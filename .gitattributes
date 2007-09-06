@@ -56,3 +56,11 @@ ELFLoader_lg8/conf_loader.h -text
 ELFLoader_lg8/config_data.c -text
 ELFLoader_lg8/elfloader.cpp -text
 ELFLoader_lg8/png.c -text
+KeyExten/KeyExten.ewp -text
+KeyExten/KeyExten.eww -text
+KeyExten/conf_loader.c -text
+KeyExten/conf_loader.h -text
+KeyExten/config_data.c -text
+KeyExten/func.asm -text
+KeyExten/main.c -text
+KeyExten/test.xcl -text
