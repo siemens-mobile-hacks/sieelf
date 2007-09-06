@@ -106,6 +106,7 @@ MC/ZLib/INFTREES.H -text
 MC/ZLib/TREES.C -text
 MC/ZLib/TREES.H -text
 MC/ZLib/UNCOMPR.C -text
+MC/ZLib/ZLIB.H -text
 MC/ZLib/ZUTIL.C -text
 MC/ZLib/Zconf.h -text
 MC/ZLib/deflate.c -text
