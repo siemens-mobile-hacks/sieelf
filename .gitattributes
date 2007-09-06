@@ -87,6 +87,10 @@ MC/Inc/mc.h -text
 MC/Inc/mui.h -text
 MC/Inc/sort.h -text
 MC/Inc/zslib.h -text
+MC/Langs/czech.mclg -text
+MC/Langs/english.mclg -text
+MC/Langs/russian.mclg -text
+MC/Langs/ukrainian.mclg -text
 inc/bn.h -text
 inc/cfg_items.h -text
 inc/crypto.h -text
