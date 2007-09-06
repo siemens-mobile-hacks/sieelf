@@ -110,6 +110,13 @@ MC/ZLib/ZLIB.H -text
 MC/ZLib/ZUTIL.C -text
 MC/ZLib/Zconf.h -text
 MC/ZLib/deflate.c -text
+MC/ZLib/minizip/crypt.h -text
+MC/ZLib/minizip/ioapi.c -text
+MC/ZLib/minizip/ioapi.h -text
+MC/ZLib/minizip/unzip.c -text
+MC/ZLib/minizip/unzip.h -text
+MC/ZLib/minizip/zip.c -text
+MC/ZLib/minizip/zip.h -text
 MC/ZLib/zutil.h -text
 inc/bn.h -text
 inc/cfg_items.h -text
