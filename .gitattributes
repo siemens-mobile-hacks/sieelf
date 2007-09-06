@@ -69,6 +69,13 @@ LaunchElf/Launch_elf.eww -text
 LaunchElf/Launch_elf.xcl -text
 LaunchElf/additional.c -text
 LaunchElf/start_elf.bcfg -text
+MC/Files/classic.mccs -text
+MC/Files/faq.txt -text
+MC/Files/far.mccs -text
+MC/Files/key_cmds.txt -text
+MC/Files/mckeys.cfg -text
+MC/Files/orange.mccs -text
+MC/Files/readme.txt -text
 inc/bn.h -text
 inc/cfg_items.h -text
 inc/crypto.h -text
