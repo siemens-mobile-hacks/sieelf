@@ -75,6 +75,7 @@ inc/crypto.h -text
 inc/gpslogger_ipc.h -text
 inc/mplayer.h -text
 inc/playsound.h -text
+inc/png.h -text
 inc/pngconf.h -text
 inc/pnglist.h -text
 inc/rsa.h -text
