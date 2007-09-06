@@ -64,3 +64,8 @@ KeyExten/config_data.c -text
 KeyExten/func.asm -text
 KeyExten/main.c -text
 KeyExten/test.xcl -text
+LaunchElf/Launch_elf.ewp -text
+LaunchElf/Launch_elf.eww -text
+LaunchElf/Launch_elf.xcl -text
+LaunchElf/additional.c -text
+LaunchElf/start_elf.bcfg -text
