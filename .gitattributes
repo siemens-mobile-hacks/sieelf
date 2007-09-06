@@ -138,8 +138,6 @@ MC/gui.c -text
 MC/keys.c -text
 MC/krnl.c -text
 MC/main.c -text
-MC/mc.dep -text
-MC/mc.ewd -text
 MC/mc.ewp -text
 MC/mc.eww -text
 MC/menus.c -text
