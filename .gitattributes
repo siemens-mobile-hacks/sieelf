@@ -91,6 +91,12 @@ MC/Langs/czech.mclg -text
 MC/Langs/english.mclg -text
 MC/Langs/russian.mclg -text
 MC/Langs/ukrainian.mclg -text
+MC/ZLib/ADLER32.C -text
+MC/ZLib/COMPRESS.C -text
+MC/ZLib/DEFLATE.H -text
+MC/ZLib/INFFAST.C -text
+MC/ZLib/INFFAST.H -text
+MC/ZLib/INFFIXED.H -text
 inc/bn.h -text
 inc/cfg_items.h -text
 inc/crypto.h -text
