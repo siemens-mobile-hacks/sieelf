@@ -76,6 +76,17 @@ MC/Files/key_cmds.txt -text
 MC/Files/mckeys.cfg -text
 MC/Files/orange.mccs -text
 MC/Files/readme.txt -text
+MC/Inc/ColorMap.h -text
+MC/Inc/color.h -text
+MC/Inc/conf_loader.h -text
+MC/Inc/config.h -text
+MC/Inc/encode.h -text
+MC/Inc/gui.h -text
+MC/Inc/lng.h -text
+MC/Inc/mc.h -text
+MC/Inc/mui.h -text
+MC/Inc/sort.h -text
+MC/Inc/zslib.h -text
 inc/bn.h -text
 inc/cfg_items.h -text
 inc/crypto.h -text
