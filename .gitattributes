@@ -97,6 +97,15 @@ MC/ZLib/DEFLATE.H -text
 MC/ZLib/INFFAST.C -text
 MC/ZLib/INFFAST.H -text
 MC/ZLib/INFFIXED.H -text
+MC/ZLib/INFLATE.H -text
+MC/ZLib/INFTREES.C -text
+MC/ZLib/INFTREES.H -text
+MC/ZLib/TREES.C -text
+MC/ZLib/TREES.H -text
+MC/ZLib/UNCOMPR.C -text
+MC/ZLib/ZUTIL.C -text
+MC/ZLib/Zconf.h -text
+MC/ZLib/zutil.h -text
 inc/bn.h -text
 inc/cfg_items.h -text
 inc/crypto.h -text
