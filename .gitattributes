@@ -166,3 +166,11 @@ inc/swilib.h -text
 inc/xtask_ipc.h -text
 inc/zconf.h -text
 inc/zlib.h -text
+mini_GPS/conf_loader.c -text
+mini_GPS/conf_loader.h -text
+mini_GPS/config_data.c -text
+mini_GPS/func.asm -text
+mini_GPS/main.c -text
+mini_GPS/mini_gps.ewp -text
+mini_GPS/mini_gps.eww -text
+mini_GPS/mini_gps.xcl -text
