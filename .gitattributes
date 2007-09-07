@@ -47,6 +47,7 @@ ELFLoader_lg8/M6Cv50/Exe/patch_esi_bl.txt -text
 ELFLoader_lg8/M6Cv50/Exe/swilib.vkp -text
 ELFLoader_lg8/S68Cv51/Exe/swilib.vkp -text
 ELFLoader_lg8/S6Cv53/Exe/patche_esi_bl.txt -text
+ELFLoader_lg8/S6Cv53/Exe/swilib.vkp -text
 ELFLoader_lg8/SK6Cv50/Exe/Cut[!!-~]heap.vkp -text
 ELFLoader_lg8/SK6Cv50/Exe/patch_esi_bl.txt -text
 ELFLoader_lg8/SK6Cv50/Exe/swilib.vkp -text
