@@ -60,11 +60,11 @@ int my_keyhook(int submsg, int msg)
     {
       if (msg==KEY_UP)
       {
-	if (mode_red!=2)
-	{
-	  mode_red=0;
-	  return KEYHOOK_BREAK;
-	}
+        if (mode_red!=2)
+        {
+          mode_red=0;
+          return KEYHOOK_BREAK;
+        }
       }
       mode_red=2; //Ложим на отпускания
     }
@@ -72,47 +72,47 @@ int my_keyhook(int submsg, int msg)
     {
       if (msg==KEY_DOWN)
       {
-	if (mode_red==1)
-	{
-	  mode_red=0;
-	  return KEYHOOK_NEXT; //Long press, continue with REDB PRESS
-	}
+        if (mode_red==1)
+        {
+          mode_red=0;
+          return KEYHOOK_NEXT; //Long press, continue with REDB PRESS
+        }
       }
       if (msg==KEY_UP)
       {
-	if (mode_red)
-	{
-	  mode_red=0; //Release after longpress
-	  return KEYHOOK_NEXT;
-	}
-	else
+        if (mode_red)
+        {
+          mode_red=0; //Release after longpress
+          return KEYHOOK_NEXT;
+        }
+        else
+        {
 	  //Release after short press
-	{
           if (RED_BUT_MODE==1)
           {
             GBS_SendMessage(MMI_CEPID,KEY_DOWN,RIGHT_SOFT);
           }
           else
           {
-	    if (!my_csm_id)
-	    {
-	      CSMtoTop(CSM_root()->idle_id,-1);
-	    }
+            if (!my_csm_id)
+            {
+              CSMtoTop(CSM_root()->idle_id,-1);
+            }
           }
-	}
+        }
       }
       if (msg==LONG_PRESS)
       {
-	mode_red=1;
-	GBS_SendMessage(MMI_CEPID,KEY_DOWN,RED_BUTTON);
+        mode_red=1;
+        GBS_SendMessage(MMI_CEPID,KEY_DOWN,RED_BUTTON);
       }
       return KEYHOOK_BREAK;
     }
   }
 #endif
-  if (ACTIVE_KEY_STYLE==3)
+  if ((ACTIVE_KEY_STYLE==1)||(ENA_LONG_PRESS==3))
   {
-    if (submsg!=ENTER_BUTTON) return KEYHOOK_NEXT;
+    if (submsg!=ACTIVE_KEY) return KEYHOOK_NEXT;
     if (my_csm_id)
     {
       if (((CSM_RAM *)(CSM_root()->csm_q->csm.last))->id!=my_csm_id)
@@ -126,8 +126,8 @@ int my_keyhook(int submsg, int msg)
     case KEY_DOWN:
       if (mode_enter==2)
       {
-	GBS_SendMessage(MMI_CEPID,KEY_UP,ENTER_BUTTON);
-	return KEYHOOK_NEXT;
+        GBS_SendMessage(MMI_CEPID,KEY_UP,ACTIVE_KEY);
+        return KEYHOOK_NEXT;
       }
       mode_enter=0;
       return KEYHOOK_BREAK;
@@ -135,7 +135,7 @@ int my_keyhook(int submsg, int msg)
       if (mode_enter==0)
       {
         mode_enter=2;
-        GBS_SendMessage(MMI_CEPID,KEY_DOWN,ENTER_BUTTON);
+        GBS_SendMessage(MMI_CEPID,KEY_DOWN,ACTIVE_KEY);
         return KEYHOOK_BREAK;
       }
       if (mode_enter==2)
@@ -182,18 +182,18 @@ int my_keyhook(int submsg, int msg)
       }
     }
   }
-  if (ACTIVE_KEY_STYLE<2)
+  if (ACTIVE_KEY_STYLE==0)
   {
     if (submsg!=ACTIVE_KEY) return KEYHOOK_NEXT;
     if (my_csm_id)
     {
       if (((CSM_RAM *)(CSM_root()->csm_q->csm.last))->id!=my_csm_id)
       {
-	CloseCSM(my_csm_id);
+        CloseCSM(my_csm_id);
       }
       if (msg==KEY_UP)
       {
-	GBS_SendMessage(MMI_CEPID,KEY_DOWN,ENTER_BUTTON);
+        GBS_SendMessage(MMI_CEPID,KEY_DOWN,ENTER_BUTTON);
       }
       return KEYHOOK_BREAK;
     }
@@ -201,50 +201,31 @@ int my_keyhook(int submsg, int msg)
     {
     case KEY_DOWN:
       mode=0;
-      if (ACTIVE_KEY_STYLE==0)
-	return KEYHOOK_BREAK;
-      else 
-	return KEYHOOK_NEXT;
+      return KEYHOOK_BREAK;
     case KEY_UP:
       if (mode==1)
       {
-	//Release after longpress
-	mode=0;
-	if ((ACTIVE_KEY_STYLE==1) || (ENA_LONG_PRESS==3))
-	{
-	  //Launch on LongPress or Extra on LP - Launch
-	  if (IsUnlocked()||ENA_LOCK)
-	  {
-	    ShowMenu();
-	  }
-	  return KEYHOOK_BREAK;
-	}
-	if (ENA_LONG_PRESS==2)
-	{
-	  CSMtoTop(CSM_root()->idle_id,-1);
-	  return KEYHOOK_BREAK;
-	}
-	if (ENA_LONG_PRESS==1) return KEYHOOK_BREAK;
-	break;
+        //Release after longpress
+        mode=0;
+        if (ENA_LONG_PRESS==2)
+        {
+          CSMtoTop(CSM_root()->idle_id,-1);
+          return KEYHOOK_BREAK;
+        }
+        if (ENA_LONG_PRESS==1) return KEYHOOK_BREAK;
+        break;
       }
       if (ACTIVE_KEY_STYLE==0)
       {
-	if (IsUnlocked()||ENA_LOCK)
-	{
-	  ShowMenu();
-	}
-	return KEYHOOK_BREAK;
+        if (IsUnlocked()||ENA_LOCK)
+        {
+          ShowMenu();
+        }
+        return KEYHOOK_BREAK;
       }
       break;
     case LONG_PRESS:
       mode=1;
-      if (ACTIVE_KEY_STYLE==1)
-      {
-	if (ENA_LONG_PRESS)
-	  return KEYHOOK_NEXT;
-	else 
-	  return KEYHOOK_BREAK;
-      }
     }
   }
   return KEYHOOK_NEXT;
