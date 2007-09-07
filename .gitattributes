@@ -151,6 +151,14 @@ MC/slib.c -text
 MC/sort.c -text
 MC/test.xcl -text
 MC/zslib.c -text
+MegaDial/MegaDial.ewp -text
+MegaDial/MegaDial.eww -text
+MegaDial/conf_loader.c -text
+MegaDial/conf_loader.h -text
+MegaDial/config_data.c -text
+MegaDial/func.asm -text
+MegaDial/main.c -text
+MegaDial/test.xcl -text
 Tools/ABraGen[!!-~]0.22[!!-~]chs.exe -text
 Tools/ARM跳转计算armtool[!!-~]1.1.exe -text
 Tools/FullflashComparer2.0汉化/Comparer.exe -text
