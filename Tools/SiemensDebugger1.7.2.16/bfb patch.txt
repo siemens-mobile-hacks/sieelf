@@ -1,0 +1,169 @@
+Siemens Debugger
+---------------------------------------------
+(c) Copyright 2004 by ACiD[mrp]
+(p) Published 2004 by GSM Development Crew
+    www.gsm-dev.com
+
+
+   /------------\  /------------\  /---\     /---\
+   |            |  |            |  |    |   |    |
+   |   /--------/  |    /-------/  |     | |     |
+   |   |           |    |_______   |      |      |
+   |   |           |            |  |   |\   /|   |
+   |   | /------\  |________    |  |   | \./ |   |
+   |   | |__    |           |   |  |   |     |   |
+   |   |____|   |  /--------/   |  |   |     |   |
+   |            |  |            |  |   |     |   |
+   |____________/  \____________/  |___|     |___|
+
+           D E V E L O P M E N T  C R E W
+               http://www.gsm-dev.com
+
+            (c) 2003, 2004 by ACiD [mrp]
+
+          powered by www.handyhelpline.com
+       join us at www.gsm-multifund.de/board
+                 (english, german)
+
+
+To use this program and some others you'll need an OpenBFB Patch
+on your mobile. Every patch will only work for _one_ firmware
+version and _one_ mobile. You can't install the patch from S55v20
+on M55 for example and not S55v20 on S55v16.
+
+how to apply the patch:
+-----------------------
+
+use v_klay (http://www.vi-soft.com.ua) to apply the patch. 
+No questions on my account about this. If you have some 
+questions please ask in the Multihandyhacking Board 
+(www.gsm-multifund.de/board) in english or german only.
+
+ALWAYS make an FULLBACKUP with FULL battery before start
+applying some patches.
+
+
+CRC Checks:
+-----------
+
+Some mobiles have an CRC Check others not. If your mobile
+has an CRC Check and ist not patches till now, you need
+to turn off this check.
+
+this phones have an 1st CRC check (two parts):
+x35, x45, x50
+
+this phones have an 2nd CRC check:
+x45, x50
+
+the new phones (x55, x60) don't have any check.
+
+You can automatical generate an patch that disables all
+CRC checks:
+http://www.gsmdev.de/page/index.php?c=viewprojektinfo&id=20
+(CRC Patcher 1.0.0.0)
+
+
+available patches:
+------------------
+
+
+ME45iv4, S45iv4 (thx RizaPN):
+	
+	2963CA: 20 0A
+
+S55v20 (thx Girosavo):
+
+	608CA2: F8 E2
+
+M55v10 (done by me):
+	
+	7E5AB4: 0A5B F45A
+
+M55v11 (done by me):
+
+	7E6918: 6E 58
+
+SL55v14 (done by me):
+
+	67367E: D2 BE
+
+SL55v16 (done by me):
+	
+	66367E: D2 BE
+
+A60 v23 (done by me):
+	
+	373C48: 9C 88
+
+C60 v23 (done by me an SiNgle):
+	
+	420160: B4 A0 
+
+MC60v7:
+	
+	7AEBC4: 1A 04
+
+MC60v10:
+
+	7B0162: B8 A2
+
+A60v25: (Freia 10 File, done by me)
+	
+	3B3E10: 64 50
+
+C45 v38: (done by me)
+
+	092B24: 76 60
+
+
+write your own patch:
+---------------------
+
+
+!!! new: use Smelter to generate this Patch !!!
+
+
+
+you need to have:
+
+- an fullflash (do it with v_klay)
+- fbytes by RizaPN (find it on www.mobiletuning.de)
+
+type on windows command line:
+fbytes flashfile.bin 46,fc,,,cd,ed,da,,,,
+
+you'll see somethin like this:
+File m5511.bin (14680064 bytes) loaded (base=200000).
+   1. 7E6910 (0279:2910) : 46 FC 29 00 CD ED DA 9E 6E 69
+
+the last 4 values: DA 9E 6E 69
+is an call to address: 0x9E696E  (last bytes are swapped)
+
+now calculate: 0x9E696E - 0x16 = 0x9E6958
+
+We need to change the old call to the new address:
+
+DA 9E 58 69 (last bytes reswapped)
+
+so the patch is:
+7E6910: 46FC2900CDEDDA9E6E69 46FC2900CDEDDA9E5869
+^       ^                    ^
+^       ^                    new data
+^       original data
+^
+address for data
+
+of course we can write this shorter because not all
+bytes have to be changed:
+
+7E6918: 6E 58
+
+you allways have to change only one or two bytes 
+for this patch.
+
+Easy isn't it? ,)
+
+If you've written an patch please let me know this on
+www.gsm-multifund.de/board so I can add this in this
+text.
