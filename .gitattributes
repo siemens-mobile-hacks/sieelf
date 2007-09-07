@@ -52,6 +52,7 @@ ELFLoader_lg8/SK6Cv50/Exe/Cut[!!-~]heap.vkp -text
 ELFLoader_lg8/SK6Cv50/Exe/patch_esi_bl.txt -text
 ELFLoader_lg8/SK6Cv50/Exe/swilib.vkp -text
 ELFLoader_lg8/SL6Cv50/Exe/patch_esi_bl.txt -text
+ELFLoader_lg8/SL6Cv50/Exe/swilib.vkp -text
 ELFLoader_lg8/additional.c -text
 ELFLoader_lg8/conf_loader.c -text
 ELFLoader_lg8/conf_loader.h -text
