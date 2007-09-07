@@ -2,7 +2,7 @@
 ;********************************************************************************
 
 ; Functions Library
-; 2007.08.12
+; 2007.09.07
 
 +0074000
 #pragma enable old_equal_ff
@@ -592,6 +592,8 @@
 0898: 0xA05B0F34   ; 226: __arm int PlayMelody_StopPlayback(int handle);
 089C: 0xA05B0FD4   ; 227: __arm int PlayMelody_PausePlayback(int handle);
 08A0: 0xA05B1004   ; 228: __arm int PlayMelody_ResumePlayBack(int handle);
+08A4: 0xA0FF2084   ; 229: __arm void longjmp(jmp_buf, int)
+08A8: 0xA0953B9C   ; 22A: __thumb void FreeGSMTXTpkt(void *pkt)
 #pragma disable old_equal_ff
 +0
 ;********************************************************************************
