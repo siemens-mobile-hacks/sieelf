@@ -3,6 +3,7 @@
 ;********************************************************************************
 
 ;FL_SWI
+;2007.09.07
 
 +0FD4000
 #pragma enable old_equal_ff
@@ -139,7 +140,7 @@
 01EC: 0xA08D2349   ;  7B: GetProfileFilter
 01F0: 0xA1234478   ;  7C: SetVibration(unsigned int power)
 01F4: 0xA00CD189   ;  7D: IsIncognitoCall
-01F8: 0xA00E75FD   ;  7E: __swi __arm int rand(void)
+01F8: 0xA00E75E1   ;  7E: __swi __arm int rand(void)
 ;1FC:              ;  7F: IsPlayerOn
 
 0200: 0xA0B334A1   ;  80: ShowCallList(int list, int zero)
@@ -191,7 +192,7 @@
 02B0: 0xA0FCF1B1   ;  AC: DrawText
 02B4: 0xA0FCF0A1   ;  AD: StrAnsi2Uni
 02B8: 0xA0FCF0C1   ;  AE: StrUni2Ansi
-02BC: 0xA0919A29   ;  AF: Hex2Int
+02BC: 0xA0FCF051   ;  AF: Hex2Int
 
 02C0: 0xA0FCF351   ;  B0: DrawPicWithCanvas
 02C4: 0xA0FCF371   ;  B1: DrawColorPicWithCanvas
@@ -581,6 +582,20 @@
 086C: 0xA00DD3AD   ; 21B: __thumb void EDIT_RemoveTextInvert(void *gui)
 0870: 0xA00DD3E9   ; 21C: __thumb int EDIT_IsBusy(void *gui)
 0874: 0xA0A61D79   ; 21D: __thumb int GSMTXT_Decode(WSHDR *dest,void *pkt,int len,int encoding_type, void *(*malloc_adr)(int), void (*mfree_adr)(void))
+0878: 0xA00B3B29   ; 21E: __thumb void FocusGUI(int id);
+087C: 0xA00B3B37   ; 21F: __thumb void UnfocusGUI(void);
+
+0880: 0xA00B205D   ; 220: IsSliderClosed ; Qwerty state (0 - open, 1 - closed, 2 - half-open)
+0884: 0xA1274810   ; 221: __arm void SetCpuClockLow(2);
+0888: 0xA12747F8   ; 222: __arm void SetCpuClockTempHi(2);
+;088C: 0x ; 223: IsMediaPlayerInBackground
+;0890: 0x ; 224: CloseMediaPlayer
+0894: 0xA08FD95C   ; 225: __arm int PlayMelody_ChangeVolume(int handle,int volume);
+0898: 0xA08FDD34   ; 226: __arm int PlayMelody_StopPlayback(int handle);
+089C: 0xA08FDDD4   ; 227: __arm int PlayMelody_PausePlayback(int handle);
+08A0: 0xA08FDE18   ; 228: __arm int PlayMelody_ResumePlayBack(int handle);
+08A4: 0xA159C3F8   ; 229: __arm void longjmp(jmp_buf, int);
+08A8: 0xA0A690C3   ; 22A: __thumb void FreeGSMTXTpkt(void *pkt);
 #pragma disable old_equal_ff
 +0
 
