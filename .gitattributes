@@ -1,4 +1,12 @@
 * text=auto !eol
+CfgEdit/CfgEdit.ewp -text
+CfgEdit/CfgEdit.eww -text
+CfgEdit/CfgEdit_IAR_old.ewp -text
+CfgEdit/CfgEdit_IAR_old.eww -text
+CfgEdit/func.asm -text
+CfgEdit/main.c -text
+CfgEdit/test.xcl -text
+CfgEdit/visual.c -text
 ELFLoader_lg8/C6Cv53/Exe/ELFLoader_C6Cv53.vkp -text
 ELFLoader_lg8/C6Cv53/Exe/patch_esi_bl.txt -text
 ELFLoader_lg8/C6Cv53/Exe/swilib.vkp -text
