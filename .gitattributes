@@ -159,6 +159,17 @@ MegaDial/config_data.c -text
 MegaDial/func.asm -text
 MegaDial/main.c -text
 MegaDial/test.xcl -text
+TurnOff/TurnOff.ewp -text
+TurnOff/TurnOff.eww -text
+TurnOff/TurnOff/off.png -text
+TurnOff/TurnOff/reboot.png -text
+TurnOff/TurnOff/sleep.png -text
+TurnOff/conf_loader.c -text
+TurnOff/conf_loader.h -text
+TurnOff/config_data.c -text
+TurnOff/func.asm -text
+TurnOff/main.c -text
+TurnOff/test.xcl -text
 XTASK3/XTask3.ewp -text
 XTASK3/XTask3.eww -text
 XTASK3/conf_loader.c -text
