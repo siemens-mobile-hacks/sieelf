@@ -1,12 +1,17 @@
 * text=auto !eol
+ELFLoader_lg8/C6Cv53/Exe/ELFLoader_C6Cv53.vkp -text
 ELFLoader_lg8/C6Cv53/Exe/patch_esi_bl.txt -text
 ELFLoader_lg8/C6Cv53/Exe/swilib.vkp -text
+ELFLoader_lg8/C7Cv22/Exe/ELFLoader_C7Cv22.vkp -text
 ELFLoader_lg8/C7Cv22/Exe/patch_esi_bl.txt -text
 ELFLoader_lg8/C7Cv22/Exe/swilib.vkp -text
+ELFLoader_lg8/CX6Cv50/Exe/ELFLoader_CX6Cv50.vkp -text
 ELFLoader_lg8/CX6Cv50/Exe/patch_esi_bl.txt -text
 ELFLoader_lg8/CX6Cv50/Exe/swilib.vkp -text
+ELFLoader_lg8/CX7Av25/Exe/ELFLoader_CX7AV25.vkp -text
 ELFLoader_lg8/CX7Av25/Exe/patch_esi_bl.txt -text
 ELFLoader_lg8/CX7Av25/Exe/swilib.vkp -text
+ELFLoader_lg8/CX7Cv50/Exe/ELFLoader_CX7Cv50.vkp -text
 ELFLoader_lg8/CX7Cv50/Exe/patch_esi_bl.txt -text
 ELFLoader_lg8/CX7Cv50/Exe/swilib.vkp -text
 ELFLoader_lg8/E71Cv41/Exe/API.vkp -text
@@ -43,14 +48,18 @@ ELFLoader_lg8/Lg8/rets_S7Cv47.asm -text
 ELFLoader_lg8/Lg8/rets_SK6Cv50.asm -text
 ELFLoader_lg8/Lg8/rets_SL6Cv50.asm -text
 ELFLoader_lg8/Lg8/rets_SL7Cv47.asm -text
+ELFLoader_lg8/M6Cv50/Exe/ELFLoader_m6cv50.vkp -text
 ELFLoader_lg8/M6Cv50/Exe/patch_esi_bl.txt -text
 ELFLoader_lg8/M6Cv50/Exe/swilib.vkp -text
 ELFLoader_lg8/S68Cv51/Exe/swilib.vkp -text
+ELFLoader_lg8/S6Cv53/Exe/ELFLoader_S6Cv53.vkp -text
 ELFLoader_lg8/S6Cv53/Exe/patche_esi_bl.txt -text
 ELFLoader_lg8/S6Cv53/Exe/swilib.vkp -text
 ELFLoader_lg8/SK6Cv50/Exe/Cut[!!-~]heap.vkp -text
+ELFLoader_lg8/SK6Cv50/Exe/ELFLoader_SK6Cv50.vkp -text
 ELFLoader_lg8/SK6Cv50/Exe/patch_esi_bl.txt -text
 ELFLoader_lg8/SK6Cv50/Exe/swilib.vkp -text
+ELFLoader_lg8/SL6Cv50/Exe/ELFLoader_sl6cv50.vkp -text
 ELFLoader_lg8/SL6Cv50/Exe/patch_esi_bl.txt -text
 ELFLoader_lg8/SL6Cv50/Exe/swilib.vkp -text
 ELFLoader_lg8/additional.c -text
