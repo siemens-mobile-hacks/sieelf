@@ -596,6 +596,11 @@
 089C: 0xA024C434   ; 227: int PlayMelody_PausePlayback(int handle)
 08A0: 0xA024C464   ; 228: int PlayMelody_ResumePlayBack(int handle)
 08A4: 0xA110678C   ; 229: void longjmp(jmp_buf, int)
+08A8: 0xA0839A49   ; 22A: void FreeGSMTXTpkt(void *pkt);
+08AC: 0xA02C9FE9   ; 22B: CreateRadioButtonList(RadioButtonListDesc *, char num_of_radiobuttons, 0, 0, char prev_setting, void HandlerFunc(int), char flag)
+08B0: 0xA02C98DB   ; 22C: pdcache_getval(char *return, int maxlen_of_return_str, char cachetype,0, *pd_entry_identifier);
+08B4: 0xA02C99D9   ; 22D: pdcache_setval(char *new_value, char cachetype, 0, char *pd_entry_identifier);
+08B8: 0xA0308A9B   ; 22E: OpenExplorer(ExplOpenDesc *)
 #pragma disable old_equal_ff
 +0
 
