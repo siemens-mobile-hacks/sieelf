@@ -1042,7 +1042,7 @@ int create_ed(CFG_HDR *need_to_focus)
       if ((curlev==level)&&(parent==levelstack[level]))
       {
         str_2ws(ews,p,hp->max);
-	ConstructEditControl(&ec,3,0x40,ews,hp->max);
+	ConstructEditControl(&ec,4,0x40,ews,hp->max);
 	AddEditControlToEditQend(eq,&ec,ma); //EditControl n*2+3
       }
       p+=(hp->max+1+3)&(~3);
@@ -1053,7 +1053,7 @@ int create_ed(CFG_HDR *need_to_focus)
       if ((curlev==level)&&(parent==levelstack[level]))
       {
         wsprintf(ews,_percent_t,p);
-	ConstructEditControl(&ec,3,0x40,ews,hp->max);
+	ConstructEditControl(&ec,4,0x40,ews,hp->max);
 	AddEditControlToEditQend(eq,&ec,ma); //EditControl n*2+3
       }
       p+=(hp->max+1+3)&(~3);
@@ -1065,7 +1065,7 @@ int create_ed(CFG_HDR *need_to_focus)
       if ((curlev==level)&&(parent==levelstack[level]))
       {
         utf8_2ws(ews,p,hp->max);
-	ConstructEditControl(&ec,3,0x40,ews,hp->max);
+	ConstructEditControl(&ec,4,0x40,ews,hp->max);
 	AddEditControlToEditQend(eq,&ec,ma); //EditControl n*2+3
       }
       p+=(hp->max+1+3)&(~3);
@@ -1094,7 +1094,7 @@ int create_ed(CFG_HDR *need_to_focus)
       if ((curlev==level)&&(parent==levelstack[level]))
       {
         wsprintf(ews,_percent_t,p);
-	ConstructEditControl(&ec,3,ECF_APPEND_EOL|ECF_PASSW,ews,hp->max);
+	ConstructEditControl(&ec,4,ECF_APPEND_EOL|ECF_PASSW,ews,hp->max);
 	AddEditControlToEditQend(eq,&ec,ma); //EditControl n*2+3
       }
       p+=(hp->max+1+3)&(~3);
