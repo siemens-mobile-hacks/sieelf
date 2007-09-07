@@ -578,6 +578,20 @@
 086C: 0xA09EA3D5   ; 21B: __thumb void EDIT_RemoveTextInvert(void *gui);
 0870: 0xA09EA411   ; 21C: __thumb int EDIT_IsBusy(void *gui);
 0874: 0xA0731D95   ; 21D: __thumb int GSMTXT_Decode(WSHDR *dest,void *pkt,int len,int encoding_type);
+0878: 0xA076940D   ; 21E: __thumb void FocusGUI(int id);
+087C: 0xA076941D   ; 21F: __thumb void UnfocusGUI(void);
+
+0880: 0xA0768185   ; 220: IsSliderClosed
+0884: 0xA0A24A00   ; 221: __arm void SetCpuClockLow(2);
+0888: 0xA0A24E98   ; 222: __arm void SetCpuClockTempHi(2);
+;088C: 0x ; 223: IsMediaPlayerInBackground
+;0890: 0x ; 224: CloseMediaPlayer
+0894: 0xA02E2A8C   ; 225: __arm int PlayMelody_ChangeVolume(int handle,int volume);
+0898: 0xA02E2E64   ; 226: __arm int PlayMelody_StopPlayback(int handle);
+089C: 0xA02E2F04   ; 227: __arm int PlayMelody_PausePlayback(int handle);
+08A0: 0xA02E2F48   ; 228: __arm int PlayMelody_ResumePlayBack(int handle);
+08A4: 0xA0D96750   ; 229: __arm void longjmp(jmp_buf, int);
+08A8: 0xA0739003   ; 22A: __thumb void FreeGSMTXTpkt(void *pkt);
 #pragma disable old_equal_ff
 +0
 ;********************************************************************************
