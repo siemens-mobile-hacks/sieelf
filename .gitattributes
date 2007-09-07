@@ -151,6 +151,9 @@ MC/slib.c -text
 MC/sort.c -text
 MC/test.xcl -text
 MC/zslib.c -text
+Tools/RS-232+RS-485串口通讯调试器[!!-~]XP[!!-~]V2.4331.1823.zip -text
+Tools/Ser232Mon串口监视[!!-~]V1.0.rar -text
+Tools/西机X65+75功能地址获取工具1.2.exe -text
 XTASK3/XTask3.ewp -text
 XTASK3/XTask3.eww -text
 XTASK3/conf_loader.c -text
