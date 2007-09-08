@@ -27,22 +27,22 @@ static int do_CSMtoTop(CSMQ *csm_q, void *_cmd)
   {
     if (top_csm)
     {
-      wcsm=(CSM_RAM *)top_csm->prev; //ѕолучаем перемещаемый CSM
+      wcsm=(CSM_RAM *)top_csm->prev; //Obtain transfer CSM 
     }
     else
     {
       wcsm=csm_q->csm.last;
     }
-    ((CSM_RAM *)(wcsm->prev))->next=top_csm; //CSM перед перемещаемым теперь указывает на верхний CSM
+    ((CSM_RAM *)(wcsm->prev))->next=top_csm; //now transferred to the CSM points to the top CSM 
     if (top_csm)
     {
-      top_csm->prev=wcsm->prev; //prev верхнего CSM указывает на CSM перед перемещаемым
+      top_csm->prev=wcsm->prev; //prev top CSM indicates transferred to the CSM 
     }
     else
     {
       csm_q->csm.last=wcsm->prev;
     }
-    //“еперь вставл€ем в нужное место перемещаемый CSM
+    //Now insert in the right place to transfer CSM 
     ((CSM_RAM *)(wcsm->next=bot_csm->next))->prev=wcsm;
     bot_csm->next=wcsm;
     wcsm->prev=bot_csm;
@@ -57,7 +57,7 @@ static int do_CSMtoTop(CSMQ *csm_q, void *_cmd)
   {
     FocusGUI(gui[3]);
   }
-  //—ообщение об уничтожении несуществующего CSM, необходимо дл€ правильной работы IdleCSM
+  //Message of the destruction of a CSM, it is necessary to work IdleCSM 
   GBS_SendMessage(MMI_CEPID,MSG_CSM_DESTROYED,0,30002,0);
   return 1;
 }
@@ -86,7 +86,7 @@ void CSMtoTop(int id, int top_id)
   CSMQ *csm_q=CSM_root()->csm_q;
   MMICMD *cmd;
   if (!FindCSMbyID(id)) return;
-  if (id==top_id) return; //Ќечего
+  if (id==top_id) return; //Nothing 
   cmd=malloc(sizeof(MMICMD));
   cmd->csm_q=csm_q;
 

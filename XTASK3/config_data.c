@@ -1,5 +1,5 @@
 #include "..\inc\cfg_items.h"
-//Конфигурация
+//Configuration
 __root const CFG_HDR cfghdr0={CFG_STR_UTF8,"CSM list file",3,127};
 #ifdef NEWSGOLD
 __root const char csmlist_fname[128]="4:\\ZBin\\etc\\CSMlist.txt";

@@ -66,7 +66,7 @@ int my_keyhook(int submsg, int msg)
           return KEYHOOK_BREAK;
         }
       }
-      mode_red=2; //Ложим на отпускания
+      mode_red=2; //Lozhim to release
     }
     else
     {
@@ -259,11 +259,11 @@ int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
   
 #ifndef NEWSGOLD 
 #define EXT_BUTTON 0x63  
-  if ((ACTIVE_KEY_STYLE!=2)&&(ACTIVE_KEY_STYLE!=3)) //не "* + #" и не "Enter Button"
-  {//чтоб можно было вызвать браузер при этих режимах
-    if (ACTIVE_KEY==EXT_BUTTON) //мнимая кнопка браузера
+  if ((ACTIVE_KEY_STYLE!=2)&&(ACTIVE_KEY_STYLE!=3)) //no "* # +" and "Enter Button" 
+  {//To be called a browser with these regimes 
+    if (ACTIVE_KEY==EXT_BUTTON) //alleged browser button 
     {
-      if (msg->msg==439) //вызван браузер
+      if (msg->msg==439) //called browser 
       {
         switch (msg->submess) 
         {
@@ -272,20 +272,20 @@ int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
           break;
 	case 2:
 	  GBS_SendMessage(MMI_CEPID,KEY_UP,EXT_BUTTON);
-          break; // Никакого default!!!
+          break; // No default! ! ! 
         }
       }
-      else //браузер не вызывался
+      else //browser does not show 
 	goto L1;
     }
-    else //кнопка вызова не является мнимой кнопкой вызова браузера
+    else //call button is not alleged call button browser 
       goto L1;
   }
   else
 L1:
   csm_result=old_icsm_onMessage(data,msg);
 #else    
-  csm_result = old_icsm_onMessage(data, msg); //Вызываем старый обработчик событий    
+  csm_result = old_icsm_onMessage(data, msg); //call old handler events 	
 #endif
   
   icgui_id=((int *)data)[DISPLACE_OF_INCOMMINGGUI/4];
@@ -346,7 +346,7 @@ L1:
   //  if ((msg->msg==MSG_STATE_OF_CALL)&&(msg->submess==0)&&((int)msg->data0==3)) callhide_mode=1;
   //  #else
   //if ((msg->msg==MSG_STATE_OF_CALL)&&(msg->submess==0)&&((int)msg->data0==0)) callhide_mode=1;
-  //    Говно!!!! Лечить!!!
+  // Govno! ! ! ! Treat! ! !
   //  #endif   
   if (callhide_mode)
   {
@@ -396,7 +396,7 @@ void main(void)
     }
     ws_nogui=AllocWS(256);
     wsprintf(ws_nogui,"%t","NO GUI!");
-    under_idle=(FindCSMbyID(CSM_root()->idle_id))->prev; //Ищем idle_dialog
+    under_idle=(FindCSMbyID(CSM_root()->idle_id))->prev; //We are looking for idle_dialog
   }
   UnlockSched();
 }
