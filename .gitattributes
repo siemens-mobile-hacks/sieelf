@@ -93,6 +93,14 @@ ExtD/img/UNK_LARGE.PNG -text
 ExtD/img/UNK_SMALL.PNG -text
 ExtD/main.c -text
 ExtD/test.xcl -text
+GprsD/GprsD.ewp -text
+GprsD/GprsD.eww -text
+GprsD/conf_loader.c -text
+GprsD/conf_loader.h -text
+GprsD/config_data.c -text
+GprsD/func.asm -text
+GprsD/main.c -text
+GprsD/test.xcl -text
 KeyExten/KeyExten.ewp -text
 KeyExten/KeyExten.eww -text
 KeyExten/conf_loader.c -text
