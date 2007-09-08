@@ -3,12 +3,12 @@
 extern unsigned int STKSZ;
 extern unsigned int STKSZ50;
 
-extern int u_disk; //Дисковый указатель верхнего стека (в блоках по STKSZ50)
-extern int d_disk; //Дисковый указатель нижнего стека (в блоках по STKSZ50)
-extern unsigned int usp; //Указатель на верхний стек
-extern unsigned int dsp; //Указатель на нижний стек
-extern unsigned int dbat[]; //Таблица распределения блоков нижнего стека во временном файле
-extern unsigned int ubat[]; //Таблица распределения блоков верхнего стека во временном файлe
+extern int u_disk; // Hard upper stack pointer (in units of STKSZ50) 
+extern int d_disk; // Hard lower stack pointer (in units of STKSZ50) 
+extern unsigned int usp; // pointer to the upper stack 
+extern unsigned int dsp; // pointer to the lower stack 
+extern unsigned int dbat[]; // Table of the lower stack blocks in the temporary file 
+extern unsigned int ubat[]; // Table of the top stack of blocks in the temporary file e 
 extern char stkfile[];
 extern char filename[];
 
@@ -19,7 +19,7 @@ extern volatile int disk_access;
 
 extern unsigned int bl_ds(unsigned int pos);
 
-extern int terminated; //Признак закрытия диалога
+extern int terminated; //Token closure dialogue 
 extern volatile unsigned int draw_mode;
 
 extern void DiskErrorMsg(int mode);
@@ -42,13 +42,13 @@ void savetext(void)
   if (!(ibuf=malloc(STKSZ50))) goto LERR1;
   if (!(obuf=malloc(STKSZ50))) goto LERR1;
 
-  f=fopen(filename,A_ReadWrite+A_BIN+A_Create+A_Truncate,P_READ+P_WRITE,&ul); //Создаем выходной файл
+  f=fopen(filename,A_ReadWrite+A_BIN+A_Create+A_Truncate,P_READ+P_WRITE,&ul); //create the output file 
   if (f==-1)
   {
     DiskErrorMsg(4);
     goto LERR1;
   }
-  sf=fopen(stkfile,A_ReadOnly+A_BIN,P_READ,&ul); //Файл верхнего стека
+  sf=fopen(stkfile,A_ReadOnly+A_BIN,P_READ,&ul); //File upper stack 
   if (f==-1)
   {
     DiskErrorMsg(3);
@@ -58,7 +58,7 @@ void savetext(void)
   i=0;
   while(i<=u_disk)
   {
-    //Пишем верхний стек непосредственно
+    //Write upper stack directly
     p=ubat[i++];
     seekpos=STKSZ50*p;
     if (lseek(sf,seekpos,0,&ul,&ul)!=seekpos) DiskErrorMsg(2);
@@ -71,7 +71,7 @@ void savetext(void)
     }
     if (fwrite(f,ibuf,STKSZ50,&ul)!=STKSZ50) DiskErrorMsg(4);
   }
-  //Пишем верхний стек из ОЗУ
+  //I am writing to the upper stack of RAM 
   p=0;
   i=0;
   while(p!=usp)
@@ -86,7 +86,7 @@ void savetext(void)
   p=dsp;
   while(p!=STKSZ)
   {
-    //Пишем нижний стек из ОЗУ
+    //I write down a stack of RAM 
     c=dstk[p];
     if (!c) c=0x0D;
     obuf[i]=c;
@@ -94,11 +94,11 @@ void savetext(void)
     flush_obuf(f,i);
     p++;
   }
-  if (fwrite(f,obuf,i,&ul)!=i) DiskErrorMsg(4); //Недобиток
+  if (fwrite(f,obuf,i,&ul)!=i) DiskErrorMsg(4); //Nedobitok 
   i=d_disk;
   while(i>=0)
   {
-    //Пишем нижний стек
+    //Write bottom stack 
     p=dbat[i--];
     seekpos=STKSZ50*p;
     if (lseek(sf,seekpos,0,&ul,&ul)!=seekpos) DiskErrorMsg(2);
@@ -111,14 +111,14 @@ void savetext(void)
     }
     if (fwrite(f,ibuf,STKSZ50,&ul)!=STKSZ50) DiskErrorMsg(4);
   }
-  fclose(sf,&ul); //Более ничего интересного в верхнем стеке
-LERR2:
+  fclose(sf,&ul); //More than anything interesting in the top stack 
+  LERR2:
   fclose(f,&ul);
 LERR1:
   mfree(ibuf);
   mfree(obuf);
   disk_access=0;
-  draw_mode=1; //Перерисовываем
+  draw_mode=1; //Pererisovyvaem 
   REDRAW();
 }
 

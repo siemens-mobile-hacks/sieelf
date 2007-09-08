@@ -14,8 +14,8 @@
 }*/
 #define my_memset memset
 
-extern unsigned long curline; //Наружная переменная, счетчик строк
-extern unsigned int max_x; //Наружная переменная - макс. размер строки
+extern unsigned long curline; //Outdoor variable counter lines 
+extern unsigned int max_x; //Outdoor variable-max. the size of the line 
 
 extern char *dstk;
 extern char *ustk;
@@ -41,10 +41,10 @@ static const char ctype[128]=
 
 int GetCharType_x(int c)
 {
-  if (c==' ') return(4); //Пробел
-  if (c<32) return(5); //Конец строки
-  if ((c=='i')||(c=='I')) return 2; //Гласная для украинского ;)
-  if (c<128) return(0); //Не русская буква
+  if (c==' ') return(4); //Space 
+  if (c<32) return(5); // End of the line 
+  if ((c=='i')||(c=='I')) return 2; //Glasnaya for the Ukrainian
+  if (c<128) return(0); //No Russian letter
   switch(win_dos_koi)
   {
   case 1:
@@ -56,19 +56,19 @@ int GetCharType_x(int c)
     c=koi8translation[c-128];
     break;
   }
-  if (c<128) return(0); //Не русская буква
+  if (c<128) return(0); //No Russian letter 
   return(ctype[c-128]);
 }
 
 unsigned int def_code (void);
 
-//Процедура форматирования текста
+//text formatting procedure 
 unsigned int ConvertFormat(int fin,int fs,int fmt)
 {
   unsigned int c0;
-  unsigned int c1=1; //Начать с пропуска символов
+  unsigned int c1=1; //Start with the passage of characters 
   unsigned int c2=1;
-  unsigned int c3=32; //Начать с абзаца, раз у нас форматирование ;)
+  unsigned int c3=32; //Start with a bullet, once we formatting;
 
   //unsigned int last_space;
 
@@ -76,7 +76,7 @@ unsigned int ConvertFormat(int fin,int fs,int fmt)
 
   register unsigned int s;
   register unsigned int d;
-  char ct[256]; //Массив для описания типа символов
+  char ct[256]; //Array to describe the type of character 
 
   char *ds=dstk;
   register char *us=ustk;
@@ -93,7 +93,7 @@ unsigned int ConvertFormat(int fin,int fs,int fmt)
 
   if (win_dos_koi==0xFF) win_dos_koi=def_code ();
 
-  //Подготавливаем массив ct
+  //Podgotavlivaem array ct 
   c0=0;
   do
   {
@@ -111,40 +111,41 @@ unsigned int ConvertFormat(int fin,int fs,int fmt)
   LSKIP1:
     c3=ds[s++];
     if (s>=maxstk) s=FL_loader(fin,s);
-    if (c3==9) c3=' '; //Замена табуляции на пробел
-    if (c3==1) c3=' '; //Замена служ. символов
-    if ((c3==' ')&&(c2==' ')) goto LSKIP1; //Пропуск пробелов
+    if (c3==9) c3=' '; //Replace tab for space 
+    if (c3==1) c3=' '; //replacement service. characters 
+    if ((c3==' ')&&(c2==' ')) goto LSKIP1; //pass gap 
     if ((c3==13)&&(ds[s]==10)) s++; //0D0A->0D
     if ((c3==10)&&(ds[s]==13)) s++; //0A0D->0A
     if (c3==10) c3=13; //0A->0D
-    if (c0==0) goto LEOF; //Конец текста
+    if (c0==0) goto LEOF; //End of text 
     if (fmt==1)
     {
       if ((c0>' ')&&(c1=='-')&&(c2==13)&&(c3>' '))
       {
-	//Удаление переноса
+	//Remove Transfer 
 	c1=1;
 	c2=1;
 	goto LSYM;
       }
       if ((c0>' ')&&(c1==13)&&(c2>' '))
       {
-	//Замена перевода строки на пробел между словами
+	//replacement of the line of space between words
 	c1=' ';
 	goto LSYM;
       }
     }
     if (c0==13)
     {
-      //Во всех других случаях перенос строки - это абзац
+      //In all other cases the transfer line is a paragraph 
       //last_space=0xFFFF;
       sl=0;
-      d=FL_saver(fs,d); //Сливаем не слитое
-      us[d++]=0; //Конец строки
+      d=FL_saver(fs,d); //oh no Slivaem 
+      us[d++]=0; //End of the line 
       curline++;
       if ((c1>' ')&&(fmt==2))
       {
-	us[d++]=' '; //Если сл. символ - буква, добавляем отступ
+	us[d++]=' '; //If Australia. symbol-letter, adding indentation 
+
 	sl++;
       }
       continue;
@@ -153,13 +154,13 @@ unsigned int ConvertFormat(int fin,int fs,int fmt)
     if (c0!=1)
     {
       us[d]=c0;
-      //if ((c0==' ')&&sl) last_space=d; //Запоминаем последний пробел
+      //if ((c0==' ')&&sl) last_space=d; //Zapominaem last gap 
       d++;
       sl++;
       if (sl>max_x)
       {
-	//Слишком длинная строка, ищем, куда вставить перенос
-	unsigned int pp=d+2; //Начинаем с конца c учетом доп. символов
+	//Too long line, looking where the paste transfer 
+	unsigned int pp=d+2; //Beginning in the late light App. characters 
 	unsigned int pg1=0xFFFFFFFF;
 	unsigned int pg2=0xFFFFFFFF;
 	int c;
@@ -171,7 +172,7 @@ unsigned int ConvertFormat(int fin,int fs,int fmt)
 	  c=GetCharType(us[pp]);
 	  if ((c==5)&&(pp<d))
 	  {
-	    //Нет подходящих пробелов, режем по живому ;)
+	    //No suitable gaps less for a living;
 	  L_CUT:
 	    d--;
 	    d=FL_saver(fs,d);
@@ -182,17 +183,17 @@ unsigned int ConvertFormat(int fin,int fs,int fmt)
 	  }
 	  if ((c==4)&&(pp<d))
 	  {
-	    //Режем по пробелу
-	    if (us[pp-1]<2) goto L_CUT; //Первый пробел не обрезаем
-	    us[pp]=0; //Обрезаем по пробелу и признак форматирования
+	    //Rezhem on gap 
+	    if (us[pp-1]<2) goto L_CUT; //The first gap is not clipped 
+	    us[pp]=0; //Obrezaem for space and formatting sign 
 	    sl=(d-pp)-1;
-	    d=FL_saver(fs,d); //Сливаем не слитое
+	    d=FL_saver(fs,d); //oh no Slivaem 
 	    //last_space=0xFFFF;
 	    break;
 	  }
 	  if ((c<1)||(c>3))
 	  {
-	    pg1=0xFFFFFFFF; //Новое слово
+	    pg1=0xFFFFFFFF; //The new floor 
 	    pg2=0xFFFFFFFF;
 	  }
 	  if (c==2)
@@ -201,15 +202,15 @@ unsigned int ConvertFormat(int fin,int fs,int fmt)
 	    pg1=pp;
 	    if (pg2!=0xFFFFFFFF)
 	    {
-	      //Нашли 2 гласных
+	      //Got two vowels 
 	      unsigned int pm=(pg2+pg1+1)>>1;
-	      if (GetCharType(us[pm])==3) pm++; //Если нельзя отрывать букву
+	      if (GetCharType(us[pm])==3) pm++; //If not divorce letter 
 	      c=GetCharType(us[pm-2]);
 	      if ((pm<(d-1))&&(c>0)&&(c<4))
 	      {
 		if (pm==pg2)
 		{
-		  //Если гласная непостредственно справа, проверяем не одна ли она
+		  //If transparent nepostredstvenno right, check whether it is not one 
 		  c=GetCharType(us[pg2+1]);
 		  if ((c<1)||(c>3)) goto L_NOPERE;
 		}
@@ -231,9 +232,9 @@ unsigned int ConvertFormat(int fin,int fs,int fmt)
 		}
 		us[pm++]='-';
 		us[pm++]=0;
-		d+=2; //Т.к. вставили 2 символа
+		d+=2; //Since pasted 2 character 
 		sl=(d-pm);
-		d=FL_saver(fs,d); //Сливаем не слитое
+		d=FL_saver(fs,d); //oh no Slivaem 
 		break;
 	      L_NOPERE:
 		;
@@ -247,19 +248,19 @@ unsigned int ConvertFormat(int fin,int fs,int fmt)
     }
   }
 LEOF:
-  if (sl) //Не записана последняя строка
+  if (sl) //Not recorded last line 
   {
     us[d++]=0;
     curline++;
   }
-  d=FL_saver(fs,d); //Сливаем не слитое
+  d=FL_saver(fs,d); //oh no Slivaem 
   return(d);
 }
 
 //-------------------------------------------------------------
-// Автоматическое определение кодировки (по первой загрузке)
+// Automatic identification code (on the first boot) 
 //-------------------------------------------------------------
-/* Таблица сочетаний */
+/* Table combinations*/
 
 static const unsigned char table_2s[128]={0xFF,0xFF,0xFF,0xC7,0xFE,0xBE,0xF7,0xFB,
 0xFD,0xBF,0xF7,0xF9,0xFC,0xBE,0xF1,0x80,0xFF,0xFF,0xF7,0xBB,0xFF,0xFF,0xFF,
@@ -272,9 +273,9 @@ static const unsigned char table_2s[128]={0xFF,0xFF,0xFF,0xC7,0xFE,0xBE,0xF7,0xF
 0xAE,0x6F,0xCB,0x15,0x3D,0xFC,0x00,0x7F,0x7D,0xE7,0xC2,0x7F,0xFD,0xF7,0xC3};
 
 /* =========================================================================
-Вспомогательная функция alt2num.
-Вход: a - код русской буквы в кодировке ALT.
-Выход: порядковый номер этой буквы (0-31).
+Alt2num support functions. 
+Admission: a Russian-code letters in the encoding ALT. 
+Withdrawal: number of the letters (0-31). 
 ========================================================================= */
 unsigned int alt2num (int a)
 {
@@ -282,9 +283,9 @@ unsigned int alt2num (int a)
   return (a&31);
 }
 /* =========================================================================
-Вспомогательная функция koi2num.
-Вход: a - код русской буквы в кодировке KOI.
-Выход: порядковый номер этой буквы (0-31).
+Koi2num support functions. 
+Admission: a Russian-code letters in the encoding KOI. 
+Withdrawal: number of the letters (0-31).
 ========================================================================= */
 unsigned int koi2num (int a)
 {
@@ -294,26 +295,26 @@ unsigned int koi2num (int a)
 }
 
 /* =========================================================================
-Вспомогательная функция work_2s - обработка двухбуквенного сочетания.
-Вход:  с1 - порядковый номер первой буквы (0-31),
-c2 - порядковый номер второй буквы (0-31),
-check - надо ли проверять, встречалось ли сочетание раньше
-(1 - да, 0 - нет),
-buf - адрес массива с информацией о встреченных сочетаниях.
-Выход: 0 - указанное сочетание уже встречалось раньше,
-1 - сочетание не встречалось раньше и является допустимым,
-2 - сочетание не встречалось раньше и является недопустимым.
+Auxiliary functions work_2s-processing combine the two. 
+Admission: c1-number first letter (0-31) 
+c2-number second letter (0-31) 
+I must check-out, I found the combination of earlier 
+(1 yes, 0 no) 
+buf-addressed array of information encountered together. 
+Withdrawal: 0-specified combination has been met before, 
+1-mix not met before and is a valid, 
+2-combination not met before and is unacceptable.
 ========================================================================= */
 
 unsigned int work_2s (unsigned int c1, unsigned int c2, unsigned int check, unsigned char buf[128])
 {
-  unsigned int i=(c1<<2)+(c2>>3); /* Номер байта в массиве. */
-  unsigned int mask=0x80>>(c2&7); /* Маска, соответствующая номеру бита в байте. */
+  unsigned int i=(c1<<2)+(c2>>3); /* Number of bytes in the array.*/
+  unsigned int mask=0x80>>(c2&7); /* mask, the number of bits in bytes.*/
 
-  /* Если check=1, проверяем: если соответствующий бит массива buf равен 0,
-  значит, указанное сочетание уже встречалось раньше. Тогда выходим из
-  функции, возвращая 0. Если же сочетание не встречалось, то помечаем, что
-  оно встретилось (обнуляем соответствующий бит массива buf). */
+  /* If you check = 1, check: if the bit is 0 array buf, 
+   thus, this combination has already met earlier. Then go out 
+   functions returning 0. If the combination is not met, then mark that 
+   it met (obnulyaem a bit array buf).*/
 
   if (check==1)
   {
@@ -321,27 +322,27 @@ unsigned int work_2s (unsigned int c1, unsigned int c2, unsigned int check, unsi
     buf[i]&=~mask;
   }
 
-  /* Проверяем, допустимо сочетание или нет. */
+  /* Checking, acceptable combination or not.*/
 
-  if ((table_2s[i]&mask)!=0) return (1); /* Допустимо. */
-  return (2);                            /* Недопустимо. */
+  if ((table_2s[i]&mask)!=0) return (1); /* Acceptable. */
+  return (2);                            /* unacceptable.*/
 }
 
 /* =========================================================================
-Вспомогательная функция def_code - определение кодировки текста. Функции
-m_def_code и f_def_code - лишь надстройки над этой функцией.
-Вход:  get_char - указатель на функцию, которую надо вызывать для получения
-очередного символа текста. Функция должна возвращать либо
-код символа, либо, при достижении конца текста, -1.
-n - количество различных сочетаний русских букв (1-255), которого
-достаточно для определения кодировки.
-Выход: 0 - текст в кодировке ALT, 1 - WIN, 2 - KOI.
+Auxiliary functions def_code-definition encoding text. Functions 
+m_def_code f_def_code and only add to this feature. 
+Admission: get_char-pointer to a function that should be called for 
+another symbol of the text. The function should return or 
+code symbol, or, when you reach the end of the text, -1. 
+n is the number of different combinations of Russian letters (1-255), which 
+enough for encoding. 
+Withdrawal: 0-text encoding ALT-1 WIN, 2-KOI.
 ========================================================================= */
 
 unsigned int def_code (void)
 {
-  /* В массиве buf_1 хранится информация о том, какие сочетания руских букв
-  уже встречались в варианте ALT, а в массиве buf_2 - в варианте WIN. */
+  /* The array buf_1 stores information about what combination of letters battle 
+   have met in alternative ALT, and the array buf_2-in option WIN.*/
 
   unsigned char buf_1 [128];
   unsigned char buf_2 [128];
@@ -356,54 +357,54 @@ unsigned int def_code (void)
   unsigned int all_3=0;  /* all_2=all_3 */
 
   unsigned int c1;
-  unsigned int c2=0; /* Символы текущего обрабатываемого сочетания. */
+  unsigned int c2=0; /* Characters treated this combination. */
 
-  /* Инициализация buf_1 и buf_2. */
+  /* Initialization buf_1 and buf_2. */
 
   my_memset(buf_1,0xFF,sizeof(buf_1));
   my_memset(buf_2,0xFF,sizeof(buf_2));
 
-  /* Главный цикл - обработка сочетаний для каждого из трёх вариантов. Цикл
-  выполняется, пока не кончится текст или в каком-либо из вариантов не
-  встретится n сочетаний. */
+  /* main loop-handling combinations for each of the three options. Cycle 
+   running until the earlier text, or in any of the options 
+   meet n combinations. */
 
   while ((s<16384)&&(all_1<255)&&(all_3<255))
   {
     c1=c2;
     if ((c2=dstk[s])==0) break;
     s++;
-    /* Вариант ALT. Вначале проверяем, являются ли символы текущего сочетания
-    кодами русских букв в кодировке ALT. */
+    /* Option ALT. First check whether the current mix of characters 
+     codes Russians letters in the encoding ALT.*/
 
     if ((((c1>=0x80)&&(c1<0xB0))||((c1>=0xE0)&&(c1<0xF0)))&&
 	(((c2>=0x80)&&(c2<0xB0))||((c2>=0xE0)&&(c2<0xF0))))
     {
-      switch (work_2s(alt2num(c1),alt2num(c2),1,buf_1)) /* Обработали. */
+      switch (work_2s(alt2num(c1),alt2num(c2),1,buf_1)) /* Obrabotali. */
       {
       case 2: bad_1++;
       case 1: all_1++;
       }
     }
-    /* Варианты WIN и KOI. Вначале проверяем, являются ли символы текущего
-    сочетания кодами русских букв в этих кодировках (в обеих кодировках
-    диапазоны кодов русских букв совпадают). */
+    /* Options WIN and KOI. First check whether the current characters 
+     combining codes Russians letters in the code (in both encoding 
+     ranges codes Russians letters match). */
 
-    if ((c1&c2)>=0xC0) /* Эквивалентно условию (c1>=0xC0)&&(c2>=0xC0). */
+    if ((c1&c2)>=0xC0) /* Ekvivalentno conditions (c1> = 0xC0) & & (c2> = 0xC0).  */
     {
-      switch (work_2s(c1&31,c2&31,1,buf_2)) /* Обработали. */
+      switch (work_2s(c1&31,c2&31,1,buf_2)) /* Obrabotali.*/
       {
-      case 0: continue; /* Если сочетание букв уже встречалось в варианте WIN,
-      то оно уже встречалось и в варианте KOI, так что
-      пропускаем обработку варианта KOI и переходим
-      к следующей итерации главного цикла. */
+      case 0: continue; /* If the combination of letters already found in version WIN, 
+       it has already met with option KOI, so 
+       ignore processing option and turn KOI 
+       the next major iteration cycle. */
       case 2: bad_2++;
       }
 
-      /* Если сочетание букв ещё не встречалось в варианте WIN, то оно заведомо
-      не встречалось и в варианте KOI, поэтому специально проверять это не
-      надо - значит, функцию work_2s вызываем с параметром check, равным 0. */
+      /* If the combination of letters had not yet met to form WIN, it certainly 
+       not found in version KOI, so it is not specifically check 
+       must mean, as work_2s causing property check equal to 0. */
 
-      switch (work_2s(koi2num(c1),koi2num(c2),0,NULL)) /* Обработали. */
+      switch (work_2s(koi2num(c1),koi2num(c2),0,NULL)) /* Obrabotali.  */
       {
       case 2: bad_3++;
       case 1: all_3++;
@@ -411,15 +412,15 @@ unsigned int def_code (void)
     }
   }
 
-  /* Данные собраны. Теперь, если в каком-либо из вариантов недопустимых
-  сочетаний не больше 1/32 от общего их числа, то считаем, что их и не
-  было. */
+  /* Data collected. Now, if any of the options unacceptable 
+   the combination of no more than 1 / 32 of the total number, then think that they are not 
+   it was. */
 
   if (bad_1<=(all_1>>5)) bad_1=0;
   if (bad_2<=(all_3>>5)) bad_2=0;
   if (bad_3<=(all_3>>5)) bad_3=0;
 
-  /* Получаем результат. */
+  /* Obtain result.*/
 
   {
     unsigned int a=((255-bad_1)<<8)+all_1;

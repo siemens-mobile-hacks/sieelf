@@ -1,22 +1,22 @@
 /* ==========================================================================
-   Файл: def_code.c
-   Компилятор: Turbo C 2.0
-   Описание: библиотека для автоматического определения кодировки текста
-             (ALT, WIN, KOI). Функция m_def_code - для случая, когда текст
-             в памяти, функция f_def_code - когда текст в файле.
-   Описание алгоритма: http://ivr.webzone.ru/articles/defcod_2/
-   (c) Иван Рощин, Москва, 2004.
+    File: def_code.c 
+    Compiler: Turbo C 2.0 
+    Description: library for automatic identification encoding text 
+              (ALT, WIN, KOI). M_def_code function for the case of a text 
+              in memory function f_def_code when the text file. 
+    Description algorithm: http://ivr.webzone.ru/articles/defcod_2/ 
+    (c) Ivan Roshchin, Moscow, 2004. 
  ========================================================================= */
 
 #include <stdio.h>
 
-/* Глобальные переменные */
+/* Global  */
 
 static int len_;
 static unsigned char *p_;
 static FILE *f_;
 
-/* Таблица сочетаний */
+/* Table combinations */
 
 static unsigned char table_2s[128]={0xFF,0xFF,0xFF,0xC7,0xFE,0xBE,0xF7,0xFB,
  0xFD,0xBF,0xF7,0xF9,0xFC,0xBE,0xF1,0x80,0xFF,0xFF,0xF7,0xBB,0xFF,0xFF,0xFF,
@@ -29,9 +29,9 @@ static unsigned char table_2s[128]={0xFF,0xFF,0xFF,0xC7,0xFE,0xBE,0xF7,0xFB,
  0xAE,0x6F,0xCB,0x15,0x3D,0xFC,0x00,0x7F,0x7D,0xE7,0xC2,0x7F,0xFD,0xF7,0xC3};
 
 /* =========================================================================
-   Вспомогательная функция alt2num.
-   Вход: a - код русской буквы в кодировке ALT.
-   Выход: порядковый номер этой буквы (0-31).
+   Alt2num support functions. 
+    Admission: a Russian-code letters in the encoding ALT. 
+    Withdrawal: number of the letters (0-31). 
  ========================================================================= */
 
 static int alt2num (int a)
@@ -41,9 +41,9 @@ static int alt2num (int a)
 }
 
 /* =========================================================================
-   Вспомогательная функция koi2num.
-   Вход: a - код русской буквы в кодировке KOI.
-   Выход: порядковый номер этой буквы (0-31).
+     Koi2num support functions. 
+    Admission: a Russian-code letters in the encoding KOI. 
+    Withdrawal: number of the letters (0-31). 
  ========================================================================= */
 
 static int koi2num (int a)
@@ -55,26 +55,26 @@ static int koi2num (int a)
 }
 
 /* =========================================================================
-   Вспомогательная функция work_2s - обработка двухбуквенного сочетания.
-   Вход:  с1 - порядковый номер первой буквы (0-31),
-          c2 - порядковый номер второй буквы (0-31),
-          check - надо ли проверять, встречалось ли сочетание раньше
-                  (1 - да, 0 - нет),
-          buf - адрес массива с информацией о встреченных сочетаниях.
-   Выход: 0 - указанное сочетание уже встречалось раньше,
-          1 - сочетание не встречалось раньше и является допустимым,
-          2 - сочетание не встречалось раньше и является недопустимым.
+    Auxiliary functions work_2s-processing combine the two. 
+    Admission: c1-number first letter (0-31) 
+           c2-number second letter (0-31) 
+           I must check-out, I found the combination of earlier 
+                   (1 yes, 0 no) 
+           buf-addressed array of information encountered together. 
+    Withdrawal: 0-specified combination has been met before, 
+           1-mix not met before and is a valid, 
+           2-combination not met before and is unacceptable. 
  ========================================================================= */
 
 static int work_2s (int c1, int c2, int check, unsigned char buf[128])
 {
- int i=(c1<<2)+(c2>>3); /* Номер байта в массиве. */
- int mask=0x80>>(c2&7); /* Маска, соответствующая номеру бита в байте. */
+ int i=(c1<<2)+(c2>>3); /* Number of bytes in the array. */
+ int mask=0x80>>(c2&7); /* mask, the number of bits in bytes.*/
 
- /* Если check=1, проверяем: если соответствующий бит массива buf равен 0,
-    значит, указанное сочетание уже встречалось раньше. Тогда выходим из
-    функции, возвращая 0. Если же сочетание не встречалось, то помечаем, что
-    оно встретилось (обнуляем соответствующий бит массива buf). */
+ /* If you check = 1, check: if the bit is 0 array buf, 
+     thus, this combination has already met earlier. Then go out 
+     functions returning 0. If the combination is not met, then mark that 
+     it met (obnulyaem a bit array buf). */
 
  if (check==1)
  {
@@ -82,27 +82,27 @@ static int work_2s (int c1, int c2, int check, unsigned char buf[128])
   buf[i]&=~mask;
  }
 
- /* Проверяем, допустимо сочетание или нет. */
+ /* Checking, acceptable combination or not. */
 
- if ((table_2s[i]&mask)!=0) return (1); /* Допустимо. */
- return (2);                            /* Недопустимо. */
+ if ((table_2s[i]&mask)!=0) return (1); /* Acceptable. */
+ return (2);                            /* unacceptable.*/
 }
 
 /* =========================================================================
-   Вспомогательная функция def_code - определение кодировки текста. Функции
-   m_def_code и f_def_code - лишь надстройки над этой функцией.
-   Вход:  get_char - указатель на функцию, которую надо вызывать для получения
-                     очередного символа текста. Функция должна возвращать либо
-                     код символа, либо, при достижении конца текста, -1.
-          n - количество различных сочетаний русских букв (1-255), которого
-              достаточно для определения кодировки.
-   Выход: 0 - текст в кодировке ALT, 1 - WIN, 2 - KOI.
+  Auxiliary functions def_code-definition encoding text. Functions 
+    m_def_code f_def_code and only add to this feature. 
+    Admission: get_char-pointer to a function that should be called for 
+                      another symbol of the text. The function should return or 
+                      code symbol, or, when you reach the end of the text, -1. 
+           n is the number of different combinations of Russian letters (1-255), which 
+               enough for encoding. 
+    Withdrawal: 0-text encoding ALT-1 WIN, 2-KOI. 
  ========================================================================= */
 
 static int def_code (int (*get_char)(), int n)
 {
- /* В массиве buf_1 хранится информация о том, какие сочетания руских букв
-    уже встречались в варианте ALT, а в массиве buf_2 - в варианте WIN. */
+ /* The array buf_1 stores information about what combination of letters battle 
+     have met in alternative ALT, and the array buf_2-in option WIN.*/
 
  unsigned char buf_1 [128];
  unsigned char buf_2 [128];
@@ -113,52 +113,52 @@ static int def_code (int (*get_char)(), int n)
  int all_1=0;
  int all_3=0;  /* all_2=all_3 */
 
- int c1; int c2=0; /* Символы текущего обрабатываемого сочетания. */
+ int c1; int c2=0; /* Characters treated this combination. */
  int i;
 
- /* Инициализация buf_1 и buf_2. */
+ /* Initialization buf_1 and buf_2. */
 
  for (i=0;i<128;i++) buf_1[i]=0xFF;
  for (i=0;i<128;i++) buf_2[i]=0xFF;
 
- /* Главный цикл - обработка сочетаний для каждого из трёх вариантов. Цикл
-    выполняется, пока не кончится текст или в каком-либо из вариантов не
-    встретится n сочетаний. */
+ /* main loop-handling combinations for each of the three options. Cycle 
+     running until the earlier text, or in any of the options 
+     meet n combinations. */
 
  while (((c1=c2,c2=(*get_char)())!=-1)&&(all_1<n)&&(all_3<n))
  {
-  /* Вариант ALT. Вначале проверяем, являются ли символы текущего сочетания
-     кодами русских букв в кодировке ALT. */
+  /* Option ALT. First check whether the current mix of characters 
+      codes Russians letters in the encoding ALT. */
 
   if ((((c1>=0x80)&&(c1<0xB0))||((c1>=0xE0)&&(c1<0xF0)))&&
       (((c2>=0x80)&&(c2<0xB0))||((c2>=0xE0)&&(c2<0xF0))))
   {
-   switch (work_2s(alt2num(c1),alt2num(c2),1,buf_1)) /* Обработали. */
+   switch (work_2s(alt2num(c1),alt2num(c2),1,buf_1)) /* Obrabotali. */
    {
     case 2: bad_1++;
     case 1: all_1++;
    }
   }
-  /* Варианты WIN и KOI. Вначале проверяем, являются ли символы текущего
-     сочетания кодами русских букв в этих кодировках (в обеих кодировках
-     диапазоны кодов русских букв совпадают). */
+  /* Options WIN and KOI. First check whether the current characters 
+      combining codes Russians letters in the code (in both encoding 
+      ranges codes Russians letters match). */
 
-  if ((c1&c2)>=0xC0) /* Эквивалентно условию (c1>=0xC0)&&(c2>=0xC0). */
+  if ((c1&c2)>=0xC0) /*Ekvivalentno conditions (c1> = 0xC0) & & (c2> = 0xC0).  */
   {
-   switch (work_2s(c1&31,c2&31,1,buf_2)) /* Обработали. */
+   switch (work_2s(c1&31,c2&31,1,buf_2)) /* Obrabotali. */
    {
-    case 0: continue; /* Если сочетание букв уже встречалось в варианте WIN,
-                         то оно уже встречалось и в варианте KOI, так что
-                         пропускаем обработку варианта KOI и переходим
-                         к следующей итерации главного цикла. */
+    case 0: continue; /* If the combination of letters already found in version WIN, 
+                          it has already met with option KOI, so 
+                          ignore processing option and turn KOI 
+                          the next major iteration cycle. */
     case 2: bad_2++;
    }
 
-  /* Если сочетание букв ещё не встречалось в варианте WIN, то оно заведомо
-     не встречалось и в варианте KOI, поэтому специально проверять это не
-     надо - значит, функцию work_2s вызываем с параметром check, равным 0. */
+  /* If the combination of letters had not yet met to form WIN, it certainly 
+      not found in version KOI, so it is not specifically check 
+      must mean, as work_2s causing property check equal to 0. */
 
-   switch (work_2s(koi2num(c1),koi2num(c2),0,NULL)) /* Обработали. */
+   switch (work_2s(koi2num(c1),koi2num(c2),0,NULL)) /* Obrabotali. */
    {
     case 2: bad_3++;
     case 1: all_3++;
@@ -166,15 +166,15 @@ static int def_code (int (*get_char)(), int n)
   }
  }
 
- /* Данные собраны. Теперь, если в каком-либо из вариантов недопустимых
-    сочетаний не больше 1/32 от общего их числа, то считаем, что их и не
-    было. */
+ /* Data collected. Now, if any of the options unacceptable 
+     the combination of no more than 1 / 32 of the total number, then think that they are not 
+     it was.. */
 
  if (bad_1<=(all_1>>5)) bad_1=0;
  if (bad_2<=(all_3>>5)) bad_2=0;
  if (bad_3<=(all_3>>5)) bad_3=0;
 
- /* Получаем результат. */
+ /* Obtain result. */
 
  {
   unsigned int a=((255-bad_1)<<8)+all_1;
@@ -187,9 +187,9 @@ static int def_code (int (*get_char)(), int n)
 }
 
 /* =========================================================================
-   Вспомогательная функция m_get_char вызывается из функции def_code, когда
-   та вызвана из m_def_code.
-   Выход: очередной символ текста или -1, если текст кончился.
+   Auxiliary functions m_get_char function is called from def_code when 
+    one result of m_def_code. 
+    Withdrawal: regular text character or -1 if it ended. 
  ========================================================================= */
 
 static int m_get_char()
@@ -200,28 +200,28 @@ static int m_get_char()
 }
 
 /* =========================================================================
-   Функция m_def_code - определение кодировки текста, находящегося в памяти.
-   Вход:  p - адрес текста,
-          len - длина текста,
-          n - количество различных сочетаний русских букв (1-255), которого
-              достаточно для определения кодировки.
-   Выход: 0 - текст в кодировке ALT, 1 - WIN, 2 - KOI.
+Feature m_def_code-definition encoding text is remembered. 
+    Admission: p-address text 
+           len-length text, 
+           n is the number of different combinations of Russian letters (1-255), which 
+               enough for encoding. 
+    Withdrawal: 0-text encoding ALT-1 WIN, 2-KOI.
  ========================================================================= */
 
 int m_def_code (unsigned char *p, int len, int n)
 {
- /* Присваиваем значения глобальным переменным len_ и p_, которые будут
-    доступны из функции m_get_char. */
+ /* values Prisvaivaem global variables len_ and p_ that will be 
+     available from m_get_char functions. */
  len_=len;
  p_=p;
- /* Получаем результат. */
+ /* Obtain result. */
  return (def_code(&m_get_char,n));
 }
 
 /* =========================================================================
-   Вспомогательная функция f_get_char вызывается из функции def_code, когда
-   та вызвана из f_def_code.
-   Выход: очередной символ текста или -1, если текст кончился.
+  Auxiliary functions f_get_char function is called from def_code when 
+    one result of f_def_code. 
+    Withdrawal: regular text character or -1 if it ended. 
  ========================================================================= */
 
 static int f_get_char()
@@ -232,19 +232,19 @@ static int f_get_char()
 }
 
 /* =========================================================================
-   Функция f_def_code - определение кодировки текста, находящегося в файле.
-   Вход:  f - указатель на структуру, связанную с файлом (указатель текущей
-              позиции в файле должен указывать на начало файла),
-          n - количество различных сочетаний русских букв (1-255), которого
-              достаточно для определения кодировки.
-   Выход: 0 - текст в кодировке ALT, 1 - WIN, 2 - KOI.
+    Feature f_def_code-definition encoding text, located in the file. 
+    Admission: f-pointer to the structure associated with the file (the current directory 
+               entries in the file to indicate the beginning of the file) 
+           n is the number of different combinations of Russian letters (1-255), which 
+               enough for encoding. 
+    Withdrawal: 0-text encoding ALT-1 WIN, 2-KOI. 
  ========================================================================= */
 
 int f_def_code (FILE *f, int n)
 {
- /* Присваиваем значение глобальной переменной f_, которая будет доступна
-    из функции f_get_char. */
+ /* Prisvaivaem important global variable states, which will be available 
+     f_get_char of functions. */
  f_=f;
- /* Получаем результат. */
+ /* Obtain result.  */
  return (def_code(&f_get_char,n));
 }

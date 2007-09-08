@@ -1,7 +1,7 @@
 extern unsigned int STKSZ;
 
-extern unsigned int usp; //Указатель на верхний стек
-extern unsigned int dsp; //Указатель на нижний стек
+extern unsigned int usp; //pointer to the upper stack 
+extern unsigned int dsp; //pointer to the lower stack 
 extern char *dstk;
 extern char *ustk;
 
@@ -29,7 +29,7 @@ unsigned int bl_ds(unsigned int p)
   return(p);
 }
 
-//Перенос из верхнего стека в нижний (на строку вверх)
+//Read from stack top to the bottom (of the line up) 
 void move_up(void)
 {
   unsigned int s=usp;
@@ -40,7 +40,7 @@ void move_up(void)
   char *us=ustk;
 
   if (!s) return;
-  ds[--d]=us[--s]; //Переносим 0
+  ds[--d]=us[--s]; //Wrap 0 
   if (s>256)
   {
     while((c=us[--s])) ds[--d]=c;
@@ -59,7 +59,7 @@ void move_up(void)
   dsp=d;
 }
 
-//Перенос из нижнего стека в верхний (на строку вниз)
+//Read from the bottom to the top stack (on the bottom row) 
 void move_dw(void)
 {
   unsigned int s=dsp;

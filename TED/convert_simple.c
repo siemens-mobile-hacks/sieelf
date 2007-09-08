@@ -33,22 +33,22 @@ unsigned int ConvertSimple(int fin,int fs)
       {
 	goto LEOL;
       }
-      if (eolsymb) break; //Пропустили второе окончание строки
-      eolsymb=sym; //Определили конец строки
+      if (eolsymb) break; //Propustili second end of the line 
+      eolsymb=sym; //Opredelili end of the line 
     LEOL:
       curline++;
-      i=0; //Начало строки
+      i=0; //Start line 
       us[d++]=0;
       break;
     case 0x01:
     case 0x09:
-      sym=' '; //Пока преобразовали табуляцию в пробел
+      sym=' '; //It transformed the tab in the gap 
     default:
       us[d++]=sym;
       i++;
       if (i>255)
       {
-	goto LEOL; //Слишком длинная строка
+	goto LEOL; //Too long line 
       }
       break;
     }
@@ -56,7 +56,7 @@ unsigned int ConvertSimple(int fin,int fs)
   }
   if (i)
   {
-    //Незавершенная строка
+    //string Nezavershennaya 
     us[d++]=0;
     curline++;
   }
