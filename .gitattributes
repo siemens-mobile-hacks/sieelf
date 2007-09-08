@@ -214,9 +214,6 @@ TED/linework.c -text
 TED/main.c -text
 TED/saver.c -text
 TED/test.xcl -text
-TMOEditor/Release/Exe/ReadME.txt -text
-TMOEditor/Release/Exe/TMOEditor.zip -text
-TMOEditor/Release/Exe/extension.cfg -text
 TMOEditor/TMO.ewp -text
 TMOEditor/TMO.eww -text
 TMOEditor/conf_loader.c -text
