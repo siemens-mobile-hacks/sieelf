@@ -178,13 +178,13 @@ void DoIt(void) //功能定位
            if (IsUnlocked())
                SwitchPhoneOff();
            else
-               ShowMSG(1,(int)"It is locked!Can't shutdowm!");
+               KbdUnlock();
       break;
       case 2:
            if (IsUnlocked())
                RebootPhone();
            else
-               ShowMSG(1,(int)"It is locked!Can't shutdowm!");
+               KbdUnlock();
       break;
      }
 
