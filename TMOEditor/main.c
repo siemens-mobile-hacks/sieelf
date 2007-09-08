@@ -437,7 +437,7 @@ int LaunchEditor(void)
     fread(hFile,tmostr->wsbody+1,str_len*2,&errcode);
     if(errcode)
     {
-      wsprintf(tmostr,"%t %u (פאיכ %s)","Error I/O", errcode, filename);          
+      wsprintf(tmostr,"%t %u (file %s)","Error I/O", errcode, filename);          
     }
     fclose(hFile, &errcode);
   }
