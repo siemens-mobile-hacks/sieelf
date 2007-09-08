@@ -4,7 +4,7 @@
 
 ;Library
 
-;2007.08.08
+;2007.09.08
 
 +0074000
 #pragma enable  old_equal_ff
@@ -590,6 +590,12 @@
 0898: 0xA027CAE4   ; 226: __arm int PlayMelody_StopPlayback(int handle);
 089C: 0xA027CB84   ; 227: __arm int PlayMelody_PausePlayback(int handle);
 08A0: 0xA027CBB4   ; 228: __arm int PlayMelody_ResumePlayBack(int handle);
+08A4: 0xA1418660   ; 229: __arm void longjmp(jmp_buf, int)
+08A8: 0xA0981465   ; 22A: void FreeGSMTXTpkt(void *pkt)
+08AC: 0xA02D8751   ; 22B:  CreateRadioButtonList(RadioButtonListDesc *, char num_of_radiobuttons, 0, 0, char prev_setting, void HandlerFunc(int), char flag)
+08B0: 0xA02D8043   ; 22C:  pdcache_getval(char *return, int maxlen_of_return_str, char cachetype,0, *pd_entry_identifier)
+08B4: 0xA02D8141   ; 22D:  pdcache_setval(char *new_value, char cachetype, 0, char *pd_entry_identifier)
+08B8: 0xA03208CB   ; 22E:  OpenExplorer(ExplOpenDesc *)
 #pragma disable old_equal_ff
 +0
 
