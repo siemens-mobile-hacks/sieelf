@@ -2,6 +2,7 @@
 #include "..\inc\swilib.h"
 
 #define DAEMON
+
 #ifdef NEWSGOLD
 #define DEFAULT_DISK "4"
 #else

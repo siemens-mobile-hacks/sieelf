@@ -84,14 +84,14 @@ void LoadParams()
 //  __________________________________________________________________
   fread( plhandle,& line, 1, & err );
   lines=line[0];
-  lines=lines-48;         //не знаю, почему та? но та?работает
+  lines=lines-48;         //I do not know why it? but it? works 
   fread( plhandle, & temp, 2, & err );
   fread( plhandle,& shows, 1, & err );
   showing=shows[0];
-  showing=showing-48;       //эт?тоже
+  showing=showing-48;       //floor? also 
   fread( plhandle, & temp, 2, & err );
   
-  for (j=0;j<(lines*3);j++)         //изменено
+  for (j=0;j<(lines*3);j++)         //modified
   {
     tmp[0]=NULL;
     m:fread( plhandle, &tmp[0], 1, & err );
@@ -271,7 +271,7 @@ void Start()
 }
 
 void execelf(char *exename, char *fname)
-{ //fname-параметр (имя файл?, передаваемый ?эльф 
+{ //fname-file name? conveyed? Elf 
  /* WSHDR *ws=AllocWS(256); 
   str_2ws(ws,exename,strlen(exename)+1); 
   ExecuteFile(ws,0,fname); 
@@ -360,7 +360,7 @@ void Menu()
     else if (mmenu[a]==1) 
     {
       active=a;
-      active_ta=ta;   /*избавляем? от бага перерисовк*/
+      active_ta=ta;   /*having? from bug pererisovk*/
       active_b=b;
     }
   ta++;

@@ -2,7 +2,7 @@
 #include "..\inc\cfg_items.h"
 #include "conf_loader.h"
 
-#define DAEMON
+#define DAEMON   //后台版本必须，加注释为直接启动版本，其他2个文件都要修改
 
 #ifdef DAEMON
 typedef struct
@@ -39,7 +39,7 @@ extern const int ENA_LOCK;
 #endif
 int mode;
 // 0-mode deal 
-// one-off 
+// 1-off
 // 2-restart 
 typedef struct
 {
@@ -106,9 +106,10 @@ void method0(MAIN_GUI *data)
 			GetPaletteAdrByColorIndex(23),
 			GetPaletteAdrByColorIndex(23));
   */
+  //加框?
    int x, y;
    
-   switch(mode)
+   switch(mode)  //图片显示位置
     {
     case 0:
       {
@@ -159,7 +160,7 @@ void method4(MAIN_GUI *data, void (*mfree_adr)(void *))
   data->gui.state=1;
 }
 
-void DoIt(void)
+void DoIt(void) //功能定位
 {
   switch(mode)
     {
@@ -177,13 +178,13 @@ void DoIt(void)
            if (IsUnlocked())
                SwitchPhoneOff();
            else
-               KbdUnlock();
+               ShowMSG(1,(int)"It is locked!Can't shutdowm!");
       break;
       case 2:
            if (IsUnlocked())
                RebootPhone();
            else
-               KbdUnlock();
+               ShowMSG(1,(int)"It is locked!Can't shutdowm!");
       break;
      }
 
@@ -226,7 +227,7 @@ int method5(MAIN_GUI *data, GUI_MSG *msg)
   {
     if (msg->gbsmsg->submess==CLOSE_BTN)
     {
-        CloseCSM(MAINCSM_ID); //There GeneralFunc challenge for Tech. GUI -> closure GUI
+        CloseCSM(MAINCSM_ID); //There GeneralFunc challenge for Tech. GUI -> close GUI
         MAINCSM_ID=0;
     }
   
@@ -444,7 +445,6 @@ int my_keyhook(int key, int m)
          mode=MODE;
          Check();
        }
-  
   return 0;
 }
 
