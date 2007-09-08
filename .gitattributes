@@ -232,7 +232,6 @@ TextInfo/config_data.c -text
 TextInfo/func.asm -text
 TextInfo/local_ipc.h -text
 TextInfo/main.c -text
-TextInfo/main.c.bak -text
 TextInfo/test.xcl -text
 TurnOff/TurnOff.ewp -text
 TurnOff/TurnOff.eww -text
