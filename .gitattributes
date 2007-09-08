@@ -196,9 +196,6 @@ MegaDial/config_data.c -text
 MegaDial/func.asm -text
 MegaDial/main.c -text
 MegaDial/test.xcl -text
-Release/Exe/ReadME.txt -text
-Release/Exe/TMOEditor.zip -text
-Release/Exe/extension.cfg -text
 TED/TED.ewp -text
 TED/TED.eww -text
 TED/TED/14.fnt -text
