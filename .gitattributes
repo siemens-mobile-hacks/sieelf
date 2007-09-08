@@ -246,6 +246,16 @@ XTASK3/rect_patcher.h -text
 XTASK3/swaper.c -text
 XTASK3/swaper.h -text
 XTASK3/test.xcl -text
+cpumon/conf_loader.c -text
+cpumon/conf_loader.h -text
+cpumon/config.c -text
+cpumon/cpumon.ewp -text
+cpumon/cpumon.eww -text
+cpumon/func.asm -text
+cpumon/main.c -text
+cpumon/strlib.c -text
+cpumon/strlib.h -text
+cpumon/test.xcl -text
 inc/bn.h -text
 inc/cfg_items.h -text
 inc/crypto.h -text
