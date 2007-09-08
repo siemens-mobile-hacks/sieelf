@@ -217,8 +217,6 @@ TED/linework.c -text
 TED/main.c -text
 TED/saver.c -text
 TED/test.xcl -text
-/TMO.ewp -text
-/TMO.eww -text
 TMOEditor/Release/Exe/ReadME.txt -text
 TMOEditor/Release/Exe/TMOEditor.zip -text
 TMOEditor/Release/Exe/extension.cfg -text
@@ -254,10 +252,6 @@ XTASK3/rect_patcher.h -text
 XTASK3/swaper.c -text
 XTASK3/swaper.h -text
 XTASK3/test.xcl -text
-/conf_loader.c -text
-/conf_loader.h -text
-/config_data.c -text
-/func.asm -text
 inc/bn.h -text
 inc/cfg_items.h -text
 inc/crypto.h -text
@@ -273,7 +267,6 @@ inc/swilib.h -text
 inc/xtask_ipc.h -text
 inc/zconf.h -text
 inc/zlib.h -text
-/main.c -text
 mini_GPS/conf_loader.c -text
 mini_GPS/conf_loader.h -text
 mini_GPS/config_data.c -text
@@ -282,5 +275,3 @@ mini_GPS/main.c -text
 mini_GPS/mini_gps.ewp -text
 mini_GPS/mini_gps.eww -text
 mini_GPS/mini_gps.xcl -text
-/tmo.xcl -text
-/upload2phone.cmd -text
