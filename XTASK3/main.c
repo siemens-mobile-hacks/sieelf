@@ -378,13 +378,13 @@ void main(void)
   LockSched();
   if (!AddKeybMsgHook_end((void *)my_keyhook))
   {
-    ShowMSG(1,(int)"Невозможно зарегистрировать обработчик!");
+    ShowMSG(1,(int)"Unable to register a handler!");
     SUBPROC((void *)ElfKiller);
   }
   else
   {
     extern const int ENA_HELLO_MSG;
-    if (ENA_HELLO_MSG) ShowMSG(1,(int)"XTask3 установлен!");
+    if (ENA_HELLO_MSG) ShowMSG(1,(int)"XTask3 Started!");
     {
       CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
       memcpy(&icsmd,icsm->constr,sizeof(icsmd));
@@ -395,7 +395,7 @@ void main(void)
       icsm->constr=&icsmd;
     }
     ws_nogui=AllocWS(256);
-    wsprintf(ws_nogui,"%t","Нет GUI!");
+    wsprintf(ws_nogui,"%t","NO GUI!");
     under_idle=(FindCSMbyID(CSM_root()->idle_id))->prev; //Ищем idle_dialog
   }
   UnlockSched();
