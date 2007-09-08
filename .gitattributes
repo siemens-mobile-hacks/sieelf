@@ -196,12 +196,14 @@ MegaDial/config_data.c -text
 MegaDial/func.asm -text
 MegaDial/main.c -text
 MegaDial/test.xcl -text
+Menu/Menu.cfg -text
 Menu/Menu.ewp -text
 Menu/Menu.eww -text
 Menu/div.r79 -text
 Menu/func.asm -text
 Menu/main.c -text
 Menu/main.h -text
+Menu/readme.txt -text
 Menu/test.xcl -text
 TED/TED.ewp -text
 TED/TED.eww -text
