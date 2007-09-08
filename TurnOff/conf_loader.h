@@ -1,12 +1,12 @@
 /*
-Загрузчик конфигурации
-(c) Rst7, Kibab
- Осуществляет загрузку конфига и предоставляет функции инициализации
+The loader configuration 
+(c) Rst7, Kibab,
+Provides boot configuration and initialization provides functions 
 */
 #ifndef _CONFLOADER_H_
   #define _CONFLOADER_H_
 
-// Вызвать обязательно перед обращением к переменным конфигурации
+// Call sure to appeal to the variable configuration InitConfig void ()
 void InitConfig();
 
 #endif

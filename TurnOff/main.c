@@ -1,6 +1,8 @@
-#include "..\inc\swilib.h"
-#include "..\inc\cfg_items.h"
+#include "F:\code\inc\swilib.h"
+#include "F:\code\inc\cfg_items.h"
 #include "conf_loader.h"
+
+#define DAEMON
 
 #ifdef DAEMON
 typedef struct
@@ -33,12 +35,12 @@ extern const unsigned int PROFILE;
 
 #ifdef DAEMON
 extern const unsigned int CALL_BTN;
+extern const int ENA_LOCK;
 #endif
 int mode;
-//  0 - ждущий режим
-//  1 - выключение
-//  2 - перезагрузка
-
+// 0-mode deal 
+// one-off 
+// 2-restart 
 typedef struct
 {
   CSM_RAM csm;
@@ -162,9 +164,14 @@ void DoIt(void)
   switch(mode)
     {
       case 0:
-        if (WHAT_DO) KbdLock();
+        if (IsUnlocked())
+        {
+          if (WHAT_DO) KbdLock();
           else
             SetProfile(PROFILE-1);
+        }
+        else
+          KbdUnlock();
       break;
       case 1:
         SwitchPhoneOff();
@@ -173,11 +180,12 @@ void DoIt(void)
         RebootPhone();
       break;
      }
+
   CloseCSM(MAINCSM_ID);
   MAINCSM_ID=0;
 }
 
-double GetWavkaLength(const char *fname) //тиков
+double GetWavkaLength(const char *fname) //actors
 {
   int f;
   unsigned int ul;
@@ -212,7 +220,7 @@ int method5(MAIN_GUI *data, GUI_MSG *msg)
   {
     if (msg->gbsmsg->submess==CLOSE_BTN)
     {
-        CloseCSM(MAINCSM_ID); //Происходит вызов GeneralFunc для тек. GUI -> закрытие GUI
+        CloseCSM(MAINCSM_ID); //There GeneralFunc challenge for Tech. GUI -> closure GUI
         MAINCSM_ID=0;
     }
   
@@ -395,7 +403,7 @@ int strcmp_nocase(const char *s1,const char *s2)
 
 int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
 {
-  if(msg->msg == MSG_RECONFIGURE_REQ) // Перечитывание конфига по сообщению
+  if(msg->msg == MSG_RECONFIGURE_REQ) // Perechityvanie configuration reported
   {
     extern const char *successed_config_filename;
     if (strcmp_nocase(successed_config_filename,(char *)msg->data0)==0)
@@ -424,7 +432,7 @@ int my_keyhook(int key, int m)
 {
   extern const int MODE_KBD;
   void *icsm=FindCSMbyID(CSM_root()->idle_id);
-  if ((IsGuiOnTop(((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4]))&&IsUnlocked()&&(m==MODE_KBD+0x193))
+  if ((IsGuiOnTop(((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4]))&&(IsUnlocked()||ENA_LOCK)&&(m==MODE_KBD+0x193))
      if (key==CALL_BTN) 
        {
          mode=MODE;
@@ -513,7 +521,7 @@ int main()
   #else
       if (!AddKeybMsgHook_end((void *)my_keyhook)) 
       {
-        ShowMSG(1, (int) "TurnOff_d. Невозможно зарегистрировать обработчик!"); 
+        ShowMSG(1, (int) "TurnOff_d. Unable to register a handler!"); 
         SUBPROC((void *)Killer);
       }
       else
