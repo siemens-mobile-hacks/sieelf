@@ -20,21 +20,26 @@ __root const CFG_HDR cfghdr2={CFG_CBOX,"Treatment pressing keys",0,3};
 __root const int MODE_KBD=0;
 __root const CFG_CBOX_ITEM cfgcbox1[3]={"KEY_DOWN","KEY_UP","LONG_PRESS"};
 
-__root const CFG_HDR cfghdr6={CFG_CBOX,"Enable if keyboard locked",0,2};
+__root const CFG_HDR cfghdr3={CFG_CBOX,"Enable if keyboard locked",0,2};
 __root const int ENA_LOCK=1;
-__root const CFG_CBOX_ITEM cfgcbox6[2]={"No","Yes"};
+__root const CFG_CBOX_ITEM cfgcbox2[2]={"No","Yes"};
+
 #endif
 
-__root const CFG_HDR cfghdr3={CFG_CBOX,"Default action",0,3};
+__root const CFG_HDR cfghdr4={CFG_CBOX,"Default action",0,3};
 __root const int MODE=1;
-__root const CFG_CBOX_ITEM cfgcbox2[3]={"Sleep","Shutting down","Reboot"};
+__root const CFG_CBOX_ITEM cfgcbox3[3]={"Sleep","Shutting down","Reboot"};
 
-__root const CFG_HDR cfghdr4={CFG_CBOX,"Sleep",0,2};
-__root const int WHAT_DO=1;
-__root const CFG_CBOX_ITEM cfgcbox3[2]={"Profile","Lock"};
+__root const CFG_HDR cfghdr5={CFG_CBOX,"Change profile when locked",0,2};
+__root const int CHANGE_PROFILE=1;
+__root const CFG_CBOX_ITEM cfgcbox4[2]={"No","Yes"};
 
-__root const CFG_HDR cfghdr5={CFG_UINT,"Profile",1,9};
-__root const unsigned int PROFILE=8;
+__root const CFG_HDR cfghdr6={CFG_UINT,"lock_profile",0,8};
+__root const unsigned int set_pr1=6;
+
+__root const CFG_HDR cfghdr7={CFG_UINT,"unlock_profile",0,8};
+__root const unsigned int set_pr2=7;
+
 
 __root const CFG_HDR cfghdr_m1_1={CFG_LEVEL,"Icon settings",1,0};
 
@@ -54,7 +59,7 @@ __root const CFG_HDR cfghdr_m2_1={CFG_LEVEL,"Sounds options",1,0};
 
 __root const CFG_HDR cfghdr2_0={CFG_CBOX,"Sounds",0,2};
 __root const int SND_ENA=1;
-__root const CFG_CBOX_ITEM cfgcbox4[2]={"No","Yes"};
+__root const CFG_CBOX_ITEM cfgcbox5[2]={"No","Yes"};
 
 __root const CFG_HDR cfghdr2_1={CFG_UINT,"Volume",0,6};
 __root const unsigned int VOLUME=1;
@@ -69,3 +74,4 @@ __root const CFG_HDR cfghdr2_4={CFG_STR_UTF8,"Sound sleep",0,127};
 __root const char SND_SR[128]=DEFAULT_DISK ":\\ZBin\\sndElfs\\TurnOff\\sleep.wav";
 
 __root const CFG_HDR cfghdr_m2_0={CFG_LEVEL,"",0,0};
+

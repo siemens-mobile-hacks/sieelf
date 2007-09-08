@@ -30,8 +30,9 @@ extern const char SND_SR[128];
 extern const unsigned int CLOSE_BTN;
 extern const int MODE;
 
-extern const int WHAT_DO;
-extern const unsigned int PROFILE;
+extern const int CHANGE_PROFILE;
+extern const unsigned int set_pr1;
+extern const unsigned int set_pr2;
 
 #ifdef DAEMON
 extern const unsigned int CALL_BTN;
@@ -165,24 +166,48 @@ void DoIt(void) //功能定位
   switch(mode)
     {
       case 0:
-        if (IsUnlocked())
-        {
-          if (WHAT_DO) KbdLock();
+          if (IsUnlocked())
+          {
+             if (CHANGE_PROFILE) 
+             {
+                 SetProfile(set_pr1-1);
+                 KbdLock();
+             }
+             else
+                 KbdLock();
+           }
           else
-            SetProfile(PROFILE-1);
-        }
-        else
-          KbdUnlock();
+          if (CHANGE_PROFILE)
+          { 
+            KbdUnlock();
+            SetProfile(set_pr2-1);
+          }
+          else
+            KbdUnlock();
       break;
       case 1:
            if (IsUnlocked())
                SwitchPhoneOff();
            else
+           if (CHANGE_PROFILE)
+           {
+              SetProfile(set_pr2-1);
+              KbdUnlock();
+              
+           }
+           else
                KbdUnlock();
+           
       break;
       case 2:
            if (IsUnlocked())
                RebootPhone();
+           else
+           if (CHANGE_PROFILE)
+           {          
+               SetProfile(set_pr2-1);
+               KbdUnlock();
+           }
            else
                KbdUnlock();
       break;
