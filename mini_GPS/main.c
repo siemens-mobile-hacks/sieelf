@@ -19,16 +19,16 @@ extern const int wrlog;
 extern const int wrnew;
 extern const int skwd;
 extern const int clrlog;
-char filename[128];     // глобальн? переменн? для имен?файл?
-char corr_name[128];   // отображаемое на гл. экране
-int len_;   // длин?отображаемог?на гл. экране
-int oldlac; //старые показатели lac ?ci
+char filename[128];     // global? variable? for names? file?
+char corr_name[128];   // Display on Ch. screen
+int len_;   // length? otobrazhaemog? at Ch. screen 
+int oldlac; //lac old figures? ci 
 int oldci;  //
-int oldlac1; //старые показатели lac ?ci
+int oldlac1; //lac old figures? ci 
 int oldcid;  //
 int count;
-GBSTMR update_tmr;  // для таймер?
-GBSTMR tm2;  // для таймер?
+GBSTMR update_tmr;  // For the timer? 
+GBSTMR tm2;  //For the timer?
 
 
 RAMNET GetNetParams()
@@ -66,7 +66,7 @@ else {
   sprintf(data,"[%02d-%02d-%04d - %d:%02d:%02d] Net Search \r\n",date.day, date.month,date.year,time.hour,time.min);
      }
   str_2ws(ws5,data,1000);
-    unsigned int len = wstrlen(ws5);//узнаем длин?записанног?
+    unsigned int len = wstrlen(ws5);//length learn? zapisannog? 
     fwrite(hFile,data,len,&errcode);
 FreeWS(ws5);
 fclose(hFile,&errcode);
@@ -139,7 +139,7 @@ wsprintf(ws0,"%u-%u",Res.ci,Res.lac);
     fwrite(hFile,&crc,2,&errcode);
 FreeWS(ws0);
 }
-//if(errcode){ ShowMSG(1,(int)"ошибка!");}
+//if(errcode){ ShowMSG(1,(int)"error !");}
 fclose(hFile,&errcode);
 }
 
@@ -149,13 +149,13 @@ void load_name()
   volatile int hFile = -1;
   GetFileName();
   hFile = fopen(filename,A_ReadWrite,P_READ+P_WRITE,&errcode);
-  if(hFile==-1)//если файл?не?
+  if(hFile==-1)//if the file? no?
   {
-    //ShowMSG(1,(int)"наиден?новая сеть!");
+    //ShowMSG(1,(int)"naiden? new network!");
     if(wrnew)
     {//write new id
-        Savenew();//создадим файл
-        load_name();//запускае?заново
+        Savenew();//create file 
+        load_name();//run? anew
     }
     else
     {//to display current id,we must build a string to display
@@ -185,14 +185,14 @@ void load_name()
       fread(hFile,&str_len,2,&errcode);//
       WSHDR *ws1=AllocWS(str_len);
       errcode=0;
-      lseek(hFile,0,0,&errcode,&errcode); // позиционирование на начало файл?
+      lseek(hFile,0,0,&errcode,&errcode); // positioning at the beginning of the file? 
       fread(hFile,ws1->wsbody,(str_len+1)*2,&errcode);
       len_=(str_len)*4;
       ws_2str(ws1,corr_name,len_);
       FreeWS(ws1);
     }
   }
-  //if(errcode){ ShowMSG(1,(int)"ошибка!");}
+  //if(errcode){ ShowMSG(1,(int)"error !");}
   fclose(hFile, &errcode);
 }
 
@@ -220,17 +220,17 @@ int main()
     unlink(logfile0,&err);
   }
   
-  if(!isdir(gps_dir,&err)){//если нету папк?    
-    mkdir(gps_dir,&err);//создадим ее
+  if(!isdir(gps_dir,&err)){//if no folder?   
+    mkdir(gps_dir,&err);//create it 
   }
-//  if(err){ ShowDialog_Error(1,(int)"произошл?ошибка!");}
+//  if(err){ ShowDialog_Error(1,(int)"happened? error !");}
   
-  CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);//засовываем на главны?экра?
+  CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);//Mouth at home? Screen savers?
   memcpy(&icsmd,icsm->constr,sizeof(icsmd));//
   old_icsm_onMessage=icsmd.onMessage;//
   icsmd.onMessage=MyIDLECSM_onMessage;// 
   icsm->constr=&icsmd;//
   
-  if (wrlog) GBS_StartTimerProc(&update_tmr,262*cfgupdate_time,check);//пише?ло?  //  GBS_StartTimerProc(&update_tmr,262*60,InitConfig);
+  if (wrlog) GBS_StartTimerProc(&update_tmr,262*cfgupdate_time,check);//write? Law?  //  GBS_StartTimerProc(&update_tmr,262*60,InitConfig);
   return 0;
 }
