@@ -1,5 +1,5 @@
-#include "F:\code\inc\cfg_items.h"
-#include "F:\code\inc\swilib.h"
+#include "..\inc\cfg_items.h"
+#include "..\inc\swilib.h"
 
 #define DAEMON
 #ifdef NEWSGOLD

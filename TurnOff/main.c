@@ -1,5 +1,5 @@
-#include "F:\code\inc\swilib.h"
-#include "F:\code\inc\cfg_items.h"
+#include "..\inc\swilib.h"
+#include "..\inc\cfg_items.h"
 #include "conf_loader.h"
 
 #define DAEMON
@@ -174,10 +174,16 @@ void DoIt(void)
           KbdUnlock();
       break;
       case 1:
-        SwitchPhoneOff();
+           if (IsUnlocked())
+               SwitchPhoneOff();
+           else
+               KbdUnlock();
       break;
       case 2:
-        RebootPhone();
+           if (IsUnlocked())
+               RebootPhone();
+           else
+               KbdUnlock();
       break;
      }
 
