@@ -223,6 +223,17 @@ TMOEditor/func.asm -text
 TMOEditor/main.c -text
 TMOEditor/tmo.xcl -text
 TMOEditor/upload2phone.cmd -text
+TextInfo/TextInfo.ewp -text
+TextInfo/TextInfo.eww -text
+TextInfo/TextInfo.h -text
+TextInfo/conf_loader.c -text
+TextInfo/conf_loader.h -text
+TextInfo/config_data.c -text
+TextInfo/func.asm -text
+TextInfo/local_ipc.h -text
+TextInfo/main.c -text
+TextInfo/main.c.bak -text
+TextInfo/test.xcl -text
 TurnOff/TurnOff.ewp -text
 TurnOff/TurnOff.eww -text
 TurnOff/TurnOff/off.png -text
