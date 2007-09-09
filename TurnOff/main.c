@@ -20,12 +20,14 @@ int MAINCSM_ID=0;
 extern const char ICONS_SD[128];
 extern const char ICONS_RB[128];
 extern const char ICONS_SR[128];
+extern const char ICONS_UL[128];
 
 extern const int SND_ENA;
 extern const unsigned int VOLUME;
 extern const char SND_SD[128];
 extern const char SND_RB[128];
 extern const char SND_SR[128];
+extern const char SND_UL[128];
 
 extern const unsigned int CLOSE_BTN;
 extern const int MODE;
@@ -36,12 +38,14 @@ extern const unsigned int set_pr2;
 
 #ifdef DAEMON
 extern const unsigned int CALL_BTN;
+extern const unsigned int CALL_BTN2;
 extern const int ENA_LOCK;
 #endif
 int mode;
 // 0-mode deal 
 // 1-off
 // 2-restart 
+// 3-unlock
 typedef struct
 {
   CSM_RAM csm;
@@ -133,6 +137,13 @@ void method0(MAIN_GUI *data)
         DrawImg(x, y, (int)ICONS_RB);
       }
       break;
+    case 3:
+      {
+        x= ScreenW()/2 - GetImgWidth((int)ICONS_UL)/2;
+        y = (ScreenH()-YDISP)/2 - GetImgHeight((int)ICONS_UL)/2;
+        DrawImg(x, y, (int)ICONS_UL);
+      }
+      break;
     }  
 }
 
@@ -166,51 +177,30 @@ void DoIt(void) //功能定位
   switch(mode)
     {
       case 0:
-          if (IsUnlocked())
-          {
-             if (CHANGE_PROFILE) 
-             {
+        if (CHANGE_PROFILE) 
+           {
                  SetProfile(set_pr1-1);
                  KbdLock();
-             }
+           }
              else
                  KbdLock();
-           }
-          else
-          if (CHANGE_PROFILE)
+      break;
+      case 1:
+               SwitchPhoneOff();
+           
+      break;
+      case 2:
+               RebootPhone();
+      break;
+      case 3:
+        if (CHANGE_PROFILE)
           { 
             KbdUnlock();
             SetProfile(set_pr2-1);
           }
-          else
+        else
             KbdUnlock();
-      break;
-      case 1:
-           if (IsUnlocked())
-               SwitchPhoneOff();
-           else
-           if (CHANGE_PROFILE)
-           {
-              SetProfile(set_pr2-1);
-              KbdUnlock();
-              
-           }
-           else
-               KbdUnlock();
-           
-      break;
-      case 2:
-           if (IsUnlocked())
-               RebootPhone();
-           else
-           if (CHANGE_PROFILE)
-           {          
-               SetProfile(set_pr2-1);
-               KbdUnlock();
-           }
-           else
-               KbdUnlock();
-      break;
+        break;
      }
 
   CloseCSM(MAINCSM_ID);
@@ -255,11 +245,12 @@ int method5(MAIN_GUI *data, GUI_MSG *msg)
         CloseCSM(MAINCSM_ID); //There GeneralFunc challenge for Tech. GUI -> close GUI
         MAINCSM_ID=0;
     }
-  
+
     switch(msg->gbsmsg->submess)
     {
     case RIGHT_BUTTON:
     case UP_BUTTON: 
+      if(IsUnlocked())
       {
         mode++;
         if (mode==3) mode=0;
@@ -267,8 +258,11 @@ int method5(MAIN_GUI *data, GUI_MSG *msg)
       break;
     case LEFT_BUTTON:
     case DOWN_BUTTON:
+     if(IsUnlocked())
+     {
         mode--;
         if (mode==-1) mode=2;
+     }
       break;
      case ENTER_BUTTON:
        switch(mode)
@@ -285,11 +279,14 @@ int method5(MAIN_GUI *data, GUI_MSG *msg)
             Play(SND_RB);
             if (SND_ENA) GBS_StartTimerProc(&mytmr,(int)GetWavkaLength(SND_RB),DoIt); else DoIt();
           break;
+          case 3:
+               Play(SND_UL);
+               if (SND_ENA) GBS_StartTimerProc(&mytmr,(int)GetWavkaLength(SND_UL),DoIt); else DoIt();
+          break;
         }
-      break;     
+       break;   
+     }
     }
-  }
-
   return(0);
 }
 
@@ -441,7 +438,6 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
     if (strcmp_nocase(successed_config_filename,(char *)msg->data0)==0)
     {
       InitConfig();
-      ShowMSG(1,(int)"TurnOff config updated!");
     }
   }
 
@@ -463,11 +459,20 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
 int my_keyhook(int key, int m)
 {
   extern const int MODE_KBD;
+  extern const int MODE_KBD2;
   void *icsm=FindCSMbyID(CSM_root()->idle_id);
-  if ((IsGuiOnTop(((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4]))&&(IsUnlocked()||ENA_LOCK)&&(m==MODE_KBD+0x193))
-     if (key==CALL_BTN) 
+  if ((IsGuiOnTop(((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4]))&&IsUnlocked()&&(m==MODE_KBD+0x193))
+  {
+    if (key==CALL_BTN) 
        {
          mode=MODE;
+         Check();
+       }
+   }
+  else if ((IsGuiOnTop(((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4]))&&ENA_LOCK&&(m==MODE_KBD2+0x193))
+     if (key==CALL_BTN2) 
+       {
+         mode=3;
          Check();
        }
   return 0;

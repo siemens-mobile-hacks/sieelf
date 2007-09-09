@@ -824,9 +824,11 @@ TurnOff/TurnOff.eww -text
 TurnOff/TurnOff/off.png -text
 TurnOff/TurnOff/reboot.png -text
 TurnOff/TurnOff/sleep.png -text
+TurnOff/TurnOff/unlock.png -text
 TurnOff/conf_loader.c -text
 TurnOff/conf_loader.h -text
 TurnOff/config_data.c -text
+TurnOff/config_data2.c -text
 TurnOff/func.asm -text
 TurnOff/main.c -text
 TurnOff/test.xcl -text
