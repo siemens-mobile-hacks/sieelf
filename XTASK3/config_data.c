@@ -25,10 +25,10 @@ __root const CFG_CBOX_ITEM cfgcbox23[2]={"Short press","Long press"};
 
 #ifdef ELKA
 __root const CFG_HDR cfghdr24={CFG_UINT,"Activation key",0,99};
-__root const int ACTIVE_KEY=21;
+__root const int ACTIVE_KEY=0x15;
 #else
 __root const CFG_HDR cfghdr24={CFG_UINT,"Activation key",0,99};
-__root const int ACTIVE_KEY=17;
+__root const int ACTIVE_KEY=0x11;
 #endif
 #endif
 
