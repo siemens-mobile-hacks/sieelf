@@ -39,6 +39,14 @@ Blinker/postbuild.cmd -text
 Blinker/test.xcl -text
 C++/_cpp.C -text
 C++/_cpp2.cpp -text
+CSMShow/CSMShow.ewp -text
+CSMShow/CSMShow.eww -text
+CSMShow/conf_loader.c -text
+CSMShow/conf_loader.h -text
+CSMShow/config_data.c -text
+CSMShow/func.asm -text
+CSMShow/main.c -text
+CSMShow/test.xcl -text
 CallCenter/CallCenter.ewp -text
 CallCenter/CallCenter.eww -text
 CallCenter/conf_loader.c -text
