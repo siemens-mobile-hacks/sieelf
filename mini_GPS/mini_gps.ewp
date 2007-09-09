@@ -1439,7 +1439,7 @@
         </option>
         <option>
           <name>XclFile</name>
-          <state>I:\&#x684C;&#x9762;\&#x4e34;&#x65F6;\&#x624B;&#x673A;&#x7F16;&#x7A0B;\SeCode\mini_gps_light\mini_gps.xcl</state>
+          <state>$PROJ_DIR$\mini_gps.xcl</state>
         </option>
         <option>
           <name>XclFileSlave</name>
@@ -2262,7 +2262,7 @@
         </option>
         <option>
           <name>XclFile</name>
-          <state>E:\SIEMENS\ELF\ELF&#x6e90;&#x4ee3;&#x7801;\mini_gps_light\mini_gps.xcl</state>
+          <state>$PROJ_DIR$\mini_gps.xcl</state>
         </option>
         <option>
           <name>XclFileSlave</name>
