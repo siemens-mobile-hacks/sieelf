@@ -834,6 +834,7 @@ TurnOff/conf_loader.c -text
 TurnOff/conf_loader.h -text
 TurnOff/config_data.c -text
 TurnOff/config_data2.c -text
+TurnOff/config_data_c.c -text
 TurnOff/func.asm -text
 TurnOff/main.c -text
 TurnOff/test.xcl -text
