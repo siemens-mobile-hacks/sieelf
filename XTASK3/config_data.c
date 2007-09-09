@@ -14,8 +14,7 @@ __root const CFG_CBOX_ITEM cfgcbox1[2]={"No","Yes"};
 #ifndef NEWSGOLD
 __root const CFG_HDR cfghdr23={CFG_CBOX,"Activation style",0,3};
 __root const int ACTIVE_KEY_STYLE=1;
-__root const CFG_CBOX_ITEM cfgcbox23[4]={"Short press","Long press","* + #","Enter Button"};
-
+__root const CFG_CBOX_ITEM cfgcbox23[3]={"Short press","Long press","* + #"};
 
 __root const CFG_HDR cfghdr24={CFG_UINT,"Activation key",0,99};
 __root const int ACTIVE_KEY=99;
