@@ -94,6 +94,12 @@ ELFLoader_lg8/CX7Cv50/Exe/patch_esi_bl.txt -text
 ELFLoader_lg8/CX7Cv50/Exe/swilib.vkp -text
 ELFLoader_lg8/E71Cv41/Exe/API.vkp -text
 ELFLoader_lg8/E71Cv41/Exe/swilib.vkp -text
+ELFLoader_lg8/ELC1v41/Exe/ElfPack2.31.vkp -text
+ELFLoader_lg8/ELC1v41/Exe/elf2vkp.exe -text
+ELFLoader_lg8/ELC1v41/Exe/patch.bat -text
+ELFLoader_lg8/ELC1v41/Exe/swi.vkp -text
+ELFLoader_lg8/ELC1v41/Functions_Library[!!-~]ELC1v41[!!-~]v2007.09.09.vkp -text
+ELFLoader_lg8/ELC1v41/lib_elka_070909.ini -text
 ELFLoader_lg8/ELFLoader.ewp -text
 ELFLoader_lg8/ESI.asm -text
 ELFLoader_lg8/EXT2.asm -text
@@ -106,6 +112,7 @@ ELFLoader_lg8/Lg8/CX6Cv50.xcl -text
 ELFLoader_lg8/Lg8/CX7Av25.xcl -text
 ELFLoader_lg8/Lg8/CX7Cv50.xcl -text
 ELFLoader_lg8/Lg8/E71Cv41.xcl -text
+ELFLoader_lg8/Lg8/ELC1v41.xcl -text
 ELFLoader_lg8/Lg8/M6Cv50.xcl -text
 ELFLoader_lg8/Lg8/M81Cv51.xcl -text
 ELFLoader_lg8/Lg8/S68Cv51.xcl -text
@@ -120,6 +127,7 @@ ELFLoader_lg8/Lg8/rets_CX6Cv50.asm -text
 ELFLoader_lg8/Lg8/rets_CX7Av25.asm -text
 ELFLoader_lg8/Lg8/rets_CX7Cv50.asm -text
 ELFLoader_lg8/Lg8/rets_E71Cv41.asm -text
+ELFLoader_lg8/Lg8/rets_ELC1v41.asm -text
 ELFLoader_lg8/Lg8/rets_M6Cv50.asm -text
 ELFLoader_lg8/Lg8/rets_M81Cv51.asm -text
 ELFLoader_lg8/Lg8/rets_S68Cv51.asm -text
