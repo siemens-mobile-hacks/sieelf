@@ -3017,7 +3017,7 @@
         </option>
         <option>
           <name>XDefines</name>
-          <state>DAEMON=1</state>
+          <state></state>
         </option>
         <option>
           <name>AlwaysOutput</name>
