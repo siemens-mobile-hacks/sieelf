@@ -155,6 +155,9 @@ ELFLoader_lg8/S6Cv53/Exe/ELFLoader_S6Cv53.vkp -text
 ELFLoader_lg8/S6Cv53/Exe/patche_esi_bl.txt -text
 ELFLoader_lg8/S6Cv53/Exe/swilib.vkp -text
 ELFLoader_lg8/S6Cv53/Lib070909_jpg001.ini -text
+ELFLoader_lg8/S7Cv47/exe/API.vkp -text
+ELFLoader_lg8/S7Cv47/exe/ELFLoader_S7Cv47.vkp -text
+ELFLoader_lg8/S7Cv47/exe/swilib.vkp -text
 ELFLoader_lg8/SK6Cv50/Exe/Cut[!!-~]heap.vkp -text
 ELFLoader_lg8/SK6Cv50/Exe/ELFLoader_SK6Cv50.vkp -text
 ELFLoader_lg8/SK6Cv50/Exe/patch_esi_bl.txt -text
@@ -162,6 +165,9 @@ ELFLoader_lg8/SK6Cv50/Exe/swilib.vkp -text
 ELFLoader_lg8/SL6Cv50/Exe/ELFLoader_sl6cv50.vkp -text
 ELFLoader_lg8/SL6Cv50/Exe/patch_esi_bl.txt -text
 ELFLoader_lg8/SL6Cv50/Exe/swilib.vkp -text
+ELFLoader_lg8/SL7Cv47/EXE/API.vkp -text
+ELFLoader_lg8/SL7Cv47/EXE/ELFLoader_SL7Cv47.vkp -text
+ELFLoader_lg8/SL7Cv47/EXE/swilib.vkp -text
 ELFLoader_lg8/additional.c -text
 ELFLoader_lg8/conf_loader.c -text
 ELFLoader_lg8/conf_loader.h -text
