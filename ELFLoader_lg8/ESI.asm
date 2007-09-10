@@ -59,11 +59,34 @@ J_PIT:
 	BX	R12
 #else      
 ; ==============================================   
-	RSEG	PATCH_ESI:CODE:ROOT
+#ifdef  SGOLDCN
+#ifdef  SGOLDX7C
+        RSEG	PATCH_ESI:DATA
+        EXTERN  PATCH_ESI_Hook1
+        CODE16
+        BLX      PATCH_ESI_Hook1
+        NOP
+        NOP
+	RSEG	PATCH_ESI_Hook
+	LDR	R3,=ESI_PATCH
+	BX	R3
+#else
+        RSEG	PATCH_ESI:DATA
+        CODE16
+        BL      ESI_Hook
+        NOP
+        NOP
+	RSEG	CODE:CODE:NOROOT
+ESI_Hook
+	LDR	R3,=ESI_PATCH
+	BX	R3
+#endif
+#else
+        RSEG	PATCH_ESI:CODE:ROOT
 	CODE16
 	LDR	R3,=ESI_PATCH
 	BX	R3
-        
+#endif
 ; ----------------------------------------------    
 	RSEG	CODE:CODE:NOROOT
 	CODE32

@@ -2051,7 +2051,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>SGOLDCN</state>
         </option>
         <option>
           <name>AList</name>
@@ -2181,7 +2181,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild></postbuild>
+        <postbuild>.\vkp\ELFPack.bat CX6Cv50 J:\mobilephone\fullflash\CX6CV50.bin</postbuild>
       </data>
     </settings>
     <settings>
@@ -2874,7 +2874,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>SGOLDCN</state>
         </option>
         <option>
           <name>AList</name>
@@ -3004,7 +3004,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild></postbuild>
+        <postbuild>.\vkp\ELFPack.bat M6Cv50 J:\mobilephone\fullflash\M6CV50.bin</postbuild>
       </data>
     </settings>
     <settings>
@@ -3697,7 +3697,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>SGOLDCN</state>
         </option>
         <option>
           <name>AList</name>
@@ -3827,7 +3827,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild></postbuild>
+        <postbuild>.\vkp\patch.bat S6Cv53 J:\mobilephone\fullflash\S6CV53.bin</postbuild>
       </data>
     </settings>
     <settings>
@@ -5344,7 +5344,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>SGOLDCN</state>
         </option>
         <option>
           <name>AList</name>
@@ -5474,7 +5474,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild></postbuild>
+        <postbuild>.\vkp\ELFPack.bat SL6Cv50 J:\mobilephone\fullflash\SL6CV50.bin</postbuild>
       </data>
     </settings>
     <settings>
@@ -8641,7 +8641,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>SGOLDCN</state>
         </option>
         <option>
           <name>AList</name>
@@ -8771,7 +8771,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild></postbuild>
+        <postbuild>.\vkp\ELFPack.bat C6Cv53 J:\mobilephone\fullflash\C6CV53.bin</postbuild>
       </data>
     </settings>
     <settings>
@@ -9464,7 +9464,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>SGOLDCN</state>
         </option>
         <option>
           <name>AList</name>
@@ -9594,7 +9594,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild></postbuild>
+        <postbuild>.\vkp\ELFPack.bat CX7Cv50 J:\mobilephone\fullflash\CX7CV50.bin</postbuild>
       </data>
     </settings>
     <settings>
@@ -15881,6 +15881,7 @@
       <configuration>S68Cv51</configuration>
       <configuration>SK6Cv50</configuration>
       <configuration>CX6Cv50</configuration>
+      <configuration>M6Cv50</configuration>
       <configuration>S6Cv53</configuration>
       <configuration>C7Cv22</configuration>
       <configuration>SL6Cv50</configuration>

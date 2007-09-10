@@ -174,6 +174,17 @@ ELFLoader_lg8/conf_loader.h -text
 ELFLoader_lg8/config_data.c -text
 ELFLoader_lg8/elfloader.cpp -text
 ELFLoader_lg8/png.c -text
+ELFLoader_lg8/vkp/ELFPack.bat -text
+ELFLoader_lg8/vkp/ElfPack_C6Cv53.vkp -text
+ELFLoader_lg8/vkp/ElfPack_CX6Cv50.vkp -text
+ELFLoader_lg8/vkp/ElfPack_M6Cv50.vkp -text
+ELFLoader_lg8/vkp/ElfPack_S6Cv53.vkp -text
+ELFLoader_lg8/vkp/ElfPack_SL6Cv50.vkp -text
+ELFLoader_lg8/vkp/GetELFPackbyyourself.bat -text
+ELFLoader_lg8/vkp/copyright -text
+ELFLoader_lg8/vkp/elf2vkp.exe -text
+ELFLoader_lg8/vkp/name -text
+ELFLoader_lg8/vkp/swi -text
 ExtD/ExtD.ewp -text
 ExtD/ExtD.eww -text
 ExtD/extension.cfg -text
