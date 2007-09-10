@@ -106,7 +106,6 @@ ELFLoader_lg8/ELC1v41/Exe/ElfPack2.31.vkp -text
 ELFLoader_lg8/ELC1v41/Exe/elf2vkp.exe -text
 ELFLoader_lg8/ELC1v41/Exe/patch.bat -text
 ELFLoader_lg8/ELC1v41/Exe/swi.vkp -text
-ELFLoader_lg8/ELC1v41/Functions_Library[!!-~]ELC1v41[!!-~]v2007.09.09.vkp -text
 ELFLoader_lg8/ELFLoader.ewp -text
 ELFLoader_lg8/ESI.asm -text
 ELFLoader_lg8/EXT2.asm -text
