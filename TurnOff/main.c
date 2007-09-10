@@ -32,6 +32,7 @@ extern const char SND_UL[128];
 extern const unsigned int CLOSE_BTN;
 extern const int MODE;
 
+extern const int DIRECT;
 extern const int CHANGE_PROFILE;
 extern const unsigned int set_pr1;
 extern const unsigned int set_pr2;
@@ -119,28 +120,28 @@ void method0(MAIN_GUI *data)
     case 0:
       {
         x= ScreenW()/2 - GetImgWidth((int)ICONS_SR)/2;
-        y = (ScreenH()-YDISP)/2 - GetImgHeight((int)ICONS_SR)/2;
+        y = (ScreenH()-YDISP)/3 - GetImgHeight((int)ICONS_SR)/2;
         DrawImg(x, y, (int)ICONS_SR);
       }
       break;
     case 1:
       {
         x= ScreenW()/2 - GetImgWidth((int)ICONS_SD)/2;
-        y = (ScreenH()-YDISP)/2 - GetImgHeight((int)ICONS_SD)/2;
+        y = (ScreenH()-YDISP)/3 - GetImgHeight((int)ICONS_SD)/2;
         DrawImg(x, y, (int)ICONS_SD);
       }
       break;
     case 2:
       {
         x= ScreenW()/2 - GetImgWidth((int)ICONS_RB)/2;
-        y = (ScreenH()-YDISP)/2 - GetImgHeight((int)ICONS_RB)/2;
+        y = (ScreenH()-YDISP)/3 - GetImgHeight((int)ICONS_RB)/2;
         DrawImg(x, y, (int)ICONS_RB);
       }
       break;
     case 3:
       {
         x= ScreenW()/2 - GetImgWidth((int)ICONS_UL)/2;
-        y = (ScreenH()-YDISP)/2 - GetImgHeight((int)ICONS_UL)/2;
+        y = (ScreenH()-YDISP)/3 - GetImgHeight((int)ICONS_UL)/2;
         DrawImg(x, y, (int)ICONS_UL);
       }
       break;
@@ -470,11 +471,13 @@ int my_keyhook(int key, int m)
        }
    }
   else if ((IsGuiOnTop(((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4]))&&ENA_LOCK&&(m==MODE_KBD2+0x193))
-     if (key==CALL_BTN2) 
+     if ((key==CALL_BTN2)&&(DIRECT)) 
        {
          mode=3;
          Check();
        }
+     else
+       KbdUnlock();
   return 0;
 }
 

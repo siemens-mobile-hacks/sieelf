@@ -14,11 +14,15 @@ __root const int ENA_LOCK=1;
 __root const CFG_CBOX_ITEM cfgcbox1[2]={"No","Yes"};
 
 __root const CFG_HDR cfghdr1={CFG_CBOX,"Default action",0,3};
-__root const int MODE=1;
+__root const int MODE=0;
 __root const CFG_CBOX_ITEM cfgcbox2[3]={"Sleep","Shutting down","Reboot",};
 
-__root const CFG_HDR cfghdr3={CFG_CBOX,"Change profile when locked",0,2};
-__root const int CHANGE_PROFILE=1;
+__root const CFG_HDR cfghdr12={CFG_CBOX,"Direct unlocked",0,2};
+__root const int DIRECT=1;
+__root const CFG_CBOX_ITEM cfgcbox12[2]={"Yes","No"};
+
+__root const CFG_HDR cfghdr2={CFG_CBOX,"Change profile when locked",0,2};
+__root const int CHANGE_PROFILE=0;
 __root const CFG_CBOX_ITEM cfgcbox3[2]={"No","Yes"};
 
 __root const CFG_HDR cfghdr4={CFG_UINT,"lock_profile",0,8};
