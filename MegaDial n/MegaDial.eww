@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<workspace>
+  <project>
+    <path>$WS_DIR$\MegaDial.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>All</name>
+      <member>
+        <project>MegaDial</project>
+        <configuration>Debug_NSGOLD</configuration>
+      </member>
+      <member>
+        <project>MegaDial</project>
+        <configuration>Debug_SGOLD</configuration>
+      </member>
+      <member>
+        <project>MegaDial</project>
+        <configuration>Debug_SK</configuration>
+      </member>
+      <member>
+        <project>MegaDial</project>
+        <configuration>Release_NSGOLD</configuration>
+      </member>
+      <member>
+        <project>MegaDial</project>
+        <configuration>Release_SGOLD</configuration>
+      </member>
+      <member>
+        <project>MegaDial</project>
+        <configuration>Release_SK</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>
+
+
