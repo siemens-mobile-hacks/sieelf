@@ -178,30 +178,17 @@ void DoIt(void) //功能定位
   switch(mode)
     {
       case 0:
-        if (CHANGE_PROFILE) 
-           {
-                 SetProfile(set_pr1-1);
-                 KbdLock();
-           }
-             else
-                 KbdLock();
+               KbdLock();
       break;
       case 1:
-               SwitchPhoneOff();
-           
+               SwitchPhoneOff();           
       break;
       case 2:
                RebootPhone();
       break;
       case 3:
-        if (CHANGE_PROFILE)
-          { 
-            KbdUnlock();
-            SetProfile(set_pr2-1);
-          }
-        else
-            KbdUnlock();
-        break;
+               KbdUnlock();
+      break;
      }
 
   CloseCSM(MAINCSM_ID);
@@ -273,12 +260,10 @@ int method5(MAIN_GUI *data, GUI_MSG *msg)
             if (SND_ENA) GBS_StartTimerProc(&mytmr,(int)GetWavkaLength(SND_SR),DoIt); else DoIt();
           break;
           case 1:
-            Play(SND_SD);
-            if (SND_ENA) GBS_StartTimerProc(&mytmr,(int)GetWavkaLength(SND_SD),DoIt); else DoIt();
+             DoIt();
           break;
           case 2:
-            Play(SND_RB);
-            if (SND_ENA) GBS_StartTimerProc(&mytmr,(int)GetWavkaLength(SND_RB),DoIt); else DoIt();
+             DoIt();
           break;
           case 3:
                Play(SND_UL);
@@ -476,8 +461,8 @@ int my_keyhook(int key, int m)
          mode=3;
          Check();
        }
-     else
-       KbdUnlock();
+     else if ((key==CALL_BTN2)&&(DIRECT==0))     
+         KbdUnlock();
   return 0;
 }
 

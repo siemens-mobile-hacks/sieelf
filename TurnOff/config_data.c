@@ -21,16 +21,6 @@ __root const CFG_HDR cfghdr12={CFG_CBOX,"Direct unlocked",0,2};
 __root const int DIRECT=1;
 __root const CFG_CBOX_ITEM cfgcbox12[2]={"Yes","No"};
 
-__root const CFG_HDR cfghdr2={CFG_CBOX,"Change profile when locked",0,2};
-__root const int CHANGE_PROFILE=0;
-__root const CFG_CBOX_ITEM cfgcbox3[2]={"No","Yes"};
-
-__root const CFG_HDR cfghdr4={CFG_UINT,"lock_profile",0,8};
-__root const unsigned int set_pr1=6;
-
-__root const CFG_HDR cfghdr5={CFG_UINT,"unlock_profile",0,8};
-__root const unsigned int set_pr2=7;
-
 __root const CFG_HDR cfghdr_m1_1={CFG_LEVEL,"Key settings",1,0};
 
 __root const CFG_HDR cfghdr1_1={CFG_UINT,"Close button",0,65535};
@@ -76,12 +66,6 @@ __root const CFG_CBOX_ITEM cfgcbox6[2]={"No","Yes"};
 
 __root const CFG_HDR cfghdr3_1={CFG_UINT,"Volume",0,6};
 __root const unsigned int VOLUME=1;
-
-__root const CFG_HDR cfghdr3_2={CFG_STR_UTF8,"Sound off",0,127};
-__root const char SND_SD[128]=DEFAULT_DISK ":\\ZBin\\sndElfs\\TurnOff\\off.wav";
-
-__root const CFG_HDR cfghdr3_3={CFG_STR_UTF8,"Sound reboot",0,127};
-__root const char SND_RB[128]=DEFAULT_DISK ":\\ZBin\\sndElfs\\TurnOff\\reboot.wav";
 
 __root const CFG_HDR cfghdr3_4={CFG_STR_UTF8,"Sound sleep",0,127};
 __root const char SND_SR[128]=DEFAULT_DISK ":\\ZBin\\sndElfs\\TurnOff\\sleep.wav";
