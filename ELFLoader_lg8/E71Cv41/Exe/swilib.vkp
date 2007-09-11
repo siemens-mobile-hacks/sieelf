@@ -598,7 +598,7 @@
 08B0: 0xA0659B11   ; 22C:  pdcache_getval(char *return, int maxlen_of_return_str, char cachetype,0, *pd_entry_identifier)                                   
 08B4: 0xA0659CFB   ; 22D:  pdcache_setval(char *new_value, char cachetype, 0, char *pd_entry_identifier)                                                    
 08B8: 0xA06B22A8   ; 22E:  OpenExplorer(ExplOpenDesc *)                                                                                                     
-#pragma disable old_equal_ff                                                                                                                                #pragma disable old_equal_ff
-+0                                                                                                                                                          +0
+#pragma disable old_equal_ff
++0
 ;********************************************************************************
 
