@@ -279,7 +279,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state></state>
+          <state>$FILE_BNAME$.r79</state>
         </option>
         <option>
           <name>CCLangSelect</name>
@@ -341,7 +341,7 @@
         </option>
         <option>
           <name>CCStdIncludePath</name>
-          <state>###Uninitialized###</state>
+          <state>$TOOLKIT_DIR$\INC\</state>
         </option>
       </data>
     </settings>

@@ -1,6 +1,9 @@
 #include "..\inc\cfg_items.h"
 #include "..\inc\swilib.h"
-//Конфигурация
+//Конфигурац?
+
+__root const CFG_HDR cfghdr58={CFG_STR_UTF8,"Address list",3,127};
+__root const char root_dir[128]="0:\\\x1F\xE7\xB3\xBB\xE7\xBB\x9F\\apo\\addr";
 
 __root const CFG_HDR cfghdr0={CFG_COLOR,"Color Menu background",0,0};
 __root const char COLOR_MENU_BK[4]={0xFF,0xFF,0x0,0x64};
