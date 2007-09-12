@@ -4,7 +4,7 @@
 #define LG_COPYRIGHT     "NATICQ v2.0\nRevision %d\n(C) by Rst7/CBSIE\nKren\nKibab\nShadow\nSeklth"
 
 //Оставляем только один дефайн иначе будет кака
-#define LANG_RU
+#define LANG_EN
 //#define LANG_UA
 //#define LANG_EN
 
