@@ -10,6 +10,8 @@ BalletMini/display_utils.h -text
 BalletMini/func.asm -text
 BalletMini/img/OMS_BIG.png -text
 BalletMini/img/OMS_SMALL.png -text
+BalletMini/inet.c -text
+BalletMini/inet.h -text
 BalletMini/jpeglib/jconfig.h -text
 BalletMini/jpeglib/jerror.h -text
 BalletMini/jpeglib/jmorecfg.h -text
@@ -27,6 +29,8 @@ BalletMini/siemens_unicode.h -text
 BalletMini/string_works.c -text
 BalletMini/string_works.h -text
 BalletMini/test.xcl -text
+BalletMini/urlstack.c -text
+BalletMini/urlstack.h -text
 BalletMini/view.h -text
 Blinker/blinker.ewp -text
 Blinker/blinker.eww -text
@@ -256,6 +260,15 @@ KeyExten/config_data.c -text
 KeyExten/func.asm -text
 KeyExten/main.c -text
 KeyExten/test.xcl -text
+KeyMaster/KeyMaster.ewp -text
+KeyMaster/KeyMaster.eww -text
+KeyMaster/conf_loader.c -text
+KeyMaster/conf_loader.h -text
+KeyMaster/config_data.c -text
+KeyMaster/func.asm -text
+KeyMaster/gui.c -text
+KeyMaster/main.c -text
+KeyMaster/test.xcl -text
 LastFM/LastFM.eww -text
 LastFM/LastFMD.ewp -text
 LastFM/Win/main.c -text
