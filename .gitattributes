@@ -8,6 +8,7 @@ BalletMini/destructors.h -text
 BalletMini/display_utils.c -text
 BalletMini/display_utils.h -text
 BalletMini/func.asm -text
+BalletMini/img/OMS.png -text
 BalletMini/img/OMS_BIG.png -text
 BalletMini/img/OMS_SMALL.png -text
 BalletMini/inet.c -text
