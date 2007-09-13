@@ -145,7 +145,7 @@ void InitIcons(void)
 #endif
 
 //-------------------------------------
-//参数
+//部分新增参数
 //-------------------------------------
 int cs_adr=0;
 int iSelIdx=0;
@@ -204,10 +204,6 @@ void RereadSettings()
 //-------------------------------------
 //区号秀
 //-------------------------------------
-
-
-const int align_flag[]={TEXT_ALIGNLEFT,TEXT_ALIGNMIDDLE,TEXT_ALIGNRIGHT};
-
 void ShowInputCodeShow(WSHDR* pwsNum)
 {
 	WSHDR* pwsCodeshow;
@@ -298,7 +294,7 @@ void FreeCLIST(void)
 }
 
 //-----------------------------------------------------
-//Pois? substring? ? line method? 
+//拼音快选
 //-----------------------------------------------------
 unsigned int us_reverse(unsigned int v)
 {
@@ -834,8 +830,19 @@ void my_ed_redraw(void *data)
         //DrawScrollString(cl->name,3,dy+4,ScreenW()-5-icons_size,dy+cfg_item_gaps+GetFontYSIZE(font_size),scroll_disp+1,font_size,0x80,COLOR_SELECTED,GetPaletteAdrByColorIndex(23));
 	DrawString(cl->icons,ScreenW()-4-icons_size,dy+cfg_item_gaps,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
         DrawScrollString(cl->num[iSelIdx],3,y-24,ScreenW()-5-icons_size,dy+cfg_item_gaps+GetFontYSIZE(font_size),scroll_disp+1,font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
+/*          WSHDR *ws;
+       NUMLIST *nltop=user_pointer;
+      void *item=AllocMenuItem(data);
+     for(int d=0; d!=curitem && nltop; d++) nltop=nltop->next;
+  if (nltop)
+  {
+    ws=AllocMenuWS(data,40);
+*/
+        
+        //区号秀输出
         wstrcpy(gwsTemp, cl->num[iSelIdx]);
         ShowSelectedCodeShow(gwsTemp,y-22+font_size+cfg_item_gaps);
+        
         dy+=font_size+cfg_item_gaps;
       }
       cl=(CLIST *)cl->next;
@@ -845,6 +852,8 @@ void my_ed_redraw(void *data)
   }
   FreeWS(prws);
 }
+
+
 
 void ChangeRC(GUI *gui)
 {
@@ -869,6 +878,10 @@ void ChangeRC(GUI *gui)
 }
 
 
+//-------------------------------------
+//短信功能菜单
+//-------------------------------------
+
 const int menusoftkeys[]={0,1,2};
 
 const SOFTKEY_DESC menu_sk[]=
@@ -883,15 +896,12 @@ const SOFTKEYSTAB menu_skt=
   menu_sk,0
 };
 
-
-//-------------------------------------
-//短信功能
-//-------------------------------------
 int is_sms_need=0;
 WSHDR *ews;
 
 void edsms_locret(void){}
 
+//字数计算
 int get_word_count(GUI *data)
 {
   int i,k=0;
@@ -930,6 +940,8 @@ int get_word_count(GUI *data)
   return len;
 }
 
+
+//按键控制
 int edsms_onkey(GUI *data, GUI_MSG *msg)
 {
   EDITCONTROL ec;
@@ -965,6 +977,7 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
   //1: close
 }
 
+
 void edsms_ghook(GUI *data, int cmd)
 {
     if(cmd != 2)
@@ -973,7 +986,10 @@ void edsms_ghook(GUI *data, int cmd)
   }
 }
 
+
 HEADER_DESC edsms_hdr={0,0,0,0,NULL,(int)"Write SMS",LGP_NULL};
+
+
 
 INPUTDIA_DESC edsms_desc=
 {
@@ -1000,7 +1016,7 @@ INPUTDIA_DESC edsms_desc=
   0x40000000 // Pom? t field? videos button 
 };
 
-
+//短信显示输出
 void VoiceOrSMS(const char *num)
 {
 
@@ -1022,28 +1038,32 @@ void VoiceOrSMS(const char *num)
     char szTemp[40+1];
 
     
-     wstrcpy(ews,gwsName);
+     wstrcpy(ews,gwsName);//名字
+     
      wsAppendChar(ews, '\n');
-        wsprintf(gwsTemp,"%s",num);
+     
+        wsprintf(gwsTemp,"%s",num);//号码
         wstrcat(ews,gwsTemp);
+        
         wsAppendChar(gwsTemp,'\n');
-        CutWSTR(gwsTemp, 0);
+        
+        CutWSTR(gwsTemp, 0);//复位?
      
         strcpy(szTemp,num);
-	GetProvAndCity(gwsTemp->wsbody,szTemp);
+	GetProvAndCity(gwsTemp->wsbody,szTemp);//区号秀地址
         wsAppendChar(ews,'\n'); 
         wstrcat(ews, gwsTemp);
         
         wsAppendChar(ews,'\n'); 
         wsAppendChar(ews, 0x5B57);
         wsAppendChar(ews, 0x6570);
-        gLen = wstrlen(ews); 
+        gLen = wstrlen(ews);  //字数输出
         
     ConstructEditControl(&ec,1,0x40,ews,SMS_MAX_LEN);
     AddEditControlToEditQend(eq,&ec,ma);
     //wsprintf(ews,percent_t,"");
     CutWSTR(ews,0);
-    ConstructEditControl(&ec,4,0x40,ews,SMS_MAX_LEN);
+    ConstructEditControl(&ec,4,0x40,ews,SMS_MAX_LEN);//短信输入
     AddEditControlToEditQend(eq,&ec,ma);
     patch_header(&edsms_hdr);
     patch_input(&edsms_desc);
@@ -1053,6 +1073,9 @@ void VoiceOrSMS(const char *num)
 
 
 
+//-------------------------------------
+//号码选择菜单
+//-------------------------------------
 
 typedef struct
 {
@@ -1128,7 +1151,11 @@ MENU_DESC gotomenu_STRUCT=
 
 
 
-int my_ed_onkey(GUI *gui, GUI_MSG *msg)
+//-------------------------------------
+//主控
+//-------------------------------------
+
+int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 {
   int key=msg->gbsmsg->submess;
   int m=msg->gbsmsg->msg;
@@ -1188,6 +1215,8 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)
     CreateMenu(0,0,&gotomenu_STRUCT,&gotomenu_HDR,0,n,nltop,0);
     return(0);
   }
+  
+ //循环号码
   if ((key==UP_BUTTON)||(key==DOWN_BUTTON))
   {
     //Do not treat vver editor? down 
@@ -1197,21 +1226,33 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)
       DisableScroll();
       if (key==UP_BUTTON)
       {
-	if (curpos) curpos--;
+				if (curpos)
+					curpos--;
+				else
+				{
+					cl=(CLIST *)cltop;
+					while(cl->next)
+					{
+						curpos++;
+						cl=(CLIST *)cl->next;
+					}
+				}
       }
       if (key==DOWN_BUTTON)
       {
-	if (cl)
-	{
-	  do
-	  {
-	    cl=(CLIST *)cl->next;
-	    if (!cl) break;
-	    i++;
-	  }
-	  while(i<=curpos);
-	}
-	curpos=i;
+				if (cl)
+				{
+					do
+					{
+						cl=(CLIST *)cl->next;
+						if (!cl) break;
+						i++;
+					}
+					while(i<=curpos);
+				}
+				if(cl)curpos=i;
+				else curpos=0;
+		
       }
     }
     r=-1; //Redraw 

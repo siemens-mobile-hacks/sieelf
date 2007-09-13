@@ -5,13 +5,13 @@
 __root const CFG_HDR cfghdr0={CFG_STR_UTF8,"Address list",3,127};
 __root const char root_dir[128]="0:\\\x1F\xE7\xB3\xBB\xE7\xBB\x9F\\apo\\addr";
 
-__root const CFG_HDR cfghdr1 = {CFG_UINT,"字体",0,9};
+__root const CFG_HDR cfghdr1 = {CFG_UINT,"Font",0,9};
 __root const int font_size=7;
 
-__root const CFG_HDR cfghdr2 = {CFG_UINT,"条目间距",0,6};
+__root const CFG_HDR cfghdr2 = {CFG_UINT,"Item gaps",0,6};
 __root const int cfg_item_gaps=3;
 
-__root const CFG_HDR cfghdr3 = {CFG_UINT,"一页显示条目数",0,8};
+__root const CFG_HDR cfghdr3 = {CFG_UINT,"Page count",0,8};
 __root const int count_page=6;
 
 __root const CFG_HDR cfghdr18={CFG_CHECKBOX,"Use vibra",0,0};
@@ -51,19 +51,16 @@ __root const char COLOR_SEARCH_UNMARK[4]={0xFF,0xFF,0xFF,0x64};
 
 __root const CFG_HDR cfghdr_m8={CFG_LEVEL,"",0,0};
 
-__root const CFG_HDR cfghdr_m11={CFG_LEVEL,"区号秀",1,0};
+__root const CFG_HDR cfghdr_m11={CFG_LEVEL,"CodeShow",1,0};
 
-__root const CFG_HDR cfghdr30 = {CFG_CBOX,"是否显示区号秀",0,2};
+__root const CFG_HDR cfghdr30 = {CFG_CBOX,"Show CodeShow",0,2};
 __root const int cfg_cs_enable=1;
-__root const CFG_CBOX_ITEM cfgcbox38[2] = {"否","是"};
+__root const CFG_CBOX_ITEM cfgcbox38[2] = {"No","Yes"};
 
-__root const CFG_HDR cfghdr31 = {CFG_COLOR,"区号秀字体颜色",0,24};
+__root const CFG_HDR cfghdr31 = {CFG_COLOR,"CodeShow color",0,24};
 __root const int cfg_cs_font_color=0;
 
-__root const CFG_HDR cfghdr32 = {CFG_UINT,"区号秀分隔符",0,0xFFFF};
-__root const int cfg_cs_split =' '; //0x2027;
-
-__root const CFG_HDR cfghdr33 = {CFG_UINT,"区号秀数据地址",0,0xFFFFFFFF};
+__root const CFG_HDR cfghdr33 = {CFG_UINT,"CodeShow address",0,0xFFFFFFFF};
 __root const int cfg_cs_adr=0xA0CC0000;
 
 __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
