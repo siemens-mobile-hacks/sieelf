@@ -601,6 +601,10 @@
 08B0: 0xA02C98DB   ; 22C: pdcache_getval(char *return, int maxlen_of_return_str, char cachetype,0, *pd_entry_identifier);
 08B4: 0xA02C99D9   ; 22D: pdcache_setval(char *new_value, char cachetype, 0, char *pd_entry_identifier);
 08B8: 0xA0308A9B   ; 22E: OpenExplorer(ExplOpenDesc *)
+08BC: 0xA8D282A4   ; 22F:   TDateTimeSettings *RamDateTimeSettings
+
+08C0: 0xA082B3BD   ; 230:   int GetTimeZoneShift(int param1, int param2, int timeZone)
+08C4: 0xA8D2824C   ; 231:   TAppointment *RamAppointment
 #pragma disable old_equal_ff
 +0
 
