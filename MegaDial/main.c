@@ -17,7 +17,7 @@ extern const char root_dir[128];
 
 
 #define TMR_SECOND 216
-
+#define SMS_MAX_LEN  760
 
 #pragma inline
 void patch_header(HEADER_DESC* head)
@@ -101,6 +101,10 @@ volatile CLIST *cltop; //Start
 volatile CLIST *clbot; //Con?
 char dstr[NUMBERS_MAX][40];
 
+int gLen=0;
+WSHDR *gwsName;
+WSHDR *gwsSMS;
+WSHDR *gwsTemp;
 
 int menu_icons[NUMBERS_MAX];
 int utf_symbs[NUMBERS_MAX];
@@ -739,13 +743,66 @@ WSHDR *ews;
 
 void edsms_locret(void){}
 
+int get_word_count(GUI *data)
+{
+  int i,k=0;
+  int len=0;
+  EDITCONTROL ec;
+  WSHDR *wsTemp=AllocWS(SMS_MAX_LEN);
+  ExtractEditControl(data, 2, &ec);
+  len = wstrlen(ec.pWS);
+  for(i=1;i<=ec.pWS->wsbody[0];i++)
+  {
+    if(ec.pWS->wsbody[i]>128)k=1;
+  }
+  if(k) 
+  {
+   if(len>70)
+    k=(len+65)/66;
+   else 
+   k=(len+69)/70;
+  }
+  else 
+  {
+   if(len>160)
+    k=(len+151)/152;  
+   else
+    k=(len+159)/160;
+  }
+  wsprintf(gwsTemp, ": %d - %d", k, len);
+  ExtractEditControl(data, 1, &ec);
+  wstrncpy(wsTemp, ec.pWS, gLen);
+  wstrcat(wsTemp, gwsTemp); 
+  wstrcpy(ec.pWS, wsTemp);
+//  REDRAW();
+  ExtractEditControl(data, 2, &ec);
+  wstrcpy(gwsSMS, ec.pWS);
+  FreeWS(wsTemp);
+  return len;
+}
+
 int edsms_onkey(GUI *data, GUI_MSG *msg)
 {
   EDITCONTROL ec;
   const char *snum=EDIT_GetUserPointer(data);
-  if (msg->gbsmsg->msg==KEY_DOWN)
+    if (get_word_count(data) == 0)
   {
-    if (msg->gbsmsg->submess==GREEN_BUTTON)
+#ifdef NEWSGOLD
+    if(msg->gbsmsg->submess==LEFT_SOFT)
+#else
+    if(msg->gbsmsg->submess==RIGHT_SOFT)
+#endif
+    {
+      return(-1);
+    }
+  }
+  else
+  {
+  #ifdef NEWSGOLD
+    if(msg->gbsmsg->submess==LEFT_SOFT)
+#else
+    if(msg->gbsmsg->submess==RIGHT_SOFT)
+#endif
     {
       ExtractEditControl(data,2,&ec);
       WSHDR *sw=AllocWS(ec.pWS->wsbody[0]);
@@ -761,6 +818,10 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
 
 void edsms_ghook(GUI *data, int cmd)
 {
+    if(cmd != 2)
+  {
+    get_word_count(data);
+  }
 }
 
 HEADER_DESC edsms_hdr={0,0,0,0,NULL,(int)"Write SMS",LGP_NULL};
@@ -790,8 +851,12 @@ INPUTDIA_DESC edsms_desc=
   0x40000000 // Pom? t field? videos button 
 };
 
+
+
+
 void VoiceOrSMS(const char *num)
 {
+
   if (!is_sms_need)
   {
 //    #ifdef NEWSGOLD
@@ -807,12 +872,30 @@ void VoiceOrSMS(const char *num)
     EDITCONTROL ec;
     PrepareEditControl(&ec);
     eq=AllocEQueue(ma,mfree_adr());
-    wsprintf(ews,"SMS to %s:",num);
-    ConstructEditControl(&ec,1,0x40,ews,64);
+
+    
+     wstrcpy(ews,gwsName);
+     wsAppendChar(ews, '\n');
+        wsprintf(gwsTemp,"%s",num);
+        wstrcat(ews,gwsTemp);
+        wsAppendChar(gwsTemp,'\n');
+        CutWSTR(gwsTemp, 0);
+     /*
+        strcpy(szTemp, gszSMS2Num);
+	GetProvAndCity(gwsTemp->wsbody, szTemp);
+        wsAppendChar(ews,'\n'); 
+        wstrcat(ews, gwsTemp);*/
+        
+        wsAppendChar(ews,'\n'); 
+        wsAppendChar(ews, 0x5B57);
+        wsAppendChar(ews, 0x6570);
+        gLen = wstrlen(ews); 
+        
+    ConstructEditControl(&ec,1,0x40,ews,SMS_MAX_LEN);
     AddEditControlToEditQend(eq,&ec,ma);
     //wsprintf(ews,percent_t,"");
     CutWSTR(ews,0);
-    ConstructEditControl(&ec,3,0x40,ews,1024);
+    ConstructEditControl(&ec,4,0x40,ews,SMS_MAX_LEN);
     AddEditControlToEditQend(eq,&ec,ma);
     patch_header(&edsms_hdr);
     patch_input(&edsms_desc);
@@ -942,6 +1025,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)
       r++;
     }
     while(r<NUMBERS_MAX);
+    wstrcpy(gwsName, cl->name);
     if (n==1) // Only one by?
     {
       VoiceOrSMS(dstr[nltop->index]);
@@ -1132,11 +1216,15 @@ void MyIDLECSM_onClose(CSM_RAM *data)
   extern void seqkill(void *data, void(*next_in_seq)(CSM_RAM *), void *data_to_kill, void *seqkiller);
   extern void *ELF_BEGIN;
   FreeWS(ews);
+  FreeWS(gwsName);
+  FreeWS(gwsTemp);
   seqkill(data,old_icsm_onClose,&ELF_BEGIN,SEQKILLER_ADR());
 }
 
 int main(void)
 {
+  gwsTemp=AllocWS(40);
+  gwsName=AllocWS(40);
   InitConfig();
   LockSched();
   CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
@@ -1147,7 +1235,7 @@ int main(void)
   icsmd.onMessage=MyIDLECSM_onMessage;
   icsm->constr=&icsmd;
   UnlockSched();
-  ews=AllocWS(1024);
+  ews=AllocWS(SMS_MAX_LEN);
   InitIcons();
   return 0;
 }
