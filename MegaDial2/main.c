@@ -968,24 +968,9 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
 {
   EDITCONTROL ec;
   const char *snum=EDIT_GetUserPointer(data);
-    if (get_word_count(data) == 0)
+  if (msg->gbsmsg->msg==KEY_DOWN)
   {
-#ifdef NEWSGOLD
-    if(msg->gbsmsg->submess==LEFT_SOFT)
-#else
-    if(msg->gbsmsg->submess==RIGHT_SOFT)
-#endif
-    {
-      return(-1);
-    }
-  }
-  else
-  {
-  #ifdef NEWSGOLD
-    if(msg->gbsmsg->submess==LEFT_SOFT)
-#else
-    if(msg->gbsmsg->submess==RIGHT_SOFT)
-#endif
+    if (msg->gbsmsg->submess==GREEN_BUTTON)
     {
       ExtractEditControl(data,2,&ec);
       WSHDR *sw=AllocWS(ec.pWS->wsbody[0]);
