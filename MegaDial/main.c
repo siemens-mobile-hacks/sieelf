@@ -1,4 +1,5 @@
 #include "..\inc\swilib.h"
+
 #include "conf_loader.h"
 
 GBSTMR tmr_scroll;
@@ -6,15 +7,15 @@ GBSTMR tmr_scroll;
 extern const int ENA_VIBRA;
 extern const unsigned int vibraPower;
 extern const unsigned int vibraDuration;
-extern const char COLOR_MENU_BK[4];
-extern const char COLOR_MENU_BRD[4];
-extern const char COLOR_NOTSELECTED[4];
-extern const char COLOR_SELECTED[4];
-extern const char COLOR_SELECTED_BG[4];
-extern const char COLOR_SELECTED_BRD[4];
+extern const int COLOR_MENU_BK;
+extern const int COLOR_MENU_BRD;
+extern const int COLOR_NOTSELECTED;
+extern const int COLOR_SELECTED;
+extern const int COLOR_SELECTED_BG;
+extern const int COLOR_SELECTED_BRD;
 extern const char COLOR_SEARCH_MARK[4];
+extern const char COLOR_SEARCH_UNMARK[4];
 extern const char root_dir[128];
-
 
 #define TMR_SECOND 216
 #define SMS_MAX_LEN  760
@@ -142,6 +143,139 @@ void InitIcons(void)
   menu_icons[4]=GetPicNByUnicodeSymbol(utf_symbs[4]=USR_FAX2);
 }
 #endif
+
+//-------------------------------------
+//参数
+//-------------------------------------
+int cs_adr=0;
+int iSelIdx=0;
+int iReadFile=0;
+extern const int cfg_cs_adr;
+extern const int cfg_cs_enable;
+extern const int font_size;
+extern const int cfg_item_gaps;
+extern const int count_page;
+extern const int cfg_cs_font_color;
+extern int GetProvAndCity(unsigned short *pBSTR, char *pNoStr);
+#define color(x) (x<24)?GetPaletteAdrByColorIndex(x):(char *)(&(x))
+
+//-------------------------------------
+//读取设置
+//-------------------------------------
+void RereadSettings()
+{
+	int fin;
+	unsigned int ul;
+	InitConfig();
+   //     if( !cfg_gps_enable )
+   //     local_ip_dial = 1;
+	if(iReadFile && !cs_adr)
+		mfree((void*)cs_adr);
+	if(cfg_cs_adr > 0xA0000000)
+	{
+		cs_adr=cfg_cs_adr;
+		iReadFile = 0;
+	}
+	else
+	{
+		iReadFile = 1;
+		if(cs_adr=(int)malloc(240*1024))
+			if ((fin=fopen("4:\\zbin\\codeshow.bin",A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
+			{
+				if (fread(fin,(void*)cs_adr,240*1024,&ul)!=240*1024)
+				{
+					mfree((void*)cs_adr);
+				}
+				fclose(fin,&ul);
+			}
+			else
+			{
+				if ((fin=fopen("0:\\zbin\\codeshow.bin",A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
+					if (fread(fin,(void*)cs_adr,240*1024,&ul)!=240*1024)
+					{
+						mfree((void*)cs_adr);
+					}
+					fclose(fin,&ul);
+			}
+		else mfree((void*)cs_adr);
+	}
+}
+
+//-------------------------------------
+//区号秀
+//-------------------------------------
+
+
+const int align_flag[]={TEXT_ALIGNLEFT,TEXT_ALIGNMIDDLE,TEXT_ALIGNRIGHT};
+
+void ShowInputCodeShow(WSHDR* pwsNum)
+{
+	WSHDR* pwsCodeshow;
+	pwsCodeshow=AllocWS(20);
+	char pszNum[20];
+	int len;
+
+	if(cltop) goto sub_end;
+
+	if(!cfg_cs_enable) goto sub_end;
+	ws_2str(pwsNum,pszNum,20);
+	len=strlen(pszNum);
+
+        if(len <= 1) goto sub_end;
+
+	if(len)
+	{
+		if(*pszNum == '0' && len < 3)
+			goto sub_end;	//Locale table number is not enough
+		else
+			if(*pszNum == '1' && len < 7)
+				goto sub_end;	//mobile number is not enough
+			else
+				if(*pszNum == '+' && len < 10)
+					goto sub_end;	//+86XXXXXXXXX number is not enough
+				else
+				{
+					GetProvAndCity(pwsCodeshow->wsbody,pszNum);
+					DrawString(pwsCodeshow,
+						0,
+						40,
+						128,
+						60,
+						font_size,
+						4,
+						color(cfg_cs_font_color),
+						GetPaletteAdrByColorIndex(23));
+				}
+//DrawString(prws,3,dy+4,ScreenW()-4,dy+3+GetFontYSIZE(font_size),font_size,0x80,COLOR_NOTSELECTED,GetPaletteAdrByColorIndex(23));
+	}
+sub_end:
+	FreeWS(pwsCodeshow);
+}
+
+void ShowSelectedCodeShow(WSHDR* pwsNum,int y1)
+{
+	WSHDR* pwsCodeshow;
+	pwsCodeshow=AllocWS(20);
+	char pszNum[20];
+
+	if(!cfg_cs_enable) goto sub_end;
+	ws_2str(pwsNum,pszNum,20);
+
+	GetProvAndCity(pwsCodeshow->wsbody,pszNum);
+	DrawString(pwsCodeshow,
+		0+1+1,
+		y1,
+		130-1-2,
+		y1+GetFontYSIZE(font_size),
+		font_size,
+		4,
+                color(cfg_cs_font_color),
+                GetPaletteAdrByColorIndex(23));
+sub_end:
+	FreeWS(pwsCodeshow);
+}
+
+
 
 //Destroy list 
 void FreeCLIST(void)
@@ -311,8 +445,8 @@ int CompareStrT9(WSHDR *ws, WSHDR *ss, int need_insert_color)
 	{
 	  if (need_insert_color&&(first_pos>0))
 	  {
-	    wsInsertChar(ws,us_reverse(((unsigned short *)COLOR_NOTSELECTED)[1]),wpos+1);
-	    wsInsertChar(ws,us_reverse(((unsigned short *)COLOR_NOTSELECTED)[0]),wpos+1);
+	    wsInsertChar(ws,us_reverse(((unsigned short *)COLOR_SEARCH_UNMARK)[1]),wpos+1);
+	    wsInsertChar(ws,us_reverse(((unsigned short *)COLOR_SEARCH_UNMARK)[0]),wpos+1);
 	    wsInsertChar(ws,0xE006,wpos+1);
 	    wsInsertChar(ws,us_reverse(((unsigned short *)COLOR_SEARCH_MARK)[1]),first_pos);
 	    wsInsertChar(ws,us_reverse(((unsigned short *)COLOR_SEARCH_MARK)[0]),first_pos);
@@ -562,11 +696,11 @@ void ConstructList(void)
 		}
 		if (curpos<2)
 		{
-		  if (total<5) REDRAW();
+		  if (total<count_page) REDRAW();
 		}
 		else
 		{
-		  if ((unsigned int)(total-(curpos-2))<5) REDRAW();
+		  if ((unsigned int)(total-(curpos-2))<count_page) REDRAW();
 		}
 		total++;
 	      }
@@ -639,6 +773,12 @@ void my_ed_redraw(void *data)
   old_ed_redraw(data);
   
   WSHDR *prws=AllocWS(256);
+  
+  //区号秀平时输出
+  if(e_ws)
+  {
+      ShowInputCodeShow((WSHDR*)e_ws);
+  }
 
   if (!cl) return;
 
@@ -646,9 +786,9 @@ void my_ed_redraw(void *data)
 
   if (e_ws->wsbody[0]<MAX_ESTR_LEN) //Its length? <MAX_ESTR_LEN 
   {
-    int y=ScreenH()-SoftkeyH()-(GetFontYSIZE(FONT_MEDIUM)+1)*5-5;
+    int y=ScreenH()-SoftkeyH()-(GetFontYSIZE(font_size)+1)*count_page-6;
 
-    DrawRoundedFrame(1,y,ScreenW()-2,ScreenH()-SoftkeyH()-2,0,0,0,COLOR_MENU_BRD,COLOR_MENU_BK);
+    DrawRoundedFrame(1,y,ScreenW()-2,ScreenH()-SoftkeyH()-2,0,0,0,color(COLOR_MENU_BRD),color(COLOR_MENU_BK));
 
     if (i<0) cp=curpos; else cp=2;
     while(i>0)
@@ -660,20 +800,21 @@ void my_ed_redraw(void *data)
     i=0;
     do
     {
-      int dy=i*(GetFontYSIZE(FONT_MEDIUM)+1)+y;
+      int dy=i*(GetFontYSIZE(font_size)+1)+y;
       if (!cl) break;
       if (i!=cp)
-      {
+      {   
 	wstrcpy(prws,cl->name);
 	if (e_ws) CompareStrT9(prws,(WSHDR *)e_ws,1);
-	DrawString(prws,3,dy+4,ScreenW()-4,dy+3+GetFontYSIZE(FONT_MEDIUM),FONT_MEDIUM,0x80,COLOR_NOTSELECTED,GetPaletteAdrByColorIndex(23));
+	DrawString(prws,3,dy+4,ScreenW()-4,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
+        dy+=font_size+cfg_item_gaps;
 	//DrawScrollString(cl->name,3,dy+4,ScreenW()-4,dy+3+GetFontYSIZE(FONT_MEDIUM),1,FONT_MEDIUM,0x80,COLOR_NOTSELECTED,GetPaletteAdrByColorIndex(23));
       }
       else
       {
-	int icons_size=Get_WS_width(cl->icons,FONT_MEDIUM_BOLD);
+	int icons_size=Get_WS_width(cl->icons,font_size);
 	{
-	  int i=Get_WS_width(cl->name,FONT_MEDIUM_BOLD);
+	  int i=Get_WS_width(cl->name,font_size);
 	  i-=(ScreenW()-7-icons_size);
 	  if (i<0)
 	  {
@@ -688,14 +829,19 @@ void my_ed_redraw(void *data)
 	    max_scroll_disp=i;
 	  }
 	}
-	DrawRoundedFrame(2,dy+2,ScreenW()-3,dy+3+GetFontYSIZE(FONT_MEDIUM_BOLD),0,0,0,COLOR_SELECTED_BRD,COLOR_SELECTED_BG);
-	DrawScrollString(cl->name,3,dy+4,ScreenW()-5-icons_size,dy+3+GetFontYSIZE(FONT_MEDIUM_BOLD),scroll_disp+1,FONT_MEDIUM_BOLD,0x80,COLOR_SELECTED,GetPaletteAdrByColorIndex(23));
-	DrawString(cl->icons,ScreenW()-4-icons_size,dy+4,ScreenW()-5,dy+3+GetFontYSIZE(FONT_MEDIUM_BOLD),FONT_MEDIUM_BOLD,0x80,COLOR_SELECTED,GetPaletteAdrByColorIndex(23));
+	DrawRoundedFrame(2,dy+3,ScreenW()-3,dy+cfg_item_gaps+GetFontYSIZE(font_size)+1,0,0,0,color(COLOR_SELECTED_BRD),color(COLOR_SELECTED_BG));
+	DrawString(cl->name,3,dy+4,ScreenW()-5-icons_size,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
+        //DrawScrollString(cl->name,3,dy+4,ScreenW()-5-icons_size,dy+cfg_item_gaps+GetFontYSIZE(font_size),scroll_disp+1,font_size,0x80,COLOR_SELECTED,GetPaletteAdrByColorIndex(23));
+	DrawString(cl->icons,ScreenW()-4-icons_size,dy+cfg_item_gaps,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
+        DrawScrollString(cl->num[iSelIdx],3,y-24,ScreenW()-5-icons_size,dy+cfg_item_gaps+GetFontYSIZE(font_size),scroll_disp+1,font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
+        wstrcpy(gwsTemp, cl->num[iSelIdx]);
+        ShowSelectedCodeShow(gwsTemp,y-22+font_size+cfg_item_gaps);
+        dy+=font_size+cfg_item_gaps;
       }
       cl=(CLIST *)cl->next;
       i++;
     }
-    while(i<5);
+    while(i<count_page);
   }
   FreeWS(prws);
 }
@@ -703,9 +849,9 @@ void my_ed_redraw(void *data)
 void ChangeRC(GUI *gui)
 {
 #ifdef ELKA
-  static const RECT rc={6,80,234,140};
+  static const RECT rc={6,36,234,140};
 #else
-  static const RECT rc={6,40,126,100};
+  static const RECT rc={6,18,126,100};
 #endif
   if (e_ws)
   {
@@ -737,9 +883,12 @@ const SOFTKEYSTAB menu_skt=
   menu_sk,0
 };
 
+
+//-------------------------------------
+//短信功能
+//-------------------------------------
 int is_sms_need=0;
 WSHDR *ews;
-
 
 void edsms_locret(void){}
 
@@ -852,8 +1001,6 @@ INPUTDIA_DESC edsms_desc=
 };
 
 
-
-
 void VoiceOrSMS(const char *num)
 {
 
@@ -872,6 +1019,7 @@ void VoiceOrSMS(const char *num)
     EDITCONTROL ec;
     PrepareEditControl(&ec);
     eq=AllocEQueue(ma,mfree_adr());
+    char szTemp[40+1];
 
     
      wstrcpy(ews,gwsName);
@@ -880,11 +1028,11 @@ void VoiceOrSMS(const char *num)
         wstrcat(ews,gwsTemp);
         wsAppendChar(gwsTemp,'\n');
         CutWSTR(gwsTemp, 0);
-     /*
-        strcpy(szTemp, gszSMS2Num);
-	GetProvAndCity(gwsTemp->wsbody, szTemp);
+     
+        strcpy(szTemp,num);
+	GetProvAndCity(gwsTemp->wsbody,szTemp);
         wsAppendChar(ews,'\n'); 
-        wstrcat(ews, gwsTemp);*/
+        wstrcat(ews, gwsTemp);
         
         wsAppendChar(ews,'\n'); 
         wsAppendChar(ews, 0x5B57);
@@ -902,6 +1050,9 @@ void VoiceOrSMS(const char *num)
     CreateInputTextDialog(&edsms_desc,&edsms_hdr,eq,1,(void *)num);
   }
 }
+
+
+
 
 typedef struct
 {
@@ -1182,7 +1333,7 @@ int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
     if (strcmp_nocase(successed_config_filename,(char *)msg->data0)==0)
     {
       ShowMSG(1,(int)"MegaDial config updated!");
-      InitConfig();
+      RereadSettings();
     }
   }
   #ifdef NEWSGOLD
@@ -1218,6 +1369,8 @@ void MyIDLECSM_onClose(CSM_RAM *data)
   FreeWS(ews);
   FreeWS(gwsName);
   FreeWS(gwsTemp);
+  if(iReadFile && !cs_adr)
+	mfree((void*)cs_adr);	
   seqkill(data,old_icsm_onClose,&ELF_BEGIN,SEQKILLER_ADR());
 }
 
@@ -1225,7 +1378,7 @@ int main(void)
 {
   gwsTemp=AllocWS(40);
   gwsName=AllocWS(40);
-  InitConfig();
+  RereadSettings();
   LockSched();
   CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
   memcpy(&icsmd,icsm->constr,sizeof(icsmd));

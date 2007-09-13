@@ -3275,6 +3275,9 @@
     </settings>
   </configuration>
   <file>
+    <name>$PROJ_DIR$\Codeshow.c</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\conf_loader.c</name>
   </file>
   <file>
@@ -3498,6 +3501,9 @@
         </data>
       </settings>
     </configuration>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\extern.h</name>
   </file>
   <file>
     <name>$PROJ_DIR$\func.asm</name>
