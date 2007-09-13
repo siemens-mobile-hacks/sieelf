@@ -434,8 +434,6 @@ MailClient/config_data.c -text
 MailClient/mailclient.h -text
 MailClient/rect_patcher.h -text
 MegaDial[!!-~]n/Codeshow.c -text
-MegaDial[!!-~]n/MegaDial.dep -text
-MegaDial[!!-~]n/MegaDial.ewd -text
 MegaDial[!!-~]n/MegaDial.ewp -text
 MegaDial[!!-~]n/MegaDial.eww -text
 MegaDial[!!-~]n/conf_loader.c -text
