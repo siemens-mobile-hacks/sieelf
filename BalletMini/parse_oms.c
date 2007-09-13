@@ -95,29 +95,29 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
     vd->oms_wanted=sizeof(OMS_HEADER_COMMON);
     vd->parse_state=OMS_HDR_COMMON;
   }
-  OMS_HEADER_COMMON *hdr=(OMS_HEADER_COMMON *)vd->oms;
   while(vd->oms_size>=vd->oms_wanted)
   {
     switch(vd->parse_state)
     {
     case OMS_HDR_COMMON:
       //Получен заголовок
-      vd->oms_pos=vd->oms_wanted;
+      i=_rshort(vd);
+      vd->page_sz=_rlong(vd);
       vd->oms_wanted+=sizeof(OMS_HEADER_V2);
       vd->parse_state=OMS_HDR;
       {
-	switch(hdr->magic)
+	switch(i)
 	{
-	case 0x330D:
+	case 0x0D33:
 	  vd->oms_wanted-=2;
 	  break;
-	case 0x3318:
+	case 0x1833:
 	  break;
-	case 0x310D:
+	case 0x0D31:
 	  vd->oms_wanted-=sizeof(OMS_HEADER_V2)-10; //10 - размер хедера GZIP
 	  vd->parse_state=OMS_GZIPHDR;
 	  break;
-	case 0x3218:
+	case 0x1832:
 	L_ZINIT:
 	  //Производим инициализацию ZLib
 	  zeromem(vd->zs=malloc(sizeof(z_stream)),sizeof(z_stream));
@@ -143,7 +143,7 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
 	  vd->oms_size=vd->oms_pos; //Возращаем размер на начало данных ZLib
 	  goto L_ZBEGIN;
 	default:
-	  sprintf(s,"Not supported type %X\n",hdr->magic);
+	  sprintf(s,"Not supported type %X\n",i);
 	  AddTextItem(vd,s,strlen(s));
 	  AddBrItem(vd);
 	  vd->parse_state=OMS_STOP;
@@ -179,6 +179,22 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
       switch(i=vd->oms[vd->oms_pos])
       {
       case '+':
+        vd->oms_pos++;
+	goto L_NOSTAGE2;
+      case 'v':
+	//???
+        vd->oms_pos++;
+	goto L_NOSTAGE2;
+      case '(':
+	//???
+        AddPictureItemHr(vd);
+//	AddTextItem(vd,"(",1);
+        vd->oms_pos++;
+	goto L_NOSTAGE2;
+      case ')':
+	//???
+        AddPictureItemHr(vd);
+//	AddTextItem(vd,")",1);
         vd->oms_pos++;
 	goto L_NOSTAGE2;
       case '$':
@@ -266,7 +282,13 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
 	}
 	vd->oms_wanted+=2;
 	break;
+      case 'k':
+	vd->oms_wanted+=3; //Code type and data length
+	break;	
       case 'L':
+	vd->oms_wanted+=2;
+	break;
+      case '^':
 	vd->oms_wanted+=2;
 	break;
       case 'P':
@@ -440,6 +462,12 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
 	vd->oms_wanted+=i;
 	vd->parse_state=OMS_TAGi_STAGE3;
 	goto L_STAGE3_WANTED;
+      case 'k':
+	vd->ih=_rbyte(vd); //Code type
+	i=(vd->iw=_rshort(vd));
+	vd->oms_wanted+=i;
+	vd->parse_state=OMS_TAGk_STAGE3;
+	goto L_STAGE3_WANTED;
       case 'L':
 	i=_rshort(vd);
 	vd->work_ref.tag='L';
@@ -447,6 +475,14 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
 	AddBeginRef(vd);
 	vd->oms_wanted+=i;
 	vd->parse_state=OMS_TAGL_STAGE3;
+	goto L_STAGE3_WANTED;
+      case '^':
+	i=_rshort(vd);
+	vd->work_ref.tag='^';
+        vd->ref_mode=1;
+	AddBeginRef(vd);
+	vd->oms_wanted+=i;
+	vd->parse_state=OMS_TAGx5E_STAGE3;
 	goto L_STAGE3_WANTED;
       case 'P':
 	i=_rshort(vd);
@@ -603,8 +639,8 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
       i=vd->ih;
       replacegstr(&vd->work_ref.value,vd->oms+vd->oms_pos,i);
       vd->oms_pos+=i;
-      vd->work_ref.group_id=_rbyte(vd); //group id
-      AddCheckBoxItem(vd);
+      vd->work_ref.group_id=i=_rbyte(vd); //group id (checked???)
+      AddCheckBoxItem(vd,i);
       AddEndRef(vd);
       vd->oms_wanted++;
       vd->parse_state=OMS_TAG_NAME;
@@ -621,8 +657,8 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
       i=vd->ih;
       replacegstr(&vd->work_ref.value,vd->oms+vd->oms_pos,i);
       vd->oms_pos+=i;
-      vd->work_ref.group_id=_rbyte(vd); //group id
-      AddRadioButton(vd);
+      vd->work_ref.group_id=i=_rbyte(vd); //group id (checked???)
+      AddRadioButton(vd,i);
       AddEndRef(vd);
       vd->oms_wanted++;
       vd->parse_state=OMS_TAG_NAME;
@@ -687,7 +723,25 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
       vd->oms_wanted++;
       vd->parse_state=OMS_TAG_NAME;
       break;
+    case OMS_TAGk_STAGE3:
+      i=vd->iw;
+      AddPictureItemHr(vd);
+      sprintf(s,vd->ih?"New AuthCode: ":"New AuthPrefix: ",vd->ih);
+      AddTextItem(vd,s,strlen(s));
+      AddTextItem(vd,vd->oms+vd->oms_pos,i);
+      AddPictureItemHr(vd);
+      vd->oms_pos=vd->oms_wanted;
+      vd->oms_wanted++;
+      vd->parse_state=OMS_TAG_NAME;
+      break;
     case OMS_TAGL_STAGE3:
+      i=vd->oms_wanted-vd->oms_pos;
+      replacegstr(&vd->work_ref.id,vd->oms+vd->oms_pos,i);
+      vd->oms_pos=vd->oms_wanted;
+      vd->oms_wanted++;
+      vd->parse_state=OMS_TAG_NAME;
+      break;
+    case OMS_TAGx5E_STAGE3:
       i=vd->oms_wanted-vd->oms_pos;
       replacegstr(&vd->work_ref.id,vd->oms+vd->oms_pos,i);
       vd->oms_pos=vd->oms_wanted;

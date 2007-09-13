@@ -10,7 +10,6 @@
 #define DP_IS_NOINDEX (-1)
 #define RAWTEXTCHUNK (16384)
 
-unsigned int wchar_hr=0xFFFF;
 unsigned int wchar_radio_on=0xFFFF;
 unsigned int wchar_radio_off=0xFFFF;
 
@@ -258,27 +257,27 @@ void AddPictureItemHr(VIEWDATA *vd)
   int wchar=0xE115;
   IMGHDR *img;
   OMS_DYNPNGLIST *dpl;
-  if (wchar_hr==0xFFFF)
+  if (!vd->wchar_hr)
   {
-    img=CreateDelimiter(ScreenW()-5,3,GetPaletteAdrByColorIndex(1));
+    img=CreateDelimiter(ScreenW()-1,3,GetPaletteAdrByColorIndex(1));
     if (img)
     {
       dpl=AddToDPngQueue(vd, img, DP_IS_NOINDEX);
-      wchar_hr=wchar=dpl->w_char;
+      vd->wchar_hr=wchar=dpl->w_char;
     }
   }
-  else wchar=wchar_hr;
+  else wchar=vd->wchar_hr;
   RawInsertChar(vd,wchar);
 }
 
-void AddRadioButton(VIEWDATA *vd)
+void AddRadioButton(VIEWDATA *vd, int checked)
 {
-  RawInsertChar(vd,CBOX_CHECKED);
+  RawInsertChar(vd,checked?RADIOB_CHECKED:RADIOB_UNCHECKED);
 }
 
-void AddCheckBoxItem(VIEWDATA *vd)
+void AddCheckBoxItem(VIEWDATA *vd, int checked)
 {
-  RawInsertChar(vd,CBOX_UNCHECKED);
+  RawInsertChar(vd,checked?CBOX_CHECKED:CBOX_UNCHECKED);
 }
 
 void AddInputItem(VIEWDATA *vd, const char *text, int len)

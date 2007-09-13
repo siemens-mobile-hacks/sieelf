@@ -30,7 +30,7 @@ int view_url_mode; //MODE_FILE, MODE_URL
 char *view_url;
 static char *goto_url;
 
-//static const char percent_t[]="%t";
+static const char percent_t[]="%t";
 
 WSHDR *ws_console;
 
@@ -57,7 +57,14 @@ static void StartGetFile(int dummy, char *fncache)
     if (f!=-1)
     {
       int fc=-1;
-      if (fncache) fc=fopen(fncache,A_ReadWrite+A_Create+A_Truncate+A_BIN,P_READ+P_WRITE,&err);
+      if (fncache)
+      {
+	fc=fopen(fncache,A_ReadWrite+A_Create+A_Truncate+A_BIN,P_READ+P_WRITE,&err);
+      }
+      else
+      {
+	UpPageStack(); 
+      }
       while((i=fread(f,buf,sizeof(buf),&err))>0)
       {
 	if (fc!=-1)
@@ -103,6 +110,8 @@ typedef struct
   GUI gui;
   VIEWDATA *vd;
   int cached;
+  WSHDR *ws1;
+  WSHDR *ws2;
 }VIEW_GUI;
 
 static void method0(VIEW_GUI *data)
@@ -145,14 +154,49 @@ static void method0(VIEW_GUI *data)
     DrawString(ws_console,0,0,scr_w,20,
 		 FONT_SMALL,TEXT_NOFORMAT
 		   ,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(0));
+    extern int connect_state;
     if (!STOPPED)
     {
-      WSHDR ws1loc, *ws1;
-      unsigned short num[128];
-      ws1=CreateLocalWS(&ws1loc,num,128);
-      wsprintf(ws1,"STOP!");
-      DrawString(ws1,(scr_w >> 1),scr_h-4-GetFontYSIZE(FONT_MEDIUM_BOLD),
-		 scr_w-4,scr_h-4,FONT_MEDIUM_BOLD,TEXT_ALIGNRIGHT|TEXT_OUTLINE,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(1));
+      int w1, h1;
+      if (connect_state)
+      {
+        switch(connect_state)
+        {
+        case 1:
+          wsprintf(data->ws1,percent_t,"Соединение...");
+          break;
+        case 2:
+          wsprintf(data->ws1,percent_t,"Обработка...");
+          break;
+        case 3:
+          wsprintf(data->ws1,percent_t,"Загрузка...");
+          break;
+        }
+      }
+      wsprintf(data->ws2,percent_t,"Стоп");
+      
+      h1=scr_h-GetFontYSIZE(FONT_MEDIUM_BOLD)-2;
+      w1=scr_w-Get_WS_width(data->ws2,FONT_MEDIUM_BOLD)-2;
+      DrawRectangle(0,h1,w1,scr_h,0,
+                    GetPaletteAdrByColorIndex(1),
+                    GetPaletteAdrByColorIndex(0));
+      DrawRectangle(w1+1,h1,scr_w,scr_h,0,
+                    GetPaletteAdrByColorIndex(1),
+                    GetPaletteAdrByColorIndex(0));
+      if ((view_url_mode==MODE_FILE && vd->oms_size<vd->page_sz) ||
+          (view_url_mode==MODE_URL && connect_state==3 && vd->oms_size<vd->page_sz))
+      {
+        DrawRectangle(1,h1+1,vd->oms_size*(w1-1)/vd->page_sz,scr_h-1,0,
+                      GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(2));
+        wsprintf(data->ws1,"%uB/%uB",vd->oms_size,vd->page_sz);
+      }
+      DrawString(data->ws1,0,h1+2,w1,scr_h,FONT_MEDIUM_BOLD,TEXT_ALIGNMIDDLE,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(23));   
+      DrawString(data->ws2,w1+1,h1+2,scr_w,scr_h,FONT_MEDIUM_BOLD,TEXT_ALIGNMIDDLE,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(23));      
+              
+      DrawString(ws_console,0,0,scr_w,20,
+		 FONT_SMALL,TEXT_NOFORMAT
+		   ,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(0));
+
     }
   }
 }
@@ -165,6 +209,8 @@ static void method1(VIEW_GUI *data,void *(*malloc_adr)(int))
   vd->pos_cur_ref=0xFFFFFFFF; //Еще вообще не найдена ссылка
   *((unsigned short *)(&vd->current_tag_d))=0xFFFF;
   data->vd=vd;
+  data->ws1=AllocWS(128);
+  data->ws2=AllocWS(128);
   data->gui.state=1;
   STOPPED=0;
   if ((vd->cached=data->cached))
@@ -188,6 +234,8 @@ static void method2(VIEW_GUI *data,void (*mfree_adr)(void *))
   SUBPROC((void*)StopINET);
   FreeViewData(data->vd);
   data->vd=NULL;
+  FreeWS(data->ws1);
+  FreeWS(data->ws2);
   data->gui.state=0;
   FreeViewUrl();
 }
@@ -249,14 +297,29 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
       rf=FindReference(vd,vd->pos_cur_ref);
       if (rf)
       {
-	if (rf->tag=='L')
+	switch(rf->tag)
 	{
+	case 'L':
 	  if (rf->id)
 	  {
 	    strcpy(goto_url=malloc(strlen(rf->id)+1),rf->id);
 	    return 0xFF;
 	  }
+	  break;
+	case 'r':
+	  ChangeRadioButtonState(vd,rf);
+	  break;
+	case 'c':
+	  ChangeCheckBoxState(vd,rf);
+	  break;
+	default:
+	  ShowMSG(1,(int)"This Reftype under construction!");
+	  break;
 	}
+      }
+      else
+      {
+	ShowMSG(1,(int)"RF empty!");
       }
       break;
     case UP_BUTTON:
@@ -313,6 +376,8 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
       }
       break;
     case LEFT_SOFT:
+      STOPPED=1;
+      CreateInputUrl();
       break;
     case RIGHT_SOFT:
       if (STOPPED)
@@ -455,6 +520,212 @@ static void GotoFile(void)
     GBS_SendMessage(MMI_CEPID,MSG_IPC,IPC_GOTO_FILE,sipc);
   }
   UnlockSched();
+}
+
+
+int char16to8(int c)
+{
+  if (c<0x400) return (c);
+  c-=0x400;
+  if (c<16)
+  {
+    if (c==1) c=0;
+    else if (c==4) c=2;
+    else if (c==6) c=10;
+    else return (c);
+  }
+  else if (c>79)
+  {
+    if (c==0x51) c=16;
+    else if (c==0x54) c=18;
+    else if (c==0x56) c=11;
+    else if (c==0x57) c=23;
+    else return (c);
+  }
+  else c+=8;
+  c+=168;
+  return (c);
+}
+
+
+SOFTKEY_DESC menu_sk[]=
+{
+  {0x0018,0x0000,(int)"Перейти"},
+  {0x0001,0x0000,(int)"Отмена"},
+  {0x003D,0x0000,(int)"+"}
+};
+
+
+
+SOFTKEYSTAB menu_skt=
+{
+  menu_sk,0
+};
+
+
+HEADER_DESC input_url_hdr={0,0,0,0,NULL,(int)"Адрес",LGP_NULL};
+
+void input_url_ghook(GUI *data, int cmd)
+{
+  static SOFTKEY_DESC sk={0x0FFF,0x0000,(int)"Перейти"};
+  if (cmd==0x0A)
+  {
+    DisableIDLETMR();
+  }
+  if (cmd==7)
+  {
+    SetSoftKey(data,&sk,SET_SOFT_KEY_N);
+  }
+}
+
+void input_url_locret(void){}
+
+int input_url_onkey(GUI *data, GUI_MSG *msg)
+{
+  EDITCONTROL ec;
+  WSHDR *ws;
+  char *s;
+  if (msg->keys==0xFFF)
+  {
+    ExtractEditControl(data,1,&ec);
+    ws = ec.pWS;
+    s = goto_url = (char *)malloc(ws->wsbody[0]+1);
+    for (int i=0; i<ws->wsbody[0]; i++) *s++=char16to8(ws->wsbody[i+1]);
+    *s = 0;
+    SUBPROC((void*)GotoLink);
+    
+  }
+  return (0);
+}
+
+INPUTDIA_DESC input_url_desc =
+{
+  1,
+  input_url_onkey,
+  input_url_ghook,
+  (void *)input_url_locret,
+  0,
+  &menu_skt,
+  {0,0,0,0},
+  FONT_SMALL,
+  100,
+  101,
+  0,
+  //  0x00000001 - Выровнять по правому краю
+  //  0x00000002 - Выровнять по центру
+  //  0x00000004 - Инверсия знакомест
+  //  0x00000008 - UnderLine
+  //  0x00000020 - Не переносить слова
+  //  0x00000200 - bold
+  0,
+  //  0x00000002 - ReadOnly
+  //  0x00000004 - Не двигается курсор
+  //  0x40000000 - Поменять местами софт-кнопки
+  0x40000000
+};
+
+const char wintranslation[128]=
+{
+  0x5F,0x5F,0x27,0x5F,0x22,0x3A,0xC5,0xD8,0x5F,0x25,0x5F,0x3C,0x5F,0x5F,0x5F,0x5F,
+  0x5F,0x27,0x27,0x22,0x22,0x07,0x2D,0x2D,0x5F,0x54,0x5F,0x3E,0x5F,0x5F,0x5F,0x5F,
+  0xFF,0xF6,0xF7,0x5F,0xFD,0x83,0xB3,0x15,0xF0,0x63,0xF2,0x3C,0xBF,0x2D,0x52,0xF4,
+  0xF8,0x2B,'I' ,'i' ,0xA3,0xE7,0x14,0xFA,0xF1,0xFC,0xF3,0x3E,0x5F,0x5F,0x5F,0xF5,
+  0x80,0x81,0x82,0x83,0x84,0x85,0x86,0x87,0x88,0x89,0x8A,0x8B,0x8C,0x8D,0x8E,0x8F,
+  0x90,0x91,0x92,0x93,0x94,0x95,0x96,0x97,0x98,0x99,0x9A,0x9B,0x9C,0x9D,0x9E,0x9F,
+  0xA0,0xA1,0xA2,0xA3,0xA4,0xA5,0xA6,0xA7,0xA8,0xA9,0xAA,0xAB,0xAC,0xAD,0xAE,0xAF,
+  0xE0,0xE1,0xE2,0xE3,0xE4,0xE5,0xE6,0xE7,0xE8,0xE9,0xEA,0xEB,0xEC,0xED,0xEE,0xEF
+};
+
+const char koi8translation[128]=
+{
+  0x5F,0x5F,0x27,0x5F,0x22,0x3A,0xC5,0xD8,0x5F,0x25,0x5F,0x3C,0x5F,0x5F,0x5F,0x5F,
+  0x5F,0x27,0x27,0x22,0x22,0x07,0x2D,0x2D,0x5F,0x54,0x5F,0x3E,0x5F,0x5F,0x5F,0x5F,
+  0xFF,0xF6,0xF7,0xF1,0xF3,0x5F,'i' ,0xF5,0xF0,0x63,0xF2,0x3C,0xBF,0xA3,0x52,0xF4,
+  0xF8,0x2B,0x5F,0xF0,0xF2,0xE7,'I' ,0xF4,0xF1,0xFC,0xF3,0x3E,0x5F,0x83,0x5F,0xF5,
+
+  0xEE,0xA0,0xA1,0xE6,0xA4,0xA5,0xE4,0xA3,0xE5,0xA8,0xA9,0xAA,0xAB,0xAC,0xAD,0xAE,
+  0xAF,0xEF,0xE0,0xE1,0xE2,0xE3,0xA6,0xA2,0xEC,0xEB,0xA7,0xE8,0xED,0xE9,0xE7,0xEA,
+  0x9E,0x80,0x81,0x96,0x84,0x85,0x94,0x83,0x95,0x88,0x89,0x8A,0x8B,0x8C,0x8D,0x8E,
+  0x8F,0x9F,0x90,0x91,0x92,0x93,0x86,0x82,0x9C,0x9B,0x87,0x98,0x9D,0x99,0x97,0x9A
+};
+
+const unsigned short dos2unicode[128]=
+{
+  0x0410,0x0411,0x0412,0x0413,0x0414,0x0415,0x0416,0x0417,
+  0x0418,0x0419,0x041A,0x041B,0x041C,0x041D,0x041E,0x041F,
+  0x0420,0x0421,0x0422,0x0423,0x0424,0x0425,0x0426,0x0427,
+  0x0428,0x0429,0x042A,0x042B,0x042C,0x042D,0x042E,0x042F,
+  0x0430,0x0431,0x0432,0x0433,0x0434,0x0435,0x0436,0x0437,
+  0x0438,0x0439,0x043A,0x043B,0x043C,0x043D,0x043E,0x043F,
+  0x002D,0x002D,0x002D,0x00A6,0x002B,0x00A6,0x00A6,0x00AC,
+  0x00AC,0x00A6,0x00A6,0x00AC,0x002D,0x002D,0x002D,0x00AC,
+  0x004C,0x002B,0x0054,0x002B,0x002D,0x002B,0x00A6,0x00A6,
+  0x004C,0x0433,0x00A6,0x0054,0x00A6,0x003D,0x002B,0x00A6,
+  0x00A6,0x0054,0x0054,0x004C,0x004C,0x002D,0x0433,0x002B,
+  0x002B,0x002D,0x002D,0x002D,0x002D,0x00A6,0x00A6,0x002D,
+  0x0440,0x0441,0x0442,0x0443,0x0444,0x0445,0x0446,0x0447,
+  0x0448,0x0449,0x044A,0x044B,0x044C,0x044D,0x044E,0x044F,
+  0x0401,0x0451,0x0404,0x0454,0x0407,0x0457,0x040E,0x045E,
+  0x00B0,0x2022,0x00B7,0x0076,0x2116,0x00A4,0x00A6,0x00A0
+};
+
+
+
+unsigned int char8to16(int c, int type)
+{
+  if (c>=128)
+  {
+    switch(type)
+    {
+    case 1:
+      //Win->Dos
+      c=wintranslation[c-128];
+      break;
+    case 2:
+      //Koi8->Dos
+      c=koi8translation[c-128];
+      break;
+    case 3:
+      break;
+      //Dos
+    }
+    if (c<128) return(c);
+    return(dos2unicode[c-128]);
+  }
+  return(c);
+}
+
+void ascii2ws(WSHDR *ws, const char *s)
+{
+  char c;
+  CutWSTR(ws,0);
+  while((c=*s++))
+  {
+    wsAppendChar(ws,char8to16(c,1));
+  }
+}
+
+void CreateInputUrl()
+{
+  void *ma=malloc_adr();
+  void *eq;
+  EDITCONTROL ec;
+  
+  
+  eq=AllocEQueue(ma,mfree_adr());    // Extension
+  WSHDR *ews=AllocWS(1024);
+
+  ascii2ws(ews,view_url);  
+
+  PrepareEditControl(&ec);
+  ConstructEditControl(&ec,ECT_NORMAL_TEXT,0x40,ews,1024);
+  AddEditControlToEditQend(eq,&ec,ma);   //2
+
+  FreeWS(ews);
+  patch_header(&input_url_hdr);
+  patch_input(&input_url_desc);
+  CreateInputTextDialog(&input_url_desc,&input_url_hdr,eq,1,0);
+
 }
 
 static int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
@@ -668,6 +939,7 @@ int LoadAuthCode(void)
   err=0;
   while((c=*s++)>=32)
   {
+    if (c=='.') break;
     if (f<63) AUTH_PREFIX[f++]=c;
   }
   if (c)
@@ -680,6 +952,7 @@ int LoadAuthCode(void)
     f=0;
     while((c=*s++)>32)
     {
+      if (c=='.') break;
       if (f<127) AUTH_CODE[f++]=c;
     }
     err=1;
