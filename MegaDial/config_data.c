@@ -5,14 +5,11 @@
 __root const CFG_HDR cfghdr0={CFG_STR_UTF8,"Address list",3,127};
 __root const char root_dir[128]="0:\\\x1F\xE7\xB3\xBB\xE7\xBB\x9F\\apo\\addr";
 
-__root const CFG_HDR cfghdr1 = {CFG_UINT,"Font",0,9};
-__root const int font_size=7;
+//__root const CFG_HDR cfghdr1 = {CFG_UINT,"Font",0,9};
+//__root const int font_size=7;
 
 __root const CFG_HDR cfghdr2 = {CFG_UINT,"Item gaps",0,6};
 __root const int cfg_item_gaps=3;
-
-__root const CFG_HDR cfghdr3 = {CFG_UINT,"Page count",0,8};
-__root const int count_page=6;
 
 __root const CFG_HDR cfghdr18={CFG_CHECKBOX,"Use vibra",0,0};
 __root const int ENA_VIBRA = 0;

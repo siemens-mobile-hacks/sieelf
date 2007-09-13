@@ -20,6 +20,8 @@ extern const char root_dir[128];
 #define TMR_SECOND 216
 #define SMS_MAX_LEN  760
 
+#define font_size 7
+
 #pragma inline
 void patch_header(HEADER_DESC* head)
 {
@@ -148,13 +150,12 @@ void InitIcons(void)
 //部分新增参数
 //-------------------------------------
 int cs_adr=0;
-int iSelIdx=0;
 int iReadFile=0;
+int count_page=7;
 extern const int cfg_cs_adr;
 extern const int cfg_cs_enable;
-extern const int font_size;
+//extern const int font_size;
 extern const int cfg_item_gaps;
-extern const int count_page;
 extern const int cfg_cs_font_color;
 extern int GetProvAndCity(unsigned short *pBSTR, char *pNoStr);
 #define color(x) (x<24)?GetPaletteAdrByColorIndex(x):(char *)(&(x))
@@ -765,6 +766,8 @@ void my_ed_redraw(void *data)
   //  WSHDR *ews=(WSHDR*)e_ws;
   int i=curpos-2;
   int cp;
+  int sum,len,j=0;
+  char pszNum[20];
   CLIST *cl=(CLIST *)cltop;
   old_ed_redraw(data);
   
@@ -782,7 +785,7 @@ void my_ed_redraw(void *data)
 
   if (e_ws->wsbody[0]<MAX_ESTR_LEN) //Its length? <MAX_ESTR_LEN 
   {
-    int y=ScreenH()-SoftkeyH()-(GetFontYSIZE(font_size)+1)*count_page-6;
+    int y=ScreenH()-SoftkeyH()-(GetFontYSIZE(font_size)+1)*count_page;
 
     DrawRoundedFrame(1,y,ScreenW()-2,ScreenH()-SoftkeyH()-2,0,0,0,color(COLOR_MENU_BRD),color(COLOR_MENU_BK));
 
@@ -812,7 +815,8 @@ void my_ed_redraw(void *data)
 	{
 	  int i=Get_WS_width(cl->name,font_size);
 	  i-=(ScreenW()-7-icons_size);
-	  if (i<0)
+	 
+          if (i<0)
 	  {
 	    DisableScroll();
 	  }
@@ -824,27 +828,45 @@ void my_ed_redraw(void *data)
 	    }
 	    max_scroll_disp=i;
 	  }
+          
 	}
 	DrawRoundedFrame(2,dy+3,ScreenW()-3,dy+cfg_item_gaps+GetFontYSIZE(font_size)+1,0,0,0,color(COLOR_SELECTED_BRD),color(COLOR_SELECTED_BG));
 	DrawString(cl->name,3,dy+4,ScreenW()-5-icons_size,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
         //DrawScrollString(cl->name,3,dy+4,ScreenW()-5-icons_size,dy+cfg_item_gaps+GetFontYSIZE(font_size),scroll_disp+1,font_size,0x80,COLOR_SELECTED,GetPaletteAdrByColorIndex(23));
 	DrawString(cl->icons,ScreenW()-4-icons_size,dy+cfg_item_gaps,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
-        DrawScrollString(cl->num[iSelIdx],3,y-24,ScreenW()-5-icons_size,dy+cfg_item_gaps+GetFontYSIZE(font_size),scroll_disp+1,font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
-/*          WSHDR *ws;
-       NUMLIST *nltop=user_pointer;
-      void *item=AllocMenuItem(data);
-     for(int d=0; d!=curitem && nltop; d++) nltop=nltop->next;
-  if (nltop)
-  {
-    ws=AllocMenuWS(data,40);
-*/
         
         //区号秀输出
-        wstrcpy(gwsTemp, cl->num[iSelIdx]);
-        ShowSelectedCodeShow(gwsTemp,y-22+font_size+cfg_item_gaps);
-        
+
+       for(j=0;j<4;j++)
+        {
+        if(sum==4)
+          break;
+        ws_2str(cl->num[j],pszNum,20);
+	len=strlen(pszNum);
+        if(len > 3)
+        {
+        DrawString(cl->num[j],3,y-25*(sum+1),ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
+        ShowSelectedCodeShow(cl->num[j],y-25*(sum+1)+font_size+cfg_item_gaps);
+        sum++;
+        }
+        }
+ 
+
         dy+=font_size+cfg_item_gaps;
       }
+      switch(sum)
+                      {
+
+                      case 1:
+                        count_page=7;    break;
+                      case 2:
+                        count_page=5;    break;
+                      case 3:
+                        count_page=3;    break;
+                      default:
+                        break;
+                      }
+
       cl=(CLIST *)cl->next;
       i++;
     }
@@ -967,6 +989,7 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
     {
       ExtractEditControl(data,2,&ec);
       WSHDR *sw=AllocWS(ec.pWS->wsbody[0]);
+      
       wstrcpy(sw,ec.pWS);
       SendSMS(sw,snum,MMI_CEPID,MSG_SMS_RX-1,6);
       return(1);
