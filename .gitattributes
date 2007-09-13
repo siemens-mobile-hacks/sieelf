@@ -453,11 +453,13 @@ MegaDial/config_data.c -text
 MegaDial/func.asm -text
 MegaDial/main.c -text
 MegaDial/test.xcl -text
+MegaDial2/Codeshow.c -text
 MegaDial2/MegaDial.ewp -text
 MegaDial2/MegaDial.eww -text
 MegaDial2/conf_loader.c -text
 MegaDial2/conf_loader.h -text
 MegaDial2/config_data.c -text
+MegaDial2/extern.h -text
 MegaDial2/func.asm -text
 MegaDial2/main.c -text
 MegaDial2/test.xcl -text
