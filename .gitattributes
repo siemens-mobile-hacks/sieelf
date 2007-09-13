@@ -445,14 +445,6 @@ MegaDial[!!-~]n/extern.h -text
 MegaDial[!!-~]n/func.asm -text
 MegaDial[!!-~]n/main.c -text
 MegaDial[!!-~]n/test.xcl -text
-MegaDial/MegaDial.ewp -text
-MegaDial/MegaDial.eww -text
-MegaDial/conf_loader.c -text
-MegaDial/conf_loader.h -text
-MegaDial/config_data.c -text
-MegaDial/func.asm -text
-MegaDial/main.c -text
-MegaDial/test.xcl -text
 MegaDial2/Codeshow.c -text
 MegaDial2/MegaDial.ewp -text
 MegaDial2/MegaDial.eww -text
