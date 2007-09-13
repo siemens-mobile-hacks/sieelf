@@ -23,22 +23,22 @@ __root const unsigned int vibraDuration=50;
 __root const CFG_HDR cfghdr_m9={CFG_LEVEL,"Color setting",1,0};
 
 __root const CFG_HDR cfghdr10={CFG_COLOR,"Color Menu background",0,99};
-__root const int COLOR_MENU_BK=23;
+__root const char COLOR_MENU_BK[4]={0xFF,0x0,0x0,0x0};
 
 __root const CFG_HDR cfghdr11={CFG_COLOR,"Color Menu border",0,99};
-__root const int COLOR_MENU_BRD=1;
+__root const char COLOR_MENU_BRD[4]={0xFF,0x0,0x0,0x64};
 
 __root const CFG_HDR cfghdr12={CFG_COLOR,"Color Not selected",0,99};
-__root const int COLOR_NOTSELECTED=0;
+__root const char COLOR_NOTSELECTED[4]={0xFF,0x0,0x0,0x64};
 
 __root const CFG_HDR cfghdr13={CFG_COLOR,"Color Selected",0,99};
-__root const int COLOR_SELECTED=1;
+__root const char COLOR_SELECTED[4]={0xFF,0x0,0x0,0x64};
 
 __root const CFG_HDR cfghdr14={CFG_COLOR,"Color Selected background",0,99};
-__root const int COLOR_SELECTED_BG=7;
+__root const char COLOR_SELECTED_BG[4]={0xFF,0x0,0x0,0x64};
 
 __root const CFG_HDR cfghdr15={CFG_COLOR,"Color Selected border",0,99};
-__root const int COLOR_SELECTED_BRD=23;
+__root const char COLOR_SELECTED_BRD[4]={0xFF,0x0,0x0,0x0};
 
 __root const CFG_HDR cfghdr16={CFG_COLOR,"Color Search mark",0,99};
 __root const char COLOR_SEARCH_MARK[4]={0xFF,0x0,0x0,0x64};
@@ -55,7 +55,7 @@ __root const int cfg_cs_enable=1;
 __root const CFG_CBOX_ITEM cfgcbox38[2] = {"No","Yes"};
 
 __root const CFG_HDR cfghdr31 = {CFG_COLOR,"CodeShow color",0,24};
-__root const int cfg_cs_font_color=0;
+__root const char cfg_cs_font_color[4]={0xFF,0xFF,0xFF,0x64};
 
 __root const CFG_HDR cfghdr33 = {CFG_UINT,"CodeShow address",0,0xFFFFFFFF};
 __root const int cfg_cs_adr=0xA0CC0000;

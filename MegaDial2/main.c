@@ -7,12 +7,12 @@ GBSTMR tmr_scroll;
 extern const int ENA_VIBRA;
 extern const unsigned int vibraPower;
 extern const unsigned int vibraDuration;
-extern const int COLOR_MENU_BK;
-extern const int COLOR_MENU_BRD;
-extern const int COLOR_NOTSELECTED;
-extern const int COLOR_SELECTED;
-extern const int COLOR_SELECTED_BG;
-extern const int COLOR_SELECTED_BRD;
+extern const char COLOR_MENU_BK[4];
+extern const char COLOR_MENU_BRD[4];
+extern const char COLOR_NOTSELECTED[4];
+extern const char COLOR_SELECTED[4];
+extern const char COLOR_SELECTED_BG[4];
+extern const char COLOR_SELECTED_BRD[4];
 extern const char COLOR_SEARCH_MARK[4];
 extern const char COLOR_SEARCH_UNMARK[4];
 extern const char root_dir[128];
@@ -156,9 +156,9 @@ extern const int cfg_cs_adr;
 extern const int cfg_cs_enable;
 //extern const int font_size;
 extern const int cfg_item_gaps;
-extern const int cfg_cs_font_color;
+extern const char cfg_cs_font_color[4];
 extern int GetProvAndCity(unsigned short *pBSTR, char *pNoStr);
-#define color(x) (x<24)?GetPaletteAdrByColorIndex(x):(char *)(&(x))
+//#define color(x) (x<24)?GetPaletteAdrByColorIndex(x):(char *)(&(x))
 
 //-------------------------------------
 //读取设置
@@ -240,7 +240,7 @@ void ShowInputCodeShow(WSHDR* pwsNum)
 						60,
 						font_size,
 						4,
-						color(cfg_cs_font_color),
+						cfg_cs_font_color,
 						GetPaletteAdrByColorIndex(23));
 				}
 //DrawString(prws,3,dy+4,ScreenW()-4,dy+3+GetFontYSIZE(font_size),font_size,0x80,COLOR_NOTSELECTED,GetPaletteAdrByColorIndex(23));
@@ -266,7 +266,7 @@ void ShowSelectedCodeShow(WSHDR* pwsNum,int y1)
 		y1+GetFontYSIZE(font_size),
 		font_size,
 		4,
-                color(cfg_cs_font_color),
+                cfg_cs_font_color,
                 GetPaletteAdrByColorIndex(23));
 sub_end:
 	FreeWS(pwsCodeshow);
@@ -787,7 +787,7 @@ void my_ed_redraw(void *data)
   {
     int y=ScreenH()-SoftkeyH()-(GetFontYSIZE(font_size)+1)*count_page;
 
-    DrawRoundedFrame(1,y,ScreenW()-2,ScreenH()-SoftkeyH()-2,0,0,0,color(COLOR_MENU_BRD),color(COLOR_MENU_BK));
+    DrawRoundedFrame(1,y,ScreenW()-2,ScreenH()-SoftkeyH()-2,0,0,0,COLOR_MENU_BRD,COLOR_MENU_BK);
 
     if (i<0) cp=curpos; else cp=2;
     while(i>0)
@@ -805,7 +805,7 @@ void my_ed_redraw(void *data)
       {   
 	wstrcpy(prws,cl->name);
 	if (e_ws) CompareStrT9(prws,(WSHDR *)e_ws,1);
-	DrawString(prws,3,dy+4,ScreenW()-4,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
+	DrawString(prws,3,dy+4,ScreenW()-4,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,COLOR_NOTSELECTED,GetPaletteAdrByColorIndex(23));
         dy+=font_size+cfg_item_gaps;
 	//DrawScrollString(cl->name,3,dy+4,ScreenW()-4,dy+3+GetFontYSIZE(FONT_MEDIUM),1,FONT_MEDIUM,0x80,COLOR_NOTSELECTED,GetPaletteAdrByColorIndex(23));
       }
@@ -830,10 +830,10 @@ void my_ed_redraw(void *data)
 	  }
           
 	}
-	DrawRoundedFrame(2,dy+3,ScreenW()-3,dy+cfg_item_gaps+GetFontYSIZE(font_size)+1,0,0,0,color(COLOR_SELECTED_BRD),color(COLOR_SELECTED_BG));
-	DrawString(cl->name,3,dy+4,ScreenW()-5-icons_size,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
+	DrawRoundedFrame(2,dy+3,ScreenW()-3,dy+cfg_item_gaps+GetFontYSIZE(font_size)+1,0,0,0,COLOR_SELECTED_BRD,COLOR_SELECTED_BG);
+	DrawString(cl->name,3,dy+4,ScreenW()-5-icons_size,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,COLOR_SELECTED,GetPaletteAdrByColorIndex(23));
         //DrawScrollString(cl->name,3,dy+4,ScreenW()-5-icons_size,dy+cfg_item_gaps+GetFontYSIZE(font_size),scroll_disp+1,font_size,0x80,COLOR_SELECTED,GetPaletteAdrByColorIndex(23));
-	DrawString(cl->icons,ScreenW()-4-icons_size,dy+cfg_item_gaps,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
+	DrawString(cl->icons,ScreenW()-4-icons_size,dy+cfg_item_gaps,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,COLOR_SELECTED,GetPaletteAdrByColorIndex(23));
         
         //区号秀输出
 
@@ -845,7 +845,7 @@ void my_ed_redraw(void *data)
 	len=strlen(pszNum);
         if(len > 3)
         {
-        DrawString(cl->num[j],3,y-25*(sum+1),ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
+        DrawString(cl->num[j],3,y-25*(sum+1),ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,COLOR_NOTSELECTED,GetPaletteAdrByColorIndex(23));
         ShowSelectedCodeShow(cl->num[j],y-25*(sum+1)+font_size+cfg_item_gaps);
         sum++;
         }
