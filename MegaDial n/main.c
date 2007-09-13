@@ -303,6 +303,7 @@ INPUTDIA_DESC sms_ed_desc=
 
 int create_sms_ed(void)
 {
+
 	void *ma=malloc_adr();
 	void *eq;
 	EDITCONTROL ec;
@@ -320,10 +321,13 @@ int create_sms_ed(void)
         wstrcat(gwsBuf,gwsTemp);
         wsAppendChar(gwsTemp,'\n');
         CutWSTR(gwsTemp, 0);
+
         strcpy(szTemp, gszSMS2Num);
 	GetProvAndCity(gwsTemp->wsbody, szTemp);
         wsAppendChar(gwsBuf,'\n');
 	wstrcat(gwsBuf, gwsTemp);
+	
+
         wsAppendChar(gwsBuf,'\n');
         wsAppendChar(gwsBuf, 0x5B57);
         wsAppendChar(gwsBuf, 0x6570);
@@ -1044,6 +1048,7 @@ void my_ed_redraw(void *data)
 		do
 		{
 		if (!cl)
+		
 
 		 	{//no more cl,then we draw a separator
 				if(list_cnt < cfg_count_page) break;
@@ -1730,7 +1735,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)
                   }
                   else
                   {
-                    MakeVoiceCall(dstr[def_item],0x10,0x20C0);
+                    MakeVoiceCall(dstr[	],0x10,0x20C0);
                     return(1); //Закрыт?на?    
                   }
                 }

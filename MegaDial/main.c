@@ -839,7 +839,7 @@ void my_ed_redraw(void *data)
 
        for(j=0;j<4;j++)
         {
-        if(sum==4)
+        if(sum==3)
           break;
         ws_2str(cl->num[j],pszNum,20);
 	len=strlen(pszNum);
