@@ -225,7 +225,7 @@
 0330: 0xA8EB5918   ;  CC: RamMissedCalls
 ;334:              ;  CD: RamMissedSMS
 ;338:              ;  CE: RamDateTime
-;33C:              ;  CF: RamAlarm
+033C: 0xA8F2B894   ;  CF: RamAlarm
 
 0340: 0xA8E2723C   ;  D0: RamAccPoint
 0344: 0xA8EAAC5C   ;  D1: RamScreensaver
@@ -597,8 +597,12 @@
 08AC: 0xA065A3ED   ; 22B:  CreateRadioButtonList(RadioButtonListDesc *, char num_of_radiobuttons, 0, 0, char prev_setting, void HandlerFunc(int), char flag)
 08B0: 0xA0659B11   ; 22C:  pdcache_getval(char *return, int maxlen_of_return_str, char cachetype,0, *pd_entry_identifier)                                   
 08B4: 0xA0659CFB   ; 22D:  pdcache_setval(char *new_value, char cachetype, 0, char *pd_entry_identifier)                                                    
-08B8: 0xA06B22A8   ; 22E:  OpenExplorer(ExplOpenDesc *)                                                                                                     
+08B8: 0xA06B22A8   ; 22E:  OpenExplorer(ExplOpenDesc *)
+08BC: 0xA8DA8268   ; 22F:   TDateTimeSettings *RamDateTimeSettings
+
+08C0: 0xA08F4795   ; 230:   int GetTimeZoneShift(int param1, int param2, int timeZone)
+08C4: 0xA8DA8210   ; 231:   TAppointment *RamAppointment               
 #pragma disable old_equal_ff
-+0
++0       
 ;********************************************************************************
 
