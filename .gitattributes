@@ -707,6 +707,14 @@ PicPusk/config_data.c -text
 PicPusk/func.asm -text
 PicPusk/main.c -text
 PicPusk/test.xcl -text
+SerialLib/Serial.ewp -text
+SerialLib/SerialLib.eww -text
+SerialLib/SerialTest.ewp -text
+SerialLib/func.asm -text
+SerialLib/main.c -text
+SerialLib/serial.asm -text
+SerialLib/serial.h -text
+SerialLib/test.xcl -text
 SieJC/MUC_Enter_UI.c -text
 SieJC/MUC_Enter_UI.h -text
 SieJC/SieJC.ewp -text
