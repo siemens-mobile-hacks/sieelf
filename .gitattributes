@@ -76,6 +76,14 @@ CfgEdit/func.asm -text
 CfgEdit/main.c -text
 CfgEdit/test.xcl -text
 CfgEdit/visual.c -text
+DialExt/DialExt.ewp -text
+DialExt/DialExtDial.eww -text
+DialExt/conf_loader.c -text
+DialExt/conf_loader.h -text
+DialExt/config.c -text
+DialExt/func.asm -text
+DialExt/main.c -text
+DialExt/test.xcl -text
 Dictionary/dictionary.ewp -text
 Dictionary/dictionary.eww -text
 Dictionary/func.asm -text
