@@ -7,12 +7,13 @@ GBSTMR tmr_scroll;
 extern const int ENA_VIBRA;
 extern const unsigned int vibraPower;
 extern const unsigned int vibraDuration;
-extern const char COLOR_MENU_BK[4];
-extern const char COLOR_MENU_BRD[4];
-extern const char COLOR_NOTSELECTED[4];
-extern const char COLOR_SELECTED[4];
-extern const char COLOR_SELECTED_BG[4];
-extern const char COLOR_SELECTED_BRD[4];
+extern const int COLOR_MENU_BK;
+extern const int COLOR_MENU_BRD;
+extern const int COLOR_NOTSELECTED;
+extern const int COLOR_SELECTED;
+extern const int COLOR_NUMBER;
+extern const int COLOR_SELECTED_BG;
+extern const int COLOR_SELECTED_BRD;
 extern const char COLOR_SEARCH_MARK[4];
 extern const char COLOR_SEARCH_UNMARK[4];
 extern const char root_dir[128];
@@ -154,11 +155,13 @@ int iReadFile=0;
 int count_page=7;
 extern const int cfg_cs_adr;
 extern const int cfg_cs_enable;
+extern const int cfg_cs_part;
 //extern const int font_size;
+extern const int disable_when_calling;
 extern const int cfg_item_gaps;
-extern const char cfg_cs_font_color[4];
+extern const int cfg_cs_font_color;
 extern int GetProvAndCity(unsigned short *pBSTR, char *pNoStr);
-//#define color(x) (x<24)?GetPaletteAdrByColorIndex(x):(char *)(&(x))
+#define color(x) (x<24)?GetPaletteAdrByColorIndex(x):(char *)(&(x))
 
 //-------------------------------------
 //读取设置
@@ -240,7 +243,7 @@ void ShowInputCodeShow(WSHDR* pwsNum)
 						60,
 						font_size,
 						4,
-						cfg_cs_font_color,
+						color(cfg_cs_font_color),
 						GetPaletteAdrByColorIndex(23));
 				}
 //DrawString(prws,3,dy+4,ScreenW()-4,dy+3+GetFontYSIZE(font_size),font_size,0x80,COLOR_NOTSELECTED,GetPaletteAdrByColorIndex(23));
@@ -255,7 +258,7 @@ void ShowSelectedCodeShow(WSHDR* pwsNum,int y1)
 	pwsCodeshow=AllocWS(20);
 	char pszNum[20];
 
-	if(!cfg_cs_enable) goto sub_end;
+	if((!cfg_cs_enable)||(cfg_cs_part)) goto sub_end;
 	ws_2str(pwsNum,pszNum,20);
 
 	GetProvAndCity(pwsCodeshow->wsbody,pszNum);
@@ -266,7 +269,7 @@ void ShowSelectedCodeShow(WSHDR* pwsNum,int y1)
 		y1+GetFontYSIZE(font_size),
 		font_size,
 		4,
-                cfg_cs_font_color,
+                color(cfg_cs_font_color),
                 GetPaletteAdrByColorIndex(23));
 sub_end:
 	FreeWS(pwsCodeshow);
@@ -765,7 +768,7 @@ void my_ed_redraw(void *data)
 {
   //  WSHDR *ews=(WSHDR*)e_ws;
   int i=curpos-2;
-  int cp;
+  int cp,h;
   int sum,len,j=0;
   char pszNum[20];
   CLIST *cl=(CLIST *)cltop;
@@ -787,7 +790,7 @@ void my_ed_redraw(void *data)
   {
     int y=ScreenH()-SoftkeyH()-(GetFontYSIZE(font_size)+1)*count_page;
 
-    DrawRoundedFrame(1,y,ScreenW()-2,ScreenH()-SoftkeyH()-2,0,0,0,COLOR_MENU_BRD,COLOR_MENU_BK);
+    DrawRoundedFrame(1,y,ScreenW()-2,ScreenH()-SoftkeyH()-2,0,0,0,color(COLOR_MENU_BRD),color(COLOR_MENU_BK));
 
     if (i<0) cp=curpos; else cp=2;
     while(i>0)
@@ -805,7 +808,7 @@ void my_ed_redraw(void *data)
       {   
 	wstrcpy(prws,cl->name);
 	if (e_ws) CompareStrT9(prws,(WSHDR *)e_ws,1);
-	DrawString(prws,3,dy+4,ScreenW()-4,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,COLOR_NOTSELECTED,GetPaletteAdrByColorIndex(23));
+	DrawString(prws,3,dy+4,ScreenW()-4,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
         dy+=font_size+cfg_item_gaps;
 	//DrawScrollString(cl->name,3,dy+4,ScreenW()-4,dy+3+GetFontYSIZE(FONT_MEDIUM),1,FONT_MEDIUM,0x80,COLOR_NOTSELECTED,GetPaletteAdrByColorIndex(23));
       }
@@ -830,42 +833,57 @@ void my_ed_redraw(void *data)
 	  }
           
 	}
-	DrawRoundedFrame(2,dy+3,ScreenW()-3,dy+cfg_item_gaps+GetFontYSIZE(font_size)+1,0,0,0,COLOR_SELECTED_BRD,COLOR_SELECTED_BG);
-	DrawString(cl->name,3,dy+4,ScreenW()-5-icons_size,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,COLOR_SELECTED,GetPaletteAdrByColorIndex(23));
+	DrawRoundedFrame(2,dy+3,ScreenW()-3,dy+cfg_item_gaps+GetFontYSIZE(font_size)+1,0,0,0,color(COLOR_SELECTED_BRD),color(COLOR_SELECTED_BG));
+	DrawString(cl->name,3,dy+4,ScreenW()-5-icons_size,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
         //DrawScrollString(cl->name,3,dy+4,ScreenW()-5-icons_size,dy+cfg_item_gaps+GetFontYSIZE(font_size),scroll_disp+1,font_size,0x80,COLOR_SELECTED,GetPaletteAdrByColorIndex(23));
-	DrawString(cl->icons,ScreenW()-4-icons_size,dy+cfg_item_gaps,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,COLOR_SELECTED,GetPaletteAdrByColorIndex(23));
+	DrawString(cl->icons,ScreenW()-4-icons_size,dy+cfg_item_gaps,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
         
-        //区号秀输出
+        
+        //区号秀和号码输出
 
-       for(j=0;j<4;j++)
+       for(j=0;j<=4;j++)
         {
-        if(sum==3)
+         if(cfg_cs_enable &&(!cfg_cs_part))
+         {         
+          h=25;
+          if(sum==3)
           break;
+         }
+         else h=12;
         ws_2str(cl->num[j],pszNum,20);
 	len=strlen(pszNum);
         if(len > 3)
         {
-        DrawString(cl->num[j],3,y-25*(sum+1),ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,COLOR_NOTSELECTED,GetPaletteAdrByColorIndex(23));
-        ShowSelectedCodeShow(cl->num[j],y-25*(sum+1)+font_size+cfg_item_gaps);
+        DrawString(cl->num[j],3,y-h*(sum+1),ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
+        ShowSelectedCodeShow(cl->num[j],y-h*(sum+1)+font_size+cfg_item_gaps);
         sum++;
         }
         }
- 
 
-        dy+=font_size+cfg_item_gaps;
-      }
-      switch(sum)
+        switch(sum)
                       {
 
-                      case 1:
-                        count_page=7;    break;
+                      case 1:        
+                        if(cfg_cs_enable &&(!cfg_cs_part)) count_page=7;
+                        else count_page=8;    break;
                       case 2:
-                        count_page=5;    break;
+                        if(cfg_cs_enable &&(!cfg_cs_part)) count_page=5;
+                        else count_page=7;    break;
                       case 3:
-                        count_page=3;    break;
+                        if(cfg_cs_enable &&(!cfg_cs_part)) count_page=3;
+                        else count_page=6;    break;
+                      case 4:
+                        count_page=5;    break;
+                      case 5:
+                        count_page=4;    break;
                       default:
                         break;
                       }
+
+
+        dy+=font_size+cfg_item_gaps;
+      }
+
 
       cl=(CLIST *)cl->next;
       i++;
@@ -968,18 +986,35 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
 {
   EDITCONTROL ec;
   const char *snum=EDIT_GetUserPointer(data);
-  if (msg->gbsmsg->msg==KEY_DOWN)
-  {
+ if (msg->gbsmsg->msg==KEY_DOWN)
+    {
     if (msg->gbsmsg->submess==GREEN_BUTTON)
     {
       ExtractEditControl(data,2,&ec);
       WSHDR *sw=AllocWS(ec.pWS->wsbody[0]);
-      
+      char szNo[40+6];
       wstrcpy(sw,ec.pWS);
-      SendSMS(sw,snum,MMI_CEPID,MSG_SMS_RX-1,6);
+      
+      if(snum[0] == '+' || snum[0] == '1')
+        strcpy(szNo, snum);
+      else
+        sprintf(szNo, "106%s", snum);
+      
+      SendSMS(sw, szNo, MMI_CEPID, MSG_SMS_RX-1, 6);
       return(1);
     }
+    else 
+    {
+        #ifdef NEWSGOLD
+    if(msg->gbsmsg->submess==LEFT_SOFT)
+#else
+    if(msg->gbsmsg->submess==RIGHT_SOFT)
+#endif
+    {
+      return(-1);
+    }
   }
+    }
   //-1 - do redraw
   return(0); //Do standart keys
   //1: close
@@ -1291,6 +1326,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 
 void my_ed_ghook(GUI *gui, int cmd)
 {
+  int bcalling;
   static void *methods[16];
   void **m=GetDataOfItemByID(gui,4);
   if ((hook_state==1)/*&&(cmd==7)*/)
@@ -1314,6 +1350,12 @@ void my_ed_ghook(GUI *gui, int cmd)
     EDITCONTROL ec;
     ExtractEditControl(gui,1,&ec);
     //New Line Search 
+    		if(disable_when_calling)
+		{//disable when calling
+			bcalling = IsCalling();
+			if(bcalling)
+				return;
+		}
     if ((e_ws=ec.pWS)->wsbody[0]<MAX_ESTR_LEN) //Its length? <MAX_ESTR_LEN 
     {
       if (hook_state==3)
