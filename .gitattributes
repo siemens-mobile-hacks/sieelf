@@ -250,6 +250,7 @@ IdleLinks/IdleLinks/tc.png -text
 IdleLinks/conf_loader.c -text
 IdleLinks/conf_loader.h -text
 IdleLinks/config_data.c -text
+IdleLinks/config_data_chinese.c -text
 IdleLinks/func.asm -text
 IdleLinks/main.c -text
 IdleLinks/test.xcl -text
