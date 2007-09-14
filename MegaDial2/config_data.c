@@ -10,8 +10,15 @@ __root const char root_dir[128]="0:\\\x1F\xE7\xB3\xBB\xE7\xBB\x9F\\apo\\addr";
 __root const CFG_HDR cfghdr50 = {CFG_CHECKBOX,"Disable when calling",0,0};
 __root const int disable_when_calling=1;
 
+__root const CFG_HDR cfghdr52 = {CFG_CHECKBOX,"Show number",0,0};
+__root const int show_number=1;
+
+__root const CFG_HDR cfghdr53 = {CFG_CHECKBOX,"Show more number",0,0};
+__root const int show_more_number=1;
+
 __root const CFG_HDR cfghdr2 = {CFG_UINT,"Item gaps",0,6};
 __root const int cfg_item_gaps=3;
+
 
 
 __root const CFG_HDR cfghdr_m7={CFG_LEVEL,"Vibra sitting",1,0};

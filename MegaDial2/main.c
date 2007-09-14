@@ -158,6 +158,8 @@ extern const int cfg_cs_enable;
 extern const int cfg_cs_part;
 //extern const int font_size;
 extern const int disable_when_calling;
+extern const int show_more_number;
+extern const int show_number;
 extern const int cfg_item_gaps;
 extern const int cfg_cs_font_color;
 extern int GetProvAndCity(unsigned short *pBSTR, char *pNoStr);
@@ -840,29 +842,33 @@ void my_ed_redraw(void *data)
         
         
         //ÇøºÅÐãºÍºÅÂëÊä³ö
-
-       for(j=0;j<=4;j++)
-        {
-         if(cfg_cs_enable &&(!cfg_cs_part))
-         {         
-          h=25;
-          if(sum==3)
-          break;
-         }
-         else h=12;
-        ws_2str(cl->num[j],pszNum,20);
-	len=strlen(pszNum);
-        if(len > 3)
-        {
-        DrawString(cl->num[j],3,y-h*(sum+1),ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
-        ShowSelectedCodeShow(cl->num[j],y-h*(sum+1)+font_size+cfg_item_gaps);
-        sum++;
-        }
-        }
-
-        switch(sum)
+        
+        if(show_number)
+          {
+               for(j=0;j<=4;j++)
+                  {
+                  if(cfg_cs_enable &&(!cfg_cs_part))
+                     {         
+                      h=25;
+                      if(sum==3) break;
+                     }
+                  else h=12;              
+                  ws_2str(cl->num[j],pszNum,20);
+	          len=strlen(pszNum);
+                  if(len > 3)
+                     {
+                      DrawString(cl->num[j],3,y-h*(sum+1),ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
+                      ShowSelectedCodeShow(cl->num[j],y-h*(sum+1)+font_size+cfg_item_gaps);
+                      sum++;
+                     }
+                  if(!show_more_number) 
+                  {
+                    if(sum==1); break; 
+                  }
+            
+                  }
+               switch(sum)
                       {
-
                       case 1:        
                         if(cfg_cs_enable &&(!cfg_cs_part)) count_page=7;
                         else count_page=8;    break;
@@ -877,10 +883,11 @@ void my_ed_redraw(void *data)
                       case 5:
                         count_page=4;    break;
                       default:
-                        break;
-                      }
-
-
+                        break;                      
+                       }
+           }
+           else 
+             count_page=9;
         dy+=font_size+cfg_item_gaps;
       }
 
