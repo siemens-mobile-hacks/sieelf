@@ -90,7 +90,6 @@ DiskMonitor/div.r79 -text
 DiskMonitor/func.asm -text
 DiskMonitor/main.c -text
 DiskMonitor/test.xcl -text
-ELFLoader_lg8/ELFLoader.dep -text
 ELFLoader_lg8/ELFLoader.ewp -text
 ELFLoader_lg8/ESI.asm -text
 ELFLoader_lg8/EXT2.asm -text
