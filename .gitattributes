@@ -293,6 +293,7 @@ LaunchElf/Launch_elf.xcl -text
 LaunchElf/additional.c -text
 LaunchElf/start_elf.bcfg -text
 MC/Bookmarks.c -text
+MC/Cfg/mcfileico_s6c.cfg -text
 MC/ColorMap.c -text
 MC/FileOp.c -text
 MC/Files/classic.mccs -text
