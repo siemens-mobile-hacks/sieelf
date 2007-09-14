@@ -6,10 +6,10 @@
 #define _LANG_H_
 
 #define LG_COPYRIGHT "Siemens natJabber Client\n(c)Kibab, Ad, Borman99\n%s r%d\nCompiled %s"
-#define LANG_EN
+#define LANG_ORIGINAL
 //#define LANG_RU
 //#define LANG_UA
-//#define LANG_EN
+#define LANG_EN
 ///////////////////////////////////////////////////////////////////////////////////////////
 #ifdef LANG_ORIGINAL
 #define LG_SELECT "Выбор"
