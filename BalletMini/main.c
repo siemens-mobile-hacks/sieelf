@@ -163,17 +163,17 @@ static void method0(VIEW_GUI *data)
         switch(connect_state)
         {
         case 1:
-          wsprintf(data->ws1,percent_t,"Соединение...");
+          wsprintf(data->ws1,percent_t,"Connection...");
           break;
         case 2:
-          wsprintf(data->ws1,percent_t,"Обработка...");
+          wsprintf(data->ws1,percent_t,"Processing...");
           break;
         case 3:
-          wsprintf(data->ws1,percent_t,"Загрузка...");
+          wsprintf(data->ws1,percent_t,"Download...");
           break;
         }
       }
-      wsprintf(data->ws2,percent_t,"Стоп");
+      wsprintf(data->ws2,percent_t,"Stop");
       
       h1=scr_h-GetFontYSIZE(FONT_MEDIUM_BOLD)-2;
       w1=scr_w-Get_WS_width(data->ws2,FONT_MEDIUM_BOLD)-2;
@@ -550,8 +550,8 @@ static int char16to8(int c)
 
 static const SOFTKEY_DESC menu_sk[]=
 {
-  {0x0018,0x0000,(int)"Перейти"},
-  {0x0001,0x0000,(int)"Отмена"},
+  {0x0018,0x0000,(int)"Go"},
+  {0x0001,0x0000,(int)"Cancel"},
   {0x003D,0x0000,(int)"+"}
 };
 
@@ -563,11 +563,11 @@ static const SOFTKEYSTAB menu_skt=
 };
 
 
-static const HEADER_DESC input_url_hdr={0,0,0,0,NULL,(int)"Адрес",LGP_NULL};
+static const HEADER_DESC input_url_hdr={0,0,0,0,NULL,(int)"Address",LGP_NULL};
 
 static void input_url_ghook(GUI *data, int cmd)
 {
-  static SOFTKEY_DESC sk={0x0FFF,0x0000,(int)"Перейти"};
+  static SOFTKEY_DESC sk={0x0FFF,0x0000,(int)"Go"};
   if (cmd==0x0A)
   {
     DisableIDLETMR();
