@@ -1,0 +1,1096 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <configuration>
+    <name>C6Cv53</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>C7Cv22</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>CX6Cv50</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>CX7Av25</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>CX7Cv50</name>
+    <outputs>
+      <file>$PROJ_DIR$\CX7Cv50\Obj\rets_CX7Cv50.r79</file>
+      <file>$PROJ_DIR$\CX7Cv50\Obj\ESI.r79</file>
+      <file>$PROJ_DIR$\CX7Cv50\Obj\IMB.r79</file>
+      <file>$PROJ_DIR$\CX7Cv50\Obj\additional.pbi</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\CX7Cv50\Obj\elfloader.pbi</file>
+      <file>$PROJ_DIR$\CX7Cv50\Obj\FSWI.r79</file>
+      <file>$PROJ_DIR$\CX7Cv50\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\CX7Cv50\List\png.s79</file>
+      <file>$PROJ_DIR$\CX7Cv50\List\additional.s79</file>
+      <file>$PROJ_DIR$\IMB.asm</file>
+      <file>$PROJ_DIR$\FSWI.asm</file>
+      <file>$PROJ_DIR$\png.c</file>
+      <file>$PROJ_DIR$\Lg8\rets_C6Cv53.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_C7Cv22.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_CX6Cv50.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_CX7Av25.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_CX7Cv50.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_E71Cv41.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_ELC1v41.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_M6Cv50.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_M81Cv51.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_S68Cv51.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_S6Cv53.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_S7Cv47.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_SK6Cv50.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_SL6Cv50.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_SL7Cv47.asm</file>
+      <file>$PROJ_DIR$\CX7Cv50\Obj\EXT2.r79</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\CX7Cv50\List\config_data.lst</file>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\Lg8\CX7Cv50.xcl</file>
+      <file>$PROJ_DIR$\CX7Cv50\List\additional.lst</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\CX7Cv50\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\..\inc\pnglist.h</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\CX7Cv50\Obj\config_data.r79</file>
+      <file>$PROJ_DIR$\CX7Cv50\List\config_data.s79</file>
+      <file>$PROJ_DIR$\elfloader.cpp</file>
+      <file>$PROJ_DIR$\ESI.asm</file>
+      <file>$PROJ_DIR$\EXT2.asm</file>
+      <file>$PROJ_DIR$\CX7Cv50\List\conf_loader.lst</file>
+      <file>$PROJ_DIR$\CX7Cv50\List\elfloader.lst</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$PROJ_DIR$\additional.c</file>
+      <file>$PROJ_DIR$\CX7Cv50\List\elfloader.s79</file>
+      <file>$PROJ_DIR$\CX7Cv50\Obj\ELFLoader.pbd</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\CX7Cv50\List\FSWI.lst</file>
+      <file>$PROJ_DIR$\CX7Cv50\Obj\elfloader.r79</file>
+      <file>$PROJ_DIR$\CX7Cv50\Obj\additional.r79</file>
+      <file>$PROJ_DIR$\CX7Cv50\List\conf_loader.s79</file>
+      <file>$PROJ_DIR$\CX7Cv50\Obj\png.r79</file>
+      <file>$PROJ_DIR$\CX7Cv50\Exe\ELFLoader.elf</file>
+      <file>$PROJ_DIR$\CX7Cv50\List\ELFLoader.map</file>
+      <file>$PROJ_DIR$\CX7Cv50\List\rets_CX7Cv50.lst</file>
+      <file>$PROJ_DIR$\CX7Cv50\List\IMB.lst</file>
+      <file>$PROJ_DIR$\CX7Cv50\Exe\ELFLoader.a79</file>
+      <file>$PROJ_DIR$\CX7Cv50\List\ESI.lst</file>
+      <file>$PROJ_DIR$\CX7Cv50\Obj\png.pbi</file>
+      <file>$PROJ_DIR$\CX7Cv50\Obj\config_data.pbi</file>
+      <file>$PROJ_DIR$\CX7Cv50\List\EXT2.lst</file>
+      <file>$PROJ_DIR$\CX7Cv50\List\png.lst</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 65 62 61</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\IMB.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 2 64</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\FSWI.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 6 56</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\png.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 60 9 70</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 67</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 8 32 43 42 4 36 40 41 38 39</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 8 32 43 42 4 36 40 41 38 39</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Lg8\rets_CX7Cv50.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 0 63</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\elfloader.cpp</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 57 53 50</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 8 32 43 42 4 36 40 41 38 30</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 8 32 43 42 4 36 40 41 38 30</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ESI.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 1 66</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\EXT2.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 29 69</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 37 59 49</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 7</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 8 32 43 42 4 36 40 41 38 35 30</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 8 32 43 42 4 36 40 41 38 35 30</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\additional.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 58 10 34</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 3</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 8 32 43 42 4 36 40 41 38</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 8 32 43 42 4 36 40 41 38</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\CX7Cv50\Obj\ELFLoader.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 3 7 68 5 67</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config_data.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 44 45 31</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 68</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 35 8 32 43 42 4 36 40 41 38</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 35 8 32 43 42 4 36 40 41 38</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\CX7Cv50\Exe\ELFLoader.a79</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 62 61</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 33 1 29 6 2 58 37 44 57 60 0</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>E71Cv41</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>ELC1v41</name>
+    <outputs>
+      <file>$PROJ_DIR$\ELC1v41\Obj\additional.r79</file>
+      <file>$PROJ_DIR$\ELC1v41\Obj\elfloader.r79</file>
+      <file>$PROJ_DIR$\ELC1v41\Obj\png.r79</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\ELC1v41\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\IMB.asm</file>
+      <file>$PROJ_DIR$\FSWI.asm</file>
+      <file>$PROJ_DIR$\png.c</file>
+      <file>$PROJ_DIR$\Lg8\rets_C6Cv53.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_C7Cv22.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_CX6Cv50.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_CX7Av25.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_CX7Cv50.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_E71Cv41.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_ELC1v41.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_M6Cv50.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_M81Cv51.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_S68Cv51.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_S6Cv53.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_S7Cv47.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_SK6Cv50.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_SL6Cv50.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_SL7Cv47.asm</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\ELC1v41\List\FSWI.lst</file>
+      <file>$PROJ_DIR$\ELC1v41\Obj\elfloader.pbi</file>
+      <file>$PROJ_DIR$\ELC1v41\Obj\additional.pbi</file>
+      <file>$PROJ_DIR$\ELC1v41\Exe\ELFLoader.hex</file>
+      <file>$PROJ_DIR$\ELC1v41\Obj\ELFLoader.pbd</file>
+      <file>$PROJ_DIR$\ELC1v41\List\png.lst</file>
+      <file>$PROJ_DIR$\ELC1v41\List\rets_ELC1v41.lst</file>
+      <file>$PROJ_DIR$\ELC1v41\Obj\png.pbi</file>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\..\inc\pnglist.h</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\ELC1v41\List\config_data.lst</file>
+      <file>$PROJ_DIR$\ELC1v41\List\IMB.lst</file>
+      <file>$PROJ_DIR$\ELC1v41\List\EXT2.lst</file>
+      <file>$PROJ_DIR$\ELC1v41\Obj\rets_ELC1v41.r79</file>
+      <file>$PROJ_DIR$\elfloader.cpp</file>
+      <file>$PROJ_DIR$\ESI.asm</file>
+      <file>$PROJ_DIR$\EXT2.asm</file>
+      <file>$PROJ_DIR$\ELC1v41\Obj\config_data.r79</file>
+      <file>$PROJ_DIR$\ELC1v41\List\ELFLoader.map</file>
+      <file>$PROJ_DIR$\ELC1v41\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$PROJ_DIR$\additional.c</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\ELC1v41\Obj\FSWI.r79</file>
+      <file>$PROJ_DIR$\ELC1v41\Obj\IMB.r79</file>
+      <file>$PROJ_DIR$\ELC1v41\Obj\config_data.pbi</file>
+      <file>$PROJ_DIR$\ELC1v41\Obj\EXT2.r79</file>
+      <file>$PROJ_DIR$\ELC1v41\Obj\ESI.r79</file>
+      <file>$PROJ_DIR$\ELC1v41\List\elfloader.lst</file>
+      <file>$PROJ_DIR$\ELC1v41\List\ESI.lst</file>
+      <file>$PROJ_DIR$\ELC1v41\List\conf_loader.lst</file>
+      <file>$PROJ_DIR$\ELC1v41\Exe\ELFLoader.elf</file>
+      <file>$PROJ_DIR$\Lg8\ELC1v41.xcl</file>
+      <file>$PROJ_DIR$\ELC1v41\List\additional.lst</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 28 50 63</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\IMB.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 56 43</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\FSWI.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 55 25</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\png.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 2 30</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 32</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 5 33 41 40 3 35 38 39 36 37</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5 33 41 40 3 35 38 39 36 37</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Lg8\rets_ELC1v41.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 45 31</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ELC1v41\Exe\ELFLoader.hex</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 50 63</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 64 59 58 55 56 0 4 49 1 2 45</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ELC1v41\Obj\ELFLoader.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 27 51 57 26 32</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\elfloader.cpp</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 1 60</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 26</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 5 33 41 40 3 35 38 39 36 24</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5 33 41 40 3 35 38 39 36 24</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ESI.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 59 61</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\EXT2.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 58 44</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 62</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 51</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 5 33 41 40 3 35 38 39 36 34 24</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5 33 41 40 3 35 38 39 36 34 24</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\additional.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 0 65</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 27</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 5 33 41 40 3 35 38 39 36</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5 33 41 40 3 35 38 39 36</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config_data.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 49 42</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 57</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 34 5 33 41 40 3 35 38 39 36</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 34 5 33 41 40 3 35 38 39 36</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>M6Cv50</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>M81Cv51</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>S68Cv51</name>
+    <outputs>
+      <file>$PROJ_DIR$\S68Cv51\Obj\png.r79</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\S68Cv51\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\S68Cv51\Obj\config_data.r79</file>
+      <file>$PROJ_DIR$\S68Cv51\Exe\ELFLoader.hex</file>
+      <file>$PROJ_DIR$\S68Cv51\Obj\ELFLoader.pbd</file>
+      <file>$PROJ_DIR$\S68Cv51\Obj\elfloader.r79</file>
+      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\S68Cv51\Obj\EXT2.r79</file>
+      <file>$PROJ_DIR$\IMB.asm</file>
+      <file>$PROJ_DIR$\FSWI.asm</file>
+      <file>$PROJ_DIR$\png.c</file>
+      <file>$PROJ_DIR$\Lg8\rets_C6Cv53.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_C7Cv22.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_CX6Cv50.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_CX7Av25.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_CX7Cv50.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_E71Cv41.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_ELC1v41.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_M6Cv50.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_M81Cv51.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_S68Cv51.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_S6Cv53.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_S7Cv47.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_SK6Cv50.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_SL6Cv50.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_SL7Cv47.asm</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\S68Cv51\Obj\ESI.r79</file>
+      <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\..\inc\pnglist.h</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\S68Cv51\Obj\png.pbi</file>
+      <file>$PROJ_DIR$\S68Cv51\Obj\config_data.pbi</file>
+      <file>$PROJ_DIR$\S68Cv51\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\S68Cv51\Obj\elfloader.pbi</file>
+      <file>$PROJ_DIR$\S68Cv51\Obj\rets_S68Cv51.r79</file>
+      <file>$PROJ_DIR$\S68Cv51\Obj\FSWI.r79</file>
+      <file>$PROJ_DIR$\S68Cv51\Obj\IMB.r79</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\elfloader.cpp</file>
+      <file>$PROJ_DIR$\ESI.asm</file>
+      <file>$PROJ_DIR$\EXT2.asm</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$PROJ_DIR$\additional.c</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\S68Cv51\Obj\ELFLoader.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 38 37 39 36</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 4</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\IMB.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 42</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\FSWI.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 41</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\png.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 0</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 36</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 7 28 44 43 1 30 34 35 32 33</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Lg8\rets_S68Cv51.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 40</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\elfloader.cpp</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 6</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 39</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 7 28 44 43 1 30 34 35 32 27</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ESI.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 31</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\EXT2.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 8</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 2</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 38</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 7 28 44 43 1 30 34 35 32 29 27</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config_data.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 3</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 37</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 29 7 28 44 43 1 30 34 35 32</file>
+        </tool>
+      </inputs>
+    </file>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>S6Cv53</name>
+    <outputs>
+      <file>$PROJ_DIR$\S6Cv53\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\S6Cv53\Obj\png.r79</file>
+      <file>$PROJ_DIR$\S6Cv53\Obj\config_data.r79</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\S6Cv53\Obj\additional.r79</file>
+      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\S6Cv53\List\conf_loader.lst</file>
+      <file>$PROJ_DIR$\S6Cv53\List\png.s79</file>
+      <file>$PROJ_DIR$\S6Cv53\List\additional.s79</file>
+      <file>$PROJ_DIR$\S6Cv53\List\additional.lst</file>
+      <file>$PROJ_DIR$\S6Cv53\List\conf_loader.s79</file>
+      <file>$PROJ_DIR$\IMB.asm</file>
+      <file>$PROJ_DIR$\FSWI.asm</file>
+      <file>$PROJ_DIR$\png.c</file>
+      <file>$PROJ_DIR$\Lg8\rets_C6Cv53.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_C7Cv22.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_CX6Cv50.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_CX7Av25.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_CX7Cv50.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_E71Cv41.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_ELC1v41.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_M6Cv50.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_M81Cv51.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_S68Cv51.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_S6Cv53.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_S7Cv47.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_SK6Cv50.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_SL6Cv50.asm</file>
+      <file>$PROJ_DIR$\Lg8\rets_SL7Cv47.asm</file>
+      <file>$PROJ_DIR$\S6Cv53\List\IMB.lst</file>
+      <file>$PROJ_DIR$\S6Cv53\List\FSWI.lst</file>
+      <file>$PROJ_DIR$\S6Cv53\Obj\elfloader.r79</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\S6Cv53\List\elfloader.s79</file>
+      <file>$PROJ_DIR$\S6Cv53\List\elfloader.lst</file>
+      <file>$PROJ_DIR$\S6Cv53\Obj\ESI.r79</file>
+      <file>$PROJ_DIR$\S6Cv53\Obj\EXT2.r79</file>
+      <file>$PROJ_DIR$\S6Cv53\Obj\FSWI.r79</file>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\S6Cv53\Obj\ELFLoader.pbd</file>
+      <file>$PROJ_DIR$\S6Cv53\List\EXT2.lst</file>
+      <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\..\inc\pnglist.h</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\S6Cv53\Obj\config_data.pbi</file>
+      <file>$PROJ_DIR$\S6Cv53\Obj\png.pbi</file>
+      <file>$PROJ_DIR$\S6Cv53\Exe\ELFLoader.a79</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\elfloader.cpp</file>
+      <file>$PROJ_DIR$\ESI.asm</file>
+      <file>$PROJ_DIR$\EXT2.asm</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$PROJ_DIR$\additional.c</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\S6Cv53\List\ESI.lst</file>
+      <file>$PROJ_DIR$\S6Cv53\Obj\IMB.r79</file>
+      <file>$PROJ_DIR$\S6Cv53\Obj\elfloader.pbi</file>
+      <file>$PROJ_DIR$\S6Cv53\Obj\additional.pbi</file>
+      <file>$PROJ_DIR$\S6Cv53\Obj\rets_S6Cv53.r79</file>
+      <file>$PROJ_DIR$\S6Cv53\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\S6Cv53\List\config_data.s79</file>
+      <file>$PROJ_DIR$\S6Cv53\List\config_data.lst</file>
+      <file>$PROJ_DIR$\S6Cv53\List\png.lst</file>
+      <file>$PROJ_DIR$\Lg8\S6Cv53.xcl</file>
+      <file>$PROJ_DIR$\S6Cv53\List\rets_S6Cv53.lst</file>
+      <file>$PROJ_DIR$\S6Cv53\Exe\ELFLoader.elf</file>
+      <file>$PROJ_DIR$\S6Cv53\List\ELFLoader.map</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 49 70 69</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\IMB.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 59 29</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\FSWI.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 37 30</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\png.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 1 7 66</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 48</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 5 38 51 50 3 40 45 46 43 44</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5 38 51 50 3 40 45 46 43 44</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Lg8\rets_S6Cv53.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 62 68</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\S6Cv53\Obj\ELFLoader.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 61 63 47 60 48</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\S6Cv53\Exe\ELFLoader.a79</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 70 69</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 67 35 36 37 59 4 0 2 31 1 62</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\elfloader.cpp</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 31 33 34</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 60</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 5 38 51 50 3 40 45 46 43 32</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5 38 51 50 3 40 45 46 43 32</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ESI.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 35 58</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\EXT2.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 36 42</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 0 10 6</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 63</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 5 38 51 50 3 40 45 46 43 39 32</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5 38 51 50 3 40 45 46 43 39 32</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\additional.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 8 9</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 61</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 5 38 51 50 3 40 45 46 43</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5 38 51 50 3 40 45 46 43</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config_data.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 2 64 65</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 47</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 39 5 38 51 50 3 40 45 46 43</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 39 5 38 51 50 3 40 45 46 43</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>S7Cv47</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>SK6Cv50</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>SL6Cv50</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>SL7Cv47</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+</project>
+
+

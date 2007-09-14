@@ -1,2 +1,0 @@
-这个目录下为部分65制作的ELFloader，是去掉了ESI部分重新找一段空白地址的麻烦(by jpg001)，功能上与对应机型目录下的ELFLoader一致！
-SWILIB.VKP在对应机型目录下

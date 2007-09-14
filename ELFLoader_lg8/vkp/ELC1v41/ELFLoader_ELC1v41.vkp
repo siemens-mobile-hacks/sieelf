@@ -1,12 +1,11 @@
-;ELFPACK2.31
-;ELC1sw41
+;ELFPACK v2.31
+;ELC1v41 
 ;(c) 2007 by Rst7/CBSIE, BoBa
-;(p) jpg001
-;Release 31.07.2007
-
+;(p) SPGC
+;2007-09-14 ÐÇÆÚÎå 
 ;ElfLoader+ESI+RunElfsByExtention+FSWI
 
-;locale=chinese-simplified;SWILIB_FUNC171,SWILIB_FUNC172
+;SWILIB_FUNC171,SWILIB_FUNC172
 #pragma enable old_equal_ff
 0x000745C4: 588607A0448607A0
 ;SWILIB_FUNC19C
