@@ -4,7 +4,7 @@
 
 ;Library
 
-;2007-8-31
+;2007.09.15
 
 +0074000
 #pragma enable  old_equal_ff
@@ -605,6 +605,8 @@
 
 08C0: 0xA082B3BD   ; 230:   int GetTimeZoneShift(int param1, int param2, int timeZone)
 08C4: 0xA8D2824C   ; 231:   TAppointment *RamAppointment
+08C8: 0xA00927B8   ; 232:  GBS_DestroyMessage(GBS_MSG *)
+08CC: 0xA03C1D0D   ; 233:  void GetAllEmail()           
 #pragma disable old_equal_ff
 +0
 

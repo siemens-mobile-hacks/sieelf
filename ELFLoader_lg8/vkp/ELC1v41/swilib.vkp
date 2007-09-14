@@ -2,8 +2,6 @@
 ; http://avkiev.kiev.ua/Siemens/Smelter/Smelter.htm
 ;********************************************************************************
 ;(c) avkiev
-;(p) Bueffel,SMeeTBB,NForce,-=PaScaL=-,shadows,jpg001
-;//(P)last update by 
 ; Functions Library
 
 +0074000
@@ -605,6 +603,8 @@
 
 08C0: 0xA08FA5F9   ; 230:   int GetTimeZoneShift(int param1, int param2, int timeZone)
 08C4: 0xA8DA809C   ; 231:   TAppointment *RamAppointment
+08C8: 0xA0091D7B   ; 232:  GBS_DestroyMessage(GBS_MSG *)
+08CC: 0xA07DB17B   ; 233:  void GetAllEmail()           
 #pragma disable old_equal_ff
 +0
 
