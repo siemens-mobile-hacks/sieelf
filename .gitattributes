@@ -742,8 +742,6 @@ SieJC/clist_util.c -text
 SieJC/clist_util.h -text
 SieJC/conf_loader.c -text
 SieJC/conf_loader.h -text
-SieJC/conf_loader2.c -text
-SieJC/conf_loader2.h -text
 SieJC/config_data.c -text
 SieJC/cont_menu.c -text
 SieJC/cont_menu.h -text
