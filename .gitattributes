@@ -1035,6 +1035,14 @@ XTASK3/rect_patcher.h -text
 XTASK3/swaper.c -text
 XTASK3/swaper.h -text
 XTASK3/test.xcl -text
+big_digital_clock/big_digital_clock.ewp -text
+big_digital_clock/big_digital_clock.eww -text
+big_digital_clock/conf_loader.c -text
+big_digital_clock/conf_loader.h -text
+big_digital_clock/config.c -text
+big_digital_clock/func.asm -text
+big_digital_clock/main.c -text
+big_digital_clock/test.xcl -text
 cpumon/conf_loader.c -text
 cpumon/conf_loader.h -text
 cpumon/config.c -text
