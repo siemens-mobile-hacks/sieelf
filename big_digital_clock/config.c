@@ -9,7 +9,7 @@ __root const CFG_HDR cfghdr1 = {CFG_COORDINATES, "Position", 0, 0};
 __root const unsigned int cfgX = 10;
 __root const unsigned int cfgY = 50;
 
-__root const CFG_HDR cfghdr3 = {CFG_UINT, "first icon", 0, 1500};
+__root const CFG_HDR cfghdr3 = {CFG_UINT, "first icon", 0, 5000};
 __root const unsigned int cfgIcon1 = 616;
 
 __root const CFG_HDR cfghdr8 = {CFG_COLOR, "main color", 0, 99};

@@ -116,6 +116,7 @@ int strcmp_nocase(const char *s1,const char *s2)
   return(i);
 }
 
+void createicon(void);
 int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
 {
   CSM_RAM *icsm;
@@ -126,6 +127,7 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
     {
       ShowMSG(1,(int)"Big Digital Clock config updated!");
       InitConfig();
+      createicon();
     }
   }
   icsm=FindCSMbyID(CSM_root()->idle_id);
