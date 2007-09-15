@@ -9,11 +9,15 @@ extern const unsigned int vibraPower;
 extern const unsigned int vibraDuration;
 extern const int COLOR_MENU_BK;
 extern const int COLOR_MENU_BRD;
+extern const int COLOR_NMENU_BK;
+extern const int COLOR_NMENU_BRD;
 extern const int COLOR_NOTSELECTED;
 extern const int COLOR_SELECTED;
 extern const int COLOR_NUMBER;
 extern const int COLOR_SELECTED_BG;
 extern const int COLOR_SELECTED_BRD;
+extern const int COLOR_NUMBER_BG;
+extern const int COLOR_NUMBER_BRD;
 extern const char COLOR_SEARCH_MARK[4];
 extern const char COLOR_SEARCH_UNMARK[4];
 extern const char root_dir[128];
@@ -816,7 +820,7 @@ void my_ed_redraw(void *data)
     int y=ScreenH()-SoftkeyH()-(GetFontYSIZE(font_size)+1)*count_page;
 
     DrawRoundedFrame(1,y,ScreenW()-2,ScreenH()-SoftkeyH()+3,0,0,0,color(COLOR_MENU_BRD),color(COLOR_MENU_BK));
-   
+    DrawRoundedFrame(1,36,ScreenW()-2,y,0,0,0,color(COLOR_NMENU_BRD),color(COLOR_NMENU_BK));
 
     if (i<0) cp=curpos; else cp=2;
     while(i>0)
@@ -869,6 +873,18 @@ void my_ed_redraw(void *data)
         //ÇøºÅÐãºÍºÅÂëÊä³ö
         if(show_number)
         {
+                if(numberlist)
+               {
+                  int n=numx;
+                  if(cfg_cs_enable &&(!cfg_cs_part))
+                     {         
+                      h=26;  
+                     }
+                  else h=13;
+                  //if(sum>1)
+                  DrawRoundedFrame(2,37+h*n,ScreenW()-3,37+h*(n+1)-1,0,0,0,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
+               }
+          
                for(j=0;j<=4;j++)
                   {
                   if(cfg_cs_enable &&(!cfg_cs_part))
@@ -891,17 +907,7 @@ void my_ed_redraw(void *data)
                   }
                   }
                
-               if(numberlist)
-               {
-                  int n=numx;
-                  if(cfg_cs_enable &&(!cfg_cs_part))
-                     {         
-                      h=26;  
-                     }
-                  else h=13;
-                  //if(sum>1)
-                  DrawRoundedFrame(2,37+h*n,ScreenW()-3,37+h*(n+1)-1,0,0,0,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
-               }
+
                 
                
                {

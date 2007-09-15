@@ -45,6 +45,12 @@ __root const int COLOR_MENU_BK=23;
 __root const CFG_HDR cfghdr11={CFG_COLOR,"Color Menu border",0,99};
 __root const int COLOR_MENU_BRD=1;
 
+__root const CFG_HDR cfghdr40={CFG_COLOR,"Number menu background",0,99};
+__root const int COLOR_NMENU_BK=23;
+
+__root const CFG_HDR cfghdr41={CFG_COLOR,"Number menu border",0,99};
+__root const int COLOR_NMENU_BRD=1;
+
 __root const CFG_HDR cfghdr12={CFG_COLOR,"Color Not selected",0,99};
 __root const int COLOR_NOTSELECTED=0;
 
@@ -59,6 +65,12 @@ __root const int COLOR_SELECTED_BG=7;
 
 __root const CFG_HDR cfghdr15={CFG_COLOR,"Color Selected border",0,99};
 __root const int COLOR_SELECTED_BRD=23;
+
+__root const CFG_HDR cfghdr24={CFG_COLOR,"Number selected background",0,99};
+__root const int COLOR_NUMBER_BG=23;
+
+__root const CFG_HDR cfghdr25={CFG_COLOR,"Number selected border",0,99};
+__root const int COLOR_NUMBER_BRD=0;
 
 __root const CFG_HDR cfghdr16={CFG_COLOR,"Color Search mark",0,99};
 __root const char COLOR_SEARCH_MARK[4]={0xFF,0x0,0x0,0x64};

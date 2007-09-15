@@ -43,6 +43,12 @@ __root const int COLOR_MENU_BK=23;
 __root const CFG_HDR cfghdr11={CFG_COLOR,"菜单边框",0,99};
 __root const int COLOR_MENU_BRD=1;
 
+__root const CFG_HDR cfghdr40={CFG_COLOR,"号码菜单背景",0,99};
+__root const int COLOR_NMENU_BK=23;
+
+__root const CFG_HDR cfghdr41={CFG_COLOR,"号码菜单边框",0,99};
+__root const int COLOR_NMENU_BRD=1;
+
 __root const CFG_HDR cfghdr12={CFG_COLOR,"未选择号码",0,99};
 __root const int COLOR_NOTSELECTED=0;
 
@@ -57,6 +63,12 @@ __root const int COLOR_SELECTED_BG=7;
 
 __root const CFG_HDR cfghdr15={CFG_COLOR,"选择条边框",0,99};
 __root const int COLOR_SELECTED_BRD=23;
+
+__root const CFG_HDR cfghdr24={CFG_COLOR,"号码条背景",0,99};
+__root const int COLOR_NUMBER_BG=23;
+
+__root const CFG_HDR cfghdr25={CFG_COLOR,"号码条边框",0,99};
+__root const int COLOR_NUMBER_BRD=0;
 
 __root const CFG_HDR cfghdr16={CFG_COLOR,"快选标识",0,99};
 __root const char COLOR_SEARCH_MARK[4]={0xFF,0x0,0x0,0x64};
