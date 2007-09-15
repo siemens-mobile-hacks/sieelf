@@ -219,8 +219,6 @@ ExtMan/rect_patcher.h -text
 ExtMan/test.xcl -text
 ExtMan/visual.c -text
 FastRun/FastRun/DIV.R79 -text
-FastRun/FastRun/FastRun.dep -text
-FastRun/FastRun/FastRun.ewd -text
 FastRun/FastRun/FastRun.ewp -text
 FastRun/FastRun/FastRun.eww -text
 FastRun/FastRun/bookmarks.c -text
@@ -228,8 +226,6 @@ FastRun/FastRun/func.asm -text
 FastRun/FastRun/keyhook.c -text
 FastRun/FastRun/main.c -text
 FastRun/FastRun/test.xcl -text
-FastRun/FastRunDaemon/FastRunDaemon.dep -text
-FastRun/FastRunDaemon/FastRunDaemon.ewd -text
 FastRun/FastRunDaemon/FastRunDaemon.ewp -text
 FastRun/FastRunDaemon/FastRunDaemon.eww -text
 FastRun/FastRunDaemon/func.asm -text

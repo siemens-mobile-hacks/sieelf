@@ -8,7 +8,7 @@
 
 __root const CFG_HDR cfghdr0={CFG_CBOX,"Display",0,4};
 __root const int DRAW_MODE=0;
-__root const CFG_CBOX_ITEM cfgcbox1[4]=( "Left", "Right", "Top", "Bottom");
+__root const CFG_CBOX_ITEM cfgcbox1[4]={"Left","Right","Top","Bottom"};
 
 __root const CFG_HDR cfghdr2={CFG_STR_UTF8,"Path of 'FastRun'",0,63};
 __root const char PATH[64]=DEFAULT_DISK":\\ZBin\\FastRun\\FastRun.elf";
