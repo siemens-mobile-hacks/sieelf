@@ -1306,8 +1306,6 @@ FastRun/TODO.c -text
 FastRun/conf_loader.c -text
 FastRun/conf_loader.h -text
 FastRun/config_data.c -text
-FreePaste/FreePaste.dep -text
-FreePaste/FreePaste.ewd -text
 FreePaste/FreePaste.ewp -text
 FreePaste/FreePaste.eww -text
 FreePaste/conf_loader.c -text
@@ -1315,10 +1313,6 @@ FreePaste/conf_loader.h -text
 FreePaste/config_data.c -text
 FreePaste/func.asm -text
 FreePaste/main.c -text
-FreePaste/settings/FreePaste.cspy.bat -text
-FreePaste/settings/FreePaste.dbgdt -text
-FreePaste/settings/FreePaste.dni -text
-FreePaste/settings/FreePaste.wsdt -text
 FreePaste/test.xcl -text
 GPSLogger/GPSLogger.ewp -text
 GPSLogger/GPSLogger.eww -text
