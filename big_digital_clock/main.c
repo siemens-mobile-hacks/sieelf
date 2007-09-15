@@ -16,8 +16,13 @@ const int minus11=-11;
 
 extern void kill_data(void *p, void (*func_p)(void *));
 
-//#pragma swi_number=0x0B1
-//__swi __arm void DrawColorPicWithCanvas(int x, int y, int icon, const char *color1,const char *color2);
+#ifdef NEWSGOLD
+#pragma swi_number=0x0B1
+__swi __arm void DrawColorPicWithCanvas(int x, int y, int icon, const char *color1);
+#else
+#pragma swi_number=0x0B1
+__swi __arm void DrawColorPicWithCanvas(int x, int y, int icon, const char *color1,const char *color2);
+#endif
 
 int (*old_icsm_onMessage)(CSM_RAM*,GBS_MSG*);
 
@@ -36,8 +41,8 @@ unsigned char pichour1, pichour2;
 unsigned char picsec1, picsec2;
 unsigned char min,sec,hour;
 extern const unsigned int cfgShowIn;
-//extern const char cfgcolor1[];
-//extern const char cfgcolor2[];
+extern const char cfgcolor1[];
+extern const char cfgcolor2[];
 extern const unsigned int gap;
 extern const int free_space;
 #ifdef ELKA
@@ -144,25 +149,36 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
 //            {                                                                   
 //              void *canvasdata = ((void **)idata)[DISPLACE_OF_IDLECANVAS / 4];  
 //            #endif                                                                      
+#ifdef ELKA
               int img_wide;                                                                   
               if (Icons[pichour1])                                                            
               {                                                                               
-                DrawImg(cfgX, cfgY, Icons[pichour1]);                                         
+                DrawColorPicWithCanvas(cfgX, cfgY, Icons[pichour1],cfgcolor1);                                         
                 img_wide=GetImgWidth(Icons[pichour1])+free_space;                             
               }                                                                               
-              if (Icons[pichour2]) DrawImg(cfgX+img_wide, cfgY, Icons[pichour2]);             
-              DrawImg(cfgX+2*img_wide, cfgY, Icons[10]);                                                   
+              if (Icons[pichour2]) DrawColorPicWithCanvas(cfgX+img_wide, cfgY, Icons[pichour2],cfgcolor1);             
+              DrawColorPicWithCanvas(cfgX+2*img_wide, cfgY, Icons[10],cfgcolor1);                                                    
               int img_wide_doc=GetImgWidth(Icons[10])+free_space;                             
-              if (Icons[picmin1]) DrawImg(cfgX+2*img_wide+img_wide_doc, cfgY, Icons[picmin1]);
-              if (Icons[picmin2]) DrawImg(cfgX+3*img_wide+img_wide_doc, cfgY, Icons[picmin2]);
-              #ifdef ELKA
-              #else
+              if (Icons[picmin1]) DrawColorPicWithCanvas(cfgX+2*img_wide+img_wide_doc, cfgY, Icons[picmin1],cfgcolor1);
+              if (Icons[picmin2]) DrawColorPicWithCanvas(cfgX+3*img_wide+img_wide_doc, cfgY, Icons[picmin2],cfgcolor1);              
+#else
+              int img_wide;                                                                   
+              if (Icons[pichour1])                                                            
+              {                                                                               
+                DrawColorPicWithCanvas(cfgX, cfgY, Icons[pichour1],cfgcolor1,cfgcolor2);                                         
+                img_wide=GetImgWidth(Icons[pichour1])+free_space;                             
+              }                                                                               
+              if (Icons[pichour2]) DrawColorPicWithCanvas(cfgX+img_wide, cfgY, Icons[pichour2],cfgcolor1,cfgcolor2);             
+              DrawColorPicWithCanvas(cfgX+2*img_wide, cfgY, Icons[10],cfgcolor1,cfgcolor2);                                                    
+              int img_wide_doc=GetImgWidth(Icons[10])+free_space;                             
+              if (Icons[picmin1]) DrawColorPicWithCanvas(cfgX+2*img_wide+img_wide_doc, cfgY, Icons[picmin1],cfgcolor1,cfgcolor2);
+              if (Icons[picmin2]) DrawColorPicWithCanvas(cfgX+3*img_wide+img_wide_doc, cfgY, Icons[picmin2],cfgcolor1,cfgcolor2);              
               if (cfgsec)                                                                                    
               {                                                                               
-                if (Iconssec[picsec1]) DrawImg(cfgsecondX, cfgsecondY, Iconssec[picsec1]);
-                if (Iconssec[picsec2]) DrawImg(cfgsecondX+7, cfgsecondY, Iconssec[picsec2]);               
+                if (Iconssec[picsec1]) DrawColorPicWithCanvas(cfgsecondX, cfgsecondY, Iconssec[picsec1],cfgcolor1,cfgcolor2);
+                if (Iconssec[picsec2]) DrawColorPicWithCanvas(cfgsecondX+7, cfgsecondY, Iconssec[picsec2],cfgcolor1,cfgcolor2);               
               }
-              #endif                                                                       
+#endif                                                                       
             }
           }
         }                                                                              

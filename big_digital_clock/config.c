@@ -12,17 +12,14 @@ __root const unsigned int cfgY = 50;
 __root const CFG_HDR cfghdr3 = {CFG_UINT, "first icon", 0, 1500};
 __root const unsigned int cfgIcon1 = 616;
 
-//__root const CFG_HDR cfghdr5 = {CFG_COLOR, "main color", 0, 99};
-//__root const char cfgcolor1[4] = {0xFF,0x0,0x0,0x64};
-
-//__root const CFG_HDR cfghdr6 = {CFG_COLOR, "canvas color", 0, 99};
-//__root const char cfgcolor2[4] = {0xFF,0x0,0x0,0x64};
-
-//__root const CFG_HDR cfghdr7 = {CFG_UINT, "gap, don't work :( ", 0, 100};
-//__root const unsigned int gap = 0;
+__root const CFG_HDR cfghdr8 = {CFG_COLOR, "main color", 0, 99};
+__root const char cfgcolor1[4] = {0xFF,0x0,0x0,0x64};
 
 #ifdef ELKA
 #else
+__root const CFG_HDR cfghdr9 = {CFG_COLOR, "canvas color", 0, 99};
+__root const char cfgcolor2[4] = {0xFF,0x0,0x0,0x64};
+
 __root const CFG_HDR cfghdr4 = {CFG_UINT, "seconds icon", 0, 5000};
 __root const unsigned int cfgIconsec = 2096;
 
