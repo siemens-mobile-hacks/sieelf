@@ -76,7 +76,7 @@ __root const int cfg_cs_enable=1;
 __root const CFG_HDR cfghdr31 = {CFG_CHECKBOX,"部分显示",0,0};
 __root const int cfg_cs_part=0;
 
-__root const CFG_HDR cfghdr31 = {CFG_COLOR,"区号秀颜色",0,99};
+__root const CFG_HDR cfghdr32 = {CFG_COLOR,"区号秀颜色",0,99};
 __root const int cfg_cs_font_color=0;
 
 __root const CFG_HDR cfghdr33 = {CFG_UINT,"区号秀地址",0,0xFFFFFFFF};
