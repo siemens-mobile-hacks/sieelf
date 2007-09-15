@@ -10,8 +10,14 @@ __root const char root_dir[128]="0:\\\x1F\xE7\xB3\xBB\xE7\xBB\x9F\\apo\\addr";
 __root const CFG_HDR cfghdr50 = {CFG_CHECKBOX,"拨号禁止",0,0};
 __root const int disable_when_calling=1;
 
-__root const CFG_HDR cfghdr2 = {CFG_UINT,"条目间距",0,6};
-__root const int cfg_item_gaps=3;
+__root const CFG_HDR cfghdr52 = {CFG_CHECKBOX,"号码显示",0,0};
+__root const int show_number=1;
+
+__root const CFG_HDR cfghdr53 = {CFG_CHECKBOX,"多个号码显示",0,0};
+__root const int show_more_number=1;
+
+__root const CFG_HDR cfghdr1_55={CFG_UINT,"屏幕拨号控制",0,65535};
+__root const unsigned int CALL_BTN=VOL_UP_BUTTON;
 
 
 
@@ -64,7 +70,7 @@ __root const CFG_HDR cfghdr_m8={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr_m11={CFG_LEVEL,"区号秀",1,0};
 
-__root const CFG_HDR cfghdr30 = {CFG_CBOX,"显示区号秀",0,0};
+__root const CFG_HDR cfghdr30 = {CFG_CHECKBOX,"显示区号秀",0,0};
 __root const int cfg_cs_enable=1;
 
 __root const CFG_HDR cfghdr31 = {CFG_CHECKBOX,"部分显示",0,0};

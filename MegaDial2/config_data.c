@@ -16,10 +16,11 @@ __root const int show_number=1;
 __root const CFG_HDR cfghdr53 = {CFG_CHECKBOX,"Show more number",0,0};
 __root const int show_more_number=1;
 
-__root const CFG_HDR cfghdr2 = {CFG_UINT,"Item gaps",0,6};
-__root const int cfg_item_gaps=3;
+//__root const CFG_HDR cfghdr54 = {CFG_CHECKBOX,"numberx",0,0};
+//__root const int numberlist=1;
 
-
+__root const CFG_HDR cfghdr1_55={CFG_UINT,"Numberlist button",0,65535};
+__root const unsigned int CALL_BTN=VOL_UP_BUTTON;
 
 __root const CFG_HDR cfghdr_m7={CFG_LEVEL,"Vibra sitting",1,0};
 
@@ -75,7 +76,7 @@ __root const CFG_HDR cfghdr_m11={CFG_LEVEL,"CodeShow",1,0};
 __root const CFG_HDR cfghdr30 = {CFG_CHECKBOX,"Show CodeShow",0,0};
 __root const int cfg_cs_enable=1;
 
-__root const CFG_HDR cfghdr31 = {CFG_CHECKBOX,"Show part",0,0};
+__root const CFG_HDR cfghdr31 = {CFG_CHECKBOX,"Part show",0,0};
 __root const int cfg_cs_part=0;
 
 __root const CFG_HDR cfghdr32 = {CFG_COLOR,"CodeShow color",0,24};
