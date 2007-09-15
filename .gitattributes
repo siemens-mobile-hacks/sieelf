@@ -1158,8 +1158,6 @@ DiskMonitor/div.r79 -text
 DiskMonitor/func.asm -text
 DiskMonitor/main.c -text
 DiskMonitor/test.xcl -text
-ECDict/ECDict.dep -text
-ECDict/ECDict.ewd -text
 ECDict/ECDict.ewp -text
 ECDict/ECDict.eww -text
 ECDict/conf_loader.c -text
@@ -1171,10 +1169,6 @@ ECDict/dict.c -text
 ECDict/func.asm -text
 ECDict/gpl.txt -text
 ECDict/main.c -text
-ECDict/settings/ECDict.cspy.bat -text
-ECDict/settings/ECDict.dbgdt -text
-ECDict/settings/ECDict.dni -text
-ECDict/settings/ECDict.wsdt -text
 ELFLoader_lg8/ELFLoader.ewp -text
 ELFLoader_lg8/ESI.asm -text
 ELFLoader_lg8/EXT2.asm -text
