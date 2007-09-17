@@ -597,6 +597,14 @@
 08A0: 0xA08FC07C   ; 228: __arm int PlayMelody_ResumePlayBack(int handle)
 08A4: 0xA1F374C4   ; 229: __arm void longjmp(jmp_buf, int)
 08A8: 0xA11C6F43   ; 22A: __thumb void FreeGSMTXTpkt(void *pkt)
+;8AC:              ; 22B:  CreateRadioButtonList(RadioButtonListDesc *, char num_of_radiobuttons, 0, 0, char prev_setting, void HandlerFunc(int), char flag)
+;8B0:              ; 22C:  pdcache_getval(char *return, int maxlen_of_return_str, char cachetype, char *pd_entry_identifier.class, char *pd_entry_identifier.sub)
+;8B4:              ; 22D:  pdcache_setval(char *new_value, char cachetype, char *pd_entry_identifier.class, char *pd_entry_identifier.sub)
+;8B8:              ; 22E:  OpenExplorer(ExplOpenDesc *)
+08BC: 0xA860E20C   ; 22F:  TDateTimeSettings *RamDateTimeSettings
+
+08C0: 0xA11CD77F   ; 230:  __thumb int GetTimeZoneShift(int param1, int param2, int timeZone)
+08C4: 0xA860E1B4   ; 231:  TAppointment *RamAppointment
 #pragma disable old_equal_ff
 +0
 
