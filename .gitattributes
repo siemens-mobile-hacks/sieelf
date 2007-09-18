@@ -765,6 +765,14 @@ PicPusk/config_data.c -text
 PicPusk/func.asm -text
 PicPusk/main.c -text
 PicPusk/test.xcl -text
+SSMS/SSMS.ewp -text
+SSMS/SSMS.eww -text
+SSMS/conf_loader.c -text
+SSMS/conf_loader.h -text
+SSMS/config.c -text
+SSMS/func.asm -text
+SSMS/main.c -text
+SSMS/test.xcl -text
 SerialLib/Serial.ewp -text
 SerialLib/SerialLib.eww -text
 SerialLib/SerialTest.ewp -text
