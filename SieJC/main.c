@@ -18,6 +18,10 @@
 #include "serial_dbg.h"
 #include "../inc/xtask_ipc.h"
 #include "lang.h"
+#include "smiles.h"
+#include "siejc_ipc.h"
+
+
 /*
 (c) Kibab
 (r) Rst7, MasterMind, AD, Borman99
@@ -37,7 +41,7 @@ extern const unsigned int IDLE_ICON_Y;
 
 const char RESOURCE[] = "SieJC";
 const char VERSION_NAME[]= "Siemens Native Jabber Client";  // НЕ МЕНЯТЬ!
-const char VERSION_VERS[] = "2.8.8-Z";
+const char VERSION_VERS[] = "2.9.5-Z";
 const char CMP_DATE[] = __DATE__;
 #define TMR_SECOND 216
 const unsigned long PING_INTERVAL = 3*60*TMR_SECOND; // 3 минуты
@@ -52,8 +56,9 @@ const char OS[] = "SGOLD_ELF-Platform";
 #define SEND_TIMER
 #endif
 
+extern volatile int total_smiles;
 //IPC
-const char ipc_my_name[]="SieJC";
+const char ipc_my_name[32]=IPC_SIEJC_NAME;
 const char ipc_xtask_name[]=IPC_XTASK_NAME;
 IPC_REQ gipc;
 
@@ -891,6 +896,10 @@ char mypic[128];
   if(Jabber_state!=JS_ONLINE)
   {
     wsprintf(data->ws1,"%t", logmsg);
+    if (total_smiles)
+     {
+       wstrcatprintf(data->ws1,"\nLoaded %d smiles",total_smiles);
+     }    
     DrawString(data->ws1,1,SCR_START+3+GetFontYSIZE(FONT_SMALL)+2,scr_w-4,scr_h-4-16,FONT_SMALL,0,color(font_color),0);
   }
 
@@ -906,7 +915,6 @@ char mypic[128];
     DrawImg(0,70,(int)logo_path);
   }
 #endif
-
 }
 
 void onCreate(MAIN_GUI *data, void *(*malloc_adr)(int))
@@ -1103,7 +1111,17 @@ int onKey(MAIN_GUI *data, GUI_MSG *msg)
 
     case ENTER_BUTTON:
       {
-        CLIST *ActiveContact = CList_FindContactByJID(CList_GetActiveContact()->full_name);
+          LockSched();
+          extern CLIST *cltop;
+          CLIST* ClEx = cltop;
+          CLIST* ActiveContact = NULL;
+          char *gjid=CList_GetActiveContact()->full_name;
+          while(ClEx)
+          {
+            if(stristr(gjid,ClEx->JID)==gjid) ActiveContact = ClEx;
+            ClEx = ClEx->next;
+          }
+          UnlockSched();
         if (ActiveContact)
         {
           if(ActiveContact->res_list->entry_type!=T_GROUP)
@@ -1263,6 +1281,7 @@ void maincsm_oncreate(CSM_RAM *data)
   DNR_TRIES=3;
   InitGroupsList();
 
+  SUBPROC((void *)InitSmiles);
   SUBPROC((void *)create_connect);
   GBS_StartTimerProc(&Ping_Timer,PING_INTERVAL,SendPing);
 #ifdef LOG_ALL
@@ -1310,6 +1329,7 @@ void maincsm_onclose(CSM_RAM *csm)
   
   SaveConfigData(successed_config_filename);
   
+  SUBPROC((void *)FreeSmiles);
   SUBPROC((void *)end_socket);
   SUBPROC((void *)ClearSendQ);
   SUBPROC((void *)ElfKiller);
@@ -1328,7 +1348,26 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 {
   MAIN_CSM *csm=(MAIN_CSM*)data;
   {
-
+    //IPC
+    if (msg->msg==MSG_IPC)
+    {
+      IPC_REQ *ipc;
+      if ((ipc=(IPC_REQ*)msg->data0))
+      {
+	if (stricmp(ipc->name_to,ipc_my_name)==0)//strcmp_nocase
+	{
+	  switch (msg->submess)
+	  {
+	  case IPC_SMILE_PROCESSED:
+	    //Только собственные смайлы ;)
+	    if (ipc->name_from==ipc_my_name) SUBPROC((void *)ProcessNextSmile);
+	    SMART_REDRAW();
+	    break;
+	  }
+	}
+      }
+    }    
+    
 #define idlegui_id (((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])
     CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
     if (IsGuiOnTop(idlegui_id))

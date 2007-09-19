@@ -8,6 +8,8 @@
 #include "string_util.h"
 #include "serial_dbg.h"
 #include "lang.h"
+#include "../inc/pnglist.h"
+#include "smiles.h"
 
 #define MSG_START_X 1    //X-координата начала рисования строки сообщения
 
@@ -109,6 +111,16 @@ void inp_ghook(GUI *gui, int cmd)
 #ifndef NEWSGOLD
   static const SOFTKEY_DESC sk_cancel={0x0FF0,0x0000,(int)LG_CLOSE};
 #endif
+  
+  PNGTOP_DESC *pltop=PNG_TOP();
+  extern S_SMILES *s_top;
+  extern DYNPNGICONLIST *SmilesImgList;  
+
+  if (cmd==9)
+  {
+    pltop->dyn_pltop=NULL;
+  }
+  
   EDITCONTROL ec;
   if (cmd==2)
   {
@@ -127,8 +139,9 @@ void inp_ghook(GUI *gui, int cmd)
 #endif
   }
 
-  if(cmd==0xA)
+  if(cmd==0x0A)
   {
+    pltop->dyn_pltop=SmilesImgList;
     DisableIDLETMR();   // Отключаем таймер выхода по таймауту
   }
 
@@ -143,7 +156,9 @@ void inp_ghook(GUI *gui, int cmd)
       //body[xz]='\0';
       int res_len;
       char* body = malloc(wstrlen(ws_eddata)*2+1);
+      ExtractAnswer(ws_eddata);
       ws_2utf8(ws_eddata, body, &res_len, wstrlen(ws_eddata)*2+1);
+      
       body = realloc(body, res_len+1);
       body[res_len]='\0';
       char is_gchat = Resource_Ex->entry_type== T_CONF_ROOT ? 1: 0;
@@ -235,14 +250,16 @@ void Init_Message(TRESOURCE* ContEx, char *init_text)
   ws_eddata = AllocWS(MAX_MSG_LEN);
   if(init_text)
   {
-    utf8_2ws(ws_eddata, init_text, MAX_MSG_LEN);
+    //char *str = convUTF8_to_ANSI_STR(init_text);
+    ParseAnswer(ws_eddata, init_text);
+    //utf8_2ws(ws_eddata, init_text, MAX_MSG_LEN);
   }
   EDITCONTROL ec;
   void *ma=malloc_adr();
   void *eq;
   PrepareEditControl(&ec);
   eq=AllocEQueue(ma,mfree_adr());
-  ConstructEditControl(&ec,4,0x40,ws_eddata,MAX_MSG_LEN);
+  ConstructEditControl(&ec,3,0x40,ws_eddata,MAX_MSG_LEN);
   AddEditControlToEditQend(eq,&ec,ma);
   edmessage_id=CreateInputTextDialog(&inp_desc,&inp_hdr,eq,1,0);
 }
@@ -388,7 +405,7 @@ void mGUI_onRedraw(GUI *data)
                        color(MsgBgColor),
                        color(MsgBgColor));
 
-      DrawString(ml->mess,MSG_START_X,SCR_START+FontSize+2+i*FontSize,ScreenW()-1,SCR_START+FontSize+2+(i+1)*FontSize*2,MESSAGEWIN_FONT,0,color(MESSAGEWIN_CHAT_FONT),0);
+      DrawString(ml->mess, MSG_START_X,SCR_START+FontSize+2+i*FontSize,ScreenW()-1,SCR_START+FontSize+2+(i+1)*FontSize*2,MESSAGEWIN_FONT,0,color(MESSAGEWIN_CHAT_FONT),0);
       i++;
     }
     ml = ml->next;
@@ -479,15 +496,17 @@ int mGUI_onKey(GUI *data, GUI_MSG *msg)
 
     case ENTER_BUTTON:
       {
-        LOG_MESSAGE* log =GetCurMessage();
+        LOG_MESSAGE* log =GetCurMessage();      
         if(log)
         {
-          unsigned int l = strlen(log->mess);
+          char *s=log->mess;
+          utf82win(s, s);
+          unsigned int l = strlen(s);
           char *init_text = malloc(l+3+1);
           zeromem(init_text,l+3+1);
           init_text[0] = '>';
           init_text[1] = '>';
-          strcat(init_text, log->mess);
+          strcat(init_text, s);
           init_text[2+ l] = '\n';
           init_text[3+ l] = '\0';
           Init_Message(Resource_Ex, init_text);
@@ -593,6 +612,7 @@ int mGUI_onKey(GUI *data, GUI_MSG *msg)
             init_text[au_nick_len]=':';
             init_text[au_nick_len+1]=' ';
             init_text[au_nick_len+2]='\0';
+            utf82win(init_text, init_text);
             Init_Message(Resource_Ex, init_text);
             mfree(init_text);
           }
@@ -697,6 +717,7 @@ void ParseMessagesIntoList(TRESOURCE* ContEx)
     {
       temp_ws_1 = AllocWS(strlen(MessEx->mess)*2);
       utf8_2ws(temp_ws_1, MessEx->mess, strlen(MessEx->mess)*2);
+      
       //temp_ws_2 = AllocWS(CHAR_ON_LINE*2); WTF?
       temp_ws_2 = AllocWS(200); //ИМХО, так лучше
       int l=wstrlen(temp_ws_1);

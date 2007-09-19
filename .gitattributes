@@ -912,6 +912,9 @@ SieJC/roster_icons.c -text
 SieJC/roster_icons.h -text
 SieJC/serial_dbg.c -text
 SieJC/serial_dbg.h -text
+SieJC/siejc_ipc.h -text
+SieJC/smiles.h -text
+SieJC/smiles_loader.c -text
 SieJC/status_change.c -text
 SieJC/status_change.h -text
 SieJC/string_util.c -text
