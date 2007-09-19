@@ -147,7 +147,8 @@ int createIndex(void) {
   
   if (lseek(fd, foffset, S_SET, &ul, &ul) != foffset) return 0;
   
-  while ((rlen = llen = fread(fd, buff, readlen, &ul)) > 0) { 
+  while ((rlen = llen = fread(fd, buff, readlen, &ul)) > 0) {
+  	fileindex->datalen += llen;
   	switch (codetype) {
   		case 1: //ansi
   		tb = gb2unicode(buff, rlen, &rlen, &llen);
@@ -175,7 +176,6 @@ int createIndex(void) {
   	p->next->prev = p;
   	p->next->next = NULL;
   	fileindex->uc16len += rlen;
-  	fileindex->datalen += llen;
   	foffset += llen;
   	p = p->next;
   }
@@ -274,7 +274,7 @@ int gotoPos(int offset) {
 		curblock = curblock->next;
 	}
 	if (curblock) {
-		viewpos = offset - curblock->offset;
+		viewpos = (offset - curblock->offset) >> 1 << 1;
 		if (viewpos < 0) {
 			viewpos = 0;
 			offset = curblock->offset;
@@ -732,7 +732,7 @@ void mainmenu_set(void) {
 }
 
 void mainmenu_help(void) {
-  ShowMSG(1, (int)"Siemens Text Viewer v0.3\nby HanikLZ\n2007");
+  ShowMSG(1, (int)"Siemens Text Viewer v0.3f\nby HanikLZ\n2007");
 }
 
 void *mainmenu_HNDLS[9] = {
@@ -865,20 +865,11 @@ int create_menu_goto(void) {
 int saveText(void) {
 	fclose(fd, &ul);
 	fd = -1;
-	char *ext = NULL;
-  char *temp = procfile;
-  while ((temp = strrchr(temp, '.'))) {
-   	if (temp != ext) ext = temp;
-   	else break;
-  }
-  
-  if (!ext) ext = procfile;
-  
-  temp = malloc(ext - procfile + 5);
-  strncpy(temp, procfile, ext - procfile);
-  temp[ext - procfile] = '\0';
+	char temp[128];
+  strncpy(temp, procfile, strlen(procfile));
   strcat(temp, ".temp");
   
+  unlink(temp, &ul);
   fmove(procfile, temp, &ul);
   int sfd = fopen(temp, A_ReadOnly, P_READ, &ul);
   int dfd = fopen(procfile, A_ReadWrite + A_Create + A_Truncate, P_READ + P_WRITE, &ul);
@@ -939,19 +930,25 @@ int saveText(void) {
   		maxlen -= BUF_LEN;
 		}
 	}
-	mfree(tbuff);
+	
+	int addr = 0;
+	if (curblock) addr = curblock->offset + viewpos;
+	
+	/*
+	sprintf(tbuff, "%d\0", addr);
+  ShowMSG(1, (int) tbuff);
+  */
+  mfree(tbuff);
 	fclose(dfd, &ul);
 	fclose(sfd, &ul);
 	unlink(temp, &ul);
-	int addr = 0;
-	if (curblock) addr = curblock->offset + viewpos;
-	KillIndex();
 	if (loadFile(procfile)) {
 		gotoPos(addr);
 	}
 	else {
 		rlen = llen = 0;
 		ShowMSG(1, (int) "File failed!");
+		return 0;
 	}
 	return 1;
 }
