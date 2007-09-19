@@ -250,7 +250,11 @@ int GetNumberOfDialogs(void)
               wsprintf(ws,"User Java");
 	      break;
             case 0x11:
+#ifdef X75
+              wsprintf(ws,"Java: %t",GetLastJavaApplication());
+#else
               wsprintf(ws,"Java");
+#endif
 	      break; 
             case 18:
               wsprintf(ws,"E-mail client");
