@@ -1,16 +1,25 @@
 * text=auto !eol
 BalletMini/BalletMini.ewp -text
 BalletMini/BalletMini.eww -text
+BalletMini/BalletMini.txt -text
+BalletMini/ToDo.txt -text
 BalletMini/additems.c -text
 BalletMini/additems.h -text
+BalletMini/conf_loader.c -text
+BalletMini/conf_loader.h -text
+BalletMini/config_data.c -text
 BalletMini/destructors.c -text
 BalletMini/destructors.h -text
 BalletMini/display_utils.c -text
 BalletMini/display_utils.h -text
 BalletMini/func.asm -text
+BalletMini/img/BalletMini.psd -text
+BalletMini/img/BalletMini_url.psd -text
 BalletMini/img/OMS.png -text
 BalletMini/img/OMS_BIG.png -text
 BalletMini/img/OMS_SMALL.png -text
+BalletMini/img/URL_BIG.png -text
+BalletMini/img/URL_SMALL.png -text
 BalletMini/inet.c -text
 BalletMini/inet.h -text
 BalletMini/jpeglib/jconfig.h -text
@@ -21,6 +30,8 @@ BalletMini/jpeglib/jpeglib.r79 -text
 BalletMini/local_ipc.h -text
 BalletMini/main.c -text
 BalletMini/main.h -text
+BalletMini/mainmenu.c -text
+BalletMini/mainmenu.h -text
 BalletMini/parse_oms.c -text
 BalletMini/parse_oms.h -text
 BalletMini/readimg.c -text
