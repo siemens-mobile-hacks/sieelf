@@ -2,7 +2,6 @@
 __swi __arm void ShowNativeMenu();
 
 #include "..\inc\swilib.h"
-#include "..\inc\cfg_items.h"
 #include "conf_loader.h"
 #include "..\inc\xtask_ipc.h"
 
@@ -21,6 +20,20 @@ extern const int SideDNL;
 extern const int SideUPS;
 extern const int SideUPL;
 
+//extern WSHDR *resstr;
+extern TDate date;
+extern TTime time; 
+extern int sh;
+extern int sm;
+extern int ss;
+extern int sd;
+extern int nh;
+extern int nm;
+extern int ns;
+extern int nd;
+
+int my_keyhook(int submsg, int msg);
+
 int IsMediaActive(void)
 {
   char s[40];
@@ -34,17 +47,17 @@ int IsMediaActive(void)
 }
 int IsIDLE(void)
 {
-  void *icsm=FindCSMbyID(CSM_root()->idle_id);
+  CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
   if (IsGuiOnTop(((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])) return(1);
                                                            else return(0);
 }
 
+const int minus11=-11;
 
-CSM_DESC icsmd;
-int (*old_icsm_onMessage)(CSM_RAM*,GBS_MSG*);
-void (*old_icsm_onClose)(CSM_RAM*);
-
-WSHDR *ws_nogui;
+typedef struct
+{
+  CSM_RAM csm;
+}MAIN_CSM;
 
 CSM_RAM *under_idle;
 
@@ -60,14 +73,7 @@ void Idle(void)
    GBS_SendMessage(MMI_CEPID,MSG_IPC,IPC_XTASK_IDLE,&gipc);
 }
 
-//extern void kill_data(void *p, void (*func_p)(void *));
-
-//void ElfKiller(void)
-//{
-//  extern void *ELF_BEGIN;
-//  FreeWS(ws_nogui);
-//  kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
-//}
+extern void kill_data(void *p, void (*func_p)(void *));
 
 void execelf(char *exename, char *fname) //fname-параметр (имя файла), передаваемый в эльф 
 {
@@ -79,6 +85,7 @@ void execelf(char *exename, char *fname) //fname-параметр (имя файла), передавае
 // 0 - disabled key2joy function
 // 1 - enabled
 int keymode;
+
 // 0 - no press
 // 1 - lonpress Key2Joy button
 int keymode2;
@@ -86,6 +93,10 @@ int keymode2;
 // 0 - no press
 // 1 - lonpress side button
 int side_mode;
+
+// 0 - no press
+// 1 - ( Enter || Red )button was pressed on idle
+int nat_red_mode;
 
 // 0 - no press
 // 1 - long press REDBUT
@@ -101,9 +112,24 @@ int media_mode;
 
 int my_keyhook(int submsg, int msg)
 {
+  
+#ifndef NEWSGOLD
+  //Red button menu
+  extern void CreateRBMenu(void);  
+  if (IsIDLE() && (submsg==RED_BUTTON) && (msg==KEY_DOWN) && IsUnlocked()) {
+      nat_red_mode=1;
+      return(2);
+  }
+  if (IsIDLE() && (submsg==RED_BUTTON) && (msg==KEY_UP) && (nat_red_mode)){
+      CreateRBMenu();
+      nat_red_mode=0;
+      return(2);}
+    else if (nat_red_mode) nat_red_mode=0;
+#endif
+  
+  
   char s[40];
   sprintf(s,RamMediaIsPlaying());
-  
   void *icsm=FindCSMbyID(CSM_root()->idle_id);
 #ifndef NEWSGOLD
   //MediaControl
@@ -136,14 +162,20 @@ int my_keyhook(int submsg, int msg)
     }
   }
 #endif
+  
 //  Goto Native Menu
-  if ((IsGuiOnTop(((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])) && (submsg==ENTER_BUTTON) && (msg==KEY_UP) && (IsNoJava()==0)){
-      ShowNativeMenu();
+  if (IsIDLE() && (submsg==ENTER_BUTTON) && (msg==KEY_DOWN) && (IsNoJava()==0)){
+      nat_red_mode=1;
       return(2);
   }
-
+  if (IsIDLE() && (submsg==ENTER_BUTTON) && (msg==KEY_UP) && (IsNoJava()==0) && (nat_red_mode)){
+      ShowNativeMenu();
+      nat_red_mode=0;
+      return(2);}
+    else if (nat_red_mode) nat_red_mode=0;
+  
   //Side keys
-  if ((SIDE_STYLE==1) && !(IsGuiOnTop(((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4]))){
+  if ((SIDE_STYLE==1) && !(IsIDLE())){
     if ((submsg==0x14)||(submsg==0xD)){
 	GBS_SendMessage(MMI_CEPID,msg,UP_BUTTON);
 	  return(2); 
@@ -154,7 +186,7 @@ int my_keyhook(int submsg, int msg)
       }
     }
   
-    if ((SIDE_STYLE==2) && !(IsGuiOnTop(((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4]))){
+    if ((SIDE_STYLE==2) && !(IsIDLE())){
     if ((submsg==0x14)||(submsg==0xD)){
 	GBS_SendMessage(MMI_CEPID,msg,LEFT_BUTTON);
 	  return(2); 
@@ -165,7 +197,7 @@ int my_keyhook(int submsg, int msg)
       }
     }
   
-    if ((SIDE_STYLE==3) && !(IsGuiOnTop(((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4]))){
+    if ((SIDE_STYLE==3) && !(IsIDLE())){
     if ((submsg==0x14)||(submsg==0xD)){
       switch(msg){
       case KEY_DOWN: side_mode=0; return(2);
@@ -229,7 +261,7 @@ int my_keyhook(int submsg, int msg)
 
   
   //keypad2joy implementation
-  if ((keymode==1) && !(IsGuiOnTop(((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4]))){
+  if ((keymode==1) && !(IsIDLE())){
     if (submsg==0x38){
 	GBS_SendMessage(MMI_CEPID,msg,DOWN_BUTTON);
 	  return(2); 
@@ -295,11 +327,8 @@ int strcmp_nocase(const char *s1,const char *s2)
   return(i);
 }
 
-int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
+int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
 {
-  int csm_result;
-  csm_result = old_icsm_onMessage(data, msg); //Вызываем старый обработчик событий
-  
   if(msg->msg == MSG_RECONFIGURE_REQ) 
   {
     extern const char *successed_config_filename;
@@ -309,46 +338,90 @@ int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
       InitConfig();
     }
   }
-  return csm_result;  
-}
-void MyIDLECSM_onClose(CSM_RAM *data)
-{
-  extern void seqkill(void *data, void(*next_in_seq)(CSM_RAM *), void *data_to_kill, void *seqkiller);
-  extern void *ELF_BEGIN;
-  FreeWS(ws_nogui);
-  RemoveKeybMsgHook((void *)my_keyhook);
-  seqkill(data,old_icsm_onClose,&ELF_BEGIN,SEQKILLER_ADR());
+  return (1);  
 }
 
-int main(void)
+static void maincsm_oncreate(CSM_RAM *data)
+{
+
+}
+
+static void Killer(void)
+{
+  extern void *ELF_BEGIN;
+  RemoveKeybMsgHook((void *)my_keyhook);
+  kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
+}
+
+static void maincsm_onclose(CSM_RAM *csm)
+{
+  SUBPROC((void *)Killer);
+}
+
+static unsigned short maincsm_name_body[140];
+
+static const struct
+{
+  CSM_DESC maincsm;
+  WSHDR maincsm_name;
+}MAINCSM =
+{
+  {
+  maincsm_onmessage,
+  maincsm_oncreate,
+#ifdef NEWSGOLD
+  0,
+  0,
+  0,
+  0,
+#endif
+  maincsm_onclose,
+  sizeof(MAIN_CSM),
+  1,
+  &minus11
+  },
+  {
+    maincsm_name_body,
+    NAMECSM_MAGIC1,
+    NAMECSM_MAGIC2,
+    0x0,
+    139
+  }
+};
+
+static void UpdateCSMname(void)
+{
+  wsprintf((WSHDR *)(&MAINCSM.maincsm_name),"KeyMaster");
+}
+
+int main()
 {
   InitConfig();
-  LockSched();
+
   keymode=0;
   media_mode=0;
   mode_red=0;
-  /*
-  if (!AddKeybMsgHook_end((void *)my_keyhook))
-  {
-    ShowMSG(1,(int)"Невозможно зарегистрировать обработчик!");
-    SUBPROC((void *)ElfKiller);
-  }
-  else*/
-  {
-    AddKeybMsgHook((void *)my_keyhook);
-    extern const int ENA_HELLO_MSG;
-    if (ENA_HELLO_MSG) ShowMSG(1,(int)"KeyMaster установлен!");
-    {
-      CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
-      memcpy(&icsmd,icsm->constr,sizeof(icsmd));
-      old_icsm_onClose=icsmd.onClose;
-      old_icsm_onMessage=icsmd.onMessage;
-      icsmd.onClose=MyIDLECSM_onClose;
-      icsmd.onMessage=MyIDLECSM_onMessage;
-      icsm->constr=&icsmd;
-    }
-    ws_nogui=AllocWS(256);
-  }
+  GetDateTime(&date,&time);
+//  resstr=AllocWS(128);
+  ss=time.sec;
+  sh=time.hour;
+  sd=date.day;
+  sm=time.min;  
+  
+  CSM_RAM *save_cmpc;
+  char dummy[sizeof(MAIN_CSM)];
+  UpdateCSMname();
+  
+  LockSched();
+  save_cmpc=CSM_root()->csm_q->current_msg_processing_csm;
+  CSM_root()->csm_q->current_msg_processing_csm=CSM_root()->csm_q->csm.first;
+  CreateCSM(&MAINCSM.maincsm,dummy,0);
+  CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
   UnlockSched();
+  
+  AddKeybMsgHook((void *)my_keyhook);
+  extern const int ENA_HELLO_MSG;
+  if (ENA_HELLO_MSG) ShowMSG(1,(int)"KeyMaster установлен!");
+  
   return 0;
 }
