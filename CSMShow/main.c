@@ -283,7 +283,7 @@ void draw_csm_name(GUI *igui)
 {
 	WSHDR *csmname;
 	NAMELIST *nl;
-	int i=0;
+	int i=0,len,font_high;
 	nl=nltop;
 	#ifdef ELKA
 	void *canvasdata = BuildCanvas();
@@ -291,15 +291,16 @@ void draw_csm_name(GUI *igui)
 	void *idata = GetDataOfItemByID(igui, 2);
 	void *canvasdata = ((void **)idata)[DISPLACE_OF_IDLECANVAS / 4];
 	#endif
-	
+	font_high=GetFontYSIZE(CSM_FONT);
 	while (nl)
 	{
 			++i;
 			csmname=AllocWS(80);
 			wsprintf(csmname,begin_str,i);
 			wstrcat(csmname,nl->name);
-			DrawCanvas(canvasdata,CSM_X,CSM_Y+(i-1)*(GetFontYSIZE(CSM_FONT)+1),get_string_width(csmname,CSM_FONT),CSM_Y+(i)*(GetFontYSIZE(CSM_FONT)+1),1);
-			DrawString(csmname, CSM_X, CSM_Y+(i-1)*(GetFontYSIZE(CSM_FONT)+1), ScreenW(), CSM_Y+(i)*(GetFontYSIZE(CSM_FONT)+1),CSM_FONT,32,CSM_COLORS, CSM_FRAME_COLORS);
+			len=get_string_width(csmname,CSM_FONT);
+			DrawCanvas(canvasdata,CSM_X,CSM_Y+(i-1)*(font_high+1),CSM_X+len+5,CSM_Y+(i)*(font_high+1),1);
+			DrawString(csmname, CSM_X, CSM_Y+(i-1)*(font_high+1),CSM_X+len+5, CSM_Y+(i)*(font_high+1),CSM_FONT,32,CSM_COLORS, CSM_FRAME_COLORS);
 			FreeWS(csmname);
 		nl=nl->next;
 	}
