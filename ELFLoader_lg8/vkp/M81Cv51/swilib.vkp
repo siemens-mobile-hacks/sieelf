@@ -152,7 +152,7 @@
 0214: 0xA026FF99   ;  85: StrCmpNoCase
 ;218:              ;  86: ReadEEPROMData
 ;21C:              ;  87: WriteEEPROMData
-;220:              ;  88: char GetAccessoryType(void)
+0220: 0xA00A2738   ;  88: char GetAccessoryType(void)
 0224: 0xA096EC24   ;  89: GetLangMesIntoWS
 0228: 0xA0252C28   ;  8A: int GetFreeFlexSpace(int DriveNum, unsigned int *ErrorNumber)
 022C: 0xA02534DC   ;  8B: int GetTotalFlexSpace(int DriveNum, unsigned int *ErrorNumber)
