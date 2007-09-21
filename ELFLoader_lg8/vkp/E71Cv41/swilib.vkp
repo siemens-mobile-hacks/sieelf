@@ -331,7 +331,7 @@
 
 04C0: 0xA096E90D   ; 130: getRGBbyPaletteAdr(int *paletteAdr,void *dest)
 04C4: 0xA096E92B   ; 131: setColor(int a,int r,int g,int b,void *dest)
-04C8: 0xA0FF1375   ; 132: void *memmove(void *dest,const void *source,int cnt)
+04C8: 0xA0FF1374   ; 132: void *memmove(void *dest,const void *source,int cnt)
 04CC: 0xA0973339   ; 133: StoreXYWHtoRECT_2(void *RECT,int x,int y,int w,int h)
 04D0: 0xA097334F   ; 134: StoreXYXYtoRECT(void *RECT,int x,int y,int x2,int y2)
 04D4: 0xA097595F   ; 135: IsGuiOnTop(int id)
