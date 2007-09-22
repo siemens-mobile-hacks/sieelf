@@ -563,6 +563,7 @@ MidletSigner/test.xcl -text
 MidletSigner/zipstruct.h -text
 NATICQ/NATICQ.ewp -text
 NATICQ/NATICQ.eww -text
+NATICQ/NATICQ.txt -text
 NATICQ/NATICQ_IAR_old.ewp -text
 NATICQ/NATICQ_IAR_old.eww -text
 NATICQ/NatICQ/Sounds/sndGlobal.wav -text
@@ -767,6 +768,8 @@ NATICQ/smiles.h -text
 NATICQ/smiles_loader.c -text
 NATICQ/status_change.c -text
 NATICQ/status_change.h -text
+NATICQ/strings.c -text
+NATICQ/strings.h -text
 NATICQ/test.xcl -text
 PANDEMONIUM/PANDEMONIUM.ewp -text
 PANDEMONIUM/PANDEMONIUM.eww -text
