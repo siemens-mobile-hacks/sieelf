@@ -789,6 +789,14 @@ SSMS/config.c -text
 SSMS/func.asm -text
 SSMS/main.c -text
 SSMS/test.xcl -text
+ScrPic/ScrPic.ewp -text
+ScrPic/ScrPic.eww -text
+ScrPic/conf_loader.c -text
+ScrPic/conf_loader.h -text
+ScrPic/config_data.C -text
+ScrPic/func.asm -text
+ScrPic/main.C -text
+ScrPic/test.xcl -text
 SerialLib/Serial.ewp -text
 SerialLib/SerialLib.eww -text
 SerialLib/SerialTest.ewp -text
