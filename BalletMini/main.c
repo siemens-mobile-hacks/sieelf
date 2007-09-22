@@ -162,17 +162,17 @@ static void method0(VIEW_GUI *data)
         switch(connect_state)
         {
         case 1:
-          wsprintf(data->ws1,percent_t,"Соединение...");
+          wsprintf(data->ws1,percent_t,"Connection...");
           break;
         case 2:
-          wsprintf(data->ws1,percent_t,"Обработка...");
+          wsprintf(data->ws1,percent_t,"Processing...");
           break;
         case 3:
-          wsprintf(data->ws1,percent_t,"Загрузка...");
+          wsprintf(data->ws1,percent_t,"Download...");
           break;
         }
       }
-      wsprintf(data->ws2,percent_t,"Стоп");
+      wsprintf(data->ws2,percent_t,"Stop");
       
       h1=scr_h-GetFontYSIZE(FONT_MEDIUM_BOLD)-2;
       w1=scr_w-Get_WS_width(data->ws2,FONT_MEDIUM_BOLD)-2;
@@ -349,7 +349,7 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
       }
       break;
     case LEFT_BUTTON:
-      m=6;
+      m=14;
       do
       {
 	if (!LineUp(vd)) break;
@@ -362,7 +362,7 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
       }
       break;
     case RIGHT_BUTTON:
-      m=6;
+      m=14;
       do
       {
 	if (!RenderPage(vd,0)) break;
