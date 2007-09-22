@@ -360,6 +360,11 @@ LaunchElf/Launch_elf.eww -text
 LaunchElf/Launch_elf.xcl -text
 LaunchElf/additional.c -text
 LaunchElf/start_elf.bcfg -text
+Link/Link.ewp -text
+Link/Link.eww -text
+Link/Main.c -text
+Link/func.asm -text
+Link/test.xcl -text
 MC/Bookmarks.c -text
 MC/Cfg/mcfileico_s6c.cfg -text
 MC/ColorMap.c -text
