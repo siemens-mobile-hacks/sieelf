@@ -2268,6 +2268,14 @@ mini_GPS/main.c -text
 mini_GPS/mini_gps.ewp -text
 mini_GPS/mini_gps.eww -text
 mini_GPS/mini_gps.xcl -text
+openwith2/conf_loader.c -text
+openwith2/conf_loader.h -text
+openwith2/config_data.c -text
+openwith2/func.asm -text
+openwith2/main.c -text
+openwith2/openwith2.ewp -text
+openwith2/openwith2.eww -text
+openwith2/test.xcl -text
 sieGet/SieGet.ewp -text
 sieGet/SieGet.eww -text
 sieGet/Siemens.c -text
