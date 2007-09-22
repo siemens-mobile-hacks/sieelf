@@ -117,14 +117,14 @@ int my_keyhook(int submsg, int msg)
   //Red button menu
   extern void CreateRBMenu(void);  
   if (IsIDLE() && (submsg==RED_BUTTON) && (msg==KEY_DOWN) && IsUnlocked()) {
-      nat_red_mode=1;
-      return(2);
+        if (((int)GetTypeUSSD())!=8) return(0) ; else nat_red_mode=1;
+        return(2);
   }
   if (IsIDLE() && (submsg==RED_BUTTON) && (msg==KEY_UP) && (nat_red_mode)){
       CreateRBMenu();
       nat_red_mode=0;
       return(2);}
-    else if (nat_red_mode) nat_red_mode=0;
+    else if ((nat_red_mode) && (submsg==RED_BUTTON)) nat_red_mode=0;
 #endif
   
   
@@ -172,7 +172,7 @@ int my_keyhook(int submsg, int msg)
       ShowNativeMenu();
       nat_red_mode=0;
       return(2);}
-    else if (nat_red_mode) nat_red_mode=0;
+    else if ((nat_red_mode)&& (submsg==ENTER_BUTTON)) nat_red_mode=0;
   
   //Side keys
   if ((SIDE_STYLE==1) && !(IsIDLE())){
@@ -421,7 +421,7 @@ int main()
   
   AddKeybMsgHook((void *)my_keyhook);
   extern const int ENA_HELLO_MSG;
-  if (ENA_HELLO_MSG) ShowMSG(1,(int)"KeyMaster установлен!");
+  if (ENA_HELLO_MSG) ShowMSG(1,(int)"KeyMaster installed!");
   
   return 0;
 }

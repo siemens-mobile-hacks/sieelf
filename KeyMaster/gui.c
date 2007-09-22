@@ -258,10 +258,10 @@ static void mp4()
 
 static const char * const menutexts[MENU_ITEMS_NUM]=
 {
-  "Выключить",
-  "Перезагрузить",
-  "Заблокировать клавиатуру",
-  "Выключить телефон и все сигналы"
+  "Turn Off",
+  "Reboot",
+  "Lock Keyboard",
+  "Turn off the phone and all the signals"
 };
 
 static const void *menuprocs[MENU_ITEMS_NUM]=
@@ -275,8 +275,8 @@ static const void *menuprocs[MENU_ITEMS_NUM]=
 static const int menusoftkeys[] = {0,1,2};
 static const SOFTKEY_DESC menu_sk[]=
 {
-  {0x0018, 0x0000, (int)"Выбрать"},
-  {0x0001, 0x0000, (int)"Закрыть"},
+  {0x0018, 0x0000, (int)"Select"},
+  {0x0001, 0x0000, (int)"Close"},
   {0x003D, 0x0000, (int)LGP_DOIT_PIC}
 };
 
@@ -291,7 +291,7 @@ int rb_menu_onkey(void *data, GUI_MSG *msg)
   TTime t;
   TDate d;
   GetDateTime(&d,&t);
-  sprintf(&hdr2,"Меню  %02d:%02d",t.hour,t.min);
+  sprintf(&hdr2,"Menu  %02d:%02d",t.hour,t.min);
   strncpy(hdr,&hdr2,63);
   
   if ((msg->keys==0x18)||(msg->keys==0x3D))
@@ -314,7 +314,7 @@ void rb_menu_iconhndl(void *data, int curitem, void *unk)
   TTime t;
   TDate d;
   GetDateTime(&d,&t);
-  sprintf(&hdr2,"Меню  %02d:%02d",t.hour,t.min);
+  sprintf(&hdr2,"Menu  %02d:%02d",t.hour,t.min);
   strncpy(hdr,&hdr2,63);
 //  count_uptime();
   
@@ -349,7 +349,7 @@ void CreateRBMenu(void)
   TTime t;
   TDate d;
   GetDateTime(&d,&t);
-  sprintf(&hdr2,"Меню  %02d:%02d",t.hour,t.min);
+  sprintf(&hdr2,"Menu  %02d:%02d",t.hour,t.min);
   strncpy(hdr,&hdr2,63);
   CreateMultiLinesMenu(0,0,&rb_menu,&rb_menuhdr,0,MENU_ITEMS_NUM);
 }
