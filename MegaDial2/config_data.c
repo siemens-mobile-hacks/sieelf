@@ -16,12 +16,15 @@ __root const int show_number=1;
 __root const CFG_HDR cfghdr53 = {CFG_CHECKBOX,"Show more number",0,0};
 __root const int show_more_number=1;
 
-//__root const CFG_HDR cfghdr54 = {CFG_CHECKBOX,"numberx",0,0};
-//__root const int numberlist=1;
+__root const CFG_HDR cfghdr54 = {CFG_CHECKBOX,"Big font",0,0};
+__root const int big_font=1;
 
 __root const CFG_HDR cfghdr1_55={CFG_UINT,"Numberlist button",0,65535};
 __root const unsigned int CALL_BTN=VOL_UP_BUTTON;
 
+
+
+//Õñ¶¯
 __root const CFG_HDR cfghdr_m7={CFG_LEVEL,"Vibra sitting",1,0};
 
 __root const CFG_HDR cfghdr18={CFG_CHECKBOX,"Use vibra",0,0};
@@ -36,7 +39,7 @@ __root const unsigned int vibraDuration=50;
 __root const CFG_HDR cfghdr_m6={CFG_LEVEL,"",0,0};
 
 
-
+//ÑÕÉ«
 __root const CFG_HDR cfghdr_m9={CFG_LEVEL,"Color setting",1,0};
 
 __root const CFG_HDR cfghdr10={CFG_COLOR,"Color Menu background",0,99};
@@ -82,7 +85,7 @@ __root const CFG_HDR cfghdr_m8={CFG_LEVEL,"",0,0};
 
 
 
-
+//ÇøºÅÐã
 __root const CFG_HDR cfghdr_m11={CFG_LEVEL,"CodeShow",1,0};
 
 __root const CFG_HDR cfghdr30 = {CFG_CHECKBOX,"Show CodeShow",0,0};

@@ -1,6 +1,6 @@
 #include "..\inc\swilib.h"
-
 #include "conf_loader.h"
+
 
 GBSTMR tmr_scroll;
 
@@ -13,24 +13,68 @@ extern const int COLOR_NMENU_BK;
 extern const int COLOR_NMENU_BRD;
 extern const int COLOR_NOTSELECTED;
 extern const int COLOR_SELECTED;
-extern const int COLOR_NUMBER;
-extern const int COLOR_SELECTED_BG;
-extern const int COLOR_SELECTED_BRD;
-extern const int COLOR_NUMBER_BG;
-extern const int COLOR_NUMBER_BRD;
 extern const char COLOR_SEARCH_MARK[4];
 extern const char COLOR_SEARCH_UNMARK[4];
-extern const char root_dir[128];
 
 #define TMR_SECOND 216
 #define SMS_MAX_LEN  760
 
-//-------------------------------------------
-#define font_size 7
+//-------------------------------------
+//部分新增参数
+//-------------------------------------
+volatile int numx;
+int sum;
+int cs_adr=0;
+int iReadFile=0;
+int numberlist=0;
+int gLen=0;
+int count_page=7;
+int font_size;
+
+WSHDR *gwsName;
+WSHDR *gwsTemp;
+
+//通信录地址
+extern const char root_dir[128];
+
+//新增的颜色控制
+extern const int COLOR_NUMBER_BG;
+extern const int COLOR_NUMBER_BRD;
+extern const int COLOR_NUMBER;
+extern const int COLOR_SELECTED_BG;
+extern const int COLOR_SELECTED_BRD;
+
+//区号秀
+extern const int cfg_cs_adr;
+extern const int cfg_cs_enable;
+extern const int cfg_cs_part;
+extern const int cfg_cs_font_color;
+extern int GetProvAndCity(unsigned short *pBSTR, char *pNoStr);
+
+//部分功能控制
+extern const int disable_when_calling;
+extern const int show_more_number;
+extern const int show_number;
+extern const int big_font;
+
+//号码列表按键
+extern const unsigned int CALL_BTN;
+
+//字体控制
+void font(void)
+{
+    if(big_font)
+    font_size=3;
+      else
+    font_size=7;
+}
+
+//条目间距定义
 #define cfg_item_gaps 3
 
-//--------------------------------------------
-
+//24色控制
+#define color(x) (x<24)?GetPaletteAdrByColorIndex(x):(char *)(&(x))  
+//-------------------------------------------
 
 #pragma inline
 void patch_header(HEADER_DESC* head)
@@ -40,6 +84,7 @@ void patch_header(HEADER_DESC* head)
   head->rc.x2=ScreenW()-1;
   head->rc.y2=HeaderH()+YDISP;
 }
+
 #pragma inline
 void patch_input(INPUTDIA_DESC* inp)
 {
@@ -55,6 +100,7 @@ void patch_input(INPUTDIA_DESC* inp)
 #else
 #define MAX_ESTR_LEN 13
 #endif
+
 
 #ifdef NEWSGOLD
 #define MAX_RECORDS 5000
@@ -116,11 +162,6 @@ volatile CLIST *cltop; //Start
 volatile CLIST *clbot; //Con?
 char dstr[NUMBERS_MAX][40];
 
-int gLen=0;
-WSHDR *gwsName;
-
-WSHDR *gwsTemp;
-
 int menu_icons[NUMBERS_MAX];
 int utf_symbs[NUMBERS_MAX];
 
@@ -158,33 +199,13 @@ void InitIcons(void)
 }
 #endif
 
-//-------------------------------------
-//部分新增参数
-//-------------------------------------
-int cs_adr=0;
-int iReadFile=0;
-int count_page=7;
-extern const int cfg_cs_adr;
-extern const int cfg_cs_enable;
-extern const int cfg_cs_part;
-//extern const int font_size;
-//extern const int cfg_item_gaps;
-extern const int disable_when_calling;
-extern const int show_more_number;
-extern const int show_number;
-extern const unsigned int CALL_BTN;
-int numberlist=0;
-volatile int numx;
-int sum;
-extern const int cfg_cs_font_color;
-extern int GetProvAndCity(unsigned short *pBSTR, char *pNoStr);
-#define color(x) (x<24)?GetPaletteAdrByColorIndex(x):(char *)(&(x))
 
 //-------------------------------------
 //读取设置
 //-------------------------------------
 void RereadSettings()
 {
+        font();
 	int fin;
 	unsigned int ul;
 	InitConfig();
@@ -199,26 +220,26 @@ void RereadSettings()
 	}
 	else
 	{
-		iReadFile = 1;
-		if(cs_adr=(int)malloc(240*1024))
-			if ((fin=fopen("4:\\zbin\\codeshow.bin",A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
-			{
-				if (fread(fin,(void*)cs_adr,240*1024,&ul)!=240*1024)
-				{
-					mfree((void*)cs_adr);
-				}
-				fclose(fin,&ul);
-			}
-			else
-			{
-				if ((fin=fopen("0:\\zbin\\codeshow.bin",A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
-					if (fread(fin,(void*)cs_adr,240*1024,&ul)!=240*1024)
-					{
-						mfree((void*)cs_adr);
-					}
-					fclose(fin,&ul);
-			}
-		else mfree((void*)cs_adr);
+	iReadFile = 1;
+	if(cs_adr=(int)malloc(240*1024))
+	if ((fin=fopen("4:\\zbin\\codeshow.bin",A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
+	{
+		if (fread(fin,(void*)cs_adr,240*1024,&ul)!=240*1024)
+		{
+			mfree((void*)cs_adr);
+		}
+		fclose(fin,&ul);
+		}
+		else
+		{
+		if ((fin=fopen("0:\\zbin\\codeshow.bin",A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
+		if (fread(fin,(void*)cs_adr,240*1024,&ul)!=240*1024)
+		{
+			mfree((void*)cs_adr);
+		}
+		fclose(fin,&ul);
+		}
+	else mfree((void*)cs_adr);
 	}
 }
 
@@ -271,6 +292,7 @@ sub_end:
 
 void ShowSelectedCodeShow(WSHDR* pwsNum,int y1)
 {
+        font();
 	WSHDR* pwsCodeshow;
 	pwsCodeshow=AllocWS(20);
 	char pszNum[20];
@@ -291,8 +313,6 @@ void ShowSelectedCodeShow(WSHDR* pwsNum,int y1)
 sub_end:
 	FreeWS(pwsCodeshow);
 }
-
-
 
 //Destroy list 
 void FreeCLIST(void)
@@ -795,8 +815,9 @@ void DisableScroll(void)
 void my_ed_redraw(void *data)
 {
   //  WSHDR *ews=(WSHDR*)e_ws;
+  font();
   int i=curpos-2;
-  int cp,h;
+  int cp,h,z;
   int len,j=0;
   sum=0;
   char pszNum[20];
@@ -805,6 +826,17 @@ void my_ed_redraw(void *data)
   
   WSHDR *prws=AllocWS(256);
   
+  //不显示号码时输出条目数目
+  if(!show_number)
+  (big_font)?(count_page=7):(count_page=9);
+  else if(!show_more_number)
+  (big_font)?(count_page=5):(count_page=7);
+  
+  if(big_font)
+      z=42;
+  else
+      z=36;
+
   //区号秀平时输出
   if(e_ws)
   {
@@ -820,7 +852,9 @@ void my_ed_redraw(void *data)
     int y=ScreenH()-SoftkeyH()-(GetFontYSIZE(font_size)+1)*count_page;
 
     DrawRoundedFrame(1,y,ScreenW()-2,ScreenH()-SoftkeyH()+3,0,0,0,color(COLOR_MENU_BRD),color(COLOR_MENU_BK));
-    DrawRoundedFrame(1,36,ScreenW()-2,y,0,0,0,color(COLOR_NMENU_BRD),color(COLOR_NMENU_BK));
+    if(show_number)
+    DrawRoundedFrame(1,z,ScreenW()-2,y,0,0,0,color(COLOR_NMENU_BRD),color(COLOR_NMENU_BK));
+    
 
     if (i<0) cp=curpos; else cp=2;
     while(i>0)
@@ -839,8 +873,7 @@ void my_ed_redraw(void *data)
       {   
 	wstrcpy(prws,cl->name);
 	if (e_ws) CompareStrT9(prws,(WSHDR *)e_ws,1);
-	DrawString(prws,3,dy+4,ScreenW()-4,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
-        
+	DrawString(prws,3,dy+4,ScreenW()-4,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));  
         dy+=font_size+cfg_item_gaps;
 	//DrawScrollString(cl->name,3,dy+4,ScreenW()-4,dy+3+GetFontYSIZE(FONT_MEDIUM),1,FONT_MEDIUM,0x80,COLOR_NOTSELECTED,GetPaletteAdrByColorIndex(23));
       }
@@ -878,27 +911,35 @@ void my_ed_redraw(void *data)
                   int n=numx;
                   if(cfg_cs_enable &&(!cfg_cs_part))
                      {         
-                      h=26;  
+                      h=GetFontYSIZE(font_size)*2+2; 
                      }
-                  else h=13;
-                  //if(sum>1)
-                  DrawRoundedFrame(2,37+h*n,ScreenW()-3,37+h*(n+1)-1,0,0,0,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
+                  else h=GetFontYSIZE(font_size)+1;
+                  DrawRoundedFrame(2,z+h*n+1,ScreenW()-3,z+h*(n+1),0,0,0,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
                }
           
                for(j=0;j<=4;j++)
                   {
                   if(cfg_cs_enable &&(!cfg_cs_part))
-                     {         
-                      h=26;
+                     {
+                      h=GetFontYSIZE(font_size)*2+2;
+                      if(big_font)
+                      {
+                      if(sum==2) break;
+                      }
+                      else
+                      {
                       if(sum==3) break;
+                      }
                      }
-                  else h=13;              
+                  else  
+                  h=GetFontYSIZE(font_size)+1; 
+                  
                   ws_2str(cl->num[j],pszNum,20);
 	          len=strlen(pszNum);
                   if(len > 3)
                      {
-                      DrawString(cl->num[j],3,38+h*sum,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
-                      ShowSelectedCodeShow(cl->num[j],38+h*sum+font_size+cfg_item_gaps+3);
+                      DrawString(cl->num[j],3,z+h*sum+2,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
+                      ShowSelectedCodeShow(cl->num[j],z+h*sum+GetFontYSIZE(font_size)+cfg_item_gaps); 
                       sum++;
                      }
                   if(!show_more_number) 
@@ -906,57 +947,41 @@ void my_ed_redraw(void *data)
                     if(sum==1); break; 
                   }
                   }
-               
 
-                
-               
                {
                switch(sum)
                       {
-                      case 1:        
-                        if(cfg_cs_enable &&(!cfg_cs_part)) count_page=7;
-                        else count_page=8;    break;
+                      case 1:
+                        if(cfg_cs_enable &&(!cfg_cs_part)) (big_font)?(count_page=5):(count_page=7);
+                        else (big_font)?(count_page=6):(count_page=8);    break;
                       case 2:
-                        if(cfg_cs_enable &&(!cfg_cs_part)) count_page=5;
-                        else count_page=7;    break;
+                        if(cfg_cs_enable &&(!cfg_cs_part)) (big_font)?(count_page=3):(count_page=5);
+                        else (big_font)?(count_page=5):(count_page=7);    break;
                       case 3:
                         if(cfg_cs_enable &&(!cfg_cs_part)) count_page=3;
-                        else count_page=6;    break;
+                        else (big_font)?(count_page=4):(count_page=6);    break;
                       case 4:
-                        count_page=5;    break;
+                        (big_font)?(count_page=3):(count_page=5);    break;
                       case 5:
-                        count_page=4;    break;
+                        (big_font)?(count_page=2):(count_page=4) ;   break;
                       default:
                         break;                      
                        }
                }
-           }
-        
-           else 
-             count_page=9;
-        
+           }      
         dy+=font_size+cfg_item_gaps;
       }
-
-
       cl=(CLIST *)cl->next;
       i++;
     }
     while(i<count_page);
-    
-    
-    
-    
-    
+
   }
-  
-  
-  
   FreeWS(prws);
 }
 
 
-
+//屏幕参数控制
 void ChangeRC(GUI *gui)
 {
 #ifdef ELKA
@@ -983,7 +1008,6 @@ void ChangeRC(GUI *gui)
 //-------------------------------------
 //短信功能菜单
 //-------------------------------------
-
 const int menusoftkeys[]={0,1,2};
 
 const SOFTKEY_DESC menu_sk[]=
@@ -1000,7 +1024,6 @@ const SOFTKEYSTAB menu_skt=
 
 int is_sms_need=0;
 WSHDR *ews;
-
 void edsms_locret(void){}
 
 //字数计算
@@ -1019,16 +1042,16 @@ int get_word_count(GUI *data)
   if(k) 
   {
    if(len>70)
-    k=(len+65)/66;
+   k=(len+65)/66;
    else 
    k=(len+69)/70;
   }
   else 
   {
    if(len>160)
-    k=(len+151)/152;  
+   k=(len+151)/152;  
    else
-    k=(len+159)/160;
+   k=(len+159)/160;
   }
   wsprintf(gwsTemp, ": %d - %d", k, len);
   ExtractEditControl(data, 1, &ec);
@@ -1041,7 +1064,6 @@ int get_word_count(GUI *data)
   FreeWS(wsTemp);
   return len;
 }
-
 
 //按键控制
 int edsms_onkey(GUI *data, GUI_MSG *msg)
@@ -1057,6 +1079,7 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
       char szNo[40+6];
       wstrcpy(wsTemp,ec.pWS);
       
+      //小灵通号码
       if(snum[0] == '+' || snum[0] == '1')
         strcpy(szNo, snum);
       else
@@ -1067,7 +1090,7 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
     }
     else 
     {
-        #ifdef NEWSGOLD
+#ifdef NEWSGOLD
     if(msg->gbsmsg->submess==LEFT_SOFT)
 #else
     if(msg->gbsmsg->submess==RIGHT_SOFT)
@@ -1082,7 +1105,6 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
   //1: close
 }
 
-
 void edsms_ghook(GUI *data, int cmd)
 {
     if(cmd != 2)
@@ -1091,10 +1113,7 @@ void edsms_ghook(GUI *data, int cmd)
   }
 }
 
-
 HEADER_DESC edsms_hdr={0,0,0,0,NULL,(int)"Write SMS",LGP_NULL};
-
-
 
 INPUTDIA_DESC edsms_desc=
 {
@@ -1121,7 +1140,9 @@ INPUTDIA_DESC edsms_desc=
   0x40000000 // Pom? t field? videos button 
 };
 
-//短信显示输出
+//---------------------------------
+//拨号短信控制
+//---------------------------------
 void VoiceOrSMS(const char *num)
 {
 
@@ -1142,31 +1163,30 @@ void VoiceOrSMS(const char *num)
     eq=AllocEQueue(ma,mfree_adr());
     char szTemp[40+1];
 
-    
      wstrcpy(ews,gwsName);//名字
-     
+
      wsAppendChar(ews, '\n');
-     
-       if(num[0] == '+' || num[0] == '1')
-        wsprintf(gwsTemp,"%s",num);
-      else 
-        wsprintf(gwsTemp,"106%s",num);//号码
-        wstrcat(ews,gwsTemp);
-        
-        wsAppendChar(gwsTemp,'\n');
-        
-        CutWSTR(gwsTemp, 0);//复位?
-     
-        strcpy(szTemp,num);
-	GetProvAndCity(gwsTemp->wsbody,szTemp);//区号秀地址
-        wsAppendChar(ews,'\n'); 
-        wstrcat(ews, gwsTemp);
-        
-        wsAppendChar(ews,'\n'); 
-        wsAppendChar(ews, 0x5B57);
-        wsAppendChar(ews, 0x6570);
-        gLen = wstrlen(ews);  //字数输出
-        
+
+     if(num[0] == '+' || num[0] == '1')
+     wsprintf(gwsTemp,"%s",num);
+     else 
+     wsprintf(gwsTemp,"106%s",num);//号码
+     wstrcat(ews,gwsTemp);
+
+     wsAppendChar(gwsTemp,'\n');
+
+     CutWSTR(gwsTemp, 0);//复位?
+
+     strcpy(szTemp,num);
+     GetProvAndCity(gwsTemp->wsbody,szTemp);//区号秀地址
+     wsAppendChar(ews,'\n'); 
+     wstrcat(ews, gwsTemp);
+
+     wsAppendChar(ews,'\n'); 
+     wsAppendChar(ews, 0x5B57);
+     wsAppendChar(ews, 0x6570);
+     gLen = wstrlen(ews);  //字数输出
+
     ConstructEditControl(&ec,1,0x40,ews,SMS_MAX_LEN);
     AddEditControlToEditQend(eq,&ec,ma);
     //wsprintf(ews,percent_t,"");
@@ -1179,12 +1199,9 @@ void VoiceOrSMS(const char *num)
   }
 }
 
-
-
 //-------------------------------------
 //号码选择菜单
 //-------------------------------------
-
 typedef struct
 {
   void *next;
@@ -1225,7 +1242,6 @@ void gotomenu_ghook(void *data, int cmd)
     }
   }
 }
-    
 
 void gotomenu_itemhandler(void *data, int curitem, void *user_pointer)
 {
@@ -1280,7 +1296,6 @@ void ElfKiller(void)
 //-------------------------------------
 //屏幕主控
 //-------------------------------------
-
 int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 {
   int key=msg->gbsmsg->submess;
@@ -1304,16 +1319,16 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 			return 1;
 		}
 	}
-  if ((key==RIGHT_BUTTON)&&(m==KEY_DOWN))
-  {
+    if ((key==RIGHT_BUTTON)&&(m==KEY_DOWN))
+    {
     EDITCONTROL ec;
     ExtractEditControl(gui,1,&ec);
     if (ec.pWS->wsbody[0]==EDIT_GetCursorPos(gui)-1)
     {
-//      ShowMSG(1,(int)"Try to write SMS!");
+//    ShowMSG(1,(int)"Try to write SMS!");
       is_sms_need=1;
     }
-  }
+   }
   if (key==GREEN_BUTTON||is_sms_need)
   {
     DisableScroll();
@@ -1338,7 +1353,6 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
       }
       r++;
     }
-    
     while(r<NUMBERS_MAX);
     wstrcpy(gwsName, cl->name);
     if (n==1) // Only one by?
@@ -1349,7 +1363,6 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
       return(1); //Closed? at?
     }
     if (n==0) goto L_OLDKEY; //No? any phone?    //Number of rooms? more than 1, paint me 
-    
     if (numberlist==1)
     {
       int len,x=0;
@@ -1362,10 +1375,9 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
       if(len < 3)
         x++;
       }
-
       VoiceOrSMS(dstr[numx+x]);
       mfree(nltop);
-      numberlist=(numberlist==1?0:0);
+      numberlist=0;
       return(1); //Closed? at?
     }
     patch_header((HEADER_DESC *)&gotomenu_HDR);
@@ -1376,12 +1388,13 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 
   if((key==CALL_BTN)&&(m==KEY_DOWN))
   {
-     if(sum>1)
+    if(((show_more_number)&&(sum>1))||(!show_more_number))
      numberlist=(numberlist==1?0:1);
      numx=0;
- }
+  }
   if(key==RED_BUTTON)
      numberlist=(numberlist==1?0:0);
+
  //循环号码
   if ((key==UP_BUTTON)||(key==DOWN_BUTTON))
   {
@@ -1394,45 +1407,37 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
       {
          if (numberlist==1)
                    {
-                           numx--;
-                           if((numx<0)&&((sum>3)&&(cfg_cs_enable &&(!cfg_cs_part))))
-                             numx=2;
-                           else if((numx<0))
-                             numx=sum-1;  
-                          
-                     }
-
-
+                     numx--;
+                     if((numx<0)&&((sum>3)&&(cfg_cs_enable &&(!cfg_cs_part))))
+                        numx=2;
+                     else if((numx<0))
+                        numx=sum-1;       
+                    }
          else 
            {
-				if (curpos)
-					curpos--;
-				else
-				{
-					cl=(CLIST *)cltop;
-					while(cl->next)
-					{
-						curpos++;
-						cl=(CLIST *)cl->next;
-					}
-				}
+			if (curpos)
+				curpos--;
+			else
+			{
+				cl=(CLIST *)cltop;
+				while(cl->next)
+			{
+				curpos++;
+				cl=(CLIST *)cl->next;
+			}
+		}
            }
       }
       if (key==DOWN_BUTTON)
       {
          if (numberlist==1)
-                        {
+                         {
                              numx++;
                              if((sum>3)&&(cfg_cs_enable &&(!cfg_cs_part))&&(numx>2))
                              numx=0;
                              else if((numx-sum+1)>0)
                              numx=0;
-
-                    
                           }
-
-                       
-
          else
          {
         
@@ -1448,7 +1453,6 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 				}
 				if(cl)curpos=i;
 				else curpos=0;
-		
          }
       }
     }
@@ -1474,10 +1478,8 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
   L_OLDKEY:
     r=old_ed_onkey(gui,msg);
   }
-  
   ChangeRC(gui);
   return(r);
-
 }
 
 void my_ed_ghook(GUI *gui, int cmd)
