@@ -1040,6 +1040,11 @@ TurnOff/config_data_c.c -text
 TurnOff/func.asm -text
 TurnOff/main.c -text
 TurnOff/test.xcl -text
+Unrar/Main.c -text
+Unrar/Unrar.ewp -text
+Unrar/Unrar.eww -text
+Unrar/func.asm -text
+Unrar/test.xcl -text
 Weather/Weather.ewp -text
 Weather/Weather.eww -text
 Weather/Weather/0.png -text
