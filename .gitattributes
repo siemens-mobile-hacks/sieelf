@@ -1040,6 +1040,13 @@ TurnOff/config_data_c.c -text
 TurnOff/func.asm -text
 TurnOff/main.c -text
 TurnOff/test.xcl -text
+Un7z/LzmaDecode.c -text
+Un7z/LzmaDecode.h -text
+Un7z/LzmaTypes.h -text
+Un7z/Un7z.eww -text
+Un7z/func.asm -text
+Un7z/main.c -text
+Un7z/test.xcl -text
 Unrar/Main.c -text
 Unrar/Unrar.ewp -text
 Unrar/Unrar.eww -text
