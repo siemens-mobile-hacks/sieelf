@@ -342,6 +342,7 @@ LGP_TEST/LGP_TEST.ewp -text
 LGP_TEST/LGP_TEST.eww -text
 LGP_TEST/func.asm -text
 LGP_TEST/main.C -text
+LGP_TEST/test.xcl -text
 LastFM/LastFM.eww -text
 LastFM/LastFMD.ewp -text
 LastFM/Win/main.c -text
