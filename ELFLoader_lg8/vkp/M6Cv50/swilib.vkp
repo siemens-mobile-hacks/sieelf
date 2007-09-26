@@ -75,7 +75,7 @@
 00F8: 0xA0A5330D   ;  3E: LoadProcesses
 00FC: 0xA00A24B1   ;  3F: GetPaletteAdrByColorIndex
 
-0100: 0xA096950B   ;  40: GetVibraStatus
+0100: 0xA0969529   ;  40: GetVibraStatus
 0104: 0xA0AB61FB   ;  41: GetProvider
 0108: 0xA092F4A5   ;  42: IsScreenSaver
 010C: 0xA00B1A63   ;  43: IsUnlocked
