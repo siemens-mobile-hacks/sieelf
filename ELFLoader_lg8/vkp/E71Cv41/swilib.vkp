@@ -1,8 +1,8 @@
-﻿; E71C v41 lg8 - Patch made by "Smelter" (c) avkiev
+; E71C v41 lg8 - Patch made by "Smelter" ? avkiev
+; http://avkiev.kiev.ua/Siemens/Smelter/Smelter.htm
 ;********************************************************************************
-
+;(c) avkiev
 ; Functions Library
-; 2007.09.15
 
 +0074000
 #pragma enable old_equal_ff
@@ -110,7 +110,7 @@
 
 0180: 0xA070787D   ;  60: ShowMainMenu
 0184: 0xA0653C6F   ;  61: ShowNativeMenu
-;188:              ;  62: SetVibraStatus
+0188: 0xA05C58A5   ;  62: SetVibraStatus
 018C: 0xA05DAE75   ;  63: MMI_CanvasBuffer_FlushV(int CanvasID)
 0190: 0xA0975AF7   ;  64: TriggerUpdate
 ;194:              ;  65: EndCall
@@ -266,7 +266,7 @@
 ;3C8:              ;  F2: lpRAM_PIT
 ;3CC:              ;  F3: RAM_PIT_Cap
 ;3D0:              ;  F4: 
-03D4: 0xA8DF3308   ;  F5: Ram_LCD_Overlay_Layer
+03D4: 0xA8DF33C8   ;  F5: Ram_LCD_Overlay_Layer
 03D8: 0xA8E6AAD4   ;  F6: RAM_LCD_Layer_Base_Ptr
 ;3DC:              ;  F7: 
 ;3E0:              ;  F8: Additional_PIT_address
@@ -608,3 +608,6 @@
 +0       
 ;********************************************************************************
 
+
+
+;locale=chinese
