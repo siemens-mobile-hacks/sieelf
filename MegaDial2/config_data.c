@@ -5,8 +5,12 @@
 __root const CFG_HDR cfghdr0={CFG_STR_UTF8,"Address list",3,127};
 __root const char root_dir[128]="0:\\\x1F\xE7\xB3\xBB\xE7\xBB\x9F\\apo\\addr";
 
-//__root const CFG_HDR cfghdr1 = {CFG_UINT,"Font",0,9};
-//__root const int font_size=7;
+__root const CFG_HDR cfghdr54 = {CFG_CHECKBOX,"Big font",0,0};
+__root const int big_font=0;
+
+__root const CFG_HDR cfghdr30 = {CFG_CHECKBOX,"Show CodeShow",0,0};
+__root const int cfg_cs_enable=1;
+
 __root const CFG_HDR cfghdr50 = {CFG_CHECKBOX,"Disable when calling",0,0};
 __root const int disable_when_calling=1;
 
@@ -16,8 +20,8 @@ __root const int show_number=1;
 __root const CFG_HDR cfghdr53 = {CFG_CHECKBOX,"Show more number",0,0};
 __root const int show_more_number=1;
 
-__root const CFG_HDR cfghdr54 = {CFG_CHECKBOX,"Big font",0,0};
-__root const int big_font=1;
+__root const CFG_HDR cfghdr31 = {CFG_CHECKBOX,"CodeShow-Part show",0,0};
+__root const int cfg_cs_part=0;
 
 __root const CFG_HDR cfghdr1_55={CFG_UINT,"Numberlist button",0,65535};
 __root const unsigned int CALL_BTN=VOL_UP_BUTTON;
@@ -85,15 +89,8 @@ __root const char COLOR_SEARCH_UNMARK[4]={0xFF,0xFF,0xFF,0x64};
 __root const CFG_HDR cfghdr_m8={CFG_LEVEL,"",0,0};
 
 
-
 //ÇøºÅÐã
 __root const CFG_HDR cfghdr_m11={CFG_LEVEL,"CodeShow",1,0};
-
-__root const CFG_HDR cfghdr30 = {CFG_CHECKBOX,"Show CodeShow",0,0};
-__root const int cfg_cs_enable=1;
-
-__root const CFG_HDR cfghdr31 = {CFG_CHECKBOX,"Part show",0,0};
-__root const int cfg_cs_part=0;
 
 __root const CFG_HDR cfghdr32 = {CFG_COLOR,"CodeShow color",0,24};
 __root const int cfg_cs_font_color=0;

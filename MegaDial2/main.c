@@ -279,7 +279,7 @@ void ShowInputCodeShow(WSHDR* pwsNum,int y1)
 					DrawString(pwsCodeshow,
 						0,
 						y1,
-						ScreenW()-4,
+						ScreenW()-6,
 						y1+GetFontYSIZE(font_size),
 						font_size,
 						4,
@@ -306,7 +306,7 @@ void ShowSelectedCodeShow(WSHDR* pwsNum,int y1)
 	DrawString(pwsCodeshow,
 		2,
 		y1,
-		ScreenW()-3,
+		ScreenW()-6,
 		y1+GetFontYSIZE(font_size),
 		font_size,
 		4,
@@ -964,7 +964,7 @@ void my_ed_redraw(void *data)
                  }
                  else
                  {
-                  int len,j=0;
+                  int len,j,x=0;
                   for(j=0;j<=4;j++) 
                   {
                   ws_2str(cl->num[j],pszNum,20);
@@ -974,10 +974,17 @@ void my_ed_redraw(void *data)
                    sumx++;
                   }
                   }
-                  int l=GetImgWidth(menu_icons[numx]);
-                  DrawImg(3,z+1,menu_icons[numx]);
-                  DrawString(cl->num[numx],l+3,z+2,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
-                  ShowSelectedCodeShow(cl->num[numx],z+GetFontYSIZE(font_size)+cfg_item_gaps); 
+                   for(j=0;j<=numx;j++)
+                  {
+                   ws_2str(cl->num[j],pszNum,20);
+                   len=strlen(pszNum);
+                   if(len < 3)
+                   x++;
+                   }
+                  int l=GetImgWidth(menu_icons[numx+x]);
+                  DrawImg(3,z,menu_icons[numx+x]);
+                  DrawString(cl->num[numx+x],l+3,z+2,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
+                  ShowSelectedCodeShow(cl->num[numx+x],z+GetFontYSIZE(font_size)+cfg_item_gaps); 
                   if(sumx>1)
                   {
 
