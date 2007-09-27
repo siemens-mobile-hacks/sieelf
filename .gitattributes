@@ -813,6 +813,11 @@ SerialLib/main.c -text
 SerialLib/serial.asm -text
 SerialLib/serial.h -text
 SerialLib/test.xcl -text
+SieHelpMan/SieHelpMan.ewp -text
+SieHelpMan/SieHelpMan.eww -text
+SieHelpMan/func.asm -text
+SieHelpMan/main.C -text
+SieHelpMan/test.xcl -text
 SieJC/MUC_Enter_UI.c -text
 SieJC/MUC_Enter_UI.h -text
 SieJC/SieJC.ewp -text
