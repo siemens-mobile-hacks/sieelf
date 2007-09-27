@@ -1,12 +1,14 @@
 #include "..\inc\swilib.h"
 #include "conf_loader.h"
 
+//#define ELKA
+//#define NEWSGOLD
 
 GBSTMR tmr_scroll;
 
-extern const int ENA_VIBRA;
-extern const unsigned int vibraPower;
-extern const unsigned int vibraDuration;
+//extern const int ENA_VIBRA;
+//extern const unsigned int vibraPower;
+//extern const unsigned int vibraDuration;
 extern const int COLOR_MENU_BK;
 extern const int COLOR_MENU_BRD;
 extern const int COLOR_NMENU_BK;
@@ -23,7 +25,7 @@ extern const char COLOR_SEARCH_UNMARK[4];
 //部分新增参数
 //-------------------------------------
 volatile int numx;
-int sum;
+int sum,sumx;
 int cs_adr=0;
 int iReadFile=0;
 int numberlist=0;
@@ -246,7 +248,7 @@ void RereadSettings()
 //-------------------------------------
 //区号秀
 //-------------------------------------
-void ShowInputCodeShow(WSHDR* pwsNum)
+void ShowInputCodeShow(WSHDR* pwsNum,int y1)
 {
 	WSHDR* pwsCodeshow;
 	pwsCodeshow=AllocWS(20);
@@ -276,9 +278,9 @@ void ShowInputCodeShow(WSHDR* pwsNum)
 					GetProvAndCity(pwsCodeshow->wsbody,pszNum);
 					DrawString(pwsCodeshow,
 						0,
-						40,
-						128,
-						60,
+						y1,
+						ScreenW()-4,
+						y1+GetFontYSIZE(font_size),
 						font_size,
 						4,
 						color(cfg_cs_font_color),
@@ -302,9 +304,9 @@ void ShowSelectedCodeShow(WSHDR* pwsNum,int y1)
 
 	GetProvAndCity(pwsCodeshow->wsbody,pszNum);
 	DrawString(pwsCodeshow,
-		0+1+1,
+		2,
 		y1,
-		130-1-2,
+		ScreenW()-3,
 		y1+GetFontYSIZE(font_size),
 		font_size,
 		4,
@@ -818,8 +820,8 @@ void my_ed_redraw(void *data)
   font();
   int i=curpos-2;
   int cp,h,z;
-  int len,j=0;
   sum=0;
+  sumx=0;
   char pszNum[20];
   CLIST *cl=(CLIST *)cltop;
   old_ed_redraw(data);
@@ -830,17 +832,28 @@ void my_ed_redraw(void *data)
   if(!show_number)
   (big_font)?(count_page=7):(count_page=9);
   else if(!show_more_number)
+  {
+   if(cfg_cs_part)
+  (big_font)?(count_page=6):(count_page=8);
+  else
   (big_font)?(count_page=5):(count_page=7);
+  }
   
   if(big_font)
       z=42;
   else
       z=36;
 
+#ifdef ELKA
+  int csh=58;
+#else
+  int csh=40;
+#endif
+  
   //区号秀平时输出
   if(e_ws)
   {
-      ShowInputCodeShow((WSHDR*)e_ws);
+      ShowInputCodeShow((WSHDR*)e_ws,csh);
   }
 
   if (!cl) return;
@@ -898,6 +911,7 @@ void my_ed_redraw(void *data)
 	    max_scroll_disp=i;
 	  }
          }
+         
 	DrawRoundedFrame(2,dy+3,ScreenW()-3,dy+cfg_item_gaps+GetFontYSIZE(font_size)+1,0,0,0,color(COLOR_SELECTED_BRD),color(COLOR_SELECTED_BG));
 	DrawString(cl->name,3,dy+4,ScreenW()-5-icons_size,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
         //DrawScrollString(cl->name,3,dy+4,ScreenW()-5-icons_size,dy+cfg_item_gaps+GetFontYSIZE(font_size),scroll_disp+1,font_size,0x80,COLOR_SELECTED,GetPaletteAdrByColorIndex(23));
@@ -906,7 +920,9 @@ void my_ed_redraw(void *data)
         //区号秀和号码输出
         if(show_number)
         {
-                if(numberlist)
+               if(show_more_number)
+               {
+               if(numberlist)
                {
                   int n=numx;
                   if(cfg_cs_enable &&(!cfg_cs_part))
@@ -916,7 +932,7 @@ void my_ed_redraw(void *data)
                   else h=GetFontYSIZE(font_size)+1;
                   DrawRoundedFrame(2,z+h*n+1,ScreenW()-3,z+h*(n+1),0,0,0,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
                }
-          
+               int len,j=0;
                for(j=0;j<=4;j++)
                   {
                   if(cfg_cs_enable &&(!cfg_cs_part))
@@ -938,13 +954,42 @@ void my_ed_redraw(void *data)
 	          len=strlen(pszNum);
                   if(len > 3)
                      {
-                      DrawString(cl->num[j],3,z+h*sum+2,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
+                      int l=GetImgWidth(menu_icons[j]);
+                      DrawImg(3,z+h*sum,menu_icons[j]);
+                      DrawString(cl->num[j],l+3,z+h*sum+2,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
                       ShowSelectedCodeShow(cl->num[j],z+h*sum+GetFontYSIZE(font_size)+cfg_item_gaps); 
                       sum++;
                      }
-                  if(!show_more_number) 
+                  }
+                 }
+                 else
+                 {
+                  int len,j=0;
+                  for(j=0;j<=4;j++) 
                   {
-                    if(sum==1); break; 
+                  ws_2str(cl->num[j],pszNum,20);
+	          len=strlen(pszNum);
+                   if(len > 3)
+                  {
+                   sumx++;
+                  }
+                  }
+                  int l=GetImgWidth(menu_icons[numx]);
+                  DrawImg(3,z+1,menu_icons[numx]);
+                  DrawString(cl->num[numx],l+3,z+2,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
+                  ShowSelectedCodeShow(cl->num[numx],z+GetFontYSIZE(font_size)+cfg_item_gaps); 
+                  if(sumx>1)
+                  {
+
+                  }
+                 if(numberlist)
+                 {
+                  if(cfg_cs_enable &&(!cfg_cs_part))
+                     {         
+                      h=GetFontYSIZE(font_size)*2+2; 
+                     }
+                  else h=GetFontYSIZE(font_size)+1;
+                  DrawRoundedFrame(2,z+1,ScreenW()-3,z+h,0,0,0,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
                   }
                   }
 
@@ -1378,6 +1423,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
       VoiceOrSMS(dstr[numx+x]);
       mfree(nltop);
       numberlist=0;
+      numx=0;
       return(1); //Closed? at?
     }
     patch_header((HEADER_DESC *)&gotomenu_HDR);
@@ -1388,12 +1434,20 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 
   if((key==CALL_BTN)&&(m==KEY_DOWN))
   {
-    if(((show_more_number)&&(sum>1))||(!show_more_number))
+    if(show_number&&(((show_more_number)&&(sum>1))||((!show_more_number)&&(sumx>1))))
+    {
      numberlist=(numberlist==1?0:1);
      numx=0;
+    }
   }
   if(key==RED_BUTTON)
-     numberlist=(numberlist==1?0:0);
+  {
+    if(show_number)
+    {
+     numberlist=0;
+     numx=0;
+    }
+  }
 
  //循环号码
   if ((key==UP_BUTTON)||(key==DOWN_BUTTON))
@@ -1406,15 +1460,25 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
       if (key==UP_BUTTON)
       {
          if (numberlist==1)
+         {
+           if(show_more_number)
                    {
                      numx--;
                      if((numx<0)&&((sum>3)&&(cfg_cs_enable &&(!cfg_cs_part))))
                         numx=2;
-                     else if((numx<0))
+                     else if(numx<0)
                         numx=sum-1;       
                     }
+           else 
+           {
+           numx--;
+           if(numx<0)
+           numx=sumx-1;
+           }
+         }
          else 
            {
+
 			if (curpos)
 				curpos--;
 			else
@@ -1431,6 +1495,8 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
       if (key==DOWN_BUTTON)
       {
          if (numberlist==1)
+         {
+          if(show_more_number)
                          {
                              numx++;
                              if((sum>3)&&(cfg_cs_enable &&(!cfg_cs_part))&&(numx>2))
@@ -1438,9 +1504,18 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
                              else if((numx-sum+1)>0)
                              numx=0;
                           }
+          else
+          {
+            if(sumx>1)
+             numx++;
+             if((numx-sumx+1)>0)
+             numx=0;
+          }
+            
+         }
          else
          {
-        
+
 				if (cl)
 				{
 					do
@@ -1454,6 +1529,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 				if(cl)curpos=i;
 				else curpos=0;
          }
+         
       }
     }
     r=-1; //Redraw 
@@ -1585,6 +1661,7 @@ int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
       RereadSettings();
     }
   }
+  /*
   #ifdef NEWSGOLD
   if ((msg->msg==MSG_STATE_OF_CALL)&&(msg->submess==1)&&((int)msg->data0==2)&&(ENA_VIBRA))
   #else
@@ -1594,6 +1671,7 @@ int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
     SetVibration(vibraPower);
     GBS_StartTimerProc(&vibra_tmr,vibraDuration*216/1000,vibra_tmr_proc);
   }
+  */
   csm_result=old_icsm_onMessage(data,msg); //call handler old news? 
     if (IsGuiOnTop(edialgui_id)) //If EDialGui itself? Top? 
     {

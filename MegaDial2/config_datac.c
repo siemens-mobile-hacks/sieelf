@@ -16,11 +16,14 @@ __root const int show_number=1;
 __root const CFG_HDR cfghdr53 = {CFG_CHECKBOX,"多个号码显示",0,0};
 __root const int show_more_number=1;
 
+__root const CFG_HDR cfghdr54 = {CFG_CHECKBOX,"大字体",0,0};
+__root const int big_font=1;
+
 __root const CFG_HDR cfghdr1_55={CFG_UINT,"屏幕拨号控制",0,65535};
 __root const unsigned int CALL_BTN=VOL_UP_BUTTON;
 
 
-
+/*
 __root const CFG_HDR cfghdr_m7={CFG_LEVEL,"振动选项",1,0};
 
 __root const CFG_HDR cfghdr18={CFG_CHECKBOX,"使用振动",0,0};
@@ -33,6 +36,7 @@ __root const CFG_HDR cfghdr20={CFG_UINT,"持续时间(ms)",0,100};
 __root const unsigned int vibraDuration=50;
 
 __root const CFG_HDR cfghdr_m6={CFG_LEVEL,"",0,0};
+*/
 
 
 __root const CFG_HDR cfghdr_m9={CFG_LEVEL,"颜色设置",1,0};

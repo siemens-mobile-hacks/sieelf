@@ -23,7 +23,7 @@ __root const CFG_HDR cfghdr1_55={CFG_UINT,"Numberlist button",0,65535};
 __root const unsigned int CALL_BTN=VOL_UP_BUTTON;
 
 
-
+/*
 //Õñ¶¯
 __root const CFG_HDR cfghdr_m7={CFG_LEVEL,"Vibra sitting",1,0};
 
@@ -37,6 +37,7 @@ __root const CFG_HDR cfghdr20={CFG_UINT,"Vibra duration (ms)",0,100};
 __root const unsigned int vibraDuration=50;
 
 __root const CFG_HDR cfghdr_m6={CFG_LEVEL,"",0,0};
+*/
 
 
 //ÑÕÉ«
