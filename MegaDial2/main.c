@@ -825,36 +825,29 @@ void my_ed_redraw(void *data)
   
   WSHDR *prws=AllocWS(256);
   
-
-#ifdef ELKA
-  int csh=58;
-  
-   if(!show_number)
-  (big_font)?(count_page=6):(count_page=8);
+  if(!show_number)
+  (big_font)?(count_page=7):(count_page=9);
   else if(!show_more_number)
   {
-   if(cfg_cs_part)
-  (big_font)?(count_page=5):(count_page=7);
+   if(cfg_cs_part||(!cfg_cs_enable))
+  (big_font)?(count_page=6):(count_page=8);
   else
-  (big_font)?(count_page=4):(count_page=6);
+  (big_font)?(count_page=5):(count_page=7);
   }
   
+  
+#ifdef ELKA
+  if((!show_more_number)||(!show_number))
+  count_page-=1;
+  
+  int csh=58;
+    
   if(big_font)
       z=60;
   else
       z=54;
 #else
   int csh=40;
-  
-    if(!show_number)
-  (big_font)?(count_page=7):(count_page=9);
-  else if(!show_more_number)
-  {
-   if(cfg_cs_part)
-  (big_font)?(count_page=6):(count_page=8);
-  else
-  (big_font)?(count_page=5):(count_page=7);
-  }
   
   if(big_font)
       z=42;
@@ -932,40 +925,50 @@ void my_ed_redraw(void *data)
         //ÇøºÅÐãºÍºÅÂëÊä³ö
         if(show_number)
         {
-               if(show_more_number)
-               {
-               if(numberlist)
-               {
-                  int n=numx;
-                  if(cfg_cs_enable &&(!cfg_cs_part))
+               int len,j,x=0;
+               if(cfg_cs_enable &&(!cfg_cs_part))
                      {         
                       h=GetFontYSIZE(font_size)*2+2; 
                      }
-                  else h=GetFontYSIZE(font_size)+1;
+               else h=GetFontYSIZE(font_size)+1;
+               if(numberlist)
+                  {
+                   if(show_more_number)
+                   {
+                  int n=numx;
                   DrawRoundedFrame(2,z+h*n+1,ScreenW()-3,z+h*(n+1),0,0,0,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
-               }
-               int len,j=0;
+                    }
+                   else
+                  DrawRoundedFrame(2,z+1,ScreenW()-3,z+h,0,0,0,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
+                  }
+               
+               if(show_more_number)
+               {
                for(j=0;j<=4;j++)
                   {
+                  #ifdef ELKA
                   if(cfg_cs_enable &&(!cfg_cs_part))
                      {
-                      h=GetFontYSIZE(font_size)*2+2;
                       if(big_font)
-                      {
-                      if(sum==2) break;
+                    {
+                    if(sum==1) break;
+                    }
+                    else
+                    {
+                    if(sum==2) break;
+                    }
                       }
-                      else
-                      {
-                      if(sum==3) break;
-                      }
-                     }
-                  else  
-                  h=GetFontYSIZE(font_size)+1; 
-                  
-                  #ifdef ELKA
-                  if(big_font)
+                  #else
+                  if(cfg_cs_enable &&(!cfg_cs_part)) 
                   {
-                    if(sum==4) break;
+                    if(big_font)
+                    {
+                    if(sum==2) break;
+                    }
+                    else
+                    {
+                    if(sum==3) break;
+                    }
                   }
                   #endif
                   
@@ -980,46 +983,8 @@ void my_ed_redraw(void *data)
                       sum++;
                      }
                   }
-                 }
-                 else
-                 {
-                  int len,j,x=0;
-                  
-                 if(numberlist)
-                 {
-                  if(cfg_cs_enable &&(!cfg_cs_part))
-                     {         
-                      h=GetFontYSIZE(font_size)*2+2; 
-                     }
-                  else h=GetFontYSIZE(font_size)+1;
-                  DrawRoundedFrame(2,z+1,ScreenW()-3,z+h,0,0,0,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
-                  }
-                  for(j=0;j<=4;j++) 
-                  {
-                  ws_2str(cl->num[j],pszNum,20);
-	          len=strlen(pszNum);
-                   if(len > 3)
-                  {
-                   sumx++;
-                  }
-                  }
-                   for(j=0;j<=numx;j++)
-                  {
-                   ws_2str(cl->num[j],pszNum,20);
-                   len=strlen(pszNum);
-                   if(len < 3)
-                   x++;
-                   }
-                  int l=GetImgWidth(menu_icons[numx+x]);
-                  DrawImg(3,z,menu_icons[numx+x]);
-                  DrawString(cl->num[numx+x],l+3,z+2,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));
-                  ShowSelectedCodeShow(cl->num[numx+x],z+GetFontYSIZE(font_size)+cfg_item_gaps-1); 
-
-
-                  }
-
-               {
-               switch(sum)
+               
+                  switch(sum)
                       {
                       case 1:
                         if(cfg_cs_enable &&(!cfg_cs_part)) (big_font)?(count_page=5):(count_page=7);
@@ -1038,19 +1003,42 @@ void my_ed_redraw(void *data)
                         break;                      
                        }
                        #ifdef ELKA
-                         if(sum<5) 
                         count_page-=1;
                        #endif
-
-               }
-           }      
+               
+                 }
+               
+                 else
+                 { 
+                  for(j=0;j<=4;j++) 
+                  {
+                  ws_2str(cl->num[j],pszNum,20);
+	          len=strlen(pszNum);
+                  if(len > 3)
+                  {
+                   sumx++;
+                  }
+                  }
+                  
+                  for(j=0;j<=numx;j++)
+                  {
+                   ws_2str(cl->num[j],pszNum,20);
+                   len=strlen(pszNum);
+                   if(len < 3)
+                   x++;
+                  }
+                  int l=GetImgWidth(menu_icons[numx+x]);
+                  DrawImg(3,z,menu_icons[numx+x]);
+                  DrawString(cl->num[numx+x],l+3,z+2,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));
+                  ShowSelectedCodeShow(cl->num[numx+x],z+GetFontYSIZE(font_size)+cfg_item_gaps-1); 
+                  }
+           }    
         dy+=font_size+cfg_item_gaps;
       }
       cl=(CLIST *)cl->next;
       i++;
     }
     while(i<count_page);
-
   }
   FreeWS(prws);
 }
