@@ -1,9 +1,6 @@
 #include "..\inc\swilib.h"
 #include "conf_loader.h"
 
-//#define ELKA
-//#define NEWSGOLD
-
 GBSTMR tmr_scroll;
 
 //extern const int ENA_VIBRA;
@@ -30,7 +27,7 @@ int cs_adr=0;
 int iReadFile=0;
 int numberlist=0;
 int gLen=0;
-int count_page=7;
+int count_page;
 int font_size;
 
 WSHDR *gwsName;
@@ -828,8 +825,28 @@ void my_ed_redraw(void *data)
   
   WSHDR *prws=AllocWS(256);
   
-  //不显示号码时输出条目数目
-  if(!show_number)
+
+#ifdef ELKA
+  int csh=58;
+  
+   if(!show_number)
+  (big_font)?(count_page=6):(count_page=8);
+  else if(!show_more_number)
+  {
+   if(cfg_cs_part)
+  (big_font)?(count_page=5):(count_page=7);
+  else
+  (big_font)?(count_page=4):(count_page=6);
+  }
+  
+  if(big_font)
+      z=60;
+  else
+      z=54;
+#else
+  int csh=40;
+  
+    if(!show_number)
   (big_font)?(count_page=7):(count_page=9);
   else if(!show_more_number)
   {
@@ -843,11 +860,6 @@ void my_ed_redraw(void *data)
       z=42;
   else
       z=36;
-
-#ifdef ELKA
-  int csh=58;
-#else
-  int csh=40;
 #endif
   
   //区号秀平时输出
@@ -950,14 +962,21 @@ void my_ed_redraw(void *data)
                   else  
                   h=GetFontYSIZE(font_size)+1; 
                   
+                  #ifdef ELKA
+                  if(big_font)
+                  {
+                    if(sum==4) break;
+                  }
+                  #endif
+                  
                   ws_2str(cl->num[j],pszNum,20);
 	          len=strlen(pszNum);
                   if(len > 3)
                      {
                       int l=GetImgWidth(menu_icons[j]);
                       DrawImg(3,z+h*sum,menu_icons[j]);
-                      DrawString(cl->num[j],l+3,z+h*sum+2,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
-                      ShowSelectedCodeShow(cl->num[j],z+h*sum+GetFontYSIZE(font_size)+cfg_item_gaps); 
+                      DrawString(cl->num[j],l+3,z+h*sum+2,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));
+                      ShowSelectedCodeShow(cl->num[j],z+h*sum+GetFontYSIZE(font_size)+cfg_item_gaps-1); 
                       sum++;
                      }
                   }
@@ -965,6 +984,16 @@ void my_ed_redraw(void *data)
                  else
                  {
                   int len,j,x=0;
+                  
+                 if(numberlist)
+                 {
+                  if(cfg_cs_enable &&(!cfg_cs_part))
+                     {         
+                      h=GetFontYSIZE(font_size)*2+2; 
+                     }
+                  else h=GetFontYSIZE(font_size)+1;
+                  DrawRoundedFrame(2,z+1,ScreenW()-3,z+h,0,0,0,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
+                  }
                   for(j=0;j<=4;j++) 
                   {
                   ws_2str(cl->num[j],pszNum,20);
@@ -983,21 +1012,10 @@ void my_ed_redraw(void *data)
                    }
                   int l=GetImgWidth(menu_icons[numx+x]);
                   DrawImg(3,z,menu_icons[numx+x]);
-                  DrawString(cl->num[numx+x],l+3,z+2,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));
-                  ShowSelectedCodeShow(cl->num[numx+x],z+GetFontYSIZE(font_size)+cfg_item_gaps); 
-                  if(sumx>1)
-                  {
+                  DrawString(cl->num[numx+x],l+3,z+2,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));
+                  ShowSelectedCodeShow(cl->num[numx+x],z+GetFontYSIZE(font_size)+cfg_item_gaps-1); 
 
-                  }
-                 if(numberlist)
-                 {
-                  if(cfg_cs_enable &&(!cfg_cs_part))
-                     {         
-                      h=GetFontYSIZE(font_size)*2+2; 
-                     }
-                  else h=GetFontYSIZE(font_size)+1;
-                  DrawRoundedFrame(2,z+1,ScreenW()-3,z+h,0,0,0,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
-                  }
+
                   }
 
                {
@@ -1019,6 +1037,11 @@ void my_ed_redraw(void *data)
                       default:
                         break;                      
                        }
+                       #ifdef ELKA
+                         if(sum<5) 
+                        count_page-=1;
+                       #endif
+
                }
            }      
         dy+=font_size+cfg_item_gaps;
@@ -1362,6 +1385,24 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
   nlbot=(NUMLIST *)&nltop;
   
   is_sms_need=0;
+  if(key==CALL_BTN&&m==KEY_DOWN)
+  {
+    if(show_number&&(((show_more_number)&&(sum>1))||((!show_more_number)&&(sumx>1))))
+    {
+     numberlist=(numberlist==1?0:1);
+     numx=0;
+    }
+    return(-1);
+  }
+  if(key==RED_BUTTON)
+  {
+    if(show_number)
+    {
+     numberlist=0;
+     numx=0;
+    }
+  }
+  
   if(e_ws && key==ENTER_BUTTON) // "##Enter" to exit
 	{
 		if(e_ws->wsbody[0]==2&&e_ws->wsbody[1]=='#'&&e_ws->wsbody[2]=='#')
@@ -1437,23 +1478,6 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
     CreateMenu(0,0,&gotomenu_STRUCT,&gotomenu_HDR,0,n,nltop,0);
 
     return(0);
-  }
-
-  if((key==CALL_BTN)&&(m==KEY_DOWN))
-  {
-    if(show_number&&(((show_more_number)&&(sum>1))||((!show_more_number)&&(sumx>1))))
-    {
-     numberlist=(numberlist==1?0:1);
-     numx=0;
-    }
-  }
-  if(key==RED_BUTTON)
-  {
-    if(show_number)
-    {
-     numberlist=0;
-     numx=0;
-    }
   }
 
  //循环号码

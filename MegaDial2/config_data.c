@@ -2,8 +2,6 @@
 #include "..\inc\swilib.h"
 //Êîíôèãóðàö?
 
-__root const CFG_HDR cfghdr0={CFG_STR_UTF8,"Address list",3,127};
-__root const char root_dir[128]="0:\\\x1F\xE7\xB3\xBB\xE7\xBB\x9F\\apo\\addr";
 
 __root const CFG_HDR cfghdr101 = {CFG_CHECKBOX,"Big font",0,0};
 __root const int big_font=0;
@@ -18,13 +16,13 @@ __root const CFG_HDR cfghdr104 = {CFG_CHECKBOX,"Show number",0,0};
 __root const int show_number=1;
 
 __root const CFG_HDR cfghdr105 = {CFG_CHECKBOX,"Show more number",0,0};
-__root const int show_more_number=1;
+__root const int show_more_number=0;
 
-__root const CFG_HDR cfghdr106 = {CFG_CHECKBOX,"CodeShow-Part show",0,0};
+__root const CFG_HDR cfghdr106 = {CFG_CHECKBOX,"CodeShow part show",0,0};
 __root const int cfg_cs_part=0;
 
 __root const CFG_HDR cfghdr107 ={CFG_UINT,"Numberlist button",0,65535};
-__root const unsigned int CALL_BTN=VOL_UP_BUTTON;
+__root const unsigned int CALL_BTN=ENTER_BUTTON;
 
 
 /*
@@ -43,47 +41,52 @@ __root const unsigned int vibraDuration=50;
 __root const CFG_HDR cfghdr_m6={CFG_LEVEL,"",0,0};
 */
 
+//ÑÕÉ«1
+__root const CFG_HDR cfghdr_m7={CFG_LEVEL,"Numberlist color",1,0};
 
-//ÑÕÉ«
-__root const CFG_HDR cfghdr_m9={CFG_LEVEL,"Color setting",1,0};
-
-__root const CFG_HDR cfghdr110={CFG_COLOR,"Color Menu background",0,99};
-__root const int COLOR_MENU_BK=23;
-
-__root const CFG_HDR cfghdr111={CFG_COLOR,"Color Menu border",0,99};
-__root const int COLOR_MENU_BRD=1;
-
-__root const CFG_HDR cfghdr112={CFG_COLOR,"Number menu background",0,99};
+__root const CFG_HDR cfghdr110={CFG_COLOR,"Numberlist background",0,99};
 __root const int COLOR_NMENU_BK=23;
 
-__root const CFG_HDR cfghdr113={CFG_COLOR,"Number menu border",0,99};
+__root const CFG_HDR cfghdr111={CFG_COLOR,"Numberlist border",0,99};
 __root const int COLOR_NMENU_BRD=1;
 
-__root const CFG_HDR cfghdr114={CFG_COLOR,"Color Not selected",0,99};
-__root const int COLOR_NOTSELECTED=0;
-
-__root const CFG_HDR cfghdr115={CFG_COLOR,"Color Selected",0,99};
-__root const int COLOR_SELECTED=1;
-
-__root const CFG_HDR cfghdr116={CFG_COLOR,"Number color",0,99};
+__root const CFG_HDR cfghdr112={CFG_COLOR,"Number color",0,99};
 __root const int COLOR_NUMBER=0;
 
-__root const CFG_HDR cfghdr117={CFG_COLOR,"Color Selected background",0,99};
-__root const int COLOR_SELECTED_BG=7;
-
-__root const CFG_HDR cfghdr118={CFG_COLOR,"Color Selected border",0,99};
-__root const int COLOR_SELECTED_BRD=23;
-
-__root const CFG_HDR cfghdr119={CFG_COLOR,"Number selected background",0,99};
+__root const CFG_HDR cfghdr113={CFG_COLOR,"Number selected background",0,99};
 __root const int COLOR_NUMBER_BG=23;
 
-__root const CFG_HDR cfghdr120={CFG_COLOR,"Number selected border",0,99};
+__root const CFG_HDR cfghdr114={CFG_COLOR,"Number selected border",0,99};
 __root const int COLOR_NUMBER_BRD=0;
 
-__root const CFG_HDR cfghdr121={CFG_COLOR,"Color Search mark",0,99};
+__root const CFG_HDR cfghdr_m6={CFG_LEVEL,"",0,0};
+
+
+//ÑÕÉ«2
+__root const CFG_HDR cfghdr_m9={CFG_LEVEL,"Menu Color",1,0};
+
+__root const CFG_HDR cfghdr120={CFG_COLOR,"Color Menu background",0,99};
+__root const int COLOR_MENU_BK=23;
+
+__root const CFG_HDR cfghdr121={CFG_COLOR,"Color Menu border",0,99};
+__root const int COLOR_MENU_BRD=1;
+
+__root const CFG_HDR cfghdr122={CFG_COLOR,"Color Not selected",0,99};
+__root const int COLOR_NOTSELECTED=0;
+
+__root const CFG_HDR cfghdr123={CFG_COLOR,"Color Selected",0,99};
+__root const int COLOR_SELECTED=1;
+
+__root const CFG_HDR cfghdr124={CFG_COLOR,"Color Selected background",0,99};
+__root const int COLOR_SELECTED_BG=7;
+
+__root const CFG_HDR cfghdr125={CFG_COLOR,"Color Selected border",0,99};
+__root const int COLOR_SELECTED_BRD=23;
+
+__root const CFG_HDR cfghdr126={CFG_COLOR,"Color Search mark",0,99};
 __root const char COLOR_SEARCH_MARK[4]={0xFF,0x0,0x0,0x64};
 
-__root const CFG_HDR cfghdr122={CFG_COLOR,"Color Search unmark",0,0};
+__root const CFG_HDR cfghdr127={CFG_COLOR,"Color Search unmark",0,0};
 __root const char COLOR_SEARCH_UNMARK[4]={0xFF,0xFF,0xFF,0x64};
 
 __root const CFG_HDR cfghdr_m8={CFG_LEVEL,"",0,0};
@@ -99,6 +102,9 @@ __root const CFG_HDR cfghdr131 = {CFG_UINT,"CodeShow address",0,0xFFFFFFFF};
 __root const int cfg_cs_adr=0xA0CC0000;
 
 __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
+
+__root const CFG_HDR cfghdr0={CFG_STR_UTF8,"Address list",3,127};
+__root const char root_dir[128]="0:\\\x1F\xE7\xB3\xBB\xE7\xBB\x9F\\apo\\addr";
 
 
 

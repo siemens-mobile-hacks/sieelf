@@ -532,6 +532,8 @@ MegaDial/test.xcl -text
 MegaDial2/Codeshow.c -text
 MegaDial2/MegaDial.ewp -text
 MegaDial2/MegaDial.eww -text
+MegaDial2/MegaDialc.ewp -text
+MegaDial2/MegaDialc.eww -text
 MegaDial2/conf_loader.c -text
 MegaDial2/conf_loader.h -text
 MegaDial2/config_data.c -text

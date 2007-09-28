@@ -545,7 +545,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>MegaDial.elf</state>
+          <state>MegaDialc.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -1364,7 +1364,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>MegaDial_NSG.elf</state>
+          <state>MegaDialc_NSG.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -1550,7 +1550,7 @@
         </option>
         <option>
           <name>ExtraOutputFile</name>
-          <state>MegaDial.a79</state>
+          <state>MegaDialc.a79</state>
         </option>
         <option>
           <name>ExtraOutputFormat</name>
@@ -2182,7 +2182,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>MegaDial_SG.elf</state>
+          <state>MegaDialc_SG.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -2368,7 +2368,7 @@
         </option>
         <option>
           <name>ExtraOutputFile</name>
-          <state>MegaDial.a79</state>
+          <state>MegaDialc.a79</state>
         </option>
         <option>
           <name>ExtraOutputFormat</name>
@@ -3003,7 +3003,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>MegaDial_ELKA.elf</state>
+          <state>MegaDialc_ELKA.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -3189,7 +3189,7 @@
         </option>
         <option>
           <name>ExtraOutputFile</name>
-          <state>MegaDial.a79</state>
+          <state>MegaDialc.a79</state>
         </option>
         <option>
           <name>ExtraOutputFormat</name>
@@ -3285,7 +3285,7 @@
     <name>$PROJ_DIR$\conf_loader.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$\config_data.c</name>
+    <name>$PROJ_DIR$\config_datac.c</name>
     <configuration>
       <name>Release</name>
       <settings>
@@ -3297,6 +3297,7 @@
           <option>
             <name>CCDefines</name>
             <state>NDEBUG</state>
+            <state>NEWSGOLD</state>
           </option>
           <option>
             <name>CCPreprocFile</name>
@@ -3735,6 +3736,8 @@
           <option>
             <name>CCDefines</name>
             <state>NDEBUG</state>
+            <state>ELKA</state>
+            <state>NEWSGOLD</state>
           </option>
           <option>
             <name>CCPreprocFile</name>
