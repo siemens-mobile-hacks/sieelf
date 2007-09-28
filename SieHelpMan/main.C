@@ -234,7 +234,7 @@ void text_attribute(void)
   WSHDR *wsh = AllocWS(128);
   int i;
   WSHDR *wst=AllocWS(8);
-  wsprintf(wst,"256:");
+  wsprintf(wst,"256: ");
   int h_len=get_string_width(wst,FONT_SMALL);
   FreeWS(wst);
   DrawRectangle(0,24,ScreenW(),ScreenH(),0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
