@@ -1,4 +1,5 @@
 #include "..\inc\swilib.h"
+//#include "math.h"
 
 typedef struct
 {
@@ -52,14 +53,69 @@ void patch_header(const HEADER_DESC* head)
   ((HEADER_DESC*)head)->rc.y2=HeaderH()+YDISP-1;
 }
 
+#pragma inline
+int get_string_width(WSHDR *ws, int font)
+{
+  int width=0;
+  unsigned short *body=ws->wsbody;
+  int len=body[0];
+  while(len)
+  {
+    width+=GetSymbolWidth(body[len],font);
+    len--;
+  }
+  return (width);
+}
+
+#pragma inline=forced
+int toupper(int c)
+{
+  if ((c>='a')&&(c<='z')) c+='A'-'a';
+  return(c);
+}
+
+#pragma inline
+int strcmp_nocase(const char *s1,const char *s2)
+{
+  int i;
+  int c;
+  while(!(i=(c=toupper(*s1++))-toupper(*s2++))) if (!c) break;
+  return(i);
+}
+
+int pow(int x,int y)
+{
+  int z=1;
+  while(y)
+  {
+    z=z*x;
+    y--;
+  }
+  return z;
+}
+
+
+void soft_key(void)
+{
+  WSHDR *wsl = AllocWS(16);
+  WSHDR *wsr = AllocWS(16);
+  wsprintf(wsl, "Menu");
+  wsprintf(wsr, "Exit");
+  DrawString(wsl,2,ScreenH()-GetFontYSIZE(FONT_MEDIUM)-2,ScreenW(),ScreenH(),FONT_MEDIUM,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(wsr,ScreenW()-get_string_width(wsr,FONT_MEDIUM)-4,ScreenH()-GetFontYSIZE(FONT_MEDIUM)-2,ScreenW(),ScreenH(),FONT_MEDIUM,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  FreeWS(wsl);
+  FreeWS(wsr);
+}
+
 void lgp(void)
 {
   WSHDR *ws = AllocWS(256);
-  WSHDR *ws1 = AllocWS(20);
+  WSHDR *ws1 = AllocWS(16);
+  soft_key();
   wsprintf(ws1, "LGP_ID: %d",num);
   wsprintf(ws, "%t",num);
-  DrawString(ws1,5,70,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
-  DrawString(ws,5,100,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws1,5,70,ScreenW(),ScreenH(),FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws,5,100,ScreenW(),ScreenH(),FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   FreeWS(ws);
   FreeWS(ws1);
 }
@@ -67,27 +123,22 @@ void lgp(void)
 
 void keycode(int code)
 {
-  WSHDR *ws = AllocWS(20);
-  WSHDR *wsd = AllocWS(20);
-  WSHDR *wsx = AllocWS(20);
-  wsprintf(ws, "Keycode:");
-  wsprintf(wsd, "Dec: %d", code);
-  wsprintf(wsx, "Hex: %X", code);
+  WSHDR *ws = AllocWS(128);
+  wsprintf(ws, "Please long press\nLEFT SOFT KEY\nback to Menu.\n\nKeycode:\n\nDec: %d\n\nHex: %X", code, code);
   DrawRectangle(0,24,ScreenW(),ScreenH(),0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
-  DrawString(ws,5,70,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
-  DrawString(wsd,5,100,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
-  DrawString(wsx,5,130,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws,5,40,ScreenW(),ScreenH(),FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   FreeWS(ws);
-  FreeWS(wsd);
-  FreeWS(wsx);
 }
 
 void pic()
 {
   WSHDR *ws = AllocWS(50);
-  wsprintf(ws, "Num:%d(D) %X(H)\nInfo:%d(W) %d(H)",num,num,GetImgWidth(num),GetImgHeight(num));
-  DrawString(ws,5,24,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
-  DrawImg(0,24+2*GetFontYSIZE(8)+2,num);
+  int w=GetImgWidth(num);
+  int h=GetImgHeight(num);
+  soft_key();
+  wsprintf(ws, "Num:%d(D) %X(H)\nInfo:%d(W) %d(H)",num,num,w,h);
+  DrawString(ws,5,24,ScreenW(),ScreenH(),FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawImg(ScreenW()/2-w/2,(ScreenH()+24+2*GetFontYSIZE(FONT_SMALL)+2)/2-h/2,num);
   FreeWS(ws);
 }
 
@@ -106,12 +157,13 @@ void font()
   #endif
   WSHDR *ws = AllocWS(64);
   WSHDR *ws1 = AllocWS(32);
+  soft_key();
   wsprintf(ws1,"Font Size: %d",num);
-  DrawString(ws1,5,70,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws1,5,70,ScreenW(),ScreenH(),FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   if (num<0||num>font_max)
   {
     wsprintf(ws,"No such font");
-    DrawString(ws,5,100,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+    DrawString(ws,5,100,ScreenW(),ScreenH(),FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   }
   else
   {
@@ -129,16 +181,17 @@ void status(void)
   int volt=GetAkku(0,9);
   #ifdef NEWSGOLD
   #ifdef ELKA
-  char model[]="Siemens X85";
+  char model[]="Siemens ELKA";
   #else
-  char model[]="Siemens X75";
+  char model[]="Siemens NEWSGOLD";
   #endif
   #else
-  char model[]="Siemens X65";
+  char model[]="Siemens SGOLD";
   #endif
   DrawRectangle(0,24,ScreenW(),ScreenH(),0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
+  soft_key();
   wsprintf(ws_info,"Phone: %s\nNet: %c%ddB\nBts: %d-%d:%d\nC1: %d C2: %d\nTemp: %d.%d°C\nVoltage:%d.%02dV\nAccuCap: %02d%%\nCpuLoad: %d%% CpuClock: %dMHz\nRam: %u Bytes",model,(net->ch_number>=255)?'=':'-',net->power,net->ci,net->lac,net->ch_number,net->c1,net->c2,temp/10,temp%10,volt/1000,(volt%1000)/10,*RamCap(),GetCPULoad(),GetCPUClock(),GetFreeRamAvail());
-  DrawString(ws_info,5,24,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws_info,5,24,ScreenW(),ScreenH(),FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
 }
 
 
@@ -153,14 +206,15 @@ void rgb24()
 {
   WSHDR *ws1 = AllocWS(32);
   WSHDR *ws = AllocWS(32);
+  soft_key();
   wsprintf(ws1,"RGB24 COLOR: %d",num);
-  DrawString(ws1,5,70,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws1,5,70,ScreenW(),ScreenH(),FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   if (num<0||num>23)
   {
     wsprintf(ws,"No such color");
-    DrawString(ws,5,100,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+    DrawString(ws,5,100,ScreenW(),ScreenH(),FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   }
-  else DrawRoundedFrame(5,105,ScreenW()-5,ScreenH()-10,0,0,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(num));
+  else DrawRoundedFrame(5,105,ScreenW()-5,ScreenH()-GetFontYSIZE(FONT_MEDIUM)-10,0,0,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(num));
   FreeWS(ws);
   FreeWS(ws1);
 }
@@ -168,10 +222,33 @@ void rgb24()
 void sound()
 {
   WSHDR *ws = AllocWS(32);
+  soft_key();
   wsprintf(ws, "Sound Num: %d", num);
-  DrawString(ws,5,70,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
-  PlaySound(1,0,0,num,0);
+  DrawString(ws,5,70,ScreenW(),ScreenH(),FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  PlaySound(0,0,0,num,0);
   FreeWS(ws);
+}
+
+void text_attribute(void)
+{
+  WSHDR *wsh = AllocWS(128);
+  int i;
+  WSHDR *wst=AllocWS(8);
+  wsprintf(wst,"256:");
+  int h_len=get_string_width(wst,FONT_SMALL);
+  FreeWS(wst);
+  DrawRectangle(0,24,ScreenW(),ScreenH(),0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
+  soft_key();
+  wsprintf(wsh, "Text attribute: \n    1:\n    2:\n    4:\n    8:\n  16:\n  32:\n  64:\n128:\n256:");
+  DrawString(wsh,5,24,ScreenW(),ScreenH(),FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  WSHDR *ws = AllocWS(32);
+  wsprintf(ws,"Test string");
+  for(i=0;i<9;i++)
+  {
+    DrawString(ws,h_len+5,24+GetFontYSIZE(FONT_SMALL)*(i+1),ScreenW(),ScreenH(),FONT_SMALL,pow(2,i),GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(2));
+  }
+  FreeWS(ws);
+  FreeWS(wsh);
 }
 
 void onRedraw(MAIN_GUI *data)
@@ -190,6 +267,7 @@ void onRedraw(MAIN_GUI *data)
     case 4: status(); status_flag=1; break;
     case 5: rgb24(); break;
     case 6: sound(); break;
+    case 7: text_attribute(); break;
     default : flag=0; break;
   }
 }
@@ -246,43 +324,57 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
   }*/
   else
   {
-    if (msg->gbsmsg->msg==KEY_UP)                      
-    {                                                  
-      switch(msg->gbsmsg->submess)                     
-      {                                                
-        case '0': create_num(0); break;                
-        case '1': create_num(1); break;                
-        case '2': create_num(2); break;                
-        case '3': create_num(3); break;                
-        case '4': create_num(4); break;                
-        case '5': create_num(5); break;                
-        case '6': create_num(6); break;                
-        case '7': create_num(7); break;                
-        case '8': create_num(8); break;                
-        case '9': create_num(9); break;
-        case '*': num=0; REDRAW(); break;
-        case '#': num=num/10; REDRAW(); break; 
-        case UP_BUTTON: num=num+1; REDRAW(); break;    
-        case DOWN_BUTTON: num=num-1; REDRAW(); break;
-        case RIGHT_BUTTON: num=num+1; REDRAW(); break; 
-        case LEFT_BUTTON: num=num-1; REDRAW(); break;  
-        case RIGHT_SOFT: CloseCSM(MAINCSM_ID); break;
-        case LEFT_SOFT: back_to_menu(); break;
-        //default : status_flag=0; break;
-      }
+    
+    if (msg->gbsmsg->msg==KEY_UP)                        
+    {                                                    
+      switch(msg->gbsmsg->submess)                       
+      {                                                  
+        case '0':
+          if(flag!=7||flag!=4) create_num(0); break;                  
+        case '1':
+          if(flag!=7||flag!=4) create_num(1); break;                  
+        case '2': 
+          if(flag!=7||flag!=4) create_num(2); break;                  
+        case '3': 
+          if(flag!=7||flag!=4) create_num(3); break;                  
+        case '4': 
+          if(flag!=7||flag!=4) create_num(4); break;                  
+        case '5': 
+          if(flag!=7||flag!=4) create_num(5); break;                  
+        case '6': 
+          if(flag!=7||flag!=4) create_num(6); break;                  
+        case '7': 
+          if(flag!=7||flag!=4) create_num(7); break;                  
+        case '8': 
+          if(flag!=7||flag!=4) create_num(8); break;                  
+        case '9': 
+          if(flag!=7||flag!=4) create_num(9); break;  
+        case '*': 
+          if(flag!=7||flag!=4) num=0; REDRAW(); break;  
+        case '#': 
+          if(flag!=7||flag!=4) num=num/10; REDRAW(); break;   
+        case UP_BUTTON: 
+          if(flag!=7||flag!=4) num=num+1; REDRAW(); break;      
+        case DOWN_BUTTON: 
+          if(flag!=7||flag!=4) num=num-1; REDRAW(); break;  
+        case RIGHT_BUTTON: 
+          if(flag!=7||flag!=4) num=num+1; REDRAW(); break;   
+        case LEFT_BUTTON: 
+          if(flag!=7||flag!=4) num=num-1; REDRAW(); break;    
+        case RIGHT_SOFT: CloseCSM(MAINCSM_ID); break;  
+        case LEFT_SOFT: back_to_menu(); break;  
+      }  
+    }  
+    if (msg->gbsmsg->msg==LONG_PRESS)  
+    {                                                    
+      switch(msg->gbsmsg->submess)  
+      {                                                  
+        case UP_BUTTON: num=num+1; REDRAW(); break;      
+        case DOWN_BUTTON: num=num-1; REDRAW(); break;    
+        case RIGHT_BUTTON: num=num+1; REDRAW(); break;   
+        case LEFT_BUTTON: num=num-1; REDRAW(); break;    
+      }  
     }
-    if (msg->gbsmsg->msg==LONG_PRESS)
-    {                                                  
-      switch(msg->gbsmsg->submess)
-      {                                                
-        case UP_BUTTON: num=num+1; REDRAW(); break;    
-        case DOWN_BUTTON: num=num-1; REDRAW(); break;  
-        case RIGHT_BUTTON: num=num+1; REDRAW(); break; 
-        case LEFT_BUTTON: num=num-1; REDRAW(); break;  
-        //default : status_flag=0; break;
-      }
-    }
-    //if (msg->gbsmsg->msg==KEY_DOWN) status_flag=0;
   }
   return(0);
 }
@@ -318,20 +410,6 @@ void startgui(void)
 	MAINGUI_ID=CreateGUI(main_gui);
 }
 
-#pragma inline=forced
-int toupper(int c)
-{
-  if ((c>='a')&&(c<='z')) c+='A'-'a';
-  return(c);
-}
-#pragma inline
-int strcmp_nocase(const char *s1,const char *s2)
-{
-  int i;
-  int c;
-  while(!(i=(c=toupper(*s1++))-toupper(*s2++))) if (!c) break;
-  return(i);
-}
 
 
 int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
@@ -381,15 +459,16 @@ SOFTKEYSTAB menu_skt=
   menu_sk,0
 };
 
-#define ITEMS_N 8
+#define ITEMS_N 9
 
 MENUITEM_DESC menu_items[ITEMS_N]=
 {
   {NULL,(int)"SystemInfo",     LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"Picture",        LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"LGP_ID",         LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-  {NULL,(int)"Sound",         LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"Sound",          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"Font",           LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"TextAttr",  LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"RGB24",          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"KeyCode",        LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"About",          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
@@ -437,10 +516,16 @@ void sound_gui(GUI *data)
   startgui();
 }
 
+void text_attr_gui(GUI *data)
+{
+  flag=7;
+  startgui();
+}
+
 
 void about(GUI *data)
 {
-  ShowMSG(1, (int)"SieHelpMan\n(c)BingK,\nbinghelingxi\n2007");
+  ShowMSG(1, (int)"SieHelpMan\ncopyright 2007\nbinghelingxi");
 }
 
 const MENUPROCS_DESC menu_hndls[ITEMS_N]=
@@ -450,6 +535,7 @@ const MENUPROCS_DESC menu_hndls[ITEMS_N]=
   lgp_gui,
   sound_gui,
   font_gui,
+  text_attr_gui,
   rgb24_gui,
   keycode_gui,
   about,
