@@ -76,7 +76,7 @@ void selurl_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
   else
   {
     ws=AllocMenuWS(gui,10);
-    ascii2ws(ws,"Error");
+    ascii2ws(ws,"Ошибка");
   }
   SetMenuItemText(gui, item, ws, cur_item);
 }
@@ -157,8 +157,8 @@ int CreateBookmarksMenu()
 
 static const SOFTKEY_DESC input_menu_sk[]=
 {
-  {0x0018,0x0000,(int)"Go"},
-  {0x0001,0x0000,(int)"Cancel"},
+  {0x0018,0x0000,(int)"Перейти"},
+  {0x0001,0x0000,(int)"Отмена"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -168,11 +168,11 @@ static const SOFTKEYSTAB input_menu_skt=
 };
 
 
-static const HEADER_DESC input_url_hdr={0,0,0,0,NULL,(int)"Address",LGP_NULL};
+static const HEADER_DESC input_url_hdr={0,0,0,0,NULL,(int)"Адрес",LGP_NULL};
 
 static void input_url_ghook(GUI *data, int cmd)
 {
-  static SOFTKEY_DESC sk={0x0FFF,0x0000,(int)"Go"};
+  static SOFTKEY_DESC sk={0x0FFF,0x0000,(int)"Перейти"};
   if (cmd==0x0A)
   {
     DisableIDLETMR();
@@ -375,8 +375,8 @@ static const int mmenusoftkeys[]={0,1,2};
 
 static const SOFTKEY_DESC mmenu_sk[]=
 {
-  {0x0018,0x0000,(int)"Select"},
-  {0x0001,0x0000,(int)"Back"},
+  {0x0018,0x0000,(int)"Выбор"},
+  {0x0001,0x0000,(int)"Назад"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -386,14 +386,14 @@ static const SOFTKEYSTAB mmenu_skt=
 };
 
 #define MAIN_MENU_ITEMS_N 4
-static HEADER_DESC main_menuhdr={0,0,0,0,NULL,(int)"Menu",LGP_NULL};
+static HEADER_DESC main_menuhdr={0,0,0,0,NULL,(int)"Меню",LGP_NULL};
 
 static MENUITEM_DESC main_menu_ITEMS[MAIN_MENU_ITEMS_N]=
 {
-  {NULL,(int)"Go to",    LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
-  {NULL,(int)"Bookmarks",     LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //1
-  {NULL,(int)"Setting",    LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //2
-  {NULL,(int)"Quit",        LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2} //3
+  {NULL,(int)"Перейти к",    LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
+  {NULL,(int)"Закладки",     LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //1
+  {NULL,(int)"Настройки",    LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //2
+  {NULL,(int)"Выход",        LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2} //3
 };
 
 static const MENUPROCS_DESC main_menu_HNDLS[MAIN_MENU_ITEMS_N]=

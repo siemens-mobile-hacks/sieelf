@@ -162,17 +162,17 @@ static void method0(VIEW_GUI *data)
         switch(connect_state)
         {
         case 1:
-          wsprintf(data->ws1,percent_t,"Connection...");
+          wsprintf(data->ws1,percent_t,"Соединение...");
           break;
         case 2:
-          wsprintf(data->ws1,percent_t,"Processing...");
+          wsprintf(data->ws1,percent_t,"Обработка...");
           break;
         case 3:
-          wsprintf(data->ws1,percent_t,"Download...");
+          wsprintf(data->ws1,percent_t,"Загрузка...");
           break;
         }
       }
-      wsprintf(data->ws2,percent_t,"Stop");
+      wsprintf(data->ws2,percent_t,"Стоп");
       
       h1=scr_h-GetFontYSIZE(FONT_MEDIUM_BOLD)-2;
       w1=scr_w-Get_WS_width(data->ws2,FONT_MEDIUM_BOLD)-2;
@@ -299,9 +299,9 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
 	switch(rf->tag)
 	{
 	case 'L':
-	  if (rf->id)
+	  if (rf->id!=_NOREF)
 	  {
-	    strcpy(goto_url=malloc(strlen(rf->id)+1),rf->id);
+	    goto_url=extract_omstr(vd,rf->id);
 	    return 0xFF;
 	  }
 	  break;
@@ -349,7 +349,7 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
       }
       break;
     case LEFT_BUTTON:
-      m=14;
+      m=6;
       do
       {
 	if (!LineUp(vd)) break;
@@ -362,7 +362,7 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
       }
       break;
     case RIGHT_BUTTON:
-      m=14;
+      m=6;
       do
       {
 	if (!RenderPage(vd,0)) break;
@@ -414,12 +414,11 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
 	if (rf->tag=='L')
 	{
 //	  ShowMSG(0x10,(int)(rf->id));
-	  if (rf->id)
+	  if (rf->id!=_NOREF)
 	  {
-	    if (strlen(rf->id)>2)
-	    {
-	      RunOtherCopyByURL(rf->id+2);
-	    }
+	    char *s=extract_omstr(vd,rf->id);
+	    RunOtherCopyByURL(s);
+	    mfree(s);
 	  }
 	}
       }
