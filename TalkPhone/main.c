@@ -440,16 +440,21 @@ int my_keyhook(int submsg, int msg)
 {
   if (msg==LONG_PRESS)
     {
-      /*if ((submsg>='0')&&(submsg<='9')&&(!IsUnlocked()))
-        {  
-          GetDateTime(&date,&CurTime);
-          SayTime();
-        }*/
-      
-      if ((submsg==CALL_BUTTON)&&(!IsUnlocked()))
-        {  
-          GetDateTime(&date,&CurTime);
-          SayTime(PLAY_PARAM_BTN_CALL);
+      if (CALL_BUTTON)
+      {
+        if ((submsg==CALL_BUTTON)&&(!IsUnlocked()))
+          {  
+            GetDateTime(&date,&CurTime);
+            SayTime(PLAY_PARAM_BTN_CALL);
+          }        
+      }
+        else
+        {
+          if ((submsg>='0')&&(submsg<='9')&&(!IsUnlocked()))
+            {  
+              GetDateTime(&date,&CurTime);
+              SayTime(PLAY_PARAM_BTN_CALL);
+            }          
         }
     }
   
@@ -520,30 +525,13 @@ int main(void)
   
   
   
-  #ifdef NEWSGOLD
-    LockSched();
-    save_cmpc=CSM_root()->csm_q->current_msg_processing_csm;
-    CSM_root()->csm_q->current_msg_processing_csm=CSM_root()->csm_q->csm.first;
-    CreateCSM(&MAINCSM.maincsm,dummy,0);
-    CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
-    AddKeybMsgHook((void *)my_keyhook);
-    UnlockSched(); 
-  #else
-    LockSched();
-      if (!AddKeybMsgHook_end((void *)my_keyhook)) 
-      {
-        ShowMSG(1, (int) "TalkPhone. Невозможно зарегистрировать обработчик!"); 
-        SUBPROC((void *)Killer);
-      }
-      else
-      {
-        save_cmpc=CSM_root()->csm_q->current_msg_processing_csm;
-        CSM_root()->csm_q->current_msg_processing_csm=CSM_root()->csm_q->csm.first;
-        CreateCSM(&MAINCSM.maincsm,dummy,0);
-        CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
-      }
-    UnlockSched();  
-  #endif
+  LockSched();
+  save_cmpc=CSM_root()->csm_q->current_msg_processing_csm;
+  CSM_root()->csm_q->current_msg_processing_csm=CSM_root()->csm_q->csm.first;
+  CreateCSM(&MAINCSM.maincsm,dummy,0);
+  CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
+  AddKeybMsgHook((void *)my_keyhook);
+  UnlockSched(); 
   
   return 0;
 }
