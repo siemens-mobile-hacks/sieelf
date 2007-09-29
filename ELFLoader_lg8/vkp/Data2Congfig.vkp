@@ -1,9 +1,11 @@
 ;for ELFPack 2.31
-;move folder "daemons" and "etc" form data to config
+;move folder "daemons" and "img" form data to config
 ;(c)bingk
 
 ;for c6cv53,s6cv53,sl6cv50,cx6cv50,cx7cv50,m6cv50
 0x00FD86EC: 00 02
+0x00FD9888: 30 32  ;move elfpack.bcfg to 2:\ZBin\etc
 
 ;for sk6cv50,c7cv22,cx7av25
 ;0x00FD86E4: 00 02
+;0x00FD9880: 30 32 ;move elfpack.bcfg to 2:\ZBin\etc
