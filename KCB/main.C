@@ -2,10 +2,16 @@
 #include "..\inc\cfg_items.h"
 #include "conf_loader.h"
 
-#define MAX_UNICODE_STR 512
+//extern const char a[512];
+extern const char a1[60];
+extern const char a2[60];
+extern const char a3[60];
+extern const char a4[60];
+extern const char a5[60];
+extern const char a6[60];
+extern const char a7[60];
 
-extern const char a[1024];
-extern const char c[128];
+extern const char c[30];
 
 typedef struct
 {
@@ -42,16 +48,31 @@ void onRedraw(MAIN_GUI *data)
 {
   //WSHDR *ws = AllocWS(256);
   //WSHDR *ws1 = AllocWS(20);
-  WSHDR *kc = AllocWS(MAX_UNICODE_STR);
+  WSHDR *kc = AllocWS(20);
   WSHDR *bt = AllocWS(sizeof(btz));
+  WSHDR* ws = AllocWS(20);
   copy_unicode_2ws(bt, btz);
   DrawRectangle(0,0,ScreenW(),ScreenH(),0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
   DrawString(bt,1,1,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
 
+  TDate d;
+  TTime t;
+  GetDateTime(&d, &t);
+  wsprintf(ws, "%d%d:%d%d", t.hour / 10, t.hour % 10, t.min / 10, t.min % 10);
+  DrawString(ws,ScreenW()-GetFontYSIZE(FONT_SMALL_ITALIC_BOLD)*3, 2, ScreenW(), 1+GetFontYSIZE(FONT_SMALL_ITALIC_BOLD),
+              8,
+              2,
+              GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)
+             );
+   FreeWS(ws);
+  
+  
+  
+  
  int i,j;
- for(i=1;i<=8;i++)
+ for(i=0;i<=7;i++)
 {
- for(j=0;j<=9;j++)
+ for(j=0;j<=10;j++)
 {
 
   if(j==0)
@@ -61,21 +82,76 @@ void onRedraw(MAIN_GUI *data)
   //copy_unicode_2ws(kc,p+i-1);
   const char *pc;
   pc=&c[0];
-  utf8_2ws(kc,pc+(i-1)*3,3);
-  DrawString(kc,15*i,20,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  utf8_2ws(kc,pc+i*3,3);
+  DrawString(kc,16*(i+1),16,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
-  else if(i==1)
+  else if(i==0)
   {
-  wsprintf(kc,"%d",j);
-  DrawString(kc,1,21+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  wsprintf(kc,"%d",j+num);
+  DrawString(kc,1,17+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
+  /*
   else if(j>0&&i>0)
   {
   const char *pa;
   pa=&a[0];
-  utf8_2ws(kc,pa+(j-1)*3+(i-2)*27,3);
-  DrawString(kc,15*(i-1),20+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  utf8_2ws(kc,pa+(j-1)*3+(i-1)*27,3);
+  DrawString(kc,15*i,16+15*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
+  */
+  else if(j>0)
+  { 
+  if(i==1)
+  {
+  const char *pa1;
+  pa1=&a1[0];
+  utf8_2ws(kc,pa1+(j-1+num)*3,3);
+  DrawString(kc,16*i,16+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  }
+  if(i==2)
+  {
+  const char *pa2;
+  pa2=&a2[0];
+  utf8_2ws(kc,pa2+(j-1+num)*3,3);
+  DrawString(kc,16*i,16+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  }
+  if(i==3)
+  {
+  const char *pa3;
+  pa3=&a3[0];
+  utf8_2ws(kc,pa3+(j-1+num)*3,3);
+  DrawString(kc,16*i,16+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  }
+  if(i==4)
+  {
+  const char *pa4;
+  pa4=&a4[0];
+  utf8_2ws(kc,pa4+(j-1+num)*3,3);
+  DrawString(kc,16*i,16+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  }
+  if(i==5)
+  {
+  const char *pa5;
+  pa5=&a5[0];
+  utf8_2ws(kc,pa5+(j-1+num)*3,3);
+  DrawString(kc,16*i,16+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  }
+  if(i==6)
+  {
+  const char *pa6;
+  pa6=&a6[0];
+  utf8_2ws(kc,pa6+(j-1+num)*3,3);
+  DrawString(kc,16*i,16+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  }
+  if(i==7)
+  {
+  const char *pa7;
+  pa7=&a7[0];
+  utf8_2ws(kc,pa7+(j-1+num)*3,3);
+  DrawString(kc,16*i,16+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  }
+  }
+
 }
 }
   
@@ -86,8 +162,7 @@ void onRedraw(MAIN_GUI *data)
   //DrawString(ws,5,100,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   
 
-  
-  FreeWS(kc);
+    FreeWS(kc);
   //FreeWS(ws);
   //FreeWS(ws1);
 }
@@ -127,8 +202,6 @@ void create_num(int numx)
   REDRAW();
 }
 
-void Killer(void);
-
 int OnKey(MAIN_GUI *data, GUI_MSG *msg)
 {
   if (msg->gbsmsg->msg==KEY_UP)
@@ -146,11 +219,11 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
       case '8': create_num(8); break;
       case '9': create_num(9); break;
       case '*': num=0; REDRAW(); break;
-      case '#': num=num/10; REDRAW(); break;
-      case UP_BUTTON: num=num+1; REDRAW(); break;
-      case DOWN_BUTTON: num=num-1; REDRAW(); break;
-      case RIGHT_BUTTON: num=num+1; REDRAW(); break;
-      case LEFT_BUTTON: num=num-1; REDRAW(); break;
+      case '#': num=num; REDRAW(); break;
+      case UP_BUTTON: if(num!=0) num=num-10; REDRAW(); break;
+      case DOWN_BUTTON: if(num<20) num=num+10; REDRAW(); break;
+      case RIGHT_BUTTON:if(num<20) num=num+10; REDRAW(); break;
+      case LEFT_BUTTON: if(num!=0) num=num-10; REDRAW(); break;
       case RIGHT_SOFT: CloseCSM(MAINCSM_ID); break;
     }
   }
@@ -158,14 +231,20 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
   {
     switch(msg->gbsmsg->submess)
     {
-      case UP_BUTTON: num=num+1; REDRAW(); break;
-      case DOWN_BUTTON: num=num-1; REDRAW(); break;
-      case RIGHT_BUTTON: num=num+1; REDRAW(); break;
-      case LEFT_BUTTON: num=num-1; REDRAW(); break;
+      case UP_BUTTON: if(num!=0)num=num-10; REDRAW(); break;
+      case DOWN_BUTTON:if(num<20) num=num+10; REDRAW(); break;
+      case RIGHT_BUTTON:if(num<20) num=num+10; REDRAW(); break;
+      case LEFT_BUTTON:if(num!=0) num=num-10; REDRAW(); break;
     }
   }
   return(0);
 }
+
+void method7(MAIN_GUI *data, void (*mfree_adr)(void *))
+{
+  kill_data(data, mfree_adr);
+}
+
 
 int method8(void){return(0);}
 int method9(void){return(0);}
@@ -178,11 +257,12 @@ const void * const gui_methods[11]={
 	(void *)onUnfocus,	//Unfocus
 	(void *)OnKey,		//OnKey
 	0,
-	(void *)kill_data,	//Destroy
+	(void *)method7,	//Destroy
 	(void *)method8,
 	(void *)method9,
 	0
 };
+
 
 int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 {
@@ -224,15 +304,9 @@ void maincsm_oncreate(CSM_RAM *data)
 	csm->gui_id=CreateGUI(main_gui);
 }
 
-void Killer(void)
-{
-  extern void *ELF_BEGIN;
-  kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
-}
-
 void maincsm_onclose(CSM_RAM *csm)
 {
-  SUBPROC((void *)Killer);
+
 }
 
 const int minus11=-11;
@@ -269,15 +343,15 @@ sizeof(MAIN_CSM),
 
 void UpdateCSMname(void) 
 {
-  wsprintf((WSHDR *)(&MAINCSM.maincsm_name), "LGP Test");
+  wsprintf((WSHDR *)(&MAINCSM.maincsm_name), "Kcb");
 }
 
 int main()
 {
+  LockSched();
   char dummy[sizeof(MAIN_CSM)];
   UpdateCSMname();
   InitConfig(); 
-  LockSched();
   MAINCSM_ID=CreateCSM(&MAINCSM.maincsm,dummy,0);
   UnlockSched();
   return 0;
