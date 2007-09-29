@@ -189,6 +189,7 @@ ELFLoader_lg8/vkp/CX7Av25/swilib.vkp -text
 ELFLoader_lg8/vkp/CX7Cv50/ELFLoader_CX7Cv50.vkp -text
 ELFLoader_lg8/vkp/CX7Cv50/patch_esi_bl.txt -text
 ELFLoader_lg8/vkp/CX7Cv50/swilib.vkp -text
+ELFLoader_lg8/vkp/Data2Congfig.vkp -text
 ELFLoader_lg8/vkp/E71Cv41/API.vkp -text
 ELFLoader_lg8/vkp/E71Cv41/swilib.vkp -text
 ELFLoader_lg8/vkp/ELC1v41/ELFLoader_ELC1v41.vkp -text
