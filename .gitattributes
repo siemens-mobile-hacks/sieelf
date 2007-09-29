@@ -1042,6 +1042,15 @@ TalkPhone/config_data.c -text
 TalkPhone/func.asm -text
 TalkPhone/main.c -text
 TalkPhone/test.xcl -text
+TalkPhoneND/TalkPhone.h -text
+TalkPhoneND/TalkPhoneND.ewp -text
+TalkPhoneND/TalkPhoneND.eww -text
+TalkPhoneND/conf_loader.c -text
+TalkPhoneND/conf_loader.h -text
+TalkPhoneND/config_data.c -text
+TalkPhoneND/func.asm -text
+TalkPhoneND/main.c -text
+TalkPhoneND/test.xcl -text
 TextInfo/TextInfo.ewp -text
 TextInfo/TextInfo.eww -text
 TextInfo/TextInfo.h -text
