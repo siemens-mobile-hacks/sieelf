@@ -767,6 +767,8 @@ NATICQ/NatICQ/ximg_qip/6.png -text
 NATICQ/NatICQ/ximg_qip/7.png -text
 NATICQ/NatICQ/ximg_qip/8.png -text
 NATICQ/NatICQ/ximg_qip/9.png -text
+NATICQ/cl_work.c -text
+NATICQ/cl_work.h -text
 NATICQ/conf_loader.c -text
 NATICQ/conf_loader.h -text
 NATICQ/config_data.c -text
@@ -779,8 +781,11 @@ NATICQ/main.c -text
 NATICQ/main.h -text
 NATICQ/mainmenu.c -text
 NATICQ/mainmenu.h -text
+NATICQ/manage_cl.c -text
+NATICQ/manage_cl.h -text
 NATICQ/naticq.h -text
 NATICQ/naticq_ipc.h -text
+NATICQ/rect_patcher.h -text
 NATICQ/revision.h -text
 NATICQ/smiles.h -text
 NATICQ/smiles_loader.c -text

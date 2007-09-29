@@ -9,25 +9,10 @@
 #include "status_change.h"
 #include "language.h"
 #include "revision.h"
+#include "manage_cl.h"
+#include "rect_patcher.h"
+#include "cl_work.h"
 
-//==============================================================================
-// ELKA Compatibility
-#pragma inline
-static void patch_header(const HEADER_DESC* head)
-{
-  ((HEADER_DESC*)head)->rc.x=0;
-  ((HEADER_DESC*)head)->rc.y=YDISP;
-  ((HEADER_DESC*)head)->rc.x2=ScreenW()-1;
-  ((HEADER_DESC*)head)->rc.y2=HeaderH()-1+YDISP;
-}
-#pragma inline
-static void patch_input(const INPUTDIA_DESC* inp)
-{
-  ((INPUTDIA_DESC*)inp)->rc.x=0;
-  ((INPUTDIA_DESC*)inp)->rc.y=HeaderH()+1+YDISP;
-  ((INPUTDIA_DESC*)inp)->rc.x2=ScreenW()-1;
-  ((INPUTDIA_DESC*)inp)->rc.y2=ScreenH()-SoftkeyH()-1;
-}
 //==============================================================================
 int MainMenu_ID;
 
@@ -38,103 +23,7 @@ extern int *XStatusesIconArray;
 extern  int S_ICONS[];
 extern const SOFTKEYSTAB menu_skt;
 
-static void ac_locret(void){}
 
-static int ac_onkey(GUI *data, GUI_MSG *msg)
-{
-  TPKT *p;
-  char num[10];
-  if (msg->keys==0xFFF)
-  {
-    if (connect_state==3)
-    {
-      int len;
-      unsigned int uin;
-      EDITCONTROL ec;
-      ExtractEditControl(data,2,&ec);
-      if ((len=ec.pWS->wsbody[0]))
-      {
-        ws_2str(ec.pWS,num,9);
-        num[len]=0;
-        uin=strtoul(num,0,10);
-        if(uin)
-        {
-          p=malloc(sizeof(PKT)+len);
-          p->pkt.uin=uin;
-          p->pkt.type=T_ADDCONTACT;
-          p->pkt.data_len=len;
-          strncpy(p->data,num,len);
-          SUBPROC((void *)SendAnswer,0,p);
-          return (1);          
-        }
-      }      
-    }
-  }
-  return(0);
-}
-       
-static void ac_ghook(GUI *data, int cmd)
-{
-  static SOFTKEY_DESC sk={0x0FFF,0x0000,(int)LG_ADD};
-  if (cmd==0x0A)
-  {
-    DisableIDLETMR();
-  }
-  if (cmd==7)
-  {
-    SetSoftKey(data,&sk,SET_SOFT_KEY_N);
-  }
-}
-
-static const HEADER_DESC ac_hdr={0,0,NULL,NULL,NULL,(int)LG_ADDCNT,LGP_NULL};
-
-
-static const INPUTDIA_DESC ac_desc=
-{
-  1,
-  ac_onkey,
-  ac_ghook,
-  (void *)ac_locret,
-  0,
-  &menu_skt,
-  {0,NULL,NULL,NULL},
-  4,
-  100,
-  101,
-  2,
-  //  0x00000001 - Выровнять по правому краю
-  //  0x00000002 - Выровнять по центру
-  //  0x00000004 - Инверсия знакомест
-  //  0x00000008 - UnderLine
-  //  0x00000020 - Не переносить слова
-  //  0x00000200 - bold
-  0,
-  //  0x00000002 - ReadOnly
-  //  0x00000004 - Не двигается курсор
-  //  0x40000000 - Поменять местами софт-кнопки
-  0x40000000
-};
-
-
-static void AddContactMenu(void)
-{
-  void *ma=malloc_adr();
-  void *eq;
-  EDITCONTROL ec;
-  WSHDR *ews=AllocWS(256);
-  PrepareEditControl(&ec);
-  eq=AllocEQueue(ma,mfree_adr());
-  ascii2ws(ews, LG_ENTERUIN);
-  ConstructEditControl(&ec,1,0x40,ews,ews->wsbody[0]);
-  AddEditControlToEditQend(eq,&ec,ma);
-  ConstructEditControl(&ec,ECT_NORMAL_NUM,ECF_APPEND_EOL|ECF_DISABLE_MINUS|ECF_DISABLE_POINT,0,9);
-  AddEditControlToEditQend(eq,&ec,ma);
-  patch_header(&ac_hdr);
-  patch_input(&ac_desc);
-  CreateInputTextDialog(&ac_desc,&ac_hdr,eq,1,0);
-  FreeWS(ews);
-  GeneralFuncF1(1);
-}
 
 extern int Is_Vibra_Enabled;
 extern unsigned int Is_Sounds_Enabled; 
@@ -145,12 +34,14 @@ extern int Is_Show_Groups;
 static void ChangeVibraMode(void)
 {
   Is_Vibra_Enabled=!(Is_Vibra_Enabled);
+  SUBPROC((void*)WriteDefSettings);
   RefreshGUI();
 }
   
 static void ChangeSoundMode(void)
 {
   Is_Sounds_Enabled=!(Is_Sounds_Enabled);
+  SUBPROC((void*)WriteDefSettings);
   RefreshGUI();
 }
 
@@ -158,6 +49,7 @@ static void ChangeShowOfflineMode(void)
 {
   void RecountMenu(CLIST *req);
   Is_Show_Offline=!(Is_Show_Offline);
+  SUBPROC((void*)WriteDefSettings);
   RecountMenu(NULL);
   RefreshGUI();
 }
@@ -166,6 +58,7 @@ static void ChangeShowGroupsMode(void)
 {
   void RecountMenu(CLIST *req);
   Is_Show_Groups=!(Is_Show_Groups);
+  SUBPROC((void*)WriteDefSettings);
   
   extern volatile CLIST *cltop;
   CLIST *t;
@@ -186,7 +79,8 @@ static void ChangeShowGroupsMode(void)
           if (t->isgroup) t->state=0xFFFF;
           t=t->next;
         }      
-    }        
+    }
+  ResortCL();
   RecountMenu(NULL);
   RefreshGUI();
 }
@@ -235,7 +129,7 @@ static const char * const menutexts[11]=
 {
   LG_MNUSTATUS,
   LG_MNUXSTATUS,
-  LG_MNUADDCONT,
+  LG_MANAGELIST,
   LG_MNUVIBRA,
   LG_MNUSOUND,
   LG_MNUSHOWOFF,
@@ -261,7 +155,7 @@ static const void *menuprocs[11]=
 {
   (void *)DispStatusChangeMenu,
   (void *)DispXStatusChangeMenu,
-  (void *)AddContactMenu,
+  (void *)CreateManageCLMenu,
   (void *)ChangeVibraMode,
   (void *)ChangeSoundMode,
   (void *)ChangeShowOfflineMode,

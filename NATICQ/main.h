@@ -3,12 +3,20 @@
 
 // Общие функции модуля MAIN.C
 void SendAnswer(int dummy, TPKT *p);
-void ascii2ws(WSHDR *ws, const char *s);
 void CreateEditChat(CLIST *t);
 void set_my_status(void);
 void set_my_xstatus(void);
 
+
+void ReadDefSettings(void);
+void WriteDefSettings(void);
 extern int connect_state;
+
+int GetIconIndex(CLIST *t);
+
+
+void FreeLOGQ(LOGQ **pp);
+
 
 typedef struct
 {
@@ -19,12 +27,31 @@ typedef struct
   int loaded_templates;
 }EDCHAT_STRUCT;
 
+#pragma pack(push)
+#pragma pack(1)
+typedef struct{
+  unsigned char
+  vibra_status:1,
+  sound_status:1,
+  off_contacts:1,
+  show_groups:1;
+  char def_status;
+  char def_xstatus;
+}DEF_SETTINGS;
+#pragma pack(pop)
+
 extern unsigned long  strtoul (const char *nptr,char **endptr,int base);
 
 
 //void patch_header(HEADER_DESC* head);
 //void patch_input(INPUTDIA_DESC* inp);
 
+
+#define PL_ALL_CAN_SEE 0
+#define PL_NOBODY_CAN_SEE 1
+#define PL_VISLIST_CAN_SEE 2
+#define PL_INVISLIST_CANNOT_SEE 3
+#define PL_CONTACTLIST_CAN_SEE 4
 
 
 // Константы операций (взаимодействие с сервером шлюза)
@@ -61,5 +88,11 @@ extern unsigned long  strtoul (const char *nptr,char **endptr,int base);
 #define T_XTEXT_ACK 25
 #define T_XTEXT_SET 26
 
+#define T_ADDCONTACT_WITH_GRP 27
+
+#define T_ADDGROUP 28
+#define T_ADDIGNORE 29
+#define T_SETPRIVACY 30
+#define T_LASTPRIVACY 31
 
 #endif
