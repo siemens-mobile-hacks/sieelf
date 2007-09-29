@@ -132,7 +132,7 @@
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>14</version>
+        <version>13</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -342,11 +342,6 @@
         <option>
           <name>CCStdIncludePath</name>
           <state>$TOOLKIT_DIR$\INC\</state>
-        </option>
-        <option>
-          <name>CCInlineThreshold</name>
-          <version>0</version>
-          <state>1</state>
         </option>
       </data>
     </settings>
@@ -955,13 +950,12 @@
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>14</version>
+        <version>13</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
           <name>CCDefines</name>
-          <state>NEWSGOLD</state>
-          <state>ELKA</state>
+          <state>NDEBUG</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -977,15 +971,15 @@
         </option>
         <option>
           <name>CCListCFile</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCListCMnemonics</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCListCMessages</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCListAssFile</name>
@@ -1021,7 +1015,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeed</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCOptimization</name>
@@ -1031,7 +1025,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>1011111</state>
+          <state>1111111</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -1103,7 +1097,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>$FILE_BNAME$.r79</state>
+          <state></state>
         </option>
         <option>
           <name>CCLangSelect</name>
@@ -1115,7 +1109,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeedSlave</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCOptimizationSlave</name>
@@ -1165,12 +1159,7 @@
         </option>
         <option>
           <name>CCStdIncludePath</name>
-          <state>$TOOLKIT_DIR$\INC\</state>
-        </option>
-        <option>
-          <name>CCInlineThreshold</name>
-          <version>0</version>
-          <state>1</state>
+          <state>###Uninitialized###</state>
         </option>
       </data>
     </settings>
@@ -1779,7 +1768,7 @@
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>14</version>
+        <version>13</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -1800,15 +1789,15 @@
         </option>
         <option>
           <name>CCListCFile</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCListCMnemonics</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCListCMessages</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCListAssFile</name>
@@ -1844,7 +1833,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeed</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCOptimization</name>
@@ -1854,7 +1843,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>1011111</state>
+          <state>1111111</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -1938,7 +1927,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeedSlave</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCOptimizationSlave</name>
@@ -1989,11 +1978,6 @@
         <option>
           <name>CCStdIncludePath</name>
           <state>$TOOLKIT_DIR$\INC\</state>
-        </option>
-        <option>
-          <name>CCInlineThreshold</name>
-          <version>0</version>
-          <state>1</state>
         </option>
       </data>
     </settings>
@@ -2602,12 +2586,12 @@
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>14</version>
+        <version>13</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
           <name>CCDefines</name>
-          <state>NEWSGOLD</state>
+          <state>NDEBUG</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -2623,15 +2607,15 @@
         </option>
         <option>
           <name>CCListCFile</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCListCMnemonics</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCListCMessages</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCListAssFile</name>
@@ -2667,7 +2651,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeed</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCOptimization</name>
@@ -2677,7 +2661,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>1011111</state>
+          <state>1111111</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -2749,7 +2733,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>$FILE_BNAME$.r79</state>
+          <state></state>
         </option>
         <option>
           <name>CCLangSelect</name>
@@ -2761,7 +2745,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeedSlave</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCOptimizationSlave</name>
@@ -2811,12 +2795,7 @@
         </option>
         <option>
           <name>CCStdIncludePath</name>
-          <state>$TOOLKIT_DIR$\INC\</state>
-        </option>
-        <option>
-          <name>CCInlineThreshold</name>
-          <version>0</version>
-          <state>1</state>
+          <state>###Uninitialized###</state>
         </option>
       </data>
     </settings>

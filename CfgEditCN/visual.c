@@ -358,6 +358,9 @@ void method0_2(MAIN_GUI_2 *data)
     DrawLine(start_column,y_line,start_column+column_width,y_line,0,black);
   }
   setColor(data->r,data->g,data->b,data->a,data->testcolor);
+  if((data->r<24)&&(data->a==0))
+  DrawRoundedFrame(scr_w-17,1,scr_w-2,16,2,2,0,black,GetPaletteAdrByColorIndex(data->r));
+  else
   DrawRoundedFrame(scr_w-17,1,scr_w-2,16,2,2,0,black,data->testcolor);
 
 }
