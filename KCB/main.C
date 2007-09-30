@@ -48,13 +48,24 @@ void onRedraw(MAIN_GUI *data)
 {
   //WSHDR *ws = AllocWS(256);
   //WSHDR *ws1 = AllocWS(20);
+  int w=16;
+  int h=16;
+  //WSHDR *kc1 = AllocWS(20);
+  //WSHDR *kc2 = AllocWS(20);
+  //WSHDR *kc3 = AllocWS(20);
+  //WSHDR *kc4 = AllocWS(20);
+  //WSHDR *kc5 = AllocWS(20);
+  //WSHDR *kc6 = AllocWS(20);
+  //WSHDR *kc7 = AllocWS(20);
   WSHDR *kc = AllocWS(20);
+  //WSHDR *kc0 = AllocWS(20);
   WSHDR *bt = AllocWS(sizeof(btz));
   WSHDR* ws = AllocWS(20);
   copy_unicode_2ws(bt, btz);
   DrawRectangle(0,0,ScreenW(),ScreenH(),0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
   DrawString(bt,1,1,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
 
+  
   TDate d;
   TTime t;
   GetDateTime(&d, &t);
@@ -64,17 +75,19 @@ void onRedraw(MAIN_GUI *data)
               2,
               GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)
              );
-   FreeWS(ws);
+   
+
+  DrawRoundedFrame(w*(GetWeek(&d)+1)-1,h-1,w*(GetWeek(&d)+1)+GetFontYSIZE(FONT_SMALL_ITALIC_BOLD)+3,h-1+GetFontYSIZE(FONT_SMALL_ITALIC_BOLD)+3,2,2,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(2)); 
   
-  
-  
-  
+
  int i,j;
  for(i=0;i<=7;i++)
 {
  for(j=0;j<=10;j++)
 {
 
+  DrawLine(w*(i+1)-1,h+14,w*(i+1)-1,h+14*11,0,GetPaletteAdrByColorIndex(0));
+  DrawLine(w-1,h+14*(j+1),w*8-1,h+14*(j+1),0,GetPaletteAdrByColorIndex(0));
   if(j==0)
   {
   //unsigned short *p;
@@ -83,12 +96,12 @@ void onRedraw(MAIN_GUI *data)
   const char *pc;
   pc=&c[0];
   utf8_2ws(kc,pc+i*3,3);
-  DrawString(kc,16*(i+1),16,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  DrawString(kc,w*(i+1),h,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
   else if(i==0)
   {
   wsprintf(kc,"%d",j+num);
-  DrawString(kc,1,17+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  DrawString(kc,0,h+3+14*j,GetFontYSIZE(FONT_SMALL_ITALIC_BOLD),ScreenH(),8,4,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
   /*
   else if(j>0&&i>0)
@@ -101,54 +114,55 @@ void onRedraw(MAIN_GUI *data)
   */
   else if(j>0)
   { 
+  
   if(i==1)
   {
   const char *pa1;
   pa1=&a1[0];
   utf8_2ws(kc,pa1+(j-1+num)*3,3);
-  DrawString(kc,16*i,16+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  DrawString(kc,w*i,h+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
   if(i==2)
   {
   const char *pa2;
   pa2=&a2[0];
   utf8_2ws(kc,pa2+(j-1+num)*3,3);
-  DrawString(kc,16*i,16+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  DrawString(kc,w*i,h+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
   if(i==3)
   {
   const char *pa3;
   pa3=&a3[0];
   utf8_2ws(kc,pa3+(j-1+num)*3,3);
-  DrawString(kc,16*i,16+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  DrawString(kc,w*i,h+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
   if(i==4)
   {
   const char *pa4;
   pa4=&a4[0];
   utf8_2ws(kc,pa4+(j-1+num)*3,3);
-  DrawString(kc,16*i,16+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  DrawString(kc,w*i,h+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
   if(i==5)
   {
   const char *pa5;
   pa5=&a5[0];
   utf8_2ws(kc,pa5+(j-1+num)*3,3);
-  DrawString(kc,16*i,16+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  DrawString(kc,w*i,h+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
   if(i==6)
   {
   const char *pa6;
   pa6=&a6[0];
   utf8_2ws(kc,pa6+(j-1+num)*3,3);
-  DrawString(kc,16*i,16+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  DrawString(kc,w*i,h+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
   if(i==7)
   {
   const char *pa7;
   pa7=&a7[0];
   utf8_2ws(kc,pa7+(j-1+num)*3,3);
-  DrawString(kc,16*i,16+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  DrawString(kc,w*i,h+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
   }
 
@@ -161,7 +175,8 @@ void onRedraw(MAIN_GUI *data)
   //DrawString(ws1,5,70,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   //DrawString(ws,5,100,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   
-
+    FreeWS(bt);
+    FreeWS(ws);
     FreeWS(kc);
   //FreeWS(ws);
   //FreeWS(ws1);
