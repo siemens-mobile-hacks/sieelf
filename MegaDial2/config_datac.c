@@ -86,10 +86,13 @@ __root const int COLOR_SELECTED_BG=7;
 __root const CFG_HDR cfghdr125={CFG_COLOR,"选择条边框",0,99};
 __root const int COLOR_SELECTED_BRD=23;
 
-__root const CFG_HDR cfghdr126={CFG_COLOR,"快选标识",0,99};
+__root const CFG_HDR cfghdr126={CFG_COLOR,"滚动条颜色",0,99};
+__root const int COLOR_SCROLLBAR=0;  
+
+__root const CFG_HDR cfghdr127={CFG_COLOR,"快选标识",0,0};
 __root const char COLOR_SEARCH_MARK[4]={0xFF,0x0,0x0,0x64};
 
-__root const CFG_HDR cfghdr127={CFG_COLOR,"快选未标识",0,0};
+__root const CFG_HDR cfghdr128={CFG_COLOR,"快选未标识",0,0};
 __root const char COLOR_SEARCH_UNMARK[4]={0xFF,0xFF,0xFF,0x64};
 
 __root const CFG_HDR cfghdr_m8={CFG_LEVEL,"",0,0};
@@ -111,6 +114,9 @@ __root const CFG_HDR cfghdr133 = {CFG_UINT,"IP号码",0,0xFFFFFFFF};
 __root const int cfg_ip_number = 17951;
 
 __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
+
+
+
 
 
 

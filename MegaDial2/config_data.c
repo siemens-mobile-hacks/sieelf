@@ -89,10 +89,13 @@ __root const int COLOR_SELECTED_BG=7;
 __root const CFG_HDR cfghdr125={CFG_COLOR,"Color Selected border",0,99};
 __root const int COLOR_SELECTED_BRD=23;
 
-__root const CFG_HDR cfghdr126={CFG_COLOR,"Color Search mark",0,99};
+__root const CFG_HDR cfghdr126={CFG_COLOR,"Color ScrollBar",0,99};
+__root const int COLOR_SCROLLBAR=0;  
+
+__root const CFG_HDR cfghdr127={CFG_COLOR,"Color Search mark",0,0};
 __root const char COLOR_SEARCH_MARK[4]={0xFF,0x0,0x0,0x64};
 
-__root const CFG_HDR cfghdr127={CFG_COLOR,"Color Search unmark",0,0};
+__root const CFG_HDR cfghdr128={CFG_COLOR,"Color Search unmark",0,0};
 __root const char COLOR_SEARCH_UNMARK[4]={0xFF,0xFF,0xFF,0x64};
 
 __root const CFG_HDR cfghdr_m8={CFG_LEVEL,"",0,0};
