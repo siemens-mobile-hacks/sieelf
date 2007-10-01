@@ -46,7 +46,11 @@ typedef struct
   int y_pos;
   int x2_pos;
   int y2_pos;
-  void *rect_or_xy;
+  union
+  {
+    unsigned int *xy;
+    RECT *rc;
+  };
   int cstep;
 }RECT_GUI;
 
@@ -58,7 +62,7 @@ typedef struct
   int g;
   int b;
   int a;
-  char* color;
+  char *color;
   int current_column;
   char testcolor[4];
   int cstep;
@@ -82,27 +86,25 @@ void method0_rect(RECT_GUI *data)
   int scr_w=ScreenW();
   int scr_h=ScreenH();
   
-  DrawRectangle(0,0,scr_w-1,scr_h-1,0,white,white);
-  // Нарисуем сетк
-  for (int y_0=0; y_0< scr_h;y_0+=10)
+  DrawRectangle(0,YDISP,scr_w-1,scr_h-1,0,white,white);
+  for (int y_0=YDISP; y_0< scr_h;y_0+=10)
   {
     DrawLine(0,y_0,scr_w-1,y_0,1,colors[3]);
   }  
   for (int x_0=0; x_0<scr_w;x_0+=10)
   {
-    DrawLine(x_0,0,x_0, scr_h-1,1,colors[3]);
+    DrawLine(x_0,YDISP,x_0, scr_h-1,1,colors[3]);
   }
   
   
   if (data->is_rect_needed)
   {
-    RECT *rc=data->rect_or_xy;
-    DrawRoundedFrame(rc->x,rc->y,rc->x2,rc->y2,
+    DrawRoundedFrame(data->rc->x,data->rc->y,data->rc->x2,data->rc->y2,
                      0,0,0,colors[3],transparent); // Предыдущий рект
     if (data->is_first_set)
     {
       DrawRoundedFrame(data->x2_pos,data->y2_pos,data->x_pos,data->y_pos,
-                     0,0,0,black,transparent);
+                       0,0,0,black,transparent);
       wsprintf(data->ws1,"%u,%u,%u,%u",data->x2_pos,data->y2_pos,data->x_pos,data->y_pos); 
     }
     else
@@ -173,7 +175,6 @@ int method5_rect(RECT_GUI *data, GUI_MSG *msg)
        case ENTER_BUTTON:
          if (data->is_rect_needed)
          {
-           RECT *rc=data->rect_or_xy;
            if (!data->is_first_set)
            {
              data->x2_pos=data->x_pos;
@@ -182,18 +183,17 @@ int method5_rect(RECT_GUI *data, GUI_MSG *msg)
            }
            else
            {
-             rc->x=data->x2_pos;
-             rc->y=data->y2_pos;
-             rc->x2=data->x_pos;
-             rc->y2=data->y_pos;
+             data->rc->x=data->x2_pos;
+             data->rc->y=data->y2_pos;
+             data->rc->x2=data->x_pos;
+             data->rc->y2=data->y_pos;
              return (1);
            }
          }
          else
          {
-           unsigned int *xy_pos=data->rect_or_xy;
-           xy_pos[0]=data->x_pos;
-           xy_pos[1]=data->y_pos;
+           data->xy[0]=data->x_pos;
+           data->xy[1]=data->y_pos;
            return (1);
          }
        }
@@ -206,21 +206,21 @@ int method5_rect(RECT_GUI *data, GUI_MSG *msg)
     case '1':
       if ((data->x_pos-=data->cstep)<0)
         data->x_pos=0;
-      if ((data->y_pos-=data->cstep)<0)
-        data->y_pos=0;
+      if ((data->y_pos-=data->cstep)<YDISP)
+        data->y_pos=YDISP;
       break;
       
     case '2':
     case UP_BUTTON:
-      if ((data->y_pos-=data->cstep)<0)
-        data->y_pos=0;
+      if ((data->y_pos-=data->cstep)<YDISP)
+        data->y_pos=YDISP;
       break;
       
     case '3':
       if ((data->x_pos+=data->cstep)>ScreenW()-1)
         data->x_pos=ScreenW()-1;
-      if ((data->y_pos-=data->cstep)<0)
-        data->y_pos=0;
+      if ((data->y_pos-=data->cstep)<YDISP)
+        data->y_pos=YDISP;
       break;
      
     case '4':
@@ -293,13 +293,14 @@ void EditCoordinates(void *rect_or_xy, int is_rect)
 {
   RECT_GUI *rect_gui=malloc(sizeof(RECT_GUI));
   zeromem(rect_gui,sizeof(RECT_GUI));
-  rect_gui->rect_or_xy=rect_or_xy;
+  
   rect_gui->is_rect_needed=is_rect;
   if (!is_rect)
   {
     unsigned int *xy=rect_or_xy;
     rect_gui->x_pos=xy[0];
-    rect_gui->y_pos=xy[1];   
+    rect_gui->y_pos=xy[1];
+    rect_gui->xy=rect_or_xy;
   }
   else
   {
@@ -308,8 +309,10 @@ void EditCoordinates(void *rect_or_xy, int is_rect)
     rect_gui->y_pos=rc->y;
     rect_gui->x2_pos=rc->x2;
     rect_gui->y2_pos=rc->y2;
+    rect_gui->rc=rect_or_xy;
   }
-  patch_rect((RECT*)&Canvas_1,0,0,ScreenW()-1,ScreenH()-1);
+  rect_gui->cstep=1;
+  patch_rect((RECT*)&Canvas_1,0,YDISP,ScreenW()-1,ScreenH()-1);
   rect_gui->gui.canvas=(void *)(&Canvas_1);
   rect_gui->gui.flag30=2;
   rect_gui->gui.methods=(void *)gui_methods_rect;
@@ -322,46 +325,46 @@ void method0_2(MAIN_GUI_2 *data)
 {
   int scr_w=ScreenW();
   int scr_h=ScreenH();
-  DrawRectangle(0,0,scr_w-1,scr_h-1,0,white,white);
+  DrawRectangle(0,YDISP,scr_w-1,scr_h-1,0,white,white);
 
-  int column_height=scr_h-35;
+  int column_height=scr_h-35-YDISP;
   int column_width=scr_w/9;
   int start_column;
   int y_line;
   wsprintf(data->ws1,"%02X,%02X,%02X,%02X",data->r,data->g,data->b,data->a);
-  DrawString(data->ws1,1,1,scr_w-20,12,FONT_SMALL,1,black,transparent);
+  DrawString(data->ws1,1,YDISP+1,scr_w-20,YDISP+1+GetFontYSIZE(FONT_SMALL),FONT_SMALL,1,black,transparent);
   
   for (int i=0;i!=4;i++)
   {
     start_column=column_width+2*i*column_width;
     if (data->current_column==i)
-      DrawRectangle(start_column-2,20-2,start_column+column_width+2,20+column_height+2,
+      DrawRectangle(start_column-2,YDISP+20-2,start_column+column_width+2,YDISP+20+column_height+2,
                     0,black,white);
 
-    DrawRectangle(start_column,20,start_column+column_width,20+column_height,
+    DrawRectangle(start_column,YDISP+20,start_column+column_width,YDISP+20+column_height,
                   0,black,colors[i]);
     switch(i)
     {
     case 0:
-      y_line=20+column_height-(data->r*column_height)/0xFF;
+      y_line=YDISP+20+column_height-(data->r*column_height)/0xFF;
       break;
     case 1:
-      y_line=20+column_height-(data->g*column_height)/0xFF;
+      y_line=YDISP+20+column_height-(data->g*column_height)/0xFF;
       break;      
     case 2:
-      y_line=20+column_height-(data->b*column_height)/0xFF;
+      y_line=YDISP+20+column_height-(data->b*column_height)/0xFF;
       break;
     case 3:
-      y_line=20+column_height-(data->a*column_height)/0x64;
+      y_line=YDISP+20+column_height-(data->a*column_height)/0x64;
       break;
     }
     DrawLine(start_column,y_line,start_column+column_width,y_line,0,black);
   }
   setColor(data->r,data->g,data->b,data->a,data->testcolor);
   if((data->r<24)&&(data->a==0))
-  DrawRoundedFrame(scr_w-17,1,scr_w-2,16,2,2,0,black,GetPaletteAdrByColorIndex(data->r));
+  DrawRoundedFrame(scr_w-17,YDISP+1,scr_w-2,YDISP+16,2,2,0,black,GetPaletteAdrByColorIndex(data->r));
   else
-  DrawRoundedFrame(scr_w-17,1,scr_w-2,16,2,2,0,black,data->testcolor);
+  DrawRoundedFrame(scr_w-17,YDISP+1,scr_w-2,YDISP+16,2,2,0,black,data->testcolor);
 
 }
 
@@ -503,7 +506,7 @@ const void * const gui_methods_2[11]={
 
 const RECT Canvas_2={0,0,0,0};
 
-void EditColors(char*color)
+void EditColors(char *color)
 {
   MAIN_GUI_2 *main_gui=malloc(sizeof(MAIN_GUI_2));
   zeromem(main_gui,sizeof(MAIN_GUI_2));
@@ -512,7 +515,7 @@ void EditColors(char*color)
   main_gui->b=color[2];
   main_gui->a=color[3];
   main_gui->color=color;
-  patch_rect((RECT*)&Canvas_2,0,0,ScreenW()-1,ScreenH()-1);
+  patch_rect((RECT*)&Canvas_2,0,YDISP,ScreenW()-1,ScreenH()-1);
   main_gui->gui.canvas=(void *)(&Canvas_2);
   main_gui->gui.flag30=2;
   main_gui->gui.methods=(void *)gui_methods_2;
@@ -523,9 +526,9 @@ void EditColors(char*color)
 typedef struct
 {
   void *next;
-  char *fullname;
-  char *name;
   int is_folder;
+  char *fullname;  
+  char *name;  
 }FLIST;
 
 typedef struct
@@ -536,7 +539,6 @@ typedef struct
 
 volatile FLIST *fltop;
 
-
 void Free_FLIST(void)
 {
   LockSched();
@@ -545,37 +547,15 @@ void Free_FLIST(void)
   UnlockSched();
   while(fl)
   {
-    FLIST *fl_prev;
-    fl_prev=fl;
+    FLIST *fl_prev=fl;
     fl=fl->next;
-    mfree(fl_prev->fullname);
-    mfree(fl_prev->name);
     mfree(fl_prev);
   }
 }
 
-#define IS_FOLDER 1
-#define IS_FILE 0
-
+enum TYPES {IS_BACK, IS_FOLDER, IS_FILE}; 
 const char back[]="..";             
-int GetFListN()
-{
-  int i=0;
-  FLIST *fl=(FLIST*)&fltop;
-  while((fl=fl->next)) i++;
-  return (i);
-}
 
-int GetFoldersLevel(char *name)
-{
-  int i=0;
-  char *s=name;
-  while(*s++)
-  {
-    if (*s=='\\' &&*(s+1)!=0) i++;    
-  }
-  return (i);
-}
 
 int strcmp_nocase(const char *s, const char *d)
 {
@@ -596,20 +576,19 @@ int strcmp_nocase(const char *s, const char *d)
 
 FLIST *AddToFList(const char* full_name, const char *name, int is_folder)
 {
+  int l_fname;
   FLIST *fl;
-  FLIST *pr;
-  FLIST *fn=malloc(sizeof(FLIST));
-  fn->fullname=malloc(strlen(full_name)+1);
+  FLIST *fn=malloc(sizeof(FLIST)+(l_fname=strlen(full_name))+strlen(name)+2);
+  fn->fullname=(char *)fn+sizeof(FLIST);
+  fn->name=(char *)fn+sizeof(FLIST)+l_fname+1;
   strcpy(fn->fullname,full_name);
-  
-  fn->name=malloc(strlen(name)+1);
   strcpy(fn->name,name);
-  
   fn->is_folder=is_folder;
   fn->next=0;
   fl=(FLIST *)fltop;
   if (fl)
   {
+    FLIST *pr;
     pr=(FLIST *)&fltop;
     while(strcmp_nocase(fl->name,fn->name)<0)
     {
@@ -624,65 +603,72 @@ FLIST *AddToFList(const char* full_name, const char *name, int is_folder)
   {
     fltop=fn;
   }
-  return (fn);  
+  return (fn);
 }
 
-void FindFiles(char *str, int type)  // type == 0 SelectFolder, type == 1 SelectFile
+int FindFiles(char *str, int type)  // type == 0 SelectFolder, type == 1 SelectFile
 {
   DIR_ENTRY de;
   unsigned int err;
-  int i, c;
-  char name[256]; 
-  char fname[128];
-
-  Free_FLIST();
-  strcpy(name,str);
-  strcat(name,"*");
+  char *rev,*s,*d;
+  int i, c, n=0;
+  char path[256];
+  char name[128];
   
-  i=GetFoldersLevel(str);
-  if (i==0)
+  strcpy(path,str);
+  Free_FLIST();
+  s=path;
+  d=name;
+  rev=0;
+  while((c=*s++))
   {
-    AddToFList("ROOT",back,IS_FOLDER);
+    *d++=c;
+    if (c=='\\' && *s!='\0') rev=d;
   }
+  if(rev==0)
+    AddToFList("ROOT",back,IS_BACK);
   else
   {
-    char *s=str;
-    char *d=fname;
-    for (int k=0; k!=i && *s; )
-    {
-      c=*s++;
-      *d++=c;
-      if (c=='\\')  k++;
-    }
-    *d=0;
-    AddToFList(fname,back,IS_FOLDER);
+    *rev=0;
+    AddToFList(name,back,IS_BACK);
   }
-
-  if (FindFirstFile(&de,name,&err))
+  n++;
+  
+  
+  i=strlen(path);
+  path[i++]='*';
+  path[i]='\0';
+  if (FindFirstFile(&de,path,&err))
   {
     do
     {
-      strcpy(name,de.folder_name);
-      strcat(name,"\\");
-      strcat(name,de.file_name);
+      i=strlen(de.folder_name);
+      strcpy(path,de.folder_name);
+      path[i++]='\\';
+      strcpy(path+i,de.file_name);
       if (de.file_attr&FA_DIRECTORY)
       {
-        strcpy(fname,"\\");
-        strcat(fname,de.file_name);
-        strcat(name,"\\");
-        AddToFList(name,fname,IS_FOLDER);
+        i=strlen(path);
+        path[i++]='\\';
+        path[i]=0;
+        name[0]='\\';
+        strcpy(name+1,de.file_name);
+        AddToFList(path,name,IS_FOLDER);
+        n++;
       }
       else
       {
         if (type!=0)
         {
-          AddToFList(name,de.file_name,IS_FILE);
+          AddToFList(path,de.file_name,IS_FILE);
+          n++;
         }
       }
     }
     while(FindNextFile(&de,&err));
   }
   FindClose(&de,&err);
+  return n;
 }
 
 
@@ -706,13 +692,11 @@ FLIST *FindFLISTtByNS(int *i, int si)
 FLIST *FindFLISTtByN(int n)
 {
   FLIST *fl;
+  fl=FindFLISTtByNS(&n,IS_BACK); if ((!n)&&(fl)) return(fl);
   fl=FindFLISTtByNS(&n,IS_FOLDER); if ((!n)&&(fl)) return(fl);
   fl=FindFLISTtByNS(&n,IS_FILE); if ((!n)&&(fl)) return(fl);
   return fl;
 }
-
-
-
 
 void SavePath(void *ed_gui, FLIST *fl)
 {
@@ -725,12 +709,12 @@ void SavePath(void *ed_gui, FLIST *fl)
 }
   
 
-char header[];
+char header[128];
 int filelist_menu_onkey(void *data, GUI_MSG *msg)
 {
   FVIEW *fview=MenuGetUserPointer(data);
   FLIST *fl;
-  int i;
+  int i, n;
   i=GetCurMenuItem(data);
   fl=FindFLISTtByN(i);
   
@@ -738,22 +722,22 @@ int filelist_menu_onkey(void *data, GUI_MSG *msg)
   {
     if (fl) 
     {
-      if (fl->is_folder==IS_FOLDER)
+      if (fl->is_folder==IS_FOLDER || fl->is_folder==IS_BACK)
       {
         int len;
         if (strcmp(fl->fullname,"ROOT"))
         {
-          strncpy(header,fl->fullname,127);
+          strncpy(header,fl->fullname,sizeof(header)-1);
           len=strlen(fl->fullname);
-          header[len>127?127:len]=0;
-          FindFiles(fl->fullname,fview->type);
+          header[len>sizeof(header)-1?sizeof(header)-1:len]=0;
+          n=FindFiles(fl->fullname,fview->type);
         }
         else
         {
-          void CreateRootMenu();
-          CreateRootMenu();
+          int CreateRootMenu();
+          n=CreateRootMenu();
         }         
-        Menu_SetItemCountDyn(data,GetFListN());
+        Menu_SetItemCountDyn(data,n);
         SetCursorToMenuItem(data, 0);
         RefreshGUI();
       }
@@ -770,7 +754,7 @@ int filelist_menu_onkey(void *data, GUI_MSG *msg)
   {
     if (fl)
     {
-      if (strcmp(fl->name,back))
+      if (fl->is_folder!=IS_BACK)
       {
         SavePath(fview->gui,fl);
         return (1);
@@ -789,6 +773,10 @@ void filelist_menu_ghook(void *data, int cmd)
     Free_FLIST();
     mfree(fview);    
   }
+  if (cmd==0x0A)
+  {
+    DisableIDLETMR();
+  }
 }
 
 void filelist_menu_iconhndl(void *data, int curitem, void *user_pointer)
@@ -802,8 +790,7 @@ void filelist_menu_iconhndl(void *data, int curitem, void *user_pointer)
   {
     len=strlen(fl->name);
     ws=AllocMenuWS(data,len+4);
-    
-    if (fl->is_folder)
+    if (fl->is_folder==IS_BACK || fl->is_folder==IS_FOLDER)
     {
       str_2ws(ws,fl->name,len);
       wsInsertChar(ws,0x0002,1);
@@ -817,7 +804,7 @@ void filelist_menu_iconhndl(void *data, int curitem, void *user_pointer)
   else
   {
     ws=AllocMenuWS(data,10);
-    wsprintf(ws, "Ошибка");
+    wsprintf(ws, "Error");
   }
   SetMenuItemText(data, item, ws, curitem);
 }
@@ -834,9 +821,8 @@ SOFTKEYSTAB fmenu_skt=
 {
   fmenu_sk,0
 };
-char header[128];
-HEADER_DESC filelist_HDR={0,0,0,0,NULL,(int)header,LGP_NULL};
 
+HEADER_DESC filelist_HDR={0,0,0,0,NULL,(int)header,LGP_NULL};
 
 MENU_DESC filelist_STRUCT=
 {
@@ -850,14 +836,26 @@ MENU_DESC filelist_STRUCT=
   0   //n
 };
 
-void CreateRootMenu()
+int CreateRootMenu()
 {
+  char path[32];
+  unsigned int err;
+  int n=0;
   Free_FLIST();
-  AddToFList("0:\\","0:\\",IS_FOLDER);
-  AddToFList("1:\\","1:\\",IS_FOLDER);
-  AddToFList("2:\\","2:\\",IS_FOLDER);
-  AddToFList("4:\\","4:\\",IS_FOLDER);
+  for (int i=0; i!=5; i++)
+  {
+    path[0]=i+'0';
+    path[1]=':';
+    path[2]='\\';
+    path[3]=0;
+    if (isdir(path,&err))
+    {
+      AddToFList(path,path,IS_FOLDER);
+      n++;
+    }
+  }
   strcpy(header,"Root");
+  return (n);
 }
 
 
@@ -865,24 +863,30 @@ void open_select_file_gui(void *ed_gui, int type)
 {
   EDITCONTROL ec;
   FVIEW *fview;
-  char *s;
+  char path[128];
+  char *s, *rev=0;
+  int n, c, len;
+  
   fview=malloc(sizeof(FVIEW));
   fview->gui=ed_gui;
   fview->type=type;
   EDIT_ExtractFocusedControl(ed_gui,&ec);
-  if (ec.pWS->wsbody[0]==0)
+  ws_2str(ec.pWS,path,127);
+  s=path;
+  while((c=*s++))
   {
-    CreateRootMenu();
+    if (c=='\\' && *s!='\0') rev=s;  
   }
+  if (!rev)
+    n=CreateRootMenu();
   else
   {
-    ws_2str(ec.pWS,header,127);
-    s=strrchr(header, '\\');
-    if (s) *(s+1)=0;
-    int len=strlen(header);
-    header[len>127?127:len]=0;
-    FindFiles(header,type);
+    *rev=0;
+    strncpy(header,path,sizeof(header)-1);
+    len=strlen(path);
+    header[len>sizeof(header)-1?sizeof(header)-1:len]=0;
+    n=FindFiles(path,type);
   }    
   patch_header(&filelist_HDR);
-  CreateMenu(0,0,&filelist_STRUCT,&filelist_HDR,0,GetFListN(),fview,0);
+  CreateMenu(0,0,&filelist_STRUCT,&filelist_HDR,0,n,fview,0);
 }

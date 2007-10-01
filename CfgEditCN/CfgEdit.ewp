@@ -925,7 +925,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.41A</state>
+          <state>4.40A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -956,6 +956,9 @@
         <option>
           <name>CCDefines</name>
           <state>NDEBUG</state>
+          <state>NDEBUG</state>
+          <state>ELKA</state>
+          <state>NEWSGOLD</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -1097,7 +1100,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state></state>
+          <state>$FILE_BNAME$.r79</state>
         </option>
         <option>
           <name>CCLangSelect</name>
@@ -1159,7 +1162,7 @@
         </option>
         <option>
           <name>CCStdIncludePath</name>
-          <state>###Uninitialized###</state>
+          <state>$TOOLKIT_DIR$\INC\</state>
         </option>
       </data>
     </settings>
@@ -1217,7 +1220,8 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>NEWSGOLD</state>
+          <state>ELKA</state>
         </option>
         <option>
           <name>AList</name>
@@ -2561,7 +2565,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.41A</state>
+          <state>4.40A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -2592,6 +2596,7 @@
         <option>
           <name>CCDefines</name>
           <state>NDEBUG</state>
+          <state>NEWSGOLD</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -2733,7 +2738,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state></state>
+          <state>$FILE_BNAME$.r79</state>
         </option>
         <option>
           <name>CCLangSelect</name>
@@ -2795,7 +2800,7 @@
         </option>
         <option>
           <name>CCStdIncludePath</name>
-          <state>###Uninitialized###</state>
+          <state>$TOOLKIT_DIR$\INC\</state>
         </option>
       </data>
     </settings>
@@ -2853,7 +2858,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>NEWSGOLD</state>
         </option>
         <option>
           <name>AList</name>
