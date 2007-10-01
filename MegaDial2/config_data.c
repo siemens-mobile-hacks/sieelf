@@ -12,17 +12,23 @@ __root const int cfg_cs_enable=1;
 __root const CFG_HDR cfghdr103 = {CFG_CHECKBOX,"Disable when calling",0,0};
 __root const int disable_when_calling=1;
 
-__root const CFG_HDR cfghdr104 = {CFG_CHECKBOX,"Show number",0,0};
+__root const CFG_HDR cfghdr104 = {CFG_CHECKBOX,"Disable one numbe",0,0};
+__root const int cfg_disable_one_number=1;
+
+__root const CFG_HDR cfghdr105 = {CFG_CHECKBOX,"Show number",0,0};
 __root const int show_number=1;
 
-__root const CFG_HDR cfghdr105 = {CFG_CHECKBOX,"Show more number",0,0};
+__root const CFG_HDR cfghdr106 = {CFG_CHECKBOX,"Show more number",0,0};
 __root const int show_more_number=0;
 
-__root const CFG_HDR cfghdr106 = {CFG_CHECKBOX,"CodeShow part show",0,0};
+__root const CFG_HDR cfghdr107 = {CFG_CHECKBOX,"CodeShow part show",0,0};
 __root const int cfg_cs_part=0;
 
-__root const CFG_HDR cfghdr107 ={CFG_UINT,"Numberlist button",0,65535};
+__root const CFG_HDR cfghdr108 ={CFG_UINT,"Numberlist button",0,65535};
 __root const unsigned int CALL_BTN=ENTER_BUTTON;
+
+__root const CFG_HDR cfghdr109 ={CFG_UINT,"IP button",0,65535};
+__root const unsigned int CALL_IP=VOL_UP_BUTTON;
 
 
 /*
@@ -93,7 +99,7 @@ __root const CFG_HDR cfghdr_m8={CFG_LEVEL,"",0,0};
 
 
 //ÇøºÅÐã
-__root const CFG_HDR cfghdr_m11={CFG_LEVEL,"CodeShow",1,0};
+__root const CFG_HDR cfghdr_m11={CFG_LEVEL,"Other",1,0};
 
 __root const CFG_HDR cfghdr130 = {CFG_COLOR,"CodeShow color",0,24};
 __root const int cfg_cs_font_color=0;
@@ -101,10 +107,14 @@ __root const int cfg_cs_font_color=0;
 __root const CFG_HDR cfghdr131 = {CFG_UINT,"CodeShow address",0,0xFFFFFFFF};
 __root const int cfg_cs_adr=0xA0CC0000;
 
+__root const CFG_HDR cfghdr132={CFG_STR_UTF8,"Address list",3,127};
+__root const char root_dir[128]="0:\\\x1F\xE7\xB3\xBB\xE7\xBB\x9F\\apo\\addr";
+
+__root const CFG_HDR cfghdr133 = {CFG_UINT,"IP number",0,0xFFFFFFFF};
+__root const int cfg_ip_number = 17951;
+
 __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
 
-__root const CFG_HDR cfghdr0={CFG_STR_UTF8,"Address list",3,127};
-__root const char root_dir[128]="0:\\\x1F\xE7\xB3\xBB\xE7\xBB\x9F\\apo\\addr";
 
 
 

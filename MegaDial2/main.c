@@ -29,6 +29,7 @@ int numberlist=0;
 int gLen=0;
 int count_page;
 int font_size;
+int need_ip=0;
 
 WSHDR *gwsName;
 WSHDR *gwsTemp;
@@ -51,13 +52,16 @@ extern const int cfg_cs_font_color;
 extern int GetProvAndCity(unsigned short *pBSTR, char *pNoStr);
 
 //部分功能控制
+extern const int cfg_disable_one_number;
 extern const int disable_when_calling;
 extern const int show_more_number;
 extern const int show_number;
 extern const int big_font;
+extern const int cfg_ip_number;
 
 //号码列表按键
 extern const unsigned int CALL_BTN;
+extern const unsigned int CALL_IP;
 
 //字体控制
 void font(void)
@@ -258,6 +262,7 @@ void ShowInputCodeShow(WSHDR* pwsNum,int y1)
 	ws_2str(pwsNum,pszNum,20);
 	len=strlen(pszNum);
 
+        if(cfg_disable_one_number)
         if(len <= 1) goto sub_end;
 
 	if(len)
@@ -1214,8 +1219,23 @@ void VoiceOrSMS(const char *num)
 //    #ifdef NEWSGOLD
 //    MakeVoiceCall(num,0x10,0x20C0);
 //    #else
-    MakeVoiceCall(num,0x10,0x2FFF);
+    //MakeVoiceCall(num,0x10,0x2FFF);
 //    #endif
+    	char buf[50];
+	if(need_ip)
+	{
+                 sprintf(buf,"%d",cfg_ip_number);
+		if(*num != '+')
+			strcat(buf,num);
+		else
+			strcat(buf,num+3);
+		need_ip = 0;
+		MakeVoiceCall(buf,0x10,0x2FFF);
+	}
+	else
+	{
+		MakeVoiceCall(num,0x10,0x2FFF);
+	}
   }
   else
   {
@@ -1259,6 +1279,7 @@ void VoiceOrSMS(const char *num)
     patch_header(&edsms_hdr);
     patch_input(&edsms_desc);
     CreateInputTextDialog(&edsms_desc,&edsms_hdr,eq,1,(void *)num);
+    need_ip = 0;
   }
 }
 
@@ -1382,6 +1403,11 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
     }
     return(-1);
   }
+  if(key==CALL_IP&&m==KEY_DOWN)
+  {
+    need_ip=1;
+    return(-1);
+  }
   if(key==RED_BUTTON)
   {
     if(show_number)
@@ -1389,7 +1415,10 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
      numberlist=0;
      numx=0;
     }
+    need_ip=0;
   }
+  
+
   
   if(e_ws && key==ENTER_BUTTON) // "##Enter" to exit
 	{
@@ -1609,7 +1638,7 @@ void my_ed_ghook(GUI *gui, int cmd)
 	if(bcalling)
 	return;
 	}
-    if ((e_ws=ec.pWS)->wsbody[0]<MAX_ESTR_LEN) //Its length? <MAX_ESTR_LEN 
+    if ((e_ws=ec.pWS)->wsbody[0]<MAX_ESTR_LEN&&(cfg_disable_one_number?((e_ws=ec.pWS)->wsbody[0]>1):1)) //Its length? <MAX_ESTR_LEN 
     {
       if (hook_state==3)
       {
