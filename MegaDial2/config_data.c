@@ -92,10 +92,13 @@ __root const int COLOR_SELECTED_BRD=23;
 __root const CFG_HDR cfghdr126={CFG_COLOR,"Color ScrollBar",0,99};
 __root const int COLOR_SCROLLBAR=0;  
 
-__root const CFG_HDR cfghdr127={CFG_COLOR,"Color Search mark",0,0};
+__root const CFG_HDR cfghdr127={CFG_COLOR,"Color ScrollBar background",0,99};
+__root const int COLOR_SCROLLBAR_BG=0;  
+
+__root const CFG_HDR cfghdr128={CFG_COLOR,"Color Search mark",0,0};
 __root const char COLOR_SEARCH_MARK[4]={0xFF,0x0,0x0,0x64};
 
-__root const CFG_HDR cfghdr128={CFG_COLOR,"Color Search unmark",0,0};
+__root const CFG_HDR cfghdr129={CFG_COLOR,"Color Search unmark",0,0};
 __root const char COLOR_SEARCH_UNMARK[4]={0xFF,0xFF,0xFF,0x64};
 
 __root const CFG_HDR cfghdr_m8={CFG_LEVEL,"",0,0};
@@ -120,4 +123,17 @@ __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
 
 
 
+#ifdef ELKA
+__root const CFG_HDR cfghdr233 = {CFG_INT,"CodeShow unkonw Y1",0,176};
+__root const int a = 60;
+
+//__root const CFG_HDR cfghdr234 = {CFG_INT,"number Y1",0,176};
+//__root const int b = 50;
+
+__root const CFG_HDR cfghdr235 = {CFG_INT,"big font numberlist Y1",0,176};
+__root const int c = 70;
+
+__root const CFG_HDR cfghdr236 = {CFG_INT,"small font numberlist Y1",0,176};
+__root const int d = 60;
+#endif
 

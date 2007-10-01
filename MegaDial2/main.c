@@ -45,6 +45,7 @@ extern const int COLOR_SELECTED_BG;
 extern const int COLOR_SELECTED_BRD;
 
 extern const int COLOR_SCROLLBAR;
+extern const int COLOR_SCROLLBAR_BG;
 
 //区号秀
 extern const int cfg_cs_adr;
@@ -79,6 +80,14 @@ void font(void)
 
 //24色控制
 #define color(x) (x<24)?GetPaletteAdrByColorIndex(x):(char *)(&(x))  
+
+//elka测试
+extern const int a;
+extern const int b;
+extern const int c;
+extern const int d;
+
+
 //-------------------------------------------
 
 #pragma inline
@@ -158,18 +167,18 @@ int (*old_ed_onkey)(GUI *gui, GUI_MSG *msg);
 void (*old_ed_ghook)(GUI *gui, int cmd);
 void (*old_ed_redraw)(void *data);
 
-// 0-poyavlen forward? dialogue? 
-// 1 to dialogue appeared, hooked, zatseplen forward? for onRedraw 
-// 2-cable onRedraw, idle- less? 
-// 3-query search 
-// 4-send? request 
-// 5-produces? seeking? 
+//0 -looking appearance dialogue
+//1 - to dialogue appeared, hooked, waiting for positive onRedraw 
+//2 - cable onRedraw, idle- regime 
+//3 - query search 
+//4 - you requested 
+//5 - searched 
 
 volatile int hook_state=0;
 
 volatile WSHDR *e_ws;
 
-volatile int curpos; //cursor position? ? list 
+volatile int curpos; //The position of the cursor in the list 
 
 
 typedef struct
@@ -181,7 +190,7 @@ typedef struct
 }CLIST;
 
 volatile CLIST *cltop; //Start
-//volatile CLIST *clbot; //Con?
+
 char dstr[NUMBERS_MAX][40];
 int dstr_index[NUMBERS_MAX+1];
 
@@ -359,8 +368,33 @@ void FreeCLIST(void)
 }
 
 //-----------------------------------------------------
-//拼音快选
+//Search pieces in the line using T9 
 //-----------------------------------------------------
+
+int char16to8(int c)
+{
+  if (c<0x400) return (c);
+  c-=0x400;
+  if (c<16)
+  {
+    if (c==1) c=0;  //big_yo
+    else if (c==4) c=2;  //big_ye
+    else if (c==6) c=10; //big_i
+    else return (c);
+  }
+  else if (c>79)
+  {
+    if (c==0x51) c=16; //small_yo
+    else if (c==0x54) c=18; //small_ye
+    else if (c==0x56) c=11; //small_i
+    else if (c==0x57) c=23; //small_yi
+    else return (c);
+  }
+  else c+=8;
+  c+=168;
+  return (c);
+}
+
 unsigned int us_reverse(unsigned int v)
 {
   return((v>>8)|((v&0xFF)<<8));
@@ -460,7 +494,7 @@ int CompareStrT9(WSHDR *ws, WSHDR *ss, int need_insert_color)
   
   unsigned short temp;
   
-  //Table? the keys for text search 
+  //Table keys for text search
   static const char key[256]=
     "11111111111111111111111111111111"   
       "10001**0***0000*012345678900***0"
@@ -471,16 +505,16 @@ int CompareStrT9(WSHDR *ws, WSHDR *ss, int need_insert_color)
 		"22223333444455566677778888899999"
 		  "22223333444455566677778888899999";
 
-  if (!wslen(ss)) return(1); //Empty? always plyashe line?
-  if (!wslen(ws)) return(0); //empty? ishodn? no pages? shall
+  if (!wslen(ss)) return(1); //Empty string always line;) 
+  if (!wslen(ws)) return(0); //A blank background is not shooting;) 
 
   do
   {
 			c=ws->wsbody[wpos];
 			if ((wpos==1)&&(c=='+')&&(c2!='+')&&(wslen(ws)>3))
 			{
-				wpos=4; //Propus? pervog? '+' 
-      continue;
+				wpos=4; //first pass'+' 
+                        continue;
 			}
 			else if((spos==1)&&(c1!='+')&&(c2=='+')&&(wslen(ss)>3))
 			{
@@ -500,15 +534,16 @@ int CompareStrT9(WSHDR *ws, WSHDR *ss, int need_insert_color)
     }
     else
     {
-      //Preobrazue? ? to? buttons 
-				temp=(c >= 0x4E00 && c <= 0x9FA8 )?PinYinTable[(c  >> 2) - 4992]:0xFFFF;
-				temp=(temp >> ((c&0x03) << 2))&0x0F;
-				if (c>255&&(temp!=0xF)) c=temp+'0';
-				else 
-				{
-					c&=0xFF;
-					c=key[c];
-				}
+      //Preobrazuem code buttons 
+	temp=(c >= 0x4E00 && c <= 0x9FA8 )?PinYinTable[(c  >> 2) - 4992]:0xFFFF;
+	temp=(temp >> ((c&0x03) << 2))&0x0F;
+	if (c>255&&(temp!=0xF)) c=temp+'0';
+	else 
+	{
+            c=char16to8(c);
+	    c&=0xFF;
+	    c=key[c];
+	}
       if (c==ss->wsbody[spos])
       {
 	if (first_pos<0) first_pos=wpos;
@@ -524,13 +559,13 @@ int CompareStrT9(WSHDR *ws, WSHDR *ss, int need_insert_color)
 	    wsInsertChar(ws,us_reverse(((unsigned short *)COLOR_SEARCH_MARK)[0]),first_pos);
 	    wsInsertChar(ws,0xE006,first_pos);
 	  }
-	  return(1); //Vs? coinciding? 
+	  return(1); //All coincided 
         }
       }
       else 
       {
 	first_pos=-1;
-	spos=0; //We are looking for new? words?
+	spos=0; //We are looking for a new word 
       }
     }
     wpos++;
@@ -539,31 +574,7 @@ int CompareStrT9(WSHDR *ws, WSHDR *ss, int need_insert_color)
   return(0);
 }
 
-int char16to8(int c)
-{
-  if (c<0x400) return (c);
-  c-=0x400;
-  if (c<16)
-  {
-    if (c==1) c=0;  //big_yo
-    else if (c==4) c=2;  //big_ye
-    else if (c==6) c=10; //big_i
-    else return (c);
-  }
-  else if (c>79)
-  {
-    if (c==0x51) c=16; //small_yo
-    else if (c==0x54) c=18; //small_ye
-    else if (c==0x56) c=11; //small_i
-    else if (c==0x57) c=23; //small_yi
-    else return (c);
-  }
-  else c+=8;
-  c+=168;
-  return (c);
-}
-
-
+//than long lines 
 int wstrcmp_nocase(WSHDR *ws1, WSHDR *ws2)
 {
   int l1=wslen(ws1);
@@ -584,14 +595,14 @@ int wstrcmp_nocase(WSHDR *ws1, WSHDR *ws2)
 }
 
 //=====================================================
-// Konstrukto? list 
+// Constructor list  
 //=====================================================
 void ConstructList(void)
 {
   int fin;
   unsigned int ul;
   char recname[128];
-  char szRoot[100];
+  char szRoot[100];//通信录地址
 
   AB_UNPRES ur;
   void *buffer;
@@ -613,10 +624,12 @@ void ConstructList(void)
   int fsz;
   CLIST contact;
 
-        strcpy(szRoot, root_dir);
-        fin = strlen(szRoot);
-        if(fin > 0 && szRoot[fin-1] == '\\')
-          szRoot[fin-1] = 0;
+  //通信录地址处理
+  strcpy(szRoot, root_dir);
+  fin = strlen(szRoot);
+  if(fin > 0 && szRoot[fin-1] == '\\')
+  szRoot[fin-1] = 0;
+        
   WSHDR *sws=AllocWS(50);
 
   FreeCLIST(); //Unichtozhaem before. list 
@@ -628,9 +641,10 @@ void ConstructList(void)
   if ((buffer=malloc(65536)))
   {
     zeromem(&ABmain,sizeof(ABmain));
-                  snprintf(recname,128,"%s\\main",szRoot);
-//		if ((fin=fopen("0:\\System\\apo\\addr\\main",A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
-		if ((fin=fopen(recname,A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
+    
+    snprintf(recname,128,"%s\\main",szRoot);
+//  if ((fin=fopen("0:\\System\\apo\\addr\\main",A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
+    if ((fin=fopen(recname,A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
     {
 #ifdef ELKA
       if (fread(fin,&ABmain,sizeof(ABmain),&ul)>=194)
@@ -655,13 +669,13 @@ void ConstructList(void)
 	    rl1=rec/LEVEL1_RN;
 	    rl2=(rec%LEVEL1_RN)/LEVEL2_RN;
 	    rl3=rec%LEVEL2_RN;
-//						snprintf(recname,128,"0:\\System\\apo\\addr\\data\\%02d\\%02d\\%02d",rl1,rl2,rl3);
-						snprintf(recname,128,"%s\\data\\%02d\\%02d\\%02d",szRoot,rl1,rl2,rl3);
+//	    snprintf(recname,128,"0:\\System\\apo\\addr\\data\\%02d\\%02d\\%02d",rl1,rl2,rl3);
+	    snprintf(recname,128,"%s\\data\\%02d\\%02d\\%02d",szRoot,rl1,rl2,rl3);
             #else
 	    unsigned int rl1=rec/LEVEL1_RN;
 	    unsigned int r12=rec%LEVEL1_RN;
-//						snprintf(recname,128,"0:\\System\\apo\\addr\\%02x\\%02x",rl1,r12);            
-						snprintf(recname,128,"%s\\%02x\\%02x",szRoot,rl1,r12);              
+//	    snprintf(recname,128,"0:\\System\\apo\\addr\\%02x\\%02x",rl1,r12);            
+	    snprintf(recname,128,"%s\\%02x\\%02x",szRoot,rl1,r12);              
            #endif             
 	    if ((fin=fopen(recname,A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
 	    {
@@ -870,8 +884,6 @@ void ConstructList(void)
   FreeWS(sws);
 }
 
-#pragma optimize=no_inline
-void f_dummy(void){}
 
 volatile int scroll_disp;
 volatile int max_scroll_disp;
@@ -901,8 +913,6 @@ void DisableScroll(void)
   max_scroll_disp=0;
   scroll_disp=0;
 }
-
-const char clBlack[4]={0,0,0,100};
 
 void my_ed_redraw(void *data)
 {
@@ -935,15 +945,13 @@ void my_ed_redraw(void *data)
   
   
 #ifdef ELKA
-  if((!show_more_number)||(!show_number))
-  count_page-=1;
   
-  int csh=58;
+  int csh=a;
     
   if(big_font)
-      z=60;
+      z=c;
   else
-      z=54;
+      z=d;
 #else
   int csh=40;
   
@@ -960,13 +968,13 @@ void my_ed_redraw(void *data)
   }
 
 
-  if (p && e_ws && e_ws->wsbody[0]<MAX_ESTR_LEN) //Its length? <MAX_ESTR_LEN 
+  if (p && e_ws && e_ws->wsbody[0]<MAX_ESTR_LEN) //Its length <MAX_ESTR_LEN 
   {
     int y=ScreenH()-SoftkeyH()-(GetFontYSIZE(font_size)+1)*count_page;
 
-    down_border=ScreenH()-SoftkeyH()-2;
+    down_border=ScreenH()-SoftkeyH()+5;
     
-    DrawRectangle(1,y,ScreenW()-2,ScreenH()-SoftkeyH()+3,0,color(COLOR_MENU_BRD),color(COLOR_MENU_BK));
+    DrawRectangle(1,y,ScreenW()-2,down_border,0,color(COLOR_MENU_BRD),color(COLOR_MENU_BK));
     if(show_number)
     DrawRectangle(1,z,ScreenW()-2,y,0,color(COLOR_NMENU_BRD),color(COLOR_NMENU_BK));
     
@@ -982,13 +990,13 @@ void my_ed_redraw(void *data)
     }
     i=0;
     
-    if (total_n>count_page && color(COLOR_SCROLLBAR))
+    if (total_n>count_page && color(COLOR_SCROLLBAR))  //Prorisuem skrollbar 
     {
       int start_y, y_width;
       right_border=ScreenW()-6;
       start_y=(y+2)+curpos*((down_border-2)-(y+2))/total_n;
       y_width=((down_border-2)-(y+2))/total_n;
-      DrawLine(right_border+2,y+2,right_border+2,down_border-2,0,clBlack);
+      DrawLine(right_border+2,y+2,right_border+2,down_border-2,0,color(COLOR_SCROLLBAR_BG));
       DrawRectangle(right_border+1,start_y,right_border+3,start_y+y_width+1,0,color(COLOR_SCROLLBAR),color(COLOR_SCROLLBAR));
     } 
     else right_border=ScreenW()-3;
@@ -1001,8 +1009,8 @@ void my_ed_redraw(void *data)
       {   
 	wstrcpy(prws,cl->name);
 	if (e_ws) CompareStrT9(prws,(WSHDR *)e_ws,1);
-	DrawString(prws,3,dy+4,ScreenW()-4,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));  
-        dy+=font_size+cfg_item_gaps;
+	DrawString(prws,3,dy+4,right_border-1,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));  
+
 	//DrawScrollString(cl->name,3,dy+4,ScreenW()-4,dy+3+GetFontYSIZE(FONT_MEDIUM),1,FONT_MEDIUM,0x80,COLOR_NOTSELECTED,GetPaletteAdrByColorIndex(23));
       }
       else
@@ -1010,10 +1018,10 @@ void my_ed_redraw(void *data)
         
 	int icons_size=Get_WS_width(cl->icons,font_size);
 	{
-	  int i=Get_WS_width(cl->name,font_size);
-	  i-=(ScreenW()-7-icons_size);
+	  int d=Get_WS_width(cl->name,font_size);
+	  d-=(right_border-4-icons_size);
 	 
-          if (i<0)
+          if (d<0)
 	  {
 	    DisableScroll();
 	  }
@@ -1029,8 +1037,7 @@ void my_ed_redraw(void *data)
          
 	DrawRectangle(2,dy+3,right_border,dy+cfg_item_gaps+GetFontYSIZE(font_size)+1,0,color(COLOR_SELECTED_BRD),color(COLOR_SELECTED_BG));
 	DrawString(cl->name,3,dy+4,right_border-2-icons_size,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
-
-       //DrawScrollString(cl->name,3,dy+4,right_border-2-icons_size,dy+cfg_item_gaps+GetFontYSIZE(font_size),scroll_disp+1,font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
+        //DrawScrollString(cl->name,3,dy+4,right_border-2-icons_size,dy+cfg_item_gaps+GetFontYSIZE(font_size),scroll_disp+1,font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
 	DrawString(cl->icons,right_border-1-icons_size,dy+cfg_item_gaps,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
         
         //区号秀和号码输出
@@ -1047,10 +1054,10 @@ void my_ed_redraw(void *data)
                    if(show_more_number)
                    {
                   int n=numx;
-                  DrawRectangle(2,z+h*n+1,ScreenW()-3,z+h*(n+1),0,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
+                  DrawRectangle(2,z+h*n+1,right_border+1,z+h*(n+1),0,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
                     }
                    else
-                  DrawRectangle(2,z+1,ScreenW()-3,z+h,0,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
+                  DrawRectangle(2,z+1,right_border+1,z+h,0,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
                   }
                
                if(show_more_number)
@@ -1089,8 +1096,8 @@ void my_ed_redraw(void *data)
                      {
                       int l=GetImgWidth(menu_icons[j]);
                       DrawImg(3,z+h*sum,menu_icons[j]);
-                      DrawString(cl->num[j],l+3,z+h*sum+2,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));
-                      ShowSelectedCodeShow(cl->num[j],z+h*sum+GetFontYSIZE(font_size)+cfg_item_gaps-1); 
+                      DrawString(cl->num[j],l+3,z+h*sum+2,right_border,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));
+                      ShowSelectedCodeShow(cl->num[j],z+h*sum+GetFontYSIZE(font_size)+cfg_item_gaps-2); 
                       sum++;
                      }
                   }
@@ -1140,16 +1147,19 @@ void my_ed_redraw(void *data)
                   }
                   int l=GetImgWidth(menu_icons[numx+x]);
                   DrawImg(3,z,menu_icons[numx+x]);
-                  DrawString(cl->num[numx+x],l+3,z+2,ScreenW()-5,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));
-                  ShowSelectedCodeShow(cl->num[numx+x],z+GetFontYSIZE(font_size)+cfg_item_gaps-1); 
+                  DrawString(cl->num[numx+x],l+3,z+2,right_border,dy+cfg_item_gaps+GetFontYSIZE(font_size),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));
+                  ShowSelectedCodeShow(cl->num[numx+x],z+GetFontYSIZE(font_size)+cfg_item_gaps-2); 
                   }
-           }    
-        dy+=font_size+cfg_item_gaps;
+           }
       }
       cl=(CLIST *)cl->next;
       i++;
+      #ifdef ELKA
+      if((!show_more_number)||(!show_number))
+      count_page=count_page-1;
+      #endif
     }
-    while(i<count_page);
+      while(i<count_page);
   }
   FreeWS(prws);
 }
@@ -1159,7 +1169,7 @@ void my_ed_redraw(void *data)
 void ChangeRC(GUI *gui)
 {
 #ifdef ELKA
-  static const RECT rc={6,36,234,140};
+  static const RECT rc={6,60,234,140};
 #else
   static const RECT rc={6,18,126,100};
 #endif
@@ -1198,6 +1208,8 @@ const SOFTKEYSTAB menu_skt=
 
 int is_sms_need=0;
 WSHDR *ews;
+//WSHDR *dbg_ws;
+
 void edsms_locret(void){}
 
 //字数计算
@@ -1234,7 +1246,6 @@ int get_word_count(GUI *data)
   wstrcpy(ec.pWS, wsTemp);
 //  REDRAW();
   ExtractEditControl(data, 2, &ec);
-
   FreeWS(wsTemp);
   return len;
 }
@@ -1244,8 +1255,8 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
 {
   EDITCONTROL ec;
   const char *snum=EDIT_GetUserPointer(data);
- if (msg->gbsmsg->msg==KEY_DOWN)
-    {
+  if (msg->gbsmsg->msg==KEY_DOWN)
+   {
     if (msg->gbsmsg->submess==GREEN_BUTTON&&(get_word_count(data) != 0))
     {
       ExtractEditControl(data,2,&ec);
@@ -1269,11 +1280,11 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
 #else
     if(msg->gbsmsg->submess==RIGHT_SOFT)
 #endif
-    {
-      return(-1);
+      {
+        return(-1);
+      }
     }
-  }
-    }
+   }
   //-1 - do redraw
   return(0); //Do standart keys
   //1: close
@@ -1303,15 +1314,17 @@ INPUTDIA_DESC edsms_desc=
   101,
   0,
 
-// 0x00000001 - Align right? edge 
-// 0x00000002 - Align Center 
-// 0x00000004 - Invers? znakomes? // 0x00000008 - UnderLine 
-// 0x00000020-not carry the words? // 0x00000200-bold 
+//  0x00000001 - Align Right 
+//  0x00000002 - Align Center 
+//  0x00000004 - inversion characters
+//  0x00000008 - UnderLine
+//  0x00000020 - not carry the word 
+//  0x00000200 - bold
   0,
 
-// 0x00000002 - ReadOnly 
-// 0x00000004-Not moving the cursor 
-  0x40000000 // Pom? t field? videos button 
+//  0x00000002 - ReadOnly
+//  0x00000004 - Not moving the cursor 
+  0x40000000 // Change field coaching buttons 
 };
 
 //---------------------------------
@@ -1330,7 +1343,7 @@ void VoiceOrSMS(const char *num)
     	char buf[50];
 	if(need_ip)
 	{
-                 sprintf(buf,"%d",cfg_ip_number);
+                sprintf(buf,"%d",cfg_ip_number);
 		if(*num != '+')
 			strcat(buf,num);
 		else
@@ -1392,13 +1405,6 @@ void VoiceOrSMS(const char *num)
 //-------------------------------------
 //号码选择菜单
 //-------------------------------------
-
-typedef struct
-{
-  void *next;
-  int index;
-}NUMLIST;
-
 int gotomenu_onkey(void *data, GUI_MSG *msg)
 {
   int i;
@@ -1414,19 +1420,7 @@ int gotomenu_onkey(void *data, GUI_MSG *msg)
   return(0);
 }
 
-void gotomenu_ghook(void *data, int cmd)
-{
-  NUMLIST *nltop=MenuGetUserPointer(data);
-  if(cmd==3)
-  {
-    while(nltop)
-    {
-      NUMLIST *nl=nltop;
-      nltop=nltop->next;
-      mfree(nl);
-    }
-  }
-}
+void gotomenu_ghook(void *data, int cmd){}
 
 void gotomenu_itemhandler(void *data, int curitem, void *user_pointer)
 {
@@ -1444,7 +1438,7 @@ void gotomenu_itemhandler(void *data, int curitem, void *user_pointer)
 
 const HEADER_DESC gotomenu_HDR={0,0,131,21,/*icon*/0,(int)"Select number...",LGP_NULL};
 
-MENU_DESC gotomenu_STRUCT=
+const MENU_DESC gotomenu_STRUCT=
 {
   8,gotomenu_onkey,gotomenu_ghook,NULL,
   menusoftkeys,
@@ -1455,7 +1449,6 @@ MENU_DESC gotomenu_STRUCT=
   NULL,
   0
 };
-
 
 
 void ElfKiller(void)
@@ -1495,7 +1488,6 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
   EDITCONTROL ec;
   CLIST *cl=(CLIST *)cltop;
 
-  
   is_sms_need=0;
   if(key==CALL_BTN&&m==KEY_DOWN)
   {
@@ -1520,9 +1512,6 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
     }
     need_ip=0;
   }
-  
-
-  
   if(e_ws && key==ENTER_BUTTON) // "##Enter" to exit
 	{
 		if(e_ws->wsbody[0]==2&&e_ws->wsbody[1]=='#'&&e_ws->wsbody[2]=='#')
@@ -1532,7 +1521,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 			return 1;
 		}
 	}
-    if ((key==RIGHT_BUTTON)&&(m==KEY_DOWN))
+  if ((key==RIGHT_BUTTON)&&(m==KEY_DOWN))
     {
     ExtractEditControl(gui,1,&ec);
     if (ec.pWS->wsbody[0]==EDIT_GetCursorPos(gui)-1)
@@ -1551,7 +1540,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
       cl=(CLIST *)cl->next;
       if (!cl) goto L_OLDKEY;
     }
-    //Now cl pointing? login 
+    //Now cl indicates input 
     d=0;
     n=0;
     do
@@ -1596,7 +1585,6 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
     CreateMenu(0,0,&gotomenu_STRUCT,&gotomenu_HDR,set_menu,n,0,0);
     return(0);
   }
-
  //循环号码
   if ((key==UP_BUTTON)||(key==DOWN_BUTTON))
   {
@@ -1611,13 +1599,13 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
          if (numberlist==1)
          {
            if(show_more_number)
-                   {
+             {
                      numx--;
                      if((numx<0)&&((sum>3)&&(cfg_cs_enable &&(!cfg_cs_part))))
                         numx=2;
                      else if(numx<0)
                         numx=sum-1;  
-                    }
+             }
            else 
            {
            numx--;
@@ -1627,17 +1615,26 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
          }
          else 
            {
-							if (curpos)
+
+                        if (curpos)
 				curpos--;
-			else
+			else 
+                        {
+                        if(cfg_disable_one_number&&(e_ws->wsbody[0]==1))
+                        {
+
+                        }
+                        else
 			{
 				cl=(CLIST *)cltop;
 				while(cl->next)
-			{
+			       {
 				curpos++;
 				cl=(CLIST *)cl->next;
-			}
-           }
+			       }
+                        }
+                        }
+
            }
       }
       if (key==DOWN_BUTTON)
@@ -1682,6 +1679,15 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
     }
     r=-1; //Redraw 
   }
+//#ifndef NEWSGOLD
+//else if (key==ENTER_BUTTON)
+//  {
+//    ExtractEditControl(gui,1,&ec);
+//    char num[40];
+//    ws_2str(ec.pWS,num,39);
+//    MakeVoiceCall(num,0x10,0x2FFF);
+//  }
+//#endif
   else
   {
     #ifdef NEWSGOLD
@@ -1714,7 +1720,7 @@ void my_ed_ghook(GUI *gui, int cmd)
   void **m=GetDataOfItemByID(gui,4);
   if ((hook_state==1)/*&&(cmd==7)*/)
   {
-    //Tseplyaem meta? onRedraw 
+    //Tseplyaem method onRedraw 
     if (m)
     {
       if (m[1])
@@ -1733,12 +1739,12 @@ void my_ed_ghook(GUI *gui, int cmd)
     EDITCONTROL ec;
     ExtractEditControl(gui,1,&ec);
     //New Line Search 
-  if(disable_when_calling)
-   {//disable when calling
+  if(disable_when_calling)//disable when calling
+   {
      bcalling = IsCalling();
-	if(bcalling)
+     if(bcalling)
 	return;
-	}
+   }
     if ((e_ws=ec.pWS)->wsbody[0]<MAX_ESTR_LEN&&(cfg_disable_one_number?((e_ws=ec.pWS)->wsbody[0]>1):1)) //Its length? <MAX_ESTR_LEN 
     {
       if (hook_state==3)
@@ -1764,12 +1770,15 @@ void DoSplices(GUI *gui)
   scroll_disp=0;
 }
 
+/*
 GBSTMR vibra_tmr;
 
 void vibra_tmr_proc(void)
 {
   SetVibration(0);
 }
+
+*/
 
 #pragma inline=forced
 int toupper(int c)
@@ -1785,6 +1794,49 @@ int strcmp_nocase(const char *s1,const char *s2)
   while(!(i=(c=toupper(*s1++))-toupper(*s2++))) if (!c) break;
   return(i);
 }
+
+/*
+const char white[4]={0xFF,0xFF,0xFF,0x64};
+const char transparent[4]={0,0,0,0};
+static void DrawMyProgress(int y, int n)
+{
+  int start_y, end_y, font_size,scr_w,fill, cur, max;
+  WSHDR *ws=AllocWS(32);
+  scr_w=ScreenW();
+  cur=CurrentCASH[n];
+  max=MaxCASH[n];
+  fill=((long long)cur)*(scr_w-5)/max;
+  font_size=GetFontYSIZE(TEXT_FONTSZ)+1;
+  start_y=y+n*font_size;
+  end_y=y+(n+1)*font_size-1;
+  
+  DrawCanvas(BuildCanvas(), 1, start_y, scr_w-2, end_y, 1);
+  DrawRectangle(1,start_y,scr_w-2,end_y,0,white,transparent);
+  DrawRectangle(2,start_y+1,fill+2,end_y-1,0,progress_colors[n],progress_colors[n]);
+  wsprintf(ws,"%u.%02u/%u.%02u",cur/100,cur%100,max/100,max%100);
+  DrawString(ws,3,start_y+1,scr_w-4,end_y-1,TEXT_FONTSZ,TEXT_ALIGNMIDDLE,COLOR_TEXTPB,transparent);
+  FreeWS(ws);
+}
+
+
+static void HoursTimerProc(void)
+{
+  SendCashReq();
+}
+
+void StartHoursTimer(void)
+{
+  if (CHECK_HOURS)
+  {
+    TTime t; int sc;
+    GetDateTime(0, &t);
+    sc = 3600*CHECK_HOURS - 60*t.min - t.sec;
+    GBS_StartTimerProc(&hours_tmr, sc*1300/6, HoursTimerProc);
+  }
+}
+
+static volatile int is_voice_connected=0;
+*/
 
 int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
 {
@@ -1842,17 +1894,13 @@ void MyIDLECSM_onClose(CSM_RAM *data)
 {
   extern void seqkill(void *data, void(*next_in_seq)(CSM_RAM *), void *data_to_kill, void *seqkiller);
   extern void *ELF_BEGIN;
-   FreeWS(ews);
+  FreeWS(ews);
   seqkill(data,old_icsm_onClose,&ELF_BEGIN,SEQKILLER_ADR());
 }
 
 
 int main(void)
 {
-  ews=AllocWS(SMS_MAX_LEN);
-  gwsTemp=AllocWS(40);
-  gwsName=AllocWS(40);
-  RereadSettings();
   LockSched();
   CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
   memcpy(&icsmd,icsm->constr,sizeof(icsmd));
@@ -1863,7 +1911,12 @@ int main(void)
   old_icsmd=icsm->constr;
   icsm->constr=&icsmd;
   UnlockSched();
+  ews=AllocWS(SMS_MAX_LEN);
+//  dbg_ws=AllocWS(256);
+  gwsTemp=AllocWS(40);
+  gwsName=AllocWS(40);
   InitIcons();
+  RereadSettings();
   return 0;
 }
 

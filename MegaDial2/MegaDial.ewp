@@ -2593,8 +2593,8 @@
         <option>
           <name>CCDefines</name>
           <state>NDEBUG</state>
-          <state>ELKA</state>
           <state>NEWSGOLD</state>
+          <state>ELKA</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -3735,6 +3735,8 @@
           <option>
             <name>CCDefines</name>
             <state>NDEBUG</state>
+            <state>NEWSGOLD</state>
+            <state>ELKA</state>
           </option>
           <option>
             <name>CCPreprocFile</name>

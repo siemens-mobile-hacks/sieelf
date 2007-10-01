@@ -89,10 +89,13 @@ __root const int COLOR_SELECTED_BRD=23;
 __root const CFG_HDR cfghdr126={CFG_COLOR,"滚动条颜色",0,99};
 __root const int COLOR_SCROLLBAR=0;  
 
-__root const CFG_HDR cfghdr127={CFG_COLOR,"快选标识",0,0};
+__root const CFG_HDR cfghdr127={CFG_COLOR,"滚动条背景",0,99};
+__root const int COLOR_SCROLLBAR_BG=0;  
+
+__root const CFG_HDR cfghdr128={CFG_COLOR,"快选标识",0,0};
 __root const char COLOR_SEARCH_MARK[4]={0xFF,0x0,0x0,0x64};
 
-__root const CFG_HDR cfghdr128={CFG_COLOR,"快选未标识",0,0};
+__root const CFG_HDR cfghdr129={CFG_COLOR,"快选未标识",0,0};
 __root const char COLOR_SEARCH_UNMARK[4]={0xFF,0xFF,0xFF,0x64};
 
 __root const CFG_HDR cfghdr_m8={CFG_LEVEL,"",0,0};
@@ -117,6 +120,19 @@ __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
 
 
 
+#ifdef ELKA
 
+__root const CFG_HDR cfghdr233 = {CFG_INT,"未知号码区号秀起始Y",0,176};
+__root const int a = 60;
 
+//__root const CFG_HDR cfghdr234 = {CFG_INT,"电话号码起始Y",0,176};
+//__root const int b = 50;
+
+__root const CFG_HDR cfghdr235 = {CFG_INT,"大字体时号码列表起始Y",0,176};
+__root const int c = 70;
+
+__root const CFG_HDR cfghdr236 = {CFG_INT,"小字体时号码列表起始Y",0,176};
+__root const int d = 60;
+
+#endif
 
