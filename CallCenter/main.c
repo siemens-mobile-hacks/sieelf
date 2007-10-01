@@ -123,17 +123,17 @@ static int (*old_ed_onkey)(GUI *gui, GUI_MSG *msg);
 static void (*old_ed_ghook)(GUI *gui, int cmd);
 static void (*old_ed_redraw)(void *data);
 
-//0 - ждем появления диалога
-//1 - диалог появился, зацепились, ждем зацепления за onRedraw
-//2 - зацепили onRedraw, idle-режим
-//3 - запрос поиска
-//4 - отправлен запрос
-//5 - производится поиск
+//0 -looking appearance dialogue
+//1 - to dialogue appeared, hooked, waiting for positive onRedraw 
+//2 - cable onRedraw, idle- regime 
+//3 - query search 
+//4 - you requested 
+//5 - searched 
 static volatile int hook_state=0;
 
 static volatile WSHDR *e_ws;
 
-static volatile int curpos; //Позиция курсора в списке
+static volatile int curpos; //The position of the cursor in the list 
 
 typedef struct
 {
@@ -143,7 +143,7 @@ typedef struct
   WSHDR *icons;
 }CLIST;
 
-static volatile CLIST *cltop; //Начало
+static volatile CLIST *cltop; //Start 
 
 static char dstr[NUMBERS_MAX][40];
 static int dstr_index[NUMBERS_MAX+1];
@@ -185,7 +185,7 @@ static void InitIcons(void)
 }
 #endif
 
-//Уничтожить список
+//Destroy list 
 static void FreeCLIST(void)
 {
   LockSched();
@@ -229,7 +229,7 @@ int char16to8(int c)
 }
 
 //-----------------------------------------------------
-//Поиск подстроки в строке по методу Т9
+//Search pieces in the line using T9 
 //-----------------------------------------------------
 static unsigned int us_reverse(unsigned int v)
 {
@@ -244,7 +244,7 @@ static int CompareStrT9(WSHDR *ws, WSHDR *ss, int need_insert_color)
   
   int first_pos=-1;
 
-  //Таблица ключей для поиска текста
+  //Table keys for text search
   static const char key[256]=
     "11111111111111111111111111111111"
       "10001**0***0000*012345678900***0"
@@ -255,24 +255,24 @@ static int CompareStrT9(WSHDR *ws, WSHDR *ss, int need_insert_color)
 		"22223333444455566677778888899999"
 		  "22223333444455566677778888899999";
 
-  if (!wslen(ss)) return(1); //Пустая строка всегда пляшет ;)
-  if (!wslen(ws)) return(0); //А пустая исходная не стреляет ;)
+  if (!wslen(ss)) return(1); //Empty string always line;) 
+  if (!wslen(ws)) return(0); //A blank background is not shooting;) 
   do
   {
     c=ws->wsbody[wpos];
     if ((wpos==1)&&(c=='+'))
     {
-      wpos=2; //Пропуск первого '+'
+      wpos=2; //first pass'+'
       continue;
     }
     if (!spos)
     {
-      //Ищем пробел
-      if (c==' ') spos=1; //Начинаем заново
+      //We are looking for a gap 
+      if (c==' ') spos=1; //Starting anew 
     }
     else
     {
-      //Преобразуем в код кнопки
+      //Preobrazuem code buttons 
       c=char16to8(c);
       c&=0xFF;
       c=key[c];
@@ -291,13 +291,13 @@ static int CompareStrT9(WSHDR *ws, WSHDR *ss, int need_insert_color)
 	    wsInsertChar(ws,us_reverse(((unsigned short *)COLOR_SEARCH_MARK)[0]),first_pos);
 	    wsInsertChar(ws,0xE006,first_pos);
 	  }
-	  return(1); //Все совпало
-	}
+	  return(1); //All coincided 
+		}
       }
       else 
       {
 	first_pos=-1;
-	spos=0; //Ищем новое слово
+	spos=0; //We are looking for a new word 
       }
     }
     wpos++;
@@ -306,7 +306,7 @@ static int CompareStrT9(WSHDR *ws, WSHDR *ss, int need_insert_color)
   return(0);
 }
 
-//сравнение длинных строк
+//than long lines 
 int wstrcmp_nocase(WSHDR *ws1, WSHDR *ws2)
 {
   int l1=wslen(ws1);
@@ -327,7 +327,7 @@ int wstrcmp_nocase(WSHDR *ws1, WSHDR *ws2)
 }
 
 //=====================================================
-// Конструктор списка
+// Constructor list 
 //=====================================================
 static void ConstructList(void)
 {
@@ -357,7 +357,7 @@ static void ConstructList(void)
 
   WSHDR *sws=AllocWS(50);
 
-  FreeCLIST(); //Уничтожаем пред. список
+  FreeCLIST(); //Unichtozhaem before. list 
   LockSched();
   if (e_ws) wstrcpy(sws,(WSHDR *)e_ws);
   if (hook_state==4) hook_state=5;
@@ -384,7 +384,7 @@ static void ConstructList(void)
           #endif   
 	  {
             #ifdef NEWSGOLD
-	    //Запись есть в битмапе
+	    //record is in class
             unsigned int rl1;
 	    unsigned int rl2;
 	    unsigned int rl3;
@@ -498,7 +498,7 @@ static void ConstructList(void)
                           unsigned int c1;
                           int m;
 			  ws=contact.num[n]=AllocWS(50);
-			  //Добавляем иконки телефонов
+			  //Add icons phones 
 			  wsAppendChar(contact.icons,utf_symbs[n]);
 			  j=0;
                           m=0;
@@ -537,7 +537,7 @@ static void ConstructList(void)
 	      LockSched();
 	      if ((hook_state==5)&&(contact.next))
 	      {
-		//Добавляем в список
+		//Add to the list 
 		int n=0;
 		CLIST *p=malloc(sizeof(contact));
 		CLIST *t;
@@ -548,21 +548,21 @@ static void ConstructList(void)
 		{
 		  if (t=b->next)
 		  {
-		    //Есть следующие
+		    //We have the following 
 		    if (wstrcmp_nocase(contact.name,t->name)<0)
 		    {
-		      //Следующий больше вставляемого, втыкаем сдесь
+		      //The following are inserted, vtykaem Here 
 		      p->next=t;
 		      b->next=p;
-                      if (is_pos_changed && n<=curpos) curpos++;  // Отсаемся на выбранной позиции
+                      if (is_pos_changed && n<=curpos) curpos++;  // Otsaemsya at selected positions 
 		      break;
 		    }
-		    b=t; //Следующий
-		    n++; //Номер добавляемого, для расчета, нужен ли REDRAW
+		    b=t; //next
+		    n++; //The number added to the calculation, I want REDRAW 
 		  }
 		  else
 		  {
-		    //Больше нет никого
+		    //End of anyone 
 		    b->next=p;
 		    break;
 		  }
@@ -647,7 +647,7 @@ static void my_ed_redraw(void *data)
   
   WSHDR *prws=AllocWS(256);
 
-  if (p && e_ws && e_ws->wsbody[0]<MAX_ESTR_LEN) //Ее длина <MAX_ESTR_LEN
+  if (p && e_ws && e_ws->wsbody[0]<MAX_ESTR_LEN) //Its length <MAX_ESTR_LEN 
   {
     int y=ScreenH()-SoftkeyH()-(GetFontYSIZE(FONT_MEDIUM)+1)*5-5;
     down_border=ScreenH()-SoftkeyH()-2;
@@ -664,7 +664,7 @@ static void my_ed_redraw(void *data)
       total_n++;
     }
     i=0;
-    if (total_n>5 && COLOR_SCROLLBAR[3])  //Прорисуем скроллбар
+    if (total_n>5 && COLOR_SCROLLBAR[3])  //Prorisuem skrollbar 
     {
       int start_y, y_width;
       right_border=ScreenW()-6;
@@ -799,17 +799,17 @@ static const INPUTDIA_DESC edsms_desc=
   101,
   0,
 
-//  0x00000001 - Выровнять по правому краю
-//  0x00000002 - Выровнять по центру
-//  0x00000004 - Инверсия знакомест
+//  0x00000001 - Align Right 
+//  0x00000002 - Align Center 
+//  0x00000004 - inversion characters
 //  0x00000008 - UnderLine
-//  0x00000020 - Не переносить слова
+//  0x00000020 - not carry the word 
 //  0x00000200 - bold
   0,
 
 //  0x00000002 - ReadOnly
-//  0x00000004 - Не двигается курсор
-  0x40000000 // Поменять местами софт-кнопки
+//  0x00000004 - Not moving the cursor 
+  0x40000000 // Change field coaching buttons 
 };
 
 static void VoiceOrSMS(const char *num)
@@ -920,7 +920,7 @@ static int my_ed_onkey(GUI *gui, GUI_MSG *msg)
       cl=(CLIST *)cl->next;
       if (!cl) goto L_OLDKEY;
     }
-    //Теперь cl указывает на вход
+    //Now cl indicates input 
     d=0;
     n=0;
     do
@@ -935,20 +935,20 @@ static int my_ed_onkey(GUI *gui, GUI_MSG *msg)
     }
     while(d<NUMBERS_MAX);
     dstr_index[0]=n;
-    if (n==1) //Только один номер
+    if (n==1) //Only one room
     {
       VoiceOrSMS(dstr[0]);
-      return(1); //Закрыть нах
+      return(1); //Close tries 
     }
-    if (n==0) goto L_OLDKEY; //Нет вообще телефонов
-    //Количество номеров больше 1, рисуем меню
+    if (n==0) goto L_OLDKEY; //No phones altogether 
+    //Number of rooms more than 1, paint me 
     patch_header((HEADER_DESC *)&gotomenu_HDR);
     CreateMenu(0,0,&gotomenu_STRUCT,&gotomenu_HDR,set_menu,n,0,0);
     return(0);
   }
   if ((key==UP_BUTTON)||(key==DOWN_BUTTON))
   {
-    //Не обрабатываем редактором вверх/вниз
+    //Do not treat editor of up / down
     msg->keys=0;
     if ((m==KEY_DOWN)||(m==LONG_PRESS))
     {
@@ -973,7 +973,7 @@ static int my_ed_onkey(GUI *gui, GUI_MSG *msg)
 	curpos=i;
       }
     }
-    r=-1; //Перерисовать
+    r=-1; //Redraw
   }
 #ifndef NEWSGOLD
   else if (key==ENTER_BUTTON)
@@ -996,7 +996,7 @@ static int my_ed_onkey(GUI *gui, GUI_MSG *msg)
       {
         is_pos_changed=0;
 	DisableScroll();
-	if (hook_state>=2) //Возможно изменение строки ввода, требуется поиск
+	if (hook_state>=2) //Changes to the line input is required search 
 	{
 	  hook_state=3;
 	}
@@ -1015,7 +1015,7 @@ static void my_ed_ghook(GUI *gui, int cmd)
   void **m=GetDataOfItemByID(gui,4);
   if ((hook_state==1)/*&&(cmd==7)*/)
   {
-    //Цепляем метод onRedraw
+    //Tseplyaem method onRedraw 
     if (m)
     {
       if (m[1])
@@ -1024,7 +1024,7 @@ static void my_ed_ghook(GUI *gui, int cmd)
 	old_ed_redraw=(void (*)(void *))(methods[0]);
 	methods[0]=(void *)my_ed_redraw;
 	m[1]=methods;
-	hook_state=3; //Запрос поиска
+	hook_state=3; //Query Search 
       }
     }
   }
@@ -1033,8 +1033,8 @@ static void my_ed_ghook(GUI *gui, int cmd)
   {
     EDITCONTROL ec;
     ExtractEditControl(gui,1,&ec);
-    //Новая строка поиска
-    if ((e_ws=ec.pWS)->wsbody[0]<MAX_ESTR_LEN) //Ее длина <MAX_ESTR_LEN
+    //New Line Search 
+    if ((e_ws=ec.pWS)->wsbody[0]<MAX_ESTR_LEN) //Its length <MAX_ESTR_LEN 
     {
       if (hook_state==3)
       {
@@ -1138,7 +1138,7 @@ static int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
   }
   if (msg->msg==MSG_USSD_RX || msg->msg==MSG_AUTOUSSD_RX)
   {
-    if (ProcessUSSD(data,(GBS_USSD_MSG *)msg)) return 0; //Обработанно
+    if (ProcessUSSD(data,(GBS_USSD_MSG *)msg)) return 0; //Obrabotanno 
   }
   if (msg->msg==MSG_END_CALL)
   {
@@ -1186,18 +1186,18 @@ static int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
       GBS_StartTimerProc(&vibra_tmr,vibraDuration*TMR_SECOND/1000,vibra_tmr_proc);
     }
   }
-  csm_result=old_icsm_onMessage(data,msg); //Вызываем старый обработчик событий
+  csm_result=old_icsm_onMessage(data,msg); //call old handler events 
   
   if (cfgShowIn != 1 - IsUnlocked())
   {
-    if (IsGuiOnTop(idlegui_id)) //Если IdleGui на самом верху
+    if (IsGuiOnTop(idlegui_id)) //If IdleGui at the top 
     {
       GUI *igui = GetTopGUI();
-      if (igui) //И он существует
+      if (igui) //And it is 
       {
         extern int CASH_SIZE;               //by BoBa 4.07.07
 
-        int n=0; //Номер      
+        int n=0; //Number    
         while(n<CASH_SIZE)
         {
           DrawMyProgress(IDLE_Y,n);
@@ -1207,14 +1207,14 @@ static int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
     }
   }
   
-  if (IsGuiOnTop(edialgui_id)) //Если EDialGui на самом верху
+  if (IsGuiOnTop(edialgui_id)) //If EDialGui at the top 
   {
     GUI *igui=GetTopGUI();
-    if (igui) //И он существует (а не в проекте ;))
+    if (igui) //And it is (not in the draft;)) 
     {
       if (!hook_state)
       {
-	//Не было диалога
+	//There was no dialogue
 	DoSplices(igui);
 	hook_state=1;
       }
@@ -1242,7 +1242,7 @@ static void MyIDLECSM_onClose(CSM_RAM *data)
 
 int main(void)
 {
-  //InitConfig();  Загружаем только когда изменится imsi с 0 на любую другую
+  //InitConfig();  only when the load changes imsi from 0 to any other 
   //LoadCash();
   LockSched();
   CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
