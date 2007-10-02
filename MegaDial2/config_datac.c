@@ -14,18 +14,12 @@ __root const int disable_when_calling=1;
 __root const CFG_HDR cfghdr104 = {CFG_CHECKBOX,"单码禁用",0,0};
 __root const int cfg_disable_one_number=1;
 
-__root const CFG_HDR cfghdr105 = {CFG_CHECKBOX,"号码显示",0,0};
-__root const int show_number=1;
-
-__root const CFG_HDR cfghdr106 = {CFG_CHECKBOX,"多号码显示",0,0};
-__root const int show_more_number=0;
-
 __root const CFG_HDR cfghdr107 = {CFG_CHECKBOX,"部分区号秀",0,0};
 __root const int cfg_cs_part=0;
-
-__root const CFG_HDR cfghdr108 = {CFG_UINT,"屏幕拨号按键",0,65535};
-__root const unsigned int CALL_BTN=ENTER_BUTTON;
-
+/*
+__root const CFG_HDR cfghdr108 = {CFG_UINT,"c1",0,65535};
+__root const unsigned int CALL_BTN=VOL_DOWN_BUTTON;
+*/
 __root const CFG_HDR cfghdr109 = {CFG_UINT,"IP电话按键",0,65535};
 __root const unsigned int CALL_IP=VOL_UP_BUTTON;
 
@@ -47,23 +41,16 @@ __root const CFG_HDR cfghdr_m6={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr_m7={CFG_LEVEL,"号码菜单颜色",1,0};
 
-__root const CFG_HDR cfghdr110={CFG_COLOR,"号码菜单背景",0,99};
-__root const int COLOR_NMENU_BK=23;
-
-__root const CFG_HDR cfghdr111={CFG_COLOR,"号码菜单边框",0,99};
-__root const int COLOR_NMENU_BRD=1;
-
 __root const CFG_HDR cfghdr112={CFG_COLOR,"号码颜色",0,99};
-__root const int COLOR_NUMBER=0;
+__root const int COLOR_NUMBER=1;
 
-__root const CFG_HDR cfghdr113={CFG_COLOR,"号码条背景",0,99};
+__root const CFG_HDR cfghdr113={CFG_COLOR,"号码标识背景",0,99};
 __root const int COLOR_NUMBER_BG=23;
 
-__root const CFG_HDR cfghdr114={CFG_COLOR,"号码条边框",0,99};
-__root const int COLOR_NUMBER_BRD=0;
+__root const CFG_HDR cfghdr114={CFG_COLOR,"号码标识边框",0,99};
+__root const int COLOR_NUMBER_BRD=1;
 
 __root const CFG_HDR cfghdr_m6={CFG_LEVEL,"",0,0};
-
 
 
 __root const CFG_HDR cfghdr_m9={CFG_LEVEL,"主菜单颜色",1,0};
@@ -81,7 +68,7 @@ __root const CFG_HDR cfghdr123={CFG_COLOR,"选择号码",0,99};
 __root const int COLOR_SELECTED=1;
 
 __root const CFG_HDR cfghdr124={CFG_COLOR,"选择条背景",0,99};
-__root const int COLOR_SELECTED_BG=7;
+__root const int COLOR_SELECTED_BG=6;
 
 __root const CFG_HDR cfghdr125={CFG_COLOR,"选择条边框",0,99};
 __root const int COLOR_SELECTED_BRD=23;
@@ -99,7 +86,6 @@ __root const CFG_HDR cfghdr129={CFG_COLOR,"快选未标识",0,0};
 __root const char COLOR_SEARCH_UNMARK[4]={0xFF,0xFF,0xFF,0x64};
 
 __root const CFG_HDR cfghdr_m8={CFG_LEVEL,"",0,0};
-
 
 
 __root const CFG_HDR cfghdr_m11={CFG_LEVEL,"其他",1,0};
@@ -121,18 +107,16 @@ __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
 
 
 #ifdef ELKA
-
 __root const CFG_HDR cfghdr233 = {CFG_INT,"未知号码区号秀起始Y",0,176};
-__root const int a = 60;
+__root const int a = 100;
 
 //__root const CFG_HDR cfghdr234 = {CFG_INT,"电话号码起始Y",0,176};
-//__root const int b = 50;
+//__root const int b = 56;
 
 __root const CFG_HDR cfghdr235 = {CFG_INT,"大字体时号码列表起始Y",0,176};
-__root const int c = 70;
+__root const int c = 100;
 
 __root const CFG_HDR cfghdr236 = {CFG_INT,"小字体时号码列表起始Y",0,176};
-__root const int d = 60;
-
+__root const int d = 100;
 #endif
 

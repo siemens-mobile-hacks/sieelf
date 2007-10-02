@@ -15,18 +15,12 @@ __root const int disable_when_calling=1;
 __root const CFG_HDR cfghdr104 = {CFG_CHECKBOX,"Disable one numbe",0,0};
 __root const int cfg_disable_one_number=1;
 
-__root const CFG_HDR cfghdr105 = {CFG_CHECKBOX,"Show number",0,0};
-__root const int show_number=1;
-
-__root const CFG_HDR cfghdr106 = {CFG_CHECKBOX,"Show more number",0,0};
-__root const int show_more_number=0;
-
 __root const CFG_HDR cfghdr107 = {CFG_CHECKBOX,"CodeShow part show",0,0};
 __root const int cfg_cs_part=0;
-
+/*
 __root const CFG_HDR cfghdr108 ={CFG_UINT,"Numberlist button",0,65535};
 __root const unsigned int CALL_BTN=ENTER_BUTTON;
-
+*/
 __root const CFG_HDR cfghdr109 ={CFG_UINT,"IP button",0,65535};
 __root const unsigned int CALL_IP=VOL_UP_BUTTON;
 
@@ -50,20 +44,14 @@ __root const CFG_HDR cfghdr_m6={CFG_LEVEL,"",0,0};
 //ÑÕÉ«1
 __root const CFG_HDR cfghdr_m7={CFG_LEVEL,"Numberlist color",1,0};
 
-__root const CFG_HDR cfghdr110={CFG_COLOR,"Numberlist background",0,99};
-__root const int COLOR_NMENU_BK=23;
-
-__root const CFG_HDR cfghdr111={CFG_COLOR,"Numberlist border",0,99};
-__root const int COLOR_NMENU_BRD=1;
-
 __root const CFG_HDR cfghdr112={CFG_COLOR,"Number color",0,99};
-__root const int COLOR_NUMBER=0;
+__root const int COLOR_NUMBER=1;
 
-__root const CFG_HDR cfghdr113={CFG_COLOR,"Number selected background",0,99};
+__root const CFG_HDR cfghdr113={CFG_COLOR,"Icon background",0,99};
 __root const int COLOR_NUMBER_BG=23;
 
-__root const CFG_HDR cfghdr114={CFG_COLOR,"Number selected border",0,99};
-__root const int COLOR_NUMBER_BRD=0;
+__root const CFG_HDR cfghdr114={CFG_COLOR,"Icon border",0,99};
+__root const int COLOR_NUMBER_BRD=1;
 
 __root const CFG_HDR cfghdr_m6={CFG_LEVEL,"",0,0};
 
@@ -84,7 +72,7 @@ __root const CFG_HDR cfghdr123={CFG_COLOR,"Color Selected",0,99};
 __root const int COLOR_SELECTED=1;
 
 __root const CFG_HDR cfghdr124={CFG_COLOR,"Color Selected background",0,99};
-__root const int COLOR_SELECTED_BG=7;
+__root const int COLOR_SELECTED_BG=6;
 
 __root const CFG_HDR cfghdr125={CFG_COLOR,"Color Selected border",0,99};
 __root const int COLOR_SELECTED_BRD=23;
@@ -128,7 +116,7 @@ __root const CFG_HDR cfghdr233 = {CFG_INT,"CodeShow unkonw Y1",0,176};
 __root const int a = 60;
 
 //__root const CFG_HDR cfghdr234 = {CFG_INT,"number Y1",0,176};
-//__root const int b = 50;
+//__root const int b = 56;
 
 __root const CFG_HDR cfghdr235 = {CFG_INT,"big font numberlist Y1",0,176};
 __root const int c = 70;
