@@ -27,6 +27,9 @@ extern const char COLOR_SEARCH_UNMARK[4];
 //-------------------------------------
 //部分新增参数
 //-------------------------------------
+#define cfg_item_gaps 3
+#define color(x) (x<24)?GetPaletteAdrByColorIndex(x):(char *)(&(x))  
+
 volatile int numx;
 int sumx;
 int cs_adr=0;
@@ -46,8 +49,10 @@ extern const char root_dir[128];
 extern const int COLOR_NUMBER_BG;
 extern const int COLOR_NUMBER_BRD;
 extern const int COLOR_NUMBER;
+extern const int CS_NUMBER_BG;
 
 //区号秀
+extern const int cs_down;
 extern const int cfg_cs_adr;
 extern const int cfg_cs_enable;
 extern const int cfg_cs_part;
@@ -59,10 +64,23 @@ extern const int cfg_disable_one_number;
 extern const int disable_when_calling;
 extern const int big_font;
 extern const int cfg_ip_number;
+extern const int show_pic;
 
 //号码列表按键
 //extern const unsigned int CALL_BTN;
 extern const unsigned int CALL_IP;
+
+
+
+
+
+
+
+//elka测试
+extern const int a;
+extern const int c;
+extern const int d;
+
 
 //字体控制
 #ifdef ELKA
@@ -82,19 +100,6 @@ void font(void)
     font_size=7;
 }
 #endif
-
-//条目间距定义
-#define cfg_item_gaps 3
-
-//24色控制
-#define color(x) (x<24)?GetPaletteAdrByColorIndex(x):(char *)(&(x))  
-
-//elka测试
-extern const int a;
-extern const int b;
-extern const int c;
-extern const int d;
-
 //-------------------------------------------
 
 #pragma inline
@@ -141,6 +146,7 @@ static void patch_input(const INPUTDIA_DESC* inp)
 #define COMPANY_NAME 0x29
 #define POST_NAME 0x6F
 #define DISPLAY_NAME 0x60
+#define PICTURE 0x33
 #else
 #define NICKNAME 0x12
 #define LAST_NAME 0x23
@@ -161,6 +167,8 @@ static void patch_input(const INPUTDIA_DESC* inp)
 #define PHONE_FAX2 0x5E
 #define WALKY_TALKY_ID 0x6D
 #endif
+
+
 
 volatile int is_pos_changed=0;
 
@@ -194,6 +202,7 @@ typedef struct
   WSHDR *name;
   WSHDR *num[NUMBERS_MAX];
   WSHDR *icons;
+  WSHDR *pic;
 }CLIST;
 
 volatile CLIST *cltop; //Start
@@ -248,10 +257,9 @@ void RereadSettings()
 	int fin;
 	unsigned int ul;
 	InitConfig();
-   //     if( !cfg_gps_enable )
-   //     local_ip_dial = 1;
+
 	if(iReadFile && !cs_adr)
-		mfree((void*)cs_adr);
+        mfree((void*)cs_adr);
 	if(cfg_cs_adr > 0xA0000000)
 	{
 		cs_adr=cfg_cs_adr;
@@ -312,7 +320,7 @@ void ShowInputCodeShow(WSHDR* pwsNum,int y1)
 				if(*pszNum == '+' && len < 10)
 					goto sub_end;	//+86XXXXXXXXX number is not enough
                         
-                        	     else if(len > 18)
+                        	     else if(len > 14)
 					goto sub_end;
 				else
 				{
@@ -327,7 +335,6 @@ void ShowInputCodeShow(WSHDR* pwsNum,int y1)
 						color(cfg_cs_font_color),
 						GetPaletteAdrByColorIndex(23));
 				}
-//DrawString(prws,3,dy+4,ScreenW()-4,dy+3+GetFontYSIZE(font_size),font_size,0x80,COLOR_NOTSELECTED,GetPaletteAdrByColorIndex(23));
 	}
 sub_end:
 	FreeWS(pwsCodeshow);
@@ -415,11 +422,8 @@ int CompareStrT9(WSHDR *ws, WSHDR *ss, int need_insert_color)
   int spos=1;
   int wpos=1;
   int c,c1=ws->wsbody[1],c2=ss->wsbody[1];
-  
   int first_pos=-1;
-
   extern const unsigned short PinYinTable[5227];
-
   unsigned short temp;
   
   //Table keys for text search
@@ -669,8 +673,15 @@ void ConstructList(void)
 		      }
 //                      #endif 
 		    }
+                    if (r->item_type==PICTURE)
+                    {
+                        if (r->data)
+                            if (!contact.pic)
+                            wstrcpy(contact.pic=AllocWS(150),(WSHDR *)(r->data)); 
+                            *((int *)(&contact.next))|=CompareStrT9(contact.pic,sws,0);
+                    }
 		    break;
-                    
+
 		  case 0x01:
 		    {
 		      PKT_NUM *p=(PKT_NUM*)r->data;
@@ -740,6 +751,7 @@ void ConstructList(void)
 		FreeWS(contact.name);
 		for(int i=0;i<NUMBERS_MAX;i++) FreeWS(contact.num[i]);
 		FreeWS(contact.icons);
+                FreeWS(contact.pic);
 	      }
 	      FreeUnpackABentry(&ur,mfree_adr());
 	      if (hook_state!=5) goto L_STOP;
@@ -843,12 +855,174 @@ void DisableScroll(void)
   scroll_disp=0;
 }
 
+/*
+typedef struct {
+  char R;
+  char G;
+  char B;
+  char A;
+}color;
+
+IMGHDR *my_pic=0;
+#define CTYPE2 3
+#define CTYPE1 10
+
+void setcolor(IMGHDR *img, int x, int y, color clr)
+{
+  color *bm=(color*)img->bitmap;
+  if(x < img->w && x>=0 && y < img->h && y>=0)
+    *(bm + x + y*img->w)=clr;
+}
+
+
+void bmfree(IMGHDR *img)
+{
+  int x, y;
+  for(y=0; y<img->h; y++)
+    for(x=0; x<img->w; x++)
+      setcolor(img, x, y, (color){0,0,0,0});
+}
+
+
+DrwImg(IMGHDR *img, int x, int y, char *pen, char *brush)
+{
+  RECT rc;
+  DRWOBJ drwobj;
+  StoreXYWHtoRECT(&rc,x,y,img->w,img->h);
+  SetPropTo_Obj5(&drwobj,&rc,0,img);
+  SetColor(&drwobj,pen,brush);
+  DrawObject(&drwobj);
+}
+
+IMGHDR *createIMGHDR(int w, int h, int type)
+{
+  IMGHDR *img=malloc(sizeof(IMGHDR));
+  img->w=w; 
+  img->h=h; 
+  img->bpnum=type;
+  img->bitmap=malloc(h*w*sizeof(color));
+  bmfree(img);
+  return img;
+}
+
+color getcolor(IMGHDR *img, int x, int y)
+{
+  color *bm=(color*)img->bitmap;
+  if(x < img->w && x>=0 && y < img->h && y>=0) 
+    return *(bm + x + y*img->w);
+  else
+    return (color){0,0,0,0};
+}
+
+int min(int x, int y)
+{
+  return x < y ? x : y;
+}
+
+
+color RGBA(char R, char G, char B, char A)
+{
+  color t={R,G,B,A};
+  return t;
+}
+
+void deleteIMGHDR(IMGHDR *img)
+{
+  mfree(img->bitmap);
+  mfree(img); 
+}
+
+IMGHDR *alpha(IMGHDR *img, char a, int nw, int del)
+{
+  int i;
+  color *r=(color*)img->bitmap;
+  for(i=0;i<img->h*img->w; i++, r++)
+    if(r->A>a)
+      r->A-=a;
+    else
+      r->A=0;
+    return img;
+}
+
+
+IMGHDR *resample(IMGHDR *img, int px, int py, int fast, int del)
+{
+  if (px==100 && py==100) return img;
+  
+  long newx = (img->w*px)/100,
+  newy = (img->h*py)/100;
+  
+  float xScale, yScale, fX, fY;
+  xScale = (float)img->w  / (float)newx;
+  yScale = (float)img->h / (float)newy;
+  
+  IMGHDR *img2=createIMGHDR(newx,newy, CTYPE1);
+  if (fast) {
+    for(long y=0; y<newy; y++){
+      fY = y * yScale;
+      for(long x=0; x<newx; x++){
+        fX = x * xScale;
+        setcolor(img2,  x,  y, getcolor(img, (long)fX,(long)fY));
+      }
+    }
+  } else {
+    long ifX, ifY, ifX1, ifY1, xmax, ymax;
+    float ir1, ir2, ig1, ig2, ib1, ib2, ia1, ia2, dx, dy;
+    char r,g,b,a;
+    color rgb1, rgb2, rgb3, rgb4;
+    xmax = img->w-1;
+    ymax = img->h-1;
+    for(long y=0; y<newy; y++){
+      fY = y * yScale;
+      ifY = (int)fY;
+      ifY1 = min(ymax, ifY+1);
+      dy = fY - ifY;
+      for(long x=0; x<newx; x++){
+        fX = x * xScale;
+        ifX = (int)fX;
+        ifX1 = min(xmax, ifX+1);
+        dx = fX - ifX;
+        rgb1= getcolor(img, ifX,ifY);
+        rgb2= getcolor(img, ifX1,ifY);
+        rgb3= getcolor(img, ifX,ifY1);
+        rgb4= getcolor(img, ifX1,ifY1);
+        
+        ir1 = rgb1.R   * (1 - dy) + rgb3.R   * dy;
+        ig1 = rgb1.G * (1 - dy) + rgb3.G * dy;
+        ib1 = rgb1.B  * (1 - dy) + rgb3.B  * dy;
+        ia1 = rgb1.A  * (1 - dy) + rgb3.A  * dy;
+        ir2 = rgb2.R   * (1 - dy) + rgb4.R   * dy;
+        ig2 = rgb2.G * (1 - dy) + rgb4.G * dy;
+        ib2 = rgb2.B  * (1 - dy) + rgb4.B  * dy;
+        ia2 = rgb2.A  * (1 - dy) + rgb4.A  * dy;
+        
+        r = (char)(ir1 * (1 - dx) + ir2 * dx);
+        g = (char)(ig1 * (1 - dx) + ig2 * dx);
+        b = (char)(ib1 * (1 - dx) + ib2 * dx);
+        a = (char)(ia1 * (1 - dx) + ia2 * dx);
+        
+        setcolor(img2, x,y,RGBA(r,g,b,a));
+      }
+    }
+  }
+  
+  if(del)
+    deleteIMGHDR(img);
+  return img2;
+}
+
+char pic_path[];
+unsigned int pic_size;
+
+
+*/
 void my_ed_redraw(void *data)
 {
   //  WSHDR *ews=(WSHDR*)e_ws;
-    font();
+  font();
   sumx=0;
   char pszNum[20];
+  char pszNum2[200];
   int z;
   int gfont_size = GetFontYSIZE(font_size);
   int len,j,x=0;
@@ -865,18 +1039,18 @@ void my_ed_redraw(void *data)
   
 #ifdef ELKA
   (big_font)?(count_page=6):(count_page=8);
-  int csh=a;
+  int csh=100;
   if(big_font)
-      z=c;
+      z=102;
   else
-      z=d;
+      z=98;
 #else
   (big_font)?(count_page=7):(count_page=9);
   int csh=40;
   if(big_font)
       z=42;
   else
-      z=36;
+      z=38;
 #endif
   //区号秀平时输出
   if(e_ws)
@@ -910,6 +1084,10 @@ void my_ed_redraw(void *data)
       DrawRectangle(right_border+1,start_y,right_border+3,start_y+y_width+1,0,color(COLOR_SCROLLBAR),color(COLOR_SCROLLBAR));
     } 
     else right_border=ScreenW()-3;
+    
+    
+    
+    
     do
     {
       int dy=i*(gfont_size+1)+y;
@@ -945,8 +1123,7 @@ void my_ed_redraw(void *data)
 	DrawRectangle(2,dy+3,right_border,dy+2*(cfg_item_gaps+gfont_size)-2,0,color(COLOR_SELECTED_BRD),color(COLOR_SELECTED_BG));
 	DrawString(cl->name,3,dy+4,right_border-2-icons_size,dy+(cfg_item_gaps+gfont_size),font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
         //DrawScrollString(cl->name,3,dy+4,right_border-2-icons_size,dy+cfg_item_gaps+GetFontYSIZE(font_size),scroll_disp+1,font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
-	DrawString(cl->icons,right_border-1-icons_size,dy+cfg_item_gaps,right_border-2,dy+cfg_item_gaps+gfont_size,font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
-        
+	
         //区号秀和号码输出
                   int aj;
                   for(j=0;j<=4;j++) 
@@ -979,10 +1156,34 @@ void my_ed_redraw(void *data)
                   int d=(sumx-numx)*l;
                   DrawImg(3,dy+(gfont_size+cfg_item_gaps),menu_icons[aj+numx+x]);
                   DrawString(cl->num[aj+numx+x],l+3,dy+(gfont_size+cfg_item_gaps)+2,right_border,dy+2*(gfont_size+cfg_item_gaps),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));
-                  ShowSelectedCodeShow(cl->num[aj+numx+x],dy+2*(gfont_size+cfg_item_gaps)); 
+                  int dyx,dyy;
+                  if((!cs_down)&&(!cfg_cs_part))
+                  {
+                    dyx=dy;
+                    dyy=dy;
+                  }
+                  else
+                  {
+                    dyx=dy+3*(gfont_size+cfg_item_gaps)-4;
+                    dyy=dy+(gfont_size+cfg_item_gaps);
+                  }
+                  if(!cfg_cs_part)
+                  DrawRectangle(ScreenW()-((gfont_size+1)*9)/2,dyx-(gfont_size+cfg_item_gaps)+3,ScreenW()-6,dyx+2,0,GetPaletteAdrByColorIndex(23),color(CS_NUMBER_BG));
+                  ShowSelectedCodeShow(cl->num[aj+numx+x],dyx-(gfont_size+cfg_item_gaps)+4);
+                  ws_2str(cl->pic,pszNum2,200);
+                  len=strlen(pszNum2);
+                  int x0=ScreenW()-4-GetImgWidth((int)pszNum2);
+                  while(x0<(gfont_size+1)*3)
+                         x0++;
+                  if(len>3&&show_pic)
+                  DrawImg(x0,dyy+2*(gfont_size+cfg_item_gaps)-1,(unsigned int)pszNum2);   
+                  
                   if(sumx>1)
                   DrawRectangle(right_border-2-d,dy+3,right_border-1-d+l,dy+(gfont_size+cfg_item_gaps)+1,1,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
-           }
+      //int x0=(e+GetImgWidth((int)pszNum2));
+      //int y0=(dy+3*(gfont_size+cfg_item_gaps)+GetImgHeight((int)pszNum2));            
+            DrawString(cl->icons,right_border-1-icons_size,dy+cfg_item_gaps,right_border-2,dy+cfg_item_gaps+gfont_size,font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
+      }
       cl=(CLIST *)cl->next;
       i++;
     }
@@ -990,6 +1191,7 @@ void my_ed_redraw(void *data)
   }
   FreeWS(prws);
 }
+
 
 //屏幕参数控制
 void ChangeRC(GUI *gui)
@@ -1262,8 +1464,6 @@ void gotomenu_itemhandler(void *data, int curitem, void *user_pointer)
   }
 }
 
-
-
 const HEADER_DESC gotomenu_HDR={0,0,131,21,0,(int)"Select number...",LGP_NULL};
 
 const MENU_DESC gotomenu_STRUCT=
@@ -1287,7 +1487,8 @@ void ElfKiller(void)
         FreeWS(ews);
         FreeCLIST();
         if(iReadFile && !cs_adr)
-		mfree((void*)cs_adr);	
+		mfree((void*)cs_adr);
+        //if(my_pic) deleteIMGHDR(my_pic);	
 	LockSched();
         CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
 	memcpy(&icsmd,icsm->constr,sizeof(icsmd));
@@ -1408,7 +1609,6 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
     */
     return(0);
   }
- //循环号码
   if ((key==UP_BUTTON)||(key==DOWN_BUTTON))
   {
     //Do not treat editor of up / down
@@ -1500,6 +1700,7 @@ void my_ed_ghook(GUI *gui, int cmd)
   old_ed_ghook(gui, cmd);
   if (cmd==7)
   {
+
     EDITCONTROL ec;
     ExtractEditControl(gui,1,&ec);
     //New Line Search 
@@ -1600,15 +1801,15 @@ int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
     GBS_StartTimerProc(&vibra_tmr,vibraDuration*216/1000,vibra_tmr_proc);
   }
   */
-  csm_result=old_icsm_onMessage(data,msg); //call handler old news? 
-    if (IsGuiOnTop(edialgui_id)) //If EDialGui itself? Top? 
+  csm_result=old_icsm_onMessage(data,msg); //call old handler events  
+    if (IsGuiOnTop(edialgui_id)) //If IdleGui at the top 
     {
     GUI *igui=GetTopGUI();
-    if (igui) // it is (? no? draft? ;)) 
+    if (igui) //And it is (not in the draft;)) 
     {
       if (!hook_state)
       {
-	//There was no dialogue?
+	//There was no dialogue
         DoSplices(igui);
 	hook_state=1;
       }
@@ -1621,10 +1822,10 @@ void MyIDLECSM_onClose(CSM_RAM *data)
 {
   extern void seqkill(void *data, void(*next_in_seq)(CSM_RAM *), void *data_to_kill, void *seqkiller);
   extern void *ELF_BEGIN;
+  //if(my_pic) deleteIMGHDR(my_pic);
   FreeWS(ews);
   seqkill(data,old_icsm_onClose,&ELF_BEGIN,SEQKILLER_ADR());
 }
-
 
 int main(void)
 {

@@ -2,6 +2,9 @@
 #include "..\inc\swilib.h"
 //暑眙桡箴圉?
 
+
+__root const CFG_HDR cfghdr_m5={CFG_LEVEL,"基本功能控制",1,0};
+
 __root const CFG_HDR cfghdr101 = {CFG_CHECKBOX,"大字体",0,0};
 __root const int big_font=0;
 
@@ -19,9 +22,18 @@ __root const int cfg_cs_part=0;
 /*
 __root const CFG_HDR cfghdr108 = {CFG_UINT,"c1",0,65535};
 __root const unsigned int CALL_BTN=VOL_DOWN_BUTTON;
+
 */
+__root const CFG_HDR cfghdr108 = {CFG_CHECKBOX,"大头贴显示",0,0};
+__root const int show_pic=1;
+
+__root const CFG_HDR cfghdr110 = {CFG_CHECKBOX,"区号秀居下",0,0};
+__root const int cs_down=0;
+
 __root const CFG_HDR cfghdr109 = {CFG_UINT,"IP电话按键",0,65535};
 __root const unsigned int CALL_IP=VOL_UP_BUTTON;
+
+__root const CFG_HDR cfghdr_m4={CFG_LEVEL,"",0,0};
 
 
 /*
@@ -39,10 +51,19 @@ __root const unsigned int vibraDuration=50;
 __root const CFG_HDR cfghdr_m6={CFG_LEVEL,"",0,0};
 */
 
-__root const CFG_HDR cfghdr_m7={CFG_LEVEL,"号码菜单颜色",1,0};
+__root const CFG_HDR cfghdr_m7={CFG_LEVEL,"选号相关颜色",1,0};
+
+__root const CFG_HDR cfghdr123={CFG_COLOR,"姓名颜色",0,99};
+__root const int COLOR_SELECTED=1;
 
 __root const CFG_HDR cfghdr112={CFG_COLOR,"号码颜色",0,99};
 __root const int COLOR_NUMBER=1;
+
+__root const CFG_HDR cfghdr124={CFG_COLOR,"选择条背景",0,99};
+__root const int COLOR_SELECTED_BG=6;
+
+__root const CFG_HDR cfghdr125={CFG_COLOR,"选择条边框",0,99};
+__root const int COLOR_SELECTED_BRD=23;
 
 __root const CFG_HDR cfghdr113={CFG_COLOR,"号码标识背景",0,99};
 __root const int COLOR_NUMBER_BG=23;
@@ -53,7 +74,7 @@ __root const int COLOR_NUMBER_BRD=1;
 __root const CFG_HDR cfghdr_m6={CFG_LEVEL,"",0,0};
 
 
-__root const CFG_HDR cfghdr_m9={CFG_LEVEL,"主菜单颜色",1,0};
+__root const CFG_HDR cfghdr_m9={CFG_LEVEL,"菜单其他颜色",1,0};
 
 __root const CFG_HDR cfghdr120={CFG_COLOR,"菜单背景",0,99};
 __root const int COLOR_MENU_BK=23;
@@ -61,17 +82,8 @@ __root const int COLOR_MENU_BK=23;
 __root const CFG_HDR cfghdr121={CFG_COLOR,"菜单边框",0,99};
 __root const int COLOR_MENU_BRD=1;
 
-__root const CFG_HDR cfghdr122={CFG_COLOR,"未选择号码",0,99};
+__root const CFG_HDR cfghdr122={CFG_COLOR,"未选择姓名",0,99};
 __root const int COLOR_NOTSELECTED=0;
-
-__root const CFG_HDR cfghdr123={CFG_COLOR,"选择号码",0,99};
-__root const int COLOR_SELECTED=1;
-
-__root const CFG_HDR cfghdr124={CFG_COLOR,"选择条背景",0,99};
-__root const int COLOR_SELECTED_BG=6;
-
-__root const CFG_HDR cfghdr125={CFG_COLOR,"选择条边框",0,99};
-__root const int COLOR_SELECTED_BRD=23;
 
 __root const CFG_HDR cfghdr126={CFG_COLOR,"滚动条颜色",0,99};
 __root const int COLOR_SCROLLBAR=0;  
@@ -88,10 +100,14 @@ __root const char COLOR_SEARCH_UNMARK[4]={0xFF,0xFF,0xFF,0x64};
 __root const CFG_HDR cfghdr_m8={CFG_LEVEL,"",0,0};
 
 
-__root const CFG_HDR cfghdr_m11={CFG_LEVEL,"其他",1,0};
+
+__root const CFG_HDR cfghdr_m11={CFG_LEVEL,"其他相关设定",1,0};
 
 __root const CFG_HDR cfghdr130 = {CFG_COLOR,"区号秀颜色",0,99};
 __root const int cfg_cs_font_color=0;
+
+__root const CFG_HDR cfghdr140 = {CFG_COLOR,"区号秀背景",0,99};
+__root const int CS_NUMBER_BG=2;
 
 __root const CFG_HDR cfghdr131 = {CFG_UINT,"区号秀地址",0,0xFFFFFFFF};
 __root const int cfg_cs_adr=0xA0CC0000;
@@ -104,14 +120,10 @@ __root const int cfg_ip_number = 17951;
 
 __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
 
-
-
+/*
 #ifdef ELKA
 __root const CFG_HDR cfghdr233 = {CFG_INT,"未知号码区号秀起始Y",0,176};
 __root const int a = 100;
-
-//__root const CFG_HDR cfghdr234 = {CFG_INT,"电话号码起始Y",0,176};
-//__root const int b = 56;
 
 __root const CFG_HDR cfghdr235 = {CFG_INT,"大字体时号码列表起始Y",0,176};
 __root const int c = 100;
@@ -119,4 +131,5 @@ __root const int c = 100;
 __root const CFG_HDR cfghdr236 = {CFG_INT,"小字体时号码列表起始Y",0,176};
 __root const int d = 100;
 #endif
+*/
 
