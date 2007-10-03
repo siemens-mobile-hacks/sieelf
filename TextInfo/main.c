@@ -646,6 +646,7 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
       GUI *igui=GetTopGUI();
       if (igui) //?он существует
       {
+        InitInfoData();
 #ifdef ELKA
         {
           void *canvasdata = BuildCanvas();
