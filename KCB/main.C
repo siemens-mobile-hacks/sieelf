@@ -10,8 +10,11 @@ extern const char a4[60];
 extern const char a5[60];
 extern const char a6[60];
 extern const char a7[60];
+extern const int line2;
+extern const int number2;
+extern const int wc;
 
-extern const char c[30];
+//extern const char c[30];
 
 typedef struct
 {
@@ -27,7 +30,6 @@ typedef struct
 
 extern void kill_data(void *p, void (*func_p)(void *));
 
-
 void copy_unicode_2ws(WSHDR* ws, unsigned short* unicode)
 {
 	int i = 0;
@@ -41,14 +43,37 @@ void copy_unicode_2ws(WSHDR* ws, unsigned short* unicode)
 unsigned short btz[]={0x8BFE,0x7A0B,0x8868, 0};
 unsigned short w[8]={0x4E00,0x4E8C,0x4E09,0x56DB,0x4E94,0x516D,0x4E03, 0};
 
+char c[30]="\xE4\xB8\x80\xE4\xBA\x8C\xE4\xB8\x89\xE5\x9B\x9B\xE4\xBA\x94\xE5\x85\xAD\xE6\x97\xA5";
+
 int num=0;
+int nx=1;
+int week;
 unsigned int MAINCSM_ID = 0;
+
 
 void onRedraw(MAIN_GUI *data)
 {
+
   //WSHDR *ws = AllocWS(256);
   //WSHDR *ws1 = AllocWS(20);
-  int w=16;
+  int aa;
+  week=wc+5;
+  int w;
+  if(week==5)
+  {
+    w=22;
+    aa=4;
+  }
+  if(week==6)
+  {
+    w=18;
+   aa=2;
+  }
+  if(week==7)
+  {
+    w=16;
+    aa=1;
+  }
   int h=16;
   //WSHDR *kc1 = AllocWS(20);
   //WSHDR *kc2 = AllocWS(20);
@@ -75,33 +100,51 @@ void onRedraw(MAIN_GUI *data)
               2,
               GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)
              );
-   
-
-  DrawRoundedFrame(w*(GetWeek(&d)+1)-1,h-1,w*(GetWeek(&d)+1)+GetFontYSIZE(FONT_SMALL_ITALIC_BOLD)+3,h-1+GetFontYSIZE(FONT_SMALL_ITALIC_BOLD)+3,2,2,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(2)); 
+if((GetWeek(&d)+7-nx+1)%7<week)
+DrawRoundedFrame(w*(GetWeek(&d)-1+(7-nx+3)%7)-aa,h-1,w*(GetWeek(&d)-1+(7-nx+3)%7)+w-aa,h-1+GetFontYSIZE(FONT_SMALL_ITALIC_BOLD)+3,2,2,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(2)); 
+ 
   
 
  int i,j;
- for(i=0;i<=7;i++)
+ for(i=0;i<=week;i++)
 {
  for(j=0;j<=10;j++)
 {
-
-  DrawLine(w*(i+1)-1,h+14,w*(i+1)-1,h+14*11,0,GetPaletteAdrByColorIndex(0));
-  DrawLine(w-1,h+14*(j+1),w*8-1,h+14*(j+1),0,GetPaletteAdrByColorIndex(0));
-  if(j==0)
+  int x,y,z,z2;
+  if(line2)
+  ((j%2)==0?(x=j):(x=j+1));
+  else
+  x=j;
+  if(number2)
+  {
+  ((j%2)==0?(y=j/2):(y=j/2+1));
+  ((j%2)==0?(z=j-1):(z=j));
+  z2=num/2;
+  }
+  else
+  {
+  y=j;
+  z=j;
+  z2=num;
+  }
+ 
+  DrawLine(w*(i+1)-aa,h+14,w*(i+1)-aa,h+14*11,0,GetPaletteAdrByColorIndex(0));
+  DrawLine(w-aa,h+14*(x+1),w*(week+1)-aa,h+14*(x+1),0,GetPaletteAdrByColorIndex(0));
+  if(j==0&&i>0)
   {
   //unsigned short *p;
   //p=&w[0];
   //copy_unicode_2ws(kc,p+i-1);
   const char *pc;
   pc=&c[0];
-  utf8_2ws(kc,pc+i*3,3);
-  DrawString(kc,w*(i+1),h,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  utf8_2ws(kc,pc+((i+nx-2)%7)*3,3);
+  DrawString(kc,w*i,h,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
-  else if(i==0)
+ 
+  if(i==0&&j>0)
   {
-  wsprintf(kc,"%d",j+num);
-  DrawString(kc,0,h+3+14*j,GetFontYSIZE(FONT_SMALL_ITALIC_BOLD),ScreenH(),8,4,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  wsprintf(kc,"%d",y+z2);
+  DrawString(kc,0,h+3+14*z,GetFontYSIZE(FONT_SMALL_ITALIC_BOLD),ScreenH(),8,4,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
   /*
   else if(j>0&&i>0)
@@ -112,52 +155,52 @@ void onRedraw(MAIN_GUI *data)
   DrawString(kc,15*i,16+15*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
   */
-  else if(j>0)
+  if(j>0&&i>0)
   { 
   
-  if(i==1)
+  if(((i+nx-1)%7)==1)
   {
   const char *pa1;
   pa1=&a1[0];
   utf8_2ws(kc,pa1+(j-1+num)*3,3);
   DrawString(kc,w*i,h+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
-  if(i==2)
+  if(((i+nx-1)%7)==2)
   {
   const char *pa2;
   pa2=&a2[0];
   utf8_2ws(kc,pa2+(j-1+num)*3,3);
   DrawString(kc,w*i,h+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
-  if(i==3)
+  if(((i+nx-1)%7)==3)
   {
   const char *pa3;
   pa3=&a3[0];
   utf8_2ws(kc,pa3+(j-1+num)*3,3);
   DrawString(kc,w*i,h+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
-  if(i==4)
+  if(((i+nx-1)%7)==4)
   {
   const char *pa4;
   pa4=&a4[0];
   utf8_2ws(kc,pa4+(j-1+num)*3,3);
   DrawString(kc,w*i,h+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
-  if(i==5)
+  if(((i+nx-1)%7)==5)
   {
   const char *pa5;
   pa5=&a5[0];
   utf8_2ws(kc,pa5+(j-1+num)*3,3);
   DrawString(kc,w*i,h+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
-  if(i==6)
+  if(((i+nx-1)%7)==6)
   {
   const char *pa6;
   pa6=&a6[0];
   utf8_2ws(kc,pa6+(j-1+num)*3,3);
   DrawString(kc,w*i,h+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
-  if(i==7)
+  if(((i+nx-1)%7)==0)
   {
   const char *pa7;
   pa7=&a7[0];
@@ -236,9 +279,9 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
       case '*': num=0; REDRAW(); break;
       case '#': num=num; REDRAW(); break;
       case UP_BUTTON: if(num!=0) num=num-10; REDRAW(); break;
-      case DOWN_BUTTON: if(num<20) num=num+10; REDRAW(); break;
-      case RIGHT_BUTTON:if(num<20) num=num+10; REDRAW(); break;
-      case LEFT_BUTTON: if(num!=0) num=num-10; REDRAW(); break;
+      case DOWN_BUTTON: if(num<10) num=num+10; REDRAW(); break;
+    case RIGHT_BUTTON:if(week!=7){nx++;if(nx>7) nx=1;} REDRAW(); break;
+    case LEFT_BUTTON:if(week!=7) {nx--;if(nx<1) nx=7;}REDRAW(); break;
       case RIGHT_SOFT: CloseCSM(MAINCSM_ID); break;
     }
   }
@@ -247,8 +290,8 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
     switch(msg->gbsmsg->submess)
     {
       case UP_BUTTON: if(num!=0)num=num-10; REDRAW(); break;
-      case DOWN_BUTTON:if(num<20) num=num+10; REDRAW(); break;
-      case RIGHT_BUTTON:if(num<20) num=num+10; REDRAW(); break;
+      case DOWN_BUTTON:if(num<10) num=num+10; REDRAW(); break;
+      case RIGHT_BUTTON:if(num<10) num=num+10; REDRAW(); break;
       case LEFT_BUTTON:if(num!=0) num=num-10; REDRAW(); break;
     }
   }
@@ -360,6 +403,7 @@ void UpdateCSMname(void)
 {
   wsprintf((WSHDR *)(&MAINCSM.maincsm_name), "Kcb");
 }
+
 
 int main()
 {
