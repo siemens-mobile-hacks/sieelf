@@ -46,51 +46,50 @@ void empty_ghook(GUI *gui, int cmd){};
 void file_prop_ghook(GUI *gui, int cmd)
 {
 	EDITCONTROL ec;
-	if (cmd==7)
+	if (cmd == 7)
 	{
-		int i=EDIT_GetFocus(gui)-1;
-		if (i==8 || i==10 || i==12 || i==14 || i==16)
+		int i = EDIT_GetFocus(gui) - 1;
+		if (i == 8 || i == 10 || i == 12 || i == 14 || i == 16)
 		{
 			int j=EDIT_GetItemNumInFocusedComboBox(gui)-1;
-			if (i== 8) fa_ro=j!=0?1:0;
-			if (i==10) fa_hd=j!=0?1:0;
-			if (i==12) fa_sy=j!=0?1:0;
-			if (i==14) fa_ar=j!=0?1:0;
-			if (i==16) fa_sb=j!=0?1:0;
+			if (i ==  8) fa_ro = j != 0 ? 1 : 0;
+			if (i == 10) fa_hd = j != 0 ? 1 : 0;
+			if (i == 12) fa_sy = j != 0 ? 1 : 0;
+			if (i == 14) fa_ar = j != 0 ? 1 : 0;
+			if (i == 16) fa_sb = j != 0 ? 1 : 0;
 		}
 	}
-	else
-		if (cmd==0x0D)
+	else if (cmd == 0x0D)
+	{
+		int j;
+		int i = EDIT_GetFocus(gui);
+		WSHDR* buff = AllocWS(64);
+		ExtractEditControl(gui, i, &ec);
+		if ((j = EDIT_GetItemNumInFocusedComboBox(gui)))
 		{
-			int j;
-			int i=EDIT_GetFocus(gui);
-			WSHDR *buff=AllocWS(64);
-			ExtractEditControl(gui,i,&ec);
-			if ((j=EDIT_GetItemNumInFocusedComboBox(gui)))
-			{
-				wsprintf(buff,_t,yesno[j-1]);
-			}
-			else
-			{
-				ExtractEditControl(gui,EDIT_GetFocus(gui)-1,&ec);
-				wstrcpy(buff,ec.pWS);
-			}
-			EDIT_SetTextToFocused(gui,buff);
-			FreeWS(buff);
+			wsprintf(buff, _t, yesno[j - 1]);
 		}
+		else
+		{
+			ExtractEditControl(gui, EDIT_GetFocus(gui) - 1, &ec);
+			wstrcpy(buff, ec.pWS);
+		}
+		EDIT_SetTextToFocused(gui, buff);
+		FreeWS(buff);
+	}
 }
 
-void empty_locret(void){}
+void empty_locret(void) {}
 
-SOFTKEY_DESC empty_menu_sk[]={{0,0,0}};
+SOFTKEY_DESC empty_menu_sk[]= { { 0, 0, 0 } };
 
-SOFTKEYSTAB empty_menu_skt=
+SOFTKEYSTAB empty_menu_skt =
 {
-	empty_menu_sk,0
+	empty_menu_sk, 0
 };
 
-HEADER_DESC file_prop_hdr={0,0,0,0,NULL,0,LGP_NULL};
-INPUTDIA_DESC file_prop_desc=
+HEADER_DESC file_prop_hdr = { 0, 0, 0, 0, NULL, 0, LGP_NULL };
+INPUTDIA_DESC file_prop_desc =
 {
 	1,
 	file_prop_onkey,
@@ -185,12 +184,6 @@ void _FileProp(FILEINF *file)
 	str_2ws(buff, pathbuf, MAX_PATH);
 	AddTextLine(buff, &ec, eq, ma, ECT_NORMAL_TEXT);
 
-#ifdef LOG	
-	_WriteLog("f[");
-	_WriteLog(file->sname);
-	_WriteLog("]");
-#endif
-
 	//Size
 	wsprintf(buff, _tc, muitxt(ind_size));
 	AddTextLine(buff, &ec, eq, ma, ECT_HEADER);
@@ -259,16 +252,16 @@ void _FileProp(FILEINF *file)
 	if (file->ftype == TYPE_COMMON_DIR)
 	{
 		wsprintf(buff, _tc, muitxt(ind_subdirs));
-		ConstructEditControl(&ec,ECT_HEADER,ECF_NORMAL_STR | ECF_APPEND_EOL,buff,MAX_PATH);
+		ConstructEditControl(&ec, ECT_HEADER,ECF_NORMAL_STR | ECF_APPEND_EOL,buff,MAX_PATH);
 		prep_hd(&ec);
 		prep_inf(&ec);
-		ec.ed_options.bitmask=ec.ed_options.bitmask | 8;
-		AddEditControlToEditQend(eq,&ec,ma); //15
-		f=0;
-		wsprintf(buff,_t,yesno[f]);
-		ConstructComboBox(&ec,ECT_COMBO_BOX,ECF_APPEND_EOL,buff,32,0,2,f+1);
+		ec.ed_options.bitmask = ec.ed_options.bitmask | 8;
+		AddEditControlToEditQend(eq, &ec, ma); //15
+		f = 0;
+		wsprintf(buff, _t, yesno[f]);
+		ConstructComboBox(&ec, ECT_COMBO_BOX, ECF_APPEND_EOL, buff, 32, 0, 2, f + 1);
 		prep_inf(&ec);
-		AddEditControlToEditQend(eq,&ec,ma); //16*
+		AddEditControlToEditQend(eq, &ec, ma); //16*
 	}
 
 	CreateInputTextDialog(&file_prop_desc,&file_prop_hdr,eq,1,0);

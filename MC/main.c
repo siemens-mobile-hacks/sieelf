@@ -3,6 +3,9 @@
 #include "inc\lng.h"
 #include "inc\ColorMap.h"
 #include "inc\config.h"
+#include "inc\exts.h"
+#include "inc\gui.h"
+#include "inc\zslib.h"
 
 const int minus11=-11; // стремная константа
 unsigned short maincsm_name_body[140];
@@ -29,6 +32,8 @@ char* pathbuf_fn;
 char* msgbuf;
 char* szLastNewFile;
 char* szLastNewDir;
+char* zippathbuf;
+FN_LIST tmp_files;
 
 typedef struct
 {
@@ -51,17 +56,19 @@ void FreeData()
 	GBS_DelTimer(&sctm);
 	GBS_DelTimer(&cmtm);
 	GBS_DelTimer(&offtm);
+	
 	if (CONFIG_LOAD_CS) SaveCS(NULL);
 #ifdef DUMP_MUI
 	void SaveMUI2(char* filename);
 	SaveMUI2(NULL);
-#else  
+#else
 	if (CONFIG_LOAD_MUI) SaveMUI(NULL);
-#endif  
+#endif
 	SaveCfg();
 	fn_free(&buffer);
 	FreeMUI();
 	FreeExt();
+	if (zippathbuf) mfree(zippathbuf);
 	if (szLastNewDir) mfree(szLastNewDir);
 	if (szLastNewFile) mfree(szLastNewFile);
 	if (msgbuf) mfree(msgbuf);
@@ -71,12 +78,12 @@ void FreeData()
 	if (wsbuf) FreeWS(wsbuf);
 	if (guibuf) FreeWS(guibuf);
 	guibuf = wsbuf = 0;
-	pathbuf = pathbuf2 = pathbuf_fn = msgbuf = 0;
+	zippathbuf = pathbuf = pathbuf2 = pathbuf_fn = msgbuf = 0;
 	for(int ii=0; ii<MAX_TABS+1; ii++)
 	{
 		DelFiles(ii);
 		FreeTab(ii);
-	} 
+	}
 	UnlockSched();
 #ifdef LOG
 	_WriteLog("FreeData");
@@ -96,9 +103,10 @@ void OnRedraw(MAIN_GUI *data) // OnRedraw
 		msgbuf=malloc(256);
 		szLastNewFile=malloc(MAX_PATH);
 		szLastNewDir=malloc(MAX_PATH);
+		zippathbuf=malloc(MAX_PATH);
 		*szLastNewFile = '\0';
 		*szLastNewDir = '\0';
-		SUBPROC((void *)LoadKeys);
+		LoadKeys();
 #ifdef LOG
 		_WriteLog("LoadExts");
 #endif
@@ -111,9 +119,7 @@ void OnRedraw(MAIN_GUI *data) // OnRedraw
 		for(int ii=0; ii < MAX_TABS+1; ii++)
 			InitTab(ii);
 
-		if (in_open_path[0])
-			cd(0, in_open_path);
-		else if (CONFIG_SAVE_PATH)
+		if (CONFIG_SAVE_PATH)
 		{
 #ifdef LOG
 			_WriteLog("Init Last Dirs");
@@ -130,9 +136,9 @@ void OnRedraw(MAIN_GUI *data) // OnRedraw
 					cd(ii, MCConfig.tabs[ii].LastPath);
 					SetTabIndex(ii, MCConfig.tabs[ii].LastInd, 0);
 				}
-			} 
+			}
 			curtab = MCConfig.curtab;
-		}  
+		}
 #ifdef LOG
 		_WriteLog("InitCS");
 #endif
@@ -149,17 +155,33 @@ void OnRedraw(MAIN_GUI *data) // OnRedraw
 		if (CONFIG_SCROLL_TEXT_SPEED)
 			GBS_StartTimerProc(&sctm,CONFIG_SCROLL_TEXT_SPEED,DrwName);
 
-		GUIStarted++;
-	}
-	else
-	{
+		GUIStarted = 1;
+
+		if (in_open_path[0])
+		{
+			if (isdir(in_open_path, &err))
+			{
+				cd(curtab = 0, in_open_path);
+			}
+			else if (CONFIG_ZIP_ENABLE && IsItZipFile(in_open_path))
+			{
+				// переходим в папку с зипом
+				cd(curtab = 0, GetFileDir(in_open_path, pathbuf));
+				// ищем наш зип файл
+				int idx = GetCurTabFileIndex(GetFileName(in_open_path));
+				SetCurTabIndex(idx, 0);
+				// открываем
+				strcpy(zippathbuf, in_open_path);
+				SUBPROC((void*)S_ZipOpen);
+			}
+		}
 	}
 
 	if (IsGuiOnTop(MAINGUI_ID))
 	{
 		if (progr_start) ShowProgr();
 		else ShowFiles();
-	} 
+	}
 }
 
 void onCreate(MAIN_GUI *data, void *(*malloc_adr)(int)) //Create
@@ -185,6 +207,12 @@ void onClose(MAIN_GUI *data, void (*mfree_adr)(void *)) //Close
 
 void onFocus(MAIN_GUI *data, void *(*malloc_adr)(int), void (*mfree_adr)(void *))//Focus
 {
+	if (ext_pnglist != NULL)
+	{
+		PNGTOP_DESC* pltop = PNG_TOP();
+		pltop->dyn_pltop = &ext_pnglist->dpl;
+	}
+	
 	data->gui.state = 2;
 	if (Terminate && !Busy)
 		GeneralFuncF1(1); // рубим верхний гуй. И приложение закрывается.
@@ -194,6 +222,9 @@ void onFocus(MAIN_GUI *data, void *(*malloc_adr)(int), void (*mfree_adr)(void *)
 
 void onUnfocus(MAIN_GUI *data, void (*mfree_adr)(void *)) //Unfocus
 {
+	PNGTOP_DESC* pltop = PNG_TOP();
+	pltop->dyn_pltop = NULL;
+
 	if (data->gui.state != 2) return;
 	data->gui.state = 1;
 }
@@ -207,7 +238,7 @@ int lastKey = -1;
 int lastIsLongPress = 0;
 int OnKey(MAIN_GUI *data, GUI_MSG *msg) //OnKey
 {
-	if (GUIStarted == 2) // Обрабатываем только после полной инициализации
+	if (GUIStarted) // Обрабатываем только после полной инициализации
 	{
 		// Для сброса счетчика таймера автовыхода отслеживаем только клавиши
 		ResetAutoExit();
@@ -233,9 +264,9 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg) //OnKey
 			{
 				isLongPress = (msg->gbsmsg->msg == LONG_PRESS);
 				
-				// Игнорим если уже обработали долгое нажатие этой же кнопки
+				// Игнорим KEY_UP если уже обработали долгое нажатие этой же кнопки
 				// Обрабатываем только KEY_UP и LONG_PRESS
-				ignore = (lastKey == key && lastIsLongPress)
+				ignore = (lastKey == key && lastIsLongPress && msg->gbsmsg->msg == KEY_UP)
 					|| (msg->gbsmsg->msg != KEY_UP && msg->gbsmsg->msg != LONG_PRESS);
 			}
 		}
@@ -336,14 +367,14 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 		}
 		else
 		{
-			if (msg->msg==MSG_RECONFIGURE_REQ) 
+			if (msg->msg==MSG_RECONFIGURE_REQ)
 			{
 				//	ShowMSG(1,(int)muitxt(ind_reconfig));
 				InitConfig();
 				UpdateAll();
 
-				if(!IsTimerProc(&offtm)) 
-					AutoExitProc();		   
+				if(!IsTimerProc(&offtm))
+					AutoExitProc();		
 				ResetAutoExit();
 			}
 		}
@@ -396,21 +427,19 @@ int main(char *exename, char *fname)
 
 	GetFileDir(exename, mcpath);
 #ifdef LOG
-	flog=fopen("0:\\mc.log",A_ReadWrite+A_Create+A_Truncate,P_READ+P_WRITE,&err);
+	char buf[MAX_PATH];
+	pathbuf = &buf[0];
+	flog = fopen(MCFilePath("mc.log"),A_ReadWrite+A_Create+A_Truncate,P_READ+P_WRITE,&err);
+	pathbuf = 0;
 	_WriteLog("Start");
 #endif
 
-#ifdef NEWSGOLD
-	if (!isdir(etc_path, &err)) etc_path[0]='0';
-#endif
 #ifdef LOG
 	_WriteLog("InitConfig");
 #endif
 	InitConfig();
 	AutoExitProc();
-	in_open_path[0]=0;
-	if (fname && isdir(fname, &err))
-		strcpy(in_open_path, fname);
+	if (fname) strcpy(in_open_path, fname);
 
 	char dummy[sizeof(MAIN_CSM)];
 	MAINCSM_ID = CreateCSM(&MAINCSM.maincsm, dummy, 0);
@@ -441,7 +470,7 @@ int main(char *exename, char *fname)
 void _WriteLog(char *buf)
 {
 	if (flog!=-1)
-	{  
+	{
 		char msg[512];
 
 		TTime t;
@@ -450,12 +479,12 @@ void _WriteLog(char *buf)
 		sprintf(msg, "%02d:%02d:%02d %s\n", t.hour,t.min,t.sec,buf);
 		//  sprintf(msg, "%s\n", buf);
 		fwrite(flog,msg,strlen(msg),&err);
-	} 
+	}
 }
 void _WriteLogWS(WSHDR *buf)
 {
 	if (flog!=-1)
-	{  
+	{
 		char msg[256];
 		char msg2[256];
 		ws_2str(buf, msg2, 256);
@@ -466,13 +495,13 @@ void _WriteLogWS(WSHDR *buf)
 		sprintf(msg, "%02d:%02d:%02d %s\n", t.hour,t.min,t.sec,msg2);
 		//  sprintf(msg, "%s\n", buf);
 		fwrite(flog,msg,strlen(msg),&err);
-	} 
+	}
 }
 
 void _WriteLog2(char *buf1, char *buf2)
 {
 	if (flog!=-1)
-	{  
+	{
 		char msg[512];
 
 		TTime t;
@@ -481,30 +510,30 @@ void _WriteLog2(char *buf1, char *buf2)
 		sprintf(msg, "%02d:%02d:%02d %s %s\n", t.hour,t.min,t.sec,buf1,buf2);
 		//  sprintf(msg, "%s\n", buf);
 		fwrite(flog,msg,strlen(msg),&err);
-	} 
+	}
 }
 void _WriteLogInt(char *buf, int ii)
 {
 	if (flog!=-1)
-	{  
+	{
 		char msg[512];
 		TTime t;
 		TDate d;
 		GetDateTime(&d,&t);
 		sprintf(msg, "%02d:%02d:%02d %s %d\n", t.hour,t.min,t.sec,buf,ii);
 		fwrite(flog,msg,strlen(msg),&err);
-	} 
+	}
 }
 void _WriteLogHex(char *buf, int ii)
 {
 	if (flog!=-1)
-	{  
+	{
 		char msg[512];
 		TTime t;
 		TDate d;
 		GetDateTime(&d,&t);
 		sprintf(msg, "%02d:%02d:%02d %s %.8x\n", t.hour,t.min,t.sec,buf,ii);
 		fwrite(flog,msg,strlen(msg),&err);
-	} 
+	}
 }
 #endif

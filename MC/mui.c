@@ -105,6 +105,10 @@ const MUI_STR mui[]={
 	{id_err_ziperr, sz_err_ziperr},
 
 	{id_msg_zreading, sz_msg_zreading},
+	{id_msg_showhid_files, sz_msg_showhid_files},
+	{id_msg_showsys_files, sz_msg_showsys_files},
+	{id_msg_showhidsys_files, sz_msg_showhidsys_files},
+	{id_msg_showhid_drv, sz_msg_showhid_drv},
 };
 #define MUI_COUNT		 (sizeof(mui)/sizeof(MUI_STR))
 char* mui_ld[MUI_COUNT];

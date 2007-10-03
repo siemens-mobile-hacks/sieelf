@@ -26,9 +26,14 @@
 #define ZLIB_FILEFUNC_MODE_CREATE   (8)
 
 
+#define IOAPI_READ_BUF_SIZE	512
+
 typedef struct {
 	int handle;
 	unsigned int err;
+	char readbuf[IOAPI_READ_BUF_SIZE];
+	uLong bufpos;
+	uLong buflen;
 } FILE;
 
 

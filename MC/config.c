@@ -8,7 +8,7 @@ char* GetCfgPath()
 {
 	if (pathbuf)
 	{
-		if (!CONFIG_MCCONFIG_PATH)
+		if (!CONFIG_MCCONFIG_PATH[0])
 			strcpy((char*)CONFIG_MCCONFIG_PATH, mcpath);
 
 		int pathLen = strlen(CONFIG_MCCONFIG_PATH);

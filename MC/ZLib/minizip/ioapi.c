@@ -6,10 +6,6 @@
    Copyright (C) 1998-2005 Gilles Vollant
 */
 
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <string.h>
-
 #include "..\zlib.h"
 #include "ioapi.h"
 
@@ -48,12 +44,19 @@ int ferror_file_func (
    voidpf opaque,
    voidpf stream);
 
+void clear_read_buf(FILE* pFile)
+{
+	pFile->buflen = 0;
+	pFile->bufpos = 0;
+}
+
 voidpf fopen_file_func (
    voidpf opaque,
    const char* filename,
    int mode)
 {
 	FILE* pFile = malloc(sizeof(FILE));
+	zeromem(pFile, sizeof(FILE));
 	unsigned int flags = 0;
 	unsigned int fmode = 0;
 	if ((mode & ZLIB_FILEFUNC_MODE_READWRITEFILTER)==ZLIB_FILEFUNC_MODE_READ)
@@ -73,7 +76,10 @@ voidpf fopen_file_func (
 	}
 
 	if (filename && pFile)
+	{
 		pFile->handle = fopen(filename, flags, fmode, &pFile->err);
+		clear_read_buf(pFile);
+	}
 
 	if (pFile->handle == -1)
 	{
@@ -92,8 +98,46 @@ uLong fread_file_func (
 {
 	uLong ret = 0;
 	FILE* pFile = (FILE*)stream;
+	
 	if (pFile)
-		ret = (uLong)fread(pFile->handle, buf, (size_t)size, &pFile->err);
+	{
+		// 1. Выбираем сколько можно из буфера
+		uLong inbuf = pFile->buflen - pFile->bufpos;
+		if (inbuf > 0)
+		{
+			uLong min = (inbuf < size) ? inbuf : size;
+			memcpy(buf, &pFile->readbuf[pFile->bufpos], min);
+			pFile->bufpos += min;
+			ret += min;
+			buf = (void*)((int)buf + min);
+			size -= min;
+			
+			if (pFile->bufpos >= pFile->buflen)
+				clear_read_buf(pFile);
+		}
+		
+		// 2. Если буфер пуст и не все еще считали, то считываем
+		if (size > 0)
+		{
+			if (size < IOAPI_READ_BUF_SIZE)
+			{
+				pFile->buflen = (uLong)fread(pFile->handle, pFile->readbuf,
+					(size_t)IOAPI_READ_BUF_SIZE, &pFile->err);
+				pFile->bufpos = 0;
+
+				uLong min = (pFile->buflen < size) ? pFile->buflen : size;
+				memcpy(buf, pFile->readbuf, min);
+				pFile->bufpos += min;
+				ret += min;
+				buf = (void*)((int)buf + min);
+				size -= min;
+			}
+			else
+			{
+				ret += (uLong)fread(pFile->handle, buf, (size_t)size, &pFile->err);
+			}
+		}
+	}
 	return ret;
 }
 
@@ -106,7 +150,10 @@ uLong fwrite_file_func (
 	uLong ret = 0;
 	FILE* pFile = (FILE*)stream;
 	if (pFile)
+	{
 		ret = (uLong)fwrite(pFile->handle, buf, (size_t)size, &pFile->err);
+		clear_read_buf(pFile);
+	}
 	return ret;
 }
 
@@ -117,7 +164,10 @@ long ftell_file_func (
 	long ret = -1;
 	FILE* pFile = (FILE*)stream;
 	if (pFile)
+	{
 		ret = lseek(pFile->handle, 0, S_CUR, &pFile->err, &pFile->err);
+		clear_read_buf(pFile);
+	}
 
 	return ret;
 }
@@ -149,6 +199,7 @@ long fseek_file_func (
 		}
 		lseek(pFile->handle, offset, fseek_origin, &pFile->err, &pFile->err);
 		ret = 0;
+		clear_read_buf(pFile);
 	}
 	return ret;
 }

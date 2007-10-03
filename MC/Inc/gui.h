@@ -1,3 +1,14 @@
+#ifndef _GUI_H
+#define _GUI_H
+
+#define FONT_N   FONT_SMALL
+#ifdef ELKA
+#define FONT_B   FONT_SMALL
+#else
+#define FONT_B   (FONT_SMALL+1)
+#endif
+
+
 #define MAIN_B	2
 
 #define TOP_B	2
@@ -48,6 +59,22 @@
 #define PRGP_X2  (PRGB_X2-4)  
 #define PRGP_H   5
 
+
 extern int scr_h;
 extern int scr_w;
 extern int ico_hw;
+extern int itms_max;
+
+extern int NormalFont;
+extern int BoldFont;
+
+extern GBSTMR sctm;
+extern FILEINF *scfile;
+
+
+void InitScr();
+void DrwName();
+void ShowFiles();
+void ShowProgr();
+
+#endif

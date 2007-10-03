@@ -1,3 +1,6 @@
+#ifndef _LNG_H
+#define _LNG_H
+
 #define psz_savestate	"Save last panels state"
 #define psz_backexit	"Back in root - Exit"
 #define psz_sconchk		"Move cursor down on check"
@@ -13,7 +16,7 @@
 #define psz_loadcs		"Load default.mccs"
 #define psz_configpath	"mcconfig.cfg path"
 
-#define psz_showsysdrv	"Show hidden drives"
+#define psz_showhiddrv	"Show hidden drives"
 #define psz_showmmc		"Show MMC"
 #define psz_showhidden	"Show hidden files"
 #define psz_showsystem	"Show system files"
@@ -28,14 +31,18 @@
 #define psz_autoexit_after			"AutoExit after (min)"
 #define psz_autoexit_on_background	"AutoExit on background"
 
-#define psz_zip_enable	"Enable zip support"
-#define psz_temppath	"Path for temp files"
-#define psz_cleartemp	"Delete temp files on exit"
+#define psz_zip_enable		"Enable zip support"
+#define psz_zip_detect_by	"Detect zip by"
+#define psz_temppath		"Path for temp files"
+#define psz_cleartemp		"Delete temp files on exit"
 
-#define psz_about		"mc v"version" \n(c) 2007 weclnt\n(m) greengo7\nThanks for efficient advices: Aru55, 1nvisible, captain_SISka"
+#define psz_about		"mc v"version" \n(c) 2007 weclnt, greengo7\nThanks for efficient advices: Aru55, 1nvisible, captain_SISka"
 
 #define psz_no			"No"
 #define psz_yes			"Yes"
+
+#define psz_content		"Content"
+#define psz_extension	"Extension"
 
 #define psz_drv_0		"Data"
 #define psz_drv_1		"Cache"
@@ -47,7 +54,7 @@
 
 #define psz_errfile		"?"
 
-//#define psz_sm_settings	"Settings"
+#define psz_sm_common	"Common"
 #define psz_sm_confirms	"Confirmations"
 #define psz_sm_configs	"Configs"
 #define psz_sm_disks	"Disks and files"
@@ -155,7 +162,10 @@
 #define sz_err_makefile		"Не удалось создать новый файл!"
 #define sz_err_ziperr		"Ошибка Zip: %d в %t!"
 
-#define sz_msg_zreading		"Чтение архива"
+#define sz_msg_zreading			"Чтение архива"
+#define sz_msg_showhid_files	"Показывать скрытые файлы"
+#define sz_msg_showsys_files	"Показывать системные файлы"
+#define sz_msg_showhidsys_files	"Показывать скрытые и системные файлы"
+#define sz_msg_showhid_drv		"Показывать скрытые диски"
 
-
-
+#endif

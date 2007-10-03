@@ -2,8 +2,8 @@
 #include "inc\mc.h"
 #include "inc\mui.h"
 
-const char mcbm_path[]="Bookmarks";
-const char mcbm_ext[]="mcbm";
+const char mcbm_path[] = "Bookmarks";
+const char mcbm_ext[] = "mcbm";
 
 void SaveBM(char* name, char* path)
 {

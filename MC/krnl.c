@@ -4,8 +4,9 @@
 #include "inc\ColorMap.h"
 #include "inc\config.h"
 #include "inc\zslib.h"
+#include "inc\gui.h"
 
-char in_open_path[MAX_PATH];
+char in_open_path[MAX_PATH] = "";
 char mcpath[MAX_PATH];
 int back_tab;
 
@@ -22,6 +23,7 @@ int progrsp_start = 0;
 
 int show_hidden = 0;
 int show_system = 0;
+int show_hiddrv = 0;
 
 volatile int AutoExitCounter=0;
 
@@ -44,7 +46,6 @@ char etc_path[] = DEFAULT_DISK":\\ZBin\\etc";
 const char* def_filter = "*.*";
 const char* def_new_file = "";
 
-const char zip_ext[]="zip";
 char* str_empty = "";
 
 GBSTMR offtm;
@@ -57,7 +58,7 @@ void SetTabIndex(int tab, int num, int slide)
 	{
 		num = -1;
 	}
-	else 
+	else
 	{
 		if (slide)
 		{
@@ -91,20 +92,11 @@ char* GetTabPath(int tab)
 		return (char*)&tabs[tab]->szDirs[tabs[tab]->CurDrv];
 }
 
-void FullInit(FILEINF *file)
+void FillFileInfo(FILEINF *file)
 {
 	if (!file || file->inited) return;
 
-	char buf[128];
-	if (!file->ws_short)
-	{
-		file->uccnt = getLVC(&file->ws_name->wsbody[1], file->ws_name->wsbody[0], BoldFont);
-		if (file->uccnt)
-		{
-			file->ws_short = AllocWS(file->uccnt+1);
-			cutname(file->ws_name, file->ws_short, file->uccnt);
-		}
-	}
+	char buf[MAX_PATH];
 	if (!file->ws_attr)
 	{
 		attr2s(file->attr, buf);
@@ -137,30 +129,69 @@ void FullInit(FILEINF *file)
 			str_2ws(file->ws_ratio, buf, 64);
 		}
 	}
+	
+	char* sext = GetFileExt(file->sname);
+	if (sext && !file->ws_showname && stricmp(sext, (char*)mcbm_ext) == 0)
+	{
+		// Откидываем расширение
+		strcpy(buf, file->sname);
+		buf[sext - file->sname - 1] = '\0';
+		file->ws_showname = AllocWS(strlen(buf) + 1);
+		str_2ws(file->ws_showname, buf, MAX_PATH);
+	}
+	
+	if (!file->ws_short)
+	{
+		WSHDR* ws = (file->ws_showname ? file->ws_showname : file->ws_name);
+		file->uccnt = getLVC(&ws->wsbody[1], ws->wsbody[0], BoldFont);
+		if (file->uccnt)
+		{
+			file->ws_short = AllocWS(file->uccnt+1);
+			cutname(ws, file->ws_short, file->uccnt);
+		}
+	}
 	file->inited = 1;
 }
 
-void AddFile_Full(int tab, int findex, char* fname, WSHDR *fwsname, unsigned int fsize, short fattr,
-				  unsigned int ftime, int fcsize, int ftype)
+FILEINF* CreateFileInfo(int findex, char* fnameOriginal,
+				unsigned int fsize, short fattr, unsigned int ftime,
+				int fcsize, int ftype)
 {
-	FILEINF* file	= malloc(sizeof(FILEINF));
+	FILEINF* file = malloc(sizeof(FILEINF));
+	zeromem(file, sizeof(FILEINF));
+
+	int len = strlen(fnameOriginal);
+	char* fname = malloc(len + 1);
+	strcpy(fname, fnameOriginal);
+	WSHDR* wsname = AllocWS(len + 1);
+	str_2ws(wsname, fname, len);
+
 	file->id		= findex;
 	file->sname		= fname;
 	file->attr		= fattr;
 	file->size		= fsize;
 	file->time		= ftime;
-	file->ext		= 0;
-	file->inited	= 0;
-	file->ws_name	= fwsname;
-	file->uccnt		= 0;
-	file->ws_short	= 0;
-	file->ws_attr	= 0;
-	file->ws_size	= 0;
-	file->ws_time	= 0;
+	//file->ext		= 0;
+	//file->inited	= 0;
+	file->ws_name	= wsname;
+	//file->uccnt		= 0;
+	//file->ws_short	= 0;
+	//file->ws_attr	= 0;
+	//file->ws_size	= 0;
+	//file->ws_time	= 0;
 	
 	file->csize		= fcsize;
-	file->ws_ratio	= 0;
+	//file->ws_ratio	= 0;
 	file->ftype		= ftype;
+	//file->ws_showname	= 0;
+	
+	return file;
+}
+
+void AddFile(int tab, int findex, char* fname, unsigned int fsize, short fattr,
+				  unsigned int ftime, int fcsize, int ftype)
+{
+	FILEINF* file = CreateFileInfo(findex, fname, fsize, fattr, ftime, fcsize, ftype);
 
 	LockSched();
 
@@ -170,21 +201,25 @@ void AddFile_Full(int tab, int findex, char* fname, WSHDR *fwsname, unsigned int
 	UnlockSched();
 }
 
-void AddFile(int tab, int findex, char* fnameOriginal, unsigned int fsize, short fattr,
-			 unsigned int ftime, int fcsize, int ftype)
-{
-	int len = strlen(fnameOriginal);
-	char* fname = malloc(len + 1);
-	WSHDR* wsname = AllocWS(len + 1);
-	str_2ws(wsname, fnameOriginal, len);
-	strcpy(fname, fnameOriginal);
-
-	AddFile_Full(tab, findex, fname, wsname, fsize, fattr, ftime, fcsize, ftype);
-}
-
 void AddFileFromDE(int tab, int findex, DIR_ENTRY* pde)
 {
 	AddFile(tab, findex, pde->file_name, pde->file_size, pde->file_attr, pde->create_date_time, 0, (pde->file_attr & FA_DIRECTORY) ? TYPE_COMMON_DIR : TYPE_COMMON_FILE);
+}
+
+void FreeFileInfo(FILEINF* file)
+{
+	if (file)
+	{
+		if (file->ws_short)	FreeWS(file->ws_short);
+		if (file->ws_showname) FreeWS(file->ws_showname);
+		if (file->ws_ratio)	FreeWS(file->ws_ratio);
+		if (file->ws_time)	FreeWS(file->ws_time);
+		if (file->ws_size)	FreeWS(file->ws_size);
+		if (file->ws_attr)	FreeWS(file->ws_attr);
+		if (file->ws_name)	FreeWS(file->ws_name);
+		if (file->sname)	mfree(file->sname);
+		mfree(file);
+	}
 }
 
 void DelFiles(int tab)
@@ -197,17 +232,7 @@ void DelFiles(int tab)
 		{
 			FILEINF *file = FileListBase[tab]->next;	// Второй элемент
 			FileListBase[tab]->next = file->next;		// Следующий у FileListBase - на третий
-			if (file)
-			{
-				if (file->ws_ratio)	FreeWS(file->ws_ratio);
-				if (file->ws_time)	FreeWS(file->ws_time);
-				if (file->ws_size)	FreeWS(file->ws_size);
-				if (file->ws_attr)	FreeWS(file->ws_attr);
-				if (file->ws_short)	FreeWS(file->ws_short);
-				mfree(file);
-				if (file->ws_name)	FreeWS(file->ws_name); 
-				if (file->sname)	mfree(file->sname);
-			} 
+			FreeFileInfo(file);
 			tabs[tab]->ccFiles--;
 		}
 		UnlockSched();
@@ -223,7 +248,6 @@ int FillRealPathFiles(int tab, char* dname)
 	if (pathbuf)
 	{
 		sprintf(pathbuf, _s_stars, dname);
-		//   ShowMSG(1, (int) pathbuf);
 
 		if (FindFirstFile(&de, pathbuf, &err))
 		{
@@ -234,11 +258,16 @@ int FillRealPathFiles(int tab, char* dname)
 					if ( (show_hidden || !(de.file_attr & FA_HIDDEN))
 						&& (show_system || !(de.file_attr & FA_SYSTEM)) )
 						AddFileFromDE(tab, num++, &de);
-				} 
+				}
 			}
 			while (FindNextFile(&de, &err));
+#ifdef NEWSGOLD
+			FindClose(&de, &err);
+#endif
 		}
+#ifndef NEWSGOLD
 		FindClose(&de, &err);
+#endif
 
 
 		if (tabs[tab]->szFilter[0])
@@ -253,11 +282,16 @@ int FillRealPathFiles(int tab, char* dname)
 						if ( (show_hidden || !(de.file_attr & FA_HIDDEN))
 							&& (show_system || !(de.file_attr & FA_SYSTEM)) )
 							AddFileFromDE(tab, num++, &de);
-					} 
+					}
 				}
 				while (FindNextFile(&de, &err));
+#ifdef NEWSGOLD
+				FindClose(&de, &err);
+#endif
 			}
-			FindClose(&de,&err);
+#ifndef NEWSGOLD
+			FindClose(&de, &err);
+#endif
 		}
 	}
 
@@ -292,13 +326,13 @@ int SetCurTabDrv(int num)
 
 int RefreshTab(int tab)
 {
-	FILEINF *cfile = _CurTabFile(tab);
+	FILEINF* cfile = _CurTabFile(tab);
 	char* lpname;
 	if (cfile)
 	{
 		lpname = malloc(strlen(cfile->sname) + 1);
 		strcpy(lpname, cfile->sname);
-	} 
+	}
 
 	int res = FillFiles(tab, GetTabPath(tab));
 
@@ -359,7 +393,7 @@ int InitTab(int tab)
 	{
 		tabs[tab]->sort = ST_FIRST;
 		tabs[tab]->szFilter[0]=0;
-	} 
+	}
 
 	tabs[tab]->zipInfo = malloc(sizeof(ZIPINF));
 	{
@@ -392,7 +426,7 @@ void FreeTab(int tab)
 
 void CB_CS(int id)
 {
-	if ((id==IDYES) && pathbuf) 
+	if ((id==IDYES) && pathbuf)
 		if (!LoadCS(pathbuf))
 			MsgBoxError(1, (int) muitxt(ind_err_badformat));
 		else
@@ -401,7 +435,7 @@ void CB_CS(int id)
 
 void CB_LG(int id)
 {
-	if ((id==IDYES) && pathbuf) 
+	if ((id==IDYES) && pathbuf)
 		if (!LoadMUI(pathbuf))
 			MsgBoxError(1, (int) muitxt(ind_err_badformat));
 		else
@@ -409,41 +443,76 @@ void CB_LG(int id)
 			SaveMUI(NULL);
 			sprintf(msgbuf, _ss, muitxt(ind_lng), muitxt(ind_lngname));
 			ShowMSG(1, (int) msgbuf);
-		}  
+		}
 }
 //####### Commands #######
 
 void S_ZipOpen(void)
 {
-	int zerr = OpenTabZip(curtab, pathbuf);
-	if (zerr == UNZ_OK)
+	if (zippathbuf && zippathbuf[0])
 	{
-		cd(curtab, str_empty);
-		SetTabIndex(curtab, 0, 0);
+		int zerr = OpenTabZip(curtab, zippathbuf);
+		if (zerr == UNZ_OK)
+		{
+			cd(curtab, str_empty);
+			SetCurTabIndex(0, 0);
+		}
+		else if (zerr != -11111) // ignore propr_stop
+		{
+			sprintf(msgbuf, "OpenZip error %i", zerr);
+			MsgBoxError(1, (int)msgbuf);
+		}
+
+		if (IsGuiOnTop(MAINGUI_ID)) REDRAW();
 	}
-	else if (zerr != -11111) // ignore propr_stop
-	{
-		sprintf(msgbuf, "OpenZip error %i", zerr);
-		MsgBoxError(1, (int)msgbuf);
-	}
-	
-	if (IsGuiOnTop(MAINGUI_ID)) REDRAW();
 }
 
-void DoOpen()
+void S_ZipOpenFile(void)
 {
-	if (_CurIndex<0) return;
+	Busy = 1;
+	
+	FILEINF* file = _CurFile();
+	CurFullPath(file->sname);
 
-	FILEINF *file = _CurFile();
+	// Берем имя временного файла
+	char szTempFilePath[MAX_PATH];
+	sprintf(szTempFilePath, _s_s, CONFIG_TEMP_PATH, GetFileName(pathbuf));
+
+	// Грохаем если он там есть
+	if (fexists(szTempFilePath) && !isdir(szTempFilePath, &err))
+		unlink(szTempFilePath, &err);
+
+	// Извлекаем наш файл или выходим
+	int res = ExtractFileByID(tabs[curtab]->zipInfo, file->id,
+		(char*)CONFIG_TEMP_PATH, 0, 1);
+		
+	// Сохраняем имя в списке временных файлов
+	if (CONFIG_DELETE_TEMP_FILES_ON_EXIT)
+		fn_add(&tmp_files, FNT_NONE, TYPE_COMMON_FILE, 0, szTempFilePath, NULL);
+
+	if (res == UNZ_OK)
+	{
+		str_2ws(wsbuf, szTempFilePath, MAX_PATH);
+		ExecuteFile(wsbuf, 0, 0);
+	}
+	
+	Busy = 0;
+}
+
+void _Open(int isSysOpen)
+{
+	if (_CurIndex < 0) return;
+
+	FILEINF* file = _CurFile();
 	if (file && pathbuf && strlen(file->sname))
 	{
 		CurFullPath(file->sname);
-		if (file->attr & FA_DIRECTORY) 
+		if (file->attr & FA_DIRECTORY)
 			cd(curtab, pathbuf);
 		else
 		{
 			char* sz = GetFileExt(file->sname);
-			if ((int) sz) 
+			if ((int)sz)
 			{
 				char szext[MAX_EXT];
 				strtolower(sz, szext, MAX_EXT);
@@ -453,70 +522,61 @@ void DoOpen()
 					UseBM(pathbuf);
 					return;
 				}
-				else if (CONFIG_ZIP_ENABLE && !strncmp(szext, zip_ext, MAX_EXT))
-				{
-					if (!IsInZip())
-						SUBPROC((void*)S_ZipOpen);
-					return;
-				}
 				else if (!strncmp(szext, mccs_ext, MAX_EXT))
 				{
-					MsgBoxYesNo(1, (int) muitxt(ind_pmt_impcs), CB_CS);
+					MsgBoxYesNo(1, (int)muitxt(ind_pmt_impcs), CB_CS);
 					return;
 				}
 				else if (!strncmp(szext, mclg_ext, MAX_EXT))
 				{
-					MsgBoxYesNo(1, (int) muitxt(ind_pmt_implg), CB_LG);
+					MsgBoxYesNo(1, (int)muitxt(ind_pmt_implg), CB_LG);
 					return;
 				}
+			}
+			
+			if (!isSysOpen && CONFIG_ZIP_ENABLE && !IsInZip() && IsItZipFile(pathbuf))
+			{
+				strcpy(zippathbuf, pathbuf);
+				SUBPROC((void*)S_ZipOpen);
+				return;
 			}
 
 			if (wsbuf)
 			{
 				if (IsInZip())
 				{
-					// Берем имя временного файла
-					char szTempFilePath[MAX_PATH];
-					sprintf(szTempFilePath, _s_s, CONFIG_TEMP_PATH, GetFileName(pathbuf));
-
-					// Грохаем если он там есть
-					if (fexists(szTempFilePath))
-						fsrm(szTempFilePath, 0);
-
-					// Извлекаем наш файл или выходим
-					int res = ExtractFileByID(tabs[curtab]->zipInfo, file->id,
-						(char*)CONFIG_TEMP_PATH, 0);
-					
-					if (res == UNZ_OK)
-						str_2ws(wsbuf, szTempFilePath, MAX_PATH);
-					else
-						return;
+					SUBPROC((void*)S_ZipOpenFile);
+					return;
 				}
 				else
 				{
 					str_2ws(wsbuf, pathbuf, MAX_PATH);
+					ExecuteFile(wsbuf, 0, 0);
 				}
-				ExecuteFile(wsbuf,0,0);
 			}
-		}  
+		}
 	}
 }
 
-
-int _DeleteTempFile(DIR_ENTRY *de, int param)
+void DoOpen()
 {
-	if (pathbuf)
-	{
-		sprintf(pathbuf, _s_s, de->folder_name, de->file_name);
-		unlink(pathbuf, 0); // Убиваем только файл а не дерево!
-		return 1;
-	}  
-	return 0;
+	_Open(0);
+}
+
+void DoSysOpen()
+{
+	_Open(1);
 }
 
 void DeleteTempFiles()
 {
-	EnumFilesInDir((char*)CONFIG_TEMP_PATH, _DeleteTempFile, 0, 0, 0); 
+	FN_ITM* itm = tmp_files.items;
+	while(itm)
+	{
+		if (fexists(itm->full) && !isdir(itm->full, &err))
+			unlink(itm->full, &err);
+		itm = itm->next;
+	}
 }
 
 void CB_Exit(int id)
@@ -531,8 +591,11 @@ void CB_Exit(int id)
 			if (i != curtab && IsZipOpened(i)) CloseTabZip(i);
 			
 		// Очищаем темп, если разрешено в конфиге
-		if (CONFIG_DELETE_TEMP_FILES_ON_EXIT)
+		if (CONFIG_DELETE_TEMP_FILES_ON_EXIT && tmp_files.count)
+		{
 			DeleteTempFiles();
+			fn_free(&tmp_files);
+		}
 	
 		Terminate = progr_stop = 1;
 		if (!Busy) GeneralFuncF1(1);
@@ -559,8 +622,8 @@ void ExitFromZip()
 		RefreshTab(curtab);
 
 		//Ищем файл из которого вышли
-		int ind = GetFileIndex(curtab, lpname);
-		SetTabIndex(curtab, ind, 0);
+		int ind = GetCurTabFileIndex(lpname);
+		SetCurTabIndex(ind, 0);
 	}
 }
 
@@ -586,8 +649,8 @@ int DoBack()
 				res = cd(curtab, pathbuf);
 
 				//Ищем папку из которой вышли
-				int ind = GetFileIndex(curtab, lpname);
-				SetTabIndex(curtab, ind, 0);
+				int ind = GetCurTabFileIndex(lpname);
+				SetCurTabIndex(ind, 0);
 			}
 			else if (IsInZip()) ExitFromZip();
 			else if (CONFIG_BACK_EXIT) DoExit();
@@ -595,15 +658,19 @@ int DoBack()
 		else
 		{
 			curtab = back_tab < MAX_TABS ? back_tab : 0;
-		}  
-	}  
+		}
+	}
 	return res;
 }
 
 void DoSwapTab()
 {
 	curtab++;
-	if (curtab>=MAX_TABS) curtab=0;
+	if (curtab >= MAX_TABS) curtab = 0;
+	
+	// Останавливаем скроллинг при смене таба
+	scfile = NULL;
+	
 	UpdateCSMname();
 }
 
@@ -638,7 +705,7 @@ void DoUp()
 
 void DoDwn()
 {
-	if (_CurIndex < _CurCount - 1 || CONFIG_LOOP_NAVIGATION_ENABLE)
+	if (CONFIG_LOOP_NAVIGATION_ENABLE || _CurIndex < _CurCount - 1)
 		SetCurTabIndex(++_CurIndex, 1);
 }
 
@@ -665,7 +732,8 @@ void DoBegin()
 void DoChk()
 {
 	ChkFile(_CurFile());
-	if (CONFIG_CUR_DOWN_ON_CHECK) SetCurTabIndex(++_CurIndex, 1);
+	if (CONFIG_CUR_DOWN_ON_CHECK && _CurIndex < _CurCount - 1)
+		SetCurTabIndex(++_CurIndex, 1);
 }
 
 void DoChkAll()
@@ -697,12 +765,12 @@ void DoNewDir()
 	if (wsbuf)
 	{
 		if (*szLastNewDir)
-			wsprintf(wsbuf, szLastNewDir);
+			str_2ws(wsbuf, szLastNewDir, MAX_PATH);
 		else
-			wsprintf(wsbuf, def_new_dir);
+			str_2ws(wsbuf, def_new_dir, MAX_PATH);
 
 		TextInput(muitxt(ind_newdir), muitxt(ind_name), 1, wsbuf, _NewDir);
-	} 
+	}
 }
 
 void DoNewFile()
@@ -712,31 +780,58 @@ void DoNewFile()
 	if (wsbuf)
 	{
 		if (*szLastNewFile)
-			wsprintf(wsbuf, szLastNewFile);
+			str_2ws(wsbuf, szLastNewFile, MAX_PATH);
 		else
-			wsprintf(wsbuf, def_new_file);
+			str_2ws(wsbuf, def_new_file, MAX_PATH);
 
 		TextInput(muitxt(ind_newfile), muitxt(ind_name), 1, wsbuf, _NewFile);
-	} 
+	}
 }
 
 void DoShowHid()
 {
 	show_hidden = !show_hidden;
+	
 	DoRefresh();
+	
+	int yesno = (show_hidden ? ind_yes : ind_no);
+	sprintf(msgbuf, _ss, muitxt(ind_msg_showhid_files), muitxt(yesno));
+	ShowMSG(1, (int)msgbuf);
 }
 
 void DoShowSys()
 {
 	show_system = !show_system;
+	
 	DoRefresh();
+	
+	int yesno = (show_system ? ind_yes : ind_no);
+	sprintf(msgbuf, _ss, muitxt(ind_msg_showsys_files), muitxt(yesno));
+	ShowMSG(1, (int)msgbuf);
 }
 
 void DoShowHidSys()
 {
 	show_hidden = !show_hidden;
 	show_system = show_hidden;
+	
 	DoRefresh();
+	
+	int yesno = (show_hidden? ind_yes : ind_no);
+	sprintf(msgbuf, _ss, muitxt(ind_msg_showhidsys_files), muitxt(yesno));
+	ShowMSG(1, (int)msgbuf);
+}
+
+void DoShowHidDrv()
+{
+	show_hiddrv = !show_hiddrv;
+
+	Drives[DRV_IDX_Cache].enabled = show_hiddrv;
+	Drives[DRV_IDX_Config].enabled = show_hiddrv;
+	
+	int yesno = (show_hiddrv ? ind_yes : ind_no);
+	sprintf(msgbuf, _ss, muitxt(ind_msg_showhid_drv), muitxt(yesno));
+	ShowMSG(1, (int)msgbuf);
 }
 
 void _Filter(WSHDR *wsname)
@@ -759,7 +854,7 @@ void DoFilter()
 			str_2ws(wsbuf, def_filter, MAX_PATH);
 
 		TextInput(muitxt(ind_filter), muitxt(ind_name), 0, wsbuf, _Filter);
-	} 
+	}
 }
 
 void DoRen()
@@ -796,12 +891,12 @@ void DoPaste()
 			else
 				CB_Paste(IDYES);
 		}
-	} 
+	}
 }
 
 void CB_Cancel(int id)
 {
-	if (id==IDYES)fn_free(&buffer);
+	if (id==IDYES) fn_free(&buffer);
 }
 
 void DoCancel()
@@ -888,6 +983,37 @@ void DoSortR()
 	DoRefresh();
 }
 
+void DoTabCopy()
+{
+	// Очищаем буфер
+	CB_Cancel(IDYES);
+	
+	// Копируем текущие файлы в буфер
+	DoCopy();
+	
+	// Переходим на другой таб
+	DoSwapTab();
+	
+	// Вставляем файлы на него
+	DoPaste();
+}
+
+void DoTabMove()
+{
+	// Очищаем буфер
+	CB_Cancel(IDYES);
+	
+	// Копируем текущие файлы в буфер
+	DoMove();
+	
+	// Переходим на другой таб
+	DoSwapTab();
+	
+	// Вставляем файлы на него
+	DoPaste();
+}
+
+
 void DoErrKey()
 {
 	MsgBoxError(1, (int) muitxt(ind_err_badkey));
@@ -915,18 +1041,18 @@ void DoZipCopy()
 
 
 
-FILEINF *_CurFile()
+FILEINF* _CurFile()
 {
 	return _CurTabFile(curtab);
 }
 
-FILEINF *_CurTabFile(int tab)
+FILEINF* _CurTabFile(int tab)
 {
 	int ind = GetTabIndex(tab);
-	if (ind<0) return NULL;
+	if (ind < 0) return NULL;
 
-	FILEINF *file = FileListBase[tab];
-	for(int ii=0;ii<=ind;ii++) 
+	FILEINF* file = FileListBase[tab];
+	for(int ii=0; ii<=ind; ii++)
 		if (file)
 			file = file->next;
 		else
@@ -937,19 +1063,24 @@ FILEINF *_CurTabFile(int tab)
 
 int GetFileIndex(int tab, char* fname)
 {
-	if (tabs[tab]->ccFiles) 
+	if (tabs[tab]->ccFiles)
 	{
 		int ind=0;
-		FILEINF *file = FileListBase[tab]->next;
+		FILEINF* file = FileListBase[tab]->next;
 		while(file != FileListBase[tab])
 		{
-			if (!strcmp(fname, file->sname)) 
+			if (!strcmp(fname, file->sname))
 				return ind;
 			file = file->next;
 			ind++;
 		}
-	} 
+	}
 	return -1;
+}
+
+int GetCurTabFileIndex(char* fname)
+{
+	return GetFileIndex(curtab, fname);
 }
 
 int ___IsMultiChk(FILEINF *file, int param){ return 1;}
@@ -960,11 +1091,11 @@ int IsMultiChk()
 
 int EnumChk(ENUM_SEL_PROC EnumProc, int param)
 {
-	int cc=0;
-	if (tabs[curtab]->ccFiles) 
+	int cc = 0;
+	if (tabs[curtab]->ccFiles)
 	{
 		FILEINF *file = FileListBase[curtab]->next;
-		while(file!=FileListBase[curtab])
+		while(file != FileListBase[curtab])
 		{
 			if (file->attr & FA_CHECK)
 			{
@@ -980,18 +1111,18 @@ int EnumChk(ENUM_SEL_PROC EnumProc, int param)
 
 int EnumSel(ENUM_SEL_PROC EnumProc, int param)
 {
-	int cc=EnumChk(EnumProc, param);
-	if (cc==0) 
+	int cc = EnumChk(EnumProc, param);
+	if (cc == 0)
 	{
 		if (EnumProc)
 		{
-			FILEINF *cfile = _CurFile();
+			FILEINF* cfile = _CurFile();
 			if (cfile)
 			{
 				EnumProc(cfile, param);
 				cc++;
-			}  
-		}  
+			}
+		}
 	}
 	return cc;
 }
@@ -999,7 +1130,7 @@ int EnumSel(ENUM_SEL_PROC EnumProc, int param)
 /*
 int IsChkAll()
 {
-if (tabs[curtab]->ccFiles) 
+if (tabs[curtab]->ccFiles)
 {
 FILEINF *file = FileListBase[curtab]->next;
 while(file!=FileListBase[curtab])
@@ -1015,7 +1146,7 @@ return 0;
 
 int ChkAll(int chk)
 {
-	if (tabs[curtab]->ccFiles) 
+	if (tabs[curtab]->ccFiles)
 	{
 		FILEINF *file = FileListBase[curtab]->next;
 		while(file!=FileListBase[curtab])
@@ -1037,7 +1168,7 @@ void ChkFile(FILEINF *file)
 	if (file)
 	{
 		file->attr = file->attr & FA_CHECK ? file->attr & ~FA_CHECK : file->attr | FA_CHECK;
-	}   
+	}
 }
 
 
@@ -1048,7 +1179,7 @@ void initprogr(int act)
 	progr_start = 1;
 	progr_max = 0;
 	progr_stop = 0;
-	progr_act = act; 
+	progr_act = act;
 }
 
 void incprogr(int inc)
@@ -1118,7 +1249,7 @@ char* TmpFullPath2(char* buff, char* sfile)
 		TDate d;
 		GetDateTime(&d,&t);
 		sprintf(buff, _s_s_d, _CurPath, sfile, *(int*)&t);
-	}  
+	}
 	return buff;
 }
 
@@ -1130,9 +1261,9 @@ char* MCFilePath(const char* sfile)
 }
 
 //this procedure resets counter
-void ResetAutoExit() 
+void ResetAutoExit()
 {
-	AutoExitCounter=0;
+	AutoExitCounter = 0;
 }
 
 const int AutExitCheckFrequencySec = 15;

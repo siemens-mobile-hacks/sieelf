@@ -1,3 +1,6 @@
+#ifndef _MUI_H
+#define _MUI_H
+
 #define id_no				1
 #define id_yes				2
 
@@ -97,7 +100,10 @@
 #define id_err_ziperr		4014
 
 #define id_msg_zreading			5000
-
+#define id_msg_showhid_files	5001
+#define id_msg_showsys_files	5002
+#define id_msg_showhidsys_files	5003
+#define id_msg_showhid_drv		5004
 
 typedef struct
 {
@@ -231,5 +237,10 @@ char* muitxt(int ind);
 #define ind_err_makefile	87
 #define ind_err_ziperr		88
 
-#define ind_msg_zreading	89
+#define ind_msg_zreading			89
+#define ind_msg_showhid_files		90
+#define ind_msg_showsys_files		91
+#define ind_msg_showhidsys_files	92
+#define ind_msg_showhid_drv			93
 
+#endif

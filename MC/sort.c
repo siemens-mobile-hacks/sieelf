@@ -1,6 +1,7 @@
 #include "inc\mc.h"
 #include "inc\mui.h"
 #include "inc\sort.h"
+#include "inc\encode.h"
 
 typedef struct {
 	char* name;
@@ -8,22 +9,25 @@ typedef struct {
 	FILEINF* dataPointer;
 } FileSortInfo;
 
-char *fn_prepare(char* src, char* dst, int sz)
+char* fn_prepare(char* src, char* dst)
 {
-	int sl = strlen(src) + 1;
-	int len = (sz == -1) ? sl : sz;
-	if (len > sl) len = sl;
-
-	for(int ii = 0; ii < len-1; ii++)
+	// Копируем
+	strcpy(dst, src);
+	
+	// Преобразуем кодировку в Win
+	utf82win(dst);
+	
+	// В нижний регистр и убиваем откуда-то взявшиеся 0x1f символы
+	int len = strlen(dst);
+	int jj = 0;
+	for(int ii = 0; ii < len; ii++)
 	{
-		int ch = src[ii];
-
-		if (ch >= 'A' && ch <= 'Z') ch = ch - 'A' + 'a';
-		if (ch == 31) ch = 255; // Русские буквы в конец
-
-		dst[ii] = ch;
+		int ch = dst[ii];
+		if (ch >= 'A' && ch <= 'Z') ch = ch-'A'+'a';
+		else if (ch == 0x1F) continue;
+		dst[jj++] = ch;
 	}
-	dst[len-1] = 0;
+	dst[jj] = 0;
 	return dst;
 }
 
@@ -36,7 +40,7 @@ int filenamecmp(FileSortInfo* fs1, FileSortInfo* fs2)
 	unsigned char c1 = 0;
 	unsigned char c2 = 0;
 
-	while(1)
+	while (1)
 	{
 		c1 = *str1;
 		c2 = *str2;
@@ -48,7 +52,6 @@ int filenamecmp(FileSortInfo* fs1, FileSortInfo* fs2)
 	}
 
 	// Если попали сюда, то строки не равны
-
 	if (stricmp(fs1->ext, fs2->ext) == 0 && isNumericStr(str1) && isNumericStr(str2))
 	{
 		// Если расширения одинаковые и неравные подстроки - цифры...
@@ -106,7 +109,7 @@ int isDateGreater(void* a, void* b)
 		return res > 0;
 }
 
-FILEINF * SortList(FILEINF * list, int sort)
+FILEINF* SortList(FILEINF* list, int sort)
 {
 	FILEINF* base = list;
 	int i;
@@ -151,7 +154,10 @@ FILEINF * SortList(FILEINF * list, int sort)
 					err = 1; break;
 				}
 
-				fn_prepare(cur->sname, sortInfo[i]->name, -1);
+				fn_prepare(cur->sname, sortInfo[i]->name);
+#ifdef LOG
+				_WriteLog(sortInfo[i]->name);
+#endif
 
 				// Разбиваем на имя файла и расширение
 				sortInfo[i]->ext = GetFileExt(sortInfo[i]->name);
@@ -256,7 +262,7 @@ FILEINF * SortList(FILEINF * list, int sort)
 
 void SortFiles(int tab)
 {
-	if (tabs[tab]->ccFiles>1) 
+	if (tabs[tab]->ccFiles>1)
 	{
 		LockSched();
 		FILEINF *files=0;
@@ -283,28 +289,26 @@ void SortFiles(int tab)
 
 		int srt = tabs[tab]->sort;
 
-		dirs  = SortList(dirs,  srt & STD_MASK);
-		files = SortList(files, srt & STD_MASK);
-		if (srt & STV_MASK)
-		{
-			if ((srt & STV_MASK)!=ST_SIZE)
-				dirs  = SortList(dirs,  srt);
-			files = SortList(files, srt);
-		}
+		if (srt & STV_MASK == ST_SIZE)
+			dirs = SortList(dirs,  srt & STD_MASK); // При сортировке по размеру папки сортируем по имени
+		else
+			dirs = SortList(dirs,  srt);
+
+		files = SortList(files, srt);
 
 		while(files)
 		{
 			next = files->next;
 			files->next = FileListBase[tab]->next;
-			FileListBase[tab]->next=files;
-			files=next;
+			FileListBase[tab]->next = files;
+			files = next;
 		}
 		while(dirs)
 		{
 			next = dirs->next;
 			dirs->next = FileListBase[tab]->next;
-			FileListBase[tab]->next=dirs;
-			dirs=next;
+			FileListBase[tab]->next = dirs;
+			dirs = next;
 		}
 
 		UnlockSched();

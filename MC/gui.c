@@ -7,7 +7,7 @@
 #include "inc\zslib.h"
 
 GBSTMR sctm;
-FILEINF *scfile=NULL;
+FILEINF* scfile=NULL;
 int scind;
 int sctpos;
 int sctdir;
@@ -26,22 +26,22 @@ int BoldFont;
 
 void InitScr()
 {
-	scr_w=ScreenW();
-	scr_h=ScreenH();
-	ico_hw=GetImgHeight(ext_dir.ico);
-	txt_h=GetFontYSIZE(NormalFont); 
+	scr_w = ScreenW();
+	scr_h = ScreenH();
+	ico_hw = GetImgHeight(ext_dir.ico);
+	txt_h = GetFontYSIZE(NormalFont); 
 	if (!txt_h)
 	{
 		ShowMSG(1, (int)"Не уд. опред. выс. шрифта.\nGetFontYSIZE()=0");
-		txt_h=16; //!!!
+		txt_h = 16; //!!!
 	}
-	int tmp=ico_hw-ITM_B*2;
-	itm_ch=tmp>txt_h?tmp:txt_h;
-	itms_max = ((FLS_H-ITM_S*2) / ITM_FH)-1;
-	itms_bs  = FLS_Y+(( (FLS_H-ITM_S*2)-((itms_max+1)*ITM_FH) )/2);
+	int tmp = ico_hw - ITM_B * 2;
+	itm_ch = tmp > txt_h ? tmp : txt_h;
+	itms_max = ((FLS_H - ITM_S * 2) / ITM_FH)-1;
+	itms_bs = FLS_Y + ( ( (FLS_H - ITM_S * 2)-((itms_max + 1) * ITM_FH) ) / 2 );
 }
 
-void DrwFile(int ind, FILEINF *file)
+void DrwFile(int ind, FILEINF* file)
 { 
 	if (ind > _CurIndex-_CurBase) ind++;
 	int y = itms_bs + ind*ITM_FH;
@@ -77,8 +77,8 @@ void DrwFile(int ind, FILEINF *file)
 			DrawString(file->ws_attr,TXT_X,y2+ITM_B+1,ITM_X2-ITM_B-2,y2+ITM_B+txt_h,NormalFont,TEXT_ALIGNRIGHT,
 				(char*)&Colors[clInfoTxt],0);
 	}
-	int ico = file->attr & FA_CHECK?ext_chk.ico:file->ext->ico;
-	DrawImg(ICO_X,y+ICO_DY,ico);
+	EXTINF* ext = file->attr & FA_CHECK ? &ext_chk : file->ext;
+	DrawImg(ICO_X, y+ICO_DY, ext->ico);
 
 	int tc;
 	if (file->attr & (FA_READONLY | FA_SYSTEM)) 
@@ -88,25 +88,27 @@ void DrwFile(int ind, FILEINF *file)
 	else
 		tc=ind==_CurIndex-_CurBase?clSelFileNormal:clFileNormal;
 
-	WSHDR* fn = file->uccnt?file->ws_short:file->ws_name;
+	WSHDR* fn = (file->uccnt ? file->ws_short :
+					(curtab == systab && file->ws_showname ? file->ws_showname : file->ws_name));
 	if (fn)
 		DrawString(fn,TXT_X,y+ITM_B+1,ITM_X2-ITM_B-2,y+ITM_B+txt_h,BoldFont,TEXT_ALIGNLEFT,
-		(char*)&Colors[tc],0);
+			(char*)&Colors[tc],0);
 }
 
 void DrwName()
 {
 	if (!Busy && scfile && IsGuiOnTop(MAINGUI_ID))
 	{
-		if (scfile->ws_name && scfile->uccnt)
+		WSHDR* ws = (curtab == systab && scfile->ws_showname ? scfile->ws_showname : scfile->ws_name);
+		if (ws && scfile->uccnt)
 		{
 			int gend=FALSE;
-			int sc = getLVC(&scfile->ws_name->wsbody[sctpos+1],
-				scfile->ws_name->wsbody[0]-sctpos,
+			int sc = getLVC(&ws->wsbody[sctpos+1],
+				ws->wsbody[0]-sctpos,
 				BoldFont);
 			if (!sc)
 			{
-				sc=scfile->ws_name->wsbody[0]-sctpos;
+				sc=ws->wsbody[0]-sctpos;
 				gend = sctdir>0;	  
 			}  
 
@@ -114,7 +116,7 @@ void DrwName()
 			txt->wsbody[0]=sc;
 			//	 txt->wsbody[sc+1]=0;
 			for(int ii=1;ii<sc+1;ii++)
-				txt->wsbody[ii]=scfile->ws_name->wsbody[ii+sctpos];
+				txt->wsbody[ii]=ws->wsbody[ii+sctpos];
 
 			if (scwait<=0)
 			{
@@ -251,13 +253,13 @@ void ShowFiles()
 		icount=itms_max;
 		ibase=_CurBase;
 
-		int idist=_CurIndex-_CurBase;
+		int idist = _CurIndex - _CurBase;
 
-		if (idist>=itms_max-1)   ibase+=idist-itms_max+2; else
-			if (_CurIndex<=_CurBase) ibase+=idist-1;
+		if (idist >= itms_max-1) ibase += idist - itms_max + 2;
+		else if (_CurIndex <= _CurBase) ibase += idist - 1;
 
-		if (ibase<0)ibase=0; else
-			if (ibase>_CurCount-itms_max)ibase=_CurCount-itms_max;
+		if (ibase < 0) ibase = 0;
+		else if (ibase > _CurCount - itms_max) ibase = _CurCount - itms_max;
 	}
 	_CurBase = ibase;
 
@@ -268,7 +270,7 @@ void ShowFiles()
 	for(int ii=0; ii<icount; ii++)
 	{
 		file = file->next;
-		FullInit(file);
+		FillFileInfo(file);
 		DrwFile(ii, file);
 	}
 

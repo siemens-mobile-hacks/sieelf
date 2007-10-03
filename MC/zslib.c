@@ -3,6 +3,8 @@
 #include "inc\mui.h"
 #include "inc\encode.h"
 
+const char zip_ext[] = "zip";
+
 void ZipError(int zipErrNum, char* procName)
 {
 	sprintf(msgbuf, muitxt(ind_err_ziperr), zipErrNum, procName);
@@ -13,11 +15,8 @@ void CloseZip(ZIPINF* pzi)
 {
 	if (pzi->uf)
 	{
-		FreeZipInfo(pzi);
 		unzClose(pzi->uf);
-		pzi->uf = 0;
-		pzi->szCurDir[0] = '\0';
-		pzi->szZipPath[0] = '\0';
+		FreeZipInfo(pzi);
 	}
 }
 
@@ -38,24 +37,26 @@ int IsInZip()
 
 void FreeZipInfo(ZIPINF* pzi)
 {
-	if (pzi->pfi)
+	if (pzi)
 	{
-		for (int i=0; i < pzi->gi.number_entry; i++)
-			if (pzi->pfi[i]) mfree(pzi->pfi[i]);
-		mfree(pzi->pfi);
-		pzi->pfi = 0;
-	}
-	if (pzi->pszNames)
-	{
-		for (int i=0; i < pzi->gi.number_entry; i++)
-			if (pzi->pszNames[i]) mfree(pzi->pszNames[i]);
-		mfree(pzi->pszNames);
-		pzi->pszNames = 0;
-	}
-	if (pzi->password)
-	{
-		mfree(pzi->password);
-		pzi->password = 0;
+		if (pzi->pfi)
+		{
+			for (int i=0; i < pzi->gi.number_entry; i++)
+				if (pzi->pfi[i]) mfree(pzi->pfi[i]);
+			mfree(pzi->pfi);
+		}
+		
+		if (pzi->pszNames)
+		{
+			for (int i=0; i < pzi->gi.number_entry; i++)
+				if (pzi->pszNames[i]) mfree(pzi->pszNames[i]);
+			mfree(pzi->pszNames);
+		}
+		
+		if (pzi->password)
+			mfree(pzi->password);
+			
+		zeromem(pzi, sizeof(ZIPINF));
 	}
 }
 
@@ -142,8 +143,6 @@ int ReadZipInfo(ZIPINF* pzi)
 
 	if (progr_stop) zerr = -11111;
 	
-	if (zerr != UNZ_OK) FreeZipInfo(pzi);
-
 	return zerr;
 }
 
@@ -164,7 +163,7 @@ int OpenZip(ZIPINF* pzi, char* zipFileName)
 		zerr = ReadZipInfo(pzi);
 		
 	if (zerr != UNZ_OK)
-		CloseZip(pzi);	
+		CloseZip(pzi);
 
 	return zerr;
 }
@@ -183,7 +182,8 @@ int FillZipFiles(int tab, char* subdname)
 {
 	int num = 0;
 	char buf[MAX_PATH_INZIP];
-	char* pszDirName = subdname[0] == '\\' ? subdname + 1 : subdname; // Пропустим в начале обратный слеш 
+	char* pszDirName = subdname[0] == '\\' ? subdname + 1 : subdname; // Пропустим в начале обратный слеш
+	int dirLen = strlen(pszDirName);
 	ZIPINF* pzi = tabs[tab]->zipInfo;
 
 	if (pzi->uf)		
@@ -191,7 +191,6 @@ int FillZipFiles(int tab, char* subdname)
 		for (int i=0; i < pzi->gi.number_entry; i++)
 		{
 			int ignore = 1;
-			int dirLen = strlen(pszDirName);
 			strcpy(buf, pzi->pszNames[i]);
 			char* pFileNameStart = &buf[0];
 			unz_file_info* pfi = pzi->pfi[i];
@@ -199,7 +198,7 @@ int FillZipFiles(int tab, char* subdname)
 			if (dirLen == 0)
 			{
 				// Если ищем корневые элементы
-				// То добавляем все файлы у которых нет слешей '\' 
+				// То добавляем все файлы у которых нет слешей '\'
 				char* slashPos = strstr(buf, "\\");
 				ignore = (slashPos != NULL);
 				if (ignore)
@@ -269,8 +268,10 @@ int SetCurrentFileInZip(ZIPINF* pzi, int id)
 	return 0;	
 }
 
-int ExtractCurrentFile(unzFile uf, char* filePathInZip, char* extractDir, int usePaths, char* password)
+int ExtractCurrentFile(ZIPINF* pzi, int ind, char* extractDir, int usePaths, int ip)
 {
+	unzFile uf = pzi->uf;
+	char* filePathInZip = pzi->pszNames[ind];
 	int res = UNZ_OK;
 	int fout = 0;
 	char extractFilePath[MAX_PATH];
@@ -281,14 +282,14 @@ int ExtractCurrentFile(unzFile uf, char* filePathInZip, char* extractDir, int us
 		// Считываем имя сами если нужно
 		unz_file_info fi;
 		filePathInZip = fnbuf;
-		unzGetCurrentFileInfo(uf, &fi, filePathInZip, MAX_PATH, NULL, 0, NULL, 0);    
+		unzGetCurrentFileInfo(uf, &fi, filePathInZip, MAX_PATH, NULL, 0, NULL, 0);
 	}
 
 	uInt size_buf = WRITEBUFFERSIZE;
 	void* buf = (void*)malloc(size_buf);
 	if (buf == NULL)
 	{
-		ZipError(1, "ExtractCurrentFile");
+		ZipError(1, "ExtractCurrentFile.malloc");
 		return 1;
 	}
 
@@ -298,7 +299,6 @@ int ExtractCurrentFile(unzFile uf, char* filePathInZip, char* extractDir, int us
 		if (usePaths)
 		{
 			// Директория... создаем
-			// ToDo: проверить как работает этот кусок кода...
 			sprintf(extractFilePath, _s_s, extractDir, filePathInZip);
 			mktree(extractFilePath);
 		}
@@ -314,7 +314,7 @@ int ExtractCurrentFile(unzFile uf, char* filePathInZip, char* extractDir, int us
 		if (fexists(extractFilePath))
 		{
 			// ToDo: добавить проверку - если Temp, то переписывать не спрашивая, иначе - диалог
-			if (fsrm(extractFilePath, 0) != 0)
+			if (!unlink(extractFilePath, &err))
 				ZipError(res = 2, "ExtractCurrentFile.fsrm");
 		}
 
@@ -341,11 +341,31 @@ int ExtractCurrentFile(unzFile uf, char* filePathInZip, char* extractDir, int us
 			// Собственно извлекаем
 
 			// Откроем файл
-			if (unzOpenCurrentFilePassword(uf, password) == UNZ_OK)
+			if (unzOpenCurrentFilePassword(uf, pzi->password) == UNZ_OK)
 			{
+				int isnewprogr = 0;
+				if (ip && !progrsp_start)
+				{
+				  	if (!progr_start)
+					{
+						initprogr(ind_msg_zreading);
+						progr_max = 1;
+						incprogr(0);
+						isnewprogr = 1;
+					}
+
+					progrsp_start = 1;
+					progrsp_max = pzi->pfi[ind]->uncompressed_size;
+					incprogrsp(0);
+				}
 				int cb = 0;
 				do
 				{
+					if (ip && progr_stop)
+					{
+						res = UNZ_ERRNO;
+						break;
+					}
 					cb = (int)unzReadCurrentFile(uf, buf, size_buf);
 					if (cb < 0)
 					{
@@ -360,9 +380,22 @@ int ExtractCurrentFile(unzFile uf, char* filePathInZip, char* extractDir, int us
 							ZipError(res = 6, "ExtractCurrentFile.fwrite");
 							break;
 						}
+						if (ip && progrsp_start) incprogrsp(cb);
 					}
 				}
 				while (cb > 0);
+				
+				if (ip && progrsp_start)
+				{
+					endprogrsp();
+					progrsp_start = 0;
+
+					if (isnewprogr)
+					{
+						endprogr();
+						progr_start = 0;
+					}
+				}
 
 				if (fout) { fclose(fout, &err); fout = 0; }
 
@@ -387,7 +420,7 @@ int ExtractCurrentFile(unzFile uf, char* filePathInZip, char* extractDir, int us
 
 	mfree(buf);
 	return res;
-} 
+}
 
 int ExtractFile(ZIPINF* pzi, char* fname, char* extractDir, int usePaths)
 {
@@ -411,20 +444,20 @@ int ExtractFile(ZIPINF* pzi, char* fname, char* extractDir, int usePaths)
 		if (found)
 		{
 			// Извлекаем его, если нашли
-			return ExtractFileByID(pzi, i, extractDir, usePaths);	 
+			return ExtractFileByID(pzi, i, extractDir, usePaths, 0);	
 		}
 	}
 	
 	return 1;
 }
 
-int ExtractFileByID(ZIPINF* pzi, int id, char* extractDir, int usePaths)
+int ExtractFileByID(ZIPINF* pzi, int id, char* extractDir, int usePaths, int ip)
 {
 	// Позиционируемся на нужном файле
 	if (SetCurrentFileInZip(pzi, id) == UNZ_OK)
 	{
 		// И извлекаем его
-		return ExtractCurrentFile(pzi->uf, pzi->pszNames[id], extractDir, usePaths, pzi->password);	 
+		return ExtractCurrentFile(pzi, id, extractDir, usePaths, ip);	
 	}
 	else return 1;
 }
@@ -458,7 +491,7 @@ int ExtractDir(ZIPINF* pzi, char* dname, char* extractDir, int usePaths)
 		}
 			
 		if (found)
-			ExtractCurrentFile(pzi->uf, pzi->pszNames[i], extractDir, 1, pzi->password);
+			ExtractCurrentFile(pzi, i, extractDir, 1, 0);
 	}
 	
 	return zerr;
@@ -504,9 +537,9 @@ int ZipBufferExtract(FN_ITM* pi, char* extractDir)
 		if (pi->ftype == TYPE_ZIP_FILE)
 			return ExtractFile(pzi, pi->full, extractDir, 0);
 		else if (pi->ftype == TYPE_ZIP_DIR)
-			return ExtractDir(pzi, pi->full, extractDir, 1); 
+			return ExtractDir(pzi, pi->full, extractDir, 1);
 	}
-    
+
     return 0;
 }
 
@@ -514,4 +547,91 @@ void ZipBufferExtractEnd()
 {
 	if (zi.uf != 0)
 		CloseZip(&zi);
+}
+
+int EnumZipFiles(ZIPINF* pzi, char* subdname, ENUM_SEL_PROC enumproc, unsigned int param)
+{
+	unsigned int ccFiles   = 0;
+	unsigned int ccSubDirs = 0;
+
+	char buf[MAX_PATH_INZIP];
+	char* pszDirName = ( subdname[0] == '\\' ? subdname + 1 : subdname ); // Пропустим в начале обратный слеш
+	int dirLen = strlen(pszDirName);
+
+	if (pzi->uf)		
+	{
+		for (int i=0; i < pzi->gi.number_entry; i++)
+		{
+			int ignore = 1;
+			strcpy(buf, pzi->pszNames[i]);
+			char* pFileNameStart = &buf[0];
+			unz_file_info* pfi = pzi->pfi[i];
+
+			if (dirLen == 0)
+			{
+				ignore = 0;
+			}
+			else
+			{
+				// Сравниваем начало, если равно и потом слеш - то это элементы нашей директории
+				pFileNameStart = pFileNameStart + dirLen;
+				ignore = (strnicmp(buf, pszDirName, dirLen) != 0 || *pFileNameStart != '\\');
+				if (!ignore)
+				{
+					pFileNameStart = pFileNameStart + 1; // пропустим слеш после имени директории
+
+					// игнорим саму текущую, директорию
+					ignore = (*pFileNameStart == 0);
+				}
+			}
+
+			if (!ignore)
+			{
+				int stop = 0;
+				
+				FILEINF* file = CreateFileInfo(i, pFileNameStart, pfi->uncompressed_size,
+					pfi->external_fa, pfi->dosDate, pfi->compressed_size,
+					(pfi->external_fa & FA_DIRECTORY) ? TYPE_ZIP_DIR : TYPE_ZIP_FILE);
+				//FillFileInfo(file);
+				
+				if (pfi->external_fa & FA_DIRECTORY)
+					ccSubDirs++;
+				else
+					ccFiles++;
+				
+				if (enumproc)
+					if (enumproc(file, param) == 0)
+						stop = 1;
+				
+				FreeFileInfo(file);
+				
+				if (stop) break;
+			}
+		}
+	}
+
+	return (ccSubDirs << 16 | ccFiles);
+}
+
+#define LOCALHEADERMAGIC	(0x04034b50)
+
+int IsItZipFile(char* fname)
+{
+	if (CONFIG_ZIP_DETECT_BY == 0) // by content
+	{
+		unsigned char buf[4];
+		uLong header = 0;
+		int f = fopen(fname, A_ReadOnly | A_BIN, P_READ, &err);
+		if (f != -1)
+		{
+			if (fread(f, &buf, 4, &err) == 4)
+				header = (uLong)buf[0] + (((uLong)buf[1])<<8) + (((uLong)buf[2])<<16) + (((uLong)buf[3])<<24);
+			fclose(f, &err);
+		}
+		return (header == LOCALHEADERMAGIC);
+	}
+	else // by extension
+	{
+		return (stricmp(GetFileExt(fname), (char*)zip_ext) == 0);
+	}
 }

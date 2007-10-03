@@ -119,6 +119,11 @@ typedef struct unz_file_info_s
 	tm_unz tmu_date;
 } unz_file_info;
 
+int unzlocal_getLong (
+	const zlib_filefunc_def* pzlib_filefunc_def,
+	voidpf filestream,
+	uLong *pX);
+
 extern int unzStringFileNameCompare (const char* fileName1,
 												 const char* fileName2,
 												 int iCaseSensitivity);

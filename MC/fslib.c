@@ -120,44 +120,49 @@ int EnumFilesInDir(char* dname, ENUM_FILES_PROC enumproc, unsigned int param, in
 	unsigned int ccSubDirs = 0;
 
 	char path[MAX_PATH];
-	DIR_ENTRY *de = malloc(sizeof(DIR_ENTRY));
-	if (path && de)
+	DIR_ENTRY* pde = malloc(sizeof(DIR_ENTRY));
+	if (path && pde)
 	{
 		sprintf(path, _s_stars, dname);
-		if (FindFirstFile(de, path, &err))
+		if (FindFirstFile(pde, path, &err))
 		{
 			do
 			{
-				if (de->file_attr & FA_DIRECTORY && enumDirs)
+				if (pde->file_attr & FA_DIRECTORY && enumDirs)
 				{
 					ccSubDirs++;
-					sprintf(path, _s_s, dname, de->file_name);
+					sprintf(path, _s_s, dname, pde->file_name);
 					int tmp = 0;
 					if (recursive) tmp = EnumFiles(path, enumproc, param);
 
 					ccSubDirs += tmp >> 16;
 					ccFiles += tmp & 0xffff;
 					if (enumproc)
-						if (enumproc(de, param)==0)
+						if (enumproc(pde, param)==0)
 							break;
 				}
 				else
 				{
 					ccFiles++;
 					if (enumproc)
-						if (enumproc(de, param)==0)
+						if (enumproc(pde, param)==0)
 							break;
 				}
 			}
-			while(FindNextFile(de, &err));
+			while(FindNextFile(pde, &err));
+#ifdef NEWSGOLD
+			FindClose(pde, &err);
+#endif
 		}
-		FindClose(de, &err);
+#ifndef NEWSGOLD
+		FindClose(pde, &err);
+#endif
 	}
-	if (de) mfree(de);
+	if (pde) mfree(pde);
 	if (ccSubDirs > 0xffff) ccSubDirs = 0xffff;
 	if (ccFiles > 0xffff)   ccFiles = 0xffff;
 	
-	return (ccSubDirs<<16 | ccFiles);
+	return (ccSubDirs << 16 | ccFiles);
 }
 
 int EnumFiles(char* dname, ENUM_FILES_PROC enumproc, unsigned int param)
@@ -176,7 +181,12 @@ int fcopy(char* src, char* dst)
 	int res = 0;
 	int attr=0;
 
-	//	if (fexists(dst)) goto L_EXIT;
+	if (CONFIG_CONFIRM_REPLACE && fexists(dst))
+	{
+		if (MsgBoxYesNoWithParam(ind_pmt_exists, 0) != IDYES)
+			return 1; // ¬се хорошо, если не стали перезаписывать
+	}
+
 	fi = fopen(src, A_ReadOnly + A_BIN, P_READ, &err);
 	if (fi != -1) 
 	{
@@ -214,8 +224,6 @@ L_EXIT:
 	if (fi !=- 1) fclose(fi, &err);
 	return res;
 }
-
-
 
 
 

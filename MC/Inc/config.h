@@ -1,3 +1,6 @@
+#ifndef _CONFIG_H
+#define _CONFIG_H
+
 typedef struct
 {
 	int sort;
@@ -24,3 +27,5 @@ extern MC_CFG MCConfig;
 
 void SaveCfg();
 int LoadCfg();
+
+#endif

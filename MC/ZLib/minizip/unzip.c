@@ -46,11 +46,11 @@ woven in by Terry Thorsen 1/2003.
 //#  include <string.h>
 //#  include <stdlib.h>
 #endif
-#ifdef NO_ERRNO_H
+//#ifdef NO_ERRNO_H
 	extern int errno;
-#else
-#   include <errno.h>
-#endif
+//#else
+//#   include <errno.h>
+//#endif
 
 #ifndef CASESENSITIVITYDEFAULT_NO
 #  if !defined(unix) && !defined(CASESENSITIVITYDEFAULT_YES)
@@ -195,58 +195,45 @@ int unzlocal_getShort (
 	voidpf filestream,
 	uLong *pX)
 {
-	uLong x ;
-	int i;
-	int err;
+	unsigned char buf[2];
 
-	err = unzlocal_getByte(pzlib_filefunc_def,filestream,&i);
-	x = (uLong)i;
-
-	if (err==UNZ_OK)
-		err = unzlocal_getByte(pzlib_filefunc_def,filestream,&i);
-	x += ((uLong)i)<<8;
-
-	if (err==UNZ_OK)
-        *pX = x;
+	int err = (int)ZREAD(*pzlib_filefunc_def,filestream,buf,2);
+	if (err==2)
+	{
+		*pX = (uLong)buf[0] + (((uLong)buf[1])<<8);
+		return UNZ_OK;
+	}
 	else
+	{
         *pX = 0;
-	return err;
+		if (ZERROR(*pzlib_filefunc_def,filestream))
+			return UNZ_ERRNO;
+		else
+			return UNZ_EOF;
+	}
 }
-
-int unzlocal_getLong (
-	const zlib_filefunc_def* pzlib_filefunc_def,
-	voidpf filestream,
-	uLong *pX);
 
 int unzlocal_getLong (
 	const zlib_filefunc_def* pzlib_filefunc_def,
 	voidpf filestream,
 	uLong *pX)
 {
-	uLong x ;
-	int i;
-	int err;
+	unsigned char buf[4];
 
-	err = unzlocal_getByte(pzlib_filefunc_def,filestream,&i);
-	x = (uLong)i;
-
-	if (err==UNZ_OK)
-		err = unzlocal_getByte(pzlib_filefunc_def,filestream,&i);
-	x += ((uLong)i)<<8;
-
-	if (err==UNZ_OK)
-		err = unzlocal_getByte(pzlib_filefunc_def,filestream,&i);
-	x += ((uLong)i)<<16;
-
-	if (err==UNZ_OK)
-		err = unzlocal_getByte(pzlib_filefunc_def,filestream,&i);
-	x += ((uLong)i)<<24;
-
-	if (err==UNZ_OK)
-        *pX = x;
+	int err = (int)ZREAD(*pzlib_filefunc_def,filestream,buf,4);
+	if (err==4)
+	{
+		*pX = (uLong)buf[0] + (((uLong)buf[1])<<8) + (((uLong)buf[2])<<16) + (((uLong)buf[3])<<24);
+		return UNZ_OK;
+	}
 	else
+	{
         *pX = 0;
-	return err;
+		if (ZERROR(*pzlib_filefunc_def,filestream))
+			return UNZ_ERRNO;
+		else
+			return UNZ_EOF;
+	}
 }
 
 

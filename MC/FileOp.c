@@ -34,7 +34,7 @@ int MsgBoxYesNoWithParam(int lgind, char* str)
 int isDir(int tab, char* dname)
 {
 	if (IsZipOpened(tab))
-		return 1; // !!! DEBUG
+		return 1; // зипы рассматриваем как директорию
 	else
 		return isdir(dname, &err);
 }
@@ -59,7 +59,7 @@ int cd(int tab, char *dname)
 			}
 		}
 		drv = dname[0] - '0';
-		if (drv == 4) drv=3;
+		if (drv == 4) drv = 3;
 		if (drv >= MAX_DRV)
 		{
 			ShowErr1(ind_err_baddrv_t, dname);
@@ -92,7 +92,20 @@ int _DirSize(DIR_ENTRY *de, int param)
 {
 	if (param)
 	{
-		*(int*)param += de->file_size;
+		CHKDS_PARAM* p = (CHKDS_PARAM*)param;
+		p->gsize += de->file_size;
+		return 1;
+	} 
+	return 0;
+}
+
+int _ZipDirSize(FILEINF *file, int param)
+{
+	if (param)
+	{
+		CHKDS_PARAM* p = (CHKDS_PARAM*)param;
+		p->gsize += file->size;
+		p->gcsize += file->csize;
 		return 1;
 	} 
 	return 0;
@@ -102,7 +115,7 @@ int M_DirSize(FILEINF *file, int param)
 {
 	if (file && pathbuf && strlen(file->sname))
 	{
-		CHKDS_PARAM *p = (CHKDS_PARAM *)param;
+		CHKDS_PARAM* p = (CHKDS_PARAM*)param;
 		CurFullPath(file->sname);
 		switch (file->ftype)
 		{
@@ -111,14 +124,17 @@ int M_DirSize(FILEINF *file, int param)
 				p->count++;
 				break;
 			case TYPE_COMMON_DIR:
-				p->count += EnumFiles(pathbuf, _DirSize, (int)&p->gsize) + 0x10000;
+				p->count += EnumFiles(pathbuf, _DirSize, (int)p) + 0x10000;
 				break;
 			case TYPE_ZIP_FILE:
+				p->gsize += file->size;
+				p->gcsize += file->csize;
+				p->count++;
 				break;
 			case TYPE_ZIP_DIR:
+				p->count += EnumZipFiles(_CurTab->zipInfo, pathbuf, _ZipDirSize, (int)p) + 0x10000;
 				break;
 			default:
-				// TODO...
 				break;
 		}
 		return 1;
@@ -176,7 +192,7 @@ void _NewDir(WSHDR *wsname)
 		{
 			DoRefresh();
 			//Ищим папку которую создали
-			int ind = GetFileIndex(curtab, pathbuf2);
+			int ind = GetCurTabFileIndex(pathbuf2);
 			SetCurTabIndex(ind, 0);
 		} 
 	}
@@ -199,7 +215,7 @@ void CB_NewFile(int id)
 			fclose(f, &err);
 			DoRefresh();
 			//Ищем новый файл
-			int ind = GetFileIndex(curtab, pathbuf2);
+			int ind = GetCurTabFileIndex(pathbuf2);
 			SetCurTabIndex(ind, 0);
 		}
 		else
@@ -217,7 +233,7 @@ void _NewFile(WSHDR *wsname)
 		strcpy(szLastNewFile, pathbuf2); // Сохраняем введенное имя
 		CurFullPath(pathbuf2);
 
-		if (fexists(pathbuf) && CONFIG_CONFIRM_REPLACE)
+		if (CONFIG_CONFIRM_REPLACE && fexists(pathbuf))
 			MsgBoxYesNo(1, (int) muitxt(ind_pmt_exists), CB_NewFile);
 		else
 			CB_NewFile(IDYES);
@@ -253,7 +269,7 @@ void CB_RenEx(int id)
 		if (res)
 		{
 			//Ищем
-			int ind = GetFileIndex(curtab, pathbuf2);
+			int ind = GetCurTabFileIndex(pathbuf2);
 			SetCurTabIndex(ind, 0);
 		} 
 		else
@@ -305,14 +321,14 @@ int M_Delit(FILEINF *file, int param)
 			{
 				SetFileAttrib(pathbuf, 0, &err);
 
-				if (fsrm(pathbuf, 1) == 0)
-					*(int*) param = 0;;
+				if (!fsrm(pathbuf, 1))
+					*(int*)param = 0;;
 			}
 		}
 		else
 		{
-			if (fsrm(pathbuf, 1) == 0)
-				*(int*) param = 0;
+			if (!fsrm(pathbuf, 1))
+				*(int*)param = 0;
 		}
 
 		return 1;
@@ -351,8 +367,9 @@ void S_Delit(void)
 	{
 		MsgBoxError(1, (int) muitxt(ind_err_delete));
 	}
-	else
+	else if (ind < _CurTab->ccFiles) // Только если есть куда идти вниз
 	{
+		
 		// List is not refreshed yet, so move index to the next file if there are no errors
 		SetCurTabIndex(ind + 1, 0);
 	}
@@ -398,7 +415,8 @@ void S_Paste(void)
 
 			initprogr(progr_act);
 
-			FN_ITM *itm = buffer.items;
+			FN_ITM* itm = buffer.items;
+			FN_ITM* last_itm = itm;
 			while(itm)
 			{
 				//	 progr_max+=itm->full[0]!=_CurPath[0] || buffer.type!=FNT_MOVE?GetFilesCnt(itm->full):1;
@@ -406,6 +424,7 @@ void S_Paste(void)
 					progr_max += GetFilesCnt(itm->full);
 				else
 					progr_max++; // Для зипа пока заглушка
+				last_itm = itm;
 				itm = itm->next;
 			}
 			incprogr(0);
@@ -443,10 +462,13 @@ void S_Paste(void)
 			if (!res)
 				MsgBoxError(1, (int) muitxt(ind_err_resnok));
 
-			fn_free(&buffer);
-
 			UpdateAll();
-			SetCurTabIndex(0, 0);
+
+			//Ищем первый файл
+			int ind = GetCurTabFileIndex(GetFileName(last_itm->full));
+			SetCurTabIndex(ind, 0);
+
+			fn_free(&buffer);
 
 			endprogr();
 			Busy = 0;

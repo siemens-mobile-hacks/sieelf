@@ -62,8 +62,8 @@ void MC_Options(void)
 {
 	if (wsbuf)
 	{
-		wsprintf(wsbuf, _s_s, etc_path, cfg_file);
-		ExecuteFile(wsbuf,0,0);
+		str_2ws(wsbuf, successed_config_filename, MAX_PATH); 
+		ExecuteFile(wsbuf, 0, 0);
 	} 
 }
 

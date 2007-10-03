@@ -33,9 +33,9 @@ char* strtolower(char* src, char* dst, int sz)
 {
 	int sl = strlen(src)+1;
 	int len = sz==-1?sl:sz;
-	if (len>sl)len=sl;
+	if (len>sl) len=sl;
 
-	for(int ii=0;ii<len-1;ii++)
+	for(int ii=0; ii<len-1; ii++)
 	{
 		int ch = src[ii];
 
@@ -65,6 +65,31 @@ int strnicmp(char* str1, char* str2, int count)
 		if (c1 < c2) return -1;
 		if (c1 > c2) return +1;
 		if (c1 == 0) return 0;
+	}
+	return 0;
+}
+
+// Аналог strcmp, но без чувствительности к регистру и сравнивае с конца
+int strircmp(char* str1, char* str2)
+{
+	return strnircmp(str1, str2, 1000); // тысячи хватит на сравнение, надеюсь
+}
+
+int strnircmp(char* str1, char* str2, int count)
+{
+	int sl1 = strlen(str1);
+	int sl2 = strlen(str2);
+	for(int i=1; i<=count; i++)
+	{
+		if (sl1-i < 0 || sl2-i < 0) return 1;
+	
+		unsigned char c1 = str1[sl1 - i];
+		unsigned char c2 = str2[sl2 - i];
+
+		if (c1 >= 'A' && c1 <= 'Z') c1 = c1 - 'A' + 'a';
+		if (c2 >= 'A' && c2 <= 'Z') c2 = c2 - 'A' + 'a';
+		if (c1 < c2) return -1;
+		if (c1 > c2) return +1;
 	}
 	return 0;
 }
@@ -148,13 +173,13 @@ char *attr2s(int attr, char *buf)
 char *fdt2s(unsigned int time, char *buf)
 {
 	short y,M,d,h,m;//,s;
-	y=(time>>25) + 80;
-	if (y>100)y-=100;
-	M=(time>>21) & 0x0f;
-	d=(time>>16) & 0x1f;
+	y = (time >> 25) + 80;
+	if (y>100) y -= 100;
+	M = (time >> 21) & 0x0f;
+	d = (time >> 16) & 0x1f;
 
-	h=(time>>11) & 0x1f;
-	m=(time>>5)  & 0x3f;
+	h = (time >> 11) & 0x1f;
+	m = (time >> 5)  & 0x3f;
 	//  s=(time&0x1f)<1;
 
 	sprintf(buf, "%.2d.%.2d.%.2d %.2d:%.2d", d,M,y,h,m);
@@ -206,11 +231,12 @@ int EnumIni(int local, char *ininame, INIPROC proc)
 			buf[size_cfg] = 0;
 			do
 			{
-				//Камент
+				// Камент
 				if (*buf == ';')
 				{
 					while( ((ch = *buf++) >= 32));
 					if (!ch) break;
+					else continue;
 				}
 
 				// Название

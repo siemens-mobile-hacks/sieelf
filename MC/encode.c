@@ -128,5 +128,60 @@ void dos2utf8(const char* s)
 	mfree(utf8);
 	FreeWS(ws);
 	strcpy((char*)s, utf8);
+	
 }
 
+int utf82win(char* utf8)
+{
+	// Рассматривая строку UTF8 как обычную, определяем её длину
+	if (!utf8) return NULL;
+	int st_len = strlen(utf8);
+
+	// Выделяем память - по-максимуму
+	int lastchar = 0;
+	char* tmp_out = utf8;
+	char chr, chr2, chr3;
+	for(int i = 0; i < st_len; i++)
+	{
+		chr = (*(utf8 + i));
+
+		if (chr < 0x80)
+		{
+			*(tmp_out + lastchar++) = chr;
+			continue;
+		}
+		
+		if (chr < 0xc0)
+			return 0;
+
+		chr2 = *(utf8 + i + 1);
+
+		if (chr2 < 0x80)
+			return 0;
+
+		if (chr < 0xe0)
+		{
+			// cx, dx
+			char test1 = (chr & 0x1f)<<6;
+			char test2 = chr2 & 0x3f;
+			*(tmp_out + lastchar++) = test1 | test2 + 127 + 0x31;
+			i++;
+			continue;
+		}
+		
+		if (chr < 0xf0)
+		{
+			// cx, dx
+			chr3 = *(utf8 + i + 2);
+
+			if (chr3 < 0x80)
+				return 0;
+
+			*(tmp_out + lastchar) = ((chr & 0x0f) << 12) | ((chr2 & 0x3f) << 6) | (chr3 & 0x3f);
+			i = i + 2;
+		}
+	}
+	
+	*(tmp_out + lastchar) = '\0';
+	return 1;
+}

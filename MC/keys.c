@@ -1,13 +1,5 @@
 #include "inc\mc.h"
 
-#ifdef NEWSGOLD
-#define VOLUP_BUTTON	0x0D
-#define VOLDOWN_BUTTON  0x0E
-#else
-#define VOLUP_BUTTON	0x14
-#define VOLDOWN_BUTTON  0x15
-#endif
-
 typedef struct{
 	int key;
 	char* name;
@@ -24,8 +16,8 @@ const KEYNM_MAP keynames[] =
 	{DOWN_BUTTON, "down"},
 	{LEFT_BUTTON, "left"},
 	{RIGHT_BUTTON, "right"},
-	{VOLUP_BUTTON, "volup"},
-	{VOLDOWN_BUTTON, "voldown"},
+	{VOL_UP_BUTTON, "volup"},
+	{VOL_DOWN_BUTTON, "voldown"},
 	{'0', "0"},
 	{'1', "1"},
 	{'2', "2"},
@@ -165,6 +157,10 @@ const PROC_MAP keyprocs[]=
 	{"showhid", DoShowHid},
 	{"showsys", DoShowSys},
 	{"showhs", DoShowHidSys},
+	{"showhdrv", DoShowHidDrv},
+	{"tabcopy", DoTabCopy},
+	{"tabmove", DoTabMove},
+	{"sysopen", DoSysOpen},
 };
 
 void KeysProc(char *name, char *value)
@@ -248,6 +244,4 @@ void LoadKeys()
 		EnumIni(1,(char*)&keys_file,KeysProc);
 	
 	InitializeKeyMap();
-	
-	GUIStarted++;
 }

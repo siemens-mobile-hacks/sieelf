@@ -1,25 +1,19 @@
+#ifndef _MC_H
+#define _MC_H
+
 #ifndef _SWILIB
 #include "..\inc\swilib.h"
 #define _SWILIB
 #endif
 
+#include "inc\exts.h"
 #include "zlib\zlib.h"
 #include "zlib\minizip\unzip.h"
 
-#define version		"0.9.5"
+#define version		"1.0"
 
 #define FALSE		0
 #define TRUE		1
-
-#define FONT_N   FONT_SMALL
-#ifdef ELKA
-#define FONT_B   FONT_SMALL
-#else
-#define FONT_B   (FONT_SMALL+1)
-#endif
-
-extern int NormalFont;
-extern int BoldFont;
 
 #define MAX_DRV			4
 #define DRV_IDX_Data	0
@@ -51,16 +45,8 @@ extern int BoldFont;
 #define ST_FIRST		ST_NAME
 #define ST_LAST			ST_DATE
 
-//#define MAX_PATH		0x80
-#define MAX_PATH		0x100
-
-#ifdef LEFT_YES
-#define IDYES			1
-#define IDNO			0
-#else
 #define IDYES			0
 #define IDNO			1
-#endif
 
 #ifdef NEWSGOLD
 #define DEFAULT_DISK	"4"
@@ -68,11 +54,11 @@ extern int BoldFont;
 #define DEFAULT_DISK	"0"
 #endif
 
+extern char successed_config_filename[MAX_PATH];
+
 #define def_new_dir		""
 
 #define FA_CHECK		0x1000
-
-#define MAX_EXT			8
 
 // for type in FILEINF
 #define TYPE_COMMON_FILE	0
@@ -81,13 +67,6 @@ extern int BoldFont;
 #define TYPE_ZIP_DIR		3
 
 // fot ftype in FN_ITM
-
-typedef struct
-{
-	char ext[MAX_EXT];
-	int  ico;
-	void *next; 
-} EXTINF;
 
 typedef struct
 {
@@ -100,12 +79,13 @@ typedef struct
 	unsigned int time;
 	int	uccnt;
 	int	inited;
-	WSHDR* ws_name; 
+	WSHDR* ws_name;
 	WSHDR* ws_short;
 	WSHDR* ws_attr;
 	WSHDR* ws_size;
 	WSHDR* ws_time;
 	WSHDR* ws_ratio;
+	WSHDR* ws_showname;
 	EXTINF* ext;
 	void* next;
 } FILEINF;
@@ -195,19 +175,6 @@ typedef void (*KEY_PROC) ();
 #define _CurIndex _CurTab->iIndex[_CurDrv]
 #define _CurBase  _CurTab->iBase[_CurDrv]
 
-
-
-
-
-
-
-
-
-
-extern long  strtol (const char* nptr,char* *endptr,int base);
-
-
-
 //global vars
 extern volatile int Terminate;
 extern volatile int GUIStarted;
@@ -216,6 +183,7 @@ extern unsigned int MAINGUI_ID;
 
 extern int show_hidden;
 extern int show_system;
+extern int show_hiddrv;
 
 extern int MsgBoxResult;
 
@@ -228,7 +196,6 @@ extern const char keys_file[];
 extern const char cfg_file[];
 extern char etc_path[];
 
-extern int itms_max;
 extern int progr_stop;
 extern int progr_act;
 extern int progr_max;
@@ -241,10 +208,12 @@ extern char* pathbuf;
 extern char* pathbuf2;
 extern char* pathbuf_fn;
 extern char* msgbuf;
+extern char* zippathbuf;
 extern WSHDR* wsbuf;
 extern WSHDR* guibuf;
 extern char* szLastNewFile;
 extern char* szLastNewDir;
+extern FN_LIST tmp_files;
 
 extern int curtab;
 extern TABINFO* tabs[];
@@ -277,10 +246,8 @@ extern MENUITEM_DESC zip_opt_menuitems[];
 extern MENUITEM_DESC zip_op_menuitems[];
 extern char* yesno[];
 
-extern GBSTMR sctm;
 extern GBSTMR cmtm;
 extern GBSTMR offtm;
-extern FILEINF *scfile;
 
 extern const char _d[];
 extern const char _s_stars[];
@@ -306,6 +273,7 @@ extern const int CONFIG_AUTO_EXIT_AFTER_MIN;
 extern const int CONFIG_ENABLE_BACKGROUND_EXIT;
 
 extern const int CONFIG_ZIP_ENABLE;
+extern const int CONFIG_ZIP_DETECT_BY;
 extern const char CONFIG_TEMP_PATH[64];
 extern const int CONFIG_DELETE_TEMP_FILES_ON_EXIT;
 
@@ -349,15 +317,15 @@ void SetCurTabIndex(int num, int slide);
 int SetTabDrv(int tab, int num);
 int SetCurTabDrv(int num);
 int GetFileIndex(int tab, char* fname);
+int GetCurTabFileIndex(char* fname);
 char* CurFullPath(char* sfile);
 char* CurFullPathBM(char* buff, char* sfile);
 char* TmpFullPath2(char* buff, char* sfile);
 int GetFilesCnt(char* path);
 int TestFileName(WSHDR *wsname);
 void CorFileName(WSHDR *wsname);
-void InitScr();
-void DrwName();
 
+int MsgBoxYesNoWithParam(int lgind, char* str);
 int cd(int tab, char* dname);
 int cdsys(char* dname);
 void _cd_tab(int tab,int drv,char* dname);
@@ -375,12 +343,13 @@ int isNumericStr(char* s);
 
 void nricp(char* src, char* dst);
 int EnumIni(int local, char* ininame, INIPROC proc);
-EXTINF *GetExt(char* fname, int fattr);
 char* GetFileExt(char* fname);
 char* strreplace(char* s, char cprev, char cnew);
 char* strtolower(char* src, char* dst, int sz);
 int stricmp(char* str1, char* str2);
 int strnicmp(char* str1, char* str2, int count);
+int strircmp(char* str1, char* str2);
+int strnircmp(char* str1, char* str2, int count);
 int wstrcmpi(WSHDR* ws1, WSHDR* ws2);
 
 char* sz2s(unsigned int size, char* buf);
@@ -451,19 +420,21 @@ void _Rename(WSHDR *wsname);
 int M_FileProp(FILEINF *file, int param);
 int M_SetAttr(FILEINF *file, int param);
 int M_MoveCopy(FILEINF *file, int param);
+void S_ZipOpen(void);
 
 int InitTab(int tab);
 void FreeTab(int tab);
-void FullInit(FILEINF *file);
+
+FILEINF* CreateFileInfo(int findex, char* fnameOriginal,
+				unsigned int fsize, short fattr, unsigned int ftime,
+				int fcsize, int ftype);
+void FillFileInfo(FILEINF* file);
+void FreeFileInfo(FILEINF* file);
+
 int FillFiles(int tab, char* dname);
 void DelFiles(int tab);
-void LoadExts();
 void LoadKeys();
-void FreeExt();
-void ShowFiles();
-void ShowProgr();
 void SortFiles(int tab);
-void ShowInfo();
 
 void AddFile(int tab, int findex, char* fnameOriginal, unsigned int fsize, short fattr,unsigned int ftime, int fcsize, int ftype);
 
@@ -507,6 +478,7 @@ void DoErrKey();
 void DoShowHid();
 void DoShowSys();
 void DoShowHidSys();
+void DoShowHidDrv();
 
 void DoBMAdd();
 void DoBMList();
@@ -518,6 +490,11 @@ void DoSortS();
 void DoSortD();
 void DoSetSort();
 void DoSortR();
+
+void DoTabCopy();
+void DoTabMove();
+
+void DoSysOpen();
 
 void empty_ghook(GUI *gui, int cmd);
 void empty_locret(void);
@@ -540,12 +517,15 @@ void incprogrsp(int inc);
 void endprogr();
 void endprogrsp();
 
-//void beginmsg(int msg_index);
-//void endmsg();
-
 void InitAllMD();
 
 extern unsigned int MAINCSM_ID;
 
 void ResetAutoExit();
 void AutoExitProc();
+
+
+// из STDLIB.H
+extern long  strtol (const char* nptr,char* *endptr,int base);
+
+#endif

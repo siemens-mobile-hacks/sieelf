@@ -207,7 +207,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>1011111</state>
+          <state>1111111</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -1031,7 +1031,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>1011111</state>
+          <state>1111111</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -1650,7 +1650,7 @@
     </settings>
   </configuration>
   <configuration>
-    <name>SGold1</name>
+    <name>SGold</name>
     <toolchain>
       <name>ARM</name>
     </toolchain>
@@ -1672,15 +1672,15 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>SGold1\Exe</state>
+          <state>SGold\Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
-          <state>SGold1\Obj</state>
+          <state>SGold\Obj</state>
         </option>
         <option>
           <name>ListPath</name>
-          <state>SGold1\List</state>
+          <state>SGold\List</state>
         </option>
         <option>
           <name>Variant</name>
@@ -1854,7 +1854,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>1011111</state>
+          <state>1111111</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -2473,7 +2473,7 @@
     </settings>
   </configuration>
   <configuration>
-    <name>SGold2</name>
+    <name>SGold_X75</name>
     <toolchain>
       <name>ARM</name>
     </toolchain>
@@ -2495,15 +2495,15 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>SGold2\Exe</state>
+          <state>SGold_X75\Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
-          <state>SGold2\Obj</state>
+          <state>SGold_X75\Obj</state>
         </option>
         <option>
           <name>ListPath</name>
-          <state>SGold2\List</state>
+          <state>SGold_X75\List</state>
         </option>
         <option>
           <name>Variant</name>
@@ -2577,7 +2577,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.40A</state>
+          <state>4.41A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -2607,7 +2607,7 @@
         <debug>0</debug>
         <option>
           <name>CCDefines</name>
-          <state>LEFT_YES</state>
+          <state>X75</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -2677,7 +2677,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>1011111</state>
+          <state>1111111</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -3004,7 +3004,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild></postbuild>
+        <postbuild>postbuild.cmd</postbuild>
       </data>
     </settings>
     <settings>
@@ -3305,6 +3305,9 @@
     </file>
     <file>
       <name>$PROJ_DIR$\Inc\encode.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Inc\exts.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\Inc\gui.h</name>
@@ -3881,7 +3884,7 @@
       </settings>
     </configuration>
     <configuration>
-      <name>SGold1</name>
+      <name>SGold</name>
       <settings>
         <name>ICCARM</name>
         <data>
@@ -4105,7 +4108,7 @@
       </settings>
     </configuration>
     <configuration>
-      <name>SGold2</name>
+      <name>SGold_X75</name>
       <settings>
         <name>ICCARM</name>
         <data>

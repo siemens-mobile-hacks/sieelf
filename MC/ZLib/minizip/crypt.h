@@ -32,6 +32,9 @@
 #define _SWILIB
 #endif
 
+extern void srand(unsigned int);
+extern int rand(void);
+
 #define CRC32(c, b) ((*(pcrc_32_tab+(((int)(c) ^ (b)) & 0xff))) ^ ((c) >> 8))
 
 /***********************************************************************
@@ -115,19 +118,15 @@ static int crypthead(passwd, buf, bufSize, pkeys, pcrc_32_tab, crcForCrypting)
 	 */
 	if (++calls == 1)
 	{
-	  TTime tt;
-	  GetDateTime(0, &tt);
-	  int n = tt.sec*1000 + tt.millisec;
-	  srand((n^ ZCR_SEED2)%32000); //Инициализируем датчик случайных чисел
+		TTime tt;
+		GetDateTime(0, &tt);
+		int n = tt.sec*1000 + tt.millisec;
+		srand((n^ ZCR_SEED2)%32000); //Инициализируем датчик случайных чисел
 	}
 	init_keys(passwd, pkeys, pcrc_32_tab);
 	for (n = 0; n < RAND_HEAD_LEN-2; n++)
 	{
-		//c = (int)((rand() >> 7) & 0xff);
-		TTime tt;
-		GetDateTime(0, &tt);
-		c = (tt.millisec >> 7) & 0xff;
-		// TODO! rand!!!
+        c = (rand() >> 7) & 0xff;
 		header[n] = (unsigned char)zencode(pkeys, pcrc_32_tab, c, t);
 	}
 	/* Encrypt random header (last two bytes is high word of crc) */

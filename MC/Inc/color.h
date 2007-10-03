@@ -1,4 +1,5 @@
-// cl - Color
+#ifndef _COLOR_H
+#define _COLOR_H
 
 #define color(c) GetPaletteAdrByColorIndex(c)
 
@@ -22,3 +23,5 @@
 #define MAX_COLOR 22
 #define AdjustColor(c)    Adjust(c,MAX_COLOR)
 #define AdjustColorCyc(c) AdjustCyc(c,MAX_COLOR)
+
+#endif

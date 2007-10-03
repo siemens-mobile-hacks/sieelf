@@ -1,3 +1,6 @@
+#ifndef _COLORMAP_H
+#define _COLORMAP_H
+
 //Colors cash
 #define clBD 0
 #define clBG 1
@@ -51,3 +54,5 @@ extern const char mccs_ext[];
 void InitCS();
 void SaveCS(char* filename);
 int LoadCS(char* filename);
+
+#endif

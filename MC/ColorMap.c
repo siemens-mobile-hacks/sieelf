@@ -19,9 +19,9 @@
 #define DRV_C_BGS	(clBlue+clLight)
 #define DRV_C_BDS	clWhite
 
-#define PRG_C_BD		clWhite
-#define PRG_C_BG		(clBlue+clDark)
-#define PRGP_C_BG	   clRed
+#define PRG_C_BD	clWhite
+#define PRG_C_BG	(clBlue+clDark)
+#define PRGP_C_BG	clRed
 
 const char mccs_deffile[]="default.mccs";
 const char mccs_ext[]="mccs";

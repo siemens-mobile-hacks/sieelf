@@ -213,6 +213,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Inc\exts.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Inc\gui.h"
 				>
 			</File>
