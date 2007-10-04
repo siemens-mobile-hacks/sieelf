@@ -578,8 +578,8 @@
 086C: 0xA09EA3D5   ; 21B: __thumb void EDIT_RemoveTextInvert(void *gui);
 0870: 0xA09EA411   ; 21C: __thumb int EDIT_IsBusy(void *gui);
 0874: 0xA0731D95   ; 21D: __thumb int GSMTXT_Decode(WSHDR *dest,void *pkt,int len,int encoding_type);
-0878: 0xA076940D   ; 21E: __thumb void FocusGUI(int id);
-087C: 0xA076941D   ; 21F: __thumb void UnfocusGUI(void);
+0878: 0xA0769441   ; 21E: __thumb void FocusGUI(int id);
+087C: 0xA076944F   ; 21F: __thumb void UnfocusGUI(void);
 
 0880: 0xA0768185   ; 220: IsSliderClosed
 0884: 0xA0A24A00   ; 221: __arm void SetCpuClockLow(2);

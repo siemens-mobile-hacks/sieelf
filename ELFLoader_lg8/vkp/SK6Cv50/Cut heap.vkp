@@ -13,5 +13,4 @@
 0FC0840: 111C58DF00BD
 #pragma disable old_equal_ff
 
-0FD4390: 0xA8AF62A0 0xA8000000   ;  E4: FreeRAM
-0FC0724: 0xA8AF62A0 0xA8000000   ; z00: FreeRAM
+;locale=Chinese_People's Republic of China.936
