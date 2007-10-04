@@ -29,6 +29,11 @@ const char ipc_my_name[]=IPC_MY_IPC;
 unsigned int REFRESH=5;
 int screenw;
 int screenh;
+#ifdef ELKA
+int y_b=24;
+#else
+int y_b=0;
+#endif
 
 const IPC_REQ my_ipc={
   ipc_my_name,
@@ -111,14 +116,14 @@ void soft_key(void)
 void lgp(void)
 {
   WSHDR *ws = AllocWS(256);
-  WSHDR *ws1 = AllocWS(16);
+  //WSHDR *ws1 = AllocWS(16);
   soft_key();
-  wsprintf(ws1, "LGP_ID: %d",num);
-  wsprintf(ws, "%t",num);
-  DrawString(ws1,5,70,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
-  DrawString(ws,5,100,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  //wsprintf(ws1, "LGP_ID: %d",num);
+  wsprintf(ws, "LGP_ID: %d\n\n%t",num,num);
+  DrawString(ws,5,screenh/3,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  //DrawString(ws,5,screenh/3*2,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   FreeWS(ws);
-  FreeWS(ws1);
+  //FreeWS(ws1);
 }
 
 
@@ -126,8 +131,8 @@ void keycode(int code)
 {
   WSHDR *ws = AllocWS(128);
   wsprintf(ws, "Please long press\nLEFT SOFT KEY\nback to Menu.\n\nKeycode:\n\nDec: %d\n\nHex: %X", code, code);
-  DrawRectangle(0,24,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
-  DrawString(ws,5,40,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawRectangle(0,y_b,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
+  DrawString(ws,5,y_b+screenh/12,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   FreeWS(ws);
 }
 
@@ -138,8 +143,8 @@ void pic()
   int h=GetImgHeight(num);
   soft_key();
   wsprintf(ws, "Num:%d(D) %X(H)\nInfo:%d(W) %d(H)",num,num,w,h);
-  DrawString(ws,5,24,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
-  DrawImg(screenw/2-w/2,(screenh+24+2*GetFontYSIZE(FONT_SMALL)+2)/2-h/2,num);
+  DrawString(ws,5,y_b,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawImg(screenw/2-w/2,(screenh+y_b+2*GetFontYSIZE(FONT_SMALL)+2)/2-h/2,num);
   FreeWS(ws);
 }
 
@@ -160,16 +165,16 @@ void font()
   WSHDR *ws1 = AllocWS(32);
   soft_key();
   wsprintf(ws1,"Font Size: %d",num);
-  DrawString(ws1,5,70,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws1,5,screenh/3,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   if (num<0||num>font_max)
   {
     wsprintf(ws,"No such font");
-    DrawString(ws,5,100,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+    DrawString(ws,5,screenh/3+GetFontYSIZE(FONT_SMALL)+screenh/12,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   }
   else
   {
     wsprintf(ws,test_str);
-    DrawString(ws,5,100,screenw,screenh,num,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+    DrawString(ws,5,screenh/3+GetFontYSIZE(FONT_SMALL)+3,screenw,screenh,num,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   }
   FreeWS(ws1);
   FreeWS(ws);
@@ -189,10 +194,10 @@ void status(void)
   #else
   char model[]="Siemens SGOLD";
   #endif
-  DrawRectangle(0,24,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
+  DrawRectangle(0,y_b,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
   soft_key();
   wsprintf(ws_info,"Phone: %s\nNet: %c%ddB\nBts: %d-%d:%d\nC1: %d C2: %d\nTemp: %d.%d°C\nVoltage:%d.%02dV\nAccuCap: %02d%%\nCpuLoad: %d%% CpuClock: %dMHz\nRam: %u Bytes",model,(net->ch_number>=255)?'=':'-',net->power,net->ci,net->lac,net->ch_number,net->c1,net->c2,temp/10,temp%10,volt/1000,(volt%1000)/10,*RamCap(),GetCPULoad(),GetCPUClock(),GetFreeRamAvail());
-  DrawString(ws_info,5,24,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws_info,5,y_b,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
 }
 
 
@@ -209,13 +214,13 @@ void rgb24()
   WSHDR *ws = AllocWS(32);
   soft_key();
   wsprintf(ws1,"RGB24 COLOR: %d",num);
-  DrawString(ws1,5,70,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws1,5,y_b+screenh/12,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   if (num<0||num>23)
   {
     wsprintf(ws,"No such color");
-    DrawString(ws,5,100,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+    DrawString(ws,5,screenh/3,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   }
-  else DrawRoundedFrame(5,105,screenw-5,screenh-GetFontYSIZE(FONT_MEDIUM)-10,0,0,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(num));
+  else DrawRoundedFrame(5,screenh/3,screenw-5,screenh-GetFontYSIZE(FONT_MEDIUM)-screenh/12,0,0,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(num));
   FreeWS(ws);
   FreeWS(ws1);
 }
@@ -225,7 +230,7 @@ void sound()
   WSHDR *ws = AllocWS(32);
   soft_key();
   wsprintf(ws, "Sound Num: %d", num);
-  DrawString(ws,5,70,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws,5,screenh/3,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   PlaySound(0,0,0,num,0);
   FreeWS(ws);
 }
@@ -238,15 +243,15 @@ void text_attribute(void)
   wsprintf(wst,"256: ");
   int h_len=get_string_width(wst,FONT_SMALL);
   FreeWS(wst);
-  DrawRectangle(0,24,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
+  DrawRectangle(0,y_b,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
   soft_key();
   wsprintf(wsh, "Text attribute: \n    1:\n    2:\n    4:\n    8:\n  16:\n  32:\n  64:\n128:\n256:");
-  DrawString(wsh,5,24,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  DrawString(wsh,5,y_b,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   WSHDR *ws = AllocWS(32);
   wsprintf(ws,"Test string");
   for(i=0;i<9;i++)
   {
-    DrawString(ws,h_len+5,24+GetFontYSIZE(FONT_SMALL)*(i+1),screenw,screenh,FONT_SMALL,pow(2,i),GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(2));
+    DrawString(ws,h_len+5,y_b+GetFontYSIZE(FONT_SMALL)*(i+1),screenw,screenh,FONT_SMALL,pow(2,i),GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(2));
   }
   FreeWS(ws);
   FreeWS(wsh);
@@ -254,7 +259,7 @@ void text_attribute(void)
 
 void onRedraw(MAIN_GUI *data)
 {
-  DrawRectangle(0,24,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
+  DrawRectangle(0,y_b,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
   if (flag!=4)
   {
     status_flag=0;
