@@ -13,6 +13,18 @@ extern const char a7[60];
 extern const int line2;
 extern const int number2;
 extern const int wc;
+extern const int showr;
+extern const char b1[140];
+extern const char b2[140];
+extern const char b3[140];
+extern const char b4[140];
+extern const char b5[140];
+extern const char b6[140];
+extern const char b7[140];
+
+
+
+
 
 //extern const char c[30];
 
@@ -59,6 +71,18 @@ void onRedraw(MAIN_GUI *data)
   int aa;
   week=wc+5;
   int w;
+  //const char *pa1;
+  WSHDR *kc = AllocWS(20);
+  WSHDR *bt = AllocWS(sizeof(btz));
+  WSHDR* ws = AllocWS(20);
+  
+  if(showr)
+  {
+    w=16;
+    aa=1;
+  }
+  else
+  {
   if(week==5)
   {
     w=22;
@@ -74,22 +98,17 @@ void onRedraw(MAIN_GUI *data)
     w=16;
     aa=1;
   }
+  }
   int h=16;
-  //WSHDR *kc1 = AllocWS(20);
-  //WSHDR *kc2 = AllocWS(20);
-  //WSHDR *kc3 = AllocWS(20);
-  //WSHDR *kc4 = AllocWS(20);
-  //WSHDR *kc5 = AllocWS(20);
-  //WSHDR *kc6 = AllocWS(20);
-  //WSHDR *kc7 = AllocWS(20);
-  WSHDR *kc = AllocWS(20);
-  //WSHDR *kc0 = AllocWS(20);
-  WSHDR *bt = AllocWS(sizeof(btz));
-  WSHDR* ws = AllocWS(20);
+  
+
   copy_unicode_2ws(bt, btz);
   DrawRectangle(0,0,ScreenW(),ScreenH(),0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
   DrawString(bt,1,1,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
 
+  
+  const char *pc;
+  pc=&c[0];
   
   TDate d;
   TTime t;
@@ -100,10 +119,84 @@ void onRedraw(MAIN_GUI *data)
               2,
               GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)
              );
-if((GetWeek(&d)+7-nx+1)%7<week)
-DrawRoundedFrame(w*(GetWeek(&d)-1+(7-nx+3)%7)-aa,h-1,w*(GetWeek(&d)-1+(7-nx+3)%7)+w-aa,h-1+GetFontYSIZE(FONT_SMALL_ITALIC_BOLD)+3,2,2,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(2)); 
+  if((GetWeek(&d)+7-nx)%7<week)
+  DrawRoundedFrame(w*((GetWeek(&d)+7-nx)%7+1)-aa,h-1,w*((GetWeek(&d)+7-nx)%7+1)+w-aa,h-1+GetFontYSIZE(FONT_SMALL_ITALIC_BOLD)+3,2,2,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(2)); 
  
-  
+
+char classr[8];
+int c,k;
+int cc=0;
+const char *s;
+char *r;
+  switch((GetWeek(&d)+nx)%7)
+  {
+  case 1:
+  s=b1;
+  break;
+  case 2:
+  s=b2;
+  break;
+  case 3:
+  s=b3;
+  break;
+  case 4:
+  s=b4;
+  break;
+  case 5:
+  s=b5;
+  break;
+  case 6:
+  s=b6;
+  break;
+  case 0:
+  s=b7;
+  break;
+  default:
+      break;
+  }
+
+
+  while((c=*s))
+  {
+    s++;
+    switch(c)
+    {
+    case '\r':
+    case '\n':
+      break;
+      
+    case ' ': 
+      r=classr;
+      k=0;
+      cc++;
+      while(*s!=' ' && *s && k<(sizeof(classr)-1))  
+      {
+        *r++=*s++;
+        k++;
+      }
+      *r=0;
+      if(num==0)
+      {
+      if(cc<=10)
+      {
+      utf8_2ws(kc,classr,8);
+      DrawString(kc,w*6,h+14*cc+2,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
+      }
+      }
+      if(num==10)
+      {
+      if(cc>10&&cc<20)
+      {
+      utf8_2ws(kc,classr,8);
+      DrawString(kc,w*6,h+14*(cc-10)+2,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
+      }
+      }
+      break;
+      
+     default:
+      break;
+    }
+  }
 
  int i,j;
  for(i=0;i<=week;i++)
@@ -127,91 +220,61 @@ DrawRoundedFrame(w*(GetWeek(&d)-1+(7-nx+3)%7)-aa,h-1,w*(GetWeek(&d)-1+(7-nx+3)%7
   z=j;
   z2=num;
   }
- 
+  if(showr&&(week==5))
+  {
+  DrawLine(w*(7+1)-aa,h+14,w*(7+1)-aa,h+14*11,0,GetPaletteAdrByColorIndex(0));
+  DrawLine(w*(week+1)-aa,h+14*(x+1),w*(week+3)-aa,h+14*(x+1),0,GetPaletteAdrByColorIndex(0));
+  utf8_2ws(kc,pc+((GetWeek(&d)+nx-1)%7)*3,3);
+  DrawString(kc,w*(week+2)-aa,h,w*(week+3)-aa,ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  }
   DrawLine(w*(i+1)-aa,h+14,w*(i+1)-aa,h+14*11,0,GetPaletteAdrByColorIndex(0));
   DrawLine(w-aa,h+14*(x+1),w*(week+1)-aa,h+14*(x+1),0,GetPaletteAdrByColorIndex(0));
   if(j==0&&i>0)
   {
-  //unsigned short *p;
-  //p=&w[0];
-  //copy_unicode_2ws(kc,p+i-1);
-  const char *pc;
-  pc=&c[0];
-  utf8_2ws(kc,pc+((i+nx-2)%7)*3,3);
+  utf8_2ws(kc,pc+((GetWeek(&d)+i+nx-4)%7)*3,3);
   DrawString(kc,w*i,h,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
- 
   if(i==0&&j>0)
   {
   wsprintf(kc,"%d",y+z2);
   DrawString(kc,0,h+3+14*z,GetFontYSIZE(FONT_SMALL_ITALIC_BOLD),ScreenH(),8,4,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
-  /*
-  else if(j>0&&i>0)
-  {
-  const char *pa;
-  pa=&a[0];
-  utf8_2ws(kc,pa+(j-1)*3+(i-1)*27,3);
-  DrawString(kc,15*i,16+15*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-  }
-  */
   if(j>0&&i>0)
   { 
-  
-  if(((i+nx-1)%7)==1)
+  switch((GetWeek(&d)+i+nx-3)%7)
   {
-  const char *pa1;
-  pa1=&a1[0];
-  utf8_2ws(kc,pa1+(j-1+num)*3,3);
-  DrawString(kc,w*i,h+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  case 1:
+  s=a1;
+  break;
+  case 2:
+  s=a2;
+  break;
+  case 3:
+  s=a3;
+  break;
+  case 4:
+  s=a4;
+  break;
+  case 5:
+  s=a5;
+  break;
+  case 6:
+  s=a6;
+  break;
+  case 0:
+  s=a7;
+  break;
+  default:
+      break;
+  }       
+   utf8_2ws(kc,s+(j-1+num)*3,3);  
+   DrawString(kc,w*i,h+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
-  if(((i+nx-1)%7)==2)
-  {
-  const char *pa2;
-  pa2=&a2[0];
-  utf8_2ws(kc,pa2+(j-1+num)*3,3);
-  DrawString(kc,w*i,h+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-  }
-  if(((i+nx-1)%7)==3)
-  {
-  const char *pa3;
-  pa3=&a3[0];
-  utf8_2ws(kc,pa3+(j-1+num)*3,3);
-  DrawString(kc,w*i,h+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-  }
-  if(((i+nx-1)%7)==4)
-  {
-  const char *pa4;
-  pa4=&a4[0];
-  utf8_2ws(kc,pa4+(j-1+num)*3,3);
-  DrawString(kc,w*i,h+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-  }
-  if(((i+nx-1)%7)==5)
-  {
-  const char *pa5;
-  pa5=&a5[0];
-  utf8_2ws(kc,pa5+(j-1+num)*3,3);
-  DrawString(kc,w*i,h+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-  }
-  if(((i+nx-1)%7)==6)
-  {
-  const char *pa6;
-  pa6=&a6[0];
-  utf8_2ws(kc,pa6+(j-1+num)*3,3);
-  DrawString(kc,w*i,h+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-  }
-  if(((i+nx-1)%7)==0)
-  {
-  const char *pa7;
-  pa7=&a7[0];
-  utf8_2ws(kc,pa7+(j-1+num)*3,3);
-  DrawString(kc,w*i,h+14*j,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-  }
-  }
+}
+}
 
-}
-}
-  
+
+
  //wsprintf(ws1, "LGPID: %d",num);
  //wsprintf(ws, "%t",num);
   

@@ -6,48 +6,132 @@
     <name>Release_ELKA</name>
     <outputs>
       <file>$PROJ_DIR$\conf_loader.h</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\config_data.pbi</file>
-      <file>$PROJ_DIR$\..\inc\png.h</file>
-      <file>$PROJ_DIR$\..\inc\zlib.h</file>
-      <file>$PROJ_DIR$\..\inc\rsa.h</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\config_data.r79</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
       <file>$PROJ_DIR$\Release_ELKA\Obj\conf_loader.r79</file>
       <file>$PROJ_DIR$\Release_ELKA\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\test.xcl</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\config_data.r79</file>
       <file>$PROJ_DIR$\Release_ELKA\Obj\func.r79</file>
-      <file>$PROJ_DIR$\Release_ELKA\List\kcb.map</file>
-      <file>$PROJ_DIR$\..\inc\zconf.h</file>
       <file>$PROJ_DIR$\..\inc\pngconf.h</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\kcb.pbd</file>
-      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
-      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\conf_loader.pbi</file>
       <file>$PROJ_DIR$\..\inc\sha.h</file>
-      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\Release_ELKA\Exe\kcb.elf</file>
       <file>$PROJ_DIR$\Release_ELKA\Obj\main.r79</file>
-      <file>$PROJ_DIR$\func.asm</file>
-      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\config_data.pbi</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\Release_ELKA\List\kcb.map</file>
       <file>$PROJ_DIR$\conf_loader.c</file>
       <file>$PROJ_DIR$\main.C</file>
-      <file>$PROJ_DIR$\test.xcl</file>
-      <file>$PROJ_DIR$\..\inc\bn.h</file>
-      <file>$PROJ_DIR$\Release_ELKA\Exe\kcb.elf</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\kcb.pbd</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\func.asm</file>
     </outputs>
     <file>
       <name>[ROOT_NODE]</name>
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 25 10</file>
+          <file> 19 11</file>
         </tool>
       </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_ELKA\Exe\kcb.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 19</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 4 2 5 6 12 8</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 2</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 9</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 17 22 16 18 7 14 1 15 10 24 0</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 17 22 16 18 7 14 1 15 10 24 0</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 12</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 3</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 17 22 16 18 7 14 1 15 10 24 0</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 17 22 16 18 7 14 1 15 10 24 0</file>
+        </tool>
+      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\Release_ELKA\Obj\kcb.pbd</name>
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 26 1 8</file>
+          <file> 9 13 3</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config_data.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 5</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 13</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 24 17 22 16 18 7 14 1 15 10</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 24 17 22 16 18 7 14 1 15 10</file>
         </tool>
       </inputs>
     </file>
@@ -56,16 +140,127 @@
       <outputs>
         <tool>
           <name>AARM</name>
-          <file> 9</file>
+          <file> 6</file>
         </tool>
       </outputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>Release_NEWSGOLD</name>
+    <outputs>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\config_data.pbi</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Exe\kcb.elf</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\main.r79</file>
+      <file>$PROJ_DIR$\test.xcl</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
+      <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\kcb.pbd</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\func.r79</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\List\kcb.map</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\config_data.r79</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$PROJ_DIR$\main.C</file>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\func.asm</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\Release_NEWSGOLD\Exe\kcb.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 14</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 7 2 15 13 6 9</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 14 5</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_NEWSGOLD\Obj\kcb.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 11 1 4</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 2</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 11</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 19 23 18 20 8 16 3 17 10 24 0</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 19 23 18 20 8 16 3 17 10 24 0</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 6</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 19 23 18 20 8 16 3 17 10 24 0</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 19 23 18 20 8 16 3 17 10 24 0</file>
+        </tool>
+      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\config_data.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 5</file>
+          <file> 15</file>
         </tool>
         <tool>
           <name>BICOMP</name>
@@ -75,137 +270,11 @@
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 14 17 2 3 11 12 4 24 15 16</file>
+          <file> 24 19 23 18 20 8 16 3 17 10</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 14 17 2 3 11 12 4 24 15 16</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\conf_loader.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 7</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 26</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 17 2 3 11 12 4 24 15 16 14 0</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 17 2 3 11 12 4 24 15 16 14 0</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\main.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 18</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 8</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 17 2 3 11 12 4 24 15 16 14 0</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 17 2 3 11 12 4 24 15 16 14 0</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release_ELKA\Exe\kcb.elf</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 10</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 23 7 5 9 18 6</file>
-        </tool>
-      </inputs>
-    </file>
-  </configuration>
-  <configuration>
-    <name>Release_NEWSGOLD</name>
-    <outputs>
-      <file>$PROJ_DIR$\conf_loader.h</file>
-      <file>$PROJ_DIR$\..\inc\png.h</file>
-      <file>$PROJ_DIR$\..\inc\zlib.h</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\..\inc\rsa.h</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\main.r79</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\func.r79</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
-      <file>$PROJ_DIR$\..\inc\zconf.h</file>
-      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\conf_loader.r79</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\kcb.pbd</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\config_data.pbi</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Exe\kcb.elf</file>
-      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
-      <file>$PROJ_DIR$\..\inc\crypto.h</file>
-      <file>$PROJ_DIR$\..\inc\sha.h</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\List\kcb.map</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\config_data.r79</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\conf_loader.pbi</file>
-      <file>$PROJ_DIR$\..\inc\swilib.h</file>
-      <file>$PROJ_DIR$\func.asm</file>
-      <file>$PROJ_DIR$\config_data.c</file>
-      <file>$PROJ_DIR$\conf_loader.c</file>
-      <file>$PROJ_DIR$\main.C</file>
-      <file>$PROJ_DIR$\test.xcl</file>
-      <file>$PROJ_DIR$\..\inc\bn.h</file>
-    </outputs>
-    <file>
-      <name>[ROOT_NODE]</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 17 13</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release_NEWSGOLD\Obj\kcb.pbd</name>
-      <inputs>
-        <tool>
-          <name>BILINK</name>
-          <file> 19 12 3</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release_NEWSGOLD\Exe\kcb.elf</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 17</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 25 10 18 6 5 7</file>
+          <file> 24 19 23 18 20 8 16 3 17 10</file>
         </tool>
       </inputs>
     </file>
@@ -214,126 +283,51 @@
       <outputs>
         <tool>
           <name>AARM</name>
-          <file> 6</file>
+          <file> 13</file>
         </tool>
       </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\config_data.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 18</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 12</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 14 20 1 2 8 9 4 26 15 16</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 14 20 1 2 8 9 4 26 15 16</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\conf_loader.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 10</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 19</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 20 1 2 8 9 4 26 15 16 14 0</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 20 1 2 8 9 4 26 15 16 14 0</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\main.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 5</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 3</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 20 1 2 8 9 4 26 15 16 14 0</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 20 1 2 8 9 4 26 15 16 14 0</file>
-        </tool>
-      </inputs>
     </file>
   </configuration>
   <configuration>
     <name>Release_SGOLD</name>
     <outputs>
       <file>$PROJ_DIR$\conf_loader.h</file>
-      <file>$PROJ_DIR$\..\inc\png.h</file>
-      <file>$PROJ_DIR$\..\inc\zlib.h</file>
-      <file>$PROJ_DIR$\Release_SGOLD\Obj\main.r79</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8f.r79</file>
-      <file>$PROJ_DIR$\Release_SGOLD\Exe\kcb.elf</file>
-      <file>$PROJ_DIR$\Release_SGOLD\Obj\config_data.pbi</file>
-      <file>$PROJ_DIR$\..\inc\rsa.h</file>
-      <file>$PROJ_DIR$\Release_SGOLD\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\Release_SGOLD\List\kcb.map</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
-      <file>$PROJ_DIR$\Release_SGOLD\Exe\LGP_TEST.elf</file>
       <file>$PROJ_DIR$\Release_SGOLD\Obj\kcb.pbd</file>
       <file>$PROJ_DIR$\Release_SGOLD\Obj\conf_loader.r79</file>
-      <file>$PROJ_DIR$\..\inc\zconf.h</file>
-      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
       <file>$PROJ_DIR$\Release_SGOLD\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
       <file>$PROJ_DIR$\Release_SGOLD\Obj\config_data.r79</file>
-      <file>$PROJ_DIR$\Release_SGOLD\Obj\LGP_TEST.pbd</file>
+      <file>$PROJ_DIR$\Release_SGOLD\List\kcb.map</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Exe\LGP_TEST.elf</file>
       <file>$PROJ_DIR$\Release_SGOLD\Obj\func.r79</file>
-      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
-      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\test.xcl</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\main.r79</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
       <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Exe\kcb.elf</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\LGP_TEST.pbd</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\config_data.pbi</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8f.r79</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
       <file>$PROJ_DIR$\..\inc\swilib.h</file>
-      <file>$PROJ_DIR$\func.asm</file>
-      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
       <file>$PROJ_DIR$\conf_loader.c</file>
       <file>$PROJ_DIR$\main.C</file>
-      <file>$PROJ_DIR$\test.xcl</file>
-      <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\func.asm</file>
     </outputs>
     <file>
-      <name>$PROJ_DIR$\Release_SGOLD\Exe\kcb.elf</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 9</file>
-        </tool>
-      </outputs>
+      <name>$PROJ_DIR$\Release_SGOLD\Obj\kcb.pbd</name>
       <inputs>
         <tool>
-          <name>XLINK</name>
-          <file> 28 13 17 19 3 10</file>
+          <name>BILINK</name>
+          <file> 3 17 4</file>
         </tool>
       </inputs>
     </file>
@@ -342,16 +336,7 @@
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 28 13 17 19 3 4</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release_SGOLD\Obj\kcb.pbd</name>
-      <inputs>
-        <tool>
-          <name>BILINK</name>
-          <file> 16 6 8</file>
+          <file> 10 2 6 9 11 18</file>
         </tool>
       </inputs>
     </file>
@@ -360,48 +345,31 @@
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 5 9</file>
+          <file> 15 7</file>
         </tool>
       </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_SGOLD\Exe\kcb.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 7</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 10 2 6 9 11 13</file>
+        </tool>
+      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\Release_SGOLD\Obj\LGP_TEST.pbd</name>
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 16 6 8</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\func.asm</name>
-      <outputs>
-        <tool>
-          <name>AARM</name>
-          <file> 19</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\config_data.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 17</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 6</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 20 23 1 2 14 15 7 29 21 22</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 20 23 1 2 14 15 7 29 21 22</file>
+          <file> 3 17 4</file>
         </tool>
       </inputs>
     </file>
@@ -410,21 +378,21 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 13</file>
+          <file> 2</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 16</file>
+          <file> 3</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 23 1 2 14 15 7 29 21 22 20 0</file>
+          <file> 22 26 21 23 12 19 5 20 14 27 0</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 23 1 2 14 15 7 29 21 22 20 0</file>
+          <file> 22 26 21 23 12 19 5 20 14 27 0</file>
         </tool>
       </inputs>
     </file>
@@ -433,23 +401,55 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 3</file>
+          <file> 11</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 8</file>
+          <file> 4</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 23 1 2 14 15 7 29 21 22 20 0</file>
+          <file> 22 26 21 23 12 19 5 20 14 27 0</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 23 1 2 14 15 7 29 21 22 20 0</file>
+          <file> 22 26 21 23 12 19 5 20 14 27 0</file>
         </tool>
       </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config_data.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 6</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 17</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 27 22 26 21 23 12 19 5 20 14</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 27 22 26 21 23 12 19 5 20 14</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\func.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 9</file>
+        </tool>
+      </outputs>
     </file>
   </configuration>
 </project>

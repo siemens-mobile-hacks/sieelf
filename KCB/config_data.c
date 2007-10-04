@@ -5,10 +5,13 @@
 //__root const CFG_HDR cfghdr0={CFG_UTF8_STRING," 1 2 3 4 5 6 7 8 9 10",1,511};
 //__root const char a[512]="";
 __root const CFG_HDR cfghdr101 = {CFG_CHECKBOX,"line*2",0,0};
-__root const int line2=1;
+__root const int line2=0;
 
 __root const CFG_HDR cfghdr102 = {CFG_CHECKBOX,"number*2",0,0};
-__root const int number2=1;
+__root const int number2=0;
+
+__root const CFG_HDR cfghdr104 = {CFG_CHECKBOX,"show classroom",0,0};
+__root const int showr=0;
 
 __root const CFG_HDR cfghdr122 = {CFG_CBOX,"week",0,3};
 __root const int wc = 2;
@@ -34,6 +37,27 @@ __root const char a6[60]="";
 
 __root const CFG_HDR cfghdr7={CFG_UTF8_STRING,"7",1,59};
 __root const char a7[60]="";
+
+__root const CFG_HDR cfghdr51={CFG_UTF8_STRING,"classroom1",1,139};
+__root const char b1[140]="";
+
+__root const CFG_HDR cfghdr52={CFG_UTF8_STRING,"classroom2",1,139};
+__root const char b2[140]="";
+
+__root const CFG_HDR cfghdr53={CFG_UTF8_STRING,"classroom3",1,139};
+__root const char b3[140]="";
+
+__root const CFG_HDR cfghdr54={CFG_UTF8_STRING,"classroom4",1,139};
+__root const char b4[140]="";
+
+__root const CFG_HDR cfghdr55={CFG_UTF8_STRING,"classroom5",1,139};
+__root const char b5[140]="";
+
+__root const CFG_HDR cfghdr56={CFG_UTF8_STRING,"classroom6",1,139};
+__root const char b6[140]="";
+
+__root const CFG_HDR cfghdr57={CFG_UTF8_STRING,"classroom7",1,139};
+__root const char b7[140]="";
 
 //__root const CFG_HDR cfghdr11={CFG_UTF8_STRING,"week",1,29};
 //__root const char c[30]="\xE4\xB8\x80\xE4\xBA\x8C\xE4\xB8\x89\xE5\x9B\x9B\xE4\xBA\x94\xE5\x85\xAD\xE6\x97\xA5";
