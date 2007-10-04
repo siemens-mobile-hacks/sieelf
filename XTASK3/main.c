@@ -376,12 +376,13 @@ void main(void)
   extern int show_daemons;
   show_daemons=SHOW_DAEMONS;
   LockSched();
-  if (!AddKeybMsgHook_end((void *)my_keyhook))
+  /*if (!AddKeybMsgHook_end((void *)my_keyhook))
   {
     ShowMSG(1,(int)"Unable to register a handler!");
     SUBPROC((void *)ElfKiller);
   }
-  else
+  else*/
+  AddKeybMsgHook_end((void *)my_keyhook);
   {
     extern const int ENA_HELLO_MSG;
     if (ENA_HELLO_MSG) ShowMSG(1,(int)"XTask3 Started!");
