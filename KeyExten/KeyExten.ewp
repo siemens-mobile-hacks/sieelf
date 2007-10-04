@@ -848,7 +848,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release\Exe</state>
+          <state></state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -1369,11 +1369,11 @@
         <debug>0</debug>
         <option>
           <name>XOutOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OutputFile</name>
-          <state>KeyExten.elf</state>
+          <state>KeyExten_SGOLD.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>

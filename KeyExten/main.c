@@ -3,9 +3,16 @@
 #include "conf_loader.h"
 
 CSM_DESC icsmd;
-int (*old_icsm_onMessage)(CSM_RAM*,GBS_MSG*);
-void (*old_icsm_onClose)(CSM_RAM*);
+//int (*old_icsm_onMessage)(CSM_RAM*,GBS_MSG*);
+//void (*old_icsm_onClose)(CSM_RAM*);
 int e=2;
+const int minus11=-11;
+extern void kill_data(void *p, void (*func_p)(void *));
+
+typedef struct
+{
+  CSM_RAM csm;
+}MAIN_CSM;
 
 extern const unsigned int K1ST;
 extern const unsigned int K1;
@@ -111,6 +118,7 @@ int strcmp_nocase(const char *s1,const char *s2)
   return(i);
 }
 
+/*
 int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
 {
  int csm_result;
@@ -135,19 +143,89 @@ void MyIDLECSM_onClose(CSM_RAM *data)
  RemoveKeybMsgHook((void *)my_keyhook);
  seqkill(data,old_icsm_onClose,&ELF_BEGIN,SEQKILLER_ADR());
 }
+*/
+int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
+{
+  if(msg->msg == MSG_RECONFIGURE_REQ) 
+  {
+    extern const char *successed_config_filename;
+    if (strcmp_nocase(successed_config_filename,(char *)msg->data0)==0)
+    {
+      ShowMSG(1,(int)"KeyExten config updated!");
+      InitConfig();
+    }
+  }
+  return(1);
+}
+
+static void maincsm_oncreate(CSM_RAM *data)
+{
+}
+
+static void Killer(void)
+{
+  extern void *ELF_BEGIN;
+  //extern void seqkill(void *data, void(*next_in_seq)(CSM_RAM *), void *data_to_kill, void *seqkiller);
+  RemoveKeybMsgHook((void *)my_keyhook);  
+  kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
+  //seqkill(data,old_icsm_onClose,&ELF_BEGIN,SEQKILLER_ADR());
+}
+
+static void maincsm_onclose(CSM_RAM *csm)
+{
+  SUBPROC((void *)Killer);
+}
+
+static unsigned short maincsm_name_body[140];
+
+static const struct
+{
+  CSM_DESC maincsm;
+  WSHDR maincsm_name;
+}MAINCSM =
+{
+  {
+  maincsm_onmessage,
+  maincsm_oncreate,
+#ifdef NEWSGOLD
+  0,
+  0,
+  0,
+  0,
+#endif
+  maincsm_onclose,
+  sizeof(MAIN_CSM),
+  1,
+  &minus11
+  },
+  {
+    maincsm_name_body,
+    NAMECSM_MAGIC1,
+    NAMECSM_MAGIC2,
+    0x0,
+    139
+  }
+};
+
+static void UpdateCSMname(void)
+{
+  wsprintf((WSHDR *)(&MAINCSM.maincsm_name),"KeyExtern");
+}
 
 int main(void)
 {
- InitConfig();
- LockSched();
- AddKeybMsgHook_end((void *)my_keyhook);
- CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
- memcpy(&icsmd,icsm->constr,sizeof(icsmd));
- old_icsm_onMessage=icsmd.onMessage;
- old_icsm_onClose=icsmd.onClose;
- icsmd.onMessage=MyIDLECSM_onMessage;
- icsmd.onClose=MyIDLECSM_onClose;
- icsm->constr=&icsmd;
- UnlockSched();
- return 0;
+  CSM_RAM *save_cmpc;
+  char dummy[sizeof(MAIN_CSM)];
+  InitConfig();
+  UpdateCSMname();
+  LockSched();
+  
+  save_cmpc=CSM_root()->csm_q->current_msg_processing_csm;
+  CSM_root()->csm_q->current_msg_processing_csm=CSM_root()->csm_q->csm.first;
+  CreateCSM(&MAINCSM.maincsm,dummy,0);
+  CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
+  AddKeybMsgHook((void *)my_keyhook);
+  
+  UnlockSched();
+  return 0;
 }
