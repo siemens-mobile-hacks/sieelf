@@ -35,13 +35,13 @@ void copy_unicode_2ws(WSHDR* ws, unsigned short* unicode)
 	ws->wsbody[0] = i;                  // set ws length
 }
 
-unsigned short btz[]={0x8BFE,0x7A0B,0x8868, 0};
 unsigned short w[8]={0x4E00,0x4E8C,0x4E09,0x56DB,0x4E94,0x516D,0x4E03, 0};
 
 char c[30]="\xE4\xB8\x80\xE4\xBA\x8C\xE4\xB8\x89\xE5\x9B\x9B\xE4\xBA\x94\xE5\x85\xAD\xE6\x97\xA5";
 
 int num=0;
 int nx=1;
+unsigned int daylist=0;
 
 unsigned int MAINCSM_ID = 0;
 
@@ -67,44 +67,13 @@ char* Opendata(char *recname)
 }
 
 
-void getfname(char *recname,int x)
+void drawname(const char *s)
 {
-  switch(x)
-  {
-  case 1:
-  snprintf(recname,128,"%s1.txt",fname);
-  break;
-  case 2:
-  snprintf(recname,128,"%s2.txt",fname);
-  break;
-  case 3:
-  snprintf(recname,128,"%s3.txt",fname);
-  break;
-  case 4:
-  snprintf(recname,128,"%s4.txt",fname);
-  break;
-  case 5:
-  snprintf(recname,128,"%s5.txt",fname);
-  break;
-  case 6:
-  snprintf(recname,128,"%s6.txt",fname);
-  break;
-  case 0:
-  snprintf(recname,128,"%s7.txt",fname);
-  break;
-  default:
-      break;
-  }
-}
-
-
-void drawname(const char *s,int l,int a,int b,int h)
-{
-  WSHDR* ws = AllocWS(25);
+  WSHDR* ws = AllocWS(55);
   int c,k;
   int cc=0;
   char *r;
-  char cr[25];
+  char cr[55];
   while((c=*s))
   {
     s++;
@@ -114,7 +83,8 @@ void drawname(const char *s,int l,int a,int b,int h)
     case '\n':
       break;
       
-    case ' ': 
+    case '\r':
+    case '\n':
       r=cr;
       k=0;
       cc++;
@@ -125,21 +95,8 @@ void drawname(const char *s,int l,int a,int b,int h)
       }
       *r=0;
      utf8_2ws(ws,cr,l);
-     if(line2)
-     {
-       if(num==0&&cc<=5)
-        DrawString(ws,a,h+14*(cc*2-1)+2,b,ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
-      if(num==10&&cc>5&&cc<10)
-        DrawString(ws,a,h+14*(cc*2-11)+2,b,ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
-     }
-     else
-     {
-      if(num==0&&cc<=10)
-        DrawString(ws,a,h+14*cc+2,b,ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
-      if(num==10&&cc>10&&cc<20)
-        DrawString(ws,a,h+14*(cc-10)+2,b,ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
-     }
-      break;
+     DrawString(ws,1,1,132,ScreenH(),8,d,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
+     break;
       
      default:
       break;
@@ -149,170 +106,20 @@ void drawname(const char *s,int l,int a,int b,int h)
   FreeWS(ws);
 }
 
-int m2d(int m,int y)
-{
-  int b;
-  switch(m)
-  {
-  case 1:b=0;break;
-  case 2:b=31; break;   
-  case 3:b=59; break; 
-  case 4:b=90; break; 
-  case 5:b=120; break;
-  case 6:b=151; break;
-  case 7:b=181; break; 
-  case 8:b=212; break;
-  case 9:b=243; break; 
-  case 10:b=273; break;
-  case 11:b=304; break;
-  case 12:b=334; break;
-  default:
-      break;
-  }
-  if(y%4==0&&b>2)
-    b=b+1;
-  return(b);
-}
-
 
 
 void onRedraw(MAIN_GUI *data)
 {
-  WSHDR* bt = AllocWS(sizeof(btz));
-  WSHDR* ws = AllocWS(20);
-  const char *pc;
-  pc=c;
   const char *s;
-  int lx,ly;
-  int x,y,z,z2;
-  int week;
+  int lz;
   char recname[128];
-  int h=16; 
-  int aa=1;
-  int w=16;
 
   //底色
   DrawRectangle(0,0,ScreenW(),ScreenH(),0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
-  
-  //标题
-  copy_unicode_2ws(bt, btz);
-  DrawString(bt,1,1,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-  
-  //时间日期星期
-  TDate d;
-  TTime t;
-  GetDateTime(&d, &t);
-  
-  week=((d.year-year)*365+m2d(d.month,d.year)-m2d(month,year)+d.day-day)/7+1;
-  
-  utf8_2ws(ws,pc+GetWeek(&d)*3,3);
-  DrawString(ws,ScreenW()-GetFontYSIZE(FONT_SMALL_ITALIC_BOLD)*8, 2, ScreenW(), 2+GetFontYSIZE(FONT_SMALL_ITALIC_BOLD),
-              8,
-              1,
-              GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)
-             );
 
-  wsprintf(ws, "%d-%d w%d %d%d:%d%d",d.month,d.day,week,t.hour / 10, t.hour % 10, t.min / 10, t.min % 10);
-  DrawString(ws,ScreenW()-GetFontYSIZE(FONT_SMALL_ITALIC_BOLD)*7, 3, ScreenW(), 3+GetFontYSIZE(FONT_SMALL_ITALIC_BOLD),
-              8,
-              2,
-              GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)
-             );
-  
-  //if((GetWeek(&d)+7-nx)%7<week)
-  //DrawRoundedFrame(w*((GetWeek(&d)+7-nx)%7+1)-aa,h-1,w*((GetWeek(&d)+7-nx)%7+1)+w-aa,h-1+GetFontYSIZE(FONT_SMALL_ITALIC_BOLD)+3,2,2,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(2)); 
- 
-
-  //
-  if(line2)
-  {
-  lx=6;
-  ly=24;
-  }
-  else
-  {
-  lx=3;
-  ly=12;
-  }
-
-//1
-  getfname(recname,(GetWeek(&d)+nx-2)%7);
+  snprintf(recname,128,"%sdata.dat",fname);
   s=Opendata(recname);
-  drawname(s,lx,w*1,w*2,h);
-
-//2
-  getfname(recname,(GetWeek(&d)+nx-1)%7);
-  s=Opendata(recname);
-  drawname(s,lx,w*2,w*3,h);
-
-//3
-  getfname(recname,(GetWeek(&d)+nx)%7);
-  s=Opendata(recname);
-  drawname(s,ly,w*3,w*6,h);
-  
-//4
-  getfname(recname,(GetWeek(&d)+nx+1)%7);
-  s=Opendata(recname);
-  drawname(s,lx,w*6,w*7,h);
-  
- //5 
-  getfname(recname,(GetWeek(&d)+nx+2)%7);
-  s=Opendata(recname);
-  drawname(s,lx,w*7,w*8,h);
-  
-  
- int i,j;
- for(i=0;i<=5;i++)
-{
- for(j=0;j<=10;j++)
-{
-  
-   if(number2)
-  {
-  ((j%2)==0?(y=j/2):(y=j/2+1));
-  ((j%2)==0?(z=j-1):(z=j));
-  z2=num/2;
-  }
-  else
-  {
-  y=j;
-  z=j;
-  z2=num;
-  }
-  
-  if(line2)
-  ((j%2)==0?(x=j):(x=j+1));
-  else
-  x=j;
-
-
-  //画框
-  DrawLine(w-aa,h+14*(x+1),w*(7+1)-aa,h+14*(x+1),0,GetPaletteAdrByColorIndex(0));
-  if(i<3)
-  DrawLine(w*(i+1)-aa,h+14,w*(i+1)-aa,h+14*11,0,GetPaletteAdrByColorIndex(0));
-  if(i>=3)
-  DrawLine(w*(i+3)-aa,h+14,w*(i+3)-aa,h+14*11,0,GetPaletteAdrByColorIndex(0)); 
-  //星期
-  if(j==0&&i>0)
-  {
-  utf8_2ws(ws,pc+((GetWeek(&d)+i+nx-4)%7)*3,3);
-  if(i<3)
-  DrawString(ws,w*i,h,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-  if(i==3)
-  DrawString(ws,w*(i+1),h,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));  
-  if(i>3)
-  DrawString(ws,w*(i+2),h,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));  
-  }
-  //数字
-  if(i==0&&j>0)
-  {
-  wsprintf(ws,"%d",y+z2);
-  DrawString(ws,0,h+3+14*z,GetFontYSIZE(FONT_SMALL_ITALIC_BOLD),ScreenH(),8,4,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-  }
-}
-}
-    FreeWS(bt);
-    FreeWS(ws);
+  drawname(s);
 }
 
 void onCreate(MAIN_GUI *data, void *(*malloc_adr)(int))
@@ -352,6 +159,12 @@ void create_num(int numx)
 
 int OnKey(MAIN_GUI *data, GUI_MSG *msg)
 {
+#ifdef ELKA
+  int aa=8;
+#else
+  int aa=10;
+#endif
+  
   if (msg->gbsmsg->msg==KEY_UP)
   {
     switch(msg->gbsmsg->submess)
@@ -368,12 +181,11 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
       case '9': create_num(9); break;
       case '*': num=0; REDRAW(); break;
       case '#': num=num; REDRAW(); break;
-      case UP_BUTTON: if(num!=0) num=num-10; REDRAW(); break;
-      case DOWN_BUTTON: if(num<10) num=num+10; REDRAW(); break;
+      case UP_BUTTON: if(num!=0) num=num-aa; REDRAW(); break;
+      case DOWN_BUTTON: if(num<aa) num=num+aa; REDRAW(); break;
       case RIGHT_BUTTON:{nx++;if(nx>7) nx=1;} REDRAW(); break;
       case LEFT_BUTTON:{nx--;if(nx<1) nx=7;}REDRAW(); break;
       case RIGHT_SOFT: CloseCSM(MAINCSM_ID); break;
-      case ENTER_BUTTON:ShowMSG(1,(int)"kcb 0.9 (c)zhanxxx(zxzyzw@163.com)");break;
     }
   }
   if (msg->gbsmsg->msg==LONG_PRESS)

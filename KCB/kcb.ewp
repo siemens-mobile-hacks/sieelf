@@ -21,7 +21,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release_SGOLD\Exe</state>
+          <state>Output</state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -541,11 +541,11 @@
         <debug>0</debug>
         <option>
           <name>XOutOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OutputFile</name>
-          <state>kcb.elf</state>
+          <state>kcb_sg.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -839,7 +839,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release_ELKA\Exe</state>
+          <state>Output</state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -956,6 +956,8 @@
         <option>
           <name>CCDefines</name>
           <state>NDEBUG</state>
+          <state>ELKA</state>
+          <state>NEWSGOLD</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -1217,7 +1219,8 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>NEWSGOLD</state>
+          <state>ELKA</state>
         </option>
         <option>
           <name>AList</name>
@@ -1359,11 +1362,11 @@
         <debug>0</debug>
         <option>
           <name>XOutOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OutputFile</name>
-          <state>kcb.elf</state>
+          <state>kcb_ELKA.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -1657,7 +1660,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release_NEWSGOLD\Exe</state>
+          <state>Output</state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -1774,6 +1777,7 @@
         <option>
           <name>CCDefines</name>
           <state>NDEBUG</state>
+          <state>NEWSGOLD</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -2035,7 +2039,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>NEWSGOLD</state>
         </option>
         <option>
           <name>AList</name>
@@ -2177,11 +2181,11 @@
         <debug>0</debug>
         <option>
           <name>XOutOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OutputFile</name>
-          <state>kcb.elf</state>
+          <state>kcb_nsg.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
