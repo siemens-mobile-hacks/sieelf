@@ -67,13 +67,53 @@ char* Opendata(char *recname)
 }
 
 
-void drawname(const char *s)
+void getfname(char *recname,int x)
+{
+  switch(x)
+  {
+  case 1:
+  snprintf(recname,128,"%s1.txt",fname);
+  break;
+  case 2:
+  snprintf(recname,128,"%s2.txt",fname);
+  break;
+  case 3:
+  snprintf(recname,128,"%s3.txt",fname);
+  break;
+  case 4:
+  snprintf(recname,128,"%s4.txt",fname);
+  break;
+  case 5:
+  snprintf(recname,128,"%s5.txt",fname);
+  break;
+  case 6:
+  snprintf(recname,128,"%s6.txt",fname);
+  break;
+  case 0:
+  snprintf(recname,128,"%s7.txt",fname);
+  break;
+  default:
+      break;
+  }
+}
+
+
+void drawname(const char *s,int l,int a,int b,int d,int h,int h2)
 {
   WSHDR* ws = AllocWS(55);
   int c,k;
   int cc=0;
   char *r;
   char cr[55];
+#ifdef ELKA
+  int n=8;
+  int ab=h+2;
+#else
+  int n=10; 
+  int ab=2;
+#endif
+  
+  
   while((c=*s))
   {
     s++;
@@ -83,8 +123,7 @@ void drawname(const char *s)
     case '\n':
       break;
       
-    case '\r':
-    case '\n':
+    case ' ': 
       r=cr;
       k=0;
       cc++;
@@ -95,8 +134,21 @@ void drawname(const char *s)
       }
       *r=0;
      utf8_2ws(ws,cr,l);
-     DrawString(ws,1,1,132,ScreenH(),8,d,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
-     break;
+     if(line2)
+     {
+       if(num==0&&cc<=(n/2))
+        DrawString(ws,a,h+h2*(cc*2-1)+ab,b,ScreenH(),8,d,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
+      if(num==n&&cc>(n/2)&&cc<n)
+        DrawString(ws,a,h+h2*(cc*2-n-1)+ab,b,ScreenH(),8,d,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
+     }
+     else
+     {
+      if(num==0&&cc<=n)
+        DrawString(ws,a,h+h2*cc+ab,b,ScreenH(),8,d,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
+      if(num==n&&cc>n&&cc<(n*2))
+        DrawString(ws,a,h+h2*(cc-n)+ab,b,ScreenH(),8,d,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
+     }
+      break;
       
      default:
       break;
@@ -106,20 +158,198 @@ void drawname(const char *s)
   FreeWS(ws);
 }
 
+int m2d(int m,int y)
+{
+  int b;
+  switch(m)
+  {
+  case 1:b=0;break;
+  case 2:b=31; break;   
+  case 3:b=59; break; 
+  case 4:b=90; break; 
+  case 5:b=120; break;
+  case 6:b=151; break;
+  case 7:b=181; break; 
+  case 8:b=212; break;
+  case 9:b=243; break; 
+  case 10:b=273; break;
+  case 11:b=304; break;
+  case 12:b=334; break;
+  default:
+      break;
+  }
+  if(y%4==0&&b>2)
+    b=b+1;
+  return(b);
+}
+
 
 
 void onRedraw(MAIN_GUI *data)
 {
+  WSHDR* ws = AllocWS(20);
+  WSHDR* ws1 = AllocWS(20);
+  const char *pc;
+  pc=c;
   const char *s;
-  int lz;
+  int lx,ly,lz;
+  int x,y,z,z2;
+  int week;
   char recname[128];
+#ifdef ELKA
+  int aa=2;
+  int h=30;
+  int h2=26;
+  int w=29;
+  int ab=26;
+  int ac=8;
+  int ad=h2;
+#else
+  int h=16; 
+  int h2=14;
+  int aa=1;
+  int w=16;
+  int ab=0;
+  int ac=10;
+  int ad=0;
+#endif
 
   //底色
   DrawRectangle(0,0,ScreenW(),ScreenH(),0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
+  
+  //时间日期星期
+  TDate d;
+  TTime t;
+  GetDateTime(&d, &t);
+  
+  week=((d.year-year)*365+m2d(d.month,d.year)-m2d(month,year)+d.day-day)/7+1;
+  
+  utf8_2ws(ws1,pc+GetWeek(&d)*3,3);
+  wsprintf(ws, "%d%d-%d-%d W%d %w %d%d:%d%d",(d.year%100)/10,(d.year%1000),d.month,d.day,week,ws1,t.hour/10, t.hour % 10, t.min/10, t.min%10);
+  DrawString(ws,3,3+ab, ScreenW()-3,3+ab+GetFontYSIZE(FONT_SMALL_ITALIC_BOLD),
+              8,
+              2,
+              GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)
+             );
+  
+  //if((GetWeek(&d)+7-nx)%7<week)
+  //DrawRoundedFrame(w*((GetWeek(&d)+7-nx)%7+1)-aa,h-1,w*((GetWeek(&d)+7-nx)%7+1)+w-aa,h-1+GetFontYSIZE(FONT_SMALL_ITALIC_BOLD)+3,2,2,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(2)); 
+ 
 
-  snprintf(recname,128,"%sdata.dat",fname);
+  //
+  if(line2)
+  {
+  lx=6;
+  ly=24;
+  lz=54;
+  }
+  else
+  {
+  lx=3;
+  ly=12;
+  lz=27;
+  }
+
+  
+  if(daylist==0)
+  {
+//1
+  getfname(recname,(GetWeek(&d)+nx-2)%7);
   s=Opendata(recname);
-  drawname(s);
+  drawname(s,lx,w*1,w*2,32,h,h2);
+
+//2
+  getfname(recname,(GetWeek(&d)+nx-1)%7);
+  s=Opendata(recname);
+  drawname(s,lx,w*2,w*3,32,h,h2);
+
+//3
+  getfname(recname,(GetWeek(&d)+nx)%7);
+  s=Opendata(recname);
+  drawname(s,ly,w*3-aa-2,w*6+aa,2,h,h2);
+  
+//4
+  getfname(recname,(GetWeek(&d)+nx+1)%7);
+  s=Opendata(recname);
+  drawname(s,lx,w*6,w*7,32,h,h2);
+  
+ //5 
+  getfname(recname,(GetWeek(&d)+nx+2)%7);
+  s=Opendata(recname);
+  drawname(s,lx,w*7,w*8,32,h,h2);
+  }
+  else
+  {
+  getfname(recname,(GetWeek(&d)+nx)%7);
+  s=Opendata(recname);
+  drawname(s,lz,w*1-aa-2,w*8+aa,2,h,h2);
+  }
+  
+ int i,j;
+ for(i=0;i<=5;i++)
+{
+ for(j=0;j<=ac;j++)
+{
+  
+   if(number2)
+  {
+  ((j%2)==0?(y=j/2):(y=j/2+1));
+  ((j%2)==0?(z=j-1):(z=j));
+  z2=num/2;
+  }
+  else
+  {
+  y=j;
+  z=j;
+  z2=num;
+  }
+  
+  if(line2)
+  ((j%2)==0?(x=j):(x=j+1));
+  else
+  x=j;
+
+
+  //画框
+  DrawLine(w-aa,h+ad-aa,w*(7+1)-aa,h+ad-aa,0,GetPaletteAdrByColorIndex(0));
+  DrawLine(w-aa,h+h2*(x+1)+ad,w*(7+1)-aa,h+h2*(x+1)+ad,0,GetPaletteAdrByColorIndex(0));
+  if(daylist==0)
+  {
+  if(i<3)
+  DrawLine(w*(i+1)-aa,h-aa+ad,w*(i+1)-aa,h+h2*(ac+1)+ad,0,GetPaletteAdrByColorIndex(0));
+  if(i>=3)
+  DrawLine(w*(i+3)-aa,h-aa+ad,w*(i+3)-aa,h+h2*(ac+1)+ad,0,GetPaletteAdrByColorIndex(0)); 
+  }
+  else
+  {
+  DrawLine(w-aa,h-aa+ad,w-aa,h+h2*(ac+1)+ad,0,GetPaletteAdrByColorIndex(0)); 
+  DrawLine(w*8-aa,h-aa+ad,w*8-aa,h+h2*(ac+1)+ad,0,GetPaletteAdrByColorIndex(0)); 
+  }
+  //星期
+  if(j==0&&i>0)
+  {
+  utf8_2ws(ws,pc+((GetWeek(&d)+i+nx-4)%7)*3,3);
+  if(i==3)
+  DrawString(ws,w*(i+1),h+ad,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  if(daylist==0)
+  {
+  if(i<3)
+  DrawString(ws,w*i,h+ad,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  if(i>3)
+  DrawString(ws,w*(i+2),h+ad,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));  
+  }
+  }
+
+  //数字
+  if(i==0&&j>0)
+  {
+  wsprintf(ws,"%d",y+z2);
+  DrawString(ws,0,h+3+h2*z+ad,GetFontYSIZE(FONT_SMALL_ITALIC_BOLD)+aa,ScreenH(),8,4,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  }
+}
+}
+    FreeWS(ws);
+    FreeWS(ws1);
 }
 
 void onCreate(MAIN_GUI *data, void *(*malloc_adr)(int))
@@ -186,6 +416,13 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
       case RIGHT_BUTTON:{nx++;if(nx>7) nx=1;} REDRAW(); break;
       case LEFT_BUTTON:{nx--;if(nx<1) nx=7;}REDRAW(); break;
       case RIGHT_SOFT: CloseCSM(MAINCSM_ID); break;
+      case ENTER_BUTTON:
+        if(daylist==0)
+        daylist=1;
+        else
+        daylist=0;REDRAW()
+         ;break;
+      //ShowMSG(1,(int)"kcb 0.96 (c)zhanxxx(zxzyzw@163.com)")
     }
   }
   if (msg->gbsmsg->msg==LONG_PRESS)
