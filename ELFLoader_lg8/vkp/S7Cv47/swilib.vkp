@@ -570,6 +570,9 @@
 08C0: 0xA0962DA1   ; 230:   int GetTimeZoneShift(int param1, int param2, int timeZone)
 08C4: 0xA8D29884   ; 231:   TAppointment *RamAppointment
 08C8: 0xA0092848   ; 232:  GBS_DestroyMessage(GBS_MSG *)
-08CC: 0xA0648B27   ; 233:  void GetAllEmail()           
+08CC: 0xA0648B27   ; 233:  void GetAllEmail()   
+08D0: 0xA0658935   ; 234:  __thumb int GetLunarDate(TDate* pdate, TDate* pLdate)
+08D4: 0xA067D059   ; 235:  __thumb int GetLunarYearID(int year)
+08D8: 0xA067D06F   ; 236:  __thumb int GetLunarAnimal(int year)
 #pragma disable old_equal_ff
 +0

@@ -601,6 +601,11 @@
 
 08C0: 0xA0755807   ; 230:  __thumb int GetTimeZoneShift(int param1, int param2, int timeZone)
 ;8C4:              ; 231:  TAppointment *RamAppointment
+;8C8:              ; 232: 
+;8CC:              ; 233: 
+08D0: 0xA04C17C5   ; 234:  __thumb int GetLunarDate(TDate* pdate, TDate* pLdate)
+08D4: 0xA04FDA81   ; 235:  __thumb int GetLunarYearID(int year)
+08D8: 0xA04FDA97   ; 236:  __thumb int GetLunarAnimal(int year)
 ##pragma disable old_equal_ff
 +0
 
