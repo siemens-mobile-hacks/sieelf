@@ -350,6 +350,13 @@ KCB/kcb.dep -text
 KCB/kcb.ewd -text
 KCB/kcb.ewp -text
 KCB/kcb.eww -text
+KCB/kcb/1.txt -text
+KCB/kcb/2.txt -text
+KCB/kcb/3.txt -text
+KCB/kcb/4.txt -text
+KCB/kcb/5.txt -text
+KCB/kcb/6.txt -text
+KCB/kcb/7.txt -text
 KCB/main.C -text
 KCB/test.xcl -text
 KeyExten/KeyExten.ewp -text

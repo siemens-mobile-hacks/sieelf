@@ -2,20 +2,14 @@
 #include "..\inc\cfg_items.h"
 #include "conf_loader.h"
 
-//extern const char a[512];
+
 extern const int line2;
 extern const int number2;
-extern const char b1[260];
-extern const char b2[260];
-extern const char b3[260];
-extern const char b4[260];
-extern const char b5[260];
-extern const char b6[260];
-extern const char b7[260];
+extern const char fname[128];
+extern const int year;
+extern const int month;
+extern const int day;
 
-
-
-//extern const char c[30];
 
 typedef struct
 {
@@ -52,39 +46,174 @@ int nx=1;
 unsigned int MAINCSM_ID = 0;
 
 
+char* Opendata(char *recname)
+{
+  char *buf;
+  int f;
+  unsigned int err;
+  unsigned int fsize;  
+  f=fopen(recname,A_ReadOnly+A_BIN,P_READ,&err);
+  fsize=lseek(f,0,S_END,&err,&err);
+  if (fsize<=0)
+  {
+    fclose(f,&err);
+  }
+  lseek(f,0,S_SET,&err,&err);
+  buf=malloc(fsize+1);
+  fread(f,buf,fsize,&err);
+  buf[fsize]=0;
+  fclose(f,&err);
+  return (buf);
+}
+
+
+void getfname(char *recname,int x)
+{
+  switch(x)
+  {
+  case 1:
+  snprintf(recname,128,"%s1.txt",fname);
+  break;
+  case 2:
+  snprintf(recname,128,"%s2.txt",fname);
+  break;
+  case 3:
+  snprintf(recname,128,"%s3.txt",fname);
+  break;
+  case 4:
+  snprintf(recname,128,"%s4.txt",fname);
+  break;
+  case 5:
+  snprintf(recname,128,"%s5.txt",fname);
+  break;
+  case 6:
+  snprintf(recname,128,"%s6.txt",fname);
+  break;
+  case 0:
+  snprintf(recname,128,"%s7.txt",fname);
+  break;
+  default:
+      break;
+  }
+}
+
+
+void drawname(const char *s,int l,int a,int b,int h)
+{
+  WSHDR* ws = AllocWS(25);
+  int c,k;
+  int cc=0;
+  char *r;
+  char cr[25];
+  while((c=*s))
+  {
+    s++;
+    switch(c)
+    {
+    case '\r':
+    case '\n':
+      break;
+      
+    case ' ': 
+      r=cr;
+      k=0;
+      cc++;
+      while(*s!=' ' && *s && k<(sizeof(cr)-1))  
+      {
+        *r++=*s++;
+        k++;
+      }
+      *r=0;
+     utf8_2ws(ws,cr,l);
+     if(line2)
+     {
+       if(num==0&&cc<=5)
+        DrawString(ws,a,h+14*(cc*2-1)+2,b,ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
+      if(num==10&&cc>5&&cc<10)
+        DrawString(ws,a,h+14*(cc*2-11)+2,b,ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
+     }
+     else
+     {
+      if(num==0&&cc<=10)
+        DrawString(ws,a,h+14*cc+2,b,ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
+      if(num==10&&cc>10&&cc<20)
+        DrawString(ws,a,h+14*(cc-10)+2,b,ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
+     }
+      break;
+      
+     default:
+      break;
+    }
+  }
+  cc=0;
+  FreeWS(ws);
+}
+
+int m2d(int m,int y)
+{
+  int b;
+  switch(m)
+  {
+  case 1:b=0;break;
+  case 2:b=31; break;   
+  case 3:b=59; break; 
+  case 4:b=90; break; 
+  case 5:b=120; break;
+  case 6:b=151; break;
+  case 7:b=181; break; 
+  case 8:b=212; break;
+  case 9:b=243; break; 
+  case 10:b=273; break;
+  case 11:b=304; break;
+  case 12:b=334; break;
+  default:
+      break;
+  }
+  if(y%4==0&&b>2)
+    b=b+1;
+  return(b);
+}
+
+
+
 void onRedraw(MAIN_GUI *data)
 {
-  //WSHDR *ws = AllocWS(256);
-  //WSHDR *ws1 = AllocWS(20);
-  int aa;
+  WSHDR* bt = AllocWS(sizeof(btz));
+  WSHDR* ws = AllocWS(20);
   const char *pc;
   pc=c;
-  int w;
-  WSHDR *kc = AllocWS(20);
-  WSHDR *bt = AllocWS(sizeof(btz));
-  WSHDR* ws = AllocWS(20);
-  WSHDR* ws1 = AllocWS(20);
- 
-  
-  w=16;
-  aa=1;
-  int h=16;
-  
-  copy_unicode_2ws(bt, btz);
+  const char *s;
+  int lx,ly;
+  int x,y,z,z2;
+  int week;
+  char recname[128];
+  int h=16; 
+  int aa=1;
+  int w=16;
+
+  //底色
   DrawRectangle(0,0,ScreenW(),ScreenH(),0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
+  
+  //标题
+  copy_unicode_2ws(bt, btz);
   DrawString(bt,1,1,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  
+  //时间日期星期
   TDate d;
   TTime t;
   GetDateTime(&d, &t);
-  utf8_2ws(ws1,pc+GetWeek(&d)*3,3);
-  DrawString(ws1,ScreenW()-GetFontYSIZE(FONT_SMALL_ITALIC_BOLD)*7, 2, ScreenW(), 2+GetFontYSIZE(FONT_SMALL_ITALIC_BOLD),
+  
+  week=((d.year-year)*365+m2d(d.month,d.year)-m2d(month,year)+d.day-day)/7+1;
+  
+  utf8_2ws(ws,pc+GetWeek(&d)*3,3);
+  DrawString(ws,ScreenW()-GetFontYSIZE(FONT_SMALL_ITALIC_BOLD)*8, 2, ScreenW(), 2+GetFontYSIZE(FONT_SMALL_ITALIC_BOLD),
               8,
               1,
               GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)
              );
 
-  wsprintf(ws, "%d-%d %d%d:%d%d",d.month,d.day,t.hour / 10, t.hour % 10, t.min / 10, t.min % 10);
-  DrawString(ws,ScreenW()-GetFontYSIZE(FONT_SMALL_ITALIC_BOLD)*5, 3, ScreenW(), 3+GetFontYSIZE(FONT_SMALL_ITALIC_BOLD),
+  wsprintf(ws, "%d-%d w%d %d%d:%d%d",d.month,d.day,week,t.hour / 10, t.hour % 10, t.min / 10, t.min % 10);
+  DrawString(ws,ScreenW()-GetFontYSIZE(FONT_SMALL_ITALIC_BOLD)*7, 3, ScreenW(), 3+GetFontYSIZE(FONT_SMALL_ITALIC_BOLD),
               8,
               2,
               GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)
@@ -94,413 +223,51 @@ void onRedraw(MAIN_GUI *data)
   //DrawRoundedFrame(w*((GetWeek(&d)+7-nx)%7+1)-aa,h-1,w*((GetWeek(&d)+7-nx)%7+1)+w-aa,h-1+GetFontYSIZE(FONT_SMALL_ITALIC_BOLD)+3,2,2,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(2)); 
  
 
-char classr[25];
-int c,k,lx,ly;
-int cc=0;
-const char *s;
-char *r;
-
-
-if(line2)
-{
-lx=6;
-ly=24;
-}
-else
-{
-lx=3;
-ly=12;
-}
-
+  //
+  if(line2)
+  {
+  lx=6;
+  ly=24;
+  }
+  else
+  {
+  lx=3;
+  ly=12;
+  }
 
 //1
-  switch((GetWeek(&d)+nx-2)%7)
-  {
-  case 1:
-  s=b1;
-  break;
-  case 2:
-  s=b2;
-  break;
-  case 3:
-  s=b3;
-  break;
-  case 4:
-  s=b4;
-  break;
-  case 5:
-  s=b5;
-  break;
-  case 6:
-  s=b6;
-  break;
-  case 0:
-  s=b7;
-  break;
-  default:
-      break;
-  }
-
-
-  while((c=*s))
-  {
-    s++;
-    switch(c)
-    {
-    case '\r':
-    case '\n':
-      break;
-      
-    case ' ': 
-      r=classr;
-      k=0;
-      cc++;
-      while(*s!=' ' && *s && k<(sizeof(classr)-1))  
-      {
-        *r++=*s++;
-        k++;
-      }
-      *r=0;
-      if(!line2||(cc%2)==1)
-      {
-      if(num==0)
-      {
-      if(cc<=10)
-      {
-      utf8_2ws(kc,classr,lx);
-      DrawString(kc,w*1,h+14*cc+2,w*2,ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
-      }
-      }
-      if(num==10)
-      {
-      if(cc>10&&cc<20)
-      {
-      utf8_2ws(kc,classr,lx);
-      DrawString(kc,w*1,h+14*(cc-10)+2,w*2,ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
-      }
-      }
-      }
-      break;
-      
-     default:
-      break;
-    }
-  }
-cc=0;
+  getfname(recname,(GetWeek(&d)+nx-2)%7);
+  s=Opendata(recname);
+  drawname(s,lx,w*1,w*2,h);
 
 //2
-    switch((GetWeek(&d)+nx-1)%7)
-  {
-  case 1:
-  s=b1;
-  break;
-  case 2:
-  s=b2;
-  break;
-  case 3:
-  s=b3;
-  break;
-  case 4:
-  s=b4;
-  break;
-  case 5:
-  s=b5;
-  break;
-  case 6:
-  s=b6;
-  break;
-  case 0:
-  s=b7;
-  break;
-  default:
-      break;
-  }
-
-
-  while((c=*s))
-  {
-    s++;
-    switch(c)
-    {
-    case '\r':
-    case '\n':
-      break;
-      
-    case ' ': 
-      r=classr;
-      k=0;
-      cc++;
-      while(*s!=' ' && *s && k<(sizeof(classr)-1))  
-      {
-        *r++=*s++;
-        k++;
-      }
-      *r=0;
-      if(!line2||(cc%2)==1)
-      {
-      if(num==0)
-      {
-      if(cc<=10)
-      {
-      utf8_2ws(kc,classr,lx);
-      DrawString(kc,w*2,h+14*cc+2,w*3,ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
-      }
-      }
-      if(num==10)
-      {
-      if(cc>10&&cc<20)
-      {
-      utf8_2ws(kc,classr,lx);
-      DrawString(kc,w*2,h+14*(cc-10)+2,w*3,ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
-      }
-      }
-      }
-      break;
-      
-     default:
-      break;
-    }
-  }
-cc=0;
+  getfname(recname,(GetWeek(&d)+nx-1)%7);
+  s=Opendata(recname);
+  drawname(s,lx,w*2,w*3,h);
 
 //3
-    switch((GetWeek(&d)+nx)%7)
-  {
-  case 1:
-  s=b1;
-  break;
-  case 2:
-  s=b2;
-  break;
-  case 3:
-  s=b3;
-  break;
-  case 4:
-  s=b4;
-  break;
-  case 5:
-  s=b5;
-  break;
-  case 6:
-  s=b6;
-  break;
-  case 0:
-  s=b7;
-  break;
-  default:
-      break;
-  }
-
-
-  while((c=*s))
-  {
-    s++;
-    switch(c)
-    {
-    case '\r':
-    case '\n':
-      break;
-      
-    case ' ': 
-      r=classr;
-      k=0;
-      cc++;
-      while(*s!=' ' && *s && k<(sizeof(classr)-1))  
-      {
-        *r++=*s++;
-        k++;
-      }
-      *r=0;
-      if(!line2||(cc%2)==1)
-      {
-      if(num==0)
-      {
-      if(cc<=10)
-      {
-      utf8_2ws(kc,classr,ly);
-      DrawString(kc,w*3-2,h+14*cc+2,w*6+2,ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
-      }
-      }
-      if(num==10)
-      {
-      if(cc>10&&cc<20)
-      {
-      utf8_2ws(kc,classr,ly);
-      DrawString(kc,w*3-2,h+14*(cc-10)+2,w*6+2,ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
-      }
-      }
-      }
-      break;
-      
-     default:
-      break;
-    }
-  }
+  getfname(recname,(GetWeek(&d)+nx)%7);
+  s=Opendata(recname);
+  drawname(s,ly,w*3,w*6,h);
   
-cc=0; 
-
 //4
-    switch((GetWeek(&d)+nx+1)%7)
-  {
-  case 1:
-  s=b1;
-  break;
-  case 2:
-  s=b2;
-  break;
-  case 3:
-  s=b3;
-  break;
-  case 4:
-  s=b4;
-  break;
-  case 5:
-  s=b5;
-  break;
-  case 6:
-  s=b6;
-  break;
-  case 0:
-  s=b7;
-  break;
-  default:
-      break;
-  }
-
-
-  while((c=*s))
-  {
-    s++;
-    switch(c)
-    {
-    case '\r':
-    case '\n':
-      break;
-      
-    case ' ': 
-      r=classr;
-      k=0;
-      cc++;
-      while(*s!=' ' && *s && k<(sizeof(classr)-1))  
-      {
-        *r++=*s++;
-        k++;
-      }
-      *r=0;
-      if(!line2||(cc%2)==1)
-      {
-      if(num==0)
-      {
-      if(cc<=10)
-      {
-      utf8_2ws(kc,classr,lx);
-      DrawString(kc,w*6,h+14*cc+2,w*7,ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
-      }
-      }
-      if(num==10)
-      {
-      if(cc>10&&cc<20)
-      {
-      utf8_2ws(kc,classr,lx);
-      DrawString(kc,w*6,h+14*(cc-10)+2,w*7,ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
-      }
-      }
-      }
-      break;
-      
-     default:
-      break;
-    }
-  }
+  getfname(recname,(GetWeek(&d)+nx+1)%7);
+  s=Opendata(recname);
+  drawname(s,lx,w*6,w*7,h);
   
-cc=0;
  //5 
-    switch((GetWeek(&d)+nx+2)%7)
-  {
-  case 1:
-  s=b1;
-  break;
-  case 2:
-  s=b2;
-  break;
-  case 3:
-  s=b3;
-  break;
-  case 4:
-  s=b4;
-  break;
-  case 5:
-  s=b5;
-  break;
-  case 6:
-  s=b6;
-  break;
-  case 0:
-  s=b7;
-  break;
-  default:
-      break;
-  }
-
-
-  while((c=*s))
-  {
-    s++;
-    switch(c)
-    {
-    case '\r':
-    case '\n':
-      break;
-      
-    case ' ': 
-      r=classr;
-      k=0;
-      cc++;
-      while(*s!=' ' && *s && k<(sizeof(classr)-1))  
-      {
-        *r++=*s++;
-        k++;
-      }
-      *r=0;
-      if(!line2||(cc%2)==1)
-      {
-      if(num==0)
-      {
-      if(cc<=10)
-      {
-      utf8_2ws(kc,classr,lx);
-      DrawString(kc,w*7,h+14*cc+2,w*8,ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
-      }
-      }
-      if(num==10)
-      {
-      if(cc>10&&cc<20)
-      {
-      utf8_2ws(kc,classr,lx);
-      DrawString(kc,w*7,h+14*(cc-10)+2,w*8,ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
-      }
-      }
-      }
-      break;
-      
-     default:
-      break;
-    }
-  }
+  getfname(recname,(GetWeek(&d)+nx+2)%7);
+  s=Opendata(recname);
+  drawname(s,lx,w*7,w*8,h);
   
-
   
  int i,j;
  for(i=0;i<=5;i++)
 {
  for(j=0;j<=10;j++)
 {
-  int x,y,z,z2;
-  if(line2)
-  ((j%2)==0?(x=j):(x=j+1));
-  else
-  x=j;
-  if(number2)
+  
+   if(number2)
   {
   ((j%2)==0?(y=j/2):(y=j/2+1));
   ((j%2)==0?(z=j-1):(z=j));
@@ -512,44 +279,40 @@ cc=0;
   z=j;
   z2=num;
   }
+  
+  if(line2)
+  ((j%2)==0?(x=j):(x=j+1));
+  else
+  x=j;
 
+
+  //画框
   DrawLine(w-aa,h+14*(x+1),w*(7+1)-aa,h+14*(x+1),0,GetPaletteAdrByColorIndex(0));
   if(i<3)
   DrawLine(w*(i+1)-aa,h+14,w*(i+1)-aa,h+14*11,0,GetPaletteAdrByColorIndex(0));
   if(i>=3)
   DrawLine(w*(i+3)-aa,h+14,w*(i+3)-aa,h+14*11,0,GetPaletteAdrByColorIndex(0)); 
-
+  //星期
   if(j==0&&i>0)
   {
-  utf8_2ws(kc,pc+((GetWeek(&d)+i+nx-4)%7)*3,3);
+  utf8_2ws(ws,pc+((GetWeek(&d)+i+nx-4)%7)*3,3);
   if(i<3)
-  DrawString(kc,w*i,h,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  DrawString(ws,w*i,h,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   if(i==3)
-  DrawString(kc,w*(i+1),h,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));  
+  DrawString(ws,w*(i+1),h,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));  
   if(i>3)
-  DrawString(kc,w*(i+2),h,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));  
+  DrawString(ws,w*(i+2),h,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));  
   }
+  //数字
   if(i==0&&j>0)
   {
-  wsprintf(kc,"%d",y+z2);
-  DrawString(kc,0,h+3+14*z,GetFontYSIZE(FONT_SMALL_ITALIC_BOLD),ScreenH(),8,4,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  wsprintf(ws,"%d",y+z2);
+  DrawString(ws,0,h+3+14*z,GetFontYSIZE(FONT_SMALL_ITALIC_BOLD),ScreenH(),8,4,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
 }
 }
-
-
-
-
- //wsprintf(ws1, "LGPID: %d",num);
- //wsprintf(ws, "%t",num);
-  
-  //DrawString(ws1,5,70,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
-  //DrawString(ws,5,100,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
-  
     FreeWS(bt);
     FreeWS(ws);
-    FreeWS(kc);
-    FreeWS(ws1);
 }
 
 void onCreate(MAIN_GUI *data, void *(*malloc_adr)(int))
@@ -607,9 +370,10 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
       case '#': num=num; REDRAW(); break;
       case UP_BUTTON: if(num!=0) num=num-10; REDRAW(); break;
       case DOWN_BUTTON: if(num<10) num=num+10; REDRAW(); break;
-    case RIGHT_BUTTON:{nx++;if(nx>7) nx=1;} REDRAW(); break;
-    case LEFT_BUTTON:{nx--;if(nx<1) nx=7;}REDRAW(); break;
+      case RIGHT_BUTTON:{nx++;if(nx>7) nx=1;} REDRAW(); break;
+      case LEFT_BUTTON:{nx--;if(nx<1) nx=7;}REDRAW(); break;
       case RIGHT_SOFT: CloseCSM(MAINCSM_ID); break;
+      case ENTER_BUTTON:ShowMSG(1,(int)"kcb 0.9 (c)zhanxxx(zxzyzw@163.com)");break;
     }
   }
   if (msg->gbsmsg->msg==LONG_PRESS)
@@ -618,8 +382,8 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
     {
       case UP_BUTTON: if(num!=0)num=num-10; REDRAW(); break;
       case DOWN_BUTTON:if(num<10) num=num+10; REDRAW(); break;
-      case RIGHT_BUTTON:if(num<10) num=num+10; REDRAW(); break;
-      case LEFT_BUTTON:if(num!=0) num=num-10; REDRAW(); break;
+      case RIGHT_BUTTON:nx++;if(nx>7) nx=1; REDRAW(); break;
+      case LEFT_BUTTON:nx--;if(nx<1) nx=7; REDRAW(); break;
     }
   }
   return(0);
