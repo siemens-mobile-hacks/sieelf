@@ -12,6 +12,17 @@ extern const int month;
 extern const int day;
 
 
+extern const int line_color;
+extern const int number_color;
+extern const int BG_color;
+extern const int string_color;
+extern const int string_color_m;
+extern const int week_color;
+extern const int title_color;
+
+#define color(x) (x<24)?GetPaletteAdrByColorIndex(x):(char *)(&(x))  
+
+
 typedef struct
 {
   CSM_RAM csm;
@@ -100,7 +111,7 @@ void getfname(char *recname,int x)
 }
 
 
-void drawname(unsigned short *s,int l,int a,int b,int d,int h,int h2)
+void drawname(unsigned short *s,int l,int a,int b,int d,int h,int h2,int color)
 {
   WSHDR* ws = AllocWS(255);
   int c,k;
@@ -138,16 +149,16 @@ void drawname(unsigned short *s,int l,int a,int b,int d,int h,int h2)
      if(line2)
      {
        if(num==0&&cc<=(n/2))
-        DrawString(ws,a,h+h2*(cc*2-1)+ab,b,ScreenH(),8,d,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
+        DrawString(ws,a,h+h2*(cc*2-1)+ab,b,ScreenH(),8,d,color(color),GetPaletteAdrByColorIndex(23));     
       if(num==n&&cc>(n/2)&&cc<n)
-        DrawString(ws,a,h+h2*(cc*2-n-1)+ab,b,ScreenH(),8,d,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
+        DrawString(ws,a,h+h2*(cc*2-n-1)+ab,b,ScreenH(),8,d,color(color),GetPaletteAdrByColorIndex(23));     
      }
      else
      {
       if(num==0&&cc<=n)
-        DrawString(ws,a,h+h2*cc+ab,b,ScreenH(),8,d,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
+        DrawString(ws,a,h+h2*cc+ab,b,ScreenH(),8,d,color(color),GetPaletteAdrByColorIndex(23));     
       if(num==n&&cc>n&&cc<(n*2))
-        DrawString(ws,a,h+h2*(cc-n)+ab,b,ScreenH(),8,d,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));     
+        DrawString(ws,a,h+h2*(cc-n)+ab,b,ScreenH(),8,d,color(color),GetPaletteAdrByColorIndex(23));     
      }
       break;
       
@@ -223,7 +234,7 @@ void onRedraw(MAIN_GUI *data)
 #endif
 
   //底色
-  DrawRectangle(0,0,ScreenW(),ScreenH(),0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
+  DrawRectangle(0,0,ScreenW(),ScreenH(),0,color(BG_color),color(BG_color));
   
   //时间日期星期
 
@@ -237,7 +248,7 @@ void onRedraw(MAIN_GUI *data)
   DrawString(ws,3,3+ab, ScreenW()-3,3+ab+GetFontYSIZE(FONT_SMALL_ITALIC_BOLD),
               8,
               2,
-              GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)
+              color(title_color),GetPaletteAdrByColorIndex(23)
              );
   
   //if((GetWeek(&d)+7-nx)%7<week)
@@ -264,33 +275,33 @@ void onRedraw(MAIN_GUI *data)
 //1
   getfname(recname,(GetWeek(&d)+nx-2)%7);
   s=Opendata(recname);
-  drawname(s,lx,w*1,w*2,32,h,h2);
+  drawname(s,lx,w*1,w*2,32,h,h2,string_color);
 
 //2
   getfname(recname,(GetWeek(&d)+nx-1)%7);
   s=Opendata(recname);
-  drawname(s,lx,w*2,w*3,32,h,h2);
+  drawname(s,lx,w*2,w*3,32,h,h2,string_color);
 
 //3
   getfname(recname,(GetWeek(&d)+nx)%7);
   s=Opendata(recname);
-  drawname(s,ly,w*3,w*6,o,h,h2);
+  drawname(s,ly,w*3,w*6,o,h,h2,string_color_m);
   
 //4
   getfname(recname,(GetWeek(&d)+nx+1)%7);
   s=Opendata(recname);
-  drawname(s,lx,w*6,w*7,32,h,h2);
+  drawname(s,lx,w*6,w*7,32,h,h2,string_color);
   
  //5 
   getfname(recname,(GetWeek(&d)+nx+2)%7);
   s=Opendata(recname);
-  drawname(s,lx,w*7,w*8,32,h,h2);
+  drawname(s,lx,w*7,w*8,32,h,h2,string_color);
   }
   else
   {
   getfname(recname,(GetWeek(&d)+nx)%7);
   s=Opendata(recname);
-  drawname(s,lz,w*1,w*8,o,h,h2);
+  drawname(s,lz,w*1,w*8,o,h,h2,string_color_m);
   }
   
  int i,j;
@@ -319,32 +330,32 @@ void onRedraw(MAIN_GUI *data)
 
 
   //画框
-  DrawLine(w-aa,h+ad-aa,w*(7+1)-aa,h+ad-aa,0,GetPaletteAdrByColorIndex(0));
-  DrawLine(w-aa,h+h2*(x+1)+ad,w*(7+1)-aa,h+h2*(x+1)+ad,0,GetPaletteAdrByColorIndex(0));
+  DrawLine(w-aa,h+ad-aa,w*(7+1)-aa,h+ad-aa,0,color(line_color));
+  DrawLine(w-aa,h+h2*(x+1)+ad,w*(7+1)-aa,h+h2*(x+1)+ad,0,color(line_color));
   if(daylist==0)
   {
   if(i<3)
-  DrawLine(w*(i+1)-aa,h-aa+ad,w*(i+1)-aa,h+h2*(ac+1)+ad,0,GetPaletteAdrByColorIndex(0));
+  DrawLine(w*(i+1)-aa,h-aa+ad,w*(i+1)-aa,h+h2*(ac+1)+ad,0,color(line_color));
   if(i>=3)
-  DrawLine(w*(i+3)-aa,h-aa+ad,w*(i+3)-aa,h+h2*(ac+1)+ad,0,GetPaletteAdrByColorIndex(0)); 
+  DrawLine(w*(i+3)-aa,h-aa+ad,w*(i+3)-aa,h+h2*(ac+1)+ad,0,color(line_color)); 
   }
   else
   {
-  DrawLine(w-aa,h-aa+ad,w-aa,h+h2*(ac+1)+ad,0,GetPaletteAdrByColorIndex(0)); 
-  DrawLine(w*8-aa,h-aa+ad,w*8-aa,h+h2*(ac+1)+ad,0,GetPaletteAdrByColorIndex(0)); 
+  DrawLine(w-aa,h-aa+ad,w-aa,h+h2*(ac+1)+ad,0,color(line_color)); 
+  DrawLine(w*8-aa,h-aa+ad,w*8-aa,h+h2*(ac+1)+ad,0,color(line_color)); 
   }
   //星期
   if(j==0&&i>0)
   {
   utf8_2ws(ws,pc+((GetWeek(&d)+i+nx-4)%7)*3,3);
   if(i==3)
-  DrawString(ws,w*(i+1),h+ad,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws,w*(i+1),h+ad,ScreenW(),ScreenH(),8,32,color(week_color),GetPaletteAdrByColorIndex(23)); 
   if(daylist==0)
   {
   if(i<3)
-  DrawString(ws,w*i,h+ad,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws,w*i,h+ad,ScreenW(),ScreenH(),8,32,color(week_color),GetPaletteAdrByColorIndex(23)); 
   if(i>3)
-  DrawString(ws,w*(i+2),h+ad,ScreenW(),ScreenH(),8,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));  
+  DrawString(ws,w*(i+2),h+ad,ScreenW(),ScreenH(),8,32,color(week_color),GetPaletteAdrByColorIndex(23));  
   }
   }
 
@@ -352,7 +363,7 @@ void onRedraw(MAIN_GUI *data)
   if(i==0&&j>0)
   {
   wsprintf(ws,"%d%d",(y+z2)/10,(y+z2)%10);
-  DrawString(ws,0,h+3+h2*z+ad,ScreenW(),ScreenH(),8,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  DrawString(ws,0,h+3+h2*z+ad,ScreenW(),ScreenH(),8,1,color(number_color),GetPaletteAdrByColorIndex(23));
   }
 }
 }

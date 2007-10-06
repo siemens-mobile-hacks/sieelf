@@ -340,7 +340,6 @@ KCB/kcb/2.tmo -text
 KCB/kcb/3.tmo -text
 KCB/kcb/4.tmo -text
 KCB/kcb/5.tmo -text
-KCB/kcb/5.txt -text
 KCB/kcb/6.tmo -text
 KCB/kcb/7.tmo -text
 KCB/kcb/help.tmo -text
@@ -1241,6 +1240,15 @@ big_digital_clock/config.c -text
 big_digital_clock/func.asm -text
 big_digital_clock/main.c -text
 big_digital_clock/test.xcl -text
+busquery/busquery.dep -text
+busquery/busquery.ewp -text
+busquery/busquery.eww -text
+busquery/conf_loader.c -text
+busquery/conf_loader.h -text
+busquery/config_data.c -text
+busquery/func.asm -text
+busquery/main.C -text
+busquery/test.xcl -text
 cbn_SRC/15/Main.c -text
 cbn_SRC/15/SETTINGS/TED.DNI -text
 cbn_SRC/15/SETTINGS/TED.dbgdt -text
