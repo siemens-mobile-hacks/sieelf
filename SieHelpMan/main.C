@@ -1,5 +1,4 @@
 #include "..\inc\swilib.h"
-//#include "math.h"
 
 typedef struct
 {
@@ -27,6 +26,7 @@ GBSTMR mytmr;
 #define IPC_UPDATE_STAT 1
 const char ipc_my_name[]=IPC_MY_IPC;
 unsigned int REFRESH=5;
+int vibra_flag=0;
 int screenw;
 int screenh;
 #ifdef ELKA
@@ -107,6 +107,7 @@ void soft_key(void)
   WSHDR *wsr = AllocWS(16);
   wsprintf(wsl, "Menu");
   wsprintf(wsr, "Exit");
+  DrawRectangle(0,screenh-GetFontYSIZE(FONT_MEDIUM)-2,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
   DrawString(wsl,2,screenh-GetFontYSIZE(FONT_MEDIUM)-2,screenw,screenh,FONT_MEDIUM,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   DrawString(wsr,screenw-get_string_width(wsr,FONT_MEDIUM)-4,screenh-GetFontYSIZE(FONT_MEDIUM)-2,screenw,screenh,FONT_MEDIUM,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   FreeWS(wsl);
@@ -116,14 +117,10 @@ void soft_key(void)
 void lgp(void)
 {
   WSHDR *ws = AllocWS(256);
-  //WSHDR *ws1 = AllocWS(16);
   soft_key();
-  //wsprintf(ws1, "LGP_ID: %d",num);
   wsprintf(ws, "LGP_ID: %d\n\n%t",num,num);
   DrawString(ws,5,screenh/3,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
-  //DrawString(ws,5,screenh/3*2,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   FreeWS(ws);
-  //FreeWS(ws1);
 }
 
 
@@ -185,6 +182,9 @@ void status(void)
   RAMNET *net=RamNet();
   int temp=GetAkku(1,3)-0xAAA+15;
   int volt=GetAkku(0,9);
+  unsigned int err;
+  int t_4=GetTotalFlexSpace(4,&err)/1024/1024;
+  int f_4=GetFreeFlexSpace(4,&err)/1024/1024;
   #ifdef NEWSGOLD
   #ifdef ELKA
   char model[]="Siemens ELKA";
@@ -196,8 +196,10 @@ void status(void)
   #endif
   DrawRectangle(0,y_b,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
   soft_key();
-  wsprintf(ws_info,"Phone: %s\nNet: %c%ddB\nBts: %d-%d:%d\nC1: %d C2: %d\nTemp: %d.%d°C\nVoltage:%d.%02dV\nAccuCap: %02d%%\nCpuLoad: %d%% CpuClock: %dMHz\nRam: %u Bytes",model,(net->ch_number>=255)?'=':'-',net->power,net->ci,net->lac,net->ch_number,net->c1,net->c2,temp/10,temp%10,volt/1000,(volt%1000)/10,*RamCap(),GetCPULoad(),GetCPUClock(),GetFreeRamAvail());
+  wsprintf(ws_info,"Phone: %s\nNet: %c%ddB T: %d.%d°C\nBts: %d-%d:%d\nC1: %d C2: %d\nV:%d.%02dV Cap: %02d%%\nCL: %d%% CC: %dMHz\nFreeRam: %u Kb",model,(net->ch_number>=255)?'=':'-',net->power,temp/10,temp%10,net->ci,net->lac,net->ch_number,net->c1,net->c2,volt/1000,(volt%1000)/10,*RamCap(),GetCPULoad(),GetCPUClock(),GetFreeRamAvail()/1024);
   DrawString(ws_info,5,y_b,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  wsprintf(ws_info,"0: %dKb / %dKb\n1: %dKb / %dKb\n2: %dKb / %dKb\n4: %dMB / %dMB",GetFreeFlexSpace(0,&err)/1024,GetTotalFlexSpace(0,&err)/1024,GetFreeFlexSpace(1,&err)/1024,GetTotalFlexSpace(1,&err)/1024,GetFreeFlexSpace(2,&err)/1024,GetTotalFlexSpace(2,&err)/1024,f_4,t_4);
+  DrawString(ws_info,5,y_b+GetFontYSIZE(FONT_SMALL)*7,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
 }
 
 
@@ -257,6 +259,27 @@ void text_attribute(void)
   FreeWS(wsh);
 }
 
+void vibra(void)
+{
+  WSHDR *ws = AllocWS(64);
+  soft_key();
+  if (num<0||num>100)
+  {
+    wsprintf(ws, "Vibra Power: %d%%\n\nWarning!\nOut of Power", num);
+    SetVibration(0);
+  }
+  else
+  {
+    wsprintf(ws, "Vibra Power: %d%%", num);
+    if (vibra_flag)
+      SetVibration(num);
+    else
+      SetVibration(0);
+  }
+  DrawString(ws,5,screenh/3,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  FreeWS(ws);
+}
+
 void onRedraw(MAIN_GUI *data)
 {
   DrawRectangle(0,y_b,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
@@ -274,6 +297,7 @@ void onRedraw(MAIN_GUI *data)
     case 5: rgb24(); break;
     case 6: sound(); break;
     case 7: text_attribute(); break;
+    case 8: vibra();break;
     default : flag=0; break;
   }
 }
@@ -314,7 +338,6 @@ void back_to_menu(void)
 
 int OnKey(MAIN_GUI *data, GUI_MSG *msg)
 {
-
   if (flag==2)
   {
     keycode(msg->gbsmsg->submess);
@@ -324,10 +347,6 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
         back_to_menu();
     }
   }
-/*  if (flag==4)
-  {
-    status_flag=0;
-  }*/
   else
   {
     
@@ -366,9 +385,26 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
         case RIGHT_BUTTON: 
           if(flag!=7||flag!=4) num=num+1; REDRAW(); break;   
         case LEFT_BUTTON: 
-          if(flag!=7||flag!=4) num=num-1; REDRAW(); break;    
-        case RIGHT_SOFT: CloseCSM(MAINCSM_ID); break;  
-        case LEFT_SOFT: back_to_menu(); break;  
+          if(flag!=7||flag!=4) num=num-1; REDRAW(); break; 
+        case ENTER_BUTTON:
+          if(flag==8)
+          {
+            vibra_flag=!vibra_flag;
+            REDRAW();
+          }
+          break; 
+        case RIGHT_SOFT: 
+          {
+            if (vibra_flag) SetVibration(0);
+            CloseCSM(MAINCSM_ID); 
+            break;  
+          }
+        case LEFT_SOFT: 
+          {
+            if (vibra_flag) SetVibration(0);
+            back_to_menu(); 
+            break; 
+          } 
       }  
     }  
     if (msg->gbsmsg->msg==LONG_PRESS)  
@@ -465,7 +501,7 @@ SOFTKEYSTAB menu_skt=
   menu_sk,0
 };
 
-#define ITEMS_N 9
+#define ITEMS_N 10
 
 MENUITEM_DESC menu_items[ITEMS_N]=
 {
@@ -474,8 +510,9 @@ MENUITEM_DESC menu_items[ITEMS_N]=
   {NULL,(int)"LGP_ID",         LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"Sound",          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"Font",           LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-  {NULL,(int)"TextAttr",  LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"TextAttr",       LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"RGB24",          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"VibraPower",     LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"KeyCode",        LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"About",          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 };
@@ -528,6 +565,11 @@ void text_attr_gui(GUI *data)
   startgui();
 }
 
+void vibra_gui(GUI *data)
+{
+  flag=8;
+  startgui();
+}
 
 void about(GUI *data)
 {
@@ -543,6 +585,7 @@ const MENUPROCS_DESC menu_hndls[ITEMS_N]=
   font_gui,
   text_attr_gui,
   rgb24_gui,
+  vibra_gui,
   keycode_gui,
   about,
 };
