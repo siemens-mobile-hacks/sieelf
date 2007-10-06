@@ -14,7 +14,6 @@ CSM_DESC icsmd;
 int (*old_icsm_onMessage)(CSM_RAM*,GBS_MSG*);
 void (*old_icsm_onClose)(CSM_RAM*);
 
-WSHDR *ws_nogui;
 
 CSM_RAM *under_idle;
 
@@ -30,7 +29,6 @@ extern void kill_data(void *p, void (*func_p)(void *));
 void ElfKiller(void)
 {
   extern void *ELF_BEGIN;
-  FreeWS(ws_nogui);
   kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
 }
 
@@ -113,14 +111,14 @@ int my_keyhook(int submsg, int msg)
   if ((ACTIVE_KEY_STYLE==1)||(ENA_LONG_PRESS==3))
   {
     if (submsg!=ACTIVE_KEY) return KEYHOOK_NEXT;
-    if (my_csm_id)
+    /*if (my_csm_id)
     {
       if (((CSM_RAM *)(CSM_root()->csm_q->csm.last))->id!=my_csm_id)
       {
         CloseCSM(my_csm_id);
       }
       return KEYHOOK_NEXT;
-    }
+    }*/
     switch(msg)
     {
     case KEY_DOWN:
@@ -152,9 +150,8 @@ int my_keyhook(int submsg, int msg)
         ShowMenu();
       }
       mode=0;
-      break;
+      return KEYHOOK_BREAK;
     }
-    return KEYHOOK_BREAK;
   }
   // * + # implementation
   if ((ACTIVE_KEY_STYLE==2) && !(my_csm_id))
@@ -187,10 +184,10 @@ int my_keyhook(int submsg, int msg)
     if (submsg!=ACTIVE_KEY) return KEYHOOK_NEXT;
     if (my_csm_id)
     {
-      if (((CSM_RAM *)(CSM_root()->csm_q->csm.last))->id!=my_csm_id)
+      /*if (((CSM_RAM *)(CSM_root()->csm_q->csm.last))->id!=my_csm_id)
       {
         CloseCSM(my_csm_id);
-      }
+      }*/
       if (msg==KEY_UP)
       {
         GBS_SendMessage(MMI_CEPID,KEY_DOWN,ENTER_BUTTON);
@@ -363,7 +360,6 @@ void MyIDLECSM_onClose(CSM_RAM *data)
 {
   extern void seqkill(void *data, void(*next_in_seq)(CSM_RAM *), void *data_to_kill, void *seqkiller);
   extern void *ELF_BEGIN;
-  FreeWS(ws_nogui);
   RemoveKeybMsgHook((void *)my_keyhook);
   seqkill(data,old_icsm_onClose,&ELF_BEGIN,SEQKILLER_ADR());
 }
@@ -395,8 +391,6 @@ void main(void)
       icsmd.onMessage=MyIDLECSM_onMessage;
       icsm->constr=&icsmd;
     }
-    ws_nogui=AllocWS(256);
-    wsprintf(ws_nogui,"%t","NO GUI!");
     under_idle=(FindCSMbyID(CSM_root()->idle_id))->prev; //We are looking for idle_dialog
   }
   UnlockSched();
