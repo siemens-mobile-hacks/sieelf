@@ -5,6 +5,7 @@
 
 extern const int line2;
 extern const int number2;
+extern const int left;
 extern const char fname[128];
 extern const int year;
 extern const int month;
@@ -25,10 +26,10 @@ typedef struct
 
 extern void kill_data(void *p, void (*func_p)(void *));
 
-void copy_unicode_2ws(WSHDR* ws, unsigned short* unicode)
+void copy_unicode_2ws(WSHDR* ws, unsigned short* unicode,int x)
 {
 	int i = 0;
-	for (; unicode[i]!=0 && i<=4; i++ )
+	for (; unicode[i]!=0 && i<=x; i++ )
 	{
 		ws->wsbody[i+1] = unicode[i];
 	}
@@ -42,15 +43,16 @@ char c[30]="\xE4\xB8\x80\xE4\xBA\x8C\xE4\xB8\x89\xE5\x9B\x9B\xE4\xBA\x94\xE5\x85
 int num=0;
 int nx=1;
 unsigned int daylist=0;
+unsigned int err;
+TDate d;
 
 unsigned int MAINCSM_ID = 0;
 
 
-char* Opendata(char *recname)
+unsigned short* Opendata(char *recname)
 {
   char *buf;
   int f;
-  unsigned int err;
   unsigned int fsize;  
   f=fopen(recname,A_ReadOnly+A_BIN,P_READ,&err);
   fsize=lseek(f,0,S_END,&err,&err);
@@ -63,7 +65,7 @@ char* Opendata(char *recname)
   fread(f,buf,fsize,&err);
   buf[fsize]=0;
   fclose(f,&err);
-  return (buf);
+  return ((unsigned short*) buf);
 }
 
 
@@ -72,25 +74,25 @@ void getfname(char *recname,int x)
   switch(x)
   {
   case 1:
-  snprintf(recname,128,"%s1.txt",fname);
+  snprintf(recname,128,"%s1.tmo",fname);
   break;
   case 2:
-  snprintf(recname,128,"%s2.txt",fname);
+  snprintf(recname,128,"%s2.tmo",fname);
   break;
   case 3:
-  snprintf(recname,128,"%s3.txt",fname);
+  snprintf(recname,128,"%s3.tmo",fname);
   break;
   case 4:
-  snprintf(recname,128,"%s4.txt",fname);
+  snprintf(recname,128,"%s4.tmo",fname);
   break;
   case 5:
-  snprintf(recname,128,"%s5.txt",fname);
+  snprintf(recname,128,"%s5.tmo",fname);
   break;
   case 6:
-  snprintf(recname,128,"%s6.txt",fname);
+  snprintf(recname,128,"%s6.tmo",fname);
   break;
   case 0:
-  snprintf(recname,128,"%s7.txt",fname);
+  snprintf(recname,128,"%s7.tmo",fname);
   break;
   default:
       break;
@@ -98,13 +100,13 @@ void getfname(char *recname,int x)
 }
 
 
-void drawname(const char *s,int l,int a,int b,int d,int h,int h2)
+void drawname(unsigned short *s,int l,int a,int b,int d,int h,int h2)
 {
-  WSHDR* ws = AllocWS(55);
+  WSHDR* ws = AllocWS(255);
   int c,k;
   int cc=0;
-  char *r;
-  char cr[55];
+  unsigned short *r;
+  unsigned short cr[255];
 #ifdef ELKA
   int n=8;
   int ab=h+2;
@@ -119,21 +121,20 @@ void drawname(const char *s,int l,int a,int b,int d,int h,int h2)
     s++;
     switch(c)
     {
-    case '\r':
-    case '\n':
+    case '@':
       break;
       
     case ' ': 
       r=cr;
       k=0;
       cc++;
-      while(*s!=' ' && *s && k<(sizeof(cr)-1))  
+      while(*s!=' '&&*s!='@'&& *s && k<(sizeof(cr)-1))  
       {
         *r++=*s++;
         k++;
       }
-      *r=0;
-     utf8_2ws(ws,cr,l);
+     *r=0;
+     copy_unicode_2ws(ws,cr,l);
      if(line2)
      {
        if(num==0&&cc<=(n/2))
@@ -191,11 +192,18 @@ void onRedraw(MAIN_GUI *data)
   WSHDR* ws1 = AllocWS(20);
   const char *pc;
   pc=c;
-  const char *s;
+  unsigned short *s;
   int lx,ly,lz;
   int x,y,z,z2;
   int week;
   char recname[128];
+  int o;
+  if(left)
+    o=1;
+  else
+    o=2;
+  
+  
 #ifdef ELKA
   int aa=2;
   int h=30;
@@ -211,14 +219,14 @@ void onRedraw(MAIN_GUI *data)
   int w=16;
   int ab=0;
   int ac=10;
-  int ad=0;
+  int ad=1;
 #endif
 
   //底色
   DrawRectangle(0,0,ScreenW(),ScreenH(),0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
   
   //时间日期星期
-  TDate d;
+
   TTime t;
   GetDateTime(&d, &t);
   
@@ -239,15 +247,15 @@ void onRedraw(MAIN_GUI *data)
   //
   if(line2)
   {
-  lx=6;
-  ly=24;
-  lz=54;
+  lx=1;
+  ly=7;
+  lz=16;
   }
   else
   {
-  lx=3;
-  ly=12;
-  lz=27;
+  lx=0;
+  ly=3;
+  lz=8;
   }
 
   
@@ -266,7 +274,7 @@ void onRedraw(MAIN_GUI *data)
 //3
   getfname(recname,(GetWeek(&d)+nx)%7);
   s=Opendata(recname);
-  drawname(s,ly,w*3-aa-2,w*6+aa,2,h,h2);
+  drawname(s,ly,w*3,w*6,o,h,h2);
   
 //4
   getfname(recname,(GetWeek(&d)+nx+1)%7);
@@ -282,7 +290,7 @@ void onRedraw(MAIN_GUI *data)
   {
   getfname(recname,(GetWeek(&d)+nx)%7);
   s=Opendata(recname);
-  drawname(s,lz,w*1-aa-2,w*8+aa,2,h,h2);
+  drawname(s,lz,w*1,w*8,o,h,h2);
   }
   
  int i,j;
@@ -343,8 +351,8 @@ void onRedraw(MAIN_GUI *data)
   //数字
   if(i==0&&j>0)
   {
-  wsprintf(ws,"%d",y+z2);
-  DrawString(ws,0,h+3+h2*z+ad,GetFontYSIZE(FONT_SMALL_ITALIC_BOLD)+aa,ScreenH(),8,4,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  wsprintf(ws,"%d%d",(y+z2)/10,(y+z2)%10);
+  DrawString(ws,0,h+3+h2*z+ad,ScreenW(),ScreenH(),8,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
 }
 }
@@ -375,16 +383,38 @@ void onUnfocus(MAIN_GUI *data, void (*mfree_adr)(void *))
 
 void create_num(int numx)
 {
-  /*
-  int w=0,t;
-  t=num;
-  while(t)
-  {
-    ++w;
-    t=t/10;
-  };*/
-  num=num*10+numx;
+  nx=(7-GetWeek(&d)+numx)%7;
   REDRAW();
+}
+
+void setting(void) 
+{
+  WSHDR *ws = AllocWS(150);
+  int fd1;
+  if ((fd1 = fopen("4:\\ZBin\\etc\\SieTxtView.bcfg", A_ReadOnly + A_BIN, P_READ, &err)) != -1)
+    str_2ws(ws, "4:\\ZBin\\etc\\schedule.bcfg", 128);
+  else
+    str_2ws(ws, "0:\\ZBin\\etc\\schedule.bcfg", 128);
+  fclose(fd1, &err);
+  ExecuteFile(ws, 0, 0);
+  FreeWS(ws);
+}
+
+void setdata(int x) 
+{
+  char recname[128];
+  WSHDR *ws = AllocWS(150);
+  if(x==1)
+  getfname(recname,(GetWeek(&d)+nx)%7);
+  if(x==0)
+  snprintf(recname,128,"%shelp.tmo",fname);  
+  int f = fopen(recname, A_ReadOnly + A_BIN, P_READ, &err);
+  if(f<0)
+    snprintf(recname,128,"%shelp.txt",fname); 
+  str_2ws(ws,recname,128);
+  fclose(f, &err);
+  ExecuteFile(ws, 0, 0);
+  FreeWS(ws);
 }
 
 int OnKey(MAIN_GUI *data, GUI_MSG *msg)
@@ -399,7 +429,7 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
   {
     switch(msg->gbsmsg->submess)
     {
-      case '0': create_num(0); break;
+      case '0': setdata(1); break;
       case '1': create_num(1); break;
       case '2': create_num(2); break;
       case '3': create_num(3); break;
@@ -407,10 +437,10 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
       case '5': create_num(5); break;
       case '6': create_num(6); break;
       case '7': create_num(7); break;
-      case '8': create_num(8); break;
-      case '9': create_num(9); break;
-      case '*': num=0; REDRAW(); break;
-      case '#': num=num; REDRAW(); break;
+      case '8': InitConfig();REDRAW();break;
+      case '9': setting();break;
+      case '*': setdata(0);  break;
+      case '#': ShowMSG(1,(int)"kcb 1.0 (c)zhangxxx(zxzyzw@163.com)"); REDRAW(); break;
       case UP_BUTTON: if(num!=0) num=num-aa; REDRAW(); break;
       case DOWN_BUTTON: if(num<aa) num=num+aa; REDRAW(); break;
       case RIGHT_BUTTON:{nx++;if(nx>7) nx=1;} REDRAW(); break;
@@ -422,15 +452,14 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
         else
         daylist=0;REDRAW()
          ;break;
-      //ShowMSG(1,(int)"kcb 0.96 (c)zhanxxx(zxzyzw@163.com)")
     }
   }
   if (msg->gbsmsg->msg==LONG_PRESS)
   {
     switch(msg->gbsmsg->submess)
     {
-      case UP_BUTTON: if(num!=0)num=num-10; REDRAW(); break;
-      case DOWN_BUTTON:if(num<10) num=num+10; REDRAW(); break;
+      case UP_BUTTON: if(num!=0)num=num-aa; REDRAW(); break;
+      case DOWN_BUTTON:if(num<aa)num=num+aa; REDRAW(); break;
       case RIGHT_BUTTON:nx++;if(nx>7) nx=1; REDRAW(); break;
       case LEFT_BUTTON:nx--;if(nx<1) nx=7; REDRAW(); break;
     }

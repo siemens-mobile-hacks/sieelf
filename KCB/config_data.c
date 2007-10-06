@@ -8,16 +8,19 @@ __root const int line2=0;
 __root const CFG_HDR cfghdr102 = {CFG_CHECKBOX,"number*2",0,0};
 __root const int number2=0;
 
-__root const CFG_HDR cfghdr103 = {CFG_INT,"year",1,3000};
+__root const CFG_HDR cfghdr103 = {CFG_CHECKBOX,"left",0,0};
+__root const int left=0;
+
+__root const CFG_HDR cfghdr104 = {CFG_INT,"year",1,3000};
 __root const int year=2007;
 
-__root const CFG_HDR cfghdr104 = {CFG_INT,"month",0,12};
+__root const CFG_HDR cfghdr105 = {CFG_INT,"month",0,12};
 __root const int month=1;
 
-__root const CFG_HDR cfghdr105 = {CFG_INT,"day",0,31};
+__root const CFG_HDR cfghdr106 = {CFG_INT,"day",0,31};
 __root const int day=1;
 
-__root const CFG_HDR cfghdr106={CFG_STR_UTF8,"µÿ÷∑",3,127};
+__root const CFG_HDR cfghdr107={CFG_STR_UTF8,"µÿ÷∑",3,127};
 __root const char fname[128]="0:\\zbin\\kcb\\";
 
 
