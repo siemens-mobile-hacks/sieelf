@@ -1,6 +1,6 @@
 //Release 17.12.2006
 //Если S75/SL75, добавить Project/Options/C C++ Compiler/Preprocessor/Defined symbols: NEWSGOLD
-//Eсли EL71 добавить предыдущий дефайн и ELKA
+//Eсл?EL71 добавить предыдущий дефайн ?ELKA
 
 typedef unsigned int size_t;
 typedef unsigned long time_t;
@@ -380,7 +380,7 @@ typedef struct
   char unk8;
   char unk9;
   int unk10;
-  int flag30; //Используется при создании (бывает |=0x02)
+  int flag30; //Использует? пр?создании (бывает |=0x02)
 }GUI;
 #else
 typedef struct
@@ -401,7 +401,7 @@ typedef struct
   char unk8;
   char unk9;
   int unk10;
-  int flag30; //Используется при создании (бывает |=0x02)
+  int flag30; //Использует? пр?создании (бывает |=0x02)
 }GUI;
 #endif
 
@@ -533,7 +533,7 @@ typedef struct
 
 #ifdef ELKA
 
-// E/EL71. Специальных символьных шрифтов нет, заменены на обычные.
+// E/EL71. Специальны?символьных шрифто?не? заменены на обычны?
 // E/EL71. There are no numeric fonts, they are replaced with regular.
 
 #define FONT_LARGE 0
@@ -584,7 +584,7 @@ typedef struct
 
 #else //#ifdef NEWSGOLD
 
-// SGOLD. Так как изначально курсивные шрифты отсутствуют, они заменены на соответствующие обычные.
+// SGOLD. Та?ка?изначально курсивны?шрифты отсутствую? он?заменены на соответствующи?обычны?
 // SGOLD. As there are initially no italic fonts in SGOLD series, they were replaced with corresponding regular fonts.
 
 #define FONT_LARGE 0
@@ -616,9 +616,9 @@ typedef struct
 #define PI_BASE_INFO3   2 // M_x75plat_MP_main_1.0
 #define PI_BASE_INFO4   3 // M_minosemea_TH
 #define PI_BUILD        4 // OFFICIAL
-#define PI_DATETIME1	5	// Какие-то две даты
+#define PI_DATETIME1	5	// Каки?то дв?даты
 #define PI_DATETIME2    6
-#define PI_SW_NUMBER    7 // Версия прошивки
+#define PI_SW_NUMBER    7 // Верс? прошивки
 #define PI_VENDOR       8 // = SIEMENS :)
 #define PI_MODEL        9 // модель телефона
 #define PI_LG           10 // = LangPack
@@ -794,16 +794,14 @@ typedef struct
   int _100;
   int _101;
   int zero2;
-//  0x00000001 - Выровнять по правому краю
+//  0x00000001 - Выровнять по правом?краю
 //  0x00000002 - Выровнять по центру
-//  0x00000004 - Инверсия знакомест
-//  0x00000008 - UnderLine
-//  0x00000020 - Не переносить слова
-//  0x00000200 - bold
+//  0x00000004 - Инверс? знакомес?//  0x00000008 - UnderLine
+//  0x00000020 - Не переносить слов?//  0x00000200 - bold
   int zero3;
 //  0x00000002 - ReadOnly
 //  0x00000004 - Не двигается курсор
-//  0x40000000 - Поменять местами софт-кнопки
+//  0x40000000 - Поме?ть местам?софт-кнопки
   int _0x40000000;
 }INPUTDIA_DESC;
 
@@ -1543,8 +1541,7 @@ __swi __arm  int DivBy10(int divident);
 //arm
 //pattern=00,30,B0,E1,00,00,60,42,0A,10,40,E2,20,01,40,E0,20,02,80,E0,20,04,80,E0,20,08,80,E0,A0,01,A0,E1,00,21,80,E0,82,10,51,E0,01,00,80,52,0A,10,81,42,03,30,B0,E1,00,00,60,42,00,10,61,42,1E,FF,2F,E1
 
-///Аналог RAMCAP, но без запарки над рамой
-#pragma swi_number=198
+///Аналог RAMCAP, но бе?запарк?на?рамо?#pragma swi_number=198
 __swi __arm  char GetAkkuCapacity();
 //arm
 //pattern=??,??,??,E5,??,??,??,E1,1E,FF,2F,E1,08,40,2D,E9,03,10,A0,E3,00,00,A0,E3,??,??,??,EB,C8,0E,50,E3,00,00,A0,93,01,00,A0,83,08,80,BD,E8
@@ -1738,7 +1735,7 @@ __swi	__arm	int  memcmp (void *m1,void *m2,int n);
 __swi	__arm	void  zeromem (void *dest,int n);
 //arm
 //pattern=??,??,??,E3,??,??,??,E3,??,??,??,3A,??,??,??,E2,??,??,??,0A,??,??,??,E2,??,??,??,E3,??,??,??,E4,??,??,??,A4,??,??,??,C4,??,??,??,E0,??,??,??,EA,??,??,??,E1,??,??,??,24,??,??,??,24,??,??,??,44,??,??,??,E1,??,??,??,??,??,??,??,E3,??,??,??,E9,??,??,??,E1,??,??,??,E1,??,??,??,E1,??,??,??,E2,??,??,??,28,??,??,??,28,??,??,??,22,??,??,??,2A,??,??,??,E1,??,??,??,28,??,??,??,48,??,??,??,E8,??,??,??,E1,??,??,??,24,??,??,??,01,??,??,??,44,??,??,??,44,??,??,??,E3,??,??,??,14,??,??,??,E1
-//есть еще такая же...
+//есть ещ?такая же...
 
 #pragma swi_number=0x011E
 __swi	__arm	void * memcpy (void *dest,const void *source,int cnt);
@@ -1799,7 +1796,7 @@ __swi	__arm	int  CreateWS (void *malloc,void *mfree,int len);
 __swi	__arm	void  FreeWS (WSHDR *wshdr);
 //thumb
 //pattern=??,B5,??,1C,??,D0,??,68,??,29,??,D0,??,68,??,28,??,D1,??,68,??,47,??,68,??,1C,??,47,??,20,??,BD,??,20,??,BD
-//две таких...
+//дв?таки?..
 
 #pragma swi_number=0x012A
 __swi	__arm	void  DrawObject (DRWOBJ *);
@@ -3086,7 +3083,9 @@ __swi __arm int GetLunarAnimal(int year);
 //pattern=E9 21 C9 00 41 1A 80 B5 0C 20 +1
 
 #pragma swi_number=0x237
-__swi __arm char *RamIconBar;
+__swi __arm char *RamIconBar(void);
 //arm
 //pattern= *(????????414D5F70)+4
+
+
 
