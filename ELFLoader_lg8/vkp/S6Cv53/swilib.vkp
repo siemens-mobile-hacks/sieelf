@@ -19,8 +19,8 @@
 0020: 0xA1255AB4   ; 08: SetIllumination(unsigned char dev,unsigned long param1,unsigned short bright,unsigned long delay)
 0024: 0xA1278B24   ; 09: SwitchPhoneOff
 0028: 0xA1243484   ; 0A: fopen(const char * cFileName, unsigned int iFileFlags, unsigned int iFileMode, unsigned int *ErrorNumber)
-;02C:     ; 0B: fread32(int FileHandler, void *cBuffer, int iByteCount, unsigned int *ErrorNumber)
-;030:     ; 0C: fwrite32(int FileHandler, void * cBuffer, int iByteCount, unsigned int *ErrorNumber)
+;02C:              ; 0B: fread32(int FileHandler, void *cBuffer, int iByteCount, unsigned int *ErrorNumber)
+;030:              ; 0C: fwrite32(int FileHandler, void * cBuffer, int iByteCount, unsigned int *ErrorNumber)
 0034: 0xA12433D8   ; 0D: fclose(int FileHandler, unsigned int *ErrorNumber)
 0038: 0xA1243408   ; 0E: fflush
 003C: 0xA1243438   ; 0F: lseek(int FileHandler, unsigned int offset, unsigned int origin, unsigned int *ErrorNumber, unsigned int *ErrorNumber2)
@@ -50,14 +50,14 @@
 0094: 0xA08C0913   ; 25: DrawCanvas(void *data, int x1, int y1, int x2, int y2, int flag_one)
 0098: 0xA00A1C55   ; 26: DrawImgBW
 009C: 0xA08C0297   ; 27: AddIconToIconbar
-00A0: 0xA161F550   ; 28: double fp_sint2fp(signed int i)
+00A0: 0xA1256B1C   ; 28: getEELiteMaxID
 00A4: 0xA1241EA4   ; 29: getEEFullMaxID
 00A8: 0xA12569B8   ; 2A: GetEELiteBlockAddress
-00AC: 0xA161F3F0   ; 2B: signed int fp_fp2sint(double f)
+00AC: 0xA1256AC0   ; 2B: getEELiteBlockSizeVersion
 00B0: 0xA1241AE8   ; 2C: getEEFullBlockSizeVersion
-00B4: 0xA161E7B0   ; 2D: double fp_add(double addend1, double addend2)
-00B8: 0xA161F710   ; 2E: double fp_mul(double factor1, double factor2)
-00BC: 0xA161EDC4   ; 2F: double fp_div(double divisor, double divident)
+00B4: 0xA1256B50   ; 2D: StartWriteEELiteBlock
+00B8: 0xA1256BCC   ; 2E: FinishWriteEELiteBlock
+00BC: 0xA1256B28   ; 2F: DeleteEELiteBlock
 
 00C0: 0xA1256B88   ; 30: WriteEELiteBlock
 00C4: 0xA1609D55   ; 31: strrchr
@@ -91,9 +91,9 @@
 0130: 0xA0AF9E49   ; 4C: GetMissedCallsCount
 0134: 0xA0827C04   ; 4D: CallAfterTimer(void *htimer, long ms, void ptr())
 0138: 0xA0098A33   ; 4E: __thumb int MsgBoxError(int flag, int LgpId);
-013C: 0xA0098A9B   ; 4F: __thumb int MsgBoxYesNo(int flag, int LgpID, void CallBackProc(int));
+013C: 0xA0098A91   ; 4F: __thumb int MsgBoxYesNo(int flag, int LgpID, void CallBackProc(int))
 
-0140: 0xA0098ADB   ; 50: __thumb int MsgBoxOkCancel(int flag, int LgpID, void CallBackProc(int));
+0140: 0xA0098A9B   ; 50: __thumb int MsgBoxOkCancel(int flag, int LgpID, void CallBackProc(int))
 0144: 0xA010C245   ; 51: GetNetAccessMode
 0148: 0xA1256160   ; 52: GetIlluminationDataTable
 014C: 0xA160924D   ; 53: memcmp(void *m1,void *m2,int n)
@@ -136,8 +136,8 @@
 01D8: 0xA00DA9F1   ; 76: SetWindowText
 01DC: 0xA00D57A7   ; 77: set2color_byPaletteAdr
 01E0: 0xA0AA7F3B   ; 78: GetTimeFormat
-01E4: 0xA00A3029   ; 79: DrawObject2Layer(LCD_Layer *, DRWOBJ *)
-01E8: 0xA00A3FD5   ; 7A: UpdateDisplayByLayerPtr(LCD_Layer *)
+01E4: 0xA00A3055   ; 79: DrawObject
+01E8: 0xA00D583D   ; 7A: ClearWindowBuffer
 01EC: 0xA08D46BD   ; 7B: GetProfileFilter
 01F0: 0xA125DE54   ; 7C: SetVibration(unsigned int power)
 01F4: 0xA00CD369   ; 7D: IsIncognitoCall
@@ -170,11 +170,9 @@
 ;258:              ; 96: GetWavLenByContent
 025C: 0xA006F261   ; 97: CreatePath
 0260: 0xA006F211   ; 98: void PlaySoundVibra(char SndNum, char VibraPower, unsigned int VibraDuration, char VibraIfOff)
-;--------------audio hook--------------------
 ;264: 0xA08FF5CC   ; 99: ;__arm int PlayMelodyInMem(char Unk_0x11,void *MelAddr,int MelSize,int unk2_0xFFFF,int Unk3_0,int Unk4_0)
 ;268: 0xA125E758   ; 9A: ;__arm int ChangeVolume(unsigned char Volume)
 ;26C: 0xA876C5A0   ; 9B: Audio params addr
-;--------------------------------------------
 ;270:              ; 9C: CloseScreensaver
 0274: 0xA0C04CA1   ; 9D: __thumb int GetMissedEventsPtr()
 0278: 0xA006F2B1   ; 9E: int GetMissedEventCount(unsigned int Event)
@@ -185,7 +183,7 @@
 0288: 0xA1000EB7   ; A2: Unicode_GetCharByPosition
 028C: 0xA1242924   ; A3: ws2str(WSHDR *ws, char *str, unsigned int size)
 0290: 0xA100112B   ; A4: AllocWS_2(int len)
-0294: 0xA1001167   ; A5: FreeWS_2(WSHDR *wshdr)
+0294: 0xA1000A75   ; A5: FreeWS_2(WSHDR *wshdr)
 0298: 0xA08DA805   ; A6: ResetGPRSTraffic()
 029C: 0xA08DA651   ; A7: char IsGPRSEnabled()
 02A0: 0xA00E9AF5   ; A8: char IsGPRSConnected()
@@ -618,3 +616,6 @@
 +0
 ;********************************************************************************
 
+
+
+;locale=chinese
