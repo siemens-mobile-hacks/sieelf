@@ -90,7 +90,7 @@
 012C: 0xA0AB51C8   ;  4B: StartMidlet
 0130: 0xA09D0C91   ;  4C: int GetMissedCallsCount()
 0134: 0xA0093278   ;  4D: void GBS_StartTimerProc(void *htimer, long ms, void ptr())
-0138: 0xA099D0E7   ;  4E: int MsgBoxError(int flag, int LgpId)
+0138: 0xA099D105   ;  4E: int MsgBoxError(int flag, int LgpId)
 013C: 0xA099D165   ;  4F: int MsgBoxYesNo(int flag, int LgpID, void CallBackProc(int))
 
 0140: 0xA099D16F   ;  50: int MsgBoxOkCancel(int flag, int LgpID, void CallBackProc(int))
@@ -333,7 +333,7 @@
 
 04C0: 0xA0996C3D   ; 130: void getRGBbyPaletteAdr(int *paletteAdr,void *dest)
 04C4: 0xA0996C5B   ; 131: void setColor(int a,int r,int g,int b,void *dest)
-04C8: 0xA1417979   ; 132: void *memmove(void *dest,const void *source,int cnt)
+04C8: 0xA1417978   ; 132: void *memmove(void *dest,const void *source,int cnt)
 04CC: 0xA099B4A1   ; 133: void StoreXYWHtoRECT(void *RECT,int x,int y,int w,int h)
 04D0: 0xA099B4B7   ; 134: void StoreXYXYtoRECT(void *RECT,int x,int y,int x2,int y2)
 04D4: 0xA099DA5F   ; 135: int IsGuiOnTop(int id)
@@ -356,7 +356,7 @@
 0514: 0xA0099208   ; 145: int GBS_GetCurCepid(void)
 0518: 0xA009B180   ; 146: void LockSched(void)
 051C: 0xA009B26C   ; 147: void UnlockSched(void)
-0520: 0xA099D0D9   ; 148: extern int ShowMSG(int flag, int lgp_id)
+0520: 0xA099D0E7   ; 148: extern int ShowMSG(int flag, int lgp_id)
 0524: 0xA0998F21   ; 149: void SetPropToText(DRWOBJ *drwobj,void *rect,int rect_flag,WSHDR *wshdr,int font,int text_flag)
 0528: 0xA0997155   ; 14A: void FreeDrawObject_subobj(DRWOBJ *drwobj)
 052C: 0xA09970BF   ; 14B: void SetColor(DRWOBJ *drwobj, char *color1, char *color2)
@@ -539,7 +539,7 @@
 ;7C4:              ; 1F1: filecopy_op_announce
 07C8: 0xA01DED98   ; 1F2: devmenu_config_IsCheckboxOff
 07CC: 0xA00A8954   ; 1F3: unsigned int GetSessionAge()
-07D0: 0xA8E4C36B   ; 1F4: char *RamServiceProviderName()
+07D0: 0xA8E4C36C   ; 1F4: char *RamServiceProviderName()
 07D4: 0xA1417C85   ; 1F5: int sscanf(const char *, const char *, ...)
 07D8: 0xA099C1FB   ; 1F6: IMGHDR *GetPitAdrBy0xE200Symbol(int uni_symbol)
 07DC: 0xA006F501   ; 1F7: long GetFileSize(char *Filename)
