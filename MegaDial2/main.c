@@ -132,8 +132,12 @@ static void patch_input(const INPUTDIA_DESC* inp)
 #define LEVEL1_RN	(41*41)
 #define LEVEL2_RN	(41)
 #else 
-#define MAX_RECORDS 1024
+#ifdef SK65
+#define LEVEL1_RN	(0x2D)
+#else
 #define LEVEL1_RN	(0x20)
+#endif
+#define MAX_RECORDS 1024
 #endif
 
 #define NUMBERS_MAX 5
