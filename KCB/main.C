@@ -273,12 +273,12 @@ void onRedraw(MAIN_GUI *data)
   if(daylist==0)
   {
 //1
-  getfname(recname,(GetWeek(&d)+nx-2)%7);
+  getfname(recname,(GetWeek(&d)+nx-2+7)%7);
   s=Opendata(recname);
   drawname(s,lx,w*1,w*2,32,h,h2,string_color);
 
 //2
-  getfname(recname,(GetWeek(&d)+nx-1)%7);
+  getfname(recname,(GetWeek(&d)+nx-1+7)%7);
   s=Opendata(recname);
   drawname(s,lx,w*2,w*3,32,h,h2,string_color);
 
@@ -347,7 +347,7 @@ void onRedraw(MAIN_GUI *data)
   //ÐÇÆÚ
   if(j==0&&i>0)
   {
-  utf8_2ws(ws,pc+((GetWeek(&d)+i+nx-4)%7)*3,3);
+  utf8_2ws(ws,pc+((GetWeek(&d)+i+nx-4+7)%7)*3,3);
   if(i==3)
   DrawString(ws,w*(i+1),h+ad,ScreenW(),ScreenH(),8,32,color(week_color),GetPaletteAdrByColorIndex(23)); 
   if(daylist==0)
