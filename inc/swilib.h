@@ -558,24 +558,44 @@ typedef struct
 //#define MIDDLE_FONT 4
 
 #else //#ifdef ELKA
+/******************************************
+NEWSGOLD字体设置定义，测试后重写，by binghelingxi
+*******************************************/
+//#define FONT_LARGE 0
+//#define FONT_LARGE_BOLD 1
+//#define FONT_LARGE_ITALIC 2
+//#define FONT_LARGE_ITALIC_BOLD 3
+//#define FONT_MEDIUM 4
+//#define FONT_MEDIUM_BOLD 5
+//#define FONT_MEDIUM_ITALIC 6
+//#define FONT_MEDIUM_ITALIC_BOLD 7
+//#define FONT_NUMERIC_SMALL 8
+//#define FONT_NUMERIC_SMALL_BOLD 9
+//#define FONT_NUMERIC_XSMALL 10
+//#define FONT_SMALL 11
+//#define FONT_SMALL_BOLD 12
+//#define FONT_SMALL_ITALIC 13
+//#define FONT_SMALL_ITALIC_BOLD 14
+//#define FONT_NUMERIC_LARGE 15
+//#define FONT_NUMERIC_MEDIUM 16
 
 #define FONT_LARGE 0
 #define FONT_LARGE_BOLD 1
-#define FONT_LARGE_ITALIC 2
-#define FONT_LARGE_ITALIC_BOLD 3
-#define FONT_MEDIUM 4
-#define FONT_MEDIUM_BOLD 5
-#define FONT_MEDIUM_ITALIC 6
-#define FONT_MEDIUM_ITALIC_BOLD 7
-#define FONT_NUMERIC_SMALL 8
-#define FONT_NUMERIC_SMALL_BOLD 9
-#define FONT_NUMERIC_XSMALL 10
-#define FONT_SMALL 11
-#define FONT_SMALL_BOLD 12
-#define FONT_SMALL_ITALIC 13
-#define FONT_SMALL_ITALIC_BOLD 14
-#define FONT_NUMERIC_LARGE 15
-#define FONT_NUMERIC_MEDIUM 16
+#define FONT_LARGE_ITALIC 0
+#define FONT_LARGE_ITALIC_BOLD 1
+#define FONT_MEDIUM 2
+#define FONT_MEDIUM_BOLD 3
+#define FONT_MEDIUM_ITALIC 2
+#define FONT_MEDIUM_ITALIC_BOLD 3
+#define FONT_SMALL 7
+#define FONT_SMALL_BOLD 8
+#define FONT_SMALL_ITALIC 7
+#define FONT_SMALL_ITALIC_BOLD 8
+#define FONT_NUMERIC_LARGE 0
+#define FONT_NUMERIC_MEDIUM 2
+#define FONT_NUMERIC_SMALL 4
+#define FONT_NUMERIC_SMALL_BOLD 5
+#define FONT_NUMERIC_XSMALL 6
 
 //#define SMALL_FONT 11
 //#define MIDDLE_FONT 4
