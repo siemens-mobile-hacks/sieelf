@@ -27,7 +27,7 @@ GBSTMR mytmr;
 const char ipc_my_name[]=IPC_MY_IPC;
 unsigned int REFRESH=5;
 int vibra_flag=0;
-int light_flag=0; //0,all , 1,display , 2,kbd , 3,do nothing
+int light_flag=3; //0,all , 1,display , 2,kbd , 3,do nothing
 int screenw;
 int screenh;
 #ifdef ELKA
