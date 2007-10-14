@@ -27,6 +27,7 @@ GBSTMR mytmr;
 const char ipc_my_name[]=IPC_MY_IPC;
 unsigned int REFRESH=5;
 int vibra_flag=0;
+int light_flag=0; //0,all , 1,display , 2,kbd , 3,do nothing
 int screenw;
 int screenh;
 #ifdef ELKA
@@ -291,6 +292,38 @@ void vibra(void)
   FreeWS(ws);
 }
 
+  
+void light(void)
+{
+  WSHDR *ws = AllocWS(64);
+  soft_key();
+  if (num<0||num>100)
+  {
+    wsprintf(ws, "Light: %d%%\n\nWarning!\nOut of Light", num);
+  }
+  else
+  {
+    wsprintf(ws, "Light: %d%%", num);
+    switch(light_flag)
+    {
+      case 0:
+        SetIllumination(0, 1, num, 0);
+        SetIllumination(1, 1, num, 0);
+        break;
+      case 1:
+        SetIllumination(0, 1, num, 0);
+        break;
+      case 2:
+        SetIllumination(1, 1, num, 0);
+        break;
+      case 3:
+        break;
+    }
+  }
+  DrawString(ws,5,screenh/3,screenw,screenh,FONT_SMALL_N,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  FreeWS(ws);
+}
+
 void onRedraw(MAIN_GUI *data)
 {
   DrawRectangle(0,y_b,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
@@ -309,6 +342,7 @@ void onRedraw(MAIN_GUI *data)
     case 6: sound(); break;
     case 7: text_attribute(); break;
     case 8: vibra();break;
+    case 9: light();break;
     default : flag=0; break;
   }
 }
@@ -401,8 +435,15 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
           if(flag==8)
           {
             vibra_flag=!vibra_flag;
-            REDRAW();
           }
+          if(flag==9)
+          {
+            if(light_flag==3)
+              light_flag=0;
+            else
+              light_flag++;
+          }
+          REDRAW();
           break; 
         case RIGHT_SOFT: 
           {
@@ -512,7 +553,7 @@ SOFTKEYSTAB menu_skt=
   menu_sk,0
 };
 
-#define ITEMS_N 10
+#define ITEMS_N 11
 
 MENUITEM_DESC menu_items[ITEMS_N]=
 {
@@ -524,6 +565,7 @@ MENUITEM_DESC menu_items[ITEMS_N]=
   {NULL,(int)"TextAttr",       LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"RGB24",          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"VibraPower",     LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"Light",          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"KeyCode",        LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"About",          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 };
@@ -582,6 +624,12 @@ void vibra_gui(GUI *data)
   startgui();
 }
 
+void light_gui(GUI *data)
+{
+  flag=9;
+  startgui();
+}
+
 void about(GUI *data)
 {
   ShowMSG(1, (int)"SieHelpMan\ncopyright 2007\nbinghelingxi");
@@ -597,6 +645,7 @@ const MENUPROCS_DESC menu_hndls[ITEMS_N]=
   text_attr_gui,
   rgb24_gui,
   vibra_gui,
+  light_gui,
   keycode_gui,
   about,
 };
