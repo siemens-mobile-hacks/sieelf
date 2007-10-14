@@ -39,23 +39,7 @@ int y_b=0;
 #ifdef ELKA
 #define FONT_SMALL_N 8
 #else
-//#define FONT_LARGE 0
-//#define FONT_LARGE_BOLD 1
-//#define FONT_LARGE_ITALIC 2
-//#define FONT_LARGE_ITALIC_BOLD 3
-//#define FONT_MEDIUM 2
-//#define FONT_MEDIUM_BOLD 3
-//#define FONT_MEDIUM_ITALIC 6
-//#define FONT_MEDIUM_ITALIC_BOLD 7
-//#define FONT_NUMERIC_SMALL 8
-//#define FONT_NUMERIC_SMALL_BOLD 9
-//#define FONT_NUMERIC_XSMALL 10
 #define FONT_SMALL_N 7
-//#define FONT_SMALL_BOLD 8
-//#define FONT_SMALL_ITALIC 13
-//#define FONT_SMALL_ITALIC_BOLD 14
-//#define FONT_NUMERIC_LARGE 15
-//#define FONT_NUMERIC_MEDIUM 16
 #endif
 #else
 #define FONT_SMALL_N 11
@@ -179,7 +163,7 @@ void font()
   #ifdef ELKA
   font_max=11;
   #else
-  font_max=8;
+  font_max=10;
   #endif
   #else
   font_max=10;
@@ -223,17 +207,6 @@ void status(void)
   DrawRectangle(0,y_b,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
   soft_key();
   GUI *igui=GetTopGUI();
-//#ifdef ELKA
-//  void *canvasdata = BuildCanvas();
-//  {
-//#else
-//  void *idata = GetDataOfItemByID(igui, 2);
-//  if (idata)
-//  {
-//    void *canvasdata = ((void **)idata)[DISPLACE_OF_IDLECANVAS / 4];
-//#endif
-//    DrawCanvas(canvasdata, 0, y_b, screenw, screenh, 1);
-//  }
   wsprintf(ws_info,"Phone: %s\nNet: %c%ddB T: %d.%d°C\nBts: %d-%d:%d\nC1: %d C2: %d\nV:%d.%02dV Cap: %02d%%\nCL: %d%% CC: %dMHz\nFreeRam: %uKb",model,(net->ch_number>=255)?'=':'-',net->power,temp/10,temp%10,net->ci,net->lac,net->ch_number,net->c1,net->c2,volt/1000,(volt%1000)/10,*RamCap(),GetCPULoad(),GetCPUClock(),GetFreeRamAvail()/1024);
   DrawString(ws_info,5,y_b,screenw,screenh,FONT_SMALL_N,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   wsprintf(ws_info,"0: %dKb / %dKb\n1: %dKb / %dKb\n2: %dKb / %dKb\n4: %dMB / %dMB",GetFreeFlexSpace(0,&err)/1024,GetTotalFlexSpace(0,&err)/1024,GetFreeFlexSpace(1,&err)/1024,GetTotalFlexSpace(1,&err)/1024,GetFreeFlexSpace(2,&err)/1024,GetTotalFlexSpace(2,&err)/1024,f_4,t_4);

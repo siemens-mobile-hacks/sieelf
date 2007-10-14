@@ -859,6 +859,11 @@ PicPusk/config_data.c -text
 PicPusk/func.asm -text
 PicPusk/main.c -text
 PicPusk/test.xcl -text
+PngExtStat/PngExtStat.ewp -text
+PngExtStat/PngExtStat.eww -text
+PngExtStat/func.asm -text
+PngExtStat/main.c -text
+PngExtStat/test.xcl -text
 SSMS/SSMS.ewp -text
 SSMS/SSMS.eww -text
 SSMS/conf_loader.c -text
