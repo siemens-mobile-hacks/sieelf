@@ -294,8 +294,8 @@ void OnRedraw(MAIN_GUI *data)
   if (current)
   {
     wsprintf(data->ws1,"%s",current->pngname);
-    DrawString(data->ws1,3,YDISP+GetFontYSIZE(FONT_SMALL),x-4,YDISP+GetFontYSIZE(FONT_SMALL)*2,FONT_SMALL,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));  
-    DrawRoundedFrame(1,YDISP+GetFontYSIZE(FONT_SMALL)*2+1,x-2,y-2,0,0,0,
+    DrawString(data->ws1,3,YDISP+GetFontYSIZE(FONT_SMALL),x-4,YDISP+GetFontYSIZE(FONT_SMALL)*3,FONT_SMALL,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));  
+    DrawRoundedFrame(1,YDISP+GetFontYSIZE(FONT_SMALL)*3+1,x-2,y-2,0,0,0,
                      GetPaletteAdrByColorIndex(0),
                      GetPaletteAdrByColorIndex(20));
     
