@@ -1,9 +1,9 @@
 #include "..\inc\cfg_items.h"
-#include "..\inc\swilib.h"
-//Конфигурац?
 
-__root const CFG_HDR cfghdr106={CFG_STR_UTF8,"address",3,127};
+__root const CFG_HDR cfghdr0={CFG_STR_UTF8,"address",3,127};
 __root const char name[128]="0:\\zbin\\data.txt";
+
+
 
 
 //__root const CFG_HDR cfghdr11={CFG_UTF8_STRING,"week",1,29};
