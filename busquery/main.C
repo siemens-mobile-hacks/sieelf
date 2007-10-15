@@ -6,20 +6,34 @@ char pt[]="%t";
 const int minus11=-11;
 
 char *buf=0;
+char *s=0;
 int fsize=0;
 int num=0;
 int len=0;
 
+int cc=0;
+
+char word[40];
+char word2[40];
+char cr[768][768]; 
+char( *p)[768]=&cr[768];
+char cr2[50]; 
+char *p2;
+char cr3[50][50]; 
+char( *p3)[50]=&cr3[50];
+char cz[152];
+
+
 const SOFTKEY_DESC menu_sk[]=
 {
-    {0x0018,0x0000,(int)"select"},
+    {0x0018,0x0000,(int)"Select"},
     {0x0001,0x0000,(int)"Close"},
     {0x003D,0x0000,(int)"+"}
 };
 
 SOFTKEYSTAB menu_skt=
 {
-    menu_sk,3
+    menu_sk,0
 };
 
 typedef struct
@@ -69,6 +83,10 @@ void Loaddata()
       buf=0;
   }
   fclose(f,&err);
+  
+
+
+  
 }
 
 
@@ -84,29 +102,18 @@ void doit(GUI *data)
     ExtractEditControl(data,2,&ec2);
     ExtractEditControl(data,3,&ec3);
     int utf8conv_res_len;
-    char word[40];
-    char word2[40];
     ws_2utf8(ec.pWS,word,&utf8conv_res_len,40);
     ws_2utf8(ec2.pWS,word2,&utf8conv_res_len,40);
     
   char *pos=buf;
   int c;
-  char *s;
   int i=0;
-  char cr[768][768]; 
-  char( *p)[768]=&cr[768];
   int find=0;
-  int cc=0;
   int i2=0;
   int k;
   int l;
   int k1;
-  char cr2[50]; 
-  char *p2;
   p2=cr2;
-  char cr3[50][50]; 
-  char( *p3)[50]=&cr3[50];
-  char cz[152];
 
   while((c=*pos))
   {
@@ -256,14 +263,12 @@ void doit(GUI *data)
   }
   }
   
-
-
      if(cc==0)
           {
            wsprintf(ec3.pWS, pt, "No bus!");
             StoreEditControl(data ,3, &ec3); 
           }
-  cr[768][768]=0;
+
   }
 }
 
@@ -327,7 +332,7 @@ int create_ed(void)
   WSHDR *ews;
   EDITCONTROL ec;
 
-  ews=AllocWS(40);
+  ews=AllocWS(1024);
   PrepareEditControl(&ec);
   eq=AllocEQueue(ma,mfree_adr());
 
@@ -340,7 +345,7 @@ int create_ed(void)
   AddEditControlToEditQend(eq,&ec,ma);
   
   wsprintf(ews,"%t","Bus number!");
-  ConstructEditControl(&ec,1,0x40,ews,40);
+  ConstructEditControl(&ec,1,0x40,ews,1024);
   AddEditControlToEditQend(eq,&ec,ma);
   FreeWS(ews);
   
@@ -365,8 +370,7 @@ void maincsm_oncreate(CSM_RAM *data)
 
 void maincsm_onclose(CSM_RAM *csm)
 {
-  if (buf != 0)
-    mfree(buf);  
+  if (buf) mfree(buf);  
   SUBPROC((void *)Killer);
 }
 
