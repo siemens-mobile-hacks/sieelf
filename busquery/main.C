@@ -11,17 +11,14 @@ int fsize=0;
 int num=0;
 int len=0;
 
-int cc=0;
 
-char word[40];
-char word2[40];
-char cr[768][768]; 
-char( *p)[768]=&cr[768];
-char cr2[50]; 
+char cr[600][600]; 
+char( *p)[600]=&cr[600];
+char cr2[40]; 
 char *p2;
-char cr3[50][50]; 
-char( *p3)[50]=&cr3[50];
-char cz[152];
+char cr3[40][40]; 
+char( *p3)[40]=&cr3[40];
+char cz[122];
 
 
 const SOFTKEY_DESC menu_sk[]=
@@ -84,9 +81,6 @@ void Loaddata()
   }
   fclose(f,&err);
   
-
-
-  
 }
 
 
@@ -98,23 +92,27 @@ void doit(GUI *data)
 {
   EDITCONTROL ec, ec2,ec3;
   {
+    char word[40];
+    char word2[40];
     ExtractEditControl(data,1,&ec);
     ExtractEditControl(data,2,&ec2);
     ExtractEditControl(data,3,&ec3);
     int utf8conv_res_len;
     ws_2utf8(ec.pWS,word,&utf8conv_res_len,40);
     ws_2utf8(ec2.pWS,word2,&utf8conv_res_len,40);
+  
     
+  int i=0;  
   char *pos=buf;
   int c;
-  int i=0;
   int find=0;
   int i2=0;
   int k;
   int l;
   int k1;
   p2=cr2;
-
+  int cc=0;
+  
   while((c=*pos))
   {
     pos++;
@@ -123,7 +121,7 @@ void doit(GUI *data)
     case '\r':
         if(*pos++=='\n')
         {
-        s=(p+i)[768];
+        s=(p+i)[600];
         i++;
         while(*pos!='\r'&&*pos!='\n'&&*pos)
         {
@@ -146,9 +144,9 @@ void doit(GUI *data)
        if(cc!=num+1)
        {
          
-       if(strstr((p+k)[768],word))
+       if(strstr((p+k)[600],word))
          {
-          utf8_2ws(ec3.pWS,(p+k)[768],768);
+          utf8_2ws(ec3.pWS,(p+k)[600],600);
           StoreEditControl(data ,3, &ec3); 
           cc++;
          }      
@@ -161,9 +159,9 @@ void doit(GUI *data)
        if(cc!=num+1)
        {
          
-       if(strstr((p+k)[768],word2))
+       if(strstr((p+k)[600],word2))
          {
-          utf8_2ws(ec3.pWS,(p+k)[768],768);
+          utf8_2ws(ec3.pWS,(p+k)[600],600);
           StoreEditControl(data ,3, &ec3); 
           cc++;
          }
@@ -175,9 +173,9 @@ void doit(GUI *data)
      { 
      if(cc!=num+1)
        {
-       if(strstr((p+k)[768],word)&&strstr((p+k)[768],word2))
+       if(strstr((p+k)[600],word)&&strstr((p+k)[600],word2))
          {
-          utf8_2ws(ec3.pWS,(p+k)[768],768);
+          utf8_2ws(ec3.pWS,(p+k)[600],600);
           StoreEditControl(data ,3, &ec3); 
           find=1;
           cc++; 
@@ -194,9 +192,9 @@ void doit(GUI *data)
        {
         if(cc!=num+1)
           {         
-          if(strstr((p+k)[768],word)&&strstr((p+l)[768],word2))
+          if(strstr((p+k)[600],word)&&strstr((p+l)[600],word2))
             {
-                char *pos2=(p+k)[768];
+                char *pos2=(p+k)[600];
                     s=p2;
                     while((c=*pos2++)!='*')
                     {
@@ -205,8 +203,8 @@ void doit(GUI *data)
                     *s=0;
                                    
                
-                char *pos3=(p+l)[768];
-                    s=p3[50];
+                char *pos3=(p+l)[600];
+                    s=p3[40];
                     while((c=*pos3++)!='*')
                     {
                        *s++=c;
@@ -219,7 +217,7 @@ void doit(GUI *data)
                  {
                    case '*':
                      i2++;
-                     s=(p3+i2)[50];
+                     s=(p3+i2)[40];
                      while(*pos3!='*'&&*pos3)
                      {
                        *s++=*pos3++;
@@ -238,7 +236,7 @@ void doit(GUI *data)
                for(k1=1;k1<=i2;k1++)
                {
                  
-               if(strstr((p+k)[768],(p3+k1)[50]))
+               if(strstr((p+k)[600],(p3+k1)[40]))
                {
                  q=1;
                  break;
@@ -247,12 +245,12 @@ void doit(GUI *data)
                }   
                if(q==1)
                {
-                 strncpy(cz,p2,50);
+                 strncpy(cz,p2,40);
                  strcat(cz," ");
-                 strncat(cz,(p3+k1)[50],50);
+                 strncat(cz,(p3+k1)[40],40);
                  strcat(cz," ");
-                 strncat(cz,p3[50],50);             
-                 utf8_2ws(ec3.pWS,cz,152);
+                 strncat(cz,p3[40],40);             
+                 utf8_2ws(ec3.pWS,cz,122);
                  StoreEditControl(data ,3, &ec3);           
                  cc++;
                }
