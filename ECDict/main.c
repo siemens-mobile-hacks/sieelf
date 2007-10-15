@@ -134,6 +134,8 @@ unsigned int floatwin;
 unsigned int fw_phonetic;
 
 //unsigned int MAINCSM_ID=0;
+int screenh;
+int screenw;
 
 
 void Error(const char *msg)
@@ -173,24 +175,25 @@ void do_lookup(GUI *data)                       //ed1
 
 void ed2_load_entry_text(GUI* gui, int text_id)     //ed2
 {
-    EDITCONTROL ec;
+  EDITCONTROL ec;
 	ExtractEditControl(gui, text_id, &ec);
-    
-    if( m_f_err )
-    {   
-        //copy_unicode_2ws(ec.pWS, mferr_unicode);
-        wsprintf(ec.pWS, "%t\0", "");
-    }
-    else if( ed1_last_key_down==LEFT_SOFT && pre_inputword[0]==0 )
-    {
-        str_2ws(ec.pWS, cr, sizeof(cr));
-    }
-    else
-    {
-        construct_entry_text(ec.pWS, index[open_entry_index], 1, 1, 1);
-    }
-    
-    StoreEditControl(gui, text_id, &ec);
+	//WSHDR *ws = AllocWS(256);
+	if( m_f_err )                                                     
+  {                                                                   
+      //copy_unicode_2ws(ec.pWS, mferr_unicode);                      
+      wsprintf(ec.pWS, "%t\0", "");                                       
+  }                                                                   
+  else if( ed1_last_key_down==LEFT_SOFT && pre_inputword[0]==0 )      
+  {                                                                   
+      str_2ws(ec.pWS, cr, sizeof(cr));                                    
+  }                                                                   
+  else                                                                
+  {                                                                   
+      construct_entry_text(ec.pWS, index[open_entry_index], 1, 1, 1);     
+  }  
+  //DrawString(ws,5,screenh/6,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));                                                        
+  //FreeWS(ws);
+  StoreEditControl(gui, text_id, &ec);
 }
 
 void my_ed1_redraw(GUI* gui)
@@ -440,7 +443,7 @@ gui->state = 1;
 
 void QuitProc(int really_quit)  //回调函数不是立即调用的
 {
-    if( really_quit )
+    if( !really_quit )
     {
         wanna_quit = true;
     }
@@ -544,7 +547,20 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
             floatwin = 1 - floatwin;
             ret = RET_REDRAW;
         }
+        #ifdef NEWSGOLD
+        else if( keycode==LEFT_BUTTON||keycode==RIGHT_BUTTON )
+        {
+            fw_phonetic = 1 - fw_phonetic;
+            ret = RET_REDRAW;
+        }
         else if( keycode == GREEN_BUTTON )
+        {
+            wanna_quit = false;
+            MsgBoxYesNo(1, (int)"Quit ECDict?", QuitProc);
+            ret = RET_REDRAW;
+        }
+        #else
+        else if( keycode==GREEN_BUTTON )
         {
             fw_phonetic = 1 - fw_phonetic;
             ret = RET_REDRAW;
@@ -552,10 +568,10 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
         else if( keycode == RED_BUTTON )
         {
             wanna_quit = false;
-            MsgBoxOkCancel(1, (int)"You wanna quit?", QuitProc);
+            MsgBoxYesNo(1, (int)"Quit ECDict?", QuitProc);
             ret = RET_REDRAW;
         }
-        
+        #endif
         if( keycode!='*' && keycode!='#' && keycode!=GREEN_BUTTON )
         {
             //if( msg->gbsmsg->msg!=LONG_PRESS || (keycode!=UP_BUTTON && keycode!=DOWN_BUTTON) )
@@ -816,6 +832,8 @@ void Killer(void)
 
 void maincsm_oncreate(CSM_RAM *data)
 {
+  screenh=ScreenH();
+  screenw=ScreenW();
 	MAIN_CSM *csm=(MAIN_CSM*)data;
     
 	csm->gui_id=create_ed2();
