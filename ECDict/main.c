@@ -103,19 +103,19 @@ extern const unsigned int cfg_item_n;
 extern const unsigned int cfg_spacing;
 extern const unsigned int cfg_padding;
 
-extern const unsigned int cfg_separator_color;
+extern const char cfg_separator_color[4];
 extern const unsigned int cfg_dim_fontsize;
-extern const unsigned int cfg_dim_color;
+extern const char cfg_dim_color[4];
 //extern const int cfg_dim_bgcolor = 23;
 
 extern const unsigned int cfg_highlight_fontsize;
-extern const unsigned int cfg_highlight_color;
+extern const char cfg_highlight_color[4];
 
-extern const unsigned int cfg_highlight_bgcolor;
-extern const unsigned int cfg_bordercolor;
+extern const char cfg_highlight_bgcolor[4];
+extern const char cfg_bordercolor[4];
 
-extern const unsigned int cfg_scrollbar_color;
-extern const unsigned int cfg_scrollbar_blkcolor;
+extern const char cfg_scrollbar_color[4];
+extern const char cfg_scrollbar_blkcolor[4];
 
 //====== instant view ==========//
 extern const unsigned int cfg_floatwin;
@@ -124,14 +124,16 @@ extern const unsigned int cfg_fw_phonetic;
 extern const unsigned int cfg_fw_height;
 extern const unsigned int cfg_fw_width;
 extern const unsigned int cfg_fw_fontsize;
-extern const unsigned int cfg_fw_fontcolor;
-extern const unsigned int cfg_fw_bgcolor;
-extern const unsigned int cfg_fw_bordercolor;
+extern const char cfg_fw_fontcolor[4];
+extern const char cfg_fw_bgcolor[4];
+extern const char cfg_fw_bordercolor[4];
 //=========== modifiable ============/
 
 // modifiables
 unsigned int floatwin;
 unsigned int fw_phonetic;
+
+//unsigned int MAINCSM_ID=0;
 
 
 void Error(const char *msg)
@@ -218,7 +220,7 @@ void my_ed1_redraw(GUI* gui)
                    cfg_list_y_start + 120,
                    cfg_highlight_fontsize,
                    TEXT_ALIGNLEFT,
-                   GetPaletteAdrByColorIndex(cfg_dim_color),
+                   cfg_dim_color,
                    GetPaletteAdrByColorIndex(23)
                        );
         FreeWS(ws);
@@ -232,7 +234,7 @@ void my_ed1_redraw(GUI* gui)
              screen_width - cfg_list_x_start - 1,
              cfg_list_y_start - 2,
              0,
-             GetPaletteAdrByColorIndex(cfg_separator_color));
+             cfg_separator_color);
     
     //draw items
     for( i=0; i<cfg_item_n; i++ )
@@ -259,8 +261,8 @@ void my_ed1_redraw(GUI* gui)
                              2,
                              2,
                              2,     //border-type 0=outline 1=dotted 2=inline
-                             GetPaletteAdrByColorIndex(cfg_bordercolor),
-                             GetPaletteAdrByColorIndex(cfg_highlight_bgcolor)
+                             cfg_bordercolor,
+                             cfg_highlight_bgcolor
                                  );
             DrawString(ws,
                        highlight.x + 2,
@@ -269,7 +271,7 @@ void my_ed1_redraw(GUI* gui)
                        highlight.y2 - 1,
                        cfg_highlight_fontsize,
                        TEXT_ALIGNLEFT + TEXT_NOAUTOLINEBREAK,
-                       GetPaletteAdrByColorIndex(cfg_highlight_color),
+                       cfg_highlight_color,
                        GetPaletteAdrByColorIndex(23)
                            );
             
@@ -283,7 +285,7 @@ void my_ed1_redraw(GUI* gui)
                        cfg_list_y_start + (i+1)*(dim_font_height + cfg_spacing + 2*cfg_padding) - cfg_padding + font_height_diff - 1,
                        cfg_dim_fontsize,// - 1, //Make it thin!!!!
                        TEXT_ALIGNLEFT + TEXT_NOAUTOLINEBREAK,
-                       GetPaletteAdrByColorIndex(cfg_dim_color),
+                       cfg_dim_color,
                        GetPaletteAdrByColorIndex(23)
                            );
         }
@@ -299,7 +301,7 @@ void my_ed1_redraw(GUI* gui)
              screen_width - 2,
              cfg_list_y_start + barlen,
              0,
-             GetPaletteAdrByColorIndex(cfg_scrollbar_color));
+             cfg_scrollbar_color);
     
     DrawRoundedFrame(screen_width - 3,
                      cfg_list_y_start + blkpos - 1,
@@ -308,8 +310,8 @@ void my_ed1_redraw(GUI* gui)
                      0,
                      0,
                      0,     //border-type 0=outline 1=dotted 2=inline
-                     GetPaletteAdrByColorIndex(cfg_scrollbar_blkcolor),
-                     GetPaletteAdrByColorIndex(cfg_scrollbar_blkcolor));
+                     cfg_scrollbar_blkcolor,
+                     cfg_scrollbar_blkcolor);
     
     //draw instant view
     if( floatwin && (global_time-last_key_time)>=cfg_fw_delay )
@@ -337,8 +339,8 @@ void my_ed1_redraw(GUI* gui)
                          4,
                          4,
                          2,     //border-type 0=outline 1=dotted 2=inline
-                         GetPaletteAdrByColorIndex(cfg_fw_bordercolor),
-                         GetPaletteAdrByColorIndex(cfg_fw_bgcolor)
+                         cfg_fw_bordercolor,
+                         cfg_fw_bgcolor
                              );
         
         construct_entry_text(ws, index[start_index + highlight_item], 0, fw_phonetic, 1);
@@ -349,7 +351,7 @@ void my_ed1_redraw(GUI* gui)
                    fw_y + cfg_fw_height - 2,
                    cfg_fw_fontsize,
                    TEXT_ALIGNLEFT + TEXT_NOAUTOLINEBREAK,
-                   GetPaletteAdrByColorIndex(cfg_fw_fontcolor),
+                   cfg_fw_fontcolor,
                    GetPaletteAdrByColorIndex(23)
                        );
                    
@@ -420,6 +422,7 @@ void my_ed1_redraw(GUI* gui)
     FreeWS(ws);
 }
 
+
 void ed1_locret(void){}
 void ed2_locret(void){}
 
@@ -433,6 +436,7 @@ ShowDialog_Error(1, (int)"my exit");
 gui->state = 1;
 }
 */
+
 
 void QuitProc(int really_quit)  //回调函数不是立即调用的
 {
@@ -533,12 +537,6 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
         {
             if( keymsg == KEY_DOWN && get_inputword(data, 1)[0]==0 )   ret = RET_CLOSE;
         }
-        else if( keycode == RED_BUTTON )
-        {
-            wanna_quit = false;
-            MsgBoxOkCancel(1, (int)"You wanna quit?", QuitProc);
-            ret = RET_REDRAW;
-        }
         
         //* switch float window
         else if( keycode == '*' )
@@ -549,6 +547,12 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
         else if( keycode == GREEN_BUTTON )
         {
             fw_phonetic = 1 - fw_phonetic;
+            ret = RET_REDRAW;
+        }
+        else if( keycode == RED_BUTTON )
+        {
+            wanna_quit = false;
+            MsgBoxOkCancel(1, (int)"You wanna quit?", QuitProc);
             ret = RET_REDRAW;
         }
         
@@ -804,6 +808,9 @@ void Killer(void)
 {
 	extern void *ELF_BEGIN;
 	extern void kill_data(void *p, void (*func_p)(void *));
+	CloseDict();
+	UnloadDictIndex();
+  GBS_DelTimer(&timer);
 	kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
 }
 
@@ -827,11 +834,6 @@ void maincsm_oncreate(CSM_RAM *data)
 
 void maincsm_onclose(CSM_RAM *csm)
 {
-	CloseDict();
-	UnloadDictIndex();
-    
-    GBS_DelTimer(&timer);
-    
 #ifdef DICT_DEBUG
     FreeWS(debug_kd_word);
     FreeWS(debug_lp_word);
@@ -858,7 +860,7 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 	return(1);
 }
 
-unsigned short maincsm_name_body[32];
+unsigned short maincsm_name_body[140];
 
 const struct
 {
@@ -908,15 +910,14 @@ void TimeCounterProc(void)
 
 int main()
 {
+	char dummy[sizeof(MAIN_CSM)];
+  InitConfig();
+  UpdateCSMname();
+  
 	LockSched();
-	{
-		char dummy[sizeof(MAIN_CSM)];
-		UpdateCSMname();
-		CreateCSM(&MAINCSM.maincsm, dummy, 0);
-	}
-	UnlockSched();
-    InitConfig();
-    
-    GBS_StartTimerProc(&timer, TMR_SECOND, TimeCounterProc);
+	CreateCSM(&MAINCSM.maincsm, dummy, 0);
+	UnlockSched(); 
+	
+	GBS_StartTimerProc(&timer, TMR_SECOND, TimeCounterProc);
 	return 0;
 }

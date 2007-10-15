@@ -5,8 +5,8 @@
 #define MAX_UNICODE_STR 512
 
 
-//extern const char dict_dir[80];
-//extern const char modidx_dir[80];
+extern const char dict_dir[128];
+extern const char modidx_dir[128];
 
 
 char *indexbuf = NULL;
@@ -191,12 +191,12 @@ void LoadDictIndex()
 	int f;
 	unsigned int errcode;
     
-	//f = fopen(modidx_dir, A_ReadOnly+A_BIN, P_READ, &errcode);
-    f = fopen("0:\\ZBin\\dict\\stardict1.3.mod.idx", A_ReadOnly+A_BIN, P_READ, &errcode);
+	f = fopen(modidx_dir, A_ReadOnly+A_BIN, P_READ, &errcode);
+  //  f = fopen("0:\\ZBin\\dict\\stardict1.3.mod.idx", A_ReadOnly+A_BIN, P_READ, &errcode);
 	if( f<0 )
 	{
-		f = fopen("4:\\ZBin\\dict\\stardict1.3.mod.idx", A_ReadOnly+A_BIN, P_READ, &errcode);
-		if( f<0 )
+	//	f = fopen("4:\\ZBin\\dict\\stardict1.3.mod.idx", A_ReadOnly+A_BIN, P_READ, &errcode);
+	//	if( f<0 )
 		{
 			SetError("Can't open index file!");
 			return;
@@ -248,12 +248,12 @@ void UnloadDictIndex()
 void OpenDict()
 {   
 	unsigned int errcode;
-    //dict = fopen(dict_dir, A_ReadOnly+A_BIN, P_READ, &errcode);
-	dict = fopen("0:\\ZBin\\dict\\stardict1.3.dict", A_ReadOnly+A_BIN, P_READ, &errcode);
+  dict = fopen(dict_dir, A_ReadOnly+A_BIN, P_READ, &errcode);
+	//dict = fopen("0:\\ZBin\\dict\\stardict1.3.dict", A_ReadOnly+A_BIN, P_READ, &errcode);
 	if( dict <= 0 )
 	{
-		dict = fopen("4:\\ZBin\\dict\\stardict1.3.dict", A_ReadOnly+A_BIN, P_READ, &errcode);
-		if( dict <= 0 )
+		//dict = fopen("4:\\ZBin\\dict\\stardict1.3.dict", A_ReadOnly+A_BIN, P_READ, &errcode);
+		//if( dict <= 0 )
 		{
 			SetError("Can't open dict file!");
 		}
