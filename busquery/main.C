@@ -95,7 +95,7 @@ void doit(GUI *data)
   int i=0;
   char cr[768][768]; 
   char( *p)[768]=&cr[768];
-  int find=0; 
+  int find=0;
   int cc=0;
   int i2=0;
   int k;
@@ -263,6 +263,7 @@ void doit(GUI *data)
            wsprintf(ec3.pWS, pt, "No bus!");
             StoreEditControl(data ,3, &ec3); 
           }
+  cr[768][768]=0;
   }
 }
 
