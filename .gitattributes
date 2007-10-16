@@ -1247,7 +1247,6 @@ big_digital_clock/config.c -text
 big_digital_clock/func.asm -text
 big_digital_clock/main.c -text
 big_digital_clock/test.xcl -text
-busquery/busquery.dep -text
 busquery/busquery.ewp -text
 busquery/busquery.eww -text
 busquery/conf_loader.c -text
