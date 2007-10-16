@@ -1,5 +1,7 @@
 #include "..\inc\swilib.h"
 #include "conf_loader.h"
+#include "define.h"
+#include "dict.h"
 #include <stdbool.h>
 
 //================= extern vars and funcs from dict.c ========================/
@@ -23,18 +25,6 @@ unsigned short mferr_unicode[] =    //"内存不足或读文件错，请退出！"
 
 char cr[] = "[ECDICT v0.6]\nAn English-Chinese DICTionary for Siemens ELF.\n\nProgrammed by CHC, May 2007.\n\nBest Wishes...";
         
-
-extern void copy_unicode_2ws(WSHDR* ws, unsigned short* unicode);
-
-extern void LoadDictIndex();
-extern void UnloadDictIndex();
-
-extern void OpenDict();
-extern void CloseDict();
-
-extern int lookup(char* word);
-void construct_entry_text(WSHDR* word_entry_text, char* word, int show_word, int show_phonetic, int show_meaning);
-
 
 //============================================================================/
 
@@ -254,8 +244,10 @@ void my_ed1_redraw(GUI* gui)
             
             highlight.x  = cfg_list_x_start;
             highlight.y  = cfg_list_y_start + i*(dim_font_height + cfg_spacing + 2*cfg_padding);
+            //highlight.y  = cfg_list_y_start + i*(dim_font_height + 5);
             highlight.x2 = screen_width-4;
             highlight.y2 = highlight.y + dim_font_height + 2*cfg_padding + font_height_diff;
+            //highlight.y2 = highlight.y + dim_font_height + 4 + font_height_diff;
             
             DrawRoundedFrame(highlight.x,
                              highlight.y,
@@ -270,6 +262,7 @@ void my_ed1_redraw(GUI* gui)
             DrawString(ws,
                        highlight.x + 2,
                        highlight.y + cfg_padding + 1,
+                       //highlight.y + 3,
                        highlight.x2 - 2,
                        highlight.y2 - 1,
                        cfg_highlight_fontsize,
@@ -284,8 +277,10 @@ void my_ed1_redraw(GUI* gui)
             DrawString(ws,
                        cfg_list_x_start + 2,
                        cfg_list_y_start + i*(dim_font_height + cfg_spacing + 2*cfg_padding) + cfg_padding + font_height_diff + 1,
+                       //cfg_list_y_start + i*(dim_font_height + 5) + 2 + font_height_diff + 1,
                        screen_width - 6,
                        cfg_list_y_start + (i+1)*(dim_font_height + cfg_spacing + 2*cfg_padding) - cfg_padding + font_height_diff - 1,
+                       //cfg_list_y_start + (i+1)*(dim_font_height + 5) - 2 + font_height_diff - 1,
                        cfg_dim_fontsize,// - 1, //Make it thin!!!!
                        TEXT_ALIGNLEFT + TEXT_NOAUTOLINEBREAK,
                        cfg_dim_color,
@@ -297,6 +292,7 @@ void my_ed1_redraw(GUI* gui)
     
     //draw scrollbar
     int barlen = cfg_item_n * (dim_font_height + 2*cfg_padding + cfg_spacing) + font_height_diff;
+    //int barlen = cfg_item_n * (dim_font_height + 5) + font_height_diff;
     int blkpos = barlen * (start_index+highlight_item) / wordcount;
     
     DrawLine(screen_width - 2,
@@ -369,13 +365,15 @@ void my_ed1_redraw(GUI* gui)
     if( cfg_showfreeram )
     {
         int fr = GetFreeRamAvail();
-        wsprintf(ws, "Ram: %d", fr);
+        wsprintf(ws, "FreeRam: %dKB", fr/1024);
         DrawString(ws,
                cfg_list_x_start + 2,
                cfg_list_y_start + i*(dim_font_height + cfg_spacing + 2*cfg_padding) + cfg_padding + 1 + font_height_diff,
+               //cfg_list_y_start + i*(dim_font_height + 5) + 2 + font_height_diff,
                screen_width - 6,
                cfg_list_y_start + (i+1)*(dim_font_height + cfg_spacing + 2*cfg_padding) - cfg_padding + font_height_diff,
-               7,// - 1, 
+               //cfg_list_y_start + (i+1)*(dim_font_height + 5) - 2 + font_height_diff,
+               FONT_SMALL,// - 1, 
                TEXT_ALIGNRIGHT + TEXT_OUTLINE,
                GetPaletteAdrByColorIndex(0),
                GetPaletteAdrByColorIndex(1)
@@ -483,7 +481,7 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
         ed1_last_key_down = 0;
     }
     
-	if ( keymsg==KEY_DOWN || keymsg==LONG_PRESS)
+	if ( keymsg==KEY_UP || keymsg==LONG_PRESS)
 	{
         int upthres, downthres;
         upthres = 1;
@@ -538,7 +536,7 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
         }
         else if( keycode == LEFT_SOFT )     //可能显示版权信息
         {
-            if( keymsg == KEY_DOWN && get_inputword(data, 1)[0]==0 )   ret = RET_CLOSE;
+            if( keymsg == KEY_UP && get_inputword(data, 1)[0]==0 )   ret = RET_CLOSE;
         }
         
         //* switch float window
@@ -548,16 +546,24 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
             ret = RET_REDRAW;
         }
         #ifdef NEWSGOLD
-        else if( keycode==LEFT_BUTTON||keycode==RIGHT_BUTTON )
-        {
-            fw_phonetic = 1 - fw_phonetic;
-            ret = RET_REDRAW;
-        }
+        //else if( keycode==LEFT_BUTTON||keycode==RIGHT_BUTTON )
+        //{
+        //    fw_phonetic = 1 - fw_phonetic;
+        //    ret = RET_REDRAW;
+        //}
         else if( keycode == GREEN_BUTTON )
         {
+          if(keymsg==LONG_PRESS)
+          {
             wanna_quit = false;
             MsgBoxYesNo(1, (int)"Quit ECDict?", QuitProc);
             ret = RET_REDRAW;
+          }
+          else
+          {
+            fw_phonetic = 1 - fw_phonetic;
+            ret = RET_REDRAW;
+          }
         }
         #else
         else if( keycode==GREEN_BUTTON )
@@ -660,7 +666,8 @@ INPUTDIA_DESC ed1_desc=
 	(void *)ed1_locret,
 	0,
 	&menu_skt,
-	{4, 12, 131, 172},
+	//{4, 12, 131, 172},
+	{2,YDISP+2,scrw,scrh},
 	8,
 	100,
 	101,
@@ -782,7 +789,8 @@ INPUTDIA_DESC ed2_desc=
 	(void *)ed2_locret,
 	0,
 	&menu_skt,
-	{2,2,131,172},
+	//{2,2,131,172},
+	{2,YDISP+2,scrw,scrh},
 	8,
 	100,
 	101,

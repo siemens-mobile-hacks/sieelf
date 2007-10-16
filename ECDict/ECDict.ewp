@@ -3299,9 +3299,6 @@
     <name>$PROJ_DIR$\conf_loader.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$\conf_loader.h</name>
-  </file>
-  <file>
     <name>$PROJ_DIR$\config_data.c</name>
     <configuration>
       <name>Release</name>
@@ -3976,9 +3973,6 @@
         </data>
       </settings>
     </configuration>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\define.h</name>
   </file>
   <file>
     <name>$PROJ_DIR$\dict.c</name>
