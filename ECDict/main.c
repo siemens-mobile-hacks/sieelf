@@ -81,10 +81,11 @@ typedef struct
 
 extern const unsigned int cfg_showfreeram;
 
-extern const unsigned int cfg_inputword_x;
-extern const unsigned int cfg_inputword_y;
-extern const unsigned int cfg_inputword_x2;
-extern const unsigned int cfg_inputword_y2;
+//extern const unsigned int cfg_inputword_x;
+//extern const unsigned int cfg_inputword_y;
+//extern const unsigned int cfg_inputword_x2;
+//extern const unsigned int cfg_inputword_y2;
+extern const RECT win_pos;
 
 extern const unsigned int cfg_list_x_start;
 extern const unsigned int cfg_list_y_start;
@@ -367,12 +368,10 @@ void my_ed1_redraw(GUI* gui)
         int fr = GetFreeRamAvail();
         wsprintf(ws, "FreeRam: %dKB", fr/1024);
         DrawString(ws,
-               cfg_list_x_start + 2,
-               cfg_list_y_start + i*(dim_font_height + cfg_spacing + 2*cfg_padding) + cfg_padding + 1 + font_height_diff,
-               //cfg_list_y_start + i*(dim_font_height + 5) + 2 + font_height_diff,
+               2,
+               screen_height-SoftkeyH()-GetFontYSIZE(FONT_SMALL),
                screen_width - 6,
-               cfg_list_y_start + (i+1)*(dim_font_height + cfg_spacing + 2*cfg_padding) - cfg_padding + font_height_diff,
-               //cfg_list_y_start + (i+1)*(dim_font_height + 5) - 2 + font_height_diff,
+               screen_height-SoftkeyH(),
                FONT_SMALL,// - 1, 
                TEXT_ALIGNRIGHT + TEXT_OUTLINE,
                GetPaletteAdrByColorIndex(0),
@@ -483,111 +482,89 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
     
 	if ( keymsg==KEY_UP || keymsg==LONG_PRESS)
 	{
-        int upthres, downthres;
-        upthres = 1;
-        downthres = cfg_item_n - 2;
-        /*if( cfg_item_n % 2 != 0 )
+	  int upthres, downthres;                                                                    
+    upthres = 1;                                                                                   
+    downthres = cfg_item_n - 2;                                                                    
+    switch(keycode)                                                                                
+    {                                                                                              
+      case DOWN_BUTTON:                                                                                         
+        if( (highlight_item==downthres || highlight_item==cfg_item_n)                              
+           && (start_index < wordcount-highlight_item-1) )                                         
+        {                                                                                          
+            //move whole                                                                           
+            start_index ++;                                                                        
+        }                                                                                          
+        else if( highlight_item < cfg_item_n-1                                                     
+                && (start_index < wordcount-highlight_item-1) )                                    
+        {                                                                                          
+            //move highlight                                                                       
+            highlight_item ++;                                                                     
+        }                                                                                          
+        ret = RET_REDRAW;
+        break;                                                                                           
+      case UP_BUTTON:                                                                                                                                                            
+        if( (highlight_item==upthres || highlight_item==0) && (start_index>0) )                    
+        {                                                                                          
+            //move whole                                                                           
+            start_index --;                                                                        
+        }                                                                                          
+        else if( highlight_item>0 )                                                                
+        {                                                                                          
+            //move highlight                                                                       
+            highlight_item --;                                                                     
+        }                                                                                          
+        ret = RET_REDRAW;
+        break;
+      case ENTER_BUTTON:
+        ret = RET_CLOSE;    
+        break;    
+      case GREEN_BUTTON:
+        fw_phonetic = 1 - fw_phonetic;
+        ret = RET_REDRAW; 
+        break;      
+      case LEFT_SOFT://可能显示版权信息
+        if( keymsg == KEY_UP && get_inputword(data, 1)[0]==0 )
+          ret = RET_CLOSE;            
+        break;
+    //else if( keycode == RIGHT_SOFT )                                                             
+    //{                                                                                            
+        //do_lookup(data);      //      在这里do_lookup就错了。系统还未处理onkey事件               
+    //}                                                                                                                                                                                                  
+    //* switch float window                                         
+#ifdef NEWSGOLD                                                                                                      
+      case '*':
+        if(keymsg==LONG_PRESS)  
         {
-        upthres = downthres = cfg_item_n / 2;
-    }
+          wanna_quit = false; 
+          MsgBoxYesNo(1, (int)"Quit ECDict?", QuitProc); 
+          ret = RET_REDRAW;  
+        }   
         else
         {
-        downthres = cfg_item_n / 2;
-        upthres = downthres - 1;
-    }
-        */
-        if( keycode == DOWN_BUTTON )
-        {
-            if( (highlight_item==downthres || highlight_item==cfg_item_n)
-               && (start_index < wordcount-highlight_item-1) )
-            {   
-                //move whole
-                start_index ++;
-            }
-            else if( highlight_item < cfg_item_n-1 
-                    && (start_index < wordcount-highlight_item-1) )
-            {
-                //move highlight
-                highlight_item ++;
-            }
-            ret = RET_REDRAW;  
+          floatwin = 1 - floatwin;                                                                   
+          ret = RET_REDRAW;
         }
-        else if( keycode == UP_BUTTON )
-        {
-            if( (highlight_item==upthres || highlight_item==0) && (start_index>0) )
-            {   
-                //move whole
-                start_index --;
-            }
-            else if( highlight_item>0 )
-            {
-                //move highlight
-                highlight_item --;
-            }
-            ret = RET_REDRAW;
-        }      
-        //else if( keycode == RIGHT_SOFT )
-        //{
-            //do_lookup(data);      //      在这里do_lookup就错了。系统还未处理onkey事件
-        //}
-        else if( keycode == ENTER_BUTTON )
-        {
-            ret = RET_CLOSE;
-        }
-        else if( keycode == LEFT_SOFT )     //可能显示版权信息
-        {
-            if( keymsg == KEY_UP && get_inputword(data, 1)[0]==0 )   ret = RET_CLOSE;
-        }
-        
-        //* switch float window
-        else if( keycode == '*' )
-        {
-            floatwin = 1 - floatwin;
-            ret = RET_REDRAW;
-        }
-        #ifdef NEWSGOLD
-        //else if( keycode==LEFT_BUTTON||keycode==RIGHT_BUTTON )
-        //{
-        //    fw_phonetic = 1 - fw_phonetic;
-        //    ret = RET_REDRAW;
-        //}
-        else if( keycode == GREEN_BUTTON )
-        {
-          if(keymsg==LONG_PRESS)
-          {
-            wanna_quit = false;
-            MsgBoxYesNo(1, (int)"Quit ECDict?", QuitProc);
-            ret = RET_REDRAW;
-          }
-          else
-          {
-            fw_phonetic = 1 - fw_phonetic;
-            ret = RET_REDRAW;
-          }
-        }
-        #else
-        else if( keycode==GREEN_BUTTON )
-        {
-            fw_phonetic = 1 - fw_phonetic;
-            ret = RET_REDRAW;
-        }
-        else if( keycode == RED_BUTTON )
-        {
-            wanna_quit = false;
-            MsgBoxYesNo(1, (int)"Quit ECDict?", QuitProc);
-            ret = RET_REDRAW;
-        }
-        #endif
-        if( keycode!='*' && keycode!='#' && keycode!=GREEN_BUTTON )
-        {
-            //if( msg->gbsmsg->msg!=LONG_PRESS || (keycode!=UP_BUTTON && keycode!=DOWN_BUTTON) )
-            {
-                //update last key time;
-                last_key_time = global_time;
-            }
-        }
-    }
-    
+        break;                                                                                        
+#else                                                                                                         
+      case '*':                                                                        
+        floatwin = 1 - floatwin;                                                                   
+        ret = RET_REDRAW;   
+        break;                                                          
+      case RED_BUTTON:                                                                            
+        wanna_quit = false;                                                                        
+        MsgBoxYesNo(1, (int)"Quit ECDict?", QuitProc);                                             
+        ret = RET_REDRAW;
+        break;                                                                                          
+#endif        
+      case '#':
+        break;
+      default:
+        last_key_time = global_time; 
+        break;
+    }   
+  }                                                                                  
+                                                                                                   
+                                                                                               
     
     //for debug
 #ifdef DICT_DEBUG
@@ -668,7 +645,7 @@ INPUTDIA_DESC ed1_desc=
 	&menu_skt,
 	//{4, 12, 131, 172},
 	{2,YDISP+2,scrw,scrh},
-	8,
+	FONT_SMALL,
 	100,
 	101,
 	0,
@@ -700,7 +677,7 @@ int create_ed1(void)
 	AddEditControlToEditQend(eq, &ec, ma);
 	FreeWS(pws);
     
-    patch_dialog(&ed1_desc, cfg_inputword_x, cfg_inputword_y, cfg_inputword_x2, cfg_inputword_y2); 
+    patch_dialog(&ed1_desc, win_pos.x, win_pos.y, win_pos.x2, win_pos.y2); 
     
     list_redraw_hooked = false;
 	ed1_id =  CreateInputTextDialog(&ed1_desc, NULL/*&ed1_hdr*/, eq, 1, 0);
@@ -779,7 +756,7 @@ void ed2_ghook(GUI *gui, int cmd)
     }
 }
 
-HEADER_DESC ed2_hdr={0, 0, 131, 21, NULL, (int)"", LGP_NULL};
+HEADER_DESC ed2_hdr={0, 0, 0, 0, NULL, (int)"", LGP_NULL};
 
 INPUTDIA_DESC ed2_desc=
 {
@@ -790,8 +767,8 @@ INPUTDIA_DESC ed2_desc=
 	0,
 	&menu_skt,
 	//{2,2,131,172},
-	{2,YDISP+2,scrw,scrh},
-	8,
+	{2,YDISP+scrw/6,scrw,scrh},
+	FONT_SMALL,
 	100,
 	101,
 	0,

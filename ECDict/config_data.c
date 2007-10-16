@@ -20,19 +20,24 @@ __root const CFG_CBOX_ITEM cfgcbox1_1[2]={"No","Yes"};
 //========================= level begin ======================//
 //__root const CFG_HDR cfghdr_L1_BEGIN={CFG_LEVEL,"界面布局：", 1, 0};
 
-
+/*
 __root const CFG_HDR cfghdr10={CFG_COORDINATES,"Up-left coords of input window",0,0};
 __root const unsigned int cfg_inputword_x = 4;
 __root const unsigned int cfg_inputword_y = YDISP;
 
+
 __root const CFG_HDR cfghdr11={CFG_COORDINATES,"Down-right coords of input win",0,0};
 __root const unsigned int cfg_inputword_x2 = scrw;
-__root const unsigned int cfg_inputword_y2 = scrh;
+__root const unsigned int cfg_inputword_y2 = scrh;*/
+
+__root const CFG_HDR cfghdr11={CFG_RECT,"Window Postion",0,0};
+__root const RECT win_pos = {2,YDISP,scrw,scrh};
 
 
 __root const CFG_HDR cfghdr12={CFG_COORDINATES,"Up-left coords of word list",0,0};
 __root const unsigned int cfg_list_x_start = 2;
-__root const unsigned int cfg_list_y_start = YDISP+20;
+__root const unsigned int cfg_list_y_start = YDISP+scrh/10;
+
 
 __root const CFG_HDR cfghdr13={CFG_UINT, "Number of words in list(>=3)", 0, 10};
 __root const unsigned int cfg_item_n = 7;
