@@ -147,7 +147,6 @@ ECDict/about.c -text
 ECDict/about.h -text
 ECDict/conf_loader.c -text
 ECDict/conf_loader.h -text
-ECDict/config_c.xcl -text
 ECDict/config_data.c -text
 ECDict/define.h -text
 ECDict/dict.c -text
@@ -162,6 +161,7 @@ ECDict/mainbackup.c -text
 ECDict/menu.c -text
 ECDict/menu.h -text
 ECDict/rect_patcher.h -text
+ECDict/test.xcl -text
 ELFLoader_lg8/ELFLoader.ewp -text
 ELFLoader_lg8/ESI.asm -text
 ELFLoader_lg8/EXT2.asm -text

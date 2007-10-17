@@ -42,11 +42,6 @@ unsigned long global_time = 0;
 unsigned long last_key_time = 0;
 int ed1_last_key_down = 0;
 
-#ifdef DICT_DEBUG
-WSHDR* debug_kd_word;
-WSHDR* debug_ku_word;
-WSHDR* debug_lp_word;
-#endif
 
 //============================================================================/
 
@@ -55,10 +50,10 @@ const int minus11 = -11;
 bool list_redraw_hooked = false;
 void (*old_ed1_redraw)(void *data);
 
-const SOFTKEY_DESC menu_sk[]=
+SOFTKEY_DESC menu_sk[]=
 {
-    {0x0018,0x0000,(int)"Menu"},
-    {0x0001,0x0000,(int)"Exit"},
+    {0x0018,0x0000,(int)""},
+    {0x0001,0x0000,(int)""},
     {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -67,19 +62,22 @@ SOFTKEYSTAB menu_skt=
 	menu_sk,0
 };
 
+
 typedef struct
 {
 	CSM_RAM csm;
 	int gui_id;
 }MAIN_CSM;
 
-
+//free ram
 extern const unsigned int cfg_showfreeram;
+extern const unsigned int cfg_fr_font;
+extern const char cfg_fr_color[4];
 
+//input gui
 extern const RECT win_pos;
-
-
 extern const unsigned int cfg_item_n;
+extern const char cfg_input_gui_color[4];
 
 extern const char cfg_separator_color[4];
 extern const unsigned int cfg_dim_fontsize;
@@ -97,7 +95,7 @@ extern const char cfg_scrollbar_blkcolor[4];
 //====== instant view ==========//
 extern const unsigned int cfg_floatwin;
 extern const unsigned int cfg_fw_delay;
-extern const unsigned int cfg_fw_phonetic;
+//extern const unsigned int cfg_fw_phonetic;
 extern const unsigned int cfg_fw_height;
 extern const unsigned int cfg_fw_width;
 extern const unsigned int cfg_fw_fontsize;
@@ -108,7 +106,7 @@ extern const char cfg_fw_bordercolor[4];
 
 // modifiables
 unsigned int floatwin;
-unsigned int fw_phonetic;
+unsigned int fw_phonetic=1;
 
 int screenh;
 int screenw;
@@ -148,6 +146,24 @@ void do_lookup(GUI *data)                       //ed1
     }
 }
 
+void show_freeram(void)
+{
+  WSHDR *ws=AllocWS(32);
+  int fr = GetFreeRamAvail();
+  wsprintf(ws, "FreeRam: %dKB", fr/1024);
+  DrawString(ws,
+         2,
+         screenh-SoftkeyH()-GetFontYSIZE(FONT_SMALL),
+         screenw - 6,
+         screenh-SoftkeyH(),
+         cfg_fr_font,// - 1, 
+         TEXT_ALIGNRIGHT + TEXT_OUTLINE,
+         cfg_fr_color,
+         GetPaletteAdrByColorIndex(1)
+             );
+  FreeWS(ws);
+}
+
 void my_ed1_redraw(GUI* gui)
 {
   int highlight_font_height = GetFontYSIZE(cfg_highlight_fontsize);
@@ -155,11 +171,11 @@ void my_ed1_redraw(GUI* gui)
   int font_height_diff = 0;   //highlight_font_height - dim_font_height;
   RECT highlight;
   int i;
-  WSHDR *ws;
-  
-  //REDRAW
-  old_ed1_redraw(gui);
-  
+  int y_end;
+  WSHDR *ws;  
+  //REDRAW  
+  old_ed1_redraw(gui);  
+  DrawRectangle(0,YDISP+win_pos.y2,screenw,screenh,0,cfg_input_gui_color,cfg_input_gui_color);
   if( m_f_err )
   {        
     ws = AllocWS(sizeof(mferr_unicode));
@@ -178,24 +194,30 @@ void my_ed1_redraw(GUI* gui)
     FreeWS(ws);
     return;
   }
-  
-  ws = AllocWS(MAX_UNICODE_STR);
-  
-  DrawLine(win_pos.x + 1,
-           win_pos.y2 - 2,
-           screenw - win_pos.x - 1,
-           win_pos.y2 - 2,
+  //show free ram
+  if(cfg_showfreeram)
+  {
+    show_freeram();
+    y_end=screenh-SoftkeyH()-GetFontYSIZE(FONT_SMALL)-1;
+  }
+  else
+  {
+    y_end=screenh-SoftkeyH()-1; 
+  }
+  ws = AllocWS(MAX_UNICODE_STR);  
+  DrawLine(win_pos.x+1,
+           win_pos.y2,
+           screenw-win_pos.x+1,
+           win_pos.y2,
            0,
-           cfg_separator_color);
-  
+           cfg_separator_color);  
   //draw items
   for( i=0; i<cfg_item_n; i++ )
   {
     if( (start_index+i)>=wordcount )
     {
       break;
-    }
-    
+    }    
     str_2ws(ws, index[start_index+i], strlen(index[start_index+i]));
     if( i == highlight_item )       //draw highlight item and frame
     {
@@ -219,7 +241,8 @@ void my_ed1_redraw(GUI* gui)
       DrawString(ws,
                  highlight.x + 2,
                  highlight.y + 3,
-                 highlight.x2 - 2,
+                 //highlight.x2 - 2,
+                 512,//加大宽度范围，防止自动换行
                  highlight.y2 - 1,
                  cfg_highlight_fontsize,
                  TEXT_ALIGNLEFT + TEXT_NOAUTOLINEBREAK,
@@ -233,28 +256,26 @@ void my_ed1_redraw(GUI* gui)
       DrawString(ws,
                  win_pos.x + 2,
                  win_pos.y2 + i*(dim_font_height + 5) + 2 + font_height_diff + 1,
-                 screenw - 6,
-                 win_pos.y2 + (i+1)*(dim_font_height + 5) - 2 + font_height_diff - 1,
+                 //screenw - 6,
+                 512,//加大宽度范围，防止自动换行
+                 //win_pos.y2 + (i+1)*(dim_font_height + 5) - 2 + font_height_diff - 1,
+                 y_end,
                  cfg_dim_fontsize,// - 1, //Make it thin!!!!
                  TEXT_ALIGNLEFT + TEXT_NOAUTOLINEBREAK,
                  cfg_dim_color,
                  GetPaletteAdrByColorIndex(23)
                      );
-    }
-    
-  }
-    
+    }    
+  }    
   //draw scrollbar
   int barlen = cfg_item_n * (dim_font_height + 5) + font_height_diff;
-  int blkpos = barlen * (start_index+highlight_item) / wordcount;
-  
+  int blkpos = barlen * (start_index+highlight_item) / wordcount;  
   DrawLine(screenw - 2,
            win_pos.y2,
            screenw - 2,
            win_pos.y2 + barlen,
            0,
-           cfg_scrollbar_color);
-  
+           cfg_scrollbar_color);  
   DrawRoundedFrame(screenw - 3,
                    win_pos.y2 + blkpos - 1,
                    screenw - 1,
@@ -263,27 +284,22 @@ void my_ed1_redraw(GUI* gui)
                    0,
                    0,     //border-type 0=outline 1=dotted 2=inline
                    cfg_scrollbar_blkcolor,
-                   cfg_scrollbar_blkcolor);
-  
+                   cfg_scrollbar_blkcolor);  
   //draw instant view
   if( floatwin && (global_time-last_key_time)>=cfg_fw_delay )
   {
-      fw_showing = true;
-      
-      int fw_x, fw_y;
-      
-      fw_x = highlight.x2 - 2 - cfg_fw_width;
-      
-      if( (highlight.y2 + cfg_fw_height > screenh - 18)     //下方放不下，18=软键高度
-         && (highlight.y  >= win_pos.y2 + cfg_fw_height))   //且上方能放下
+      fw_showing = true;      
+      int fw_x, fw_y;      
+      fw_x =highlight.x2-2-cfg_fw_width;      
+      if((highlight.y2+cfg_fw_height>y_end)     //下方放不下
+         &&(highlight.y>=win_pos.y2+cfg_fw_height))   //且上方能放下
       {
-          fw_y = highlight.y - cfg_fw_height;             //放到上方
+        fw_y = highlight.y - cfg_fw_height;             //放到上方
       }
       else
       {
-          fw_y = highlight.y2;                            //放到下方
-      }
-      
+        fw_y = highlight.y2;                            //放到下方
+      }      
       DrawRoundedFrame(fw_x,
                        fw_y,
                        fw_x + cfg_fw_width,
@@ -293,8 +309,7 @@ void my_ed1_redraw(GUI* gui)
                        2,     //border-type 0=outline 1=dotted 2=inline
                        cfg_fw_bordercolor,
                        cfg_fw_bgcolor
-                           );
-      
+                           );      
       construct_entry_text(ws, index[start_index + highlight_item], 0, fw_phonetic, 1);
       DrawString(ws,
                  fw_x + 2,
@@ -311,23 +326,6 @@ void my_ed1_redraw(GUI* gui)
   else
   {
       fw_showing = false;
-  }
-  
-  //draw debug info
-  if( cfg_showfreeram )
-  {
-    int fr = GetFreeRamAvail();
-    wsprintf(ws, "FreeRam: %dKB", fr/1024);
-    DrawString(ws,
-           2,
-           screenh-SoftkeyH()-GetFontYSIZE(FONT_SMALL),
-           screenw - 6,
-           screenh-SoftkeyH(),
-           FONT_SMALL,// - 1, 
-           TEXT_ALIGNRIGHT + TEXT_OUTLINE,
-           GetPaletteAdrByColorIndex(0),
-           GetPaletteAdrByColorIndex(1)
-               );
   }
   FreeWS(ws);
 }
@@ -420,16 +418,18 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
         ret = RET_REDRAW;
         break;
       case ENTER_BUTTON:
+        //if(get_inputword(data, 1)[0]==0)
+        //  create_gui();//由于中键在文本编辑中的作用，对于中键的响应还是去掉
         //ret = RET_CLOSE;    
-        create_gui();
         break;    
       case GREEN_BUTTON:
         fw_phonetic = 1 - fw_phonetic;
         ret = RET_REDRAW; 
         break;      
-      case LEFT_SOFT://可能显示版权信息
-        if( keymsg == KEY_DOWN && get_inputword(data, 1)[0]==0 )
-          ret = RET_CLOSE;            
+      case LEFT_SOFT:
+        //if( keymsg == KEY_DOWN && get_inputword(data, 1)[0]==0 )
+        //  ret = RET_CLOSE;   
+        create_gui();
         break;                                      
 #ifdef NEWSGOLD                                                                                                      
       case '*':
@@ -493,7 +493,7 @@ void ed1_ghook(GUI *gui, int cmd)
 
 
 //unsigned short thdr1[] = {0xF182, 0x496C, 0x8BCD, 0x5178, 0}; //"英汉词典"
-HEADER_DESC ed1_hdr={0, 0, 131, 19, NULL, (int)"En-Cn Dictionary", LGP_NULL};
+//HEADER_DESC ed1_hdr={0, 0, 131, 19, NULL, (int)"En-Cn Dictionary", LGP_NULL};
 
 INPUTDIA_DESC ed1_desc=
 {
@@ -503,6 +503,7 @@ INPUTDIA_DESC ed1_desc=
 	(void *)ed1_locret,
 	0,
 	&menu_skt,
+	//NULL,
 	{2,YDISP+2,scrw,scrh},
 	FONT_SMALL,
 	100,
@@ -557,7 +558,7 @@ void maincsm_oncreate(CSM_RAM *data)
 	csm->gui_id=create_gui();
     
   floatwin = cfg_floatwin;
-  fw_phonetic = cfg_fw_phonetic;
+  //fw_phonetic = cfg_fw_phonetic;
   LoadDictIndex();
   OpenDict();
 }
@@ -567,21 +568,45 @@ void maincsm_onclose(CSM_RAM *csm)
   SUBPROC((void *)Killer);
 }
 
+#pragma inline=forced
+int toupper(int c)
+{
+  if ((c>='a')&&(c<='z')) c+='A'-'a';
+  return(c);
+}
+
+int strcmp_nocase(const char *s1,const char *s2)
+{
+  int i;
+  int c;
+  while(!(i=(c=toupper(*s1++))-toupper(*s2++))) if (!c) break;
+  return(i);
+}
+
 int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 {
-	MAIN_CSM *csm=(MAIN_CSM*)data;
-	if (msg->msg==MSG_GUI_DESTROYED)
-	{
-		if ((int)msg->data0==csm->gui_id)
-		{
-			csm->csm.state=-3;
-		}
-	}
+  MAIN_CSM *csm=(MAIN_CSM*)data;
+  if (msg->msg==MSG_RECONFIGURE_REQ)
+  {
+    extern const char *successed_config_filename;
+    if (strcmp_nocase(successed_config_filename,(char *)msg->data0)==0)
+    {
+      ShowMSG(1,(int)"ECDict config updated!");
+      InitConfig();
+    }
+  }
+  if (msg->msg==MSG_GUI_DESTROYED)
+  {
+  	if ((int)msg->data0==csm->gui_id)
+  	{
+  		csm->csm.state=-3;
+  	}
+  }
   if( wanna_quit )
   {
     csm->csm.state=-3;
   }
-	return(1);
+  return(1);
 }
 
 unsigned short maincsm_name_body[140];

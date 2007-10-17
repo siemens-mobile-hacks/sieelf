@@ -21,6 +21,13 @@ extern int screenh;
 extern int screenw;
 extern int is_ed_started;
 
+//config
+extern const char cfg_gui_bg_color[4];
+extern const unsigned int cfg_gui_font;
+extern const char cfg_gui_color[4];
+extern const unsigned int cfg_gui_sk_font;
+extern const char cfg_gui_sk_color[4];
+
 extern void kill_data(void *p, void (*func_p)(void *));
 
 
@@ -35,10 +42,10 @@ void soft_key(void)
   wsprintf(wsl, "Menu");
   wsprintf(wsr, "Exit");
   wsprintf(wsm, "Input");
-  DrawRectangle(0,screenh-GetFontYSIZE(FONT_MEDIUM)-2,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
-  DrawString(wsl,2,screenh-GetFontYSIZE(FONT_MEDIUM),screenw,screenh,FONT_MEDIUM,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
-  DrawString(wsr,screenw-get_string_width(wsr,FONT_MEDIUM)-4,screenh-GetFontYSIZE(FONT_MEDIUM),screenw,screenh,FONT_MEDIUM,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
-  DrawString(wsm,screenw/2-get_string_width(wsm,FONT_MEDIUM)/2,screenh-GetFontYSIZE(FONT_MEDIUM),screenw,screenh,FONT_MEDIUM,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawRectangle(0,screenh-GetFontYSIZE(cfg_gui_sk_font)-2,screenw,screenh,0,cfg_gui_bg_color,cfg_gui_bg_color);
+  DrawString(wsl,2,screenh-GetFontYSIZE(cfg_gui_sk_font),screenw,screenh,cfg_gui_sk_font,32,cfg_gui_sk_color,GetPaletteAdrByColorIndex(23)); 
+  DrawString(wsr,screenw-get_string_width(wsr,cfg_gui_sk_font)-4,screenh-GetFontYSIZE(cfg_gui_sk_font),screenw,screenh,cfg_gui_sk_font,32,cfg_gui_sk_color,GetPaletteAdrByColorIndex(23)); 
+  DrawString(wsm,screenw/2-get_string_width(wsm,cfg_gui_sk_font)/2,screenh-GetFontYSIZE(cfg_gui_sk_font),screenw,screenh,cfg_gui_sk_font,32,cfg_gui_sk_color,GetPaletteAdrByColorIndex(23)); 
   FreeWS(wsl);
   FreeWS(wsr);
   FreeWS(wsm);
@@ -47,7 +54,7 @@ void soft_key(void)
 
 void onRedraw(MAIN_GUI *data)
 {
-  DrawRectangle(0,YDISP,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
+  DrawRectangle(0,YDISP,screenw,screenh,0,cfg_gui_bg_color,cfg_gui_bg_color);
   soft_key();
   if(is_ed_started)
   {
@@ -60,7 +67,7 @@ void onRedraw(MAIN_GUI *data)
     {
       construct_entry_text(ws, index[open_entry_index], 1, 1, 1);
     }
-    DrawString(ws,5,YDISP,screenw,screenh-SoftkeyH(),FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+    DrawString(ws,5,YDISP,screenw,screenh-SoftkeyH(),cfg_gui_font,32,cfg_gui_color,GetPaletteAdrByColorIndex(23));
     FreeWS(ws);
   }
   else
