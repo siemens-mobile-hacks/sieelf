@@ -504,7 +504,7 @@
 0738: 0xA00A6F4D   ; 1CE: __thumb void CopyOptionsToEditControl(EDITCONTROL *ec,EDITC_OPTIONS *ec_options)
 073C: 0xA08BBA40   ; 1CF: REGEXPLEXT_ARM_NEW *GetEXPLEXTByRegN(int id) 
 
-0740: 0xA08BC058   ; 1D0: int GetFileTypeRegNFromFullFileName(WSHDR * fullname) 
+0740: 0xA08BBBC0   ; 1D0: int GetFileTypeRegNFromFullFileName(WSHDR * fullname) 
 0744: 0xA00DD329   ; 1D1: __thumb void EDIT_RemoveEditControl(void *gui,int n,EDITCONTROL *)
 0748: 0xA00DD333   ; 1D2: __thumb void EDIT_InsertEditControl(void *gui,int n,EDITCONTROL *)
 074C: 0xA00DD213   ; 1D3: __thumb int EDIT_GetCursorPos(void *gui)
