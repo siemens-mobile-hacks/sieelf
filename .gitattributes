@@ -153,6 +153,7 @@ ECDict/dict.h -text
 ECDict/func.asm -text
 ECDict/gpl.txt -text
 ECDict/main.c -text
+ECDict/mainbackup.c -text
 ELFLoader_lg8/ELFLoader.ewp -text
 ELFLoader_lg8/ESI.asm -text
 ELFLoader_lg8/EXT2.asm -text
