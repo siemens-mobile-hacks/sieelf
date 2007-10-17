@@ -151,6 +151,8 @@ ECDict/config_data.c -text
 ECDict/define.h -text
 ECDict/dict.c -text
 ECDict/dict.h -text
+ECDict/ed_gui.c -text
+ECDict/ed_gui.h -text
 ECDict/func.asm -text
 ECDict/gpl.txt -text
 ECDict/gui.c -text

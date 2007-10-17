@@ -43,11 +43,12 @@ __root const unsigned int cfg_highlight_fontsize = FONT_SMALL_BOLD;
 __root const CFG_HDR cfghdr8={CFG_COLOR, "Hightlight frame color", 0, 0};
 __root const char cfg_bordercolor[4] = {255,0,255,100};
 
-__root const CFG_HDR cfghdr9={CFG_COLOR, "Scrollbar color", 0, 0};
-__root const char cfg_scrollbar_color[4] = {255,0,255,100};
+////去掉了意义并不大的进度滑块
+//__root const CFG_HDR cfghdr9={CFG_COLOR, "Scrollbar color", 0, 0};
+//__root const char cfg_scrollbar_color[4] = {255,0,255,100};
 
-__root const CFG_HDR cfghdr10={CFG_COLOR, "Scrollbar slider color", 0, 0};
-__root const char cfg_scrollbar_blkcolor[4] = {255,255,255,100};
+//__root const CFG_HDR cfghdr10={CFG_COLOR, "Scrollbar slider color", 0, 0};
+//__root const char cfg_scrollbar_blkcolor[4] = {255,255,255,100};
 
 __root const CFG_HDR cfghdr11={CFG_COLOR, "Separator line color", 0, 0};
 __root const char cfg_separator_color[4] = {255,255,255,100};

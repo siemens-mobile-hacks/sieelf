@@ -844,7 +844,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release\Exe</state>
+          <state></state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -1369,11 +1369,11 @@
         <debug>0</debug>
         <option>
           <name>XOutOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OutputFile</name>
-          <state>ECDict.elf</state>
+          <state>ECDict_SGOLD.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -1439,7 +1439,7 @@
         </option>
         <option>
           <name>XclFile</name>
-          <state>$PROJ_DIR$\config_c.xcl</state>
+          <state>$PROJ_DIR$\test.xcl</state>
         </option>
         <option>
           <name>XclFileSlave</name>
@@ -2262,7 +2262,7 @@
         </option>
         <option>
           <name>XclFile</name>
-          <state>$PROJ_DIR$\config_c.xcl</state>
+          <state>$PROJ_DIR$\test.xcl</state>
         </option>
         <option>
           <name>XclFileSlave</name>
@@ -2490,7 +2490,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release_ELKA\Exe</state>
+          <state></state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -3016,11 +3016,11 @@
         <debug>0</debug>
         <option>
           <name>XOutOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OutputFile</name>
-          <state>ECDict.elf</state>
+          <state>ECDict_ELKA.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -3086,7 +3086,7 @@
         </option>
         <option>
           <name>XclFile</name>
-          <state>$PROJ_DIR$\config_c.xcl</state>
+          <state>$PROJ_DIR$\test.xcl</state>
         </option>
         <option>
           <name>XclFileSlave</name>
@@ -3979,6 +3979,9 @@
   </file>
   <file>
     <name>$PROJ_DIR$\dict.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\ed_gui.c</name>
   </file>
   <file>
     <name>$PROJ_DIR$\func.asm</name>

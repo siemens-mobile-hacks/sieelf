@@ -1,15 +1,23 @@
 #include "..\inc\swilib.h"
-#include "main.h"
 #include "gui.h"
+#include "ed_gui.h"
 #include "rect_patcher.h"
 
 extern int is_ed_started;
 
+#ifdef NEWSGOLD
+#define LGP_SEL 0x3B
+#define LGP_BACK 0x3FC
+#else
+#define LGP_SEL 0x1A0
+#define LGP_BACK 0x411
+#endif
+
 const int menusoftkeys[]={0,1,2};
 SOFTKEY_DESC menu_skm[]=
 {
-  {0x0018,0x0000,(int)"Select"},
-  {0x0001,0x0000,(int)"Back"},
+  {0x0018,0x0000,(int)LGP_SEL},
+  {0x0001,0x0000,(int)LGP_BACK},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -30,7 +38,7 @@ MENUITEM_DESC menu_items[ITEMS_N]=
 
 void input(GUI *data)
 {
-  create_ed1();
+  create_ed();
 }
 
 void options(GUI *data)

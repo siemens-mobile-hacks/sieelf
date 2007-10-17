@@ -7,19 +7,14 @@
 
 extern const char dict_dir[128];
 extern const char modidx_dir[128];
+extern char *indexbuf;
+extern const int idxbuf_size;
+extern char **index;
+extern const int wordcount;
+extern bool m_f_err;                //memory or file error;
 
-
-char *indexbuf = NULL;
-const int idxbuf_size = 694718;
-
-char **index = NULL;
-const int wordcount = 51214;
-
-int dict = 0;
-
-bool m_f_err = false;           //memory or file error;
-char* err_msg = NULL;           //error msg string;
-
+char* err_msg;               //error msg string;
+int dict;
 
 void SetError(char* msg)
 {
@@ -46,15 +41,15 @@ int strcmp_nocase(const char *s1, const char *s2)
 
 int strmatch_nocase(const char *s1, const char *s2)
 {
-    //return the matched length. '\0'='\0' also match
-    int c;
+  //return the matched length. '\0'='\0' also match
+  int c;
 	int i = 0;
-    while( (c=tolower(*s1++))==tolower(*s2++) )
-    {
-        i++;
-        if( !c )    break;
-    }
-    return i;
+  while( (c=tolower(*s1++))==tolower(*s2++) )
+  {
+      i++;
+      if( !c )    break;
+  }
+  return i;
 }
 
 //unicode must be a pointer to zero-terminated unicode string.

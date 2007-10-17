@@ -1,8 +1,9 @@
+
 #include "..\inc\swilib.h"
-#include "main.h"
 #include "dict.h"
 #include "about.h"
 #include "menu.h"
+#include "ed_gui.h"
 #include "rect_patcher.h"
 #include <stdbool.h>
 
@@ -34,6 +35,7 @@ extern void kill_data(void *p, void (*func_p)(void *));
 int open_entry_index = 9;
 unsigned int MAINGUI_ID = 0;
 
+
 void soft_key(void)
 {
   WSHDR *wsl = AllocWS(16);
@@ -42,7 +44,6 @@ void soft_key(void)
   wsprintf(wsl, "Menu");
   wsprintf(wsr, "Exit");
   wsprintf(wsm, "Input");
-  DrawRectangle(0,screenh-GetFontYSIZE(cfg_gui_sk_font)-2,screenw,screenh,0,cfg_gui_bg_color,cfg_gui_bg_color);
   DrawString(wsl,2,screenh-GetFontYSIZE(cfg_gui_sk_font),screenw,screenh,cfg_gui_sk_font,32,cfg_gui_sk_color,GetPaletteAdrByColorIndex(23)); 
   DrawString(wsr,screenw-get_string_width(wsr,cfg_gui_sk_font)-4,screenh-GetFontYSIZE(cfg_gui_sk_font),screenw,screenh,cfg_gui_sk_font,32,cfg_gui_sk_color,GetPaletteAdrByColorIndex(23)); 
   DrawString(wsm,screenw/2-get_string_width(wsm,cfg_gui_sk_font)/2,screenh-GetFontYSIZE(cfg_gui_sk_font),screenw,screenh,cfg_gui_sk_font,32,cfg_gui_sk_color,GetPaletteAdrByColorIndex(23)); 
@@ -113,7 +114,7 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
     case RED_BUTTON:
 #endif
     case ENTER_BUTTON:
-      create_ed1();
+      create_ed();
       break;
       
     default:
