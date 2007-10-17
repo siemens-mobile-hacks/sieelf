@@ -1667,7 +1667,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release_NEWSGOLD\Exe</state>
+          <state></state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -2192,11 +2192,11 @@
         <debug>0</debug>
         <option>
           <name>XOutOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OutputFile</name>
-          <state>ECDict.elf</state>
+          <state>ECDict_NEWSGOLD.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -3296,6 +3296,9 @@
     </settings>
   </configuration>
   <file>
+    <name>$PROJ_DIR$\about.c</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\conf_loader.c</name>
   </file>
   <file>
@@ -3981,7 +3984,13 @@
     <name>$PROJ_DIR$\func.asm</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\gui.c</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\main.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\menu.c</name>
   </file>
 </project>
 

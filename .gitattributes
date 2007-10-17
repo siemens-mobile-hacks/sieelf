@@ -143,6 +143,8 @@ DiskMonitor/main.c -text
 DiskMonitor/test.xcl -text
 ECDict/ECDict.ewp -text
 ECDict/ECDict.eww -text
+ECDict/about.c -text
+ECDict/about.h -text
 ECDict/conf_loader.c -text
 ECDict/conf_loader.h -text
 ECDict/config_c.xcl -text
@@ -152,8 +154,14 @@ ECDict/dict.c -text
 ECDict/dict.h -text
 ECDict/func.asm -text
 ECDict/gpl.txt -text
+ECDict/gui.c -text
+ECDict/gui.h -text
 ECDict/main.c -text
+ECDict/main.h -text
 ECDict/mainbackup.c -text
+ECDict/menu.c -text
+ECDict/menu.h -text
+ECDict/rect_patcher.h -text
 ELFLoader_lg8/ELFLoader.ewp -text
 ELFLoader_lg8/ESI.asm -text
 ELFLoader_lg8/EXT2.asm -text
