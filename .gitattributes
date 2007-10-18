@@ -902,6 +902,9 @@ SerialLib/serial.h -text
 SerialLib/test.xcl -text
 SieHelpMan/SieHelpMan.ewp -text
 SieHelpMan/SieHelpMan.eww -text
+SieHelpMan/conf_loader.c -text
+SieHelpMan/conf_loader.h -text
+SieHelpMan/config_data.c -text
 SieHelpMan/func.asm -text
 SieHelpMan/main.C -text
 SieHelpMan/test.xcl -text

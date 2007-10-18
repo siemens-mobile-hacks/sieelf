@@ -1,4 +1,5 @@
 #include "..\inc\swilib.h"
+#include "conf_loader.h"
 
 typedef struct
 {
@@ -10,6 +11,18 @@ typedef struct
 {
   GUI gui;
 }MAIN_GUI;
+
+//config
+extern const char main_bg_color[4];
+extern const unsigned int main_font;
+extern const char main_text_color[4];
+extern const unsigned int sk_font;
+extern const char sk_color[4];
+extern const unsigned int sys_re_t;
+extern const char test_string[256];
+extern const char t_a_b_color[4];
+extern const int default_vibra_sta;
+extern const int default_light_sta;
 
 
 extern void kill_data(void *p, void (*func_p)(void *));
@@ -25,9 +38,9 @@ GBSTMR mytmr;
 #define IPC_MY_IPC "SieHelpMan"
 #define IPC_UPDATE_STAT 1
 const char ipc_my_name[]=IPC_MY_IPC;
-unsigned int REFRESH=5;
-int vibra_flag=0;
-int light_flag=3; //0,all , 1,display , 2,kbd , 3,do nothing
+//unsigned int REFRESH=5;
+int vibra_flag;
+int light_flag; //0,all , 1,display , 2,kbd , 3,do nothing
 int screenw;
 int screenh;
 #ifdef ELKA
@@ -109,9 +122,9 @@ void soft_key(void)
   WSHDR *wsr = AllocWS(16);
   wsprintf(wsl, "Menu");
   wsprintf(wsr, "Exit");
-  DrawRectangle(0,screenh-GetFontYSIZE(FONT_MEDIUM)-2,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
-  DrawString(wsl,2,screenh-GetFontYSIZE(FONT_MEDIUM)-2,screenw,screenh,FONT_MEDIUM,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
-  DrawString(wsr,screenw-get_string_width(wsr,FONT_MEDIUM)-4,screenh-GetFontYSIZE(FONT_MEDIUM)-2,screenw,screenh,FONT_MEDIUM,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  //DrawRectangle(0,screenh-GetFontYSIZE(FONT_MEDIUM)-2,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
+  DrawString(wsl,2,screenh-GetFontYSIZE(sk_font)-2,screenw,screenh,sk_font,32,sk_color,GetPaletteAdrByColorIndex(23)); 
+  DrawString(wsr,screenw-get_string_width(wsr,sk_font)-4,screenh-GetFontYSIZE(sk_font)-2,screenw,screenh,sk_font,32,sk_color,GetPaletteAdrByColorIndex(23)); 
   FreeWS(wsl);
   FreeWS(wsr);
 }
@@ -120,8 +133,14 @@ void lgp(void)
 {
   WSHDR *ws = AllocWS(256);
   soft_key();
-  wsprintf(ws, "LGP_ID: %d\n\n%t",num,num);
-  DrawString(ws,5,screenh/3,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  wsprintf(ws, "LGP_ID: %d\n%t",num,num);
+  num++;
+  DrawString(ws,5,YDISP,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  wsprintf(ws, "LGP_ID: %d\n%t",num,num);
+  num++;
+  DrawString(ws,5,YDISP+(screenh-YDISP)/3,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  wsprintf(ws, "LGP_ID: %d\n%t",num,num);
+  DrawString(ws,5,YDISP+2*(screenh-YDISP)/3,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   FreeWS(ws);
 }
 
@@ -130,8 +149,8 @@ void keycode(int code)
 {
   WSHDR *ws = AllocWS(128);
   wsprintf(ws, "Please long press\nLEFT SOFT KEY\nback to Menu.\n\nKeycode:\n\nDec: %d\n\nHex: %X", code, code);
-  DrawRectangle(0,y_b,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
-  DrawString(ws,5,y_b+screenh/12,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawRectangle(0,y_b,screenw,screenh,0,GetPaletteAdrByColorIndex(1),main_bg_color);
+  DrawString(ws,5,y_b+screenh/12,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   FreeWS(ws);
 }
 
@@ -143,14 +162,14 @@ void pic()
   {
     int w=GetImgWidth(num);
     int h=GetImgHeight(num);
-    wsprintf(ws, "Num:%d(D) %X(H)\nInfo:%d(W) %d(H)",num,num,w,h);
-    DrawString(ws,5,y_b,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
-    DrawImg(screenw/2-w/2,(screenh+y_b+2*GetFontYSIZE(FONT_SMALL)+2)/2-h/2,num);
+    wsprintf(ws, "Num:%d(D) %X(H) %dx%d",num,num,w,h);
+    DrawString(ws,5,y_b,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+    DrawImg(screenw/2-w/2,(screenh+y_b+2*GetFontYSIZE(main_font)+2)/2-h/2,num);
   }
   else
   {
     wsprintf(ws, "Num:%d(D) %X(H)\nNO SUCH PICTURE!",num);
-    DrawString(ws,5,y_b,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+    DrawString(ws,5,y_b,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   }
   FreeWS(ws);
 }
@@ -158,7 +177,7 @@ void pic()
 void font()
 {
   int font_max;
-  char test_str[]="Test String 123";
+  //char test_str[]="Test String 123";
   #ifdef NEWSGOLD
   #ifdef ELKA
   font_max=11;
@@ -172,16 +191,16 @@ void font()
   WSHDR *ws1 = AllocWS(32);
   soft_key();
   wsprintf(ws1,"Font Size: %d",num);
-  DrawString(ws1,5,screenh/3,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws1,5,screenh/3,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   if (num<0||num>font_max)
   {
     wsprintf(ws,"No such font");
-    DrawString(ws,5,screenh/3+GetFontYSIZE(FONT_SMALL)+screenh/12,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+    DrawString(ws,5,screenh/3+GetFontYSIZE(main_font)+screenh/12,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   }
   else
   {
-    wsprintf(ws,test_str);
-    DrawString(ws,5,screenh/3+GetFontYSIZE(FONT_SMALL)+3,screenw,screenh,num,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+    utf8_2ws(ws,test_string,strlen(test_string));
+    DrawString(ws,5,screenh/3+GetFontYSIZE(main_font)+3,screenw,screenh,num,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   }
   FreeWS(ws1);
   FreeWS(ws);
@@ -204,13 +223,13 @@ void status(void)
   #else
   char model[]="SGOLD";
   #endif
-  DrawRectangle(0,y_b,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
+  DrawRectangle(0,y_b,screenw,screenh,0,GetPaletteAdrByColorIndex(1),main_bg_color);
   soft_key();
   GUI *igui=GetTopGUI();
   wsprintf(ws_info,"Phone: %s\nNet: %c%ddB T: %d.%d°C\nBts: %d-%d:%d\nC1: %d C2: %d\nV:%d.%02dV Cap: %02d%%\nCL: %d%% CC: %dMHz\nFreeRam: %uKb",model,(net->ch_number>=255)?'=':'-',net->power,temp/10,temp%10,net->ci,net->lac,net->ch_number,net->c1,net->c2,volt/1000,(volt%1000)/10,*RamCap(),GetCPULoad(),GetCPUClock(),GetFreeRamAvail()/1024);
-  DrawString(ws_info,5,y_b,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws_info,5,y_b,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   wsprintf(ws_info,"0: %dKb / %dKb\n1: %dKb / %dKb\n2: %dKb / %dKb\n4: %dMB / %dMB",GetFreeFlexSpace(0,&err)/1024,GetTotalFlexSpace(0,&err)/1024,GetFreeFlexSpace(1,&err)/1024,GetTotalFlexSpace(1,&err)/1024,GetFreeFlexSpace(2,&err)/1024,GetTotalFlexSpace(2,&err)/1024,f_4,t_4);
-  DrawString(ws_info,5,y_b+GetFontYSIZE(FONT_SMALL)*7,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws_info,5,y_b+GetFontYSIZE(main_font)*7,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
 }
 
 
@@ -227,11 +246,11 @@ void rgb24()
   WSHDR *ws = AllocWS(32);
   soft_key();
   wsprintf(ws1,"RGB24 COLOR: %d",num);
-  DrawString(ws1,5,y_b+screenh/12,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws1,5,y_b+screenh/12,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   if (num<0||num>23)
   {
     wsprintf(ws,"No such color");
-    DrawString(ws,5,screenh/3,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+    DrawString(ws,5,screenh/3,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   }
   else DrawRoundedFrame(5,screenh/3,screenw-5,screenh-GetFontYSIZE(FONT_MEDIUM)-screenh/12,0,0,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(num));
   FreeWS(ws);
@@ -243,7 +262,7 @@ void sound()
   WSHDR *ws = AllocWS(32);
   soft_key();
   wsprintf(ws, "Sound Num: %d", num);
-  DrawString(ws,5,screenh/3,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws,5,screenh/3,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   PlaySound(0,0,0,num,0);
   FreeWS(ws);
 }
@@ -254,17 +273,17 @@ void text_attribute(void)
   int i;
   WSHDR *wst=AllocWS(8);
   wsprintf(wst,"256: ");
-  int h_len=get_string_width(wst,FONT_SMALL);
+  int h_len=get_string_width(wst,main_font);
   FreeWS(wst);
-  DrawRectangle(0,y_b,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
+  DrawRectangle(0,y_b,screenw,screenh,0,GetPaletteAdrByColorIndex(1),main_bg_color);
   soft_key();
   wsprintf(wsh, "Text attribute: \n    1:\n    2:\n    4:\n    8:\n  16:\n  32:\n  64:\n128:\n256:");
-  DrawString(wsh,5,y_b,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  DrawString(wsh,5,y_b,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23));
   WSHDR *ws = AllocWS(32);
   wsprintf(ws,"Test string");
   for(i=0;i<9;i++)
   {
-    DrawString(ws,h_len+5,y_b+GetFontYSIZE(FONT_SMALL)*(i+1),screenw,screenh,FONT_SMALL,pow(2,i),GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(2));
+    DrawString(ws,h_len+5,y_b+GetFontYSIZE(main_font)*(i+1),screenw,screenh,main_font,pow(2,i),main_text_color,t_a_b_color);
   }
   FreeWS(ws);
   FreeWS(wsh);
@@ -287,7 +306,7 @@ void vibra(void)
     else
       SetVibration(0);
   }
-  DrawString(ws,5,screenh/3,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws,5,screenh/3,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   FreeWS(ws);
 }
 
@@ -319,13 +338,13 @@ void light(void)
         break;
     }
   }
-  DrawString(ws,5,screenh/3,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws,5,screenh/3,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   FreeWS(ws);
 }
 
 void onRedraw(MAIN_GUI *data)
 {
-  DrawRectangle(0,y_b,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
+  DrawRectangle(0,y_b,screenw,screenh,0,GetPaletteAdrByColorIndex(1),main_bg_color);
   if (flag!=4)
   {
     status_flag=0;
@@ -508,6 +527,15 @@ void startgui(void)
 int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 {
   MAIN_CSM *csm=(MAIN_CSM*)data;
+  if (msg->msg==MSG_RECONFIGURE_REQ)
+  {
+    extern const char *successed_config_filename;
+    if (strcmp_nocase(successed_config_filename,(char *)msg->data0)==0)
+    {
+      ShowMSG(1,(int)"SieHelpMan config updated!");
+      InitConfig();
+    }
+  }
   if ((msg->msg==MSG_GUI_DESTROYED)&&((int)msg->data0==csm->gui_id))
   {
     csm->csm.state=-3;
@@ -529,7 +557,7 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
             StartCpuUsageCount();
           }
 #endif
-          GBS_StartTimerProc(&mytmr, REFRESH*TMR_SECOND/10, TimerProc);
+          GBS_StartTimerProc(&mytmr, sys_re_t*TMR_SECOND/10, TimerProc);
         }
       }
     }
@@ -552,7 +580,7 @@ SOFTKEYSTAB menu_skt=
   menu_sk,0
 };
 
-#define ITEMS_N 11
+#define ITEMS_N 12
 
 MENUITEM_DESC menu_items[ITEMS_N]=
 {
@@ -566,6 +594,7 @@ MENUITEM_DESC menu_items[ITEMS_N]=
   {NULL,(int)"VibraPower",     LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"Light",          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"KeyCode",        LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"Options",        LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"About",          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 };
 
@@ -629,6 +658,16 @@ void light_gui(GUI *data)
   startgui();
 }
 
+void options(GUI *data)
+{
+  extern const char *successed_config_filename;
+  WSHDR *ws;
+  ws=AllocWS(128);
+  str_2ws(ws,successed_config_filename,128);
+  ExecuteFile(ws,0,0);
+  FreeWS(ws);
+}
+
 void about(GUI *data)
 {
   ShowMSG(1, (int)"SieHelpMan\ncopyright 2007\nbinghelingxi");
@@ -646,6 +685,7 @@ const MENUPROCS_DESC menu_hndls[ITEMS_N]=
   vibra_gui,
   light_gui,
   keycode_gui,
+  options,
   about,
 };
 
@@ -689,6 +729,8 @@ void maincsm_oncreate(CSM_RAM *data)
 {
   screenw=ScreenW();
   screenh=ScreenH();
+  vibra_flag=default_vibra_sta;
+  light_flag=default_light_sta;
   ws_info = AllocWS(256);
   MAIN_CSM *csm=(MAIN_CSM *)data;
   csm->csm.state=0;
@@ -752,6 +794,7 @@ void UpdateCSMname(void)
 int main()
 {
   char dummy[sizeof(MAIN_CSM)];
+  InitConfig();
   UpdateCSMname();
   LockSched();
   MAINCSM_ID=CreateCSM(&MAINCSM.maincsm,dummy,0);
