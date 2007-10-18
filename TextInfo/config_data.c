@@ -284,45 +284,45 @@ __root const CFG_CBOX_ITEM cfgcboxA1[7] = {"13:00","PM 01:00","01:00","13:00:00"
 __root const CFG_HDR cfghdr_mA0={CFG_LEVEL,"",0,0};
 // -------------------------------------------------------------------------- //
 
-__root const CFG_HDR cfghdr_mB1={CFG_LEVEL,"NongLiNian setup",1,0};
+__root const CFG_HDR cfghdr_mB1={CFG_LEVEL,"LunarYear setup",1,0};
 
-__root const CFG_HDR cfghdrB_1 = {CFG_CBOX, "NongLiNian display", 0, 2};
+__root const CFG_HDR cfghdrB_1 = {CFG_CBOX, "LunarYear display", 0, 2};
 __root const int NongLiNian_ENA = 1;
 __root const CFG_CBOX_ITEM cfgcboxB[2] = {"No", "Yes"};
 
-__root const CFG_HDR cfghdrB_2={CFG_COORDINATES,"NongLiNian position",0,0};
+__root const CFG_HDR cfghdrB_2={CFG_COORDINATES,"LunarYear position",0,0};
 __root const unsigned int NongLiNian_X=3;
 __root const unsigned int NongLiNian_Y=265;
 
-__root const CFG_HDR cfghdrB_3={CFG_COLOR,"NongLiNian color",0,0};
+__root const CFG_HDR cfghdrB_3={CFG_COLOR,"LunarYear color",0,0};
 __root const char NongLiNian_COLORS[4]={0,0,0,100};
 
-__root const CFG_HDR cfghdrB_6={CFG_COLOR,"NongLiNian frame color",0,0};
+__root const CFG_HDR cfghdrB_6={CFG_COLOR,"LunarYear frame color",0,0};
 __root const char NongLiNian_FRAME_COLORS[4]={255,255,255,100};
 
-__root const CFG_HDR cfghdrB_4={CFG_UINT,"NongLiNian font",0,65535};
+__root const CFG_HDR cfghdrB_4={CFG_UINT,"LunarYear font",0,65535};
 __root const unsigned int NongLiNian_FONT=8;
 
 __root const CFG_HDR cfghdr_mB0={CFG_LEVEL,"",0,0};
 // -------------------------------------------------------------------------- //
 
-__root const CFG_HDR cfghdr_mC1={CFG_LEVEL,"NongLiData setup",1,0};
+__root const CFG_HDR cfghdr_mC1={CFG_LEVEL,"LunarDate setup",1,0};
 
-__root const CFG_HDR cfghdrC_1 = {CFG_CBOX, "NongLiData display", 0, 2};
+__root const CFG_HDR cfghdrC_1 = {CFG_CBOX, "LunarDate display", 0, 2};
 __root const int NongLiData_ENA = 1;
 __root const CFG_CBOX_ITEM cfgcboxC[2] = {"No", "Yes"};
 
-__root const CFG_HDR cfghdrC_2={CFG_COORDINATES,"NongLiData position",0,0};
+__root const CFG_HDR cfghdrC_2={CFG_COORDINATES,"LunarDate position",0,0};
 __root const unsigned int NongLiData_X=147;
 __root const unsigned int NongLiData_Y=265;
 
-__root const CFG_HDR cfghdrC_3={CFG_COLOR,"NongLiData color",0,0};
+__root const CFG_HDR cfghdrC_3={CFG_COLOR,"LunarDate color",0,0};
 __root const char NongLiData_COLORS[4]={0,0,0,100};
 
-__root const CFG_HDR cfghdrC_6={CFG_COLOR,"NongLiData frame color",0,0};
+__root const CFG_HDR cfghdrC_6={CFG_COLOR,"LunarDate frame color",0,0};
 __root const char NongLiData_FRAME_COLORS[4]={255,255,255,100};
 
-__root const CFG_HDR cfghdrC_4={CFG_UINT,"NongLiData font",0,65535};
+__root const CFG_HDR cfghdrC_4={CFG_UINT,"LunarDate font",0,65535};
 __root const unsigned int NongLiData_FONT=8;
 
 __root const CFG_HDR cfghdr_mC0={CFG_LEVEL,"",0,0};
