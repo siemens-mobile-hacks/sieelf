@@ -345,7 +345,6 @@ KCB/conf_loader.c -text
 KCB/conf_loader.h -text
 KCB/config_data.c -text
 KCB/func.asm -text
-KCB/kcb.dep -text
 KCB/kcb.ewd -text
 KCB/kcb.ewp -text
 KCB/kcb.eww -text

@@ -16,26 +16,25 @@ extern void kill_data(void *p, void (*func_p)(void *));
 const int minus11=-11;
 int MAINCSM_ID=0;
 
-
 extern const char ICONS_SD[128];
 extern const char ICONS_RB[128];
 extern const char ICONS_SR[128];
 extern const char ICONS_UL[128];
 
-extern const int SND_ENA;
-extern const unsigned int VOLUME;
-extern const char SND_SD[128];
-extern const char SND_RB[128];
-extern const char SND_SR[128];
-extern const char SND_UL[128];
+//extern const int SND_ENA;
+//extern const unsigned int VOLUME;
+//extern const char SND_SD[128];
+//extern const char SND_RB[128];
+//extern const char SND_SR[128];
+//extern const char SND_UL[128];
 
 extern const unsigned int CLOSE_BTN;
 extern const int MODE;
 
 extern const int DIRECT;
-extern const int CHANGE_PROFILE;
-extern const unsigned int set_pr1;
-extern const unsigned int set_pr2;
+//extern const int CHANGE_PROFILE;
+//extern const unsigned int set_pr1;
+//extern const unsigned int set_pr2;
 
 #ifdef DAEMON
 extern const unsigned int CALL_BTN;
@@ -61,58 +60,12 @@ typedef struct
   int i1;
 }MAIN_GUI;
 
-//int PLAY_ID;
-void Play(const char *fname)
-{
-  if ((!IsCalling())&&SND_ENA)
-  {
-    FSTATS fstats;
-    unsigned int err;
-    if (GetFileStats(fname,&fstats,&err)!=-1)
-    {
-      PLAYFILE_OPT _sfo1;
-      WSHDR* sndPath=AllocWS(128);
-      WSHDR* sndFName=AllocWS(128);
-      char s[128];
-      const char *p=strrchr(fname,'\\')+1;
-      str_2ws(sndFName,p,128);
-      strncpy(s,fname,p-fname);
-      s[p-fname]='\0';
-      str_2ws(sndPath,s,128);
-      
-      zeromem(&_sfo1,sizeof(PLAYFILE_OPT));
-      _sfo1.repeat_num=1;
-      _sfo1.time_between_play=0;
-      _sfo1.play_first=0;
-      _sfo1.volume=VOLUME;
-#ifdef NEWSGOLD
-      _sfo1.unk6=1;
-      _sfo1.unk7=1;
-      _sfo1.unk9=2;
-      /*PLAY_ID=*/PlayFile(0x10, sndPath, sndFName, MMI_CEPID, MSG_PLAYFILE_REPORT, &_sfo1);
-#else
-#ifdef X75
-      _sfo1.unk4=0x80000000;
-      _sfo1.unk5=1;
-      /*PLAY_ID=*/PlayFile(0xC, sndPath, sndFName, 0,MMI_CEPID, MSG_PLAYFILE_REPORT, &_sfo1);
-#else
-      _sfo1.unk5=1;
-      /*PLAY_ID=*/PlayFile(0xC, sndPath, sndFName, MMI_CEPID, MSG_PLAYFILE_REPORT, &_sfo1);
-#endif
-#endif
-      FreeWS(sndPath);
-      FreeWS(sndFName);
-    }
-  }
-}
-
 void method0(MAIN_GUI *data)
 {
  /* DrawRoundedFrame(0,0, ScreenW()-1, ScreenH()-1, 0, 0, 0,
 			GetPaletteAdrByColorIndex(23),
 			GetPaletteAdrByColorIndex(23));
   */
-  //加框?
    int x, y;
    
    switch(mode)  //图片显示位置
@@ -190,11 +143,11 @@ void DoIt(void) //功能定位
                KbdUnlock();
       break;
      }
-
   CloseCSM(MAINCSM_ID);
   MAINCSM_ID=0;
 }
 
+/*
 double GetWavkaLength(const char *fname) //actors
 {
   int f;
@@ -203,7 +156,6 @@ double GetWavkaLength(const char *fname) //actors
   int DataLength;//4
   int BytePerSec;//28  
   
-
   if ((f=fopen(fname,A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
   {
     lseek(f,4,S_SET,&ul,&ul);
@@ -221,7 +173,7 @@ double GetWavkaLength(const char *fname) //actors
 }
 
 GBSTMR mytmr;
-
+*/
 int method5(MAIN_GUI *data, GUI_MSG *msg)
 {
   DirectRedrawGUI();
@@ -256,8 +208,7 @@ int method5(MAIN_GUI *data, GUI_MSG *msg)
        switch(mode)
         {
           case 0:
-            Play(SND_SR);
-            if (SND_ENA) GBS_StartTimerProc(&mytmr,(int)GetWavkaLength(SND_SR),DoIt); else DoIt();
+             DoIt();
           break;
           case 1:
              DoIt();
@@ -266,8 +217,7 @@ int method5(MAIN_GUI *data, GUI_MSG *msg)
              DoIt();
           break;
           case 3:
-               Play(SND_UL);
-               if (SND_ENA) GBS_StartTimerProc(&mytmr,(int)GetWavkaLength(SND_UL),DoIt); else DoIt();
+             DoIt();
           break;
         }
        break;   
@@ -346,7 +296,6 @@ int maincsm_onmessage_GUI(CSM_RAM *data, GBS_MSG *msg)
   {
     csm->csm.state=-3;
   }
-  
   /*if (msg->msg==MSG_PLAYFILE_REPORT)
     {
       if ((msg->submess>>16)==PLAY_ID) 
@@ -356,7 +305,6 @@ int maincsm_onmessage_GUI(CSM_RAM *data, GBS_MSG *msg)
         else
           PLAY_ID=0;
     }*/  
-  
   return(1);
 }
 
@@ -426,7 +374,6 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
       InitConfig();
     }
   }
-
   /*if (msg->msg==MSG_PLAYFILE_REPORT)
     {
       //DoIt();
@@ -438,7 +385,6 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
         else
           PLAY_ID=0;
     }  */
-  
   return(1);
 }  
 
@@ -543,7 +489,7 @@ int main()
     CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
     AddKeybMsgHook((void *)my_keyhook);
   #else
-      if (!AddKeybMsgHook_end((void *)my_keyhook)) 
+      if (!AddKeybMsgHook((void *)my_keyhook)) 
       {
         ShowMSG(1, (int) "TurnOff_d. Unable to register a handler!"); 
         SUBPROC((void *)Killer);

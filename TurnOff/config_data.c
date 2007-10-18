@@ -58,20 +58,3 @@ __root const char ICONS_UL[128]=DEFAULT_DISK ":\\ZBin\\img\\TurnOff\\unlock.png"
 
 __root const CFG_HDR cfghdr_m2_0={CFG_LEVEL,"",0,0};
 
-__root const CFG_HDR cfghdr_m3_1={CFG_LEVEL,"Sounds options",1,0};
-
-__root const CFG_HDR cfghdr3_0={CFG_CBOX,"Sounds",0,2};
-__root const int SND_ENA=1;
-__root const CFG_CBOX_ITEM cfgcbox6[2]={"No","Yes"};
-
-__root const CFG_HDR cfghdr3_1={CFG_UINT,"Volume",0,6};
-__root const unsigned int VOLUME=1;
-
-__root const CFG_HDR cfghdr3_4={CFG_STR_UTF8,"Sound sleep",0,127};
-__root const char SND_SR[128]=DEFAULT_DISK ":\\ZBin\\sndElfs\\TurnOff\\sleep.wav";
-
-__root const CFG_HDR cfghdr3_5={CFG_STR_UTF8,"Sound unlock",0,127};
-__root const char SND_UL[128]=DEFAULT_DISK ":\\ZBin\\sndElfs\\TurnOff\\unlock.wav";
-
-__root const CFG_HDR cfghdr_m3_0={CFG_LEVEL,"",0,0};
-
