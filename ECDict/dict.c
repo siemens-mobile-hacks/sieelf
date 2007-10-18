@@ -7,14 +7,15 @@
 
 extern const char dict_dir[128];
 extern const char modidx_dir[128];
-extern char *indexbuf;
-extern const int idxbuf_size;
+
 extern char **index;
-extern const int wordcount;
 extern bool m_f_err;                //memory or file error;
 
 char* err_msg;               //error msg string;
 int dict;
+const int idxbuf_size = 694718;
+char *indexbuf = NULL;
+const int wordcount = 51214;
 
 void SetError(char* msg)
 {

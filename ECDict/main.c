@@ -19,10 +19,7 @@ extern const unsigned int cfg_floatwin;
 extern const unsigned int cfg_fw_delay;
 
 
-char *indexbuf = NULL;
-const int idxbuf_size = 694718;
 char **index = NULL;
-const int wordcount = 51214;
 bool m_f_err = false;           //memory or file error;
 #define TMR_SECOND 216
 GBSTMR  timer;

@@ -29,6 +29,8 @@ extern const char cfg_gui_color[4];
 extern const unsigned int cfg_gui_sk_font;
 extern const char cfg_gui_sk_color[4];
 
+extern const unsigned int cfg_showfreeram;
+
 extern void kill_data(void *p, void (*func_p)(void *));
 
 
@@ -69,6 +71,7 @@ void onRedraw(MAIN_GUI *data)
       construct_entry_text(ws, index[open_entry_index], 1, 1, 1);
     }
     DrawString(ws,5,YDISP,screenw,screenh-SoftkeyH(),cfg_gui_font,32,cfg_gui_color,GetPaletteAdrByColorIndex(23));
+    if(cfg_showfreeram) show_freeram();
     FreeWS(ws);
   }
   else
