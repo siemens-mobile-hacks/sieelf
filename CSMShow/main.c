@@ -95,16 +95,6 @@ int get_string_width(WSHDR *ws, int font)
   }
   return (width);
 }
-/*
-#pragma inline
-int strcmp_nocase(const char *s1,const char *s2)
-{
-  int i;
-  int c;
-  while(!(i=(c=toupper(*s1++))-toupper(*s2++))) if (!c) break;
-  return(i);
-}
-*/
 
 char *find_name(CSM_RAM *csm)
 {
@@ -158,13 +148,6 @@ void GetNumberOfDialogs(void)
   do
   {
     if (icsm!=ircsm)
-/*    {
-      ws=AllocWS(40);
-      wsprintf(ws,"IDLE Screen");
-      AddNL(ws,0,0);
-      nltop->p=icsm;
-    }
-    else*/
     {
       if (icsm->constr!=&maincsm)
       {
@@ -281,7 +264,7 @@ void GetNumberOfDialogs(void)
 
 void draw_csm_name(GUI *igui)
 {
-	WSHDR *csmname;
+	WSHDR *csmname=AllocWS(80);
 	NAMELIST *nl;
 	int i=0,len,font_high;
 	nl=nltop;
@@ -294,16 +277,15 @@ void draw_csm_name(GUI *igui)
 	font_high=GetFontYSIZE(CSM_FONT);
 	while (nl)
 	{
-			++i;
-			csmname=AllocWS(80);
-			wsprintf(csmname,begin_str,i);
-			wstrcat(csmname,nl->name);
-			len=get_string_width(csmname,CSM_FONT);
-			DrawCanvas(canvasdata,CSM_X,CSM_Y+(i-1)*(font_high+1),CSM_X+len+5,CSM_Y+(i)*(font_high+1),1);
-			DrawString(csmname, CSM_X, CSM_Y+(i-1)*(font_high+1),CSM_X+len+5, CSM_Y+(i)*(font_high+1),CSM_FONT,32,CSM_COLORS, CSM_FRAME_COLORS);
-			FreeWS(csmname);
+		++i;
+		wsprintf(csmname,begin_str,i);
+		wstrcat(csmname,nl->name);
+		len=get_string_width(csmname,CSM_FONT);
+	  DrawCanvas(canvasdata,CSM_X,CSM_Y+(i-1)*(font_high+1),CSM_X+len+5,CSM_Y+(i)*(font_high+1),1);
+	  DrawString(csmname, CSM_X, CSM_Y+(i-1)*(font_high+1),CSM_X+len+5, CSM_Y+(i)*(font_high+1),CSM_FONT,32,CSM_COLORS, CSM_FRAME_COLORS);
 		nl=nl->next;
 	}
+	FreeWS(csmname);
 }
 
 #define idlegui_id(icsm) (((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])
