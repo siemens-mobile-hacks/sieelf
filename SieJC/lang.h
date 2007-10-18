@@ -5,11 +5,11 @@
 #ifndef _LANG_H_
 #define _LANG_H_
 
-#define LG_COPYRIGHT "Siemens natJabber Client\n(c)Kibab, Ad, Borman99\n%s r%d\nCompiled %s"
+#define LG_COPYRIGHT "Siemens natJabber Client\n(c)Kibab, Ad, Borman99\n%s r%i\nCompiled %s"
 
-#define LANG_EN
+//#define LANG_RU
 //#define LANG_UA
-//#define LANG_EN
+#define LANG_EN
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -80,6 +80,7 @@
 #define LG_JTRANSP          "Данный контакт является транспортом Jabber"
 #define LG_GROUPROSTER      "Группа ростера"
 #define LG_RESOURCE         "Ресурс:"
+#define LG_PRIORITY         "Приоритет:"
 #define LG_REALJID          "Реальный JID:"
 #define LG_STATUS2          "Статус:"
 #define LG_PRIVILEGES       "Привилегии:"
@@ -223,6 +224,7 @@
 #define LG_JTRANSP          "Даний контакт є транспортом Jabber"
 #define LG_GROUPROSTER      "Група ростеру"
 #define LG_RESOURCE         "Ресурс:"
+#define LG_PRIORITY         "Приоритет:"
 #define LG_REALJID          "Реальний JID:"
 #define LG_STATUS2          "Статус:"
 #define LG_PRIVILEGES       "Привілеї:"
@@ -366,6 +368,7 @@
 #define LG_JTRANSP          "This contact is Jabber transport"
 #define LG_GROUPROSTER      "Roster group"
 #define LG_RESOURCE         "Resource:"
+#define LG_PRIORITY         "Priority:"
 #define LG_REALJID          "Real JID:"
 #define LG_STATUS2          "Statuse:"
 #define LG_PRIVILEGES       "Privileges:"

@@ -57,7 +57,7 @@
 // Оно же, но принимает ANSI-строку. Полезно в отдельных случаях :)
   void CList_AddSystemMessageA(char* jid, char status, char* ansi_status_msg);
 
-  TRESOURCE* CList_AddResourceWithPresence(char* jid, char status, char* status_msg);
+  TRESOURCE* CList_AddResourceWithPresence(char* jid, char status, char* status_msg, short priority);
 
 // Получить контакт, на котором стоит курсор
   TRESOURCE* CList_GetActiveContact();
@@ -65,6 +65,8 @@
 // Делаем оффлайнами все ресурсы заданного контакта. Useful для конференций.
   void CList_MakeAllResourcesOFFLINE(CLIST* ClEx);
 
+// Делаем оффлайнами все контакты.
+  void CList_MakeAllContactsOFFLINE();  
 // Уничтожить список контактов
   void CList_Destroy();
 

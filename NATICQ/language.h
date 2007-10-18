@@ -4,9 +4,9 @@
 #define LG_COPYRIGHT     "NATICQ v2.0\nRevision %d\n(C) by Rst7/CBSIE\nKren\nKibab\nShadow\nSeklth"
 
 //Оставляем только один дефайн иначе будет кака
-#define LANG_EN
+//#define LANG_RU
 //#define LANG_UA
-//#define LANG_EN
+#define LANG_EN
 
 #ifdef LANG_RU
 
@@ -122,7 +122,7 @@
 
 //=================================
 
-#define LG_GRSTATESTRING "State: %d, RXstate: %d\n%t"
+#define LG_GRSTATESTRING "State: %d, RXstate: %d\nRx: %db, Tx: %db\nQueue: %db\n%t"
 #define LG_GRSKEYEXIT    "Exit"
 #define LG_GRSKEYCLIST   "CList"
 

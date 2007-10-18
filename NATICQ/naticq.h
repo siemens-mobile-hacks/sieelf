@@ -28,11 +28,12 @@ typedef struct
   int req_add;
   int req_drawack;
   LOGQ *log;
-  LOGQ *answer;
+  char *answer;
   LOGQ *last_log;
   int isactive;
   int msg_count;
   char *xtext;
+  int req_xtext;
 }CLIST;
 
 typedef struct

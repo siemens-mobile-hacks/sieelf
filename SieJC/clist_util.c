@@ -343,7 +343,8 @@ TRESOURCE* CList_IsResourceInList(char* jid)
 // ѕомен€ть статус у контакта
 void CList_Ch_Status(TRESOURCE* resource,
                      char status,
-                     char* status_msg
+                     char* status_msg,
+                     short priority  
                        )
 {
   LockSched();
@@ -358,6 +359,7 @@ void CList_Ch_Status(TRESOURCE* resource,
     strcpy(resource->status_msg, status_msg);
   }
   resource->status = status;
+  resource->priority = priority;
   UnlockSched();
   CList_AddSystemMessage(resource->full_name, status, status_msg);
 }
@@ -373,9 +375,30 @@ void CList_MakeAllResourcesOFFLINE(CLIST* ClEx)
   {
     CList_Ch_Status(ResEx,
                     PRESENCE_OFFLINE,
-                    NULL
+                    NULL, 0
                       );
     ResEx = ResEx->next;
+  }
+}
+
+// ƒелаем оффлайнами все контакты. Useful дл€ реконнекта *џ*
+void CList_MakeAllContactsOFFLINE()
+{
+  CLIST *ClEx;
+  if(!(ClEx=cltop))return;
+  while(ClEx)
+  {
+    TRESOURCE* ResEx = ClEx->res_list;
+    while(ResEx)
+    {
+      if(ResEx->entry_type!=T_GROUP)
+        CList_Ch_Status(ResEx,
+                      PRESENCE_OFFLINE,
+                       NULL,0
+                       );
+      ResEx = ResEx->next;
+    }
+    ClEx = ClEx->next;
   }
 }
 
@@ -413,7 +436,7 @@ int CList_GetVisibilityForGroup(int GID)
   return 1; //“ака€ группа не найдена. “акого вообще-то не должно быть, но дл€ конференций это именно так.
 }
 
-TRESOURCE* CList_AddResourceWithPresence(char* jid, char status, char* status_msg)
+TRESOURCE* CList_AddResourceWithPresence(char* jid, char status, char* status_msg, short priority)
 {
   TRESOURCE* qq = CList_IsResourceInList(jid);
 
@@ -421,7 +444,7 @@ TRESOURCE* CList_AddResourceWithPresence(char* jid, char status, char* status_ms
   // Ќужно ему статус помен€ть.
   if(qq)
   {
-    CList_Ch_Status(qq, status, status_msg);
+    CList_Ch_Status(qq, status, status_msg, priority);
     return qq;
   }
   CLIST* ClEx = cltop;
@@ -456,6 +479,7 @@ TRESOURCE* CList_AddResourceWithPresence(char* jid, char status, char* status_ms
       }
 
       ResEx->status = status;
+      ResEx->priority = priority;
       ResEx->muc_privs.aff = AFFILIATION_NONE;
       ResEx->muc_privs.role=  ROLE_NONE;
       ResEx->muc_privs.real_jid =  NULL;
@@ -576,6 +600,7 @@ CLIST* CList_AddContact(char* jid,
   ResEx->log=NULL;
   ResEx->next=NULL;
   ResEx->status_msg=NULL;
+  ResEx->priority=0;
   ResEx->muc_privs.real_jid =  NULL;
   ResEx->has_unread_msg=0;
   ResEx->total_msg_count=0;
@@ -659,7 +684,7 @@ void CList_AddMessage(char* jid, MESS_TYPE mtype, char* mtext)
     ShowMSG(1,(int)qjid);
     contEx = CList_AddContact(qjid, qjid, SUB_NONE, 0, 0);
     mfree(qjid);
-    CList_AddResourceWithPresence(jid, PRESENCE_OFFLINE, NULL);
+    CList_AddResourceWithPresence(jid, PRESENCE_OFFLINE, NULL,0);
   }
   TRESOURCE* cont = (contEx->group & 0x80 && (mtype==MSG_GCHAT || mtype==MSG_SUBJECT)) ? contEx->res_list : CList_IsResourceInList(jid);
   if(!cont)
@@ -780,6 +805,9 @@ void CList_Display_Popup_Info(TRESOURCE* ResEx)
   Disp_Info(ResEx);
 }
 
+
+char qqq[100];
+
 // бегаем по контактам с сообщени€ми
 void nextUnread()
 {
@@ -793,11 +821,15 @@ void nextUnread()
     ResEx = ClEx->res_list;
     while(ResEx) //идем по списку ресурсов
     {
-      if(ResEx->has_unread_msg) { //если есть непрочитанное
-        if (CList_GetActiveContact()!=ResEx) { //если мы не стоим на этом контакте
+      if(ResEx->has_unread_msg) //если есть непрочитанное
+      { 
+        if (CList_GetActiveContact()!=ResEx)//если мы не стоим на этом контакте
+        { 
           //нужна еще кака€-то проверка, € что-то не учитываю, поэтому иногда ведет себ€ странно...
           if(!CList_GetVisibilityForGroup(ClEx->group)) //если группа контакта свернута, надо ее развернуть, иначе плохо будет
+          {
             CList_ToggleVisibilityForGroup(ClEx->group);
+          }
           MoveCursorTo(ResEx);
           break;
         }
@@ -845,9 +877,15 @@ void MoveCursorTo(TRESOURCE* NewResEx)
   {
     while(CList_isGroup(ClEx)&&(ClEx->IsVisible==0)) //ѕерескакиваем через свернутую группу, иначе промахнемс€
     {
+
+//      sprintf(qqq,"Skip group %s\r\n", ClEx->name);tx_str(qqq);
+
       char c_group = ClEx->group;
       while(ClEx->group==c_group)
-        ClEx = ClEx->next;
+        if(ClEx->next!=NULL)
+        {
+          ClEx = ClEx->next;
+        }else return;
       pos++;
     }
 

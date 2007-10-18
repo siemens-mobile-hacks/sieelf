@@ -3108,4 +3108,16 @@ __swi __arm char *RamIconBar(void);
 //pattern= *(????????414D5F70)+4
 
 
+#pragma swi_number=0x8237
+__swi __arm char *RamIconBar();
+//arm
+//pattern_ELKA=*(????????414D5F70)+4
+
+#pragma swi_number=0x86
+__swi __arm void ReadEEPROMData(int block, void *buf, int offset, int size);
+//arm
+
+#pragma swi_number=0x87
+__swi __arm void WriteEEPROMData(int block, void *buf, int offset, int size);
+//arm
 

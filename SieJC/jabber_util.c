@@ -7,6 +7,7 @@
 #include "string_util.h"
 #include "xml_parser.h"
 #include "item_info.h"
+#include "vCard.h"
 #include "jabber.h"
 #include "bookmarks.h"
 #include "serial_dbg.h"
@@ -37,8 +38,18 @@ extern unsigned int NContacts;
 MUC_ITEM *muctop = NULL;
 
 extern JABBER_STATE Jabber_state;
-const char* PRESENCES[PRES_COUNT] = {"online", "chat", "away", "xa", "dnd", "invisible", "unavailable", "error",
-                                      "subscribe", "subscribed", "unsubscribe", "unsubscribed"};
+const char* PRESENCES[PRES_COUNT] = {"online",
+                                     "chat",
+                                     "away",
+                                     "xa",
+                                     "dnd",
+                                     "invisible",
+                                     "unavailable",
+                                     "error",
+                                     "subscribe",
+                                     "subscribed",
+                                     "unsubscribe",
+                                     "unsubscribed"};
 
 const RGBA PRES_COLORS[PRES_COUNT] =
 {
@@ -62,6 +73,7 @@ const RGBA PRES_COLORS[PRES_COUNT] =
 const char* JABBER_AFFS[] = {"none", "outcast", "member", "admin", "owner"};
 const char* JABBER_ROLS[] = {"none", "visitor", "participant", "moderator"};
 
+ONLINEINFO OnlineInfo = {0,0,NULL};
 
 /*
   Посылка стандартного Jabber Iq
@@ -81,11 +93,15 @@ void SendIq(char* to, char* type, char* id, char* xmlns, char* payload)
   {
     strcpy(s_id, "");
   }
-  sprintf(xmlq, "<iq type='%s' %s from='%s'", type, s_id, My_JID_full);
+  char *_from = Mask_Special_Syms(My_JID_full);
+  sprintf(xmlq, "<iq type='%s' %s from='%s'", type, s_id, _from);
+  mfree(_from);
   if(to)
   {
-    snprintf(s_to, 128, " to='%s'", to);
+    char *_to = Mask_Special_Syms(to);
+    snprintf(s_to, 128, " to='%s'", _to);
     strcat(xmlq, s_to);
+    mfree(_to);
   }
   if(payload)
   {
@@ -244,7 +260,7 @@ void Send_Vcard_Request(char *dest_jid)
 // Возвращаемую строку необходимо освобождать!
 char *Generate_Caps()
 {
-  char caps_tpl[]="%s:%s:%d";
+  char caps_tpl[]="%s:%i:%d";
   char *q = malloc(64);
   zeromem(q,64);
   snprintf(q,127, caps_tpl, VERSION_VERS,__SVN_REVISION__,DELIVERY_EVENTS);
@@ -263,11 +279,21 @@ void Send_Presence(PRESENCE_INFO *pr_info)
 {
   extern char My_Presence;
   My_Presence = pr_info->status;
-//<c xmlns='http://jabber.org/protocol/caps' node='VERSION_NAME' ver='VERSION_VERS __SVN_REVISION__' />
+
+  OnlineInfo.status = pr_info->status;
+  OnlineInfo.priority = pr_info->priority;
+  if(OnlineInfo.txt)mfree(OnlineInfo.txt);
+  if(pr_info->message)
+  {
+    OnlineInfo.txt = malloc(strlen(pr_info->message)+1);
+    strcpy(OnlineInfo.txt, pr_info->message);
+  }else OnlineInfo.txt = NULL;
+
+  //<c xmlns='http://jabber.org/protocol/caps' node='VERSION_NAME' ver='VERSION_VERS __SVN_REVISION__' />
 
   // Генерируем капс исходя из включённых фич
   char *caps = Generate_Caps();
-  
+
   char* presence = malloc(1024);
   if(pr_info->status!=PRESENCE_INVISIBLE)
   {
@@ -293,16 +319,20 @@ void Send_Presence(PRESENCE_INFO *pr_info)
   MUC_ITEM* m_ex = muctop;
   while(m_ex)
   {
+    char *_to = Mask_Special_Syms(m_ex->conf_jid);
+    char *_from = Mask_Special_Syms(My_JID_full);
     if(pr_info->message)
     {
       char presence_template[]="<presence from='%s' to='%s'><show>%s</show><status>%s</status><c xmlns='http://jabber.org/protocol/caps' node='%s %s-r%d' ver='%s' /></presence>";//по идее для инвиз/оффлайн не надо отправлять инфо
-      snprintf(presence,1024,presence_template, My_JID_full, m_ex->conf_jid, PRESENCES[pr_info->status], pr_info->message, VERSION_NAME, VERSION_VERS, __SVN_REVISION__, caps);
+      snprintf(presence,1024,presence_template, _from, _to, PRESENCES[pr_info->status], pr_info->message, VERSION_NAME, VERSION_VERS, __SVN_REVISION__, caps);
     }
     else
     {
       char presence_template[]="<presence from='%s' to='%s'><show>%s</show><c xmlns='http://jabber.org/protocol/caps' node='%s %s-r%d' ver='%s' /></presence>";//по идее для инвиз/оффлайн не надо отправлять инфо
-      snprintf(presence,1024,presence_template, My_JID_full, m_ex->conf_jid, PRESENCES[pr_info->status], VERSION_NAME, VERSION_VERS, __SVN_REVISION__, caps);
+      snprintf(presence,1024,presence_template, _from, _to, PRESENCES[pr_info->status], VERSION_NAME, VERSION_VERS, __SVN_REVISION__, caps);
     }
+    mfree(_to);
+    mfree(_from);
     SendAnswer(presence);
     m_ex=m_ex->next;
   };
@@ -344,8 +374,7 @@ void SendMessage(char* jid, IPC_MESSAGE_S *mess)
       </x>
     </message>
 */
-  char* _jid=malloc(128);
-  strcpy(_jid, jid);
+  char *_jid = Mask_Special_Syms(jid);
   char mes_template[]="<message to='%s' id='SieJC_%d' type='%s'><body>%s</body><x xmlns='jabber:x:event'></x></message>";
   char* msg_buf = malloc(MAX_MSG_LEN*2+200);
   if(mess->IsGroupChat)
@@ -473,12 +502,16 @@ char* Get_Resource_Name_By_FullJID(char* full_jid)
 //Context: HELPER
 void Send_Initial_Presence_Helper()
 {
-  char ansi_msg[]="Online";
-  char *message = ANSI2UTF8(ansi_msg, strlen(ansi_msg));
+//  OnlineInfo
+//  char *message = ANSI2UTF8(ansi_msg, strlen(ansi_msg));
   PRESENCE_INFO *pr_info = malloc(sizeof(PRESENCE_INFO));
-  pr_info->priority = 16;
-  pr_info->status=PRESENCE_ONLINE;
-  pr_info->message=message;
+  pr_info->priority = OnlineInfo.priority;
+  pr_info->status=OnlineInfo.status;
+  if(OnlineInfo.txt)
+  {
+    pr_info->message = malloc(strlen(OnlineInfo.txt)+1);
+    strcpy(pr_info->message,OnlineInfo.txt);
+  }else pr_info->message = NULL;
   Send_Presence(pr_info);
   Jabber_state = JS_ONLINE;
 }
@@ -486,9 +519,18 @@ void Send_Initial_Presence_Helper()
 //Context: HELPER
 void _enterconference(MUC_ENTER_PARAM *param)
 {
-  char magic_ex[]="<presence from='%s' to='%s/%s'><x xmlns='http://jabber.org/protocol/muc'><history maxstanzas='%d'/></x></presence>";
+  char magic_ex[]="<presence from='%s' to='%s/%s'><x xmlns='http://jabber.org/protocol/muc'><history maxstanzas='%d'/></x><show>%s</show><status>%s</status></presence>";
   char* magic = malloc(1024);
-  sprintf(magic,magic_ex, My_JID_full, param->room_name,param->room_nick, param->mess_num);
+  char *stext;
+  extern char empty_str[];
+  if(OnlineInfo.txt){stext= OnlineInfo.txt;}else{stext = empty_str;}
+  char *_from = Mask_Special_Syms(My_JID_full);
+  char *_room_name = Mask_Special_Syms(param->room_name);
+  char *_room_nick = Mask_Special_Syms(param->room_nick);
+  sprintf(magic,magic_ex, _from, _room_name,_room_nick, param->mess_num, PRESENCES[OnlineInfo.status], stext);
+  mfree(_from);
+  mfree(_room_name);
+  mfree(_room_nick);
   SendAnswer(magic);
   mfree(magic);
   mfree(param->room_nick);
@@ -654,6 +696,7 @@ void Send_Presence_MMIStub()
 {
   SUBPROC((void*)Send_Initial_Presence_Helper);
 }
+
 
 // Изменяет имя контакта в ростере
 void ChangeRoster(XMLNode* items)
@@ -1031,144 +1074,7 @@ if(!strcmp(gres,iqtype))
     if(!(vcard = XML_Get_Child_Node_By_Name(nodeEx, "vCard")))return;
     char* v_type = XML_Get_Attr_Value("xmlns", vcard->attr);
     if(!v_type)return;
-    if(!strcmp(v_type,"vcard-temp"))
-    {
-      char* pres=malloc(1024);
-      int resul_s = 1024;
-      char* resul=malloc(resul_s);
-      char* FN_str;
-      char* NICKNAME_str;
-//      char* JABBERID_str;
-//      char* GIVEN_str;
-//      char* FAMILY_str;
-//      char* MIDDLE_str;
-//      char* EMAILHOME_str;
-//      char* EMAILWORK_str;
-//      char* URL_str;
-//      char* BDAY_str;
-//      char* ORGNAME_str;
-//      char* ORGUNIT_str;
-//      char* TITLE_str;
-//     char* ROLE_str;
-//      char* USERID_str;
-//      char* DESC_str;
-      XMLNode *vc_FN=XML_Get_Child_Node_By_Name(vcard, "FN");
-//--------<N>
-//     XMLNode *N_TEG=XML_Get_Child_Node_By_Name(vcard, "N");
-//     XMLNode *vc_GIVEN=XML_Get_Child_Node_By_Name(N_TEG, "GIVEN");
-//      XMLNode *vc_FAMILY=XML_Get_Child_Node_By_Name(N_TEG, "FAMILY");
-//      XMLNode *vc_MIDDLE=XML_Get_Child_Node_By_Name(N_TEG, "MIDDLE");
-//----------<N/>
-//-------<ORG>
-//       XMLNode *ORG_TEG=XML_Get_Child_Node_By_Name(vcard, "ORG");
-//     XMLNode *vc_ORGNAME=XML_Get_Child_Node_By_Name(ORG_TEG, "ORGNAME");
-//      XMLNode *vc_ORGUNIT=XML_Get_Child_Node_By_Name(ORG_TEG, "ORGUNIT");
-//------<ORG/>
-//---<EMAIL>
-//       XMLNode *EMAIL_TEG=XML_Get_Child_Node_By_Name(vcard, "EMAIL");
-//     XMLNode *vc_EMAILHOME=XML_Get_Child_Node_By_Name(EMAIL_TEG, "HOME");
-//     XMLNode *vc_EMAILWORK=XML_Get_Child_Node_By_Name(EMAIL_TEG, "WORK");
-//     XMLNode *vc_EMAILINTERNET=XML_Get_Child_Node_By_Name(EMAIL_TEG, "INTERNET");
-//     XMLNode *vc_EMAILPREF=XML_Get_Child_Node_By_Name(EMAIL_TEG, "PREF");
-//     XMLNode *vc_EMAILX400=XML_Get_Child_Node_By_Name(EMAIL_TEG, "X400");
- //    XMLNode *vc_EMAILUSERID=XML_Get_Child_Node_By_Name(EMAIL_TEG, "USERID");
-//---<EMAIL/>
-//      XMLNode *vc_JABBERID=XML_Get_Child_Node_By_Name(vcard, "JABBERID");
-      XMLNode *vc_NICKNAME=XML_Get_Child_Node_By_Name(vcard, "NICKNAME");
-//      XMLNode *vc_URL=XML_Get_Child_Node_By_Name(vcard, "URL");
-//      XMLNode *vc_BDAY=XML_Get_Child_Node_By_Name(vcard, "BDAY");
-//     XMLNode *vc_TITLE=XML_Get_Child_Node_By_Name(vcard, "TITLE");
-//      XMLNode *vc_ROLE=XML_Get_Child_Node_By_Name(vcard, "ROLE");
-//      XMLNode *vc_DESC=XML_Get_Child_Node_By_Name(vcard, "DESC");
-      if(vc_FN)
-      { FN_str=vc_FN->value;
-        sprintf(pres,"Fullname: %s\n",FN_str);
-        if (strlen(resul)+strlen(pres)>resul_s)
-        {
-          resul_s *= 2;
-          resul = realloc(resul, resul_s);
-        }
-        strcpy(resul,pres);
-      };
-      if(vc_NICKNAME)
-      { NICKNAME_str=vc_NICKNAME->value;
-        sprintf(pres,"Nick: %s\n",NICKNAME_str);
-        if (strlen(resul)+strlen(pres)>resul_s)
-        {
-          resul_s *= 2;
-          resul = realloc(resul, resul_s);
-        }
-        strcat(resul,pres);
-      };
-//      if(vc_GIVEN)
-//      { GIVEN_str=vc_GIVEN->value;
-//        sprintf(pres,"GIVEN: %s\n",GIVEN_str);
-//        strcat(resul,pres);
-//      };
-//      if(vc_MIDDLE)
-//      { MIDDLE_str=vc_MIDDLE->value;
-//       sprintf(pres,"MIDDLE: %s\n",MIDDLE_str);
-//        strcat(resul,pres);
-//      };
-//      if(vc_FAMILY)
-//      { FAMILY_str=vc_FAMILY->value;
-//        sprintf(pres,"FAMILY: %s\n",FAMILY_str);
-//        strcat(resul,pres);
-//      };
-//      if(vc_BDAY)
-//      { BDAY_str=vc_BDAY->value;
-//        sprintf(pres,"BDAY: %s\n",BDAY_str);
-//        strcat(resul,pres);
-//      };
-//      if(vc_URL)
-//      { URL_str=vc_URL->value;
-//        sprintf(pres,"URL: %s\n",URL_str);
-//        strcat(resul,pres);
-//      };
-//      if(vc_EMAILHOME)
-//      { EMAILHOME_str=vc_EMAILHOME->value;
-//        sprintf(pres,"E.Home: %s\n",EMAILHOME_str);
-//        strcat(resul,pres);
-//      };
-//      if(vc_EMAILWORK)
-//      { EMAILWORK_str=vc_EMAILWORK->value;
-//        sprintf(pres,"E.Work: %s\n",EMAILWORK_str);
-//        strcat(resul,pres);
-//      };
-//      if(vc_JABBERID)
-//      { JABBERID_str=vc_JABBERID->value;
-//        sprintf(pres,"JABBERID: %s\n",JABBERID_str);
-//        strcat(resul,pres);
-//      };
-//      if(vc_TITLE)
-//      { TITLE_str=vc_TITLE->value;
-//        sprintf(pres,"TITLE: %s\n",TITLE_str);
-//        strcat(resul,pres);
-//      };
-//      if(vc_ROLE)
-//      { ROLE_str=vc_ROLE->value;
-//        sprintf(pres,"ROLE: %s\n",ROLE_str);
-//        strcat(resul,pres);
-//      };
-//      if(vc_ORGNAME)
-//      { ORGNAME_str=vc_ORGNAME->value;
-//        sprintf(pres,"Org.Name: %s\n",ORGNAME_str);
-//        strcat(resul,pres);
-//      };
-//      if(vc_ORGUNIT)
-//      { ORGUNIT_str=vc_ORGUNIT->value;
-//        sprintf(pres,"Org.Unit: %s\n",ORGUNIT_str);
-//        strcat(resul,pres);
-//      };
-      //Формируем сообщение
-      char *reply=malloc(strlen(resul)+16);
-      sprintf(reply, "vCard:\n%s", resul);
-      CList_AddMessage(from, MSG_SYSTEM, reply);
-      mfree(reply);
-      mfree(pres);
-      mfree(resul);
-      return;
-    }
+    if(!strcmp(v_type,"vcard-temp"))Process_vCard(from, vcard);
   }
 /////////////////
   if(!strcmp(id,disco_id))   // Запрос диско (ответ)
@@ -1246,6 +1152,7 @@ char loc_jid[]="jid";
 char loc_reason[]="reason";
 char loc_xmlns[]="xmlns";
 char loc_x[]="x";
+short priority = 0;
 
   CONF_DATA priv;
   char Req_Set_Role=0;
@@ -1274,6 +1181,10 @@ char loc_x[]="x";
 
     XMLNode* statusmsg_node = XML_Get_Child_Node_By_Name(node,"status");
     if(statusmsg_node)msg = statusmsg_node->value;
+
+    XMLNode* prio_node = XML_Get_Child_Node_By_Name(node,"priority");
+    extern long  strtol (const char *nptr,char **endptr,int base);
+    if(prio_node)priority = strtol (prio_node->value,0,10);
   }
 
    // Предусматриваем случай, что послано нам что-то от конференции. Это важно.
@@ -1419,7 +1330,7 @@ static char r[MAX_STATUS_LEN];       // Статик, чтобы не убило её при завершении
 
     }
 
-  TRESOURCE *ResEx = CList_AddResourceWithPresence(from, status, msg);
+  TRESOURCE *ResEx = CList_AddResourceWithPresence(from, status, msg, priority);
   if(Req_Set_Role) CList_MUC_SetRole(from, priv);
   if(real_jid)
   {
@@ -1453,8 +1364,7 @@ void _mucadmincmd(char* room, char* iq_payload)
 void MUC_Admin_Command(char* room_name, char* room_jid, MUC_ADMIN cmd, char* reason)
 {
   char* payload = malloc(1024);
-  char *_room_name = malloc(strlen(room_name)+1);
-  strcpy(_room_name, room_name);
+  char *_room_name = Mask_Special_Syms(room_name);
   char payload_tpl[]="<item nick='%s' %s='%s'><reason>%s</reason></item>";
   char it[20];
   char val[20];
@@ -1490,8 +1400,9 @@ void MUC_Admin_Command(char* room_name, char* room_jid, MUC_ADMIN cmd, char* rea
 
   }
 
-  snprintf(payload, 1023, payload_tpl, room_jid, it, val, reason);
-//  ShowMSG(1,(int)payload);
+  char *_room_jid = Mask_Special_Syms(room_jid);
+  snprintf(payload, 1023, payload_tpl, _room_jid, it, val, reason);
+  mfree(_room_jid);
   SUBPROC((void*)_mucadmincmd, _room_name, payload);
 }
 
@@ -1567,7 +1478,7 @@ void Process_Incoming_Message(XMLNode* nodeEx)
         //char *ansi_m=convUTF8_to_ANSI_STR(m);
         char *ansi_m = m;
         utf82win(ansi_m, ansi_m);
-        ShowMSG(0,(int)ansi_m);
+        ShowMSG(1,(int)ansi_m);
         mfree(m);
         //mfree(ansi_m);
       }
