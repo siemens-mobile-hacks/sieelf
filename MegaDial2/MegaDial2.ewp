@@ -545,7 +545,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>MegaDial_NSG.elf</state>
+          <state>MegaDialc_NSG.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -731,7 +731,7 @@
         </option>
         <option>
           <name>ExtraOutputFile</name>
-          <state>MegaDial.a79</state>
+          <state>MegaDial2.a79</state>
         </option>
         <option>
           <name>ExtraOutputFormat</name>
@@ -1363,7 +1363,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>MegaDial_SG.elf</state>
+          <state>MegaDialc_SG.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -1549,7 +1549,7 @@
         </option>
         <option>
           <name>ExtraOutputFile</name>
-          <state>MegaDial.a79</state>
+          <state>MegaDial2.a79</state>
         </option>
         <option>
           <name>ExtraOutputFormat</name>
@@ -1665,11 +1665,11 @@
         </option>
         <option>
           <name>ObjPath</name>
-          <state>Release_ELKA\Obj</state>
+          <state>Output\Release_ELKA\Obj</state>
         </option>
         <option>
           <name>ListPath</name>
-          <state>Release_ELKA\List</state>
+          <state>Output\Release_ELKA\List</state>
         </option>
         <option>
           <name>Variant</name>
@@ -2182,7 +2182,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>MegaDial_ELKA.elf</state>
+          <state>MegaDialc_ELKA.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -2368,7 +2368,7 @@
         </option>
         <option>
           <name>ExtraOutputFile</name>
-          <state>MegaDial.a79</state>
+          <state>MegaDial2.a79</state>
         </option>
         <option>
           <name>ExtraOutputFormat</name>
@@ -2480,15 +2480,15 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release_SGOLD_SK65\Exe</state>
+          <state>Output\</state>
         </option>
         <option>
           <name>ObjPath</name>
-          <state>Release_SGOLD_SK65\Obj</state>
+          <state>Output\Release_SGOLD_SK65\Obj</state>
         </option>
         <option>
           <name>ListPath</name>
-          <state>Release_SGOLD_SK65\List</state>
+          <state>Output\Release_SGOLD_SK65\List</state>
         </option>
         <option>
           <name>Variant</name>
@@ -2562,7 +2562,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.41A</state>
+          <state>4.40A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -2593,6 +2593,7 @@
         <option>
           <name>CCDefines</name>
           <state>NDEBUG</state>
+          <state>SK65</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -2854,7 +2855,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>SK65</state>
         </option>
         <option>
           <name>AList</name>
@@ -3000,7 +3001,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>MegaDial_SK65.elf</state>
+          <state>MegaDialc_SK65.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -3186,7 +3187,7 @@
         </option>
         <option>
           <name>ExtraOutputFile</name>
-          <state>MegaDial.a79</state>
+          <state>MegaDial2.a79</state>
         </option>
         <option>
           <name>ExtraOutputFormat</name>

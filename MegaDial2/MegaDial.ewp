@@ -2480,15 +2480,15 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release_SGOLD_SK65\Exe</state>
+          <state>Output\</state>
         </option>
         <option>
           <name>ObjPath</name>
-          <state>Release_SGOLD_SK65\Obj</state>
+          <state>Output\Release_SGOLD_SK65\Obj</state>
         </option>
         <option>
           <name>ListPath</name>
-          <state>Release_SGOLD_SK65\List</state>
+          <state>Output\Release_SGOLD_SK65\List</state>
         </option>
         <option>
           <name>Variant</name>
@@ -2562,7 +2562,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.41A</state>
+          <state>4.40A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -2593,6 +2593,7 @@
         <option>
           <name>CCDefines</name>
           <state>NDEBUG</state>
+          <state>SK65</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -2854,7 +2855,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>SK65</state>
         </option>
         <option>
           <name>AList</name>
