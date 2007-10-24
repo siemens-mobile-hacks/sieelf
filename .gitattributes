@@ -1,4 +1,9 @@
 * text=auto !eol
+32/lock.png -text
+32/no.png -text
+32/off.png -text
+32/reboot.png -text
+32/set.png -text
 BalletMini/BalletMini.ewp -text
 BalletMini/BalletMini.eww -text
 BalletMini/BalletMini.txt -text
@@ -892,6 +897,9 @@ ScrPic/config_data.C -text
 ScrPic/func.asm -text
 ScrPic/main.C -text
 ScrPic/test.xcl -text
+/ScrTool.dep -text
+/ScrTool.ewp -text
+/ScrTool.eww -text
 SerialLib/Serial.ewp -text
 SerialLib/SerialLib.eww -text
 SerialLib/SerialTest.ewp -text
@@ -2360,6 +2368,9 @@ cbn_SRC/vNes/SETTINGS/Ted.wsdt -text
 cbn_SRC/vNes/TED.DEP -text
 cbn_SRC/vNes/TED.EWP -text
 cbn_SRC/vNes/TED.EWW -text
+/conf_loader.c -text
+/conf_loader.h -text
+/config_data.c -text
 cpumon/conf_loader.c -text
 cpumon/conf_loader.h -text
 cpumon/config.c -text
@@ -2370,6 +2381,7 @@ cpumon/main.c -text
 cpumon/strlib.c -text
 cpumon/strlib.h -text
 cpumon/test.xcl -text
+/func.asm -text
 inc/bn.h -text
 inc/cfg_items.h -text
 inc/crypto.h -text
@@ -2423,6 +2435,7 @@ jpeglib/jpeglib.h -text
 jpeglib/jutils.c -text
 jpeglib/jversion.h -text
 jpeglib/main.c -text
+/main.c -text
 mini_GPS/conf_loader.c -text
 mini_GPS/conf_loader.h -text
 mini_GPS/config_data.c -text
@@ -2439,6 +2452,8 @@ openwith2/main.c -text
 openwith2/openwith2.ewp -text
 openwith2/openwith2.eww -text
 openwith2/test.xcl -text
+/scrtool.c -text
+/scrtool.h -text
 sieGet/SieGet.ewp -text
 sieGet/SieGet.eww -text
 sieGet/Siemens.cpp -text
@@ -2462,3 +2477,4 @@ sieGet/socket.h -text
 sieGet/test.xcl -text
 sieGet/url.cpp -text
 sieGet/url.h -text
+/test.xcl -text
