@@ -20,10 +20,10 @@ int loadPngLater = 1;
 
 int str_get_crc(char* str)
 {
-	int crc = 0;
-	for (int ii = 0; *str; ii++)
-		crc += *str++ * (ii + 1);
-	return crc;
+  int crc = 0;
+  for (int ii = 0,c; c=*str++; ii++)
+    crc += c* (ii + 1);
+  return crc;
 }
 
 int AddIconToPngCache(char* fname)
@@ -110,7 +110,7 @@ void ExtProc(char* name, char* value)
 	EXTINF* ext;
 	int inj;
 	int nlen = strlen(name);
-	
+	unsigned int i;
 	strtolower(name, name, -1);
 
 #ifdef LOG
@@ -133,7 +133,11 @@ void ExtProc(char* name, char* value)
 		inj=1;
 	}
 	int ico;
-	if (!value[0])
+        if (((i=(unsigned int)value)>>28) != 0xA)
+        {
+          ico=i;
+        }
+	else if (!value[0])
 		ico = ext_unk.ico;
 	else if (isNumericStr(value))
 	{
@@ -226,43 +230,45 @@ EXTINF* FindExtByName(char* szext)
 
 EXTINF* GetExt(char* fname, int fattr)
 {
-	char name[MAX_PATH];
-	
-	strtolower(fname, name, -1);
-	int len = strlen(name);
-	if (fattr & FA_DIRECTORY && name[len-1] != '\\')
-	{
-		name[len] = '\\';
-		name[len+1] = '\0';
-	}
-
-	// Пробуем поиск по имени
-	EXTINF* ext = FindExtByName(name);
-	if (ext != NULL)
-		return ext;
-	else if (fattr & FA_DIRECTORY)
-		return &ext_dir;
-	
-	// Пробуем поиск по расширению
-	char* pext = GetFileExt(name);
-	ext = FindExtByName(pext);
-	if (ext != NULL)
-		return ext;
-	
-	// Пробуем найти расширение	в системе
-	WSHDR* wsext = AllocWS(256);
-	str_2ws(wsext, pext, 255);
-	int uid = GetExtUid_ws(wsext);
-	FreeWS(wsext);
-	if (uid)
-	{
-		// Добавляем в список
-		TREGEXPLEXT* pr = get_regextpnt_by_uid(uid);
-		ExtProc(pext, (char*)(*pr->icon1));
-		ext = FindExtByName(pext);
-		if (ext != NULL)
-			return ext; 
-	}		
-
-	return &ext_unk;
+  char name[MAX_PATH];
+  
+  strtolower(fname, name, -1);
+  int len = strlen(name);
+  if (fattr & FA_DIRECTORY && name[len-1] != '\\')
+  {
+    name[len] = '\\';
+    name[len+1] = '\0';
+  }
+   
+  // Пробуем поиск по имени
+  EXTINF* ext = FindExtByName(name);
+  if (ext != NULL)
+    return ext;
+  else if (fattr & FA_DIRECTORY)
+    return &ext_dir;
+  
+  // Пробуем поиск по расширению
+  char* pext = GetFileExt(name);
+  if (pext)
+  {
+    ext = FindExtByName(pext);
+    if (ext != NULL)
+      return ext;
+    
+    // Пробуем найти расширение	в системе
+    WSHDR* wsext = AllocWS(256);
+    str_2ws(wsext, pext, 255);
+    int uid = GetExtUid_ws(wsext);
+    FreeWS(wsext);
+    if (uid)
+    {
+      // Добавляем в список
+      TREGEXPLEXT* pr = get_regextpnt_by_uid(uid);
+      ExtProc(pext, (char*)(*pr->icon1));
+      ext = FindExtByName(pext);
+      if (ext != NULL)
+        return ext;
+    }
+  }
+  return &ext_unk;
 }
