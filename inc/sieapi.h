@@ -39,6 +39,10 @@ _C_LIB_DECL
  __INTRINSIC char* unicodeSwitch(char *str, int len, int *rlen, int *llen); 
  __INTRINSIC char* utf82unicode(char *str, int len, int *rlen, int *llen); 
  __INTRINSIC char* unicode2utf8(char *str, int *len); 
+ __INTRINSIC void patch_rect(RECT*rc,int x,int y, int x2, int y2);
+ __INTRINSIC void patch_header(const HEADER_DESC* head);
+ __INTRINSIC void patch_input(const INPUTDIA_DESC* inp);
+ __INTRINSIC void patch_dialog(INPUTDIA_DESC* dialog, int x,int y,int x2, int y2);
 _END_C_LIB_DECL
 _C_STD_END
 //函数执行代码
@@ -362,6 +366,42 @@ if (!str) return NULL;
   return s; 
 }
 
+#pragma inline
+void patch_rect(RECT*rc,int x,int y, int x2, int y2)
+{
+  rc->x=x;
+  rc->y=y;
+  rc->x2=x2;
+  rc->y2=y2;
+}
+
+#pragma inline
+void patch_header(const HEADER_DESC* head)
+{
+  ((HEADER_DESC*)head)->rc.x=0;
+  ((HEADER_DESC*)head)->rc.y=YDISP;
+  ((HEADER_DESC*)head)->rc.x2=ScreenW()-1;
+  ((HEADER_DESC*)head)->rc.y2=HeaderH()+YDISP-1;
+}
+
+#pragma inline
+void patch_input(const INPUTDIA_DESC* inp)
+{
+  ((INPUTDIA_DESC*)inp)->rc.x=0;
+  ((INPUTDIA_DESC*)inp)->rc.y=HeaderH()+1+YDISP;
+  ((INPUTDIA_DESC*)inp)->rc.x2=ScreenW()-1;
+  ((INPUTDIA_DESC*)inp)->rc.y2=ScreenH()-SoftkeyH()-1;
+}
+
+#pragma inline
+void patch_dialog(INPUTDIA_DESC* dialog, int x,int y,int x2, int y2)
+{
+  dialog->rc.x = x;
+  dialog->rc.y = y;
+  dialog->rc.x2 = x2;
+  dialog->rc.y2 = y2;
+}
+
 //导出函数引用表
 #if defined(_STD_USING) && defined(__cplusplus)
  using _CSTD strtoul;
@@ -380,6 +420,10 @@ if (!str) return NULL;
  using _CSTD unicodeSwitch;
  using _CSTD utf82unicode;
  using _CSTD unicode2utf8;
+ using _CSTD patch_rect;
+ using _CSTD patch_header;
+ using _CSTD patch_input;
+ using _CSTD patch_dialog;
 #endif /* 导出函数引用表 */
  
 #endif/*SIEAPI_H_*/
