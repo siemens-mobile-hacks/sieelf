@@ -45,7 +45,7 @@ _C_LIB_DECL
  __INTRINSIC void patch_header(const HEADER_DESC* head);
  __INTRINSIC void patch_input(const INPUTDIA_DESC* inp);
  __INTRINSIC void patch_dialog(INPUTDIA_DESC* dialog, int x,int y,int x2, int y2);
- __INTRINSIC void OpenBCFGFile(const char *filename);
+ __INTRINSIC void OpenBCFGFile(void);
  __INTRINSIC void DrawCanvasExt(void *canvas, RECT rc,int mode);
  __INTRINSIC void DrawCanvasRect(void *canvas, TRect rc,int mode);
  __INTRINSIC void DrawStringExt(WSHDR *ws,RECT rc,TFont Font,int text_attribute);
@@ -420,14 +420,15 @@ void patch_dialog(INPUTDIA_DESC* dialog, int x,int y,int x2, int y2)
   dialog->rc.y2 = y2;
 }
 #pragma inline
-void OpenBCFGFile(const char *filename)
+void OpenBCFGFile(void)
 {   
-  if ((filename)&&(strlen(filename))){
-  WSHDR *ws = AllocWS(150);
-  str_2ws(ws, filename, 128);
-  ExecuteFile(ws, 0, 0);
-  FreeWS(ws);
-  GeneralFuncF1(1);
+  extern const char *successed_config_filename;
+  if ((successed_config_filename)&&(strlen(successed_config_filename))){
+   WSHDR *ws = AllocWS(150);
+   str_2ws(ws, successed_config_filename, 128);
+   ExecuteFile(ws, 0, 0);
+   FreeWS(ws);
+   GeneralFuncF1(1);
   }
 }
 #pragma inline
