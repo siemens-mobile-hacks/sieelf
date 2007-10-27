@@ -612,10 +612,8 @@
 08D0: 0xA0AC0579   ; 234:  __thumb int GetLunarDate(TDate* pdate, TDate* pLdate)
 08D4: 0xA0B6CB4D   ; 235:  __thumb int GetLunarYearID(int year)
 08D8: 0xA0B6CB63   ; 236:  __thumb int GetLunarAnimal(int year)
+;8DC:              ; 237:  __arm char *RamIconBar()
+08E0: 0xA0A9C085   ; 238:  __thumb void SendAutoUSSDack(void)
 #pragma disable old_equal_ff
 +0
 ;********************************************************************************
-
-
-
-;locale=chinese

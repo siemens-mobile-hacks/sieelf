@@ -604,7 +604,9 @@
 08CC: 0xA06544EF   ; 233:  void GetAllEmail()      
 08D0: 0xA06642FD   ; 234:  __thumb int GetLunarDate(TDate* pdate, TDate* pLdate)
 08D4: 0xA06878A5   ; 235:  __thumb int GetLunarYearID(int year)
-08D8: 0xA06878BB   ; 236:  __thumb int GetLunarAnimal(int year)     
+08D8: 0xA06878BB   ; 236:  __thumb int GetLunarAnimal(int year)    
+;8DC:              ; 237:  __arm char *RamIconBar()
+08E0: 0xA098140F   ; 238:  __thumb void SendAutoUSSDack(void)
 #pragma disable old_equal_ff
 +0
 
