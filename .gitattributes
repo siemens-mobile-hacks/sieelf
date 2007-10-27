@@ -220,6 +220,7 @@ ELFLoader_lg8/vkp/Data2Congfig.vkp -text
 ELFLoader_lg8/vkp/E71Cv41/API.vkp -text
 ELFLoader_lg8/vkp/E71Cv41/ELFLoader_E71CV41.vkp -text
 ELFLoader_lg8/vkp/E71Cv41/swilib.vkp -text
+ELFLoader_lg8/vkp/ELC1v41/API.vkp -text
 ELFLoader_lg8/vkp/ELC1v41/ELFLoader_ELC1v41.vkp -text
 ELFLoader_lg8/vkp/ELC1v41/swilib.vkp -text
 ELFLoader_lg8/vkp/ELFPack.bat -text
