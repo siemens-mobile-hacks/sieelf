@@ -9,33 +9,35 @@ _C_STD_BEGIN
  #define word  unsigned short
  #define uint  unsigned int
  #define ulong unsigned long
+ #define uchar unsigned char
+ #define TVoid typedef void
+ #define TStruct typedef struct
+ #define idlegui_id(icsm) (((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])
  //定义农历类型结构
- typedef struct{
+ TStruct{
   WSHDR *year;
   WSHDR *monthday;
  }TNongLi;
- //定义区域
- typedef struct{
+ //定义区域属性
+ TStruct{
   int t;//top
   int l;//left
   int r;//Right;
   int b;//Bottom;
  }TRect;
+ //定义字体属性
+ TStruct{
+  char Pen[4];//文字颜色
+  char Brush[4];//边框颜色
+  word Size;//字体大小
+ }TFont;
  //定义函数引出结构
 _C_LIB_DECL
- __INTRINSIC ulong strtoul(const char *nptr,char **endptr,int base);
- __INTRINSIC void kill_data(void *p, void (*func_p)(void *));
- __INTRINSIC void RunCUT(char *s);
- __INTRINSIC void RunAPP(char *s);
- __INTRINSIC void RunADR(char *s);
- __INTRINSIC int  extstrcmp(char *a,char *b);
- __INTRINSIC void BSTRAdd(word *pDst, const word * pSrc, int Count);
- __INTRINSIC void GetDayOf(TDate pSt,TNongLi *NongLiData);
+ __INTRINSIC ulong strtoul(const char *nptr,char **endptr,int base); 
+ __INTRINSIC int  ExtStrcmp(char *a,char *b);
  __INTRINSIC int  get_string_width(WSHDR *ws, int font);
  __INTRINSIC int  toupper(int c);
- __INTRINSIC int  strcmp_nocase(const char *s1,const char *s2);
- __INTRINSIC void str2ws_unicode(WSHDR* ws, char* str, int len);
- __INTRINSIC void ws2str_unicode(char* str, WSHDR* ws, int *len); 
+ __INTRINSIC int  strcmp_nocase(const char *s1,const char *s2); 
  __INTRINSIC char* unicodeSwitch(char *str, int len, int *rlen, int *llen); 
  __INTRINSIC char* utf82unicode(char *str, int len, int *rlen, int *llen); 
  __INTRINSIC char* unicode2utf8(char *str, int *len); 
@@ -43,15 +45,29 @@ _C_LIB_DECL
  __INTRINSIC void patch_header(const HEADER_DESC* head);
  __INTRINSIC void patch_input(const INPUTDIA_DESC* inp);
  __INTRINSIC void patch_dialog(INPUTDIA_DESC* dialog, int x,int y,int x2, int y2);
+ __INTRINSIC void OpenBCFGFile(const char *filename);
+ __INTRINSIC void DrawCanvasExt(void *canvas, RECT rc,int mode);
+ __INTRINSIC void DrawCanvasRect(void *canvas, TRect rc,int mode);
+ __INTRINSIC void DrawStringExt(WSHDR *ws,RECT rc,TFont Font,int text_attribute);
+ __INTRINSIC void DrawStringRect(WSHDR *ws,TRect rc,TFont Font,int text_attribute);
+ __INTRINSIC void kill_data(void *p, void (*func_p)(void *));
+ __INTRINSIC void str2ws_unicode(WSHDR* ws, char* str, int len);
+ __INTRINSIC void ws2str_unicode(char* str, WSHDR* ws, int *len);  
+ __INTRINSIC void BSTRAdd(word *pDst, const word * pSrc, int Count);
+ __INTRINSIC void GetDayOf(TDate pSt,TNongLi *NongLiData);
+ __INTRINSIC void RunCUT(char *s);
+ __INTRINSIC void RunAPP(char *s);
+ __INTRINSIC void RunADR(char *s);
 _END_C_LIB_DECL
 _C_STD_END
 //函数执行代码
 #pragma inline//运行快捷
 void RunCUT(char *s)
 {
+ if ((s)&&(strlen(s))){
  uint* addr = (uint*)GetFunctionPointer(s);
  if (addr){
-   typedef void (*voidfunc)(); 
+   TVoid (*voidfunc)(); 
   #ifdef NEWSGOLD          
          voidfunc pp=(voidfunc)*(addr+4);
   #else 
@@ -59,28 +75,30 @@ void RunCUT(char *s)
   #endif 
          SUBPROC((void*)pp);
  }
+ }
 }
 #pragma inline//运行ELF程序
 void RunAPP(char *s)
 {
   if ((s)&&(strlen(s))){
-      WSHDR *ws;
-      ws=AllocWS(150);
+      WSHDR *ws=AllocWS(150);
       str_2ws(ws,s,128);
-      ExecuteFile(ws,0,0);
+      ExecuteFile(ws, 0,0);
       FreeWS(ws);
   }
 }
 #pragma inline//运行地址函数
 void RunADR(char *s)
 {  
-  typedef void (*voidfunc)(); 
+  if ((s)&&(strlen(s))){
+  TVoid (*voidfunc)(); 
   uint addr=strtoul(s, 0, 16 );
   voidfunc pp=(voidfunc)addr;
   SUBPROC((void*)pp); 
+  }
 }
 #pragma inline//字串比较函数
-int extstrcmp(char *a,char *b)
+int ExtStrcmp(char *a,char *b)
 {
   int state=0,max=strlen(a);
   if(strlen(a)>strlen(b)) max = strlen(b);
@@ -227,10 +245,10 @@ int get_string_width(WSHDR *ws, int font)
 {
   int width=0;
   word *body=ws->wsbody;
-  int l=body[0];
-  while(l){
-    width+=GetSymbolWidth(body[l],font);
-    l--;
+  int len=body[0];
+  while(0<len){
+    width+=GetSymbolWidth(body[len],font);
+    len--;
   }
   return (width);
 }
@@ -401,15 +419,39 @@ void patch_dialog(INPUTDIA_DESC* dialog, int x,int y,int x2, int y2)
   dialog->rc.x2 = x2;
   dialog->rc.y2 = y2;
 }
+#pragma inline
+void OpenBCFGFile(const char *filename)
+{   
+  if ((filename)&&(strlen(filename))){
+  WSHDR *ws = AllocWS(150);
+  str_2ws(ws, filename, 128);
+  ExecuteFile(ws, 0, 0);
+  FreeWS(ws);
+  GeneralFuncF1(1);
+  }
+}
+#pragma inline
+void DrawCanvasExt(void *canvas, RECT rc,int mode)
+{ DrawCanvas(canvas, rc.x, rc.y, rc.x2, rc.y2, mode); }
+#pragma inline
+void DrawCanvasRect(void *canvas, TRect rc,int mode)
+{ DrawCanvas(canvas, rc.l, rc.t, rc.r, rc.b, mode); }
+#pragma inline
+void DrawStringExt(WSHDR *ws,RECT rc,TFont Font,int text_attribute)
+{ DrawString(ws, rc.x, rc.y, rc.x2, rc.y2, Font.Size,text_attribute,Font.Pen, Font.Brush); }
+#pragma inline
+void DrawStringRect(WSHDR *ws,TRect rc,TFont Font,int text_attribute)
+{ DrawString(ws, rc.l, rc.t, rc.r, rc.b, Font.Size,text_attribute,Font.Pen, Font.Brush); }
+#endif/*SIEAPI_H_*/
 
 //导出函数引用表
-#if defined(_STD_USING) && defined(__cplusplus)
+#if defined(_STD_USING)
  using _CSTD strtoul;
  using _CSTD kill_data;
  using _CSTD RunCUT;
  using _CSTD RunAPP;
  using _CSTD RunADR;
- using _CSTD extstrcmp;
+ using _CSTD ExtStrcmp;
  using _CSTD BSTRAdd;
  using _CSTD GetDayOf;
  using _CSTD get_string_width;
@@ -424,6 +466,11 @@ void patch_dialog(INPUTDIA_DESC* dialog, int x,int y,int x2, int y2)
  using _CSTD patch_header;
  using _CSTD patch_input;
  using _CSTD patch_dialog;
+ using _CSTD OpenBCFGFile;
+ using _CSTD DrawCanvasExt;
+ using _CSTD DrawCanvasRect;
+ using _CSTD DrawStringExt;
+ using _CSTD DrawStringRect;
 #endif /* 导出函数引用表 */
  
-#endif/*SIEAPI_H_*/
+
