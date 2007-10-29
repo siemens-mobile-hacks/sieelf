@@ -142,7 +142,7 @@
 01EC: 0xA02B7691   ; 7B: __thumb ClearWindowBuffer                          
 01F0: 0xA09B8EF8   ; 7C: __thumb GetProfileFilter                           
 01F4: 0xA09E4B5D   ; 7D: __arm unsigned int SetVibration(unsigned int power)
-01F8: 0xA0A4AF21   ; 7E: __thumb IsIncognitoCall                            
+01F8: 0xA0A4AF05   ; 7E: __thumb int rand(void);                       
 ;01FC: 0x   ; 7F: IsPlayerOn
 
 0200: 0xA05131B1   ; 80: __thumb void int ShowCallList(int list, int zero)                                                  

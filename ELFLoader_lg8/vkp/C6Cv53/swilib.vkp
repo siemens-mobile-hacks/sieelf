@@ -139,7 +139,7 @@
 01EC: 0xA08D20B5   ;  7B: GetProfileFilter
 01F0: 0xA1021BE0   ;  7C: SetVibration(unsigned int power)
 01F4: 0xA00CD531   ;  7D: IsIncognitoCall
-01F8: 0xA00E79A5   ;  7E: __swi __arm int rand(void)
+01F8: 0xA00E7989   ;  7E: __swi __arm int rand(void)
 ;1FC:              ;  7F: IsPlayerOn
 
 0200: 0xA0B6FED5   ;  80: ShowCallList(int list, int zero)
