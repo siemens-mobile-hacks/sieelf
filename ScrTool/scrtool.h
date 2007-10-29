@@ -11,57 +11,69 @@
  #define UPDATE_STAT 1
  #define TMR_SECOND 216
  #define MAX_IDS 14
- #define MAX_APP 13
+ #define MAX_APP 14
  #define MAX_BIR 8
  #define LEN 32
- #define FontStyle "12 Font","11 Font","10 Font","09 Font","08 Font","07 Font","06 Font","05 Font","04 Font","03 Font","02 Font","01 Font"
+ #define FontStyle "00","01","02","03","04","05","06","07","08","09","10","11"
+ #define NoName "\xE7\xA9\xBA\xE7\x99\xBD"
+ #define ExcuteType "File", "Shortcut", "Address"
+ #define DateFmt "YYYY/MM/DD","YYYY-MM-DD","YYYY.MM.DD","YYYY MM DD","MM/DD","MM-DD","MM.DD","MM DD","年月日","月日"
+ #define TimeFmt "13:00","PM 01:00","01:00","13:00:00","PM 01:00:00","03D00F","03D00F00M"
+ #define DateStyle "NewStyle", "OldStyle"
  
  #ifdef DAEMON
  typedef struct{
   CSM_RAM csm;
  }MAIN_CSM;
  #endif
-
+ 
  typedef struct{
   CSM_RAM csm;
-  int gui_id;
+  int tool_id; 
+  int menu_id;
  }MAIN_CSM_GUI;
 
  typedef struct{
-  int enabled;
+  int show;
   RECT rc;
   WSHDR *ws;
-  char pen[4];
-  char frame[4];
-  word font;
-  word type;
+  char Pen[4];
+  char Brush[4];
+  int Size;
+  int Type;
  }TSCR;
  
  typedef struct{
   WSHDR *ws;
-  int type;
-  char *pic,*file;
+  int  Type;
+  char *Pic;
+  char *File;
  }TAPP;
  
  typedef struct{
   WSHDR *dt;
   WSHDR *ws;
-  int tp;
+  int Type;
  }TBIR;
  
  typedef struct{
   WSHDR *nd;
   WSHDR *od;
  }TBIRS;
+ 
+ typedef struct{
+  void *next;
+  char cfgname[32];
+  char fullpath[64];
+ }TBCFG;
 
  extern const int MENU_ENA;
+ extern const int INFO_ENA;
  extern const uint EXIT_BTN;
 #ifdef DAEMON
  extern const uint CALL_BTN;
 #endif
- extern const int SELECTED;
 //运行软件
- extern const uint BARPOS;
  extern const uint OFFSET;
  extern const uint AUTO_CLOSE;
  extern const char APPTEXT_COLORS[4];
@@ -74,10 +86,6 @@
  //没有图标
  extern const char AINO[64];
  //运行内部地址
- extern const int AT01; 
- extern const int AT02;
- extern const int AT03;
- extern const int AT04;
  extern const int AT05;
  extern const int AT06;
  extern const int AT07;
@@ -86,11 +94,8 @@
  extern const int AT10;
  extern const int AT11;
  extern const int AT12;
+ extern const int AT13;
  //功能描述
- extern const char AN01[LEN];
- extern const char AN02[LEN];
- extern const char AN03[LEN];
- extern const char AN04[LEN];
  extern const char AN05[LEN];
  extern const char AN06[LEN];
  extern const char AN07[LEN];
@@ -99,12 +104,13 @@
  extern const char AN10[LEN];
  extern const char AN11[LEN];
  extern const char AN12[LEN];
+ extern const char AN13[LEN];
  //功能图标 
- extern const char AI00[64];
- extern const char AI01[64];
- extern const char AI02[64];
- extern const char AI03[64];
- extern const char AI04[64]; 
+ extern const char AIST[64];
+ extern const char AITO[64];
+ extern const char AIRT[64];
+ extern const char AILK[64];
+ extern const char AIBC[64]; 
  extern const char AI05[64]; 
  extern const char AI06[64]; 
  extern const char AI07[64];
@@ -113,11 +119,8 @@
  extern const char AI10[64];
  extern const char AI11[64];
  extern const char AI12[64];
+ extern const char AI13[64];
  //功能调用
- extern const char AF01[64];
- extern const char AF02[64]; 
- extern const char AF03[64];
- extern const char AF04[64];
  extern const char AF05[64];
  extern const char AF06[64];
  extern const char AF07[64]; 
@@ -126,6 +129,7 @@
  extern const char AF10[64];
  extern const char AF11[64];
  extern const char AF12[64];
+ extern const char AF13[64];
 //定义生日显示
  extern const int BIR_ENA;
  extern const uint BIR_X;

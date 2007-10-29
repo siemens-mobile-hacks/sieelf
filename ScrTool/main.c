@@ -4,58 +4,217 @@
 #include "scrtool.h"
 #include "conf_loader.h"
 
+const char ANST[LEN]="\xE9\x85\x8D\xE7\xBD\xAE\x2D\xE7\x8E\xAB\xE7\x91\xB0\x76\x32\x2E\x30\x36";
+const char AVER[LEN]="\xE7\x8E\xAB\xE7\x91\xB0\x76\x32\x2E\x30\x36";
+
 const int minus11=-11;
 const char ipc_my_name[]=SCRTOOL_NAME;
+const IPC_REQ my_ipc={ipc_my_name, ipc_my_name, NULL};
 TSCR IDS[MAX_IDS];
-int Count,Seled;
 TAPP APP[MAX_APP];
-TRect pos,txt,ico;
+TRect txt,ico;
 TNongLi NongLi;
 TBIR    BIR[MAX_BIR];
 TBIRS   BIRS;
 int MAINCSM_ID = 0;
+int BCFGActive = 0;
 int SUCCED_HOOK= 0;
 int MenuActive = 0;
+int TextActive = 0;
 int auto_close = 0;
+int Count,Seled;
 GBSTMR barTimer;
 GBSTMR txtTimer;
-const IPC_REQ my_ipc={ipc_my_name, ipc_my_name, NULL};
 
+//配置菜单
+const char _mmc_etc_path[]="4:\\Zbin\\etc\\";
+const char _data_etc_path[]="0:\\Zbin\\etc\\";
+const char _percent_t[]="%t";
+
+HEADER_DESC BCFG_HDR={0,0,0,0,NULL,3826,LGP_NULL};
+
+//关闭有的菜单
+void CloseMenu(void);
+
+int BCFG_MENUONKEY(void *gui, GUI_MSG *msg)
+{
+  TBCFG *sbtop=MenuGetUserPointer(gui);
+  if (msg->keys==0x3D || msg->keys==0x18)
+  {
+    int i=GetCurMenuItem(gui);
+    for (int n=0; n!=i; n++) sbtop=sbtop->next;
+    if (sbtop)
+    {
+      
+      CloseMenu();
+      RunAPP(sbtop->fullpath);
+      return (1);
+    }
+  }
+  if((msg->keys==0x01 || msg->keys==RED_BUTTON)&&(MAINCSM_ID))CloseMenu();  
+  return (0);
+}
+
+void BCFG_MENUHOOK(void *gui, int cmd)
+{
+  TBCFG *sbtop=MenuGetUserPointer(gui);
+  if (cmd==3)
+  {
+    while(sbtop)
+    {
+      TBCFG *sb=sbtop;
+      sbtop=sbtop->next;
+      mfree(sb);
+    }    
+  }
+  if (cmd==0x0A)
+  {
+    DisableIDLETMR();
+  }
+}
+
+void BCFG_HANDLE(void *gui, int cur_item, void *user_pointer)
+{
+  TBCFG *sbtop=user_pointer;
+  WSHDR *ws;
+  int len;
+  for (int n=0; n!=cur_item; n++) sbtop=sbtop->next;
+  void *item=AllocMenuItem(gui);
+  if (sbtop)
+  {
+    len=strlen(sbtop->cfgname);
+    ws=AllocMenuWS(gui,len+4);
+    wsprintf(ws,_percent_t,sbtop->cfgname);
+  }
+  else
+  {
+    ws=AllocMenuWS(gui,10);
+    wsprintf(ws,_percent_t,"Error!");
+  }
+  SetMenuItemText(gui, item, ws, cur_item);
+}
+
+int BCFG_SOFTKEYS[]={0,1,2};
+
+SOFTKEY_DESC BCFG_SKPRESS[]=
+{
+  {0x0018,0x0000,3471},//浏览
+  {0x0001,0x0000,5107},//关闭
+  {0x003D,0x0000,(int)"+"}
+};
+
+SOFTKEYSTAB BCFG_SKTAB=
+{
+  BCFG_SKPRESS,0
+};
+
+MENU_DESC BCFG_STRUCT=
+{
+  8,
+  BCFG_MENUONKEY,
+  BCFG_MENUHOOK,
+  NULL,
+  BCFG_SOFTKEYS,
+  &BCFG_SKTAB,
+  0x10,
+  BCFG_HANDLE,
+  NULL,   //Items
+  NULL,   //Procs
+  0   //n
+};
+
+int CreateSelectBCFGMenu()
+{ 
+if(BCFGActive){
+  uint err;
+  DIR_ENTRY de;
+  const char *s;
+  TBCFG *sbtop=0;
+  TBCFG *sb;
+  int n_bcfg=0;
+  char str[128];
+  if (!isdir((s=_mmc_etc_path),&err))
+  {
+    s=_data_etc_path;
+  }
+  strcpy(str,s);
+  strcat(str,"*.bcfg");
+  if (FindFirstFile(&de,str,&err))
+  {
+    do
+    {
+      if (!(de.file_attr&FA_DIRECTORY))
+      {
+        sb=malloc(sizeof(TBCFG));
+        strcpy(sb->fullpath,s);
+        strcat(sb->fullpath,de.file_name);
+        strcpy(sb->cfgname,de.file_name);
+        sb->cfgname[strlen(de.file_name)-5]=0;
+        sb->next=0;
+        if (sbtop)
+        {
+          TBCFG *sbr, *sbt;
+          sbr=(TBCFG *)&sbtop;
+          sbt=sbtop;
+          while(strcmp_nocase(sbt->cfgname,sb->cfgname)<0)
+          {
+            sbr=sbt;
+            sbt=sbt->next;
+            if (!sbt) break;
+          }
+          sb->next=sbt;
+          sbr->next=sb;
+        }
+        else
+        {
+          sbtop=sb;
+        }
+        n_bcfg++;
+      }
+    }
+    while(FindNextFile(&de,&err));
+  }
+  FindClose(&de,&err);
+  patch_header(&BCFG_HDR);
+  return CreateMenu(0,0,&BCFG_STRUCT,&BCFG_HDR,0,n_bcfg,sbtop,0);
+ }else return 0;
+}
+
+
+//结束配置菜单
 //初始化生日显示数据
 void InitBir(void)
 { 
-  BIR[0].tp = BIRT01;
+  BIR[0].Type = BIRT01;
   utf8_2ws(BIR[0].dt,BIRD01,strlen(BIRD01));
   utf8_2ws(BIR[0].ws,BIRS01,strlen(BIRS01));
-  BIR[1].tp = BIRT02;
+  BIR[1].Type = BIRT02;
   utf8_2ws(BIR[1].dt,BIRD02,strlen(BIRD02));
   utf8_2ws(BIR[1].ws,BIRS02,strlen(BIRS02));
-  BIR[2].tp = BIRT03;
+  BIR[2].Type = BIRT03;
   utf8_2ws(BIR[2].dt,BIRD03,strlen(BIRD03));
   utf8_2ws(BIR[2].ws,BIRS03,strlen(BIRS03));
-  BIR[3].tp = BIRT04;
+  BIR[3].Type = BIRT04;
   utf8_2ws(BIR[3].dt,BIRD04,strlen(BIRD04));
   utf8_2ws(BIR[3].ws,BIRS04,strlen(BIRS04));
-  BIR[4].tp = BIRT05;
+  BIR[4].Type = BIRT05;
   utf8_2ws(BIR[4].dt,BIRD05,strlen(BIRD05));
   utf8_2ws(BIR[4].ws,BIRS05,strlen(BIRS05));
-  BIR[5].tp = BIRT06;
+  BIR[5].Type = BIRT06;
   utf8_2ws(BIR[5].dt,BIRD06,strlen(BIRD06));
   utf8_2ws(BIR[5].ws,BIRS06,strlen(BIRS06));
-  BIR[6].tp = BIRT07;
+  BIR[6].Type = BIRT07;
   utf8_2ws(BIR[6].dt,BIRD07,strlen(BIRD07));
   utf8_2ws(BIR[6].ws,BIRS07,strlen(BIRS07));
-  BIR[7].tp = BIRT08;
+  BIR[7].Type = BIRT08;
   utf8_2ws(BIR[7].dt,BIRD08,strlen(BIRD08));
   utf8_2ws(BIR[7].ws,BIRS08,strlen(BIRS08));
 }
-
 void InitIDS(void);
 void TimerProc(void)
 {
-  InitIDS();
-  InitBir();
-  GBS_SendMessage(MMI_CEPID,MSG_IPC,UPDATE_STAT,&my_ipc);
+  InitIDS();  
+  GBS_SendMessage(MMI_CEPID,MSG_IPC,UPDATE_STAT,&my_ipc);  
 }
 
 #pragma inline  
@@ -69,15 +228,15 @@ int wsprintf_bytes(WSHDR *ws, uint bytes)
   }  
 }
 
-void FillIDS(TSCR *Info,int x_start,int y_start, int font,const char *color,const char *colorframe)
+void FillIDS(TSCR *Info,int x_start,int y_start, int fontSize,const char *color,const char *colorframe)
 {  
   Info->rc.x=x_start;
   Info->rc.y=y_start;
-  Info->rc.x2=x_start+get_string_width(Info->ws,font);
-  Info->rc.y2=y_start+GetFontYSIZE(font);
-  Info->font=font;
-  memcpy(Info->pen,color,4);
-  memcpy(Info->frame,colorframe,4);
+  Info->rc.x2=x_start+get_string_width(Info->ws,fontSize)+10;
+  Info->rc.y2=y_start+GetFontYSIZE(fontSize);
+  Info->Size=fontSize;
+  memcpy(Info->Pen,color,4);
+  memcpy(Info->Brush,colorframe,4);
 }
 
 void InitIDS(void)
@@ -93,7 +252,7 @@ void InitIDS(void)
     {"Mon","Tues","Wed","Thu","Fri","Sat","Sun"}};
   const word XINGQI[] = {0x661F, 0x671F, 0}; //星期
   const word UniNum[] = {0x4E00,0x4E8C,0x4E09,0x56DB,0x4E94,0x516D,0x65E5,0};//一二三四五六日
-  const word UniData[] = {0x5E74,0x6708,0x65E5,0};//年月日
+  const word UniDate[] = {0x5E74,0x6708,0x65E5,0};//年月日
   const word UniTime[] = {0x70B9,0x5206,0x79D2,0x4E0A,0x4E0B,0x5348,0};//点分秒上下午
   word UniToday[3];
   char cDataFmt[8][16] = {
@@ -108,28 +267,28 @@ void InitIDS(void)
   TTime tt;
   TDate d;
   if (TEMP_ENA){
-    IDS[0].enabled=1;
+    IDS[0].show=1;
     c=GetAkku(1,3)-0xAAA+15;
     wsprintf(IDS[0].ws,TEMP_FMT,c/10,c%10);
     FillIDS(&IDS[0],TEMP_X,TEMP_Y,TEMP_FONT,TEMP_COLORS,TEMP_FCOLOR);
-  } else { IDS[0].enabled=0; }
+  } else { IDS[0].show=0; }
   
   if (VOLT_ENA){
-    IDS[1].enabled=1;
+    IDS[1].show=1;
     c=GetAkku(0,9);
     wsprintf(IDS[1].ws,VOLT_FMT,c/1000,(c%1000)/10);
     FillIDS(&IDS[1],VOLT_X,VOLT_Y,VOLT_FONT,VOLT_COLORS,VOLT_FCOLOR);
-  } else { IDS[1].enabled=0; }
+  } else { IDS[1].show=0; }
   
   if (RAM_ENA){
-    IDS[2].enabled=1;
+    IDS[2].show=1;
     c=GetFreeRamAvail();
     wsprintf_bytes(IDS[2].ws,c);
     FillIDS(&IDS[2],RAM_X,RAM_Y,RAM_FONT,RAM_COLORS,RAM_FCOLOR);  
-  } else { IDS[2].enabled=0; }
+  } else { IDS[2].show=0; }
   
   if(WEEK_ENA){
-    IDS[3].enabled=1;
+    IDS[3].show=1;
     GetDateTime(&d,&tt);
     c = GetWeek(&d);
     if(WEEK_FMT <4)
@@ -146,10 +305,10 @@ void InitIDS(void)
       BSTRAdd(IDS[3].ws->wsbody,UniToday, 1);      
     }
     FillIDS(&IDS[3],WEEK_X,WEEK_Y,WEEK_FONT,WEEK_COLORS,WEEK_FCOLOR);
-  } else { IDS[3].enabled=0; }
+  } else { IDS[3].show=0; }
   
   if(DATE_ENA){
-    IDS[4].enabled=1;
+    IDS[4].show=1;
     GetDateTime(&d,&tt);  
     for(int iloop = 0;iloop < 16;iloop++){
       cData[iloop] = cDataFmt[DATE_FMT][iloop];        
@@ -162,26 +321,26 @@ void InitIDS(void)
       CutWSTR(IDS[4].ws,0);
       if(DATE_FMT == 8) {
         wsprintf(IDS[4].ws,"%04d",d.year);
-        UniToday[0] = UniData[0];
+        UniToday[0] = UniDate[0];
         BSTRAdd(IDS[4].ws->wsbody,UniToday, 1);
       }      
       UniToday[0] = d.month/10 + 0x30;
       UniToday[1] = d.month%10 + 0x30;
       BSTRAdd(IDS[4].ws->wsbody,UniToday, 2);
-      UniToday[0] = UniData[1];
+      UniToday[0] = UniDate[1];
       BSTRAdd(IDS[4].ws->wsbody,UniToday, 1);
       
       UniToday[0] = d.day/10 + 0x30;
       UniToday[1] = d.day%10 + 0x30;
       BSTRAdd(IDS[4].ws->wsbody,UniToday, 2);
-      UniToday[0] = UniData[2];
+      UniToday[0] = UniDate[2];
       BSTRAdd(IDS[4].ws->wsbody,UniToday, 1);      
     }
     FillIDS(&IDS[4],DATE_X,DATE_Y,DATE_FONT,DATE_COLORS,DATE_FCOLOR);
-  } else { IDS[4].enabled=0; }
+  } else { IDS[4].show=0; }
   
   if(TIME_ENA){
-    IDS[5].enabled=1;
+    IDS[5].show=1;
     GetDateTime(&d,&tt);
     switch(TIME_FMT) {
     case 0: wsprintf(IDS[5].ws,"%02d:%02d",tt.hour,tt.min); break;
@@ -241,64 +400,65 @@ void InitIDS(void)
       
     }   
     FillIDS(&IDS[5],TIME_X,TIME_Y,TIME_FONT,TIME_COLORS,TIME_FCOLOR);
-  } else { IDS[5].enabled=0; }
+  } else { IDS[5].show=0; }
   
   if (TEXT_ENA){
-    IDS[6].enabled=1;
+    IDS[6].show=1;
     utf8_2ws(IDS[6].ws,TEXT_FMT,strlen(TEXT_FMT));
     FillIDS(&IDS[6],TEXT_X,TEXT_Y,TEXT_FONT,TEXT_COLORS,TEXT_FCOLOR);
-  } else { IDS[6].enabled=0; }    
+  } else { IDS[6].show=0; }    
   
   if (NongLiNian_ENA){
-    IDS[7].enabled=1;
+    IDS[7].show=1;
     CutWSTR(IDS[7].ws,0);
     GetDateTime(&d,&tt); 
     GetDayOf(d,&NongLi);
     memcpy(IDS[7].ws->wsbody,NongLi.year->wsbody,16);
     FillIDS(&IDS[7],NongLiNian_X,NongLiNian_Y,NongLiNian_FONT,NongLiNian_COLORS,NongLiNian_FCOLOR);
-  } else { IDS[7].enabled=0; }    
+  } else { IDS[7].show=0; }    
 
   if (NongLiDATE_ENA){
-    IDS[8].enabled=1;
+    IDS[8].show=1;
     CutWSTR(IDS[8].ws,0);
     GetDateTime(&d,&tt); 
     GetDayOf(d,&NongLi);
     memcpy(IDS[8].ws->wsbody,NongLi.monthday->wsbody,16);
     FillIDS(&IDS[8],NongLiDATE_X,NongLiDATE_Y,NongLiDATE_FONT,NongLiDATE_COLORS,NongLiDATE_FCOLOR);
-  } else { IDS[8].enabled=0; }   
+  } else { IDS[8].show=0; }   
   
   if(NET_ENA){
-    IDS[9].enabled=1;
+    IDS[9].show=1;
     net_data=RamNet();
     c=(net_data->ch_number>=255)?'=':'-';
     wsprintf(IDS[9].ws,NET_FMT,c,net_data->power);
     FillIDS(&IDS[9],NET_X,NET_Y,NET_FONT,NET_COLORS,NET_FCOLOR);
-  } else { IDS[9].enabled=0; }
+  } else { IDS[9].show=0; }
   
   if (CAP_ENA){
-    IDS[10].enabled=1;
+    IDS[10].show=1;
     c=*RamCap();
     wsprintf(IDS[10].ws,CAP_FMT,c);
     FillIDS(&IDS[10],ACCU_X,ACCU_Y,ACCU_FONT,ACCU_COLORS,ACCU_FCOLOR);
-  } else { IDS[10].enabled=0; }
+  } else { IDS[10].show=0; }
   
   if (CPU_ENA){
-    IDS[11].enabled=1;
+    IDS[11].show=1;
     c=GetCPULoad();
     if(c==100) c=99;
     wsprintf(IDS[11].ws,CPU_FMT,c);
     FillIDS(&IDS[11],CPU_X,CPU_Y,CPU_FONT,CPU_COLORS,CPU_FCOLOR);
-  } else { IDS[11].enabled=0; }
+  } else { IDS[11].show=0; }
 
   if (GPRS_ENA){
-    IDS[12].enabled=1;
+    IDS[12].show=1;
     //RefreshGPRSTraffic();
     c=*GetGPRSTrafficPointer();
     wsprintf_bytes(IDS[12].ws,c);
     FillIDS(&IDS[12],GPRS_X,GPRS_Y,GPRS_FONT,GPRS_COLORS,GPRS_FCOLOR);
-  } else { IDS[12].enabled=0; }
+  } else { IDS[12].show=0; }
   
   if(BIR_ENA){
+    InitBir();
     char dta[16],dtb[16];  
     CutWSTR(IDS[13].ws,0);
     GetDateTime(&d,&tt);      
@@ -307,43 +467,46 @@ void InitIDS(void)
     memcpy(BIRS.od->wsbody,NongLi.monthday->wsbody,16);    
     int i=0;
     while(i<MAX_BIR){
-      switch(BIR[i].tp){
+      switch(BIR[i].Type){
        case 0:ws_2str(BIRS.nd,(char*)dta,16);break;
        case 1:ws_2str(BIRS.od,(char*)dta,16);break;
       }
       ws_2str(BIR[i].dt,(char*)dtb,16); 
-      IDS[13].enabled=extstrcmp(dta,dtb);
-      if(IDS[13].enabled){
+      IDS[13].show=ExtStrcmp(dta,dtb);
+      if(IDS[13].show){
         wstrcpy(IDS[13].ws,BIR[i].ws);
         break;
       }  
       i++;
     }     
     FillIDS(&IDS[13],BIR_X,BIR_Y,BIR_FONT,BIR_COLORS,BIR_FCOLOR);
-  } else { IDS[13].enabled=0; }
+  } else { IDS[13].show=0; }
 }
 //菜单功能
-const char AN00[LEN]="\xE9\x85\x8D\xE7\xBD\xAE\x2D\xE6\xA1\x8C\xE9\x9D\xA2\xE5\xB7\xA5\xE5\x85\xB7\x76\x32\x2E\x30\x35";
-const char AVER[LEN]="\xE6\xA1\x8C\xE9\x9D\xA2\xE5\xB7\xA5\xE5\x85\xB7\x76\x32\x2E\x30\x35";
-
-void APP_TRAF(const char *Name, int inx, int type,char *pic,char *file)
+void APP_TRAF(const char *name, int inx, int type,char *pic,char *file)
 {
-  utf8_2ws(APP[inx].ws,Name,strlen(Name));
-  APP[inx].type = type;
-  APP[inx].pic  = pic;
-  APP[inx].file = file;
-  if ((file)&&(strlen(file)))Count+=1;
+  utf8_2ws(APP[inx].ws,name,strlen(name));
+  APP[inx].Type = type;
+  APP[inx].Pic  = pic;
+  APP[inx].File = file;
+  if((file)&&(strlen(file)))Count+=1;
 }
-
+//关机
+const char ANTO[16]="\xE5\x85\xB3\xE9\x97\xAD\xE6\x89\x8B\xE6\x9C\xBA";
+//重启
+const char ANRT[16]="\xE9\x87\x8D\xE5\x90\xAF\xE7\xB3\xBB\xE7\xBB\x9F";
+//锁键
+const char ANLK[16]="\xE9\x94\x81\xE5\xAE\x9A\xE9\x94\xAE\xE7\x9B\x98";
+//配置
+const char ANBC[16]="\xE5\x85\xB6\xE5\xAE\x83\xE9\x85\x8D\xE7\xBD\xAE";
 void CreateAppInfo(int inx)
 { 
-  switch(inx)
-  {  
-  case  0: APP_TRAF(AN00,inx,   -1,(char*)AI00, ""); break; 
-  case  1: APP_TRAF(AN01,inx, AT01,(char*)AI01,(char*)AF01); break;
-  case  2: APP_TRAF(AN02,inx, AT02,(char*)AI02,(char*)AF02); break;
-  case  3: APP_TRAF(AN03,inx, AT03,(char*)AI03,(char*)AF03); break;
-  case  4: APP_TRAF(AN04,inx, AT04,(char*)AI04,(char*)AF04); break;
+  switch(inx){  
+  case  0: APP_TRAF(ANST,inx,   -1,(char*)AIST,""); break;//设置 
+  case  1: APP_TRAF(ANTO,inx,   -2,(char*)AITO,""); break;//关机
+  case  2: APP_TRAF(ANRT,inx,   -3,(char*)AIRT,""); break;//重启
+  case  3: APP_TRAF(ANLK,inx,   -4,(char*)AILK,""); break;//锁键
+  case  4: APP_TRAF(ANBC,inx,   -5,(char*)AIBC,""); break;//配置
   case  5: APP_TRAF(AN05,inx, AT05,(char*)AI05,(char*)AF05); break;
   case  6: APP_TRAF(AN06,inx, AT06,(char*)AI06,(char*)AF06); break;
   case  7: APP_TRAF(AN07,inx, AT07,(char*)AI07,(char*)AF07); break;
@@ -352,18 +515,84 @@ void CreateAppInfo(int inx)
   case 10: APP_TRAF(AN10,inx, AT10,(char*)AI10,(char*)AF10); break;
   case 11: APP_TRAF(AN11,inx, AT11,(char*)AI11,(char*)AF11); break;
   case 12: APP_TRAF(AN12,inx, AT12,(char*)AI12,(char*)AF12); break;
+  case 13: APP_TRAF(AN13,inx, AT13,(char*)AI13,(char*)AF13); break;
   }  
 }
 
-//打开配置文件
-void OpenBCFGFile(void)
+int size=32;
+
+void InitMenu(int active)
+{   //全画区域
+   Seled=0;
+   Count=5;   
+   for(int i=0;i<MAX_APP;i++) CreateAppInfo(i); 
+   int TextH = GetFontYSIZE(APPTEXT_FONT)+4;
+   if (TextH < SoftkeyH()) TextH = SoftkeyH();
+    //文本区域    
+    txt.l = 0;
+    txt.r = ScreenW()-1;
+    txt.t = ScreenH()-OFFSET-1-TextH;    
+    txt.b = ScreenH()-OFFSET-1;
+    //图标位置
+    ico.l = 0;
+    ico.t = txt.t-size-1;
+    ico.r = size;
+    ico.b = txt.t-1;  
+   MenuActive=active;
+}
+
+void DrawPanel(void)
 { 
-  extern const char *successed_config_filename;
-  WSHDR *ws = AllocWS(150);
-  str_2ws(ws, successed_config_filename, 128);
-  ExecuteFile(ws, 0, 0);
-  FreeWS(ws);
-  GeneralFuncF1(1);
+ GBS_StartTimerProc(&barTimer,10,DrawPanel); 
+ #ifdef ELKA
+  {void *canvasmenu = BuildCanvas();
+ #else
+  void *idata = GetDataOfItemByID(GetTopGUI(), 2);
+  if (idata){
+  void *canvasmenu = ((void **)idata)[DISPLACE_OF_IDLECANVAS / 4];
+ #endif     
+  DrawCanvas(canvasmenu,txt.l,txt.t,txt.r,txt.b, 1); 
+  DrawRoundedFrame( txt.l, txt.t, txt.r, txt.b, 0, 0, 0, cfgPanBorderCol, cfgPanBGCol ); 
+  int y = 0; 
+  int i = 0;
+  int state=0;
+  int n = (txt.r-txt.l)/size;
+  int m = size + (txt.r-txt.l-size*n)/(n-1);
+  int ts=(txt.b-txt.t-GetFontYSIZE(APPTEXT_FONT))/2;  
+  //分页显示代码
+  if ( i < 0 ) i = 0; 
+  if (i>=Count) i=Count - 1;
+  while ( i < Count ){  
+    const char *s=APP[i].Pic;
+    if (!((s)&&(strlen(s)))) s=AINO;
+    TRect tmp;
+    if(i<(MAX_APP+1)/2){
+     tmp.l = y+ico.l;
+     tmp.t = ico.t;
+     tmp.r = y+ico.r;
+     tmp.b = ico.b;
+     state = 1;
+    }else{
+     if(state){y=0;state=0;}
+     tmp.l = y+ico.l;
+     tmp.t = ico.t-size;
+     tmp.r = y+ico.r;
+     tmp.b = ico.b-size;
+    }
+    DrawCanvas(canvasmenu, tmp.l, tmp.t, tmp.r, tmp.b, 1); 
+    if (i == Seled){                    
+       DrawRoundedFrame(tmp.l+1, tmp.t+1, tmp.r-1, tmp.b-1, 2, 2, 0, cfgBookBorderCol, cfgBookBGCol );        
+       DrawString(APP[i].ws, txt.l+1, txt.t+ts, txt.r-1, txt.b-ts, APPTEXT_FONT, TEXT_ALIGNLEFT,APPTEXT_COLORS, cfgPanBGCol);    
+    }
+    int picw = (size-GetImgWidth((int)s))/2;  if(picw<0)picw=0;
+    int pich = (size-GetImgHeight((int)s))/2; if(pich<0)pich=0; 
+    DrawImg(tmp.l+picw,tmp.t+pich,(int)s);
+    y += m;
+    i++;    
+  }
+  }
+ //自动关闭菜单
+ if((++auto_close>=AUTO_CLOSE*TMR_SECOND/10)&&(MenuActive)&&(MAINCSM_ID)) CloseMenu();
 }
 
 void CloseMenu(void)
@@ -372,112 +601,14 @@ void CloseMenu(void)
   CloseCSM(MAINCSM_ID); //关闭GUI界面
   MAINCSM_ID=0;
   MenuActive=0;
+  BCFGActive=0;
   auto_close=0;
   RefreshGUI();
 }
 
 //功能定位
-void DoIt(int inx) 
-{ 
-  CloseMenu();
-  char *s = APP[inx].file;
-  switch(APP[inx].type)
-  {
-   case -1: OpenBCFGFile(); break;
-   case  0: RunAPP(s); break;
-   case  1: RunCUT(s); break;
-   case  2: RunADR(s); break;
-  }
-}
+void OpenBCFGMenu();
 
-int size=32;
-
-void InitMenu(int active)
-{   //全画区域
-   Seled=SELECTED;
-   Count=1;   
-   for(int i=0;i<MAX_APP;i++) CreateAppInfo(i); 
-   int TextH = GetFontYSIZE(APPTEXT_FONT)+4;
-   if (TextH < SoftkeyH()) TextH = SoftkeyH();
-   int BarsH = size + TextH;
-   switch(BARPOS){
-    case 0:{
-    pos.l = 0;
-    pos.r = ScreenW()-1;
-    pos.t = OFFSET+YDISP;
-    pos.b = OFFSET+BarsH+YDISP;    
-    //文本区域    
-    txt.l = pos.l;
-    txt.r = pos.r;
-    txt.t = pos.t;    
-    txt.b = pos.t+TextH;
-    //图标位置
-    ico.l = pos.l;
-    ico.t = pos.t+TextH;
-    ico.r = pos.l+size;
-    ico.b = pos.b;  
-    };break;
-   case 1:{
-    pos.l = 0;
-    pos.r = ScreenW()-1;
-    pos.t = ScreenH()-BarsH-OFFSET-1;
-    pos.b = ScreenH()-OFFSET-1;    
-    //文本区域    
-    txt.l = pos.l;
-    txt.r = pos.r;
-    txt.t = pos.b-TextH;    
-    txt.b = pos.b;
-    //图标位置
-    ico.l = pos.l;
-    ico.t = pos.t;
-    ico.r = pos.l+size;
-    ico.b = pos.t+size;  
-   }; break;
-  }  
-  MenuActive=active;
-}
-void DrawPanel(void)
-{  
- GBS_StartTimerProc(&barTimer,10,DrawPanel);
- #ifdef ELKA
-  {void *canvasAPPS = BuildCanvas();
- #else
-  void *idata = GetDataOfItemByID(GetTopGUI(), 2);
-  if (idata){
-  void *canvasAPPS = ((void **)idata)[DISPLACE_OF_IDLECANVAS / 4];
- #endif     
-  DrawCanvas(canvasAPPS, pos.l, pos.t, pos.r, pos.b, 1);  
-  DrawRoundedFrame( txt.l, txt.t, txt.r, txt.b, 0, 0, 0, cfgPanBorderCol, cfgPanBGCol ); 
-  int y = 0; 
-  int z = 0;  
-  int i = 0;
-  int n = (pos.r-pos.l)/size;
-  int m = size + (pos.r-pos.l-size*n)/(n-1);
-  int x = ((pos.r-pos.l)/m)-1;
-  int ts=(txt.b-txt.t-GetFontYSIZE(APPTEXT_FONT))/2;  
-  //分页显示代码
-  if(Count>((pos.r-pos.l)/(m))) i = Seled - ((pos.r-pos.l)/(m))+1; else i=0;  
-  if ( i < 0 ) i = 0;  
-  while ( i < Count ){  
-    const char *s=APP[i].pic;
-    if (!((s)&&(strlen(s)))) s=AINO;
-   // DrawCanvas(canvasAPPS, y+ico.l, ico.t, y+ico.r, ico.b, 1); 
-    if (i == Seled){                    
-       DrawRoundedFrame(y+ico.l, ico.t, y+ico.r, ico.b, 2, 2, 0, cfgBookBorderCol, cfgBookBGCol ); 
-       DrawString(APP[i].ws, txt.l+1, txt.t+ts, txt.r-1, txt.b-ts, APPTEXT_FONT, TEXT_OUTLINE,APPTEXT_COLORS, APPTEXT_FCOLOR);    
-    }
-    int picw = (size-GetImgWidth((int)s))/2; if(picw<0)picw=0;
-    int pich = (size-GetImgHeight((int)s))/2; if(pich<0)pich=0;    
-    DrawImg(y+ico.l+picw, ico.t+pich, (int)s);    
-    y += m;
-    i++;
-    z++;
-    if ( z > x ) break;
-  }
-  }  
- //自动关闭菜单
- if((++auto_close>=AUTO_CLOSE*TMR_SECOND/10)&&(MenuActive)&&(MAINCSM_ID)) CloseMenu();
-}
 
 void OnRedraw(GUI *data)
 {
@@ -505,6 +636,8 @@ void onUnfocus(GUI *data, void (*mfree_adr)(void *))
   data->state=1;  
 }
 
+void DoIt(int inx);
+
 int OnKey(GUI *data, GUI_MSG *msg)
 { 
   if(SUCCED_HOOK||MENU_ENA)
@@ -513,13 +646,23 @@ int OnKey(GUI *data, GUI_MSG *msg)
 
   if ((msg->gbsmsg->msg==KEY_DOWN))
   {
-    if(msg->gbsmsg->submess==EXIT_BTN) CloseMenu();
+    //关闭菜单
+    if(msg->gbsmsg->submess==EXIT_BTN) CloseMenu();    
+    //选定操作
     if(IsUnlocked()){
+     int tmp=Seled;
+     int line=(MAX_APP+1)/2;
+     auto_close=0; 
      switch(msg->gbsmsg->submess){     
-      case RIGHT_BUTTON:  
-      case UP_BUTTON:{auto_close=0; if (++Seled >= Count) Seled=0;} break;
-      case LEFT_BUTTON: 
-      case DOWN_BUTTON:{auto_close=0; if (--Seled<0) Seled=Count-1;} break;     
+      //右选定
+      case RIGHT_BUTTON:{if(++Seled >= Count) Seled=0;} break;  
+      //上选定
+      case UP_BUTTON:   {if((Seled+=line)>=Count) Seled=tmp-line;} break; 
+      //右选定
+      case LEFT_BUTTON: {if(--Seled<0) Seled=Count-1;} break;   
+      //下选定
+      case DOWN_BUTTON: {if((Seled-=line)<0) Seled=tmp+line;} break;     
+      //执行对就的功能
       case ENTER_BUTTON: DoIt(Seled); break;
      }
     }
@@ -564,14 +707,14 @@ void maincsm_onguicreate(CSM_RAM *data)
   main_gui->item_ll.data_mfree=(void (*)(void *))mfree_adr();
   csm->csm.state=0;
   csm->csm.unk1=0;
-  csm->gui_id=CreateGUI(main_gui);
+  csm->tool_id=CreateGUI(main_gui);  
+  csm->menu_id=CreateSelectBCFGMenu();
 }
 
 #ifndef DAEMON
 static void ELF_KILLER(void)
 {
   extern void *ELF_BEGIN;
-  if(my_pic) deleteIMGHDR(my_pic);  
   kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
 }
 #endif
@@ -585,7 +728,7 @@ void maincsm_onguiclose(CSM_RAM *csm)
 int maincsm_onguimessage(CSM_RAM *data, GBS_MSG *msg)
 {
   MAIN_CSM_GUI *csm=(MAIN_CSM_GUI*)data;
-  if ((msg->msg==MSG_GUI_DESTROYED)&&((int)msg->data0==csm->gui_id))
+  if ((msg->msg==MSG_GUI_DESTROYED)&&((int)msg->data0==csm->tool_id))
   {
     csm->csm.state=-3;
   }  
@@ -610,7 +753,7 @@ const struct
 0,
 #endif
 maincsm_onguiclose,
-sizeof(MAIN_CSM_GUI),
+sizeof(MAIN_CSM),
 1,
 &minus11
   },
@@ -623,16 +766,38 @@ sizeof(MAIN_CSM_GUI),
   }
 };
 
-#ifdef DAEMON
-void ShowMenu()
+void ShowMenu(int mode)
 {
   LockSched();
-  char dummy[sizeof(MAIN_CSM_GUI)];
-  InitMenu(1);
+  char dummy[sizeof(MAIN_CSM)];
+  switch(mode){
+   case 0: InitMenu(1);break;
+   case 1: MenuActive=0;
+           BCFGActive=1;
+           GBS_SendMessage(MMI_CEPID,KEY_UP);
+           break;
+  }
   MAINCSM_ID=CreateCSM(&MAINCSM.maincsm,dummy,2);
   UnlockSched();
 }
 
+void DoIt(int inx) 
+{ 
+  CloseMenu(); 
+  extern const int MODE_KBD;
+  switch(APP[inx].Type){
+   case -5: ShowMenu(1);break;
+   case -4: KbdLock();break;
+   case -3: RebootPhone();break;
+   case -2: SwitchPhoneOff();break;
+   case -1: OpenBCFGFile(); break;
+   case  0: RunAPP(APP[inx].File); break;
+   case  1: RunCUT(APP[inx].File); break;
+   case  2: RunADR(APP[inx].File); break;
+  }  
+}
+
+#ifdef DAEMON
 //按键挂钩
 int my_keyhook(int key, int m)
 {
@@ -640,24 +805,22 @@ int my_keyhook(int key, int m)
   void *icsm=FindCSMbyID(CSM_root()->idle_id);
   if ((IsGuiOnTop(((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4]))&&IsUnlocked()&&(m==MODE_KBD+0x193))
   {
-    if (key==CALL_BTN) ShowMenu();
+    if (key==CALL_BTN) ShowMenu(0);
    }
   return 0;
 }
 
 int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
-{
-  #define idlegui_id(icsm) (((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])
-  CSM_RAM *icsm;
-  if(msg->msg == MSG_RECONFIGURE_REQ) // Perechityvanie configuration reported
+{  
+  // 更新配置
+  if(msg->msg == MSG_RECONFIGURE_REQ) 
   {
     extern const char *successed_config_filename;
     if (strcmp_nocase(successed_config_filename,(char *)msg->data0)==0)
     {      
       ShowMSG(1,(int)"ScrTool updated!");
       InitConfig();
-      InitMenu(0);
-      InitBir();
+      //InitMenu(0);
     }
   } 
   //自定义手机启动管理
@@ -673,15 +836,12 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
      SUCCED_HOOK = 0;
   }
   //自定义功能显示
-  if (msg->msg==MSG_IPC)
-  {
+  if (INFO_ENA){
+   if (msg->msg==MSG_IPC){
     IPC_REQ *ipc;
-    if ((ipc=(IPC_REQ*)msg->data0))
-    {
-      if (strcmp_nocase(ipc->name_to,ipc_my_name)==0)
-      {
-        switch (msg->submess)
-        {
+    if ((ipc=(IPC_REQ*)msg->data0)){
+      if (strcmp_nocase(ipc->name_to,ipc_my_name)==0){
+        switch (msg->submess){
         case UPDATE_STAT:
           #ifdef NEWSGOLD
           if (!getCpuUsedTime_if_ena())
@@ -690,18 +850,16 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
           }
           #endif
           GBS_StartTimerProc(&txtTimer, REFRESH*TMR_SECOND/10, TimerProc);
+          TextActive = 1;
         }
       }
     }
-  }
-  icsm=FindCSMbyID(CSM_root()->idle_id);
-  if (icsm)
-  {
-    if (IsGuiOnTop(idlegui_id(icsm))) //篷腓 IdleGui 磬 襦祛?忮瘐?
-    {
+   }  
+   CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
+   if (icsm){
+    if (IsGuiOnTop(idlegui_id(icsm))){
       GUI *igui=GetTopGUI();
-      if (igui) //?铐 耋耱怏弪
-      {
+      if (igui){
         InitIDS();
         #ifdef ELKA
         { void *canvastext = BuildCanvas();
@@ -710,19 +868,25 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
         if (idata){
           void *canvastext = ((void **)idata)[DISPLACE_OF_IDLECANVAS / 4];
         #endif
-          for (int inx=0; inx<(sizeof(IDS)/sizeof(TSCR)); inx++)
-          {
-            if (IDS[inx].enabled)
-            {
-          DrawCanvas(canvastext, IDS[inx].rc.x, IDS[inx].rc.y, IDS[inx].rc.x2, IDS[inx].rc.y2, 1);
-          DrawString(IDS[inx].ws, IDS[inx].rc.x, IDS[inx].rc.y, IDS[inx].rc.x2+10, IDS[inx].rc.y2, IDS[inx].font,
-          32,IDS[inx].pen, IDS[inx].frame);         
-            }
+          for (int inx=0; inx<(sizeof(IDS)/sizeof(TSCR)); inx++){
+            if (IDS[inx].show){
+              DrawCanvas(canvastext, IDS[inx].rc.x,IDS[inx].rc.y,IDS[inx].rc.x2,IDS[inx].rc.y2, 1);
+              DrawString(IDS[inx].ws,IDS[inx].rc.x,IDS[inx].rc.y,IDS[inx].rc.x2,IDS[inx].rc.y2,IDS[inx].Size,TEXT_OUTLINE,IDS[inx].Pen,IDS[inx].Brush);
+            }          
           }
         }
       }
     }
-  }
+    }
+   }else{if(TextActive){GBS_DelTimer(&txtTimer);TextActive=0;}}
+   //菜单
+   MAIN_CSM_GUI *csm=(MAIN_CSM_GUI*)data;
+   if ((int)msg->data0==csm->menu_id)
+    {
+      if (csm->tool_id==0)
+         csm->csm.state=-3;
+      csm->menu_id=0;
+    }
   return(1);
 }  
 
@@ -743,12 +907,12 @@ static void maincsm_oncreate(CSM_RAM *data)
   BIRS.od=AllocWS(50);
   NongLi.year=AllocWS(50);
   NongLi.monthday=AllocWS(50);
-  GBS_SendMessage(MMI_CEPID,MSG_IPC,UPDATE_STAT,&my_ipc);
+  if(INFO_ENA) GBS_SendMessage(MMI_CEPID,MSG_IPC,UPDATE_STAT,&my_ipc);
 }
 
 static void maincsm_onclose(CSM_RAM *csm)
 {
-  GBS_DelTimer(&txtTimer);
+  if (TextActive) GBS_DelTimer(&txtTimer);
   for (int i=0;i!=MAX_IDS; i++) FreeWS(IDS[i].ws);
   for (int i=0;i!=MAX_APP; i++) FreeWS(APP[i].ws);
   for (int i=0;i!=MAX_BIR; i++){FreeWS(BIR[i].ws);FreeWS(BIR[i].dt);}
@@ -777,7 +941,7 @@ static const struct
   0,
 #endif
   maincsm_onclose,
-  sizeof(MAIN_CSM),
+  sizeof(MAIN_CSM_GUI),
   1,
   &minus11
   },
@@ -800,10 +964,10 @@ static void UpdateCSMname(void)
 int main()
 {
   LockSched();
-  InitConfig();  
+  InitConfig();
 #ifdef DAEMON
   CSM_RAM *save_cmpc;
-  char dummy[sizeof(MAIN_CSM)];
+  char dummy[sizeof(MAIN_CSM_GUI)];
   UpdateCSMname();
   
   #ifdef NEWSGOLD
@@ -831,7 +995,7 @@ int main()
       }
   #endif   
 #else 
-  char dummy[sizeof(MAIN_CSM_gui)];
+  char dummy[sizeof(MAIN_CSM)];
   UpdateCSMname();
   MAINCSM_ID=CreateCSM(&MAINCSM.maincsm,dummy,0);
 #endif    
