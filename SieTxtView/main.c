@@ -649,13 +649,13 @@ void open_select_file_gui(int);
 int create_menu_goto(void);
 int create_menu_bookmark(void);
 
-void mainmenu_open(void) {
+void mainmenu_open(GUI *data) {
   GeneralFuncF1(1);
   //create_menu_folder();
   open_select_file_gui(1);
 }
 
-void mainmenu_quit(void) {
+void mainmenu_quit(GUI *data) {
   GeneralFuncF1(1);
   Quit_Required = 1;
 }
@@ -694,32 +694,32 @@ int deletebmk(int n) {
 	return 1;
 }
 
-void mainmenu_add2bmk(void) {
+void mainmenu_add2bmk(GUI *data){
 	GeneralFuncF1(1);
 	add2bmk();
 	create_menu_bookmark();
 }
 
-void mainmenu_search(void) {
+void mainmenu_search(GUI *data){
 
 }
 
-void mainmenu_goto(void) {
+void mainmenu_goto(GUI *data){
   GeneralFuncF1(1);
   create_menu_goto();
 }
 
 int LaunchEditor(void);
-void mainmenu_edit(void) {
+void mainmenu_edit(GUI *data){
 	GeneralFuncF1(1);
 	LaunchEditor();
 }
 
-void mainmenu_sendsms(void) {
+void mainmenu_sendsms(GUI *data) {
 
 }
 
-void mainmenu_set(void) {
+void mainmenu_set(GUI *data){
   WSHDR *ws = AllocWS(150);
   int fd1;
   if ((fd1 = fopen("4:\\ZBin\\etc\\SieTxtView.bcfg", A_ReadOnly + A_BIN, P_READ, &ul)) != -1)
@@ -731,20 +731,20 @@ void mainmenu_set(void) {
   FreeWS(ws);
 }
 
-void mainmenu_help(void) {
+void mainmenu_help(GUI *data){
   ShowMSG(1, (int)"Siemens Text Viewer v0.3f\nby HanikLZ\n2007");
 }
 
-void *mainmenu_HNDLS[9] = {
-  (void *)mainmenu_open,
-  (void *)mainmenu_add2bmk,
-  (void *)mainmenu_search,
-  (void *)mainmenu_goto,
-  (void *)mainmenu_edit,
-  (void *)mainmenu_sendsms,
-  (void *)mainmenu_set,
-  (void *)mainmenu_help,
-  (void *)mainmenu_quit
+const MENUPROCS_DESC mainmenu_HNDLS[9] = {
+  mainmenu_open,
+  mainmenu_add2bmk,
+  mainmenu_search,
+  mainmenu_goto,
+  mainmenu_edit,
+  mainmenu_sendsms,
+  mainmenu_set,
+  mainmenu_help,
+  mainmenu_quit
 };
 
 MENUITEM_DESC mainmenu_ITEMS[9] = {
@@ -780,46 +780,46 @@ int create_menu_main(void) {
 /*----------end--------------*/
 
 /*--------GOTO---------*/
-void gotomenu_start(void) {
+void gotomenu_start(GUI *data) {
 	GeneralFuncF1(1);
 	gotoPos(0);
 }
 
-void gotomenu_readed(void) {
+void gotomenu_readed(GUI *data) {
   
 	GeneralFuncF1(1);
 	if (!bookmark || bmknum < 2 || !gotoPos(bookmark[1]))
 		ShowMSG(1, (int) "Load bookmark failed!");
 }
 
-void gotomenu_end(void) {
+void gotomenu_end(GUI *data) {
 	GeneralFuncF1(1);
 	if (!buffloaded) return;
 	gotoPos(fileindex->prev->offset + 
   				((fileindex->prev->uc16len - viewlen) > 0 ? (fileindex->prev->uc16len - viewlen) : 0));
 }
 
-void gotomenu_random(void) {
+void gotomenu_random(GUI *data) {
 	
 	GeneralFuncF1(1);
 	if (!buffloaded) return;
 	char *s = malloc(10);
-	sprintf(s, "%d", rand());
+	sprintf(s, "%d", Rand());
   ShowMSG(1, (int) s);
   mfree(s);
 }
 
-void gotomenu_bookmark(void) {
+void gotomenu_bookmark(GUI *data) {
 	GeneralFuncF1(1);
   create_menu_bookmark();
 }
 
-void *gotomenu_HNDLS[5] = {
-	(void *)gotomenu_start,
-  (void *)gotomenu_readed,
-  (void *)gotomenu_end,
-  (void *)gotomenu_random,
-  (void *)gotomenu_bookmark
+const MENUPROCS_DESC gotomenu_HNDLS[5] = {
+	gotomenu_start,
+  gotomenu_readed,
+  gotomenu_end,
+  gotomenu_random,
+  gotomenu_bookmark
 };
 
 MENUITEM_DESC gotomenu_ITEMS[5] = {
@@ -1306,11 +1306,11 @@ HEADER_DESC filelist_HDR = {0, 0, 0, 0, NULL, (int)header, LGP_NULL};
 
 MENU_DESC filelist_STRUCT = {
 	
-  8, (void *)filelist_menu_onkey, (void *)filelist_menu_ghook, NULL,
+  8,filelist_menu_onkey,filelist_menu_ghook, NULL,
  	menusoftkeys,
   &menu_skt,
   0x10,
-  (void *)filelist_menu_iconhndl,
+  filelist_menu_iconhndl,
   NULL,   //Items
   NULL,   //Procs
   0   //n
@@ -1467,7 +1467,7 @@ void bmklist_menu_ghook(void *data, int cmd) {
   }
 }
 
-void bmklist_menu_iconhndl(void *data, int curitem, int *unk) {
+void bmklist_menu_iconhndl(void *data, int curitem, void *unk) {
   BMKLIST *t;
   WSHDR *ws;
   void *item = AllocMenuItem(data);
@@ -1488,11 +1488,11 @@ void bmklist_menu_iconhndl(void *data, int curitem, int *unk) {
 HEADER_DESC bmklist_HDR = {0, 0, 0, 0, 0, (int)header, LGP_NULL};
 
 MENU_DESC bmklist_STRUCT = {
-  8, (void*) bmklist_menu_onkey, (void*) bmklist_menu_ghook, NULL,
+  8, bmklist_menu_onkey, bmklist_menu_ghook, NULL,
   menusoftkeys,
   &menu_skt,
   1 + 0x10,
-  (void *)bmklist_menu_iconhndl,
+  bmklist_menu_iconhndl,
   NULL,   //Items
   NULL,   //Procs
   0   //n
