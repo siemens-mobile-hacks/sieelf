@@ -859,6 +859,13 @@ NATICQ/status_change.h -text
 NATICQ/strings.c -text
 NATICQ/strings.h -text
 NATICQ/test.xcl -text
+OBEXTool/Language/english.lng -text
+OBEXTool/Language/russian.lng -text
+OBEXTool/Language/ukrainian.lng -text
+OBEXTool/obexcopy.exe -text
+OBEXTool/obexdel.exe -text
+OBEXTool/obexsetup.exe -text
+OBEXTool/vsofs.wfx -text
 PANDEMONIUM/PANDEMONIUM.ewp -text
 PANDEMONIUM/PANDEMONIUM.eww -text
 PANDEMONIUM/func.asm -text
