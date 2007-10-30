@@ -2265,7 +2265,7 @@
         </option>
         <option>
           <name>XclFile</name>
-          <state>$PROJ_DIR$\E71Cv41.xcl</state>
+          <state>$PROJ_DIR$\ELC1v41.xcl</state>
         </option>
         <option>
           <name>XclFileSlave</name>
@@ -3913,7 +3913,7 @@
         </option>
         <option>
           <name>XclFile</name>
-          <state>$PROJ_DIR$\S7Cv47.xcl</state>
+          <state>$PROJ_DIR$\S68Cv51.xcl</state>
         </option>
         <option>
           <name>XclFileSlave</name>
@@ -4737,7 +4737,7 @@
         </option>
         <option>
           <name>XclFile</name>
-          <state>$PROJ_DIR$\S7Cv47.xcl</state>
+          <state>$PROJ_DIR$\M81Cv51.xcl</state>
         </option>
         <option>
           <name>XclFileSlave</name>
