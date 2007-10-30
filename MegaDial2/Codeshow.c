@@ -12,6 +12,7 @@
 #include "..\inc\swilib.h"
 #include "extern.h"
 extern int cs_adr;
+extern  unsigned  long   strtoul  (const  char  *nptr,char  **endptr,int  base); 
 #define BASEADDRESS			cs_adr
 #define CODESHOWDATAADDRESS	BASEADDRESS
 #define IPCODETABLECOUNT	(BASEADDRESS+0x1E000)

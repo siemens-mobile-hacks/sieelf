@@ -21,6 +21,7 @@ extern const char COLOR_SEARCH_MARK[4];
 extern const char COLOR_SEARCH_UNMARK[4];
 
 
+
 //#define TMR_SECOND 216
 #define SMS_MAX_LEN  760
 
@@ -70,10 +71,6 @@ extern const int show_pic;
 //extern const unsigned int CALL_BTN;
 extern const unsigned int CALL_IP;
 
-//elka²âÊÔ
-//extern const int a;
-//extern const int c;
-//extern const int d;
 
 //×ÖÌå¿ØÖÆ
 #ifdef ELKA
