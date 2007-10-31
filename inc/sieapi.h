@@ -7,16 +7,19 @@
 _C_STD_BEGIN
  //定义数据类型
  #define word  unsigned short
+ #define byte  short int
  #define uint  unsigned int
  #define ulong unsigned long
  #define uchar unsigned char
  #define TVoid typedef void
  #define TStruct typedef struct
  #define idlegui_id(icsm) (((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])
+ #define IS_FOLDER 1 //定义文件夹操作
+ #define IS_FILE 0  //定义文件操作
  //定义农历类型结构
  TStruct{
-  WSHDR *year;
-  WSHDR *monthday;
+  WSHDR *year;//年份
+  WSHDR *mday;//月份
  }TNongLi;
  //定义区域属性
  TStruct{
@@ -29,8 +32,15 @@ _C_STD_BEGIN
  TStruct{
   char Pen[4];//文字颜色
   char Brush[4];//边框颜色
-  word Size;//字体大小
+  byte Size;//字体大小
  }TFont;
+ //定义文件结构
+ typedef struct{
+  void *next;
+  char *filename;
+  char *fullname;
+  int   type;//1为文件夹,0为文件
+ }TFile;
  //定义函数引出结构
 _C_LIB_DECL
  __INTRINSIC ulong strtoul(const char *nptr,char **endptr,int base); 
@@ -55,12 +65,30 @@ _C_LIB_DECL
  __INTRINSIC void ws2str_unicode(char* str, WSHDR* ws, int *len);  
  __INTRINSIC void BSTRAdd(word *pDst, const word * pSrc, int Count);
  __INTRINSIC void GetDayOf(TDate pSt,TNongLi *NongLiData);
+ __INTRINSIC void CutFileExt(char *filename,char *ext);
+ __INTRINSIC int  strlpos(char *str,char c);
  __INTRINSIC void RunCUT(char *s);
  __INTRINSIC void RunAPP(char *s);
  __INTRINSIC void RunADR(char *s);
 _END_C_LIB_DECL
 _C_STD_END
 //函数执行代码
+#pragma inline//获取c在str字串的位置
+int  getstrpos(char *str,char c)
+{
+  int cur = 0;
+  for (int inx=1;inx<=strlen(str);inx++)
+  {
+    if(str[inx]==c){cur=inx;break;}
+  }
+  return cur;
+}
+
+#pragma inline//获取主文件名称
+void CutFileExt(char *filename,char *ext)
+{
+  if(strlen(filename)>strlen(ext))filename[strlen(filename)-strlen(ext)]=0;
+}
 #pragma inline//运行快捷
 void RunCUT(char *s)
 {
@@ -220,24 +248,24 @@ UniToday[2] = cShuXiang[((wCurYear - 4) % 60) % 12];  //属相
 UniToday[3] = cOtherName[0];                          //年
 BSTRAdd(NongLiData->year->wsbody,UniToday,4);
 /*--生成农历月 --*/
-CutWSTR(NongLiData->monthday,0);
+CutWSTR(NongLiData->mday,0);
 if (wCurMonth < 1)                            //闰月
 {
     UniToday[0] = cOtherName[2];                //闰
     UniToday[1] = cMonName[-1 * wCurMonth];
-    BSTRAdd(NongLiData->monthday->wsbody,UniToday,2);
+    BSTRAdd(NongLiData->mday->wsbody,UniToday,2);
 }
 else
 {
     UniToday[0] = cMonName[wCurMonth];
-    BSTRAdd(NongLiData->monthday->wsbody,UniToday,1);
+    BSTRAdd(NongLiData->mday->wsbody,UniToday,1);
 }
   UniToday[0] = cOtherName[1];                //月
-  BSTRAdd(NongLiData->monthday->wsbody,UniToday,1);
+  BSTRAdd(NongLiData->mday->wsbody,UniToday,1);
 /*--生成农历日 --*/  
   UniToday[0] = cDayName[wCurDay][0];  
   UniToday[1] = cDayName[wCurDay][1]; 
-  BSTRAdd(NongLiData->monthday->wsbody,UniToday,2);  
+  BSTRAdd(NongLiData->mday->wsbody,UniToday,2);  
 }  
 
 #pragma inline
@@ -443,6 +471,8 @@ void DrawStringExt(WSHDR *ws,RECT rc,TFont Font,int text_attribute)
 #pragma inline
 void DrawStringRect(WSHDR *ws,TRect rc,TFont Font,int text_attribute)
 { DrawString(ws, rc.l, rc.t, rc.r, rc.b, Font.Size,text_attribute,Font.Pen, Font.Brush); }
+
+
 #endif/*SIEAPI_H_*/
 
 //导出函数引用表
@@ -472,6 +502,8 @@ void DrawStringRect(WSHDR *ws,TRect rc,TFont Font,int text_attribute)
  using _CSTD DrawCanvasRect;
  using _CSTD DrawStringExt;
  using _CSTD DrawStringRect;
+ using _CSTD CutFileExt;
+ using _CSTD getstrpos;
 #endif /* 导出函数引用表 */
  
 
