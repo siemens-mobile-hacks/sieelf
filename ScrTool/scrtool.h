@@ -16,7 +16,8 @@
  #define LEN 32
  #define FontStyle "00","01","02","03","04","05","06","07","08","09","10","11"
  #define NoName "\xE7\xA9\xBA\xE7\x99\xBD"
- #define ExcuteType "File", "Shortcut", "Address"
+ #define ExcuteType "File", "Shortcut", "Address", "Path"
+ #define ExcuteLen 4
  #define DateFmt "YYYY/MM/DD","YYYY-MM-DD","YYYY.MM.DD","YYYY MM DD","MM/DD","MM-DD","MM.DD","MM DD","年月日","月日"
  #define TimeFmt "13:00","PM 01:00","01:00","13:00:00","PM 01:00:00","03D00F","03D00F00M"
  #define DateStyle "NewStyle", "OldStyle"
@@ -33,21 +34,21 @@
   int menu_id;
  }MAIN_CSM_GUI;
 
- typedef struct{
-  int show;
+ typedef struct{  
   RECT rc;
   WSHDR *ws;
   char Pen[4];
   char Brush[4];
   int Size;
   int Type;
+  int show;
  }TSCR;
  
  typedef struct{
-  WSHDR *ws;
-  int  Type;
-  char *Pic;
-  char *File;
+  WSHDR *ws;  
+  char  *Pic;
+  char  *File;
+  int    Type;
  }TAPP;
  
  typedef struct{
@@ -59,16 +60,12 @@
  typedef struct{
   WSHDR *nd;
   WSHDR *od;
- }TBIRS;
+ }TBIRS; 
  
- typedef struct{
-  void *next;
-  char cfgname[32];
-  char fullpath[64];
- }TBCFG;
 
  extern const int MENU_ENA;
  extern const int INFO_ENA;
+ extern const int SHOW_EXT;
  extern const uint EXIT_BTN;
 #ifdef DAEMON
  extern const uint CALL_BTN;
@@ -86,6 +83,7 @@
  //没有图标
  extern const char AINO[64];
  //运行内部地址
+ extern const int AT04;
  extern const int AT05;
  extern const int AT06;
  extern const int AT07;
@@ -96,6 +94,7 @@
  extern const int AT12;
  extern const int AT13;
  //功能描述
+ extern const char AN04[LEN];
  extern const char AN05[LEN];
  extern const char AN06[LEN];
  extern const char AN07[LEN];
@@ -110,7 +109,7 @@
  extern const char AITO[64];
  extern const char AIRT[64];
  extern const char AILK[64];
- extern const char AIBC[64]; 
+ extern const char AI04[64]; 
  extern const char AI05[64]; 
  extern const char AI06[64]; 
  extern const char AI07[64];
@@ -121,6 +120,7 @@
  extern const char AI12[64];
  extern const char AI13[64];
  //功能调用
+ extern const char AF04[64];
  extern const char AF05[64];
  extern const char AF06[64];
  extern const char AF07[64]; 

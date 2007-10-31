@@ -4,20 +4,20 @@
 #include "scrtool.h"
 #include "conf_loader.h"
 
-const char ANST[LEN]="\xE9\x85\x8D\xE7\xBD\xAE\x2D\xE7\x8E\xAB\xE7\x91\xB0\x76\x32\x2E\x30\x36";
-const char AVER[LEN]="\xE7\x8E\xAB\xE7\x91\xB0\x76\x32\x2E\x30\x36";
+const char ANST[LEN]="\xE9\x85\x8D\xE7\xBD\xAE\x2D\xE7\x8E\xAB\xE7\x91\xB0\xE6\xA1\x8C\xE9\x9D\xA2\x76\x32\x2E\x30\x36";
+const char AVER[LEN]="\xE7\x8E\xAB\xE7\x91\xB0\xE6\xA1\x8C\xE9\x9D\xA2\x76\x32\x2E\x30\x36";
 
 const int minus11=-11;
-const char ipc_my_name[]=SCRTOOL_NAME;
-const IPC_REQ my_ipc={ipc_my_name, ipc_my_name, NULL};
+const char ipc_name[]=SCRTOOL_NAME;
+const IPC_REQ my_ipc={ipc_name, ipc_name, NULL};
 TSCR IDS[MAX_IDS];
 TAPP APP[MAX_APP];
+TBIR BIR[MAX_BIR];
 TRect txt,ico;
 TNongLi NongLi;
-TBIR    BIR[MAX_BIR];
 TBIRS   BIRS;
 int MAINCSM_ID = 0;
-int BCFGActive = 0;
+int DIRActive  = 0;
 int SUCCED_HOOK= 0;
 int MenuActive = 0;
 int TextActive = 0;
@@ -27,159 +27,170 @@ GBSTMR barTimer;
 GBSTMR txtTimer;
 
 //配置菜单
-const char _mmc_etc_path[]="4:\\Zbin\\etc\\";
-const char _data_etc_path[]="0:\\Zbin\\etc\\";
-const char _percent_t[]="%t";
+char path[128];
 
-HEADER_DESC BCFG_HDR={0,0,0,0,NULL,3826,LGP_NULL};
+HEADER_DESC MENU_HDR={0,0,0,0,NULL,(int)path,LGP_NULL};
 
 //关闭有的菜单
 void CloseMenu(void);
 
-int BCFG_MENUONKEY(void *gui, GUI_MSG *msg)
+int GetFileCount(TFile *bcfg)
 {
-  TBCFG *sbtop=MenuGetUserPointer(gui);
-  if (msg->keys==0x3D || msg->keys==0x18)
-  {
-    int i=GetCurMenuItem(gui);
-    for (int n=0; n!=i; n++) sbtop=sbtop->next;
-    if (sbtop)
-    {
-      
-      CloseMenu();
-      RunAPP(sbtop->fullpath);
-      return (1);
-    }
-  }
-  if((msg->keys==0x01 || msg->keys==RED_BUTTON)&&(MAINCSM_ID))CloseMenu();  
-  return (0);
+  int i=0;
+  TFile *bc=(TFile*)&bcfg;
+  while((bc=bc->next)) i++;
+  return (i);
 }
 
-void BCFG_MENUHOOK(void *gui, int cmd)
+void FREE_FILE(TFile *FileList)
 {
-  TBCFG *sbtop=MenuGetUserPointer(gui);
-  if (cmd==3)
-  {
-    while(sbtop)
-    {
-      TBCFG *sb=sbtop;
-      sbtop=sbtop->next;
+  while(FileList){
+      TFile *sb=FileList;
+      FileList=FileList->next;
+      mfree(sb->fullname);
+      mfree(sb->filename);
       mfree(sb);
-    }    
-  }
-  if (cmd==0x0A)
-  {
-    DisableIDLETMR();
-  }
+  } 
+  mfree(FileList);
 }
 
-void BCFG_HANDLE(void *gui, int cur_item, void *user_pointer)
+int MENU_ONKEY(void *gui, GUI_MSG *msg);
+
+
+void MENU_HOOK(void *gui, int cmd)
 {
-  TBCFG *sbtop=user_pointer;
+  TFile *FileList=MenuGetUserPointer(gui);
+  if (cmd==3)
+  { 
+    FREE_FILE(FileList);
+  }  
+}
+
+void MENU_DRAW(void *gui, int cur_item, void *user_pointer)
+{
   WSHDR *ws;
-  int len;
-  for (int n=0; n!=cur_item; n++) sbtop=sbtop->next;
+  TFile *FileList=user_pointer;
+  for (int n=0; n!=cur_item; n++) FileList=FileList->next;
   void *item=AllocMenuItem(gui);
-  if (sbtop)
+  if (FileList)
   {
-    len=strlen(sbtop->cfgname);
+    int len=strlen(FileList->filename);
     ws=AllocMenuWS(gui,len+4);
-    wsprintf(ws,_percent_t,sbtop->cfgname);
+    if(FileList->type){
+       str_2ws(ws,FileList->filename,len);
+       wsInsertChar(ws,0x0002,1);
+       wsInsertChar(ws,0xE008,1);
+    }else{str_2ws(ws,FileList->filename,len);}
   }
   else
   {
     ws=AllocMenuWS(gui,10);
-    wsprintf(ws,_percent_t,"Error!");
+    wsprintf(ws,"%t","Error!");
   }
-  SetMenuItemText(gui, item, ws, cur_item);
+  SetMenuItemText(gui, item, ws, cur_item);       
 }
 
-int BCFG_SOFTKEYS[]={0,1,2};
+int MENU_SOFTKEYS[]={0,1,2};
 
-SOFTKEY_DESC BCFG_SKPRESS[]=
+SOFTKEY_DESC MENU_PRESS[]=
 {
-  {0x0018,0x0000,3471},//浏览
-  {0x0001,0x0000,5107},//关闭
+  {0x0018,0x0000,(int)"Open"},//打开
+  {0x0001,0x0000,(int)"Close"},//关闭
   {0x003D,0x0000,(int)"+"}
 };
 
-SOFTKEYSTAB BCFG_SKTAB=
+SOFTKEYSTAB MENU_TAB=
 {
-  BCFG_SKPRESS,0
+  MENU_PRESS,0
 };
 
-MENU_DESC BCFG_STRUCT=
+MENU_DESC MENU_STRUCT=
 {
   8,
-  BCFG_MENUONKEY,
-  BCFG_MENUHOOK,
+  MENU_ONKEY,
+  MENU_HOOK,
   NULL,
-  BCFG_SOFTKEYS,
-  &BCFG_SKTAB,
+  MENU_SOFTKEYS,
+  &MENU_TAB,
   0x10,
-  BCFG_HANDLE,
+  MENU_DRAW,
   NULL,   //Items
   NULL,   //Procs
   0   //n
 };
 
-int CreateSelectBCFGMenu()
-{ 
-if(BCFGActive){
+int MENU_ONKEY(void *gui, GUI_MSG *msg)
+{
+  TFile *sbtop=MenuGetUserPointer(gui); 
+  if (msg->keys==0x3D || msg->keys==0x18)
+  {
+    int i=GetCurMenuItem(gui);
+    for (int n=0; n!=i; n++) sbtop=sbtop->next;
+    if (sbtop)
+    {      
+      CloseMenu();
+      RunAPP(sbtop->fullname);
+      return (1);
+    }
+  }
+  if((msg->keys==0x01 || msg->keys==RED_BUTTON)&&(MAINCSM_ID)) CloseMenu();  
+  return (0);
+}
+
+TFile *FindBCFGFile()
+{
   uint err;
   DIR_ENTRY de;
-  const char *s;
-  TBCFG *sbtop=0;
-  TBCFG *sb;
-  int n_bcfg=0;
+  int  len;
+  TFile *filelist=0;
   char str[128];
-  if (!isdir((s=_mmc_etc_path),&err))
-  {
-    s=_data_etc_path;
-  }
-  strcpy(str,s);
-  strcat(str,"*.bcfg");
-  if (FindFirstFile(&de,str,&err))
-  {
-    do
-    {
-      if (!(de.file_attr&FA_DIRECTORY))
-      {
-        sb=malloc(sizeof(TBCFG));
-        strcpy(sb->fullpath,s);
-        strcat(sb->fullpath,de.file_name);
-        strcpy(sb->cfgname,de.file_name);
-        sb->cfgname[strlen(de.file_name)-5]=0;
+  strcpy(str,path);
+  if (isdir(path,&err))strcat(str,"*");
+  if (FindFirstFile(&de,str,&err)){
+    do{
+      if (!(de.file_attr&FA_DIRECTORY)){
+        TFile *sb=malloc(sizeof(TFile));
+        //设置文件目录
+        len=strlen(de.folder_name)+strlen(de.file_name)+2+1;
+        sb->fullname=malloc(len);        
+        strcpy(sb->fullname,de.folder_name);
+        strcat(sb->fullname,"\\");
+        strcat(sb->fullname,de.file_name);
+        //设置文件名称
+        sb->filename=malloc(strlen(de.file_name)+1);        
+        strcpy(sb->filename,de.file_name);
+        //隐藏扩展名
+        if(SHOW_EXT)sb->filename[getstrpos(sb->filename,'.')]=0;
+        sb->type=0;
         sb->next=0;
-        if (sbtop)
-        {
-          TBCFG *sbr, *sbt;
-          sbr=(TBCFG *)&sbtop;
-          sbt=sbtop;
-          while(strcmp_nocase(sbt->cfgname,sb->cfgname)<0)
-          {
+        if (filelist){
+          TFile *sbr, *sbt;
+          sbr=(TFile *)&filelist;
+          sbt=filelist;
+          while(strcmp_nocase(sbt->filename,sb->filename)<0){
             sbr=sbt;
             sbt=sbt->next;
             if (!sbt) break;
           }
           sb->next=sbt;
           sbr->next=sb;
-        }
-        else
-        {
-          sbtop=sb;
-        }
-        n_bcfg++;
+        } else{filelist=sb;}
       }
     }
     while(FindNextFile(&de,&err));
   }
   FindClose(&de,&err);
-  patch_header(&BCFG_HDR);
-  return CreateMenu(0,0,&BCFG_STRUCT,&BCFG_HDR,0,n_bcfg,sbtop,0);
- }else return 0;
+  return filelist;
 }
 
+int BrowserFileMenu()
+{ 
+if(DIRActive){   
+  TFile *sbtop=FindBCFGFile();
+  patch_header(&MENU_HDR);
+  return CreateMenu(0,0,&MENU_STRUCT,&MENU_HDR,0,GetFileCount(sbtop),sbtop,0);
+ }else return 0;
+}
 
 //结束配置菜单
 //初始化生日显示数据
@@ -422,7 +433,7 @@ void InitIDS(void)
     CutWSTR(IDS[8].ws,0);
     GetDateTime(&d,&tt); 
     GetDayOf(d,&NongLi);
-    memcpy(IDS[8].ws->wsbody,NongLi.monthday->wsbody,16);
+    memcpy(IDS[8].ws->wsbody,NongLi.mday->wsbody,16);
     FillIDS(&IDS[8],NongLiDATE_X,NongLiDATE_Y,NongLiDATE_FONT,NongLiDATE_COLORS,NongLiDATE_FCOLOR);
   } else { IDS[8].show=0; }   
   
@@ -464,7 +475,7 @@ void InitIDS(void)
     GetDateTime(&d,&tt);      
     GetDayOf(d,&NongLi);
     wsprintf(BIRS.nd,"%02d.%02d",d.month,d.day); 
-    memcpy(BIRS.od->wsbody,NongLi.monthday->wsbody,16);    
+    memcpy(BIRS.od->wsbody,NongLi.mday->wsbody,16);    
     int i=0;
     while(i<MAX_BIR){
       switch(BIR[i].Type){
@@ -497,8 +508,7 @@ const char ANTO[16]="\xE5\x85\xB3\xE9\x97\xAD\xE6\x89\x8B\xE6\x9C\xBA";
 const char ANRT[16]="\xE9\x87\x8D\xE5\x90\xAF\xE7\xB3\xBB\xE7\xBB\x9F";
 //锁键
 const char ANLK[16]="\xE9\x94\x81\xE5\xAE\x9A\xE9\x94\xAE\xE7\x9B\x98";
-//配置
-const char ANBC[16]="\xE5\x85\xB6\xE5\xAE\x83\xE9\x85\x8D\xE7\xBD\xAE";
+
 void CreateAppInfo(int inx)
 { 
   switch(inx){  
@@ -506,7 +516,7 @@ void CreateAppInfo(int inx)
   case  1: APP_TRAF(ANTO,inx,   -2,(char*)AITO,""); break;//关机
   case  2: APP_TRAF(ANRT,inx,   -3,(char*)AIRT,""); break;//重启
   case  3: APP_TRAF(ANLK,inx,   -4,(char*)AILK,""); break;//锁键
-  case  4: APP_TRAF(ANBC,inx,   -5,(char*)AIBC,""); break;//配置
+  case  4: APP_TRAF(AN04,inx, AT04,(char*)AI04,(char*)AF04); break;//配置
   case  5: APP_TRAF(AN05,inx, AT05,(char*)AI05,(char*)AF05); break;
   case  6: APP_TRAF(AN06,inx, AT06,(char*)AI06,(char*)AF06); break;
   case  7: APP_TRAF(AN07,inx, AT07,(char*)AI07,(char*)AF07); break;
@@ -524,7 +534,7 @@ int size=32;
 void InitMenu(int active)
 {   //全画区域
    Seled=0;
-   Count=5;   
+   Count=4;   
    for(int i=0;i<MAX_APP;i++) CreateAppInfo(i); 
    int TextH = GetFontYSIZE(APPTEXT_FONT)+4;
    if (TextH < SoftkeyH()) TextH = SoftkeyH();
@@ -537,7 +547,7 @@ void InitMenu(int active)
     ico.l = 0;
     ico.t = txt.t-size-1;
     ico.r = size;
-    ico.b = txt.t-1;  
+    ico.b = txt.t-1; 
    MenuActive=active;
 }
 
@@ -597,11 +607,11 @@ void DrawPanel(void)
 
 void CloseMenu(void)
 {
-  GBS_DelTimer(&barTimer);
-  CloseCSM(MAINCSM_ID); //关闭GUI界面
+  if(IsTimerProc(&barTimer)) GBS_DelTimer(&barTimer);
+  if(MAINCSM_ID) CloseCSM(MAINCSM_ID); //关闭GUI界面
   MAINCSM_ID=0;
   MenuActive=0;
-  BCFGActive=0;
+  DIRActive =0;
   auto_close=0;
   RefreshGUI();
 }
@@ -708,7 +718,7 @@ void maincsm_onguicreate(CSM_RAM *data)
   csm->csm.state=0;
   csm->csm.unk1=0;
   csm->tool_id=CreateGUI(main_gui);  
-  csm->menu_id=CreateSelectBCFGMenu();
+  csm->menu_id=BrowserFileMenu();
 }
 
 #ifndef DAEMON
@@ -765,18 +775,24 @@ sizeof(MAIN_CSM),
     139
   }
 };
-
-void ShowMenu(int mode)
+void BrowseDir(char *dir)
 {
   LockSched();
   char dummy[sizeof(MAIN_CSM)];
-  switch(mode){
-   case 0: InitMenu(1);break;
-   case 1: MenuActive=0;
-           BCFGActive=1;
-           GBS_SendMessage(MMI_CEPID,KEY_UP);
-           break;
-  }
+  MenuActive=0;
+  DIRActive =1;
+  strcpy(path,dir);
+  GBS_SendMessage(MMI_CEPID,KEY_UP);
+  RefreshGUI();
+  MAINCSM_ID=CreateCSM(&MAINCSM.maincsm,dummy,2);
+  UnlockSched();
+}
+void ShowMenu(int mode)
+{
+  LockSched();
+  DIRActive=0;
+  char dummy[sizeof(MAIN_CSM)];
+  InitMenu(1);
   MAINCSM_ID=CreateCSM(&MAINCSM.maincsm,dummy,2);
   UnlockSched();
 }
@@ -794,6 +810,7 @@ void DoIt(int inx)
    case  0: RunAPP(APP[inx].File); break;
    case  1: RunCUT(APP[inx].File); break;
    case  2: RunADR(APP[inx].File); break;
+   case  3: BrowseDir(APP[inx].File); break;
   }  
 }
 
@@ -840,7 +857,7 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
    if (msg->msg==MSG_IPC){
     IPC_REQ *ipc;
     if ((ipc=(IPC_REQ*)msg->data0)){
-      if (strcmp_nocase(ipc->name_to,ipc_my_name)==0){
+      if (strcmp_nocase(ipc->name_to,ipc_name)==0){
         switch (msg->submess){
         case UPDATE_STAT:
           #ifdef NEWSGOLD
@@ -878,7 +895,7 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
       }
     }
     }
-   }else{if(TextActive){GBS_DelTimer(&txtTimer);TextActive=0;}}
+   }else{if((TextActive)&&(IsTimerProc(&txtTimer))){GBS_DelTimer(&txtTimer);TextActive=0;}}
    //菜单
    MAIN_CSM_GUI *csm=(MAIN_CSM_GUI*)data;
    if ((int)msg->data0==csm->menu_id)
@@ -906,18 +923,18 @@ static void maincsm_oncreate(CSM_RAM *data)
   BIRS.nd=AllocWS(50);
   BIRS.od=AllocWS(50);
   NongLi.year=AllocWS(50);
-  NongLi.monthday=AllocWS(50);
+  NongLi.mday=AllocWS(50);
   if(INFO_ENA) GBS_SendMessage(MMI_CEPID,MSG_IPC,UPDATE_STAT,&my_ipc);
 }
 
 static void maincsm_onclose(CSM_RAM *csm)
 {
-  if (TextActive) GBS_DelTimer(&txtTimer);
+  if((TextActive)&&(IsTimerProc(&txtTimer)))GBS_DelTimer(&txtTimer);
   for (int i=0;i!=MAX_IDS; i++) FreeWS(IDS[i].ws);
   for (int i=0;i!=MAX_APP; i++) FreeWS(APP[i].ws);
   for (int i=0;i!=MAX_BIR; i++){FreeWS(BIR[i].ws);FreeWS(BIR[i].dt);}
   FreeWS(NongLi.year);
-  FreeWS(NongLi.monthday);
+  FreeWS(NongLi.mday);
   FreeWS(BIRS.nd);
   FreeWS(BIRS.od);
   SUBPROC((void *)Killer);  
