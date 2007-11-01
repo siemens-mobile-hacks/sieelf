@@ -52,7 +52,7 @@
 ;0A4:              ; 29: getEEFullMaxID
 00A8: 0xA050381C   ; 2A: int *GetEELiteBlockAddress(short blocknum)
 00AC: 0xA102CF24   ; 2B: signed int fp_fp2sint(double f)
-00B0: 0xA0502EB8   ; 2C: getEEFullBlockSizeVersion
+00B0: 0xA0502EB8   ; 2C: __swi __arm  int EEFullGetBlockInfo(unsigned int block,int *size,char *version)
 00B4: 0xA102C2E4   ; 2D: double fp_add(double addend1, double addend2)
 00B8: 0xA102D244   ; 2E: double fp_mul(double factor1, double factor2)
 00BC: 0xA102C8F8   ; 2F: double fp_div(double divisor, double divident)
@@ -148,8 +148,8 @@
 ;20C:              ; 83: GetPathOfFoundFile
 0210: 0xA058747C   ; 84: int GetFileStats(const char *cFileName, void *StatBuffer, unsigned int *errornumber)
 0214: 0xA05A4F09   ; 85: StrCmpNoCase
-0218: 0xA0502CD8   ; 86: ReadEEPROMData
-021C: 0xA0502F68   ; 87: WriteEEPROMData
+0218: 0xA0502CD8   ; 86: void EEFullReadBlock(int block, void *buf, int offset, int size, int cepid, int msg)
+021C: 0xA0502F68   ; 87: void EEFullWriteBlock(int block, void *buf, int offset, int size, int cepid, int msg)
 0220: 0xA006EF00   ; 88: GetAccessoryType
 0224: 0xA0901258   ; 89: GetLangMesIntoWS
 0228: 0xA0587060   ; 8A: int GetFreeFlexSpace(int DriveNum, unsigned int *ErrorNumber)
@@ -593,8 +593,8 @@
 0898: 0xA05B46B0   ; 226: int PlayMelody_StopPlayback(int handle)
 089C: 0xA05B4750   ; 227: int PlayMelody_PausePlayback(int handle)
 08A0: 0xA05B4780   ; 228: int PlayMelody_ResumePlayBack(int handle)
-08A4: 0xA0FFD414   ; 229: __swi __arm void longjmp(jmp_buf, int)
-08A8: 0xA095A35D   ; 22A: __swi __arm void FreeGSMTXTpkt(void *pkt)
+08A4: 0xA0FFD414   ; 229: void longjmp(jmp_buf, int)
+08A8: 0xA095A35D   ; 22A: void FreeGSMTXTpkt(void *pkt)
 08AC: 0xA065E289   ; 22B: CreateRadioButtonList(RadioButtonListDesc *, char num_of_radiobuttons, 0, 0, char prev_setting, void HandlerFunc(int), char flag)
 08B0: 0xA065D9AD   ; 22C: pdcache_getval(char *return, int maxlen_of_return_str, char cachetype, char *pd_entry_identifier.class, char *pd_entry_identifier.sub); OR pdcache_getval(char *return, int maxlen_of_return_str, char cachetype,0, *pd_entry_identifier)
 08B4: 0xA065DB97   ; 22D: pdcache_setval(char *new_value, char cachetype, char *pd_entry_identifier.class, char *pd_entry_identifier.sub); OR pdcache_setval(char *new_value, char cachetype, 0, char *pd_entry_identifier)
@@ -605,12 +605,17 @@
 08C4: 0xA8DA809C   ; 231: TAppointment *RamAppointment
 08C8: 0xA0091D7B   ; 232: GBS_DestroyMessage(GBS_MSG *)
 08CC: 0xA07DB17B   ; 233: void GetAllEmail()     
-08D0: 0xA0B5C7FD   ; 234:  __thumb int GetLunarDate(TDate* pdate, TDate* pLdate)
-08D4: 0xA0BE9FED   ; 235:  __thumb int GetLunarYearID(int year)
-08D8: 0xA0BEA003   ; 236:  __thumb int GetLunarAnimal(int year)
-08DC: 0xA8E94D94   ; 237:  __arm char *RamIconBar()
-08E0: 0xA095A307   ; 238:  __thumb void SendAutoUSSDack(void)
+08D0: 0xA0B5C7FD   ; 234: int GetLunarDate(TDate* pdate, TDate* pLdate)
+08D4: 0xA0BE9FED   ; 235: int GetLunarYearID(int year)
+08D8: 0xA0BEA003   ; 236: int GetLunarAnimal(int year)
+08DC: 0xA8E94D94   ; 237: char *RamIconBar
+08E0: 0xA095A307   ; 238: void SendAutoUSSDack(void)
+08E4: 0xA0503384   ; 239: int EEFullDeleteBlock(unsigned int block,int cepid,int msg)
+08E8: 0xA05034F0   ; 23A: int EEFullCreateBlock(unsigned int block,int size,int version,int cepid,int msg)
+08EC: 0xA09852CB   ; 23B: void DisableIconBar(int disable)
 #pragma disable old_equal_ff
 +0
 
 ;********************************************************************************
+
+;locale=chinese

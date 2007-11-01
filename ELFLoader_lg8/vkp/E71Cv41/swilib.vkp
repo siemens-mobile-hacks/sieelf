@@ -52,7 +52,7 @@
 ;0A4:              ;  29: getEEFullMaxID
 00A8: 0xA04FD060   ;  2A: int *GetEELiteBlockAddress(short blocknum)
 00AC: 0xA1021B94   ;  2B: signed int fp_fp2sint(double f)
-00B0: 0xA04FC6FD   ;  2C: getEEFullBlockSizeVersion
+00B0: 0xA04FC6FD   ;  2C: int EEFullGetBlockInfo(unsigned int block,int *size,char *version)
 00B4: 0xA1020F54   ;  2D: double fp_add(double addend1, double addend2)
 00B8: 0xA1021EB4   ;  2E: double fp_mul(double factor1, double factor2)
 00BC: 0xA1021568   ;  2F: double fp_div(double divisor, double divident
@@ -148,8 +148,8 @@
 ;20C:              ;  83: GetPathOfFoundFile
 0210: 0xA057EA60   ;  84: int GetFileStats(const char *cFileName, void *StatBuffer, unsigned int *errornumber)
 0214: 0xA05A178D   ;  85: StrCmpNoCase
-;218:              ;  86: ReadEEPROMData
-;21C:              ;  87: WriteEEPROMData
+0218: 0xA04FC51C   ;  86: void EEFullReadBlock(int block, void *buf, int offset, int size, int cepid, int msg)
+021C: 0xA04FC7AC   ;  87: void EEFullWriteBlock(int block, void *buf, int offset, int size, int cepid, int msg)
 0220: 0xA006EF00   ;  88: GetAccessoryType
 0224: 0xA08FB3F4   ;  89: GetLangMesIntoWS
 0228: 0xA057E644   ;  8A: int GetFreeFlexSpace(int DriveNum, unsigned int *ErrorNumber)
@@ -609,6 +609,12 @@
 08D8: 0xA0BE119B   ; 236:  __thumb int GetLunarAnimal(int year)
 08DC: 0xA8E950A8   ; 237:  __arm char *RamIconBar()
 08E0: 0xA0953B47   ; 238:  __thumb void SendAutoUSSDack(void)
+08E4: 0xA04FCBC8   ; 239:  __swi __arm int EEFullDeleteBlock(unsigned int block,int cepid,int msg)
+08E8: 0xA04FCD34   ; 23A: __swi __arm  int EEFullCreateBlock(unsigned int block,int size,int version,int cepid,int msg)
+08EC: 0xA097EB0B   ; 23B:  __swi __arm void DisableIconBar(int disable)
 #pragma disable old_equal_ff
 +0       
 ;********************************************************************************
+
+
+;locale=chinese
