@@ -4,7 +4,15 @@
 
 
 #ifdef NEWSGOLD
+#ifdef SL7C
+#define DEFAULT_DISK 0
+#else
+#ifdef S68C
+#define DEFAULT_DISK 0
+#else
 #define DEFAULT_DISK 4
+#endif
+#endif
 #else
 #define DEFAULT_DISK 0
 #endif
