@@ -987,7 +987,7 @@ int main()
   char dummy[sizeof(MAIN_CSM_GUI)];
   UpdateCSMname();
   
-  #ifdef NEWSGOLD
+  //#ifdef NEWSGOLD
     save_cmpc=CSM_root()->csm_q->current_msg_processing_csm;
     CSM_root()->csm_q->current_msg_processing_csm=CSM_root()->csm_q->csm.first;
     CreateCSM(&MAINCSM_d.maincsm,dummy,0);
@@ -997,20 +997,22 @@ int main()
       AddKeybMsgHook((void *)my_keyhook);   
       SUCCED_HOOK = 1;
     }
-  #else
-      if ((!AddKeybMsgHook((void *)my_keyhook))&&(!SUCCED_HOOK)) 
-      {
-        ShowMSG(1, (int) "ScrTool failed!"); 
-        SUBPROC((void *)Killer);
-      }
-      else
-      {
-        save_cmpc=CSM_root()->csm_q->current_msg_processing_csm;
-        CSM_root()->csm_q->current_msg_processing_csm=CSM_root()->csm_q->csm.first;
-        CreateCSM(&MAINCSM_d.maincsm,dummy,0);
-        CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
-      }
-  #endif   
+  //#else
+      //if ((!AddKeybMsgHook((void *)my_keyhook))&&(!SUCCED_HOOK)) 
+      //{
+      //  ShowMSG(1, (int) "ScrTool failed!"); 
+      //  SUBPROC((void *)Killer);
+      //}
+      //AddKeybMsgHook((void *)my_keyhook);
+      //SUCCED_HOOK = 1;
+      //else
+      //{
+      //  save_cmpc=CSM_root()->csm_q->current_msg_processing_csm;
+      //  CSM_root()->csm_q->current_msg_processing_csm=CSM_root()->csm_q->csm.first;
+      //  CreateCSM(&MAINCSM_d.maincsm,dummy,0);
+      //  CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
+      //}
+  //#endif   
 #else 
   char dummy[sizeof(MAIN_CSM)];
   UpdateCSMname();
