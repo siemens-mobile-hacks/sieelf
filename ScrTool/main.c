@@ -998,7 +998,7 @@ int main()
       SUCCED_HOOK = 1;
     }
   #else
-      if ((!AddKeybMsgHook_end((void *)my_keyhook))&&(!SUCCED_HOOK)) 
+      if ((!AddKeybMsgHook((void *)my_keyhook))&&(!SUCCED_HOOK)) 
       {
         ShowMSG(1, (int) "ScrTool failed!"); 
         SUBPROC((void *)Killer);
