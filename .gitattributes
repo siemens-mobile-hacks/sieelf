@@ -1314,6 +1314,7 @@ alarm/alarm_ring/config_data.c -text
 alarm/alarm_ring/image.c -text
 alarm/alarm_ring/main.c -text
 alarm/func.asm -text
+alarm/icon.png -text
 alarm/lgp.h -text
 alarm/new_alarm/main.c -text
 alarm/new_alarm/new_alarm.ewp -text

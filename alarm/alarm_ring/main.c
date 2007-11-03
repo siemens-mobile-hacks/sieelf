@@ -3,7 +3,6 @@
 #include "conf_loader.h"
 #include "..\lgp.h"
 
-
 #ifdef NEWSGOLD
 #define DEFAULT_DISK "4"
 #define PROFILE_PD_DISC "1"
@@ -35,6 +34,8 @@ int old_light_kb;
 int old_light_d;
 int old_profile;
 GBSTMR restarttmr;
+GBSTMR restartmelody;
+int file_length;
 char profile_pd_file[]=PROFILE_PD_DISC":\\system\\hmi\\profile.pd";
 
 typedef struct
@@ -62,6 +63,23 @@ int get_file_size(char* fname)
 }
 
 int tmp;
+void restart_melody();
+int findlength(char *playy)
+{
+#ifdef NEWSGOLD
+  return(GetWavLen(playy)); 
+#else
+  TWavLen wl;
+  zeromem(&wl, sizeof(wl));
+  wl.type=0x2000;
+  wl.wfilename=AllocWS(128);
+  str_2ws(wl.wfilename,playy,128);
+  GetWavLen(&wl);
+  FreeWS(wl.wfilename);
+  file_length=wl.length/1000*216;
+  return (file_length);
+#endif
+}
 
 void Play(const char *fname)
 {
@@ -126,7 +144,18 @@ void play_standart_melody()
   }
   buf[i+1]=0;
   Play(buf);
+  if(findlength(buf))
+    GBS_StartTimerProc(&restartmelody,file_length,restart_melody);
   mfree(buf2);
+}
+
+void restart_melody()
+{
+  if (play_==1)
+    play_standart_melody();
+  else if (play_==0)
+    Play(melody);
+  GBS_StartTimerProc(&restartmelody,file_length,restart_melody);
 }
 
 void LightOff();
@@ -214,9 +243,6 @@ void OnRedraw()
 
 void onCreate(MAIN_GUI *data, void *(*malloc_adr)(int))
 {
-#ifdef ELKA
-  RamIconBar()[0]=0;
-#endif
   ws=AllocWS(128);
   SetIllumination(1,1,100,0);
   SetIllumination(0,1,100,0);
@@ -226,9 +252,6 @@ void onCreate(MAIN_GUI *data, void *(*malloc_adr)(int))
 
 void onClose(MAIN_GUI *data, void (*mfree_adr)(void *))
 {
-#ifdef ELKA
-  RamIconBar()[0]=1;
-#endif
   GBS_DelTimer(&restarttmr);
   FreeWS(ws);
   data->gui.state=0;
@@ -236,6 +259,9 @@ void onClose(MAIN_GUI *data, void (*mfree_adr)(void *))
 
 void onFocus(MAIN_GUI *data, void *(*malloc_adr)(int), void (*mfree_adr)(void *))
 {
+#ifdef ELKA
+  DisableIconBar(1);
+#endif
   DisableIDLETMR();
   data->gui.state=2;
 }
@@ -317,6 +343,7 @@ void ElfKiller(void)
 void maincsm_onclose(CSM_RAM *csm)
 {  
   GBS_DelTimer(&mytmr);
+  GBS_DelTimer(&restartmelody);
   SetVibration(0);
   SetIllumination(0,1,old_light_d,0);
   SetIllumination(1,1,old_light_kb,0);  
@@ -393,6 +420,8 @@ void play_sound()
       my_csm_id=CreateCSM(&MAINCSM.maincsm,dummy,0);
       UnlockSched();
       Play(melody);
+      if(findlength((char *)melody))
+        GBS_StartTimerProc(&restartmelody,file_length,restart_melody);
     } break;
 #ifndef NEWSGOLD
   case 2: AlarmClockRing(); break;
