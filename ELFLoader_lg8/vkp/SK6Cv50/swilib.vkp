@@ -5,7 +5,7 @@
 ;Library
 ;(p)SPGC
 
-;Version=2007.07.02
+;Version=2007.11.3
 
 +0FD4000
 #pragma enable old_equal_ff
@@ -194,9 +194,8 @@
 02B0: 0xA0FCF1B1   ; AC: __API DrawText                
 02B4: 0xA0FCF0A1   ; AD: __API StrAnsi2Uni             
 02B8: 0xA0FCF0C1   ; AE: __API StrUni2Ansi             
-02BC: 0xA0FCF051   ; AF: __API Hex2Int                 
-                         __                            
-02C0: 0xA0FCF351   ; B0: __API DrawPicWithCanvas       
+02BC: 0xA0FCF051   ; AF: __API Hex2Int                                       
+02C0: 0xA0FCF351   ; B0: __API DrawPicWithCanvs       
 02C4: 0xA0FCF371   ; B1: __API DrawColorPicWithCanvas  
 02C8: 0xA0FC3E29   ; B2: __API GetBuildCanvas          
 02CC: 0xA0FCF301   ; B3: __API Seconds2iTime           
@@ -211,8 +210,7 @@
 02F0: 0xA021975C   ; BC: __arm int udiv(int divisor, int dividend)    
 02F4: 0xA0D95FC4   ; BD: __arm int DivBy10(int divident)              
 02F8: 0xA0FC0C91   ; BE: __MP RunScaner                
-02FC: 0xA0FC3001   ; BF: __MP SpellTime                
-                         __                            
+02FC: 0xA0FC3001   ; BF: __MP SpellTime                                         __                            
 0300: 0xA0FC7601   ; C0: __MP MiniGPS                  
 0304: 0xA0FC0C51   ; C1: __MP RunDispatcher            
 0308: 0xA0FC12A1   ; C2: __MP GetAllPatchesByInject    
@@ -228,8 +226,7 @@
 0330: 0xA8E5A56C   ; CC: __RamMissedCalls
 0334: 0xA865D158   ; CD: __RamMissedSMS
 0338: 0xA8E0FC50   ; CE: __RamDateTime
-033C: 0xA8EEDF08   ; CF: __RamAlarm
-                         __
+033C: 0xA8EEDF08   ; CF: __RamAlarm                        __
 0340: 0xA8E87408   ; D0: __RamAccPoint
 0344: 0xA8EECEA4   ; D1: __RamScreensaver
 0348: 0xA8E0FC78   ; D2: __RamAutoTime
@@ -245,8 +242,7 @@
 0370: 0xA8EEAC9C   ; 80DC: __arm int *RamRandSeed(void);
 0374: 0xA899F2BC   ; DD: __RamCurrentTrack
 0378: 0xA8E4A4A5   ; DE: __RamIsSimPresent
-037C: 0xA8E084B8   ; DF: __RamPressedKey
-                         __
+037C: 0xA8E084B8   ; DF: __RamPressedKey                         __
 0380: 0xA8E1BD18   ; E0: __RamScreenBuffer
 ;384:              ; E1: __
 0388: 0xA8E34534   ; E2: __RamKeyBuffer
@@ -263,7 +259,6 @@
 03B4: 0x000011A7   ; ED: __LP_MonthsLong
 03B8: 0x00000402   ; EE: __LP_Weekdays
 03BC: 0x00000485   ; EF: __Pic_Calendar
-                         __
 03C0: 0x000004E4   ; F0: __Pic_AccuGraph
 03C4: 0xA02BE74D   ; F1: __BuildCanvas
 ;3C8:              ; F2: __lpRAM_PIT
@@ -611,3 +606,6 @@
 +0
 ;********************************************************************************
 
+
+
+;locale=Chinese_People's Republic of China.936
