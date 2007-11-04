@@ -20,8 +20,6 @@ extern const int COLOR_SCROLLBAR_BG;
 extern const char COLOR_SEARCH_MARK[4];
 extern const char COLOR_SEARCH_UNMARK[4];
 
-
-
 //#define TMR_SECOND 216
 #define SMS_MAX_LEN  760
 
@@ -354,6 +352,7 @@ sub_end:
 	FreeWS(pwsCodeshow);
 }
 
+//-------------------------------------------
 //Destroy list 
 void FreeCLIST(void)
 {
@@ -565,7 +564,7 @@ void ConstructList(void)
     zeromem(&ABmain,sizeof(ABmain));
     
     snprintf(recname,128,"%s\\main",szRoot);
-//  if ((fin=fopen("0:\\System\\apo\\addr\\main",A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
+//   if ((fin=fopen("0:\\System\\apo\\addr\\main",A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
     if ((fin=fopen(recname,A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
     {
 #ifdef ELKA
@@ -591,12 +590,12 @@ void ConstructList(void)
 	    rl1=rec/LEVEL1_RN;
 	    rl2=(rec%LEVEL1_RN)/LEVEL2_RN;
 	    rl3=rec%LEVEL2_RN;
-//	    snprintf(recname,128,"0:\\System\\apo\\addr\\data\\%02d\\%02d\\%02d",rl1,rl2,rl3);
+//	     snprintf(recname,128,"0:\\System\\apo\\addr\\data\\%02d\\%02d\\%02d",rl1,rl2,rl3);
 	    snprintf(recname,128,"%s\\data\\%02d\\%02d\\%02d",szRoot,rl1,rl2,rl3);
             #else
 	    unsigned int rl1=rec/LEVEL1_RN;
 	    unsigned int r12=rec%LEVEL1_RN;
-//	    snprintf(recname,128,"0:\\System\\apo\\addr\\%02x\\%02x",rl1,r12);            
+//	     snprintf(recname,128,"0:\\System\\apo\\addr\\%02x\\%02x",rl1,r12);            
 	    snprintf(recname,128,"%s\\%02x\\%02x",szRoot,rl1,r12);              
            #endif             
 	    if ((fin=fopen(recname,A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
@@ -668,7 +667,6 @@ void ConstructList(void)
                         if (r->data)
                             if (!contact.pic)
                             wstrcpy(contact.pic=AllocWS(150),(WSHDR *)(r->data)); 
-                            *((int *)(&contact.next))|=CompareStrT9(contact.pic,sws,0);
                     }
 		    break;
 
@@ -975,9 +973,7 @@ void my_ed_redraw(void *data)
                   ws_2str(cl->num[j],pszNum,20);
 	          len=strlen(pszNum);
                   if(len > 3)
-                  {
                    sumx++;
-                  }
                   }
                   
                   for(j=aj;j<=numx+aj;j++)
