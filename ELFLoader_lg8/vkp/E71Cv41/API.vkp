@@ -88,14 +88,19 @@
 006F2C0: 012F08D0351C4688022F04D0AD198688
 006F2D0: 032F00D0AE19301CFEBD0000
 
-; Send_MPlayer_Command
+; New in v2:
+; Dont send cmd while player off, when you send 0xFF this mean now no cmd
+; Send_MPlayer_Command v2
 ; in: R0 - cmd 
 ; in: R1 - substract
-; no=0x0D prev=0x02 next=0x01 fwd=0x12 rwd=0x13 list begin=0x1D track begin=0x27 
+; no=0xFF prev=0x02 next=0x01 fwd=0x12 rwd=0x13 list begin=0x1D track begin=0x27 
 ; pause=0x10 play=0x0E toggle=0x11 stop=0x0F vol_up=0x15 vol_dwn=0x16 kill=0x0C mute=0x0A
-006F400: 03B5C7DFE180036803BC5B1A01B40022
-006F410: 02490348C7DF000101BDC04653800000
-006F420: 09420000
+
+006F400: FCB5041CFF2C12D00D1C7FDF00280ED0
+006F410: C7DFE18003685B1B10B4002280210902
+006F420: 5331422000020930C7DF000101B00020
+006F430: FCBD
+
 
 ;GetFileSize
 ;v1.1
