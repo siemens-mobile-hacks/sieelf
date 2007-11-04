@@ -48,7 +48,7 @@ arm_mode
 	STRNE	R12,[SP,#4]		; пишем адрес в R0(стек)
 	BNE	exit
 	CMP	R12,#0xFFFFFFFF
-	LDREQ	R2,=FUNC_ABORT
+	LDREQ	R12,=FUNC_ABORT
 	STREQ	R0,[SP,#4]
 	STR	R2,[SP,#0x14]		; Пишем адрес джампера для возврата в стеке (PC)
 exit:
