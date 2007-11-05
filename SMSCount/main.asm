@@ -4,7 +4,11 @@
 #define	RamUnuse  	0xA8D88E00
 #endif
 #ifdef NEWSGOLD
+#ifdef S68Cv51
+#define	RamUnuse  	0xA8D7B800
+#else
 #define	RamUnuse  	0xA8A7F020
+#endif
 #endif
   
 
