@@ -943,6 +943,7 @@ SieHelpMan/config_data.c -text
 SieHelpMan/filecopy.bat -text
 SieHelpMan/func.asm -text
 SieHelpMan/main.C -text
+SieHelpMan/mk_SGOLD.cmd -text
 SieHelpMan/test.xcl -text
 SieJC/MUC_Enter_UI.c -text
 SieJC/MUC_Enter_UI.h -text

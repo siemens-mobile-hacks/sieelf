@@ -534,7 +534,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild>filecopy.bat $PROJ_DIR$\SieHelpMan_SGOLD.elf \Data\ZBin\</postbuild>
+        <postbuild></postbuild>
       </data>
     </settings>
     <settings>
@@ -1358,7 +1358,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild>filecopy.bat $PROJ_DIR$\SieHelpMan_ELKA.elf \MMCard\ZBin\</postbuild>
+        <postbuild></postbuild>
       </data>
     </settings>
     <settings>
@@ -2181,7 +2181,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild>filecopy.bat $PROJ_DIR$\SieHelpMan_NEWSGOLD.elf \MMC\ZBin\</postbuild>
+        <postbuild></postbuild>
       </data>
     </settings>
     <settings>
