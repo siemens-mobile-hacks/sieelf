@@ -137,7 +137,7 @@ void my_ed_redraw(GUI* gui)
   WSHDR *ws;  
   //REDRAW  
   old_ed_redraw(gui);  
-  DrawRectangle(0,YDISP+win_pos.y2,screenw,screenh,0,cfg_input_gui_color,cfg_input_gui_color);
+  DrawRectangle(0,win_pos.y2,screenw,screenh,0,cfg_input_gui_color,cfg_input_gui_color);
   if( m_f_err )
   {        
     ws = AllocWS(sizeof(mferr_unicode));
