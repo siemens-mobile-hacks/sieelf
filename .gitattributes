@@ -896,6 +896,14 @@ SMSCount/about.txt -text
 SMSCount/addr.h -text
 SMSCount/main.asm -text
 SMSCount/smsc.bat -text
+SMSCountReader/SMSCountReader.ewp -text
+SMSCountReader/SMSCountReader.eww -text
+SMSCountReader/func.asm -text
+SMSCountReader/main.c -text
+SMSCountReader/make_elka.bat -text
+SMSCountReader/mk_NEWSGOLD.bat -text
+SMSCountReader/mk_SGOLD.bat -text
+SMSCountReader/test.xcl -text
 SSMS/SSMS.ewp -text
 SSMS/SSMS.eww -text
 SSMS/conf_loader.c -text
