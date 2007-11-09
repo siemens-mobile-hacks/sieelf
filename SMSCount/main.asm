@@ -16,14 +16,6 @@
     PUBLIC
 InitDay:
     DCB 0x01
-TypeALL:
-    DCB	0x01 	 
-TypeCHM:
-    DCB	0x02 
-TypeCHU:
-    DCB	0x03 
-TypeOTH:
-    DCB	0x04 
 
 NewLine:
     DCB	0xA,00
@@ -265,13 +257,11 @@ ShowMesMain:
         ADD     R5, R0, R5
 ShowSMSCount:
         MOV     R0, R5
+        //all
         LDR     R1, =All
         SWI     0x1A
-        LDR	R2, =TypeALL
-	LDRB	R0, [R2, #0]
-	LSL	R0, R0, #2	 	//get the pos
 	LDR	R2, =RamUnuse
-	LDR 	R0, [R2, R0]
+	LDR 	R0, [R2, #4]
 	BL      Ui2Str
 	BL      tostrcat
 	LDR     R1, =NewLine
@@ -279,11 +269,8 @@ ShowSMSCount:
 	//CHM:
         LDR     R1, =ChinaMobile
         BL      tostrcat
-        LDR	R2, =TypeCHM
-	LDRB	R0, [R2, #0]
-	LSL	R0, R0, #2	 	//get the pos
 	LDR	R2, =RamUnuse
-	LDR 	R0, [R2, R0]
+	LDR 	R0, [R2, #8]
 	BL      Ui2Str
 	BL      tostrcat
 	LDR     R1, =NewLine
@@ -291,11 +278,8 @@ ShowSMSCount:
 	//CHU	
         LDR     R1, =ChinaUnicom
         BL      tostrcat
-        LDR	R2, =TypeCHU
-	LDRB	R0, [R2, #0]
-	LSL     R0, R0, #2	 	//get the pos
 	LDR     R2, =RamUnuse
-	LDR 	R0, [R2, R0]
+	LDR 	R0, [R2, #0xC]
 	BL      Ui2Str
 	BL      tostrcat
 	LDR     R1, =NewLine
@@ -303,11 +287,8 @@ ShowSMSCount:
 	//OTH
         LDR     R1, =Others
         BL      tostrcat
-        LDR	R2, =TypeOTH
-        LDRB    R0, [R2, #0]
-	LSL     R0, R0, #2	 	//get the pos
 	LDR     R2, =RamUnuse
-	LDR     R0, [R2, R0]
+	LDR     R0, [R2, #0x10]
 	BL      Ui2Str
 	BL      tostrcat
 	LDR     R1, =NewLine
