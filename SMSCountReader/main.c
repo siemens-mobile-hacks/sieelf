@@ -70,8 +70,9 @@ void load_dat(void)
 
 void soft_key(void)
 {
+	char utf8_exit[]="\xE9\x80\x80\xE5\x87\xBA";//退出
   WSHDR *wsr = AllocWS(16);
-  wsprintf(wsr, "Exit");
+  utf8_2ws(wsr,utf8_exit,strlen(utf8_exit));
   DrawString(wsr,screenw-get_string_width(wsr,FONT_MEDIUM)-4,screenh-GetFontYSIZE(FONT_MEDIUM)-2,screenw,screenh,FONT_MEDIUM,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   FreeWS(wsr);
 }
@@ -80,9 +81,13 @@ void onRedraw(MAIN_GUI *data)
 {
 	DrawRectangle(0,YDISP,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
 	soft_key();
+	char *utf8_str=malloc(128);
 	WSHDR *ws = AllocWS(128);
-	wsprintf(ws, "All: %d\nChinaMobile: %d\nChinaUnicom: %d\nOther: %d", data_buf[4], data_buf[8], data_buf[0xC], data_buf[0x10]);
+	//全部，移动，联通，其它
+	sprintf(utf8_str,"\xE5\x85\xA8\xE9\x83\xA8: %d\n\xE7\xA7\xBB\xE5\x8A\xA8: %d\n\xE8\x81\x94\xE9\x80\x9A: %d\n\xE5\x85\xB6\xE4\xBB\x96: %d", data_buf[4], data_buf[8], data_buf[0xC], data_buf[0x10]);
+	utf8_2ws(ws,utf8_str,strlen(utf8_str));
 	DrawString(ws,0,YDISP+screenh/10,screenw,screenh,FONT_MEDIUM,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+	mfree(utf8_str);
 	FreeWS(ws);
 }
 
