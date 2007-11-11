@@ -22,16 +22,10 @@ __root const int cfg_cs_part=0;
 /*
 __root const CFG_HDR cfghdr108 = {CFG_UINT,"c1",0,65535};
 __root const unsigned int CALL_BTN=VOL_DOWN_BUTTON;
-
 */
+
 __root const CFG_HDR cfghdr108 = {CFG_CHECKBOX,"大头贴显示",0,0};
 __root const int show_pic=1;
-
-__root const CFG_HDR cfghdr110 = {CFG_CHECKBOX,"区号秀居下",0,0};
-__root const int cs_down=0;
-
-__root const CFG_HDR cfghdr109 = {CFG_UINT,"IP电话按键",0,65535};
-__root const unsigned int CALL_IP=VOL_UP_BUTTON;
 
 __root const CFG_HDR cfghdr_m4={CFG_LEVEL,"",0,0};
 
@@ -120,16 +114,5 @@ __root const int cfg_ip_number = 17951;
 
 __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
 
-/*
-#ifdef ELKA
-__root const CFG_HDR cfghdr233 = {CFG_INT,"未知号码区号秀起始Y",0,176};
-__root const int a = 100;
 
-__root const CFG_HDR cfghdr235 = {CFG_INT,"大字体时号码列表起始Y",0,176};
-__root const int c = 100;
-
-__root const CFG_HDR cfghdr236 = {CFG_INT,"小字体时号码列表起始Y",0,176};
-__root const int d = 100;
-#endif
-*/
 

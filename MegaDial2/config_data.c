@@ -25,12 +25,6 @@ __root const unsigned int CALL_BTN=ENTER_BUTTON;
 __root const CFG_HDR cfghdr108 = {CFG_CHECKBOX,"Show pic",0,0};
 __root const int show_pic=1;
 
-__root const CFG_HDR cfghdr110 = {CFG_CHECKBOX,"CodeShow under number",0,0};
-__root const int cs_down=0;
-
-__root const CFG_HDR cfghdr109 ={CFG_UINT,"IP button",0,65535};
-__root const unsigned int CALL_IP=VOL_UP_BUTTON;
-
 __root const CFG_HDR cfghdr_m4={CFG_LEVEL,"",0,0};
 /*
 //Õñ¶¯
@@ -119,19 +113,3 @@ __root const int cfg_ip_number = 17951;
 
 __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
 
-/*
-#ifdef ELKA
-__root const CFG_HDR cfghdr233 = {CFG_INT,"CodeShow unkonw Y1",0,176};
-__root const int a = 100;
-
-//__root const CFG_HDR cfghdr234 = {CFG_INT,"number Y1",0,176};
-//__root const int b = 56;
-
-__root const CFG_HDR cfghdr235 = {CFG_INT,"big font numberlist Y1",0,176};
-__root const int c = 100;
-
-__root const CFG_HDR cfghdr236 = {CFG_INT,"small font numberlist Y1",0,176};
-__root const int d = 100;
-#endif
-
-*/

@@ -51,7 +51,6 @@ extern const int COLOR_NUMBER;
 extern const int CS_NUMBER_BG;
 
 //区号秀
-extern const int cs_down;
 extern const int cfg_cs_adr;
 extern const int cfg_cs_enable;
 extern const int cfg_cs_part;
@@ -67,7 +66,7 @@ extern const int show_pic;
 
 //号码列表按键
 //extern const unsigned int CALL_BTN;
-extern const unsigned int CALL_IP;
+
 
 
 //字体控制
@@ -989,7 +988,7 @@ void my_ed_redraw(void *data)
                   DrawImg(3,dy+(gfont_size+cfg_item_gaps),menu_icons[aj+numx+x]);
                   DrawString(cl->num[aj+numx+x],l+3,dy+(gfont_size+cfg_item_gaps)+2,right_border,dy+2*(gfont_size+cfg_item_gaps),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));
                   int dyx,dyy;
-                  if((!cs_down)&&(!cfg_cs_part))
+                  if(i!=1||cfg_cs_part)
                   {
                     dyx=dy;
                     dyy=dy;
@@ -1007,7 +1006,7 @@ void my_ed_redraw(void *data)
                   x0+=2;
                   
                   if(len>3&&show_pic)
-                  DrawImg(x0,dyy+2*(gfont_size+cfg_item_gaps)-1,(unsigned int)pszNum2);   
+                  DrawImg(x0,dyy+2*(gfont_size+cfg_item_gaps)-1,(unsigned int)pszNum2); 
                   
                   if(sumx>1)
                   DrawRectangle(right_border-2-d,dy+3,right_border-1-d+l,dy+(gfont_size+cfg_item_gaps)+1,1,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
@@ -1056,7 +1055,7 @@ const SOFTKEY_DESC menu_sk[]=
 {
   {0x0018,0x0000,(int)"Select"},
   {0x0001,0x0000,(int)"Back"},
-  {0x003D,0x0000,(int)LGP_DOIT_PIC}
+  {0x003D,0x0000,(int)"+"/*LGP_DOIT_PIC*/}
 };
 
 const SOFTKEYSTAB menu_skt=
@@ -1081,7 +1080,7 @@ int get_word_count(GUI *data)
   len = wstrlen(ec.pWS);
   for(i=1;i<=ec.pWS->wsbody[0];i++)
   {
-    if(ec.pWS->wsbody[i]>128)k=1;
+    if(ec.pWS->wsbody[i]>128) k=1;
   }
   if(k) 
   {
@@ -1113,13 +1112,15 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
 {
   EDITCONTROL ec;
   const char *snum=EDIT_GetUserPointer(data);
-  if (msg->gbsmsg->msg==KEY_DOWN)
+  int key=msg->gbsmsg->submess;
+  int m=msg->gbsmsg->msg;
+  if (m==KEY_DOWN)
    {
-    if (msg->gbsmsg->submess==GREEN_BUTTON&&(get_word_count(data) != 0))
+    if (key==GREEN_BUTTON&&(get_word_count(data)!=0))
     {
       ExtractEditControl(data,2,&ec);
       WSHDR *wsTemp=AllocWS(ec.pWS->wsbody[0]);
-      char szNo[40+6];
+      char szNo[46];
       wstrcpy(wsTemp,ec.pWS);
       
       //小灵通号码
@@ -1132,25 +1133,29 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
       return(1);
     }
     else 
-    {
+    { 
 #ifdef NEWSGOLD
-    if(msg->gbsmsg->submess==LEFT_SOFT)
+      if(key==LEFT_SOFT)
 #else
-    if(msg->gbsmsg->submess==RIGHT_SOFT)
+      if(key==RIGHT_SOFT)
 #endif
       {
+        if(EDIT_IsBusy(data))
+        return(0); 
+        else
         return(-1);
       }
     }
-   }
+    }
   //-1 - do redraw
   return(0); //Do standart keys
   //1: close
 }
 
+
 void edsms_ghook(GUI *data, int cmd)
 {
-    if(cmd != 2)
+   if(cmd != 2)
   {
     get_word_count(data);
   }
@@ -1182,6 +1187,7 @@ INPUTDIA_DESC edsms_desc=
 //  0x00000004 - Not moving the cursor 
   0x40000000 // Change field coaching buttons 
 };
+
 
 //---------------------------------
 //拨号短信控制
@@ -1219,7 +1225,7 @@ void VoiceOrSMS(const char *num)
     EDITCONTROL ec;
     PrepareEditControl(&ec);
     eq=AllocEQueue(ma,mfree_adr());
-    char szTemp[40+1];
+    char szTemp[46];
 
      wstrcpy(ews,gwsName);//名字
 
@@ -1254,7 +1260,6 @@ void VoiceOrSMS(const char *num)
     patch_header(&edsms_hdr);
     patch_input(&edsms_desc);
     CreateInputTextDialog(&edsms_desc,&edsms_hdr,eq,1,(void *)num);
-    need_ip = 0;
   }
 }
 /*
@@ -1316,7 +1321,6 @@ void ElfKiller(void)
         FreeCLIST();
         if(iReadFile && !cs_adr)
 	   mfree((void*)cs_adr);
-        //if(my_pic) deleteIMGHDR(my_pic);	
 	LockSched();
         CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
 	memcpy(&icsmd,icsm->constr,sizeof(icsmd));
@@ -1342,13 +1346,8 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
   
   EDITCONTROL ec;
   CLIST *cl=(CLIST *)cltop;
-
   is_sms_need=0;
-  if(key==CALL_IP&&m==KEY_DOWN)
-  {
-    need_ip=1;
-    return(-1);
-  }
+  
   if (sumx>1&&((key==LEFT_BUTTON)||(key==RIGHT_BUTTON)))
    {
     msg->keys=0;
@@ -1369,11 +1368,13 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
    }   
    return(-1); 
   }
+  
   if(key==RED_BUTTON)
   {
     numx=0;
     need_ip=0;
   }
+  
   if(e_ws && key==ENTER_BUTTON) // "##Enter" to exit
 	{
 		if(e_ws->wsbody[0]==2&&e_ws->wsbody[1]=='#'&&e_ws->wsbody[2]=='#')
@@ -1383,6 +1384,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 			return 1;
 		}
 	}
+  
   if ((key==ENTER_BUTTON)&&(m==KEY_DOWN))
    {
     ExtractEditControl(gui,1,&ec);
@@ -1392,7 +1394,16 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
       is_sms_need=1;
     }
    }
-  if (key==GREEN_BUTTON||is_sms_need)
+  
+#ifdef ELKA
+          if(key==VOL_DOWN_BUTTON||key==GREEN_BUTTON||is_sms_need)
+#else
+#ifdef NEWSGOLD
+          if(key==LEFT_SOFT||key==GREEN_BUTTON||is_sms_need)
+#else
+          if(key==RIGHT_SOFT||key==GREEN_BUTTON||is_sms_need)
+#endif
+#endif
   {
     //DisableScroll();
     if (!cl) goto L_OLDKEY;
@@ -1418,8 +1429,20 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
     while(d<NUMBERS_MAX);
     dstr_index[0]=n;
     wstrcpy(gwsName, cl->name);
+    
     if (n==1) //Only one room
     {
+#ifdef ELKA
+       if(key==VOL_DOWN_BUTTON)
+#else
+#ifdef NEWSGOLD
+       if(key==LEFT_SOFT)
+#else
+       if(key==RIGHT_SOFT)
+#endif
+#endif
+      need_ip=1;
+      
       VoiceOrSMS(dstr[0]);
       return(1); //Close tries 
     }
@@ -1427,6 +1450,17 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
     //Number of rooms more than 1, paint me 
     if(sumx>1)
     {
+#ifdef ELKA
+          if(key==VOL_DOWN_BUTTON)
+#else
+#ifdef NEWSGOLD
+          if(key==LEFT_SOFT)
+#else
+          if(key==RIGHT_SOFT)
+#endif
+#endif
+      need_ip=1;
+      
       VoiceOrSMS(dstr[numx]);
       numx=0;
       return(1); //Close tries 
@@ -1453,19 +1487,19 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
       }
       if (key==DOWN_BUTTON)
       {
-				if (cl)
-				{
-					do
-					{
-						cl=(CLIST *)cl->next;
-						if (!cl) break;
-						i++;
-					}
-					while(i<=curpos);
-				}
-				if(cl)curpos=i;
-				else curpos=0;
-                                numx=0;
+		if (cl)
+		{
+			do
+			{
+			cl=(CLIST *)cl->next;
+			if (!cl) break;
+			i++;
+			}
+			while(i<=curpos);
+		}
+			if(cl)curpos=i;
+			else curpos=0;
+                        numx=0;
       }
     }
     r=-1; //Redraw 
@@ -1528,7 +1562,18 @@ void my_ed_ghook(GUI *gui, int cmd)
   old_ed_ghook(gui, cmd);
   if (cmd==7)
   {
-
+#ifdef ELKA
+#else
+          if(cltop)
+          {
+             static SOFTKEY_DESC skIP={0x0018,0x0000,(int)"IP Dial"};
+#ifdef NEWSGOLD
+             SetSoftKey(gui,&skIP,0);
+#else
+             SetSoftKey(gui,&skIP,1);
+#endif
+          }
+#endif
     EDITCONTROL ec;
     ExtractEditControl(gui,1,&ec);
     //New Line Search 
