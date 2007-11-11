@@ -890,9 +890,11 @@ SMSCount/M81Cv51.xcl -text
 SMSCount/S68Cv51.xcl -text
 SMSCount/S7Cv47.xcl -text
 SMSCount/SL7Cv47.xcl -text
+SMSCount/SMSCount.bcfg -text
 SMSCount/SMSCount.ewp -text
 SMSCount/SMSCount.eww -text
 SMSCount/about.txt -text
+SMSCount/additional.c -text
 SMSCount/addr.h -text
 SMSCount/main.asm -text
 SMSCount/smsc.bat -text

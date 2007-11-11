@@ -1,10 +1,8 @@
-;短信记数器 v3.5
-;SMSCount v3.5
-;(c) starfriend
-;(r) lisugar
-;(i) binghelingxi
+;短信记数器 v3.6
+;SMSCount v3.6
+;(c) starfriend，lisugar，binghelingxi
+;(!) ELFPack
 
-;(!) swi,lib: 0A,0B,0C,0D,17,1A,4E,B4
 /*
 v3.0
 1.采用新的文件创建方式,不需要手动复制SMSCount.Dat文件,SMSCount.Dat文件自动生成到"2:\"目录下
@@ -32,18 +30,18 @@ v3.2
 
 2007.10.25 v3.41
 加入156，157号段计数
-由binghelingxi移植为非MasterPatch
-//去掉了“发送短信后退回桌面显示计数”功能，如果想要增加回这个功能，请在
-//Project/Options/Assembler/Preprocessor/Defined symbols添加SHOW_AFTER_NEW，再编译生成补丁
-//可能是个不足之处：开机后会显示一次，这是伴随“发送短信后退回桌面显示计数”这个功能而来的
-//目前未解决，不过本人倒并不觉得这有什么不好
-//
+由binghelingxi移植为非MasterPatch,并移植到ELKA
 
-2007.10.26
+2007.10.26 v3.5
 改显示方式为全部显示,all,chinamobile,chinaunicom,others
 最下面一行显示清零日期
-//为了压缩空间，适合屏幕显示，E71仅显示ALL,CHMB（移动），CHUN（联通），OTH（其他）
-//以及InitDay（清零日期）
+
+2007.11.10 v3.51
+简化，优化代码
+
+2007.11.10 v3.6
+使用SMSCount.bcfg来配置清零日期
+使用SMSCountReader.elf来读取SMSCount.dat来实现显示
 
 */
 
