@@ -52,6 +52,29 @@ void exit(void)
 	CloseCSM(MAINCSM_ID);
 }
 
+int get_initday(void)
+{
+  unsigned int err;
+  int f;
+  char bcfgpath[]="0:\\ZBin\\etc\\SMSCount.bcfg";
+  if((f=fopen(bcfgpath,A_ReadOnly+A_BIN,P_READ,&err))==-1)
+  {
+  	bcfgpath[0]='4';
+  	if((f=fopen(bcfgpath,A_ReadOnly+A_BIN,P_READ,&err))==-1)
+  	{
+  		MsgBoxError(1, (int)"Can't find SMSCount.bcfg!\nDefault initday: 1");
+  		return 1;
+  	}
+  }
+  char *initday=malloc(8);
+  lseek(f,44,0,&err,&err);
+  fread(f,initday,4,&err);
+  fclose(f,&err);
+  mfree(initday);
+  return initday[0];
+}
+
+
 void load_dat(void)
 {
 	unsigned int err;
@@ -60,7 +83,7 @@ void load_dat(void)
   {
   	if((f=fopen("2:\\SMSCount\\SMSCount.dat",A_ReadOnly+A_BIN,P_READ,&err))==-1)
     {
-    	ShowMSG(1, (int)"Read data error");
+    	ShowMSG(1, (int)"Can't find SMSCount.dat");
     	exit();
     }
   }
@@ -79,14 +102,34 @@ void soft_key(void)
 
 void onRedraw(MAIN_GUI *data)
 {
+	int init_day=get_initday();
+	int font_h=GetFontYSIZE(FONT_SMALL);
 	DrawRectangle(0,YDISP,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
 	soft_key();
 	char *utf8_str=malloc(128);
 	WSHDR *ws = AllocWS(128);
+	wsprintf(ws, "SMSCount v3.6\nSMSCountReader v1.0\n");
+	DrawString(ws,0,YDISP,screenw,screenh,FONT_SMALL,TEXT_ALIGNMIDDLE+TEXT_OUTLINE,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
 	//全部，移动，联通，其它
 	sprintf(utf8_str,"\xE5\x85\xA8\xE9\x83\xA8: %d\n\xE7\xA7\xBB\xE5\x8A\xA8: %d\n\xE8\x81\x94\xE9\x80\x9A: %d\n\xE5\x85\xB6\xE4\xBB\x96: %d", data_buf[4], data_buf[8], data_buf[0xC], data_buf[0x10]);
 	utf8_2ws(ws,utf8_str,strlen(utf8_str));
-	DrawString(ws,0,YDISP+screenh/10,screenw,screenh,FONT_MEDIUM,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+	DrawString(ws,0,YDISP+3*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+	//清零日期
+  if(init_day==0)
+  {
+    sprintf(utf8_str,"\xE6\xB8\x85\xE9\x9B\xB6\xE6\x97\xA5\xE6\x9C\x9F: \xE4\xB8\x8D\xE6\xB8\x85\xE9\x9B\xB6");
+  }
+  else sprintf(utf8_str,"\xE6\xB8\x85\xE9\x9B\xB6\xE6\x97\xA5\xE6\x9C\x9F: %d",init_day);
+	utf8_2ws(ws,utf8_str,strlen(utf8_str));
+	DrawString(ws,0,YDISP+7*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 	
+	//显示当前日期
+	TTime tt;
+  TDate td;
+  GetDateTime(&td,&tt);
+  sprintf(utf8_str,"\xE5\xBD\x93\xE5\x89\x8D\xE6\x97\xA5\xE6\x9C\x9F: %04d.%i.%i",td.year,td.month,td.day);
+  utf8_2ws(ws,utf8_str,strlen(utf8_str));
+  DrawString(ws,0,YDISP+8*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  
 	mfree(utf8_str);
 	FreeWS(ws);
 }
@@ -97,6 +140,7 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
 	{
 		if(msg->gbsmsg->submess==RIGHT_SOFT)
 			exit();
+			
 	}
 	return(0);
 }
@@ -223,7 +267,7 @@ void UpdateCSMname(void)
   wsprintf((WSHDR *)(&MAINCSM.maincsm_name), "SMSCountReader");
 }
 
-int main(void)
+int main(char *initday)
 {
   char dummy[sizeof(MAIN_CSM)];
   UpdateCSMname();
