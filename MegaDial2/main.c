@@ -1066,6 +1066,7 @@ const SOFTKEYSTAB menu_skt=
 int is_sms_need=0;
 WSHDR *ews;
 //WSHDR *dbg_ws;
+char c[15]="\xE8\xB6\x85\xE5\x87\xBA\xE9\x95\xBF\xE5\xBA\xA6";
 
 void edsms_locret(void){}
 
@@ -1073,30 +1074,41 @@ void edsms_locret(void){}
 int get_word_count(GUI *data)
 {
   int i,k=0;
-  int len=0;
+  int l,len=0;
   EDITCONTROL ec;
   WSHDR *wsTemp=AllocWS(SMS_MAX_LEN);
+  WSHDR *wsTemp2=AllocWS(15);
   ExtractEditControl(data, 2, &ec);
   len = wstrlen(ec.pWS);
+  
   for(i=1;i<=ec.pWS->wsbody[0];i++)
   {
-    if(ec.pWS->wsbody[i]>128) k=1;
+    if(ec.pWS->wsbody[i]>128)k=1;
   }
+  
   if(k) 
   {
+   l=330;
    if(len>70)
    k=(len+65)/66;
-   else 
+   else
    k=(len+69)/70;
   }
   else 
   {
+   l=760;
    if(len>160)
    k=(len+151)/152;  
    else
    k=(len+159)/160;
   }
-  wsprintf(gwsTemp, ": %d - %d", k, len);
+  if(k<=5)
+  wsprintf(gwsTemp, ": %d - %d   (%d)", k, len,l-len);
+  else
+  {
+  utf8_2ws(wsTemp2,c,15);
+  wsprintf(gwsTemp, ": %w(%d/%d)",wsTemp2,len,l);
+  }
   ExtractEditControl(data, 1, &ec);
   wstrncpy(wsTemp, ec.pWS, gLen);
   wstrcat(wsTemp, gwsTemp); 
@@ -1104,7 +1116,8 @@ int get_word_count(GUI *data)
 //REDRAW();
   ExtractEditControl(data, 2, &ec);
   FreeWS(wsTemp);
-  return len;
+  FreeWS(wsTemp2);  
+  return k;
 }
 
 //按键控制
@@ -1116,7 +1129,7 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
   int m=msg->gbsmsg->msg;
   if (m==KEY_DOWN)
    {
-    if (key==GREEN_BUTTON&&(get_word_count(data)!=0))
+    if (key==GREEN_BUTTON&&(get_word_count(data)!=0)&&(get_word_count(data)<=5))
     {
       ExtractEditControl(data,2,&ec);
       WSHDR *wsTemp=AllocWS(ec.pWS->wsbody[0]);
@@ -1250,6 +1263,7 @@ void VoiceOrSMS(const char *num)
      wsAppendChar(ews, 0x5B57);
      wsAppendChar(ews, 0x6570);
      gLen = wstrlen(ews);  //字数输出
+
 
     ConstructEditControl(&ec,1,0x40,ews,SMS_MAX_LEN);
     AddEditControlToEditQend(eq,&ec,ma);
