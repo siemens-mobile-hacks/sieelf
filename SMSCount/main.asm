@@ -36,6 +36,8 @@ main:
 CheckNumber:
 	CMP	R2, #0x0B
 	BEQ	CheckChinaMblAndUniCom
+        CMP	R2, #0x0E
+        BEQ	CheckXLT   //小灵通
 	B	CheckOthers
 CheckChinaMblAndUniCom:
 	LDRB	R1, [R6, R0]	//获得前两个数字
@@ -70,6 +72,9 @@ CheckNewMb:
 	BEQ     Mb
 	CMP	R1, #9
 	BEQ	Mb
+CheckXLT:
+        MOV	R3, #20
+	B	ModfiyCountAndFile
 CheckOthers:
 	MOV	R3, #16
 ModfiyCountAndFile:			
@@ -81,7 +86,7 @@ ModfiyCountAndFile:
 	ADD     R2, #1
 	STR     R2, [R1, R3]
 	MOV   	R0, R5
-	MOV    	R2, #20
+	MOV    	R2, #24
 	MOV     R3, SP
         SWI     0x0C
 	MOV     R0, R5
@@ -120,7 +125,7 @@ needToInit:
 	BEQ	exitinit
 	MOV	R0, R5
 	LDR	R1, =RamUnuse
-	MOV	R2, #20
+	MOV	R2, #24
 	MOV	R3, SP
         SWI     0x0B
 	MOV	R0, R5
@@ -148,6 +153,7 @@ CheckIfClean:
 	STR     R2, [R1, #8]
 	STR     R2, [R1, #12]
 	STR     R2, [R1, #16]
+        STR     R2, [R1, #20]
 SaveInit:
 	LDR     R0, =FilePath
         MOV     R1, #1
