@@ -20,9 +20,12 @@ extern void kill_data(void *p, void (*func_p)(void *));
 
 unsigned int MAINCSM_ID = 0;
 unsigned int MAINGUI_ID = 0;
+int no_bcfg=0;
 int screenw;
 int screenh;
 char* data_buf;
+char bcfgpath[]="0:\\ZBin\\etc\\SMSCount.bcfg";
+char dat_path[]="2:\\SMSCount.Dat";
 
 #pragma inline
 int get_string_width(WSHDR *ws, int font)
@@ -56,13 +59,13 @@ int get_initday(void)
 {
   unsigned int err;
   int f;
-  char bcfgpath[]="0:\\ZBin\\etc\\SMSCount.bcfg";
   if((f=fopen(bcfgpath,A_ReadOnly+A_BIN,P_READ,&err))==-1)
   {
   	bcfgpath[0]='4';
   	if((f=fopen(bcfgpath,A_ReadOnly+A_BIN,P_READ,&err))==-1)
   	{
   		MsgBoxError(1, (int)"Can't find SMSCount.bcfg!\nDefault initday: 1");
+  		no_bcfg=1;
   		return 1;
   	}
   }
@@ -79,39 +82,153 @@ void load_dat(void)
 {
 	unsigned int err;
 	int f;
-	if((f=fopen("2:\\SMSCount.dat",A_ReadOnly+A_BIN,P_READ,&err))==-1)
+  if((f=fopen(dat_path,A_ReadOnly+A_BIN,P_READ,&err))==-1)
   {
-  	if((f=fopen("2:\\SMSCount\\SMSCount.dat",A_ReadOnly+A_BIN,P_READ,&err))==-1)
-    {
-    	ShowMSG(1, (int)"Can't find SMSCount.dat");
-    	exit();
-    }
+    MsgBoxError(1, (int)"Can't find SMSCount.dat");
+    exit();
   }
-  fread(f,data_buf,20,&err);
+  fread(f,data_buf,24,&err);
   fclose(f,&err);
 }
 
+void rebootProc(int id)
+{
+  if(id==0) RebootPhone();
+}
+
+void clear_dat(void)
+{
+	unsigned int err;
+	int f;
+  data_buf[4]=0;
+  data_buf[8]=0;
+  data_buf[0xC]=0;
+  data_buf[0x14]=0;
+  data_buf[0x10]=0;
+  if(f=fopen(dat_path,A_WriteOnly+A_BIN,P_WRITE,&err)!=-1)
+  {
+    fwrite(f, data_buf, 24, &err);
+    fclose(f,&err);
+    MsgBoxYesNo(1, (int)"Reboot soon ?", rebootProc);
+  }
+  else MsgBoxError(1,(int)"Clear Error");
+}
+
+void clearProc(int id)
+{
+  if(id==0) clear_dat();
+}
+
+/*
+int get_month_day(int type)
+{
+  TTime tt;
+  TDate td;
+  GetDateTime(&td,&tt);
+  if(type==1) return (int)td.day;
+  if(type==2) return (int)td.month;
+  return 0;
+}
+
+void read_write_dat(int type)
+{
+  char dat_path[]="0:\\Misc\\SMSCount.dat";
+  //type: 0:clear,1:chinamobile,2:chinaunicom,3:xiaolingtong,4:others
+	unsigned int err;
+	int f;
+	//char *data_buf=malloc(32);
+	f=fopen(dat_path,A_WriteOnly+A_BIN,P_WRITE,&err);
+	switch(type)
+	{
+	  case 0:
+	    data_buf[4]=0;     //全部
+      data_buf[8]=0;     //移动
+      data_buf[0xC]=0;   //联通
+      data_buf[0x14]=0;  //小灵通
+      data_buf[0x10]=0;  //其它
+      break;
+    case 1:
+      data_buf[4]++;
+      data_buf[8]++;
+      break;
+    case 2:
+      data_buf[4]++;
+      data_buf[0xC]++;
+      break;
+    case 3:
+      data_buf[4]++;
+      data_buf[0x14]++;
+      break;
+    case 4:
+      data_buf[4]++;
+      data_buf[0x10]++;
+      break;
+	}
+	fwrite(f, data_buf, 24, &err);
+	fclose(f,&err);
+	mfree(data_buf);
+}
+
+void check_if_clearn(void)
+{
+  int initday=get_initday();
+  if(initday==get_month_day(1))
+  {
+    char dat_path[]="0:\\Misc\\SMSCount.dat";
+    unsigned int err;
+    int f;
+    char *data_buf=malloc(32);
+    if(f=fopen(dat_path,A_ReadWrite+A_BIN,P_READ+P_WRITE,&err)!=-1)
+    {
+      fread(f,data_buf,24,&err);
+    }
+    else MsgBoxYesNo(1, (int)"Clear ALL?", clearProc);
+    if(data_buf[0]==get_month_day(2))
+    {
+      fclose(f,&err);
+      mfree(data_buf);
+      read_write_dat(0);
+      goto END;
+    }
+    if(data_buf[0]==0)
+    {
+      data_buf[0]=get_month_day(2);
+    }
+    fwrite(f, data_buf, 24, &err);
+    fclose(f,&err);
+    mfree(data_buf);
+  }
+END:;
+}
+*/
 void soft_key(void)
 {
+  char utf8_clear[]="\xE6\xB8\x85\xE7\xA9\xBA\xE8\xAE\xA1\xE6\x95\xB0";//清空计数
 	char utf8_exit[]="\xE9\x80\x80\xE5\x87\xBA";//退出
+	WSHDR *wsl = AllocWS(16);
   WSHDR *wsr = AllocWS(16);
   utf8_2ws(wsr,utf8_exit,strlen(utf8_exit));
+  utf8_2ws(wsl,utf8_clear,strlen(utf8_clear));
   DrawString(wsr,screenw-get_string_width(wsr,FONT_MEDIUM)-4,screenh-GetFontYSIZE(FONT_MEDIUM)-2,screenw,screenh,FONT_MEDIUM,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(wsl,2,screenh-GetFontYSIZE(FONT_MEDIUM)-2,screenw,screenh,FONT_MEDIUM,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   FreeWS(wsr);
+  FreeWS(wsl);
 }
 
 void onRedraw(MAIN_GUI *data)
 {
-	int init_day=get_initday();
+	int init_day;
+	if(no_bcfg) init_day=1;
+	  else init_day=get_initday();
 	int font_h=GetFontYSIZE(FONT_SMALL);
 	DrawRectangle(0,YDISP,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
 	soft_key();
 	char *utf8_str=malloc(128);
 	WSHDR *ws = AllocWS(128);
-	wsprintf(ws, "SMSCount v3.6\nSMSCountReader v1.0\n");
+	wsprintf(ws, "SMSCount v3.7\nSMSCountReader v1.1\n");
 	DrawString(ws,0,YDISP,screenw,screenh,FONT_SMALL,TEXT_ALIGNMIDDLE+TEXT_OUTLINE,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
-	//全部，移动，联通，其它
-	sprintf(utf8_str,"\xE5\x85\xA8\xE9\x83\xA8: %d\n\xE7\xA7\xBB\xE5\x8A\xA8: %d\n\xE8\x81\x94\xE9\x80\x9A: %d\n\xE5\x85\xB6\xE4\xBB\x96: %d", data_buf[4], data_buf[8], data_buf[0xC], data_buf[0x10]);
+	//全部，移动，联通，小灵通，其它
+	sprintf(utf8_str,"\xE5\x85\xA8\xE9\x83\xA8: %d\n\xE7\xA7\xBB\xE5\x8A\xA8: %d\n\xE8\x81\x94\xE9\x80\x9A: %d\n\xE5\xB0\x8F\xE7\x81\xB5\xE9\x80\x9A: %d\n\xE5\x85\xB6\xE4\xBB\x96: %d", data_buf[4], data_buf[8], data_buf[0xC], data_buf[0x14], data_buf[0x10]);
 	utf8_2ws(ws,utf8_str,strlen(utf8_str));
 	DrawString(ws,0,YDISP+3*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
 	//清零日期
@@ -121,14 +238,14 @@ void onRedraw(MAIN_GUI *data)
   }
   else sprintf(utf8_str,"\xE6\xB8\x85\xE9\x9B\xB6\xE6\x97\xA5\xE6\x9C\x9F: %d",init_day);
 	utf8_2ws(ws,utf8_str,strlen(utf8_str));
-	DrawString(ws,0,YDISP+7*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 	
+	DrawString(ws,0,YDISP+8*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 	
 	//显示当前日期
 	TTime tt;
   TDate td;
   GetDateTime(&td,&tt);
   sprintf(utf8_str,"\xE5\xBD\x93\xE5\x89\x8D\xE6\x97\xA5\xE6\x9C\x9F: %04d.%i.%i",td.year,td.month,td.day);
   utf8_2ws(ws,utf8_str,strlen(utf8_str));
-  DrawString(ws,0,YDISP+8*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws,0,YDISP+9*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
   
 	mfree(utf8_str);
 	FreeWS(ws);
@@ -138,9 +255,36 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
 {
 	if(msg->gbsmsg->msg==KEY_UP)
 	{
-		if(msg->gbsmsg->submess==RIGHT_SOFT)
-			exit();
-			
+	  int i=msg->gbsmsg->submess;
+	  switch(i)
+	  {
+	    case RIGHT_SOFT: 
+	      exit();
+	      break;
+	    case LEFT_SOFT:
+	      MsgBoxYesNo(1, (int)"Clear ALL?", clearProc);
+	      break;
+/*	    case '1':
+	      read_write_dat(1);
+	      REDRAW();
+	      break;
+	    case '2':
+	      read_write_dat(2);
+	      REDRAW();
+	      break;
+	    case '3':
+	      read_write_dat(3);
+	      REDRAW();
+	      break;
+	    case '4':
+	      read_write_dat(4);
+	      REDRAW();
+	      break;
+	    case '5':
+	      check_if_clearn();
+	      REDRAW();
+	      break;*/
+	  }
 	}
 	return(0);
 }
