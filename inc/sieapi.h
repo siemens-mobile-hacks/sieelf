@@ -112,8 +112,8 @@ void RunCUT(char *s)
 void RunAPP(char *s)
 {
   if ((s)&&(strlen(s))){
-      WSHDR *ws=AllocWS(150);
-      str_2ws(ws,s,128);
+      WSHDR *ws=AllocWS(128);
+      str_2ws(ws,s,(strlen(s));
       ExecuteFile(ws, 0,0);
       FreeWS(ws);
   }
