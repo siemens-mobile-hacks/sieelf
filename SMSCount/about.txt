@@ -43,5 +43,8 @@ v3.2
 使用SMSCount.bcfg来配置清零日期
 使用SMSCountReader.elf来读取SMSCount.dat来实现显示
 
+2007.11.12 v3.7
+加入小灵通号码支持
+
 */
 
