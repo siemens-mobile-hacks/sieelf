@@ -12,12 +12,10 @@ const char ipc_name[]=SCRTOOL_NAME;
 const IPC_REQ my_ipc={ipc_name, ipc_name, NULL};
 TSCR IDS[MAX_IDS];
 TAPP APP[MAX_APP];
-TBIR BIR[MAX_BIR];
 TRect txt,ico;
 TNongLi NongLi;
-TBIRS   BIRS;
 int MAINCSM_ID = 0;
-int DIRActive  = 0;
+int DirsActive = 0;
 int SUCCED_HOOK= 0;
 int MenuActive = 0;
 int TextActive = 0;
@@ -94,9 +92,15 @@ int MENU_SOFTKEYS[]={0,1,2};
 
 SOFTKEY_DESC MENU_PRESS[]=
 {
-  {0x0018,0x0000,(int)"Open"},//打开
-  {0x0001,0x0000,(int)"Close"},//关闭
+#ifdef ELKA
+  {0x0018,0x0000,8104},//打开 8104
+  {0x0001,0x0000,7240},//关闭7240
   {0x003D,0x0000,(int)"+"}
+#else
+  {0x0018,0x0000,(int)"Open"},//打开 8104
+  {0x0001,0x0000,(int)"Close"},//关闭7240
+  {0x003D,0x0000,(int)"+"}
+#endif
 };
 
 SOFTKEYSTAB MENU_TAB=
@@ -121,7 +125,7 @@ MENU_DESC MENU_STRUCT=
 
 int MENU_ONKEY(void *gui, GUI_MSG *msg)
 {
-  TFile *sbtop=MenuGetUserPointer(gui); 
+  TFile *sbtop=MenuGetUserPointer(gui);
   if (msg->keys==0x3D || msg->keys==0x18)
   {
     int i=GetCurMenuItem(gui);
@@ -160,7 +164,7 @@ TFile *FindBCFGFile()
         sb->filename=malloc(strlen(de.file_name)+1);        
         strcpy(sb->filename,de.file_name);
         //隐藏扩展名
-        if(SHOW_EXT)sb->filename[getstrpos(sb->filename,'.')]=0;
+        if(!SHOW_EXT)sb->filename[getstrpos(sb->filename,'.')]=0;
         sb->type=0;
         sb->next=0;
         if (filelist){
@@ -185,7 +189,7 @@ TFile *FindBCFGFile()
 
 int BrowserFileMenu()
 { 
-if(DIRActive){   
+if(DirsActive){   
   TFile *sbtop=FindBCFGFile();
   patch_header(&MENU_HDR);
   return CreateMenu(0,0,&MENU_STRUCT,&MENU_HDR,0,GetFileCount(sbtop),sbtop,0);
@@ -194,33 +198,6 @@ if(DIRActive){
 
 //结束配置菜单
 //初始化生日显示数据
-void InitBir(void)
-{ 
-  BIR[0].Type = BIRT01;
-  utf8_2ws(BIR[0].dt,BIRD01,strlen(BIRD01));
-  utf8_2ws(BIR[0].ws,BIRS01,strlen(BIRS01));
-  BIR[1].Type = BIRT02;
-  utf8_2ws(BIR[1].dt,BIRD02,strlen(BIRD02));
-  utf8_2ws(BIR[1].ws,BIRS02,strlen(BIRS02));
-  BIR[2].Type = BIRT03;
-  utf8_2ws(BIR[2].dt,BIRD03,strlen(BIRD03));
-  utf8_2ws(BIR[2].ws,BIRS03,strlen(BIRS03));
-  BIR[3].Type = BIRT04;
-  utf8_2ws(BIR[3].dt,BIRD04,strlen(BIRD04));
-  utf8_2ws(BIR[3].ws,BIRS04,strlen(BIRS04));
-  BIR[4].Type = BIRT05;
-  utf8_2ws(BIR[4].dt,BIRD05,strlen(BIRD05));
-  utf8_2ws(BIR[4].ws,BIRS05,strlen(BIRS05));
-  BIR[5].Type = BIRT06;
-  utf8_2ws(BIR[5].dt,BIRD06,strlen(BIRD06));
-  utf8_2ws(BIR[5].ws,BIRS06,strlen(BIRS06));
-  BIR[6].Type = BIRT07;
-  utf8_2ws(BIR[6].dt,BIRD07,strlen(BIRD07));
-  utf8_2ws(BIR[6].ws,BIRS07,strlen(BIRS07));
-  BIR[7].Type = BIRT08;
-  utf8_2ws(BIR[7].dt,BIRD08,strlen(BIRD08));
-  utf8_2ws(BIR[7].ws,BIRS08,strlen(BIRS08));
-}
 void InitIDS(void);
 void TimerProc(void)
 {
@@ -243,11 +220,30 @@ void FillIDS(TSCR *Info,int x_start,int y_start, int fontSize,const char *color,
 {  
   Info->rc.x=x_start;
   Info->rc.y=y_start;
-  Info->rc.x2=x_start+get_string_width(Info->ws,fontSize)+10;
+  Info->rc.x2=x_start+get_string_width(Info->ws,fontSize)+6;
   Info->rc.y2=y_start+GetFontYSIZE(fontSize);
   Info->Size=fontSize;
   memcpy(Info->Pen,color,4);
   memcpy(Info->Brush,colorframe,4);
+}
+
+char *BirBuf; 
+
+int FindBirName(const char *date,WSHDR *ws)
+{   
+  char *s=strstr(BirBuf,date);
+  if(s){  
+      int c,i=0;
+      char ss[LEN];
+      s+=strlen(date);       
+      while((c=*s++)>=':'){
+        if (i<(sizeof(ss)-1)) ss[i++]=c; 
+    }
+    ss[i]=0;
+    utf8_2ws(ws,ss,strlen(ss));
+  }
+  int state = wstrlen(ws);
+  return(state);
 }
 
 void InitIDS(void)
@@ -265,42 +261,36 @@ void InitIDS(void)
   const word UniNum[] = {0x4E00,0x4E8C,0x4E09,0x56DB,0x4E94,0x516D,0x65E5,0};//一二三四五六日
   const word UniDate[] = {0x5E74,0x6708,0x65E5,0};//年月日
   const word UniTime[] = {0x70B9,0x5206,0x79D2,0x4E0A,0x4E0B,0x5348,0};//点分秒上下午
+  
+  char cDataFmt[8][16] = {"%02d/%02d/%02d", "%02d-%02d-%02d", "%02d.%02d.%02d", "%02d %02d %02d", "%02d/%02d", "%02d-%02d", "%02d.%02d", "%02d %02d",};
   word UniToday[3];
-  char cDataFmt[8][16] = {
-    "%02d/%02d/%02d",
-    "%02d-%02d-%02d",
-    "%02d.%02d.%02d",
-    "%02d %02d %02d",
-    "%02d/%02d",
-    "%02d-%02d",
-    "%02d.%02d",
-    "%02d %02d",};
   TTime tt;
   TDate d;
+  GetDateTime(&d,&tt);
   if (TEMP_ENA){
     IDS[0].show=1;
     c=GetAkku(1,3)-0xAAA+15;
     wsprintf(IDS[0].ws,TEMP_FMT,c/10,c%10);
-    FillIDS(&IDS[0],TEMP_X,TEMP_Y,TEMP_FONT,TEMP_COLORS,TEMP_FCOLOR);
+    FillIDS(&IDS[0],TEMP_X,TEMP_Y,FontType(TEMP_FONT),TEMP_COLORS,TEMP_FCOLOR);
   } else { IDS[0].show=0; }
   
   if (VOLT_ENA){
     IDS[1].show=1;
     c=GetAkku(0,9);
     wsprintf(IDS[1].ws,VOLT_FMT,c/1000,(c%1000)/10);
-    FillIDS(&IDS[1],VOLT_X,VOLT_Y,VOLT_FONT,VOLT_COLORS,VOLT_FCOLOR);
+    FillIDS(&IDS[1],VOLT_X,VOLT_Y,FontType(VOLT_FONT),VOLT_COLORS,VOLT_FCOLOR);
   } else { IDS[1].show=0; }
   
   if (RAM_ENA){
     IDS[2].show=1;
     c=GetFreeRamAvail();
     wsprintf_bytes(IDS[2].ws,c);
-    FillIDS(&IDS[2],RAM_X,RAM_Y,RAM_FONT,RAM_COLORS,RAM_FCOLOR);  
+    FillIDS(&IDS[2],RAM_X,RAM_Y,FontType(RAM_FONT),RAM_COLORS,RAM_FCOLOR);  
   } else { IDS[2].show=0; }
   
   if(WEEK_ENA){
     IDS[3].show=1;
-    GetDateTime(&d,&tt);
+   // GetDateTime(&d,&tt);
     c = GetWeek(&d);
     if(WEEK_FMT <4)
     {
@@ -315,12 +305,12 @@ void InitIDS(void)
          BSTRAdd(IDS[3].ws->wsbody, XINGQI, 2);
       BSTRAdd(IDS[3].ws->wsbody,UniToday, 1);      
     }
-    FillIDS(&IDS[3],WEEK_X,WEEK_Y,WEEK_FONT,WEEK_COLORS,WEEK_FCOLOR);
+    FillIDS(&IDS[3],WEEK_X,WEEK_Y,FontType(WEEK_FONT),WEEK_COLORS,WEEK_FCOLOR);
   } else { IDS[3].show=0; }
   
   if(DATE_ENA){
     IDS[4].show=1;
-    GetDateTime(&d,&tt);  
+    //GetDateTime(&d,&tt);  
     for(int iloop = 0;iloop < 16;iloop++){
       cData[iloop] = cDataFmt[DATE_FMT][iloop];        
     }
@@ -347,12 +337,12 @@ void InitIDS(void)
       UniToday[0] = UniDate[2];
       BSTRAdd(IDS[4].ws->wsbody,UniToday, 1);      
     }
-    FillIDS(&IDS[4],DATE_X,DATE_Y,DATE_FONT,DATE_COLORS,DATE_FCOLOR);
+    FillIDS(&IDS[4],DATE_X,DATE_Y,FontType(DATE_FONT),DATE_COLORS,DATE_FCOLOR);
   } else { IDS[4].show=0; }
   
   if(TIME_ENA){
     IDS[5].show=1;
-    GetDateTime(&d,&tt);
+    //GetDateTime(&d,&tt);
     switch(TIME_FMT) {
     case 0: wsprintf(IDS[5].ws,"%02d:%02d",tt.hour,tt.min); break;
       
@@ -406,35 +396,33 @@ void InitIDS(void)
       UniToday[0] = UniTime[2];
       BSTRAdd(IDS[5].ws->wsbody,UniToday, 1);
       break;
-    default:
-      break;
-      
+    default: break;      
     }   
-    FillIDS(&IDS[5],TIME_X,TIME_Y,TIME_FONT,TIME_COLORS,TIME_FCOLOR);
+    FillIDS(&IDS[5],TIME_X,TIME_Y,FontType(TIME_FONT),TIME_COLORS,TIME_FCOLOR);
   } else { IDS[5].show=0; }
   
   if (TEXT_ENA){
     IDS[6].show=1;
     utf8_2ws(IDS[6].ws,TEXT_FMT,strlen(TEXT_FMT));
-    FillIDS(&IDS[6],TEXT_X,TEXT_Y,TEXT_FONT,TEXT_COLORS,TEXT_FCOLOR);
+    FillIDS(&IDS[6],TEXT_X,TEXT_Y,FontType(TEXT_FONT),TEXT_COLORS,TEXT_FCOLOR);
   } else { IDS[6].show=0; }    
   
-  if (NongLiNian_ENA){
+  if (CHSYear_ENA){
     IDS[7].show=1;
     CutWSTR(IDS[7].ws,0);
-    GetDateTime(&d,&tt); 
+    //GetDateTime(&d,&tt); 
     GetDayOf(d,&NongLi);
     memcpy(IDS[7].ws->wsbody,NongLi.year->wsbody,16);
-    FillIDS(&IDS[7],NongLiNian_X,NongLiNian_Y,NongLiNian_FONT,NongLiNian_COLORS,NongLiNian_FCOLOR);
+    FillIDS(&IDS[7],CHSYear_X,CHSYear_Y,FontType(CHSYear_FONT),CHSYear_COLORS,CHSYear_FCOLOR);
   } else { IDS[7].show=0; }    
 
-  if (NongLiDATE_ENA){
+  if (CHSDay_ENA){
     IDS[8].show=1;
     CutWSTR(IDS[8].ws,0);
-    GetDateTime(&d,&tt); 
+    //GetDateTime(&d,&tt); 
     GetDayOf(d,&NongLi);
     memcpy(IDS[8].ws->wsbody,NongLi.mday->wsbody,16);
-    FillIDS(&IDS[8],NongLiDATE_X,NongLiDATE_Y,NongLiDATE_FONT,NongLiDATE_COLORS,NongLiDATE_FCOLOR);
+    FillIDS(&IDS[8],CHSDay_X,CHSDay_Y,FontType(CHSDay_FONT),CHSDay_COLORS,CHSDay_FCOLOR);
   } else { IDS[8].show=0; }   
   
   if(NET_ENA){
@@ -442,14 +430,14 @@ void InitIDS(void)
     net_data=RamNet();
     c=(net_data->ch_number>=255)?'=':'-';
     wsprintf(IDS[9].ws,NET_FMT,c,net_data->power);
-    FillIDS(&IDS[9],NET_X,NET_Y,NET_FONT,NET_COLORS,NET_FCOLOR);
+    FillIDS(&IDS[9],NET_X,NET_Y,FontType(NET_FONT),NET_COLORS,NET_FCOLOR);
   } else { IDS[9].show=0; }
   
   if (CAP_ENA){
     IDS[10].show=1;
     c=*RamCap();
     wsprintf(IDS[10].ws,CAP_FMT,c);
-    FillIDS(&IDS[10],ACCU_X,ACCU_Y,ACCU_FONT,ACCU_COLORS,ACCU_FCOLOR);
+    FillIDS(&IDS[10],ACCU_X,ACCU_Y,FontType(ACCU_FONT),ACCU_COLORS,ACCU_FCOLOR);
   } else { IDS[10].show=0; }
   
   if (CPU_ENA){
@@ -457,7 +445,7 @@ void InitIDS(void)
     c=GetCPULoad();
     if(c==100) c=99;
     wsprintf(IDS[11].ws,CPU_FMT,c);
-    FillIDS(&IDS[11],CPU_X,CPU_Y,CPU_FONT,CPU_COLORS,CPU_FCOLOR);
+    FillIDS(&IDS[11],CPU_X,CPU_Y,FontType(CPU_FONT),CPU_COLORS,CPU_FCOLOR);
   } else { IDS[11].show=0; }
 
   if (GPRS_ENA){
@@ -465,33 +453,29 @@ void InitIDS(void)
     //RefreshGPRSTraffic();
     c=*GetGPRSTrafficPointer();
     wsprintf_bytes(IDS[12].ws,c);
-    FillIDS(&IDS[12],GPRS_X,GPRS_Y,GPRS_FONT,GPRS_COLORS,GPRS_FCOLOR);
+    FillIDS(&IDS[12],GPRS_X,GPRS_Y,FontType(GPRS_FONT),GPRS_COLORS,GPRS_FCOLOR);
   } else { IDS[12].show=0; }
   
-  if(BIR_ENA){
-    InitBir();
-    char dta[16],dtb[16];  
+  if(NBIR_ENA){
+    char nDay[16];    
+    //GetDateTime(&d,&tt); 
+    //显示公历节日   
     CutWSTR(IDS[13].ws,0);
-    GetDateTime(&d,&tt);      
-    GetDayOf(d,&NongLi);
-    wsprintf(BIRS.nd,"%02d.%02d",d.month,d.day); 
-    memcpy(BIRS.od->wsbody,NongLi.mday->wsbody,16);    
-    int i=0;
-    while(i<MAX_BIR){
-      switch(BIR[i].Type){
-       case 0:ws_2str(BIRS.nd,(char*)dta,16);break;
-       case 1:ws_2str(BIRS.od,(char*)dta,16);break;
-      }
-      ws_2str(BIR[i].dt,(char*)dtb,16); 
-      IDS[13].show=ExtStrcmp(dta,dtb);
-      if(IDS[13].show){
-        wstrcpy(IDS[13].ws,BIR[i].ws);
-        break;
-      }  
-      i++;
-    }     
-    FillIDS(&IDS[13],BIR_X,BIR_Y,BIR_FONT,BIR_COLORS,BIR_FCOLOR);
-  } else { IDS[13].show=0; }
+    sprintf(nDay,"N%02d.%02d:",d.month,d.day);
+    IDS[13].show = FindBirName(nDay,IDS[13].ws);
+    FillIDS(&IDS[13],NBIR_X,NBIR_Y,FontType(NBIR_FONT),NBIR_COLORS,NBIR_FCOLOR);
+  } else { IDS[13].show=0;}
+  
+  if(OBIR_ENA){
+    //显示农历节日  
+    char oDay[16];   
+    //GetDateTime(&d,&tt); 
+    TDate o=GetOldDay(d);
+    CutWSTR(IDS[14].ws,0);
+    sprintf(oDay,"P%02d.%02d:",o.month,o.day);
+    IDS[14].show = FindBirName(oDay,IDS[14].ws);
+    FillIDS(&IDS[14],OBIR_X,OBIR_Y,FontType(OBIR_FONT),OBIR_COLORS,OBIR_FCOLOR);
+  } else { IDS[14].show=0;}
 }
 //菜单功能
 void APP_TRAF(const char *name, int inx, int type,char *pic,char *file)
@@ -552,17 +536,18 @@ void InitMenu(int active)
 }
 
 void DrawPanel(void)
-{ 
- GBS_StartTimerProc(&barTimer,10,DrawPanel); 
+{/*   
  #ifdef ELKA
-  {void *canvasmenu = BuildCanvas();
+  void *canvasmenu = BuildCanvas();{
  #else
   void *idata = GetDataOfItemByID(GetTopGUI(), 2);
   if (idata){
   void *canvasmenu = ((void **)idata)[DISPLACE_OF_IDLECANVAS / 4];
- #endif     
+ #endif  */   
+  void *canvasmenu = BuildCanvas();
   DrawCanvas(canvasmenu,txt.l,txt.t,txt.r,txt.b, 1); 
   DrawRoundedFrame( txt.l, txt.t, txt.r, txt.b, 0, 0, 0, cfgPanBorderCol, cfgPanBGCol ); 
+  GBS_StartTimerProc(&barTimer,10,DrawPanel); 
   int y = 0; 
   int i = 0;
   int state=0;
@@ -592,7 +577,7 @@ void DrawPanel(void)
     DrawCanvas(canvasmenu, tmp.l, tmp.t, tmp.r, tmp.b, 1); 
     if (i == Seled){                    
        DrawRoundedFrame(tmp.l+1, tmp.t+1, tmp.r-1, tmp.b-1, 2, 2, 0, cfgBookBorderCol, cfgBookBGCol );        
-       DrawString(APP[i].ws, txt.l+1, txt.t+ts, txt.r-1, txt.b-ts, APPTEXT_FONT, TEXT_ALIGNLEFT,APPTEXT_COLORS, cfgPanBGCol);    
+       DrawString(APP[i].ws, txt.l+2, txt.t+ts, txt.r-2, txt.b-ts, FontType(APPTEXT_FONT), TEXT_ALIGNLEFT,APPTEXT_COLORS, cfgPanBGCol);    
     }
     int picw = (size-GetImgWidth((int)s))/2;  if(picw<0)picw=0;
     int pich = (size-GetImgHeight((int)s))/2; if(pich<0)pich=0; 
@@ -600,29 +585,14 @@ void DrawPanel(void)
     y += m;
     i++;    
   }
-  }
+// }  
  //自动关闭菜单
- if((++auto_close>=AUTO_CLOSE*TMR_SECOND/10)&&(MenuActive)&&(MAINCSM_ID)) CloseMenu();
+  if((++auto_close>=AUTO_CLOSE*TMR_SECOND/10)&&(MenuActive)&&(MAINCSM_ID)) CloseMenu();
 }
-
-void CloseMenu(void)
-{
-  if(IsTimerProc(&barTimer)) GBS_DelTimer(&barTimer);
-  if(MAINCSM_ID) CloseCSM(MAINCSM_ID); //关闭GUI界面
-  MAINCSM_ID=0;
-  MenuActive=0;
-  DIRActive =0;
-  auto_close=0;
-  RefreshGUI();
-}
-
-//功能定位
-void OpenBCFGMenu();
-
 
 void OnRedraw(GUI *data)
 {
-  if(SUCCED_HOOK&&MENU_ENA&&MenuActive) DrawPanel();
+  if(SUCCED_HOOK&&MENU_ENA&&(MenuActive)) DrawPanel();
 }
 
 void onCreate(GUI *data, void *(*malloc_adr)(int))
@@ -657,25 +627,26 @@ int OnKey(GUI *data, GUI_MSG *msg)
   if ((msg->gbsmsg->msg==KEY_DOWN))
   {
     //关闭菜单
-    if(msg->gbsmsg->submess==EXIT_BTN) CloseMenu();    
+     if(msg->gbsmsg->submess==EXIT_BTN){ CloseMenu(); return(1);}
     //选定操作
-    if(IsUnlocked()){
+   // if(IsUnlocked()){
      int tmp=Seled;
      int line=(MAX_APP+1)/2;
-     auto_close=0; 
+     auto_close=0;  
      switch(msg->gbsmsg->submess){     
       //右选定
-      case RIGHT_BUTTON:{if(++Seled >= Count) Seled=0;} break;  
+      case RIGHT_BUTTON:if(++Seled >= Count) Seled=0;break;  
       //上选定
-      case UP_BUTTON:   {if((Seled+=line)>=Count) Seled=tmp-line;} break; 
+      case    UP_BUTTON:if((Seled+=line)>=Count) Seled=tmp-line;break; 
       //右选定
-      case LEFT_BUTTON: {if(--Seled<0) Seled=Count-1;} break;   
+      case  LEFT_BUTTON:if(--Seled<0) Seled=Count-1; break;   
       //下选定
-      case DOWN_BUTTON: {if((Seled-=line)<0) Seled=tmp+line;} break;     
+      case  DOWN_BUTTON:if((Seled-=line)<0) Seled=tmp+line; break;     
       //执行对就的功能
       case ENTER_BUTTON: DoIt(Seled); break;
-     }
-    }
+     }     
+     //return(1);
+    //}
    }
   }
   return(0);
@@ -717,7 +688,7 @@ void maincsm_onguicreate(CSM_RAM *data)
   main_gui->item_ll.data_mfree=(void (*)(void *))mfree_adr();
   csm->csm.state=0;
   csm->csm.unk1=0;
-  csm->tool_id=CreateGUI(main_gui);  
+  csm->task_id=CreateGUI(main_gui);  
   csm->menu_id=BrowserFileMenu();
 }
 
@@ -738,7 +709,7 @@ void maincsm_onguiclose(CSM_RAM *csm)
 int maincsm_onguimessage(CSM_RAM *data, GBS_MSG *msg)
 {
   MAIN_CSM_GUI *csm=(MAIN_CSM_GUI*)data;
-  if ((msg->msg==MSG_GUI_DESTROYED)&&((int)msg->data0==csm->tool_id))
+  if ((msg->msg==MSG_GUI_DESTROYED)&&((int)msg->data0==csm->task_id))
   {
     csm->csm.state=-3;
   }  
@@ -775,22 +746,32 @@ sizeof(MAIN_CSM),
     139
   }
 };
-void BrowseDir(char *dir)
+
+void CloseMenu(void)
 {
-  LockSched();
-  char dummy[sizeof(MAIN_CSM)];
+  if(IsTimerProc(&barTimer)){GBS_DelTimer(&barTimer);}
+  if(MAINCSM_ID){CloseCSM(MAINCSM_ID); MAINCSM_ID=0;}
   MenuActive=0;
-  DIRActive =1;
-  strcpy(path,dir);
-  GBS_SendMessage(MMI_CEPID,KEY_UP);
+  DirsActive=0;
+  auto_close=0;
   RefreshGUI();
+}
+void DirsMenu(char *dir)
+{
+  LockSched();  
+  MenuActive=0;
+  DirsActive=1;
+  strcpy(path,dir);
+  GBS_SendMessage(MMI_CEPID,KEY_UP);  
+  char dummy[sizeof(MAIN_CSM)];
   MAINCSM_ID=CreateCSM(&MAINCSM.maincsm,dummy,2);
+  RefreshGUI();
   UnlockSched();
 }
-void ShowMenu(int mode)
+void TaskMenu(int mode)
 {
   LockSched();
-  DIRActive=0;
+  DirsActive=0;
   char dummy[sizeof(MAIN_CSM)];
   InitMenu(1);
   MAINCSM_ID=CreateCSM(&MAINCSM.maincsm,dummy,2);
@@ -799,19 +780,19 @@ void ShowMenu(int mode)
 
 void DoIt(int inx) 
 { 
-  CloseMenu(); 
-  extern const int MODE_KBD;
+  CloseMenu();
   switch(APP[inx].Type){
-   case -5: ShowMenu(1);break;
-   case -4: KbdLock();break;
+   case -5: TaskMenu(1);break;
+   case -4: KbdLock(); break;
    case -3: RebootPhone();break;
    case -2: SwitchPhoneOff();break;
    case -1: OpenBCFGFile(); break;
    case  0: RunAPP(APP[inx].File); break;
    case  1: RunCUT(APP[inx].File); break;
    case  2: RunADR(APP[inx].File); break;
-   case  3: BrowseDir(APP[inx].File); break;
+   case  3: DirsMenu(APP[inx].File); break;
   }  
+   
 }
 
 #ifdef DAEMON
@@ -822,10 +803,12 @@ int my_keyhook(int key, int m)
   void *icsm=FindCSMbyID(CSM_root()->idle_id);
   if ((IsGuiOnTop(((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4]))&&IsUnlocked()&&(m==MODE_KBD+0x193))
   {
-    if (key==CALL_BTN) ShowMenu(0);
+    if (key==CALL_BTN) TaskMenu(0);
    }
   return 0;
 }
+
+#define idlegui_id(icsm) (((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])
 
 int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
 {  
@@ -837,7 +820,8 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
     {      
       ShowMSG(1,(int)"ScrTool updated!");
       InitConfig();
-      //InitMenu(0);
+      //重新加载节日文件数据
+      if(FreeFileBuf(BirBuf)) BirBuf=LoadFileBuf(BIR_FILE);  
     }
   } 
   //自定义手机启动管理
@@ -900,7 +884,7 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
    MAIN_CSM_GUI *csm=(MAIN_CSM_GUI*)data;
    if ((int)msg->data0==csm->menu_id)
     {
-      if (csm->tool_id==0)
+      if (csm->task_id==0)
          csm->csm.state=-3;
       csm->menu_id=0;
     }
@@ -916,12 +900,10 @@ static void Killer(void)
 }
 
 static void maincsm_oncreate(CSM_RAM *data)
-{
+{  
   for (int i=0;i<MAX_IDS; i++) IDS[i].ws=AllocWS(50);
   for (int i=0;i<MAX_APP; i++) APP[i].ws=AllocWS(50);
-  for (int i=0;i<MAX_BIR; i++){BIR[i].ws=AllocWS(50);BIR[i].dt=AllocWS(50);}
-  BIRS.nd=AllocWS(50);
-  BIRS.od=AllocWS(50);
+  BirBuf=LoadFileBuf(BIR_FILE);
   NongLi.year=AllocWS(50);
   NongLi.mday=AllocWS(50);
   if(INFO_ENA) GBS_SendMessage(MMI_CEPID,MSG_IPC,UPDATE_STAT,&my_ipc);
@@ -932,11 +914,9 @@ static void maincsm_onclose(CSM_RAM *csm)
   if((TextActive)&&(IsTimerProc(&txtTimer)))GBS_DelTimer(&txtTimer);
   for (int i=0;i!=MAX_IDS; i++) FreeWS(IDS[i].ws);
   for (int i=0;i!=MAX_APP; i++) FreeWS(APP[i].ws);
-  for (int i=0;i!=MAX_BIR; i++){FreeWS(BIR[i].ws);FreeWS(BIR[i].dt);}
+  FreeFileBuf(BirBuf);
   FreeWS(NongLi.year);
   FreeWS(NongLi.mday);
-  FreeWS(BIRS.nd);
-  FreeWS(BIRS.od);
   SUBPROC((void *)Killer);  
 }
 
@@ -986,33 +966,14 @@ int main()
   CSM_RAM *save_cmpc;
   char dummy[sizeof(MAIN_CSM_GUI)];
   UpdateCSMname();
-  
-  //#ifdef NEWSGOLD
-    save_cmpc=CSM_root()->csm_q->current_msg_processing_csm;
-    CSM_root()->csm_q->current_msg_processing_csm=CSM_root()->csm_q->csm.first;
-    CreateCSM(&MAINCSM_d.maincsm,dummy,0);
-    CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
-    if (MENU_ENA)
-    {      
+  save_cmpc=CSM_root()->csm_q->current_msg_processing_csm;
+  CSM_root()->csm_q->current_msg_processing_csm=CSM_root()->csm_q->csm.first;
+  CreateCSM(&MAINCSM_d.maincsm,dummy,0);
+  CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
+  if(MENU_ENA){      
       AddKeybMsgHook((void *)my_keyhook);   
       SUCCED_HOOK = 1;
-    }
-  //#else
-      //if ((!AddKeybMsgHook((void *)my_keyhook))&&(!SUCCED_HOOK)) 
-      //{
-      //  ShowMSG(1, (int) "ScrTool failed!"); 
-      //  SUBPROC((void *)Killer);
-      //}
-      //AddKeybMsgHook((void *)my_keyhook);
-      //SUCCED_HOOK = 1;
-      //else
-      //{
-      //  save_cmpc=CSM_root()->csm_q->current_msg_processing_csm;
-      //  CSM_root()->csm_q->current_msg_processing_csm=CSM_root()->csm_q->csm.first;
-      //  CreateCSM(&MAINCSM_d.maincsm,dummy,0);
-      //  CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
-      //}
-  //#endif   
+  }
 #else 
   char dummy[sizeof(MAIN_CSM)];
   UpdateCSMname();

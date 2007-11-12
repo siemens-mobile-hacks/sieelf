@@ -10,7 +10,7 @@ const char *successed_config_filename="";
 int LoadConfigData(const char *fname)
 {
   int f;
-  unsigned int ul;
+  uint ul;
   char *buf;
   int result=0;
   void *cfg;
@@ -18,7 +18,7 @@ int LoadConfigData(const char *fname)
   extern const CFG_HDR cfghdr0; //first var in CONFIG
   cfg=(void*)&cfghdr0;
 
-  unsigned int len=(int)__segment_end("CONFIG_C")-(int)__segment_begin("CONFIG_C");
+  uint len=(int)__segment_end("CONFIG_C")-(int)__segment_begin("CONFIG_C");
 
   if (!(buf=malloc(len))) return -1;
   if ((f=fopen(fname,A_ReadOnly+A_BIN,P_READ,&ul))!=-1)

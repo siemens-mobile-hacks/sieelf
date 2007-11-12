@@ -2,53 +2,77 @@
 
 <project>
   <fileVersion>2</fileVersion>
-  <fileChecksum>3945189224</fileChecksum>
+  <fileChecksum>41690915</fileChecksum>
   <configuration>
     <name>Release</name>
     <outputs>
-      <file>$TOOLKIT_DIR$\inc\rsa.h</file>
-      <file>$TOOLKIT_DIR$\inc\pngconf.h</file>
-      <file>$PROJ_DIR$\Release\Obj\scrtool.pbd</file>
-      <file>$TOOLKIT_DIR$\inc\crypto.h</file>
-      <file>$PROJ_DIR$\Release\Obj\config_data.pbi</file>
-      <file>$PROJ_DIR$\Release\Obj\conf_loader.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\bn.h</file>
-      <file>$TOOLKIT_DIR$\inc\swilib.h</file>
-      <file>$TOOLKIT_DIR$\inc\zconf.h</file>
-      <file>$PROJ_DIR$\Release\Obj\func.r79</file>
-      <file>$PROJ_DIR$\Release\Exe\scrtool.elf</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.h</file>
-      <file>$TOOLKIT_DIR$\inc\DLib_Defaults.h</file>
-      <file>$TOOLKIT_DIR$\inc\zlib.h</file>
-      <file>$TOOLKIT_DIR$\inc\yvals.h</file>
-      <file>$PROJ_DIR$\Release\Obj\config_data.r79</file>
-      <file>$PROJ_DIR$\conf_loader.c</file>
-      <file>$PROJ_DIR$\config_data.c</file>
-      <file>$PROJ_DIR$\func.asm</file>
-      <file>$PROJ_DIR$\main.c</file>
-      <file>$PROJ_DIR$\scrtool.h</file>
-      <file>$PROJ_DIR$\Release\Obj\main.r79</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
-      <file>$TOOLKIT_DIR$\inc\cfg_items.h</file>
-      <file>$PROJ_DIR$\test.xcl</file>
-      <file>$TOOLKIT_DIR$\inc\sha.h</file>
-      <file>$TOOLKIT_DIR$\inc\xencoding_limits.h</file>
-      <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\sieapi.h</file>
-      <file>$TOOLKIT_DIR$\inc\DLib_Threads.h</file>
+      <file>$PROJ_DIR$\Output\scrtool.elf</file>
       <file>$TOOLKIT_DIR$\inc\DLib_Product.h</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$TOOLKIT_DIR$\inc\swilib.h</file>
+      <file>$TOOLKIT_DIR$\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\xencoding_limits.h</file>
       <file>$PROJ_DIR$\Release\List\scrtool.map</file>
-      <file>$PROJ_DIR$\Release\Obj\conf_loader.r79</file>
-      <file>$PROJ_DIR$\conf_loader.h</file>
-      <file>$TOOLKIT_DIR$\inc\ysizet.h</file>
+      <file>$PROJ_DIR$\Release\Obj\scrtool.pbd</file>
+      <file>$PROJ_DIR$\scrtool.h</file>
+      <file>$PROJ_DIR$\Release\Obj\func.r79</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Threads.h</file>
+      <file>$PROJ_DIR$\test.xcl</file>
       <file>$TOOLKIT_DIR$\inc\png.h</file>
+      <file>$TOOLKIT_DIR$\inc\sieapi.h</file>
+      <file>$TOOLKIT_DIR$\inc\yvals.h</file>
+      <file>$TOOLKIT_DIR$\inc\pngconf.h</file>
+      <file>$TOOLKIT_DIR$\inc\ysizet.h</file>
+      <file>$PROJ_DIR$\Release\Obj\config_data.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\rsa.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
+      <file>$PROJ_DIR$\func.asm</file>
+      <file>$TOOLKIT_DIR$\inc\bn.h</file>
+      <file>$TOOLKIT_DIR$\inc\zconf.h</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$PROJ_DIR$\Release\Obj\config_data.r79</file>
+      <file>$TOOLKIT_DIR$\inc\zlib.h</file>
+      <file>$PROJ_DIR$\Release\Obj\conf_loader.r79</file>
+      <file>$TOOLKIT_DIR$\inc\sha.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.h</file>
+      <file>$PROJ_DIR$\Release\Obj\main.r79</file>
+      <file>$TOOLKIT_DIR$\inc\crypto.h</file>
+      <file>$PROJ_DIR$\Release\Exe\scrtool.elf</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Defaults.h</file>
+      <file>$PROJ_DIR$\Release\Obj\conf_loader.pbi</file>
     </outputs>
+    <file>
+      <name>$PROJ_DIR$\config_data.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 26</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 19</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 3 14 27 24 17 20 23 32 29 4 15 18 16 35 30 1 6 12 9</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 3 14 27 24 17 20 23 32 29 4 15 18 16 35 1 6 12 9</file>
+        </tool>
+      </inputs>
+    </file>
     <file>
       <name>[ROOT_NODE]</name>
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 31 10</file>
+          <file> 7 33 0</file>
         </tool>
       </outputs>
     </file>
@@ -57,31 +81,16 @@
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 5 4 27</file>
+          <file> 36 19 5</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\Release\Exe\scrtool.elf</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 31</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 24 32 15 9 21 22</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\conf_loader.c</name>
+      <name>$PROJ_DIR$\main.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 32</file>
+          <file> 31</file>
         </tool>
         <tool>
           <name>BICOMP</name>
@@ -91,34 +100,11 @@
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 7 35 13 8 1 0 6 3 25 23 28 34 14 12 11 30 26 29 33 20</file>
+          <file> 3 14 27 24 17 20 23 32 29 4 15 18 16 35 30 1 6 12 9 34</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 7 35 13 8 1 0 6 3 25 23 28 34 14 12 30 26 29 33 20</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\config_data.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 15</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 4</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 7 35 13 8 1 0 6 3 25 23 28 34 14 12 11 30 26 29 20</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 7 35 13 8 1 0 6 3 25 23 28 34 14 12 30 26 29 20</file>
+          <file> 3 14 27 24 17 20 23 32 29 4 15 18 16 35 1 6 12 9 34</file>
         </tool>
       </inputs>
     </file>
@@ -127,30 +113,45 @@
       <outputs>
         <tool>
           <name>AARM</name>
-          <file> 9</file>
+          <file> 10</file>
         </tool>
       </outputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\main.c</name>
+      <name>$PROJ_DIR$\conf_loader.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 21</file>
+          <file> 28</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 27</file>
+          <file> 36</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 7 35 13 8 1 0 6 3 25 23 28 34 14 12 11 30 26 29 20 33</file>
+          <file> 3 14 27 24 17 20 23 32 29 4 15 18 16 35 30 1 6 12 34 9</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 7 35 13 8 1 0 6 3 25 23 28 34 14 12 30 26 29 20 33</file>
+          <file> 3 14 27 24 17 20 23 32 29 4 15 18 16 35 1 6 12 34 9</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release\Exe\scrtool.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 7</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 13 28 26 10 31 21</file>
         </tool>
       </inputs>
     </file>
@@ -161,72 +162,50 @@
   <configuration>
     <name>Release_ELKA</name>
     <outputs>
-      <file>$TOOLKIT_DIR$\inc\rsa.h</file>
-      <file>$TOOLKIT_DIR$\inc\pngconf.h</file>
-      <file>$TOOLKIT_DIR$\inc\crypto.h</file>
-      <file>$TOOLKIT_DIR$\inc\bn.h</file>
-      <file>$TOOLKIT_DIR$\inc\swilib.h</file>
-      <file>$TOOLKIT_DIR$\inc\zconf.h</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\func.r79</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.h</file>
-      <file>$TOOLKIT_DIR$\inc\DLib_Defaults.h</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\conf_loader.r79</file>
-      <file>$TOOLKIT_DIR$\inc\zlib.h</file>
-      <file>$TOOLKIT_DIR$\inc\yvals.h</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\config_data.r79</file>
+      <file>$PROJ_DIR$\Output\scrtool.elf</file>
+      <file>$PROJ_DIR$\Release_ELKA\List\scrtool_klka.map</file>
       <file>$PROJ_DIR$\Release_ELKA\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\main.r79</file>
-      <file>$PROJ_DIR$\conf_loader.c</file>
-      <file>$PROJ_DIR$\config_data.c</file>
-      <file>$PROJ_DIR$\func.asm</file>
-      <file>$PROJ_DIR$\main.c</file>
-      <file>$PROJ_DIR$\scrtool.h</file>
-      <file>$PROJ_DIR$\Release_ELKA\List\scrtool.map</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\config_data.pbi</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\conf_loader.pbi</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
-      <file>$TOOLKIT_DIR$\inc\cfg_items.h</file>
-      <file>$PROJ_DIR$\test.xcl</file>
-      <file>$TOOLKIT_DIR$\inc\sha.h</file>
-      <file>$TOOLKIT_DIR$\inc\xencoding_limits.h</file>
-      <file>$TOOLKIT_DIR$\inc\sieapi.h</file>
-      <file>$TOOLKIT_DIR$\inc\DLib_Threads.h</file>
-      <file>$PROJ_DIR$\Release_ELKA\Exe\scrtool.elf</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\ScrTool.pbd</file>
       <file>$TOOLKIT_DIR$\inc\DLib_Product.h</file>
-      <file>$PROJ_DIR$\conf_loader.h</file>
-      <file>$TOOLKIT_DIR$\inc\ysizet.h</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\config_data.pbi</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\config_data.r79</file>
+      <file>$TOOLKIT_DIR$\inc\swilib.h</file>
+      <file>$TOOLKIT_DIR$\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\conf_loader.r79</file>
+      <file>$TOOLKIT_DIR$\inc\xencoding_limits.h</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\main.r79</file>
+      <file>$PROJ_DIR$\scrtool.h</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\func.r79</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Threads.h</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\ScrTool.pbd</file>
+      <file>$PROJ_DIR$\test.xcl</file>
       <file>$TOOLKIT_DIR$\inc\png.h</file>
+      <file>$TOOLKIT_DIR$\inc\sieapi.h</file>
+      <file>$TOOLKIT_DIR$\inc\yvals.h</file>
+      <file>$TOOLKIT_DIR$\inc\pngconf.h</file>
+      <file>$TOOLKIT_DIR$\inc\ysizet.h</file>
+      <file>$TOOLKIT_DIR$\inc\rsa.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
+      <file>$PROJ_DIR$\Output\scrtool_klka.elf</file>
+      <file>$PROJ_DIR$\func.asm</file>
+      <file>$TOOLKIT_DIR$\inc\bn.h</file>
+      <file>$TOOLKIT_DIR$\inc\zconf.h</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$TOOLKIT_DIR$\inc\zlib.h</file>
+      <file>$TOOLKIT_DIR$\inc\sha.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.h</file>
+      <file>$TOOLKIT_DIR$\inc\crypto.h</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\conf_loader.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Defaults.h</file>
     </outputs>
     <file>
-      <name>[ROOT_NODE]</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 30 20</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\conf_loader.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 9</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 22</file>
-        </tool>
-      </outputs>
+      <name>$PROJ_DIR$\Output\scrtool.elf</name>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 4 35 10 5 1 0 3 2 26 24 28 34 11 8 7 32 27 29 33 19</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 4 35 10 5 1 0 3 2 26 24 28 34 11 8 32 27 29 33 19</file>
+          <name>XLINK</name>
+          <file> 17 9 6 14 11 24</file>
         </tool>
       </inputs>
     </file>
@@ -235,208 +214,30 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 12</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 21</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 4 35 10 5 1 0 3 2 26 24 28 34 11 8 7 32 27 29 19</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 4 35 10 5 1 0 3 2 26 24 28 34 11 8 32 27 29 19</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\func.asm</name>
-      <outputs>
-        <tool>
-          <name>AARM</name>
           <file> 6</file>
         </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\main.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 14</file>
-        </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 13</file>
+          <file> 4</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 4 35 10 5 1 0 3 2 26 24 28 34 11 8 7 32 27 29 19 33</file>
+          <file> 7 18 30 28 21 23 27 33 31 8 19 22 20 36 32 3 10 15 12</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 4 35 10 5 1 0 3 2 26 24 28 34 11 8 32 27 29 19 33</file>
+          <file> 7 18 30 28 21 23 27 33 31 8 19 22 20 36 3 10 15 12</file>
         </tool>
       </inputs>
     </file>
-    <file>
-      <name>$PROJ_DIR$\Release_ELKA\Exe\scrtool.elf</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 20</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 25 9 12 6 14 23</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release_ELKA\Obj\ScrTool.pbd</name>
-      <inputs>
-        <tool>
-          <name>BILINK</name>
-          <file> 22 21 13</file>
-        </tool>
-      </inputs>
-    </file>
-  </configuration>
-  <configuration>
-    <name>Release_NEWSGOLD</name>
-    <outputs>
-      <file>$TOOLKIT_DIR$\inc\rsa.h</file>
-      <file>$TOOLKIT_DIR$\inc\pngconf.h</file>
-      <file>$TOOLKIT_DIR$\inc\crypto.h</file>
-      <file>$TOOLKIT_DIR$\inc\bn.h</file>
-      <file>$TOOLKIT_DIR$\inc\swilib.h</file>
-      <file>$TOOLKIT_DIR$\inc\zconf.h</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.h</file>
-      <file>$TOOLKIT_DIR$\inc\DLib_Defaults.h</file>
-      <file>$TOOLKIT_DIR$\inc\zlib.h</file>
-      <file>$TOOLKIT_DIR$\inc\yvals.h</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\List\scrtool_newsgold.map</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\main.r79</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Exe\TurnOff_gui_NSG.elf</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\conf_loader.pbi</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\config_data.pbi</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\config_data.r79</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Exe\scrtool_newsgold.elf</file>
-      <file>$PROJ_DIR$\conf_loader.c</file>
-      <file>$PROJ_DIR$\config_data.c</file>
-      <file>$PROJ_DIR$\func.asm</file>
-      <file>$PROJ_DIR$\main.c</file>
-      <file>$PROJ_DIR$\scrtool.h</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\func.r79</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\conf_loader.r79</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\main.pbi</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
-      <file>$TOOLKIT_DIR$\inc\cfg_items.h</file>
-      <file>$PROJ_DIR$\test.xcl</file>
-      <file>$TOOLKIT_DIR$\inc\sha.h</file>
-      <file>$TOOLKIT_DIR$\inc\xencoding_limits.h</file>
-      <file>$TOOLKIT_DIR$\inc\sieapi.h</file>
-      <file>$TOOLKIT_DIR$\inc\DLib_Threads.h</file>
-      <file>$TOOLKIT_DIR$\inc\DLib_Product.h</file>
-      <file>$PROJ_DIR$\conf_loader.h</file>
-      <file>$TOOLKIT_DIR$\inc\ysizet.h</file>
-      <file>$TOOLKIT_DIR$\inc\png.h</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Exe\scrtool.elf</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\ScrTool.pbd</file>
-    </outputs>
     <file>
       <name>[ROOT_NODE]</name>
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 10 16</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release_NEWSGOLD\Exe\TurnOff_gui_NSG.elf</name>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 27 23 15 22 11 25</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release_NEWSGOLD\Exe\scrtool_newsgold.elf</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 10</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 27 23 15 22 11 25</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\conf_loader.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 23</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 13</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 4 35 8 5 1 0 3 2 28 26 30 34 9 7 6 32 29 31 33 21</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 4 35 8 5 1 0 3 2 28 26 30 34 9 7 32 29 31 33 21</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\config_data.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 15</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 14</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 4 35 8 5 1 0 3 2 28 26 30 34 9 7 6 32 29 31 21</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 4 35 8 5 1 0 3 2 28 26 30 34 9 7 32 29 31 21</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\func.asm</name>
-      <outputs>
-        <tool>
-          <name>AARM</name>
-          <file> 22</file>
+          <file> 25 1</file>
         </tool>
       </outputs>
     </file>
@@ -449,17 +250,205 @@
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 24</file>
+          <file> 2</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 4 35 8 5 1 0 3 2 28 26 30 34 9 7 6 32 29 31 21 33</file>
+          <file> 7 18 30 28 21 23 27 33 31 8 19 22 20 36 32 3 10 15 12 34</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 4 35 8 5 1 0 3 2 28 26 30 34 9 7 32 29 31 21 33</file>
+          <file> 7 18 30 28 21 23 27 33 31 8 19 22 20 36 3 10 15 12 34</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_ELKA\Obj\ScrTool.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 35 4 2</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Output\scrtool_klka.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 1</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 17 9 6 14 11 24</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\func.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 14</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 9</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 35</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 7 18 30 28 21 23 27 33 31 8 19 22 20 36 32 3 10 15 34 12</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 7 18 30 28 21 23 27 33 31 8 19 22 20 36 3 10 15 34 12</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>Release_NEWSGOLD</name>
+    <outputs>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Exe\TurnOff_gui_NSG.elf</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\List\scrtool_newsgold.map</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Product.h</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\config_data.r79</file>
+      <file>$TOOLKIT_DIR$\inc\swilib.h</file>
+      <file>$TOOLKIT_DIR$\inc\cfg_items.h</file>
+      <file>$TOOLKIT_DIR$\inc\xencoding_limits.h</file>
+      <file>$PROJ_DIR$\Output\scrtool_newsgold.elf</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Exe\scrtool_newsgold.elf</file>
+      <file>$PROJ_DIR$\scrtool.h</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Threads.h</file>
+      <file>$PROJ_DIR$\test.xcl</file>
+      <file>$TOOLKIT_DIR$\inc\png.h</file>
+      <file>$TOOLKIT_DIR$\inc\sieapi.h</file>
+      <file>$TOOLKIT_DIR$\inc\yvals.h</file>
+      <file>$TOOLKIT_DIR$\inc\pngconf.h</file>
+      <file>$TOOLKIT_DIR$\inc\ysizet.h</file>
+      <file>$TOOLKIT_DIR$\inc\rsa.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Exe\scrtool.elf</file>
+      <file>$PROJ_DIR$\func.asm</file>
+      <file>$TOOLKIT_DIR$\inc\bn.h</file>
+      <file>$TOOLKIT_DIR$\inc\zconf.h</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$TOOLKIT_DIR$\inc\zlib.h</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\conf_loader.r79</file>
+      <file>$TOOLKIT_DIR$\inc\sha.h</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\func.r79</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.h</file>
+      <file>$TOOLKIT_DIR$\inc\crypto.h</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\config_data.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Defaults.h</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\ScrTool.pbd</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\main.r79</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\Release_NEWSGOLD\Exe\TurnOff_gui_NSG.elf</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 13 27 4 29 38 20</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config_data.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 34</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 5 14 26 24 17 19 23 31 28 6 15 18 16 35 30 2 7 12 10</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5 14 26 24 17 19 23 31 28 6 15 18 16 35 2 7 12 10</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 8 1</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Output\scrtool_newsgold.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 1</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 13 27 4 29 38 20</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_NEWSGOLD\Exe\scrtool_newsgold.elf</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 13 27 4 29 38 20</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 38</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 37</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 5 14 26 24 17 19 23 31 28 6 15 18 16 35 30 2 7 12 10 33</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5 14 26 24 17 19 23 31 28 6 15 18 16 35 2 7 12 10 33</file>
         </tool>
       </inputs>
     </file>
@@ -468,7 +457,39 @@
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 27 23 15 22 11 25</file>
+          <file> 13 27 4 29 38 20</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\func.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 29</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 27</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 32</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 5 14 26 24 17 19 23 31 28 6 15 18 16 35 30 2 7 12 33 10</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5 14 26 24 17 19 23 31 28 6 15 18 16 35 2 7 12 33 10</file>
         </tool>
       </inputs>
     </file>
@@ -477,7 +498,7 @@
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 13 14 24</file>
+          <file> 32 34 37</file>
         </tool>
       </inputs>
     </file>
@@ -488,69 +509,57 @@
   <configuration>
     <name>Release_SGOLD</name>
     <outputs>
-      <file>$TOOLKIT_DIR$\inc\rsa.h</file>
-      <file>$TOOLKIT_DIR$\inc\pngconf.h</file>
-      <file>$PROJ_DIR$\Release_SGOLD\Obj\conf_loader.r79</file>
-      <file>$TOOLKIT_DIR$\inc\crypto.h</file>
-      <file>$TOOLKIT_DIR$\inc\bn.h</file>
-      <file>$TOOLKIT_DIR$\inc\swilib.h</file>
-      <file>$TOOLKIT_DIR$\inc\zconf.h</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.h</file>
-      <file>$TOOLKIT_DIR$\inc\DLib_Defaults.h</file>
-      <file>$TOOLKIT_DIR$\inc\zlib.h</file>
-      <file>$TOOLKIT_DIR$\inc\yvals.h</file>
-      <file>$PROJ_DIR$\conf_loader.c</file>
-      <file>$PROJ_DIR$\config_data.c</file>
-      <file>$PROJ_DIR$\func.asm</file>
-      <file>$PROJ_DIR$\main.c</file>
-      <file>$PROJ_DIR$\scrtool.h</file>
-      <file>$PROJ_DIR$\Release_SGOLD\Obj\ScrTool.pbd</file>
-      <file>$PROJ_DIR$\Release_SGOLD\Obj\conf_loader.pbi</file>
       <file>$PROJ_DIR$\Release_SGOLD\Obj\config_data.r79</file>
-      <file>$PROJ_DIR$\Release_SGOLD\Obj\main.r79</file>
-      <file>$PROJ_DIR$\Release_SGOLD\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\Release_SGOLD\Obj\config_data.pbi</file>
-      <file>$PROJ_DIR$\Release_SGOLD\List\scrtool_sgold.map</file>
       <file>$PROJ_DIR$\Release_SGOLD\Obj\func.r79</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
-      <file>$TOOLKIT_DIR$\inc\cfg_items.h</file>
-      <file>$PROJ_DIR$\test.xcl</file>
-      <file>$TOOLKIT_DIR$\inc\sha.h</file>
-      <file>$TOOLKIT_DIR$\inc\xencoding_limits.h</file>
-      <file>$TOOLKIT_DIR$\inc\sieapi.h</file>
-      <file>$TOOLKIT_DIR$\inc\DLib_Threads.h</file>
+      <file>$PROJ_DIR$\Output\scrtool_sgold.elf</file>
       <file>$TOOLKIT_DIR$\inc\DLib_Product.h</file>
-      <file>$PROJ_DIR$\conf_loader.h</file>
-      <file>$TOOLKIT_DIR$\inc\ysizet.h</file>
-      <file>$TOOLKIT_DIR$\inc\png.h</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$TOOLKIT_DIR$\inc\swilib.h</file>
       <file>$PROJ_DIR$\Release_SGOLD\Exe\scrtool_sgold.elf</file>
+      <file>$TOOLKIT_DIR$\inc\cfg_items.h</file>
+      <file>$TOOLKIT_DIR$\inc\xencoding_limits.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\List\scrtool_sgold.map</file>
+      <file>$PROJ_DIR$\scrtool.h</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Threads.h</file>
+      <file>$PROJ_DIR$\test.xcl</file>
+      <file>$TOOLKIT_DIR$\inc\png.h</file>
+      <file>$TOOLKIT_DIR$\inc\sieapi.h</file>
+      <file>$TOOLKIT_DIR$\inc\yvals.h</file>
+      <file>$TOOLKIT_DIR$\inc\pngconf.h</file>
+      <file>$TOOLKIT_DIR$\inc\ysizet.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\main.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\rsa.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
+      <file>$PROJ_DIR$\func.asm</file>
+      <file>$TOOLKIT_DIR$\inc\bn.h</file>
+      <file>$TOOLKIT_DIR$\inc\zconf.h</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$TOOLKIT_DIR$\inc\zlib.h</file>
+      <file>$TOOLKIT_DIR$\inc\sha.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\config_data.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\crypto.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\conf_loader.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Defaults.h</file>
       <file>$PROJ_DIR$\Release_SGOLD\Exe\scrtool.elf</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\ScrTool.pbd</file>
     </outputs>
     <file>
-      <name>[ROOT_NODE]</name>
+      <name>$PROJ_DIR$\Output\scrtool_sgold.elf</name>
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 35 22</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\conf_loader.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 2</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 17</file>
+          <file> 9</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 5 34 9 6 1 0 4 3 27 25 29 33 10 8 7 31 28 30 32 15</file>
+          <name>XLINK</name>
+          <file> 13 31 0 1 33 21</file>
         </tool>
       </inputs>
     </file>
@@ -559,21 +568,62 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 18</file>
+          <file> 0</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 21</file>
+          <file> 29</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 5 34 9 6 1 0 4 3 27 25 29 33 10 8 7 31 28 30 15</file>
+          <file> 5 14 26 24 17 20 23 30 27 7 15 18 16 35 28 3 8 12 10</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 5 34 9 6 1 0 4 3 27 25 29 33 10 8 31 28 30 15</file>
+          <file> 5 14 26 24 17 20 23 30 27 7 15 18 16 35 3 8 12 10</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 2 9</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_SGOLD\Exe\scrtool_sgold.elf</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 13 31 0 1 33 21</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 33</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 19</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 5 14 26 24 17 20 23 30 27 7 15 18 16 35 28 3 8 12 10 32</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5 14 26 24 17 20 23 30 27 7 15 18 16 35 3 8 12 10 32</file>
         </tool>
       </inputs>
     </file>
@@ -582,54 +632,30 @@
       <outputs>
         <tool>
           <name>AARM</name>
-          <file> 23</file>
+          <file> 1</file>
         </tool>
       </outputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\main.c</name>
+      <name>$PROJ_DIR$\conf_loader.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 19</file>
+          <file> 31</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 20</file>
+          <file> 34</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 5 34 9 6 1 0 4 3 27 25 29 33 10 8 7 31 28 30 15 32</file>
+          <file> 5 14 26 24 17 20 23 30 27 7 15 18 16 35 28 3 8 12 32 10</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 5 34 9 6 1 0 4 3 27 25 29 33 10 8 31 28 30 15 32</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release_SGOLD\Obj\ScrTool.pbd</name>
-      <inputs>
-        <tool>
-          <name>BILINK</name>
-          <file> 17 21 20</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release_SGOLD\Exe\scrtool_sgold.elf</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 22</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 26 2 18 23 19 24</file>
+          <file> 5 14 26 24 17 20 23 30 27 7 15 18 16 35 3 8 12 32 10</file>
         </tool>
       </inputs>
     </file>
@@ -638,178 +664,19 @@
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 26 2 18 23 19 24</file>
-        </tool>
-      </inputs>
-    </file>
-    <forcedrebuild>
-      <name>[REBUILD_ALL]</name>
-    </forcedrebuild>
-  </configuration>
-  <configuration>
-    <name>Release_X75</name>
-    <outputs>
-      <file>$TOOLKIT_DIR$\inc\rsa.h</file>
-      <file>$TOOLKIT_DIR$\inc\pngconf.h</file>
-      <file>$PROJ_DIR$\Release_X75\Exe\scrtool.elf</file>
-      <file>$PROJ_DIR$\Release_X75\Obj\main.r79</file>
-      <file>$TOOLKIT_DIR$\inc\crypto.h</file>
-      <file>$TOOLKIT_DIR$\inc\bn.h</file>
-      <file>$TOOLKIT_DIR$\inc\swilib.h</file>
-      <file>$TOOLKIT_DIR$\inc\zconf.h</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.h</file>
-      <file>$TOOLKIT_DIR$\inc\DLib_Defaults.h</file>
-      <file>$TOOLKIT_DIR$\inc\zlib.h</file>
-      <file>$TOOLKIT_DIR$\inc\yvals.h</file>
-      <file>$PROJ_DIR$\Release_X75\Exe\scrtool_x75.elf</file>
-      <file>$PROJ_DIR$\Release_X75\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\Release_X75\List\scrtool_x75.map</file>
-      <file>$PROJ_DIR$\conf_loader.c</file>
-      <file>$PROJ_DIR$\config_data.c</file>
-      <file>$PROJ_DIR$\func.asm</file>
-      <file>$PROJ_DIR$\main.c</file>
-      <file>$PROJ_DIR$\scrtool.h</file>
-      <file>$PROJ_DIR$\Release_X75\Obj\config_data.r79</file>
-      <file>$PROJ_DIR$\Release_X75\Obj\conf_loader.r79</file>
-      <file>$PROJ_DIR$\Release_X75\Obj\ScrTool.pbd</file>
-      <file>$PROJ_DIR$\Release_X75\Obj\config_data.pbi</file>
-      <file>$PROJ_DIR$\Release_X75\Obj\conf_loader.pbi</file>
-      <file>$PROJ_DIR$\Release_X75\Obj\func.r79</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
-      <file>$TOOLKIT_DIR$\inc\cfg_items.h</file>
-      <file>$PROJ_DIR$\test.xcl</file>
-      <file>$TOOLKIT_DIR$\inc\sha.h</file>
-      <file>$TOOLKIT_DIR$\inc\xencoding_limits.h</file>
-      <file>$TOOLKIT_DIR$\inc\sieapi.h</file>
-      <file>$TOOLKIT_DIR$\inc\DLib_Threads.h</file>
-      <file>$TOOLKIT_DIR$\inc\DLib_Product.h</file>
-      <file>$PROJ_DIR$\conf_loader.h</file>
-      <file>$TOOLKIT_DIR$\inc\ysizet.h</file>
-      <file>$TOOLKIT_DIR$\inc\png.h</file>
-    </outputs>
-    <file>
-      <name>[ROOT_NODE]</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 14 12</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release_X75\Exe\scrtool.elf</name>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 28 21 20 25 3 26</file>
+          <file> 13 31 0 1 33 21</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\Release_X75\Exe\scrtool_x75.elf</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 14</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 28 21 20 25 3 26</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\conf_loader.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 21</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 24</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 6 36 10 7 1 0 5 4 29 27 31 35 11 9 8 33 30 32 34 19</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 6 36 10 7 1 0 5 4 29 27 31 35 11 9 33 30 32 34 19</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\config_data.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 20</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 23</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 6 36 10 7 1 0 5 4 29 27 31 35 11 9 8 33 30 32 19</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 6 36 10 7 1 0 5 4 29 27 31 35 11 9 33 30 32 19</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\func.asm</name>
-      <outputs>
-        <tool>
-          <name>AARM</name>
-          <file> 25</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\main.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 3</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 13</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 6 36 10 7 1 0 5 4 29 27 31 35 11 9 8 33 30 32 19 34</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 6 36 10 7 1 0 5 4 29 27 31 35 11 9 33 30 32 19 34</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release_X75\Obj\ScrTool.pbd</name>
+      <name>$PROJ_DIR$\Release_SGOLD\Obj\ScrTool.pbd</name>
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 24 23 13</file>
+          <file> 34 29 19</file>
         </tool>
       </inputs>
     </file>
-    <forcedrebuild>
-      <name>[REBUILD_ALL]</name>
-    </forcedrebuild>
   </configuration>
 </project>
 

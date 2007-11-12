@@ -1,26 +1,19 @@
 #ifndef _SCRTOOL_H_
  #define _SCRTOOL_H_ 
- #include <sieapi.h>
- #ifdef NEWSGOLD
-  #define DEFAULT_DISK "4"
- #else
-  #define DEFAULT_DISK "0"
- #endif 
+ #include <sieapi.h> 
  #define DAEMON  
  #define SCRTOOL_NAME "ScrTool"
  #define UPDATE_STAT 1
  #define TMR_SECOND 216
- #define MAX_IDS 14
+ #define MAX_IDS 15
  #define MAX_APP 14
  #define MAX_BIR 8
  #define LEN 32
- #define FontStyle "00","01","02","03","04","05","06","07","08","09","10","11"
  #define NoName "\xE7\xA9\xBA\xE7\x99\xBD"
  #define ExcuteType "File", "Shortcut", "Address", "Path"
  #define ExcuteLen 4
  #define DateFmt "YYYY/MM/DD","YYYY-MM-DD","YYYY.MM.DD","YYYY MM DD","MM/DD","MM-DD","MM.DD","MM DD","年月日","月日"
  #define TimeFmt "13:00","PM 01:00","01:00","13:00:00","PM 01:00:00","03D00F","03D00F00M"
- #define DateStyle "NewStyle", "OldStyle"
  
  #ifdef DAEMON
  typedef struct{
@@ -30,7 +23,7 @@
  
  typedef struct{
   CSM_RAM csm;
-  int tool_id; 
+  int task_id; 
   int menu_id;
  }MAIN_CSM_GUI;
 
@@ -51,21 +44,9 @@
   int    Type;
  }TAPP;
  
- typedef struct{
-  WSHDR *dt;
-  WSHDR *ws;
-  int Type;
- }TBIR;
- 
- typedef struct{
-  WSHDR *nd;
-  WSHDR *od;
- }TBIRS; 
- 
-
- extern const int MENU_ENA;
- extern const int INFO_ENA;
- extern const int SHOW_EXT;
+ extern const int  MENU_ENA;
+ extern const int  INFO_ENA;
+ extern const int  SHOW_EXT;
  extern const uint EXIT_BTN;
 #ifdef DAEMON
  extern const uint CALL_BTN;
@@ -131,41 +112,21 @@
  extern const char AF12[64];
  extern const char AF13[64];
 //定义生日显示
- extern const int BIR_ENA;
- extern const uint BIR_X;
- extern const uint BIR_Y;
- extern const char BIR_COLORS[4];
- extern const char BIR_FCOLOR[4];
- extern const uint BIR_FONT;
- //显示标题
- extern const char BIRS01[LEN];
- extern const char BIRS02[LEN];
- extern const char BIRS03[LEN];
- extern const char BIRS04[LEN];
- extern const char BIRS05[LEN];
- extern const char BIRS06[LEN];
- extern const char BIRS07[LEN];
- extern const char BIRS08[LEN];
- //控制日期
- extern const char BIRD01[16];
- extern const char BIRD02[16];
- extern const char BIRD03[16];
- extern const char BIRD04[16];
- extern const char BIRD05[16];
- extern const char BIRD06[16];
- extern const char BIRD07[16];
- extern const char BIRD08[16];
- //控制日期
- extern const int BIRT01;
- extern const int BIRT02;
- extern const int BIRT03;
- extern const int BIRT04;
- extern const int BIRT05;
- extern const int BIRT06;
- extern const int BIRT07;
- extern const int BIRT08;
+ extern const int  NBIR_ENA;
+ extern const uint NBIR_X;
+ extern const uint NBIR_Y;
+ extern const char NBIR_COLORS[4];
+ extern const char NBIR_FCOLOR[4];
+ extern const uint NBIR_FONT; 
+ extern const int  OBIR_ENA;
+ extern const uint OBIR_X;
+ extern const uint OBIR_Y;
+ extern const char OBIR_COLORS[4];
+ extern const char OBIR_FCOLOR[4];
+ extern const uint OBIR_FONT;
+ extern const char BIR_FILE[64];
 //显示文本
- extern const int TEXT_ENA;
+ extern const int  TEXT_ENA;
  extern const uint TEXT_X;
  extern const uint TEXT_Y;
  extern const char TEXT_COLORS[];
@@ -173,7 +134,7 @@
  extern const uint TEXT_FONT;
  extern const char TEXT_FMT[LEN];
 //显示温度
- extern const int TEMP_ENA;
+ extern const int  TEMP_ENA;
  extern const uint TEMP_X;
  extern const uint TEMP_Y;
  extern const char TEMP_COLORS[];
@@ -181,7 +142,7 @@
  extern const uint TEMP_FONT;
  extern const char TEMP_FMT[16];
 //显示电压
- extern const int VOLT_ENA;
+ extern const int  VOLT_ENA;
  extern const uint VOLT_X;
  extern const uint VOLT_Y;
  extern const char VOLT_COLORS[];
@@ -189,7 +150,7 @@
  extern const uint VOLT_FONT;
  extern const char VOLT_FMT[16];
 //显示内存
- extern const int RAM_ENA;
+ extern const int  RAM_ENA;
  extern const uint RAM_X;
  extern const uint RAM_Y;
  extern const char RAM_COLORS[];
@@ -200,45 +161,45 @@
  extern const char BYTES_SG[8];
  extern const char KBYTES_SG[8];
 //显示星期
- extern const int WEEK_ENA;
+ extern const int  WEEK_ENA;
  extern const uint WEEK_X;
  extern const uint WEEK_Y;
  extern const char WEEK_COLORS[];
  extern const char WEEK_FCOLOR[];
  extern const uint WEEK_FONT;
- extern const int WEEK_FMT;
+ extern const int  WEEK_FMT;
 //显示日期
- extern const int DATE_ENA;
+ extern const int  DATE_ENA;
  extern const uint DATE_X;
  extern const uint DATE_Y;
  extern const char DATE_COLORS[];
  extern const char DATE_FCOLOR[];
  extern const uint DATE_FONT;
- extern const int DATE_FMT;
+ extern const int  DATE_FMT;
 //显示时间
- extern const int TIME_ENA;
+ extern const int  TIME_ENA;
  extern const uint TIME_X;
  extern const uint TIME_Y;
  extern const char TIME_COLORS[];
  extern const char TIME_FCOLOR[];
  extern const uint TIME_FONT;
- extern const int TIME_FMT;
+ extern const int  TIME_FMT;
 //显示农历年
- extern const int NongLiNian_ENA;
- extern const uint NongLiNian_X;
- extern const uint NongLiNian_Y;
- extern const char NongLiNian_COLORS[];
- extern const char NongLiNian_FCOLOR[];
- extern const uint NongLiNian_FONT;
+ extern const int  CHSYear_ENA;
+ extern const uint CHSYear_X;
+ extern const uint CHSYear_Y;
+ extern const char CHSYear_COLORS[];
+ extern const char CHSYear_FCOLOR[];
+ extern const uint CHSYear_FONT;
 //显示农历月日
- extern const int NongLiDATE_ENA;
- extern const uint NongLiDATE_X;
- extern const uint NongLiDATE_Y;
- extern const char NongLiDATE_COLORS[];
- extern const char NongLiDATE_FCOLOR[];
- extern const uint NongLiDATE_FONT;
+ extern const int  CHSDay_ENA;
+ extern const uint CHSDay_X;
+ extern const uint CHSDay_Y;
+ extern const char CHSDay_COLORS[];
+ extern const char CHSDay_FCOLOR[];
+ extern const uint CHSDay_FONT;
 //显示信号强度
- extern const int NET_ENA;
+ extern const int  NET_ENA;
  extern const uint NET_X;
  extern const uint NET_Y;
  extern const char NET_COLORS[];
@@ -246,7 +207,7 @@
  extern const uint NET_FONT;
  extern const char NET_FMT[16];
 //显示CPU使用率
- extern const int CAP_ENA;
+ extern const int  CAP_ENA;
  extern const uint ACCU_X;
  extern const uint ACCU_Y;
  extern const char ACCU_COLORS[];
@@ -254,14 +215,14 @@
  extern const uint ACCU_FONT;
  extern const char CAP_FMT[16];
 //显示GPRS流量
- extern const int GPRS_ENA;
+ extern const int  GPRS_ENA;
  extern const uint GPRS_X;
  extern const uint GPRS_Y;
  extern const char GPRS_COLORS[];
  extern const char GPRS_FCOLOR[];
  extern const uint GPRS_FONT;
  //显示CPU使用率
- extern const int CPU_ENA;
+ extern const int  CPU_ENA;
  extern const uint CPU_X;
  extern const uint CPU_Y;
  extern const char CPU_COLORS[];
