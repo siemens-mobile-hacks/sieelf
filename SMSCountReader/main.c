@@ -119,88 +119,6 @@ void clearProc(int id)
   if(id==0) clear_dat();
 }
 
-/*
-int get_month_day(int type)
-{
-  TTime tt;
-  TDate td;
-  GetDateTime(&td,&tt);
-  if(type==1) return (int)td.day;
-  if(type==2) return (int)td.month;
-  return 0;
-}
-
-void read_write_dat(int type)
-{
-  char dat_path[]="0:\\Misc\\SMSCount.dat";
-  //type: 0:clear,1:chinamobile,2:chinaunicom,3:xiaolingtong,4:others
-	unsigned int err;
-	int f;
-	//char *data_buf=malloc(32);
-	f=fopen(dat_path,A_WriteOnly+A_BIN,P_WRITE,&err);
-	switch(type)
-	{
-	  case 0:
-	    data_buf[4]=0;     //全部
-      data_buf[8]=0;     //移动
-      data_buf[0xC]=0;   //联通
-      data_buf[0x14]=0;  //小灵通
-      data_buf[0x10]=0;  //其它
-      break;
-    case 1:
-      data_buf[4]++;
-      data_buf[8]++;
-      break;
-    case 2:
-      data_buf[4]++;
-      data_buf[0xC]++;
-      break;
-    case 3:
-      data_buf[4]++;
-      data_buf[0x14]++;
-      break;
-    case 4:
-      data_buf[4]++;
-      data_buf[0x10]++;
-      break;
-	}
-	fwrite(f, data_buf, 24, &err);
-	fclose(f,&err);
-	mfree(data_buf);
-}
-
-void check_if_clearn(void)
-{
-  int initday=get_initday();
-  if(initday==get_month_day(1))
-  {
-    char dat_path[]="0:\\Misc\\SMSCount.dat";
-    unsigned int err;
-    int f;
-    char *data_buf=malloc(32);
-    if(f=fopen(dat_path,A_ReadWrite+A_BIN,P_READ+P_WRITE,&err)!=-1)
-    {
-      fread(f,data_buf,24,&err);
-    }
-    else MsgBoxYesNo(1, (int)"Clear ALL?", clearProc);
-    if(data_buf[0]==get_month_day(2))
-    {
-      fclose(f,&err);
-      mfree(data_buf);
-      read_write_dat(0);
-      goto END;
-    }
-    if(data_buf[0]==0)
-    {
-      data_buf[0]=get_month_day(2);
-    }
-    fwrite(f, data_buf, 24, &err);
-    fclose(f,&err);
-    mfree(data_buf);
-  }
-END:;
-}
-*/
 void soft_key(void)
 {
   char utf8_clear[]="\xE6\xB8\x85\xE7\xA9\xBA\xE8\xAE\xA1\xE6\x95\xB0";//清空计数
@@ -264,26 +182,6 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
 	    case LEFT_SOFT:
 	      MsgBoxYesNo(1, (int)"Clear ALL?", clearProc);
 	      break;
-/*	    case '1':
-	      read_write_dat(1);
-	      REDRAW();
-	      break;
-	    case '2':
-	      read_write_dat(2);
-	      REDRAW();
-	      break;
-	    case '3':
-	      read_write_dat(3);
-	      REDRAW();
-	      break;
-	    case '4':
-	      read_write_dat(4);
-	      REDRAW();
-	      break;
-	    case '5':
-	      check_if_clearn();
-	      REDRAW();
-	      break;*/
 	  }
 	}
 	return(0);
