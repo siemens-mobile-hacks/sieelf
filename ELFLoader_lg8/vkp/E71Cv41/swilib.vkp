@@ -52,7 +52,7 @@
 ;0A4:              ;  29: getEEFullMaxID
 00A8: 0xA04FD060   ;  2A: int *GetEELiteBlockAddress(short blocknum)
 00AC: 0xA1021B94   ;  2B: signed int fp_fp2sint(double f)
-00B0: 0xA04FC6FD   ;  2C: int EEFullGetBlockInfo(unsigned int block,int *size,char *version)
+00B0: 0xA04FC6FC   ;  2C: int EEFullGetBlockInfo(unsigned int block,int *size,char *version)
 00B4: 0xA1020F54   ;  2D: double fp_add(double addend1, double addend2)
 00B8: 0xA1021EB4   ;  2E: double fp_mul(double factor1, double factor2)
 00BC: 0xA1021568   ;  2F: double fp_div(double divisor, double divident
