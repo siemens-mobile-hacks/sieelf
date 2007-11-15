@@ -21,9 +21,11 @@ extern void kill_data(void *p, void (*func_p)(void *));
 unsigned int MAINCSM_ID = 0;
 unsigned int MAINGUI_ID = 0;
 int no_bcfg=0;
+int is_editing=0;
+int edit_line=1;
 int screenw;
 int screenh;
-char* data_buf;
+int count[5];
 char bcfgpath[]="0:\\ZBin\\etc\\SMSCount.bcfg";
 char dat_path[]="2:\\SMSCount.Dat";
 
@@ -65,6 +67,7 @@ int get_initday(void)
   	if((f=fopen(bcfgpath,A_ReadOnly+A_BIN,P_READ,&err))==-1)
   	{
   		MsgBoxError(1, (int)"Can't find SMSCount.bcfg!\nDefault initday: 1");
+      fclose(f,&err);
   		no_bcfg=1;
   		return 1;
   	}
@@ -81,13 +84,24 @@ int get_initday(void)
 void load_dat(void)
 {
 	unsigned int err;
-	int f;
-  if((f=fopen(dat_path,A_ReadOnly+A_BIN,P_READ,&err))==-1)
+  int f=fopen(dat_path,A_ReadOnly, P_READ,&err);
+  if (f!=-1)
+  {
+    char *data_buf=malloc(32);
+    fread(f,data_buf,24,&err);
+    count[0]=data_buf[4];
+    count[1]=data_buf[8];
+    count[2]=data_buf[0xC];
+    count[4]=data_buf[0x10];
+    count[3]=data_buf[0x14];
+    mfree(data_buf);
+  }
+  else
   {
     MsgBoxError(1, (int)"Can't find SMSCount.dat");
+    fclose(f,&err);
     exit();
   }
-  fread(f,data_buf,24,&err);
   fclose(f,&err);
 }
 
@@ -96,27 +110,67 @@ void rebootProc(int id)
   if(id==0) RebootPhone();
 }
 
-void clear_dat(void)
+//void clear_dat(void)
+//{
+//	unsigned int err;
+//	int f;
+//  if(f=fopen(dat_path,A_WriteOnly+A_Create+A_BIN,P_WRITE,&err)!=-1)
+//  {
+//    fwrite(f, data_buf, 24, &err);
+//    fclose(f,&err);
+//    //MsgBoxYesNo(1, (int)"Reboot soon ?", rebootProc);
+//  }
+//  else
+//  {
+//    MsgBoxError(1,(int)"Clear Error");
+//    fclose(f,&err);
+//  }
+//}
+
+void save_dat(int type)
 {
+  //type 1:clear 0:save change
 	unsigned int err;
-	int f;
-  data_buf[4]=0;
-  data_buf[8]=0;
-  data_buf[0xC]=0;
-  data_buf[0x14]=0;
-  data_buf[0x10]=0;
-  if(f=fopen(dat_path,A_WriteOnly+A_BIN,P_WRITE,&err)!=-1)
+	int f=fopen(dat_path,A_WriteOnly+A_Create,P_WRITE,&err);
+	if (f!=-1)
+	{
+    char *data_buf=malloc(32);
+    if(type==1)
+    {
+      count[0]=0;
+      count[1]=0;
+      count[2]=0;
+      count[3]=0;
+      count[4]=0;
+    }
+    data_buf[4]=count[0];
+    data_buf[8]=count[1];
+    data_buf[0xC]=count[2];
+    data_buf[0x10]=count[4];
+    data_buf[0x14]=count[3];
+	  fwrite(f, data_buf, 24, &err);
+    mfree(data_buf);
+	}
+  else
   {
-    fwrite(f, data_buf, 24, &err);
-    fclose(f,&err);
-    MsgBoxYesNo(1, (int)"Reboot soon ?", rebootProc);
+    MsgBoxError(1,(int)"Save Error");
   }
-  else MsgBoxError(1,(int)"Clear Error");
+  fclose(f,&err);
+  MsgBoxYesNo(1, (int)"Reboot soon ?", rebootProc);
 }
 
 void clearProc(int id)
 {
-  if(id==0) clear_dat();
+  if(id==0) save_dat(1);
+}
+
+void saveProc(int id)
+{
+  if(id==0)
+  {
+    save_dat(0);
+    is_editing=0;
+  }
 }
 
 void soft_key(void)
@@ -135,35 +189,87 @@ void soft_key(void)
 
 void onRedraw(MAIN_GUI *data)
 {
+  int color_index=0;
 	int init_day;
 	if(no_bcfg) init_day=1;
 	  else init_day=get_initday();
 	int font_h=GetFontYSIZE(FONT_SMALL);
-	DrawRectangle(0,YDISP,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
+	DrawRectangle(0,0,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
 	soft_key();
 	char *utf8_str=malloc(128);
 	WSHDR *ws = AllocWS(128);
-	wsprintf(ws, "SMSCount v3.7\nSMSCountReader v1.1\n");
-	DrawString(ws,0,YDISP,screenw,screenh,FONT_SMALL,TEXT_ALIGNMIDDLE+TEXT_OUTLINE,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
-	//全部，移动，联通，小灵通，其它
-	sprintf(utf8_str,"\xE5\x85\xA8\xE9\x83\xA8: %d\n\xE7\xA7\xBB\xE5\x8A\xA8: %d\n\xE8\x81\x94\xE9\x80\x9A: %d\n\xE5\xB0\x8F\xE7\x81\xB5\xE9\x80\x9A: %d\n\xE5\x85\xB6\xE4\xBB\x96: %d", data_buf[4], data_buf[8], data_buf[0xC], data_buf[0x14], data_buf[0x10]);
+	wsprintf(ws, "SMSCount v3.7\nSMSCountReader v1.5\n");
+	DrawString(ws,0,0,screenw,screenh,FONT_SMALL,TEXT_ALIGNMIDDLE+TEXT_OUTLINE,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+	//全部
+	sprintf(utf8_str,"\xE5\x85\xA8\xE9\x83\xA8: %d", count[0]);
 	utf8_2ws(ws,utf8_str,strlen(utf8_str));
-	DrawString(ws,0,YDISP+3*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+	DrawString(ws,0,3*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+	//移动
+	sprintf(utf8_str,"\xE7\xA7\xBB\xE5\x8A\xA8: %d", count[1]);
+	utf8_2ws(ws,utf8_str,strlen(utf8_str));
+	if(is_editing)
+	{
+	  if(edit_line==1)
+	    color_index=2;
+	  else color_index=0;
+	}
+	else color_index=0;
+	DrawString(ws,0,4*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(color_index),GetPaletteAdrByColorIndex(23)); 
+	//联通
+	sprintf(utf8_str,"\xE8\x81\x94\xE9\x80\x9A: %d", count[2]);
+	utf8_2ws(ws,utf8_str,strlen(utf8_str));
+	if(is_editing)
+	{
+	  if(edit_line==2)
+	    color_index=2;
+	  else color_index=0;
+	}
+	else color_index=0;
+	DrawString(ws,0,5*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(color_index),GetPaletteAdrByColorIndex(23)); 
+	//小灵通
+	sprintf(utf8_str,"\xE5\xB0\x8F\xE7\x81\xB5\xE9\x80\x9A: %d", count[3]);
+	utf8_2ws(ws,utf8_str,strlen(utf8_str));
+	if(is_editing)
+	{
+	  if(edit_line==3)
+	    color_index=2;
+	  else color_index=0;
+	}
+	else color_index=0;
+	DrawString(ws,0,6*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(color_index),GetPaletteAdrByColorIndex(23)); 
+	//其它
+	sprintf(utf8_str,"\xE5\x85\xB6\xE4\xBB\x96: %d", count[4]);
+	utf8_2ws(ws,utf8_str,strlen(utf8_str));
+	if(is_editing)
+	{
+	  if(edit_line==4)
+	    color_index=2;
+	  else color_index=0;
+	}
+	else color_index=0;
+	DrawString(ws,0,7*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(color_index),GetPaletteAdrByColorIndex(23)); 
 	//清零日期
   if(init_day==0)
   {
     sprintf(utf8_str,"\xE6\xB8\x85\xE9\x9B\xB6\xE6\x97\xA5\xE6\x9C\x9F: \xE4\xB8\x8D\xE6\xB8\x85\xE9\x9B\xB6");
   }
-  else sprintf(utf8_str,"\xE6\xB8\x85\xE9\x9B\xB6\xE6\x97\xA5\xE6\x9C\x9F: %d",init_day);
+  else sprintf(utf8_str,"\xE6\xB8\x85\xE9\x9B\xB6\xE6\x97\xA5\xE6\x9C\x9F: \xE6\xAF\x8F\xE6\x9C\x88%d\xE6\x97\xA5",init_day);
 	utf8_2ws(ws,utf8_str,strlen(utf8_str));
-	DrawString(ws,0,YDISP+8*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 	
+	DrawString(ws,0,8*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 	
 	//显示当前日期
 	TTime tt;
   TDate td;
   GetDateTime(&td,&tt);
   sprintf(utf8_str,"\xE5\xBD\x93\xE5\x89\x8D\xE6\x97\xA5\xE6\x9C\x9F: %04d.%i.%i",td.year,td.month,td.day);
   utf8_2ws(ws,utf8_str,strlen(utf8_str));
-  DrawString(ws,0,YDISP+9*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws,0,9*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  //正在编辑 
+  if(is_editing)
+  {
+    sprintf(utf8_str,"\xE7\xBC\x96\xE8\xBE\x91\xE4\xB8\xAD\xE3\x80\x82\xE3\x80\x82\xE3\x80\x82\n\xE8\xAF\xB7\xE6\x8C\x89\xE7\xBB\xBF\xE9\x94\xAE\xE4\xBF\x9D\xE5\xAD\x98");
+    utf8_2ws(ws,utf8_str,strlen(utf8_str));
+    DrawString(ws,0,10*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(7),GetPaletteAdrByColorIndex(23)); 
+  }
   
 	mfree(utf8_str);
 	FreeWS(ws);
@@ -181,6 +287,42 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
 	      break;
 	    case LEFT_SOFT:
 	      MsgBoxYesNo(1, (int)"Clear ALL?", clearProc);
+	      REDRAW();
+	      break;
+	    case ENTER_BUTTON:
+	      is_editing=1;
+	      REDRAW();
+	      break;
+	    case DOWN_BUTTON:
+	      if(edit_line!=4) 
+	        edit_line++;
+	      else edit_line=1;
+	      REDRAW();
+	      break;
+	    case UP_BUTTON:
+	      if(edit_line!=1)
+	        edit_line--;
+	      else edit_line=4;
+	      REDRAW();
+	      break;
+	    case LEFT_BUTTON:
+	      if(count[edit_line])
+	      {
+	        count[0]--;
+	        count[edit_line]--;
+	      }
+	      REDRAW();
+	      break;
+	    case RIGHT_BUTTON:
+	      //if(count[0]) 
+	        count[0]++;
+	      //if(count[1]) 
+	        count[edit_line]++;
+	      REDRAW();
+	      break;
+	    case GREEN_BUTTON:
+	      if(is_editing) MsgBoxYesNo(1, (int)"Save All Change?", saveProc);
+	      REDRAW();
 	      break;
 	  }
 	}
@@ -199,8 +341,11 @@ void onClose(MAIN_GUI *data, void (*mfree_adr)(void *))
 
 void onFocus(MAIN_GUI *data, void *(*malloc_adr)(int), void (*mfree_adr)(void *))
 {
+#ifdef ELKA
+  DisableIconBar(1);
+#endif
   data->gui.state=2;
-  DisableIDLETMR();
+  //DisableIDLETMR();
 }
 
 void onUnfocus(MAIN_GUI *data, void (*mfree_adr)(void *))
@@ -230,10 +375,6 @@ const RECT Canvas={0,0,0,0};
 
 void maincsm_oncreate(CSM_RAM *data)
 {
-  screenw=ScreenW();
-  screenh=ScreenH();
-  data_buf=malloc(32);
-  load_dat();
 	MAIN_GUI *main_gui=malloc(sizeof(MAIN_GUI));
   MAIN_CSM *csm=(MAIN_CSM *)data;
 	zeromem(main_gui,sizeof(MAIN_GUI));	
@@ -263,7 +404,6 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 void Killer(void)
 {
   extern void *ELF_BEGIN;
-  mfree(data_buf);
   kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
 }
 
@@ -312,6 +452,9 @@ void UpdateCSMname(void)
 int main(char *initday)
 {
   char dummy[sizeof(MAIN_CSM)];
+  screenw=ScreenW()-1;
+  screenh=ScreenH()-1;
+  load_dat();
   UpdateCSMname();
   LockSched();
   MAINCSM_ID=CreateCSM(&MAINCSM.maincsm,dummy,0);
