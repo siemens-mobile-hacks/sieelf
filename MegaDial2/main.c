@@ -330,23 +330,18 @@ void ShowSelectedCodeShow(WSHDR* pwsNum,int y1)
 	WSHDR* pwsCodeshow;
 	pwsCodeshow=AllocWS(20);
 	char pszNum[20];
-        char lenx[20];
-        int len=0;
 	if((!cfg_cs_enable)||(cfg_cs_part)) goto sub_end;
 	ws_2str(pwsNum,pszNum,20);
 	GetProvAndCity(pwsCodeshow->wsbody,pszNum);
-        ws_2str(pwsCodeshow,lenx,20);
-        len=strlen(lenx);
-        DrawRectangle(ScreenW()-((len-1)/3+1)*GetFontYSIZE(font_size),y1-1,ScreenW()-6,y1+GetFontYSIZE(font_size),0,GetPaletteAdrByColorIndex(23),color(CS_NUMBER_BG));
 	DrawString(pwsCodeshow,
 		2,
 		y1,
-		ScreenW()-8,
+		ScreenW()-6,
 		y1+GetFontYSIZE(font_size),
 		font_size,
 		4,
                 color(cfg_cs_font_color),
-                GetPaletteAdrByColorIndex(23));
+                color(CS_NUMBER_BG));
 sub_end:
 	FreeWS(pwsCodeshow);
 }
@@ -995,17 +990,18 @@ void my_ed_redraw(void *data)
                   }
                   else
                   {
-                    dyx=dy+3*(gfont_size+cfg_item_gaps)-4;
-                    dyy=dy+(gfont_size+cfg_item_gaps);
+                    dyx=dy+3*(gfont_size+cfg_item_gaps)-7;
+                    dyy=dy+(gfont_size+cfg_item_gaps)-3;
                   }
-                  ShowSelectedCodeShow(cl->num[aj+numx+x],dyx-(gfont_size+cfg_item_gaps)+4);
+                  ShowSelectedCodeShow(cl->num[aj+numx+x],dyx-(gfont_size+cfg_item_gaps)+6);
                   ws_2str(cl->pic,pszNum2,200);
                   len=strlen(pszNum2);
                   int x0=ScreenW()-4-GetImgWidth((int)pszNum2);
-                  while(x0<(gfont_size+1)*3)
-                  x0+=2;
                   
-                  if(len>3&&show_pic)
+                  while(x0<(gfont_size+1)*3)
+                  x0=(gfont_size+1)*3;
+                  
+                  if(len>5&&show_pic)
                   DrawImg(x0,dyy+2*(gfont_size+cfg_item_gaps)-1,(unsigned int)pszNum2); 
                   
                   if(sumx>1)
@@ -1518,15 +1514,6 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //°´¼ü¹¦ÄÜ
     }
     r=-1; //Redraw 
   }
-//#ifndef NEWSGOLD
-//else if (key==ENTER_BUTTON)
-//  {
-//    ExtractEditControl(gui,1,&ec);
-//    char num[40];
-//    ws_2str(ec.pWS,num,39);
-//    MakeVoiceCall(num,0x10,0x2FFF);
-//  }
-//#endif
   else
   {
     #ifdef NEWSGOLD
@@ -1606,8 +1593,10 @@ void my_ed_ghook(GUI *gui, int cmd)
 	SUBPROC((void *)ConstructList);
       }
     }
-    if(cfg_disable_one_number&&((e_ws=ec.pWS)->wsbody[0]==1))
-       a=1;
+   if(cfg_disable_one_number&&((e_ws=ec.pWS)->wsbody[0]<2))
+      
+   {a=1;
+   FreeCLIST();}
     if((e_ws=ec.pWS)->wsbody[0]>1)
        a=0;
   }
@@ -1625,6 +1614,7 @@ void DoSplices(GUI *gui)
   my_ed.global_hook_proc=my_ed_ghook;
   gui->definition=&my_ed;
   //scroll_disp=0;
+  is_pos_changed=0;
 }
 
 /*
