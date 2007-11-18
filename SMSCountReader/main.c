@@ -25,7 +25,7 @@ int is_editing=0;
 int edit_line=1;
 int screenw;
 int screenh;
-int count[5];
+int count[5]={0,0,0,0,0};
 char bcfgpath[]="0:\\ZBin\\etc\\SMSCount.bcfg";
 char dat_path[]="2:\\SMSCount.Dat";
 
@@ -80,11 +80,31 @@ int get_initday(void)
   return initday[0];
 }
 
+void creat_new_dat(void)
+{
+  int i;
+  unsigned int err;
+  int f=fopen(dat_path,A_WriteOnly+A_Create,P_WRITE+P_READ,&err);
+  char *data_buf=malloc(32);
+  TTime tt;
+  TDate td;
+  GetDateTime(&td,&tt);
+  data_buf[0]=(int)td.month;
+  for(i=1;i!=25;i++) data_buf[i]=0;
+  fwrite(f, data_buf, 24, &err);
+  fclose(f,&err);
+  mfree(data_buf);
+}
 
+//void createnewProc(int id)
+//{
+//  if(id==0) creat_new_dat();
+//}
+//
 void load_dat(void)
 {
 	unsigned int err;
-  int f=fopen(dat_path,A_ReadOnly, P_READ,&err);
+  int f=fopen(dat_path,A_ReadOnly,P_READ,&err);
   if (f!=-1)
   {
     char *data_buf=malloc(32);
@@ -94,15 +114,16 @@ void load_dat(void)
     count[2]=data_buf[0xC];
     count[4]=data_buf[0x10];
     count[3]=data_buf[0x14];
+    fclose(f,&err);
     mfree(data_buf);
   }
   else
   {
-    MsgBoxError(1, (int)"Can't find SMSCount.dat");
     fclose(f,&err);
-    exit();
+    MsgBoxError(1, (int)"Can't find SMSCount.dat");
+    creat_new_dat();
+    //MsgBoxYesNo(1, (int)"Create NEW SMSCount.dat?", createnewProc);
   }
-  fclose(f,&err);
 }
 
 void rebootProc(int id)
@@ -110,22 +131,6 @@ void rebootProc(int id)
   if(id==0) RebootPhone();
 }
 
-//void clear_dat(void)
-//{
-//	unsigned int err;
-//	int f;
-//  if(f=fopen(dat_path,A_WriteOnly+A_Create+A_BIN,P_WRITE,&err)!=-1)
-//  {
-//    fwrite(f, data_buf, 24, &err);
-//    fclose(f,&err);
-//    //MsgBoxYesNo(1, (int)"Reboot soon ?", rebootProc);
-//  }
-//  else
-//  {
-//    MsgBoxError(1,(int)"Clear Error");
-//    fclose(f,&err);
-//  }
-//}
 
 void save_dat(int type)
 {
@@ -189,6 +194,9 @@ void soft_key(void)
 
 void onRedraw(MAIN_GUI *data)
 {
+#ifdef ELKA
+  DisableIconBar(1);
+#endif
   int color_index=0;
 	int init_day;
 	if(no_bcfg) init_day=1;
@@ -341,11 +349,8 @@ void onClose(MAIN_GUI *data, void (*mfree_adr)(void *))
 
 void onFocus(MAIN_GUI *data, void *(*malloc_adr)(int), void (*mfree_adr)(void *))
 {
-#ifdef ELKA
-  DisableIconBar(1);
-#endif
+  DisableIDLETMR();
   data->gui.state=2;
-  //DisableIDLETMR();
 }
 
 void onUnfocus(MAIN_GUI *data, void (*mfree_adr)(void *))
@@ -452,9 +457,9 @@ void UpdateCSMname(void)
 int main(char *initday)
 {
   char dummy[sizeof(MAIN_CSM)];
+  load_dat();
   screenw=ScreenW()-1;
   screenh=ScreenH()-1;
-  load_dat();
   UpdateCSMname();
   LockSched();
   MAINCSM_ID=CreateCSM(&MAINCSM.maincsm,dummy,0);
