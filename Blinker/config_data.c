@@ -48,5 +48,15 @@ __root const unsigned int vibra_pow=50;
 __root const CFG_HDR cfghdr12={CFG_CHECKBOX,"Use sound",0,2};
 __root const int use_snd=1;
 
-__root const CFG_HDR cfghdr13={CFG_UINT,"Sound number",0,65535};
+__root const CFG_HDR cfghdr13={CFG_CBOX,"Sound Type",0,2};
+__root const int sound_type = 0;
+__root const CFG_CBOX_ITEM cfgcbox1[2]={"Inside","File"};
+
+__root const CFG_HDR cfghdr14={CFG_UINT,"Inside Sound number",0,65535};
 __root const unsigned int sndNum=10;
+
+__root const CFG_HDR cfghdr15={CFG_STR_UTF8,"Sound File",0,127};
+__root const char snd_file[128]="";
+
+__root const CFG_HDR cfghdr16={CFG_UINT,"Sound Volume",0,6};
+__root const unsigned int sndVolume=3;

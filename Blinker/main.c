@@ -31,6 +31,9 @@ extern const int use_vib;
 extern const unsigned int vibra_pow;
 extern const int use_snd;
 extern const unsigned int sndNum;
+extern const char snd_file[128];
+extern const int sound_type;
+extern const unsigned int sndVolume;
 
 extern const int cfgKbd;
 extern const int cfgDispl;
@@ -49,7 +52,7 @@ void LightOff(void);
 void Check(void);
 
 //SetIllumination(unsigned char dev,unsigned long param1,unsigned short bright,unsigned long delay);
-//0 - дисплей, 1 - клавиатура, 2 - динамический свет (x65)
+//0 - диспле? 1 - клавиатура, 2 - динамический свет (x65)
 void LightOn()
 {
 	if (cfgDispl)
@@ -95,6 +98,54 @@ void LightOff()
 __swi __arm GetMissedEventCount(unsigned int Event);
 #endif
 
+void Play(const char *fname)
+{
+    FSTATS fstats;
+    unsigned int err;
+    if (GetFileStats(fname,&fstats,&err)!=-1)
+    {
+      PLAYFILE_OPT _sfo1;
+      WSHDR* sndPath=AllocWS(128);
+      WSHDR* sndFName=AllocWS(128);
+      char s[128];
+      const char *p=strrchr(fname,'\\')+1;
+      str_2ws(sndFName,p,128);
+      strncpy(s,fname,p-fname);
+      s[p-fname]='\0';
+      str_2ws(sndPath,s,128);
+      
+      zeromem(&_sfo1,sizeof(PLAYFILE_OPT));
+      _sfo1.repeat_num=1;
+      _sfo1.time_between_play=0;
+      _sfo1.play_first=0;
+      _sfo1.volume=sndVolume;
+#ifdef NEWSGOLD
+      _sfo1.unk6=1;
+      _sfo1.unk7=1;
+      _sfo1.unk9=2;
+      PlayFile(0x10, sndPath, sndFName, GBS_GetCurCepid(), MSG_PLAYFILE_REPORT, &_sfo1);
+#else
+#ifdef X75
+      _sfo1.unk4=0x80000000;
+      _sfo1.unk5=1;
+      PlayFile(0xC, sndPath, sndFName, 0,GBS_GetCurCepid(), MSG_PLAYFILE_REPORT, &_sfo1);
+#else
+      _sfo1.unk5=1;
+      PlayFile(0xC, sndPath, sndFName, GBS_GetCurCepid(), MSG_PLAYFILE_REPORT, &_sfo1);
+#endif
+#endif
+      FreeWS(sndPath);
+      FreeWS(sndFName);
+    }
+}
+
+void play_sound(void)
+{
+  if(sound_type)
+    Play(snd_file);
+  else PlaySound(0, 0, 0, sndNum, 0);
+}
+
 void Check(void)
 {
 	if (!(IsUnlocked() && cfgLockOnly))
@@ -120,7 +171,7 @@ void Check(void)
 				count = cfgMaxEv;
 			LightOn();
                         if (use_snd)
-                          PlaySound(0, 0, 0, sndNum, 0);
+                          play_sound();
 			return;
 		}
 	}
