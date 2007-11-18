@@ -1,4 +1,4 @@
-#ifndef _LANG_H_
+ï»¿#ifndef _LANG_H_
 #define _LANG_H_
 
 #define COPYRIGHT   "MusicStart v0.1alpha\n(c)2007 bingk"
@@ -21,11 +21,11 @@
 
 
 //LNG,UTF8
-#define LNG_MENU     "\xE8\x8F\x9C\xE5\x8D\x95" //²Ëµ¥
-#define LNG_STOP     "\xE5\x81\x9C\xE6\xAD\xA2" //Í£Ö¹
-#define LNG_PLAYING  "\xE6\xAD\xA3\xE5\x9C\xA8\xE6\x92\xAD\xE6\x94\xBE" //ÕıÔÚ²¥·Å
-#define LNG_PAUSE    "\xE6\x9A\x82\xE5\x81\x9C" //ÔİÍ£
-#define LNG_VOL      "\xE9\x9F\xB3\xE9\x87\x8F" //ÒôÁ¿
-#define LNG_STATUS   "\xE6\x92\xAD\xE6\x94\xBE\xE7\x8A\xB6\xE6\x80\x81" //²¥·Å×´Ì¬
+#define LNG_MENU     "èœå•"
+#define LNG_STOP     "åœæ­¢"
+#define LNG_PLAYING  "æ­£åœ¨æ’­æ”¾"
+#define LNG_PAUSE    "æš‚åœ"
+#define LNG_VOL      "éŸ³é‡"
+#define LNG_STATUS   "æ’­æ”¾çŠ¶æ€"
 
 #endif
