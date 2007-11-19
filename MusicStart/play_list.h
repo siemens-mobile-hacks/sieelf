@@ -5,6 +5,7 @@
 void load_list(void);
 void get_next_song(void);
 void get_prev_song(void);
+void select_list_gui(void);
 
 
 #endif

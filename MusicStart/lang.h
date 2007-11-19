@@ -1,4 +1,4 @@
-﻿#ifndef _LANG_H_
+#ifndef _LANG_H_
 #define _LANG_H_
 
 #define COPYRIGHT   "MusicStart v0.1alpha\n(c)2007 bingk"
@@ -8,6 +8,7 @@
 #define LGP_SELECT   "Select"
 #define LGP_BACK     "Back"
 #define LGP_OPEN     "Open.."
+#define LGP_SELECT_LIST "SelectList"
 #define LGP_OPTIONS  "Options"
 #define LGP_ABOUT    "About"
 #define LGP_EXIT     "Exit"

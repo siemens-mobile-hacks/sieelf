@@ -48,6 +48,7 @@ int screenh;
 int playhandle=0;
 int play_flag=0;//0:stop, 1:paly, 2:pause
 char procfile[128];
+
 char song_name[128];
 unsigned int sndVolume=6;
 //int is_new_file_selected=0;
@@ -100,7 +101,7 @@ void Play(const char *fname)
       FreeWS(sndPath);
       FreeWS(sndFName);
     }
-    else ShowMSG(1,(int)"FFF");//²âÊÔÓÃ
+    else ShowMSG(1,(int)fname);//²âÊÔÓÃ
 }
 
 
@@ -120,11 +121,12 @@ SOFTKEYSTAB menu_sktm=
 };
 
 
-#define ITEMS_N 4
+#define ITEMS_N 5
 
 MENUITEM_DESC menu_items[ITEMS_N]=
 {
   {NULL,(int)LGP_OPEN,          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)LGP_SELECT_LIST,   LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)LGP_OPTIONS,       LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)LGP_ABOUT,         LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)LGP_EXIT,          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
@@ -133,9 +135,15 @@ MENUITEM_DESC menu_items[ITEMS_N]=
 void control(int type);
 void menu_open(GUI *data) 
 {
-  open_select_file_gui(1);
+  open_select_file_gui(1,0);
   GeneralFuncF1(1);
 
+}
+
+void menu_select_list(GUI *data)
+{
+  select_list_gui();
+  GeneralFuncF1(1);
 }
 
 void menu_options(GUI *data)
@@ -163,6 +171,7 @@ void menu_exit(GUI *data)
 const MENUPROCS_DESC menu_hndls[ITEMS_N]=
 {
   menu_open,
+  menu_select_list,
   menu_options,
   menu_about,
   menu_exit,
@@ -211,14 +220,15 @@ void onRedraw(MAIN_GUI *data)
   DrawRectangle(0,0,screenw,screenh,0,gui_main_bg_col,gui_main_bg_col);
   soft_key();
   //¸èÇúÃû
-  WSHDR *ws_song_name=AllocWS(64);
+  WSHDR *ws_song_name=AllocWS(128);
   const char *p=strrchr(procfile,'\\')+1;
-  str_2ws(ws_song_name,p,64);
+  //str_2ws(ws_song_name,p,64);
+  str_2ws(ws_song_name,procfile,128);
   DrawString(ws_song_name,gui_name_x,gui_name_y,screenw,screenh,gui_name_font,TEXT_ALIGNMIDDLE+TEXT_OUTLINE,gui_name_col,gui_frame_col); 
   FreeWS(ws_song_name);
   //ÒôÁ¿
-  char *sta=malloc(64);
-  WSHDR *ws_sta=AllocWS(64);
+  char *sta=malloc(256);
+  WSHDR *ws_sta=AllocWS(256);
   //ÒôÁ¿//²¥·Å×´Ì¬
   char c_sta[16];
   switch(play_flag)
@@ -423,6 +433,8 @@ void maincsm_oncreate(CSM_RAM *data)
   MAINGUI_ID=csm->gui_id;
 }
 
+int is_call_pause=0;
+
 #define idlegui_id(icsm) (((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])
 int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 {
@@ -439,6 +451,17 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
   if((msg->msg==MSG_GUI_DESTROYED)&&((int)msg->data0==csm->gui_id))
   {
     csm->csm.state=-3;
+  }
+  if(msg->msg==MSG_INCOMMING_CALL)
+  {
+    is_call_pause=1;
+    control(1);
+  }
+  if(msg->msg==MSG_END_CALL)
+  {
+    if(is_call_pause)
+      control(2);
+    is_call_pause=0;
   }
   if(msg->msg==MSG_PLAYFILE_REPORT) 
   {

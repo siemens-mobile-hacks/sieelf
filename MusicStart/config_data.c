@@ -1,17 +1,30 @@
 #include "..\inc\cfg_items.h"
 #include "..\inc\swilib.h"
 
+#ifdef NEWSGOLD
+#define DEFAULT_DISK '4'
+#define scrh  319
+#define scrw  239
+#else 
+#define DEFAULT_DISK '0'
+#define scrh  175
+#define scrw  131
+#endif
 
-__root const CFG_HDR cfghdr0={CFG_LEVEL,"Idle Screen Setup",1,0};
+__root const CFG_HDR cfghdr0={CFG_STR_UTF8,"Generol Path",3,127};
+__root const char g_path[128]=":\\ZBin\\MusicStart\\";
+
+
+__root const CFG_HDR cfghdr_0_0={CFG_LEVEL,"Idle Screen Setup",1,0};
 
 __root const CFG_HDR cfghdr1= {CFG_RECT, "Name Position", 0, 239};
-__root const RECT name_pos = {65,108,131,153};
+__root const RECT name_pos = {0,scrh/2,scrw,scrh/2+20};
 
 __root const CFG_HDR cfghdr2={CFG_UINT,"Name Font",0,16};
 __root const unsigned int name_font=FONT_SMALL;
 
 __root const CFG_HDR cfghdr3={CFG_COLOR,"Name Color",0,0};
-__root const char name_col[4]={255,255,255,100};
+__root const char name_col[4]={0,0,0,100};
 
 __root const CFG_HDR cfghdr4={CFG_COLOR,"Name Frame Color",0,0};
 __root const char frame_col[4]={255,255,255,0};
@@ -25,7 +38,7 @@ __root const char gui_main_bg_col[4]={0,0,0,100};
 
 __root const CFG_HDR cfghdr6={CFG_COORDINATES,"Name Position",0,0};
 __root const unsigned int gui_name_x=0;
-__root const unsigned int gui_name_y=20;
+__root const unsigned int gui_name_y=scrh/2;
 
 __root const CFG_HDR cfghdr7={CFG_UINT,"Name Font",0,16};
 __root const unsigned int gui_name_font=FONT_SMALL;
@@ -37,7 +50,7 @@ __root const CFG_HDR cfghdr9={CFG_COLOR,"Name Frame Color",0,0};
 __root const char gui_frame_col[4]={255,255,255,0};
 
 __root const CFG_HDR cfghdr10={CFG_COORDINATES,"Status Position",0,0};
-__root const unsigned int gui_sta_x=0;
+__root const unsigned int gui_sta_x=20;
 __root const unsigned int gui_sta_y=20;
 
 __root const CFG_HDR cfghdr11={CFG_UINT,"Status Font",0,16};

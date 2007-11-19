@@ -1,9 +1,14 @@
 #include "..\inc\swilib.h"
+#include "filelist.h"
 
+//extern const char g_path[128];
 extern char procfile[128];
+char list_path[128]="4:\\ZBin\\MusicStart\\PlayList\\mylist.lst";
 char list_text[32768];
 int list_size=0;
 char *p_list=list_text; //该指针指向当前正在播放的歌曲
+
+
 
 void get_currect_song_name(void)
 {
@@ -13,21 +18,12 @@ void get_currect_song_name(void)
   int i=0;
   char ss[128];
   int is_1st_utf8=0;
-  char m3u_header[]="#EXTM3U";//M3U标头
-  if(strncmp(list_text,m3u_header,7)==0)  //M3U头判断
+  while((*p!='\0')&&(*(p+1)!=':')&&(*(p+2)!='\\')) //以":\"为标记
   {
-    if(*p==0x23)
-    {
-      p+=9;
-      p_list=p; //指向正确的路径起始位置
-    }
+    p++;
   }
-  if (*p==0xEF) //纯UTF8头判断
-  {
-    p+=3;//utf8编码文件头（暂时）
-    p_list=p; //指向正确的路径起始位置
-  }
-  while(*p!='\n')
+  p_list=p;
+  while((*p!=0)&&(*p!='\n'))
   {
     c=*p;
     if(c>=' ')
@@ -87,31 +83,23 @@ void get_prev_song(void)
 {
   char *p;
   p=p_list;
-  if((*(p-1)==0x0A)&&(*(p-2)==0x0D)&&(*(p-3)==0x55)) //已经在第一首判断,M3U（暂时）
+  while(*p)
   {
-    top2end();
-    return;
-  }
-  if((*(p-1)==0xBF)||(*p==0xEF)) //已经在第一首判断,纯UTF8（暂时）
-  {
-    top2end();
-    return;
-  }
-  else p=p-2;
-  while(*p!='\n')
-  {
-    if((*p==0xBF)&&(*(p-1)==0xBB)) //到达第一首判断，纯UTF8，（暂时）
-      break;
     p--;
+    if((*(p+1)==':')&&(*(p+2)=='\\')) //以":\"为标记搜索上一首
+      break;
   }
-  //p++;
-  p_list=p+1;
+  if(*p==0)
+  {
+    top2end();
+    return;
+  }
+  p_list=p;
   get_currect_song_name();
 }
 
 void load_list(void)
 {
-  char list_path[]="4:\\ZBin\\MusicStart\\mylist.lst";
   unsigned int err;
   int f=fopen(list_path,A_ReadOnly+A_BIN,P_READ,&err);
   if(f==-1)
@@ -128,3 +116,8 @@ void load_list(void)
   get_currect_song_name();
 }
 
+
+void select_list_gui(void)
+{
+  open_select_file_gui(1,1);
+}

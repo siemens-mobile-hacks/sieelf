@@ -1,8 +1,12 @@
 #include "..\inc\swilib.h"
+#include "play_list.h"
 #include "rect_patcher.h"
 
 extern char procfile[128];
+extern char list_path[128];
 //extern int is_new_file_selected;
+
+int file_rtype=0;
 
 typedef struct
 {
@@ -166,7 +170,14 @@ void SavePath(FLIST *fl)
   unsigned int err;
   if (GetFileStats(fl->fullname,&fstats,&err)!=-1)
   {
-    strcpy(procfile, fl->fullname);
+    if (file_rtype==0)
+      strcpy(procfile, fl->fullname);
+    else 
+    {
+      strcpy(list_path, fl->fullname);
+      ShowMSG(1, (int)list_path);
+      load_list();
+    }
     //is_new_file_selected=1;
   }
 }
@@ -311,27 +322,49 @@ int CreateRootMenu()
 
 
 
-void open_select_file_gui(int type) 
+void open_select_file_gui(int type, int file_type)//file_type: 0,music 1,list 
 {
   char *s, *rev=0;
   int n, c, len;
+  file_rtype=file_type;
   
-	s = procfile;
-	//is_new_file_selected=0;
-  while ((c = *s++)) 
-  {
-    if (c == '\\' && *s != '\0') rev = s;
+	if(file_type==0)
+	{
+	  s = procfile;
+    while ((c = *s++)) 
+    {
+      if (c == '\\' && *s != '\0') rev = s;
+    }
+    if (!rev)
+      n = CreateRootMenu();
+    else 
+    {
+      *rev = 0;
+      strncpy(header, procfile, sizeof (header) - 1);
+      len = strlen(procfile);
+      header[len > sizeof (header) - 1 ? sizeof (header) - 1 : len] = 0;
+      n = FindFiles(procfile, type);
+    }
   }
-  if (!rev)
-    n = CreateRootMenu();
-  else 
-  {
-    *rev = 0;
-    strncpy(header, procfile, sizeof (header) - 1);
-    len = strlen(procfile);
-    header[len > sizeof (header) - 1 ? sizeof (header) - 1 : len] = 0;
-    n = FindFiles(procfile, type);
-  } 
+	else 
+	{
+	  s=list_path;
+	  
+    while ((c = *s++)) 
+    {
+      if (c == '\\' && *s != '\0') rev = s;
+    }
+    if (!rev)
+      n = CreateRootMenu();
+    else 
+    {
+      *rev = 0;
+      strncpy(header, list_path, sizeof (header) - 1);
+      len = strlen(list_path);
+      header[len > sizeof (header) - 1 ? sizeof (header) - 1 : len] = 0;
+      n = FindFiles(list_path, type);
+    }
+	}
   patch_header(&filelist_HDR);
   CreateMenu(0, 0, &filelist_STRUCT, &filelist_HDR, 0, n, 0, 0);
 }
