@@ -645,9 +645,14 @@ MusicStart/config_data.c -text
 MusicStart/filelist.c -text
 MusicStart/filelist.h -text
 MusicStart/func.asm -text
+MusicStart/history.h -text
+MusicStart/histroy.c -text
 MusicStart/lang.h -text
 MusicStart/main.c -text
+MusicStart/main.h -text
 MusicStart/make_elka.bat -text
+MusicStart/menu.c -text
+MusicStart/menu.h -text
 MusicStart/mk_NEWSGOLD.bat -text
 MusicStart/mk_SGOLD.bat -text
 MusicStart/play_list.c -text

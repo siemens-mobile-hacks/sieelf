@@ -5,6 +5,8 @@
 #include "filelist.h"
 #include "play_list.h"
 #include "lang.h"
+#include "history.h"
+#include "menu.h"
 
 typedef struct
 {
@@ -47,8 +49,8 @@ int screenw;
 int screenh;
 int playhandle=0;
 int play_flag=0;//0:stop, 1:paly, 2:pause
+int play_mode=0;//0:t2b, 1:b2t, 2:shuf
 char procfile[128];
-
 char song_name[128];
 unsigned int sndVolume=6;
 //int is_new_file_selected=0;
@@ -106,99 +108,6 @@ void Play(const char *fname)
 
 
 
-const int menusoftkeys[]={0,1,2};
-SOFTKEY_DESC menu_skm[]=
-{
-  {0x0018,0x0000,(int)LGP_SELECT},
-  {0x0001,0x0000,(int)LGP_BACK},
-  {0x003D,0x0000,(int)LGP_DOIT_PIC}
-};
-
-
-SOFTKEYSTAB menu_sktm=
-{
-  menu_skm,0
-};
-
-
-#define ITEMS_N 5
-
-MENUITEM_DESC menu_items[ITEMS_N]=
-{
-  {NULL,(int)LGP_OPEN,          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-  {NULL,(int)LGP_SELECT_LIST,   LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-  {NULL,(int)LGP_OPTIONS,       LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-  {NULL,(int)LGP_ABOUT,         LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-  {NULL,(int)LGP_EXIT,          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-};
-
-void control(int type);
-void menu_open(GUI *data) 
-{
-  open_select_file_gui(1,0);
-  GeneralFuncF1(1);
-
-}
-
-void menu_select_list(GUI *data)
-{
-  select_list_gui();
-  GeneralFuncF1(1);
-}
-
-void menu_options(GUI *data)
-{
-  WSHDR *ws;
-  ws=AllocWS(128);
-  str_2ws(ws,successed_config_filename,128);
-  ExecuteFile(ws,0,0);
-  FreeWS(ws);
-  GeneralFuncF1(1);
-}
-
-void menu_about(GUI *data) 
-{
-  ShowMSG(1, (int)COPYRIGHT);
-  GeneralFuncF1(1);
-}
-
-void menu_exit(GUI *data)
-{
-  exit();
-}
-
-
-const MENUPROCS_DESC menu_hndls[ITEMS_N]=
-{
-  menu_open,
-  menu_select_list,
-  menu_options,
-  menu_about,
-  menu_exit,
-};
-
-
-HEADER_DESC mm_menuhdr={0,0,0,0,NULL,(int)ELF_NAME,LGP_NULL};
-
-const MENU_DESC mm_menu=
-{
-  8,NULL,NULL,NULL,
-  menusoftkeys,
-  &menu_sktm,
-  0,
-  NULL,
-  menu_items,   //Items
-  menu_hndls,   //Procs
-  ITEMS_N   //n
-};
-
-void create_main_menu(void)
-{
-  patch_header(&mm_menuhdr);
-  CreateMenu(0,0,&mm_menu,&mm_menuhdr,0,ITEMS_N,0,0);
-}
-
-
 void soft_key(void)
 {
 	WSHDR *wsl = AllocWS(16);
@@ -220,10 +129,10 @@ void onRedraw(MAIN_GUI *data)
   DrawRectangle(0,0,screenw,screenh,0,gui_main_bg_col,gui_main_bg_col);
   soft_key();
   //歌曲名
-  WSHDR *ws_song_name=AllocWS(128);
+  WSHDR *ws_song_name=AllocWS(64);
   const char *p=strrchr(procfile,'\\')+1;
-  //str_2ws(ws_song_name,p,64);
-  str_2ws(ws_song_name,procfile,128);
+  str_2ws(ws_song_name,p,64);
+  //str_2ws(ws_song_name,procfile,128);
   DrawString(ws_song_name,gui_name_x,gui_name_y,screenw,screenh,gui_name_font,TEXT_ALIGNMIDDLE+TEXT_OUTLINE,gui_name_col,gui_frame_col); 
   FreeWS(ws_song_name);
   //音量
@@ -243,7 +152,21 @@ void onRedraw(MAIN_GUI *data)
       sprintf(c_sta,LNG_PAUSE);//暂停
       break;
   }
-  sprintf(sta,LNG_VOL": %d\n"LNG_STATUS": %s", sndVolume, c_sta);
+  //播放模式
+  char c_mode[16];
+  switch(play_mode)
+  {
+    case 0:
+      sprintf(c_mode,LNG_MODE_T2B);
+      break;
+    case 1:
+      sprintf(c_mode,LNG_MODE_B2T);
+      break;
+    case 2:
+      sprintf(c_mode,LNG_MODE_SHUF);
+      break;
+  }
+  sprintf(sta,LNG_VOL": %d\n"LNG_STATUS": %s\n"LNG_PLAYMODE": %s", sndVolume, c_sta, c_mode);
   utf8_2ws(ws_sta,sta,strlen(sta));
   DrawString(ws_sta,gui_sta_x,gui_sta_y,screenw,screenh,gui_sta_font,TEXT_OUTLINE,gui_sta_col,gui_sta_frame_col); 
   mfree(sta);
@@ -281,17 +204,6 @@ void control(int type)
     }
 }
 
-void play_next(void)
-{
-	get_next_song();
-	control(0);
-}
-
-void play_prev(void)
-{
-	get_prev_song();
-	control(0);
-}
 
 int OnKey(MAIN_GUI *data, GUI_MSG *msg)
 {
@@ -359,6 +271,10 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
         play_next();
         REDRAW();
         break;
+      case '3':
+        play_shuff();
+        REDRAW();
+        break;
       default: 
         REDRAW();
         break;
@@ -412,6 +328,23 @@ void add_ws_idle_name(void)
 	const char *p=strrchr(procfile,'\\')+1;
   str_2ws(ws_idle_name,p,64);
 }
+
+void play_mode_switch(void)
+{
+  switch(play_mode)
+  {
+    case 0:
+      play_next();
+      break;
+    case 1:
+      play_prev();
+      break;
+    case 2:
+      play_shuff();
+      break;
+  }
+}
+
 const RECT Canvas={0,0,0,0};
 
 void maincsm_oncreate(CSM_RAM *data)
@@ -468,10 +401,14 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
     GBS_PSOUND_MSG *pmsg=(GBS_PSOUND_MSG *)msg;
     if (pmsg->handler==playhandle)
     {
-      if (pmsg->cmd==M_SAE_PLAYBACK_ERROR || pmsg->cmd==M_SAE_PLAYBACK_DONE)
+      if (pmsg->cmd==M_SAE_PLAYBACK_ERROR)
+      {
+        control(3);
+      }
+      if (pmsg->cmd==M_SAE_PLAYBACK_DONE)
       {
         if(play_flag!=0) 
-          play_next();
+          play_mode_switch();
       }
     }
   }
@@ -561,6 +498,7 @@ void Killer(void)
 {
   extern void *ELF_BEGIN;
   FreeWS(ws_idle_name);
+  save_his();
   RemoveKeybMsgHook((void *)my_keyhook);
   kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
 }
@@ -614,7 +552,9 @@ int main(char *initday)
   sndVolume=defau_vol;
   screenw=ScreenW()-1;
   screenh=ScreenH()-1;
-  load_list();
+  
+  load_list(load_history());
+  
   UpdateCSMname();
   
   LockSched();

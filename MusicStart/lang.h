@@ -8,7 +8,7 @@
 #define LGP_SELECT   "Select"
 #define LGP_BACK     "Back"
 #define LGP_OPEN     "Open.."
-#define LGP_SELECT_LIST "SelectList"
+#define LGP_PLAYLIST "PlayList"
 #define LGP_OPTIONS  "Options"
 #define LGP_ABOUT    "About"
 #define LGP_EXIT     "Exit"
@@ -19,14 +19,26 @@
 #define LGP_VOLUP    "VolUP"
 #define LGP_PREV     "Previous"
 #define LGP_NEXT     "Next"
+#define LGP_PLAYMODE "PlayMode"
+#define LGP_CYCLETOP2BOTTOM "CycleTop2Bottom"
+#define LGP_CYCLEBOTTOM2TOP "CycleBottom2Top"
+#define LGP_SHUFFLE  "Shuffle"
+
 
 
 //LNG,UTF8
-#define LNG_MENU     "菜单"
-#define LNG_STOP     "停止"
-#define LNG_PLAYING  "正在播放"
-#define LNG_PAUSE    "暂停"
-#define LNG_VOL      "音量"
-#define LNG_STATUS   "播放状态"
+#define LNG_MENU      "菜单"
+
+#define LNG_STOP      "停止"
+#define LNG_PLAYING   "正在播放"
+#define LNG_PAUSE     "暂停"
+#define LNG_VOL       "音量"
+#define LNG_STATUS    "播放状态"
+
+#define LNG_PLAYMODE  "播放模式"
+#define LNG_MODE_T2B  "顺序循环"
+#define LNG_MODE_B2T  "倒序循环"
+#define LNG_MODE_SHUF "随机播放"
+
 
 #endif

@@ -4206,7 +4206,13 @@
     <name>$PROJ_DIR$\func.asm</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\histroy.c</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\main.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\menu.c</name>
   </file>
   <file>
     <name>$PROJ_DIR$\play_list.c</name>
