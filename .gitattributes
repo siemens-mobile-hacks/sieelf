@@ -655,6 +655,7 @@ MusicStart/menu.c -text
 MusicStart/menu.h -text
 MusicStart/mk_NEWSGOLD.bat -text
 MusicStart/mk_SGOLD.bat -text
+MusicStart/mk_SGOLD_X75.bat -text
 MusicStart/play_list.c -text
 MusicStart/play_list.h -text
 MusicStart/rect_patcher.h -text
