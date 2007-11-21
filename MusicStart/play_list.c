@@ -2,6 +2,8 @@
 #include "filelist.h"
 #include "main.h"
 
+extern int scroll_pos; // 长歌曲名滚动显示的起始位置
+extern int scroll_wait;
 extern const char g_path[128];
 extern char procfile[128];
 extern int playhandle;
@@ -44,6 +46,7 @@ void get_currect_song_name(void)
   }
   ss[i]='\0';
   strcpy(procfile,ss);
+  scroll_pos = 0;
 }
 
 void top2end(void)

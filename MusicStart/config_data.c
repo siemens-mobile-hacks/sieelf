@@ -74,5 +74,8 @@ __root const CFG_HDR cfghdr_2={CFG_LEVEL,"Default Player Setup",1,0};
 __root const CFG_HDR cfghdr16={CFG_UINT,"Default Vol",0,6};
 __root const unsigned int defau_vol=3;
 
+__root const CFG_HDR cfghdr17={CFG_UINT,"Scroll speed",0,999};
+__root const unsigned int defau_scroll_speed=50;
+
 __root const CFG_HDR cfghdr_2_0={CFG_LEVEL,"",0,0};
 

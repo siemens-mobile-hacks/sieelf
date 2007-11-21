@@ -1,7 +1,7 @@
 #ifndef _LANG_H_
 #define _LANG_H_
 
-#define COPYRIGHT   "MusicStart v0.2alpha\n(c)2007 bingk"
+#define COPYRIGHT   "MusicStart v0.2alpha\n(c)2007 bingk\nalong1976"
 #define ELF_NAME    "MusicStart"
 
 //LGP

@@ -40,7 +40,7 @@ extern const char gui_sta_frame_col[4];
 extern const unsigned int sk_font;
 extern const char sk_col[4];
 extern const unsigned int defau_vol;
-
+extern const unsigned int defau_scroll_speed; // 长歌曲名滚动速度
 
 unsigned int MAINCSM_ID = 0;
 unsigned int MAINGUI_ID = 0;
@@ -56,11 +56,14 @@ unsigned int sndVolume=6;
 WSHDR *ws_idle_name;
 //WSHDR *ws_song_name;
 char *list_text;
+GBSTMR mytmr; // 长歌曲名滚动显示计时器
+int scroll_pos=0; // 长歌曲名滚动显示的起始位置
 
 void exit(void)
 {
+  GBS_DelTimer( &mytmr );
   if(playhandle) PlayMelody_StopPlayback(playhandle);
-	CloseCSM(MAINCSM_ID);
+  CloseCSM(MAINCSM_ID);        
 }
 
 
@@ -114,36 +117,55 @@ void soft_key(void)
   WSHDR *wsr = AllocWS(16);
   utf8_2ws(wsr,LNG_STOP,strlen(LNG_STOP));
   utf8_2ws(wsl,LNG_MENU,strlen(LNG_MENU));
-  DrawString(wsr,screenw-get_string_width(wsr,sk_font)-4,screenh-GetFontYSIZE(sk_font)-2,screenw,screenh,sk_font,32,sk_col,GetPaletteAdrByColorIndex(23)); 
+  DrawString(wsr,screenw-Get_WS_width(wsr,sk_font)-4,screenh-GetFontYSIZE(sk_font)-2,screenw,screenh,sk_font,32,sk_col,GetPaletteAdrByColorIndex(23)); 
   DrawString(wsl,2,screenh-GetFontYSIZE(sk_font)-2,screenw,screenh,sk_font,32,sk_col,GetPaletteAdrByColorIndex(23)); 
   FreeWS(wsr);
   FreeWS(wsl);
 }
 
-/*
-GBSTMR mytmr;
-char *p_song_name;
+int getMaxChars(unsigned short *wsbody, int len, int font) // 获取可显示的最大字符数 Unicode
+{
+	int ii,width=0;
+	for(ii=0;ii<len;ii++)
+	{
+		width+=GetSymbolWidth(wsbody[ii], font);
+		if (width>=gui_name_pos.x2-gui_name_pos.x) break;
+	}
+	return ii;
+}
+
 void drawnameproc(void)
 {
   if(IsGuiOnTop(MAINGUI_ID))
   {
-    str_2ws(ws_song_name,p_song_name,64);
-    if(get_string_width(ws_song_name, gui_name_font)>=(gui_name_pos.x2-gui_name_pos.x))
+    WSHDR *ws_song_name=AllocWS(64);
+    const char *p=strrchr(procfile,'\\')+1;
+    str_2ws(ws_song_name,p,64);
+    char bScroll=Get_WS_width(ws_song_name, gui_name_font)>=(gui_name_pos.x2-gui_name_pos.x);
+    DrawRoundedFrame(gui_name_pos.x-1,gui_name_pos.y-1,gui_name_pos.x2+1,gui_name_pos.y2+2,0,0,0,GetPaletteAdrByColorIndex(7),gui_main_bg_col);
+    if(bScroll && defau_scroll_speed)
     {
-      p_song_name++;
+      int sc=getMaxChars(&ws_song_name->wsbody[scroll_pos+1], ws_song_name->wsbody[0]-scroll_pos, gui_name_font);
+      WSHDR* txt = AllocWS(sc+1);
+      txt->wsbody[0]=sc;
+      for(int ii=1;ii<sc+1;ii++)
+        txt->wsbody[ii]=ws_song_name->wsbody[ii+scroll_pos];
+      DrawString(txt,gui_name_pos.x,gui_name_pos.y,gui_name_pos.x2,gui_name_pos.y2,gui_name_font,TEXT_ALIGNLEFT+TEXT_OUTLINE,gui_name_col,gui_frame_col); 
+      scroll_pos++;
+      if(sc == 0)
+        scroll_pos = 0;      
+      GBS_StartTimerProc(&mytmr,defau_scroll_speed,drawnameproc);
+      FreeWS(txt);
     }
-    DrawString(ws_song_name,gui_name_pos.x,gui_name_pos.y,gui_name_pos.x2,gui_name_pos.y2,gui_name_font,TEXT_ALIGNMIDDLE+TEXT_OUTLINE,gui_name_col,gui_frame_col); 
+    else
+    {
+      scroll_pos = 0;
+      DrawString(ws_song_name,gui_name_pos.x,gui_name_pos.y,gui_name_pos.x2,gui_name_pos.y2,gui_name_font,TEXT_ALIGNMIDDLE+TEXT_OUTLINE,gui_name_col,gui_frame_col); 
+    }
+    FreeWS(ws_song_name);
+//    REDRAW();
   }    
-  GBS_StartTimerProc(&mytmr,216/2,drawnameproc);
 }
-
-void drawname(void)
-{
-  p_song_name=strrchr(procfile,'\\')+1;
-  DrawRoundedFrame(gui_name_pos.x-1,gui_name_pos.y-1,gui_name_pos.x2+1,gui_name_pos.y2+2,0,0,0,GetPaletteAdrByColorIndex(7),GetPaletteAdrByColorIndex(23));
-  drawnameproc();
-}
-*/
 
 void onRedraw(MAIN_GUI *data)
 {
@@ -153,13 +175,15 @@ void onRedraw(MAIN_GUI *data)
   DrawRectangle(0,0,screenw,screenh,0,gui_main_bg_col,gui_main_bg_col);
   soft_key();
   //歌曲名
-  //drawname();
+#if 1
+  drawnameproc();
+#else
   WSHDR *ws_song_name=AllocWS(64);
   const char *p=strrchr(procfile,'\\')+1;
   str_2ws(ws_song_name,p,64);
   DrawRoundedFrame(gui_name_pos.x-1,gui_name_pos.y-1,gui_name_pos.x2+1,gui_name_pos.y2+3,0,0,0,GetPaletteAdrByColorIndex(7),GetPaletteAdrByColorIndex(23));
   DrawString(ws_song_name,gui_name_pos.x,gui_name_pos.y,gui_name_pos.x2,gui_name_pos.y2,gui_name_font,TEXT_ALIGNMIDDLE+TEXT_OUTLINE,gui_name_col,gui_frame_col); 
-                      
+#endif                 
   //str_2ws(ws_song_name,procfile,128);
   
   //音量
@@ -197,7 +221,7 @@ void onRedraw(MAIN_GUI *data)
   utf8_2ws(ws_sta,sta,strlen(sta));
   DrawString(ws_sta,gui_sta_x,gui_sta_y,screenw,screenh,gui_sta_font,TEXT_OUTLINE,gui_sta_col,gui_sta_frame_col); 
   mfree(sta);
-  FreeWS(ws_song_name);
+//  FreeWS(ws_song_name);
   FreeWS(ws_sta);
 }
 
@@ -238,15 +262,16 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
   if(msg->gbsmsg->msg==KEY_UP)
   {
     int i=msg->gbsmsg->submess;
+    DirectRedrawGUI();
     switch(i)
     {
       case RIGHT_SOFT:
         control(3);
-        REDRAW();
+//        REDRAW();
         break;
       case LEFT_SOFT:
         create_main_menu();
-        REDRAW();
+//        REDRAW();
         break;
       case ENTER_BUTTON:
       case '5':
@@ -254,17 +279,17 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
         {
           play_flag=1; //在不播放条件下，先改变这个值，使control(0);继续执行
           control(0);
-          REDRAW();
+//          REDRAW();
           break;
         }
         if(play_flag==1)
         {
           control(1);
-          REDRAW();
+//          REDRAW();
           break;
         }
         if(play_flag==2) control(2);
-        REDRAW();
+//        REDRAW();
         break;
       case LEFT_BUTTON:
       case '4':
@@ -273,7 +298,7 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
           sndVolume--;
           control(4);
         }
-        REDRAW();
+//        REDRAW();
         break;
       case RIGHT_BUTTON:
       case '6':
@@ -282,24 +307,24 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
           sndVolume++;
           control(4);
         }
-        REDRAW();
+//        REDRAW();
         break;
       case UP_BUTTON:
       case '2':
         play_prev();
-        REDRAW();
+//        REDRAW();
         break;
       case DOWN_BUTTON:
       case '8':
         play_next();
-        REDRAW();
+//        REDRAW();
         break;
       case '3':
         play_shuff();
-        REDRAW();
+//        REDRAW();
         break;
       default: 
-        REDRAW();
+//        REDRAW();
         break;
     }
   }
