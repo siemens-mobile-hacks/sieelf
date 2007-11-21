@@ -28,8 +28,7 @@ extern const unsigned int name_font;
 extern const char name_col[4];
 extern const char frame_col[4];
 extern const char gui_main_bg_col[4];
-extern const unsigned int gui_name_x;
-extern const unsigned int gui_name_y;
+extern const RECT gui_name_pos;
 extern const unsigned int gui_name_font;
 extern const char gui_name_col[4];
 extern const char gui_frame_col[4];
@@ -55,7 +54,8 @@ char song_name[128];
 unsigned int sndVolume=6;
 //int is_new_file_selected=0;
 WSHDR *ws_idle_name;
-
+//WSHDR *ws_song_name;
+char *list_text;
 
 void exit(void)
 {
@@ -120,6 +120,30 @@ void soft_key(void)
   FreeWS(wsl);
 }
 
+/*
+GBSTMR mytmr;
+char *p_song_name;
+void drawnameproc(void)
+{
+  if(IsGuiOnTop(MAINGUI_ID))
+  {
+    str_2ws(ws_song_name,p_song_name,64);
+    if(get_string_width(ws_song_name, gui_name_font)>=(gui_name_pos.x2-gui_name_pos.x))
+    {
+      p_song_name++;
+    }
+    DrawString(ws_song_name,gui_name_pos.x,gui_name_pos.y,gui_name_pos.x2,gui_name_pos.y2,gui_name_font,TEXT_ALIGNMIDDLE+TEXT_OUTLINE,gui_name_col,gui_frame_col); 
+  }    
+  GBS_StartTimerProc(&mytmr,216/2,drawnameproc);
+}
+
+void drawname(void)
+{
+  p_song_name=strrchr(procfile,'\\')+1;
+  DrawRoundedFrame(gui_name_pos.x-1,gui_name_pos.y-1,gui_name_pos.x2+1,gui_name_pos.y2+2,0,0,0,GetPaletteAdrByColorIndex(7),GetPaletteAdrByColorIndex(23));
+  drawnameproc();
+}
+*/
 
 void onRedraw(MAIN_GUI *data)
 {
@@ -129,12 +153,15 @@ void onRedraw(MAIN_GUI *data)
   DrawRectangle(0,0,screenw,screenh,0,gui_main_bg_col,gui_main_bg_col);
   soft_key();
   //¸èÇúÃû
+  //drawname();
   WSHDR *ws_song_name=AllocWS(64);
   const char *p=strrchr(procfile,'\\')+1;
   str_2ws(ws_song_name,p,64);
+  DrawRoundedFrame(gui_name_pos.x-1,gui_name_pos.y-1,gui_name_pos.x2+1,gui_name_pos.y2+3,0,0,0,GetPaletteAdrByColorIndex(7),GetPaletteAdrByColorIndex(23));
+  DrawString(ws_song_name,gui_name_pos.x,gui_name_pos.y,gui_name_pos.x2,gui_name_pos.y2,gui_name_font,TEXT_ALIGNMIDDLE+TEXT_OUTLINE,gui_name_col,gui_frame_col); 
+                      
   //str_2ws(ws_song_name,procfile,128);
-  DrawString(ws_song_name,gui_name_x,gui_name_y,screenw,screenh,gui_name_font,TEXT_ALIGNMIDDLE+TEXT_OUTLINE,gui_name_col,gui_frame_col); 
-  FreeWS(ws_song_name);
+  
   //ÒôÁ¿
   char *sta=malloc(256);
   WSHDR *ws_sta=AllocWS(256);
@@ -170,6 +197,7 @@ void onRedraw(MAIN_GUI *data)
   utf8_2ws(ws_sta,sta,strlen(sta));
   DrawString(ws_sta,gui_sta_x,gui_sta_y,screenw,screenh,gui_sta_font,TEXT_OUTLINE,gui_sta_col,gui_sta_frame_col); 
   mfree(sta);
+  FreeWS(ws_song_name);
   FreeWS(ws_sta);
 }
 
@@ -218,11 +246,6 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
         break;
       case LEFT_SOFT:
         create_main_menu();
-        //if(is_new_file_selected)
-        //{
-        //  control(0);
-        //  is_new_file_selected=0;
-        //}
         REDRAW();
         break;
       case ENTER_BUTTON:
@@ -349,6 +372,7 @@ const RECT Canvas={0,0,0,0};
 
 void maincsm_oncreate(CSM_RAM *data)
 {
+  //ws_song_name=AllocWS(64);
   ws_idle_name=AllocWS(64);
 	MAIN_GUI *main_gui=malloc(sizeof(MAIN_GUI));
   MAIN_CSM *csm=(MAIN_CSM *)data;
@@ -441,54 +465,89 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
   return(1);
 }
 
+void long_press_switch(int key)
+{
+  switch(key)
+  {
+    case 0://2
+      play_prev();
+      break;
+    case 1://8
+      play_next();
+      break;
+    case 2://4
+      if(sndVolume>0)
+      {
+        sndVolume--;
+        control(4);
+      }
+      break;
+    case 3://6
+      if(sndVolume<6)
+      {
+        sndVolume++;
+        control(4);
+      }
+      break;
+    case 4://5
+      if(play_flag==0)
+      {
+        play_flag=1;
+        control(0);
+        break;
+      }
+      if(play_flag==1)
+      {
+        control(1);
+        break;
+      }
+      if(play_flag==2) 
+      control(2);
+      break;
+    case 5://3
+      play_shuff();
+      break;
+  }
+}
+
+int hot_key_mode=0;
 int my_keyhook(int submsg, int msg)
 {
-  if (msg==LONG_PRESS)
+  int i;
+  int hot_keys[6]={'2','8','4','6','5','3'};
+  for(i=0;i<6;i++)
   {
-    switch(submsg)
+    if(submsg==hot_keys[i])
     {
-      case '5':
-        if(play_flag==0)
-        {
-          ShowMSG(1,(int)LGP_PLAY);
-          play_flag=1;
-          control(0);
+      switch(msg)
+      {
+        case KEY_DOWN:
+          if(hot_key_mode==2)
+          {
+            GBS_SendMessage(MMI_CEPID,KEY_UP,hot_keys[i]);
+            return KEYHOOK_NEXT;
+          }
+          hot_key_mode=0;
           return KEYHOOK_BREAK;
-        }
-        if(play_flag==1)
-        {
-          ShowMSG(1,(int)LGP_PAUSE);
-          control(1);
+        case KEY_UP:
+          if(hot_key_mode==0)
+          {
+            hot_key_mode=2;
+            GBS_SendMessage(MMI_CEPID,KEY_DOWN,hot_keys[i]);
+            return KEYHOOK_BREAK;
+          }
+          if (hot_key_mode==2)
+          {
+            hot_key_mode=0;
+            return KEYHOOK_NEXT;
+          }
+          hot_key_mode=0;
           return KEYHOOK_BREAK;
-        }
-        if(play_flag==2) 
-          ShowMSG(1,(int)LGP_RESUME);
-          control(2);
-        return KEYHOOK_BREAK;
-      case '4':
-        if(sndVolume)
-        {
-          ShowMSG(1,(int)LGP_VOLDOWN);
-          sndVolume--;
-          control(4);
-        }
-        return KEYHOOK_BREAK;
-      case '6':
-        if(sndVolume!=6)
-        {
-          ShowMSG(1,(int)LGP_VOLUP);
-          sndVolume++;
-          control(4);
-        }
-        return KEYHOOK_BREAK;
-      case '2':
-        ShowMSG(1,(int)LGP_PREV);
-        play_prev();
-        return KEYHOOK_BREAK;
-      case '8':
-        ShowMSG(1,(int)LGP_NEXT);
-        play_next();
-        return KEYHOOK_BREAK;
+        case LONG_PRESS:
+          hot_key_mode=1;
+          long_press_switch(i);
+          break;
+      }
     }
   }
   return KEYHOOK_NEXT;
@@ -497,8 +556,10 @@ int my_keyhook(int submsg, int msg)
 void Killer(void)
 {
   extern void *ELF_BEGIN;
+  //FreeWS(ws_song_name);
   FreeWS(ws_idle_name);
   save_his();
+  mfree(list_text);
   RemoveKeybMsgHook((void *)my_keyhook);
   kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
 }
@@ -549,6 +610,7 @@ int main(char *initday)
 {
   char dummy[sizeof(MAIN_CSM)];
   InitConfig();
+  list_text=malloc(16384);
   sndVolume=defau_vol;
   screenw=ScreenW()-1;
   screenh=ScreenH()-1;

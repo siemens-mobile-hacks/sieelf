@@ -176,7 +176,7 @@ void SavePath(FLIST *fl)
     {
       strcpy(list_path, fl->fullname);
       //ShowMSG(1, (int)list_path);
-      load_list(0);
+      load_list(2);
     }
     //is_new_file_selected=1;
   }

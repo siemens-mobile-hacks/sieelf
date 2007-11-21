@@ -5,10 +5,10 @@
 extern const char g_path[128];
 extern char procfile[128];
 extern int playhandle;
+extern char *list_text;
 char list_path[128];
-char list_text[16384];
 int list_size=0;
-char *p_list=list_text; //该指针指向当前正在播放的歌曲
+char *p_list; //该指针指向当前正在播放的歌曲
 
 
 void get_currect_song_name(void)
@@ -156,7 +156,7 @@ void play_prev(void) //倒序循环
 原理：先获取正在播放歌曲的handle，这本身就是一个随机正整数
 然后将它除以3，按得到的余数0，1，2，分别定位到列表的上中下三段
 再将原来得到的handle乘以0x18(大约为一首歌路径的长度)
-循环减去handle/2，直到它出现在它被定位在列表的范围内的为止
+循环减去handle/3，直到它出现在它被定位在列表的范围内的为止
 然后把歌曲在列表中的位置指针定位到这个数
 经过get_currect_song_name函数处理就可以得到准确的歌曲名
 ****************************************************************/
