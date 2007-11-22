@@ -29,6 +29,9 @@ __root const char name_col[4]={0,0,0,100};
 __root const CFG_HDR cfghdr04={CFG_COLOR,"Name Frame Color",0,0};
 __root const char frame_col[4]={255,255,255,0};
 
+__root const CFG_HDR cfghdr05={CFG_COLOR,"Name Rounded Frame Color",0,0};
+__root const char round_frame_col[4]={255,255,0,100};
+
 __root const CFG_HDR cfghdr_0={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr_1={CFG_LEVEL,"GUI Setup",1,0};
@@ -49,7 +52,7 @@ __root const CFG_HDR cfghdr14={CFG_COLOR,"Name Frame Color",0,0};
 __root const char gui_frame_col[4]={255,255,255,0};
 
 __root const CFG_HDR cfghdr1b={CFG_COLOR,"Name Rounded Frame Color",0,0};
-__root const char gui_round_frame_col[4]={255,255,255,100};
+__root const char gui_round_frame_col[4]={255,255,0,100};
 
 __root const CFG_HDR cfghdr15={CFG_COORDINATES,"Status Position",0,0};
 __root const unsigned int gui_sta_x=20;
@@ -77,8 +80,11 @@ __root const CFG_HDR cfghdr_2={CFG_LEVEL,"Default Player Setup",1,0};
 __root const CFG_HDR cfghdr20={CFG_UINT,"Default Vol",0,6};
 __root const unsigned int defau_vol=3;
 
-__root const CFG_HDR cfghdr21={CFG_UINT,"Scroll speed",0,999};
+__root const CFG_HDR cfghdr21={CFG_UINT,"Scroll Speed",0,999};
 __root const unsigned int defau_scroll_speed=80;
+
+__root const CFG_HDR cfghdr22={CFG_UINT,"Scroll Wait Time",0,999};
+__root const unsigned int scroll_wait_time=108;
 
 __root const CFG_HDR cfghdr_2_0={CFG_LEVEL,"",0,0};
 

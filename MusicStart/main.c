@@ -27,6 +27,7 @@ extern const RECT name_pos;
 extern const unsigned int name_font;
 extern const char name_col[4];
 extern const char frame_col[4];
+extern const char round_frame_col[4];
 extern const char gui_main_bg_col[4];
 extern const RECT gui_name_pos;
 extern const unsigned int gui_name_font;
@@ -42,6 +43,7 @@ extern const unsigned int sk_font;
 extern const char sk_col[4];
 extern const unsigned int defau_vol;
 extern const unsigned int defau_scroll_speed; // 长歌曲名滚动速度
+extern const unsigned int scroll_wait_time;
 
 unsigned int MAINCSM_ID = 0;
 unsigned int MAINGUI_ID = 0;
@@ -59,6 +61,7 @@ WSHDR *ws_song_name;
 char *list_text;
 GBSTMR mytmr; // 长歌曲名滚动显示计时器
 int scroll_pos=0; // 长歌曲名滚动显示的起始位置
+int is_idle_gui=0; // 待机界面标记
 
 void exit(void)
 {
@@ -140,10 +143,9 @@ void drawnameproc(void)
   if(IsGuiOnTop(MAINGUI_ID))
   {
 //    WSHDR *ws_song_name=AllocWS(64);
-    const char *p=strrchr(procfile,'\\')+1;
-    str_2ws(ws_song_name,p,64);
+    int font_h=GetFontYSIZE(gui_name_font);
     char bScroll=Get_WS_width(ws_song_name, gui_name_font)>=(gui_name_pos.x2-gui_name_pos.x);
-    DrawRoundedFrame(gui_name_pos.x-1,gui_name_pos.y-1,gui_name_pos.x2+1,gui_name_pos.y2+2,0,0,0,gui_round_frame_col,gui_main_bg_col);
+    DrawRoundedFrame(gui_name_pos.x,gui_name_pos.y,gui_name_pos.x2,gui_name_pos.y2,0,0,0,gui_round_frame_col,gui_main_bg_col);
     if(bScroll && defau_scroll_speed)
     {
       int sc=getMaxChars(&ws_song_name->wsbody[scroll_pos+1], ws_song_name->wsbody[0]-scroll_pos, gui_name_font);
@@ -151,7 +153,7 @@ void drawnameproc(void)
       txt->wsbody[0]=sc;
       for(int ii=1;ii<sc+1;ii++)
         txt->wsbody[ii]=ws_song_name->wsbody[ii+scroll_pos];
-      DrawString(txt,gui_name_pos.x,gui_name_pos.y,gui_name_pos.x2,gui_name_pos.y2,gui_name_font,TEXT_ALIGNLEFT+TEXT_OUTLINE,gui_name_col,gui_frame_col); 
+      DrawString(txt,gui_name_pos.x,(gui_name_pos.y2+gui_name_pos.y-font_h)/2,gui_name_pos.x2,gui_name_pos.y2,gui_name_font,TEXT_ALIGNLEFT+TEXT_OUTLINE,gui_name_col,gui_frame_col); 
       scroll_pos++;
       int rest_len=0;         //获取剩余字串长度，当长度小于宽度时，从头开始
       int i;
@@ -161,18 +163,30 @@ void drawnameproc(void)
       }
       //if(sc == 0)
       if (rest_len<=(gui_name_pos.x2-gui_name_pos.x-0x40)) //-0x40使得视觉效果更好一些
-        scroll_pos = 0;      
-      GBS_StartTimerProc(&mytmr,defau_scroll_speed,drawnameproc);
+      {
+        scroll_pos = 0;
+      }
+      if(scroll_pos==1)
+        GBS_StartTimerProc(&mytmr,scroll_wait_time,drawnameproc); //重新从头显示时停顿
+      else
+        GBS_StartTimerProc(&mytmr,defau_scroll_speed,drawnameproc);
       FreeWS(txt);
     }
     else
     {
       scroll_pos = 0;
-      DrawString(ws_song_name,gui_name_pos.x,gui_name_pos.y,gui_name_pos.x2,gui_name_pos.y2,gui_name_font,TEXT_ALIGNMIDDLE+TEXT_OUTLINE,gui_name_col,gui_frame_col); 
+      DrawString(ws_song_name,gui_name_pos.x,(gui_name_pos.y2+gui_name_pos.y-font_h)/2,gui_name_pos.x2,gui_name_pos.y2,gui_name_font,TEXT_ALIGNMIDDLE+TEXT_OUTLINE,gui_name_col,gui_frame_col); 
     }
 //    FreeWS(ws_song_name);
 //    REDRAW();
   }    
+}
+
+void draw_name(void)
+{
+  const char *p_name=strrchr(procfile,'\\')+1;
+  str_2ws(ws_song_name,p_name,64);
+  drawnameproc();
 }
 
 void onRedraw(MAIN_GUI *data)
@@ -184,7 +198,8 @@ void onRedraw(MAIN_GUI *data)
   soft_key();
   //歌曲名
 #if 1
-  drawnameproc();
+  //drawnameproc();
+  draw_name();  //从Draw_name开始，减少对系统资源的消耗
 #else
   WSHDR *ws_song_name=AllocWS(64);
   const char *p=strrchr(procfile,'\\')+1;
@@ -269,7 +284,7 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
   if(msg->gbsmsg->msg==KEY_UP)
   {
     int i=msg->gbsmsg->submess;
-//    DirectRedrawGUI(); //到了长文件名时不能redraw,暂时改
+    //DirectRedrawGUI(); //到了长文件名时不能redraw(ELKA),暂时改
     switch(i)
     {
       case RIGHT_SOFT:
@@ -377,11 +392,52 @@ const void * const gui_methods[11]={
 	0
 };
 
-
-void add_ws_idle_name(void)
+void drawidlenameproc(void)
 {
-	const char *p=strrchr(procfile,'\\')+1;
-  str_2ws(ws_song_name,p,64);
+  if(is_idle_gui)
+  {
+    int font_h=GetFontYSIZE(gui_name_font);
+    char bScroll=Get_WS_width(ws_song_name, name_font)>=(name_pos.x2-name_pos.x);
+    DrawRoundedFrame(name_pos.x,name_pos.y,name_pos.x2,name_pos.y2,0,0,0,round_frame_col,GetPaletteAdrByColorIndex(23));
+    if(bScroll && defau_scroll_speed)
+    {
+      int sc=getMaxChars(&ws_song_name->wsbody[scroll_pos+1], ws_song_name->wsbody[0]-scroll_pos, name_font);
+      WSHDR* txt = AllocWS(sc+1);
+      txt->wsbody[0]=sc;
+      for(int ii=1;ii<sc+1;ii++)
+        txt->wsbody[ii]=ws_song_name->wsbody[ii+scroll_pos];
+      DrawString(txt,name_pos.x,(name_pos.y2+name_pos.y-font_h)/2,name_pos.x2,name_pos.y2,name_font,TEXT_ALIGNLEFT+TEXT_OUTLINE,name_col,frame_col); 
+      scroll_pos++;
+      int rest_len=0;         //获取剩余字串长度，当长度小于宽度时，从头开始
+      int i;
+      for (i=scroll_pos+1;i<ws_song_name->wsbody[0];i++)
+      {
+        rest_len+=GetSymbolWidth(ws_song_name->wsbody[i], name_font);
+      }
+      //if(sc == 0)
+      if (rest_len<=(name_pos.x2-name_pos.x-0x40)) //-0x40使得视觉效果更好一些
+      {
+        scroll_pos = 0;
+      }
+      if(scroll_pos==1)
+        GBS_StartTimerProc(&mytmr,scroll_wait_time,drawidlenameproc); //重新从头显示时停顿
+      else
+        GBS_StartTimerProc(&mytmr,defau_scroll_speed,drawidlenameproc);
+      FreeWS(txt);
+    }
+    else
+    {
+      scroll_pos = 0;
+      DrawString(ws_song_name,name_pos.x,(name_pos.y2+name_pos.y-font_h)/2,name_pos.x2,name_pos.y2,name_font,TEXT_ALIGNMIDDLE+TEXT_OUTLINE,name_col,frame_col); 
+    }
+  }    
+}
+
+void draw_idle_name(void)
+{
+  const char *p_name=strrchr(procfile,'\\')+1;
+  str_2ws(ws_song_name,p_name,64);
+  drawidlenameproc();
 }
 
 void play_mode_switch(void)
@@ -486,13 +542,14 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
           {
             void *canvasdata = ((void **)idata)[DISPLACE_OF_IDLECANVAS / 4];
 #endif
-            add_ws_idle_name();
+            is_idle_gui=1;
             DrawCanvas(canvasdata,name_pos.x,name_pos.y,name_pos.x2,name_pos.y2,1);
-            DrawString(ws_song_name,name_pos.x,name_pos.y,name_pos.x2,name_pos.y2,name_font,TEXT_OUTLINE,name_col,frame_col);
+            draw_idle_name();
           }
         }
       }
     }
+    is_idle_gui=0;
   }
   return(1);
 }
