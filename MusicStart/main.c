@@ -32,6 +32,7 @@ extern const RECT gui_name_pos;
 extern const unsigned int gui_name_font;
 extern const char gui_name_col[4];
 extern const char gui_frame_col[4];
+extern const char gui_round_frame_col[4];
 extern const unsigned int gui_sta_x;
 extern const unsigned int gui_sta_y;
 extern const unsigned int gui_sta_font;
@@ -53,7 +54,7 @@ char procfile[128];
 char song_name[128];
 unsigned int sndVolume=6;
 //int is_new_file_selected=0;
-WSHDR *ws_idle_name;
+WSHDR *ws_song_name;
 //WSHDR *ws_song_name;
 char *list_text;
 GBSTMR mytmr; // 长歌曲名滚动显示计时器
@@ -138,11 +139,11 @@ void drawnameproc(void)
 {
   if(IsGuiOnTop(MAINGUI_ID))
   {
-    WSHDR *ws_song_name=AllocWS(64);
+//    WSHDR *ws_song_name=AllocWS(64);
     const char *p=strrchr(procfile,'\\')+1;
     str_2ws(ws_song_name,p,64);
     char bScroll=Get_WS_width(ws_song_name, gui_name_font)>=(gui_name_pos.x2-gui_name_pos.x);
-    DrawRoundedFrame(gui_name_pos.x-1,gui_name_pos.y-1,gui_name_pos.x2+1,gui_name_pos.y2+2,0,0,0,GetPaletteAdrByColorIndex(7),gui_main_bg_col);
+    DrawRoundedFrame(gui_name_pos.x-1,gui_name_pos.y-1,gui_name_pos.x2+1,gui_name_pos.y2+2,0,0,0,gui_round_frame_col,gui_main_bg_col);
     if(bScroll && defau_scroll_speed)
     {
       int sc=getMaxChars(&ws_song_name->wsbody[scroll_pos+1], ws_song_name->wsbody[0]-scroll_pos, gui_name_font);
@@ -152,7 +153,14 @@ void drawnameproc(void)
         txt->wsbody[ii]=ws_song_name->wsbody[ii+scroll_pos];
       DrawString(txt,gui_name_pos.x,gui_name_pos.y,gui_name_pos.x2,gui_name_pos.y2,gui_name_font,TEXT_ALIGNLEFT+TEXT_OUTLINE,gui_name_col,gui_frame_col); 
       scroll_pos++;
-      if(sc == 0)
+      int rest_len=0;         //获取剩余字串长度，当长度小于宽度时，从头开始
+      int i;
+      for (i=scroll_pos+1;i<ws_song_name->wsbody[0];i++)
+      {
+        rest_len+=GetSymbolWidth(ws_song_name->wsbody[i], gui_name_font);
+      }
+      //if(sc == 0)
+      if (rest_len<=(gui_name_pos.x2-gui_name_pos.x-0x40)) //-0x40使得视觉效果更好一些
         scroll_pos = 0;      
       GBS_StartTimerProc(&mytmr,defau_scroll_speed,drawnameproc);
       FreeWS(txt);
@@ -162,7 +170,7 @@ void drawnameproc(void)
       scroll_pos = 0;
       DrawString(ws_song_name,gui_name_pos.x,gui_name_pos.y,gui_name_pos.x2,gui_name_pos.y2,gui_name_font,TEXT_ALIGNMIDDLE+TEXT_OUTLINE,gui_name_col,gui_frame_col); 
     }
-    FreeWS(ws_song_name);
+//    FreeWS(ws_song_name);
 //    REDRAW();
   }    
 }
@@ -221,7 +229,6 @@ void onRedraw(MAIN_GUI *data)
   utf8_2ws(ws_sta,sta,strlen(sta));
   DrawString(ws_sta,gui_sta_x,gui_sta_y,screenw,screenh,gui_sta_font,TEXT_OUTLINE,gui_sta_col,gui_sta_frame_col); 
   mfree(sta);
-//  FreeWS(ws_song_name);
   FreeWS(ws_sta);
 }
 
@@ -262,16 +269,16 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
   if(msg->gbsmsg->msg==KEY_UP)
   {
     int i=msg->gbsmsg->submess;
-    DirectRedrawGUI();
+//    DirectRedrawGUI(); //到了长文件名时不能redraw,暂时改
     switch(i)
     {
       case RIGHT_SOFT:
         control(3);
-//        REDRAW();
+        REDRAW();
         break;
       case LEFT_SOFT:
         create_main_menu();
-//        REDRAW();
+        REDRAW();
         break;
       case ENTER_BUTTON:
       case '5':
@@ -279,17 +286,17 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
         {
           play_flag=1; //在不播放条件下，先改变这个值，使control(0);继续执行
           control(0);
-//          REDRAW();
+          REDRAW();
           break;
         }
         if(play_flag==1)
         {
           control(1);
-//          REDRAW();
+          REDRAW();
           break;
         }
         if(play_flag==2) control(2);
-//        REDRAW();
+        REDRAW();
         break;
       case LEFT_BUTTON:
       case '4':
@@ -298,7 +305,7 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
           sndVolume--;
           control(4);
         }
-//        REDRAW();
+        REDRAW();
         break;
       case RIGHT_BUTTON:
       case '6':
@@ -307,24 +314,24 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
           sndVolume++;
           control(4);
         }
-//        REDRAW();
+        REDRAW();
         break;
       case UP_BUTTON:
       case '2':
         play_prev();
-//        REDRAW();
+        REDRAW();
         break;
       case DOWN_BUTTON:
       case '8':
         play_next();
-//        REDRAW();
+        REDRAW();
         break;
       case '3':
         play_shuff();
-//        REDRAW();
+        REDRAW();
         break;
       default: 
-//        REDRAW();
+        REDRAW();
         break;
     }
   }
@@ -374,7 +381,7 @@ const void * const gui_methods[11]={
 void add_ws_idle_name(void)
 {
 	const char *p=strrchr(procfile,'\\')+1;
-  str_2ws(ws_idle_name,p,64);
+  str_2ws(ws_song_name,p,64);
 }
 
 void play_mode_switch(void)
@@ -397,8 +404,7 @@ const RECT Canvas={0,0,0,0};
 
 void maincsm_oncreate(CSM_RAM *data)
 {
-  //ws_song_name=AllocWS(64);
-  ws_idle_name=AllocWS(64);
+  ws_song_name=AllocWS(64);
 	MAIN_GUI *main_gui=malloc(sizeof(MAIN_GUI));
   MAIN_CSM *csm=(MAIN_CSM *)data;
 	zeromem(main_gui,sizeof(MAIN_GUI));	
@@ -460,6 +466,7 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
           play_mode_switch();
       }
     }
+    else control(3);
   }
   icsm=FindCSMbyID(CSM_root()->idle_id);
   if (icsm)
@@ -481,7 +488,7 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 #endif
             add_ws_idle_name();
             DrawCanvas(canvasdata,name_pos.x,name_pos.y,name_pos.x2,name_pos.y2,1);
-            DrawString(ws_idle_name,name_pos.x,name_pos.y,name_pos.x2,name_pos.y2,name_font,TEXT_OUTLINE,name_col,frame_col);
+            DrawString(ws_song_name,name_pos.x,name_pos.y,name_pos.x2,name_pos.y2,name_font,TEXT_OUTLINE,name_col,frame_col);
           }
         }
       }
@@ -581,8 +588,7 @@ int my_keyhook(int submsg, int msg)
 void Killer(void)
 {
   extern void *ELF_BEGIN;
-  //FreeWS(ws_song_name);
-  FreeWS(ws_idle_name);
+  FreeWS(ws_song_name);
   save_his();
   mfree(list_text);
   RemoveKeybMsgHook((void *)my_keyhook);
