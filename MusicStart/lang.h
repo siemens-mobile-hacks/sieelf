@@ -12,6 +12,7 @@
 #define LGP_OPTIONS  "Options"
 #define LGP_ABOUT    "About"
 #define LGP_EXIT     "Exit"
+
 #define LGP_PLAY     "Play"
 #define LGP_PAUSE    "Pause"
 #define LGP_RESUME   "Resume"
@@ -19,10 +20,15 @@
 #define LGP_VOLUP    "VolUP"
 #define LGP_PREV     "Previous"
 #define LGP_NEXT     "Next"
+
 #define LGP_PLAYMODE "PlayMode"
 #define LGP_CYCLETOP2BOTTOM "CycleTop2Bottom"
 #define LGP_CYCLEBOTTOM2TOP "CycleBottom2Top"
 #define LGP_SHUFFLE  "Shuffle"
+
+#define LGP_ATUOEXIT "AutoExit"
+#define LGP_START_AUTOEXIT "StartAutoExit"
+#define LGP_STOP_AUTOEXIT "StopAutoExit"
 
 
 
@@ -40,5 +46,7 @@
 #define LNG_MODE_B2T  "倒序循环"
 #define LNG_MODE_SHUF "随机播放"
 
+#define LNG_AUTO_SHUTDOWN "自动关机已激活"
+#define LNG_AUTO_QUIT "自动退出已激活"
 
 #endif

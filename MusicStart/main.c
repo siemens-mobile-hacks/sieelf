@@ -7,6 +7,7 @@
 #include "lang.h"
 #include "history.h"
 #include "menu.h"
+#include "main.h"
 
 typedef struct
 {
@@ -21,6 +22,8 @@ typedef struct
 
 extern void kill_data(void *p, void (*func_p)(void *));
 extern const char *successed_config_filename;
+extern int SONG_ALL;
+extern int SONG_NUM_NOW;
 
 //config
 extern const RECT name_pos;
@@ -45,6 +48,25 @@ extern const unsigned int defau_vol;
 extern const unsigned int defau_scroll_speed; // 长歌曲名滚动速度
 extern const unsigned int scroll_wait_time;
 
+extern const unsigned int auto_exit_time;
+extern const int exit_type;
+
+extern const unsigned int song_num_lst;
+extern const char lst_song_col[4];
+extern const char lst_this_song_col[4];
+extern const char lst_song_frame_col[4];
+extern const char lst_round_frame_col[4];
+extern const unsigned int lst_song_x;
+extern const unsigned int lst_song_y;
+extern const unsigned int song_lst_w;
+extern const unsigned int lst_song_font;
+
+extern const unsigned int num_pos_x;
+extern const unsigned int num_pos_y;
+extern const unsigned int num_font;
+extern const char num_col[4];
+extern const char num_frame_col[4];
+
 unsigned int MAINCSM_ID = 0;
 unsigned int MAINGUI_ID = 0;
 int screenw;
@@ -60,14 +82,56 @@ WSHDR *ws_song_name;
 //WSHDR *ws_song_name;
 char *list_text;
 GBSTMR mytmr; // 长歌曲名滚动显示计时器
+GBSTMR exit_tmr; //自动退出计时器
 int scroll_pos=0; // 长歌曲名滚动显示的起始位置
 int is_idle_gui=0; // 待机界面标记
+LIST_SONG_NAME *name_list;
+int is_auto_exit_started=0;
+
+#define TIME_SECOND 216
+
+///////////////////////////////
+//char **pp_list; //该指向指针的指针存储每首歌的位置
+//extern int some_num_in_list;
+//extern int some_num_now;
+///////////////////////////////
 
 void exit(void)
 {
   GBS_DelTimer( &mytmr );
   if(playhandle) PlayMelody_StopPlayback(playhandle);
   CloseCSM(MAINCSM_ID);        
+}
+
+void exit_proc(void)
+{
+  //GBS_DelTimer(&exit_tmr);
+  if(exit_type)
+    SwitchPhoneOff();
+  else
+    exit();
+}
+
+void stop_auto_exit(void)
+{
+  if(is_auto_exit_started)
+  {
+    GBS_DelTimer(&exit_tmr);
+    is_auto_exit_started=0;
+  }
+  else
+    ShowMSG(0,(int)"Auto Exit have not started!");
+}
+
+void start_auto_exit(void)
+{
+  if(is_auto_exit_started==0)
+  {
+    GBS_StartTimerProc(&exit_tmr,TIME_SECOND*60*auto_exit_time,exit);
+    is_auto_exit_started=1;
+  }
+  else
+    ShowMSG(0,(int)"Auto Exit is already started!");
 }
 
 
@@ -138,6 +202,58 @@ int getMaxChars(unsigned short *wsbody, int len, int font) // 获取可显示的最大字
 	return ii;
 }
 
+
+void draw_song_list(void)
+{
+  WSHDR *ws=AllocWS(64);
+  int j;
+  int c;
+  int k=0;
+  char ss[128];
+  DrawRoundedFrame(lst_song_x,lst_song_y,lst_song_x+song_lst_w,lst_song_y+song_num_lst*GetFontYSIZE(lst_song_font)+4,0,0,0,lst_round_frame_col,gui_main_bg_col);
+  for(j=SONG_NUM_NOW-song_num_lst/2;j<SONG_NUM_NOW+song_num_lst/2+song_num_lst%2;j++) //显示5个
+  {
+    if(j<0)
+      j=0;
+    if(j>SONG_ALL)
+      break;
+	  char *p;
+	  p=(name_list+j)->p_name;
+    int i=0;
+    int is_1st_utf8=0;
+    while((*p!=0)&&(*p!='\n'))
+    {
+      c=*p;
+      if(c>=' ')
+      {
+        if((is_1st_utf8==0)&&(c>0x80))//第一个UTF8中文识别（暂时），0x80为ASCII单字节字符最大值
+        {
+          ss[i]=0x1F;
+          i++;
+          is_1st_utf8=1;
+        }
+        if (i<(sizeof(ss)-1)) ss[i]=c;
+        i++;
+      }
+      p++;
+    }
+    ss[i-4]='\0';  //去掉后缀，3位
+    char *pp=strrchr(ss,'\\')+1;
+    str_2ws(ws,pp,64);
+    if(Get_WS_width(ws, lst_song_font)>song_lst_w)
+    {
+      *(pp+getMaxChars(ws->wsbody, song_lst_w, gui_name_font)-1)='\0'; //使歌曲名显示在范围之内
+      str_2ws(ws,pp,64);
+    }
+    if(j==SONG_NUM_NOW) //判断为正在播放
+      DrawString(ws,lst_song_x+2,lst_song_y+k*GetFontYSIZE(gui_name_font),lst_song_x+song_lst_w,screenh,lst_song_font,TEXT_OUTLINE,lst_this_song_col,lst_song_frame_col); 
+    else
+      DrawString(ws,lst_song_x+2,lst_song_y+k*GetFontYSIZE(gui_name_font),lst_song_x+song_lst_w,screenh,lst_song_font,TEXT_OUTLINE,lst_song_col,lst_song_frame_col);
+    k++;
+  }
+  FreeWS(ws);
+}
+
 void drawnameproc(void)
 {
   if(IsGuiOnTop(MAINGUI_ID))
@@ -153,7 +269,7 @@ void drawnameproc(void)
       txt->wsbody[0]=sc;
       for(int ii=1;ii<sc+1;ii++)
         txt->wsbody[ii]=ws_song_name->wsbody[ii+scroll_pos];
-      DrawString(txt,gui_name_pos.x,(gui_name_pos.y2+gui_name_pos.y-font_h)/2,gui_name_pos.x2,gui_name_pos.y2,gui_name_font,TEXT_ALIGNLEFT+TEXT_OUTLINE,gui_name_col,gui_frame_col); 
+      DrawString(txt,gui_name_pos.x,(gui_name_pos.y2+gui_name_pos.y-font_h)/2,/*gui_name_pos.x2*/512,gui_name_pos.y2,gui_name_font,TEXT_ALIGNLEFT+TEXT_OUTLINE,gui_name_col,gui_frame_col); 
       scroll_pos++;
       int rest_len=0;         //获取剩余字串长度，当长度小于宽度时，从头开始
       int i;
@@ -240,11 +356,25 @@ void onRedraw(MAIN_GUI *data)
       sprintf(c_mode,LNG_MODE_SHUF);
       break;
   }
-  sprintf(sta,LNG_VOL": %d\n"LNG_STATUS": %s\n"LNG_PLAYMODE": %s", sndVolume, c_sta, c_mode);
+  if(is_auto_exit_started)
+  {
+    if(exit_type)
+      sprintf(sta,LNG_VOL": %d\n"LNG_STATUS": %s\n"LNG_PLAYMODE": %s\n"LNG_AUTO_SHUTDOWN, sndVolume, c_sta, c_mode);
+    else
+      sprintf(sta,LNG_VOL": %d\n"LNG_STATUS": %s\n"LNG_PLAYMODE": %s\n"LNG_AUTO_QUIT, sndVolume, c_sta, c_mode);
+  }
+  else sprintf(sta,LNG_VOL": %d\n"LNG_STATUS": %s\n"LNG_PLAYMODE": %s", sndVolume, c_sta, c_mode);
   utf8_2ws(ws_sta,sta,strlen(sta));
   DrawString(ws_sta,gui_sta_x,gui_sta_y,screenw,screenh,gui_sta_font,TEXT_OUTLINE,gui_sta_col,gui_sta_frame_col); 
   mfree(sta);
   FreeWS(ws_sta);
+  //显示曲目数量及当前曲目位置
+  WSHDR *ws_num=AllocWS(16);
+  wsprintf(ws_num,"%d/%d", SONG_NUM_NOW+1, SONG_ALL+1);
+  DrawString(ws_num,num_pos_x,num_pos_y,screenw,screenh,num_font,TEXT_OUTLINE,num_col,num_frame_col);
+  FreeWS(ws_num);
+  //显示列表
+  draw_song_list();
 }
 
 void control(int type)
@@ -324,7 +454,7 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
         break;
       case RIGHT_BUTTON:
       case '6':
-        if(sndVolume!=6)
+        if(sndVolume!=5)
         {
           sndVolume++;
           control(4);
@@ -406,7 +536,7 @@ void drawidlenameproc(void)
       txt->wsbody[0]=sc;
       for(int ii=1;ii<sc+1;ii++)
         txt->wsbody[ii]=ws_song_name->wsbody[ii+scroll_pos];
-      DrawString(txt,name_pos.x,(name_pos.y2+name_pos.y-font_h)/2,name_pos.x2,name_pos.y2,name_font,TEXT_ALIGNLEFT+TEXT_OUTLINE,name_col,frame_col); 
+      DrawString(txt,name_pos.x,(name_pos.y2+name_pos.y-font_h)/2,/*name_pos.x2*/512,name_pos.y2,name_font,TEXT_ALIGNLEFT+TEXT_OUTLINE,name_col,frame_col); 
       scroll_pos++;
       int rest_len=0;         //获取剩余字串长度，当长度小于宽度时，从头开始
       int i;
@@ -522,7 +652,7 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
           play_mode_switch();
       }
     }
-    else control(3);
+    //else control(3);
   }
   icsm=FindCSMbyID(CSM_root()->idle_id);
   if (icsm)
@@ -648,6 +778,7 @@ void Killer(void)
   FreeWS(ws_song_name);
   save_his();
   mfree(list_text);
+  mfree(name_list);
   RemoveKeybMsgHook((void *)my_keyhook);
   kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
 }
@@ -699,6 +830,7 @@ int main(char *initday)
   char dummy[sizeof(MAIN_CSM)];
   InitConfig();
   list_text=malloc(16384);
+  name_list=malloc(1024*sizeof(LIST_SONG_NAME));
   sndVolume=defau_vol;
   screenw=ScreenW()-1;
   screenh=ScreenH()-1;

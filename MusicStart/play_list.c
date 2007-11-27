@@ -8,10 +8,45 @@ extern const char g_path[128];
 extern char procfile[128];
 extern int playhandle;
 extern char *list_text;
+extern LIST_SONG_NAME *name_list;
+//extern char **pp_list; //该指向指针的指针存储每首歌的位置
 char list_path[128];
 int list_size=0;
 char *p_list; //该指针指向当前正在播放的歌曲
+//int some_num_in_list;
+int SONG_NUM_NOW=0;
+int SONG_ALL=0; //列表歌曲总数
 
+
+void get_song_point(void)
+{
+  char *pp;
+  pp=list_text;
+  int i=0;
+	while(*(pp+2))
+  {
+    if((*(pp+1)==':')&&(*(pp+2)=='\\'))//以":\"为标记
+    {
+      (name_list+i)->id=i;
+    	(name_list+i)->p_name=pp;
+    	i++;
+    }
+    pp++;
+  }
+  SONG_ALL=i-1;
+}
+  
+
+void check_song_now(void)
+{
+	int i=0;
+	for(;i<SONG_ALL;i++)
+	{
+		if((name_list+i)->p_name==p_list)
+			break;
+	}
+	SONG_NUM_NOW=i;
+}
 
 void get_currect_song_name(void)
 {
@@ -20,7 +55,7 @@ void get_currect_song_name(void)
   int c;
   int i=0;
   char ss[128];
-  int is_1st_utf8=0;         
+  int is_1st_utf8=0;
   while(*p)
   {
     if((*(p+1)==':')&&(*(p+2)=='\\'))//以":\"为标记
@@ -28,6 +63,7 @@ void get_currect_song_name(void)
     p++;
   }
   p_list=p;
+  check_song_now();
   while((*p!=0)&&(*p!='\n'))
   {
     c=*p;
@@ -119,7 +155,9 @@ void load_list(int type) //0: load his fail, 1:load his succ... 2:reload
   }
   if (list_size>=0)
     list_text[list_size]=0;
-    
+
+  get_song_point();
+
   if(type==0||type==2) //load his fail or reload
   {
     p_list=list_text; //初始化一次
@@ -130,7 +168,10 @@ void load_list(int type) //0: load his fail, 1:load his succ... 2:reload
     char *p=strstr(list_text,procfile); //转到列表中的位置
     if(*p)
       p_list=p;
+    check_song_now();
   }
+  
+
 }
 
 
@@ -201,4 +242,8 @@ void play_shuff(void)
     control(0);
   }
 }
+
+/****************************************************
+
+****************************************************/
 
