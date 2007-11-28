@@ -46,7 +46,9 @@
 #define LNG_MODE_B2T  "倒序循环"
 #define LNG_MODE_SHUF "随机播放"
 
-#define LNG_AUTO_SHUTDOWN "自动关机已激活"
-#define LNG_AUTO_QUIT "自动退出已激活"
+//#define LNG_AUTO_SHUTDOWN "自动关机已激活"
+//#define LNG_AUTO_QUIT "自动退出已激活"
+#define LNG_SWITCHOFF_TIME "自动关机: "
+#define LNG_EXIT_TIME "自动退出: "
 
 #endif
