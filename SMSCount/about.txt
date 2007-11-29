@@ -1,5 +1,5 @@
-;短信记数器 v3.6
-;SMSCount v3.6
+;短信记数器 v3.7
+;SMSCount v3.7
 ;(c) starfriend，lisugar，binghelingxi
 ;(!) ELFPack
 
