@@ -325,7 +325,6 @@ GprsD/config_data.c -text
 GprsD/func.asm -text
 GprsD/main.c -text
 GprsD/test.xcl -text
-/IRAWork.7z -text
 IdleLinks/IdleLinks.ewp -text
 IdleLinks/IdleLinks.eww -text
 IdleLinks/IdleLinks.h -text
