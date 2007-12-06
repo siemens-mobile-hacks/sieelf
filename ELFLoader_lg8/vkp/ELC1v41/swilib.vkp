@@ -613,9 +613,13 @@
 08E4: 0xA0503384   ; 239: int EEFullDeleteBlock(unsigned int block,int cepid,int msg)
 08E8: 0xA05034F0   ; 23A: int EEFullCreateBlock(unsigned int block,int size,int version,int cepid,int msg)
 08EC: 0xA09852CB   ; 23B: void DisableIconBar(int disable)
+;8F0:              ; 23C:  __arm int SetCurrentGPRSProfile(int profile)
+08F4: 0xA0F68B05   ; 23D:  __thumb void MD5_Init(MD5_CTX *c)
+08F8: 0xA0F68775   ; 23E:  __thumb void MD5_Update(MD5_CTX *c, const void *data, unsigned long len)
+08FC: 0xA0F68A0D   ; 23F:  __thumb void MD5_Final(unsigned char *md, MD5_CTX *c)
+
+0900: 0xA0F69495   ; 240:  __thumb char *MD5_Hash(const unsigned char *data, unsigned long n, unsigned char *md)
 #pragma disable old_equal_ff
 +0
 
 ;********************************************************************************
-
-;locale=chinese
