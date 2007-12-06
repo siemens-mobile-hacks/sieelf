@@ -2461,6 +2461,7 @@ inc/bn.h -text
 inc/cfg_items.h -text
 inc/crypto.h -text
 inc/gpslogger_ipc.h -text
+inc/md5.h -text
 inc/mplayer.h -text
 inc/playsound.h -text
 inc/png.h -text
