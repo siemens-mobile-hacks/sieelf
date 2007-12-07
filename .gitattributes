@@ -1371,6 +1371,16 @@ alarm/new_alarm/new_alarm.ewp -text
 alarm/new_alarm/new_alarm.eww -text
 alarm/new_alarm/test.xcl -text
 alarm/pack.cmd -text
+alerts2/alerts.dep -text
+alerts2/alerts.ewd -text
+alerts2/alerts.ewp -text
+alerts2/alerts.eww -text
+alerts2/conf_loader.c -text
+alerts2/conf_loader.h -text
+alerts2/config_data.c -text
+alerts2/func.asm -text
+alerts2/main.c -text
+alerts2/test.xcl -text
 big_digital_clock/big_digital_clock.ewp -text
 big_digital_clock/big_digital_clock.eww -text
 big_digital_clock/conf_loader.c -text
