@@ -13,7 +13,7 @@ extern const unsigned int min;
 extern const unsigned int max;
 extern const unsigned int minute;
 extern const unsigned int minute2;
-
+extern const unsigned int x;
 extern const char fname[128];
 
 TDate date; 
@@ -114,7 +114,7 @@ if(time.min==minute2&&setp)
   ws_2str(ws,c,30);
   pc=&c[0];
   
-  switch(*(pc+time.hour))
+  switch(*(pc+time.hour+x))
   {
   case '1':
   SetProfile(0);

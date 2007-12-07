@@ -28,3 +28,6 @@ __root const unsigned int minute2=0;
 
 __root const CFG_HDR cfghdr15={CFG_STR_UTF8,"Address",3,127};
 __root const char fname[128]="0:\\ZBIN\\ACP\\";
+
+__root const CFG_HDR cfghdr16={CFG_UINT,"fix",0,59};
+__root const unsigned int x=0;
