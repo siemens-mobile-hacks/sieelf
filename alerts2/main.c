@@ -6,14 +6,14 @@
 
 extern const int ch_bat;
 extern const int setp;
-
+extern const int twice;
 extern const unsigned int melody;
 extern const unsigned int melody2;
 extern const unsigned int min;
 extern const unsigned int max;
 extern const unsigned int minute;
 extern const unsigned int minute2;
-extern const unsigned int x;
+extern const unsigned int minute3;
 extern const char fname[128];
 
 TDate date; 
@@ -90,7 +90,7 @@ void Check()
 if (!IsCalling())
 {
 GetDateTime(&date,&time);
-if(time.min==minute)
+if(time.min==minute||(time.min==minute2&&twice))
 { 
   if (time.hour>min)
   {
@@ -101,7 +101,7 @@ if(time.min==minute)
   }
 }
 
-if(time.min==minute2&&setp)
+if(time.min==minute3&&setp)
 {
   WSHDR* ws = AllocWS(30);
   unsigned short *s;
@@ -114,7 +114,7 @@ if(time.min==minute2&&setp)
   ws_2str(ws,c,30);
   pc=&c[0];
   
-  switch(*(pc+time.hour+x))
+  switch(*(pc+time.hour+2))
   {
   case '1':
   SetProfile(0);

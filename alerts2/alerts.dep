@@ -5,49 +5,35 @@
   <configuration>
     <name>Debug</name>
     <outputs>
-      <file>$PROJ_DIR$\conf_loader.c</file>
-      <file>$PROJ_DIR$\Debug\Exe\blinker.d79</file>
-      <file>$PROJ_DIR$\Debug\Obj\blinker.pbd</file>
-      <file>$PROJ_DIR$\Debug\Obj\main.r79</file>
-      <file>$PROJ_DIR$\func.asm</file>
-      <file>$PROJ_DIR$\Debug\Obj\conf_loader.r79</file>
-      <file>$PROJ_DIR$\..\..\cfg_items.h</file>
       <file>$PROJ_DIR$\Debug\Obj\func.r79</file>
-      <file>$TOOLKIT_DIR$\config\lnkarm.xcl</file>
-      <file>$PROJ_DIR$\..\..\swilib.h</file>
-      <file>$PROJ_DIR$\Debug\Exe\alerts.d79</file>
-      <file>$PROJ_DIR$\Debug\Obj\alerts.pbd</file>
-      <file>$PROJ_DIR$\conf_loader.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\config_data.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\blinker.pbd</file>
+      <file>$PROJ_DIR$\Debug\Exe\blinker.d79</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
       <file>$PROJ_DIR$\Debug\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\func.asm</file>
+      <file>$PROJ_DIR$\Debug\Obj\config_data.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.r79</file>
+      <file>$TOOLKIT_DIR$\config\lnkarm.xcl</file>
+      <file>$PROJ_DIR$\..\..\cfg_items.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\music_illumination.pbd</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\alerts.pbd</file>
+      <file>$PROJ_DIR$\Debug\Exe\alerts.d79</file>
       <file>$TOOLKIT_DIR$\lib\dl4tptinl8n.r79</file>
       <file>$PROJ_DIR$\Debug\Obj\config_data.r79</file>
       <file>$PROJ_DIR$\main.c</file>
       <file>$PROJ_DIR$\config_data.c</file>
-      <file>$PROJ_DIR$\Debug\Obj\music_illumination.pbd</file>
-      <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\..\..\swilib.h</file>
       <file>$PROJ_DIR$\Debug\Exe\music_illumination.d79</file>
     </outputs>
     <file>
-      <name>$PROJ_DIR$\conf_loader.c</name>
-      <outputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 14</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 5</file>
-        </tool>
-      </outputs>
+      <name>$PROJ_DIR$\Debug\Obj\blinker.pbd</name>
       <inputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 12</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 9 6 12</file>
+          <name>BILINK</name>
+          <file> 7</file>
         </tool>
       </inputs>
     </file>
@@ -56,16 +42,7 @@
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 8 3 15</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Debug\Obj\blinker.pbd</name>
-      <inputs>
-        <tool>
-          <name>BILINK</name>
-          <file> 20</file>
+          <file> 9 8 15</file>
         </tool>
       </inputs>
     </file>
@@ -74,38 +51,20 @@
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 1 21 10</file>
+          <file> 2 21 14</file>
         </tool>
       </outputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\func.asm</name>
-      <outputs>
-        <tool>
-          <name>AARM</name>
-          <file> 7</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Debug\Obj\alerts.pbd</name>
-      <inputs>
-        <tool>
-          <name>BILINK</name>
-          <file> 14 13 20</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\main.c</name>
+      <name>$PROJ_DIR$\conf_loader.c</name>
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 20</file>
+          <file> 4</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 3</file>
+          <file> 19</file>
         </tool>
       </outputs>
       <inputs>
@@ -115,7 +74,57 @@
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 9 6 12</file>
+          <file> 20 10 12</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\func.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 0</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Obj\music_illumination.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 4 6 7</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Obj\alerts.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 4 6 7</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 7</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 8</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 12</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 20 10 12</file>
         </tool>
       </inputs>
     </file>
@@ -124,7 +133,7 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 13</file>
+          <file> 6</file>
         </tool>
         <tool>
           <name>ICCARM</name>
@@ -134,16 +143,7 @@
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 6</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Debug\Obj\music_illumination.pbd</name>
-      <inputs>
-        <tool>
-          <name>BILINK</name>
-          <file> 14 13 20</file>
+          <file> 10</file>
         </tool>
       </inputs>
     </file>
@@ -155,84 +155,52 @@
   <configuration>
     <name>Release</name>
     <outputs>
+      <file>$TOOLKIT_DIR$\lib\dl4tpainl8n.r79</file>
+      <file>$PROJ_DIR$\Release\List\config_data.lst</file>
       <file>$PROJ_DIR$\Release\Exe\alerts2.elf</file>
-      <file>$PROJ_DIR$\..\inc\zlib.h</file>
-      <file>$PROJ_DIR$\Release\List\conf_loader.lst</file>
-      <file>$PROJ_DIR$\Release\Exe\alerts.elf</file>
-      <file>$PROJ_DIR$\Release\List\alerts2.map</file>
-      <file>$PROJ_DIR$\conf_loader.c</file>
-      <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\Release\Obj\alerts.pbd</file>
       <file>$PROJ_DIR$\..\inc\sha.h</file>
       <file>$PROJ_DIR$\Release\Obj\conf_loader.pbi</file>
-      <file>$PROJ_DIR$\Release\Obj\config_data.pbi</file>
-      <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Release\List\conf_loader.lst</file>
+      <file>$PROJ_DIR$\Release\Obj\func.r79</file>
+      <file>$PROJ_DIR$\Release\List\alerts2.map</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
       <file>$PROJ_DIR$\test.xcl</file>
       <file>$PROJ_DIR$\Release\List\main.lst</file>
-      <file>$PROJ_DIR$\Release\Obj\alerts.pbd</file>
-      <file>$PROJ_DIR$\Release\Obj\conf_loader.r79</file>
-      <file>$PROJ_DIR$\Release\Obj\main.r79</file>
-      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
-      <file>$PROJ_DIR$\func.asm</file>
-      <file>$PROJ_DIR$\..\inc\zconf.h</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
-      <file>$TOOLKIT_DIR$\lib\dl4tpainl8n.r79</file>
-      <file>$PROJ_DIR$\Release\Exe\alerts2elf</file>
-      <file>$PROJ_DIR$\Release\List\config_data.lst</file>
       <file>$PROJ_DIR$\..\inc\pngconf.h</file>
       <file>$PROJ_DIR$\Release\Obj\config_data.r79</file>
-      <file>$PROJ_DIR$\conf_loader.h</file>
-      <file>$PROJ_DIR$\..\inc\swilib.h</file>
-      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\Release\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\Release\Obj\config_data.pbi</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\func.asm</file>
+      <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
       <file>$PROJ_DIR$\..\inc\crypto.h</file>
       <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\Release\Exe\alerts2elf</file>
+      <file>$PROJ_DIR$\Release\Obj\main.r79</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
       <file>$PROJ_DIR$\main.c</file>
-      <file>$PROJ_DIR$\Release\Obj\func.r79</file>
       <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\Release\Exe\alerts.elf</file>
     </outputs>
     <file>
       <name>$PROJ_DIR$\Release\Exe\alerts2.elf</name>
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 4</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 11 14 24 31 15 19</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release\Exe\alerts.elf</name>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 11 14 24 31 15 20</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\conf_loader.c</name>
-      <outputs>
-        <tool>
-          <name>BICOMP</name>
           <file> 8</file>
         </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 14 2</file>
-        </tool>
       </outputs>
       <inputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 26 29 1 18 23 27 6 28 7 16 25</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 26 29 1 18 23 27 6 28 7 16 25</file>
+          <name>XLINK</name>
+          <file> 11 15 14 7 27 23</file>
         </tool>
       </inputs>
     </file>
@@ -241,7 +209,7 @@
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 8 9 10</file>
+          <file> 5 16 20</file>
         </tool>
       </inputs>
     </file>
@@ -250,16 +218,39 @@
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 0 4</file>
+          <file> 2 8</file>
         </tool>
       </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 15 6</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 25 22 18 28 13 9 29 21 4 10 24</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 25 22 18 28 13 9 29 21 4 10 24</file>
+        </tool>
+      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\func.asm</name>
       <outputs>
         <tool>
           <name>AARM</name>
-          <file> 31</file>
+          <file> 7</file>
         </tool>
       </outputs>
     </file>
@@ -268,7 +259,7 @@
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 11 14 24 31 15 19</file>
+          <file> 11 15 14 7 27 23</file>
         </tool>
       </inputs>
     </file>
@@ -277,21 +268,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 10</file>
+          <file> 20</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 15 12</file>
+          <file> 27 12</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 26 29 1 18 23 27 6 28 7 16 25</file>
+          <file> 25 22 18 28 13 9 29 21 4 10 24</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 26 29 1 18 23 27 6 28 7 16 25</file>
+          <file> 25 22 18 28 13 9 29 21 4 10 24</file>
         </tool>
       </inputs>
     </file>
@@ -300,21 +291,30 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 9</file>
+          <file> 16</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 24 22</file>
+          <file> 14 1</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 16</file>
+          <file> 10</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 16</file>
+          <file> 10</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release\Exe\alerts.elf</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 11 15 14 7 27 0</file>
         </tool>
       </inputs>
     </file>
