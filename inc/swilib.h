@@ -19,6 +19,7 @@ typedef int jmp_buf[11];
 #include "png.h"
 #include "rsa.h"
 #include "sha.h"
+#include "md5.h"
 
 #define LMAN_CONNECT_CNF 0x80
 #define LMAN_CONNECT_REJ_IND 0x81
