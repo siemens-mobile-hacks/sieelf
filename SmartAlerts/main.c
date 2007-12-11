@@ -134,13 +134,13 @@ if(time.min==minute3)
   }
 }
 
-GBS_StartTimerProc(&mytmr,262*60,Check);
+GBS_StartTimerProc(&mytmr,216*60,Check);
 }
 
 
 void start()
 { 
-GBS_StartTimerProc(&mytmr,262*60,Check); 
+GBS_StartTimerProc(&mytmr,216*60,Check); 
 } 
 
 
