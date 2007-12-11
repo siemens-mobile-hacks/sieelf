@@ -2592,6 +2592,7 @@
         <option>
           <name>CCDefines</name>
           <state>NDEBUG</state>
+          <state>DAEMON</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -2853,7 +2854,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>DAEMON</state>
         </option>
         <option>
           <name>AList</name>

@@ -2,7 +2,6 @@
 #include "..\inc\cfg_items.h"
 #include "conf_loader.h"
 
-#define DAEMON
 
 const char *successed_config_filename="";
 
@@ -52,15 +51,8 @@ int LoadConfigData(const char *fname)
 
 void InitConfig()
 {
-#ifndef DAEMON
-  if (LoadConfigData("4:\\ZBin\\etc\\TurnOff_gui.bcfg")<0)
-  {
-    LoadConfigData("0:\\ZBin\\etc\\TurnOff_gui.bcfg");
-  }
-#else
   if (LoadConfigData("4:\\ZBin\\etc\\TurnOff_d.bcfg")<0)
   {
     LoadConfigData("0:\\ZBin\\etc\\TurnOff_d.bcfg");
   }  
-#endif
 }

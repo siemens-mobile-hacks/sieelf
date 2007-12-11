@@ -2,14 +2,15 @@
 #include "..\inc\cfg_items.h"
 #include "conf_loader.h"
 
-#define DAEMON   //后台版本必须，加注释为直接启动版本，其他2个文件都要修改
 
-#ifdef DAEMON
+TDate date; 
+TTime time; 
+
 typedef struct
 {
   CSM_RAM csm;
 }MAIN_CSM;
-#endif
+
 
 extern void kill_data(void *p, void (*func_p)(void *));
 
@@ -21,26 +22,13 @@ extern const char ICONS_RB[128];
 extern const char ICONS_SR[128];
 extern const char ICONS_UL[128];
 
-//extern const int SND_ENA;
-//extern const unsigned int VOLUME;
-//extern const char SND_SD[128];
-//extern const char SND_RB[128];
-//extern const char SND_SR[128];
-//extern const char SND_UL[128];
-
 extern const unsigned int CLOSE_BTN;
 extern const int MODE;
-
 extern const int DIRECT;
-//extern const int CHANGE_PROFILE;
-//extern const unsigned int set_pr1;
-//extern const unsigned int set_pr2;
-
-#ifdef DAEMON
 extern const unsigned int CALL_BTN;
 extern const unsigned int CALL_BTN2;
 extern const int ENA_LOCK;
-#endif
+
 int mode;
 // 0-mode deal 
 // 1-off
@@ -147,33 +135,7 @@ void DoIt(void) //功能定位
   MAINCSM_ID=0;
 }
 
-/*
-double GetWavkaLength(const char *fname) //actors
-{
-  int f;
-  unsigned int ul;
-  
-  int DataLength;//4
-  int BytePerSec;//28  
-  
-  if ((f=fopen(fname,A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
-  {
-    lseek(f,4,S_SET,&ul,&ul);
-    fread(f,&DataLength,sizeof(DataLength),&ul);
-    
-    lseek(f,28,S_SET,&ul,&ul);
-    fread(f,&BytePerSec,sizeof(BytePerSec),&ul);
-    
-    fclose(f,&ul);
-    
-    return (((((double)DataLength/(double)BytePerSec)*(double)1000)*0.216)+50);
-  }
-    else
-      return 0;
-}
 
-GBSTMR mytmr;
-*/
 int method5(MAIN_GUI *data, GUI_MSG *msg)
 {
   DirectRedrawGUI();
@@ -275,13 +237,7 @@ void maincsm_oncreate_GUI(CSM_RAM *data)
   csm->gui_id=CreateGUI(main_gui);
 }
 
-#ifndef DAEMON
-static void ELF_KILLER(void)
-{
-  extern void *ELF_BEGIN;
-  kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
-}
-#endif
+
 void maincsm_onclose_GUI(CSM_RAM *csm)
 {
 #ifndef DAEMON
@@ -339,7 +295,7 @@ sizeof(MAIN_CSM_GUI),
   }
 };
 
-#ifdef DAEMON
+
 void Check()
 {
   LockSched();
@@ -465,19 +421,14 @@ static void UpdateCSMname(void)
 {
   wsprintf((WSHDR *)(&MAINCSM_d.maincsm_name),"TurnOff_d");
 }
-#endif
 
-void UpdateCSMname_GUI(void)
-{
-  wsprintf((WSHDR *)(&MAINCSM.maincsm_name_GUI),"TurnOff");
-}
 
 int main()
 {
   LockSched();
   InitConfig();  
   
-#ifdef DAEMON
+
   CSM_RAM *save_cmpc;
   char dummy[sizeof(MAIN_CSM)];
   UpdateCSMname();
@@ -489,7 +440,7 @@ int main()
     CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
     AddKeybMsgHook((void *)my_keyhook);
   #else
-      if (!AddKeybMsgHook((void *)my_keyhook)) 
+      if (!AddKeybMsgHook_end((void *)my_keyhook)) 
       {
         ShowMSG(1, (int) "TurnOff_d. Unable to register a handler!"); 
         SUBPROC((void *)Killer);
@@ -503,12 +454,6 @@ int main()
       }
   #endif
     
-#else  
-  mode=MODE;      
-  char dummy[sizeof(MAIN_CSM_GUI)];
-  UpdateCSMname_GUI();
-  MAINCSM_ID=CreateCSM(&MAINCSM.maincsm,dummy,0);
-#endif  
   
   UnlockSched();
   return 0;
