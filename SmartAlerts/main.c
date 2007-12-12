@@ -6,13 +6,13 @@
 #define TMR_SECOND 216
 
 extern const int ch_bat;
-extern const int twice;
+
 extern const unsigned int melody;
 extern const unsigned int melody2;
 extern const unsigned int min;
 extern const unsigned int max;
 extern const unsigned int minute;
-extern const unsigned int minute2;
+
 //extern const unsigned int filter;
 extern const unsigned int minute3;
 extern const char day1[25];
@@ -23,10 +23,48 @@ extern const char day5[25];
 extern const char day6[25];
 extern const char day7[25];
 
+
+extern const int runfile;
+extern const char name1[64];
+extern const unsigned int rhour1;
+extern const unsigned int rminute1;
+extern const char name2[64];
+extern const unsigned int rhour2;
+extern const unsigned int rminute2;
+extern const char name3[64];
+extern const unsigned int rhour3;
+extern const unsigned int rminute3;
+extern const char name4[64];
+extern const unsigned int rhour4;
+extern const unsigned int rminute4;
+extern const char name5[64];
+extern const unsigned int rhour5;
+extern const unsigned int rminute5;
+
+
+
 TDate date; 
 TTime time; 
 
 GBSTMR mytmr;
+
+
+int runFile(char *file) 
+{
+  if (file) 
+  {
+    if (strlen(file)) 
+    {
+      WSHDR *ws;
+      ws=AllocWS(64);
+      str_2ws(ws, file, 64);
+      ExecuteFile(ws, 0, 0);
+      FreeWS(ws);
+      return 1;
+    }
+  }
+  return 0;
+}
 
 
 void Check()
@@ -36,7 +74,7 @@ if (!IsCalling())
 {
 	GetDateTime(&date,&time);
 
-	if(time.min==minute||(time.min==minute2&&twice))
+	if(time.min==minute)
 	{ 
 		if (time.hour>min)
 		{
@@ -47,18 +85,34 @@ if (!IsCalling())
 			}
 		}
 	}
-        
 
-        if(ch_bat)
-	{
-          if (*RamCap()==100)
-          {
-          PlaySound(1,0,0,melody2,0);
-          *RamCap()==99;
-          }
-	}
-
-
+        if(runfile)
+        {
+        if(!(time.hour=0&&time.min==0))
+        {
+	if(time.hour=rhour1&&time.min==rminute1)
+        {
+          runFile((char*)name1);
+        }
+	if(time.hour=rhour2&&time.min==rminute2)
+        {
+          runFile((char*)name2);
+        }
+	if(time.hour=rhour3&&time.min==rminute3)
+        {
+          runFile((char*)name3);
+        }
+	if(time.hour=rhour4&&time.min==rminute4)
+        {
+          runFile((char*)name4);
+        } 
+	if(time.hour=rhour5&&time.min==rminute5)
+        {
+          runFile((char*)name5);
+        }
+        }
+        }
+        void Cap();
 }
 
 if(time.min==minute3)
@@ -137,6 +191,18 @@ if(time.min==minute3)
 GBS_StartTimerProc(&mytmr,216*60,Check);
 }
 
+void Cap()
+{
+if (ch_bat)
+{
+if (*RamCap()==100){
+  PlaySound(1,0,0,melody2,0);
+  *RamCap()==99;
+}
+}
+GBS_StartTimerProc(&mytmr,216*60,Check);
+}
+
 
 void start()
 { 
@@ -182,6 +248,7 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
     }
   }
   return(1);
+  
 }  
 
 
@@ -193,6 +260,7 @@ static void maincsm_oncreate(CSM_RAM *data)
 static void Killer(void)
 {
   extern void *ELF_BEGIN;
+  GBS_DelTimer(&mytmr);
   kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr()); 
 }
 
@@ -240,16 +308,18 @@ static void UpdateCSMname(void)
 
 int main()
 {
-  InitConfig(); 
-  start();
-  LockSched();
   CSM_RAM *save_cmpc;
   char dummy[sizeof(MAIN_CSM)];
+  InitConfig(); 
   UpdateCSMname();
+ 
+  LockSched(); 
   save_cmpc=CSM_root()->csm_q->current_msg_processing_csm;
   CSM_root()->csm_q->current_msg_processing_csm=CSM_root()->csm_q->csm.first;
   CreateCSM(&MAINCSM_d.maincsm,dummy,0);
   CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
   UnlockSched();
+  
+  start();
   return 0;
 }
