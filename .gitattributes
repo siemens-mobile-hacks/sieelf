@@ -359,6 +359,14 @@ IdleLinks_Daemon_CN/config_data.c -text
 IdleLinks_Daemon_CN/func.asm -text
 IdleLinks_Daemon_CN/main.c -text
 IdleLinks_Daemon_CN/test.xcl -text
+Joke/Joke.ewp -text
+Joke/Joke.eww -text
+Joke/conf_loader.c -text
+Joke/conf_loader.h -text
+Joke/config_data.c -text
+Joke/func.asm -text
+Joke/main.c -text
+Joke/test.xcl -text
 KCB/conf_loader.c -text
 KCB/conf_loader.h -text
 KCB/config_data.c -text
