@@ -413,7 +413,7 @@ int main(void)
   UpdateCSMname();
   screenw=ScreenW()-1;
   screenh=ScreenH()-1;
-  ws_sh=AllocWS(32);
+  ws_sh=AllocWS(128);
   LockSched();
   
   save_cmpc=CSM_root()->csm_q->current_msg_processing_csm;
