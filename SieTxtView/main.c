@@ -4,6 +4,12 @@
 #include "code.h"
 #include "bookmark.h"
 
+#ifdef NEWSGOLD
+#define DEFAULT_DISK "4"
+#else
+#define DEFAULT_DISK "0"
+#endif
+
 /* 待完成
   -页码与边界控制
   -字符集控制
@@ -83,12 +89,13 @@ int bmknum;              	//数量
 
 /*---------屏幕----------*/
 int winx = 0, winy = 0, winw = 0, winh = 0;
+int editlen = 0;		    //编辑初始字节数
 int viewlen = 0;                    //一次性转换的字节数
 int bytelen = 0;										//显示缓存字节数
 int viewpos = 0;                    //显示起始缓存偏移
-int viewrow = 0;                		//
-short showinfo = 0;
-WSHDR *sbw;													//屏幕显存
+int viewrow = 0;                    //
+short bShowStatusBar = 0;
+WSHDR *sbw;			    //屏幕显存
 
 extern const int charset;				//编码
 extern const int space;					//行间距
@@ -102,7 +109,8 @@ extern const char fontcolor[4];	//字体颜色
 extern const char bgcolor[4];		//背景颜色
 extern const char statbgcolor[4]; 	//状态栏背景颜色
 extern const char statfontcolor[4]; //状态栏字体颜色
-extern const char LAST[];				//上次打开的文件
+extern const char sbcolor[4]; 	//滚动条颜色
+extern const char sbthumbcolor[4]; //滚动块颜色
 /*---------end-----------*/
 /*
 ===============================
@@ -222,7 +230,7 @@ int openFile(char *filename) {
 int loadBuffer(void) {
 	
 	if (curblock && lseek(fd, curblock->offset, S_SET, &ul, &ul) == curblock->offset) {
-		char *ms = malloc (50);
+//		char *ms = malloc (50);
 		char *tb = NULL;
 		if ((rlen = llen = fread(fd, buff, BUF_LEN, &ul)) > 0) { 
   		switch (codetype) {
@@ -289,6 +297,34 @@ int gotoPos(int offset) {
 	}
 }
 
+void LoadLastFile(char *szFileName)
+{
+  int plhandle;
+  unsigned int err;
+  plhandle = fopen( DEFAULT_DISK ":\\ZBin\\SieTxtView\\config.txt", A_ReadOnly + A_BIN, P_READ, &err );
+  if ( plhandle != -1 )
+  {
+    fread( plhandle, szFileName, 128, &err );
+  }
+  fclose( plhandle, &err );
+}
+
+void SaveLastFile(char *szFileName)
+{
+#pragma swi_number=133
+__swi __arm int StrCmpNoCase(const char *,const char *);
+
+  if(StrCmpNoCase(szFileName, procfile))
+  {
+    int plhandle;
+    unsigned int err;
+    unlink(DEFAULT_DISK ":\\ZBin\\SieTxtView\\config.txt",&err);
+    plhandle = fopen( DEFAULT_DISK ":\\ZBin\\SieTxtView\\config.txt", A_ReadWrite + A_BIN + A_Append + A_Create, P_READ + P_WRITE, &err );
+    fwrite( plhandle, szFileName, 128, &err );
+    fclose( plhandle, &err );
+  }
+}
+
 int InitSettings();
 void KillIndex();
 int loadFile(char *filename) {
@@ -311,6 +347,7 @@ int loadFile(char *filename) {
     	curblock = fileindex->next;
     	loadBuffer();
     }
+    SaveLastFile(filename);
     strcpy(procfile, filename);
  		UnlockSched();
  		return 1;
@@ -351,8 +388,9 @@ int InitSettings() {
   adjustWindowsSize();
   InitConfig();
   viewrow = div(winh, GetFontYSIZE(font) + space);
-  viewlen = div(winw, GetSymbolWidth(' ', font)) * viewrow;
-  viewlen = viewlen >> 1 << 1;
+//  viewlen = div(winw, GetSymbolWidth(' ', font)) * viewrow;
+//  viewlen = viewlen >> 1 << 1;
+  viewlen = 660;
   if (sbw) {
   	FreeWS(sbw);
   	sbw = NULL;
@@ -399,6 +437,7 @@ void ElfKiller(void) {
 void rowFluctuate(int param) {
 	
 	if (!buffloaded || param == 0) return;
+        unsigned short usChar = 0;
 	int i = 0, curwidth = 0, offset = viewlen;
 	if (param < 0) {
 		if (viewpos - viewlen < 0) {
@@ -411,7 +450,7 @@ void rowFluctuate(int param) {
 					return;
 				}
 			}
-			else if (viewpos < 0) {
+			else if (viewpos <= 0) {
 				viewpos = 0;
 				return;
 			}
@@ -421,7 +460,8 @@ void rowFluctuate(int param) {
 		}
 		str2ws_unicode(sbw, buff + viewpos - offset, offset);
     for (i = sbw->wsbody[0]; i > 0; i--) {
-      if (sbw->wsbody[i] == 0x0a && i > 1 && sbw->wsbody[i - 1] == 0x0d) {
+      usChar = sbw->wsbody[i];
+      if (usChar == 0x0a && i > 1 && sbw->wsbody[i - 1] == 0x0d) {
       	if (param + 1 == 0) {
       		if (i != sbw->wsbody[0]) {
       			param++;
@@ -435,12 +475,14 @@ void rowFluctuate(int param) {
 				i--;
       	goto L_CALROW1;
       }
-     	else if (sbw->wsbody[i] == 0x0d) {
+     	else if (usChar == 0x0d) {
      		goto L_CALROW1;
      	}
       else {
-        curwidth += GetSymbolWidth(sbw->wsbody[i], font);
-        if (curwidth > winw) {
+        if (usChar < 0x20)
+          usChar = 0x20;
+        curwidth += GetSymbolWidth(usChar, font);
+        if (curwidth+3 > winw) {
         	i++;
         L_CALROW1:
           curwidth = 0;
@@ -454,13 +496,16 @@ void rowFluctuate(int param) {
 	else if (param > 0) {
 		str2ws_unicode(sbw, buff + viewpos, viewlen > rlen ? rlen : viewlen);
     for (i = 1; i <= sbw->wsbody[0]; i++) {
-      if (sbw->wsbody[i] == 0x0a || sbw->wsbody[i] == 0x0d) {
+      usChar = sbw->wsbody[i];
+      if (usChar == 0x0a || usChar == 0x0d) {
         if (i < sbw->wsbody[0] && sbw->wsbody[i + 1] == 0x0a) i++;
         goto L_CALROW2;
       }
       else {
-        curwidth += GetSymbolWidth(sbw->wsbody[i], font);
-        if (curwidth > winw) {
+        if (usChar < 0x20)
+          usChar = 0x20;
+        curwidth += GetSymbolWidth(usChar, font);
+        if (curwidth+3 > winw) {
         	i--;
         L_CALROW2:
           curwidth = 0;
@@ -493,38 +538,42 @@ void rowFluctuate(int param) {
   rowFluctuate(param);
 }
 
-/*
 //卷动条
 void DrawIndication(void) {
-	
-	int progress =  winh * ((viewpos / curblock->uc16len) * (curblock->offset / fileindex->datalen));
-	progress = progress * , ;
-	
-	DrawRectangle(winw + winx - 3,
+#if 0	
+  int progress = div((viewpos + viewlen) * 1000, curblock->uc16len);
+  if (progress <= 0) progress = 1;
+  int factor = div((curblock->offset + curblock->datalen) * 1000, fileindex->datalen);
+  if (factor <= 0) factor = 1;
+	progress = progress * factor;
+	progress /= 1000;
+  if (progress > 1000) progress = 1000;
+#endif
+	DrawLine(winw + winx - 2,
                 winy,
-                winw + winx - 1,
+                winw + winx - 2,
                 winy + winh,
-                1,     //border-type 0=outline 1=dotted 2=inline
-                GetPaletteAdrByColorIndex(3),
-                GetPaletteAdrByColorIndex(3));
-  int indh = div(winh, div(fileindex->uc16len, viewlen));
-  if (indh < 3) indh = 3;
-  int indy = div(winh, progress);
-  DrawRectangle(winw + winx - 3,
+                0,     //border-type 0=outline 1=dotted 2=inline
+                sbcolor);
+  int list_cnt = div(fileindex->uc16len, viewlen);
+  int indh = div(winh, list_cnt);
+  if (indh < 6) indh = 6;
+  int indy = div((curblock->offset + viewpos)*(winh - indh), fileindex->uc16len);
+  DrawRoundedFrame(winw + winx - 3,
                 winy + indy,
                 //winy + 70,
                 winw + winx - 1,
                 winy + indy + indh,
                 //winy + 100,
-                0,     //border-type 0=outline 1=dotted 2=inline
-                GetPaletteAdrByColorIndex(5),
-                GetPaletteAdrByColorIndex(5));
+                0,0,0,     //border-type 0=outline 1=dotted 2=inline
+                sbthumbcolor,
+                sbthumbcolor);
 }
-*/
+
 //状态栏
 void DrawStateBar(void) {
     DrawRectangle(winx,
-                winy + winh - GetFontYSIZE(FONT_SMALL_ITALIC_BOLD),
+                winy + winh - GetFontYSIZE(statfont),
                 winx + winw,
                 winy + winh,
                 0,
@@ -537,17 +586,24 @@ void DrawStateBar(void) {
 	TDate d;
   TTime t;
   GetDateTime(&d, &t);
-  int progress = div((viewpos + viewlen) * 1000, curblock->uc16len);
+/*  int progress = div((viewpos + viewlen) * 1000, curblock->uc16len);
   if (progress <= 0) progress = 1;
   int factor = div((curblock->offset + curblock->datalen) * 1000, fileindex->datalen);
   if (factor <= 0) factor = 1;
 	progress = progress * factor;
 	progress /= 1000;
-  if (progress > 1000) progress = 1000;
-  wsprintf(ws, "%d%d%d.%d%c %d%d:%d%d", progress / 1000, progress / 100 % 10, progress / 10 % 10, progress % 10, '%',
-  																			t.hour / 10, t.hour % 10, t.min / 10, t.min % 10);
+  if (progress > 1000) progress = 1000;*/
+#if 1
+  wsprintf(ws, "%02d%% %02d.%02d %02d:%02d", *RamCap(), d.month, d.day, t.hour, t.min);
+#else
+  int list_cnt = div(fileindex->uc16len, viewlen);
+  int indh = div(list_cnt, winh);
+  if (indh < 3) indh = 3;
+  int indy = udiv(viewlen,udiv(list_cnt,viewpos) * winh);
+  wsprintf(ws, "%d %d %d", list_cnt, indh, indy);
+#endif
 	DrawString(ws,
-							winx, winy + winh - GetFontYSIZE(FONT_SMALL_ITALIC_BOLD), winx + winw - 1, winy + winh - 1,
+              winx, winy + winh - GetFontYSIZE(statfont), winx + winw - 1, winy + winh - 1,
               statfont,
               TEXT_ALIGNRIGHT,
               statfontcolor,
@@ -556,13 +612,6 @@ void DrawStateBar(void) {
               //GetPaletteAdrByColorIndex(bgcolor)
              );
 	FreeWS(ws);
-}
-
-//信息框
-void DrawInfoDialog(void) {
-	  char *s = malloc(100);
-	  ShowMSG(1, (int)s);
-	  mfree(s);
 }
 
 //主窗口
@@ -581,19 +630,23 @@ void DrawScreen(void) {     //显示位置bug
   str2ws_unicode(sbw, buff + viewpos, bytelen);
   WSHDR *tws = AllocWS(sbw->wsbody[0]);      //实际输出字符串，自动换行和行间距
   int curwidth = 0, drawrow = 0;
+  unsigned short usChar = 0;
   int i = 1, j = 1;
   for (i = 1; i <= sbw->wsbody[0]; i++) {
-    if (sbw->wsbody[i] == 0x0a || sbw->wsbody[i] == 0x0d) {
+    usChar = sbw->wsbody[i];
+    if (usChar == 0x0a || usChar == 0x0d) {
       if (i < sbw->wsbody[0] && sbw->wsbody[i + 1] == 0x0a) i++;
       goto L_DRAWCHAR;
     }
     else {
-      curwidth += GetSymbolWidth(sbw->wsbody[i], font);
-      if (curwidth > winw) {
+      if (usChar < 0x20)
+        usChar = 0x20;
+      curwidth += GetSymbolWidth(usChar, font);
+      if (curwidth+3 > winw) {
       	i--;
       L_DRAWCHAR:
         DrawString(tws,
-                    1, 1 + winy + (space + GetFontYSIZE(font)) * drawrow++, (curwidth << 1), winy + winh - 1,
+                    1, 3 + winy + (space + GetFontYSIZE(font)) * drawrow++, (curwidth << 1), winy + winh - 1,
                     font,
                     TEXT_ALIGNLEFT,
                     fontcolor,
@@ -601,9 +654,11 @@ void DrawScreen(void) {     //显示位置bug
                   );
         curwidth = 0;
         j = 1;
+        if(1 + winy + (space + GetFontYSIZE(font)) * (drawrow+1) > winh)
+          break;
       }
       else {
-      	tws->wsbody[j] = sbw->wsbody[i];
+      	tws->wsbody[j] = usChar;
       	tws->wsbody[0] = j++; 
       }
     }
@@ -613,10 +668,12 @@ void DrawScreen(void) {     //显示位置bug
     goto L_DRAWCHAR;
   }
   FreeWS(tws);
+  editlen = i<<1;
+  if (i > sbw->wsbody[0])
+    editlen -= 2;
   
-  //if (scroll) DrawIndication();
-  if (status) DrawStateBar();
-  //if (showinfo) DrawInfoDialog();
+  if ( status ) DrawIndication();
+  if ( bShowStatusBar ) DrawStateBar();
 }
 /*
 ===============================
@@ -648,6 +705,18 @@ SOFTKEYSTAB menu_skt = {
 void open_select_file_gui(int);
 int create_menu_goto(void);
 int create_menu_bookmark(void);
+void Free_BLIST(void);
+void QuitAppCallbackProc(int id)
+{
+  if( id )
+  {
+    GeneralFuncF1(1);
+    Quit_Required = 1;
+    GBS_SendMessage(MMI_CEPID,KEY_DOWN,RED_BUTTON);
+  }
+  else
+    Quit_Required = 0;
+}
 
 void mainmenu_open(GUI *data) {
   GeneralFuncF1(1);
@@ -657,12 +726,12 @@ void mainmenu_open(GUI *data) {
 
 void mainmenu_quit(GUI *data) {
   GeneralFuncF1(1);
-  Quit_Required = 1;
+  MsgBoxOkCancel(1,5062, QuitAppCallbackProc);
 }
 
 int add2bmk(void) {
   
-	if (!buffloaded) return 0;
+	if (!buffloaded || !fileindex->uc16len) return 0;
 	if (bookmark && bmknum == 0) {
 		bookmark[bmknum++] = curblock->offset + viewpos;
 		bookmark[bmknum++] = curblock->offset + viewpos;
@@ -732,7 +801,7 @@ void mainmenu_set(GUI *data){
 }
 
 void mainmenu_help(GUI *data){
-  ShowMSG(1, (int)"Siemens Text Viewer v0.3f\nby HanikLZ\n2007");
+  ShowMSG(1, (int)"Siemens Text Viewer v0.3f3\nby HanikLZ\nalong1976\n2007");
 }
 
 const MENUPROCS_DESC mainmenu_HNDLS[9] = {
@@ -887,8 +956,8 @@ int saveText(void) {
 	char *s = malloc(len);
 	ws2str_unicode(s, sbw, &len);
 	
-	maxlen = rlen - viewpos - bytelen;
-	rlen = rlen - bytelen + len;
+	maxlen = rlen - viewpos - editlen;
+	rlen = rlen - editlen + len;
 	if (rlen > BUF_LEN) {
 		mfree(tbuff);
 		tbuff = malloc(rlen);
@@ -896,7 +965,7 @@ int saveText(void) {
 	
 	memcpy(tbuff, buff, viewpos);
 	memcpy(tbuff + viewpos, s, len);
-	memcpy(tbuff + viewpos + len, buff + viewpos + bytelen, maxlen);
+	memcpy(tbuff + viewpos + len, buff + viewpos + editlen, maxlen);
 	mfree(s);
 	
 	maxlen = curblock->offset + llen;
@@ -1035,14 +1104,17 @@ int LaunchEditor(void) {
 	if (!buffloaded) return 0;
   void *ma = malloc_adr();
   void *eq;
+  WSHDR *tws = AllocWS((editlen>>1)+1);
   EDITCONTROL ec;
   PrepareEditControl(&ec);
   eq = AllocEQueue(ma, mfree_adr());
-  ConstructEditControl(&ec, 4, 0x40, sbw, viewlen);
+  wstrncpy(tws, sbw, editlen>>1);
+  ConstructEditControl(&ec, 4, 0x40, tws, viewlen);
   AddEditControlToEditQend(eq, &ec, ma);
   patch_header(&inp_hdr);
   patch_input(&inp_desc);
-  return CreateInputTextDialog(&inp_desc, &inp_hdr, eq, 1, sbw);
+  FreeWS(tws);
+  return CreateInputTextDialog(&inp_desc, &inp_hdr, eq, 1, 0);
 }
 
 /*
@@ -1387,7 +1459,7 @@ void Free_BLIST(void) {       //清空列表
 
 void Add_Blist_Item(int offset) {
   
-  int len = 100;
+  int len = 33;
   WSHDR *ws; 
   BMKLIST* bl = bltop;
   if (!bl) {
@@ -1405,7 +1477,7 @@ void Add_Blist_Item(int offset) {
   DataIndex *block = curblock;
   int view = viewpos;
   gotoPos(offset);
-  str2ws_unicode(ws, buff + viewpos, 20);
+  str2ws_unicode(ws, buff + viewpos, 32);
   bl->preview = ws;
   bl->next = NULL;
   bl->address = offset;
@@ -1491,7 +1563,7 @@ MENU_DESC bmklist_STRUCT = {
   8, bmklist_menu_onkey, bmklist_menu_ghook, NULL,
   menusoftkeys,
   &menu_skt,
-  1 + 0x10,
+  0x10,
   bmklist_menu_iconhndl,
   NULL,   //Items
   NULL,   //Procs
@@ -1569,10 +1641,15 @@ int method9(void){return 0;}
 
 int method5(MAIN_GUI *data, GUI_MSG *msg) {
   int result = 0;
+  DirectRedrawGUI();
   if (msg->gbsmsg->msg == KEY_DOWN || msg->gbsmsg->msg == LONG_PRESS) {
     switch(msg->gbsmsg->submess) {
     case RED_BUTTON:
-      Quit_Required = 1;
+      if( Quit_Required )
+        return 1;
+      else
+        MsgBoxOkCancel(1,5062, QuitAppCallbackProc);      
+//      Quit_Required = 1;
       /*result = 1;*/
       break;
     case GREEN_BUTTON:
@@ -1599,7 +1676,7 @@ int method5(MAIN_GUI *data, GUI_MSG *msg) {
     case VOL_UP_BUTTON:
     case '1':
     	break;
-    case '3':
+//    case '3':
     case '4': case LEFT_BUTTON:
       rowFluctuate(1 - viewrow);
       if (bookmark && bmknum > 1) {
@@ -1610,10 +1687,6 @@ int method5(MAIN_GUI *data, GUI_MSG *msg) {
     	}
       REDRAW();
       break;
-    case '5':
-    	showinfo = !showinfo;
-    	//DrawInfoDialog();
-    	break;
     case '6': case RIGHT_BUTTON:
       rowFluctuate(viewrow - 1);
       if (bookmark && bmknum > 1) {
@@ -1624,7 +1697,7 @@ int method5(MAIN_GUI *data, GUI_MSG *msg) {
     	}
       REDRAW();
       break;
-    case '7':
+//    case '7':
     case '8': case DOWN_BUTTON:
       rowFluctuate(1);
       if (bookmark && bmknum > 1) {
@@ -1635,11 +1708,27 @@ int method5(MAIN_GUI *data, GUI_MSG *msg) {
     	}
       REDRAW();
       break;
-    case '9':
     case '0':      
+      bShowStatusBar = !bShowStatusBar;
+      break;
+    case '9':
     case '*':
       break;
     case '#':
+      {
+  	LockSched();
+	if ( buffloaded )
+        {
+          codetype = (codetype%4)+1;
+          KillIndex();
+          if (createIndex())
+          {
+            curblock = fileindex->next;
+            loadBuffer();
+          }
+        }
+        UnlockSched();
+      }
       break;
     default:
       break;
@@ -1696,12 +1785,12 @@ void maincsm_onclose(CSM_RAM *csm) {
 
 int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg) {
   MAIN_CSM *csm = (MAIN_CSM *) data;
-  
+/*  
   if (Quit_Required) {
     fclose(fd, &ul);
     GeneralFuncF1(1);
   }
-  
+*/  
   if (msg->msg == MSG_GUI_DESTROYED) {
     if ((int)msg->data0 == csm->gui_id) {
       csm->csm.state = -3;
@@ -1789,7 +1878,8 @@ int main(char *exename, char *fname) {
   if (fname && strlen(fname) < 128)
     strcpy(procfile, fname);
   else
-    strcpy(procfile, LAST);
+//  strcpy(procfile, LAST);
+    LoadLastFile(procfile);
   
 	if (!loadFile(procfile)) adjustWindowsSize();
   char dummy[sizeof(MAIN_CSM)];

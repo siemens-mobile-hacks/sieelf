@@ -14,15 +14,15 @@ int openBMKFile(char *filename, unsigned int *ul, int st) {
   }
   if (!ext) ext = filename;
   
-  bmk = malloc(ext - filename + 5);
-  strncpy(bmk, filename, ext - filename);
-  bmk[ext - filename] = '\0';
-  strcat(bmk, ".bmk");
+  char bmkFile[128];
+  strncpy(bmkFile, filename, ext - filename);
+  bmkFile[ext - filename] = '\0';
+  strcat(bmkFile, ".bmk");
   unsigned int attrib;
   attrib = A_BIN;
   if (st) attrib += A_ReadWrite + A_Create + A_Truncate;
   else attrib += A_ReadOnly;
-  return fopen(bmk, attrib, P_READ + P_WRITE, ul);
+  return fopen(bmkFile, attrib, P_READ + P_WRITE, ul);
 }
 
 int* readAddrInt(char *filename, int *bmkfd, unsigned int *ul, int *len, int flag) {      //∂¡»° È«©
