@@ -1164,6 +1164,10 @@ SmartAlerts/ACP/4.tmo -text
 SmartAlerts/ACP/5.tmo -text
 SmartAlerts/ACP/6.tmo -text
 SmartAlerts/ACP/7.tmo -text
+SmartAlerts/Exe/SmartAlertsC_NSG.elf -text
+SmartAlerts/Exe/SmartAlertsC_SG.elf -text
+SmartAlerts/Exe/SmartAlerts_NSG.elf -text
+SmartAlerts/Exe/SmartAlerts_SG.elf -text
 SmartAlerts/SmartAlerts.dep -text
 SmartAlerts/SmartAlerts.ewd -text
 SmartAlerts/SmartAlerts.ewp -text
