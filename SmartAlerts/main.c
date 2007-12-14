@@ -65,6 +65,7 @@ extern const char tmo[64];
 extern const int miss;
 extern const int mvib;
 extern const unsigned int melodym;
+extern const unsigned int mminute;
 
 extern const unsigned int count2;
 extern const unsigned int vibra_pow;
@@ -296,22 +297,6 @@ if (!IsCalling())
           SendSMS(ws, snum, MMI_CEPID, MSG_SMS_RX-1, 6);
         }
         }
-
-        if(miss)
-        {
-#ifdef NEWSGOLD          
-	if (GetMissedEventCount(0) > 0)
-#else
-        if (GetMissedCallsCount()||HasNewSMS()) 
-#endif
-        {
-          if(!mvib)
-           PlaySound(1,0,0,melodym,0);
-          
-           _count=count2;
-           start_();
-        }
-        }
         
         
         void Cap();
@@ -405,9 +390,30 @@ if (*RamCap()==100){
 GBS_StartTimerProc(&mytmr,216*60,Check);
 }
 
+void missed()
+{
+        if(miss)
+        {
+#ifdef NEWSGOLD          
+	if (GetMissedEventCount(0) > 0)
+#else
+        if (GetMissedCallsCount()||HasNewSMS()) 
+#endif
+        {
+          if(!mvib)
+           PlaySound(1,0,0,melodym,0);
+          
+           _count=count2;
+           start_();
+        }
+        }
+
+  GBS_StartTimerProc(&mytmr, 216*60*mminute, missed);  
+}
 
 void start()
 { 
+missed();
 GBS_StartTimerProc(&mytmr,216*60,Check); 
 } 
 

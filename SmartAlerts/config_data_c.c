@@ -194,6 +194,9 @@ __root const int mvib=0;
 __root const CFG_HDR cfghdr5_3={CFG_UINT,"未接音效",0,200};
 __root const unsigned int melodym=60;
 
+__root const CFG_HDR cfghdr5_4={CFG_UINT,"分钟间隔",0,59};
+__root const unsigned int mminute=1;
+
 __root const CFG_HDR cfghdr_m16={CFG_LEVEL,"",0,0};
 
 
