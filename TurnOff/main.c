@@ -240,9 +240,7 @@ void maincsm_oncreate_GUI(CSM_RAM *data)
 
 void maincsm_onclose_GUI(CSM_RAM *csm)
 {
-#ifndef DAEMON
-  SUBPROC((void *)ELF_KILLER);
-#endif
+
 }
 
 int maincsm_onmessage_GUI(CSM_RAM *data, GBS_MSG *msg)
