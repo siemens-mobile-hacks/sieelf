@@ -5,74 +5,75 @@
   <configuration>
     <name>Release</name>
     <outputs>
-      <file>$PROJ_DIR$\conf_loader.h</file>
-      <file>$PROJ_DIR$\config_data.c</file>
-      <file>$PROJ_DIR$\Release\Obj\func.r79</file>
-      <file>$PROJ_DIR$\Release\Obj\SmartAlerts.pbd</file>
-      <file>$PROJ_DIR$\Release\Obj\TurnOff.pbd</file>
-      <file>$PROJ_DIR$\Release\Exe\SmartAlertsC_SG.elf</file>
-      <file>$PROJ_DIR$\..\inc\zlib.h</file>
-      <file>$PROJ_DIR$\Release\Obj\config_data.r79</file>
-      <file>$PROJ_DIR$\config_data_c.c</file>
-      <file>$PROJ_DIR$\Release\Obj\main.r79</file>
-      <file>$PROJ_DIR$\test.xcl</file>
-      <file>$PROJ_DIR$\Release\List\SmartAlertsC_SG.map</file>
-      <file>$PROJ_DIR$\..\inc\rsa.h</file>
-      <file>$PROJ_DIR$\Release\Obj\Smart Alerts.pbd</file>
-      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
       <file>$PROJ_DIR$\Release\Obj\config_data_c.r79</file>
-      <file>$PROJ_DIR$\Release\Exe\TurnOff_gui_SG.elf</file>
-      <file>$PROJ_DIR$\Release\Obj\config_data_c.pbi</file>
-      <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\Release\Obj\conf_loader.pbi</file>
-      <file>$PROJ_DIR$\..\inc\md5.h</file>
-      <file>$PROJ_DIR$\Release\Exe\Smart Alerts_SG.elf</file>
+      <file>$PROJ_DIR$\Release\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Release\Exe\SmartAlerts_SG.elf</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
+      <file>$PROJ_DIR$\Exe\SmartAlertsC_SG.elf</file>
+      <file>$PROJ_DIR$\Release\Obj\TurnOff.pbd</file>
       <file>$PROJ_DIR$\..\inc\swilib.h</file>
       <file>$PROJ_DIR$\..\inc\bn.h</file>
-      <file>$PROJ_DIR$\Release\Exe\SmartAlerts_SG.elf</file>
-      <file>$PROJ_DIR$\Release\Obj\config_data.pbi</file>
-      <file>$PROJ_DIR$\Exe\SmartAlertsC_SG.elf</file>
-      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
-      <file>$PROJ_DIR$\Release\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Release\Exe\TurnOff_gui_SG.elf</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\Release\Obj\Smart Alerts.pbd</file>
+      <file>$PROJ_DIR$\Release\List\SmartAlertsC_SG.map</file>
       <file>$PROJ_DIR$\..\inc\sha.h</file>
       <file>$PROJ_DIR$\..\inc\zconf.h</file>
-      <file>$PROJ_DIR$\main.c</file>
-      <file>$PROJ_DIR$\func.asm</file>
-      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
-      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$PROJ_DIR$\Release\Obj\config_data.r79</file>
+      <file>$PROJ_DIR$\Release\Exe\SmartAlertsC_SG.elf</file>
+      <file>$PROJ_DIR$\Release\Obj\config_data_c.pbi</file>
+      <file>$PROJ_DIR$\Release\Exe\Smart Alerts_SG.elf</file>
+      <file>$PROJ_DIR$\Release\Obj\config_data.pbi</file>
+      <file>$PROJ_DIR$\config_data_c.c</file>
+      <file>$PROJ_DIR$\..\inc\md5.h</file>
       <file>$PROJ_DIR$\..\inc\png.h</file>
       <file>$PROJ_DIR$\Release\Obj\SmartAlertsC.pbd</file>
+      <file>$PROJ_DIR$\test.xcl</file>
+      <file>$PROJ_DIR$\Release\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\Release\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\func.asm</file>
+      <file>$PROJ_DIR$\Release\Obj\func.r79</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$PROJ_DIR$\Release\Obj\SmartAlerts.pbd</file>
     </outputs>
     <file>
-      <name>$PROJ_DIR$\config_data.c</name>
+      <name>[ROOT_NODE]</name>
       <outputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 25</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 7</file>
+          <name>XLINK</name>
+          <file> 6 16</file>
         </tool>
       </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release\Exe\SmartAlerts_SG.elf</name>
       <inputs>
         <tool>
-          <name>BICOMP</name>
-          <file> 33</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 33</file>
+          <name>XLINK</name>
+          <file> 28 29 19 35 2 5</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\Release\Obj\SmartAlerts.pbd</name>
+      <name>$PROJ_DIR$\Exe\SmartAlertsC_SG.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 16</file>
+        </tool>
+      </outputs>
       <inputs>
         <tool>
-          <name>BILINK</name>
-          <file> 19 25 18</file>
+          <name>XLINK</name>
+          <file> 28 29 1 35 2 5</file>
         </tool>
       </inputs>
     </file>
@@ -81,7 +82,25 @@
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 19 25 18</file>
+          <file> 32 23 11</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release\Exe\TurnOff_gui_SG.elf</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 28 29 19 35 2 5</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release\Obj\Smart Alerts.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 32 23 11</file>
         </tool>
       </inputs>
     </file>
@@ -90,18 +109,189 @@
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 10 28 15 2 9 34</file>
+          <file> 28 29 1 35 2 5</file>
         </tool>
       </inputs>
     </file>
+    <file>
+      <name>$PROJ_DIR$\Release\Exe\Smart Alerts_SG.elf</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 28 29 19 35 2 5</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config_data_c.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 21</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 1</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 0 8 26 10 18 4 14 9 13 17 25</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 0 8 26 10 18 4 14 9 13 17 25</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release\Obj\SmartAlertsC.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 32 21 11</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config_data.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 23</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 19</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 0</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 0</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 11</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 2</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 8 26 10 18 4 14 9 13 17 25 0 31</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 8 26 10 18 4 14 9 13 17 25 0 31</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\func.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 35</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 32</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 29</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 8 26 10 18 4 14 9 13 17 25 0 31</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 8 26 10 18 4 14 9 13 17 25 0 31</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release\Obj\SmartAlerts.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 32 23 11</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>Release_ELKA</name>
+    <outputs>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\Release_ELKA\Exe\SmartAlertsC.elf</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\SmartAlertsC.pbd</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\func.r79</file>
+      <file>$PROJ_DIR$\config_data_c.c</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\TurnOff.pbd</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\config_data_c.pbi</file>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\config_data_c.r79</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\config_data.r79</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Release_ELKA\Exe\TurnOff_gui_EL.elf</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\config_data.pbi</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\func.asm</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+    </outputs>
     <file>
       <name>[ROOT_NODE]</name>
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 26 11</file>
+          <file> 24 8</file>
         </tool>
       </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_ELKA\Obj\SmartAlertsC.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 6 17 13</file>
+        </tool>
+      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\config_data_c.c</name>
@@ -112,222 +302,13 @@
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 15</file>
+          <file> 21</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 33 22 36 6 30 27 12 23 14 29 20</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 33 22 36 6 30 27 12 23 14 29 20</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release\Obj\Smart Alerts.pbd</name>
-      <inputs>
-        <tool>
-          <name>BILINK</name>
-          <file> 19 25 18</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release\Exe\TurnOff_gui_SG.elf</name>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 10 28 7 2 9 34</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release\Exe\Smart Alerts_SG.elf</name>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 10 28 7 2 9 34</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release\Exe\SmartAlerts_SG.elf</name>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 10 28 7 2 9 34</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Exe\SmartAlertsC_SG.elf</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 11</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 10 28 15 2 9 34</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\main.c</name>
-      <outputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 18</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 9</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 22 36 6 30 27 12 23 14 29 20 33 0</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 22 36 6 30 27 12 23 14 29 20 33 0</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\func.asm</name>
-      <outputs>
-        <tool>
-          <name>AARM</name>
-          <file> 2</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\conf_loader.c</name>
-      <outputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 19</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 28</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 22 36 6 30 27 12 23 14 29 20 33 0</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 22 36 6 30 27 12 23 14 29 20 33 0</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release\Obj\SmartAlertsC.pbd</name>
-      <inputs>
-        <tool>
-          <name>BILINK</name>
-          <file> 19 17 18</file>
-        </tool>
-      </inputs>
-    </file>
-  </configuration>
-  <configuration>
-    <name>Release_ELKA</name>
-    <outputs>
-      <file>$PROJ_DIR$\conf_loader.h</file>
-      <file>$PROJ_DIR$\config_data.c</file>
-      <file>$PROJ_DIR$\Release_ELKA\Exe\TurnOff_gui_EL.elf</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\config_data_c.r79</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\conf_loader.pbi</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\conf_loader.r79</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\config_data.pbi</file>
-      <file>$PROJ_DIR$\..\inc\zlib.h</file>
-      <file>$PROJ_DIR$\config_data_c.c</file>
-      <file>$PROJ_DIR$\Release_ELKA\Exe\SmartAlertsC.elf</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\..\inc\rsa.h</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\config_data_c.pbi</file>
-      <file>$PROJ_DIR$\..\inc\crypto.h</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\SmartAlertsC.pbd</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\config_data.r79</file>
-      <file>$PROJ_DIR$\..\inc\swilib.h</file>
-      <file>$PROJ_DIR$\..\inc\bn.h</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\func.r79</file>
-      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\TurnOff.pbd</file>
-      <file>$PROJ_DIR$\Release_ELKA\Obj\main.r79</file>
-      <file>$PROJ_DIR$\..\inc\sha.h</file>
-      <file>$PROJ_DIR$\..\inc\zconf.h</file>
-      <file>$PROJ_DIR$\main.c</file>
-      <file>$PROJ_DIR$\func.asm</file>
-      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
-      <file>$PROJ_DIR$\conf_loader.c</file>
-      <file>$PROJ_DIR$\..\inc\png.h</file>
-    </outputs>
-    <file>
-      <name>$PROJ_DIR$\config_data.c</name>
-      <outputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 6</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 15</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 26</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>[ROOT_NODE]</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 2 9</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\config_data_c.c</name>
-      <outputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 12</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 3</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 26</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release_ELKA\Obj\SmartAlertsC.pbd</name>
-      <inputs>
-        <tool>
-          <name>BILINK</name>
-          <file> 4 12 10</file>
+          <file> 0</file>
         </tool>
       </inputs>
     </file>
@@ -336,7 +317,26 @@
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 4 6 10</file>
+          <file> 6 25 13</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config_data.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 25</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 22</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 0</file>
         </tool>
       </inputs>
     </file>
@@ -345,17 +345,17 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 10</file>
+          <file> 13</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 21</file>
+          <file> 23</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 16 28 7 23 19 11 17 13 22 26 0</file>
+          <file> 2 18 4 11 1 9 3 5 10 0 20</file>
         </tool>
       </inputs>
     </file>
@@ -364,7 +364,7 @@
       <outputs>
         <tool>
           <name>AARM</name>
-          <file> 18</file>
+          <file> 14</file>
         </tool>
       </outputs>
     </file>
@@ -373,17 +373,17 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 4</file>
+          <file> 6</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 5</file>
+          <file> 7</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 16 28 7 23 19 11 17 13 22 26 0</file>
+          <file> 2 18 4 11 1 9 3 5 10 0 20</file>
         </tool>
       </inputs>
     </file>
@@ -411,47 +411,149 @@
   <configuration>
     <name>Release_NEWSGOLD</name>
     <outputs>
-      <file>$PROJ_DIR$\conf_loader.h</file>
-      <file>$PROJ_DIR$\config_data.c</file>
       <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\..\inc\zlib.h</file>
-      <file>$PROJ_DIR$\config_data_c.c</file>
       <file>$PROJ_DIR$\Release_NEWSGOLD\Exe\SmartAlertsC_NSG.elf</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\main.r79</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\TurnOff.pbd</file>
-      <file>$PROJ_DIR$\test.xcl</file>
-      <file>$PROJ_DIR$\..\inc\rsa.h</file>
-      <file>$PROJ_DIR$\..\inc\crypto.h</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\List\SmartAlertsC_NSG.map</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
       <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\conf_loader.pbi</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\func.r79</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\conf_loader.r79</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\config_data.r79</file>
-      <file>$PROJ_DIR$\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\config_data_c.pbi</file>
       <file>$PROJ_DIR$\..\inc\swilib.h</file>
       <file>$PROJ_DIR$\..\inc\bn.h</file>
-      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
       <file>$PROJ_DIR$\Exe\SmartAlertsC_NSG.elf</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\Smart Alerts.pbd</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\config_data.pbi</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\config_data_c.pbi</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\SmartAlertsC.pbd</file>
-      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\config_data_c.r79</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
       <file>$PROJ_DIR$\..\inc\sha.h</file>
       <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\List\SmartAlertsC_NSG.map</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\func.r79</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\TurnOff.pbd</file>
+      <file>$PROJ_DIR$\config_data_c.c</file>
+      <file>$PROJ_DIR$\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\test.xcl</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\SmartAlertsC.pbd</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\Smart Alerts.pbd</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\config_data.pbi</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\config_data.r79</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\config_data_c.r79</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\conf_loader.r79</file>
       <file>$PROJ_DIR$\main.c</file>
       <file>$PROJ_DIR$\func.asm</file>
-      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
       <file>$PROJ_DIR$\conf_loader.c</file>
-      <file>$PROJ_DIR$\..\inc\png.h</file>
     </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 10 16</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_NEWSGOLD\Exe\SmartAlertsC_NSG.elf</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 22 30 29 17 15 4</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Exe\SmartAlertsC_NSG.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 16</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 22 30 29 17 15 4</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_NEWSGOLD\Obj\TurnOff.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 5 27 0</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config_data_c.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 6</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 29</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 2 7 21 9 14 3 12 8 11 13 20</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 2 7 21 9 14 3 12 8 11 13 20</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_NEWSGOLD\Obj\SmartAlertsC.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 5 6 0</file>
+        </tool>
+      </inputs>
+    </file>
     <file>
       <name>$PROJ_DIR$\config_data.c</name>
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 22</file>
+          <file> 27</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 28</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 2</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_NEWSGOLD\Obj\Smart Alerts.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 5 27 0</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 0</file>
         </tool>
         <tool>
           <name>ICCARM</name>
@@ -461,113 +563,11 @@
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 30</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>[ROOT_NODE]</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 20 11</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\config_data_c.c</name>
-      <outputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 23</file>
+          <file> 7 21 9 14 3 12 8 11 13 20 2 25</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 25</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 30 17 33 3 27 19 9 18 10 26 16</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 30 17 33 3 27 19 9 18 10 26 16</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release_NEWSGOLD\Exe\SmartAlertsC_NSG.elf</name>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 8 14 25 13 6 31</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release_NEWSGOLD\Obj\TurnOff.pbd</name>
-      <inputs>
-        <tool>
-          <name>BILINK</name>
-          <file> 12 22 2</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Exe\SmartAlertsC_NSG.elf</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 11</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 8 14 25 13 6 31</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release_NEWSGOLD\Obj\Smart Alerts.pbd</name>
-      <inputs>
-        <tool>
-          <name>BILINK</name>
-          <file> 12 22 2</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release_NEWSGOLD\Obj\SmartAlertsC.pbd</name>
-      <inputs>
-        <tool>
-          <name>BILINK</name>
-          <file> 12 23 2</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\main.c</name>
-      <outputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 2</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 6</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 17 33 3 27 19 9 18 10 26 16 30 0</file>
-        </tool>
-        <tool>
-          <name>ICCARM</name>
-          <file> 17 33 3 27 19 9 18 10 26 16 30 0</file>
+          <file> 7 21 9 14 3 12 8 11 13 20 2 25</file>
         </tool>
       </inputs>
     </file>
@@ -576,7 +576,7 @@
       <outputs>
         <tool>
           <name>AARM</name>
-          <file> 13</file>
+          <file> 17</file>
         </tool>
       </outputs>
     </file>
@@ -585,21 +585,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 12</file>
+          <file> 5</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 14</file>
+          <file> 30</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 17 33 3 27 19 9 18 10 26 16 30 0</file>
+          <file> 7 21 9 14 3 12 8 11 13 20 2 25</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 17 33 3 27 19 9 18 10 26 16 30 0</file>
+          <file> 7 21 9 14 3 12 8 11 13 20 2 25</file>
         </tool>
       </inputs>
     </file>

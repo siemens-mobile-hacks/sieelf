@@ -298,8 +298,30 @@ if (!IsCalling())
         }
         }
         
-        
-        void Cap();
+     if(miss&&(time.min%mminute==0))
+        {
+#ifdef NEWSGOLD          
+	if (GetMissedEventCount(0) > 0)
+#else
+        if (GetMissedCallsCount()||HasNewSMS()) 
+#endif
+        {
+          if(!mvib)
+           PlaySound(1,0,0,melodym,0);
+          
+           _count=count2;
+           start_();
+        }
+        }
+  
+if (ch_bat)
+{
+if (*RamCap()==100){
+  PlaySound(1,0,0,melody3,0);
+  *RamCap()==99;
+}
+}
+
 }
 
 if(time.min==minute3)
@@ -378,42 +400,11 @@ if(time.min==minute3)
 GBS_StartTimerProc(&mytmr,216*60,Check);
 }
 
-void Cap()
-{
-if (ch_bat)
-{
-if (*RamCap()==100){
-  PlaySound(1,0,0,melody3,0);
-  *RamCap()==99;
-}
-}
-GBS_StartTimerProc(&mytmr,216*60,Check);
-}
 
-void missed()
-{
-        if(miss)
-        {
-#ifdef NEWSGOLD          
-	if (GetMissedEventCount(0) > 0)
-#else
-        if (GetMissedCallsCount()||HasNewSMS()) 
-#endif
-        {
-          if(!mvib)
-           PlaySound(1,0,0,melodym,0);
-          
-           _count=count2;
-           start_();
-        }
-        }
 
-  GBS_StartTimerProc(&mytmr, 216*60*mminute, missed);  
-}
 
 void start()
 { 
-missed();
 GBS_StartTimerProc(&mytmr,216*60,Check); 
 } 
 
@@ -469,6 +460,7 @@ static void Killer(void)
 {
   extern void *ELF_BEGIN;
   GBS_DelTimer(&mytmr);
+  GBS_DelTimer(&tmr_vibra);
   FreeWS(ws);
   kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr()); 
 }
