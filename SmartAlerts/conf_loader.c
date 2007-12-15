@@ -2,7 +2,6 @@
 #include "..\inc\cfg_items.h"
 #include "conf_loader.h"
 
-
 const char *successed_config_filename="";
 
 #pragma segment="CONFIG_C"

@@ -1,105 +1,20 @@
 #include "..\inc\swilib.h"
 #include "..\inc\cfg_items.h"
 #include "conf_loader.h"
-
+#include "SmartAlerts.h"
 
 #define TMR_SECOND 216
 
-extern const int ch_bat;
-extern const unsigned int melody3;
-
-
-extern const unsigned int melody;
-extern const unsigned int min;
-extern const unsigned int max;
-extern const unsigned int minute;
-
-extern const int voice;
-extern const unsigned int volume;
-extern const unsigned int filter;
-extern const char wav[64];
-extern const int amelody;
-
-extern const int twice;
-extern const unsigned int minute2;
-extern const unsigned int melody2;
-
-extern const unsigned int minute3;
-extern const char day1[25];
-extern const char day2[25];
-extern const char day3[25];
-extern const char day4[25];
-extern const char day5[25];
-extern const char day6[25];
-extern const char day7[25];
-
-
-extern const int runfile;
-extern const char name1[64];
-extern const unsigned int rhour1;
-extern const unsigned int rminute1;
-extern const char name2[64];
-extern const unsigned int rhour2;
-extern const unsigned int rminute2;
-extern const char name3[64];
-extern const unsigned int rhour3;
-extern const unsigned int rminute3;
-extern const char name4[64];
-extern const unsigned int rhour4;
-extern const unsigned int rminute4;
-extern const char name5[64];
-extern const unsigned int rhour5;
-extern const unsigned int rminute5;
-
-extern const int call;
-extern const char num[30];
-extern const unsigned int chour1;
-extern const unsigned int cminute1;
-
-extern const int sms;
-extern const char snum[30];
-extern const unsigned int shour1;
-extern const unsigned int sminute1;
-extern const char tmo[64];
-
-extern const int miss;
-extern const int mvib;
-extern const unsigned int melodym;
-extern const unsigned int mminute;
-
-extern const unsigned int count2;
-extern const unsigned int vibra_pow;
-
 TDate date; 
 TTime time; 
-
 GBSTMR mytmr;
+GBSTMR tmr_vibra;
 
 WSHDR* ws;
-
 unsigned short *s;
 
 int count;
-GBSTMR tmr_vibra;
-
 volatile int _count;
-
-void start_(void)
-{
-  void stop_(void);
-  SetVibration(vibra_pow);
-  GBS_StartTimerProc(&tmr_vibra,TMR_SECOND>>1,stop_);
-}
-
-void stop_(void)
-{
-  SetVibration(0);
-  if (--_count)
-  {
-    GBS_StartTimerProc(&tmr_vibra,TMR_SECOND>>1,start_);
-  }
-}
-
 
 unsigned short* Opendata(char *recname)
 {
@@ -121,12 +36,11 @@ unsigned short* Opendata(char *recname)
   return ((unsigned short*) buf);
 }
 
-
 int runFile(char *file) 
 {
-  if (file) 
+  if(file)
   {
-    if (strlen(file)) 
+    if (strlen(file))
     {
       WSHDR *ws;
       ws=AllocWS(64);
@@ -141,7 +55,6 @@ int runFile(char *file)
 
 void Play(const char *fpath, const char *fname)
 {
-  
   WSHDR* sndPath=AllocWS(64);
   WSHDR* sndFName=AllocWS(64);
 
@@ -171,14 +84,10 @@ void Play(const char *fpath, const char *fname)
     PlayFile(0xC, sndPath, sndFName, MMI_CEPID, MSG_PLAYFILE_REPORT, &_sfo1);
 #endif
 #endif 
-
   }
-
   FreeWS(sndPath);
   FreeWS(sndFName);
-  /*}*/
 }
-
 
 void copy_unicode_2ws(WSHDR* ws, unsigned short* unicode,int x)
 {
@@ -190,116 +99,133 @@ void copy_unicode_2ws(WSHDR* ws, unsigned short* unicode,int x)
 	ws->wsbody[0] = i;                  // set ws length
 }
 
+void start_(void)
+{
+  void stop_(void);
+  SetVibration(vibra_pow);
+  GBS_StartTimerProc(&tmr_vibra,TMR_SECOND>>1,stop_);
+}
 
-
-#ifdef NEWSGOLD
-#pragma swi_number=0x9E
-__swi __arm GetMissedEventCount(unsigned int Event);
-#endif
-
-
+void stop_(void)
+{
+  SetVibration(0);
+  if (--_count)
+  {
+    GBS_StartTimerProc(&tmr_vibra,TMR_SECOND>>1,start_);
+  }
+}
 
 void Check()
 {
-
-if (!IsCalling())
-{
-	GetDateTime(&date,&time);
-
-	if(time.min==minute)
-	{ 
-		if (time.hour>min)
-		{
-			if (time.hour<max)
-			{  
-                          if(voice&&((GetProfile()+1)!=filter))
-                          {
-                            char s[5];
-                            sprintf(s, "%d.wav",time.hour);
-                            Play(wav, s);
-                          }
-                          else
-                          {
-			     PlaySound(1,0,0,melody,0);
-                          }
-                          if(!amelody)
-                          {
-                          _count=count2;
-                          start_();
-                          }
-			}
-		}
-	}
-        
-        if(time.min==minute2&&twice)
-	{ 
-          	if (time.hour>min)
-		{
-			if (time.hour<max)
-			{  
-        		  PlaySound(1,0,0,melody2,0);
-                          if(!amelody)
-                          {
-                          _count=count2;
-                          start_();
-                          }
-                        }
-                }
+GetDateTime(&date,&time);
+ if (!IsCalling())
+ {
+     if (!(time.hour<min)&&!(time.hour>max))
+        {              
+         if(time.min==minute)
+	 { 
+               if(voice&&((GetProfile()+1)!=filter))
+               {
+                   char w[5];
+                   sprintf(w, "%d.wav",time.hour);
+                   Play(wav,w);
+               }
+               else
+               {
+		   PlaySound(1,0,0,melody,0);
+               }
+               if(!amelody)
+               {
+                   _count=count2;
+                   start_();
+               }
+	  }
+          else if(time.min==minute2&&twice)
+	  { 
+               PlaySound(1,0,0,melody2,0);
+               if(!amelody)
+               {
+                  _count=count2;
+                  start_();
+               }
+           }
         }
-        
 
         if(runfile)
         {
-        if(!(time.hour==0&&time.min==0))
-        {
-	if(time.hour==rhour1&&time.min==rminute1)
-        {
-          runFile((char*)name1);
+          if(time.hour!=0&&time.min!=0)
+           {
+            void Runing(unsigned int x,unsigned int y);
+            Runing(time.hour,time.min);
+           }
         }
-	if(time.hour==rhour2&&time.min==rminute2)
-        {
-          runFile((char*)name2);
-        }
-	if(time.hour==rhour3&&time.min==rminute3)
-        {
-          runFile((char*)name3);
-        }
-	if(time.hour==rhour4&&time.min==rminute4)
-        {
-          runFile((char*)name4);
-        } 
-	if(time.hour==rhour5&&time.min==rminute5)
-        {
-          runFile((char*)name5);
-        }
-        }
-        }
-        
         
         if(call)
         {
-          
-	if(time.hour==chour1&&time.min==cminute1)
-        {
-          if(strlen(num)>5)
-           MakeVoiceCall(num,0x10,0x2FFF);
+	  if(time.hour==chour1&&time.min==cminute1)
+           {
+            if(strlen(num)>5)
+            MakeVoiceCall(num,0x10,0x2FFF);
+           }
         }
-        }
-        
         
         if(sms)
         {
-	if(time.hour==shour1&&time.min==sminute1)
-        {
-          s=Opendata((char*)tmo);
-          copy_unicode_2ws(ws,s+1,210);
-          if(strlen(snum)>5&&s>0)
-          SendSMS(ws, snum, MMI_CEPID, MSG_SMS_RX-1, 6);
+	  if(time.hour==shour1)
+          {
+            if(time.min==sminute1)
+            {
+            void Sms();
+            }
+          }
         }
+     
+        if (ch_bat)
+        {
+          void Cap();
         }
         
-     if(miss&&(time.min%mminute==0))
+        if(miss)
         {
+          if(time.min%mminute==0)
+          {
+          void Missed();
+          }
+        }
+
+ }
+
+  if(time.min==minute3)
+  {
+     void Profile(unsigned int x);
+     Profile(time.hour);
+  }
+
+GBS_StartTimerProc(&mytmr,216*60,Check);
+}
+
+void Sms()
+{
+   s=Opendata((char*)tmo);
+   copy_unicode_2ws(ws,s+1,140);
+   if(strlen(snum)>5&&s)
+   SendSMS(ws, snum, MMI_CEPID, MSG_SMS_RX-1, 6);
+   
+   GBS_StartTimerProc(&mytmr,216*60,Check);
+}
+
+void Cap()
+{
+  if (*RamCap()==100)
+  {
+  PlaySound(1,0,0,melody3,0);
+  *RamCap()==99;
+  }
+  GBS_StartTimerProc(&mytmr,216*60,Check);
+}
+
+void Missed()
+{
 #ifdef NEWSGOLD          
 	if (GetMissedEventCount(0) > 0)
 #else
@@ -312,19 +238,35 @@ if (!IsCalling())
            _count=count2;
            start_();
         }
-        }
-  
-if (ch_bat)
+  GBS_StartTimerProc(&mytmr,216*60,Check);
+}
+
+void Runing(unsigned int x,unsigned int y)
 {
-if (*RamCap()==100){
-  PlaySound(1,0,0,melody3,0);
-  *RamCap()==99;
-}
+	if(x==rhour1&&y==rminute1)
+        {
+          runFile((char*)name1);
+        }
+	if(x==rhour2&&y==rminute2)
+        {
+          runFile((char*)name2);
+        }
+	if(x==rhour3&&y==rminute3)
+        {
+          runFile((char*)name3);
+        }
+	if(x==rhour4&&y==rminute4)
+        {
+          runFile((char*)name4);
+        } 
+	if(x==rhour5&&y==rminute5)
+        {
+          runFile((char*)name5);
+        }
+    GBS_StartTimerProc(&mytmr,216*60,Check);
 }
 
-}
-
-if(time.min==minute3)
+void Profile(unsigned int x)
 {
   const char *pc;
   
@@ -354,71 +296,56 @@ if(time.min==minute3)
   default:
       break;
   }
-  
-  switch(*(pc+time.hour))
+    
+  switch(*(pc+x))
   {
   case '1':
   SetProfile(0);
   break;
-  
   case '2':
   SetProfile(1);
   break;
-  
   case '3':
   SetProfile(2);
   break;
-  
   case '4':
   SetProfile(3);
   break;
-  
   case '5':
   SetProfile(4);
   break;
-  
   case '6':
   SetProfile(5);
   break;
-  
   case '7':
   SetProfile(6);
   break;
-  
   case '8':
   SetProfile(7);  
   break;
-  
   case '0':
   break;
   
   default:
       break;
   }
+  ShowMSG(1,(int)"Profile Changed!");
+  
+  GBS_StartTimerProc(&mytmr,216*60,Check);
 }
-
-GBS_StartTimerProc(&mytmr,216*60,Check);
-}
-
-
-
 
 void start()
 { 
 GBS_StartTimerProc(&mytmr,216*60,Check); 
 } 
 
-
 typedef struct
 {
   CSM_RAM csm;
 }MAIN_CSM;
 
-
 extern void kill_data(void *p, void (*func_p)(void *));
-
 const int minus11=-11;
-
 
 #pragma inline=forced
 int toupper(int c)
@@ -435,10 +362,9 @@ int strcmp_nocase(const char *s1,const char *s2)
   return(i);
 }
 
-
 int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
 {
-  if(msg->msg == MSG_RECONFIGURE_REQ) // Perechityvanie configuration reported
+  if(msg->msg == MSG_RECONFIGURE_REQ)
   {
     extern const char *successed_config_filename;
     if (strcmp_nocase(successed_config_filename,(char *)msg->data0)==0)
@@ -447,13 +373,10 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
     }
   }
   return(1);
-  
 }  
-
 
 static void maincsm_oncreate(CSM_RAM *data)
 {
-
 }
 
 static void Killer(void)
@@ -501,7 +424,6 @@ static const struct
   }
 };
 
-
 static void UpdateCSMname(void)
 {
   wsprintf((WSHDR *)(&MAINCSM_d.maincsm_name),"SmartAlerts");
@@ -521,7 +443,7 @@ int main()
   CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
   UnlockSched();
   
-  ws=AllocWS(210);
+  ws=AllocWS(140);
   start();
   return 0;
 }

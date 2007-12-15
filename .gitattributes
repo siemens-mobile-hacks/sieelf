@@ -1165,6 +1165,7 @@ SmartAlerts/SmartAlerts.dep -text
 SmartAlerts/SmartAlerts.ewd -text
 SmartAlerts/SmartAlerts.ewp -text
 SmartAlerts/SmartAlerts.eww -text
+SmartAlerts/SmartAlerts.h -text
 SmartAlerts/SmartAlertsC.dep -text
 SmartAlerts/SmartAlertsC.ewd -text
 SmartAlerts/SmartAlertsC.ewp -text
