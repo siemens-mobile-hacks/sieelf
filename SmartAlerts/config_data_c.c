@@ -130,6 +130,7 @@ __root const unsigned int rminute1=0;
 __root const CFG_HDR cfghdr5_13={CFG_STR_UTF8,"文件目录1",0,63};
 __root const char name1[64]="";
 
+/*
 __root const CFG_HDR cfghdr5_14={CFG_UINT,"运行小时2",0,23};
 __root const unsigned int rhour2=0;
 
@@ -165,6 +166,7 @@ __root const unsigned int rminute5=0;
 
 __root const CFG_HDR cfghdr5_25={CFG_STR_UTF8,"文件目录5",0,63};
 __root const char name5[64]="";
+*/
 
 __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
 

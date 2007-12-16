@@ -34,6 +34,7 @@ extern const int runfile;
 extern const char name1[64];
 extern const unsigned int rhour1;
 extern const unsigned int rminute1;
+/*
 extern const char name2[64];
 extern const unsigned int rhour2;
 extern const unsigned int rminute2;
@@ -46,6 +47,7 @@ extern const unsigned int rminute4;
 extern const char name5[64];
 extern const unsigned int rhour5;
 extern const unsigned int rminute5;
+*/
 
 extern const int call;
 extern const char num[30];

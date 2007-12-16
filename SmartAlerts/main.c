@@ -71,11 +71,11 @@ GetDateTime(&date,&time);
 
         if(runfile)
         {
-          if(time.hour!=0&&time.min!=0)
-           {
+          //if(time.hour!=0&&time.min!=0)
+           //{
             void Runing(unsigned int x,unsigned int y);
             Runing(time.hour,time.min);
-           }
+           //}
         }
         
         if(call)
@@ -165,7 +165,8 @@ void Runing(unsigned int x,unsigned int y)
         {
           runFile((char*)name1);
         }
-	if(x==rhour2&&y==rminute2)
+	/*
+        if(x==rhour2&&y==rminute2)
         {
           runFile((char*)name2);
         }
@@ -181,6 +182,7 @@ void Runing(unsigned int x,unsigned int y)
         {
           runFile((char*)name5);
         }
+        */
     GBS_StartTimerProc(&mytmr,216*60,Check);
 }
 
