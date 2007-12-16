@@ -33,6 +33,9 @@ void stop_(void)
   }
 }
 
+
+
+
 void Check()
 {
 GetDateTime(&date,&time);
@@ -71,11 +74,10 @@ GetDateTime(&date,&time);
 
         if(runfile)
         {
-          //if(time.hour!=0&&time.min!=0)
-           //{
-            void Runing(unsigned int x,unsigned int y);
-            Runing(time.hour,time.min);
-           //}
+          if(time.hour==rhour1&&time.min==rminute1)
+           {
+           runFile((char*)name1);
+           }
         }
         
         if(call)
@@ -93,21 +95,39 @@ GetDateTime(&date,&time);
           {
             if(time.min==sminute1)
             {
-            void Sms();
+                s=Opendata((char*)tmo);
+                copy_unicode_2ws(ws,s+1,140);
+                if(strlen(snum)>5&&s)
+                SendSMS(ws, snum, MMI_CEPID, MSG_SMS_RX-1, 6);
             }
           }
         }
      
         if (ch_bat)
         {
-          void Cap();
+           if (*RamCap()==100)
+           {
+           PlaySound(1,0,0,melody3,0);
+           *RamCap()==99;
+           }
         }
         
         if(miss)
         {
           if(time.min%mminute==0)
           {
-          void Missed();
+          #ifdef NEWSGOLD          
+	    if (GetMissedEventCount(0) > 0)
+          #else
+            if (GetMissedCallsCount()||HasNewSMS()) 
+          #endif
+          {
+            if(!mvib)
+             PlaySound(1,0,0,melodym,0);
+          
+             _count=count2;
+             start_();
+          }
           }
         }
 
@@ -122,69 +142,6 @@ GetDateTime(&date,&time);
 GBS_StartTimerProc(&mytmr,216*60,Check);
 }
 
-void Sms()
-{
-   s=Opendata((char*)tmo);
-   copy_unicode_2ws(ws,s+1,140);
-   if(strlen(snum)>5&&s)
-   SendSMS(ws, snum, MMI_CEPID, MSG_SMS_RX-1, 6);
-   
-   GBS_StartTimerProc(&mytmr,216*60,Check);
-}
-
-void Cap()
-{
-  if (*RamCap()==100)
-  {
-  PlaySound(1,0,0,melody3,0);
-  *RamCap()==99;
-  }
-  GBS_StartTimerProc(&mytmr,216*60,Check);
-}
-
-void Missed()
-{
-#ifdef NEWSGOLD          
-	if (GetMissedEventCount(0) > 0)
-#else
-        if (GetMissedCallsCount()||HasNewSMS()) 
-#endif
-        {
-          if(!mvib)
-           PlaySound(1,0,0,melodym,0);
-          
-           _count=count2;
-           start_();
-        }
-  GBS_StartTimerProc(&mytmr,216*60,Check);
-}
-
-void Runing(unsigned int x,unsigned int y)
-{
-	if(x==rhour1&&y==rminute1)
-        {
-          runFile((char*)name1);
-        }
-	/*
-        if(x==rhour2&&y==rminute2)
-        {
-          runFile((char*)name2);
-        }
-	if(x==rhour3&&y==rminute3)
-        {
-          runFile((char*)name3);
-        }
-	if(x==rhour4&&y==rminute4)
-        {
-          runFile((char*)name4);
-        } 
-	if(x==rhour5&&y==rminute5)
-        {
-          runFile((char*)name5);
-        }
-        */
-    GBS_StartTimerProc(&mytmr,216*60,Check);
-}
 
 void Profile(unsigned int x)
 {

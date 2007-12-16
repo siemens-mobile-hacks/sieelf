@@ -130,44 +130,6 @@ __root const unsigned int rminute1=0;
 __root const CFG_HDR cfghdr5_13={CFG_STR_UTF8,"文件目录1",0,63};
 __root const char name1[64]="";
 
-/*
-__root const CFG_HDR cfghdr5_14={CFG_UINT,"运行小时2",0,23};
-__root const unsigned int rhour2=0;
-
-__root const CFG_HDR cfghdr5_15={CFG_UINT,"运行分钟2",0,59};
-__root const unsigned int rminute2=0;
-
-__root const CFG_HDR cfghdr5_16={CFG_STR_UTF8,"文件目录2",0,63};
-__root const char name2[64]="";
-
-__root const CFG_HDR cfghdr5_17={CFG_UINT,"运行小时3",0,23};
-__root const unsigned int rhour3=0;
-
-__root const CFG_HDR cfghdr5_18={CFG_UINT,"运行分钟3",0,59};
-__root const unsigned int rminute3=0;
-
-__root const CFG_HDR cfghdr5_19={CFG_STR_UTF8,"文件目录3",0,63};
-__root const char name3[64]="";
-
-__root const CFG_HDR cfghdr5_20={CFG_UINT,"运行小时4",0,23};
-__root const unsigned int rhour4=0;
-
-__root const CFG_HDR cfghdr5_21={CFG_UINT,"运行分钟4",0,59};
-__root const unsigned int rminute4=0;
-
-__root const CFG_HDR cfghdr5_22={CFG_STR_UTF8,"文件目录4",0,63};
-__root const char name4[64]="";
-
-__root const CFG_HDR cfghdr5_23={CFG_UINT,"运行小时5",0,23};
-__root const unsigned int rhour5=0;
-
-__root const CFG_HDR cfghdr5_24={CFG_UINT,"运行分钟5",0,59};
-__root const unsigned int rminute5=0;
-
-__root const CFG_HDR cfghdr5_25={CFG_STR_UTF8,"文件目录5",0,63};
-__root const char name5[64]="";
-*/
-
 __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
 
 
