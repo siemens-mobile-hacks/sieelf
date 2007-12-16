@@ -1173,6 +1173,8 @@ SmartAlerts/conf_loader.c -text
 SmartAlerts/conf_loader.h -text
 SmartAlerts/config_data.c -text
 SmartAlerts/config_data_c.c -text
+SmartAlerts/extern.c -text
+SmartAlerts/extern.h -text
 SmartAlerts/func.asm -text
 SmartAlerts/main.c -text
 SmartAlerts/test.xcl -text
