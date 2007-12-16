@@ -708,7 +708,7 @@ int create_menu_bookmark(void);
 void Free_BLIST(void);
 void QuitAppCallbackProc(int id)
 {
-  if( id )
+  if( !id )
   {
     GeneralFuncF1(1);
     Quit_Required = 1;
@@ -726,7 +726,7 @@ void mainmenu_open(GUI *data) {
 
 void mainmenu_quit(GUI *data) {
   GeneralFuncF1(1);
-  MsgBoxOkCancel(1,5062, QuitAppCallbackProc);
+  MsgBoxYesNo(1,(int)"Quit SieTxtView?", QuitAppCallbackProc);
 }
 
 int add2bmk(void) {
@@ -1648,7 +1648,7 @@ int method5(MAIN_GUI *data, GUI_MSG *msg) {
       if( Quit_Required )
         return 1;
       else
-        MsgBoxOkCancel(1,5062, QuitAppCallbackProc);      
+          MsgBoxYesNo(1,(int)"Quit SieTxtView?", QuitAppCallbackProc);      
 //      Quit_Required = 1;
       /*result = 1;*/
       break;
