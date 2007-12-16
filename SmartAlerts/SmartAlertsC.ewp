@@ -3123,6 +3123,12 @@
     </configuration>
   </file>
   <file>
+    <name>$PROJ_DIR$\extern.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\extern.h</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\func.asm</name>
   </file>
   <file>

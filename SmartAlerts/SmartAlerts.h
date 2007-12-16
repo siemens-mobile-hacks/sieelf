@@ -20,6 +20,7 @@ extern const unsigned int minute2;
 extern const unsigned int melody2;
 
 extern const unsigned int minute3;
+extern const int merge;
 extern const char day1[25];
 extern const char day2[25];
 extern const char day3[25];
