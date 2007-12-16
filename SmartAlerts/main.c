@@ -218,8 +218,6 @@ void Profile(unsigned int x)
   default:
       break;
   }
-  ShowMSG(1,(int)"Profile Changed!");
-  
   GBS_StartTimerProc(&mytmr,216*60,Check);
 }
 
