@@ -1,4 +1,5 @@
 #include "..\inc\cfg_items.h"
+#include "..\inc\swilib.h"
 
 #ifdef NEWSGOLD
 #define DEFAULT_DISK "4"
@@ -35,8 +36,11 @@ __root const CFG_HDR cfghdr1_12={CFG_UINT,"filter",0,8};
 __root const unsigned int filter=0;
 
 __root const CFG_HDR cfghdr1_13={CFG_STR_UTF8,"Address",0,63};
-__root const char wav[64]=DEFAULT_DISK ":\\ZBin\\alerts\\";
+__root const char sound[64]=DEFAULT_DISK ":\\ZBin\\alerts\\";
 
+
+__root const CFG_HDR cfghdr1_14={CFG_STR_UTF8,"Media style",0,3};
+__root const char mstyle[4]="wav";
 
 __root const CFG_HDR cfghdr1_20={CFG_CHECKBOX,"twice",0,0};
 __root const int twice=0;
@@ -85,8 +89,15 @@ __root const CFG_HDR cfghdr_m4={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr_m7={CFG_LEVEL,"Missed Alerts",1,0};
 
-__root const CFG_HDR cfghdr3_1={CFG_CHECKBOX,"Missed Alerts",0,0};
+__root const CFG_HDR cfghdr3_0={CFG_CHECKBOX,"Missed Alerts",0,0};
 __root const int miss=0;
+
+#ifdef NEWSGOLD
+__root const CFG_HDR cfghdr3_1 = {CFG_CBOX, "Missed event", 0, 4};
+__root const int events = 0;
+__root const CFG_CBOX_ITEM cfgcbox0[4] = {"All", "Calls", "SMS", "Other"};
+#endif
+
 
 __root const CFG_HDR cfghdr3_2={CFG_CHECKBOX,"Only vibra",0,0};
 __root const int mvib=0;
@@ -126,45 +137,6 @@ __root const unsigned int rminute1=0;
 
 __root const CFG_HDR cfghdr5_13={CFG_STR_UTF8,"Address1",0,63};
 __root const char name1[64]="";
-
-
-/*
-__root const CFG_HDR cfghdr5_14={CFG_UINT,"hour2",0,23};
-__root const unsigned int rhour2=0;
-
-__root const CFG_HDR cfghdr5_15={CFG_UINT,"minute2",0,59};
-__root const unsigned int rminute2=0;
-
-__root const CFG_HDR cfghdr5_16={CFG_STR_UTF8,"Address2",0,63};
-__root const char name2[64]="";
-
-__root const CFG_HDR cfghdr5_17={CFG_UINT,"hour3",0,23};
-__root const unsigned int rhour3=0;
-
-__root const CFG_HDR cfghdr5_18={CFG_UINT,"minute3",0,59};
-__root const unsigned int rminute3=0;
-
-__root const CFG_HDR cfghdr5_19={CFG_STR_UTF8,"Address3",0,63};
-__root const char name3[64]="";
-
-__root const CFG_HDR cfghdr5_20={CFG_UINT,"hour4",0,23};
-__root const unsigned int rhour4=0;
-
-__root const CFG_HDR cfghdr5_21={CFG_UINT,"minute4",0,59};
-__root const unsigned int rminute4=0;
-
-__root const CFG_HDR cfghdr5_22={CFG_STR_UTF8,"Address4",0,63};
-__root const char name4[64]="";
-
-__root const CFG_HDR cfghdr5_23={CFG_UINT,"hour5",0,23};
-__root const unsigned int rhour5=0;
-
-__root const CFG_HDR cfghdr5_24={CFG_UINT,"minute5",0,59};
-__root const unsigned int rminute5=0;
-
-__root const CFG_HDR cfghdr5_25={CFG_STR_UTF8,"Address5",0,63};
-__root const char name5[64]="";
-*/
 
 __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
 
@@ -210,12 +182,31 @@ __root const char tmo[64]="";
 __root const CFG_HDR cfghdr_m14={CFG_LEVEL,"",0,0};
 
 
-__root const CFG_HDR cfghdr_m17={CFG_LEVEL,"Vibra setting",1,0};
+__root const CFG_HDR cfghdr_m17={CFG_LEVEL,"Other",1,0};
+
+__root const CFG_HDR cfghdr8_0={CFG_CHECKBOX,"Vibra",0,0};
+__root const int vib=0;
 
 __root const CFG_HDR cfghdr8_1={CFG_UINT,"vibra count",0,10};
 __root const unsigned int count2=3;
 
 __root const CFG_HDR cfghdr8_2={CFG_UINT,"Vibra power",0,100};
 __root const unsigned int vibra_pow=100;
+
+__root const CFG_HDR cfghdr8_3={CFG_CHECKBOX,"display",0,0};
+__root const int dis=0;
+
+__root const CFG_HDR cfghdr8_4={CFG_CHECKBOX,"keyboard",0,0};
+__root const int key=0;
+#ifndef NEWSGOLD
+__root const CFG_HDR cfghdr8_5={CFG_CHECKBOX,"dynlights",0,0};
+__root const int dyn=0;
+#else
+__root const CFG_HDR cfghdr8_6={CFG_CHECKBOX,"lighter",0,0};
+__root const int lighter=0;
+#endif
+__root const CFG_HDR cfghdr8_7={CFG_UINT,"light",0,100};
+__root const unsigned int light=100;
+
 
 __root const CFG_HDR cfghdr_m18={CFG_LEVEL,"",0,0};

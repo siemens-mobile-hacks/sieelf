@@ -1,4 +1,5 @@
 #include "..\inc\cfg_items.h"
+#include "..\inc\swilib.h"
 
 #ifdef NEWSGOLD
 #define DEFAULT_DISK "4"
@@ -35,9 +36,10 @@ __root const CFG_HDR cfghdr1_12={CFG_UINT,"音频情景禁用",0,8};
 __root const unsigned int filter=0;
 
 __root const CFG_HDR cfghdr1_13={CFG_STR_UTF8,"音频地址",0,63};
-__root const char wav[64]=DEFAULT_DISK ":\\ZBin\\alerts\\";
+__root const char sound[64]=DEFAULT_DISK ":\\ZBin\\alerts\\";
 
-
+__root const CFG_HDR cfghdr1_14={CFG_STR_UTF8,"文件类型",0,3};
+__root const char mstyle[4]="wav";
 
 __root const CFG_HDR cfghdr1_20={CFG_CHECKBOX,"两次音效",0,0};
 __root const int twice=0;
@@ -88,8 +90,15 @@ __root const CFG_HDR cfghdr_m4={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr_m7={CFG_LEVEL,"未接提示",1,0};
 
-__root const CFG_HDR cfghdr3_1={CFG_CHECKBOX,"未接提示",0,0};
+__root const CFG_HDR cfghdr3_0={CFG_CHECKBOX,"未接提示",0,0};
 __root const int miss=0;
+
+#ifdef NEWSGOLD
+__root const CFG_HDR cfghdr3_1 = {CFG_CBOX, "未接事件", 0, 4};
+__root const int events = 0;
+__root const CFG_CBOX_ITEM cfgcbox0[4] = {"All", "Calls", "SMS", "Other"};
+#endif
+
 
 __root const CFG_HDR cfghdr3_2={CFG_CHECKBOX,"无音效",0,0};
 __root const int mvib=0;
@@ -127,7 +136,7 @@ __root const unsigned int rhour1=0;
 __root const CFG_HDR cfghdr5_12={CFG_UINT,"运行分钟1",0,59};
 __root const unsigned int rminute1=0;
 
-__root const CFG_HDR cfghdr5_13={CFG_STR_UTF8,"文件目录1",0,63};
+__root const CFG_HDR cfghdr5_13={CFG_STR_UTF8,"文件位置1",0,63};
 __root const char name1[64]="";
 
 __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
@@ -170,12 +179,30 @@ __root const char tmo[64]="";
 __root const CFG_HDR cfghdr_m14={CFG_LEVEL,"",0,0};
 
 
-__root const CFG_HDR cfghdr_m17={CFG_LEVEL,"振动设置",1,0};
+__root const CFG_HDR cfghdr_m17={CFG_LEVEL,"其他设置",1,0};
+
+__root const CFG_HDR cfghdr8_0={CFG_CHECKBOX,"振动",0,0};
+__root const int vib=0;
 
 __root const CFG_HDR cfghdr8_1={CFG_UINT,"振动次数",0,10};
 __root const unsigned int count2=3;
 
 __root const CFG_HDR cfghdr8_2={CFG_UINT,"振动强度",0,100};
 __root const unsigned int vibra_pow=100;
+
+__root const CFG_HDR cfghdr8_3={CFG_CHECKBOX,"屏幕",0,0};
+__root const int dis=0;
+
+__root const CFG_HDR cfghdr8_4={CFG_CHECKBOX,"键盘",0,0};
+__root const int key=0;
+#ifndef NEWSGOLD
+__root const CFG_HDR cfghdr8_5={CFG_CHECKBOX,"动感",0,0};
+__root const int dyn=0;
+#else
+__root const CFG_HDR cfghdr8_6={CFG_CHECKBOX,"闪灯",0,0};
+__root const int lighter=0;
+#endif
+__root const CFG_HDR cfghdr8_7={CFG_UINT,"light",0,100};
+__root const unsigned int light=100;
 
 __root const CFG_HDR cfghdr_m16={CFG_LEVEL,"",0,0};

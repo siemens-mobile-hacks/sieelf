@@ -20,13 +20,37 @@ volatile int _count;
 void start_(void)
 {
   void stop_(void);
-  SetVibration(vibra_pow);
+  	if (dis)
+		SetIllumination(0, 1, light, 0);
+	if (key)
+		SetIllumination(1, 1, light, 0);   
+#ifndef NEWSGOLD
+	if (dyn)
+		SetIllumination(2, 1, light, 0);
+#else
+	if (lighter)
+		SetIllumination(4, 1, light, 0);
+#endif
+  
+  if (vib) SetVibration(vibra_pow);
   GBS_StartTimerProc(&tmr_vibra,TMR_SECOND>>1,stop_);
 }
 
 void stop_(void)
 {
-  SetVibration(0);
+  	if (dis)
+		SetIllumination(0, 1, 0, 0);
+	if (key)
+		SetIllumination(1, 1, 0, 0);   
+#ifndef NEWSGOLD
+	if (dyn)
+		SetIllumination(2, 1, 0, 0);
+#else
+	if (lighter)
+		SetIllumination(4, 1, 0, 0);
+#endif
+  
+  if (vib) SetVibration(0);
   if (--_count)
   {
     GBS_StartTimerProc(&tmr_vibra,TMR_SECOND>>1,start_);
@@ -48,8 +72,8 @@ GetDateTime(&date,&time);
                if(voice&&((GetProfile()+1)!=filter))
                {
                    char w[5];
-                   sprintf(w, "%d.wav",time.hour);
-                   Play(wav,w);
+                   sprintf(w, "%d.%s",time.hour,mstyle);
+                   Play(sound,w);
                }
                else
                {
@@ -107,8 +131,8 @@ GetDateTime(&date,&time);
         {
            if (*RamCap()==100)
            {
-           PlaySound(1,0,0,melody3,0);
            *RamCap()==99;
+           PlaySound(1,0,0,melody3,0);
            }
         }
         
@@ -117,7 +141,7 @@ GetDateTime(&date,&time);
           if(time.min%mminute==0)
           {
           #ifdef NEWSGOLD          
-	    if (GetMissedEventCount(0) > 0)
+	    if (GetMissedEventCount(events) > 0)
           #else
             if (GetMissedCallsCount()||HasNewSMS()) 
           #endif
