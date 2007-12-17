@@ -24,7 +24,7 @@
  typedef struct{
   CSM_RAM csm;
   int task_id; 
-  int menu_id;
+  int file_id;
  }MAIN_CSM_GUI;
 
  typedef struct{  
@@ -185,19 +185,19 @@
  extern const uint TIME_FONT;
  extern const int  TIME_FMT;
 //显示农历年
- extern const int  CHSYear_ENA;
- extern const uint CHSYear_X;
- extern const uint CHSYear_Y;
- extern const char CHSYear_COLORS[];
- extern const char CHSYear_FCOLOR[];
- extern const uint CHSYear_FONT;
+ extern const int  CHSYEAR_ENA;
+ extern const uint CHSYEAR_X;
+ extern const uint CHSYEAR_Y;
+ extern const char CHSYEAR_COLORS[];
+ extern const char CHSYEAR_FCOLOR[];
+ extern const uint CHSYEAR_FONT;
 //显示农历月日
- extern const int  CHSDay_ENA;
- extern const uint CHSDay_X;
- extern const uint CHSDay_Y;
- extern const char CHSDay_COLORS[];
- extern const char CHSDay_FCOLOR[];
- extern const uint CHSDay_FONT;
+ extern const int  CHSDATE_ENA;
+ extern const uint CHSDATE_X;
+ extern const uint CHSDATE_Y;
+ extern const char CHSDATE_COLORS[];
+ extern const char CHSDATE_FCOLOR[];
+ extern const uint CHSDATE_FONT;
 //显示信号强度
  extern const int  NET_ENA;
  extern const uint NET_X;
@@ -231,5 +231,11 @@
  extern const char CPU_FMT[16];
 //刷新速度
  extern const uint REFRESH;
-
+//铃声参数
+ extern const char RIN_FILE[64];
+ extern const uint RIN_VOLUME;
+ extern const int  RIN_ENA;
+ extern const uint RIN_NUM;
+ extern const uint RIN_VIB;
+ extern const int  VIB_ENA;
 #endif

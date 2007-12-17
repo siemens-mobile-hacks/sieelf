@@ -2197,7 +2197,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>scrtool_klka.elf</state>
+          <state>ScrTool.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>

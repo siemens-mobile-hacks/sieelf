@@ -300,31 +300,31 @@ __root const CFG_HDR cfghdr_mTSI70={CFG_LEVEL,"",0,0};
 //显示农历年份
 __root const CFG_HDR cfghdr_mTSI81={CFG_LEVEL,"CHSYear Setup",1,0};
 __root const CFG_HDR cfghdrTSI8_1={CFG_CHECKBOX, "CHSYear Show", 0, 2};
-__root const int CHSYear_ENA=0;
+__root const int CHSYEAR_ENA=0;
 __root const CFG_HDR cfghdrTSI8_2={CFG_COORDINATES,"CHSYear Position",0,0};
-__root const uint CHSYear_X=80;
-__root const uint CHSYear_Y=260;
+__root const uint CHSYEAR_X=80;
+__root const uint CHSYEAR_Y=260;
 __root const CFG_HDR cfghdrTSI8_3={CFG_COLOR,"CHSYear Color",0,0};
-__root const char CHSYear_COLORS[4]={0,0,255,75};
+__root const char CHSYEAR_COLORS[4]={0,0,255,75};
 __root const CFG_HDR cfghdrTSI8_4={CFG_COLOR,"CHSYear Frame",0,0};
-__root const char CHSYear_FCOLOR[4]={255,255,255,100};
+__root const char CHSYEAR_FCOLOR[4]={255,255,255,100};
 __root const CFG_HDR cfghdrTSI8_5={CFG_CBOX,"CHSYear Font",0,17};
-__root const uint CHSYear_FONT=8;
+__root const uint CHSYEAR_FONT=8;
 __root const CFG_CBOX_ITEM cfgcboxTSI81[17]={FontStyle};
 __root const CFG_HDR cfghdr_mTSI80={CFG_LEVEL,"",0,0};
 //显示农历日期
 __root const CFG_HDR cfghdr_mTSI91={CFG_LEVEL,"CHSDay Setup",1,0};
 __root const CFG_HDR cfghdrTSI9_1={CFG_CHECKBOX, "CHSDay Show", 0, 2};
-__root const int CHSDay_ENA=1;
+__root const int CHSDATE_ENA=1;
 __root const CFG_HDR cfghdrTSI9_2={CFG_COORDINATES,"CHSDay Position",0,0};
-__root const uint CHSDay_X=150;
-__root const uint CHSDay_Y=293;
+__root const uint CHSDATE_X=150;
+__root const uint CHSDATE_Y=293;
 __root const CFG_HDR cfghdrTSI9_3={CFG_COLOR,"CHSDay Color",0,0};
-__root const char CHSDay_COLORS[4]={0,0,255,75};
+__root const char CHSDATE_COLORS[4]={0,0,255,75};
 __root const CFG_HDR cfghdrTSI9_4={CFG_COLOR,"CHSDay Frame",0,0};
-__root const char CHSDay_FCOLOR[4]={255,255,255,100};
+__root const char CHSDATE_FCOLOR[4]={255,255,255,100};
 __root const CFG_HDR cfghdrTSI9_5={CFG_CBOX,"CHSDay Font",0,17};
-__root const uint CHSDay_FONT=8;
+__root const uint CHSDATE_FONT=8;
 __root const CFG_CBOX_ITEM cfgcboxTSI91[17]={FontStyle};
 __root const CFG_HDR cfghdr_mTSI90={CFG_LEVEL,"",0,0};
 //NET begin
@@ -441,6 +441,19 @@ __root const CFG_HDR cfghdr_mNBIR0={CFG_LEVEL,"",0,0};
 __root const CFG_HDR cfghdrBIRFILE={CFG_STR_UTF8,"Data FileName",0,63};
 __root const char BIR_FILE[64]=DEFAULT_DISK ":\\ZBin\\ScrTool\\day.txt";
 __root const CFG_HDR cfghdr_mBIR0={CFG_LEVEL,"",0,0};
-
-
+//铃声设置
+__root const CFG_HDR cfghdr_mRIN1={CFG_LEVEL,"Ring Setup",1,0};
+__root const CFG_HDR cfghdrRIN_ENA={CFG_CHECKBOX, "Ring Enabled", 0, 2};
+__root const int RIN_ENA=1;
+__root const CFG_HDR cfghdrVIB_ENA={CFG_CHECKBOX, "Vibra Enabled", 0, 2};
+__root const int VIB_ENA=1;
+__root const CFG_HDR cfghdrRIN_NUM={CFG_UINT,"Ring Repeat[1-3]",0,4};
+__root const uint RIN_NUM=1;
+__root const CFG_HDR cfghdrVOLUME={CFG_UINT,"Ring Volume[0-5]",0,6};
+__root const uint RIN_VOLUME=5;
+__root const CFG_HDR cfghdrRIN_VIB={CFG_UINT,"Vibra Power[0-100]",0,101};
+__root const uint RIN_VIB=50;
+__root const CFG_HDR cfghdrRINFILE={CFG_STR_UTF8,"Ring File",0,63};
+__root const char RIN_FILE[64]=DEFAULT_DISK ":\\ZBin\\ScrTool\\ring.mp3";
+__root const CFG_HDR cfghdr_mRIN0={CFG_LEVEL,"",0,0};
 
