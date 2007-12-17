@@ -91,7 +91,7 @@ _C_LIB_DECL
  __INTRINSIC char *LoadFileBuf(const char *FileName);
  __INTRINSIC int  FreeFileBuf(char *Buffer);
  __INTRINSIC uint FontType(int index);
- __INTRINSIC int PlayRing(const char *fname, uint VOLUME, uint RepeatNum);
+ __INTRINSIC int PlayMusic(const char *fname, uint VOLUME, uint RepeatNum);
  //-----------------------------------------
  __INTRINSIC TMenu *BuildMenu(char *Title[]);
  __INTRINSIC void DrawMenu(void *gui, int cur_item, void *user_pointer);
@@ -610,7 +610,7 @@ uint FontType(int index)
  }
 }
 #pragma inline//≤•∑≈“Ù¿÷Œƒº˛
-int PlayRing(const char *fname, uint VOLUME, uint RepeatNum)
+int PlayMusic(const char *fname, uint VOLUME, uint RepeatNum)
 {
   int Handle=0;
   if(!IsCalling()){
@@ -802,7 +802,7 @@ int IsMediaActive(void)
  using _CSTD LoadFileBuf;
  using _CSTD FreeFileBuf;
  using _CSTD FontType;
- using _CSTD PlayRing;
+ using _CSTD PlayMusic;
  using _CSTD BuildMenu;
  using _CSTD DrawMenu;
  using _CSTD FreeMenu;
