@@ -109,11 +109,11 @@ void load_dat(void)
   {
     char *data_buf=malloc(32);
     fread(f,data_buf,24,&err);
-    count[0]=data_buf[4];
-    count[1]=data_buf[8];
-    count[2]=data_buf[0xC];
-    count[4]=data_buf[0x10];
-    count[3]=data_buf[0x14];
+    count[0]=data_buf[4]+data_buf[5]*256;
+    count[1]=data_buf[8]+data_buf[9]*256;
+    count[2]=data_buf[0xC]+data_buf[0xD]*256;
+    count[4]=data_buf[0x10]+data_buf[0x11]*256;
+    count[3]=data_buf[0x14]+data_buf[0x15]*256;
     fclose(f,&err);
     mfree(data_buf);
   }
