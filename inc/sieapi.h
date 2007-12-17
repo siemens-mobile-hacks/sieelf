@@ -25,8 +25,8 @@ _C_STD_BEGIN
  #define TStruct typedef struct 
  //定义字体索引类型0-16!
  #define FontStyle "Large","Large bold","Large italic","Large italic bold","Medium","Medium bold","Medium italic","Medium italic bold","Small","Small bold","Small italic","Small italic bold","Numeric small","Numeric small bold","Numeric xsmall","Numeric large","Numeric medium"
- #define IS_FOLDER 1 //定义文件夹操作
- #define IS_FILE 0  //定义文件操作
+ //#define IS_FOLDER 1 //定义文件夹操作
+ //#define IS_FILE 0  //定义文件操作
  //定义农历类型结构
  TStruct{
   WSHDR *year;//年份
@@ -52,6 +52,12 @@ _C_STD_BEGIN
   char *fullname;
   int   type;//1为文件夹,0为文件
  }TFile;
+ //定义文件结构
+ TStruct{
+  void *next;
+  char *name;
+  uint  cmd;//为执行功能代码
+ }TMenu;
  //定义函数引出结构
 _C_LIB_DECL
  __INTRINSIC ulong strtoul(const char *nptr,char **endptr,int base); 
@@ -85,6 +91,17 @@ _C_LIB_DECL
  __INTRINSIC char *LoadFileBuf(const char *FileName);
  __INTRINSIC int  FreeFileBuf(char *Buffer);
  __INTRINSIC uint FontType(int index);
+ __INTRINSIC int PlayRing(const char *fname, uint VOLUME, uint RepeatNum);
+ //-----------------------------------------
+ __INTRINSIC TMenu *BuildMenu(char *Title[]);
+ __INTRINSIC void DrawMenu(void *gui, int cur_item, void *user_pointer);
+ __INTRINSIC void FreeMenu(TMenu *Menu);
+ __INTRINSIC int  MenuCount(TMenu *Menu);
+ //-----------------------------------------
+ __INTRINSIC int  FileCount(TFile *File);
+ __INTRINSIC void FreeFile(TFile *File);
+ //-----------------------------------------
+ __INTRINSIC int IsMediaActive(void);
 _END_C_LIB_DECL
 _C_STD_END
 //函数执行代码
@@ -263,16 +280,16 @@ const word cOtherName[] = {0x5E74,0x6708,0x95F0,0};
 /*公历每月前面的天数*/
 const int wMonthAdd[12] = {0,31,59,90,120,151,181,212,243,273,304,334};
 /*农历数据*/
-const int wNongliData[100] = {2635  ,333387,1701,1748,267701,694,2391,133423,1175,396438
-                             ,3402  ,3749  ,331177,1453,694,201326,2350,465197,3221,3402
-                             ,400202,2901  ,1386,267611,605,2349,137515,2709,464533,1738
-                             ,2901  ,330421,1242,2651,199255,1323,529706,3733,1706,398762
-                             ,2741  ,1206  ,267438,2647,1318,204070,3477,461653,1386,2413
-                             ,330077,1197  ,2637,268877,3365,531109,2900,2922,398042,2395
-                             ,1179  ,267415,2635,661067,1701,1748,398772,2742,2391,330031
-                             ,1175  ,1611  ,200010,3749,527717,1452,2742,332397,2350,3222
-                             ,268949,3402  ,3493,133973,1386,464219,605,2349,334123,2709
-                             ,2890  ,267946,2773,592565,1210,2651,395863,1323,2707,265877};
+const int wNongliData[100] = {  2635,333387,  1701,  1748,267701,   694,  2391,133423,  1175,396438,
+                                3402,  3749,331177,  1453,   694,201326,  2350,465197,  3221,  3402,
+                              400202,  2901,  1386,267611,   605,  2349,137515,  2709,464533,  1738,
+                                2901,330421,  1242,  2651,199255,  1323,529706,  3733,  1706,398762,
+                                2741,  1206,267438,  2647,  1318,204070,  3477,461653,  1386,  2413,
+                              330077,  1197,  2637,268877,  3365,531109,  2900,  2922,398042,  2395,
+                                1179,267415,  2635,661067,  1701,  1748,398772,  2742,  2391,330031,
+                                1175,  1611,200010,  3749,527717,  1452,  2742,332397,  2350,  3222,
+                              268949,  3402,  3493,133973,  1386,464219,   605,  2349,334123,  2709,
+                                2890,267946,  2773,592565,  1210,  2651,395863,  1323,  2707,265877};
 TDate old = GetOldDay(pSt);
 /*--生成农历天干、地支、属相 ==> wNongli--*/
 word UniToday[5];
@@ -284,9 +301,9 @@ UniToday[3] = cOtherName[0];                          //年
 BSTRAdd(NongLiData->year->wsbody,UniToday,4);
 /*--生成农历月 --*/
 CutWSTR(NongLiData->mday,0);
-if (old.month < 1)                            //闰月
+if (old.month < 1)  //闰月
 {
-    UniToday[0] = cOtherName[2];                //闰
+    UniToday[0] = cOtherName[2]; //闰
     UniToday[1] = cMonName[-1 * old.month];
     BSTRAdd(NongLiData->mday->wsbody,UniToday,2);
 }
@@ -295,7 +312,7 @@ else
     UniToday[0] = cMonName[old.month];
     BSTRAdd(NongLiData->mday->wsbody,UniToday,1);
 }
-  UniToday[0] = cOtherName[1];                //月
+  UniToday[0] = cOtherName[1]; //月
   BSTRAdd(NongLiData->mday->wsbody,UniToday,1);
 /*--生成农历日 --*/  
   UniToday[0] = cDayName[old.day][0];  
@@ -317,10 +334,7 @@ int get_string_width(WSHDR *ws, int font)
 }
 
 #pragma inline=forced
-int toupper(int c)
-{
-  if ((c>='a')&&(c<='z')) c+='A'-'a';  return(c);
-}
+int toupper(int c){ if ((c>='a')&&(c<='z')) c+='A'-'a';  return(c);}
 
 #pragma inline
 int strcmp_nocase(const char *s1,const char *s2)
@@ -333,8 +347,7 @@ int strcmp_nocase(const char *s1,const char *s2)
 void str2ws_unicode(WSHDR* ws, char* str, int len)
  {
   int i = 0;
-  char *p;
-  p = str;
+  char *p = str;
   while ((p - str) < len - 1) {
     ws->wsbody[++i] = (*(p + 1) << 8) + *p;
     p += 2;
@@ -450,8 +463,8 @@ if (!str) return NULL;
 #pragma inline
 void patch_rect(RECT*rc,int x,int y, int x2, int y2)
 {
-  rc->x=x;
-  rc->y=y;
+  rc->x =x;
+  rc->y =y;
   rc->x2=x2;
   rc->y2=y2;
 }
@@ -477,8 +490,8 @@ void patch_input(const INPUTDIA_DESC* inp)
 #pragma inline
 void patch_dialog(INPUTDIA_DESC* dialog, int x,int y,int x2, int y2)
 {
-  dialog->rc.x = x;
-  dialog->rc.y = y;
+  dialog->rc.x  = x;
+  dialog->rc.y  = y;
   dialog->rc.x2 = x2;
   dialog->rc.y2 = y2;
 }
@@ -495,11 +508,9 @@ void OpenBCFGFile(void)
   }
 }
 #pragma inline
-void DrawCanvasExt(void *canvas, RECT rc,int mode)
-{ DrawCanvas(canvas, rc.x, rc.y, rc.x2, rc.y2, mode); }
+void DrawCanvasExt(void *canvas, RECT rc,int mode){ DrawCanvas(canvas, rc.x, rc.y, rc.x2, rc.y2, mode); }
 #pragma inline
-void DrawCanvasRect(void *canvas, TRect rc,int mode)
-{ DrawCanvas(canvas, rc.l, rc.t, rc.r, rc.b, mode); }
+void DrawCanvasRect(void *canvas, TRect rc,int mode){ DrawCanvas(canvas, rc.l, rc.t, rc.r, rc.b, mode); }
 #pragma inline
 void DrawStringExt(WSHDR *ws,RECT rc,TFont Font,int text_attribute)
 { DrawString(ws, rc.x, rc.y, rc.x2, rc.y2, Font.Size,text_attribute,Font.Pen, Font.Brush); }
@@ -535,7 +546,7 @@ int FreeFileBuf(char *Buffer)
     return(1);
   }else return(0);
 }
-#pragma inline
+#pragma inline//获取字体类型
 uint FontType(int index)
 {
  switch(index){
@@ -576,7 +587,7 @@ uint FontType(int index)
      case 14:return(6);//#define FONT_NUMERIC_XSMALL 6
      case 15:return(9);//#define FONT_NUMERIC_LARGE 9
   default   :return(10);//#define FONT_NUMERIC_MEDIUM 10
-  #endif //#ifdef ELKA
+  #endif //#ifdef NEWSGOLD
  #else //#ifdef NEWSGOLD
      case  0:return(0);//#define FONT_LARGE 0
      case  1:return(1);//#define FONT_LARGE_BOLD 1
@@ -597,6 +608,163 @@ uint FontType(int index)
   default   :return(10);//#define FONT_NUMERIC_MEDIUM 10
  #endif //#ifdef NEWSGOLD
  }
+}
+#pragma inline//播放音乐文件
+int PlayRing(const char *fname, uint VOLUME, uint RepeatNum)
+{
+  int Handle=0;
+  if(!IsCalling()){
+    FSTATS fstats;
+    uint err;
+    if (GetFileStats(fname,&fstats,&err)!=-1){
+      PLAYFILE_OPT INFO;
+      WSHDR* sndPath =AllocWS(128);
+      WSHDR* sndName=AllocWS(128);
+      char s[128];
+      const char *p=strrchr(fname,'\\')+1;
+      str_2ws(sndName,p,128);
+      strncpy(s,fname,p-fname);
+      s[p-fname]='\0';
+      str_2ws(sndPath,s,128);
+      
+      zeromem(&INFO,sizeof(PLAYFILE_OPT));
+      INFO.repeat_num=RepeatNum;
+      INFO.time_between_play=0;
+      INFO.play_first=0;
+      INFO.volume=VOLUME;
+     #ifdef NEWSGOLD
+      INFO.unk6=1;
+      INFO.unk7=1;
+      INFO.unk9=2;
+      Handle=PlayFile(0x10, sndPath, sndName, MMI_CEPID, MSG_PLAYFILE_REPORT, &INFO);
+     #else
+      #ifdef X75
+      INFO.unk4=0x80000000;
+      INFO.unk5=1;
+      Handle=PlayFile(0xC, sndPath, sndName, 0, MMI_CEPID, MSG_PLAYFILE_REPORT, &INFO);
+      #else
+      INFO.unk5=1;
+      Handle=PlayFile(0xC, sndPath, sndName, MMI_CEPID, MSG_PLAYFILE_REPORT, &INFO);
+      #endif
+     #endif
+      FreeWS(sndPath);
+      FreeWS(sndName);
+      return(Handle);
+    }
+  }
+  return(Handle);
+}
+#pragma inline//创建字串总数
+uint CountTitle(char *Title[])
+{
+ int max=0;
+ for (int i=0; Title[i]!=NULL; i++)
+    max++;
+ return(max-1); 
+}
+#pragma inline//创建菜单名称
+TMenu *BuildMenu(char *Title[])
+{
+  TMenu *Menu=0;
+  for (int i=0; Title[i]!=NULL; i++)
+ // for (int i=CountTitle(Title); i>=0; i--)
+  {
+        TMenu *sbl=malloc(sizeof(TMenu));
+        sbl->name=malloc(strlen(Title[i])+1);        
+        strcpy(sbl->name,Title[i]);
+        sbl->cmd=i;
+        sbl->next=0;
+        if (Menu)
+        {
+          TMenu *sbr, *sbt;
+          sbr=(TMenu *)&Menu;
+          sbt=Menu;
+          while(strcmp_nocase(sbt->name,sbl->name)<0)
+          {
+            sbr=sbt;
+            sbt=sbt->next;
+            if (!sbt) break;
+          }
+          sbl->next=sbt;
+          sbr->next=sbl;
+        } else{Menu=sbl;}
+  }
+  return(Menu);
+}
+#pragma inline//创建菜单列表
+void DrawMenu(void *gui, int cur_item, void *user_pointer)
+{
+  WSHDR *ws;
+  TMenu *Menu=user_pointer;
+  void *item=AllocMenuItem(gui);
+  for (int n=0; n!=cur_item; n++) 
+  {
+    Menu=Menu->next;
+  }  
+  if (Menu)
+  {
+    int len=strlen(Menu->name);
+    ws=AllocMenuWS(gui,len+4);
+    //str_2ws(ws,Menu->name,len);
+    utf8_2ws(ws,Menu->name,len);
+  }
+  else
+  {
+    ws=AllocMenuWS(gui,10);
+    wsprintf(ws,"%t","Error!");
+  }    
+  SetMenuItemText(gui, item, ws, cur_item);       
+}
+#pragma inline//释放菜单资源
+void FreeMenu(TMenu *Menu)
+{
+  while(Menu){
+      TMenu *sb=Menu;
+      Menu=Menu->next;
+      mfree(sb->name);
+      mfree(sb);
+  } 
+  mfree(Menu);
+}
+#pragma inline//获取菜单总数
+int MenuCount(TMenu *Menu)
+{
+  int i=0;
+  TMenu *sb=(TMenu*)&Menu;
+  while((sb=sb->next)) i++;
+  return (i);
+}
+#pragma inline//获取文件总数
+int FileCount(TFile *File)
+{
+  int i=0;
+  TFile *sb=(TFile*)&File;
+  while((sb=sb->next)) i++;
+  return (i);
+}
+#pragma inline//释放文件资源
+void FreeFile(TFile *File)
+{
+  while(File){
+      TFile *sb=File;
+      File=File->next;
+      mfree(sb->fullname);
+      mfree(sb->filename);
+      mfree(sb);
+  } 
+  mfree(File);
+}
+#pragma inline//获取播放状态
+int IsMediaActive(void)
+{
+  char s[40];
+  sprintf(s,RamMediaIsPlaying());
+#ifdef NEWSGOLD
+  if (s[0]==1) return 1;
+#else
+  if (s[0]==2) return 1;// SGOLD s[0]!=2    
+#endif 
+  return 0;
 }
 
 #endif/*SIEAPI_H_*/
@@ -634,6 +802,14 @@ uint FontType(int index)
  using _CSTD LoadFileBuf;
  using _CSTD FreeFileBuf;
  using _CSTD FontType;
+ using _CSTD PlayRing;
+ using _CSTD BuildMenu;
+ using _CSTD DrawMenu;
+ using _CSTD FreeMenu;
+ using _CSTD MenuCount;
+ using _CSTD FileCount;
+ using _CSTD FreeFile;
+ using _CSTD IsMediaActive;
 #endif /* 导出函数引用表 */
  
 
