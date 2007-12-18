@@ -132,6 +132,22 @@ void OnRedraw(MAIN_GUI *data) // OnRedraw
       DrawImg(LabelData[pos-1].x+GetImgWidth(pic)-GetImgWidth((int)chpic),
               LabelData[pos-1].y+GetImgHeight(pic)-GetImgHeight((int)chpic),(int)chpic);            
     }
+  WSHDR *wsBuf=AllocWS(30);
+  char *p=strrchr(LabelData[pos-1].FileName, '\\');
+  if( p )
+    utf8_2ws(wsBuf,p+1,30);
+  else
+    utf8_2ws(wsBuf,LabelData[pos-1].FileName,30);
+  DrawRoundedFrame(0,0,ScreenW()-1,14,0,0,0,frcol,cl);
+  DrawString(wsBuf,
+             0,
+             2,
+             ScreenW()-1,
+             13,
+             FONT_SMALL_BOLD,
+             TEXT_ALIGNMIDDLE,
+             frcol,cl);
+  FreeWS(wsBuf);
 }
 
 void onCreate(MAIN_GUI *data, void *(*malloc_adr)(int)) //Create
@@ -158,13 +174,137 @@ void onUnfocus(MAIN_GUI *data, void (*mfree_adr)(void *)) //Unfocus
   data->gui.state=1;
 }
 
+void Bubble2Sort(int* pData, int count, int* cur, char dir) 
+{
+#if 0
+  int i,iTemp; 
+  int left = 1; 
+  int right =count -1; 
+  int t,t2=pData[*cur]; 
+  do 
+  {
+    //正向的部分 
+    for(i=right;i>=left;i--) 
+    {
+      if(dir==0 && LabelData[pData[i]-1].y < LabelData[pData[i-1]-1].y ||
+         dir==1 && LabelData[pData[i]-1].x < LabelData[pData[i-1]-1].x) 
+      {
+        iTemp = pData[i]; 
+        pData[i] = pData[i-1]; 
+        pData[i-1] = iTemp; 
+        t = i; 
+      } 
+    } 
+    left = t+1; 
+    //反向的部分 
+    for(i=left;i<right+1;i++) 
+    {
+      if(dir==0 && LabelData[pData[i]-1].y < LabelData[pData[i-1]-1].y ||
+         dir==1 && LabelData[pData[i]-1].x < LabelData[pData[i-1]-1].x) 
+      {
+        iTemp = pData[i]; 
+        pData[i] = pData[i-1]; 
+        pData[i-1] = iTemp; 
+        t = i; 
+      }
+    }
+    right = t-1; 
+  }while(left<=right); 
+  for(t=0; t<count; t++)
+  {
+    if(pData[t] == t2)
+    {
+      *cur = t;
+      break;
+    }
+  }
+#else
+  int i,j,iTemp; 
+  int t=pData[*cur]; 
+  char exchange=1; //交换标志
+  for(i=1; exchange && i<count; i++) //最多做n-1趟排序
+  {
+	  exchange=0; //本趟排序开始前，交换标志应为假
+	  for(j=count-1; j>=i; j--)
+	  {
+		  if(dir==0 && LabelData[pData[j]-1].y < LabelData[pData[j-1]-1].y ||
+			  dir==1 && LabelData[pData[j]-1].x < LabelData[pData[j-1]-1].x)
+		  {
+			  iTemp = pData[j];
+			  pData[j] = pData[j-1];
+			  pData[j-1] = iTemp;
+			  exchange = 1;
+		  }
+	  }
+  }
+  for(i=0; i<count; i++)
+  {
+	  if(pData[i] == t)
+	  {
+		  *cur = i;
+		  break;
+	  }
+  }
+#endif
+}
+
+void GetNextPos(int key)
+{
+  int i=0,xCount=0,yCount=0;
+  int x=LabelData[pos-1].x;
+  int y=LabelData[pos-1].y;
+  int p1[15],p2[15],px,py,step;
+  for(i=0; i<=count; i++)
+  {
+    if(LabelData[i].x+3 >= x && LabelData[i].x <= x+3)
+    {
+      if(pos == i+1)
+        py = yCount;
+      p1[yCount++] = i+1;
+    }
+    if(LabelData[i].y+3 >= y && LabelData[i].y <= y+3)
+    {
+      if(pos == i+1)
+        px = xCount;
+      p2[xCount++] = i+1;
+    }
+  }
+  step=(key == UP_BUTTON || key == LEFT_BUTTON)?-1:1;
+  if(key == UP_BUTTON || key == DOWN_BUTTON)
+  {
+    if(yCount > 1)
+    {
+      Bubble2Sort(p1, yCount, &py, 0);
+      py += step;
+      if(py < 0)
+        py = yCount-1;
+      else if (py == yCount)
+        py = 0;
+      pos = p1[py];
+    }
+  }
+  else if(key == LEFT_BUTTON || key == RIGHT_BUTTON)
+  {
+    if(xCount > 1)
+    {
+      Bubble2Sort(p2, xCount, &px, 1);
+      px += step;
+      if(px < 0)
+        px = xCount-1;
+      else if(px == xCount)
+        px = 0;
+      pos = p2[px];
+    }
+  }
+}
+
 int OnKey(MAIN_GUI *data, GUI_MSG *msg) //OnKey
 {
   DirectRedrawGUI();  
   
   if (msg->gbsmsg->msg==KEY_DOWN)
   { 
-    if (msg->gbsmsg->submess == CALL_BTN || msg->gbsmsg->submess == RED_BUTTON)
+    if (msg->gbsmsg->submess == RED_BUTTON)
     {
       CloseCSM(MAINCSM_ID); //There GeneralFunc challenge for Tech. GUI -> close GUI
       MAINCSM_ID=0;      
@@ -172,6 +312,14 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg) //OnKey
     }
     switch (msg->gbsmsg->submess)
     {
+#if 1
+    case UP_BUTTON:
+    case DOWN_BUTTON:
+    case LEFT_BUTTON:
+    case RIGHT_BUTTON:
+      GetNextPos( msg->gbsmsg->submess );
+      break;
+#else
     case RIGHT_BUTTON:
       {
         pos+=1;
@@ -183,14 +331,23 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg) //OnKey
           pos-=1;
           if (pos==0) pos=count+1;
        }
-        break;        
+        break;
+#endif        
     case ENTER_BUTTON:
       {
         DoLabel();   
         return(1);
       }
+    case '*': case '0': case '#':
     case 49: case 50: case 51:  case 52:  case 53:  case 54:  case 55:  case 56: case 57: //1-9
       {
+        if(msg->gbsmsg->submess == '*')
+          msg->gbsmsg->submess = 58;
+        else if(msg->gbsmsg->submess == '0')
+          msg->gbsmsg->submess = 59;
+        else if(msg->gbsmsg->submess == '#')
+          msg->gbsmsg->submess = 60;
+        
         if (msg->gbsmsg->submess-49>count) return(0);
         
         pos = msg->gbsmsg->submess-48;
