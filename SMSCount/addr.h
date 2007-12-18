@@ -38,4 +38,9 @@
 #define	RamUnuse  0xA8A7F020
 #endif
 
+#ifdef SK6Cv50
+#define RamSMSNum	0xA8F40DD9
+#define	RamUnuse  0xA80001C0
+#endif
+
 #endif
