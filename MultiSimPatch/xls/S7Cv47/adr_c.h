@@ -7,3 +7,8 @@
 
 
 #define Set_Profile_ADR           0xA050CE64 //0E402DE924109FE50030A0E3B000C1E100308DE504308DE5
+#define GetAllCtxInfo_ADR   0xA053EED3
+//B5 00 27 87 B0 00 26 04 1C 00 20 01 90
+#define Net_Search_ADR            0xA09D32D5
+//01 20 ???????? A3 21 C9 00 00 22 -F
+
