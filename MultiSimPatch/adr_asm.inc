@@ -1,3 +1,6 @@
+#ifdef ELC1v41
+	#include "xls\elc1v41\adr_asm.inc"
+#endif
 
 #ifdef E71Cv41
 	#include "xls\e71cv41\adr_asm.inc"
