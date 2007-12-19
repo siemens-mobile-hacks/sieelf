@@ -46,8 +46,21 @@ void Play(const char *fpath, const char *fname)
   wsprintf(sndPath, fpath);
   wsprintf(sndFName, fname);
   
-  if (!IsCalling())
-  {
+    if(*fpath==0)
+    {
+    FSTATS fstats;
+    unsigned int err; 
+    if (GetFileStats(fname,&fstats,&err)!=-1)
+    {
+      char s[64];
+      const char *p=strrchr(fname,'\\')+1;
+      str_2ws(sndFName,p,64);
+      strncpy(s,fname,p-fname);
+      s[p-fname]='\0';
+      str_2ws(sndPath,s,64);
+    }
+    }
+
     PLAYFILE_OPT _sfo1;
     zeromem(&_sfo1,sizeof(PLAYFILE_OPT));
     _sfo1.repeat_num=1;
@@ -69,7 +82,7 @@ void Play(const char *fpath, const char *fname)
     PlayFile(0xC, sndPath, sndFName, MMI_CEPID, MSG_PLAYFILE_REPORT, &_sfo1);
 #endif
 #endif 
-  }
+    
   FreeWS(sndPath);
   FreeWS(sndFName);
 }

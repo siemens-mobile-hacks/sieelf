@@ -109,6 +109,12 @@ __root const unsigned int melodym=60;
 __root const CFG_HDR cfghdr3_4={CFG_UINT,"提示间隔",0,59};
 __root const unsigned int mminute=1;
 
+__root const CFG_HDR cfghdr3_5={CFG_CHECKBOX,"音频模式",0,0};
+__root const int voice2=0;
+
+__root const CFG_HDR cfghdr3_6={CFG_STR_UTF8,"文件位置",0,63};
+__root const char mname[64]="";
+
 __root const CFG_HDR cfghdr_m6={CFG_LEVEL,"",0,0};
 
 
@@ -120,6 +126,9 @@ __root const int ch_bat=0;
 
 __root const CFG_HDR cfghdr4_1={CFG_UINT,"满电音效",0,200};
 __root const unsigned int melody3=51;
+
+__root const CFG_HDR cfghdr4_2={CFG_UINT,"提醒次数",0,20};
+__root const unsigned int fcount=3;
 
 __root const CFG_HDR cfghdr_m8={CFG_LEVEL,"",0,0};
 

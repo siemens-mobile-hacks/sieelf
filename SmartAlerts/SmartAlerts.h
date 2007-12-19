@@ -3,7 +3,7 @@
 
 extern const int ch_bat;
 extern const unsigned int melody3;
-
+extern const unsigned int fcount;
 
 extern const int amelody;
 extern const unsigned int melody;
@@ -55,6 +55,8 @@ extern const int events;
 extern const int mvib;
 extern const unsigned int melodym;
 extern const unsigned int mminute;
+extern const int voice2;
+extern const char mname[];
 
 extern const int vib;
 extern const unsigned int count2;

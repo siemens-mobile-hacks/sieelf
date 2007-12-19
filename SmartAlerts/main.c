@@ -15,6 +15,7 @@ WSHDR* ws;
 unsigned short *s;
 
 int count;
+int fb=0;
 volatile int _count;
 
 void start_(void)
@@ -129,11 +130,13 @@ GetDateTime(&date,&time);
      
         if (ch_bat)
         {
-           if (*RamCap()==100)
+           if (*RamCap()==100&&fb!=fcount)
            {
-           *RamCap()==99;
            PlaySound(1,0,0,melody3,0);
+           fb++;
            }
+           else if(*RamCap()!=100)
+                fb=0;
         }
         
         if(miss)
@@ -147,7 +150,14 @@ GetDateTime(&date,&time);
           #endif
           {
             if(!mvib)
+            {
+             if(voice2)
+              Play(0,mname); 
+             else
              PlaySound(1,0,0,melodym,0);
+             
+            }
+
           
              _count=count2;
              start_();
