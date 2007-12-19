@@ -10,31 +10,31 @@
  #define MAX_BIR 8
  #define LEN 32
  #define NoName "\xE7\xA9\xBA\xE7\x99\xBD"
- #define ExcuteType "File", "Shortcut", "Address", "Path"
+ #define ExcuteType "文件", "快捷", "地址", "目录"
  #define ExcuteLen 4
  #define DateFmt "YYYY/MM/DD","YYYY-MM-DD","YYYY.MM.DD","YYYY MM DD","MM/DD","MM-DD","MM.DD","MM DD","年月日","月日"
  #define TimeFmt "13:00","PM 01:00","01:00","13:00:00","PM 01:00:00","03D00F","03D00F00M"
- 
+
  #ifdef DAEMON
  typedef struct{
   CSM_RAM csm;
- }MAIN_CSM;
+ }DAEMON_CSM;
  #endif
  
  typedef struct{
   CSM_RAM csm;
-  int task_id; 
+  int menu_id; 
   int file_id;
- }MAIN_CSM_GUI;
+ }DAEMON_GUI;
 
  typedef struct{  
-  RECT rc;
+  RECT  rc;
   WSHDR *ws;
   char Pen[4];
   char Brush[4];
-  int Size;
-  int Type;
-  int show;
+  int  Size;
+  int  Type;
+  int  Show;
  }TSCR;
  
  typedef struct{
@@ -54,15 +54,15 @@
 //运行软件
  extern const uint OFFSET;
  extern const uint AUTO_CLOSE;
- extern const char APPTEXT_COLORS[4];
- extern const char APPTEXT_FCOLOR[4];
+ extern const char APPTEXT_COLORS[];
+ extern const char APPTEXT_FCOLOR[];
  extern const uint APPTEXT_FONT;
- extern const char cfgPanBorderCol[4];
- extern const char cfgPanBGCol[4];
- extern const char cfgBookBorderCol[4];
- extern const char cfgBookBGCol[4];
+ extern const char cfgPanBorderCol[];
+ extern const char cfgPanBGCol[];
+ extern const char cfgBookBorderCol[];
+ extern const char cfgBookBGCol[];
  //没有图标
- extern const char AINO[64];
+ extern const char AINO[];
  //运行内部地址
  extern const int AT04;
  extern const int AT05;
@@ -75,56 +75,56 @@
  extern const int AT12;
  extern const int AT13;
  //功能描述
- extern const char AN04[LEN];
- extern const char AN05[LEN];
- extern const char AN06[LEN];
- extern const char AN07[LEN];
- extern const char AN08[LEN];
- extern const char AN09[LEN];
- extern const char AN10[LEN];
- extern const char AN11[LEN];
- extern const char AN12[LEN];
- extern const char AN13[LEN];
+ extern const char AN04[];
+ extern const char AN05[];
+ extern const char AN06[];
+ extern const char AN07[];
+ extern const char AN08[];
+ extern const char AN09[];
+ extern const char AN10[];
+ extern const char AN11[];
+ extern const char AN12[];
+ extern const char AN13[];
  //功能图标 
- extern const char AIST[64];
- extern const char AITO[64];
- extern const char AIRT[64];
- extern const char AILK[64];
- extern const char AI04[64]; 
- extern const char AI05[64]; 
- extern const char AI06[64]; 
- extern const char AI07[64];
- extern const char AI08[64];
- extern const char AI09[64];
- extern const char AI10[64];
- extern const char AI11[64];
- extern const char AI12[64];
- extern const char AI13[64];
+ extern const char AIST[];
+ extern const char AITO[];
+ extern const char AIRT[];
+ extern const char AILK[];
+ extern const char AI04[]; 
+ extern const char AI05[]; 
+ extern const char AI06[]; 
+ extern const char AI07[];
+ extern const char AI08[];
+ extern const char AI09[];
+ extern const char AI10[];
+ extern const char AI11[];
+ extern const char AI12[];
+ extern const char AI13[];
  //功能调用
- extern const char AF04[64];
- extern const char AF05[64];
- extern const char AF06[64];
- extern const char AF07[64]; 
- extern const char AF08[64];
- extern const char AF09[64];
- extern const char AF10[64];
- extern const char AF11[64];
- extern const char AF12[64];
- extern const char AF13[64];
+ extern const char AF04[];
+ extern const char AF05[];
+ extern const char AF06[];
+ extern const char AF07[]; 
+ extern const char AF08[];
+ extern const char AF09[];
+ extern const char AF10[];
+ extern const char AF11[];
+ extern const char AF12[];
+ extern const char AF13[];
 //定义生日显示
  extern const int  NBIR_ENA;
  extern const uint NBIR_X;
  extern const uint NBIR_Y;
- extern const char NBIR_COLORS[4];
- extern const char NBIR_FCOLOR[4];
+ extern const char NBIR_COLORS[];
+ extern const char NBIR_FCOLOR[];
  extern const uint NBIR_FONT; 
  extern const int  OBIR_ENA;
  extern const uint OBIR_X;
  extern const uint OBIR_Y;
- extern const char OBIR_COLORS[4];
- extern const char OBIR_FCOLOR[4];
+ extern const char OBIR_COLORS[];
+ extern const char OBIR_FCOLOR[];
  extern const uint OBIR_FONT;
- extern const char BIR_FILE[64];
+ extern const char BIR_FILE[];
 //显示文本
  extern const int  TEXT_ENA;
  extern const uint TEXT_X;
@@ -132,7 +132,7 @@
  extern const char TEXT_COLORS[];
  extern const char TEXT_FCOLOR[];
  extern const uint TEXT_FONT;
- extern const char TEXT_FMT[LEN];
+ extern const char TEXT_FMT[];
 //显示温度
  extern const int  TEMP_ENA;
  extern const uint TEMP_X;
@@ -140,7 +140,7 @@
  extern const char TEMP_COLORS[];
  extern const char TEMP_FCOLOR[];
  extern const uint TEMP_FONT;
- extern const char TEMP_FMT[16];
+ extern const char TEMP_FMT[];
 //显示电压
  extern const int  VOLT_ENA;
  extern const uint VOLT_X;
@@ -148,7 +148,7 @@
  extern const char VOLT_COLORS[];
  extern const char VOLT_FCOLOR[];
  extern const uint VOLT_FONT;
- extern const char VOLT_FMT[16];
+ extern const char VOLT_FMT[];
 //显示内存
  extern const int  RAM_ENA;
  extern const uint RAM_X;
@@ -157,9 +157,9 @@
  extern const char RAM_FCOLOR[];
  extern const uint RAM_FONT;
 //转换格式
- extern const char BYTES_FMT[16];
- extern const char BYTES_SG[8];
- extern const char KBYTES_SG[8];
+ extern const char BYTES_FMT[];
+ extern const char BYTES_SG[];
+ extern const char KBYTES_SG[];
 //显示星期
  extern const int  WEEK_ENA;
  extern const uint WEEK_X;
@@ -205,7 +205,7 @@
  extern const char NET_COLORS[];
  extern const char NET_FCOLOR[];
  extern const uint NET_FONT;
- extern const char NET_FMT[16];
+ extern const char NET_FMT[];
 //显示CPU使用率
  extern const int  CAP_ENA;
  extern const uint ACCU_X;
@@ -213,7 +213,7 @@
  extern const char ACCU_COLORS[];
  extern const char ACCU_FCOLOR[];
  extern const uint ACCU_FONT;
- extern const char CAP_FMT[16];
+ extern const char CAP_FMT[];
 //显示GPRS流量
  extern const int  GPRS_ENA;
  extern const uint GPRS_X;
@@ -228,14 +228,18 @@
  extern const char CPU_COLORS[];
  extern const char CPU_FCOLOR[];
  extern const uint CPU_FONT;
- extern const char CPU_FMT[16];
+ extern const char CPU_FMT[];
 //刷新速度
  extern const uint REFRESH;
 //铃声参数
- extern const char RIN_FILE[64];
+ extern const char RIN_FILE[];
  extern const uint RIN_VOLUME;
  extern const int  RIN_ENA;
  extern const uint RIN_NUM;
  extern const uint RIN_VIB;
+ extern const uint RIN_BTN;
  extern const int  VIB_ENA;
+ //自动关机
+ extern const int  AUTOSD_ENA;
+ extern const char AUTOSD_TIME[];
 #endif
