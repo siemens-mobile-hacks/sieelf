@@ -602,8 +602,15 @@
 08D8: 0xA0503A8F   ; 236:  __thumb int GetLunarAnimal(int year)
 ;8DC:              ; 237:  __arm char *RamIconBar()
 08E0: 0xA0738FAD   ; 238:  __thumb void SendAutoUSSDack(void)
-08E4: 0xA098F5A8   ; 239: __arm int EEFullDeleteBlock(unsigned int block,int cepid,int msg);
-08E8: 0xA098F6F4   ; 23A: __arm int EEFullCreateBlock(unsigned int block,int size,int version,int cepid,int msg);
+08E4: 0xA098F5A8   ; 239:  __arm int EEFullDeleteBlock(unsigned int block,int cepid,int msg);
+08E8: 0xA098F6F4   ; 23A:  __arm int EEFullCreateBlock(unsigned int block,int size,int version,int cepid,int msg);
+08EC: 0xA0002070   ; 23B:  __arm void DisableIconBar(int disable); // loopback
+08F0: 0xA07DAB34   ; 23C:  __arm int SetCurrentGPRSProfile(int profile);
+08F4: 0xA0CF5829   ; 23D:  __thumb void MD5_Init(MD5_CTX *c)
+08F8: 0xA0CF5499   ; 23E:  __thumb void MD5_Update(MD5_CTX *c, const void *data, unsigned long len)
+08FC: 0xA0CF5731   ; 23F:  __thumb void MD5_Final(unsigned char *md, MD5_CTX *c)
+
+0900: 0xA0CF61B9   ; 240:  __thumb char *MD5_Hash(const unsigned char *data, unsigned long n, unsigned char *md)
 #pragma disable old_equal_ff
 +0
 ;********************************************************************************
