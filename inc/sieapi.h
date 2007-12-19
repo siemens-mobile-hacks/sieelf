@@ -24,9 +24,11 @@ _C_STD_BEGIN
  #define TVoid typedef void
  #define TStruct typedef struct 
  //定义字体索引类型0-16!
- #define FontStyle "Large","Large bold","Large italic","Large italic bold","Medium","Medium bold","Medium italic","Medium italic bold","Small","Small bold","Small italic","Small italic bold","Numeric small","Numeric small bold","Numeric xsmall","Numeric large","Numeric medium"
+ #define FontSyEN "Large","Large bold","Large italic","Large italic bold","Medium","Medium bold","Medium italic","Medium italic bold","Small","Small bold","Small italic","Small italic bold","Numeric small","Numeric small bold","Numeric xsmall","Numeric large","Numeric medium"
+ #define FontSyCN "大号字体","大号粗体","大号斜体","大号粗斜","中号字体","中号加粗","中号倾斜","中号粗斜","小号字体","小号加粗","小号斜体","小号粗斜","小号数体","小号数粗","最小数体","大号数体","中号数体"
  //#define IS_FOLDER 1 //定义文件夹操作
  //#define IS_FILE 0  //定义文件操作
+ 
  //定义农历类型结构
  TStruct{
   WSHDR *year;//年份
@@ -667,7 +669,6 @@ TMenu *BuildMenu(char *Title[])
 {
   TMenu *Menu=0;
   for (int i=0; Title[i]!=NULL; i++)
- // for (int i=CountTitle(Title); i>=0; i--)
   {
         TMenu *sbl=malloc(sizeof(TMenu));
         sbl->name=malloc(strlen(Title[i])+1);        
