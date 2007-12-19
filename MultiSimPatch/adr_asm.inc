@@ -13,3 +13,7 @@
 #ifdef S7Cv47
 	#include "xls\S7Cv47\adr_asm.inc"
 #endif
+
+#ifdef SK6Cv50
+	#include "xls\SK6Cv50\adr_asm.inc"
+#endif
