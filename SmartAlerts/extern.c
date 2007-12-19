@@ -46,7 +46,7 @@ void Play(const char *fpath, const char *fname)
   wsprintf(sndPath, fpath);
   wsprintf(sndFName, fname);
   
-    if(*fpath==0)
+    if(fpath==0)
     {
     FSTATS fstats;
     unsigned int err; 
