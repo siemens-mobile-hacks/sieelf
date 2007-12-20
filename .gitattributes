@@ -1040,8 +1040,6 @@ ScrTool/32/no.png -text
 ScrTool/32/off.png -text
 ScrTool/32/reboot.png -text
 ScrTool/32/set.png -text
-ScrTool/ScrTool.dep -text
-ScrTool/ScrTool.ewd -text
 ScrTool/ScrTool.ewp -text
 ScrTool/ScrTool.eww -text
 ScrTool/conf_loader.c -text
@@ -1231,13 +1229,9 @@ SmartAlerts/Exe/SmartAlertsC_NSG.elf -text
 SmartAlerts/Exe/SmartAlertsC_SG.elf -text
 SmartAlerts/Exe/SmartAlerts_NSG.elf -text
 SmartAlerts/Exe/SmartAlerts_SG.elf -text
-SmartAlerts/SmartAlerts.dep -text
-SmartAlerts/SmartAlerts.ewd -text
 SmartAlerts/SmartAlerts.ewp -text
 SmartAlerts/SmartAlerts.eww -text
 SmartAlerts/SmartAlerts.h -text
-SmartAlerts/SmartAlertsC.dep -text
-SmartAlerts/SmartAlertsC.ewd -text
 SmartAlerts/SmartAlertsC.ewp -text
 SmartAlerts/conf_loader.c -text
 SmartAlerts/conf_loader.h -text
