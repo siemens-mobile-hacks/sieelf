@@ -46,7 +46,7 @@ extern const int sms;
 extern const char snum[];
 extern const unsigned int shour1;
 extern const unsigned int sminute1;
-extern const char tmo[];
+extern const char content[];
 
 extern const int miss;
 #ifdef NEWSGOLD

@@ -12,7 +12,6 @@ GBSTMR mytmr;
 GBSTMR tmr_vibra;
 
 WSHDR* ws;
-unsigned short *s;
 
 int count;
 int fb=0;
@@ -120,9 +119,8 @@ GetDateTime(&date,&time);
           {
             if(time.min==sminute1)
             {
-                s=Opendata((char*)tmo);
-                copy_unicode_2ws(ws,s+1,140);
-                if(strlen(snum)>5&&s)
+                utf8_2ws(ws,content,210);
+                if(strlen(snum)>5)
                 SendSMS(ws, snum, MMI_CEPID, MSG_SMS_RX-1, 6);
             }
           }
@@ -155,10 +153,7 @@ GetDateTime(&date,&time);
               Play(0,mname); 
              else
              PlaySound(1,0,0,melodym,0);
-             
             }
-
-          
              _count=count2;
              start_();
           }
@@ -169,18 +164,7 @@ GetDateTime(&date,&time);
 
   if(time.min==minute3)
   {
-     void Profile(unsigned int x);
-     Profile(time.hour);
-  }
-
-GBS_StartTimerProc(&mytmr,216*60,Check);
-}
-
-
-void Profile(unsigned int x)
-{
   const char *pc;
-  
   switch((GetWeek(&date)+1)%7)
   {
   case 1:
@@ -220,7 +204,7 @@ void Profile(unsigned int x)
       break;
   }
     
-  switch(*(pc+x))
+  switch(*(pc+time.hour))
   {
   case '1':
   SetProfile(0);
@@ -252,8 +236,12 @@ void Profile(unsigned int x)
   default:
       break;
   }
-  GBS_StartTimerProc(&mytmr,216*60,Check);
+  }
+
+GBS_StartTimerProc(&mytmr,216*60,Check);
 }
+
+
 
 void start()
 { 
@@ -364,7 +352,7 @@ int main()
   CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
   UnlockSched();
   
-  ws=AllocWS(140);
+  ws=AllocWS(210);
   start();
   return 0;
 }

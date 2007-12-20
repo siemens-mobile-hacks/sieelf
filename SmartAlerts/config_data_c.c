@@ -182,8 +182,8 @@ __root const unsigned int sminute1=0;
 __root const CFG_HDR cfghdr7_4={CFG_STR_UTF8,"电话号码",0,29};
 __root const char snum[30]="";
 
-__root const CFG_HDR cfghdr7_5={CFG_STR_UTF8,"短信地址",0,63};
-__root const char tmo[64]="";
+__root const CFG_HDR cfghdr7_5={CFG_STR_UTF8,"短信内容",0,209};
+__root const char content[210]="";
 
 __root const CFG_HDR cfghdr_m14={CFG_LEVEL,"",0,0};
 

@@ -1,26 +1,6 @@
 #include "..\inc\swilib.h"
 #include "SmartAlerts.h"
 
-unsigned short* Opendata(char *recname)
-{
-  char *buf;
-  int f;
-  unsigned int fsize;  
-  unsigned int err;
-  f=fopen(recname,A_ReadOnly+A_BIN,P_READ,&err);
-  fsize=lseek(f,0,S_END,&err,&err);
-  if (fsize<=0)
-  {
-    fclose(f,&err);
-  }
-  lseek(f,0,S_SET,&err,&err);
-  buf=malloc(fsize+1);
-  fread(f,buf,fsize,&err);
-  buf[fsize]=0;
-  fclose(f,&err);
-  return ((unsigned short*) buf);
-}
-
 int runFile(char *file) 
 {
   if(file)
@@ -85,16 +65,6 @@ void Play(const char *fpath, const char *fname)
     
   FreeWS(sndPath);
   FreeWS(sndFName);
-}
-
-void copy_unicode_2ws(WSHDR* ws, unsigned short* unicode,int x)
-{
-	int i = 0;
-	for (; unicode[i]!=0 && i<=x; i++ )
-	{
-		ws->wsbody[i+1] = unicode[i];
-	}
-	ws->wsbody[0] = i;                  // set ws length
 }
 
 
