@@ -1,5 +1,6 @@
 #include "../inc/swilib.h"
 #include "../inc/pnglist.h"
+#include "code.h"
 //===============================================================================================
 // ELKA Compatibility
 #pragma inline
@@ -103,17 +104,6 @@ unsigned int char8to16(int c)
   }
   return(c);
 }
-
-void ascii2ws(WSHDR *ws, const char *s)
-{
-  char c;
-  CutWSTR(ws,0);
-  while((c=*s++))
-  {
-    wsAppendChar(ws,char8to16(c));
-  }
-}
-
 
 //types:
 //1 - menu;
@@ -488,7 +478,7 @@ void main_menu_iconhndl(void *data, int curitem, void *user_pointer)
   while(top && i!=curitem) {top=top->next; i++;}
   s=top?top->name:"Ошибка";
   ws=AllocMenuWS(data,strlen(s));
-  ascii2ws(ws,s);
+  ascii2ws(ws,s,0);
   SetMenuItemText(data,item,ws,curitem);
 }
 
@@ -527,6 +517,7 @@ void maincsm_oncreate(CSM_RAM *data)
 
 void maincsm_onclose(CSM_RAM *csm)
 {
+  free_font_lib();
   SUBPROC((void *)ElfKiller);
 }
 
@@ -578,11 +569,12 @@ sizeof(MAIN_CSM),
 
 void UpdateCSMname(void)
 {
-  ascii2ws((WSHDR *)(&MAINCSM.maincsm_name), "Physics");
+  ascii2ws((WSHDR *)(&MAINCSM.maincsm_name), "Physics",0);
 }
 
 int main(char *filename)
 {
+  init_font_lib();
   char *s;
   int len;
   MAIN_CSM csm;

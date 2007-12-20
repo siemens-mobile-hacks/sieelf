@@ -988,6 +988,8 @@ Physics/Physics.dep -text
 Physics/Physics.ewd -text
 Physics/Physics.ewp -text
 Physics/Physics.eww -text
+Physics/code.c -text
+Physics/code.h -text
 Physics/func.asm -text
 Physics/main.c -text
 Physics/misc/1.txt -text
