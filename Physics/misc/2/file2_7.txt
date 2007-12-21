@@ -1,31 +1,31 @@
-t~Количество теплоты&
-t~Нагревания:&
+t~Quantity of heat&
+t~ЖшМеИИБї:&
 p~/br.png&
 p~/2/186.png&
 p~/gran.png&
-t~Плавления:&
+t~µИОВ№эіМ:&
 p~/br.png&
 p~/2/187.png&
 p~/gran.png&
-t~Кристаллизации:&
+t~µИС№№эіМ:&
 p~/br.png&
 p~/2/188.png&
 p~/gran.png&
-t~Кипения:&
+t~µИИЭ№эіМ:&
 p~/br.png&
 p~/2/189.png&
 p~/gran.png&
-t~Сгорания&
+t~ѕшИИ№эіМ:&
 p~/br.png&
 p~/2/190.png&
 p~/br.png&
 p~/2/191.png&
 p~/gran.png&
-t~Теплоемкость тела:&
+t~Д¦¶ыИИИЭ:&
 p~/br.png&
 p~/2/192.png&
 p~/gran.png&
-t~Уравнение теплового баланса:&
+t~ИИБїКШєг:&
 p~/br.png&
 p~/2/193.png&
 p~/br.png&

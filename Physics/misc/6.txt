@@ -1,5 +1,5 @@
-HМКТ
-E2\file2_1.txt Основные положения МКТ
-E2\file2_2.txt Изотермический процесс
-E2\file2_3.txt Изобарный процесс
-E2\file2_4.txt Изохорный процесс
+HAerodynamisch
+E2\file2_1.txt ЖшМе¶ЇБ¦С§
+E2\file2_2.txt µИОВФЛ¶Ї
+E2\file2_3.txt µИС№ФЛ¶Ї
+E2\file2_4.txt µИмКФЛ¶Ї

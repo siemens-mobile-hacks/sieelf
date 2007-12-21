@@ -1,4 +1,4 @@
-t~Изобарный&
+t~Izobarny process&
 p~/2/158.png&
 p~/br.png&
 p~/2/167.png&

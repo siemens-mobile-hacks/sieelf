@@ -1,4 +1,4 @@
-t~Изотермический процесс&
+t~Isothermal process&
 p~/2/157.png&
 p~/br.png&
 p~/2/165.png&
