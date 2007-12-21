@@ -1,5 +1,5 @@
-t~Работа силы тока&
-t~Работа силы тока:&
+t~Electric power&
+t~µз№¦:&
 p~/br.png&
 p~/3/265.png&
 p~/br.png&
