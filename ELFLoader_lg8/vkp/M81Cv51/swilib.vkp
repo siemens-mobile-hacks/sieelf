@@ -225,7 +225,7 @@
 0330: 0xA8E6858C   ;  CC: char *RamMissedCalls()
 ;334:              ;  CD: char *RamMissedSMS()
 0338: 0xA8DA861C   ;  CE: RamDateTime
-;33C:              ;  CF: RamAlarm
+033C: 0xA8EE25B0   ;  CF: RamAlarm
 
 ;340:              ;  D0: RamAccPoint
 ;344:              ;  D1: RamScreensaver
