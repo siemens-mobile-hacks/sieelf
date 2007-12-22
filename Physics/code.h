@@ -1,6 +1,7 @@
 #ifndef _CODE_H_
   #define _CODE_H_
 
+
 void init_font_lib(void);
 void free_font_lib(void);
 // GB2UC

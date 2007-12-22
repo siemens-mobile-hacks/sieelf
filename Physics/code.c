@@ -2,6 +2,7 @@
 #include "..\inc\swilib.h"
 #include "code.h"
 
+
 unsigned short *codemap;
 
 void init_font_lib(void)
@@ -94,4 +95,3 @@ void ascii2ws(WSHDR *ws, const char *s, int maxlen)
     }
   }
 }
-
