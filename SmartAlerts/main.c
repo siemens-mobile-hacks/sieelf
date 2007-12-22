@@ -115,16 +115,16 @@ GetDateTime(&date,&time);
         
         if(sms)
         {
-	  if(time.hour==shour1)
+         if(!sdate||(date.month==month&&date.day==day))
           {
-            if(time.min==sminute1)
-            {
+	  if(time.hour==shour1&&time.min==sminute1)
+          {
                 utf8_2ws(ws,content,210);
                 if(strlen(snum)>5)
                 SendSMS(ws, snum, MMI_CEPID, MSG_SMS_RX-1, 6);
-            }
           }
-        }
+          }
+        }  
      
         if (ch_bat)
         {
@@ -139,6 +139,8 @@ GetDateTime(&date,&time);
         
         if(miss)
         {
+          if (!(time.hour<min)&&!(time.hour>max))
+          {
           if(time.min%mminute==0)
           {
           #ifdef NEWSGOLD          
@@ -156,6 +158,7 @@ GetDateTime(&date,&time);
             }
              _count=count2;
              start_();
+          }
           }
           }
         }

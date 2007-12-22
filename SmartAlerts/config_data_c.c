@@ -12,11 +12,6 @@ __root const CFG_HDR cfghdr_m3={CFG_LEVEL,"定时提醒",1,0};
 __root const CFG_HDR cfghdr1_0={CFG_CHECKBOX,"无振动",0,0};
 __root const int amelody=0;
 
-__root const CFG_HDR cfghdr1_1={CFG_UINT,"起始时间",0,23};
-__root const unsigned int min=0;
-
-__root const CFG_HDR cfghdr1_2={CFG_UINT,"结束时间",0,23};
-__root const unsigned int max=23;
 
 __root const CFG_HDR cfghdr1_3={CFG_UINT,"提示音效",0,200};
 __root const unsigned int melody=60;
@@ -170,25 +165,40 @@ __root const CFG_HDR cfghdr_m12={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr_m15={CFG_LEVEL,"定时短信",1,0};
 
-__root const CFG_HDR cfghdr7_1={CFG_CHECKBOX,"定时短信",0,0};
+__root const CFG_HDR cfghdr7_0={CFG_CHECKBOX,"定时短信",0,0};
 __root const int sms=0;
 
-__root const CFG_HDR cfghdr7_2={CFG_UINT,"小时",0,23};
+__root const CFG_HDR cfghdr7_1={CFG_CHECKBOX,"日期支持",0,0};
+__root const int sdate=0;
+
+__root const CFG_HDR cfghdr7_2={CFG_UINT,"月",1,12};
+__root const unsigned int month=1;
+
+__root const CFG_HDR cfghdr7_3={CFG_UINT,"日",1,31};
+__root const unsigned int day=1;
+
+__root const CFG_HDR cfghdr7_4={CFG_UINT,"小时",0,23};
 __root const unsigned int shour1=0;
 
-__root const CFG_HDR cfghdr7_3={CFG_UINT,"分钟",0,59};
+__root const CFG_HDR cfghdr7_5={CFG_UINT,"分钟",0,59};
 __root const unsigned int sminute1=0;
 
-__root const CFG_HDR cfghdr7_4={CFG_STR_UTF8,"电话号码",0,29};
+__root const CFG_HDR cfghdr7_6={CFG_STR_UTF8,"电话号码",0,29};
 __root const char snum[30]="";
 
-__root const CFG_HDR cfghdr7_5={CFG_STR_UTF8,"短信内容",0,209};
+__root const CFG_HDR cfghdr7_7={CFG_STR_UTF8,"短信内容",0,209};
 __root const char content[210]="";
 
 __root const CFG_HDR cfghdr_m14={CFG_LEVEL,"",0,0};
 
 
 __root const CFG_HDR cfghdr_m17={CFG_LEVEL,"其他设置",1,0};
+
+__root const CFG_HDR cfghdr8_11={CFG_UINT,"起始时间",0,23};
+__root const unsigned int min=0;
+
+__root const CFG_HDR cfghdr8_12={CFG_UINT,"结束时间",0,23};
+__root const unsigned int max=23;
 
 __root const CFG_HDR cfghdr8_0={CFG_CHECKBOX,"振动",0,0};
 __root const int vib=0;

@@ -7,8 +7,6 @@ extern const unsigned int fcount;
 
 extern const int amelody;
 extern const unsigned int melody;
-extern const unsigned int min;
-extern const unsigned int max;
 extern const unsigned int minute;
 
 extern const int voice;
@@ -43,6 +41,9 @@ extern const unsigned int chour1;
 extern const unsigned int cminute1;
 
 extern const int sms;
+extern const int sdate;
+extern const unsigned int month;
+extern const unsigned int day;
 extern const char snum[];
 extern const unsigned int shour1;
 extern const unsigned int sminute1;
@@ -58,6 +59,9 @@ extern const unsigned int mminute;
 extern const int voice2;
 extern const char mname[];
 
+
+extern const unsigned int min;
+extern const unsigned int max;
 extern const int vib;
 extern const unsigned int count2;
 extern const unsigned int vibra_pow;

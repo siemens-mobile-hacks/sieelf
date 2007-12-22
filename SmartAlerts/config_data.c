@@ -12,11 +12,6 @@ __root const CFG_HDR cfghdr_m3={CFG_LEVEL,"Alerts",1,0};
 __root const CFG_HDR cfghdr1_0={CFG_CHECKBOX,"No Vibra",0,0};
 __root const int amelody=0;
 
-__root const CFG_HDR cfghdr1_1={CFG_UINT,"OnlyFrom",0,24};
-__root const unsigned int min=0;
-
-__root const CFG_HDR cfghdr1_2={CFG_UINT,"OnlyTo",0,24};
-__root const unsigned int max=24;
 
 __root const CFG_HDR cfghdr1_3={CFG_UINT,"melody",0,200};
 __root const unsigned int melody=60;
@@ -176,25 +171,42 @@ __root const CFG_HDR cfghdr_m12={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr_m15={CFG_LEVEL,"Auto-Sms",1,0};
 
-__root const CFG_HDR cfghdr7_1={CFG_CHECKBOX,"Auto-Sms",0,0};
+__root const CFG_HDR cfghdr7_0={CFG_CHECKBOX,"Auto-Sms",0,0};
 __root const int sms=0;
 
-__root const CFG_HDR cfghdr7_2={CFG_UINT,"hour",0,23};
+__root const CFG_HDR cfghdr7_1={CFG_CHECKBOX,"Day supply",0,0};
+__root const int sdate=0;
+
+__root const CFG_HDR cfghdr7_2={CFG_UINT,"month",1,12};
+__root const unsigned int month=1;
+
+__root const CFG_HDR cfghdr7_3={CFG_UINT,"day",1,31};
+__root const unsigned int day=1;
+
+__root const CFG_HDR cfghdr7_4={CFG_UINT,"hour",0,23};
 __root const unsigned int shour1=0;
 
-__root const CFG_HDR cfghdr7_3={CFG_UINT,"minute",0,59};
+__root const CFG_HDR cfghdr7_5={CFG_UINT,"minute",0,59};
 __root const unsigned int sminute1=0;
 
-__root const CFG_HDR cfghdr7_4={CFG_STR_UTF8,"number",0,29};
+__root const CFG_HDR cfghdr7_6={CFG_STR_UTF8,"number",0,29};
 __root const char snum[30]="";
 
-__root const CFG_HDR cfghdr7_5={CFG_STR_UTF8,"content",0,209};
+__root const CFG_HDR cfghdr7_7={CFG_STR_UTF8,"content",0,209};
 __root const char content[210]="";
 
 __root const CFG_HDR cfghdr_m14={CFG_LEVEL,"",0,0};
 
 
 __root const CFG_HDR cfghdr_m17={CFG_LEVEL,"Other",1,0};
+
+
+__root const CFG_HDR cfghdr8_11={CFG_UINT,"OnlyFrom",0,23};
+__root const unsigned int min=0;
+
+__root const CFG_HDR cfghdr8_12={CFG_UINT,"OnlyTo",0,23};
+__root const unsigned int max=23;
+
 
 __root const CFG_HDR cfghdr8_0={CFG_CHECKBOX,"Vibra",0,0};
 __root const int vib=0;
