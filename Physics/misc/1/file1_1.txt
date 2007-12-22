@@ -7,7 +7,7 @@ p~/1/3.png&
 p~/br.png&
 t~S-距离, V-速度, t-时间&
 p~/gran.png&
-t~座标方程
+t~座标方程&
 p~/br.png&
 p~/1/4.png&
 $
