@@ -10,6 +10,10 @@
 	#include "xls\M81Cv51\adr_asm.inc"
 #endif
 
+#ifdef S68Cv51
+	#include "xls\S68Cv51\adr_asm.inc"
+#endif
+
 #ifdef S7Cv47
 	#include "xls\S7Cv47\adr_asm.inc"
 #endif
