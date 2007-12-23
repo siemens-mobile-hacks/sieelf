@@ -25,7 +25,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release_NSG\Exe</state>
+          <state>Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -86,28 +86,28 @@
         <option>
           <name>GRuntimeLibSelect</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>GRuntimeLibSelectSlave</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>RTDescription</name>
-          <state>Do not link with a runtime library.</state>
+          <state>Use the normal configuration of the C/C++ runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
         </option>
         <option>
           <name>RTConfigPath</name>
-          <state></state>
+          <state>$TOOLKIT_DIR$\LIB\dl5tpainl8n.h</state>
         </option>
         <option>
           <name>RTLibraryPath</name>
-          <state></state>
+          <state>$TOOLKIT_DIR$\LIB\dl5tpainl8n.r79</state>
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.41A</state>
+          <state>4.40A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -132,11 +132,12 @@
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>14</version>
+        <version>13</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
           <name>CCDefines</name>
+          <state>NDEBUG</state>
           <state>NEWSGOLD</state>
         </option>
         <option>
@@ -157,11 +158,11 @@
         </option>
         <option>
           <name>CCListCMnemonics</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCListCMessages</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCListAssFile</name>
@@ -197,7 +198,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeed</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCOptimization</name>
@@ -207,7 +208,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>1011101</state>
+          <state>1111111</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -271,7 +272,7 @@
         </option>
         <option>
           <name>CCCompilerRuntimeInfo</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>IFpuProcessor</name>
@@ -291,7 +292,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeedSlave</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCOptimizationSlave</name>
@@ -342,11 +343,6 @@
         <option>
           <name>CCStdIncludePath</name>
           <state>$TOOLKIT_DIR$\INC\</state>
-        </option>
-        <option>
-          <name>CCInlineThreshold</name>
-          <version>0</version>
-          <state>1</state>
         </option>
       </data>
     </settings>
@@ -404,7 +400,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>NEWSGOLD</state>
         </option>
         <option>
           <name>AList</name>
@@ -550,7 +546,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>CallRecs.elf</state>
+          <state>CallRecs_NSG.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -848,7 +844,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release_ELKA\Exe</state>
+          <state>Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -909,28 +905,28 @@
         <option>
           <name>GRuntimeLibSelect</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>GRuntimeLibSelectSlave</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>RTDescription</name>
-          <state>Do not link with a runtime library.</state>
+          <state>Use the normal configuration of the C/C++ runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
         </option>
         <option>
           <name>RTConfigPath</name>
-          <state></state>
+          <state>$TOOLKIT_DIR$\LIB\dl5tpainl8n.h</state>
         </option>
         <option>
           <name>RTLibraryPath</name>
-          <state></state>
+          <state>$TOOLKIT_DIR$\LIB\dl5tpainl8n.r79</state>
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.41A</state>
+          <state>4.40A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -955,11 +951,12 @@
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>14</version>
+        <version>13</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
           <name>CCDefines</name>
+          <state>NDEBUG</state>
           <state>NEWSGOLD</state>
           <state>ELKA</state>
         </option>
@@ -981,11 +978,11 @@
         </option>
         <option>
           <name>CCListCMnemonics</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCListCMessages</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCListAssFile</name>
@@ -1021,7 +1018,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeed</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCOptimization</name>
@@ -1031,7 +1028,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>1011101</state>
+          <state>1111111</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -1095,7 +1092,7 @@
         </option>
         <option>
           <name>CCCompilerRuntimeInfo</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>IFpuProcessor</name>
@@ -1115,7 +1112,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeedSlave</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCOptimizationSlave</name>
@@ -1166,11 +1163,6 @@
         <option>
           <name>CCStdIncludePath</name>
           <state>$TOOLKIT_DIR$\INC\</state>
-        </option>
-        <option>
-          <name>CCInlineThreshold</name>
-          <version>0</version>
-          <state>1</state>
         </option>
       </data>
     </settings>
@@ -1228,7 +1220,8 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>NEWSGOLD</state>
+          <state>ELKA</state>
         </option>
         <option>
           <name>AList</name>
@@ -1374,7 +1367,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>CallRecs.elf</state>
+          <state>CallRecs_EL.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -1672,7 +1665,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release_SGOLDalph\Exe</state>
+          <state>Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -1733,28 +1726,28 @@
         <option>
           <name>GRuntimeLibSelect</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>GRuntimeLibSelectSlave</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>RTDescription</name>
-          <state>Do not link with a runtime library.</state>
+          <state>Use the normal configuration of the C/C++ runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
         </option>
         <option>
           <name>RTConfigPath</name>
-          <state></state>
+          <state>$TOOLKIT_DIR$\LIB\dl5tpainl8n.h</state>
         </option>
         <option>
           <name>RTLibraryPath</name>
-          <state></state>
+          <state>$TOOLKIT_DIR$\LIB\dl5tpainl8n.r79</state>
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.41A</state>
+          <state>4.40A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -1779,12 +1772,12 @@
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>14</version>
+        <version>13</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
           <name>CCDefines</name>
-          <state></state>
+          <state>NDEBUG</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -1804,11 +1797,11 @@
         </option>
         <option>
           <name>CCListCMnemonics</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCListCMessages</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCListAssFile</name>
@@ -1844,7 +1837,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeed</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCOptimization</name>
@@ -1854,7 +1847,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>1011101</state>
+          <state>1111111</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -1866,7 +1859,7 @@
         </option>
         <option>
           <name>CCDebugInfo</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IProcessorMode</name>
@@ -1918,7 +1911,7 @@
         </option>
         <option>
           <name>CCCompilerRuntimeInfo</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>IFpuProcessor</name>
@@ -1938,7 +1931,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeedSlave</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCOptimizationSlave</name>
@@ -1990,11 +1983,6 @@
           <name>CCStdIncludePath</name>
           <state>$TOOLKIT_DIR$\INC\</state>
         </option>
-        <option>
-          <name>CCInlineThreshold</name>
-          <version>0</version>
-          <state>1</state>
-        </option>
       </data>
     </settings>
     <settings>
@@ -2043,7 +2031,7 @@
         </option>
         <option>
           <name>ADebug</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>AltRegisterNames</name>
@@ -2197,7 +2185,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>CallRecs.elf</state>
+          <state>CallRecs_SG.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -2231,7 +2219,7 @@
         </option>
         <option>
           <name>XList</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>SegmentMap</name>
@@ -2339,7 +2327,7 @@
         </option>
         <option>
           <name>IncludeSuppressed</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OXLibIOConfig</name>
@@ -2347,7 +2335,7 @@
         </option>
         <option>
           <name>ModuleSummary</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>xcProgramEntryLabel</name>
@@ -2413,7 +2401,7 @@
         </option>
         <option>
           <name>OverlaySystemMap</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>RawBinaryFile</name>
@@ -2485,13 +2473,13 @@
       <settings>
         <name>ICCARM</name>
         <data>
-          <version>14</version>
-          <wantNonLocal>1</wantNonLocal>
+          <version>13</version>
+          <wantNonLocal>0</wantNonLocal>
           <debug>0</debug>
           <option>
             <name>CCDefines</name>
+            <state>NDEBUG</state>
             <state>NEWSGOLD</state>
-            <state>ELKA</state>
           </option>
           <option>
             <name>CCPreprocFile</name>
@@ -2511,11 +2499,11 @@
           </option>
           <option>
             <name>CCListCMnemonics</name>
-            <state>1</state>
+            <state>0</state>
           </option>
           <option>
             <name>CCListCMessages</name>
-            <state>1</state>
+            <state>0</state>
           </option>
           <option>
             <name>CCListAssFile</name>
@@ -2551,7 +2539,7 @@
           </option>
           <option>
             <name>CCOptSizeSpeed</name>
-            <state>1</state>
+            <state>0</state>
           </option>
           <option>
             <name>CCOptimization</name>
@@ -2561,7 +2549,7 @@
           <option>
             <name>CCAllowList</name>
             <version>1</version>
-            <state>1011101</state>
+            <state>1111111</state>
           </option>
           <option>
             <name>CCObjUseModuleName</name>
@@ -2625,7 +2613,7 @@
           </option>
           <option>
             <name>CCCompilerRuntimeInfo</name>
-            <state>1</state>
+            <state>0</state>
           </option>
           <option>
             <name>IFpuProcessor</name>
@@ -2645,7 +2633,7 @@
           </option>
           <option>
             <name>CCOptSizeSpeedSlave</name>
-            <state>1</state>
+            <state>0</state>
           </option>
           <option>
             <name>CCOptimizationSlave</name>
@@ -2654,7 +2642,7 @@
           </option>
           <option>
             <name>CCCodeFunctions</name>
-            <state>CODE</state>
+            <state>CONFIG</state>
           </option>
           <option>
             <name>CCData</name>
@@ -2696,11 +2684,6 @@
           <option>
             <name>CCStdIncludePath</name>
             <state>$TOOLKIT_DIR$\INC\</state>
-          </option>
-          <option>
-            <name>CCInlineThreshold</name>
-            <version>0</version>
-            <state>1</state>
           </option>
         </data>
       </settings>
@@ -2710,13 +2693,12 @@
       <settings>
         <name>ICCARM</name>
         <data>
-          <version>14</version>
-          <wantNonLocal>1</wantNonLocal>
+          <version>13</version>
+          <wantNonLocal>0</wantNonLocal>
           <debug>0</debug>
           <option>
             <name>CCDefines</name>
-            <state>NEWSGOLD</state>
-            <state>ELKA</state>
+            <state>NDEBUG</state>
           </option>
           <option>
             <name>CCPreprocFile</name>
@@ -2736,11 +2718,11 @@
           </option>
           <option>
             <name>CCListCMnemonics</name>
-            <state>1</state>
+            <state>0</state>
           </option>
           <option>
             <name>CCListCMessages</name>
-            <state>1</state>
+            <state>0</state>
           </option>
           <option>
             <name>CCListAssFile</name>
@@ -2776,7 +2758,7 @@
           </option>
           <option>
             <name>CCOptSizeSpeed</name>
-            <state>1</state>
+            <state>0</state>
           </option>
           <option>
             <name>CCOptimization</name>
@@ -2786,7 +2768,7 @@
           <option>
             <name>CCAllowList</name>
             <version>1</version>
-            <state>1011101</state>
+            <state>1111111</state>
           </option>
           <option>
             <name>CCObjUseModuleName</name>
@@ -2850,7 +2832,7 @@
           </option>
           <option>
             <name>CCCompilerRuntimeInfo</name>
-            <state>1</state>
+            <state>0</state>
           </option>
           <option>
             <name>IFpuProcessor</name>
@@ -2870,7 +2852,7 @@
           </option>
           <option>
             <name>CCOptSizeSpeedSlave</name>
-            <state>1</state>
+            <state>0</state>
           </option>
           <option>
             <name>CCOptimizationSlave</name>
@@ -2879,7 +2861,7 @@
           </option>
           <option>
             <name>CCCodeFunctions</name>
-            <state>CODE</state>
+            <state>CONFIG</state>
           </option>
           <option>
             <name>CCData</name>
@@ -2921,11 +2903,6 @@
           <option>
             <name>CCStdIncludePath</name>
             <state>$TOOLKIT_DIR$\INC\</state>
-          </option>
-          <option>
-            <name>CCInlineThreshold</name>
-            <version>0</version>
-            <state>1</state>
           </option>
         </data>
       </settings>
@@ -2935,13 +2912,12 @@
       <settings>
         <name>ICCARM</name>
         <data>
-          <version>14</version>
-          <wantNonLocal>1</wantNonLocal>
+          <version>13</version>
+          <wantNonLocal>0</wantNonLocal>
           <debug>0</debug>
           <option>
             <name>CCDefines</name>
-            <state>NEWSGOLD</state>
-            <state>ELKA</state>
+            <state>NDEBUG</state>
           </option>
           <option>
             <name>CCPreprocFile</name>
@@ -2961,11 +2937,11 @@
           </option>
           <option>
             <name>CCListCMnemonics</name>
-            <state>1</state>
+            <state>0</state>
           </option>
           <option>
             <name>CCListCMessages</name>
-            <state>1</state>
+            <state>0</state>
           </option>
           <option>
             <name>CCListAssFile</name>
@@ -3001,7 +2977,7 @@
           </option>
           <option>
             <name>CCOptSizeSpeed</name>
-            <state>1</state>
+            <state>0</state>
           </option>
           <option>
             <name>CCOptimization</name>
@@ -3011,7 +2987,7 @@
           <option>
             <name>CCAllowList</name>
             <version>1</version>
-            <state>1011101</state>
+            <state>1111111</state>
           </option>
           <option>
             <name>CCObjUseModuleName</name>
@@ -3023,7 +2999,7 @@
           </option>
           <option>
             <name>CCDebugInfo</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>IProcessorMode</name>
@@ -3075,7 +3051,7 @@
           </option>
           <option>
             <name>CCCompilerRuntimeInfo</name>
-            <state>1</state>
+            <state>0</state>
           </option>
           <option>
             <name>IFpuProcessor</name>
@@ -3095,7 +3071,7 @@
           </option>
           <option>
             <name>CCOptSizeSpeedSlave</name>
-            <state>1</state>
+            <state>0</state>
           </option>
           <option>
             <name>CCOptimizationSlave</name>
@@ -3104,7 +3080,7 @@
           </option>
           <option>
             <name>CCCodeFunctions</name>
-            <state>CODE</state>
+            <state>CONFIG</state>
           </option>
           <option>
             <name>CCData</name>
@@ -3147,11 +3123,6 @@
             <name>CCStdIncludePath</name>
             <state>$TOOLKIT_DIR$\INC\</state>
           </option>
-          <option>
-            <name>CCInlineThreshold</name>
-            <version>0</version>
-            <state>1</state>
-          </option>
         </data>
       </settings>
     </configuration>
@@ -3160,7 +3131,13 @@
     <name>$PROJ_DIR$\func.asm</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\language.h</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\main.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\rect_patcher.h</name>
   </file>
 </project>
 

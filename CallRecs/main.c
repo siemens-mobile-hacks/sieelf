@@ -1,10 +1,10 @@
 /*
 TODO:
-парсинг базы событий - пока обойдемся думаю мало у кого больше 512  слбытий
+parsing database events - long enough who think little more than 512 slbyty
 */
 #define DEBUG_
 
-#define DEMON_
+#define DEMON
 #ifdef NEWSGOLD
   #define DEFAULT_DISK "4"
   #define USR_MOBILE 0xE107
@@ -19,12 +19,47 @@ TODO:
 #include "..\inc\cfg_items.h"
 #include "rect_patcher.h"
 #include "conf_loader.h"
-#include "language.h" //потом сгодится
+#include "language.h" //then microscope
 static int prev_clmenu_itemcount;
 int curlist=0;
 
 
+extern const char root_dir[];
+extern const char str1[];
+extern const char str2[];
+extern const char str3[];
+extern const char str4[];
+extern const char str5[];
 
+
+#ifdef NEWSGOLD
+#define LAST_NAME 0x23
+#define FIRST_NAME 0x24
+#define COMPANY_NAME 0x29
+#define POST_NAME 0x6F
+#define DISPLAY_NAME 0x60
+#define PICTURE 0x33
+#define E_MAIL 0x2E
+#else
+#define NICKNAME 0x12
+#define LAST_NAME 0x23
+#define FIRST_NAME 0x24
+#define STREET 0x25
+#define POSTCODE 0x26
+#define CITY 0x27
+#define COUNTRY 0x28
+#define COMPANY_NAME 0x29
+#define PHONE_OFFICE 0x2A
+#define PHONE_FAX 0x2B
+#define PHONE_MOBILE 0x2C
+#define PHONE_NUMBER 0x2D
+#define E_MAIL 0x2E
+#define URL 0x2F
+#define PICTURE 0x33
+#define E_MAIL2 0x5D
+#define PHONE_FAX2 0x5E
+#define WALKY_TALKY_ID 0x6D
+#endif
 
 
 extern void kill_data(void *p, void (*func_p)(void *));
@@ -42,8 +77,7 @@ typedef struct
   char unk3; 
 }dates;
 
-//константы APO
-#define APO_EN "calrec"
+//constants APO 
 #define APO_TYPE 0x37
 
 int S_ICONS[7];
@@ -51,7 +85,6 @@ int S_ICONS[7];
 int CountRecord(void);
 
 char clm_hdr_text[48]="Calls Records";
-
 
 volatile int contactlist_menu_id=0;
 static const HEADER_DESC contactlist_menuhdr = {0, 0, 0, 0, S_ICONS+6, (int)clm_hdr_text, LGP_NULL};
@@ -80,15 +113,15 @@ char clmenu_sk_r[16]=LG_CLOSE;
 
 typedef  struct {
   void* next;
-  void* next_g;  //указатель на звонки с таким же номером
+  void* next_g;  //pointer to calls from the same number 
   dates datetime;
   char number[16];
   char name[31];  
   unsigned int duration;
-  unsigned char type; //битовое поле флагов
-  unsigned int recid;  //ид записи, мож пригодится
-  char cnt;  //если группа то число субитемов -1
-  char isGroup;  //признак группы
+  unsigned char type; //bit field flags
+  unsigned int recid;  //Id records may be useful 
+  char cnt;  //if the group is the number -1 subitemov
+  char isGroup;  //Token Group 
 
 }CRECS;
 
@@ -100,8 +133,8 @@ void RecountMenu(CRECS  *req){
   int j;
   void *data;
   UpdateCLheader();  
-  if (!contactlist_menu_id) return; //Нечего считать
-
+  if (!contactlist_menu_id) return; //Nothing to believe 
+  
   data=FindGUIbyId(contactlist_menu_id,NULL);
   if (!data)return;
   if (req==NULL)
@@ -149,7 +182,7 @@ static const ML_MENU_DESC contactlist_menu=
   NULL,   //Items
   NULL,   //Procs
   0,   //n
-  2 //Добавочных строк  
+  2 //Dobavochnyh lines 
 };
 
 
@@ -177,7 +210,7 @@ typedef struct {
   CRECS *grp;  
 } CRECL;
 
-CRECL list[4]={0}; //3 списка вызовов, 4-ый прозапас)
+CRECL list[4]={0}; //3 of the list of challenges, 4 - prozapas y
 
 CRECS *FindNum(char *num,CRECL* cl){
   CRECS *ct=cl->top;
@@ -188,7 +221,7 @@ CRECS *FindNum(char *num,CRECL* cl){
   return NULL;
 }
 
-int PutRecSub(CRECS* in,CRECL *cl){  //хитрожопые списки
+int PutRecSub(CRECS* in,CRECL *cl){  //hitrozhopye lists 
   if (!(cl->top)){cl->top=in;
     cl->end=in;    
   }
@@ -238,23 +271,23 @@ void contactlist_menu_ghook(void *data, int cmd)
   }
 }
 
-CRECS* GetNext(CRECS *ct){  //хитрожопое выдергивание из списка
-    if (ct->cnt){ //группа
-      if (!(ct->cnt&0x80)){ //группа и свернута
+CRECS* GetNext(CRECS *ct){  //hitrozhopoe release from the list 
+    if (ct->cnt){ //Force 
+      if (!(ct->cnt&0x80)){ //Group and curtailed 
         ct=ct->next;
       }else{
         ct=ct->next_g;
       }
-    }else{ //хз че
-      if (ct->isGroup){ //если ссылка  внутри группы
-       if (ct->next_g)  //если есть еще внутри группы то берем
+    }else{ //BEGIN
+      if (ct->isGroup){ //if the link within the group 
+       if (ct->next_g)  //if there are groups within a downpayment 
          ct=ct->next_g;
-         else{  //иначе откатываемся на след элемент 
+         else{  //otherwise backwards to trace element 
           ct=ct->next;
           ct=ct->next;        
          };
        }
-       else  //не группа
+       else  //no group  
        ct=ct->next;       
     }
   
@@ -303,7 +336,6 @@ int contactlist_menu_onkey(void *data, GUI_MSG *msg)
     return(-1);
   }
   */
-
       
   if (msg->keys==0x3D)
   {
@@ -326,7 +358,7 @@ int contactlist_menu_onkey(void *data, GUI_MSG *msg)
   if (msg->gbsmsg->msg==KEY_DOWN)
   {
     int key=msg->gbsmsg->submess;
-    //меняем списки
+    //changing lists 
     if (key==RIGHT_BUTTON){
       curlist++; 
       if (curlist>2)curlist=0;
@@ -347,7 +379,7 @@ int contactlist_menu_onkey(void *data, GUI_MSG *msg)
     }
       
   }
-//ТУТ БЫ тоже не плохо было прикрутить поиск по Т9
+//TUT BY too bad, it was not tie search T9 
     
   return(0);
 }
@@ -381,7 +413,7 @@ void contactlist_menu_iconhndl(void *data, int curitem, void *unk)
   if (t)
   {
 
-    if (t->name[0]){  //если есть  имя то
+    if (t->name[0]){  //if it has a name 
         str_2ws(ws0,t->name,120);    
       if (t->cnt&0x7f)      {//
         wsprintf(ws1, "(%d) ",(t->cnt&0x7f)+1);
@@ -396,8 +428,8 @@ void contactlist_menu_iconhndl(void *data, int curitem, void *unk)
 
        wsprintf(ws3, "%t\n%02d.%02d.%02d%c%02d:%02d",t->number,t->datetime.day,t->datetime.month,t->datetime.year%100,0xE01D,t->datetime.hour,t->datetime.min);                
     }
-    else{//иначе тока номер
-      if (t->cnt&0x7f)
+    else{//otherwise a current number
+       if (t->cnt&0x7f)
        wsprintf(ws1, "(%d) %t",(t->cnt&0x7f)+1,t->number);                  
       else
        wsprintf(ws1, "%t",t->number);                         
@@ -415,11 +447,11 @@ void contactlist_menu_iconhndl(void *data, int curitem, void *unk)
   wstrcpy(ws2,ws1);
   
   char ico=0;
-  if (t->cnt)      {//группа
-      if (t->cnt&0x80)  //развернута -
+  if (t->cnt)      {//Force 
+      if (t->cnt&0x80)  //deployed -- 
 //        ico=0;
 ;
-     else //свернута +
+     else //discouraged + 
       ico=1;
   }
   else{
@@ -435,8 +467,8 @@ void contactlist_menu_iconhndl(void *data, int curitem, void *unk)
 
 
 
-void ReadCal(void)//собсветнно чтени АПО  
-// ВНИМАНИЕ ЧТЕНИЕ НАПИСАНО ПОД ЕЛКУ и наверно НСГ, и идет с последней записи а не с первой, на СГОЛД надо чето придумать
+void ReadCal(void)//sobsvetnno readings APO 
+// NOTE WRITTEN IN READING ELKU and probably NSG, and comes with the latest recording, and not the first, the couple must come SGOLD 
 {
 //  struct cals tmp_cal;
 //  tmp_cal.number=AllocWS(250);
@@ -458,11 +490,12 @@ void ReadCal(void)//собсветнно чтени АПО
 #endif
   
   
+  
 #pragma pack(1)
   struct {
 #ifdef NEWSGOLD
     long dummy1; //62 33 dc 05
-    short len;  //!!!!! НА СГОЛД ХЗ ЕСТЬ ЭТО ПОЛЕ ИЛИ НЕТ
+    short len;  //!!!!! HZ SGOLD FOR POLE IS IT OR NOT 
     char bitmap[MAX_RECORDS/8];
 #else
     long dummy1; 
@@ -474,7 +507,8 @@ void ReadCal(void)//собсветнно чтени АПО
 //    unsigned int rec=0;
   unsigned int rec;    
   int fsz;
-  char recname[128];  
+  char recname[128];
+  char szRoot[100];  
   
   AB_UNPRES ur;
   void *buffer;
@@ -484,7 +518,14 @@ void ReadCal(void)//собсветнно чтени АПО
   {
     zeromem(&ABmain,sizeof(ABmain));
 
-    if ((fin=fopen("0:\\System\\apo\\" APO_EN "\\main",A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
+    strcpy(szRoot, root_dir);
+    fin = strlen(szRoot);
+    if(fin > 0 && szRoot[fin-1] == '\\')
+    szRoot[fin-1] = 0; 
+    
+    snprintf(recname,128,"%s\\main",szRoot);
+    
+    if ((fin=fopen(recname,A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
     {
   
 #ifdef ELKA
@@ -494,9 +535,9 @@ void ReadCal(void)//собсветнно чтени АПО
 #endif
       {
 #ifdef NEWSGOLD        
-        rec=ABmain.len;  //СОБСТВЕННО ВОТ ЗДЕСЬ  И НАЧИНАЕМ ЦИКЛ НЕ С НУЛЯ
+        rec=ABmain.len;  //WTO SOBSTVENNO HERE AND NOT GETTING CYCLE WITH ZERO 
 #else
-        rec=MAX_RECORDS-1;//чит
+        rec=MAX_RECORDS-1;//cheat
 #endif         
         fclose(fin,&ul);
 	do
@@ -507,21 +548,20 @@ void ReadCal(void)//собсветнно чтени АПО
           if (ABmain.bitmap[rec>>3]&(1<<(rec&7)))
           #endif   
 	  {
-            
             #ifdef NEWSGOLD
-	    //Запись есть в битмапе
-            unsigned int rl1;
+	    //The list is in bitmape 
+        unsigned int rl1;
 	    unsigned int rl2;
 	    unsigned int rl3;
 	    rl1=rec/LEVEL1_RN;
 	    rl2=(rec%LEVEL1_RN)/LEVEL2_RN;
 	    rl3=rec%LEVEL2_RN;
-    	    snprintf(recname,128,"0:\\System\\apo\\" APO_EN "\\data\\%02d\\%02d\\%02d",rl1,rl2,rl3);
+	    snprintf(recname,128,"%s\\data\\%02d\\%02d\\%02d",szRoot,rl1,rl2,rl3);
             
             #else
 	    unsigned int rl1=rec/LEVEL1_RN;
 	    unsigned int r12=rec%LEVEL1_RN;
-	    snprintf(recname,128,"0:\\System\\apo\\" APO_EN "\\%02x\\%02x",rl1,r12);            
+	    snprintf(recname,128,"%s\\%02x\\%02x",szRoot,rl1,r12);        
             #endif             
 	    if ((fin=fopen(recname,A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
 	    {
@@ -550,17 +590,16 @@ void ReadCal(void)//собсветнно чтени АПО
 		if (r->no_data!=1)
 		{
 
-
                   switch (GetTypeOfAB_UNPRES_ITEM(r->item_type))
                   {
-                    case 6: //дата
+                    case 6: //date 
                       memcpy(&loc->datetime,r->data,sizeof(dates));
                       break;
-                    case 5: //имя
+                    case 5: //name 
                       ws_2str(r->data,loc->name,30) ;    
                       break;    
                       
-                    case 1:  {        //номер          
+                    case 1:  {        //Number 
                       PKT_NUM *p=(PKT_NUM*)r->data;
                       if (p){
                         unsigned int c;
@@ -616,17 +655,17 @@ void ReadCal(void)//собсветнно чтени АПО
               UnlockSched();
 	      FreeUnpackABentry(&ur,mfree_adr());
                  LockSched();
-                   RecountMenu(NULL); // как-то позно оно апдеитится
+                   RecountMenu(NULL); // once it <adam@lapdoog.doogie.org> apdeititsya 
               UnlockSched();
             }
 	
 	  }
        
 //          rec++;
-          rec--;          //читы
+          rec--;          //cheat 
         }  
 //	while(rec<MAX_RECORDS); 
-	while(rec>0);        //читы
+	while(rec>0);        // cheat 
       }
       else
       {
@@ -674,7 +713,7 @@ void maincsm_oncreate(CSM_RAM *data)
   csm->csm.unk1=0;
 ///  csm->gui_id=CreateGUI(main_gui);
 #ifndef DEMON  
-  csm->gui_id=    create_contactlist_menu();
+  csm->gui_id=  create_contactlist_menu();
   
 #endif  
 //  maincsm=
@@ -755,19 +794,12 @@ sizeof(MAIN_CSM),
 
 void UpdateCSMname(void)
 {
-  wsprintf((WSHDR *)(&MAINCSM.maincsm_name),"Call Records v0.3b");
+  wsprintf((WSHDR *)(&MAINCSM.maincsm_name),"Call Records");
 }
 
 int maincsm;
 
 
-char str1[]="4:\\zbin\\img\\callrecs\\groupon.png";
-char str2[]="4:\\zbin\\img\\callrecs\\groupoff.png";
-char str3[]="4:\\zbin\\img\\callrecs\\cd.png";
-char str4[]="4:\\zbin\\img\\callrecs\\ci.png";
-char str5[]="4:\\zbin\\img\\callrecs\\cm.png";
-
-//char str3[]="4:\\zbin\\naticq\\img\\work.png";
 #ifdef DEMON
 int (*old_ed_onkey)(GUI *gui, GUI_MSG *msg);
 
@@ -791,8 +823,10 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)
 //    ShowCallList(0, 0);
     r=0;
   }
-  else    
+  else
+  { 
     r=old_ed_onkey(gui,msg);
+  }
   return(r);
 }
 
@@ -806,9 +840,8 @@ void DoSplices(GUI *gui)
     my_ed.onKey=my_ed_onkey;
     gui->definition=&my_ed;
   }
+  
 }
-
-
 
 CSM_DESC icsmd;
 
@@ -817,16 +850,14 @@ int (*old_icsm_onMessage)(CSM_RAM*,GBS_MSG*);
 
 int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
 {
-  int csm_result=0;
-
-  csm_result=old_icsm_onMessage(data,msg); //Вызываем старый обработчик событий
-
-#define idlegui_id (((int *)data)[DISPLACE_OF_IDLEGUI_ID/4])  
+ #define idlegui_id (((int *)data)[DISPLACE_OF_IDLEGUI_ID/4])  
+  int csm_result;
+  csm_result=old_icsm_onMessage(data,msg); //Call old handler events 
   
-  if (IsGuiOnTop(idlegui_id)) //Если IdleGui на самом верху
+  if (IsGuiOnTop(idlegui_id)) //If IdleGui at the top 
   {
     GUI *igui=GetTopGUI();
-    if (igui) //И он существует (а не в проекте ;))
+    if (igui) //And it exists   and not in the draft
     {
       DoSplices(igui);
     }
@@ -843,10 +874,10 @@ int main(void)
   struct {
 #ifdef NEWSGOLD
     long dummy1; //62 33 dc 05
-    short len;  //!!!!! НА СГОЛД ХЗ ЕСТЬ ЭТО ПОЛЕ ИЛИ НЕТ
+    short len;  //!!!!! HZ SGOLD FOR POLE IS IT OR NOT 
     char bitmap[MAX_RECORDS/8];
 #else
-    long dummy1; // ВОЗМОЖНО ОН ВХОДИТ СЮДА и здесь должно быть два шота, иначе придется делать подругому поиск
+    long dummy1; // POSSIBLE ON HERE VHODIT there should be two shota otherwise would have to search Urwin 
     char bitmap[MAX_RECORDS/8];    
 #endif    
   } ABmain;
@@ -858,28 +889,14 @@ int main(void)
   return 0;
   */
   InitConfig();
-  extern const char *successed_config_filename;  
-  char m=successed_config_filename[0];
-  str1[0]=  m;
-  str2[0]=  m;
-  str3[0]=  m;
-  str4[0]=  m;
-  str5[0]=  m;
 
-  //  str3[0]=  successed_config_filename[0];
-  
-  
   S_ICONS[0]=(int)str1;
   S_ICONS[1]=(int)str2;
   S_ICONS[2]=GetPicNByUnicodeSymbol(USR_MOBILE); 
-  S_ICONS[6]=  S_ICONS[2];  
+  S_ICONS[6]=S_ICONS[2];  
   S_ICONS[3]=(int)str3;
   S_ICONS[4]=(int)str4;
   S_ICONS[5]=(int)str5;
-
-  
-//  S_ICONS[2]=(int)str3;
-  
 
   LockSched();
   char dummy[sizeof(MAIN_CSM)];
@@ -898,7 +915,7 @@ int main(void)
   old_icsm_onMessage=icsmd.onMessage;
   icsmd.onMessage=MyIDLECSM_onMessage;
   icsm->constr=&icsmd;
-  // как бы его потом корректно удалить?
+  // as if it correctly then removed? 
 
 #else
   maincsm=CreateCSM(&MAINCSM.maincsm,dummy,0);  
