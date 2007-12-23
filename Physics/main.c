@@ -1,5 +1,6 @@
 #include "../inc/swilib.h"
 #include "../inc/pnglist.h"
+#include "conf_loader.h"
 #include "code.h"
 //===============================================================================================
 // ELKA Compatibility

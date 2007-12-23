@@ -5,38 +5,92 @@
   <configuration>
     <name>Release</name>
     <outputs>
-      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\Release\Obj\code.pbi</file>
       <file>$PROJ_DIR$\Release\List\Physics.map</file>
-      <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\Release\Obj\main.r79</file>
-      <file>$PROJ_DIR$\Release\Obj\Physics.pbd</file>
-      <file>$PROJ_DIR$\..\inc\pnglist.h</file>
-      <file>$PROJ_DIR$\..\inc\zconf.h</file>
       <file>$PROJ_DIR$\..\inc\zlib.h</file>
-      <file>$PROJ_DIR$\Release\Obj\code.r79</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
       <file>$PROJ_DIR$\test.xcl</file>
+      <file>$PROJ_DIR$\Release\Obj\Physics.pbd</file>
       <file>$PROJ_DIR$\..\inc\swilib.h</file>
       <file>$PROJ_DIR$\..\inc\rsa.h</file>
       <file>$PROJ_DIR$\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\..\inc\pnglist.h</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
       <file>$PROJ_DIR$\code.h</file>
       <file>$PROJ_DIR$\func.asm</file>
-      <file>$PROJ_DIR$\..\inc\sha.h</file>
-      <file>$PROJ_DIR$\Release\Exe\Physics.elf</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
-      <file>$PROJ_DIR$\..\inc\crypto.h</file>
-      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
-      <file>$PROJ_DIR$\Release\Obj\code.pbi</file>
       <file>$PROJ_DIR$\Release\Obj\func.r79</file>
-      <file>$PROJ_DIR$\main.c</file>
-      <file>$PROJ_DIR$\code.c</file>
+      <file>$PROJ_DIR$\Release\Obj\config_data.r79</file>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
+      <file>$PROJ_DIR$\Release\Exe\Physics.elf</file>
       <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\Release\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Release\Obj\code.r79</file>
+      <file>$PROJ_DIR$\Release\Obj\config_data.pbi</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\code.c</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\Release\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\Release\Obj\conf_loader.pbi</file>
     </outputs>
+    <file>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 32</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 30</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 9 19 4 5 14 10 22 29 12 11 31 27 15</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 9 19 4 5 14 10 22 29 12 11 31 27 15</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config_data.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 25</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 18</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 31 9 19 4 5 14 10 22 29 12 11 15</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 31 9 19 4 5 14 10 22 29 12 11 15</file>
+        </tool>
+      </inputs>
+    </file>
     <file>
       <name>$PROJ_DIR$\Release\Obj\Physics.pbd</name>
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 20 2</file>
+          <file> 2 32 25 6</file>
         </tool>
       </inputs>
     </file>
@@ -45,7 +99,7 @@
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 16 1</file>
+          <file> 21 3</file>
         </tool>
       </outputs>
     </file>
@@ -54,7 +108,7 @@
       <outputs>
         <tool>
           <name>AARM</name>
-          <file> 21</file>
+          <file> 17</file>
         </tool>
       </outputs>
     </file>
@@ -63,13 +117,13 @@
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 1</file>
+          <file> 3</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 9 8 21 3 17</file>
+          <file> 7 24 30 18 17 23 20</file>
         </tool>
       </inputs>
     </file>
@@ -78,21 +132,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 2</file>
+          <file> 6</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 3</file>
+          <file> 23</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 10 0 7 6 19 11 24 18 15 12 5 13</file>
+          <file> 9 19 4 5 14 10 22 29 12 11 13 27 15</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 10 0 7 6 19 11 24 18 15 12 5 13</file>
+          <file> 9 19 4 5 14 10 22 29 12 11 13 27 15</file>
         </tool>
       </inputs>
     </file>
@@ -101,21 +155,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 20</file>
+          <file> 2</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 8</file>
+          <file> 24</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 10 0 7 6 19 11 24 18 15 12 13</file>
+          <file> 9 19 4 5 14 10 22 29 12 11 27 15</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 10 0 7 6 19 11 24 18 15 12 13</file>
+          <file> 9 19 4 5 14 10 22 29 12 11 27 15</file>
         </tool>
       </inputs>
     </file>
@@ -123,44 +177,99 @@
   <configuration>
     <name>Release_SGOLD</name>
     <outputs>
-      <file>$PROJ_DIR$\..\inc\png.h</file>
-      <file>$PROJ_DIR$\..\inc\pnglist.h</file>
-      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Exe\Physics_SG.elf</file>
       <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
       <file>$PROJ_DIR$\test.xcl</file>
       <file>$PROJ_DIR$\..\inc\swilib.h</file>
-      <file>$PROJ_DIR$\Release_SGOLD\Exe\Physics.elf</file>
-      <file>$PROJ_DIR$\Release_SGOLD\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\Release_SGOLD\Obj\main.r79</file>
-      <file>$PROJ_DIR$\Release_SGOLD\Obj\Physics.pbd</file>
-      <file>$PROJ_DIR$\Release_SGOLD\Obj\code.pbi</file>
       <file>$PROJ_DIR$\..\inc\rsa.h</file>
       <file>$PROJ_DIR$\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\Physics.pbd</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Exe\Physics.elf</file>
+      <file>$PROJ_DIR$\..\inc\pnglist.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\code.pbi</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
       <file>$PROJ_DIR$\code.h</file>
       <file>$PROJ_DIR$\func.asm</file>
-      <file>$PROJ_DIR$\..\inc\sha.h</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
-      <file>$PROJ_DIR$\Release_SGOLD\Obj\code.r79</file>
-      <file>$PROJ_DIR$\..\inc\crypto.h</file>
-      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
       <file>$PROJ_DIR$\Release_SGOLD\Obj\func.r79</file>
-      <file>$PROJ_DIR$\Release_SGOLD\List\Physics.map</file>
-      <file>$PROJ_DIR$\main.c</file>
-      <file>$PROJ_DIR$\code.c</file>
+      <file>$PROJ_DIR$\Release_SGOLD\List\Physics_SG.map</file>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\main.r79</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
       <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\code.r79</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\code.c</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\config_data.pbi</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\config_data.r79</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
     </outputs>
     <file>
-      <name>$PROJ_DIR$\Release_SGOLD\Exe\Physics.elf</name>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 28</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 0</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 7 20 4 5 15 8 23 30 10 9 33 27 16</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 7 20 4 5 15 8 23 30 10 9 33 27 16</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config_data.c</name>
+      <outputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 31</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 32</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 33 7 20 4 5 15 8 23 30 10 9 16</file>
+        </tool>
+        <tool>
+          <name>ICCARM</name>
+          <file> 33 7 20 4 5 15 8 23 30 10 9 16</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_SGOLD\Exe\Physics_SG.elf</name>
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 21</file>
+          <file> 19</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 4 17 20 8 16</file>
+          <file> 6 25 0 32 18 21 22</file>
         </tool>
       </inputs>
     </file>
@@ -169,7 +278,16 @@
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 10 7</file>
+          <file> 14 28 31 24</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_SGOLD\Exe\Physics.elf</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 6 25 18 21 22</file>
         </tool>
       </inputs>
     </file>
@@ -178,7 +296,7 @@
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 21 6</file>
+          <file> 3 19</file>
         </tool>
       </outputs>
     </file>
@@ -187,7 +305,7 @@
       <outputs>
         <tool>
           <name>AARM</name>
-          <file> 20</file>
+          <file> 18</file>
         </tool>
       </outputs>
     </file>
@@ -196,21 +314,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 7</file>
+          <file> 24</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 8</file>
+          <file> 21</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 5 0 3 2 19 11 24 18 15 12 1 13</file>
+          <file> 7 20 4 5 15 8 23 30 10 9 13 27 16</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 5 0 3 2 19 11 24 18 15 12 1 13</file>
+          <file> 7 20 4 5 15 8 23 30 10 9 13 27 16</file>
         </tool>
       </inputs>
     </file>
@@ -219,21 +337,21 @@
       <outputs>
         <tool>
           <name>BICOMP</name>
-          <file> 10</file>
+          <file> 14</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 17</file>
+          <file> 25</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 5 0 3 2 19 11 24 18 15 12 13</file>
+          <file> 7 20 4 5 15 8 23 30 10 9 27 16</file>
         </tool>
         <tool>
           <name>ICCARM</name>
-          <file> 5 0 3 2 19 11 24 18 15 12 13</file>
+          <file> 7 20 4 5 15 8 23 30 10 9 27 16</file>
         </tool>
       </inputs>
     </file>
