@@ -568,7 +568,7 @@
 0838: 0xA00A73B5   ; 20E: __swi __arm int ConstructEditTime(EDITCONTROL *EditControl,TTime *time)
 083C: 0xA00A729B   ; 20F: __swi __arm int ConstructEditDate(EDITCONTROL *EditControl,TDate *date)
 
-0840: 0xA00B3B11   ; 210:  int GetCurGuiID(void)
+0840: 0xA00B3B11   ; 210: int GetCurGuiID(void)
 0844: 0x000000A1   ; 211: GBS_Cmd_4209_RefreshScreensaver
 0848: 0xA099DE38   ; 212: __swi __arm int CardExplGetCurItem(void *csm)
 084C: 0xA093DC5C   ; 213: __swi __arm void CardExplGetFName(void *csm, int cur_item, WSHDR *dest)
@@ -597,21 +597,33 @@
 08A0: 0xA08FFB88   ; 228: __arm int PlayMelody_ResumePlayBack(int handle);
 08A4: 0xA160A0F0   ; 229: __arm void longjmp(jmp_buf, int)
 08A8: 0xA0A9C0DB   ; 22A: __thumb void FreeGSMTXTpkt(void *pkt)
-;8AC:              ; 22B:  CreateRadioButtonList(RadioButtonListDesc *, char num_of_radiobuttons, 0, 0, char prev_setting, void HandlerFunc(int), char flag)
-;8B0:              ; 22C:  pdcache_getval(char *return, int maxlen_of_return_str, char cachetype, char *pd_entry_identifier.class, char *pd_entry_identifier.sub)
-;8B4:              ; 22D:  pdcache_setval(char *new_value, char cachetype, char *pd_entry_identifier.class, char *pd_entry_identifier.sub)
-;8B8:              ; 22E:  OpenExplorer(ExplOpenDesc *)
-08BC: 0xA8661B28   ; 22F:  TDateTimeSettings *RamDateTimeSettings
+;8AC:              ; 22B: CreateRadioButtonList(RadioButtonListDesc *, char num_of_radiobuttons, 0, 0, char prev_setting, void HandlerFunc(int), char flag)
+;8B0:              ; 22C: pdcache_getval(char *return, int maxlen_of_return_str, char cachetype, char *pd_entry_identifier.class, char *pd_entry_identifier.sub)
+;8B4:              ; 22D: pdcache_setval(char *new_value, char cachetype, char *pd_entry_identifier.class, char *pd_entry_identifier.sub)
+;8B8:              ; 22E: OpenExplorer(ExplOpenDesc *)
+08BC: 0xA8661B28   ; 22F: TDateTimeSettings *RamDateTimeSettings
 
-08C0: 0xA0AA704F   ; 230:  __thumb int GetTimeZoneShift(int param1, int param2, int timeZone)
-08C4: 0xA8661AD0   ; 231:  TAppointment *RamAppointment
+08C0: 0xA0AA704F   ; 230: __thumb int GetTimeZoneShift(int param1, int param2, int timeZone)
+08C4: 0xA8661AD0   ; 231: TAppointment *RamAppointment
 ;8C8:              ; 232:  
 ;8CC:              ; 233:  
-08D0: 0xA0AC0579   ; 234:  __thumb int GetLunarDate(TDate* pdate, TDate* pLdate)
-08D4: 0xA0B6CB4D   ; 235:  __thumb int GetLunarYearID(int year)
-08D8: 0xA0B6CB63   ; 236:  __thumb int GetLunarAnimal(int year)
-;8DC:              ; 237:  __arm char *RamIconBar()
-08E0: 0xA0A9C085   ; 238:  __thumb void SendAutoUSSDack(void)
+08D0: 0xA0AC0579   ; 234: __thumb int GetLunarDate(TDate* pdate, TDate* pLdate)
+08D4: 0xA0B6CB4D   ; 235: __thumb int GetLunarYearID(int year)
+08D8: 0xA0B6CB63   ; 236: __thumb int GetLunarAnimal(int year)
+;8DC:              ; 237: __arm char *RamIconBar()
+08E0: 0xA0A9C085   ; 238: __thumb void SendAutoUSSDack(void)
+08E4: 0xA1241E14   ; 239: __arm int EEFullDeleteBlock(unsigned int block,int cepid,int msg); //cepid=msg=0
+08E8: 0xA1241F60   ; 23A: __swi __arm  int EEFullCreateBlock(unsigned int block,int size,int version,int cepid,int msg)
+;8EC: 0x00000000   ; 23B: __swi __arm void DisableIconBar(int disable);disable
+08F0: 0xA1026740   ; 23C: __swi __arm int SetCurrentGPRSProfile(int profile)
+08F4: 0xA157C7B5   ; 23D: __swi __arm void MD5_Init(MD5_CTX *c)
+08F8: 0xA157C425   ; 23E: __swi __arm void MD5_Update(MD5_CTX *c, const void *data, unsigned long len)
+08FC: 0xA157C6BD   ; 23F: __swi __arm void MD5_Final(unsigned char *md, MD5_CTX *c)
+
+0900: 0xA157D145   ; 240: __swi __arm char *MD5_Hash(const unsigned char *data, unsigned long n, unsigned char *md_NULL)
 #pragma disable old_equal_ff
 +0
 ;********************************************************************************
+
+
+;locale=chinese

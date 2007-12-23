@@ -718,6 +718,9 @@ MultiSimPatch/xls/M81Cv51/multisim.xcl -text
 MultiSimPatch/xls/S68Cv51/adr_asm.inc -text
 MultiSimPatch/xls/S68Cv51/adr_c.h -text
 MultiSimPatch/xls/S68Cv51/multisim.xcl -text
+MultiSimPatch/xls/S6Cv53/adr_asm.inc -text
+MultiSimPatch/xls/S6Cv53/adr_c.h -text
+MultiSimPatch/xls/S6Cv53/multisim.xcl -text
 MultiSimPatch/xls/S7Cv47/adr_asm.inc -text
 MultiSimPatch/xls/S7Cv47/adr_c.h -text
 MultiSimPatch/xls/S7Cv47/multisim.xcl -text

@@ -21,3 +21,7 @@
 #ifdef SK6Cv50
 	#include "xls\SK6Cv50\adr_asm.inc"
 #endif
+
+#ifdef S6Cv53
+	#include "xls\S6Cv53\adr_asm.inc"
+#endif
