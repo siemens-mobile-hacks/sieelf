@@ -15,17 +15,17 @@ _C_STD_BEGIN
  #else
   #define DEFAULT_DISK "0"
  #endif //newsgold
- //定义数据类型
- #define word  unsigned short
- #define byte  short int
- #define uint  unsigned int
- #define ulong unsigned long
- #define uchar unsigned char
- #define TVoid typedef void
+ //定义数据类型 
+ #define byte    short int
+ #define uword   unsigned short
+ #define uint    unsigned int
+ #define ulong   unsigned long
+ #define uchar   unsigned char
+ #define TVoid   typedef void
  #define TStruct typedef struct 
  //定义字体索引类型0-16!
  #define FontSyEN "Large","Large bold","Large italic","Large italic bold","Medium","Medium bold","Medium italic","Medium italic bold","Small","Small bold","Small italic","Small italic bold","Numeric small","Numeric small bold","Numeric xsmall","Numeric large","Numeric medium"
- #define FontSyCN "大号字体","大号粗体","大号斜体","大号粗斜","中号字体","中号加粗","中号倾斜","中号粗斜","小号字体","小号加粗","小号斜体","小号粗斜","小号数体","小号数粗","最小数体","大号数体","中号数体"
+ #define FontSyCN "大号字体","大号加粗","大号斜体","大号粗斜","中号字体","中号加粗","中号倾斜","中号粗斜","小号字体","小号加粗","小号斜体","小号粗斜","小号数体","小号数粗","最小数体","大号数体","中号数体"
  //#define IS_FOLDER 1 //定义文件夹操作
  //#define IS_FILE 0  //定义文件操作
  
@@ -50,8 +50,8 @@ _C_STD_BEGIN
  //定义文件结构
  TStruct{
   void *next;
-  char *filename;
-  char *fullname;
+  char *file;
+  char *path;
   int   type;//1为文件夹,0为文件
  }TFile;
  //定义文件结构
@@ -82,7 +82,7 @@ _C_LIB_DECL
  __INTRINSIC void kill_data(void *p, void (*func_p)(void *));
  __INTRINSIC void str2ws_unicode(WSHDR* ws, char* str, int len);
  __INTRINSIC void ws2str_unicode(char* str, WSHDR* ws, int *len);  
- __INTRINSIC void BSTRAdd(word *pDst, const word * pSrc, int Count);
+ __INTRINSIC void BSTRAdd(uword *pDst, const uword * pSrc, int Count);
  __INTRINSIC void GetDayOf(TDate pSt,TNongLi *NongLiData);
  __INTRINSIC void CutFileExt(char *filename,char *ext);
  __INTRINSIC int  strlpos(char *str,char c);
@@ -102,8 +102,15 @@ _C_LIB_DECL
  //-----------------------------------------
  __INTRINSIC int  FileCount(TFile *File);
  __INTRINSIC void FreeFile(TFile *File);
- //-----------------------------------------
+ //媒体功能是否使用中-------------
  __INTRINSIC int IsMediaActive(void);
+ //十六进制转换为十进制-----------
+ __INTRINSIC ulong HexToInt(char *HEX);
+ //数据转换
+ __INTRINSIC void  Ascii2WS(uword *data,WSHDR *ws, const char *s, int maxlen);
+ __INTRINSIC void  WS2Ascii(uword *data, WSHDR *ws, char *s, int maxlen);
+ __INTRINSIC void  FreeFontLib(uword *data);
+ __INTRINSIC uword *LoadFontLib(void);
 _END_C_LIB_DECL
 _C_STD_END
 //函数执行代码
@@ -170,7 +177,7 @@ int ExtStrcmp(char *a,char *b)
   return(state);
 }
 #pragma inline//数据合并
-void BSTRAdd(word *pDst, const word * pSrc, int Count)
+void BSTRAdd(uword *pDst, const uword * pSrc, int Count)
 {
   uint nSize = *pDst, i=1;
   while(*pSrc != '\0' && i<=Count) *(pDst+ nSize + i++) = *pSrc++;
@@ -254,18 +261,18 @@ void GetDayOf(TDate pSt,TNongLi *NongLiData)
 { 
 /*天干名称*/
 //const char *cTianGan[] = {"甲","乙","丙","丁","戊","己","庚","辛","壬","癸"};
-const word cTianGan[] = {0x7532,0x4E59,0x4E19,0x4E01,0x620A,0x5DF1,0x5E9A,0x8F9B,0x58EC,0x7678,0};  
+const uword cTianGan[] = {0x7532,0x4E59,0x4E19,0x4E01,0x620A,0x5DF1,0x5E9A,0x8F9B,0x58EC,0x7678,0};  
 /*地支名称*/
 //const char *cDiZhi[] = {"子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"};
-const word cDiZhi[] = {0x5B50,0x4E11,0x5BC5,0x536F,0x8FB0,0x5DF3,0x5348,0x672A,0x7533,0x9149,0x620C,0x4EA5,0};
+const uword cDiZhi[] = {0x5B50,0x4E11,0x5BC5,0x536F,0x8FB0,0x5DF3,0x5348,0x672A,0x7533,0x9149,0x620C,0x4EA5,0};
 /*属相名称*/
 //const char *cShuXiang[] = {"鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"};
-const word cShuXiang[] = {0x9F20,0x725B,0x864E,0x5154,0x9F99,0x86C7,0x9A6C,0x7F8A,0x7334,0x9E21,0x72D7,0x732A,0};
+const uword cShuXiang[] = {0x9F20,0x725B,0x864E,0x5154,0x9F99,0x86C7,0x9A6C,0x7F8A,0x7334,0x9E21,0x72D7,0x732A,0};
 /*农历日期名*/
 /*const char *cDayName[] = {"*","初一","初二","初三","初四","初五","初六","初七","初八","初九","初十",
                                 "十一","十二","十三","十四","十五","十六","十七","十八","十九","二十",
                                 "廿一","廿二","廿三","廿四","廿五","廿六","廿七","廿八","廿九","三十"};*/
-const word cDayName[][2] = {{0x002A},
+const uword cDayName[][2] = {{0x002A},
                             {0x521D,0x4E00},{0x521D,0x4E8C},{0x521D,0x4E09},{0x521D,0x56DB},
                             {0x521D,0x4E94},{0x521D,0x516D},{0x521D,0x4E03},{0x521D,0x516B},
                             {0x521D,0x4E5D},{0x521D,0x5341},{0x5341,0x4E00},{0x5341,0x4E8C},
@@ -276,9 +283,9 @@ const word cDayName[][2] = {{0x002A},
                             {0x5EFF,0x4E5D},{0x4E09,0x5341},{0,0}};
 /*农历月份名*/
 /*const char *cMonName[] = {"*","正","二","三","四","五","六","七","八","九","十","畅","腊"};*/
-const word cMonName[] = {0x002A,0x6B63,0x4E8C,0x4E09,0x56DB,0x4E94,0x516D,0x4E03,0x516B,0x4E5D,0x5341,0x7545,0x814A,0};
+const uword cMonName[] = {0x002A,0x6B63,0x4E8C,0x4E09,0x56DB,0x4E94,0x516D,0x4E03,0x516B,0x4E5D,0x5341,0x7545,0x814A,0};
 /*其它名称:年,月,闰*/
-const word cOtherName[] = {0x5E74,0x6708,0x95F0,0};
+const uword cOtherName[] = {0x5E74,0x6708,0x95F0,0};
 /*公历每月前面的天数*/
 const int wMonthAdd[12] = {0,31,59,90,120,151,181,212,243,273,304,334};
 /*农历数据*/
@@ -294,7 +301,7 @@ const int wNongliData[100] = {  2635,333387,  1701,  1748,267701,   694,  2391,1
                                 2890,267946,  2773,592565,  1210,  2651,395863,  1323,  2707,265877};
 TDate old = GetOldDay(pSt);
 /*--生成农历天干、地支、属相 ==> wNongli--*/
-word UniToday[5];
+uword UniToday[5];
 CutWSTR(NongLiData->year,0);
 UniToday[0] = cTianGan[ ((old.year - 4) % 60) % 10];  //天干
 UniToday[1] = cDiZhi[   ((old.year - 4) % 60) % 12];  //地支
@@ -324,11 +331,11 @@ else
 
 #pragma inline
 int get_string_width(WSHDR *ws, int font)
-{
-  int width=0;
-  word *body=ws->wsbody;
-  int len=body[0];
-  while(0<len){
+{  
+  uword *body=ws->wsbody;
+  int len=body[0],width;
+  if(len>0)width=1;else width=0;
+  while(len>0){
     width+=GetSymbolWidth(body[len],font);
     len--;
   }
@@ -749,8 +756,8 @@ void FreeFile(TFile *File)
   while(File){
       TFile *sb=File;
       File=File->next;
-      mfree(sb->fullname);
-      mfree(sb->filename);
+      mfree(sb->path);
+      mfree(sb->file);
       mfree(sb);
   } 
   mfree(File);
@@ -767,6 +774,118 @@ int IsMediaActive(void)
 #endif 
   return 0;
 }
+#pragma inline
+ulong HexToInt(char *HEX) 
+{ 
+ ulong result=0; 
+ for(int i=0 ; i<strlen(HEX) ; i++) 
+ { 
+  if(*(HEX+i)>='A'&&*(HEX+i)<='F') 
+  { 
+   result*=16; 
+   result+=*(HEX+i)-'A'+10; 
+  } 
+  if(*(HEX+i)>='0'&&*(HEX+i)<='9') 
+  { 
+  result*=16; 
+  result+=*(HEX+i)-'0'; 
+  } 
+ }
+ return(result); 
+}
+#pragma inline
+uword *LoadFontLib(void)
+{
+  int f;
+  char cnfont[]=DEFAULT_DISK ":\\ZBin\\ETC\\cnfont.dat";
+  uint ul;
+  uword *data = 0;
+  f=fopen(cnfont,A_ReadOnly+A_BIN,P_READ,&ul);
+  if(f == -1)
+  {
+    cnfont[0] = '0';
+    f=fopen(cnfont,A_ReadOnly+A_BIN,P_READ,&ul);
+  }
+  if(f == -1)
+  {
+    cnfont[0] = '2';
+    f=fopen(cnfont,A_ReadOnly+A_BIN,P_READ,&ul);
+  }
+  if(f != -1)
+  {
+    data=(uword *)malloc(73808);
+    if (fread(f,(void*)data,73808,&ul)!=73808)
+    {
+      mfree((void*)data);
+      data = 0;
+    }
+    fclose(f,&ul);
+  }
+  return(data);
+}
+#pragma inline
+void FreeFontLib(uword *data)
+{
+  if (data){
+    mfree(data);
+    data = 0;
+  }
+}
+#pragma inline
+void WS2Ascii(uword *data, WSHDR *ws, char *s, int maxlen)
+{
+  int len=ws->wsbody[0];
+  if(maxlen != 0 && len > maxlen)
+    len = maxlen;
+  if(data == 0)
+  {
+    ws_2str(ws, s, len);
+    return;
+  }
+  int i,j=0;
+  uword temp;
+  for(i=1; i<=len; i++)
+  {
+    temp=ws->wsbody[i];
+    if(temp < 256)
+      s[j++] = (uchar)temp;
+    else if(temp >= 0x4E00 && temp <= 0x9FA5)
+    {
+      s[j++] = (uchar)(data[temp-0x4E00+32004]>>8);
+      s[j++] = (uchar)((data[temp-0x4E00+32004]<<8)>>8);
+    }
+    else
+      s[j++] = '?';
+  }
+  s[j] = 0;
+}
+#pragma inline
+void Ascii2WS(uword *data,WSHDR *ws, const char *s, int maxlen)
+{
+  if(data == 0)
+  {
+    wsprintf(ws, "%t", s);
+    return;
+  }
+  char *p=(char *)s;
+  unsigned char uc,uc2;
+  CutWSTR(ws,0);
+  while((uc=*s++) && (maxlen == 0 || s-p<maxlen))
+  {
+    if(uc <= 128)
+      wsAppendChar(ws,uc);
+    else
+    {
+      uc2=*s++;
+      if(uc2 < 128)
+        wsAppendChar(ws, uc2);
+      else{
+        wsAppendChar(ws, data[(uc-129)*127+(uc2-128)]);
+      }
+    }
+  }
+}
+
 
 #endif/*SIEAPI_H_*/
 
@@ -811,6 +930,11 @@ int IsMediaActive(void)
  using _CSTD FileCount;
  using _CSTD FreeFile;
  using _CSTD IsMediaActive;
+ using _CSTD HexToInt;
+ using _CSTD Ascii2WS;
+ using _CSTD WS2Ascii;
+ using _CSTD FreeFontLib;
+ using _CSTD LoadFontLib;
 #endif /* 导出函数引用表 */
  
 
