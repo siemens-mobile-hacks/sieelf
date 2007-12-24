@@ -10,7 +10,6 @@
 *********************************************************************/
 #define VERSION "2.0b"
 #include "..\inc\swilib.h"
-#include "extern.h"
 extern int cs_adr;
 extern  unsigned  long   strtoul  (const  char  *nptr,char  **endptr,int  base); 
 #define BASEADDRESS			cs_adr

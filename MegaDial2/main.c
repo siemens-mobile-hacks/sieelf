@@ -1,31 +1,13 @@
 #include "..\inc\swilib.h"
 #include "conf_loader.h"
 #include "extern.h"
+#include "MegaDial.h"
 
 //GBSTMR tmr_scroll;
 
 //#define NUM_TOTAL_CNT  5	
-
-//extern const int ENA_VIBRA;
-//extern const unsigned int vibraPower;
-//extern const unsigned int vibraDuration;
-extern const int COLOR_MENU_BK;
-extern const int COLOR_MENU_BRD;
-extern const int COLOR_NOTSELECTED;
-extern const int COLOR_SELECTED;
-extern const int COLOR_SELECTED_BG;
-extern const int COLOR_SELECTED_BRD;
-extern const int COLOR_SCROLLBAR;
-extern const int COLOR_SCROLLBAR_BG;
-extern const char COLOR_SEARCH_MARK[4];
-extern const char COLOR_SEARCH_UNMARK[4];
-
 //#define TMR_SECOND 216
 #define SMS_MAX_LEN  760
-
-//-------------------------------------
-//部分新增参数
-//-------------------------------------
 #define cfg_item_gaps 3
 #define color(x) (x<24)?GetPaletteAdrByColorIndex(x):(char *)(&(x))  
 
@@ -40,34 +22,8 @@ int need_ip=0;
 
 WSHDR *gwsName;
 WSHDR *gwsTemp;
-
-//通信录地址
-extern const char root_dir[128];
-
-//新增的颜色控制
-extern const int COLOR_NUMBER_BG;
-extern const int COLOR_NUMBER_BRD;
-extern const int COLOR_NUMBER;
-extern const int CS_NUMBER_BG;
-
-//区号秀
-extern const int cfg_cs_adr;
-extern const int cfg_cs_enable;
-extern const int cfg_cs_part;
-extern const int cfg_cs_font_color;
-extern int GetProvAndCity(unsigned short *pBSTR, char *pNoStr);
-
-//部分功能控制
-extern const int cfg_disable_one_number;
-extern const int disable_when_calling;
-extern const int big_font;
-extern const int cfg_ip_number;
-extern const int show_pic;
-
-//号码列表按键
-//extern const unsigned int CALL_BTN;
-
-
+WSHDR *smstemp;
+char smsnum[46];
 
 //字体控制
 #ifdef ELKA
@@ -88,23 +44,6 @@ void font(void)
 }
 #endif
 //-------------------------------------------
-
-#pragma inline
-static void patch_header(const HEADER_DESC* head)
-{
-  ((HEADER_DESC*)head)->rc.x=0;
-  ((HEADER_DESC*)head)->rc.y=YDISP;
-  ((HEADER_DESC*)head)->rc.x2=ScreenW()-1;
-  ((HEADER_DESC*)head)->rc.y2=HeaderH()-1+YDISP;
-}
-#pragma inline
-static void patch_input(const INPUTDIA_DESC* inp)
-{
-  ((INPUTDIA_DESC*)inp)->rc.x=0;
-  ((INPUTDIA_DESC*)inp)->rc.y=HeaderH()+1+YDISP;
-  ((INPUTDIA_DESC*)inp)->rc.x2=ScreenW()-1;
-  ((INPUTDIA_DESC*)inp)->rc.y2=ScreenH()-SoftkeyH()-1;
-}
 
 #ifdef ELKA
 #define MAX_ESTR_LEN 9
@@ -136,6 +75,7 @@ static void patch_input(const INPUTDIA_DESC* inp)
 #define POST_NAME 0x6F
 #define DISPLAY_NAME 0x60
 #define PICTURE 0x33
+#define E_MAIL 0x2E
 #else
 #define NICKNAME 0x12
 #define LAST_NAME 0x23
@@ -188,6 +128,7 @@ typedef struct
   WSHDR *num[NUMBERS_MAX];
   WSHDR *icons;
   WSHDR *pic;
+  WSHDR *arm;
 }CLIST;
 
 volatile CLIST *cltop; //Start
@@ -362,15 +303,13 @@ void FreeCLIST(void)
     for(int i=0;i<NUMBERS_MAX;i++) FreeWS(cl->num[i]);
     FreeWS(cl->icons);
     FreeWS(cl->pic);
+    FreeWS(cl->arm);
     p=cl;
     cl=(CLIST*)(cl->next);
     mfree(p);
   }
 }
 
-//-----------------------------------------------------
-//Search pieces in the line using T9 
-//-----------------------------------------------------
 int char16to8(int c)
 {
   if (c<0x400) return (c);
@@ -395,6 +334,17 @@ int char16to8(int c)
   return (c);
 }
 
+int strcmp_nocase(const char *s1,const char *s2)
+{
+  int i;
+  int c;
+  while(!(i=(c=toupper(*s1++))-toupper(*s2++))) if (!c) break;
+  return(i);
+}
+
+//-----------------------------------------------------
+//Search pieces in the line using T9 
+//-----------------------------------------------------
 unsigned int us_reverse(unsigned int v)
 {
   return((v>>8)|((v&0xFF)<<8));
@@ -661,8 +611,15 @@ void ConstructList(void)
                         if (r->data)
                             if (!contact.pic)
                             wstrcpy(contact.pic=AllocWS(150),(WSHDR *)(r->data)); 
+                    }                    
+                    if (r->item_type==E_MAIL)
+                    {
+                        if (r->data)
+                            if (!contact.arm)
+                            wstrcpy(contact.arm=AllocWS(150),(WSHDR *)(r->data)); 
                     }
 		    break;
+                    
 
 		  case 0x01:
 		    {
@@ -734,6 +691,7 @@ void ConstructList(void)
 		for(int i=0;i<NUMBERS_MAX;i++) FreeWS(contact.num[i]);
 		FreeWS(contact.icons);
                 FreeWS(contact.pic);
+                FreeWS(contact.arm);
 	      }
 	      FreeUnpackABentry(&ur,mfree_adr());
 	      if (hook_state!=5) goto L_STOP;
@@ -800,6 +758,7 @@ void ConstructList(void)
     for(int i=0;i<NUMBERS_MAX;i++) FreeWS(contact.num[i]);
     FreeWS(contact.icons);
     FreeWS(contact.pic);
+    FreeWS(contact.arm);
   }
   LockSched();
   if (hook_state==5) hook_state=2; else FreeCLIST();
@@ -839,13 +798,52 @@ void DisableScroll(void)
 }
 */
 
+
+void Play(const char *fpath, const char *fname)
+{  
+  WSHDR* sndPath=AllocWS(128);
+  WSHDR* sndFName=AllocWS(128);
+
+  wsprintf(sndPath, fpath);
+  wsprintf(sndFName, fname);
+  
+
+    PLAYFILE_OPT _sfo1;
+    zeromem(&_sfo1,sizeof(PLAYFILE_OPT));
+    _sfo1.repeat_num=1;
+    _sfo1.time_between_play=0;
+    _sfo1.play_first=0;
+    _sfo1.volume=6;
+#ifdef NEWSGOLD
+    _sfo1.unk6=1;
+    _sfo1.unk7=1;
+    _sfo1.unk9=2;
+    PlayFile(0x10, sndPath, sndFName, MMI_CEPID, MSG_PLAYFILE_REPORT, &_sfo1);
+#else
+#ifdef X75
+    _sfo1.unk4=0x80000000;
+    _sfo1.unk5=1;
+    PlayFile(0xC, sndPath, sndFName, 0, MMI_CEPID, MSG_PLAYFILE_REPORT, &_sfo1);
+#else
+    _sfo1.unk5=1;
+    PlayFile(0xC, sndPath, sndFName, MMI_CEPID, MSG_PLAYFILE_REPORT, &_sfo1);
+#endif
+#endif 
+
+
+  FreeWS(sndPath);
+  FreeWS(sndFName);
+  /*}*/
+}
+
+
 void my_ed_redraw(void *data)
 {
   //WSHDR *ews=(WSHDR*)e_ws;
   font();
   sumx=0;
   char pszNum[20];
-  char pszNum2[200];
+  char pszNum2[100];
   int z;
   int gfont_size = GetFontYSIZE(font_size);
   int len,j,x=0;
@@ -994,7 +992,7 @@ void my_ed_redraw(void *data)
                     dyy=dy+(gfont_size+cfg_item_gaps)-3;
                   }
                   ShowSelectedCodeShow(cl->num[aj+numx+x],dyx-(gfont_size+cfg_item_gaps)+6);
-                  ws_2str(cl->pic,pszNum2,200);
+                  ws_2str(cl->pic,pszNum2,100);
                   len=strlen(pszNum2);
                   int x0=ScreenW()-4-GetImgWidth((int)pszNum2);
                   
@@ -1006,7 +1004,18 @@ void my_ed_redraw(void *data)
                   
                   if(sumx>1)
                   DrawRectangle(right_border-2-d,dy+3,right_border-1-d+l,dy+(gfont_size+cfg_item_gaps)+1,1,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
-      
+
+        
+          char fn[10]="0:\\amr\\";
+          char pszNum3[25];
+          int len=0;
+          ws_2str(cl->arm,pszNum3,25);
+          len=strlen(pszNum3);
+          if(len>4)
+          {
+          Play(fn, pszNum3);
+          }         
+                  
           DrawString(cl->icons,right_border-1-icons_size,dy+cfg_item_gaps,right_border-2,dy+cfg_item_gaps+gfont_size,font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
       }
       cl=(CLIST *)cl->next;
@@ -1016,7 +1025,6 @@ void my_ed_redraw(void *data)
   }
   FreeWS(prws);
 }
-
 
 //屏幕参数控制
 void ChangeRC(GUI *gui)
@@ -1041,6 +1049,77 @@ void ChangeRC(GUI *gui)
   if (m[0]) memcpy(m[0],&rc,sizeof(rc));
 }
 
+//-------------------------------------
+//短信发送菜单
+//-------------------------------------
+static void mm_settings(GUI *gui)
+{
+  SendSMS(smstemp, smsnum, MMI_CEPID, MSG_SMS_RX-1, 6);
+  GeneralFuncF1(1);
+}
+
+static const int mmenusoftkeys[]={0,1,2};
+
+static const SOFTKEY_DESC mmenu_sk[]=
+{
+  {0x0018,0x0000,(int)"Select"},
+  {0x0001,0x0000,(int)"Back"},
+  {0x003D,0x0000,(int)LGP_DOIT_PIC}
+};
+
+static const SOFTKEYSTAB mmenu_skt=
+{
+  mmenu_sk,0
+};
+
+#define MAIN_MENU_ITEMS_N 1
+static HEADER_DESC mmenu_hdr={0,0,0,0,NULL,(int)"Option",LGP_NULL};
+
+static MENUITEM_DESC mmenu_ITEMS[MAIN_MENU_ITEMS_N]=
+{
+  {NULL,(int)"SendSMS", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2} //0
+};
+
+static const MENUPROCS_DESC mmenu_HNDLS[MAIN_MENU_ITEMS_N]=
+{
+  mm_settings
+};
+
+void VoiceOrSMS(const char *num);
+
+static int mmenu_keyhook(void *data, GUI_MSG *msg)
+{
+  return (0);
+}
+
+static void mmenu_ghook(void *data, int cmd)
+{
+  if (cmd==0x0A)
+  {
+    DisableIDLETMR();
+  }
+}
+
+
+static const MENU_DESC mmenu=
+{
+  8,mmenu_keyhook,mmenu_ghook,NULL,
+  mmenusoftkeys,
+  &mmenu_skt,
+  0x10,//MENU_FLAG,
+  NULL,
+  mmenu_ITEMS,//menuitems,
+  mmenu_HNDLS,//menuprocs,
+  MAIN_MENU_ITEMS_N
+};
+
+int ShowMainMenu()
+{
+  patch_header(&mmenu_hdr);
+  return CreateMenu(0,0,&mmenu,&mmenu_hdr,0,MAIN_MENU_ITEMS_N,0,0);
+}
+
+
 
 //-------------------------------------
 //短信功能菜单
@@ -1049,9 +1128,9 @@ const int menusoftkeys[]={0,1,2};
 
 const SOFTKEY_DESC menu_sk[]=
 {
-  {0x0018,0x0000,(int)"Select"},
+  {0x0018,0x0000,(int)"Option"},
   {0x0001,0x0000,(int)"Back"},
-  {0x003D,0x0000,(int)"+"/*LGP_DOIT_PIC*/}
+  {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
 const SOFTKEYSTAB menu_skt=
@@ -1125,36 +1204,39 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
   int m=msg->gbsmsg->msg;
   if (m==KEY_DOWN)
    {
-    if (key==GREEN_BUTTON&&(get_word_count(data)!=0)&&(get_word_count(data)<=5))
-    {
-      ExtractEditControl(data,2,&ec);
-      WSHDR *wsTemp=AllocWS(ec.pWS->wsbody[0]);
-      char szNo[46];
-      wstrcpy(wsTemp,ec.pWS);
-      
-      //小灵通号码
-      if(snum[0] == '+' || snum[0] == '1')
-        strcpy(szNo, snum);
-      else
-        sprintf(szNo, "106%s", snum);
-      
-      SendSMS(wsTemp, szNo, MMI_CEPID, MSG_SMS_RX-1, 6);
-      return(1);
-    }
-    else 
-    { 
 #ifdef NEWSGOLD
       if(key==LEFT_SOFT)
 #else
       if(key==RIGHT_SOFT)
 #endif
       {
+     if(EDIT_IsBusy(data))
+     return(0);           
+     else if((get_word_count(data)!=0)&&(get_word_count(data)<=5))
+      {
+      ExtractEditControl(data,2,&ec);
+      smstemp=AllocWS(ec.pWS->wsbody[0]);
+      wstrcpy(smstemp,ec.pWS);
+
+      //小灵通号码
+      if(snum[0] == '+' || snum[0] == '1')
+        strcpy(smsnum, snum);
+      else
+        sprintf(smsnum, "106%s", snum);
+      
+        
+        ShowMainMenu();
+      }
+     else
+      return (-1);
+      
+        /*
         if(EDIT_IsBusy(data))
         return(0); 
         else
         return(-1);
+        */
       }
-    }
     }
   //-1 - do redraw
   return(0); //Do standart keys
@@ -1196,7 +1278,6 @@ INPUTDIA_DESC edsms_desc=
 //  0x00000004 - Not moving the cursor 
   0x40000000 // Change field coaching buttons 
 };
-
 
 //---------------------------------
 //拨号短信控制
@@ -1248,7 +1329,7 @@ void VoiceOrSMS(const char *num)
 
      wsAppendChar(gwsTemp,'\n');
 
-     CutWSTR(gwsTemp, 0);//复位?
+     CutWSTR(gwsTemp, 0);
 
      strcpy(szTemp,num);
      GetProvAndCity(gwsTemp->wsbody,szTemp);//区号秀地址
@@ -1272,55 +1353,6 @@ void VoiceOrSMS(const char *num)
     CreateInputTextDialog(&edsms_desc,&edsms_hdr,eq,1,(void *)num);
   }
 }
-/*
-//-------------------------------------
-//号码选择菜单
-//-------------------------------------
-int gotomenu_onkey(void *data, GUI_MSG *msg)
-{
-  int i;
-  if ((msg->gbsmsg->msg==KEY_DOWN)&&(msg->gbsmsg->submess==GREEN_BUTTON))
-  {
-    msg->keys=0x18;
-  }
-  if (msg->keys==0x18 || msg->keys==0x3D)
-  {
-    i=GetCurMenuItem(data);
-    if (i<dstr_index[0]) VoiceOrSMS(dstr[i]);
-  }
-  return(0);
-}
-
-void gotomenu_ghook(void *data, int cmd){}
-
-void gotomenu_itemhandler(void *data, int curitem, void *user_pointer)
-{
-  WSHDR *ws;
-  void *item=AllocMenuItem(data);
-  if (curitem<dstr_index[0])
-  {
-    ws=AllocMenuWS(data,40);
-    str_2ws(ws,dstr[curitem],39);
-    SetMenuItemIconArray(data, item, menu_icons+dstr_index[curitem+1]);
-    SetMenuItemText(data, item, ws, curitem);
-//    SetMenuItemIcon(data,curitem,nltop->index);
-  }
-}
-
-const HEADER_DESC gotomenu_HDR={0,0,131,21,0,(int)"Select number...",LGP_NULL};
-
-const MENU_DESC gotomenu_STRUCT=
-{
-  8,gotomenu_onkey,gotomenu_ghook,NULL,
-  menusoftkeys,
-  &menu_skt,
-  1|0x10,
-  gotomenu_itemhandler,
-  NULL,
-  NULL,
-  0
-};
-*/
 
 void ElfKiller(void)
 {
@@ -1342,6 +1374,9 @@ void ElfKiller(void)
 }
 
 
+
+
+
 //-------------------------------------
 //屏幕主控
 //-------------------------------------
@@ -1354,7 +1389,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
   int n,d;
   //int set_menu=0;
   
-  EDITCONTROL ec;
+
   CLIST *cl=(CLIST *)cltop;
   is_sms_need=0;
   
@@ -1397,6 +1432,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
   
   if ((key==ENTER_BUTTON)&&(m==KEY_DOWN))
    {
+    EDITCONTROL ec;
     ExtractEditControl(gui,1,&ec);
     if (ec.pWS->wsbody[0]==EDIT_GetCursorPos(gui)-1)
     {
@@ -1452,7 +1488,6 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 #endif
 #endif
       need_ip=1;
-      
       VoiceOrSMS(dstr[0]);
       return(1); //Close tries 
     }
@@ -1626,21 +1661,6 @@ void vibra_tmr_proc(void)
 }
 */
 
-#pragma inline=forced
-int toupper(int c)
-{
-  if ((c>='a')&&(c<='z')) c+='A'-'a';
-  return(c);
-}
-
-int strcmp_nocase(const char *s1,const char *s2)
-{
-  int i;
-  int c;
-  while(!(i=(c=toupper(*s1++))-toupper(*s2++))) if (!c) break;
-  return(i);
-}
-
 
 int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
 {
@@ -1677,6 +1697,23 @@ int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
     GBS_StartTimerProc(&vibra_tmr,vibraDuration*216/1000,vibra_tmr_proc);
   }
   */
+  /*
+  CLIST *cl=(CLIST *)cltop;
+ 
+  if (msg->msg==MSG_STATE_OF_CALL)  
+  {
+          char fn[60]="0:\\numarm\\";
+          char pszNum3[25];
+          int len=0;
+          ws_2str(cl->arm,pszNum3,100);
+          len=strlen(pszNum3);
+          if(len>4)
+          {
+          Play(fn, pszNum3);
+          }
+  }
+  */
+  
   csm_result=old_icsm_onMessage(data,msg); //call old handler events  
     if (IsGuiOnTop(edialgui_id)) //If IdleGui at the top 
     {
@@ -1701,6 +1738,7 @@ void MyIDLECSM_onClose(CSM_RAM *data)
   //if(my_pic) deleteIMGHDR(my_pic);
   FreeWS(gwsName);
   FreeWS(gwsTemp);
+  FreeWS(smstemp);
   FreeWS(ews);
   seqkill(data,old_icsm_onClose,&ELF_BEGIN,SEQKILLER_ADR());
 }

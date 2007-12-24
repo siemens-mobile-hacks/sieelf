@@ -634,6 +634,7 @@ MegaDial/test.xcl -text
 MegaDial2/Codeshow.c -text
 MegaDial2/MegaDial.ewp -text
 MegaDial2/MegaDial.eww -text
+MegaDial2/MegaDial.h -text
 MegaDial2/MegaDial2.ewp -text
 MegaDial2/conf_loader.c -text
 MegaDial2/conf_loader.h -text

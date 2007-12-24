@@ -1,6 +1,5 @@
 #include "..\inc\cfg_items.h"
 #include "..\inc\swilib.h"
-//暑眙桡箴圉?
 
 
 __root const CFG_HDR cfghdr_m5={CFG_LEVEL,"基本功能控制",1,0};
