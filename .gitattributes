@@ -55,7 +55,6 @@ Blinker/postbuild.cmd -text
 Blinker/test.xcl -text
 C++/_cpp.C -text
 C++/_cpp2.cpp -text
-CFGROSECN/CfgEdit.ewd -text
 CFGROSECN/CfgEdit.ewp -text
 CFGROSECN/CfgEdit.eww -text
 CFGROSECN/cnfont.dat -text
