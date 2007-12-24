@@ -636,6 +636,14 @@ MegaDial2/MegaDial.ewp -text
 MegaDial2/MegaDial.eww -text
 MegaDial2/MegaDial.h -text
 MegaDial2/MegaDial2.ewp -text
+MegaDial2/Output/MegaDial_ELKA.elf -text
+MegaDial2/Output/MegaDial_NSG.elf -text
+MegaDial2/Output/MegaDial_SG.elf -text
+MegaDial2/Output/MegaDial_SK65.elf -text
+MegaDial2/Output/MegaDialc_ELKA.elf -text
+MegaDial2/Output/MegaDialc_NSG.elf -text
+MegaDial2/Output/MegaDialc_SG.elf -text
+MegaDial2/Output/MegaDialc_SK65.elf -text
 MegaDial2/conf_loader.c -text
 MegaDial2/conf_loader.h -text
 MegaDial2/config_data.c -text
