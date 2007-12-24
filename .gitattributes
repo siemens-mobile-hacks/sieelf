@@ -55,6 +55,14 @@ Blinker/postbuild.cmd -text
 Blinker/test.xcl -text
 C++/_cpp.C -text
 C++/_cpp2.cpp -text
+CFGROSECN/CfgEdit.ewd -text
+CFGROSECN/CfgEdit.ewp -text
+CFGROSECN/CfgEdit.eww -text
+CFGROSECN/cnfont.dat -text
+CFGROSECN/func.asm -text
+CFGROSECN/main.c -text
+CFGROSECN/test.xcl -text
+CFGROSECN/visual.c -text
 CSMShow/CSMShow.ewp -text
 CSMShow/CSMShow.eww -text
 CSMShow/conf_loader.c -text
