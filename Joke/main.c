@@ -241,47 +241,28 @@ void maincsm_oncreate_GUI(CSM_RAM *data)
 
 const int minus11=-11;
 
-static unsigned short maincsm_name_body_GUI[140];
-const struct
-{
-  CSM_DESC maincsm;
-  WSHDR maincsm_name_GUI;
-}MAINCSM_GUI =
-{
-  {
-    maincsm_onmessage_GUI,
-    maincsm_oncreate_GUI,
-#ifdef NEWSGOLD
-0,
-0,
-0,
-0,
-#endif
-maincsm_onclose_GUI,
-sizeof(MAIN_CSM),
-1,
-&minus11
-  },
-  {
-    maincsm_name_body_GUI,
-    NAMECSM_MAGIC1,
-    NAMECSM_MAGIC2,
-    0x0,
-    139
-  }
-};
 
-void UpdateCSMname_GUI(void) 
+const CSM_DESC maincsm=
 {
-  wsprintf((WSHDR *)(&MAINCSM_GUI.maincsm_name_GUI), "Password Input");
-}
+  maincsm_onmessage_GUI,
+  maincsm_oncreate_GUI,
+#ifdef NEWSGOLD
+  0,
+  0,
+  0,
+  0,
+#endif
+  maincsm_onclose_GUI,
+  sizeof(MAIN_CSM),
+  1,
+  &minus11
+};
 
 void StarGUI_CSM(void)
 {
   LockSched();
   char dummy[sizeof(MAIN_CSM)];
-  UpdateCSMname_GUI();
-  MAINCSM_GUI_ID=CreateCSM(&MAINCSM_GUI.maincsm,dummy,2);
+  MAINCSM_GUI_ID=CreateCSM(&maincsm,dummy,2);
   UnlockSched();
 }
 
