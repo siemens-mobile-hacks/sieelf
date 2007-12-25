@@ -140,6 +140,7 @@ void onClose(MAIN_GUI *data, void (*mfree_adr)(void *))
 
 void onFocus(MAIN_GUI *data, void *(*malloc_adr)(int), void (*mfree_adr)(void *))
 {
+  DisableIDLETMR();
   data->gui.state=2;
 }
 
