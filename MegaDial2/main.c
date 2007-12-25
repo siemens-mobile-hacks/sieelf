@@ -1234,13 +1234,15 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
      else
       return (-1);
       
-        /*
-        if(EDIT_IsBusy(data))
-        return(0); 
-        else
-        return(-1);
-        */
+
       }
+      if(key==RED_BUTTON)
+     {
+      ExtractEditControl(data,2,&ec);
+      smstemp=AllocWS(ec.pWS->wsbody[0]);
+      wstrcpy(smstemp,ec.pWS);
+      smsdata=1;
+     }
     }
   //-1 - do redraw
   return(0); //Do standart keys
@@ -1425,7 +1427,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //°´¼ü¹¦ÄÜ
   {
     numx=0;
     need_ip=0;
-    smsdata=0;
+    smsdata=1;
   }
   
   if(e_ws && key==ENTER_BUTTON) // "##Enter" to exit
