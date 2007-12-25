@@ -16,14 +16,21 @@ __root const int disable_when_calling=1;
 __root const CFG_HDR cfghdr104 = {CFG_CHECKBOX,"Disable one number",0,0};
 __root const int cfg_disable_one_number=1;
 
-__root const CFG_HDR cfghdr107 = {CFG_CHECKBOX,"CodeShow part show",0,0};
+__root const CFG_HDR cfghdr105 = {CFG_CHECKBOX,"CodeShow part show",0,0};
 __root const int cfg_cs_part=0;
 /*
 __root const CFG_HDR cfghdr108 ={CFG_UINT,"Numberlist button",0,65535};
 __root const unsigned int CALL_BTN=ENTER_BUTTON;
 */
-__root const CFG_HDR cfghdr108 = {CFG_CHECKBOX,"Show pic",0,0};
-__root const int show_pic=1;
+__root const CFG_HDR cfghdr106 = {CFG_CHECKBOX,"Show pic",0,0};
+__root const int show_pic=0;
+
+__root const CFG_HDR cfghdr107 = {CFG_CHECKBOX,"Sms number show",0,0};
+__root const int smsn=1;
+
+__root const CFG_HDR cfghdr108 = {CFG_CHECKBOX,"Sms codeshow",0,0};
+__root const int smsc=1;
+
 
 __root const CFG_HDR cfghdr_m4={CFG_LEVEL,"",0,0};
 /*

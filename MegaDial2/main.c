@@ -20,6 +20,7 @@ int count_page;
 int font_size;
 int need_ip=0;
 int smsdata=0;
+int smscount=0;
 
 WSHDR *gwsName;
 WSHDR *gwsTemp;
@@ -1047,9 +1048,30 @@ void ChangeRC(GUI *gui)
 //-------------------------------------
 static void mm_settings(GUI *gui)
 {
+  if(smscount>0)
+  {
   smsdata=0;
+  smscount=0;
   SendSMS(smstemp, smsnum, MMI_CEPID, MSG_SMS_RX-1, 6);
   GeneralFuncF1(1);
+  }
+  else
+  ShowMSG(1,(int)"Plese input word!");
+}
+
+unsigned int err;
+
+static void setting(GUI *gui) 
+{
+  WSHDR *ws = AllocWS(150);
+  int fd1;
+  if ((fd1 = fopen("4:\\ZBin\\etc\\MegaDial.bcfg", A_ReadOnly + A_BIN, P_READ, &err)) != -1)
+    str_2ws(ws, "4:\\ZBin\\etc\\MegaDial.bcfg", 128);
+  else
+    str_2ws(ws, "0:\\ZBin\\etc\\MegaDial.bcfg", 128);
+  fclose(fd1, &err);
+  ExecuteFile(ws, 0, 0);
+  FreeWS(ws);
 }
 
 static const int mmenusoftkeys[]={0,1,2};
@@ -1066,17 +1088,19 @@ static const SOFTKEYSTAB mmenu_skt=
   mmenu_sk,0
 };
 
-#define MAIN_MENU_ITEMS_N 1
+#define MAIN_MENU_ITEMS_N 2
 static HEADER_DESC mmenu_hdr={0,0,0,0,NULL,(int)"Option",LGP_NULL};
 
 static MENUITEM_DESC mmenu_ITEMS[MAIN_MENU_ITEMS_N]=
 {
-  {NULL,(int)"SendSMS", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2} //0
+  {NULL,(int)"SendSMS", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
+  {NULL,(int)"Sitting", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}
 };
 
 static const MENUPROCS_DESC mmenu_HNDLS[MAIN_MENU_ITEMS_N]=
 {
-  mm_settings
+  mm_settings,
+  setting,
 };
 
 void VoiceOrSMS(const char *num);
@@ -1216,12 +1240,14 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
       {
      if(EDIT_IsBusy(data))
      return(0);           
-     else if((get_word_count(data)!=0)&&(get_word_count(data)<=5))
+     else if(/*(get_word_count(data)!=0)&&*/(get_word_count(data)<=5))
       {
       ExtractEditControl(data,2,&ec);
       smstemp=AllocWS(ec.pWS->wsbody[0]);
       wstrcpy(smstemp,ec.pWS);
 
+      smscount=(int)ec.pWS->wsbody[0];
+      
       //小灵通号码
       if(snum[0] == '+' || snum[0] == '1')
         strcpy(smsnum, snum);
@@ -1325,8 +1351,11 @@ void VoiceOrSMS(const char *num)
 
      wstrcpy(ews,gwsName);//名字
 
-     wsAppendChar(ews, '\n');
 
+     
+     if(smsn)
+     {
+     wsAppendChar(ews, '\n');  
      if(num[0] == '+' || num[0] == '1')
      wsprintf(gwsTemp,"%s",num);
      else 
@@ -1334,15 +1363,20 @@ void VoiceOrSMS(const char *num)
      wstrcat(ews,gwsTemp);
 
      wsAppendChar(gwsTemp,'\n');
+     }
 
+     if(smsc)
+     {
      CutWSTR(gwsTemp, 0);
 
      strcpy(szTemp,num);
      GetProvAndCity(gwsTemp->wsbody,szTemp);//区号秀地址
      wsAppendChar(ews,'\n'); 
      wstrcat(ews, gwsTemp);
-
+     
+     }
      wsAppendChar(ews,'\n'); 
+     
      wsAppendChar(ews, 0x5B57);
      wsAppendChar(ews, 0x6570);
      gLen = wstrlen(ews);  //字数输出

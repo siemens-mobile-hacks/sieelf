@@ -33,6 +33,8 @@ extern const int disable_when_calling;
 extern const int big_font;
 extern const int cfg_ip_number;
 extern const int show_pic;
+extern const int smsn;
+extern const int smsc;
 //ºÅÂëÁĞ±í°´¼ü
 //extern const unsigned int CALL_BTN;
 
