@@ -431,13 +431,13 @@ int main()
   char dummy[sizeof(MAIN_CSM)];
   UpdateCSMname();
   
-  #ifdef NEWSGOLD
+  //#ifdef NEWSGOLD
     save_cmpc=CSM_root()->csm_q->current_msg_processing_csm;
     CSM_root()->csm_q->current_msg_processing_csm=CSM_root()->csm_q->csm.first;
     CreateCSM(&MAINCSM_d.maincsm,dummy,0);
     CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
     AddKeybMsgHook((void *)my_keyhook);
-  #else
+  /*#else
       if (!AddKeybMsgHook_end((void *)my_keyhook)) 
       {
         ShowMSG(1, (int) "TurnOff_d. Unable to register a handler!"); 
@@ -450,7 +450,7 @@ int main()
         CreateCSM(&MAINCSM_d.maincsm,dummy,0);
         CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
       }
-  #endif
+  #endif*/
     
   
   UnlockSched();
