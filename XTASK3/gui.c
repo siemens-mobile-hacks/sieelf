@@ -141,8 +141,8 @@ int GetNumberOfDialogs(void)
   //Find new style daemons
   if (show_daemons)
   {
-    icsm=((CSM_RAM *)(CSM_root()->csm_q->csm.first))->next; //Start of CSM demons
-       while(((unsigned int)(icsm->constr)>>27)==0x15)
+    icsm=((CSM_RAM *)(CSM_root()->csm_q->csm.first))->next; //������ ������������ CSM �������
+    while(((unsigned int)(icsm->constr)>>27)==0x15)
     {
       WSHDR *tws=(WSHDR *)(((char *)icsm->constr)+sizeof(CSM_DESC));
       if((tws->ws_malloc==NAMECSM_MAGIC1)&&(tws->ws_mfree==NAMECSM_MAGIC2))
@@ -156,7 +156,7 @@ int GetNumberOfDialogs(void)
       icsm=icsm->next;
     }
   }
-  icsm=under_idle->next; //Start round 
+  icsm=under_idle->next; //������ ��������
   do
   {
     if (icsm==ircsm)
@@ -477,7 +477,7 @@ void bm_menu_iconhndl(void *data, int curitem, void *unk)
           char *p=strrchr(s,'\\');
           if (p)
           {
-            short pos;
+            unsigned int pos;
             ws=AllocWS((l=strlen(p+1)));
             str_2ws(ws,p+1,l);
             if ((pos=wstrrchr(ws,ws->wsbody[0],'.'))!=0xFFFF)
@@ -535,17 +535,24 @@ int mm_menu_onkey(void *data, GUI_MSG *msg)
     }
     switch(i)
     {
+#ifdef ELKA
+    case LEFT_BUTTON:
+      i=((CSM_RAM *)(nl->p))->id;
+      if (i!=CSM_root()->idle_id) CloseCSM(i);
+      return 0;
+#else
     case '#':
       i=((CSM_RAM *)(nl->p))->id;
       if (i!=CSM_root()->idle_id) CloseCSM(i);
       return 0;
+#endif
     case '*':
       show_daemons=!show_daemons;
       RefreshGUI();
       return 0;      
     case LEFT_SOFT:
       CSMtoTop(CSM_root()->idle_id,-1);
-      return(1); //There GeneralFunc challenge for Tech. GUI-> closure GUI
+      return(1); //���������� ����� GeneralFunc ��� ���. GUI -> �������� GUI
     case ENTER_BUTTON:
       if (!nl->is_daemon)
       {
@@ -553,8 +560,7 @@ int mm_menu_onkey(void *data, GUI_MSG *msg)
       }
       return(1);
     case RIGHT_SOFT:
-      return(1); //There GeneralFunc challenge for Tech. GUI-> closure GUI 
-
+      return(1); //���������� ����� GeneralFunc ��� ���. GUI -> �������� GUI
     }
   }
   return(0);

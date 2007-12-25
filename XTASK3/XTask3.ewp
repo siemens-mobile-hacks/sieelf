@@ -271,7 +271,7 @@
         </option>
         <option>
           <name>CCCompilerRuntimeInfo</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IFpuProcessor</name>
@@ -279,7 +279,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state></state>
+          <state>$FILE_BNAME$.r79</state>
         </option>
         <option>
           <name>CCLangSelect</name>
@@ -341,7 +341,7 @@
         </option>
         <option>
           <name>CCStdIncludePath</name>
-          <state>###Uninitialized###</state>
+          <state>$TOOLKIT_DIR$\INC\</state>
         </option>
         <option>
           <name>CCInlineThreshold</name>
@@ -909,24 +909,24 @@
         <option>
           <name>GRuntimeLibSelect</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>GRuntimeLibSelectSlave</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>RTDescription</name>
-          <state>Do not link with a runtime library.</state>
+          <state>Use the normal configuration of the C/C++ runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
         </option>
         <option>
           <name>RTConfigPath</name>
-          <state></state>
+          <state>$TOOLKIT_DIR$\LIB\dl5tpainl8n.h</state>
         </option>
         <option>
           <name>RTLibraryPath</name>
-          <state></state>
+          <state>$TOOLKIT_DIR$\LIB\dl5tpainl8n.r79</state>
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
@@ -960,7 +960,7 @@
         <debug>0</debug>
         <option>
           <name>CCDefines</name>
-          <state>NDEBUG</state>
+          <state>NEWSGOLD</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -976,15 +976,15 @@
         </option>
         <option>
           <name>CCListCFile</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCListCMnemonics</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCListCMessages</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCListAssFile</name>
@@ -1020,7 +1020,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeed</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCOptimization</name>
@@ -1030,7 +1030,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>1111111</state>
+          <state>1011101</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -1094,7 +1094,7 @@
         </option>
         <option>
           <name>CCCompilerRuntimeInfo</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IFpuProcessor</name>
@@ -1114,7 +1114,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeedSlave</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCOptimizationSlave</name>
@@ -1357,7 +1357,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild></postbuild>
+        <postbuild>obexcopy.exe $PROJ_DIR$\Release\Exe\XTask3.elf \MMCard\ZBin\Daemons\XTask3.elf</postbuild>
       </data>
     </settings>
     <settings>
@@ -1732,24 +1732,24 @@
         <option>
           <name>GRuntimeLibSelect</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>GRuntimeLibSelectSlave</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>RTDescription</name>
-          <state>Do not link with a runtime library.</state>
+          <state>Use the normal configuration of the C/C++ runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
         </option>
         <option>
           <name>RTConfigPath</name>
-          <state></state>
+          <state>$TOOLKIT_DIR$\LIB\dl5tpainl8n.h</state>
         </option>
         <option>
           <name>RTLibraryPath</name>
-          <state></state>
+          <state>$TOOLKIT_DIR$\LIB\dl5tpainl8n.r79</state>
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
@@ -1783,7 +1783,8 @@
         <debug>0</debug>
         <option>
           <name>CCDefines</name>
-          <state>NDEBUG</state>
+          <state>NEWSGOLD</state>
+          <state>ELKA</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -1799,15 +1800,15 @@
         </option>
         <option>
           <name>CCListCFile</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCListCMnemonics</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCListCMessages</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCListAssFile</name>
@@ -1843,7 +1844,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeed</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCOptimization</name>
@@ -1853,7 +1854,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>1111111</state>
+          <state>1011101</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -1917,7 +1918,7 @@
         </option>
         <option>
           <name>CCCompilerRuntimeInfo</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IFpuProcessor</name>
@@ -1937,7 +1938,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeedSlave</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCOptimizationSlave</name>
@@ -2180,7 +2181,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild></postbuild>
+        <postbuild>obexcopy.exe $PROJ_DIR$\Release_ELKA\Exe\XTask3.elf \MMCard\ZBin\Daemons\XTask3.elf</postbuild>
       </data>
     </settings>
     <settings>
@@ -2555,28 +2556,28 @@
         <option>
           <name>GRuntimeLibSelect</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>GRuntimeLibSelectSlave</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>RTDescription</name>
-          <state>Do not link with a runtime library.</state>
+          <state>Use the normal configuration of the C/C++ runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
         </option>
         <option>
           <name>RTConfigPath</name>
-          <state></state>
+          <state>$TOOLKIT_DIR$\LIB\dl5tpainl8n.h</state>
         </option>
         <option>
           <name>RTLibraryPath</name>
-          <state></state>
+          <state>$TOOLKIT_DIR$\LIB\dl5tpainl8n.r79</state>
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.40A</state>
+          <state>4.41A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -2606,7 +2607,7 @@
         <debug>0</debug>
         <option>
           <name>CCDefines</name>
-          <state>NDEBUG</state>
+          <state></state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -2622,15 +2623,15 @@
         </option>
         <option>
           <name>CCListCFile</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCListCMnemonics</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCListCMessages</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCListAssFile</name>
@@ -2666,7 +2667,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeed</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCOptimization</name>
@@ -2676,7 +2677,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>1111111</state>
+          <state>1011101</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -2740,7 +2741,7 @@
         </option>
         <option>
           <name>CCCompilerRuntimeInfo</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IFpuProcessor</name>
@@ -2760,7 +2761,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeedSlave</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCOptimizationSlave</name>
@@ -3003,7 +3004,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild></postbuild>
+        <postbuild>obexcopy.exe $EXE_DIR$\XTask3.elf \Data\ZBin\Daemons\XTask3.elf</postbuild>
       </data>
     </settings>
     <settings>
@@ -3295,7 +3296,7 @@
     </settings>
   </configuration>
   <configuration>
-    <name>Release_SGOD_X75</name>
+    <name>Release_SGOLD_X75</name>
     <toolchain>
       <name>ARM</name>
     </toolchain>
@@ -3317,15 +3318,15 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release_SGOD_X75\Exe</state>
+          <state>Release_SGOLD_X75\Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
-          <state>Release_SGOD_X75\Obj</state>
+          <state>Release_SGOLD_X75\Obj</state>
         </option>
         <option>
           <name>ListPath</name>
-          <state>Release_SGOD_X75\List</state>
+          <state>Release_SGOLD_X75\List</state>
         </option>
         <option>
           <name>Variant</name>
@@ -3378,28 +3379,28 @@
         <option>
           <name>GRuntimeLibSelect</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>GRuntimeLibSelectSlave</name>
           <version>0</version>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>RTDescription</name>
-          <state>Do not link with a runtime library.</state>
+          <state>Use the normal configuration of the C/C++ runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
         </option>
         <option>
           <name>RTConfigPath</name>
-          <state></state>
+          <state>$TOOLKIT_DIR$\LIB\dl5tpainl8n.h</state>
         </option>
         <option>
           <name>RTLibraryPath</name>
-          <state></state>
+          <state>$TOOLKIT_DIR$\LIB\dl5tpainl8n.r79</state>
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.40A</state>
+          <state>4.41A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -3429,7 +3430,6 @@
         <debug>0</debug>
         <option>
           <name>CCDefines</name>
-          <state>NDEBUG</state>
           <state>X75</state>
         </option>
         <option>
@@ -3446,15 +3446,15 @@
         </option>
         <option>
           <name>CCListCFile</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCListCMnemonics</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCListCMessages</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCListAssFile</name>
@@ -3490,7 +3490,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeed</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCOptimization</name>
@@ -3500,7 +3500,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>1111111</state>
+          <state>1011101</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -3564,7 +3564,7 @@
         </option>
         <option>
           <name>CCCompilerRuntimeInfo</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IFpuProcessor</name>
@@ -3584,7 +3584,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeedSlave</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCOptimizationSlave</name>
@@ -3827,7 +3827,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild></postbuild>
+        <postbuild>obexcopy.exe $EXE_DIR$\XTask3.elf \Data\ZBin\Daemons\XTask3.elf</postbuild>
       </data>
     </settings>
     <settings>
@@ -4149,15 +4149,15 @@
           </option>
           <option>
             <name>CCListCFile</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>CCListCMnemonics</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>CCListCMessages</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>CCListAssFile</name>
@@ -4193,7 +4193,7 @@
           </option>
           <option>
             <name>CCOptSizeSpeed</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>CCOptimization</name>
@@ -4203,7 +4203,7 @@
           <option>
             <name>CCAllowList</name>
             <version>1</version>
-            <state>1111111</state>
+            <state>1011101</state>
           </option>
           <option>
             <name>CCObjUseModuleName</name>
@@ -4267,7 +4267,7 @@
           </option>
           <option>
             <name>CCCompilerRuntimeInfo</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>IFpuProcessor</name>
@@ -4287,7 +4287,7 @@
           </option>
           <option>
             <name>CCOptSizeSpeedSlave</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>CCOptimizationSlave</name>
@@ -4353,7 +4353,7 @@
         <name>ICCARM</name>
         <data>
           <version>14</version>
-          <wantNonLocal>0</wantNonLocal>
+          <wantNonLocal>1</wantNonLocal>
           <debug>0</debug>
           <option>
             <name>CCDefines</name>
@@ -4374,15 +4374,15 @@
           </option>
           <option>
             <name>CCListCFile</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>CCListCMnemonics</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>CCListCMessages</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>CCListAssFile</name>
@@ -4418,7 +4418,7 @@
           </option>
           <option>
             <name>CCOptSizeSpeed</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>CCOptimization</name>
@@ -4428,7 +4428,7 @@
           <option>
             <name>CCAllowList</name>
             <version>1</version>
-            <state>1111111</state>
+            <state>1011101</state>
           </option>
           <option>
             <name>CCObjUseModuleName</name>
@@ -4492,7 +4492,7 @@
           </option>
           <option>
             <name>CCCompilerRuntimeInfo</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>IFpuProcessor</name>
@@ -4512,7 +4512,7 @@
           </option>
           <option>
             <name>CCOptSizeSpeedSlave</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>CCOptimizationSlave</name>
@@ -4578,11 +4578,11 @@
         <name>ICCARM</name>
         <data>
           <version>14</version>
-          <wantNonLocal>0</wantNonLocal>
+          <wantNonLocal>1</wantNonLocal>
           <debug>0</debug>
           <option>
             <name>CCDefines</name>
-            <state>NDEBUG</state>
+            <state></state>
           </option>
           <option>
             <name>CCPreprocFile</name>
@@ -4598,15 +4598,15 @@
           </option>
           <option>
             <name>CCListCFile</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>CCListCMnemonics</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>CCListCMessages</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>CCListAssFile</name>
@@ -4642,7 +4642,7 @@
           </option>
           <option>
             <name>CCOptSizeSpeed</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>CCOptimization</name>
@@ -4652,7 +4652,7 @@
           <option>
             <name>CCAllowList</name>
             <version>1</version>
-            <state>1111111</state>
+            <state>1011101</state>
           </option>
           <option>
             <name>CCObjUseModuleName</name>
@@ -4716,7 +4716,7 @@
           </option>
           <option>
             <name>CCCompilerRuntimeInfo</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>IFpuProcessor</name>
@@ -4736,7 +4736,7 @@
           </option>
           <option>
             <name>CCOptSizeSpeedSlave</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>CCOptimizationSlave</name>
@@ -4797,7 +4797,7 @@
       </settings>
     </configuration>
     <configuration>
-      <name>Release_SGOD_X75</name>
+      <name>Release_SGOLD_X75</name>
       <settings>
         <name>ICCARM</name>
         <data>
@@ -4806,7 +4806,7 @@
           <debug>0</debug>
           <option>
             <name>CCDefines</name>
-            <state>NDEBUG</state>
+            <state></state>
           </option>
           <option>
             <name>CCPreprocFile</name>
@@ -4822,15 +4822,15 @@
           </option>
           <option>
             <name>CCListCFile</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>CCListCMnemonics</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>CCListCMessages</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>CCListAssFile</name>
@@ -4866,7 +4866,7 @@
           </option>
           <option>
             <name>CCOptSizeSpeed</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>CCOptimization</name>
@@ -4876,7 +4876,7 @@
           <option>
             <name>CCAllowList</name>
             <version>1</version>
-            <state>1111111</state>
+            <state>1011101</state>
           </option>
           <option>
             <name>CCObjUseModuleName</name>
@@ -4940,7 +4940,7 @@
           </option>
           <option>
             <name>CCCompilerRuntimeInfo</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>IFpuProcessor</name>
@@ -4960,7 +4960,7 @@
           </option>
           <option>
             <name>CCOptSizeSpeedSlave</name>
-            <state>0</state>
+            <state>1</state>
           </option>
           <option>
             <name>CCOptimizationSlave</name>
