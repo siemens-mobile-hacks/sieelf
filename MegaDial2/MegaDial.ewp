@@ -2487,11 +2487,11 @@
         </option>
         <option>
           <name>ObjPath</name>
-          <state>Output\Release_SGOLD_SK65\Obj</state>
+          <state>Release_SGOLD_SK65\Obj</state>
         </option>
         <option>
           <name>ListPath</name>
-          <state>Output\Release_SGOLD_SK65\List</state>
+          <state>Release_SGOLD_SK65\List</state>
         </option>
         <option>
           <name>Variant</name>

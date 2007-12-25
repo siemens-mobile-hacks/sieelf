@@ -19,11 +19,15 @@ int gLen=0;
 int count_page;
 int font_size;
 int need_ip=0;
+int smsdata=0;
 
 WSHDR *gwsName;
 WSHDR *gwsTemp;
 WSHDR *smstemp;
 char smsnum[46];
+char fn[10]="0:\\amr\\";
+char pszNum3[25];
+char pszNum4[30];
 
 //字体控制
 #ifdef ELKA
@@ -128,7 +132,6 @@ typedef struct
   WSHDR *num[NUMBERS_MAX];
   WSHDR *icons;
   WSHDR *pic;
-  WSHDR *arm;
 }CLIST;
 
 volatile CLIST *cltop; //Start
@@ -303,7 +306,6 @@ void FreeCLIST(void)
     for(int i=0;i<NUMBERS_MAX;i++) FreeWS(cl->num[i]);
     FreeWS(cl->icons);
     FreeWS(cl->pic);
-    FreeWS(cl->arm);
     p=cl;
     cl=(CLIST*)(cl->next);
     mfree(p);
@@ -612,14 +614,7 @@ void ConstructList(void)
                             if (!contact.pic)
                             wstrcpy(contact.pic=AllocWS(150),(WSHDR *)(r->data)); 
                     }                    
-                    if (r->item_type==E_MAIL)
-                    {
-                        if (r->data)
-                            if (!contact.arm)
-                            wstrcpy(contact.arm=AllocWS(150),(WSHDR *)(r->data)); 
-                    }
-		    break;
-                    
+                    break;
 
 		  case 0x01:
 		    {
@@ -691,7 +686,6 @@ void ConstructList(void)
 		for(int i=0;i<NUMBERS_MAX;i++) FreeWS(contact.num[i]);
 		FreeWS(contact.icons);
                 FreeWS(contact.pic);
-                FreeWS(contact.arm);
 	      }
 	      FreeUnpackABentry(&ur,mfree_adr());
 	      if (hook_state!=5) goto L_STOP;
@@ -758,7 +752,6 @@ void ConstructList(void)
     for(int i=0;i<NUMBERS_MAX;i++) FreeWS(contact.num[i]);
     FreeWS(contact.icons);
     FreeWS(contact.pic);
-    FreeWS(contact.arm);
   }
   LockSched();
   if (hook_state==5) hook_state=2; else FreeCLIST();
@@ -1006,14 +999,14 @@ void my_ed_redraw(void *data)
                   DrawRectangle(right_border-2-d,dy+3,right_border-1-d+l,dy+(gfont_size+cfg_item_gaps)+1,1,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
 
         
-          char fn[10]="0:\\amr\\";
-          char pszNum3[25];
+
           int len=0;
-          ws_2str(cl->arm,pszNum3,25);
-          len=strlen(pszNum3);
+          ws_2str(cl->name,pszNum3,25);
+          sprintf(pszNum4,"%s.amr",pszNum3);
+          len=strlen(pszNum4);
           if(len>4)
           {
-          Play(fn, pszNum3);
+          Play(fn, pszNum4);
           }         
                   
           DrawString(cl->icons,right_border-1-icons_size,dy+cfg_item_gaps,right_border-2,dy+cfg_item_gaps+gfont_size,font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
@@ -1054,6 +1047,7 @@ void ChangeRC(GUI *gui)
 //-------------------------------------
 static void mm_settings(GUI *gui)
 {
+  smsdata=0;
   SendSMS(smstemp, smsnum, MMI_CEPID, MSG_SMS_RX-1, 6);
   GeneralFuncF1(1);
 }
@@ -1089,6 +1083,16 @@ void VoiceOrSMS(const char *num);
 
 static int mmenu_keyhook(void *data, GUI_MSG *msg)
 {
+  if (msg->gbsmsg->msg==KEY_DOWN)
+  {
+    switch(msg->gbsmsg->submess)
+    {
+      case RIGHT_SOFT : 
+        smsdata=1; 
+        VoiceOrSMS(dstr[numx]);
+        break;
+    }
+  }
   return (0);
 }
 
@@ -1346,7 +1350,10 @@ void VoiceOrSMS(const char *num)
     AddEditControlToEditQend(eq,&ec,ma);
     //wsprintf(ews,percent_t,"");
     CutWSTR(ews,0);
-    ConstructEditControl(&ec,4,0x40,ews,SMS_MAX_LEN);//短信输入
+    if(smsdata==0)
+    ConstructEditControl(&ec,4,0x40,ews,SMS_MAX_LEN);
+    else
+    ConstructEditControl(&ec,4,0x40,smstemp,SMS_MAX_LEN);//短信输入
     AddEditControlToEditQend(eq,&ec,ma);
     patch_header(&edsms_hdr);
     patch_input(&edsms_desc);
@@ -1418,6 +1425,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
   {
     numx=0;
     need_ip=0;
+    smsdata=0;
   }
   
   if(e_ws && key==ENTER_BUTTON) // "##Enter" to exit
@@ -1697,22 +1705,7 @@ int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
     GBS_StartTimerProc(&vibra_tmr,vibraDuration*216/1000,vibra_tmr_proc);
   }
   */
-  /*
-  CLIST *cl=(CLIST *)cltop;
- 
-  if (msg->msg==MSG_STATE_OF_CALL)  
-  {
-          char fn[60]="0:\\numarm\\";
-          char pszNum3[25];
-          int len=0;
-          ws_2str(cl->arm,pszNum3,100);
-          len=strlen(pszNum3);
-          if(len>4)
-          {
-          Play(fn, pszNum3);
-          }
-  }
-  */
+
   
   csm_result=old_icsm_onMessage(data,msg); //call old handler events  
     if (IsGuiOnTop(edialgui_id)) //If IdleGui at the top 
