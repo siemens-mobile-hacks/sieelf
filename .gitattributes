@@ -1674,10 +1674,6 @@ SieTxtView/conf_loader.h -text
 SieTxtView/config.c -text
 SieTxtView/func.asm -text
 SieTxtView/main.c -text
-SmartAlerts/Exe/SmartAlertsC_NSG.elf -text
-SmartAlerts/Exe/SmartAlertsC_SG.elf -text
-SmartAlerts/Exe/SmartAlerts_NSG.elf -text
-SmartAlerts/Exe/SmartAlerts_SG.elf -text
 SmartAlerts/SmartAlerts.ewp -text
 SmartAlerts/SmartAlerts.eww -text
 SmartAlerts/SmartAlerts.h -text

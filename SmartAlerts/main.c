@@ -67,7 +67,7 @@ GetDateTime(&date,&time);
  {
      if (!(time.hour<min)&&!(time.hour>max))
         {              
-         if(time.min==minute)
+         if(time.min==minute&&!(sdate&&time.hour==smstime.hour&&time.min==smstime.min))
 	 { 
                if(voice&&((GetProfile()+1)!=filter))
                {
@@ -98,30 +98,36 @@ GetDateTime(&date,&time);
 
         if(runfile)
         {
-          if(time.hour==rhour1&&time.min==rminute1)
+          if(!rdate||(date.month==rundate.month&&date.day==rundate.day))
+          {
+          if(time.hour==runtime.hour&&time.min==runtime.min)
            {
            runFile((char*)name1);
            }
+          }
         }
         
         if(call)
         {
-	  if(time.hour==chour1&&time.min==cminute1)
+          if(!cdate||(date.month==calldate.month&&date.day==calldate.day))
+          {
+	  if(time.hour==calltime.hour&&time.min==calldate.day)
            {
-            if(strlen(num)>5)
-            MakeVoiceCall(num,0x10,0x2FFF);
+            if(strlen(callnum)>5)
+            MakeVoiceCall(callnum,0x10,0x2FFF);
            }
+          }
         }
         
         if(sms)
         {
-         if(!sdate||(date.month==month&&date.day==day))
+         if(!sdate||(date.month==smsdate.month&&date.day==smsdate.day))
           {
-	  if(time.hour==shour1&&time.min==sminute1)
+	  if(time.hour==smstime.hour&&time.min==smstime.min)
           {
                 utf8_2ws(ws,content,210);
-                if(strlen(snum)>5)
-                SendSMS(ws, snum, MMI_CEPID, MSG_SMS_RX-1, 6);
+                if(strlen(smsnum)>5)
+                SendSMS(ws,smsnum,MMI_CEPID,MSG_SMS_RX-1, 6);
           }
           }
         }  

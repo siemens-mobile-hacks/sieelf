@@ -134,13 +134,16 @@ __root const CFG_HDR cfghdr_m11={CFG_LEVEL,"运行文件",1,0};
 __root const CFG_HDR cfghdr5_0={CFG_CHECKBOX,"运行文件",0,0};
 __root const int runfile=0;
 
-__root const CFG_HDR cfghdr5_11={CFG_UINT,"运行小时1",0,23};
-__root const unsigned int rhour1=0;
+__root const CFG_HDR cfghdr5_1={CFG_CHECKBOX,"日期支持",0,0};
+__root const int rdate=0;
 
-__root const CFG_HDR cfghdr5_12={CFG_UINT,"运行分钟1",0,59};
-__root const unsigned int rminute1=0;
+__root const CFG_HDR cfghdr5_2={CFG_DATE,"日期",0,0};
+__root const TDate rundate={2008,1,1};
 
-__root const CFG_HDR cfghdr5_13={CFG_STR_UTF8,"文件位置1",0,63};
+__root const CFG_HDR cfghdr5_3={CFG_TIME,"时间",0,0};
+__root const TTime runtime={0,0};
+
+__root const CFG_HDR cfghdr5_4={CFG_STR_UTF8,"文件位置1",0,63};
 __root const char name1[64]="";
 
 __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
@@ -148,17 +151,20 @@ __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr_m13={CFG_LEVEL,"定时电话",1,0};
 
-__root const CFG_HDR cfghdr6_1={CFG_CHECKBOX,"定时电话",0,0};
+__root const CFG_HDR cfghdr6_0={CFG_CHECKBOX,"定时电话",0,0};
 __root const int call=0;
 
-__root const CFG_HDR cfghdr6_2={CFG_UINT,"小时",0,23};
-__root const unsigned int chour1=0;
+__root const CFG_HDR cfghdr6_1={CFG_CHECKBOX,"日期支持",0,0};
+__root const int cdate=0;
 
-__root const CFG_HDR cfghdr6_3={CFG_UINT,"分钟",0,59};
-__root const unsigned int cminute1=0;
+__root const CFG_HDR cfghdr6_2={CFG_DATE,"日期",0,0};
+__root const TDate calldate={2008,1,1};
+
+__root const CFG_HDR cfghdr6_3={CFG_TIME,"时间",0,0};
+__root const TTime calltime={0,0};
 
 __root const CFG_HDR cfghdr6_4={CFG_STR_UTF8,"电话号码",0,29};
-__root const char num[30]="";
+__root const char callnum[30]="";
 
 __root const CFG_HDR cfghdr_m12={CFG_LEVEL,"",0,0};
 
@@ -171,20 +177,14 @@ __root const int sms=0;
 __root const CFG_HDR cfghdr7_1={CFG_CHECKBOX,"日期支持",0,0};
 __root const int sdate=0;
 
-__root const CFG_HDR cfghdr7_2={CFG_UINT,"月",1,12};
-__root const unsigned int month=1;
+__root const CFG_HDR cfghdr7_2={CFG_DATE,"日期",0,0};
+__root const TDate smsdate={2008,1,1};
 
-__root const CFG_HDR cfghdr7_3={CFG_UINT,"日",1,31};
-__root const unsigned int day=1;
-
-__root const CFG_HDR cfghdr7_4={CFG_UINT,"小时",0,23};
-__root const unsigned int shour1=0;
-
-__root const CFG_HDR cfghdr7_5={CFG_UINT,"分钟",0,59};
-__root const unsigned int sminute1=0;
+__root const CFG_HDR cfghdr7_3={CFG_TIME,"时间",0,0};
+__root const TTime smstime={0,0};
 
 __root const CFG_HDR cfghdr7_6={CFG_STR_UTF8,"电话号码",0,29};
-__root const char snum[30]="";
+__root const char smsnum[30]="";
 
 __root const CFG_HDR cfghdr7_7={CFG_STR_UTF8,"短信内容",0,209};
 __root const char content[210]="";
@@ -221,7 +221,7 @@ __root const int dyn=0;
 __root const CFG_HDR cfghdr8_6={CFG_CHECKBOX,"闪灯",0,0};
 __root const int lighter=0;
 #endif
-__root const CFG_HDR cfghdr8_7={CFG_UINT,"light",0,100};
+__root const CFG_HDR cfghdr8_7={CFG_UINT,"亮度",0,100};
 __root const unsigned int light=100;
 
 __root const CFG_HDR cfghdr_m16={CFG_LEVEL,"",0,0};

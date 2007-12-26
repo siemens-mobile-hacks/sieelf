@@ -30,23 +30,26 @@ extern const char day5[];
 extern const char day6[];
 extern const char day7[];
 
+
 extern const int runfile;
+extern const int rdate;
+extern const TDate rundate;
+extern const TTime runtime;
 extern const char name1[];
-extern const unsigned int rhour1;
-extern const unsigned int rminute1;
+
 
 extern const int call;
-extern const char num[];
-extern const unsigned int chour1;
-extern const unsigned int cminute1;
+extern const int cdate;
+extern const TDate calldate;
+extern const TTime calltime;
+extern const char callnum[];
+
 
 extern const int sms;
 extern const int sdate;
-extern const unsigned int month;
-extern const unsigned int day;
-extern const char snum[];
-extern const unsigned int shour1;
-extern const unsigned int sminute1;
+extern const TDate smsdate;
+extern const TTime smstime;
+extern const char smsnum[];
 extern const char content[];
 
 extern const int miss;

@@ -1640,7 +1640,7 @@
     </settings>
   </configuration>
   <configuration>
-    <name>Release_ELKA</name>
+    <name>Release_X75</name>
     <toolchain>
       <name>ARM</name>
     </toolchain>
@@ -1662,15 +1662,15 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release_ELKA\Exe</state>
+          <state>Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
-          <state>Release_ELKA\Obj</state>
+          <state>Release_X75\Obj</state>
         </option>
         <option>
           <name>ListPath</name>
-          <state>Release_ELKA\List</state>
+          <state>Release_X75\List</state>
         </option>
         <option>
           <name>Variant</name>
@@ -1775,7 +1775,7 @@
         <option>
           <name>CCDefines</name>
           <state>NDEBUG</state>
-          <state>NEWSGOLD</state>
+          <state>X75</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -2037,7 +2037,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state>NEWSGOLD</state>
+          <state>X75</state>
         </option>
         <option>
           <name>AList</name>
@@ -2183,7 +2183,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>SmartAlertsC.elf</state>
+          <state>SmartAlertsC_X75.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -2903,12 +2903,12 @@
       </settings>
     </configuration>
     <configuration>
-      <name>Release_ELKA</name>
+      <name>Release_X75</name>
       <settings>
         <name>ICCARM</name>
         <data>
           <version>13</version>
-          <wantNonLocal>0</wantNonLocal>
+          <wantNonLocal>1</wantNonLocal>
           <debug>0</debug>
           <option>
             <name>CCDefines</name>

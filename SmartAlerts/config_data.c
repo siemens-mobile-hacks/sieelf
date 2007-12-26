@@ -12,20 +12,14 @@ __root const CFG_HDR cfghdr_m3={CFG_LEVEL,"Alerts",1,0};
 __root const CFG_HDR cfghdr1_0={CFG_CHECKBOX,"No Vibra",0,0};
 __root const int amelody=0;
 
-
 __root const CFG_HDR cfghdr1_3={CFG_UINT,"melody",0,200};
 __root const unsigned int melody=60;
 
 __root const CFG_HDR cfghdr1_4={CFG_UINT,"minute",0,59};
 __root const unsigned int minute=0;
 
-
-
 __root const CFG_HDR cfghdr1_10={CFG_CHECKBOX,"Voice",0,0};
 __root const int voice=0;
-
-__root const CFG_HDR cfghdr1_11={CFG_UINT,"volume",0,6};
-__root const unsigned int volume=6;
 
 __root const CFG_HDR cfghdr1_12={CFG_UINT,"filter",0,8};
 __root const unsigned int filter=0;
@@ -136,13 +130,16 @@ __root const CFG_HDR cfghdr_m11={CFG_LEVEL,"Runfile",1,0};
 __root const CFG_HDR cfghdr5_0={CFG_CHECKBOX,"Runfile",0,0};
 __root const int runfile=0;
 
-__root const CFG_HDR cfghdr5_11={CFG_UINT,"hour1",0,23};
-__root const unsigned int rhour1=0;
+__root const CFG_HDR cfghdr5_1={CFG_CHECKBOX,"Day supply",0,0};
+__root const int rdate=0;
 
-__root const CFG_HDR cfghdr5_12={CFG_UINT,"minute1",0,59};
-__root const unsigned int rminute1=0;
+__root const CFG_HDR cfghdr5_2={CFG_DATE,"Date",0,0};
+__root const TDate rundate={2008,1,1};
 
-__root const CFG_HDR cfghdr5_13={CFG_STR_UTF8,"Address1",0,63};
+__root const CFG_HDR cfghdr5_3={CFG_TIME,"Time",0,0};
+__root const TTime runtime={0,0};
+
+__root const CFG_HDR cfghdr5_4={CFG_STR_UTF8,"Address1",0,63};
 __root const char name1[64]="";
 
 __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
@@ -153,17 +150,20 @@ __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr_m13={CFG_LEVEL,"Auto-call",1,0};
 
-__root const CFG_HDR cfghdr6_1={CFG_CHECKBOX,"call",0,0};
+__root const CFG_HDR cfghdr6_0={CFG_CHECKBOX,"call",0,0};
 __root const int call=0;
 
-__root const CFG_HDR cfghdr6_2={CFG_UINT,"hour",0,23};
-__root const unsigned int chour1=0;
+__root const CFG_HDR cfghdr6_1={CFG_CHECKBOX,"Day supply",0,0};
+__root const int cdate=0;
 
-__root const CFG_HDR cfghdr6_3={CFG_UINT,"minute",0,59};
-__root const unsigned int cminute1=0;
+__root const CFG_HDR cfghdr6_2={CFG_DATE,"Date",0,0};
+__root const TDate calldate={2008,1,1};
+
+__root const CFG_HDR cfghdr6_3={CFG_TIME,"Time",0,0};
+__root const TTime calltime={0,0};
 
 __root const CFG_HDR cfghdr6_4={CFG_STR_UTF8,"number",0,29};
-__root const char num[30]="";
+__root const char callnum[30]="";
 
 __root const CFG_HDR cfghdr_m12={CFG_LEVEL,"",0,0};
 
@@ -177,20 +177,14 @@ __root const int sms=0;
 __root const CFG_HDR cfghdr7_1={CFG_CHECKBOX,"Day supply",0,0};
 __root const int sdate=0;
 
-__root const CFG_HDR cfghdr7_2={CFG_UINT,"month",1,12};
-__root const unsigned int month=1;
+__root const CFG_HDR cfghdr7_2={CFG_TIME,"Date",0,0};
+__root const TDate smsdate={8,1,1};
 
-__root const CFG_HDR cfghdr7_3={CFG_UINT,"day",1,31};
-__root const unsigned int day=1;
-
-__root const CFG_HDR cfghdr7_4={CFG_UINT,"hour",0,23};
-__root const unsigned int shour1=0;
-
-__root const CFG_HDR cfghdr7_5={CFG_UINT,"minute",0,59};
-__root const unsigned int sminute1=0;
+__root const CFG_HDR cfghdr7_3={CFG_TIME,"Time",0,0};
+__root const TTime smstime={0,0};
 
 __root const CFG_HDR cfghdr7_6={CFG_STR_UTF8,"number",0,29};
-__root const char snum[30]="";
+__root const char smsnum[30]="";
 
 __root const CFG_HDR cfghdr7_7={CFG_STR_UTF8,"content",0,209};
 __root const char content[210]="";
@@ -207,6 +201,8 @@ __root const unsigned int min=0;
 __root const CFG_HDR cfghdr8_12={CFG_UINT,"OnlyTo",0,23};
 __root const unsigned int max=23;
 
+__root const CFG_HDR cfghdr8_13={CFG_UINT,"Volume",0,6};
+__root const unsigned int volume=6;
 
 __root const CFG_HDR cfghdr8_0={CFG_CHECKBOX,"Vibra",0,0};
 __root const int vib=0;
