@@ -1056,7 +1056,7 @@ static void mm_settings(GUI *gui)
   GeneralFuncF1(1);
   }
   else
-  ShowMSG(1,(int)"Plese input word!");
+  ShowMSG(1,(int)"Empty SMS!");
 }
 
 unsigned int err;
@@ -1094,7 +1094,7 @@ static HEADER_DESC mmenu_hdr={0,0,0,0,NULL,(int)"Option",LGP_NULL};
 static MENUITEM_DESC mmenu_ITEMS[MAIN_MENU_ITEMS_N]=
 {
   {NULL,(int)"SendSMS", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
-  {NULL,(int)"Sitting", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}
+  {NULL,(int)"Setting", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}
 };
 
 static const MENUPROCS_DESC mmenu_HNDLS[MAIN_MENU_ITEMS_N]=

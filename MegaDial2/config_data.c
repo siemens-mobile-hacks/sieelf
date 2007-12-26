@@ -2,7 +2,7 @@
 #include "..\inc\swilib.h"
 //Конфигурац?
 
-__root const CFG_HDR cfghdr_m5={CFG_LEVEL,"Basic sitting",1,0};
+__root const CFG_HDR cfghdr_m5={CFG_LEVEL,"Basic setting",1,0};
 
 __root const CFG_HDR cfghdr101 = {CFG_CHECKBOX,"Big font",0,0};
 __root const int big_font=0;
