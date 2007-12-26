@@ -77,43 +77,57 @@ _C_STD_BEGIN
  //定义函数引出结构
 _C_LIB_DECL
  __INTRINSIC ulong strtoul(const char *nptr,char **endptr,int base); 
- __INTRINSIC int  ExtStrcmp(char *a,char *b);
- __INTRINSIC int  get_string_width(WSHDR *ws, int font);
+ __INTRINSIC int  strlpos(char *str,char c); 
+ //获取对手机对应画布文本的长度
+ __INTRINSIC int  get_string_width(WSHDR *ws, int font); 
+ //字串比较函数
  __INTRINSIC int  toupper(int c);
+ __INTRINSIC int  ExtStrcmp(char *a,char *b);
  __INTRINSIC int  strcmp_nocase(const char *s1,const char *s2); 
- __INTRINSIC char* unicodeSwitch(char *str, int len, int *rlen, int *llen); 
- __INTRINSIC char* utf82unicode(char *str, int len, int *rlen, int *llen); 
- __INTRINSIC char* unicode2utf8(char *str, int *len); 
- __INTRINSIC void patch_rect(RECT*rc,int x,int y, int x2, int y2);
- __INTRINSIC void patch_header(const HEADER_DESC* head);
- __INTRINSIC void patch_input(const INPUTDIA_DESC* inp);
- __INTRINSIC void patch_dialog(INPUTDIA_DESC* dialog, int x,int y,int x2, int y2);
+ //屏幕控制范围函数
+ __INTRINSIC void patch_rect(RECT*rc,int x,int y, int x2, int y2);//设定区域
+ __INTRINSIC void patch_header(const HEADER_DESC* head);//设定头区域
+ __INTRINSIC void patch_input(const INPUTDIA_DESC* inp);//设定输入区域
+ __INTRINSIC void patch_dialog(INPUTDIA_DESC* dialog, int x,int y,int x2, int y2);//设定对话框区域
+ //打开程序对应的默认配置文件(*.BCFG)
  __INTRINSIC void OpenBCFGFile(void);
+ //重定义画布函数
  __INTRINSIC void DrawCanvasExt(void *canvas, RECT rc,int mode);
  __INTRINSIC void DrawCanvasRect(void *canvas, TRect rc,int mode);
  __INTRINSIC void DrawStringExt(WSHDR *ws,RECT rc,TFont Font,int text_attribute);
  __INTRINSIC void DrawStringRect(WSHDR *ws,TRect rc,TFont Font,int text_attribute);
+ //释放程序内存
  __INTRINSIC void kill_data(void *p, void (*func_p)(void *));
+ //字串转换函数
  __INTRINSIC void str2ws_unicode(WSHDR* ws, char* str, int len);
- __INTRINSIC void ws2str_unicode(char* str, WSHDR* ws, int *len);  
+ __INTRINSIC void ws2str_unicode(char* str, WSHDR* ws, int *len);
+ __INTRINSIC char* unicodeSwitch(char *str, int len, int *rlen, int *llen); 
+ __INTRINSIC char* utf82unicode(char *str, int len, int *rlen, int *llen); 
+ __INTRINSIC char* unicode2utf8(char *str, int *len); 
+ //UNICODE代码增加到WS数据中
  __INTRINSIC void BSTRAdd(uword *pDst, const uword * pSrc, int Count);
- __INTRINSIC void GetDayOf(TDate pSt,TNongLi *NongLiData);
+ //获取农历日期函数
+ __INTRINSIC void GetDayOf(TDate pSt,TNongLi *NongLiData);//获取农历字串
+ __INTRINSIC TDate GetOldDay(TDate pSt);//获取农历日期
+ //获取文件的扩展名
  __INTRINSIC void CutFileExt(char *filename,char *ext);
- __INTRINSIC int  strlpos(char *str,char c);
- __INTRINSIC void RunCUT(char *s);
- __INTRINSIC void RunAPP(char *s);
- __INTRINSIC void RunADR(char *s);
- __INTRINSIC TDate GetOldDay(TDate pSt);
+ //运行文件函数
+ __INTRINSIC void RunCUT(char *s);//执行快捷
+ __INTRINSIC void RunAPP(char *s);//打开文件
+ __INTRINSIC void RunADR(char *s);//执行地址 
+ //UTF8文件载入与释放
  __INTRINSIC char *LoadFileBuf(const char *FileName);
  __INTRINSIC int  FreeFileBuf(char *Buffer);
+ //获取手机内部对应的字体
  __INTRINSIC uint FontType(int index);
+ //播放声音文件,支持手机内部所有声音文件
  __INTRINSIC int PlayMusic(const char *fname, uint VOLUME, uint RepeatNum);
- //-----------------------------------------
+ //动态菜单创建函数
  __INTRINSIC TMenu *BuildMenu(char *Title[]);
  __INTRINSIC void DrawMenu(void *gui, int cur_item, void *user_pointer);
  __INTRINSIC void FreeMenu(TMenu *Menu);
  __INTRINSIC int  MenuCount(TMenu *Menu);
- //-----------------------------------------
+ //文件菜单相关函数
  __INTRINSIC int  FileCount(TFile *File);
  __INTRINSIC void FreeFile(TFile *File);
  //媒体功能是否使用中-------------
