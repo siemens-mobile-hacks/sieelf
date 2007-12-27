@@ -233,7 +233,7 @@ ELFLoader_lg8/vkp/ELC1v41/swilib.vkp -text
 ELFLoader_lg8/vkp/ELFPack.bat -text
 ELFLoader_lg8/vkp/ELFloader说明及生成.txt -text
 ELFLoader_lg8/vkp/GetELFPackbyyourself.bat -text
-ELFLoader_lg8/vkp/Lib65_070909_jpg001.ini -text
+ELFLoader_lg8/vkp/Lib65.ini -text
 ELFLoader_lg8/vkp/M6Cv50/ELFLoader_M6Cv50.vkp -text
 ELFLoader_lg8/vkp/M6Cv50/swilib.vkp -text
 ELFLoader_lg8/vkp/M81Cv51/API.vkp -text
@@ -257,7 +257,7 @@ ELFLoader_lg8/vkp/SL7Cv47/ELFLoader_SL7Cv47.vkp -text
 ELFLoader_lg8/vkp/SL7Cv47/swilib.vkp -text
 ELFLoader_lg8/vkp/copyright -text
 ELFLoader_lg8/vkp/elf2vkp.exe -text
-ELFLoader_lg8/vkp/lib_elka_070909_jpg001.ini -text
+ELFLoader_lg8/vkp/lib_elka.ini -text
 ELFLoader_lg8/vkp/name -text
 ELFLoader_lg8/vkp/swi -text
 ELFLoader_lg8/vkp/更新记录，请更新者及时改写，方便普通机油查阅.txt -text
