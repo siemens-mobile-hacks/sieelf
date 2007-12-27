@@ -69,11 +69,15 @@ GetDateTime(&date,&time);
         {              
          if(time.min==minute&&!(sdate&&time.hour==smstime.hour&&time.min==smstime.min))
 	 { 
-               if(voice&&((GetProfile()+1)!=filter))
+               if(talk&&((GetProfile()+1)!=filter))
                {
                    char w[5];
                    sprintf(w, "%d.%s",time.hour,mstyle);
                    Play(sound,w);
+               }
+               else if(voice&&((GetProfile()+1)!=filter))
+               {
+                   Play(0,vname);
                }
                else
                {

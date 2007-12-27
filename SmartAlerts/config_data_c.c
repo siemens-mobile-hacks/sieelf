@@ -19,22 +19,25 @@ __root const unsigned int melody=60;
 __root const CFG_HDR cfghdr1_4={CFG_UINT,"提示分钟",0,59};
 __root const unsigned int minute=0;
 
+__root const CFG_HDR cfghdr1_10={CFG_CHECKBOX,"报时模式",0,0};
+__root const int talk=0;
 
-
-__root const CFG_HDR cfghdr1_10={CFG_CHECKBOX,"音频模式",0,0};
-__root const int voice=0;
-
-__root const CFG_HDR cfghdr1_11={CFG_UINT,"音频音量",0,6};
-__root const unsigned int volume=6;
-
-__root const CFG_HDR cfghdr1_12={CFG_UINT,"音频情景禁用",0,8};
-__root const unsigned int filter=0;
-
-__root const CFG_HDR cfghdr1_13={CFG_STR_UTF8,"音频地址",0,63};
+__root const CFG_HDR cfghdr1_13={CFG_STR_UTF8,"音频文件夹",0,63};
 __root const char sound[64]=DEFAULT_DISK ":\\ZBin\\alerts\\";
 
 __root const CFG_HDR cfghdr1_14={CFG_STR_UTF8,"文件类型",0,3};
 __root const char mstyle[4]="wav";
+
+
+__root const CFG_HDR cfghdr1_15={CFG_CHECKBOX,"音频模式",0,0};
+__root const int voice=0;
+
+__root const CFG_HDR cfghdr1_16={CFG_STR_UTF8,"音频位置",0,63};
+__root const char vname[64]="";
+
+
+__root const CFG_HDR cfghdr1_17={CFG_UINT,"音频情景禁用",0,8};
+__root const unsigned int filter=0;
 
 __root const CFG_HDR cfghdr1_20={CFG_CHECKBOX,"两次音效",0,0};
 __root const int twice=0;
@@ -199,6 +202,9 @@ __root const unsigned int min=0;
 
 __root const CFG_HDR cfghdr8_12={CFG_UINT,"结束时间",0,23};
 __root const unsigned int max=23;
+
+__root const CFG_HDR cfghdr8_13={CFG_UINT,"音频音量",0,6};
+__root const unsigned int volume=6;
 
 __root const CFG_HDR cfghdr8_0={CFG_CHECKBOX,"振动",0,0};
 __root const int vib=0;

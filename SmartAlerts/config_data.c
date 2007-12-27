@@ -19,17 +19,24 @@ __root const CFG_HDR cfghdr1_4={CFG_UINT,"minute",0,59};
 __root const unsigned int minute=0;
 
 __root const CFG_HDR cfghdr1_10={CFG_CHECKBOX,"Voice",0,0};
-__root const int voice=0;
+__root const int talk=0;
 
-__root const CFG_HDR cfghdr1_12={CFG_UINT,"filter",0,8};
-__root const unsigned int filter=0;
-
-__root const CFG_HDR cfghdr1_13={CFG_STR_UTF8,"Address",0,63};
+__root const CFG_HDR cfghdr1_13={CFG_STR_UTF8,"Folder",0,63};
 __root const char sound[64]=DEFAULT_DISK ":\\ZBin\\alerts\\";
 
 
 __root const CFG_HDR cfghdr1_14={CFG_STR_UTF8,"Media style",0,3};
 __root const char mstyle[4]="wav";
+
+__root const CFG_HDR cfghdr1_16={CFG_CHECKBOX,"Voice",0,0};
+__root const int voice=0;
+
+__root const CFG_HDR cfghdr1_15={CFG_STR_UTF8,"Address",0,63};
+__root const char vname[64]="";
+
+__root const CFG_HDR cfghdr1_17={CFG_UINT,"filter",0,8};
+__root const unsigned int filter=0;
+
 
 __root const CFG_HDR cfghdr1_20={CFG_CHECKBOX,"twice",0,0};
 __root const int twice=0;

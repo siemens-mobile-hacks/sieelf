@@ -9,12 +9,14 @@ extern const int amelody;
 extern const unsigned int melody;
 extern const unsigned int minute;
 
-extern const int voice;
+extern const int talk;
 extern const unsigned int volume;
 extern const unsigned int filter;
 extern const char sound[];
 extern const char mstyle[];
 
+extern const int voice;
+extern const char vname[];
 
 extern const int twice;
 extern const unsigned int minute2;
