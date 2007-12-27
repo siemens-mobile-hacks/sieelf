@@ -4,7 +4,7 @@ http://avkiev.kiev.ua/Siemens/Smelter/Library.ini
 
 
 lib75_sg:for x75 SGold : C75,cx75,m75...
-(r):Geka66
+(r):Geka666
 http://cx75planet.ru/games/Geka/Lib_cx75_13.ini
 
 lib65°¢libelka ”…SPGCÀ—ºØ°£
