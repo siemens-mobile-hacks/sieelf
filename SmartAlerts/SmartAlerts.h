@@ -2,6 +2,8 @@
   #define _SmartAlerts_H_
 
 extern const int ch_bat;
+extern const int capsave;
+extern const unsigned int capnum;
 extern const unsigned int melody3;
 extern const unsigned int fcount;
 
@@ -55,6 +57,8 @@ extern const char smsnum[];
 extern const char content[];
 
 extern const int miss;
+extern const TTime misstime1;
+extern const TTime misstime2;
 #ifdef NEWSGOLD
 extern const int events;
 #endif

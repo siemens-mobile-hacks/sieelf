@@ -20,6 +20,8 @@ volatile int _count;
 void start_(void)
 {
   void stop_(void);
+  if(!capsave||(*RamCap()<capnum))
+  {
   	if (dis)
 		SetIllumination(0, 1, light, 0);
 	if (key)
@@ -33,6 +35,7 @@ void start_(void)
 #endif
   
   if (vib) SetVibration(vibra_pow);
+  }
   GBS_StartTimerProc(&tmr_vibra,TMR_SECOND>>1,stop_);
 }
 
@@ -115,7 +118,7 @@ GetDateTime(&date,&time);
         {
           if(!cdate||(date.month==calldate.month&&date.day==calldate.day))
           {
-	  if(time.hour==calltime.hour&&time.min==calldate.day)
+	  if(time.hour==calltime.hour&&time.min==calltime.min)
            {
             if(strlen(callnum)>5)
             MakeVoiceCall(callnum,0x10,0x2FFF);
@@ -149,7 +152,7 @@ GetDateTime(&date,&time);
         
         if(miss)
         {
-          if (!(time.hour<min)&&!(time.hour>max))
+          if (!(time.hour*60+time.min<misstime1.hour*60+misstime1.min)&&!(time.hour*60+time.min>misstime2.hour*60+misstime2.min))
           {
           if(time.min%mminute==0)
           {

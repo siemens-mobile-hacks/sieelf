@@ -12,6 +12,13 @@ __root const CFG_HDR cfghdr_m3={CFG_LEVEL,"Alerts",1,0};
 __root const CFG_HDR cfghdr1_0={CFG_CHECKBOX,"No Vibra",0,0};
 __root const int amelody=0;
 
+__root const CFG_HDR cfghdr1_1={CFG_UINT,"OnlyFrom",0,23};
+__root const unsigned int min=0;
+
+__root const CFG_HDR cfghdr1_2={CFG_UINT,"OnlyTo",0,23};
+__root const unsigned int max=23;
+
+
 __root const CFG_HDR cfghdr1_3={CFG_UINT,"melody",0,200};
 __root const unsigned int melody=60;
 
@@ -88,10 +95,17 @@ __root const CFG_HDR cfghdr_m7={CFG_LEVEL,"Missed Alerts",1,0};
 __root const CFG_HDR cfghdr3_0={CFG_CHECKBOX,"Missed Alerts",0,0};
 __root const int miss=0;
 
+__root const CFG_HDR cfghdr3_11={CFG_TIME,"OnlyFrom",0,0};
+__root const TTime misstime1={0,0};
+
+__root const CFG_HDR cfghdr3_12={CFG_TIME,"OnlyTo",0,0};
+__root const TTime misstime2={23,59};
+
+
 #ifdef NEWSGOLD
 __root const CFG_HDR cfghdr3_1 = {CFG_CBOX, "Missed event", 0, 4};
 __root const int events = 0;
-__root const CFG_CBOX_ITEM cfgcbox0[4] = {"All", "Calls", "SMS", "Other"};
+__root const CFG_CBOX_ITEM cfgcbox3_1[4] = {"All", "Calls", "SMS", "Other"};
 #endif
 
 
@@ -116,15 +130,21 @@ __root const CFG_HDR cfghdr_m6={CFG_LEVEL,"",0,0};
 
 
 
-__root const CFG_HDR cfghdr_m9={CFG_LEVEL,"FullBattery",1,0};
+__root const CFG_HDR cfghdr_m9={CFG_LEVEL,"BatterySetting",1,0};
 
 __root const CFG_HDR cfghdr4_0={CFG_CHECKBOX,"FullBattery",0,0};
 __root const int ch_bat=0;
 
-__root const CFG_HDR cfghdr4_1={CFG_UINT,"melody",0,200};
+__root const CFG_HDR cfghdr4_1={CFG_CHECKBOX,"BatterySave",0,0};
+__root const int capsave=0;
+
+__root const CFG_HDR cfghdr4_2={CFG_UINT,"BatteryNum",0,100};
+__root const unsigned int capnum=10;
+
+__root const CFG_HDR cfghdr4_3={CFG_UINT,"melody",0,200};
 __root const unsigned int melody3=51;
 
-__root const CFG_HDR cfghdr4_2={CFG_UINT,"count",0,20};
+__root const CFG_HDR cfghdr4_4={CFG_UINT,"count",0,20};
 __root const unsigned int fcount=3;
 
 
@@ -201,12 +221,6 @@ __root const CFG_HDR cfghdr_m14={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr_m17={CFG_LEVEL,"Other",1,0};
 
-
-__root const CFG_HDR cfghdr8_11={CFG_UINT,"OnlyFrom",0,23};
-__root const unsigned int min=0;
-
-__root const CFG_HDR cfghdr8_12={CFG_UINT,"OnlyTo",0,23};
-__root const unsigned int max=23;
 
 __root const CFG_HDR cfghdr8_13={CFG_UINT,"Volume",0,6};
 __root const unsigned int volume=6;
