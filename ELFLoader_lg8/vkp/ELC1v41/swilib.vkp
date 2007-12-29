@@ -619,6 +619,7 @@
 08FC: 0xA0F68A0D   ; 23F:  __thumb void MD5_Final(unsigned char *md, MD5_CTX *c)
 
 0900: 0xA0F69495   ; 240:  __thumb char *MD5_Hash(const unsigned char *data, unsigned long n, unsigned char *md)
+0904: 0xA08FA817   ; 241: __thumb void SetDateTime(TDate *, TTime *)
 #pragma disable old_equal_ff
 +0
 

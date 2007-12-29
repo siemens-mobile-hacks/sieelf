@@ -3,7 +3,8 @@
 //Eсл?EL71 добавить предыдущий дефайн ?ELKA
 
 typedef unsigned int size_t;
-typedef unsigned long time_t;
+//typedef unsigned long time_t;
+#include <time.h>
 typedef int jmp_buf[11];
 
 #ifndef _NULL
@@ -1119,6 +1120,17 @@ typedef struct
   int unk_1C; //1C
   int unk_20 ; //20
 } TWavLen;
+
+
+typedef struct
+{
+  char yearNormBudd; //1 - norm, 2 - buddhist
+  char dateFormat;
+  char timeFormat; //0-24h, 1-12h
+  char timeZone; //internal representation
+  char isAutoTime1; 
+  char isAutoTime2;
+}TDateTimeSettings;
 
 #pragma diag_suppress=Ta035
 
@@ -3132,16 +3144,19 @@ __swi __arm int GetLunarAnimal(int year);
 //thumb
 //pattern=E9 21 C9 00 41 1A 80 B5 0C 20 +1
 
-#pragma swi_number=0x237
-__swi __arm char *RamIconBar(void);
-//arm
-//pattern= *(????????414D5F70)+4
-
 
 #pragma swi_number=0x8237
 __swi __arm char *RamIconBar();
 //arm
 //pattern_ELKA=*(????????414D5F70)+4
+
+#pragma swi_number=0x822F
+__swi __arm  TDateTimeSettings *RamDateTimeSettings(void);
+//pattern=*(50bf0000????????01000080 + 4)
+
+#pragma swi_number=0x230
+__swi __arm int GetTimeZoneShift(TDate *, TTime *, int timeZone);
+//pattern=38B5151C0124002A + 1
 
 #pragma swi_number=0x86
 __swi __arm void ReadEEPROMData(int block, void *buf, int offset, int size);
@@ -3214,4 +3229,10 @@ __swi __arm void MD5_Final(unsigned char *md, MD5_CTX *c);
 __swi __arm char *MD5_Hash(const unsigned char *data, unsigned long n, unsigned char *md); //md can be NULL
 //thumb
 //pattern=F0 B5 0E 1C 05 1C 14 1C 97 B0 00 D1 +1
+
+#pragma swi_number=0x241
+__swi __arm void SetDateTime(TDate *, TTime *);
+//thumb
+//pattern=F0,B5,05,1C,0C,1C,00,28,89,B0,??,??,00,2C
+
 

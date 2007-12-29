@@ -367,6 +367,14 @@ IdleLinks_Daemon_CN/config_data.c -text
 IdleLinks_Daemon_CN/func.asm -text
 IdleLinks_Daemon_CN/main.c -text
 IdleLinks_Daemon_CN/test.xcl -text
+InetTime/InetTime.ewp -text
+InetTime/InetTime.eww -text
+InetTime/conf_loader.c -text
+InetTime/conf_loader.h -text
+InetTime/config_data.c -text
+InetTime/func.asm -text
+InetTime/main.c -text
+InetTime/test.xcl -text
 Joke/Joke.ewp -text
 Joke/Joke.eww -text
 Joke/conf_loader.c -text
