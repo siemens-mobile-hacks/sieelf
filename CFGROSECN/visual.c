@@ -89,12 +89,12 @@ void DrwImg(IMGHDR *img, int x, int y, char *pen, char *brush)
   SetColor(&drwobj,pen,brush);
   DrawObject(&drwobj);
 }
-extern char picpath[];
+//extern char picpath[];
 void method0_rect(RECT_GUI *data)
 {
   int scr_w=ScreenW();
   int scr_h=ScreenH();
-
+  /*
   FSTATS fs;
   unsigned int ul;
   if (!GetFileStats(picpath,&fs,&ul))
@@ -109,8 +109,14 @@ void method0_rect(RECT_GUI *data)
     {
       DrawLine(x_0,YDISP,x_0, scr_h-1,1,colors[3]);
     }
+  }*/
+  DrawRectangle(0,YDISP,scr_w-1,scr_h-1,0,white,white);
+  for (int y_0=YDISP; y_0< scr_h;y_0+=10){
+      DrawLine(0,y_0,scr_w-1,y_0,1,colors[3]);
+  }  
+  for (int x_0=0; x_0<scr_w;x_0+=10){
+      DrawLine(x_0,YDISP,x_0, scr_h-1,1,colors[3]);
   }
-  
   if (data->is_rect_needed)
   {
     DrawRoundedFrame(data->rc->x,data->rc->y,data->rc->x2,data->rc->y2,

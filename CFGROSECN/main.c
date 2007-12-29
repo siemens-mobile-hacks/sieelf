@@ -34,6 +34,7 @@ int size_cfg;
 
 CFG_HDR *cfg_h[512];
 int total_items;
+int total;
 
 SOFTKEY_DESC menu_sk[]=
 {
@@ -62,7 +63,8 @@ const char _percent_u[]="%u";
 const char _percent_d[]="%d";
 const char _percent_t[]="%t";
 
-const char _main_path[] = DEFAULT_DISK ":\\ZBin\\ETC\\";
+//const char _mmc_etc_path[]="4:\\Zbin\\etc\\";
+//const char _data_etc_path[]="0:\\Zbin\\etc\\";
 
 int create_ed(CFG_HDR *);
 unsigned int char16to8(unsigned int c);
@@ -107,8 +109,7 @@ int IsFieldCorrect(void *data, int ec_index)
         wsprintf(ws1,_percent_u,vui);
         EDIT_SetTextToEditControl(data,ec_index,ws1);
       }
-      break;
-      
+      break;    
     case CFG_INT:
       vi=strtol(ss,0,10);
       if (vi<(int)hp->min || vi>(int)hp->max || !ws1->wsbody[0] || (err=*_Geterrno())==ERANGE)
@@ -183,24 +184,17 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
     {
       n=(i-3)>>1; //Èíäåêñ ýëåìåíòà ?ìàññèâ?cfg_h
       hp=cfg_h[n]; 
-      /*------------------
-      if(n == 0 && l==UP_BUTTON || n == total_items-1 && l==DOWN_BUTTON || l==VOL_UP_BUTTON || l==VOL_DOWN_BUTTON)
+      //Ñ­»·´úÂë£¬ÏÖÔÚ²»Æð×÷ÓÃ
+      if((n==0)&&(l==UP_BUTTON || l==VOL_UP_BUTTON))
+      {  
+        EDIT_SetFocus(data, total_items*2+1);  
+        return(-1);
+      }else if ((n>=total_items-1)&&(l==DOWN_BUTTON || l==VOL_DOWN_BUTTON))
       {
-        if(l==VOL_UP_BUTTON)
-          n = ((n>10)?n-10:0)+1;
-        else if(l==VOL_DOWN_BUTTON)
-          n = ((n+10<total_items)?n+10:total_items-1)+1;
-        else
-        {
-          if(n == 0)
-            n = total_items;
-          else
-            n = 1;
-        }
-        EDIT_SetFocus(data, n<<1);
-        return (-1);
+        EDIT_SetFocus(data, 3);
+        return(-1);
       }
-      *//////////
+      //--------------------
       if (l==LEFT_SOFT||l==ENTER_BUTTON)
       {
         if (l==ENTER_BUTTON)
@@ -408,7 +402,7 @@ void ed1_ghook(GUI *data, int cmd)
   }
 }
 #ifdef ELKA
-HEADER_DESC ed1_hdr={0,0,0,0,NULL,1028,LGP_NULL};//8631 1028
+HEADER_DESC ed1_hdr={0,0,0,0,NULL,2898,LGP_NULL};//8631 1028
 #else
 HEADER_DESC ed1_hdr={0,0,0,0,NULL,(int)"Edit Config",LGP_NULL};//8631
 #endif
@@ -562,7 +556,7 @@ SOFTKEYSTAB selbcfg_skt=
   selbcfg_sk,0
 };
 #ifdef ELKA
-HEADER_DESC selbcfg_HDR={0,0,0,0,NULL,2867,LGP_NULL};
+HEADER_DESC selbcfg_HDR={0,0,0,0,NULL,2898,LGP_NULL};
 #else
 HEADER_DESC selbcfg_HDR={0,0,0,0,NULL,(int)"Select BCFG",LGP_NULL};
 #endif
@@ -584,29 +578,34 @@ int CreateSelectBCFGMenu()
 {
   unsigned int err;
   DIR_ENTRY de;
-  //const char *s=_main_path;
+  char ETC_DIR[]="4:\\Zbin\\etc\\";
   SEL_BCFG *sbtop=0;
   SEL_BCFG *sb;
   int n_bcfg=0;
-  char str[128];
-  /*
-  if (!isdir((s=_mmc_etc_path),&err))
-  {
-    s=_data_etc_path;
-  }
-  */
-  strcpy(str,_main_path);
+  int dir=isdir(ETC_DIR,&err);
+  char str[128];  
+  if (!dir){ 
+    ETC_DIR[0]='0';
+    dir=isdir(ETC_DIR,&err);
+  }  
+  if (!dir){
+    ETC_DIR[0]='1'; 
+    dir=isdir(ETC_DIR,&err);
+  }  
+  if (!dir){ 
+    ETC_DIR[0]='2'; 
+    dir=isdir(ETC_DIR,&err);
+  }  
+  strcpy(str,ETC_DIR);
   strcat(str,"*.bcfg");
   if (FindFirstFile(&de,str,&err))
   {
     do
     {
       if (!(de.file_attr&FA_DIRECTORY))
-      {
-        ///extern int strcmp_nocase(const char *s, const char *d);
+      {        
         sb=malloc(sizeof(SEL_BCFG));
-//        strcpy(sb->fullpath,s);
-        strcpy(sb->fullpath,_main_path);
+        strcpy(sb->fullpath,ETC_DIR);        
         strcat(sb->fullpath,de.file_name);
         strcpy(sb->cfgname,de.file_name);
         sb->cfgname[strlen(de.file_name)-5]=0;
@@ -657,7 +656,8 @@ void maincsm_oncreate(CSM_RAM *data)
   }
   if (find_cfg)
   {
-    UpdateCSMname("Select BCFG");
+    //UpdateCSMname("Ñ¡ÔñÅäÖÃÎÄ¼þSelect BCFG");
+    UpdateCSMname("ÅäÖÃÎÄ¼þ");
     csm->sel_bcfg_id=CreateSelectBCFGMenu();    
   }
   csm->csm.state=0;
@@ -830,9 +830,7 @@ unsigned int char16to8(unsigned int c)
 
 void UpdateCSMname(const char *fname)
 {
-  char *s;
-//  int i;
-  WSHDR *ws=AllocWS(256);
+  char *s,EDIT[128];
   if ((s=strrchr(fname,'\\'))==0)
   {
     if ((s=strrchr(fname,'/'))==0)
@@ -840,13 +838,13 @@ void UpdateCSMname(const char *fname)
       if ((s=strrchr(fname,':'))==0) s=(char *)fname-1;
     }
   }
-  s++;
-  str_2ws(ws,s,128);
-  //char name[128];
-  //sprintf(name,"ÅäÖÃ:%s",s);
-  //ascii2ws((WSHDR *)(&MAINCSM.maincsm_name),name,0);
-  wsprintf((WSHDR *)(&MAINCSM.maincsm_name),"EDIT:%w",ws);
-  FreeWS(ws);
+  s++;  
+  sprintf(EDIT,"±à¼­:%s",s);
+  Ascii2WS(codemap,(WSHDR *)(&MAINCSM.maincsm_name),EDIT,0);
+  //WSHDR *ws=AllocWS(256);
+  //str_2ws(ws,s,128);
+  //wsprintf((WSHDR *)(&MAINCSM.maincsm_name),"EDIT:%w",ws);
+  //FreeWS(ws);
 }
 
 void ErrorMsg(const char *msg)
@@ -855,11 +853,11 @@ void ErrorMsg(const char *msg)
   ShowMSG(1,(int)msg);
   UnlockSched();
 }
-char picpath[]=DEFAULT_DISK ":\\ZBin\\IMG\\cfgedit.png";
+//char picpath[]="4:\\ZBin\\IMG\\cfgedit.png";
 int main(const char *elf_name, const char *fname)
 {
   codemap=LoadFontLib();
-  picpath[0]=elf_name[0];
+ // picpath[0]=elf_name[0];
   MAIN_CSM main_csm;
   if (fname) strncpy(cfg_name,fname,255);
   zeromem(&main_csm,sizeof(MAIN_CSM));
@@ -883,6 +881,7 @@ int getnumwidth(unsigned int num)
 
 int create_ed(CFG_HDR *need_to_focus)
 {
+  char ERROR[128];
   void *ma=malloc_adr();
   void *eq;
   EDITCONTROL ec;
@@ -905,7 +904,7 @@ int create_ed(CFG_HDR *need_to_focus)
   AddEditControlToEditQend(eq,&ec,ma); //EditControl 1
   parents[0]=NULL;
 
-  total_items=0;
+  total_items=0;total=0;
   while(n>=sizeof(CFG_HDR))
   {
     hp=(CFG_HDR*)p;
@@ -913,7 +912,7 @@ int create_ed(CFG_HDR *need_to_focus)
     //Äîáàâëÿåì çàãîëîâî?èòåì?    
     //wsprintf(ews,"%t:",hp->name);
     Ascii2WS(codemap,ews,hp->name,0);
-    wsAppendChar(ews, ':');
+    wsAppendChar(ews, ':');    
     if (hp->type==CFG_LEVEL)
     {
       if (hp->min)
@@ -929,7 +928,7 @@ int create_ed(CFG_HDR *need_to_focus)
 	{
 	  parent=parents[curlev];
 	  curlev--;
-	}
+	}      
     }
     else
     {
@@ -955,7 +954,8 @@ int create_ed(CFG_HDR *need_to_focus)
       if (n<0)
       {
       L_ERRCONSTR:
-        wsprintf(ews,"Unexpected EOF!!!");
+        Ascii2WS(codemap,ews,"ÅäÖÃÒâÍâ½áÊø!!!",0);
+        //wsprintf(ews,"Unexpected EOF!!!");
       L_ERRCONSTR1:
         ConstructEditControl(&ec,1,0x40,ews,256);
         AddEditControlToEditQend(eq,&ec,ma);
@@ -968,7 +968,7 @@ int create_ed(CFG_HDR *need_to_focus)
 	AddEditControlToEditQend(eq,&ec,ma); //EditControl n*2+3
       }
       p+=sizeof(unsigned int);
-      break;
+      break;    
     case CFG_INT:
       n-=sizeof(int);
       if (n<0) goto L_ERRCONSTR;
@@ -1026,7 +1026,8 @@ int create_ed(CFG_HDR *need_to_focus)
       i=*((int *)p);
       if (i>=hp->max)
       {
-        wsprintf(ews,"Bad index in combobox!!!");
+        Ascii2WS(codemap,ews,"»µË÷ÒýÔÚÁÐ±íÖÐ!!!",0);
+        //wsprintf(ews,"Bad index in combobox!!!");
         goto L_ERRCONSTR1;
       }
       if ((curlev==level)&&(parent==levelstack[level]))
@@ -1095,7 +1096,7 @@ int create_ed(CFG_HDR *need_to_focus)
 	curlev++;
 	parents[curlev]=parent;
 	parent=hp;
-      }
+      }      
       continue;
     case CFG_CHECKBOX:
       n-=4;
@@ -1151,13 +1152,16 @@ int create_ed(CFG_HDR *need_to_focus)
       p+=sizeof(RECT);
       break;
       
-    default:
-      wsprintf(ews,"Unsupported item %d",hp->type);
+    default:      
+      sprintf(ERROR,"²»Ö§³ÖÏîÄ¿:%d",hp->type);
+      Ascii2WS(codemap,ews,ERROR,0);
+      //wsprintf(ews,"Unsupported item %d",hp->type);
       ConstructEditControl(&ec,1,ECF_APPEND_EOL,ews,256);
       AddEditControlToEditQend(eq,&ec,ma);
       goto L_ENDCONSTR;
     }
     if ((curlev==level)&&(parent==levelstack[level])) total_items++;
+    total++;
   }
 L_ENDCONSTR:
   patch_header(&ed1_hdr);
