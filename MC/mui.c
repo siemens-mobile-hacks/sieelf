@@ -317,16 +317,19 @@ int LoadMUIold(char* fname)
 
 void InitMUI()
 {
-	int i = 0;
 
 	yesno[0] = muitxt(ind_no);
 	yesno[1] = muitxt(ind_yes);
 
 	tmenuhdr.lgp_id = (int)muitxt(ind_mcmenu);
+	
+#define MENU_ZH
+#ifndef MENU_ZH
+	int i = 0;
 
 	menu_sk[0].lgp_id = (int)muitxt(ind_select);
 	menu_sk[1].lgp_id = (int)muitxt(ind_back);
-
+	
 	opt_menuitems[0].lgp_id_small = (int)muitxt(ind_open);
 	opt_menuitems[1].lgp_id_small = (int)muitxt(ind_file_m);
 	opt_menuitems[2].lgp_id_small = (int)muitxt(ind_oper_m);
@@ -334,7 +337,6 @@ void InitMUI()
 	opt_menuitems[4].lgp_id_small = (int)muitxt(ind_view_m);
 	opt_menuitems[5].lgp_id_small = (int)muitxt(ind_misc_m);
 	opt_menuitems[6].lgp_id_small = (int)muitxt(ind_exit);
-
 	i = 0;
 	//zip_opt_menuitems[i++].lgp_id_small = (int)muitxt(ind_open);
 	zip_opt_menuitems[i++].lgp_id_small = (int)muitxt(ind_file_m);
@@ -385,4 +387,5 @@ void InitMUI()
 
 	bm_menuitems[0].lgp_id_small = (int)muitxt(ind_add);
 	bm_menuitems[1].lgp_id_small = (int)muitxt(ind_bml);
+#endif
 }
