@@ -18,10 +18,7 @@ __root const int cfg_disable_one_number=1;
 
 __root const CFG_HDR cfghdr105 = {CFG_CHECKBOX,"CodeShow part show",0,0};
 __root const int cfg_cs_part=0;
-/*
-__root const CFG_HDR cfghdr108 ={CFG_UINT,"Numberlist button",0,65535};
-__root const unsigned int CALL_BTN=ENTER_BUTTON;
-*/
+
 __root const CFG_HDR cfghdr106 = {CFG_CHECKBOX,"Show pic",0,0};
 __root const int show_pic=0;
 
@@ -33,21 +30,6 @@ __root const int smsc=1;
 
 
 __root const CFG_HDR cfghdr_m4={CFG_LEVEL,"",0,0};
-/*
-//振动
-__root const CFG_HDR cfghdr_m7={CFG_LEVEL,"Vibra sitting",1,0};
-
-__root const CFG_HDR cfghdr18={CFG_CHECKBOX,"Use vibra",0,0};
-__root const int ENA_VIBRA = 0;
-
-__root const CFG_HDR cfghdr19={CFG_UINT,"Vibra power",0,100};
-__root const unsigned int vibraPower=20;
-
-__root const CFG_HDR cfghdr20={CFG_UINT,"Vibra duration (ms)",0,100};
-__root const unsigned int vibraDuration=50;
-
-__root const CFG_HDR cfghdr_m6={CFG_LEVEL,"",0,0};
-*/
 
 //颜色1
 __root const CFG_HDR cfghdr_m7={CFG_LEVEL,"Number color",1,0};
@@ -100,8 +82,24 @@ __root const char COLOR_SEARCH_UNMARK[4]={0xFF,0xFF,0xFF,0x64};
 __root const CFG_HDR cfghdr_m8={CFG_LEVEL,"",0,0};
 
 
+
+//振动
+__root const CFG_HDR cfghdr_m11={CFG_LEVEL,"Vibra sitting",1,0};
+
+__root const CFG_HDR cfghdr2_1={CFG_CHECKBOX,"Use vibra",0,0};
+__root const int ENA_VIBRA = 0;
+
+__root const CFG_HDR cfghdr2_2={CFG_UINT,"Vibra power",0,100};
+__root const unsigned int vibraPower=20;
+
+__root const CFG_HDR cfghdr2_3={CFG_UINT,"Vibra duration (ms)",0,100};
+__root const unsigned int vibraDuration=50;
+
+__root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
+
+
 //其他杂项
-__root const CFG_HDR cfghdr_m11={CFG_LEVEL,"Other",1,0};
+__root const CFG_HDR cfghdr_m13={CFG_LEVEL,"Other",1,0};
 
 __root const CFG_HDR cfghdr130 = {CFG_COLOR,"CodeShow color",0,24};
 __root const int cfg_cs_font_color=1;
@@ -118,5 +116,9 @@ __root const char root_dir[128]="0:\\\x1F\xE7\xB3\xBB\xE7\xBB\x9F\\apo\\addr";
 __root const CFG_HDR cfghdr133 = {CFG_UINT,"IP number",0,0xFFFFFFFF};
 __root const int cfg_ip_number = 17951;
 
-__root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
+__root const CFG_HDR cfghdr134={CFG_UINT,"Volume",0,6};
+__root const unsigned int volume=6;
+
+__root const CFG_HDR cfghdr_m12={CFG_LEVEL,"",0,0};
+
 

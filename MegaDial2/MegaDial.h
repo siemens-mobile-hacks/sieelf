@@ -1,9 +1,12 @@
 #ifndef _MegaDial_H_
   #define _MegaDial_H_
+//#include "ussd_process.h"
+//#include "main.h"
 
-//extern const int ENA_VIBRA;
-//extern const unsigned int vibraPower;
-//extern const unsigned int vibraDuration;
+extern const int ENA_VIBRA;
+extern const unsigned int vibraPower;
+extern const unsigned int vibraDuration;
+
 //通信录地址
 extern const char root_dir[128];
 //颜色控制
@@ -35,7 +38,36 @@ extern const int cfg_ip_number;
 extern const int show_pic;
 extern const int smsn;
 extern const int smsc;
-//号码列表按键
-//extern const unsigned int CALL_BTN;
+extern const unsigned int volume;
 
+/*
+#define idlegui_id (((int *)data)[DISPLACE_OF_IDLEGUI_ID/4])
+
+extern const unsigned int CHECK_HOURS;
+extern const int cfgShowIn;
+extern const int ENA_CASHTRACE;
+
+extern int CurrentCASH[MAX_CASH_SIZE];
+extern int MaxCASH[MAX_CASH_SIZE];
+
+extern const unsigned int IDLE_Y;
+
+extern const char COLOR_CASHPB1[4];
+extern const char COLOR_CASHPB2[4];
+extern const char COLOR_CASHPB3[4];
+extern const char COLOR_CASHPB4[4];
+extern const char COLOR_TEXTPB[4];
+extern const unsigned int TEXT_FONTSZ;
+
+char cur_imsi[IMSI_DATA_BYTE_LEN];
+
+const char *progress_colors[MAX_CASH_SIZE]=
+{
+  COLOR_CASHPB1,
+  COLOR_CASHPB2,
+  COLOR_CASHPB3,
+  COLOR_CASHPB4
+};
+*/
 #endif
+
