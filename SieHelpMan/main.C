@@ -1,6 +1,8 @@
 #include "..\inc\swilib.h"
 #include "conf_loader.h"
 
+#define MENU_CN
+
 typedef struct
 {
   CSM_RAM csm;
@@ -43,12 +45,13 @@ int vibra_flag;
 int light_flag; //0,all , 1,display , 2,kbd , 3,do nothing
 int screenw;
 int screenh;
+/*
 #ifdef ELKA
 int y_b=24;
 #else
 int y_b=0;
 #endif
-
+*/
 
 const IPC_REQ my_ipc={
   ipc_my_name,
@@ -120,8 +123,15 @@ void soft_key(void)
 {
   WSHDR *wsl = AllocWS(16);
   WSHDR *wsr = AllocWS(16);
+#ifdef MENU_CN
+  char ch_l[]="菜单";
+  char ch_r[]="退出";
+  utf8_2ws(wsl,ch_l,strlen(ch_l));
+  utf8_2ws(wsr,ch_r,strlen(ch_r));
+#else
   wsprintf(wsl, "Menu");
   wsprintf(wsr, "Exit");
+#endif
   //DrawRectangle(0,screenh-GetFontYSIZE(FONT_MEDIUM)-2,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
   DrawString(wsl,2,screenh-GetFontYSIZE(sk_font)-2,screenw,screenh,sk_font,32,sk_color,GetPaletteAdrByColorIndex(23)); 
   DrawString(wsr,screenw-get_string_width(wsr,sk_font)-4,screenh-GetFontYSIZE(sk_font)-2,screenw,screenh,sk_font,32,sk_color,GetPaletteAdrByColorIndex(23)); 
@@ -149,8 +159,8 @@ void keycode(int code)
 {
   WSHDR *ws = AllocWS(128);
   wsprintf(ws, "Please long press\nLEFT SOFT KEY\nback to Menu.\n\nKeycode:\n\nDec: %d\n\nHex: %X", code, code);
-  DrawRectangle(0,y_b,screenw,screenh,0,GetPaletteAdrByColorIndex(1),main_bg_color);
-  DrawString(ws,5,y_b+screenh/12,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  DrawRectangle(0,0,screenw,screenh,0,GetPaletteAdrByColorIndex(1),main_bg_color);
+  DrawString(ws,5,screenh/12,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   FreeWS(ws);
 }
 
@@ -163,13 +173,13 @@ void pic()
     int w=GetImgWidth(num);
     int h=GetImgHeight(num);
     wsprintf(ws, "Num:%d(D) %X(H) %dx%d",num,num,w,h);
-    DrawString(ws,5,y_b,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
-    DrawImg(screenw/2-w/2,(screenh+y_b+2*GetFontYSIZE(main_font)+2)/2-h/2,num);
+    DrawString(ws,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+    DrawImg(screenw/2-w/2,(screenh+2*GetFontYSIZE(main_font)+2)/2-h/2,num);
   }
   else
   {
     wsprintf(ws, "Num:%d(D) %X(H)\nNO SUCH PICTURE!",num);
-    DrawString(ws,5,y_b,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+    DrawString(ws,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   }
   FreeWS(ws);
 }
@@ -223,13 +233,13 @@ void status(void)
   #else
   char model[]="SGOLD";
   #endif
-  DrawRectangle(0,y_b,screenw,screenh,0,GetPaletteAdrByColorIndex(1),main_bg_color);
+  DrawRectangle(0,0,screenw,screenh,0,GetPaletteAdrByColorIndex(1),main_bg_color);
   soft_key();
   GUI *igui=GetTopGUI();
-  wsprintf(ws_info,"Phone: %s\nNet: %c%ddB T: %d.%d�C\nBts: %d-%d:%d\nC1: %d C2: %d\nV:%d.%02dV Cap: %02d%%\nCL: %d%% CC: %dMHz\nFreeRam: %uKb",model,(net->ch_number>=255)?'=':'-',net->power,temp/10,temp%10,net->ci,net->lac,net->ch_number,net->c1,net->c2,volt/1000,(volt%1000)/10,*RamCap(),GetCPULoad(),GetCPUClock(),GetFreeRamAvail()/1024);
-  DrawString(ws_info,5,y_b,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  wsprintf(ws_info,"Phone: %s\nNet: %c%ddB T: %d.%d癈\nBts: %d-%d:%d\nC1: %d C2: %d\nV:%d.%02dV Cap: %02d%%\nCL: %d%% CC: %dMHz\nFreeRam: %uKb",model,(net->ch_number>=255)?'=':'-',net->power,temp/10,temp%10,net->ci,net->lac,net->ch_number,net->c1,net->c2,volt/1000,(volt%1000)/10,*RamCap(),GetCPULoad(),GetCPUClock(),GetFreeRamAvail()/1024);
+  DrawString(ws_info,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   wsprintf(ws_info,"0: %dKb / %dKb\n1: %dKb / %dKb\n2: %dKb / %dKb\n4: %dMB / %dMB",GetFreeFlexSpace(0,&err)/1024,GetTotalFlexSpace(0,&err)/1024,GetFreeFlexSpace(1,&err)/1024,GetTotalFlexSpace(1,&err)/1024,GetFreeFlexSpace(2,&err)/1024,GetTotalFlexSpace(2,&err)/1024,f_4,t_4);
-  DrawString(ws_info,5,y_b+GetFontYSIZE(main_font)*7,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws_info,5,GetFontYSIZE(main_font)*7,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
 }
 
 
@@ -246,7 +256,7 @@ void rgb24()
   WSHDR *ws = AllocWS(32);
   soft_key();
   wsprintf(ws1,"RGB24 COLOR: %d",num);
-  DrawString(ws1,5,y_b+screenh/12,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws1,5,screenh/12,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   if (num<0||num>23)
   {
     wsprintf(ws,"No such color");
@@ -275,15 +285,15 @@ void text_attribute(void)
   wsprintf(wst,"256: ");
   int h_len=get_string_width(wst,main_font);
   FreeWS(wst);
-  DrawRectangle(0,y_b,screenw,screenh,0,GetPaletteAdrByColorIndex(1),main_bg_color);
+  DrawRectangle(0,0,screenw,screenh,0,GetPaletteAdrByColorIndex(1),main_bg_color);
   soft_key();
   wsprintf(wsh, "Text attribute: \n    1:\n    2:\n    4:\n    8:\n  16:\n  32:\n  64:\n128:\n256:");
-  DrawString(wsh,5,y_b,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23));
+  DrawString(wsh,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23));
   WSHDR *ws = AllocWS(32);
   wsprintf(ws,"Test string");
   for(i=0;i<9;i++)
   {
-    DrawString(ws,h_len+5,y_b+GetFontYSIZE(main_font)*(i+1),screenw,screenh,main_font,pow(2,i),main_text_color,t_a_b_color);
+    DrawString(ws,h_len+5,GetFontYSIZE(main_font)*(i+1),screenw,screenh,main_font,pow(2,i),main_text_color,t_a_b_color);
   }
   FreeWS(ws);
   FreeWS(wsh);
@@ -344,7 +354,10 @@ void light(void)
 
 void onRedraw(MAIN_GUI *data)
 {
-  DrawRectangle(0,y_b,screenw,screenh,0,GetPaletteAdrByColorIndex(1),main_bg_color);
+#ifdef ELKA
+  DisableIconBar(1);
+#endif
+  DrawRectangle(0,0,screenw,screenh,0,GetPaletteAdrByColorIndex(1),main_bg_color);
   if (flag!=4)
   {
     status_flag=0;
@@ -583,6 +596,44 @@ SOFTKEYSTAB menu_skt=
 
 #define ITEMS_N 12
 
+
+#ifdef MENU_CN
+typedef struct
+{
+  char *item;
+}ZH_ITEM;
+
+
+const ZH_ITEM zh_menu_item[ITEMS_N]={
+  {"系统信息"},
+  {"内置图片"},
+  {"LGP查看"},
+  {"内置铃声"},
+  {"字体查看"},
+  {"文本属性"},
+  {"RGB颜色"},
+  {"振动强度"},
+  {"亮度测试"},
+  {"键值测试"},
+  {"设置选项"},
+  {"关于"}
+};
+
+void menu_iconhndl(void *data, int curitem, void *unk)
+{
+  WSHDR *ws;
+  void *item=AllocMenuItem(data);
+  const char *s;
+  int l;
+  
+  s=zh_menu_item[curitem].item;
+  l=strlen(s);
+  ws=AllocMenuWS(data,l);
+  utf8_2ws(ws,s,l);
+  SetMenuItemText(data,item,ws,curitem);
+}
+#else
+
 MENUITEM_DESC menu_items[ITEMS_N]=
 {
   {NULL,(int)"SystemInfo",     LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
@@ -598,68 +649,121 @@ MENUITEM_DESC menu_items[ITEMS_N]=
   {NULL,(int)"Options",        LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"About",          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 };
+#endif
 
+#ifdef MENU_CN
+void lgp_gui(void)
+#else
 void lgp_gui(GUI *data)
+#endif
 {
   flag=0;
   startgui();
 }
 
+#ifdef MENU_CN
+void pic_gui(void)
+#else
 void pic_gui(GUI *data)
+#endif
 {
   flag=1;
   startgui();
 }
 
+#ifdef MENU_CN
+void keycode_gui(void)
+#else
 void keycode_gui(GUI *data)
+#endif
 {
   flag=2;
   startgui();
 }
 
+
+#ifdef MENU_CN
+void font_gui(void)
+#else
 void font_gui(GUI *data)
+#endif
 {
   flag=3;
   startgui();
 }
 
+
+#ifdef MENU_CN
+void status_gui(void)
+#else
 void status_gui(GUI *data)
+#endif
 {
   flag=4;
   startgui();
 }
 
+
+#ifdef MENU_CN
+void rgb24_gui(void)
+#else
 void rgb24_gui(GUI *data)
+#endif
 {
   flag=5;
   startgui();
 }
 
+
+#ifdef MENU_CN
+void sound_gui(void)
+#else
 void sound_gui(GUI *data)
+#endif
 {
   flag=6;
   startgui();
 }
 
+
+#ifdef MENU_CN
+void text_attr_gui(void)
+#else
 void text_attr_gui(GUI *data)
+#endif
 {
   flag=7;
   startgui();
 }
 
+
+#ifdef MENU_CN
+void vibra_gui(void)
+#else
 void vibra_gui(GUI *data)
+#endif
 {
   flag=8;
   startgui();
 }
 
+
+#ifdef MENU_CN
+void light_gui(void)
+#else
 void light_gui(GUI *data)
+#endif
 {
   flag=9;
   startgui();
 }
 
+
+#ifdef MENU_CN
+void options(void)
+#else
 void options(GUI *data)
+#endif
 {
   extern const char *successed_config_filename;
   WSHDR *ws;
@@ -669,10 +773,17 @@ void options(GUI *data)
   FreeWS(ws);
 }
 
+
+#ifdef MENU_CN
+void about(void)
+#else
 void about(GUI *data)
+#endif
 {
   ShowMSG(1, (int)"SieHelpMan\ncopyright 2007\nbinghelingxi");
 }
+
+#ifndef MENU_CN
 
 const MENUPROCS_DESC menu_hndls[ITEMS_N]=
 {
@@ -690,6 +801,8 @@ const MENUPROCS_DESC menu_hndls[ITEMS_N]=
   about,
 };
 
+#endif
+
 
 int menu_onkey(void *data, GUI_MSG *msg)
 {
@@ -698,7 +811,53 @@ int menu_onkey(void *data, GUI_MSG *msg)
     switch(msg->gbsmsg->submess)
     {
       case RIGHT_SOFT : CloseCSM(MAINCSM_ID); break;
-      case LEFT_SOFT : GBS_SendMessage(MMI_CEPID,KEY_UP,ENTER_BUTTON); break;
+#ifdef MENU_CN
+      case ENTER_BUTTON :
+      case LEFT_SOFT :
+        {
+          int i=GetCurMenuItem(data);
+          switch(i)
+          {
+            case 0 : 
+              status_gui();
+              break;
+            case 1 :
+              pic_gui();
+              break;
+            case 2 :
+              lgp_gui();
+              break;
+            case 3 :
+              sound_gui();
+              break;
+            case 4 :
+              font_gui();
+              break;
+            case 5 :
+              text_attr_gui();
+              break;
+            case 6 :
+              rgb24_gui();
+              break;
+            case 7 :
+              vibra_gui();
+              break;
+            case 8 :
+              light_gui();
+              break;
+            case 9 :
+              keycode_gui();
+              break;
+            case 10 :
+              options();
+              break;
+            case 11 :
+              about();
+              break;
+          }
+        }
+#endif
+      //case LEFT_SOFT : GBS_SendMessage(MMI_CEPID,KEY_UP,ENTER_BUTTON); break;
     }
   }
   return (0);
@@ -714,6 +873,19 @@ void mm_menu_ghook(void *data, int cmd)
 
 HEADER_DESC mm_menuhdr={0,0,0,0,NULL,(int)"SieHelpMan",LGP_NULL};
 
+#ifdef MENU_CN
+const MENU_DESC mm_menu=
+{
+  8,menu_onkey,NULL,NULL,
+  menusoftkeys,
+  &menu_skt,
+  0x10,
+  menu_iconhndl,
+  NULL,   //Items
+  NULL,   //Procs
+  ITEMS_N   //n
+};
+#else
 const MENU_DESC mm_menu=
 {
   8,menu_onkey,NULL,NULL,
@@ -725,6 +897,7 @@ const MENU_DESC mm_menu=
   menu_hndls,   //Procs
   ITEMS_N   //n
 };
+#endif
 
 void maincsm_oncreate(CSM_RAM *data)
 {
