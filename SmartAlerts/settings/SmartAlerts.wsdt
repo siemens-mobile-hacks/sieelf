@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Workspace>
+  <ConfigDictionary>
+    
+    
+    
+  <CurrentConfigs><Project>alarm_ring/ELKA</Project><Project>SmartAlerts/Release</Project><Project>SmartAlertsC/Release</Project><Project>SmartAlerts_cfg_editor/ELKA</Project></CurrentConfigs><CurrentProj>SmartAlerts_cfg_editor</CurrentProj><OverviewSelected>1</OverviewSelected></ConfigDictionary>
+  <Desktop>
+    <Static>
+      <Workspace>
+        <ColumnWidths>
+          
+          
+          
+          
+        <Column0>139</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+      </Workspace>
+      <Build>
+        
+        
+        
+        
+      <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>723</ColumnWidth1><ColumnWidth2>193</ColumnWidth2><ColumnWidth3>48</ColumnWidth3></Build>
+      <TerminalIO/>
+      <CodeCoveragePlugin/>
+      <Profiling/>
+    </Static>
+    <Windows>
+      
+      
+    <Wnd2>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-29729-20995</Identity>
+            <TabName>Workspace</TabName>
+            <Factory>Workspace</Factory>
+            <Session>
+              
+            <NodeDict><ExpandedNode>&lt;ws></ExpandedNode><ExpandedNode>&lt;ws>/SmartAlerts</ExpandedNode><ExpandedNode>&lt;ws>/SmartAlertsC</ExpandedNode><ExpandedNode>&lt;ws>/SmartAlerts_cfg_editor</ExpandedNode><ExpandedNode>&lt;ws>/alarm_cfg_editor</ExpandedNode></NodeDict></Session>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd2><Wnd3>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-24690-22317</Identity>
+            <TabName>Build</TabName>
+            <Factory>Build</Factory>
+            <Session/>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd3></Windows>
+    <Editor>
+      
+      
+      
+      
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>F:\elf\SieELF\SmartAlarm\alarm_ring\conf_loader.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>576</SelStart><SelEnd>576</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>F:\elf\SieELF\SmartAlarm\alarm_ring\config_data.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>F:\elf\SieELF\SmartAlarm\func.asm</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>F:\elf\SieELF\SmartAlarm\lgp.h</Filename><XPos>112</XPos><YPos>0</YPos><SelStart>273</SelStart><SelEnd>273</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>F:\elf\SieELF\SmartAlarm\SmartAlerts\config_data_c.c</Filename><XPos>0</XPos><YPos>51</YPos><SelStart>1761</SelStart><SelEnd>1761</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>F:\elf\SieELF\SmartAlarm\SmartAlerts\config_data.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>48</SelStart><SelEnd>48</SelEnd></Tab><ActiveTab>5</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>F:\elf\SieELF\SmartAlarm\SmartAlerts\func.asm</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>F:\elf\SieELF\SmartAlarm\SmartAlerts\main.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>6053</SelStart><SelEnd>6053</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>F:\elf\SieELF\SmartAlarm\SmartAlerts\extern.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>F:\elf\SieELF\SmartAlarm\SmartAlerts\extern.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>F:\elf\SieELF\SmartAlarm\SmartAlerts\SmartAlerts.h</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>363</SelStart><SelEnd>363</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>F:\elf\SieELF\SmartAlarm\SmartAlerts_cfg_editor\main.c</Filename><XPos>0</XPos><YPos>99</YPos><SelStart>2276</SelStart><SelEnd>2276</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>F:\elf\SieELF\SmartAlarm\alarm_ring\main.c</Filename><XPos>0</XPos><YPos>222</YPos><SelStart>4983</SelStart><SelEnd>4983</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Positions>
+      
+      
+      
+      
+      
+    <Top><Row0><Sizes><Toolbar-003bb300><key>iaridepm1</key></Toolbar-003bb300></Sizes></Row0><Row1><Sizes><Toolbar-015885d0><key>debuggergui1</key></Toolbar-015885d0></Sizes></Row1></Top><Left><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>459</Bottom><Right>230</Right><x>-2</x><y>-2</y><xscreen>200</xscreen><yscreen>200</yscreen><sizeHorzCX>195313</sizeHorzCX><sizeHorzCY>284900</sizeHorzCY><sizeVertCX>226563</sizeVertCX><sizeVertCY>656695</sizeVertCY></Rect></Wnd2></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd3><Rect><Top>-2</Top><Left>-2</Left><Bottom>198</Bottom><Right>1026</Right><x>-2</x><y>-2</y><xscreen>1028</xscreen><yscreen>200</yscreen><sizeHorzCX>1003906</sizeHorzCX><sizeHorzCY>284900</sizeHorzCY><sizeVertCX>195313</sizeVertCX><sizeVertCY>284900</sizeVertCY></Rect></Wnd3></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+  </Desktop>
+</Workspace>
+
+
