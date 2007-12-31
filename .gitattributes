@@ -1699,7 +1699,6 @@ SmartAlerts/SmartAlerts/extern.h -text
 SmartAlerts/SmartAlerts/func.asm -text
 SmartAlerts/SmartAlerts/main.c -text
 SmartAlerts/SmartAlerts/test.xcl -text
-SmartAlerts/SmartAlerts_cfg_editor/SmartAlerts_cfg_editor.dep -text
 SmartAlerts/SmartAlerts_cfg_editor/SmartAlerts_cfg_editor.ewd -text
 SmartAlerts/SmartAlerts_cfg_editor/SmartAlerts_cfg_editor.ewp -text
 SmartAlerts/SmartAlerts_cfg_editor/SmartAlerts_cfg_editor.eww -text

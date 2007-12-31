@@ -48,9 +48,9 @@ unsigned int edit_level=1;
 unsigned int ch[4];
 unsigned int set=1;
 int lng;
-char cfgfile[]=DEFAULT_DISK":\\zbin\\img\\alarm\\alarm.cfg";
-char fongpf[]=DEFAULT_DISK":\\zbin\\img\\alarm\\fon.gpf";
-char fonpng[]=DEFAULT_DISK":\\zbin\\img\\alarm\\fon.png";
+char cfgfile[]=DEFAULT_DISK":\\zbin\\img\\SmartAlerts\\SmartAlerts.cfg";
+char fongpf[]=DEFAULT_DISK":\\zbin\\img\\SmartAlerts\\fon.gpf";
+char fonpng[]=DEFAULT_DISK":\\zbin\\img\\SmartAlerts\\fon.png";
 char bcfgfile[]=DEFAULT_DISK":\\Zbin\\etc\\alarm_melody.bcfg";
 
 int scr_w;

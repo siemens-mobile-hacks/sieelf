@@ -41,8 +41,8 @@ int fb=0;
 volatile int _count;
 
 
-char icon[]=DEFAULT_DISK":\\Zbin\\img\\alarm\\icon.png";
-char cfgfile[]=DEFAULT_DISK":\\Zbin\\img\\alarm\\alarm.cfg";
+char icon[]=DEFAULT_DISK":\\Zbin\\img\\SmartAlerts\\icon.png";
+char cfgfile[]=DEFAULT_DISK":\\Zbin\\img\\SmartAlerts\\alarm.cfg";
 
 void getimgwh()
 {
