@@ -1720,9 +1720,6 @@ SmartAlerts/alarm_ring/main.c -text
 SmartAlerts/func.asm -text
 SmartAlerts/icon.png -text
 SmartAlerts/lgp.h -text
-SmartAlerts/settings/SmartAlarm.wsdt -text
-SmartAlerts/settings/SmartAlerts.wsdt -text
-SmartAlerts/settings/alarm.wsdt -text
 TED/TED.ewp -text
 TED/TED.eww -text
 TED/TED/14.fnt -text
