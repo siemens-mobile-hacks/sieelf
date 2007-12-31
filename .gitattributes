@@ -1707,7 +1707,6 @@ SmartAlerts/SmartAlerts_cfg_editor/SmartAlerts_cfg_editor.xcl -text
 SmartAlerts/SmartAlerts_cfg_editor/image.c -text
 SmartAlerts/SmartAlerts_cfg_editor/image.h -text
 SmartAlerts/SmartAlerts_cfg_editor/main.c -text
-SmartAlerts/alarm_ring/alarm_ring.dep -text
 SmartAlerts/alarm_ring/alarm_ring.ewd -text
 SmartAlerts/alarm_ring/alarm_ring.ewp -text
 SmartAlerts/alarm_ring/alarm_ring.eww -text
