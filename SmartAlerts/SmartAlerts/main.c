@@ -556,6 +556,10 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
     if (strcmp_nocase(successed_config_filename,(char *)msg->data0)==0)
     {
       InitConfig();
+      
+    }
+    if (strcmp_nocase("SmartAlerts",(char *)msg->data0)==0)
+    {
       load_settings();
     }
   }

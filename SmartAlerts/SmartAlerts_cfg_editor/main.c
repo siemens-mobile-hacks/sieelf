@@ -321,7 +321,7 @@ int hex2int (char *s)
 
 void geteeblock()
 {
-  char *Block5166=malloc(30);
+  char *Block5166=malloc(8);
   EEFullReadBlock(5166, Block5166, 0, 5,0,0);
   
   char *hex=malloc(8);
@@ -333,35 +333,7 @@ void geteeblock()
     status[5]=1;
   else status[5]=0;
   hour[5]=Block5166[0];
-  min[6]=Block5166[1];
-  
-  
-   day[6][0]=Block5166[2];
-   day[6][1]=Block5166[3];
-   day[6][2]=Block5166[4];
-   day[6][3]=Block5166[5];
-   day[6][4]=Block5166[6];
-   day[6][5]=Block5166[7];
-   day[6][6]=Block5166[8];
-   day[6][7]=Block5166[9];
-   day[6][8]=Block5166[10];
-   day[6][9]=Block5166[11];
-   day[6][10]=Block5166[12];
-   day[6][11]=Block5166[13];
-   day[6][12]=Block5166[14];
-   day[6][13]=Block5166[15];
-   day[6][14]=Block5166[16];
-   day[6][15]=Block5166[17];
-   day[6][16]=Block5166[18];
-   day[6][17]=Block5166[19];
-   day[6][18]=Block5166[20];
-   day[6][19]=Block5166[21];
-   day[6][20]=Block5166[22];
-   day[6][21]=Block5166[23];
-   day[6][22]=Block5166[24];
-   day[6][23]=Block5166[25];
-                        
-  
+  min[5]=Block5166[1];
   
   weekdays[5][0]=bin[6];
   weekdays[5][1]=bin[5];
@@ -378,41 +350,10 @@ void geteeblock()
 
 void saveeeblock()
 {
-  char *Block5166=malloc(30);
+  char *Block5166=malloc(8);
   Block5166[0]=hour[5];
-  Block5166[1]=min[6];
-
-  
-Block5166[2]= day[6][0];
-Block5166[3]=   day[6][1];
-Block5166[4]=   day[6][2];
-Block5166[5]=   day[6][3];
-Block5166[6]=   day[6][4];
-Block5166[7]=   day[6][5];
-Block5166[8]=   day[6][6];
-Block5166[9]=   day[6][7];
-Block5166[10]=   day[6][8];
-Block5166[11]=   day[6][9];
-Block5166[12]=   day[6][10];
-Block5166[13]=   day[6][11];
-Block5166[14]=   day[6][12];
-Block5166[15]=   day[6][13];
-Block5166[16]=   day[6][14];
-Block5166[17]=   day[6][15];
-Block5166[18]=   day[6][16];
-Block5166[19]=   day[6][17];
-Block5166[20]=   day[6][18];
-Block5166[21]=   day[6][19];
-Block5166[22]=   day[6][20];
-Block5166[23]=   day[6][21];
-Block5166[24]=   day[6][22];
-Block5166[25]=   day[6][23];  
-  Block5166[26]=0;
-  
-  
-  
-  
-  
+  Block5166[1]=min[5];
+  Block5166[2]=0;
   
   char *hex=malloc(3);
   char *bin=malloc(8);
@@ -555,7 +496,7 @@ show_icon=data[53];
 X=data[54];
 Y=data[55];
 
-
+min[6]=data[230];
 day[0][0]=data[56];
 day[0][1]=data[57];
 day[0][2]=data[58];
@@ -725,7 +666,6 @@ day[6][21]=data[221];
 day[6][22]=data[222];
 day[6][23]=data[229];
 
-min[6]=data[230];
     mfree(data);
   }
   fclose(handle,&err);
@@ -1245,7 +1185,7 @@ void OnRedraw()
      
      GetDateTime(0,&time);
      
-     wsprintf(ws,"%d:%d____%02d",time.hour,time.min,min[6]);
+     wsprintf(ws,"%d:%d_Min=%02d",time.hour,time.min,min[6]);
 
       if (edit_level==1) DrwStr(ws,a,HeaderH(),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
         else DrwStr(ws,a,HeaderH(),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
@@ -1615,7 +1555,7 @@ int onkey(unsigned char keycode, int pressed)
         case LEFT_SOFT:
           {
             if (edit_level==1)
-              edit_level=2;
+            {edit_level=2;dat=0;}
             else
               edit_level=1;
             break;
