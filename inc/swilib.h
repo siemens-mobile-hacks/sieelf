@@ -302,9 +302,10 @@ typedef struct{
   unsigned short *wsbody;
   void *(*ws_malloc)(int);
   void (*ws_mfree)(void *);
-  int unk;
-  int maxlen;
-} WSHDR;
+  int isbody_allocated;
+  unsigned short maxlen;
+  unsigned short unk1;
+}WSHDR;
 
 typedef struct
 {
