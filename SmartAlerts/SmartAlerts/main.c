@@ -527,11 +527,11 @@ GetDateTime(&date,&time);
  {
   if(time.min==min[6])
   {
-   unsigned int *pc;
-   pc=&day[0][0];
-   int a=*((pc+time.hour)+(GetWeek(&date)));
-   if(a<9&&a!=0)
-     SetProfile(a-1);
+   int a1,a2;
+   a1=GetWeek(&date);
+   a2=time.hour;
+   if(day[a1][a2]<9&&day[a1][a2]!=0)
+     SetProfile(day[a1][a2]-1);
   }
  }
 
