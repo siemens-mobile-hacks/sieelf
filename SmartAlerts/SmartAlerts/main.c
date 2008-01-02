@@ -20,6 +20,8 @@ unsigned int min[7];
 unsigned int status[5];
 unsigned int weekdays[5][7];
 unsigned int day[7][24];
+unsigned int other[4];
+unsigned int name2[9];
 int show_icon=0;
 int status_icon=0;
 int X;
@@ -42,7 +44,7 @@ volatile int _count;
 
 
 char icon[]=DEFAULT_DISK":\\Zbin\\img\\SmartAlerts\\icon.png";
-char cfgfile[]=DEFAULT_DISK":\\Zbin\\img\\SmartAlerts\\alarm.cfg";
+char cfgfile[]=DEFAULT_DISK":\\Zbin\\img\\SmartAlerts\\SmartAlerts.cfg";
 
 void getimgwh()
 {
@@ -295,6 +297,21 @@ day[6][23]=data[229];
 
 min[6]=data[230];
 
+name2[0]=data[231];
+name2[1]=data[232];
+name2[2]=data[233];
+name2[3]=data[234];
+name2[4]=data[235];
+name2[5]=data[236];
+name2[6]=data[237];
+name2[7]=data[238];
+name2[8]=data[239];
+
+other[0]=data[240];
+other[1]=data[241];
+other[2]=data[242];
+other[3]=data[243];
+
     mfree(data);
     fclose(handle,&err);
   }
@@ -312,77 +329,54 @@ void start_ring()
   FreeWS(ws);
 }
 
-void alarm(int n)
-{
-  if (status[n])
-  {
-    TDate date;
-    GetDateTime(&date, 0);
-    char wd = GetWeek(&date);
-    if (weekdays[n][wd])
-      {
-        GetDateTime(&date,&time);
-        if (time.hour==hour[n])
-          {
-            if (time.min==min[n])
-              {
-                start_ring();
-              }
-          }
-      }
-  }
-}
-
-void start_check(void)
-{
-  for (int i=0;i<5;i++)
-  {
-    alarm(i);
-  }
-  
-  GBS_StartTimerProc(&mytmr,216*60,start_check);
-}
 
 void start_(void)
 {
+  if(name2[8])
+  {
   void stop_(void);
   if(!capsave||(*RamCap()<capnum))
   {
-  	if (dis)
+  	if (other[1])
 		SetIllumination(0, 1, light, 0);
-	if (key)
+	if (other[2])
 		SetIllumination(1, 1, light, 0);   
 #ifndef NEWSGOLD
-	if (dyn)
+	if (other[3])
 		SetIllumination(2, 1, light, 0);
 #else
-	if (lighter)
+	if (other[3])
 		SetIllumination(4, 1, light, 0);
 #endif
   
-  if (vib) SetVibration(vibra_pow);
+  if (other[0]) SetVibration(vibra_pow);
   }
   GBS_StartTimerProc(&tmr_vibra,TMR_SECOND>>1,stop_);
+  }
 }
 
 void stop_(void)
 {
-  	if (dis)
+  if(name2[8])
+  {
+  	if (other[1])
 		SetIllumination(0, 1, 0, 0);
-	if (key)
+	if (other[2])
 		SetIllumination(1, 1, 0, 0);   
 #ifndef NEWSGOLD
-	if (dyn)
+	if (other[3])
 		SetIllumination(2, 1, 0, 0);
 #else
-	if (lighter)
+	if (other[3])
 		SetIllumination(4, 1, 0, 0);
 #endif
   
-  if (vib) SetVibration(0);
+  if (other[0]) SetVibration(0);
+
   if (--_count)
   {
     GBS_StartTimerProc(&tmr_vibra,TMR_SECOND>>1,start_);
+  }
   }
 }
 
@@ -392,6 +386,33 @@ void Check()
 GetDateTime(&date,&time);
  if (!IsCalling())
  {
+   
+  if(name2[0])
+  {
+   for (int i=0;i<5;i++)
+  {
+
+     if (status[i])
+     {
+       char wd = GetWeek(&date);
+         if (weekdays[i][wd])
+         {
+           if (time.hour==hour[i])
+            {
+                if (time.min==min[i])
+                {
+                 start_ring();
+                }
+            }
+         }
+     }
+  }
+  }
+
+   
+   
+   if(name2[1])
+   {
      if (!(time.hour<amin)&&!(time.hour>amax))
         {              
          if(time.min==minute&&!(sdate&&time.hour==smstime.hour&&time.min==smstime.min))
@@ -426,8 +447,8 @@ GetDateTime(&date,&time);
                }
            }
         }
-
-        if(runfile)
+   }
+        if(name2[5])
         {
           if(!rdate||(date.month==rundate.month&&date.day==rundate.day))
           {
@@ -438,7 +459,7 @@ GetDateTime(&date,&time);
           }
         }
         
-        if(call)
+        if(name2[6])
         {
           if(!cdate||(date.month==calldate.month&&date.day==calldate.day))
           {
@@ -450,7 +471,7 @@ GetDateTime(&date,&time);
           }
         }
         
-        if(sms)
+        if(name2[7])
         {
          if(!sdate||(date.month==smsdate.month&&date.day==smsdate.day))
           {
@@ -463,7 +484,7 @@ GetDateTime(&date,&time);
           }
         }  
      
-        if (ch_bat)
+        if (name2[4])
         {
            if (*RamCap()==100&&fb!=fcount)
            {
@@ -474,7 +495,7 @@ GetDateTime(&date,&time);
                 fb=0;
         }
         
-        if(miss)
+        if(name2[3])
         {
           if (!(time.hour*60+time.min<misstime1.hour*60+misstime1.min)&&!(time.hour*60+time.min>misstime2.hour*60+misstime2.min))
           {
@@ -500,10 +521,10 @@ GetDateTime(&date,&time);
           }
         }
 
-  start_check();
      
  }
- 
+ if(name2[2])
+ {
   if(time.min==min[6])
   {
    unsigned int *pc;
@@ -512,6 +533,7 @@ GetDateTime(&date,&time);
    if(a<9&&a!=0)
      SetProfile(a-1);
   }
+ }
 
 GBS_StartTimerProc(&mytmr,216*60,Check);
 }

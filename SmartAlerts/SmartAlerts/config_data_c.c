@@ -56,20 +56,9 @@ __root const unsigned int minute2=0;
 __root const CFG_HDR cfghdr_m2={CFG_LEVEL,"",0,0};
 
 
-/*
-__root const CFG_HDR cfghdr_m5={CFG_LEVEL,"情景切换",1,0};
-
-__root const CFG_HDR cfghdr2_0={CFG_CHECKBOX,"五天模式",0,0};
-__root const int merge=0;
-
-__root const CFG_HDR cfghdr_m4={CFG_LEVEL,"",0,0};
-*/
-
 
 __root const CFG_HDR cfghdr_m7={CFG_LEVEL,"未接提示",1,0};
 
-__root const CFG_HDR cfghdr3_0={CFG_CHECKBOX,"未接提示",0,0};
-__root const int miss=0;
 
 __root const CFG_HDR cfghdr3_11={CFG_TIME,"起始时间",0,0};
 __root const TTime misstime1={0,0};
@@ -105,9 +94,6 @@ __root const CFG_HDR cfghdr_m6={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr_m9={CFG_LEVEL,"电量设置",1,0};
 
-__root const CFG_HDR cfghdr4_0={CFG_CHECKBOX,"满电提醒",0,0};
-__root const int ch_bat=0;
-
 __root const CFG_HDR cfghdr4_1={CFG_CHECKBOX,"电量保护",0,0};
 __root const int capsave=0;
 
@@ -126,9 +112,6 @@ __root const CFG_HDR cfghdr_m8={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr_m11={CFG_LEVEL,"运行文件",1,0};
 
-__root const CFG_HDR cfghdr5_0={CFG_CHECKBOX,"运行文件",0,0};
-__root const int runfile=0;
-
 __root const CFG_HDR cfghdr5_1={CFG_CHECKBOX,"日期支持",0,0};
 __root const int rdate=0;
 
@@ -146,9 +129,6 @@ __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr_m13={CFG_LEVEL,"定时电话",1,0};
 
-__root const CFG_HDR cfghdr6_0={CFG_CHECKBOX,"定时电话",0,0};
-__root const int call=0;
-
 __root const CFG_HDR cfghdr6_1={CFG_CHECKBOX,"日期支持",0,0};
 __root const int cdate=0;
 
@@ -165,9 +145,6 @@ __root const CFG_HDR cfghdr_m12={CFG_LEVEL,"",0,0};
 
 
 __root const CFG_HDR cfghdr_m15={CFG_LEVEL,"定时短信",1,0};
-
-__root const CFG_HDR cfghdr7_0={CFG_CHECKBOX,"定时短信",0,0};
-__root const int sms=0;
 
 __root const CFG_HDR cfghdr7_1={CFG_CHECKBOX,"日期支持",0,0};
 __root const int sdate=0;
@@ -193,27 +170,12 @@ __root const CFG_HDR cfghdr_m17={CFG_LEVEL,"其他设置",1,0};
 __root const CFG_HDR cfghdr8_13={CFG_UINT,"音频音量",0,6};
 __root const unsigned int volume=6;
 
-__root const CFG_HDR cfghdr8_0={CFG_CHECKBOX,"振动",0,0};
-__root const int vib=0;
-
 __root const CFG_HDR cfghdr8_1={CFG_UINT,"振动次数",0,10};
 __root const unsigned int count2=3;
 
 __root const CFG_HDR cfghdr8_2={CFG_UINT,"振动强度",0,100};
 __root const unsigned int vibra_pow=100;
 
-__root const CFG_HDR cfghdr8_3={CFG_CHECKBOX,"屏幕",0,0};
-__root const int dis=0;
-
-__root const CFG_HDR cfghdr8_4={CFG_CHECKBOX,"键盘",0,0};
-__root const int key=0;
-#ifndef NEWSGOLD
-__root const CFG_HDR cfghdr8_5={CFG_CHECKBOX,"动感",0,0};
-__root const int dyn=0;
-#else
-__root const CFG_HDR cfghdr8_6={CFG_CHECKBOX,"闪灯",0,0};
-__root const int lighter=0;
-#endif
 __root const CFG_HDR cfghdr8_7={CFG_UINT,"亮度",0,100};
 __root const unsigned int light=100;
 

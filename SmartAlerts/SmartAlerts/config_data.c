@@ -57,43 +57,9 @@ __root const unsigned int minute2=0;
 __root const CFG_HDR cfghdr_m2={CFG_LEVEL,"",0,0};
 
 
-/*
-__root const CFG_HDR cfghdr_m5={CFG_LEVEL,"Auto-profile",1,0};
-
-__root const CFG_HDR cfghdr2_0={CFG_CHECKBOX,"merge",0,0};
-__root const int merge=0;
-
-__root const CFG_HDR cfghdr2_1={CFG_UINT,"minute",0,59};
-__root const unsigned int minute3=0;
-
-__root const CFG_HDR cfghdr2_11={CFG_STR_UTF8,"Day1",0,24};
-__root const char day1[25]="000000000000000000000000";
-
-__root const CFG_HDR cfghdr2_12={CFG_STR_UTF8,"Day2",0,24};
-__root const char day2[25]="000000000000000000000000";
-
-__root const CFG_HDR cfghdr2_13={CFG_STR_UTF8,"Day3",0,24};
-__root const char day3[25]="000000000000000000000000";
-
-__root const CFG_HDR cfghdr2_14={CFG_STR_UTF8,"Day4",0,24};
-__root const char day4[25]="000000000000000000000000";
-
-__root const CFG_HDR cfghdr2_15={CFG_STR_UTF8,"Day5",0,24};
-__root const char day5[25]="000000000000000000000000";
-
-__root const CFG_HDR cfghdr2_16={CFG_STR_UTF8,"Day6",24,24};
-__root const char day6[25]="000000000000000000000000";
-
-__root const CFG_HDR cfghdr2_17={CFG_STR_UTF8,"Day7",0,24};
-__root const char day7[25]="000000000000000000000000";
-
-__root const CFG_HDR cfghdr_m4={CFG_LEVEL,"",0,0};
-*/
 
 __root const CFG_HDR cfghdr_m7={CFG_LEVEL,"Missed Alerts",1,0};
 
-__root const CFG_HDR cfghdr3_0={CFG_CHECKBOX,"Missed Alerts",0,0};
-__root const int miss=0;
 
 __root const CFG_HDR cfghdr3_11={CFG_TIME,"OnlyFrom",0,0};
 __root const TTime misstime1={0,0};
@@ -132,8 +98,6 @@ __root const CFG_HDR cfghdr_m6={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr_m9={CFG_LEVEL,"BatterySetting",1,0};
 
-__root const CFG_HDR cfghdr4_0={CFG_CHECKBOX,"FullBattery",0,0};
-__root const int ch_bat=0;
 
 __root const CFG_HDR cfghdr4_1={CFG_CHECKBOX,"BatterySave",0,0};
 __root const int capsave=0;
@@ -154,8 +118,6 @@ __root const CFG_HDR cfghdr_m8={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr_m11={CFG_LEVEL,"Runfile",1,0};
 
-__root const CFG_HDR cfghdr5_0={CFG_CHECKBOX,"Runfile",0,0};
-__root const int runfile=0;
 
 __root const CFG_HDR cfghdr5_1={CFG_CHECKBOX,"Day supply",0,0};
 __root const int rdate=0;
@@ -177,9 +139,6 @@ __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr_m13={CFG_LEVEL,"Auto-call",1,0};
 
-__root const CFG_HDR cfghdr6_0={CFG_CHECKBOX,"call",0,0};
-__root const int call=0;
-
 __root const CFG_HDR cfghdr6_1={CFG_CHECKBOX,"Day supply",0,0};
 __root const int cdate=0;
 
@@ -198,8 +157,6 @@ __root const CFG_HDR cfghdr_m12={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr_m15={CFG_LEVEL,"Auto-Sms",1,0};
 
-__root const CFG_HDR cfghdr7_0={CFG_CHECKBOX,"Auto-Sms",0,0};
-__root const int sms=0;
 
 __root const CFG_HDR cfghdr7_1={CFG_CHECKBOX,"Day supply",0,0};
 __root const int sdate=0;
@@ -225,8 +182,7 @@ __root const CFG_HDR cfghdr_m17={CFG_LEVEL,"Other",1,0};
 __root const CFG_HDR cfghdr8_13={CFG_UINT,"Volume",0,6};
 __root const unsigned int volume=6;
 
-__root const CFG_HDR cfghdr8_0={CFG_CHECKBOX,"Vibra",0,0};
-__root const int vib=0;
+
 
 __root const CFG_HDR cfghdr8_1={CFG_UINT,"vibra count",0,10};
 __root const unsigned int count2=3;
@@ -234,18 +190,6 @@ __root const unsigned int count2=3;
 __root const CFG_HDR cfghdr8_2={CFG_UINT,"Vibra power",0,100};
 __root const unsigned int vibra_pow=100;
 
-__root const CFG_HDR cfghdr8_3={CFG_CHECKBOX,"display",0,0};
-__root const int dis=0;
-
-__root const CFG_HDR cfghdr8_4={CFG_CHECKBOX,"keyboard",0,0};
-__root const int key=0;
-#ifndef NEWSGOLD
-__root const CFG_HDR cfghdr8_5={CFG_CHECKBOX,"dynlights",0,0};
-__root const int dyn=0;
-#else
-__root const CFG_HDR cfghdr8_6={CFG_CHECKBOX,"lighter",0,0};
-__root const int lighter=0;
-#endif
 __root const CFG_HDR cfghdr8_7={CFG_UINT,"light",0,100};
 __root const unsigned int light=100;
 

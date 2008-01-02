@@ -9,7 +9,6 @@
 #define wd_on 5
 #define logo 6
 
-//#define NO_PNG
 
 #ifdef NEWSGOLD
 #define DEFAULT_DISK "4"
@@ -23,6 +22,7 @@
 #define sevens 7
 #define dats 24
 
+
 TTime time;
 
 unsigned int status[6];
@@ -31,6 +31,8 @@ unsigned int min[7];
 unsigned int weekdays[6][7];
 unsigned int day[7][24];
 unsigned int backup[4];
+unsigned int other[4];
+unsigned int name2[9];
 unsigned int max;
 unsigned int mode=0;
 unsigned int X;
@@ -40,18 +42,20 @@ unsigned int show_icon;
 GBSTMR mytmr;
 unsigned int input;
 
+unsigned int num=0;
+unsigned int onum=0;
 unsigned int num_alarm=0;
 unsigned int menu=0;
 unsigned int dat=0;
 unsigned int seven=0;
 unsigned int edit_level=1;
-unsigned int ch[4];
+unsigned int ch[5];
 unsigned int set=1;
 int lng;
 char cfgfile[]=DEFAULT_DISK":\\zbin\\img\\SmartAlerts\\SmartAlerts.cfg";
-char fongpf[]=DEFAULT_DISK":\\zbin\\img\\SmartAlerts\\fon.gpf";
 char fonpng[]=DEFAULT_DISK":\\zbin\\img\\SmartAlerts\\fon.png";
 char bcfgfile[]=DEFAULT_DISK":\\Zbin\\etc\\alarm_melody.bcfg";
+char bcfgfile1[]=DEFAULT_DISK":\\Zbin\\etc\\SmartAlerts.bcfg";
 
 int scr_w;
 int scr_h;
@@ -112,33 +116,6 @@ DrwImg(IMGHDR *img, int x, int y)
   DrawObject(&drwobj);
 }
 
-void DrawBackground()
-{
-  volatile int hFile;
-  PICHDR Pic_Header;
-  unsigned int io_error = 0;
-  hFile = fopen(fongpf, A_ReadOnly + A_BIN, P_READ, &io_error);
-  if(!io_error)
-  {
-    fread(hFile, &Pic_Header, sizeof(Pic_Header), &io_error);
-    unsigned int buf_size = lseek(hFile, 0, S_END, &io_error, &io_error) - sizeof(PICHDR);
-    lseek(hFile, sizeof(PICHDR), S_SET, &io_error, &io_error); 
-    char *pic_buffer = malloc((buf_size+3)&(~3));
-    fread(hFile, pic_buffer, buf_size, &io_error);    
-    fclose(hFile, &io_error);
-    IMGHDR img;
-    img.w = Pic_Header.w;
-    img.h = Pic_Header.h;
-    img.bpnum = Pic_Header.Compr_Bits;
-    img.bitmap = pic_buffer;
-    DrwImg(&img, 0, 0);
-    mfree(pic_buffer);
-  }
-  else
-  {
-    DrawImg(0, 0, (int)fonpng);
-  }
-}
 
 void draw_pic(int num,int x, int y)
 {
@@ -146,7 +123,7 @@ void draw_pic(int num,int x, int y)
   {
   case fon:
     {
-      DrawBackground();
+      DrawImg(0, 0, (int)fonpng);
     } break;
   case st_off:
     {
@@ -496,7 +473,7 @@ show_icon=data[53];
 X=data[54];
 Y=data[55];
 
-min[6]=data[230];
+
 day[0][0]=data[56];
 day[0][1]=data[57];
 day[0][2]=data[58];
@@ -665,6 +642,23 @@ day[6][20]=data[220];
 day[6][21]=data[221];
 day[6][22]=data[222];
 day[6][23]=data[229];
+
+min[6]=data[230];
+
+name2[0]=data[231];
+name2[1]=data[232];
+name2[2]=data[233];
+name2[3]=data[234];
+name2[4]=data[235];
+name2[5]=data[236];
+name2[6]=data[237];
+name2[7]=data[238];
+name2[8]=data[239];
+
+other[0]=data[240];
+other[1]=data[241];
+other[2]=data[242];
+other[3]=data[243];
 
     mfree(data);
   }
@@ -908,6 +902,22 @@ data[229]=day[6][23];
 
 data[230]=min[6];
 
+data[231]=name2[0];
+data[232]=name2[1];
+data[233]=name2[2];
+data[234]=name2[3];
+data[235]=name2[4];
+data[236]=name2[5];
+data[237]=name2[6];
+data[238]=name2[7];
+data[239]=name2[8];
+
+data[240]=other[0];
+data[241]=other[1];
+data[242]=other[2];
+data[243]=other[3];
+
+
     fwrite(handle,data,300,&err);
     mfree(data);
   }
@@ -922,16 +932,17 @@ void edit()
     switch(set)
     {
     case 1: if(ch[1])
-        hour[num_alarm]=backup[1];
+      hour[num_alarm]=backup[1];
     case 2: if(ch[2])
       min[num_alarm]=backup[2];
-            if(ch[1])
+            if(ch[4])
       min[6]=backup[2];   
     case 3: if(ch[3])
       day[seven][dat]=backup[3];
     }
     }
 }
+
 
 void status_on_off()
 {
@@ -943,7 +954,6 @@ void weekday_on_off()
   if (weekdays[num_alarm][set]==1) weekdays[num_alarm][set]=0; else weekdays[num_alarm][set]=1;
 }
 
-
 void menuselect()
 {
   switch(menu)
@@ -953,6 +963,9 @@ void menuselect()
         break;
       case 2:
         mode=3;
+        break;
+  case 8:
+        mode=9;
         break;      
              
       default:
@@ -974,20 +987,23 @@ void OnRedraw()
       wsprintf(ws, "%t",name);
       DrwStr(ws,15,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
-      wsprintf(ws, "%t",select);
+      wsprintf(ws, "%t",change);
       DrwStr(ws,8,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       wsprintf(ws, "%t",save);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
-
+      int a=scr_w-20;
       int tmp=scr_h/10.3;
       for (int i=0;i<menus;i++)
       {
         wsprintf(ws, "%t",alerts_name[i]);
-        if (menu==i) DrwStr(ws,5,1+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-          else DrwStr(ws,5,1+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+        if (menu==i) DrwStr(ws,5,tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
+          else DrwStr(ws,5,tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+        if (name2[i]) draw_pic(wd_on,a,tmp*(i+1));
+          else draw_pic(wd_off,a,tmp*(i+1));
       }
+
     } break;
 
     
@@ -1043,6 +1059,47 @@ void OnRedraw()
           else DrwStr(ws,5,1+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       }
     } break; 
+    
+  case 9:
+    {
+      DrawRoundedFrame(0,0,scr_w,scr_h,0,0,0,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(2));
+      draw_pic(fon,0,0);
+      //draw_pic(logo,2,2);
+      
+      wsprintf(ws, "%t",alerts_name[8]);
+      DrwStr(ws,30,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws, "%t",change);
+      DrwStr(ws,8,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws, "%t",back);
+      DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      int a=scr_w-20;
+      int tmp=scr_h/7.3;
+      for (int i=0;i<4;i++)
+      {
+        wsprintf(ws, "%t",othern[i]);
+        if (onum==i) DrwStr(ws,5,tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
+          else DrwStr(ws,5,tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+        if (other[i]) draw_pic(wd_on,a,tmp*(i+1));
+          else draw_pic(wd_off,a,tmp*(i+1));
+      }
+
+    
+/*      
+"vibra count"
+unsigned int count2=3;
+"Vibra power"
+unsigned int vibra_pow=100;
+"Volume"
+unsigned int volume=6;
+"light"
+unsigned int light=100;
+*/
+
+    } break; 
+    
     
   case 12:
     {
@@ -1181,17 +1238,18 @@ void OnRedraw()
       wsprintf(ws, "%t",ok);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
-     int a=scr_w/4;
+
      
      GetDateTime(0,&time);
      
-     wsprintf(ws,"%d:%d_Min=%02d",time.hour,time.min,min[6]);
+     wsprintf(ws,"%d:%d Minute:%02d",time.hour,time.min,min[6]);
 
-      if (edit_level==1) DrwStr(ws,a,HeaderH(),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-        else DrwStr(ws,a,HeaderH(),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      if (edit_level==1) DrwStr(ws,5,HeaderH(),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
+        else DrwStr(ws,5,HeaderH(),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
         
-            
+      int a=scr_w/4;     
       int b=HeaderH()+font_size+4;
+      int c=(ScreenH()-HeaderH()-SoftkeyH()-font_size)/6;
       
       for(int i=0;i<dats;i++)  
       {  
@@ -1200,38 +1258,38 @@ void OnRedraw()
       if(i<4)
       {
       if ((edit_level==2)&&(dat==i))
-        DrwStr(ws,4+i*ScreenW()/4,b,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-        else DrwStr(ws,4+i*ScreenW()/4,b,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+        DrwStr(ws,4+i*a,b,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
+        else DrwStr(ws,4+i*a,b,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       }
       else if(i<8)
       {
       if ((edit_level==2)&&(dat==i))
-        DrwStr(ws,4+(i-4)*ScreenW()/4,b+(ScreenH()-HeaderH()-SoftkeyH()-font_size)/6,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-        else DrwStr(ws,4+(i-4)*ScreenW()/4,b+(ScreenH()-HeaderH()-SoftkeyH()-font_size)/6,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+        DrwStr(ws,4+(i-4)*a,b+c,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
+        else DrwStr(ws,4+(i-4)*a,b+c,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       }
       else if(i<12)
       {
       if ((edit_level==2)&&(dat==i))
-        DrwStr(ws,4+(i-8)*ScreenW()/4,b+2*(ScreenH()-HeaderH()-SoftkeyH()-font_size)/6,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-        else DrwStr(ws,4+(i-8)*ScreenW()/4,b+2*(ScreenH()-HeaderH()-SoftkeyH()-font_size)/6,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+        DrwStr(ws,4+(i-8)*a,b+2*c,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
+        else DrwStr(ws,4+(i-8)*a,b+2*c,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       }
       else if(i<16)
       {
       if ((edit_level==2)&&(dat==i))
-        DrwStr(ws,4+(i-12)*ScreenW()/4,b+3*(ScreenH()-HeaderH()-SoftkeyH()-font_size)/6,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-        else DrwStr(ws,4+(i-12)*ScreenW()/4,b+3*(ScreenH()-HeaderH()-SoftkeyH()-font_size)/6,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+        DrwStr(ws,4+(i-12)*a,b+3*c,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
+        else DrwStr(ws,4+(i-12)*a,b+3*c,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       }
       else if(i<20)
       {
       if ((edit_level==2)&&(dat==i))
-        DrwStr(ws,4+(i-16)*ScreenW()/4,b+4*(ScreenH()-HeaderH()-SoftkeyH()-font_size)/6,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-        else DrwStr(ws,4+(i-16)*ScreenW()/4,b+4*(ScreenH()-HeaderH()-SoftkeyH()-font_size)/6,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+        DrwStr(ws,4+(i-16)*a,b+4*c,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
+        else DrwStr(ws,4+(i-16)*a,b+4*c,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       }
       else 
       {
       if ((edit_level==2)&&(dat==i))
-        DrwStr(ws,4+(i-20)*ScreenW()/4,b+5*(ScreenH()-HeaderH()-SoftkeyH()-font_size)/6,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-        else DrwStr(ws,4+(i-20)*ScreenW()/4,b+5*(ScreenH()-HeaderH()-SoftkeyH()-font_size)/6,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+        DrwStr(ws,4+(i-20)*a,b+5*c,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
+        else DrwStr(ws,4+(i-20)*a,b+5*c,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       }
       }
       
@@ -1268,13 +1326,14 @@ void onUnfocus(MAIN_GUI *data, void (*mfree_adr)(void *))
   data->gui.state=1;
 }
 
-void open_bcfg()
+void open_bcfg(char *x)
 {
   WSHDR *_elf=AllocWS(256);
-  wsprintf(_elf,"%s",bcfgfile);
+  wsprintf(_elf,"%s",x);
   ExecuteFile(_elf,0,0);
   FreeWS(_elf);
 }
+
 
 int onkey(unsigned char keycode, int pressed)
 {
@@ -1290,12 +1349,14 @@ int onkey(unsigned char keycode, int pressed)
             switch(keycode)
             {
             case RED_BUTTON: return(1);
-            case ENTER_BUTTON:
-            case LEFT_SOFT:  menuselect(); OnRedraw(); break;
+            case ENTER_BUTTON: menuselect(); OnRedraw(); break;
+            case LEFT_SOFT: 
+              if (name2[num]==1) name2[num]=0; else name2[num]=1;
+            OnRedraw();break;
             case RIGHT_SOFT:
               {
                 save_settings();
-                GBS_SendMessage(MMI_CEPID, MSG_RECONFIGURE_REQ,0,"alarm");
+                GBS_SendMessage(MMI_CEPID, MSG_RECONFIGURE_REQ,0,"SmartAlerts");
                 return(1);
               }
             case UP_BUTTON:
@@ -1303,6 +1364,8 @@ int onkey(unsigned char keycode, int pressed)
               {
                 if (menu>0) menu--;
                   else menu=(menus-1);
+                if (num>0) num--;
+                  else num=(menus-1);
                 break;
               }
             case RIGHT_BUTTON:
@@ -1310,19 +1373,19 @@ int onkey(unsigned char keycode, int pressed)
               {
                 if (menu<(menus-1)) menu++;
                   else menu=0;
+                if (num<(menus-1)) num++;
+                  else num=0;
                   break;
               }
-            /*  
-            case GREEN_BUTTON: open_bcfg(); break;
-            case '1': num_alarm=0; break;
-            case '2': num_alarm=1; break;
-            case '3': num_alarm=2; break;
-            case '4': num_alarm=3; break;
-            case '5': num_alarm=4; break;
-            //case '6': num_alarm=5; break;
-            case '#': mode=3; break;
-            //case '*': saveeeblock(); break;
-            //case '*': ShowMSG(1,(int)"Alarm cfg editor\n(c)Geka"); break;
+            
+            case GREEN_BUTTON: open_bcfg(bcfgfile1); break;
+           /*  
+            case '1': break;
+            case '2': break;
+            case '3': break;
+            case '4': break;
+            case '5': break;
+            case '#': break;
               */
             }
           }
@@ -1354,7 +1417,7 @@ int onkey(unsigned char keycode, int pressed)
                   else num_alarm=0;
                   break;
               }
-            case GREEN_BUTTON: open_bcfg(); break;
+            case GREEN_BUTTON: open_bcfg(bcfgfile); break;
             case '1': num_alarm=0; break;
             case '2': num_alarm=1; break;
             case '3': num_alarm=2; break;
@@ -1398,6 +1461,39 @@ int onkey(unsigned char keycode, int pressed)
             }
           }
       } break;   
+      
+    case 9:
+      {
+        switch(pressed)
+          {
+          case KEY_UP: break;
+          case LONG_PRESS:
+          case KEY_DOWN:
+            switch(keycode)
+            {
+            case RED_BUTTON: return(1);
+            case ENTER_BUTTON:
+            case LEFT_SOFT: 
+                if (other[onum]==1) other[onum]=0; else other[onum]=1;OnRedraw(); break;
+            case RIGHT_SOFT: mode=0; OnRedraw(); break;
+            case UP_BUTTON:
+            case LEFT_BUTTON:
+              {
+              if (onum>0) onum--;
+                else onum=4-1;      
+                break;
+              }
+            case RIGHT_BUTTON:
+            case DOWN_BUTTON:
+              {
+              if (onum<(4-1)) onum++;
+                else onum=0;     
+                  break;
+              }
+            }
+          }
+      } break;   
+      
       
   case 12:
     {
@@ -1581,7 +1677,7 @@ int onkey(unsigned char keycode, int pressed)
             if(edit_level==2)
             {
               if (dat>0) dat--;
-                else dat=23;
+                else dat=23;   
             }
             break;
           }
@@ -1604,10 +1700,9 @@ int onkey(unsigned char keycode, int pressed)
                 else
                 {
                   backup[set]=keycode-'0';
-                  lng=1;
+                  //lng=1;
                 }
-
-               ch[1]=1;
+               ch[4]=1;
                input=1;
                edit();
             }

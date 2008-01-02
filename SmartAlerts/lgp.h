@@ -8,6 +8,11 @@ const char off[]="off";
 const char name[]="SmartAlerts Setting";
 const char *alerts_name[9]={"Alarm","Alerts","Auto-profile","Missed Alerts","BatterySetting","Runfile","Auto-call","Auto-Sms","Other"};
 
+#ifndef NEWSGOLD
+const char *othern[4]={"Vibra","Displays","Keyboard","Dynlight"};
+#else
+const char *othern[4]={"Vibra","Displays","Keyboard","Lighter"};
+#endif
 
 const char change[]="change";
 const char select[]="select";
