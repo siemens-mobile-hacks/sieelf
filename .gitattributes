@@ -653,14 +653,11 @@ MegaDial2/extern.h -text
 MegaDial2/func.asm -text
 MegaDial2/main.c -text
 MegaDial2/test.xcl -text
-Menu/Menu.cfg -text
 Menu/Menu.ewp -text
 Menu/Menu.eww -text
-Menu/div.r79 -text
 Menu/func.asm -text
 Menu/main.c -text
 Menu/main.h -text
-Menu/readme.txt -text
 Menu/test.xcl -text
 MidletSigner/MidletSigner.ewp -text
 MidletSigner/MidletSigner.eww -text

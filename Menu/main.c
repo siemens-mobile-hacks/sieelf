@@ -1,4 +1,10 @@
-#include "..\inc\swilib.h"
+#include "../inc/swilib.h"
+
+#ifndef NEWSGOLD
+#define DEFAULT_DISC "0"
+#else
+#define DEFAULT_DISC "4"
+#endif
 
 const int minus11=-11;
 
@@ -8,28 +14,22 @@ unsigned int MAINCSM_ID = 0;
 unsigned int MAINGUI_ID = 0;
 
 
+static const char *percent_t="%t";
+int x,y=1;
+int flag='mm';
+char *nill="";
+char mmenu[50]={1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
-static const char percent_t[]="%t";
-int x,y,i=1;
-//int click;
-int flag='mm';  
-char mmenu[30]={0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-int mode=0;
-int show;
-int from=0;
-char commands[30][15];
-char elfs[30][64];
-char names[30][64];
-int type[30];
-char shows[1]="";
-char back[64]="0:\\Zbin\\img\\Menu\\bg.png";
-int lines=0;
-char line[1]="";
-int showing=0;
-int offset=0;
-char start_menu[8][64];
-int length[30];
-int click=0;
+
+//#define mod
+
+
+char text_bevel_col[4]={0,0,0,0x64};
+char text_col[4]={255,255,255,0x64};
+int fps=30;
+int img_x=0;
+int img_y=0;
+
 
 
 typedef struct
@@ -48,349 +48,765 @@ typedef struct
 
 
 
-void exe(char *fname)
+
+int strh2int(char* str)
 {
-  PlaySound(1,0,0,51,0);
-  int (*p) (void);
-  p=(int(*)(void))GetFunctionPointer(fname);
-  if(p!=NULL)
-    (*p)();
+  int n,c=0;
+  if (*(str+strlen(str)-1)=='h') *(str+strlen(str)-1)='\0';
+  while ((*str!='h')&&(*str))
+  {
+    if ((*str>='a')&&(*str <='f')) n=*str-('A'-('9'+1))-('a'-'A');
+    else if ((*str>='A')&&(*str<='F')) n=*str-('A'-('9'+1));
+    else if ((*str>='0')&&(*str<='9')) n=*str;
+    c=c*16+(n-'0');
+    str++;
+  }
+  return c;
+}
+
+int str2int(const char *str)
+{
+  int n,c=0;
+  while(*str!='\0')
+  {
+    n=*str;
+    c=c*10+(n-'0');
+    str++;
+  }
+  return c;
+}
+
+void RunEntry(char *entry)
+{
+  typedef int (*func)(void);
+  func ff;
+  ff=(func)strh2int(entry);
+  if (ff!=NULL) SUBPROC((void *)(*ff));
+}
+
+void RunShort(char *fname)
+{
+  int (*ff) (void);
+  ff=(int(*)(void))GetFunctionPointer(fname);
+  if(ff!=NULL)
+    SUBPROC((void*)(*ff));
   else
     ShowMSG(1,(int)"NULL pointer function!");
-} 
-
-void shif()
-{
-//  ShowMSG(1,(int)commands[1]);
-
 }
 
-void LoadParams()
+void RunFile(char *fname)
 {
-  unsigned int err;
-  int plhandle,j,k;
-  char tmp[2]="";
-  char temp[10]="";
-  char t[2]="";
-//  int star_count=0;
-//  int names_count=0;
-  plhandle = fopen( "0:\\Zbin\\Menu\\Menu.cfg", A_ReadOnly + A_BIN, P_READ, & err );
-  if ( plhandle == -1 )
+  WSHDR *ws=AllocWS(256);
+  str_2ws(ws,fname,strlen(fname)+1);
+  ExecuteFile(ws,0,nill);
+  FreeWS(ws);
+}
+
+
+void RunSub(char *sub_name)
+{
+  char *fname=DEFAULT_DISC ":\\RedButMenu.elf";
+  WSHDR *ws=AllocWS(256);
+  str_2ws(ws,fname,strlen(fname)+1);
+  ExecuteFile(ws,0,sub_name);
+  FreeWS(ws);
+}
+
+
+typedef struct
+{
+  enum {F,S,E,SUB} RunType;      //слуэебный. тип запускаемого...(не смог подобрать слов)
+  char Name[32];        //название
+  char Command[128];    //что запускать
+  char IconUnSel[128];  //путь к пнгшке(номер картинки в проше)
+  char IconSel[10][128];  //путь к пнгшке(*кам)(номер картинки в проше)
+  int x;            //координата
+  int y;            //координата
+  int Png_Count;        //количество пнг-шек в аимации(если есть)
+  int Sel_PicIsPng;     //служ. Пнг-шка ли у нас стоит на выделенном пункте
+  int UnSel_PicIsPng;   //--||--
+  int Hotkey;       //горячая клавиша
+  char Pass[32];        //пароль
+  int UseCurr;          //использовать курсор, или нет
+
+}TItem;
+
+typedef struct
+{
+  int x;
+  int y;
+  int pic;
+}TIndicator;
+
+char png_folder[128];
+TItem Items[50];
+TIndicator Accu,Net,Clock,Desc;     //аккум, сеть, часы и название
+int NumOfItems=0;
+int Rows, Cols;
+char Row[5];
+char Col[5];
+char Bg[128];
+IMGHDR *img_sel[10][50];
+IMGHDR *img_unsel[50];
+IMGHDR *bg;
+IMGHDR *curr;
+char cur[128]=DEFAULT_DISC":\\zbin\\menu\\cur.png";
+int ena_cache=1;
+
+int GetNumber(char *str)
+{
+  if (*(str+strlen(str)-1)=='h')
+    return (strh2int(str));
+  else return (str2int(str));
+}
+
+
+
+void FillCoords();
+void deleteIMGHDR(IMGHDR *img);
+
+
+int n=0;
+
+int Icons_UnSel[50];
+int Icons_Sel[50][2];//{первая картинка, кол-во картинок в анимации}
+//////////////////
+
+#define CTYPE1 8
+#define CTYPE2 0
+
+void FreeIcons()
+{
+  if (bg) deleteIMGHDR(bg);
+  if (curr) deleteIMGHDR(curr);
+  for (int i=0;i<NumOfItems;i++)
   {
-    fclose( plhandle, & err );
+    for (int j=0; j<=Items[i].Png_Count;j++)
+    {if (img_sel[j][i]) deleteIMGHDR(img_sel[j][i]);}
+    if (img_unsel[i]) deleteIMGHDR(img_unsel[i]);
+
+  }
+}
+
+void FreeSingleIcon(int num)
+{
+  for (int j=0; j<=Items[num].Png_Count;j++)
+  {if (img_sel[j][num]) {deleteIMGHDR(img_sel[j][num]); img_sel[j][num]=0;}}
+}
+
+/////////////////
+
+char *pps="%s%s";
+
+char *concat(char *s1,char *s2)
+{
+  int l;
+  char *str=malloc((l=strlen(s1))+strlen(s2)+1);
+  strcpy(str,s1);
+  strcpy(str+l,s2);
+  return str;
+}
+
+void FillIcons()
+{
+  int j;
+  for (int i=0;i<NumOfItems;i++)
+  {
+    if (!Items[i].Sel_PicIsPng) {Icons_Sel[i][0]=GetNumber(Items[i].IconSel[0]);}
+    else
+    {
+      for (j=0;j<=Items[i].Png_Count;j++)
+      {
+        if (strstr(Items[i].IconSel[j],":\\")==0)       //полный путь или нет...
+          sprintf(Items[i].IconSel[j],concat(png_folder,Items[i].IconSel[j]));
+      }
+    }
+    if (!Items[i].UnSel_PicIsPng) Icons_UnSel[i]=GetNumber(Items[i].IconUnSel);
+    else
+      if (strstr(Items[i].IconUnSel,":\\")==0)
+        sprintf(Items[i].IconUnSel,concat(png_folder,Items[i].IconUnSel));
+
+  }
+}
+
+int isFile(char *fname)
+{
+  return (strstr(fname,".")!=0);
+}
+
+int isSub(char *fname)
+{
+  return (strstr(fname,".sub")!=0);
+}
+
+void FillRunType()
+{
+  for (int i=0;i<NumOfItems;i++)
+  {
+    if (isSub(Items[i].Command)) Items[i].RunType=SUB;
+    else if (isFile(Items[i].Command)) Items[i].RunType=F;
+    else if ((strlen(Items[i].Command)==15)&&(strstr(Items[i].Command,"_")!=0))  Items[i].RunType=S;
+    else Items[i].RunType=E;
+  }
+}
+
+//int Accu_First;
+//int Net_First;
+
+void FillMisc()
+{
+  Rows=GetNumber(Row);
+  Cols=GetNumber(Col);
+}
+
+void BruteForce(int num)
+{
+  int row=GetNumber(Row);
+  int col=GetNumber(Col);
+  for (int i=0;i<col;i++)
+    for (int j=0;j<row;j++)
+      if ((j*col+i)==num)
+      {
+        y=j;
+        x=i;
+        break;
+      }
+}
+
+int count=0; //счетчик активных пунктов
+
+void Parse(char *str)
+{
+  if (*str=='[')
+  {
+    if (NumOfItems++) n++;
+    str++;
+    if (!strncmp(str,"Item*",5))     //пункт выделенн
+    {
+      if (++count<=1) //чтобы не было нескольких активных пунктов
+      {
+        mmenu[0]=0;
+        mmenu[n]=1;
+        BruteForce(n);   //подбираем значеня x и y для n
+      }
+    }
+    Items[n].UseCurr=1; //а вдрyг все-таки нужeн?..
     return;
   }
-// ShowMSG(1,(int)star);
-//  __________________________________________________________________
-  fread( plhandle,& line, 1, & err );
-  lines=line[0];
-  lines=lines-48;         //I do not know why it? but it? works 
-  fread( plhandle, & temp, 2, & err );
-  fread( plhandle,& shows, 1, & err );
-  showing=shows[0];
-  showing=showing-48;       //floor? also 
-  fread( plhandle, & temp, 2, & err );
-  
-  for (j=0;j<(lines*3);j++)         //modified
+  if (!strncmp(str,"accu_x=",7))
   {
-    tmp[0]=NULL;
-    m:fread( plhandle, &tmp[0], 1, & err );
-     if ((tmp[0]!=124)&&(tmp[0]!=42)&&(tmp[0]!=47)) goto m;
-//     ShowMSG(1,(int)tmp);
-       if ((int)tmp[0]==42)
-        {
-        
-          t[0]=NULL;
-          for (k=0;k<64;k++)
-            {
-              fread(plhandle,& t[0],1,&err);     
-              if (((int)t[0]==42)|((int)t[0]==124)|((int)t[0]==47))
-                {
-                  type[j]=1;
-                nah: fread(plhandle,& t[0],1,&err); 
-                if ((int)t[0]!=47) goto nah; //:)
-                  goto nm; 
-//                  break;
-                }
-              else
-                {
-                  sprintf(elfs[j],"%s%s",elfs[j],t);
-                }
-            }
-          type[j]=1;
-      } 
-   
-      if ((int)tmp[0]==124)
-         {
-        //  ShowMSG(1,(int)"test_shortcut");
-          t[0]=NULL;
-          int kl=0;
-          for (kl=0;kl<64;kl++) 
-            {
-              t[0]=NULL;
-              fread( plhandle, &t[0], 1, & err );
-             // ShowMSG(1,(int)t);
-              if (((int)t[0]==42)|((int)t[0]==124)|((int)t[0]==47))
-                {
-                  
-                   nah1: fread(plhandle,& t[0],1,&err); 
-                  if ((int)t[0]!=47) goto nah1;
-                  goto nm; 
-//                  break;
-                }
-            else 
-              {
-                sprintf(commands[j],"%s%s",commands[j],t);
-              }
-            }
-           t[0]=NULL;
-           type[j]=0;
-          }
-       
-       
-  nm:if (((int)tmp[0]==47)|((int)t[0]==47))
-         {
-          t[0]=NULL;
-          int klm=0;
-          for (klm=0;klm<64;klm++) 
-            {
-              t[0]=NULL;
-              fread( plhandle, &t[0], 1, & err );
-              if (((int)t[0]==42)|((int)t[0]==124)|((int)t[0]==47)){/*ShowMSG(1,(int)commands[j]); */ break;}
-            else 
-              {
-                sprintf(names[j],"%s%s",names[j],t);
-                length[j]++;
-              }
-            }
-           t[0]=NULL;
-          // type[j]=0;
-          }
-       
-    
-  }   
-  
-  
-  
- show=showing;
- fclose( plhandle, & err );
-}
-
-
-void bar()
-{
-/*char cl4[]={0xD1,0xDE,0xE7,0x64};
-char cl2[]={0x91,0x9E,0xE7,0x64};
-
-unsigned char* ex;
-
-
-int ij=y*3+x;
-
-ex=names[ij];
-WSHDR *ws=AllocWS(256);
-wsprintf(ws,  percent_t ,ex);
-DrawString(ws,25,3,123,50,7,36,GetPaletteAdrByColorIndex(1),cl4); 
-TDate date;
-TTime time; 
-GetDateTime(&date,&time);
-wsprintf(ws, "        %i:%02i",time.hour,time.min);  
-DrawString(ws,25,16,123,100,7,32,GetPaletteAdrByColorIndex(1),cl2); */
-//FreeWS(ws);
-}
-
-
-void runst()
-{
-
-}
-
-
-
-void run()
-{
-  WSHDR *ws=AllocWS(256); 
-  int ij=y*3+x;
-   if (((type[ij]==0)&(flag!='st'))|((i==5)&(flag=='st')))
+    str+=7;
+    Accu.x=GetNumber(str);
+    return;
+  }
+  if (!strncmp(str,"x=",2))
   {
-    if (flag=='st')
+    str+=2;
+    Items[n].x=GetNumber(str) ;
+    return;
+  }
+  if (!strncmp(str,"y=",2))
+  {
+    str+=2;
+    Items[n].y=GetNumber(str);
+    return;
+  }
+  if (!strncmp(str,"command=",8))
+  {
+    str+=8;
+    strcpy(Items[n].Command,str);
+    return;
+  }
+  if (!strncmp(str,"name=",5))
+  {
+    str+=5;
+    strcpy(Items[n].Name,str);
+    return;
+  }
+  if (!strncmp(str,"icon_sel=",9))
+  {
+    str+=9;
+    //
+    Items[n].UseCurr=0;  //курсор нам не нужен
+    if (isFile(str)) //это-файл
     {
-      exe("STUP_TEXT_INPUT");
-    } else
-    {
-    int hi;
-    char com[15]="";
-    for (hi=0;hi<15;hi++)
+      int i=0;
+      Items[n].Sel_PicIsPng=1;
+      while ((*str))
       {
-        com[hi]=commands[ij][hi];
+        if (*str=='|') {Items[n].Png_Count++; i=0; str++; }      //считываем названия файлов до символа |
+        else Items[n].IconSel[Items[n].Png_Count][i++]=*str++;
       }
-   
-    exe(com);
+    }
+    else
+    {
+      Items[n].Sel_PicIsPng=0;
+      strcpy(Items[n].IconSel[0],str);
+    }
+
+    return;
+  }
+  if (!strncmp(str,"icon_unsel=",11))
+  {
+    str+=11;
+    strcpy(Items[n].IconUnSel,str);
+    if (isFile(str)) //это-путь->иконка в пнг
+      Items[n].UnSel_PicIsPng=1;
+    else Items[n].UnSel_PicIsPng=0;
+    return;
+  }
+  if (!strncmp(str,"anim_count=",11))
+  {
+    str+=11;
+    Icons_Sel[n][1]=GetNumber(str);
+    return;
+  }
+  if (!strncmp(str,"accu_y=",7))
+  {
+    str+=7;
+    Accu.y=GetNumber(str);
+    return;
+  }
+  if (!strncmp(str,"net_x=",6))
+  {
+    str+=6;
+    Net.x=GetNumber(str);
+    return;
+  }
+  if (!strncmp(str,"net_y=",6))
+  {
+    str+=6;
+    Net.y=GetNumber(str);
+    return;
+  }
+  if (!strncmp(str,"clock_x=",8))
+  {
+    str+=8;
+    Clock.x=GetNumber(str);
+    return;
+  }
+  if (!strncmp(str,"clock_y=",8))
+  {
+    str+=8;
+    Clock.y=GetNumber(str);
+    return;
+  }
+  if (!strncmp(str,"desc_x=",7))
+  {
+    str+=7;
+    Desc.x=GetNumber(str);
+    return;
+  }
+  if (!strncmp(str,"desc_y=",7))
+  {
+    str+=7;
+    Desc.y=GetNumber(str);
+    return;
+  }
+  if (!strncmp(str,"accu_pic=",9))
+  {
+    str+=9;
+    Accu.pic=GetNumber(str);
+    return;
+  }
+  if (!strncmp(str,"net_pic=",8))
+  {
+    str+=8;
+    Net.pic=GetNumber(str);
+    return;
+  }
+  if (!strncmp(str,"rows=",5))
+  {
+    str+=5;
+    strcpy(Row,str);
+    return;
+  }
+  if (!strncmp(str,"cols=",5))
+  {
+    str+=5;
+    strcpy(Col,str);
+    return;
+  }
+  if (!strncmp(str,"hotkey=",7))
+  {
+    str+=7;
+    Items[n].Hotkey=GetNumber(str);
+    return;
+  }
+  if (!strncmp(str,"pass=",5))
+  {
+    str+=5;
+    strcpy(Items[n].Pass,str);
+    return;
+  }
+  if (!strncmp(str,"bg_img=",7))
+  {
+    str+=7;
+    strcpy(Bg,str);
+    //ShowMSG(1,(int)Bg);
+    return;
+  }
+  if (!strncmp(str,"text_col=",9))
+  {
+    int i=0;
+    int j=0;
+    char col[5];
+    str+=9;
+    for (j=0;j<4;j++)
+    {
+      i=0;
+      while ((*str!=' ')&&(*str)) col[i++]=*str++;
+      str++;
+      col[i]='\0';
+      text_col[j]=GetNumber(col);
+    }
+    return;
+  }
+  if (!strncmp(str,"bevel_col=",10))
+  {
+    int i=0;
+    int j=0;
+    char col[5];
+    str+=10;
+    for (j=0;j<4;j++)
+    {
+      i=0;
+      while ((*str!=' ')&&(*str)) col[i++]=*str++;
+      str++;
+      col[i]='\0';
+      text_bevel_col[j]=GetNumber(col);
+    }
+    return;
+  }
+  if (!strncmp(str,"img_fps=",8))
+  {
+    str+=8;
+    fps=GetNumber(str) ;
+    return;
+  }
+  if (!strncmp(str,"png_folder=",11))
+  {
+    str+=11;
+    strcpy(png_folder,str);
+    return;
+  }
+  if (!strncmp(str,"w_x=",4))
+  {
+    str+=4;
+    img_x=GetNumber(str);
+    return;
+  }
+  if (!strncmp(str,"w_y=",4))
+  {
+    str+=4;
+    img_y=GetNumber(str);
+    return;
+  }
+  if (!strncmp(str,"cur_pic=",8))
+  {
+    str+=8;
+    strncpy(cur,str,strlen(str));
+    cur[strlen(str)]='\0';
+    return;
+  }
+  if (!strncmp(str,"cache=",6))
+  {
+    //    ShowMSG(1,(int)"aasd");
+    str+=6;
+    ena_cache=GetNumber(str);
+    return;
+  }
+  if (*str==';') return;    //коментарии
+}
+
+
+
+char *cfg=DEFAULT_DISC":\\Zbin\\Menu\\Menu.cfg";
+//char *cfg="0:\\Menu.cfg";
+
+
+void Load_cfg()
+{
+  unsigned int ul;
+  unsigned int size;
+  int f;
+  char *mem;
+  char str[256]="";
+  Accu.pic=-1;
+  Net.pic=-1;
+  f=fopen(cfg, A_ReadOnly + A_BIN, P_READ, & ul );
+  if (f==-1)
+  {
+    ShowMSG(1,(int)"Can't open cfg");
+    fclose(f,&ul);
+    return;
+  }
+  mem=malloc(10000);
+  if (mem!=0)
+  {
+    int i,j=0;
+    size=fread(f,mem,9999,&ul);
+    i=0;
+    while (i<size)
+    {
+      j=0;
+      while (((*(mem+i)!='\r')&&((*(mem+i)!='\n')))&&(i<size)) {*(str+j)=*(mem+i); j++;i++;}
+      *(str+j)='\0';
+      Parse(str);
+      while (((*(mem+i)>'z')||(*(mem+i)<'a'))&&(*(mem+i)!='[')&&(*(mem+i)!=';')) i++;   //пропускаем нежелательные символы :)
     }
   }
-  else 
-    {
+  mfree(mem);
+  fclose(f,&ul);
+  FillIcons();
+  FillRunType();
+  FillMisc();
+}
 
-      if (flag=='st'){ str_2ws(ws,start_menu[i],strlen(start_menu[i])+1); ExecuteFile(ws,0,"");} else
-      {str_2ws(ws,elfs[ij],strlen(elfs[ij])+1); ExecuteFile(ws,0,"");}
-    }
 
-  FreeWS(ws);
-}    
-    
-void Start()
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+void Menu();
+
+int pic;
+
+GBSTMR timer,timer2;
+TTime time;
+TDate date;
+
+char pass[9];
+char view[9];
+int pos=0;
+
+typedef struct {
+  char R;
+  char G;
+  char B;
+  char A;
+}color;
+////////////////////////////////////////////
+void deleteIMGHDR(IMGHDR *img)
 {
-  char cl[]={0x00,0x00,0x00,0x16};
-  char clt[]={0xD1,0xDE,0xE7,0x64};
-  DrawRoundedFrame(0,0,131,176,0,0,0,cl,cl); 
-  DrawImg(0,26,(int)"0:\\Zbin\\img\\Menu\\st.png");
-  int p[8]={0,0,0,0,0,0,0,0};
-  p[i]=32;
-  WSHDR *ws = AllocWS(256);
-  
-  wsprintf(ws,  percent_t,"  ");
-  DrawString(ws,5,76,128,172,7,p[0],(p[0]!=0)?GetPaletteAdrByColorIndex(1):clt,(p[0]==0)?GetPaletteAdrByColorIndex(23):clt); 
-  
-  wsprintf(ws,  percent_t,"  MP3 player");
-  DrawString(ws,5,89,128,172,7,p[1],(p[1]!=0)?GetPaletteAdrByColorIndex(1):clt,(p[1]==0)?GetPaletteAdrByColorIndex(23):clt); 
-  
-  wsprintf(ws,  percent_t,"  Opera");
-  DrawString(ws,5,102,128,172,7,p[2],(p[2]!=0)?GetPaletteAdrByColorIndex(1):clt,(p[2]==0)?GetPaletteAdrByColorIndex(23):clt); 
-  
-  wsprintf(ws,  percent_t,"  NatIcq");
-  DrawString(ws,5,115,128,172,7,p[3],(p[3]!=0)?GetPaletteAdrByColorIndex(1):clt,(p[3]==0)?GetPaletteAdrByColorIndex(23):clt); 
-  
-  wsprintf(ws,  percent_t,"  MC");
-  DrawString(ws,5,128,128,172,7,p[4],(p[4]!=0)?GetPaletteAdrByColorIndex(1):clt,(p[4]==0)?GetPaletteAdrByColorIndex(23):clt); 
-  
-  wsprintf(ws,  percent_t,"  Выбо?языка");
-  DrawString(ws,5,141,128,172,7,p[5],(p[5]!=0)?GetPaletteAdrByColorIndex(1):clt,(p[5]==0)?GetPaletteAdrByColorIndex(23):clt); 
-  
- 
-  FreeWS(ws);
+  mfree(img->bitmap);
+  mfree(img);
 }
 
-void execelf(char *exename, char *fname)
-{ //fname-file name? conveyed? Elf 
- /* WSHDR *ws=AllocWS(256); 
-  str_2ws(ws,exename,strlen(exename)+1); 
-  ExecuteFile(ws,0,fname); 
-  FreeWS(ws);*/
+IMGHDR *alpha(IMGHDR *img, char a, int nw, int del)
+{
+  int i;
+  color *r=(color*)img->bitmap;
+  for(i=0;i<img->h*img->w; i++, r++)
+    if(r->A>a)
+      r->A-=a;
+    else
+      r->A=0;
+    return img;
 }
 
-void Info()
-{char cl[]={0x00,0x00,0x00,0x16};
- char clt[]={0xD1,0xDE,0xE7,0x64};
-    TDate date;
-    TTime time; 
-    GetDateTime(&date,&time); 
-    
- DrawRoundedFrame(0,0,131,176,0,0,0,cl,cl);
- DrawImg(13,35,(int)"0:\\Zbin\\img\\Menu\\wi.png");
- WSHDR *ws = AllocWS(256);
- wsprintf(ws, "Time: %i:%02i",time.hour,time.min);
- DrawString(ws,18,49,110,100,7,32,clt,GetPaletteAdrByColorIndex(1));
-
- wsprintf(ws, "RAM: %i Kb",GetFreeRamAvail()/1024);
- DrawString(ws,18,65,110,100,7,32,clt,GetPaletteAdrByColorIndex(1));
- 
- wsprintf(ws, "%i,%03i=%i%%, %i°C",GetAkku(0,2)/1000,GetAkku(0,2)%1000,*RamCap(),(GetAkku(1,3)-0xAAA+15)/10);
- DrawString(ws,18,81,110,100,7,32,clt,GetPaletteAdrByColorIndex(1));
- 
- RAMNET *rn=RamNet();
-  char* std;
-  if (rn->ch_number>=255) std="GSM 1800"; else {if (rn->ch_number>=128) std="EGSM 900"; else std="GSM 900";};
-  wsprintf(ws, "%i db,%s",rn->power,std);
-  DrawString(ws,18,97,110,120,7,32,clt,GetPaletteAdrByColorIndex(1));
- 
- 
- 
- FreeWS(ws);
- 
+DrwImg(IMGHDR *img, int x, int y, char *pen, char *brush)
+{
+  RECT rc;
+  DRWOBJ drwobj;
+  StoreXYWHtoRECT(&rc,x,y,img->w,img->h);
+  SetPropTo_Obj5(&drwobj,&rc,0,img);
+  SetColor(&drwobj,pen,brush);
+  DrawObject(&drwobj);
 }
 
+////////////////////////////////////////////
 
+
+
+int png_pic=0;
 
 void Menu()
 {
-  int a;
-  int ta=1;
-  int b=0;
-  char cl4[]={0xD1,0xDE,0xE7,0x64};
-//  char cl2[]={0x91,0x9E,0xE7,0x64};
+  int h=ScreenH();
+  int w=ScreenW();
+  int w_c=1;
+  int h_c=1;
+  char clt[]={0xD1,0xDE,0xE7,0x64};
+  int sel_x,sel_y,sel;
   WSHDR *ws=AllocWS(256);
-  char* ex;
-  int ij=y*3+x;
-  
-  int active,active_ta,active_b;
-  char temp[64];
-  char path[64]="0:\\Zbin\\img\\Menu\\";
-  char full_path[64]="0:\\Zbin\\img\\Menu\\";
-  char cut_ex[11]="";
-  int g=0;
-  int lim=0;
-  DrawImg(0,0,(int)back);
-  
-  for (a=from;a<(3*show);a++)
+  char const curbcol[]={0,0,0,80};
+  char const bgcol[]={0,0,0,43};
+  char const framecol[]={255,255,255,100};
+  int i;
+  int img_w,img_h,sel_w,sel_h;
+  if ((strlen(Bg)==0))
   {
-    
-  
-    if (mmenu[a]==0) 
+    void *canvasdata=BuildCanvas();
+    DrawCanvas(canvasdata, img_x, img_y, w, h, 0);
+  }
+  else
+  {
+#ifdef mod
+    void *canvasdata=BuildCanvas();
+    DrawCanvas(canvasdata, img_x, img_y, w, h, 0);
+#endif
+    if (!bg) {bg=CreateIMGHDRFromPngFile(Bg,CTYPE2);}
+    DrwImg(bg,img_x,img_y,GetPaletteAdrByColorIndex(0),
+           GetPaletteAdrByColorIndex(1));
+  }
+  for (i=0;i<NumOfItems;i++)
+  {
+    if (mmenu[i]==1)         //если выделенный пункт...
     {
-      sprintf(temp,"%i_s.png",a+1);
-      sprintf(full_path,"%s%s",path,temp);
-      DrawImg(47*(ta-1),3+176/showing*b,(int)full_path);
-      ex=names[a];
-      if (strlen(ex)>5) lim=5;
-        else lim=strlen(ex);
-        for (g=0;g<lim;g++)
-          {
-              cut_ex[g]=ex[g];
-            }
-      if (strlen(ex)>5)
-        wsprintf(ws,"%t%t",cut_ex,"...");
-      else wsprintf(ws,"%t",ex);
-    if (a%3==0)
-        DrawString(ws,0,(6)+(176/showing)*b+24,176,(30)+(121/showing)*b+60,7,32,GetPaletteAdrByColorIndex(1),cl4); 
-    if (a%3==1)
-        DrawString(ws,41*(ta-1)+22-(strlen(cut_ex)*8)/2,(6)+(176/showing)*b+24,41*(ta-1)+32+(strlen(cut_ex)*8)/2,(30)+(121/showing)*b+60,7,32,GetPaletteAdrByColorIndex(1),cl4); 
-    if (a%3==2)
-        DrawString(ws,41*(ta-1)+48-(strlen(cut_ex)*8),(6)+(176/showing)*b+24,176,(30)+(121/showing)*b+60,7,32,GetPaletteAdrByColorIndex(1),cl4); 
+      int t;
+      t=(Items[i].UnSel_PicIsPng)?((int)Items[i].IconUnSel):(Icons_UnSel[i]);
+      img_w=GetImgWidth(t);
+      img_h=GetImgHeight(t);
+      t=(Items[i].Sel_PicIsPng)?((int)Items[i].IconSel):(Icons_Sel[i][0]);
+      sel_w=GetImgWidth(t);
+      sel_h=GetImgHeight(t);
+      sel=i;
+      sel_x=Items[i].x;
+      sel_y=Items[i].y;
+      if (sel_w>img_w) sel_x=Items[i].x-((sel_w-img_w)/2);
+      else sel_x=Items[i].x+((img_w-sel_w)/2);
+      if (sel_h>img_h) sel_y=Items[i].y-((sel_h-img_h)/2);
+      else sel_y=Items[i].y+((img_h-sel_h)/2);
     }
-    else if (mmenu[a]==1) 
+    else    //пункт невыделенный
     {
-      active=a;
-      active_ta=ta;   /*having? from bug pererisovk*/
-      active_b=b;
-    }
-  ta++;
-  
-  if ((ta%4==0)&&(a!=0) )
-    {
-      b++;
-      ta=1;
-
+#ifndef mod
+      if (Items[i].UnSel_PicIsPng)      //картинка в пнг
+      {
+        if (!img_unsel[i]) img_unsel[i]=CreateIMGHDRFromPngFile(Items[i].IconUnSel,CTYPE2);
+        DrwImg(img_unsel[i],Items[i].x,Items[i].y,GetPaletteAdrByColorIndex(0),
+               GetPaletteAdrByColorIndex(1));
+      }
+      else DrawImg(Items[i].x,Items[i].y,(int)Icons_UnSel[i]);
+#endif
     }
   }
-      sprintf(temp,"%i_b.png",active+1);
-      sprintf(full_path,"%s%s",path,temp);
-      DrawImg(41*(active_ta-1),7+(163/showing)*active_b,(int)full_path);  
+  wsprintf(ws,percent_t,Items[sel].Name);
+  DrawString(ws,Desc.x,Desc.y,w,h,FONT_SMALL,32,text_col, text_bevel_col);
+  GetDateTime(&date,&time);
+  wsprintf(ws,"%02i:%02i",time.hour,time.min);
+  DrawString(ws,Clock.x,Clock.y,w,h,FONT_SMALL,32,text_col,text_bevel_col);
+  if (Items[sel].UseCurr==0)      //если указана иконка выделенного пункта
+  {
+    if (Items[sel].Sel_PicIsPng==1)     //если иконка в пнг
+    {
+      if (!img_sel[png_pic][sel]) img_sel[png_pic][sel]=CreateIMGHDRFromPngFile(Items[sel].IconSel[png_pic],CTYPE2);
+      DrwImg(img_sel[png_pic][sel],sel_x,sel_y,GetPaletteAdrByColorIndex(0),
+             GetPaletteAdrByColorIndex(1));
+      if (flag=='mm') png_pic++;
+      if ((png_pic>Items[sel].Png_Count)) png_pic=0;
+    }
+    else    //из прошивки
+    {
+      DrawImg(sel_x,sel_y,pic);
+      if ((flag=='mm'))         //чтоб анмация не поигравалась, кода окошко доп. инф-ии активно
+      {
+        if (pic>=Icons_Sel[sel][0]+Icons_Sel[sel][1]-1) pic=Icons_Sel[sel][0];
+        else pic++;
+      }
+    }
+  }
+  else      //иконка не указана->рисуем курсорчег
+  {
+    int t2;
+    t2=(Items[sel].UnSel_PicIsPng)?((int)Items[sel].IconUnSel):(Icons_UnSel[sel]);
+    int iw=GetImgWidth(t2);
+    int ih=GetImgHeight(t2);
+    int ch=GetImgHeight((int)cur);
+    int cw=GetImgWidth((int)cur);
+    //рисуем картинку невыделенного пункта
+#ifndef mod
+    if (Items[i].UnSel_PicIsPng)
+    {
+      if (!img_unsel[sel]) img_unsel[sel]=CreateIMGHDRFromPngFile(Items[sel].IconUnSel,CTYPE2);
+      DrwImg(img_unsel[sel],Items[sel].x,Items[sel].y,GetPaletteAdrByColorIndex(0),
+             GetPaletteAdrByColorIndex(1));
+    }
+    else DrawImg(Items[sel].x,Items[sel].y,(int)Icons_UnSel[sel]);
+#endif
 
- ex=names[ij];
 
-wsprintf(ws,  percent_t ,ex);
-if (x==0)
-DrawString(ws,0,(13)+(163/showing)*active_b,176,(30)+(121/showing)*active_b+50,7,0,GetPaletteAdrByColorIndex(1),cl4); 
-if (x==1)
-DrawString(ws,41*(active_ta-1)+32-(strlen(ex)*8)/2,(13)+(163/showing)*active_b,41*(active_ta-1)+32+(strlen(ex)*8)/2,(30)+(121/showing)*active_b+50,7,0,GetPaletteAdrByColorIndex(1),cl4); 
-if (x==2)
-DrawString(ws,0,(13)+(163/showing)*active_b,176,(30)+(121/showing)*active_b+50,7,3,GetPaletteAdrByColorIndex(1),cl4); 
+    /////
+    if (!curr) curr=CreateIMGHDRFromPngFile(cur,CTYPE2);       //курсорчег
+#ifdef mod
+    DrwImg(curr, Items[sel].x, Items[sel].y,GetPaletteAdrByColorIndex(0),
+           GetPaletteAdrByColorIndex(1));
+#else
+    DrwImg(curr, (Items[sel].x+iw-(cw/2)), (Items[sel].y+ih-(ch/2)),GetPaletteAdrByColorIndex(0),
+           GetPaletteAdrByColorIndex(1));
+#endif
+  }
 
-FreeWS(ws);
-  bar();
-  
-  if (flag=='st') Start();
-  if (flag=='iw') Info();
+  if (Accu.pic>0)        //если не указана картинка, то не показывать
+  {
+    if (*RamCap()>=3)DrawImg(Accu.x, Accu.y, Accu.pic);
+    if (*RamCap()>=7) DrawImg(Accu.x, Accu.y, Accu.pic+1);
+    if (*RamCap()>=17) DrawImg(Accu.x, Accu.y, Accu.pic+2);
+    if (*RamCap()>=25) DrawImg(Accu.x, Accu.y, Accu.pic+3);
+    if (*RamCap()>=32) DrawImg(Accu.x, Accu.y, Accu.pic+4);
+    if (*RamCap()>=40) DrawImg(Accu.x, Accu.y, Accu.pic+5);
+    if (*RamCap()>=47) DrawImg(Accu.x, Accu.y, Accu.pic+6);
+    if (*RamCap()>=55) DrawImg(Accu.x, Accu.y, Accu.pic+7);
+    if (*RamCap()>=62) DrawImg(Accu.x, Accu.y, Accu.pic+8);
+    if (*RamCap()>=70) DrawImg(Accu.x, Accu.y, Accu.pic+9);
+    if (*RamCap()>=78) DrawImg(Accu.x, Accu.y, Accu.pic+10);
+    if (*RamCap()>=85) DrawImg(Accu.x, Accu.y, Accu.pic+11);
+  }
+  RAMNET *rn=RamNet();
+  if (Net.pic>0)   //если не указана картинка, то не показывать
+  {
+    if (rn->power<=139) DrawImg(Net.x,Net.y, Net.pic);
+    if (rn->power<=126) DrawImg(Net.x,Net.y, Net.pic+1);
+    if (rn->power<=113) DrawImg(Net.x,Net.y, Net.pic+2);
+    if (rn->power<=100) DrawImg(Net.x,Net.y, Net.pic+3);
+    if (rn->power<=87) DrawImg(Net.x,Net.y, Net.pic+4);
+    if (rn->power<=74) DrawImg(Net.x,Net.y, Net.pic+5);
+  }
+  if (flag=='wi')
+  {
+    TDate date;
+    TTime time;
+    GetDateTime(&date,&time);
+    int size=GetFontYSIZE(FONT_SMALL);
+    DrawRoundedFrame( 0, 0, w, h, 0, 0, 0, curbcol, bgcol );
+    DrawRoundedFrame( w/2-50*w_c, h/2-40*h_c, w/2+50*w_c, h/2+40*h_c, 7, 7, 0, framecol, curbcol );
+    WSHDR *ws1 = AllocWS(256);
+    wsprintf(ws1, "%t: %i:%02i:%02i","Время",time.hour,time.min,time.sec);
+    DrawString(ws1,w/2-45*w_c,h/2-37*h_c,w,h,FONT_SMALL,32,clt,GetPaletteAdrByColorIndex(1));
+    wsprintf(ws1, "RAM: %i Kb",GetFreeRamAvail()/1024);
+    DrawString(ws1,w/2-45*w_c,h/2-17*h_c,w,h,FONT_SMALL,32,clt,GetPaletteAdrByColorIndex(1));
+    wsprintf(ws1, "%i,%03i=%i%%, %i°C",GetAkku(0,2)/1000,GetAkku(0,2)%1000,*RamCap(),(GetAkku(1,3)-0xAAA+15)/10);
+    DrawString(ws1,w/2-45*w_c,h/2+3*h_c,w,h,FONT_SMALL,32,clt,GetPaletteAdrByColorIndex(1));
+    RAMNET *rn=RamNet();
+    char* std;
+    if (rn->ch_number>=255) std="GSM 1800"; else {if (rn->ch_number>=128) std="EGSM 900"; else std="GSM 900";};
+    wsprintf(ws1, "%i db,%s",rn->power,std);
+    DrawString(ws1,w/2-45*w_c,h/2+23*h_c,w,h,FONT_SMALL,32,clt,GetPaletteAdrByColorIndex(1));
+    FreeWS(ws1);
+  }
+  if (flag=='pw')          //окошко пассворда
+  {
+    WSHDR *ws2 = AllocWS(256);
+    DrawRoundedFrame( 0, 0, w, h, 0, 0, 0, curbcol, bgcol );
+    wsprintf(ws2,"%s","Enter Password");
+    DrawString(ws2,w/2-45,h/2-10-GetFontYSIZE(FONT_SMALL),w,h,FONT_SMALL,32,clt,GetPaletteAdrByColorIndex(1));
+    DrawRoundedFrame( w/2-45, h/2-10, w/2+45, h/2+10, 0, 0, 0, framecol, curbcol );
+    wsprintf(ws2,"%s",view);
+    DrawString(ws2,w/2-45*w_c+2,h/2-10*h_c+3,w,h,7,32,clt,GetPaletteAdrByColorIndex(1));
+    FreeWS(ws2);
+  }
+  FreeWS(ws);
+  GBS_StartTimerProc(&timer,216/fps,Menu);
 }
 
 
@@ -398,7 +814,8 @@ FreeWS(ws);
 
 void OnRedraw(MAIN_GUI *data)
 {
-Menu();
+  pic=Icons_Sel[y*Cols+x][0];
+  Menu();
 }
 
 void onCreate(MAIN_GUI *data, void *(*malloc_adr)(int))
@@ -408,130 +825,168 @@ void onCreate(MAIN_GUI *data, void *(*malloc_adr)(int))
 
 void onClose(MAIN_GUI *data, void (*mfree_adr)(void *))
 {
+  FreeIcons();
   data->gui.state=0;
 }
 
 void onFocus(MAIN_GUI *data, void *(*malloc_adr)(int), void (*mfree_adr)(void *))
 {
+  REDRAW();
   data->gui.state=2;
-
   DisableIDLETMR();
-  
 }
 
 void onUnfocus(MAIN_GUI *data, void (*mfree_adr)(void *))
 {
+  GBS_DelTimer(&timer);
   if (data->gui.state!=2) return;
   data->gui.state=1;
 }
 
+
+
+void run()
+{
+  char *file=malloc(strlen(Items[y*Cols+x].Command)+1);
+  strcpy(file,Items[y*Cols+x].Command);
+  char type;
+  type=Items[y*Cols+x].RunType;
+  switch (type)
+  {
+  case F:RunFile(file);break;
+  case S:RunShort(file);break;
+  case E:RunEntry(file);break;
+  case SUB:RunSub(file);break;
+  }
+  mfree(file);
+}
+
+
+
+
 int OnKey(MAIN_GUI *data, GUI_MSG *msg)
 {
- 
-//  REDRAW();
-
   if (msg->gbsmsg->msg==KEY_DOWN || msg->gbsmsg->msg==LONG_PRESS)
   {
-  
-    switch(msg->gbsmsg->submess)
-    { 
-    case RED_BUTTON: if (flag=='mm' ) {return(1);} else {flag='mm';} REDRAW(); break;
-    case ENTER_BUTTON:  {   
-                                    if (flag=='mm') 
-                                      {
-                                        run();
-                                      } 
-                                    if (flag=='st') 
-                                      {
-                                      run();
-                                      }  
-                                    } break;
-    case LEFT_BUTTON: 
-                          {  
-                            if (flag=='mm') 
-                              {
-                                mmenu[y*3+x]=0; 
-                                x=(x-1+3)%3;
-                                mmenu[y*3+x]=1;
-                              } 
-                            REDRAW();
-                          }break;
-    case UP_BUTTON:    
-                          {  
-                          click++;
-                            if (flag=='mm') 
-                              {
-                                mmenu[y*3+x]=0; 
-                                 if (from!=0)
-                                  {
-                                    if (y<=from/3)
-                                    {
-                                      from=from-3;
-                                     show--;
-                                    }
-                                    }
-                              
-                                if (y<=0)
-                                {
-                                  y=lines;
-                                  from=(lines-showing)*3;
-                                  show=lines;
-                                }
-                                 y=y-1;
-                                  
-                                mmenu[y*3+x]=1;
-                              } 
-                            if (flag=='st') 
-                              {
-                                i=(i-1+6)%6;
-                              } 
-                            REDRAW();
-                          }break;
-    case RIGHT_BUTTON:  {  if (flag=='mm') {mmenu[y*3+x]=0; x=(x+1+3)%3;mmenu[y*3+x]=1;} REDRAW();}break;
-    case DOWN_BUTTON:  
-                           {  
-                              if (flag=='mm') 
-                                {
-                                  mmenu[y*3+x]=0;
-                                  y=y+1;
-                                  if (y>=show)
-                                  {
-                                    if (y>=lines)
-                                    {
-                                    y=0;
-                                    from=0;
-                                    show=showing;
-                                    } else{
-                                    from=from+3;
-                                    show=show+1;}
-                                  }
-                                   
-                                  mmenu[y*3+x]=1;
-                                } 
-                              if (flag=='st') {i=(i+1+6)%6;} 
-                              REDRAW();
-                           }
-                           break;
- //  case 0x01: {  click++;flag=(flag=='st')?'mm':'st'; REDRAW();}break;
-      case '1':{mmenu[y*3+x]=0;x=0;y=(from/3);mmenu[y*3+x]=1;REDRAW(); run();}break;                       
-      case '2':{mmenu[y*3+x]=0;x=1;y=(from/3);mmenu[y*3+x]=1;REDRAW(); run();}break;     
-      case '3':{mmenu[y*3+x]=0;x=2;y=(from/3);mmenu[y*3+x]=1;REDRAW(); run();}break;     
-      case '4':{mmenu[y*3+x]=0;x=0;y=(from/3)+1;mmenu[y*3+x]=1;REDRAW(); run();}break;     
-      case '5':{mmenu[y*3+x]=0;x=1;y=(from/3)+1;mmenu[y*3+x]=1;REDRAW(); run();}break;     
-      case '6':{mmenu[y*3+x]=0;x=2;y=(from/3)+1;mmenu[y*3+x]=1;REDRAW(); run();}break;     
-      case '7':{mmenu[y*3+x]=0;x=0;y=(from/3)+2;mmenu[y*3+x]=1;REDRAW(); run();}break;     
-      case '8':{mmenu[y*3+x]=0;x=1;y=(from/3)+2;mmenu[y*3+x]=1;REDRAW(); run();}break;     
-      case '9':{mmenu[y*3+x]=0;x=2;y=(from/3)+2;mmenu[y*3+x]=1;REDRAW(); run();}break;
-    case 0x2A:{mmenu[y*3+x]=0;x=0;y=(from/3)+3;mmenu[y*3+x]=1;REDRAW(); run();}break;
-   case '0':{mmenu[y*3+x]=0;x=1;y=(from/3)+3;mmenu[y*3+x]=1;REDRAW(); run();}break;
-   case 0x23:{mmenu[y*3+x]=0;x=2;y=(from/3)+3;mmenu[y*3+x]=1;REDRAW(); run();}break;
-    case 0x04: {  flag=(flag=='iw')?'mm':'iw'; REDRAW();}break;
-  //  case 0x2A:{if (mode<11){mode++;} else mode=0; REDRAW();}break;
-  //  case 0x0B:{InitConfig(); REDRAW();}break;
+    if (flag!='pw')
+    {
+      switch(msg->gbsmsg->submess)
+      {
+      case RED_BUTTON: {if (flag=='mm') return (1); else flag='mm'; REDRAW(); } break;
+      case ENTER_BUTTON:
+        {
+          pos=0;
+          view[0]='\0';
+          pass[0]='\0';
+          if (strlen(Items[y*Cols+x].Pass)==0)  run();
+          else {flag='pw'; REDRAW();}
+        } break;
+      case LEFT_BUTTON:
+        {
+          if (flag=='mm')
+          {
+            mmenu[y*Cols+x]=0;
+            if (!ena_cache) FreeSingleIcon(y*Cols+x);
+            mmenu[y*Cols+(x=(x-1+Cols)%Cols)]=1;
+            REDRAW();
+          }
+        }break;
+      case UP_BUTTON:
+        {
+          if (flag=='mm')
+          {
+            mmenu[y*Cols+x]=0;
+            if (!ena_cache) FreeSingleIcon(y*Cols+x);
+            mmenu[(y=(y-1+Rows)%Rows)*Cols+x]=1;
+            REDRAW();
+          }
+        }break;
+      case RIGHT_BUTTON:
+        {
+          if (flag=='mm')
+          {
+            mmenu[y*Cols+x]=0;
+            if (!ena_cache) FreeSingleIcon(y*Cols+x);
+            mmenu[y*Cols+(x=(x+1+Cols)%Cols)]=1;
+            REDRAW();
+          }
+        }break;
+      case DOWN_BUTTON:
+        {
+          if (flag=='mm')
+          {
+            mmenu[y*Cols+x]=0;
+            if (!ena_cache) FreeSingleIcon(y*Cols+x);
+            mmenu[(y=(y+1+Rows)%Rows)*Cols+x]=1;
+            REDRAW();
+          }
+        } break;
+
+      case 0x04:
+        {
+#ifdef NEWSGOLD
+          return(1);
+#else
+          flag=(flag=='mm')?'wi':'mm'; REDRAW();
+#endif
+        }
+#ifdef NEWSGOLD
+      case 0x01:
+        {
+          flag=(flag=='mm')?'wi':'mm'; REDRAW();
+        }break;
+#endif
+      case GREEN_BUTTON:  //разворачиваем окошко
+        {
+
+        }break;
+      }
+      for (int i=0;i<NumOfItems;i++)
+      {
+        if (msg->gbsmsg->submess==Items[i].Hotkey)      //Уважаемые туристы, сейчас наш путь пройдет через
+        {                                             //ЖОПУ, так что сильно не засматривайтесь
+          if (flag=='mm')
+          {
+            mmenu[y*Cols+x]=0;
+            BruteForce(i);   //находим x и y
+            mmenu[y*Cols+x]=1;
+            REDRAW();
+            pos=0;
+            view[0]='\0';
+            pass[0]='\0';
+            if (strlen(Items[y*Cols+x].Pass)==0) run();
+            else {flag='pw'; REDRAW();}
+          }
+        }
+      }
+    }
+    else
+    {
+      if ((msg->gbsmsg->submess>='0')&&(msg->gbsmsg->submess<='9'))
+        if (pos<=8)
+        {
+          pass[pos]=msg->gbsmsg->submess;
+          view[pos]='*';
+          pos++;
+          pass[pos]='\0';
+          view[pos]='\0';
+          REDRAW();
+        }
+      if (msg->gbsmsg->submess==RED_BUTTON)
+      {flag='mm';REDRAW();}
+      if (msg->gbsmsg->submess==ENTER_BUTTON)
+      {
+        if ((!strcmp(pass,Items[y*Cols+x].Pass))&&(*pass!='\0')) {flag='mm'; REDRAW();  run();}
+        else
+        {
+          ShowMSG(1,(int)"Incorrect Password");
+          flag='mm';
+          REDRAW();
+        }
+      }
     }
   }
-  
-  //REDRAW();
+
   return(0);
 }
 
@@ -539,7 +994,7 @@ extern void kill_data(void *p, void (*func_p)(void *));
 
 void onDestroy(MAIN_GUI *data, void (*mfree_adr)(void *))
 {
-kill_data(data,mfree_adr);
+  kill_data(data,mfree_adr);
 }
 
 int method8(void){return(0);}
@@ -552,17 +1007,17 @@ const void * const gui_methods[11]={
   (void *)onUnfocus,
   (void *)OnKey,	
   0,
-  #ifdef NEWSGOLD
-  (void *)onDestroy,
-  #else
-  (void *)kill_data,	
-  #endif
-  (void *)method8,
-  (void *)method9,
-  0
+#ifdef NEWSGOLD
+(void *)onDestroy,
+#else
+(void *)kill_data,	
+#endif
+(void *)method8,
+(void *)method9,
+0
 };
 
-const RECT Canvas={0,0,129,129};
+const RECT Canvas={0,0,131,175};
 void maincsm_oncreate(CSM_RAM *data)
 {
   MAIN_GUI *main_gui=malloc(sizeof(MAIN_GUI));
@@ -576,8 +1031,8 @@ void maincsm_oncreate(CSM_RAM *data)
   csm->csm.unk1=0;
   csm->gui_id=CreateGUI(main_gui);
   MAINGUI_ID=csm->gui_id;
-  LoadParams();
- 
+  Load_cfg();
+
 }
 
 void ElfKiller(void)
@@ -589,6 +1044,7 @@ void ElfKiller(void)
 
 void maincsm_onclose(CSM_RAM *csm)
 {
+  GBS_DelTimer(&timer);
   SUBPROC((void *)ElfKiller);
 }
 
@@ -609,18 +1065,18 @@ const struct
 }MAINCSM =
 {
   {
-  maincsm_onmessage,
-  maincsm_oncreate,
+    maincsm_onmessage,
+    maincsm_oncreate,
 #ifdef NEWSGOLD
-  0,
-  0,
-  0,
-  0,
+0,
+0,
+0,
+0,
 #endif
-  maincsm_onclose,
-  sizeof(MAIN_CSM),
-  1,
-  &minus11
+maincsm_onclose,
+sizeof(MAIN_CSM),
+1,
+&minus11
   },
   {
     maincsm_name_body,
@@ -639,13 +1095,13 @@ void UpdateCSMname(void)
 }
 
 
+
+
 int main(char *exename, char *fname)
 {
-  x=1;
-  y=1;
+  *cfg=*cur=*exename; //прописываем правильную букоффку диска-)
   char dummy[sizeof(MAIN_CSM)];
   MAINCSM_ID = CreateCSM(&MAINCSM.maincsm,dummy,0);
   UpdateCSMname();
-  
   return 0;
 }
