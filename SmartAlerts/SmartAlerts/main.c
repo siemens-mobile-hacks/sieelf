@@ -15,12 +15,19 @@
 
 GBSTMR *restarttmr;
 
+unsigned int files[5];
+unsigned int smss[5];
+unsigned int calls[5];
+unsigned int anemus[11];
+unsigned int miss[6];
+unsigned int bnemus[4];
+
 unsigned int hour[5];
 unsigned int min[7];
 unsigned int status[5];
 unsigned int weekdays[5][7];
 unsigned int day[7][24];
-unsigned int other[4];
+unsigned int other[8];
 unsigned int name2[9];
 int show_icon=0;
 int status_icon=0;
@@ -312,6 +319,54 @@ other[1]=data[241];
 other[2]=data[242];
 other[3]=data[243];
 
+other[4]=data[244];
+other[5]=data[245];
+other[6]=data[246];
+other[7]=data[247];
+
+bnemus[0]=data[248];
+bnemus[1]=data[249];
+bnemus[2]=data[250];
+bnemus[3]=data[251];
+
+miss[0]=data[252];
+miss[1]=data[253];
+miss[2]=data[254];
+miss[3]=data[255];
+miss[4]=data[256];
+miss[5]=data[257];
+
+
+files[0]=data[258];
+files[1]=data[259];
+files[2]=data[260];
+files[3]=data[261];
+files[4]=data[262];
+
+calls[0]=data[263];
+calls[1]=data[264];
+calls[2]=data[265];
+calls[3]=data[266];
+calls[4]=data[267];
+
+smss[0]=data[268];
+smss[1]=data[269];
+smss[2]=data[270];
+smss[3]=data[271];
+smss[4]=data[272];
+
+anemus[0]=data[273];
+anemus[1]=data[274];
+anemus[2]=data[275];
+anemus[3]=data[276];
+anemus[4]=data[277];
+anemus[5]=data[278];
+anemus[6]=data[279];
+anemus[7]=data[280];
+anemus[8]=data[281];
+anemus[9]=data[282];
+anemus[10]=data[283];
+
     mfree(data);
     fclose(handle,&err);
   }
@@ -321,7 +376,7 @@ other[3]=data[243];
 
 void start_ring()
 {
-  char elf[]=DEFAULT_DISK":\\Zbin\\SmartAlerts\\alarm_ring.elf";
+  char elf[]=DEFAULT_DISK":\\Zbin\\img\\SmartAlerts\\alarm_ring.elf";
   WSHDR *ws;
   ws=AllocWS(64);
   str_2ws(ws,elf,strlen(elf)+1);
@@ -330,26 +385,94 @@ void start_ring()
 }
 
 
+int runFile(char *file) 
+{
+  if(file)
+  {
+    if (strlen(file))
+    {
+      WSHDR *ws;
+      ws=AllocWS(64);
+      str_2ws(ws, file, 64);
+      ExecuteFile(ws, 0, 0);
+      FreeWS(ws);
+      return 1;
+    }
+  }
+  return 0;
+}
+
+void Play(const char *fpath, const char *fname)
+{
+  WSHDR* sndPath=AllocWS(64);
+  WSHDR* sndFName=AllocWS(64);
+
+  wsprintf(sndPath, fpath);
+  wsprintf(sndFName, fname);
+  
+    if(fpath==0)
+    {
+    FSTATS fstats;
+    unsigned int err; 
+    if (GetFileStats(fname,&fstats,&err)!=-1)
+    {
+      char s[64];
+      const char *p=strrchr(fname,'\\')+1;
+      str_2ws(sndFName,p,64);
+      strncpy(s,fname,p-fname);
+      s[p-fname]='\0';
+      str_2ws(sndPath,s,64);
+    }
+    }
+
+    PLAYFILE_OPT _sfo1;
+    zeromem(&_sfo1,sizeof(PLAYFILE_OPT));
+    _sfo1.repeat_num=1;
+    _sfo1.time_between_play=0;
+    _sfo1.play_first=0;
+    _sfo1.volume=other[4];
+#ifdef NEWSGOLD
+    _sfo1.unk6=1;
+    _sfo1.unk7=1;
+    _sfo1.unk9=2;
+    PlayFile(0x10, sndPath, sndFName, MMI_CEPID, MSG_PLAYFILE_REPORT, &_sfo1);
+#else
+#ifdef X75
+    _sfo1.unk4=0x80000000;
+    _sfo1.unk5=1;
+    PlayFile(0xC, sndPath, sndFName, 0, MMI_CEPID, MSG_PLAYFILE_REPORT, &_sfo1);
+#else
+    _sfo1.unk5=1;
+    PlayFile(0xC, sndPath, sndFName, MMI_CEPID, MSG_PLAYFILE_REPORT, &_sfo1);
+#endif
+#endif 
+    
+  FreeWS(sndPath);
+  FreeWS(sndFName);
+}
+
+
+
 void start_(void)
 {
   if(name2[8])
   {
   void stop_(void);
-  if(!capsave||(*RamCap()<capnum))
+  if(!bnemus[0]||(*RamCap()<bnemus[1]))
   {
   	if (other[1])
-		SetIllumination(0, 1, light, 0);
+		SetIllumination(0, 1, other[7], 0);
 	if (other[2])
-		SetIllumination(1, 1, light, 0);   
+		SetIllumination(1, 1, other[7], 0);   
 #ifndef NEWSGOLD
 	if (other[3])
-		SetIllumination(2, 1, light, 0);
+		SetIllumination(2, 1, other[7], 0);
 #else
 	if (other[3])
-		SetIllumination(4, 1, light, 0);
+		SetIllumination(4, 1, other[7], 0);
 #endif
   
-  if (other[0]) SetVibration(vibra_pow);
+  if (other[0]) SetVibration(other[6]);
   }
   GBS_StartTimerProc(&tmr_vibra,TMR_SECOND>>1,stop_);
   }
@@ -413,46 +536,41 @@ GetDateTime(&date,&time);
    
    if(name2[1])
    {
-     if (!(time.hour<amin)&&!(time.hour>amax))
+     if (!(time.hour<anemus[3])&&!(time.hour>anemus[4]))
         {              
-         if(time.min==minute&&!(sdate&&time.hour==smstime.hour&&time.min==smstime.min))
+         if(time.min==anemus[5]&&!(name2[7]&&time.hour==smss[3]&&time.min==smss[4]))
 	 { 
-               if(talk&&((GetProfile()+1)!=filter))
+               if(anemus[1]&&((GetProfile()+1)!=anemus[9]))
                {
                    char w[5];
                    sprintf(w, "%d.%s",time.hour,mstyle);
                    Play(sound,w);
                }
-               else if(voice&&((GetProfile()+1)!=filter))
+               else if(anemus[0]&&((GetProfile()+1)!=anemus[9]))
                {
                    Play(0,vname);
                }
                else
                {
-		   PlaySound(1,0,0,melody,0);
+		   PlaySound(1,0,0,anemus[6],0);
                }
-               if(!amelody)
-               {
-                   _count=count2;
+                   _count=other[5];
                    start_();
-               }
 	  }
-          else if(time.min==minute2&&twice)
+          else if(time.min==anemus[7]&&anemus[2])
 	  { 
-               PlaySound(1,0,0,melody2,0);
-               if(!amelody)
-               {
-                  _count=count2;
+               PlaySound(1,0,0,anemus[8],0);
+                  _count=other[5];
                   start_();
-               }
+
            }
         }
    }
         if(name2[5])
         {
-          if(!rdate||(date.month==rundate.month&&date.day==rundate.day))
+          if(!files[0]||(date.month==files[1]&&date.day==files[2]))
           {
-          if(time.hour==runtime.hour&&time.min==runtime.min)
+          if(time.hour==files[3]&&time.min==files[4])
            {
            runFile((char*)name1);
            }
@@ -461,9 +579,9 @@ GetDateTime(&date,&time);
         
         if(name2[6])
         {
-          if(!cdate||(date.month==calldate.month&&date.day==calldate.day))
+          if(!calls[0]||(date.month==calls[1]&&date.day==calls[2]))
           {
-	  if(time.hour==calltime.hour&&time.min==calltime.min)
+	  if(time.hour==calls[3]&&time.min==calls[4])
            {
             if(strlen(callnum)>5)
             MakeVoiceCall(callnum,0x10,0x2FFF);
@@ -473,9 +591,9 @@ GetDateTime(&date,&time);
         
         if(name2[7])
         {
-         if(!sdate||(date.month==smsdate.month&&date.day==smsdate.day))
+         if(!smss[0]||(date.month==smss[1]&&date.day==smss[2]))
           {
-	  if(time.hour==smstime.hour&&time.min==smstime.min)
+	  if(time.hour==smss[3]&&time.min==smss[4])
           {
                 utf8_2ws(ws,content,210);
                 if(strlen(smsnum)>5)
@@ -486,9 +604,9 @@ GetDateTime(&date,&time);
      
         if (name2[4])
         {
-           if (*RamCap()==100&&fb!=fcount)
+           if (*RamCap()==100&&fb!=bnemus[3])
            {
-           PlaySound(1,0,0,melody3,0);
+           PlaySound(1,0,0,bnemus[2],0);
            fb++;
            }
            else if(*RamCap()!=100)
@@ -497,24 +615,24 @@ GetDateTime(&date,&time);
         
         if(name2[3])
         {
-          if (!(time.hour*60+time.min<misstime1.hour*60+misstime1.min)&&!(time.hour*60+time.min>misstime2.hour*60+misstime2.min))
+          if ((time.hour>=miss[2])&&(time.hour<=miss[3]))
           {
-          if(time.min%mminute==0)
+          if(time.min%miss[5]==0)
           {
           #ifdef NEWSGOLD          
-	    if (GetMissedEventCount(events) > 0)
+	    if (GetMissedEventCount(0) > 0)
           #else
             if (GetMissedCallsCount()||HasNewSMS()) 
           #endif
           {
-            if(!mvib)
+            if(!miss[0])
             {
-             if(voice2)
+             if(miss[1])
               Play(0,mname); 
              else
-             PlaySound(1,0,0,melodym,0);
+             PlaySound(1,0,0,miss[4],0);
             }
-             _count=count2;
+             _count=other[5];
              start_();
           }
           }
