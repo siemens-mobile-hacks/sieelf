@@ -139,8 +139,8 @@
 ;20C:              ;  83: GetPathOfFoundFile
 0210: 0xA0253604   ;  84: int GetFileStats(const char *cFileName, void *StatBuffer, unsigned int *errornumber)
 0214: 0xA027053D   ;  85: StrCmpNoCase
-;218:              ;  86: ReadEEPROMData
-;21C:              ;  87: WriteEEPROMData
+0218: 0xA01E56F8   ;  86: ReadEEPROMData
+021C: 0xA01E5964   ;  87: WriteEEPROMData
 0220: 0xA022FE28   ;  88: char GetAccessoryType(void)
 0224: 0xA0968BE0   ;  89: GetLangMesIntoWS
 0228: 0xA02531E8   ;  8A: int GetFreeFlexSpace(int DriveNum, unsigned int *ErrorNumber)

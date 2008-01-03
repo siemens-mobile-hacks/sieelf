@@ -3159,10 +3159,6 @@ __swi __arm  TDateTimeSettings *RamDateTimeSettings(void);
 __swi __arm int GetTimeZoneShift(TDate *, TTime *, int timeZone);
 //pattern=38B5151C0124002A + 1
 
-#pragma swi_number=0x86
-__swi __arm void ReadEEPROMData(int block, void *buf, int offset, int size);
-//arm
-
 #pragma swi_number=0x7E
 __swi __arm int Rand(void);
 //thumb
