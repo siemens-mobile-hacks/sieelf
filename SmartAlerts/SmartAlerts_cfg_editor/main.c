@@ -1047,7 +1047,7 @@ void edit()
     case 2: if(ch[2])
       min[num_alarm]=backup[2];
             if(ch[4])
-      min[6]=backup[3];   
+      min[6]=backup[2];   
            if(ch[5])
       bnemus[bnemu]=backup[2];   
            if(ch[6])
@@ -1138,7 +1138,7 @@ void OnRedraw()
       ascii2ws(ws, save,0);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
-      int a=scr_w-20;
+      int a=scr_w-font_size*2;
       int tmp=scr_h/10.3;
       for (int i=0;i<menus;i++)
       {
@@ -1197,18 +1197,18 @@ void OnRedraw()
       ascii2ws(ws,back,0);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
-      int a=scr_w-20;
+      int a=scr_w-font_size*2;
       int tmp=scr_h/10.3;
       
       
       wsprintf(ws,"%02d",anemus[4]);
       if(anemu==3)
-      DrwStr(ws,a-30,tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
+      DrwStr(ws,a-font_size*1.5,tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
       else
-      DrwStr(ws,a-30,tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,a-font_size*1.5,tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       wsprintf(ws, "-");
-      DrwStr(ws,a-15,tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,a-font_size*0.5,tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       wsprintf(ws,"%02d",anemus[5]);
       if(anemu==4)
@@ -1286,7 +1286,7 @@ void OnRedraw()
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   
   
-      int a=scr_w-20;
+      int a=scr_w-font_size*2;
       int tmp=scr_h/7.3;
       for (int i=0;i<6;i++)
       {
@@ -1325,7 +1325,7 @@ void OnRedraw()
       ascii2ws(ws,back,0);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
-      int a=scr_w-20;
+      int a=scr_w-font_size*2;
       int tmp=scr_h/7.3;
 
 
@@ -1367,7 +1367,7 @@ void OnRedraw()
       ascii2ws(ws,back,0);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
-      int a=scr_w-20;
+      int a=scr_w-font_size*2;
       int tmp=scr_h/7.3;
       int c=font_size*1.5;
 
@@ -1414,7 +1414,7 @@ void OnRedraw()
       ascii2ws(ws,back,0);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
-      int a=scr_w-20;
+      int a=scr_w-font_size*2;
       int tmp=scr_h/7.3;
       int c=font_size*1.5;
 
@@ -1461,7 +1461,7 @@ void OnRedraw()
       ascii2ws(ws,back,0);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
-      int a=scr_w-20;
+      int a=scr_w-font_size*2;
       int tmp=scr_h/7.3;
       int c=font_size*1.5;
 
@@ -1509,7 +1509,7 @@ void OnRedraw()
       ascii2ws(ws,back,0);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
-      int a=scr_w-20;
+      int a=scr_w-font_size*2;
       int tmp=scr_h/9.3;
       for (int i=0;i<8;i++)
       {

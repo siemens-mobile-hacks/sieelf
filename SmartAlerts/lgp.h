@@ -1,7 +1,7 @@
 #ifndef lgp_H
 #define lgp_H
 
-#define EN
+//#define EN
 #ifdef EN
 const char on[]="on";
 const char off[]="off";
