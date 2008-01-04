@@ -27,7 +27,7 @@ unsigned int min[7];
 unsigned int status[5];
 unsigned int weekdays[5][7];
 unsigned int day[7][24];
-unsigned int other[8];
+unsigned int other[9];
 unsigned int name2[9];
 int show_icon=0;
 int status_icon=0;
@@ -367,6 +367,8 @@ anemus[8]=data[281];
 anemus[9]=data[282];
 anemus[10]=data[283];
 
+other[8]=data[284];
+
     mfree(data);
     fclose(handle,&err);
   }
@@ -536,7 +538,7 @@ GetDateTime(&date,&time);
    
    if(name2[1])
    {
-     if (!(time.hour<anemus[3])&&!(time.hour>anemus[4]))
+     if ((time.hour>=anemus[3])&&(time.hour<=anemus[4]))
         {              
          if(time.min==anemus[5]&&!(name2[7]&&time.hour==smss[3]&&time.min==smss[4]))
 	 { 
@@ -562,7 +564,6 @@ GetDateTime(&date,&time);
                PlaySound(1,0,0,anemus[8],0);
                   _count=other[5];
                   start_();
-
            }
         }
    }
@@ -646,7 +647,11 @@ GetDateTime(&date,&time);
   if(time.min==min[6])
   {
    int a1,a2;
+   if(GetWeek(&date)<5&&other[8])
+   a1=0;
+   else
    a1=GetWeek(&date);
+   
    a2=time.hour;
    if(day[a1][a2]<9&&day[a1][a2]!=0)
      SetProfile(day[a1][a2]-1);

@@ -21,7 +21,7 @@
 #endif
 
 #define menus 9
-#define sevens 7
+#define sevens 8
 #define dats 24
 
 
@@ -41,7 +41,7 @@ unsigned int miss[6];
 
 unsigned int bnemus[4];
 unsigned int backup[7];
-unsigned int other[8];
+unsigned int other[9];
 unsigned int name2[9];
 unsigned int max;
 unsigned int mode=0;
@@ -725,6 +725,8 @@ anemus[8]=data[281];
 anemus[9]=data[282];
 anemus[10]=data[283];
 
+other[8]=data[284];
+
     mfree(data);
   }
   fclose(handle,&err);
@@ -982,10 +984,10 @@ data[241]=other[1];
 data[242]=other[2];
 data[243]=other[3];
 
-data[244]=other[0];
-data[245]=other[1];
-data[246]=other[2];
-data[247]=other[3];
+data[244]=other[4];
+data[245]=other[5];
+data[246]=other[6];
+data[247]=other[7];
 
 data[248]=bnemus[0];
 data[249]=bnemus[1];
@@ -1029,6 +1031,8 @@ data[281]=anemus[8];
 data[282]=anemus[9];
 data[283]=anemus[10];
 
+data[284]=other[8];
+
     fwrite(handle,data,300,&err);
     mfree(data);
   }
@@ -1059,7 +1063,7 @@ void edit()
            if(ch[9])
       smss[sms]=backup[2];
           if(ch[10])
-      anemus[anemu+1]=backup[2];
+      anemus[anemu]=backup[2];
           if(ch[11])
       other[onum]=backup[2];
       
@@ -1191,17 +1195,21 @@ void OnRedraw()
       ascii2ws(ws,alerts_name[mode-1],0);
       DrwStr(ws,30,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
+      int a=scr_w-font_size*2;
+      GetDateTime(0,&time);
+      wsprintf(ws,"%d:%d",time.hour,time.min);
+      DrwStr(ws,a-font_size,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+     
       ascii2ws(ws,change,0);
       DrwStr(ws,8,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       ascii2ws(ws,back,0);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
-      int a=scr_w-font_size*2;
       int tmp=scr_h/10.3;
       
       
-      wsprintf(ws,"%02d",anemus[4]);
+      wsprintf(ws,"%02d",anemus[3]);
       if(anemu==3)
       DrwStr(ws,a-font_size*1.5,tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
       else
@@ -1210,7 +1218,7 @@ void OnRedraw()
       wsprintf(ws, "-");
       DrwStr(ws,a-font_size*0.5,tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
-      wsprintf(ws,"%02d",anemus[5]);
+      wsprintf(ws,"%02d",anemus[4]);
       if(anemu==4)
       DrwStr(ws,a,tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
       else
@@ -1233,7 +1241,7 @@ void OnRedraw()
 
        if(i>4)
        {
-        wsprintf(ws, "%02d",anemus[i+1]);
+        wsprintf(ws, "%02d",anemus[i]);
         if(anemu==i)
         DrwStr(ws,a,tmp*i,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
           else DrwStr(ws,a,tmp*i,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
@@ -1260,13 +1268,17 @@ void OnRedraw()
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
 
-      int tmp=scr_h/8.7;
-      for (int i=0;i<7;i++)
+      int tmp=scr_h/9.9;
+      for (int i=0;i<8;i++)
       {
         ascii2ws(ws,wd2[i],0);
         if (seven==i) DrwStr(ws,5,1+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
           else DrwStr(ws,5,1+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       }
+      if (other[8])  draw_pic(wd_on,scr_w-font_size*2,tmp*8);
+          else draw_pic(wd_off,scr_w-font_size*2,tmp*8);
+      
+      
     } break; 
   
   
@@ -1561,7 +1573,7 @@ void OnRedraw()
       ascii2ws(ws, ok,0);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
-      int a=scr_w/2-GetSymbolWidth('n',FONT_SMALL)*2;
+      int a=scr_w/2-font_size*0.5;
       if (status[num_alarm]) ascii2ws(ws, on,0);
           else 
           {
@@ -1928,7 +1940,13 @@ int onkey(unsigned char keycode, int pressed)
             {
             case RED_BUTTON: return(1);
             case ENTER_BUTTON:
-            case LEFT_SOFT:  mode=15; OnRedraw(); break;
+            case LEFT_SOFT:  
+                if(seven==7)
+                {
+                if (other[8]==1) other[8]=0; else other[8]=1;
+		}
+              else
+              mode=15; OnRedraw(); break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
             //case GREEN_BUTTON: open_bcfg(bcfgfile1); break;
             case UP_BUTTON:
