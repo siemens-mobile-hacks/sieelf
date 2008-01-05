@@ -145,7 +145,7 @@ _C_LIB_DECL
  __INTRINSIC ubyte LunarYearId(ulong year);// 返回某公历是否闰年
  __INTRINSIC uword BetweenDaySum(TDate start,TDate end);//计算两日期之间的天数
  __INTRINSIC uword GetDayFromYearBegin(ulong AYear,ubyte AMonth,ubyte ADay);// 取某日期到年初的天数
- __INTRINSIC ubyte FileExists(char *FileName,int *Handle);
+ __INTRINSIC ubyte FileExists(char *FileName,int *Handle);//判断文件是否存在!
 _END_C_LIB_DECL
 _C_STD_END
 //函数执行代码
@@ -988,6 +988,7 @@ void LunarHolDay(WSHDR* ws,int LunarId)
  using _CSTD LunarYearId;
  using _CSTD BetweenDaySum;
  using _CSTD GetDayFromYearBegin;
+ using _CSTD FileExists;
 #endif /* 导出函数引用表 */
  
 
