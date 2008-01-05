@@ -3041,6 +3041,7 @@ inc/pnglist.h -text
 inc/rsa.h -text
 inc/sha.h -text
 inc/sieapi.h -text
+inc/siecxt.h -text
 inc/swilib.h -text
 inc/xtask_ipc.h -text
 inc/zconf.h -text
