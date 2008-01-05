@@ -126,6 +126,16 @@ CfgEditCN/func.asm -text
 CfgEditCN/main.c -text
 CfgEditCN/test.xcl -text
 CfgEditCN/visual.c -text
+CodeShowPatch/CodeShow.C -text
+CodeShowPatch/CodeShowPatch.ewp -text
+CodeShowPatch/CodeShowPatch.eww -text
+CodeShowPatch/DataBase.vkp -text
+CodeShowPatch/E71Cv41.inc -text
+CodeShowPatch/E71Cv41.xcl -text
+CodeShowPatch/about.txt -text
+CodeShowPatch/addr.h -text
+CodeShowPatch/main.asm -text
+CodeShowPatch/mk.bat -text
 DialExt/DialExt.ewp -text
 DialExt/DialExtDial.eww -text
 DialExt/conf_loader.c -text
