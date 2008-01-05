@@ -28,6 +28,9 @@ __root const int smsn=1;
 __root const CFG_HDR cfghdr108 = {CFG_CHECKBOX,"Sms codeshow",0,0};
 __root const int smsc=1;
 
+__root const CFG_HDR cfghdr109 = {CFG_CHECKBOX,"Voice",0,0};
+__root const int voice=0;
+
 
 __root const CFG_HDR cfghdr_m4={CFG_LEVEL,"",0,0};
 

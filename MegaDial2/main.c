@@ -2,6 +2,7 @@
 #include "conf_loader.h"
 #include "extern.h"
 #include "MegaDial.h"
+#include "math.h"
 //#include "ussd_process.h"
 //#include "main.h"
 
@@ -807,8 +808,8 @@ void Play(const char *fpath, const char *fname)
 IMGHDR *my_pic=0;
 
 //#define PI 3.1415926535
-#define CTYPE1 10
-#define CTYPE2 3
+#define CTYPE1 0
+#define CTYPE2 1
 
 typedef struct {
   int x;
@@ -906,6 +907,55 @@ void deleteIMGHDR(IMGHDR *img)
   mfree(img); 
 }
 
+IMGHDR *rotate(IMGHDR *img, float angle, int del)
+{
+  double ang = -angle*acos(0)/90;
+  int newWidth, newHeight;
+  int nWidth = img->w;
+  int nHeight= img->h;
+  double cos_angle = cos(ang);
+  double sin_angle = sin(ang);
+  
+  POINT p1={0,0};
+  POINT p2={nWidth,0};
+  POINT p3={0,nHeight};
+  POINT p4={nWidth-1,nHeight};
+  POINT newP1,newP2,newP3,newP4, leftTop, rightTop, leftBottom, rightBottom;
+  
+  newP1.x = p1.x;
+  newP1.y = p1.y;
+  newP2.x = (long)(p2.x*cos_angle - p2.y*sin_angle);
+  newP2.y = (long)(p2.x*sin_angle + p2.y*cos_angle);
+  newP3.x = (long)(p3.x*cos_angle - p3.y*sin_angle);
+  newP3.y = (long)(p3.x*sin_angle + p3.y*cos_angle);
+  newP4.x = (long)(p4.x*cos_angle - p4.y*sin_angle);
+  newP4.y = (long)(p4.x*sin_angle + p4.y*cos_angle);
+  
+  leftTop.x = min(min(newP1.x,newP2.x),min(newP3.x,newP4.x));
+  leftTop.y = min(min(newP1.y,newP2.y),min(newP3.y,newP4.y));
+  rightBottom.x = max(max(newP1.x,newP2.x),max(newP3.x,newP4.x));
+  rightBottom.y = max(max(newP1.y,newP2.y),max(newP3.y,newP4.y));
+  leftBottom.x = leftTop.x;
+  leftBottom.y = rightBottom.y;
+  rightTop.x = rightBottom.x;
+  rightTop.y = leftTop.y;
+  
+  newWidth = rightTop.x - leftTop.x;
+  newHeight= leftBottom.y - leftTop.y;
+  IMGHDR *img2=createIMGHDR(newWidth, newHeight, CTYPE1);
+  
+  int x,y,newX,newY,oldX,oldY;
+  for (y = leftTop.y, newY = 0; y<=leftBottom.y; y++,newY++){
+    for (x = leftTop.x, newX = 0; x<=rightTop.x; x++,newX++){
+      oldX = (long)(x*cos_angle + y*sin_angle /*- 0.5*/);
+      oldY = (long)(y*cos_angle - x*sin_angle /*- 0.5*/);
+      setcolor(img2,newX,newY,getcolor(img,oldX,oldY));
+    }
+  }
+  if(del)
+    deleteIMGHDR(img);
+  return img2;
+}
 
 IMGHDR *alpha(IMGHDR *img, char a, int nw, int del)
 {
@@ -931,28 +981,35 @@ IMGHDR *resample(IMGHDR *img, int px, int py, int fast, int del)
   xScale = (float)img->w  / (float)newx;
   yScale = (float)img->h / (float)newy;
   
-  IMGHDR *img2=createIMGHDR(newx,newy, CTYPE1);
-  if (fast) {
-    for(long y=0; y<newy; y++){
+  IMGHDR *img2=createIMGHDR(newx,newy,CTYPE1);
+  if (fast) 
+  {
+    for(long y=0; y<newy; y++)
+    {
       fY = y * yScale;
-      for(long x=0; x<newx; x++){
+      for(long x=0; x<newx; x++)
+      {
         fX = x * xScale;
         setcolor(img2,  x,  y, getcolor(img, (long)fX,(long)fY));
       }
     }
-  } else {
+  }
+  else 
+  {
     long ifX, ifY, ifX1, ifY1, xmax, ymax;
     float ir1, ir2, ig1, ig2, ib1, ib2, ia1, ia2, dx, dy;
     char r,g,b,a;
     color rgb1, rgb2, rgb3, rgb4;
     xmax = img->w-1;
     ymax = img->h-1;
-    for(long y=0; y<newy; y++){
+    for(long y=0; y<newy; y++)
+    {
       fY = y * yScale;
       ifY = (int)fY;
       ifY1 = min(ymax, ifY+1);
       dy = fY - ifY;
-      for(long x=0; x<newx; x++){
+      for(long x=0; x<newx; x++)
+      {
         fX = x * xScale;
         ifX = (int)fX;
         ifX1 = min(xmax, ifX+1);
@@ -989,7 +1046,7 @@ IMGHDR *resample(IMGHDR *img, int px, int py, int fast, int del)
 
 void DrwPic(int x,int y,const char *pic_path,int pic_size)
 {
-  //unsigned int pic_op = 95;
+  //unsigned int pic_op = 50;
   if(my_pic) deleteIMGHDR(my_pic);
   my_pic=0;
   if(strlen(pic_path))
@@ -999,22 +1056,28 @@ void DrwPic(int x,int y,const char *pic_path,int pic_size)
     if (GetFileStats(pic_path,&fstats,&err)!=-1)
     {
       #ifdef NEWSGOLD
-      if(my_pic=CreateIMGHDRFromPngFile(pic_path, 0)) 
+      if(my_pic=CreateIMGHDRFromPngFile(pic_path, CTYPE2)) 
       {                                                    
         my_pic=resample(my_pic, pic_size, pic_size, 0, 1); 
-       // my_pic=alpha(my_pic, 255-255*pic_op/100, 0, 0);    
+        //if(ROT)
+        //my_pic=rotate(my_pic, ROT*-1, 1);
+        //my_pic=alpha(my_pic, 255-255*pic_op/100, 0, 0);    
       }
+      
       #else
       #ifdef X75
-      if(my_pic=CreateIMGHDRFromPngFile(pic_path, 0)) 
+      if(my_pic=CreateIMGHDRFromPngFile(pic_path, CTYPE2)) 
       {                                                    
         my_pic=resample(my_pic, pic_size, pic_size, 0, 1); 
-       // my_pic=alpha(my_pic, 255-255*pic_op/100, 0, 0);    
+        //if(ROT)
+        //my_pic=rotate(my_pic, ROT*-1, 1);
+        //my_pic=alpha(my_pic, 255-255*pic_op/100, 0, 0);       
       }
       #else
-      my_pic=CreateIMGHDRFromPngFile(pic_path,0);
+      my_pic=CreateIMGHDRFromPngFile(pic_path,CTYPE2);
       #endif
       #endif
+      
       DrwImg(my_pic,x,y,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(1)); 
     }
     else my_pic=0;
@@ -1056,7 +1119,7 @@ void my_ed_redraw(void *data)
   if(big_font)
       z=61;
   else
-      z=58;
+      z=60;
   #else
   (big_font)?(count_page=7):(count_page=9);
   int csh=40;
@@ -1188,6 +1251,7 @@ void my_ed_redraw(void *data)
                   len=strlen(pszNum2);
                   int x0=ScreenW()-4-GetImgWidth((int)pszNum2);
                   unsigned int pic_size=100;
+                  
                   if(x0<(gfont_size+1)*3)
                   {
                   x0=(gfont_size+1)*3;
@@ -1199,6 +1263,7 @@ void my_ed_redraw(void *data)
                   #endif  
                   }
                   
+                  
                  if(len>5&&show_pic)
                  DrwPic(x0,dyy+2*(gfont_size+cfg_item_gaps)-1,pszNum2, pic_size);
                  // DrawImg(x0,dyy+2*(gfont_size+cfg_item_gaps)-1,(unsigned int)pszNum2); 
@@ -1208,7 +1273,8 @@ void my_ed_redraw(void *data)
                   if(sumx>1)
                   DrawRectangle(right_border-2-d,dy+3,right_border-1-d+l,dy+(gfont_size+cfg_item_gaps)+1,1,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
 
-                  
+          if(voice)
+          {
           int len=0;
           ws_2str(cl->name,pszNum3,25);
           sprintf(pszNum4,"%s.amr",pszNum3);
@@ -1216,7 +1282,8 @@ void my_ed_redraw(void *data)
           if(len>4)
           {
           Play(fn, pszNum4);
-          }         
+          }      
+          }
                   
           DrawString(cl->icons,right_border-1-icons_size,dy+cfg_item_gaps,right_border-2,dy+cfg_item_gaps+gfont_size,font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
       }
@@ -1685,6 +1752,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 		}
 	}
   
+  
   if ((key==ENTER_BUTTON)&&(m==KEY_DOWN))
    {
     EDITCONTROL ec;
@@ -1716,6 +1784,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
     //Now cl indicates input 
     d=0;
     n=0;
+    
     do
     {
       if (cl->num[d])
@@ -2005,9 +2074,9 @@ int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
   }
 
   #ifdef NEWSGOLD
-  if ((msg->msg==MSG_STATE_OF_CALL)&&(msg->submess==1)&&((int)msg->data0==2))
+  if ((msg->msg==MSG_STATE_OF_CALL||msg->msg==MSG_END_CALL)&&(msg->submess==1)&&((int)msg->data0==2))
   #else
-  if ((msg->msg==MSG_STATE_OF_CALL)&&(msg->submess==1)&&((int)msg->data0==0))
+  if ((msg->msg==MSG_STATE_OF_CALL||msg->msg==MSG_END_CALL)&&(msg->submess==1)&&((int)msg->data0==0))
   #endif   
   {
     //is_voice_connected=1;
