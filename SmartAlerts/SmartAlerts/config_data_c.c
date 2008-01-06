@@ -10,10 +10,7 @@
 __root const CFG_HDR cfghdr_m3={CFG_LEVEL,"定时提醒",1,0};
 
 
-__root const CFG_HDR cfghdr1_13={CFG_STR_UTF8,"音频文件夹",0,63};
-__root const char sound[64]=DEFAULT_DISK ":\\ZBin\\alerts\\";
-
-__root const CFG_HDR cfghdr1_14={CFG_STR_UTF8,"文件类型",0,3};
+__root const CFG_HDR cfghdr1_14={CFG_STR_UTF8,"报时文件类型",0,3};
 __root const char mstyle[4]="wav";
 
 

@@ -2,8 +2,6 @@
   #define _SmartAlerts_H_
 
 
-
-extern const char sound[];
 extern const char mstyle[];
 
 extern const char vname[];

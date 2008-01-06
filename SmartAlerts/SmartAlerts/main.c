@@ -52,6 +52,7 @@ volatile int _count;
 
 char icon[]=DEFAULT_DISK":\\Zbin\\img\\SmartAlerts\\icon.png";
 char cfgfile[]=DEFAULT_DISK":\\Zbin\\img\\SmartAlerts\\SmartAlerts.cfg";
+char sound[]=DEFAULT_DISK ":\\ZBin\\SmartAlerts\\alerts\\";
 
 void getimgwh()
 {

@@ -1,23 +1,27 @@
 #include "..\..\inc\swilib.h"
-#include "conf_loader.h"
 #include "code.h"
 
 
 unsigned short *codemap;
 
-#ifdef NEWSGOLD
-#define DEFAULT_DISK "4"
-#else
-#define DEFAULT_DISK "0"
-#endif
 
 void init_font_lib(void)
 {
   int f;
-  char cnfont[]=DEFAULT_DISK":\\zbin\\utilities\\cnfont.dat";
+  char cnfont[]="4:\\zbin\\utilities\\cnfont.dat";
   unsigned int ul;
   codemap = 0;
   f=fopen(cnfont,A_ReadOnly+A_BIN,P_READ,&ul);
+  if(f == -1)
+  {
+    cnfont[0] = '0';
+    f=fopen(cnfont,A_ReadOnly+A_BIN,P_READ,&ul);
+  }
+  if(f == -1)
+  {
+    cnfont[0] = '2';
+    f=fopen(cnfont,A_ReadOnly+A_BIN,P_READ,&ul);
+  }
   if(f != -1)
   {
     codemap=(unsigned short *)malloc(73808);

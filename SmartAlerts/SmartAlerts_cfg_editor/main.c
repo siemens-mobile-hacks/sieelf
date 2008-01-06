@@ -1134,23 +1134,23 @@ void OnRedraw()
       //draw_pic(logo,2,2);
       
       ascii2ws(ws, name,0);
-      DrwStr(ws,15,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,6,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       ascii2ws(ws, change,0);
-      DrwStr(ws,8,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       ascii2ws(ws, save,0);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       int a=scr_w-font_size*2;
-      int tmp=scr_h/10.3;
+      int tmp=scr_h/11.5;
       for (int i=0;i<menus;i++)
       {
         ascii2ws(ws,alerts_name[i],0);
-        if (menu==i) DrwStr(ws,5,tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-          else DrwStr(ws,5,tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-        if (name2[i]) draw_pic(wd_on,a,tmp*(i+1));
-          else draw_pic(wd_off,a,tmp*(i+1));
+        if (menu==i) DrwStr(ws,6,5+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
+          else DrwStr(ws,6,5+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+        if (name2[i]) draw_pic(wd_on,a,6+tmp*(i+1));
+          else draw_pic(wd_off,a,6+tmp*(i+1));
       }
 
     } break;
@@ -1164,9 +1164,14 @@ void OnRedraw()
       
       ascii2ws(ws, alerts_name[mode-1],0);
       DrwStr(ws,30,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+
+      int a=scr_w-font_size*2;
+      GetDateTime(0,&time);
+      wsprintf(ws,"%d:%d",time.hour,time.min);
+      DrwStr(ws,a-font_size,4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       ascii2ws(ws, change,0);
-      DrwStr(ws,8,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       ascii2ws(ws,back,0);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
@@ -1193,58 +1198,57 @@ void OnRedraw()
       //draw_pic(logo,2,2);
       
       ascii2ws(ws,alerts_name[mode-1],0);
-      DrwStr(ws,30,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,6,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       int a=scr_w-font_size*2;
       GetDateTime(0,&time);
       wsprintf(ws,"%d:%d",time.hour,time.min);
-      DrwStr(ws,a-font_size,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,a-font_size,4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
      
       ascii2ws(ws,change,0);
-      DrwStr(ws,8,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       ascii2ws(ws,back,0);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
-      int tmp=scr_h/10.3;
-      
+      int tmp=scr_h/11.5;
       
       wsprintf(ws,"%02d",anemus[3]);
       if(anemu==3)
-      DrwStr(ws,a-font_size*1.5,tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
+      DrwStr(ws,a-font_size*1.5,6+tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
       else
-      DrwStr(ws,a-font_size*1.5,tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,a-font_size*1.5,6+tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       wsprintf(ws, "-");
-      DrwStr(ws,a-font_size*0.5,tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,a-font_size*0.5,6+tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       wsprintf(ws,"%02d",anemus[4]);
       if(anemu==4)
-      DrwStr(ws,a,tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
+      DrwStr(ws,a,6+tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
       else
-      DrwStr(ws,a,tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
+      DrwStr(ws,a,6+tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
 
 
       for (int i=0;i<10;i++)
       { 
        ascii2ws(ws,an[i],0); 
        if(anemu==i&&i<3)
-       DrwStr(ws,5,tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3)); 
+       DrwStr(ws,5,6+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3)); 
        else if(i<9)
-       DrwStr(ws,5,tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+       DrwStr(ws,5,6+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
 
        if (i<3) 
        {
-       if (anemus[i])  draw_pic(wd_on,a,tmp*(i+1));
-          else draw_pic(wd_off,a,tmp*(i+1));
+       if (anemus[i])  draw_pic(wd_on,a,6+tmp*(i+1));
+          else draw_pic(wd_off,a,6+tmp*(i+1));
        }
 
        if(i>4)
        {
         wsprintf(ws, "%02d",anemus[i]);
         if(anemu==i)
-        DrwStr(ws,a,tmp*i,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-          else DrwStr(ws,a,tmp*i,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+        DrwStr(ws,a,6+tmp*i,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
+          else DrwStr(ws,a,6+tmp*i,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
        }
       } 
 
@@ -1259,24 +1263,24 @@ void OnRedraw()
       //draw_pic(logo,2,2);
       
       ascii2ws(ws,alerts_name[mode-1],0);
-      DrwStr(ws,30,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,6,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       ascii2ws(ws,change,0);
-      DrwStr(ws,8,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       ascii2ws(ws,back,0);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
 
-      int tmp=scr_h/9.9;
+      int tmp=scr_h/10;
       for (int i=0;i<8;i++)
       {
         ascii2ws(ws,wd2[i],0);
-        if (seven==i) DrwStr(ws,5,1+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-          else DrwStr(ws,5,1+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+        if (seven==i) DrwStr(ws,5,5+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
+          else DrwStr(ws,5,5+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       }
-      if (other[8])  draw_pic(wd_on,scr_w-font_size*2,tmp*8);
-          else draw_pic(wd_off,scr_w-font_size*2,tmp*8);
+      if (other[8])  draw_pic(wd_on,scr_w-font_size*2,5+tmp*8);
+          else draw_pic(wd_off,scr_w-font_size*2,5+tmp*8);
       
       
     } break; 
@@ -1289,10 +1293,10 @@ void OnRedraw()
       //draw_pic(logo,2,2);
       
       ascii2ws(ws,alerts_name[mode-1],0);
-      DrwStr(ws,30,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,6,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       ascii2ws(ws,change,0);
-      DrwStr(ws,8,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       ascii2ws(ws,back,0);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
@@ -1329,10 +1333,10 @@ void OnRedraw()
       //draw_pic(logo,2,2);
       
       ascii2ws(ws,alerts_name[mode-1],0);
-      DrwStr(ws,30,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,6,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       ascii2ws(ws,change,0);
-      DrwStr(ws,8,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       ascii2ws(ws,back,0);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
@@ -1371,15 +1375,19 @@ void OnRedraw()
       //draw_pic(logo,2,2);
       
       ascii2ws(ws,alerts_name[mode-1],0);
-      DrwStr(ws,30,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,6,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+
+      int a=scr_w-font_size*2;
+      GetDateTime(0,&time);
+      wsprintf(ws,"%d:%d",time.hour,time.min);
+      DrwStr(ws,a-font_size,4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       ascii2ws(ws,change,0);
-      DrwStr(ws,8,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       ascii2ws(ws,back,0);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
-      int a=scr_w-font_size*2;
       int tmp=scr_h/7.3;
       int c=font_size*1.5;
 
@@ -1418,15 +1426,19 @@ void OnRedraw()
       //draw_pic(logo,2,2);
       
       ascii2ws(ws,alerts_name[mode-1],0);
-      DrwStr(ws,30,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-      
+      DrwStr(ws,6,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+
+      int a=scr_w-font_size*2;
+      GetDateTime(0,&time);
+      wsprintf(ws,"%d:%d",time.hour,time.min);
+      DrwStr(ws,a-font_size,4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+     
       ascii2ws(ws,change,0);
-      DrwStr(ws,8,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       ascii2ws(ws,back,0);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
-      int a=scr_w-font_size*2;
       int tmp=scr_h/7.3;
       int c=font_size*1.5;
 
@@ -1465,15 +1477,19 @@ void OnRedraw()
       //draw_pic(logo,2,2);
       
       ascii2ws(ws,alerts_name[mode-1],0);
-      DrwStr(ws,30,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,6,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+
+      int a=scr_w-font_size*2;
+      GetDateTime(0,&time);
+      wsprintf(ws,"%d:%d",time.hour,time.min);
+      DrwStr(ws,a-font_size,4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       ascii2ws(ws,change,0);
-      DrwStr(ws,8,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       ascii2ws(ws,back,0);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
-      int a=scr_w-font_size*2;
       int tmp=scr_h/7.3;
       int c=font_size*1.5;
 
@@ -1513,33 +1529,33 @@ void OnRedraw()
       //draw_pic(logo,2,2);
       
       ascii2ws(ws,alerts_name[8],0);
-      DrwStr(ws,30,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,6,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       ascii2ws(ws,change,0);
-      DrwStr(ws,8,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       ascii2ws(ws,back,0);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       int a=scr_w-font_size*2;
-      int tmp=scr_h/9.3;
+      int tmp=scr_h/10;
       for (int i=0;i<8;i++)
       {
         ascii2ws(ws,othern[i],0);
         if (onum==i&&i<4) 
-        DrwStr(ws,5,tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-          else DrwStr(ws,5,tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+        DrwStr(ws,5,5+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
+          else DrwStr(ws,5,5+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
         if(i<4)
         {
-        if (other[i]) draw_pic(wd_on,a,tmp*(i+1));
-          else draw_pic(wd_off,a,tmp*(i+1));
+        if (other[i]) draw_pic(wd_on,a,5+tmp*(i+1));
+          else draw_pic(wd_off,a,5+tmp*(i+1));
         }
         else
         {
         wsprintf(ws, "%02d",other[i]);
         if(onum==i)
-        DrwStr(ws,a,tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-          else DrwStr(ws,a,tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+        DrwStr(ws,a,5+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
+          else DrwStr(ws,a,5+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
         }
       }
 
@@ -1567,7 +1583,7 @@ void OnRedraw()
       if ((edit_level==1)||(edit_level==3))
         {
           ascii2ws(ws,change,0);
-          DrwStr(ws,8,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+          DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
         }
       
       ascii2ws(ws, ok,0);
@@ -1675,10 +1691,10 @@ void OnRedraw()
      // draw_pic(logo,2,2);
       
       ascii2ws(ws,wd2[seven],0);
-      DrwStr(ws,30,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,6,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
 
       ascii2ws(ws,change,0);
-      DrwStr(ws,8,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
 
       ascii2ws(ws,ok,0);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
@@ -2568,12 +2584,12 @@ void maincsm_oncreate(CSM_RAM *data)
 void ElfKiller(void)
 {
   extern void *ELF_BEGIN;
-  free_font_lib();
   kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
 }
 
 void maincsm_onclose(CSM_RAM *csm)
 {
+  free_font_lib();
   SUBPROC((void *)ElfKiller);
 }
 
