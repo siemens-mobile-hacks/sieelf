@@ -114,7 +114,6 @@ CfgEdit/func.asm -text
 CfgEdit/main.c -text
 CfgEdit/test.xcl -text
 CfgEdit/visual.c -text
-CfgEditCN/CfgEdit.dep -text
 CfgEditCN/CfgEdit.ewp -text
 CfgEditCN/CfgEdit.eww -text
 CfgEditCN/CfgEdit_IAR_old.ewp -text
