@@ -110,12 +110,12 @@ int IsFieldCorrect(void *data, int ec_index)
     hp=cfg_h[n];
     wstrcpy(ws1,ec.pWS);
     ws_2str(ws1,ss,15);
-    err=0;
+    errno=0;
     switch(hp->type)
     {
     case CFG_UINT:
       vui=strtoul(ss,0,10);
-      if (vui<hp->min || vui>hp->max || !ws1->wsbody[0] || err==ERANGE)
+      if (vui<hp->min || vui>hp->max || !ws1->wsbody[0] || (err=errno)==ERANGE)
       {
         if (vui<hp->min) {vui=hp->min; result=-1;}
         if (vui>hp->max) {vui=hp->max; result=1;}
@@ -129,7 +129,7 @@ int IsFieldCorrect(void *data, int ec_index)
       
     case CFG_INT:
       vi=strtol(ss,0,10);
-      if (vi<hp->min || vi>hp->max || !ws1->wsbody[0] || err==ERANGE)
+      if (vi<(int)hp->min || vi>(int)hp->max || !ws1->wsbody[0] || (err=errno)==ERANGE)        
       {
         if (vi<hp->min) {vi=hp->min; result=-1;}
         if (vi>hp->max) {vi=hp->max; result=1;}
