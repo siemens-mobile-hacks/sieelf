@@ -2,19 +2,23 @@
 #include "..\..\inc\cfg_items.h"
 #include "conf_loader.h"
 #include "..\lgp.h"
+#include "code.h"
+
 
 #ifdef NEWSGOLD
+#ifdef S68
+#define DEFAULT_DISK "0"
+#else
 #define DEFAULT_DISK "4"
-#define PROFILE_PD_DISC "1"
+#endif
 #else
 #define DEFAULT_DISK "0"
-#define PROFILE_PD_DISC "0"
 #endif
 
 unsigned short maincsm_name_body[140];
 unsigned int my_csm_id = 0;
 unsigned int MAINGUI_ID = 0;
-
+int font_size;
 extern const char melody[128];
 extern const unsigned int play_;
 extern const unsigned int vibra_power;
@@ -23,6 +27,9 @@ extern const int sndVolume;
 extern const int profile;
 extern const int time;
 extern char IMG[];
+extern const char profile_pd_file[];
+
+char yx[64]=DEFAULT_DISK":\\\x1F\xE9\x9F\xB3\xE6\x95\x88\\";
 
 GBSTMR mytmr;
 const int minus11=-11;
@@ -36,7 +43,6 @@ int old_profile;
 GBSTMR restarttmr;
 GBSTMR restartmelody;
 int file_length;
-char profile_pd_file[]=PROFILE_PD_DISC":\\system\\hmi\\profile.pd";
 
 typedef struct
 {
@@ -82,22 +88,29 @@ int findlength(char *playy)
 #endif
 }
 
-void Play(const char *fname)
+void Play(const char *fpath, const char *fname)
 {
+  WSHDR* sndPath=AllocWS(64);
+  WSHDR* sndFName=AllocWS(64);
+
+  wsprintf(sndPath, fpath);
+  wsprintf(sndFName, fname);
+  
+    if(fpath==0)
+    {
     FSTATS fstats;
-    unsigned int err;
+    unsigned int err; 
     if (GetFileStats(fname,&fstats,&err)!=-1)
     {
-      PLAYFILE_OPT _sfo1;
-      WSHDR* sndPath=AllocWS(128);
-      WSHDR* sndFName=AllocWS(128);
-      char s[128];
+      char s[64];
       const char *p=strrchr(fname,'\\')+1;
-      str_2ws(sndFName,p,128);
+      str_2ws(sndFName,p,64);
       strncpy(s,fname,p-fname);
       s[p-fname]='\0';
-      str_2ws(sndPath,s,128);
-      
+      str_2ws(sndPath,s,64);
+    }
+    }
+    PLAYFILE_OPT _sfo1;
       zeromem(&_sfo1,sizeof(PLAYFILE_OPT));
       _sfo1.repeat_num=1;
       _sfo1.time_between_play=0;
@@ -120,7 +133,7 @@ void Play(const char *fname)
 #endif
       FreeWS(sndPath);
       FreeWS(sndFName);
-    }
+    
 }
 
 void play_standart_melody()
@@ -128,7 +141,7 @@ void play_standart_melody()
   int f;
   int i=0;
   unsigned int err;
-  unsigned int fsize=get_file_size(profile_pd_file);
+  unsigned int fsize=get_file_size((char *)profile_pd_file);
   
   if((f=fopen(profile_pd_file,A_ReadOnly+A_BIN,P_READ,&err))==-1) return;
   char* buf=malloc(fsize+1);
@@ -137,15 +150,18 @@ void play_standart_melody()
   fclose(f,&err);
   
   buf=strstr(buf,"Alarm_Clock_3=");
-  buf+=14;
+  buf+=24;
   
   while ((buf[i]!=10)&&(buf[i+1]!=13))
   {
       i++;
   }
   buf[i+1]=0;
-  Play(buf);
-  if(findlength(buf))
+  Play(yx,buf);
+  char s[64];
+  strncpy(s,yx,64);
+  strncat(s,buf,64);
+  if(findlength(s))
     GBS_StartTimerProc(&restartmelody,file_length,restart_melody);
   mfree(buf2);
 }
@@ -155,7 +171,7 @@ void restart_melody()
   if (play_==1)
     play_standart_melody();
   else if (play_==0)
-    Play(melody);
+    Play(0,melody);
   GBS_StartTimerProc(&restartmelody,file_length,restart_melody);
 }
 
@@ -229,16 +245,23 @@ void OnRedraw()
   GetDateTime(&date,&time);
   wsprintf(ws,"%d:%02d",time.hour,time.min);
   DrawString(ws,0,75,scr_w,172,FONT_SMALL,3,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-  wsprintf(ws,"%02d-%02d-%04d",date.day, date.month,date.year);
+  wsprintf(ws,"%04d-%02d-%02d",date.year,date.month,date.day);
   DrawString(ws,0,90,scr_w,scr_h,FONT_SMALL,3,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   
-  wsprintf(ws, "%t",alerts_name[0]);
+  ascii2ws(ws,alarm_name,0);
   DrawString(ws,0,60,scr_w,scr_h,FONT_SMALL,3,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(23));
+
+  ascii2ws(ws,restart2,0);
+  DrawString(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+  ascii2ws(ws,close,0);
+  DrawString(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
   
   TDate date1;
   GetDateTime(&date1,0);
   char wd = GetWeek(&date1);
-  wsprintf(ws, "%t",wd2[wd]);
+  ascii2ws(ws,wd2[wd],0);
   DrawString(ws,0,105,scr_w,scr_h,FONT_SMALL,3,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
 }
 
@@ -338,6 +361,7 @@ void maincsm_oncreate(CSM_RAM *data)
 void ElfKiller(void)
 {
   extern void *ELF_BEGIN;
+  free_font_lib();
   kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
 }
 
@@ -420,7 +444,7 @@ void play_sound()
       UpdateCSMname();
       my_csm_id=CreateCSM(&MAINCSM.maincsm,dummy,0);
       UnlockSched();
-      Play(melody);
+      Play(0,melody);
       if(findlength((char *)melody))
         GBS_StartTimerProc(&restartmelody,file_length,restart_melody);
     } break;
@@ -446,8 +470,11 @@ void play_sound()
 int main(char *exename, char *fname)
 {
   InitConfig();
+  init_font_lib();
   scr_w=ScreenW()-1;
   scr_h=ScreenH()-1;
+  font_size=GetFontYSIZE(FONT_SMALL);
+
   
   old_light_d=GetIlluminationDataTable()[3];
   old_light_kb=GetIlluminationDataTable()[155];

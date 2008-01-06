@@ -7,7 +7,11 @@
 #define TMR_SECOND 216
 
 #ifdef NEWSGOLD
+#ifdef S68
+#define DEFAULT_DISK "0"
+#else
 #define DEFAULT_DISK "4"
+#endif
 #else
 #define DEFAULT_DISK "0"
 #endif
@@ -52,7 +56,7 @@ volatile int _count;
 
 char icon[]=DEFAULT_DISK":\\Zbin\\img\\SmartAlerts\\icon.png";
 char cfgfile[]=DEFAULT_DISK":\\Zbin\\img\\SmartAlerts\\SmartAlerts.cfg";
-char sound[]=DEFAULT_DISK ":\\ZBin\\SmartAlerts\\alerts\\";
+char sound[]=DEFAULT_DISK ":\\ZBin\\img\\SmartAlerts\\alerts\\";
 
 void getimgwh()
 {

@@ -1,5 +1,14 @@
 #include "..\..\inc\cfg_items.h"
 
+#ifdef NEWSGOLD
+#define DEFAULT_DISK "4"
+#define PROFILE_PD_DISC "1"
+#else
+#define DEFAULT_DISK "0"
+#define PROFILE_PD_DISC "0"
+#endif
+
+
 #ifndef NEWSGOLD
 __root const CFG_HDR cfghdr0={CFG_CBOX,"use",0,4};
 __root const unsigned int play_=1;
@@ -27,3 +36,6 @@ __root const int profile=1;
 
 __root const CFG_HDR cfghdr6={CFG_UINT,"restart waiting time (min)",0,60};
 __root const int time=5;
+
+__root const CFG_HDR cfghdr7={CFG_STR_UTF8,"shortcut2",0,63};
+__root const char profile_pd_file[64]=PROFILE_PD_DISC":\\\x1F\xE7\xB3\xBB\xE7\xBB\x9F\\hmi\\profile.pd";

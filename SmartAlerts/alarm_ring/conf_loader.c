@@ -11,9 +11,7 @@ int LoadConfigData(const char *fname)
   int result=0;
   void *cfg;
 
-  extern const CFG_HDR cfghdr0; //first var in CONFIG
-  cfg=(void*)&cfghdr0;
-
+  cfg=(char *)__segment_begin("CONFIG_C");
   unsigned int len=(int)__segment_end("CONFIG_C")-(int)__segment_begin("CONFIG_C");
 
   if (!(buf=malloc(len))) return -1;

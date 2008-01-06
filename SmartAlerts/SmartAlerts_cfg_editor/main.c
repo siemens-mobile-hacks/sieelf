@@ -13,8 +13,14 @@
 
 
 #ifdef NEWSGOLD
-#define DEFAULT_DISK "4"
 #define num_alarms 5
+
+#ifdef S68
+#define DEFAULT_DISK "0"
+#else
+#define DEFAULT_DISK "4"
+#endif
+
 #else
 #define DEFAULT_DISK "0"
 #define num_alarms 6
@@ -73,6 +79,7 @@ char cfgfile[]=DEFAULT_DISK":\\zbin\\img\\SmartAlerts\\SmartAlerts.cfg";
 char fonpng[]=DEFAULT_DISK":\\zbin\\img\\SmartAlerts\\fon.png";
 char bcfgfile[]=DEFAULT_DISK":\\Zbin\\etc\\alarm_melody.bcfg";
 char bcfgfile1[]=DEFAULT_DISK":\\Zbin\\etc\\SmartAlerts.bcfg";
+char ring[]=DEFAULT_DISK":\\Zbin\\img\\SmartAlerts\\alarm_ring.elf";
 
 int scr_w;
 int scr_h;
@@ -1840,13 +1847,14 @@ int onkey(unsigned char keycode, int pressed)
               }
             
             case GREEN_BUTTON: open_bcfg(bcfgfile1); break;
+            case '0':open_bcfg(ring);  break;
            /*  
             case '1': break;
             case '2': break;
             case '3': break;
             case '4': break;
             case '5': break;
-            case '#': break;
+    
               */
             }
           }
@@ -1886,6 +1894,7 @@ int onkey(unsigned char keycode, int pressed)
             case '5': num_alarm=4; break;
             //case '6': num_alarm=5; break;
             case '#': mode=13; break;
+            case '0':open_bcfg(ring);  break;
             //case '*': saveeeblock(); break;
             //case '*': ShowMSG(1,(int)"Alarm cfg editor\n(c)Geka"); break;
             }
