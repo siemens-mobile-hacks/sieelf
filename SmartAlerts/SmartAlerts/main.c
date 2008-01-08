@@ -17,7 +17,7 @@
 #endif
 
 
-GBSTMR *restarttmr;
+GBSTMR *xtmr;
 
 unsigned int files[5];
 unsigned int smss[5];
@@ -465,18 +465,18 @@ void start_(void)
   if(name2[8])
   {
   void stop_(void);
-  if(!bnemus[0]||(*RamCap()<bnemus[1]))
+  if(!name2[4]||!bnemus[0]||(*RamCap()<bnemus[1]))
   {
   	if (other[1])
-		SetIllumination(0, 1, other[7], 0);
+		SetIllumination(0, 1, other[7]+1, 0);
 	if (other[2])
-		SetIllumination(1, 1, other[7], 0);   
+		SetIllumination(1, 1, other[7]+1, 0);   
 #ifndef NEWSGOLD
 	if (other[3])
-		SetIllumination(2, 1, other[7], 0);
+		SetIllumination(2, 1, other[7]+1, 0);
 #else
 	if (other[3])
-		SetIllumination(4, 1, other[7], 0);
+		SetIllumination(4, 1, other[7]+1, 0);
 #endif
   
   if (other[0]) SetVibration(other[6]);
@@ -510,6 +510,27 @@ void stop_(void)
   }
 }
 
+void alarm(int n)
+{
+  if (status[n])
+  {
+    TDate date;
+    GetDateTime(&date, 0);
+    char wd = GetWeek(&date);
+    if (weekdays[n][wd])
+      {
+        GetDateTime(&date,&time);
+        if (time.hour==hour[n])
+          {
+            if (time.min==min[n])
+              {
+                start_ring();
+              }
+          }
+      }
+  }
+}
+
 
 void Check()
 {
@@ -521,21 +542,7 @@ GetDateTime(&date,&time);
   {
    for (int i=0;i<5;i++)
   {
-
-     if (status[i])
-     {
-       char wd = GetWeek(&date);
-         if (weekdays[i][wd])
-         {
-           if (time.hour==hour[i])
-            {
-                if (time.min==min[i])
-                {
-                 start_ring();
-                }
-            }
-         }
-     }
+    alarm(i);
   }
   }
 
@@ -708,24 +715,27 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
       InitConfig();
       
     }
-    if (strcmp_nocase("SmartAlerts",(char *)msg->data0)==0)
+
+    if (strcmp_nocase("smartalerts",(char *)msg->data0)==0)
     {
       load_settings();
     }
+
   }
-  
-    if (msg->msg == MSG_IPC)
+
+  if (msg->msg == MSG_IPC)
   {
     IPC_REQ *ipc=(IPC_REQ*)((msg)->data0);
     if (ipc)
     {
-      if (strcmp_nocase(ipc->name_to,"alarm") == 0)
+      if (strcmp_nocase("smartalerts",(char *)ipc->name_to)==0)
       {
-        int time2 = msg -> submess;
-        GBS_StartTimerProc(&restarttmr,216*60*time2,start_ring);
+         int time2 =msg->submess;
+        GBS_StartTimerProc(&xtmr,216*60*time2,start_ring);
       }
     }
   }
+
   
   CSM_RAM *icsm;
   if ((icsm=FindCSMbyID(CSM_root()->idle_id)))
@@ -768,6 +778,7 @@ static void Killer(void)
   extern void *ELF_BEGIN;
   GBS_DelTimer(&mytmr);
   GBS_DelTimer(&tmr_vibra);
+  GBS_DelTimer(xtmr);
   FreeWS(ws);
   kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr()); 
 }
@@ -810,7 +821,7 @@ static const struct
 
 static void UpdateCSMname(void)
 {
-  wsprintf((WSHDR *)(&MAINCSM_d.maincsm_name),"SmartAlerts");
+  wsprintf((WSHDR *)(&MAINCSM_d.maincsm_name),"smartalerts");
 }
 
 int main()
@@ -820,14 +831,13 @@ int main()
   InitConfig(); 
   load_settings();
   UpdateCSMname();
- 
+  ws=AllocWS(210);
   LockSched(); 
   save_cmpc=CSM_root()->csm_q->current_msg_processing_csm;
   CSM_root()->csm_q->current_msg_processing_csm=CSM_root()->csm_q->csm.first;
   CreateCSM(&MAINCSM_d.maincsm,dummy,0);
   CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
   UnlockSched();
-  
-  ws=AllocWS(210);
+
   return 0;
 }
