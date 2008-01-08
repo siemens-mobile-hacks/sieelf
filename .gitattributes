@@ -1714,6 +1714,8 @@ SmartAlerts/alarm_ring/alarm_ring.ewd -text
 SmartAlerts/alarm_ring/alarm_ring.ewp -text
 SmartAlerts/alarm_ring/alarm_ring.eww -text
 SmartAlerts/alarm_ring/alarm_ring.xcl -text
+SmartAlerts/alarm_ring/code.c -text
+SmartAlerts/alarm_ring/code.h -text
 SmartAlerts/alarm_ring/conf_loader.c -text
 SmartAlerts/alarm_ring/conf_loader.h -text
 SmartAlerts/alarm_ring/config_data.c -text
