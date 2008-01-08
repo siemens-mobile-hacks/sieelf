@@ -2,7 +2,7 @@
 #include "..\..\inc\cfg_items.h"
 #include "conf_loader.h"
 #include "SmartAlerts.h"
-#include "extern.h"
+
 
 #define TMR_SECOND 216
 
@@ -16,15 +16,14 @@
 #define DEFAULT_DISK "0"
 #endif
 
-
 GBSTMR *xtmr;
 
 unsigned int files[5];
 unsigned int smss[5];
 unsigned int calls[5];
-unsigned int anemus[11];
+unsigned int amenus[11];
 unsigned int miss[6];
-unsigned int bnemus[4];
+unsigned int bmenus[4];
 
 unsigned int hour[5];
 unsigned int min[7];
@@ -32,14 +31,13 @@ unsigned int status[5];
 unsigned int weekdays[5][7];
 unsigned int day[7][24];
 unsigned int other[9];
-unsigned int name2[9];
+unsigned int name2[8];
 int show_icon=0;
 int status_icon=0;
 int X;
 int Y;
 int imgw;
 int imgh;
-
 
 TDate date; 
 TTime time; 
@@ -53,7 +51,6 @@ int count;
 int fb=0;
 volatile int _count;
 
-
 char icon[]=DEFAULT_DISK":\\Zbin\\img\\SmartAlerts\\icon.png";
 char cfgfile[]=DEFAULT_DISK":\\Zbin\\img\\SmartAlerts\\SmartAlerts.cfg";
 char sound[]=DEFAULT_DISK ":\\ZBin\\img\\SmartAlerts\\alerts\\";
@@ -63,7 +60,6 @@ void getimgwh()
   imgw=GetImgWidth((int)icon);
   imgh=GetImgHeight((int)icon);
 }
-
 
 void update_status()
 {
@@ -317,7 +313,8 @@ name2[4]=data[235];
 name2[5]=data[236];
 name2[6]=data[237];
 name2[7]=data[238];
-name2[8]=data[239];
+
+other[8]=data[239];
 
 other[0]=data[240];
 other[1]=data[241];
@@ -329,10 +326,10 @@ other[5]=data[245];
 other[6]=data[246];
 other[7]=data[247];
 
-bnemus[0]=data[248];
-bnemus[1]=data[249];
-bnemus[2]=data[250];
-bnemus[3]=data[251];
+bmenus[0]=data[248];
+bmenus[1]=data[249];
+bmenus[2]=data[250];
+bmenus[3]=data[251];
 
 miss[0]=data[252];
 miss[1]=data[253];
@@ -360,19 +357,17 @@ smss[2]=data[270];
 smss[3]=data[271];
 smss[4]=data[272];
 
-anemus[0]=data[273];
-anemus[1]=data[274];
-anemus[2]=data[275];
-anemus[3]=data[276];
-anemus[4]=data[277];
-anemus[5]=data[278];
-anemus[6]=data[279];
-anemus[7]=data[280];
-anemus[8]=data[281];
-anemus[9]=data[282];
-anemus[10]=data[283];
-
-other[8]=data[284];
+amenus[0]=data[273];
+amenus[1]=data[274];
+amenus[2]=data[275];
+amenus[3]=data[276];
+amenus[4]=data[277];
+amenus[5]=data[278];
+amenus[6]=data[279];
+amenus[7]=data[280];
+amenus[8]=data[281];
+amenus[9]=data[282];
+amenus[10]=data[283];
 
     mfree(data);
     fclose(handle,&err);
@@ -462,10 +457,8 @@ void Play(const char *fpath, const char *fname)
 
 void start_(void)
 {
-  if(name2[8])
-  {
   void stop_(void);
-  if(!name2[4]||!bnemus[0]||(*RamCap()<bnemus[1]))
+  if(!name2[4]||!bmenus[0]||(*RamCap()<bmenus[1]))
   {
   	if (other[1])
 		SetIllumination(0, 1, other[7]+1, 0);
@@ -482,13 +475,10 @@ void start_(void)
   if (other[0]) SetVibration(other[6]);
   }
   GBS_StartTimerProc(&tmr_vibra,TMR_SECOND>>1,stop_);
-  }
 }
 
 void stop_(void)
 {
-  if(name2[8])
-  {
   	if (other[1])
 		SetIllumination(0, 1, 0, 0);
 	if (other[2])
@@ -500,13 +490,10 @@ void stop_(void)
 	if (other[3])
 		SetIllumination(4, 1, 0, 0);
 #endif
-  
   if (other[0]) SetVibration(0);
-
   if (--_count)
   {
     GBS_StartTimerProc(&tmr_vibra,TMR_SECOND>>1,start_);
-  }
   }
 }
 
@@ -546,39 +533,38 @@ GetDateTime(&date,&time);
   }
   }
 
-   
-   
    if(name2[1])
    {
-     if ((time.hour>=anemus[3])&&(time.hour<=anemus[4]))
+     if ((time.hour>=amenus[3])&&(time.hour<=amenus[4]))
         {              
-         if(time.min==anemus[5]&&!(name2[7]&&time.hour==smss[3]&&time.min==smss[4]))
+         if(time.min==amenus[5]&&!(name2[7]&&time.hour==smss[3]&&time.min==smss[4]))
 	 { 
-               if(anemus[1]&&((GetProfile()+1)!=anemus[9]))
+               if(amenus[1]&&((GetProfile()+1)!=amenus[9]))
                {
                    char w[5];
                    sprintf(w, "%d.%s",time.hour,mstyle);
                    Play(sound,w);
                }
-               else if(anemus[0]&&((GetProfile()+1)!=anemus[9]))
+               else if(amenus[0]&&((GetProfile()+1)!=amenus[9]))
                {
                    Play(0,vname);
                }
                else
                {
-		   PlaySound(1,0,0,anemus[6],0);
+		   PlaySound(1,0,0,amenus[6],0);
                }
                    _count=other[5];
                    start_();
 	  }
-          else if(time.min==anemus[7]&&anemus[2])
+          else if(time.min==amenus[7]&&amenus[2]&&!(name2[7]&&time.hour==smss[3]&&time.min==smss[4]))
 	  { 
-               PlaySound(1,0,0,anemus[8],0);
+               PlaySound(1,0,0,amenus[8],0);
                   _count=other[5];
                   start_();
            }
         }
    }
+  
         if(name2[5])
         {
           if(!files[0]||(date.month==files[1]&&date.day==files[2]))
@@ -617,9 +603,9 @@ GetDateTime(&date,&time);
      
         if (name2[4])
         {
-           if (*RamCap()==100&&fb!=bnemus[3])
+           if (*RamCap()==100&&fb!=bmenus[3])
            {
-           PlaySound(1,0,0,bnemus[2],0);
+           PlaySound(1,0,0,bmenus[2],0);
            fb++;
            }
            else if(*RamCap()!=100)
@@ -651,8 +637,6 @@ GetDateTime(&date,&time);
           }
           }
         }
-
-     
  }
  if(name2[2])
  {
@@ -672,8 +656,6 @@ GetDateTime(&date,&time);
 
 GBS_StartTimerProc(&mytmr,216*60,Check);
 }
-
-
 
 void start()
 { 
@@ -713,14 +695,12 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
     if (strcmp_nocase(successed_config_filename,(char *)msg->data0)==0)
     {
       InitConfig();
-      
     }
 
     if (strcmp_nocase("smartalerts",(char *)msg->data0)==0)
     {
       load_settings();
     }
-
   }
 
   if (msg->msg == MSG_IPC)
@@ -735,7 +715,6 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
       }
     }
   }
-
   
   CSM_RAM *icsm;
   if ((icsm=FindCSMbyID(CSM_root()->idle_id)))
@@ -776,15 +755,15 @@ static void maincsm_oncreate(CSM_RAM *data)
 static void Killer(void)
 {
   extern void *ELF_BEGIN;
-  GBS_DelTimer(&mytmr);
-  GBS_DelTimer(&tmr_vibra);
-  GBS_DelTimer(xtmr);
-  FreeWS(ws);
   kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr()); 
 }
 
 static void maincsm_onclose(CSM_RAM *csm)
 {
+  GBS_DelTimer(&mytmr);
+  GBS_DelTimer(&tmr_vibra);
+  GBS_DelTimer(xtmr);
+  FreeWS(ws);
   SUBPROC((void *)Killer);
 }
 

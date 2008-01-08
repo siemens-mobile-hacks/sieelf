@@ -1704,6 +1704,9 @@ SmartAlerts/SmartAlerts_cfg_editor/SmartAlerts_cfg_editor.eww -text
 SmartAlerts/SmartAlerts_cfg_editor/SmartAlerts_cfg_editor.xcl -text
 SmartAlerts/SmartAlerts_cfg_editor/code.c -text
 SmartAlerts/SmartAlerts_cfg_editor/code.h -text
+SmartAlerts/SmartAlerts_cfg_editor/conf_loader.c -text
+SmartAlerts/SmartAlerts_cfg_editor/conf_loader.h -text
+SmartAlerts/SmartAlerts_cfg_editor/config_data.c -text
 SmartAlerts/SmartAlerts_cfg_editor/image.c -text
 SmartAlerts/SmartAlerts_cfg_editor/image.h -text
 SmartAlerts/SmartAlerts_cfg_editor/main.c -text

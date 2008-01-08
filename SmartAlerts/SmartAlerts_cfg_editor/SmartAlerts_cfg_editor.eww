@@ -2,7 +2,7 @@
 
 <workspace>
   <project>
-    <path>$WS_DIR$\alarm_cfg_editor.ewp</path>
+    <path>$WS_DIR$\SmartAlerts_cfg_editor.ewp</path>
   </project>
   <batchBuild/>
 </workspace>
