@@ -153,7 +153,7 @@
 0218: 0xA098F1A4   ; 86: __arm void EEFullReadBlock(int block, void *buf, int offset, int size, int cepid, int msg);
 021C: 0xA098F2E8   ; 87: __arm void EEFullWriteBlock(int block, void *buf, int offset, int size, int cepid, int msg);
 ;0220: 0x   ; 88: GetAccessoryType                                                                      
-;0224: 0x   ; 89: GetLangMesIntoWS                                                                      
+0224: 0xA0715A71   ; 89: __thumb GetLangMesIntoWS         
 0228: 0xA0990868   ; 8A: __arm int GetFreeFlexSpace(int DriveNum, unsigned int *ErrorNumber)                                
 022C: 0xA0990E2C   ; 8B: __arm int GetTotalFlexSpace(int DriveNum, unsigned int *ErrorNumber)                               
 0230: 0xA029F328   ; 8C: __thumb void RegExplorerExt(REGEXPLEXT *)                                                          

@@ -152,7 +152,7 @@
 0218: 0xA1222030   ;  86: ReadEEPROMData
 021C: 0xA1222174   ;  87: WriteEEPROMData
 ;220:              ;  88: GetAccessoryType
-;224:              ;  89: GetLangMesIntoWS
+0224: 0xA12206B1   ; 89: GetLangMesIntoWS
 0228: 0xA12236F4   ;  8A: GetFreeFlexSpace
 022C: 0xA1223CB8   ;  8B: GetTotalFlexSpace
 0230: 0xA08BC310   ;  8C: RegExplorerExt(REGEXPLEXT const *)
