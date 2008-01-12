@@ -20,7 +20,7 @@ __root const CFG_HDR cfghdr5={CFG_UINT,"SystemInfo Refresh Time 0.1s",0,600};
 __root const unsigned int sys_re_t=5;
 
 __root const CFG_HDR cfghdr6={CFG_UTF8_STRING,"String for Font Test",0,255};
-__root const char test_string[256]="Test String 123";
+__root const char test_string[256]="中文字体 Test String 123";
 
 __root const CFG_HDR cfghdr7={CFG_COLOR,"Text Attribute Brush Color",0,0};
 __root const char t_a_b_color[4]={255,0,0,100};
@@ -33,3 +33,6 @@ __root const CFG_HDR cfghdr9 = {CFG_CBOX, "Default Light In", 0, 4};
 __root const int default_light_sta = 3;
 __root const CFG_CBOX_ITEM cfgcbox1[4] = {"All","Display","Keybord","Do Nothing"};
 
+__root const CFG_HDR cfghdr10={CFG_CBOX, "Default Sound Status", 0, 2};
+__root const int default_sound_sta = 0;
+__root const CFG_CBOX_ITEM cfgcbox2[2] = {"OFF", "ON"};

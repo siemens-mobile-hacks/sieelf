@@ -25,7 +25,7 @@ extern const char test_string[256];
 extern const char t_a_b_color[4];
 extern const int default_vibra_sta;
 extern const int default_light_sta;
-
+extern const int default_sound_sta;
 
 extern void kill_data(void *p, void (*func_p)(void *));
 
@@ -34,7 +34,11 @@ int flag=0;
 unsigned int MAINCSM_ID = 0;
 unsigned int MAINGUI_ID = 0;
 int status_flag=0;
+int direct=0;//0为减小，1为增加
 WSHDR *ws_info;
+#ifdef MENU_CN
+char *utf8_str;
+#endif
 GBSTMR mytmr;
 #define TMR_SECOND 216
 #define IPC_MY_IPC "SieHelpMan"
@@ -43,6 +47,7 @@ const char ipc_my_name[]=IPC_MY_IPC;
 //unsigned int REFRESH=5;
 int vibra_flag;
 int light_flag; //0,all , 1,display , 2,kbd , 3,do nothing
+int sound_flag;
 int screenw;
 int screenh;
 /*
@@ -139,49 +144,177 @@ void soft_key(void)
   FreeWS(wsr);
 }
 
+int number_judge(int min,int max,int num)  //判断num是否超值
+{
+  if(num<min){
+   return (max);
+  }
+  /*
+  if(num==max+1){
+   return(min);
+  }
+  */
+  else if(num>max){
+     return(min);
+  }
+ else return(num);
+}
+
 void lgp(void)
 {
   WSHDR *ws = AllocWS(256);
   soft_key();
-  wsprintf(ws, "LGP_ID: %d\n%t",num,num);
-  num++;
-  DrawString(ws,5,YDISP,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
-  wsprintf(ws, "LGP_ID: %d\n%t",num,num);
-  num++;
-  DrawString(ws,5,YDISP+(screenh-YDISP)/3,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
-  wsprintf(ws, "LGP_ID: %d\n%t",num,num);
-  DrawString(ws,5,YDISP+2*(screenh-YDISP)/3,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  num=number_judge(0,9997,num);
+  for(int i=0;i<3;i++)
+  {
+      wsprintf(ws, "LGP_ID: %4d %4X H\n%t",num+i,num+i,num+i);
+      DrawString(ws,5,YDISP+i*(screenh-YDISP)/3,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23));
+  }
   FreeWS(ws);
 }
 
 
 void keycode(int code)
 {
-  WSHDR *ws = AllocWS(128);
-  wsprintf(ws, "Please long press\nLEFT SOFT KEY\nback to Menu.\n\nKeycode:\n\nDec: %d\n\nHex: %X", code, code);
+  WSHDR *ws = AllocWS(64);
+  WSHDR *wsk = AllocWS(64);
+  WSHDR *wsc = AllocWS(16); 
+  WSHDR *wst=AllocWS(16);
+  WSHDR *wsh=AllocWS(16);
+  switch(code)
+  {
+   case '0' : wsprintf(wsc,"   0");  break;
+   case '1' : wsprintf(wsc,"   1");  break;
+   case '2' : wsprintf(wsc,"   2");  break;
+   case '3' : wsprintf(wsc,"   3");  break;
+   case '4' : wsprintf(wsc,"   4");  break;
+   case '5' : wsprintf(wsc,"   5");  break;
+   case '6' : wsprintf(wsc,"   6");  break;
+   case '7' : wsprintf(wsc,"   7");  break;
+   case '8' : wsprintf(wsc,"   8");  break;
+   case '9' : wsprintf(wsc,"   9");  break;
+   case '*' : wsprintf(wsc,"   *");  break;
+   case '#' : wsprintf(wsc,"   #");  break;
+#ifdef NEWSGOLD
+   case 0x01 : wsprintf(wsc,"LEFT_SOFT");  break;
+   case 0x04 : wsprintf(wsc,"RIGHT_SOFT");  break;
+   case 0x0B : wsprintf(wsc,"GREEN_BUTTON");  break;
+   case 0x0C : wsprintf(wsc,"RED_BUTTON");  break;
+   case 0x0D : wsprintf(wsc,"VOL_UP_BUTTON");  break;
+   case 0x0E : wsprintf(wsc,"VOL_DOWN_BUTTON");  break;
+   case 0x3B : wsprintf(wsc,"UP_BUTTON");  break;
+   case 0x3C : wsprintf(wsc,"DOWN_BUTTON");  break;
+   case 0x3D : wsprintf(wsc,"LEFT_BUTTON");  break;
+   case 0x3E : wsprintf(wsc,"RIGHT_BUTTON");  break;
+   case 0x1A : wsprintf(wsc,"ENTER_BUTTON");  break;
+#ifdef ELKA
+   case 0x15 : wsprintf(wsc,"POC_BUTTON");  break;
+#else   
+	case 0x15 : wsprintf(wsc,"PLAY_BUTTON");  break;
+#endif
+	case 0x11 : wsprintf(wsc,"INTERNET_BUTTON");  break;
+   case 0x14 : wsprintf(wsc,"CAMERA_BUTTON");  break;
+#else
+   case 0x01 : wsprintf(wsc,"LEFT_SOFT");  break;
+   case 0x04 : wsprintf(wsc,"RIGHT_SOFT");  break;
+   case 0x0B : wsprintf(wsc,"GREEN_BUTTON");  break;
+   case 0x0C : wsprintf(wsc,"RED_BUTTON");  break;
+#ifdef X75
+   case 0x14 : wsprintf(wsc,"VOL_UP_BUTTON");  break;
+   case 0x15 : wsprintf(wsc,"VOL_DOWN_BUTTON");  break;
+#else
+   case 0x0D : wsprintf(wsc,"VOL_UP_BUTTON");  break;
+   case 0x0E : wsprintf(wsc,"VOL_DOWN_BUTTON");  break;
+#endif
+   case 0x3B : wsprintf(wsc,"UP_BUTTON");  break;
+   case 0x3C : wsprintf(wsc,"DOWN_BUTTON");  break;
+   case 0x3D : wsprintf(wsc,"LEFT_BUTTON");  break;
+   case 0x3E : wsprintf(wsc,"RIGHT_BUTTON");  break;
+   case 0x1A : wsprintf(wsc,"ENTER_BUTTON");  break;
+   case 0x11 : wsprintf(wsc,"INTERNET_BUTTON");  break;
+#endif
+  }
+#ifdef MENU_CN
+  sprintf(utf8_str,"*键值测试*");//标题
+  utf8_2ws(wsh,utf8_str,strlen(utf8_str));
+  sprintf(utf8_str,"长按左软键返回菜单\n");
+  utf8_2ws(ws,utf8_str,strlen(utf8_str));
+  sprintf(utf8_str,"按键: ");
+  utf8_2ws(wst,utf8_str,strlen(utf8_str));
+  sprintf(utf8_str,"键值: %.2d  %.2X H",code,code);
+  utf8_2ws(wsk,utf8_str,strlen(utf8_str));
+#else
+    wsprintf(wsh, "*KeyCode*");
+	wsprintf(ws, "Please long press\nLEFT_SOFT\nback to Menu.\n");
+	wsprintf(wst,"Key: "); 
+	wsprintf(wsk, "Keycode: %.2d  %.2X H",code,code);
+#endif
+ 
+  int h_len=get_string_width(wst,main_font);
+  
   DrawRectangle(0,0,screenw,screenh,0,GetPaletteAdrByColorIndex(1),main_bg_color);
-  DrawString(ws,5,screenh/12,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  DrawString(wsh,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws,5,screenh/7,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  DrawString(wst,5,screenh/3,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23));
+  DrawString(wsc,5+h_len,screenh/3,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23));
+  DrawString(wsk,5,screenh/2,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23));
+  
+  FreeWS(wsh);
   FreeWS(ws);
+  FreeWS(wsk);
+  FreeWS(wsc);
+  FreeWS(wst);
 }
 
 void pic()
-{
+{ 
+  int i,max_pic_num;
   WSHDR *ws = AllocWS(50);
-  soft_key();
-  if (num>=0)
+  WSHDR *wsr = AllocWS(50);
+
+  for(i=0;!GetImgWidth(1700-i);i++); //寻找末尾图片
+  max_pic_num=1700-i;//max=1700
+  num=number_judge(0,max_pic_num,num);
+  if(num!=max_pic_num && GetImgWidth(num)==255 && GetImgHeight(num)==255) //跳过所有255 x 255的空白图片
   {
-    int w=GetImgWidth(num);
-    int h=GetImgHeight(num);
-    wsprintf(ws, "Num:%d(D) %X(H) %dx%d",num,num,w,h);
-    DrawString(ws,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
-    DrawImg(screenw/2-w/2,(screenh+2*GetFontYSIZE(main_font)+2)/2-h/2,num);
-  }
-  else
+    if(direct==0)//往回找
+    {
+    for(i=0;GetImgWidth(num-i)==255;i++);
+    num-=i;
+    }
+    else//往前找
+    {
+    for(i=0;GetImgWidth(num+i)==255&&(num+i)!=max_pic_num;i++);
+    num+=i;
+    }
+  } 
+  int w=GetImgWidth(num);
+  int h=GetImgHeight(num);
+  #ifdef MENU_CN
+  sprintf(utf8_str,"图片ID: %4d %3X H\n大小: %3dx%d",num,num,w,h);
+  utf8_2ws(ws,utf8_str,strlen(utf8_str));
+  sprintf(utf8_str,"没有该图片!");
+  utf8_2ws(wsr,utf8_str,strlen(utf8_str));
+#else
+ wsprintf(ws, "Pic_ID:%4d %3X H  %3dx%d",num,num,w,h); 
+ wsprintf(wsr, "No Such Picture!");
+#endif
+
+  if(w)
   {
-    wsprintf(ws, "Num:%d(D) %X(H)\nNO SUCH PICTURE!",num);
-    DrawString(ws,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+    DrawRoundedFrame(screenw/2-w/2-1,screenh/2-h/2-1,screenw/2+w/2+1,screenh/2+h/2+1,0,0,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+    DrawImg(screenw/2-w/2,screenh/2-h/2,num);
+    //DrawRoundedFrame(screenw/2-w/2-1,(screenh+GetFontYSIZE(main_font)+2)/2-h/2-1,screenw/2+w/2+1,(screenh+GetFontYSIZE(main_font)+2)/2+h/2+1,0,0,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+    //DrawImg(screenw/2-w/2,(screenh+GetFontYSIZE(main_font)+2)/2-h/2,num);
   }
+  if(!w || (w==255 && h==255))
+  {
+   DrawString(wsr,0,(screenh+2*GetFontYSIZE(main_font)+2)/2-GetFontYSIZE(main_font)/2,screenw,screenh,main_font,2,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  }
+  soft_key();//图片不会挡住菜单
+  DrawString(ws,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23));//图片不会挡住文字
   FreeWS(ws);
+  FreeWS(wsr);
 }
 
 void font()
@@ -192,32 +325,40 @@ void font()
   #ifdef ELKA
   font_max=11;
   #else
-  font_max=10;
+  font_max=16;
   #endif
   #else
   font_max=10;
   #endif
   WSHDR *ws = AllocWS(64);
-  WSHDR *ws1 = AllocWS(32);
+  WSHDR *wsl = AllocWS(32);
+  WSHDR *wsh=AllocWS(16);
   soft_key();
-  wsprintf(ws1,"Font Size: %d",num);
-  DrawString(ws1,5,screenh/3,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
-  if (num<0||num>font_max)
-  {
-    wsprintf(ws,"No such font");
-    DrawString(ws,5,screenh/3+GetFontYSIZE(main_font)+screenh/12,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
-  }
-  else
-  {
-    utf8_2ws(ws,test_string,strlen(test_string));
-    DrawString(ws,5,screenh/3+GetFontYSIZE(main_font)+3,screenw,screenh,num,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
-  }
-  FreeWS(ws1);
+  num=number_judge(0,font_max,num);
+ #ifdef MENU_CN
+  sprintf(utf8_str,"*字体查看*");//标题
+  utf8_2ws(wsh,utf8_str,strlen(utf8_str));
+  sprintf(utf8_str,"字体大小: %2d",num);
+  utf8_2ws(wsl,utf8_str,strlen(utf8_str));
+#else
+  wsprintf(wsh,"*Font*");
+  wsprintf(wsl,"Font Size: %2d",num);
+#endif
+  
+  DrawString(wsh,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  DrawString(wsl,5,screenh/4,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+ 
+  utf8_2ws(ws,test_string,strlen(test_string));
+  DrawString(ws,5,screenh/3+GetFontYSIZE(main_font)+3,screenw,screenh,num,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+ 
+  FreeWS(wsl);
   FreeWS(ws);
+  FreeWS(wsh);
 }
 
 void status(void)
 {
+  WSHDR *wsh = AllocWS(16);
   RAMNET *net=RamNet();
   int temp=GetAkku(1,3)-0xAAA+15;
   int volt=GetAkku(0,9);
@@ -236,10 +377,20 @@ void status(void)
   DrawRectangle(0,0,screenw,screenh,0,GetPaletteAdrByColorIndex(1),main_bg_color);
   soft_key();
   GUI *igui=GetTopGUI();
-  wsprintf(ws_info,"Phone: %s\nNet: %c%ddB T: %d.%d癈\nBts: %d-%d:%d\nC1: %d C2: %d\nV:%d.%02dV Cap: %02d%%\nCL: %d%% CC: %dMHz\nFreeRam: %uKb",model,(net->ch_number>=255)?'=':'-',net->power,temp/10,temp%10,net->ci,net->lac,net->ch_number,net->c1,net->c2,volt/1000,(volt%1000)/10,*RamCap(),GetCPULoad(),GetCPUClock(),GetFreeRamAvail()/1024);
-  DrawString(ws_info,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  #ifdef MENU_CN
+  sprintf(utf8_str,"*系统信息*");//标题
+  utf8_2ws(wsh,utf8_str,strlen(utf8_str));
+  sprintf(utf8_str,"机型: %s\n信号: %c%ddB\n温度: %d.%d℃\n基站: %d-%d:%d\nC1: %d C2: %d\n电压:%d.%02dV 电量: %02d%%\nCL: %d%% CC: %dMHz\n剩余内存: %uKb",model,(net->ch_number>=255)?'=':'-',net->power,temp/10,temp%10,net->ci,net->lac,net->ch_number,net->c1,net->c2,volt/1000,(volt%1000)/10,*RamCap(),GetCPULoad(),GetCPUClock(),GetFreeRamAvail()/1024);
+  utf8_2ws(ws_info,utf8_str,strlen(utf8_str));
+#else
+	wsprintf(wsh,"*SystemInfo*");
+   wsprintf(ws_info,"Phone: %s\nNet: %c%ddB\nT: %d.%d℃\nBts: %d-%d:%d\nC1: %d C2: %d\nV:%d.%02dV Cap: %02d%%\nCL: %d%% CC: %dMHz\nFreeRam: %uKb",model,(net->ch_number>=255)?'=':'-',net->power,temp/10,temp%10,net->ci,net->lac,net->ch_number,net->c1,net->c2,volt/1000,(volt%1000)/10,*RamCap(),GetCPULoad(),GetCPUClock(),GetFreeRamAvail()/1024);
+#endif
+  DrawString(wsh,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws_info,5,GetFontYSIZE(main_font),screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   wsprintf(ws_info,"0: %dKb / %dKb\n1: %dKb / %dKb\n2: %dKb / %dKb\n4: %dMB / %dMB",GetFreeFlexSpace(0,&err)/1024,GetTotalFlexSpace(0,&err)/1024,GetFreeFlexSpace(1,&err)/1024,GetTotalFlexSpace(1,&err)/1024,GetFreeFlexSpace(2,&err)/1024,GetTotalFlexSpace(2,&err)/1024,f_4,t_4);
-  DrawString(ws_info,5,GetFontYSIZE(main_font)*7,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws_info,5,GetFontYSIZE(main_font)*9,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  FreeWS(wsh);
 }
 
 
@@ -252,34 +403,60 @@ void TimerProc(void)
 
 void rgb24()
 {
-  WSHDR *ws1 = AllocWS(32);
+  WSHDR *wsh = AllocWS(16);
   WSHDR *ws = AllocWS(32);
   soft_key();
-  wsprintf(ws1,"RGB24 COLOR: %d",num);
-  DrawString(ws1,5,screenh/12,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
-  if (num<0||num>23)
-  {
-    wsprintf(ws,"No such color");
-    DrawString(ws,5,screenh/3,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
-  }
-  else DrawRoundedFrame(5,screenh/3,screenw-5,screenh-GetFontYSIZE(FONT_MEDIUM)-screenh/12,0,0,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(num));
+  num=number_judge(0,23,num);
+    #ifdef MENU_CN
+ sprintf(utf8_str,"*RGB颜色*");//标题
+  utf8_2ws(wsh,utf8_str,strlen(utf8_str));
+  sprintf(utf8_str,"RGB24颜色编号: %2d",num);
+  utf8_2ws(ws,utf8_str,strlen(utf8_str));
+#else
+	wsprintf(wsh,"*RGB24*");
+   wsprintf(ws,"RGB24 COLOR ID: %2d",num);
+#endif
+  DrawString(wsh,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws,5,screenh/9,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  DrawRoundedFrame(5,screenh/4,screenw-5,screenh-GetFontYSIZE(FONT_MEDIUM)-screenh/12,0,0,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(num));
   FreeWS(ws);
-  FreeWS(ws1);
+  FreeWS(wsh);
 }
 
 void sound()
 {
   WSHDR *ws = AllocWS(32);
+  WSHDR *wsh = AllocWS(16);
+  WSHDR *status = AllocWS(16);
   soft_key();
-  wsprintf(ws, "Sound Num: %d", num);
-  DrawString(ws,5,screenh/3,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
-  PlaySound(0,0,0,num,0);
+  num=number_judge(0,150, num);
+    #ifdef MENU_CN
+  sprintf(utf8_str,"*内置铃声*");//标题
+  utf8_2ws(wsh,utf8_str,strlen(utf8_str));
+  sprintf(utf8_str,"铃声编号: %3d",num);
+  utf8_2ws(ws,utf8_str,strlen(utf8_str));
+    if(sound_flag)sprintf(utf8_str,"状态: 开启");
+  else sprintf(utf8_str,"状态: 关闭");
+  utf8_2ws(status,utf8_str,strlen(utf8_str));
+#else
+ wsprintf(wsh, "*Sound*");
+   wsprintf(ws, "Sound Num: %3d",num);
+   if(sound_flag)wsprintf(status, "Status: On");
+else wsprintf(status, "Status: Off");
+#endif
+  DrawString(wsh,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  DrawString(status,5,screenh/2,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws,5,screenh/4,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  if(sound_flag)PlaySound(0,0,0,num,0);
   FreeWS(ws);
+  FreeWS(wsh);
+  FreeWS(status);
 }
 
 void text_attribute(void)
 {
   WSHDR *wsh = AllocWS(128);
+  WSHDR *ws = AllocWS(32);
   int i;
   WSHDR *wst=AllocWS(8);
   wsprintf(wst,"256: ");
@@ -287,13 +464,20 @@ void text_attribute(void)
   FreeWS(wst);
   DrawRectangle(0,0,screenw,screenh,0,GetPaletteAdrByColorIndex(1),main_bg_color);
   soft_key();
-  wsprintf(wsh, "Text attribute: \n    1:\n    2:\n    4:\n    8:\n  16:\n  32:\n  64:\n128:\n256:");
-  DrawString(wsh,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23));
-  WSHDR *ws = AllocWS(32);
+     #ifdef MENU_CN
+ sprintf(utf8_str,"*文本属性* \n\n    1:\n    2:\n    4:\n    8:\n  16:\n  32:\n  64:\n128:\n256:");
+  utf8_2ws(wsh,utf8_str,strlen(utf8_str));
+  sprintf(utf8_str,"中文Ab12");
+  utf8_2ws(ws,utf8_str,strlen(utf8_str));
+#else
+wsprintf(wsh, "*Text attribute* \n\n    1:\n    2:\n    4:\n    8:\n  16:\n  32:\n  64:\n128:\n256:");
   wsprintf(ws,"Test string");
+#endif 
+  DrawString(wsh,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23));
+
   for(i=0;i<9;i++)
   {
-    DrawString(ws,h_len+5,GetFontYSIZE(main_font)*(i+1),screenw,screenh,main_font,pow(2,i),main_text_color,t_a_b_color);
+    DrawString(ws,h_len+7,GetFontYSIZE(main_font)*(i+1)+15,screenw,screenh,main_font,pow(2,i),main_text_color,t_a_b_color);
   }
   FreeWS(ws);
   FreeWS(wsh);
@@ -302,38 +486,59 @@ void text_attribute(void)
 void vibra(void)
 {
   WSHDR *ws = AllocWS(64);
+  WSHDR *wsh = AllocWS(16);
+  WSHDR *status = AllocWS(16);
   soft_key();
-  if (num<0||num>100)
-  {
-    wsprintf(ws, "Vibra Power: %d%%\n\nWarning!\nOut of Power", num);
-    SetVibration(0);
-  }
-  else
-  {
-    wsprintf(ws, "Vibra Power: %d%%", num);
-    if (vibra_flag)
-      SetVibration(num);
-    else
-      SetVibration(0);
-  }
-  DrawString(ws,5,screenh/3,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  num=number_judge(0,100,num);
+    #ifdef MENU_CN
+  sprintf(utf8_str,"*振动测试*");//标题
+  utf8_2ws(wsh,utf8_str,strlen(utf8_str));
+  sprintf(utf8_str,"振动强度: %3d%%",num);
+  utf8_2ws(ws,utf8_str,strlen(utf8_str));
+  if(vibra_flag)sprintf(utf8_str,"状态: 开启");
+  else sprintf(utf8_str,"状态: 关闭");
+  utf8_2ws(status,utf8_str,strlen(utf8_str));
+#else
+wsprintf(wsh, "*VibraTest*");
+wsprintf(ws, "Vibra Power:%3d%%",num);
+if(vibra_flag)wsprintf(status, "Status: On");
+else wsprintf(status, "Status: Off");
+#endif
+	DrawString(wsh,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  if (vibra_flag)SetVibration(num);
+  else SetVibration(0);   
+  DrawString(status,5,screenh/2,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  DrawString(ws,5,screenh/4,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   FreeWS(ws);
+  FreeWS(wsh);
+  FreeWS(status);
 }
 
   
 void light(void)
 {
   WSHDR *ws = AllocWS(64);
+  WSHDR *wsh = AllocWS(16);
+  WSHDR *status = AllocWS(16);  
   soft_key();
-  if (num<0||num>100)
+  num=number_judge(0,100,num);
+#ifdef MENU_CN
+ char *zh_str[]={"全开","显示屏","键盘灯","全关"};
+  sprintf(utf8_str,"*亮度测试*");//标题
+  utf8_2ws(wsh,utf8_str,strlen(utf8_str));
+  sprintf(utf8_str,"亮度: %3d%%",num);
+  utf8_2ws(ws,utf8_str,strlen(utf8_str));
+  sprintf(utf8_str,"状态: %s",zh_str[light_flag]);
+  utf8_2ws(status,utf8_str,strlen(utf8_str));
+#else
+char *en_str[]={"All","Display","Keyboard","Do Nothing"};
+  wsprintf(wsh, "*LightTest*");
+  wsprintf(ws, "Light:%3d%%", num);
+  wsprintf(status,"Status: %s",en_str[light_flag]);
+#endif
+  DrawString(wsh,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23));
+  switch(light_flag)
   {
-    wsprintf(ws, "Light: %d%%\n\nWarning!\nOut of Light", num);
-  }
-  else
-  {
-    wsprintf(ws, "Light: %d%%", num);
-    switch(light_flag)
-    {
       case 0:
         SetIllumination(0, 1, num, 0);
         SetIllumination(1, 1, num, 0);
@@ -346,11 +551,15 @@ void light(void)
         break;
       case 3:
         break;
-    }
   }
-  DrawString(ws,5,screenh/3,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
+  DrawString(status,5,screenh/5,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23));
+  DrawString(ws,5,screenh/9,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23));
+  DrawRoundedFrame(5,screenh/3,screenw-5,screenh-GetFontYSIZE(FONT_MEDIUM)-screenh/12,0,0,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(0));
   FreeWS(ws);
+  FreeWS(wsh);
+  FreeWS(status);
 }
+
 
 void onRedraw(MAIN_GUI *data)
 {
@@ -456,13 +665,15 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
         case '#': 
           if(flag!=7||flag!=4) num=num/10; REDRAW(); break;   
         case UP_BUTTON: 
-          if(flag!=7||flag!=4) num=num+1; REDRAW(); break;      
+          if(flag!=7||flag!=4) num=num+1;direct=1; REDRAW(); break;      
         case DOWN_BUTTON: 
-          if(flag!=7||flag!=4) num=num-1; REDRAW(); break;  
+          if(flag!=7||flag!=4) num=num-1;direct=0;REDRAW(); break;  
         case RIGHT_BUTTON: 
-          if(flag!=7||flag!=4) num=num+1; REDRAW(); break;   
+          if(flag!=7||flag!=4) 
+        if(flag!=0)num=num+1;else num=num+3;direct=1; REDRAW(); break;   
         case LEFT_BUTTON: 
-          if(flag!=7||flag!=4) num=num-1; REDRAW(); break; 
+          if(flag!=7||flag!=4) 
+		if(flag!=0)num=num-1;else num=num-3;direct=0; REDRAW(); break; 
         case ENTER_BUTTON:
           if(flag==8)
           {
@@ -475,6 +686,9 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
             else
               light_flag++;
           }
+		  if(flag==6){//铃声
+		  sound_flag=!sound_flag;
+		  }
           REDRAW();
           break; 
         case RIGHT_SOFT: 
@@ -495,10 +709,10 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
     {                                                    
       switch(msg->gbsmsg->submess)  
       {                                                  
-        case UP_BUTTON: num=num+1; REDRAW(); break;      
-        case DOWN_BUTTON: num=num-1; REDRAW(); break;    
-        case RIGHT_BUTTON: num=num+1; REDRAW(); break;   
-        case LEFT_BUTTON: num=num-1; REDRAW(); break;    
+        case UP_BUTTON: num=num+1;direct=1; REDRAW(); break;      
+        case DOWN_BUTTON: num=num-1;direct=0; REDRAW(); break;    
+        case RIGHT_BUTTON: if(flag!=0)num=num+1;else num=num+3;direct=1; REDRAW(); break;   
+        case LEFT_BUTTON: if(flag!=0)num=num-1;else num=num-3;direct=0; REDRAW(); break;    
       }  
     }
   }
@@ -629,7 +843,8 @@ void menu_iconhndl(void *data, int curitem, void *unk)
   s=zh_menu_item[curitem].item;
   l=strlen(s);
   ws=AllocMenuWS(data,l);
-  utf8_2ws(ws,s,l);
+  utf8_2ws(ws,s,l);
+
   SetMenuItemText(data,item,ws,curitem);
 }
 #else
@@ -780,7 +995,7 @@ void about(void)
 void about(GUI *data)
 #endif
 {
-  ShowMSG(1, (int)"SieHelpMan\ncopyright 2007\nbinghelingxi");
+  ShowMSG(1, (int)"SieHelpMan\ncopyright 2008\nbinghelingxi\nOmo\nDaiXM");
 }
 
 #ifndef MENU_CN
@@ -905,7 +1120,11 @@ void maincsm_oncreate(CSM_RAM *data)
   screenh=ScreenH();
   vibra_flag=default_vibra_sta;
   light_flag=default_light_sta;
+  sound_flag=default_sound_sta;
   ws_info = AllocWS(256);
+  #ifdef MENU_CN
+  utf8_str=malloc(256);
+  #endif
   MAIN_CSM *csm=(MAIN_CSM *)data;
   csm->csm.state=0;
   csm->csm.unk1=0;
@@ -920,6 +1139,9 @@ void Killer(void)
   extern void *ELF_BEGIN;
   GBS_DelTimer(&mytmr);
   FreeWS(ws_info);
+  #ifdef MENU_CN
+  mfree(utf8_str);
+  #endif
   kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
 }
 
