@@ -9,7 +9,7 @@ void init_font_lib(void)
 {
   int f;
   InitConfig(); 
-  extern const char cnfont[];
+  extern const char cnfont[64];
   unsigned int ul;
   codemap = 0;
   f=fopen(cnfont,A_ReadOnly+A_BIN,P_READ,&ul);

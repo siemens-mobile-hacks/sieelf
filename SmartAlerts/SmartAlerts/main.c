@@ -16,7 +16,7 @@
 #define DEFAULT_DISK "0"
 #endif
 
-GBSTMR *xtmr;
+
 
 unsigned int files[5];
 unsigned int smss[5];
@@ -44,6 +44,7 @@ TTime time;
 TDate week;
 GBSTMR mytmr;
 GBSTMR tmr_vibra;
+GBSTMR *xtmr;
 
 WSHDR* ws;
 
@@ -762,7 +763,7 @@ static void maincsm_onclose(CSM_RAM *csm)
 {
   GBS_DelTimer(&mytmr);
   GBS_DelTimer(&tmr_vibra);
-  GBS_DelTimer(xtmr);
+  //GBS_DelTimer(&xtmr);
   FreeWS(ws);
   SUBPROC((void *)Killer);
 }

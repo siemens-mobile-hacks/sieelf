@@ -20,7 +20,6 @@ extern const int time;
 extern char IMG[];
 extern const char profile_pd_file[];
 
-
 GBSTMR mytmr;
 const int minus11=-11;
 WSHDR *ws;
@@ -129,11 +128,11 @@ void play_standart_melody()
   
   if((f=fopen(profile_pd_file,A_ReadOnly+A_BIN,P_READ,&err))==-1) return;
   char* buf=malloc(fsize+1);
-  char* buf2=buf;
   fread(f,buf,fsize,&err);
   fclose(f,&err);
   
   buf=strstr(buf,"Alarm_Clock_3=");
+  
   buf+=14;
   
   while ((buf[i]!=10)&&(buf[i+1]!=13))
@@ -144,7 +143,6 @@ void play_standart_melody()
   Play(buf);
   if(findlength(buf))
     GBS_StartTimerProc(&restartmelody,file_length,restart_melody);
-  mfree(buf2);
 }
 
 void restart_melody()
@@ -200,8 +198,6 @@ void draw_pic()
     img.bitmap = IMG;
     DrwImg(&img,37,5, GetPaletteAdrByColorIndex(1), GetPaletteAdrByColorIndex(0));
 }
-
-
 
 const char ipc_alarm_name[]="smartalerts";
 const char ipc_alarm_ring_name[]="alarmring";
