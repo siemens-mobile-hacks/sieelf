@@ -248,7 +248,7 @@
 0384: 0xA8E8D880   ;  E1: unsigned int RamMPlayer_CtrlCode()
 ;388:              ;  E2: RamKeyBuffer
 ;38C:              ;  E3: RamProfileNum
-0390: 0xA8A80000   ;  E4: FreeRAM
+0390: 0xA8D80400   ;  E4: FreeRAM
 0394: 0x0000123D   ;  E5: LP_MonthsShort
 0398: 0x00000260   ;  E6: Pic_Big0
 039C: 0x00000830   ;  E7: Pic_Little0
