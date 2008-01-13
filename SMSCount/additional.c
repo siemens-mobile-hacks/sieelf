@@ -12,12 +12,14 @@ int get_initday(void)
   	if((f=fopen(bcfgpath,A_ReadOnly+A_BIN,P_READ,&err))==-1)
   		return 1;
   }
-  char *initday=malloc(8);
+  //char *initday=malloc(8);
+  int initday;
   lseek(f,44,0,&err,&err);
-  fread(f,initday,4,&err);
+  fread(f,&initday,1,&err);
   fclose(f,&err);
-  mfree(initday);
-  return initday[0];
+  //mfree(initday);
+  //return initday[0];
+  return initday;
 }
 
 int get_month_day(int type)

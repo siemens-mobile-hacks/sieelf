@@ -72,12 +72,14 @@ int get_initday(void)
   		return 1;
   	}
   }
-  char *initday=malloc(8);
+  //char *initday=malloc(8);
+  int initday;
   lseek(f,44,0,&err,&err);
-  fread(f,initday,4,&err);
+  fread(f,&initday,1,&err);
   fclose(f,&err);
-  mfree(initday);
-  return initday[0];
+  //mfree(initday);
+  //return initday[0];
+  return initday;
 }
 
 void creat_new_dat(void)
