@@ -18,6 +18,7 @@
 
 volatile int numx;
 int sumx;
+volatile int numx2;
 int cs_adr=0;
 int iReadFile=0;
 int gLen=0;
@@ -1230,10 +1231,15 @@ void my_ed_redraw(void *data)
                    x++;
                   }
                   
-                  int l=GetImgWidth(menu_icons[aj+numx+x]);
-                  int d=(sumx-numx)*l;
-                  DrawImg(3,dy+(gfont_size+cfg_item_gaps),menu_icons[aj+numx+x]);
-                  DrawString(cl->num[aj+numx+x],l+3,dy+(gfont_size+cfg_item_gaps)+2,right_border,dy+2*(gfont_size+cfg_item_gaps),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));
+                  if(sumx>1&&setnum2)
+                    numx2=numx+1;
+                  else
+                    numx2=numx;
+                  int l=GetImgWidth(menu_icons[aj+numx2+x]);
+                  int d=(sumx-numx2)*l;
+                  DrawString(cl->num[aj+numx2+x],l+3,dy+(gfont_size+cfg_item_gaps)+2,right_border,dy+2*(gfont_size+cfg_item_gaps),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));
+
+                  DrawImg(3,dy+(gfont_size+cfg_item_gaps),menu_icons[aj+numx2+x]);
                   int dyx,dyy;
                   if(i!=1||cfg_cs_part)
                   {
@@ -1245,7 +1251,7 @@ void my_ed_redraw(void *data)
                     dyx=dy+3*(gfont_size+cfg_item_gaps)-7;
                     dyy=dy+(gfont_size+cfg_item_gaps)-3;
                   }
-                  ShowSelectedCodeShow(cl->num[aj+numx+x],dyx-(gfont_size+cfg_item_gaps)+6);
+                  ShowSelectedCodeShow(cl->num[aj+numx2+x],dyx-(gfont_size+cfg_item_gaps)+6);
                   
                   ws_2str(cl->pic,pszNum2,100);
                   len=strlen(pszNum2);
@@ -1267,9 +1273,7 @@ void my_ed_redraw(void *data)
                  if(len>5&&show_pic)
                  DrwPic(x0,dyy+2*(gfont_size+cfg_item_gaps)-1,pszNum2, pic_size);
                  // DrawImg(x0,dyy+2*(gfont_size+cfg_item_gaps)-1,(unsigned int)pszNum2); 
-                  
-                  
-                  
+
                   if(sumx>1)
                   DrawRectangle(right_border-2-d,dy+3,right_border-1-d+l,dy+(gfont_size+cfg_item_gaps)+1,1,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
 
@@ -1714,6 +1718,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
   CLIST *cl=(CLIST *)cltop;
   is_sms_need=0;
   
+  
   if (sumx>1&&((key==LEFT_BUTTON)||(key==RIGHT_BUTTON)))
    {
     msg->keys=0;
@@ -1721,17 +1726,25 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
    {
     if(key==RIGHT_BUTTON)
     {
-           numx++;
-           if((numx-sumx+1)>0)
-           numx=0;
+           numx++;   
+        if(sumx>1&&setnum2)
+        {if((numx-sumx+2)>0)
+          numx=-1;}
+        else
+        {if((numx-sumx+1)>0)
+          numx=0;}
     }
     if(key==LEFT_BUTTON)
     {
            numx--;
-           if(numx<0)
-           numx=sumx-1;
+         if(sumx>1&&setnum2)
+         {if(numx<-1)
+           numx=sumx-2;}
+         else
+         {if(numx<0)
+           numx=sumx-1;}
     }
-   }   
+   }
    return(-1); 
   }
   
@@ -1829,7 +1842,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 #endif
       need_ip=1;
       
-      VoiceOrSMS(dstr[numx]);
+      VoiceOrSMS(dstr[numx2]);
       numx=0;
       return(1); //Close tries 
     }
@@ -1843,6 +1856,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
   {
     //Do not treat editor of up / down
     msg->keys=0;
+
     if ((m==KEY_DOWN)||(m==LONG_PRESS))
     {
       is_pos_changed=1;

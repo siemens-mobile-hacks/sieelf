@@ -39,6 +39,7 @@ extern const int show_pic;
 extern const int smsn;
 extern const int smsc;
 extern const int voice;
+extern const int setnum2;
 extern const unsigned int volume;
 
 /*
