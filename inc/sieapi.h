@@ -3,8 +3,8 @@
  #ifndef _SYSTEM_BUILD
   #pragma system_include
  #endif
- #include <ysizet.h>
- #include <siecxt.h>
+#include <ysizet.h>
+#include <siecxt.h>
 _C_STD_BEGIN
  //定义编译默认盘符
 #ifdef NEWSGOLD
@@ -27,6 +27,8 @@ _C_STD_BEGIN
 #define LHYear  2050//定义计算节气最大年份
 #define LLYear  2000//定义计算节气最小年份
 #define LCData (LHYear-LLYear+1)*12//节气数据长度
+#define color(x) (x<24)?GetPaletteAdrByColorIndex(x):(char *)(&(x))
+#define idlegui_id(icsm) (((int*)icsm)[DISPLACE_OF_IDLEGUI_ID/4])
 //定义字体索引类型0-16!
 #define FontSyEN "Large","Large bold","Large italic","Large italic bold","Medium","Medium bold","Medium italic","Medium italic bold","Small","Small bold","Small italic","Small italic bold","Numeric small","Numeric small bold","Numeric xsmall","Numeric large","Numeric medium"
 #define FontSyCN "大号字体","大号加粗","大号斜体","大号粗斜","中号字体","中号加粗","中号倾斜","中号粗斜","小号字体","小号加粗","小号斜体","小号粗斜","小号数体","小号数粗","最小数体","大号数体","中号数体"
@@ -146,6 +148,7 @@ _C_LIB_DECL
  __INTRINSIC uword BetweenDaySum(TDate start,TDate end);//计算两日期之间的天数
  __INTRINSIC uword GetDayFromYearBegin(ulong AYear,ubyte AMonth,ubyte ADay);// 取某日期到年初的天数
  __INTRINSIC ubyte FileExists(char *FileName,int *Handle);//判断文件是否存在!
+ __INTRINSIC void *CreateCanvas();//创建画布指针
 _END_C_LIB_DECL
 _C_STD_END
 //函数执行代码
@@ -934,7 +937,25 @@ void LunarHolDay(WSHDR* ws,int LunarId)
  UNI[3] = cDay[LunarId-1][1]; 
  BSTRAdd(ws->wsbody,UNI,4);
 }
-
+#pragma inline//获取画布
+void *CreateCanvas()
+{
+  CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
+  if (icsm){
+    if (IsGuiOnTop(idlegui_id(icsm))){
+      GUI *igui=GetTopGUI();      
+      #ifdef ELKA
+       return(BuildCanvas());
+      #else
+       void *idata = GetDataOfItemByID(igui,2);
+       if(idata){
+         return(((void **)idata)[DISPLACE_OF_IDLECANVAS/4]);         
+       }
+      #endif
+    }
+  }
+  return NULL;
+}
 #endif/*SIEAPI_H_*/
 
 //导出函数引用表
@@ -989,6 +1010,7 @@ void LunarHolDay(WSHDR* ws,int LunarId)
  using _CSTD BetweenDaySum;
  using _CSTD GetDayFromYearBegin;
  using _CSTD FileExists;
+ using _CSTD CreateCanvas;
 #endif /* 导出函数引用表 */
  
 
