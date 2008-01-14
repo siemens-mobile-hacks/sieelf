@@ -9,6 +9,8 @@ __root const CFG_HDR cfghdr0={CFG_CHECKBOX, "启用菜单", 0,2};
 __root const uint MENU_ENA= 1;
 __root const CFG_HDR cfghdrTSI0={CFG_CHECKBOX, "启用幕显", 0,2}; 
 __root const uint INFO_ENA= 1;
+//__root const CFG_HDR cfghdrTSI0={CFG_CHECKBOX, "启用情景", 0,2}; 
+//__root const uint SCEN_ENA= 1;
 //菜单配置信息
 //开始按键配置
 __root const CFG_HDR cfghdr_mBAR1={CFG_LEVEL,"基本设置",1,0};
@@ -32,7 +34,7 @@ __root const char cfgPBGCol[4]={0,0,255,75};
 __root const CFG_HDR cfghdrBAR_A={CFG_COLOR,"图标边框颜色",0,0};
 __root const char cfgBBDCol[4]={255,255,255,100};
 __root const CFG_HDR cfghdrBAR_B={CFG_COLOR,"图标背景颜色",0,0};
-__root const char cfgBBGCol[4]={255,255,255,20};
+__root const char cfgBBGCol[4]={0,0,0,0};
 __root const CFG_HDR cfghdrBAR_C={CFG_COLOR,"菜单内部颜色",0,0};
 __root const char ATEXT_CS[4]={255,255,255,100};
 __root const CFG_HDR cfghdrBAR_D={CFG_CBOX,"菜单文本字体",0,17};
@@ -506,7 +508,7 @@ __root const CFG_HDR cfghdr_mRIN0={CFG_LEVEL,"",0,0};
 //自动关机
 __root const CFG_HDR cfghdr_mAUTOSD1={CFG_LEVEL,"自动关机",1,0};
 __root const CFG_HDR cfghdrAUTOSD_ENA={CFG_CHECKBOX, "启用", 0, 2};
-__root const int AUTOSD_ENA=1;
+__root const int AUTOSD_ENA=0;
 __root const CFG_HDR cfghdrAUTOSD_TIME={CFG_STR_WIN1251, "时间", 0, 8};
 __root const char AUTOSD_TIME[9]="02:00:00";
 __root const CFG_HDR cfghdr_mAUTOSD0={CFG_LEVEL,"",0,0};

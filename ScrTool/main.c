@@ -37,6 +37,7 @@ int Count,Seled,RINS_VPW;
 char *BirBuf;
 //配置菜单
 char path[128];
+void *MenuCanvas;
 
 HEADER_DESC MENU_HDR={0,0,0,0,NULL,(int)path,LGP_NULL};
 
@@ -265,85 +266,79 @@ int AutoPowerOff(const char *time)
   char *s=strstr(AUTOSD_TIME,time);
   if(s) return(1); else return(0);
 }
+//初始化屏显信息
+void InitScreen()
+{
+  InitConfig();
+  IDS[0x00].Show=TEMP_ENA;
+  IDS[0x01].Show=VOLT_ENA;
+  IDS[0x02].Show=RAM_ENA;
+  IDS[0x03].Show=TEXT_ENA;
+  IDS[0x04].Show=NET_ENA;
+  IDS[0x05].Show=ACCU_ENA;
+  IDS[0x06].Show=CPU_ENA;
+  IDS[0x07].Show=GPRS_ENA;
+  IDS[0x08].Show=WEEK_ENA;
+  IDS[0x09].Show=DATE_ENA;
+  IDS[0x0A].Show=TIME_ENA;
+  IDS[0x0B].Show=CYEAR_ENA;
+  IDS[0x0C].Show=CDATE_ENA; 
+  IDS[0x0D].Show=NBIR_ENA;
+  IDS[0x0E].Show=OBIR_ENA; 
+}
 //对所有显示数据进行补始化
 void InitData(void)
 {
-  int c;
-  char cWeek[16],cData[16];
-  const char cWeekName[4][7][12]={
-    {"MONDAY","TUESDAY","WEDNESDAY","THUSDAY","FRIDAY","SATURDAY","SUNDAY"},
-    {"MON","TUES","WED","THU","FRI","SAT","SUN"},
-    {"Monday","Tuesday","Wednesday","Thusday","Friday","Saturday","Sunday"},
-    {"Mon","Tues","Wed","Thu","Fri","Sat","Sun"}};
-  
-  char cDataFmt[8][16] = {"%02d/%02d/%02d", "%02d-%02d-%02d", "%02d.%02d.%02d", "%02d %02d %02d", "%02d/%02d", "%02d-%02d", "%02d.%02d", "%02d %02d"};  
-  //显示温度信息  
-  IDS[0].Show=TEMP_ENA;
-  if(IDS[0].Show){
-    c=GetAkku(1,3)-0xAAA+15;
+  if(IDS[0].Show){//显示温度信息 
+    int c=GetAkku(1,3)-0xAAA+15;
     wsprintf(IDS[0].ws,TEMP_FMT,c/10,c%10);
     FillScreen(&IDS[0],TEMP_XT,TEMP_X,TEMP_Y,FontType(TEMP_FONT),TEMP_CS,TEMP_CB);
-  }
-  //显示电压信息    
-  IDS[1].Show=VOLT_ENA;  
-  if(IDS[1].Show){
-    c=GetAkku(0,9);
+  }        
+  if(IDS[1].Show){//显示电压信息
+    int c=GetAkku(0,9);
     wsprintf(IDS[1].ws,VOLT_FMT,c/1000,(c%1000)/10);
     FillScreen(&IDS[1],VOLT_XT,VOLT_X,VOLT_Y,FontType(VOLT_FONT),VOLT_CS,VOLT_CB);
-  }
-  //显示剩余信息
-  IDS[2].Show=RAM_ENA;
-  if(IDS[2].Show){    
-    c=GetFreeRamAvail();
+  }    
+  if(IDS[2].Show){//显示剩余信息    
+    int c=GetFreeRamAvail();
     wsprintf_bytes(IDS[2].ws,c);
     FillScreen(&IDS[2],RAM_XT,RAM_X,RAM_Y,FontType(RAM_FONT),RAM_CS,RAM_CB);  
-  }
-  //显示定义信息    
-  IDS[3].Show=TEXT_ENA;
-  if(IDS[3].Show){
+  }        
+  if(IDS[3].Show){//显示定义信息
     utf8_2ws(IDS[3].ws,TEXT_FMT,strlen(TEXT_FMT));
     FillScreen(&IDS[3],TEXT_XT,TEXT_X,TEXT_Y,FontType(TEXT_FONT),TEXT_CS,TEXT_CB);
-  } 
-  //显示网络信息    
-  IDS[4].Show=NET_ENA;
-  if(IDS[4].Show){
+  }         
+  if(IDS[4].Show){//显示网络信息
     RAMNET *net_data=RamNet();
-    c=(net_data->ch_number>=255)?'=':'-';
+    int c=(net_data->ch_number>=255)?'=':'-';
     wsprintf(IDS[4].ws,NET_FMT,c,net_data->power);
     FillScreen(&IDS[4],NET_XT,NET_X,NET_Y,FontType(NET_FONT),NET_CS,NET_CB);
-  }
-  //显示CAP信息    
-  IDS[5].Show=ACCU_ENA;
-  if(IDS[5].Show){
-    c=*RamCap();
+  }        
+  if(IDS[5].Show){//显示CAP信息
+    int c=*RamCap();
     wsprintf(IDS[5].ws,ACCU_FMT,c);
     FillScreen(&IDS[5],ACCU_XT,ACCU_X,ACCU_Y,FontType(ACCU_FONT),ACCU_CS,ACCU_CB);
-  }
-  //显示CPU使用率    
-  IDS[6].Show=CPU_ENA;
-  if(IDS[6].Show){
-    c=GetCPULoad();
+  }        
+  if(IDS[6].Show){//显示CPU使用率
+    int c=GetCPULoad();
     if(c==100) c=99;
     wsprintf(IDS[6].ws,CPU_FMT,c);
     FillScreen(&IDS[6],CPU_XT,CPU_X,CPU_Y,FontType(CPU_FONT),CPU_CS,CPU_CB);
-  }
-  //显示GPRS流量   
-  IDS[7].Show=GPRS_ENA;
-  if(IDS[7].Show){
+  }      
+  if(IDS[7].Show){//显示GPRS流量
     //RefreshGPRSTraffic();
-    c=*GetGPRSTrafficPointer();
+    int c=*GetGPRSTrafficPointer();
     wsprintf_bytes(IDS[7].ws,c);
     FillScreen(&IDS[7],GPRS_XT,GPRS_X,GPRS_Y,FontType(GPRS_FONT),GPRS_CS,GPRS_CB);
   }
   //定义时间信息
   TTime time; TDate date; GetDateTime(&date,&time);
-  uword UniToday[3];
-  //显示当前星期    
-  IDS[8].Show=WEEK_ENA;
-  if(IDS[8].Show){
-    c = GetWeek(&date);
+  uword UniToday[3];     
+  if(IDS[8].Show){//显示当前星期
+    int c = GetWeek(&date);
     if(WEEK_FMT <4)
     {
+      char cWeek[16];
       for(int iloop = 0;iloop < 16;iloop++){
         cWeek[iloop] = cWeekName[WEEK_FMT][c][iloop];        
       }
@@ -356,10 +351,9 @@ void InitData(void)
       BSTRAdd(IDS[8].ws->wsbody,UniToday, 1);      
     }
     FillScreen(&IDS[8],WEEK_XT,WEEK_X,WEEK_Y,FontType(WEEK_FONT),WEEK_CS,WEEK_CB);
-  }
-  //显示当前日期    
-  IDS[9].Show=DATE_ENA;
-  if(IDS[9].Show){
+  } 
+  if(IDS[9].Show){//显示当前日期
+    char cData[16]; 
     for(int iloop = 0;iloop < 16;iloop++){ cData[iloop] = cDataFmt[DATE_FMT][iloop]; }
     if(DATE_FMT < 4)
       wsprintf(IDS[9].ws,cData,date.year,date.month,date.day);
@@ -384,35 +378,33 @@ void InitData(void)
       BSTRAdd(IDS[9].ws->wsbody,UniToday, 1);      
     }
     FillScreen(&IDS[9],DATE_XT,DATE_X,DATE_Y,FontType(DATE_FONT),DATE_CS,DATE_CB);
-  }
-  //显示当前时间    
-  IDS[10].Show=TIME_ENA;
-  if(IDS[10].Show){
+  }  
+  if(IDS[10].Show){//显示当前时间
     switch(TIME_FMT) {
-    case 0: wsprintf(IDS[10].ws,"%02d:%02d",time.hour,time.min); break;
-      
+    case 0: wsprintf(IDS[10].ws,"%02d:%02d",time.hour,time.min); 
+      break;      
     case 1:
       if(time.hour <= 12) {
         wsprintf(IDS[10].ws,"AM %02d:%02d",time.hour,time.min);
       } else {
         time.hour = time.hour - 12;
         wsprintf(IDS[10].ws,"PM %02d:%02d",time.hour,time.min);
-      } break;
-      
+      } 
+      break;      
     case 2:
       if(time.hour > 12) time.hour = time.hour - 12;
       wsprintf(IDS[10].ws,"%02d:%02d",time.hour,time.min);
-      break;
-      
-    case 3: wsprintf(IDS[10].ws,"%02d:%02d:%02d",time.hour,time.min,time.sec); break;
-      
+      break;      
+    case 3: wsprintf(IDS[10].ws,"%02d:%02d:%02d",time.hour,time.min,time.sec); 
+      break;      
     case 4:
       if(time.hour <= 12){
         wsprintf(IDS[10].ws,"AM %02d:%02d:%02d",time.hour,time.min,time.sec);
       } else {
         time.hour = time.hour - 12;
         wsprintf(IDS[10].ws,"PM %02d:%02d:%02d",time.hour,time.min,time.sec);
-      } break;
+      }
+      break;
     case 5:
       wsprintf(IDS[10].ws,"%02d",time.hour);
       UniToday[0] = UniTime[0];
@@ -441,18 +433,14 @@ void InitData(void)
     default: break;      
     }   
     FillScreen(&IDS[10],TIME_XT,TIME_X,TIME_Y,FontType(TIME_FONT),TIME_CS,TIME_CB);
-  }
-  //显示农历年份    
-  IDS[11].Show=CYEAR_ENA;
-  if(IDS[11].Show){
+  }  
+  if(IDS[11].Show){//显示农历年份
     CutWSTR(IDS[11].ws,0);
     GetDayOf(date,&NongLi);
     memcpy(IDS[11].ws->wsbody,NongLi.year->wsbody,16);
     FillScreen(&IDS[11],CYEAR_XT,CYEAR_X,CYEAR_Y,FontType(CYEAR_FONT),CYEAR_CS,CYEAR_CB);
-  }
-  //显示农历日期    
-  IDS[12].Show=CDATE_ENA; 
-  if(IDS[12].Show){
+  } 
+  if(IDS[12].Show){//显示农历日期
     CutWSTR(IDS[12].ws,0);
     uword lunar = LunarHolId(date);
     if(lunar)
@@ -462,19 +450,15 @@ void InitData(void)
       memcpy(IDS[12].ws->wsbody,NongLi.mday->wsbody,16);
     }
     FillScreen(&IDS[12],CDATE_XT,CDATE_X,CDATE_Y,FontType(CDATE_FONT),CDATE_CS,CDATE_CB);
-  }
-  //显示公历节日   
-  IDS[13].Show=NBIR_ENA;
-  if(IDS[13].Show){
+  } 
+  if(IDS[13].Show){//显示公历节日
     char nDay[8];       
     CutWSTR(IDS[13].ws,0);
     sprintf(nDay,"N%02d.%02d:",date.month,date.day);
     IDS[13].Show = FindBirName(nDay,IDS[13].ws);
     FillScreen(&IDS[13],NBIR_XT,NBIR_X,NBIR_Y,FontType(NBIR_FONT),NBIR_CS,NBIR_CB);
-  }
-  //显示农历节日    
-  IDS[14].Show=OBIR_ENA;  
-  if(IDS[14].Show){      
+  }   
+  if(IDS[14].Show){//显示农历节日      
     char oDay[8];   
     TDate o=GetOldDay(date);
     CutWSTR(IDS[14].ws,0);
@@ -548,36 +532,35 @@ void InitMenu(int active)
 }
 //在屏幕上画主菜单图标位置和文本信息
 void DrawPanel(void)
-{
-  void *canvasmenu=BuildCanvas();  
-  DrawRoundedFrame( tRC.l, tRC.t, tRC.r, tRC.b, 0, 0, 0, cfgPBDCol, cfgPBGCol ); 
-  GBS_StartTimerProc(&barTimer,10,DrawPanel);   
-  if ( Count == 0 ) return; 
-  int y = 0,z = 0,i = 0,n = ScreenW()/size;  
-  int ts=(tRC.b-tRC.t-GetFontYSIZE(ATEXT_FONT))/2;  
-  n = size + (ScreenW()-n*size)/(n-1);
-  if(Count>((ScreenW())/(n))) i=Seled-((ScreenW())/(n))+1; else i=0;  
-  if ( i < 0 ) i = 0;
-  while(i<Count){
+{ 
+  GBS_StartTimerProc(&barTimer,5,DrawPanel);  
+  if(MenuCanvas!=NULL){
+   if ( Count == 0 ) return; 
+   int y =0, z =0, i = 0,n = ScreenW()/size;  
+   int ts=(tRC.b-tRC.t-GetFontYSIZE(ATEXT_FONT))/2;  
+   n = size + (ScreenW()-n*size)/(n-1);
+   if(Count>((ScreenW())/(n))){ i=Seled-((ScreenW())/(n))+1; if(i<0)i=0;} else i=0;   
+   DrawRectangle(tRC.l, tRC.t, tRC.r, tRC.b,0, cfgPBDCol, cfgPBGCol);
+   while(i<Count){
     const char *s=APP[i].Pic;
     if(!((s)&&(strlen(s)))) s=AINO;    
-    TRect tmp=iRC;
-    tmp.l+=y;
-    tmp.r+=y;
-    DrawCanvas(canvasmenu, tmp.l,tmp.t,tmp.r,tmp.b, 1);
-    if(i==Seled){             
-       DrawString(APP[i].ws, tRC.l+2, tRC.t+ts, tRC.r-2, tRC.b-ts, FontType(ATEXT_FONT), TEXT_ALIGNLEFT,ATEXT_CS, cfgPBGCol); 
-       DrawRoundedFrame(tmp.l+1, tmp.t+1, tmp.r-1, tmp.b-1, 2, 2, 0, cfgBBDCol, cfgBBGCol ); 
-    }     
+    TRect tmp=iRC; tmp.l+=y; tmp.r+=y;  
+    DrawCanvas(MenuCanvas, tmp.l,tmp.t,tmp.r,tmp.b, 0);
     int picw = (size-GetImgWidth((int)s))/2;  if(picw<0)picw=0;
     int pich = (size-GetImgHeight((int)s))/2; if(pich<0)pich=0; 
-    DrawImg(tmp.l+picw,tmp.t+pich,(int)s);    
+    DrawImg(tmp.l+picw,tmp.t+pich,(int)s);  
+    if(i==Seled){             
+       DrawString(APP[i].ws, tRC.l+2, tRC.t+ts, tRC.r-2, tRC.b-ts, FontType(ATEXT_FONT), TEXT_ALIGNLEFT,ATEXT_CS, cfgPBGCol);
+       //DrawRectangle(tmp.l,tmp.t,tmp.r,tmp.b,0,cfgBBDCol,cfgBBGCol);//color(COLOR_MENU_BK));//cfgBBDCol, cfgBBGCol
+       DrawRoundedFrame(tmp.l+1, tmp.t+1, tmp.r-1, tmp.b-1, 2, 2, 0, cfgBBDCol, cfgBBGCol ); 
+    }
     y+=n;
     i++;
     if(++z>((ScreenW())/(n))-1) break;
+   }
+   //自动关闭菜单
+   if((++auto_close>=AUTO_CLOSE*TMR_SECOND/5)&&(MenuActive)&&(MAINCSM_ID)) CloseMenu();
   }
- //自动关闭菜单
-  if((++auto_close>=AUTO_CLOSE*TMR_SECOND/10)&&(MenuActive)&&(MAINCSM_ID)) CloseMenu();
 }
 //重画响应事件
 void OnRedraw(GUI *data)
@@ -740,6 +723,7 @@ void CloseMenu(void)
 {
   if(IsTimerProc(&barTimer)){GBS_DelTimer(&barTimer);}
   if(MAINCSM_ID){CloseCSM(MAINCSM_ID); MAINCSM_ID=0;}
+  MenuCanvas=NULL;
   MenuActive=0;
   DirsActive=0;
   auto_close=0;
@@ -752,8 +736,8 @@ void RunDIR(char *dir)
   DirsActive=1;
   strcpy(path,dir);
   GBS_SendMessage(MMI_CEPID,KEY_UP);  
-  char dummy[sizeof(DAEMON_CSM)];
-  MAINCSM_ID=CreateCSM(&DAEMONGUI.maincsm,dummy,2);
+  char dummy[sizeof(DAEMON_GUI)];//DAEMON_CSM
+  MAINCSM_ID=CreateCSM(&DAEMONGUI.maincsm,dummy,0);
   RefreshGUI();
   UnlockSched();
 }
@@ -761,9 +745,10 @@ void TaskMenu(int mode)
 {
   LockSched();
   DirsActive=0;
-  char dummy[sizeof(DAEMON_CSM)];
+  char dummy[sizeof(DAEMON_GUI)];//DAEMON_CSM
   InitMenu(mode);
-  MAINCSM_ID=CreateCSM(&DAEMONGUI.maincsm,dummy,2);
+  MAINCSM_ID=CreateCSM(&DAEMONGUI.maincsm,dummy,0);
+  MenuCanvas=CreateCanvas();
   UnlockSched();
 }
 
@@ -773,8 +758,8 @@ void DoIt(int inx)
   switch(APP[inx].Type){
    case -4: OpenBCFGFile(); break;
    case -3: KbdLock();break;
-   case -2: CloseCSM(DAEMON_ID);RebootPhone();break;
-   case -1: CloseCSM(DAEMON_ID);SwitchPhoneOff(); break;
+   case -2: RebootPhone();break;
+   case -1: SwitchPhoneOff(); break;
    case  0: RunAPP(APP[inx].File); break;
    case  1: RunCUT(APP[inx].File); break;
    case  2: RunADR(APP[inx].File); break;
@@ -816,8 +801,8 @@ int daemon_onmessage(CSM_RAM* data,GBS_MSG* msg)
     extern const char *successed_config_filename;
     if (strcmp_nocase(successed_config_filename,(char *)msg->data0)==0)
     {      
-      ShowMSG(1,(int)"ScrTool updated!");
-      InitConfig();
+      ShowMSG(1,(int)"ScrTool updated!");      
+      InitScreen();
       //重新加载节日文件数据
       if(FreeFileBuf(BirBuf)) BirBuf=LoadFileBuf(BIRS_FILE);  
     }
@@ -835,8 +820,7 @@ int daemon_onmessage(CSM_RAM* data,GBS_MSG* msg)
      SUCCED_HOOK = 0;
   }
   //自定义功能显示
-  if (INFO_ENA){
-   #define idlegui_id(icsm) (((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])
+  if (INFO_ENA){   
    if (msg->msg==MSG_IPC){
     IPC_REQ *ipc;
     if ((ipc=(IPC_REQ*)msg->data0)){
@@ -851,41 +835,28 @@ int daemon_onmessage(CSM_RAM* data,GBS_MSG* msg)
         }
       }
     }
-   }  
-   CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
-   if (icsm){
-    if (IsGuiOnTop(idlegui_id(icsm))){
-      GUI *igui=GetTopGUI();
-      if (igui){
-        InitData();
-        #ifdef ELKA
-        { void *canvastext = BuildCanvas();
-        #else
-          void *idata = GetDataOfItemByID(igui, 2);
-        if (idata){
-          void *canvastext = ((void **)idata)[DISPLACE_OF_IDLECANVAS / 4];
-        #endif
-          for (int inx=0; inx<(sizeof(IDS)/sizeof(TSCR)); inx++){
-            if (IDS[inx].Show){
-              DrawCanvas(canvastext, IDS[inx].rc.x,IDS[inx].rc.y,IDS[inx].rc.x2,IDS[inx].rc.y2, 1);
-              DrawString(IDS[inx].ws,IDS[inx].rc.x,IDS[inx].rc.y,IDS[inx].rc.x2,IDS[inx].rc.y2,IDS[inx].Size,
-                         TEXT_OUTLINE,IDS[inx].Pen,IDS[inx].Brush);
-            }          
-          }
-        }
-      }
-    }
-    }
-   }else{if((TextActive)&&(IsTimerProc(&txtTimer))){GBS_DelTimer(&txtTimer);TextActive=0;}}
-   //菜单
-   DAEMON_GUI *csm=(DAEMON_GUI*)data;
-   if ((int)msg->data0==csm->file_id){
+   }
+   void *canvastext=CreateCanvas();
+   if(canvastext!=NULL){
+     InitData();
+     for (int inx=0; inx<(sizeof(IDS)/sizeof(TSCR)); inx++){
+      if (IDS[inx].Show){
+          DrawCanvas(canvastext, IDS[inx].rc.x,IDS[inx].rc.y,IDS[inx].rc.x2,IDS[inx].rc.y2, 1);
+          DrawString(IDS[inx].ws,IDS[inx].rc.x,IDS[inx].rc.y,IDS[inx].rc.x2,IDS[inx].rc.y2,IDS[inx].Size,
+                     TEXT_OUTLINE,IDS[inx].Pen,IDS[inx].Brush);
+      }          
+     }
+   }   
+  }else{if((TextActive)&&(IsTimerProc(&txtTimer))){GBS_DelTimer(&txtTimer);TextActive=0;}}
+  //菜单
+  DAEMON_GUI *csm=(DAEMON_GUI*)data;
+  if ((int)msg->data0==csm->file_id){
       if (csm->menu_id==0)
          csm->csm.state=-3;
       csm->file_id=0;
-    }   
-   //播放铃声
-   if((msg->msg==MSG_PLAYFILE_REPORT)&&(RINS_ENA)){
+  }   
+  //播放铃声
+  if((msg->msg==MSG_PLAYFILE_REPORT)&&(RINS_ENA)){
     GBS_PSOUND_MSG *pmsg=(GBS_PSOUND_MSG *)msg;
     if (pmsg->handler==RingHandle){
       if (pmsg->cmd==M_SAE_PLAYBACK_ERROR || pmsg->cmd==M_SAE_PLAYBACK_DONE){
@@ -971,7 +942,7 @@ static void UpdateCSMname(void)
 int main()
 {
   LockSched();
-  InitConfig();
+  InitScreen();
   UpdateCSMname();
 #ifdef DAEMON
   CSM_RAM *save_cmpc;

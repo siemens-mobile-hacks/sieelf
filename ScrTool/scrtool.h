@@ -49,6 +49,7 @@
  
  extern const uint MENU_ENA;
  extern const uint INFO_ENA;
+// extern const uint SCEN_ENA;
  extern const uint SHOW_EXT;
  extern const uint EXIT_BTN;
  extern const uint MODE_KBD;
