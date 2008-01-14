@@ -77,134 +77,80 @@ void load_settings(void)
   int handle=fopen(cfgfile, A_ReadOnly, P_READ,&err);
   if(handle!=-1)
   {
-    char *data=malloc(300);
-    fread(handle,data,300,&err);
+    char *data=malloc(280);
+    fread(handle,data,280,&err);
 
-status[0]=data[2];
-hour[0]=data[3];
-min[0]=data[4];
-weekdays[0][0]=data[5];
-weekdays[0][1]=data[6];
-weekdays[0][2]=data[7];
-weekdays[0][3]=data[8];
-weekdays[0][4]=data[9];
-weekdays[0][5]=data[10];
-weekdays[0][6]=data[11];
-status[1]=data[12];
-hour[1]=data[13];
-min[1]=data[14];
-weekdays[1][0]=data[15];
-weekdays[1][1]=data[16];
-weekdays[1][2]=data[17];
-weekdays[1][3]=data[18];
-weekdays[1][4]=data[19];
-weekdays[1][5]=data[20];
-weekdays[1][6]=data[21];
-status[2]=data[22];
-hour[2]=data[23];
-min[2]=data[24];
-weekdays[2][0]=data[25];
-weekdays[2][1]=data[26];
-weekdays[2][2]=data[27];
-weekdays[2][3]=data[28];
-weekdays[2][4]=data[29];
-weekdays[2][5]=data[30];
-weekdays[2][6]=data[31];
-status[3]=data[32];
-hour[3]=data[33];
-min[3]=data[34];
-weekdays[3][0]=data[35];
-weekdays[3][1]=data[36];
-weekdays[3][2]=data[37];
-weekdays[3][3]=data[38];
-weekdays[3][4]=data[39];
-weekdays[3][5]=data[40];
-weekdays[3][6]=data[41];
-status[4]=data[42];
-hour[4]=data[43];
-min[4]=data[44];
-weekdays[4][0]=data[45];
-weekdays[4][1]=data[46];
-weekdays[4][2]=data[47];
-weekdays[4][3]=data[48];
-weekdays[4][4]=data[49];
-weekdays[4][5]=data[50];
-weekdays[4][6]=data[51];
-
-show_icon=data[53];
-X=data[54];
-Y=data[55];
-
-for(int i=0;i<24*7/*168*/;i++)
+      
+show_icon=data[2];
+X=data[3];
+Y=data[4];
+//5
+for(int i=0;i<5;i++)
 {
-day[i/24][i%24]=data[i+56];
+  status[i]=data[i+5];
+  hour[i]=data[i+10];
+  min[i]=data[i+15];
+  files[i]=data[i+20];
+  calls[i]=data[i+25];
+  smss[i]=data[i+30];
 }
-/*224*/
-min[6]=data[230];
+//35
+for(int i=0;i<35;i++)
+{
+weekdays[i/7][i%7]=data[i+35];
+}
+//70
+for(int i=0;i<168;i++)
+{
+day[i/24][i%24]=data[i+70];
+}
+//238
+min[6]=data[238];
 
-name2[0]=data[231];
-name2[1]=data[232];
-name2[2]=data[233];
-name2[3]=data[234];
-name2[4]=data[235];
-name2[5]=data[236];
-name2[6]=data[237];
-name2[7]=data[238];
+name2[0]=data[239];
+name2[1]=data[240];
+name2[2]=data[241];
+name2[3]=data[242];
+name2[4]=data[243];
+name2[5]=data[244];
+name2[6]=data[245];
+name2[7]=data[246];
 
-other[8]=data[239];
+other[8]=data[247];
 
-other[0]=data[240];
-other[1]=data[241];
-other[2]=data[242];
-other[3]=data[243];
+other[0]=data[248];
+other[1]=data[249];
+other[2]=data[250];
+other[3]=data[251];
 
-other[4]=data[244];
-other[5]=data[245];
-other[6]=data[246];
-other[7]=data[247];
+other[4]=data[252];
+other[5]=data[253];
+other[6]=data[254];
+other[7]=data[255];
 
-bmenus[0]=data[248];
-bmenus[1]=data[249];
-bmenus[2]=data[250];
-bmenus[3]=data[251];
+bmenus[0]=data[256];
+bmenus[1]=data[257];
+bmenus[2]=data[258];
+bmenus[3]=data[259];
 
-miss[0]=data[252];
-miss[1]=data[253];
-miss[2]=data[254];
-miss[3]=data[255];
-miss[4]=data[256];
-miss[5]=data[257];
+miss[0]=data[260];
+miss[1]=data[261];
+miss[2]=data[262];
+miss[3]=data[263];
+miss[4]=data[264];
+miss[5]=data[265];
 
-
-files[0]=data[258];
-files[1]=data[259];
-files[2]=data[260];
-files[3]=data[261];
-files[4]=data[262];
-
-calls[0]=data[263];
-calls[1]=data[264];
-calls[2]=data[265];
-calls[3]=data[266];
-calls[4]=data[267];
-
-smss[0]=data[268];
-smss[1]=data[269];
-smss[2]=data[270];
-smss[3]=data[271];
-smss[4]=data[272];
-
-amenus[0]=data[273];
-amenus[1]=data[274];
-amenus[2]=data[275];
-amenus[3]=data[276];
-amenus[4]=data[277];
-amenus[5]=data[278];
-amenus[6]=data[279];
-amenus[7]=data[280];
-amenus[8]=data[281];
-amenus[9]=data[282];
-amenus[10]=data[283];
+amenus[0]=data[266];
+amenus[1]=data[267];
+amenus[2]=data[268];
+amenus[3]=data[269];
+amenus[4]=data[270];
+amenus[5]=data[271];
+amenus[6]=data[272];
+amenus[7]=data[273];
+amenus[8]=data[274];
+amenus[9]=data[275];
+amenus[10]=data[276];
 
     mfree(data);
     fclose(handle,&err);
