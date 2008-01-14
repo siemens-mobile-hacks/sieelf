@@ -26,6 +26,9 @@ extern const char t_a_b_color[4];
 extern const int default_vibra_sta;
 extern const int default_light_sta;
 extern const int default_sound_sta;
+extern const unsigned int max_image_num;
+extern const unsigned int max_lpg_num;
+extern const unsigned int max_sound_num;
 
 extern void kill_data(void *p, void (*func_p)(void *));
 
@@ -34,8 +37,9 @@ int flag=0;
 unsigned int MAINCSM_ID = 0;
 unsigned int MAINGUI_ID = 0;
 int status_flag=0;
-int direct=0;//0为减小，1为增加
+int direct=0;//0为减小，1为增加 
 WSHDR *ws_info;
+WSHDR *ws_search; // 待查找字符串 
 #ifdef MENU_CN
 char *utf8_str;
 #endif
@@ -50,6 +54,8 @@ int light_flag; //0,all , 1,display , 2,kbd , 3,do nothing
 int sound_flag;
 int screenw;
 int screenh;
+int imagew; // 待查找图片宽度 
+int imageh; // 待查找图片高度 
 /*
 #ifdef ELKA
 int y_b=24;
@@ -80,6 +86,15 @@ void patch_header(const HEADER_DESC* head)
   ((HEADER_DESC*)head)->rc.y=YDISP;
   ((HEADER_DESC*)head)->rc.x2=screenw-1;
   ((HEADER_DESC*)head)->rc.y2=HeaderH()+YDISP-1;
+}
+
+#pragma inline
+void patch_input(const INPUTDIA_DESC* inp)
+{
+  ((INPUTDIA_DESC*)inp)->rc.x=0;
+  ((INPUTDIA_DESC*)inp)->rc.y=HeaderH()+1+YDISP;
+  ((INPUTDIA_DESC*)inp)->rc.x2=ScreenW()-1;
+  ((INPUTDIA_DESC*)inp)->rc.y2=ScreenH()-SoftkeyH()-1;
 }
 
 #pragma inline
@@ -123,19 +138,122 @@ int pow(int x,int y)
   return z;
 }
 
+SOFTKEY_DESC ed_menu_sk[]=
+{
+  {0x0018,0x0000,(int)""},
+  {0x0001,0x0000,(int)""},
+  {0x003D,0x0000,(int)"+"}
+};
 
-void soft_key(void)
+SOFTKEYSTAB ed_menu_skt=
+{
+  ed_menu_sk,0
+};
+unsigned int SEARCH_CSM_ID = 0;
+int icon[]={0x58,0};
+char gszHeader[21]="Find LGP";
+HEADER_DESC ed1_hdr={0,0,0,0,icon,(int)gszHeader,LGP_NULL};
+int ed1_onkey(GUI *data, GUI_MSG *msg)
+{
+	EDITCONTROL ec;
+	ExtractEditControl(data, 2, &ec);
+	wstrcpy(ws_info, ec.pWS);
+	if( flag )
+	{
+		wsAppendChar(ws_info, ' ');
+		ExtractEditControl(data, 4, &ec);
+	  wstrcat(ws_info, ec.pWS);
+	}
+	return 0;
+};
+void ed1_ghook(GUI *data, int cmd)
+{
+  if (cmd==0x0A)
+  {
+    DisableIDLETMR();
+  }
+};
+
+void ed1_locret(void){};
+INPUTDIA_DESC ed1_desc=
+{
+  1,
+  ed1_onkey,
+  ed1_ghook,
+  (void *)ed1_locret,
+  0,
+  &ed_menu_skt,
+  {0,0,0,0},
+  4,
+  100,
+  101,
+  0,
+
+  0,
+
+  0x40000000
+};
+
+int create_ed(HEADER_DESC *pHeader)
+{
+  void *ma=malloc_adr();
+  void *eq;
+  EDITCONTROL ec;
+  
+  PrepareEditControl(&ec);
+  eq=AllocEQueue(ma,mfree_adr());
+  if ( flag )
+  {
+  	strcpy(gszHeader, "Find PIC");
+  	utf8_2ws(ws_info,"图片宽度:",13);
+  }
+  else
+  {
+  	strcpy(gszHeader, "Find LGP");
+  	utf8_2ws(ws_info,"输入字串:",13);
+  }
+  	
+  ConstructEditControl(&ec,ECT_HEADER,0x40,ws_info,ws_info->wsbody[0]);
+  AddEditControlToEditQend(eq,&ec,ma);
+ 
+  if ( flag )
+  {
+  	wsprintf(ws_info, "%d", imagew);
+  	ConstructEditControl(&ec,ECT_NUMBER_TYPING,0x40,ws_info,3);
+  	AddEditControlToEditQend(eq,&ec,ma);
+  	utf8_2ws(ws_info,"图片高度:",13);
+  	ConstructEditControl(&ec,ECT_HEADER,0x40,ws_info,10);
+  	AddEditControlToEditQend(eq,&ec,ma);
+  	wsprintf(ws_info, "%d", imageh);
+  	ConstructEditControl(&ec,ECT_NUMBER_TYPING,0x40,ws_info,3);
+  	AddEditControlToEditQend(eq,&ec,ma);
+  }
+  else
+  {
+  	ConstructEditControl(&ec,ECT_CURSOR_STAY,0x40,ws_search,20);
+  	AddEditControlToEditQend(eq,&ec,ma);
+  }
+  patch_header(&ed1_hdr);
+  patch_input(&ed1_desc); 
+  return CreateInputTextDialog(&ed1_desc,pHeader,eq,1,0);
+}
+
+void soft_key(char bFind)
 {
   WSHDR *wsl = AllocWS(16);
   WSHDR *wsr = AllocWS(16);
 #ifdef MENU_CN
-  char ch_l[]="菜单";
-  char ch_r[]="退出";
-  utf8_2ws(wsl,ch_l,strlen(ch_l));
-  utf8_2ws(wsr,ch_r,strlen(ch_r));
+  utf8_2ws(wsl,"菜单",6);
+  if( bFind )
+  	utf8_2ws(wsr,"查找",6);
+  else
+  	utf8_2ws(wsr,"退出",6);
 #else
   wsprintf(wsl, "Menu");
-  wsprintf(wsr, "Exit");
+  if( bFind )
+  	  wsprintf(wsr, "Find");
+  else
+  	  wsprintf(wsr, "Exit");
 #endif
   //DrawRectangle(0,screenh-GetFontYSIZE(FONT_MEDIUM)-2,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
   DrawString(wsl,2,screenh-GetFontYSIZE(sk_font)-2,screenw,screenh,sk_font,32,sk_color,GetPaletteAdrByColorIndex(23)); 
@@ -144,7 +262,7 @@ void soft_key(void)
   FreeWS(wsr);
 }
 
-int number_judge(int min,int max,int num)  //判断num是否超值
+int number_judge(int min,int max,int num)  //判断num是否超值 
 {
   if(num<min){
    return (max);
@@ -163,8 +281,8 @@ int number_judge(int min,int max,int num)  //判断num是否超值
 void lgp(void)
 {
   WSHDR *ws = AllocWS(256);
-  soft_key();
-  num=number_judge(0,9997,num);
+  soft_key(1);
+  num=number_judge(0,max_lpg_num,num);
   for(int i=0;i<3;i++)
   {
       wsprintf(ws, "LGP_ID: %4d %4X H\n%t",num+i,num+i,num+i);
@@ -272,8 +390,8 @@ void pic()
   WSHDR *ws = AllocWS(50);
   WSHDR *wsr = AllocWS(50);
 
-  for(i=0;!GetImgWidth(1700-i);i++); //寻找末尾图片
-  max_pic_num=1700-i;//max=1700
+  for(i=0;!GetImgWidth(max_image_num-i);i++); //寻找末尾图片
+  max_pic_num=max_image_num-i;//max=max_image_num
   num=number_judge(0,max_pic_num,num);
   if(num!=max_pic_num && GetImgWidth(num)==255 && GetImgHeight(num)==255) //跳过所有255 x 255的空白图片
   {
@@ -311,7 +429,7 @@ void pic()
   {
    DrawString(wsr,0,(screenh+2*GetFontYSIZE(main_font)+2)/2-GetFontYSIZE(main_font)/2,screenw,screenh,main_font,2,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
-  soft_key();//图片不会挡住菜单
+  soft_key(1);//图片不会挡住菜单
   DrawString(ws,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23));//图片不会挡住文字
   FreeWS(ws);
   FreeWS(wsr);
@@ -333,7 +451,7 @@ void font()
   WSHDR *ws = AllocWS(64);
   WSHDR *wsl = AllocWS(32);
   WSHDR *wsh=AllocWS(16);
-  soft_key();
+  soft_key(0);
   num=number_judge(0,font_max,num);
  #ifdef MENU_CN
   sprintf(utf8_str,"*字体查看*");//标题
@@ -375,7 +493,7 @@ void status(void)
   char model[]="SGOLD";
   #endif
   DrawRectangle(0,0,screenw,screenh,0,GetPaletteAdrByColorIndex(1),main_bg_color);
-  soft_key();
+  soft_key(0);
   GUI *igui=GetTopGUI();
   #ifdef MENU_CN
   sprintf(utf8_str,"*系统信息*");//标题
@@ -405,7 +523,7 @@ void rgb24()
 {
   WSHDR *wsh = AllocWS(16);
   WSHDR *ws = AllocWS(32);
-  soft_key();
+  soft_key(0);
   num=number_judge(0,23,num);
     #ifdef MENU_CN
  sprintf(utf8_str,"*RGB颜色*");//标题
@@ -428,8 +546,8 @@ void sound()
   WSHDR *ws = AllocWS(32);
   WSHDR *wsh = AllocWS(16);
   WSHDR *status = AllocWS(16);
-  soft_key();
-  num=number_judge(0,150, num);
+  soft_key(0);
+  num=number_judge(0, max_sound_num, num);
     #ifdef MENU_CN
   sprintf(utf8_str,"*内置铃声*");//标题
   utf8_2ws(wsh,utf8_str,strlen(utf8_str));
@@ -463,7 +581,7 @@ void text_attribute(void)
   int h_len=get_string_width(wst,main_font);
   FreeWS(wst);
   DrawRectangle(0,0,screenw,screenh,0,GetPaletteAdrByColorIndex(1),main_bg_color);
-  soft_key();
+  soft_key(0);
      #ifdef MENU_CN
  sprintf(utf8_str,"*文本属性* \n\n    1:\n    2:\n    4:\n    8:\n  16:\n  32:\n  64:\n128:\n256:");
   utf8_2ws(wsh,utf8_str,strlen(utf8_str));
@@ -488,7 +606,7 @@ void vibra(void)
   WSHDR *ws = AllocWS(64);
   WSHDR *wsh = AllocWS(16);
   WSHDR *status = AllocWS(16);
-  soft_key();
+  soft_key(0);
   num=number_judge(0,100,num);
     #ifdef MENU_CN
   sprintf(utf8_str,"*振动测试*");//标题
@@ -520,7 +638,7 @@ void light(void)
   WSHDR *ws = AllocWS(64);
   WSHDR *wsh = AllocWS(16);
   WSHDR *status = AllocWS(16);  
-  soft_key();
+  soft_key(0);
   num=number_judge(0,100,num);
 #ifdef MENU_CN
  char *zh_str[]={"全开","显示屏","键盘灯","全关"};
@@ -674,6 +792,59 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
         case LEFT_BUTTON: 
           if(flag!=7||flag!=4) 
 		if(flag!=0)num=num-1;else num=num-3;direct=0; REDRAW(); break; 
+			  case VOL_UP_BUTTON:
+			  case VOL_DOWN_BUTTON:
+          if (flag==0 || flag==1)
+          {
+          	int i,j,step;
+          	char bFound=0;
+         		step = msg->gbsmsg->submess==VOL_UP_BUTTON ? -1 : 1;
+          	if( flag )
+          	{
+          		int w,h;
+          		for(i=num+step; i>=0 && i<max_image_num; i+=step)
+          		{
+          			w=GetImgWidth(i);
+          			h=GetImgHeight(i);
+          			if((imagew == 0 || imagew == w) && (imageh == 0 || imageh == h))
+          			{
+          				bFound = 1;
+          				num = i;
+          				break;
+          			}		  				
+          		}
+          	}
+          	else
+          	{
+          		WSHDR *ws = AllocWS(256);
+          		for(i=num+step; i>=0 && i<max_lpg_num; i+=step)
+          		{
+          			wsprintf(ws, "%t", i);
+          			for(j=1; j<=ws_search->wsbody[0]; j++)
+          			{
+          				if(j > ws->wsbody[0] || ws_search->wsbody[j] != ws->wsbody[j])
+          					break;
+          			}
+          			if( j > ws_search->wsbody[0] )
+          			{
+          				bFound = 1;
+          				num = i;
+          				break;
+          			} 
+          		}
+          		FreeWS( ws );
+          	}
+          	if( !bFound )
+          	{
+          		if (msg->gbsmsg->submess==VOL_DOWN_BUTTON)
+          			num = 0;
+          		else
+          			num = flag ? max_image_num-1 : max_lpg_num-1;
+          		ShowMSG(1, (int)"Not found!");
+          	}
+          }
+          REDRAW();
+			  	break;
         case ENTER_BUTTON:
           if(flag==8)
           {
@@ -694,7 +865,10 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
         case RIGHT_SOFT: 
           {
             if (vibra_flag) SetVibration(0);
-            CloseCSM(MAINCSM_ID); 
+            if (flag==0 || flag==1)
+            	SEARCH_CSM_ID=create_ed(&ed1_hdr);
+            else
+            	CloseCSM(MAINCSM_ID); 
             break;  
           }
         case LEFT_SOFT: 
@@ -767,6 +941,22 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
   if ((msg->msg==MSG_GUI_DESTROYED)&&((int)msg->data0==csm->gui_id))
   {
     csm->csm.state=-3;
+  }
+  if ((msg->msg==MSG_GUI_DESTROYED)&&((int)msg->data0==SEARCH_CSM_ID))
+  {
+  	if ((int)msg->data1==1 && wstrlen(ws_info) > 0) // 确认保存查找条件 
+  	{
+  		if ( flag )
+  		{
+  			char szTemp[9];
+  			ws_2str(ws_info, szTemp, 7);
+  			sscanf(szTemp, "%d %d", &imagew, &imageh);
+  		}
+  		else
+  		{
+  			wstrcpy(ws_search, ws_info);
+  		}
+  	}
   }
   
   if (msg->msg==MSG_IPC)
@@ -995,7 +1185,7 @@ void about(void)
 void about(GUI *data)
 #endif
 {
-  ShowMSG(1, (int)"SieHelpMan\ncopyright 2008\nbinghelingxi\nOmo\nDaiXM");
+  ShowMSG(1, (int)"SieHelpMan\ncopyright 2008 V0.6\nbinghelingxi\nOmo DaiXM\nalong1976");
 }
 
 #ifndef MENU_CN
@@ -1116,12 +1306,15 @@ const MENU_DESC mm_menu=
 
 void maincsm_oncreate(CSM_RAM *data)
 {
+	imagew=imageh=0;
   screenw=ScreenW();
   screenh=ScreenH();
   vibra_flag=default_vibra_sta;
   light_flag=default_light_sta;
   sound_flag=default_sound_sta;
   ws_info = AllocWS(256);
+  ws_search = AllocWS(20);
+  CutWSTR(ws_search, 0);
   #ifdef MENU_CN
   utf8_str=malloc(256);
   #endif
@@ -1139,6 +1332,7 @@ void Killer(void)
   extern void *ELF_BEGIN;
   GBS_DelTimer(&mytmr);
   FreeWS(ws_info);
+  FreeWS(ws_search);
   #ifdef MENU_CN
   mfree(utf8_str);
   #endif

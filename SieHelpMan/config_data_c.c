@@ -20,7 +20,7 @@ __root const CFG_HDR cfghdr5={CFG_UINT,"刷新时间",0,600};
 __root const unsigned int sys_re_t=5;
 
 __root const CFG_HDR cfghdr6={CFG_UTF8_STRING,"测试字串",0,255};
-__root const char test_string[256]="中文字体 Test String 123";
+__root const char test_string[256]="涓枃瀛椾綋 Test String 123";
 
 __root const CFG_HDR cfghdr7={CFG_COLOR,"测试颜色",0,0};
 __root const char t_a_b_color[4]={255,0,0,100};
@@ -36,3 +36,12 @@ __root const CFG_CBOX_ITEM cfgcbox1[4] = {"全部","屏幕","键盘","从不"};
 __root const CFG_HDR cfghdr10={CFG_CBOX, "默认声音", 0, 2};
 __root const int default_sound_sta = 0;
 __root const CFG_CBOX_ITEM cfgcbox2[2] = {"关", "开"};
+
+__root const CFG_HDR cfghdr11={CFG_UINT,"最大图片数",0,999999};
+__root const unsigned int max_image_num=1700;
+
+__root const CFG_HDR cfghdr12={CFG_UINT,"最大语言包数",0,999999};
+__root const unsigned int max_lpg_num=8000;
+
+__root const CFG_HDR cfghdr13={CFG_UINT,"最大铃声数",0,999999};
+__root const unsigned int max_sound_num=150;

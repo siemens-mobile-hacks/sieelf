@@ -36,3 +36,12 @@ __root const CFG_CBOX_ITEM cfgcbox1[4] = {"All","Display","Keybord","Do Nothing"
 __root const CFG_HDR cfghdr10={CFG_CBOX, "Default Sound Status", 0, 2};
 __root const int default_sound_sta = 0;
 __root const CFG_CBOX_ITEM cfgcbox2[2] = {"OFF", "ON"};
+
+__root const CFG_HDR cfghdr11={CFG_UINT,"Max Image Number",0,999999};
+__root const unsigned int max_image_num=1700;
+
+__root const CFG_HDR cfghdr12={CFG_UINT,"Max LPG Number",0,999999};
+__root const unsigned int max_lpg_num=8000;
+
+__root const CFG_HDR cfghdr13={CFG_UINT,"Max Sound Number",0,999999};
+__root const unsigned int max_sound_num=150;
