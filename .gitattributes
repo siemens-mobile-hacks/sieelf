@@ -3048,6 +3048,7 @@ inc/sha.h -text
 inc/sieapi.h -text
 inc/siecxt.h -text
 inc/swilib.h -text
+inc/swilib函数解释.h -text
 inc/xtask_ipc.h -text
 inc/zconf.h -text
 inc/zlib.h -text
