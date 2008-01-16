@@ -1223,7 +1223,12 @@ void my_ed_redraw(void *data)
                    sumx++;
                   }
                   
-                  for(j=aj;j<=numx+aj;j++)
+                  if(sumx>1&&setnum2)
+                    numx2=numx+1;
+                  else
+                    numx2=numx;
+                  
+                  for(j=aj;j<=numx2+aj;j++)
                   {
                    ws_2str(cl->num[j],pszNum,20);
                    len=strlen(pszNum);
@@ -1231,10 +1236,7 @@ void my_ed_redraw(void *data)
                    x++;
                   }
                   
-                  if(sumx>1&&setnum2)
-                    numx2=numx+1;
-                  else
-                    numx2=numx;
+
                   int l=GetImgWidth(menu_icons[aj+numx2+x]);
                   int d=(sumx-numx2)*l;
                   DrawString(cl->num[aj+numx2+x],l+3,dy+(gfont_size+cfg_item_gaps)+2,right_border,dy+2*(gfont_size+cfg_item_gaps),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));

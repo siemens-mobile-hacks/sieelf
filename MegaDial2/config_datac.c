@@ -39,8 +39,7 @@ __root const CFG_HDR cfghdr109 = {CFG_CHECKBOX,"界面音效",0,0};
 __root const int voice=0;
 
 __root const CFG_HDR cfghdr110 = {CFG_CHECKBOX,"默认号码2",0,0};
-__root const int setnum2=0;
-
+__root const int setnum2=1;
 
 __root const CFG_HDR cfghdr_m4={CFG_LEVEL,"",0,0};
 
