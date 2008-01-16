@@ -63,7 +63,7 @@ sprintf(utf8_str, "全部： ~%dKB", total/1024);
 utf8_2ws(ews, utf8_str, strlen(utf8_str));
 unsigned int RED=0x640000FF;
 unsigned int BLACK=0x64000000;
-DrawString(ews,ScreenW()/2,ScreenH()-SoftkeyH()-30,ScreenW(),ScreenH()-SoftkeyH(),FONT_SMALL+1,TEXT_ALIGNMIDDLE,(char*)&RED,(char*)&BLACK);
+DrawString(ews,ScreenW()/2,YDISP,ScreenW(),YDISP+30,FONT_SMALL+1,TEXT_ALIGNMIDDLE,(char*)&RED,(char*)&BLACK);
 mfree(utf8_str);
 }
 
@@ -259,7 +259,7 @@ SOFTKEYSTAB menu_skt=
 
 int S_ICONS[3];
 
-HEADER_DESC contactlist_menuhdr={0,0,131,21,NULL,(int)"开机自动启动:",0x7FFFFFFF};
+HEADER_DESC contactlist_menuhdr={0,0,131,21,NULL,(int)"开机启动:",0x7FFFFFFF};
 int menusoftkeys[]={0,1,2};
 
 void contactlist_menu_ghook(void *data, int cmd);
