@@ -56,11 +56,15 @@ typedef void (*tredraw)(void *data);
 
 void new_redraw(void *data)
 {
-((tredraw)old_redraw)(data);  
-wsprintf(ews,"total ~%dk",total/1024);
+((tredraw)old_redraw)(data);
+char *utf8_str=malloc(128);
+sprintf(utf8_str, "全部： ~%dKB", total/1024);  
+//wsprintf(ews,"total ~%dk",total/1024);
+utf8_2ws(ews, utf8_str, strlen(utf8_str));
 unsigned int RED=0x640000FF;
 unsigned int BLACK=0x64000000;
-DrawString(ews,ScreenW()/2,YDISP+2,ScreenW(),YDISP+32,FONT_SMALL+1,TEXT_ALIGNMIDDLE,(char*)&RED,(char*)&BLACK);
+DrawString(ews,ScreenW()/2,ScreenH()-SoftkeyH()-30,ScreenW(),ScreenH()-SoftkeyH(),FONT_SMALL+1,TEXT_ALIGNMIDDLE,(char*)&RED,(char*)&BLACK);
+mfree(utf8_str);
 }
 
 typedef struct
@@ -89,8 +93,8 @@ void Killer(void)
 int SaveDaemonList();
 void maincsm_onclose(CSM_RAM *csm)
 {
-  if(SaveDaemonList()) //������
-    ShowMSG(2,(int)"Error while saving daemons list!!");
+  if(SaveDaemonList()) //铠栳赅
+    ShowMSG(2,(int)"保存开机自动启动ELF出错!!");
   mfree(daemons);  
   SUBPROC((void *)Killer);
 }
@@ -242,8 +246,8 @@ return 0;
 
 SOFTKEY_DESC menu_sk[]=
 {
-  {0x0018,0x0000,(int)"On/Off"},
-  {0x0001,0x0000,(int)"Exit"},
+  {0x0018,0x0000,(int)"开/关"},
+  {0x0001,0x0000,(int)"退出"},
   {0x003D,0x0000,(int)"+"}
 };
 
@@ -255,7 +259,7 @@ SOFTKEYSTAB menu_skt=
 
 int S_ICONS[3];
 
-HEADER_DESC contactlist_menuhdr={0,0,131,21,NULL,(int)"Autostart:",0x7FFFFFFF};
+HEADER_DESC contactlist_menuhdr={0,0,131,21,NULL,(int)"开机自动启动:",0x7FFFFFFF};
 int menusoftkeys[]={0,1,2};
 
 void contactlist_menu_ghook(void *data, int cmd);
@@ -337,7 +341,7 @@ int main()
   if(!LoadDaemonList())
     {
     mfree(daemons);  
-    ShowMSG(2,(int)"Cant access Zbin\\Daemons!");
+    ShowMSG(2,(int)"找不到Zbin\\Daemons!");
     return 0;
     };
   
