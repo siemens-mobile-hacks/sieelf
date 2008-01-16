@@ -204,12 +204,12 @@ int create_ed(HEADER_DESC *pHeader)
   eq=AllocEQueue(ma,mfree_adr());
   if ( flag )
   {
-  	strcpy(gszHeader, "Find PIC");
+  	strcpy(gszHeader, "查找图片");
   	utf8_2ws(ws_info,"图片宽度:",13);
   }
   else
   {
-  	strcpy(gszHeader, "Find LGP");
+  	strcpy(gszHeader, "查找语言包");
   	utf8_2ws(ws_info,"输入字串:",13);
   }
   	
@@ -481,8 +481,8 @@ void status(void)
   int temp=GetAkku(1,3)-0xAAA+15;
   int volt=GetAkku(0,9);
   unsigned int err;
-  int t_4=GetTotalFlexSpace(4,&err)/1024/1024;
-  int f_4=GetFreeFlexSpace(4,&err)/1024/1024;
+  int t_4=GetTotalFlexSpace(4,&err)/1024;
+  int f_4=GetFreeFlexSpace(4,&err)/1024;
   #ifdef NEWSGOLD
   #ifdef ELKA
   char model[]="ELKA";
@@ -506,7 +506,7 @@ void status(void)
 #endif
   DrawString(wsh,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   DrawString(ws_info,5,GetFontYSIZE(main_font),screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
-  wsprintf(ws_info,"0: %dKb / %dKb\n1: %dKb / %dKb\n2: %dKb / %dKb\n4: %dMB / %dMB",GetFreeFlexSpace(0,&err)/1024,GetTotalFlexSpace(0,&err)/1024,GetFreeFlexSpace(1,&err)/1024,GetTotalFlexSpace(1,&err)/1024,GetFreeFlexSpace(2,&err)/1024,GetTotalFlexSpace(2,&err)/1024,f_4,t_4);
+  wsprintf(ws_info,"0: %dKb / %dKb\n1: %dKb / %dKb\n2: %dKb / %dKb\n4: %dKB / %dKB",GetFreeFlexSpace(0,&err)/1024,GetTotalFlexSpace(0,&err)/1024,GetFreeFlexSpace(1,&err)/1024,GetTotalFlexSpace(1,&err)/1024,GetFreeFlexSpace(2,&err)/1024,GetTotalFlexSpace(2,&err)/1024,f_4,t_4);
   DrawString(ws_info,5,GetFontYSIZE(main_font)*9,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   FreeWS(wsh);
 }
@@ -740,6 +740,60 @@ void back_to_menu(void)
   GeneralFuncF1(1); 
 }
 
+void begin_search(int key)
+{
+          if (flag==0 || flag==1)
+          {
+          	int i,j,step;
+          	char bFound=0;
+         		step = key==VOL_UP_BUTTON ? -1 : 1;
+          	if( flag )
+          	{
+          		int w,h;
+          		for(i=num+step; i>=0 && i<max_image_num; i+=step)
+          		{
+          			w=GetImgWidth(i);
+          			h=GetImgHeight(i);
+          			if((imagew == 0 || imagew == w) && (imageh == 0 || imageh == h))
+          			{
+          				bFound = 1;
+          				num = i;
+          				break;
+          			}		  				
+          		}
+          	}
+          	else
+          	{
+          		WSHDR *ws = AllocWS(256);
+          		for(i=num+step; i>=0 && i<max_lpg_num; i+=step)
+          		{
+          			wsprintf(ws, "%t", i);
+          			for(j=1; j<=ws_search->wsbody[0]; j++)
+          			{
+          				if(j > ws->wsbody[0] || ws_search->wsbody[j] != ws->wsbody[j])
+          					break;
+          			}
+          			if( j > ws_search->wsbody[0] )
+          			{
+          				bFound = 1;
+          				num = i;
+          				break;
+          			} 
+          		}
+          		FreeWS( ws );
+          	}
+          	if( !bFound )
+          	{
+/*          		if (key==VOL_DOWN_BUTTON)
+          			num = 0;
+          		else
+          			num = flag ? max_image_num : max_lpg_num;*/
+          		ShowMSG(1, (int)"未找到!");
+          	}
+          }
+          REDRAW();
+}
+
 int OnKey(MAIN_GUI *data, GUI_MSG *msg)
 {
   if (flag==2)
@@ -794,56 +848,7 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
 		if(flag!=0)num=num-1;else num=num-3;direct=0; REDRAW(); break; 
 			  case VOL_UP_BUTTON:
 			  case VOL_DOWN_BUTTON:
-          if (flag==0 || flag==1)
-          {
-          	int i,j,step;
-          	char bFound=0;
-         		step = msg->gbsmsg->submess==VOL_UP_BUTTON ? -1 : 1;
-          	if( flag )
-          	{
-          		int w,h;
-          		for(i=num+step; i>=0 && i<max_image_num; i+=step)
-          		{
-          			w=GetImgWidth(i);
-          			h=GetImgHeight(i);
-          			if((imagew == 0 || imagew == w) && (imageh == 0 || imageh == h))
-          			{
-          				bFound = 1;
-          				num = i;
-          				break;
-          			}		  				
-          		}
-          	}
-          	else
-          	{
-          		WSHDR *ws = AllocWS(256);
-          		for(i=num+step; i>=0 && i<max_lpg_num; i+=step)
-          		{
-          			wsprintf(ws, "%t", i);
-          			for(j=1; j<=ws_search->wsbody[0]; j++)
-          			{
-          				if(j > ws->wsbody[0] || ws_search->wsbody[j] != ws->wsbody[j])
-          					break;
-          			}
-          			if( j > ws_search->wsbody[0] )
-          			{
-          				bFound = 1;
-          				num = i;
-          				break;
-          			} 
-          		}
-          		FreeWS( ws );
-          	}
-          	if( !bFound )
-          	{
-          		if (msg->gbsmsg->submess==VOL_DOWN_BUTTON)
-          			num = 0;
-          		else
-          			num = flag ? max_image_num-1 : max_lpg_num-1;
-          		ShowMSG(1, (int)"Not found!");
-          	}
-          }
-          REDRAW();
+			  	begin_search( msg->gbsmsg->submess );
 			  	break;
         case ENTER_BUTTON:
           if(flag==8)
@@ -956,6 +961,7 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
   		{
   			wstrcpy(ws_search, ws_info);
   		}
+  		begin_search( VOL_DOWN_BUTTON );
   	}
   }
   
@@ -988,8 +994,8 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 const int menusoftkeys[]={0,1,2};
 SOFTKEY_DESC menu_sk[]=
 {
-  {0x0018,0x0000,(int)"Select"},
-  {0x0001,0x0000,(int)"Exit"},
+  {0x0018,0x0000,(int)"选择"},
+  {0x0001,0x0000,(int)"退出"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -1185,7 +1191,7 @@ void about(void)
 void about(GUI *data)
 #endif
 {
-  ShowMSG(1, (int)"SieHelpMan\ncopyright 2008 V0.6\nbinghelingxi\nOmo DaiXM\nalong1976");
+  ShowMSG(1, (int)"西机助手V0.6\n(c) 2008\nbinghelingxi\nOmo DaiXM\nalong1976");
 }
 
 #ifndef MENU_CN
@@ -1276,7 +1282,7 @@ void mm_menu_ghook(void *data, int cmd)
   }
 }
 
-HEADER_DESC mm_menuhdr={0,0,0,0,NULL,(int)"SieHelpMan",LGP_NULL};
+HEADER_DESC mm_menuhdr={0,0,0,0,NULL,(int)"西机助手V0.6",LGP_NULL};
 
 #ifdef MENU_CN
 const MENU_DESC mm_menu=
@@ -1378,7 +1384,7 @@ sizeof(MAIN_CSM),
 
 void UpdateCSMname(void) 
 {
-  wsprintf((WSHDR *)(&MAINCSM.maincsm_name), "SieHelpMan");
+  wsprintf((WSHDR *)(&MAINCSM.maincsm_name), ipc_my_name);
 }
 
 int main()
