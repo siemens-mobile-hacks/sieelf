@@ -31,8 +31,8 @@ int menusoftkeys[]={0,1,2};
 
 SOFTKEY_DESC menu_sk[]=
 {
-  {0x0018,0x0000,(int)"Select"},
-  {0x0001,0x0000,(int)"Back"},
+  {0x0018,0x0000,(int)"йЂ‰ж‹©"},
+  {0x0001,0x0000,(int)"иї”е›ћ"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -43,10 +43,10 @@ SOFTKEYSTAB menu_skt=
 
 #define icon 0
 
-char t_bm1[]="BM1 000000000";
-char t_bm2[]="BM2 000000000";
-char t_bm3[]="BM3 000000000";
-char t_bm4[]="BM4 000000000";
+char t_bm1[]="д№¦з­ѕ1  000000000";
+char t_bm2[]="д№¦з­ѕ2  000000000";
+char t_bm3[]="д№¦з­ѕ3  000000000";
+char t_bm4[]="д№¦з­ѕ4  000000000";
 
 WSHDR *info_ws;
 WSHDR *upinfo_ws;
@@ -75,7 +75,6 @@ void DrwImg(IMGHDR *img, int x, int y, char *pen, char *brush)
 volatile unsigned int editmode=0;
 volatile int stk_fhandle=-1;
 
-//Флаг необходимости перерисовать экран
 volatile unsigned int draw_mode=255;
 volatile unsigned int font_size=6;
 
@@ -100,15 +99,15 @@ const int minus11=-11;
 const char bmpDiskAccess[12]={0xFC,0x86,0xB3,0xA9,0xB1,0xA9,0x81,0xFF};
 const IMGHDR imgDiskAccess = {8,8,0x1,(char *)bmpDiskAccess};
 
-//Указатель блока в верхнем стеке
-int u_disk; //Дисковый указатель верхнего стека (в блоках по STKSZ50)
-//Указатель блока в нижнем стеке
-int d_disk; //Дисковый указатель нижнего стека (в блоках по STKSZ50)
 
-unsigned int usp; //Указатель на верхний стек
-unsigned int dsp; //Указатель на нижний стек
+int u_disk; //и”«иЂњй’јоЋ– з®Ёе™»е›№е’«?еї®зђз¤¤жіђ иЂ±е°»?(?зЉ­й“ЊењЉ й•± STKSZ50)
 
-//Флаг работы с диском
+int d_disk; //и”«иЂњй’јоЋ– з®Ёе™»е›№е’«?йѕ›йЄ“й‚€?иЂ±е°»?(?зЉ­й“ЊењЉ й•± STKSZ50)
+
+unsigned int usp; //й›Ёе™»е›№е’«?зЈ¬ еї®зђйѕ›?иЂ±е°»
+unsigned int dsp; //й›Ёе™»е›№е’«?зЈ¬ йѕ›йЄ“ж ќ иЂ±е°»
+
+//е™Єељ† з–ЈзЉ·ић“ ?ж»‚иЂњй“Ћ
 #define FIRSTLOAD 1
 #define LOAD_UP 2
 #define LOAD_DOWN 4
@@ -128,17 +127,17 @@ extern const char ted_path[];
 
 char stkfile[128];
 
-//Строка, на которую надо установить позицию в самом начале
+
 unsigned long seek_to_line;
-//Общее количество строк
+
 unsigned long total_line;
-//Номер текущей строки (курсор)
+
 unsigned long curline;
-//Текущий символ для редактирования (курсор)
+
 unsigned int curpos;
-//Номер верхней отображаемой строки
+
 unsigned long viewline;
-//Номер самого левого отображаемого символа
+
 unsigned int viewpos;
 
 unsigned int max_y;
@@ -149,47 +148,46 @@ unsigned int sheight_emode;
 unsigned int sheight;
 
 //---------------------------------
-// Состояние конвертора
+//
 //---------------------------------
 //unsigned int CSM;
-//Символ конца строки в конверторе
 //unsigned int eolsymb;
 
-//Прототипы конверторов
 unsigned int ConvertFormat(int fin,int fs,int fmt);
 unsigned int ConvertSimple(int fin,int fs);
 
 
 #define SSIZE 131072
-//Размер стеков
+
 unsigned int STKSZ=(SSIZE);
-//Размер, при котором происходит запись во временный файл
+
 unsigned int STKMAX=(SSIZE-16000);
-//Размер, при котором происходит чтение из временного файла
+
 unsigned int STKMIN=(16000);
-//Размер блока во временном файле
+
 unsigned int STKSZ50=(SSIZE/2);
 
-char *ustk; //верхний стек строк
-char *dstk; //нижний стек строк, строки хранятся в обратном порядке
+char *ustk;
+
+char *dstk;
 
 #define MAXBLOCK 1024
-unsigned int dbat[MAXBLOCK]; //Таблица распределения блоков нижнего стека во временном файле
-unsigned int ubat[MAXBLOCK]; //Таблица распределения блоков верхнего стека во временном файлe
-char bfree[MAXBLOCK]; //Таблица занятости блоков (0 - свободен)
+unsigned int dbat[MAXBLOCK];
+unsigned int ubat[MAXBLOCK];
+char bfree[MAXBLOCK];
 
-char font[4096]; //Буфер для шрифта
-char editline[256]; //Буфер для редактирования строки
+char font[4096];
+char editline[256];
 char filename[128];
 struct
 {
-  char name[128]; //Имя файла
-  char font; //Размер шрифта
-  char fmt; //Тип форматера
-  char codepage; //Кодировка
-  char cursor_off; //Если 1 - выключен курсор при просмотре
-  unsigned long line; //Номер строки для перехода
-  unsigned long total; //Общее количество. Если не совпадает, переход по отношению
+  char name[128];
+  char font;
+  char fmt;
+  char codepage;
+  char cursor_off;
+  unsigned long line;
+  unsigned long total;
   unsigned long bookm1;
   unsigned long bookm2;
   unsigned long bookm3;
@@ -227,25 +225,25 @@ volatile char Q_DiskError;
 
 void DiskErrorMsg(int mode)
 {
-  if (Q_DiskError&(1<<mode)) return; //Такое сообщение уже отобразили
+  if (Q_DiskError&(1<<mode)) return; //дє¦и§ђ?иЂ¦й’єо‹–йѕ›?з®§?й“—й’єз–ЈзЋ·и…“
   LockSched();
   Q_DiskError|=(1<<mode);
   switch(mode)
   {
   case 4:
-    ShowMSG(1,(int)"Can't create or write outfile!");
+    ShowMSG(1,(int)"ж— жі•ж–°е»єж€–е†™е…Ґж–‡д»¶!");
     break;
   case 3:
-    ShowMSG(1,(int)"Can't open tempfile!");
+    ShowMSG(1,(int)"ж— жі•ж‰“ејЂзј“е­ж–‡д»¶!");
     break;
   case 2:
-    ShowMSG(1,(int)"Can't seek in tempfile!");
+    ShowMSG(1,(int)"ж— жі•ењЁзј“е­ж–‡д»¶е†…и·іиЅ¬!");
     break;
   case 1:
-    ShowMSG(1,(int)"Can't write tempfile!");
+    ShowMSG(1,(int)"ж— жі•е†™е…Ґзј“е­ж–‡д»¶!");
     break;
   case 0:
-    ShowMSG(1,(int)"Can't read tempfile!");
+    ShowMSG(1,(int)"ж— жі•иЇ»еЏ–зј“е­ж–‡д»¶!");
     break;
   }
   UnlockSched();
@@ -332,38 +330,38 @@ typedef struct
 const TUNICODE2CHAR unicode2char[]=
 {
   // CAPITAL Cyrillic letters (base)
-  0x410,0x80,0xC0,0xE1, // А
-  0x411,0x81,0xC1,0xE2, // Б
-  0x412,0x82,0xC2,0xF7, // В
-  0x413,0x83,0xC3,0xE7, // Г
-  0x414,0x84,0xC4,0xE4, // Д
-  0x415,0x85,0xC5,0xE5, // Е
-  0x416,0x86,0xC6,0xF6, // Ж
-  0x417,0x87,0xC7,0xFA, // З
-  0x418,0x88,0xC8,0xE9, // И
-  0x419,0x89,0xC9,0xEA, // Й
-  0x41A,0x8A,0xCA,0xEB, // К
-  0x41B,0x8B,0xCB,0xEC, // Л
-  0x41C,0x8C,0xCC,0xED, // М
-  0x41D,0x8D,0xCD,0xEE, // Н
-  0x41E,0x8E,0xCE,0xEF, // О
-  0x41F,0x8F,0xCF,0xF0, // П
-  0x420,0x90,0xD0,0xF2, // Р
-  0x421,0x91,0xD1,0xF3, // С
-  0x422,0x92,0xD2,0xF4, // Т
-  0x423,0x93,0xD3,0xF5, // У
-  0x424,0x94,0xD4,0xE6, // Ф
-  0x425,0x95,0xD5,0xE8, // Х
-  0x426,0x96,0xD6,0xE3, // Ц
-  0x427,0x97,0xD7,0xFE, // Ч
-  0x428,0x98,0xD8,0xFB, // Ш
-  0x429,0x99,0xD9,0xFD, // Щ
-  0x42A,0x9A,0xDA,0xFF, // Ъ
-  0x42B,0x9B,0xDB,0xF9, // Ы
-  0x42C,0x9C,0xDC,0xF8, // Ь
-  0x42D,0x9D,0xDD,0xFC, // Э
-  0x42E,0x9E,0xDE,0xE0, // Ю
-  0x42F,0x9F,0xDF,0xF1, // Я
+  0x410,0x80,0xC0,0xE1, // ?
+  0x411,0x81,0xC1,0xE2, // ?
+  0x412,0x82,0xC2,0xF7, // ?
+  0x413,0x83,0xC3,0xE7, // ?
+  0x414,0x84,0xC4,0xE4, // ?
+  0x415,0x85,0xC5,0xE5, // ?
+  0x416,0x86,0xC6,0xF6, // ?
+  0x417,0x87,0xC7,0xFA, // ?
+  0x418,0x88,0xC8,0xE9, // ?
+  0x419,0x89,0xC9,0xEA, // ?
+  0x41A,0x8A,0xCA,0xEB, // ?
+  0x41B,0x8B,0xCB,0xEC, // ?
+  0x41C,0x8C,0xCC,0xED, // ?
+  0x41D,0x8D,0xCD,0xEE, // ?
+  0x41E,0x8E,0xCE,0xEF, // ?
+  0x41F,0x8F,0xCF,0xF0, // ?
+  0x420,0x90,0xD0,0xF2, // ?
+  0x421,0x91,0xD1,0xF3, // ?
+  0x422,0x92,0xD2,0xF4, // ?
+  0x423,0x93,0xD3,0xF5, // ?
+  0x424,0x94,0xD4,0xE6, // ?
+  0x425,0x95,0xD5,0xE8, // ?
+  0x426,0x96,0xD6,0xE3, // ?
+  0x427,0x97,0xD7,0xFE, // ?
+  0x428,0x98,0xD8,0xFB, // ?
+  0x429,0x99,0xD9,0xFD, // ?
+  0x42A,0x9A,0xDA,0xFF, // ?
+  0x42B,0x9B,0xDB,0xF9, // ?
+  0x42C,0x9C,0xDC,0xF8, // ?
+  0x42D,0x9D,0xDD,0xFC, // ?
+  0x42E,0x9E,0xDE,0xE0, // ?
+  0x42F,0x9F,0xDF,0xF1, // ?
   // CAPITAL Cyrillic letters (additional)
   0x402,'_',0x80,'_', // _ .*.*
   0x403,'_',0x81,'_', // _ .*.*
@@ -372,47 +370,47 @@ const TUNICODE2CHAR unicode2char[]=
   0x40C,'_',0x8D,'_', // _ .*.*
   0x40B,'_',0x8E,'_', // _ .*.*
   0x40F,'_',0x8F,'_', // _ .*.*
-  0x40E,0xF6,0xA1,'_', // Ў ...*
+  0x40E,0xF6,0xA1,'_', // ?...*
   0x408,0x4A,0xA3,0x4A, // _ .*.*
   0x409,0x83,0xA5,0xBD, // _ .*..
-  0x401,0xF0,0xA8,0xB3, // Ё
-  0x404,0xF2,0xAA,0xB4, // Є
-  0x407,0xF4,0xAF,0xB7, // Ї
+  0x401,0xF0,0xA8,0xB3, // ?
+  0x404,0xF2,0xAA,0xB4, // ?
+  0x407,0xF4,0xAF,0xB7, // ?
   0x406,0x49,0xB2,0xB6, // _ .*..
   0x405,0x53,0xBD,0x53, // _ .*.*
   // SMALL Cyrillic letters (base)
-  0x430,0xA0,0xE0,0xC1, // а
-  0x431,0xA1,0xE1,0xC2, // б
-  0x432,0xA2,0xE2,0xD7, // в
-  0x433,0xA3,0xE3,0xC7, // г
-  0x434,0xA4,0xE4,0xC4, // д
-  0x435,0xA5,0xE5,0xC5, // е
-  0x436,0xA6,0xE6,0xD6, // ж
-  0x437,0xA7,0xE7,0xDA, // з
-  0x438,0xA8,0xE8,0xC9, // и
-  0x439,0xA9,0xE9,0xCA, // й
-  0x43A,0xAA,0xEA,0xCB, // к
-  0x43B,0xAB,0xEB,0xCC, // л
-  0x43C,0xAC,0xEC,0xCD, // м
-  0x43D,0xAD,0xED,0xCE, // н
-  0x43E,0xAE,0xEE,0xCF, // о
-  0x43F,0xAF,0xEF,0xD0, // п
-  0x440,0xE0,0xF0,0xD2, // р
-  0x441,0xE1,0xF1,0xD3, // с
-  0x442,0xE2,0xF2,0xD4, // т
-  0x443,0xE3,0xF3,0xD5, // у
-  0x444,0xE4,0xF4,0xC6, // ф
-  0x445,0xE5,0xF5,0xC8, // х
-  0x446,0xE6,0xF6,0xC3, // ц
-  0x447,0xE7,0xF7,0xDE, // ч
-  0x448,0xE8,0xF8,0xDB, // ш
-  0x449,0xE9,0xF9,0xDD, // щ
-  0x44A,0xEA,0xFA,0xDF, // ъ
-  0x44B,0xEB,0xFB,0xD9, // ы
-  0x44C,0xEC,0xFC,0xD8, // ь
-  0x44D,0xED,0xFD,0xDC, // э
-  0x44E,0xEE,0xFE,0xC0, // ю
-  0x44F,0xEF,0xFF,0xD1, // я
+  0x430,0xA0,0xE0,0xC1, // ?
+  0x431,0xA1,0xE1,0xC2, // ?
+  0x432,0xA2,0xE2,0xD7, // ?
+  0x433,0xA3,0xE3,0xC7, // ?
+  0x434,0xA4,0xE4,0xC4, // ?
+  0x435,0xA5,0xE5,0xC5, // ?
+  0x436,0xA6,0xE6,0xD6, // ?
+  0x437,0xA7,0xE7,0xDA, // ?
+  0x438,0xA8,0xE8,0xC9, // ?
+  0x439,0xA9,0xE9,0xCA, // ?
+  0x43A,0xAA,0xEA,0xCB, // ?
+  0x43B,0xAB,0xEB,0xCC, // ?
+  0x43C,0xAC,0xEC,0xCD, // ?
+  0x43D,0xAD,0xED,0xCE, // ?
+  0x43E,0xAE,0xEE,0xCF, // ?
+  0x43F,0xAF,0xEF,0xD0, // ?
+  0x440,0xE0,0xF0,0xD2, // ?
+  0x441,0xE1,0xF1,0xD3, // ?
+  0x442,0xE2,0xF2,0xD4, // ?
+  0x443,0xE3,0xF3,0xD5, // ?
+  0x444,0xE4,0xF4,0xC6, // ?
+  0x445,0xE5,0xF5,0xC8, // ?
+  0x446,0xE6,0xF6,0xC3, // ?
+  0x447,0xE7,0xF7,0xDE, // ?
+  0x448,0xE8,0xF8,0xDB, // ?
+  0x449,0xE9,0xF9,0xDD, // ?
+  0x44A,0xEA,0xFA,0xDF, // ?
+  0x44B,0xEB,0xFB,0xD9, // ?
+  0x44C,0xEC,0xFC,0xD8, // ?
+  0x44D,0xED,0xFD,0xDC, // ?
+  0x44E,0xEE,0xFE,0xC0, // ?
+  0x44F,0xEF,0xFF,0xD1, // пЈµ
   // SMALL Cyrillic letters (additional)
   0x452,'_',0x90,'_', // _ .*.*
   0x453,'_',0x83,'_', // _ .*.*
@@ -421,24 +419,24 @@ const TUNICODE2CHAR unicode2char[]=
   0x45C,'_',0x9D,'_', // _ .*.*
   0x45B,'_',0x9E,'_', // _ .*.*
   0x45F,'_',0x9F,'_', // _ .*.*
-  0x45E,0xF7,0xA2,'_', // ў ...*
+  0x45E,0xF7,0xA2,'_', // ?...*
   0x458,0x6A,0xBC,0x6A, // _ .*.*
   0x491,0xA3,0xB4,0xAD, // _ .*..
-  0x451,0xF1,0xB8,0xA3, // ё
-  0x454,0xF3,0xBA,0xA4, // є
-  0x457,0xF5,0xBF,0xA7, // ї
+  0x451,0xF1,0xB8,0xA3, // ?
+  0x454,0xF3,0xBA,0xA4, // ?
+  0x457,0xF5,0xBF,0xA7, // ?
   0x456,0x69,0xB3,0xA6, // _ .*..
   0x455,0x73,0xBE,0x73, // _ .*.*
   0x0A0,'_',0xA0,0x20, // space .*..
-  0x0A4,'_',0xA4,0xFD, // ¤   .*..
-  0x0A6,'_',0xA6,'_', // ¦   .*.*
-  0x0B0,0xF8,0xB0,0x9C, // °
-  0x0B7,0xFA,0xB7,0x9E, // ·
+  0x0A4,'_',0xA4,0xFD, // ?  .*..
+  0x0A6,'_',0xA6,'_', // ?  .*.*
+  0x0B0,0xF8,0xB0,0x9C, // ?
+  0x0B7,0xFA,0xB7,0x9E, // ?
   // 0x2022,,0x95,0x95, //    .*..
-  // 0x2116,0xFC,0xB9,0x23, // №   ...*
+  // 0x2116,0xFC,0xB9,0x23, // ?  ...*
   // 0x2219,,0xF9,0x9E, //    .*..
   // 0x221A,0xFB,,0x96, // v   ..*.
-  // 0x25A0,0xFE,,0x94, // ¦
+  // 0x25A0,0xFE,,0x94, // ?
   0x0000,0,0,0
 };
 
@@ -471,11 +469,11 @@ unsigned int char16to8(unsigned int c)
 }
 
 //--------------------------------------------------------------------------
-//Печать символа
+//иҐ„й¬ЈићЇ иЂ”з„й“Ќ?
 void DrawChar(int c,int x,int y)
 {
-  char *d; //Куда рисуем
-  char *s; //Откуда рисуем
+  char *d; //йј жє§ з—‚иЂ‹е±ђ
+  char *s; //ж‚џз‰¦жє§ з—‚иЂ‹е±ђ
   int i;
   int ms;
   int md;
@@ -496,12 +494,12 @@ void DrawChar(int c,int x,int y)
   {
   case 4:
     s=font+(c<<3);
-    //Обрабатываем фонт размером 4
-    d=myscr+(y*(8*SCR_MODULO)+(x>>1)); //Основной экран
+    //еђѕз–Јеѕ‰ић“еї„е±ђ зє›зњљ з–ЈзЏ€е±¦й“Ћ 4
+    d=myscr+(y*(8*SCR_MODULO)+(x>>1)); //еЉЎзњЌеї­й“‹ о‘“з–Ј?
     ms=0xF0;
     md=0x0F;
     if (x&1) {ms=0x0F;md=0xF0;}
-    //Печать в тетраде
+    //иҐ„й¬ЈићЇ ?иќ€иќ е™¤?
     do
     {
       *d=(*d&md)|(*s++&ms);
@@ -511,8 +509,8 @@ void DrawChar(int c,int x,int y)
     break;
   case 6:
     s=font+(c<<3);
-    //Обрабатываем фонт размером 6
-    d=myscr+(y*(8*SCR_MODULO)+((x>>2)*3)); //0E:160C - Основной экран
+    //еђѕз–Јеѕ‰ић“еї„е±ђ зє›зњљ з–ЈзЏ€е±¦й“Ћ 6
+    d=myscr+(y*(8*SCR_MODULO)+((x>>2)*3)); //0E:160C - еЉЎзњЌеї­й“‹ о‘“з–Ј?
     switch(x&3)
     {
     case 0:
@@ -557,8 +555,8 @@ void DrawChar(int c,int x,int y)
     break;
   case 8:
     s=font+(c<<3);
-    //Обрабатываем фонт размером 8
-    d=myscr+(y*(8*SCR_MODULO)+x); //0E:160C - Основной экран
+    //еђѕз–Јеѕ‰ић“еї„е±ђ зє›зњљ з–ЈзЏ€е±¦й“Ћ 8
+    d=myscr+(y*(8*SCR_MODULO)+x); //0E:160C - еЉЎзњЌеї­й“‹ о‘“з–Ј?
     do
     {
       *d=*s++;
@@ -569,8 +567,8 @@ void DrawChar(int c,int x,int y)
   case 14:
     i=14;
     s=font+(c*14);
-    //Обрабатываем фонт размером 8
-    d=myscr+(y*(14*SCR_MODULO)+x); //0E:160C - Основной экран
+    //еђѕз–Јеѕ‰ић“еї„е±ђ зє›зњљ з–ЈзЏ€е±¦й“Ћ 8
+    d=myscr+(y*(14*SCR_MODULO)+x); //0E:160C - еЉЎзњЌеї­й“‹ о‘“з–Ј?
     do
     {
       *d=*s++;
@@ -581,8 +579,8 @@ void DrawChar(int c,int x,int y)
   case 16:
     i=16;
     s=font+(c*16);
-    //Обрабатываем фонт размером 16
-    d=myscr+(y*(16*SCR_MODULO)+x); //0E:160C - Основной экран
+    //еђѕз–Јеѕ‰ић“еї„е±ђ зє›зњљ з–ЈзЏ€е±¦й“Ћ 16
+    d=myscr+(y*(16*SCR_MODULO)+x); //0E:160C - еЉЎзњЌеї­й“‹ о‘“з–Ј?
     do
     {
       *d=*s++;
@@ -595,7 +593,7 @@ void DrawChar(int c,int x,int y)
   }
 }
 
-//Печать строки из буфера текста
+//иҐ„й¬ЈићЇ иЂ±з—¤и§‡ жЎ¤ з‹Ќзї¦з–Ј иќ€зЉџињћ
 void drawStkStr(char *p, unsigned int y, unsigned int vp, int ep)
 {
   unsigned int i=0;
@@ -615,7 +613,7 @@ void drawStkStr(char *p, unsigned int y, unsigned int vp, int ep)
     }
   }
   while(i<max_x);
-  if (ep>=0) while((c=*p++)) editline[ep++]=c; //Добиваем остаток строки
+  if (ep>=0) while((c=*p++)) editline[ep++]=c; //еїµеѕјеї„е±ђ й“–ињћиќѕ?иЂ±з—¤и§‡
 }
 
 void drawFrmStkStr(char *p, unsigned int y, unsigned int vp, int ep)
@@ -626,21 +624,21 @@ void drawFrmStkStr(char *p, unsigned int y, unsigned int vp, int ep)
   unsigned long spcadd;
   unsigned int spcs=0;
   
-  //Надо посчитать пробелы
+  //иўњжј• й•±иЃЌж ©е›№?й•ій’єе’«?
   i=0;
   if (*p)
   {
-    i=1; //Считаем со второго символа
-    while((c=p[i])) //Пока не конец строки
+    i=1; //з—’ж ©е™±?иЂ¦ жЂ›й“•й’Ѕ?иЂ”з„й“Ќ?
+    while((c=p[i])) //йЎ№иµ… з¤¤ и§ђз¤¤?иЂ±з—¤и§‡
     {
-      if (c==' ') spcs++; //Считаем пробелы
+      if (c==' ') spcs++; //з—’ж ©е™±?й•ій’єе’«?
       i++;
     }
   }
   if (i>max_x)
-    i=0; //Не добавляем пробелы, строка длиннее, чем экран
+    i=0; //ж№ѕ жј•еѕ‰жЂ†пЈµе±ђ й•ій’єе’«? иЂ±з—¤иµ… жЅ†жЎ§з¤¤? йє‡?о‘“з–Ј?
   else
-    i=max_x-i; //Теперь в i - общее количество добавляемых пробелов
+    i=max_x-i; //д№‰й•Ґз ?i - й’єо‹–?и§ђи…“йє‡иЂ±еїё жј•еѕ‰жЂ†пЈµе±ђоЋў й•ій’єе’«й’ј
   spcadd=0;
   spcsum=0;
   if (spcs)
@@ -648,7 +646,7 @@ void drawFrmStkStr(char *p, unsigned int y, unsigned int vp, int ep)
     spcadd=((unsigned long)i<<16)/spcs;
     spcsum=((unsigned long)i<<16)%spcs;
   }
-  spcsum+=spcadd; //Начальное значение
+  spcsum+=spcadd; //иўњй¬Јжњ¦зњЌ?зЏҐењње±™жЎў
   
   i=0;
   c=*p;
@@ -668,7 +666,7 @@ void drawFrmStkStr(char *p, unsigned int y, unsigned int vp, int ep)
       if (vp!=0) vp--; else DrawChar(c,i++,y);
       if (c==' ')
       {
-	//Добавляем пробелы
+	//еїµеѕ‰жЂ†пЈµе±ђ й•ій’єе’«?
 	if (spcsum>=65536)
 	{
 	  spcsum-=65536;
@@ -685,21 +683,21 @@ void drawFrmStkStr(char *p, unsigned int y, unsigned int vp, int ep)
     }
   }
   while(i<max_x);
-  if (ep>=0) while((c=*p++)) editline[ep++]=c; //Добиваем остаток строки
+  if (ep>=0) while((c=*p++)) editline[ep++]=c; //еїµеѕјеї„е±ђ й“–ињћиќѕ?иЂ±з—¤и§‡
 }
 
-//Поиск начала строки в верхнем стеке
+//йЎ№жЎ‰?зЈ¬й¬Ји±љ иЂ±з—¤и§‡ ?еї®зђз¤¤?иЂ±е°»?
 extern unsigned int bl_us(unsigned int pos);
 extern unsigned int bl_ds(unsigned int pos);
 
-//Перенос из верхнего стека в нижний (на строку вверх)
+//иҐ„з–±зњЌ?жЎ¤ еї®зђз¤¤жіђ иЂ±е°»??йѕ›йЄ“ж ќ (зЈ¬ иЂ±з—¤з‰¦ еї–е±¦?
 extern void move_up(void);
-//Перенос из нижнего стека в верхний (на строку вниз)
+//иҐ„з–±зњЌ?жЎ¤ йѕ›йЄ“й‚€?иЂ±е°»??еї®зђйѕ›?(зЈ¬ иЂ±з—¤з‰¦ еї­жЎ¤)
 extern void move_dw(void);
 //---------------------------------------
-// Работа с таблицей блоков
+// жњЅзЉ·ињћ ?ињћзЉ­жЎ·еЅ зЉ­й“Њй’ј
 //---------------------------------------
-//Поиск первого свободного блока
+//йЎ№жЎ‰?й•Ґз–ґй’Ѕ?з–‹й’єй’їзњЌжіђ зЉ­й“Њ?
 int FindFreeBlock(void)
 {
   unsigned int i=0;
@@ -716,7 +714,7 @@ int FindFreeBlock(void)
 }
 
 //---------------------------------------
-// Загрузка с диска нового фрагмента
+// йќ’жІ­з®ёиµ… ?ж»‚иЂњ?зњЌеїёжіђ йєґељ†ж€ѕзњљ?
 //---------------------------------------
 void DoDiskAccess(unsigned int flag)
 {
@@ -727,7 +725,7 @@ void DoDiskAccess(unsigned int flag)
   
   if ((f=stk_fhandle)==-1)
   {
-    stk_fhandle=f=fopen(stkfile,A_ReadWrite+A_BIN,P_READ+P_WRITE,&ul); //Файл верхнего стека
+    stk_fhandle=f=fopen(stkfile,A_ReadWrite+A_BIN,P_READ+P_WRITE,&ul); //и„Џж®Ў еї®зђз¤¤жіђ иЂ±е°»?
     if (stk_fhandle==-1) DiskErrorMsg(3);
   }
   if (disk_access&LOAD_UP)
@@ -783,7 +781,7 @@ void DoDiskAccess(unsigned int flag)
 }
 
 //------------------------------------------
-// Проверка необходимости чтения/записи с диска/на диск
+// ж©Ўй’је±¦иµ… з¤¤й’єиє…ж»‚зҐ›иЂ±?й»©е±™?/зЋЋй•ЁиЂ” ?ж»‚иЂњ?зЈ¬ ж»‚иЂњ
 //------------------------------------------
 void CheckDiskAccess(void)
 {
@@ -794,7 +792,7 @@ void CheckDiskAccess(void)
 }
 
 //-------------------------------------------------------
-// Работа с историей
+// жњЅзЉ·ињћ ?жЎ‰иќѕз—‚еЅ
 //-------------------------------------------------------
 #pragma inline=forced
 int toupper(int c)
@@ -830,7 +828,7 @@ unsigned int SearchHistory(void)
       if (!strcmp_nocase(HISTORY.name,filename))
       {
    	history_pos|=0x8000;
-	break; //Нашли
+	break; //иўњо‰ѕ?
       }
       history_pos++;
     }
@@ -840,7 +838,7 @@ unsigned int SearchHistory(void)
   return(history_pos);
 }
 
-//Записать историю, вызывается в контексте MMC_Filesystem
+//йќ’й•ЁиҐ¦ићЇ жЎ‰иќѕз—‚? жЃ№зђЁеї„ејЄ? ?и§ђзњље°»иЂ±?MMC_Filesystem
 void SaveHistory(void)
 {
   int f;
@@ -870,7 +868,7 @@ void SaveHistory(void)
   }
   /*  if (terminated)
   {
-  //Записываем snap-shoot
+  //йќ’й•Ёи¦ѓеї„е±ђ snap-shoot
   if ((f=FileOpen((STR)snapshootfile,_O_BINARY+_O_CREAT+_O_RDWR,_S_IEXEC))!=-1)
   {
   FileWrite(f,(void far *)0x80000,16384);
@@ -883,9 +881,9 @@ void SaveHistory(void)
 }*/
 }
 //------------------------------------------
-// Собственно редактор
+// жќЁз‹Ѓињ®е±™зњЌ з–±жє§з‰ќй“•
 //------------------------------------------
-void GotoLine(void) //Переход на строку seek_to_line, вызывается в контексте MMC_Filesystem
+void GotoLine(void) //иҐ„з–±иє…?зЈ¬ иЂ±з—¤з‰¦ seek_to_line, жЃ№зђЁеї„ејЄ? ?и§ђзњље°»иЂ±?MMC_Filesystem
 {
   // unsigned int l;
   // unsigned int p;
@@ -893,22 +891,22 @@ void GotoLine(void) //Переход на строку seek_to_line, вызывается в контексте MMC
   
   for(;;)
   {
-    disk_access=0; //Закончили дисковые операции
+    disk_access=0; //йќ’и§ђзњµжЎ¦?ж»‚иЂњй’јоЋ’ й“’е±¦ењ‰жўѓ
     CheckDiskAccess();
     if (disk_access) DoDiskAccess(0);
-    if (seek_to_line==curline) break; //Пришли
+    if (seek_to_line==curline) break; //ж©ЎжЎ«и…“
     if (seek_to_line<curline)
     {
-      //Пытаемся идти вверх
-      if (!curline) break; //начало!
-      if (curline==viewline) viewline--; //Если первая строка экрана
+      //ж¶€ињће±ђ? жЎЋињ© еї–е±¦?
+      if (!curline) break; //зЈ¬й¬Ји…©!
+      if (curline==viewline) viewline--; //зЇ·и…“ й•Ґз–ґ? иЂ±з—¤иµ… о‘“з–ЈзЈ¬
       curline--;
       move_up();
     }
     else
     {
-      //Пытаемся идти вниз
-      if (dsp==STKSZ) break; //Конец текста
+      //ж¶€ињће±ђ? жЎЋињ© еї­жЎ¤
+      if (dsp==STKSZ) break; //жљ‘з¤¤?иќ€зЉџињћ
       curline++;
       if ((curline-viewline)==max_y)
       {
@@ -922,7 +920,7 @@ void GotoLine(void) //Переход на строку seek_to_line, вызывается в контексте MMC
     fclose(stk_fhandle,&ul);
     stk_fhandle=-1;
   }
-  draw_mode=1; //Перерисовываем
+  draw_mode=1; //иҐ„з–±з—‚иЂ¦жЃ№еї„е±ђ
   if (!terminated) REDRAW();
 }
 
@@ -930,9 +928,9 @@ void LineUp(void)
 {
   // unsigned int l;
   // unsigned int p;
-  if (curline) //Не начало!
+  if (curline) //ж№ѕ зЈ¬й¬Ји…©!
   {
-    if (curline==viewline) viewline--; //Если первая строка экрана
+    if (curline==viewline) viewline--; //зЇ·и…“ й•Ґз–ґ? иЂ±з—¤иµ… о‘“з–ЈзЈ¬
     curline--;
     move_up();
   }
@@ -942,7 +940,7 @@ void LineDw(void)
 {
   // unsigned int l;
   // unsigned int p;
-  if (dsp==STKSZ) return; //Конец текста
+  if (dsp==STKSZ) return; //жљ‘з¤¤?иќ€зЉџињћ
   curline++;
   if ((curline-viewline)==max_y)
   {
@@ -983,7 +981,7 @@ void PageDw(unsigned int lines)
   i=lines;
   do
   {
-    if (dsp==STKSZ) break; //Конец текста
+    if (dsp==STKSZ) break; //жљ‘з¤¤?иќ€зЉџињћ
     viewline++;
     curline++;
     move_dw();
@@ -1043,14 +1041,18 @@ void DrawInfo(void)
   
   DrawRoundedFrame(0,YDISP,scr_w-1,scr_h-1,0,0,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(20));
   str_2ws(e_ws,filename,126);
-  wsprintf(info_ws,"Time:\n%02d:%02d\n"
-	   "Current line %lu\nTotal lines %lu\n\nCurrent file:\n%w",
-	   t.hour,t.min,curline,total_line,e_ws);
+  char *info_chr=malloc(512);
+  sprintf(info_chr, "ж—¶й—ґ:\n%02d:%02d\nиЎЊ: %lu\nжЂ»иЎЊж•°: %lu\n\nж–‡д»¶:\n%w", t.hour,t.min,curline,total_line,e_ws);
+  //wsprintf(info_ws,"Time:\n%02d:%02d\n"
+	//   "Current line %lu\nTotal lines %lu\n\nCurrent file:\n%w",
+	//   t.hour,t.min,curline,total_line,e_ws);
+	utf8_2ws(info_ws, info_chr, strlen(info_chr));
   DrawString(info_ws,3,3+YDISP,scr_w-4,scr_h-4,FONT_SMALL,2,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  mfree(info_chr);
 }
 
 //=============================================================================
-//Вывод на экран
+//и”“еїё?зЈ¬ о‘“з–Ј?
 //=============================================================================
 #pragma optimize=z 9
 void DrawScreen(void)
@@ -1065,24 +1067,30 @@ void DrawScreen(void)
   
   char *ink=GetPaletteAdrByColorIndex(INK);
   char *paper=GetPaletteAdrByColorIndex(PAPER);
-  
+  char *upinfo_chr=malloc(256);
   if (disk_access)
   {
     DrawRoundedFrame(0,YDISP+8,8,GetFontYSIZE(FONT_SMALL)+YDISP-1,0,0,0,paper,paper);
     DrwImg((IMGHDR *)&imgDiskAccess,0,YDISP,ink,paper);
     if (draw_mode==2)
     {
-      wsprintf(upinfo_ws,"Goto line %u...",curline);
+    	sprintf(upinfo_chr,"иЅ¬е€°иЎЊ %u...",curline);
+      //wsprintf(upinfo_ws,"Goto line %u...",curline);
+      utf8_2ws(upinfo_ws, upinfo_chr, strlen(upinfo_chr));
       goto L_W1;
     }
     if (disk_access==SAVE_FILE)
     {
-      wsprintf(upinfo_ws,"Saving...");
+    	sprintf(upinfo_chr,"ж­ЈењЁдїќе­...");
+      //wsprintf(upinfo_ws,"Saving...");
+      utf8_2ws(upinfo_ws, upinfo_chr, strlen(upinfo_chr));
       goto L_W1;
     }
     if (disk_access==FIRSTLOAD)
     {
-      wsprintf(upinfo_ws,"Line %u...",curline);
+      //wsprintf(upinfo_ws,"Line %u...",curline);
+      sprintf(upinfo_chr,"иЎЊ %u...",curline);
+      utf8_2ws(upinfo_ws, upinfo_chr, strlen(upinfo_chr));
     L_W1:
       DrawRoundedFrame(8,YDISP,scr_w-1,GetFontYSIZE(FONT_SMALL)+YDISP-1,0,0,0,paper,paper);
       DrawString(upinfo_ws,8,YDISP,scr_w-1,GetFontYSIZE(FONT_SMALL)+YDISP-1,FONT_SMALL,2,ink,paper);
@@ -1097,13 +1105,12 @@ void DrawScreen(void)
     case 1:
       my=editmode?max_y_emode:max_y;
       zeromem(editline,256);
-      //Перерисовываем весь экран
       y=curline-viewline;
       p=usp;
-      if (dsp!=STKSZ) c=dstk[dsp]; else c=0; //Первый символ текущей строки - если буква - форматируем
+      if (dsp!=STKSZ) c=dstk[dsp]; else c=0; //иҐ„з–ґоЋ– иЂ”з„й“Ќ иќ€з‰¦о‹–?иЂ±з—¤и§‡ - зѕји…“ з‹Ќиµ€?- зє›з—Ёе›№жЎЉз®¦?
       while(y)
       {
-	//Есть строки выше текущей
+	//зЇ·ићЇ иЂ±з—¤и§‡ жЃ№о‰ё иќ€з‰¦о‹–?
 	p=bl_us(p);
 	if ((c>' ')&&(!(HISTORY.fmt&0x80))&&(cursor_off))
 	  drawFrmStkStr(ustk+p,--y,viewpos,-1);
@@ -1112,7 +1119,7 @@ void DrawScreen(void)
 	c=ustk[p];
       }
       y=curline-viewline;
-      //Теперь печатаем от текущей вниз
+      //д№‰й•Ґз й•Ґй¬Јињће±ђ й“— иќ€з‰¦о‹–?еї­жЎ¤
       p=dsp;
       f=0;
       while(y!=(my))
@@ -1127,7 +1134,7 @@ void DrawScreen(void)
 	{
 	  unsigned int p1;
 	  p1=bl_ds(p);
-	  if (p1!=STKSZ) c=dstk[p1]; else c=0; //Посл. строка не расширяется
+	  if (p1!=STKSZ) c=dstk[p1]; else c=0; //йЎ№иЂ . иЂ±з—¤иµ… з¤¤ з–ЈиЃ’жЎЉпЈµејЄ?
 	  if ((c>' ')&&(!(HISTORY.fmt&0x80))&&(cursor_off))
 	    drawFrmStkStr(dstk+p,y++,viewpos,f);
 	  else
@@ -1138,8 +1145,8 @@ void DrawScreen(void)
       }
       //DrawCursor(curpos-viewpos,curline-viewline);
       {
-	//Рисуем скролл-бар
-	char *d=myscr+((scr_w-1)>>3); //Последний байт
+	//йњЂиЂ‹е±ђ иЂњз—¤и…љ-еѕ‰?
+	char *d=myscr+((scr_w-1)>>3); //йЎ№иЂ й‚ѓйѕ›?еѕ‰иЅµ
 	if (total_line)
 	{
 	  y=((editmode?sheight_emode-8:sheight-8)*curline)/total_line;
@@ -1183,20 +1190,23 @@ void DrawScreen(void)
       cursor_cnt=3;
       goto L_CURSOR;
     case 2:
-      //Процесс перехода на строку
+      //ж©Ўй“ћзѕј?й•Ґз–±иє…жє§ зЈ¬ иЂ±з—¤з‰¦
       {
-	wsprintf(upinfo_ws,"Goto line %u...",curline);
+      sprintf(upinfo_chr,"иЅ¬е€°иЎЊ %u...",curline);
+      //wsprintf(upinfo_ws,"Goto line %u...",curline);
+      utf8_2ws(upinfo_ws, upinfo_chr, strlen(upinfo_chr));
+	//wsprintf(upinfo_ws,"Goto line %u...",curline);
 	DrawRoundedFrame(0,YDISP,scr_w-1,GetFontYSIZE(FONT_SMALL)+YDISP,0,0,0,paper,paper);
 	DrawString(upinfo_ws,0,YDISP,scr_w-1,GetFontYSIZE(FONT_SMALL)+YDISP,FONT_SMALL,2,ink,paper);
 	goto L_WELLCOME2;
       }
       //return;
     case 4:
-      //Экран информации
+      //и“ђз–Ј?жЎ§зє›з—Ёењ‰жўѓ
       DrawInfo();
       return;
     case 255:
-      //Экран приветствия
+      //и“ђз–Ј?й•іжЎ ејЄиЂ±еї¤пЈµ
     L_WELLCOME:
       DrawRoundedFrame(0,YDISP,scr_w-1,GetFontYSIZE(FONT_SMALL)+YDISP-1,0,0,0,paper,paper);
       draw_mode=1;
@@ -1207,7 +1217,7 @@ void DrawScreen(void)
       DrawString(info_ws,0,GetFontYSIZE(FONT_SMALL)+9+YDISP,scr_w-1,ScreenH()-1,FONT_SMALL,2,ink,paper);
       return;
     case 0:
-      //Курсор
+      //йј зѓй“•
       if (cursor_cnt)
       {
 	cursor_cnt--;
@@ -1240,6 +1250,7 @@ void DrawScreen(void)
     }
     draw_mode=1;
   }
+  mfree(upinfo_chr);
   return;
 }
 
@@ -1398,17 +1409,17 @@ void* edmenu_HNDLS[8]=
 
 MENUITEM_DESC edmenu_ITEMS[8]=
 {
-  {NULL,(int)"Insert line"    ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Delete line"    ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Split line"     ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Join lines"     ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Insert time"    ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Insert date"    ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Paste"          ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Clear clipboard",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2}
+  {NULL,(int)"жЏ’е…ҐиЎЊ"    ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"е€ й™¤иЎЊ"    ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"ж–­ејЂиЎЊ"     ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"иїћжЋҐиЎЊ"     ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"жЏ’е…Ґж—¶й—ґ"    ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"жЏ’е…Ґж—Ґжњџ"    ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"зІиґґ"          ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"жё…з©єе‰Єиґґжќї",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2}
 };
 
-HEADER_DESC edmenu_HDR={0,0,0,0,icon,(int)"Special...",LGP_NULL};
+HEADER_DESC edmenu_HDR={0,0,0,0,icon,(int)"зј–иѕ‘...",LGP_NULL};
 
 MENU_DESC edmenu_STRUCT=
 {
@@ -1428,10 +1439,10 @@ int ed_inp_onkey(GUI *data, GUI_MSG *msg)
   
   if (msg->keys==0xFFF)
   {
-    editmode=0xFFF; //Признак меню
+    editmode=0xFFF; //ж©ЎжЎ¤зЈ¬?ж€ѕзќЁ
     patch_header(&edmenu_HDR);
     edit_id=CreateMenu(0,0,&edmenu_STRUCT,&edmenu_HDR,0,8,0,0);
-    return(1); //Закрываем лавочку
+    return(1); //йќ’з‰®оЋЏе™±?и±љеїёйєќ?
   }
   if ((msg->gbsmsg->msg==KEY_DOWN)||(msg->gbsmsg->msg==LONG_PRESS))
   {
@@ -1473,9 +1484,9 @@ void ed_inp_redraw(void *data)
   {
     if (strcmp(editline,dstk+dsp)!=0) text_changed=1;
   }
-  sz=bl_ds(sz); //Ищем начало сл. строки
-  sz-=p+1; //Вновь добавляемая строка
-  strcpy(dstk+(dsp=sz),editline); //Добавляем
+  sz=bl_ds(sz); //и…®е±ђ зЈ¬й¬Ји…© иЂ . иЂ±з—¤и§‡
+  sz-=p+1; //й©¬й’ј?жј•еѕ‰жЂ†пЈµе±ђ? иЂ±з—¤иµ…
+  strcpy(dstk+(dsp=sz),editline); //еїµеѕ‰жЂ†пЈµе±ђ
   draw_mode=1;
   DrawScreen();
 }
@@ -1484,7 +1495,7 @@ void ed_inp_locret(void){}
 
 void ed_inp_ghook(GUI *data, int cmd)
 {
-  static SOFTKEY_DESC sk={0x0FFF,0x0000,(int)"Menu"};
+  static SOFTKEY_DESC sk={0x0FFF,0x0000,(int)"иЏњеЌ•"};
   static void *methods[16];
   EDITCONTROL ec;
   int ecp;
@@ -1514,7 +1525,7 @@ void ed_inp_ghook(GUI *data, int cmd)
   }
 }
 
-HEADER_DESC ed_inp_hdr={0,0,0,0,icon,(int)"Edit text",LGP_NULL};
+HEADER_DESC ed_inp_hdr={0,0,0,0,icon,(int)"зј–иѕ‘ж–‡жњ¬",LGP_NULL};
 
 INPUTDIA_DESC ed_inp_desc=
 {
@@ -1543,7 +1554,7 @@ void CreateEditDialog(void)
   
   editmode=0;
   cursor_off=0;
-  while ((curline-viewline)>=max_y_emode) viewline++; //Если ниже чем 16 строк - перемещаемся
+  while ((curline-viewline)>=max_y_emode) viewline++; //зЇ·и…“ йѕ›й©Ѕ йє‡?16 иЂ±з—¤?- й•Ґз–±ж€ѕо‹‘е±ђ?
   
   CutWSTR(e_ws,0);
   if ((p=dsp)!=STKSZ)
@@ -1606,7 +1617,7 @@ void SetViewIllumination(void)
   //  GBS_StartTimerProc(&light_tmr,1,LightTimerProc);
 }
 
-//Перерисовка основного диалога
+//иҐ„з–±з—‚иЂ¦жЂ…?й“–зњЌеї­й’Ѕ?ж»‚ељЇй’Ѕ?
 void method0(MAIN_GUI *data)
 {
   if (data->gui.state==2)
@@ -1654,12 +1665,12 @@ int method8(void){return(0);}
 int method9(void){return(0);}
 
 //------------------------------------------------------------------------------
-// Осн. диалог - обработка кнопок
+// еЉЎ? ж»‚ељЇй’Ѕ - й’єз–ЈзЉ·ињї?и§Џй“’й“Њ
 //------------------------------------------------------------------------------
 int method5(MAIN_GUI *data, GUI_MSG *msg)
 {
-  if (disk_access) return(0); //Если дисковые операции
-  if ((draw_mode>1)&&(draw_mode!=4)) return(0); //Если еще рисуем
+  if (disk_access) return(0); //зЇ·и…“ ж»‚иЂњй’јоЋ’ й“’е±¦ењ‰жўѓ
+  if ((draw_mode>1)&&(draw_mode!=4)) return(0); //зЇ·и…“ е¦Ѓ?з—‚иЂ‹е±ђ
   if (msg->gbsmsg->msg==KEY_UP)
   {
     if (draw_mode==4)
@@ -1677,7 +1688,7 @@ int method5(MAIN_GUI *data, GUI_MSG *msg)
     case RED_BUTTON:
     case RIGHT_SOFT:
       //  L_EXIT:
-      return(1); //Происходит вызов GeneralFunc для тек. GUI -> закрытие GUI
+      return(1); //ж©Ўй“ЉиЃѓй’їж © жЃ№зЏ™?GeneralFunc жЅ†пЈµ иќ€? GUI -> зЋЋз‰®оЋџжЎў GUI
     case GREEN_BUTTON:
       //    L_EDIT:
       CreateEditDialog();
@@ -1700,9 +1711,9 @@ int method5(MAIN_GUI *data, GUI_MSG *msg)
       if (cursor_off||(dsp==STKSZ)) break;
       else
       {
-      unsigned int i=strlen(dstk+dsp); //Длина тек. строки
+      unsigned int i=strlen(dstk+dsp); //зўѕжЎ§?иќ€? иЂ±з—¤и§‡
       char far *s;
-      s=EX_heap_malloc_with_lock(i+2); //Т.к. добавляем 0 и 0d
+      s=EX_heap_malloc_with_lock(i+2); //?? жј•еѕ‰жЂ†пЈµе±ђ 0 ?0d
       if (s)
       {
       strcpy(s,dstk+dsp);
@@ -1739,7 +1750,7 @@ int method5(MAIN_GUI *data, GUI_MSG *msg)
 	break;
       }
     case '4':
-      //На слово влево
+      //иўњ иЂ й’ј?жЂ†й‚‚?
       WordLeft();
       cursor_off&=0xFE;
       draw_mode=1;
@@ -1751,7 +1762,7 @@ int method5(MAIN_GUI *data, GUI_MSG *msg)
 	break;
       }
     case '6':
-      //На слово вправо
+      //иўњ иЂ й’ј?жЂ™з–Јеїё
       WordRight();
       cursor_off&=0xFE;
       draw_mode=1;
@@ -1786,7 +1797,7 @@ int method5(MAIN_GUI *data, GUI_MSG *msg)
 }
 
 //===================================================================
-// Меню загрузки файла
+// дЅ“зќЁ зЋЋжІ­з®ёи§‡ зѕїж®Ў?
 //===================================================================
 int sf_inp_onkey(GUI *data, GUI_MSG *msg)
 {
@@ -1796,7 +1807,7 @@ int sf_inp_onkey(GUI *data, GUI_MSG *msg)
     void UpdateCSMname(void);
     ws_2str(e_ws,filename,126);
     UpdateCSMname();
-    HISTORY.fmt=0; //Грузим его теперь как DirectLoad
+    HISTORY.fmt=0; //зЃ­з®ёжЎЃ й‚€?иќ€й•Ґз иµ…?DirectLoad
     disk_access=SAVE_FILE;
     text_changed=0;    
     SUBPROC((void *)savetext);
@@ -1807,7 +1818,7 @@ int sf_inp_onkey(GUI *data, GUI_MSG *msg)
 
 void sf_inp_ghook(GUI *data, int cmd)
 {
-  static SOFTKEY_DESC sk={0x0FFF,0x0000,(int)"Save..."};
+  static SOFTKEY_DESC sk={0x0FFF,0x0000,(int)"дїќе­..."};
   EDITCONTROL ec;
   if (cmd==7)
   {
@@ -1819,7 +1830,7 @@ void sf_inp_ghook(GUI *data, int cmd)
 
 void sf_inp_locret(void){}
 
-HEADER_DESC sf_inp_hdr={0,0,0,0,icon,(int)"Save as:",LGP_NULL};
+HEADER_DESC sf_inp_hdr={0,0,0,0,icon,(int)"дїќе­дёє:",LGP_NULL};
 
 INPUTDIA_DESC sf_inp_desc=
 {
@@ -1895,22 +1906,22 @@ void loadfont(int flag)
   {
     disk_access=0;
     draw_mode=1;
-    if (!terminated) REDRAW(); //Перерисовываем
+    if (!terminated) REDRAW(); //иҐ„з–±з—‚иЂ¦жЃ№еї„е±ђ
   }
 }
 
 void setfont(char sz)
 {
   font_size=sz;
-  if (disk_access==FIRSTLOAD) //Пришли из первой загрузки
+  if (disk_access==FIRSTLOAD) //ж©ЎжЎ«и…“ жЎ¤ й•Ґз–ґй“‹ зЋЋжІ­з®ёи§‡
   {
-    ShowMSG(1,(int)"Font selected!");
+    ShowMSG(1,(int)"е­—дЅ“е·ІеЏжЌў!");
     return;
   }
   disk_access=FIRSTLOAD;
-  draw_mode=255; //Экран приветствия
+  draw_mode=255; //и“ђз–Ј?й•іжЎ ејЄиЂ±еї¤пЈµ
   SUBPROC((void *)loadfont,1);
-  GeneralFuncF1(1); //Закрываем меню
+  GeneralFuncF1(1); //йќ’з‰®оЋЏе™±?ж€ѕзќЁ
 }
 
 void load_setfont4(void){setfont(4);}
@@ -1979,19 +1990,19 @@ void *loadmenu_HNDLS[10]=
 
 MENUITEM_DESC loadmenu_ITEMS[10]=
 {
-  {NULL,(int)"Font size = 4" ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Font size = 6" ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Font size = 8" ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Font size = 14",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Font size = 16",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Direct load"   ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"DOS format"    ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"WIN format"    ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Padding on/off",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Save as..."    ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2}
+  {NULL,(int)"4еЏ·е­—дЅ“" ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"6еЏ·е­—дЅ“" ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"8еЏ·е­—дЅ“" ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"14еЏ·е­—дЅ“",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"16еЏ·е­—дЅ“",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"з›ґжЋҐиЅЅе…Ґ"   ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"DOSж јејЏ"    ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"WINж јејЏ"    ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"ејЂ/е…іPadding",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"дїќе­дёє..."    ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2}
 };
 
-HEADER_DESC loadmenu_HDR={0,0,0,0,icon,(int)"General...",LGP_NULL};
+HEADER_DESC loadmenu_HDR={0,0,0,0,icon,(int)"дё»иЏњеЌ•...",LGP_NULL};
 
 MENU_DESC loadmenu_STRUCT=
 {
@@ -2017,12 +2028,12 @@ int DrawLoadMenu(void)
 //-------------------------------------------------------------------
 
 //===================================================================
-// Меню Goto...
+// дЅ“зќЁ Goto...
 //===================================================================
 void goto_l(unsigned long l)
 {
   seek_to_line=l;
-  draw_mode=2; //Переходим на нужную строку
+  draw_mode=2; //иҐ„з–±иє…ж»‚?зЈ¬ зњўйЄ“з°‹ иЂ±з—¤з‰¦
   SUBPROC((void *)GotoLine);
   GeneralFuncF1(1);
 }
@@ -2066,7 +2077,7 @@ int gl_inp_onkey(GUI *data, GUI_MSG *msg)
     {
       seek_to_line=my_atoui(e_ws);
     }
-    draw_mode=2; //Переходим на нужную строку
+    draw_mode=2; //иҐ„з–±иє…ж»‚?зЈ¬ зњўйЄ“з°‹ иЂ±з—¤з‰¦
     SUBPROC((void *)GotoLine);
     return(1); //Close
   }
@@ -2075,7 +2086,7 @@ int gl_inp_onkey(GUI *data, GUI_MSG *msg)
 
 void gl_inp_ghook(GUI *data, int cmd)
 {
-  static SOFTKEY_DESC sk={0x0FFF,0x0000,(int)"Goto..."};
+  static SOFTKEY_DESC sk={0x0FFF,0x0000,(int)"иЅ¬е€°..."};
   EDITCONTROL ec;
   if (cmd==7)
   {
@@ -2087,8 +2098,8 @@ void gl_inp_ghook(GUI *data, int cmd)
 
 void gl_inp_locret(void){}
 
-HEADER_DESC gl_inp_hdr_percent={0,0,0,0,icon,(int)"Goto percent:",LGP_NULL};
-HEADER_DESC gl_inp_hdr_line={0,0,0,0,icon,(int)"Goto line:",LGP_NULL};
+HEADER_DESC gl_inp_hdr_percent={0,0,0,0,icon,(int)"иЅ¬е€°з™ѕе€†д№‹:",LGP_NULL};
+HEADER_DESC gl_inp_hdr_line={0,0,0,0,icon,(int)"иЅ¬е€°иЎЊ:",LGP_NULL};
 
 INPUTDIA_DESC gl_inp_desc=
 {
@@ -2128,13 +2139,13 @@ void goto_line_inp(int f)
 void goto_line(void)
 {
   GeneralFuncF1(1);
-  goto_line_inp(0); //Признак перехода по строке
+  goto_line_inp(0); //ж©ЎжЎ¤зЈ¬?й•Ґз–±иє…жє§ й•± иЂ±з—¤иµЌ
 }
 
 void goto_percent(void)
 {
   GeneralFuncF1(1);
-  goto_line_inp(1); //Признак перехода по процентам
+  goto_line_inp(1); //ж©ЎжЎ¤зЈ¬?й•Ґз–±иє…жє§ й•± й•ій“ће±™ињћ?
 }
 
 void goto_last_saved(void)
@@ -2174,18 +2185,18 @@ void *gotomenu_HNDLS[9]=
 
 MENUITEM_DESC gotomenu_ITEMS[9]=
 {
-  {NULL,(int)"Top"       ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Line"      ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Percent"   ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Bottom"    ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Last saved",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"йЎ¶йѓЁ"      ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"иЎЊ"        ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"з™ѕе€†д№‹?"   ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"еє•йѓЁ"      ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"дёЉдёЂж¬Ў"    ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
   {NULL,(int)t_bm1       ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
   {NULL,(int)t_bm2       ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
   {NULL,(int)t_bm3       ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
   {NULL,(int)t_bm4       ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
 };
 
-HEADER_DESC gotomenu_HDR={0,0,0,0,icon,(int)"Goto...",LGP_NULL};
+HEADER_DESC gotomenu_HDR={0,0,0,0,icon,(int)"иЅ¬е€°...",LGP_NULL};
 
 MENU_DESC gotomenu_STRUCT=
 {
@@ -2207,7 +2218,7 @@ void goto_menu(void)
 }
 
 //===================================================================
-// Меню Bookmark...
+// дЅ“зќЁ Bookmark...
 //===================================================================
 void set_book1(void)
 {
@@ -2249,7 +2260,7 @@ void *bookmenu_HNDLS[4]=
   (void *)set_book4
 };
 
-HEADER_DESC bookmenu_HDR={0,0,0,0,icon,(int)"Set Bookmark...",LGP_NULL};
+HEADER_DESC bookmenu_HDR={0,0,0,0,icon,(int)"и®ѕзЅ®д№¦з­ѕ...",LGP_NULL};
 
 MENU_DESC bookmenu_STRUCT=
 {
@@ -2270,7 +2281,7 @@ void bookm_menu(void)
   CreateMenu(0,0,&bookmenu_STRUCT,&bookmenu_HDR,0,4,0,0);
 }
 //===================================================================
-// Меню по левому софту
+// дЅ“зќЁ й•± и„ІеїёзҐ— иЂ¦и¶„?
 //===================================================================
 
 void search_menu(void)
@@ -2279,19 +2290,19 @@ void search_menu(void)
 
 MENUITEM_DESC softmenu_ITEMS[3]=
 {
-  {NULL,(int)"Goto..."        ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Set Bookmark...",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Search..."      ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"иЅ¬е€°..."        ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"и®ѕзЅ®д№¦з­ѕ...",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  //{NULL,(int)"Search..."      ,LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
 };
 
 void *softmenu_HNDLS[3]=
 {
   (void *)goto_menu,
   (void *)bookm_menu,
-  (void *)search_menu
+  //(void *)search_menu
 };
 
-HEADER_DESC softmenu_HDR={0,0,0,0,icon,(int)"TED menu",LGP_NULL};
+HEADER_DESC softmenu_HDR={0,0,0,0,icon,(int)"TEDиЏњеЌ•",LGP_NULL};
 
 MENU_DESC softmenu_STRUCT=
 {
@@ -2302,49 +2313,49 @@ MENU_DESC softmenu_STRUCT=
   NULL,
   softmenu_ITEMS,
   (MENUPROCS_DESC*)&softmenu_HNDLS,
-  3
+  2
 };
 
 void DrawSoftMenu(void)
 {
   static const char lfrm[]="%u";
-  sprintf(t_bm1+4,lfrm,HISTORY.bookm1);
-  sprintf(t_bm2+4,lfrm,HISTORY.bookm2);
-  sprintf(t_bm3+4,lfrm,HISTORY.bookm3);
-  sprintf(t_bm4+4,lfrm,HISTORY.bookm4);
+  sprintf(t_bm1+8,lfrm,HISTORY.bookm1);
+  sprintf(t_bm2+8,lfrm,HISTORY.bookm2);
+  sprintf(t_bm3+8,lfrm,HISTORY.bookm3);
+  sprintf(t_bm4+8,lfrm,HISTORY.bookm4);
   patch_header(&softmenu_HDR);
-  CreateMenu(0,0,&softmenu_STRUCT,&softmenu_HDR,0,3,0,0);
+  CreateMenu(0,0,&softmenu_STRUCT,&softmenu_HDR,0,2,0,0);
 }
 
 //======================================================================
 
-//Загрузка куска входного файла
+//йќ’жІ­з®ёиµ… з‰¦иЂњ?жЂ©й’їзњЌжіђ зѕїж®Ў?
 unsigned int FL_loader(int fin, unsigned int p)
 {
   unsigned int i;
   unsigned int ul;
   if (p==0xFFFFFFFF)
   {
-    //Первая загрузка
+    //иҐ„з–ґ? зЋЋжІ­з®ёиµ…
     i=fread(fin,dstk,STKSZ,&ul);
     if (i<STKSZ)
     {
-      //Загрузили меньше размера стека
-      dstk[i]=0; //Маркер конца файла
+      //йќ’жІ­з®ёжЎ¦?ж€ѕзќѓо‰ё з–ЈзЏ€е±¦?иЂ±е°»?
+      dstk[i]=0; //й”‘з—Ќе±¦ и§ђзњ¦?зѕїж®Ў?
     }
     p=0;
   }
-  if (p>=STKSZ50) //Если указатель перешел за границу половины буфера
+  if (p>=STKSZ50) //зЇ·и…“ з®Ёе™»е›№е’«?й•Ґз–±о‰ё?зЋЋ жІ­е›—жЎ·?й•±и…©еї¤зќ‡ з‹Ќзї¦з–Ј
   {
-    memcpy(dstk,dstk+STKSZ50,STKSZ50); //Копируем конец буфера в начало
-    p-=STKSZ50; //Новый указатель
-    i=fread(fin,dstk+STKSZ50,STKSZ50,&ul); //Следующие пол-буфера
-    if (i<STKSZ50) dstk[i+STKSZ50]=0; //Меньше половины - маркер конца файла
+    memcpy(dstk,dstk+STKSZ50,STKSZ50); //жљ‘й•Ёз—је±ђ и§ђз¤¤?з‹Ќзї¦з–Ј ?зЈ¬й¬Ји…©
+    p-=STKSZ50; //зљ–жЃ№?з®Ёе™»е›№е’«?
+    i=fread(fin,dstk+STKSZ50,STKSZ50,&ul); //е¤®й‚ѓз°‹о‹™?й•±?з‹Ќзї¦з–Ј
+    if (i<STKSZ50) dstk[i+STKSZ50]=0; //дЅ“зќѓо‰ё й•±и…©еї¤зќ‡ - з€Ёз—Ќе±¦ и§ђзњ¦?зѕїж®Ў?
   }
   return(p);
 }
 
-//Запись верхнего стека при начальной загрузке
+//йќ’й•ЁйЎё еї®зђз¤¤жіђ иЂ±е°»?й•і?зЈ¬й¬Јжњ¦зњЌ?зЋЋжІ­з®ёиµЌ
 unsigned int FL_saver(int fs, unsigned int p)
 {
   unsigned int b;
@@ -2365,7 +2376,7 @@ unsigned int FL_saver(int fs, unsigned int p)
 }
 
 //==================================================================
-// Первая загрузка файла
+// иҐ„з–ґ? зЋЋжІ­з®ёиµ… зѕїж®Ў?
 // TODO:
 //==================================================================
 void FirstLoadFile(unsigned int fmt)
@@ -2378,13 +2389,13 @@ void FirstLoadFile(unsigned int fmt)
   extern const int AUTOF_MODE;
   extern const int AUTOF_FONT;
   
-  u_disk=-1; //Дисковый указатель верхнего стека
-  d_disk=-1; //Дисковый указатель нижнего стека
-  zeromem(ubat,sizeof(ubat)); //Прочищаем таблицу блоков верхнего стека
-  zeromem(dbat,sizeof(dbat)); //Прочищаем таблицу блоков нижнего стека
-  zeromem(bfree,sizeof(bfree)); //Прочищаем таблицу занятых блоков
-  usp=0; //Указатель на верхний стек
-  dsp=STKSZ; //Указатель на нижний стек
+  u_disk=-1; //и”«иЂњй’јоЋ– з®Ёе™»е›№е’«?еї®зђз¤¤жіђ иЂ±е°»?
+  d_disk=-1; //и”«иЂњй’јоЋ– з®Ёе™»е›№е’«?йѕ›йЄ“й‚€?иЂ±е°»?
+  zeromem(ubat,sizeof(ubat)); //ж©Ўй“џжЈ‚е™±?ињћзЉ­жЎ·?зЉ­й“Њй’ј еї®зђз¤¤жіђ иЂ±е°»?
+  zeromem(dbat,sizeof(dbat)); //ж©Ўй“џжЈ‚е™±?ињћзЉ­жЎ·?зЉ­й“Њй’ј йѕ›йЄ“й‚€?иЂ±е°»?
+  zeromem(bfree,sizeof(bfree)); //ж©Ўй“џжЈ‚е™±?ињћзЉ­жЎ·?зЋЋ?ић“?зЉ­й“Њй’ј
+  usp=0; //й›Ёе™»е›№е’«?зЈ¬ еї®зђйѕ›?иЂ±е°»
+  dsp=STKSZ; //й›Ёе™»е›№е’«?зЈ¬ йѕ›йЄ“ж ќ иЂ±е°»
   viewpos=0;
   curpos=0;
   curline=0;
@@ -2395,7 +2406,7 @@ void FirstLoadFile(unsigned int fmt)
   
   if (fmt==0xFFFFFFFF)
   {
-    //Ищем историю
+    //и…®е±ђ жЎ‰иќѕз—‚?
     if (SearchHistory()&0x8000)
     {
       font_size=HISTORY.font;
@@ -2405,8 +2416,8 @@ void FirstLoadFile(unsigned int fmt)
     }
     else
     {
-      win_dos_koi=0xFF; //Неизвестный
-      switch(AUTOF_FONT) //Шрифт
+      win_dos_koi=0xFF; //ж№ѕжЎ¤еї®иЂ±зќ‡?
+      switch(AUTOF_FONT) //д»ћжўЏ?
       {
       case 0: font_size=4; break;
       default:
@@ -2415,11 +2426,11 @@ void FirstLoadFile(unsigned int fmt)
       case 3: font_size=14; break;
       case 4: font_size=16; break;
       }
-      zeromem(&HISTORY.line,4*6); //Все на самом верху
-      HISTORY.cursor_off=cursor_off=1; //Выключить курсор
+      zeromem(&HISTORY.line,4*6); //еџ‹?зЈ¬ иҐ¦зҐ›?еї®зђ?
+      HISTORY.cursor_off=cursor_off=1; //и”“и§Њо’ѕж ©?з‰¦зѓй“•
       HISTORY.total=1;
       //      HISTORY.fmt=0;
-      HISTORY.fmt=255; //Первый запуск!!!!
+      HISTORY.fmt=255; //иҐ„з–ґоЋ– зЋЋзџ¬иЂњ!!!!
       if (ENA_AUTOF)
       {
         HISTORY.fmt=fmt=AUTOF_MODE;
@@ -2427,7 +2438,7 @@ void FirstLoadFile(unsigned int fmt)
       else
       {
         LockSched();
-        loadmenu_id=DrawLoadMenu(); //Определяем, как грузить через меню
+        loadmenu_id=DrawLoadMenu(); //з‰©з–±жєґ?е±ђ, иµ…?жІ­з®ёж ©?йє‡з–±?ж€ѕзќЁ
         UnlockSched();
         return;
       }
@@ -2446,11 +2457,11 @@ void FirstLoadFile(unsigned int fmt)
     font_size=6;
     break;
   }
-  //Загружаем шрифт
+  //йќ’жІ­з®§е™±?оЉѓжўЏ?
   loadfont(0);
   
-  //Конвертируем все строки в верхний стек
-  fs=fopen(stkfile,A_Create+A_ReadWrite+A_BIN,P_READ+P_WRITE,&ul); //Файл верхнего стека
+  //жљ‘з¤…е±¦ињ©з—је±ђ жЂ¦?иЂ±з—¤и§‡ ?еї®зђйѕ›?иЂ±е°»
+  fs=fopen(stkfile,A_Create+A_ReadWrite+A_BIN,P_READ+P_WRITE,&ul); //и„Џж®Ў еї®зђз¤¤жіђ иЂ±е°»?
   if (fs==-1) DiskErrorMsg(3);
   if ((fin=fopen(filename,A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
   {
@@ -2469,24 +2480,24 @@ void FirstLoadFile(unsigned int fmt)
     fclose(fin,&ul);
   }
   fclose(fs,&ul);
-  total_line=viewline=curline; //Находимся в последней строке
+  total_line=viewline=curline; //иўњиє…ж»‚зҐљпЈµ ?й•±иЂ й‚ѓз¤¤?иЂ±з—¤иµЌ
   HISTORY.font=font_size;
   HISTORY.fmt=fmt;
   memcpy(HISTORY.name,filename,sizeof(HISTORY.name));
-  //Расчитываем, куда перейти
+  //жњЅиЃЌж ©оЋЏе™±? з‰¦жє§ й•Ґз–±иЅµ?
   if (HISTORY.total==total_line)
   {
-    seek_to_line=HISTORY.line; //Прямой переход
+    seek_to_line=HISTORY.line; //ж©ЎпЈµзҐ›?й•Ґз–±иє…?
   }
   else
   {
     if (HISTORY.total)
-      seek_to_line=(total_line*HISTORY.line)/HISTORY.total; //По отношению
+      seek_to_line=(total_line*HISTORY.line)/HISTORY.total; //йЎ№ й“—зњЌо‰ёйѕ›?
     else
       seek_to_line=0;
     HISTORY.line=seek_to_line;
   }
-  draw_mode=2; //Переходим на нужную строку
+  draw_mode=2; //иҐ„з–±иє…ж»‚?зЈ¬ зњўйЄ“з°‹ иЂ±з—¤з‰¦
   GotoLine();
 }
 
@@ -2539,10 +2550,10 @@ void Killer(void)
   {
     extern void savetext(void);
     LockSched();
-    ShowMSG(1,(int)"File as .new saved!");
+    ShowMSG(1,(int)"ж–‡д»¶дЅњдёє.newе·Ідїќе­!");
     UnlockSched();
     strcat(filename,".new");
-    HISTORY.fmt=0; //Грузим его теперь как DirectLoad
+    HISTORY.fmt=0; //зЃ­з®ёжЎЃ й‚€?иќ€й•Ґз иµ…?DirectLoad
     disk_access=SAVE_FILE;
     text_changed=0;    
     savetext();	
@@ -2582,8 +2593,8 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
     }
     if ((int)msg->data0==edit_id)
     {
-      //Закрыт диалог редактирования, проверяем
-      //Вышли из редактора стрелками вверх/вниз, выполняем	переход
+      //йќ’з‰®оЋџ ж»‚ељЇй’Ѕ з–±жє§з‰ќжЎЉй’је›—?, й•ій’је±¦пЈµе±ђ
+      //и”“о‰ѕ?жЎ¤ з–±жє§з‰ќй“•?иЂ±з–±и…™е›”?еї–е±¦?еї­жЎ¤, жЃ№й•±и… пЈµе±ђ	й•Ґз–±иє…?
       switch(editmode)
       {
       case VOL_UP_BUTTON:
@@ -2598,17 +2609,17 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
       case DOWN_BUTTON:
 	LineDw();
 	break;
-      case 0xFFF: //Просто меню
+      case 0xFFF: //ж©Ўй“–иќѕ ж€ѕзќЁ
 	break;
       default:
-	editmode=0; //Выключаем редактор
+	editmode=0; //и”“и§Њо’ѕе™±?з–±жє§з‰ќй“•
 	REDRAW();
 	return(1);
       }
       CheckDiskAccess();
       if (disk_access)
       {
-	DoDiskAccess(1); //Тут кривость, принято через SUBPROC
+	DoDiskAccess(1); //ж®·?з‰®жЎ й“–ићЇ, й•іжЎ§пЈµиќѕ йє‡з–±?SUBPROC
       }
       CreateEditDialog();
     }
@@ -2730,13 +2741,13 @@ int main(char *exename, char *fname)
     }
     mfree(ustk);
     LockSched();
-    ShowMSG(1,(int)"Can't alloc DSTK!");
+    ShowMSG(1,(int)"зЈЃз›з©єй—ґдёЌи¶і!");
     UnlockSched();
     SUBPROC((void *)Killer2);
     return 0;
   }
   LockSched();
-  ShowMSG(1,(int)"Can't alloc USTK!");
+  ShowMSG(1,(int)"ж— жі•з”іиЇ·USTK!");
   UnlockSched();
   SUBPROC((void *)Killer2);
   return 0;
