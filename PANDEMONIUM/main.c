@@ -63,7 +63,7 @@ sprintf(utf8_str, "全部： ~%dKB", total/1024);
 utf8_2ws(ews, utf8_str, strlen(utf8_str));
 unsigned int RED=0x640000FF;
 unsigned int BLACK=0x64000000;
-DrawString(ews,ScreenW()/2,YDISP,ScreenW(),YDISP+30,FONT_SMALL+1,TEXT_ALIGNMIDDLE,(char*)&RED,(char*)&BLACK);
+DrawString(ews,ScreenW()/2-20,YDISP,ScreenW(),YDISP+60,FONT_SMALL+1,TEXT_ALIGNMIDDLE,(char*)&RED,(char*)&BLACK);
 mfree(utf8_str);
 }
 
