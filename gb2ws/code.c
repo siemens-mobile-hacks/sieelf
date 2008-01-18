@@ -8,8 +8,6 @@
 #define CODEMAP_ADDR 0xA0FE0200
 #endif
 
-extern CutWSTRT(WSHDR *,int );
-
 #pragma swi_number=0x0A0
 __swi	__arm	int wsprintf_2 (WSHDR *,const char *format,...);
 
@@ -52,8 +50,7 @@ __thumb void ascii2ws(WSHDR *ws, const char *s, int maxlen)
   }
   char *p=(char *)s;
   unsigned char uc,uc2;
-  //CutWSTR(ws,0);
-  CutWSTRT(ws,0);
+  ws->wsbody[0] = 0;
   while((uc=*s++) && (maxlen == 0 || s-p<=maxlen))
   {
     if(uc <= 128)

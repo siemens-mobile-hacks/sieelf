@@ -1649,9 +1649,6 @@
     </settings>
   </configuration>
   <file>
-    <name>$PROJ_DIR$\arm_swi.asm</name>
-  </file>
-  <file>
     <name>$PROJ_DIR$\code.c</name>
   </file>
 </project>
