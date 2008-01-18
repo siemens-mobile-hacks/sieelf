@@ -3,17 +3,15 @@
 
 
 #ifdef NEWSGOLD
-#define CODEMAP_ADDR 0xA1568200;  //-0xA157A24F
+#define CODEMAP_ADDR 0xA1568200  //-0xA157A24F
 #else
-#define CODEMAP_ADDR 0xA0FE0200;
+#define CODEMAP_ADDR 0xA0FE0200
 #endif
 
 extern CutWSTRT(WSHDR *,int );
 
 #pragma swi_number=0x0A0
 __swi	__arm	int wsprintf_2 (WSHDR *,const char *format,...);
-
-#pragma segment="BODY"
 
 __thumb void ws2ascii(WSHDR *ws, char *s, int maxlen)
 {
@@ -72,10 +70,10 @@ __thumb void ascii2ws(WSHDR *ws, const char *s, int maxlen)
 }
 
 #pragma diag_suppress=Pe177
-__root static const int SWILIB_GB2WS @ "SWILIB_GB2WS" = (int)ascii2ws;
+__root static const int SWILIB_242_GB2WS @ "SWILIB_242_GB2WS" = (int)ascii2ws;
 #pragma diag_default=Pe177
 
 #pragma diag_suppress=Pe177
-__root static const int SWILIB_WS2GB @ "SWILIB_WS2GB" = (int)ws2ascii;
+__root static const int SWILIB_243_WS2GB @ "SWILIB_243_WS2GB" = (int)ws2ascii;
 #pragma diag_default=Pe177
 
