@@ -3050,6 +3050,7 @@ cpumon/strlib.h -text
 cpumon/test.xcl -text
 gb2ws/NEWSGOLD.xcl -text
 gb2ws/SGOLD.xcl -text
+gb2ws/about.txt -text
 gb2ws/arm_swi.asm -text
 gb2ws/cnfont.dat -text
 gb2ws/code.c -text
