@@ -80,7 +80,7 @@ void ascii2ws(WSHDR *ws, const char *s, int maxlen)
   char *p=(char *)s;
   unsigned char uc,uc2;
   CutWSTR(ws,0);
-  while((uc=*s++) && (maxlen == 0 || s-p<maxlen))
+  while((uc=*s++) && (maxlen == 0 || s-p<=maxlen))
   {
     if(uc <= 128)
       wsAppendChar(ws,uc);
