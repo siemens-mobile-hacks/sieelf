@@ -3232,4 +3232,10 @@ __swi __arm void SetDateTime(TDate *, TTime *);
 //thumb
 //pattern=F0,B5,05,1C,0C,1C,00,28,89,B0,??,??,00,2C
 
+#pragma swi_number=0x242
+__swi __arm void gb2ws(WSHDR *ws, const char *s, int len);
+//thumb
 
+#pragma swi_number=0x243
+__swi __arm void ws2gb(WSHDR *ws, char *s, int len);
+//thumb
