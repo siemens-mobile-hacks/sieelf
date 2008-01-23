@@ -1,8 +1,7 @@
 #include "..\..\inc\swilib.h"
-#include "conf_loader.h"
 #include "image.h"
 #include "..\lgp.h"
-#include "code.h"
+
 
 #define fon 1
 #define st_off 2
@@ -690,33 +689,6 @@ void menuselect()
   }
 }
 
-void menux()
-{
-      DrawRoundedFrame(0,0,scr_w,scr_h,0,0,0,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(2));
-      draw_pic(fon,0,0);
-      
-      if(mode==15)
-      ascii2ws(ws,wd2[seven],0);
-      else
-      ascii2ws(ws,alerts_name[mode],0);
-      DrwStr(ws,5,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-  
-      a=scr_w-font_size*2;
-      tmp=scr_h/11.6;
-      GetDateTime(0,&time);
-      wsprintf(ws,"%02d:%02d",time.hour,time.min);
-      DrwStr(ws,a-font_size,4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-      
-      ascii2ws(ws, change,0);
-      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-      
-     if(mode==0)
-      ascii2ws(ws,save,0);
-     else
-      ascii2ws(ws,back,0);
-      DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-}
-
 
 void OnRedraw()
 {
@@ -725,10 +697,28 @@ void OnRedraw()
   case 0:
     {
       //draw_pic(logo,2,2);     
-      menux();
+     DrawRoundedFrame(0,0,scr_w,scr_h,0,0,0,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(2));
+      draw_pic(fon,0,0);
+      
+      wsprintf(ws,"%t",alerts_name[mode]);
+      DrwStr(ws,5,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  
+      a=scr_w-font_size*2;
+      tmp=scr_h/11.6;
+      GetDateTime(0,&time);
+      wsprintf(ws,"%02d:%02d",time.hour,time.min);
+      DrwStr(ws,a-font_size,4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",change);
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+     if(mode==0)
+      wsprintf(ws,"%t",save);
+      DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+
       for (int i=0;i<menus;i++)
       {
-        ascii2ws(ws,alerts_name[i+1],0);
+        wsprintf(ws,"%t",alerts_name[i+1]);
         if (menu==i) DrwStr(ws,5,6+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
           else DrwStr(ws,5,6+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
         if(i<menus-1)
@@ -744,13 +734,30 @@ void OnRedraw()
   case 1:
     {
       //draw_pic(logo,2,2);
-      menux();
+     DrawRoundedFrame(0,0,scr_w,scr_h,0,0,0,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(2));
+      draw_pic(fon,0,0);
+      
+      wsprintf(ws,"%t",alerts_name[mode]);
+      DrwStr(ws,5,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  
+      a=scr_w-font_size*2;
+      tmp=scr_h/11.6;
+      GetDateTime(0,&time);
+      wsprintf(ws,"%02d:%02d",time.hour,time.min);
+      DrwStr(ws,a-font_size,4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",change);
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",back);
+      DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
       char *stat=malloc(16);
       for (int i=0;i<num_alarms;i++)
       {
-        if (status[i]) strcpy(stat,on2);
-          else strcpy(stat,off2);
-        wsprintf(ws, "%d: %d:%02d %t",i+1,hour[i],min[i],stat);
+        if (status[i]) strcpy(stat,on);
+          else strcpy(stat,off);
+        wsprintf(ws, "%t %d: %d:%02d %t",alarm_name,i+1,hour[i],min[i],stat);
         if (num_alarm==i) DrwStr(ws,5,6+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
           else DrwStr(ws,5,6+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       }
@@ -760,7 +767,24 @@ void OnRedraw()
  case 2:
     {
       //draw_pic(logo,2,2);
-      menux();
+     DrawRoundedFrame(0,0,scr_w,scr_h,0,0,0,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(2));
+      draw_pic(fon,0,0);
+      
+      wsprintf(ws,"%t",alerts_name[mode]);
+      DrwStr(ws,5,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  
+      a=scr_w-font_size*2;
+      tmp=scr_h/11.6;
+      GetDateTime(0,&time);
+      wsprintf(ws,"%02d:%02d",time.hour,time.min);
+      DrwStr(ws,a-font_size,4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",change);
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",back);
+      DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
       wsprintf(ws,"%02d",amenus[3]);
       if(amenu==3)
       DrwStr(ws,a-font_size*1.5,6+tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
@@ -772,7 +796,7 @@ void OnRedraw()
 
       for (int i=0;i<10;i++)
       { 
-       ascii2ws(ws,an[i],0); 
+       wsprintf(ws,"%t",an[i]); 
        if(amenu==i&&i<3)
        DrwStr(ws,5,6+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3)); 
        else if(i<9)
@@ -798,11 +822,28 @@ void OnRedraw()
    case 3:
     {
       //draw_pic(logo,2,2);
-      menux();
+     DrawRoundedFrame(0,0,scr_w,scr_h,0,0,0,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(2));
+      draw_pic(fon,0,0);
+      
+      wsprintf(ws,"%t",alerts_name[mode]);
+      DrwStr(ws,5,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  
+      a=scr_w-font_size*2;
+      tmp=scr_h/11.6;
+      GetDateTime(0,&time);
+      wsprintf(ws,"%02d:%02d",time.hour,time.min);
+      DrwStr(ws,a-font_size,4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",change);
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",back);
+      DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
       
       for (int i=0;i<8;i++)
       {
-        ascii2ws(ws,wd2[i],0);
+        wsprintf(ws,"%t",wd2[i]);
         if (seven==i) DrwStr(ws,5,6+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
           else DrwStr(ws,5,6+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       }
@@ -814,10 +855,27 @@ void OnRedraw()
   case 4:
     {
       //draw_pic(logo,2,2);
-      menux();
+     DrawRoundedFrame(0,0,scr_w,scr_h,0,0,0,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(2));
+      draw_pic(fon,0,0);
+      
+      wsprintf(ws,"%t",alerts_name[mode]);
+      DrwStr(ws,5,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  
+      a=scr_w-font_size*2;
+      tmp=scr_h/11.6;
+      GetDateTime(0,&time);
+      wsprintf(ws,"%02d:%02d",time.hour,time.min);
+      DrwStr(ws,a-font_size,4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",change);
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",back);
+      DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
       for (int i=0;i<6;i++)
       {
-        ascii2ws(ws,mn[i],0);
+        wsprintf(ws,"%t",mn[i]);
         if (mmenu==i&&i<2) 
         DrwStr(ws,5,6+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
           else DrwStr(ws,5,6+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
@@ -840,11 +898,28 @@ void OnRedraw()
     {
       //draw_pic(logo,2,2);
   
-      menux();
+     DrawRoundedFrame(0,0,scr_w,scr_h,0,0,0,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(2));
+      draw_pic(fon,0,0);
+      
+      wsprintf(ws,"%t",alerts_name[mode]);
+      DrwStr(ws,5,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  
+      a=scr_w-font_size*2;
+      tmp=scr_h/11.6;
+      GetDateTime(0,&time);
+      wsprintf(ws,"%02d:%02d",time.hour,time.min);
+      DrwStr(ws,a-font_size,4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",change);
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",back);
+      DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
       
       for (int i=0;i<4;i++)
       { 
-       ascii2ws(ws,bn[i],0); 
+       wsprintf(ws,"%t",bn[i]); 
        if(bmenu==i&&i==0)  
        DrwStr(ws,5,6+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3)); 
        else
@@ -866,10 +941,27 @@ void OnRedraw()
     case 6:
     {
       //draw_pic(logo,2,2);
-      menux();
+     DrawRoundedFrame(0,0,scr_w,scr_h,0,0,0,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(2));
+      draw_pic(fon,0,0);
+      
+      wsprintf(ws,"%t",alerts_name[mode]);
+      DrwStr(ws,5,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  
+      a=scr_w-font_size*2;
+      tmp=scr_h/11.6;
+      GetDateTime(0,&time);
+      wsprintf(ws,"%02d:%02d",time.hour,time.min);
+      DrwStr(ws,a-font_size,4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",change);
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",back);
+      DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
       int c=font_size*1.5;
 
-       ascii2ws(ws,rn,0); 
+       wsprintf(ws,"%t",rn); 
       
        if(file==0)  
        DrwStr(ws,5,6+tmp,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3)); 
@@ -901,10 +993,27 @@ void OnRedraw()
     {
       //draw_pic(logo,2,2);
       
-      menux();
+     DrawRoundedFrame(0,0,scr_w,scr_h,0,0,0,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(2));
+      draw_pic(fon,0,0);
+      
+      wsprintf(ws,"%t",alerts_name[mode]);
+      DrwStr(ws,5,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  
+      a=scr_w-font_size*2;
+      tmp=scr_h/11.6;
+      GetDateTime(0,&time);
+      wsprintf(ws,"%02d:%02d",time.hour,time.min);
+      DrwStr(ws,a-font_size,4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",change);
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",back);
+      DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
       int c=font_size*1.5;
 
-       ascii2ws(ws,rn,0); 
+        wsprintf(ws,"%t",rn); 
       
        if(call==0)  
        DrwStr(ws,5,6+tmp,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3)); 
@@ -935,10 +1044,27 @@ void OnRedraw()
     case 8:
     {
       //draw_pic(logo,2,2);
-      menux();
+     DrawRoundedFrame(0,0,scr_w,scr_h,0,0,0,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(2));
+      draw_pic(fon,0,0);
+      
+      wsprintf(ws,"%t",alerts_name[mode]);
+      DrwStr(ws,5,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  
+      a=scr_w-font_size*2;
+      tmp=scr_h/11.6;
+      GetDateTime(0,&time);
+      wsprintf(ws,"%02d:%02d",time.hour,time.min);
+      DrwStr(ws,a-font_size,4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",change);
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",back);
+      DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
       int c=font_size*1.5;
 
-       ascii2ws(ws,rn,0); 
+        wsprintf(ws,"%t",rn); 
       
        if(sms==0)  
        DrwStr(ws,5,6+tmp,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3)); 
@@ -970,10 +1096,27 @@ void OnRedraw()
   case 9:
     {
       //draw_pic(logo,2,2);
-      menux();
+     DrawRoundedFrame(0,0,scr_w,scr_h,0,0,0,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(2));
+      draw_pic(fon,0,0);
+      
+      wsprintf(ws,"%t",alerts_name[mode]);
+      DrwStr(ws,5,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  
+      a=scr_w-font_size*2;
+      tmp=scr_h/11.6;
+      GetDateTime(0,&time);
+      wsprintf(ws,"%02d:%02d",time.hour,time.min);
+      DrwStr(ws,a-font_size,4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",change);
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",back);
+      DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
       for (int i=0;i<8;i++)
       {
-        ascii2ws(ws,othern[i],0);
+        wsprintf(ws,"%t",othern[i]);
         if (onum==i&&i<4) 
         DrwStr(ws,5,6+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
           else DrwStr(ws,5,6+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
@@ -1004,7 +1147,7 @@ void OnRedraw()
       wsprintf(ws,"%02d:%02d",time.hour,time.min);
       DrwStr(ws,a-font_size,4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
-      ascii2ws(ws,Alarm_name[num_alarm],0);
+      wsprintf(ws,"%t",Alarm_name[num_alarm]);
       DrwStr(ws,30,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
 
       if(status[num_alarm]==1) draw_pic(st_on,scr_w/2-25,HeaderH());
@@ -1012,18 +1155,18 @@ void OnRedraw()
 
       if ((edit_level==1)||(edit_level==3))
         {
-          ascii2ws(ws,change,0);
+          wsprintf(ws,"%t",change);
           DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
         }
       
-      ascii2ws(ws, ok,0);
+      wsprintf(ws,"%t",ok);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
       int x=scr_w/2-font_size*0.5;
-      if (status[num_alarm]) ascii2ws(ws, on,0);
+      if (status[num_alarm])         wsprintf(ws,"%t", on);
           else 
           {
-            ascii2ws(ws, off,0);
+        wsprintf(ws,"%t",off);
             x-=3;
           }
 
@@ -1051,7 +1194,7 @@ void OnRedraw()
       b=scr_h-SoftkeyH()-font_size-24;
       for (int i=0;i<7;i++)
       {
-        ascii2ws(ws, wd[i],0);
+                wsprintf(ws,"%t", wd[i]);
         if ((edit_level==3)&&(set==i)) DrwStr(ws,4+x*i,b,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
           else DrwStr(ws,4+x*i,b,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       }
@@ -1082,8 +1225,8 @@ void OnRedraw()
       wsprintf(ws, "%03d,%03d", X, Y);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(23));
       
-      if (show_icon) ascii2ws(ws, on,0);
-        else ascii2ws(ws, off,0);
+      if (show_icon)         wsprintf(ws,"%t", on);
+        else         wsprintf(ws,"%t", off);
       DrwStr(ws,8,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(23));
     } break;  
     
@@ -1091,9 +1234,25 @@ void OnRedraw()
   case 15:
     {
      // draw_pic(logo,2,2);
-      menux();
+     DrawRoundedFrame(0,0,scr_w,scr_h,0,0,0,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(2));
+      draw_pic(fon,0,0);
       
-      ascii2ws(ws,minx,0);
+      wsprintf(ws,"%t",wd2[seven]);
+      DrwStr(ws,5,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+  
+      a=scr_w-font_size*2;
+      tmp=scr_h/11.6;
+      GetDateTime(0,&time);
+      wsprintf(ws,"%02d:%02d",time.hour,time.min);
+      DrwStr(ws,a-font_size,4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",change);
+      DrwStr(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",back);
+      DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,"%t",minx);
       DrwStr(ws,5,HeaderH(),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
 
       wsprintf(ws, "%02d",min[6]);
@@ -1948,7 +2107,6 @@ void ElfKiller(void)
 
 void maincsm_onclose(CSM_RAM *csm)
 {
-  free_font_lib();
   SUBPROC((void *)ElfKiller);
 }
 
@@ -2000,8 +2158,6 @@ void UpdateCSMname(void)
 
 int main(void)
 {
-  init_font_lib();
-  InitConfig();
   font_size=GetFontYSIZE(FONT_SMALL);
   load_settings();
   scr_w=ScreenW()-1;

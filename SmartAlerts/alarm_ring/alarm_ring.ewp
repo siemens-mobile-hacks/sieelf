@@ -4101,12 +4101,6 @@
     </settings>
   </configuration>
   <file>
-    <name>$PROJ_DIR$\code.c</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\code.h</name>
-  </file>
-  <file>
     <name>$PROJ_DIR$\conf_loader.c</name>
   </file>
   <file>

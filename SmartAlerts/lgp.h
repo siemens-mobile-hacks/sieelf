@@ -33,8 +33,6 @@ const char *othern[8]={"Vibra","Displays","Keyboard","Lighter","Volume","Vibra c
 #else
 const char on[]="开";
 const char off[]="关";
-const char on2[]="on";
-const char off2[]="off";
 const char change[]="更改";
 const char select[]="选择";
 const char restart2[]="重复";

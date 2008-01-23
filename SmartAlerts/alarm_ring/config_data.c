@@ -44,7 +44,5 @@ __root const int time=5;
 __root const CFG_HDR cfghdr7={CFG_STR_UTF8,"闹钟文件位置读取地址",0,63};
 __root const char profile_pd_file[64]=PROFILE_PD_DISC":\\\x1F\xE7\xB3\xBB\xE7\xBB\x9F\\hmi\\profile.pd";
 
-__root const CFG_HDR cfghdr8={CFG_STR_UTF8,"cnfont位置",3,63};
-__root const char cnfont[64]=DEFAULT_DISK":\\zbin\\utilities\\cnfont.dat";
 
 

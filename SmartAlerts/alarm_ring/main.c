@@ -1,8 +1,7 @@
 #include "..\..\inc\swilib.h"
 #include "..\..\inc\cfg_items.h"
-#include "conf_loader.h"
 #include "..\lgp.h"
-#include "code.h"
+
 
 int font_size;
 
@@ -229,20 +228,20 @@ void OnRedraw()
   wsprintf(ws,"%04d-%02d-%02d",date.year,date.month,date.day);
   DrawString(ws,0,90,scr_w,scr_h,FONT_SMALL,3,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   
-  ascii2ws(ws,alarm_name,0);
+  wsprintf(ws,"%t",alarm_name);
   DrawString(ws,0,60,scr_w,scr_h,FONT_SMALL,3,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(23));
 
-  ascii2ws(ws,restart2,0);
+  wsprintf(ws,"%t",restart2);
   DrawString(ws,18,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
-  ascii2ws(ws,close,0);
+  wsprintf(ws,"%t",close);
   DrawString(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
   
   TDate date1;
   GetDateTime(&date1,0);
   char wd = GetWeek(&date1);
-  ascii2ws(ws,wd2[wd],0);
+  wsprintf(ws,"%t",wd2[wd]);
   DrawString(ws,0,105,scr_w,scr_h,FONT_SMALL,3,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
 }
 
@@ -354,7 +353,6 @@ void maincsm_onclose(CSM_RAM *csm)
   SetIllumination(1,1,old_light_kb,0);  
   if (profile)
     SetProfile(old_profile);
-  free_font_lib();
   PlayMelody_StopPlayback(tmp);
   SUBPROC((void *)ElfKiller);
 }
@@ -449,7 +447,6 @@ void play_sound()
 
 int main(char *exename, char *fname)
 {
-  init_font_lib();
   InitConfig();
   scr_w=ScreenW()-1;
   scr_h=ScreenH()-1;
