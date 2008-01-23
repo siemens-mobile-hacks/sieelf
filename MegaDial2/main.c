@@ -1115,10 +1115,10 @@ void my_ed_redraw(void *data)
       z=98;
 #else
   #ifdef S68
-  (big_font)?(count_page=6):(count_page=8);
-  int csh=58;
+  (big_font)?(count_page=6):(count_page=7);
+  int csh=60;
   if(big_font)
-      z=61;
+      z=57;
   else
       z=60;
   #else
@@ -1139,7 +1139,11 @@ void my_ed_redraw(void *data)
 
   if (p && e_ws && e_ws->wsbody[0]<MAX_ESTR_LEN) //Its length <MAX_ESTR_LEN 
   {
+  #ifdef S68
+    int y=ScreenH()-25-(gfont_size+1)*count_page;
+  #else
     int y=ScreenH()-SoftkeyH()-(gfont_size+1)*count_page;
+  #endif
     down_border=ScreenH()-SoftkeyH()+5;
     DrawRectangle(1,z,ScreenW()-2,down_border,0,color(COLOR_MENU_BRD),color(COLOR_MENU_BK));
     
@@ -2088,7 +2092,9 @@ int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
       RereadSettings();
     }
   }
-
+  static volatile int is_incoming_call=0;
+  if (msg->msg==MSG_INCOMMING_CALL)
+   is_incoming_call=1;
   #ifdef NEWSGOLD
   if ((msg->msg==MSG_STATE_OF_CALL||msg->msg==MSG_END_CALL)&&(msg->submess==1)&&((int)msg->data0==2))
   #else
@@ -2098,8 +2104,12 @@ int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
     //is_voice_connected=1;
     if (ENA_VIBRA)
     {
+    if (ENA_VIBRA==3 || is_incoming_call+ENA_VIBRA==2)
+    {
       SetVibration(vibraPower);
-      GBS_StartTimerProc(&vibra_tmr,vibraDuration*TMR_SECOND/1000,vibra_tmr_proc);
+      GBS_StartTimerProc(&vibra_tmr, vibraDuration*TMR_SECOND/1000, vibra_tmr_proc);
+    }
+    is_incoming_call=0;
     }
   }
   

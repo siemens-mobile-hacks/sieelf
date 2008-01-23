@@ -95,8 +95,10 @@ __root const CFG_HDR cfghdr_m8={CFG_LEVEL,"",0,0};
 //振动
 __root const CFG_HDR cfghdr_m11={CFG_LEVEL,"接通振动设置",1,0};
 
-__root const CFG_HDR cfghdr2_1={CFG_CHECKBOX,"使用振动",0,0};
-__root const int ENA_VIBRA = 0;
+ __root const CFG_HDR cfghdr2_1={CFG_CBOX, "使用振动", 0, 4};
+ __root const int ENA_VIBRA = 0;
+ __root const CFG_CBOX_ITEM cfgcbox7[4]={"不", "来电", "去电", "全部"};
+
 
 __root const CFG_HDR cfghdr2_2={CFG_UINT,"振动强度",0,100};
 __root const unsigned int vibraPower=20;
