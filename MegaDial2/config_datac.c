@@ -29,6 +29,9 @@ __root const int cfg_cs_part=0;
 __root const CFG_HDR cfghdr106 = {CFG_CHECKBOX,"大头贴显示",0,0};
 __root const int show_pic=0;
 
+__root const CFG_HDR cfghdr111 = {CFG_CHECKBOX,"大头贴缩放",0,0};
+__root const int resampled=0;
+
 __root const CFG_HDR cfghdr107 = {CFG_CHECKBOX,"短信号码",0,0};
 __root const int smsn=1;
 
@@ -98,7 +101,6 @@ __root const CFG_HDR cfghdr_m11={CFG_LEVEL,"接通振动设置",1,0};
  __root const CFG_HDR cfghdr2_1={CFG_CBOX, "使用振动", 0, 4};
  __root const int ENA_VIBRA = 0;
  __root const CFG_CBOX_ITEM cfgcbox7[4]={"不", "来电", "去电", "全部"};
-
 
 __root const CFG_HDR cfghdr2_2={CFG_UINT,"振动强度",0,100};
 __root const unsigned int vibraPower=20;
