@@ -323,7 +323,7 @@ void InitMUI()
 
 	tmenuhdr.lgp_id = (int)muitxt(ind_mcmenu);
 	
-#define MENU_ZH
+//#define MENU_ZH
 #ifndef MENU_ZH
 	int i = 0;
 

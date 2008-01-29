@@ -184,7 +184,7 @@ void MC_FileProp(void)
 
 
 
-#define MENU_ZH
+//#define MENU_ZH
 
 HEADER_DESC tmenuhdr={0,0,0,0,0,LGP_NULL/*(int)sz_mcmenu*/,LGP_NULL};
 int menusoftkeys[]={0,1,2};
