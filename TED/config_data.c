@@ -10,7 +10,7 @@
 __root const CFG_HDR cfghdr0={CFG_UINT,"Ink color",0,22};
 __root const unsigned int INK=0;
 
-__root const CFG_HDR cfghdr1={CFG_UINT,"Paper color",0,22};
+__root const CFG_HDR cfghdr1={CFG_UINT,"Paper color³",0,22};
 __root const unsigned int PAPER=1;
 
 __root const CFG_HDR cfghdr2={CFG_STR_UTF8,"Files path",3,63};
