@@ -66,23 +66,36 @@ Hook1:
 
 Hook2:
     PUSH  {LR}
+#ifdef NEWSGOLD
     LDR   R0, =ADDR_IsCalling           //0xA0DE7EA4+1,10B5041C????????4121201C????????D4+22
     BLX   R0
     MOV   R1, R0
     MOV   R0, #1
     MOV   R2, R4
-//	MOV		R2, R5
+#else
+    MOV		R0, #0
+    MOV		R1, R4
+    MOV		R2, R5
+#endif
     BL    UpdateLocaleToItem
     LDR   R0, =ADDR_CallIN
     BLX   R0		
     POP   {PC}
 
 Hook3:
+#ifdef NEWSGOLD
     LDR	  R0, =ADDR_IsCalling
     BLX	  R0
     MOV	  R1, R0
     MOV	  R0, #4
     MOV   R2, R4
+#else
+		LDR		R0, =ADDR_CALLX
+		BLX		R0
+		MOV		R1, R0
+		MOV		R0, #3
+		MOV		R2, R4
+#endif
     BL    UpdateLocaleToItem
     LDR   R0, =ADDR_CallOUT
     BLX   R0
@@ -101,7 +114,23 @@ Hook4:
     BL    AppendInfoW
     POP   {PC}
 
+#ifndef NEWSGOLD
+Hook5:
+		PUSH	{LR}
+		LDR   R0, [SP,#0x174]
+		MOV		R1, #0xA
+		LDR		R2, =ADDR_NUMX
+		BLX		R2
+		LDR   R0, [SP,#0x174]
+		LDR   R1, [SP,#0x1D0]
+		LDR		R2, =AppendInfoW
+		BLX		R2
+		MOV   R1, #0
+		ADD   R0, R7, #0
+		POP	  {PC}
+#endif
 
+#ifdef NEWSGOLD
     RSEG  HOOK_DUMP
     CODE16
 HOOKRecoedWindow_DUMP:
@@ -137,5 +166,35 @@ HOOKAddrBookWindow_DUMP:
     RSEG  AddrBookWindow:CODE(1)
     CODE16
     BL    HOOKAddrBookWindow_DUMP
-    
+#else
+//Hook
+// 通话记录修改
+    RSEG  RecordWindow:CODE(1)
+    CODE16
+    BL      Hook1
+
+// 拨入窗口修改，覆盖了group xx的显示位置
+    RSEG Callinwindow:CODE(1)
+    CODE16
+    BL      Hook2
+
+// 拨出窗口修改，覆盖了group xx的显示位置
+    RSEG  CallOutWindow:CODE(1)
+    CODE16
+    BL      Hook3
+
+// 通讯录窗口修改
+    RSEG  AddrBookWindow:CODE(1)
+    CODE16
+    BL      Hook4
+
+		RSEG	AddrBookWindow2:CODE(1)
+		CODE16
+    DCB		0x21
+
+// 电话本窗口修改
+		RSEG	PhonebookWindow:CODE(1)
+		CODE16
+    BL      Hook5
+#endif    
     END

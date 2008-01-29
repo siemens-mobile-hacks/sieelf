@@ -8,11 +8,11 @@
 	describe:	replaces provider name with custom format
 	history:    2005-06-22 V2
 *********************************************************************/
-
+#include "addr.h"
 
 #define VERSION "2.0b"
 
-#define BASEADDRESS			0xA1580000
+//#define BASEADDRESS			0xA1580000
 #define CODESHOWDATAADDRESS	BASEADDRESS
 #define IPCODETABLECOUNT	(BASEADDRESS+0x1E000)
 #define REPEATSELECTTABLE	(BASEADDRESS+0x1F000)
