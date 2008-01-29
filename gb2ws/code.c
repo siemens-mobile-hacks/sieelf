@@ -5,7 +5,7 @@
 #ifdef NEWSGOLD
 #define CODEMAP_ADDR 0xA1568200  //-0xA157A24F
 #else
-#define CODEMAP_ADDR 0xA0FE5600
+#define CODEMAP_ADDR 0xA0FA0200
 #endif
 
 #pragma swi_number=0x0A0
