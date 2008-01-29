@@ -58,7 +58,7 @@ void new_redraw(void *data)
 {
 ((tredraw)old_redraw)(data);
 char *utf8_str=malloc(128);
-sprintf(utf8_str, "å…¨éƒ¨ï¼š ~%dKB", total/1024);  
+sprintf(utf8_str, "È«²¿£º ~%dKB", total/1024);  
 //wsprintf(ews,"total ~%dk",total/1024);
 utf8_2ws(ews, utf8_str, strlen(utf8_str));
 unsigned int RED=0x640000FF;
@@ -93,8 +93,8 @@ void Killer(void)
 int SaveDaemonList();
 void maincsm_onclose(CSM_RAM *csm)
 {
-  if(SaveDaemonList()) //é“ æ ³èµ…
-    ShowMSG(2,(int)"ä¿å­˜å¼€æœºè‡ªåŠ¨å¯åŠ¨ELFå‡ºé”™!!");
+  if(SaveDaemonList()) //îøèáêà
+    ShowMSG(2,(int)"±£´æ¿ª»ú×Ô¶¯Æô¶¯ELF³ö´í!!");
   mfree(daemons);  
   SUBPROC((void *)Killer);
 }
@@ -246,8 +246,8 @@ return 0;
 
 SOFTKEY_DESC menu_sk[]=
 {
-  {0x0018,0x0000,(int)"å¼€/å…³"},
-  {0x0001,0x0000,(int)"é€€å‡º"},
+  {0x0018,0x0000,(int)"¿ª/¹Ø"},
+  {0x0001,0x0000,(int)"ÍË³ö"},
   {0x003D,0x0000,(int)"+"}
 };
 
@@ -259,7 +259,7 @@ SOFTKEYSTAB menu_skt=
 
 int S_ICONS[3];
 
-HEADER_DESC contactlist_menuhdr={0,0,131,21,NULL,(int)"å¼€æœºå¯åŠ¨:",0x7FFFFFFF};
+HEADER_DESC contactlist_menuhdr={0,0,131,21,NULL,(int)"¿ª»úÆô¶¯:",0x7FFFFFFF};
 int menusoftkeys[]={0,1,2};
 
 void contactlist_menu_ghook(void *data, int cmd);
@@ -341,7 +341,7 @@ int main()
   if(!LoadDaemonList())
     {
     mfree(daemons);  
-    ShowMSG(2,(int)"æ‰¾ä¸åˆ°Zbin\\Daemons!");
+    ShowMSG(2,(int)"ÕÒ²»µ½Zbin\\Daemons!");
     return 0;
     };
   
