@@ -834,8 +834,8 @@ void filelist_menu_iconhndl(void *data, int curitem, void *user_pointer)
 int fmenusoftkeys[]={0,1,2};
 SOFTKEY_DESC fmenu_sk[]=
 {
-  {0x0018,0x0000,(int)"Select"},
-  {0x0001,0x0000,(int)"Close"},
+  {0x0018,0x0000,(int)"Ñ¡Ôñ"},
+  {0x0001,0x0000,(int)"¹Ø±Õ"},
   {0x003D,0x0000,(int)"+"}
 };
 
