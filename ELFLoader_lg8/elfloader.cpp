@@ -817,8 +817,8 @@ __arm void MyIDLECSMonCreate(void *data)
   //  asm("NOP\n");
 }
 
-#define ZH_CN-UTF8
-#ifndef ZH_CN-UTF8
+//#define ZH_CN-UTF8
+//#ifndef ZH_CN-UTF8
 unsigned int char8to16(int c)
 {
   if (c==0xA8) c=0x401;
@@ -841,8 +841,8 @@ void ascii2ws(char *s, WSHDR *ws)
     wsAppendChar(ws,char8to16(c));
   }
 }
-#endif
-
+//#endif
+#define ANSI_STD
 #ifdef NEWSGOLD
 __arm void ESI(WSHDR *ws, int dummy, char *s)
 #else
@@ -852,8 +852,12 @@ __arm void ESI(char *s, WSHDR *ws)
   if (((unsigned int)s>>28)==0xA) //Только строки из области RAM/FLASH
   {
 #ifndef ZH_CN-UTF8
+#ifdef ANSI_STD
+		gb2ws(ws, s, strlen(s));
+#else
     CutWSTR(ws,0); 
     ascii2ws(s,ws);
+#endif
 #else
     utf8_2ws(ws, s, strlen(s));
 #endif
