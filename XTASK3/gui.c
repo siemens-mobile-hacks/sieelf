@@ -121,7 +121,7 @@ char *find_name(CSM_RAM *csm)
   }
   else
   {
-    sprintf(u,"Unknown %08X!",desc);
+    sprintf(u,"Î´Öª %08X!",desc);
     return(u);
   }
 }
@@ -141,7 +141,7 @@ int GetNumberOfDialogs(void)
   //Find new style daemons
   if (show_daemons)
   {
-    icsm=((CSM_RAM *)(CSM_root()->csm_q->csm.first))->next; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ CSM ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    icsm=((CSM_RAM *)(CSM_root()->csm_q->csm.first))->next; //?????? ???????????? CSM ???????
     while(((unsigned int)(icsm->constr)>>27)==0x15)
     {
       WSHDR *tws=(WSHDR *)(((char *)icsm->constr)+sizeof(CSM_DESC));
@@ -156,13 +156,13 @@ int GetNumberOfDialogs(void)
       icsm=icsm->next;
     }
   }
-  icsm=under_idle->next; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+  icsm=under_idle->next;
   do
   {
     if (icsm==ircsm)
     {
       ws=AllocWS(40);
-      wsprintf(ws,"IDLE Screen");
+      wsprintf(ws,percent_t,"½øÈë´ý»ú½çÃæ");
       AddNL(ws,0);
       nltop->p=icsm;
       count++;
@@ -204,7 +204,7 @@ int GetNumberOfDialogs(void)
 	    switch(i)
 	    {
 	    case 1:
-	      wsprintf(ws,"Browser",j);
+	      wsprintf(ws,percent_t,"ä¯ÀÀÆ÷");
 	      break;
 	    case 2:
 	      wsprintf(ws,"Jam %d",j);
@@ -244,7 +244,7 @@ int GetNumberOfDialogs(void)
 	    switch(i)
 	    {
 	    case 1:
-	      wsprintf(ws,"Browser");
+	      wsprintf(ws,percent_t,"ä¯ÀÀÆ÷");
 	      break;
 	    case 0xF:
               wsprintf(ws,"User Java");
@@ -257,7 +257,7 @@ int GetNumberOfDialogs(void)
 #endif
 	      break; 
             case 18:
-              wsprintf(ws,"E-mail client");
+              wsprintf(ws,percent_t,"µç×ÓÓÊ¼þ·þÎñ");
 	      break; 
             default:
               wsprintf(ws,"Unknown %d bearer",i);
@@ -275,7 +275,7 @@ int GetNumberOfDialogs(void)
 	      if (i<(sizeof(ss)-1)) ss[i++]=c;
 	    }
 	    ss[i]=0;
-	    utf8_2ws(ws,ss,strlen(ss));
+	    wsprintf(ws,percent_t,ss);
 	  L_ADD:
 	    AddNL(ws,0);
 	    nltop->p=icsm;
@@ -286,7 +286,7 @@ int GetNumberOfDialogs(void)
     }
   }
   while((icsm=icsm->next));
-  sprintf(mmenu_hdr_txt,"XTask3.0 : %d dialogs",count);
+  sprintf(mmenu_hdr_txt,"XTask3.0 : %d¸öÈÎÎñ",count);
   return(count);
 }
 
@@ -326,13 +326,13 @@ void mm_menu_iconhndl(void *data, int curitem, void *unk)
     else
     {
       ws=AllocMenuWS(data,16);
-      wsprintf(ws,"no name???");
+      wsprintf(ws,percent_t,"ÎÞÃû???");
     }
   }
   else
   {
     ws=AllocMenuWS(data,16);
-    wsprintf(ws,"error!!!");
+    wsprintf(ws,percent_t,"´íÎó!!!");
   }
   SetMenuItemText(data,item,ws,curitem);
 }
@@ -389,12 +389,12 @@ int RunBM(int bm)
   return(0);
 }
 
-const HEADER_DESC bm_menuhdr={0,0,131,21,NULL,(int)"Bookmarks...",LGP_NULL};
+const HEADER_DESC bm_menuhdr={0,0,131,21,NULL,(int)"¿ìËÙÆô¶¯...",LGP_NULL};
 const int menusoftkeys[]={0,1,2};
 const SOFTKEY_DESC menu_sk[]=
 {
-  {0x0018,0x0000,(int)"Config"},
-  {0x0001,0x0000,(int)"Close"},
+  {0x0018,0x0000,(int)"ÅäÖÃ"},
+  {0x0001,0x0000,(int)"¹Ø±Õ"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -493,14 +493,14 @@ void bm_menu_iconhndl(void *data, int curitem, void *unk)
       {
       L_EMPTY:
         ws=AllocMenuWS(data,10);
-        wsprintf(ws,"Empty");        
+        wsprintf(ws,percent_t,"¿Õ°×");
       }
     }
   }
   else
   {
     ws=AllocMenuWS(data,10);
-    wsprintf(ws,"error");
+    wsprintf(ws,percent_t,"´íÎó");
   }
 //  SetMenuItemIconArray(data,item,S_ICONS);
   SetMenuItemText(data,item,ws,curitem);
@@ -552,7 +552,7 @@ int mm_menu_onkey(void *data, GUI_MSG *msg)
       return 0;      
     case LEFT_SOFT:
       CSMtoTop(CSM_root()->idle_id,-1);
-      return(1); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ GeneralFunc ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½. GUI -> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ GUI
+      return(1); //?????????? ????? GeneralFunc ??? ???. GUI -> ???????? GUI
     case ENTER_BUTTON:
       if (!nl->is_daemon)
       {
@@ -560,7 +560,7 @@ int mm_menu_onkey(void *data, GUI_MSG *msg)
       }
       return(1);
     case RIGHT_SOFT:
-      return(1); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ GeneralFunc ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½. GUI -> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ GUI
+      return(1); //?????????? ????? GeneralFunc ??? ???. GUI -> ???????? GUI
     }
   }
   return(0);
@@ -569,8 +569,8 @@ int mm_menu_onkey(void *data, GUI_MSG *msg)
 const HEADER_DESC mm_menuhdr={0,0,131,21,NULL,(int)mmenu_hdr_txt,LGP_NULL};
 const SOFTKEY_DESC mm_menu_sk[]=
 {
-  {0x0018,0x0000,(int)"Idle"},
-  {0x0001,0x0000,(int)"Back"},
+  {0x0018,0x0000,(int)"´ý»ú½çÃæ"},
+  {0x0001,0x0000,(int)"·µ»Ø"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 

@@ -213,19 +213,80 @@ int my_keyhook(int submsg, int msg)
   if (ACTIVE_KEY_STYLE<2)
   {
     if (submsg!=ACTIVE_KEY) return KEYHOOK_NEXT;
-    if (my_csm_id)
+/*    if (my_csm_id)
     {
-/*      if (((CSM_RAM *)(CSM_root()->csm_q->csm.last))->id!=my_csm_id)
+      if (((CSM_RAM *)(CSM_root()->csm_q->csm.last))->id!=my_csm_id)
       {
 	CloseCSM(my_csm_id);
-      }*/
+      }
       if (msg==KEY_UP)
       {
 	GBS_SendMessage(MMI_CEPID,KEY_DOWN,ENTER_BUTTON);
       }
       return KEYHOOK_BREAK;
-    }
+    }*/
+    //////////////////////
     switch(msg)
+    {
+    case KEY_DOWN:
+      if (ACTIVE_KEY_STYLE==0)
+      {
+      	if (IsUnlocked()||ENA_LOCK)
+      	{
+      		ShowMenu();
+      	}
+      	return KEYHOOK_BREAK;
+      }
+      
+      if (mode_enter==2)
+      {
+      	GBS_SendMessage(MMI_CEPID,KEY_UP,ACTIVE_KEY);
+      	return KEYHOOK_NEXT;
+      }
+      mode_enter=0;
+      return KEYHOOK_BREAK;
+    case KEY_UP:
+      if (mode_enter==0)
+      {
+        mode_enter=2;
+        GBS_SendMessage(MMI_CEPID,KEY_DOWN,ACTIVE_KEY);
+        return KEYHOOK_BREAK;
+      }
+      if (mode_enter==2)
+      {
+        mode_enter=0;
+        return KEYHOOK_NEXT;
+      }
+      mode_enter=0;
+      return KEYHOOK_BREAK;      
+    case LONG_PRESS:
+      mode_enter=1;
+      if ((ACTIVE_KEY_STYLE==1) || (ENA_LONG_PRESS==3))
+     	{
+	  		//Launch on LongPress or Extra on LP - Launch
+	  		if (IsUnlocked()||ENA_LOCK)
+	  		{
+	  			ShowMenu();
+	  		}
+	  		return KEYHOOK_BREAK;
+	  	}
+      mode=0;
+      if (ENA_LONG_PRESS==1) return KEYHOOK_BREAK;
+			if (ENA_LONG_PRESS==2)
+			{
+				CSMtoTop(CSM_root()->idle_id,-1);
+				return KEYHOOK_BREAK;
+			}
+      if (ENA_LONG_PRESS==4)
+      {
+        CSMtoTop(CSM_root()->idle_id,-1);
+        KbdLock();
+        return KEYHOOK_BREAK;
+      }
+    	return KEYHOOK_BREAK;
+    }
+    //////////////////////
+/*    switch(msg)
     {
     case KEY_DOWN:
       mode=0;
@@ -283,7 +344,7 @@ int my_keyhook(int submsg, int msg)
 #else
       return KEYHOOK_BREAK;
 #endif
-    }
+    }*/
   }
   return KEYHOOK_NEXT;
 }
@@ -355,7 +416,7 @@ L1:
   {
     if (strcmp_nocase(successed_config_filename,(char *)msg->data0)==0)
     {
-      ShowMSG(1,(int)"XTask config updated!");
+      ShowMSG(1,(int)"XTask配置已更新!");
       InitConfig();
     }
   }
@@ -438,7 +499,7 @@ void DoSplices(void)
   else
   {
     extern const int ENA_HELLO_MSG;
-    if (ENA_HELLO_MSG) ShowMSG(1,(int)"XTask3 Started!");
+    if (ENA_HELLO_MSG) ShowMSG(1,(int)"XTask3 正在运行!");
     {
       CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
       memcpy(&icsmd,icsm->constr,sizeof(icsmd));
