@@ -37,7 +37,7 @@ void patch_input(INPUTDIA_DESC* inp)
   inp->rc.y2=ScreenH()-SoftkeyH()-1;
 }
 //===============================================================================================
-//  YDISP нам больше не нужен так как иконбар отключим
+//  YDISP на?больше не нуже?та?ка?иконба?отключим
 #ifdef ELKA  
 #undef YDISP
 #define   YDISP 0
@@ -98,7 +98,7 @@ void method0_rect(RECT_GUI *data)
     DrawImg(0,0,(int)picpath);
   else{
     DrawRectangle(0,YDISP,scr_w-1,scr_h-1,0,white,white);
-    // Нарисуем сетку
+
     for (int y_0=YDISP; y_0< scr_h;y_0+=10)
     {
       DrawLine(0,y_0,scr_w-1,y_0,1,colors[3]);
@@ -112,7 +112,7 @@ void method0_rect(RECT_GUI *data)
   if (data->is_rect_needed)
   {
     DrawRoundedFrame(data->rc->x,data->rc->y,data->rc->x2,data->rc->y2,
-                     0,0,0,colors[3],transparent); // Предыдущий рект
+                     0,0,0,colors[3],transparent); 
     if (data->is_first_set)
     {
       DrawRoundedFrame(data->x2_pos,data->y2_pos,data->x_pos,data->y_pos,
@@ -131,7 +131,6 @@ void method0_rect(RECT_GUI *data)
     DrawString(data->ws1,3,scr_h-GetFontYSIZE(FONT_SMALL)-1,scr_w-4,scr_h-1,FONT_SMALL,1,black,transparent);
   }
   
-  //Текущая позиция
   DrwImg((IMGHDR *)&imgPointer,data->x_pos-2,data->y_pos-2,black,transparent);
 }
 
@@ -384,7 +383,10 @@ void method0_2(MAIN_GUI_2 *data)
     DrawLine(start_column,y_line,start_column+column_width,y_line,0,black);
   }
   setColor(data->r,data->g,data->b,data->a,data->testcolor);
-  DrawRoundedFrame(scr_w-1-fsize,YDISP+1,scr_w-2,YDISP+fsize,2,2,0,black,data->testcolor);
+  if((data->r<24)&&(data->a==0))
+  DrawRoundedFrame(scr_w-17,YDISP+1,scr_w-2,YDISP+16,2,2,0,black,GetPaletteAdrByColorIndex(data->r));
+  else
+  DrawRoundedFrame(scr_w-17,YDISP+1,scr_w-2,YDISP+16,2,2,0,black,data->testcolor);
 }
 
 void method1_2(MAIN_GUI_2 *data, void *(*malloc_adr)(int))
@@ -826,7 +828,7 @@ void filelist_menu_iconhndl(void *data, int curitem, void *user_pointer)
   else
   {
     ws=AllocMenuWS(data,10);
-    wsprintf(ws, "Ошибка");
+    wsprintf(ws, "ґнОу");
   }
   SetMenuItemText(data, item, ws, curitem);
 }
