@@ -132,7 +132,7 @@
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>13</version>
+        <version>14</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -342,6 +342,11 @@
         <option>
           <name>CCStdIncludePath</name>
           <state>$TOOLKIT_DIR$\INC\</state>
+        </option>
+        <option>
+          <name>CCInlineThreshold</name>
+          <version>0</version>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -554,7 +559,7 @@
         </option>
         <option>
           <name>FormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -740,7 +745,7 @@
         </option>
         <option>
           <name>ExtraFormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -950,7 +955,7 @@
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>13</version>
+        <version>14</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -1161,6 +1166,11 @@
         <option>
           <name>CCStdIncludePath</name>
           <state>$TOOLKIT_DIR$\INC\</state>
+        </option>
+        <option>
+          <name>CCInlineThreshold</name>
+          <version>0</version>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -1373,7 +1383,7 @@
         </option>
         <option>
           <name>FormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -1559,7 +1569,7 @@
         </option>
         <option>
           <name>ExtraFormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -1769,7 +1779,7 @@
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>13</version>
+        <version>14</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -1980,6 +1990,11 @@
         <option>
           <name>CCStdIncludePath</name>
           <state>$TOOLKIT_DIR$\INC\</state>
+        </option>
+        <option>
+          <name>CCInlineThreshold</name>
+          <version>0</version>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -2192,7 +2207,7 @@
         </option>
         <option>
           <name>FormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -2378,7 +2393,7 @@
         </option>
         <option>
           <name>ExtraFormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -2588,7 +2603,7 @@
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>13</version>
+        <version>14</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -2800,6 +2815,11 @@
         <option>
           <name>CCStdIncludePath</name>
           <state>$TOOLKIT_DIR$\INC\</state>
+        </option>
+        <option>
+          <name>CCInlineThreshold</name>
+          <version>0</version>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -3013,7 +3033,7 @@
         </option>
         <option>
           <name>FormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -3199,7 +3219,7 @@
         </option>
         <option>
           <name>ExtraFormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -3409,7 +3429,7 @@
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>13</version>
+        <version>14</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -3621,6 +3641,11 @@
         <option>
           <name>CCStdIncludePath</name>
           <state>$TOOLKIT_DIR$\INC\</state>
+        </option>
+        <option>
+          <name>CCInlineThreshold</name>
+          <version>0</version>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -3834,7 +3859,7 @@
         </option>
         <option>
           <name>FormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -4020,7 +4045,7 @@
         </option>
         <option>
           <name>ExtraFormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -4104,16 +4129,13 @@
     <name>$PROJ_DIR$\conf_loader.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$\conf_loader.h</name>
-  </file>
-  <file>
     <name>$PROJ_DIR$\config_data.c</name>
     <configuration>
       <name>SGOLD</name>
       <settings>
         <name>ICCARM</name>
         <data>
-          <version>13</version>
+          <version>14</version>
           <wantNonLocal>0</wantNonLocal>
           <debug>0</debug>
           <option>
@@ -4323,6 +4345,11 @@
           <option>
             <name>CCStdIncludePath</name>
             <state>$TOOLKIT_DIR$\INC\</state>
+          </option>
+          <option>
+            <name>CCInlineThreshold</name>
+            <version>0</version>
+            <state>1</state>
           </option>
         </data>
       </settings>
@@ -4332,7 +4359,7 @@
       <settings>
         <name>ICCARM</name>
         <data>
-          <version>13</version>
+          <version>14</version>
           <wantNonLocal>0</wantNonLocal>
           <debug>0</debug>
           <option>
@@ -4543,6 +4570,11 @@
             <name>CCStdIncludePath</name>
             <state>$TOOLKIT_DIR$\INC\</state>
           </option>
+          <option>
+            <name>CCInlineThreshold</name>
+            <version>0</version>
+            <state>1</state>
+          </option>
         </data>
       </settings>
     </configuration>
@@ -4551,7 +4583,7 @@
       <settings>
         <name>ICCARM</name>
         <data>
-          <version>13</version>
+          <version>14</version>
           <wantNonLocal>0</wantNonLocal>
           <debug>0</debug>
           <option>
@@ -4763,6 +4795,11 @@
             <name>CCStdIncludePath</name>
             <state>$TOOLKIT_DIR$\INC\</state>
           </option>
+          <option>
+            <name>CCInlineThreshold</name>
+            <version>0</version>
+            <state>1</state>
+          </option>
         </data>
       </settings>
     </configuration>
@@ -4771,7 +4808,7 @@
       <settings>
         <name>ICCARM</name>
         <data>
-          <version>13</version>
+          <version>14</version>
           <wantNonLocal>0</wantNonLocal>
           <debug>0</debug>
           <option>
@@ -4984,6 +5021,11 @@
             <name>CCStdIncludePath</name>
             <state>$TOOLKIT_DIR$\INC\</state>
           </option>
+          <option>
+            <name>CCInlineThreshold</name>
+            <version>0</version>
+            <state>1</state>
+          </option>
         </data>
       </settings>
     </configuration>
@@ -4992,7 +5034,7 @@
       <settings>
         <name>ICCARM</name>
         <data>
-          <version>13</version>
+          <version>14</version>
           <wantNonLocal>1</wantNonLocal>
           <debug>0</debug>
           <option>
@@ -5203,6 +5245,11 @@
           <option>
             <name>CCStdIncludePath</name>
             <state>$TOOLKIT_DIR$\INC\</state>
+          </option>
+          <option>
+            <name>CCInlineThreshold</name>
+            <version>0</version>
+            <state>1</state>
           </option>
         </data>
       </settings>

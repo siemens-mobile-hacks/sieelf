@@ -5,9 +5,6 @@
     <path>$WS_DIR$\alarm_ring\alarm_ring.ewp</path>
   </project>
   <project>
-    <path>$WS_DIR$\SmartAlerts\SmartAlerts.ewp</path>
-  </project>
-  <project>
     <path>$WS_DIR$\SmartAlerts_cfg_editor\SmartAlerts_cfg_editor.ewp</path>
   </project>
   <project>

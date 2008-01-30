@@ -4,7 +4,7 @@
 #include "SmartAlerts.h"
 
 
-#define TMR_SECOND 216
+#define TMR_SECOND (1300/6)
 
 #ifdef NEWSGOLD
 #ifdef S68
@@ -437,12 +437,12 @@ GetDateTime(&date,&time);
   }
  }
 
-GBS_StartTimerProc(&mytmr,216*60,Check);
+GBS_StartTimerProc(&mytmr,13000,Check);
 }
 
 void start()
 { 
-GBS_StartTimerProc(&mytmr,216*60,Check); 
+GBS_StartTimerProc(&mytmr,13000,Check); 
 } 
 
 typedef struct
@@ -494,7 +494,7 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
       if (strcmp_nocase("smartalerts",(char *)ipc->name_to)==0)
       {
          int time2 =msg->submess;
-        GBS_StartTimerProc(&xtmr,216*60*time2,start_ring);
+        GBS_StartTimerProc(&xtmr,13000*time2,start_ring);
       }
     }
   }

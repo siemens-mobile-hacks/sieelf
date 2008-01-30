@@ -1,7 +1,7 @@
 #include "..\..\inc\swilib.h"
 #include "..\..\inc\cfg_items.h"
 #include "..\lgp.h"
-
+#include "conf_loader.h"
 
 int font_size;
 
@@ -62,7 +62,7 @@ void restart_melody();
 int findlength(char *playy)
 {
 #ifdef NEWSGOLD
-  file_length=GetWavLen(playy)*216;
+  file_length=GetWavLen(playy)*1300/6;
   return(file_length);
 #else
   TWavLen wl;
@@ -72,7 +72,7 @@ int findlength(char *playy)
   str_2ws(wl.wfilename,playy,128);
   GetWavLen(&wl);
   FreeWS(wl.wfilename);
-  file_length=wl.length/1000*216;
+  file_length=wl.length/1000*1300/6;
   return (file_length);
 #endif
 }
