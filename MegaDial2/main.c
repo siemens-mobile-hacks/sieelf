@@ -1308,7 +1308,7 @@ static void sendsms()
   GeneralFuncF1(1);
   }
   else
-  ShowMSG(1,(int)"Empty SMS!");
+  ShowMSG(1,(int)"空短信!");
 }
 
 static void mm_settings(GUI *gui)
@@ -1340,8 +1340,8 @@ static const int mmenusoftkeys[]={0,1,2};
 
 static const SOFTKEY_DESC mmenu_sk[]=
 {
-  {0x0018,0x0000,(int)"Select"},
-  {0x0001,0x0000,(int)"Back"},
+  {0x0018,0x0000,(int)"选择"},
+  {0x0001,0x0000,(int)"返回"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -1351,12 +1351,12 @@ static const SOFTKEYSTAB mmenu_skt=
 };
 
 #define MAIN_MENU_ITEMS_N 2
-static HEADER_DESC mmenu_hdr={0,0,0,0,NULL,(int)"Option",LGP_NULL};
+static HEADER_DESC mmenu_hdr={0,0,0,0,NULL,(int)"选项",LGP_NULL};
 
 static MENUITEM_DESC mmenu_ITEMS[MAIN_MENU_ITEMS_N]=
 {
-  {NULL,(int)"SendSMS", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
-  {NULL,(int)"Setting", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}
+  {NULL,(int)"发送短信", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
+  {NULL,(int)"bcfg设置", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}
 };
 
 static const MENUPROCS_DESC mmenu_HNDLS[MAIN_MENU_ITEMS_N]=
@@ -1429,7 +1429,6 @@ const SOFTKEYSTAB menu_skt=
 int is_sms_need=0;
 WSHDR *ews;
 //WSHDR *dbg_ws;
-char c[15]="\xE8\xB6\x85\xE5\x87\xBA\xE9\x95\xBF\xE5\xBA\xA6";
 
 void edsms_locret(void){}
 
@@ -1466,11 +1465,10 @@ int get_word_count(GUI *data)
    k=(len+159)/160;
   }
   if(k<=5)
-  wsprintf(gwsTemp, ": %d - %d   (%d)", k, len,l-len);
+  wsprintf(gwsTemp, "%t: %d - %d   (%d)","字数", k, len,l-len);
   else
   {
-  utf8_2ws(wsTemp2,c,15);
-  wsprintf(gwsTemp, ": %w(%d/%d)",wsTemp2,len,l);
+  wsprintf(gwsTemp, "%t: %t(%d/%d)","字数","超出长度",len,l);
   }
   ExtractEditControl(data, 1, &ec);
   wstrncpy(wsTemp, ec.pWS, gLen);
@@ -1491,11 +1489,11 @@ void mmenuitem(USR_MENU_ITEM *item)
     switch(item->cur_item)
     {
     case 1:
-      wsprintf(item->ws,"%t","SmsSetting");
+      wsprintf(item->ws,"%t","短信设置");
       break;
       
     case 0:
-      wsprintf(item->ws,"%t","InputSetting");
+      wsprintf(item->ws,"%t","输入法选择");
       break;
     }
   }
@@ -1522,7 +1520,7 @@ void mmenuitem(USR_MENU_ITEM *item)
     switch(item->cur_item)
     {
     case 0:
-      wsprintf(item->ws,"%t","InputSetting");
+      wsprintf(item->ws,"%t","输入法选择");
       break;
     }
   }
@@ -1612,7 +1610,7 @@ void edsms_ghook(GUI *data, int cmd)
   }
 }
 
-HEADER_DESC edsms_hdr={0,0,0,0,NULL,(int)"Write SMS",LGP_NULL};
+HEADER_DESC edsms_hdr={0,0,0,0,NULL,(int)"短信",LGP_NULL};
 
 INPUTDIA_DESC edsms_desc=
 {
@@ -1705,12 +1703,9 @@ void VoiceOrSMS(const char *num)
      }
      wsAppendChar(ews,'\n'); 
      
-     wsAppendChar(ews, 0x5B57);
-     wsAppendChar(ews, 0x6570);
      gLen = wstrlen(ews);  //字数输出
 
-
-    ConstructEditControl(&ec,1,0x40,ews,SMS_MAX_LEN);
+    ConstructEditControl(&ec,1,0x40,ews,150);
     AddEditControlToEditQend(eq,&ec,ma);
     //wsprintf(ews,percent_t,"");
     CutWSTR(ews,0);
@@ -1803,16 +1798,16 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
   
   if(e_ws && key==ENTER_BUTTON) // "##Enter" to exit
 	{
-		if(e_ws->wsbody[0]==2&&e_ws->wsbody[1]=='#'&&e_ws->wsbody[2]=='#')
+		if(e_ws->wsbody[0]==2&&e_ws->wsbody[1]=='1'&&e_ws->wsbody[2]=='1')
 		{
-			ShowMSG(1,(int)"Megadial Exit!");
+			ShowMSG(1,(int)"Megadial退出!");
 			SUBPROC((void *)ElfKiller);
 			return 1;
 		}
 	}
   
   
-  if ((key==ENTER_BUTTON)&&(m==KEY_DOWN))
+  if ((key==RIGHT_BUTTON)&&(m==KEY_DOWN))
    {
     EDITCONTROL ec;
     ExtractEditControl(gui,1,&ec);
@@ -1983,7 +1978,7 @@ void my_ed_ghook(GUI *gui, int cmd)
 #else
           if(cltop)
           {
-             static SOFTKEY_DESC skIP={0x0018,0x0000,(int)"IP Dial"};
+             static SOFTKEY_DESC skIP={0x0018,0x0000,(int)"IP电话"};
 #ifdef NEWSGOLD
              SetSoftKey(gui,&skIP,0);
 #else
@@ -2128,7 +2123,7 @@ int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
     extern const char *successed_config_filename;
     if (strcmp_nocase(successed_config_filename,(char *)msg->data0)==0)
     {
-      ShowMSG(1,(int)"MegaDial config updated!");
+      ShowMSG(1,(int)"MegaDial设置更新完成!");
       RereadSettings();
     }
   }
