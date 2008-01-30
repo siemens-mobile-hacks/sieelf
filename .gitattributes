@@ -114,17 +114,6 @@ CfgEdit/func.asm -text
 CfgEdit/main.c -text
 CfgEdit/test.xcl -text
 CfgEdit/visual.c -text
-CfgEditCN/CfgEdit.ewp -text
-CfgEditCN/CfgEdit.eww -text
-CfgEditCN/CfgEdit_IAR_old.ewp -text
-CfgEditCN/CfgEdit_IAR_old.eww -text
-CfgEditCN/cnfont.dat -text
-CfgEditCN/code.c -text
-CfgEditCN/code.h -text
-CfgEditCN/func.asm -text
-CfgEditCN/main.c -text
-CfgEditCN/test.xcl -text
-CfgEditCN/visual.c -text
 CodeShowPatch/CodeShow.C -text
 CodeShowPatch/CodeShowPatch.ewp -text
 CodeShowPatch/CodeShowPatch.eww -text
