@@ -57,14 +57,10 @@ typedef void (*tredraw)(void *data);
 void new_redraw(void *data)
 {
 ((tredraw)old_redraw)(data);
-char *utf8_str=malloc(128);
-sprintf(utf8_str, "全部： ~%dKB", total/1024);  
-//wsprintf(ews,"total ~%dk",total/1024);
-utf8_2ws(ews, utf8_str, strlen(utf8_str));
+wsprintf(ews,"%t%dKB","全部： ~",total/1024);
 unsigned int RED=0x640000FF;
 unsigned int BLACK=0x64000000;
 DrawString(ews,ScreenW()/2-20,YDISP,ScreenW(),YDISP+60,FONT_SMALL+1,TEXT_ALIGNMIDDLE,(char*)&RED,(char*)&BLACK);
-mfree(utf8_str);
 }
 
 typedef struct
