@@ -121,7 +121,7 @@ void Play(const char *fname)
     }
 }
 
-char alarm_str[]="Alarm_Clock_3=";
+
 int play_standart_melody()
 {
   int f;
@@ -131,28 +131,32 @@ int play_standart_melody()
   
   if((f=fopen(profile_pd_file,A_ReadOnly+A_BIN,P_READ,&err))==-1) return 0;
   char* buf=malloc(fsize+1);
-  char* buf2=buf;
   fread(f,buf,fsize,&err);
   fclose(f,&err);
-  
-  buf=strstr(buf,alarm_str);
+
+  buf=strstr(buf,"Alarm_Clock_3=");
   if(!buf)
   {
-    mfree(buf2);
     CloseCSM(my_csm_id);
     ShowMSG(1,(int)no_melody);
     return 0;
   }
-  buf+=strlen(alarm_str);
+  buf+=14;
   while ((buf[i]!=10)&&(buf[i+1]!=13))
   {
       i++;
   }
   buf[i+1]=0;
+
+  WSHDR *ws;
+  ws=AllocWS(128);
+  utf8_2ws(ws,buf,strlen(buf)+1);
+  ws_2str(ws,buf,strlen(buf)+1);
+  FreeWS(ws);
+      
   Play(buf);
   if(findlength(buf))
     GBS_StartTimerProc(&restartmelody,file_length,restart_melody);
-  mfree(buf2);
   return 1;
 }
 
