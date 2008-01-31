@@ -2,13 +2,7 @@
 
 #ifdef NEWSGOLD
 #define PROFILE_PD_DISC "1"
-#ifdef S68
-#define DEFAULT_DISK "0"
 #else
-#define DEFAULT_DISK "4"
-#endif
-#else
-#define DEFAULT_DISK "0"
 #define PROFILE_PD_DISC "0"
 #endif
 

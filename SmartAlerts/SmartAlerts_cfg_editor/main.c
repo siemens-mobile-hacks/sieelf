@@ -1,34 +1,6 @@
 #include "..\..\inc\swilib.h"
 #include "image.h"
-#include "..\lgp.h"
-
-
-#define fon 1
-#define st_off 2
-#define st_on 3
-#define wd_off 4
-#define wd_on 5
-#define logo 6
-
-
-#ifdef NEWSGOLD
-#define num_alarms 5
-
-#ifdef S68
-#define DEFAULT_DISK "0"
-#else
-#define DEFAULT_DISK "4"
-#endif
-
-#else
-#define DEFAULT_DISK "0"
-#define num_alarms 6
-#endif
-
-#define menus 9
-#define sevens 8
-#define dats 24
-
+#include "..\SmartAlerts.h"
 
 TTime time;
 
@@ -74,11 +46,6 @@ unsigned int edit_level=1;
 unsigned int ch[12];
 unsigned int set=1;
 int lng;
-char cfgfile[]=DEFAULT_DISK":\\zbin\\img\\SmartAlerts\\SmartAlerts.cfg";
-char fonpng[]=DEFAULT_DISK":\\zbin\\img\\SmartAlerts\\fon.png";
-char bcfgfile[]=DEFAULT_DISK":\\Zbin\\etc\\alarm_melody.bcfg";
-char bcfgfile1[]=DEFAULT_DISK":\\Zbin\\etc\\SmartAlerts.bcfg";
-char ring[]=DEFAULT_DISK":\\Zbin\\img\\SmartAlerts\\alarm_ring.elf";
 
 int scr_w;
 int scr_h;
@@ -328,7 +295,7 @@ void geteeblock()
   
   char *hex=malloc(8);
   char *bin=malloc(8);
-  sprintf(hex, "%x", Block5166[3]);  
+  sprintf(hex, "%x", Block5166[3]);
   hex2bin(bin, 3, hex);
   
   if (Block5166[4]==0xF1)
@@ -336,14 +303,8 @@ void geteeblock()
   else status[5]=0;
   hour[5]=Block5166[0];
   min[5]=Block5166[1];
-  
-  weekdays[5][0]=bin[6];
-  weekdays[5][1]=bin[5];
-  weekdays[5][2]=bin[4];
-  weekdays[5][3]=bin[3];
-  weekdays[5][4]=bin[2];
-  weekdays[5][5]=bin[1];
-  weekdays[5][6]=bin[0];
+  for (int i=0;i<7;i++)
+    weekdays[5][i]=bin[6-i];
   
   mfree(Block5166);
   mfree(bin);
@@ -359,16 +320,9 @@ void saveeeblock()
   
   char *hex=malloc(3);
   char *bin=malloc(8);
-  bin[0]=weekdays[5][6];
-  bin[1]=weekdays[5][5];
-  bin[2]=weekdays[5][4];
-  bin[3]=weekdays[5][3];
-  bin[4]=weekdays[5][2];
-  bin[5]=weekdays[5][1];
-  bin[6]=weekdays[5][0];
+  for (int i=0;i<7;i++)
+    bin[i]=weekdays[5][6-i];
   bin[7]=1;
- 
-  
   bin2hex(hex, 7, bin);
   hex[2]=0;
   Block5166[3]=hex2int(hex);
@@ -382,54 +336,6 @@ void saveeeblock()
   mfree(Block5166);
   mfree(bin);
   mfree(hex);
-}
-
-#else
-
-void geteeblock()
-{
-  /*
-  unsigned int err;
-  int fp=fopen("2:\\Default\\PD\\alarmclock.pd", A_ReadOnly, P_READ,&err);
-  if(fp!=-1)
-  {
-    char *buf=malloc(128);
-    fread(fp, buf, 128, &err);
-    fclose(fp,&err);
-    
-    buf=strstr(buf,"days_in_use=");
-    buf+=strlen("days_in_use=");
-    for (int i=0; i<7; i++)
-    {
-      weekdays[5][i]=buf[i]-'0';
-    }
-    buf=strstr(buf,"alarm_time=");
-    buf+=strlen("alarm_time=");
-    //????????????????
-    buf=strstr(buf,"alarm_active=");
-    buf+=strlen("alarm_active=");
-    status[5]=buf[0]-'0';
-    mfree(buf);
-  }
-  else
-  {
-    status[5]=0;
-    hour[5]=0;
-    min[5]=0;
-    weekdays[5][0]=0;
-    weekdays[5][1]=0;
-    weekdays[5][2]=0;
-    weekdays[5][3]=0;
-    weekdays[5][4]=0;
-    weekdays[5][5]=0;
-    weekdays[5][6]=0;
-  }
-  */
-}
-
-void saveeeblock()
-{
-  
 }
 
 #endif
@@ -519,7 +425,9 @@ amenus[10]=data[276];
     mfree(data);
   }
   fclose(handle,&err);
+#ifndef NEWSGOLD
   geteeblock();
+#endif
 }
 
 void save_settings(void)
@@ -604,7 +512,9 @@ data[276]=amenus[10];
     mfree(data);
   }
   fclose(handle,&err);
+#ifndef NEWSGOLD
   saveeeblock();
+#endif
 }
 
 void edit()
@@ -633,7 +543,6 @@ void edit()
       amenus[amenu]=backup[2];
           if(ch[11])
       other[onum]=backup[2];
-      
     case 3: 
       if(ch[3])
       day[seven][dat]=backup[3];
@@ -1305,14 +1214,6 @@ void onUnfocus(MAIN_GUI *data, void (*mfree_adr)(void *))
   data->gui.state=1;
 }
 
-void open_bcfg(char *x)
-{
-  WSHDR *_elf=AllocWS(256);
-  wsprintf(_elf,"%s",x);
-  ExecuteFile(_elf,0,0);
-  FreeWS(_elf);
-}
-
 int onkey(unsigned char keycode, int pressed)
 {
   switch(mode)
@@ -1356,8 +1257,8 @@ int onkey(unsigned char keycode, int pressed)
                   break;
               }
             
-            case GREEN_BUTTON: open_bcfg(bcfgfile1); break;
-            case '0':open_bcfg(ring);  break;
+            case GREEN_BUTTON: runFile(bcfgfile1); break;
+            case '0':runFile(ring);  break;
            /*  
             case '1': break;
             case '2': break;
@@ -1396,7 +1297,7 @@ int onkey(unsigned char keycode, int pressed)
                   else num_alarm=0;
                   break;
               }
-            case GREEN_BUTTON: open_bcfg(bcfgfile); break;
+            case GREEN_BUTTON: runFile(bcfgfile); break;
             case '1': num_alarm=0; break;
             case '2': num_alarm=1; break;
             case '3': num_alarm=2; break;
@@ -1404,7 +1305,7 @@ int onkey(unsigned char keycode, int pressed)
             case '5': num_alarm=4; break;
             //case '6': num_alarm=5; break;
             case '#': mode=13; OnRedraw(); break;
-            case '0':open_bcfg(ring);  break;
+            case '0':runFile(ring);  break;
             //case '*': saveeeblock(); break;
             //case '*': ShowMSG(1,(int)"Alarm cfg editor\n(c)Geka"); break;
             }
@@ -1428,7 +1329,7 @@ int onkey(unsigned char keycode, int pressed)
                 if (amenus[amenu]==1) amenus[amenu]=0; else amenus[amenu]=1;}
                 OnRedraw(); break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
-            case GREEN_BUTTON: open_bcfg(bcfgfile1); break;
+            case GREEN_BUTTON: runFile(bcfgfile1); break;
             case UP_BUTTON:
             case LEFT_BUTTON:
               {
@@ -1520,7 +1421,7 @@ int onkey(unsigned char keycode, int pressed)
 			    }
                 OnRedraw(); break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
-            case GREEN_BUTTON: open_bcfg(bcfgfile1); break;
+            case GREEN_BUTTON: runFile(bcfgfile1); break;
 
             case UP_BUTTON:
             case LEFT_BUTTON:
@@ -1574,7 +1475,7 @@ int onkey(unsigned char keycode, int pressed)
 			    }
                 OnRedraw(); break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
-            case GREEN_BUTTON: open_bcfg(bcfgfile1); break;
+            case GREEN_BUTTON: runFile(bcfgfile1); break;
 
             case UP_BUTTON:
             case LEFT_BUTTON:
@@ -1627,7 +1528,7 @@ int onkey(unsigned char keycode, int pressed)
 			    }
                 OnRedraw(); break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
-            case GREEN_BUTTON: open_bcfg(bcfgfile1); break;
+            case GREEN_BUTTON: runFile(bcfgfile1); break;
 
             case UP_BUTTON:
             case LEFT_BUTTON:
@@ -1680,7 +1581,7 @@ int onkey(unsigned char keycode, int pressed)
 			    }
                 OnRedraw(); break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
-            case GREEN_BUTTON: open_bcfg(bcfgfile1); break;
+            case GREEN_BUTTON: runFile(bcfgfile1); break;
 
             case UP_BUTTON:
             case LEFT_BUTTON:
@@ -1733,7 +1634,7 @@ int onkey(unsigned char keycode, int pressed)
 			    }
                 OnRedraw(); break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
-            case GREEN_BUTTON: open_bcfg(bcfgfile1); break;
+            case GREEN_BUTTON: runFile(bcfgfile1); break;
 
             case UP_BUTTON:
             case LEFT_BUTTON:
@@ -1786,7 +1687,7 @@ int onkey(unsigned char keycode, int pressed)
                 if (other[onum]==1) other[onum]=0; else other[onum]=1;}
                 OnRedraw(); break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
-            case GREEN_BUTTON: open_bcfg(bcfgfile1); break;
+            case GREEN_BUTTON: runFile(bcfgfile1); break;
             case UP_BUTTON:
             case LEFT_BUTTON:
               {
@@ -2158,6 +2059,8 @@ void UpdateCSMname(void)
 
 int main(void)
 {
+  if (check_install()>0)
+    return 0;
   font_size=GetFontYSIZE(FONT_SMALL);
   load_settings();
   scr_w=ScreenW()-1;

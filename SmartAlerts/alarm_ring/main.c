@@ -1,7 +1,7 @@
 #include "..\..\inc\swilib.h"
 #include "..\..\inc\cfg_items.h"
-#include "..\lgp.h"
 #include "conf_loader.h"
+#include "..\SmartAlerts.h"
 
 int font_size;
 
@@ -32,7 +32,6 @@ GBSTMR restarttmr;
 GBSTMR restartmelody;
 int file_length;
 
-
 typedef struct
 {
   CSM_RAM csm;
@@ -62,7 +61,7 @@ void restart_melody();
 int findlength(char *playy)
 {
 #ifdef NEWSGOLD
-  file_length=GetWavLen(playy)*1300/6;
+  file_length=GetWavLen(playy)*216;
   return(file_length);
 #else
   TWavLen wl;
@@ -72,7 +71,7 @@ int findlength(char *playy)
   str_2ws(wl.wfilename,playy,128);
   GetWavLen(&wl);
   FreeWS(wl.wfilename);
-  file_length=wl.length/1000*1300/6;
+  file_length=wl.length/1000*216;
   return (file_length);
 #endif
 }
@@ -116,24 +115,35 @@ void Play(const char *fname)
       FreeWS(sndPath);
       FreeWS(sndFName);
     }
+    else
+    {
+      ShowMSG(1,(int)no_melody);
+    }
 }
 
-void play_standart_melody()
+char alarm_str[]="Alarm_Clock_3=";
+int play_standart_melody()
 {
   int f;
   int i=0;
   unsigned int err;
   unsigned int fsize=get_file_size((char *)profile_pd_file);
   
-  if((f=fopen(profile_pd_file,A_ReadOnly+A_BIN,P_READ,&err))==-1) return;
+  if((f=fopen(profile_pd_file,A_ReadOnly+A_BIN,P_READ,&err))==-1) return 0;
   char* buf=malloc(fsize+1);
+  char* buf2=buf;
   fread(f,buf,fsize,&err);
   fclose(f,&err);
   
-  buf=strstr(buf,"Alarm_Clock_3=");
-  
-  buf+=14;
-  
+  buf=strstr(buf,alarm_str);
+  if(!buf)
+  {
+    mfree(buf2);
+    CloseCSM(my_csm_id);
+    ShowMSG(1,(int)no_melody);
+    return 0;
+  }
+  buf+=strlen(alarm_str);
   while ((buf[i]!=10)&&(buf[i+1]!=13))
   {
       i++;
@@ -142,7 +152,10 @@ void play_standart_melody()
   Play(buf);
   if(findlength(buf))
     GBS_StartTimerProc(&restartmelody,file_length,restart_melody);
+  mfree(buf2);
+  return 1;
 }
+
 
 void restart_melody()
 {
@@ -207,14 +220,12 @@ const IPC_REQ gipc={
   NULL
 };
 
-
 void restart()
 {
   GBS_DelTimer(&restarttmr);
   GBS_SendMessage(MMI_CEPID,MSG_IPC,time,&gipc);
   GeneralFunc_flag1(((MAIN_CSM*)FindCSMbyID(my_csm_id))->gui_id,1);
 }
-
 
 void OnRedraw()
 {
@@ -237,7 +248,6 @@ void OnRedraw()
   wsprintf(ws,"%t",close);
   DrawString(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
-  
   TDate date1;
   GetDateTime(&date1,0);
   char wd = GetWeek(&date1);

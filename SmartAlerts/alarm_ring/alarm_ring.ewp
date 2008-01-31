@@ -107,7 +107,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.40A</state>
+          <state>4.42A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -584,7 +584,7 @@
         </option>
         <option>
           <name>XList</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>SegmentMap</name>
@@ -692,7 +692,7 @@
         </option>
         <option>
           <name>IncludeSuppressed</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OXLibIOConfig</name>
@@ -700,7 +700,7 @@
         </option>
         <option>
           <name>ModuleSummary</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>xcProgramEntryLabel</name>
@@ -766,7 +766,7 @@
         </option>
         <option>
           <name>OverlaySystemMap</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>RawBinaryFile</name>
@@ -5266,6 +5266,9 @@
   </file>
   <file>
     <name>$PROJ_DIR$\main.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\..\SmartAlerts.h</name>
   </file>
 </project>
 

@@ -1,21 +1,18 @@
 #include "..\..\inc\swilib.h"
 #include "..\..\inc\cfg_items.h"
 #include "conf_loader.h"
-#include "SmartAlerts.h"
+#include "..\SmartAlerts.h"
 
 
 #define TMR_SECOND (1300/6)
 
-#ifdef NEWSGOLD
-#ifdef S68
-#define DEFAULT_DISK "0"
-#else
-#define DEFAULT_DISK "4"
-#endif
-#else
-#define DEFAULT_DISK "0"
-#endif
-
+extern const char mstyle[];
+extern const char vname[];
+extern const char name1[];
+extern const char callnum[];
+extern const char smsnum[];
+extern const char content[];
+extern const char mname[];
 
 
 unsigned int files[5];
@@ -51,10 +48,6 @@ WSHDR* ws;
 int count;
 int fb=0;
 volatile int _count;
-
-char icon[]=DEFAULT_DISK":\\Zbin\\img\\SmartAlerts\\icon.png";
-char cfgfile[]=DEFAULT_DISK":\\Zbin\\img\\SmartAlerts\\SmartAlerts.cfg";
-char sound[]=DEFAULT_DISK ":\\ZBin\\img\\SmartAlerts\\alerts\\";
 
 void getimgwh()
 {
@@ -161,30 +154,11 @@ amenus[10]=data[276];
 
 void start_ring()
 {
-  char elf[]=DEFAULT_DISK":\\Zbin\\img\\SmartAlerts\\alarm_ring.elf";
   WSHDR *ws;
   ws=AllocWS(64);
-  str_2ws(ws,elf,strlen(elf)+1);
+  str_2ws(ws,ring,strlen(ring)+1);
   ExecuteFile(ws,0,0);
   FreeWS(ws);
-}
-
-
-int runFile(char *file) 
-{
-  if(file)
-  {
-    if (strlen(file))
-    {
-      WSHDR *ws;
-      ws=AllocWS(64);
-      str_2ws(ws, file, 64);
-      ExecuteFile(ws, 0, 0);
-      FreeWS(ws);
-      return 1;
-    }
-  }
-  return 0;
 }
 
 void Play(const char *fpath, const char *fname)
@@ -454,21 +428,6 @@ int IDLECSM_ID=-1;
 
 extern void kill_data(void *p, void (*func_p)(void *));
 const int minus11=-11;
-
-#pragma inline=forced
-int toupper(int c)
-{
-  if ((c>='a')&&(c<='z')) c+='A'-'a';
-  return(c);
-}
-#pragma inline
-int strcmp_nocase(const char *s1,const char *s2)
-{
-  int i;
-  int c;
-  while(!(i=(c=toupper(*s1++))-toupper(*s2++))) if (!c) break;
-  return(i);
-}
 
 int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
 {
