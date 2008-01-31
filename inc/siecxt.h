@@ -3,7 +3,7 @@
 static const char cWeekName[4][7][12]={{"MONDAY","TUESDAY","WEDNESDAY","THUSDAY","FRIDAY","SATURDAY","SUNDAY"},{"MON","TUES","WED","THU","FRI","SAT","SUN"},{"Monday","Tuesday","Wednesday","Thusday","Friday","Saturday","Sunday"},{"Mon","Tues","Wed","Thu","Fri","Sat","Sun"}};
 static const char cDataFmt[8][16]={"%02d/%02d/%02d", "%02d-%02d-%02d", "%02d.%02d.%02d", "%02d %02d %02d", "%02d/%02d", "%02d-%02d", "%02d.%02d", "%02d %02d"};  
 static const unsigned short wMonthAdd[12]={0,31,59,90,120,151,181,212,243,273,304,334};
-static const unsigned long wNongliData[100]={/*农历数据*/
+static const unsigned long wLunar[100]={/*农历数据*/
 0x00A4B,0x5164B,0x006A5,0x006D4,0x415B5,0x002B6,0x00957,0x2092F,0x00497,0x60C96,0x00D4A,0x00EA5,0x50DA9,0x005AD,
 0x002B6,0x3126E,0x0092E,0x7192D,0x00C95,0x00D4A,0x61B4A,0x00B55,0x0056A,0x4155B,0x0025D,0x0092D,0x2192B,0x00A95,
 0x71695,0x006CA,0x00B55,0x50AB5,0x004DA,0x00A5B,0x30A57,0x0052B,0x8152A,0x00E95,0x006AA,0x615AA,0x00AB5,0x004B6,

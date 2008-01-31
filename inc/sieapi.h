@@ -23,12 +23,18 @@ _C_STD_BEGIN
 #define ubyte   unsigned char//0..255
 #define TYPVOID typedef void
 #define TSTRUCT typedef struct 
+#define elif    else if
 //定义二十节气初始数据(此数据为51年)
 #define LHYear  2050//定义计算节气最大年份
 #define LLYear  2000//定义计算节气最小年份
 #define LCData (LHYear-LLYear+1)*12//节气数据长度
 #define color(x) (x<24)?GetPaletteAdrByColorIndex(x):(char *)(&(x))
 #define idlegui_id(icsm) (((int*)icsm)[DISPLACE_OF_IDLEGUI_ID/4])
+#define MIN(a,b) (a<b)?a:b
+#define MAX(a,b) (a>b)?a:b
+#define TRAN_CBK GetPaletteAdrByColorIndex(23)
+#define CTYPE1 8
+#define CTYPE2 0
 //定义字体索引类型0-16!
 #define FontSyEN "Large","Large bold","Large italic","Large italic bold","Medium","Medium bold","Medium italic","Medium italic bold","Small","Small bold","Small italic","Small italic bold","Numeric small","Numeric small bold","Numeric xsmall","Numeric large","Numeric medium"
 #define FontSyCN "大号字体","大号加粗","大号斜体","大号粗斜","中号字体","中号加粗","中号倾斜","中号粗斜","小号字体","小号加粗","小号斜体","小号粗斜","小号数体","小号数粗","最小数体","大号数体","中号数体"
@@ -39,13 +45,19 @@ _C_STD_BEGIN
  TSTRUCT{
   WSHDR *year;//年份
   WSHDR *mday;//月份
- }TNongLi;
+ }TLunar;
+ TSTRUCT{
+  char R;
+  char G;
+  char B;
+  char A;
+ }color;
  //定义区域属性
  TSTRUCT{
-  int t;//top
-  int l;//left
-  int r;//Right;
-  int b;//Bottom;
+  short l;//left
+  short t;//top  
+  short r;//Right;
+  short b;//Bottom;
  }TRect;
  //定义字体属性
  TSTRUCT{
@@ -79,13 +91,15 @@ _C_STD_BEGIN
  //定义函数引出结构
 _C_LIB_DECL
  __INTRINSIC ulong strtoul(const char *nptr,char **endptr,int base); 
+ __INTRINSIC long strtol(const char *nptr,char **endptr,int base);
  __INTRINSIC int  strlpos(char *str,char c); 
  //获取对手机对应画布文本的长度
- __INTRINSIC int  get_string_width(WSHDR *ws, int font); 
+ __INTRINSIC int  PixlsWidth(WSHDR *ws, int font); 
  //字串比较函数
  __INTRINSIC int  toupper(int c);
  __INTRINSIC int  ExtStrcmp(char *a,char *b);
  __INTRINSIC int  strcmp_nocase(const char *s1,const char *s2); 
+ __INTRINSIC int  cmpstr_nocase(const char *s, const char *d);
  //屏幕控制范围函数
  __INTRINSIC void patch_rect(RECT*rc,int x,int y, int x2, int y2);//设定区域
  __INTRINSIC void patch_header(const HEADER_DESC* head);//设定头区域
@@ -109,7 +123,7 @@ _C_LIB_DECL
  //UNICODE代码增加到WS数据中
  __INTRINSIC void BSTRAdd(uword *pDst, const uword * pSrc, int Count);
  //获取农历日期函数
- __INTRINSIC void GetDayOf(TDate pSt,TNongLi *NongLiData);//获取农历字串
+ __INTRINSIC void GetDayOf(TDate pSt,TLunar *Lunar);//获取农历字串
  __INTRINSIC TDate GetOldDay(TDate pSt);//获取农历日期
  //获取文件的扩展名
  __INTRINSIC void CutFileExt(char *filename,char *ext);
@@ -149,11 +163,15 @@ _C_LIB_DECL
  __INTRINSIC uword GetDayFromYearBegin(ulong AYear,ubyte AMonth,ubyte ADay);// 取某日期到年初的天数
  __INTRINSIC ubyte FileExists(char *FileName,int *Handle);//判断文件是否存在!
  __INTRINSIC void *CreateCanvas();//创建画布指针
+ __INTRINSIC void  SearchSub(const char *source,const char *sub,char *result);//获取子字串
+ __INTRINSIC IMGHDR *alpha(IMGHDR *img, char a, int nw, int del);
+ __INTRINSIC DrawIMGHDR(IMGHDR *img, int x, int y, char *pen, char *brush);
+ __INTRINSIC deleteIMGHDR(IMGHDR *img);
 _END_C_LIB_DECL
 _C_STD_END
 //函数执行代码
 #pragma inline//获取c在str字串的位置
-int  getstrpos(char *str,char c)
+static int getstrpos(char *str,char c)
 {
   int cur = 0;
   for (int inx=1;inx<=strlen(str);inx++)
@@ -164,12 +182,12 @@ int  getstrpos(char *str,char c)
 }
 
 #pragma inline//获取主文件名称
-void CutFileExt(char *filename,char *ext)
+static void CutFileExt(char *filename,char *ext)
 {
   if(strlen(filename)>strlen(ext))filename[strlen(filename)-strlen(ext)]=0;
 }
 #pragma inline//运行快捷
-void RunCUT(char *s)
+static void RunCUT(char *s)
 {
  if ((s)&&(strlen(s))){
  uint* addr = (uint*)GetFunctionPointer(s);
@@ -185,7 +203,7 @@ void RunCUT(char *s)
  }
 }
 #pragma inline//运行ELF程序
-void RunAPP(char *s)
+static void RunAPP(char *s)
 {
   if ((s)&&(strlen(s))){
       WSHDR *ws=AllocWS(128);
@@ -195,7 +213,7 @@ void RunAPP(char *s)
   }
 }
 #pragma inline//运行地址函数
-void RunADR(char *s)
+static void RunADR(char *s)
 {  
   if ((s)&&(strlen(s))){
       TYPVOID (*voidfunc)(); 
@@ -205,7 +223,7 @@ void RunADR(char *s)
   }
 }
 #pragma inline//字串比较函数
-int ExtStrcmp(char *a,char *b)
+static int ExtStrcmp(char *a,char *b)
 {
   int state=0,max=strlen(a);
   if(strlen(a)>strlen(b)) max = strlen(b);
@@ -215,14 +233,14 @@ int ExtStrcmp(char *a,char *b)
   return(state);
 }
 #pragma inline//数据合并
-void BSTRAdd(uword *pDst, const uword * pSrc, int Count)
+static void BSTRAdd(uword *pDst, const uword * pSrc, int Count)
 {
   uint nSize = *pDst, i=1;
   while(*pSrc != '\0' && i<=Count) *(pDst+ nSize + i++) = *pSrc++;
   *pDst = nSize+i-1;
 }
 #pragma inline//当前日期转换为农历日期
-TDate GetOldDay(TDate pSt)
+static TDate GetOldDay(TDate pSt)
 {/*公历每月前面的天数*/
 static int wCurYear,wCurMonth,wCurDay;
 static int nTheDate,nIsEnd,m,k,n,i,nBit;
@@ -239,11 +257,11 @@ if((!(wCurYear % 4)) && (wCurMonth > 2))
 nIsEnd = 0;
 m      = 0;
 while(nIsEnd != 1){
-  if(wNongliData[m] < 4095)  k = 11; else k = 12;
+  if(wLunar[m] < 4095)  k = 11; else k = 12;
   n = k;
   while(n>=0){
-   //获取wNongliData(m)的第n个二进制位的值
-   nBit = wNongliData[m];
+   //获取wLunar(m)的第n个二进制位的值
+   nBit = wLunar[m];
    for(i=1;i<n+1;i++) nBit = nBit/2;
    nBit = nBit % 2;
    if (nTheDate <= (29 + nBit)){
@@ -261,9 +279,9 @@ wCurMonth = k - n + 1;
 wCurDay   = nTheDate;
 if (k == 12){
 
-  if (wCurMonth == wNongliData[m] / 65536 + 1)
+  if (wCurMonth == wLunar[m] / 65536 + 1)
       wCurMonth = 1 - wCurMonth;
-  else if (wCurMonth > wNongliData[m] / 65536 + 1)
+  else if (wCurMonth > wLunar[m] / 65536 + 1)
       wCurMonth = wCurMonth - 1;
 }
 OldDay.year =wCurYear;
@@ -272,38 +290,38 @@ OldDay.day  =wCurDay;
 return(OldDay);
 }
 #pragma inline//获取农历日期信息
-void GetDayOf(TDate pSt,TNongLi *NongLiData)
+static void GetDayOf(TDate pSt,TLunar *Lunar)
 { 
 TDate old = GetOldDay(pSt);
 /*--生成农历天干、地支、属相 ==> wNongli--*/
 uword UniToday[5];
-CutWSTR(NongLiData->year,0);
+CutWSTR(Lunar->year,0);
 UniToday[0] = cTianGan[ ((old.year - 4) % 60) % 10];  //天干
 UniToday[1] = cDiZhi[   ((old.year - 4) % 60) % 12];  //地支
 UniToday[2] = cShuXiang[((old.year - 4) % 60) % 12];  //属相
 UniToday[3] = cOtherName[0];                          //年
-BSTRAdd(NongLiData->year->wsbody,UniToday,4);
+BSTRAdd(Lunar->year->wsbody,UniToday,4);
 /*--生成农历月 --*/
-CutWSTR(NongLiData->mday,0);
+CutWSTR(Lunar->mday,0);
 if (old.month < 1){  //闰月
 
     UniToday[0] = cOtherName[2]; //闰
     UniToday[1] = cMonName[-1 * old.month];
-    BSTRAdd(NongLiData->mday->wsbody,UniToday,2);
+    BSTRAdd(Lunar->mday->wsbody,UniToday,2);
 }else{
     UniToday[0] = cMonName[old.month];
-    BSTRAdd(NongLiData->mday->wsbody,UniToday,1);
+    BSTRAdd(Lunar->mday->wsbody,UniToday,1);
 }
   UniToday[0] = cOtherName[1]; //月
-  BSTRAdd(NongLiData->mday->wsbody,UniToday,1);
+  BSTRAdd(Lunar->mday->wsbody,UniToday,1);
 /*--生成农历日 --*/  
   UniToday[0] = cDayName[old.day][0];  
   UniToday[1] = cDayName[old.day][1]; 
-  BSTRAdd(NongLiData->mday->wsbody,UniToday,2);  
+  BSTRAdd(Lunar->mday->wsbody,UniToday,2);  
 }  
 
 #pragma inline
-int get_string_width(WSHDR *ws, int font)
+static int PixlsWidth(WSHDR *ws, int font)
 {  
   uword *body=ws->wsbody;
   int len=body[0],width;
@@ -316,17 +334,34 @@ int get_string_width(WSHDR *ws, int font)
 }
 
 #pragma inline=forced
-int toupper(int c){ if ((c>='a')&&(c<='z')) c+='A'-'a';  return(c);}
+static int toupper(int c){ if ((c>='a')&&(c<='z')) c+='A'-'a';  return(c);}
 
 #pragma inline
-int strcmp_nocase(const char *s1,const char *s2)
+static int strcmp_nocase(const char *s1,const char *s2)
 {
   int i,c;
   while(!(i=(c=toupper(*s1++))-toupper(*s2++))) if (!c) break;
   return(i);
 }
 #pragma inline
-void str2ws_unicode(WSHDR* ws, char* str, int len)
+static int cmpstr_nocase(const char *s, const char *d)
+{
+  int cs;
+  int ds;
+  do
+  {
+    cs=*s++;
+    if (cs&0x40) cs&=0xDF;
+    ds=*d++;
+    if (ds&0x40) ds&=0xDF;
+    cs-=ds;
+    if (cs) break;
+  }
+  while(ds);
+  return(cs);
+}
+#pragma inline
+static void str2ws_unicode(WSHDR* ws, char* str, int len)
  {
   int i = 0;
   char *p = str;
@@ -337,7 +372,7 @@ void str2ws_unicode(WSHDR* ws, char* str, int len)
   ws->wsbody[0] = i;
 }
 #pragma inline
-void ws2str_unicode(char* str, WSHDR* ws, int *len) 
+static void ws2str_unicode(char* str, WSHDR* ws, int *len) 
 {	//注意范围
   for (int i = 0; i < ws->wsbody[0]; i++) {
   	*(str + (i << 1)) = ws->wsbody[i + 1] & 0xFF;
@@ -346,7 +381,7 @@ void ws2str_unicode(char* str, WSHDR* ws, int *len)
 	*len = ws->wsbody[0] << 1;
 }
 #pragma inline
-char* unicodeSwitch(char *str, int len, int *rlen, int *llen) 
+static char* unicodeSwitch(char *str, int len, int *rlen, int *llen) 
 {
   if (!str) return NULL;
   int i = 0, l = len >> 1 << 1;
@@ -360,7 +395,7 @@ char* unicodeSwitch(char *str, int len, int *rlen, int *llen)
   return p;
 }
 #pragma inline
-char* utf82unicode(char *str, int len, int *rlen, int *llen) 
+static char* utf82unicode(char *str, int len, int *rlen, int *llen) 
 {
   if (!str) return NULL;
   
@@ -415,7 +450,7 @@ char* utf82unicode(char *str, int len, int *rlen, int *llen)
   return s; 
 }
 #pragma inline
-char* unicode2utf8(char *str, int *len) 
+static char* unicode2utf8(char *str, int *len) 
 {
 if (!str) return NULL;
 
@@ -443,7 +478,7 @@ if (!str) return NULL;
 }
 
 #pragma inline
-void patch_rect(RECT*rc,int x,int y, int x2, int y2)
+static void patch_rect(RECT*rc,int x,int y, int x2, int y2)
 {
   rc->x =x;
   rc->y =y;
@@ -452,7 +487,7 @@ void patch_rect(RECT*rc,int x,int y, int x2, int y2)
 }
 
 #pragma inline
-void patch_header(const HEADER_DESC* head)
+static void patch_header(const HEADER_DESC* head)
 {
   ((HEADER_DESC*)head)->rc.x=0;
   ((HEADER_DESC*)head)->rc.y=YDISP;
@@ -461,7 +496,7 @@ void patch_header(const HEADER_DESC* head)
 }
 
 #pragma inline
-void patch_input(const INPUTDIA_DESC* inp)
+static void patch_input(const INPUTDIA_DESC* inp)
 {
   ((INPUTDIA_DESC*)inp)->rc.x=0;
   ((INPUTDIA_DESC*)inp)->rc.y=HeaderH()+1+YDISP;
@@ -470,7 +505,7 @@ void patch_input(const INPUTDIA_DESC* inp)
 }
 
 #pragma inline
-void patch_dialog(INPUTDIA_DESC* dialog, int x,int y,int x2, int y2)
+static void patch_dialog(INPUTDIA_DESC* dialog, int x,int y,int x2, int y2)
 {
   dialog->rc.x  = x;
   dialog->rc.y  = y;
@@ -478,7 +513,7 @@ void patch_dialog(INPUTDIA_DESC* dialog, int x,int y,int x2, int y2)
   dialog->rc.y2 = y2;
 }
 #pragma inline
-void OpenBCFGFile(void)
+static void OpenBCFGFile(void)
 {   
   extern const char *successed_config_filename;
   if ((successed_config_filename)&&(strlen(successed_config_filename))){
@@ -490,17 +525,19 @@ void OpenBCFGFile(void)
   }
 }
 #pragma inline
-void DrawCanvasExt(void *canvas, RECT rc,int mode){ DrawCanvas(canvas, rc.x, rc.y, rc.x2, rc.y2, mode); }
+static void DrawCanvasExt(void *canvas, RECT rc,int mode)
+{ DrawCanvas(canvas, rc.x, rc.y, rc.x2, rc.y2, mode); }
 #pragma inline
-void DrawCanvasRect(void *canvas, TRect rc,int mode){ DrawCanvas(canvas, rc.l, rc.t, rc.r, rc.b, mode); }
+static void DrawCanvasRect(void *canvas, TRect rc,int mode)
+{ DrawCanvas(canvas, rc.l, rc.t, rc.r, rc.b, mode); }
 #pragma inline
-void DrawStringExt(WSHDR *ws,RECT rc,TFont Font,int text_attribute)
+static void DrawStringExt(WSHDR *ws,RECT rc,TFont Font,int text_attribute)
 { DrawString(ws, rc.x, rc.y, rc.x2, rc.y2, Font.Size,text_attribute,Font.Pen, Font.Brush); }
 #pragma inline
-void DrawStringRect(WSHDR *ws,TRect rc,TFont Font,int text_attribute)
+static void DrawStringRect(WSHDR *ws,TRect rc,TFont Font,int text_attribute)
 { DrawString(ws, rc.l, rc.t, rc.r, rc.b, Font.Size,text_attribute,Font.Pen, Font.Brush); }
 #pragma inline//创建文件缓冲区
-char *LoadFileBuf(const char *FileName)
+static char *LoadFileBuf(const char *FileName)
 {
   int f;
   char *buf=0;  
@@ -521,7 +558,7 @@ char *LoadFileBuf(const char *FileName)
   return(buf);
 }
 #pragma inline//释放文件缓冲区
-int FreeFileBuf(char *Buffer)
+static int FreeFileBuf(char *Buffer)
 {
   if(Buffer){
     mfree(Buffer);
@@ -529,7 +566,7 @@ int FreeFileBuf(char *Buffer)
   }else return(0);
 }
 #pragma inline//获取字体类型
-uint FontType(int index)
+static uint FontType(int index)
 {
  switch(index){
  #ifdef NEWSGOLD
@@ -592,10 +629,9 @@ uint FontType(int index)
  }
 }
 #pragma inline//播放音乐文件
-int PlayMusic(const char *fname, uint VOLUME, uint RepeatNum)
+static int PlayMusic(const char *fname, uint VOLUME, uint RepeatNum)
 {
-  int Handle=0;
-  if(!IsCalling()){
+    int Handle=0;
     FSTATS fstats;
     uint err;
     if (GetFileStats(fname,&fstats,&err)!=-1){
@@ -633,11 +669,10 @@ int PlayMusic(const char *fname, uint VOLUME, uint RepeatNum)
       FreeWS(sndName);
       return(Handle);
     }
-  }
-  return(Handle);
+   return(Handle);
 }
 #pragma inline//创建字串总数
-uint CountTitle(char *Title[])
+static uint CountTitle(char *Title[])
 {
  int max=0;
  for (int i=0; Title[i]!=NULL; i++)
@@ -645,7 +680,7 @@ uint CountTitle(char *Title[])
  return(max-1); 
 }
 #pragma inline//创建菜单名称
-TMenu *BuildMenu(char *Title[])
+static TMenu *BuildMenu(char *Title[])
 {
   TMenu *Menu=0;
   for (int i=0; Title[i]!=NULL; i++)
@@ -673,7 +708,7 @@ TMenu *BuildMenu(char *Title[])
   return(Menu);
 }
 #pragma inline//创建菜单列表
-void DrawMenu(void *gui, int cur_item, void *user_pointer)
+static void DrawMenu(void *gui, int cur_item, void *user_pointer)
 {
   WSHDR *ws;
   TMenu *Menu=user_pointer;
@@ -697,7 +732,7 @@ void DrawMenu(void *gui, int cur_item, void *user_pointer)
   SetMenuItemText(gui, item, ws, cur_item);       
 }
 #pragma inline//释放菜单资源
-void FreeMenu(TMenu *Menu)
+static void FreeMenu(TMenu *Menu)
 {
   while(Menu){
       TMenu *sb=Menu;
@@ -708,7 +743,7 @@ void FreeMenu(TMenu *Menu)
   mfree(Menu);
 }
 #pragma inline//获取菜单总数
-int MenuCount(TMenu *Menu)
+static int MenuCount(TMenu *Menu)
 {
   int i=0;
   TMenu *sb=(TMenu*)&Menu;
@@ -724,7 +759,7 @@ int FileCount(TFile *File)
   return (i);
 }
 #pragma inline//释放文件资源
-void FreeFile(TFile *File)
+static void FreeFile(TFile *File)
 {
   while(File){
       TFile *sb=File;
@@ -736,7 +771,7 @@ void FreeFile(TFile *File)
   mfree(File);
 }
 #pragma inline//获取播放状态
-int IsMediaActive(void)
+static int IsMediaActive(void)
 {
   char s[40];
   sprintf(s,RamMediaIsPlaying());
@@ -748,7 +783,7 @@ int IsMediaActive(void)
   return 0;
 }
 #pragma inline
-ulong HexToInt(char *HEX) 
+static ulong HexToInt(char *HEX) 
 { 
  ulong result=0; 
  for(int i=0 ; i<strlen(HEX) ; i++) 
@@ -767,14 +802,14 @@ ulong HexToInt(char *HEX)
  return(result); 
 }
 #pragma inline
-ubyte FileExists(char *FileName,int *Handle)
+static ubyte FileExists(char *FileName,int *Handle)
 {
   int ul;
   *Handle=fopen(FileName,A_ReadOnly+A_BIN,P_READ,&ul);
   if(*Handle==-1) return 0; else return 1;
 }
 #pragma inline
-uword *LoadFontLib(void)
+static uword *LoadFontLib(void)
 {  
   int ul;
   uword *data = 0;
@@ -803,7 +838,7 @@ uword *LoadFontLib(void)
   return(data);
 }
 #pragma inline
-void FreeFontLib(uword *data)
+static void FreeFontLib(uword *data)
 {
   if (data){
     mfree(data);
@@ -811,7 +846,7 @@ void FreeFontLib(uword *data)
   }
 }
 #pragma inline
-void WS2Ascii(uword *data, WSHDR *ws, char *s, int maxlen)
+static void WS2Ascii(uword *data, WSHDR *ws, char *s, int maxlen)
 {
   int len=ws->wsbody[0];
   if(maxlen != 0 && len > maxlen)
@@ -834,7 +869,7 @@ void WS2Ascii(uword *data, WSHDR *ws, char *s, int maxlen)
   s[j] = 0;
 }
 #pragma inline
-void Ascii2WS(uword *data,WSHDR *ws, const char *s, int maxlen)
+static void Ascii2WS(uword *data,WSHDR *ws, const char *s, int maxlen)
 {
   if(data == 0){
     wsprintf(ws, "%t", s);
@@ -857,12 +892,12 @@ void Ascii2WS(uword *data,WSHDR *ws, const char *s, int maxlen)
   }
 }
 #pragma inline// 返回某公历是否闰年
-ubyte LunarYearId(ulong year)
+static ubyte LunarYearId(ulong year)
 {  
   return (year%4==0)&&((year%100!=0)||(year%400==0));
 }
 #pragma inline
-uword MonthMaxDay(int year,int month)
+static uword MonthMaxDay(int year,int month)
 {
   uword result;
   switch(month){ 
@@ -876,7 +911,7 @@ uword MonthMaxDay(int year,int month)
  return result;
 }
 #pragma inline// 取某日期到年初的天数，不考虑 1582 年 10 月的特殊情况
-uword GetDayFromYearBegin(ulong AYear,ubyte AMonth,ubyte ADay)
+static uword GetDayFromYearBegin(ulong AYear,ubyte AMonth,ubyte ADay)
 {
   uword Result=0;
   for(int i= 1;i<= AMonth - 1;i++){
@@ -886,7 +921,7 @@ uword GetDayFromYearBegin(ulong AYear,ubyte AMonth,ubyte ADay)
   return Result;
 }
 #pragma inline
-uword BetweenDaySum(TDate start,TDate end)
+static uword BetweenDaySum(TDate start,TDate end)
 {
 uword sum=0;
 TDate e = end;
@@ -914,7 +949,7 @@ sum=sum-s.day;
 return(sum);
 }
 #pragma inline//获取二十四节气索引ID值
-int LunarHolId(TDate date)
+static int LunarHolId(TDate date)
 { 
  if((date.year>LHYear)||(date.year<LLYear))return 0; 
  int Flag=HolDay[(date.year-LLYear)*12+date.month-1]; 
@@ -928,7 +963,7 @@ int LunarHolId(TDate date)
  }else return 0;
 }
 #pragma inline//获取二十节气字串名称
-void LunarHolDay(WSHDR* ws,int LunarId)
+static void LunarHolDay(WSHDR* ws,int LunarId)
 {
  uword UNI[4];
  UNI[0] = 0x519C;
@@ -938,7 +973,7 @@ void LunarHolDay(WSHDR* ws,int LunarId)
  BSTRAdd(ws->wsbody,UNI,4);
 }
 #pragma inline//获取画布
-void *CreateCanvas()
+static void *CreateCanvas()
 {
   CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
   if (icsm){
@@ -956,11 +991,55 @@ void *CreateCanvas()
   }
   return NULL;
 }
+#pragma inline//获取字串
+static void SearchSub(const char *source,const char *sub,char *result)
+{
+  char *s=strstr(source,sub);
+  if(s){  
+      int c,i=0;
+      char TEMP[256];
+      s+=strlen(sub);       
+      while((c=*s++)!=0x0A){if (i<(sizeof(TEMP)-1)) TEMP[i++]=c;}
+      TEMP[i]=0;
+      strcpy(result,TEMP);
+      return;
+  }
+  result=NULL;
+}
+#pragma inline//释放IMGHDR
+static deleteIMGHDR(IMGHDR *img)
+{
+  mfree(img->bitmap);
+  mfree(img);
+}
+#pragma inline//释放IMGHDR
+static IMGHDR *alpha(IMGHDR *img, char a, int nw, int del)
+{
+  int i;
+  color *r=(color*)img->bitmap;
+  for(i=0;i<img->h*img->w; i++, r++)
+    if(r->A>a)
+      r->A-=a;
+    else
+      r->A=0;
+    return img;
+}
+#pragma inline//释放IMGHDR
+static DrawIMGHDR(IMGHDR *img, int x, int y, char *pen, char *brush)
+{
+  RECT rc;
+  DRWOBJ drwobj;
+  StoreXYWHtoRECT(&rc,x,y,img->w,img->h);
+  SetPropTo_Obj5(&drwobj,&rc,0,img);
+  SetColor(&drwobj,pen,brush);
+  DrawObject(&drwobj);
+}
 #endif/*SIEAPI_H_*/
 
 //导出函数引用表
 #if defined(_STD_USING)
  using _CSTD strtoul;
+ using _CSTD strtol;
  using _CSTD kill_data;
  using _CSTD RunCUT;
  using _CSTD RunAPP;
@@ -968,9 +1047,10 @@ void *CreateCanvas()
  using _CSTD ExtStrcmp;
  using _CSTD BSTRAdd;
  using _CSTD GetDayOf;
- using _CSTD get_string_width;
+ using _CSTD PixlsWidth;
  using _CSTD toupper;
  using _CSTD strcmp_nocase;
+ using _CSTD cmpstr_nocase;
  using _CSTD str2ws_unicode;
  using _CSTD ws2str_unicode;
  using _CSTD unicodeSwitch;
@@ -1011,6 +1091,7 @@ void *CreateCanvas()
  using _CSTD GetDayFromYearBegin;
  using _CSTD FileExists;
  using _CSTD CreateCanvas;
+ using _CSTD SearchSub;
 #endif /* 导出函数引用表 */
  
 
