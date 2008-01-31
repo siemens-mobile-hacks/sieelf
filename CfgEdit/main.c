@@ -324,6 +324,7 @@ void ed1_ghook(GUI *data, int cmd)
         break;        
         
       case CFG_STR_PASS:
+      case CFG_STR_GB:
       case CFG_STR_WIN1251:
         j=0;
         p=(char *)(hp+1);
@@ -1072,6 +1073,7 @@ int create_ed(CFG_HDR *need_to_focus)
       }
       p+=(hp->max+1+3)&(~3);
       break;
+    case CFG_STR_GB:
     case CFG_STR_WIN1251:
       n-=(hp->max+1+3)&(~3);
       if (n<0) goto L_ERRCONSTR;
