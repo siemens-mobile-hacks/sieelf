@@ -5,10 +5,11 @@
 
 #ifdef NEWSGOLD
   #define num_alarms 5
-  #define alarm_dir "4:\\Zbin\\SmartAlerts\\"
   #ifdef S68
+    #define alarm_dir "0:\\Zbin\\SmartAlerts\\"
     #define DEFAULT_DISK "0"
   #else
+    #define alarm_dir "4:\\Zbin\\SmartAlerts\\"
     #define DEFAULT_DISK "4"
   #endif
 #else
@@ -36,7 +37,6 @@ char cfgfile[]=alarm_dir"SmartAlerts.cfg";
 char fonpng[]=alarm_dir"fon.png";
 char ring[]=alarm_dir"alarm_ring.elf";
 char icon[]=alarm_dir"icon.png";
-char sound[]=alarm_dir"alerts\\";
 const char param_new_cfg[]="new_cfg";
 char bcfgfile[]=DEFAULT_DISK":\\Zbin\\etc\\alarm_melody.bcfg";
 char bcfgfile1[]=DEFAULT_DISK":\\Zbin\\etc\\SmartAlerts.bcfg";

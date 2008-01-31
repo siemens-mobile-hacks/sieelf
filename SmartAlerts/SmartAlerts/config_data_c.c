@@ -1,6 +1,7 @@
 #include "..\..\inc\cfg_items.h"
 
-
+__root const CFG_HDR cfghdr1_13={CFG_STR_UTF8,"报时文件目录",0,63};
+__root const char sound[64]="0:\\Zbin\\SmartAlerts\\alerts\\";
 __root const CFG_HDR cfghdr1_14={CFG_STR_UTF8,"报时文件类型",0,3};
 __root const char mstyle[4]="wav";
 __root const CFG_HDR cfghdr1_16={CFG_STR_UTF8,"定时提醒音频",0,63};

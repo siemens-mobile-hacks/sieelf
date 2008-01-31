@@ -5,7 +5,7 @@
 
 
 #define TMR_SECOND (1300/6)
-
+extern const char sound[];
 extern const char mstyle[];
 extern const char vname[];
 extern const char name1[];
@@ -339,7 +339,7 @@ GetDateTime(&date,&time);
           {
 	  if(time.hour==calls[3]&&time.min==calls[4])
            {
-            if(strlen(callnum)>5)
+            if(strlen(callnum)>0)
             MakeVoiceCall(callnum,0x10,0x2FFF);
            }
           }
@@ -352,7 +352,7 @@ GetDateTime(&date,&time);
 	  if(time.hour==smss[3]&&time.min==smss[4])
           {
                 utf8_2ws(ws,content,210);
-                if(strlen(smsnum)>5)
+                if(strlen(smsnum)>0)
                 SendSMS(ws,smsnum,MMI_CEPID,MSG_SMS_RX-1, 6);
           }
           }
