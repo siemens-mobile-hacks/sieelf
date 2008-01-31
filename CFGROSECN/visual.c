@@ -5,41 +5,9 @@ char colors[4][4]={{0xFF,0,0,0x64},{0,0xFF,0,0x64},{0,0,0xFF,0x64},{0xC6,0xAA,0x
 char black[4]={0x00,0x00,0x00,0x64};
 char white[4]={0xFF,0xFF,0xFF,0x64};
 char transparent[4]={0x00,0x00,0x00,0x00};
-extern long  strtol (const char *nptr,char **endptr,int base);
-extern unsigned long  strtoul (const char *nptr,char **endptr,int base);
-#define MIN(a,b) (a<b)?a:b
-#define MAX(a,b) (a>b)?a:b
-/*
-#pragma inline
-void patch_rect(RECT*rc,int x,int y, int x2, int y2)
-{
-  rc->x=x;
-  rc->y=y;
-  rc->x2=x2;
-  rc->y2=y2;
-}
 
-//===============================================================================================
-// ELKA Compatibility
-#pragma inline
-void patch_header(HEADER_DESC* head)
-{
-  head->rc.x=0;
-  head->rc.y=YDISP;
-  head->rc.x2=ScreenW()-1;
-  head->rc.y2=HeaderH()+YDISP;
-}
-#pragma inline
-void patch_input(INPUTDIA_DESC* inp)
-{
-  inp->rc.x=0;
-  inp->rc.y=HeaderH()+1+YDISP;
-  inp->rc.x2=ScreenW()-1;
-  inp->rc.y2=ScreenH()-SoftkeyH()-1;
-}
-//===============================================================================================
 //  YDISP на?больше не нуже?та?ка?иконба?отключим
-*/
+
 #ifdef ELKA  
 #undef YDISP
 #define   YDISP 0
@@ -586,24 +554,6 @@ void Free_FLIST(void)
 enum TYPES {IS_BACK, IS_FOLDER, IS_FILE}; 
 const char back[]="..";             
 
-/*
-int strcmp_nocase(const char *s, const char *d)
-{
-  int cs;
-  int ds;
-  do
-  {
-    cs=*s++;
-    if (cs&0x40) cs&=0xDF;
-    ds=*d++;
-    if (ds&0x40) ds&=0xDF;
-    cs-=ds;
-    if (cs) break;
-  }
-  while(ds);
-  return(cs);
-}
-*/
 FLIST *AddToFList(const char* full_name, const char *name, int is_folder)
 {
   int l_fname;
@@ -620,7 +570,7 @@ FLIST *AddToFList(const char* full_name, const char *name, int is_folder)
   {
     FLIST *pr;
     pr=(FLIST *)&fltop;
-    while(strcmp_nocase(fl->name,fn->name)<0)
+    while(cmpstr_nocase(fl->name,fn->name)<0)
     {
       pr=fl;
       fl=fl->next;
@@ -834,7 +784,7 @@ void filelist_menu_iconhndl(void *data, int curitem, void *user_pointer)
   else
   {
     ws=AllocMenuWS(data,10);
-    wsprintf(ws, "Error");
+    wsprintf(ws, "ґнОу!!!");
   }
   SetMenuItemText(data, item, ws, curitem);
 }
@@ -842,13 +792,16 @@ void filelist_menu_iconhndl(void *data, int curitem, void *user_pointer)
 int fmenusoftkeys[]={0,1,2};
 SOFTKEY_DESC fmenu_sk[]=
 {
+/*
 #ifdef ELKA
   {0x0018,0x0000,57},//Select
   {0x0001,0x0000,5107},//Close
 #else
   {0x0018,0x0000,(int)"Select"},
   {0x0001,0x0000,(int)"Close"},
-#endif
+#endif*/
+  {0x0018,0x0000,(int)"СЎ¶Ё"},//Select
+  {0x0001,0x0000,(int)"№Ш±Х"},//Close
   {0x003D,0x0000,(int)"+"}
 };
 
