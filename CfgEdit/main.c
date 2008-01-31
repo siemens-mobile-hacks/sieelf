@@ -1,6 +1,5 @@
 #include "..\inc\swilib.h"
 #include "..\inc\cfg_items.h"
-#include "code.h"
 #include <errno.h>
 
 extern long  strtol (const char *nptr,char **endptr,int base);
@@ -919,7 +918,7 @@ void UpdateCSMname(const char *fname)
 /*  str_2ws(ws,s,128);
   wsprintf((WSHDR *)(&MAINCSM.maincsm_name),"Config: %w",ws);
   FreeWS(ws);*/
-  wsprintf((WSHDR *)(&MAINCSM.maincsm_name),"%t%t","±‡º≠≈‰÷√:",s);
+  wsprintf((WSHDR *)(&MAINCSM.maincsm_name),"%t",s);
 }
 
 void ErrorMsg(const char *msg)
