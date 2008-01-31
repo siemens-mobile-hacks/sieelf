@@ -1,6 +1,7 @@
 #define CFG_UINT 1
 #define CFG_STR_UTF8 2
 #define CFG_INT 3
+#define CFG_STR_GB 15
 #define CFG_STR_WIN1251 4
 #define CFG_CBOX 5
 #define CFG_STR_PASS 6
@@ -10,7 +11,6 @@
 //min<>0 - start tag (name used)
 //min=0 - end tag
 #define CFG_LEVEL 9
-
 #define CFG_UTF8_STRING 10
 #define CFG_CHECKBOX 11
 #define CFG_TIME 12   
