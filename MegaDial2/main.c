@@ -1545,15 +1545,15 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
   int m=msg->gbsmsg->msg;
   if (m==KEY_DOWN)
    {
+if(EDIT_IsBusy(data))
+     return(0);       
+     
 #ifdef NEWSGOLD
       if(key==LEFT_SOFT)
 #else
       if(key==RIGHT_SOFT)
 #endif
-      {
-     if(EDIT_IsBusy(data))
-     return(0);           
-     else if((get_word_count(data)<=5))
+       if((get_word_count(data)<=5))
       {
       ExtractEditControl(data,2,&ec);
       smstemp=AllocWS(ec.pWS->wsbody[0]);
@@ -1572,7 +1572,7 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
       
         if (key==ENTER_BUTTON)
         {
-#ifdef NEWSGOLD
+#ifndef NEWSGOLD
             EDIT_OpenOptionMenuWithUserItems(data,mmenuitem,data,2);
 #else
             EDIT_OpenOptionMenuWithUserItems(data,mmenuitem,data,1);
@@ -1587,7 +1587,7 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
      return (-1);
      }
         
-      }
+     
       if(key==RED_BUTTON)
      {
       ExtractEditControl(data,2,&ec);
@@ -1760,13 +1760,8 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
   is_sms_need=0;
   
   
-  if (sumx>1&&((key==LEFT_BUTTON)||(key==RIGHT_BUTTON)))
+  if (sumx>1&&key==ENTER_BUTTON&&m==KEY_DOWN)
    {
-    msg->keys=0;
-   if ((m==KEY_DOWN)||(m==LONG_PRESS))
-   {
-    if(key==RIGHT_BUTTON)
-    {
            numx++;   
         if(sumx>1&&setnum2)
         {if((numx-sumx+2)>0)
@@ -1774,25 +1769,13 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
         else
         {if((numx-sumx+1)>0)
           numx=0;}
-    }
-    if(key==LEFT_BUTTON)
-    {
-           numx--;
-         if(sumx>1&&setnum2)
-         {if(numx<-1)
-           numx=sumx-2;}
-         else
-         {if(numx<0)
-           numx=sumx-1;}
-    }
-   }
+    
    return(-1); 
   }
   
   if(key==RED_BUTTON)
   {
     numx=0;
-    need_ip=0;
     smsdata=1;
   }
   
@@ -1807,6 +1790,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 	}
   
   
+
   if ((key==RIGHT_BUTTON)&&(m==KEY_DOWN))
    {
     EDITCONTROL ec;
@@ -1865,6 +1849,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 #endif
 #endif
       need_ip=1;
+      
       VoiceOrSMS(dstr[0]);
       return(1); //Close tries 
     }
