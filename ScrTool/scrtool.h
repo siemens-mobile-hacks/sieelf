@@ -1,62 +1,63 @@
 #ifndef _SCRTOOL_H_
  #define _SCRTOOL_H_ 
  #include <sieapi.h> 
- #define DAEMON  
- #define SCRTOOL_NAME "ScrTool"
- #define UPDATE_STAT 1
- #define TMR_SECOND 216
- #define MAX_IDS 15
- #define MAX_APP 14
- #define MAX_BIR 8
- #define LEN 32
- #define NoName "\xE7\xA9\xBA\xE7\x99\xBD"
- #define ExcuteTyen "File", "Shortcut", "Address", "Directory"
- #define ExcuteTycn "文件", "快捷", "地址", "目录"
- #define AgainEN "Default", "AgainLeft", "Center", "AgainRight"
- #define AgainCN "默认", "靠左", "居中", "靠右"
- #define ExcuteLen 4
- #define DateFmt "YYYY/MM/DD","YYYY-MM-DD","YYYY.MM.DD","YYYY MM DD","MM/DD","MM-DD","MM.DD","MM DD","年月日","月日"
- #define TimeFmt "13:00","PM 01:00","01:00","13:00:00","PM 01:00:00","03D00F","03D00F00M"
+#define DAEMON
+#define SCRTOOL_NAME "ScrTool"
+#define UPDATE_STAT 1
+#define TMR_SECOND 216
+#define MAX_IDS 15
+#define MAX_APP 14
+#define MAX_BIR 8
+#define SCR_ALARM 3
+#define SCR_MENUS 2
+#define SCR_TASKS 1
+#define LEN 32
+#define NoName "\xE7\xA9\xBA\xE7\x99\xBD"
+#define ExcuteTyen "File", "Shortcut", "Address", "Directory"
+#define ExcuteTycn "文件", "快捷", "地址", "目录"
+#define AgainEN "Default", "AgainLeft", "Center", "AgainRight"
+#define AgainCN "默认", "靠左", "居中", "靠右"
+#define ExcuteLen 4
+#define DateFmt "YYYY/MM/DD","YYYY-MM-DD","YYYY.MM.DD","YYYY MM DD","MM/DD","MM-DD","MM.DD","MM DD","年月日","月日"
+#define TimeFmt "13:00","PM 01:00","01:00","13:00:00","PM 01:00:00","=点分=","点分秒"
 
- #ifdef DAEMON
  typedef struct{
   CSM_RAM csm;
  }DAEMON_CSM;
- #endif
- 
+
  typedef struct{
   CSM_RAM csm;
-  int menu_id; 
-  int file_id;
- }DAEMON_GUI;
+  int TaskID; 
+ }TASK_GUI;
 
  typedef struct{  
-  RECT  rc;
   WSHDR *ws;
-  char Pen[4];
-  char Brush[4];
-  int  Size;
-  int  Type;
-  int  Show;
+  char  Pen[4];
+  char  Brush[4];
+  short Size;
+  short Type;
+  short Show;
+  short l;//left
+  short t;//top
+  short r;//right
+  short b;//bottom
  }TSCR;
  
  typedef struct{
   WSHDR *ws;  
-  char  *Pic;
-  char  *File;
-  int    Type;
+  char *Pic;
+  char *File;
+  char *Name;
+  short Type;
  }TAPP;
  
- extern const uint MENU_ENA;
+ extern const uint TASK_ENA;
  extern const uint INFO_ENA;
-// extern const uint SCEN_ENA;
  extern const uint SHOW_EXT;
  extern const uint EXIT_BTN;
  extern const uint MODE_KBD;
-#ifdef DAEMON
  extern const uint CALL_BTN; 
- extern const uint RINS_BTN;
-#endif
+ extern const uint DEST_ENA; 
 //运行软件
  extern const uint OFFSET;
  extern const uint AUTO_CLOSE;
@@ -65,7 +66,6 @@
  extern const char cfgPBDCol[];
  extern const char cfgPBGCol[];
  extern const char cfgBBDCol[];
- extern const char cfgBBGCol[];
  //没有图标
  extern const char AINO[];
  //运行内部地址
@@ -253,13 +253,18 @@
  extern const char BYTES_SG[];
  extern const char KBYTES_SG[];
 //铃声参数
- extern const char RINS_FILE[];
- extern const uint RINS_VOLUME;
- extern const int  RINS_ENA;
- extern const uint RINS_NUM;
- extern const uint RINS_VIB;
+ extern const char ALRM_FILE[];
+ extern const char ALRM_PIC[];
+ extern const char ALRM_CBK[];
+ extern const char ALRM_CTX[];
+ extern const uint ALRM_FONT;
+ extern const uint ALRM_VOLUME;
+ extern const uint ALRM_COT;
+ extern const int  ALRM_ENA;
+ extern const uint ALRM_NUM;
+ extern const uint ALRM_VIB;
  extern const int  VIB_ENA;
 //自动关机
- extern const int  AUTOSD_ENA;
- extern const char AUTOSD_TIME[];
+ extern const int   SHUT_ENA;
+ extern const TTime SHUT_TIME;
 #endif

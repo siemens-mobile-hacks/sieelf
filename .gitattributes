@@ -1505,7 +1505,6 @@ ScrTool/ScrTool.eww -text
 ScrTool/conf_loader.c -text
 ScrTool/conf_loader.h -text
 ScrTool/config_data.c -text
-ScrTool/config_data_e.c -text
 ScrTool/func.asm -text
 ScrTool/main.c -text
 ScrTool/scrtool.h -text

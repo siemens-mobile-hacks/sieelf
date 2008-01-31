@@ -6,19 +6,19 @@
 //中文配置为 config_DATE_c.c
 
 __root const CFG_HDR cfghdr0={CFG_CHECKBOX, "启用菜单", 0,2}; 
-__root const uint MENU_ENA= 1;
+__root const uint TASK_ENA= 1;
 __root const CFG_HDR cfghdrTSI0={CFG_CHECKBOX, "启用幕显", 0,2}; 
 __root const uint INFO_ENA= 1;
-//__root const CFG_HDR cfghdrTSI0={CFG_CHECKBOX, "启用情景", 0,2}; 
-//__root const uint SCEN_ENA= 1;
 //菜单配置信息
 //开始按键配置
 __root const CFG_HDR cfghdr_mBAR1={CFG_LEVEL,"基本设置",1,0};
-__root const CFG_HDR cfghdrTSI={CFG_UINT,"自动刷新屏显(秒)",0,600};
+__root const CFG_HDR cfghdrBAR_0={CFG_CHECKBOX, "启用功能描述", 0,2}; 
+__root const uint DEST_ENA=1;
+__root const CFG_HDR cfghdrBAR_1={CFG_UINT,"自动刷新屏显(秒)",0,50};
 __root const uint REFRESH=10;
-__root const CFG_HDR cfghdrBAR_1={CFG_UINT,"自动关闭菜单(秒)",0,20};
+__root const CFG_HDR cfghdrBAR_2={CFG_UINT,"自动关闭菜单(秒)",0,20};
 __root const uint AUTO_CLOSE=3;
-__root const CFG_HDR cfghdrBAR_3={CFG_UINT,"退出菜单按键",0,80};
+__root const CFG_HDR cfghdrBAR_3={CFG_UINT,"界面关闭按键",0,80};
 __root const uint EXIT_BTN=RIGHT_SOFT;
 __root const CFG_HDR cfghdrBAR_4={CFG_UINT,"调用菜单按键",0,80};
 __root const uint CALL_BTN=RED_BUTTON;
@@ -27,21 +27,23 @@ __root const uint MODE_KBD=0;
 __root const CFG_CBOX_ITEM cfgcbox03[3]={"按下键","弹起键","长按键"};
 __root const CFG_HDR cfghdrBAR_7={CFG_UINT,"菜单垂直偏移",0,400};
 __root const uint OFFSET=0;
-__root const CFG_HDR cfghdrBAR_8={CFG_COLOR,"菜单边框颜色",0,0};
-__root const char cfgPBDCol[4]={255,255,255,100};
-__root const CFG_HDR cfghdrBAR_9={CFG_COLOR,"菜单背景颜色",0,0};
-__root const char cfgPBGCol[4]={0,0,255,75};
-__root const CFG_HDR cfghdrBAR_A={CFG_COLOR,"图标边框颜色",0,0};
-__root const char cfgBBDCol[4]={255,255,255,100};
-__root const CFG_HDR cfghdrBAR_B={CFG_COLOR,"图标背景颜色",0,0};
-__root const char cfgBBGCol[4]={0,0,0,0};
-__root const CFG_HDR cfghdrBAR_C={CFG_COLOR,"菜单内部颜色",0,0};
+__root const CFG_HDR cfghdrBAR_8={CFG_COLOR,"菜单文本颜色",0,0};
 __root const char ATEXT_CS[4]={255,255,255,100};
-__root const CFG_HDR cfghdrBAR_D={CFG_CBOX,"菜单文本字体",0,17};
+__root const CFG_HDR cfghdrBAR_9={CFG_CBOX,"菜单文本字体",0,17};
 __root const uint ATEXT_FONT=8;
 __root const CFG_CBOX_ITEM cfgcboxBAR[17]={FontSyCN};
+__root const CFG_HDR cfghdrBAR_A={CFG_COLOR,"菜单边框颜色",0,0};
+__root const char cfgPBDCol[4]={255,255,255,100};
+__root const CFG_HDR cfghdrBAR_B={CFG_COLOR,"菜单背景颜色",0,0};
+__root const char cfgPBGCol[4]={0,0,0,75};
+__root const CFG_HDR cfghdrBAR_C={CFG_COLOR,"图标边框颜色",0,0};
+__root const char cfgBBDCol[4]={255,255,255,100};
+/*
+__root const CFG_HDR cfghdrBAR_B={CFG_COLOR,"图标背景颜色",0,0};
+__root const char cfgBBGCol[4]={0,0,0,0};
+*/
 __root const CFG_HDR cfghdrBAR_J={CFG_CHECKBOX, "显示扩展名", 0,2}; 
-__root const uint SHOW_EXT= 1;
+__root const uint SHOW_EXT= 0;
 __root const CFG_HDR cfghdrBAR_E={CFG_STR_UTF8,"设置图标",0,63};
 __root const char AIST[64]=DEFAULT_DISK ":\\ZBin\\ScrTool\\st.png";
 __root const CFG_HDR cfghdrBAR_F={CFG_STR_UTF8,"空白图标",3,63};
@@ -72,14 +74,14 @@ __root const CFG_HDR cfghdr_mA040={CFG_LEVEL,"",0,0};
 //-------------------------------------------------
 __root const CFG_HDR cfghdr_mA051={CFG_LEVEL,"应用02",1,0};
 __root const CFG_HDR cfghdrA05_4 ={CFG_CBOX,"类型", 0,ExcuteLen}; 
-__root const int  AT05=0; 
+__root const int  AT05=3; 
 __root const CFG_CBOX_ITEM cfgcboxA05[ExcuteLen]={ExcuteTycn};
 __root const CFG_HDR cfghdrA05_1={CFG_UTF8_STRING,"描述",0,LEN-1};
-__root const char AN05[LEN]=NoName;
+__root const char AN05[LEN]="\xE5\xBA\x94\xE7\x94\xA8\xE8\xBD\xAF\xE4\xBB\xB6";
 __root const CFG_HDR cfghdrA05_2={CFG_STR_UTF8,"图标",0,63};
-__root const char AI05[64]="";
+__root const char AI05[64]=DEFAULT_DISK ":\\ZBin\\ScrTool\\elf.png";;
 __root const CFG_HDR cfghdrA05_3={CFG_STR_UTF8,"调用",0,63};
-__root const char AF05[64]="";
+__root const char AF05[64]=DEFAULT_DISK ":\\ZBin\\APP\\*.elf";
 __root const CFG_HDR cfghdr_mA050={CFG_LEVEL,"",0,0};
 //-------------------------------------------------
 __root const CFG_HDR cfghdr_mA061={CFG_LEVEL,"应用03",1,0};
@@ -490,25 +492,35 @@ __root const CFG_HDR cfghdr_mTSI0={CFG_LEVEL,"",0,0};
 //TextInfo end
 //铃声设置
 __root const CFG_HDR cfghdr_mRIN1={CFG_LEVEL,"闹钟设置",1,0};
-__root const CFG_HDR cfghdrRINS_ENA={CFG_CHECKBOX, "启用闹钟", 0, 2};
-__root const int RINS_ENA=1;
+__root const CFG_HDR cfghdrALRM_ENA={CFG_CHECKBOX, "启用闹钟", 0, 2};
+__root const int ALRM_ENA=1;
 __root const CFG_HDR cfghdrVIB_ENA={CFG_CHECKBOX, "启用振动", 0, 2};
 __root const int VIB_ENA=1;
-__root const CFG_HDR cfghdrRINS_EXIT={CFG_UINT,"停止闹钟",0,80};
-__root const uint RINS_BTN=RIGHT_SOFT;
-__root const CFG_HDR cfghdrRINS_NUM={CFG_UINT,"重复次数[1-3]",0,4};
-__root const uint RINS_NUM=1;
-__root const CFG_HDR cfghdrVOLUME={CFG_UINT,"闹钟音量[0-5]",0,6};
-__root const uint RINS_VOLUME=5;
-__root const CFG_HDR cfghdrRINS_VIB={CFG_UINT,"振动强度[1-50]",0,52};
-__root const uint RINS_VIB=30;
+__root const CFG_HDR cfghdrALRM_CBK={CFG_COLOR,"窗口背景",0,0};
+__root const char ALRM_CBK[4]={255,255,255,100};
+__root const CFG_HDR cfghdrALRM_CTX={CFG_COLOR,"字体颜色",0,0};
+__root const char ALRM_CTX[4]={0,0,255,75};
+__root const CFG_HDR cfghdrALRM_FONT={CFG_CBOX,"字体大小",0,17};
+__root const uint ALRM_FONT=8;
+__root const CFG_CBOX_ITEM cfgcboxALRMFONT[17]={FontSyCN};
+__root const CFG_HDR cfghdrALRM_NUM={CFG_UINT,"重复次数[1-8]",0,9};
+__root const uint ALRM_NUM=3;
+__root const CFG_HDR cfghdrVOLUME={CFG_UINT,"闹钟音量[0-6]",0,7};
+__root const uint ALRM_VOLUME=6;
+__root const CFG_HDR cfghdrALRM_VIB={CFG_UINT,"振动强度[1-50]",0,51};
+__root const uint ALRM_VIB=30;
+__root const CFG_HDR cfghdrALRM_COT={CFG_UINT,"图片总数[1-10]",0,11};
+__root const uint ALRM_COT=4;
 __root const CFG_HDR cfghdrRINFILE={CFG_STR_UTF8,"闹钟铃声",0,63};
-__root const char RINS_FILE[64]=DEFAULT_DISK ":\\ZBin\\ScrTool\\ring.mp3";
+__root const char ALRM_FILE[64]=DEFAULT_DISK ":\\ZBin\\ScrTool\\alm.mp3";
+__root const CFG_HDR cfghdrRINPIC={CFG_STR_UTF8,"闹钟图片",0,63};
+__root const char ALRM_PIC[64]=DEFAULT_DISK ":\\ZBin\\ScrTool\\al%d.png";
 __root const CFG_HDR cfghdr_mRIN0={CFG_LEVEL,"",0,0};
 //自动关机
-__root const CFG_HDR cfghdr_mAUTOSD1={CFG_LEVEL,"自动关机",1,0};
-__root const CFG_HDR cfghdrAUTOSD_ENA={CFG_CHECKBOX, "启用", 0, 2};
-__root const int AUTOSD_ENA=0;
-__root const CFG_HDR cfghdrAUTOSD_TIME={CFG_STR_WIN1251, "时间", 0, 8};
-__root const char AUTOSD_TIME[9]="02:00:00";
-__root const CFG_HDR cfghdr_mAUTOSD0={CFG_LEVEL,"",0,0};
+__root const CFG_HDR cfghdr_mSHUT1={CFG_LEVEL,"自动关机",1,0};
+__root const CFG_HDR cfghdrSHUT_ENA={CFG_CHECKBOX, "启用", 0, 2};
+__root const int SHUT_ENA=0;
+__root const CFG_HDR cfghdrSHUT_TIME={CFG_TIME, "时间", 0, 0};
+__root const TTime SHUT_TIME={2,0,0,0};
+__root const CFG_HDR cfghdr_mSHUT0={CFG_LEVEL,"",0,0};
+
