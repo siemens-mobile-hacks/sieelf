@@ -11,7 +11,7 @@ __root const CFG_HDR cfghdr1={CFG_CHECKBOX,"允许欢迎信息",0,2};
 __root const int ENA_HELLO_MSG=1;
 //__root const CFG_CBOX_ITEM cfgcbox1[2]={"No","Yes"};
 
-__root const CFG_HDR cfghdr25={CFG_STR_WIN1251,"UnderIdleCSM_DESC",0,8};
+__root const CFG_HDR cfghdr25={CFG_STR_GB,"UnderIdleCSM_DESC",0,8};
 __root const char UNDER_IDLE_CONSTR[9]="";
 
 #ifndef NEWSGOLD
@@ -35,9 +35,9 @@ __root const int ACTIVE_KEY=0x11;
 #endif
 #endif
 
-__root const CFG_HDR cfghdr2={CFG_CBOX,"其它: 长按时",0,5};
-__root const int ENA_LONG_PRESS=2;
-__root const CFG_CBOX_ITEM cfgcbox2[5]={"保持系统原样","不做任何事","所有任务后台运行","打开任务列表","锁键盘且所有任务后台"};
+//__root const CFG_HDR cfghdr2={CFG_CBOX,"其它: 长按时",0,5};
+//__root const int ENA_LONG_PRESS=2;
+//__root const CFG_CBOX_ITEM cfgcbox2[5]={"保持系统原样","不做任何事","所有任务后台运行","打开任务列表","锁键盘且所有任务后台"};
 
 #ifdef NEWSGOLD
 __root const CFG_HDR cfghdr3={CFG_CBOX,"红键模式",0,3};
@@ -53,47 +53,47 @@ __root const CFG_HDR cfghdr33={CFG_CHECKBOX,"显示NewStyleDaemons",0,2};
 __root const int SHOW_DAEMONS=1;
 //__root const CFG_CBOX_ITEM cfgcbox33[2]={"No","Yes"};
 
-__root const CFG_HDR cfghdr4={CFG_STR_WIN1251,"快速启动1名称",1,31};
+__root const CFG_HDR cfghdr4={CFG_STR_GB,"快速启动1名称",1,31};
 __root const char BM1NAME[32]="";
 __root const CFG_HDR cfghdr5={CFG_STR_UTF8,"快速启动1文件路径",3,127};
 __root const char BM1FILE[128]="";
 
-__root const CFG_HDR cfghdr6={CFG_STR_WIN1251,"快速启动2名称",1,31};
+__root const CFG_HDR cfghdr6={CFG_STR_GB,"快速启动2名称",1,31};
 __root const char BM2NAME[32]="";
 __root const CFG_HDR cfghdr7={CFG_STR_UTF8,"快速启动2文件路径",3,127};
 __root const char BM2FILE[128]="";
 
-__root const CFG_HDR cfghdr8={CFG_STR_WIN1251,"快速启动3名称",1,31};
+__root const CFG_HDR cfghdr8={CFG_STR_GB,"快速启动3名称",1,31};
 __root const char BM3NAME[32]="";
 __root const CFG_HDR cfghdr9={CFG_STR_UTF8,"快速启动3文件路径",3,127};
 __root const char BM3FILE[128]="";
 
-__root const CFG_HDR cfghdr10={CFG_STR_WIN1251,"快速启动4名称",1,31};
+__root const CFG_HDR cfghdr10={CFG_STR_GB,"快速启动4名称",1,31};
 __root const char BM4NAME[32]="";
 __root const CFG_HDR cfghdr11={CFG_STR_UTF8,"快速启动4文件路径",3,127};
 __root const char BM4FILE[128]="";
 
-__root const CFG_HDR cfghdr12={CFG_STR_WIN1251,"快速启动5名称",1,31};
+__root const CFG_HDR cfghdr12={CFG_STR_GB,"快速启动5名称",1,31};
 __root const char BM5NAME[32]="";
 __root const CFG_HDR cfghdr13={CFG_STR_UTF8,"快速启动5文件路径",3,127};
 __root const char BM5FILE[128]="";
 
-__root const CFG_HDR cfghdr14={CFG_STR_WIN1251,"快速启动6名称",1,31};
+__root const CFG_HDR cfghdr14={CFG_STR_GB,"快速启动6名称",1,31};
 __root const char BM6NAME[32]="";
 __root const CFG_HDR cfghdr15={CFG_STR_UTF8,"快速启动6文件路径",3,127};
 __root const char BM6FILE[128]="";
 
-__root const CFG_HDR cfghdr16={CFG_STR_WIN1251,"快速启动7名称",1,31};
+__root const CFG_HDR cfghdr16={CFG_STR_GB,"快速启动7名称",1,31};
 __root const char BM7NAME[32]="";
 __root const CFG_HDR cfghdr17={CFG_STR_UTF8,"快速启动7文件路径",3,127};
 __root const char BM7FILE[128]="";
 
-__root const CFG_HDR cfghdr18={CFG_STR_WIN1251,"快速启动8名称",1,31};
+__root const CFG_HDR cfghdr18={CFG_STR_GB,"快速启动8名称",1,31};
 __root const char BM8NAME[32]="";
 __root const CFG_HDR cfghdr19={CFG_STR_UTF8,"快速启动8文件路径",3,127};
 __root const char BM8FILE[128]="";
 
-__root const CFG_HDR cfghdr20={CFG_STR_WIN1251,"快速启动9名称",1,31};
+__root const CFG_HDR cfghdr20={CFG_STR_GB,"快速启动9名称",1,31};
 __root const char BM9NAME[32]="";
 __root const CFG_HDR cfghdr21={CFG_STR_UTF8,"快速启动9文件路径",3,127};
 __root const char BM9FILE[128]="";

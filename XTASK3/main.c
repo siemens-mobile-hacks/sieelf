@@ -22,7 +22,7 @@ CSM_RAM *under_idle;
 extern const int ACTIVE_KEY;
 extern const int ACTIVE_KEY_STYLE;
 extern const int RED_BUT_MODE;
-extern const int ENA_LONG_PRESS;
+//extern const int ENA_LONG_PRESS;
 extern const int ENA_LOCK;
 extern int my_csm_id;
 
@@ -238,113 +238,34 @@ int my_keyhook(int submsg, int msg)
       	return KEYHOOK_BREAK;
       }
       
-      if (mode_enter==2)
+      if (mode==2)
       {
       	GBS_SendMessage(MMI_CEPID,KEY_UP,ACTIVE_KEY);
       	return KEYHOOK_NEXT;
       }
-      mode_enter=0;
+      mode=0;
       return KEYHOOK_BREAK;
     case KEY_UP:
-      if (mode_enter==0)
+      if (mode==0)
       {
-        mode_enter=2;
+        mode=2;
         GBS_SendMessage(MMI_CEPID,KEY_DOWN,ACTIVE_KEY);
         return KEYHOOK_BREAK;
       }
-      if (mode_enter==2)
-      {
-        mode_enter=0;
-        return KEYHOOK_NEXT;
-      }
-      mode_enter=0;
-      return KEYHOOK_BREAK;      
+      mode=0;
+      return KEYHOOK_BREAK;
     case LONG_PRESS:
-      mode_enter=1;
-      if ((ACTIVE_KEY_STYLE==1) || (ENA_LONG_PRESS==3))
+      mode=1;
+      if (ACTIVE_KEY_STYLE==1)
      	{
 	  		//Launch on LongPress or Extra on LP - Launch
 	  		if (IsUnlocked()||ENA_LOCK)
 	  		{
 	  			ShowMenu();
 	  		}
-	  		return KEYHOOK_BREAK;
 	  	}
-      mode=0;
-      if (ENA_LONG_PRESS==1) return KEYHOOK_BREAK;
-			if (ENA_LONG_PRESS==2)
-			{
-				CSMtoTop(CSM_root()->idle_id,-1);
-				return KEYHOOK_BREAK;
-			}
-      if (ENA_LONG_PRESS==4)
-      {
-        CSMtoTop(CSM_root()->idle_id,-1);
-        KbdLock();
-        return KEYHOOK_BREAK;
-      }
     	return KEYHOOK_BREAK;
     }
-    //////////////////////
-/*    switch(msg)
-    {
-    case KEY_DOWN:
-      mode=0;
-      if (ACTIVE_KEY_STYLE==0)
-	return KEYHOOK_BREAK;
-      else 
-	return KEYHOOK_NEXT;
-    case KEY_UP:
-      if (mode==1)
-      {
-	//Release after longpress
-	mode=0;
-	if ((ACTIVE_KEY_STYLE==1) || (ENA_LONG_PRESS==3))
-	{
-	  //Launch on LongPress or Extra on LP - Launch
-	  if (IsUnlocked()||ENA_LOCK)
-	  {
-	    ShowMenu();
-	  }
-	  return KEYHOOK_BREAK;
-	}
-        if (ENA_LONG_PRESS==1) return KEYHOOK_BREAK;
-	if (ENA_LONG_PRESS==2)
-	{
-	  CSMtoTop(CSM_root()->idle_id,-1);
-	  return KEYHOOK_BREAK;
-	}
-        if (ENA_LONG_PRESS==4)
-        {
-          CSMtoTop(CSM_root()->idle_id,-1);
-          KbdLock();
-          return KEYHOOK_BREAK;
-        }
-	break;
-      }
-      if (ACTIVE_KEY_STYLE==0)
-      {
-	if (IsUnlocked()||ENA_LOCK)
-	{
-	  ShowMenu();
-	}
-	return KEYHOOK_BREAK;
-      }
-      break;
-    case LONG_PRESS:
-      mode=1;
-#ifndef NEWSGOLD
-      if (ACTIVE_KEY_STYLE==1)
-      {
-	if (ENA_LONG_PRESS)
-	  return KEYHOOK_NEXT;
-	else 
-	  return KEYHOOK_BREAK;
-      }
-#else
-      return KEYHOOK_BREAK;
-#endif
-    }*/
   }
   return KEYHOOK_NEXT;
 }
