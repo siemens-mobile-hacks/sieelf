@@ -323,8 +323,10 @@ void ed1_ghook(GUI *data, int cmd)
         ws_2utf8(ews,(char *)(hp+1),&utf8conv_res_len,hp->max);
         break;        
         
-      case CFG_STR_PASS:
       case CFG_STR_GB:
+      	ws2gb(ews,(char *)(hp+1),hp->max);
+      	break;
+      case CFG_STR_PASS:
       case CFG_STR_WIN1251:
         j=0;
         p=(char *)(hp+1);
@@ -1080,7 +1082,7 @@ int create_ed(CFG_HDR *need_to_focus)
       if ((curlev==level)&&(parent==levelstack[level]))
       {
         wsprintf(ews,_percent_t,p);
-	ConstructEditControl(&ec,3,0x40,ews,hp->max);
+	ConstructEditControl(&ec,4,0x40,ews,hp->max);
 	AddEditControlToEditQend(eq,&ec,ma); //EditControl n*2+3
       }
       p+=(hp->max+1+3)&(~3);
