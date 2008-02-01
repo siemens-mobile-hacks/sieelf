@@ -932,7 +932,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.41A</state>
+          <state>4.42A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -978,15 +978,15 @@
         </option>
         <option>
           <name>CCListCFile</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCListCMnemonics</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCListCMessages</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCListAssFile</name>
@@ -1022,7 +1022,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeed</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCOptimization</name>
@@ -1032,7 +1032,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>1111111</state>
+          <state>1011111</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -1116,7 +1116,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeedSlave</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCOptimizationSlave</name>
@@ -1801,15 +1801,15 @@
         </option>
         <option>
           <name>CCListCFile</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCListCMnemonics</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCListCMessages</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCListAssFile</name>
@@ -1845,7 +1845,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeed</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCOptimization</name>
@@ -1855,7 +1855,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>1111111</state>
+          <state>1011111</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -1939,7 +1939,7 @@
         </option>
         <option>
           <name>CCOptSizeSpeedSlave</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCOptimizationSlave</name>
