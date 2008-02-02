@@ -1,23 +1,6 @@
 #include "..\..\inc\swilib.h"
 #include "image.h"
-#include "..\lgp.h"
-
-#define fon 1
-#define st_off 2
-#define st_on 3
-#define wd_off 4
-#define wd_on 5
-#define logo 6
-
-//#define NO_PNG
-
-#ifdef NEWSGOLD
-#define DEFAULT_DISK "4"
-#define num_alarms 5
-#else
-#define DEFAULT_DISK "0"
-#define num_alarms 6
-#endif
+#include "..\alarm.h"
 
 unsigned int status[6];
 unsigned int hour[6];
@@ -34,27 +17,15 @@ unsigned int show_icon;
 GBSTMR mytmr;
 unsigned int input;
 
-unsigned int num_alarm=1;
+unsigned int num_alarm=0;
 unsigned int edit_level=1;
 unsigned int ch[3];
 unsigned int set=1;
 int lng;
-char cfgfile[]=DEFAULT_DISK":\\zbin\\alarm\\alarm.cfg";
-char fongpf[]=DEFAULT_DISK":\\zbin\\alarm\\fon.gpf";
-char fonpng[]=DEFAULT_DISK":\\zbin\\alarm\\fon.png";
-char bcfgfile[]=DEFAULT_DISK":\\Zbin\\etc\\alarm_melody.bcfg";
 
 int scr_w;
 int scr_h;
 int font_size;
-
-//typedef struct
-//{
-//  char w;
-//  char h;
-//  unsigned short bpnum;
-//  char *bitmap;
-//}IMGHDR_;
 
 const int minus11=-11;
 unsigned short maincsm_name_body[140];
@@ -63,7 +34,6 @@ unsigned int MAINGUI_ID = 0;
 char colors[4][4]={{0xFF,0,0,0x64},{0,0xFF,0,0x64},{0,0,0xFF,0x64},{0xC6,0xAA,0xAF,0x32}};
 const char Pointer[5]={0x27,0x27,0xFF,0x27,0x27};
 const IMGHDR imgPointer = {5,5,0x1,(char *)Pointer};
-
 GBSTMR mytmr;
 
 WSHDR *ws;
@@ -114,10 +84,11 @@ DrwImg(IMGHDR *img, int x, int y)
 
 void DrawBackground()
 {
+#ifdef NO_PNG
   volatile int hFile;
   PICHDR Pic_Header;
   unsigned int io_error = 0;
-  hFile = fopen(fongpf, A_ReadOnly + A_BIN, P_READ, &io_error);
+  hFile = fopen(fonimg, A_ReadOnly + A_BIN, P_READ, &io_error);
   if(!io_error)
   {
     fread(hFile, &Pic_Header, sizeof(Pic_Header), &io_error);
@@ -134,10 +105,9 @@ void DrawBackground()
     DrwImg(&img, 0, 0);
     mfree(pic_buffer);
   }
-  else
-  {
-    DrawImg(0, 0, (int)fonpng);
-  }
+#else
+  DrawImg(0, 0, (int)fonimg);
+#endif
 }
 
 void draw_pic(int num,int x, int y)
@@ -196,6 +166,7 @@ void draw_pic(int num,int x, int y)
   }
 }
 
+#ifdef SIX_ALARMS
 #ifndef NEWSGOLD
 
 #define MAX_HEX   (100+10)
@@ -326,7 +297,7 @@ void geteeblock()
   
   char *hex=malloc(8);
   char *bin=malloc(8);
-  sprintf(hex, "%x", Block5166[3]);  
+  sprintf(hex, "%x", Block5166[3]);
   hex2bin(bin, 3, hex);
   
   if (Block5166[4]==0xF1)
@@ -334,14 +305,8 @@ void geteeblock()
   else status[5]=0;
   hour[5]=Block5166[0];
   min[5]=Block5166[1];
-  
-  weekdays[5][0]=bin[6];
-  weekdays[5][1]=bin[5];
-  weekdays[5][2]=bin[4];
-  weekdays[5][3]=bin[3];
-  weekdays[5][4]=bin[2];
-  weekdays[5][5]=bin[1];
-  weekdays[5][6]=bin[0];
+  for (int i=0;i<7;i++)
+    weekdays[5][i]=bin[6-i];
   
   mfree(Block5166);
   mfree(bin);
@@ -357,13 +322,8 @@ void saveeeblock()
   
   char *hex=malloc(3);
   char *bin=malloc(8);
-  bin[0]=weekdays[5][6];
-  bin[1]=weekdays[5][5];
-  bin[2]=weekdays[5][4];
-  bin[3]=weekdays[5][3];
-  bin[4]=weekdays[5][2];
-  bin[5]=weekdays[5][1];
-  bin[6]=weekdays[5][0];
+  for (int i=0;i<7;i++)
+    bin[i]=weekdays[5][6-i];
   bin[7]=1;
   bin2hex(hex, 7, bin);
   hex[2]=0;
@@ -379,55 +339,7 @@ void saveeeblock()
   mfree(bin);
   mfree(hex);
 }
-
-#else
-
-void geteeblock()
-{
-  /*
-  unsigned int err;
-  int fp=fopen("2:\\Default\\PD\\alarmclock.pd", A_ReadOnly, P_READ,&err);
-  if(fp!=-1)
-  {
-    char *buf=malloc(128);
-    fread(fp, buf, 128, &err);
-    fclose(fp,&err);
-    
-    buf=strstr(buf,"days_in_use=");
-    buf+=strlen("days_in_use=");
-    for (int i=0; i<7; i++)
-    {
-      weekdays[5][i]=buf[i]-'0';
-    }
-    buf=strstr(buf,"alarm_time=");
-    buf+=strlen("alarm_time=");
-    //????????????????
-    buf=strstr(buf,"alarm_active=");
-    buf+=strlen("alarm_active=");
-    status[5]=buf[0]-'0';
-    mfree(buf);
-  }
-  else
-  {
-    status[5]=0;
-    hour[5]=0;
-    min[5]=0;
-    weekdays[5][0]=0;
-    weekdays[5][1]=0;
-    weekdays[5][2]=0;
-    weekdays[5][3]=0;
-    weekdays[5][4]=0;
-    weekdays[5][5]=0;
-    weekdays[5][6]=0;
-  }
-  */
-}
-
-void saveeeblock()
-{
-  
-}
-
+#endif
 #endif
 
 void load_settings(void)
@@ -497,12 +409,14 @@ Y=data[55];
     mfree(data);
   }
   fclose(handle,&err);
+#ifdef SIX_ALARMS
   geteeblock();
+#endif
 }
 
 void save_settings(void)
 {
-  unsigned int err; 
+  unsigned int err;
   int handle=fopen(cfgfile,A_WriteOnly+A_Create,P_WRITE,&err);
   if(handle!=-1)
   {
@@ -567,7 +481,9 @@ data[55]=Y;
     mfree(data);
   }
   fclose(handle,&err);
+#ifdef SIX_ALARMS
   saveeeblock();
+#endif
 }
 
 void edit()
@@ -605,24 +521,43 @@ void OnRedraw()
       draw_pic(fon,0,0);
       draw_pic(logo,2,2);
       
-      wsprintf(ws, "%t",alarm_name);
-      DrwStr(ws,30,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      char *ColorIndex[3]={GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23),GetPaletteAdrByColorIndex(3)};
       
-      wsprintf(ws, "%t",change);
-      DrwStr(ws,8,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      wsprintf(ws, percent_t, alarm_name);
+      DrwStr(ws,30,3,scr_w,scr_h,FONT_SMALL,1,ColorIndex[0],ColorIndex[1]);
       
-      wsprintf(ws, "%t",save);
-      DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      wsprintf(ws, percent_t, change);
+      DrwStr(ws,8,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,ColorIndex[0],ColorIndex[1]);
+      
+      wsprintf(ws, percent_t, save);
+      DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,ColorIndex[0],ColorIndex[1]);
       
       char *stat=malloc(16);
       int tmp=scr_h/7.3;
+#ifndef SL65
+      int tmp3=0;
+#endif
       for (int i=0;i<num_alarms;i++)
       {
         if (status[i]) strcpy(stat,on);
           else strcpy(stat,off);
+#ifdef SL65
+        wsprintf(ws, "%d: %d:%02d %t",i+1,hour[i],min[i],stat);
+        DrwStr(ws,10,5+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,ColorIndex[0],ColorIndex[1+(num_alarm==i)]);
+#else
         wsprintf(ws, "%t %d: %d:%02d %t",alarm_name,i+1,hour[i],min[i],stat);
-        if (num_alarm==i) DrwStr(ws,5,1+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-          else DrwStr(ws,5,1+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+        int tmp2=1+tmp*(i+1)+tmp3+tmp3;
+        if (num_alarm==i)
+        {
+          DrwStr(ws,5,tmp2,scr_w,scr_h,FONT_SMALL,1,ColorIndex[0],ColorIndex[2]);
+          tmp3=3;
+          for (int ii=0;ii<7;ii++)
+          {
+            draw_pic((int)wd_off+weekdays[i][ii],scr_w-11*(7-ii)-3, tmp2+GetFontYSIZE(FONT_SMALL)+1);
+          }
+        }
+          else DrwStr(ws,5,tmp2,scr_w,scr_h,FONT_SMALL,1,ColorIndex[0],ColorIndex[1]);
+#endif
       }
       mfree(stat);
     } break;
@@ -633,94 +568,82 @@ void OnRedraw()
       draw_pic(fon,0,0);
       draw_pic(logo,2,2);
       
-      wsprintf(ws, "%t %d",alarm_name,num_alarm+1);
-      DrwStr(ws,30,3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      char *ColorIndex[3]={GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23),GetPaletteAdrByColorIndex(3)};
       
-      //////////////////////////////////  SL65  ////////////////////////////////
+      wsprintf(ws, "%t %d",alarm_name,num_alarm+1);
+      DrwStr(ws,30,3,scr_w,scr_h,FONT_SMALL,1,ColorIndex[0],ColorIndex[1]);
+      
 #ifdef SL65
       if(status[num_alarm]==1) draw_pic(st_on,5,HeaderH());
         else draw_pic(st_off,5,HeaderH());
 #else
-      //////////////////////////////////////////////////////////////////////////
-      if(status[num_alarm]==1) draw_pic(st_on,scr_w/2-25,HeaderH());
-        else draw_pic(st_off,scr_w/2-25,HeaderH());
+      if(status[num_alarm]==1) draw_pic(st_on,scr_w/2-26,HeaderH());
+        else draw_pic(st_off,scr_w/2-26,HeaderH());
 #endif
       if ((edit_level==1)||(edit_level==3))
         {
-          wsprintf(ws,"%t",change);
-          DrwStr(ws,8,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+          wsprintf(ws, percent_t, change);
+          DrwStr(ws,8,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,ColorIndex[0],ColorIndex[1]);
         }
       
-      wsprintf(ws, "%t",ok);
-      DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      wsprintf(ws, percent_t,ok);
+      DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,ColorIndex[0],ColorIndex[1]);
       
       int a=scr_w/2-GetSymbolWidth('n',FONT_SMALL)*2;
-      if (status[num_alarm]) wsprintf(ws, "%t",on);
+      if (status[num_alarm]) wsprintf(ws, percent_t,on);
           else 
           {
-            wsprintf(ws, "%t",off);
+            wsprintf(ws, percent_t,off);
             a-=3;
           }
-      //////////////////////////////////  SL65  ////////////////////////////////
 #ifdef SL65
-      if (edit_level==1) DrwStr(ws,67,HeaderH()+18,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-        else DrwStr(ws,67,HeaderH()+18,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,67,HeaderH()+18,scr_w,scr_h,FONT_SMALL,1,ColorIndex[0],ColorIndex[1+(edit_level==1)]);
 #else
-      //////////////////////////////////////////////////////////////////////////
-      if (edit_level==1) DrwStr(ws,a,HeaderH()+57,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-        else DrwStr(ws,a,HeaderH()+57,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,a,HeaderH()+57,scr_w,scr_h,FONT_SMALL,1,ColorIndex[0],ColorIndex[1+(edit_level==1)]);
 #endif
       
-      //////////////////////////////////  SL65  ////////////////////////////////
 #ifdef SL65
       a=67;
         int b=HeaderH()+21+font_size;
       wsprintf(ws, "%02d",hour[num_alarm]);
-      if ((edit_level==2)&&(set==1))
-        DrwStr(ws,a,b,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-        else DrwStr(ws,a,b,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,a,b,scr_w,scr_h,FONT_SMALL,1,ColorIndex[0],ColorIndex[1+((edit_level==2)&&(set==1))]);
         
       a+=(GetSymbolWidth((backup[1]/10)+'0',FONT_SMALL)+GetSymbolWidth((backup[1]%10)+'0',FONT_SMALL));
       wsprintf(ws, ":");
-      DrwStr(ws,a,b,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,a,b,scr_w,scr_h,FONT_SMALL,1,ColorIndex[0],ColorIndex[1]);
       
       a+=GetSymbolWidth(':',FONT_SMALL);
       wsprintf(ws, "%02d",min[num_alarm]);
-      if ((edit_level==2)&&(set==2))
-        DrwStr(ws,a,b,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-        else DrwStr(ws,a,b,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));      
+      DrwStr(ws,a,b,scr_w,scr_h,FONT_SMALL,1,ColorIndex[0],ColorIndex[1+((edit_level==2)&&(set==2))]);
 #else
-      //////////////////////////////////////////////////////////////////////////
       a=scr_w/2-GetSymbolWidth((backup[1]/10)+'0',FONT_SMALL)-GetSymbolWidth((backup[1]%10)+'0',FONT_SMALL);      
         int b=HeaderH()+60+font_size;
       wsprintf(ws, "%02d",hour[num_alarm]);
-      if ((edit_level==2)&&(set==1))
-        DrwStr(ws,a,b,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-        else DrwStr(ws,a,b,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,a,b,scr_w,scr_h,FONT_SMALL,1,ColorIndex[0],ColorIndex[1+((edit_level==2)&&(set==1))]);
         
       a=scr_w/2;
       wsprintf(ws, ":");
-      DrwStr(ws,a,b,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,a,b,scr_w,scr_h,FONT_SMALL,1,ColorIndex[0],ColorIndex[1]);
       
       a+=GetSymbolWidth(':',FONT_SMALL);
       wsprintf(ws, "%02d",min[num_alarm]);
-      if ((edit_level==2)&&(set==2))
-        DrwStr(ws,a,b,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-        else DrwStr(ws,a,b,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      DrwStr(ws,a,b,scr_w,scr_h,FONT_SMALL,1,ColorIndex[0],ColorIndex[1+((edit_level==2)&&(set==2))]);
 #endif
       a=scr_w/7.3;
+#ifdef SL65
+      b=scr_h-SoftkeyH()-font_size-18;
+#else
       b=scr_h-SoftkeyH()-font_size-24;
+#endif
       for (int i=0;i<7;i++)
       {
-        wsprintf(ws, "%t",wd[i]);
-        if ((edit_level==3)&&(set==i)) DrwStr(ws,4+a*i,b,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-          else DrwStr(ws,4+a*i,b,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+        wsprintf(ws, percent_t,wd[i]);
+        DrwStr(ws,4+a*i,b,scr_w,scr_h,FONT_SMALL,1,ColorIndex[0],ColorIndex[1+((edit_level==3)&&(set==i))]);
       }
       b+=(font_size+3);
       for (int i=0;i<7;i++)
       {
-        if (weekdays[num_alarm][i]) draw_pic(wd_on,5+a*i,b);
-          else draw_pic(wd_off,5+a*i,b);
+        draw_pic(wd_off+weekdays[num_alarm][i],5+a*i,b);
       }
     } break;
   case 3:
@@ -741,8 +664,8 @@ void OnRedraw()
       wsprintf(ws, "%03d,%03d", X, Y);
       DrwStr(ws,scr_w/1.5,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(23));
       
-      if (show_icon) wsprintf(ws, "%t",on);
-        else wsprintf(ws, "%t",off);
+      if (show_icon) wsprintf(ws, percent_t, on);
+        else wsprintf(ws, percent_t, off);
       DrwStr(ws,8,scr_h-font_size-3,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(23));
     }
   }
@@ -775,14 +698,6 @@ void onUnfocus(MAIN_GUI *data, void (*mfree_adr)(void *))
   data->gui.state=1;
 }
 
-void open_bcfg()
-{
-  WSHDR *_elf=AllocWS(256);
-  wsprintf(_elf,"%s",bcfgfile);
-  ExecuteFile(_elf,0,0);
-  FreeWS(_elf);
-}
-
 int onkey(unsigned char keycode, int pressed)
 {
   switch(mode)
@@ -797,7 +712,8 @@ int onkey(unsigned char keycode, int pressed)
             switch(keycode)
             {
             case RED_BUTTON: return(1);
-            case LEFT_SOFT:  mode=2; OnRedraw(); break;
+            case LEFT_SOFT:
+            case ENTER_BUTTON:  mode=2; OnRedraw(); break;
             case RIGHT_SOFT:
               {
                 save_settings();
@@ -824,7 +740,9 @@ int onkey(unsigned char keycode, int pressed)
             case '3': num_alarm=2; break;
             case '4': num_alarm=3; break;
             case '5': num_alarm=4; break;
-            //case '6': num_alarm=5; break;
+#ifdef SIX_ALARMS
+            case '6': num_alarm=5; break;
+#endif
             case '#': mode=3; break;
             //case '*': saveeeblock(); break;
             //case '*': ShowMSG(1,(int)"Alarm cfg editor\n(c)Geka"); break;
@@ -953,34 +871,20 @@ int onkey(unsigned char keycode, int pressed)
       case LONG_PRESS:
         switch(keycode)
           {
-#ifdef ELKA         
-          case LEFT_BUTTON: case '4': if (X>0) X-=5; else X=239; break;
-          case RIGHT_BUTTON: case '6': if (X<239) X+=5; else X=0; break;
-          case UP_BUTTON: case '2': if (Y>0) Y-=5; else Y=319; break;
-          case DOWN_BUTTON: case '8': if (Y<319) Y+=5; else Y=0; break;
-#else
-          case LEFT_BUTTON: case '4': if (X>0) X-=5; else X=132; break;
+          case LEFT_BUTTON: case '4': if (X>0) X-=5; else X=scr_w; break;
           case RIGHT_BUTTON: case '6': if (X<132) X+=5; else X=0; break;
-          case UP_BUTTON: case '2': if (Y>0) Y-=5; else Y=176; break;
+          case UP_BUTTON: case '2': if (Y>0) Y-=5; else Y=scr_h; break;
           case DOWN_BUTTON: case '8': if (Y<176) Y+=5; else Y=0; break;
-#endif
           }
       case KEY_DOWN:
         switch(keycode)
         {
         case RED_BUTTON:  mode=1; break;
         case LEFT_SOFT: if (show_icon==1) show_icon=0; else show_icon=1; break;
-#ifdef ELKA  
-        case LEFT_BUTTON: case '4': if (X!=0) X=X-1; else X=239; break;
-        case RIGHT_BUTTON: case '6': if (X!=239) X=X+1; else X=0; break;
-        case UP_BUTTON: case '2': if (Y!=0) Y=Y-1; else Y=319; break;
-        case DOWN_BUTTON: case '8': if (Y!=319) Y=Y+1; else Y=0; break;
-#else
-        case LEFT_BUTTON: case '4': if (X!=0) X=X-1; else X=132; break;
-        case RIGHT_BUTTON: case '6': if (X!=132) X=X+1; else X=0; break;
-        case UP_BUTTON: case '2': if (Y!=0) Y=Y-1; else Y=176; break;
-        case DOWN_BUTTON: case '8': if (Y!=176) Y=Y+1; else Y=0; break;
-#endif
+        case LEFT_BUTTON: case '4': if (X!=0) X--; else X=scr_w; break;
+        case RIGHT_BUTTON: case '6': if (X!=132) X++; else X=0; break;
+        case UP_BUTTON: case '2': if (Y!=0) Y--; else Y=scr_h; break;
+        case DOWN_BUTTON: case '8': if (Y!=176) Y++; else Y=0; break;
         default: mode=1; break;
         }
       }
@@ -1098,6 +1002,8 @@ void UpdateCSMname(void)
 
 int main(void)
 {
+  if (check_install()>0)
+    return 0;
   font_size=GetFontYSIZE(FONT_SMALL);
   load_settings();
   scr_w=ScreenW()-1;

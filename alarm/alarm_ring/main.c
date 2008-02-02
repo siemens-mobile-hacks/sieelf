@@ -1,15 +1,7 @@
 #include "..\..\inc\swilib.h"
 #include "..\..\inc\cfg_items.h"
 #include "conf_loader.h"
-#include "..\lgp.h"
-
-#ifdef NEWSGOLD
-#define DEFAULT_DISK "4"
-#define PROFILE_PD_DISC "1"
-#else
-#define DEFAULT_DISK "0"
-#define PROFILE_PD_DISC "0"
-#endif
+#include "..\alarm.h"
 
 unsigned short maincsm_name_body[140];
 unsigned int my_csm_id = 0;
@@ -36,7 +28,6 @@ int old_profile;
 GBSTMR restarttmr;
 GBSTMR restartmelody;
 int file_length;
-char profile_pd_file[]=PROFILE_PD_DISC":\\system\\hmi\\profile.pd";
 
 typedef struct
 {
@@ -67,7 +58,8 @@ void restart_melody();
 int findlength(char *playy)
 {
 #ifdef NEWSGOLD
-  return(GetWavLen(playy)); 
+  file_length=GetWavLen(playy)*216;
+  return(file_length);
 #else
   TWavLen wl;
   zeromem(&wl, sizeof(wl));
@@ -120,24 +112,34 @@ void Play(const char *fname)
       FreeWS(sndPath);
       FreeWS(sndFName);
     }
+    else
+    {
+      ShowMSG(1,(int)no_melody);
+    }
 }
 
-void play_standart_melody()
+int play_standart_melody()
 {
   int f;
   int i=0;
   unsigned int err;
   unsigned int fsize=get_file_size(profile_pd_file);
   
-  if((f=fopen(profile_pd_file,A_ReadOnly+A_BIN,P_READ,&err))==-1) return;
+  if((f=fopen(profile_pd_file,A_ReadOnly+A_BIN,P_READ,&err))==-1) return 0;
   char* buf=malloc(fsize+1);
   char* buf2=buf;
   fread(f,buf,fsize,&err);
   fclose(f,&err);
   
-  buf=strstr(buf,"Alarm_Clock_3=");
-  buf+=14;
-  
+  buf=strstr(buf,alarm_str);
+  if(!buf)
+  {
+    mfree(buf2);
+    CloseCSM(my_csm_id);
+    ShowMSG(1,(int)no_melody);
+    return 0;
+  }
+  buf+=strlen(alarm_str);
   while ((buf[i]!=10)&&(buf[i+1]!=13))
   {
       i++;
@@ -147,6 +149,7 @@ void play_standart_melody()
   if(findlength(buf))
     GBS_StartTimerProc(&restartmelody,file_length,restart_melody);
   mfree(buf2);
+  return 1;
 }
 
 void restart_melody()
@@ -231,13 +234,13 @@ void OnRedraw()
   wsprintf(ws,"%02d-%02d-%04d",date.day, date.month,date.year);
   DrawString(ws,0,90,scr_w,scr_h,FONT_SMALL,3,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   
-  wsprintf(ws, "%t",alarm_name);
+  wsprintf(ws, percent_t, alarm_name);
   DrawString(ws,0,60,scr_w,scr_h,FONT_SMALL,3,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(23));
   
   TDate date1;
   GetDateTime(&date1,0);
   char wd = GetWeek(&date1);
-  wsprintf(ws, "%t",wd2[wd]);
+  wsprintf(ws, percent_t, wd2[wd]);
   DrawString(ws,0,105,scr_w,scr_h,FONT_SMALL,3,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
 }
 
@@ -404,12 +407,14 @@ void play_sound()
   {
   case 1:
       {
-        LockSched();
-        char dummy[sizeof(MAIN_CSM)];
-        UpdateCSMname();
-        my_csm_id=CreateCSM(&MAINCSM.maincsm,dummy,0);
-        UnlockSched();
-        play_standart_melody();
+        if(play_standart_melody())
+        {
+          LockSched();
+          char dummy[sizeof(MAIN_CSM)];
+          UpdateCSMname();
+          my_csm_id=CreateCSM(&MAINCSM.maincsm,dummy,0);
+          UnlockSched();
+        }
       } 
       break;
   case 0:
@@ -442,9 +447,10 @@ void play_sound()
   }
 }
 
-int main(char *exename, char *fname)
+int main(char *exename, const char *fname)
 {
   InitConfig();
+  if(strcmp_nocase(fname,param_new_cfg) == 0) return 0;
   scr_w=ScreenW()-1;
   scr_h=ScreenH()-1;
   

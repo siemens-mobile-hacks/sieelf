@@ -1,12 +1,5 @@
-#include "../../inc/swilib.h"
-
-//#define NO_PNG
-
-#ifdef NEWSGOLD
-#define DEFAULT_DISK "4"
-#else
-#define DEFAULT_DISK "0"
-#endif
+#include "..\..\inc\swilib.h"
+#include "..\alarm.h"
 
 void check();
 void start_ring();
@@ -24,13 +17,6 @@ int X;
 int Y;
 int imgw;
 int imgh;
-
-#ifdef NO_PNG
-char icon[]=DEFAULT_DISK":\\Zbin\\alarm\\icon.gpf";
-#else
-char icon[]=DEFAULT_DISK":\\Zbin\\alarm\\icon.png";
-#endif
-char cfgfile[]=DEFAULT_DISK":\\Zbin\\alarm\\alarm.cfg";
 
 GBSTMR mytmr;
 TDate date;
@@ -195,10 +181,9 @@ Y=data[55];
 
 void start_ring()
 {
-  char elf[]=DEFAULT_DISK":\\Zbin\\alarm\\alarm_ring.elf";
   WSHDR *ws;
   ws=AllocWS(64);
-  str_2ws(ws,elf,strlen(elf)+1);
+  str_2ws(ws,alarm_ring_elf,strlen(alarm_ring_elf)+1);
   ExecuteFile(ws,0,0);
   FreeWS(ws);
 }
@@ -234,21 +219,6 @@ void start_check(void)
   GBS_StartTimerProc(&mytmr,216*60,start_check);
 }
 
-#pragma inline=forced
-int toupper(int c)
-{
-  if ((c>='a')&&(c<='z')) c+='A'-'a';
-  return(c);
-}
-#pragma inline
-int strcmp_nocase(const char *s1,const char *s2)
-{
-  int i;
-  int c;
-  while(!(i=(c=toupper(*s1++))-toupper(*s2++))) if (!c) break;
-  return(i);
-}
-
 int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
 {
   if (msg->msg == MSG_IPC)
@@ -277,10 +247,10 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
         {
           void *canvasdata = BuildCanvas();
 #else
-        void *idata = GetDataOfItemByID(igui, 2);
-        if (idata)
-        {
-          void *canvasdata = ((void **)idata)[DISPLACE_OF_IDLECANVAS / 4];
+          void *idata = GetDataOfItemByID(igui, 2);
+          if (idata)
+          {
+            void *canvasdata = ((void **)idata)[DISPLACE_OF_IDLECANVAS / 4];
 #endif
           if((IsUnlocked())&&(show_icon)&&(status_icon))
           {
