@@ -1509,6 +1509,14 @@ ScrTool/func.asm -text
 ScrTool/main.c -text
 ScrTool/scrtool.h -text
 ScrTool/test.xcl -text
+ScreenFrame/ScreenFrame.ewp -text
+ScreenFrame/ScreenFrame.eww -text
+ScreenFrame/conf_loader.c -text
+ScreenFrame/conf_loader.h -text
+ScreenFrame/config_data.c -text
+ScreenFrame/func.asm -text
+ScreenFrame/main.c -text
+ScreenFrame/test.xcl -text
 SerialLib/Serial.ewp -text
 SerialLib/SerialLib.eww -text
 SerialLib/SerialTest.ewp -text
