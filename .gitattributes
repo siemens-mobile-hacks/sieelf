@@ -1516,6 +1516,7 @@ ScreenFrame/conf_loader.h -text
 ScreenFrame/config_data.c -text
 ScreenFrame/func.asm -text
 ScreenFrame/main.c -text
+ScreenFrame/scrfrm.h -text
 ScreenFrame/test.xcl -text
 SerialLib/Serial.ewp -text
 SerialLib/SerialLib.eww -text
