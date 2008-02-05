@@ -31,13 +31,14 @@ extern int GetProvAndCity(unsigned short *pBSTR, char *pNoStr);
 extern const int cfg_disable_one_number;
 extern const int disable_when_calling;
 extern const int big_font;
-extern const int cfg_ip_number;
+extern const int cfg_ip_number1;
+extern const int cfg_ip_number2;
 extern const int show_pic;
 extern const int resampled;
 extern const int smsn;
 extern const int smsc;
 extern const int voice;
-extern const int setnum2;
+extern const int ipx2;
 extern const unsigned int volume;
 
 #endif

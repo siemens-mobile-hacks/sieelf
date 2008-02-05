@@ -11,7 +11,6 @@
 
 volatile int numx;
 int sumx;
-volatile int numx2;
 int cs_adr=0;
 int iReadFile=0;
 int gLen=0;
@@ -136,6 +135,7 @@ typedef struct
 volatile CLIST *cltop; //Start
 
 char dstr[NUMBERS_MAX][40];
+char dstr2[40];
 int dstr_index[NUMBERS_MAX+1];
 
 int menu_icons[NUMBERS_MAX];
@@ -1179,13 +1179,8 @@ void my_ed_redraw(void *data)
                    }
                   }
                   }
-                  
-                  if(sumx>1&&setnum2)
-                    numx2=numx+1;
-                  else
-                    numx2=numx;
-                  
-                  for(j=aj;j<=numx2+aj;j++)
+
+                  for(j=aj;j<=numx+aj;j++)
                   {
                    ws_2str(cl->num[j],pszNum,20);
                    len=strlen(pszNum);
@@ -1193,10 +1188,10 @@ void my_ed_redraw(void *data)
                    x++;
                   }
                   
-                  int l=GetImgWidth(menu_icons[aj+numx2+x]);
-                  int d=(sumx-numx2)*l;
-                  DrawString(cl->num[aj+numx2+x],l+3,dy+(gfont_size+cfg_item_gaps)+2,right_border,dy+2*(gfont_size+cfg_item_gaps),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));
-                  DrawImg(3,dy+(gfont_size+cfg_item_gaps),menu_icons[aj+numx2+x]);
+                  int l=GetImgWidth(menu_icons[aj+numx+x]);
+                  int d=(sumx-numx)*l;
+                  DrawString(cl->num[aj+numx+x],l+3,dy+(gfont_size+cfg_item_gaps)+2,right_border,dy+2*(gfont_size+cfg_item_gaps),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));
+                  DrawImg(3,dy+(gfont_size+cfg_item_gaps),menu_icons[aj+numx+x]);
                   int dyx,dyy;
                   if(i!=1||cfg_cs_part)
                   {
@@ -1208,7 +1203,7 @@ void my_ed_redraw(void *data)
                     dyx=dy+3*(gfont_size+cfg_item_gaps)-7;
                     dyy=dy+(gfont_size+cfg_item_gaps)-3;
                   }
-                  ShowSelectedCodeShow(cl->num[aj+numx2+x],dyx-(gfont_size+cfg_item_gaps)+6);
+                  ShowSelectedCodeShow(cl->num[aj+numx+x],dyx-(gfont_size+cfg_item_gaps)+6);
                   //大头贴
                   if(show_pic)
                   {
@@ -1408,8 +1403,6 @@ int ShowMainMenu()
   patch_header(&mmenu_hdr);
   return CreateMenu(0,0,&mmenu,&mmenu_hdr,0,MAIN_MENU_ITEMS_N,0,0);
 }
-
-
 
 //-------------------------------------
 //短信功能菜单
@@ -1637,6 +1630,77 @@ INPUTDIA_DESC edsms_desc=
   0x40000000 // Change field coaching buttons 
 };
 
+
+
+//-------------------------------------
+//ip电话菜单
+//-------------------------------------
+
+int cfg_ip_number3;
+
+static void ip1(GUI *gui)
+{
+   cfg_ip_number3=cfg_ip_number1;
+   need_ip=1;
+   VoiceOrSMS(dstr2);
+   numx=0;
+}
+
+static void ip2(GUI *gui)
+{
+   cfg_ip_number3=cfg_ip_number2;
+   need_ip=1;
+   VoiceOrSMS(dstr2);
+   numx=0;
+}
+
+#define MAIN_MENU_ITEMS_2 2
+static HEADER_DESC amenu_hdr={0,0,0,0,NULL,(int)"IP选项",LGP_NULL};
+
+static MENUITEM_DESC amenu_ITEMS[MAIN_MENU_ITEMS_2]=
+{
+  {NULL,(int)"本地IP",LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
+  {NULL,(int)"漫游和国际IP",LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}
+};
+
+static const MENUPROCS_DESC amenu_HNDLS[MAIN_MENU_ITEMS_N]=
+{
+  ip1,
+  ip2,
+};
+
+static int amenu_keyhook(void *data, GUI_MSG *msg)
+{
+  return (0);
+}
+
+static void amenu_ghook(void *data, int cmd)
+{
+  if (cmd==0x0A)
+  {
+    DisableIDLETMR();
+  }
+}
+
+static const MENU_DESC amenu=
+{
+  8,amenu_keyhook,amenu_ghook,NULL,
+  mmenusoftkeys,
+  &mmenu_skt,
+  0x10,//MENU_FLAG,
+  NULL,
+  amenu_ITEMS,//menuitems,
+  amenu_HNDLS,//menuprocs,
+  MAIN_MENU_ITEMS_2
+};
+
+int ShowMainMenu2()
+{
+  patch_header(&amenu_hdr);
+  return CreateMenu(0,0,&amenu,&amenu_hdr,0,MAIN_MENU_ITEMS_2,0,0);
+}
+
+
 //---------------------------------
 //拨号短信控制
 //---------------------------------
@@ -1652,11 +1716,22 @@ void VoiceOrSMS(const char *num)
     	char buf[50];
 	if(need_ip)
 	{
-                sprintf(buf,"%d",cfg_ip_number);
 		if(*num != '+')
+                {
+                        sprintf(buf,"%d",cfg_ip_number3);
 			strcat(buf,num);
-		else
+                }
+		else if(*(num+1)== '8'&&*(num+2)== '6')
+                {
+                        sprintf(buf,"%d",cfg_ip_number3);
 			strcat(buf,num+3);
+                }
+                else
+                {
+                        sprintf(buf,"%d00",cfg_ip_number3);
+			strcat(buf,num+1);
+                }
+
 		need_ip = 0;
 		MakeVoiceCall(buf,0x10,0x2FFF);
 	}
@@ -1739,10 +1814,6 @@ void ElfKiller(void)
 	((void (*)(void *))(mfree_adr()))(&ELF_BEGIN);
 }
 
-
-
-
-
 //-------------------------------------
 //屏幕主控
 //-------------------------------------
@@ -1753,23 +1824,29 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
   int r=0;
   int i=0;
   int n,d;
-  //int set_menu=0;
   
-
   CLIST *cl=(CLIST *)cltop;
   is_sms_need=0;
   
   
-  if (sumx>1&&key==ENTER_BUTTON&&m==KEY_DOWN)
+  if (sumx>1&&((key==LEFT_BUTTON)||(key==RIGHT_BUTTON)))
    {
+    msg->keys=0;
+   if ((m==KEY_DOWN)||(m==LONG_PRESS))
+   {
+    if(key==RIGHT_BUTTON)
+    {
            numx++;   
-        if(sumx>1&&setnum2)
-        {if((numx-sumx+2)>0)
-          numx=-1;}
-        else
-        {if((numx-sumx+1)>0)
-          numx=0;}
-    
+        if((numx-sumx+1)>0)
+          numx=0;
+    }
+    if(key==LEFT_BUTTON)
+    {
+           numx--;
+         if(numx<0)
+           numx=sumx-1;
+    }
+   }
    return(-1); 
   }
   
@@ -1787,11 +1864,14 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 			SUBPROC((void *)ElfKiller);
 			return 1;
 		}
+		if(e_ws->wsbody[0]==2&&e_ws->wsbody[1]=='#'&&e_ws->wsbody[2]=='#')
+		{
+                        bcfgsetting();
+			return 1;
+		}
 	}
   
-  
-
-  if ((key==RIGHT_BUTTON)&&(m==KEY_DOWN))
+  if ((key==ENTER_BUTTON)&&(m==KEY_DOWN))
    {
     EDITCONTROL ec;
     ExtractEditControl(gui,1,&ec);
@@ -1827,7 +1907,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
     {
       if (cl->num[d])
       {
-        //if (d==2) set_menu=n;
+        //if (d==2) numx=n;
         ws_2str(cl->num[d],dstr[n],39);
         dstr_index[++n]=d;
       }
@@ -1848,9 +1928,22 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
        if(key==RIGHT_SOFT)
 #endif
 #endif
+      {   
+      if(ipx2)
+      {
+      strcpy(dstr2,dstr[0]);
+      ShowMainMenu2();
+      }
+      else
+      {
+      cfg_ip_number3=cfg_ip_number1;
       need_ip=1;
-      
       VoiceOrSMS(dstr[0]);
+      }
+      }
+      else
+      VoiceOrSMS(dstr[0]);
+      //need_ip=1;
       return(1); //Close tries 
     }
     if (n==0) goto L_OLDKEY; //No phones altogether 
@@ -1866,16 +1959,25 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
           if(key==RIGHT_SOFT)
 #endif
 #endif
+      {   
+      if(ipx2)
+      {
+      strcpy(dstr2,dstr[numx]); 
+      ShowMainMenu2();
+      }
+      else
+      {
+      cfg_ip_number3=cfg_ip_number1;
       need_ip=1;
-      
-      VoiceOrSMS(dstr[numx2]);
+      VoiceOrSMS(dstr[numx]);
+      numx=0;
+      }
+      }
+      else
+      VoiceOrSMS(dstr[numx]);
       numx=0;
       return(1); //Close tries 
     }
-    /*
-    patch_header((HEADER_DESC *)&gotomenu_HDR);
-    CreateMenu(0,0,&gotomenu_STRUCT,&gotomenu_HDR,set_menu,n,0,0);
-    */
     return(0);
   }
   if ((key==UP_BUTTON)||(key==DOWN_BUTTON))

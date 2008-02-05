@@ -33,16 +33,16 @@ __root const CFG_HDR cfghdr111 = {CFG_CHECKBOX,"大头贴缩放",0,0};
 __root const int resampled=0;
 
 __root const CFG_HDR cfghdr107 = {CFG_CHECKBOX,"短信号码",0,0};
-__root const int smsn=1;
+__root const int smsn=0;
 
 __root const CFG_HDR cfghdr108 = {CFG_CHECKBOX,"短信区号秀",0,0};
-__root const int smsc=1;
+__root const int smsc=0;
 
 __root const CFG_HDR cfghdr109 = {CFG_CHECKBOX,"界面音效",0,0};
 __root const int voice=0;
 
-__root const CFG_HDR cfghdr110 = {CFG_CHECKBOX,"默认号码2",0,0};
-__root const int setnum2=1;
+__root const CFG_HDR cfghdr110 = {CFG_CHECKBOX,"IP扩展",0,0};
+__root const int ipx2=0;
 
 __root const CFG_HDR cfghdr_m4={CFG_LEVEL,"",0,0};
 
@@ -125,10 +125,13 @@ __root const int cfg_cs_adr=0xA0CC0000;
 __root const CFG_HDR cfghdr132={CFG_STR_UTF8,"通信录地址",3,127};
 __root const char root_dir[128]="0:\\\x1F\xE7\xB3\xBB\xE7\xBB\x9F\\apo\\addr";
 
-__root const CFG_HDR cfghdr133 = {CFG_UINT,"IP号码",0,0xFFFFFFFF};
-__root const int cfg_ip_number = 17951;
+__root const CFG_HDR cfghdr133 = {CFG_UINT,"IP号码1",0,0xFFFFFFFF};
+__root const int cfg_ip_number1 = 17951;
 
-__root const CFG_HDR cfghdr134={CFG_UINT,"音效音量",0,6};
+__root const CFG_HDR cfghdr134 = {CFG_UINT,"IP号码2",0,0xFFFFFFFF};
+__root const int cfg_ip_number2 = 12593;
+
+__root const CFG_HDR cfghdr135={CFG_UINT,"音效音量",0,6};
 __root const unsigned int volume=6;
 
 __root const CFG_HDR cfghdr_m12={CFG_LEVEL,"",0,0};
