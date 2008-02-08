@@ -19,8 +19,8 @@ __root const char sk_color[4]={255,255,255,100};
 __root const CFG_HDR cfghdr5={CFG_UINT,"刷新时间",0,600};
 __root const unsigned int sys_re_t=5;
 
-__root const CFG_HDR cfghdr6={CFG_UTF8_STRING,"测试字串",0,255};
-__root const char test_string[256]="涓枃瀛椾綋 Test String 123";
+__root const CFG_HDR cfghdr6={CFG_STR_GB,"测试字串",0,255};
+__root const char test_string[256]="中文字体 Test String 123";
 
 __root const CFG_HDR cfghdr7={CFG_COLOR,"测试颜色",0,0};
 __root const char t_a_b_color[4]={255,0,0,100};

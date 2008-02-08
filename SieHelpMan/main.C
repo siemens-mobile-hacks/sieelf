@@ -37,15 +37,16 @@ int flag=0;
 unsigned int MAINCSM_ID = 0;
 unsigned int MAINGUI_ID = 0;
 int status_flag=0;
-int direct=0;//0ä¸ºå‡å°ï¼Œ1ä¸ºå¢åŠ  
+int direct=0;//0Îª¼õĞ¡£¬1ÎªÔö¼Ó 
 WSHDR *ws_info;
-WSHDR *ws_search; // å¾…æŸ¥æ‰¾å­—ç¬¦ä¸² 
-#ifdef MENU_CN
-char *utf8_str;
-#endif
+WSHDR *ws_search; // ´ı²éÕÒ×Ö·û´® 
 GBSTMR mytmr;
 #define TMR_SECOND 216
+#ifdef MENU_CN
+#define IPC_MY_IPC "Î÷»úÖúÊÖ"
+#else
 #define IPC_MY_IPC "SieHelpMan"
+#endif
 #define IPC_UPDATE_STAT 1
 const char ipc_my_name[]=IPC_MY_IPC;
 //unsigned int REFRESH=5;
@@ -54,8 +55,9 @@ int light_flag; //0,all , 1,display , 2,kbd , 3,do nothing
 int sound_flag;
 int screenw;
 int screenh;
-int imagew; // å¾…æŸ¥æ‰¾å›¾ç‰‡å®½åº¦ 
-int imageh; // å¾…æŸ¥æ‰¾å›¾ç‰‡é«˜åº¦ 
+int imagew; // ´ı²éÕÒÍ¼Æ¬¿í¶È
+int imageh; // ´ı²éÕÒÍ¼Æ¬¸ß¶È 
+const char _percent_t[]="%t";
 /*
 #ifdef ELKA
 int y_b=24;
@@ -149,6 +151,7 @@ SOFTKEYSTAB ed_menu_skt=
 {
   ed_menu_sk,0
 };
+
 unsigned int SEARCH_CSM_ID = 0;
 int icon[]={0x58,0};
 char gszHeader[21]="Find LGP";
@@ -204,13 +207,23 @@ int create_ed(HEADER_DESC *pHeader)
   eq=AllocEQueue(ma,mfree_adr());
   if ( flag )
   {
-  	strcpy(gszHeader, "æŸ¥æ‰¾å›¾ç‰‡");
-  	utf8_2ws(ws_info,"å›¾ç‰‡å®½åº¦:",13);
+#ifdef MENU_CN
+    strcpy(gszHeader, "²éÕÒÍ¼Æ¬");   
+    wsprintf(ws_info,_percent_t,"Í¼Æ¬¿í¶È");
+#else
+    strcpy(gszHeader, "Find Pic");   
+    wsprintf(ws_info,"Pic Width");
+#endif
   }
   else
   {
-  	strcpy(gszHeader, "æŸ¥æ‰¾è¯­è¨€åŒ…");
-  	utf8_2ws(ws_info,"è¾“å…¥å­—ä¸²:",13);
+#ifdef MENU_CN
+    strcpy(gszHeader, "²éÕÒÓïÑÔ°ü");    
+    wsprintf(ws_info,_percent_t, "ÊäÈë×Ö´®£º");
+#else
+    strcpy(gszHeader, "Find LGP");   
+    wsprintf(ws_info,"Input String:");
+#endif
   }
   	
   ConstructEditControl(&ec,ECT_HEADER,0x40,ws_info,ws_info->wsbody[0]);
@@ -221,7 +234,11 @@ int create_ed(HEADER_DESC *pHeader)
   	wsprintf(ws_info, "%d", imagew);
   	ConstructEditControl(&ec,ECT_NUMBER_TYPING,0x40,ws_info,3);
   	AddEditControlToEditQend(eq,&ec,ma);
-  	utf8_2ws(ws_info,"å›¾ç‰‡é«˜åº¦:",13);
+#ifdef MENU_CN
+  	 wsprintf(ws_info,_percent_t, "Í¼Æ¬¸ß¶È");
+#else
+         wsprintf(ws_info,"Pic Height");
+#endif
   	ConstructEditControl(&ec,ECT_HEADER,0x40,ws_info,10);
   	AddEditControlToEditQend(eq,&ec,ma);
   	wsprintf(ws_info, "%d", imageh);
@@ -243,11 +260,11 @@ void soft_key(char bFind)
   WSHDR *wsl = AllocWS(16);
   WSHDR *wsr = AllocWS(16);
 #ifdef MENU_CN
-  utf8_2ws(wsl,"èœå•",6);
+   wsprintf(wsl,_percent_t, "²Ëµ¥");
   if( bFind )
-  	utf8_2ws(wsr,"æŸ¥æ‰¾",6);
+  	wsprintf(wsr,_percent_t, "²éÕÒ");
   else
-  	utf8_2ws(wsr,"é€€å‡º",6);
+  	wsprintf(wsr,_percent_t, "ÍË³ö");
 #else
   wsprintf(wsl, "Menu");
   if( bFind )
@@ -262,7 +279,7 @@ void soft_key(char bFind)
   FreeWS(wsr);
 }
 
-int number_judge(int min,int max,int num)  //åˆ¤æ–­numæ˜¯å¦è¶…å€¼ 
+int number_judge(int min,int max,int num)  //ÅĞ¶ÏnumÊÇ·ñ³¬Öµ 
 {
   if(num<min){
    return (max);
@@ -313,6 +330,46 @@ void keycode(int code)
    case '9' : wsprintf(wsc,"   9");  break;
    case '*' : wsprintf(wsc,"   *");  break;
    case '#' : wsprintf(wsc,"   #");  break;
+#ifdef MENU_CN
+   #ifdef NEWSGOLD
+   case 0x01 : wsprintf(wsc,_percent_t,"×óÈí¼ü");  break;
+   case 0x04 : wsprintf(wsc,_percent_t,"ÓÒÈí¼ü");  break;
+   case 0x0B : wsprintf(wsc,_percent_t,"ÂÌ¼ü");  break;
+   case 0x0C : wsprintf(wsc,_percent_t,"ºì¼ü");  break;
+   case 0x0D : wsprintf(wsc,_percent_t,"ÒôÁ¿+");  break;
+   case 0x0E : wsprintf(wsc,_percent_t,"ÒôÁ¿-");  break;
+   case 0x3B : wsprintf(wsc,_percent_t,"Ò¡¸ËÉÏ");  break;
+   case 0x3C : wsprintf(wsc,_percent_t,"Ò¡¸ËÏÂ");  break;
+   case 0x3D : wsprintf(wsc,_percent_t,"Ò¡¸Ë×ó");  break;
+   case 0x3E : wsprintf(wsc,_percent_t,"Ò¡¸ËÓÒ");  break;
+   case 0x1A : wsprintf(wsc,_percent_t,"Ò¡¸ËÖĞ");  break;
+#ifdef ELKA
+   case 0x15 : wsprintf(wsc,_percent_t,"Ö±½Ó²¦´ò¼ü");  break;
+#else   
+   case 0x15 : wsprintf(wsc,_percent_t,"²¥·ÅÆ÷¼ü");  break;
+#endif
+   case 0x11 : wsprintf(wsc,_percent_t,"ÉÏÍø¼ü");  break;
+   case 0x14 : wsprintf(wsc,_percent_t,"ÕÕÏà¼ü");  break;
+#else
+   case 0x01 : wsprintf(wsc,_percent_t,"×óÈí¼ü");  break;
+   case 0x04 : wsprintf(wsc,_percent_t,"ÓÒÈí¼ü");  break;
+   case 0x0B : wsprintf(wsc,_percent_t,"ÂÌ¼ü");  break;
+   case 0x0C : wsprintf(wsc,_percent_t,"ºì¼ü");  break;
+#ifdef X75
+   case 0x14 : wsprintf(wsc,_percent_t,"ÒôÁ¿+");  break;
+   case 0x15 : wsprintf(wsc,_percent_t,"ÒôÁ¿-");  break;
+#else
+   case 0x0D : wsprintf(wsc,_percent_t,"ÒôÁ¿+");  break;
+   case 0x0E : wsprintf(wsc,_percent_t,"ÒôÁ¿-");  break;
+#endif
+   case 0x3B : wsprintf(wsc,_percent_t,"Ò¡¸ËÉÏ");  break;
+   case 0x3C : wsprintf(wsc,_percent_t,"Ò¡¸ËÏÂ");  break;
+   case 0x3D : wsprintf(wsc,_percent_t,"Ò¡¸Ë×ó");  break;
+   case 0x3E : wsprintf(wsc,_percent_t,"Ò¡¸ËÓÒ");  break;
+   case 0x1A : wsprintf(wsc,_percent_t,"Ò¡¸ËÖĞ");  break;
+   case 0x11 : wsprintf(wsc,_percent_t,"ÉÏÍø¼ü");  break;
+#endif
+#else
 #ifdef NEWSGOLD
    case 0x01 : wsprintf(wsc,"LEFT_SOFT");  break;
    case 0x04 : wsprintf(wsc,"RIGHT_SOFT");  break;
@@ -328,9 +385,9 @@ void keycode(int code)
 #ifdef ELKA
    case 0x15 : wsprintf(wsc,"POC_BUTTON");  break;
 #else   
-	case 0x15 : wsprintf(wsc,"PLAY_BUTTON");  break;
+   case 0x15 : wsprintf(wsc,"PLAY_BUTTON");  break;
 #endif
-	case 0x11 : wsprintf(wsc,"INTERNET_BUTTON");  break;
+   case 0x11 : wsprintf(wsc,"INTERNET_BUTTON");  break;
    case 0x14 : wsprintf(wsc,"CAMERA_BUTTON");  break;
 #else
    case 0x01 : wsprintf(wsc,"LEFT_SOFT");  break;
@@ -351,21 +408,18 @@ void keycode(int code)
    case 0x1A : wsprintf(wsc,"ENTER_BUTTON");  break;
    case 0x11 : wsprintf(wsc,"INTERNET_BUTTON");  break;
 #endif
+#endif
   }
 #ifdef MENU_CN
-  sprintf(utf8_str,"*é”®å€¼æµ‹è¯•*");//æ ‡é¢˜
-  utf8_2ws(wsh,utf8_str,strlen(utf8_str));
-  sprintf(utf8_str,"é•¿æŒ‰å·¦è½¯é”®è¿”å›èœå•\n");
-  utf8_2ws(ws,utf8_str,strlen(utf8_str));
-  sprintf(utf8_str,"æŒ‰é”®: ");
-  utf8_2ws(wst,utf8_str,strlen(utf8_str));
-  sprintf(utf8_str,"é”®å€¼: %.2d  %.2X H",code,code);
-  utf8_2ws(wsk,utf8_str,strlen(utf8_str));
+  wsprintf(wsh, _percent_t,"*¼üÖµ²âÊÔ*");
+  wsprintf(ws, _percent_t,"³¤°´×óÈí¼ü·µ»Ø²Ëµ¥\n");
+  wsprintf(wst,_percent_t,"°´¼ü: "); 
+  wsprintf(wsk,"%t%.2d  %.2X H","¼üÖµ: ",code,code);
 #else
-    wsprintf(wsh, "*KeyCode*");
-	wsprintf(ws, "Please long press\nLEFT_SOFT\nback to Menu.\n");
-	wsprintf(wst,"Key: "); 
-	wsprintf(wsk, "Keycode: %.2d  %.2X H",code,code);
+  wsprintf(wsh, "*KeyCode*");
+  wsprintf(ws, "Please long press\nLEFT_SOFT\nback to Menu.\n");
+  wsprintf(wst,"Key: "); 
+  wsprintf(wsk, "Keycode: %.2d  %.2X H",code,code);
 #endif
  
   int h_len=get_string_width(wst,main_font);
@@ -390,17 +444,17 @@ void pic()
   WSHDR *ws = AllocWS(50);
   WSHDR *wsr = AllocWS(50);
 
-  for(i=0;!GetImgWidth(max_image_num-i);i++); //å¯»æ‰¾æœ«å°¾å›¾ç‰‡
+  for(i=0;!GetImgWidth(max_image_num-i);i++); //Ñ°ÕÒÄ©Î²Í¼Æ¬
   max_pic_num=max_image_num-i;//max=max_image_num
   num=number_judge(0,max_pic_num,num);
-  if(num!=max_pic_num && GetImgWidth(num)==255 && GetImgHeight(num)==255) //è·³è¿‡æ‰€æœ‰255 x 255çš„ç©ºç™½å›¾ç‰‡
+  if(num!=max_pic_num && GetImgWidth(num)==255 && GetImgHeight(num)==255) //Ìø¹ıËùÓĞ255 x 255µÄ¿Õ°×Í¼Æ¬  
   {
-    if(direct==0)//å¾€å›æ‰¾
+    if(direct==0)//Íù»ØÕÒ
     {
     for(i=0;GetImgWidth(num-i)==255;i++);
     num-=i;
     }
-    else//å¾€å‰æ‰¾
+    else//ÍùÇ°ÕÒ
     {
     for(i=0;GetImgWidth(num+i)==255&&(num+i)!=max_pic_num;i++);
     num+=i;
@@ -408,13 +462,11 @@ void pic()
   } 
   int w=GetImgWidth(num);
   int h=GetImgHeight(num);
-  #ifdef MENU_CN
-  sprintf(utf8_str,"å›¾ç‰‡ID: %4d %3X H\nå¤§å°: %3dx%d",num,num,w,h);
-  utf8_2ws(ws,utf8_str,strlen(utf8_str));
-  sprintf(utf8_str,"æ²¡æœ‰è¯¥å›¾ç‰‡!");
-  utf8_2ws(wsr,utf8_str,strlen(utf8_str));
+#ifdef MENU_CN
+ wsprintf(ws,"%t%4d %3X H\n%t%3dx%d","Í¼Æ¬ID: ",num,num,"´óĞ¡: ",w,h); 
+ wsprintf(wsr,_percent_t,"Ã»ÓĞ¸ÃÍ¼Æ¬!");
 #else
- wsprintf(ws, "Pic_ID:%4d %3X H  %3dx%d",num,num,w,h); 
+ wsprintf(ws, "Pic_ID:%4d %3X H\nSize: %3dx%d",num,num,w,h); 
  wsprintf(wsr, "No Such Picture!");
 #endif
 
@@ -429,8 +481,8 @@ void pic()
   {
    DrawString(wsr,0,(screenh+2*GetFontYSIZE(main_font)+2)/2-GetFontYSIZE(main_font)/2,screenw,screenh,main_font,2,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
-  soft_key(1);//å›¾ç‰‡ä¸ä¼šæŒ¡ä½èœå•
-  DrawString(ws,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23));//å›¾ç‰‡ä¸ä¼šæŒ¡ä½æ–‡å­—
+  soft_key(1);//Í¼Æ¬²»»áµ²×¡²Ëµ¥
+  DrawString(ws,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23));//Í¼Æ¬²»»áµ²×¡ÎÄ×Ö
   FreeWS(ws);
   FreeWS(wsr);
 }
@@ -454,10 +506,8 @@ void font()
   soft_key(0);
   num=number_judge(0,font_max,num);
  #ifdef MENU_CN
-  sprintf(utf8_str,"*å­—ä½“æŸ¥çœ‹*");//æ ‡é¢˜
-  utf8_2ws(wsh,utf8_str,strlen(utf8_str));
-  sprintf(utf8_str,"å­—ä½“å¤§å°: %2d",num);
-  utf8_2ws(wsl,utf8_str,strlen(utf8_str));
+  wsprintf(wsh,_percent_t,"*×ÖÌå²é¿´*");
+  wsprintf(wsl,"%t%2d","×ÖÌå´óĞ¡: ",num);
 #else
   wsprintf(wsh,"*Font*");
   wsprintf(wsl,"Font Size: %2d",num);
@@ -465,8 +515,11 @@ void font()
   
   DrawString(wsh,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   DrawString(wsl,5,screenh/4,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
- 
+#ifdef MENU_CN
+  wsprintf(ws,_percent_t,test_string);
+#else
   utf8_2ws(ws,test_string,strlen(test_string));
+#endif
   DrawString(ws,5,screenh/3+GetFontYSIZE(main_font)+3,screenw,screenh,num,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
  
   FreeWS(wsl);
@@ -495,14 +548,13 @@ void status(void)
   DrawRectangle(0,0,screenw,screenh,0,GetPaletteAdrByColorIndex(1),main_bg_color);
   soft_key(0);
   GUI *igui=GetTopGUI();
-  #ifdef MENU_CN
-  sprintf(utf8_str,"*ç³»ç»Ÿä¿¡æ¯*");//æ ‡é¢˜
-  utf8_2ws(wsh,utf8_str,strlen(utf8_str));
-  sprintf(utf8_str,"æœºå‹: %s\nä¿¡å·: %c%ddB\næ¸©åº¦: %d.%dâ„ƒ\nåŸºç«™: %d-%d:%d\nC1: %d C2: %d\nç”µå‹:%d.%02dV ç”µé‡: %02d%%\nCL: %d%% CC: %dMHz\nå‰©ä½™å†…å­˜: %uKb",model,(net->ch_number>=255)?'=':'-',net->power,temp/10,temp%10,net->ci,net->lac,net->ch_number,net->c1,net->c2,volt/1000,(volt%1000)/10,*RamCap(),GetCPULoad(),GetCPUClock(),GetFreeRamAvail()/1024);
-  utf8_2ws(ws_info,utf8_str,strlen(utf8_str));
+#ifdef MENU_CN
+  wsprintf(wsh,_percent_t,"*ÏµÍ³ĞÅÏ¢*");
+  //gbprintf(ws_info,"»úĞÍ: %s\nĞÅºÅ: %c%ddB\nÎÂ¶È: %d.%d¡æ\n»ùÕ¾: %d-%d:%d\nC1: %d C2: %d\nµçÑ¹:%d.%02dV µçÁ¿: %02d%%\nCL: %d%% CC: %dMHz\nÊ£ÓàÄÚ´æ: %uKb",model,(net->ch_number>=255)?'=':'-',net->power,temp/10,temp%10,net->ci,net->lac,net->ch_number,net->c1,net->c2,volt/1000,(volt%1000)/10,*RamCap(),GetCPULoad(),GetCPUClock(),GetFreeRamAvail()/1024);
+  wsprintf(ws_info,"%t%s\n%t%c%ddB\n%t%d.%d%t\n%t%d-%d:%d\nC1: %d C2: %d\n%t%d.%02dV %t%02d%%\nCL: %d%% CC: %dMHz\n%t%uKb","»úĞÍ: ",model,"ĞÅºÅ: ",(net->ch_number>=255)?'=':'-',net->power,"ÎÂ¶È: ",temp/10,temp%10,"¡æ","»ùÕ¾: ",net->ci,net->lac,net->ch_number,net->c1,net->c2,"µçÑ¹:",volt/1000,(volt%1000)/10,"µçÁ¿: ",*RamCap(),GetCPULoad(),GetCPUClock(),"Ê£ÓàÄÚ´æ: ",GetFreeRamAvail()/1024);
 #else
-	wsprintf(wsh,"*SystemInfo*");
-   wsprintf(ws_info,"Phone: %s\nNet: %c%ddB\nT: %d.%dâ„ƒ\nBts: %d-%d:%d\nC1: %d C2: %d\nV:%d.%02dV Cap: %02d%%\nCL: %d%% CC: %dMHz\nFreeRam: %uKb",model,(net->ch_number>=255)?'=':'-',net->power,temp/10,temp%10,net->ci,net->lac,net->ch_number,net->c1,net->c2,volt/1000,(volt%1000)/10,*RamCap(),GetCPULoad(),GetCPUClock(),GetFreeRamAvail()/1024);
+  wsprintf(wsh,"*SystemInfo*");
+  wsprintf(ws_info,"Phone: %s\nNet: %c%ddB\nT: %d.%d¡ænBts: %d-%d:%d\nC1: %d C2: %d\nV:%d.%02dV Cap: %02d%%\nCL: %d%% CC: %dMHz\nFreeRam: %uKb",model,(net->ch_number>=255)?'=':'-',net->power,temp/10,temp%10,net->ci,net->lac,net->ch_number,net->c1,net->c2,volt/1000,(volt%1000)/10,*RamCap(),GetCPULoad(),GetCPUClock(),GetFreeRamAvail()/1024);
 #endif
   DrawString(wsh,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   DrawString(ws_info,5,GetFontYSIZE(main_font),screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
@@ -525,13 +577,11 @@ void rgb24()
   WSHDR *ws = AllocWS(32);
   soft_key(0);
   num=number_judge(0,23,num);
-    #ifdef MENU_CN
- sprintf(utf8_str,"*RGBé¢œè‰²*");//æ ‡é¢˜
-  utf8_2ws(wsh,utf8_str,strlen(utf8_str));
-  sprintf(utf8_str,"RGB24é¢œè‰²ç¼–å·: %2d",num);
-  utf8_2ws(ws,utf8_str,strlen(utf8_str));
+#ifdef MENU_CN
+  wsprintf(wsh,_percent_t,"*RGBÑÕÉ«*");
+  wsprintf(ws,"%t%2d","RGB24ÑÕÉ«±àºÅ: ",num);
 #else
-	wsprintf(wsh,"*RGB24*");
+  wsprintf(wsh,"*RGB24*");
    wsprintf(ws,"RGB24 COLOR ID: %2d",num);
 #endif
   DrawString(wsh,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
@@ -548,14 +598,11 @@ void sound()
   WSHDR *status = AllocWS(16);
   soft_key(0);
   num=number_judge(0, max_sound_num, num);
-    #ifdef MENU_CN
-  sprintf(utf8_str,"*å†…ç½®é“ƒå£°*");//æ ‡é¢˜
-  utf8_2ws(wsh,utf8_str,strlen(utf8_str));
-  sprintf(utf8_str,"é“ƒå£°ç¼–å·: %3d",num);
-  utf8_2ws(ws,utf8_str,strlen(utf8_str));
-    if(sound_flag)sprintf(utf8_str,"çŠ¶æ€: å¼€å¯");
-  else sprintf(utf8_str,"çŠ¶æ€: å…³é—­");
-  utf8_2ws(status,utf8_str,strlen(utf8_str));
+#ifdef MENU_CN
+   wsprintf(wsh,_percent_t,"*ÄÚÖÃÁåÉù*");
+   wsprintf(ws,"%t%3d","ÁåÉù±àºÅ: ",num);
+   if(sound_flag)wsprintf(status, _percent_t,"×´Ì¬: ¿ªÆô");
+   else wsprintf(status,_percent_t, "×´Ì¬: ¹Ø±Õ");
 #else
  wsprintf(wsh, "*Sound*");
    wsprintf(ws, "Sound Num: %3d",num);
@@ -582,13 +629,11 @@ void text_attribute(void)
   FreeWS(wst);
   DrawRectangle(0,0,screenw,screenh,0,GetPaletteAdrByColorIndex(1),main_bg_color);
   soft_key(0);
-     #ifdef MENU_CN
- sprintf(utf8_str,"*æ–‡æœ¬å±æ€§* \n\n    1:\n    2:\n    4:\n    8:\n  16:\n  32:\n  64:\n128:\n256:");
-  utf8_2ws(wsh,utf8_str,strlen(utf8_str));
-  sprintf(utf8_str,"ä¸­æ–‡Ab12");
-  utf8_2ws(ws,utf8_str,strlen(utf8_str));
+#ifdef MENU_CN
+  wsprintf(wsh,_percent_t,"*ÎÄ±¾ÊôĞÔ* \n\n    1:\n    2:\n    4:\n    8:\n  16:\n  32:\n  64:\n128:\n256:");
+  wsprintf(ws,_percent_t,"ÖĞÎÄAb12");
 #else
-wsprintf(wsh, "*Text attribute* \n\n    1:\n    2:\n    4:\n    8:\n  16:\n  32:\n  64:\n128:\n256:");
+  wsprintf(wsh, "*Text attribute* \n\n    1:\n    2:\n    4:\n    8:\n  16:\n  32:\n  64:\n128:\n256:");
   wsprintf(ws,"Test string");
 #endif 
   DrawString(wsh,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23));
@@ -609,18 +654,15 @@ void vibra(void)
   soft_key(0);
   num=number_judge(0,100,num);
     #ifdef MENU_CN
-  sprintf(utf8_str,"*æŒ¯åŠ¨æµ‹è¯•*");//æ ‡é¢˜
-  utf8_2ws(wsh,utf8_str,strlen(utf8_str));
-  sprintf(utf8_str,"æŒ¯åŠ¨å¼ºåº¦: %3d%%",num);
-  utf8_2ws(ws,utf8_str,strlen(utf8_str));
-  if(vibra_flag)sprintf(utf8_str,"çŠ¶æ€: å¼€å¯");
-  else sprintf(utf8_str,"çŠ¶æ€: å…³é—­");
-  utf8_2ws(status,utf8_str,strlen(utf8_str));
+   wsprintf(wsh,_percent_t, "*Õñ¶¯²âÊÔ*");
+   wsprintf(ws, "%t%3d%%","Õñ¶¯Ç¿¶È: ",num);
+   if(sound_flag)wsprintf(status,_percent_t, "×´Ì¬: ¿ªÆô");
+   else wsprintf(status, _percent_t,"×´Ì¬: ¹Ø±Õ");
 #else
-wsprintf(wsh, "*VibraTest*");
-wsprintf(ws, "Vibra Power:%3d%%",num);
-if(vibra_flag)wsprintf(status, "Status: On");
-else wsprintf(status, "Status: Off");
+  wsprintf(wsh, "*VibraTest*");
+  wsprintf(ws, "Vibra Power:%3d%%",num);
+  if(vibra_flag)wsprintf(status, "Status: On");
+  else wsprintf(status, "Status: Off");
 #endif
 	DrawString(wsh,5,0,screenw,screenh,main_font,32,main_text_color,GetPaletteAdrByColorIndex(23)); 
   if (vibra_flag)SetVibration(num);
@@ -631,25 +673,21 @@ else wsprintf(status, "Status: Off");
   FreeWS(wsh);
   FreeWS(status);
 }
-
   
 void light(void)
 {
   WSHDR *ws = AllocWS(64);
   WSHDR *wsh = AllocWS(16);
-  WSHDR *status = AllocWS(16);  
+  WSHDR *status = AllocWS(20);  
   soft_key(0);
   num=number_judge(0,100,num);
 #ifdef MENU_CN
- char *zh_str[]={"å…¨å¼€","æ˜¾ç¤ºå±","é”®ç›˜ç¯","å…¨å…³"};
-  sprintf(utf8_str,"*äº®åº¦æµ‹è¯•*");//æ ‡é¢˜
-  utf8_2ws(wsh,utf8_str,strlen(utf8_str));
-  sprintf(utf8_str,"äº®åº¦: %3d%%",num);
-  utf8_2ws(ws,utf8_str,strlen(utf8_str));
-  sprintf(utf8_str,"çŠ¶æ€: %s",zh_str[light_flag]);
-  utf8_2ws(status,utf8_str,strlen(utf8_str));
+  char *zh_str[]={"È«¿ª","ÏÔÊ¾ÆÁ","¼üÅÌµÆ","È«¹Ø"};
+  wsprintf(wsh,_percent_t,"*ÁÁ¶È²âÊÔ*");//±êÌâ
+  wsprintf(ws,"%t%3d%%","ÁÁ¶È: ",num);
+  wsprintf(status,"%t%t","×´Ì¬: ",zh_str[light_flag]);
 #else
-char *en_str[]={"All","Display","Keyboard","Do Nothing"};
+  char *en_str[]={"All","Display","Keyboard","Do Nothing"};
   wsprintf(wsh, "*LightTest*");
   wsprintf(ws, "Light:%3d%%", num);
   wsprintf(status,"Status: %s",en_str[light_flag]);
@@ -788,7 +826,11 @@ void begin_search(int key)
           			num = 0;
           		else
           			num = flag ? max_image_num : max_lpg_num;*/
-          		ShowMSG(1, (int)"æœªæ‰¾åˆ°!");
+#ifdef MENU_CN
+          		ShowMSG(1, (int)"Î´ÕÒµ½?");
+#else
+                        ShowMSG(1, (int)"Not Found?");
+#endif
           	}
           }
           REDRAW();
@@ -862,7 +904,7 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
             else
               light_flag++;
           }
-		  if(flag==6){//é“ƒå£°
+		  if(flag==6){//ÁåÉù
 		  sound_flag=!sound_flag;
 		  }
           REDRAW();
@@ -939,7 +981,11 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
     extern const char *successed_config_filename;
     if (strcmp_nocase(successed_config_filename,(char *)msg->data0)==0)
     {
+#ifdef MENU_CN
+	  ShowMSG(1,(int)"Î÷»úÖúÊÖÉèÖÃÒÑ¾­¸üĞÂ!");
+#else
       ShowMSG(1,(int)"SieHelpMan config updated!");
+#endif
       InitConfig();
     }
   }
@@ -949,7 +995,7 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
   }
   if ((msg->msg==MSG_GUI_DESTROYED)&&((int)msg->data0==SEARCH_CSM_ID))
   {
-  	if ((int)msg->data1==1 && wstrlen(ws_info) > 0) // ç¡®è®¤ä¿å­˜æŸ¥æ‰¾æ¡ä»¶ 
+  	if ((int)msg->data1==1 && wstrlen(ws_info) > 0) // È·ÈÏ±£´æ²éÕÒÌõ¼ş 
   	{
   		if ( flag )
   		{
@@ -994,8 +1040,13 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 const int menusoftkeys[]={0,1,2};
 SOFTKEY_DESC menu_sk[]=
 {
-  {0x0018,0x0000,(int)"é€‰æ‹©"},
-  {0x0001,0x0000,(int)"é€€å‡º"},
+#ifdef MENU_CN
+  {0x0018,0x0000,(int)"Ñ¡Ôñ"},
+  {0x0001,0x0000,(int)"ÍË³ö"},
+#else
+  {0x0018,0x0000,(int)"Select"},
+  {0x0001,0x0000,(int)"Exit"},
+#endif
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -1008,41 +1059,22 @@ SOFTKEYSTAB menu_skt=
 
 
 #ifdef MENU_CN
-typedef struct
+
+MENUITEM_DESC menu_items[ITEMS_N]=
 {
-  char *item;
-}ZH_ITEM;
-
-
-const ZH_ITEM zh_menu_item[ITEMS_N]={
-  {"ç³»ç»Ÿä¿¡æ¯"},
-  {"å†…ç½®å›¾ç‰‡"},
-  {"LGPæŸ¥çœ‹"},
-  {"å†…ç½®é“ƒå£°"},
-  {"å­—ä½“æŸ¥çœ‹"},
-  {"æ–‡æœ¬å±æ€§"},
-  {"RGBé¢œè‰²"},
-  {"æŒ¯åŠ¨å¼ºåº¦"},
-  {"äº®åº¦æµ‹è¯•"},
-  {"é”®å€¼æµ‹è¯•"},
-  {"è®¾ç½®é€‰é¡¹"},
-  {"å…³äº"}
+  {NULL,(int)"ÏµÍ³ĞÅÏ¢",     LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"ÄÚÖÃÍ¼Æ¬",        LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"LGP²é¿´",         LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"ÄÚÖÃÁåÉù",          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"×ÖÌå²é¿´",           LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"ÎÄ±¾ÊôĞÔ",       LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"RGBÑÕÉ«",          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"Õñ¶¯Ç¿¶È",     LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"ÁÁ¶È²âÊÔ",          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"¼üÖµ²âÊÔ",        LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"ÉèÖÃÑ¡Ïî",        LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"¹ØÓÚ",          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 };
-
-void menu_iconhndl(void *data, int curitem, void *unk)
-{
-  WSHDR *ws;
-  void *item=AllocMenuItem(data);
-  const char *s;
-  int l;
-  
-  s=zh_menu_item[curitem].item;
-  l=strlen(s);
-  ws=AllocMenuWS(data,l);
-  utf8_2ws(ws,s,l);
-
-  SetMenuItemText(data,item,ws,curitem);
-}
 #else
 
 MENUITEM_DESC menu_items[ITEMS_N]=
@@ -1062,119 +1094,67 @@ MENUITEM_DESC menu_items[ITEMS_N]=
 };
 #endif
 
-#ifdef MENU_CN
-void lgp_gui(void)
-#else
 void lgp_gui(GUI *data)
-#endif
 {
   flag=0;
   startgui();
 }
 
-#ifdef MENU_CN
-void pic_gui(void)
-#else
 void pic_gui(GUI *data)
-#endif
 {
   flag=1;
   startgui();
 }
 
-#ifdef MENU_CN
-void keycode_gui(void)
-#else
 void keycode_gui(GUI *data)
-#endif
 {
   flag=2;
   startgui();
 }
 
-
-#ifdef MENU_CN
-void font_gui(void)
-#else
 void font_gui(GUI *data)
-#endif
 {
   flag=3;
   startgui();
 }
 
-
-#ifdef MENU_CN
-void status_gui(void)
-#else
 void status_gui(GUI *data)
-#endif
 {
   flag=4;
   startgui();
 }
 
-
-#ifdef MENU_CN
-void rgb24_gui(void)
-#else
 void rgb24_gui(GUI *data)
-#endif
 {
   flag=5;
   startgui();
 }
 
-
-#ifdef MENU_CN
-void sound_gui(void)
-#else
 void sound_gui(GUI *data)
-#endif
 {
   flag=6;
   startgui();
 }
 
-
-#ifdef MENU_CN
-void text_attr_gui(void)
-#else
 void text_attr_gui(GUI *data)
-#endif
 {
   flag=7;
   startgui();
 }
 
-
-#ifdef MENU_CN
-void vibra_gui(void)
-#else
 void vibra_gui(GUI *data)
-#endif
 {
   flag=8;
   startgui();
 }
 
-
-#ifdef MENU_CN
-void light_gui(void)
-#else
 void light_gui(GUI *data)
-#endif
 {
   flag=9;
   startgui();
 }
 
-
-#ifdef MENU_CN
-void options(void)
-#else
 void options(GUI *data)
-#endif
 {
   extern const char *successed_config_filename;
   WSHDR *ws;
@@ -1184,17 +1164,14 @@ void options(GUI *data)
   FreeWS(ws);
 }
 
-
-#ifdef MENU_CN
-void about(void)
-#else
 void about(GUI *data)
-#endif
 {
-  ShowMSG(1, (int)"è¥¿æœºåŠ©æ‰‹V0.6\n(c) 2008\nbinghelingxi\nOmo DaiXM\nalong1976");
+#ifdef MENU_CN
+  ShowMSG(1, (int)"Î÷»úÖúÊÖV0.61GB  (c) 2008\nbinghelingxi\nOmo DaiXM\nalong1976");
+#else
+  ShowMSG(1, (int)"SieHelpManV0.61  (c) 2008\nbinghelingxi\nOmo DaiXM\nalong1976");
+#endif
 }
-
-#ifndef MENU_CN
 
 const MENUPROCS_DESC menu_hndls[ITEMS_N]=
 {
@@ -1212,9 +1189,6 @@ const MENUPROCS_DESC menu_hndls[ITEMS_N]=
   about,
 };
 
-#endif
-
-
 int menu_onkey(void *data, GUI_MSG *msg)
 {
   if (msg->gbsmsg->msg==KEY_DOWN)
@@ -1222,52 +1196,6 @@ int menu_onkey(void *data, GUI_MSG *msg)
     switch(msg->gbsmsg->submess)
     {
       case RIGHT_SOFT : CloseCSM(MAINCSM_ID); break;
-#ifdef MENU_CN
-      case ENTER_BUTTON :
-      case LEFT_SOFT :
-        {
-          int i=GetCurMenuItem(data);
-          switch(i)
-          {
-            case 0 : 
-              status_gui();
-              break;
-            case 1 :
-              pic_gui();
-              break;
-            case 2 :
-              lgp_gui();
-              break;
-            case 3 :
-              sound_gui();
-              break;
-            case 4 :
-              font_gui();
-              break;
-            case 5 :
-              text_attr_gui();
-              break;
-            case 6 :
-              rgb24_gui();
-              break;
-            case 7 :
-              vibra_gui();
-              break;
-            case 8 :
-              light_gui();
-              break;
-            case 9 :
-              keycode_gui();
-              break;
-            case 10 :
-              options();
-              break;
-            case 11 :
-              about();
-              break;
-          }
-        }
-#endif
       //case LEFT_SOFT : GBS_SendMessage(MMI_CEPID,KEY_UP,ENTER_BUTTON); break;
     }
   }
@@ -1281,22 +1209,12 @@ void mm_menu_ghook(void *data, int cmd)
     DisableIDLETMR();
   }
 }
-
-HEADER_DESC mm_menuhdr={0,0,0,0,NULL,(int)"è¥¿æœºåŠ©æ‰‹V0.6",LGP_NULL};
-
 #ifdef MENU_CN
-const MENU_DESC mm_menu=
-{
-  8,menu_onkey,NULL,NULL,
-  menusoftkeys,
-  &menu_skt,
-  0x10,
-  menu_iconhndl,
-  NULL,   //Items
-  NULL,   //Procs
-  ITEMS_N   //n
-};
+HEADER_DESC mm_menuhdr={0,0,0,0,NULL,(int)"Î÷»úÖúÊÖV0.61GB",LGP_NULL};
 #else
+HEADER_DESC mm_menuhdr={0,0,0,0,NULL,(int)"SieHelpManV0.61",LGP_NULL};
+#endif
+
 const MENU_DESC mm_menu=
 {
   8,menu_onkey,NULL,NULL,
@@ -1308,7 +1226,6 @@ const MENU_DESC mm_menu=
   menu_hndls,   //Procs
   ITEMS_N   //n
 };
-#endif
 
 void maincsm_oncreate(CSM_RAM *data)
 {
@@ -1321,9 +1238,6 @@ void maincsm_oncreate(CSM_RAM *data)
   ws_info = AllocWS(256);
   ws_search = AllocWS(20);
   CutWSTR(ws_search, 0);
-  #ifdef MENU_CN
-  utf8_str=malloc(256);
-  #endif
   MAIN_CSM *csm=(MAIN_CSM *)data;
   csm->csm.state=0;
   csm->csm.unk1=0;
@@ -1339,9 +1253,6 @@ void Killer(void)
   GBS_DelTimer(&mytmr);
   FreeWS(ws_info);
   FreeWS(ws_search);
-  #ifdef MENU_CN
-  mfree(utf8_str);
-  #endif
   kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
 }
 
@@ -1384,7 +1295,11 @@ sizeof(MAIN_CSM),
 
 void UpdateCSMname(void) 
 {
+#ifdef MENU_CN
+  wsprintf((WSHDR *)(&MAINCSM.maincsm_name),_percent_t,ipc_my_name);
+#else
   wsprintf((WSHDR *)(&MAINCSM.maincsm_name), ipc_my_name);
+#endif
 }
 
 int main()
@@ -1397,3 +1312,4 @@ int main()
   UnlockSched();
   return 0;
 }
+
