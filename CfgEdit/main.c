@@ -543,12 +543,12 @@ void selbcfg_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
   {
     len=strlen(sbtop->cfgname);
     ws=AllocMenuWS(gui,len+4);
-    wsprintf(ws,_percent_t,sbtop->cfgname);
+    str_2ws(ws,sbtop->cfgname,128);
   }
   else
   {
     ws=AllocMenuWS(gui,10);
-    wsprintf(ws,_percent_t,"Œ¯Ë·Í‡");
+    wsprintf(ws,_percent_t,"Œ¥÷™");
   }
   SetMenuItemText(gui, item, ws, cur_item);
 }
@@ -910,7 +910,7 @@ void UpdateCSMname(const char *fname)
   }
   s++;
   str_2ws(ws,s,128);
-  wsprintf((WSHDR *)(&MAINCSM.maincsm_name),"%t%w","±‡º≠≈‰÷√:",ws);
+  wsprintf((WSHDR *)(&MAINCSM.maincsm_name),"%t%w","≈‰÷√:",ws);
   FreeWS(ws);
 }
 
