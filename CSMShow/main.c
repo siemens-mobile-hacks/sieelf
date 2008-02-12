@@ -250,7 +250,8 @@ void GetNumberOfDialogs(void)
 	      if (i<(sizeof(ss)-1)) ss[i++]=c;
 	    }
 	    ss[i]=0;
-	    utf8_2ws(ws,ss,strlen(ss));
+	    //utf8_2ws(ws,ss,strlen(ss));
+	    wsprintf(ws, "%t", ss);
 	  L_ADD:
 	    AddNL(ws,0);
 	    nltop->p=icsm;
