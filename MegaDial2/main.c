@@ -136,6 +136,7 @@ volatile CLIST *cltop; //Start
 
 char dstr[NUMBERS_MAX][40];
 char dstr2[40];
+char dstr3[40];
 int dstr_index[NUMBERS_MAX+1];
 
 int menu_icons[NUMBERS_MAX];
@@ -246,7 +247,7 @@ void ShowInputCodeShow(WSHDR* pwsNum,int y1)
 				if(*pszNum == '+' && len < 10)
 					goto sub_end;	//+86XXXXXXXXX number is not enough
                         
-                        	     else if(len > 14)
+                        	     else if(len > 20)
 					    goto sub_end;   //Too long
 				else
 				{
@@ -1160,48 +1161,42 @@ void my_ed_redraw(void *data)
 	DrawRectangle(2,dy+3,right_border,dy+2*(cfg_item_gaps+gfont_size)-2,0,color(COLOR_SELECTED_BRD),color(COLOR_SELECTED_BG));
 	DrawString(cl->name,3,dy+4,right_border-2-icons_size,dy+(cfg_item_gaps+gfont_size),font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
 
-        //区号秀和号码输出
-           
+        //号码输出
          int c=0,n=0;    
           do
           {
             if (cl->num[c])
            {
              ws_2str(cl->num[c],dstr[n],39);
-             dstr_index[++n]=c;
+             if(c==priority&&dstr[0])
+             {
+                  strncpy(dstr3,dstr[0],39);
+                  strncpy(dstr[0],dstr[n],39);
+                  strncpy(dstr[n],dstr3,39);
+             }
+             ++n;
            }
             c++;
           }
          while(c<NUMBERS_MAX);
          sumx=n;
-         /*
-        int find=0;
-        for(j=0;j<=4;j++) 
-        {
-         wstrcpy(prws,cl->num[j]);
-         if(CompareStrT9(prws,(WSHDR *)e_ws,1));
-         {
-         find=1;
-         }
-        }  
 
-        if(!find)
-         */
-        str_2ws(prws,dstr[numx],39);
+         str_2ws(prws,dstr[numx],39);
 
            int l=GetImgWidth(menu_icons[0]);
-           int d=(n-numx)*l;
+           int d=(sumx-numx)*l;
           //图标框
-          if(n>1)
+          if(sumx>1)
           DrawRectangle(right_border-2-d,dy+3,right_border-1-d+l,dy+(gfont_size+cfg_item_gaps)+1,1,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
           //图标
           DrawString(cl->icons,right_border-1-icons_size,dy+cfg_item_gaps,right_border-2,dy+cfg_item_gaps+gfont_size,font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
     
           DrawString(prws,3,dy+(gfont_size+cfg_item_gaps)+2,right_border,dy+2*(gfont_size+cfg_item_gaps),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));
           //DrawImg(3,dy+(gfont_size+cfg_item_gaps),menu_icons[numx]);
-                
-          int dyx,dyy;    
-          if(i!=1||cfg_cs_part)
+            
+
+          int dyx,dyy;
+          if(i!=1)
              {
                     dyx=dy;
                     dyy=dy;
@@ -1210,7 +1205,10 @@ void my_ed_redraw(void *data)
              {
                     dyx=dy+3*(gfont_size+cfg_item_gaps)-7;
                     dyy=dy+(gfont_size+cfg_item_gaps)-3;
-             }   
+             }
+          
+          //区号秀
+          if(!cfg_cs_part)
           ShowSelectedCodeShow(prws,dyx-(gfont_size+cfg_item_gaps)+6);
           
           
@@ -1911,16 +1909,21 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
       {
         //if (d==2) numx=n;
         ws_2str(cl->num[d],dstr[n],39);
-        dstr_index[++n]=d;
+             if(d==priority&&dstr[0])
+             {
+                  strncpy(dstr3,dstr[0],39);
+                  strncpy(dstr[0],dstr[n],39);
+                  strncpy(dstr[n],dstr3,39);
+             }
+        ++n;
       }
       d++;
     }
     while(d<NUMBERS_MAX);
-    //dstr_index[0]=n;
     wstrcpy(gwsName, cl->name);
 
     if (n==0) goto L_OLDKEY; //No phones altogether 
-    //Number of rooms more than 1, paint me 
+
     if(n>0)
     {
 #ifdef ELKA

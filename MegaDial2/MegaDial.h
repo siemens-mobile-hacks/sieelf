@@ -39,6 +39,7 @@ extern const int smsn;
 extern const int smsc;
 extern const int voice;
 extern const int ipx2;
+extern const int priority;
 extern const unsigned int volume;
 
 #endif
