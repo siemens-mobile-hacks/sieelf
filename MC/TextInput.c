@@ -70,7 +70,7 @@ void TextInput(char *caption, char *prmpt, int TestFileName, WSHDR *wsname, IFN_
 	prep_hd(&ec);
 	AddEditControlToEditQend(eq,&ec,ma);
 
-	ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_SET_CURSOR_END,wsname,MAX_PATH);
+	ConstructEditControl(&ec,ECT_CURSOR_STAY,ECF_SET_CURSOR_END,wsname,MAX_PATH);
 	//  prep_inf(&ec);
 	AddEditControlToEditQend(eq,&ec,ma);
 
