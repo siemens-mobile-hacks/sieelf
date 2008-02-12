@@ -284,7 +284,8 @@ void contactlist_menu_iconhndl(void *data, int curitem, void *unk)
 {
   void *item=AllocMenuItem(data);
   WSHDR *ws=AllocMenuWS(data,20);
-  wsprintf(ws,"%s",daemons[curitem].name);
+  //wsprintf(ws,"%s",daemons[curitem].name);
+  str_2ws(ws, daemons[curitem].name, 128);
   SetMenuItemIconArray(data,item,S_ICONS);
   SetMenuItemText(data,item,ws,curitem);
   SetMenuItemIcon(data,curitem,daemons[curitem].newmode);
