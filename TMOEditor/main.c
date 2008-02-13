@@ -128,7 +128,7 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
   {
     if (strcmp_nocase(successed_config_filename,(char *)msg->data0)==0)
     {
-      ShowMSG(1,(int)"TMOEditor config updated!");
+      ShowMSG(1,(int)"TMO编辑器配置更新!");
       InitConfig();
     }
   } 
@@ -267,6 +267,7 @@ void _SaveText(GUI *data)
 {
   WSHDR *tmostr=MenuGetUserPointer(data);
   SaveText(tmostr);
+  GeneralFuncF1(1);
 }
 
 void Settings(GUI *data)
@@ -285,7 +286,7 @@ void menup2(GUI *data)  // Leave editor (calls from the menu)
 
 void AboutDlg(GUI *data)
 {
-  char *str = "TMO--Editor v4.0(0xC604)\r\n(c) 2006 Kibab\r\n(r) Rst7/CBSIE";
+  char *str = "TMO--Editor v4.0(0xC604)\n(c) 2006 Kibab\n(r) Rst7/CBSIE\n汉化 BingK,\nbinghelingxi";
   ShowMSG(2,(int)str);
 }
 
@@ -294,14 +295,14 @@ int about_icon[]={0x4DB,0};
 int exit_icon[] = {0x315,0};
 int save_icon[] = {0x50E,0};
 
-HEADER_DESC menuhdr={0,0,131,21,NULL,(int)"Menu Editor",LGP_NULL};
+HEADER_DESC menuhdr={0,0,131,21,NULL,(int)"菜单",LGP_NULL};
 int menusoftkeys[]={0,1,2};
 MENUITEM_DESC menuitems[4]=
 {
-  {NULL,(int)"Save",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Options",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"on the bank ...", LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Exit", LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2}
+  {NULL,(int)"保存",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"设置",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"关于", LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"退出", LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2}
 };
 
 MENUPROCS_DESC menuprocs[4]=
@@ -314,8 +315,8 @@ MENUPROCS_DESC menuprocs[4]=
 
 SOFTKEY_DESC menu_sk[]=
 {
-  {0x0018,0x0000,(int)"Choice"},
-  {0x0001,0x0000,(int)"Back"},
+  {0x0018,0x0000,(int)"选择"},
+  {0x0001,0x0000,(int)"返回"},
   {0x003D,0x0000,(int)"+"}
 };
 
@@ -373,7 +374,7 @@ int inp_onkey(GUI *gui, GUI_MSG *msg)
 
 void inp_ghook(GUI *gui, int cmd)
 {
-  static SOFTKEY_DESC sk={0x0018, 0x0000,(int)"Menu"};
+  static SOFTKEY_DESC sk={0x0018, 0x0000,(int)"菜单"};
   
   WSHDR *tmostr=EDIT_GetUserPointer(gui);
   if (cmd==2)
@@ -410,7 +411,7 @@ INPUTDIA_DESC inp_desc=
 };
 
 
-HEADER_DESC inp_hdr={0,0,131,21,/*icon*/NULL,(int)"TMOEdit",LGP_NULL};
+HEADER_DESC inp_hdr={0,0,131,21,/*icon*/NULL,(int)"TMO编辑器",LGP_NULL};
 
 #define MAX_TMO_LEN 256
 int LaunchEditor(void)
@@ -435,22 +436,22 @@ int LaunchEditor(void)
     inp_hdr.lgp_id = (int)sh_fname;
     tmostr->wsbody[0]=str_len;   
     fread(hFile,tmostr->wsbody+1,str_len*2,&errcode);
-    if(errcode)
+/*    if(errcode)
     {
       wsprintf(tmostr,"%t %u (file %s)","Error I/O", errcode, filename);          
-    }
+    }*/
     fclose(hFile, &errcode);
   }
   else
   {
     wsprintf(tmostr,"%t","0 ");
-    inp_hdr.lgp_id = (int)"//<New>";
+    inp_hdr.lgp_id = (int)"//<新建>";
   } 
   UpdateCSMname();
   EDITCONTROL ec;
   PrepareEditControl(&ec);
   eq=AllocEQueue(ma,mfree_adr());
-  ConstructEditControl(&ec,3,0x40,tmostr,256);
+  ConstructEditControl(&ec,4,0x40,tmostr,256);
   AddEditControlToEditQend(eq,&ec,ma);
   patch_header(&inp_hdr);
   patch_input(&inp_desc);

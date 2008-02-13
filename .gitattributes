@@ -1753,7 +1753,6 @@ TMOEditor/config_data.c -text
 TMOEditor/func.asm -text
 TMOEditor/main.c -text
 TMOEditor/tmo.xcl -text
-TMOEditor/upload2phone.cmd -text
 TalkAkkum/TalkAkkum.ewp -text
 TalkAkkum/TalkAkkum.eww -text
 TalkAkkum/TalkAkkum.h -text
