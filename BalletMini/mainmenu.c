@@ -76,7 +76,7 @@ void selurl_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
   else
   {
     ws=AllocMenuWS(gui,10);
-    ascii2ws(ws,"Ошибка");
+    ascii2ws(ws,"ґнОу");
   }
   SetMenuItemText(gui, item, ws, cur_item);
 }
@@ -84,8 +84,8 @@ void selurl_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
 int selurl_softkeys[]={0,1,2};
 SOFTKEY_DESC selurl_sk[]=
 {
-  {0x0018,0x0000,(int)"Select"},
-  {0x0001,0x0000,(int)"Close"},
+  {0x0018,0x0000,(int)"СЎФс"},
+  {0x0001,0x0000,(int)"№Ш±Х"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -94,7 +94,7 @@ SOFTKEYSTAB selurl_skt=
   selurl_sk,0
 };
 
-HEADER_DESC selurl_HDR={0,0,0,0,NULL,(int)"Select Bookmark",LGP_NULL};
+HEADER_DESC selurl_HDR={0,0,0,0,NULL,(int)"СЎФсКйЗ©",LGP_NULL};
 
 
 MENU_DESC selurl_STRUCT=
@@ -157,8 +157,8 @@ int CreateBookmarksMenu()
 
 static const SOFTKEY_DESC input_menu_sk[]=
 {
-  {0x0018,0x0000,(int)"Перейти"},
-  {0x0001,0x0000,(int)"Отмена"},
+  {0x0018,0x0000,(int)"И·¶Ё"},
+  {0x0001,0x0000,(int)"ИЎПы"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -168,11 +168,11 @@ static const SOFTKEYSTAB input_menu_skt=
 };
 
 
-static const HEADER_DESC input_url_hdr={0,0,0,0,NULL,(int)"Адрес",LGP_NULL};
+static const HEADER_DESC input_url_hdr={0,0,0,0,NULL,(int)"µШЦ·",LGP_NULL};
 
 static void input_url_ghook(GUI *data, int cmd)
 {
-  static SOFTKEY_DESC sk={0x0FFF,0x0000,(int)"Перейти"};
+  static SOFTKEY_DESC sk={0x0FFF,0x0000,(int)"И·¶Ё"};
   if (cmd==0x0A)
   {
     DisableIDLETMR();
@@ -185,21 +185,21 @@ static void input_url_ghook(GUI *data, int cmd)
 
 static void input_url_locret(void){}
 
-int char_win2utf8(char*d,const char *s) // функция возвращает количество 
-{                                       // добавленных символов в d
+int char_win2utf8(char*d,const char *s) // §ж§е§Я§Ь§и§Ъ§с §У§а§Щ§У§в§С§л§С§Ц§д §Ь§а§Э§Ъ§й§Ц§г§д§У§а 
+{                                       // §Х§а§Т§С§У§Э§Ц§Я§Я§н§з §г§Ъ§Ю§У§а§Э§а§У §У d
   char hex[] = "0123456789ABCDEF";
   char *d0 = "%D0%";
   char *d1 = "%D1%";
   unsigned char b = *s, lb, ub;
   int r = 0, ab;
-  if(b >= 0xC0 && b <= 0xFF)           //если это русская буква в коде win1251
+  if(b >= 0xC0 && b <= 0xFF)           //§Ц§г§Э§Ъ §п§д§а §в§е§г§г§Ь§С§с §Т§е§Ь§У§С §У §Ь§а§Х§Ц win1251
   {
-    ab = 0x350;                        //считаем её unicode-номер
+    ab = 0x350;                        //§г§й§Ъ§д§С§Ц§Ю §Ц§Ч unicode-§Я§а§Ю§Ц§в
     ab += b;
-    ub = 0xC0 | ((ab>>6) & 0x1F);      //вычисляем бытовые компоненты для utf8
+    ub = 0xC0 | ((ab>>6) & 0x1F);      //§У§н§й§Ъ§г§Э§с§Ц§Ю §Т§н§д§а§У§н§Ц §Ь§а§Ю§б§а§Я§Ц§Я§д§н §Х§Э§с utf8
     lb = 0x80 | (ab & 0x3F);
     *d = '%'; d++;
-    *d = hex[(ub>>4)&0xF]; d++;        //и кладём в буфер результата
+    *d = hex[(ub>>4)&0xF]; d++;        //§Ъ §Ь§Э§С§Х§Ч§Ю §У §Т§е§ж§Ц§в §в§Ц§Щ§е§Э§о§д§С§д§С
     *d = hex[ub     &0xF]; d++;
     *d = '%'; d++;
     *d = hex[(lb>>4)&0xF]; d++;
@@ -209,7 +209,7 @@ int char_win2utf8(char*d,const char *s) // функция возвращает количество
   else
       if(b == 0xA8)
       {
-        memcpy(d, d0, 4);              //пара особых случаев для буквы "ё"
+        memcpy(d, d0, 4);              //§б§С§в§С §а§г§а§Т§н§з §г§Э§е§й§С§Ц§У §Х§Э§с §Т§е§Ь§У§н "§Ч"
         d+=4;
         *d = '8'; d++;
         *d = '1'; d++;
@@ -227,20 +227,20 @@ int char_win2utf8(char*d,const char *s) // функция возвращает количество
   return r;
 }
 
-char * ToWeb(char *src)                   //конвертируем ссылку в utf8
+char * ToWeb(char *src)                   //§Ь§а§Я§У§Ц§в§д§Ъ§в§е§Ц§Ю §г§г§н§Э§Ь§е §У utf8
 {
   int cnt = 0, i, j;
   char *ret;
-  for(i = 0; src[i]; i++)                 //считаем русские символы
+  for(i = 0; src[i]; i++)                 //§г§й§Ъ§д§С§Ц§Ю §в§е§г§г§Ь§Ъ§Ц §г§Ъ§Ю§У§а§Э§н
     if((unsigned char)src[i] >= 0x80) cnt++;
-  ret = malloc(strlen(src) + cnt*6 + 1);  //выделяем память под utf8-строку
+  ret = malloc(strlen(src) + cnt*6 + 1);  //§У§н§Х§Ц§Э§с§Ц§Ю §б§С§Ю§с§д§о §б§а§Х utf8-§г§д§в§а§Ь§е
   for(i = 0, j = 0; src[i]; i++)
     if((unsigned char)src[i] >= 0x80)
-      j += char_win2utf8(ret+j, src+i);   //получаем вместо русского символа utf8-замену
+      j += char_win2utf8(ret+j, src+i);   //§б§а§Э§е§й§С§Ц§Ю §У§Ю§Ц§г§д§а §в§е§г§г§Ь§а§Ф§а §г§Ъ§Ю§У§а§Э§С utf8-§Щ§С§Ю§Ц§Я§е
     else
       ret[j++] = src[i];
   ret[j] = 0;
-  mfree(src);                             //освобождаем память от исходной строки
+  mfree(src);                             //§а§г§У§а§Т§а§Ш§Х§С§Ц§Ю §б§С§Ю§с§д§о §а§д §Ъ§г§з§а§Х§Я§а§Ы §г§д§в§а§Ь§Ъ
   return ret;
 }
 
@@ -279,16 +279,16 @@ static const INPUTDIA_DESC input_url_desc =
   100,
   101,
   0,
-  //  0x00000001 - Выровнять по правому краю
-  //  0x00000002 - Выровнять по центру
-  //  0x00000004 - Инверсия знакомест
+  //  0x00000001 - §Ј§н§в§а§У§Я§с§д§о §б§а §б§в§С§У§а§Ю§е §Ь§в§С§р
+  //  0x00000002 - §Ј§н§в§а§У§Я§с§д§о §б§а §и§Ц§Я§д§в§е
+  //  0x00000004 - §Є§Я§У§Ц§в§г§Ъ§с §Щ§Я§С§Ь§а§Ю§Ц§г§д
   //  0x00000008 - UnderLine
-  //  0x00000020 - Не переносить слова
+  //  0x00000020 - §Ї§Ц §б§Ц§в§Ц§Я§а§г§Ъ§д§о §г§Э§а§У§С
   //  0x00000200 - bold
   0,
   //  0x00000002 - ReadOnly
-  //  0x00000004 - Не двигается курсор
-  //  0x40000000 - Поменять местами софт-кнопки
+  //  0x00000004 - §Ї§Ц §Х§У§Ъ§Ф§С§Ц§д§г§с §Ь§е§в§г§а§в
+  //  0x40000000 - §±§а§Ю§Ц§Я§с§д§о §Ю§Ц§г§д§С§Ю§Ъ §г§а§ж§д-§Ь§Я§а§б§Ь§Ъ
   0x40000000
 };
 
@@ -375,8 +375,8 @@ static const int mmenusoftkeys[]={0,1,2};
 
 static const SOFTKEY_DESC mmenu_sk[]=
 {
-  {0x0018,0x0000,(int)"Выбор"},
-  {0x0001,0x0000,(int)"Назад"},
+  {0x0018,0x0000,(int)"СЎФс"},
+  {0x0001,0x0000,(int)"·µ»Ш"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -386,14 +386,14 @@ static const SOFTKEYSTAB mmenu_skt=
 };
 
 #define MAIN_MENU_ITEMS_N 4
-static HEADER_DESC main_menuhdr={0,0,0,0,NULL,(int)"Меню",LGP_NULL};
+static HEADER_DESC main_menuhdr={0,0,0,0,NULL,(int)"ІЛµҐ",LGP_NULL};
 
 static MENUITEM_DESC main_menu_ITEMS[MAIN_MENU_ITEMS_N]=
 {
-  {NULL,(int)"Перейти к",    LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
-  {NULL,(int)"Закладки",     LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //1
-  {NULL,(int)"Настройки",    LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //2
-  {NULL,(int)"Выход",        LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2} //3
+  {NULL,(int)"ЧЄµЅ",    LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
+  {NULL,(int)"КйЗ©",     LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //1
+  {NULL,(int)"СЎПо",    LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //2
+  {NULL,(int)"НЛіц",        LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2} //3
 };
 
 static const MENUPROCS_DESC main_menu_HNDLS[MAIN_MENU_ITEMS_N]=

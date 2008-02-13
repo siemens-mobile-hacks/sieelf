@@ -10,6 +10,12 @@
 
 #define TMR_SECOND(A) (1300*A/6)
 
+inline int min(int a,int b)
+{
+  return (a>b)?b:a;
+};
+
+
 extern WSHDR *ws_console;
 
 extern volatile int TERMINATED;
@@ -30,8 +36,11 @@ static char *sendq_p=NULL; //указатель очереди
 static int recvq_l=0;
 static char *recvq_p=NULL;
 
-static char OM_POST_HOST[]="80.232.117.10";
-static unsigned short OM_POST_PORT=80;
+//static char OM_POST_HOST[]="80.232.117.10";
+//static unsigned short OM_POST_PORT=80;
+extern const char OM_POST_HOST[32];
+extern const unsigned int OM_POST_PORT;
+
 
 static int receive_mode;
 
@@ -354,13 +363,13 @@ static void SendPost(void)
   sprintf(buf,"u=/obml/%s",URL); // 0/http://
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"q=ru");
+  sprintf(buf,"q=zh");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"v=Opera Mini/2.0.4509/hifi/woodland/ru");
+  sprintf(buf,"v=Opera Mini/2.0.4509/hifi/woodland/zh");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"i-ua=Opera/9.10 (Windows NT 5.1; U; ru)");
+  sprintf(buf,"i-ua=Opera/9.10 (Windows NT 5.1; U; zh)");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
   sprintf(buf,"s=-1");
@@ -378,7 +387,7 @@ static void SendPost(void)
   sprintf(buf,"C=j2me");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"D=ru");
+  sprintf(buf,"D=zh");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
   sprintf(buf,"E=ISO8859_1");
@@ -405,7 +414,8 @@ static void SendPost(void)
     j=1;
     break;
   }
-  sprintf(buf,"d=w:%d;h:%d;c:65536;m:3145728;i:%d;q:%d;f:0;j:0;l:256",ScreenW(),ScreenH(),i,j);
+  extern const int java_heap_size;
+  sprintf(buf,"d=w:%d;h:%d;c:65536;m:%d;i:%d;q:%d;f:0;j:0;l:256",ScreenW(),ScreenH(),min(1024*java_heap_size,GetFreeRamAvail()/2),i,j);
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
   sprintf(buf,"c=%s",AUTH_CODE);
@@ -420,7 +430,7 @@ static void SendPost(void)
   sprintf(buf,"b=");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"y=ru");
+  sprintf(buf,"y=zh");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
   sprintf(buf,"t=2");

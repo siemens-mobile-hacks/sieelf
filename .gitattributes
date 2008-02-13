@@ -22,6 +22,7 @@ BalletMini/img/URL_BIG.png -text
 BalletMini/img/URL_SMALL.png -text
 BalletMini/inet.c -text
 BalletMini/inet.h -text
+BalletMini/inputbox.c -text
 BalletMini/jpeglib/jconfig.h -text
 BalletMini/jpeglib/jerror.h -text
 BalletMini/jpeglib/jmorecfg.h -text

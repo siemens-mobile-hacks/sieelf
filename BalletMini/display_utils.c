@@ -13,11 +13,48 @@ int GetFontHeight(int font, int atribute)
   return height;
 }
 
+
+/*void GotoTop(VIEWDATA *vd)
+{
+};
+
+void GotoBottom(VIEWDATA *vd)
+{
+};*/
+
+
+void ScrollDown(int dy,VIEWDATA *vd)
+{
+  int ypos=0;
+  do
+  {
+    if (!RenderPage(vd,0)) break;
+    if (!LineDown(vd)) break;
+    ypos+=((vd->lines_cache+vd->view_line)->pixheight);
+  }
+  while(ypos<dy);
+  if(ypos>dy) LineUp(vd);  
+};
+
+void ScrollUp(int dy,VIEWDATA *vd)
+{
+  int ypos=0;
+  do
+  {
+    if (!LineUp(vd)) break;
+    ypos+=((vd->lines_cache+vd->view_line)->pixheight);
+  }
+  while(ypos<dy);
+  if(ypos>dy) LineDown(vd);  
+};
+
+
 unsigned int SearchNextDisplayLine(VIEWDATA *vd, LINECACHE *p, unsigned int *max_h)
 {
   int left=ScreenW();
   int c;
   int h;
+  int f=0;
   unsigned int pos=p->pos;
   while(pos<vd->rawtext_size)
   {
@@ -30,15 +67,12 @@ unsigned int SearchNextDisplayLine(VIEWDATA *vd, LINECACHE *p, unsigned int *max
     {
       h=GetFontHeight(p->bold?FONT_SMALL_BOLD:FONT_SMALL,p->underline?TEXT_UNDERLINE:0+p->ref?TEXT_INVERT:0);
     }
-    if (max_h)
-    {
-      if (h>*max_h) *max_h=h;
-    }
     switch(c)
     {
     case 0x0A:
     case 0x0D:
-      return(pos);
+      f=1;
+      break;
     case UTF16_DIS_INVERT:
       p->ref=0;
       continue;
@@ -74,10 +108,12 @@ unsigned int SearchNextDisplayLine(VIEWDATA *vd, LINECACHE *p, unsigned int *max
       continue;
     }
     left-=GetSymbolWidth(c,p->bold?FONT_SMALL_BOLD:FONT_SMALL);
-    if (left<0)
+    if (left<0)   return pos-1;
+    if (max_h)
     {
-      return pos-1;
+      if (h>*max_h)  *max_h=h;
     }
+    if (f) return pos;
   }
 LERR:
   return(vd->rawtext_size);
@@ -160,7 +196,7 @@ int RenderPage(VIEWDATA *vd, int do_draw)
   int scr_h=ScreenH()-1;
   int sc;
   int dc;
-//  VIEWDATA *vd=data->vd;
+  //  VIEWDATA *vd=data->vd;
   WSHDR *ws=vd->ws;
   LINECACHE *lc;
   unsigned int vl;
@@ -179,7 +215,7 @@ int RenderPage(VIEWDATA *vd, int do_draw)
   int ena_ref=0;
   
   int result=1;
-
+  
   unsigned int _ref=0xFFFFFFFF;
   unsigned int flag=0;
   
@@ -220,11 +256,11 @@ int RenderPage(VIEWDATA *vd, int do_draw)
 	{
 	  //Found begin of ref
 	  _ref=sc;
-/*	  if (vd->pos_first_ref==0xFFFFFFFF)
+	  /*	  if (vd->pos_first_ref==0xFFFFFFFF)
 	  {
-	    vd->pos_first_ref=sc;
-	    vd->pos_last_ref=sc;
-	  }*/
+	  vd->pos_first_ref=sc;
+	  vd->pos_last_ref=sc;
+	}*/
 	  if (vd->pos_cur_ref!=sc)
 	  {
 	    if (flag==0) vd->pos_prev_ref=sc;
@@ -239,10 +275,10 @@ int RenderPage(VIEWDATA *vd, int do_draw)
 	}
 	if (c==UTF16_DIS_INVERT)
 	{
-//	  if ((scr_h-ypos)>lc->pixheight)
-//	  {
-//	    vd->pos_botview_ref=prepare_bot_ref;
-//	  }
+	  //	  if ((scr_h-ypos)>lc->pixheight)
+	  //	  {
+	  //	    vd->pos_botview_ref=prepare_bot_ref;
+	  //	  }
 	  if (flag==2)
 	  {
 	    if ((scr_h-ypos)>lc->pixheight)
@@ -294,20 +330,6 @@ int RenderPage(VIEWDATA *vd, int do_draw)
       y2=lc->pixheight+ypos;
       if (do_draw)
       {
-	  
-/*	if (do_draw==2)
-	{
-	  //Dump rawtext
-	  unsigned int ul;
-	  int f;
-          char fn[128];
-	  sprintf(fn,"4:\\dump%d.raw",vl);
-	  if ((f=fopen(fn,A_ReadWrite+A_Create+A_Truncate,P_READ+P_WRITE,&ul))!=-1)
-	  {
-	    fwrite(f,ws->wsbody,ws->wsbody[0]*2,&ul);
-	    fclose(f,&ul);
-	  }
-	}*/
 	def_ink[0]=lc->ink1>>8;
 	def_ink[1]=lc->ink1;
 	def_ink[2]=lc->ink2>>8;
@@ -315,7 +337,7 @@ int RenderPage(VIEWDATA *vd, int do_draw)
         for (int i=0; i!=cur_rc; i++) 
         {
           DrawRectangle(rc[i].start_x,ypos,rc[i].end_x,y2,
-		      RECT_FILL_WITH_PEN,rc[i].color,rc[i].color);
+			RECT_FILL_WITH_PEN,rc[i].color,rc[i].color);
         }
 	DrawString(ws,0,ypos,scr_w,y2,
 		   lc->bold?FONT_SMALL_BOLD:FONT_SMALL,TEXT_NOFORMAT
@@ -328,12 +350,38 @@ int RenderPage(VIEWDATA *vd, int do_draw)
     else
     {
       result=0;
-//      if (ena_ref) vd->pos_botview_ref=prepare_bot_ref;
       break;
     }
   }
+  
+  int sb_max  = vd->rawtext_size;
+  int sb_1  = store_pos; 
+  int sb_2  = vd->view_pos;  
+  
+  
   vd->view_pos=store_pos;
   vd->view_line=store_line;
+  
+  //paint scrollbar here   
+  if(sb_max>0)
+  {
+    if(sb_2<=sb_1) sb_2=sb_1+1;  
+    if(sb_1<0) sb_1=0;
+    if(sb_2<0) sb_2=0;
+    if(sb_1>=sb_max) sb_1=sb_max-1;
+    if(sb_2>=sb_max) sb_2=sb_max-1;   
+    
+    static const unsigned int SB_FG = 0x642FFF2F;  
+    static const unsigned int SB_BG = 0x64000000;  
+    /* DrawRectangle(scr_w-1,0,
+    scr_w,scr_h,
+    RECT_FILL_WITH_PEN,(char*)&WHITE,(char*)&WHITE);
+    DrawRectangle(scr_w-1,(scr_h*sb_1/sb_max),
+    scr_w,(scr_h*sb_2/sb_max),
+    RECT_FILL_WITH_PEN,(char*)&BLACK,(char*)&BLACK);*/
+    DrawLine(scr_w,0,scr_w,scr_h,0,(char*)&SB_BG);
+    DrawLine(scr_w,(scr_h*sb_1/sb_max),scr_w,(scr_h*sb_2/sb_max),0,(char*)&SB_FG);
+  }
   return(result);
 }
 
