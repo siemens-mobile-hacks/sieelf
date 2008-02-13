@@ -65,22 +65,25 @@ Hook1:
     POP   {PC}
 
 Hook2:
-    PUSH  {LR}
 #ifdef NEWSGOLD
+    PUSH  {LR}
     LDR   R0, =ADDR_IsCalling           //0xA0DE7EA4+1,10B5041C????????4121201C????????D4+22
     BLX   R0
     MOV   R1, R0
     MOV   R0, #1
     MOV   R2, R4
-#else
-    MOV		R0, #0
-    MOV		R1, R4
-    MOV		R2, R5
-#endif
     BL    UpdateLocaleToItem
     LDR   R0, =ADDR_CallIN
     BLX   R0		
     POP   {PC}
+#else
+    MOV		R0, #0
+    MOV		R1, R4
+    MOV		R2, R5
+    BL    UpdateLocaleToItem
+    LDR   R0, =ADDR_CallIN
+    BLX   R0		
+#endif
 
 Hook3:
 #ifdef NEWSGOLD
