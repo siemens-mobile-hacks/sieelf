@@ -44,7 +44,10 @@ __root const int voice=0;
 __root const CFG_HDR cfghdr1_11 = {CFG_CHECKBOX,"IP扩展",0,0};
 __root const int ipx2=0;
 
- __root const CFG_HDR cfghdr1_12={CFG_CBOX, "优先号码", 0, 5};
+__root const CFG_HDR cfghdr1_12 = {CFG_CHECKBOX,"ip外国+00",0,0};
+__root const int ip00=0;
+
+ __root const CFG_HDR cfghdr1_13={CFG_CBOX, "优先号码", 0, 5};
  __root const int priority = 0;
  __root const CFG_CBOX_ITEM cfgcbox1[5]={"电话号码","公司号码","移动号码","传真号码","传真号码2"};
 

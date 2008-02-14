@@ -1728,7 +1728,10 @@ void VoiceOrSMS(const char *num)
                 }
                 else
                 {
+                  if(ip00)
                         sprintf(buf,"%d00",cfg_ip_number3);
+                  else
+                        sprintf(buf,"%d",cfg_ip_number3);
 			strcat(buf,num+1);
                 }
 
