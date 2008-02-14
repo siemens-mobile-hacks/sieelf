@@ -930,7 +930,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.41A</state>
+          <state>4.42A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -1369,11 +1369,11 @@
         <debug>0</debug>
         <option>
           <name>XOutOverride</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>OutputFile</name>
-          <state>mini_gps_newsgold.elf</state>
+          <state>MiniGPSx.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -1559,7 +1559,7 @@
         </option>
         <option>
           <name>ExtraOutputFile</name>
-          <state>mini_gps.a79</state>
+          <state>MiniGPSx.a79</state>
         </option>
         <option>
           <name>ExtraOutputFormat</name>
@@ -2197,7 +2197,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>mini_gps.elf</state>
+          <state>MiniGPSx.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -2383,7 +2383,7 @@
         </option>
         <option>
           <name>ExtraOutputFile</name>
-          <state>mini_gps.a79</state>
+          <state>MiniGPSx.a79</state>
         </option>
         <option>
           <name>ExtraOutputFormat</name>
@@ -3016,11 +3016,11 @@
         <debug>0</debug>
         <option>
           <name>XOutOverride</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>OutputFile</name>
-          <state>mini_gps.elf</state>
+          <state>MiniGPSx.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -3206,7 +3206,7 @@
         </option>
         <option>
           <name>ExtraOutputFile</name>
-          <state>mini_gps.a79</state>
+          <state>MiniGPSx.a79</state>
         </option>
         <option>
           <name>ExtraOutputFormat</name>
