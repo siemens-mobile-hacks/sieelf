@@ -680,6 +680,14 @@ MidletSigner/main.c -text
 MidletSigner/objects.h -text
 MidletSigner/test.xcl -text
 MidletSigner/zipstruct.h -text
+MiniGPSx/MiniGPSx.ewp -text
+MiniGPSx/MiniGPSx.eww -text
+MiniGPSx/conf_loader.c -text
+MiniGPSx/conf_loader.h -text
+MiniGPSx/config_data.c -text
+MiniGPSx/func.asm -text
+MiniGPSx/main.c -text
+MiniGPSx/test.xcl -text
 MultiSimPatch/MultiSimElf/MultiSimElf.ewp -text
 MultiSimPatch/MultiSimElf/MultiSimElf.eww -text
 MultiSimPatch/MultiSimElf/conf_loader.c -text
