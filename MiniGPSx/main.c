@@ -151,8 +151,8 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
           {
             void *canvasdata = ((void **)idata)[DISPLACE_OF_IDLECANVAS / 4];
 #endif
-            DrawCanvas(canvasdata,cfgx,cfgy,cfgx+Get_WS_width(corr_name,cfgfont),cfgy+GetFontYSIZE(cfgfont),1);
-            DrawString(corr_name,cfgx,cfgy,cfgx+Get_WS_width(corr_name,cfgfont),cfgy+GetFontYSIZE(cfgfont),
+            DrawCanvas(canvasdata,cfgx,cfgy,cfgx+Get_WS_width(corr_name,cfgfont)+5,cfgy+GetFontYSIZE(cfgfont),1);
+            DrawString(corr_name,cfgx,cfgy,cfgx+Get_WS_width(corr_name,cfgfont)+5,cfgy+GetFontYSIZE(cfgfont),
                        cfgfont,cfgtext_attribute,cfgcolor,cfgcvcolor);
           }
       }
