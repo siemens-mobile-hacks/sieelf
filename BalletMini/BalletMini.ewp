@@ -1357,7 +1357,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild>"obexcopy.exe" $EXE_DIR$\BalletMini.elf \MMCard\ZBin\BalletMini\BalletMini.elf</postbuild>
+        <postbuild>obexcopy.exe $EXE_DIR$\BalletMini.elf \MMCard\ZBin\BalletMini\BalletMini.elf</postbuild>
       </data>
     </settings>
     <settings>
@@ -1753,7 +1753,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.42A</state>
+          <state>4.41A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -4014,7 +4014,13 @@
     <name>$PROJ_DIR$\string_works.c</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\ToDo.txt</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\urlstack.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\view.h</name>
   </file>
 </project>
 

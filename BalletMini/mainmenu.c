@@ -21,7 +21,7 @@ typedef struct
 }URL_STRUCT;
 
   
-int selurl_menu_onkey(void *gui, GUI_MSG *msg)
+int selurl_menu_onkey(void *gui, GUI_MSG *msg) //bookmarks
 {
   int l;
   URL_STRUCT *ustop=MenuGetUserPointer(gui);
@@ -185,67 +185,6 @@ static void input_url_ghook(GUI *data, int cmd)
 
 static void input_url_locret(void){}
 
-int char_win2utf8(char*d,const char *s) // §æ§å§ß§Ü§è§Ú§ñ §Ó§à§Ù§Ó§â§Ñ§ë§Ñ§Ö§ä §Ü§à§Ý§Ú§é§Ö§ã§ä§Ó§à 
-{                                       // §Õ§à§Ò§Ñ§Ó§Ý§Ö§ß§ß§í§ç §ã§Ú§Þ§Ó§à§Ý§à§Ó §Ó d
-  char hex[] = "0123456789ABCDEF";
-  char *d0 = "%D0%";
-  char *d1 = "%D1%";
-  unsigned char b = *s, lb, ub;
-  int r = 0, ab;
-  if(b >= 0xC0 && b <= 0xFF)           //§Ö§ã§Ý§Ú §ï§ä§à §â§å§ã§ã§Ü§Ñ§ñ §Ò§å§Ü§Ó§Ñ §Ó §Ü§à§Õ§Ö win1251
-  {
-    ab = 0x350;                        //§ã§é§Ú§ä§Ñ§Ö§Þ §Ö§× unicode-§ß§à§Þ§Ö§â
-    ab += b;
-    ub = 0xC0 | ((ab>>6) & 0x1F);      //§Ó§í§é§Ú§ã§Ý§ñ§Ö§Þ §Ò§í§ä§à§Ó§í§Ö §Ü§à§Þ§á§à§ß§Ö§ß§ä§í §Õ§Ý§ñ utf8
-    lb = 0x80 | (ab & 0x3F);
-    *d = '%'; d++;
-    *d = hex[(ub>>4)&0xF]; d++;        //§Ú §Ü§Ý§Ñ§Õ§×§Þ §Ó §Ò§å§æ§Ö§â §â§Ö§Ù§å§Ý§î§ä§Ñ§ä§Ñ
-    *d = hex[ub     &0xF]; d++;
-    *d = '%'; d++;
-    *d = hex[(lb>>4)&0xF]; d++;
-    *d = hex[lb     &0xF]; d++;
-    r = 6;
-  }
-  else
-      if(b == 0xA8)
-      {
-        memcpy(d, d0, 4);              //§á§Ñ§â§Ñ §à§ã§à§Ò§í§ç §ã§Ý§å§é§Ñ§Ö§Ó §Õ§Ý§ñ §Ò§å§Ü§Ó§í "§×"
-        d+=4;
-        *d = '8'; d++;
-        *d = '1'; d++;
-        r = 6;
-      }
-      else
-        if(b == 0xB8)
-        {
-        memcpy(d, d1, 4);
-        d+=4;
-        *d = '9'; d++;
-        *d = '1'; d++;
-        r = 6;
-        }
-  return r;
-}
-
-char * ToWeb(char *src)                   //§Ü§à§ß§Ó§Ö§â§ä§Ú§â§å§Ö§Þ §ã§ã§í§Ý§Ü§å §Ó utf8
-{
-  int cnt = 0, i, j;
-  char *ret;
-  for(i = 0; src[i]; i++)                 //§ã§é§Ú§ä§Ñ§Ö§Þ §â§å§ã§ã§Ü§Ú§Ö §ã§Ú§Þ§Ó§à§Ý§í
-    if((unsigned char)src[i] >= 0x80) cnt++;
-  ret = malloc(strlen(src) + cnt*6 + 1);  //§Ó§í§Õ§Ö§Ý§ñ§Ö§Þ §á§Ñ§Þ§ñ§ä§î §á§à§Õ utf8-§ã§ä§â§à§Ü§å
-  for(i = 0, j = 0; src[i]; i++)
-    if((unsigned char)src[i] >= 0x80)
-      j += char_win2utf8(ret+j, src+i);   //§á§à§Ý§å§é§Ñ§Ö§Þ §Ó§Þ§Ö§ã§ä§à §â§å§ã§ã§Ü§à§Ô§à §ã§Ú§Þ§Ó§à§Ý§Ñ utf8-§Ù§Ñ§Þ§Ö§ß§å
-    else
-      ret[j++] = src[i];
-  ret[j] = 0;
-  mfree(src);                             //§à§ã§Ó§à§Ò§à§Ø§Õ§Ñ§Ö§Þ §á§Ñ§Þ§ñ§ä§î §à§ä §Ú§ã§ç§à§Õ§ß§à§Û §ã§ä§â§à§Ü§Ú
-  return ret;
-}
-
-
-
 static int input_url_onkey(GUI *data, GUI_MSG *msg)
 {
   EDITCONTROL ec;
@@ -260,7 +199,7 @@ static int input_url_onkey(GUI *data, GUI_MSG *msg)
     *s++='/';
     for (int i=0; i<ws->wsbody[0]; i++) *s++=char16to8(ws->wsbody[i+1]);
     *s = 0;
-    goto_url = ToWeb(goto_url);
+    goto_url = ToWeb(goto_url,0);
     return (0xFF);
   }
   return (0);
@@ -299,18 +238,28 @@ int CreateInputUrl()
   void *eq;
   EDITCONTROL ec;
   
-  
   eq=AllocEQueue(ma,mfree_adr());    // Extension
   WSHDR *ews=AllocWS(1024);
-  
-  switch(view_url_mode)
+
+  MAIN_CSM *main_csm;
+  if ((main_csm=(MAIN_CSM *)FindCSMbyID(maincsm_id)))
   {
-  case MODE_FILE:
-    str_2ws(ews,view_url,255);
-    break;
-  case MODE_URL:
-    ascii2ws(ews,view_url+2);
-    break;
+    VIEW_GUI *p=FindGUIbyId(main_csm->view_id,NULL);
+    if (p->vd->pageurl)
+      str_2ws(ews,p->vd->pageurl+2,strlen(p->vd->pageurl)-2);
+    else
+    {
+      // url §ß§Ö §Ù§Ñ§Ô§â§å§Ø§Ö§ß
+      switch(view_url_mode)
+      {
+      case MODE_FILE:
+        str_2ws(ews,view_url,255);
+        break;
+      case MODE_URL:
+        ascii2ws(ews,view_url+2);
+        break;
+      }
+    }
   }
 
   PrepareEditControl(&ec);

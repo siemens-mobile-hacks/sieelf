@@ -1,5 +1,6 @@
 #include "view.h"
 
+unsigned int _rshort2(char *p);
 int strcmp_nocase(const char *s, const char *d);
 int omstrcmp(VIEWDATA *vd, unsigned int ps, unsigned int pd);
 char *globalstr(const char *s);
@@ -9,4 +10,7 @@ int char16to8(int c);
 int char8to16(int c);
 void ascii2ws(WSHDR *ws, const char *s);
 char *extract_omstr(VIEWDATA *vd, unsigned int pos);
-
+int char_win2utf8(char*d,const char *s);
+char * ToWeb(char *src,int special);
+char* Correct_UTF8_String(char* utf8_str);
+void oms2ws(WSHDR *ws, const char *text, int len);
