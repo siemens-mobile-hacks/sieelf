@@ -230,7 +230,7 @@
 0340: 0xA8E2723C   ;  D0: RamAccPoint
 0344: 0xA8EAAC5C   ;  D1: RamScreensaver
 ;348:              ;  D2: RamAutoTime
-034C: 0xA8A80000   ;  D3: RamStby
+034C: 0xA8D00000   ;  D3: RamStby
 0350: 0xA8F20DE4   ;  D4: RamMissedMes
 0354: 0xA8DF3458   ;  D5: RamIsLocked
 0358: 0xA8E69374   ;  D6: RamNetOnline
