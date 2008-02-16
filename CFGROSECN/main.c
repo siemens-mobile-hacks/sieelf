@@ -1,10 +1,40 @@
-#include <swilib.h>
-#include <cfg_items.h>
-#include <sieapi.h>
+#include "..\inc\swilib.h"
+#include "..\inc\cfg_items.h"
 #include <errno.h>
+
+extern long  strtol (const char *nptr,char **endptr,int base);
+extern unsigned long  strtoul (const char *nptr,char **endptr,int base);
 
 void EditCoordinates(void *rect_or_xy, int is_rect);
 extern void EditColors(char*color);
+#pragma inline
+//===============================================================================================
+#pragma inline
+void patch_rect(RECT*rc,int x,int y, int x2, int y2)
+{
+  rc->x=x;
+  rc->y=y;
+  rc->x2=x2;
+  rc->y2=y2;
+}
+
+#pragma inline
+void patch_header(HEADER_DESC* head)
+{
+  head->rc.x=0;
+  head->rc.y=YDISP;
+  head->rc.x2=ScreenW()-1;
+  head->rc.y2=HeaderH()+YDISP-1;
+}
+#pragma inline
+void patch_input(INPUTDIA_DESC* inp)
+{
+  inp->rc.x=0;
+  inp->rc.y=HeaderH()+1+YDISP;
+  inp->rc.x2=ScreenW()-1;
+  inp->rc.y2=ScreenH()-SoftkeyH()-1;
+}
+//===============================================================================================
 
 #ifdef NEWSGOLD
 #define CBOX_CHECKED 0xE116
@@ -14,9 +44,9 @@ extern void EditColors(char*color);
 #define CBOX_UNCHECKED 0xE10C
 #endif
 
-//uword *codemap;
 
-uword level=0;
+
+unsigned int level=0;
 CFG_HDR *levelstack[16];
 
 int icon[]={0x58,0};
@@ -30,12 +60,12 @@ char *cfg;
 int size_cfg;
 
 CFG_HDR *cfg_h[512];
-uword total_items;
+int total_items;
 
 SOFTKEY_DESC menu_sk[]=
 {
-  {0x0018,0x0000,(int)""},
-  {0x0001,0x0000,(int)""},
+  {0x0018,0x0000,(int)"Ñ¡Ôñ"},
+  {0x0001,0x0000,(int)"¹Ø±Õ"},
   {0x003D,0x0000,(int)"+"}
 };
 
@@ -59,14 +89,13 @@ const char _percent_u[]="%u";
 const char _percent_d[]="%d";
 const char _percent_t[]="%t";
 
-//const char _mmc_etc_path[]="4:\\Zbin\\etc\\";
-//const char _data_etc_path[]="0:\\Zbin\\etc\\";
+const char _mmc_etc_path[]="4:\\Zbin\\etc\\";
+const char _data_etc_path[]="0:\\Zbin\\etc\\";
 
 int create_ed(CFG_HDR *);
 unsigned int char16to8(unsigned int c);
 
 void ed1_locret(void){}
-void ErrorMsg(const char *msg);
 
 extern void open_select_file_gui(void *ed_gui, int type);
 
@@ -105,7 +134,8 @@ int IsFieldCorrect(void *data, int ec_index)
         wsprintf(ws1,_percent_u,vui);
         EDIT_SetTextToEditControl(data,ec_index,ws1);
       }
-      break;  
+      break;
+      
     case CFG_INT:
       vi=strtol(ss,0,10);
       if (vi<(int)hp->min || vi>(int)hp->max || !ws1->wsbody[0] || (err=*_Geterrno())==ERANGE)
@@ -135,11 +165,9 @@ void on_utf8ec(USR_MENU_ITEM *item)
     {
     case 0:
       wsprintf(item->ws,_percent_t,"Ñ¡ÔñÄ¿Â¼");
-      //Ascii2WS(codemap,item->ws,"Ñ¡ÔñÄ¿Â¼",0);
       break;
     case 1:
       wsprintf(item->ws,_percent_t,"Ñ¡ÔñÎÄ¼þ");
-      //Ascii2WS(codemap,item->ws,"Ñ¡ÔñÎÄ¼þ",0);
       break;
     }
   }
@@ -179,7 +207,7 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
     if ((i>1)&&(i&1))
     {
       n=(i-3)>>1; //Èíäåêñ ýëåìåíòà ?ìàññèâ?cfg_h
-      hp=cfg_h[n]; 
+      hp=cfg_h[n];
       //Ñ­»·´úÂë
       if((n==0)&&(l==UP_BUTTON || l==VOL_UP_BUTTON)){  
         EDIT_SetFocus(data, total_items*2+1); return(-1);
@@ -212,8 +240,7 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
 	  return 1;
         case CFG_CHECKBOX:
           *((int *)(hp+1))=!*((int *)(hp+1));
-          break;
-          
+          break;          
         case CFG_RECT:
           EditCoordinates((unsigned int *)(hp+1),1);
           break;          
@@ -231,19 +258,9 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
 
 void ed1_ghook(GUI *data, int cmd)
 {
-/*
-#ifdef ELKA
-  static SOFTKEY_DESC ok={0x0FFF,0x0000,267};//Ok
-  static SOFTKEY_DESC back={0x0FFE,0x0000,1020};//Back
-  static SOFTKEY_DESC close={0x0FFE,0x0000,5107};//Close
-#else
-  static SOFTKEY_DESC ok={0x0FFF,0x0000,(int)"OK"};//267
-  static SOFTKEY_DESC back={0x0FFE,0x0000,(int)"Back"};//1020
-  static SOFTKEY_DESC close={0x0FFE,0x0000,(int)"Close"};//5107
-#endif*/
-  static SOFTKEY_DESC ok={0x0FFF,0x0000,(int)"È·¶¨"};//Ok
-  static SOFTKEY_DESC back={0x0FFE,0x0000,(int)"·µ»Ø"};//Back
-  static SOFTKEY_DESC close={0x0FFE,0x0000,(int)"¹Ø±Õ"};//Close
+  static SOFTKEY_DESC ok={0x0FFF,0x0000,(int)"±£´æ"};
+  static SOFTKEY_DESC back={0x0FFE,0x0000,(int)"·µ»Ø"};
+  static SOFTKEY_DESC close={0x0FFE,0x0000,(int)"¹Ø±Õ"};
   EDITCONTROL ec;
   int i;
   int n;
@@ -293,12 +310,13 @@ void ed1_ghook(GUI *data, int cmd)
       case CFG_STR_UTF8:
         ws_2str(ews,(char *)(hp+1),hp->max);
         break;
-
       case CFG_UTF8_STRING:
         // ws_2utf8( WSHDR *from, char *to , int *result_length, int max_len);
         ws_2utf8(ews,(char *)(hp+1),&utf8conv_res_len,hp->max);
-        break;        
-        
+        break;
+      case CFG_STR_GB:
+      	ws2gb(ews,(char *)(hp+1),hp->max);
+      	break;  
       case CFG_STR_PASS:
       case CFG_STR_WIN1251:
         j=0;
@@ -349,8 +367,7 @@ void ed1_ghook(GUI *data, int cmd)
         break;
       case CFG_LEVEL:
         need_set_sk=1;
-        break;
-        
+        break;        
       default:
         break;      
       }
@@ -385,7 +402,6 @@ void ed1_ghook(GUI *data, int cmd)
         if ((j=EDIT_GetItemNumInFocusedComboBox(data)))
         {
           wsprintf(ews,_percent_t,((CFG_CBOX_ITEM*)((char *)hp+sizeof(CFG_HDR)+4))+(j-1));
-          //Ascii2WS(codemap,ews,(char*)(((CFG_CBOX_ITEM*)((char *)hp+sizeof(CFG_HDR)+4))+(j-1)), 0);
         }
         else
         {
@@ -397,13 +413,9 @@ void ed1_ghook(GUI *data, int cmd)
     }
   }
 }
-/*
-#ifdef ELKA
-HEADER_DESC ed1_hdr={0,0,0,0,NULL,2898,LGP_NULL};//8631 1028
-#else
-HEADER_DESC ed1_hdr={0,0,0,0,NULL,(int)"Edit Config",LGP_NULL};//8631
-#endif*/
-HEADER_DESC ed1_hdr={0,0,0,0,NULL,(int)"±à¼­ÅäÖÃ",LGP_NULL};//8631 1028
+
+HEADER_DESC ed1_hdr={0,0,0,0,NULL,(int)"±à¼­ÅäÖÃ",LGP_NULL};
+
 INPUTDIA_DESC ed1_desc=
 {
   1,
@@ -420,8 +432,10 @@ INPUTDIA_DESC ed1_desc=
 
 //  0x00000001 - Âûðîâíÿòü ïî ïðàâîì?êðàþ
 //  0x00000002 - Âûðîâíÿòü ïî öåíòðó
-//  0x00000004 - Èíâåðñ? çíàêîìåñ?//  0x00000008 - UnderLine
-//  0x00000020 - Íå ïåðåíîñèòü ñëîâ?//  0x00000200 - bold
+//  0x00000004 - Èíâåðñ? çíàêîìåñ
+//  0x00000008 - UnderLine
+//  0x00000020 - Íå ïåðåíîñèòü ñëîâ
+//  0x00000200 - bold
   0,
 
 //  0x00000002 - ReadOnly
@@ -431,7 +445,7 @@ INPUTDIA_DESC ed1_desc=
 };
 
 
-
+void ErrorMsg(const char *msg);
 void UpdateCSMname(const char *fname);
 
 int LoadCfg(char *cfgname)
@@ -449,14 +463,14 @@ int LoadCfg(char *cfgname)
       size_cfg=fstat.size;
       if (size_cfg<=0)
       {
-        ErrorMsg(".BCFGÅäÖÃÎÄ¼þ³¤¶ÈÎª0!");//Zero lenght of .bcfg file!
+        ErrorMsg(".bcfgÎÄ¼þ³¤¶ÈÎª0!");
       }
       else
       {
         cfg=malloc((size_cfg+3)&(~3));
         if (fread(f,cfg,size_cfg,&err)!=size_cfg)
         {
-          ErrorMsg("²»ÄÜ¶ÁÈ¡.BCFGÎÄ¼þ!");//Can't read .bcfg file!
+          ErrorMsg("²»ÄÜ¶ÁÈ¡.bcfgÎÄ¼þ!");
           mfree(cfg);
         }
         else result=1;
@@ -525,12 +539,12 @@ void selbcfg_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
   {
     len=strlen(sbtop->cfgname);
     ws=AllocMenuWS(gui,len+4);
-    wsprintf(ws,_percent_t,sbtop->cfgname);
+    str_2ws(ws,sbtop->cfgname,128);
   }
   else
   {
     ws=AllocMenuWS(gui,10);
-    wsprintf(ws,_percent_t,"´íÎó!");
+    wsprintf(ws,_percent_t,"Î´Öª");
   }
   SetMenuItemText(gui, item, ws, cur_item);
 }
@@ -538,8 +552,8 @@ void selbcfg_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
 int selbcfg_softkeys[]={0,1,2};
 SOFTKEY_DESC selbcfg_sk[]=
 {
-  {0x0018,0x0000,(int)"´ò¿ª"},//Select
-  {0x0001,0x0000,(int)"¹Ø±Õ"},//Close
+  {0x0018,0x0000,(int)"Ñ¡Ôñ"},
+  {0x0001,0x0000,(int)"¹Ø±Õ"},
   {0x003D,0x0000,(int)"+"}
 };
 
@@ -547,13 +561,7 @@ SOFTKEYSTAB selbcfg_skt=
 {
   selbcfg_sk,0
 };
-/*
-#ifdef ELKA
-HEADER_DESC selbcfg_HDR={0,0,0,0,NULL,2898,LGP_NULL};
-#else
-HEADER_DESC selbcfg_HDR={0,0,0,0,NULL,(int)"Select BCFG",LGP_NULL};
-#endif*/
-HEADER_DESC selbcfg_HDR={0,0,0,0,NULL,(int)"ÅäÖÃÎÄ¼þ",LGP_NULL};
+HEADER_DESC selbcfg_HDR={0,0,0,0,NULL,(int)"Ñ¡Ôñ BCFG",LGP_NULL};
 
 
 MENU_DESC selbcfg_STRUCT=
@@ -572,34 +580,26 @@ int CreateSelectBCFGMenu()
 {
   unsigned int err;
   DIR_ENTRY de;
-  char ETC_DIR[]="4:\\Zbin\\etc\\";
+  const char *s;
   SEL_BCFG *sbtop=0;
   SEL_BCFG *sb;
   int n_bcfg=0;
-  int dir=isdir(ETC_DIR,&err);
-  char str[128];  
-  if (!dir){ 
-    ETC_DIR[0]='0';
-    dir=isdir(ETC_DIR,&err);
-  }  
-  if (!dir){
-    ETC_DIR[0]='1'; 
-    dir=isdir(ETC_DIR,&err);
-  }  
-  if (!dir){ 
-    ETC_DIR[0]='2'; 
-    dir=isdir(ETC_DIR,&err);
-  }  
-  strcpy(str,ETC_DIR);
+  char str[128];
+  if (!isdir((s=_mmc_etc_path),&err))
+  {
+    s=_data_etc_path;
+  }
+  strcpy(str,s);
   strcat(str,"*.bcfg");
   if (FindFirstFile(&de,str,&err))
   {
     do
     {
       if (!(de.file_attr&FA_DIRECTORY))
-      {        
+      {
+        extern int strcmp_nocase(const char *s, const char *d);
         sb=malloc(sizeof(SEL_BCFG));
-        strcpy(sb->fullpath,ETC_DIR);        
+        strcpy(sb->fullpath,s);
         strcat(sb->fullpath,de.file_name);
         strcpy(sb->cfgname,de.file_name);
         sb->cfgname[strlen(de.file_name)-5]=0;
@@ -650,8 +650,7 @@ void maincsm_oncreate(CSM_RAM *data)
   }
   if (find_cfg)
   {
-    //UpdateCSMname("Ñ¡ÔñÅäÖÃÎÄ¼þSelect BCFG");
-    UpdateCSMname("ÅäÖÃÎÄ¼þ");
+    UpdateCSMname("Ñ¡Ôñ BCFG");
     csm->sel_bcfg_id=CreateSelectBCFGMenu();    
   }
   csm->csm.state=0;
@@ -681,7 +680,6 @@ void maincsm_onclose(CSM_RAM *csm)
 {
   FreeWS(ews);
   if (cfg) mfree(cfg);
-  //FreeFontLib(codemap);
   SUBPROC((void *)Killer);
 }
 
@@ -762,10 +760,42 @@ typedef struct
   char koi8;
 } TUNICODE2CHAR;
 
-static const TUNICODE2CHAR unicode2char[]=
+const TUNICODE2CHAR unicode2char[]=
 {
   // CAPITAL Cyrillic letters (base)
-  0x410,0x80,0xC0,0xE1, // ?  0x411,0x81,0xC1,0xE2, // ?  0x412,0x82,0xC2,0xF7, // ?  0x413,0x83,0xC3,0xE7, // ?  0x414,0x84,0xC4,0xE4, // ?  0x415,0x85,0xC5,0xE5, // ?  0x416,0x86,0xC6,0xF6, // ?  0x417,0x87,0xC7,0xFA, // ?  0x418,0x88,0xC8,0xE9, // ?  0x419,0x89,0xC9,0xEA, // ?  0x41A,0x8A,0xCA,0xEB, // ?  0x41B,0x8B,0xCB,0xEC, // ?  0x41C,0x8C,0xCC,0xED, // ?  0x41D,0x8D,0xCD,0xEE, // ?  0x41E,0x8E,0xCE,0xEF, // ?  0x41F,0x8F,0xCF,0xF0, // ?  0x420,0x90,0xD0,0xF2, // ?  0x421,0x91,0xD1,0xF3, // ?  0x422,0x92,0xD2,0xF4, // ?  0x423,0x93,0xD3,0xF5, // ?  0x424,0x94,0xD4,0xE6, // ?  0x425,0x95,0xD5,0xE8, // ?  0x426,0x96,0xD6,0xE3, // ?  0x427,0x97,0xD7,0xFE, // ?  0x428,0x98,0xD8,0xFB, // ?  0x429,0x99,0xD9,0xFD, // ?  0x42A,0x9A,0xDA,0xFF, // ?  0x42B,0x9B,0xDB,0xF9, // ?  0x42C,0x9C,0xDC,0xF8, // ?  0x42D,0x9D,0xDD,0xFC, // ?  0x42E,0x9E,0xDE,0xE0, // ?  0x42F,0x9F,0xDF,0xF1, // ?  // CAPITAL Cyrillic letters (additional)
+  0x410,0x80,0xC0,0xE1, // 
+  0x411,0x81,0xC1,0xE2, // 
+  0x412,0x82,0xC2,0xF7, // 
+  0x413,0x83,0xC3,0xE7, // 
+  0x414,0x84,0xC4,0xE4, // 
+  0x415,0x85,0xC5,0xE5, // 
+  0x416,0x86,0xC6,0xF6, // 
+  0x417,0x87,0xC7,0xFA, // 
+  0x418,0x88,0xC8,0xE9, // 
+  0x419,0x89,0xC9,0xEA, // 
+  0x41A,0x8A,0xCA,0xEB, // 
+  0x41B,0x8B,0xCB,0xEC, // 
+  0x41C,0x8C,0xCC,0xED, // 
+  0x41D,0x8D,0xCD,0xEE, // 
+  0x41E,0x8E,0xCE,0xEF, // 
+  0x41F,0x8F,0xCF,0xF0, // 
+  0x420,0x90,0xD0,0xF2, // 
+  0x421,0x91,0xD1,0xF3, // 
+  0x422,0x92,0xD2,0xF4, // 
+  0x423,0x93,0xD3,0xF5, // 
+  0x424,0x94,0xD4,0xE6, // 
+  0x425,0x95,0xD5,0xE8, // 
+  0x426,0x96,0xD6,0xE3, // 
+  0x427,0x97,0xD7,0xFE, // 
+  0x428,0x98,0xD8,0xFB, // 
+  0x429,0x99,0xD9,0xFD, // 
+  0x42A,0x9A,0xDA,0xFF, // 
+  0x42B,0x9B,0xDB,0xF9, // 
+  0x42C,0x9C,0xDC,0xF8, // 
+  0x42D,0x9D,0xDD,0xFC, // 
+  0x42E,0x9E,0xDE,0xE0, // 
+  0x42F,0x9F,0xDF,0xF1, // 
+  // CAPITAL Cyrillic letters (additional)
   0x402,'_',0x80,'_', // _ .*.*
   0x403,'_',0x81,'_', // _ .*.*
   0x409,'_',0x8A,'_', // _ .*.*
@@ -776,10 +806,44 @@ static const TUNICODE2CHAR unicode2char[]=
   0x40E,0xF6,0xA1,'_', // ?...*
   0x408,0x4A,0xA3,0x4A, // _ .*.*
   0x409,0x83,0xA5,0xBD, // _ .*..
-  0x401,0xF0,0xA8,0xB3, // ?  0x404,0xF2,0xAA,0xB4, // ?  0x407,0xF4,0xAF,0xB7, // ?  0x406,0x49,0xB2,0xB6, // _ .*..
+  0x401,0xF0,0xA8,0xB3, // 
+  0x404,0xF2,0xAA,0xB4, // 
+  0x407,0xF4,0xAF,0xB7, // 
+  0x406,0x49,0xB2,0xB6, // _ .*..
   0x405,0x53,0xBD,0x53, // _ .*.*
   // SMALL Cyrillic letters (base)
-  0x430,0xA0,0xE0,0xC1, // ?  0x431,0xA1,0xE1,0xC2, // ?  0x432,0xA2,0xE2,0xD7, // ?  0x433,0xA3,0xE3,0xC7, // ?  0x434,0xA4,0xE4,0xC4, // ?  0x435,0xA5,0xE5,0xC5, // ?  0x436,0xA6,0xE6,0xD6, // ?  0x437,0xA7,0xE7,0xDA, // ?  0x438,0xA8,0xE8,0xC9, // ?  0x439,0xA9,0xE9,0xCA, // ?  0x43A,0xAA,0xEA,0xCB, // ?  0x43B,0xAB,0xEB,0xCC, // ?  0x43C,0xAC,0xEC,0xCD, // ?  0x43D,0xAD,0xED,0xCE, // ?  0x43E,0xAE,0xEE,0xCF, // ?  0x43F,0xAF,0xEF,0xD0, // ?  0x440,0xE0,0xF0,0xD2, // ?  0x441,0xE1,0xF1,0xD3, // ?  0x442,0xE2,0xF2,0xD4, // ?  0x443,0xE3,0xF3,0xD5, // ?  0x444,0xE4,0xF4,0xC6, // ?  0x445,0xE5,0xF5,0xC8, // ?  0x446,0xE6,0xF6,0xC3, // ?  0x447,0xE7,0xF7,0xDE, // ?  0x448,0xE8,0xF8,0xDB, // ?  0x449,0xE9,0xF9,0xDD, // ?  0x44A,0xEA,0xFA,0xDF, // ?  0x44B,0xEB,0xFB,0xD9, // ?  0x44C,0xEC,0xFC,0xD8, // ?  0x44D,0xED,0xFD,0xDC, // ?  0x44E,0xEE,0xFE,0xC0, // ?  0x44F,0xEF,0xFF,0xD1, // ÿ
+  0x430,0xA0,0xE0,0xC1, // 
+  0x431,0xA1,0xE1,0xC2, // 
+  0x432,0xA2,0xE2,0xD7, // 
+  0x433,0xA3,0xE3,0xC7, // 
+  0x434,0xA4,0xE4,0xC4, // 
+  0x435,0xA5,0xE5,0xC5, // 
+  0x436,0xA6,0xE6,0xD6, // 
+  0x437,0xA7,0xE7,0xDA, // 
+  0x438,0xA8,0xE8,0xC9, // 
+  0x439,0xA9,0xE9,0xCA, // 
+  0x43A,0xAA,0xEA,0xCB, // 
+  0x43B,0xAB,0xEB,0xCC, // 
+  0x43C,0xAC,0xEC,0xCD, // 
+  0x43D,0xAD,0xED,0xCE, // 
+  0x43E,0xAE,0xEE,0xCF, // 
+  0x43F,0xAF,0xEF,0xD0, // 
+  0x440,0xE0,0xF0,0xD2, // 
+  0x441,0xE1,0xF1,0xD3, // 
+  0x442,0xE2,0xF2,0xD4, // 
+  0x443,0xE3,0xF3,0xD5, // 
+  0x444,0xE4,0xF4,0xC6, // 
+  0x445,0xE5,0xF5,0xC8, // 
+  0x446,0xE6,0xF6,0xC3, // 
+  0x447,0xE7,0xF7,0xDE, // 
+  0x448,0xE8,0xF8,0xDB, // 
+  0x449,0xE9,0xF9,0xDD, // 
+  0x44A,0xEA,0xFA,0xDF, // 
+  0x44B,0xEB,0xFB,0xD9, // 
+  0x44C,0xEC,0xFC,0xD8, // 
+  0x44D,0xED,0xFD,0xDC, // 
+  0x44E,0xEE,0xFE,0xC0, // 
+  0x44F,0xEF,0xFF,0xD1, // ÿ
   // SMALL Cyrillic letters (additional)
   0x452,'_',0x90,'_', // _ .*.*
   0x453,'_',0x83,'_', // _ .*.*
@@ -791,16 +855,22 @@ static const TUNICODE2CHAR unicode2char[]=
   0x45E,0xF7,0xA2,'_', // ?...*
   0x458,0x6A,0xBC,0x6A, // _ .*.*
   0x491,0xA3,0xB4,0xAD, // _ .*..
-  0x451,0xF1,0xB8,0xA3, // ?  0x454,0xF3,0xBA,0xA4, // ?  0x457,0xF5,0xBF,0xA7, // ?  0x456,0x69,0xB3,0xA6, // _ .*..
+  0x451,0xF1,0xB8,0xA3, // 
+  0x454,0xF3,0xBA,0xA4, // 
+  0x457,0xF5,0xBF,0xA7, // 
+  0x456,0x69,0xB3,0xA6, // _ .*..
   0x455,0x73,0xBE,0x73, // _ .*.*
   0x0A0,'_',0xA0,0x20, // space .*..
   0x0A4,'_',0xA4,0xFD, // ?  .*..
   0x0A6,'_',0xA6,'_', // ?  .*.*
-  0x0B0,0xF8,0xB0,0x9C, // ?  0x0B7,0xFA,0xB7,0x9E, // ?  // 0x2022,,0x95,0x95, //    .*..
+  0x0B0,0xF8,0xB0,0x9C, // 
+  0x0B7,0xFA,0xB7,0x9E, // 
+  // 0x2022,,0x95,0x95, //    .*..
   // 0x2116,0xFC,0xB9,0x23, // ?  ...*
   // 0x2219,,0xF9,0x9E, //    .*..
   // 0x221A,0xFB,,0x96, // v   ..*.
-  // 0x25A0,0xFE,,0x94, // ?  0x0000,0,0,0
+  // 0x25A0,0xFE,,0x94, // 
+  0x0000,0,0,0
 };
 
 unsigned int char16to8(unsigned int c)
@@ -824,7 +894,9 @@ unsigned int char16to8(unsigned int c)
 
 void UpdateCSMname(const char *fname)
 {
-  char *s,EDIT[128];
+  char *s;
+//  int i;
+  WSHDR *ws=AllocWS(256);
   if ((s=strrchr(fname,'\\'))==0)
   {
     if ((s=strrchr(fname,'/'))==0)
@@ -832,26 +904,21 @@ void UpdateCSMname(const char *fname)
       if ((s=strrchr(fname,':'))==0) s=(char *)fname-1;
     }
   }
-  s++;  
-  sprintf(EDIT,"ÎÄ¼þ:%s",s);
-  //Ascii2WS(codemap,(WSHDR *)(&MAINCSM.maincsm_name),EDIT,0);
-  //WSHDR *ws=AllocWS(256);
-  //str_2ws(ws,s,128);
-  wsprintf((WSHDR *)(&MAINCSM.maincsm_name),"%t",EDIT);
-  //FreeWS(ws);
+  s++;
+  str_2ws(ws,s,128);
+  wsprintf((WSHDR *)(&MAINCSM.maincsm_name),"%t%w","ÅäÖÃ:",ws);
+  FreeWS(ws);
 }
 
 void ErrorMsg(const char *msg)
 {
   LockSched();
-  ShowMSG(2,(int)msg);
+  ShowMSG(1,(int)msg);
   UnlockSched();
 }
-//char picpath[]="4:\\ZBin\\IMG\\cfgedit.png";
+
 int main(const char *elf_name, const char *fname)
 {
-  //codemap=LoadFontLib();
- // picpath[0]=elf_name[0];
   MAIN_CSM main_csm;
   if (fname) strncpy(cfg_name,fname,255);
   zeromem(&main_csm,sizeof(MAIN_CSM));
@@ -875,7 +942,6 @@ int getnumwidth(unsigned int num)
 
 int create_ed(CFG_HDR *need_to_focus)
 {
-  //char ERROR[128];
   void *ma=malloc_adr();
   void *eq;
   EDITCONTROL ec;
@@ -903,10 +969,8 @@ int create_ed(CFG_HDR *need_to_focus)
   {
     hp=(CFG_HDR*)p;
     cfg_h[total_items]=hp;
-    //Äîáàâëÿåì çàãîëîâî?èòåì?    
+    //Äîáàâëÿåì çàãîëîâî?èòåì
     wsprintf(ews,"%t:",hp->name);
-    //Ascii2WS(codemap,ews,hp->name,0);
-    //wsAppendChar(ews, ':');    
     if (hp->type==CFG_LEVEL)
     {
       if (hp->min)
@@ -922,7 +986,7 @@ int create_ed(CFG_HDR *need_to_focus)
 	{
 	  parent=parents[curlev];
 	  curlev--;
-	}      
+	}
     }
     else
     {
@@ -948,8 +1012,7 @@ int create_ed(CFG_HDR *need_to_focus)
       if (n<0)
       {
       L_ERRCONSTR:
-        //Ascii2WS(codemap,ews,"ÅäÖÃÒâÍâ½áÊø!!!",0);
-        wsprintf(ews,"²»¿ÉÔ¤ÁÏµÄ½ØÖ¹Î»ÖÃ!!!");
+        wsprintf(ews,_percent_t,"²»¿ÉÔ¤ÁÏµÄ½ØÖ¹Î»ÖÃ!!!");
       L_ERRCONSTR1:
         ConstructEditControl(&ec,1,0x40,ews,256);
         AddEditControlToEditQend(eq,&ec,ma);
@@ -962,7 +1025,7 @@ int create_ed(CFG_HDR *need_to_focus)
 	AddEditControlToEditQend(eq,&ec,ma); //EditControl n*2+3
       }
       p+=sizeof(unsigned int);
-      break; 
+      break;
     case CFG_INT:
       n-=sizeof(int);
       if (n<0) goto L_ERRCONSTR;
@@ -990,6 +1053,7 @@ int create_ed(CFG_HDR *need_to_focus)
       }
       p+=(hp->max+1+3)&(~3);
       break;
+    case CFG_STR_GB:
     case CFG_STR_WIN1251:
       n-=(hp->max+1+3)&(~3);
       if (n<0) goto L_ERRCONSTR;
@@ -1020,14 +1084,12 @@ int create_ed(CFG_HDR *need_to_focus)
       i=*((int *)p);
       if (i>=hp->max)
       {
-        //Ascii2WS(codemap,ews,"»µË÷ÒýÔÚÁÐ±íÖÐ!!!",0);
-        wsprintf(ews,"´íÎóµÄÑ¡ÔñÏîË÷Òý!!!");
+        wsprintf(ews,_percent_t,"´íÎóµÄÑ¡ÔñÏîË÷Òý!!!");
         goto L_ERRCONSTR1;
       }
       if ((curlev==level)&&(parent==levelstack[level]))
       {
         wsprintf(ews,_percent_t,((CFG_CBOX_ITEM*)(p+4))+i);
-        //Ascii2WS(codemap,ews,(char *)(((CFG_CBOX_ITEM*)(p+4))+i),0);
 	ConstructComboBox(&ec,7,ECF_APPEND_EOL,ews,32,0,hp->max,i+1);
 	AddEditControlToEditQend(eq,&ec,ma);
       }
@@ -1039,7 +1101,7 @@ int create_ed(CFG_HDR *need_to_focus)
       if ((curlev==level)&&(parent==levelstack[level]))
       {
         wsprintf(ews,_percent_t,p);
-	ConstructEditControl(&ec,4,ECF_APPEND_EOL|ECF_PASSW,ews,hp->max);
+	ConstructEditControl(&ec,3,ECF_APPEND_EOL|ECF_PASSW,ews,hp->max);
 	AddEditControlToEditQend(eq,&ec,ma); //EditControl n*2+3
       }
       p+=(hp->max+1+3)&(~3);
@@ -1069,7 +1131,6 @@ int create_ed(CFG_HDR *need_to_focus)
     case CFG_LEVEL:
       if (n<0) goto L_ERRCONSTR;
       wsprintf(ews,_percent_t,"½øÈë");
-      //Ascii2WS(codemap,ews,"½øÈë",0);
       if (hp->min)
       {
 	if ((curlev==level)&&(parent==levelstack[level]))
@@ -1090,7 +1151,7 @@ int create_ed(CFG_HDR *need_to_focus)
 	curlev++;
 	parents[curlev]=parent;
 	parent=hp;
-      }      
+      }
       continue;
     case CFG_CHECKBOX:
       n-=4;
@@ -1146,10 +1207,8 @@ int create_ed(CFG_HDR *need_to_focus)
       p+=sizeof(RECT);
       break;
       
-    default:      
-      //sprintf(ERROR,"²»Ö§³ÖÏîÄ¿:%d",hp->type);
-      //Ascii2WS(codemap,ews,ERROR,0);
-      wsprintf(ews,"²»Ö§³ÖÏîÄ¿ %d",hp->type);
+    default:
+      wsprintf(ews,_percent_t,"²»Ö§³ÖµÄÏîÄ¿ %d",hp->type);
       ConstructEditControl(&ec,1,ECF_APPEND_EOL,ews,256);
       AddEditControlToEditQend(eq,&ec,ma);
       goto L_ENDCONSTR;

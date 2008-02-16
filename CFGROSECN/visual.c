@@ -1,16 +1,46 @@
-#include <swilib.h>
-#include <sieapi.h>
+#include "..\inc\swilib.h"
 
 char colors[4][4]={{0xFF,0,0,0x64},{0,0xFF,0,0x64},{0,0,0xFF,0x64},{0xC6,0xAA,0xAF,0x32}};
 char black[4]={0x00,0x00,0x00,0x64};
 char white[4]={0xFF,0xFF,0xFF,0x64};
 char transparent[4]={0x00,0x00,0x00,0x00};
+extern long  strtol (const char *nptr,char **endptr,int base);
+extern unsigned long  strtoul (const char *nptr,char **endptr,int base);
+#define MIN(a,b) (a<b)?a:b
+#define MAX(a,b) (a>b)?a:b
 
+#pragma inline
+void patch_rect(RECT*rc,int x,int y, int x2, int y2)
+{
+  rc->x=x;
+  rc->y=y;
+  rc->x2=x2;
+  rc->y2=y2;
+}
+
+//===============================================================================================
+// ELKA Compatibility
+#pragma inline
+void patch_header(HEADER_DESC* head)
+{
+  head->rc.x=0;
+  head->rc.y=YDISP;
+  head->rc.x2=ScreenW()-1;
+  head->rc.y2=HeaderH()+YDISP-1;
+}
+#pragma inline
+void patch_input(INPUTDIA_DESC* inp)
+{
+  inp->rc.x=0;
+  inp->rc.y=HeaderH()+1+YDISP;
+  inp->rc.x2=ScreenW()-1;
+  inp->rc.y2=ScreenH()-SoftkeyH()-1;
+}
+//===============================================================================================
 //  YDISP на?больше не нуже?та?ка?иконба?отключим
-
 #ifdef ELKA  
 #undef YDISP
-#define   YDISP 0
+#define YDISP 0
 #endif
 
 typedef struct
@@ -57,18 +87,13 @@ void DrwImg(IMGHDR *img, int x, int y, char *pen, char *brush)
   SetColor(&drwobj,pen,brush);
   DrawObject(&drwobj);
 }
-//extern char picpath[];
+
 void method0_rect(RECT_GUI *data)
 {
   int scr_w=ScreenW();
   int scr_h=ScreenH();
-  /*
-  FSTATS fs;
-  unsigned int ul;
-  if (!GetFileStats(picpath,&fs,&ul))
-    DrawImg(0,0,(int)picpath);
-  else{
     DrawRectangle(0,YDISP,scr_w-1,scr_h-1,0,white,white);
+    // Нарисуем сетк?    
     for (int y_0=YDISP; y_0< scr_h;y_0+=10)
     {
       DrawLine(0,y_0,scr_w-1,y_0,1,colors[3]);
@@ -77,14 +102,7 @@ void method0_rect(RECT_GUI *data)
     {
       DrawLine(x_0,YDISP,x_0, scr_h-1,1,colors[3]);
     }
-  }*/
-  DrawRectangle(0,YDISP,scr_w-1,scr_h-1,0,white,white);
-  for (int y_0=YDISP; y_0< scr_h;y_0+=10){
-      DrawLine(0,y_0,scr_w-1,y_0,1,colors[3]);
-  }  
-  for (int x_0=0; x_0<scr_w;x_0+=10){
-      DrawLine(x_0,YDISP,x_0, scr_h-1,1,colors[3]);
-  }
+  
   if (data->is_rect_needed)
   {
     DrawRoundedFrame(data->rc->x,data->rc->y,data->rc->x2,data->rc->y2,
@@ -554,6 +572,24 @@ void Free_FLIST(void)
 enum TYPES {IS_BACK, IS_FOLDER, IS_FILE}; 
 const char back[]="..";             
 
+
+int strcmp_nocase(const char *s, const char *d)
+{
+  int cs;
+  int ds;
+  do
+  {
+    cs=*s++;
+    if (cs&0x40) cs&=0xDF;
+    ds=*d++;
+    if (ds&0x40) ds&=0xDF;
+    cs-=ds;
+    if (cs) break;
+  }
+  while(ds);
+  return(cs);
+}
+
 FLIST *AddToFList(const char* full_name, const char *name, int is_folder)
 {
   int l_fname;
@@ -570,7 +606,7 @@ FLIST *AddToFList(const char* full_name, const char *name, int is_folder)
   {
     FLIST *pr;
     pr=(FLIST *)&fltop;
-    while(cmpstr_nocase(fl->name,fn->name)<0)
+    while(strcmp_nocase(fl->name,fn->name)<0)
     {
       pr=fl;
       fl=fl->next;
@@ -784,7 +820,7 @@ void filelist_menu_iconhndl(void *data, int curitem, void *user_pointer)
   else
   {
     ws=AllocMenuWS(data,10);
-    wsprintf(ws, "ґнОу!!!");
+    wsprintf(ws, "ґнОу!");
   }
   SetMenuItemText(data, item, ws, curitem);
 }
@@ -792,16 +828,8 @@ void filelist_menu_iconhndl(void *data, int curitem, void *user_pointer)
 int fmenusoftkeys[]={0,1,2};
 SOFTKEY_DESC fmenu_sk[]=
 {
-/*
-#ifdef ELKA
-  {0x0018,0x0000,57},//Select
-  {0x0001,0x0000,5107},//Close
-#else
-  {0x0018,0x0000,(int)"Select"},
-  {0x0001,0x0000,(int)"Close"},
-#endif*/
-  {0x0018,0x0000,(int)"СЎ¶Ё"},//Select
-  {0x0001,0x0000,(int)"№Ш±Х"},//Close
+  {0x0018,0x0000,(int)"СЎФс"},
+  {0x0001,0x0000,(int)"№Ш±Х"},
   {0x003D,0x0000,(int)"+"}
 };
 
