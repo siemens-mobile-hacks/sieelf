@@ -1,17 +1,42 @@
-//A8ED5139 char *RAMPlayingFilename;
-
-//*(20 63 69 64 20 3D 20 25 64 00 00 00+c)+2d
-
-
-/*
-0000000ch: 4D 65 64 69 61 43 53 4D 5F 53 65 6E 64 44 69 73 ; MediaCSM_SendDis
-0000001ch: 63 6F 6E 6E 65 63 74 52 65 71 75 65 73 74 54 6F ; connectRequestTo
-0000002ch: 43 6F 6E 6E 65 63 74 69 6F 6E 4D 61 6E 61 67 65 ; ConnectionManage
-0000003ch: 72 3A 20 63 69 64 20 3D 20 36 35 35 33 35       ; r: cid = 65535
-*/
 #include "../inc/swilib.h"
 #include "lang.h"
 #include "conf_loader.h"
+
+
+
+typedef struct
+{
+	CSM_RAM csm;
+}MAIN_CSM;
+
+extern kill_data(void *p, void (*func_p)(void *));
+
+extern const unsigned int pos_x;
+extern const unsigned int pos_y;
+extern const unsigned int length;
+extern const unsigned int font;
+extern const char color[4];
+extern const char frmcolor[4];
+extern const unsigned int txt_attr;
+extern const int ENA_LOCK;
+extern const char frmmain_color[4];
+extern const char frmbg_color[4];
+extern const unsigned int xrnd;
+extern const unsigned int yrnd;
+extern const int style;
+extern const unsigned int speed;
+extern const unsigned int wait_time;
+
+WSHDR *ews;
+//WSHDR *ews_2;
+WSHDR *temp;
+int drawname_needed=0;
+int scroll_pos=0;
+GBSTMR mytmr;
+int is_tmr=0;
+//int is_drawname=0;
+char utf8_name[128];
+int is_music_file=0;
 
 #pragma inline=forced
 int toupper(int c)
@@ -48,9 +73,6 @@ int strcmp_nocase(const char *s1, const char *s2)
 
 //gf
 //bmp,bmx,gif,jpeg,jpg,png,svg,wbmp
-
-char utf8_name[128];
-int is_music_file=0;
 void getname(void)
 {
 	char *p=RAMPlayingFilename();
@@ -170,35 +192,79 @@ void getname(void)
 	}
 //gf
 //bmp,bmx,gif,jpeg,jpg,png,svg,wbmp
-end:;
+end:
+	str_2ws(ews, utf8_name, 128);
 	
 }
 
-typedef struct
+int getMaxChars(unsigned short *wsbody, int len, int font) // 获取可显示的最大字符数 Unicode
 {
-	CSM_RAM csm;
-}MAIN_CSM;
+	int ii,width=0;
+	for(ii=0;ii<len;ii++)
+	{
+      width+=GetSymbolWidth(wsbody[ii], font);
+      if (width>=length-4) break;
+	}
+	return ii;
+}
 
-extern kill_data(void *p, void (*func_p)(void *));
+/*
+int wstrcmp(WSHDR *ws1, WSHDR *ws2)
+{
+	int i=0,c,t1,t2;
+	while(!(c=(t1=(ws1->wsbody[i]))-(t2=(ws2->wsbody[i]))))
+	{
+		if(!t1||!t2)
+			break;
+	}
+	return c;
+}*/
 
-extern const unsigned int pos_x;
-extern const unsigned int pos_y;
-extern const unsigned int length;
-extern const unsigned int font;
-extern const char color[4];
-extern const char frmcolor[4];
-extern const unsigned int txt_attr;
-extern const int ENA_LOCK;
-
-WSHDR *ews;
-
-//unsigned int WHITE=0x64FFFFFF;
-//unsigned int BLACK=0x64000000;
+void drawname_proc(void)
+{
+	if(drawname_needed)
+	{
+		/*if(!memcmp(ews, ews_2, sizeof(ews)))
+		{
+			memcpy(ews_2, ews,sizeof(ews));
+			scroll_pos=0;
+		}*/
+		//DrawString(ews,pos_x+2,pos_y+2,pos_x+length-2,pos_y+GetFontYSIZE(font)+2,font,txt_attr,color,frmcolor);
+		if((Get_WS_width(ews, font)>=(length-4))&&speed)
+		{
+			int sc=getMaxChars(&ews->wsbody[scroll_pos+1], ews->wsbody[0]-scroll_pos, font);
+			temp->wsbody[0]=sc;
+			for(int ii=1;ii<sc+1;ii++)
+				temp->wsbody[ii]=ews->wsbody[ii+scroll_pos];
+			DrawString(temp,pos_x+2,pos_y+2,pos_x+length-2,pos_y+GetFontYSIZE(font)+2,font,txt_attr,color,frmcolor);
+			scroll_pos++;
+			int rest_len=0;
+			int i;
+			for (i=scroll_pos+1;i<ews->wsbody[0];i++)
+				rest_len+=GetSymbolWidth(ews->wsbody[i], font);
+			if (rest_len<=(length-4-0x40))
+				scroll_pos = 0;
+			if(scroll_pos==1)
+				GBS_StartTimerProc(&mytmr,wait_time,drawname_proc);
+			else
+				GBS_StartTimerProc(&mytmr,speed,drawname_proc);
+			is_tmr=1;
+		}
+		else
+		{
+			DrawString(ews,pos_x+2,pos_y+2,pos_x+length-2,pos_y+GetFontYSIZE(font)+2,font,txt_attr,color,frmcolor);
+			is_tmr=0;
+		}
+	}
+	else
+	{
+		is_tmr=0;
+		//is_drawname=0;
+	}
+}
 
 int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 {
-#define idlegui_id(icsm) (((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])
-	CSM_RAM *icsm;
 	if(msg->msg==MSG_RECONFIGURE_REQ)
 	{
 		extern const char *successed_config_filename;
@@ -211,6 +277,8 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 	if(IsPlayerOn()&&(ENA_LOCK||IsUnlocked()))
 	{
 		getname();
+#define idlegui_id(icsm) (((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])
+		CSM_RAM *icsm;
 		icsm=FindCSMbyID(CSM_root()->idle_id);
 		if(icsm&&is_music_file)
 		{
@@ -228,20 +296,41 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 					{
 						void *canvasdata = ((void **)idata)[DISPLACE_OF_IDLECANVAS / 4];
 #endif
-						str_2ws(ews, utf8_name, 128);
-						DrawCanvas(canvasdata,pos_x,pos_y,pos_x+length,pos_y+GetFontYSIZE(font),1);
-						DrawString(ews,pos_x,pos_y,pos_x+length,pos_y+GetFontYSIZE(font),font,txt_attr,color,frmcolor);
+						//str_2ws(ews, utf8_name, 128);
+						DrawCanvas(canvasdata,pos_x,pos_y,pos_x+length,pos_y+GetFontYSIZE(font)+4,1);
+						DrawRoundedFrame(pos_x,pos_y,pos_x+length,pos_y+GetFontYSIZE(font)+4, xrnd, yrnd, style, frmmain_color, frmbg_color);
+						drawname_needed=1;
+						//if(!is_drawname)
+						//{
+							drawname_proc();
+						//	is_drawname=0;
+						//}
+						//DrawString(ews,pos_x+2,pos_y+2,pos_x+length-2,pos_y+GetFontYSIZE(font)+2,font,txt_attr,color,frmcolor);
 					}
+#ifndef ELKA
+					else
+						drawname_needed=0;
+#endif
 				}
+				else
+					drawname_needed=0;
 			}
+			else
+				drawname_needed=0;
 		}
+		else
+			drawname_needed=0;
 	}
+	else
+		drawname_needed=0;
 	return 1;
 }
 
 static void maincsm_oncreate(CSM_RAM *data)
 {
 	ews=AllocWS(128);
+	temp=AllocWS(128);
+	//ews_2=AllocWS(128);
 }
 
 
@@ -249,6 +338,9 @@ static void Killer(void)
 {
 	extern void *ELF_BEGIN;
 	FreeWS(ews);
+	FreeWS(temp);
+	//FreeWS(ews_2);
+	if(is_tmr) GBS_DelTimer(&mytmr);
 	kill_data(&ELF_BEGIN, (void (*)(void *))mfree_adr());
 }
 
