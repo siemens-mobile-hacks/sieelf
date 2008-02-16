@@ -1,33 +1,33 @@
 #ifndef _LANGUAGE_H_
 #define _LANGUAGE_H_
 
-//#define LANG_RU
-#define LANG_EN
+#define LANG_ZH
+//#define LANG_EN
 
-#ifdef LANG_RU
+#ifdef LANG_ZH
 
-#define LG_SAVE        "Сохранить"
-#define LG_OPTIONS     "Опции"
-#define LG_SET         "Настройки"
-#define LG_ABOUT       "Об эльфе"
-#define LG_EXIT        "Выход"
-#define LG_MENU        "Меню"
+#define LG_OPTIONS     "СЎПо"
+#define LG_SAVE        "±Јґж"
+#define LG_SET         "ЙиЦГ"
+#define LG_ABOUT       "№ШУЪ"
+#define LG_EXIT        "НЛіц"
+#define LG_MENU        "ІЛµҐ"
 
-#define LG_SELECT      "Выбрать"
-#define LG_CLOSE       "Закрыть"
-#define LG_OPEN        "Открыть"
-#define LG_DEL         "Удалить"
+#define LG_SELECT      "СЎФс"
+#define LG_CLOSE       "№Ш±Х"
+#define LG_OPEN        "їЄЖф"
+#define LG_DEL         "Йѕіэ"
 
-#define LG_FILESAVE    "Файл сохранен!!!"
-#define LG_NOTSAVE     "Не могу сохранить!:("
+#define LG_FILESAVE    "ОДјюТС±Јґж!!!"
+#define LG_NOTSAVE     "±ЈґжІ»іЙ№¦!:("
 
-#define LG_ADD         "Добавить"
+#define LG_ADD         "ФцјУСЎПо"
 
-#define LG_NAME        "Имя:\n"
-#define LG_ICON        "Иконка:"
-#define LG_ACTION      "Действие:\n"
-#define LG_PATH        "Путь/shortcut/entry:\n"
-#define LG_EDIT        "Редактор"
+#define LG_NAME        "ГыіЖ:\n"
+#define LG_ICON        "Нј±к:"
+#define LG_ACTION      "¶ЇЧч:\n"
+#define LG_PATH        "Path/shortcut/entry:\n"
+#define LG_EDIT        "±ај­"
 #endif
 
 #ifdef LANG_EN

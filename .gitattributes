@@ -3141,6 +3141,7 @@ mnuedit/func.asm -text
 mnuedit/language.h -text
 mnuedit/main.c -text
 mnuedit/menu.c -text
+mnuedit/test.xcl -text
 openwith2/conf_loader.c -text
 openwith2/conf_loader.h -text
 openwith2/config_data.c -text
