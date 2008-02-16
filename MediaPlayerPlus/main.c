@@ -90,63 +90,63 @@ void getname(void)
 		{
 			strcpy(&utf8_name[i], ".mp3");
 			is_music_file=1;
-			break;
+			goto end;
 		}
 		if(!strncmp_nocase(p, ".aac", 4))
 		{
 			strcpy(&utf8_name[i], ".aac");
 			is_music_file=1;
-			break;
+			goto end;
 		}
 		if(!strncmp_nocase(p, ".m4a", 4))
 		{
 			strcpy(&utf8_name[i], ".m4a");
 			is_music_file=1;
-			break;
+			goto end;
 		}
 		if(!strncmp_nocase(p, ".wav", 4))
 		{
 			strcpy(&utf8_name[i], ".wav");
 			is_music_file=1;
-			break;
+			goto end;
 		}
 		if(!strncmp_nocase(p, ".amr", 4))
 		{
 			strcpy(&utf8_name[i], ".amr");
 			is_music_file=1;
-			break;
+			goto end;
 		}
 		if(!strncmp_nocase(p, ".mid", 4))
 		{
 			strcpy(&utf8_name[i], ".mid");
 			is_music_file=1;
-			break;
+			goto end;
 		}
 		if(!strncmp_nocase(p, ".3gp", 4))
 		{
 			strcpy(&utf8_name[i], ".3gp");
 			is_music_file=1;
-			break;
+			goto end;
 		}
 		if(!strncmp_nocase(p, ".mp4", 4))
 		{
 			strcpy(&utf8_name[i], ".mp4");
 			is_music_file=1;
-			break;
+			goto end;
 		}
 		if(!strncmp_nocase(p, ".imy", 4))
 		{
 			strcpy(&utf8_name[i], ".imy");
 			is_music_file=1;
-			break;
+			goto end;
 		}
 		if(!strncmp_nocase(p, ".srt", 4))
 		{
 			strcpy(&utf8_name[i], ".srt");
 			is_music_file=1;
-			break;
+			goto end;
 		}
-		if(!strncmp_nocase(p, ".bmp", 4))
+		/*if(!strncmp_nocase(p, ".bmp", 4))
 		{
 			is_music_file=0;
 			break;
@@ -185,11 +185,13 @@ void getname(void)
 		{
 			is_music_file=0;
 			break;
-		}
+		}*/
 		utf8_name[i]=c;
 		i++;
 		p++;
 	}
+	utf8_name[i]=0;
+	is_music_file=0;
 //gf
 //bmp,bmx,gif,jpeg,jpg,png,svg,wbmp
 end:
@@ -202,8 +204,8 @@ int getMaxChars(unsigned short *wsbody, int len, int font) // 获取可显示的最大字
 	int ii,width=0;
 	for(ii=0;ii<len;ii++)
 	{
-      width+=GetSymbolWidth(wsbody[ii], font);
-      if (width>=length-4) break;
+		width+=GetSymbolWidth(wsbody[ii], font);
+		if (width>=length-4) break;
 	}
 	return ii;
 }
@@ -302,7 +304,7 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 						drawname_needed=1;
 						//if(!is_drawname)
 						//{
-							drawname_proc();
+						drawname_proc();
 						//	is_drawname=0;
 						//}
 						//DrawString(ews,pos_x+2,pos_y+2,pos_x+length-2,pos_y+GetFontYSIZE(font)+2,font,txt_attr,color,frmcolor);
