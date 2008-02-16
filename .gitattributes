@@ -622,6 +622,15 @@ MailClient/conf_loader.h -text
 MailClient/config_data.c -text
 MailClient/mailclient.h -text
 MailClient/rect_patcher.h -text
+MediaPlayerPlus/MediaPlayerPlus.ewp -text
+MediaPlayerPlus/MediaPlayerPlus.eww -text
+MediaPlayerPlus/conf_loader.c -text
+MediaPlayerPlus/conf_loader.h -text
+MediaPlayerPlus/config_data.c -text
+MediaPlayerPlus/func.asm -text
+MediaPlayerPlus/lang.h -text
+MediaPlayerPlus/main.c -text
+MediaPlayerPlus/test.xcl -text
 MegaDial/MegaDial.ewp -text
 MegaDial/MegaDial.eww -text
 MegaDial/conf_loader.c -text
