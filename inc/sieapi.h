@@ -33,8 +33,8 @@ _C_STD_BEGIN
 #define MIN(a,b) (a<b)?a:b
 #define MAX(a,b) (a>b)?a:b
 #define TRAN_CBK GetPaletteAdrByColorIndex(23)
-#define CTYPE1 8
-#define CTYPE2 0
+#define CTYPE1 0
+#define CTYPE2 1
 //定义字体索引类型0-16!
 #define FontSyEN "Large","Large bold","Large italic","Large italic bold","Medium","Medium bold","Medium italic","Medium italic bold","Small","Small bold","Small italic","Small italic bold","Numeric small","Numeric small bold","Numeric xsmall","Numeric large","Numeric medium"
 #define FontSyCN "大号字体","大号加粗","大号斜体","大号粗斜","中号字体","中号加粗","中号倾斜","中号粗斜","小号字体","小号加粗","小号斜体","小号粗斜","小号数体","小号数粗","最小数体","大号数体","中号数体"
@@ -164,9 +164,14 @@ _C_LIB_DECL
  __INTRINSIC ubyte FileExists(char *FileName,int *Handle);//判断文件是否存在!
  __INTRINSIC void *CreateCanvas();//创建画布指针
  __INTRINSIC void  SearchSub(const char *source,const char *sub,char *result);//获取子字串
- __INTRINSIC IMGHDR *alpha(IMGHDR *img, char a, int nw, int del);
- __INTRINSIC DrawIMGHDR(IMGHDR *img, int x, int y, char *pen, char *brush);
- __INTRINSIC deleteIMGHDR(IMGHDR *img);
+//PNG转换相关函数 
+ __INTRINSIC IMGHDR_Draw(IMGHDR *Handle, int x, int y, char *pen, char *brush);
+ __INTRINSIC IMGHDR_Delete(IMGHDR *Handle);
+ __INTRINSIC void  IMGHDR_Free(IMGHDR *Handle);
+ __INTRINSIC color IMGHDR_Color(IMGHDR *Handle, int x, int y);
+ __INTRINSIC IMGHDR *IMGHDR_Alpha(IMGHDR *Handle, char a, int nw, int del);
+ __INTRINSIC IMGHDR *IMGHDR_Sample(IMGHDR *Handle, int px, int py, int fast, int del);
+ __INTRINSIC IMGHDR *IMGHDR_Handle(int x,int y,const char *pic_path,int pic_size);
 _END_C_LIB_DECL
 _C_STD_END
 //函数执行代码
@@ -293,31 +298,19 @@ return(OldDay);
 static void GetDayOf(TDate pSt,TLunar *Lunar)
 { 
 TDate old = GetOldDay(pSt);
-/*--生成农历天干、地支、属相 ==> wNongli--*/
-uword UniToday[5];
-CutWSTR(Lunar->year,0);
-UniToday[0] = cTianGan[ ((old.year - 4) % 60) % 10];  //天干
-UniToday[1] = cDiZhi[   ((old.year - 4) % 60) % 12];  //地支
-UniToday[2] = cShuXiang[((old.year - 4) % 60) % 12];  //属相
-UniToday[3] = cOtherName[0];                          //年
-BSTRAdd(Lunar->year->wsbody,UniToday,4);
+const char _year_t[]="%t%t%t%t";
+const char _mday_o[]="%t%t%t%t";
+const char _mday_t[]="%t%t%t";
+/*--生成农历天干、地支、属相 ==> Lunar--*/
+short cTGInx=((old.year-4)%60)%10;
+short cTDInx=((old.year-4)%60)%12;
+wsprintf(Lunar->year,_year_t,cTGan[cTGInx],cDZhi[cTDInx],cSXin[cTDInx],cOName[0]);
 /*--生成农历月 --*/
-CutWSTR(Lunar->mday,0);
 if (old.month < 1){  //闰月
-
-    UniToday[0] = cOtherName[2]; //闰
-    UniToday[1] = cMonName[-1 * old.month];
-    BSTRAdd(Lunar->mday->wsbody,UniToday,2);
+    wsprintf(Lunar->mday,_mday_o,cOName[2],cMName[-1*old.month],cOName[1],cDName[old.day]);
 }else{
-    UniToday[0] = cMonName[old.month];
-    BSTRAdd(Lunar->mday->wsbody,UniToday,1);
+    wsprintf(Lunar->mday,_mday_t,cMName[old.month],cOName[1],cDName[old.day]);
 }
-  UniToday[0] = cOtherName[1]; //月
-  BSTRAdd(Lunar->mday->wsbody,UniToday,1);
-/*--生成农历日 --*/  
-  UniToday[0] = cDayName[old.day][0];  
-  UniToday[1] = cDayName[old.day][1]; 
-  BSTRAdd(Lunar->mday->wsbody,UniToday,2);  
 }  
 
 #pragma inline
@@ -1006,31 +999,158 @@ static void SearchSub(const char *source,const char *sub,char *result)
   }
   result=NULL;
 }
-#pragma inline//释放IMGHDR
-static deleteIMGHDR(IMGHDR *img)
+#pragma inline//初始IMGHDR
+static color IMGHDR_Color(IMGHDR *Handle, int x, int y)
 {
-  mfree(img->bitmap);
-  mfree(img);
+  color *bm=(color*)Handle->bitmap;
+  if(x < Handle->w && x>=0 && y < Handle->h && y>=0) 
+    return *(bm + x + y*Handle->w);
+  else
+    return (color){0,0,0,0};
+}
+#pragma inline//初始IMGHDR
+static void IMGHDR_Free(IMGHDR *Handle)
+{
+  int x, y;
+  for(y=0; y<Handle->h; y++)
+    for(x=0; x<Handle->w; x++)
+      setcolor(Handle, x, y, (color){0,0,0,0});
+}
+#pragma inline//创建IMGHDR
+IMGHDR *IMGHDR_Create(int w, int h, int type)
+{
+  IMGHDR *img=malloc(sizeof(IMGHDR));
+  img->w=w; 
+  img->h=h; 
+  img->bpnum=type;
+  img->bitmap=malloc(h*w*sizeof(color));
+  IMGHDRFree(img);
+  return img;
 }
 #pragma inline//释放IMGHDR
-static IMGHDR *alpha(IMGHDR *img, char a, int nw, int del)
+static IMGHDR_Delete(IMGHDR *Handle)
+{
+  mfree(Handle->bitmap);
+  mfree(Handle);
+}
+#pragma inline//缩放IMGHDR
+static IMGHDR *IMGHDR_Sample(IMGHDR *Handle, int px, int py, int fast, int del)
+{
+  if (px==100 && py==100) return Handle;
+
+  long newx = (Handle->w*px)/100,
+  newy = (Handle->h*py)/100;
+  
+  float xScale, yScale, fX, fY;
+  xScale = (float)Handle->w  / (float)newx;
+  yScale = (float)Handle->h / (float)newy;
+  
+  IMGHDR *TEMP=IMGHDR_Create(newx,newy,CTYPE1);
+  if (fast) 
+  {
+    for(long y=0; y<newy; y++)
+    {
+      fY = y * yScale;
+      for(long x=0; x<newx; x++)
+      {
+        fX = x * xScale;
+        setcolor(TEMP,  x,  y, getcolor(Handle, (long)fX,(long)fY));
+      }
+    }
+  }
+  else 
+  {
+    long ifX, ifY, ifX1, ifY1, xmax, ymax;
+    float ir1, ir2, ig1, ig2, ib1, ib2, ia1, ia2, dx, dy;
+    char r,g,b,a;
+    color rgb1, rgb2, rgb3, rgb4;
+    xmax = Handle->w-1;
+    ymax = Handle->h-1;
+    for(long y=0; y<newy; y++)
+    {
+      fY   = y * yScale;
+      ifY  = (int)fY;
+      ifY1 = min(ymax, ifY+1);
+      dy   = fY - ifY;
+      for(long x=0; x<newx; x++)
+      {
+        fX   = x * xScale;
+        ifX  = (int)fX;
+        ifX1 = min(xmax, ifX+1);
+        dx   = fX - ifX;
+        rgb1= IMGHDR_Color(Handle, ifX,ifY);
+        rgb2= IMGHDR_Color(Handle, ifX1,ifY);
+        rgb3= IMGHDR_Color(Handle, ifX,ifY1);
+        rgb4= IMGHDR_Color(Handle, ifX1,ifY1);
+        
+        ir1 = rgb1.R * (1 - dy) + rgb3.R * dy;
+        ig1 = rgb1.G * (1 - dy) + rgb3.G * dy;
+        ib1 = rgb1.B * (1 - dy) + rgb3.B * dy;
+        ia1 = rgb1.A * (1 - dy) + rgb3.A * dy;
+        ir2 = rgb2.R * (1 - dy) + rgb4.R * dy;
+        ig2 = rgb2.G * (1 - dy) + rgb4.G * dy;
+        ib2 = rgb2.B * (1 - dy) + rgb4.B * dy;
+        ia2 = rgb2.A * (1 - dy) + rgb4.A * dy;
+        
+        r = (char)(ir1 * (1 - dx) + ir2 * dx);
+        g = (char)(ig1 * (1 - dx) + ig2 * dx);
+        b = (char)(ib1 * (1 - dx) + ib2 * dx);
+        a = (char)(ia1 * (1 - dx) + ia2 * dx);
+        
+        setcolor(TEMP, x,y,RGBA(r,g,b,a));
+      }
+    }
+  }
+  if(del)IMGHDR_Delete(Handle);
+  return TEMP;  
+}
+#pragma inline//转换PNG到IMGHDR
+static IMGHDR *IMGHDR_Handle(int x,int y,const char *pic_path,int pic_size)
+{
+  //unsigned int pic_op = 50;
+  IMGHDR *handle=0;
+  if(strlen(pic_path))
+  {
+    FSTATS fstats;
+    unsigned int err;     
+    if (GetFileStats(pic_path,&fstats,&err)!=-1)
+    {
+      #ifdef NEWSGOLD
+      if(handle=CreateIMGHDRFromPngFile(pic_path, CTYPE2)){                                                    
+         handle=IMGHDR_Sample(handle, pic_size, pic_size, 0, 1);
+      }      
+      #else
+      #ifdef X75
+      if(handle=CreateIMGHDRFromPngFile(pic_path, CTYPE2)){                                                    
+         handle=IMGHDR_Sample(handle, pic_size, pic_size, 0, 1);  
+      }
+      #else
+         handle=CreateIMGHDRFromPngFile(pic_path,CTYPE2);
+      #endif
+      #endif
+    }
+  }
+  return handle;
+}
+#pragma inline//透明IMGHDR
+static IMGHDR *IMGHDR_Alpha(IMGHDR *Handle, char a, int nw, int del)
 {
   int i;
-  color *r=(color*)img->bitmap;
-  for(i=0;i<img->h*img->w; i++, r++)
+  color *r=(color*)Handle->bitmap;
+  for(i=0;i<Handle->h*Handle->w; i++, r++)
     if(r->A>a)
       r->A-=a;
     else
       r->A=0;
-    return img;
+    return Handle;
 }
-#pragma inline//释放IMGHDR
-static DrawIMGHDR(IMGHDR *img, int x, int y, char *pen, char *brush)
+#pragma inline//显示IMGHDR
+static IMGHDR_Draw(IMGHDR *Handle, int x, int y, char *pen, char *brush)
 {
   RECT rc;
   DRWOBJ drwobj;
-  StoreXYWHtoRECT(&rc,x,y,img->w,img->h);
-  SetPropTo_Obj5(&drwobj,&rc,0,img);
+  StoreXYWHtoRECT(&rc,x,y,Handle->w,Handle->h);
+  SetPropTo_Obj5(&drwobj,&rc,0,Handle);
   SetColor(&drwobj,pen,brush);
   DrawObject(&drwobj);
 }
@@ -1092,6 +1212,13 @@ static DrawIMGHDR(IMGHDR *img, int x, int y, char *pen, char *brush)
  using _CSTD FileExists;
  using _CSTD CreateCanvas;
  using _CSTD SearchSub;
+ using _CSTD IMGHDR_Draw;
+ using _CSTD IMGHDR_Delete;
+ using _CSTD IMGHDR_Free;
+ using _CSTD IMGHDR_Color;
+ using _CSTD IMGHDR_Alpha;
+ using _CSTD IMGHDR_Sample;
+ using _CSTD IMGHDR_Handle;
 #endif /* 导出函数引用表 */
  
 
