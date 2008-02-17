@@ -10,8 +10,7 @@ static char ANTO[]="关机-玫瑰v2.13";//关机
 static char ANRT[]="重启手机";//重启
 static char ANLK[]="锁住键盘";//锁键
 static char TASK[]="任务菜单";//任务菜单
-static char ALRM[]="极酷闹钟";//闹钟界面
-const char _percent_t[]="%t";
+static char ALRM[]="酷酷闹钟";//闹钟界面
 const  IPC_REQ my_ipc={SCRTOOL_NAME, SCRTOOL_NAME, NULL};
 const  int  minus11=-11;
 static int  TASK_ID   = 0;//记录图形界面
@@ -214,7 +213,9 @@ static void FillScreen(TSCR *SCR,int style,int x,int y, int Size,const char *Pen
 static int FindBirName(WSHDR *ws,const char *sub){  
   char TEMP[LEN];
   SearchSub(FestaData,sub,TEMP);
+  //wsprintf(ws,_percent_t,TEMP);
   utf8_2ws(ws,TEMP,strlen(TEMP));
+  //gb2ws(ws,TEMP,strlen(TEMP));
   return(wstrlen(ws));
 }
 //搜索自定义闹钟操作
@@ -239,10 +240,7 @@ static void APP_TRAF(char *name, int inx, int type,char *pic,char *file)
   APP[inx].Pic  = pic;
   APP[inx].File = file;
   APP[inx].Name = name;
-  if(type>=0)
-     utf8_2ws(APP[inx].ws,name,strlen(name));  
-  else
-     gb2ws(APP[inx].ws,name,strlen(name));
+  gb2ws(APP[inx].ws,name,strlen(name));
   if((file)&&(strlen(file)))TaskCount+=1;
 }
 //初始化程序执行信息
@@ -277,7 +275,16 @@ static void InitData(void)
   IDS[1].Show=VOLT_ENA;
   if(IDS[1].Show){//显示电压信息
     int c=GetAkku(0,9);
-    wsprintf(IDS[1].ws,VOLT_FMT,c/1000,(c%1000)/10);
+    if(VOLT_TY==0)
+       wsprintf(IDS[1].ws,VOLT_FMT,c/1000,(c%1000)/10);
+    elif(VOLT_TY==1){
+      int ct=VOLT_TS-VOLT_TE;
+      c=(c-VOLT_TE)*100;
+      if(VOLT_TE>VOLT_TS)ct=VOLT_TE-VOLT_TS;
+      if(ct>0)c=(c/ct);else c=0;
+      if(c>100)c=100;elif(c<0)c=0;
+      wsprintf(IDS[1].ws,"%d%%",c);
+    }
     FillScreen(&IDS[1],VOLT_XT,VOLT_X,VOLT_Y,FontType(VOLT_FONT),VOLT_CS,VOLT_CB);
   }
   IDS[2].Show=RAM_ENA;
@@ -288,7 +295,7 @@ static void InitData(void)
   }
   IDS[3].Show=TEXT_ENA;     
   if(IDS[3].Show){//显示定义信息
-    utf8_2ws(IDS[3].ws,TEXT_FMT,strlen(TEXT_FMT));
+    wsprintf(IDS[3].ws,_percent_t,TEXT_FMT);
     FillScreen(&IDS[3],TEXT_XT,TEXT_X,TEXT_Y,FontType(TEXT_FONT),TEXT_CS,TEXT_CB);
   }
   IDS[4].Show=NET_ENA;            
@@ -329,10 +336,7 @@ static void InitData(void)
       for(ubyte i=0;i<16;i++){cWeek[i]=cWeekName[WEEK_FMT][Week][i];}
       wsprintf(IDS[8].ws,cWeek,Week);
     }else{
-      CutWSTR(IDS[8].ws,0);
-      UniToday[0] = UniNum[Week];
-      if(WEEK_FMT==4)BSTRAdd(IDS[8].ws->wsbody, XINGQI, 2);
-      BSTRAdd(IDS[8].ws->wsbody,UniToday, 1);      
+      wsprintf(IDS[8].ws,_percent_t,WeekGB[Week]);
     }
     FillScreen(&IDS[8],WEEK_XT,WEEK_X,WEEK_Y,FontType(WEEK_FONT),WEEK_CS,WEEK_CB);
   }
@@ -497,12 +501,12 @@ static void DrawPanel(void)
   if((++AUTO_EXIT>=AUTO_CLOSE*TMR_SECOND/5)&&(TASK_ID)) CloseTask();
 }
 //闹钟界面
-static void DrawAlarm(void){  
-  utf8_2ws(AlrmWS,ALRM,strlen(ALRM));  
+static void DrawAlarm(void){     
   GBS_StartTimerProc(&barTimer,100,DrawAlarm);  
   char s[64];
   sprintf(s,ALRM_PIC,Alrminx);
   TRect Alarm={0,YDISP,ScreenW()-1,ScreenH()-1};
+  wsprintf(AlrmWS,_percent_t,ALRM);
   int wsh=GetFontYSIZE(ALRM_FONT)+4;
   int wso=(Alarm.r-Alarm.l-PixlsWidth(AlrmWS,ALRM_FONT))/2;
   int pio=(Alarm.r-Alarm.l-GetImgWidth((int)s))/2;
@@ -515,16 +519,9 @@ static void DrawAlarm(void){
   //图标
   DrawImg(Alpic.l,Alpic.t,(int)s);
   //定义
-  TTime time; 
-  TDate date;
-  uword UniToday[8]; 
+  TTime time; TDate date;
   GetDateTime(&date,&time);   //星期
-  CutWSTR(AlrmWS,0);
-  UniToday[0]=XINGQI[0];
-  UniToday[1]=XINGQI[1];
-  UniToday[2]=UniNum[GetWeek(&date)];  
-  //BSTRAdd(AlrmWS->wsbody,XINGQI, 2);
-  BSTRAdd(AlrmWS->wsbody,UniToday, 3); 
+  wsprintf(AlrmWS,_percent_t,WeekGB[GetWeek(&date)]);
   wso=(Alarm.r-Alarm.l-PixlsWidth(AlrmWS,ALRM_FONT))/2;
   TRect Alwek={Alarm.l+wso,Altxt.b+pih,Alarm.r-wso,Altxt.b+pih+wsh}; 
   DrawString(AlrmWS, Alwek.l, Alwek.t+2,Alwek.r,Alwek.b-2,FontType(ALRM_FONT), 1,ALRM_CTX, TRAN_CBK);
@@ -534,16 +531,7 @@ static void DrawAlarm(void){
   TRect Altim={Alarm.l+wso,Alwek.b,Alarm.r-wso,Alwek.b+wsh}; 
   DrawString(AlrmWS, Altim.l, Altim.t+2,Altim.r,Altim.b-2,FontType(ALRM_FONT), 1,ALRM_CTX, TRAN_CBK);
   //显示日期
-  CutWSTR(AlrmWS,0);
-  wsprintf(AlrmWS,"%04d",date.year);
-  UniToday[0] = UniDate[0];
-  UniToday[1] = date.month/10 + 0x30;
-  UniToday[2] = date.month%10 + 0x30;
-  UniToday[3] = UniDate[1]; 
-  UniToday[4] = date.day/10 + 0x30;
-  UniToday[5] = date.day%10 + 0x30;
-  UniToday[6] = UniDate[2];
-  BSTRAdd(AlrmWS->wsbody,UniToday, 7);  
+  wsprintf(AlrmWS,"%04d-%02d-%02d",date.year,date.month,date.day);
   wso=(Alarm.r-Alarm.l-PixlsWidth(AlrmWS,ALRM_FONT))/2;
   TRect Aldat={Alarm.l+wso,Altim.b,Alarm.r-wso,Altim.b+wsh}; 
   DrawString(AlrmWS, Aldat.l, Aldat.t+2,Aldat.r,Aldat.b-2,FontType(ALRM_FONT), 1,ALRM_CTX, TRAN_CBK);
@@ -554,6 +542,15 @@ static void DrawAlarm(void){
      SetIllumination(0,1,5,0);
   if(Alrminx>=ALRM_COT)Alrminx=0;
   Alrminx++;
+  //振动控制
+  if(VIB_ENA){
+     if(--Alrmvpw>0){
+        SetVibration(Alrmvpw);
+     }else{
+        Alrmvpw=ALRM_VIB;
+        SetVibration(ALRM_VIB);
+     }
+  }  
 }
 //重画响应事件
 static void TaskRedraw(GUI *gui){
@@ -574,13 +571,11 @@ static void TaskCreate(GUI *gui, void *(*malloc_adr)(int)){
     Alrminx=1;    
     TaskCanvas=CreateCanvas();
     OLScr=GetIlluminationDataTable()[3];
-  }
-  DisableIDLETMR();
+  }  
   gui->state=1;
 }
 //关闭响应事件
 static void TaskClose(GUI *gui, void (*mfree_adr)(void *)){
-  RestartIDLETMR();
   gui->state=0;
 }
 //聚焦响应事件
@@ -710,10 +705,10 @@ static void BuildGUI(short mode,char *name){
   TASK_ID=CreateCSM(&GUI_TASK.csm,dummy,2);  
   UnlockSched();
 }
-static void RunDIR(char *dir,char *NAME){  
-  strcpy(PATHS,dir);
-  strcpy(TITLE,NAME);
-  BuildGUI(SCR_MENUS,NAME);
+static void RunDIR(char *dir,char *name,WSHDR *ws){  
+  strcpy(PATHS,dir);  
+  ws2gb(ws,TITLE,32);
+  BuildGUI(SCR_MENUS,name);
 }
 static void DoIt(int inx){ 
   CloseTask();
@@ -725,7 +720,7 @@ static void DoIt(int inx){
    case  0: RunAPP(APP[inx].File); break;
    case  1: RunCUT(APP[inx].File); break;
    case  2: RunADR(APP[inx].File); break;
-   case  3: RunDIR(APP[inx].File,APP[inx].Name); break;
+   case  3: RunDIR(APP[inx].File,APP[inx].Name,APP[inx].ws); break;
   }     
 }
 //按键挂钩,内存运行
@@ -787,17 +782,8 @@ static int daemon_onmessage(CSM_RAM* data,GBS_MSG* msg){
   if((msg->msg==MSG_PLAYFILE_REPORT)&&(ALRM_ENA)){
     GBS_PSOUND_MSG *pmsg=(GBS_PSOUND_MSG *)msg;
     if (pmsg->handler==RING_ID){
-      if (pmsg->cmd==M_SAE_PLAYBACK_ERROR || pmsg->cmd==M_SAE_PLAYBACK_DONE){       
-       //SetVibration(0);
+      if (pmsg->cmd==M_SAE_PLAYBACK_ERROR || pmsg->cmd==M_SAE_PLAYBACK_DONE){  
        CloseTask();
-       //RING_ID=0;
-      }elif((VIB_ENA)&&(!IsCalling())){
-        if(--Alrmvpw>0){
-          SetVibration(Alrmvpw);
-        }else{
-          Alrmvpw=ALRM_VIB;
-          SetVibration(ALRM_VIB);
-        }
       }
     }  
    }

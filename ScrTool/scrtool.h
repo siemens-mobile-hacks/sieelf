@@ -12,7 +12,7 @@
 #define SCR_MENUS 2
 #define SCR_TASKS 1
 #define LEN 32
-#define NoName "\xE7\xA9\xBA\xE7\x99\xBD"
+#define NoName "空白"
 #define ExcuteTyen "File", "Shortcut", "Address", "Directory"
 #define ExcuteTycn "文件", "快捷", "地址", "目录"
 #define AgainEN "Default", "AgainLeft", "Center", "AgainRight"
@@ -155,6 +155,9 @@
  extern const char TEMP_FMT[];
 //显示电压
  extern const int  VOLT_ENA;
+ extern const int  VOLT_TY;
+ extern const uint VOLT_TS;
+ extern const uint VOLT_TE;
  extern const uint VOLT_XT;
  extern const uint VOLT_X;
  extern const uint VOLT_Y;
