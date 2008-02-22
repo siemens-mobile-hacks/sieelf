@@ -2,6 +2,9 @@
 #include "..\inc\swilib.h"
 #include "lang.h"
 
+__root const CFG_HDR cfghdr9 = {CFG_STR_GB,"Ã½Ìå²¥·ÅÆ÷CSM",1,8};
+__root const char CSMADR[9]="A0895D68";
+
 __root const CFG_HDR cfghdr0={CFG_COORDINATES, CS_POS, 0, 0};
 __root const unsigned int pos_x=2;
 __root const unsigned int pos_y=60;

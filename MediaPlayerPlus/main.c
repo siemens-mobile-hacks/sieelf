@@ -10,6 +10,7 @@ typedef struct
 }MAIN_CSM;
 
 extern kill_data(void *p, void (*func_p)(void *));
+extern unsigned long  strtoul (const char *nptr,char **endptr,int base);
 
 extern const unsigned int pos_x;
 extern const unsigned int pos_y;
@@ -26,6 +27,7 @@ extern const unsigned int yrnd;
 extern const int style;
 extern const unsigned int speed;
 extern const unsigned int wait_time;
+extern const char CSMADR[];
 
 WSHDR *ews;
 //WSHDR *ews_2;
@@ -37,6 +39,11 @@ int is_tmr=0;
 //int is_drawname=0;
 char utf8_name[128];
 int is_music_file=0;
+
+const char percent_t[]="%t";
+
+unsigned int playercsmid=0;
+void *playercsmadr=NULL;
 
 #pragma inline=forced
 int toupper(int c)
@@ -73,6 +80,7 @@ int strcmp_nocase(const char *s1, const char *s2)
 
 //gf
 //bmp,bmx,gif,jpeg,jpg,png,svg,wbmp
+/*
 void getname(void)
 {
 	char *p=RAMPlayingFilename();
@@ -146,7 +154,7 @@ void getname(void)
 			is_music_file=1;
 			goto end;
 		}
-		/*if(!strncmp_nocase(p, ".bmp", 4))
+		if(!strncmp_nocase(p, ".bmp", 4))
 		{
 			is_music_file=0;
 			break;
@@ -185,7 +193,7 @@ void getname(void)
 		{
 			is_music_file=0;
 			break;
-		}*/
+		}
 		utf8_name[i]=c;
 		i++;
 		p++;
@@ -197,6 +205,12 @@ void getname(void)
 end:
 	str_2ws(ews, utf8_name, 128);
 	
+}*/
+
+void RereadSettings(void)
+{
+	InitConfig();
+	playercsmadr=(void *)strtoul(CSMADR,NULL,16);
 }
 
 int getMaxChars(unsigned short *wsbody, int len, int font) // 获取可显示的最大字符数 Unicode
@@ -265,6 +279,7 @@ void drawname_proc(void)
 	}
 }
 
+
 int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 {
 	if(msg->msg==MSG_RECONFIGURE_REQ)
@@ -273,16 +288,57 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 		if(strcmp_nocase(successed_config_filename, (char *)msg->data0)==0)
 		{
 			ShowMSG(1, (int)LGP_UPDATE_CONFIG);
-			InitConfig();
+			//InitConfig();
+			RereadSettings();
 		}
 	}
+	
+	if (playercsmid)
+	{
+		CSM_RAM *csmp=FindCSMbyID(playercsmid);
+		if(csmp)
+		{
+			WSHDR *fn=((WSHDR **)csmp)[0x2C/4];
+			if (!fn) goto L_ACTIVE;
+			if (!fn->wsbody) goto L_ACTIVE;
+			if (fn->wsbody[0])
+			{
+				wstrcpy(ews,fn);
+			}
+			else
+			{
+			L_ACTIVE:
+				wsprintf(ews, percent_t, "出错!");
+			}
+		}
+		else
+		{
+			playercsmid=0;
+			//wsprintf(ws1,"Player not active");
+		}
+	}
+	else
+	{
+		CSM_RAM *p=CSM_root()->csm_q->csm.first;
+		while(p)
+		{
+			if (p->constr==playercsmadr) break;
+			p=p->next;
+		}
+		if(p)
+		{
+			playercsmid=p->id;
+		}
+	}	
+	
 	if(IsPlayerOn()&&(ENA_LOCK||IsUnlocked()))
 	{
-		getname();
+		//getname();
 #define idlegui_id(icsm) (((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])
 		CSM_RAM *icsm;
 		icsm=FindCSMbyID(CSM_root()->idle_id);
-		if(icsm&&is_music_file)
+		//if(icsm&&is_music_file)
+		if(icsm)
 		{
 			if(IsGuiOnTop(idlegui_id(icsm)))
 			{
@@ -395,7 +451,8 @@ int main(void)
 {
 	CSM_RAM *save_cmpc;
 	char dummy[sizeof(MAIN_CSM)];
-	InitConfig();
+	//InitConfig();
+	RereadSettings();
 	UpdateCSMName();
 	LockSched();
 	save_cmpc=CSM_root()->csm_q->current_msg_processing_csm;
