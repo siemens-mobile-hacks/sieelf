@@ -28,6 +28,8 @@ extern const int style;
 extern const unsigned int speed;
 extern const unsigned int wait_time;
 extern const char CSMADR[];
+extern const int show_gp;
+extern const int show_ext;
 
 WSHDR *ews;
 //WSHDR *ews_2;
@@ -38,7 +40,9 @@ GBSTMR mytmr;
 int is_tmr=0;
 //int is_drawname=0;
 char utf8_name[128];
+char name_temp[128];
 int is_music_file=0;
+int is_player_active=0;
 
 const char percent_t[]="%t";
 
@@ -80,132 +84,159 @@ int strcmp_nocase(const char *s1, const char *s2)
 
 //gf
 //bmp,bmx,gif,jpeg,jpg,png,svg,wbmp
-/*
+
 void getname(void)
 {
-	char *p=RAMPlayingFilename();
-	unsigned char c;
-	int i=0;
-	if(!strncmp_nocase(p, "ager: cid = 65535", 12))//未打开媒体播放器或不在播放状态
-	{
-		utf8_name[0]=0;
-		is_music_file=0;
-		goto end;
-	}
-	while(c=*p)
+	char *p=strrchr(name_temp, '.');
+	//if(show_gp)
+	//	if(show_ext)
+	//		goto show_ext;
+	if(p)
 	{
 		if(!strncmp_nocase(p, ".mp3", 4))
 		{
-			strcpy(&utf8_name[i], ".mp3");
 			is_music_file=1;
-			goto end;
+			//strcpy(&utf8_name[i], ".mp3");
+			goto if_show_ext;
 		}
 		if(!strncmp_nocase(p, ".aac", 4))
 		{
-			strcpy(&utf8_name[i], ".aac");
 			is_music_file=1;
-			goto end;
+			//strcpy(&utf8_name[i], ".aac");
+			goto if_show_ext;
 		}
 		if(!strncmp_nocase(p, ".m4a", 4))
 		{
-			strcpy(&utf8_name[i], ".m4a");
 			is_music_file=1;
-			goto end;
+			//strcpy(&utf8_name[i], ".m4a");
+			goto if_show_ext;
 		}
 		if(!strncmp_nocase(p, ".wav", 4))
 		{
-			strcpy(&utf8_name[i], ".wav");
 			is_music_file=1;
-			goto end;
+			//strcpy(&utf8_name[i], ".wav");
+			goto if_show_ext;
 		}
 		if(!strncmp_nocase(p, ".amr", 4))
 		{
-			strcpy(&utf8_name[i], ".amr");
 			is_music_file=1;
-			goto end;
+			//strcpy(&utf8_name[i], ".amr");
+			goto if_show_ext;
 		}
 		if(!strncmp_nocase(p, ".mid", 4))
 		{
-			strcpy(&utf8_name[i], ".mid");
 			is_music_file=1;
-			goto end;
+			//strcpy(&utf8_name[i], ".mid");
+			goto if_show_ext;
 		}
 		if(!strncmp_nocase(p, ".3gp", 4))
 		{
-			strcpy(&utf8_name[i], ".3gp");
 			is_music_file=1;
-			goto end;
+			//strcpy(&utf8_name[i], ".3gp");
+			goto if_show_ext;
 		}
 		if(!strncmp_nocase(p, ".mp4", 4))
 		{
-			strcpy(&utf8_name[i], ".mp4");
 			is_music_file=1;
-			goto end;
+			//strcpy(&utf8_name[i], ".mp4");
+			goto if_show_ext;
 		}
 		if(!strncmp_nocase(p, ".imy", 4))
 		{
-			strcpy(&utf8_name[i], ".imy");
 			is_music_file=1;
-			goto end;
+			//strcpy(&utf8_name[i], ".imy");
+			goto if_show_ext;
 		}
 		if(!strncmp_nocase(p, ".srt", 4))
 		{
-			strcpy(&utf8_name[i], ".srt");
 			is_music_file=1;
-			goto end;
+			//strcpy(&utf8_name[i], ".srt");
+			goto if_show_ext;
 		}
 		if(!strncmp_nocase(p, ".bmp", 4))
 		{
-			is_music_file=0;
-			break;
+			if(show_gp)
+				is_music_file=1;
+			else
+				is_music_file=0;
+			goto if_show_ext;
 		}
 		if(!strncmp_nocase(p, ".jpg", 4))
 		{
-			is_music_file=0;
-			break;
+			if(show_gp)
+				is_music_file=1;
+			else
+				is_music_file=0;
+			goto if_show_ext;
 		}
 		if(!strncmp_nocase(p, ".gif", 4))
 		{
-			is_music_file=0;
-			break;
+			if(show_gp)
+				is_music_file=1;
+			else
+				is_music_file=0;
+			goto if_show_ext;
 		}
 		if(!strncmp_nocase(p, ".png", 4))
 		{
-			is_music_file=0;
-			break;
+			if(show_gp)
+				is_music_file=1;
+			else
+				is_music_file=0;
+			goto if_show_ext;
 		}
 		if(!strncmp_nocase(p, ".jpeg", 5))
 		{
-			is_music_file=0;
-			break;
+			if(show_gp)
+				is_music_file=1;
+			else
+				is_music_file=0;
+			goto if_show_ext;
 		}
 		if(!strncmp_nocase(p, ".bmx", 4))
 		{
-			is_music_file=0;
-			break;
+			if(show_gp)
+				is_music_file=1;
+			else
+				is_music_file=0;
+			goto if_show_ext;
 		}
 		if(!strncmp_nocase(p, ".svg", 4))
 		{
-			is_music_file=0;
-			break;
+			if(show_gp)
+				is_music_file=1;
+			else
+				is_music_file=0;
+			goto if_show_ext;
 		}
 		if(!strncmp_nocase(p, ".wbmp", 4))
 		{
-			is_music_file=0;
-			break;
+			if(show_gp)
+				is_music_file=1;
+			else
+				is_music_file=0;
+			goto if_show_ext;
 		}
-		utf8_name[i]=c;
-		i++;
-		p++;
 	}
-	utf8_name[i]=0;
+	else
+		utf8_name[0]=0;
+	
 	is_music_file=0;
 //gf
 //bmp,bmx,gif,jpeg,jpg,png,svg,wbmp
+if_show_ext:
+	if(!show_ext)
+		goto not_show_ext;
+	strcpy(utf8_name, name_temp);
+	goto end;
+	
+not_show_ext:
+	strncpy(utf8_name, name_temp, p-name_temp);
+	utf8_name[p-name_temp]=0;
+	
 end:
 	str_2ws(ews, utf8_name, 128);
-	
-}*/
+}
 
 void RereadSettings(void)
 {
@@ -290,6 +321,7 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 			ShowMSG(1, (int)LGP_UPDATE_CONFIG);
 			//InitConfig();
 			RereadSettings();
+			getname();
 		}
 	}
 	
@@ -303,17 +335,21 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 			if (!fn->wsbody) goto L_ACTIVE;
 			if (fn->wsbody[0])
 			{
-				wstrcpy(ews,fn);
+				ws_2str(fn, name_temp, 128);
+				getname();
+				//wstrcpy(ews,fn);
 			}
 			else
 			{
 			L_ACTIVE:
 				wsprintf(ews, percent_t, "出错!");
 			}
+			is_player_active=1;
 		}
 		else
 		{
 			playercsmid=0;
+			is_player_active=0;
 			//wsprintf(ws1,"Player not active");
 		}
 	}
@@ -329,16 +365,18 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 		{
 			playercsmid=p->id;
 		}
+		else
+			is_player_active=0;
 	}	
 	
-	if(IsPlayerOn()&&(ENA_LOCK||IsUnlocked()))
+	if(is_player_active&&(ENA_LOCK||IsUnlocked()))
 	{
 		//getname();
 #define idlegui_id(icsm) (((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])
 		CSM_RAM *icsm;
 		icsm=FindCSMbyID(CSM_root()->idle_id);
-		//if(icsm&&is_music_file)
-		if(icsm)
+		if(icsm&&is_music_file)
+		//if(icsm)
 		{
 			if(IsGuiOnTop(idlegui_id(icsm)))
 			{

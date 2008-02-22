@@ -23,7 +23,14 @@
 #define CS_SOLID_LINE "实线"
 #define CS_SPEED "滚动速度(毫秒)"
 #define CS_WAIT "滚动延迟(毫秒)"
-//#define CS_SHOWEXT "显示后缀"
+#define CS_CSMADDR "媒体播放器CSM"
+
+//#define CS_EXTCTRL "后缀显示控制"
+//#define CS_SHOW_ALL "所有文件类型"
+//#define CS_SHOW_ADVD "显示视频音频文件"
+#define CS_SHOW_GP "显示图形文件"
+//#define CS_SHOW_NO "不显示所有后缀"
+#define CS_SHOW_EXT "显示后缀"
 
 
 

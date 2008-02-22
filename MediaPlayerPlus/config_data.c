@@ -2,10 +2,10 @@
 #include "..\inc\swilib.h"
 #include "lang.h"
 
-__root const CFG_HDR cfghdr9 = {CFG_STR_GB,"Ã½Ìå²¥·ÅÆ÷CSM",1,8};
+__root const CFG_HDR cfghdr0 = {CFG_STR_GB,CS_CSMADDR,1,8};
 __root const char CSMADR[9]="A0895D68";
 
-__root const CFG_HDR cfghdr0={CFG_COORDINATES, CS_POS, 0, 0};
+__root const CFG_HDR cfghdr9={CFG_COORDINATES, CS_POS, 0, 0};
 __root const unsigned int pos_x=2;
 __root const unsigned int pos_y=60;
 
@@ -35,6 +35,16 @@ __root const unsigned int speed=300;
 
 __root const CFG_HDR cfghdr8={CFG_UINT, CS_WAIT, 0, 9999};
 __root const unsigned int wait_time=500;
+
+__root const CFG_HDR cfghdrb={CFG_CHECKBOX, CS_SHOW_GP, 0, 2};
+__root const int show_gp=0;
+
+__root const CFG_HDR cfghdra={CFG_CHECKBOX, CS_SHOW_EXT, 0, 2};
+__root const int show_ext=1;
+//__root const CFG_CBOX_ITEM cfgcbox1[4]={CS_SHOW_ALL, CS_SHOW_ADVD, CS_SHOW_GP, CS_SHOW_NO};
+
+
+//amr,imy,m4a,mfi,mid,mp3,srt,wav,mp4,3gp
 
 __root const CFG_HDR cfghdr1_0={CFG_LEVEL, CS_FRMLEV, 1, 0};
 
