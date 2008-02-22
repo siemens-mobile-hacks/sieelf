@@ -625,7 +625,6 @@
 ;090C: 0x          ; 243:  __arm void ws2gb(WSHDR *ws, char *s, int len);
 0910: 0xA0E9B275   ; 244:  __arm int Base64Encode(void *inbuf, int insize, void *outbuf, int outsize);
 0914: 0xA0E9b325   ; 245:  __arm int Base64Decode(char *inbuf, int insize, void *outbuf, int outsize, char *_null, int *unk5);
-0918: 0xA8ED5175   ; 8246:  char *RAMPlayingFilename();
 #pragma disable old_equal_ff
 +0
 
