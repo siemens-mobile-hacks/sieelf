@@ -3253,7 +3253,3 @@ __swi __arm int Base64Decode(char *inbuf, int insize, void *outbuf, int outsize,
 //thumb
 //pattern=FE B5 84 46 48 00 40 18 1C 1C 83 08 08 9E 96 46 +1
 
-#pragma swi_number=0x8246
-__swi __arm char *RAMPlayingFilename();
-
-//pattern_ELKA=*(20 63 69 64 20 3D 20 25 64 00 00 00+c)+2d
