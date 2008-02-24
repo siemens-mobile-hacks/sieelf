@@ -37,9 +37,13 @@ void FreeViewData(VIEWDATA *vd)
   if (vd->ws) FreeWS(vd->ws);
   for (int i=0;i<vd->ref_cache_size;i++)
   {
-    if ((int)vd->ref_cache[i].ws!=0xFFFFFFFF)
+    REFCACHE *rf=vd->ref_cache+i;
+    if (rf->tag=='x'||rf->tag=='p')
+      if ((int)((WSHDR *)rf->data)!=0xFFFFFFFF)
+        FreeWS(((WSHDR *)rf->data));
+    else if (rf->tag=='s')
     {
-      FreeWS(vd->ref_cache[i].ws);
+      mfree(rf->data);
     }
   }
   mfree(vd->ref_cache);
@@ -59,5 +63,7 @@ void FreeViewData(VIEWDATA *vd)
   FreeDynImgList(vd); 
   mfree(vd->pageurl);
   vd->pageurl=NULL;
+  mfree(vd->title);
+  vd->title=NULL;
   mfree(vd);
 }

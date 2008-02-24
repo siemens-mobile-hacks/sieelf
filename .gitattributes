@@ -20,6 +20,12 @@ BalletMini/img/OMS_BIG.png -text
 BalletMini/img/OMS_SMALL.png -text
 BalletMini/img/URL_BIG.png -text
 BalletMini/img/URL_SMALL.png -text
+BalletMini/img/button.png -text
+BalletMini/img/button_clkd.png -text
+BalletMini/img/radio_bttn.png -text
+BalletMini/img/radio_bttn_clkd.png -text
+BalletMini/img/spisok.png -text
+BalletMini/img/text_form.png -text
 BalletMini/inet.c -text
 BalletMini/inet.h -text
 BalletMini/inputbox.c -text

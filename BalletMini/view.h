@@ -68,8 +68,10 @@ typedef struct
   unsigned int id;
   unsigned int value;
   unsigned int id2;
-  WSHDR *ws;
-  char no_upload:1, reserved:7;
+  //WSHDR *ws;
+  void *data;
+  int size;
+  char no_upload:1, multiselect:1;
 }REFCACHE;
 
 
@@ -88,7 +90,7 @@ typedef struct
   unsigned int view_pos;
   unsigned int view_line;
   unsigned int displayed_lines;
-  int pixdisp;    // YDISP-pixel_disp=view_line screen pos, 0 or out of screen
+  int pixdisp;
   
   WSHDR *ws;
   
@@ -106,7 +108,7 @@ typedef struct
   int oms_wanted;
   int parse_state;
   //
-  int tag_l_count;
+  //int tag_l_count;
   //
   TAG_S *S_cache;
   int S_cache_size;
@@ -120,8 +122,8 @@ typedef struct
   unsigned int ih;
   //
   unsigned int tag_o_count;
-  //
-  unsigned int ref_mode;
+  unsigned int ref_mode_L;
+  unsigned int ref_mode_i;
   //
   OMS_DYNPNGLIST *dynpng_list;
   
@@ -130,20 +132,23 @@ typedef struct
   REFCACHE *ref_cache;
   int ref_cache_size;
   
-  REFCACHE *ref_cur;
-  
-  REFCACHE *ref_first;
-  REFCACHE *ref_last;
-  REFCACHE *ref_next;
-  REFCACHE *ref_prev;
-  
   int page_sz;
   int loaded_sz;
   unsigned short wchar_hr;
   
   char *pageurl;    //utf8
+  char *title;
+  
+  int img_cbtn_off, img_cbtn_on, img_rbtn_off, img_rbtn_on, img_tbox, img_ddlist;
   
 }VIEWDATA;
+
+#define RADIO_BTTN_CLKD "radio_bttn_clkd.png"
+#define RADIO_BTTN      "radio_bttn.png"
+#define BUTTON_CLKD     "button_clkd.png"
+#define BUTTON          "button.png"
+#define TEXT_FORM       "text_form.png"
+#define LIST            "list.png"
 
 #endif
 

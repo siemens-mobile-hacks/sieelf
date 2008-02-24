@@ -1,4 +1,7 @@
 /*
+x [1] 2l lid 2l lvalue
+s 2l lid 1 2count o 2l lo_name 2l lo_id 1checked ...  // 1 странный байт на гугл сеттингс равен 0 на симка 1
+
 Известные поядки тэгов:
 L T (I не отображается ?)
 L T E
@@ -6,6 +9,15 @@ L Z I E E
 L I S T E
 L I T E
 L T S T T T B E
+L K E
+K
+L K I E
+Z J E
+i I
+i J
+formum.siemens-club.org
+...T P E B T B L K E L K E L K E L K E K K B T B T T B...
+...K B T B L K I E B B T B T T...
 patches.siemens-club.org/patches
 S + T L Z I E E L I E B S L T B E B D I S T B S L T E
 
@@ -17,13 +29,11 @@ V S L T B E B B N D  облом_внешняя_ошибка
 dtf.ru
 S X I + T L B S T L T E L I E h_opf_1 i=_id_value I L
 T B E B S L B D
-
 google.com/reader/m   -  purple magic
 S X + I + T L I E S T B B D V Y T B S B D T S
 T L T E Y T S L T E B Y T "2" Y T L T E Y T Y
 L T E B Y T "3" Y T L T E Y T Y L T E B Y T "4"
-Y T L T E Y T Y L T E B Y T "5" Y T L T T E Y
-T
+Y T L T E Y T Y L T E B Y T "5" Y T L T T E Y T
 */
 
 #include "../inc/swilib.h"
@@ -210,6 +220,9 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
       break;
     case OMS_TAG_NAME:
       // STAGE 1
+      //DEBUGV("OMS_TAG_NAME pos:",17);
+      //DEBUGS("%i ",vd->oms_pos);
+      //DEBUGS("%c\n",vd->oms[vd->oms_pos]);
       switch(i=vd->oms[vd->oms_pos])
       {
       case '+':
@@ -263,16 +276,16 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
 	      AddPItem(vd);
         vd->oms_pos++;
 	      goto L_NOSTAGE2;
-      case 'I':    // 
+      case 'I':  // image
         vd->oms_wanted+=8;
         break;
-      case 'J':
+      case 'J':  // picture frame
         vd->oms_wanted+=4;
         break;
-      case 'K':
+      case 'K':  // image by id
         vd->oms_wanted+=6;
         break;
-      case 'X':    // Image
+      case 'X':  // Image RGBA
         vd->oms_wanted+=4;
         break;
       case 'h':    // opf 1
@@ -297,44 +310,44 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
       case 'r':
         vd->oms_wanted+=2;
         break;
-      case 's':
+      case 's': // drop down list
         vd->oms_wanted+=2;
         break;
-      case 'o':
+      case 'o': // drop down list item
         vd->oms_wanted+=2;
         break;
-      case 'l':  // страннй тег, из за него курсор гллючит, может 'l' заканчивает список
+      case 'l':  // страннй тег, из за него курсор гллючит, заканчивает список ?
         //AddBeginRef(vd);
-        vd->tag_l_count=2;
-        AddTextItem(vd,"<l>",3);
+        //vd->tag_l_count=2;
+        //AddTextItem(vd,"<l>",3);
         vd->oms_pos++;
         goto L_NOSTAGE2;
       case 'i':  // image button
-        if (!vd->tag_l_count)
-        {
+        //if (!vd->tag_l_count)
+        //{
           AddBeginRef(vd);
-          vd->tag_l_count=1;
-        }
+          //vd->tag_l_count=1;
+        //}
         vd->oms_wanted+=2;
         break;
       case 'k':
         vd->oms_wanted+=3; //Code type and data length
         break;	
-      case 'L':
+      case 'L':  // link
         vd->oms_wanted+=2;
         break;
-      case '^':
+      case '^':  // wrong tag ?
         vd->oms_wanted+=2;
         break;
-      case 'P':
+      case 'P':  // phone number
         vd->oms_wanted+=2;
         break;
       case 'R':
         vd->oms_wanted+=2;
         break;        
-      case 'E':
-        vd->ref_mode--;
-        if (!vd->ref_mode) // must be equal 0
+      case 'E':  //finish ref
+        vd->ref_mode_L--;
+        if (!vd->ref_mode_L) // must be equal 0
   	      AddEndRef(vd);
         vd->oms_pos++;
 	      goto L_NOSTAGE2;
@@ -356,6 +369,9 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
       vd->parse_state=OMS_TAG_DATA;
       break;
     case OMS_TAG_DATA:
+      //DEBUGV("OMS_TAG_DATA pos:",17);
+      //DEBUGS("%i ",vd->oms_pos);
+      //DEBUGS("%c\n",vd->oms[vd->oms_pos]);
       i=vd->oms[vd->oms_pos];
       vd->oms_pos++;
       switch(i)
@@ -377,7 +393,6 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
         AddNewStyle(vd);
         break;
       case 'T':
-        vd->ref_mode=1;
         i=_rshort(vd);
         vd->oms_wanted+=i;
         vd->parse_state=OMS_TAGT_STAGE3;
@@ -388,7 +403,6 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
         AddNewStyle(vd);
         break;
       case 'I':
-        vd->ref_mode++;
         vd->iw=_rshort(vd); //width
         vd->ih=_rshort(vd); //heigth
         i=_rshort(vd);
@@ -400,19 +414,25 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
         vd->iw=_rshort(vd); //width
         vd->ih=_rshort(vd); //height
         AddPictureItemFrame(vd,vd->iw,vd->ih);
-        if (vd->tag_l_count)
-        {
-          if (!(--vd->tag_l_count))
-          {
-            AddEndRef(vd);
-          }
-        }
+        //if (vd->tag_l_count)
+        //{
+        //  if (!(--vd->tag_l_count))
+        //  {
+        //    AddEndRef(vd);
+        //  }
+        //}
+        vd->ref_mode_i--;
+        if (!vd->ref_mode_i)
+          AddEndRef(vd);
         break;
       case 'K':
         _rshort(vd); //width
         _rshort(vd); //height
         i=_rshort(vd); //index
         AddPictureItemIndex(vd,i);
+        vd->ref_mode_i--;
+        if (!vd->ref_mode_i)
+          AddEndRef(vd);
         break;
       case 'X':
         vd->iw=_rbyte(vd); //width
@@ -508,7 +528,7 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
       case 'L':
         i=_rshort(vd);
         vd->work_ref.tag='L';
-        vd->ref_mode=0;
+        vd->ref_mode_L=1;
         AddBeginRef(vd);
         vd->oms_wanted+=i;
         vd->parse_state=OMS_TAGL_STAGE3;
@@ -516,7 +536,7 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
       case '^':
         i=_rshort(vd);
         vd->work_ref.tag='^';
-        vd->ref_mode=1;
+        //vd->ref_mode=1;//????
         AddBeginRef(vd);
         vd->oms_wanted+=i;
         vd->parse_state=OMS_TAGx5E_STAGE3;
@@ -534,7 +554,7 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
         i=vd->iw=_rshort(vd);
         //vd->work_ref.tag='Z';
         vd->work_ref.id2=vd->oms_pos-2;
-        vd->ref_mode++;
+        vd->ref_mode_L++;
         //AddBeginRef(vd);
         vd->oms_wanted+=i;
         vd->parse_state=OMS_TAGZ_STAGE3;
@@ -558,20 +578,24 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
     case OMS_TAGT_STAGE3:
       i=vd->oms_wanted-vd->oms_pos;
       AddTextItem(vd,vd->oms+vd->oms_pos,i);
+
+      if(!vd->title)
+      {
+        vd->title=(char *)malloc(i+1);
+        memcpy(vd->title,vd->oms+vd->oms_pos,i);
+        vd->title[i]=NULL;
+        utf82win(vd->title, vd->title);
+      }
+      
       vd->oms_pos=vd->oms_wanted;
       vd->oms_wanted++;
       vd->parse_state=OMS_TAG_NAME;
       break;
     case OMS_TAGI_STAGE3:
-      //i=vd->oms_wanted-vd->oms_pos; //Size of picture
       AddPictureItem(vd,(void *)(vd->oms+vd->oms_pos));
-      //if (vd->tag_l_count)
-      //{
-        //if (!(--vd->tag_l_count))
-        //{
-          //AddEndRef(vd);
-        //}
-      //}
+      vd->ref_mode_i--;
+      if (!vd->ref_mode_i)
+        AddEndRef(vd);
       vd->oms_pos=vd->oms_wanted;
       vd->oms_wanted++;
       vd->parse_state=OMS_TAG_NAME;
@@ -579,6 +603,9 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
     case OMS_TAGX_STAGE3:
       //i=vd->oms_wanted-vd->oms_pos; //Size of picture
       AddPictureItemRGBA(vd,(void *)(vd->oms+vd->oms_pos),vd->iw,vd->ih);
+      vd->ref_mode_i--;
+      if (!vd->ref_mode_i)
+        AddEndRef(vd);
       vd->oms_pos=vd->oms_wanted;
       vd->oms_wanted++;
       vd->parse_state=OMS_TAG_NAME;
@@ -705,8 +732,9 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
       i=vd->iw;
       vd->work_ref.id=vd->oms_pos-2;
       vd->oms_pos+=i;
-      _rbyte(vd);
-      vd->tag_o_count=_rshort(vd);
+      vd->work_ref.multiselect=_rbyte(vd);
+      vd->work_ref.data=malloc(vd->tag_o_count=_rshort(vd));
+      vd->work_ref.size=0;
       vd->oms_wanted++;
       vd->parse_state=OMS_TAG_NAME;
       break;
@@ -723,11 +751,12 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
       //AddTextItem(vd,vd->oms+vd->oms_pos,i);
       //AddBrItem(vd);
       vd->oms_pos+=i;
-      if (_rbyte(vd)) //checked/unchecked
+      if (((char*)vd->work_ref.data)[vd->work_ref.size]=_rbyte(vd)) //checked/unchecked
       {
         vd->work_ref.value=vd->oms_pos-1-vd->ih-2-vd->iw-2;
         vd->work_ref.id2=vd->oms_pos-1-vd->ih-2;
       }
+      vd->work_ref.size++;
       if (!vd->tag_o_count)
       {
         AddDropDownList(vd);
@@ -740,7 +769,7 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
       i=vd->iw;
       vd->work_ref.id=vd->oms_pos-2;
       vd->oms_pos+=i;
-      i=(vd->ih=_rshort(vd));
+      i=vd->ih=_rshort(vd);
       vd->oms_wanted+=i;
       vd->parse_state=OMS_TAGi_STAGE4;
       break;
@@ -762,26 +791,10 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
       //  vd->parse_state=OMS_STOP;
       //  return;
       //}
-      vd->oms_pos+=i+1;
+      vd->oms_pos+=i;
       //_rshort(vd); //unk
-      vd->oms_wanted+=9;
-      vd->parse_state=OMS_TAGi_STAGE5;  // read next I tag
-      break;
-    case OMS_TAGi_STAGE5:
-      vd->iw=_rshort(vd); //width
-      vd->ih=_rshort(vd); //heigth
-      i=_rshort(vd);
-      _rshort(vd);
-      vd->oms_wanted+=i;
-      vd->parse_state=OMS_TAGi_STAGE6;
-      break;
-    case OMS_TAGi_STAGE6:
-      AddBrItem(vd);
-      AddPictureItem(vd,(void *)(vd->oms+vd->oms_pos));
-      AddBrItem(vd);
-      AddEndRef(vd);
-      vd->oms_pos=vd->oms_wanted;
       vd->oms_wanted++;
+      vd->ref_mode_i=1;
       vd->parse_state=OMS_TAG_NAME;
       break;
     case OMS_TAGk_STAGE3:

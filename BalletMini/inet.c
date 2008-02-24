@@ -3,6 +3,7 @@
 #include "local_ipc.h"
 #include "string_works.h"
 #include "view.h"
+#include "history.h"
 
 #ifndef NEWSGOLD
 #define SEND_TIMER
@@ -30,8 +31,8 @@ static char *sendq_p=NULL; //указатель очереди
 static int recvq_l=0;
 static char *recvq_p=NULL;
 
-static char OM_POST_HOST[]="80.232.117.10";
-static unsigned short OM_POST_PORT=80;
+extern const char OM_POST_HOST[32];
+extern const unsigned int OM_POST_PORT;
 
 static int receive_mode;
 
@@ -369,8 +370,9 @@ static void SendPost(void)
 
   sprintf(buf,"v=Opera Mini/2.0.4509/hifi/woodland/zh");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
-
-  sprintf(buf,"i-ua=Opera/9.10 (Windows NT 5.1; U; zh)");
+  
+  sprintf(buf,"i=Opera/8.01 (J2ME/MIDP; Opera Mini/2.0.4509/1630; zh; U; ssr)");
+  //sprintf(buf,"i-ua=Opera/9.10 (Windows NT 5.1; U; zh)");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
   sprintf(buf,"s=-1");
@@ -379,7 +381,8 @@ static void SendPost(void)
   sprintf(buf,"n=1");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"A=CLDC-1.1");
+  sprintf(buf,"A=CLDC-1.0");
+  //sprintf(buf,"A=CLDC-1.1");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
   sprintf(buf,"B=MIDP-2.0");
@@ -391,7 +394,8 @@ static void SendPost(void)
   sprintf(buf,"D=zh");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"E=ISO8859_1");
+  sprintf(buf,"E=ISO-8859-1");
+  //sprintf(buf,"E=ISO8859_1");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
   
   extern const int PIC_QUALITY;
@@ -415,7 +419,9 @@ static void SendPost(void)
     j=1;
     break;
   }
-  sprintf(buf,"d=w:%d;h:%d;c:65536;m:3145728;i:%d;q:%d;f:0;j:0;l:256",ScreenW(),ScreenH(),i,j);
+  
+  extern const int JAVA_HEAP_SIZE;
+  sprintf(buf,"d=w:%d;h:%d;c:65536;m:%d;i:%d;q:%d;f:0;j:0;l:256",ScreenW(),ScreenH(),JAVA_HEAP_SIZE*1024,i,j);
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
   sprintf(buf,"c=%s",AUTH_CODE);
@@ -435,16 +441,19 @@ static void SendPost(void)
   sprintf(buf,"g=1");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"b=");
+  sprintf(buf,"b=mod2.04");
+  //sprintf(buf,"b=");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
   sprintf(buf,"y=zh");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"t=2");
+  sprintf(buf,"t=-1");
+  //sprintf(buf,"t=2");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"w=1;0");
+  sprintf(buf,"w=1;1");
+  //sprintf(buf,"w=1;0");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
   sprintf(buf,"e=def");
@@ -585,6 +594,7 @@ void StartINET(const char *url, char *fncache)
     STOPPED=1;
     goto ERR;
   }
+  AddURLToHistory(url+2);
   URL=globalstr(url);
   if ((FNCACHE=fncache))
   {

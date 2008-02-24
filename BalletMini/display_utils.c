@@ -18,7 +18,6 @@ int GetFontHeight(int font, int atribute)
 
 unsigned int SearchNextDisplayLine(VIEWDATA *vd, LINECACHE *p, unsigned int *max_h)
 {
-  REFCACHE *rf;
   int left=ScreenW();
   int c;
   int h;
@@ -37,12 +36,6 @@ unsigned int SearchNextDisplayLine(VIEWDATA *vd, LINECACHE *p, unsigned int *max
     }
     switch(c)
     {
-    case 0xE11F:
-    case 0xE11E:
-      f=1;
-      rf=FindReference(vd,pos);
-      if (rf) pos=rf->end;
-      break;
     case 0x0A:
     case 0x0D:
       f=1;
@@ -206,7 +199,7 @@ int RenderPage(VIEWDATA *vd, int do_draw)
   WSHDR *ws=vd->ws;
   LINECACHE *lc;
   unsigned int vl;
-  int ypos=YDISP-vd->pixdisp;
+  int ypos=-vd->pixdisp;
   unsigned int store_pos=vd->view_pos;
   unsigned int store_line=vl=vd->view_line;
   unsigned int len;
@@ -258,7 +251,6 @@ int RenderPage(VIEWDATA *vd, int do_draw)
       while(len>0&&(dc<32000))
       {
         c=vd->rawtext[sc];
-        //if (c==0x0000) goto L1;
         if (c==UTF16_ENA_INVERT)
         {
           //Found begin of ref
@@ -341,7 +333,7 @@ int RenderPage(VIEWDATA *vd, int do_draw)
         def_ink[1]=lc->ink1;
         def_ink[2]=lc->ink2>>8;
         def_ink[3]=lc->ink2;
-        for (int i=0; i!=cur_rc; i++) 
+        for (int i=0; i!=cur_rc; i++)
         {
           DrawRectangle(rc[i].start_x,ypos,rc[i].end_x,y2,
 		        RECT_FILL_WITH_PEN,rc[i].color,rc[i].color);
@@ -350,6 +342,59 @@ int RenderPage(VIEWDATA *vd, int do_draw)
 		      lc->bold?FONT_SMALL_BOLD:FONT_SMALL,TEXT_NOFORMAT+
 		      (lc->underline?TEXT_UNDERLINE:0),
 		      def_ink,GetPaletteAdrByColorIndex(23));
+        
+        if (ws->wsbody[1]==vd->img_tbox)
+        {
+          REFCACHE *rf=FindReference(vd,vd->view_pos);
+          // calc pos
+          int d=(GetImgHeight(GetPicNByUnicodeSymbol(vd->img_tbox))-GetFontHeight(FONT_SMALL,0))/2;
+          // count lenght
+          int w=GetImgWidth(GetPicNByUnicodeSymbol(vd->img_tbox))-(d*2);
+          WSHDR *ws2=AllocWS(((WSHDR *)rf->data)->wsbody[0]);
+          for (;ws2->wsbody[0]<((WSHDR *)rf->data)->wsbody[0];)
+          {
+            w-=GetSymbolWidth(((WSHDR *)rf->data)->wsbody[ws2->wsbody[0]+1],FONT_SMALL);
+            if (w<=0)
+              break;
+            ws2->wsbody[0]++;
+            ws2->wsbody[ws2->wsbody[0]]=((WSHDR *)rf->data)->wsbody[ws2->wsbody[0]];
+          }
+          DrawString(ws2,0+d,ypos+d,scr_w,y2,
+            FONT_SMALL,TEXT_NOFORMAT,
+            vd->pos_cur_ref==rf->begin?GetPaletteAdrByColorIndex(0):GetPaletteAdrByColorIndex(1),
+            GetPaletteAdrByColorIndex(23));
+          FreeWS(ws2);
+        }
+        if (ws->wsbody[1]==vd->img_ddlist)
+        {
+          REFCACHE *rf=FindReference(vd,vd->view_pos);
+          if (rf->value!=_NOREF)
+          {
+            // calc pos
+            int d=(GetImgHeight(GetPicNByUnicodeSymbol(vd->img_ddlist))-GetFontHeight(FONT_SMALL,0))/2;
+            // count lenght
+            int w=GetImgWidth(GetPicNByUnicodeSymbol(vd->img_ddlist))-(d*2)-GetImgHeight(GetPicNByUnicodeSymbol(vd->img_ddlist));
+            int count=_rshort2(vd->oms+rf->value);
+            char *c=extract_omstr(vd,rf->value);
+            WSHDR *ws2=AllocWS(count);
+            oms2ws(ws2,c,count);
+            count=ws2->wsbody[0];
+            ws2->wsbody[0]=0;
+            for (;ws2->wsbody[0]<count;)
+            {
+              w-=GetSymbolWidth(ws2->wsbody[ws2->wsbody[0]+1],FONT_SMALL);
+              if (w<=0)
+                break;
+              ws2->wsbody[0]++;
+            }
+            DrawString(ws2,0+d,ypos+d,scr_w,y2,
+              FONT_SMALL,TEXT_NOFORMAT,
+              GetPaletteAdrByColorIndex(1),
+              GetPaletteAdrByColorIndex(23));
+            FreeWS(ws2);
+            mfree(c);
+          }
+        }
       }
       
       if (y2>=scr_h||vl==vd->lines_cache_size-2)
@@ -361,18 +406,18 @@ int RenderPage(VIEWDATA *vd, int do_draw)
           SetPixel(scr_w,i,GetPaletteAdrByColorIndex(2));
           SetPixel(scr_w-1,i,GetPaletteAdrByColorIndex(2));
         }
-        //WSHDR *ws;
-        //ws=AllocWS(128);
-        //wsprintf(ws,"%u %u",vd->pos_first_ref,vd->pos_last_ref);
-        //DrawString(ws,3,14,scr_w,scr_h,FONT_SMALL,TEXT_NOFORMAT,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(21));
-        //wsprintf(ws,"%u %u",vd->pos_prev_ref,vd->pos_next_ref);
-        //DrawString(ws,3,26,scr_w,scr_h,FONT_SMALL,TEXT_NOFORMAT,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(21));
-        //wsprintf(ws,"%u %c",vd->pos_cur_ref,FindReference(vd,vd->pos_cur_ref)?FindReference(vd,vd->pos_cur_ref)->tag:'0');
-        //DrawString(ws,3,38,scr_w,scr_h,FONT_SMALL,TEXT_NOFORMAT,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(21));
-        //ws->wsbody[0]=10;
-        //memcpy(&(ws->wsbody[1]),(vd->rawtext+store_pos),10);
-        //DrawString(ws,3,50,scr_w,scr_h,FONT_SMALL,TEXT_NOFORMAT,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(21));
-        //FreeWS(ws);
+//        WSHDR *ws;
+//        ws=AllocWS(128);
+//        wsprintf(ws,"%u %u",vd->pos_first_ref,vd->pos_last_ref);
+//        DrawString(ws,3,14,scr_w,scr_h,FONT_SMALL,TEXT_NOFORMAT,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(21));
+//        wsprintf(ws,"%u %u",vd->pos_prev_ref,vd->pos_next_ref);
+//        DrawString(ws,3,26,scr_w,scr_h,FONT_SMALL,TEXT_NOFORMAT,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(21));
+//        wsprintf(ws,"%u %c",vd->pos_cur_ref,FindReference(vd,vd->pos_cur_ref)?FindReference(vd,vd->pos_cur_ref)->tag:'0');
+//        DrawString(ws,3,38,scr_w,scr_h,FONT_SMALL,TEXT_NOFORMAT,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(21));
+//        ws->wsbody[0]=10;
+//        memcpy(&(ws->wsbody[1]),(vd->rawtext+store_pos),10);
+//        DrawString(ws,3,50,scr_w,scr_h,FONT_SMALL,TEXT_NOFORMAT,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(21));
+//        FreeWS(ws);
       }
       ypos=y2;
       vl++;
@@ -463,9 +508,9 @@ static int input_box_onkey(GUI *data, GUI_MSG *msg)
   {
     // set value
     ExtractEditControl(data,1,&ec);
-    FreeWS(cur_ref->ws);
-    cur_ref->ws=AllocWS(ec.pWS->wsbody[0]);
-    wstrcpy(cur_ref->ws,ec.pWS);
+    FreeWS(((WSHDR *)cur_ref->data));
+    cur_ref->data=(void *)AllocWS(ec.pWS->wsbody[0]);
+    wstrcpy(((WSHDR *)cur_ref->data),ec.pWS);
     if (!cur_ref->no_upload)
     {
       goto_url=malloc(strlen(cur_vd->pageurl)+1);
@@ -520,7 +565,7 @@ int CreateInputBox(VIEWDATA *vd, REFCACHE *rf)
   eq=AllocEQueue(ma,mfree_adr());
   WSHDR *ews=AllocWS(16384);
   
-  wstrcpy(ews,rf->ws);
+  wstrcpy(ews,((WSHDR *)rf->data));
   
   PrepareEditControl(&ec);
   ConstructEditControl(&ec,ECT_NORMAL_TEXT,0x40,ews,16384);
@@ -537,34 +582,47 @@ int CreateInputBox(VIEWDATA *vd, REFCACHE *rf)
 typedef struct
 {
   void *next;
-  char name[64];
+  char name[256];
   unsigned short value;
   unsigned short id2;
 }SEL_STRUCT;
 
 int sel_menu_onkey(void *gui, GUI_MSG *msg)
-{ 
+{
   SEL_STRUCT *ustop=MenuGetUserPointer(gui);
   if (msg->keys==0x3D || msg->keys==0x18)
   {
     int i=GetCurMenuItem(gui);
-    for (int n=0; n!=i; n++) ustop=ustop->next;
+    int n=0;
+    for (; n!=i; n++) ustop=ustop->next;
     if (ustop)
     {
-      cur_ref->value=ustop->value;
-      cur_ref->id2=ustop->id2;
-      if (!cur_ref->no_upload)
+      if (cur_ref->multiselect)
       {
-        goto_url=malloc(strlen(cur_vd->pageurl)+1);
-        strcpy(goto_url,cur_vd->pageurl);
-        from_url=malloc(strlen(cur_vd->pageurl)+1);
-        strcpy(from_url,cur_vd->pageurl);
-        goto_params=collectItemsParams(cur_vd,cur_ref);
-        quit_reqired=1;
+        if(((char*)cur_ref->data)[n])
+          ((char*)cur_ref->data)[n]=0;
+        else
+          ((char*)cur_ref->data)[n]=1;
+        SetMenuItemIcon(gui,i,((char*)cur_ref->data)[n]);
+        RefreshGUI();
       }
-      cur_ref=NULL;
-      cur_vd=NULL;
-      return 0xFF;
+      else
+      {
+        cur_ref->value=ustop->value;
+        cur_ref->id2=ustop->id2;
+        if (!cur_ref->no_upload)
+        {
+          goto_url=malloc(strlen(cur_vd->pageurl)+1);
+          strcpy(goto_url,cur_vd->pageurl);
+          from_url=malloc(strlen(cur_vd->pageurl)+1);
+          strcpy(from_url,cur_vd->pageurl);
+          goto_params=collectItemsParams(cur_vd,cur_ref);
+          quit_reqired=1;
+        }
+        cur_ref=NULL;
+        cur_vd=NULL;
+        return 0xFF;
+      }
     }
   }
   return (0);
@@ -588,18 +646,26 @@ void sel_menu_ghook(void *gui, int cmd)
   }
 }
 
+static int icon_array[2];
+
 void sel_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
 {
   SEL_STRUCT *ustop=user_pointer;
   WSHDR *ws;
   int len;
-  for (int n=0; n!=cur_item; n++) ustop=ustop->next;
+  int n=0;
+  for (; n!=cur_item; n++) ustop=ustop->next;
   void *item=AllocMenuItem(gui);
   if (ustop)
   {
     len=strlen(ustop->name);
     ws=AllocMenuWS(gui,len+4);
     oms2ws(ws,ustop->name,len);
+    if (cur_ref->multiselect)
+    {
+      SetMenuItemIconArray(gui,item,icon_array);
+      SetMenuItemIcon(gui,cur_item,((char*)cur_ref->data)[n]);
+    }
   }
   else
   {
@@ -676,6 +742,12 @@ int ChangeMenuSelection(VIEWDATA *vd, REFCACHE *rf)
   }
   cur_ref=rf;
   cur_vd=vd;
+  icon_array[0]=GetPicNByUnicodeSymbol(CBOX_UNCHECKED);
+  icon_array[1]=GetPicNByUnicodeSymbol(CBOX_CHECKED);
+  if (rf->multiselect)
+    sel_STRUCT.flags2=0x11;
+  else
+    sel_STRUCT.flags2=0x10;
   patch_header(&sel_HDR);
   return CreateMenu(0,0,&sel_STRUCT,&sel_HDR,start,n_sel,ustop,0);
 }
