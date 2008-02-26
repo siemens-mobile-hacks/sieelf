@@ -69,7 +69,24 @@
 #define ADDR_ADDRBook 0xA0592670
 #define BASEADDRESS			0xA0E30000
 
+
 #endif
 
+#ifdef S68Cv51
+#define ADDR_strlen 0xA110632C+1
+#define ADDR_atou 0xA02B9190+1
+#define ADDR_WS_InitByZero	0xA01B9DA2+1
+#define ADDR_GetCalleeNumber	0xA08334CA+1
+#define ADDR_UpdateWndItem	0xA08D427C+1
+#define ADDR_memcmp	0xA11054D4+1
 
+#define ADDR_RECORD1 0xA09F2E50
+#define ADDR_NUMX 0xA09F2D8C
+#define ADDR_IsCalling 0xA0C26E00+1
+#define ADDR_CallIN 0xA02E8BA8+1
+#define ADDR_CallOUT 0xA02E8D4E+1
+#define ADDR_ADDRBook 0xA01BA38E+1
+
+#define BASEADDRESS			0xA1580000
+#endif
 

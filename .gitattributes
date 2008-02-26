@@ -126,7 +126,9 @@ CodeShowPatch/CodeShowPatch.eww -text
 CodeShowPatch/DataBase.vkp -text
 CodeShowPatch/E71Cv41.xcl -text
 CodeShowPatch/ELC1v41.xcl -text
+CodeShowPatch/S68Cv51.xcl -text
 CodeShowPatch/S7Cv47.xcl -text
+CodeShowPatch/SK6Cv50.xcl -text
 CodeShowPatch/about.txt -text
 CodeShowPatch/addr.h -text
 CodeShowPatch/main.asm -text
