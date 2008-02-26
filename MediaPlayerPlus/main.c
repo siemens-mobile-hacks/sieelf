@@ -429,7 +429,7 @@ static void maincsm_oncreate(CSM_RAM *data)
 	//ews_2=AllocWS(128);
 }
 
-
+extern int my_keyhook(int submsg, int msg);
 static void Killer(void)
 {
 	extern void *ELF_BEGIN;
@@ -437,6 +437,7 @@ static void Killer(void)
 	FreeWS(temp);
 	//FreeWS(ews_2);
 	if(is_tmr) GBS_DelTimer(&mytmr);
+	RemoveKeybMsgHook((void *)my_keyhook);
 	kill_data(&ELF_BEGIN, (void (*)(void *))mfree_adr());
 }
 
@@ -497,6 +498,7 @@ int main(void)
 	CSM_root()->csm_q->current_msg_processing_csm=CSM_root()->csm_q->csm.first;
 	CreateCSM(&MAINCSM.maincsm, dummy,0);
 	CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
+	AddKeybMsgHook((void *)my_keyhook);
 	UnlockSched();
 	return 0;
 }

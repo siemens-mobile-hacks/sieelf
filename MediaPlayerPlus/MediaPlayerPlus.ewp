@@ -535,7 +535,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild></postbuild>
+        <postbuild>$PROJ_DIR$\tripper.exe $EXE_DIR$\MediaPlayerPlus.elf $PROJ_DIR$\\MediaPlayerPlus_elka_trippered.elf</postbuild>
       </data>
     </settings>
     <settings>
@@ -3158,6 +3158,9 @@
   </file>
   <file>
     <name>$PROJ_DIR$\main.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\my_keyhook.c</name>
   </file>
 </project>
 
