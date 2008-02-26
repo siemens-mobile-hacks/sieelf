@@ -182,7 +182,7 @@ static const struct
 
 static void UpdateCSMName(void)
 {
-	wsprintf((WSHDR *)(&MAINCSM.maincsm_name), "%t", "фад╩╥╫©Р");
+	wsprintf((WSHDR *)(&MAINCSM.maincsm_name), "ScreenFrame");
 }	
 
 int main(void)
