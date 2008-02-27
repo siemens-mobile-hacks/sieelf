@@ -1,6 +1,0 @@
-;for ELFPack 2.31
-;move folder "daemons" and "img" form data to config
-;(c)bingk
-;2007-10-05
-;0x00FD86E4: 00 02
-;0x00FD9884: 30 32 ;move elfpack.bcfg to 2:\ZBin\etc
