@@ -241,7 +241,8 @@ end:
 void RereadSettings(void)
 {
 	InitConfig();
-	playercsmadr=(void *)strtoul(CSMADR,NULL,16);
+	if(strlen((char *)CSMADR)==8)
+		playercsmadr=(void *)strtoul(CSMADR,NULL,16);
 }
 
 int getMaxChars(unsigned short *wsbody, int len, int font) // 获取可显示的最大字符数 Unicode
