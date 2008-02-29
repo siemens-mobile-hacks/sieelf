@@ -1497,6 +1497,9 @@ SMSCount/main.asm -text
 SMSCount/smsc.bat -text
 SMSCountReader/SMSCountReader.ewp -text
 SMSCountReader/SMSCountReader.eww -text
+SMSCountReader/conf_loader.c -text
+SMSCountReader/conf_loader.h -text
+SMSCountReader/config_data.c -text
 SMSCountReader/func.asm -text
 SMSCountReader/main.c -text
 SMSCountReader/make_elka.bat -text

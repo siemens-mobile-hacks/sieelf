@@ -16,7 +16,9 @@ typedef struct
   GUI gui;
 }MAIN_GUI;
 
+extern unsigned long  strtoul (const char *nptr,char **endptr,int base);
 extern void kill_data(void *p, void (*func_p)(void *));
+extern const char UNUSERAMADDR[];
 
 unsigned int MAINCSM_ID = 0;
 unsigned int MAINGUI_ID = 0;
@@ -128,10 +130,10 @@ void load_dat(void)
   }
 }
 
-void rebootProc(int id)
-{
-  if(id==0) RebootPhone();
-}
+//void rebootProc(int id)
+//{
+//  if(id==0) RebootPhone();
+//}
 
 
 void save_dat(int type)
@@ -150,11 +152,19 @@ void save_dat(int type)
       count[3]=0;
       count[4]=0;
     }
+    unsigned int *p;
+    if(strlen((char *)UNUSERAMADDR)==8)
+    	p=(unsigned int *)UNUSERAMADDR;
     data_buf[4]=count[0];
+    *p++=count[0];
     data_buf[8]=count[1];
+    *p++=count[1];
     data_buf[0xC]=count[2];
+    *p++=count[2];
     data_buf[0x10]=count[4];
+    *p++=count[4];
     data_buf[0x14]=count[3];
+    *p=count[3];
 	  fwrite(f, data_buf, 24, &err);
     mfree(data_buf);
 	}
@@ -163,7 +173,7 @@ void save_dat(int type)
     MsgBoxError(1,(int)"Save Error");
   }
   fclose(f,&err);
-  MsgBoxYesNo(1, (int)"Reboot soon ?", rebootProc);
+  //MsgBoxYesNo(1, (int)"Reboot soon ?", rebootProc);
 }
 
 void clearProc(int id)
