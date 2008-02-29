@@ -267,7 +267,7 @@ void _SaveText(GUI *data)
 {
   WSHDR *tmostr=MenuGetUserPointer(data);
   SaveText(tmostr);
-  GeneralFuncF1(1);
+  GeneralFuncF1(10);
 }
 
 void Settings(GUI *data)
