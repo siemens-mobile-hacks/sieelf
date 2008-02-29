@@ -33,6 +33,7 @@
 //#define CS_SHOW_NO "不显示所有后缀"
 #define CS_SHOW_EXT "显示后缀"
 #define CS_KEYCTRL "按键控制"
+#define CS_KEY_ENA "允许按键控制"
 #define CS_KEYPP "播放/暂停"
 #define CS_KEYPRE "上一首"
 #define CS_KEYNEXT "下一首"

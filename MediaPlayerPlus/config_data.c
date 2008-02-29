@@ -65,6 +65,9 @@ __root const CFG_HDR cfghdr1_1={CFG_LEVEL, "", 0, 0};
 
 __root const CFG_HDR cfghdr2_0={CFG_LEVEL, CS_KEYCTRL, 1, 0};
 
+__root const CFG_HDR cfghdr23={CFG_CHECKBOX, CS_KEY_ENA, 0, 2};
+__root const int ena_keyhook=1;
+
 #ifndef ELKA
 __root const CFG_HDR cfghdr20={CFG_CBOX, CS_KEYNEXT, 0, 22};
 __root const unsigned int next_key=8;

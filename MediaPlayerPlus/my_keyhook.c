@@ -4,6 +4,7 @@
 extern const unsigned int next_key;
 extern const unsigned int pre_key;
 extern const unsigned int play_pause_key;
+extern const int ena_keyhook;
 
 extern int is_player_active;
 
@@ -72,7 +73,7 @@ void long_press_switch(unsigned int key)
 int hot_key_mode=0;
 int my_keyhook(int submsg, int msg)
 {
-	if(is_player_active)
+	if(is_player_active&&ena_keyhook)
 	{
     int i;
     unsigned int hot_keys[3]={key_switch(next_key),key_switch(pre_key),key_switch(play_pause_key)};
