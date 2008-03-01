@@ -1023,6 +1023,13 @@ OBEXTool/obexcopy.exe -text
 OBEXTool/obexdel.exe -text
 OBEXTool/obexsetup.exe -text
 OBEXTool/vsofs.wfx -text
+OwnMelody/OwnMelody.ewp -text
+OwnMelody/OwnMelody.eww -text
+OwnMelody/SK6Cv50.xcl -text
+OwnMelody/entry.asm -text
+OwnMelody/main.c -text
+OwnMelody/postbuild.cmd -text
+OwnMelody/readme.txt -text
 PANDEMONIUM/PANDEMONIUM.ewp -text
 PANDEMONIUM/PANDEMONIUM.eww -text
 PANDEMONIUM/func.asm -text
