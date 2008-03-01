@@ -647,7 +647,6 @@ MediaPlayerPlus/config_data.c -text
 MediaPlayerPlus/func.asm -text
 MediaPlayerPlus/lang.h -text
 MediaPlayerPlus/main.c -text
-MediaPlayerPlus/my_keyhook.c -text
 MediaPlayerPlus/test.xcl -text
 MegaDial/MegaDial.ewp -text
 MegaDial/MegaDial.eww -text

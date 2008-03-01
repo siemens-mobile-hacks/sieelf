@@ -63,6 +63,7 @@ __root const CFG_CBOX_ITEM cfgcbox0[2]={CS_SOLID_LINE, CS_BROKEN_LINE};
 
 __root const CFG_HDR cfghdr1_1={CFG_LEVEL, "", 0, 0};
 
+/*
 __root const CFG_HDR cfghdr2_0={CFG_LEVEL, CS_KEYCTRL, 1, 0};
 
 __root const CFG_HDR cfghdr23={CFG_CHECKBOX, CS_KEY_ENA, 0, 2};
@@ -95,3 +96,28 @@ __root const CFG_CBOX_ITEM cfgcbox22[21]={CS_KEY_0, CS_KEY_1, CS_KEY_2, CS_KEY_3
 #endif
 
 __root const CFG_HDR cfghdr2_1={CFG_LEVEL, "", 0, 0};
+*/
+__root const CFG_HDR cfghdr4_0={CFG_LEVEL, CS_LRCCTRL, 1, 0};
+
+__root const CFG_HDR cfghdr30={CFG_CHECKBOX, CS_LRC_ENA, 0, 2};
+__root const int ena_lrc=1;
+
+__root const CFG_HDR cfghdr31={CFG_STR_UTF8,CS_LRC_DIR_PATH,3,127};
+__root const char lrc_dir_path[128]="0:\\ZBin\\MediaPlayerPlus\\LRC\\";
+
+__root const CFG_HDR cfghdr32={CFG_UINT, CS_LRC_FONT, 0, 16};
+__root const unsigned int lrc_font=FONT_SMALL;
+
+__root const CFG_HDR cfghdr33={CFG_COLOR, CS_LRC_COLOR, 0, 0};
+__root const char lrc_color[4]={255, 255, 255, 80};
+
+__root const CFG_HDR cfghdr34={CFG_COLOR, CS_LRC_FRMCOLOR, 0, 0};
+__root const char lrc_frmcolor[4]={0, 0, 0, 0};
+
+__root const CFG_HDR cfghdr36={CFG_UINT, CS_LRC_ATTR, 0, 512};
+__root const unsigned int lrc_txt_attr=10;
+
+__root const CFG_HDR cfghdr35={CFG_UINT, CS_LRC_SPEED, 0, 9999};
+__root const unsigned int lrc_speed=300;
+
+__root const CFG_HDR cfghdr4_1={CFG_LEVEL, "", 0, 0};

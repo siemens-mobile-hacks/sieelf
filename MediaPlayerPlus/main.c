@@ -41,6 +41,7 @@ int is_tmr=0;
 //int is_drawname=0;
 char utf8_name[128];
 char name_temp[128];
+char name_temp_cmp[128];
 int is_music_file=0;
 int is_player_active=0;
 
@@ -290,7 +291,7 @@ void drawname_proc(void)
 			int i;
 			for (i=scroll_pos+1;i<ews->wsbody[0];i++)
 				rest_len+=GetSymbolWidth(ews->wsbody[i], font);
-			if (rest_len<=(length-4-0x40))
+			if (rest_len<=(length-0x40))
 				scroll_pos = 0;
 			if(scroll_pos==1)
 				GBS_StartTimerProc(&mytmr,wait_time,drawname_proc);
@@ -310,7 +311,119 @@ void drawname_proc(void)
 		//is_drawname=0;
 	}
 }
+#define time_second 216
+GBSTMR tmup;
+int time=0;
+//int is_playing=0;
+#pragma swi_number=0x01F8
+__swi __arm int GetPlayStatus(void);
 
+WSHDR *ws_lrc;
+WSHDR *temp_lrc;
+char *lrc_buf;
+char lrc_path[128];
+int is_no_lrc;
+GBSTMR lrctmr;
+int is_dlrc_tmr=0;
+int scroll_pos_lrc=0;
+extern const int ena_lrc;
+extern const char lrc_dir_path[128];
+extern const unsigned int lrc_font;
+extern const char lrc_color[4];
+extern const char lrc_frmcolor[4];
+extern const unsigned int lrc_speed;
+extern const unsigned int lrc_txt_attr;
+
+void time_update_proc(void)
+{
+	if(is_player_active&&ena_lrc)
+	{
+//		goto no_tm_up;
+		int status=GetPlayStatus();
+		//if(GetPlayStatus()==2)
+		if(status==2)
+			time++;
+		else
+			if(status==0)
+				time=0;
+	}
+//no_tm_up:
+	GBS_StartTimerProc(&tmup,time_second,time_update_proc);
+}
+
+void draw_lrc_proc(void)
+{
+	int fh=GetFontYSIZE(font);
+	int lrcfh=GetFontYSIZE(lrc_font);
+	if(drawname_needed&&ena_lrc)
+	{
+		if((Get_WS_width(ws_lrc, lrc_font)>=(length-4))&&speed)
+		{
+			int sc=getMaxChars(&ws_lrc->wsbody[scroll_pos_lrc+1], ws_lrc->wsbody[0]-scroll_pos_lrc, lrc_font);
+			temp_lrc->wsbody[0]=sc;
+			int ii;
+			for(ii=1;ii<sc+1;ii++)
+				temp_lrc->wsbody[ii]=ws_lrc->wsbody[ii+scroll_pos_lrc];
+			DrawString(temp_lrc,pos_x+2,pos_y+fh+4,pos_x+length-2,pos_y+fh+lrcfh+4,lrc_font,lrc_txt_attr,lrc_color,lrc_frmcolor);
+			scroll_pos_lrc++;
+			int rest_len=0;
+			//int i;
+			for (ii=scroll_pos_lrc;ii<(ws_lrc->wsbody[0]);ii++)
+				rest_len+=GetSymbolWidth(ws_lrc->wsbody[ii], lrc_font);
+			if (rest_len<=(length-0x40))
+				scroll_pos_lrc=0;
+			GBS_StartTimerProc(&lrctmr,lrc_speed,draw_lrc_proc);
+			is_dlrc_tmr=1;
+		}
+		else
+		{
+			DrawString(ws_lrc,pos_x+2,pos_y+fh+4,pos_x+length-2,pos_y+fh+lrcfh+4,lrc_font,lrc_txt_attr,lrc_color,lrc_frmcolor);
+			is_dlrc_tmr=0;
+		}
+	}
+	else
+		is_dlrc_tmr=0;
+}
+
+void drawlrc(void)
+{
+	if(is_no_lrc)
+		goto end;
+	char *p;
+	char *pp;
+	int c;
+	char ch_time[16];
+	sprintf(ch_time,"%02d:%02d",time/60,time%60);
+	///////////////////
+	
+	p=strstr(lrc_buf,ch_time);
+	if(p)
+	{
+		while(c=*p)
+		{
+			if(c=='\n')
+				break;
+			p++;
+		}
+		pp=p;
+		while(c=*pp)
+		{
+			if(c==']')
+			{
+				pp++;
+				break;
+			}
+			pp--;
+		}
+		int len=p-pp;
+		if(len>=127) len=127;
+		gb2ws(ws_lrc,pp,len);
+		scroll_pos_lrc=0;
+	}
+end:
+	draw_lrc_proc();
+	//DrawString(ws_lrc,pos_x+2,pos_y+fh+4,pos_x+length-2,pos_y+2*fh+4,font,txt_attr,color,frmcolor);
+}
 
 int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 {
@@ -337,6 +450,32 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 			if (fn->wsbody[0])
 			{
 				ws_2str(fn, name_temp, 128);
+				if((strcmp(name_temp, name_temp_cmp))&&ena_lrc)
+				{
+					strcpy(name_temp_cmp, name_temp);
+					strcpy(lrc_path,lrc_dir_path);
+					strcat(lrc_path,name_temp);
+					char *p=strchr(lrc_path,'.');
+					strcpy(p,".lrc");
+					int size;
+					int f;
+					unsigned int err;
+					if((f=fopen(lrc_path, A_ReadOnly, P_READ, &err))!=-1)
+					{
+						size=fread(f,lrc_buf,8*1024,&err);
+						fclose(f, &err);
+						is_no_lrc=0;
+					}
+					else
+					{
+						wsprintf(ws_lrc, percent_t, "ÎÞ¸è´Ê!");
+						is_no_lrc=1;
+						//goto end;
+					}
+					if(size>=0)
+						lrc_buf[size]=0;
+					time=0;
+				}
 				getname();
 				//wstrcpy(ews,fn);
 			}
@@ -394,12 +533,19 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 						void *canvasdata = ((void **)idata)[DISPLACE_OF_IDLECANVAS / 4];
 #endif
 						//str_2ws(ews, utf8_name, 128);
-						DrawCanvas(canvasdata,pos_x,pos_y,pos_x+length,pos_y+GetFontYSIZE(font)+4,1);
-						DrawRoundedFrame(pos_x,pos_y,pos_x+length,pos_y+GetFontYSIZE(font)+4, xrnd, yrnd, style, frmmain_color, frmbg_color);
+						int n;
+						if(ena_lrc)
+							n=GetFontYSIZE(lrc_font)+2;
+						else
+							n=0;
+						DrawCanvas(canvasdata,pos_x,pos_y,pos_x+length,pos_y+GetFontYSIZE(font)+n+4,1);
+						DrawRoundedFrame(pos_x,pos_y,pos_x+length,pos_y+GetFontYSIZE(font)+n+4, xrnd, yrnd, style, frmmain_color, frmbg_color);
 						drawname_needed=1;
 						//if(!is_drawname)
 						//{
 						drawname_proc();
+						if(ena_lrc)
+							drawlrc();
 						//	is_drawname=0;
 						//}
 						//DrawString(ews,pos_x+2,pos_y+2,pos_x+length-2,pos_y+GetFontYSIZE(font)+2,font,txt_attr,color,frmcolor);
@@ -427,6 +573,10 @@ static void maincsm_oncreate(CSM_RAM *data)
 {
 	ews=AllocWS(128);
 	temp=AllocWS(128);
+	ws_lrc=AllocWS(128);
+	temp_lrc=AllocWS(128);
+	lrc_buf=malloc(8*1024);
+	time_update_proc();
 	//ews_2=AllocWS(128);
 }
 
@@ -436,9 +586,14 @@ static void Killer(void)
 	extern void *ELF_BEGIN;
 	FreeWS(ews);
 	FreeWS(temp);
+	FreeWS(ws_lrc);
+	FreeWS(temp_lrc);
+	mfree(lrc_buf);
 	//FreeWS(ews_2);
 	if(is_tmr) GBS_DelTimer(&mytmr);
-	RemoveKeybMsgHook((void *)my_keyhook);
+	if(is_dlrc_tmr) GBS_DelTimer(&lrctmr);
+	GBS_DelTimer(&tmup);
+	//RemoveKeybMsgHook((void *)my_keyhook);
 	kill_data(&ELF_BEGIN, (void (*)(void *))mfree_adr());
 }
 
@@ -499,7 +654,7 @@ int main(void)
 	CSM_root()->csm_q->current_msg_processing_csm=CSM_root()->csm_q->csm.first;
 	CreateCSM(&MAINCSM.maincsm, dummy,0);
 	CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
-	AddKeybMsgHook((void *)my_keyhook);
+	//AddKeybMsgHook((void *)my_keyhook);
 	UnlockSched();
 	return 0;
 }
