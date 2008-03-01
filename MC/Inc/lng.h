@@ -23,7 +23,7 @@
 
 #define psz_confirmexit	"退出"
 #define psz_confirmdel	"删除"
-#define psz_confirmdelr	"删除只度文件"
+#define psz_confirmdelr	"删除只读文件"
 #define psz_confirmcopy	"复制"
 #define psz_confirmmove	"移动"
 #define psz_confirmrepl	"替换"
@@ -31,7 +31,7 @@
 #define psz_autoexit_after			"自动退出时间(min)"
 #define psz_autoexit_on_background	"在后台自动退出"
 
-#define psz_zip_enable		"ZIP直持"
+#define psz_zip_enable		"ZIP支持"
 #define psz_zip_detect_by	"连接zip用"
 #define psz_temppath		"ZIP缓存文件夹"
 #define psz_cleartemp		"退出时删除ZIP缓存文件"
