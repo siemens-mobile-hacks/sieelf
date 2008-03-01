@@ -166,9 +166,15 @@ HOOKAddrBookWindow_DUMP:
     CODE16
     BL    HOOKCallOutWindow_DUMP
 
+#ifdef ELKA
     RSEG  AddrBookWindow:CODE(1)
     CODE16
     BL    HOOKAddrBookWindow_DUMP
+#else
+    RSEG  AddrBookWindow
+    CODE32
+    BLX    HOOKAddrBookWindow_DUMP
+#endif
 #else
 //Hook
 // 通话记录修改
