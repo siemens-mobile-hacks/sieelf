@@ -1,4 +1,14 @@
 * text=auto !eol
+AppEx/AppEx.ewp -text
+AppEx/AppEx.eww -text
+AppEx/E71Cv41.xcl -text
+AppEx/SK6Cv50.xcl -text
+AppEx/config_newsgold.vkp -text
+AppEx/config_sgold.vkp -text
+AppEx/funct.asm -text
+AppEx/main.c -text
+AppEx/postbuild.cmd -text
+AppEx/readme.txt -text
 BalletMini/BalletMini.ewp -text
 BalletMini/BalletMini.eww -text
 BalletMini/BalletMini.txt -text
