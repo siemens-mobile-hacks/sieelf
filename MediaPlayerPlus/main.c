@@ -269,6 +269,28 @@ int wstrcmp(WSHDR *ws1, WSHDR *ws2)
 	return c;
 }*/
 
+#ifndef ELKA
+void draw_canvas_frm(void)
+{
+	GUI *igui=GetTopGUI();
+	if(igui)
+	{
+		void *idata = GetDataOfItemByID(igui, 2);
+		if (idata)
+		{
+			void *canvasdata = ((void **)idata)[DISPLACE_OF_IDLECANVAS / 4];
+			int n;
+			if(ena_lrc)
+				n=GetFontYSIZE(lrc_font)+2;
+			else
+				n=0;
+			DrawCanvas(canvasdata,pos_x,pos_y,pos_x+length,pos_y+GetFontYSIZE(font)+n+4,1);
+			DrawRoundedFrame(pos_x,pos_y,pos_x+length,pos_y+GetFontYSIZE(font)+n+4, xrnd, yrnd, style, frmmain_color, frmbg_color);
+		}
+	}
+}
+#endif
+
 void drawname_proc(void)
 {
 	if(drawname_needed)
@@ -285,6 +307,9 @@ void drawname_proc(void)
 			temp->wsbody[0]=sc;
 			for(int ii=1;ii<sc+1;ii++)
 				temp->wsbody[ii]=ews->wsbody[ii+scroll_pos];
+#ifndef ELKA
+			draw_canvas_frm();
+#endif
 			DrawString(temp,pos_x+2,pos_y+2,pos_x+length-2,pos_y+GetFontYSIZE(font)+2,font,txt_attr,color,frmcolor);
 			scroll_pos++;
 			int rest_len=0;
@@ -301,6 +326,9 @@ void drawname_proc(void)
 		}
 		else
 		{
+#ifndef ELKA
+			draw_canvas_frm();
+#endif
 			DrawString(ews,pos_x+2,pos_y+2,pos_x+length-2,pos_y+GetFontYSIZE(font)+2,font,txt_attr,color,frmcolor);
 			is_tmr=0;
 		}
@@ -364,6 +392,9 @@ void draw_lrc_proc(void)
 			int ii;
 			for(ii=1;ii<sc+1;ii++)
 				temp_lrc->wsbody[ii]=ws_lrc->wsbody[ii+scroll_pos_lrc];
+#ifndef ELKA
+			draw_canvas_frm();
+#endif
 			DrawString(temp_lrc,pos_x+2,pos_y+fh+4,pos_x+length-2,pos_y+fh+lrcfh+4,lrc_font,lrc_txt_attr,lrc_color,lrc_frmcolor);
 			scroll_pos_lrc++;
 			int rest_len=0;
@@ -377,6 +408,9 @@ void draw_lrc_proc(void)
 		}
 		else
 		{
+#ifndef ELKA
+			draw_canvas_frm();
+#endif
 			DrawString(ws_lrc,pos_x+2,pos_y+fh+4,pos_x+length-2,pos_y+fh+lrcfh+4,lrc_font,lrc_txt_attr,lrc_color,lrc_frmcolor);
 			is_dlrc_tmr=0;
 		}
