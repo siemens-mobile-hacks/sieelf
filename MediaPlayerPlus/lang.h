@@ -74,3 +74,40 @@
 
 #endif
 
+
+#ifdef LANG_EN
+
+#define CS_NAMEDRW "SongName Ctrl"
+#define CS_POS "Postion"
+#define CS_LENGTH "Width"
+#define CS_SHOWLOCK "Show Lock"
+#define CS_FONT "Font"
+#define CS_COLOR "Color"
+#define CS_FRMCOLOR "Brush Color"
+#define CS_ATTR "Text Attr"
+#define CS_FRMLEV "Frame Setting"
+#define CS_FRAMMAINCOLOR "Frame Color"
+#define CS_FRMBGCOLOR "BG Color"
+#define CS_XRND "X Round"
+#define CS_YRND "Y Round"
+#define CS_FRMSTYLE "Style" 
+#define CS_BROKEN_LINE "Broken"
+#define CS_SOLID_LINE "Solid"
+#define CS_SPEED "Scroll Speed"
+#define CS_WAIT "Wait for Scroll"
+#define CS_CSMADDR "Player CSM Addr"
+#define CS_SHOW_GP "Show Graphic"
+#define CS_SHOW_EXT "Show Externsion"
+#define CS_LRCCTRL "Lyrics Show Ctrl"
+#define CS_LRC_ENA "Enable Show Lyrics"
+#define CS_LRC_DIR_PATH "Lyrics Dir Path"
+#define CS_LRC_FONT "Font"
+#define CS_LRC_COLOR "Color"
+#define CS_LRC_FRMCOLOR "Brush Color"
+#define CS_LRC_SPEED "Scroll Speed"
+#define CS_LRC_ATTR "Text Attr"
+
+
+#define LGP_UPDATE_CONFIG "MediaPlayerPlus config updated!"
+
+#endif
