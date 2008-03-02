@@ -50,6 +50,30 @@ const char percent_t[]="%t";
 unsigned int playercsmid=0;
 void *playercsmadr=NULL;
 
+
+#define time_second 216
+GBSTMR tmup;
+int time=0;
+//int is_playing=0;
+#pragma swi_number=0x01F8
+__swi __arm int GetPlayStatus(void);
+
+WSHDR *ws_lrc;
+WSHDR *temp_lrc;
+char *lrc_buf;
+char lrc_path[128];
+int is_no_lrc;
+GBSTMR lrctmr;
+int is_dlrc_tmr=0;
+int scroll_pos_lrc=0;
+extern const int ena_lrc;
+extern const char lrc_dir_path[128];
+extern const unsigned int lrc_font;
+extern const char lrc_color[4];
+extern const char lrc_frmcolor[4];
+extern const unsigned int lrc_speed;
+extern const unsigned int lrc_txt_attr;
+
 #pragma inline=forced
 int toupper(int c)
 {
@@ -339,28 +363,6 @@ void drawname_proc(void)
 		//is_drawname=0;
 	}
 }
-#define time_second 216
-GBSTMR tmup;
-int time=0;
-//int is_playing=0;
-#pragma swi_number=0x01F8
-__swi __arm int GetPlayStatus(void);
-
-WSHDR *ws_lrc;
-WSHDR *temp_lrc;
-char *lrc_buf;
-char lrc_path[128];
-int is_no_lrc;
-GBSTMR lrctmr;
-int is_dlrc_tmr=0;
-int scroll_pos_lrc=0;
-extern const int ena_lrc;
-extern const char lrc_dir_path[128];
-extern const unsigned int lrc_font;
-extern const char lrc_color[4];
-extern const char lrc_frmcolor[4];
-extern const unsigned int lrc_speed;
-extern const unsigned int lrc_txt_attr;
 
 void time_update_proc(void)
 {
