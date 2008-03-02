@@ -147,12 +147,15 @@ HOOKCallinwindow_DUMP:
 HOOKCallOutWindow_DUMP:
     LDR   R7, =Hook3
     BLX   R7
+    
+#ifdef ELKA
 HOOKAddrBookWindow_DUMP:
     PUSH  {R7,LR}	
     LDR   R7, =Hook4
     BLX   R7
     POP   {R7,PC}
-    
+#endif
+
     RSEG  RecordWindow:CODE(1)
     CODE16
     BL    HOOKRecoedWindow_DUMP
@@ -173,7 +176,7 @@ HOOKAddrBookWindow_DUMP:
 #else
     RSEG  AddrBookWindow
     CODE32
-    BLX    HOOKAddrBookWindow_DUMP
+    BLX    Hook4
 #endif
 #else
 //Hook
