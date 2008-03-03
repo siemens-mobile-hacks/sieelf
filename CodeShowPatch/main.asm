@@ -90,7 +90,7 @@ Hook3:
     LDR	  R0, =ADDR_IsCalling
     BLX	  R0
     MOV	  R1, R0
-    MOV	  R0, #4
+    MOV	  R0, #3
     MOV   R2, R4
 #else
 		LDR		R0, =ADDR_CALLX
