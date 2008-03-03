@@ -115,7 +115,13 @@ Hook4:
     MOV   R0, R4
     MOV   R1, R4
     BL    AppendInfoW
+#ifdef ELKA
     POP   {PC}
+#else
+		POP		{R2}
+		ADD		R2, #4
+		BX		R2
+#endif
 
 #ifndef NEWSGOLD
 Hook5:
