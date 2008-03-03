@@ -104,6 +104,11 @@ Hook3:
     BLX   R0
 
 Hook4:
+#ifdef NEWSGOLD
+#ifndef ELKA
+		ADD		R1, SP, #4
+#endif
+#endif
     PUSH  {LR}
     MOV   R4, R0
     LDR   R2, =ADDR_ADDRBook
@@ -115,12 +120,16 @@ Hook4:
     MOV   R0, R4
     MOV   R1, R4
     BL    AppendInfoW
+#ifdef NEWSGOLD
 #ifdef ELKA
     POP   {PC}
 #else
 		POP		{R2}
 		ADD		R2, #4
 		BX		R2
+#endif
+#else
+		POP   {PC}
 #endif
 
 #ifndef NEWSGOLD
@@ -182,7 +191,8 @@ HOOKAddrBookWindow_DUMP:
 #else
     RSEG  AddrBookWindow
     CODE32
-    BLX    Hook4
+	  LDR		R4, =Hook4
+	  BLX		R4
 #endif
 #else
 //Hook
