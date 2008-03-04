@@ -70,7 +70,11 @@ Hook2:
     LDR   R0, =ADDR_IsCalling           //0xA0DE7EA4+1,10B5041C????????4121201C????????D4+22
     BLX   R0
     MOV   R1, R0
+#ifdef ELKA
     MOV   R0, #1
+#else
+    MOV   R0, #0
+#endif
     MOV   R2, R4
     BL    UpdateLocaleToItem
     LDR   R0, =ADDR_CallIN
