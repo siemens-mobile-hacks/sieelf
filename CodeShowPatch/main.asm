@@ -90,7 +90,11 @@ Hook3:
     LDR	  R0, =ADDR_IsCalling
     BLX	  R0
     MOV	  R1, R0
-    MOV	  R0, #3
+#ifdef ELKA
+    MOV   R0, #4
+#else
+    MOV   R0, #3
+#endif
     MOV   R2, R4
 #else
 		LDR		R0, =ADDR_CALLX
@@ -194,6 +198,13 @@ HOOKAddrBookWindow_DUMP:
 	  LDR		R4, =Hook4
 	  BLX		R4
 #endif
+
+#ifndef ELKA
+    RSEG  AddrBookWindow2
+    DCB		0xFF
+#endif
+
+
 #else
 //Hook
 // 通话记录修改
