@@ -252,6 +252,11 @@ int my_keyhook(int submsg, int msg)
         GBS_SendMessage(MMI_CEPID,KEY_DOWN,ACTIVE_KEY);
         return KEYHOOK_BREAK;
       }
+      if (mode==2)
+      {
+        mode=0;
+        return KEYHOOK_NEXT;
+      }
       mode=0;
       return KEYHOOK_BREAK;
     case LONG_PRESS:
