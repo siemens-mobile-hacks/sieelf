@@ -3213,3 +3213,4 @@ sieGet/socket.h -text
 sieGet/test.xcl -text
 sieGet/url.cpp -text
 sieGet/url.h -text
+tool/7z.exe -text
