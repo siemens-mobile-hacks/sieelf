@@ -1844,6 +1844,7 @@ TextInfo/test.xcl -text
 Tripper/strip.cpp -text
 Tripper/strip.h -text
 Tripper/tripper.cpp -text
+Tripper/tripper.exe -text
 TurnOff/TurnOff.ewp -text
 TurnOff/TurnOff.eww -text
 TurnOff/TurnOff/off.png -text
