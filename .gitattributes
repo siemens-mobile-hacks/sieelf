@@ -3205,10 +3205,12 @@ sieGet/socket.h -text
 sieGet/test.xcl -text
 sieGet/url.cpp -text
 sieGet/url.h -text
+tools/7z.dll -text
 tools/7z.exe -text
 tools/Language/english.lng -text
 tools/Language/russian.lng -text
 tools/Language/ukrainian.lng -text
+tools/elf2vkp.exe -text
 tools/obexcopy.exe -text
 tools/obexdel.exe -text
 tools/obexsetup.exe -text
