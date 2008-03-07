@@ -90,3 +90,21 @@
 #define BASEADDRESS			0xA1580000
 #endif
 
+#ifdef M81Cv51
+#define ADDR_strlen 0xA1418200+1
+#define ADDR_atou 0xA02C78F8+1
+#define ADDR_WS_InitByZero	0xA01F7146+1
+#define ADDR_GetCalleeNumber	0xA097AEE6+1
+#define ADDR_UpdateWndItem	0xA0A38380+1
+#define ADDR_memcmp	0xA14173C0+1
+
+#define ADDR_RECORD1 0xA0BB5114
+#define ADDR_NUMX 0xA0BB5050
+#define ADDR_IsCalling 0xA0DE44C8+1
+#define ADDR_CallIN 0xA02FB630+1
+#define ADDR_CallOUT 0xA02FB7D6+1
+#define ADDR_ADDRBook 0xA01F7732+1
+
+#define BASEADDRESS			0xA1580000
+#endif
+

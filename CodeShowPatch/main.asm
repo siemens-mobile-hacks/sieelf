@@ -66,50 +66,50 @@ Hook1:
 
 Hook2:
 #ifdef NEWSGOLD
-    PUSH  {LR}
-    LDR   R0, =ADDR_IsCalling           //0xA0DE7EA4+1,10B5041C????????4121201C????????D4+22
-    BLX   R0
-    MOV   R1, R0
+    PUSH	{LR}
+    LDR		R0, =ADDR_IsCalling           //0xA0DE7EA4+1,10B5041C????????4121201C????????D4+22
+    BLX		R0
+    MOV		R1, R0
 #ifdef ELKA
-    MOV   R0, #1
+    MOV		R0, #1
 #else
-    MOV   R0, #0
+    MOV		R0, #0
 #endif
-    MOV   R2, R4
-    BL    UpdateLocaleToItem
-    LDR   R0, =ADDR_CallIN
-    BLX   R0		
-    POP   {PC}
+    MOV		R2, R4
+    BL		UpdateLocaleToItem
+    LDR		R0, =ADDR_CallIN
+    BLX		R0		
+    POP		{PC}
 #else
     MOV		R0, #0
     MOV		R1, R4
     MOV		R2, R5
-    BL    UpdateLocaleToItem
-    LDR   R0, =ADDR_CallIN
-    BLX   R0		
+    BL		UpdateLocaleToItem
+    LDR		R0, =ADDR_CallIN
+    BLX		R0		
 #endif
 
 Hook3:
 #ifdef NEWSGOLD
-    LDR	  R0, =ADDR_IsCalling
-    BLX	  R0
-    MOV	  R1, R0
+    LDR		R0, =ADDR_IsCalling
+    BLX		R0
+    MOV		R1, R0
 #ifdef ELKA
-    MOV   R0, #4
+    MOV		R0, #4
 #else
-    MOV   R0, #3
+    MOV		R0, #3
 #endif
-    MOV   R2, R4
+    MOV		R2, R4
 #else
-		LDR		R0, =ADDR_CALLX
-		BLX		R0
-		MOV		R1, R0
-		MOV		R0, #3
-		MOV		R2, R4
+    LDR		R0, =ADDR_CALLX
+    BLX		R0
+    MOV		R1, R0
+    MOV		R0, #3
+    MOV		R2, R4
 #endif
-    BL    UpdateLocaleToItem
-    LDR   R0, =ADDR_CallOUT
-    BLX   R0
+    BL		UpdateLocaleToItem
+    LDR		R0, =ADDR_CallOUT
+    BLX		R0
 
 Hook4:
 #ifdef NEWSGOLD
@@ -117,43 +117,43 @@ Hook4:
 		ADD		R1, SP, #4
 #endif
 #endif
-    PUSH  {LR}
-    MOV   R4, R0
-    LDR   R2, =ADDR_ADDRBook
-    BLX   R2
-    MOV   R0, R4
-    MOV   R1, #0xD
-    LDR   R2, =ADDR_NUMX
-    BLX   R2
-    MOV   R0, R4
-    MOV   R1, R4
-    BL    AppendInfoW
+    PUSH	{LR}
+    MOV		R4, R0
+    LDR		R2, =ADDR_ADDRBook
+    BLX		R2
+    MOV		R0, R4
+    MOV		R1, #0xD
+    LDR		R2, =ADDR_NUMX
+    BLX		R2
+    MOV		R0, R4
+    MOV		R1, R4
+    BL		AppendInfoW
 #ifdef NEWSGOLD
 #ifdef ELKA
-    POP   {PC}
+    POP		{PC}
 #else
-		POP		{R2}
-		ADD		R2, #4
-		BX		R2
+    POP		{R2}
+    ADD		R2, #4
+    BX		R2
 #endif
 #else
-		POP   {PC}
+    POP		{PC}
 #endif
 
 #ifndef NEWSGOLD
 Hook5:
-		PUSH	{LR}
-		LDR   R0, [SP,#0x174]
-		MOV		R1, #0xA
-		LDR		R2, =ADDR_NUMX
-		BLX		R2
-		LDR   R0, [SP,#0x174]
-		LDR   R1, [SP,#0x1D0]
-		LDR		R2, =AppendInfoW
-		BLX		R2
-		MOV   R1, #0
-		ADD   R0, R7, #0
-		POP	  {PC}
+    PUSH	{LR}
+    LDR		R0, [SP,#0x174]
+    MOV		R1, #0xA
+    LDR		R2, =ADDR_NUMX
+    BLX		R2
+    LDR		R0, [SP,#0x174]
+    LDR		R1, [SP,#0x1D0]
+    LDR		R2, =AppendInfoW
+    BLX		R2
+    MOV		R1, #0
+    ADD		R0, R7, #0
+    POP		{PC}
 #endif
 
 #ifdef NEWSGOLD
@@ -199,12 +199,12 @@ HOOKAddrBookWindow_DUMP:
 #else
     RSEG  AddrBookWindow
     CODE32
-	  LDR		R4, =Hook4
-	  BLX		R4
+    LDR		R4, =Hook4
+    BLX		R4
 #endif
 
 #ifndef ELKA
-    RSEG  AddrBookWindow2
+    RSEG  AddrBookWindow2:DATA(1)
     DCB		0xFF
 #endif
 
@@ -231,13 +231,12 @@ HOOKAddrBookWindow_DUMP:
     CODE16
     BL      Hook4
 
-		RSEG	AddrBookWindow2:CODE(1)
-		CODE16
+    RSEG	AddrBookWindow2:DATA(1)
     DCB		0x21
 
 // 电话本窗口修改
-		RSEG	PhonebookWindow:CODE(1)
-		CODE16
+    RSEG	PhonebookWindow:CODE(1)
+    CODE16
     BL      Hook5
 #endif    
     END
