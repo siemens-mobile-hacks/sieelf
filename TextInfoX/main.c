@@ -55,7 +55,7 @@ void FillInfoData(TInfo *Info,int x_start,int y_start, int font,const char *colo
 {  
   Info->rc.x=x_start;
   Info->rc.y=y_start;
-  Info->rc.x2=x_start+Get_WS_width(Info->ws,font)+1;//без +1 неправильно работает обводка
+  Info->rc.x2=x_start+Get_WS_width(Info->ws,font)+1;//бе?+1 неправильн?работает обводк
   Info->rc.y2=y_start+GetFontYSIZE(font);
   Info->font=font;
   memcpy(Info->pen,color,4);
@@ -265,7 +265,7 @@ void InitInfoData(void)
     			wsprintf(InfoData[8].ws, "%02d/%02d/%d", t_date.day, t_date.month, t_date.year);
     			break;
     		case 3:
-    			wsprintf(InfoData[8].ws, "%d%.02d.%02d", t_date.year, t_date.month, t_date.day);
+    			wsprintf(InfoData[8].ws, "%d.%02d.%02d", t_date.year, t_date.month, t_date.day);
     			break;
     		case 4:
     			wsprintf(InfoData[8].ws, "%d-%02d-%02d", t_date.year, t_date.month, t_date.day);
@@ -420,10 +420,10 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
   icsm=FindCSMbyID(CSM_root()->idle_id);
   if (icsm)
   {
-    if (IsGuiOnTop(idlegui_id(icsm)) && fShow) //Если IdleGui на самом верху
+    if (IsGuiOnTop(idlegui_id(icsm)) && fShow) //Если IdleGui на само?верх
     {
       GUI *igui=GetTopGUI();
-      if (igui) //И он существует
+      if (igui) //?он существует
       {
 #ifdef ELKA
         {
