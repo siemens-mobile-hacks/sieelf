@@ -1,7 +1,7 @@
 cd %~dp0
 echo %1
 
-..\..\elfloader_lg8\elf2vkp.exe ..\tmp\multisim.elf a %2
+..\..\tools\elf2vkp.exe ..\tmp\multisim.elf a %2
 date /T >d
 time /T >dt
 @echo set /A rr=text > b.bat
