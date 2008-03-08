@@ -1,6 +1,6 @@
-//#define wintel	//êîìïåëèì ïîä âèíäó
+//#define wintel	//§Ü§à§Þ§á§Ö§Ý§Ú§Þ §á§à§Õ §Ó§Ú§ß§Õ§å
 
-#define MAX_PHNUM	10	//ìàêñèìàëüíîå êîëè÷åñòâî ïðîãðàìíûõ ñåãìåíòîâ
+#define MAX_PHNUM	10	//§Þ§Ñ§Ü§ã§Ú§Þ§Ñ§Ý§î§ß§à§Ö §Ü§à§Ý§Ú§é§Ö§ã§ä§Ó§à §á§â§à§Ô§â§Ñ§Þ§ß§í§ç §ã§Ö§Ô§Þ§Ö§ß§ä§à§Ó
 
 #ifdef wintel
 #define _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES 1
@@ -36,23 +36,23 @@ typedef unsigned long  Elf32_Word; 	//Unsigned large integer   4
 #define EI_NIDENT  16 //Size of e_ident[]
 
 typedef struct{
-  unsigned char e_ident[EI_NIDENT]; //The initial bytes mark the file as an object file and provide machine-independent data with which to decode and interpret the file’s contents.
+  unsigned char e_ident[EI_NIDENT]; //The initial bytes mark the file as an object file and provide machine-independent data with which to decode and interpret the file¡¯s contents.
   Elf32_Half e_type;      //This member identifies the object file type.
-  Elf32_Half e_machine;   //This member’s value specifies the required architecture for an individual file.
+  Elf32_Half e_machine;   //This member¡¯s value specifies the required architecture for an individual file.
   Elf32_Word e_version;   //This member identifies the object file version.
   Elf32_Addr e_entry;     //This member gives the virtual address to which the system first transfers control, thus starting the process. If the file has no associated entry point, this member holds zero.
-  Elf32_Off  e_phoff;     //This member holds the program header table’s file offset in bytes. If the file has no program header table, this member holds zero.
-  Elf32_Off  e_shoff;     //This member holds the section header table’s file offset in bytes. If the file has no section header table, this member holds zero.
+  Elf32_Off  e_phoff;     //This member holds the program header table¡¯s file offset in bytes. If the file has no program header table, this member holds zero.
+  Elf32_Off  e_shoff;     //This member holds the section header table¡¯s file offset in bytes. If the file has no section header table, this member holds zero.
   Elf32_Word e_flags;     //This member holds processor-specific flags associated with the file. Flag names take the form EF_machine_flag.
-  Elf32_Half e_ehsize;    //This member holds the ELF header’s size in bytes.
-  Elf32_Half e_phentsize; //This member holds the size in bytes of one entry in the file’s program header table; all entries are the same size.
-  Elf32_Half e_phnum;     //This member holds the number of entries in the program header table. Thus the product of e_phentsize and e_phnum gives the table’s size in bytes. If a file has no program header table, e_phnum holds the value zero.
-  Elf32_Half e_shentsize; //This member holds a section header’s size in bytes. A section header is one entry in the section header table; all entries are the same size.
-  Elf32_Half e_shnum;     //shnum—This member holds the number of entries in the section header table. Thus the product of e_shentsize and e_shnum gives the section header table’s size in bytes. If a file has no section header table, e_shnum holds the value zero.
+  Elf32_Half e_ehsize;    //This member holds the ELF header¡¯s size in bytes.
+  Elf32_Half e_phentsize; //This member holds the size in bytes of one entry in the file¡¯s program header table; all entries are the same size.
+  Elf32_Half e_phnum;     //This member holds the number of entries in the program header table. Thus the product of e_phentsize and e_phnum gives the table¡¯s size in bytes. If a file has no program header table, e_phnum holds the value zero.
+  Elf32_Half e_shentsize; //This member holds a section header¡¯s size in bytes. A section header is one entry in the section header table; all entries are the same size.
+  Elf32_Half e_shnum;     //shnum¡ªThis member holds the number of entries in the section header table. Thus the product of e_shentsize and e_shnum gives the section header table¡¯s size in bytes. If a file has no section header table, e_shnum holds the value zero.
   Elf32_Half e_shstrndx;  //This member holds the section header table index of the entry associated with the section name string table. If the file has no section name string table, this member holds the value SHN_UNDEF.
 } Elf32_Ehdr;
 
-//E_type—This member identifies the object file type.
+//E_type¡ªThis member identifies the object file type.
 #define ET_NONE   0        //No file type
 #define ET_REL    1        //Re-locatable file
 #define ET_EXEC   2        //Executable file
@@ -61,7 +61,7 @@ typedef struct{
 #define ET_LOPROC 0xFF00   //Processor-specific
 #define ET_HIPROC 0xFFFF   //Processor-specific
 
-//E_machine—This member’s value specifies the required architecture for an individual file.
+//E_machine¡ªThis member¡¯s value specifies the required architecture for an individual file.
 #define EM_NONE        0  //No machine
 #define EM_M32         1  //AT&T WE 32100
 #define EM_SPARC       2  //SPARC
@@ -73,22 +73,22 @@ typedef struct{
 #define EM_MIPS_RS4_BE 10 //MIPS RS4000 Big-Endian
 #define EM_ARM         40 //ARM/Thumb Architecture
 
-//E_version—This member identifies the object file version.
+//E_version¡ªThis member identifies the object file version.
 #define EV_NONE    0 //Invalid version
 #define EV_CURRENT 1 //Current version
 
-//EI_MAG0 0 to EI_MAG3—A file’s first 4 bytes hold a magic number, identifying the file as an ELF object file. Name Value Meaning
+//EI_MAG0 0 to EI_MAG3¡ªA file¡¯s first 4 bytes hold a magic number, identifying the file as an ELF object file. Name Value Meaning
 #define ELFMAG0 0x7f //e_ident[EI_MAG0]
 #define ELFMAG1 'E' //e_ident[EI_MAG1]
 #define ELFMAG2 'L' //e_ident[EI_MAG2]
 #define ELFMAG3 'F' //e_ident[EI_MAG3]
 
-//EI_CLASS—The next byte, e_ident[EI_CLASS], identifies the file’s class, or capacity. Name Value Meaning
+//EI_CLASS¡ªThe next byte, e_ident[EI_CLASS], identifies the file¡¯s class, or capacity. Name Value Meaning
 #define ELFCLASSNONE 0 //Invalid class
 #define ELFCLASS32   1 //32-bit objects
 #define ELFCLASS64   2 //64-bit objects
 
-//EI_DATA—Byte e_ident[EI_DATA]specifies the data encoding of all data1 in the object file. The following encodings are currently defined. Name Value Meaning
+//EI_DATA¡ªByte e_ident[EI_DATA]specifies the data encoding of all data1 in the object file. The following encodings are currently defined. Name Value Meaning
 #define ELFDATANONE 0 //Invalid data encoding
 #define ELFDATA2LSB 1 //See Data encodings ELFDATA2LSB, below
 #define ELFDATA2MSB 2 //See Data encodings ELFDATA2MSB, below
@@ -97,19 +97,19 @@ typedef struct{
 //Section Header
 typedef struct{
   Elf32_Word sh_name;      //This member specifies the name of the section. Its value is an index into the section header string table section [see section 3.4, String Table below], giving the location of a null-terminated string.
-  Elf32_Word sh_type;      //type—This member categorizes the section’s contents and semantics. Section types and their descriptions appear in Figure 3-9 below.
+  Elf32_Word sh_type;      //type¡ªThis member categorizes the section¡¯s contents and semantics. Section types and their descriptions appear in Figure 3-9 below.
   Elf32_Word sh_flags;     //Sections support 1-bit flags that describe miscellaneous attributes. Flag definitions appear in Figure 3-11, below.
-  Elf32_Addr sh_addr;      //If the section will appear in the memory image of a process, this member gives the address at which the section’s first byte should reside. Otherwise, the member contains 0.
-  Elf32_Off  sh_offset;    //This member’s value gives the byte offset from the beginning of the file to the first byte in the section. One section type, SHT_NOBITS described in Figure 3-9 below, occupies no space in the file, and its sh_offset member locates the conceptual placement in the file.
-  Elf32_Word sh_size;      //This member gives the section’s size in bytes. Unless the section type is SHT_NOBITS, the section occupies sh_size bytes in the file. A section of type SHT_NOBITS may have a non-zero size, but it occupies no space in the file.
+  Elf32_Addr sh_addr;      //If the section will appear in the memory image of a process, this member gives the address at which the section¡¯s first byte should reside. Otherwise, the member contains 0.
+  Elf32_Off  sh_offset;    //This member¡¯s value gives the byte offset from the beginning of the file to the first byte in the section. One section type, SHT_NOBITS described in Figure 3-9 below, occupies no space in the file, and its sh_offset member locates the conceptual placement in the file.
+  Elf32_Word sh_size;      //This member gives the section¡¯s size in bytes. Unless the section type is SHT_NOBITS, the section occupies sh_size bytes in the file. A section of type SHT_NOBITS may have a non-zero size, but it occupies no space in the file.
   Elf32_Word sh_link;      //This member holds a section header table index link, whose interpretation depends on the section type. Figure 3-12 below describes the values.
   Elf32_Word sh_info;      //This member holds extra information, whose interpretation depends on the section type. Figure 3-12 below describes the values.
   Elf32_Word sh_addralign; //Some sections have address alignment constraints. For example, if a section holds a doubleword, the system must ensure double-word alignment for the entire section. That is, the value of sh_addr must be congruent to 0, modulo the value of sh_addralign. Currently, only 0 and positive integral powers of two are allowed. Values 0 and 1 mean the section has no alignment constraints.
-  Elf32_Word sh_entsize;   //Some sections hold a table of fixed-size entries, such as a symbol table. For such a section, this member gives the size in bytes of each entry. The member contains 0 if the section does not hold a table of fixedsize entries. A section header’s sh_type member specifies the section’s semantics.
+  Elf32_Word sh_entsize;   //Some sections hold a table of fixed-size entries, such as a symbol table. For such a section, this member gives the size in bytes of each entry. The member contains 0 if the section does not hold a table of fixedsize entries. A section header¡¯s sh_type member specifies the section¡¯s semantics.
 } Elf32_Shdr;
 
 //Special Section Indexes
-#define SHN_UNDEF     0     //This value marks an undefined, missing, irrelevant, or otherwise meaningless section reference. For example, a symbol “defined” relative to section number SHN_UNDEF is an undefined symbol.
+#define SHN_UNDEF     0     //This value marks an undefined, missing, irrelevant, or otherwise meaningless section reference. For example, a symbol ¡°defined¡± relative to section number SHN_UNDEF is an undefined symbol.
 #define SHN_LORESERVE 0xff00 //This value specifies the lower bound of the range of reserved indexes.
 #define SHN_LOPROC    0xff00 //Values in this range are reserved for processor-specific semantics.
 #define SHN_HIPROC    0xff1f //Values in this range are reserved for processor-specific semantics.
@@ -189,7 +189,7 @@ typedef struct{
 #define DT_RELASZ   8
 #define DT_RELAENT  9
 #define DT_STRSZ    10 //The byte size of the string table section. mandatory
-#define DT_SYMENT   11 //The byte size of an ARM symbol table entry—16. mandatory
+#define DT_SYMENT   11 //The byte size of an ARM symbol table entry¡ª16. mandatory
 #define DT_INIT     12 //These entries are unused by versions 1-2 of the ARM EABI. unused
 #define DT_FINI     13
 #define DT_SONAME   14 //The Index in the string table of the name of this shared object. mandatory
@@ -224,22 +224,22 @@ typedef struct{
 
 //ARM relocation types
 #define R_ARM_NONE            0   //Any No relocation. Encodes dependencies between sections.
-#define R_ARM_PC24            1   //ARM B/BL S – P + A
+#define R_ARM_PC24            1   //ARM B/BL S ¨C P + A
 #define R_ARM_ABS32           2   //32-bit word S + A
-#define R_ARM_REL32           3   //32-bit word S – P + A
-#define R_ARM_PC13            4   //ARM LDR r, [pc,…] S – P + A
+#define R_ARM_REL32           3   //32-bit word S ¨C P + A
+#define R_ARM_PC13            4   //ARM LDR r, [pc,¡­] S ¨C P + A
 #define R_ARM_ABS16           5   //16-bit half-word S + A
 #define R_ARM_ABS12           6   //ARM LDR/STR S + A
 #define R_ARM_THM_ABS5        7   //Thumb LDR/STR S + A
 #define R_ARM_ABS8            8   //8-bit byte S + A
-#define R_ARM_SBREL32         9   //32-bit word S – B + A
-#define R_ARM_THM_PC22        10  //Thumb BL pair S – P+ A
-#define R_ARM_THM_PC8         11  //Thumb LDR r, [pc,…] S – P + A
-#define R_ARM_AMP_VCALL9      12  //AMP VCALL Obsolete—SA-1500 only.
+#define R_ARM_SBREL32         9   //32-bit word S ¨C B + A
+#define R_ARM_THM_PC22        10  //Thumb BL pair S ¨C P+ A
+#define R_ARM_THM_PC8         11  //Thumb LDR r, [pc,¡­] S ¨C P + A
+#define R_ARM_AMP_VCALL9      12  //AMP VCALL Obsolete¡ªSA-1500 only.
 #define R_ARM_SWI24           13  //ARM SWI S + A
 #define R_ARM_THM_SWI8        14  //Thumb SWI S + A
-#define R_ARM_XPC25           15  //ARM BLX S – P+ A
-#define R_ARM_THM_XPC22       16  //Thumb BLX pair S – P+ A
+#define R_ARM_XPC25           15  //ARM BLX S ¨C P+ A
+#define R_ARM_THM_XPC22       16  //Thumb BLX pair S ¨C P+ A
 #define R_ARM_COPY            20  //32 bit word Copy symbol at dynamic link time.
 #define R_ARM_GLOB_DAT        21  //32 bit word Create GOT entry.
 #define R_ARM_JUMP_SLOT       22  //32 bit word Create PLT entry.
@@ -248,23 +248,23 @@ typedef struct{
 #define R_ARM_GOTPC           25  //32 bit word Insert address of GOT.
 #define R_ARM_GOT32           26  //32 bit word Entry in GOT.
 #define R_ARM_PLT32           27  //ARM BL Entry in PLT.
-#define R_ARM_ALU_PCREL_7_0   32  //ARM ADD/SUB (S – P + A) & 0x000000FF
-#define R_ARM_ALU_PCREL_15_8  33  //ARM ADD/SUB (S – P + A) & 0x0000FF00
-#define R_ARM_ALU_PCREL_23_15 34  //ARM ADD/SUB (S – P + A) & 0x00FF0000
-#define R_ARM_LDR_SBREL_11_0  35  //ARM LDR/STR (S – B + A) & 0x00000FFF
-#define R_ARM_ALU_SBREL_19_12 36  //ARM ADD/SUB (S – B + A) & 0x000FF000
-#define R_ARM_ALU_SBREL_27_20 37  //ARM ADD/SUB (S – B + A) & 0x0FF00000
+#define R_ARM_ALU_PCREL_7_0   32  //ARM ADD/SUB (S ¨C P + A) & 0x000000FF
+#define R_ARM_ALU_PCREL_15_8  33  //ARM ADD/SUB (S ¨C P + A) & 0x0000FF00
+#define R_ARM_ALU_PCREL_23_15 34  //ARM ADD/SUB (S ¨C P + A) & 0x00FF0000
+#define R_ARM_LDR_SBREL_11_0  35  //ARM LDR/STR (S ¨C B + A) & 0x00000FFF
+#define R_ARM_ALU_SBREL_19_12 36  //ARM ADD/SUB (S ¨C B + A) & 0x000FF000
+#define R_ARM_ALU_SBREL_27_20 37  //ARM ADD/SUB (S ¨C B + A) & 0x0FF00000
 #define R_ARM_GNU_VTENTRY     100 //32 bit word Record C++ vtable entry.
 #define R_ARM_GNU_VTINHERIT   101 //32 bit word Record C++ member usage.
-#define R_ARM_THM_PC11        102 //Thumb B S – P + A
-#define R_ARM_THM_PC9         103 //Thumb B<cond> S – P + A
-#define R_ARM_RXPC25          249 //ARM BLX (?S – ?P) + A For calls between program segments.
-#define R_ARM_RSBREL32        250 //Word (?S – ?SB) + A For an offset from SB, the static base.
-#define R_ARM_THM_RPC22       251 //Thumb BL/BLX pair (?S – ?P) + A For calls between program segments.
-#define R_ARM_RREL32          252 //Word (?S – ?P) + A For on offset between two segments.
+#define R_ARM_THM_PC11        102 //Thumb B S ¨C P + A
+#define R_ARM_THM_PC9         103 //Thumb B<cond> S ¨C P + A
+#define R_ARM_RXPC25          249 //ARM BLX (?S ¨C ?P) + A For calls between program segments.
+#define R_ARM_RSBREL32        250 //Word (?S ¨C ?SB) + A For an offset from SB, the static base.
+#define R_ARM_THM_RPC22       251 //Thumb BL/BLX pair (?S ¨C ?P) + A For calls between program segments.
+#define R_ARM_RREL32          252 //Word (?S ¨C ?P) + A For on offset between two segments.
 #define R_ARM_RABS32          253 //Word ?S + A For the address of a location in the target segment.
-#define R_ARM_RPC24           254 //ARM B/BL (?S – ?P) + A For calls between program segments.
-#define R_ARM_RBASE           255 //None None—Identifies the segment being relocated by the following relocation directives.
+#define R_ARM_RPC24           254 //ARM B/BL (?S ¨C ?P) + A For calls between program segments.
+#define R_ARM_RBASE           255 //None None¡ªIdentifies the segment being relocated by the following relocation directives.
 
 typedef long TElfEntry(char *, void *,void *,void *);
 
@@ -275,9 +275,9 @@ void zeromem_a(void *d, int l){memset(d,0, l);}
 #endif
 
 long elfload(char *filename, void *param1, void *param2, void *param3){
-  Elf32_Ehdr ehdr;				                        //çàãîëîâîê åëüôà
-  Elf32_Phdr phdrs[MAX_PHNUM];	                                        //çàãîëîâêè ïðîãðàì
-  Elf32_Word dyn[DT_BIND_NOW+1];	                                        //òýãè äèíàìè÷åñêîé ñåêöèè
+  Elf32_Ehdr ehdr;				                        //§Ù§Ñ§Ô§à§Ý§à§Ó§à§Ü §Ö§Ý§î§æ§Ñ
+  Elf32_Phdr phdrs[MAX_PHNUM];	                                        //§Ù§Ñ§Ô§à§Ý§à§Ó§Ü§Ú §á§â§à§Ô§â§Ñ§Þ
+  Elf32_Word dyn[DT_BIND_NOW+1];	                                        //§ä§ï§Ô§Ú §Õ§Ú§ß§Ñ§Þ§Ú§é§Ö§ã§Ü§à§Û §ã§Ö§Ü§è§Ú§Ú
   char *reloc, *base;
   unsigned long minadr=(unsigned long)-1, maxadr=0;//, maxadrsize;
   int n,m;
@@ -289,21 +289,21 @@ long elfload(char *filename, void *param1, void *param2, void *param3){
   //WINTEL
 #ifdef wintel
   FILE *fin=NULL;
-  if ((fin=fopen(filename,"rb"))==NULL) return -1;			//íå îòêðûâàåòñÿ åëüô
-  if (fread(&ehdr,sizeof(Elf32_Ehdr),1,fin)!=1) return -2;	        //íå ÷èòàåòñÿ åëüô
+  if ((fin=fopen(filename,"rb"))==NULL) return -1;			//§ß§Ö §à§ä§Ü§â§í§Ó§Ñ§Ö§ä§ã§ñ §Ö§Ý§î§æ
+  if (fread(&ehdr,sizeof(Elf32_Ehdr),1,fin)!=1) return -2;	        //§ß§Ö §é§Ú§ä§Ñ§Ö§ä§ã§ñ §Ö§Ý§î§æ
 #endif
   
   //ARM
 #ifndef wintel
   int fin;
   unsigned int iError, iError2;
-  if ((fin=fopen(filename, A_ReadOnly+A_BIN, P_READ, &iError))<0) return -1;	//íå îòêðûâàåòñÿ åëüô
-  if (fread(fin, &ehdr, sizeof(Elf32_Ehdr), &iError)!=sizeof(Elf32_Ehdr))	//íå ÷èòàåòñÿ åëüô
+  if ((fin=fopen(filename, A_ReadOnly+A_BIN, P_READ, &iError))<0) return -1;	//§ß§Ö §à§ä§Ü§â§í§Ó§Ñ§Ö§ä§ã§ñ §Ö§Ý§î§æ
+  if (fread(fin, &ehdr, sizeof(Elf32_Ehdr), &iError)!=sizeof(Elf32_Ehdr))	//§ß§Ö §é§Ú§ä§Ñ§Ö§ä§ã§ñ §Ö§Ý§î§æ
   {fclose(fin, &iError); return -2;}
 #endif
   /////////////////////////////////////////
   
-  if (*((long *)ehdr.e_ident)!=0x464C457F){                               //äà è íå åëüô ýòî âîâñå
+  if (*((long *)ehdr.e_ident)!=0x464C457F){                               //§Õ§Ñ §Ú §ß§Ö §Ö§Ý§î§æ §ï§ä§à §Ó§à§Ó§ã§Ö
 #ifndef wintel
     fclose(fin, &iError);
 #endif
@@ -316,22 +316,22 @@ long elfload(char *filename, void *param1, void *param2, void *param3){
   cout << "ehdr.e_phoff:"<<ehdr.e_phoff<<endl;
 #endif
   
-  //ïðî÷èòàåì âñå ïðîãðàìíûå ñåãìåíòû è âû÷èñëèì íåîáõîäèìóþ îáëàñòü â ðàìå
-  if (ehdr.e_phnum>MAX_PHNUM) return -9;					//ñëèøêîì ìíîãî ïðîãðàìíûõ ñåãìåíòîâ
+  //§á§â§à§é§Ú§ä§Ñ§Ö§Þ §Ó§ã§Ö §á§â§à§Ô§â§Ñ§Þ§ß§í§Ö §ã§Ö§Ô§Þ§Ö§ß§ä§í §Ú §Ó§í§é§Ú§ã§Ý§Ú§Þ §ß§Ö§à§Ò§ç§à§Õ§Ú§Þ§å§ð §à§Ò§Ý§Ñ§ã§ä§î §Ó §â§Ñ§Þ§Ö
+  if (ehdr.e_phnum>MAX_PHNUM) return -9;					//§ã§Ý§Ú§ê§Ü§à§Þ §Þ§ß§à§Ô§à §á§â§à§Ô§â§Ñ§Þ§ß§í§ç §ã§Ö§Ô§Þ§Ö§ß§ä§à§Ó
   for(n=0;n<ehdr.e_phnum;n++){
     ////////////////////////////////////////////////////
     //WINTEL
 #ifdef wintel
-    if (fseek(fin,ehdr.e_phoff+n*ehdr.e_phentsize,SEEK_SET)!=0) return -4;	//íå ñèêàåòñÿ ïðîãðàìíûé çàãîëîâîê
-    if (fread(&(phdrs[n]),sizeof(Elf32_Phdr),1,fin)!=1) return -5;		//íå ÷èòàåòñÿ ïðîãðàìíûé çàãîëîâîê
+    if (fseek(fin,ehdr.e_phoff+n*ehdr.e_phentsize,SEEK_SET)!=0) return -4;	//§ß§Ö §ã§Ú§Ü§Ñ§Ö§ä§ã§ñ §á§â§à§Ô§â§Ñ§Þ§ß§í§Û §Ù§Ñ§Ô§à§Ý§à§Ó§à§Ü
+    if (fread(&(phdrs[n]),sizeof(Elf32_Phdr),1,fin)!=1) return -5;		//§ß§Ö §é§Ú§ä§Ñ§Ö§ä§ã§ñ §á§â§à§Ô§â§Ñ§Þ§ß§í§Û §Ù§Ñ§Ô§à§Ý§à§Ó§à§Ü
 #endif
     
     //ARM
 #ifndef wintel
     if (lseek(fin, ehdr.e_phoff+n*ehdr.e_phentsize, S_SET, &iError, &iError2)!=ehdr.e_phoff+n*ehdr.e_phentsize)
-    {fclose(fin, &iError); return -4;}				//íå ñèêàåòñÿ ïðîãðàìíûé çàãîëîâîê
+    {fclose(fin, &iError); return -4;}				//§ß§Ö §ã§Ú§Ü§Ñ§Ö§ä§ã§ñ §á§â§à§Ô§â§Ñ§Þ§ß§í§Û §Ù§Ñ§Ô§à§Ý§à§Ó§à§Ü
     if (fread(fin, &phdrs[n], sizeof(Elf32_Phdr), &iError)!=sizeof(Elf32_Phdr))
-    {fclose(fin, &iError); return -5;}				//íå ÷èòàåòñÿ ïðîãðàìíûé çàãîëîâîê
+    {fclose(fin, &iError); return -5;}				//§ß§Ö §é§Ú§ä§Ñ§Ö§ä§ã§ñ §á§â§à§Ô§â§Ñ§Þ§ß§í§Û §Ù§Ñ§Ô§à§Ý§à§Ó§à§Ü
 #endif
     /////////////////////////////////////////////////////
     if (phdrs[n].p_type==PT_LOAD) {
@@ -354,8 +354,8 @@ long elfload(char *filename, void *param1, void *param2, void *param3){
 #endif
   }
   
-  //âûäåëèì ýòó îáëàñòü è î÷èñòèì åå
-  if ((base=(char *)malloc(maxadr-minadr))==0){		//íå âûäåëÿåòüñÿ ïàìÿòü ïîä åëüô
+  //§Ó§í§Õ§Ö§Ý§Ú§Þ §ï§ä§å §à§Ò§Ý§Ñ§ã§ä§î §Ú §à§é§Ú§ã§ä§Ú§Þ §Ö§Ö
+  if ((base=(char *)malloc(maxadr-minadr))==0){		//§ß§Ö §Ó§í§Õ§Ö§Ý§ñ§Ö§ä§î§ã§ñ §á§Ñ§Þ§ñ§ä§î §á§à§Õ §Ö§Ý§î§æ
 #ifndef wintel
     fclose(fin, &iError);
 #endif
@@ -363,40 +363,40 @@ long elfload(char *filename, void *param1, void *param2, void *param3){
   }
   //  t_zeromem(base,maxadr-minadr);
   zeromem_a(base,maxadr-minadr);
-  for(n=0;n<ehdr.e_phnum;n++){ //  îáõîä âñåõ ñåãìåíòîâ
+  for(n=0;n<ehdr.e_phnum;n++){ //  §à§Ò§ç§à§Õ §Ó§ã§Ö§ç §ã§Ö§Ô§Þ§Ö§ß§ä§à§Ó
     ////////////////////////////////////////////////////////////////////
     //WINTEL
 #ifdef wintel
-    if (fseek(fin,phdrs[n].p_offset,SEEK_SET)!=0) return -6;	//íå ñèêàåòñÿ äèíàìè÷åñêèé ñåãìåíò
+    if (fseek(fin,phdrs[n].p_offset,SEEK_SET)!=0) return -6;	//§ß§Ö §ã§Ú§Ü§Ñ§Ö§ä§ã§ñ §Õ§Ú§ß§Ñ§Þ§Ú§é§Ö§ã§Ü§Ú§Û §ã§Ö§Ô§Þ§Ö§ß§ä
 #endif
     
     //ARM
 #ifndef wintel
     if (lseek(fin, phdrs[n].p_offset, S_SET, &iError, &iError)!=phdrs[n].p_offset)
-    {fclose(fin, &iError); mfree(base); return -6;}		//íå ñèêàåòñÿ äèíàìè÷åñêèé ñåãìåíò
+    {fclose(fin, &iError); mfree(base); return -6;}		//§ß§Ö §ã§Ú§Ü§Ñ§Ö§ä§ã§ñ §Õ§Ú§ß§Ñ§Þ§Ú§é§Ö§ã§Ü§Ú§Û §ã§Ö§Ô§Þ§Ö§ß§ä
 #endif
     /////////////////////////////////////////////////////////////////////
     switch (phdrs[n].p_type){
     case PT_LOAD:
-      //çàãðóçèì ïðîãðàìíûå ñåãìåíòû ñ ðàçìåðîì áîëüøå 0
+      //§Ù§Ñ§Ô§â§å§Ù§Ú§Þ §á§â§à§Ô§â§Ñ§Þ§ß§í§Ö §ã§Ö§Ô§Þ§Ö§ß§ä§í §ã §â§Ñ§Ù§Þ§Ö§â§à§Þ §Ò§à§Ý§î§ê§Ö 0
       if (phdrs[n].p_filesz!=0) {
 	/////////////////////////////////////////////////////////////////////
 	//WINTEL
 #ifdef wintel
-	if (fread((void *)&base[phdrs[n].p_vaddr-minadr],phdrs[n].p_filesz,1,fin)!=1) return -11;	//íå ÷èòàåòñÿ ïðîãðàìíûé ñåãìåíò
+	if (fread((void *)&base[phdrs[n].p_vaddr-minadr],phdrs[n].p_filesz,1,fin)!=1) return -11;	//§ß§Ö §é§Ú§ä§Ñ§Ö§ä§ã§ñ §á§â§à§Ô§â§Ñ§Þ§ß§í§Û §ã§Ö§Ô§Þ§Ö§ß§ä
 #endif
 	
 	//ARM
 #ifndef wintel
 	if (fread(fin, &base[phdrs[n].p_vaddr-minadr], phdrs[n].p_filesz, &iError)!= phdrs[n].p_filesz)
-	{fclose(fin, &iError); mfree(base); return -11;}//íå ÷èòàåòñÿ ïðîãðàìíûé ñåãìåíò
+	{fclose(fin, &iError); mfree(base); return -11;}//§ß§Ö §é§Ú§ä§Ñ§Ö§ä§ã§ñ §á§â§à§Ô§â§Ñ§Þ§ß§í§Û §ã§Ö§Ô§Þ§Ö§ß§ä
 #endif
 	///////////////////////////////////////////////////////////////////////
       }
       break;
     case PT_DYNAMIC:
-      //ïðî÷òåì äèíàìè÷åñêóþ ñåêöèþ
-      if ((reloc=(char *)malloc(phdrs[n].p_filesz))==0) {//íå âûäåëÿåòñÿ ðàìà ïîä äèíàìè÷åñêèé ñåãìåíò
+      //§á§â§à§é§ä§Ö§Þ §Õ§Ú§ß§Ñ§Þ§Ú§é§Ö§ã§Ü§å§ð §ã§Ö§Ü§è§Ú§ð
+      if ((reloc=(char *)malloc(phdrs[n].p_filesz))==0) {//§ß§Ö §Ó§í§Õ§Ö§Ý§ñ§Ö§ä§ã§ñ §â§Ñ§Þ§Ñ §á§à§Õ §Õ§Ú§ß§Ñ§Þ§Ú§é§Ö§ã§Ü§Ú§Û §ã§Ö§Ô§Þ§Ö§ß§ä
 #ifndef wintel
 	fclose(fin, &iError);
 #endif
@@ -407,17 +407,17 @@ long elfload(char *filename, void *param1, void *param2, void *param3){
       //WINTEL
 #ifdef wintel
       cout << "dyn seg: off="<<hex<<phdrs[n].p_offset<<", sz="<<phdrs[n].p_filesz<<endl;
-      if (fread(reloc,phdrs[n].p_filesz,1,fin)!=1) {mfree(reloc); return -8;} //íå ÷èòàåòñÿ äèíàìè÷åñêèé ñåãìåíò
+      if (fread(reloc,phdrs[n].p_filesz,1,fin)!=1) {mfree(reloc); return -8;} //§ß§Ö §é§Ú§ä§Ñ§Ö§ä§ã§ñ §Õ§Ú§ß§Ñ§Þ§Ú§é§Ö§ã§Ü§Ú§Û §ã§Ö§Ô§Þ§Ö§ß§ä
 #endif
       
       //ARM
 #ifndef wintel
       if (fread(fin, reloc, phdrs[n].p_filesz, &iError)!=phdrs[n].p_filesz)
-      {fclose(fin, &iError); mfree(reloc); mfree (base); return -8;}	//íå ÷èòàåòñÿ äèíàìè÷åñêèé ñåãìåíò
+      {fclose(fin, &iError); mfree(reloc); mfree (base); return -8;}	//§ß§Ö §é§Ú§ä§Ñ§Ö§ä§ã§ñ §Õ§Ú§ß§Ñ§Þ§Ú§é§Ö§ã§Ü§Ú§Û §ã§Ö§Ô§Þ§Ö§ß§ä
 #endif
       ////////////////////////////////////////////////////////////////////////
       //				memset(dyn,0, sizeof(dyn));
-      //âûòàùèì âñå òýãè èç äèíàìè÷åñêîé ñåêöèè
+      //§Ó§í§ä§Ñ§ë§Ú§Þ §Ó§ã§Ö §ä§ï§Ô§Ú §Ú§Ù §Õ§Ú§ß§Ñ§Þ§Ú§é§Ö§ã§Ü§à§Û §ã§Ö§Ü§è§Ú§Ú
       m=0;
       while (((Elf32_Dyn *)reloc)[m].d_tag!=DT_NULL){
 	if (((Elf32_Dyn *)reloc)[m].d_tag<=DT_BIND_NOW) {
@@ -439,7 +439,7 @@ long elfload(char *filename, void *param1, void *param2, void *param3){
 #endif
       
       m=0;
-      //âûïîëíèì ðåëîêàöèþ REL
+      //§Ó§í§á§à§Ý§ß§Ú§Þ §â§Ö§Ý§à§Ü§Ñ§è§Ú§ð REL
       if (dyn[DT_RELSZ]!=0) {
 	while (m*sizeof(Elf32_Rel)<dyn[DT_RELSZ]){
 #ifdef wintel
@@ -457,7 +457,7 @@ long elfload(char *filename, void *param1, void *param2, void *param3){
             else
               switch(ri){
                 
-              case R_ARM_NONE: break; // ïóñòîé ðåëîêåéøåí
+              case R_ARM_NONE: break; // §á§å§ã§ä§à§Û §â§Ö§Ý§à§Ü§Ö§Û§ê§Ö§ß
               
               case R_ARM_ABS32:
 #ifdef wintel
@@ -467,7 +467,7 @@ long elfload(char *filename, void *param1, void *param2, void *param3){
                 *((long*)(base+((Elf32_Rel *)(reloc+dyn[DT_REL]-phdrs[n].p_vaddr))[m].r_offset-minadr))+=(long)base;
                 break;
                 
-              case R_ARM_RELATIVE: // âîîáùå ãîâîðÿ íå minadr à íà÷àëî ñåãìåíòà ñîäåðæàùåãî ñèìâîë
+              case R_ARM_RELATIVE: // §Ó§à§à§Ò§ë§Ö §Ô§à§Ó§à§â§ñ §ß§Ö minadr §Ñ §ß§Ñ§é§Ñ§Ý§à §ã§Ö§Ô§Þ§Ö§ß§ä§Ñ §ã§à§Õ§Ö§â§Ø§Ñ§ë§Ö§Ô§à §ã§Ú§Þ§Ó§à§Ý
                 *((long*)(base+((Elf32_Rel *)(reloc+dyn[DT_REL]-phdrs[n].p_vaddr))[m].r_offset-minadr))+=(long)base-minadr;
                 break; // ignore
                 
@@ -476,7 +476,7 @@ long elfload(char *filename, void *param1, void *param2, void *param3){
                 //            break;
                 
                 //              case R_ARM_RBASE: break;
-              default: 	//íåèçâåñòíûé òèï ðåëîêàöèè
+              default: 	//§ß§Ö§Ú§Ù§Ó§Ö§ã§ä§ß§í§Û §ä§Ú§á §â§Ö§Ý§à§Ü§Ñ§è§Ú§Ú
 #ifdef wintel
                 cout << "Invalid reloc type: " <<dec<<(unsigned)ELF32_R_TYPE(((Elf32_Rel *)(reloc+dyn[DT_REL]-phdrs[n].p_vaddr))[m].r_info) << endl;
 #else
@@ -498,7 +498,7 @@ long elfload(char *filename, void *param1, void *param2, void *param3){
 #endif
       mfree(reloc);
       break;
-    default:	//íåèçâåñòíûé òèï ïðîãðàìíîãî ñåãìåíòà
+    default:	//§ß§Ö§Ú§Ù§Ó§Ö§ã§ä§ß§í§Û §ä§Ú§á §á§â§à§Ô§â§Ñ§Þ§ß§à§Ô§à §ã§Ö§Ô§Þ§Ö§ß§ä§Ñ
 #ifndef wintel
       fclose(fin, &iError);
 #endif
@@ -773,12 +773,12 @@ __arm void MyIDLECSMonCreate(void *data)
     "elf",
     0x55,
     0xFF,
-    8, //Êàòàëîã Misc
+    8, //§¬§Ñ§ä§Ñ§Ý§à§Ô Misc
     MENU_FLAG2,
     smallicons,
     bigicons,
-    (int)"Open",    //LGP "Îòêðûòü"
-    (int)"AltOpen", //LGP "Îïöèè"
+    (int)"Open",    //LGP "§°§ä§Ü§â§í§ä§î"
+    (int)"AltOpen", //LGP "§°§á§è§Ú§Ú"
     LGP_DOIT_PIC,
     (void *)elfloader_onload,
     0
@@ -817,8 +817,7 @@ __arm void MyIDLECSMonCreate(void *data)
   //  asm("NOP\n");
 }
 
-//#define ZH_CN-UTF8
-//#ifndef ZH_CN-UTF8
+/*
 unsigned int char8to16(int c)
 {
   if (c==0xA8) c=0x401;
@@ -840,27 +839,26 @@ void ascii2ws(char *s, WSHDR *ws)
   {
     wsAppendChar(ws,char8to16(c));
   }
-}
-//#endif
-#define ANSI_STD
+}*/
+
 #ifdef NEWSGOLD
 __arm void ESI(WSHDR *ws, int dummy, char *s)
 #else
 __arm void ESI(char *s, WSHDR *ws)
 #endif
 {
-  if (((unsigned int)s>>28)==0xA) //Òîëüêî ñòðîêè èç îáëàñòè RAM/FLASH
+  if (((unsigned int)s>>28)==0xA) //§´§à§Ý§î§Ü§à §ã§ä§â§à§Ü§Ú §Ú§Ù §à§Ò§Ý§Ñ§ã§ä§Ú RAM/FLASH
   {
-#ifndef ZH_CN-UTF8
-#ifdef ANSI_STD
-		gb2ws(ws, s, strlen(s));
-#else
-    CutWSTR(ws,0); 
-    ascii2ws(s,ws);
-#endif
-#else
-    utf8_2ws(ws, s, strlen(s));
-#endif
+//#ifndef ZH_CN-UTF8
+//#ifdef ANSI_STD
+    gb2ws(ws, s, strlen(s));
+//#else
+//    CutWSTR(ws,0); 
+//    ascii2ws(s,ws);
+//#endif
+//#else
+//    utf8_2ws(ws, s, strlen(s));
+//#endif
   }
   else
   {
@@ -1023,7 +1021,7 @@ __arm void FUNC_ABORT(int f)
   StoreErrInfoAndAbort(0xFFFF,"\1\1No function in lib\xA1",2,2);
 }
 
-//Ïàò÷è
+//§±§Ñ§ä§é§Ú
 #pragma diag_suppress=Pe177
 __root static const int NEW_ONCREATE @ "PATCH_ONCREATE" = (int)MyIDLECSMonCreate;
 
@@ -1040,4 +1038,3 @@ __root static const int SWILIB_FUNC172 @ "SWILIB_FUNC172" = (int)REDRAW_impl;
 __root static const int SWILIB_FUNC19C @ "SWILIB_FUNC19C" = (int)SEQKILLER_impl;
 #pragma diag_default=Pe177
 #endif
-

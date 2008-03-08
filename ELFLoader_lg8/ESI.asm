@@ -71,7 +71,8 @@ J_PIT:
         EXTERN  ESIOld
 #ifdef SGOLD_CN
 ESI_PATCH:
-        PUSH    {R4,LR}
+        //PUSH    {R4,LR}
+        STMFD	SP!,{R4,LR}
 	MOV	R3,R0,LSR #28
 	CMP	R3,#0x0A
         LDMEQFD SP!,{R4,LR}
