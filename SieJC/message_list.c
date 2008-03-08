@@ -261,7 +261,7 @@ void Init_Message(TRESOURCE* ContEx, char *init_text)
   void *eq;
   PrepareEditControl(&ec);
   eq=AllocEQueue(ma,mfree_adr());
-  ConstructEditControl(&ec,3,0x40,ws_eddata,MAX_MSG_LEN);
+  ConstructEditControl(&ec,4,0x40,ws_eddata,MAX_MSG_LEN);
   AddEditControlToEditQend(eq,&ec,ma);
   edmessage_id=CreateInputTextDialog(&inp_desc,&inp_hdr,eq,1,0);
 }

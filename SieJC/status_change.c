@@ -245,7 +245,7 @@ void Disp_AddSettings_Dialog(char curentstat)
   AddEditControlToEditQend(eq,&ec,ma);
 
   wsprintf(ews,percent_t,textstatus);
-  ConstructEditControl(&ec,3,0x40,ews,256);
+  ConstructEditControl(&ec,4,0x40,ews,256);
   AddEditControlToEditQend(eq,&ec,ma);
 
   wsprintf(ews,percent_t,LG_PRIORITY);

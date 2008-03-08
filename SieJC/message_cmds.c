@@ -472,7 +472,7 @@ void AddSmile(GUI *data)
   PrepareEditControl(&ec);
   eq=AllocEQueue(ma,mfree_adr());
   
-  ConstructEditControl(&ec,ECT_NORMAL_TEXT,0x40,ws1,ws1->wsbody[0]);
+  ConstructEditControl(&ec,4,0x40,ws1,ws1->wsbody[0]);
   AddEditControlToEditQend(eq,&ec,ma);
   patch_header(&as_hdr);
   patch_input(&as_desc);

@@ -135,7 +135,7 @@ void Disp_Info(TRESOURCE* ResEx)
     AddEditControlToEditQend(eq,&ec,ma);
 
     utf8_2ws(ws_info, ClEx->JID, 128);
-    ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL,ws_info,256);
+    ConstructEditControl(&ec,4,ECF_APPEND_EOL,ws_info,256);
     AddEditControlToEditQend(eq,&ec,ma);
   }
 
@@ -151,7 +151,7 @@ void Disp_Info(TRESOURCE* ResEx)
     ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ws_info,256);
     AddEditControlToEditQend(eq,&ec,ma);
     utf8_2ws(ws_info, TmpMUC->muctema, strlen(TmpMUC->muctema)*2);
-    ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL,ws_info,wstrlen(ws_info));
+    ConstructEditControl(&ec,4,ECF_APPEND_EOL,ws_info,wstrlen(ws_info));
     AddEditControlToEditQend(eq,&ec,ma);
     }
     }
@@ -164,7 +164,7 @@ void Disp_Info(TRESOURCE* ResEx)
     AddEditControlToEditQend(eq,&ec,ma);
 
     utf8_2ws(ws_info, ResEx->name, 128);
-    ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL,ws_info,256);
+    ConstructEditControl(&ec,4,ECF_APPEND_EOL,ws_info,256);
     AddEditControlToEditQend(eq,&ec,ma);
   }
 
@@ -176,7 +176,7 @@ void Disp_Info(TRESOURCE* ResEx)
     AddEditControlToEditQend(eq,&ec,ma);
 
     utf8_2ws(ws_info, ResEx->name, 128);
-    ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL,ws_info,256);
+    ConstructEditControl(&ec,4,ECF_APPEND_EOL,ws_info,256);
     AddEditControlToEditQend(eq,&ec,ma);
 
 ////   if (ResEx->priority != 0)
@@ -187,7 +187,7 @@ void Disp_Info(TRESOURCE* ResEx)
     AddEditControlToEditQend(eq,&ec,ma);
 
     wsprintf(ws_info, "%i", ResEx->priority);
-    ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL,ws_info,256);
+    ConstructEditControl(&ec,4,ECF_APPEND_EOL,ws_info,256);
     AddEditControlToEditQend(eq,&ec,ma);
 ////    }
   }
@@ -203,7 +203,7 @@ void Disp_Info(TRESOURCE* ResEx)
       AddEditControlToEditQend(eq,&ec,ma);
 
       utf8_2ws(ws_info, ResEx->muc_privs.real_jid, 128);
-      ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL,ws_info,600);
+      ConstructEditControl(&ec,4,ECF_APPEND_EOL,ws_info,600);
       AddEditControlToEditQend(eq,&ec,ma);
     }
 
@@ -222,7 +222,7 @@ void Disp_Info(TRESOURCE* ResEx)
       }
     }
     else wsprintf(ws_info,percent_s,PRESENCES[ResEx->status]);
-    ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL,ws_info,600);
+    ConstructEditControl(&ec,4,ECF_APPEND_EOL,ws_info,600);
     AddEditControlToEditQend(eq,&ec,ma);
   }
 
@@ -235,7 +235,7 @@ void Disp_Info(TRESOURCE* ResEx)
     AddEditControlToEditQend(eq,&ec,ma);
 
     wsprintf(ws_info, percent_s, JABBER_AFFS[ResEx->muc_privs.aff]);
-    ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL,ws_info,256);
+    ConstructEditControl(&ec,4,ECF_APPEND_EOL,ws_info,256);
     AddEditControlToEditQend(eq,&ec,ma);
 
     wsprintf(ws_info,percent_t,LG_ROLE);
@@ -243,7 +243,7 @@ void Disp_Info(TRESOURCE* ResEx)
     AddEditControlToEditQend(eq,&ec,ma);
 
     wsprintf(ws_info, percent_s, JABBER_ROLS[ResEx->muc_privs.role]);
-    ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL,ws_info,256);
+    ConstructEditControl(&ec,4,ECF_APPEND_EOL,ws_info,256);
     AddEditControlToEditQend(eq,&ec,ma);
   }
   
@@ -281,7 +281,7 @@ void Disp_Info(TRESOURCE* ResEx)
       }
     }
 
-    ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL,ws_info,256);
+    ConstructEditControl(&ec,4,ECF_APPEND_EOL,ws_info,256);
     AddEditControlToEditQend(eq,&ec,ma);
   }
   
@@ -346,7 +346,7 @@ void Disp_From_Disco(char *jid, XMLNode *info)
   AddEditControlToEditQend(eq,&ec,ma);
 
   utf8_2ws(ws_info, jid, 128);
-  ConstructEditControl(&ec,3,0x40,ws_info,256);
+  ConstructEditControl(&ec,4,0x40,ws_info,256);
   AddEditControlToEditQend(eq,&ec,ma);
 
 
@@ -364,7 +364,7 @@ void Disp_From_Disco(char *jid, XMLNode *info)
       {
         var = Lookup_Known_Vars(var);
         utf8_2ws(ws_info, var, 128);
-        ConstructEditControl(&ec,3,0x40,ws_info,256);
+        ConstructEditControl(&ec,4,0x40,ws_info,256);
         AddEditControlToEditQend(eq,&ec,ma);
       }
     }

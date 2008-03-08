@@ -207,7 +207,7 @@ void Disp_MUC_Enter_Dialog()
   AddEditControlToEditQend(eq,&ec,ma);
 
   utf8_2ws(mews, (char*)DEFAULT_MUC, 64);
-  ConstructEditControl(&ec,3,0x40,mews,128);      //2
+  ConstructEditControl(&ec,4,0x40,mews,128);      //2
   AddEditControlToEditQend(eq,&ec,ma);  
 
   wsprintf(mews,percent_t,LG_NICK);
@@ -223,7 +223,7 @@ void Disp_MUC_Enter_Dialog()
   {
     wsprintf(mews,percent_t,USERNAME);
   }
-  ConstructEditControl(&ec,3,0x40,mews,80);     // 4
+  ConstructEditControl(&ec,4,0x40,mews,80);     // 4
   AddEditControlToEditQend(eq,&ec,ma);  
 
   wsprintf(mews,percent_t,"Password");
@@ -231,7 +231,7 @@ void Disp_MUC_Enter_Dialog()
   AddEditControlToEditQend(eq,&ec,ma);  
 
   wsprintf(mews,percent_t,"");
-  ConstructEditControl(&ec,3,0x40,mews,80);     // 6
+  ConstructEditControl(&ec,4,0x40,mews,80);     // 6
   AddEditControlToEditQend(eq,&ec,ma);  
 
   wsprintf(mews,percent_t,LG_GETMESSAGECOUNT);

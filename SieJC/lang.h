@@ -839,7 +839,7 @@
 #define LG_SELSMILE         "选择表情..."
 #define LG_SELECT2          "选择..."
 #define LG_CONTRESOURCES    "资源..."  //както подругому надо
-#define LG_CONTRESOURCE     "旎称"
+#define LG_CONTRESOURCE     "昵称"
 #define LG_COMMANDS         "命令"
 #define LG_MSGTEMPLATE      "摸板"
 #define LG_SMILE            "表情"
