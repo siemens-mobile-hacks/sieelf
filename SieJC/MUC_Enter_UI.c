@@ -120,9 +120,19 @@ void med1_ghook(GUI *data, int cmd)
    }
    else user_name = NULL;
    
-   
+   char* pass_name;
+   ExtractEditControl(data,6,&ec);
+   wstrcpy(mews,ec.pWS);
+   st_len = wstrlen(mews)*2;
+   if(st_len)
+   {
+      pass_name =  utf16_to_utf8((char**)mews,&st_len);
+      pass_name[st_len]='\0';
+   }
+   else pass_name = NULL;
+
     extern long  strtol (const char *nptr,char **endptr,int base);
-    ExtractEditControl(data,6,&ec);    // = n_messages
+    ExtractEditControl(data,8,&ec);    // = n_messages
     wstrcpy(mews,ec.pWS);
     char ss[10];
     ws_2str(mews,ss,15);
@@ -131,8 +141,9 @@ void med1_ghook(GUI *data, int cmd)
     {
       //ShowMSG(1,(int)user_name);
       //ShowMSG(1,(int)conf_name);
-      Enter_Conference(conf_name, user_name, n_messages);
+      Enter_Conference(conf_name, user_name, pass_name, n_messages);
       mfree(user_name);
+      mfree(pass_name);
       mfree(conf_name);
     }
    }
@@ -182,6 +193,7 @@ void Disp_MUC_Enter_Dialog()
   extern const char USERNAME[32];
   extern const char DEFAULT_MUC[64];
   extern const char DEFAULT_MUC_NICK[64];
+  extern const unsigned int DEFAULT_MUC_MSGCOUNT;
   
   void *eq;
   EDITCONTROL ec;
@@ -213,19 +225,29 @@ void Disp_MUC_Enter_Dialog()
   }
   ConstructEditControl(&ec,3,0x40,mews,80);     // 4
   AddEditControlToEditQend(eq,&ec,ma);  
-  
+
+  wsprintf(mews,percent_t,"Password");
+  ConstructEditControl(&ec,1,0x40,mews,256);
+  AddEditControlToEditQend(eq,&ec,ma);  
+
+  wsprintf(mews,percent_t,"");
+  ConstructEditControl(&ec,3,0x40,mews,80);     // 6
+  AddEditControlToEditQend(eq,&ec,ma);  
+
   wsprintf(mews,percent_t,LG_GETMESSAGECOUNT);
   ConstructEditControl(&ec,1,0x40,mews,256);      
   AddEditControlToEditQend(eq,&ec,ma);  
 
-  wsprintf(mews,"20");
-  ConstructEditControl(&ec,5,0x40,mews,2);    //6
+  wsprintf(mews,"%d",DEFAULT_MUC_MSGCOUNT);
+  ConstructEditControl(&ec,5,0x40,mews,2);    //8
   AddEditControlToEditQend(eq,&ec,ma);  
   
   patch_input(&med1_desc);
   patch_header(&med1_hdr);
   CreateInputTextDialog(&med1_desc,&med1_hdr,eq,1,0);
 }
+
+
 
 
 

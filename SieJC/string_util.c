@@ -415,9 +415,22 @@ char* convUTF8_to_ANSI_STR(char *UTF8_str)
 	
 	if (chr<0xe0) {
 	    // cx, dx
+                  if ((chr == 0xD0)&&(chr2 == 0x81)){*(tmp_out+lastchar) = 0xA8;}//¨
+             else if ((chr == 0xD0)&&(chr2 == 0x86)){*(tmp_out+lastchar) = 0xB2;}//²
+             else if ((chr == 0xD0)&&(chr2 == 0x87)){*(tmp_out+lastchar) = 0xAF;}//¯
+             else if ((chr == 0xD0)&&(chr2 == 0x84)){*(tmp_out+lastchar) = 0xAA;}//ª
+             else if ((chr == 0xD1)&&(chr2 == 0x91)){*(tmp_out+lastchar) = 0xB8;}//¸
+             else if ((chr == 0xD1)&&(chr2 == 0x96)){*(tmp_out+lastchar) = 0xB3;}//³
+             else if ((chr == 0xD1)&&(chr2 == 0x97)){*(tmp_out+lastchar) = 0xBF;}//¿
+             else if ((chr == 0xD1)&&(chr2 == 0x94)){*(tmp_out+lastchar) = 0xBA;}//º
+             else if ((chr == 0xD2)&&(chr2 == 0x91)){*(tmp_out+lastchar) = 0xE3;}//´->ã
+             else if ((chr == 0xD2)&&(chr2 == 0x90)){*(tmp_out+lastchar) = 0xC3;}//¥->Ã
+             else
+          {
 	    char test1 = (chr & 0x1f)<<6;
             char test2 = chr2 & 0x3f;
             *(tmp_out+lastchar)= test1 | test2 + 127 + 0x31;
+          }
             i++;
             lastchar++;
             goto L_END_CYCLE;
@@ -842,24 +855,100 @@ void utf82win(char*d,const char *s)
   for (; *s; s+=2)
   {
     unsigned char ub = *s, lb = *(s+1);
-    if (ub == 208)
-      if (lb != 0x81)
-        {*d = lb + 48; d++;}
-      else
-        {*d = '¨'; d++;}
-
-    if (ub == 209)
-      if (lb != 0x91)
-        {*d = lb + 112; d++;}
-      else
-        {*d = '¸'; d++;}
-
-    if ((ub != 208) && (ub != 209) && (lb != 91) && (lb != 81))
+    if (ub == 0xD0)
+    {
+                     if(lb == 0x81){*d = 0xA8;}//¨
+		else if(lb == 0x86){*d = 0xB2;}//²
+		else if(lb == 0x87){*d = 0xAF;}//¯
+		else if(lb == 0x84){*d = 0xAA;}//ª
+	  else {*d = lb + 48;}
+    } else
+    if (ub == 0xD1)
+    {
+                     if(lb == 0x91){*d = 0xB8;}//¸
+		else if(lb == 0x96){*d = 0xB3;}//³
+		else if(lb == 0x97){*d = 0xBF;}//¿
+		else if(lb == 0x94){*d = 0xBA;}//º
+	        else {*d = lb + 112;}
+    } else
+    if (ub == 0xD2)
+    {
+//        if(lb == 0x91){*d = 0xB4;}//´
+//        if(lb == 0x90){*d = 0xA5;}//¥
+        if(lb == 0x91){*d = 0xE3;}//´->ã
+        if(lb == 0x90){*d = 0xC3;}//¥->Ã
+    } else
     {
       *d = ub;
-      d++;
       s--;
     }
+      d++;
   }
   *d = 0;
 }
+
+long GetIDLETime(TTime intime, TDate indate)
+{
+ TTime endt;
+ TDate endd;
+// TDate endd, resd;
+ signed int res=0, rmin=0;
+ long resul=0;
+ GetDateTime(&endd, &endt);
+ res = endt.sec - intime.sec;
+ if (res < 0)
+ {
+   res = 60 + res;
+   rmin = 1;
+ }
+ resul = res;
+ res = endt.min - intime.min - rmin;
+ rmin = 0;
+ if (res <0 )
+ {
+   res = 60 + res;
+   rmin = 1;
+ }
+ resul = resul + res*60;
+ res = endt.hour - intime.hour - rmin;
+ rmin = 0;
+ if (res < 0) 
+ {
+   res = 24 + res;
+   rmin = 1;
+ }
+ resul = resul + res*3600;
+ res = endd.day - indate.day - rmin;
+ rmin = 0; 
+ if (res < 0)
+ {
+   res = 31 + res;
+//   rmin=1;
+ }
+ resul = resul + res*86400;
+/*
+ res = end.mounth - indate.mounth - rmin;
+ rmin = 0;
+ if (res < 0 )
+ {
+   res = 12 + res;
+ }
+ res = resul + res*2678400; mnogovato trowki
+   */
+ return(resul);
+}
+
+char *utf82filename(char *str)
+{
+  int len = strlen(str)+16;
+  WSHDR *ws = AllocWS(len);
+  char *res = malloc(len);
+  utf8_2ws(ws, str, len);
+  ws_2str(ws, res, len);
+  FreeWS(ws);
+  return res;
+}
+
+
+
+

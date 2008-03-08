@@ -8,23 +8,27 @@
 #include "roster_icons.h"
 #include "history.h"
 #include "item_info.h"
+#include "vCard.h"
 #include "lang.h"
 #include "..\inc\pnglist.h"
 #include "smiles.h"
 
-const RGBA CURSOR =           {120, 120, 255, 100};         // Цвет курсора
-const RGBA CURSOR_BORDER =    {200, 200, 200, 100};         // Цвет ободка курсора
-const RGBA CLIST_F_COLOR_0 =  {  0,   0,   0, 100};         // Цвет шрифта
-const RGBA CLIST_F_COLOR_1 =  {  0,   0, 170, 100};         // Цвет шрифта (есть сообщения)
-const RGBA CONTACT_BG_0 =     {255, 255, 255, 100};         // Чередование: цвет фона 1
-const RGBA CONTACT_BG_1 =     {225, 225, 225, 100};         // Чередование: цвет фона 2
 
+
+  // Цвет курсора
+extern char color_cfg[10000];
+extern RGBA CURSOR_BORDER;         // Цвет ободка курсора
+extern RGBA CLIST_F_COLOR_0;         // Цвет шрифта
+extern RGBA CLIST_F_COLOR_1 ;         // Цвет шрифта (есть сообщения)
+extern RGBA CONTACT_BG_0 ;         // Чередование: цвет фона 1
+extern RGBA CONTACT_BG_1 ;         // Чередование: цвет фона 2
+extern const unsigned int DEF_SKR;
 CLIST* cltop = NULL;
 
 char Display_Offline;         // Отображать ли оффлайн-пользователей
 
-RGBA lineColor = {0, 0, 0, 0};    // Цвет текущей строчки
-RGBA borderColor = {0, 0, 0, 0};  // Цвет ободка текущей строчки
+extern RGBA lineColor ;    // Цвет текущей строчки
+extern RGBA borderColor;  // Цвет ободка текущей строчки
 
 unsigned int NContacts = 0;       // Всего контактов (и ресурсов) в списке
 unsigned int N_Disp_Contacts = 0; // Сколько из них должны отображаться
@@ -36,11 +40,12 @@ unsigned int CursorPos = 1;       // Текущая позиция курсора
 TRESOURCE* ActiveContact = NULL;
 
 extern char logmsg[512];
-extern const RGBA PRES_COLORS[PRES_COUNT];
+extern  RGBA PRES_COLORS[PRES_COUNT];
 extern char My_Presence;
 extern const char* PRESENCES[PRES_COUNT];
 extern JABBER_STATE Jabber_state;
-
+extern RGBA CURSOR;
+extern int CLIST_FONT;
 /*
 Единственная процедура, которая занимается отрисовкой контакт-листа
 */
@@ -263,6 +268,7 @@ void KillResourceList(TRESOURCE* res_list)
     if(cl->status_msg)mfree(cl->status_msg);
     if(cl->log)KillMsgList(cl->log);
     if(cl->muc_privs.real_jid)mfree(cl->muc_privs.real_jid);
+    Free_vCard(cl->vcard);
     p=cl;
     cl=cl->next;
     mfree(p);
@@ -288,6 +294,25 @@ CLIST* CList_FindContactByJID(char* jid)
       return ClEx;
     }
     ClEx = ClEx->next;
+  }
+  UnlockSched();
+  return NULL;
+}
+//поиск конфы
+MUC_ITEM* CList_FindMUCByJID(char* jid)
+{
+  LockSched();
+  extern MUC_ITEM* muctop;
+  MUC_ITEM* McEx = muctop;
+  if(McEx)
+  while(McEx)
+  {
+    if(stristr(McEx->conf_jid,jid))
+    {
+      UnlockSched();
+      return McEx;
+    }
+    McEx = McEx->next;
   }
   UnlockSched();
   return NULL;
@@ -344,7 +369,7 @@ TRESOURCE* CList_IsResourceInList(char* jid)
 void CList_Ch_Status(TRESOURCE* resource,
                      char status,
                      char* status_msg,
-                     short priority  
+                     short priority
                        )
 {
   LockSched();
@@ -480,9 +505,11 @@ TRESOURCE* CList_AddResourceWithPresence(char* jid, char status, char* status_ms
 
       ResEx->status = status;
       ResEx->priority = priority;
+      ResEx->compos = 0;
       ResEx->muc_privs.aff = AFFILIATION_NONE;
       ResEx->muc_privs.role=  ROLE_NONE;
       ResEx->muc_privs.real_jid =  NULL;
+      ResEx->vcard = NULL;
       if(ClEx->res_list->entry_type!=T_CONF_ROOT){ ResEx->entry_type = T_NORMAL;}
       else{ResEx->entry_type = T_CONF_NODE;}
       ResEx->has_unread_msg=0;
@@ -550,6 +577,13 @@ void CList_ChangeContactParams(CLIST* Cont_Ex,
   Cont_Ex->subscription = subscription;
   Cont_Ex->wants_subscription = wants_subscription;
   Cont_Ex->group = group;
+  Cont_Ex->IsVisible = CList_GetVisibilityForGroup(group);
+}
+
+void CList_ChangeComposingStatus(TRESOURCE* Res_Ex, char composing)
+{
+  if(!Res_Ex)return;
+  Res_Ex->compos = composing;
 }
 
 // Пишет роли контакта в конфе в структуру
@@ -593,10 +627,12 @@ CLIST* CList_AddContact(char* jid,
   Cont_Ex->subscription = subscription;
   Cont_Ex->wants_subscription = wants_subscription;
   Cont_Ex->group = group;
-  Cont_Ex->IsVisible = 1;
-  Cont_Ex->next=NULL;
+  Cont_Ex->IsVisible = CList_GetVisibilityForGroup(group);
+  Cont_Ex->next = NULL;
+  Cont_Ex->vcard = NULL; // Не запросили еще
 
   TRESOURCE* ResEx = malloc(sizeof(TRESOURCE));
+  ResEx->vcard = NULL;
   ResEx->log=NULL;
   ResEx->next=NULL;
   ResEx->status_msg=NULL;
@@ -604,11 +640,10 @@ CLIST* CList_AddContact(char* jid,
   ResEx->muc_privs.real_jid =  NULL;
   ResEx->has_unread_msg=0;
   ResEx->total_msg_count=0;
+  ResEx->compos=0;
   if(group & 0x80)
   {
     ResEx->entry_type=T_CONF_ROOT; // Корень конференции
-    ResEx->status=PRESENCE_ONLINE;
-    ShowMSG(1,(int)LG_MUCCROK);
   }
   else
   {
@@ -617,8 +652,9 @@ CLIST* CList_AddContact(char* jid,
     {
       ResEx->entry_type=T_TRANSPORT; // Транспортный агент
     }
-    ResEx->status=PRESENCE_OFFLINE;
   }
+  ResEx->status=PRESENCE_OFFLINE;
+  
   ResEx->name = NULL;
   ResEx->full_name = malloc(strlen(jid)+1);
   strcpy(ResEx->full_name, jid);
@@ -660,7 +696,7 @@ void CList_AddMessage(char* jid, MESS_TYPE mtype, char* mtext)
   TDate now_date;
   GetDateTime(&now_date,&now_time);
   char datestr[200];
-  
+
   char IsMe = strstr(mtext,"/me ")==mtext ? 1 : 0; // Флаг наличия /me
   if(mtype==MSG_ME)
   {
@@ -768,12 +804,10 @@ void CList_AddMessage(char* jid, MESS_TYPE mtype, char* mtext)
 
   extern const int WRITE_HISTORY, WRITE_MUC_HISTORY;
 
- 
+
   if((WRITE_HISTORY && !(cont->entry_type==T_CONF_ROOT)) || (WRITE_MUC_HISTORY && (cont->entry_type==T_CONF_ROOT)))
   {
-    char *ansi_text = convUTF8_to_ANSI_STR(mtext);
-    Add2History(CList_FindContactByJID(jid), datestr,ansi_text);
-    mfree(ansi_text);
+    Add2History(CList_FindContactByJID(jid), datestr,mtext);
   }
 }
 // Уничтожить список контактов
@@ -787,6 +821,7 @@ void CList_Destroy()
     CLIST *p;
     if(cl->res_list) KillResourceList(cl->res_list);
     cl->ResourceCount=0;
+    Free_vCard(cl->vcard);
     mfree(cl->JID);
     mfree(cl->name);
     p=cl;
@@ -822,9 +857,9 @@ void nextUnread()
     while(ResEx) //идем по списку ресурсов
     {
       if(ResEx->has_unread_msg) //если есть непрочитанное
-      { 
+      {
         if (CList_GetActiveContact()!=ResEx)//если мы не стоим на этом контакте
-        { 
+        {
           //нужна еще какая-то проверка, я что-то не учитываю, поэтому иногда ведет себя странно...
           if(!CList_GetVisibilityForGroup(ClEx->group)) //если группа контакта свернута, надо ее развернуть, иначе плохо будет
           {
@@ -918,10 +953,10 @@ void MoveCursorTo(TRESOURCE* NewResEx)
 
 
 // Управление курсором
-void CList_MoveCursorUp()
+void CList_MoveCursorUp(int flagi)
 {
   if(!N_Disp_Contacts)return;
-  if(CursorPos==1)
+  if(CursorPos<=1)
   {
     CursorPos=N_Disp_Contacts;
     if (N_cont_disp==N_Disp_Contacts) {
@@ -931,29 +966,42 @@ void CList_MoveCursorUp()
     }
   }
   else
-  {
-    CursorPos--;
+  {if(flagi){CursorPos=CursorPos-DEF_SKR;}else{CursorPos--;}
+    
     if(CursorPos<=(Active_page-1)*N_cont_disp){Active_page--;}
   }
   REDRAW();
 };
 
-void CList_MoveCursorDown()
+
+void CList_MoveCursorDown(int flagi)
 {
   if(!N_Disp_Contacts)return;
-  CursorPos++;
-  if(CursorPos>N_Disp_Contacts){CursorPos=1;Active_page=1;}
+  if(flagi==1){
+    if(CursorPos==(N_Disp_Contacts+1)){CursorPos=1;Active_page=1;}
+    else {CursorPos=CursorPos+DEF_SKR;
+    if(CursorPos>(N_Disp_Contacts+1)){CursorPos=(N_Disp_Contacts+1);Active_page = sdiv(N_cont_disp, N_Disp_Contacts)+1;}
+    }
+  }
+  
+
+  if(flagi==0)
+  {
+    CursorPos++;
+  
+  if(CursorPos>N_Disp_Contacts/*+1*/){CursorPos=1;Active_page=1;}
+  
+  }
   if(Active_page*N_cont_disp<CursorPos){Active_page++;}
   REDRAW();
-};
-
+}
 void CList_MoveCursorHome()
 {
   if(!N_Disp_Contacts)return;
   CursorPos =1;
   Active_page = 1;
   REDRAW();
-};
+}
 
 void CList_MoveCursorEnd()
 {
@@ -961,7 +1009,7 @@ void CList_MoveCursorEnd()
   CursorPos = N_Disp_Contacts;
   Active_page = sdiv(N_cont_disp, N_Disp_Contacts)+1;
   REDRAW();
-};
+}
 
 int CList_isGroup(CLIST *cont)
 {
@@ -1009,7 +1057,7 @@ void ParseAnswer(WSHDR *ws, const char *s)
       ulb>>=8;
       ulb+=s[3]<<24;
     }
-    //if (wchar!=10) 
+    //if (wchar!=10)
     wsAppendChar(ws,wchar);
   }
   /*

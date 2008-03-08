@@ -5,6 +5,7 @@
 #include "lang.h"
 
 BM_ITEM *BM_ROOT  = NULL;
+int reqbook = 0; //флаг запроса закладок
 
 void KillBMList()
 {
@@ -14,14 +15,16 @@ void KillBMList()
   while(cl)
   {
     BM_ITEM *p;
-    mfree(cl->mucname);
-    mfree(cl->nick);
+    mfree(cl->bmname);
+    if(cl->mucname)mfree(cl->mucname);
+    if(cl->nick)mfree(cl->nick);
     if(cl->pass)mfree(cl->pass);
     p=cl;
     cl=(BM_ITEM*)(cl->next);
     mfree(p);
     p=NULL;
   }
+  reqbook = 0;
   UnlockSched();
 }
 
@@ -31,6 +34,7 @@ void Process_Bookmarks_Storage(XMLNode* nodeEx)
   XMLNode *tmpnode;
   extern const char conference_t[];
   char jid[]="jid";
+  char *bm_name = NULL;
   char *n_name = NULL;
   char *c_name=NULL;
   char *c_nick=NULL;
@@ -40,33 +44,45 @@ void Process_Bookmarks_Storage(XMLNode* nodeEx)
   {
     n_name = elem->name;
     if(!n_name)return;
-    if(!strcmp(n_name, conference_t))  // Элемент конференции
+     if(!strcmp(n_name, conference_t)) // Элемент конференции
     {
       c_name = XML_Get_Attr_Value(jid,elem->attr);
+      bm_name = XML_Get_Attr_Value("name",elem->attr);
       tmpnode = XML_Get_Child_Node_By_Name(elem, "nick");
-      if(!tmpnode)return;
-      c_nick = tmpnode->value;
-      if(!c_nick)return;
+      if(tmpnode)
+      {
+        c_nick = tmpnode->value;
+      }else c_nick=NULL;
       tmpnode = XML_Get_Child_Node_By_Name(elem, "password");
       if(tmpnode)
       {
         c_pass = tmpnode->value;
-      }
+      }else c_pass = NULL;
 
-      // Создаём очередной элемент списка
       BM_ITEM *bmitem = malloc(sizeof(BM_ITEM));
+            if(!bm_name) strcpy(bm_name ,c_name); //если нет имени, имя=JID
+      bmitem->bmname = malloc(strlen(bm_name)+1);
+      strcpy(bmitem->bmname, bm_name);
+  
       bmitem->mucname = malloc(strlen(c_name)+1);
       strcpy(bmitem->mucname, c_name);
-
-      bmitem->nick = malloc(strlen(c_nick)+1);
-      strcpy(bmitem->nick, c_nick);
-
+      if(c_nick)
+      {
+        bmitem->nick = malloc(strlen(c_nick)+1);
+        strcpy(bmitem->nick, c_nick);
+      }
+      else bmitem->nick = NULL;
       if(c_pass)
       {
         bmitem->pass = malloc(strlen(c_pass)+1);
         strcpy(bmitem->pass, c_pass);
       }
       else bmitem->pass = NULL;
+
+      // Создаём очередной элемент списка
+      //если нет ника и имени конфы такая закладка нам ненужна
+      if((bmitem->mucname)&&(bmitem->nick))
+      {
       bmitem->next = NULL;
 
       BM_ITEM *tmp=BM_ROOT;
@@ -77,10 +93,10 @@ void Process_Bookmarks_Storage(XMLNode* nodeEx)
         tmp->next = bmitem;
       }
       else BM_ROOT = bmitem;
+      }
     }
     elem = elem->next;
   }
-
   Disp_BM_Menu();
 }
 
@@ -96,11 +112,13 @@ void _getbookmarkslist()
 
 void Get_Bookmarks_List()
 {
-  if(!BM_ROOT)
+  if((!BM_ROOT)&&(reqbook==0))
   {
-    SUBPROC((void*)_getbookmarkslist);
+      SUBPROC((void*)_getbookmarkslist);
+      reqbook=1;
   }
-  else Disp_BM_Menu();
+  else 
+    if(BM_ROOT) Disp_BM_Menu();
 }
 
 
@@ -201,9 +219,10 @@ int bm_menu_onkey(void *data, GUI_MSG *msg)
       it=it->next;    
       
     };
-    Enter_Conference(it->mucname, it->nick, 20);
+    extern const unsigned int DEFAULT_MUC_MSGCOUNT;
+      Enter_Conference(it->mucname, it->nick, it->pass, DEFAULT_MUC_MSGCOUNT);
   }
-  Req_Close_BM_Menu = 1;
+//  Req_Close_BM_Menu = 1;
 return 0;
 }
 
@@ -230,9 +249,9 @@ void bm_menu_iconhndl(void *data, int curitem, void *unk)
     it=it->next;    
   };
   
-  ws=AllocMenuWS(data,strlen(it->mucname));
-  wsprintf(ws,percent_t,it->mucname);
-  
+  ws=AllocMenuWS(data,strlen(it->bmname));
+//  wsprintf(ws,percent_t,it->bmname);
+  utf8_2ws(ws,it->bmname,strlen(it->bmname));
   SetMenuItemIconArray(data,item,BM_ICON+1);
   SetMenuItemText(data,item,ws,curitem);
   //SetMenuItemIcon(data,curitem,1);  // 0 = индекс иконки
@@ -248,12 +267,11 @@ void Init_bm_Icon_array()
 
 void Disp_BM_Menu()
 {
-  Init_bm_Icon_array();
-  int n_items=0;
-  BM_ITEM *i;
   if(BM_ROOT)
   {
-    i=BM_ROOT;
+    Init_bm_Icon_array();
+    int n_items=0;
+    BM_ITEM *i = BM_ROOT;
     n_items=1;
     while(i->next)
     {

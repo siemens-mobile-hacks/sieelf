@@ -107,18 +107,22 @@ typedef struct
   char *real_jid;
 }CONF_DATA;
 
+typedef char **VCARD;
+
 typedef struct
 {
   char* name;                   // Отображаемое имя ресурса
   char* full_name;              // Полный JID (jid/resource)
   RES_TYPE entry_type;          // Тип записи (см. RES_TYPE)
   char status;                  // Статус
+  char compos:1;                  // Сообшение о наборе
   char* status_msg;             // Статусное сообщение
   short priority;               // Приоритет ресурса
   unsigned int has_unread_msg;  // Есть ли непрочитанные и сколько
   unsigned int total_msg_count; // Общее количество сообщений
   LOG_MESSAGE* log;             // Начало лога сообщений
   CONF_DATA muc_privs;          // Тут для конференционных контактов - про роли и риал-жид
+  VCARD vcard;                  // Здесь хранится vCard для участников конференций
   void* next;                   // Следующий экземпляр
 } TRESOURCE;
 
@@ -132,6 +136,7 @@ typedef struct
   JABBER_SUBSCRIPTION subscription;
   char wants_subscription;
   char group;     // >128 -> конференции
+  VCARD vcard; // Полученная VCard, для контактов ростера
   void *next;
 } CLIST;
 
@@ -140,6 +145,7 @@ typedef struct
 typedef struct
 {
   char* conf_jid; //UTF-8
+  char* muctema;
   void* next;
 }MUC_ITEM;
 
@@ -158,6 +164,19 @@ typedef struct
   char b;
   char a;
 }RGBA;
+
+#pragma pack(push)
+#pragma pack(1)
+typedef struct{
+  unsigned char
+  vibra_status:1,
+  sound_status:1,
+  off_contacts:1,
+  auto_status:1,
+  player_status:1;
+  char cl_num;
+}DEF_SETTINGS;
+#pragma pack(pop)
 
 #ifdef NEWSGOLD
 #define CBOX_CHECKED 0xE116
@@ -178,4 +197,5 @@ void QuitCallbackProc(int decision);
 void patch_rect(RECT*rc,int x,int y, int x2, int y2);
 void patch_header(HEADER_DESC* head);
 void patch_input(INPUTDIA_DESC* inp);
+void OpenSettings(void);
 #endif

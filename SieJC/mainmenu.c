@@ -6,10 +6,12 @@
 #include "bookmarks.h"
 #include "jabber_util.h"
 #include "MUC_Enter_UI.h"
+#include "JID_Enter_UI.h"
 #include "cont_menu.h"
 #include "revision.h"
 #include "lang.h"
 #include "clist_util.h"
+
 //==============================================================================
 // ELKA Compatibility
 #pragma inline
@@ -30,16 +32,65 @@ void patch_input(INPUTDIA_DESC* inp)
 }
 //==============================================================================
 
-#define N_ITEMS 10
+#define N_ITEMS 14
 
 extern int Is_Sounds_Enabled;
 extern int Is_Vibra_Enabled;
- extern char Display_Offline; 
+extern char Display_Offline;
+extern int Is_Autostatus_Enabled;
+extern int Is_Playerstatus_Enabled;
+
 int MainMenu_ID;
 
 extern char My_Presence;
 
 extern const char VERSION_VERS[];
+
+void Colorshem(GUI *data)
+{
+  extern int color_num;
+  extern const char color_PATH[];
+  extern const char colorshem_PATH_1[];
+  extern const char colorshem_PATH_2[];
+  extern const char colorshem_PATH_3[];
+  extern const char colorshem_PATH_4[];
+  extern const char colorshem_PATH_5[];
+
+  
+  char path[128];
+  WSHDR *ws;
+  ws=AllocWS(150); 
+  
+  strcpy(path, color_PATH);
+  
+  switch (color_num)
+  {
+  case 1:
+    strcat(path, colorshem_PATH_1);
+    str_2ws(ws,(char*)path,128);
+    break;
+  case 2:
+    strcat(path, colorshem_PATH_2);
+    str_2ws(ws,(char*)path,128);
+    break;
+  case 3:
+    strcat(path, colorshem_PATH_3);
+    str_2ws(ws,(char*)path,128);
+    break;
+  case 4:
+    strcat(path, colorshem_PATH_4);
+    str_2ws(ws,(char*)path,128);
+    break;
+  case 5:
+    strcat(path, colorshem_PATH_5);
+    str_2ws(ws,(char*)path,128);
+    break;    
+  }
+
+  ExecuteFile(ws,0,0);
+  FreeWS(ws);
+  GeneralFuncF1(1);
+}
 
 
 void AboutDlg(GUI *data)
@@ -53,7 +104,7 @@ void AboutDlg(GUI *data)
 };
 
 
-void Dummy()
+void Dummy(GUI *data)
 {
   ShowMSG(1,(int)"Раздел в разработке :)");
 };
@@ -69,6 +120,7 @@ HEADER_DESC menuhdr={0,0,131,21,NULL,(int)LG_MENU,LGP_NULL};
 int mmenusoftkeys[]={0,1,2};
 
 int icon_array[2];
+extern JABBER_STATE Jabber_state; 
 
 void ChangeVibraMode(GUI *data)
 {
@@ -82,26 +134,57 @@ void ChangeSoundMode(GUI *data)
   RefreshGUI();
 }
 
+void ChangeAutostatusMode(GUI *data)
+{
+  Is_Autostatus_Enabled=!(Is_Autostatus_Enabled);
+  RefreshGUI();
+}
+
+void ChangePlayerstatusMode(GUI *data)
+{
+  Is_Playerstatus_Enabled=!(Is_Playerstatus_Enabled);
+  RefreshGUI();
+}
+
 void ChangeOffContMode(GUI *data)
 {
   CList_ToggleOfflineDisplay();
   RefreshGUI();
 }
 
-void OpenSettings(GUI *data)
+void OpenSettings_(GUI *data)
 {
-  extern const char *successed_config_filename;
-  WSHDR *ws;
-  ws=AllocWS(150);
-  str_2ws(ws,successed_config_filename,128);
-  ExecuteFile(ws,0,0);
-  FreeWS(ws);
+  OpenSettings();
   GeneralFuncF1(1);
+}
+
+void AddContact(GUI *data)
+{
+ if(Jabber_state==JS_ONLINE)
+ {
+  Disp_JID_Enter_Dialog(NULL);
+ }
+}
+
+void OpenBookmarks_List(GUI *data)
+{
+  if(Jabber_state==JS_ONLINE)
+  {
+  Get_Bookmarks_List();
+  }
+}
+void OpenDisp_MUC_Enter_Dialog(GUI *data)
+{
+  if(Jabber_state==JS_ONLINE)
+  {
+    Disp_MUC_Enter_Dialog();
+  }
 }
 
 void Exit_SieJC(GUI *data)
 {
   QuitCallbackProc(0);
+  GeneralFuncF1(1);
 }
 
 static const char * const menutexts[N_ITEMS]=
@@ -110,12 +193,17 @@ static const char * const menutexts[N_ITEMS]=
   LG_STATUS,
   LG_MUC,
   LG_BOOKMARK,
+  LG_ADDCONTACT,
   LG_MVIBRA,
   LG_MSOUND,
   LG_MOFFLINE,
+  LG_AUTOSTATUS,
+  "PlayerStatus",
   LG_SETTINGS,
+  LG_COLOR,
   LG_ABOUT,
-  LG_EXIT
+  LG_EXIT,
+  
 };
 
 
@@ -134,12 +222,16 @@ static const char * const menutexts[N_ITEMS]=
 static const MENUPROCS_DESC menuprocs[N_ITEMS]={
                           Disp_Contact_Menu,
                           DispStatusChangeMenu,
-                          Disp_MUC_Enter_Dialog,
-                          Get_Bookmarks_List,
+                          OpenDisp_MUC_Enter_Dialog,
+                          OpenBookmarks_List,
+                          AddContact,
                           ChangeVibraMode,
                           ChangeSoundMode,
                           ChangeOffContMode,
-                          OpenSettings,
+                          ChangeAutostatusMode,
+                          ChangePlayerstatusMode,
+                          OpenSettings_,
+                          Colorshem,
                           AboutDlg,
                           Exit_SieJC
                          };
@@ -180,23 +272,35 @@ void menuitemhandler(void *data, int curitem, void *unk)
     SetMenuItemIconArray(data,item,S_ICONS+3);
     break;
   case 4:
-    SetMenuItemIconArray(data,item,icon_array+(Is_Vibra_Enabled?0:1));
+    SetMenuItemIconArray(data,item,S_ICONS+4);
     break;
   case 5:
-    SetMenuItemIconArray(data,item,icon_array+(Is_Sounds_Enabled?0:1));
+    SetMenuItemIconArray(data,item,icon_array+(Is_Vibra_Enabled?0:1));
     break;
   case 6:
-    SetMenuItemIconArray(data,item,icon_array+(Display_Offline?0:1));
+    SetMenuItemIconArray(data,item,icon_array+(Is_Sounds_Enabled?0:1));
     break;
   case 7:
-    SetMenuItemIconArray(data,item,S_ICONS+6);
+    SetMenuItemIconArray(data,item,icon_array+(Display_Offline?0:1));
     break;
   case 8:
-    SetMenuItemIconArray(data,item,S_ICONS+7);
+    SetMenuItemIconArray(data,item,icon_array+(Is_Autostatus_Enabled?0:1));
     break;
   case 9:
+    SetMenuItemIconArray(data,item,icon_array+(Is_Playerstatus_Enabled?0:1));
+    break;
+  case 10:
+    SetMenuItemIconArray(data,item,S_ICONS+6);
+    break;
+  case 11:
+    SetMenuItemIconArray(data,item,S_ICONS+9);
+    break;
+  case 12:
+    SetMenuItemIconArray(data,item,S_ICONS+7);
+    break;  
+  case 13:
     SetMenuItemIconArray(data,item,S_ICONS+8);
-    break;    
+    break;
   }
   SetMenuItemText(data, item, ws, curitem);
 }
@@ -236,11 +340,13 @@ char exitpic[128];
 char infopic[128];
 char settpic[128];
 char aboutpic[128];
+char color_icon[128];
 extern const char conference_t[];
 const char exit_t[] = "exit";
 const char info_t[] = "info";
 const char about_t[] = "about";
 const char sett_t[] = "settings";
+const char coloricon[] = "coloricon";
 
 
 void MM_Show()
@@ -265,8 +371,8 @@ void MM_Show()
   // Закладки
   S_ICONS[3] = (int)confpic;
 
-  // Режим вибры
-  // S_ICONS[4]
+  // Add Contact
+  S_ICONS[4] = (int)confpic;
 
   // Режим звука
   // S_ICONS[5]
@@ -277,6 +383,11 @@ void MM_Show()
   strcat(settpic,png_t);
   S_ICONS[6] = (int)settpic;  
 
+  //цвета
+  strcpy(color_icon, PATH_TO_PIC);
+  strcat(color_icon,coloricon);
+  strcat(color_icon,png_t);
+  S_ICONS[9] =(int)color_icon;
   // Об эльфе...
   strcpy(aboutpic, PATH_TO_PIC);
   strcat(aboutpic,about_t);

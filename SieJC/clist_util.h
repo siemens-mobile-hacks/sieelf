@@ -12,8 +12,6 @@
 
 #define CHAR_ON_LINE 20
 
-#define CLIST_FONT FONT_SMALL     // Шрифт контакт-листа
-
 #define CLIST_Y1 5 + SCR_START               // ad: меньше сделал (26->5)
 
 // Отрисовать список контактов
@@ -26,7 +24,10 @@
 
 // Получить дескриптор контакта по FullJID (JID вместе с ресурсом)
   CLIST* CList_FindContactByJID(char* jid);
-
+  
+// Получить дескриптор конфы по JID
+  MUC_ITEM* CList_FindMUCByJID(char* jid);
+    
 // Узнать, есть ли уже такой ресурс у контакта, по FullJID
   TRESOURCE* CList_IsResourceInList(char* jid);
 
@@ -46,6 +47,8 @@
                           char wants_subscription,
                           char group);
 
+  void CList_ChangeComposingStatus(TRESOURCE* Res_Ex, char composing);
+    
 // Пишет роли контакта в конфе в структуру
   void CList_MUC_SetRole(char* jid, CONF_DATA priv);
 
@@ -98,8 +101,8 @@
   void CList_Display_Popup_Info(TRESOURCE* ResEx);
 
 // Управление курсором
-  void CList_MoveCursorUp();
-  void CList_MoveCursorDown();
+  void CList_MoveCursorUp(int flagi);
+  void CList_MoveCursorDown(int flagi);
 
   void CList_MoveCursorHome();
   void CList_MoveCursorEnd();

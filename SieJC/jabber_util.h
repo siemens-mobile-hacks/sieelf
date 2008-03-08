@@ -23,6 +23,7 @@ typedef enum
   ADM_PARTICIPANT,      // Participant
   ADM_MEMBER,           // Member
   ADM_MODERATOR,        // Moderator
+  ADM_MODERATOR_REMOVE,  // Moderator remove
   ADM_ADMIN,            // Admin
   ADM_OWNER             // Owner
 }MUC_ADMIN;
@@ -68,6 +69,7 @@ void Send_Auth();
 // Context: HELPER
 void Send_Presence(PRESENCE_INFO *pr_info);
 
+void Send_ShortPresence(char *to,char type);
 // Послать запрос о версии пользователю с указанным JID
 // JID указываем в UTF-8
 void Send_Version_Request(char *dest_jid);
@@ -76,6 +78,10 @@ void Send_Version_Request(char *dest_jid);
 void Send_Time_Request(char *dest_jid);
 //vcard
 void Send_Vcard_Request(char *dest_jid);
+
+//lastactivity
+void Send_LastActivity_Request(char *dest_jid);
+
 // Послать запрос disco#info
 // JID указываем в UTF-8
 void Send_DiscoInfo_Request(char *dest_jid);
@@ -137,10 +143,12 @@ typedef struct
 
 typedef struct
 {
+  char *bmname;
   char *mucname;
   char *nick;
   char *pass;
-  char a_join;
+//  char a_join;
+//  char *url;
   void *next;
 }BM_ITEM;
 
@@ -157,10 +165,10 @@ void CancelComposing(char* jid);
 void MUCList_Destroy();
 
 // Войти в конференцию
-void Enter_Conference(char *room, char *roomnick, char N_messages);
+void Enter_Conference(char *room, char *roomnick, char *roompass, char N_messages);
 
 // Выйти из конференции
-void Leave_Conference(char* room);
+void Send_Leave_Conference(char* room);
 
 ///////////////////
 
