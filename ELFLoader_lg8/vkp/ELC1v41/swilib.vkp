@@ -619,8 +619,7 @@
 08FC: 0xA0F68A0D   ; 23F:  __thumb void MD5_Final(unsigned char *md, MD5_CTX *c)
 
 0900: 0xA0F69495   ; 240:  __thumb char *MD5_Hash(const unsigned char *data, unsigned long n, unsigned char *md)
-0904: 0xA08FA817   ; 241: __thumb void SetDateTime(TDate *, TTime *)
-0904: 0xA08F49B3   ; 241:  __thumb void SetDateTime(TDate *, TTime *)
+0904: 0xA08FA817   ; 241:  __thumb void SetDateTime(TDate *, TTime *)
 ;0908: 0x          ; 242:  __arm void gb2ws(WSHDR *ws, const char *s, int len);
 ;090C: 0x          ; 243:  __arm void ws2gb(WSHDR *ws, char *s, int len);
 0910: 0xA0E9B275   ; 244:  __arm int Base64Encode(void *inbuf, int insize, void *outbuf, int outsize);
