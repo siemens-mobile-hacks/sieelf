@@ -4,6 +4,8 @@
 
 void ShowErr1(int lgind, char* str)
 {
+	str_2ws(wsbuf, str, MAX_PATH);
+	ws2gb(wsbuf, str, 0);
 	sprintf(msgbuf, muitxt(lgind), str);
 	MsgBoxError(1, (int) msgbuf);
 }
@@ -27,6 +29,8 @@ int ShowWaitMsgBoxYesNo()
 
 int MsgBoxYesNoWithParam(int lgind, char* str)
 {
+	str_2ws(wsbuf, str, MAX_PATH);
+	ws2gb(wsbuf, str, 0);
 	sprintf(msgbuf, muitxt(lgind), str);
 	return ShowWaitMsgBoxYesNo();
 }
@@ -34,7 +38,7 @@ int MsgBoxYesNoWithParam(int lgind, char* str)
 int isDir(int tab, char* dname)
 {
 	if (IsZipOpened(tab))
-		return 1; // зипы рассматриваем как директорию
+		return 1; // зипы рассматривае?ка?директорию
 	else
 		return isdir(dname, &err);
 }
@@ -147,7 +151,7 @@ int _SetAttr(DIR_ENTRY *de, int param)
 	if (pathbuf2)
 	{
 		sprintf(pathbuf2, _s_s, de->folder_name, de->file_name);
-		SetFileAttrib(pathbuf2, param, &err);
+		SetFileAttrib(pathbuf2, param|(de->file_attr&FA_DIRECTORY), &err);
 		return 1;
 	}  
 	return 0;
@@ -158,7 +162,7 @@ int M_SetAttr(FILEINF *file, int param)
 	if (file && pathbuf && strlen(file->sname))
 	{
 		CurFullPath(file->sname);
-		SetFileAttrib(pathbuf, fa_attr, &err);
+		SetFileAttrib(pathbuf, fa_attr|(file->attr&FA_DIRECTORY), &err);
 		if (fa_sb)
 			EnumFiles(pathbuf, _SetAttr, fa_attr);
 		return 1;
@@ -183,7 +187,7 @@ void _NewDir(WSHDR *wsname)
 	if (pathbuf && pathbuf2)
 	{
 		ws_2str(wsname, pathbuf2, MAX_PATH);
-		strcpy(szLastNewDir, pathbuf2);	// Сохраняем введенное имя
+		strcpy(szLastNewDir, pathbuf2);	// Сохраняем введенно?имя
 		CurFullPath(pathbuf2);
 		
 		if (!mkdir(pathbuf, &err))
@@ -191,7 +195,7 @@ void _NewDir(WSHDR *wsname)
 		else
 		{
 			DoRefresh();
-			//Ищим папку которую создали
+			//Ищим папк?котору?создал?
 			int ind = GetCurTabFileIndex(pathbuf2);
 			SetCurTabIndex(ind, 0);
 		} 
@@ -214,7 +218,7 @@ void CB_NewFile(int id)
 		{
 			fclose(f, &err);
 			DoRefresh();
-			//Ищем новый файл
+			//Ищем новы?файл
 			int ind = GetCurTabFileIndex(pathbuf2);
 			SetCurTabIndex(ind, 0);
 		}
@@ -230,7 +234,7 @@ void _NewFile(WSHDR *wsname)
 	if (pathbuf && pathbuf2)
 	{
 		ws_2str(wsname, pathbuf2, MAX_PATH);
-		strcpy(szLastNewFile, pathbuf2); // Сохраняем введенное имя
+		strcpy(szLastNewFile, pathbuf2); // Сохраняем введенно?имя
 		CurFullPath(pathbuf2);
 
 		if (CONFIG_CONFIRM_REPLACE && fexists(pathbuf))
@@ -319,7 +323,7 @@ int M_Delit(FILEINF *file, int param)
 		{
 			if (!CONFIG_CONFIRM_DELETERO || MsgBoxYesNoWithParam(ind_pmt_rodel, file->sname) == IDYES)
 			{
-				SetFileAttrib(pathbuf, 0, &err);
+				SetFileAttrib(pathbuf, file->attr&FA_DIRECTORY, &err);
 
 				if (!fsrm(pathbuf, 1))
 					*(int*)param = 0;;
@@ -450,7 +454,7 @@ void S_Paste(void)
 				}
 				else
 				{
-					// Пока обрабатываем только копирование
+					// Пока обрабатываем только копировани?
 					if (buffer.type == FNT_COPY)
 						res &= (ZipBufferExtract(itm, _CurPath) == UNZ_OK);
 				}	  
