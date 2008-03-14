@@ -530,7 +530,7 @@
 07AC: 0xA8EA4226   ; 1EB: __arm char *RAM_IMSI(void)
 07B0: 0xA0973EEB   ; 1EC: __thumb void FreeDynIcon(int picture)
 07B4: 0xA0974051   ; 1ED: __thumb int IsDynIconBusy(int picture)
-07B8: 0xA1400000   ; 1EE: __arm int ProgressCalculate(int current, int total)
+07B8: 0xA06AAD50   ; 1EE: __arm int ProgressCalculate(int current, int total)
 07BC: 0xA0973F4F   ; 1EF: __thumb void SetDynIcon(int picture,IMGHDR *img,char *bitmap)
 
 07C0: 0xA06ADA0C   ; 1F0: Filecopy
@@ -593,7 +593,7 @@
 089C: 0xA05B0FD4   ; 227: __arm int PlayMelody_PausePlayback(int handle);
 08A0: 0xA05B1004   ; 228: __arm int PlayMelody_ResumePlayBack(int handle);
 08A4: 0xA0FF2084   ; 229: __arm void longjmp(jmp_buf, int)
-08A8: 0xA0953B9C   ; 22A: __thumb void FreeGSMTXTpkt(void *pkt)
+08A8: 0xA0953B9D   ; 22A: __thumb void FreeGSMTXTpkt(void *pkt)
 08AC: 0xA065A3ED   ; 22B:  CreateRadioButtonList(RadioButtonListDesc *, char num_of_radiobuttons, 0, 0, char prev_setting, void HandlerFunc(int), char flag)
 08B0: 0xA0659B11   ; 22C:  pdcache_getval(char *return, int maxlen_of_return_str, char cachetype,0, *pd_entry_identifier)                                   
 08B4: 0xA0659CFB   ; 22D:  pdcache_setval(char *new_value, char cachetype, 0, char *pd_entry_identifier)                                                    
