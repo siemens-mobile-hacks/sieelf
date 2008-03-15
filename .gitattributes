@@ -18,11 +18,17 @@ BalletMini/additems.h -text
 BalletMini/conf_loader.c -text
 BalletMini/conf_loader.h -text
 BalletMini/config_data.c -text
+BalletMini/default_page.h -text
 BalletMini/destructors.c -text
 BalletMini/destructors.h -text
 BalletMini/display_utils.c -text
 BalletMini/display_utils.h -text
+BalletMini/file_works.c -text
+BalletMini/file_works.h -text
 BalletMini/func.asm -text
+BalletMini/history.c -text
+BalletMini/history.h -text
+BalletMini/images.h -text
 BalletMini/img/BalletMini.psd -text
 BalletMini/img/BalletMini_url.psd -text
 BalletMini/img/OMS.png -text

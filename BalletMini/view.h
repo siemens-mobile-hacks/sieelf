@@ -1,5 +1,5 @@
 #ifndef _VIEW_H_
-  #define _VIEW_H_
+#define _VIEW_H_
 
 #include "../inc/pnglist.h"
 
@@ -49,15 +49,17 @@ typedef struct
   unsigned short red:5, green:6, blue: 5;
 }TAG_D;
 
+// линия кончается с данными параметрами, т.е. это параметры следующей строки
+// выравнивание, же, - для данной линии
 typedef struct
 {
-  unsigned int pos;
+  unsigned int pos;  // позиция последего символа в строке
   unsigned short ink1;
   unsigned short ink2;
   unsigned short paper1;
   unsigned short paper2;
   unsigned short pixheight;
-  unsigned short bold:1, underline:1, ref:1;
+  unsigned short bold:1, underline:1, ref:1,center:1,right:1;
 }LINECACHE;
 
 typedef struct
@@ -87,9 +89,8 @@ typedef struct
   LINECACHE *lines_cache;
   unsigned int lines_cache_size;
 
-  unsigned int view_pos;
+  unsigned int view_pos;  // del
   unsigned int view_line;
-  unsigned int displayed_lines;
   int pixdisp;
   
   WSHDR *ws;
@@ -113,6 +114,7 @@ typedef struct
   TAG_S *S_cache;
   int S_cache_size;
   TAG_S current_tag_s;
+  TAG_S prev_tag_s;
 //  int prev_bold;
 //  int prev_underline;
   
@@ -122,13 +124,15 @@ typedef struct
   unsigned int ih;
   //
   unsigned int tag_o_count;
-  unsigned int ref_mode_L;
+  //unsigned int ref_mode_L;
   unsigned int ref_mode_i;
+  char ref_mode_P;
   //
   OMS_DYNPNGLIST *dynpng_list;
   
   //References
   REFCACHE work_ref;
+  REFCACHE work_ref_Z;
   REFCACHE *ref_cache;
   int ref_cache_size;
   

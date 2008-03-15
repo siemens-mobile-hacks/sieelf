@@ -15,6 +15,7 @@
 #include "default_page.h"
 #include "history.h"
 #include "images.h"
+#include "file_works.h"
 
 #define DEFAULT_OMS "BalletMini.oms"
 
@@ -39,7 +40,7 @@ char *goto_url;
 char *from_url;
 char *goto_params;
 
-int quit_reqired;
+//int quit_reqired;
 
 static const char percent_t[]="%t";
 
@@ -47,12 +48,14 @@ WSHDR *ws_console;
 
 int maincsm_id;
 
-char URLCACHE_PATH[256];
 char OMSCACHE_PATH[256];
 char AUTHDATA_FILE[256];
 char BOOKMARKS_PATH[256];
 char SEARCH_PATH[256];
 char IMG_PATH[256];
+
+char BALLET_PATH[256];
+char BALLET_EXE[256];
 
 static void StartGetFile(int dummy, char *fncache)
 {
@@ -469,24 +472,29 @@ static void method4(VIEW_GUI *data,void (*mfree_adr)(void *))
   data->gui.state=1;
 }
 
-static void RunOtherCopyByURL(const char *url)
+static void RunOtherCopyByURL(const char *url, int isNativeBrowser)
 {
   char fname[256];
-  TDate d;
-  TTime t;
   int f;
   unsigned int err;
   WSHDR *ws;
-  GetDateTime(&d,&t);
-  sprintf(fname,"%s%d%d%d%d%d%d.url",URLCACHE_PATH,d.year,d.month,d.day,t.hour,t.min,t.sec);
+  getSymbolicPath(fname,"$urlcache\\$date$time.url");
   f=fopen(fname,A_Create+A_Truncate+A_BIN+A_ReadWrite,P_READ+P_WRITE,&err);
   if (f!=-1)
   {
     fwrite(f,url,strlen(url),&err);
     fclose(f,&err);
     ws=AllocWS(256);
-    str_2ws(ws,fname,255);
-    ExecuteFile(ws,NULL,NULL);
+    if (isNativeBrowser)
+    {
+      str_2ws(ws,fname,255);
+      ExecuteFile(ws,NULL,NULL);
+    }
+    else
+    {
+      str_2ws(ws,BALLET_EXE,255);
+      ExecuteFile(ws,NULL,fname);
+    } 
     FreeWS(ws);
     unlink(fname,&err);
   }
@@ -494,11 +502,11 @@ static void RunOtherCopyByURL(const char *url)
 
 static int method5(VIEW_GUI *data,GUI_MSG *msg)
 {
-  if (quit_reqired)
-  {
-    quit_reqired=0;
-    return 0xFF;
-  }
+//  if (quit_reqired)
+//  {
+//    quit_reqired=0;
+//    return 0xFF;
+//  }
   VIEWDATA *vd=data->vd;
   REFCACHE *rf;
   int m=msg->gbsmsg->msg;
@@ -507,11 +515,23 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
     switch(msg->gbsmsg->submess)
     {
     case ENTER_BUTTON:
+      if (vd->pos_cur_ref==0xFFFFFFFF) break;
       rf=FindReference(vd,vd->pos_cur_ref);
       if (rf)
       {
         switch(rf->tag)
         {
+        case 'Z':
+          if (rf->id!=_NOREF)
+          {
+            char *c=extract_omstr(vd,rf->id);
+            unsigned int l=_rshort2(vd->oms+rf->id);
+            goto_url=malloc(l-strlen(c)+1);
+            strcpy(goto_url,c+strlen(c)+1);
+            mfree(c);
+            return 0xFF;
+          }
+          break;
         case 'L':
           if (rf->id!=_NOREF)
           {
@@ -528,12 +548,18 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
             return 0xFF;
           }
           break;
+        case '@':
+          if (rf->id!=_NOREF)
+          {
+            char *s=extract_omstr(vd,rf->id);
+            RunOtherCopyByURL(s,1);
+            mfree(s);
+          }
+          break;
         case 'r':
           {
             REFCACHE *rfp;
             int i;
-            if (rf->tag!='r') break;
-            if (rf->begin>=vd->rawtext_size) break;
             if (vd->rawtext[rf->begin+1]!=vd->img_rbtn_off) break;
             vd->rawtext[rf->begin+1]=vd->img_rbtn_on;
             i=0;
@@ -541,9 +567,8 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
             {
               rfp=vd->ref_cache+i;
               if (rfp!=rf)
-                if (rfp->begin<vd->rawtext_size)
-                  if (vd->rawtext[rfp->begin+1]==vd->img_rbtn_on)
-                    vd->rawtext[rfp->begin+1]=vd->img_rbtn_off;
+                if (vd->rawtext[rfp->begin+1]==vd->img_rbtn_on)
+                  vd->rawtext[rfp->begin+1]=vd->img_rbtn_off;
               i++;
             }
           }
@@ -558,7 +583,6 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
           }
           break;
         case 'c':
-          if (rf->begin>=vd->rawtext_size) break;
           if (vd->rawtext[rf->begin+1]==vd->img_cbtn_on)
             vd->rawtext[rf->begin+1]=vd->img_cbtn_off;
           else
@@ -575,24 +599,34 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
           break;
         case 'x':
         case 'p':
-          CreateInputBox(vd,rf);
+          {
+            MAIN_CSM *main_csm;
+            int bookmark_menu_id;
+            if ((main_csm=(MAIN_CSM *)FindCSMbyID(maincsm_id)))
+            {
+              bookmark_menu_id=CreateInputBox(vd,rf);
+              main_csm->sel_bmk=bookmark_menu_id;
+            }
+          }
           break;
         case 'i':
         case 'u':
-          if (rf->id!=_NOREF)
-          {
-            goto_url=malloc(strlen(vd->pageurl)+1);
-            strcpy(goto_url,vd->pageurl);
-            from_url=malloc(strlen(vd->pageurl)+1);
-            strcpy(from_url,vd->pageurl);
-            goto_params=collectItemsParams(vd,rf);
-            return 0xFF;
-          }
-          break;
+          goto_url=malloc(strlen(vd->pageurl)+1);
+          strcpy(goto_url,vd->pageurl);
+          from_url=malloc(strlen(vd->pageurl)+1);
+          strcpy(from_url,vd->pageurl);
+          goto_params=collectItemsParams(vd,rf);
+          return 0xFF;
         case 's':
-          if (rf->id!=_NOREF)
+          
           {
-            ChangeMenuSelection(vd, rf);
+            MAIN_CSM *main_csm;
+            int bookmark_menu_id;
+            if ((main_csm=(MAIN_CSM *)FindCSMbyID(maincsm_id)))
+            {
+              bookmark_menu_id=ChangeMenuSelection(vd, rf);
+              main_csm->sel_bmk=bookmark_menu_id;
+            }
           }
           break;
         default:
@@ -618,7 +652,12 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
         if (vd->pos_prev_ref!=0xFFFFFFFF)
           vd->pos_cur_ref=vd->pos_prev_ref;
         else
+        {
           scrollUp(vd,20);
+          RenderPage(vd,0);
+          if (vd->pos_prev_ref!=0xFFFFFFFF)
+            vd->pos_cur_ref=vd->pos_prev_ref;
+        }
       break;
     case DOWN_BUTTON:
       if (vd->pos_cur_ref!=vd->pos_first_ref&&vd->pos_first_ref==vd->pos_last_ref)
@@ -629,19 +668,22 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
         if (vd->pos_next_ref!=0xFFFFFFFF)
           vd->pos_cur_ref=vd->pos_next_ref;
         else
+        {
           scrollDown(vd,20);
+          RenderPage(vd,0);
+          if (vd->pos_next_ref!=0xFFFFFFFF)
+            vd->pos_cur_ref=vd->pos_next_ref;
+        }
       break;
     case RIGHT_BUTTON:
     case VOL_DOWN_BUTTON:
       scrollDown(vd,ScreenH()-20);
-      if (vd->pos_cur_ref<vd->pos_first_ref)
-        vd->pos_cur_ref=0xFFFFFFFF;
+      vd->pos_cur_ref=0xFFFFFFFF;
       break;
     case LEFT_BUTTON:
     case VOL_UP_BUTTON:
       scrollUp(vd,ScreenH()-20);
-      if (vd->pos_cur_ref>vd->pos_last_ref)
-        vd->pos_cur_ref=0xFFFFFFFF;
+      vd->pos_cur_ref=0xFFFFFFFF;
       break;
     case LEFT_SOFT:
       STOPPED=1;
@@ -665,6 +707,7 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
         }
         break;
       }
+    case 0x32:
     case GREEN_BUTTON:
       rf=FindReference(vd,vd->pos_cur_ref);
       if (rf)
@@ -675,11 +718,29 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
           if (rf->id!=_NOREF)
           {
             char *s=extract_omstr(vd,rf->id);
-            RunOtherCopyByURL(s+2);
+            if (msg->gbsmsg->submess==0x32)
+            {
+              RunOtherCopyByURL(s+2,1);
+            }
+            else
+            {
+              RunOtherCopyByURL(s+2,0);
+            }
             mfree(s);
           }
         }
       }
+      break;
+    case 0x33: // '3'
+      vd->pixdisp=0;
+      vd->view_line=0;
+      vd->pos_cur_ref=0xFFFFFFFF;
+      break;
+    case 0x39: // '9'
+      while(LineDown(vd)) ;
+      vd->pixdisp=0;
+      scrollUp(vd,ScreenH()-1);
+      vd->pos_cur_ref=0xFFFFFFFF;
       break;
     case 0x31: // '1'
       {
@@ -733,7 +794,7 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
             if (rf->id!=_NOREF)
             {
               char *s=extract_omstr(vd,rf->id);
-              for (int to=_rshort2(vd->oms+rf->id)-1;to;to--) if (s[to]==NULL) s[to]=' ';
+              for (int to=strlen(s);to;to--) if (s[to-1]==NULL) s[to-1]=' ';
               sprintf(c,"   %s",s);
               fwrite(f,c,strlen(c),&ul);
               mfree(s);
@@ -741,7 +802,7 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
             fwrite(f,"\n",1,&ul);
             sprintf(c,"  id2:       %u",rf->id2);
             fwrite(f,c,strlen(c),&ul);
-            if (rf->id2!=_NOREF)
+            if (rf->id2!=_NOREF&&rf->tag!='@')
             {
               char *s=extract_omstr(vd,rf->id2);
               for (int to=_rshort2(vd->oms+rf->id)-1;to;to--) if (s[to]==NULL) s[to]=' ';
@@ -776,6 +837,26 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
               fwrite(f,rf->data,rf->size,&ul);
               fwrite(f,"\n",1,&ul);
             }
+          }
+          fclose(f,&ul);
+        }
+      }
+      break;
+    case 0x38: // '8'
+      {
+        //Dump LINECACHE
+        unsigned int ul;
+        int f;
+        if ((f=fopen("0:\\zbin\\balletmini\\dumplc.txt",A_ReadWrite+A_Create+A_Truncate,P_READ+P_WRITE,&ul))!=-1)
+        {
+          char c[256];
+          sprintf(c,"\nlines_cache_size : %i\n",vd->lines_cache_size);
+          fwrite(f,c,strlen(c),&ul);
+          for (int i=0;i<vd->lines_cache_size;i++)
+          {
+            LINECACHE *lc=vd->lines_cache+i;
+            sprintf(c,"%i\n  pos : %u\n  pix : %u\n",i,lc->pos,lc->pixheight);
+            fwrite(f,c,strlen(c),&ul);
           }
           fclose(f,&ul);
         }
@@ -890,10 +971,10 @@ static int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
     {
       if (strcmp_nocase(ipc->name_to,ipc_my_name)==0)
       {
+        //§¦§ã§Ý§Ú §á§â§Ú§ß§ñ§Ý§Ú §ã§Ó§à§Ö §ã§à§Ò§ã§ä§Ó§Ö§ß§ß§à§Ö §ã§à§à§Ò§ë§Ö§ß§Ú§Ö, §Ù§ß§Ñ§é§Ú§ä §Ù§Ñ§á§å§ã§Ü§Ñ§Ö§Þ §é§Ö§Ü§Ö§â
         switch (msg->submess)
         {
         case IPC_DATA_ARRIVED:
-          //§¦§ã§Ý§Ú §á§â§Ú§ß§ñ§Ý§Ú §ã§Ó§à§Ö §ã§à§Ò§ã§ä§Ó§Ö§ß§ß§à§Ö §ã§à§à§Ò§ë§Ö§ß§Ú§Ö, §Ù§ß§Ñ§é§Ú§ä §Ù§Ñ§á§å§ã§Ü§Ñ§Ö§Þ §é§Ö§Ü§Ö§â
           if (ipc->name_from==ipc_my_name)
           {
             VIEW_GUI *p=FindGUIbyId(csm->view_id,NULL);
@@ -960,18 +1041,16 @@ static int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
     {
       switch((int)msg->data1)
       {
-      case 0xFE:
-        //§±§â§à§Ò§å§Ö§Þ §Ú§Õ§ä§Ú §á§à §ã§ä§Ö§Ü§å §ß§Ñ§Ù§Ñ§Õ
+      case 0xFE: //§±§â§à§Ò§å§Ö§Þ §Ú§Õ§ä§Ú §á§à §ã§ä§Ö§Ü§å §ß§Ñ§Ù§Ñ§Õ
         if ((goto_url=PopPageFromStack()))
         {
           SUBPROC((void*)GotoFile);
           break;
         }
         goto L_CLOSE;
-      case 0xFF:
+      case 0xFF: //§¦§ã§ä§î §Ü§å§Õ§Ñ §á§à§Û§ä§Ú
         if (goto_url)
         {
-          //§¦§ã§ä§î §Ü§å§Õ§Ñ §á§à§Û§ä§Ú
           SUBPROC((void*)GotoLink);
           break;
         }
@@ -987,7 +1066,7 @@ static int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
     {
       if ((int)msg->data1==0xFF)
       {
-        GeneralFunc_flag1(csm->view_id,0xFF);        
+        GeneralFunc_flag1(csm->view_id,0xFF);
       }
       csm->goto_url=0;
     }
@@ -995,7 +1074,7 @@ static int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
     {
       if ((int)msg->data1==0xFF)
       {
-        GeneralFunc_flag1(csm->view_id,0xFF);        
+        GeneralFunc_flag1(csm->view_id,0xFF);
       }
       csm->sel_bmk=0;
     }
@@ -1172,10 +1251,12 @@ void GenerateFile(char *path, char *name, unsigned char *from, unsigned size)
 
 }
 
+//int CreateBookmarksMenu(char *dir);
+//extern __root const char DEFAULT_PARAM[256];
+
 int main(const char *exename, const char *filename)
 {
   char dummy[sizeof(MAIN_CSM)];
-  char *pathbuf;
   unsigned int ul;
   char *path=strrchr(exename,'\\');
   int l;
@@ -1183,8 +1264,6 @@ int main(const char *exename, const char *filename)
   path++;
   l=path-exename;
   InitConfig();
-  memcpy(URLCACHE_PATH,exename,l);
-  strcat(URLCACHE_PATH,"UrlCache");
   memcpy(OMSCACHE_PATH,exename,l);
   strcat(OMSCACHE_PATH,"OmsCache");
   memcpy(AUTHDATA_FILE,exename,l);
@@ -1193,29 +1272,29 @@ int main(const char *exename, const char *filename)
   strcat(BOOKMARKS_PATH,"Bookmarks");
   memcpy(IMG_PATH,exename,l);
   strcat(IMG_PATH,"img");
-
+  
+  memcpy(BALLET_PATH,exename,l);
+  strcpy(BALLET_EXE, exename);
+  
   memcpy(SEARCH_PATH,exename,l);
   strcat(SEARCH_PATH,"Search");
 
   //Create folders if not exists
-  if (!isdir(URLCACHE_PATH,&ul))
-    mkdir(URLCACHE_PATH,&ul);
   if (!isdir(OMSCACHE_PATH,&ul))
     mkdir(OMSCACHE_PATH,&ul);
   if (!isdir(BOOKMARKS_PATH,&ul))
     mkdir(BOOKMARKS_PATH,&ul);
   if (!isdir(SEARCH_PATH,&ul))
-    mkdir(SEARCH_PATH,&ul);  
+    mkdir(SEARCH_PATH,&ul);
   if (!isdir(IMG_PATH,&ul))
-    mkdir(IMG_PATH,&ul);  
+    mkdir(IMG_PATH,&ul);
   
-  strcat(URLCACHE_PATH,"\\");
   strcat(OMSCACHE_PATH,"\\");
   strcat(BOOKMARKS_PATH,"\\");
-  strcat(SEARCH_PATH,"\\");  
-  strcat(IMG_PATH,"\\");  
+  strcat(SEARCH_PATH,"\\");
+  strcat(IMG_PATH,"\\");
   
-  CheckHistory("http://perk11.info/elf");
+  //CheckHistory("http://perk11.info/elf");
 
   GenerateFile(IMG_PATH, RADIO_BTTN_CLKD, radio_bttn_clkd_png, radio_bttn_clkd_png_size);
   GenerateFile(IMG_PATH, RADIO_BTTN,      radio_bttn_png,      radio_bttn_png_size);
@@ -1243,19 +1322,30 @@ int main(const char *exename, const char *filename)
   }
   else
   {
-    
+//    char fname[256];
+//    if (!strcmp(DEFAULT_PARAM,"opera:bookmarks"))
+//    {
+//      UpdateCSMname();
+//      LockSched();
+//      maincsm_id=CreateCSM(&MAINCSM.maincsm,dummy,0);
+//      UnlockSched();
+//      getSymbolicPath(fname,"$bookmarks\\");
+//      MAINCSM.maincsm.sel_bmk=CreateBookmarksMenu(fname);
+//    }
+//    else
+//    {
+//      getSymbolicPath(fname,DEFAULT_PARAM);
+//      if (ParseInputFilename(fname))
+//      {
+//        UpdateCSMname();
+//        LockSched();
+//        maincsm_id=CreateCSM(&MAINCSM.maincsm,dummy,0);
+//        UnlockSched();
+//      }
+//    }
+//  }
     GenerateFile(OMSCACHE_PATH, DEFAULT_OMS, default_page,default_page_size);
-
-    /*unlink(pathbuf,&ul);
-    f=fopen(pathbuf,A_WriteOnly+A_Create+A_BIN,P_READ+P_WRITE,&ul);
-    if (f!=-1)
-    {
-      fwrite(f,default_page,default_page_size,&ul);
-      fclose(f,&ul);
-    }*/
-//    mfree(pathbuf);
-    
-    pathbuf = malloc(strlen(OMSCACHE_PATH) + strlen(DEFAULT_OMS) + 1);
+    char *pathbuf=malloc(strlen(OMSCACHE_PATH) + strlen(DEFAULT_OMS) + 1);
     strcpy(pathbuf, OMSCACHE_PATH); strcat(pathbuf, DEFAULT_OMS);
     view_url=pathbuf;
     view_url_mode=MODE_FILE;
