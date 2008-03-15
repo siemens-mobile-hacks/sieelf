@@ -501,6 +501,8 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 						size=fread(f,lrc_buf,8*1024,&err);
 						fclose(f, &err);
 						is_no_lrc=0;
+						if(size>=0)
+							lrc_buf[size]=0;
 					}
 					else
 					{
@@ -508,8 +510,6 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 						is_no_lrc=1;
 						//goto end;
 					}
-					if(size>=0)
-						lrc_buf[size]=0;
 					time=0;
 				}
 				getname();
@@ -579,7 +579,10 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 						drawname_needed=1;
 						//if(!is_drawname)
 						//{
-						drawname_proc();
+						//drawname_proc();
+						//void DrawScrollString(WSHDR *WSHDR,int x1,int y1,int x2,int y2,int xdisp,int font,int text_attribute,const char *Pen,const char *Brush);
+						//DrawString(ews,pos_x+2,pos_y+2,pos_x+length-2,pos_y+GetFontYSIZE(font)+2,font,txt_attr,color,frmcolor);
+						DrawScrollString(ews,pos_x+2,pos_y+2,pos_x+length-2,pos_y+GetFontYSIZE(font)+2,1,font,txt_attr,color,frmcolor);
 						if(ena_lrc)
 							drawlrc();
 						//	is_drawname=0;
