@@ -29,8 +29,11 @@ int ShowWaitMsgBoxYesNo()
 
 int MsgBoxYesNoWithParam(int lgind, char* str)
 {
-	str_2ws(wsbuf, str, MAX_PATH);
-	ws2gb(wsbuf, str, 0);
+	if (str)
+	{
+	  str_2ws(wsbuf, str, MAX_PATH);
+	  ws2gb(wsbuf, str, 0);
+	}
 	sprintf(msgbuf, muitxt(lgind), str);
 	return ShowWaitMsgBoxYesNo();
 }
