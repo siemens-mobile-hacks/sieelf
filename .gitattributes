@@ -320,6 +320,15 @@ FastRun/TODO.c -text
 FastRun/conf_loader.c -text
 FastRun/conf_loader.h -text
 FastRun/config_data.c -text
+FesRemind/FesRemind.ewp -text
+FesRemind/FesRemind.eww -text
+FesRemind/FesRemind.h -text
+FesRemind/conf_loader.c -text
+FesRemind/conf_loader.h -text
+FesRemind/config_data.c -text
+FesRemind/func.asm -text
+FesRemind/main.c -text
+FesRemind/test.xcl -text
 FreePaste/FreePaste.ewp -text
 FreePaste/FreePaste.eww -text
 FreePaste/conf_loader.c -text
