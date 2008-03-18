@@ -209,6 +209,7 @@ ELFLoader_lg8/Lg8/CX7Cv50.xcl -text
 ELFLoader_lg8/Lg8/E71Cv41.xcl -text
 ELFLoader_lg8/Lg8/ELC1v41.xcl -text
 ELFLoader_lg8/Lg8/M6Cv50.xcl -text
+ELFLoader_lg8/Lg8/M75Cv25.xcl -text
 ELFLoader_lg8/Lg8/M81Cv51.xcl -text
 ELFLoader_lg8/Lg8/S68Cv51.xcl -text
 ELFLoader_lg8/Lg8/S6Cv53.xcl -text
@@ -224,6 +225,7 @@ ELFLoader_lg8/Lg8/rets_CX7Cv50.asm -text
 ELFLoader_lg8/Lg8/rets_E71Cv41.asm -text
 ELFLoader_lg8/Lg8/rets_ELC1v41.asm -text
 ELFLoader_lg8/Lg8/rets_M6Cv50.asm -text
+ELFLoader_lg8/Lg8/rets_M75Cv25.asm -text
 ELFLoader_lg8/Lg8/rets_M81Cv51.asm -text
 ELFLoader_lg8/Lg8/rets_S68Cv51.asm -text
 ELFLoader_lg8/Lg8/rets_S6Cv53.asm -text
@@ -259,6 +261,8 @@ ELFLoader_lg8/vkp/GetELFPackbyyourself.bat -text
 ELFLoader_lg8/vkp/Lib65.ini -text
 ELFLoader_lg8/vkp/M6Cv50/ELFLoader_M6Cv50_ANSI_Standard.vkp -text
 ELFLoader_lg8/vkp/M6Cv50/swilib.vkp -text
+ELFLoader_lg8/vkp/M75Cv25/ELFLoader_M75Cv25_ANSI_Standard.vkp -text
+ELFLoader_lg8/vkp/M75Cv25/swilib.vkp -text
 ELFLoader_lg8/vkp/M81Cv51/API.vkp -text
 ELFLoader_lg8/vkp/M81Cv51/ELFLoader_M81Cv51_ANSI_Standard.vkp -text
 ELFLoader_lg8/vkp/M81Cv51/swilib.vkp -text
