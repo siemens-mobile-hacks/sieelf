@@ -159,7 +159,7 @@ char *collectItemsParams(VIEWDATA *vd, REFCACHE *rf)
       break;
     case 'c':
     case 'r':
-      if (vd->rawtext[prf->begin+1]==vd->img_rbtn_on||vd->rawtext[prf->begin+1]==vd->img_cbtn_on)
+      if (vd->rawtext[prf->begin+1]==vd->WCHAR_RADIO_ON||vd->rawtext[prf->begin+1]==vd->WCHAR_BUTTON_ON)
         pos+=_rshort2(vd->oms+prf->id)+1+_rshort2(vd->oms+prf->value)+1;
       break;
     case 'i':
@@ -261,7 +261,7 @@ char *collectItemsParams(VIEWDATA *vd, REFCACHE *rf)
     case 'c':
     case 'r':
       {
-        if (vd->rawtext[prf->begin+1]==vd->img_rbtn_on||vd->rawtext[prf->begin+1]==vd->img_cbtn_on)
+        if (vd->rawtext[prf->begin+1]==vd->WCHAR_RADIO_ON||vd->rawtext[prf->begin+1]==vd->WCHAR_BUTTON_ON)
         {
           s[pos]='&';
           pos++;
@@ -560,15 +560,15 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
           {
             REFCACHE *rfp;
             int i;
-            if (vd->rawtext[rf->begin+1]!=vd->img_rbtn_off) break;
-            vd->rawtext[rf->begin+1]=vd->img_rbtn_on;
+            if (vd->rawtext[rf->begin+1]!=vd->WCHAR_RADIO_OFF) break;
+            vd->rawtext[rf->begin+1]=vd->WCHAR_RADIO_ON;
             i=0;
             while((i=FindReferenceById(vd,rf->id,i))>=0)
             {
               rfp=vd->ref_cache+i;
               if (rfp!=rf)
-                if (vd->rawtext[rfp->begin+1]==vd->img_rbtn_on)
-                  vd->rawtext[rfp->begin+1]=vd->img_rbtn_off;
+                if (vd->rawtext[rfp->begin+1]==vd->WCHAR_RADIO_ON)
+                  vd->rawtext[rfp->begin+1]=vd->WCHAR_RADIO_OFF;
               i++;
             }
           }
@@ -583,10 +583,10 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
           }
           break;
         case 'c':
-          if (vd->rawtext[rf->begin+1]==vd->img_cbtn_on)
-            vd->rawtext[rf->begin+1]=vd->img_cbtn_off;
+          if (vd->rawtext[rf->begin+1]==vd->WCHAR_BUTTON_ON)
+            vd->rawtext[rf->begin+1]=vd->WCHAR_BUTTON_OFF;
           else
-            vd->rawtext[rf->begin+1]=vd->img_cbtn_on;
+            vd->rawtext[rf->begin+1]=vd->WCHAR_BUTTON_ON;
           if (!rf->no_upload)
           {
             goto_url=malloc(strlen(vd->pageurl)+1);
@@ -862,6 +862,73 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
         }
       }
       break;
+    case 0x30: // '0'
+      {
+        // get text from page
+        int scr_h=ScreenH()-1;
+        WSHDR *ws=AllocWS(512);
+        LINECACHE *lc;
+        unsigned int vl;
+        int ypos=-vd->pixdisp;
+        unsigned int store_line=vl=vd->view_line;
+        unsigned int len;
+        int sc;
+        int c;
+
+        while(ypos<=scr_h)
+        {
+          if (LineDown(vd))
+          {
+            lc=vd->lines_cache+vl;
+            if ((vl+1)<vd->lines_cache_size)
+            {
+              len=(lc[1]).pos-(lc[0]).pos;
+            }
+            else
+              len=vd->rawtext_size-lc->pos;
+            sc=lc->pos;
+            while(len>0)
+            {
+              c=vd->rawtext[sc];
+              if ((c&0xFF00)!=0xE100)
+              {
+                switch (c)
+                {
+                case UTF16_FONT_SMALL:
+                case UTF16_FONT_SMALL_BOLD:
+                case UTF16_DIS_UNDERLINE:
+                case UTF16_ENA_UNDERLINE:
+                case UTF16_ENA_INVERT:
+                case UTF16_DIS_INVERT:
+                case UTF16_ALIGN_LEFT:
+                case UTF16_ALIGN_RIGHT:
+                case UTF16_ENA_CENTER:
+                case UTF16_DIS_CENTER:
+                  break;
+                case UTF16_INK_RGBA:
+                case UTF16_PAPER_RGBA:
+                  len--;
+                  sc++;
+                  len--;
+                  sc++;
+                  break;
+                default :
+                  wsAppendChar(ws,c);
+                }
+              }
+              sc++;
+              len--;
+            }
+            ypos+=lc->pixheight;
+            vl++;
+          }
+          else
+            break;
+        }
+        vd->view_line=store_line;
+        createTextView(ws);
+      }
+      break;
     }
   }
   DirectRedrawGUI();
@@ -1126,7 +1193,7 @@ static void UpdateCSMname(void)
     str_2ws(ws,view_url,255);
     break;
   case MODE_URL:
-    ascii2ws(ws,view_url+2);
+    gb2ws(ws,view_url+2,strlen(view_url+2));
     break;
   }
   wsprintf((WSHDR *)(&MAINCSM.maincsm_name),"BM: %w",ws);
@@ -1238,14 +1305,15 @@ void GenerateFile(char *path, char *name, unsigned char *from, unsigned size)
   stat.size = 0;
   GetFileStats(pathbuf,&stat,&ul); 
   ///if (GetFileStats(pathbuf,&stat,&ul)!=-1) return;
-  if (stat.size>0) return;
-
-  unlink(pathbuf,&ul);
-  f = fopen(pathbuf,A_WriteOnly+A_Create+A_BIN,P_READ+P_WRITE,&ul);
-  if (f!=-1)
+  if (stat.size==0)
   {
-    fwrite(f,from,size,&ul);
-    fclose(f,&ul);
+    unlink(pathbuf,&ul);
+    f = fopen(pathbuf,A_WriteOnly+A_Create+A_BIN,P_READ+P_WRITE,&ul);
+    if (f!=-1)
+    {
+      fwrite(f,from,size,&ul);
+      fclose(f,&ul);
+    }
   }
   mfree(pathbuf);
 

@@ -5,6 +5,7 @@
 #include "string_works.h"
 #include "rect_patcher.h"
 #include "main.h"
+#include "file_works.h"
 
 extern int maincsm_id;
 
@@ -22,8 +23,7 @@ unsigned int SearchNextDisplayLine(VIEWDATA *vd, LINECACHE *p, unsigned int *max
   int left=ScreenW();
   int c,h,cw,f=0;
   unsigned int pos=p->pos;
-  unsigned int ref_pos;
-  int needNewLine=0;
+  p->centerAtAll=0;
   while(pos<vd->rawtext_size)
   {
     c=vd->rawtext[pos++];
@@ -58,7 +58,6 @@ unsigned int SearchNextDisplayLine(VIEWDATA *vd, LINECACHE *p, unsigned int *max
       continue;
     case UTF16_ENA_INVERT:
       p->ref=1;
-      ref_pos=pos;
       continue;
     case UTF16_DIS_UNDERLINE:
       p->underline=0;
@@ -90,11 +89,11 @@ unsigned int SearchNextDisplayLine(VIEWDATA *vd, LINECACHE *p, unsigned int *max
     }
     // компоновка элементов здесь
     cw=GetSymbolWidth(c,p->bold?FONT_SMALL_BOLD:FONT_SMALL);
-    if (needNewLine&&cw>0)
-    {
-      needNewLine=0;
-      cw=ScreenW();
-    }
+//    if (needNewLine&&cw>0)
+//    {
+//      needNewLine=0;
+//      cw=ScreenW();
+//    }
     left-=cw;
     if (left<0)
     {
@@ -105,9 +104,11 @@ unsigned int SearchNextDisplayLine(VIEWDATA *vd, LINECACHE *p, unsigned int *max
         while (1)
         {
           if (vd->rawtext[pos-b]==UTF16_ENA_INVERT) break;
-//          if (vd->rawtext[pos-b]==0x20)
-//            if (vd->rawtext[pos-(b+1)]!=UTF16_ENA_INVERT)
-//              break;
+          if (vd->rawtext[pos-b]==UTF16_NEWLINE)
+          {
+            b++;
+            break;
+          }
           if (cw>=ScreenW()/2)
           {
             b=1;
@@ -123,18 +124,49 @@ unsigned int SearchNextDisplayLine(VIEWDATA *vd, LINECACHE *p, unsigned int *max
       }
       return pos-b;
     }
-    if (cw>=ScreenW()/2)
+    
+    if (cw>=ScreenW()/2||h>GetFontHeight(FONT_SMALL,0)*2) // Картинки отдельно
     {
-      if (left+cw!=ScreenW())
-          if (p->ref)
-            return ref_pos-1;
-      needNewLine=1;
+      if (left+cw<ScreenW()) // image is last character
+      {
+        if (c!=vd->WCHAR_LIST_FORM) // preserve dropdown list centring
+          p->centerAtAll=1;
+        if (vd->rawtext[pos-1]==UTF16_ENA_INVERT)
+        {
+          return pos-2;
+        }
+        else
+        {
+          return pos-1;
+        }
+      }
     }
     if (max_h)
     {
       if (h>*max_h)  *max_h=h;
     }
-    if (f) return pos;
+    if (cw>=ScreenW()/2||h>GetFontHeight(FONT_SMALL,0)*2) // Картинки отдельно
+    {
+      if (left+cw==ScreenW()) // image is first character
+      {
+        if (pos>(vd->rawtext_size-1)) goto LERR;
+        if (c!=vd->WCHAR_LIST_FORM) // preserve dropdown list centring
+          p->centerAtAll=1;
+        if (vd->rawtext[pos+1]==UTF16_DIS_INVERT)
+        {
+          p->ref=0;
+          return pos+1;
+        }
+        else
+        {
+          return pos;
+        }
+      }
+    }
+    if (f)
+    {
+      return pos;
+    }
   }
 LERR:
   return(vd->rawtext_size);
@@ -162,8 +194,8 @@ int LineDown(VIEWDATA *vd)
   {
     LINECACHE lc;
     unsigned int h;
-    unsigned int pos=vd->view_pos; // pos - это последний символ в строке
-    if (pos>=vd->rawtext_size) return 0;
+    unsigned int pos;//=vd->view_pos; // pos - это последний символ в строке
+    //if (pos>=vd->rawtext_size) return 0;
     if (vd->view_line>=vd->lines_cache_size)
     {
       lc.ink1=0x0000;
@@ -174,7 +206,7 @@ int LineDown(VIEWDATA *vd)
       lc.bold=0;
       lc.underline=0;
       lc.ref=0;
-      lc.pos=pos;
+      lc.pos=0;//pos;
       lc.center=0;
       lc.right=0;
       AddLineToCache(vd,&lc);
@@ -187,11 +219,11 @@ int LineDown(VIEWDATA *vd)
     pos=SearchNextDisplayLine(vd,&lc,&h);
     (vd->lines_cache+vd->view_line)->pixheight=h;
     if (pos>=vd->rawtext_size) return 0;
-    vd->view_pos=pos;
     lc.pos=pos;
     vd->view_line++;
     if (vd->view_line>=vd->lines_cache_size)
     {
+      // HACK prev line if there is ref begin symbol, then add new
       AddLineToCache(vd,&lc);
     }
   }
@@ -271,9 +303,9 @@ void renderForm(VIEWDATA *vd, REFCACHE *rf, int x, int y)
   if (rf->tag=='x'||rf->tag=='p')
   {
     // calc pos
-    int d=(GetImgHeight(GetPicNByUnicodeSymbol(vd->img_tbox))-GetFontHeight(FONT_SMALL,0))/2;
+    int d=(GetImgHeight(GetPicNByUnicodeSymbol(vd->WCHAR_TEXT_FORM))-GetFontHeight(FONT_SMALL,0))/2;
     // count lenght
-    int w=GetImgWidth(GetPicNByUnicodeSymbol(vd->img_tbox))-(d*2);
+    int w=GetImgWidth(GetPicNByUnicodeSymbol(vd->WCHAR_TEXT_FORM))-(d*2);
     WSHDR *ws2=AllocWS(((WSHDR *)rf->data)->wsbody[0]);
     for (;ws2->wsbody[0]<((WSHDR *)rf->data)->wsbody[0];)
     {
@@ -295,9 +327,9 @@ void renderForm(VIEWDATA *vd, REFCACHE *rf, int x, int y)
   if (rf->tag=='s'&&rf->value!=_NOREF)
   {
     // calc pos
-    int d=(GetImgHeight(GetPicNByUnicodeSymbol(vd->img_ddlist))-GetFontHeight(FONT_SMALL,0))/2;
+    int d=(GetImgHeight(GetPicNByUnicodeSymbol(vd->WCHAR_LIST_FORM))-GetFontHeight(FONT_SMALL,0))/2;
     // count lenght
-    int w=GetImgWidth(GetPicNByUnicodeSymbol(vd->img_ddlist))-(d*2)-GetImgHeight(GetPicNByUnicodeSymbol(vd->img_ddlist));
+    int w=GetImgWidth(GetPicNByUnicodeSymbol(vd->WCHAR_LIST_FORM))-(d*2)-GetImgHeight(GetPicNByUnicodeSymbol(vd->WCHAR_LIST_FORM));
     int count=_rshort2(vd->oms+rf->value);
     char *c=extract_omstr(vd,rf->value);
     WSHDR *ws2=AllocWS(count);
@@ -356,13 +388,13 @@ int RenderPage(VIEWDATA *vd, int do_draw)
   int dfh=GetFontHeight(FONT_SMALL,0)*2; //double font height
   
   int rnd_x;
-  REFCACHE *rnd_rf;
+  REFCACHE *rnd_rf; 
   
   while(ypos<=scr_h)
   {
     if (LineDown(vd))
     {
-      lc=vd->lines_cache+vl;
+      lc=vd->lines_cache+vl;  
       dc=0;
       ws_width=0;
       cur_rc=1;
@@ -472,7 +504,7 @@ int RenderPage(VIEWDATA *vd, int do_draw)
       {
         int x=0;
         if (lc[1].right) x=scr_w-ws_width;
-        if (lc[1].center) x=(scr_w-ws_width)/2;
+        if (lc[1].center||lc[1].centerAtAll) x=(scr_w-ws_width)/2;
         def_ink[0]=lc->ink1>>8;
         def_ink[1]=lc->ink1;
         def_ink[2]=lc->ink2>>8;
@@ -591,6 +623,156 @@ int FindReferenceById(VIEWDATA *vd, unsigned int id, int i) // Находит in
   return -1;
 }
 
+// TEMPLATES MENU
+GUI *paste_gui;
+
+int templ_menu_onkey(void *gui, GUI_MSG *msg)
+{
+  if (msg->keys==0x3D || msg->keys==0x18)
+  {
+    // select
+    int item=GetCurMenuItem(gui);
+    EDITCONTROL ec;
+    ExtractEditControl(paste_gui,1,&ec);
+    char fname[256];
+    int file;
+    unsigned int ul;
+    getSymbolicPath(fname,"$ballet\\templates.txt");
+    if ((file=fopen(fname,A_ReadWrite,P_READ+P_WRITE,&ul))!=-1)
+    {
+      int num=0;
+      unsigned int buf_size = lseek(file, 0, S_END, &ul, &ul);
+      lseek(file, 0, S_SET, &ul, &ul);
+      char *buffer = malloc(buf_size);
+      fread(file, buffer, buf_size, &ul);
+      fclose(file, &ul);
+      int start=0,len=0;
+      for (int i=0;i<=buf_size;i++)
+        if (buffer[i]==0x0A||buffer[i]==0x0D||i==buf_size)
+        {
+          if (num==item) len=i-start;
+          num++;
+          if (num==item) start=i+1;
+        }
+      char *c=malloc(len+1);
+      memcpy(c,buffer+start,len);
+      c[len]=NULL;
+      gb2ws(ec.pWS,c,strlen(c));
+      StoreEditControl(paste_gui,1,&ec);
+      mfree(buffer);
+      mfree(c);
+    }
+    return 0xFF;
+  }
+  return (0);
+}
+
+void templ_menu_ghook(void *gui, int cmd)
+{
+  if (cmd==3) // free
+  {
+    ;
+  }
+  if (cmd==0x0A)
+  {
+    DisableIDLETMR();
+  }
+}
+void templ_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
+{
+  WSHDR *ws;
+  void *item=AllocMenuItem(gui);
+  char fname[256];
+  int file;
+  unsigned int ul;
+  getSymbolicPath(fname,"$ballet\\templates.txt");
+  if ((file=fopen(fname,A_ReadWrite,P_READ+P_WRITE,&ul))!=-1)
+  {
+    int num=0;
+    unsigned int buf_size = lseek(file, 0, S_END, &ul, &ul);
+    lseek(file, 0, S_SET, &ul, &ul);
+    char *buffer = malloc(buf_size);
+    fread(file, buffer, buf_size, &ul);
+    fclose(file, &ul);
+    int start=0,len=0;
+    for (int i=0;i<=buf_size;i++)
+      if (buffer[i]==0x0A||buffer[i]==0x0D||i==buf_size)
+      {
+        if (num==cur_item) len=i-start;
+        num++;
+        if (num==cur_item) start=i+1;
+      }
+    ws=AllocMenuWS(gui,len);
+    str_2ws(ws,buffer+start,len);
+    mfree(buffer);
+  }
+  else
+  {
+    ws=AllocMenuWS(gui,10);
+    wsprintf(ws, "错误");
+  }
+  SetMenuItemText(gui, item, ws, cur_item);
+}
+
+int templ_softkeys[]={0,1,2};
+SOFTKEY_DESC templ_sk[]=
+{
+  {0x0018,0x0000,(int)"选择"},
+  {0x0001,0x0000,(int)"关闭"},
+  {0x003D,0x0000,(int)LGP_DOIT_PIC}
+};
+
+SOFTKEYSTAB templ_skt=
+{
+  templ_sk,0
+};
+
+HEADER_DESC templ_HDR={0,0,0,0,NULL,(int)"选择",LGP_NULL};
+
+MENU_DESC templ_STRUCT=
+{
+  8,templ_menu_onkey,templ_menu_ghook,NULL,
+  templ_softkeys,
+  &templ_skt,
+  0x10,
+  templ_menu_iconhndl,
+  NULL,   //Items
+  NULL,   //Procs
+  0   //n
+};
+
+void createTemplatesMenu()
+{
+  // get amount of lines
+  char fname[256];
+  int file;
+  unsigned int ul;
+  getSymbolicPath(fname,"$ballet\\templates.txt");
+  if ((file=fopen(fname,A_ReadWrite,P_READ+P_WRITE,&ul))!=-1)
+  {
+    int num=1;
+    unsigned int buf_size=lseek(file, 0, S_END, &ul, &ul);
+    lseek(file, 0, S_SET, &ul, &ul);
+    char *buffer=malloc(buf_size);
+    fread(file, buffer, buf_size, &ul);
+    fclose(file, &ul);
+    if ((buffer[buf_size-1]==0x0A||buffer[buf_size-1]==0x0D)) buf_size--;
+    for (int i=0;i<buf_size;i++)
+    {
+      if ((buffer[i]==0x0A||buffer[i]==0x0D))
+      {
+        num++;
+      }
+    }
+    patch_header(&templ_HDR);
+    mfree(buffer);
+    if (num>0)
+    {
+      CreateMenu(0,0,&templ_STRUCT,&templ_HDR,0,num,0,0);
+    }
+  }
+}
+
 // EDIT BOX
 REFCACHE *cur_ref;
 VIEWDATA *cur_vd;
@@ -598,7 +780,6 @@ VIEWDATA *cur_vd;
 extern char *goto_url;
 extern char *from_url;
 extern char *goto_params;
-//extern int quit_reqired;
 
 char *collectItemsParams(VIEWDATA *vd, REFCACHE *rf);
 
@@ -631,9 +812,37 @@ static void input_box_ghook(GUI *data, int cmd)
 
 static void input_box_locret(void){}
 
+void input_box_onkey_options(USR_MENU_ITEM *item)
+{
+  if (item->type==0)
+  {
+    switch(item->cur_item)
+    {
+    case 0:
+      gb2ws(item->ws,"模板",strlen("模板"));
+      break;
+    }
+  }
+  if (item->type==1)
+  {
+    switch(item->cur_item)
+    {
+    case 0:
+      createTemplatesMenu();
+      break;
+    }
+  }
+}
+
 static int input_box_onkey(GUI *data, GUI_MSG *msg)
 {
   EDITCONTROL ec;
+  if (msg->gbsmsg->msg==KEY_DOWN&&msg->gbsmsg->submess==ENTER_BUTTON)
+	{
+    paste_gui=data;
+    EDIT_OpenOptionMenuWithUserItems(data,input_box_onkey_options,0,1);
+    return (-1);
+	}
   if (msg->keys==0xFFF)
   {
     // set value
@@ -648,7 +857,6 @@ static int input_box_onkey(GUI *data, GUI_MSG *msg)
       from_url=malloc(strlen(cur_vd->pageurl)+1);
       strcpy(from_url,cur_vd->pageurl);
       goto_params=collectItemsParams(cur_vd,cur_ref);
-//      quit_reqired=1;
     }
     else
     {
@@ -706,8 +914,8 @@ int CreateInputBox(VIEWDATA *vd, REFCACHE *rf)
   wstrcpy(ews,((WSHDR *)rf->data));
   
   PrepareEditControl(&ec);
-  ConstructEditControl(&ec,ECT_NORMAL_TEXT,0x40,ews,16384);
-  AddEditControlToEditQend(eq,&ec,ma);   //2
+  ConstructEditControl(&ec,4,ECF_APPEND_EOL|(rf->tag=='p'?ECF_PASSW:NULL),ews,16384);
+  AddEditControlToEditQend(eq,&ec,ma);
 
   FreeWS(ews);
   patch_header(&input_box_hdr);
@@ -715,6 +923,81 @@ int CreateInputBox(VIEWDATA *vd, REFCACHE *rf)
   return CreateInputTextDialog(&input_box_desc,&input_box_hdr,eq,1,0);
 }
 
+// TEXT VIEW
+static const SOFTKEY_DESC txtview_menu_sk[]=
+{
+  {0x0018,0x0000,(int)"确定"},
+  {0x0001,0x0000,(int)"取消"},
+  {0x003D,0x0000,(int)LGP_DOIT_PIC}
+};
+
+static const SOFTKEYSTAB txtview_menu_skt=
+{
+  txtview_menu_sk,0
+};
+
+static const HEADER_DESC txtview_hdr={0,0,0,0,NULL,(int)"文本:",LGP_NULL};
+
+static void txtview_ghook(GUI *data, int cmd)
+{
+  static SOFTKEY_DESC sk={0x0FFF,0x0000,(int)"确定"};
+  if (cmd==0x0A)
+  {
+    DisableIDLETMR();
+  }
+  if (cmd==7)
+  {
+    SetSoftKey(data,&sk,SET_SOFT_KEY_N);
+  }
+}
+
+static void txtview_locret(void){}
+
+static int txtview_onkey(GUI *data, GUI_MSG *msg)
+{
+  if (msg->keys==0xFFF)
+  {
+    return (0xFF);
+  }
+  return (0);
+}
+
+static const INPUTDIA_DESC txtview_desc =
+{
+  1,
+  txtview_onkey,
+  txtview_ghook,
+  (void *)txtview_locret,
+  0,
+  &txtview_menu_skt,
+  {0,0,0,0},
+  FONT_SMALL,
+  100,
+  101,
+  0,
+  0,
+  0x40000000
+};
+
+void createTextView(WSHDR *ws)
+{
+  void *ma=malloc_adr();
+  void *eq;
+  EDITCONTROL ec;
+  eq=AllocEQueue(ma,mfree_adr());
+  if (!wstrlen(ws))
+  {
+    FreeWS(ws);
+    return;
+  }
+  PrepareEditControl(&ec);
+  ConstructEditControl(&ec,4,ECF_APPEND_EOL,ws,512);
+  AddEditControlToEditQend(eq,&ec,ma);
+  FreeWS(ws);
+  patch_header(&txtview_hdr);
+  patch_input(&txtview_desc);
+  CreateInputTextDialog(&txtview_desc,&txtview_hdr,eq,1,0);
+}
 
 // SELECTION MENU
 typedef struct
@@ -816,7 +1099,7 @@ void sel_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
   else
   {
     ws=AllocMenuWS(gui,10);
-    ascii2ws(ws,"错误");
+    gb2ws(ws,"错误",strlen("错误"));
   }
   SetMenuItemText(gui, item, ws, cur_item);
 }
@@ -835,7 +1118,6 @@ SOFTKEYSTAB sel_skt=
 };
 
 HEADER_DESC sel_HDR={0,0,0,0,NULL,(int)"选择",LGP_NULL};
-
 
 MENU_DESC sel_STRUCT=
 {
@@ -898,3 +1180,4 @@ int ChangeMenuSelection(VIEWDATA *vd, REFCACHE *rf)
   patch_header(&sel_HDR);
   return CreateMenu(0,0,&sel_STRUCT,&sel_HDR,start,n_sel,ustop,0);
 }
+
