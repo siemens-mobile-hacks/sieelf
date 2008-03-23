@@ -68,6 +68,7 @@ BalletMini/test.xcl -text
 BalletMini/urlstack.c -text
 BalletMini/urlstack.h -text
 BalletMini/view.h -text
+BalletMini/使用方法（部分，欢迎补充）.txt -text
 Blinker/blinker.ewp -text
 Blinker/blinker.eww -text
 Blinker/conf_loader.c -text
