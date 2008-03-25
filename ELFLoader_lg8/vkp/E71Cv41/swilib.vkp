@@ -623,6 +623,12 @@
 ;090C: 0x          ; 243:  __arm void ws2gb(WSHDR *ws, char *s, int len);
 0910: 0xA0E8FEE5   ; 244:  __arm int Base64Encode(void *inbuf, int insize, void *outbuf, int outsize);
 0914: 0xA0E8FF95   ; 245:  __arm int Base64Decode(char *inbuf, int insize, void *outbuf, int outsize, char *_null, int *unk5);
+
+091C: 0xA09A1809   ; 247:  __thumb void NetOff();
+0920: 0xA8D8595A   ; 248: char *RamFormatTrack()
+0924: 0xA8D85BC2   ; 249: char *RamFreq()\\§³§Ü§à§â§à§ã§ä§î §Õ§Ú§ã§Ü§â§Ö§ä§Ú§Ù§Ñ§è§Ú§Ú(4-22, 7-44, 8-48)
+0928: 0xA8D85D7A   ; 24A: char *RamChannel()\\§³§ä§Ö§â§Ö§à §Ú§Ý§Ú §®§à§ß§à(0-§®§à§ß§à, 1-§³§ä§Ö§â§Ö§à)
+
 #pragma disable old_equal_ff
 +0       
 ;********************************************************************************

@@ -624,6 +624,14 @@
 
 0900: 0xA150F071   ; 240: __swi __arm char *MD5_Hash(const unsigned char *data, unsigned long n, unsigned char *md_NULL)
 0904: 0xA0A73F8F   ; 241: __thumb void SetDateTime(TDate *, TTime *)
+;908:              ; 242:   __arm void gb2ws(WSHDR *ws, const char *s, int len)
+;90C:              ; 243:   __arm void ws2gb(WSHDR *ws, char *s, int len)
+0910: 0xA150BA99   ; 244:   __arm int Base64Encode(void *inbuf, int insize, void *outbuf, int outsize)
+0914: 0xA150BB49   ; 245:   __arm int Base64Decode(char *inbuf, int insize, void *outbuf, int outsize, char *_null, int *unk5)
+;91C:              ; 247:   __thumb void NetOff()
+;920:              ; 248:  char *RamFormatTrack()
+;924:              ; 249:  char *RamFreq()
+;928:              ; 24A:  char *RamChannel()
 #pragma disable old_equal_ff
 +0
 
