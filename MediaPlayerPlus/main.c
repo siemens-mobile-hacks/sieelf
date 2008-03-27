@@ -26,18 +26,18 @@ extern const unsigned int xrnd;
 extern const unsigned int yrnd;
 extern const int style;
 extern const unsigned int speed;
-extern const unsigned int wait_time;
+//extern const unsigned int wait_time;
 extern const char CSMADR[];
 extern const int show_gp;
 extern const int show_ext;
 
 WSHDR *ews;
 //WSHDR *ews_2;
-WSHDR *temp;
-int drawname_needed=0;
-int scroll_pos=0;
-GBSTMR mytmr;
-int is_tmr=0;
+//WSHDR *temp;
+//int drawname_needed=0;
+int scroll_pos=1;
+//GBSTMR mytmr;
+//int is_tmr=0;
 //int is_drawname=0;
 char utf8_name[128];
 char name_temp[128];
@@ -59,13 +59,13 @@ int time=0;
 __swi __arm int GetPlayStatus(void);
 
 WSHDR *ws_lrc;
-WSHDR *temp_lrc;
+//WSHDR *temp_lrc;
 char *lrc_buf;
 char lrc_path[128];
 int is_no_lrc;
-GBSTMR lrctmr;
-int is_dlrc_tmr=0;
-int scroll_pos_lrc=0;
+//GBSTMR lrctmr;
+//int is_dlrc_tmr=0;
+int scroll_pos_lrc=1;
 extern const int ena_lrc;
 extern const char lrc_dir_path[128];
 extern const unsigned int lrc_font;
@@ -113,9 +113,6 @@ int strcmp_nocase(const char *s1, const char *s2)
 void getname(void)
 {
 	char *p=strrchr(name_temp, '.');
-	//if(show_gp)
-	//	if(show_ext)
-	//		goto show_ext;
 	if(p)
 	{
 		if(!strncmp_nocase(p, ".mp3", 4))
@@ -281,86 +278,20 @@ int getMaxChars(unsigned short *wsbody, int len, int font) // 获取可显示的最大字
 	return ii;
 }
 
-/*
-int wstrcmp(WSHDR *ws1, WSHDR *ws2)
-{
-	int i=0,c,t1,t2;
-	while(!(c=(t1=(ws1->wsbody[i]))-(t2=(ws2->wsbody[i]))))
-	{
-		if(!t1||!t2)
-			break;
-	}
-	return c;
-}*/
-
-#ifndef ELKA
-void draw_canvas_frm(void)
-{
-	GUI *igui=GetTopGUI();
-	if(igui)
-	{
-		void *idata = GetDataOfItemByID(igui, 2);
-		if (idata)
-		{
-			void *canvasdata = ((void **)idata)[DISPLACE_OF_IDLECANVAS / 4];
-			int n;
-			if(ena_lrc)
-				n=GetFontYSIZE(lrc_font)+2;
-			else
-				n=0;
-			DrawCanvas(canvasdata,pos_x,pos_y,pos_x+length,pos_y+GetFontYSIZE(font)+n+4,1);
-			DrawRoundedFrame(pos_x,pos_y,pos_x+length,pos_y+GetFontYSIZE(font)+n+4, xrnd, yrnd, style, frmmain_color, frmbg_color);
-		}
-	}
-}
-#endif
-
 void drawname_proc(void)
 {
-	if(drawname_needed)
+	int ws_width=Get_WS_width(ews, font);
+	if((ws_width>=length-4)&&speed)
 	{
-		/*if(!memcmp(ews, ews_2, sizeof(ews)))
-		{
-			memcpy(ews_2, ews,sizeof(ews));
-			scroll_pos=0;
-		}*/
-		//DrawString(ews,pos_x+2,pos_y+2,pos_x+length-2,pos_y+GetFontYSIZE(font)+2,font,txt_attr,color,frmcolor);
-		if((Get_WS_width(ews, font)>=(length-4))&&speed)
-		{
-			int sc=getMaxChars(&ews->wsbody[scroll_pos+1], ews->wsbody[0]-scroll_pos, font);
-			temp->wsbody[0]=sc;
-			for(int ii=1;ii<sc+1;ii++)
-				temp->wsbody[ii]=ews->wsbody[ii+scroll_pos];
-#ifndef ELKA
-			draw_canvas_frm();
-#endif
-			DrawString(temp,pos_x+2,pos_y+2,pos_x+length-2,pos_y+GetFontYSIZE(font)+2,font,txt_attr,color,frmcolor);
-			scroll_pos++;
-			int rest_len=0;
-			int i;
-			for (i=scroll_pos+1;i<ews->wsbody[0];i++)
-				rest_len+=GetSymbolWidth(ews->wsbody[i], font);
-			if (rest_len<=(length-0x40))
-				scroll_pos = 0;
-			if(scroll_pos==1)
-				GBS_StartTimerProc(&mytmr,wait_time,drawname_proc);
-			else
-				GBS_StartTimerProc(&mytmr,speed,drawname_proc);
-			is_tmr=1;
-		}
+		DrawScrollString(ews,pos_x+2,pos_y+2,pos_x+length-2,pos_y+GetFontYSIZE(font)+2,scroll_pos,font,txt_attr,color,frmcolor);
+		if((ws_width-scroll_pos)<=(length-4))
+			scroll_pos=1;
 		else
-		{
-#ifndef ELKA
-			draw_canvas_frm();
-#endif
-			DrawString(ews,pos_x+2,pos_y+2,pos_x+length-2,pos_y+GetFontYSIZE(font)+2,font,txt_attr,color,frmcolor);
-			is_tmr=0;
-		}
+			scroll_pos+=speed;
 	}
 	else
 	{
-		is_tmr=0;
-		//is_drawname=0;
+		DrawString(ews,pos_x+2,pos_y+2,pos_x+length-2,pos_y+GetFontYSIZE(font)+2,font,txt_attr,color,frmcolor);
 	}
 }
 
@@ -368,57 +299,33 @@ void time_update_proc(void)
 {
 	if(is_player_active&&ena_lrc)
 	{
-//		goto no_tm_up;
 		int status=GetPlayStatus();
-		//if(GetPlayStatus()==2)
 		if(status==2)
 			time++;
 		else
 			if(status==0)
 				time=0;
 	}
-//no_tm_up:
 	GBS_StartTimerProc(&tmup,time_second,time_update_proc);
 }
+
+
 
 void draw_lrc_proc(void)
 {
 	int fh=GetFontYSIZE(font);
 	int lrcfh=GetFontYSIZE(lrc_font);
-	if(drawname_needed&&ena_lrc)
+	int ws_width=Get_WS_width(ws_lrc, lrc_font);
+	if((ws_width>=length-4)&&lrc_speed)
 	{
-		if((Get_WS_width(ws_lrc, lrc_font)>=(length-4))&&speed)
-		{
-			int sc=getMaxChars(&ws_lrc->wsbody[scroll_pos_lrc+1], ws_lrc->wsbody[0]-scroll_pos_lrc, lrc_font);
-			temp_lrc->wsbody[0]=sc;
-			int ii;
-			for(ii=1;ii<sc+1;ii++)
-				temp_lrc->wsbody[ii]=ws_lrc->wsbody[ii+scroll_pos_lrc];
-#ifndef ELKA
-			draw_canvas_frm();
-#endif
-			DrawString(temp_lrc,pos_x+2,pos_y+fh+4,pos_x+length-2,pos_y+fh+lrcfh+4,lrc_font,lrc_txt_attr,lrc_color,lrc_frmcolor);
-			scroll_pos_lrc++;
-			int rest_len=0;
-			//int i;
-			for (ii=scroll_pos_lrc;ii<(ws_lrc->wsbody[0]);ii++)
-				rest_len+=GetSymbolWidth(ws_lrc->wsbody[ii], lrc_font);
-			if (rest_len<=(length-0x40))
-				scroll_pos_lrc=0;
-			GBS_StartTimerProc(&lrctmr,lrc_speed,draw_lrc_proc);
-			is_dlrc_tmr=1;
-		}
+		DrawScrollString(ws_lrc,pos_x+2,pos_y+fh+4,pos_x+length-2,pos_y+fh+lrcfh+4,scroll_pos_lrc,lrc_font,lrc_txt_attr,lrc_color,lrc_frmcolor);
+		if((ws_width-scroll_pos_lrc)<=(length-4))
+			scroll_pos_lrc=1;
 		else
-		{
-#ifndef ELKA
-			draw_canvas_frm();
-#endif
-			DrawString(ws_lrc,pos_x+2,pos_y+fh+4,pos_x+length-2,pos_y+fh+lrcfh+4,lrc_font,lrc_txt_attr,lrc_color,lrc_frmcolor);
-			is_dlrc_tmr=0;
-		}
+			scroll_pos_lrc+=lrc_speed;
 	}
 	else
-		is_dlrc_tmr=0;
+		DrawString(ws_lrc,pos_x+2,pos_y+fh+4,pos_x+length-2,pos_y+fh+lrcfh+4,lrc_font,lrc_txt_attr,lrc_color,lrc_frmcolor);
 }
 
 void drawlrc(void)
@@ -454,11 +361,10 @@ void drawlrc(void)
 		int len=p-pp;
 		if(len>=127) len=127;
 		gb2ws(ws_lrc,pp,len);
-		scroll_pos_lrc=0;
+		scroll_pos_lrc=1;
 	}
 end:
 	draw_lrc_proc();
-	//DrawString(ws_lrc,pos_x+2,pos_y+fh+4,pos_x+length-2,pos_y+2*fh+4,font,txt_attr,color,frmcolor);
 }
 
 int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
@@ -469,7 +375,6 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 		if(strcmp_nocase(successed_config_filename, (char *)msg->data0)==0)
 		{
 			ShowMSG(1, (int)LGP_UPDATE_CONFIG);
-			//InitConfig();
 			RereadSettings();
 			getname();
 		}
@@ -508,12 +413,12 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 					{
 						wsprintf(ws_lrc, percent_t, "无歌词!");
 						is_no_lrc=1;
-						//goto end;
 					}
+					scroll_pos=1;
+					scroll_pos_lrc=1;
 					time=0;
 				}
 				getname();
-				//wstrcpy(ews,fn);
 			}
 			else
 			{
@@ -526,7 +431,6 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 		{
 			playercsmid=0;
 			is_player_active=0;
-			//wsprintf(ws1,"Player not active");
 		}
 	}
 	else
@@ -547,12 +451,10 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 	
 	if(is_player_active&&(ENA_LOCK||IsUnlocked()))
 	{
-		//getname();
 #define idlegui_id(icsm) (((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])
 		CSM_RAM *icsm;
 		icsm=FindCSMbyID(CSM_root()->idle_id);
 		if(icsm&&is_music_file)
-		//if(icsm)
 		{
 			if(IsGuiOnTop(idlegui_id(icsm)))
 			{
@@ -568,7 +470,6 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 					{
 						void *canvasdata = ((void **)idata)[DISPLACE_OF_IDLECANVAS / 4];
 #endif
-						//str_2ws(ews, utf8_name, 128);
 						int n;
 						if(ena_lrc)
 							n=GetFontYSIZE(lrc_font)+2;
@@ -576,47 +477,23 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 							n=0;
 						DrawCanvas(canvasdata,pos_x,pos_y,pos_x+length,pos_y+GetFontYSIZE(font)+n+4,1);
 						DrawRoundedFrame(pos_x,pos_y,pos_x+length,pos_y+GetFontYSIZE(font)+n+4, xrnd, yrnd, style, frmmain_color, frmbg_color);
-						drawname_needed=1;
-						//if(!is_drawname)
-						//{
-						//drawname_proc();
-						//void DrawScrollString(WSHDR *WSHDR,int x1,int y1,int x2,int y2,int xdisp,int font,int text_attribute,const char *Pen,const char *Brush);
-						//DrawString(ews,pos_x+2,pos_y+2,pos_x+length-2,pos_y+GetFontYSIZE(font)+2,font,txt_attr,color,frmcolor);
-						DrawScrollString(ews,pos_x+2,pos_y+2,pos_x+length-2,pos_y+GetFontYSIZE(font)+2,1,font,txt_attr,color,frmcolor);
+						drawname_proc();
 						if(ena_lrc)
 							drawlrc();
-						//	is_drawname=0;
-						//}
-						//DrawString(ews,pos_x+2,pos_y+2,pos_x+length-2,pos_y+GetFontYSIZE(font)+2,font,txt_attr,color,frmcolor);
 					}
-#ifndef ELKA
-					else
-						drawname_needed=0;
-#endif
 				}
-				else
-					drawname_needed=0;
 			}
-			else
-				drawname_needed=0;
 		}
-		else
-			drawname_needed=0;
 	}
-	else
-		drawname_needed=0;
 	return 1;
 }
 
 static void maincsm_oncreate(CSM_RAM *data)
 {
 	ews=AllocWS(128);
-	temp=AllocWS(128);
 	ws_lrc=AllocWS(128);
-	temp_lrc=AllocWS(128);
 	lrc_buf=malloc(8*1024);
 	time_update_proc();
-	//ews_2=AllocWS(128);
 }
 
 extern int my_keyhook(int submsg, int msg);
@@ -624,15 +501,9 @@ static void Killer(void)
 {
 	extern void *ELF_BEGIN;
 	FreeWS(ews);
-	FreeWS(temp);
 	FreeWS(ws_lrc);
-	FreeWS(temp_lrc);
 	mfree(lrc_buf);
-	//FreeWS(ews_2);
-	if(is_tmr) GBS_DelTimer(&mytmr);
-	if(is_dlrc_tmr) GBS_DelTimer(&lrctmr);
 	GBS_DelTimer(&tmup);
-	//RemoveKeybMsgHook((void *)my_keyhook);
 	kill_data(&ELF_BEGIN, (void (*)(void *))mfree_adr());
 }
 
@@ -685,7 +556,6 @@ int main(void)
 {
 	CSM_RAM *save_cmpc;
 	char dummy[sizeof(MAIN_CSM)];
-	//InitConfig();
 	RereadSettings();
 	UpdateCSMName();
 	LockSched();
@@ -693,7 +563,6 @@ int main(void)
 	CSM_root()->csm_q->current_msg_processing_csm=CSM_root()->csm_q->csm.first;
 	CreateCSM(&MAINCSM.maincsm, dummy,0);
 	CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
-	//AddKeybMsgHook((void *)my_keyhook);
 	UnlockSched();
 	return 0;
 }
