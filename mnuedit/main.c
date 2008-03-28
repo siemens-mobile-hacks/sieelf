@@ -3,11 +3,11 @@
 #include "../inc/cfg_items.h"
 
 CSM_DESC icsmd;
-
+//"obexcopy.exe" $PROJ_DIR$\Release_ELKA\Exe\MNUEdit.elf \Data\MNUEdit.elf
 extern void InitConfig();
 extern const char smenu_path[128];
 int id_ed;
-extern void CreateRootMenu();
+extern int CreateRootMenu();
 extern void open_fm(void *ed_gui,int type);
 
 int (*old_icsm_onMessage)(CSM_RAM*,GBS_MSG*);
@@ -19,6 +19,7 @@ const int minus11=-11;
 
 const char per_t[]="%t";
 const char per_s[]="%s";
+const char per_d[]="%d";
 const char empty_str[]="";
 
 //-----------------------------------------
@@ -89,7 +90,6 @@ int get_file_size(char* fname)
   return (fs.size);
 }
 
-
 void mess(char *s)
 {
   ShowMSG(1,(int)s);
@@ -103,6 +103,7 @@ void mess2(char *s)
 void messd(int i)
 {
   char s[10];
+  sprintf(s,per_d,i);
   ShowMSG(1,(int)s);
 }
 
@@ -116,6 +117,7 @@ typedef struct
   char *type;
   char *path;
 }MNU;
+
 volatile MNU *mnutop;
 
 EDITCONTROL ec;
@@ -139,15 +141,26 @@ int GetFListN2()
   return (i);
 }
 
-MNU *Add(const char *name,const char *icon,const char *type,const char *path)
+MNU *Add(const char *name,const char *icon,const char *type,const char *path,int new_item)
 {
   MNU *pr;
   MNU *fl;
   MNU *fn=malloc(sizeof(MNU));
-  fn->name=malloc(strlen(name)+1);
-  fn->icon=malloc(strlen(icon)+1);
-  fn->type=malloc(strlen(type)+1);
-  fn->path=malloc(strlen(path)+1);
+  /*if(new_item)
+  {
+    fn->name=malloc(128);
+    fn->icon=malloc(128);
+    fn->type=malloc(32);
+    fn->path=malloc(128); 
+  }
+  else
+  {    */
+    fn->name=malloc(strlen(name)+1);
+    fn->icon=malloc(strlen(icon)+1);
+    fn->type=malloc(strlen(type)+1);
+    fn->path=malloc(strlen(path)+1);
+//  }
+  
   strcpy(fn->name,name);
   strcpy(fn->icon,icon);
   strcpy(fn->type,type);
@@ -168,7 +181,7 @@ MNU *Add(const char *name,const char *icon,const char *type,const char *path)
 return fn;
 }
 
-void parse(char *str)//Ðàçáèðàåì ñòðî÷êó
+void parse(char *str)//§²§Ñ§Ù§Ò§Ú§â§Ñ§Ö§Þ §ã§ä§â§à§é§Ü§å
 {
   int j=0; 
   int k=0;
@@ -177,21 +190,21 @@ void parse(char *str)//Ðàçáèðàåì ñòðî÷êó
   char *type=malloc(24);
   char *path=malloc(256);
   
-  if(isnewSGold()==1 || isnewSGold()==2)//Åñëè íñã èëè åëêà òî äåëàåì òàê, íà ñãîëä ïèêîôô ïðè òàêîì ñïîñîáå...
+  if(isnewSGold()==1 || isnewSGold()==2)//§¦§ã§Ý§Ú §ß§ã§Ô §Ú§Ý§Ú §Ö§Ý§Ü§Ñ §ä§à §Õ§Ö§Ý§Ñ§Ö§Þ §ä§Ñ§Ü, §ß§Ñ §ã§Ô§à§Ý§Õ §á§Ú§Ü§à§æ§æ §á§â§Ú §ä§Ñ§Ü§à§Þ §ã§á§à§ã§à§Ò§Ö...
   {
     while(*(str+k)!='|') { *(name+j)=*(str+k); j++; k++; } *(name+j++)=0; j=0; k++;
     while(*(str+k)!='|') { *(icon+j)=*(str+k); j++; k++; } *(icon+j++)=0; j=0; k++;
     while(*(str+k)!='|') { *(type+j)=*(str+k); j++; k++; } *(type+j++)=0; j=0; k++;
     while(*(str+k))      { *(path+j)=*(str+k); j++; k++; } *(path+j++)=0;
   }
-  else//äëÿ ñãîëä äåëàåì òàê)
+  else//§Õ§Ý§ñ §ã§Ô§à§Ý§Õ §Õ§Ö§Ý§Ñ§Ö§Þ §ä§Ñ§Ü)
   {
     while (str[j]!='|') { name[k++]=str[j]; j++;} name[k++]=0; j++; k=0;
     while (str[j]!='|') { icon[k++]=str[j]; j++;} icon[k++]=0; j++; k=0;
     while (str[j]!='|') { type[k++]=str[j]; j++;} type[k++]=0; j++; k=0;
     while (str[j])      { path[k++]=str[j]; j++;} path[k++]=0; 
-  }  
-  Add(name,icon,type,path);
+  }
+  Add(name,icon,type,path,0);
 }
 
 void LoadMNU(char *path)
@@ -212,11 +225,11 @@ void LoadMNU(char *path)
      { 
       size=fread(f,mem,get_file_size(path),&err); 
       i=0; 
-      while (i<size) //ïîêà íå êîíåö ôàéëa
+      while (i<size) //§á§à§Ü§Ñ §ß§Ö §Ü§à§ß§Ö§è §æ§Ñ§Û§Ýa
       { 
         strcpy(str,""); 
         j=0; 
-        while((i<size) && (j<255))//÷èòàåì äàííûå ïî ñòðîêàì
+        while((i<size) && (j<255))//§é§Ú§ä§Ñ§Ö§Þ §Õ§Ñ§ß§ß§í§Ö §á§à §ã§ä§â§à§Ü§Ñ§Þ
         {
           if(*(mem+i)==0x0D)// 0D
           {
@@ -257,7 +270,7 @@ mfree(str);
 
 MNU *FindByN(int n);
 
-void del(int i)//àëüòåðíàòèâíîå óäàëåíèå:)
+void del(int i)//§Ñ§Ý§î§ä§Ö§â§ß§Ñ§ä§Ú§Ó§ß§à§Ö §å§Õ§Ñ§Ý§Ö§ß§Ú§Ö:)
 {
  MNU *mnu;
  mnu=FindByN(i);
@@ -265,9 +278,9 @@ void del(int i)//àëüòåðíàòèâíîå óäàëåíèå:)
  RefreshGUI();
 }
 
-void AddItem()//Äîáàâëÿåì ïóíêò ìåíþ
+void AddItem()//§¥§à§Ò§Ñ§Ó§Ý§ñ§Ö§Þ §á§å§ß§Ü§ä §Þ§Ö§ß§ð
 {
-  Add("new","icons\\","FILE","4:\\");
+  Add("new","icons\\","FILE","4:\\",1);
   RefreshGUI();
   ShowMSG(1,(int)"New item add!");
 }
@@ -310,7 +323,7 @@ int bm_menu_onkey2(void *data, GUI_MSG *msg)
  
  if(k==LEFT_SOFT) ShowMainMenu(); 
  
- item=i;//Êàêîé âûáðàí èòåì
+ item=i;//§¬§Ñ§Ü§à§Û §Ó§í§Ò§â§Ñ§ß §Ú§ä§Ö§Þ
  
  if(k==ENTER_BUTTON)
  {
@@ -321,7 +334,7 @@ int bm_menu_onkey2(void *data, GUI_MSG *msg)
   {
     i=msg->gbsmsg->submess;
     if(i==GREEN_BUTTON)
-    {    
+    {
       SaveFile(file);
     }
   }
@@ -350,7 +363,7 @@ MNU *FindByN(int n)
   int j=0;
   int k=GetFListN2();
   fl=(MNU *)mnutop;
-  j=k-n-1;//ß âèäèìî òàëïàåï,èëè ñèìåíñ âñå òàêè ñèìåíñ î÷ çàãàäî÷íûé àïïàðàò)) åñëè íàïèñàòü òàê k-=n-1 òî áóèò ïèêîôô...
+  j=k-n-1;//§Á §Ó§Ú§Õ§Ú§Þ§à §ä§Ñ§Ý§á§Ñ§Ö§á,§Ú§Ý§Ú §ã§Ú§Þ§Ö§ß§ã §Ó§ã§Ö §ä§Ñ§Ü§Ú §ã§Ú§Þ§Ö§ß§ã §à§é §Ù§Ñ§Ô§Ñ§Õ§à§é§ß§í§Û §Ñ§á§á§Ñ§â§Ñ§ä)) §Ö§ã§Ý§Ú §ß§Ñ§á§Ú§ã§Ñ§ä§î §ä§Ñ§Ü k-=n-1 §ä§à §Ò§å§Ú§ä §á§Ú§Ü§à§æ§æ...
   if(j==-1) fl=fl->next;
   else
   {
@@ -510,7 +523,9 @@ int main(char *exename, char *fname)
  return 0;
 }
 
-//--------------------------------þçåð ìåíþ--------------------------------//
+//--------------------------------§ð§Ù§Ö§â §Þ§Ö§ß§ð--------------------------------//
+
+extern int DispShortcutsMenu(void *ed_gui);
 
 void on_utf8ec(USR_MENU_ITEM *item)
 {
@@ -521,6 +536,8 @@ void on_utf8ec(USR_MENU_ITEM *item)
     case 0:
       wsprintf(item->ws,per_t,"SelectFile");
       break;
+    case 1:
+      wsprintf(item->ws,per_t,"SelectShortcut");
     }
   }
 
@@ -529,53 +546,60 @@ void on_utf8ec(USR_MENU_ITEM *item)
     switch(item->cur_item)
     {
     case 0: 
-      CreateRootMenu();open_fm(item->user_pointer,1);
+      open_fm(item->user_pointer,1);
+      break;
+    case 1:
+      DispShortcutsMenu(item->user_pointer);
       break;
     }
-  }   
+  }
 }
 
-//--------------------------------Ðåäàêòîð--------------------------------//
+//--------------------------------§²§Ö§Õ§Ñ§Ü§ä§à§â--------------------------------//
 
 HEADER_DESC disk_prop_hdr={0,0,131,21,NULL,0,LGP_NULL};
 
 int empty_onkey(GUI *data, GUI_MSG *msg)
 { 
   int i=0;
+  int j=EDIT_GetFocus(data);
   MNU *fl;
   WSHDR *ws;
   ws=AllocWS(256);    
   if (msg->keys==0xFFF)
-  {  
+  {
     EDITCONTROL ec;
     fl=FindByN(item);                       
     ExtractEditControl(data,2,&ec);	    
     ws=ec.pWS;
     GeneralFuncF1(1);
-                 
+    fl->name=malloc(wstrlen(ws)+1);     
     for(i=0;i<ws->wsbody[0];i++)
       *(fl->name+i)=char16to8(ws->wsbody[i+1]);
-      *(fl->name+i++)=0;//Îáîçíà÷èì êîíåö ñòðîêè,èíà÷å êàêà :)
+      *(fl->name+i++)=0;
                   
     ExtractEditControl(data,4,&ec);	
     ws=ec.pWS;
     GeneralFuncF1(1);
+    fl->icon=malloc(wstrlen(ws)+1);
     ws_2str(ws,fl->icon,wstrlen(ws));
                   
     ExtractEditControl(data,6,&ec);	
     ws=ec.pWS;
     GeneralFuncF1(1);
+    fl->type=malloc(wstrlen(ws)+1);
     ws_2str(ws,fl->type,wstrlen(ws));
                   
     ExtractEditControl(data,8,&ec);	
     ws=ec.pWS;
     GeneralFuncF1(1);
+    fl->path=malloc(wstrlen(ws)+1);
     ws_2str(ws,fl->path,wstrlen(ws));    
   }
   
-  if(msg->gbsmsg->submess==ENTER_BUTTON)
+  if(msg->gbsmsg->submess==ENTER_BUTTON && j!=6)
    {
-     EDIT_OpenOptionMenuWithUserItems(data,on_utf8ec,data,1);
+     EDIT_OpenOptionMenuWithUserItems(data,on_utf8ec,data,2);
      return -1;
    }
  return(0);
@@ -592,7 +616,7 @@ void empty_ghook(GUI *gui, int cmd)
   
   if(cmd==0xA)
   {
-    DisableIDLETMR();   // Îòêëþ÷àåì òàéìåð âûõîäà ïî òàéìàóòó
+    DisableIDLETMR();   // §°§ä§Ü§Ý§ð§é§Ñ§Ö§Þ §ä§Ñ§Û§Þ§Ö§â §Ó§í§ç§à§Õ§Ñ §á§à §ä§Ñ§Û§Þ§Ñ§å§ä§å
   }
   
   if(cmd==0x03)     // onDestroy
@@ -627,7 +651,7 @@ void empty_ghook(GUI *gui, int cmd)
 }
 
 
-INPUTDIA_DESC edit_desc=//Ðåäàêòèðîâàíèå
+INPUTDIA_DESC edit_desc=//§²§Ö§Õ§Ñ§Ü§ä§Ú§â§à§Ó§Ñ§ß§Ú§Ö
 {
   1,
   empty_onkey,
@@ -650,19 +674,21 @@ void SaveFile(char *fname)
 {
   unsigned int err;
   int f;
-  char *s;//=malloc(get_file_size(fname));
+  char *s;
   char *p=malloc(strlen(fname)+10);
   strcpy(p,fname);
   strcat(p,".bkp");
-  unlink(p,&err);
-  fmove(fname,p/*"0:\\zzxc.mnu"*/,&err);
+  
+  if(get_file_size(p)) unlink(p,&err);
+  fmove(fname,p,&err);
   MNU *fl;
-  if((f=fopen(fname/*"0:\\zzxc.mnu"*/,A_Create+A_ReadWrite+A_BIN,P_WRITE,&err))!=-1)
+  
+  if((f=fopen(fname,A_Create+A_ReadWrite+A_BIN,P_WRITE,&err))!=-1)
    {
-     for(int i=0;i<GetFListN2();i++)//TotalItem
+     for(int i=0;i<GetFListN2();i++)
       {
         fl=FindByN(i);             
-        if(fl->name[0]==';'){ continue;}//Óäàëÿåì íàõ ñòðîêó:)
+        if(fl->name[0]==';') continue;//§µ§Õ§Ñ§Ý§ñ§Ö§Þ §ß§Ñ§ç §ã§ä§â§à§Ü§å:)
 
         s=malloc(strlen(fl->name)+1);
         *(s)=0;
@@ -686,8 +712,8 @@ void SaveFile(char *fname)
         *(s)=0;
         snprintf(s,strlen(fl->path)+1,per_s,fl->path);
         fwrite(f,s,strlen(s),&err);
-        
-        fwrite(f,"\r\n",2,&err);
+        if(i!=GetFListN2())//§¹§ä§à§Ò §Ó §á§à§ã§Ý§Ö§Õ§ß§Ö§Û §ã§ä§â§à§é§Ü§Ö §ß§Ö §Õ§à§Ò§Ñ§Ó§Ý§ñ§ä§î §á§Ö§â§Ö§Ó§à§Õ §ã§ä§â§à§Ü§Ú
+          fwrite(f,"\r\n",2,&err);
       }
      ShowMSG(1,(int)LG_FILESAVE);
    }
@@ -699,7 +725,7 @@ void SaveFile(char *fname)
 //--------------------------------------------------------//
 
 int DrawText(int i)
-{     
+{
   EDITC_OPTIONS ec_options;
   PrepareEditControl(&ec);
 
@@ -709,31 +735,31 @@ int DrawText(int i)
   MNU *fl;
   fl=FindByN(i);
 
-  wsprintf(ws,per_t,LG_NAME);//"Èìÿ:\n"
+  wsprintf(ws,per_t,LG_NAME);//"§ª§Þ§ñ:\n"
   ConstructEditControl(&ec,ECT_HEADER,ECF_NORMAL_STR,ws,256);
   AddEditControlToEditQend(eq,&ec,ma);
 
-  ascii2ws(ws,fl->name);
-  ConstructEditControl(&ec,ECT_NORMAL_TEXT,0x40,ws,256);
+  gb2ws(ws,fl->name,strlen(fl->name));
+  ConstructEditControl(&ec,4,0x40,ws,256);
   PrepareEditCOptions(&ec_options);
   SetFontToEditCOptions(&ec_options,1);
   CopyOptionsToEditControl(&ec,&ec_options);
   AddEditControlToEditQend(eq,&ec,ma);
   
 
-  wsprintf(ws,per_t,LG_ICON);//"\nÈêîíêà:\n"
+  wsprintf(ws,per_t,LG_ICON);//"\n§ª§Ü§à§ß§Ü§Ñ:\n"
   ConstructEditControl(&ec,ECT_HEADER,ECF_SET_CURSOR_END,ws,256);
   AddEditControlToEditQend(eq,&ec,ma);
 
   str_2ws(ws,fl->icon,strlen(fl->icon));
-  ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_SET_CURSOR_END,ws,256);
+  ConstructEditControl(&ec,4,ECF_SET_CURSOR_END,ws,256);
   PrepareEditCOptions(&ec_options);
   SetFontToEditCOptions(&ec_options,1);
   CopyOptionsToEditControl(&ec,&ec_options);
   AddEditControlToEditQend(eq,&ec,ma);
 
   
-  wsprintf(ws,per_t,LG_ACTION);//"\nÄåéñòâèå:\n"
+  wsprintf(ws,per_t,LG_ACTION);//"\n§¥§Ö§Û§ã§ä§Ó§Ú§Ö:\n"
   ConstructEditControl(&ec,ECT_HEADER,ECF_NORMAL_STR,ws,256);
   AddEditControlToEditQend(eq,&ec,ma);
 
@@ -743,12 +769,12 @@ int DrawText(int i)
   AddEditControlToEditQend(eq,&ec,ma);
   
   
-  wsprintf(ws,per_t,LG_PATH);//"Ïóòü:\n"
+  wsprintf(ws,per_t,LG_PATH);//"§±§å§ä§î:\n"
   ConstructEditControl(&ec,ECT_HEADER,ECF_NORMAL_STR,ws,256);
   AddEditControlToEditQend(eq,&ec,ma);
 
   str_2ws(ws,fl->path,strlen(fl->path));
-  ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_SET_CURSOR_END,ws,256);
+  ConstructEditControl(&ec,4,ECF_APPEND_EOL,ws,256);
   PrepareEditCOptions(&ec_options);
   SetFontToEditCOptions(&ec_options,1);
   CopyOptionsToEditControl(&ec,&ec_options);
@@ -778,38 +804,38 @@ typedef struct
 const TUNICODE2CHAR unicode2char[]=
 {
   // CAPITAL Cyrillic letters (base)
-  0x410,0x80,0xC0,0xE1, // À
-  0x411,0x81,0xC1,0xE2, // Á
-  0x412,0x82,0xC2,0xF7, // Â
-  0x413,0x83,0xC3,0xE7, // Ã
-  0x414,0x84,0xC4,0xE4, // Ä
-  0x415,0x85,0xC5,0xE5, // Å
-  0x416,0x86,0xC6,0xF6, // Æ
-  0x417,0x87,0xC7,0xFA, // Ç
-  0x418,0x88,0xC8,0xE9, // È
-  0x419,0x89,0xC9,0xEA, // É
-  0x41A,0x8A,0xCA,0xEB, // Ê
-  0x41B,0x8B,0xCB,0xEC, // Ë
-  0x41C,0x8C,0xCC,0xED, // Ì
-  0x41D,0x8D,0xCD,0xEE, // Í
-  0x41E,0x8E,0xCE,0xEF, // Î
-  0x41F,0x8F,0xCF,0xF0, // Ï
-  0x420,0x90,0xD0,0xF2, // Ð
-  0x421,0x91,0xD1,0xF3, // Ñ
-  0x422,0x92,0xD2,0xF4, // Ò
-  0x423,0x93,0xD3,0xF5, // Ó
-  0x424,0x94,0xD4,0xE6, // Ô
-  0x425,0x95,0xD5,0xE8, // Õ
-  0x426,0x96,0xD6,0xE3, // Ö
-  0x427,0x97,0xD7,0xFE, // ×
-  0x428,0x98,0xD8,0xFB, // Ø
-  0x429,0x99,0xD9,0xFD, // Ù
-  0x42A,0x9A,0xDA,0xFF, // Ú
-  0x42B,0x9B,0xDB,0xF9, // Û
-  0x42C,0x9C,0xDC,0xF8, // Ü
-  0x42D,0x9D,0xDD,0xFC, // Ý
-  0x42E,0x9E,0xDE,0xE0, // Þ
-  0x42F,0x9F,0xDF,0xF1, // ß
+  0x410,0x80,0xC0,0xE1, // §¡
+  0x411,0x81,0xC1,0xE2, // §¢
+  0x412,0x82,0xC2,0xF7, // §£
+  0x413,0x83,0xC3,0xE7, // §¤
+  0x414,0x84,0xC4,0xE4, // §¥
+  0x415,0x85,0xC5,0xE5, // §¦
+  0x416,0x86,0xC6,0xF6, // §¨
+  0x417,0x87,0xC7,0xFA, // §©
+  0x418,0x88,0xC8,0xE9, // §ª
+  0x419,0x89,0xC9,0xEA, // §«
+  0x41A,0x8A,0xCA,0xEB, // §¬
+  0x41B,0x8B,0xCB,0xEC, // §­
+  0x41C,0x8C,0xCC,0xED, // §®
+  0x41D,0x8D,0xCD,0xEE, // §¯
+  0x41E,0x8E,0xCE,0xEF, // §°
+  0x41F,0x8F,0xCF,0xF0, // §±
+  0x420,0x90,0xD0,0xF2, // §²
+  0x421,0x91,0xD1,0xF3, // §³
+  0x422,0x92,0xD2,0xF4, // §´
+  0x423,0x93,0xD3,0xF5, // §µ
+  0x424,0x94,0xD4,0xE6, // §¶
+  0x425,0x95,0xD5,0xE8, // §·
+  0x426,0x96,0xD6,0xE3, // §¸
+  0x427,0x97,0xD7,0xFE, // §¹
+  0x428,0x98,0xD8,0xFB, // §º
+  0x429,0x99,0xD9,0xFD, // §»
+  0x42A,0x9A,0xDA,0xFF, // §¼
+  0x42B,0x9B,0xDB,0xF9, // §½
+  0x42C,0x9C,0xDC,0xF8, // §¾
+  0x42D,0x9D,0xDD,0xFC, // §¿
+  0x42E,0x9E,0xDE,0xE0, // §À
+  0x42F,0x9F,0xDF,0xF1, // §Á
   // CAPITAL Cyrillic letters (additional)
   0x402,'_',0x80,'_', // _ .*.*
   0x403,'_',0x81,'_', // _ .*.*
@@ -818,47 +844,47 @@ const TUNICODE2CHAR unicode2char[]=
   0x40C,'_',0x8D,'_', // _ .*.*
   0x40B,'_',0x8E,'_', // _ .*.*
   0x40F,'_',0x8F,'_', // _ .*.*
-  0x40E,0xF6,0xA1,'_', // ¡ ...*
+  0x40E,0xF6,0xA1,'_', // ? ...*
   0x408,0x4A,0xA3,0x4A, // _ .*.*
   0x409,0x83,0xA5,0xBD, // _ .*..
-  0x401,0xF0,0xA8,0xB3, // ¨
-  0x404,0xF2,0xAA,0xB4, // ª
-  0x407,0xF4,0xAF,0xB7, // ¯
+  0x401,0xF0,0xA8,0xB3, // §§
+  0x404,0xF2,0xAA,0xB4, // ?
+  0x407,0xF4,0xAF,0xB7, // ?
   0x406,0x49,0xB2,0xB6, // _ .*..
   0x405,0x53,0xBD,0x53, // _ .*.*
   // SMALL Cyrillic letters (base)
-  0x430,0xA0,0xE0,0xC1, // à
-  0x431,0xA1,0xE1,0xC2, // á
-  0x432,0xA2,0xE2,0xD7, // â
-  0x433,0xA3,0xE3,0xC7, // ã
-  0x434,0xA4,0xE4,0xC4, // ä
-  0x435,0xA5,0xE5,0xC5, // å
-  0x436,0xA6,0xE6,0xD6, // æ
-  0x437,0xA7,0xE7,0xDA, // ç
-  0x438,0xA8,0xE8,0xC9, // è
-  0x439,0xA9,0xE9,0xCA, // é
-  0x43A,0xAA,0xEA,0xCB, // ê
-  0x43B,0xAB,0xEB,0xCC, // ë
-  0x43C,0xAC,0xEC,0xCD, // ì
-  0x43D,0xAD,0xED,0xCE, // í
-  0x43E,0xAE,0xEE,0xCF, // î
-  0x43F,0xAF,0xEF,0xD0, // ï
-  0x440,0xE0,0xF0,0xD2, // ð
-  0x441,0xE1,0xF1,0xD3, // ñ
-  0x442,0xE2,0xF2,0xD4, // ò
-  0x443,0xE3,0xF3,0xD5, // ó
-  0x444,0xE4,0xF4,0xC6, // ô
-  0x445,0xE5,0xF5,0xC8, // õ
-  0x446,0xE6,0xF6,0xC3, // ö
-  0x447,0xE7,0xF7,0xDE, // ÷
-  0x448,0xE8,0xF8,0xDB, // ø
-  0x449,0xE9,0xF9,0xDD, // ù
-  0x44A,0xEA,0xFA,0xDF, // ú
-  0x44B,0xEB,0xFB,0xD9, // û
-  0x44C,0xEC,0xFC,0xD8, // ü
-  0x44D,0xED,0xFD,0xDC, // ý
-  0x44E,0xEE,0xFE,0xC0, // þ
-  0x44F,0xEF,0xFF,0xD1, // ÿ
+  0x430,0xA0,0xE0,0xC1, // §Ñ
+  0x431,0xA1,0xE1,0xC2, // §Ò
+  0x432,0xA2,0xE2,0xD7, // §Ó
+  0x433,0xA3,0xE3,0xC7, // §Ô
+  0x434,0xA4,0xE4,0xC4, // §Õ
+  0x435,0xA5,0xE5,0xC5, // §Ö
+  0x436,0xA6,0xE6,0xD6, // §Ø
+  0x437,0xA7,0xE7,0xDA, // §Ù
+  0x438,0xA8,0xE8,0xC9, // §Ú
+  0x439,0xA9,0xE9,0xCA, // §Û
+  0x43A,0xAA,0xEA,0xCB, // §Ü
+  0x43B,0xAB,0xEB,0xCC, // §Ý
+  0x43C,0xAC,0xEC,0xCD, // §Þ
+  0x43D,0xAD,0xED,0xCE, // §ß
+  0x43E,0xAE,0xEE,0xCF, // §à
+  0x43F,0xAF,0xEF,0xD0, // §á
+  0x440,0xE0,0xF0,0xD2, // §â
+  0x441,0xE1,0xF1,0xD3, // §ã
+  0x442,0xE2,0xF2,0xD4, // §ä
+  0x443,0xE3,0xF3,0xD5, // §å
+  0x444,0xE4,0xF4,0xC6, // §æ
+  0x445,0xE5,0xF5,0xC8, // §ç
+  0x446,0xE6,0xF6,0xC3, // §è
+  0x447,0xE7,0xF7,0xDE, // §é
+  0x448,0xE8,0xF8,0xDB, // §ê
+  0x449,0xE9,0xF9,0xDD, // §ë
+  0x44A,0xEA,0xFA,0xDF, // §ì
+  0x44B,0xEB,0xFB,0xD9, // §í
+  0x44C,0xEC,0xFC,0xD8, // §î
+  0x44D,0xED,0xFD,0xDC, // §ï
+  0x44E,0xEE,0xFE,0xC0, // §ð
+  0x44F,0xEF,0xFF,0xD1, // §ñ
   // SMALL Cyrillic letters (additional)
   0x452,'_',0x90,'_', // _ .*.*
   0x453,'_',0x83,'_', // _ .*.*
@@ -867,24 +893,24 @@ const TUNICODE2CHAR unicode2char[]=
   0x45C,'_',0x9D,'_', // _ .*.*
   0x45B,'_',0x9E,'_', // _ .*.*
   0x45F,'_',0x9F,'_', // _ .*.*
-  0x45E,0xF7,0xA2,'_', // ¢ ...*
+  0x45E,0xF7,0xA2,'_', // ? ...*
   0x458,0x6A,0xBC,0x6A, // _ .*.*
   0x491,0xA3,0xB4,0xAD, // _ .*..
-  0x451,0xF1,0xB8,0xA3, // ¸
-  0x454,0xF3,0xBA,0xA4, // º
-  0x457,0xF5,0xBF,0xA7, // ¿
+  0x451,0xF1,0xB8,0xA3, // §×
+  0x454,0xF3,0xBA,0xA4, // ?
+  0x457,0xF5,0xBF,0xA7, // ?
   0x456,0x69,0xB3,0xA6, // _ .*..
   0x455,0x73,0xBE,0x73, // _ .*.*
   0x0A0,'_',0xA0,0x20, // space .*..
-  0x0A4,'_',0xA4,0xFD, // ¤   .*..
-  0x0A6,'_',0xA6,'_', // ¦   .*.*
-  0x0B0,0xF8,0xB0,0x9C, // °
-  0x0B7,0xFA,0xB7,0x9E, // ·
+  0x0A4,'_',0xA4,0xFD, // ¡è   .*..
+  0x0A6,'_',0xA6,'_', // |   .*.*
+  0x0B0,0xF8,0xB0,0x9C, // ¡ã
+  0x0B7,0xFA,0xB7,0x9E, // ¡¤
   // 0x2022,,0x95,0x95, //    .*..
-  // 0x2116,0xFC,0xB9,0x23, // ¹   ...*
+  // 0x2116,0xFC,0xB9,0x23, // ¡í   ...*
   // 0x2219,,0xF9,0x9E, //    .*..
   // 0x221A,0xFB,,0x96, // v   ..*.
-  // 0x25A0,0xFE,,0x94, // ¦
+  // 0x25A0,0xFE,,0x94, // |
   0x0000,0,0,0
 };
 

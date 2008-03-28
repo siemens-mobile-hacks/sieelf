@@ -3208,6 +3208,9 @@ mnuedit/IDLEHOOK.dep -text
 mnuedit/IDLEHOOK.ewd -text
 mnuedit/IDLEHOOK.ewp -text
 mnuedit/IDLEHOOK.eww -text
+mnuedit/MNUEdit.dep -text
+mnuedit/MNUEdit.ewp -text
+mnuedit/MNUEdit.eww -text
 mnuedit/ReadMe.txt -text
 mnuedit/conf_loader.c -text
 mnuedit/conf_loader.h -text
@@ -3217,6 +3220,9 @@ mnuedit/func.asm -text
 mnuedit/language.h -text
 mnuedit/main.c -text
 mnuedit/menu.c -text
+mnuedit/pack.cmd -text
+mnuedit/shortcuts.txt -text
+mnuedit/shortcuts_menu.c -text
 mnuedit/test.xcl -text
 openwith2/conf_loader.c -text
 openwith2/conf_loader.h -text
