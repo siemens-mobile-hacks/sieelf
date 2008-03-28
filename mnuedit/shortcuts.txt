@@ -1,168 +1,168 @@
-ELSE_DEVELP_MNU;Developer Menu
-CKLK_CK_MAINMNU;Главное меню
-CNCT_CRT_ADBOOK;Создать новую запись в адресной книге
-CNCT_CRT_CONTCT;Создать новый контакт
-CNCT_CRT_PHBOOK;Создать новую запись в телефонной книге
-ELSE_ALARMCLOCK;Будильник
-MESG_WRT_NEMAIL;Новое эл.письмо
-STUP_MASTERRESE;Установка стандартных настроек
-MESG_WRT_NEWEMS;Новое SMS
-MESG_WRT_NEWMMS;Новое MMS
-MESG_INBOX_DIRC;Папка Входящие
-RECD_DIALEDCALL;Набранные номера
-RECD_MISSEDCALL;ропущенные вызовы
-RECD_RECVEDCALL;Принятые вызовы
-JAVA_APPLI_MENU;Приложения
-JAVA_GAMES_MENU;Игры
-CNCT_DEFAU_BOOK;Телефонный справочник по умолчанию
-CNCT_ADDRESSBOK;Адресная книга
-CNCT_OWN_NUMBER;Собственные номера
-ELSE_DOWN_ASSIS;Помощник загрузки
-ELSE_COUNT_DOWN;Таймер
-ORGZ_DICT_MACHI;Записи диктофона
-ELSE_CALCULATOR;Калькулятор
-ELSE_STOP_WATCH;Секундомер
-ELSE_UNIT_CONVE;Конвертер величин
-INTR_STRTBROWSR;Открыть браузер
-ELSE_SATKITMENU;SIM Меню
-STUP_BABYSITTER;Прямой вызов(няня)
-STUP__GPRS_INFO;Информация GPRS
-STUP__INFOTONES;Сервисные сигналы
-STUP__WALLPAPER;Обои
-STUP_AUTOKEYLOK;Блокировка клавиш
-STUP_BANDSELECT;Диапазон
-STUP_BIGLETTERS;Прописные буквы
-STUP_BUDDSTYEAR;Буддист. год
-STUP_CALLSCREEN;Фильтр звонков
-STUP_CALLWAITIN;Ожидание вызова
-STUP_CH_PINCODE;Изменить PIN
-STUP_CHANGE_NET;Выбор сети
-STUP_CLK_AUTOOF;Автоматическое выключение
-STUP_CLOCK_MENU;Меню Часы
-STUP_CONCEAL_ID;Инкогнито
-STUP_CONCT_BLUE;Bluetooth вкл\выкл
-STUP_CONCT_GPRS;GPRS вкл\выкл
-STUP_CONCT_IRDA;ИК-порт вкл\выкл
-STUP_CONNEC_MNU;Меню Передача данных
-STUP_CTIME_DATE;Настройки Дата\время
-STUP_DATSERVICE;Меню Службы данных
-STUP_DISPLAYMNU;Меню Индикация
-STUP_DLIGHT_MNU;Меню Динамическая подсветка
-STUP_FASTSEARCH;Быстрый поиск сети
-STUP_FAXDAT_MNU;Меню Факс\данные
-STUP_FILESYSTEM;Card-Explorer
-STUP_FORMATDATE;Формат даты
-STUP_HTTPPROFIL;HTTP-профиль
-STUP_ILLUMINATI;Подсветка
-STUP_KEYTON_MNU;Сигнал нажатия клавиш
-STUP_LANGUAGMNU;Меню Выбор языка
-STUP_MINUTEBEEP;Ежеминутный сигнал
-STUP_MNU_DIVERT;Переадресация
-STUP_NET_USERGR;Абонентская группа
-STUP_NETWORKINF;Сетевая информация
-STUP_NETWRK_MNU;Меню Сеть
-STUP_ONLYPROTSI;Только защищен.SIM
-STUP_OWNGREETIN;Приветствие
-STUP_PCALL_MENU;Меню Настройка соединения
-STUP_PHONE_CODE;Код телефона
-STUP_PHONE_MENU;Меню Настройка телефона
-STUP_PHONEIDENT;Идентификация телефона
-STUP_PREFERNETW;Предпочтительная сеть
-STUP_PROTECBOOK;Настройка защищенных номеров
-STUP_RINGSE_MNU;Настройка звонка вкл\выкл\гудок
-STUP_RINGTO_MNU;Меню Мелодии звонка
-STUP_SCREENSAVR;Настройка заставки
-STUP_SECPIN_MNU;Контроль PIN
-STUP_SECUR_MENU;Меню Безопасность
-STUP_SETCONTRAS;Меню Контраст
-STUP_SETPUPMENU;Меню Настройки
-STUP_SHOW_CLOCK;Показать часы
-STUP_SHUTDOWNAN;Анимация при выключенииr
-STUP_SILENTALER;Вибра вкл\выкл
-STUP_SOFTVERSIO;Версия прошивки
-STUP_STARTUPANI;Анимация при включении
-STUP_TEXT_INPUT;Ввод текста
-STUP_THEMES_MNU;Меню Темы
-STUP_THISIMONLY;Только эта SIM
-STUP_TIMEFORMAT;Формат времени
+ELSE_DEVELP_MNU;№¤ДЈІЛµҐ
+CKLK_CK_MAINMNU;ЦчІЛµҐ
+CNCT_CRT_ADBOOK;РВЅЁНЁС¶Вј
+CNCT_CRT_CONTCT;РВЅЁБЄПµИЛ(єНРВЅЁНЁС¶ВјТ»Сщ)
+CNCT_CRT_PHBOOK;РВЅЁµз»°Іѕ
+ELSE_ALARMCLOCK;ДЦЦУ
+MESG_WRT_NEMAIL;РВЅЁУКјю
+STUP_MASTERRESE;ЧЬёґО»
+MESG_WRT_NEWEMS;РВЅЁ¶МРЕ
+MESG_WRT_NEWMMS;РВЅЁІКРЕ
+MESG_INBOX_DIRC;КХјюјР
+RECD_DIALEDCALL;ТСІ¦µз»°
+RECD_MISSEDCALL;ОґЅУµз»°
+RECD_RECVEDCALL;ТСЅУµз»°
+JAVA_APPLI_MENU;У¦УГИнјю
+JAVA_GAMES_MENU;УОП·
+CNCT_DEFAU_BOOK;ґтїЄД¬ИПБЄПµІѕ(µз»°Іѕ,НЁС¶Вј)
+CNCT_ADDRESSBOK;НЁС¶Вј
+CNCT_OWN_NUMBER;±ѕ»ъєЕВл
+ELSE_DOWN_ASSIS;ПВФШЦъКЦ
+ELSE_COUNT_DOWN;µ№јЖК±
+ORGZ_DICT_MACHI;ВјТф»ъ
+ELSE_CALCULATOR;јЖЛгЖч
+ELSE_STOP_WATCH;Гл±н
+ELSE_UNIT_CONVE;µҐО»»»Лг
+INTR_STRTBROWSR;дЇААЖч
+ELSE_SATKITMENU;SIMїЁ№¤ѕЯ°ь(Из¶ЇёРµШґш)
+STUP_BABYSITTER;Ц±ЅУІ¦ґт(РиТЄКдИлКЦ»ъГЬВл)
+STUP__GPRS_INFO;GPRSБчБї
+STUP__INFOTONES;ТµОсМбКѕТф
+STUP__WALLPAPER;ЗЅЦЅ
+STUP_AUTOKEYLOK;ЧФ¶ЇЛшјьЕМ
+STUP_BANDSELECT;ЖµВКСЎФс
+STUP_BIGLETTERS;ґуЧЦМеПФКѕ
+STUP_BUDDSTYEAR;ОґЙи¶Ё
+STUP_CALLSCREEN;АґµзЙёСЎ
+STUP_CALLWAITIN;АґµзµИґэ
+STUP_CH_PINCODE;РЮёДPINВл
+STUP_CHANGE_NET;ЦШРВСЎНш
+STUP_CLK_AUTOOF;ЧФ¶Ї№Ш»ъ
+STUP_CLOCK_MENU;К±ЦУ
+STUP_CONCEAL_ID;ТюІШ±ѕ»ъєЕВл
+STUP_CONCT_BLUE;АєСА
+STUP_CONCT_GPRS;GPRS
+STUP_CONCT_IRDA;ємНвПЯ
+STUP_CONNEC_MNU;КэѕЭБ¬ЅУ
+STUP_CTIME_DATE;К±јдЎўИХЖЪ
+STUP_DATSERVICE;КэѕЭ·юОс
+STUP_DISPLAYMNU;ПФКѕЖБ
+STUP_DLIGHT_MNU;¶ЇёРЙБ№в
+STUP_FASTSEARCH;їмЛЩЛСНш
+STUP_FAXDAT_MNU;ґ«Хж/КэѕЭДЈКЅ
+STUP_FILESYSTEM;ОДјю№ЬАнЖч(ёсКЅ»Ї/Зеіэ)
+STUP_FORMATDATE;Йи¶ЁИХЖЪёсКЅ
+STUP_HTTPPROFIL;HTTPЕдЦГОДјю
+STUP_ILLUMINATI;Т№№вХХГч
+STUP_KEYTON_MNU;°ґјь°йТф
+STUP_LANGUAGMNU;УпСФ
+STUP_MINUTEBEEP;·ЦЦУѕЇКѕТф
+STUP_MNU_DIVERT;ЧЄТЖЙи¶Ё
+STUP_NET_USERGR;НшВз№ЬАн-УГ»§ИєЧй
+STUP_NETWORKINF;НшВзРЕПў
+STUP_NETWRK_MNU;НшВз№ЬАнІЛµҐ
+STUP_ONLYPROTSI;ПЮІ¦(РиТЄPIN2)
+STUP_OWNGREETIN;їЄ»ъОКєтУп
+STUP_PCALL_MENU;НЁ»°Йи¶Ё
+STUP_PHONE_CODE;КЦ»ъГЬВл
+STUP_PHONE_MENU;КЦ»ъЙи¶Ё
+STUP_PHONEIDENT;КЦ»ъРтБРєЕ
+STUP_PREFERNETW;УЕПИНшВз
+STUP_PROTECBOOK;(±Ј»¤µз»°±ѕ)ОґЙи¶Ё
+STUP_RINGSE_MNU;ХсБеЙи¶Ё
+STUP_RINGTO_MNU;ХсБеТфµч
+STUP_SCREENSAVR;ЖБ±ЈЙиЦГ
+STUP_SECPIN_MNU;PINВл
+STUP_SECUR_MENU;°ІИ«Йи¶Ё
+STUP_SETCONTRAS;¶Ф±И¶И
+STUP_SETPUPMENU;ЖдЛьЙи¶Ё
+STUP_SHOW_CLOCK;їЄЖф/№Ш±Х ПФКѕК±ЦУ
+STUP_SHUTDOWNAN;§Ў§Я§Ъ§Ю§С§и§Ъ§с §б§в§Ъ §У§н§Ь§Э§р§й§Ц§Я§Ъ§Ъr
+STUP_SILENTALER;§Ј§Ъ§Т§в§С §У§Ь§Э\§У§н§Ь§Э
+STUP_SOFTVERSIO;§Ј§Ц§в§г§Ъ§с §б§в§а§к§Ъ§У§Ь§Ъ
+STUP_STARTUPANI;§Ў§Я§Ъ§Ю§С§и§Ъ§с §б§в§Ъ §У§Ь§Э§р§й§Ц§Я§Ъ§Ъ
+STUP_TEXT_INPUT;§Ј§У§а§Х §д§Ц§Ь§г§д§С
+STUP_THEMES_MNU;§®§Ц§Я§р §ґ§Ц§Ю§н
+STUP_THISIMONLY;§ґ§а§Э§о§Ь§а §п§д§С SIM
+STUP_TIMEFORMAT;§¶§а§в§Ю§С§д §У§в§Ц§Ю§Ц§Я§Ъ
 STUP_VCONTR_MNU;??
-STUP_VOLUME_MNU;Меню Громкость
-CNCT_BUSINESSCD;Визитная карточка
-CNCT_INFO_NUMBS;Информационные номера
-CNCT_PHONE_BOOK;Телефонный справочник
-CNCT_SELDEFBOOK;Выбор справочника по умолчанию
-CNCT_STRT_GROUP;Группы
-ELSE_CKVOLUMEDN;Уменьшение громкости
-ELSE_CKVOLUMEUP;Увеличение громкости
+STUP_VOLUME_MNU;§®§Ц§Я§р §¤§в§а§Ю§Ь§а§г§д§о
+CNCT_BUSINESSCD;§Ј§Ъ§Щ§Ъ§д§Я§С§с §Ь§С§в§д§а§й§Ь§С
+CNCT_INFO_NUMBS;§Є§Я§ж§а§в§Ю§С§и§Ъ§а§Я§Я§н§Ц §Я§а§Ю§Ц§в§С
+CNCT_PHONE_BOOK;§ґ§Ц§Э§Ц§ж§а§Я§Я§н§Ы §г§б§в§С§У§а§й§Я§Ъ§Ь
+CNCT_SELDEFBOOK;§Ј§н§Т§а§в §г§б§в§С§У§а§й§Я§Ъ§Ь§С §б§а §е§Ю§а§Э§й§С§Я§Ъ§р
+CNCT_STRT_GROUP;§¤§в§е§б§б§н
+ELSE_CKVOLUMEDN;§µ§Ю§Ц§Я§о§к§Ц§Я§Ъ§Ц §Ф§в§а§Ю§Ь§а§г§д§Ъ
+ELSE_CKVOLUMEUP;§µ§У§Ц§Э§Ъ§й§Ц§Я§Ъ§Ц §Ф§в§а§Ю§Ь§а§г§д§Ъ
 ELSE_CNG_POCFLG;??
-ELSE_DEVICE_MAN;Управление устройствами
-ELSE_DICTA_PLAY;Воспроизведение последней записи диктофона
-ELSE_DICTA_SAVE;Начать запись диктофона
-ELSE_EXTRASMENU;Меню Ещё
-ELSE_FLEXMNUOPT;Опции Главного меню
-ELSE_GPRS_TESTS;Тест GPRS
-ELSE_INTRCAMERA;Камера
-ELSE_MMENU_OPEN;Главное меню
+ELSE_DEVICE_MAN;§µ§б§в§С§У§Э§Ц§Я§Ъ§Ц §е§г§д§в§а§Ы§г§д§У§С§Ю§Ъ
+ELSE_DICTA_PLAY;§Ј§а§г§б§в§а§Ъ§Щ§У§Ц§Х§Ц§Я§Ъ§Ц §б§а§г§Э§Ц§Х§Я§Ц§Ы §Щ§С§б§Ъ§г§Ъ §Х§Ъ§Ь§д§а§ж§а§Я§С
+ELSE_DICTA_SAVE;§Ї§С§й§С§д§о §Щ§С§б§Ъ§г§о §Х§Ъ§Ь§д§а§ж§а§Я§С
+ELSE_EXTRASMENU;§®§Ц§Я§р §¦§л§Ч
+ELSE_FLEXMNUOPT;§°§б§и§Ъ§Ъ §¤§Э§С§У§Я§а§Ф§а §Ю§Ц§Я§р
+ELSE_GPRS_TESTS;§ґ§Ц§г§д GPRS
+ELSE_INTRCAMERA;§¬§С§Ю§Ц§в§С
+ELSE_MMENU_OPEN;§¤§Э§С§У§Я§а§Ц §Ю§Ц§Я§р
 ELSE_NOT_IN_CAL;??
 ELSE_OPENPOCAPL;??
-ELSE_PUSHTOTALK;Функция Push to talk
+ELSE_PUSHTOTALK;§¶§е§Я§Ь§и§Ъ§с Push to talk
 ELSE_REMOTESATK;??
-ELSE_REMOTESYNC;Удалённая синхронизация
-ELSE_SETKEYLOCK;Блокировка клавиш вкл\выкл
-ELSE_SOUND_RECO;Запись звука
-ELSE_STR_MYMENU;Моё меню
-ELSE_SUFFUNUMNU;Интернет\игры
-ELSE_VIDEO_RECO;Запись видео
-FLSH_FLEXDINBOX;Папка Data inbox
-FLSH_FLEXPLORER;Проводник файлов
-FLSH_FLEXSOUNDS;Папка Звуки
-FLSH_FLPICTURES;Папка Картинки
-FLSH_MYOWNANIMA;Папка Анимация
-FLSH_MYOWNSTUFF;Мои файлы
-FLSH_MYOWNVIDEO;Папка Видео
-FLSH_MYPICTURES;Папка Рисунки
-INTR_BBOOKMARKS;Закладки
-MESG_CHG_SETTGS;Меню Сообщения->Настройка
-MESG_DRAFT_DIRC;Папка Черновик
+ELSE_REMOTESYNC;§µ§Х§С§Э§Ч§Я§Я§С§с §г§Ъ§Я§з§в§а§Я§Ъ§Щ§С§и§Ъ§с
+ELSE_SETKEYLOCK;§ў§Э§а§Ь§Ъ§в§а§У§Ь§С §Ь§Э§С§У§Ъ§к §У§Ь§Э\§У§н§Ь§Э
+ELSE_SOUND_RECO;§©§С§б§Ъ§г§о §Щ§У§е§Ь§С
+ELSE_STR_MYMENU;§®§а§Ч §Ю§Ц§Я§р
+ELSE_SUFFUNUMNU;§Є§Я§д§Ц§в§Я§Ц§д\§Ъ§Ф§в§н
+ELSE_VIDEO_RECO;§©§С§б§Ъ§г§о §У§Ъ§Х§Ц§а
+FLSH_FLEXDINBOX;§±§С§б§Ь§С Data inbox
+FLSH_FLEXPLORER;§±§в§а§У§а§Х§Я§Ъ§Ь §ж§С§Ы§Э§а§У
+FLSH_FLEXSOUNDS;§±§С§б§Ь§С §©§У§е§Ь§Ъ
+FLSH_FLPICTURES;§±§С§б§Ь§С §¬§С§в§д§Ъ§Я§Ь§Ъ
+FLSH_MYOWNANIMA;§±§С§б§Ь§С §Ў§Я§Ъ§Ю§С§и§Ъ§с
+FLSH_MYOWNSTUFF;§®§а§Ъ §ж§С§Ы§Э§н
+FLSH_MYOWNVIDEO;§±§С§б§Ь§С §Ј§Ъ§Х§Ц§а
+FLSH_MYPICTURES;§±§С§б§Ь§С §І§Ъ§г§е§Я§Ь§Ъ
+INTR_BBOOKMARKS;§©§С§Ь§Э§С§Х§Ь§Ъ
+MESG_CHG_SETTGS;§®§Ц§Я§р §і§а§а§Т§л§Ц§Я§Ъ§с->§Ї§С§г§д§в§а§Ы§Ь§С
+MESG_DRAFT_DIRC;§±§С§б§Ь§С §№§Ц§в§Я§а§У§Ъ§Ь
 MESG_IMPS_START;??
-MESG_MESSGEMENU;Меню Сообщения
-MESG_MMSTEMPLTS;Шаблоны MMS
-MESG_OUTBOXDIRC;Папка Не отправленные
+MESG_MESSGEMENU;§®§Ц§Я§р §і§а§а§Т§л§Ц§Я§Ъ§с
+MESG_MMSTEMPLTS;§є§С§Т§Э§а§Я§н MMS
+MESG_OUTBOXDIRC;§±§С§б§Ь§С §Ї§Ц §а§д§б§в§С§У§Э§Ц§Я§Я§н§Ц
 MESG_RIM_CLIENT;IM (Provider specific)
-MESG_SENTITMBOX;Папка Отправлено
-MESG_SMSARCHIVE;Архив SMS
-MESG_TXTMODULES;Текстовые модули
-MESG_UNIFIEDBOX;Все входящие (SMS\MMS\звонки)
+MESG_SENTITMBOX;§±§С§б§Ь§С §°§д§б§в§С§У§Э§Ц§Я§а
+MESG_SMSARCHIVE;§Ў§в§з§Ъ§У SMS
+MESG_TXTMODULES;§ґ§Ц§Ь§г§д§а§У§н§Ц §Ю§а§Х§е§Э§Ъ
+MESG_UNIFIEDBOX;§Ј§г§Ц §У§з§а§Х§с§л§Ъ§Ц (SMS\MMS\§Щ§У§а§Я§Ь§Ъ)
 MESG_UNSENTIBOX;??
 MESG_WRT_POSTCD;??
-ORGZ_APPOINTMNT;Встречи
-ORGZ_APPOINTNEW;Встречи->Новая запись
-ORGZ_CALE_SETUP;Настройки календаря
-ORGZ_CALENDERMV;Календар
+ORGZ_APPOINTMNT;§Ј§г§д§в§Ц§й§Ъ
+ORGZ_APPOINTNEW;§Ј§г§д§в§Ц§й§Ъ->§Ї§а§У§С§с §Щ§С§б§Ъ§г§о
+ORGZ_CALE_SETUP;§Ї§С§г§д§в§а§Ы§Ь§Ъ §Ь§С§Э§Ц§Я§Х§С§в§с
+ORGZ_CALENDERMV;§¬§С§Э§Ц§Я§Х§С§в
 ORGZ_CHINESEFST;??
 ORGZ_LUNARSOLAR;??
-ORGZ_MISSED_APP;Пропущенные напоминания
-ORGZ_ORGANIZMNU;Меню Органайзер
-ORGZ_ORGZRNOTES;Записки
-ORGZ_ORGZRTASKS;Задания
+ORGZ_MISSED_APP;§±§в§а§б§е§л§Ц§Я§Я§н§Ц §Я§С§б§а§Ю§Ъ§Я§С§Я§Ъ§с
+ORGZ_ORGANIZMNU;§®§Ц§Я§р §°§в§Ф§С§Я§С§Ы§Щ§Ц§в
+ORGZ_ORGZRNOTES;§©§С§б§Ъ§г§Ь§Ъ
+ORGZ_ORGZRTASKS;§©§С§Х§С§Я§Ъ§с
 ORGZ_SOLARLUNAR;??
-ORGZ_TIME_ZONES;Часовые пояса
-PROF_PROFILEMNU;Меню Профили
-RECD_DELETERECD;Удалить списки
-RECD_DURCHARGES;Время\стоимость
-RECD_DURCHSETUP;Настройка тарифа
-RECD_RECORDMENU;Списки вызовов
-STUP_ACC_CARKIT;Настройки Car Kit
-STUP_ACC_HEADSET;Настройки гарнитуры
-STUP_ACCESS_MNU;Меню Аксессуары
+ORGZ_TIME_ZONES;§№§С§г§а§У§н§Ц §б§а§с§г§С
+PROF_PROFILEMNU;§®§Ц§Я§р §±§в§а§ж§Ъ§Э§Ъ
+RECD_DELETERECD;§µ§Х§С§Э§Ъ§д§о §г§б§Ъ§г§Ь§Ъ
+RECD_DURCHARGES;§Ј§в§Ц§Ю§с\§г§д§а§Ъ§Ю§а§г§д§о
+RECD_DURCHSETUP;§Ї§С§г§д§в§а§Ы§Ь§С §д§С§в§Ъ§ж§С
+RECD_RECORDMENU;§і§б§Ъ§г§Ь§Ъ §У§н§Щ§а§У§а§У
+STUP_ACC_CARKIT;§Ї§С§г§д§в§а§Ы§Ь§Ъ Car Kit
+STUP_ACC_HEADSET;§Ї§С§г§д§в§а§Ы§Ь§Ъ §Ф§С§в§Я§Ъ§д§е§в§н
+STUP_ACCESS_MNU;§®§Ц§Я§р §Ў§Ь§г§Ц§г§г§е§С§в§н
 STUP_ALTER_LINE;??
-STUP_ANYKEYTOAN;Ответ любой клавишей
-STUP_AUTENTIFIC;Аутентификация WAP
-STUP_AUTONETWORK;Автоматический выбор сети
-STUP_AVATAR_MNU;Тел.помощник
-STUP_BARRINGMENU;Меню Сетевые блокировки
-STUP_BITMAPLOGO;Выбор логотипа
-STUP_ACC_HEADSE;Настройка гарнитуры
-STUP_AUTONETWOR;Автоматический выбор сети
-STUP_BARRINGMNU;Меню Сетевые блокировки
+STUP_ANYKEYTOAN;§°§д§У§Ц§д §Э§р§Т§а§Ы §Ь§Э§С§У§Ъ§к§Ц§Ы
+STUP_AUTENTIFIC;§Ў§е§д§Ц§Я§д§Ъ§ж§Ъ§Ь§С§и§Ъ§с WAP
+STUP_AUTONETWORK;§Ў§У§д§а§Ю§С§д§Ъ§й§Ц§г§Ь§Ъ§Ы §У§н§Т§а§в §г§Ц§д§Ъ
+STUP_AVATAR_MNU;§ґ§Ц§Э.§б§а§Ю§а§л§Я§Ъ§Ь
+STUP_BARRINGMENU;§®§Ц§Я§р §і§Ц§д§Ц§У§н§Ц §Т§Э§а§Ь§Ъ§в§а§У§Ь§Ъ
+STUP_BITMAPLOGO;§Ј§н§Т§а§в §Э§а§Ф§а§д§Ъ§б§С
+STUP_ACC_HEADSE;§Ї§С§г§д§в§а§Ы§Ь§С §Ф§С§в§Я§Ъ§д§е§в§н
+STUP_AUTONETWOR;§Ў§У§д§а§Ю§С§д§Ъ§й§Ц§г§Ь§Ъ§Ы §У§н§Т§а§в §г§Ц§д§Ъ
+STUP_BARRINGMNU;§®§Ц§Я§р §і§Ц§д§Ц§У§н§Ц §Т§Э§а§Ь§Ъ§в§а§У§Ь§Ъ
 
