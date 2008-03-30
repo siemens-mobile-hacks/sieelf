@@ -1833,6 +1833,7 @@ TMOEditor/conf_loader.h -text
 TMOEditor/config_data.c -text
 TMOEditor/func.asm -text
 TMOEditor/main.c -text
+TMOEditor/save_as.c -text
 TMOEditor/tmo.xcl -text
 TalkAkkum/TalkAkkum.ewp -text
 TalkAkkum/TalkAkkum.eww -text

@@ -16,7 +16,8 @@ const char IPC_me[]="TMOEditor";
 const char IPC_to[]=IPC_GPSL_NAME;
 
 char filename[128];     // global variable for the file name 
-
+int is_new=0;
+WSHDR *e_ws;
 extern const char minigps_dir[];
 extern const char *successed_config_filename;
 //===============================================================================================
@@ -29,7 +30,7 @@ void patch_rect(RECT*rc,int x,int y, int x2, int y2)
   rc->y2=y2;
 }
 
-#pragma inline
+//#pragma inline
 void patch_header(const HEADER_DESC* head)
 {
   ((HEADER_DESC*)head)->rc.x=0;
@@ -37,7 +38,7 @@ void patch_header(const HEADER_DESC* head)
   ((HEADER_DESC*)head)->rc.x2=ScreenW()-1;
   ((HEADER_DESC*)head)->rc.y2=HeaderH()+YDISP-1;
 }
-#pragma inline
+//#pragma inline
 void patch_input(const INPUTDIA_DESC* inp)
 {
   ((INPUTDIA_DESC*)inp)->rc.x=0;
@@ -89,6 +90,7 @@ int MakeFolderPath(char *path)
 int LaunchEditor();
 void maincsm_oncreate(CSM_RAM *data)
 {
+	e_ws=AllocWS(128);
   MAIN_CSM*csm=(MAIN_CSM*)data;
   csm->csm.state=0;
   csm->csm.unk1=0;
@@ -99,6 +101,7 @@ extern void kill_data(void *p, void (*func_p)(void *));
 void ElfKiller(void)
 {
   extern void *ELF_BEGIN;
+  FreeWS(e_ws);
   kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
 }
 
@@ -263,11 +266,29 @@ int SaveText(WSHDR *tmostr)
   return 1;
 }
 
+extern void CreateSaveAsDialog(WSHDR *tmostr);
+
 void _SaveText(GUI *data)
 {
   WSHDR *tmostr=MenuGetUserPointer(data);
-  SaveText(tmostr);
-  GeneralFuncF1(10);
+  if(is_new)
+  {
+  	CreateSaveAsDialog(tmostr);
+  	is_new=0;
+  	GeneralFuncF1(1);
+  }
+  else
+  {
+  	SaveText(tmostr);
+  	GeneralFuncF1(10);
+  }
+}
+
+void goto_save_as_dlg(GUI *data)
+{
+	WSHDR *tmostr=MenuGetUserPointer(data);
+	CreateSaveAsDialog(tmostr);
+	GeneralFuncF1(1);
 }
 
 void Settings(GUI *data)
@@ -297,17 +318,21 @@ int save_icon[] = {0x50E,0};
 
 HEADER_DESC menuhdr={0,0,131,21,NULL,(int)"菜单",LGP_NULL};
 int menusoftkeys[]={0,1,2};
-MENUITEM_DESC menuitems[4]=
+
+#define MENU_ITEM_N 5
+MENUITEM_DESC menuitems[MENU_ITEM_N]=
 {
-  {NULL,(int)"保存",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"设置",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"关于", LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"退出", LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2}
+  {NULL,(int)"保存",			LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"另存为..",	LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"设置",			LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"关于", 			LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"退出", 			LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2}
 };
 
-MENUPROCS_DESC menuprocs[4]=
+MENUPROCS_DESC menuprocs[MENU_ITEM_N]=
 {
   _SaveText,
+  goto_save_as_dlg,
   Settings,
   AboutDlg,
   menup2
@@ -317,7 +342,7 @@ SOFTKEY_DESC menu_sk[]=
 {
   {0x0018,0x0000,(int)"选择"},
   {0x0001,0x0000,(int)"返回"},
-  {0x003D,0x0000,(int)"+"}
+  {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
 SOFTKEYSTAB menu_skt=
@@ -334,7 +359,7 @@ MENU_DESC tmenu=
   NULL,
   menuitems,
   menuprocs,
-  4
+  MENU_ITEM_N
 };
 
 //---------------------------------------------------------------------------
@@ -364,7 +389,7 @@ int inp_onkey(GUI *gui, GUI_MSG *msg)
     ExtractEditControl(gui,1,&ec);    
     wstrcpy(tmostr,ec.pWS);
     patch_header(&menuhdr);
-    menu_gui_id=CreateMenu(0,0,&tmenu,&menuhdr,0,4,tmostr,0);
+    menu_gui_id=CreateMenu(0,0,&tmenu,&menuhdr,0,MENU_ITEM_N,tmostr,0);
     return(-1); //do redraw
   }
   return(0); //Do standart keys
@@ -432,7 +457,10 @@ int LaunchEditor(void)
   if ((hFile=fopen(filename,A_ReadWrite+A_BIN,P_READ+P_WRITE,&errcode))!=-1)
   {
     fread(hFile,&str_len,2,&errcode);
-    char *sh_fname = strrchr(filename,'\\');
+    str_2ws(e_ws, filename, 128);
+    extern char header_str[128];
+    ws2gb(e_ws, header_str, 128);
+    char *sh_fname = strrchr(header_str,'\\');
     inp_hdr.lgp_id = (int)sh_fname;
     tmostr->wsbody[0]=str_len;   
     fread(hFile,tmostr->wsbody+1,str_len*2,&errcode);
@@ -441,11 +469,13 @@ int LaunchEditor(void)
       wsprintf(tmostr,"%t %u (file %s)","Error I/O", errcode, filename);          
     }*/
     fclose(hFile, &errcode);
+    is_new=0;
   }
   else
   {
     wsprintf(tmostr,"%t","0 ");
     inp_hdr.lgp_id = (int)"//<新建>";
+    is_new=1;
   } 
   UpdateCSMname();
   EDITCONTROL ec;
