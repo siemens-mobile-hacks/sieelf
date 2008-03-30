@@ -61,6 +61,7 @@ static int add_bookmark_onkey(GUI *data, GUI_MSG *msg)
   EDITCONTROL ec;
   WSHDR *ws;
   char *name, *url, pathbuf[256], *tmp;
+ // char *name2;
   unsigned ul;
   int f;
 
@@ -69,8 +70,10 @@ static int add_bookmark_onkey(GUI *data, GUI_MSG *msg)
     ExtractEditControl(data,2,&ec);
     ws = ec.pWS;
     name = (char *)malloc(256);
-    ws2gb(ws, name, 256);
-    //ws_2str(ws, name, 256);
+    //name2 = (char *)malloc(256);
+    //ws2gb(ws, name, 256);
+
+    ws_2str(ws,name,256);
     //for (int i=0; i<ws->wsbody[0]; i++) *name++=char16to8(ws->wsbody[i+1]);
     //*name = 0;
     //name = tmp;
@@ -95,6 +98,7 @@ static int add_bookmark_onkey(GUI *data, GUI_MSG *msg)
     }
     mfree(url);
     mfree(name);
+   // mfree(name2);
       
     return (1);
   }
@@ -150,7 +154,7 @@ int CreateAddBookmark(GUI *data)
   AddEditControlToEditQend(eq,&ec,ma); 
       
   if(data && flag)
-    gb2ws(ews,ustop->urlname,64);
+    str_2ws(ews,ustop->urlname,64);
   else
     if ((main_csm=(MAIN_CSM *)FindCSMbyID(maincsm_id)))
     {
@@ -401,7 +405,7 @@ void selurl_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
     len=strlen(ustop->urlname);
     ws=AllocMenuWS(gui,len+4);
     //ascii2ws(ws,ustop->urlname);
-    gb2ws(ws,ustop->urlname,64);
+    str_2ws(ws,ustop->urlname,64);
     if (!strcmp(ustop->fullpath+(strlen(ustop->fullpath)-4),".url"))
       SetMenuItemIconArray(gui,item,S_ICONS+0);
     else
