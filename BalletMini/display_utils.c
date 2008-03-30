@@ -703,7 +703,7 @@ void templ_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
         if (num==cur_item) start=i+1;
       }
     ws=AllocMenuWS(gui,len);
-    str_2ws(ws,buffer+start,len);
+    gb2ws(ws,buffer+start,len);
     mfree(buffer);
   }
   else
@@ -812,6 +812,8 @@ static void input_box_ghook(GUI *data, int cmd)
 
 static void input_box_locret(void){}
 
+int input=0;
+
 void input_box_onkey_options(USR_MENU_ITEM *item)
 {
   if (item->type==0)
@@ -819,7 +821,11 @@ void input_box_onkey_options(USR_MENU_ITEM *item)
     switch(item->cur_item)
     {
     case 0:
-      gb2ws(item->ws,"模板",strlen("模板"));
+      wsprintf(item->ws,"%t","模板");
+      break;
+      
+    case 1:
+      wsprintf(item->ws,"%t","输入法选择");
       break;
     }
   }
@@ -830,6 +836,10 @@ void input_box_onkey_options(USR_MENU_ITEM *item)
     case 0:
       createTemplatesMenu();
       break;
+      
+    case 1:
+      input=1;
+      break;    
     }
   }
 }
@@ -840,9 +850,17 @@ static int input_box_onkey(GUI *data, GUI_MSG *msg)
   if (msg->gbsmsg->msg==KEY_DOWN&&msg->gbsmsg->submess==ENTER_BUTTON)
 	{
     paste_gui=data;
-    EDIT_OpenOptionMenuWithUserItems(data,input_box_onkey_options,0,1);
+    EDIT_OpenOptionMenuWithUserItems(data,input_box_onkey_options,0,2);
     return (-1);
 	}
+  
+  if(input==1)
+     {
+     GBS_SendMessage(MMI_CEPID,LONG_PRESS,0x23);
+     input=0;
+     return (-1);
+     }
+  
   if (msg->keys==0xFFF)
   {
     // set value

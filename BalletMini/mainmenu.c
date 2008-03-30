@@ -69,7 +69,8 @@ static int add_bookmark_onkey(GUI *data, GUI_MSG *msg)
     ExtractEditControl(data,2,&ec);
     ws = ec.pWS;
     name = (char *)malloc(256);
-    ws_2str(ws, name, 256);
+    ws2gb(ws, name, 256);
+    //ws_2str(ws, name, 256);
     //for (int i=0; i<ws->wsbody[0]; i++) *name++=char16to8(ws->wsbody[i+1]);
     //*name = 0;
     //name = tmp;
@@ -88,7 +89,7 @@ static int add_bookmark_onkey(GUI *data, GUI_MSG *msg)
     f=fopen(pathbuf,A_WriteOnly+A_Create+A_BIN,P_READ+P_WRITE,&ul);
     if (f!=-1)
     {
-      url = ToWeb(url, 0);
+      //url = ToWeb(url, 0);
       fwrite(f,url,strlen(url),&ul);
       fclose(f,&ul);
     }
@@ -149,13 +150,13 @@ int CreateAddBookmark(GUI *data)
   AddEditControlToEditQend(eq,&ec,ma); 
       
   if(data && flag)
-    str_2ws(ews,ustop->urlname,64);
+    gb2ws(ews,ustop->urlname,64);
   else
     if ((main_csm=(MAIN_CSM *)FindCSMbyID(maincsm_id)))
     {
       p=FindGUIbyId(main_csm->view_id,NULL);
       if (p->vd->title)
-        gb2ws(ews,p->vd->title,strlen("p->vd->title:"));
+        utf8_2ws(ews,p->vd->title,strlen(p->vd->title));
       else
         gb2ws(ews,"新建书签",strlen("新建书签"));
     }
@@ -179,7 +180,8 @@ int CreateAddBookmark(GUI *data)
       {
         for(url_start = p->vd->pageurl; *url_start && *url_start != '/'; url_start++);
         for(; *url_start && *url_start == '/'; url_start++);
-        str_2ws(ews,url_start,strlen(url_start));
+        gb2ws(ews,url_start,strlen(url_start));
+        //wsprintf(ews,"%t",url_start);
         //str_2ws(ews,p->vd->pageurl+2,strlen(p->vd->pageurl)-2);
       }
       else
@@ -188,12 +190,12 @@ int CreateAddBookmark(GUI *data)
         switch(view_url_mode)
         {
         case MODE_FILE:
-          str_2ws(ews,view_url,255);
+          gb2ws(ews,view_url,255);
           break;
         case MODE_URL:
           for(url_start = view_url; *url_start && *url_start != '/'; url_start++);
           for(; *url_start && *url_start == '/'; url_start++);
-          str_2ws(ews,url_start,strlen(url_start));
+          gb2ws(ews,url_start,strlen(url_start));
           //ascii2ws(ews,view_url+2);
           break;
         }
@@ -399,7 +401,7 @@ void selurl_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
     len=strlen(ustop->urlname);
     ws=AllocMenuWS(gui,len+4);
     //ascii2ws(ws,ustop->urlname);
-    str_2ws(ws,ustop->urlname,64);
+    gb2ws(ws,ustop->urlname,64);
     if (!strcmp(ustop->fullpath+(strlen(ustop->fullpath)-4),".url"))
       SetMenuItemIconArray(gui,item,S_ICONS+0);
     else
@@ -509,6 +511,8 @@ static void get_search_engines()
 
 void search_locret(void){}
 
+char word[61];
+
 int search_onkey(GUI *data, GUI_MSG *msg)
 {
   EDITCONTROL ec;
@@ -519,7 +523,7 @@ int search_onkey(GUI *data, GUI_MSG *msg)
     //query
     ExtractEditControl(data,2,&ec);
     WSHDR *ws = ec.pWS;
-    int ql=ws->wsbody[0];
+    //int ql=ws->wsbody[0];
     
     //read url file    
     int f,fsize;
@@ -544,37 +548,42 @@ int search_onkey(GUI *data, GUI_MSG *msg)
     *s=0;
     fsize=strlen(url);
     
+    int utf8conv_res_len;
+    ws_2utf8(ws,word,&utf8conv_res_len,61);
+    
     //build search url    
-    goto_url=malloc(2+fsize+ql+2);    
+    goto_url=malloc(2+fsize+strlen(word)+2);    
     goto_url[0]='0';
     goto_url[1]='/';          
     
     s=strstr(url,"%s");
+
     if(s)
       {
       int ofs=s-url;
       memcpy(goto_url+2,url,ofs);
       s=goto_url+2+ofs;
-      for (int i=0; i<ql; i++) *s++=char16to8(ws->wsbody[i+1]);
-      memcpy(goto_url+2+ofs+ql,url+ofs+2,fsize-ofs-1);
+      for (int i=0; i<strlen(word); i++) *s++=word[i];
+      memcpy(goto_url+2+ofs+strlen(word),url+ofs+2,fsize-ofs-1);
       }
     else
       {
       memcpy(goto_url+2,url,fsize);  
       s=goto_url+2+fsize;
-      for (int i=0; i<ql; i++) *s++=char16to8(ws->wsbody[i+1]);
-      *s = 0;  
-      };       
+      for (int i=0; i<strlen(word); i++) *s++=word[i];
+      *s = 0;
+      };  
+    
     mfree(url);
    
-    goto_url = ToWeb(goto_url,0);
+    //goto_url = ToWeb(goto_url,0);
     
     return (0xFF);     
     
   fail:
     ShowMSG(2,(int)"错误!");    
     return (0);
-  }
+  } 
   return (0);
 }
 
@@ -613,7 +622,7 @@ void search_ghook(GUI *data, int cmd)
       selected_search_engine=EDIT_GetItemNumInFocusedComboBox(data)-1;
       if(selected_search_engine>=0&&selected_search_engine<search_engine_count)
         {
-        str_2ws(ews,search_engines[selected_search_engine],128);
+        gb2ws(ews,search_engines[selected_search_engine],128);
         EDIT_SetTextToFocused(data,ews);
         };
       FreeWS(ews);
@@ -658,7 +667,8 @@ static int CreateSearchDialog()
   ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,1024);
   AddEditControlToEditQend(eq,&ec,ma);
 
-  wsprintf(ews,"");
+  //CutWSTR(ews,0);
+  wsprintf(ews,"%t","");
   ConstructEditControl(&ec,4,ECF_APPEND_EOL,ews,1024);
   AddEditControlToEditQend(eq,&ec,ma);
   
@@ -666,7 +676,8 @@ static int CreateSearchDialog()
   ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,1024);
   AddEditControlToEditQend(eq,&ec,ma);
   
-  wsprintf(ews,"");
+  //CutWSTR(ews,0);
+  wsprintf(ews,"%t","");
   ConstructComboBox(&ec,7,ECF_APPEND_EOL,ews,32,0,search_engine_count,selected_search_engine+1);
   AddEditControlToEditQend(eq,&ec,ma);
   
@@ -846,7 +857,7 @@ void history_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
     len=strlen(history[cur_item]);
     ws=AllocMenuWS(gui,len+4);
     //ascii2ws(ws,ustop->urlname);
-    str_2ws(ws,history[cur_item],64);
+    gb2ws(ws,history[cur_item],64);
   }
   else
   {
@@ -938,7 +949,7 @@ static int input_url_onkey(GUI *data, GUI_MSG *msg)
     *s++='/';
     for (int i=0; i<ws->wsbody[0]; i++) *s++=char16to8(ws->wsbody[i+1]);
     *s = 0;
-    goto_url = ToWeb(goto_url,0);
+    //goto_url = ToWeb(goto_url,0);
     return (0xFF);
   }
   return (0);
@@ -989,7 +1000,7 @@ int CreateInputUrl()
     {
       for(url_start = p->vd->pageurl; *url_start && *url_start != '/'; url_start++);
       for(; *url_start && *url_start == '/'; url_start++);
-      str_2ws(ews,url_start,strlen(url_start));
+      gb2ws(ews,url_start,strlen(url_start));
       //str_2ws(ews,p->vd->pageurl+2,strlen(p->vd->pageurl)-2);
     }
     else
@@ -998,12 +1009,12 @@ int CreateInputUrl()
       switch(view_url_mode)
       {
       case MODE_FILE:
-        str_2ws(ews,view_url,255);
+        gb2ws(ews,view_url,255);
         break;
       case MODE_URL:
         for(url_start = view_url; *url_start && *url_start != '/'; url_start++);
         for(; *url_start && *url_start == '/'; url_start++);
-        str_2ws(ews,url_start,strlen(url_start));        
+        gb2ws(ews,url_start,strlen(url_start));        
         //ascii2ws(ews,view_url+2);
         break;
       }
@@ -1078,7 +1089,7 @@ static void mm_options(GUI *gui)
 {
   WSHDR *ws;
   ws=AllocWS(150);
-  str_2ws(ws,successed_config_filename,128);
+  gb2ws(ws,successed_config_filename,128);
   ExecuteFile(ws,0,0);
   FreeWS(ws);
   GeneralFuncF1(1);

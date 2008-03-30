@@ -1,8 +1,8 @@
 /*
 x [1] 2l lid 2l lvalue
-s 2l lid 1 2count o 2l lo_name 2l lo_id 1checked ...  // 1 ñòðàííûé áàéò íà ãóãë ñåòòèíãñ ðàâåí 0 íà ñèìêà 1
+s 2l lid 1 2count o 2l lo_name 2l lo_id 1checked ...  // 1 §ã§ä§â§Ñ§ß§ß§í§Û §Ò§Ñ§Û§ä §ß§Ñ §Ô§å§Ô§Ý §ã§Ö§ä§ä§Ú§ß§Ô§ã §â§Ñ§Ó§Ö§ß 0 §ß§Ñ §ã§Ú§Þ§Ü§Ñ 1
 
-Èçâåñòíûå ïîÿäêè òýãîâ:
+§ª§Ù§Ó§Ö§ã§ä§ß§í§Ö §á§à§ñ§Õ§Ü§Ú §ä§ï§Ô§à§Ó:
 L T E
 L I S T E
 L I T E
@@ -16,8 +16,8 @@ i J
 i Z I E - yandex maps
 L Z I E E - patches siemens club
 L P T E T P T E T E - perk11.info/dantix
-L B T J E - ãëóïîñòè!
-L T B Y E - ãëóïîñòè!
+L B T J E - §Ô§Ý§å§á§à§ã§ä§Ú!
+L T B Y E - §Ô§Ý§å§á§à§ã§ä§Ú!
 
 formum.siemens-club.org
 ...T P E B T B L K E L K E L K E L K E K K B T B T T B...
@@ -26,9 +26,9 @@ patches.siemens-club.org/patches
 S + T L Z I E E L I E B S L T B E B D I S T B S L T E
 L T B E B V Y T h_opf_1 C s B Y L T s B Y L T E B Y T 
 mywishlist.ru
-S X 9áàéò_êàêèõ_òî + I 'êàêîéòî B + T L I S T E L I T
+S X 9§Ò§Ñ§Û§ä_§Ü§Ñ§Ü§Ú§ç_§ä§à + I '§Ü§Ñ§Ü§à§Û§ä§à B + T L I S T E L I T
 E L I T E B L I E B S B D T h_opf_1 C x B T p B c T B
-V S L T B E B B N D  îáëîì_âíåøíÿÿ_îøèáêà
+V S L T B E B B N D  §à§Ò§Ý§à§Þ_§Ó§ß§Ö§ê§ß§ñ§ñ_§à§ê§Ú§Ò§Ü§Ñ
 dtf.ru
 S X I + T L B S T L T E L I E h_opf_1 i=_id_value I L
 T B E B S L B D
@@ -37,7 +37,7 @@ S X + I + T L I E S T B B D V Y T B S B D T S
 T L T E Y T S L T E B Y T "2" Y T L T E Y T Y
 L T E B Y T "3" Y T L T E Y T Y L T E B Y T "4"
 Y T L T E Y T Y L T E B Y T "5" Y T L T T E Y T
-expert.com - êîìïîíîâêà êàðòèíîê
+expert.com - §Ü§à§Þ§á§à§ß§à§Ó§Ü§Ñ §Ü§Ñ§â§ä§Ú§ß§à§Ü
 X + I + T L I E !B! L I E L I E B L I E L 
 wap.lingvo
 S + T S L B D T B S E T B h_opf_1 B Y L T B E L T B E L 
@@ -82,7 +82,7 @@ unsigned int _rlong(VIEWDATA *vd)
   return r;
 }
 
-// Ôóíêöèè-çàãëóøêè äëÿ ZLib
+// §¶§å§ß§Ü§è§Ú§Ú-§Ù§Ñ§Ô§Ý§å§ê§Ü§Ú §Õ§Ý§ñ ZLib
 void* zcalloc(int unk,size_t nelem, size_t elsize)
 {
   return (malloc(nelem*elsize));
@@ -147,7 +147,7 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
     switch(vd->parse_state)
     {
     case OMS_HDR_COMMON:
-      //Ïîëó÷åí çàãîëîâîê
+      //§±§à§Ý§å§é§Ö§ß §Ù§Ñ§Ô§à§Ý§à§Ó§à§Ü
       memset(&(vd->work_ref),0xFF,sizeof(REFCACHE));
       memset(&(vd->work_ref_Z),0xFF,sizeof(REFCACHE));
       i=_rshort(vd);
@@ -163,12 +163,12 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
         case 0x1833:
           break;
         case 0x0D31:
-          vd->oms_wanted-=sizeof(OMS_HEADER_V2)-10; //10 - ðàçìåð õåäåðà GZIP
+          vd->oms_wanted-=sizeof(OMS_HEADER_V2)-10; //10 - §â§Ñ§Ù§Þ§Ö§â §ç§Ö§Õ§Ö§â§Ñ GZIP
           vd->parse_state=OMS_GZIPHDR;
           break;
         case 0x1832:
         L_ZINIT:
-          //Ïðîèçâîäèì èíèöèàëèçàöèþ ZLib
+          //§±§â§à§Ú§Ù§Ó§à§Õ§Ú§Þ §Ú§ß§Ú§è§Ú§Ñ§Ý§Ú§Ù§Ñ§è§Ú§ð ZLib
           zeromem(vd->zs=malloc(sizeof(z_stream)),sizeof(z_stream));
           vd->zs->zalloc = (alloc_func)zcalloc;
           vd->zs->zfree = (free_func)zcfree;
@@ -182,14 +182,14 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
             vd->parse_state=OMS_STOP;
             return;
           }
-          //Òåïåðü ïîñëå vd->oms_pos äî vd->oms_size åñòü äàííûå ZLib
-          //Îíè æå åñòü â buf+len-(vd->oms_size-vd->oms_pos) äëèííîé vd->oms_size-vd->oms_pos
-          //Èõ íåîáõîäèìî îáðàáîòàòü ÷åðåç ZLib
+          //§´§Ö§á§Ö§â§î §á§à§ã§Ý§Ö vd->oms_pos §Õ§à vd->oms_size §Ö§ã§ä§î §Õ§Ñ§ß§ß§í§Ö ZLib
+          //§°§ß§Ú §Ø§Ö §Ö§ã§ä§î §Ó buf+len-(vd->oms_size-vd->oms_pos) §Õ§Ý§Ú§ß§ß§à§Û vd->oms_size-vd->oms_pos
+          //§ª§ç §ß§Ö§à§Ò§ç§à§Õ§Ú§Þ§à §à§Ò§â§Ñ§Ò§à§ä§Ñ§ä§î §é§Ö§â§Ö§Ù ZLib
           i=vd->oms_size-vd->oms_pos;
-          if (!i) return; //Íåò äàííûõ
-          buf=buf+len-i; //Íîâûé óêàçàòåëü íà äàííûå
-          len=i; //Íîâàÿ äëèííà
-          vd->oms_size=vd->oms_pos; //Âîçðàùàåì ðàçìåð íà íà÷àëî äàííûõ ZLib
+          if (!i) return; //§¯§Ö§ä §Õ§Ñ§ß§ß§í§ç
+          buf=buf+len-i; //§¯§à§Ó§í§Û §å§Ü§Ñ§Ù§Ñ§ä§Ö§Ý§î §ß§Ñ §Õ§Ñ§ß§ß§í§Ö
+          len=i; //§¯§à§Ó§Ñ§ñ §Õ§Ý§Ú§ß§ß§Ñ
+          vd->oms_size=vd->oms_pos; //§£§à§Ù§â§Ñ§ë§Ñ§Ö§Þ §â§Ñ§Ù§Þ§Ö§â §ß§Ñ §ß§Ñ§é§Ñ§Ý§à §Õ§Ñ§ß§ß§í§ç ZLib
           goto L_ZBEGIN;
         default:
           sprintf(s,"Not supported type %X\n",i);
@@ -201,9 +201,9 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
       }
       break;
     case OMS_GZIPHDR:
-      //Ïðîïóñòèëè õåäåð ãçèïà
+      //§±§â§à§á§å§ã§ä§Ú§Ý§Ú §ç§Ö§Õ§Ö§â §Ô§Ù§Ú§á§Ñ
       vd->oms_pos=vd->oms_wanted;
-      vd->oms_wanted+=sizeof(OMS_HEADER_V2)-2; //Çàãîëîâîê V1
+      vd->oms_wanted+=sizeof(OMS_HEADER_V2)-2; //§©§Ñ§Ô§à§Ý§à§Ó§à§Ü V1
       vd->parse_state=OMS_HDR;
       goto L_ZINIT;
     case OMS_HDR:
@@ -260,7 +260,7 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
       case 'A':
         vd->oms_wanted+=2;
         break;
-      case 'C':    // ñëåäóþùèé òýã ïîäðàçóìåâàåò çàãðóçêó äàííûõ ôîðì
+      case 'C':    // §ã§Ý§Ö§Õ§å§ð§ë§Ú§Û §ä§ï§Ô §á§à§Õ§â§Ñ§Ù§å§Þ§Ö§Ó§Ñ§Ö§ä §Ù§Ñ§Ô§â§å§Ù§Ü§å §Õ§Ñ§ß§ß§í§ç §æ§à§â§Þ
         vd->work_ref.no_upload=0;
         vd->oms_pos++;
         goto L_NOSTAGE2;
@@ -299,7 +299,7 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
       case 'h':    // opf 1
         vd->oms_wanted+=2;
         break;
-      case 'e':  // à íåòó òàêîãî òýãà
+      case 'e':  // §Ñ §ß§Ö§ä§å §ä§Ñ§Ü§à§Ô§à §ä§ï§Ô§Ñ
       case 'p':
       case 'u':
         vd->oms_wanted+=2;
@@ -324,7 +324,7 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
       case 'o': // drop down list item
         vd->oms_wanted+=2;
         break;
-      case 'l':  // ñòðàííé òåã, èç çà íåãî êóðñîð ãëëþ÷èò, çàêàí÷èâàåò ñïèñîê ?
+      case 'l':  // §ã§ä§â§Ñ§ß§ß§Û §ä§Ö§Ô, §Ú§Ù §Ù§Ñ §ß§Ö§Ô§à §Ü§å§â§ã§à§â §Ô§Ý§Ý§ð§é§Ú§ä, §Ù§Ñ§Ü§Ñ§ß§é§Ú§Ó§Ñ§Ö§ä §ã§á§Ú§ã§à§Ü ?
         //AddBeginRef(vd);
         //vd->tag_l_count=2;
         //AddTextItem(vd,"<l>",3);
@@ -606,7 +606,7 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
         vd->title=(char *)malloc(i+1);
         memcpy(vd->title,vd->oms+vd->oms_pos,i);
         vd->title[i]=NULL;
-        utf82win(vd->title, vd->title);
+        //utf82win(vd->title, vd->title);
 //        AddBrItem(vd);
       }
       vd->oms_pos=vd->oms_wanted;
@@ -886,4 +886,5 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
     if (vd->zs->avail_out==0) goto L_ZNEXT;
   }
 }
+
 

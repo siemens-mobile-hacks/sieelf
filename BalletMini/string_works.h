@@ -14,7 +14,6 @@ void freegstr(char **ps);
 char *replacegstr(char **ps, const char *s, int len);
 int char16to8(int c);
 int char8to16(int c);
-void ascii2ws(WSHDR *ws, const char *s);
 char *extract_omstr(VIEWDATA *vd, unsigned int pos);
 int char_win2utf8(char*d,const char *s);
 char * ToWeb(char *src,int special);

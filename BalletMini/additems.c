@@ -16,7 +16,7 @@ static void RawInsertChar(VIEWDATA *vd, int wchar)
 {
   if ((vd->rawtext_size%RAWTEXTCHUNK)==0)
   {
-    //Дошли до конца куска, реаллоцируем еще кусок
+    //§Ґ§а§к§Э§Ъ §Х§а §Ь§а§Я§и§С §Ь§е§г§Ь§С, §в§Ц§С§Э§Э§а§и§Ъ§в§е§Ц§Ю §Ц§л§Ц §Ь§е§г§а§Ь
     vd->rawtext=realloc(vd->rawtext,(vd->rawtext_size+RAWTEXTCHUNK)*2);
   }
   //
@@ -136,8 +136,8 @@ void AddPictureItemIndex(VIEWDATA *vd, int index)
 }
 
 
-//is_index >= 0 использовать последний
-//is_index <0 - задать  принудительно
+//is_index >= 0 §Ъ§г§б§а§Э§о§Щ§а§У§С§д§о §б§а§г§Э§Ц§Х§Я§Ъ§Ы
+//is_index <0 - §Щ§С§Х§С§д§о  §б§в§Ъ§Я§е§Х§Ъ§д§Ц§Э§о§Я§а
 OMS_DYNPNGLIST *AddToDPngQueue(VIEWDATA *vd, IMGHDR *img, int is_index)
 {
   int wchar, i, index;
@@ -366,3 +366,4 @@ void AddDropDownList(VIEWDATA *vd)
   RawInsertChar(vd,vd->WCHAR_LIST_FORM);
 //  RawInsertChar(vd,0x0A);
 }
+

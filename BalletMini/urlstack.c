@@ -39,15 +39,17 @@ char *PushPageToStack(void)
     iday++;
   iday=(tt.sec+60*(tt.min+60*(tt.hour+24* iday)));
   
+
   if (stack_top==PageSTACK_SIZE)
   {
-    //Убиваем лишнее
+    //§µ§Т§Ъ§У§С§Ц§Ю §Э§Ъ§к§Я§Ц§Ц
     killpage(0);
     memcpy(PageSTACK,PageSTACK+1,(PageSTACK_SIZE-1)*sizeof(int));
     PageSTACK[--stack_top]=0;
   }
   i=stack_top;
-  //Убираем возможность пойти вперед ;)
+  //§µ§Т§Ъ§в§С§Ц§Ю §У§а§Щ§Ю§а§Ш§Я§а§г§д§о §б§а§Ы§д§Ъ §У§б§Ц§в§Ц§Х ;)
+
   while(i!=PageSTACK_SIZE)
   {
     if (PageSTACK[i]!=0)
