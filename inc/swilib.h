@@ -21,6 +21,7 @@ typedef int jmp_buf[11];
 #include "rsa.h"
 #include "sha.h"
 #include "md5.h"
+#include "data_n.h"
 
 #define LMAN_CONNECT_CNF 0x80
 #define LMAN_CONNECT_REJ_IND 0x81
@@ -1132,6 +1133,44 @@ typedef struct
   char isAutoTime1; 
   char isAutoTime2;
 }TDateTimeSettings;
+
+typedef struct
+{
+#ifdef NEWSGOLD
+  unsigned int type;  //from debugger 0x400 general(size) | 0x4000 picture, | 0xA800(3gp) video, | 0x1000 audio (wav/midi), 0x1800 (mp3/aac)
+  WSHDR *filename;   
+  WSHDR *resolution_ws;
+  int uid;            
+  unsigned short width; 
+  unsigned short height;
+  WSHDR *duration_mp3_ws;
+  unsigned int duration_mp3;
+  WSHDR *duration_wav_ws; 
+  unsigned int duration_wav;
+  WSHDR *tag_title_ws;
+  WSHDR *tag_artist_ws;
+  WSHDR *tag_album_ws; 
+  WSHDR *tag_track_ws; 
+  WSHDR *tag_year_ws;  
+  WSHDR *unk_tag_2_ws; 
+  WSHDR *bitrate_ws;   
+  WSHDR *audio_frequency_ws; 
+  WSHDR *size_ws;   
+#else
+  unsigned short type;  // | 0x8000 picture, | 0x4000 video, | 0x2000 audio
+  WSHDR *filename;
+  WSHDR *text_resol;
+  int uid;
+  unsigned short width;
+  unsigned short height;
+  WSHDR *duration_wav_ws;
+  unsigned int duration_wav;
+  WSHDR *video_ws;
+  int video_len;
+#endif  
+} FILE_PROP;
+
+typedef int  (__interwork MenuSearchCallBack)(void *gui,WSHDR * searchstr);  // return -1 
 
 #pragma diag_suppress=Ta035
 
@@ -2582,7 +2621,7 @@ __swi __arm void *PNG_TOP(void);
 __swi __arm void *LIB_TOP(void);
 
 #pragma swi_number=0x81BB
-__swi __arm void *DATA_N_SFB(void);
+__swi __arm SFN_DATA *DATA_N_SFB(void);
 
 //===========================================
 //openssl_lib
@@ -3252,4 +3291,24 @@ __swi __arm int Base64Encode(void *inbuf, int insize, void *outbuf, int outsize)
 __swi __arm int Base64Decode(char *inbuf, int insize, void *outbuf, int outsize, char *_null, int *unk5);//returns length of decoded message
 //thumb
 //pattern=FE B5 84 46 48 00 40 18 1C 1C 83 08 08 9E 96 46 +1
+
+#pragma swi_number=0x246
+__swi __arm int GetFileProp(FILE_PROP *wl,WSHDR *file,WSHDR *folder); 
+//arm
+//pattern_ELKA=?? ?? ??  E9 ?? ?? ?? E1 ?? ?? ?? 11 ?? ?? ?? e2
+//pattetn SGOLD =same as GetWavLen (0x45)
+//thumb
+//pattern_NSG=F7 B5 00 27 05 1C
+
+#pragma swi_number=0x24B
+__swi __arm void SetMenuSearchCallBack(void *gui, MenuSearchCallBack proc);
+//thumb
+//00 28 02 d0 ?? 30 ?? 30 ?? ??  70 47 10 b5
+
+#pragma swi_number=0x24C
+__swi __arm int  GetPeripheryState (int device, int check_state); // device: 4-gprs  0 -BT  1 -irda   2 -COM ?; ChechState:    4 -IsActive  (1|2) - IsOn  
+//thumb 
+//pattern_NSG   = ?? B5 ?? 1C 0E 1C 00 25   ?? ?? ?? ?? ?? 1C  ?? ??  ?? ?? ?? f7
+//pattern_SGOLD = ?? B5 ?? 1C 0E 1C 00 25 ?? ?? ?? ?? ?? ?? 88 42
+
 

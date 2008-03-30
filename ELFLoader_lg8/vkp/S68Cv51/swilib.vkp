@@ -624,10 +624,13 @@
 ;90C:              ; 243:   __arm void ws2gb(WSHDR *ws, char *s, int len)
 0910: 0xA0FEBA11   ; 244:   __arm int Base64Encode(void *inbuf, int insize, void *outbuf, int outsize)
 0914: 0xA0FEBAC1   ; 245:   __arm int Base64Decode(char *inbuf, int insize, void *outbuf, int outsize, char *_null, int *unk5)
+0918: 0xA035F447   ; 246:  __thumb int GetFileProp(FILE_PROP *wl,WSHDR *file,WSHDR *folder)
 091C: 0xA0C18B19   ; 247:   __thumb void NetOff()
 0920: 0xA8D06A7A   ; 248:  char *RamFormatTrack()
 0924: 0xA8D06CE2   ; 249:  char *RamFreq()
 0928: 0xA8D06E9A   ; 24A:  char *RamChannel()
+092C: 0xA085B687   ; 24B:  __thumb void SetMenuSearchCallBack(void *gui, MenuSearchCallBack proc)
+0930: 0xA02DE105   ; 24C:  __thumb int  GetPeripheryState (int device, int check_state)
 #pragma disable old_equal_ff
 +0
 
