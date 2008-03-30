@@ -1,4 +1,4 @@
-#include "..\inc\swilib.h"
+#include "swilib.h"
 #include "conf_loader.h"
 #include "FesRemind.h"
 #include "sieapi.h"
@@ -7,7 +7,12 @@ extern void kill_data(void *p, void (*func_p)(void *));
 
 static char zhName[] = "节日提醒";
 int FirstRun = 1,cnt = 0;
+int scroll_pos = 1;
+static int AppNum;
+char nTime[7];
 unsigned int fShow;
+WSHDR *ws_App;
+char **start_Time,**end_Time;
 
 CSM_DESC icsmd;
 TTime t_time;
@@ -26,7 +31,7 @@ typedef struct{
   char fr_cl[4];
 } TInfo;
 
-TInfo InfoData[7];
+TInfo InfoData[6];
 
 GBSTMR mytmr;
 const IPC_REQ my_ipc={
@@ -46,8 +51,7 @@ void ElfKiller(void)
 //搜索自定义节日操作
 static int FindBirName(WSHDR* ws,const char *source,const char *sub)
 {
-  char *p;
-  p=strstr(source,sub);
+  char *p = strstr(source,sub);
   if (p) 
   {
     wsprintf(ws,_percent_t,p+7);
@@ -57,57 +61,104 @@ static int FindBirName(WSHDR* ws,const char *source,const char *sub)
     return 0;}
 }
 
-//搜索自定义事件操作
-static int FindApp(const char *source,const char *sub,char stTime[6],char enTime[6],WSHDR* ws)
+void FindApp(char *source,char *search,char **result)
 {
-  char *end,*pstT,*penT;
-  char *src1,src2[256];
-  src1 = strstr(source,sub);
-  if (src1) 
+  for (int j=0;j < AppNum;j++)
   {
-    end = strchr(src1,0x0A);
-    strncpy(src2,src1,end - src1);
-    pstT = strstr(src2,"FM");
-    if (pstT)
+    char *s = strstr(source,search);
+    if (s)
     {
-      strncpy(stTime,pstT + 2,6);
-      enTime[6] = '\0';
-      penT = strstr(src2,"TO");
-      if (penT)
+      int c,il=0;
+      s+= strlen(search);
+      while((c=*s++) != 0x0A)
       {
-        strncpy(enTime,penT + 2,6);
-        enTime[6] = '\0';
-        wsprintf(ws,_percent_t,penT + 9);
-        return 3;
+        if (il < 59) result[j][il++]=c;
       }
-      else
-      {
-        wsprintf(ws,_percent_t,pstT + 9);
-        return 2;
-      }
+      result[j][il] = 0;
+      source = s;
     }
-    else 
+  }
+}
+
+//搜索更新时间
+int GetUpdateTime(char *source,char *time1,char *time2)
+{
+  int d;
+  d = source[0] - 48;
+  switch(d){
+  case 0:
+    time1 = 0;
+    time2 = 0;
+    break;
+  case 1:
+    strncpy(time1,source+1,6);
+    time1[6] = 0;
+    time2 = 0;
+    break;
+  case 2:
+    time1 = 0;
+    strncpy(time2,source+1,6);
+    time2[6] = 0;
+    break;
+  case 3:
+    strncpy(time1,source+1,6);
+    time1[6] = 0;
+    strncpy(time2,source+7,6);
+    time2[6] = 0;
+  }
+  return d;
+}
+
+//搜索当日自定义事件数量
+static int getAppNum(char *source,char *search)
+{
+  int is = 0;
+  while (is < 20)
+  {
+    char *p = strstr(source,search);
+    if (p)
     {
-      wsprintf(ws,_percent_t,src2 + 8);
-      return 1;
+      is++;
+      source = p + strlen(search);
     }
+    else return is;
+  }
+}
+
+void drawApp(void)
+{
+  int ws_width=Get_WS_width(ws_App, FontType(APP_FONT));
+  if((ws_width >= length-4) && SPEED)
+  {
+    DrawScrollString(ws_App,APP_X+2,APP_Y+2,APP_X+length-2,APP_Y+GetFontYSIZE(FontType(APP_FONT))+2,scroll_pos,FontType(APP_FONT),TEXT_OUTLINE,APP_CS,APP_CB);
+    if((ws_width-scroll_pos)<=(length-4)) scroll_pos=1;
+    else  scroll_pos += SPEED;
   }
   else
   {
-    return 0;
+    DrawString(ws_App,APP_X+2,APP_Y+2,APP_X+length-2,APP_Y+GetFontYSIZE(FontType(APP_FONT))+2,FontType(APP_FONT),TEXT_OUTLINE,APP_CS,APP_CB);
   }
 }
-        
 
 void InitInfoData(void);
 void TimerProc(void)
 {
+  char oDian[7] = "00h00m";
+  GetDateTime(&t_date,&t_time);
+  sprintf(nTime,"%02dh%02dm",t_time.hour,t_time.min); 
   cnt++;
   if (FirstRun == 1) InitInfoData();
   else if (cnt == 35)
   {
-    InitInfoData();
+    int k = 0;
     cnt = 0;
+    for(int ii = 0;ii < AppNum;ii++)
+    {
+      if (start_Time[ii])  k += (strncmp(nTime,start_Time[ii],6) == 0);
+      if (end_Time[ii])    k += (strncmp(nTime,end_Time[ii],6) == 0);
+    }
+    k += (strcmp(nTime,oDian) == 0);
+    if (k > 0)  InitInfoData();
   }
   GBS_SendMessage(MMI_CEPID,MSG_IPC,IPC_UPDATE_STAT,&my_ipc);
 }
@@ -137,46 +188,54 @@ void InitInfoData(void)
 {
   if (fShow)
   {
-      GetDateTime(&t_date,&t_time);
-      char *FestaData;
-      char oDian[6] = "00h00m";
-      FestaData=LoadFileBuf(BIRS_FILE);
+    char *FestaData = LoadFileBuf(BIRS_FILE);
+    char toDay[8];
+    char str_App[300];
+    sprintf(toDay,"AP%02d.%02d",t_date.month,t_date.day);
+    AppNum = getAppNum(FestaData,toDay);
+    if (AppNum)
+      {
+        char **apps = (char **)malloc(sizeof(char *) * AppNum);
+        start_Time = (char **)malloc(sizeof(char *) * AppNum);
+        end_Time = (char **)malloc(sizeof(char *) * AppNum);
+        for (int i = 0;i < AppNum;i++)
+        {
+          apps[i] = (char *)malloc(sizeof(char) * 70);
+          start_Time[i] = (char *)malloc(sizeof(char) * 7);
+          end_Time[i] = (char *)malloc(sizeof(char) * 7);
+        }
+        
+        FindApp(FestaData,toDay,apps);
+        
+        for (int i = 0;i < AppNum;i++)
+        {
+          int ts = GetUpdateTime(apps[i],start_Time[i],end_Time[i]);
+          char *sd;
+          switch (ts)
+          {
+            case 0:
+              sd = apps[i] + 2;
+              break;
+            case 1:
+              if (strncmp(nTime,start_Time[i],6) >= 0) sd = apps[i] + 8;
+              else  sd = 0;
+              break;
+            case 2:
+              if (strncmp(end_Time[i],nTime,6) > 0)  sd = apps[i] + 8;
+              else sd = 0;
+              break;
+            case 3:
+              if ((strncmp(nTime,start_Time[i],6) >= 0) && (strncmp(end_Time[i],nTime,6) > 0))
+                sd = apps[i] + 14;
+              else  sd = 0;
+          }
+          if (sd) strcat(str_App,sd);
+          if (apps[i]) mfree(apps[i]);
+         }
+        if(apps) mfree(apps);
+        if (str_App) wsprintf(ws_App,_percent_t,str_App);
+      }
 
-      char stTime[6],enTime[6],toDay[8],nTime[6];
-      int ena1,ena2;
-      sprintf(toDay,"AP%02d.%02d",t_date.month,t_date.day);
-      sprintf(nTime,"%02dh%02dm",t_time.hour,t_time.min); 
-      int app = FindApp(FestaData,toDay,stTime,enTime,InfoData[6].ws);
-      switch(app)
-       {
-       case 0:
-         InfoData[6].enabled = 0;
-         if (FirstRun == 1) goto lb1;
-         else if (strcmp(nTime,oDian) == 0) goto lb1;
-         break;
-       case 1:
-         InfoData[6].enabled = 1;
-         if (FirstRun == 1) goto lb1;
-         else if (strcmp(nTime,oDian) == 0) goto lb1;
-         break;
-       case 2:
-         if (strcmp(nTime,stTime) >= 0) InfoData[6].enabled = 1;
-         else InfoData[6].enabled = 0;
-         if (FirstRun == 1) goto lb1;
-         else 
-           if ((strcmp(nTime,oDian) == 0) || (strcmp(nTime,stTime) == 0)) goto lb1;
-         break;
-       case 3:
-         ena1 = strcmp(nTime,stTime);
-         ena2 = strcmp(enTime,nTime);
-         if ((ena1 >= 0) && (ena2 > 0)) InfoData[6].enabled = 1;
-         else InfoData[6].enabled = 0;
-         if (FirstRun == 1) goto lb1;
-         else if ((strcmp(nTime,oDian) == 0) || (ena1 == 0) || (ena2 == 0)) goto lb1;
-       }      
-       goto lb2;
-                
-  lb1:
       if (TEXT_ENA)
          {
            InfoData[0].enabled=1;
@@ -197,7 +256,7 @@ void InitInfoData(void)
            int e = GetLunarAnimal(pLdate.year);   
     	   InfoData[1].enabled=1;
            wsprintf(InfoData[1].ws,"%t%t",d,e);
-    	   FillInfoData(&InfoData[1],CYEAR_X,CYEAR_Y,FontType(CYEAR_FONT),CYEAR_CS,32,CYEAR_CB);
+    	   FillInfoData(&InfoData[1],CYEAR_X,CYEAR_Y,FontType(CYEAR_FONT),CYEAR_CS,TEXT_OUTLINE,CYEAR_CB);
          }
        else
          {
@@ -213,7 +272,7 @@ void InitInfoData(void)
                wsprintf(InfoData[2].ws,"%t%t%t%t",cOName[2],cMName[f],cOName[1],cDName[pLdate.day]);
             if ((f !=  0) && (f < pLdate.month - 1))
                wsprintf(InfoData[2].ws,"%t%t%t",cMName[pLdate.month - 1],cOName[1],cDName[pLdate.day]);
-    	    FillInfoData(&InfoData[2],CDATE_X,CDATE_Y,FontType(CDATE_FONT),CDATE_CS,32,CDATE_CB);
+    	    FillInfoData(&InfoData[2],CDATE_X,CDATE_Y,FontType(CDATE_FONT),CDATE_CS,TEXT_OUTLINE,CDATE_CB);
          }
        else
          {
@@ -226,7 +285,7 @@ void InitInfoData(void)
             sprintf(oDay,"L%02d.%02d:",pLdate.month,pLdate.day);
             InfoData[3].enabled = FindBirName(InfoData[3].ws,FestaData,oDay);
             if (InfoData[3].enabled)
-                 FillInfoData(&InfoData[3],OBIR_X,OBIR_Y,FontType(OBIR_FONT),OBIR_CS,32,OBIR_CB);
+                 FillInfoData(&InfoData[3],OBIR_X,OBIR_Y,FontType(OBIR_FONT),OBIR_CS,TEXT_OUTLINE,OBIR_CB);
      
             unsigned short lunar = LunarHolId(t_date);
             if (lunar)
@@ -240,16 +299,14 @@ void InitInfoData(void)
                  InfoData[4].enabled = FindBirName(InfoData[4].ws,FestaData,nDay);
               }
             if (InfoData[4].enabled)
-                 FillInfoData(&InfoData[4],NBIR_X,NBIR_Y,FontType(NBIR_FONT),NBIR_CS,32,NBIR_CB);
-
-            if (InfoData[6].enabled)
-                 FillInfoData(&InfoData[6],APP_X,APP_Y,FontType(APP_FONT),APP_CS,32,APP_CB);
-         }
+                 FillInfoData(&InfoData[4],NBIR_X,NBIR_Y,FontType(NBIR_FONT),NBIR_CS,TEXT_OUTLINE,NBIR_CB);
+            }
        else
          {
             InfoData[3].enabled = 0;
-            InfoData[4].enabled = 0;            
+            InfoData[4].enabled = 0;
          }
+       
        if (WEEK_ENA)
          {
             InfoData[5].enabled=1;
@@ -268,10 +325,8 @@ void InitInfoData(void)
          {
             InfoData[5].enabled=0;
          }
-       
-  lb2:FirstRun = 0;       
+      FirstRun = 0;
       FreeFileBuf(FestaData);
-
   }
 }
 
@@ -353,6 +408,12 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
                          InfoData[i].fr_cl);
             }
           }
+         if (AppNum)
+          {
+            DrawCanvas(canvasdata,APP_X,APP_Y,APP_X+length,APP_Y+GetFontYSIZE(FontType(APP_FONT))+4,1);
+            DrawRoundedFrame(APP_X,APP_Y,APP_X+length,APP_Y+GetFontYSIZE(FontType(APP_FONT))+4, 2, yrnd, style, frmmain_color, frmbg_color);
+            drawApp();
+          }
         }
       }
     }
@@ -365,13 +426,22 @@ static void maincsm_oncreate(CSM_RAM *data)
   for (int i=0;i<(sizeof(InfoData)/sizeof(TInfo)); i++)
   {
     InfoData[i].ws=CreateLocalWS(&InfoData[i].wsh,InfoData[i].wsbody,WS_MAXLEN+1);
-  }  
+  }
+  ws_App = AllocWS(500);
   GBS_SendMessage(MMI_CEPID,MSG_IPC,IPC_UPDATE_STAT,&my_ipc);
 }
 
 static void maincsm_onclose(CSM_RAM *csm)
 {
   GBS_DelTimer(&mytmr);
+  FreeWS(ws_App);
+  for (int i = 0;i < AppNum;i++)
+  {
+    if (start_Time[i]) mfree(start_Time[i]);
+    if (end_Time[i]) mfree(end_Time[i]);
+  }
+  if (start_Time)  mfree(start_Time);
+  if (end_Time)  mfree(end_Time);
   SUBPROC((void *)ElfKiller);
 }
 

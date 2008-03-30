@@ -332,6 +332,7 @@ FesRemind/FesRemind.h -text
 FesRemind/conf_loader.c -text
 FesRemind/conf_loader.h -text
 FesRemind/config_data.c -text
+FesRemind/day.txt -text
 FesRemind/func.asm -text
 FesRemind/main.c -text
 FesRemind/test.xcl -text

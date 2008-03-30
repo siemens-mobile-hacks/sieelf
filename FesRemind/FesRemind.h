@@ -51,11 +51,18 @@ extern const int WEEK_STYLE;
  extern const char OBIR_CB[];
  extern const unsigned int OBIR_FONT;
 //定义重要记事
+ extern const unsigned int length;
+ extern const unsigned int SPEED;
  extern const unsigned int APP_X;
  extern const unsigned int APP_Y;
  extern const char APP_CS[];
  extern const char APP_CB[];
  extern const unsigned int APP_FONT;
+ extern const char frmmain_color[4];
+ extern const char frmbg_color[4];
+ extern const unsigned int xrnd;
+ extern const unsigned int yrnd;
+ extern const int style;
  
 extern const int cfgShowIn;
 extern const char BIRS_FILE[];

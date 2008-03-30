@@ -102,8 +102,8 @@ __root const CFG_CBOX_ITEM cfgcboxTSI91[17]={FontSyCN};
 __root const CFG_HDR cfghdr_mTSI90={CFG_LEVEL,"",0,0};
 
 //------------------------------------------------------------------------------
-//阴历节日选项设置
-__root const CFG_HDR cfghdr_mFESTA1={CFG_LEVEL,"节日设置",1,0};
+
+__root const CFG_HDR cfghdr_mFESTA1={CFG_LEVEL,"节日提醒设置",1,0};
 
 __root const CFG_HDR cfghdrFESTA={CFG_CHECKBOX, "屏显", 0, 2};
 __root const int BIR_ENA=1;
@@ -111,24 +111,8 @@ __root const int BIR_ENA=1;
 __root const CFG_HDR cfghdrBIRFILE={CFG_STR_UTF8,"数据文件",0,63};
 __root const char BIRS_FILE[64]="0:\\ZBin\\etc\\day.txt";
 
-__root const CFG_HDR cfghdr_mAPP1={CFG_LEVEL,"重要记事",1,0};
-__root const CFG_HDR cfghdrAPP_1={CFG_COORDINATES,"位置",0,0};
-__root const unsigned int APP_X=2;
-__root const unsigned int APP_Y=126;
-
-__root const CFG_HDR cfghdrAPP_2={CFG_COLOR,"文字颜色",0,0};
-__root const char APP_CS[4]={255,255,255,100};
-
-__root const CFG_HDR cfghdrAPP_3={CFG_COLOR,"边框颜色",0,0};
-__root const char APP_CB[4]={0,0,0,100};
-
-__root const CFG_HDR cfghdrAPP_4={CFG_CBOX,"字体",0,17};
-__root const unsigned int APP_FONT=5;
-__root const CFG_CBOX_ITEM cfgcboxAPP1[17]={FontSyCN};
-
-__root const CFG_HDR cfghdr_mAPP0={CFG_LEVEL,"",0,0};
-
          /*------------------------------------*/
+//阴历节日选项设置
 __root const CFG_HDR cfghdr_mTSIA1={CFG_LEVEL,"阴历节日",1,0};
 
 __root const CFG_HDR cfghdrOBIR_1={CFG_COORDINATES,"位置",0,0};
@@ -169,3 +153,44 @@ __root const CFG_HDR cfghdr_mTSIB0={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr_mFESTA0={CFG_LEVEL,"",0,0};
 
+//--------------------------------------------------------------
+
+__root const CFG_HDR cfghdr_mAPP1={CFG_LEVEL,"重要记事",1,0};
+
+__root const CFG_HDR cfghdrAPP_0={CFG_UINT, "显示宽度", 0, 512};
+__root const unsigned int length=126;
+
+__root const CFG_HDR cfghdrAPP_5={CFG_UINT,"滚动速度",0,100};
+__root const unsigned int SPEED = 10;
+
+__root const CFG_HDR cfghdrAPP_1={CFG_COORDINATES,"位置",0,0};
+__root const unsigned int APP_X=2;
+__root const unsigned int APP_Y=100;
+
+__root const CFG_HDR cfghdrAPP_2={CFG_COLOR,"文字颜色",0,0};
+__root const char APP_CS[4]={255,255,255,100};
+
+__root const CFG_HDR cfghdrAPP_3={CFG_COLOR,"边框颜色",0,0};
+__root const char APP_CB[4]={0,0,0,100};
+
+__root const CFG_HDR cfghdrAPP_4={CFG_CBOX,"字体",0,17};
+__root const unsigned int APP_FONT=5;
+__root const CFG_CBOX_ITEM cfgcboxAPP1[17]={FontSyCN};
+
+__root const CFG_HDR cfghdr10={CFG_COLOR,"边框前景色",0,0};
+__root const char frmmain_color[4]={255, 255, 255, 80};
+
+__root const CFG_HDR cfghdr12={CFG_COLOR,"边框背景色", 0, 0};
+__root const char frmbg_color[4]={255, 255, 255, 0};
+
+__root const CFG_HDR cfghdr13={CFG_UINT,"X弯曲", 0, 512};
+__root const unsigned int xrnd=2;
+
+__root const CFG_HDR cfghdr14={CFG_UINT,"Y弯曲", 0, 512};
+__root const unsigned int yrnd=2;
+
+__root const CFG_HDR cfghdr15={CFG_CBOX,"边框样式", 0, 2};
+__root const int style=0;
+__root const CFG_CBOX_ITEM cfgcbox0[2]={"实线","虚线"};
+
+__root const CFG_HDR cfghdr_mAPP0={CFG_LEVEL,"",0,0};
