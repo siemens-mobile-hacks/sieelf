@@ -3,9 +3,13 @@
 
     EXTERN  AppendInfoW
     EXTERN  UpdateLocaleToItem
+    EXTERN  do_phonebook_work 
 
     RSEG  CODE
     
+//SSS:
+//		DCB	 "%s",00
+		
     CODE16
     
     PUBLIC strlen
@@ -139,8 +143,24 @@ Hook4:
 #else
     POP		{PC}
 #endif
-
-#ifndef NEWSGOLD
+		
+		
+#ifdef NEWSGOLD
+#ifdef ELKA
+SIMBOOK:
+		PUSH	{LR}
+		ADD		R1, R4, #0
+		ADD		R0, R6, #0
+		LDR		R3, =ADDR_GetPhoneBookNum
+		BLX		R3
+		MOV		R0,R4
+		MOV		R1,R4
+		BL		do_phonebook_work
+		POP		{R3}
+		ADD		R3, #4
+		BX		R3
+#endif
+#else
 Hook5:
     PUSH	{LR}
     LDR		R0, [SP,#0x174]
@@ -155,6 +175,7 @@ Hook5:
     ADD		R0, R7, #0
     POP		{PC}
 #endif
+
 
 #ifdef NEWSGOLD
     RSEG  HOOK_DUMP
@@ -207,7 +228,15 @@ HOOKAddrBookWindow_DUMP:
     RSEG  AddrBookWindow2:DATA(1)
     DCB		0xFF
 #endif
-
+#ifdef ELKA
+		CODE16
+		RSEG	PHONEBOOKHOOK:CODE(2)
+		LDR		R1, =SIMBOOK
+		BLX		R1
+#endif
+		
+		//RSEG	PHONEBOOKHOOK2:CODE(1)
+		//NOP
 
 #else
 //Hook
@@ -239,4 +268,5 @@ HOOKAddrBookWindow_DUMP:
     CODE16
     BL      Hook5
 #endif    
-    END
+
+		END

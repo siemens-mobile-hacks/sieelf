@@ -13,7 +13,7 @@
 #define ADDR_CallIN 0xA067DACC+1
 #define ADDR_CallOUT 0xA067DDAC+1
 #define ADDR_ADDRBook 0xA0510D1A+1
-
+#define ADDR_GetPhoneBookNum 0xA09546FE+1
 #define BASEADDRESS			0xA1580000
 #endif
 
@@ -49,7 +49,7 @@
 #define ADDR_CallIN 0xA0681B64+1
 #define ADDR_CallOUT 0xA0681E44+1
 #define ADDR_ADDRBook 0xA05168B6+1
-
+#define ADDR_GetPhoneBookNum 0xA095AEBE+1 ;//90b50c1c8bb06946
 #define BASEADDRESS			0xA1580000
 #endif
 

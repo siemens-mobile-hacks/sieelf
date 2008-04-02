@@ -93,6 +93,7 @@ const word szErrorData[] 	= { 0x6570, 0x636E, 0x5E93, 0x9519, 0x8BEF, 0};
 const word szLocalCode[] 	= { 0x672C, 0x5730, 0x53F7,0x7801, 0};
 const word szSplit[] 		= { 0x2027, 0 };
 const word szAddInfo[] 		= { 0x20, 0 };
+const word szNewLine[] 		= { 0x0A, 0 };
 
 /****************/
 /* main program */
@@ -121,6 +122,15 @@ void AppendInfoW(WSTRING *pWS, WSTRING * pNo)
 	szPNo[i] = '\0';
 	GetProvAndCity(pWS->pstr, szPNo);			
 }
+
+#ifdef ELKA
+//给NEWSGOLD的SIM卡电话本添加一个换行符
+void do_phonebook_work(WSTRING *pWS, WSTRING * pNo)
+{
+	BSTRAdd(pWS->pstr, szNewLine, 1);
+	AppendInfoW(pWS, pNo);
+}
+#endif
 
 void memcpy(char *szDest, char *szSrc, int len)
 {
