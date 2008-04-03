@@ -820,11 +820,11 @@ void input_box_onkey_options(USR_MENU_ITEM *item)
   {
     switch(item->cur_item)
     {
-    case 0:
+    case 1:
       wsprintf(item->ws,"%t","模板");
       break;
       
-    case 1:
+    case 0:
       wsprintf(item->ws,"%t","输入法选择");
       break;
     }
@@ -833,11 +833,11 @@ void input_box_onkey_options(USR_MENU_ITEM *item)
   {
     switch(item->cur_item)
     {
-    case 0:
+    case 1:
       createTemplatesMenu();
       break;
       
-    case 1:
+    case 0:
       input=1;
       break;    
     }
@@ -847,7 +847,7 @@ void input_box_onkey_options(USR_MENU_ITEM *item)
 static int input_box_onkey(GUI *data, GUI_MSG *msg)
 {
   EDITCONTROL ec;
-  if (msg->gbsmsg->msg==KEY_DOWN&&msg->gbsmsg->submess==ENTER_BUTTON)
+  if (msg->gbsmsg->msg==KEY_DOWN&&msg->gbsmsg->submess==ENTER_BUTTON&&!EDIT_IsBusy(data))
 	{
     paste_gui=data;
     EDIT_OpenOptionMenuWithUserItems(data,input_box_onkey_options,0,2);

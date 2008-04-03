@@ -11,3 +11,5 @@ int FindReferenceById(VIEWDATA *vd, unsigned int id, int i);
 int ChangeMenuSelection(VIEWDATA *vd, REFCACHE *rf);
 int CreateInputBox(VIEWDATA *vd, REFCACHE *rf);
 void createTextView(WSHDR *ws);
+void input_box_onkey_options(USR_MENU_ITEM *item);
+int Input_Method();

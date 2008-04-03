@@ -8,6 +8,8 @@
 #include "urlstack.h"
 #include "history.h"
 #include "file_works.h"
+#include "display_utils.h"
+
 
 extern int view_url_mode; //MODE_FILE, MODE_URL
 extern char *view_url;
@@ -56,6 +58,8 @@ static void add_bookmark_ghook(GUI *data, int cmd)
 
 static void add_bookmark_locret(void){}
 
+extern int input;
+
 static int add_bookmark_onkey(GUI *data, GUI_MSG *msg)
 {
   EDITCONTROL ec;
@@ -64,7 +68,28 @@ static int add_bookmark_onkey(GUI *data, GUI_MSG *msg)
  // char *name2;
   unsigned ul;
   int f;
-
+  
+  if (msg->gbsmsg->msg==KEY_DOWN&&msg->gbsmsg->submess==ENTER_BUTTON&&!EDIT_IsBusy(data))
+	{
+    EDIT_OpenOptionMenuWithUserItems(data,input_box_onkey_options,0,1);
+    return (-1);
+	}
+  
+     if(input==1)
+     {
+     GBS_SendMessage(MMI_CEPID,LONG_PRESS,0x23);
+     input=0;
+     return (-1);
+     }
+  
+  /*
+  if(input==1)
+     {
+     GBS_SendMessage(MMI_CEPID,LONG_PRESS,0x23);
+     input=0;
+     return (-1);
+     }
+  */
   if (msg->keys==0xFFF)
   {
     ExtractEditControl(data,2,&ec);
@@ -520,10 +545,24 @@ char word[61];
 int search_onkey(GUI *data, GUI_MSG *msg)
 {
   EDITCONTROL ec;
+
+  if (msg->gbsmsg->msg==KEY_DOWN&&msg->gbsmsg->submess==ENTER_BUTTON&&!EDIT_IsBusy(data))
+	{
+    EDIT_OpenOptionMenuWithUserItems(data,input_box_onkey_options,0,1);
+    return (-1);
+	}
+  
+    if(input==1)
+     {
+     GBS_SendMessage(MMI_CEPID,LONG_PRESS,0x23);
+     input=0;
+     return (-1);
+     }
+  
   if (msg->keys==0xFFF)
   {
     if(selected_search_engine<0)return 0;
-
+    
     //query
     ExtractEditControl(data,2,&ec);
     WSHDR *ws = ec.pWS;
@@ -944,6 +983,20 @@ static int input_url_onkey(GUI *data, GUI_MSG *msg)
   EDITCONTROL ec;
   WSHDR *ws;
   char *s;
+  
+  if (msg->gbsmsg->msg==KEY_DOWN&&msg->gbsmsg->submess==ENTER_BUTTON&&!EDIT_IsBusy(data))
+	{
+    EDIT_OpenOptionMenuWithUserItems(data,input_box_onkey_options,0,1);
+    return (-1);
+	}
+  
+    if(input==1)
+     {
+     GBS_SendMessage(MMI_CEPID,LONG_PRESS,0x23);
+     input=0;
+     return (-1);
+     }
+  
   if (msg->keys==0xFFF || msg->keys == 0x18)
   {
     ExtractEditControl(data,1,&ec);

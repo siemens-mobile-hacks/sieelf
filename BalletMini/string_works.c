@@ -154,7 +154,7 @@ char *extract_omstr(VIEWDATA *vd, unsigned int pos)
   d[n]=0;
   return d;
 }
-
+/*
 void utf82win(char*d,const char *s)
 {
   int ds = 2;
@@ -274,7 +274,7 @@ char * ToWeb(char *src,int special)        //link in converting utf8
   return ret;
   
 }
-
+*/
 
 void oms2ws(WSHDR *ws, const char *text, int len)
 {

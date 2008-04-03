@@ -1373,7 +1373,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>BalletMini_SG.elf</state>
+          <state>BalletMini.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
