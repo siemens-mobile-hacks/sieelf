@@ -146,8 +146,8 @@ Hook4:
 		
 		
 #ifdef NEWSGOLD
-#ifdef ELKA
 SIMBOOK:
+#ifdef ELKA
 		PUSH	{LR}
 		ADD		R1, R4, #0
 		ADD		R0, R6, #0
@@ -159,7 +159,15 @@ SIMBOOK:
 		POP		{R3}
 		ADD		R3, #4
 		BX		R3
+#else
+		PUSH	{LR}
+		MOV		R0,R4
+		MOV		R1,R4
+		BL		do_phonebook_work
+		MOV		R3, #3
+		POP		{PC}
 #endif
+
 #else
 Hook5:
     PUSH	{LR}
@@ -223,20 +231,21 @@ HOOKAddrBookWindow_DUMP:
     LDR		R4, =Hook4
     BLX		R4
 #endif
-
-#ifndef ELKA
-    RSEG  AddrBookWindow2:DATA(1)
-    DCB		0xFF
-#endif
 #ifdef ELKA
 		CODE16
 		RSEG	PHONEBOOKHOOK:CODE(2)
 		LDR		R1, =SIMBOOK
 		BLX		R1
+#else
+		CODE32
+		RSEG	PHONEBOOKHOOK
+		BLX		SIMBOOK
+#endif	
+
+#ifndef ELKA
+    RSEG  AddrBookWindow2:DATA(1)
+    DCB		0xFF
 #endif
-		
-		//RSEG	PHONEBOOKHOOK2:CODE(1)
-		//NOP
 
 #else
 //Hook

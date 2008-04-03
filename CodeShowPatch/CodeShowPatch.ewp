@@ -137,6 +137,8 @@
         <debug>0</debug>
         <option>
           <name>CCDefines</name>
+          <state>NEWSGOLD</state>
+          <state>ELKA</state>
           <state>E71Cv41</state>
         </option>
         <option>
@@ -962,6 +964,7 @@
         <debug>0</debug>
         <option>
           <name>CCDefines</name>
+          <state>NEWSGOLD</state>
           <state>S7Cv47</state>
         </option>
         <option>
@@ -1786,6 +1789,8 @@
         <debug>0</debug>
         <option>
           <name>CCDefines</name>
+          <state>NEWSGOLD</state>
+          <state>ELKA</state>
           <state>ELC1v41</state>
         </option>
         <option>
@@ -3434,6 +3439,7 @@
         <debug>0</debug>
         <option>
           <name>CCDefines</name>
+          <state>NEWSGOLD</state>
           <state>S68Cv51</state>
         </option>
         <option>
@@ -4258,6 +4264,7 @@
         <debug>0</debug>
         <option>
           <name>CCDefines</name>
+          <state>NEWSGOLD</state>
           <state>M81Cv51</state>
         </option>
         <option>

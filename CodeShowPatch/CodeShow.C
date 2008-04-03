@@ -123,7 +123,7 @@ void AppendInfoW(WSTRING *pWS, WSTRING * pNo)
 	GetProvAndCity(pWS->pstr, szPNo);			
 }
 
-#ifdef ELKA
+#ifdef NEWSGOLD
 //给NEWSGOLD的SIM卡电话本添加一个换行符
 void do_phonebook_work(WSTRING *pWS, WSTRING * pNo)
 {
