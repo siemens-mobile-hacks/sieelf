@@ -432,7 +432,7 @@ static void SendPost(void)
   sprintf(buf,"D=zh");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"E=ISO-8859-1");
+  sprintf(buf,"E=GB2312");
   //sprintf(buf,"E=ISO8859_1");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
   
