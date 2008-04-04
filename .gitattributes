@@ -12,7 +12,6 @@ AppEx/readme.txt -text
 BalletMini/BalletMini.ewp -text
 BalletMini/BalletMini.eww -text
 BalletMini/BalletMini.txt -text
-BalletMini/Balletmini.html -text
 BalletMini/ToDo.txt -text
 BalletMini/additems.c -text
 BalletMini/additems.h -text
@@ -29,7 +28,6 @@ BalletMini/file_works.h -text
 BalletMini/func.asm -text
 BalletMini/history.c -text
 BalletMini/history.h -text
-BalletMini/html/help.html -text
 BalletMini/images.h -text
 BalletMini/img/BalletMini.psd -text
 BalletMini/img/BalletMini_url.psd -text
