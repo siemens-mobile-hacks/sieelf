@@ -28,6 +28,7 @@ BalletMini/file_works.h -text
 BalletMini/func.asm -text
 BalletMini/history.c -text
 BalletMini/history.h -text
+BalletMini/html/help.html -text
 BalletMini/images.h -text
 BalletMini/img/BalletMini.psd -text
 BalletMini/img/BalletMini_url.psd -text

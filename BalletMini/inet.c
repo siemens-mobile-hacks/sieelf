@@ -433,7 +433,7 @@ static void SendPost(void)
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
   sprintf(buf,"E=GB2312");
-  //sprintf(buf,"E=ISO8859_1");
+  //sprintf(buf,"E=GB2312);
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
   
   extern const int PIC_QUALITY;
