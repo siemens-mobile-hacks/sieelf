@@ -642,7 +642,18 @@ void ConstructList(void)
                           unsigned int c1;
                           int m;
 			  ws=contact.num[n]=AllocWS(50);
-			  //Add icons phones 
+			  //Add icons phones
+
+                          if(priority&&n==0)
+                          {
+                           n=priority;
+                          }
+                          else 
+                          if(n==priority)
+                          {
+                           n=0;
+                          }  
+                            
 			  wsAppendChar(contact.icons,utf_symbs[n]);
 			  j=0;
                           m=0;
@@ -1162,17 +1173,22 @@ void my_ed_redraw(void *data)
 	DrawString(cl->name,3,dy+4,right_border-2-icons_size,dy+(cfg_item_gaps+gfont_size),font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
 
         //号码输出
-         int c=0,n=0;    
+         int c=0,n=0,bc=0;
+         int box[5];
           do
           {
             if (cl->num[c])
            {
              ws_2str(cl->num[c],dstr[n],39);
+             box[n]=c;
              if(c==priority&&dstr[0])
              {
                   strncpy(dstr3,dstr[0],39);
                   strncpy(dstr[0],dstr[n],39);
                   strncpy(dstr[n],dstr3,39);
+                  bc=box[0];
+                  box[0]=box[n];
+                  box[n]=bc;
              }
              ++n;
            }
@@ -1191,8 +1207,8 @@ void my_ed_redraw(void *data)
           //图标
           DrawString(cl->icons,right_border-1-icons_size,dy+cfg_item_gaps,right_border-2,dy+cfg_item_gaps+gfont_size,font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
     
-          DrawString(prws,3,dy+(gfont_size+cfg_item_gaps)+2,right_border,dy+2*(gfont_size+cfg_item_gaps),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));
-          //DrawImg(3,dy+(gfont_size+cfg_item_gaps),menu_icons[numx]);
+          DrawString(prws,3+l,dy+(gfont_size+cfg_item_gaps)+2,right_border,dy+2*(gfont_size+cfg_item_gaps),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));
+          DrawImg(3,dy+(gfont_size+cfg_item_gaps),menu_icons[box[numx]]);
             
 
           int dyx,dyy;
@@ -1554,7 +1570,7 @@ if(EDIT_IsBusy(data))
 
       smscount=(int)ec.pWS->wsbody[0];
       //小灵通号码
-      if(snum[0] == '+' || snum[0] == '1')
+      if(snum[0] == '+' || snum[0] == '1' || !xlt)
         strcpy(smsnum, snum);
       else
         sprintf(smsnum, "106%s", snum);
@@ -1760,7 +1776,7 @@ void VoiceOrSMS(const char *num)
      if(smsn)
      {
      wsAppendChar(ews, '\n');  
-     if(num[0] == '+' || num[0] == '1')
+     if(num[0] == '+' || num[0] == '1' || !xlt)
      wsprintf(gwsTemp,"%s",num);
      else 
      wsprintf(gwsTemp,"106%s",num);//号码
@@ -1896,6 +1912,8 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 #endif
   {
     if (!cl) goto L_OLDKEY;
+    //VoiceOrSMS();  
+    
     while(i!=curpos)
     {
       i++;
@@ -1971,8 +1989,17 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
       is_pos_changed=1;
       if (key==UP_BUTTON)
       {
-                 if (curpos)
-		 curpos--;
+		if (curpos)
+			curpos--;
+		else if(cl)
+		{
+			cl=(CLIST *)cltop;
+			while(cl->next)
+			{
+				curpos++;
+				cl=(CLIST *)cl->next;
+			}
+		}
                  numx=0;
       }
       if (key==DOWN_BUTTON)
@@ -1987,9 +2014,9 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 			}
 			while(i<=curpos);
 		}
-			if(cl)curpos=i;
-			else curpos=0;
-                        numx=0;
+		if(cl)curpos=i;
+		else curpos=0;
+                numx=0;
       }
     }
     r=-1; //Redraw 

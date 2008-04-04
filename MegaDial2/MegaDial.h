@@ -40,6 +40,7 @@ extern const int smsc;
 extern const int voice;
 extern const int ipx2;
 extern const int ip00;
+extern const int xlt;
 extern const int priority;
 extern const unsigned int volume;
 

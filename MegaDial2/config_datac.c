@@ -41,19 +41,33 @@ __root const int smsc=0;
 __root const CFG_HDR cfghdr1_10 = {CFG_CHECKBOX,"界面音效",0,0};
 __root const int voice=0;
 
-__root const CFG_HDR cfghdr1_11 = {CFG_CHECKBOX,"IP扩展",0,0};
-__root const int ipx2=0;
-
-__root const CFG_HDR cfghdr1_12 = {CFG_CHECKBOX,"ip外国+00",0,0};
-__root const int ip00=0;
-
- __root const CFG_HDR cfghdr1_13={CFG_CBOX, "优先号码", 0, 5};
+ __root const CFG_HDR cfghdr1_11={CFG_CBOX, "优先号码", 0, 5};
  __root const int priority = 0;
  __root const CFG_CBOX_ITEM cfgcbox1[5]={"电话号码","公司号码","移动号码","传真号码","传真号码2"};
 
-
+ 
 __root const CFG_HDR cfghdr_m4={CFG_LEVEL,"",0,0};
 
+
+__root const CFG_HDR cfghdr_m3={CFG_LEVEL,"号码前缀选项",1,0};
+
+__root const CFG_HDR cfghdr11_11 = {CFG_CHECKBOX,"IP拨号扩展",0,0};
+__root const int ipx2=0;
+
+__root const CFG_HDR cfghdr11_12 = {CFG_CHECKBOX,"IP外国+00",0,0};
+__root const int ip00=0;
+
+__root const CFG_HDR cfghdr11_13 = {CFG_CHECKBOX,"小灵通+106",0,0};
+__root const int xlt=1;
+
+__root const CFG_HDR cfghdr11_14 = {CFG_UINT,"本地IP",0,0xFFFFFFFF};
+__root const int cfg_ip_number1 = 17951;
+
+__root const CFG_HDR cfghdr11_15 = {CFG_UINT,"漫游和国际IP",0,0xFFFFFFFF};
+__root const int cfg_ip_number2 = 12593;
+
+
+__root const CFG_HDR cfghdr_m2={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr_m7={CFG_LEVEL,"选号相关颜色",1,0};
 
@@ -132,12 +146,6 @@ __root const int cfg_cs_adr=0xA0CC0000;
 
 __root const CFG_HDR cfghdr5_4={CFG_STR_UTF8,"通信录地址",3,127};
 __root const char root_dir[128]="0:\\\x1F\xE7\xB3\xBB\xE7\xBB\x9F\\apo\\addr";
-
-__root const CFG_HDR cfghdr5_5 = {CFG_UINT,"IP号码1",0,0xFFFFFFFF};
-__root const int cfg_ip_number1 = 17951;
-
-__root const CFG_HDR cfghdr5_6 = {CFG_UINT,"IP号码2",0,0xFFFFFFFF};
-__root const int cfg_ip_number2 = 12593;
 
 __root const CFG_HDR cfghdr5_7={CFG_UINT,"音效音量",0,6};
 __root const unsigned int volume=6;
