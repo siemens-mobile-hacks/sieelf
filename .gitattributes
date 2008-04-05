@@ -29,6 +29,11 @@ BalletMini/func.asm -text
 BalletMini/history.c -text
 BalletMini/history.h -text
 BalletMini/html/help.html -text
+BalletMini/html/history.htm -text
+BalletMini/html/index.files/Thumbs.db -text
+BalletMini/html/index.files/filelist.xml -text
+BalletMini/html/index.files/image296.gif -text
+BalletMini/html/index.htm -text
 BalletMini/images.h -text
 BalletMini/img/BalletMini.psd -text
 BalletMini/img/BalletMini_url.psd -text
@@ -69,7 +74,6 @@ BalletMini/test.xcl -text
 BalletMini/urlstack.c -text
 BalletMini/urlstack.h -text
 BalletMini/view.h -text
-BalletMini/使用方法（部分，欢迎补充）.txt -text
 Blinker/blinker.ewp -text
 Blinker/blinker.eww -text
 Blinker/conf_loader.c -text
