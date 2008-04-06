@@ -643,16 +643,6 @@ void ConstructList(void)
                           int m;
 			  ws=contact.num[n]=AllocWS(50);
 			  //Add icons phones
-
-                          if(priority&&n==0&&ur.number_of_records<2)
-                          {
-                           n=priority;
-                          }
-                          else 
-                          if(n==priority&&contact.icons->wsbody[0]>0)
-                          {
-                           n=0;
-                          }  
                             
 			  wsAppendChar(contact.icons,utf_symbs[n]);
 			  j=0;
@@ -1200,10 +1190,10 @@ void my_ed_redraw(void *data)
          str_2ws(prws,dstr[numx],39);
 
            int l=GetImgWidth(menu_icons[0]);
-           int d=(sumx-numx)*l;
+           //int d=(sumx-numx)*l;
           //Í¼±ê¿ò
-          if(sumx>1)
-          DrawRectangle(right_border-2-d,dy+3,right_border-1-d+l,dy+(gfont_size+cfg_item_gaps)+1,1,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
+          //if(sumx>1)
+          //DrawRectangle(right_border-2-d,dy+3,right_border-1-d+l,dy+(gfont_size+cfg_item_gaps)+1,1,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
           //Í¼±ê
           DrawString(cl->icons,right_border-1-icons_size,dy+cfg_item_gaps,right_border-2,dy+cfg_item_gaps+gfont_size,font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
     
