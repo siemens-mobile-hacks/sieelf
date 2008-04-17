@@ -628,7 +628,7 @@
 0920: 0xA8D8595A   ; 248: char *RamFormatTrack()
 0924: 0xA8D85BC2   ; 249: char *RamFreq()\\§³§Ü§à§â§à§ã§ä§î §Õ§Ú§ã§Ü§â§Ö§ä§Ú§Ù§Ñ§è§Ú§Ú(4-22, 7-44, 8-48)
 0928: 0xA8D85D7A   ; 24A: char *RamChannel()\\§³§ä§Ö§â§Ö§à §Ú§Ý§Ú §®§à§ß§à(0-§®§à§ß§à, 1-§³§ä§Ö§â§Ö§à)
-0924: 0xA097AFEB   ; 24B: __thumb void SetMenuSearchCallBack(void *gui, MenuSearchCallBack proc);
+092C: 0xA097AFEB   ; 24B: __thumb void SetMenuSearchCallBack(void *gui, MenuSearchCallBack proc);
 0930: 0xA0671701   ; 24C: __thumb int  GetPeripheryState (int device, int check_state); // device: 4-gprs  0 -BT  1 -irda   2 -COM ?; ChechState:    4 -IsActive  (1|2) - IsOn  
 0934: 0xA05B1034   ; 24D: __arm int PlayMelody_SetPosition(int handle, int pos_ms);
 0938: 0xA064C320   ; 24E: __arm void* GetPlayObjById(int handle);
@@ -638,3 +638,4 @@
 #pragma disable old_equal_ff
 +0       
 ;********************************************************************************
+
