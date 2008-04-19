@@ -628,42 +628,7 @@ __arm void MyIDLECSMonClose(void *data)
   //  asm("NOP\n");
 }
 
-//#define Check_LoadDaemons
 
-#ifdef Check_LoadDaemons
-__arm void LoadDaemons(int yes_no_id)
-{
-  if (yes_no_id==0)
-  {    
-    DIR_ENTRY de;                       
-    unsigned int err;                   
-    unsigned int pathlen;               
-    char name[256];                     
-    strcpy(name+1,":\\ZBin\\Daemons\\");
-    name[0]=DEFAULT_DISK_N+'0';         
-    pathlen=strlen(name);               
-    strcat(name,"*.elf");               
-    if (FindFirstFile(&de,name,&err))   
-    {                                   
-      do                                
-      {                                 
-        //strcpy(name,path);            
-        name[pathlen]=0;                
-        strcat(name,de.file_name);      
-        elfload(name,0,0,0);            
-      }                                 
-      while(FindNextFile(&de,&err));    
-    }                                   
-    FindClose(&de,&err);                
-  }
-}
-
-__arm void CheckLoadDaemons(void)
-{
-  MsgBoxYesNo(1, (int)"Load Daemons ?", LoadDaemons);
-}
-
-#else
 __arm void LoadDaemons(void)
 {
   DIR_ENTRY de;
@@ -687,7 +652,7 @@ __arm void LoadDaemons(void)
   }
   FindClose(&de,&err);
 }
-#endif
+
 
 __no_init void *(*pLIB_TOP)[];
 extern void *Library[];
@@ -805,9 +770,10 @@ __arm void MyIDLECSMonCreate(void *data)
   strcpy(bigicons_str+1,":\\ZBin\\img\\elf_big.png");
   smallicons_str[0]=bigicons_str[0]=DEFAULT_DISK_N+'0';
   RegExplorerExt(&elf_reg);
-  //SUBPROC((void *)LoadDaemons);
-#ifdef Check_LoadDaemons
-  SUBPROC((void *)CheckLoadDaemons);
+//#define SAFE_MODE
+#ifdef SAFE_MODE
+	if(*RamPressedKey()!='*')
+		SUBPROC((void *)LoadDaemons);
 #else
   SUBPROC((void *)LoadDaemons);
 #endif
