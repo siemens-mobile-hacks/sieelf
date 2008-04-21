@@ -23,6 +23,7 @@ extern const int COLOR_NUMBER;
 extern const int CS_NUMBER_BG;
 //ÇøºÅÐã
 extern const int cfg_cs_adr;
+extern const int cfg_cs_adrs;
 extern const int cfg_cs_enable;
 extern const int cfg_cs_part;
 extern const int cfg_cs_font_color;
@@ -42,6 +43,9 @@ extern const int ipx2;
 extern const int ip00;
 extern const int xlt;
 extern const int priority;
+extern const int startY;
+extern const int startfix;
+extern const int startfix2;
 extern const unsigned int volume;
 
 #endif

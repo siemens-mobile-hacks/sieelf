@@ -135,19 +135,55 @@ __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr_m13={CFG_LEVEL,"其他相关设定",1,0};
 
-__root const CFG_HDR cfghdr5_1 = {CFG_COLOR,"区号秀颜色",0,99};
+#ifdef ELKA
+__root const CFG_HDR cfghdr5_0 = {CFG_UINT,"拨号号码坐标",0,320};
+__root const int startY = 56;
+
+__root const CFG_HDR cfghdr5_1 = {CFG_UINT,"区号秀大头贴修正值",0,320};
+__root const int startfix = 0;
+
+__root const CFG_HDR cfghdr5_2 = {CFG_UINT,"列表修正值",0,320};
+__root const int startfix2 = 0;
+#else
+  #ifdef S68
+__root const CFG_HDR cfghdr5_0 = {CFG_UINT,"拨号号码坐标",0,176};
+__root const int startY = 38;
+  
+__root const CFG_HDR cfghdr5_1 = {CFG_UINT,"区号秀大头贴修正值",0,176};
+__root const int startfix = 0;
+
+__root const CFG_HDR cfghdr5_2 = {CFG_UINT,"列表修正值",0,176};
+__root const int startfix2 = 0;
+  #else
+__root const CFG_HDR cfghdr5_0 = {CFG_UINT,"拨号号码坐标",0,176};
+__root const int startY = 18;
+
+__root const CFG_HDR cfghdr5_1 = {CFG_UINT,"区号秀大头贴修正值",0,176};
+__root const int startfix = 0;
+
+__root const CFG_HDR cfghdr5_2 = {CFG_UINT,"列表修正值",0,176};
+__root const int startfix2 = 0;
+  #endif
+#endif
+
+
+__root const CFG_HDR cfghdr5_3 = {CFG_COLOR,"区号秀颜色",0,99};
 __root const int cfg_cs_font_color=0;
 
-__root const CFG_HDR cfghdr5_2 = {CFG_COLOR,"区号秀背景",0,99};
+__root const CFG_HDR cfghdr5_4 = {CFG_COLOR,"区号秀背景",0,99};
 __root const int CS_NUMBER_BG=2;
 
-__root const CFG_HDR cfghdr5_3 = {CFG_UINT,"区号秀地址",0,0xFFFFFFFF};
-__root const int cfg_cs_adr=0xA0CC0000;
+__root const CFG_HDR cfghdr5_5 = {CFG_CBOX,"区号秀地址选择",0,10};
+ __root const int cfg_cs_adrs = 1;
+ __root const CFG_CBOX_ITEM cfgcbox3[10]={"自输","S65/CX65","SK65","C65/SL65","CX70","M65","C7C","CX7A","E71/EL71/M81/S68/SL75","S75(外置)"};
 
-__root const CFG_HDR cfghdr5_4={CFG_STR_UTF8,"通信录地址",3,127};
+__root const CFG_HDR cfghdr5_6 = {CFG_UINT,"区号秀自输",0,0xFFFFFFFF};
+__root const int cfg_cs_adr=0;
+
+__root const CFG_HDR cfghdr5_7={CFG_STR_UTF8,"通信录地址",3,127};
 __root const char root_dir[128]="0:\\\x1F\xE7\xB3\xBB\xE7\xBB\x9F\\apo\\addr";
 
-__root const CFG_HDR cfghdr5_7={CFG_UINT,"音效音量",0,6};
+__root const CFG_HDR cfghdr5_8={CFG_UINT,"音效音量",0,6};
 __root const unsigned int volume=6;
 
 __root const CFG_HDR cfghdr_m12={CFG_LEVEL,"",0,0};

@@ -181,16 +181,53 @@ void InitIcons(void)
 //-------------------------------------
 void RereadSettings()
 {
-        font();
+        //font();
 	int fin;
 	unsigned int ul;
 	InitConfig();
 	if(iReadFile && !cs_adr)
         mfree((void*)cs_adr);
-	if(cfg_cs_adr > 0xA0000000)
+	if(cfg_cs_adrs < 8)
 	{
-		cs_adr=cfg_cs_adr;
-		iReadFile = 0;
+          switch(cfg_cs_adrs)
+          {
+          case 0:
+            cs_adr=cfg_cs_adr;
+            break;
+            
+          case 1:
+            cs_adr=0xA0CC0000;
+            break;
+            
+          case 2:
+            cs_adr=0xA0F80000;
+            break;
+            
+          case 3:
+            cs_adr=0xA0F60000;
+            break;
+            
+          case 4:
+            cs_adr=0xA0E55A00;
+            break;
+            
+          case 5:
+            cs_adr=0xA0C61220;
+            break;
+            
+          case 6:
+            cs_adr=0xA0E70B60;
+            break;            
+            
+          case 7:
+            cs_adr=0xA0F294B0;
+            break;
+            
+          case 8:
+            cs_adr=0xA1580000;
+            break;
+          }  
+	   iReadFile = 0;
 	}
 	else
 	{
@@ -1086,26 +1123,26 @@ void my_ed_redraw(void *data)
   
 #ifdef ELKA
   (big_font)?(count_page=6):(count_page=8);
-  int csh=100;
+  int csh=startY+startfix+44;
   if(big_font)
-      z=102;
+      z=startY+startfix+46;
   else
-      z=98;
+      z=startY+startfix+42;
 #else
   #ifdef S68
   (big_font)?(count_page=6):(count_page=7);
-  int csh=60;
+  int csh=startY+startfix+22;
   if(big_font)
-      z=57;
+      z=startY+startfix+19;
   else
-      z=60;
+      z=startY+startfix+22;
   #else
   (big_font)?(count_page=7):(count_page=9);
-  int csh=40;
+  int csh=startY+startfix+22;
   if(big_font)
-      z=42;
+      z=startY+startfix+24;
   else
-      z=38;
+      z=startY+startfix+20;
   #endif
 #endif
   
@@ -1118,9 +1155,9 @@ void my_ed_redraw(void *data)
   if (p && e_ws && e_ws->wsbody[0]<MAX_ESTR_LEN) //Its length <MAX_ESTR_LEN 
   {
   #ifdef S68
-    int y=ScreenH()-25-(gfont_size+1)*count_page;
+    int y=ScreenH()-25-(gfont_size+1)*count_page+startfix2;
   #else
-    int y=ScreenH()-SoftkeyH()-(gfont_size+1)*count_page;
+    int y=ScreenH()-SoftkeyH()-(gfont_size+1)*count_page+startfix2;
   #endif
     down_border=ScreenH()-SoftkeyH()+5;
     DrawRectangle(1,z,ScreenW()-2,down_border,0,color(COLOR_MENU_BRD),color(COLOR_MENU_BK));
@@ -1273,14 +1310,16 @@ void my_ed_redraw(void *data)
 void ChangeRC(GUI *gui)
 {
 #ifdef ELKA
-  static const RECT rc={6,56,234,140};
+  static RECT rc={6,56,234,140};
 #else
   #ifdef S68
-  static const RECT rc={6,38,126,100};
+  static RECT rc={6,38,126,100};
   #else
-  static const RECT rc={6,18,126,100};
+  static RECT rc={6,18,126,100};
   #endif
 #endif
+  rc.y = startY;
+  
   if (e_ws)
   {
     if (wslen(e_ws)>=MAX_ESTR_LEN) return;
@@ -1323,10 +1362,10 @@ static void bcfgsetting()
 {
   WSHDR *ws = AllocWS(150);
   int fd1;
-  if ((fd1 = fopen("4:\\ZBin\\etc\\MegaDial.bcfg", A_ReadOnly + A_BIN, P_READ, &err)) != -1)
-    str_2ws(ws, "4:\\ZBin\\etc\\MegaDial.bcfg", 128);
+  if ((fd1 = fopen("4:\\ZBin\\etc\\MegaDial2.bcfg", A_ReadOnly + A_BIN, P_READ, &err)) != -1)
+    str_2ws(ws, "4:\\ZBin\\etc\\MegaDial2.bcfg", 128);
   else
-    str_2ws(ws, "0:\\ZBin\\etc\\MegaDial.bcfg", 128);
+    str_2ws(ws, "0:\\ZBin\\etc\\MegaDial2.bcfg", 128);
   fclose(fd1, &err);
   ExecuteFile(ws, 0, 0);
   FreeWS(ws);
@@ -1874,7 +1913,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //°´¼ü¹¦ÄÜ
 			SUBPROC((void *)ElfKiller);
 			return 1;
 		}
-		if(e_ws->wsbody[0]==2&&e_ws->wsbody[1]=='#'&&e_ws->wsbody[2]=='#')
+		if(e_ws->wsbody[0]==3&&e_ws->wsbody[1]=='1'&&e_ws->wsbody[2]=='1'&&e_ws->wsbody[3]=='1')
 		{
                         bcfgsetting();
 			return 1;
