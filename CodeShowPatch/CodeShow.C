@@ -9,6 +9,7 @@
 	history:    2005-06-22 V2
 *********************************************************************/
 #include "addr.h"
+#include "type_.h"
 
 #define VERSION "2.0b"
 
@@ -24,55 +25,6 @@
 
 #define LOBYTE(w) ((byte)(w))
 #define HIBYTE(w) ((byte)(((word)(w) >> 8) & 0xFF))
-
-typedef unsigned char  byte;
-typedef unsigned short word;
-typedef unsigned int   dword;
-typedef unsigned int   uint;
-
-typedef struct WString{
-	word* pstr;
-	int unknown[3];
-	int buflen;
-}WSTRING; 
-
-typedef struct {
-    byte Flag;
-    byte ID;
-    byte Version;
-    byte Year;
-    byte Month;
-    byte Day;
-    byte ProvinceNameLen;
-    byte CityNameLen;
-    dword CodeTableOffset;
-    dword CodeCount;
-    dword LocaleTableOffset;
-    dword LocaleCount;
-    dword ProvinceTableOffset;
-    dword ProvinceCount;
-    dword CityTableOffset;
-    dword CityCount;
-}CODESHOWHEAD;
-
-#pragma pack(2)
-typedef struct {
-    word ProvinceName[3];
-    word StartOffset;
-    word EndOffset;
-}PROVINCE;
-
-typedef struct {
-    word CityName[6];
-    word LocaleNo     :10;
-    word ProvinceNo   :6;
-}CITY;
-#pragma pack()
-
-typedef struct {
-    word LocaleNo;
-    word CityNo;
-}LOCALE;
 
 
 extern int strlen(const char*);
@@ -93,7 +45,6 @@ const word szErrorData[] 	= { 0x6570, 0x636E, 0x5E93, 0x9519, 0x8BEF, 0};
 const word szLocalCode[] 	= { 0x672C, 0x5730, 0x53F7,0x7801, 0};
 const word szSplit[] 		= { 0x2027, 0 };
 const word szAddInfo[] 		= { 0x20, 0 };
-//const word szNewLine[] 		= { 0x0A, 0 };
 
 /****************/
 /* main program */
