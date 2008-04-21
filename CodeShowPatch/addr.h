@@ -7,7 +7,7 @@
 #define ADDR_UpdateWndItem	0xA0A4EA4C+1
 #define ADDR_memcmp	0xA0FF0DA4+1
 
-#define ADDR_RECORD1 0xA0C45170
+#define ADDR_wstrcat 0xA0C45170
 #define ADDR_wsAppendChar 0xA0C450CC
 #define ADDR_IsCalling 0xA0D0CF80+1
 #define ADDR_CallIN 0xA067DACC+1
@@ -25,7 +25,7 @@
 #define ADDR_UpdateWndItem	0xA0A35900+1
 #define ADDR_memcmp		0xA142627C+1
 
-#define ADDR_RECORD1		0xA06A0FE8
+#define ADDR_wstrcat		0xA06A0FE8
 #define ADDR_wsAppendChar	0xA06A0FF4
 #define ADDR_IsCalling		0xA0DE7EA4+1
 #define ADDR_CallIN		0xA02FCB7C+1
@@ -43,7 +43,7 @@
 #define ADDR_UpdateWndItem	0xA0A55234+1
 #define ADDR_memcmp	0xA0FFC134+1
 
-#define ADDR_RECORD1 0xA0C4D128
+#define ADDR_wstrcat 0xA0C4D128
 #define ADDR_wsAppendChar 0xA0C4D09C
 #define ADDR_IsCalling 0xA0D158C8+1
 #define ADDR_CallIN 0xA0681B64+1
@@ -60,15 +60,23 @@
 #define ADDR_GetCalleeNumber	0xA0733432+1
 #define ADDR_UpdateWndItem	0xA0999A5E+1
 #define ADDR_memcmp		0xA0D958AC+1
+#define ADDR_DrawString		0xA07F43B8+1
+#define ADDR_FreeWS		0xA071988E+1
+#define ADDR_AllocWS		0xA0719852+1
+#define ADDR_GetCurMenuItem	0xA098B9E2+1
 
-#define ADDR_RECORD1		0xA05928C4
+#define ADDR_wstrcat		0xA07199B8+1
 #define ADDR_wsAppendChar	0xA0719AE0+1
-#define ADDR_CALLX		0xA044AC5C
+#define ADDR_IsCalling		0xA09E5142+1
 #define ADDR_CallIN		0xA038F496+1
 #define ADDR_CallOUT		0xA038E854+1
-#define ADDR_ADDRBook		0xA0592670
-#define ADDR_SMS_SEND		0xA07D3BC0+1	
+#define ADDR_ADDRBook		0xA0719FE8+1
+#define ADDR_SMS_SEND		0xA07D3BC0+1
 #define BASEADDRESS		0xA0E30000
+#define UNUSERAM_NUM		0xA8000240
+#define UNUSERAM_METHOD		0xA8000300
+#define UNUSERAM_OLD_REDRAW	0xA80002F0
+#define ADDR_SELECT_MENU	0xA079188C+1
 
 
 #endif
@@ -81,7 +89,7 @@
 #define ADDR_UpdateWndItem	0xA08D427C+1
 #define ADDR_memcmp	0xA11054D4+1
 
-#define ADDR_RECORD1 0xA09F2E50
+#define ADDR_wstrcat 0xA09F2E50
 #define ADDR_wsAppendChar 0xA09F2D8C
 #define ADDR_IsCalling 0xA0C26E00+1
 #define ADDR_CallIN 0xA02E8BA8+1
@@ -99,7 +107,7 @@
 #define ADDR_UpdateWndItem	0xA0A38380+1
 #define ADDR_memcmp	0xA14173C0+1
 
-#define ADDR_RECORD1 0xA0BB5114
+#define ADDR_wstrcat 0xA0BB5114
 #define ADDR_wsAppendChar 0xA0BB5050
 #define ADDR_IsCalling 0xA0DE44C8+1
 #define ADDR_CallIN 0xA02FB630+1

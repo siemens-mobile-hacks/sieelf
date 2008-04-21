@@ -157,6 +157,8 @@ CodeShowPatch/about.txt -text
 CodeShowPatch/addr.h -text
 CodeShowPatch/main.asm -text
 CodeShowPatch/mk.bat -text
+CodeShowPatch/select_menu.c -text
+CodeShowPatch/type_.h -text
 DialExt/DialExt.ewp -text
 DialExt/DialExtDial.eww -text
 DialExt/conf_loader.c -text

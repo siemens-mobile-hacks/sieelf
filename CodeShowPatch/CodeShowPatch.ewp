@@ -4960,6 +4960,9 @@
   <file>
     <name>$PROJ_DIR$\main.asm</name>
   </file>
+  <file>
+    <name>$PROJ_DIR$\select_menu.c</name>
+  </file>
 </project>
 
 

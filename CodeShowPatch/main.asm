@@ -1,56 +1,84 @@
 
 #include "addr.h"
 
-    EXTERN  AppendInfoW
-    EXTERN  UpdateLocaleToItem
-    EXTERN  do_phonebook_work 
+	EXTERN	AppendInfoW
+	EXTERN	UpdateLocaleToItem
+	EXTERN	do_phonebook_work 
 
-    RSEG  CODE
-		
-    CODE16
-    
-    PUBLIC strlen
+#ifdef NEWSGOLD
+	RSEG	CODE
+#else
+	RSEG	CODE_2
+#endif
+	
+	CODE16
+	PUBLIC	strlen
 strlen:
-    PUSH  {R4, LR} 
-    LDR   R4, =ADDR_strlen
-    BLX   R4
-    POP   {R4, PC}
-    
-    PUBLIC memcmp
+	PUSH		{R4, LR} 
+	LDR		R4, =ADDR_strlen
+	BLX		R4
+	POP		{R4, PC}
+	
+	PUBLIC	memcmp
 memcmp:
-    PUSH  {R4, LR} 
-    LDR	  R4, =ADDR_memcmp
-    BLX   R4
-    POP   {R4, PC}
-    
-    PUBLIC atou
+	PUSH		{R4, LR} 
+	LDR		R4, =ADDR_memcmp
+	BLX		R4
+	POP		{R4, PC}
+	
+	PUBLIC	atou
 atou:
-    PUSH  {R4, LR} 
-    LDR	  R4, =ADDR_atou
-    BLX   R4
-    POP   {R4, PC}
-    
-    PUBLIC WS_InitByZero
+	PUSH		{R4, LR} 
+	LDR		R4, =ADDR_atou
+	BLX		R4
+	POP		{R4, PC}
+	
+	PUBLIC	WS_InitByZero
 WS_InitByZero:
-    PUSH  {R4, LR} 
-    LDR	  R4, =ADDR_WS_InitByZero
-    BLX   R4
-    POP   {R4, PC}
-    
-    PUBLIC GetCalleeNumber
+	PUSH		{R4, LR} 
+	LDR		R4, =ADDR_WS_InitByZero
+	BLX		R4
+	POP		{R4, PC}
+	
+	PUBLIC	GetCalleeNumber
 GetCalleeNumber:
-    PUSH  {R4, LR} 
-    LDR	  R4, =ADDR_GetCalleeNumber
-    BLX   R4
-    POP   {R4, PC}
-    
-    PUBLIC UpdateWndItem
+	PUSH		{R4, LR} 
+	LDR		R4, =ADDR_GetCalleeNumber
+	BLX		R4
+	POP		{R4, PC}
+	
+	PUBLIC	UpdateWndItem
 UpdateWndItem:
-    PUSH  {R4, LR} 
-    LDR   R4, =ADDR_UpdateWndItem
-    BLX   R4
-    POP   {R4, PC}
-    
+	PUSH		{R4, LR} 
+	LDR		R4, =ADDR_UpdateWndItem
+	BLX		R4
+	POP		{R4, PC}
+	
+	//CODE32
+	public	AllocWS
+AllocWS:
+	LDR		R3, =ADDR_AllocWS
+	BX		R3
+	
+	public	FreeWS
+FreeWS:
+	LDR		R3, =ADDR_FreeWS
+	BX		R3
+	
+	public	DrawString
+DrawString:
+	PUSH		{R3}
+	LDR		R3, =ADDR_DrawString
+	MOV		R12, R3
+	POP		{R3}
+	BX		R12
+	
+	public		GetCurMenuItem
+GetCurMenuItem:
+	LDR		R3, =ADDR_GetCurMenuItem
+	BX		R3
+	
+	CODE16
 AddNewLine:
 	PUSH		{R0-R7, LR}
 	MOV		R1, #0xD
@@ -59,15 +87,15 @@ AddNewLine:
 	POP		{R0-R7, PC}
 
 Hook1:
-    PUSH  {R0-R1,R4,LR}
-    MOV   R4, R0
-    LDR   R2, =ADDR_RECORD1
-    BLX   R2
-    MOV   R0, R4
-    BL    AddNewLine
-    POP   {R0-R1,R4}
-    BL    AppendInfoW	
-    POP   {PC}
+	PUSH		{R0-R1,R4,LR}
+	MOV		R4, R0
+	LDR		R2, =ADDR_wstrcat
+	BLX		R2
+	MOV		R0, R4
+	BL		AddNewLine
+	POP		{R0-R1,R4}
+	BL		AppendInfoW	
+	POP		{PC}
 
 #ifdef NEWSGOLD
 Hook2:
@@ -205,7 +233,7 @@ HOOKAddrBookWindow_DUMP:
 #endif	
 
 #ifndef ELKA
-	RSEG  AddrBookWindow2:DATA(1)
+	RSEG		AddrBookWindow2:DATA(1)
 	DCB		0xFF
 #endif
 
@@ -221,7 +249,7 @@ Hook2:
 	BLX		R0		
 
 Hook3:
-	LDR		R0, =ADDR_CALLX
+	LDR		R0, =ADDR_IsCalling
 	BLX		R0
 	MOV		R1, R0
 	MOV		R0, #3
@@ -270,7 +298,55 @@ SMS_SEND_WINDOW:
 	POP		{R0}
 	ADD		R0, R0, #4
 	BX		R0
+	
+	extern	store_the_num_2_ram
+	extern	new_redraw_
+	extern	memcpy_n
+	
+//用于将列表中的号码存到RAM中,by BingK(binghelingxi)
+	CODE16
+NUM_SELECT_MENU:
+	PUSH		{R3, LR}
+	LDR		R3, =ADDR_SELECT_MENU
+	BLX		R3
+	ADD		R1, SP, #0x0C
+	MOV		R0, R7
+	BL		store_the_num_2_ram
+	POP		{R3, PC}
 
+//重建redraw,by BingK(binghelingxi)
+	CODE16
+new_redraw:
+	PUSH		{R4-R7,LR}
+	MOV		R7, R0
+	LDR		R4, =UNUSERAM_OLD_REDRAW
+	LDR		R4, [R4, #0]		//RUN OLD REDRAW
+	BLX		R4
+	MOV		R0, R7
+	BL		new_redraw_
+	POP		{R4-R7,PC}
+	
+//替换原来列表GUI的methods,by BingK(binghelingxi)
+	CODE16
+NUM_SELECT_MENU1:
+	PUSH		{R0-R7, LR}
+	MOV		R7, R0			//R0=OLD_GUI
+	LDR		R6, =UNUSERAM_METHOD 	//METHODS
+	LDR		R1, [R7, #4]		//OLD METHODS
+	MOV		R2, #0x60
+	MOV		R0, R6
+	BL		memcpy_n
+	LDR		R5, =UNUSERAM_OLD_REDRAW//FOR OLD METHODS
+	LDR		R0, [R7, #4]
+	LDR		R0, [R0, #0]		//OLD REDRAW
+	STR		R0, [R5, #0]		//STORE OLD REDRAW HERE
+	LDR		R0, =new_redraw
+	STR		R0, [R6, #0]		//STORE NEW REDRAW
+	STR		R6, [R7, #4]		//STORE NEW METHODS
+	POP		{R0-R7}
+	ADD		R4, R0, #0
+	LDR		R1, =0xA0711F5C
+	POP		{PC}
 //Hook
 // 通话记录修改
 	RSEG	RecordWindow:CODE(1)
@@ -312,6 +388,15 @@ pSMS_SEND
 	
 	CODE16
 	NOP
-	
+
+//用于将列表中的号码存到RAM中,by BingK(binghelingxi)
+	CODE16
+	RSEG	NUM_SELECT_MENU_HOOK:CODE(1)
+	BL		NUM_SELECT_MENU
+
+//替换原来列表的methods,重建redraw,by BingK(binghelingxi)
+	CODE16
+	RSEG	NUM_SELECT_MENU_HOOK1:CODE(1)
+	BL		NUM_SELECT_MENU1
 #endif
 	END
