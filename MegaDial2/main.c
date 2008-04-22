@@ -181,13 +181,12 @@ void InitIcons(void)
 //-------------------------------------
 void RereadSettings()
 {
-        //font();
 	int fin;
 	unsigned int ul;
 	InitConfig();
 	if(iReadFile && !cs_adr)
         mfree((void*)cs_adr);
-	if(cfg_cs_adrs < 8)
+	if(cfg_cs_adrs != 9||(cfg_cs_adrs==0&&cfg_cs_adr > 0xA0000000))
 	{
           switch(cfg_cs_adrs)
           {
@@ -1200,7 +1199,7 @@ void my_ed_redraw(void *data)
 	DrawString(cl->name,3,dy+4,right_border-2-icons_size,dy+(cfg_item_gaps+gfont_size),font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
 
         //号码输出
-         int c=0,n=0,bc=0;
+         int c=0,n=0,bc=0,cn=0;
          int box[5];
           do
           {
@@ -1208,7 +1207,20 @@ void my_ed_redraw(void *data)
            {
              ws_2str(cl->num[c],dstr[n],39);
              box[n]=c;
-             if(c==priority&&dstr[0])
+             
+             wstrcpy(gwsTemp,cl->num[c]);
+             if(CompareStrT9(gwsTemp,(WSHDR *)e_ws,0))
+               {
+                  strncpy(dstr3,dstr[0],39);
+                  strncpy(dstr[0],dstr[n],39);
+                  strncpy(dstr[n],dstr3,39);
+                  bc=box[0];
+                  box[0]=box[n];
+                  box[n]=bc;
+                  cn=1;
+               }
+             
+             if(c==priority&&dstr[0]&&cn==0)
              {
                   strncpy(dstr3,dstr[0],39);
                   strncpy(dstr[0],dstr[n],39);
@@ -1226,6 +1238,7 @@ void my_ed_redraw(void *data)
 
          str_2ws(prws,dstr[numx],39);
 
+         
            int l=GetImgWidth(menu_icons[0]);
            //int d=(sumx-numx)*l;
           //图标框
@@ -1872,7 +1885,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
   int m=msg->gbsmsg->msg;
   int r=0;
   int i=0;
-  int n,d;
+  int n,d,dn;
   
   CLIST *cl=(CLIST *)cltop;
   is_sms_need=0;
@@ -1953,14 +1966,23 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
     //Now cl indicates input 
     d=0;
     n=0;
-    
+    dn=0;
     do
     {
       if (cl->num[d])
       {
         //if (d==2) numx=n;
         ws_2str(cl->num[d],dstr[n],39);
-             if(d==priority&&dstr[0])
+              wstrcpy(gwsTemp,cl->num[d]);
+             if(CompareStrT9(gwsTemp,(WSHDR *)e_ws,0))
+             {
+                  strncpy(dstr3,dstr[0],39);
+                  strncpy(dstr[0],dstr[n],39);
+                  strncpy(dstr[n],dstr3,39);
+                  dn=1;
+             }
+
+             if(d==priority&&dstr[0]&&dn==0)
              {
                   strncpy(dstr3,dstr[0],39);
                   strncpy(dstr[0],dstr[n],39);
