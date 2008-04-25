@@ -21,13 +21,13 @@ United ...
 网络连接忙! 
 Including GPRS! 
 正在制作! 
-The choice 
+选择 
 Eakryt 
 确定 
 取消 
 模板 
 名称: 
-Reference: 
+网址: 
 文本: 
 搜索引擎: 
 选择: 

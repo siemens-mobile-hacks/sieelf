@@ -166,12 +166,7 @@ int char8to16(int c)
 
 void ascii2ws(WSHDR *ws, const char *s)
 {
-  char c;
-  CutWSTR(ws,0);
-  while((c=*s++))
-  {
-    wsAppendChar(ws,char8to16(c));
-  }
+gb2ws(ws, s, strlen(s));
 }
 
 char *extract_omstr(VIEWDATA *vd, unsigned int pos)
