@@ -6,7 +6,7 @@
 
 #define TMR_SECOND (1300/6)
 #define SMS_MAX_LEN  760
-#define cfg_item_gaps 3
+#define cfg_item_gaps 2
 #define color(x) (x<24)?GetPaletteAdrByColorIndex(x):(char *)(&(x))  
 
 volatile int numx;
@@ -199,7 +199,7 @@ void RereadSettings()
             break;
             
           case 2:
-            cs_adr=0xA0F80000;
+            cs_adr=0xA0E30000;
             break;
             
           case 3:
@@ -1108,7 +1108,7 @@ void my_ed_redraw(void *data)
   sumx=0;
   char pszNum2[100];
   int z;
-  int gfont_size = GetFontYSIZE(font_size);
+  int gfont_size = GetFontYSIZE(font_size)+1;
   
   int i=curpos-2;
   int cp;
@@ -1145,6 +1145,7 @@ void my_ed_redraw(void *data)
   #endif
 #endif
   
+  
   //区号秀平时输出
   if(e_ws)
   {
@@ -1154,9 +1155,9 @@ void my_ed_redraw(void *data)
   if (p && e_ws && e_ws->wsbody[0]<MAX_ESTR_LEN) //Its length <MAX_ESTR_LEN 
   {
   #ifdef S68
-    int y=ScreenH()-25-(gfont_size+1)*count_page+startfix2;
+    int y=ScreenH()-25-gfont_size*count_page+startfix2;
   #else
-    int y=ScreenH()-SoftkeyH()-(gfont_size+1)*count_page+startfix2;
+    int y=ScreenH()-SoftkeyH()-gfont_size*count_page+startfix2;
   #endif
     down_border=ScreenH()-SoftkeyH()+5;
     DrawRectangle(1,z,ScreenW()-2,down_border,0,color(COLOR_MENU_BRD),color(COLOR_MENU_BK));
@@ -1184,7 +1185,7 @@ void my_ed_redraw(void *data)
     
     do
     {
-      int dy=i*(gfont_size+1)+y;
+      int dy=i*gfont_size+y;
       if (!cl) break;
       if (i!=cp)
       {
@@ -1238,7 +1239,6 @@ void my_ed_redraw(void *data)
 
          str_2ws(prws,dstr[numx],39);
 
-         
            int l=GetImgWidth(menu_icons[0]);
            //int d=(sumx-numx)*l;
           //图标框
@@ -1267,7 +1267,6 @@ void my_ed_redraw(void *data)
           if(!cfg_cs_part)
           ShowSelectedCodeShow(prws,dyx-(gfont_size+cfg_item_gaps)+6);
           
-          
                   //大头贴
                   if(show_pic)
                   {
@@ -1275,16 +1274,16 @@ void my_ed_redraw(void *data)
                   int x0=ScreenW()-4-GetImgWidth((int)pszNum2);
                   unsigned int pic_size=100;
                   
-                  if(x0<(gfont_size+1)*3)
+                  if(x0<gfont_size*3)
                   {
-                  x0=(gfont_size+1)*3;
+                  x0=gfont_size*3;
                   if(resampled)
                    {
                     #ifdef NEWSGOLD
-                    pic_size=100-((gfont_size+1)*3-x0)*100/(ScreenW()-x0);
+                    pic_size=100-(gfont_size*3-x0)*100/(ScreenW()-x0);
                     #endif  
                     #ifdef X75
-                    pic_size=100-((gfont_size+1)*3-x0)*100/(ScreenW()-x0);
+                    pic_size=100-(gfont_size*3-x0)*100/(ScreenW()-x0);
                      #endif
                     }
                   }
@@ -1331,6 +1330,7 @@ void ChangeRC(GUI *gui)
   static RECT rc={6,18,126,100};
   #endif
 #endif
+  rc.x = startX;
   rc.y = startY;
   
   if (e_ws)
@@ -1954,8 +1954,21 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 #endif
 #endif
   {
-    if (!cl) goto L_OLDKEY;
-    //VoiceOrSMS();  
+    if (!cl) 
+    {
+      if(is_sms_need)
+      {
+        char nx[40];
+        ws_2str((WSHDR *)e_ws,nx,39);
+        gb2ws(gwsName,"未知号码",10);
+        VoiceOrSMS(nx);
+        return(1);
+      }
+      else
+      goto L_OLDKEY;
+    }
+    else
+    {
     
     while(i!=curpos)
     {
@@ -2030,6 +2043,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
       return(1); //Close tries 
     }
     return(0);
+    }
   }
   if ((key==UP_BUTTON)||(key==DOWN_BUTTON))
   {

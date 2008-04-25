@@ -43,6 +43,7 @@ extern const int ipx2;
 extern const int ip00;
 extern const int xlt;
 extern const int priority;
+extern const int startX;
 extern const int startY;
 extern const int startfix;
 extern const int startfix2;
