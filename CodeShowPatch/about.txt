@@ -10,10 +10,11 @@
 ;V1.224beta-> 2007.07.24 实现EL71的去电查询,jpg001
 ;V1.228beta2-> 2007.07.25 实现EL71的去电查询,jpg001
 ;V1.228beta2-> 2007.07.25 移植到E71,jpg001
-;V1.23-> 2008.4.2 ELKA实现SIM卡电话本区号秀,BingK(binghelingxi)
-;V1.23-> 2008.4.3 NEWSGOLD实现SIM卡电话本区号秀,BingK(binghelingxi)
-;V1.3-> 2008.4.20 SGOLD增加短信发送动画界面对所发送短信号码的区号秀支持,BingK(binghelingxi)
-;V1.4-> 2008.4.21 SGOLD多号码选择菜单中区号秀支持,包括电话,短信,JAVA选择号码菜单,BingK(binghelingxi)
+;V1.23-> 2008.04.02 ELKA实现SIM卡电话本区号秀,BingK(binghelingxi)
+;V1.23-> 2008.04.03 NEWSGOLD实现SIM卡电话本区号秀,BingK(binghelingxi)
+;V1.3-> 2008.04.20 SGOLD增加短信发送动画界面对所发送短信号码的区号秀支持,BingK(binghelingxi)
+;V1.4-> 2008.04.21 SGOLD多号码选择菜单中区号秀支持,包括电话,短信,JAVA选择号码菜单,BingK(binghelingxi)
+;V1.4-> 2008.04.25 ELKA多号码选择菜单中区号秀支持,包括电话,短信,JAVA选择号码菜单,BingK(binghelingxi)
 ;
 ;修改省市间的分割符(默认为点):
 ;例如：2720:点, 2000:空格, 4000:＠, 2A00:＃, 2300:*(即标准UniCode码高低字节倒序)

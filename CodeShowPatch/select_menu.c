@@ -36,8 +36,20 @@ void store_the_num_2_ram(int pos, char *num)
 	char *p=num;
 	memcpy_n(ram, p, 16);
 }
-
+#ifdef ELKA
+#define FONT_MEDIUM 4
+#define x	0
+#define y	260
+#define x1	239
+#define y1	288
+#else
 #define FONT_MEDIUM 2
+#define x	0
+#define y	140
+#define x1	131
+#define y1	157
+#endif
+
 
 void new_redraw_(void *data)
 {
@@ -62,7 +74,7 @@ void new_redraw_(void *data)
 	if(i>0&&is_num)
 	{
 		GetProvAndCity(ws->pstr, num);
-		DrawString(ws, 0, 140, 131, 157, FONT_MEDIUM, 34, color_white, color_black);
+		DrawString(ws, x, y, x1, y1, FONT_MEDIUM, 34, color_white, color_black);
 	}
 	FreeWS(ws);
 }
