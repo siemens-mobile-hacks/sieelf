@@ -1,74 +1,106 @@
 #include "..\inc\swilib.h"
+#include "addr.h"
 
+#define	COUNT_ALL 0
+#define	COUNT_CHM 1
+#define	COUNT_CHU 2
+#define	COUNT_XLT 3
+#define	COUNT_OTH 4
+#define	TYPE_ALL  5
+#define	BUF_LEN   (TYPE_ALL*sizeof(int))
 
-int get_initday(void)
+void countadd(int *buf, int type)
 {
-  unsigned int err;
-  int f;
-  char bcfgpath[]="0:\\ZBin\\etc\\SMSCount.bcfg";
-  if((f=fopen(bcfgpath,A_ReadOnly+A_BIN,P_READ,&err))==-1)
-  {
-  	bcfgpath[0]='4';
-  	if((f=fopen(bcfgpath,A_ReadOnly+A_BIN,P_READ,&err))==-1)
-  		return 1;
-  }
-  //char *initday=malloc(8);
-  int initday;
-  lseek(f,44,0,&err,&err);
-  fread(f,&initday,1,&err);
-  fclose(f,&err);
-  //mfree(initday);
-  //return initday[0];
-  return initday;
+	buf[COUNT_ALL]++;
+	buf[type]++;
 }
 
-int get_month_day(int type)
+void is_mobile(char *num, int *buf)
 {
-  TTime tt;
-  TDate td;
-  GetDateTime(&td,&tt);
-  if(type==1) return (int)td.day;
-  if(type==2) return (int)td.month;
-  return 0;
-}
-
-int check_initday(void)
-{
-	int initday=get_initday();
-  if(initday==0) return 0;
-  if(initday==get_month_day(1)) return 1;
-  return 2;
-}
-
-#pragma swi_number=0x0A4
-__swi	__arm	WSHDR * AllocWS_2 (int len);
-
-#pragma swi_number=0x0A5
-__swi	__arm	void  FreeWS_2 (WSHDR *wshdr);
-
-#pragma swi_number=0x0A0
-__swi	__arm	int wsprintf_2 (WSHDR *,const char *format,...);
-
-void start_elf()
-{
-	char fpath[]="0:\\ZBin\\utilities\\SMSCountReader.elf";
-	FSTATS fstats;
-	unsigned int err;
-	if (GetFileStats(fpath,&fstats,&err)==-1)
+	int c;
+	c=(*(num+1))%0x10;
+	if(*num==0x31)
 	{
-		fpath[0]='4';
-		if (GetFileStats(fpath,&fstats,&err)==-1)
-	  {
-	  	MsgBoxError(1, (int)"Can't find SMSCountReader.elf");
-	  	return;
-	  }
+		if(c>3) //134...
+			countadd(buf, COUNT_CHM);
+		else
+			countadd(buf, COUNT_CHU);
 	}
-	WSHDR *ws=AllocWS_2(128);
-	wsprintf_2(ws,"%s",fpath);
-	ExecuteFile(ws,0,0);
-	FreeWS_2(ws);
+	else
+	{
+		if(*num==0x51)
+		{
+			switch(c)
+			{
+			case 0: //150
+			case 8: //158
+			case 9: //159
+				countadd(buf, COUNT_CHM);
+				break;
+			case 6: //156
+			case 3: //153
+			case 1: //151
+				countadd(buf, COUNT_CHU);
+				break;
+			default:
+				countadd(buf, COUNT_OTH);
+			}
+		}
+		else
+			countadd(buf, COUNT_OTH);
+	}
 }
 
-#pragma diag_suppress=Pe177
-__root static const int HookShow @ "HookShow" = (int)start_elf;
-#pragma diag_default=Pe177
+void check_num(void)
+{
+	int buf[TYPE_ALL];
+	unsigned int err;
+	int f;
+	char dat_path[]="2:\\SMSCount.dat";
+	int i;
+	for(i=0;i<TYPE_ALL;i++)
+		buf[i]=0;
+	if((f=fopen(dat_path, A_ReadWrite+A_BIN, P_READ+P_WRITE, &err))!=-1)
+	{
+		fread(f, buf, BUF_LEN, &err);
+		lseek(f, 0, S_SET, &err, &err);
+	}
+	else if((f=fopen(dat_path, A_ReadWrite+A_Create+A_Truncate, P_READ+P_WRITE, &err))==-1)
+		return;
+		
+	char *p=(char *)RamSMSNum;
+	if(*p>=0x0A)
+	{
+		int c;
+		p++;
+		if(*p==0x91) //+
+		{
+			p++;
+			if(*p==0x68) //86
+			{
+				p++;
+				goto CheckMobile;
+			}
+			else
+			{
+				countadd(buf, COUNT_OTH);
+				goto END;
+			}
+		}
+		p++; //81
+		c=(*p)%0x10; //用于判断小灵通区号前必带一个0
+		if((*p==0x01&&*(p+1)==0x06)||c==0x0) //1060...的小灵通
+		{
+			countadd(buf, COUNT_XLT);
+			goto END;
+		}
+		CheckMobile:
+		is_mobile(p, buf);
+	}
+	else
+		countadd(buf, COUNT_OTH);
+END:
+	fwrite(f, buf, BUF_LEN, &err);
+	fclose(f,&err);
+}
+

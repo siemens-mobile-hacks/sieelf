@@ -1,5 +1,6 @@
 #include "addr.h"
-  
+
+/*
         EXTERN  get_month_day
         EXTERN  check_initday
     
@@ -101,10 +102,11 @@ exit:
         ADD     R0, R4, #0
 	ADD     R7, #4
 	BX      R7
-
+*/
 /*************
 CheckIfinitRam
 *************/
+/*
 initRam:
 	PUSH	{R0-R6,LR}
 	SUB	SP, #16
@@ -196,8 +198,29 @@ exitinit:
     RSEG hookwindow
     CODE16
     LDR     R1, =initRam
-    BLX     R1
+    BLX     R1*/
     
-    END
+	EXTERN	check_num
+	
+	CODE16
+	RSEG	CODE
+_main:
+	PUSH	{R0-R6,LR}
+	BL	check_num
+	POP	{R0-R6,R7}
+	LDR	R0, [R6,#4]
+	LDR	R1, [R0,#0x18]
+	LDR	R2, [R0,#0x14]
+	ADD	R0, R4, #0
+	ADD	R7, R7, #4
+	BX	R7
+
+	
+	CODE16
+	RSEG	SMSHook
+	LDR	R0, =_main
+	BLX	R0
+	
+	END
     
     
