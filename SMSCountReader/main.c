@@ -1,9 +1,6 @@
 #include "..\inc\swilib.h"
 
-/*****************************************************************************
-00000000h: 0B 00 00 00 4E 00 00 00 42 00 00 00 00 00 00 00 ; ....N...B.......
-00000010h: 0C 00 00 00                                     ; ....
-*****************************************************************************/
+#define CP_MSG "SMSCountReader v1.6\n(C) 2008 BingK(binghelingxi)"
 
 typedef struct
 {
@@ -16,20 +13,26 @@ typedef struct
   GUI gui;
 }MAIN_GUI;
 
-extern unsigned long  strtoul (const char *nptr,char **endptr,int base);
 extern void kill_data(void *p, void (*func_p)(void *));
-extern const char UNUSERAMADDR[];
 
 unsigned int MAINCSM_ID = 0;
 unsigned int MAINGUI_ID = 0;
-int no_bcfg=0;
 int is_editing=0;
 int edit_line=1;
 int screenw;
 int screenh;
-int count[5]={0,0,0,0,0};
-char bcfgpath[]="0:\\ZBin\\etc\\SMSCount.bcfg";
-char dat_path[]="2:\\SMSCount.Dat";
+char dat_path[]="2:\\SMSCount.dat";
+int f;
+
+#define	COUNT_ALL 0
+#define	COUNT_CHM 1
+#define	COUNT_CHU 2
+#define	COUNT_XLT 3
+#define	COUNT_OTH 4
+#define	TYPE_ALL  5
+#define	BUF_LEN   (TYPE_ALL*sizeof(int))
+
+int count[TYPE_ALL];
 
 #pragma inline
 int get_string_width(WSHDR *ws, int font)
@@ -53,149 +56,61 @@ void patch_rect(RECT*rc,int x,int y, int x2, int y2)
 	rc->x2=x2;
 	rc->y2=y2;
 }
-
-void exit(void)
-{
-	CloseCSM(MAINCSM_ID);
-}
-
-int get_initday(void)
-{
-  unsigned int err;
-  int f;
-  if((f=fopen(bcfgpath,A_ReadOnly+A_BIN,P_READ,&err))==-1)
-  {
-  	bcfgpath[0]='4';
-  	if((f=fopen(bcfgpath,A_ReadOnly+A_BIN,P_READ,&err))==-1)
-  	{
-  		MsgBoxError(1, (int)"Can't find SMSCount.bcfg!\nDefault initday: 1");
-      fclose(f,&err);
-  		no_bcfg=1;
-  		return 1;
-  	}
-  }
-  //char *initday=malloc(8);
-  int initday;
-  lseek(f,44,0,&err,&err);
-  fread(f,&initday,1,&err);
-  fclose(f,&err);
-  //mfree(initday);
-  //return initday[0];
-  return initday;
-}
-
-void creat_new_dat(void)
-{
-  int i;
-  unsigned int err;
-  int f=fopen(dat_path,A_WriteOnly+A_Create,P_WRITE+P_READ,&err);
-  char *data_buf=malloc(32);
-  TTime tt;
-  TDate td;
-  GetDateTime(&td,&tt);
-  data_buf[0]=(int)td.month;
-  for(i=1;i!=25;i++) data_buf[i]=0;
-  fwrite(f, data_buf, 24, &err);
-  fclose(f,&err);
-  mfree(data_buf);
-}
-
-//void createnewProc(int id)
-//{
-//  if(id==0) creat_new_dat();
-//}
-//
-void load_dat(void)
+int load_dat(void)
 {
 	unsigned int err;
-  int f=fopen(dat_path,A_ReadOnly,P_READ,&err);
-  if (f!=-1)
-  {
-    char *data_buf=malloc(32);
-    fread(f,data_buf,24,&err);
-    count[0]=data_buf[4]+data_buf[5]*256;
-    count[1]=data_buf[8]+data_buf[9]*256;
-    count[2]=data_buf[0xC]+data_buf[0xD]*256;
-    count[4]=data_buf[0x10]+data_buf[0x11]*256;
-    count[3]=data_buf[0x14]+data_buf[0x15]*256;
-    fclose(f,&err);
-    mfree(data_buf);
-  }
-  else
-  {
-    fclose(f,&err);
-    MsgBoxError(1, (int)"Can't find SMSCount.dat");
-    creat_new_dat();
-    //MsgBoxYesNo(1, (int)"Create NEW SMSCount.dat?", createnewProc);
-  }
+	if((f=fopen(dat_path, A_ReadWrite+A_BIN, P_READ+P_WRITE, &err))!=-1)
+	{
+		fread(f, count, BUF_LEN, &err);
+		lseek(f, 0, S_SET, &err, &err);
+	}
+	else if((f=fopen(dat_path, A_ReadWrite+A_Create+A_Truncate, P_READ+P_WRITE, &err))==-1)
+		return -1;
+	return 1;
 }
-
-//void rebootProc(int id)
-//{
-//  if(id==0) RebootPhone();
-//}
-
 
 void save_dat(int type)
 {
-  //type 1:clear 0:save change
 	unsigned int err;
-	int f=fopen(dat_path,A_WriteOnly+A_Create,P_WRITE,&err);
-	if (f!=-1)
+	if(type==1)
 	{
-    char *data_buf=malloc(32);
-    if(type==1)
-    {
-      count[0]=0;
-      count[1]=0;
-      count[2]=0;
-      count[3]=0;
-      count[4]=0;
-    }
-    unsigned int *p;
-    if(strlen((char *)UNUSERAMADDR)==8)
-    	p=(unsigned int *)UNUSERAMADDR;
-    data_buf[4]=count[0];
-    *p++=count[0];
-    data_buf[8]=count[1];
-    *p++=count[1];
-    data_buf[0xC]=count[2];
-    *p++=count[2];
-    data_buf[0x10]=count[4];
-    *p++=count[4];
-    data_buf[0x14]=count[3];
-    *p=count[3];
-	  fwrite(f, data_buf, 24, &err);
-    mfree(data_buf);
+		int i;
+		for(i=0; i<TYPE_ALL; i++)
+			count[i]=0;
 	}
-  else
-  {
-    MsgBoxError(1,(int)"Save Error");
-  }
-  fclose(f,&err);
-  //MsgBoxYesNo(1, (int)"Reboot soon ?", rebootProc);
+	if(fwrite(f, count, BUF_LEN, &err)!=BUF_LEN)
+		MsgBoxError(1,(int)"Save Error");
+	is_editing=0;
 }
-
 void clearProc(int id)
 {
-  if(id==0) save_dat(1);
+  if(id==0)
+  	save_dat(1);
 }
 
 void saveProc(int id)
 {
   if(id==0)
-  {
     save_dat(0);
-    is_editing=0;
-  }
 }
+
+void exit(void)
+{
+	if(is_editing)
+	{
+		MsgBoxYesNo(1, (int)"Is Editing, Save First?", saveProc);
+	}
+	else
+		CloseCSM(MAINCSM_ID);
+}
+
 
 void soft_key(void)
 {
   char utf8_clear[]="\xE6\xB8\x85\xE7\xA9\xBA\xE8\xAE\xA1\xE6\x95\xB0";//清空计数
-	char utf8_exit[]="\xE9\x80\x80\xE5\x87\xBA";//退出
-	WSHDR *wsl = AllocWS(16);
-  WSHDR *wsr = AllocWS(16);
+  char utf8_exit[]="\xE9\x80\x80\xE5\x87\xBA";//退出
+  WSHDR *wsl=AllocWS(16);
+  WSHDR *wsr=AllocWS(16);
   utf8_2ws(wsr,utf8_exit,strlen(utf8_exit));
   utf8_2ws(wsl,utf8_clear,strlen(utf8_clear));
   DrawString(wsr,screenw-get_string_width(wsr,FONT_MEDIUM)-4,screenh-GetFontYSIZE(FONT_MEDIUM)-2,screenw,screenh,FONT_MEDIUM,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
@@ -210,15 +125,15 @@ void onRedraw(MAIN_GUI *data)
   DisableIconBar(1);
 #endif
   int color_index=0;
-	int init_day;
-	if(no_bcfg) init_day=1;
-	  else init_day=get_initday();
+	//int init_day;
+	//if(no_bcfg) init_day=1;
+	//  else init_day=get_initday();
 	int font_h=GetFontYSIZE(FONT_SMALL);
 	DrawRectangle(0,0,screenw,screenh,0,GetPaletteAdrByColorIndex(1),GetPaletteAdrByColorIndex(1));
 	soft_key();
 	char *utf8_str=malloc(128);
 	WSHDR *ws = AllocWS(128);
-	wsprintf(ws, "SMSCount v3.7\nSMSCountReader v1.5\n");
+	wsprintf(ws, "SMSCount v3.7.1\nSMSCountReader v1.6\n");
 	DrawString(ws,0,0,screenw,screenh,FONT_SMALL,TEXT_ALIGNMIDDLE+TEXT_OUTLINE,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 
 	//全部
 	sprintf(utf8_str,"\xE5\x85\xA8\xE9\x83\xA8: %d", count[0]);
@@ -269,30 +184,41 @@ void onRedraw(MAIN_GUI *data)
 	else color_index=0;
 	DrawString(ws,0,7*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(color_index),GetPaletteAdrByColorIndex(23)); 
 	//清零日期
-  if(init_day==0)
-  {
-    sprintf(utf8_str,"\xE6\xB8\x85\xE9\x9B\xB6\xE6\x97\xA5\xE6\x9C\x9F: \xE4\xB8\x8D\xE6\xB8\x85\xE9\x9B\xB6");
-  }
-  else sprintf(utf8_str,"\xE6\xB8\x85\xE9\x9B\xB6\xE6\x97\xA5\xE6\x9C\x9F: \xE6\xAF\x8F\xE6\x9C\x88%d\xE6\x97\xA5",init_day);
-	utf8_2ws(ws,utf8_str,strlen(utf8_str));
-	DrawString(ws,0,8*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 	
+  //if(init_day==0)
+  //{
+  //  sprintf(utf8_str,"\xE6\xB8\x85\xE9\x9B\xB6\xE6\x97\xA5\xE6\x9C\x9F: \xE4\xB8\x8D\xE6\xB8\x85\xE9\x9B\xB6");
+  //}
+  //else sprintf(utf8_str,"\xE6\xB8\x85\xE9\x9B\xB6\xE6\x97\xA5\xE6\x9C\x9F: \xE6\xAF\x8F\xE6\x9C\x88%d\xE6\x97\xA5",init_day);
+//	utf8_2ws(ws,utf8_str,strlen(utf8_str));
+//	DrawString(ws,0,8*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23)); 	
 	//显示当前日期
 	TTime tt;
-  TDate td;
-  GetDateTime(&td,&tt);
-  sprintf(utf8_str,"\xE5\xBD\x93\xE5\x89\x8D\xE6\x97\xA5\xE6\x9C\x9F: %04d.%i.%i",td.year,td.month,td.day);
-  utf8_2ws(ws,utf8_str,strlen(utf8_str));
-  DrawString(ws,0,9*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-  //正在编辑 
-  if(is_editing)
-  {
-    sprintf(utf8_str,"\xE7\xBC\x96\xE8\xBE\x91\xE4\xB8\xAD\xE3\x80\x82\xE3\x80\x82\xE3\x80\x82\n\xE8\xAF\xB7\xE6\x8C\x89\xE7\xBB\xBF\xE9\x94\xAE\xE4\xBF\x9D\xE5\xAD\x98");
-    utf8_2ws(ws,utf8_str,strlen(utf8_str));
-    DrawString(ws,0,10*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(7),GetPaletteAdrByColorIndex(23)); 
-  }
+	TDate td;
+	GetDateTime(&td,&tt);
+	sprintf(utf8_str,"\xE5\xBD\x93\xE5\x89\x8D\xE6\x97\xA5\xE6\x9C\x9F: %04d.%i.%i",td.year,td.month,td.day);
+	utf8_2ws(ws,utf8_str,strlen(utf8_str));
+	DrawString(ws,0,9*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+	//正在编辑 
+	if(is_editing)
+	{
+		sprintf(utf8_str,"\xE7\xBC\x96\xE8\xBE\x91\xE4\xB8\xAD\xE3\x80\x82\xE3\x80\x82\xE3\x80\x82\n\xE8\xAF\xB7\xE6\x8C\x89\xE7\xBB\xBF\xE9\x94\xAE\xE4\xBF\x9D\xE5\xAD\x98");
+		utf8_2ws(ws,utf8_str,strlen(utf8_str));
+		DrawString(ws,0,10*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(7),GetPaletteAdrByColorIndex(23)); 
+	}
+	else //提示按中键编辑
+  	{
+  		sprintf(utf8_str,"\xE6\x8C\x89\xE4\xB8\xAD\xE9\x94\xAE\xE5\xBC\x80\xE5\xA7\x8B\xE4\xBF\xAE\xE6\x94\xB9\xE6\x95\xB0\xE6\x8D\xAE");
+		utf8_2ws(ws,utf8_str,strlen(utf8_str));
+		DrawString(ws,0,10*font_h,screenw,screenh,FONT_SMALL,32,GetPaletteAdrByColorIndex(7),GetPaletteAdrByColorIndex(23)); 
+	}
   
 	mfree(utf8_str);
 	FreeWS(ws);
+}
+
+void show_about(void)
+{
+	ShowMSG(1, (int)CP_MSG);
 }
 
 int OnKey(MAIN_GUI *data, GUI_MSG *msg)
@@ -314,36 +240,49 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
 	      REDRAW();
 	      break;
 	    case DOWN_BUTTON:
+	    	if(is_editing)
+	    	{
 	      if(edit_line!=4) 
 	        edit_line++;
 	      else edit_line=1;
+	      	}
 	      REDRAW();
 	      break;
 	    case UP_BUTTON:
+	    	if(is_editing)
+	    	{
 	      if(edit_line!=1)
 	        edit_line--;
 	      else edit_line=4;
+		}
 	      REDRAW();
 	      break;
 	    case LEFT_BUTTON:
+	    	if(is_editing)
+	    	{
 	      if(count[edit_line])
 	      {
 	        count[0]--;
 	        count[edit_line]--;
 	      }
+		}
 	      REDRAW();
 	      break;
 	    case RIGHT_BUTTON:
-	      //if(count[0]) 
+	    	if(is_editing)
+	    	{
 	        count[0]++;
-	      //if(count[1]) 
 	        count[edit_line]++;
+		}
 	      REDRAW();
 	      break;
 	    case GREEN_BUTTON:
 	      if(is_editing) MsgBoxYesNo(1, (int)"Save All Change?", saveProc);
 	      REDRAW();
 	      break;
+	     case '*':
+	     	show_about();
+	     	break; 
 	  }
 	}
 	return(0);
@@ -392,9 +331,16 @@ const RECT Canvas={0,0,0,0};
 
 void maincsm_oncreate(CSM_RAM *data)
 {
+	screenw=ScreenW()-1;
+	screenh=ScreenH()-1;
+	int i;
+	for(i=0; i<TYPE_ALL; i++)
+		count[i]=0;
+	if(load_dat()<0)
+		ShowMSG(1, (int)"Load SMSCount.dat failed");
 	MAIN_GUI *main_gui=malloc(sizeof(MAIN_GUI));
-  MAIN_CSM *csm=(MAIN_CSM *)data;
-	zeromem(main_gui,sizeof(MAIN_GUI));	
+	MAIN_CSM *csm=(MAIN_CSM *)data;
+	zeromem(main_gui,sizeof(MAIN_GUI));
 	patch_rect((RECT*)&Canvas,0,0,screenw-1,screenh-1);
 	main_gui->gui.canvas=(void *)(&Canvas);
 	main_gui->gui.flag30=2;
@@ -421,6 +367,8 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 void Killer(void)
 {
   extern void *ELF_BEGIN;
+  unsigned int err;
+  fclose(f, &err);
   kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
 }
 
@@ -469,9 +417,6 @@ void UpdateCSMname(void)
 int main(char *initday)
 {
   char dummy[sizeof(MAIN_CSM)];
-  load_dat();
-  screenw=ScreenW()-1;
-  screenh=ScreenH()-1;
   UpdateCSMname();
   LockSched();
   MAINCSM_ID=CreateCSM(&MAINCSM.maincsm,dummy,0);
