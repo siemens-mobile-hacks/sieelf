@@ -1351,13 +1351,16 @@ void ChangeRC(GUI *gui)
 //-------------------------------------
 //短信发送菜单
 //-------------------------------------
+int mode;
+
 static void sendsms()
 {
   if(smscount>0)
   {
   //smsdata=0;
   smscount=0;
-  SendSMS(smstemp, smsnum, MMI_CEPID, MSG_SMS_RX-1, 6);
+
+  SendSMS(smstemp, smsnum, MMI_CEPID, MSG_SMS_RX-1, mode);
   GeneralFuncF1(1);
   }
   else
@@ -1366,6 +1369,13 @@ static void sendsms()
 
 static void mm_settings(GUI *gui)
 {
+   mode=6;
+   sendsms();
+}
+
+static void sm_settings(GUI *gui)
+{
+   mode=1;
    sendsms();
 }
 
@@ -1403,18 +1413,20 @@ static const SOFTKEYSTAB mmenu_skt=
   mmenu_sk,0
 };
 
-#define MAIN_MENU_ITEMS_N 2
+#define MAIN_MENU_ITEMS_N 3
 static HEADER_DESC mmenu_hdr={0,0,0,0,NULL,(int)"选项",LGP_NULL};
 
 static MENUITEM_DESC mmenu_ITEMS[MAIN_MENU_ITEMS_N]=
 {
   {NULL,(int)"发送短信", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
-  {NULL,(int)"bcfg设置", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}
+  {NULL,(int)"转入默认菜单", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"MD设置", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}
 };
 
 static const MENUPROCS_DESC mmenu_HNDLS[MAIN_MENU_ITEMS_N]=
 {
   mm_settings,
+  sm_settings,
   setting,
 };
 
@@ -1960,7 +1972,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
       {
         char nx[40];
         ws_2str((WSHDR *)e_ws,nx,39);
-        gb2ws(gwsName,"未知号码",10);
+        gb2ws(gwsName,nx,10);
         VoiceOrSMS(nx);
         return(1);
       }
