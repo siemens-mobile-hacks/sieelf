@@ -635,6 +635,10 @@
 093C: 0xA0CEDFC8   ; 24F: __arm int GetPlayObjPosition(void *playobj_3D0, int *pos_ms);
 
 0940: 0xA0CEDD08   ; 250: __arm int GetPlayObjDuration(void *playobj_3D0, int *pos_ms);
+;0944: 0x ; 251: char *RamDataSendFName();
+;0948: 0x ; 252: char *RamDataReceiveFName();
+;094C: 0x ; 253: char *RamLastCallNum();
+0950: 0xA06B22D4   ; 254: __arm int StartNativeExplorer(NativeExplorerData* data);
 #pragma disable old_equal_ff
 +0       
 ;********************************************************************************
