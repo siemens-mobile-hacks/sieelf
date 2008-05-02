@@ -7,6 +7,7 @@
 #define ERR_STR		"Error!"
 #define CFG_PATH	"0:\\ZBin\\etc\\MyMenu2.cfg"
 
+
 #define LGP_SELECT	0x39
 #define LGP_EXIT	0x28F
 
@@ -29,6 +30,10 @@
 #define TYPE_SHORTCUT	1
 #define TYPE_ADDRESS	2
 #define TYPE_FOLDER	3
+
+#define CHARSET_GB2312	0
+#define CHARSET_UTF8	1
+#define CHARSET_UNICODE	2
 
 #define HEADER_X1	0
 #define HEADER_Y1	24
@@ -55,8 +60,10 @@ typedef struct
 	int path_len;
 	int type;
 }MENU_LIST;
+
 char *buf;
 MENU_LIST *mltop;
+//int char_set;
 
 const int menusoftkeys[]={0, 1, 2};
 
@@ -96,15 +103,13 @@ PROCESSOR_MODE void utf8_2str(char *str, char *utf8)
 		p++;
 		i++;
 	}
-	if(str[i-1]!=US_CHAR)
-	{
-		str[i]=US_CHAR;
-		i++;
-	}
 	if(*p)
 	{
-		//str[i]=US_CHAR;
-		//i++;
+		if(str[i-1]!=US_CHAR)
+		{
+			str[i]=US_CHAR;
+			i++;
+		}
 		while(*p)
 		{
 			str[i]=*p;
@@ -242,14 +247,25 @@ PROCESSOR_MODE int read_cfg(void)
 	int size=0;
 	size=fread(f, buf, BUF_SIZE, &err);
 	fclose(f, &err);
-	if(size>=0)
-		buf[size]=0;
+	if(size<3)
+		return 0;
+	buf[size]=0;
 	char *p=buf;
 	int name_len;
 	int path_len;
 	int item_n=0;
-	if(*p==0xEF)
-		p+=3;
+	//if(*p==0xEF && *(p+1)==0xBB && *(p+2)==0xBF)
+	//{
+	//	char_set=CHARSET_UTF8;
+	//	p+=3;
+	//}
+	//else if(*p==0xFF && *(p+1)==0xFE && *(p+2)==0xED)
+	//{
+	//	char_set=CHARSET_UNICODE;
+	//	p+=3;
+	//}
+	//else
+	//	char_set=CHARSET_GB2312;
 	while(*p)
 	{
 		p=gotoRealPos(p);
@@ -614,7 +630,10 @@ void Killer(void)
 {
 	mfree(buf);
 	FreeMenuList();
-#ifndef VKP
+#ifdef VKP
+	buf=0; //退出时将RAM地址置零
+	mltop=0;
+#else
 	extern void *ELF_BEGIN;
 	extern void kill_data(void *p, void (*func_p)(void *));
 	kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
@@ -667,6 +686,13 @@ void UpdateCSMname(void)
 
 int main(void)
 {
+#ifdef VKP
+	if(buf||mltop) //检测是否已经有mymenu启动
+	{
+		MsgBoxError(1, (int)ERR_STR);
+		return 0;
+	}
+#endif
 	char dummy[sizeof(MAIN_CSM)];
 #ifndef VKP
 	UpdateCSMname();
