@@ -17,7 +17,7 @@ int gLen=0;
 int count_page;
 int font_size;
 int need_ip=0;
-//int smsdata=0;
+int smsdata=0;
 int smscount=0;
 int input=0;
 
@@ -1355,11 +1355,10 @@ int mode;
 
 static void sendsms()
 {
-  if(smscount>0)
+  if(smscount>0||mode==1)
   {
-  //smsdata=0;
+  smsdata=0;
   smscount=0;
-
   SendSMS(smstemp, smsnum, MMI_CEPID, MSG_SMS_RX-1, mode);
   GeneralFuncF1(1);
   }
@@ -1439,7 +1438,7 @@ static int mmenu_keyhook(void *data, GUI_MSG *msg)
     switch(msg->gbsmsg->submess)
     {
       case RIGHT_SOFT : 
-        //smsdata=1; 
+        smsdata=1; 
         VoiceOrSMS(dstr[numx]);
         break;
     }
@@ -1650,15 +1649,15 @@ if(EDIT_IsBusy(data))
      return (-1);
      }
         
-     /*
+     
       if(key==RED_BUTTON)
      {
-      ExtractEditControl(data,2,&ec);
-      smstemp=AllocWS(ec.pWS->wsbody[0]);
-      wstrcpy(smstemp,ec.pWS);
-      smsdata=1;
+      //ExtractEditControl(data,2,&ec);
+      //smstemp=AllocWS(ec.pWS->wsbody[0]);
+      //wstrcpy(smstemp,ec.pWS);
+      smsdata=0;
      }
-     */
+     
     }
   //-1 - do redraw
   return(0); //Do standart keys
@@ -1858,10 +1857,10 @@ void VoiceOrSMS(const char *num)
     AddEditControlToEditQend(eq,&ec,ma);
     //wsprintf(ews,percent_t,"");
     CutWSTR(ews,0);
-    //if(smsdata==0)
+    if(smsdata==0)
     ConstructEditControl(&ec,4,0x40,ews,SMS_MAX_LEN);
-    //else
-    //ConstructEditControl(&ec,4,0x40,smstemp,SMS_MAX_LEN);//短信输入
+    else
+    ConstructEditControl(&ec,4,0x40,smstemp,SMS_MAX_LEN);//短信输入
     AddEditControlToEditQend(eq,&ec,ma);
     patch_header(&edsms_hdr);
     patch_input(&edsms_desc);
@@ -1927,7 +1926,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
   if(key==RED_BUTTON)
   {
     numx=0;
-    //smsdata=1;
+    //smsdata=0;
   }
   
   if(e_ws && key==ENTER_BUTTON) // "##Enter" to exit
@@ -1938,7 +1937,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 			SUBPROC((void *)ElfKiller);
 			return 1;
 		}
-		if(e_ws->wsbody[0]==3&&e_ws->wsbody[1]=='1'&&e_ws->wsbody[2]=='1'&&e_ws->wsbody[3]=='1')
+		if(e_ws->wsbody[0]==2&&e_ws->wsbody[1]=='2'&&e_ws->wsbody[2]=='1')
 		{
                         bcfgsetting();
 			return 1;
