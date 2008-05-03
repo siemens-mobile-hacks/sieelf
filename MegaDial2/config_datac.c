@@ -14,14 +14,14 @@ __root const CFG_HDR cfghdr_m5={CFG_LEVEL,"基本功能控制",1,0};
 __root const CFG_HDR cfghdr1_1 = {CFG_CHECKBOX,"大字体",0,0};
 __root const int big_font=0;
 
-__root const CFG_HDR cfghdr1_2 = {CFG_CHECKBOX,"区号秀",0,0};
-__root const int cfg_cs_enable=1;
-
-__root const CFG_HDR cfghdr1_3 = {CFG_CHECKBOX,"拨号禁止",0,0};
+__root const CFG_HDR cfghdr1_2 = {CFG_CHECKBOX,"拨号禁止",0,0};
 __root const int disable_when_calling=1;
 
-__root const CFG_HDR cfghdr1_4 = {CFG_CHECKBOX,"单码禁用",0,0};
+__root const CFG_HDR cfghdr1_3 = {CFG_CHECKBOX,"单码禁用",0,0};
 __root const int cfg_disable_one_number=1;
+
+__root const CFG_HDR cfghdr1_4 = {CFG_CHECKBOX,"显示区号秀",0,0};
+__root const int cfg_cs_enable=1;
 
 __root const CFG_HDR cfghdr1_5 = {CFG_CHECKBOX,"部分区号秀",0,0};
 __root const int cfg_cs_part=0;
@@ -38,10 +38,13 @@ __root const int smsn=1;
 __root const CFG_HDR cfghdr1_9 = {CFG_CHECKBOX,"短信区号秀",0,0};
 __root const int smsc=0;
 
-__root const CFG_HDR cfghdr1_10 = {CFG_CHECKBOX,"界面音效",0,0};
+__root const CFG_HDR cfghdr1_10 = {CFG_CHECKBOX,"默认短信界面",0,0};
+__root const int dewin=0;
+
+__root const CFG_HDR cfghdr1_11 = {CFG_CHECKBOX,"界面音效",0,0};
 __root const int voice=0;
 
- __root const CFG_HDR cfghdr1_11={CFG_CBOX, "优先号码", 0, 5};
+ __root const CFG_HDR cfghdr1_12={CFG_CBOX, "优先号码", 0, 5};
  __root const int priority = 0;
  __root const CFG_CBOX_ITEM cfgcbox1[5]={"电话号码","公司号码","移动号码","传真号码","传真号码2"};
 
@@ -77,7 +80,7 @@ __root const int CS_NUMBER_BG=2;
 
 __root const CFG_HDR cfghdr5_5 = {CFG_CBOX,"区号秀地址选择",0,10};
  __root const int cfg_cs_adrs = 1;
- __root const CFG_CBOX_ITEM cfgcbox3[10]={"自输","S65/CX65","SK65","C65/SL65","CX70","M65","C7C","CX7A","E71/EL71/M81/S68/SL75","S75(外置)"};
+ __root const CFG_CBOX_ITEM cfgcbox3[10]={"自输","S65/CX65","SK65","C65/SL65","CX70","M65","C7C","CX7A","E71/EL71/M81/S68/SL75/S75","外置"};
 
 __root const CFG_HDR cfghdr5_6 = {CFG_UINT,"区号秀自输",0,0xFFFFFFFF};
 __root const int cfg_cs_adr=0;

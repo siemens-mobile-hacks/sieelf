@@ -2048,6 +2048,9 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //°´¼ü¹¦ÄÜ
       }
       else
       {
+      if(dewin)  
+      SendSMS(smstemp,dstr[numx], MMI_CEPID, MSG_SMS_RX-1, 1);  
+      else  
       VoiceOrSMS(dstr[numx]);
       numx=0;
       }

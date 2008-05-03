@@ -38,6 +38,7 @@ extern const int show_pic;
 extern const int resampled;
 extern const int smsn;
 extern const int smsc;
+extern const int dewin;
 extern const int voice;
 extern const int ipx2;
 extern const int ip00;
