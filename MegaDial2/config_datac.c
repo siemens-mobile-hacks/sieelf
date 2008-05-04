@@ -9,6 +9,9 @@
 #endif
 */
 
+__root const CFG_HDR cfghdr0_1={CFG_UINT,"test",0,100};
+__root const unsigned int test=1;
+
 __root const CFG_HDR cfghdr_m5={CFG_LEVEL,"基本功能控制",1,0};
 
 __root const CFG_HDR cfghdr1_1 = {CFG_CHECKBOX,"大字体",0,0};
@@ -180,7 +183,7 @@ __root const CFG_HDR cfghdr_m13={CFG_LEVEL,"其他相关设定",1,0};
 __root const CFG_HDR cfghdr6_1={CFG_STR_UTF8,"通信录地址",3,127};
 __root const char root_dir[128]="0:\\\x1F\xE7\xB3\xBB\xE7\xBB\x9F\\apo\\addr";
 
-__root const CFG_HDR cfghdr6_2={CFG_UINT,"音效音量",0,6};
+__root const CFG_HDR cfghdr6_2={CFG_UINT,"音效音量",0,10};
 __root const unsigned int volume=6;
 
 __root const CFG_HDR cfghdr_m12={CFG_LEVEL,"",0,0};

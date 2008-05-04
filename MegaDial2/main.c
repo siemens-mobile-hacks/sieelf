@@ -1972,6 +1972,9 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
         char nx[40];
         ws_2str((WSHDR *)e_ws,nx,39);
         gb2ws(gwsName,nx,10);
+        if(dewin&&is_sms_need)  
+        SendSMS(smstemp,nx, MMI_CEPID, MSG_SMS_RX-1, test);  
+        else
         VoiceOrSMS(nx);
         return(1);
       }
@@ -2048,8 +2051,8 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
       }
       else
       {
-      if(dewin)  
-      SendSMS(smstemp,dstr[numx], MMI_CEPID, MSG_SMS_RX-1, 1);  
+      if(dewin&&is_sms_need)  
+      SendSMS(smstemp,dstr[numx], MMI_CEPID, MSG_SMS_RX-1, test);  
       else  
       VoiceOrSMS(dstr[numx]);
       numx=0;
