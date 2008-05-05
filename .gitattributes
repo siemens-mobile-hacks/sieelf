@@ -2046,6 +2046,15 @@ Unrar/Unrar.ewp -text
 Unrar/Unrar.eww -text
 Unrar/func.asm -text
 Unrar/test.xcl -text
+ViewTheLastSMS/E71Csw41.xcl -text
+ViewTheLastSMS/ViewTheLastSMS.ewp -text
+ViewTheLastSMS/ViewTheLastSMS.eww -text
+ViewTheLastSMS/entery.asm -text
+ViewTheLastSMS/func.asm -text
+ViewTheLastSMS/main.c -text
+ViewTheLastSMS/mk.bat -text
+ViewTheLastSMS/pdusms_sie.c -text
+ViewTheLastSMS/test.xcl -text
 Weather/Weather.ewp -text
 Weather/Weather.eww -text
 Weather/Weather/0.png -text
