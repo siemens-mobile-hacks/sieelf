@@ -204,8 +204,9 @@ exitinit:
 	
 	CODE16
 	RSEG	CODE
-_main:
+_main
 	PUSH	{R0-R6,LR}
+	MOV	R0, #0
 	BL	check_num
 	POP	{R0-R6,R7}
 	LDR	R0, [R6,#4]
@@ -215,11 +216,38 @@ _main:
 	ADD	R7, R7, #4
 	BX	R7
 
+_main_fix
+	PUSH	{LR}
+	//ADD	R0, R6, #0
+	LDR	R1, =0xA00AD03C+1
+	BLX	R1
+	CMP	R0, #1
+	BNE	fix_count
+exit
+	POP	{PC}
+	
+fix_count
+	PUSH	{R0-R7}
+	MOV	R0, #1
+	BL	check_num
+	POP	{R0-R7}
+	B	exit
+	
+	CODE16
+	RSEG	SMS_COUNT_JMP
+_JMP
+	LDR	R1, =_main_fix
+	BX	R1
+	
 	
 	CODE16
 	RSEG	SMSHook
 	LDR	R0, =_main
 	BLX	R0
+	
+	CODE16
+	RSEG	SMS_FIX_HOOK
+	BL	_JMP
 	
 	END
     

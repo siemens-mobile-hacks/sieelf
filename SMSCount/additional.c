@@ -9,22 +9,33 @@
 #define	TYPE_ALL  5
 #define	BUF_LEN   (TYPE_ALL*sizeof(int))
 
-void countadd(int *buf, int type)
+void countadd(int *buf, int type, int IsFix)
 {
-	buf[COUNT_ALL]++;
-	buf[type]++;
+	if(IsFix)
+	{
+		if(buf[type]>0)
+		{
+			buf[COUNT_ALL]--;
+			buf[type]--;
+		}
+	}
+	else
+	{
+		buf[COUNT_ALL]++;
+		buf[type]++;
+	}
 }
 
-void is_mobile(char *num, int *buf)
+void is_mobile(char *num, int *buf, int IsFix)
 {
 	int c;
 	c=(*(num+1))%0x10;
 	if(*num==0x31)
 	{
 		if(c>3) //134...
-			countadd(buf, COUNT_CHM);
+			countadd(buf, COUNT_CHM, IsFix);
 		else
-			countadd(buf, COUNT_CHU);
+			countadd(buf, COUNT_CHU, IsFix);
 	}
 	else
 	{
@@ -35,23 +46,23 @@ void is_mobile(char *num, int *buf)
 			case 0: //150
 			case 8: //158
 			case 9: //159
-				countadd(buf, COUNT_CHM);
+				countadd(buf, COUNT_CHM, IsFix);
 				break;
 			case 6: //156
 			case 3: //153
 			case 1: //151
-				countadd(buf, COUNT_CHU);
+				countadd(buf, COUNT_CHU, IsFix);
 				break;
 			default:
-				countadd(buf, COUNT_OTH);
+				countadd(buf, COUNT_OTH, IsFix);
 			}
 		}
 		else
-			countadd(buf, COUNT_OTH);
+			countadd(buf, COUNT_OTH, IsFix);
 	}
 }
 
-void check_num(void)
+void check_num(int IsFix)
 {
 	int buf[TYPE_ALL];
 	unsigned int err;
@@ -83,7 +94,7 @@ void check_num(void)
 			}
 			else
 			{
-				countadd(buf, COUNT_OTH);
+				countadd(buf, COUNT_OTH, IsFix);
 				goto END;
 			}
 		}
@@ -91,14 +102,14 @@ void check_num(void)
 		c=(*p)%0x10; //用于判断小灵通区号前必带一个0
 		if((*p==0x01&&*(p+1)==0x06)||c==0x0) //1060...的小灵通
 		{
-			countadd(buf, COUNT_XLT);
+			countadd(buf, COUNT_XLT, IsFix);
 			goto END;
 		}
 		CheckMobile:
-		is_mobile(p, buf);
+		is_mobile(p, buf, IsFix);
 	}
 	else
-		countadd(buf, COUNT_OTH);
+		countadd(buf, COUNT_OTH, IsFix);
 END:
 	fwrite(f, buf, BUF_LEN, &err);
 	fclose(f,&err);
