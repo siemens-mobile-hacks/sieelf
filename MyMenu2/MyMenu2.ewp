@@ -2475,6 +2475,9 @@
     </settings>
   </configuration>
   <file>
+    <name>$PROJ_DIR$\entry.asm</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\func.asm</name>
     <excluded>
       <configuration>E71Csw41</configuration>

@@ -703,10 +703,3 @@ int main(void)
 	return 0;
 }
 
-#ifdef VKP
-
-#pragma diag_suppress=Pe177
-__root static const int ENTRYPOINT @ "ENTRYPOINT" = (int)main;
-#pragma diag_default=Pe177
-
-#endif
