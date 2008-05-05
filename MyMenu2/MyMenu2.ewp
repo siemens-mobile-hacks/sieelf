@@ -2476,6 +2476,9 @@
   </configuration>
   <file>
     <name>$PROJ_DIR$\entry.asm</name>
+    <excluded>
+      <configuration>Release</configuration>
+    </excluded>
   </file>
   <file>
     <name>$PROJ_DIR$\func.asm</name>
