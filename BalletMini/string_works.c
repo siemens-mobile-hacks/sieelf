@@ -193,13 +193,13 @@ void utf82win(char*d,const char *s)
       if (lb != 0x81)
         {*d = lb + 48; d++;}
       else
-        {*d = '¨'; d++;}
+        {*d = '§§'; d++;}
 
     if (ub == 0xD1)
       if (lb != 0x91)
         {*d = lb + 112; d++;}
       else
-        {*d = '¸'; d++;}
+        {*d = '§×'; d++;}
 
     if (ub == 0xE2)
       if (lb == 0x80)
@@ -227,8 +227,8 @@ int sfind8(char s,char *v)
   return -1;
 }
 
-int char_win2utf8(char*d,const char *s) // ôóíêöèÿ âîçâðàùàåò êîëè÷åñòâî 
-{                                       // äîáàâëåííûõ ñèìâîëîâ â d
+int char_win2utf8(char*d,const char *s) // §æ§å§ß§Ü§è§Ú§ñ §Ó§à§Ù§Ó§â§Ñ§ë§Ñ§Ö§ä §Ü§à§Ý§Ú§é§Ö§ã§ä§Ó§à 
+{                                       // §Õ§à§Ò§Ñ§Ó§Ý§Ö§ß§ß§í§ç §ã§Ú§Þ§Ó§à§Ý§à§Ó §Ó d
   char hex[] = "0123456789abcdef";
   char *d0 = "%d0%";
   char *d1 = "%d1%";
@@ -241,14 +241,14 @@ int char_win2utf8(char*d,const char *s) // ôóíêöèÿ âîçâðàùàåò êîëè÷åñòâî
     *d = hex[b     &0xF]; d++;
     r = 3;
   }
-  if(b >= 0xC0 && b <= 0xFF)           //åñëè ýòî ðóññêàÿ áóêâà â êîäå win1251
+  if(b >= 0xC0 && b <= 0xFF)           //§Ö§ã§Ý§Ú §ï§ä§à §â§å§ã§ã§Ü§Ñ§ñ §Ò§å§Ü§Ó§Ñ §Ó §Ü§à§Õ§Ö win1251
   {
-    ab = 0x350;                        //ñ÷èòàåì å¸ unicode-íîìåð
+    ab = 0x350;                        //§ã§é§Ú§ä§Ñ§Ö§Þ §Ö§× unicode-§ß§à§Þ§Ö§â
     ab += b;
-    ub = 0xC0 | ((ab>>6) & 0x1F);      //âû÷èñëÿåì áûòîâûå êîìïîíåíòû äëÿ utf8
+    ub = 0xC0 | ((ab>>6) & 0x1F);      //§Ó§í§é§Ú§ã§Ý§ñ§Ö§Þ §Ò§í§ä§à§Ó§í§Ö §Ü§à§Þ§á§à§ß§Ö§ß§ä§í §Õ§Ý§ñ utf8
     lb = 0x80 | (ab & 0x3F);
     *d = '%'; d++;
-    *d = hex[(ub>>4)&0xF]; d++;        //è êëàä¸ì â áóôåð ðåçóëüòàòà
+    *d = hex[(ub>>4)&0xF]; d++;        //§Ú §Ü§Ý§Ñ§Õ§×§Þ §Ó §Ò§å§æ§Ö§â §â§Ö§Ù§å§Ý§î§ä§Ñ§ä§Ñ
     *d = hex[ub     &0xF]; d++;
     *d = '%'; d++;
     *d = hex[(lb>>4)&0xF]; d++;
@@ -258,7 +258,7 @@ int char_win2utf8(char*d,const char *s) // ôóíêöèÿ âîçâðàùàåò êîëè÷åñòâî
   else
       if(b == 0xA8)
       {
-        memcpy(d, d0, 4);              //ïàðà îñîáûõ ñëó÷àåâ äëÿ áóêâû "¸"
+        memcpy(d, d0, 4);              //§á§Ñ§â§Ñ §à§ã§à§Ò§í§ç §ã§Ý§å§é§Ñ§Ö§Ó §Õ§Ý§ñ §Ò§å§Ü§Ó§í "§×"
         d+=4;
         *d = '8'; d++;
         *d = '1'; d++;
@@ -276,27 +276,27 @@ int char_win2utf8(char*d,const char *s) // ôóíêöèÿ âîçâðàùàåò êîëè÷åñòâî
   return r;
 }
 
-char * ToWeb(char *src,int special)                   //êîíâåðòèðóåì ññûëêó â utf8
+char * ToWeb(char *src,int special)                   //§Ü§à§ß§Ó§Ö§â§ä§Ú§â§å§Ö§Þ §ã§ã§í§Ý§Ü§å §Ó utf8
 {
   int cnt = 0, i, j;
   char *ret;
-  for(i = 0; src[i]; i++)                 //ñ÷èòàåì ðóññêèå ñèìâîëû
+  for(i = 0; src[i]; i++)                 //§ã§é§Ú§ä§Ñ§Ö§Þ §â§å§ã§ã§Ü§Ú§Ö §ã§Ú§Þ§Ó§à§Ý§í
   {
     unsigned char c=src[i];
     if(c>=0x80) cnt+=2;
     if(special&&(sfind8(c,symbols)>=0)) cnt++;
   }
-  ret = malloc(strlen(src) + cnt*3 + 1);  //âûäåëÿåì ïàìÿòü ïîä utf8-ñòðîêó
+  ret = malloc(strlen(src) + cnt*3 + 1);  //§Ó§í§Õ§Ö§Ý§ñ§Ö§Þ §á§Ñ§Þ§ñ§ä§î §á§à§Õ utf8-§ã§ä§â§à§Ü§å
   for(i = 0, j = 0; src[i]; i++)
   {
     unsigned char c=src[i];
     if(c>=0x80||(special&&(sfind8(c,symbols)>=0)))
-      j += char_win2utf8(ret+j, src+i);   //ïîëó÷àåì âìåñòî ðóññêîãî ñèìâîëà utf8-çàìåíó
+      j += char_win2utf8(ret+j, src+i);   //§á§à§Ý§å§é§Ñ§Ö§Þ §Ó§Þ§Ö§ã§ä§à §â§å§ã§ã§Ü§à§Ô§à §ã§Ú§Þ§Ó§à§Ý§Ñ utf8-§Ù§Ñ§Þ§Ö§ß§å
     else
       ret[j++] = src[i];
   }
   ret[j] = 0;
-  mfree(src);                             //îñâîáîæäàåì ïàìÿòü îò èñõîäíîé ñòðîêè
+  mfree(src);                             //§à§ã§Ó§à§Ò§à§Ø§Õ§Ñ§Ö§Þ §á§Ñ§Þ§ñ§ä§î §à§ä §Ú§ã§ç§à§Õ§ß§à§Û §ã§ä§â§à§Ü§Ú
   return ret;
 }
 
@@ -332,3 +332,4 @@ void oms2ws(WSHDR *ws, const char *text, int len)
     ws->wsbody[++(ws->wsbody[0])]=c;
   }
 }
+

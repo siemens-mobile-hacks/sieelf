@@ -89,7 +89,7 @@ unsigned int SearchNextDisplayLine(VIEWDATA *vd, LINECACHE *p/*, unsigned int *m
       p->pos++;
       continue;
     }
-    // êîìïîíîâêà ýëåìåíòîâ çäåñü
+    // §Ü§à§Þ§á§à§ß§à§Ó§Ü§Ñ §ï§Ý§Ö§Þ§Ö§ß§ä§à§Ó §Ù§Õ§Ö§ã§î
     cw=GetSymbolWidth(c,p->bold?FONT_SMALL_BOLD:FONT_SMALL);
     left-=cw;
     if (left<0)
@@ -123,7 +123,7 @@ unsigned int SearchNextDisplayLine(VIEWDATA *vd, LINECACHE *p/*, unsigned int *m
       return 1; // here can be a bug with line height
     }
     
-    if (cw>=ScreenW()/2||h>GetFontHeight(FONT_SMALL,0)*2) // Êàðòèíêè îòäåëüíî
+    if (cw>=ScreenW()/2||h>GetFontHeight(FONT_SMALL,0)*2) // §¬§Ñ§â§ä§Ú§ß§Ü§Ú §à§ä§Õ§Ö§Ý§î§ß§à
     {
       if (left+cw<ScreenW()) // image is last character
       {
@@ -142,7 +142,7 @@ unsigned int SearchNextDisplayLine(VIEWDATA *vd, LINECACHE *p/*, unsigned int *m
     }
     if (h>p->pixheight) p->pixheight=h;
       
-    if (cw>=ScreenW()/2||h>GetFontHeight(FONT_SMALL,0)*2) // Êàðòèíêè îòäåëüíî
+    if (cw>=ScreenW()/2||h>GetFontHeight(FONT_SMALL,0)*2) // §¬§Ñ§â§ä§Ú§ß§Ü§Ú §à§ä§Õ§Ö§Ý§î§ß§à
     {
       if (left+cw==ScreenW()) // image is first character
       {
@@ -171,7 +171,7 @@ static void newCacheLine(VIEWDATA *vd, LINECACHE *p)
 {
   if ((vd->lines_cache_size%LINESCACHECHUNK)==0)
   {
-    //Äîøëè äî êîíöà êóñêà, ðåàëëîöèðóåì åùå êóñîê
+    //§¥§à§ê§Ý§Ú §Õ§à §Ü§à§ß§è§Ñ §Ü§å§ã§Ü§Ñ, §â§Ö§Ñ§Ý§Ý§à§è§Ú§â§å§Ö§Þ §Ö§ë§Ö §Ü§å§ã§à§Ü
     vd->lines_cache=realloc(vd->lines_cache,(vd->lines_cache_size+LINESCACHECHUNK)*sizeof(LINECACHE));
   }
   memcpy(vd->lines_cache+(vd->lines_cache_size++),p,sizeof(LINECACHE));
@@ -335,8 +335,8 @@ void renderForm(VIEWDATA *vd, REFCACHE *rf, int x, int y)
   }
 }
 
-// âîçâðàùàåò 1, åñëè âèäíà ïîñëåäíÿÿ ñòðîêà
-// âîçâðàùàåò 2, åñëè âèäåí êîíåö ñòðàíèöû
+// §Ó§à§Ù§Ó§â§Ñ§ë§Ñ§Ö§ä 1, §Ö§ã§Ý§Ú §Ó§Ú§Õ§ß§Ñ §á§à§ã§Ý§Ö§Õ§ß§ñ§ñ §ã§ä§â§à§Ü§Ñ
+// §Ó§à§Ù§Ó§â§Ñ§ë§Ñ§Ö§ä 2, §Ö§ã§Ý§Ú §Ó§Ú§Õ§Ö§ß §Ü§à§ß§Ö§è §ã§ä§â§Ñ§ß§Ú§è§í
 int RenderPage(VIEWDATA *vd, int do_draw)
 {
   int scr_w=ScreenW()-1;
@@ -455,7 +455,7 @@ int RenderPage(VIEWDATA *vd, int do_draw)
             rc[cur_rc].color[1]=vd->rawtext[sc+1];
             rc[cur_rc].color[2]=vd->rawtext[sc+2]>>8;
             rc[cur_rc].color[3]=vd->rawtext[sc+2];
-            if (memcmp((void *)rc[cur_rc].color,(void *)prev->color,4))  // Òîëüêî åñëè öâåò íå ðàâåí ïðåäûäóùåìó (î÷åðåäü îáúåêòîâ íå ðåçèíîâàÿ ;))
+            if (memcmp((void *)rc[cur_rc].color,(void *)prev->color,4))  // §´§à§Ý§î§Ü§à §Ö§ã§Ý§Ú §è§Ó§Ö§ä §ß§Ö §â§Ñ§Ó§Ö§ß §á§â§Ö§Õ§í§Õ§å§ë§Ö§Þ§å (§à§é§Ö§â§Ö§Õ§î §à§Ò§ì§Ö§Ü§ä§à§Ó §ß§Ö §â§Ö§Ù§Ú§ß§à§Ó§Ñ§ñ ;))
             {
               prev->end_x=ws_width-1;
               rc[cur_rc].start_x=ws_width;
@@ -679,7 +679,7 @@ REFCACHE *FindReference(VIEWDATA *vd, unsigned int pos)
   return NULL;
 }
 
-int FindReferenceById(VIEWDATA *vd, unsigned int id, int i) // Íàõîäèò index'û âñåõ ref'îâ ñ çàäàííûì id
+int FindReferenceById(VIEWDATA *vd, unsigned int id, int i) // §¯§Ñ§ç§à§Õ§Ú§ä index'§í §Ó§ã§Ö§ç ref'§à§Ó §ã §Ù§Ñ§Õ§Ñ§ß§ß§í§Þ id
 {
   unsigned int sz=*(vd->oms+id);
   sz<<=8;
@@ -778,7 +778,7 @@ void templ_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
   else
   {
     ws=AllocMenuWS(gui,10);
-    wsprintf(ws, "Îøèáêà");
+    wsprintf(ws, "§°§ê§Ú§Ò§Ü§Ñ");
   }
   SetMenuItemText(gui, item, ws, cur_item);
 }
@@ -796,7 +796,7 @@ SOFTKEYSTAB templ_skt=
   templ_sk,0
 };
 
-HEADER_DESC templ_HDR={0,0,0,0,NULL,(int)"Âûáîð",LGP_NULL};
+HEADER_DESC templ_HDR={0,0,0,0,NULL,(int)"§£§í§Ò§à§â",LGP_NULL};
 
 MENU_DESC templ_STRUCT=
 {
@@ -955,16 +955,16 @@ static const INPUTDIA_DESC input_box_desc =
   100,
   101,
   0,
-  //  0x00000001 - Âûðîâíÿòü ïî ïðàâîìó êðàþ
-  //  0x00000002 - Âûðîâíÿòü ïî öåíòðó
-  //  0x00000004 - Èíâåðñèÿ çíàêîìåñò
+  //  0x00000001 - §£§í§â§à§Ó§ß§ñ§ä§î §á§à §á§â§Ñ§Ó§à§Þ§å §Ü§â§Ñ§ð
+  //  0x00000002 - §£§í§â§à§Ó§ß§ñ§ä§î §á§à §è§Ö§ß§ä§â§å
+  //  0x00000004 - §ª§ß§Ó§Ö§â§ã§Ú§ñ §Ù§ß§Ñ§Ü§à§Þ§Ö§ã§ä
   //  0x00000008 - UnderLine
-  //  0x00000020 - Íå ïåðåíîñèòü ñëîâà
+  //  0x00000020 - §¯§Ö §á§Ö§â§Ö§ß§à§ã§Ú§ä§î §ã§Ý§à§Ó§Ñ
   //  0x00000200 - bold
   0,
   //  0x00000002 - ReadOnly
-  //  0x00000004 - Íå äâèãàåòñÿ êóðñîð
-  //  0x40000000 - Ïîìåíÿòü ìåñòàìè ñîôò-êíîïêè
+  //  0x00000004 - §¯§Ö §Õ§Ó§Ú§Ô§Ñ§Ö§ä§ã§ñ §Ü§å§â§ã§à§â
+  //  0x40000000 - §±§à§Þ§Ö§ß§ñ§ä§î §Þ§Ö§ã§ä§Ñ§Þ§Ú §ã§à§æ§ä-§Ü§ß§à§á§Ü§Ú
   0x40000000
 };
 
@@ -1167,7 +1167,7 @@ void sel_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
   else
   {
     ws=AllocMenuWS(gui,10);
-    ascii2ws(ws,lgpData[LGP_Error]);//"Îøèáêà");
+    ascii2ws(ws,lgpData[LGP_Error]);//"§°§ê§Ú§Ò§Ü§Ñ");
   }
   SetMenuItemText(gui, item, ws, cur_item);
 }
@@ -1260,3 +1260,4 @@ void initDisplayUtilsLangPack()
   input_box_menu_sk[0].lgp_id=(int)lgpData[LGP_Ok];
   input_box_menu_sk[1].lgp_id=(int)lgpData[LGP_Cancel];
 }
+

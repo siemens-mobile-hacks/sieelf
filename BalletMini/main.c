@@ -501,15 +501,15 @@ static void method0(VIEW_GUI *data)
         switch(connect_state)
         {
         case 1: case 2: case 3:
-//          wsprintf(data->ws1,percent_t,"Соединение...");
+//          wsprintf(data->ws1,percent_t,"§і§а§Ц§Х§Ъ§Я§Ц§Я§Ъ§Ц...");
 //          break;
 //        case 2:
-//          wsprintf(data->ws1,percent_t,"Обработка...");
+//          wsprintf(data->ws1,percent_t,"§°§Т§в§С§Т§а§д§Ь§С...");
           wstrcpy(data->ws1, ws_console);
           //wsprintf(data->ws1,percent_t,);
           break;
 //        case 3:
-//          wsprintf(data->ws1,percent_t,"Загрузка...");
+//          wsprintf(data->ws1,percent_t,"§©§С§Ф§в§е§Щ§Ь§С...");
 //          break;
         }
       }
@@ -548,7 +548,7 @@ static void method1(VIEW_GUI *data,void *(*malloc_adr)(int))
   VIEWDATA *vd=malloc(sizeof(VIEWDATA));
   zeromem(vd,sizeof(VIEWDATA));
   vd->ws=AllocWS(256);
-  vd->pos_cur_ref=0xFFFFFFFF; //Еще вообще не найдена ссылка
+  vd->pos_cur_ref=0xFFFFFFFF; //§¦§л§Ц §У§а§а§Т§л§Ц §Я§Ц §Я§С§Ы§Х§Ц§Я§С §г§г§н§Э§Ь§С
   *((unsigned short *)(&vd->current_tag_d))=0xFFFF;
   data->vd=vd;
   data->ws1=AllocWS(128);
@@ -665,8 +665,8 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
         case 'L':
           if (rf->id!=_NOREF)
           {
-            // 1/http:        не бывает здесь такого
-            // 0/http:        не загружать
+            // 1/http:        §Я§Ц §Т§н§У§С§Ц§д §Щ§Х§Ц§г§о §д§С§Ь§а§Ф§а
+            // 0/http:        §Я§Ц §Щ§С§Ф§в§е§Ш§С§д§о
             goto_url=extract_omstr(vd,rf->id);
             // 0/javascript:  upload data
             if (!strncmp("0/javascript",goto_url,12))
@@ -1169,7 +1169,7 @@ static int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
     {
       if (strcmp_nocase(ipc->name_to,ipc_my_name)==0)
       {
-        //Если приняли свое собственное сообщение, значит запускаем чекер
+        //§¦§г§Э§Ъ §б§в§Ъ§Я§с§Э§Ъ §г§У§а§Ц §г§а§Т§г§д§У§Ц§Я§Я§а§Ц §г§а§а§Т§л§Ц§Я§Ъ§Ц, §Щ§Я§С§й§Ъ§д §Щ§С§б§е§г§Ь§С§Ц§Ю §й§Ц§Ь§Ц§в
         switch (msg->submess)
         {
         case IPC_DATA_ARRIVED:
@@ -1190,7 +1190,7 @@ static int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
             }
             mfree(ipc->data);
             mfree(ipc);
-            csm_result=0;  //Обработали сообщение 
+            csm_result=0;  //§°§Т§в§С§Т§а§д§С§Э§Ъ §г§а§а§Т§л§Ц§Я§Ъ§Ц 
           }
           break;
         case IPC_GOTO_URL:
@@ -1203,7 +1203,7 @@ static int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
             goto_url=NULL;
             UpdateCSMname();
             csm->view_id=CreateViewGUI(0);
-            csm_result=0;  //Обработали сообщение 
+            csm_result=0;  //§°§Т§в§С§Т§а§д§С§Э§Ъ §г§а§а§Т§л§Ц§Я§Ъ§Ц 
           }
           break;
         case IPC_GOTO_FILE:
@@ -1217,7 +1217,7 @@ static int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
             }
             mfree(goto_url);
             goto_url=NULL;
-            csm_result=0;   //Обработали сообщение 
+            csm_result=0;   //§°§Т§в§С§Т§а§д§С§Э§Ъ §г§а§а§Т§л§Ц§Я§Ъ§Ц 
           }
           break;
         }
@@ -1240,14 +1240,14 @@ static int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
     {
       switch((int)msg->data1)
       {
-      case 0xFE: //Пробуем идти по стеку назад
+      case 0xFE: //§±§в§а§Т§е§Ц§Ю §Ъ§Х§д§Ъ §б§а §г§д§Ц§Ь§е §Я§С§Щ§С§Х
         if ((goto_url=PopPageFromStack()))
         {
           SUBPROC((void*)GotoFile);
           break;
         }
         goto L_CLOSE;
-      case 0xFF: //Есть куда пойти
+      case 0xFF: //§¦§г§д§о §Ь§е§Х§С §б§а§Ы§д§Ъ
         if (goto_url)
         {
           SUBPROC((void*)GotoLink);
@@ -1468,7 +1468,7 @@ int main(const char *exename, const char *filename)
   unsigned int ul;
   char *path=strrchr(exename,'\\');
   int l;
-  if (!path) return 0; //Фигня какая-то
+  if (!path) return 0; //§¶§Ъ§Ф§Я§с §Ь§С§Ь§С§с-§д§а
   path++;
   l=path-exename;
   InitConfig();
@@ -1545,3 +1545,4 @@ int main(const char *exename, const char *filename)
   }
   return 0;
 }
+

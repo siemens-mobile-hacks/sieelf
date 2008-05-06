@@ -49,8 +49,8 @@ typedef struct
   unsigned short red:5, green:6, blue: 5;
 }TAG_D;
 
-// линия кончается с данными параметрами, т.е. это параметры следующей строки
-// выравнивание, же, - для данной линии
+// §Э§Ъ§Я§Ъ§с §Ь§а§Я§й§С§Ц§д§г§с §г §Х§С§Я§Я§н§Ю§Ъ §б§С§в§С§Ю§Ц§д§в§С§Ю§Ъ, §д.§Ц. §п§д§а §б§С§в§С§Ю§Ц§д§в§н §г§Э§Ц§Х§е§р§л§Ц§Ы §г§д§в§а§Ь§Ъ
+// §У§н§в§С§У§Я§Ъ§У§С§Я§Ъ§Ц, §Ш§Ц, - §Х§Э§с §Х§С§Я§Я§а§Ы §Э§Ъ§Я§Ъ§Ъ
 typedef struct
 {
   unsigned int   pos; // last line character
@@ -79,7 +79,7 @@ typedef struct
 
 typedef struct
 {
-  z_stream *zs;                // Поток для ZLib
+  z_stream *zs;                // §±§а§д§а§Ь §Х§Э§с ZLib
   
   int cached;
   
@@ -155,5 +155,6 @@ typedef struct
 //#define LIST            "list.png"
 
 #endif
+
 
 
