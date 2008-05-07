@@ -593,5 +593,7 @@
 0920: 0xA8D06BCE   ; 248:  char *RamFormatTrack()
 0924: 0xA8D06E36   ; 249:  char *RamFreq()
 0928: 0xA8D06FEE   ; 24A:  char *RamChannel()
+
+0950: 0xA031EA63   ; 254:  __arm int StartNativeExplorer(NativeExplorerData* data)
 #pragma disable old_equal_ff
 +0
