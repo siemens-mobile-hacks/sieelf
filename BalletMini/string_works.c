@@ -181,7 +181,7 @@ char *extract_omstr(VIEWDATA *vd, unsigned int pos)
   d[n]=0;
   return d;
 }
-
+/*
 void utf82win(char*d,const char *s)
 {
   int ds = 2;
@@ -193,13 +193,13 @@ void utf82win(char*d,const char *s)
       if (lb != 0x81)
         {*d = lb + 48; d++;}
       else
-        {*d = '§§'; d++;}
+        {*d = 'E'; d++;}
 
     if (ub == 0xD1)
       if (lb != 0x91)
         {*d = lb + 112; d++;}
       else
-        {*d = '§×'; d++;}
+        {*d = 'E'; d++;}
 
     if (ub == 0xE2)
       if (lb == 0x80)
@@ -299,7 +299,7 @@ char * ToWeb(char *src,int special)                   //§Ü§à§ß§Ó§Ö§â§ä§Ú§â§å§Ö§Þ
   mfree(src);                             //§à§ã§Ó§à§Ò§à§Ø§Õ§Ñ§Ö§Þ §á§Ñ§Þ§ñ§ä§î §à§ä §Ú§ã§ç§à§Õ§ß§à§Û §ã§ä§â§à§Ü§Ú
   return ret;
 }
-
+*/
 void oms2ws(WSHDR *ws, const char *text, int len)
 {
   ws->wsbody[0]=0;

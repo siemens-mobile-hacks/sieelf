@@ -32,13 +32,47 @@ static char *sendq_p=NULL; //§å§Ü§Ñ§Ù§Ñ§ä§Ö§Ý§î §à§é§Ö§â§Ö§Õ§Ú
 static int recvq_l=0;
 static char *recvq_p=NULL;
 
-extern const char OM_POST_HOST[32];
-extern const unsigned int OM_POST_PORT;
+extern const int IP_CHOOSE;
+extern const char OM_POST_HOST1[32];
+extern const unsigned int OM_POST_PORT1;
+extern const char OM_POST_HOST2[32];
+extern const unsigned int OM_POST_PORT2;
+extern const char OM_POST_HOST3[32];
+extern const unsigned int OM_POST_PORT3;
+extern const char OM_POST_HOST4[32];
+extern const unsigned int OM_POST_PORT4;
 
 static int receive_mode;
 
 static char *URL;
 static char *FNCACHE;
+
+char OM_POST_HOST[32];
+unsigned int OM_POST_PORT;
+
+void clooseip()
+{
+if(IP_CHOOSE==0)
+{
+  strncpy(OM_POST_HOST,OM_POST_HOST1,32);
+  OM_POST_PORT=OM_POST_PORT1;
+}
+else if(IP_CHOOSE==1)
+{
+  strncpy(OM_POST_HOST,OM_POST_HOST2,32);
+  OM_POST_PORT=OM_POST_PORT2;
+}
+else if(IP_CHOOSE==2)
+{
+  strncpy(OM_POST_HOST,OM_POST_HOST3,32);
+  OM_POST_PORT=OM_POST_PORT3;
+}
+else
+{
+  strncpy(OM_POST_HOST,OM_POST_HOST4,32);
+  OM_POST_PORT=OM_POST_PORT4;
+}
+}
 
 void SmartREDRAW(void)
 {
@@ -48,6 +82,7 @@ void SmartREDRAW(void)
 
 static void create_connect(void)
 {
+  clooseip();
   int ***p_res=NULL;
   void do_reconnect(void);
   const char *hostname;
@@ -342,7 +377,7 @@ static void SendPost(void)
   extern char AUTH_CODE[];
   extern char *from_url;
   extern char *goto_params;
-  
+  clooseip();
   char *buf;
   int buf_max_sz=1024+strlen(URL);
   if (from_url)
@@ -392,10 +427,11 @@ static void SendPost(void)
   sprintf(buf,"C=j2me");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"D=ru");
+  sprintf(buf,"D=zh");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"E=ISO-8859-1");
+  sprintf(buf,"E=GB2312");
+  //sprintf(buf,"E=ISO-8859-1");
   //sprintf(buf,"E=ISO8859_1");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
   
@@ -446,7 +482,7 @@ static void SendPost(void)
   //sprintf(buf,"b=");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"y=ru");
+  sprintf(buf,"y=zh");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
   sprintf(buf,"t=-1");

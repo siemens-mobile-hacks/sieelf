@@ -9,6 +9,7 @@
 #include "history.h"
 #include "file_works.h"
 #include "lang.h"
+#include "display_utils.h"
 
 extern int view_url_mode;
 extern char *view_url;
@@ -31,8 +32,8 @@ typedef struct
 
 SOFTKEY_DESC add_bookmark_sk[]=
 {
-  {0x0018,0x0000,(int)"Add"},
-  {0x0001,0x0000,(int)"Cancel"},
+  {0x0018,0x0000,(int)"添加"},
+  {0x0001,0x0000,(int)"取消"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -42,7 +43,7 @@ static const SOFTKEYSTAB add_bookmark_skt=
 };
 
 
-HEADER_DESC add_bookmark_hdr={0,0,0,0,NULL,(int)"Bookmark...",LGP_NULL};
+HEADER_DESC add_bookmark_hdr={0,0,0,0,NULL,(int)"书签",LGP_NULL};
 
 static void add_bookmark_ghook(GUI *data, int cmd)
 {
@@ -59,14 +60,30 @@ static void add_bookmark_ghook(GUI *data, int cmd)
 
 static void add_bookmark_locret(void){}
 
+extern int input;
+
 static int add_bookmark_onkey(GUI *data, GUI_MSG *msg)
 {
   EDITCONTROL ec;
   WSHDR *ws;
   char *name, *url, path[256], *tmp;
+  
   unsigned ul;
   int f;
-
+  
+  if (msg->gbsmsg->msg==KEY_DOWN&&msg->gbsmsg->submess==ENTER_BUTTON&&!EDIT_IsBusy(data))
+	{
+    EDIT_OpenOptionMenuWithUserItems(data,input_box_onkey_options,0,1);
+    return (-1);
+	}
+  
+     if(input==1)
+     {
+     GBS_SendMessage(MMI_CEPID,LONG_PRESS,0x23);
+     input=0;
+     return (-1);
+     }
+  
   if (msg->keys==0xFFF)
   {
     ExtractEditControl(data,2,&ec);
@@ -88,7 +105,7 @@ static int add_bookmark_onkey(GUI *data, GUI_MSG *msg)
     f=fopen(path,A_WriteOnly+A_Create+A_BIN,P_READ+P_WRITE,&ul);
     if (f!=-1)
     {
-      url = ToWeb(url, 0);
+      //url = ToWeb(url, 0);
       fwrite(f,url,strlen(url),&ul);
       fclose(f,&ul);
     }
@@ -163,7 +180,6 @@ int CreateAddBookmark(GUI *data)
       }
     }
   }
-  
   ascii2ws(ews,lgpData[LGP_NameHeader]);
   ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,wslen(ews));
   AddEditControlToEditQend(eq,&ec,ma);
@@ -178,14 +194,15 @@ int CreateAddBookmark(GUI *data)
     {
       p=FindGUIbyId(main_csm->view_id,NULL);
       if (p->vd->title)
-        ascii2ws(ews,p->vd->title);
+        utf8_2ws(ews,p->vd->title,strlen(p->vd->title));
+        //ascii2ws(ews,p->vd->title);
       else
         ascii2ws(ews,lgpData[LGP_NewBookmark]);
     }
   }
     
   PrepareEditControl(&ec);
-  ConstructEditControl(&ec,ECT_NORMAL_TEXT,0x40,ews,64);
+  ConstructEditControl(&ec,4,0x40,ews,64);
   AddEditControlToEditQend(eq,&ec,ma);   //2
 
   ascii2ws(ews,lgpData[LGP_LinkHeader]);
@@ -206,29 +223,33 @@ int CreateAddBookmark(GUI *data)
       {
         for(url_start = p->vd->pageurl; *url_start && *url_start != '/'; url_start++);
         for(; *url_start && *url_start == '/'; url_start++);
-        str_2ws(ews,url_start,strlen(url_start));
+        gb2ws(ews,url_start,strlen(url_start));
+        //str_2ws(ews,url_start,strlen(url_start));
       }
       else // url не загружен
       {
         switch(view_url_mode)
         {
         case MODE_FILE:
-          str_2ws(ews,view_url,255);
+          gb2ws(ews,view_url,255);
+          //str_2ws(ews,view_url,255);
           break;
         case MODE_URL:
           for(url_start = view_url; *url_start && *url_start != '/'; url_start++);
           for(; *url_start && *url_start == '/'; url_start++);
-          str_2ws(ews,url_start,strlen(url_start));
+          gb2ws(ews,url_start,strlen(url_start));
+          //str_2ws(ews,url_start,strlen(url_start));
           break;
         default:
-          str_2ws(ews,lgpData[LGP_Absent],32);
+          gb2ws(ews,lgpData[LGP_Absent],32);
+          //str_2ws(ews,lgpData[LGP_Absent],32);
           break;
         }
       }
     }
   }
   PrepareEditControl(&ec);
-  ConstructEditControl(&ec,ECT_NORMAL_TEXT,0x40,ews,1024);
+  ConstructEditControl(&ec,4,0x40,ews,1024);
   AddEditControlToEditQend(eq,&ec,ma);   //2
   
   FreeWS(ews);
@@ -271,14 +292,14 @@ void back(GUI *data)
 
 
 #define OPTIONS_ITEMS_N 4
-HEADER_DESC options_menuhdr={0,0,0,0,NULL,(int)"Options:",LGP_NULL};
+HEADER_DESC options_menuhdr={0,0,0,0,NULL,(int)"设置:",LGP_NULL};
 
 MENUITEM_DESC options_menu_ITEMS[OPTIONS_ITEMS_N]=
 {
-  {NULL,(int)"Add",       LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
-  {NULL,(int)"Edit",      LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //1
-  {NULL,(int)"Delete",    LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //2
-  {NULL,(int)"Back",      LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //3
+  {NULL,(int)"添加",       LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
+  {NULL,(int)"编辑",      LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //1
+  {NULL,(int)"删除",    LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //2
+  {NULL,(int)"返回",      LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //3
 };
 
 const MENUPROCS_DESC options_menu_HNDLS[OPTIONS_ITEMS_N]=
@@ -292,8 +313,8 @@ const MENUPROCS_DESC options_menu_HNDLS[OPTIONS_ITEMS_N]=
 int menusoftkeys[]={0,1,2};
 SOFTKEY_DESC menu_sk[]=
 {
-  {0x0018,0x0000,(int)"Options"},
-  {0x0001,0x0000,(int)"Close"},
+  {0x0018,0x0000,(int)"设置"},
+  {0x0001,0x0000,(int)"关闭"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -423,7 +444,6 @@ void selurl_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
   {
     len=strlen(ustop->urlname);
     ws=AllocMenuWS(gui,len+4);
-    //ascii2ws(ws,ustop->urlname);
     str_2ws(ws,ustop->urlname,64);
     if (!strcmp(ustop->fullpath+(strlen(ustop->fullpath)-4),".url"))
       SetMenuItemIconArray(gui,item,S_ICONS+0);
@@ -441,8 +461,8 @@ void selurl_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
 int selurl_softkeys[]={0,1,2};
 SOFTKEY_DESC selurl_sk[]=
 {
-  {0x0018,0x0000,(int)"Options"},
-  {0x0001,0x0000,(int)"Cancel"},
+  {0x0018,0x0000,(int)"设置"},
+  {0x0001,0x0000,(int)"取消"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -451,7 +471,7 @@ SOFTKEYSTAB selurl_skt=
   selurl_sk,0
 };
 
-HEADER_DESC selurl_HDR={0,0,0,0,NULL,(int)"Select Bookmark:",LGP_NULL};
+HEADER_DESC selurl_HDR={0,0,0,0,NULL,(int)"选择书签:",LGP_NULL};
 
 
 MENU_DESC selurl_STRUCT=
@@ -472,8 +492,8 @@ MENU_DESC selurl_STRUCT=
 
 SOFTKEY_DESC search_sk[]=
 {
-  {0x0018,0x0000,(int)"Search"},
-  {0x0001,0x0000,(int)"Cancel"},
+  {0x0018,0x0000,(int)"搜索"},
+  {0x0001,0x0000,(int)"取消"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -532,9 +552,25 @@ static void get_search_engines()
 
 void search_locret(void){}
 
+char word[61];
+
 int search_onkey(GUI *data, GUI_MSG *msg)
 {
   EDITCONTROL ec;
+  
+  if (msg->gbsmsg->msg==KEY_DOWN&&msg->gbsmsg->submess==ENTER_BUTTON&&!EDIT_IsBusy(data))
+	{
+    EDIT_OpenOptionMenuWithUserItems(data,input_box_onkey_options,0,1);
+    return (-1);
+	}
+  
+    if(input==1)
+     {
+     GBS_SendMessage(MMI_CEPID,LONG_PRESS,0x23);
+     input=0;
+     return (-1);
+     }
+  
   if (msg->keys==0xFFF)
   {
     if(selected_search_engine<0)return 0;
@@ -542,7 +578,7 @@ int search_onkey(GUI *data, GUI_MSG *msg)
     //query
     ExtractEditControl(data,2,&ec);
     WSHDR *ws = ec.pWS;
-    int ql=ws->wsbody[0];
+    //int ql=ws->wsbody[0];
     
     //read url file    
     int f,fsize;
@@ -567,8 +603,11 @@ int search_onkey(GUI *data, GUI_MSG *msg)
     *s=0;
     fsize=strlen(url);
     
+    int utf8conv_res_len;
+    ws_2utf8(ws,word,&utf8conv_res_len,61);
     //build search url    
-    goto_url=malloc(2+fsize+ql+2);    
+    goto_url=malloc(2+fsize+strlen(word)+2);    
+    //goto_url=malloc(2+fsize+ql+2);    
     goto_url[0]='0';
     goto_url[1]='/';          
     
@@ -578,19 +617,19 @@ int search_onkey(GUI *data, GUI_MSG *msg)
       int ofs=s-url;
       memcpy(goto_url+2,url,ofs);
       s=goto_url+2+ofs;
-      for (int i=0; i<ql; i++) *s++=char16to8(ws->wsbody[i+1]);
-      memcpy(goto_url+2+ofs+ql,url+ofs+2,fsize-ofs-1);
+      for (int i=0; i<strlen(word); i++) *s++=word[i];
+      memcpy(goto_url+2+ofs+strlen(word),url+ofs+2,fsize-ofs-1);
       }
     else
       {
       memcpy(goto_url+2,url,fsize);  
       s=goto_url+2+fsize;
-      for (int i=0; i<ql; i++) *s++=char16to8(ws->wsbody[i+1]);
-      *s = 0;  
+      for (int i=0; i<strlen(word); i++) *s++=word[i];
+      *s = 0;
       };       
     mfree(url);
    
-    goto_url = ToWeb(goto_url,0);
+    //goto_url = ToWeb(goto_url,0);
     
     return (0xFF);     
     
@@ -636,7 +675,8 @@ void search_ghook(GUI *data, int cmd)
       selected_search_engine=EDIT_GetItemNumInFocusedComboBox(data)-1;
       if(selected_search_engine>=0&&selected_search_engine<search_engine_count)
         {
-        str_2ws(ews,search_engines[selected_search_engine],128);
+        gb2ws(ews,search_engines[selected_search_engine],128);
+        //str_2ws(ews,search_engines[selected_search_engine],128);
         EDIT_SetTextToFocused(data,ews);
         };
       FreeWS(ews);
@@ -644,7 +684,7 @@ void search_ghook(GUI *data, int cmd)
   }
 }
 
-HEADER_DESC search_hdr={0,0,0,0,NULL,(int)"Search:",0x7FFFFFFF};
+HEADER_DESC search_hdr={0,0,0,0,NULL,(int)"搜索:",0x7FFFFFFF};
 
 INPUTDIA_DESC search_desc=
 {
@@ -681,15 +721,17 @@ static int CreateSearchDialog()
   ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,1024);
   AddEditControlToEditQend(eq,&ec,ma);
 
-  wsprintf(ews,"");
-  ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL,ews,1024);
+  wsprintf(ews,"%t","");
+  //wsprintf(ews,"");
+  ConstructEditControl(&ec,4,ECF_APPEND_EOL,ews,1024);
   AddEditControlToEditQend(eq,&ec,ma);
-  
+
   ascii2ws(ews,lgpData[LGP_SearchEngine]);
   ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,1024);
   AddEditControlToEditQend(eq,&ec,ma);
   
-  wsprintf(ews,"");
+  wsprintf(ews,"%t","");
+  //wsprintf(ews,"");
   ConstructComboBox(&ec,7,ECF_APPEND_EOL,ews,32,0,search_engine_count,selected_search_engine+1);
   AddEditControlToEditQend(eq,&ec,ma);
   
@@ -868,7 +910,8 @@ void history_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
   {
     len=strlen(history[cur_item]);
     ws=AllocMenuWS(gui,len+4);
-    str_2ws(ws,history[cur_item],64);
+    gb2ws(ws,history[cur_item],64);
+    //str_2ws(ws,history[cur_item],64);
   }
   else
   {
@@ -881,8 +924,8 @@ void history_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
 int history_softkeys[]={0,1,2};
 SOFTKEY_DESC history_sk[]=
 {
-  {0x0018,0x0000,(int)"Go"},
-  {0x0001,0x0000,(int)"Cancel"},
+  {0x0018,0x0000,(int)"访问"},
+  {0x0001,0x0000,(int)"取消"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -891,7 +934,7 @@ SOFTKEYSTAB history_skt=
   history_sk,0
 };
 
-HEADER_DESC history_HDR={0,0,0,0,NULL,(int)"History:",LGP_NULL};
+HEADER_DESC history_HDR={0,0,0,0,NULL,(int)"历史:",LGP_NULL};
 
 MENU_DESC history_STRUCT=
 {
@@ -919,8 +962,8 @@ int CreateHistoryMenu()
 
 SOFTKEY_DESC input_menu_sk[]=
 {
-  {0x0018,0x0000,(int)"Go"},
-  {0x0001,0x0000,(int)"Cnacel"},
+  {0x0018,0x0000,(int)"访问"},
+  {0x0001,0x0000,(int)"取消"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -930,7 +973,7 @@ static const SOFTKEYSTAB input_menu_skt=
 };
 
 
-HEADER_DESC input_url_hdr={0,0,0,0,NULL,(int)"Adress:",LGP_NULL};
+HEADER_DESC input_url_hdr={0,0,0,0,NULL,(int)"地址:",LGP_NULL};
 
 static void input_url_ghook(GUI *data, int cmd)
 {
@@ -952,6 +995,21 @@ static int input_url_onkey(GUI *data, GUI_MSG *msg)
   EDITCONTROL ec;
   WSHDR *ws;
   char *s;
+  
+  if (msg->gbsmsg->msg==KEY_DOWN&&msg->gbsmsg->submess==ENTER_BUTTON&&!EDIT_IsBusy(data))
+	{
+    EDIT_OpenOptionMenuWithUserItems(data,input_box_onkey_options,0,1);
+    return (-1);
+	}
+  
+    if(input==1)
+     {
+     GBS_SendMessage(MMI_CEPID,LONG_PRESS,0x23);
+     input=0;
+     return (-1);
+     }
+  
+  
   if (msg->keys==0xFFF || msg->keys == 0x18)
   {
     ExtractEditControl(data,1,&ec);
@@ -961,7 +1019,7 @@ static int input_url_onkey(GUI *data, GUI_MSG *msg)
     *s++='/';
     for (int i=0; i<ws->wsbody[0]; i++) *s++=char16to8(ws->wsbody[i+1]);
     *s = 0;
-    goto_url = ToWeb(goto_url,0);
+    //goto_url = ToWeb(goto_url,0);
     return (0xFF);
   }
   return (0);
@@ -1030,12 +1088,10 @@ int CreateInputUrl()
       }
     }
   }
-  ews->wsbody[0]=0;
-  for(int i=0;i<strlen(url_start);i++)
-    ews->wsbody[++ews->wsbody[0]]=url_start[i];
+  ascii2ws(ews,url_start);  
 
   PrepareEditControl(&ec);
-  ConstructEditControl(&ec,ECT_NORMAL_TEXT,0x40,ews,1024);
+  ConstructEditControl(&ec,4,0x40,ews,1024);
   AddEditControlToEditQend(eq,&ec,ma);   //2
 
   FreeWS(ews);
@@ -1102,7 +1158,8 @@ static void mm_options(GUI *gui)
 {
   WSHDR *ws;
   ws=AllocWS(150);
-  str_2ws(ws,successed_config_filename,128);
+  gb2ws(ws,successed_config_filename,128);
+  //str_2ws(ws,successed_config_filename,128);
   ExecuteFile(ws,0,0);
   FreeWS(ws);
   GeneralFuncF1(1);
@@ -1129,8 +1186,8 @@ static const int mmenusoftkeys[]={0,1,2};
 
 SOFTKEY_DESC mmenu_sk[]=
 {
-  {0x0018,0x0000,(int)"Select"},
-  {0x0001,0x0000,(int)"Back"},
+  {0x0018,0x0000,(int)"选择"},
+  {0x0001,0x0000,(int)"返回"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -1140,16 +1197,16 @@ static const SOFTKEYSTAB mmenu_skt=
 };
 
 #define MAIN_MENU_ITEMS_N 6
-HEADER_DESC main_menuhdr={0,0,0,0,NULL,(int)"Menu:",LGP_NULL};
+HEADER_DESC main_menuhdr={0,0,0,0,NULL,(int)"菜单:",LGP_NULL};
 
 MENUITEM_DESC main_menu_ITEMS[MAIN_MENU_ITEMS_N]=
 {
-  {NULL,(int)"Go to",      LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
-  {NULL,(int)"Bookmarks",  LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //1
-  {NULL,(int)"History",    LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //2
-  {NULL,(int)"Settings",   LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //3
-  {NULL,(int)"Search",     LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //3
-  {NULL,(int)"Exit",       LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}  //4
+  {NULL,(int)"网址",      LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
+  {NULL,(int)"书签",  LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //1
+  {NULL,(int)"历史",    LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //2
+  {NULL,(int)"设置",   LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //3
+  {NULL,(int)"搜索",     LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //3
+  {NULL,(int)"退出",       LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}  //4
 };
 
 static const MENUPROCS_DESC main_menu_HNDLS[MAIN_MENU_ITEMS_N]=

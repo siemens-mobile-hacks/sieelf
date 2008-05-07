@@ -772,13 +772,14 @@ void templ_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
         if (num==cur_item) start=i+1;
       }
     ws=AllocMenuWS(gui,len);
-    str_2ws(ws,buffer+start,len);
+    //str_2ws(ws,buffer+start,len);
+    gb2ws(ws,buffer+start,len);
     mfree(buffer);
   }
   else
   {
     ws=AllocMenuWS(gui,10);
-    wsprintf(ws, "Ошибка");
+    wsprintf(ws, "错误");
   }
   SetMenuItemText(gui, item, ws, cur_item);
 }
@@ -786,8 +787,8 @@ void templ_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
 int templ_softkeys[]={0,1,2};
 SOFTKEY_DESC templ_sk[]=
 {
-  {0x0018,0x0000,(int)"Select"},
-  {0x0001,0x0000,(int)"Close"},
+  {0x0018,0x0000,(int)"选择"},
+  {0x0001,0x0000,(int)"关闭"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -796,7 +797,7 @@ SOFTKEYSTAB templ_skt=
   templ_sk,0
 };
 
-HEADER_DESC templ_HDR={0,0,0,0,NULL,(int)"Выбор",LGP_NULL};
+HEADER_DESC templ_HDR={0,0,0,0,NULL,(int)"选择",LGP_NULL};
 
 MENU_DESC templ_STRUCT=
 {
@@ -854,8 +855,8 @@ char *collectItemsParams(VIEWDATA *vd, REFCACHE *rf);
 
 SOFTKEY_DESC input_box_menu_sk[]=
 {
-  {0x0018,0x0000,(int)"Ok"},
-  {0x0001,0x0000,(int)"Cancel"},
+  {0x0018,0x0000,(int)"确定"},
+  {0x0001,0x0000,(int)"取消"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -864,7 +865,7 @@ static const SOFTKEYSTAB input_box_menu_skt=
   input_box_menu_sk,0
 };
 
-HEADER_DESC input_box_hdr={0,0,0,0,NULL,(int)"Enter:",LGP_NULL};
+HEADER_DESC input_box_hdr={0,0,0,0,NULL,(int)"输入:",LGP_NULL};
 
 static void input_box_ghook(GUI *data, int cmd)
 {
@@ -881,14 +882,20 @@ static void input_box_ghook(GUI *data, int cmd)
 
 static void input_box_locret(void){}
 
+int input=0;
+
 void input_box_onkey_options(USR_MENU_ITEM *item)
 {
   if (item->type==0)
   {
     switch(item->cur_item)
     {
-    case 0:
+    case 1:
       ascii2ws(item->ws,lgpData[LGP_Templates]);
+      break;
+      
+    case 0:
+      wsprintf(item->ws,"%t","输入法选择");
       break;
     }
   }
@@ -896,9 +903,13 @@ void input_box_onkey_options(USR_MENU_ITEM *item)
   {
     switch(item->cur_item)
     {
-    case 0:
+    case 1:
       createTemplatesMenu();
       break;
+      
+    case 0:
+      input=1;
+      break;    
     }
   }
 }
@@ -909,9 +920,19 @@ static int input_box_onkey(GUI *data, GUI_MSG *msg)
   if (msg->gbsmsg->msg==KEY_DOWN&&msg->gbsmsg->submess==ENTER_BUTTON)
 	{
     paste_gui=data;
-    EDIT_OpenOptionMenuWithUserItems(data,input_box_onkey_options,0,1);
+    EDIT_OpenOptionMenuWithUserItems(data,input_box_onkey_options,0,2);
     return (-1);
 	}
+  
+  
+  if(input==1)
+     {
+     GBS_SendMessage(MMI_CEPID,LONG_PRESS,0x23);
+     input=0;
+     return (-1);
+     }
+  
+  
   if (msg->keys==0xFFF)
   {
     // set value
@@ -995,8 +1016,8 @@ int CreateInputBox(VIEWDATA *vd, REFCACHE *rf)
 // TEXT VIEW
 SOFTKEY_DESC txtview_menu_sk[]=
 {
-  {0x0018,0x0000,(int)"Ok"},
-  {0x0001,0x0000,(int)"Cancel"},
+  {0x0018,0x0000,(int)"确定"},
+  {0x0001,0x0000,(int)"取消"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 

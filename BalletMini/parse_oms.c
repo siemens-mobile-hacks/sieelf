@@ -602,7 +602,7 @@ void OMS_DataArrived(VIEWDATA *vd, const char *buf, int len)
         vd->title=(char *)malloc(i+1);
         memcpy(vd->title,vd->oms+vd->oms_pos,i);
         vd->title[i]=NULL;
-        utf82win(vd->title, vd->title);
+        //utf82win(vd->title, vd->title);
         AddBrItem(vd);
       }
       vd->oms_pos=vd->oms_wanted;

@@ -1,7 +1,7 @@
 不能打开文件! 
 不能载入AuthCode! 
 不能打开history.txt! 
-BalletMini培植文件更新 
+BalletMini配置文件更新 
 元素 \ '% c \' 正在制作! 
 没有选中连接! 
 错误! 
