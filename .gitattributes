@@ -799,8 +799,6 @@ Menu/main.h -text
 Menu/test.xcl -text
 MidletSigner/MidletSigner.ewp -text
 MidletSigner/MidletSigner.eww -text
-MidletSigner/MidletSigner_IAR_old.ewp -text
-MidletSigner/MidletSigner_IAR_old.eww -text
 MidletSigner/base64.c -text
 MidletSigner/base64.h -text
 MidletSigner/conf_loader.c -text
@@ -916,15 +914,6 @@ MusicStart/play_list.c -text
 MusicStart/play_list.h -text
 MusicStart/rect_patcher.h -text
 MusicStart/test.xcl -text
-MyMenu2/E71Csw41.xcl -text
-MyMenu2/MyMenu2.ewp -text
-MyMenu2/MyMenu2.eww -text
-MyMenu2/entry.asm -text
-MyMenu2/example/MyMenu2.cfg -text
-MyMenu2/func.asm -text
-MyMenu2/main.c -text
-MyMenu2/mk.bat -text
-MyMenu2/test.xcl -text
 NATICQ/NATICQ.ewp -text
 NATICQ/NATICQ.eww -text
 NATICQ/NATICQ.txt -text
