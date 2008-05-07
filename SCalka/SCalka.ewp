@@ -132,7 +132,7 @@
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>13</version>
+        <version>14</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -343,6 +343,11 @@
         <option>
           <name>CCStdIncludePath</name>
           <state>$TOOLKIT_DIR$\INC\</state>
+        </option>
+        <option>
+          <name>CCInlineThreshold</name>
+          <version>0</version>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -555,7 +560,7 @@
         </option>
         <option>
           <name>FormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -741,7 +746,7 @@
         </option>
         <option>
           <name>ExtraFormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -951,7 +956,7 @@
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>13</version>
+        <version>14</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -1161,6 +1166,11 @@
         <option>
           <name>CCStdIncludePath</name>
           <state>$TOOLKIT_DIR$\INC\</state>
+        </option>
+        <option>
+          <name>CCInlineThreshold</name>
+          <version>0</version>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -1373,7 +1383,7 @@
         </option>
         <option>
           <name>FormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -1559,7 +1569,7 @@
         </option>
         <option>
           <name>ExtraFormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -1744,7 +1754,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.40A</state>
+          <state>4.42A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -1769,13 +1779,14 @@
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>13</version>
+        <version>14</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
           <name>CCDefines</name>
           <state>NDEBUG</state>
           <state>NEWSGOLD</state>
+          <state>ELKA</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -1980,6 +1991,11 @@
         <option>
           <name>CCStdIncludePath</name>
           <state>$TOOLKIT_DIR$\INC\</state>
+        </option>
+        <option>
+          <name>CCInlineThreshold</name>
+          <version>0</version>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -2192,7 +2208,7 @@
         </option>
         <option>
           <name>FormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -2378,7 +2394,7 @@
         </option>
         <option>
           <name>ExtraFormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
