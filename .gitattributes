@@ -916,12 +916,10 @@ MusicStart/rect_patcher.h -text
 MusicStart/test.xcl -text
 MyMenu2/MyMenu2.eww -text
 MyMenu2/MyMenu2/E71Csw41.xcl -text
-MyMenu2/MyMenu2/MyMenu2.dep -text
 MyMenu2/MyMenu2/MyMenu2.ewp -text
 MyMenu2/MyMenu2/entry.asm -text
 MyMenu2/MyMenu2/main.c -text
 MyMenu2/MyMenu2/mk.bat -text
-MyMenu2/MyMenu2_Editor/MyMenu2_Editor.dep -text
 MyMenu2/MyMenu2_Editor/MyMenu2_Editor.ewp -text
 MyMenu2/MyMenu2_Editor/ed_gui.c -text
 MyMenu2/MyMenu2_Editor/lang.h -text
