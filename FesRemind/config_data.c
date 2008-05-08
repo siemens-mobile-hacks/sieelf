@@ -16,8 +16,12 @@ __root const CFG_HDR cfghdrTSI1_2={CFG_COORDINATES,"位置",0,0};
 __root const unsigned int TEXT_X=20;
 __root const unsigned int TEXT_Y=70;
 
+__root const CFG_HDR cfghdrTSI1_7={CFG_CBOX,"对齐",0,3};
+__root const unsigned int TEXT_XT=1;
+__root const CFG_CBOX_ITEM cfgcboxTSI12[3]={AgainCN};
+
 __root const CFG_HDR cfghdrTSI1_3={CFG_STR_GB,"文字",0,31};
-__root const char TEXT_FMT[32]="我爱我家";
+__root const char TEXT_FMT[32]="中国移不动通信";
 
 __root const CFG_HDR cfghdrTSI1_4={CFG_COLOR,"文字颜色",0,0};
 __root const char TEXT_CS[4]={255,255,255,100};
@@ -26,7 +30,7 @@ __root const CFG_HDR cfghdrTSI1_5={CFG_COLOR,"边框颜色",0,0};
 __root const char TEXT_CB[4]={0,0,0,100};
 
 __root const CFG_HDR cfghdrTSI1_6={CFG_CBOX,"字体",0,17};
-__root const unsigned int TEXT_FONT=0;
+__root const unsigned int TEXT_FONT=5;
 __root const CFG_CBOX_ITEM cfgcboxTSI11[17]={FontSyCN};
 __root const CFG_HDR cfghdr_mTSI10={CFG_LEVEL,"",0,0};
 
@@ -40,6 +44,10 @@ __root const int WEEK_ENA = 1;
 __root const CFG_HDR cfghdr9_2={CFG_COORDINATES,"位置坐标",0,0};
 __root const unsigned int WEEK_X=40;
 __root const unsigned int WEEK_Y=140;
+
+__root const CFG_HDR cfghdrTSI5_7={CFG_CBOX,"对齐",0,3};
+__root const unsigned int WEEK_XT=1;
+__root const CFG_CBOX_ITEM cfgcboxTSI53[3]={AgainCN};
 
 __root const CFG_HDR cfghdr9_3={CFG_COLOR,"文字颜色",0,0};
 __root const char WEEK_COLORS[4]={255,255,255,100};
@@ -64,8 +72,12 @@ __root const CFG_HDR cfghdrTSI8_1={CFG_CHECKBOX, "屏显", 0, 2};
 __root const int CYEAR_ENA=1;
 
 __root const CFG_HDR cfghdrTSI8_2={CFG_COORDINATES,"位置",0,0};
-__root const unsigned int CYEAR_X=75;
+__root const unsigned int CYEAR_X=128;
 __root const unsigned int CYEAR_Y=20;
+
+__root const CFG_HDR cfghdrTSI8_7={CFG_CBOX,"对齐",0,3};
+__root const unsigned int CYEAR_XT=2;
+__root const CFG_CBOX_ITEM cfgcboxTSI82[3]={AgainCN};
 
 __root const CFG_HDR cfghdrTSI8_3={CFG_COLOR,"文字颜色",0,0};
 __root const char CYEAR_CS[4]={255,255,255,100};
@@ -89,6 +101,10 @@ __root const CFG_HDR cfghdrTSI9_2={CFG_COORDINATES,"位置",0,0};
 __root const unsigned int CDATE_X=2;
 __root const unsigned int CDATE_Y=20;
 
+__root const CFG_HDR cfghdrTSI9_7={CFG_CBOX,"对齐",0,3};
+__root const unsigned int CDATE_XT=0;
+__root const CFG_CBOX_ITEM cfgcboxTSI92[3]={AgainCN};
+
 __root const CFG_HDR cfghdrTSI9_3={CFG_COLOR,"文字颜色",0,0};
 __root const char CDATE_CS[4]={255,255,255,100};
 
@@ -103,7 +119,7 @@ __root const CFG_HDR cfghdr_mTSI90={CFG_LEVEL,"",0,0};
 
 //------------------------------------------------------------------------------
 
-__root const CFG_HDR cfghdr_mFESTA1={CFG_LEVEL,"节日提醒设置",1,0};
+__root const CFG_HDR cfghdr_mFESTA1={CFG_LEVEL,"节日提醒",1,0};
 
 __root const CFG_HDR cfghdrFESTA={CFG_CHECKBOX, "屏显", 0, 2};
 __root const int BIR_ENA=1;
@@ -111,13 +127,13 @@ __root const int BIR_ENA=1;
 __root const CFG_HDR cfghdrBIRFILE={CFG_STR_UTF8,"数据文件",0,63};
 __root const char BIRS_FILE[64]="0:\\ZBin\\etc\\day.txt";
 
-         /*------------------------------------*/
-//阴历节日选项设置
-__root const CFG_HDR cfghdr_mTSIA1={CFG_LEVEL,"阴历节日",1,0};
-
 __root const CFG_HDR cfghdrOBIR_1={CFG_COORDINATES,"位置",0,0};
 __root const unsigned int OBIR_X=2;
 __root const unsigned int OBIR_Y=36;
+
+__root const CFG_HDR cfghdrOBIR_7={CFG_CBOX,"对齐",0,3};
+__root const unsigned int OBIR_XT=0;
+__root const CFG_CBOX_ITEM cfgcboxOBIR2[3]={AgainCN};
 
 __root const CFG_HDR cfghdrOBIR_2={CFG_COLOR,"文字颜色",0,0};
 __root const char OBIR_CS[4]={255,255,255,100};
@@ -129,43 +145,18 @@ __root const CFG_HDR cfghdrOBIR_4={CFG_CBOX,"字体",0,17};
 __root const unsigned int OBIR_FONT=5;
 __root const CFG_CBOX_ITEM cfgcboxOBIR1[17]={FontSyCN};
 
-__root const CFG_HDR cfghdr_mTSIA0={CFG_LEVEL,"",0,0};
-
-       /*-----------------------------------------------*/
-//阳历节日选项设置
-__root const CFG_HDR cfghdr_mTSIB1={CFG_LEVEL,"阳历节日",1,0};
-
-__root const CFG_HDR cfghdrNBIR_1={CFG_COORDINATES,"位置",0,0};
-__root const unsigned int NBIR_X=2;
-__root const unsigned int NBIR_Y=126;
-
-__root const CFG_HDR cfghdrNBIR_2={CFG_COLOR,"文字颜色",0,0};
-__root const char NBIR_CS[4]={255,255,255,100};
-
-__root const CFG_HDR cfghdrNBIR_3={CFG_COLOR,"边框颜色",0,0};
-__root const char NBIR_CB[4]={0,0,0,100};
-
-__root const CFG_HDR cfghdrNBIR_4={CFG_CBOX,"字体",0,17};
-__root const unsigned int NBIR_FONT=5;
-__root const CFG_CBOX_ITEM cfgcboxNBIR1[17]={FontSyCN};
-
-__root const CFG_HDR cfghdr_mTSIB0={CFG_LEVEL,"",0,0};
-
 __root const CFG_HDR cfghdr_mFESTA0={CFG_LEVEL,"",0,0};
 
 //--------------------------------------------------------------
 
 __root const CFG_HDR cfghdr_mAPP1={CFG_LEVEL,"重要记事",1,0};
 
-__root const CFG_HDR cfghdrAPP_0={CFG_UINT, "显示宽度", 0, 512};
-__root const unsigned int length=126;
-
 __root const CFG_HDR cfghdrAPP_5={CFG_UINT,"滚动速度",0,100};
 __root const unsigned int SPEED = 10;
 
 __root const CFG_HDR cfghdrAPP_1={CFG_COORDINATES,"位置",0,0};
 __root const unsigned int APP_X=2;
-__root const unsigned int APP_Y=100;
+__root const unsigned int APP_Y=122;
 
 __root const CFG_HDR cfghdrAPP_2={CFG_COLOR,"文字颜色",0,0};
 __root const char APP_CS[4]={255,255,255,100};
@@ -190,7 +181,7 @@ __root const CFG_HDR cfghdr14={CFG_UINT,"Y弯曲", 0, 512};
 __root const unsigned int yrnd=2;
 
 __root const CFG_HDR cfghdr15={CFG_CBOX,"边框样式", 0, 2};
-__root const int style=0;
+__root const int fstyle=0;
 __root const CFG_CBOX_ITEM cfgcbox0[2]={"实线","虚线"};
 
 __root const CFG_HDR cfghdr_mAPP0={CFG_LEVEL,"",0,0};

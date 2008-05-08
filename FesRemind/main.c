@@ -7,11 +7,9 @@ extern void kill_data(void *p, void (*func_p)(void *));
 
 static char zhName[] = "节日提醒";
 int FirstRun = 1,cnt = 0;
-int scroll_pos = 1;
 static int AppNum;
 char nTime[7];
 unsigned int fShow;
-WSHDR *ws_App;
 char **start_Time,**end_Time;
 
 CSM_DESC icsmd;
@@ -25,14 +23,13 @@ typedef struct{
   char pen[4];
   unsigned short font;
   unsigned short type;
-  WSHDR wsh;
-  unsigned short wsbody[WS_MAXLEN+1]; 
   unsigned int draw_flag;
   char fr_cl[4];
+  int enaScroll;
+  int scroll_pos;
 } TInfo;
 
 TInfo InfoData[6];
-
 GBSTMR mytmr;
 const IPC_REQ my_ipc={
   IPC_FESREMIND_NAME,
@@ -54,10 +51,14 @@ static int FindBirName(WSHDR* ws,const char *source,const char *sub)
   char *p = strstr(source,sub);
   if (p) 
   {
-    wsprintf(ws,_percent_t,p+7);
+    char *pa = strchr(p,0x0A);
+    char findname[30];
+    strncpy(findname,p+7,pa - p - 7);
+    wsprintf(ws,"%t%t%t","【",findname,"】");
     return 1;
   }
-  else{
+  else
+  {
     return 0;}
 }
 
@@ -125,21 +126,6 @@ static int getAppNum(char *source,char *search)
   }
 }
 
-void drawApp(void)
-{
-  int ws_width=Get_WS_width(ws_App, FontType(APP_FONT));
-  if((ws_width >= length-4) && SPEED)
-  {
-    DrawScrollString(ws_App,APP_X+2,APP_Y+2,APP_X+length-2,APP_Y+GetFontYSIZE(FontType(APP_FONT))+2,scroll_pos,FontType(APP_FONT),TEXT_OUTLINE,APP_CS,APP_CB);
-    if((ws_width-scroll_pos)<=(length-4)) scroll_pos=1;
-    else  scroll_pos += SPEED;
-  }
-  else
-  {
-    DrawString(ws_App,APP_X+2,APP_Y+2,APP_X+length-2,APP_Y+GetFontYSIZE(FontType(APP_FONT))+2,FontType(APP_FONT),TEXT_OUTLINE,APP_CS,APP_CB);
-  }
-}
-
 void InitInfoData(void);
 void TimerProc(void)
 {
@@ -163,11 +149,58 @@ void TimerProc(void)
   GBS_SendMessage(MMI_CEPID,MSG_IPC,IPC_UPDATE_STAT,&my_ipc);
 }
 
-void FillInfoData(TInfo *Info,int x_start,int y_start, int font,const char *color,int draw_flag,const char *fr_cl)
-{  
-  Info->rc.x=x_start;
+void FillInfoData(TInfo *Info,int style,int x_start,int y_start, int font,const char *color,int draw_flag,const char *fr_cl)
+{
+  int width =Get_WS_width(Info->ws,font);
+  int scrwth = ScreenW();
+  switch(style)
+  {
+    case 0:
+      Info->rc.x = x_start;
+      if (x_start + width + 1 < scrwth)
+      {
+        Info->rc.x2 = x_start + width + 1;
+        Info->enaScroll = 0;
+      }
+      else
+      {
+        Info->rc.x2 = scrwth - x_start;
+        Info->enaScroll = width;
+        Info->scroll_pos = 1;
+      }
+      break;
+      
+    case 1:
+      if (width < scrwth)
+      {
+        Info->rc.x = (scrwth-width)/2 - 1;
+        Info->rc.x2 = (scrwth + width)/2;
+        Info->enaScroll = 0;
+      }
+      else
+      {
+        Info->rc.x = 4;
+        Info->rc.x2 = scrwth - 4;
+        Info->enaScroll = width;
+        Info->scroll_pos = 1;
+      }
+      break;
+      
+    case 2:      
+      if (width < (x_start -2 ))
+      {
+        Info->rc.x = x_start - width - 1;
+        Info->enaScroll = 0;
+      }
+      else
+      {
+        Info->rc.x = scrwth - x_start;
+        Info->enaScroll = width;
+        Info->scroll_pos = 1;
+      }
+      Info->rc.x2 = x_start;
+  }
   Info->rc.y=y_start;
-  Info->rc.x2=x_start+Get_WS_width(Info->ws,font)+1;
   Info->rc.y2=y_start+GetFontYSIZE(font);
   Info->font=font;
   memcpy(Info->pen,color,4);
@@ -178,11 +211,11 @@ void FillInfoData(TInfo *Info,int x_start,int y_start, int font,const char *colo
 
 const char weekdays1[7][5]={"MON","TUE","WED","THU","FRI","SAT","SUN"};
 const char weekdays2[7][8]={"星期一","星期二","星期三","星期四","星期五","星期六","星期日"};
-const char jDay[24][6]={
-                        "小寒","大寒","立春","雨水","惊蛰","春分",
-                        "清明","谷雨","立夏","小满","芒种","夏至",
-                        "小暑","大暑","立秋","处暑","白露","秋分",
-                        "寒露","霜降","立冬","小雪","大雪","冬至"}; 
+const char jDay[24][9]={
+                        "【小寒】","【大寒】","【立春】","【雨水】","【惊蛰】","【春分】",
+                        "【清明】","【谷雨】","【立夏】","【小满】","【芒种】","【夏至】",
+                        "【小暑】","【大暑】","【立秋】","【处暑】","【白露】","【秋分】",
+                        "【寒露】","【霜降】","【立冬】","【小雪】","【大雪】","【冬至】"}; 
 
 void InitInfoData(void)
 {
@@ -233,15 +266,20 @@ void InitInfoData(void)
           if (apps[i]) mfree(apps[i]);
          }
         if(apps) mfree(apps);
-        if (str_App) wsprintf(ws_App,_percent_t,str_App);
+        if (str_App)
+        {
+          InfoData[5].enabled = 1;
+          wsprintf(InfoData[5].ws,_percent_t,str_App);
+          FillInfoData(&InfoData[5],1,APP_X,APP_Y,FontType(APP_FONT),APP_CS, TEXT_OUTLINE,APP_CB);
+        }
+        else InfoData[5].enabled = 0;
       }
 
       if (TEXT_ENA)
          {
            InfoData[0].enabled=1;
            wsprintf(InfoData[0].ws,_percent_t,TEXT_FMT);
-           FillInfoData(&InfoData[0],TEXT_X,TEXT_Y,FontType(TEXT_FONT),TEXT_CS,
-                     TEXT_OUTLINE,TEXT_CB);
+           FillInfoData(&InfoData[0],TEXT_XT,TEXT_X,TEXT_Y,FontType(TEXT_FONT),TEXT_CS, TEXT_OUTLINE,TEXT_CB);
          }
        else
          {
@@ -256,7 +294,7 @@ void InitInfoData(void)
            int e = GetLunarAnimal(pLdate.year);   
     	   InfoData[1].enabled=1;
            wsprintf(InfoData[1].ws,"%t%t",d,e);
-    	   FillInfoData(&InfoData[1],CYEAR_X,CYEAR_Y,FontType(CYEAR_FONT),CYEAR_CS,TEXT_OUTLINE,CYEAR_CB);
+    	   FillInfoData(&InfoData[1],CYEAR_XT,CYEAR_X,CYEAR_Y,FontType(CYEAR_FONT),CYEAR_CS,TEXT_OUTLINE,CYEAR_CB);
          }
        else
          {
@@ -272,7 +310,7 @@ void InitInfoData(void)
                wsprintf(InfoData[2].ws,"%t%t%t%t",cOName[2],cMName[f],cOName[1],cDName[pLdate.day]);
             if ((f !=  0) && (f < pLdate.month - 1))
                wsprintf(InfoData[2].ws,"%t%t%t",cMName[pLdate.month - 1],cOName[1],cDName[pLdate.day]);
-    	    FillInfoData(&InfoData[2],CDATE_X,CDATE_Y,FontType(CDATE_FONT),CDATE_CS,TEXT_OUTLINE,CDATE_CB);
+    	    FillInfoData(&InfoData[2],CDATE_XT,CDATE_X,CDATE_Y,FontType(CDATE_FONT),CDATE_CS,TEXT_OUTLINE,CDATE_CB);
          }
        else
          {
@@ -282,48 +320,54 @@ void InitInfoData(void)
        if (BIR_ENA)
          {
             char oDay[7],nDay[7];
+            WSHDR *wsBir1 = AllocWS(10); 
+            WSHDR *wsBir2 = AllocWS(20); 
+            WSHDR *wsBir3 = AllocWS(5);
             sprintf(oDay,"L%02d.%02d:",pLdate.month,pLdate.day);
-            InfoData[3].enabled = FindBirName(InfoData[3].ws,FestaData,oDay);
-            if (InfoData[3].enabled)
-                 FillInfoData(&InfoData[3],OBIR_X,OBIR_Y,FontType(OBIR_FONT),OBIR_CS,TEXT_OUTLINE,OBIR_CB);
-     
-            unsigned short lunar = LunarHolId(t_date);
-            if (lunar)
-              {
-                 gb2ws(InfoData[4].ws, &jDay[lunar - 1][0], 6);
-                 InfoData[4].enabled = 1;
-              }
-            else
-              {
-                 sprintf(nDay,"N%02d.%02d:",t_date.month,t_date.day);
-                 InfoData[4].enabled = FindBirName(InfoData[4].ws,FestaData,nDay);
-              }
-            if (InfoData[4].enabled)
-                 FillInfoData(&InfoData[4],NBIR_X,NBIR_Y,FontType(NBIR_FONT),NBIR_CS,TEXT_OUTLINE,NBIR_CB);
+            sprintf(nDay,"N%02d.%02d:",t_date.month,t_date.day);
+            
+            int bir1 = FindBirName(wsBir1,FestaData,oDay);
+            int bir2 = FindBirName(wsBir2,FestaData,nDay);
+            int bir3 = LunarHolId(t_date);
+            if (bir3)  gb2ws(wsBir3, &jDay[bir3 - 1][0], 9);
+            
+            if (bir1 + bir2 + bir3)
+            {
+              wsprintf(InfoData[3].ws,_percent_t,"今日");
+              if (bir1) wstrncat(InfoData[3].ws,wsBir1,wstrlen(wsBir1));
+              if (bir2) wstrncat(InfoData[3].ws,wsBir2,wstrlen(wsBir2));
+              if (bir3) wstrncat(InfoData[3].ws,wsBir3,wstrlen(wsBir3));
+              InfoData[3].enabled = 1;
+              FillInfoData(&InfoData[3],OBIR_XT,OBIR_X,OBIR_Y,FontType(OBIR_FONT),OBIR_CS,TEXT_OUTLINE,OBIR_CB);
             }
+            else InfoData[3].enabled = 0;
+            
+            FreeWS(wsBir1);
+            FreeWS(wsBir2);
+            FreeWS(wsBir3);
+         }
        else
          {
             InfoData[3].enabled = 0;
-            InfoData[4].enabled = 0;
          }
        
        if (WEEK_ENA)
          {
-            InfoData[5].enabled=1;
+            InfoData[4].enabled=1;
             int c=GetWeek(&t_date);
             switch(WEEK_STYLE)
               {
     	         case 0:
-    		    str_2ws(InfoData[5].ws, &weekdays1[c][0], 5);
+    		    str_2ws(InfoData[4].ws, &weekdays1[c][0], 5);
     		    break;
     	         case 1:
-    		    gb2ws(InfoData[5].ws, &weekdays2[c][0], 8);
+    		    gb2ws(InfoData[4].ws, &weekdays2[c][0], 8);
                }
-             FillInfoData(&InfoData[5],WEEK_X,WEEK_Y,FontType(WEEK_FONT),WEEK_COLORS,TEXT_OUTLINE,WEEK_FRINGING_COLORS);
+             FillInfoData(&InfoData[4],WEEK_XT,WEEK_X,WEEK_Y,FontType(WEEK_FONT),WEEK_COLORS,TEXT_OUTLINE,WEEK_FRINGING_COLORS);
          }
        else
          {
-            InfoData[5].enabled=0;
+            InfoData[4].enabled=0;
          }
       FirstRun = 0;
       FreeFileBuf(FestaData);
@@ -400,19 +444,25 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
           {
             if (InfoData[i].enabled)
             {
-              DrawCanvas(canvasdata, InfoData[i].rc.x, InfoData[i].rc.y, InfoData[i].rc.x2, InfoData[i].rc.y2, 1);
-              DrawString(InfoData[i].ws, InfoData[i].rc.x, InfoData[i].rc.y, InfoData[i].rc.x2, InfoData[i].rc.y2, 
-                         InfoData[i].font,
-                         InfoData[i].draw_flag,
-                         InfoData[i].pen,
-                         InfoData[i].fr_cl);
+              if (i == 5)
+              {
+                DrawCanvas(canvasdata, InfoData[i].rc.x - 2, InfoData[i].rc.y -2, InfoData[i].rc.x2 + 2, InfoData[i].rc.y2 + 2, 1);
+                DrawRoundedFrame(InfoData[i].rc.x - 2, InfoData[i].rc.y - 2, InfoData[i].rc.x2 + 2, InfoData[i].rc.y2 + 2, 2, yrnd, fstyle, frmmain_color, frmbg_color);
+              }
+              else DrawCanvas(canvasdata, InfoData[i].rc.x, InfoData[i].rc.y, InfoData[i].rc.x2, InfoData[i].rc.y2, 1);
+              if (InfoData[i].enaScroll)
+              {
+                DrawScrollString(InfoData[i].ws, InfoData[i].rc.x, InfoData[i].rc.y, InfoData[i].rc.x2, InfoData[i].rc.y2,
+                                 InfoData[i].scroll_pos, InfoData[i].font, InfoData[i].draw_flag, InfoData[i].pen, InfoData[i].fr_cl);
+                if(InfoData[i].enaScroll < (InfoData[i].scroll_pos + 60))  InfoData[i].scroll_pos = 1;
+                else InfoData[i].scroll_pos += SPEED;
+              }
+              else
+              {
+                DrawString(InfoData[i].ws, InfoData[i].rc.x, InfoData[i].rc.y, InfoData[i].rc.x2, InfoData[i].rc.y2,
+                           InfoData[i].font, InfoData[i].draw_flag, InfoData[i].pen, InfoData[i].fr_cl);
+              }
             }
-          }
-         if (AppNum)
-          {
-            DrawCanvas(canvasdata,APP_X,APP_Y,APP_X+length,APP_Y+GetFontYSIZE(FontType(APP_FONT))+4,1);
-            DrawRoundedFrame(APP_X,APP_Y,APP_X+length,APP_Y+GetFontYSIZE(FontType(APP_FONT))+4, 2, yrnd, style, frmmain_color, frmbg_color);
-            drawApp();
           }
         }
       }
@@ -425,16 +475,21 @@ static void maincsm_oncreate(CSM_RAM *data)
 {
   for (int i=0;i<(sizeof(InfoData)/sizeof(TInfo)); i++)
   {
-    InfoData[i].ws=CreateLocalWS(&InfoData[i].wsh,InfoData[i].wsbody,WS_MAXLEN+1);
+    if (i == 3) InfoData[i].ws = AllocWS(35);
+    else
+      if (i == 5) InfoData[i].ws = AllocWS(300);
+      else InfoData[i].ws = AllocWS(12);
   }
-  ws_App = AllocWS(500);
   GBS_SendMessage(MMI_CEPID,MSG_IPC,IPC_UPDATE_STAT,&my_ipc);
 }
 
 static void maincsm_onclose(CSM_RAM *csm)
 {
   GBS_DelTimer(&mytmr);
-  FreeWS(ws_App);
+  for (int i=0;i<(sizeof(InfoData)/sizeof(TInfo)); i++)
+  {
+    FreeWS(InfoData[i].ws);
+  }
   for (int i = 0;i < AppNum;i++)
   {
     if (start_Time[i]) mfree(start_Time[i]);
