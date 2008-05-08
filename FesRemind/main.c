@@ -274,6 +274,7 @@ void InitInfoData(void)
         }
         else InfoData[5].enabled = 0;
       }
+    else InfoData[5].enabled = 0;
 
       if (TEXT_ENA)
          {
