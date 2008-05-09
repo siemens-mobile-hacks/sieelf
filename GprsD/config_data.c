@@ -24,4 +24,5 @@ __root const CFG_HDR cfghdr3={CFG_STR_WIN1251,"Password",0,19};
 __root const char cfgPASS[20]="";
 
 __root const CFG_HDR cfghdr4={CFG_UINT,"Net timeout",0,0xFFFFFFFF};
-__root const unsigned int cfgTimeout=0x5F5E0FF; // 99999999 секунд =)
+__root const unsigned int cfgTimeout=0x5F5E0FF; // 99999999 §г§Ц§Ь§е§Я§Х =)
+

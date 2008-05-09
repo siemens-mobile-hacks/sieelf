@@ -2,7 +2,7 @@
 #include "..\inc\cfg_items.h"
 #include "conf_loader.h"
 
-// Импорт переменных
+// §Є§Ю§б§а§в§д §б§Ц§в§Ц§Ю§Ц§Я§Я§н§з
 extern const char cfgINTNAME[40];
 extern const char cfgNAME[20];
 extern const char cfgAPN[30];
@@ -11,8 +11,8 @@ extern const char cfgUSER[20];
 extern const char cfgPASS[20];
 extern const unsigned int cfgTimeout;
 
-// Пустышка, все поля забиты нулями
-// Используем для инициализации
+// §±§е§г§д§н§к§Ь§С, §У§г§Ц §б§а§Э§с §Щ§С§Т§Ъ§д§н §Я§е§Э§с§Ю§Ъ
+// §Є§г§б§а§Э§о§Щ§е§Ц§Ю §Х§Э§с §Ъ§Я§Ъ§и§Ъ§С§Э§Ъ§Щ§С§и§Ъ§Ъ
 const char profile_template[0x204] = {
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
@@ -49,14 +49,14 @@ const char profile_template[0x204] = {
 	0x00, 0x00, 0x00, 0x00
 };
 
-// Заполняет поля профиля
-// Вход - указатель на буфер
-// Выход - буфер заполнен нужными данными
+// §©§С§б§а§Э§Я§с§Ц§д §б§а§Э§с §б§в§а§ж§Ъ§Э§с
+// §Ј§з§а§Х - §е§Ь§С§Щ§С§д§Ц§Э§о §Я§С §Т§е§ж§Ц§в
+// §Ј§н§з§а§Х - §Т§е§ж§Ц§в §Щ§С§б§а§Э§Я§Ц§Я §Я§е§Ш§Я§н§Ю§Ъ §Х§С§Я§Я§н§Ю§Ъ
 void FillProfile(char *profile)
 {
-  memcpy(profile, profile_template, 0x204); // Template => наст.профайл
+  memcpy(profile, profile_template, 0x204); // Template => §Я§С§г§д.§б§в§а§ж§С§Ы§Э
 
-  // Определяем указатели на поля профиля
+  // §°§б§в§Ц§Х§Ц§Э§с§Ц§Ю §е§Ь§С§Щ§С§д§Ц§Э§Ъ §Я§С §б§а§Э§с §б§в§а§ж§Ъ§Э§с
   char *apn_place = profile + coAPN_name;
   char *user_place = profile + coLogin;
   char *pass_place = profile + coPass;
@@ -64,7 +64,7 @@ void FillProfile(char *profile)
   char *intname_place= profile + coIntName;
   unsigned int *timeout_place =(unsigned int*)(profile + coTimeout);
   
-  // Заполняем информацию
+  // §©§С§б§а§Э§Я§с§Ц§Ю §Ъ§Я§ж§а§в§Ю§С§и§Ъ§р
   strcpy(intname_place, cfgINTNAME);
   strcpy(name_place, cfgNAME);
   strcpy(user_place, cfgUSER);
@@ -75,8 +75,8 @@ void FillProfile(char *profile)
 }
 
 
-// Загрузить конфигурационный файл по пути fname (взято из XTask)
-// Конфигурационный загрузчик (c) Rst7
+// §©§С§Ф§в§е§Щ§Ъ§д§о §Ь§а§Я§ж§Ъ§Ф§е§в§С§и§Ъ§а§Я§Я§н§Ы §ж§С§Ы§Э §б§а §б§е§д§Ъ fname (§У§Щ§с§д§а §Ъ§Щ XTask)
+// §¬§а§Я§ж§Ъ§Ф§е§в§С§и§Ъ§а§Я§Я§н§Ы §Щ§С§Ф§в§е§Щ§й§Ъ§Ь (c) Rst7
 #pragma segment="CONFIG_C"
 int LoadConfigData(const char *fname)
 {
@@ -121,8 +121,8 @@ int LoadConfigData(const char *fname)
 }
 
 /*
-  Возвращает строку вида CC-NC - параметры текущей сети в буфере.
-  возвращает 0, Если сети не обнаружено:)
+  §Ј§а§Щ§У§в§С§л§С§Ц§д §г§д§в§а§Ь§е §У§Ъ§Х§С CC-NC - §б§С§в§С§Ю§Ц§д§в§н §д§Ц§Ь§е§л§Ц§Ы §г§Ц§д§Ъ §У §Т§е§ж§Ц§в§Ц.
+  §У§а§Щ§У§в§С§л§С§Ц§д 0, §¦§г§Э§Ъ §г§Ц§д§Ъ §Я§Ц §а§Т§Я§С§в§е§Ш§Ц§Я§а:)
 */
 char get_net_id(char *buf)
 {
@@ -131,7 +131,7 @@ char get_net_id(char *buf)
   char *z = x+2;
   char cc_2 = *x;
   char cc_1 = *y;
-  // Немного жёсткого секса с BCD...
+  // §Ї§Ц§Ю§Я§а§Ф§а §Ш§Ч§г§д§Ь§а§Ф§а §г§Ц§Ь§г§С §г BCD...
   if(cc_1>=0xF0){cc_1 = cc_1 && 0x0F>>4;}
   cc_2 = (cc_2<<4) + (cc_2>>4);
   char nc = *z;
@@ -140,15 +140,15 @@ char get_net_id(char *buf)
   {
     return 0;
   }
-  // ... и золотой ключик у нас в кармане )
+  // ... §Ъ §Щ§а§Э§а§д§а§Ы §Ь§Э§р§й§Ъ§Ь §е §Я§С§г §У §Ь§С§в§Ю§С§Я§Ц )
   sprintf(buf, "%X%X-%02X", cc_2, cc_1, nc);
   return 1;
 }
 
 
-// Инициализация конфигурации
-// Надо вызвать в начале работы для загрузки конфигурации
-// Поиск конфиг-файла согласно стандарту
+// §Є§Я§Ъ§и§Ъ§С§Э§Ъ§Щ§С§и§Ъ§с §Ь§а§Я§ж§Ъ§Ф§е§в§С§и§Ъ§Ъ
+// §Ї§С§Х§а §У§н§Щ§У§С§д§о §У §Я§С§й§С§Э§Ц §в§С§Т§а§д§н §Х§Э§с §Щ§С§Ф§в§е§Щ§Ь§Ъ §Ь§а§Я§ж§Ъ§Ф§е§в§С§и§Ъ§Ъ
+// §±§а§Ъ§г§Ь §Ь§а§Я§ж§Ъ§Ф-§ж§С§Ы§Э§С §г§а§Ф§Э§С§г§Я§а §г§д§С§Я§Х§С§в§д§е
 char config_name[128];
 
 void InitConfig()
@@ -158,11 +158,12 @@ void InitConfig()
   {
     return;
   }
-  sprintf(config_name,"4:\\ZBin\\etc\\GprsD_%s.bcfg", buf);
+  sprintf(config_name,"0:\\ZBin\\etc\\GprsD_%s.bcfg", buf);
   //ShowMSG(1,(int)config_name);
   if(LoadConfigData(config_name)<0)
   {
-    config_name[0] = '0';
+    config_name[0] = '4';
     LoadConfigData(config_name);
   }
 }
+

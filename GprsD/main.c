@@ -31,7 +31,7 @@ extern const int ENA_GPRSD;
 #endif
 
 /*
-Del by Kibab - бинарные профили конфигурируются
+Del by Kibab - §Т§Ъ§Я§С§в§Я§н§Ц §б§в§а§ж§Ъ§Э§Ъ §Ь§а§Я§ж§Ъ§Ф§е§в§Ъ§в§е§р§д§г§с
 */
 
 GBSTMR mytmr;
@@ -48,7 +48,7 @@ void do_connect(void)
   LMAN_DATA lmd;
   NAP_PARAM_CONT nap_container;
   NAP_PARAM_CONT *nc;
-  // Проверим, включён ли GPRS. Если нет - дальнейшие извращения бесмысленны
+  // §±§в§а§У§Ц§в§Ъ§Ю, §У§Ь§Э§р§й§Ч§Я §Э§Ъ GPRS. §¦§г§Э§Ъ §Я§Ц§д - §Х§С§Э§о§Я§Ц§Ы§к§Ъ§Ц §Ъ§Щ§У§в§С§л§Ц§Я§Ъ§с §Т§Ц§г§Ю§н§г§Э§Ц§Я§Я§н
   if(!IsGPRSEnabled())
   {
     OldGPRSstatus=0;
@@ -57,9 +57,9 @@ void do_connect(void)
   OldGPRSstatus=1;
   if(!ENA_GPRSD)
   {
-    return; // Если не разрешён коннект, выходим
+    return; // §¦§г§Э§Ъ §Я§Ц §в§С§Щ§в§Ц§к§Ч§Я §Ь§а§Я§Я§Ц§Ь§д, §У§н§з§а§Х§Ъ§Ю
   }
-  //Устанавливаем соединение
+  //§µ§г§д§С§Я§С§У§Э§Ъ§У§С§Ц§Ю §г§а§Ц§Х§Ъ§Я§Ц§Я§Ъ§Ц
   rsc._0x0080=0x0080;
   rsc._0xFFFF=0xFFFF;
   rsc._0x0000=0x0000;
@@ -157,7 +157,7 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
         //ShowMSG(1,(int)s);
 	if (m==LMAN_CONNECT_REJ_IND)
 	{
-	  //Если не удалось стартовать сессию, то пробуем еще раз по таймеру
+	  //§¦§г§Э§Ъ §Я§Ц §е§Х§С§Э§а§г§о §г§д§С§в§д§а§У§С§д§о §г§Ц§г§г§Ъ§р, §д§а §б§в§а§Т§е§Ц§Ю §Ц§л§Ц §в§С§Щ §б§а §д§С§Ы§Ю§Ц§в§е
 	  GBS_StartTimerProc(&mytmr,RECONNECT_TIME,reconnect);
 	}
 	else
@@ -169,7 +169,7 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
   }
   if ((!OldGPRSstatus)&&IsGPRSEnabled())
   {
-    //Включили жопорез
+    //§Ј§Ь§Э§р§й§Ъ§Э§Ъ §Ш§а§б§а§в§Ц§Щ
     GBS_DelTimer(&mytmr);
     SUBPROC((void*)do_connect);
   }
@@ -253,3 +253,4 @@ int main()
 #endif  
   return 0;
 }
+
