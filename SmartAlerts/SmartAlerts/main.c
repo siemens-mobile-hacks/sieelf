@@ -23,7 +23,7 @@ unsigned int miss[6];
 unsigned int bmenus[4];
 
 unsigned int hour[5];
-unsigned int min[7];
+unsigned int min[6];
 unsigned int status[5];
 unsigned int weekdays[5][7];
 unsigned int day[7][24];
@@ -98,7 +98,7 @@ for(int i=0;i<168;i++)
 day[i/24][i%24]=data[i+70];
 }
 //238
-min[6]=data[238];
+min[5]=data[238];
 
 name2[0]=data[239];
 name2[1]=data[240];
@@ -211,7 +211,6 @@ void Play(const char *fpath, const char *fname)
 }
 
 
-
 void start_(void)
 {
   void stop_(void);
@@ -320,7 +319,7 @@ GetDateTime(&date,&time);
                   start_();
            }
         }
-   }
+       }
   
         if(name2[5])
         {
@@ -397,7 +396,7 @@ GetDateTime(&date,&time);
  }
  if(name2[2])
  {
-  if(time.min==min[6])
+  if(time.min==min[5])
   {
    int a1,a2;
    if(GetWeek(&date)<5&&other[8])

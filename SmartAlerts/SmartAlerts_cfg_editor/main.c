@@ -9,10 +9,10 @@ unsigned int smss[5];
 unsigned int calls[5];
 unsigned int amenus[11];
 
-unsigned int status[6];
-unsigned int hour[6];
-unsigned int min[7];
-unsigned int weekdays[6][7];
+unsigned int status[5];
+unsigned int hour[5];
+unsigned int min[6];
+unsigned int weekdays[5][7];
 unsigned int day[7][24];
 unsigned int miss[6];
 
@@ -108,7 +108,6 @@ DrwImg(IMGHDR *img, int x, int y)
   DrawObject(&drwobj);
 }
 
-
 void draw_pic(int num,int x, int y)
 {
   switch(num)
@@ -165,180 +164,6 @@ void draw_pic(int num,int x, int y)
   }
 }
 
-#ifndef NEWSGOLD
-
-#define MAX_HEX   (100+10)
-#define MAX_BIN   (4 * MAX_HEX)
-
-int hex2bin(char *bin, int hex_len, char *hex)
-{
-    int i;
-    int bi;
-    int num;
-    int start = 1;
-
-    bi = 0;
-    i = 0;
-    while (hex[i] == '0') i++;
-    for ( ; i < hex_len; i++) {
-        if      (hex[i] >= '0' && hex[i] <= '9') num = hex[i]-'0';
-        else if (hex[i] >= 'A' && hex[i] <= 'F') num = hex[i]-'A'+10;
-        else if (hex[i] >= 'a' && hex[i] <= 'f') num = hex[i]-'a'+10;
-        else continue;
-        if (start) {
-            if ((num >> 3) & 1) start = 0;
-
-            if (!start) bin[bi++] = (num >> 2) & 1;
-            else if ((num >> 2) & 1) start = 0;
-
-            if (!start) bin[bi++] = (num >> 1) & 1;
-            else if ((num >> 1) & 1) start = 0;
-
-            if (!start) bin[bi++] = num & 1;
-            start = 0;
-        } else {
-            bin[bi++] = (num >> 3) & 1;
-            bin[bi++] = (num >> 2) & 1;
-            bin[bi++] = (num >> 1) & 1;
-            bin[bi++] =  num       & 1;
-        }
-    }
-    return bi;
-}
-
-int bin2hex(char *hex, int bin_len, char *bin)
-{
-    int  i, j;
-    int  num;
-    int  ti, hi;
-    char tmp[MAX_BIN];
-
-    ti = 0;
-    num = (bin_len+1) % 4;
-    if (num > 0) {
-        num = 4 - num;
-        while (num-- > 0) tmp[ti++] = 0;
-    }
-    tmp[ti++] = 1;
-    while (bin_len-- > 0) tmp[ti++] = *bin++;
-
-    hi = 0;
-    for (i = 0; i < ti; i += 4) {
-        num = 0;
-        for (j = 0; j < 4; j++) num = (num << 1) | tmp[i+j];
-        if (num < 10) num += '0';
-        else          num += 'A' - 10;
-        hex[hi++] = num;
-    }
-    return hi;
-}
-
-int digit2int (char d)
-{
-  switch (d)
-    {
-    case 'F':
-    case 'E':
-    case 'D':
-    case 'C':
-    case 'B':
-    case 'A':
-      return d - 'A' + 10;
-    case 'f':
-    case 'e':
-    case 'd':
-    case 'c':
-    case 'b':
-    case 'a':
-      return d - 'a' + 10;
-    case '9':
-    case '8':
-    case '7':
-    case '6':
-    case '5':
-    case '4':
-    case '3':
-    case '2':
-    case '1':
-    case '0':
-      return d - '0';
-    }
-  return -1;
-}
-
-int hex2int (char *s)
-{
-  int res;
-  int tmp;
-  if (strlen (s) < 1)
-    return -1;
-  if (strlen (s) > 2)
-    return -1;
-  res = digit2int (s[0]);
-  if (res < 0)
-    return -1;
-  tmp = res;
-  if (strlen (s) > 1)
-    {
-      res = digit2int (s[1]);
-      if (res < 0)
-	return -1;
-      tmp = tmp * 16 + res;
-    }
-  return tmp;
-}
-
-void geteeblock()
-{
-  char *Block5166=malloc(8);
-  EEFullReadBlock(5166, Block5166, 0, 5,0,0);
-  
-  char *hex=malloc(8);
-  char *bin=malloc(8);
-  sprintf(hex, "%x", Block5166[3]);
-  hex2bin(bin, 3, hex);
-  
-  if (Block5166[4]==0xF1)
-    status[5]=1;
-  else status[5]=0;
-  hour[5]=Block5166[0];
-  min[5]=Block5166[1];
-  for (int i=0;i<7;i++)
-    weekdays[5][i]=bin[6-i];
-  
-  mfree(Block5166);
-  mfree(bin);
-  mfree(hex);
-}
-
-void saveeeblock()
-{
-  char *Block5166=malloc(8);
-  Block5166[0]=hour[5];
-  Block5166[1]=min[5];
-  Block5166[2]=0;
-  
-  char *hex=malloc(3);
-  char *bin=malloc(8);
-  for (int i=0;i<7;i++)
-    bin[i]=weekdays[5][6-i];
-  bin[7]=1;
-  bin2hex(hex, 7, bin);
-  hex[2]=0;
-  Block5166[3]=hex2int(hex);
-  
-  if (status[5]==1)
-    Block5166[4]=0xF1;
-  else Block5166[4]=0xF0;
-  Block5166[5]=0xFF;
-  
-  EEFullWriteBlock(5166, Block5166, 0, 5,0,0);
-  mfree(Block5166);
-  mfree(bin);
-  mfree(hex);
-}
-
-#endif
 
 void load_settings(void)
 {
@@ -373,7 +198,7 @@ for(int i=0;i<168;i++)
 day[i/24][i%24]=data[i+70];
 }
 //238
-min[6]=data[238];
+min[5]=data[238];
 
 name2[0]=data[239];
 name2[1]=data[240];
@@ -425,9 +250,6 @@ amenus[10]=data[276];
     mfree(data);
   }
   fclose(handle,&err);
-#ifndef NEWSGOLD
-  geteeblock();
-#endif
 }
 
 void save_settings(void)
@@ -462,7 +284,7 @@ for(int i=0;i<168;i++)
 data[i+70]=day[i/24][i%24];
 }
 //238
-data[238]=min[6];
+data[238]=min[5];
 
 data[239]=name2[0];
 data[240]=name2[1];
@@ -512,9 +334,6 @@ data[276]=amenus[10];
     mfree(data);
   }
   fclose(handle,&err);
-#ifndef NEWSGOLD
-  saveeeblock();
-#endif
 }
 
 void edit()
@@ -528,7 +347,7 @@ void edit()
     case 2: if(ch[2])
       min[num_alarm]=backup[2];
             if(ch[4])
-      min[6]=backup[2];   
+      min[5]=backup[2];   
            if(ch[5])
       bmenus[bmenu]=backup[2];   
            if(ch[6])
@@ -1164,7 +983,7 @@ void OnRedraw()
       wsprintf(ws,"%t",minx);
       DrwStr(ws,5,HeaderH(),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
 
-      wsprintf(ws, "%02d",min[6]);
+      wsprintf(ws, "%02d",min[5]);
       if (edit_level==1) 
         DrwStr(ws,a,HeaderH(),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
           else DrwStr(ws,a,HeaderH(),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));

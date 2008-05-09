@@ -4,7 +4,6 @@
 #include "..\lgp.h"
 
 #ifdef NEWSGOLD
-  #define num_alarms 5
   #ifdef S68
     #define alarm_dir "0:\\Zbin\\SmartAlerts\\"
     #define DEFAULT_DISK "0"
@@ -15,9 +14,9 @@
 #else
   #define alarm_dir "0:\\Zbin\\SmartAlerts\\"
   #define DEFAULT_DISK "0"
-  #define num_alarms 6
 #endif
 
+#define num_alarms 5
 #define fon 1
 #define st_off 2
 #define st_on 3
