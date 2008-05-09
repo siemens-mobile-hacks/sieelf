@@ -402,7 +402,7 @@ void setting(void)
 {
   WSHDR *ws = AllocWS(150);
   int fd1;
-  if ((fd1 = fopen("4:\\ZBin\\etc\\SieTxtView.bcfg", A_ReadOnly + A_BIN, P_READ, &err)) != -1)
+  if ((fd1 = fopen("4:\\ZBin\\etc\\schedule.bcfg", A_ReadOnly + A_BIN, P_READ, &err)) != -1)
     str_2ws(ws, "4:\\ZBin\\etc\\schedule.bcfg", 128);
   else
     str_2ws(ws, "0:\\ZBin\\etc\\schedule.bcfg", 128);
