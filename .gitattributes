@@ -15,6 +15,9 @@ BalletMini/BalletMini.txt -text
 BalletMini/Files/BalletMini/Bookmarks/Google/GMail.url -text
 BalletMini/Files/BalletMini/Bookmarks/Google/GoogleReader.url -text
 BalletMini/Files/BalletMini/Bookmarks/Поиск[!!-~]в[!!-~]Google.url -text
+BalletMini/Files/BalletMini/Search/google.url -text
+BalletMini/Files/BalletMini/Search/wiki.url -text
+BalletMini/Files/BalletMini/Search/yandex.url -text
 BalletMini/Files/BalletMini/StartPage.oms -text
 BalletMini/Files/BalletMini/img/bookmark.png -text
 BalletMini/Files/BalletMini/img/button.PNG -text
@@ -34,6 +37,9 @@ BalletMini/Files/Language/Ukrainian.txt -text
 BalletMini/Files/QVGA/Bookmarks/Google/GMail.url -text
 BalletMini/Files/QVGA/Bookmarks/Google/GoogleReader.url -text
 BalletMini/Files/QVGA/Bookmarks/Поиск[!!-~]в[!!-~]Google.url -text
+BalletMini/Files/QVGA/Search/google.url -text
+BalletMini/Files/QVGA/Search/wiki.url -text
+BalletMini/Files/QVGA/Search/yandex.url -text
 BalletMini/Files/QVGA/StartPage.oms -text
 BalletMini/Files/QVGA/img/bookmark.png -text
 BalletMini/Files/QVGA/img/button.PNG -text

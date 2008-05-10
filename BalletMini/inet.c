@@ -32,6 +32,9 @@ static char *sendq_p=NULL; //§å§Ü§Ñ§Ù§Ñ§ä§Ö§Ý§î §à§é§Ö§â§Ö§Õ§Ú
 static int recvq_l=0;
 static char *recvq_p=NULL;
 
+char OM_POST_HOST[32];
+unsigned int OM_POST_PORT;
+
 extern const int IP_CHOOSE;
 extern const char OM_POST_HOST1[32];
 extern const unsigned int OM_POST_PORT1;
@@ -41,14 +44,6 @@ extern const char OM_POST_HOST3[32];
 extern const unsigned int OM_POST_PORT3;
 extern const char OM_POST_HOST4[32];
 extern const unsigned int OM_POST_PORT4;
-
-static int receive_mode;
-
-static char *URL;
-static char *FNCACHE;
-
-char OM_POST_HOST[32];
-unsigned int OM_POST_PORT;
 
 void clooseip()
 {
@@ -74,6 +69,11 @@ else
 }
 }
 
+static int receive_mode;
+
+static char *URL;
+static char *FNCACHE;
+
 void SmartREDRAW(void)
 {
   extern int ENABLE_REDRAW;
@@ -82,7 +82,6 @@ void SmartREDRAW(void)
 
 static void create_connect(void)
 {
-  clooseip();
   int ***p_res=NULL;
   void do_reconnect(void);
   const char *hostname;
@@ -401,14 +400,15 @@ static void SendPost(void)
   sprintf(buf,"u=/obml/%s",URL);
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"q=lgpData[LGP_LangCode]");
+  sprintf(buf,"q=%s",lgpData[LGP_LangCode]);
+  //sprintf(buf,"q=ru");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"v=Opera Mini/2.0.4509/hifi/woodland/lgpData[LGP_LangCode]");
+  sprintf(buf,"v=Opera Mini/2.0.4509/hifi/woodland/%s",lgpData[LGP_LangCode]);
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
   
-  sprintf(buf,"i=Opera/8.01 (J2ME/MIDP; Opera Mini/2.0.4509/1630; lgpData[LGP_LangCode]; U; ssr)");
-  //sprintf(buf,"i-ua=Opera/9.10 (Windows NT 5.1; U; lgpData[LGP_LangCode])");
+  sprintf(buf,"i=Opera/8.01 (J2ME/MIDP; Opera Mini/2.0.4509/1630; %s; U; ssr)",lgpData[LGP_LangCode]);
+  //sprintf(buf,"i-ua=Opera/9.10 (Windows NT 5.1; U; ru)");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
   sprintf(buf,"s=-1");
@@ -417,8 +417,8 @@ static void SendPost(void)
   sprintf(buf,"n=1");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"A=CLDC-1.0");
-  //sprintf(buf,"A=CLDC-1.1");
+  //sprintf(buf,"A=CLDC-1.0");
+  sprintf(buf,"A=CLDC-1.1");//
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
   sprintf(buf,"B=MIDP-2.0");
@@ -427,7 +427,8 @@ static void SendPost(void)
   sprintf(buf,"C=j2me");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"D=lgpData[LGP_LangCode]");
+  sprintf(buf,"D=%s",lgpData[LGP_LangCode]);
+  //sprintf(buf,"D=ru");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
   sprintf(buf,"E=GB2312");
@@ -479,10 +480,10 @@ static void SendPost(void)
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
   sprintf(buf,"b=mod2.04");
-  //sprintf(buf,"b=");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"y=lgpData[LGP_LangCode]");
+  
+  sprintf(buf,"y=%s",lgpData[LGP_LangCode]);
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
   sprintf(buf,"t=-1");

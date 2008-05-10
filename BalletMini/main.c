@@ -17,6 +17,8 @@
 #include "lang.h"
 #include "../inc/sieget_ipc.h"
 
+#define length 241
+
 char *lgpData[LGP_DATA_NUM];
 int lgpLoaded;
 
@@ -340,8 +342,11 @@ char *collectItemsParams(VIEWDATA *vd, REFCACHE *rf)
       {
         pos+=_rshort2(vd->oms+prf->id)+2;
         char *c;
-        char *b=c=(char *)malloc(((WSHDR *)prf->data)->wsbody[0]+3);
-        for (int i=0; i<((WSHDR *)prf->data)->wsbody[0]; i++) *c++=char16to8(((WSHDR *)prf->data)->wsbody[i+1]);
+        char se[length];
+        int utf8conv_res_len;
+        ws_2utf8(prf->data,se,&utf8conv_res_len,length);
+        char *b=c=(char *)malloc(length);
+        for (int i=0; i<strlen(se); i++) *c++=se[i];
         *c=0;
         //b=ToWeb(b,1);
         pos+=strlen(b);
@@ -470,8 +475,11 @@ char *collectItemsParams(VIEWDATA *vd, REFCACHE *rf)
         mfree(c);
         s[pos]='=';
         pos++;
-        char *b=c=(char *)malloc(((WSHDR *)prf->data)->wsbody[0]+3);
-        for (int i=0; i<((WSHDR *)prf->data)->wsbody[0]; i++) *c++=char16to8(((WSHDR *)prf->data)->wsbody[i+1]);
+        char se[length];
+        int utf8conv_res_len;
+        ws_2utf8(prf->data,se,&utf8conv_res_len,length);
+        char *b=c=(char *)malloc(length);
+        for (int i=0; i<strlen(se); i++) *c++=se[i];
         *c=0;
         //b=ToWeb(b,1);
         memcpy(s+pos,b,strlen(b));
@@ -642,12 +650,12 @@ static void RunOtherCopyByURL(const char *url, int isNativeBrowser)
     ws=AllocWS(256);
     if (isNativeBrowser)
     {
-      str_2ws(ws,fname,255);
+      gb2ws(ws,fname,255);
       ExecuteFile(ws,NULL,NULL);
     }
     else
     {
-      str_2ws(ws,BALLET_EXE,255);
+      gb2ws(ws,BALLET_EXE,255);
       ExecuteFile(ws,NULL,fname);
     } 
     FreeWS(ws);
@@ -1369,13 +1377,13 @@ static void UpdateCSMname(void)
   switch(view_url_mode)
   {
   case MODE_FILE:
-    str_2ws(ws,view_url,255);
+    gb2ws(ws,view_url,255);
     break;
   case MODE_URL:
     ascii2ws(ws,view_url+2);
     break;
   default:
-    str_2ws(ws,"",1);
+    gb2ws(ws,"",1);
     break;
   }
   wsprintf((WSHDR *)(&MAINCSM.maincsm_name),"BM: %w",ws);
@@ -1592,3 +1600,4 @@ int main(const char *exename, const char *filename)
   }
   return 0;
 }
+
