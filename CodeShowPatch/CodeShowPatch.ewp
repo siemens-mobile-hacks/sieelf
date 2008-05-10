@@ -4962,6 +4962,22 @@
   </file>
   <file>
     <name>$PROJ_DIR$\select_menu.c</name>
+    <excluded>
+      <configuration>S7Cv47</configuration>
+      <configuration>ELC1v41</configuration>
+      <configuration>S68Cv51</configuration>
+      <configuration>M81Cv51</configuration>
+    </excluded>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\sms_num.c</name>
+    <excluded>
+      <configuration>S7Cv47</configuration>
+      <configuration>ELC1v41</configuration>
+      <configuration>SK6Cv50</configuration>
+      <configuration>S68Cv51</configuration>
+      <configuration>M81Cv51</configuration>
+    </excluded>
   </file>
 </project>
 

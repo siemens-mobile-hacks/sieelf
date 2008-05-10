@@ -10,6 +10,7 @@
 #define ADDR_FreeWS		0xA0510058+1
 #define ADDR_AllocWS		0xA0965EB4+1
 #define ADDR_GetCurMenuItem	0xA097931A+1
+#define ADDR_IncommingPDU	0xA8F1F6BC
 
 #define ADDR_wstrcat		0xA05108E4+1
 #define ADDR_wsAppendChar	0xA05109AC+1
