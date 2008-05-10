@@ -15,6 +15,7 @@
 #include "history.h"
 #include "file_works.h"
 #include "lang.h"
+#include "../inc/sieget_ipc.h"
 
 char *lgpData[LGP_DATA_NUM];
 int lgpLoaded;
@@ -27,80 +28,99 @@ void lgpInitLangPack(void)
   unsigned int err;
   char fname[128];
   getSymbolicPath(fname,"$ballet\\lang.txt");
-  int f=fopen(fname,A_ReadOnly+A_BIN,P_READ,&err);
+  int f;
   lgpLoaded=0;
-  if (f!=-1)
+  char * buf;
+  FSTATS fstat;
+  if (GetFileStats(fname, &fstat, &err)!=-1)
   {
-    char c;
-    char line[128];
-    int lineSize=0;
-    int lp_id=0;
-    while ((fread(f,&c,1,&err))>0&&lp_id<LGP_DATA_NUM)
+    if((f=fopen(fname, A_ReadOnly + A_BIN, P_READ, &err))!=-1)
     {
-      if (c==0x0D||c==0x0A)
+      if (buf =(char *)malloc(fstat.size+1))
       {
-        if (lineSize>0)
+        buf[fread(f, buf, fstat.size, &err)]=0;
+        fclose(f, &err);
+        char line[128];
+        int lineSize=0;
+        int lp_id=0;
+        int buf_pos = 0;
+        while(buf[buf_pos]!=0 && buf_pos < fstat.size && lp_id < LGP_DATA_NUM)
         {
-          lgpData[lp_id]=malloc(lineSize+1);
-          memcpy(lgpData[lp_id],line,lineSize);
+          if (buf[buf_pos]=='\n' || buf[buf_pos]=='\r')
+          {
+            if (lineSize > 0)
+            {
+              lgpData[lp_id] = (char *)malloc(lineSize+1);
+              memcpy(lgpData[lp_id], line, lineSize);
+              lgpData[lp_id][lineSize]=0;
+              lp_id++;
+              lineSize=0;
+            }
+          }
+          else
+            line[lineSize++]=buf[buf_pos];
+          buf_pos++;
+        }
+        if (lineSize > 0 && lp_id < LGP_DATA_NUM) // eof
+        {
+          lgpData[lp_id] = (char *)malloc(lineSize+1);
+          memcpy(lgpData[lp_id], line, lineSize);
           lgpData[lp_id][lineSize]=0;
           lp_id++;
           lineSize=0;
         }
+        mfree(buf);
+        initDisplayUtilsLangPack();
+        initMainMenuLangPack();
+        lgpLoaded=1;
+        
+        // old langpack
+        if (strlen(lgpData[LGP_LangCode])>2)
+        {
+          mfree(lgpData[LGP_LangCode]);
+          lgpData[LGP_LangCode]=malloc(3);
+          strcpy(lgpData[LGP_LangCode],"ru");
+        }
+        return;
       }
-      else
-        line[lineSize++]=c;
+      fclose(f, &err);
     }
-    if (lineSize>0&&lp_id<LGP_DATA_NUM) // eof
-    {
-      lgpData[lp_id]=malloc(lineSize+1);
-      memcpy(lgpData[lp_id],line,lineSize);
-      lgpData[lp_id][lineSize]=0;
-      lp_id++;
-      lineSize=0;
-    }
-    fclose(f,&err);
-    initDisplayUtilsLangPack();
-    initMainMenuLangPack();
-    lgpLoaded=1;
   }
-  else
-  {
-    lgpData[LGP_CantOpenFile]=         "Can't open file!";
-    lgpData[LGP_CantLoadAuthCode]=     "Can't load AuthCode!";
-    lgpData[LGP_HistoryFileFailed]=    "Can't open history.txt!";
-    lgpData[LGP_CfgUpdated]=           "Congif updated";
-    lgpData[LGP_RefUnderConstruction]= "Ref \'%c\' under construction!";
-    lgpData[LGP_RefEmpty]=             "RF empty!";
-    lgpData[LGP_Error]=                "Error!";
-    lgpData[LGP_Stop]=                 "Stop";
-    lgpData[LGP_WaitDNR]=              "Wait DNR ...";
-    lgpData[LGP_IpConnect]=            "Ip connect ...";
-    lgpData[LGP_GetHostByName]=        "Get host by name";
-    lgpData[LGP_FaultDNR]=             "DNR falut!";
-    lgpData[LGP_OkDNR]=                "DNR ok!";
-    lgpData[LGP_OpenSocket]=           "Open socket...";
-    lgpData[LGP_ConnectFault]=         "Connect fault...";
-    lgpData[LGP_AnswerDNR]=            "DNR answer...";
-    lgpData[LGP_Connected]=            "Connected...";
-    lgpData[LGP_DataReceived]=         "Data received...";
-    lgpData[LGP_RemoteClosed]=         "Remote closed!";
-    lgpData[LGP_LocalClosed]=          "Local closed!";
-    lgpData[LGP_InetBussy]=            "INET process bussy!";
-    lgpData[LGP_EnableGPRS]=           "Enable GPRS first!";
-    lgpData[LGP_UnderConstruction]=    "Under Construction!";
-    lgpData[LGP_Ok]=                   "Ok";
-    lgpData[LGP_Templates]=            "Templates";
-    lgpData[LGP_Save]=                 "Save";
-    lgpData[LGP_NameHeader]=           "Name:";
-    lgpData[LGP_NewBookmark]=          "New Bookmark";
-    lgpData[LGP_LinkHeader]=           "Link:";
-    lgpData[LGP_Absent]=               "Absent...";
-    lgpData[LGP_Search]=               "Search";
-    lgpData[LGP_TextHeader]=           "Text:";
-    lgpData[LGP_SearchEngine]=         "Search engine:";
-    lgpData[LGP_Go]=                   "Go";
-  }
+  lgpData[LGP_CantOpenFile]=         "Can't open file!";
+  lgpData[LGP_CantLoadAuthCode]=     "Can't load AuthCode!";
+  lgpData[LGP_HistoryFileFailed]=    "Can't open history.txt!";
+  lgpData[LGP_CfgUpdated]=           "Congif updated";
+  lgpData[LGP_RefUnderConstruction]= "Ref \'%c\' under construction!";
+  lgpData[LGP_RefEmpty]=             "RF empty!";
+  lgpData[LGP_Error]=                "Error!";
+  lgpData[LGP_Stop]=                 "Stop";
+  lgpData[LGP_WaitDNR]=              "Wait DNR ...";
+  lgpData[LGP_IpConnect]=            "Ip connect ...";
+  lgpData[LGP_GetHostByName]=        "Get host by name";
+  lgpData[LGP_FaultDNR]=             "DNR falut!";
+  lgpData[LGP_OkDNR]=                "DNR ok!";
+  lgpData[LGP_OpenSocket]=           "Open socket...";
+  lgpData[LGP_ConnectFault]=         "Connect fault...";
+  lgpData[LGP_AnswerDNR]=            "DNR answer...";
+  lgpData[LGP_Connected]=            "Connected...";
+  lgpData[LGP_DataReceived]=         "Data received...";
+  lgpData[LGP_RemoteClosed]=         "Remote closed!";
+  lgpData[LGP_LocalClosed]=          "Local closed!";
+  lgpData[LGP_InetBussy]=            "INET process bussy!";
+  lgpData[LGP_EnableGPRS]=           "Enable GPRS first!";
+  lgpData[LGP_UnderConstruction]=    "Under Construction!";
+  lgpData[LGP_Ok]=                   "Ok";
+  lgpData[LGP_Templates]=            "Templates";
+  lgpData[LGP_Save]=                 "Save";
+  lgpData[LGP_NameHeader]=           "Name:";
+  lgpData[LGP_NewBookmark]=          "New Bookmark";
+  lgpData[LGP_LinkHeader]=           "Link:";
+  lgpData[LGP_Absent]=               "Absent...";
+  lgpData[LGP_Search]=               "Search";
+  lgpData[LGP_TextHeader]=           "Text:";
+  lgpData[LGP_SearchEngine]=         "Search engine:";
+  lgpData[LGP_Go]=                   "Go";
+  lgpData[LGP_LangCode]=             "en";
 }
 
 void lgpFreeLangPack(void)
@@ -251,8 +271,6 @@ static void StartGetFile(int dummy, char *fncache)
   }
 }
 
-#define length 241
-
 char *collectItemsParams(VIEWDATA *vd, REFCACHE *rf)
 {
   unsigned int pos=0;
@@ -322,12 +340,8 @@ char *collectItemsParams(VIEWDATA *vd, REFCACHE *rf)
       {
         pos+=_rshort2(vd->oms+prf->id)+2;
         char *c;
-        
-        char se[length];
-        int utf8conv_res_len;
-        ws_2utf8(prf->data,se,&utf8conv_res_len,length);
-        char *b=c=(char *)malloc(length);
-        for (int i=0; i<strlen(se); i++) *c++=se[i];
+        char *b=c=(char *)malloc(((WSHDR *)prf->data)->wsbody[0]+3);
+        for (int i=0; i<((WSHDR *)prf->data)->wsbody[0]; i++) *c++=char16to8(((WSHDR *)prf->data)->wsbody[i+1]);
         *c=0;
         //b=ToWeb(b,1);
         pos+=strlen(b);
@@ -456,11 +470,8 @@ char *collectItemsParams(VIEWDATA *vd, REFCACHE *rf)
         mfree(c);
         s[pos]='=';
         pos++;
-        char se[length];
-        int utf8conv_res_len;
-        ws_2utf8(prf->data,se,&utf8conv_res_len,length);
-        char *b=c=(char *)malloc(length);
-        for (int i=0; i<strlen(se); i++) *c++=se[i];
+        char *b=c=(char *)malloc(((WSHDR *)prf->data)->wsbody[0]+3);
+        for (int i=0; i<((WSHDR *)prf->data)->wsbody[0]; i++) *c++=char16to8(((WSHDR *)prf->data)->wsbody[i+1]);
         *c=0;
         //b=ToWeb(b,1);
         memcpy(s+pos,b,strlen(b));
@@ -631,12 +642,12 @@ static void RunOtherCopyByURL(const char *url, int isNativeBrowser)
     ws=AllocWS(256);
     if (isNativeBrowser)
     {
-      gb2ws(ws,fname,255);
+      str_2ws(ws,fname,255);
       ExecuteFile(ws,NULL,NULL);
     }
     else
     {
-      gb2ws(ws,BALLET_EXE,255);
+      str_2ws(ws,BALLET_EXE,255);
       ExecuteFile(ws,NULL,fname);
     } 
     FreeWS(ws);
@@ -842,6 +853,33 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
         }
         break;
       }
+      case 0x31: // '1'
+        if (rf = FindReference(vd,vd->pos_cur_ref))
+        {
+          if (rf->id != _NOREF)
+          {
+            if (rf->tag == 'L' || rf->tag == 'Z')
+            {
+              char * s = extract_omstr(vd, rf->id);
+              if (rf->tag == 'L') s += 2;
+              if (rf->tag == 'Z') s += strlen(s) + 1;
+              
+              char sieget_ipc_name[] = SIEGET_IPC_NAME;
+              IPC_REQ ipc;
+              ipc.name_to = sieget_ipc_name;
+              ipc.name_from = ipc_my_name;
+              ipc.data = malloc(strlen(s) + 1);
+              strcpy((char *)ipc.data, s);
+//              DEBUGS("ipc.data : %s\n",ipc.data);
+//              DEBUGS("ipc.name_from : %s\n",ipc.name_from);
+//              DEBUGS("ipc.name_to : %s\n",ipc.name_to);
+              GBS_SendMessage(MMI_CEPID, MSG_IPC, SIEGET_GOTO_URL, &ipc);
+              s=0; // is it necessary
+              mfree(s);
+            }
+          }
+        }
+      break;
     case 0x32:
     case GREEN_BUTTON:
       rf=FindReference(vd,vd->pos_cur_ref);
@@ -881,126 +919,126 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
       scrollUp(vd,ScreenH()-1);
       vd->pos_cur_ref=0xFFFFFFFF;
       break;
-    case 0x31: // '1'
-      {
-        //Dump OMS
-        unsigned int ul;
-        int f;
-        if ((f=fopen("0:\\zbin\\balletmini\\dumpoms.txt",A_ReadWrite+A_Create+A_Truncate,P_READ+P_WRITE,&ul))!=-1)
-        {
-          fwrite(f,vd->oms,vd->oms_size,&ul);
-          fclose(f,&ul);
-        }
-      }
-      break;
-    case 0x34: // '4'
-      {
-        //Dump RAWTEXT
-        unsigned int ul;
-        int f;
-        if ((f=fopen("0:\\zbin\\balletmini\\dumpraw.txt",A_ReadWrite+A_Create+A_Truncate,P_READ+P_WRITE,&ul))!=-1)
-        {
-          fwrite(f,vd->rawtext,vd->rawtext_size*2,&ul);
-          fclose(f,&ul);
-        }
-      }
-      break;
-    case 0x37: // '7'
-      {
-        //Dump REFCACHE
-        unsigned int ul;
-        int f;
-        if ((f=fopen("0:\\zbin\\balletmini\\dumpref.txt",A_ReadWrite+A_Create+A_Truncate,P_READ+P_WRITE,&ul))!=-1)
-        {
-          char c[256];
-          sprintf(c,"\nref_cache_size : %i\n",vd->ref_cache_size);
-          fwrite(f,c,strlen(c),&ul);
-          sprintf(c,  "oms_size       : %i\n",vd->oms_size);
-          fwrite(f,c,strlen(c),&ul);
-          sprintf(c,  "page_sz        : %i\n",vd->page_sz);
-          fwrite(f,c,strlen(c),&ul);
-          sprintf(c,  "loaded_sz      : %i\n\n",vd->loaded_sz);
-          fwrite(f,c,strlen(c),&ul);
-          for (int i=0;i<vd->ref_cache_size;i++)
-          {
-            REFCACHE *rf=vd->ref_cache+i;
-            sprintf(c,"\nREF : %i\n",i);
-            fwrite(f,c,strlen(c),&ul);
-            sprintf(c,"  tag:       %c\n",rf->tag);
-            fwrite(f,c,strlen(c),&ul);
-            sprintf(c,"  id:        %u",rf->id);
-            fwrite(f,c,strlen(c),&ul);
-            if (rf->id!=_NOREF)
-            {
-              char *s=extract_omstr(vd,rf->id);
-              for (int to=strlen(s);to;to--) if (s[to-1]==NULL) s[to-1]=' ';
-              sprintf(c,"   %s",s);
-              fwrite(f,c,strlen(c),&ul);
-              mfree(s);
-            }
-            fwrite(f,"\n",1,&ul);
-            sprintf(c,"  id2:       %u",rf->id2);
-            fwrite(f,c,strlen(c),&ul);
-            if (rf->id2!=_NOREF&&rf->tag!='@')
-            {
-              char *s=extract_omstr(vd,rf->id2);
-              for (int to=_rshort2(vd->oms+rf->id)-1;to;to--) if (s[to]==NULL) s[to]=' ';
-              sprintf(c,"   %s",s);
-              fwrite(f,c,strlen(c),&ul);
-              mfree(s);
-            }
-            fwrite(f,"\n",1,&ul);
-            sprintf(c,"  value:     %u",rf->value);
-            fwrite(f,c,strlen(c),&ul);
-            if (rf->value!=_NOREF)
-            {
-              char *s=extract_omstr(vd,rf->value);
-              for (int to=_rshort2(vd->oms+rf->id)-1;to;to--) if (s[to]==NULL) s[to]=' ';
-              sprintf(c,"   %s",s);
-              fwrite(f,c,strlen(c),&ul);
-              mfree(s);
-            }
-            fwrite(f,"\n",1,&ul);
-            sprintf(c,"  begin:     %u\n",rf->begin);
-            fwrite(f,c,strlen(c),&ul);
-            sprintf(c,"  end:       %u\n",rf->end);
-            fwrite(f,c,strlen(c),&ul);
-            sprintf(c,"  upload:    %s\n",rf->no_upload?"false":"true");
-            fwrite(f,c,strlen(c),&ul);
-            if (rf->tag=='s')
-            {
-              sprintf(c,"  multiple:  %s\n",rf->multiselect?"true":"false");
-              fwrite(f,c,strlen(c),&ul);
-              sprintf(c,"  size:    %i ",rf->size);
-              fwrite(f,c,strlen(c),&ul);
-              fwrite(f,rf->data,rf->size,&ul);
-              fwrite(f,"\n",1,&ul);
-            }
-          }
-          fclose(f,&ul);
-        }
-      }
-      break;
-    case 0x38: // '8'
-      {
-        //Dump LINECACHE
-        unsigned int ul;
-        int f;
-        if ((f=fopen("0:\\zbin\\balletmini\\dumplc.txt",A_ReadWrite+A_Create+A_Truncate,P_READ+P_WRITE,&ul))!=-1)
-        {
-          char c[256];
-          sprintf(c,"\nlines_cache_size : %i\n",vd->lines_cache_size);
-          fwrite(f,c,strlen(c),&ul);
-          for (int i=0;i<vd->lines_cache_size;i++)
-          {
-            LINECACHE *lc=vd->lines_cache+i;
-            sprintf(c,"%i\n  pos : %u\n  pix : %u\n",i,lc->pos,lc->pixheight);
-            fwrite(f,c,strlen(c),&ul);
-          }
-          fclose(f,&ul);
-        }
-      }
-      break;
+//    case 0x31: // '1'
+//      {
+//        //Dump OMS
+//        unsigned int ul;
+//        int f;
+//        if ((f=fopen("0:\\zbin\\balletmini\\dumpoms.txt",A_ReadWrite+A_Create+A_Truncate,P_READ+P_WRITE,&ul))!=-1)
+//        {
+//          fwrite(f,vd->oms,vd->oms_size,&ul);
+//          fclose(f,&ul);
+//        }
+//      }
+//      break;
+//    case 0x34: // '4'
+//      {
+//        //Dump RAWTEXT
+//        unsigned int ul;
+//        int f;
+//        if ((f=fopen("0:\\zbin\\balletmini\\dumpraw.txt",A_ReadWrite+A_Create+A_Truncate,P_READ+P_WRITE,&ul))!=-1)
+//        {
+//          fwrite(f,vd->rawtext,vd->rawtext_size*2,&ul);
+//          fclose(f,&ul);
+//        }
+//      }
+//      break;
+//    case 0x37: // '7'
+//      {
+//        //Dump REFCACHE
+//        unsigned int ul;
+//        int f;
+//        if ((f=fopen("0:\\zbin\\balletmini\\dumpref.txt",A_ReadWrite+A_Create+A_Truncate,P_READ+P_WRITE,&ul))!=-1)
+//        {
+//          char c[256];
+//          sprintf(c,"\nref_cache_size : %i\n",vd->ref_cache_size);
+//          fwrite(f,c,strlen(c),&ul);
+//          sprintf(c,  "oms_size       : %i\n",vd->oms_size);
+//          fwrite(f,c,strlen(c),&ul);
+//          sprintf(c,  "page_sz        : %i\n",vd->page_sz);
+//          fwrite(f,c,strlen(c),&ul);
+//          sprintf(c,  "loaded_sz      : %i\n\n",vd->loaded_sz);
+//          fwrite(f,c,strlen(c),&ul);
+//          for (int i=0;i<vd->ref_cache_size;i++)
+//          {
+//            REFCACHE *rf=vd->ref_cache+i;
+//            sprintf(c,"\nREF : %i\n",i);
+//            fwrite(f,c,strlen(c),&ul);
+//            sprintf(c,"  tag:       %c\n",rf->tag);
+//            fwrite(f,c,strlen(c),&ul);
+//            sprintf(c,"  id:        %u",rf->id);
+//            fwrite(f,c,strlen(c),&ul);
+//            if (rf->id!=_NOREF)
+//            {
+//              char *s=extract_omstr(vd,rf->id);
+//              for (int to=strlen(s);to;to--) if (s[to-1]==NULL) s[to-1]=' ';
+//              sprintf(c,"   %s",s);
+//              fwrite(f,c,strlen(c),&ul);
+//              mfree(s);
+//            }
+//            fwrite(f,"\n",1,&ul);
+//            sprintf(c,"  id2:       %u",rf->id2);
+//            fwrite(f,c,strlen(c),&ul);
+//            if (rf->id2!=_NOREF&&rf->tag!='@')
+//            {
+//              char *s=extract_omstr(vd,rf->id2);
+//              for (int to=_rshort2(vd->oms+rf->id)-1;to;to--) if (s[to]==NULL) s[to]=' ';
+//              sprintf(c,"   %s",s);
+//              fwrite(f,c,strlen(c),&ul);
+//              mfree(s);
+//            }
+//            fwrite(f,"\n",1,&ul);
+//            sprintf(c,"  value:     %u",rf->value);
+//            fwrite(f,c,strlen(c),&ul);
+//            if (rf->value!=_NOREF)
+//            {
+//              char *s=extract_omstr(vd,rf->value);
+//              for (int to=_rshort2(vd->oms+rf->id)-1;to;to--) if (s[to]==NULL) s[to]=' ';
+//              sprintf(c,"   %s",s);
+//              fwrite(f,c,strlen(c),&ul);
+//              mfree(s);
+//            }
+//            fwrite(f,"\n",1,&ul);
+//            sprintf(c,"  begin:     %u\n",rf->begin);
+//            fwrite(f,c,strlen(c),&ul);
+//            sprintf(c,"  end:       %u\n",rf->end);
+//            fwrite(f,c,strlen(c),&ul);
+//            sprintf(c,"  upload:    %s\n",rf->no_upload?"false":"true");
+//            fwrite(f,c,strlen(c),&ul);
+//            if (rf->tag=='s')
+//            {
+//              sprintf(c,"  multiple:  %s\n",rf->multiselect?"true":"false");
+//              fwrite(f,c,strlen(c),&ul);
+//              sprintf(c,"  size:    %i ",rf->size);
+//              fwrite(f,c,strlen(c),&ul);
+//              fwrite(f,rf->data,rf->size,&ul);
+//              fwrite(f,"\n",1,&ul);
+//            }
+//          }
+//          fclose(f,&ul);
+//        }
+//      }
+//      break;
+//    case 0x38: // '8'
+//      {
+//        //Dump LINECACHE
+//        unsigned int ul;
+//        int f;
+//        if ((f=fopen("0:\\zbin\\balletmini\\dumplc.txt",A_ReadWrite+A_Create+A_Truncate,P_READ+P_WRITE,&ul))!=-1)
+//        {
+//          char c[256];
+//          sprintf(c,"\nlines_cache_size : %i\n",vd->lines_cache_size);
+//          fwrite(f,c,strlen(c),&ul);
+//          for (int i=0;i<vd->lines_cache_size;i++)
+//          {
+//            LINECACHE *lc=vd->lines_cache+i;
+//            sprintf(c,"%i\n  pos : %u\n  pix : %u\n",i,lc->pos,lc->pixheight);
+//            fwrite(f,c,strlen(c),&ul);
+//          }
+//          fclose(f,&ul);
+//        }
+//      }
+//      break;
     case 0x30: // '0'
       {
         // get text from page
@@ -1331,8 +1369,7 @@ static void UpdateCSMname(void)
   switch(view_url_mode)
   {
   case MODE_FILE:
-    gb2ws(ws,view_url,255);
-    //str_2ws(ws,view_url,255);
+    str_2ws(ws,view_url,255);
     break;
   case MODE_URL:
     ascii2ws(ws,view_url+2);
@@ -1555,4 +1592,3 @@ int main(const char *exename, const char *filename)
   }
   return 0;
 }
-

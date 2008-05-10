@@ -401,14 +401,14 @@ static void SendPost(void)
   sprintf(buf,"u=/obml/%s",URL);
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"q=ru");
+  sprintf(buf,"q=lgpData[LGP_LangCode]");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"v=Opera Mini/2.0.4509/hifi/woodland/ru");
+  sprintf(buf,"v=Opera Mini/2.0.4509/hifi/woodland/lgpData[LGP_LangCode]");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
   
-  sprintf(buf,"i=Opera/8.01 (J2ME/MIDP; Opera Mini/2.0.4509/1630; ru; U; ssr)");
-  //sprintf(buf,"i-ua=Opera/9.10 (Windows NT 5.1; U; ru)");
+  sprintf(buf,"i=Opera/8.01 (J2ME/MIDP; Opera Mini/2.0.4509/1630; lgpData[LGP_LangCode]; U; ssr)");
+  //sprintf(buf,"i-ua=Opera/9.10 (Windows NT 5.1; U; lgpData[LGP_LangCode])");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
   sprintf(buf,"s=-1");
@@ -427,7 +427,7 @@ static void SendPost(void)
   sprintf(buf,"C=j2me");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"D=zh");
+  sprintf(buf,"D=lgpData[LGP_LangCode]");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
   sprintf(buf,"E=GB2312");
@@ -482,7 +482,7 @@ static void SendPost(void)
   //sprintf(buf,"b=");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
-  sprintf(buf,"y=zh");
+  sprintf(buf,"y=lgpData[LGP_LangCode]");
   strcpy((content=realloc(content,content_len+(l=strlen(buf)+1)))+content_len,buf);content_len+=l;
 
   sprintf(buf,"t=-1");

@@ -1004,7 +1004,7 @@ int CreateInputBox(VIEWDATA *vd, REFCACHE *rf)
   wstrcpy(ews,((WSHDR *)rf->data));
   
   PrepareEditControl(&ec);
-  ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL|(rf->tag=='p'?ECF_PASSW:NULL),ews,16384);
+  ConstructEditControl(&ec,4,ECF_APPEND_EOL|(rf->tag=='p'?ECF_PASSW:NULL),ews,16384);
   AddEditControlToEditQend(eq,&ec,ma);
 
   FreeWS(ews);
@@ -1081,7 +1081,7 @@ void createTextView(WSHDR *ws)
     return;
   }
   PrepareEditControl(&ec);
-  ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL,ws,512);
+  ConstructEditControl(&ec,4,ECF_APPEND_EOL,ws,512);
   AddEditControlToEditQend(eq,&ec,ma);
   FreeWS(ws);
   patch_header(&txtview_hdr);
