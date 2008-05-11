@@ -263,28 +263,32 @@ NUM_SELECT_MENU1:
 	EXTERN	GetNumFromIncomingPDU
 	CODE16
 SMS_IN
-	LDR	R0, [SP, #8]
-	PUSH	{R0-R7, LR}
-	MOV	R7, R0
-	SUB	SP, #0x20
-	ADD	R0, SP, #0
-	BL	GetNumFromIncomingPDU
-	CMP	R0, #0
-	BEQ	GoBack
-	MOV	R0, R7
-	BL	AddNewLine
-	LDR	R0, [R7, #0]
-	ADD	R1, SP, #0
-	BL	GetProvAndCity
+	LDR		R0, [SP, #8]
+	LDR		R2, [SP, #4]
+	PUSH		{R0-R7, LR}
+	MOV		R7, R0
+	SUB		SP, #0x20
+	LDR		R6, =0xAC5 //LGP ÐÂÐÅÏ¢
+	CMP		R6, R2
+	BNE		GoBack
+	ADD		R0, SP, #0
+	BL		GetNumFromIncomingPDU
+	CMP		R0, #0
+	BEQ		GoBack
+	MOV		R0, R7
+	BL		AddNewLine
+	LDR		R0, [R7, #0]
+	ADD		R1, SP, #0
+	BL		GetProvAndCity
 GoBack
-	ADD	SP, #0x20
-	POP	{R0-R7}
-	POP	{R2}
-	LDR	R0, [R0, #0] //WSTRLEN
-	LDRH	R0, [R0, #0]
-	STR	R0, [SP,#0xD8]
-	ADD	R2, R2, #4
-	BX	R2
+	ADD		SP, #0x20
+	POP		{R0-R7}
+	POP		{R2}
+	LDR		R0, [R0, #0] //WSTRLEN
+	LDRH		R0, [R0, #0]
+	STR		R0, [SP,#0xD8]
+	ADD		R2, R2, #4
+	BX		R2
 
 	
 	RSEG	HOOK_DUMP
