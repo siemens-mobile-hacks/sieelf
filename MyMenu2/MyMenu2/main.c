@@ -628,7 +628,7 @@ const MENU_DESC main_menu=
 	NULL,
 	menusoftkeys,
 	&menu_skt,
-	0x11,
+	0x10,
 	menu_iconhndl,
 	NULL,   //Items
 	NULL,   //Procs
