@@ -870,6 +870,14 @@ MyMenu2/MyMenu2_Editor/rect_patcher.h -text
 MyMenu2/MyMenu2_Editor/type.h -text
 MyMenu2/func.asm -text
 MyMenu2/test.xcl -text
+MyScreenSaver/E71Csw41.xcl -text
+MyScreenSaver/MyScreenSaver.ewp -text
+MyScreenSaver/MyScreenSaver.eww -text
+MyScreenSaver/entery.asm -text
+MyScreenSaver/func.asm -text
+MyScreenSaver/main.c -text
+MyScreenSaver/mk.bat -text
+MyScreenSaver/test.xcl -text
 NATICQ/NATICQ.ewp -text
 NATICQ/NATICQ.eww -text
 NATICQ/NATICQ.txt -text
