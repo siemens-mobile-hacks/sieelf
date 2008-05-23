@@ -20,9 +20,11 @@ int need_ip=0;
 int smsdata=0;
 int smscount=0;
 int input=0;
+int nxc=0;
 
 WSHDR *gwsName;
 WSHDR *gwsTemp;
+WSHDR *numTemp;
 WSHDR *smstemp;
 char smsnum[46];
 char fn[10]="0:\\amr\\";
@@ -1355,9 +1357,10 @@ int mode;
 
 static void sendsms()
 {
-  if(smscount>0||mode==1)
+  if((smscount > 0) || (mode == 1))
   {
   smsdata=0;
+  nxc=0;
   smscount=0;
   SendSMS(smstemp, smsnum, MMI_CEPID, MSG_SMS_RX-1, mode);
   GeneralFuncF1(1);
@@ -1439,7 +1442,14 @@ static int mmenu_keyhook(void *data, GUI_MSG *msg)
     {
       case RIGHT_SOFT : 
         smsdata=1; 
+        if(nxc==1)
+        {
+        VoiceOrSMS(smsnum);
+        }  
+        else
+        {
         VoiceOrSMS(dstr[numx]);
+        }
         break;
     }
   }
@@ -1602,7 +1612,7 @@ void mmenuitem(USR_MENU_ITEM *item)
 int edsms_onkey(GUI *data, GUI_MSG *msg)
 {
   EDITCONTROL ec;
-  const char *snum=EDIT_GetUserPointer(data);
+ // const char *snum=EDIT_GetUserPointer(data);
   int key=msg->gbsmsg->submess;
   int m=msg->gbsmsg->msg;
   if (m==KEY_DOWN)
@@ -1620,14 +1630,9 @@ if(EDIT_IsBusy(data))
       ExtractEditControl(data,2,&ec);
       smstemp=AllocWS(ec.pWS->wsbody[0]);
       wstrcpy(smstemp,ec.pWS);
-
       smscount=(int)ec.pWS->wsbody[0];
-      //小灵通号码
-      if(snum[0] == '+' || snum[0] == '1' || !xlt)
-        strcpy(smsnum, snum);
-      else
-        sprintf(smsnum, "106%s", snum);
-        ShowMainMenu();
+      ws_2str(numTemp,smsnum,wstrlen(numTemp));
+      ShowMainMenu();
       }
      else
       return (-1);
@@ -1656,6 +1661,7 @@ if(EDIT_IsBusy(data))
       //smstemp=AllocWS(ec.pWS->wsbody[0]);
       //wstrcpy(smstemp,ec.pWS);
       smsdata=0;
+      nxc=0;
      }
      
     }
@@ -1834,9 +1840,12 @@ void VoiceOrSMS(const char *num)
      wsprintf(gwsTemp,"%s",num);
      else 
      wsprintf(gwsTemp,"106%s",num);//号码
+     
+     wstrcpy(numTemp,gwsTemp);
+     
      wstrcat(ews,gwsTemp);
 
-     wsAppendChar(gwsTemp,'\n');
+     //wsAppendChar(gwsTemp,'\n');
      }
 
      if(smsc)
@@ -1873,6 +1882,7 @@ void ElfKiller(void)
 	extern void *ELF_BEGIN;
         FreeWS(gwsName);
 	FreeWS(gwsTemp);
+	FreeWS(numTemp);
         FreeWS(ews);
         FreeCLIST();
         if(iReadFile && !cs_adr)
@@ -1967,15 +1977,20 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
   {
     if (!cl) 
     {
-      if(is_sms_need)
+      if(is_sms_need && (e_ws->wsbody[0] > 1))
       {
         char nx[40];
-        ws_2str((WSHDR *)e_ws,nx,39);
-        gb2ws(gwsName,nx,10);
-        if(dewin&&is_sms_need)  
-        SendSMS(smstemp,nx, MMI_CEPID, MSG_SMS_RX-1, test);  
+        ws_2str((WSHDR *)e_ws,nx,e_ws->wsbody[0]);
+        gb2ws(gwsName,nx,e_ws->wsbody[0]);
+        if(dewin&&is_sms_need)
+        {
+        SendSMS(smstemp,nx, MMI_CEPID, MSG_SMS_RX-1, 1);
+        }
         else
+        {
         VoiceOrSMS(nx);
+        nxc=1;
+        }
         return(1);
       }
       else
@@ -2052,7 +2067,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
       else
       {
       if(dewin&&is_sms_need)  
-      SendSMS(smstemp,dstr[numx], MMI_CEPID, MSG_SMS_RX-1, test);  
+      SendSMS(smstemp,dstr[numx], MMI_CEPID, MSG_SMS_RX-1, 1);  
       else  
       VoiceOrSMS(dstr[numx]);
       numx=0;
@@ -2373,6 +2388,7 @@ void Destructor(void)
 //  FreeWS(dbg_ws);
   FreeWS(gwsName);
   FreeWS(gwsTemp);
+  FreeWS(numTemp);
   FreeWS(smstemp);
   FreeWS(ews);
 }
@@ -2401,6 +2417,7 @@ int main(void)
   ews=AllocWS(SMS_MAX_LEN);
 //dbg_ws=AllocWS(256);
   gwsTemp=AllocWS(40);
+  numTemp=AllocWS(40);
   gwsName=AllocWS(40);
   InitIcons();
   RereadSettings();

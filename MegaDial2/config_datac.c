@@ -9,9 +9,6 @@
 #endif
 */
 
-__root const CFG_HDR cfghdr0_1={CFG_UINT,"test",0,100};
-__root const unsigned int test=1;
-
 __root const CFG_HDR cfghdr_m5={CFG_LEVEL,"基本功能控制",1,0};
 
 __root const CFG_HDR cfghdr1_1 = {CFG_CHECKBOX,"大字体",0,0};
