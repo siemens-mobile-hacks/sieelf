@@ -25,7 +25,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release\Exe</state>
+          <state>Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -546,11 +546,11 @@
         <debug>0</debug>
         <option>
           <name>XOutOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OutputFile</name>
-          <state>BalletMini.elf</state>
+          <state>BalletMini_NSG.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -848,7 +848,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release_SGOLD\Exe</state>
+          <state>Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -930,7 +930,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.41A</state>
+          <state>4.42A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -1369,11 +1369,11 @@
         <debug>0</debug>
         <option>
           <name>XOutOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OutputFile</name>
-          <state>BalletMini.elf</state>
+          <state>BalletMini_SG.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -1671,7 +1671,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release_ELKA\Exe</state>
+          <state>Exe</state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -2193,11 +2193,11 @@
         <debug>0</debug>
         <option>
           <name>XOutOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OutputFile</name>
-          <state>BalletMini.elf</state>
+          <state>BalletMini_EL.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>

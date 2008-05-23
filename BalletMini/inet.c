@@ -47,25 +47,24 @@ extern const unsigned int OM_POST_PORT4;
 
 void clooseip()
 {
-if(IP_CHOOSE==0)
+switch(IP_CHOOSE)
 {
+case 0:
   strncpy(OM_POST_HOST,OM_POST_HOST1,32);
   OM_POST_PORT=OM_POST_PORT1;
-}
-else if(IP_CHOOSE==1)
-{
+  break;
+case 1:
   strncpy(OM_POST_HOST,OM_POST_HOST2,32);
   OM_POST_PORT=OM_POST_PORT2;
-}
-else if(IP_CHOOSE==2)
-{
+  break;
+case 2:
   strncpy(OM_POST_HOST,OM_POST_HOST3,32);
   OM_POST_PORT=OM_POST_PORT3;
-}
-else
-{
+  break;
+case 3:
   strncpy(OM_POST_HOST,OM_POST_HOST4,32);
   OM_POST_PORT=OM_POST_PORT4;
+  break;
 }
 }
 
@@ -87,7 +86,7 @@ static void create_connect(void)
   const char *hostname;
   unsigned int ip;
   int err;
-
+  clooseip();
   SOCK_ADDR sa;
   //§µ§ã§ä§Ñ§ß§Ñ§Ó§Ý§Ú§Ó§Ñ§Ö§Þ §ã§à§Ö§Õ§Ú§ß§Ö§ß§Ú§Ö
   connect_state = 0;

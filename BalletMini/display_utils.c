@@ -917,7 +917,7 @@ void input_box_onkey_options(USR_MENU_ITEM *item)
 static int input_box_onkey(GUI *data, GUI_MSG *msg)
 {
   EDITCONTROL ec;
-  if (msg->gbsmsg->msg==KEY_DOWN&&msg->gbsmsg->submess==ENTER_BUTTON)
+  if (msg->gbsmsg->msg==KEY_DOWN&&msg->gbsmsg->submess==ENTER_BUTTON&&!EDIT_IsBusy(data))
 	{
     paste_gui=data;
     EDIT_OpenOptionMenuWithUserItems(data,input_box_onkey_options,0,2);
