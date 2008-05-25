@@ -53,7 +53,8 @@ UpdateWndItem:
 	LDR		R4, =ADDR_UpdateWndItem
 	BLX		R4
 	POP		{R4, PC}
-//#ifndef NEWSGOLD
+#ifdef NEWSGOLD
+#ifdef ELKA
 	//CODE32
 	public	AllocWS
 AllocWS:
@@ -77,7 +78,31 @@ DrawString:
 GetCurMenuItem:
 	LDR		R3, =ADDR_GetCurMenuItem
 	BX		R3
-//#endif	
+#endif
+#else
+	public	AllocWS
+AllocWS:
+	LDR		R3, =ADDR_AllocWS
+	BX		R3
+	
+	public	FreeWS
+FreeWS:
+	LDR		R3, =ADDR_FreeWS
+	BX		R3
+	
+	public	DrawString
+DrawString:
+	PUSH		{R3}
+	LDR		R3, =ADDR_DrawString
+	MOV		R12, R3
+	POP		{R3}
+	BX		R12
+	
+	public		GetCurMenuItem
+GetCurMenuItem:
+	LDR		R3, =ADDR_GetCurMenuItem
+	BX		R3
+#endif	
 	CODE16
 AddNewLine:
 	PUSH		{R0-R7, LR}
@@ -130,24 +155,24 @@ Hook3:
 	BLX		R0
 
 Hook4:
-#ifndef ELKA
-	ADD		R1, SP, #4
-#endif
+//#ifndef ELKA
+//	ADD		R1, SP, #4
+//#endif
 	PUSH		{LR}
-	MOV		R4, R0
+//	MOV		R4, R0
 	LDR		R2, =ADDR_ADDRBook
 	BLX		R2
 	MOV		R0, R4
 	BL		AddNewLine
 	MOV		R1, R4
 	BL		AppendInfoW
-#ifdef ELKA
+//#ifdef ELKA
 	POP		{PC}
-#else
-	POP		{R2}
-	ADD		R2, #4
-	BX		R2
-#endif
+//#else
+//	POP		{R2}
+//	ADD		R2, #4
+//	BX		R2
+//#endif
 
 		
 		
@@ -201,6 +226,7 @@ AddrBookMenu:
 	//void store_the_num_2_ram(int pos, char *num)
 	
 //用于将列表中的号码存到RAM中,by BingK(binghelingxi)
+#ifdef	ELKA
 	extern	store_the_num_2_ram
 	extern	new_redraw_
 	extern	memcpy_n
@@ -289,15 +315,17 @@ GoBack
 	STR		R0, [SP,#0xD8]
 	ADD		R2, R2, #4
 	BX		R2
-
+#endif
 	
 	RSEG	HOOK_DUMP
 	CODE16
 HOOKRecoedWindow_DUMP:
-	PUSH		{R7,LR}	
-	LDR		R7, =Hook1
-	BLX		R7
-	POP		{R7,PC}
+	//PUSH		{R7,LR}	
+	//LDR		R7, =Hook1
+	//BLX		R7
+	//POP		{R7,PC}
+	LDR		R2, =Hook1
+	BX		R2
 HOOKCallinwindow_DUMP:
 	LDR		R7, =Hook2
 	BX		R7
@@ -307,10 +335,12 @@ HOOKCallOutWindow_DUMP:
 	
 #ifdef ELKA
 HOOKAddrBookWindow_DUMP:
-	PUSH		{R7,LR}	
-	LDR		R7, =Hook4
-	BLX		R7
-	POP		{R7,PC}
+	//PUSH		{R7,LR}	
+	//LDR		R7, =Hook4
+	//BLX		R7
+	//POP		{R7,PC}
+	LDR		R2, =Hook4
+	BX		R2
 #endif
 
 	RSEG	RecordWindow:CODE(1)
@@ -333,8 +363,9 @@ HOOKAddrBookWindow_DUMP:
 #else
 	RSEG	AddrBookWindow
 	CODE32
-	LDR		R4, =Hook4
-	BLX		R4
+	//LDR		R4, =Hook4
+	//BLX		R4
+	BLX		Hook4
 #endif
 #ifdef ELKA
 	CODE16
@@ -361,6 +392,7 @@ HOOKAddrBookWindow_DUMP:
 	RSEG	AddrBookMenu_HOOK:CODE(2)
 	LDR		R0, =AddrBookMenu
 	BLX		R0*/
+#ifdef	ELKA
 	CODE16
 	RSEG	NUM_SELECT_MENU_HOOK
 	LDR		R6, =NUM_SELECT_MENU
@@ -375,6 +407,7 @@ HOOKAddrBookWindow_DUMP:
 	RSEG	SMS_IN_HOOK
 	LDR		R0, =SMS_IN
 	BLX		R0
+#endif
 #else
 //SGOLD
 
