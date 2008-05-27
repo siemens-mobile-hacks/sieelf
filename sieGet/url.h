@@ -1,22 +1,36 @@
 #ifndef _URL_H_
 #define _URL_H_
 
+#include "include.h"
+#include "log.h"
 
 // scheme://host:port/path?param#fragment
-typedef struct
+class URL
 {
-  char *scheme;
-  char *host;
+public:
+  int Parse(char * s_url);
+  void Print(Log * log);
+
+  char * scheme;
+  char * host;
   short port;
-  char *path;
-  char *param;
-  char *fragment;
-} URL;
+  char * path;
+  char * param;
+  char * fragment;
 
-char *FormatUrl(URL *url);
+  URL();
+  ~URL();
+};
 
-int ParseUrl(char *s_url, URL *url);
-
-void FreeUrlMem(URL *url);
+class URLFile
+{
+public:
+  int Read(char * file);
+  int Write(char * file);
+  char * url;
+  
+  URLFile();
+  ~URLFile();
+};
 
 #endif

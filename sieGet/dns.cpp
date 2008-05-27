@@ -1,5 +1,98 @@
-#include "..\inc\swilib.h"
+#include "include.h"
 #include "dns.h"
+#include "log.h"
+
+DNRHandler * DNRHandler::Top = NULL;
+
+//Проверить процесс (работа с DNR только в хелпере)
+inline int CheckCepId()
+{
+  if (GBS_GetCurCepid()==MMI_CEPID) return 1;
+  return 0;
+}
+
+DNR::DNR()
+{
+  if(DNRHandler::Top)
+    DNRHandler::Top->RegisterDNR(this);
+  
+  DNR_ID = 0;
+  host = NULL;
+  DNR_TRIES = 0;
+}
+
+DNR::~DNR()
+{
+  _safe_delete(host);
+
+  if(DNRHandler::Top)
+    DNRHandler::Top->DeleteDNR(this);
+}
+
+void DNR::Start(const char *_host, int _tries)
+{
+  _safe_delete(host);
+  host = new char[strlen(_host)+1];
+  strcpy(host, _host);
+  DNR_TRIES = _tries;
+  DNR_ID = 0;
+  SendReq();
+}
+
+void _send_req(DNR *obj)
+{
+  obj->SendReq();
+}
+
+void DNR::SendReq()
+{
+  if (CheckCepId())
+  {
+    SUBPROC((void *)_send_req, this);
+    return;
+  }
+  int ***res = NULL;
+  int err;
+  err = async_gethostbyname(host, &res, &DNR_ID);
+  
+  if (err)
+  {
+    if ((err==0xC9)||(err==0xD6))
+    {
+      if (DNR_ID)
+      {
+        return; // Ждем готовности DNR
+      }
+    }
+    else
+    {
+      onResolve(DNR_RESULT_ERROR, err); // Получили ошибку
+      DNR_ID = 0;
+      return;
+    }
+  }
+  if (res)
+  {
+    if (res[3])
+    {
+      onResolve(DNR_RESULT_OK, res[3][0][0]); // Получили адрес
+      DNR_ID = 0;
+    }
+  }
+  else
+  {
+    DNR_TRIES--;
+    if (!DNR_TRIES)
+    {
+      onResolve(DNR_RESULT_OUT_OF_TRIES, 0); // Истекло количество попыток
+      DNR_ID = 0;
+    }
+  }
+}
+
+/*******************************************************************************
+ DNRHandler
+*******************************************************************************/
 
 DNR *DNRHandler::GetDNR(int DNR_ID)
 {
@@ -8,11 +101,12 @@ DNR *DNRHandler::GetDNR(int DNR_ID)
   {
     if (tmp->dnr->DNR_ID==DNR_ID)
       return tmp->dnr; // Нашли!
+    tmp = tmp->next;
   }
   return NULL; // Не нашли...
 }
 
-void DNRHandler::Add(DNR *dnr)
+void DNRHandler::RegisterDNR(DNR *dnr)
 {
   DNRQ *tmp = new DNRQ;
   tmp->dnr = dnr;
@@ -20,7 +114,7 @@ void DNRHandler::Add(DNR *dnr)
   queue = tmp;
 }
 
-void DNRHandler::Delete(DNR *dnr)
+void DNRHandler::DeleteDNR(DNR *dnr)
 {
   if (!queue)
     return;
@@ -33,12 +127,11 @@ void DNRHandler::Delete(DNR *dnr)
   }
   else
   {
-    DNRQ *prev;
-    prev = queue;
+    DNRQ * prev = queue;
     tmp = queue->next;
     while (tmp)
     {
-      if (tmp->dnr==dnr)
+      if (tmp->dnr == dnr)
       {
         prev->next = tmp->next;
         delete tmp;
@@ -50,67 +143,10 @@ void DNRHandler::Delete(DNR *dnr)
   }
 }
 
-void DNRHandler::Reg(DNR *dnr)
-{
-  dnr->DNR_ID = 0;
-  Add(dnr);
-  SendDNR(dnr);
-}
-
-void DNRHandler::SendDNR(DNR *dnr)
-{
-  int ***res = NULL;
-  int err;
-  err = async_gethostbyname(dnr->host, &res, &dnr->DNR_ID);
-  if (err)
-  {
-    if ((err==0xC9)||(err==0xD6))
-    {
-      if (dnr->DNR_ID)
-      {
-        return; // Ждем готовности DNR
-      }
-    }
-    else
-    {
-      dnr->onResolve(DNR_RESULT_ERROR, err);
-      Delete(dnr); // Удаляем из списка
-      return; // Получили ошибку
-    }
-  }
-  if (res)
-  {
-    if (res[3])
-    {
-      dnr->onResolve(DNR_RESULT_OK, res[3][0][0]);
-      Delete(dnr); // Удаляем из списка
-      // Получили адрес
-    }
-  }
-  else
-  {
-    dnr->DNR_TRIES--;
-    if (!dnr->DNR_TRIES)
-    {
-      dnr->onResolve(DNR_RESULT_OUT_OF_TRIES, 0);
-      Delete(dnr); // Удаляем из списка
-      // Истекло количество попыток
-    }
-  }
-}
-
-void DNRHandler::onDNREvent(int DNR_ID)
-{
-  DNR *dnr = GetDNR(DNR_ID);
-  if (dnr)
-  {
-    SendDNR(dnr);
-  }
-}
-
 DNRHandler::DNRHandler()
 {
   queue = NULL;
+  Top = this;
 }
 
 DNRHandler::~DNRHandler()
@@ -121,19 +157,4 @@ DNRHandler::~DNRHandler()
     queue = queue->next;
     delete tmp;
   }
-}
-
-//---------------------------------------------------------------
-
-
-DNR::DNR(DNRHandler *handler)
-{
-  this->handler = handler;
-}
-
-void DNR::Start(const char *_host, int _tries)
-{
-  host = _host;
-  DNR_TRIES = _tries;
-  handler->Reg(this);
 }

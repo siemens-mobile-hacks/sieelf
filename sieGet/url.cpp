@@ -1,8 +1,15 @@
-//#include "stdafx.h"
-#include "../inc/swilib.h"
-extern unsigned int strtoul(const char * str, char ** endptr, int base);
-
+#include "include.h"
+#include "inet.h"
 #include "url.h"
+#include "gui.h"
+#include "log.h"
+#include "daemon.h"
+#include "rect_patcher.h"
+
+extern "C"
+{
+  extern unsigned long strtoul(const char *, char **, int);
+};
 
 #define ST_ERR -1
 #define ST_FINISH 0
@@ -11,11 +18,6 @@ extern unsigned int strtoul(const char * str, char ** endptr, int base);
 #define ST_PATH 3
 #define ST_PARAM 4
 #define ST_FRAGMENT 5
-
-char *FormatUrl(URL *url)
-{
-  return "";
-}
 
 char host_term[] = ":/?#";
 int  host_st[] = {ST_PORT, ST_PATH, ST_PARAM, ST_FRAGMENT};
@@ -26,22 +28,22 @@ int  path_st[] = {ST_PARAM, ST_FRAGMENT};
 char param_term[] = "#";
 int  param_st[] = {ST_FRAGMENT};
 
-int ParseUrl(char *s_url, URL *url)
+int URL::Parse(char * s_url)
 {
-  char *tmp = s_url;
-  char *scheme_delim = strstr(tmp, "://");
+  char * tmp = s_url;
+  char * scheme_delim = strstr(tmp, "://");
   if (scheme_delim)
   {
     int schlen = scheme_delim-tmp;
-    url->scheme = (char *)malloc(schlen+1);
-    strncpy(url->scheme, tmp, schlen);
-    url->scheme[schlen] = 0;
+    this->scheme = new char[schlen+1];
+    strncpy(this->scheme, tmp, schlen);
+    this->scheme[schlen] = 0;
     tmp += schlen+3;
   }
   else
   {
-    url->scheme = (char *)malloc(5);
-    strcpy(url->scheme, "http");
+    this->scheme = new char[5];
+    strcpy(this->scheme, "http");
   }
   int st = ST_HOST;
   int len = strlen(tmp);
@@ -57,9 +59,9 @@ int ParseUrl(char *s_url, URL *url)
           st = host_st[strchr(host_term, tmp[clen])-host_term];
         else
           st = ST_FINISH;
-        url->host = (char *)malloc(clen+1);
-        strncpy(url->host, tmp, clen);
-        url->host[clen] = 0;
+        this->host = new char[clen+1];
+        strncpy(this->host, tmp, clen);
+        this->host[clen] = 0;
         tmp += clen+1;
         len -= clen+1;
         clen = 0;
@@ -68,7 +70,7 @@ int ParseUrl(char *s_url, URL *url)
         clen++;
       break;
     case ST_PORT:
-      url->port = strtoul(tmp, &tmp, 10);
+      this->port = strtoul(tmp, &tmp, 10);
       if (tmp[clen])
         st = port_st[strchr(port_term, *tmp++)-port_term];
       else
@@ -81,9 +83,9 @@ int ParseUrl(char *s_url, URL *url)
           st = path_st[strchr(path_term, tmp[clen])-path_term];
         else
           st = ST_FINISH;
-        url->path = (char *)malloc(clen+1);
-        strncpy(url->path, tmp, clen);
-        url->path[clen] = 0;
+        this->path = new char[clen+1];
+        strncpy(this->path, tmp, clen);
+        this->path[clen] = 0;
         tmp += clen+1;
         len -= clen+1;
         clen = 0;
@@ -98,9 +100,9 @@ int ParseUrl(char *s_url, URL *url)
           st = param_st[strchr(param_term, tmp[clen])-param_term];
         else
           st = ST_FINISH;
-        url->param = (char *)malloc(clen+1);
-        strncpy(url->param, tmp, clen);
-        url->param[clen] = 0;
+        this->param = new char[clen+1];
+        strncpy(this->param, tmp, clen);
+        this->param[clen] = 0;
         tmp += clen+1;
         len -= clen+1;
         clen = 0;
@@ -112,9 +114,9 @@ int ParseUrl(char *s_url, URL *url)
       if (!tmp[clen])
       {
         st = ST_FINISH;
-        url->fragment = (char *)malloc(clen+1);
-        strncpy(url->fragment, tmp, clen);
-        url->fragment[clen] = 0;
+        this->fragment = new char[clen+1];
+        strncpy(this->fragment, tmp, clen);
+        this->fragment[clen] = 0;
         tmp += clen+1;
         len -= clen+1;
         clen = 0;
@@ -124,22 +126,107 @@ int ParseUrl(char *s_url, URL *url)
       break;
     }
   }
-  if (url->port==0)
-    url->port = 80;
+  if (!this->port)
+    this->port = 80;
   return 1;
 }
 
-void FreeUrlMem(URL *url)
+void URL::Print(Log * log)
 {
-  if (url->fragment)
-    mfree(url->fragment);
-  if (url->host)
-    mfree(url->host);
-  if (url->param)
-    mfree(url->param);
-  if (url->path)
-    mfree(url->path);
-  if (url->scheme)
-    mfree(url->scheme);
+  char * msg = new char[128];
+  if (scheme)
+  {
+    sprintf(msg, "Scheme: %s", scheme);
+    log->Print(msg, CLR_Violet);
+  }
+  if (host)
+  {
+    sprintf(msg, "Host: %s", host);
+    log->Print(msg, CLR_Violet);
+  }
+  sprintf(msg, "Port: %d", port);
+  log->Print(msg, CLR_Violet);
+  if (path)
+  {
+    sprintf(msg, "Path: %s", path);
+    log->Print(msg, CLR_Violet);
+  }
+  if (param)
+  {
+    sprintf(msg, "Params: %s", param);
+    log->Print(msg, CLR_Violet);
+  }
+  if (fragment)
+  {
+    sprintf(msg, "Fragment: %s", fragment);
+    log->Print(msg, CLR_Violet);
+  }
+  delete msg;
 }
 
+URL::~URL()
+{
+  _safe_delete(fragment);
+  _safe_delete(host);
+  _safe_delete(param);
+  _safe_delete(path);
+  _safe_delete(scheme);
+}
+
+URL::URL()
+{
+  this->fragment = NULL;
+  this->host = NULL;
+  this->port = NULL;
+  this->param = NULL;
+  this->path = NULL;
+  this->scheme = NULL;
+}
+
+/*******************************************************************************
+  URLFile
+*******************************************************************************/
+
+URLFile::URLFile()
+{
+  url = NULL;
+}
+
+URLFile::~URLFile()
+{
+  _safe_delete(url);
+}
+
+int URLFile::Read(char * file)
+{
+  int f;
+  unsigned int err;
+  FSTATS fstat;
+  if (GetFileStats(file, &fstat, &err)!=-1)
+  {
+    if((f=fopen(file, A_ReadOnly+A_BIN, P_READ, &err))!=-1)
+    {
+      if (url = new char[fstat.size+1])
+      {
+        url[fread(f, url, fstat.size, &err)]=0;
+        fclose(f, &err);
+        return 1;
+      }
+      fclose(f, &err);
+    }
+  }
+  return 0;
+}
+
+int URLFile::Write(char * file)
+{
+  int hFile;
+  unsigned int io_error;
+  if ((hFile=fopen(file, A_WriteOnly + A_Truncate + A_Create + A_BIN, P_WRITE, &io_error))!=-1)
+  {
+    fwrite(hFile, url, strlen(url), &io_error);
+    fclose(hFile, &io_error);
+    return 1;
+  }
+  return 0;
+}

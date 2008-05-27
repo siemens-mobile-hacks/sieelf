@@ -8,6 +8,8 @@
 #ifndef _SOCKETAPI_H_
 #define _SOCKETAPI_H_
 
+#include "log.h"
+
 typedef enum
 {
   SOCK_UNDEF,
@@ -22,13 +24,12 @@ typedef enum
   SOCK_ERROR_SENDING,
   SOCK_ERROR_CLOSING,
   SOCK_ERROR_INVALID_SOCKET,
-  SOCK_ERROR_INVALID_CEPID
+  SOCK_ERROR_INVALID_CEPID,
+  SOCK_ERROR_CLIENT,
+  SOCK_ERROR_SERVER
 } SOCK_ERROR;
 
-class Socket;
-class SocketHandler;
-
-// Класс сокета. Одноразовый.
+// Класс сокета.
 class Socket
 {
 public:
@@ -42,54 +43,34 @@ public:
 
   //------------------------------
 
-  //Создать сокет
-  Socket(SocketHandler *handler);
-
+  Socket();   // Создать сокет
+  ~Socket();  // Удалить сокет
+  
   void Create();
 
   //Соединить сокет по ip и порту
   //ip должен иметь порядок байтов сети (htonl)
   void Connect(int ip, short port);
-
   //Отправить данные
   void Send(const char *data, int size);
-
   //Получить данные
   int Recv(char *data, int size);
-
   //Закрыть сокет
   void Close();
 
   SOCK_STATE GetState() const;
 
-  ~Socket();
+  // Статистика трафика
+  int Tx;
+  int Rx;
+  static int GlobalTx;
+  static int GlobalRx;
 
-private:
-  int id;
-  char *senq_p;
-  int sendq_l;
-  SOCK_STATE state;
-  SocketHandler *handler;
+  // Внутреннее состояние
+  int socket_id;
 
-  friend class SocketHandler;
-};
-
-class SocketHandler
-{
-public:
-  void Reg(Socket *sock);
-  void UnReg(Socket *sock);
-  void onSockEvent(int sock, int event);
-  SocketHandler();
-  ~SocketHandler();
-private:
-  struct SocketQ
-  {
-    Socket *sock;
-    SocketQ *next;
-  };
-  SocketQ *queue;
-  Socket *GetSocket(int sock);
+  Log * log;
+  SOCK_STATE socket_state;
 };
 
 #endif
