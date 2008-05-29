@@ -685,7 +685,7 @@ void BookmarksInput::Show(EDIT_MODE _mode, BookmarksList::ItemsList * _il)
   default: wsprintf(ws, "");
   }
   PrepareEditControl(&ec);
-  ConstructEditControl(&ec, ECT_NORMAL_TEXT, ECF_APPEND_EOL, ws, 64);
+  ConstructEditControl(&ec, 4, ECF_APPEND_EOL, ws, 64);
   name_pos = AddEditControlToEditQend(eq,&ec,ma);
   
   if(mode == CreateBookmark || mode == EditBookmark)
@@ -697,7 +697,7 @@ void BookmarksInput::Show(EDIT_MODE _mode, BookmarksList::ItemsList * _il)
     
     utf8_2ws(ws, mode == CreateBookmark?"":urlfile->url, 511);
     PrepareEditControl(&ec);
-    ConstructEditControl(&ec, ECT_NORMAL_TEXT, ECF_APPEND_EOL, ws, 511);
+    ConstructEditControl(&ec, 4, ECF_APPEND_EOL, ws, 511);
     url_pos = AddEditControlToEditQend(eq,&ec,ma);
   }
 

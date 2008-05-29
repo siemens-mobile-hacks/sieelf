@@ -227,7 +227,7 @@ void Info::Show(Download * _download, Info::InfoMode _mode)
       
     utf8_2ws(ws, download->url, 511);
     PrepareEditControl(&ec);
-    ConstructEditControl(&ec, ECT_NORMAL_TEXT, ECF_APPEND_EOL, ws, 511);
+    ConstructEditControl(&ec, 4, ECF_APPEND_EOL, ws, 511);
     url_pos = AddEditControlToEditQend(eq,&ec,ma);
       
     ascii2ws(ws, LangPack::Active->data[LGP_DownloadFolder]);
@@ -237,7 +237,7 @@ void Info::Show(Download * _download, Info::InfoMode _mode)
       
     str_2ws(ws, download->file_path, 511);
     PrepareEditControl(&ec);
-    ConstructEditControl(&ec, ECT_NORMAL_TEXT, ECF_APPEND_EOL, ws, 511);
+    ConstructEditControl(&ec, 4, ECF_APPEND_EOL, ws, 511);
     path_pos = AddEditControlToEditQend(eq,&ec,ma);
       
     ascii2ws(ws, LangPack::Active->data[LGP_FileSize]);

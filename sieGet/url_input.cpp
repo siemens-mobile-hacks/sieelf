@@ -214,7 +214,7 @@ void URLInput::Show(char * url_str)
   URL_unescape(url_str);
   utf8_2ws(ws, url_str, 511);
   PrepareEditControl(&ec);
-  ConstructEditControl(&ec, ECT_NORMAL_TEXT, ECF_APPEND_EOL, ws, 511);
+  ConstructEditControl(&ec, 4, ECF_APPEND_EOL, ws, 511);
   url_pos = AddEditControlToEditQend(eq, &ec, ma);
   
   ascii2ws(ws, LangPack::Active->data[LGP_DownloadFolder]);
@@ -224,7 +224,7 @@ void URLInput::Show(char * url_str)
   
   str_2ws(ws, CFG_DOWNLOADS_FOLDER, 511);
   PrepareEditControl(&ec);
-  ConstructEditControl(&ec, ECT_NORMAL_TEXT, ECF_APPEND_EOL, ws, 511);
+  ConstructEditControl(&ec, 4, ECF_APPEND_EOL, ws, 511);
   path_pos = AddEditControlToEditQend(eq, &ec, ma);
 
   ascii2ws(ws, LangPack::Active->data[LGP_FileName]);
@@ -234,7 +234,7 @@ void URLInput::Show(char * url_str)
   
   ascii2ws(ws, "");
   PrepareEditControl(&ec);
-  ConstructEditControl(&ec, ECT_NORMAL_TEXT, ECF_APPEND_EOL, ws, 256);
+  ConstructEditControl(&ec, 4, ECF_APPEND_EOL, ws, 256);
   fname_pos = AddEditControlToEditQend(eq, &ec, ma);
 
   FreeWS(ws);

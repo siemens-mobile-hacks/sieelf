@@ -101,7 +101,7 @@ void LogInput::Show(Log::LogLine * first_line, Log::LogLine * last_line, int lin
   PrepareEditControl(&ec);
   PrepareEditCOptions(&ec_options);
   SetFontToEditCOptions(&ec_options, 1);
-  ConstructEditControl(&ec, ECT_NORMAL_TEXT, ECF_APPEND_EOL, ws, total_len);
+  ConstructEditControl(&ec, 4, ECF_APPEND_EOL, ws, total_len);
   CopyOptionsToEditControl(&ec, &ec_options);
   AddEditControlToEditQend(eq, &ec, ma);
 
