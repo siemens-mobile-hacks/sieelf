@@ -5,11 +5,14 @@ __swi __arm void ShowNativeMenu();
 #include "conf_loader.h"
 #include "..\inc\xtask_ipc.h"
 
+extern const int ENA_HELLO_MSG;
+extern const int ENA_RBM;
 extern const int RED_BUT_MODE;
 extern const int ENA_LONG_PRESS;
 extern const int ENA_LOCK;
 extern const int ENA_MEDIAC;
 extern const int ENA_KEY2JOY;
+extern const int ENA_K2J_MSG;
 extern const int Key2Joy_KEY;
 extern const int Key2Joy_KEY_LONG_PRESS;
 extern const int ENA_NATIVE;
@@ -19,7 +22,9 @@ extern const int SideDNS;
 extern const int SideDNL;
 extern const int SideUPS;
 extern const int SideUPL;
-
+extern const char player_path[128];
+extern const char playlist_path[128];
+extern const int ENA_PLAYER;
 //extern WSHDR *resstr;
 extern TDate date;
 extern TTime time; 
@@ -41,7 +46,7 @@ int IsMediaActive(void)
 #ifdef NEWSGOLD
   if (s[0]==1) return 1;
 #else
-  if (s[0]==2) return 1;// äëÿ SGOLD s[0]!=2    
+  if (s[0]==2) return 1;// §Õ§İ§ñ SGOLD s[0]!=2    
 #endif 
   return 0;
 }
@@ -75,11 +80,11 @@ void Idle(void)
 
 extern void kill_data(void *p, void (*func_p)(void *));
 
-void execelf(char *exename, char *fname) //fname-ïàğàìåòğ (èìÿ ôàéëà), ïåğåäàâàåìûé â ıëüô 
+void execelf(char const *exename, char const *fname) //fname-§á§Ñ§â§Ñ§Ş§Ö§ä§â (§Ú§Ş§ñ §æ§Ñ§Û§İ§Ñ), §á§Ö§â§Ö§Õ§Ñ§Ó§Ñ§Ö§Ş§í§Û §Ó §ï§İ§î§æ 
 {
   WSHDR *ws=AllocWS(256); 
   str_2ws(ws,exename,strlen(exename)+1); 
-  ExecuteFile(ws,0,fname); FreeWS(ws);
+  ExecuteFile(ws,0,(void*)fname); FreeWS(ws);
 }
 
 // 0 - disabled key2joy function
@@ -87,7 +92,7 @@ void execelf(char *exename, char *fname) //fname-ïàğàìåòğ (èìÿ ôàéëà), ïåğåäàâàå
 int keymode;
 
 // 0 - no press
-// 1 - lonpress Key2Joy button
+// 1 - action succeeded
 int keymode2;
 
 // 0 - no press
@@ -112,69 +117,74 @@ int media_mode;
 
 int my_keyhook(int submsg, int msg)
 {
-  
+  if (IsUnlocked()||ENA_LOCK){
 #ifndef NEWSGOLD
+  if (ENA_RBM){
   //Red button menu
-  extern void CreateRBMenu(void);  
+  extern void CreateRBMenu(void); 
+  if (IsIDLE() && (submsg==RED_BUTTON) && (msg==LONG_PRESS)){
+      nat_red_mode=0;
+      return 0;
+  }
   if (IsIDLE() && (submsg==RED_BUTTON) && (msg==KEY_DOWN) && IsUnlocked()) {
         if (((int)GetTypeUSSD())!=8) return(0) ; else nat_red_mode=1;
-        return(2);
+        return(0);
   }
   if (IsIDLE() && (submsg==RED_BUTTON) && (msg==KEY_UP) && (nat_red_mode)){
       CreateRBMenu();
       nat_red_mode=0;
       return(2);}
     else if ((nat_red_mode) && (submsg==RED_BUTTON)) nat_red_mode=0;
+  }
 #endif
   
-  
-  char s[40];
-  sprintf(s,RamMediaIsPlaying());
-  void *icsm=FindCSMbyID(CSM_root()->idle_id);
+void *icsm=FindCSMbyID(CSM_root()->idle_id);
 #ifndef NEWSGOLD
   //MediaControl
   if ((submsg==0x27) && (ENA_MEDIAC==1)){
     switch (msg){
     case (KEY_DOWN): break;
-    case (KEY_UP):{
-      if (media_mode==1){
-//        execelf("0:\\Sounds\\All.m3u","");
-        media_mode=0;
-        break;
-      }
-      else if (!IsIDLE())
+    case (KEY_UP): if (!IsIDLE())
       {
           GBS_SendMessage(MMI_CEPID,KEY_DOWN,ENTER_BUTTON);
           GBS_SendMessage(MMI_CEPID,KEY_UP,ENTER_BUTTON);
-      }
-    }
-    case (LONG_PRESS):{
-      if (IsGuiOnTop(((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])){
-        if (media_mode==0) SUBPROC(GetFunctionPointer("ELSE_MUSIC_PLAY"));
-        media_mode=1;
-      }
-          else if (!IsIDLE())
+      } break;
+    case (LONG_PRESS): if (!IsIDLE())
           {
               GBS_SendMessage(MMI_CEPID,KEY_DOWN,RIGHT_BUTTON);
               GBS_SendMessage(MMI_CEPID,KEY_UP,RIGHT_BUTTON);
-          }
-    }
+          } break;
     }
   }
 #endif
+  if ((submsg==0x27) && (ENA_PLAYER) && (!IsCalling()) && (msg==LONG_PRESS)){
+    if (IsGuiOnTop(((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])){
+      if (ENA_PLAYER==2) SUBPROC(GetFunctionPointer("ELSE_MUSIC_PLAY"));
+      else execelf(player_path,playlist_path);
+      media_mode=1;
+      return 2;
+    }
+  }
+  if ((submsg==0x27) && (media_mode)){ media_mode=0; return 2;}
   
 //  Goto Native Menu
+  if (ENA_NATIVE){
+  if (IsIDLE() && (submsg==ENTER_BUTTON) && (msg==LONG_PRESS) && (IsNoJava()==0)){
+      nat_red_mode=0;
+      return 0;
+  }
   if (IsIDLE() && (submsg==ENTER_BUTTON) && (msg==KEY_DOWN) && (IsNoJava()==0)){
       nat_red_mode=1;
-      return(2);
+      return(0);
   }
   if (IsIDLE() && (submsg==ENTER_BUTTON) && (msg==KEY_UP) && (IsNoJava()==0) && (nat_red_mode)){
       ShowNativeMenu();
       nat_red_mode=0;
       return(2);}
     else if ((nat_red_mode)&& (submsg==ENTER_BUTTON)) nat_red_mode=0;
+  }
   
-  //Side keys
+//Side keys
   if ((SIDE_STYLE==1) && !(IsIDLE())){
     if ((submsg==0x14)||(submsg==0xD)){
 	GBS_SendMessage(MMI_CEPID,msg,UP_BUTTON);
@@ -236,32 +246,65 @@ int my_keyhook(int submsg, int msg)
     
   //Key2Joy init
   if ((ENA_KEY2JOY>0) && (submsg==Key2Joy_KEY)){
-    if (msg==LONG_PRESS) keymode2=1;
-    if (msg==KEY_UP){
-      if ((Key2Joy_KEY_LONG_PRESS==1) && (keymode2==1)){
-        keymode+=1;
-        keymode2=0;
-        if (keymode==2) keymode=0;
-        if (keymode==1) ShowMSG(1,(int)"Key2Joy On!");
-                        else ShowMSG(1,(int)"Key2Joy Off!");
-        return 2;
-      } else if (keymode2==0) return(0);
-      if ((Key2Joy_KEY_LONG_PRESS==0) && (keymode2==0)){
-        keymode+=1;
-        if (keymode==2) keymode=0;
-        if (keymode==1) ShowMSG(1,(int)"Key2Joy On!");
-                        else ShowMSG(1,(int)"Key2Joy Off!");
-        return 2;
-      } else{
-        keymode=0;
-        return(0);
+    if (Key2Joy_KEY_LONG_PRESS==1){                                         // §¥§İ§Ú§ß§ß§à§Ö §ß§Ñ§Ø§Ñ§ä§Ú§Ö
+    switch (msg){
+    case KEY_DOWN:
+      if (keymode2==0) return KEYHOOK_BREAK; else return KEYHOOK_NEXT; 
+    case KEY_UP:
+      if (keymode2==0)
+      {
+        keymode2=1;
+        GBS_SendMessage(MMI_CEPID,KEY_DOWN,Key2Joy_KEY);
+        GBS_SendMessage(MMI_CEPID,KEY_UP,Key2Joy_KEY);
+        return KEYHOOK_BREAK;
       }
+      if (keymode2==1)
+      {
+        keymode2=0;
+        return KEYHOOK_NEXT;
+      }
+      if (keymode2==2)
+      {
+        keymode2=0;
+        return KEYHOOK_BREAK;
+      }
+    case LONG_PRESS:
+      if ((IsUnlocked()||ENA_LOCK) && (keymode2==0))
+      {
+        keymode+=1;
+        keymode2=2;
+        if (keymode==2) keymode=0;
+        if ((keymode==1)&&(ENA_K2J_MSG)) ShowMSG(1,(int)"Key2Joy¿ªÆô!");
+                                    else if (ENA_K2J_MSG) ShowMSG(1,(int)"Key2Joy¹Ø±Õ!");
+      return KEYHOOK_BREAK;
+      } else return KEYHOOK_NEXT;
     }
+    
+    
+    } else{                                                                 // §¬§à§â§à§ä§Ü§à§Ö §ß§Ñ§Ø§Ñ§ä§Ú§Ö
+      if (msg==KEY_DOWN) { if (keymode2==0) return KEYHOOK_BREAK; else return KEYHOOK_NEXT; };
+      if (msg==LONG_PRESS){
+        if (keymode2==0) { keymode2=1; GBS_SendMessage(MMI_CEPID,KEY_DOWN,Key2Joy_KEY); }
+        return KEYHOOK_NEXT;
+      }
+      if (msg==KEY_UP){
+        if (keymode2==0){
+        keymode+=1;
+        if (keymode==2) keymode=0;
+        if ((keymode==1)&&(ENA_K2J_MSG)) ShowMSG(1,(int)"Key2Joy¿ªÆô!");
+                                    else if (ENA_K2J_MSG) ShowMSG(1,(int)"Key2Joy¹Ø±Õ!");
+        return KEYHOOK_BREAK;
+         } else{
+           keymode2=0;
+           return KEYHOOK_NEXT;
+         }
+    }
+  }
   }
 
   
   //keypad2joy implementation
-  if ((keymode==1) && !(IsIDLE())){
+  if (keymode==1){
     if (submsg==0x38){
 	GBS_SendMessage(MMI_CEPID,msg,DOWN_BUTTON);
 	  return(2); 
@@ -309,6 +352,7 @@ int my_keyhook(int submsg, int msg)
   }
 #endif
 return(0);
+  } else return 0;
 }
 
 #pragma inline=forced
@@ -334,7 +378,7 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
     extern const char *successed_config_filename;
     if (strcmp_nocase(successed_config_filename,(char *)msg->data0)==0)
     {
-      ShowMSG(1,(int)"KeyMaster config updated!");
+      ShowMSG(1,(int)"KeyMasterÅäÖÃÒÑ¸üĞÂ!");
       InitConfig();
     }
   }
@@ -420,8 +464,7 @@ int main()
   UnlockSched();
   
   AddKeybMsgHook((void *)my_keyhook);
-  extern const int ENA_HELLO_MSG;
-  if (ENA_HELLO_MSG) ShowMSG(1,(int)"KeyMaster installed!");
+  if (ENA_HELLO_MSG) ShowMSG(1,(int)"KeyMasterÕıÔÚÔËĞĞ!");
   
   return 0;
 }

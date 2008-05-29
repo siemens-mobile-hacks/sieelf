@@ -10,7 +10,7 @@ void patch_header(const HEADER_DESC* head)
 }
 
 //==============================================================================
-// Ãóé
+// §¤§å§Û
 //==============================================================================
 /*
 extern void kill_data(void *p, void (*func_p)(void *));
@@ -69,7 +69,7 @@ int method5(MAIN_GUI *data, GUI_MSG *msg)
     {
     case RIGHT_SOFT:
       return(1); 
-    }//Ïðîèñõîäèò âûçîâ GeneralFunc äëÿ òåê. GUI -> çàêðûòèå GUI
+    }//§±§â§à§Ú§ã§ç§à§Õ§Ú§ä §Ó§í§Ù§à§Ó GeneralFunc §Õ§Ý§ñ §ä§Ö§Ü. GUI -> §Ù§Ñ§Ü§â§í§ä§Ú§Ö GUI
   }
   return(0);
 }
@@ -224,7 +224,7 @@ GetDateTime(&date,&time);
        else sprintf(&resstr,"Uptime %i Days, %02i:%02i",nh,nm);
 }
 //==============================================================================
-// Ìåíþ
+// §®§Ö§ß§ð
 //==============================================================================
 #define MENU_ITEMS_NUM 4
 
@@ -258,10 +258,10 @@ static void mp4()
 
 static const char * const menutexts[MENU_ITEMS_NUM]=
 {
-  "Turn Off",
-  "Reboot",
-  "Lock Keyboard",
-  "Turn off the phone and all the signals"
+  "¹Ø»ú",
+  "ÖØÆô",
+  "Ëø¼üÅÌ",
+  "¹Ø»úÎÞÄÖÁå"
 };
 
 static const void *menuprocs[MENU_ITEMS_NUM]=
@@ -275,8 +275,8 @@ static const void *menuprocs[MENU_ITEMS_NUM]=
 static const int menusoftkeys[] = {0,1,2};
 static const SOFTKEY_DESC menu_sk[]=
 {
-  {0x0018, 0x0000, (int)"Select"},
-  {0x0001, 0x0000, (int)"Close"},
+  {0x0018, 0x0000, (int)"Ñ¡Ôñ"},
+  {0x0001, 0x0000, (int)"¹Ø±Õ"},
   {0x003D, 0x0000, (int)LGP_DOIT_PIC}
 };
 
@@ -291,7 +291,7 @@ int rb_menu_onkey(void *data, GUI_MSG *msg)
   TTime t;
   TDate d;
   GetDateTime(&d,&t);
-  sprintf(&hdr2,"Menu  %02d:%02d",t.hour,t.min);
+  sprintf(&hdr2,"²Ëµ¥  %02d:%02d",t.hour,t.min);
   strncpy(hdr,&hdr2,63);
   
   if ((msg->keys==0x18)||(msg->keys==0x3D))
@@ -314,7 +314,7 @@ void rb_menu_iconhndl(void *data, int curitem, void *unk)
   TTime t;
   TDate d;
   GetDateTime(&d,&t);
-  sprintf(&hdr2,"Menu  %02d:%02d",t.hour,t.min);
+  sprintf(&hdr2,"²Ëµ¥  %02d:%02d",t.hour,t.min);
   strncpy(hdr,&hdr2,63);
 //  count_uptime();
   
@@ -339,17 +339,17 @@ static const ML_MENU_DESC rb_menu=
   NULL,   //Items
   NULL,   //Procs
   MENU_ITEMS_NUM,   //n
-  1 //Äîáàâî÷íûõ ñòðîê  
+  0 //§¥§à§Ò§Ñ§Ó§à§é§ß§í§ç §ã§ä§â§à§Ü  
 };
 
 void CreateRBMenu(void)
 {
   patch_header(&rb_menuhdr);
-  sprintf(&resstr,"");;
+  sprintf(&resstr,"");
   TTime t;
   TDate d;
   GetDateTime(&d,&t);
-  sprintf(&hdr2,"Menu  %02d:%02d",t.hour,t.min);
+  sprintf(&hdr2,"%i kb RAM %02d:%02d",GetFreeRamAvail()/1024,t.hour,t.min);
   strncpy(hdr,&hdr2,63);
   CreateMultiLinesMenu(0,0,&rb_menu,&rb_menuhdr,0,MENU_ITEMS_NUM);
 }

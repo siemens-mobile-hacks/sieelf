@@ -1,60 +1,94 @@
 #include "..\inc\cfg_items.h"
-//Êîíôèãóðàöèÿ
-__root const CFG_HDR cfghdr0={CFG_CBOX,"Enable hello message",0,2};
-__root const int ENA_HELLO_MSG=1;
-__root const CFG_CBOX_ITEM cfgcbox0[2]={"No","Yes"};
+//§¬§à§ß§æ§Ú§Ô§å§â§Ñ§è§Ú§ñ
 
-__root const CFG_HDR cfghdr1={CFG_CBOX,"Enable if keyboard locked",0,2};
+__root const CFG_HDR cfghdr0={CFG_CBOX,"ÔÊÐíËø¼üÅÌÊ±Ê¹ÓÃ",0,2};
 __root const int ENA_LOCK=1;
-__root const CFG_CBOX_ITEM cfgcbox1[2]={"No","Yes"};
+__root const CFG_CBOX_ITEM cfgcbox0[2]={"·ñ","ÊÇ"};
 
-#ifndef NEWSGOLD
-__root const CFG_HDR cfghdr2={CFG_CBOX,"Enable MediaControl",0,2};
-__root const int ENA_MEDIAC=1;
-__root const CFG_CBOX_ITEM cfgcbox2[2]={"No","Yes"};
-#endif
+__root const CFG_HDR cfghdr_m11={CFG_LEVEL,"ÌáÊ¾ÐÅÏ¢",1,0};
 
-__root const CFG_HDR cfghdr_m11={CFG_LEVEL,"Key2Joy",1,0};
+__root const CFG_HDR cfghdr1={CFG_CBOX,"ÔÊÐí»¶Ó­ÐÅÏ¢",0,2};
+__root const int ENA_HELLO_MSG=1;
+__root const CFG_CBOX_ITEM cfgcbox1[2]={"·ñ","ÊÇ"};
 
-__root const CFG_HDR cfghdr3={CFG_CBOX,"Enable  Key2Joy",0,4};
-__root const int ENA_KEY2JOY=2;
-__root const CFG_CBOX_ITEM cfgcbox3[4]={"No","Yes","With soft keys on 7,9","With soft keys on 1,3"};
-
-__root const CFG_HDR cfghdr4={CFG_UINT,"Key2Joy key",0,99};
-__root const int Key2Joy_KEY=11;
-
-__root const CFG_HDR cfghdr5={CFG_CBOX,"Long press Key2Joy key",0,2};
-__root const int Key2Joy_KEY_LONG_PRESS=1;
-__root const CFG_CBOX_ITEM cfgcbox5[2]={"No","Yes"};
+__root const CFG_HDR cfghdr2={CFG_CBOX,"ÔÊÐíKey2JoyÐÅÏ¢",0,2};
+__root const int ENA_K2J_MSG=1;
+__root const CFG_CBOX_ITEM cfgcbox2[2]={"·ñ","ÊÇ"};
 
 __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
 
-__root const CFG_HDR cfghdr6={CFG_CBOX,"MenuD replacement",0,2};
-__root const int ENA_NATIVE=1;
-__root const CFG_CBOX_ITEM cfgcbox6[2]={"No","Yes"};
-
+__root const CFG_HDR cfghdr_m21={CFG_LEVEL,"²¥·Å¿ØÖÆ",1,0};
 #ifndef NEWSGOLD
-__root const CFG_HDR cfghdr8={CFG_CBOX,"Red button longpress mode",0,2};
-__root const int RED_BUT_MODE=1;
-__root const CFG_CBOX_ITEM cfgcbox8[2]={"As in FW","Hide all tasks"};
+__root const CFG_HDR cfghdr3={CFG_CBOX,"ÔÊÐí²¥·Å¿ØÖÆ",0,2};
+__root const int ENA_MEDIAC=0;
+__root const CFG_CBOX_ITEM cfgcbox3[2]={"·ñ","ÊÇ"};
+
+__root const CFG_HDR cfghdr4={CFG_CBOX,"Start player on HandsFree button",0,3};
+__root const int ENA_PLAYER=1;
+__root const CFG_CBOX_ITEM cfgcbox4[3]={"·ñ","ÊÇ,Elf²¥·ÅÆ÷","ÊÇ,Ä¬ÈÏ²¥·ÅÆ÷"};
+#else 
+__root const CFG_HDR cfghdr4={CFG_CBOX,"Start player on HandsFree button",0,2};
+__root const int ENA_PLAYER=1;
+__root const CFG_CBOX_ITEM cfgcbox4[2]={"·ñ","ÊÇ,Elf²¥·ÅÆ÷"};
 #endif
 
-__root const CFG_HDR cfghdr_m21={CFG_LEVEL,"SideButtons settings",1,0};
+__root const CFG_HDR cfghdr5={CFG_STR_UTF8,"Elf²¥·ÅÆ÷Â·¾¶",3,127};
+__root const char player_path[128]="2:\\Misc\\Data inbox\\SPlayer.elf";
 
-__root const CFG_HDR cfghdr9={CFG_CBOX,"Side buttons as joypad",0,4};
-__root const int SIDE_STYLE=3;
-__root const CFG_CBOX_ITEM cfgcbox9[4]={"No","Yes,Up&Down","Yes,Left&Right","ExtMode"};
-
-__root const CFG_HDR cfghdr10={CFG_UINT,"SideUp longpress",0,99};
-__root const int SideUPL=0x0C;
-
-__root const CFG_HDR cfghdr11={CFG_UINT,"SideUp shortpress",0,99};
-__root const int SideUPS=0x3B;
-
-__root const CFG_HDR cfghdr12={CFG_UINT,"SideDown longpress",0,99};
-__root const int SideDNL=0x1A;
-
-__root const CFG_HDR cfghdr13={CFG_UINT,"SideDown shortpress",0,99};
-__root const int SideDNS=0x3C;
+__root const CFG_HDR cfghdr17={CFG_STR_UTF8,"ELF²¥·ÅÆ÷²¥·ÅÁÐ±í",3,127};
+__root const char playlist_path[128]="0:\\Sounds\\ Best.m3u";
 
 __root const CFG_HDR cfghdr_m20={CFG_LEVEL,"",0,0};
+
+__root const CFG_HDR cfghdr_m31={CFG_LEVEL,"Key2Joy",1,0};
+
+__root const CFG_HDR cfghdr6={CFG_CBOX,"Ê¹ÓÃKey2Joy",0,4};
+__root const int ENA_KEY2JOY=2;
+__root const CFG_CBOX_ITEM cfgcbox6[4]={"·ñ","ÊÇ","×óÓÒ¼ü7,9","×óÓÒ¼ü1,3"};
+
+__root const CFG_HDR cfghdr7={CFG_UINT,"Key2Joy¼ü",0,99};
+__root const int Key2Joy_KEY=11;
+
+__root const CFG_HDR cfghdr8={CFG_CBOX,"¼¤»îÄ£Ê½",0,2};
+__root const int Key2Joy_KEY_LONG_PRESS=1;
+__root const CFG_CBOX_ITEM cfgcbox8[2]={"¶Ì°´","³¤°´"};
+
+__root const CFG_HDR cfghdr_m30={CFG_LEVEL,"",0,0};
+
+__root const CFG_HDR cfghdr9={CFG_CBOX,"MenuDÌæ»»",0,2};
+__root const int ENA_NATIVE=1;
+__root const CFG_CBOX_ITEM cfgcbox9[2]={"·ñ","ÊÇ"};
+
+#ifndef NEWSGOLD
+__root const CFG_HDR cfghdr_m41={CFG_LEVEL,"ºì¼üÉèÖÃ",1,0};
+
+__root const CFG_HDR cfghdr10={CFG_CBOX,"ÔÊÐí×ÀÃæÊ¹ÓÃºì¼ü",0,2};
+__root const int ENA_RBM=1;
+__root const CFG_CBOX_ITEM cfgcbox10[2]={"·ñ","ÊÇ"};
+
+__root const CFG_HDR cfghdr11={CFG_CBOX,"³¤°´ºì¼üÄ£Ê½",0,2};
+__root const int RED_BUT_MODE=0;
+__root const CFG_CBOX_ITEM cfgcbox11[2]={"ºÍÍ¨³£Ò»Ñù","Òþ²ØËùÓÐÈÎÎñ"};
+
+__root const CFG_HDR cfghdr_m40={CFG_LEVEL,"",0,0};
+#endif
+
+__root const CFG_HDR cfghdr_m51={CFG_LEVEL,"²à¼üÉèÖÃ",1,0};
+
+__root const CFG_HDR cfghdr112={CFG_CBOX,"²à¼üµ±µ¼º½¼ü",0,4};
+__root const int SIDE_STYLE=3;
+__root const CFG_CBOX_ITEM cfgcbox12[4]={"·ñ","ÊÇ,ÉÏºÍÏÂ","ÊÇ,×óºÍÓÒ","ExtMode"};
+
+__root const CFG_HDR cfghdr13={CFG_UINT,"²àÉÏ³¤°´",0,99};
+__root const int SideUPL=0x0C;
+
+__root const CFG_HDR cfghdr14={CFG_UINT,"²àÉÏ¶Ì°´",0,99};
+__root const int SideUPS=0x3B;
+
+__root const CFG_HDR cfghdr15={CFG_UINT,"²àÏÂ³¤°´",0,99};
+__root const int SideDNL=0x1A;
+
+__root const CFG_HDR cfghdr16={CFG_UINT,"²àÏÂ¶Ì°´",0,99};
+__root const int SideDNS=0x3C;
+
+__root const CFG_HDR cfghdr_m50={CFG_LEVEL,"",0,0};

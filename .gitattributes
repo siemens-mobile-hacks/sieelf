@@ -497,6 +497,7 @@ KeyMaster/config_data.c -text
 KeyMaster/func.asm -text
 KeyMaster/gui.c -text
 KeyMaster/main.c -text
+KeyMaster/postbuild.bat -text
 KeyMaster/test.xcl -text
 LGP_TEST/LGP_TEST.ewp -text
 LGP_TEST/LGP_TEST.eww -text
