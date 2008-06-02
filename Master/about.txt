@@ -1,0 +1,39 @@
+ELF名称: Master.elf
+作者: BingK(binghelingxi), Email: bingkx@gmail.com
+版本: 1.0
+感谢: 所有参与CfgEdit制作的人,CfgEdit给了我很多应用参考实例
+      很大程度上方便了我制作这个ELF.
+作用: 和JAVA版本的Master一样,实现了对MasterPatch的配置,
+      并在一定程度上发挥了ELF的优势.
+其它相关:
+      1.和JAVA版本的一点不同,配置情景模式时请在补丁列表打开
+        选项菜单,选择"情景模式"项目配置.
+      2.我查看过JAVA版本的Master的源码,由于对JAVA一窍不通,故
+        对于以下几种数据类型不是很了解,且不是很常用,因此没有
+        在1.0版本中加入支持:
+          //#define TYPE_MS     15 //timeinms
+          //#define TYPE_OF     16 //offset
+          //#define TYPE_DL     17 //slider
+          //#define TYPE_CONST  18 //const
+          //#define TYPE_TP     19 //template
+          //#define TYPE_USETP  20 //usetemplate
+          //#define TYPE_ENDTP  21 //endtemplate
+        可能在以后的版本中会加入支持,或者如果你有什么好提议,请联系我.
+      3.源代码中的各个文件作用:
+        getConfig.c,解析config.txt,并将结果填入到对应的数据结构中,并
+            提供一些处理数据的函数.
+        lang.h,定义了语言包
+        main.c,建立CSM,GUI,完成整个程序的控制.
+        master.h,定义了各个类型的数据结构.
+        optionMenu.c,建立了选项菜单,并提供了选项菜单的各个功能.
+        ptcFileWork.c,处理*.ptc文件,完成开始的读取数据初始化及退出ELF
+            时的保存数据到*.ptc文件.
+        visual.c,提供了一些设置的视觉上的效果,包括颜色设置,选择文件及
+            文件夹,它来自CfgEdit,我在这个基础上做了一些适应于Master的修改
+        usedstr.c,用它来定义了一些字符串,可能是IAR的BUG,如果一个字符串被
+            重复使用(在反汇编代码中要写入了两个位置),就会出现如下错误:
+              Diagnostic: Unknown relocation directive (70)
+            这个文件就是让这些字符串只会被写在一个地方,其它程序都来调用它,
+            以避开错误.
+      4.源码中WINTEL_DEBUG项为使用WINDOWS的编译器调试的条件编译项.
+           

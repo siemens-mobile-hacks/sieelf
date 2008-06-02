@@ -1,0 +1,163 @@
+#ifndef _MASTER_H_
+#define _MASTER_H_
+
+typedef struct
+{
+	char patchName[128];
+	char patchID[16];
+	char version[8];
+	char author[32];
+	char *info;
+}PATCH_INFO;
+
+typedef struct
+{
+	int min;
+	int max;
+	int initData;
+}DATA_INT;
+
+typedef struct
+{
+	short x;
+	short y;
+}DATA_POS;
+
+typedef struct
+{
+	char color[4];
+}DATA_COLOR;
+
+typedef struct
+{
+	char path[128];
+	char mask[32];
+	int maxlen;//if 0, use default 58
+}DATA_SF;
+
+typedef struct
+{
+	char path[128];
+	int maxlen;
+}DATA_SD;
+typedef struct
+{
+	unsigned short ustr[128]; //max 128
+	int maxlen; //if 0, use default 0x10
+}DATA_UNICODE;
+
+typedef struct
+{
+	char string[128];
+	int maxlen;
+}DATA_STRING;//if 0, use default 0x10
+
+typedef struct
+{
+	int addr;
+}DATA_ADDRESS;
+
+typedef struct
+{
+	char min;
+	char max;
+	char initData;
+}DATA_BYTE;
+
+typedef struct
+{
+	int bitPos;
+	char onoff;
+}DATA_CHECKBOX;
+
+typedef struct
+{
+	void *prev;
+	void *next;
+	char name[128];
+	char data;
+}CBOX_ITEM;
+
+typedef struct
+{
+	char initData;
+	CBOX_ITEM *cboxitem;
+}DATA_CBOX;
+
+typedef struct
+{
+	char str[128];
+}DATA_DRSTR;
+
+typedef struct
+{
+	unsigned char hex[128];
+	int maxlen;
+}DATA_HEX;//if 0, use default 0x10
+
+typedef struct
+{
+	void *prev;
+	void *next;
+	char itemName[128];
+	char data;
+}PREPARE_ITEM;
+
+typedef struct
+{
+	char useAs[32];
+	PREPARE_ITEM *prepareItem;
+}PREPARE_DATA;
+
+typedef struct
+{
+	void *prev;
+	void *next;
+	int bytePos;
+	char itemName[128];
+	int itemType;
+	void *itemData;
+}PATCH_ITEM;
+
+typedef struct
+{
+	char smName[128];
+	PATCH_ITEM *item;
+}PATCH_SUBMENU;
+
+
+typedef struct
+{
+	void *prev;
+	void *next;
+	unsigned char patchonoff;
+	int needSaveData;
+	int memory;
+	PATCH_INFO *patchInfo;
+	PATCH_SUBMENU mainitem; //理解为一个submenu
+}PTC_CONFIG;
+
+#define TYPE_PRE	0 //choice //data prepare for option/cbox
+#define TYPE_DRSTR	1 //direct sring
+#define TYPE_CHECKBOX	2 //checkbox
+#define TYPE_POS	3 //XY postion
+#define TYPE_BYTE	4 //data byte
+#define TYPE_INT	5 //data int
+#define TYPE_CBOX	6 //CBOX/option
+#define TYPE_COLOR	7 //color
+#define TYPE_ADDRESS	8 //address
+#define TYPE_STRING	9 //String
+#define TYPE_UNICODE	10 //unicode
+#define TYPE_SUBMENU	11 //submenu
+#define TYPE_HEX	12 //hex
+#define TYPE_SF		13 //select file
+#define TYPE_SD		14 //selectdir
+//#define TYPE_MS	15 //timeinms
+//#define TYPE_OF	16 //offset
+//#define TYPE_DL	17 //slider
+//#define TYPE_CONST	18 //const
+//#define TYPE_TP	19 //template
+//#define TYPE_USETP	20 //usetemplate
+//#define TYPE_ENDTP	21 //endtemplate
+
+#endif
