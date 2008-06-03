@@ -92,6 +92,33 @@ extern const char BYTES_FMT[16];
 extern const char BYTES_SG[8];
 extern const char KBYTES_SG[8];
 
+
+extern const int LUNAR_YEAR_ENA;
+extern const unsigned int LUNAR_YEAR_X;
+extern const unsigned int LUNAR_YEAR_Y;
+extern const char LUNAR_YEAR_COLORS[4];
+extern const unsigned int LUNAR_YEAR_FONT;
+extern const int LUNAR_YEAR_FRINGING_ENA;
+extern const char LUNAR_YEAR_FRINGING_COLORS[4];
+
+extern const int LUNAR_DATE_ENA;
+extern const unsigned int LUNAR_DATE_X;
+extern const unsigned int LUNAR_DATE_Y;
+extern const char LUNAR_DATE_COLORS[4];
+extern const unsigned int LUNAR_DATE_FONT;
+extern const int LUNAR_DATE_FRINGING_ENA;
+extern const char LUNAR_DATE_FRINGING_COLORS[4];
+extern const int LUNAR_DATE_STYLE;
+
+
+extern const int LUNAR_MONTH_ENA;
+extern const unsigned int LUNAR_MONTH_X;
+extern const unsigned int LUNAR_MONTH_Y;
+extern const char LUNAR_MONTH_COLORS[4];
+extern const unsigned int LUNAR_MONTH_FONT;
+extern const int LUNAR_MONTH_FRINGING_ENA;
+extern const char LUNAR_MONTH_FRINGING_COLORS[4];
+extern const int LUNAR_MONTH_STYLE;
 /*
 extern const int FLEX0_ENA;
 extern const int cfgMB0;

@@ -11,7 +11,7 @@ unsigned int fShow;
 CSM_DESC icsmd;
 
 WSHDR *ws;
-#define WS_MAXLEN 20
+#define WS_MAXLEN 32
 
 
 typedef struct{
@@ -27,7 +27,7 @@ typedef struct{
   char fr_cl[4];
 } TInfo;
 
-TInfo InfoData[10];
+TInfo InfoData[13];
  
 GBSTMR mytmr;
 const IPC_REQ my_ipc={
@@ -110,8 +110,60 @@ const char weekdays2[7][16]=
 	"星期日"
 };
 
+const char LUNAR_MONTH_TAB[12][8]=
+{
+	"正月",
+	"二月",
+	"三月",
+	"四月",
+	"五月",
+	"六月",
+	"七月",
+	"八月",
+	"九月",
+	"十月",
+	"十一月",
+	"腊月",
+};
+
+const char LUNAR_DATE_TAB[31][8]=
+{
+	"初一",
+	"初二",
+	"初三",
+	"初四",
+	"初五",
+	"初六",
+	"初七",
+	"初八",
+	"初九",
+	"初十",
+	"十一",
+	"十二",
+	"十三",
+	"十四",
+	"十五",
+	"十六",
+	"十七",
+	"十八",
+	"十九",
+	"二十",
+	"二十一",
+	"二十二",
+	"二十三",
+	"二十四",
+	"二十五",
+	"二十六",
+	"二十七",
+	"二十八",
+	"二十九",
+	"三十",
+	"三十一",
+};
+
 TTime t_time;
 TDate t_date;
+TDate lunar_date;
 //char utf8_temp[20];
 
 void InitInfoData(void)
@@ -233,13 +285,13 @@ void InitInfoData(void)
     	switch(WEEK_STYLE)
     	{
     		case 0:
-    			str_2ws(InfoData[7].ws, &weekdays[c][0], 16);
+    			str_2ws(InfoData[7].ws, weekdays[c], 16);
     			break;
     		case 1:
-    			str_2ws(InfoData[7].ws, &weekdays1[c][0], 16);
+    			str_2ws(InfoData[7].ws, weekdays1[c], 16);
     			break;
     		case 2:
-    			gb2ws(InfoData[7].ws, &weekdays2[c][0], 16);
+    			gb2ws(InfoData[7].ws, weekdays2[c], 16);
     	}
     	//str_2ws(InfoData[7].ws, &weekdays[c][0], 16);
     	FillInfoData(&InfoData[7],WEEK_X,WEEK_Y,WEEK_FONT,WEEK_COLORS,WEEK_FRINGING_ENA ? TEXT_OUTLINE : 0,WEEK_FRINGING_COLORS);
@@ -288,6 +340,47 @@ void InitInfoData(void)
     else
     {
     	InfoData[9].enabled=0;
+    }
+    if (LUNAR_DATE_ENA)
+    {
+    	InfoData[10].enabled=1;
+    	GetDateTime(&t_date, &t_time);
+    	GetLunarDate(&t_date, &lunar_date);
+    	if(LUNAR_DATE_STYLE)
+    		wsprintf(InfoData[10].ws, "%02d", lunar_date.day);
+    	else
+    		wsprintf(InfoData[10].ws, "%t", LUNAR_DATE_TAB[(lunar_date.day-1)]);
+    	FillInfoData(&InfoData[10],LUNAR_DATE_X,LUNAR_DATE_Y,LUNAR_DATE_FONT,LUNAR_DATE_COLORS,LUNAR_DATE_FRINGING_ENA ? TEXT_OUTLINE : 0,LUNAR_DATE_FRINGING_COLORS);
+    }
+    else
+    {
+    	InfoData[10].enabled=0;
+    }
+    if (LUNAR_YEAR_ENA)
+    {
+    	InfoData[11].enabled=1;
+    	GetLunarDate(&t_date, &lunar_date);
+    	wsprintf(InfoData[11].ws, "%t%t", GetLunarYearID(lunar_date.year),"年");
+    	FillInfoData(&InfoData[11],LUNAR_YEAR_X,LUNAR_YEAR_Y,LUNAR_YEAR_FONT,LUNAR_YEAR_COLORS,LUNAR_YEAR_FRINGING_ENA ? TEXT_OUTLINE : 0,LUNAR_YEAR_FRINGING_COLORS);
+    }
+    else
+    {
+    	InfoData[11].enabled=0;
+    }
+    if (LUNAR_MONTH_ENA)
+    {
+    	InfoData[12].enabled=1;
+    	GetDateTime(&t_date, &t_time);
+    	GetLunarDate(&t_date, &lunar_date);
+    	if(LUNAR_MONTH_STYLE)
+    		wsprintf(InfoData[12].ws, "%02d", lunar_date.month);
+    	else
+    		wsprintf(InfoData[12].ws, "%t", LUNAR_MONTH_TAB[(lunar_date.month-1)]);
+    	FillInfoData(&InfoData[12],LUNAR_MONTH_X,LUNAR_MONTH_Y,LUNAR_MONTH_FONT,LUNAR_MONTH_COLORS,LUNAR_MONTH_FRINGING_ENA ? TEXT_OUTLINE : 0,LUNAR_MONTH_FRINGING_COLORS);
+    }
+    else
+    {
+    	InfoData[12].enabled=0;
     }
 /*    if (FLEX0_ENA)
     {
@@ -382,6 +475,7 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
     {
       ShowMSG(1,(int)"TextInfo配置更新!");
       InitConfig();
+      InitInfoData();
     }
   }
   if (msg->msg==MSG_IPC)
@@ -459,7 +553,7 @@ static void maincsm_oncreate(CSM_RAM *data)
   {
     InfoData[i].ws=CreateLocalWS(&InfoData[i].wsh,InfoData[i].wsbody,WS_MAXLEN+1);
   }  
-  GBS_SendMessage(MMI_CEPID,MSG_IPC,IPC_UPDATE_STAT,&my_ipc);
+  TimerProc();
 }
 
 static void maincsm_onclose(CSM_RAM *csm)

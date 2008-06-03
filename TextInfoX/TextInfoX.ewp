@@ -550,7 +550,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>TextInfo.elf</state>
+          <state>TextInfoX.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -736,7 +736,7 @@
         </option>
         <option>
           <name>ExtraOutputFile</name>
-          <state>TextInfo.a79</state>
+          <state>TextInfoX.a79</state>
         </option>
         <option>
           <name>ExtraOutputFormat</name>
@@ -1753,7 +1753,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.41A</state>
+          <state>4.42A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -2197,7 +2197,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>TextInfo.elf</state>
+          <state>TextInfoX.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -2383,7 +2383,7 @@
         </option>
         <option>
           <name>ExtraOutputFile</name>
-          <state>TextInfo.a79</state>
+          <state>TextInfoX.a79</state>
         </option>
         <option>
           <name>ExtraOutputFormat</name>
@@ -2935,7 +2935,8 @@
           <debug>0</debug>
           <option>
             <name>CCDefines</name>
-            <state></state>
+            <state>NEWSGOLD</state>
+            <state>ELKA</state>
           </option>
           <option>
             <name>CCPreprocFile</name>

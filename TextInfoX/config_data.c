@@ -3,7 +3,7 @@
 #include "TextInfoX.h"
 //Êîíôèãóðàöèÿ
 
-__root const CFG_HDR cfghdr0={CFG_UINT,"Ë¢ÐÂÊ±¼ä, 1/10Ãë",0,600};
+__root const CFG_HDR cfghdr0={CFG_UINT,"Ë¢ÐÂÊ±¼ä, 1/10Ãë",0,9999};
 __root const unsigned int REFRESH=20;
 
 __root const CFG_HDR cfghdr0_0 = {CFG_CBOX, "ÏÔÊ¾Ê±»ú", 0, 3};
@@ -298,6 +298,88 @@ __root const char TIME_FRINGING_COLORS[4]={255,255,255,100};
 __root const CFG_HDR cfghdr_m110={CFG_LEVEL,"",0,0};
 
 //------------------------------------------------------------------------------
+
+__root const CFG_HDR cfghdr_m131={CFG_LEVEL,"Å©ÀúÄê",1,0};
+
+__root const CFG_HDR cfghdr13_1 = {CFG_CHECKBOX, "ÏÔÊ¾", 0, 2};
+__root const int LUNAR_YEAR_ENA = 0;
+
+__root const CFG_HDR cfghdr13_2={CFG_COORDINATES,"Î»ÖÃ×ø±ê",0,0};
+__root const unsigned int LUNAR_YEAR_X=0;
+__root const unsigned int LUNAR_YEAR_Y=50;
+
+__root const CFG_HDR cfghdr13_3={CFG_COLOR,"ÑÕÉ«",0,0};
+__root const char LUNAR_YEAR_COLORS[4]={255,255,255,100};
+
+__root const CFG_HDR cfghdr13_4={CFG_UINT,"×ÖÌå",0,65535};
+__root const unsigned int LUNAR_YEAR_FONT=FONT_SMALL;
+
+__root const CFG_HDR cfghdr13_5 = {CFG_CHECKBOX, "ÏÔÊ¾±ß¿ò", 0, 2};
+__root const int LUNAR_YEAR_FRINGING_ENA = 1;
+
+__root const CFG_HDR cfghdr13_6={CFG_COLOR,"±ß¿òÑÕÉ«",0,0};
+__root const char LUNAR_YEAR_FRINGING_COLORS[4]={0,0,0,100};
+
+__root const CFG_HDR cfghdr_m130={CFG_LEVEL,"",0,0};
+
+// -------------------------------------------------------------------------- //
+
+__root const CFG_HDR cfghdr_m151={CFG_LEVEL,"Å©ÀúÔÂ",1,0};
+
+__root const CFG_HDR cfghdr15_1 = {CFG_CHECKBOX, "ÏÔÊ¾", 0, 2};
+__root const int LUNAR_MONTH_ENA = 0;
+
+__root const CFG_HDR cfghdr15_2={CFG_COORDINATES,"Î»ÖÃ×ø±ê",0,0};
+__root const unsigned int LUNAR_MONTH_X=90;
+__root const unsigned int LUNAR_MONTH_Y=50;
+
+__root const CFG_HDR cfghdr15_3={CFG_COLOR,"ÑÕÉ«",0,0};
+__root const char LUNAR_MONTH_COLORS[4]={255,255,255,100};
+
+__root const CFG_HDR cfghdr15_4={CFG_UINT,"×ÖÌå",0,65535};
+__root const unsigned int LUNAR_MONTH_FONT=FONT_SMALL;
+
+__root const CFG_HDR cfghdr15_5 = {CFG_CHECKBOX, "ÏÔÊ¾±ß¿ò", 0, 2};
+__root const int LUNAR_MONTH_FRINGING_ENA = 1;
+
+__root const CFG_HDR cfghdr15_6={CFG_COLOR,"±ß¿òÑÕÉ«",0,0};
+__root const char LUNAR_MONTH_FRINGING_COLORS[4]={0,0,0,100};
+
+__root const CFG_HDR cfghdr15_7={CFG_CBOX,"ÑùÊ½",0,2};
+__root const int LUNAR_MONTH_STYLE = 0;
+__root const CFG_CBOX_ITEM cfgcbox15_0[2] = {"ÕýÔÂ","01"};
+
+__root const CFG_HDR cfghdr_m150={CFG_LEVEL,"",0,0};
+
+// -------------------------------------------------------------------------- //
+__root const CFG_HDR cfghdr_m141={CFG_LEVEL,"Å©ÀúÈÕ",1,0};
+
+__root const CFG_HDR cfghdr14_1 = {CFG_CHECKBOX, "ÏÔÊ¾", 0, 2};
+__root const int LUNAR_DATE_ENA = 0;
+
+__root const CFG_HDR cfghdr14_2={CFG_COORDINATES,"Î»ÖÃ×ø±ê",0,0};
+__root const unsigned int LUNAR_DATE_X=160;
+__root const unsigned int LUNAR_DATE_Y=50;
+
+__root const CFG_HDR cfghdr14_3={CFG_COLOR,"ÑÕÉ«",0,0};
+__root const char LUNAR_DATE_COLORS[4]={255,255,255,100};
+
+__root const CFG_HDR cfghdr14_4={CFG_UINT,"×ÖÌå",0,65535};
+__root const unsigned int LUNAR_DATE_FONT=FONT_SMALL;
+
+__root const CFG_HDR cfghdr14_5 = {CFG_CHECKBOX, "ÏÔÊ¾±ß¿ò", 0, 2};
+__root const int LUNAR_DATE_FRINGING_ENA = 1;
+
+__root const CFG_HDR cfghdr14_6={CFG_COLOR,"±ß¿òÑÕÉ«",0,0};
+__root const char LUNAR_DATE_FRINGING_COLORS[4]={0,0,0,100};
+
+__root const CFG_HDR cfghdr14_7={CFG_CBOX,"ÑùÊ½",0,2};
+__root const int LUNAR_DATE_STYLE = 0;
+__root const CFG_CBOX_ITEM cfgcbox14_0[2] = {"³õÒ»","01"};
+
+__root const CFG_HDR cfghdr_m140={CFG_LEVEL,"",0,0};
+
+// -------------------------------------------------------------------------- //
 
 __root const CFG_HDR cfghdr_m81={CFG_LEVEL,"Êý¾Ýµ¥Î»ÉèÖÃ",1,0};
 
