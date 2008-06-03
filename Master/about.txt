@@ -36,4 +36,6 @@ ELF名称: Master.elf
             这个文件就是让这些字符串只会被写在一个地方,其它程序都来调用它,
             以避开错误.
       4.源码中WINTEL_DEBUG项为使用WINDOWS的编译器调试的条件编译项.
+      5.该ELF在打开和关闭时都会运行RunScaner函数一次,因此如果没有安装
+        过MasterPatch就不要尝试了.
            

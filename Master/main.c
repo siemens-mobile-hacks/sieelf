@@ -323,11 +323,12 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 	{
 		if(((int)msg->data0==csm->gui_id)&&!colorEditing)
 		{
+			PTC_CONFIG *ptcfg;
 			if((int)msg->data1==1)
 			{
 				if(editItemList)
 				{
-					PTC_CONFIG *ptcfg=editItemList->ptcfg;
+					ptcfg=editItemList->ptcfg;
 					if(ptcfg)
 						ptcfg->needSaveData=1;
 				}
@@ -336,7 +337,7 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 			{
 				if(editItemList)
 				{
-					PTC_CONFIG *ptcfg=editItemList->ptcfg;
+					ptcfg=editItemList->ptcfg;
 					if(ptcfg)
 						ptcfg->needSaveData=0;
 				}
@@ -345,7 +346,14 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 				popItemStack();
 			csm->gui_id=createEditGui();
 			if(!csm->gui_id)
+			{
+				if(ptcfg=getPatchConfigItem(PTCFG_CUR))
+				{
+					if(ptcfg->needSaveData && !getPatchOnOff(ptcfg, 7))//when patch is off
+						setPatchOnOff(ptcfg, 7);
+				}
 				csm->gui_id=createMainMenu();
+			}
 			if(csm->gui_id)
 				return 1;
 			else

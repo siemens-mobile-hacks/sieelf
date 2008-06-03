@@ -4,6 +4,7 @@
 #include "main.h"
 #include "optionMenu.h"
 #include "getConfig.h"
+#include "usedstr.h"
 
 #define MAIN_MENU_ITEMS_N 7
 
@@ -220,7 +221,7 @@ void profile_menu_iconhndl(void *data, int curitem, void *unk)
 	#ifdef BUG
 		gb2ws(ws, profileName[curitem], 128);
 	#else
-		wsprintf(ws, _percent_t, profileName[curitem]);
+		wsprintf(ws, PERCENT_T, profileName[curitem]);
 	#endif
 		if(getPatchOnOff(ptcfg, curitem))
 			n=1;
@@ -233,7 +234,7 @@ void profile_menu_iconhndl(void *data, int curitem, void *unk)
 	#ifdef BUG
 		gb2ws(ws, ERR_STR, 16);
 	#else
-		wsprintf(ws, _percent_t, ERR_STR);
+		wsprintf(ws, PERCENT_T, ERR_STR);
 	#endif
 		n=2;
 	}

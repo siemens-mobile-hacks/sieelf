@@ -1,3 +1,6 @@
+#ifndef _USEDSTR_H_
+#define _USEDSTR_H_
+
 extern const char PERCENT_T[];
 extern const char STR_CHKBOX1[];
 extern const char STR_CHKBOX2[];
@@ -10,6 +13,6 @@ extern const char STR_CHOICE[];
 extern const char STR_CHOICE1[];
 extern const char STR_CHOICE2[];
 
-
+#endif
 
 
