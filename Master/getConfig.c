@@ -508,6 +508,26 @@ void addItemToConfig(void *item, PATCH_SUBMENU *userPoint, int type, int bytePos
 	}
 }
 
+//清除一个字符串中的某个字符
+void cleanStrByChr(char *pdata, char chr)
+{
+	char *p=pdata;
+	char *t;
+	while(*p)
+	{
+		if(*p==chr)
+		{
+			t=p;
+			while(*t)
+			{
+				*t=*(t+1);
+				t++;
+			}
+		}
+		p++;
+	}
+}
+
 //解析预置的选项，及其对应的数据，并添加到条目链表
 void addPrepareData(char *pdata)
 {
@@ -522,15 +542,19 @@ void addPrepareData(char *pdata)
 	p2=gotoMyStrEnd(p);
 	strnCopyWithEnd(preData->useAs, p1, p2-p1);
 	p=p2+1;
-	while((pp=gotoRealPos(p))&&(p1=gotoMyStrStart(p)))
+	while((pp=gotoRealPos(p))&&(p1=gotoMyStrStart(pp)))
 	{
 		PREPARE_ITEM *prepareItem=malloc(sizeof(PREPARE_ITEM));
 		prepareItem->next=0;
 		prepareItem->prev=0;
 		prepareItem->itemName[0]=0;
 		prepareItem->data=0;
-		p2=gotoMyStrEnd(pp);
+		if(*pp=='`')
+			p2=gotoMyStrEnd(pp);
+		else
+			p2=gotoStringEndByChr(pp, '=');
 		strnCopyWithEnd(prepareItem->itemName, p1, p2-p1);
+		cleanStrByChr(prepareItem->itemName, '`'); //可能是不标准的补丁格式
 		if(*p2=='`')
 			p=p2+2;
 		else
