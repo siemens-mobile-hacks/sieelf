@@ -36,13 +36,14 @@ extern const int cfg_ip_number1;
 extern const int cfg_ip_number2;
 extern const int show_pic;
 extern const int resampled;
+#ifndef NEWSGOLD
+extern const int dewin;
+#endif
 extern const int smsn;
 extern const int smsc;
-extern const int dewin;
 extern const int voice;
 extern const int ipx2;
 extern const int ip00;
-extern const int xlt;
 extern const int priority;
 extern const int startX;
 extern const int startY;

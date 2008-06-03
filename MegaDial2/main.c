@@ -9,13 +9,19 @@
 #define cfg_item_gaps 2
 #define color(x) (x<24)?GetPaletteAdrByColorIndex(x):(char *)(&(x))  
 
+//字体控制
+#ifdef ELKA
+#define font_size big_font?4:8
+#else
+#define font_size big_font?3:7
+#endif
+
 volatile int numx;
 int sumx;
 int cs_adr=0;
 int iReadFile=0;
 int gLen=0;
 int count_page;
-int font_size;
 int need_ip=0;
 int smsdata=0;
 int smscount=0;
@@ -30,25 +36,6 @@ char smsnum[46];
 char fn[10]="0:\\amr\\";
 char pszNum3[25];
 char pszNum4[30];
-
-//字体控制
-#ifdef ELKA
-void font(void)
-{
-    if(big_font)
-    font_size=4;
-    else
-    font_size=8;
-}
-#else
-void font(void)
-{
-    if(big_font)
-    font_size=3;
-    else
-    font_size=7;
-}
-#endif
 
 #ifdef ELKA
 #define MAX_ESTR_LEN 9
@@ -259,7 +246,6 @@ void RereadSettings()
 //-------------------------------------
 void ShowInputCodeShow(WSHDR* pwsNum,int y1)
 {
-        font();
 	WSHDR* pwsCodeshow;
 	pwsCodeshow=AllocWS(20);
 	char pszNum[20];
@@ -307,7 +293,6 @@ sub_end:
 
 void ShowSelectedCodeShow(WSHDR* pwsNum,int y1)
 {
-        font();
 	WSHDR* pwsCodeshow;
 	pwsCodeshow=AllocWS(20);
 	char pszNum[20];
@@ -394,7 +379,6 @@ int CompareStrT9(WSHDR *ws, WSHDR *ss, int need_insert_color)
   int wpos=1;
   int c,c1=ws->wsbody[1],c2=ss->wsbody[1];
   int first_pos=-1;
-  //extern const unsigned short PinYinTable[5227];
   unsigned short temp;
   
   //Table keys for text search
@@ -518,8 +502,8 @@ void ConstructList(void)
     char bitmap[MAX_RECORDS/8];
 #else
     long dummy1;
-    char bitmap[MAX_RECORDS/8];    
-#endif    
+    char bitmap[MAX_RECORDS/8];
+#endif
   } ABmain;
 #pragma pack()
 
@@ -820,7 +804,6 @@ void Play(const char *fpath, const char *fname)
 #endif
 #endif 
 
-
   FreeWS(sndPath);
   FreeWS(sndFName);
 
@@ -1106,7 +1089,6 @@ void DrwPic(int x,int y,const char *pic_path,int pic_size)
 
 void my_ed_redraw(void *data)
 {
-  font();
   sumx=0;
   char pszNum2[100];
   int z;
@@ -1242,10 +1224,6 @@ void my_ed_redraw(void *data)
          str_2ws(prws,dstr[numx],39);
 
            int l=GetImgWidth(menu_icons[0]);
-           //int d=(sumx-numx)*l;
-          //图标框
-          //if(sumx>1)
-          //DrawRectangle(right_border-2-d,dy+3,right_border-1-d+l,dy+(gfont_size+cfg_item_gaps)+1,1,color(COLOR_NUMBER_BRD),color(COLOR_NUMBER_BG));
           //图标
           DrawString(cl->icons,right_border-1-icons_size,dy+cfg_item_gaps,right_border-2,dy+cfg_item_gaps+gfont_size,font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
     
@@ -1311,7 +1289,7 @@ void my_ed_redraw(void *data)
           Play(fn, pszNum4);
           }      
           }
-     }
+      }
       cl=(CLIST *)cl->next;
       i++;
     }
@@ -1375,11 +1353,21 @@ static void mm_settings(GUI *gui)
    sendsms();
 }
 
+
+#ifndef NEWSGOLD
 static void sm_settings(GUI *gui)
 {
    mode=1;
    sendsms();
 }
+
+static void sms_settings(GUI *gui)
+{
+    typedef void (*voidfunc)();
+    voidfunc pp=(voidfunc)GetFunctionPointer("MESG_SMSSETUPOM");
+    if(pp!=0) pp();
+}
+#endif
 
 unsigned int err;
 
@@ -1396,7 +1384,7 @@ static void bcfgsetting()
   FreeWS(ws);
 }
 
-static void setting(GUI *gui) 
+static void md_setting(GUI *gui) 
 {
   bcfgsetting();
 }
@@ -1415,13 +1403,30 @@ static const SOFTKEYSTAB mmenu_skt=
   mmenu_sk,0
 };
 
-#define MAIN_MENU_ITEMS_N 3
+#ifdef NEWSGOLD
+#define MAIN_MENU_ITEMS_N 2
 static HEADER_DESC mmenu_hdr={0,0,0,0,NULL,(int)"选项",LGP_NULL};
 
 static MENUITEM_DESC mmenu_ITEMS[MAIN_MENU_ITEMS_N]=
 {
   {NULL,(int)"发送短信", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
-  {NULL,(int)"转入默认菜单", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"MD设置", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}
+};
+
+static const MENUPROCS_DESC mmenu_HNDLS[MAIN_MENU_ITEMS_N]=
+{
+  mm_settings,
+  md_setting,
+};
+#else
+#define MAIN_MENU_ITEMS_N 4
+static HEADER_DESC mmenu_hdr={0,0,0,0,NULL,(int)"选项",LGP_NULL};
+
+static MENUITEM_DESC mmenu_ITEMS[MAIN_MENU_ITEMS_N]=
+{
+  {NULL,(int)"发送短信", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
+  {NULL,(int)"默认菜单", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"短信菜单", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"MD设置", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}
 };
 
@@ -1429,8 +1434,11 @@ static const MENUPROCS_DESC mmenu_HNDLS[MAIN_MENU_ITEMS_N]=
 {
   mm_settings,
   sm_settings,
-  setting,
+  sms_settings,
+  md_setting,
 };
+#endif
+
 
 void VoiceOrSMS(const char *num);
 
@@ -1555,44 +1563,12 @@ int get_word_count(GUI *data)
 
 void mmenuitem(USR_MENU_ITEM *item)
 {
-#ifndef NEWSGOLD
-  if (item->type==0)
-  {
-    switch(item->cur_item)
-    {
-    case 1:
-      wsprintf(item->ws,"%t","短信设置");
-      break;
-      
-    case 0:
-      wsprintf(item->ws,"%t","输入法选择");
-      break;
-    }
-  }
-  if (item->type==1)
-  {
-    switch(item->cur_item)
-    {
-    case 1:
-      {
-      typedef void (*voidfunc)();
-      voidfunc pp=(voidfunc)GetFunctionPointer("MESG_SMSSETUPOM");
-      if(pp!=0) pp();
-      }
-      break;
-      
-    case 0:
-      input=1;
-      break;
-    }
-  }
-#else
   if (item->type==0)
   {
     switch(item->cur_item)
     {
     case 0:
-      wsprintf(item->ws,"%t","输入法选择");
+      wsprintf(item->ws,"%t","换输入法");
       break;
     }
   }
@@ -1605,7 +1581,6 @@ void mmenuitem(USR_MENU_ITEM *item)
       break;
     }
   }
-#endif
 }
 
 //按键控制
@@ -1615,17 +1590,32 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
  // const char *snum=EDIT_GetUserPointer(data);
   int key=msg->gbsmsg->submess;
   int m=msg->gbsmsg->msg;
+  
+     if(input==1)
+     {
+     GBS_SendMessage(MMI_CEPID,LONG_PRESS,0x23);
+     input=0;
+     return (-1);
+     }
+  
+  
   if (m==KEY_DOWN)
-   {
-if(EDIT_IsBusy(data))
-     return(0);       
-     
-#ifdef NEWSGOLD
-      if(key==LEFT_SOFT)
-#else
-      if(key==RIGHT_SOFT)
-#endif
-       if((get_word_count(data)<=5))
+   {  
+  switch(key)
+     {
+  #ifdef NEWSGOLD
+    case LEFT_SOFT:
+  #else
+    case RIGHT_SOFT:
+  #endif
+       {
+      if(EDIT_IsMarkModeActive(data))
+        return(-1);
+      
+      if(EDIT_IsBusy(data))
+        return(0);     
+      
+      if((get_word_count(data)<=5))
       {
       ExtractEditControl(data,2,&ec);
       smstemp=AllocWS(ec.pWS->wsbody[0]);
@@ -1634,36 +1624,33 @@ if(EDIT_IsBusy(data))
       ws_2str(numTemp,smsnum,wstrlen(numTemp));
       ShowMainMenu();
       }
-     else
-      return (-1);
+      else
+      {
+       ShowMSG(1,(int)"短信太长了!");
+       return (-1);
+      }
       
-        if (key==ENTER_BUTTON)
-        {
-#ifndef NEWSGOLD
-            EDIT_OpenOptionMenuWithUserItems(data,mmenuitem,data,2);
-#else
-            EDIT_OpenOptionMenuWithUserItems(data,mmenuitem,data,1);
-#endif
-            return (-1);
-        }
-        
-     if(input==1)
-     {
-     GBS_SendMessage(MMI_CEPID,LONG_PRESS,0x23);
-     input=0;
-     return (-1);
-     }
-        
-     
-      if(key==RED_BUTTON)
+      break;
+      }
+      
+     case ENTER_BUTTON:
+      {
+        EDIT_OpenOptionMenuWithUserItems(data,mmenuitem,data,2);
+        return (-1);
+      }
+ 
+     case RED_BUTTON:
      {
       //ExtractEditControl(data,2,&ec);
       //smstemp=AllocWS(ec.pWS->wsbody[0]);
       //wstrcpy(smstemp,ec.pWS);
       smsdata=0;
       nxc=0;
+      break;
      }
      
+     }
+        
     }
   //-1 - do redraw
   return(0); //Do standart keys
@@ -1784,11 +1771,6 @@ void VoiceOrSMS(const char *num)
 {
   if (!is_sms_need)
   {
-//    #ifdef NEWSGOLD
-//    MakeVoiceCall(num,0x10,0x20C0);
-//    #else
-    //MakeVoiceCall(num,0x10,0x2FFF);
-//    #endif
     	char buf[50];
 	if(need_ip)
 	{
@@ -1831,32 +1813,22 @@ void VoiceOrSMS(const char *num)
 
      wstrcpy(ews,gwsName);//名字
 
-
-     
      if(smsn)
      {
      wsAppendChar(ews, '\n');  
-     if(num[0] == '+' || num[0] == '1' || !xlt)
      wsprintf(gwsTemp,"%s",num);
-     else 
-     wsprintf(gwsTemp,"106%s",num);//号码
-     
      wstrcpy(numTemp,gwsTemp);
-     
      wstrcat(ews,gwsTemp);
-
      //wsAppendChar(gwsTemp,'\n');
      }
 
      if(smsc)
      {
      CutWSTR(gwsTemp, 0);
-
      strcpy(szTemp,num);
      GetProvAndCity(gwsTemp->wsbody,szTemp);//区号秀地址
      wsAppendChar(ews,'\n'); 
      wstrcat(ews, gwsTemp);
-     
      }
      wsAppendChar(ews,'\n'); 
      
@@ -1982,11 +1954,13 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
         char nx[40];
         ws_2str((WSHDR *)e_ws,nx,e_ws->wsbody[0]);
         gb2ws(gwsName,nx,e_ws->wsbody[0]);
+#ifndef NEWSGOLD
         if(dewin&&is_sms_need)
         {
         SendSMS(smstemp,nx, MMI_CEPID, MSG_SMS_RX-1, 1);
         }
         else
+#endif
         {
         VoiceOrSMS(nx);
         nxc=1;
@@ -2066,9 +2040,11 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
       }
       else
       {
+#ifndef NEWSGOLD
       if(dewin&&is_sms_need)  
       SendSMS(smstemp,dstr[numx], MMI_CEPID, MSG_SMS_RX-1, 1);  
-      else  
+      else
+#endif
       VoiceOrSMS(dstr[numx]);
       numx=0;
       }
@@ -2077,11 +2053,11 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
     return(0);
     }
   }
+  
   if ((key==UP_BUTTON)||(key==DOWN_BUTTON))
   {
     //Do not treat editor of up / down
     msg->keys=0;
-
     if ((m==KEY_DOWN)||(m==LONG_PRESS))
     {
       is_pos_changed=1;

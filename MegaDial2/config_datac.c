@@ -32,21 +32,23 @@ __root const int show_pic=0;
 __root const CFG_HDR cfghdr1_7 = {CFG_CHECKBOX,"大头贴缩放",0,0};
 __root const int resampled=0;
 
-__root const CFG_HDR cfghdr1_8 = {CFG_CHECKBOX,"短信号码",0,0};
+#ifndef NEWSGOLD
+__root const CFG_HDR cfghdr1_8 = {CFG_CHECKBOX,"默认短信界面",0,0};
+__root const int dewin=0;
+#endif
+
+__root const CFG_HDR cfghdr1_9 = {CFG_CHECKBOX,"短信号码",0,0};
 __root const int smsn=1;
 
-__root const CFG_HDR cfghdr1_9 = {CFG_CHECKBOX,"短信区号秀",0,0};
+__root const CFG_HDR cfghdr1_10 = {CFG_CHECKBOX,"短信区号秀",0,0};
 __root const int smsc=0;
-
-__root const CFG_HDR cfghdr1_10 = {CFG_CHECKBOX,"默认短信界面",0,0};
-__root const int dewin=0;
 
 __root const CFG_HDR cfghdr1_11 = {CFG_CHECKBOX,"界面音效",0,0};
 __root const int voice=0;
 
- __root const CFG_HDR cfghdr1_12={CFG_CBOX, "优先号码", 0, 5};
- __root const int priority = 0;
- __root const CFG_CBOX_ITEM cfgcbox1[5]={"电话号码","公司号码","移动号码","传真号码","传真号码2"};
+__root const CFG_HDR cfghdr1_12 = {CFG_CBOX, "优先号码", 0, 5};
+__root const int priority = 0;
+__root const CFG_CBOX_ITEM cfgcbox1[5]={"电话号码","公司号码","移动号码","传真号码","传真号码2"};
 
  
 __root const CFG_HDR cfghdr_m4={CFG_LEVEL,"",0,0};
@@ -96,13 +98,10 @@ __root const int ipx2=0;
 __root const CFG_HDR cfghdr11_12 = {CFG_CHECKBOX,"IP外国+00",0,0};
 __root const int ip00=0;
 
-__root const CFG_HDR cfghdr11_13 = {CFG_CHECKBOX,"小灵通+106",0,0};
-__root const int xlt=1;
-
-__root const CFG_HDR cfghdr11_14 = {CFG_UINT,"本地IP",0,0xFFFFFFFF};
+__root const CFG_HDR cfghdr11_13 = {CFG_UINT,"本地IP",0,0xFFFFFFFF};
 __root const int cfg_ip_number1 = 17951;
 
-__root const CFG_HDR cfghdr11_15 = {CFG_UINT,"漫游和国际IP",0,0xFFFFFFFF};
+__root const CFG_HDR cfghdr11_14 = {CFG_UINT,"漫游和国际IP",0,0xFFFFFFFF};
 __root const int cfg_ip_number2 = 12593;
 
 
@@ -130,7 +129,6 @@ __root const CFG_HDR cfghdr2_6={CFG_COLOR,"号码标识边框",0,99};
 __root const int COLOR_NUMBER_BRD=1;
 
 __root const CFG_HDR cfghdr_m6={CFG_LEVEL,"",0,0};
-
 
 
 
