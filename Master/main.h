@@ -17,7 +17,7 @@ extern int PTCFG_CUR;
 extern int S_ICONS[3];
 
 #define PATCH_DIR	"0:\\Misc\\Patches\\"
-#define PTC_FOLDR	"ptc1\\"
+#define PTC_FOLDR	"ptc\\"
 
 
 #endif
