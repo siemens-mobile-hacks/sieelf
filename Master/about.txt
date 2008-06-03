@@ -13,7 +13,6 @@ ELF名称: Master.elf
         在1.0版本中加入支持:
           //#define TYPE_MS     15 //timeinms
           //#define TYPE_OF     16 //offset
-          //#define TYPE_DL     17 //slider
           //#define TYPE_CONST  18 //const
           //#define TYPE_TP     19 //template
           //#define TYPE_USETP  20 //usetemplate
