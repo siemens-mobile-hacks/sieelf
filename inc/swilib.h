@@ -2,6 +2,9 @@
 //§¦§ã§Ý§Ú S75/SL75, §Õ§à§Ò§Ñ§Ó§Ú§ä§î Project/Options/C C++ Compiler/Preprocessor/Defined symbols: NEWSGOLD
 //E§ã§Ý?EL71 §Õ§à§Ò§Ñ§Ó§Ú§ä§î §á§â§Ö§Õ§í§Õ§å§ë§Ú§Û §Õ§Ö§æ§Ñ§Û§ß ?ELKA
 
+#ifndef __SWILIB__
+#define __SWILIB__
+
 typedef unsigned int size_t;
 typedef long time_t;
 //#include <time.h>
@@ -561,6 +564,27 @@ typedef struct
 
 #else // SGOLD/NEWSGOLD LG8
 
+#ifdef NEWSGOLD_LG3
+
+#define FONT_LARGE 0
+#define FONT_LARGE_BOLD 1
+#define FONT_LARGE_ITALIC 2
+#define FONT_LARGE_ITALIC_BOLD 3
+#define FONT_MEDIUM 4
+#define FONT_MEDIUM_BOLD 5
+#define FONT_MEDIUM_ITALIC 6
+#define FONT_MEDIUM_ITALIC_BOLD 7
+#define FONT_NUMERIC_SMALL 8
+#define FONT_NUMERIC_SMALL_BOLD 9
+#define FONT_NUMERIC_XSMALL 10
+#define FONT_SMALL 11
+#define FONT_SMALL_BOLD 12
+#define FONT_SMALL_ITALIC 13
+#define FONT_SMALL_ITALIC_BOLD 14
+#define FONT_NUMERIC_LARGE 15
+#define FONT_NUMERIC_MEDIUM 16
+
+#else
 // SGOLD. §´§Ñ?§Ü§Ñ?§Ú§Ù§ß§Ñ§é§Ñ§Ý§î§ß§à §Ü§å§â§ã§Ú§Ó§ß§í?§ê§â§Ú§æ§ä§í §à§ä§ã§å§ä§ã§ä§Ó§å§ð? §à§ß?§Ù§Ñ§Þ§Ö§ß§Ö§ß§í §ß§Ñ §ã§à§à§ä§Ó§Ö§ä§ã§ä§Ó§å§ð§ë§Ú?§à§Ò§í§é§ß§í?
 // SGOLD. As there are initially no italic fonts in SGOLD series, they were replaced with corresponding regular fonts.
 
@@ -581,7 +605,7 @@ typedef struct
 #define FONT_SMALL_ITALIC_BOLD 8
 #define FONT_NUMERIC_LARGE 9
 #define FONT_NUMERIC_MEDIUM 10
-
+#endif
 
 #endif //#ifdef NEWSGOLD
 
@@ -3287,13 +3311,13 @@ __swi __arm void SetDateTime(TDate *, TTime *);
 //thumb
 //pattern=F0,B5,05,1C,0C,1C,00,28,89,B0,??,??,00,2C
 
-#pragma swi_number=0x242
-__swi __arm void gb2ws(WSHDR *ws, const char *s, int len);
-//thumb
-
-#pragma swi_number=0x243
-__swi __arm void ws2gb(WSHDR *ws, char *s, int len);
-//thumb
+//#pragma swi_number=0x242
+//__swi __arm void gb2ws(WSHDR *ws, const char *s, int len);
+////thumb
+//
+//#pragma swi_number=0x243
+//__swi __arm void ws2gb(WSHDR *ws, char *s, int len);
+////thumb
 
 #pragma swi_number=0x244
 __swi __arm int Base64Encode(void *inbuf, int insize, void *outbuf, int outsize);//returns length of encoded message
@@ -3418,3 +3442,4 @@ __swi __arm int Obs_GetInfo (HObj hObj, int unk_0or1);
 __swi __arm int Obs_SetScaling (HObj hObj, int unk5);
 //pattern_NSG=??,??,??,E9,??,??,??,E1,??,??,??,E3,??,??,??,E3,??,??,??,13,??,??,??,E1,??,??,??,1A,??,??,??,E3,??,??,??,0A,??,??,??,E5,??,??,??,E3
 
+#endif
