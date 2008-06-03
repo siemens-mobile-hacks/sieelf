@@ -12,50 +12,34 @@ typedef struct
 
 typedef struct
 {
-	int min;
-	int max;
-	int initData;
-}DATA_INT;
+	void *prev;
+	void *next;
+	char itemName[128];
+	char data;
+}PREPARE_ITEM;
+
+typedef struct
+{
+	char useAs[32];
+	PREPARE_ITEM *prepareItem;
+}PREPARE_DATA;
+
+typedef struct
+{
+	char str[128];
+}DATA_DRSTR;
+
+typedef struct
+{
+	int bitPos;
+	char onoff;
+}DATA_CHECKBOX;
 
 typedef struct
 {
 	short x;
 	short y;
 }DATA_POS;
-
-typedef struct
-{
-	char color[4];
-}DATA_COLOR;
-
-typedef struct
-{
-	char path[128];
-	char mask[32];
-	int maxlen;//if 0, use default 58
-}DATA_SF;
-
-typedef struct
-{
-	char path[128];
-	int maxlen;
-}DATA_SD;
-typedef struct
-{
-	unsigned short ustr[128]; //max 128
-	int maxlen; //if 0, use default 0x10
-}DATA_UNICODE;
-
-typedef struct
-{
-	char string[128];
-	int maxlen;
-}DATA_STRING;//if 0, use default 0x10
-
-typedef struct
-{
-	int addr;
-}DATA_ADDRESS;
 
 typedef struct
 {
@@ -66,9 +50,11 @@ typedef struct
 
 typedef struct
 {
-	int bitPos;
-	char onoff;
-}DATA_CHECKBOX;
+	int min;
+	int max;
+	int initData;
+}DATA_INT;
+
 
 typedef struct
 {
@@ -86,8 +72,26 @@ typedef struct
 
 typedef struct
 {
-	char str[128];
-}DATA_DRSTR;
+	char color[4];
+}DATA_COLOR;
+
+typedef struct
+{
+	unsigned int addr;
+}DATA_ADDRESS;
+
+typedef struct
+{
+	char string[128];
+	int maxlen;
+}DATA_STRING;//if 0, use default 0x10
+
+typedef struct
+{
+	unsigned short ustr[128]; //max 128
+	int maxlen; //if 0, use default 0x10
+}DATA_UNICODE;
+
 
 typedef struct
 {
@@ -97,17 +101,25 @@ typedef struct
 
 typedef struct
 {
-	void *prev;
-	void *next;
-	char itemName[128];
-	char data;
-}PREPARE_ITEM;
+	char path[128];
+	char mask[32];
+	int maxlen;//if 0, use default 58
+}DATA_SF;
 
 typedef struct
 {
-	char useAs[32];
-	PREPARE_ITEM *prepareItem;
-}PREPARE_DATA;
+	char path[128];
+	int maxlen;
+}DATA_SD;
+
+typedef struct
+{
+	char min;
+	char max;
+	char initData;
+}DATA_SL;
+
+
 
 typedef struct
 {
@@ -152,12 +164,11 @@ typedef struct
 #define TYPE_HEX	12 //hex
 #define TYPE_SF		13 //select file
 #define TYPE_SD		14 //selectdir
-//#define TYPE_MS	15 //timeinms
-//#define TYPE_OF	16 //offset
-//#define TYPE_DL	17 //slider
-//#define TYPE_CONST	18 //const
-//#define TYPE_TP	19 //template
-//#define TYPE_USETP	20 //usetemplate
-//#define TYPE_ENDTP	21 //endtemplate
-
+//#define TYPE_MS     15 //timeinms
+//#define TYPE_OF     16 //offset
+#define TYPE_SL     17 //slider
+//#define TYPE_CONST  18 //const
+//#define TYPE_TP     19 //template
+//#define TYPE_USETP  20 //usetemplate
+//#define TYPE_ENDTP  21 //endtemplate
 #endif

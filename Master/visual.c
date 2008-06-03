@@ -1,5 +1,5 @@
 #include "..\inc\swilib.h"
-//#include "getConfig.h"
+#include "usedstr.h"
 
 char colors[4][4]={{0xFF,0,0,0x64},{0,0xFF,0,0x64},{0,0,0xFF,0x64},{0xC6,0xAA,0xAF,0x32}};
 char black[4]={0x00,0x00,0x00,0x64};
@@ -606,7 +606,7 @@ void method0_2(MAIN_GUI_2 *data)
   int column_width=scr_w/9;
   int start_column;
   int y_line;
-  wsprintf(data->ws1,"%02X,%02X,%02X,%02X",data->r,data->g,data->b,data->a);
+  wsprintf(data->ws1,PERCENT_02X_02X_,data->r,data->g,data->b,data->a);
 
   DrawString(data->ws1,1,YDISP+1,scr_w-20,YDISP+fsize,FONT_SMALL,1,black,transparent);
   fsize+=3;

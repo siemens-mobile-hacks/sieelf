@@ -2,6 +2,11 @@
 #define _USEDSTR_H_
 
 extern const char PERCENT_T[];
+extern const char PERCENT_D[];
+extern const char PERCENT_D_D[];
+extern const char PERCENT_08X[];
+extern const char PERCENT_02X[];
+extern const char PERCENT_02X_02X_[];
 extern const char STR_CHKBOX1[];
 extern const char STR_CHKBOX2[];
 extern const char STR_VOL[];
@@ -12,7 +17,12 @@ extern const char STR_Y[];
 extern const char STR_CHOICE[];
 extern const char STR_CHOICE1[];
 extern const char STR_CHOICE2[];
-
+extern const char STR_SLIDER1[];
+extern const char STR_SLIDER2[];
+extern const char STR_ENDSUBMENU1[];
+extern const char STR_ENDSUBMENU2[];
+extern const char STR_SUBMENU1[];
+extern const char STR_SUBMENU2[];
 #endif
 
 

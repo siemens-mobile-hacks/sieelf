@@ -165,7 +165,7 @@ void hex2ws(WSHDR *ws, unsigned char *hex, int maxlen)
 	WSHDR *tws=AllocWS(8);
 	while(*p&&(maxlen==0||p-hex<=maxlen))
 	{
-		wsprintf(tws, "%02X", *p);
+		wsprintf(tws, PERCENT_02X, *p);
 		wstrcat(ws, tws);
 		p++;
 	}
@@ -216,12 +216,9 @@ int menu_onkey(void *data, GUI_MSG *msg)
 			}
 		case ENTER_BUTTON:
 			{
-				//int i=GetCurMenuItem(data);
 				ptcfg=getPatchConfigItem(c);
 				if(ptcfg)
 				{
-					//isSubMenuNeed=0;
-					//MAIN_CSM *csm=(MAIN_CSM *)FindCSMbyID(MAIN_CSM_ID);
 					if(ptcfg->mainitem.item)
 					{
 						pushToItemStack(&ptcfg->mainitem);
@@ -453,7 +450,7 @@ PATCH_ITEM *findPatchItemInED(int n)
 		type=pitem->itemType;
 		if(type==TYPE_DRSTR)
 			i++;
-		else if(type>0&&type<=13)
+		else if(type>0)
 			i+=2;
 		if(i==n)
 			return pitem;
@@ -475,7 +472,7 @@ int getMaxFocus(void)
 		type=pitem->itemType;
 		if(type==TYPE_DRSTR)
 			i++;
-		else if(type>0&&type<=13)
+		else if(type>0)
 			i+=2;
 		pitem=pitem->next;
 	}
@@ -624,7 +621,6 @@ int edOnKey(GUI *data, GUI_MSG *msg)
 						colorEditing=1;
 						return 1;
 					}
-					//break;
 				}
 			}
 		}
@@ -677,7 +673,7 @@ void edGHook(GUI *data, int cmd)
 			case TYPE_POS:
 				{
 					DATA_POS *pos=(DATA_POS *)pitem->itemData;
-					wsprintf(ews, "%d,%d", pos->x, pos->y);
+					wsprintf(ews, PERCENT_D_D, pos->x, pos->y);
 					EDIT_SetTextToFocused(data,ews);
 					sk_need=1;
 					break;
@@ -706,7 +702,7 @@ void edGHook(GUI *data, int cmd)
 			case TYPE_COLOR:
 				{
 					DATA_COLOR *color=(DATA_COLOR *)pitem->itemData;
-					wsprintf(ews,"%02X,%02X,%02X,%02X",color->color[0],color->color[1],color->color[2],color->color[3]);
+					wsprintf(ews,PERCENT_02X_02X_,color->color[0],color->color[1],color->color[2],color->color[3]);
 					EDIT_SetTextToFocused(data,ews);  
 					sk_need=1;
 					break;
@@ -714,7 +710,7 @@ void edGHook(GUI *data, int cmd)
 			case TYPE_ADDRESS:
 				{
 					DATA_ADDRESS *addr=(DATA_ADDRESS *)pitem->itemData;
-					str2num(ss, &addr->addr, 0xA4000000, 0, 1);
+					str2num(ss, (int *)&addr->addr, 0xA4000000, 0, 1);
 					break;
 				}
 			case TYPE_STRING:
@@ -747,6 +743,13 @@ void edGHook(GUI *data, int cmd)
 					ws_2str(ews, sd->path, sd->maxlen?sd->maxlen:58);
 					break;
 				}
+			case TYPE_SL:
+				{
+					int j=EDIT_GetItemNumInFocusedComboBox(data);
+					DATA_SL *sl=(DATA_SL *)pitem->itemData;
+					sl->initData=j-1;
+					break;
+				}
 			}
 			if(sk_need)
 			{
@@ -777,6 +780,20 @@ void edGHook(GUI *data, int cmd)
 					#else
 						wsprintf(ews, PERCENT_T, cboxitem->name);
 					#endif
+				}
+				else
+				{
+					ExtractEditControl(data,EDIT_GetFocus(data)-1,&ec);
+					wstrcpy(ews,ec.pWS);
+				}
+				EDIT_SetTextToFocused(data,ews);
+			}
+			else if(pitem->itemType==TYPE_SL)
+			{
+				if((j=EDIT_GetItemNumInFocusedComboBox(data)))
+				{
+					//DATA_SL *sl=(DATA_SL *)pitem->itemData;
+					wsprintf(ews, PERCENT_D, j-1);
 				}
 				else
 				{
@@ -840,7 +857,7 @@ int createEditGui(void)
 			wsprintf(ews, "%t:", pitem->itemName);
 		else
 			CutWSTR(ews,0);
-		if(type==TYPE_SUBMENU||type==TYPE_CHECKBOX)
+		if(type==TYPE_SUBMENU||type==TYPE_CHECKBOX||type==TYPE_SL)
 		{
 			ConstructEditControl(&ec,1,0x00,ews,256);
 		}
@@ -873,7 +890,7 @@ int createEditGui(void)
 		case TYPE_BYTE:
 			{
 				DATA_BYTE *dbyte=(DATA_BYTE *)pitem->itemData;
-				wsprintf(ews, "%d", dbyte->initData);
+				wsprintf(ews, PERCENT_D, dbyte->initData);
 				ConstructEditControl(&ec,ECT_NORMAL_NUM,ECF_APPEND_EOL|ECF_DISABLE_MINUS|ECF_DISABLE_POINT,ews,getnumwidth(dbyte->max));
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
@@ -881,7 +898,7 @@ int createEditGui(void)
 		case TYPE_INT:
 			{
 				DATA_INT *dint=(DATA_INT *)pitem->itemData;
-				wsprintf(ews, "%d", dint->initData);
+				wsprintf(ews, PERCENT_D, dint->initData);
 				ConstructEditControl(&ec,ECT_NORMAL_NUM,ECF_APPEND_EOL|ECF_DISABLE_MINUS|ECF_DISABLE_POINT,ews,getnumwidth(dint->max));
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
@@ -890,7 +907,7 @@ int createEditGui(void)
 			{
 				DATA_COLOR *color=(DATA_COLOR *)pitem->itemData;
 				char *p=(char *)color->color;
-				wsprintf(ews, "%02X,%02X,%02X,%02X", *p, *(p+1), *(p+2), *(p+3));
+				wsprintf(ews, PERCENT_02X_02X_, *p, *(p+1), *(p+2), *(p+3));
 				ConstructEditControl(&ec,9,ECF_APPEND_EOL,ews,12);
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
@@ -898,7 +915,7 @@ int createEditGui(void)
 		case TYPE_ADDRESS:
 			{
 				DATA_ADDRESS *addr=(DATA_ADDRESS *)pitem->itemData;
-				wsprintf(ews, "%08X", addr->addr);
+				wsprintf(ews, PERCENT_08X, addr->addr);
 				ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL|ECF_DISABLE_MINUS|ECF_DISABLE_POINT,ews,10);
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
@@ -949,7 +966,7 @@ int createEditGui(void)
 		case TYPE_POS:
 			{
 				DATA_POS *dpos=(DATA_POS *)pitem->itemData;
-				wsprintf(ews, "%d,%d", dpos->x, dpos->y);
+				wsprintf(ews, PERCENT_D_D, dpos->x, dpos->y);
 				ConstructEditControl(&ec,9,ECF_APPEND_EOL,ews,10);
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
@@ -998,6 +1015,14 @@ int createEditGui(void)
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
 			}
+		case TYPE_SL:
+			{
+				DATA_SL *sl=(DATA_SL *)pitem->itemData;
+				wsprintf(ews, PERCENT_D, sl->initData);
+				ConstructComboBox(&ec, 7, ECF_APPEND_EOL, ews, 8, 0, sl->max+1, sl->initData+1);
+				AddEditControlToEditQend(eq,&ec,ma);
+				break;
+			}
 		default:
 			wsprintf(ews, "%t:%d", LGP_NOTSUPPORT, type);
 			ConstructEditControl(&ec,1,ECF_APPEND_EOL,ews,256);
@@ -1013,4 +1038,5 @@ int createEditGui(void)
 ex_back:
 	return 0;
 }
+
 

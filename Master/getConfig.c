@@ -1000,10 +1000,39 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		str2num(pp, &bytePos,0,0, 0);
 		addItemToConfig(hex, subMenu, TYPE_HEX, bytePos, temp);
 	}
+	else if((p1=strstrInQuote(p, STR_SLIDER2))||(p1=strstrInQuote(p, STR_SLIDER1)))
+	{
+		DATA_SL *sl=malloc(sizeof(DATA_SL));
+		sl->initData=0;
+		sl->max=0;
+		sl->min=0;
+		pp=gotoRealPos(p1);
+		p1=gotoMyStrStart(pp);
+		p2=gotoMyStrEnd(pp);
+		strnCopyWithEnd(temp, p1, p2-p1);
+		if(p1=strstrInQuote(p, STR_VOL))
+		{
+			pp=gotoRealPos(p1);
+			str2num_char(pp, &sl->initData, 0, 0, 0);
+		}
+		if(p1=strstrInQuote(p, "r="))
+		{
+			pp=gotoRealPos(p1);
+			str2num_char(pp, &sl->min,0,0, 0);
+			while(*pp>='0'&&*pp<='9') //leave min
+				pp++;
+			while(*pp<'0'||*pp>'9') //to max
+				pp++;
+			str2num_char(pp, &sl->max,0,0, 0);
+		}
+		pp=gotoRealPos(p+1);
+		str2num(pp, &bytePos,0,0, 0);
+		addItemToConfig(sl, subMenu, TYPE_SL, bytePos, temp);
+	}
 }
 
 //½âÎöSUBMENU£¬×Ó²Ëµ¥
-char *doSubMenuJob(char *pdata)
+char *doSubMenuJob(PATCH_SUBMENU *motherMenu, char *pdata)
 {
 	char *p=pdata;
 	char *pp;
@@ -1016,16 +1045,25 @@ char *doSubMenuJob(char *pdata)
 	p1=gotoMyStrStart(p);
 	p2=gotoMyStrEnd(p);
 	strnCopyWithEnd(subMenu->smName, p1, p2-p1);
-	while((strstrInQuote(p, "endsm")==0)&&(strstrInQuote(p, "endsubmenu"))==0)//ÅÐ¶Ï½áÎ²
+	p=gotoQuoteEnd(p);
+	p=gotoQuoteStart(p);
+	while(!(strstrInQuote(p, STR_ENDSUBMENU2))&&!(strstrInQuote(p, STR_ENDSUBMENU1)))//ÅÐ¶Ï½áÎ²
 	{
-		doItemJob(p, subMenu);
+		if((p2=strstrInQuote(p, STR_SUBMENU1))||(p2=strstrInQuote(p, STR_SUBMENU2)))
+		{
+			pp=p2-3;
+			if(*pp!='d') //ÅÅ³ýendsm
+				p=doSubMenuJob(subMenu, p2);
+		}
+		else
+			doItemJob(p, subMenu);
 		pp=gotoQuoteEnd(p);
 		if(!pp)
 			break;
 		p=++pp;
 		while(*p)
 		{
-			if(*p=='{')
+			if(*p=='{') //sirect string
 				break;
 			if(*p>X_CHAR)
 			{
@@ -1052,7 +1090,7 @@ char *doSubMenuJob(char *pdata)
 		if(!*p)
 			break;
 	}
-	addItemToConfig(subMenu, &ptcfgtop->mainitem, TYPE_SUBMENU, 0, subMenu->smName);
+	addItemToConfig(subMenu, motherMenu, TYPE_SUBMENU, 0, subMenu->smName);
 	return (p);
 }
 
@@ -1139,11 +1177,17 @@ int readConfig(int type, char *tp) //type, 1,load one, 0,load all
 			else
 				doItemJob(pp, &ptcfgtop->mainitem);
 		}
-		else if((p2=strstrInQuote(pp, "sm"))||(p2=strstrInQuote(pp, "submenu")))
+		else if((p2=strstrInQuote(pp, STR_SUBMENU1))||(p2=strstrInQuote(pp, STR_SUBMENU2)))
 		{
 			pp=p2-3;
 			if(*pp!='d') //ÅÅ³ýendsm
-				p=doSubMenuJob(p2);
+			{
+				//p=doSubMenuJob(p2);
+			//	PATCH_SUBMENU *subMenu=malloc(sizeof(PATCH_SUBMENU));
+			//	subMenu->item=0;
+			//	subMenu->smName[0]=0;
+				p=doSubMenuJob(&ptcfgtop->mainitem, p2);
+			}
 		}
 		else
 			doItemJob(pp, &ptcfgtop->mainitem);
@@ -1650,7 +1694,7 @@ void showSubMenuItem(PATCH_SUBMENU *subMenuItem)
 					printf("HexData:");
 					while(*s)
 					{
-						printf("%02X", *s);
+						printf(PERCENT_02X, *s);
 						s++;
 					}
 					printf("\nMaxLen: %d\n", hex->maxlen);
@@ -1663,6 +1707,17 @@ void showSubMenuItem(PATCH_SUBMENU *subMenuItem)
 				printf("FilePath: %s\n", fs->path);
 				printf("Mask: %s\n", fs->mask);
 				printf("Maxlen: %d\n", fs->maxlen);
+				break;
+			}
+		case TYPE_SL:
+			{
+				DATA_SL *sl=(DATA_SL *)patchItem->itemData;
+				if(sl)
+				{
+					printf("initData: %d\n", sl->initData);
+					printf("min: %d\n", sl->min);
+					printf("max: %d\n", sl->max);
+				}
 				break;
 			}
 		}

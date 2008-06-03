@@ -155,6 +155,12 @@ void initPatchItem(PATCH_ITEM *ptcitem)
 				memcpy(sd->path, (ptc_buf+bpos), sd->maxlen?sd->maxlen:58);
 				break;
 			}
+		case TYPE_SL:
+			{
+				DATA_SL *sl=(DATA_SL *)pitem->itemData;
+				sl->initData=ptc_buf[bpos];
+				break;
+			}
 		}
 	NEXT_ITEM:
 		pitem=pitem->next;
@@ -437,6 +443,12 @@ void fillItemDataToBuf(PATCH_ITEM *ptcitem)
 				strcpy(p, p1);
 				break;
 			}
+		case TYPE_SL:
+			{
+				DATA_SL *sl=(DATA_SL *)pitem->itemData;
+				ptc_buf[bpos]=sl->initData;
+				break;
+			}
 		}
 	}
 }
@@ -462,6 +474,7 @@ int getPtcSize(PATCH_ITEM *ptcitem)
 	{
 		case TYPE_CHECKBOX:
 		case TYPE_BYTE:
+		case TYPE_SL:
 		case TYPE_CBOX:
 			{
 				ptcsize++;
