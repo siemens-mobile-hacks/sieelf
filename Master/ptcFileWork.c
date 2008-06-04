@@ -161,6 +161,17 @@ void initPatchItem(PATCH_ITEM *ptcitem)
 				sl->initData=ptc_buf[bpos];
 				break;
 			}
+		case TYPE_MS:
+			{
+				DATA_MS *ms=(DATA_MS *)pitem->itemData;
+				//读取INT型数据指针的是LDR指令，似乎只能是使用4字节对齐的地址，改用char型处理
+				char *p=(ptc_buf+bpos);
+				char *p1=(char *)(&ms->ms);
+				int i=0;
+				for(;i<4;i++)
+					p1[i]=p[i];
+				break;
+			}
 		}
 	NEXT_ITEM:
 		pitem=pitem->next;
@@ -175,7 +186,7 @@ void initPatchConfig(PTC_CONFIG *ptcfg)
 #ifdef WINTEL_DEBUG
 	FILE *fp;
 	strcpy(ptcpath, PATCH_DIR);
-	strcat(ptcpath, "PTC\\");
+	strcat(ptcpath, PTC_FOLDR);
 	sprintf(ptcid, "%08s", ptcfg->patchInfo->patchID);
 	strcat(ptcpath, ptcid);
 	strcat(ptcpath, ".ptc");
@@ -449,6 +460,16 @@ void fillItemDataToBuf(PATCH_ITEM *ptcitem)
 				ptc_buf[bpos]=sl->initData;
 				break;
 			}
+		case TYPE_MS:
+			{
+				DATA_MS *ms=(DATA_MS *)pitem->itemData;
+				char *p=ptc_buf+bpos;
+				char *p1=(char *)&ms->ms;
+				int i=0;
+				for(;i<4;i++)
+					p[i]=p1[i];
+				break;
+			}
 		}
 	}
 }
@@ -488,6 +509,7 @@ int getPtcSize(PATCH_ITEM *ptcitem)
 			}
 		case TYPE_POS:
 		case TYPE_INT:
+		case TYPE_MS:
 		case TYPE_COLOR:
 		case TYPE_ADDRESS:
 			{

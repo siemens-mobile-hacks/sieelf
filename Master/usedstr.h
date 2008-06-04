@@ -23,6 +23,14 @@ extern const char STR_ENDSUBMENU1[];
 extern const char STR_ENDSUBMENU2[];
 extern const char STR_SUBMENU1[];
 extern const char STR_SUBMENU2[];
+extern const char STR_TEMPLATE1[];
+extern const char STR_TEMPLATE2[];
+extern const char STR_ENDTEMPLATE1[];
+extern const char STR_ENDTEMPLATE2[];
+extern const char STR_USETEMPLATE1[];
+extern const char STR_USRTEMPLATE2[];
+extern const char STR_MS1[];
+extern const char STR_MS2[];
 #endif
 
 

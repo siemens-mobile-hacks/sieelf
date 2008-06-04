@@ -657,6 +657,42 @@ void cboxItemColon(char *pdata, DATA_CBOX *cbox)
 	}
 }
 
+
+int isThatItem(char *p)
+{
+	while(*p)
+	{
+		if(*p>X_CHAR)
+		{
+			if(*p=='{')
+				return 1;
+			else
+				return 0;
+		}
+		p--;
+	}
+	return 0;
+}
+
+PATCH_TP *findTemplate(PTC_CONFIG *ptcfg, char *p)
+{
+	PATCH_ITEM *pitem;
+	if(!ptcfg)
+		return 0;
+	pitem=ptcfg->mainitem.item;
+	while(pitem)
+	{
+		if(pitem->itemType==TYPE_TP)
+		{
+			PATCH_TP *tpl=(PATCH_TP *)pitem->itemData;
+			if(!strncmpNoCase(tpl->useAs, p, strlen(p)))
+				return tpl;
+		}
+		pitem=pitem->next;
+	}
+	return 0;
+}
+void subMenuCopy(PATCH_SUBMENU *sbmdst, PATCH_SUBMENU *sbmsrc, int byteBase);
 //解析选择项条目
 void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 {
@@ -1029,6 +1065,37 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		str2num(pp, &bytePos,0,0, 0);
 		addItemToConfig(sl, subMenu, TYPE_SL, bytePos, temp);
 	}
+	else if((p1=strstrInQuote(p, STR_USETEMPLATE1))||(p1=strstrInQuote(p, STR_USRTEMPLATE2)))
+	{
+		//DATA_USETP *usetp=malloc(sizeof(DATA_USETP));
+		//usetp->tpName[0]=0;
+		PATCH_TP *tpl;
+		pp=gotoRealPos(p1);
+		p1=gotoMyStrStart(pp);
+		p2=gotoMyStrEnd(pp);
+		strnCopyWithEnd(temp, p1, p2-p1);
+		pp=gotoRealPos(p+1);
+		str2num(pp, &bytePos,0,0, 0);
+		if(tpl=findTemplate(ptcfgtop, temp))
+			subMenuCopy(subMenu, (PATCH_SUBMENU *)tpl, bytePos);
+	}
+	else if((p1=strstrInQuote(p, STR_MS1))||(p1=strstrInQuote(p, STR_MS2)))
+	{
+		DATA_MS *ms=malloc(sizeof(DATA_MS));
+		ms->ms=0;
+		pp=gotoRealPos(p1);
+		p1=gotoMyStrStart(pp);
+		p2=gotoMyStrEnd(pp);
+		strnCopyWithEnd(temp, p1, p2-p1);
+		if(p1=strstrInQuote(p, STR_VOL))
+		{
+			pp=gotoRealPos(p1);
+			str2num(pp, (int *)&ms->ms, 0, 0, 0);
+		}
+		pp=gotoRealPos(p+1);
+		str2num(pp, &bytePos,0,0, 0);
+		addItemToConfig(ms, subMenu, TYPE_MS, bytePos, temp);
+	}
 }
 
 //解析SUBMENU，子菜单
@@ -1049,10 +1116,13 @@ char *doSubMenuJob(PATCH_SUBMENU *motherMenu, char *pdata)
 	p=gotoQuoteStart(p);
 	while(!(strstrInQuote(p, STR_ENDSUBMENU2))&&!(strstrInQuote(p, STR_ENDSUBMENU1)))//判断结尾
 	{
-		if((p2=strstrInQuote(p, STR_SUBMENU1))||(p2=strstrInQuote(p, STR_SUBMENU2)))
+		if((p2=strstrInQuote(p, STR_SUBMENU1)))
 		{
-			pp=p2-3;
-			if(*pp!='d') //排除endsm
+			p=doSubMenuJob(subMenu, p2);
+		}
+		else if((p2=strstrInQuote(p, STR_SUBMENU2)))
+		{
+			if(isThatItem(p2-3))
 				p=doSubMenuJob(subMenu, p2);
 		}
 		else
@@ -1108,7 +1178,6 @@ void addInfoToPatchInfo(char *pdata)
 	strnCopyWithEnd(info, p1, p2-p1);
 	ptcfgtop->patchInfo->info=info;
 }
-
 //判断是否是预置的选择项
 int isPrepareItem(char *p)
 {
@@ -1135,6 +1204,256 @@ int isPrepareItem(char *p)
 	}
 	return 0;
 }
+char *doTemplateWork(char *pdata)
+{
+	PATCH_TP *tpl=malloc(sizeof(PATCH_TP));
+	char *p=pdata;
+	char *pp;
+	char *p1;
+	char *p2;
+	tpl->item=0;
+	tpl->useAs[0]=0;
+	pp=gotoRealPos(p);
+	p1=gotoMyStrStart(pp);
+	p2=gotoMyStrEnd(pp);
+	strnCopyWithEnd(tpl->useAs, p1, p2-p1);
+	p=gotoQuoteEnd(p);
+	p=gotoQuoteStart(p);
+	while(!(strstrInQuote(p, STR_ENDTEMPLATE1))&&!(strstrInQuote(p, STR_ENDTEMPLATE2)))
+	{
+		if((p2=strstrInQuote(p, STR_SUBMENU1)))
+		{
+			p=doSubMenuJob((PATCH_SUBMENU *)tpl, p2);
+		}
+		else if((p2=strstrInQuote(p, STR_SUBMENU2)))
+		{
+			if(isThatItem(p2-3))
+				p=doSubMenuJob((PATCH_SUBMENU *)tpl, p2);
+		}
+		else
+			doItemJob(p, (PATCH_SUBMENU *)tpl);
+		pp=gotoQuoteEnd(p);
+		if(!pp)
+			break;
+		p=++pp;
+		while(*p)
+		{
+			if(*p=='{') //sirect string
+				break;
+			if(*p>X_CHAR)
+			{
+				DATA_DRSTR *drstr=malloc(sizeof(DATA_DRSTR));
+				char *p1=p;
+				char *p2=gotoQuoteStart(p)-1;
+				while(*p2)
+				{
+					if(*p2>X_CHAR)
+						break;
+					p2--;
+				}
+				p2++;
+				strnCopyWithEnd(drstr->str, p1, p2-p1);
+				addItemToConfig(drstr, (PATCH_SUBMENU *)tpl, TYPE_DRSTR, 0, NULL);
+				break;
+			}
+			p++;
+		}
+		pp=gotoQuoteStart(p);
+		if(!pp)
+			break;
+		p=pp;
+		if(!*p)
+			break;
+	}
+	addItemToConfig(tpl, &ptcfgtop->mainitem, TYPE_TP, 0, tpl->useAs);
+	return (p);
+}
+
+void subMenuCopy(PATCH_SUBMENU *sbmdst, PATCH_SUBMENU *sbmsrc, int byteBase)
+{
+	PATCH_ITEM *pitem;
+	int bytePos;
+	if(!sbmsrc)
+		return;
+	pitem=sbmsrc->item;
+	while(pitem)
+	{
+		bytePos=pitem->bytePos;
+		switch(pitem->itemType)
+		{
+		case TYPE_DRSTR:
+			{
+				DATA_DRSTR *dstr1=(DATA_DRSTR *)pitem->itemData;
+				DATA_DRSTR *dstr=malloc(sizeof(DATA_DRSTR));
+				strcpy(dstr->str, dstr1->str);
+				addItemToConfig(dstr, sbmdst, TYPE_DRSTR, bytePos+byteBase, pitem->itemName);
+				break;
+			}
+		case TYPE_CHECKBOX:
+			{
+				DATA_CHECKBOX *chkbox1=(DATA_CHECKBOX *)pitem->itemData;
+				DATA_CHECKBOX *chkbox=malloc(sizeof(DATA_CHECKBOX));
+				chkbox->bitPos=chkbox1->bitPos;
+				chkbox->onoff=chkbox1->onoff;
+				addItemToConfig(chkbox, sbmdst, TYPE_CHECKBOX, bytePos+byteBase, pitem->itemName);
+				break;
+			}
+		case TYPE_POS:
+			{
+				DATA_POS *pos1=(DATA_POS *)pitem->itemData;
+				DATA_POS *pos=malloc(sizeof(DATA_POS));
+				pos->x=pos1->x;
+				pos->y=pos1->y;
+				addItemToConfig(pos, sbmdst, TYPE_POS, bytePos+byteBase, pitem->itemName);
+				break;
+			}
+		case TYPE_BYTE:
+			{
+				DATA_BYTE *dbyte1=(DATA_BYTE *)pitem->itemData;
+				DATA_BYTE *dbyte=malloc(sizeof(DATA_BYTE));
+				dbyte->initData=dbyte1->initData;
+				dbyte->max=dbyte1->max;
+				dbyte->min=dbyte1->min;
+				addItemToConfig(dbyte, sbmdst, TYPE_BYTE, bytePos+byteBase, pitem->itemName);
+				break;
+			}
+		case TYPE_INT:
+			{
+				DATA_INT *dint1=(DATA_INT *)pitem->itemData;
+				DATA_INT *dint=malloc(sizeof(DATA_INT));
+				dint->initData=dint1->initData;
+				dint->max=dint1->max;
+				dint->min=dint1->min;
+				addItemToConfig(dint, sbmdst, TYPE_INT, bytePos+byteBase, pitem->itemName);
+				break;
+			}
+		case TYPE_CBOX:
+			{
+				DATA_CBOX *cbox1=(DATA_CBOX *)pitem->itemData;
+				DATA_CBOX *cbox=malloc(sizeof(DATA_CBOX));
+				CBOX_ITEM *cbitem=cbox1->cboxitem;
+				CBOX_ITEM *ct;
+				CBOX_ITEM *ct2;
+				cbox->cboxitem=0;
+				cbox->initData=cbox1->initData;
+				while(cbitem)
+				{
+					ct=malloc(sizeof(CBOX_ITEM));
+					ct->data=cbitem->data;
+					ct->next=0;
+					ct->prev=0;
+					strcpy(ct->name, cbitem->name);
+					if(!cbox->cboxitem)
+						cbox->cboxitem=ct;
+					else
+					{
+						ct2=cbox->cboxitem;
+						while(ct2->next) //goto last
+						{
+							ct2=ct2->next;
+						}
+						ct2->next=ct;
+						ct->prev=ct2;
+					}
+					cbitem=cbitem->next;
+				}
+				addItemToConfig(cbox, sbmdst, TYPE_CBOX, bytePos+byteBase, pitem->itemName);
+				break;
+			}
+		case TYPE_COLOR:
+			{
+				DATA_COLOR *color1=(DATA_COLOR *)pitem->itemData;
+				DATA_COLOR *color=malloc(sizeof(DATA_COLOR));
+				strncpy(color->color,color1->color, 4);
+				addItemToConfig(color, sbmdst, TYPE_COLOR, bytePos+byteBase, pitem->itemName);
+				break;
+			}
+		case TYPE_ADDRESS:
+			{
+				DATA_ADDRESS *addr1=(DATA_ADDRESS *)pitem->itemData;
+				DATA_ADDRESS *addr=malloc(sizeof(DATA_ADDRESS));
+				addr->addr=addr1->addr;
+				addItemToConfig(addr, sbmdst, TYPE_ADDRESS, bytePos+byteBase, pitem->itemName);
+				break;
+			}
+		case TYPE_STRING:
+			{
+				DATA_STRING *str1=(DATA_STRING *)pitem->itemData;
+				DATA_STRING *str=malloc(sizeof(DATA_STRING));
+				str->maxlen=str1->maxlen;
+				strcpy(str->string, str1->string);
+				addItemToConfig(str, sbmdst, TYPE_STRING, bytePos+byteBase, pitem->itemName);
+				break;
+			}
+		case TYPE_UNICODE:
+			{
+				DATA_UNICODE *uni1=(DATA_UNICODE *)pitem->itemData;
+				DATA_UNICODE *uni=malloc(sizeof(DATA_UNICODE));
+				uni->maxlen=uni1->maxlen;
+				memcpy(uni->ustr, uni1->ustr, sizeof(short)*128);
+				addItemToConfig(uni, sbmdst, TYPE_UNICODE, bytePos+byteBase, pitem->itemName);
+				break;
+			}
+		case TYPE_SUBMENU:
+			{
+				PATCH_SUBMENU *submenu1=(PATCH_SUBMENU *)pitem->itemData;
+				PATCH_SUBMENU *submenu=malloc(sizeof(PATCH_SUBMENU));
+				submenu->item=0;
+				strcpy(submenu->smName, submenu1->smName);
+				subMenuCopy(submenu, submenu1, byteBase);
+				addItemToConfig(submenu, sbmdst, TYPE_SUBMENU, bytePos+byteBase, pitem->itemName);
+				break;
+			}
+		case TYPE_HEX:
+			{
+				DATA_HEX *hex1=(DATA_HEX *)pitem->itemData;
+				DATA_HEX *hex=malloc(sizeof(DATA_HEX));
+				hex->maxlen=hex1->maxlen;
+				memcpy(hex->hex, hex1->hex, 128);
+				addItemToConfig(hex, sbmdst, TYPE_HEX, bytePos+byteBase, pitem->itemName);
+				break;
+			}
+		case TYPE_SF:
+			{
+				DATA_SF *sf1=(DATA_SF *)pitem->itemData;
+				DATA_SF *sf=malloc(sizeof(DATA_SF));
+				sf->maxlen=sf1->maxlen;
+				strcpy(sf->mask, sf1->mask);
+				strcpy(sf->path, sf1->path);
+				addItemToConfig(sf, sbmdst, TYPE_SF, bytePos+byteBase, pitem->itemName);
+				break;
+			}
+		case TYPE_SD:
+			{
+				DATA_SD *sd1=(DATA_SD *)pitem->itemData;
+				DATA_SD *sd=malloc(sizeof(DATA_SD));
+				sd->maxlen=sd1->maxlen;
+				strcpy(sd->path,sd1->path);
+				addItemToConfig(sd, sbmdst, TYPE_SD, bytePos+byteBase, pitem->itemName);
+				break;
+			}
+		case TYPE_SL:
+			{
+				DATA_SL *sl1=(DATA_SL *)pitem->itemData;
+				DATA_SL *sl=malloc(sizeof(DATA_SL));
+				sl->initData=sl1->initData;
+				sl->max=sl1->max;
+				sl->min=sl1->min;
+				addItemToConfig(sl, sbmdst, TYPE_SL, bytePos+byteBase, pitem->itemName);
+				break;
+			}
+		case TYPE_MS:
+			{
+				DATA_MS *ms1=(DATA_MS *)pitem->itemData;
+				DATA_MS *ms=malloc(sizeof(DATA_MS));
+				ms->ms=ms1->ms;
+				addItemToConfig(ms, sbmdst, TYPE_MS, bytePos+byteBase, pitem->itemName);
+				break;
+			}
+		}
+		pitem=pitem->next;
+	}
+}
 void sortPatchConfigList(void);
 int readConfig(int type, char *tp) //type, 1,load one, 0,load all
 {
@@ -1159,35 +1478,51 @@ int readConfig(int type, char *tp) //type, 1,load one, 0,load all
 		if(!pp)
 			break;
 		//getnextpatch
-		if((p2=strstrInQuote(pp, "p="))||(p2=strstrInQuote(pp, "patch=")))
+		if((p2=strstrInQuote(pp, "patch=")))
 		{
 			if(type)//读取完一个补丁就了事，用于重新载入一个补丁
 				goto END;
 			addPatchConfigList();
 			addToPatchInfo(p2); ////Jump to name
 		}
-		else if((p2=strstrInQuote(pp, "info")))
+		else if(p2=strstrInQuote(pp, "p="))
+		{
+			if(isThatItem(p2-3))
+			{
+				if(type)//读取完一个补丁就了事，用于重新载入一个补丁
+					goto END;
+				addPatchConfigList();
+				addToPatchInfo(p2); ////Jump to name
+			}
+		}
+		if((p2=strstrInQuote(pp, "info")))
 		{
 			addInfoToPatchInfo(p2);
 		}
-		else if((p2=strstrInQuote(pp, STR_CHOICE))||(p2=strstrInQuote(pp, STR_CHOICE1))||(p2=strstrInQuote(pp, STR_CHOICE2)))
+		if((p2=strstrInQuote(pp, STR_CHOICE))||(p2=strstrInQuote(pp, STR_CHOICE1))||(p2=strstrInQuote(pp, STR_CHOICE2)))
 		{
 			if(isPrepareItem(p2))
 				addPrepareData(p2); //Jump to 
 			else
 				doItemJob(pp, &ptcfgtop->mainitem);
 		}
-		else if((p2=strstrInQuote(pp, STR_SUBMENU1))||(p2=strstrInQuote(pp, STR_SUBMENU2)))
+		if((p2=strstrInQuote(pp, STR_TEMPLATE1)))
 		{
-			pp=p2-3;
-			if(*pp!='d') //排除endsm
-			{
-				//p=doSubMenuJob(p2);
-			//	PATCH_SUBMENU *subMenu=malloc(sizeof(PATCH_SUBMENU));
-			//	subMenu->item=0;
-			//	subMenu->smName[0]=0;
+			if(isThatItem(p2-3))
+				p=doTemplateWork(p2);
+		}
+		else if((p2=strstrInQuote(pp, STR_TEMPLATE1)))
+		{
+			p=doTemplateWork(p2);
+		}
+		if((p2=strstrInQuote(pp, STR_SUBMENU1)))
+		{
+			p=doSubMenuJob(&ptcfgtop->mainitem, p2);
+		}
+		else if((p2=strstrInQuote(pp, STR_SUBMENU2)))
+		{
+			if(isThatItem(p2-3))
 				p=doSubMenuJob(&ptcfgtop->mainitem, p2);
-			}
 		}
 		else
 			doItemJob(pp, &ptcfgtop->mainitem);
@@ -1304,7 +1639,7 @@ void freePatchItem(PATCH_SUBMENU *subMenuItem)
 					cboxItem=cItem;
 				}
 			}
-			else if(patchItem->itemType==TYPE_SUBMENU)
+			else if(patchItem->itemType==TYPE_SUBMENU&&patchItem->itemType==TYPE_TP)
 			{
 				PATCH_SUBMENU *subMenu=(PATCH_SUBMENU *)patchItem->itemData;
 				freePatchItem(subMenu);
@@ -1568,6 +1903,7 @@ void showSubMenuItem(PATCH_SUBMENU *subMenuItem)
 		switch(patchItem->itemType)
 		{
 		case TYPE_SUBMENU:
+		case TYPE_TP:
 			showSubMenuItem((PATCH_SUBMENU *)patchItem->itemData);
 			break;
 		case TYPE_PRE:
@@ -1717,6 +2053,15 @@ void showSubMenuItem(PATCH_SUBMENU *subMenuItem)
 					printf("initData: %d\n", sl->initData);
 					printf("min: %d\n", sl->min);
 					printf("max: %d\n", sl->max);
+				}
+				break;
+			}
+		case TYPE_MS:
+			{
+				DATA_MS *ms=(DATA_MS *)patchItem->itemData;
+				if(ms)
+				{
+					printf("ms: %d\n", ms->ms);
 				}
 				break;
 			}

@@ -119,7 +119,10 @@ typedef struct
 	char initData;
 }DATA_SL;
 
-
+typedef struct
+{
+	unsigned int ms;
+}DATA_MS;
 
 typedef struct
 {
@@ -137,6 +140,11 @@ typedef struct
 	PATCH_ITEM *item;
 }PATCH_SUBMENU;
 
+typedef struct
+{
+	char useAs[128];
+	PATCH_ITEM *item;
+}PATCH_TP;
 
 typedef struct
 {
@@ -164,11 +172,11 @@ typedef struct
 #define TYPE_HEX	12 //hex
 #define TYPE_SF		13 //select file
 #define TYPE_SD		14 //selectdir
-//#define TYPE_MS     15 //timeinms
+#define TYPE_MS     15 //timeinms
 //#define TYPE_OF     16 //offset
 #define TYPE_SL     17 //slider
 //#define TYPE_CONST  18 //const
-//#define TYPE_TP     19 //template
+#define TYPE_TP     19 //template
 //#define TYPE_USETP  20 //usetemplate
 //#define TYPE_ENDTP  21 //endtemplate
 #endif

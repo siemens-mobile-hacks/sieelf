@@ -297,18 +297,7 @@ int createMainMenu(void)
 }
 void maincsm_oncreate(CSM_RAM *data)
 {
-	RunScaner();
-	S_ICONS[0]=GetPicNByUnicodeSymbol(CBOX_UNCHECKED);//icon_disabled;
-	S_ICONS[1]=GetPicNByUnicodeSymbol(CBOX_CHECKED);//icon_enabled;
-	S_ICONS[2]=0;
-	ptc_buf=malloc(PTC_SIZE);
-	cfg_buf=malloc(CONFIG_SIZE);
-	ews=AllocWS(256);
 	MAIN_CSM *csm=(MAIN_CSM*)data;
-	if(!getAllPatchData())
-	{
-		CloseCSM(MAIN_CSM_ID);
-	}
 	patch_header(&menuheader);
 	csm->gui_id=MAIN_GUI_ID=createMainMenu();
 }
@@ -375,7 +364,7 @@ void Killer(void)
 	mfree(cfg_buf);
 	fuckThemAll();
 	FreeWS(ews);
-	RunScaner();
+	//RunScaner();
 	extern void *ELF_BEGIN;
 	extern void kill_data(void *p, void (*func_p)(void *));
 	kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
@@ -426,7 +415,18 @@ void UpdateCSMname(void)
 int main(void)
 {
 	char dummy[sizeof(MAIN_CSM)];
-	zeromem(&dummy,sizeof(MAIN_CSM));
+	//zeromem(&dummy,sizeof(MAIN_CSM));
+	//RunScaner();
+	S_ICONS[0]=GetPicNByUnicodeSymbol(CBOX_UNCHECKED);//icon_disabled;
+	S_ICONS[1]=GetPicNByUnicodeSymbol(CBOX_CHECKED);//icon_enabled;
+	S_ICONS[2]=0;
+	ptc_buf=malloc(PTC_SIZE);
+	cfg_buf=malloc(CONFIG_SIZE);
+	ews=AllocWS(256);
+	if(!getAllPatchData())
+	{
+		SUBPROC((void *)Killer);
+	}
 	UpdateCSMname();
 	LockSched();
 	MAIN_CSM_ID=CreateCSM(&MAINCSM.maincsm,dummy,0);
@@ -450,7 +450,7 @@ PATCH_ITEM *findPatchItemInED(int n)
 		type=pitem->itemType;
 		if(type==TYPE_DRSTR)
 			i++;
-		else if(type>0)
+		else if(type>0&&type!=TYPE_TP)
 			i+=2;
 		if(i==n)
 			return pitem;
@@ -472,7 +472,7 @@ int getMaxFocus(void)
 		type=pitem->itemType;
 		if(type==TYPE_DRSTR)
 			i++;
-		else if(type>0)
+		else if(type>0&&type!=TYPE_TP)
 			i+=2;
 		pitem=pitem->next;
 	}
@@ -750,6 +750,12 @@ void edGHook(GUI *data, int cmd)
 					sl->initData=j-1;
 					break;
 				}
+			case TYPE_MS:
+				{
+					DATA_MS *ms=(DATA_MS *)pitem->itemData;
+					str2num(ss, (int *)&ms->ms, 0, 0, 0);
+					break;
+				}
 			}
 			if(sk_need)
 			{
@@ -852,6 +858,8 @@ int createEditGui(void)
 		if(!pitem->itemData)
 			goto NextItem;
 		if(!type)
+			goto NextItem;
+		if(type==TYPE_TP) //template
 			goto NextItem;
 		if(strlen(pitem->itemName))
 			wsprintf(ews, "%t:", pitem->itemName);
@@ -1020,6 +1028,14 @@ int createEditGui(void)
 				DATA_SL *sl=(DATA_SL *)pitem->itemData;
 				wsprintf(ews, PERCENT_D, sl->initData);
 				ConstructComboBox(&ec, 7, ECF_APPEND_EOL, ews, 8, 0, sl->max+1, sl->initData+1);
+				AddEditControlToEditQend(eq,&ec,ma);
+				break;
+			}
+		case TYPE_MS:
+			{
+				DATA_MS *ms=(DATA_MS *)pitem->itemData;
+				wsprintf(ews, PERCENT_D, ms->ms);
+				ConstructEditControl(&ec,ECT_NORMAL_NUM,ECF_APPEND_EOL|ECF_DISABLE_MINUS|ECF_DISABLE_POINT,ews,8);
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
 			}

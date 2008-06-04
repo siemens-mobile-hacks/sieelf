@@ -21,7 +21,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release\Exe</state>
+          <state></state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -551,7 +551,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>Master.elf</state>
+          <state>Master_ELKA.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -845,7 +845,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release_NEWSGOLD\Exe</state>
+          <state></state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -1374,7 +1374,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>Master.elf</state>
+          <state>Master_NEWSGOLD.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -1668,7 +1668,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release_SGOLD\Exe</state>
+          <state></state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -2197,7 +2197,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>Master.elf</state>
+          <state>Master_SGOLD.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -2491,7 +2491,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release_NEWSGOLD_LG3\Exe</state>
+          <state></state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -3021,7 +3021,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>Master.elf</state>
+          <state>Master_NEWSGOLD_LG3.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -3304,6 +3304,9 @@
   </file>
   <file>
     <name>$PROJ_DIR$\getConfig.h</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\lang.h</name>
   </file>
   <file>
     <name>$PROJ_DIR$\main.c</name>
