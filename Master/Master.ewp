@@ -1784,7 +1784,7 @@
         <debug>0</debug>
         <option>
           <name>CCDefines</name>
-          <state>NEWSGOLD</state>
+          <state></state>
         </option>
         <option>
           <name>CCPreprocFile</name>
