@@ -2,7 +2,7 @@
  * 文件名: ptcFileWork.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.6.2
+ * 最后修改日期: 2008.06.05
  *
  * 作用: 读取*.ptc进行初始化和写入*.ptc
  * 备注: WINTEL_DEBUG为使用在windows中使用编译器进行调试的条件编译项目

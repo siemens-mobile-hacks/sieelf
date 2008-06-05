@@ -1,6 +1,6 @@
 ELF名称: Master.elf
 作者: BingK(binghelingxi), Email: bingkx@gmail.com
-版本: 1.5
+版本: 1.5.1
 感谢: 所有参与CfgEdit制作的人,CfgEdit给了我很多应用参考实例
       很大程度上方便了我制作这个ELF.
 作用: 和JAVA版本的Master一样,实现了对MasterPatch的配置,
@@ -10,7 +10,7 @@ ELF名称: Master.elf
         选项菜单,选择"情景模式"项目配置.
       2.我查看过JAVA版本的Master的源码,由于对JAVA一窍不通,故
         对于以下几种数据类型不是很了解,且不是很常用,因此没有
-        在1.5版本中加入支持:
+        在1.5.1版本中加入支持:
           //#define TYPE_OF     16 //offset
           //#define TYPE_CONST  18 //const
         可能在以后的版本中会加入支持,或者如果你有什么好提议,请联系我.
@@ -33,4 +33,27 @@ ELF名称: Master.elf
       4.源码中WINTEL_DEBUG项为使用WINDOWS的编译器调试的条件编译项.
       5.该ELF在打开和关闭时都会运行RunScaner函数一次,因此如果没有安装
         过MasterPatch就不要尝试了.
-           
+
+更新日志:
+v1.5.1 2008.06.05
++增加一种数据类型TYPE_POSB,处理起来和TYPE_POS一样，只在保存的时候只保存一个字节，标志字符串"xy"
++实时申请/释放config.txt的缓存
++设置颜色时不再关闭ED_GUI，直接打开GUI
+*修正SGOLD死机问题，一个低级的设置错误
+
+v1.5 2008.06.05
++毫秒(timeinms)支持，暂作unsigned int处理
++模板(template)支持
+
+v1.3 2008.06.04
++多层菜单支持
++原Master中的滑块支持,不过在ELF我暂时没法将它处理成滑块,只好用一个ComboBox（选择项）替代
++加了一个NEWSGOLD_LG3的编译项,可能可以解决中文/俄文机型之间的字体定义不同问题
+
+v1.1 2008.06.03
++点"完成"退出补丁配置时,如果补丁处于关状态,自动开启补丁
++加入英文语言包
+*修正一些字符处理问题
+
+v1.0 2008.06.03
+实现了基本的MasterPatch配置      
