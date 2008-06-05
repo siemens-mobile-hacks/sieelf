@@ -34,6 +34,8 @@ int patch_n=0;
 
 PTC_CONFIG * volatile ptcfgtop=0;
 
+char *cfg_buf;
+
 //打开config.txt并载入到cfg_buf
 int loadConfig(void)
 {
@@ -53,24 +55,32 @@ int loadConfig(void)
 #else
 	int f;
 	unsigned int ferr;
+	FSTATS fstat;
 	strcat(cfg_path, PTC_FOLDR);
 	strcat(cfg_path, "configs.txt");
-	f=fopen(cfg_path, A_BIN+A_ReadOnly, P_READ, &ferr);
-	if(f==-1)
+	if(GetFileStats(cfg_path,&fstat,&ferr)!=-1)
 	{
-		cfg_buf[0]=0;
-		return 0;
-	}
-	size=fread(f, cfg_buf, CONFIG_SIZE, &ferr);
-	fclose(f, &ferr);
-#endif
-	if(size>0)
+		f=fopen(cfg_path, A_BIN+A_ReadOnly, P_READ, &ferr);
+		if(f==-1)
+		{
+			return 0;
+		}
+		size=fstat.size;
+		if(size<=0)
+			return 0;
+		cfg_buf=malloc((size+3)&(~3));
+		if(fread(f, cfg_buf, size, &ferr)!=size)
+		{
+			fclose(f, &ferr);
+			mfree(cfg_buf);
+			return 0;
+		}
+		fclose(f, &ferr);
 		cfg_buf[size]=0;
-	else
-	{
-		cfg_buf[0]=0;
-		return 0;
 	}
+	else
+		return 0;
+#endif
 	return 1;
 }
 #ifndef	WINTEL_DEBUG
@@ -1484,6 +1494,7 @@ int readConfig(int type, char *tp) //type, 1,load one, 0,load all
 				goto END;
 			addPatchConfigList();
 			addToPatchInfo(p2); ////Jump to name
+			goto ANYWHERE;
 		}
 		else if(p2=strstrInQuote(pp, "p="))
 		{
@@ -1493,11 +1504,13 @@ int readConfig(int type, char *tp) //type, 1,load one, 0,load all
 					goto END;
 				addPatchConfigList();
 				addToPatchInfo(p2); ////Jump to name
+				goto ANYWHERE;
 			}
 		}
 		if((p2=strstrInQuote(pp, "info")))
 		{
 			addInfoToPatchInfo(p2);
+			goto ANYWHERE;
 		}
 		if((p2=strstrInQuote(pp, STR_CHOICE))||(p2=strstrInQuote(pp, STR_CHOICE1))||(p2=strstrInQuote(pp, STR_CHOICE2)))
 		{
@@ -1505,27 +1518,32 @@ int readConfig(int type, char *tp) //type, 1,load one, 0,load all
 				addPrepareData(p2); //Jump to 
 			else
 				doItemJob(pp, &ptcfgtop->mainitem);
+			goto ANYWHERE;
 		}
 		if((p2=strstrInQuote(pp, STR_TEMPLATE1)))
 		{
 			if(isThatItem(p2-3))
 				p=doTemplateWork(p2);
 		}
-		else if((p2=strstrInQuote(pp, STR_TEMPLATE1)))
+		if((p2=strstrInQuote(pp, STR_TEMPLATE1)))
 		{
-			p=doTemplateWork(p2);
-		}
-		if((p2=strstrInQuote(pp, STR_SUBMENU1)))
-		{
-			p=doSubMenuJob(&ptcfgtop->mainitem, p2);
-		}
-		else if((p2=strstrInQuote(pp, STR_SUBMENU2)))
-		{
-			if(isThatItem(p2-3))
-				p=doSubMenuJob(&ptcfgtop->mainitem, p2);
+			p=doTemplateWork(p2);       
 		}
 		else
-			doItemJob(pp, &ptcfgtop->mainitem);
+		{
+			if((p2=strstrInQuote(pp, STR_SUBMENU2)))
+			{
+				if(isThatItem(p2-3))
+					p=doSubMenuJob(&ptcfgtop->mainitem, p2);
+			}
+			if((p2=strstrInQuote(pp, STR_SUBMENU1)))
+			{
+				p=doSubMenuJob(&ptcfgtop->mainitem, p2);
+			}
+			else
+				doItemJob(pp, &ptcfgtop->mainitem);
+		}
+	ANYWHERE: //执行完成一种数据类型之后,不再对这一行进行解析
 		p=gotoQuoteEnd(p);
 		if(!p)
 			break;
@@ -1558,6 +1576,7 @@ int readConfig(int type, char *tp) //type, 1,load one, 0,load all
 	}
 	sortPatchConfigList();
 END:
+	mfree(cfg_buf);
 	return 1;
 }
 

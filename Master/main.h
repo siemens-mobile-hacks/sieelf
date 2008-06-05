@@ -9,7 +9,7 @@
 #define CONFIG_SIZE	(32*1024)
 
 extern char *ptc_buf;
-extern char *cfg_buf;
+//extern char *cfg_buf;
 extern int patch_n;
 extern unsigned int MAIN_GUI_ID;
 extern unsigned int MAIN_CSM_ID;

@@ -44,7 +44,7 @@ typedef struct
 __swi __arm void RunScaner(void);
 
 char *ptc_buf;
-char *cfg_buf;
+//char *cfg_buf;
 int patch_n=0;
 int isSubMenuNeed=0;
 int colorEditing=0;
@@ -52,7 +52,7 @@ int PTCFG_CUR=0;
 unsigned int MAIN_GUI_ID=0;
 unsigned int MAIN_CSM_ID=0;
 unsigned int MAIN_EDGUI_ID=0;
-unsigned int COLOR_EDITOR_GUI_ID=0;
+//unsigned int COLOR_EDITOR_GUI_ID=0;
 int S_ICONS[3];
 WSHDR *ews;
 
@@ -78,7 +78,7 @@ typedef struct
 	PTC_CONFIG *ptcfg;
 	PATCH_SUBMENU *submenu;
 }EDIT_ITEM_LIST;
-EDIT_ITEM_LIST *editItemList=0;
+EDIT_ITEM_LIST * volatile editItemList=0;
 
 void pushToItemStack(PATCH_SUBMENU *submenu)
 {
@@ -103,9 +103,9 @@ void pushToItemStack(PATCH_SUBMENU *submenu)
 void popItemStack(void)
 {
 	EDIT_ITEM_LIST *item=editItemList;
-	if(editItemList)
+	if(item)
 	{
-		editItemList=editItemList->next;
+		editItemList=item->next;
 		if(editItemList)
 			editItemList->prev=0;
 		mfree(item);
@@ -307,7 +307,7 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 	MAIN_CSM *csm=(MAIN_CSM*)data;
 	if (msg->msg==MSG_GUI_DESTROYED)
 	{
-		if(((int)msg->data0==csm->gui_id)&&!colorEditing)
+		if(((int)msg->data0==csm->gui_id))
 		{
 			PTC_CONFIG *ptcfg;
 			if((int)msg->data1==1)
@@ -345,14 +345,6 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 			else
 				csm->csm.state=-3;
 		}
-		if((int)msg->data0==COLOR_EDITOR_GUI_ID)
-		{
-			colorEditing=0;
-			csm->gui_id=createEditGui();
-			if(csm->gui_id==0)
-				csm->csm.state=-3;
-			COLOR_EDITOR_GUI_ID=0;
-		}
 	}
 	return(1);
 }
@@ -361,10 +353,10 @@ void Killer(void)
 {
 	saveAllConfig();
 	mfree(ptc_buf);
-	mfree(cfg_buf);
+	//mfree(cfg_buf);
 	fuckThemAll();
 	FreeWS(ews);
-	//RunScaner();
+	RunScaner();
 	extern void *ELF_BEGIN;
 	extern void kill_data(void *p, void (*func_p)(void *));
 	kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
@@ -415,17 +407,16 @@ void UpdateCSMname(void)
 int main(void)
 {
 	char dummy[sizeof(MAIN_CSM)];
-	//zeromem(&dummy,sizeof(MAIN_CSM));
-	//RunScaner();
 	S_ICONS[0]=GetPicNByUnicodeSymbol(CBOX_UNCHECKED);//icon_disabled;
 	S_ICONS[1]=GetPicNByUnicodeSymbol(CBOX_CHECKED);//icon_enabled;
 	S_ICONS[2]=0;
 	ptc_buf=malloc(PTC_SIZE);
-	cfg_buf=malloc(CONFIG_SIZE);
-	ews=AllocWS(256);
+	//cfg_buf=malloc(CONFIG_SIZE);
+	ews=AllocWS(256); 
 	if(!getAllPatchData())
 	{
 		SUBPROC((void *)Killer);
+		return 0;
 	}
 	UpdateCSMname();
 	LockSched();
@@ -616,10 +607,8 @@ int edOnKey(GUI *data, GUI_MSG *msg)
 				case TYPE_COLOR:
 					{
 						DATA_COLOR *color=(DATA_COLOR *)pitem->itemData;
-						
-						COLOR_EDITOR_GUI_ID=EditColors(color->color);
-						colorEditing=1;
-						return 1;
+						EditColors(color->color);
+						break;
 					}
 				}
 			}
@@ -1054,5 +1043,6 @@ int createEditGui(void)
 ex_back:
 	return 0;
 }
+
 
 
