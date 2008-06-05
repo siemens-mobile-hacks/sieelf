@@ -23,11 +23,12 @@ unsigned int miss[6];
 unsigned int bmenus[4];
 
 unsigned int hour[5];
-unsigned int min[6];
+unsigned int min[5];
 unsigned int status[5];
 unsigned int weekdays[5][7];
 unsigned int day[7][24];
-unsigned int other[9];
+unsigned int weeks[8];
+unsigned int other[8];
 unsigned int name2[8];
 int show_icon=0;
 int status_icon=0;
@@ -70,8 +71,8 @@ void load_settings(void)
   int handle=fopen(cfgfile, A_ReadOnly, P_READ,&err);
   if(handle!=-1)
   {
-    char *data=malloc(280);
-    fread(handle,data,280,&err);
+    char *data=malloc(290);
+    fread(handle,data,290,&err);
 
       
 show_icon=data[2];
@@ -98,7 +99,7 @@ for(int i=0;i<168;i++)
 day[i/24][i%24]=data[i+70];
 }
 //238
-min[5]=data[238];
+weeks[7]=data[238];
 
 name2[0]=data[239];
 name2[1]=data[240];
@@ -109,7 +110,7 @@ name2[5]=data[244];
 name2[6]=data[245];
 name2[7]=data[246];
 
-other[8]=data[247];
+//week[0]=data[247];
 
 other[0]=data[248];
 other[1]=data[249];
@@ -144,6 +145,14 @@ amenus[7]=data[273];
 amenus[8]=data[274];
 amenus[9]=data[275];
 amenus[10]=data[276];
+
+weeks[0]=data[277];
+weeks[1]=data[278];
+weeks[2]=data[279];
+weeks[3]=data[280];
+weeks[4]=data[281];
+weeks[5]=data[282];
+weeks[6]=data[283];
 
     mfree(data);
     fclose(handle,&err);
@@ -238,7 +247,7 @@ void stop_(void)
   	if (other[1])
 		SetIllumination(0, 1, 0, 0);
 	if (other[2])
-		SetIllumination(1, 1, 0, 0);   
+		SetIllumination(1, 1, 0, 0);
 #ifndef NEWSGOLD
 	if (other[3])
 		SetIllumination(2, 1, 0, 0);
@@ -246,7 +255,7 @@ void stop_(void)
 	if (other[3])
 		SetIllumination(4, 1, 0, 0);
 #endif
-  if (other[0]) SetVibration(0);
+  if (other[0]) Vibration(0,5);
   if (--_count)
   {
     GBS_StartTimerProc(&tmr_vibra,TMR_SECOND>>1,start_);
@@ -375,7 +384,7 @@ GetDateTime(&date,&time);
           if(time.min%miss[5]==0)
           {
           #ifdef NEWSGOLD          
-	    if (GetMissedEventCount(0) > 0)
+	    if (GetMissedEventCount(0))
           #else
             if (GetMissedCallsCount()||HasNewSMS()) 
           #endif
@@ -396,16 +405,12 @@ GetDateTime(&date,&time);
  }
  if(name2[2])
  {
-  if(time.min==min[5])
+  if(time.min==weeks[7])
   {
    int a1,a2;
-   if(GetWeek(&date)<5&&other[8])
-   a1=0;
-   else
    a1=GetWeek(&date);
-   
    a2=time.hour;
-   if(day[a1][a2]<9&&day[a1][a2]!=0)
+   if(day[a1][a2]<9&&day[a1][a2]!=0&&(weeks[a1]))
      SetProfile(day[a1][a2]-1);
   }
  }
@@ -503,7 +508,6 @@ static void maincsm_onclose(CSM_RAM *csm)
 {
   GBS_DelTimer(&mytmr);
   GBS_DelTimer(&tmr_vibra);
-  //GBS_DelTimer(&xtmr);
   FreeWS(ws);
   SUBPROC((void *)Killer);
 }
