@@ -172,6 +172,14 @@ void initPatchItem(PATCH_ITEM *ptcitem)
 					p1[i]=p[i];
 				break;
 			}
+		case TYPE_POSB:
+			{
+				DATA_POS *pos=(DATA_POS *)pitem->itemData;
+				char *sp=ptc_buf+bpos;
+				pos->x=*sp;
+				pos->y=*(sp+1);
+				break;
+			}
 		}
 	NEXT_ITEM:
 		pitem=pitem->next;
@@ -470,6 +478,16 @@ void fillItemDataToBuf(PATCH_ITEM *ptcitem)
 					p[i]=p1[i];
 				break;
 			}
+		case TYPE_POSB:
+			{
+				DATA_POS *pos=(DATA_POS *)pitem->itemData;
+				char *sp=ptc_buf+bpos;
+				char *px=(char *)&pos->x;
+				char *py=(char *)&pos->y;
+				*sp=*px;
+				*(sp+1)=*py;
+				break;
+			}
 		}
 	}
 }
@@ -514,6 +532,11 @@ int getPtcSize(PATCH_ITEM *ptcitem)
 		case TYPE_ADDRESS:
 			{
 				ptcsize+=4;
+				break;
+			}
+		case TYPE_POSB:
+			{
+				ptcsize+=2;
 				break;
 			}
 		case TYPE_STRING:

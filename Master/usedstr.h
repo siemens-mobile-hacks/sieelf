@@ -14,6 +14,8 @@ extern const char STR_XY1[];
 extern const char STR_XY2[];
 extern const char STR_X[];
 extern const char STR_Y[];
+extern const char STR_WIDTH[];
+extern const char STR_HIGHT[];
 extern const char STR_CHOICE[];
 extern const char STR_CHOICE1[];
 extern const char STR_CHOICE2[];
@@ -32,5 +34,6 @@ extern const char STR_USRTEMPLATE2[];
 extern const char STR_MS1[];
 extern const char STR_MS2[];
 #endif
+
 
 

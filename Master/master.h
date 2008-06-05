@@ -39,6 +39,8 @@ typedef struct
 {
 	short x;
 	short y;
+	short w;
+	short h;
 }DATA_POS;
 
 typedef struct
@@ -177,6 +179,6 @@ typedef struct
 #define TYPE_SL     17 //slider
 //#define TYPE_CONST  18 //const
 #define TYPE_TP     19 //template
-//#define TYPE_USETP  20 //usetemplate
-//#define TYPE_ENDTP  21 //endtemplate
+#define TYPE_POSB	20 //pos in byte //use it the same as pos, except when save
+
 #endif

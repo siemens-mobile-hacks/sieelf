@@ -598,10 +598,11 @@ int edOnKey(GUI *data, GUI_MSG *msg)
 						chkbox->onoff=!chkbox->onoff;
 						return (-1);
 					}
+				case TYPE_POSB:
 				case TYPE_POS:
 					{
 						DATA_POS *pos=(DATA_POS *)pitem->itemData;
-						EditPostionGUI(&pos->x, &pos->y);
+						EditPostionGUI(&pos->x, &pos->y, pos->w, pos->h);
 						break;
 					}
 				case TYPE_COLOR:
@@ -659,6 +660,7 @@ void edGHook(GUI *data, int cmd)
 			case TYPE_SUBMENU:
 				sk_need=1;
 				break;
+			case TYPE_POSB:
 			case TYPE_POS:
 				{
 					DATA_POS *pos=(DATA_POS *)pitem->itemData;
@@ -960,6 +962,7 @@ int createEditGui(void)
 				AddEditControlToEditQend(eq,&ec,ma);
 			}
 			break;
+		case TYPE_POSB:
 		case TYPE_POS:
 			{
 				DATA_POS *dpos=(DATA_POS *)pitem->itemData;

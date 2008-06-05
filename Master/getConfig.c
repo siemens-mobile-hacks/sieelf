@@ -30,11 +30,15 @@
 char cfg_buf[CONFIG_SIZE];
 int patch_n=0;
 #define mfree free
+
+#else
+
+char *cfg_buf;
+
 #endif
 
 PTC_CONFIG * volatile ptcfgtop=0;
 
-char *cfg_buf;
 
 //打开config.txt并载入到cfg_buf
 int loadConfig(void)
@@ -452,13 +456,13 @@ void addToPatchInfo(char *pdata)
 	p1=gotoMyStrStart(pp);
 	p2=gotoMyStrEnd(pp);
 	strnCopyWithEnd(ptcinfo->patchName, p1, p2-p1);
-	if(pp=strstrInQuote(pdata, "ver="))
+	if((pp=strstrInQuote(pdata, "ver="))||(pp=strstrInQuote(pdata, "version=")))
 	{
 		p1=gotoMyStrStart(pp);
 		p2=gotoMyStrEnd(pp);
 		strnCopyWithEnd(ptcinfo->version, p1, p2-p1);
 	}
-	if(pp=strstrInQuote(pdata, "cp="))
+	if((pp=strstrInQuote(pdata, "cp="))||(pp=strstrInQuote(pdata, "cp=")))
 	{
 		p1=gotoMyStrStart(pp);
 		p2=gotoMyStrEnd(pp);
@@ -470,7 +474,7 @@ void addToPatchInfo(char *pdata)
 		p2=gotoMyStrEnd(pp);
 		strnCopyWithEnd(ptcinfo->patchID, p1, p2-p1);
 	}
-	if(pp=strstrInQuote(pdata, "mem=")) //指定ptc长度
+	if((pp=strstrInQuote(pdata, "mem="))||(pp=strstrInQuote(pdata, "mem="))) //指定ptc长度
 	{
 		pp=gotoRealPos(pp);
 		str2num(pp, &ptcfgtop->memory, 0,0, 0);
@@ -741,11 +745,13 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		}
 		addItemToConfig(checkbox, subMenu, TYPE_CHECKBOX, bytePos, temp);
 	}
-	else if((p1=strstrInQuote(p, STR_XY1))||(p1=strstrInQuote(p, STR_XY2)))
+	else if((p1=strstrInQuote(p, STR_XY2)))
 	{
 		DATA_POS *pos=malloc(sizeof(DATA_POS));
 		pos->x=0;
 		pos->y=0;
+		pos->w=0;
+		pos->h=0;
 		pp=gotoRealPos(p1);
 		p1=gotoMyStrStart(pp);
 		p2=gotoMyStrEnd(pp);
@@ -759,6 +765,16 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		{
 			pp=gotoRealPos(p1);
 			str2num_short(pp, &pos->y, 0xFFF, 0, 0);
+		}
+		if(p1=strstrInQuote(p, STR_WIDTH))
+		{
+			pp=gotoRealPos(p1);
+			str2num_short(pp, &pos->w, 0xFFF, 0, 0);
+		}
+		if(p1=strstrInQuote(p, STR_HIGHT))
+		{
+			pp=gotoRealPos(p1);
+			str2num_short(pp, &pos->h, 0xFFF, 0, 0);
 		}
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos, 0, 0, 0);
@@ -1106,6 +1122,41 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		str2num(pp, &bytePos,0,0, 0);
 		addItemToConfig(ms, subMenu, TYPE_MS, bytePos, temp);
 	}
+	else if((p1=strstrInQuote(p, STR_XY1)))
+	{
+		DATA_POS *pos=malloc(sizeof(DATA_POS));
+		pos->x=0;
+		pos->y=0;
+		pos->w=0;
+		pos->h=0;
+		pp=gotoRealPos(p1);
+		p1=gotoMyStrStart(pp);
+		p2=gotoMyStrEnd(pp);
+		strnCopyWithEnd(temp, p1, p2-p1);
+		if(p1=strstrInQuote(p, STR_X))
+		{
+			pp=gotoRealPos(p1);
+			str2num_short(pp, &pos->x, 0xFFF, 0, 0);
+		}
+		if(p1=strstrInQuote(p, STR_Y))
+		{
+			pp=gotoRealPos(p1);
+			str2num_short(pp, &pos->y, 0xFFF, 0, 0);
+		}
+		if(p1=strstrInQuote(p, STR_WIDTH))
+		{
+			pp=gotoRealPos(p1);
+			str2num_short(pp, &pos->w, 0xFFF, 0, 0);
+		}
+		if(p1=strstrInQuote(p, STR_HIGHT))
+		{
+			pp=gotoRealPos(p1);
+			str2num_short(pp, &pos->h, 0xFFF, 0, 0);
+		}
+		pp=gotoRealPos(p+1);
+		str2num(pp, &bytePos, 0, 0, 0);
+		addItemToConfig(pos, subMenu, TYPE_POSB, bytePos, temp);
+	}
 }
 
 //解析SUBMENU，子菜单
@@ -1314,6 +1365,8 @@ void subMenuCopy(PATCH_SUBMENU *sbmdst, PATCH_SUBMENU *sbmsrc, int byteBase)
 				DATA_POS *pos=malloc(sizeof(DATA_POS));
 				pos->x=pos1->x;
 				pos->y=pos1->y;
+				pos->w=pos1->w;
+				pos->h=pos1->h;
 				addItemToConfig(pos, sbmdst, TYPE_POS, bytePos+byteBase, pitem->itemName);
 				break;
 			}
@@ -1460,6 +1513,17 @@ void subMenuCopy(PATCH_SUBMENU *sbmdst, PATCH_SUBMENU *sbmsrc, int byteBase)
 				addItemToConfig(ms, sbmdst, TYPE_MS, bytePos+byteBase, pitem->itemName);
 				break;
 			}
+		case TYPE_POSB:
+			{
+				DATA_POS *pos1=(DATA_POS *)pitem->itemData;
+				DATA_POS *pos=malloc(sizeof(DATA_POS));
+				pos->x=pos1->x;
+				pos->y=pos1->y;
+				pos->w=pos1->w;
+				pos->h=pos1->h;
+				addItemToConfig(pos, sbmdst, TYPE_POSB, bytePos+byteBase, pitem->itemName);
+				break;
+			}
 		}
 		pitem=pitem->next;
 	}
@@ -1516,9 +1580,9 @@ int readConfig(int type, char *tp) //type, 1,load one, 0,load all
 		{
 			if(isPrepareItem(p2))
 				addPrepareData(p2); //Jump to 
-			else
-				doItemJob(pp, &ptcfgtop->mainitem);
-			goto ANYWHERE;
+			//else
+			//	doItemJob(pp, &ptcfgtop->mainitem);
+			//goto ANYWHERE;
 		}
 		if((p2=strstrInQuote(pp, STR_TEMPLATE1)))
 		{
@@ -1576,7 +1640,9 @@ int readConfig(int type, char *tp) //type, 1,load one, 0,load all
 	}
 	sortPatchConfigList();
 END:
+#ifndef WINTEL_DEBUG
 	mfree(cfg_buf);
+#endif
 	return 1;
 }
 
@@ -1958,6 +2024,8 @@ void showSubMenuItem(PATCH_SUBMENU *subMenuItem)
 				{
 					printf("X: %d\n", pos->x);
 					printf("Y: %d\n", pos->y);
+					printf("W: %d\n", pos->w);
+					printf("H: %d\n", pos->h);
 				}
 				break;
 			}
@@ -2081,6 +2149,18 @@ void showSubMenuItem(PATCH_SUBMENU *subMenuItem)
 				if(ms)
 				{
 					printf("ms: %d\n", ms->ms);
+				}
+				break;
+			}
+		case TYPE_POSB:
+			{
+				DATA_POS *pos=(DATA_POS *)patchItem->itemData;
+				if(pos)
+				{
+					printf("X: %d\n", pos->x);
+					printf("Y: %d\n", pos->y);
+					printf("W: %d\n", pos->w);
+					printf("H: %d\n", pos->h);
 				}
 				break;
 			}

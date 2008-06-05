@@ -350,6 +350,8 @@ typedef struct
   short y_pos;
   short *x;
   short *y;
+  short width;
+  short hight;
   int cstep;
 }XY_GUI;
 
@@ -399,6 +401,8 @@ void method0_xy(XY_GUI *data)
   
   //Текущая позиция
   DrwImg((IMGHDR *)&imgPointer,data->x_pos-2,data->y_pos-2,black,transparent);
+  if(data->width || data->hight)
+  	DrawRectangle(data->x_pos,data->y_pos,data->x_pos+data->width,data->y_pos+data->hight,1,black,transparent);
 }
 
 
@@ -576,7 +580,7 @@ const void * const gui_methods_xy[11]={
 
 const RECT Canvas_xy={0,0,0,0};
 
-void EditPostionGUI(short *x, short *y)
+void EditPostionGUI(short *x, short *y, short width, short hight)
 {
   XY_GUI *xy_gui=malloc(sizeof(XY_GUI));
   zeromem(xy_gui,sizeof(XY_GUI));
@@ -585,6 +589,8 @@ void EditPostionGUI(short *x, short *y)
   xy_gui->y_pos=*y;
   xy_gui->x=x;
   xy_gui->y=y;
+  xy_gui->width=width;
+  xy_gui->hight=hight;
   xy_gui->cstep=1;
   patch_rect((RECT*)&Canvas_xy,0,YDISP,ScreenW()-1,ScreenH()-1);
   xy_gui->gui.canvas=(void *)(&Canvas_xy);
