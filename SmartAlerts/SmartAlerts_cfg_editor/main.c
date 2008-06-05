@@ -4,9 +4,9 @@
 
 TTime time;
 
-unsigned int files[5];
-unsigned int smss[5];
-unsigned int calls[5];
+unsigned int files[8];
+unsigned int smss[8];
+unsigned int calls[8];
 unsigned int amenus[11];
 
 unsigned int status[5];
@@ -19,7 +19,7 @@ unsigned int miss[6];
 unsigned int bmenus[4];
 unsigned int backup[7];
 unsigned int other[8];
-unsigned int week[8];
+unsigned int weeks[8];
 unsigned int name2[9];
 unsigned int max;
 unsigned int mode=0;
@@ -171,8 +171,8 @@ void load_settings(void)
   int handle=fopen(cfgfile, A_ReadOnly, P_READ,&err);
   if(handle!=-1)
   {
-    char *data=malloc(290);
-    fread(handle,data,290,&err);
+    char *data=malloc(512);
+    fread(handle,data,512,&err);
       
 show_icon=data[2];
 X=data[3];
@@ -187,71 +187,45 @@ for(int i=0;i<5;i++)
   calls[i]=data[i+25];
   smss[i]=data[i+30];
 }
-//35
+
+//20
 for(int i=0;i<35;i++)
 {
-weekdays[i/7][i%7]=data[i+35];
+weekdays[i/7][i%7]=data[i+20];
 }
-//70
+//55
 for(int i=0;i<168;i++)
 {
-day[i/24][i%24]=data[i+70];
+day[i/24][i%24]=data[i+55];
 }
-//238
-week[7]=data[238];
+//223
+for(int i=0;i<8;i++)
+{
+ name2[i]=data[i+223];
+ weeks[i]=data[i+231];
+ amenus[i]=data[i+239];
+ files[i]=data[i+247];
+ calls[i]=data[i+255];
+ smss[i]=data[i+263];
+ other[i]=data[i+271];
+}
 
-name2[0]=data[239];
-name2[1]=data[240];
-name2[2]=data[241];
-name2[3]=data[242];
-name2[4]=data[243];
-name2[5]=data[244];
-name2[6]=data[245];
-name2[7]=data[246];
+amenus[8]=data[279];
+amenus[9]=data[280];
+amenus[10]=data[281];
 
-//week[7]=data[247];
 
-other[0]=data[248];
-other[1]=data[249];
-other[2]=data[250];
-other[3]=data[251];
+bmenus[0]=data[282];
+bmenus[1]=data[283];
+bmenus[2]=data[284];
+bmenus[3]=data[285];
 
-other[4]=data[252];
-other[5]=data[253];
-other[6]=data[254];
-other[7]=data[255];
-
-bmenus[0]=data[256];
-bmenus[1]=data[257];
-bmenus[2]=data[258];
-bmenus[3]=data[259];
-
-miss[0]=data[260];
-miss[1]=data[261];
-miss[2]=data[262];
-miss[3]=data[263];
-miss[4]=data[264];
-miss[5]=data[265];
-
-amenus[0]=data[266];
-amenus[1]=data[267];
-amenus[2]=data[268];
-amenus[3]=data[269];
-amenus[4]=data[270];
-amenus[5]=data[271];
-amenus[6]=data[272];
-amenus[7]=data[273];
-amenus[8]=data[274];
-amenus[9]=data[275];
-amenus[10]=data[276];
-
-week[0]=data[277];
-week[1]=data[278];
-week[2]=data[279];
-week[3]=data[280];
-week[4]=data[281];
-week[5]=data[282];
-week[6]=data[283];
+miss[0]=data[286];
+miss[1]=data[287];
+miss[2]=data[288];
+miss[3]=data[289];
+miss[4]=data[290];
+miss[5]=data[291];
 
 
     mfree(data);
@@ -265,7 +239,7 @@ void save_settings(void)
   int handle=fopen(cfgfile,A_WriteOnly+A_Create,P_WRITE,&err);
   if(handle!=-1)
   {
-    char *data=malloc(290);
+    char *data=malloc(512);
 
 data[2]=show_icon;
 data[3]=X;
@@ -276,77 +250,49 @@ for(int i=0;i<5;i++)
   data[i+5]=status[i];
   data[i+10]=hour[i];
   data[i+15]=min[i];
-  data[i+20]=files[i];
-  data[i+25]=calls[i];
-  data[i+30]=smss[i];
 }
-//35
+//20
 for(int i=0;i<35;i++)
 {
-data[i+35]=weekdays[i/7][i%7];
+data[i+20]=weekdays[i/7][i%7];
 }
-//70
+//55
 for(int i=0;i<168;i++)
 {
-data[i+70]=day[i/24][i%24];
+data[i+55]=day[i/24][i%24];
 }
-//238
-data[238]=week[7];
+//223
+for(int i=0;i<8;i++)
+{
+ data[i+223]=name2[i];
+ data[i+231]=weeks[i];
+ data[i+239]=amenus[i];
+ data[i+247]=files[i];
+ data[i+255]=calls[i];
+ data[i+263]=smss[i];
+ data[i+271]=other[i];
+}
 
-data[239]=name2[0];
-data[240]=name2[1];
-data[241]=name2[2];
-data[242]=name2[3];
-data[243]=name2[4];
-data[244]=name2[5];
-data[245]=name2[6];
-data[246]=name2[7];
-
-data[247]=week[0];
-
-data[248]=other[0];
-data[249]=other[1];
-data[250]=other[2];
-data[251]=other[3];
-data[252]=other[4];
-data[253]=other[5];
-data[254]=other[6];
-data[255]=other[7];
-
-data[256]=bmenus[0];
-data[257]=bmenus[1];
-data[258]=bmenus[2];
-data[259]=bmenus[3];
-
-data[260]=miss[0];
-data[261]=miss[1];
-data[262]=miss[2];
-data[263]=miss[3];
-data[264]=miss[4];
-data[265]=miss[5];
-
-data[266]=amenus[0];
-data[267]=amenus[1];
-data[268]=amenus[2];
-data[269]=amenus[3];
-data[270]=amenus[4];
-data[271]=amenus[5];
-data[272]=amenus[6];
-data[273]=amenus[7];
-data[274]=amenus[8];
-data[275]=amenus[9];
-data[276]=amenus[10];
-
-data[277]=week[0];
-data[278]=week[1];
-data[279]=week[2];
-data[280]=week[3];
-data[281]=week[4];
-data[282]=week[5];
-data[283]=week[6];
+data[279]=amenus[8];
+data[280]=amenus[9];
+data[281]=amenus[10];
 
 
-    fwrite(handle,data,290,&err);
+data[282]=bmenus[0];
+data[283]=bmenus[1];
+data[284]=bmenus[2];
+data[285]=bmenus[3];
+
+data[286]=miss[0];
+data[287]=miss[1];
+data[288]=miss[2];
+data[289]=miss[3];
+data[290]=miss[4];
+data[291]=miss[5];
+
+
+
+    fwrite(handle,data,512,&err);
     mfree(data);
   }
   fclose(handle,&err);
@@ -363,7 +309,7 @@ void edit()
     case 2: if(ch[2])
       min[num_alarm]=backup[2];
             if(ch[4])
-      week[7]=backup[2];   
+      weeks[7]=backup[2];   
            if(ch[5])
       bmenus[bmenu]=backup[2];   
            if(ch[6])
@@ -438,9 +384,6 @@ const char percent_t[]="%t";
 
 void CreateList(char const *header,char control,char const *list[],int num,int change,int boxend,int datanum,unsigned int data[],int fix,char const *LeftButton,char const *RightButton)
 {
-      int i;
-      tmp=scr_h/11.6;
-  
       //draw_pic(logo,2,2);     
       DrawRoundedFrame(0,0,scr_w,scr_h,0,0,0,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(2));
       draw_pic(fon,0,0);
@@ -461,22 +404,23 @@ void CreateList(char const *header,char control,char const *list[],int num,int c
       wsprintf(ws,"%02d:%02d",time.hour,time.min);
       DrwStr(ws,scr_w-font_size*3,4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
      
-      if(num!=0)
-      {  
+      tmp=scr_h/11.6;
+      int i;
       for(i=0;i<num;i++)
       {
       wsprintf(ws,percent_t,list[i]);
       if (control==i&&i<change) DrwStr(ws,5,6+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
         else DrwStr(ws,5,6+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       }
-
+      
+      
       for (int i=0;i<boxend;i++)
       {
-        if (data[i]) draw_pic(wd_on,scr_w-font_size*2,6+tmp*(i+1));
-          else draw_pic(wd_off,scr_w-font_size*2,6+tmp*(i+1));
+        if (data[i]) draw_pic(wd_on,scr_w-font_size*2,4+tmp*(i+1));
+          else draw_pic(wd_off,scr_w-font_size*2,4+tmp*(i+1));
       }
       
-      if(datanum!=0)
+      
       for (int i=boxend;i<datanum+boxend;i++)
       {
         wsprintf(ws, "%02d",data[i+fix]);
@@ -484,8 +428,32 @@ void CreateList(char const *header,char control,char const *list[],int num,int c
         DrwStr(ws,scr_w-font_size*2,6+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
           else DrwStr(ws,scr_w-font_size*2,6+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       }
+}
+
+const char percent_d[]="%02d";
+const char minus[]="-";
+const char colon[]=":";
+
+void DrawData(unsigned int num,unsigned int data[])
+{
+      tmp=scr_h/11.6;
+      int c=font_size*1.5;
+
+      for(int i=0;i<4;i++)  
+      {  
+      wsprintf(ws,percent_d,data[i+4]);
+      
+      if (num==i+4)
+        DrwStr(ws,scr_w-font_size*3.5+i%2*c,6+tmp*(5+i/2),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
+        else DrwStr(ws,scr_w-font_size*3.5+i%2*c,6+tmp*(5+i/2),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       }
       
+      wsprintf(ws,minus);
+      DrwStr(ws,scr_w-font_size*2.5,6+tmp*5,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+      
+      wsprintf(ws,colon);
+      DrwStr(ws,scr_w-font_size*2.5,6+tmp*6,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
+
 }
 
 void OnRedraw()
@@ -505,21 +473,19 @@ void OnRedraw()
     {
       CreateList(main_menu[mode],
                  0,0,0,0,
-                 0,0,0,0,
-                 change,save);
+                 5,0,status,0,
+                 change,back);
 
       tmp=scr_h/11.6;
-
-      char *stat=malloc(16);
+ 
       for (int i=0;i<num_alarms;i++)
       {
-        if (status[i]) strcpy(stat,on);
-          else strcpy(stat,off);
-        wsprintf(ws, "%t %d: %d:%02d %t",alarm_name,i+1,hour[i],min[i],stat);
+        wsprintf(ws, "%t %d: %d:%02d",alarm_name,i+1,hour[i],min[i]);
         if (num_alarm==i) DrwStr(ws,5,6+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
           else DrwStr(ws,5,6+tmp*(i+1),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       }
-      mfree(stat);
+
+     
     } break;
 
  case 2:
@@ -529,21 +495,19 @@ void OnRedraw()
                  3,6,amenus,1,
                  change,back);
       
-      wsprintf(ws,"%02d",amenus[3]);
+      wsprintf(ws,"%02d-",amenus[3]);
       if(amenu==3)
       DrwStr(ws,scr_w-font_size*3.5,6+tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
       else
       DrwStr(ws,scr_w-font_size*3.5,6+tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
       
-      wsprintf(ws, "-");
-      DrwStr(ws,scr_w-font_size*2.5,6+tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-    }break; 
+     }break; 
 
    case 3:
     {
       CreateList(main_menu[mode],
                  seven,wd2,8,7,
-                 7,1,week,0,
+                 7,1,weeks,0,
                  change,back);
     } break; 
   
@@ -567,82 +531,31 @@ void OnRedraw()
     {
       
       CreateList(main_menu[mode],
-                 file,rn,5,1,
-                 1,0,0,0,
+                 file,rn,6,2,
+                 2,2,files,0,
                  change,back);
-
-      tmp=scr_h/11.6;
-      int c=font_size*1.5;
-//strat
-      for(int i=0;i<4;i++)  
-      {  
-      wsprintf(ws, "%02d",files[i+1]);
       
-      if (file==i+1)
-        DrwStr(ws,scr_w-font_size*3.5+i%2*c,6+tmp*(4+i/2),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-        else DrwStr(ws,scr_w-font_size*3.5+i%2*c,6+tmp*(4+i/2),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-      }
-      
-      wsprintf(ws, "-");
-      DrwStr(ws,scr_w-font_size*2.5,6+tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-      
-      wsprintf(ws, ":");
-      DrwStr(ws,scr_w-font_size*2.5,6+tmp*5,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-  //end
+      DrawData(file,files);
     }break; 
     
     case 7:
     {
       CreateList(main_menu[mode],
-                 call,rn,5,1,
-                 1,0,0,0,
+                 call,rn,6,2,
+                 2,2,calls,0,
                  change,back);
 
-      tmp=scr_h/11.6;
-      int c=font_size*1.5;
-      
-
-      for(int i=0;i<4;i++)  
-      {  
-      wsprintf(ws, "%02d",calls[i+1]);
-      if (call==i+1)
-        DrwStr(ws,scr_w-font_size*3.5+i%2*c,6+tmp*(4+i/2),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-        else DrwStr(ws,scr_w-font_size*3.5+i%2*c,6+tmp*(4+i/2),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-      }
-      
-      wsprintf(ws, "-");
-      DrwStr(ws,scr_w-font_size*2.5,6+tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-      
-      wsprintf(ws, ":");
-      DrwStr(ws,scr_w-font_size*2.5,6+tmp*5,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-   
+      DrawData(call,calls);
     }break; 
     
     case 8:
     {
       CreateList(main_menu[mode],
-                 sms,rn,5,1,
-                 1,0,0,0,
+                 sms,rn,6,2,
+                 2,2,smss,0,
                  change,back);
       
-      tmp=scr_h/11.6;
-      int c=font_size*1.5;
-
-      for(int i=0;i<4;i++)  
-      {  
-      wsprintf(ws, "%02d",smss[i+1]);
-      
-      if (sms==i+1)
-        DrwStr(ws,scr_w-font_size*3.5+i%2*c,6+tmp*(4+i/2),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(3));
-        else DrwStr(ws,scr_w-font_size*3.5+i%2*c,6+tmp*(4+i/2),scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-      }
-      
-      wsprintf(ws, "-");
-      DrwStr(ws,scr_w-font_size*2.5,6+tmp*4,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-      
-      wsprintf(ws, ":");
-      DrwStr(ws,scr_w-font_size*2.5,6+tmp*5,scr_w,scr_h,FONT_SMALL,1,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
-  
+      DrawData(sms,smss);
     }break; 
     
     
@@ -864,7 +777,10 @@ int onkey(unsigned char keycode, int pressed)
             {
             case RED_BUTTON: return(1);
             case ENTER_BUTTON:
-            case LEFT_SOFT:  mode=12; OnRedraw(); break;
+               mode=12; OnRedraw(); break;
+            case LEFT_SOFT: 
+               if (status[num_alarm]==1) status[num_alarm]=0; else status[num_alarm]=1;
+                OnRedraw(); break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
             case UP_BUTTON:
             case LEFT_BUTTON:
@@ -963,7 +879,7 @@ int onkey(unsigned char keycode, int pressed)
                    mode=15; OnRedraw(); break;
             case LEFT_SOFT:
                 if(seven!=7)
-                {if (week[seven]==1) week[seven]=0; else week[seven]=1;} OnRedraw();break;
+                {if (weeks[seven]==1) weeks[seven]=0; else weeks[seven]=1;} OnRedraw();break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
             //case GREEN_BUTTON: open_bcfg(bcfgfile1); break;
             case UP_BUTTON:
@@ -982,6 +898,8 @@ int onkey(unsigned char keycode, int pressed)
               }
             case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
              {
+               if(seven==7)
+               {  
                set=2;
                if (backup[set]<6) backup[set]=backup[set]*10+keycode-'0';
                 else
@@ -991,6 +909,7 @@ int onkey(unsigned char keycode, int pressed)
                ch[4]=1;
                input=1;
                edit();
+               }
                 break;
               }
             }
@@ -1116,9 +1035,9 @@ int onkey(unsigned char keycode, int pressed)
             case RED_BUTTON: return(1);
             case ENTER_BUTTON:
             case LEFT_SOFT: 
-                if(file==0)
+                if(file<2)
                 {
-                if (files[0]==1) files[0]=0; else files[0]=1;
+                if (files[file]==1) files[file]=0; else files[file]=1;
 			    }
                 OnRedraw(); break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
@@ -1128,23 +1047,29 @@ int onkey(unsigned char keycode, int pressed)
             case LEFT_BUTTON:
               {
               if (file>0) file--;
-                else file=5-1;      
+                else file=8-1;      
                 break;
               }
             case RIGHT_BUTTON:
             case DOWN_BUTTON:
               {
-              if (file<(5-1)) file++;
+              if (file<(8-1)) file++;
                 else file=0;     
                   break;
               }
           case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
           {
-          if(file!=0)
+          if(file>2)
           {
                set=2;  
-               if ((backup[set]<2&&file==1)||(backup[set]<4&&file==2)||(backup[set]<3&&file==3)||(backup[set]<6&&file==4)) backup[set]=backup[set]*10+keycode-'0';
-                else
+               if ((backup[set]<10&&file==2)||
+                   (backup[set]<1&&file==3)||
+                   (backup[set]<2&&file==4)||
+                   (backup[set]<4&&file==5)||
+                   (backup[set]<3&&file==6)||
+                   (backup[set]<6&&file==7))
+                 backup[set]=backup[set]*10+keycode-'0';
+               else
                 {
                   backup[set]=keycode-'0';
                 }
@@ -1169,9 +1094,9 @@ int onkey(unsigned char keycode, int pressed)
             case RED_BUTTON: return(1);
             case ENTER_BUTTON:
             case LEFT_SOFT: 
-                if(call==0)
+                if(call<2)
                 {
-                if (calls[0]==1) calls[0]=0; else calls[0]=1;
+                if (calls[call]==1) calls[call]=0; else calls[call]=1;
 			    }
                 OnRedraw(); break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
@@ -1181,23 +1106,29 @@ int onkey(unsigned char keycode, int pressed)
             case LEFT_BUTTON:
               {
               if (call>0) call--;
-                else call=5-1;      
+                else call=8-1;      
                 break;
               }
             case RIGHT_BUTTON:
             case DOWN_BUTTON:
               {
-              if (call<(5-1)) call++;
+              if (call<(8-1)) call++;
                 else call=0;     
                   break;
               }
           case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
           {
-          if(call!=0)
+          if(call>2)
           {
                set=2;  
-               if ((backup[set]<2&&call==1)||(backup[set]<4&&call==2)||(backup[set]<3&&call==3)||(backup[set]<6&&call==4)) backup[set]=backup[set]*10+keycode-'0';
-                else
+               if ((backup[set]<10&&call==2)||
+                   (backup[set]<1&&call==3)||
+                     (backup[set]<2&&call==4)||
+                       (backup[set]<4&&call==5)||
+                         (backup[set]<3&&call==6)||
+                           (backup[set]<6&&call==7)) 
+                 backup[set]=backup[set]*10+keycode-'0';
+               else
                 {
                   backup[set]=keycode-'0';
                 }
@@ -1222,9 +1153,9 @@ int onkey(unsigned char keycode, int pressed)
             case RED_BUTTON: return(1);
             case ENTER_BUTTON:
             case LEFT_SOFT: 
-                if(sms==0)
+                if(sms<2)
                 {
-                if (smss[0]==1) smss[0]=0; else smss[0]=1;
+                if (smss[sms]==1) smss[sms]=0; else smss[sms]=1;
 			    }
                 OnRedraw(); break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
@@ -1234,22 +1165,27 @@ int onkey(unsigned char keycode, int pressed)
             case LEFT_BUTTON:
               {
               if (sms>0) sms--;
-                else sms=5-1;      
+                else sms=8-1;      
                 break;
               }
             case RIGHT_BUTTON:
             case DOWN_BUTTON:
               {
-              if (sms<(5-1)) sms++;
+              if (sms<(8-1)) sms++;
                 else sms=0;     
                   break;
               }
           case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
           {
-          if(sms!=0)
+          if(sms>2)
           {
                set=2;  
-               if ((backup[set]<2&&sms==1)||(backup[set]<4&&sms==2)||(backup[set]<3&&sms==3)||(backup[set]<6&&sms==4)) 
+               if ((backup[set]<10&&sms==2)||
+                   (backup[set]<1&&sms==3)||
+                     (backup[set]<2&&sms==4)||
+                       (backup[set]<4&&sms==5)||
+                         (backup[set]<3&&sms==6)||
+                           (backup[set]<6&&sms==7)) 
                  backup[set]=backup[set]*10+keycode-'0';
                 else
                 {

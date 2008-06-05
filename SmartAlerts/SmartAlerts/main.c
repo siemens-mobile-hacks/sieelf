@@ -15,9 +15,9 @@ extern const char content[];
 extern const char mname[];
 
 
-unsigned int files[5];
-unsigned int smss[5];
-unsigned int calls[5];
+unsigned int files[8];
+unsigned int smss[8];
+unsigned int calls[8];
 unsigned int amenus[11];
 unsigned int miss[6];
 unsigned int bmenus[4];
@@ -71,8 +71,8 @@ void load_settings(void)
   int handle=fopen(cfgfile, A_ReadOnly, P_READ,&err);
   if(handle!=-1)
   {
-    char *data=malloc(290);
-    fread(handle,data,290,&err);
+    char *data=malloc(512);
+    fread(handle,data,512,&err);
 
       
 show_icon=data[2];
@@ -88,71 +88,45 @@ for(int i=0;i<5;i++)
   calls[i]=data[i+25];
   smss[i]=data[i+30];
 }
-//35
+
+//20
 for(int i=0;i<35;i++)
 {
-weekdays[i/7][i%7]=data[i+35];
+weekdays[i/7][i%7]=data[i+20];
 }
-//70
+//55
 for(int i=0;i<168;i++)
 {
-day[i/24][i%24]=data[i+70];
+day[i/24][i%24]=data[i+55];
 }
-//238
-weeks[7]=data[238];
+//223
+for(int i=0;i<8;i++)
+{
+ name2[i]=data[i+223];
+ weeks[i]=data[i+231];
+ amenus[i]=data[i+239];
+ files[i]=data[i+247];
+ calls[i]=data[i+255];
+ smss[i]=data[i+263];
+ other[i]=data[i+271];
+}
 
-name2[0]=data[239];
-name2[1]=data[240];
-name2[2]=data[241];
-name2[3]=data[242];
-name2[4]=data[243];
-name2[5]=data[244];
-name2[6]=data[245];
-name2[7]=data[246];
+amenus[8]=data[279];
+amenus[9]=data[280];
+amenus[10]=data[281];
 
-//week[0]=data[247];
 
-other[0]=data[248];
-other[1]=data[249];
-other[2]=data[250];
-other[3]=data[251];
+bmenus[0]=data[282];
+bmenus[1]=data[283];
+bmenus[2]=data[284];
+bmenus[3]=data[285];
 
-other[4]=data[252];
-other[5]=data[253];
-other[6]=data[254];
-other[7]=data[255];
-
-bmenus[0]=data[256];
-bmenus[1]=data[257];
-bmenus[2]=data[258];
-bmenus[3]=data[259];
-
-miss[0]=data[260];
-miss[1]=data[261];
-miss[2]=data[262];
-miss[3]=data[263];
-miss[4]=data[264];
-miss[5]=data[265];
-
-amenus[0]=data[266];
-amenus[1]=data[267];
-amenus[2]=data[268];
-amenus[3]=data[269];
-amenus[4]=data[270];
-amenus[5]=data[271];
-amenus[6]=data[272];
-amenus[7]=data[273];
-amenus[8]=data[274];
-amenus[9]=data[275];
-amenus[10]=data[276];
-
-weeks[0]=data[277];
-weeks[1]=data[278];
-weeks[2]=data[279];
-weeks[3]=data[280];
-weeks[4]=data[281];
-weeks[5]=data[282];
-weeks[6]=data[283];
+miss[0]=data[286];
+miss[1]=data[287];
+miss[2]=data[288];
+miss[3]=data[289];
+miss[4]=data[290];
+miss[5]=data[291];
 
     mfree(data);
     fclose(handle,&err);
@@ -302,7 +276,7 @@ GetDateTime(&date,&time);
    {
      if ((time.hour>=amenus[3])&&(time.hour<=amenus[4]))
         {              
-         if(time.min==amenus[5]&&!(name2[7]&&time.hour==smss[3]&&time.min==smss[4]))
+         if(time.min==amenus[5])
 	 { 
                if(amenus[1]&&((GetProfile()+1)!=amenus[9]))
                {
@@ -321,7 +295,7 @@ GetDateTime(&date,&time);
                    _count=other[5];
                    start_();
 	  }
-          else if(time.min==amenus[7]&&amenus[2]&&!(name2[7]&&time.hour==smss[3]&&time.min==smss[4]))
+          else if(time.min==amenus[7])
 	  { 
                PlaySound(1,0,0,amenus[8],0);
                   _count=other[5];
@@ -332,9 +306,20 @@ GetDateTime(&date,&time);
   
         if(name2[5])
         {
-          if(!files[0]||(date.month==files[1]&&date.day==files[2]))
+          if(!files[0]||(date.month==files[4]&&date.day==files[5]))
           {
-          if(time.hour==files[3]&&time.min==files[4])
+          if((time.hour==files[6]||
+              (
+               files[1]&&
+                 (
+                  !files[3]||
+                    (
+                     (time.hour-files[6])%files[3]==0
+                       )
+                    )
+               )
+                )&&
+                time.min==files[7])
            {
            runFile((char*)name1);
            }
@@ -343,9 +328,20 @@ GetDateTime(&date,&time);
         
         if(name2[6])
         {
-          if(!calls[0]||(date.month==calls[1]&&date.day==calls[2]))
+          if(!calls[0]||(date.month==calls[4]&&date.day==calls[5]))
           {
-	  if(time.hour==calls[3]&&time.min==calls[4])
+          if((time.hour==calls[6]||
+              (
+               calls[1]&&
+                 (
+                  !calls[3]||
+                    (
+                     (time.hour-calls[6])%calls[3]==0
+                       )
+                    )
+               )
+                )&&
+                time.min==calls[7])
            {
             if(strlen(callnum)>0)
             MakeVoiceCall(callnum,0x10,0x2FFF);
@@ -355,9 +351,20 @@ GetDateTime(&date,&time);
         
         if(name2[7])
         {
-         if(!smss[0]||(date.month==smss[1]&&date.day==smss[2]))
+         if(!smss[0]||(date.month==smss[4]&&date.day==smss[5]))
           {
-	  if(time.hour==smss[3]&&time.min==smss[4])
+          if((time.hour==smss[6]||
+              (
+               smss[1]&&
+                 (
+                  !smss[3]||
+                    (
+                     (time.hour-smss[6])%smss[3]==0
+                       )
+                    )
+               )
+                )&&
+                time.min==smss[7])
           {
                 utf8_2ws(ws,content,210);
                 if(strlen(smsnum)>0)
@@ -410,7 +417,14 @@ GetDateTime(&date,&time);
    int a1,a2;
    a1=GetWeek(&date);
    a2=time.hour;
-   if(day[a1][a2]<9&&day[a1][a2]!=0&&(weeks[a1]))
+   
+   for(;a1>0;a1--)
+   {
+   if(weeks[a1])
+     break;
+   } 
+   
+   if(day[a1][a2]<9&&day[a1][a2]!=0)
      SetProfile(day[a1][a2]-1);
   }
  }
