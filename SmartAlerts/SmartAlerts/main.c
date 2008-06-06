@@ -311,13 +311,17 @@ void sendsms()
       utf8_2ws(smstemp,s,210);
       if(strlen(smsnum)>0)
       SendSMS(smstemp,smsnum,MMI_CEPID,MSG_SMS_RX-1, 6);
+      else
+      ShowMSG(1,(int)"没有短信号码!");
      }  
      else if(strstr(recname,"tmo"))
      {
       s+=2;
       copy_unicode_2ws(smstemp,(unsigned short *)s,280);
+      if(strlen(smsnum)>0)
       SendSMS(smstemp,smsnum,MMI_CEPID,MSG_SMS_RX-1, 6);
-      GeneralFuncF1(1);
+      else
+      ShowMSG(1,(int)"没有短信号码!");
       }
   }
 }
@@ -461,7 +465,7 @@ GetDateTime(&date,&time);
             if(!miss[0])
             {
              if(miss[1])
-              Play(0,mname); 
+             Play(0,mname); 
              else
              PlaySound(1,0,0,miss[4],0);
             }
@@ -576,6 +580,7 @@ static void maincsm_oncreate(CSM_RAM *data)
 
 static void Killer(void)
 {
+  FreeWS(smstemp);
   extern void *ELF_BEGIN;
   kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr()); 
 }
@@ -585,7 +590,6 @@ static void maincsm_onclose(CSM_RAM *csm)
   GBS_DelTimer(&mytmr);
   GBS_DelTimer(&tmr_vibra);
   FreeWS(ws);
-  FreeWS(smstemp);
   SUBPROC((void *)Killer);
 }
 
