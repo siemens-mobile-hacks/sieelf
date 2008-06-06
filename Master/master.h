@@ -154,6 +154,7 @@ typedef struct
 	void *next;
 	unsigned char patchonoff;
 	int needSaveData;
+	int disableProfile;
 	int memory;
 	PATCH_INFO *patchInfo;
 	PATCH_SUBMENU mainitem; //理解为一个submenu

@@ -633,12 +633,26 @@ void savePatchConfig(PTC_CONFIG *ptcfg)
 	}
 	if(!ptcfg->needSaveData)
 	{
+		if(ptcfg->disableProfile)
+		{
+			if(getPatchOnOff(ptcfg, 7))
+				ptcfg->patchonoff=0xFF;
+			else
+				ptcfg->patchonoff=0;
+		}
 		fwrite(f, &ptcfg->patchonoff, 1, &ferr);
 	}
 	else
 	{
 	SAVE_DATA:
 		zeromem(ptc_buf, PTC_SIZE);
+		if(ptcfg->disableProfile)
+		{
+			if(getPatchOnOff(ptcfg, 7))
+				ptcfg->patchonoff=0xFF;
+			else
+				ptcfg->patchonoff=0;
+		}
 		ptc_buf[0]=ptcfg->patchonoff;
 		fillItemDataToBuf(ptcfg->mainitem.item);
 		ptcsize=getPtcSize(ptcfg->mainitem.item);

@@ -33,6 +33,9 @@ extern const char STR_USETEMPLATE1[];
 extern const char STR_USRTEMPLATE2[];
 extern const char STR_MS1[];
 extern const char STR_MS2[];
+extern const char STR_DISPF1[];
+extern const char STR_DISPF2[];
+
 #endif
 
 

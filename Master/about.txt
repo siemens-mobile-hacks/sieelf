@@ -1,6 +1,6 @@
 ELF名称: Master.elf
 作者: BingK(binghelingxi), Email: bingkx@gmail.com
-版本: 1.5.1
+版本: 1.6
 感谢: 所有参与CfgEdit制作的人,CfgEdit给了我很多应用参考实例
       很大程度上方便了我制作这个ELF.
 作用: 和JAVA版本的Master一样,实现了对MasterPatch的配置,
@@ -10,7 +10,7 @@ ELF名称: Master.elf
         选项菜单,选择"情景模式"项目配置.
       2.我查看过JAVA版本的Master的源码,由于对JAVA一窍不通,故
         对于以下几种数据类型不是很了解,且不是很常用,因此没有
-        在1.5.1版本中加入支持:
+        在1.6版本中加入支持:
           //#define TYPE_OF     16 //offset
           //#define TYPE_CONST  18 //const
         可能在以后的版本中会加入支持,或者如果你有什么好提议,请联系我.
@@ -35,6 +35,10 @@ ELF名称: Master.elf
         过MasterPatch就不要尝试了.
 
 更新日志:
+v1.6 2008.06.06
++增加对"pf=n"的支持，即关闭情景模式控制
+*修正NEWSGOLD/SGOLD死机问题
+
 v1.5.1 2008.06.05
 +增加一种数据类型TYPE_POSB,处理起来和TYPE_POS一样，只在保存的时候只保存一个字节，标志字符串"xy"
 +实时申请/释放config.txt的缓存

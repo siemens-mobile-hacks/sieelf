@@ -26,14 +26,15 @@
 
 #ifdef	WINTEL_DEBUG
 #define PATCH_DIR	"E:\\SRC\\SVN\\SieELF\\Master\\Patches\\"
-#define CONFIG_SIZE	(32*1024)
+//#define CONFIG_SIZE	(32*1024)
 char cfg_buf[CONFIG_SIZE];
 int patch_n=0;
 #define mfree free
 
 #else
 
-char *cfg_buf;
+char cfg_buf[CONFIG_SIZE];
+//char *cfg_buf;
 
 #endif
 
@@ -72,11 +73,11 @@ int loadConfig(void)
 		size=fstat.size;
 		if(size<=0)
 			return 0;
-		cfg_buf=malloc((size+3)&(~3));
+		//cfg_buf=malloc((size+3)&(~3));
 		if(fread(f, cfg_buf, size, &ferr)!=size)
 		{
 			fclose(f, &ferr);
-			mfree(cfg_buf);
+			//mfree(cfg_buf);
 			return 0;
 		}
 		fclose(f, &ferr);
@@ -429,6 +430,7 @@ void addPatchConfigList(void)
 	ptcfg->mainitem.item=0;
 	ptcfg->needSaveData=0;
 	ptcfg->memory=0;
+	ptcfg->disableProfile=0;
 	if(!ptcfgtop)
 		ptcfgtop=ptcfg;
 	else
@@ -462,7 +464,7 @@ void addToPatchInfo(char *pdata)
 		p2=gotoMyStrEnd(pp);
 		strnCopyWithEnd(ptcinfo->version, p1, p2-p1);
 	}
-	if((pp=strstrInQuote(pdata, "cp="))||(pp=strstrInQuote(pdata, "cp=")))
+	if((pp=strstrInQuote(pdata, "cp="))||(pp=strstrInQuote(pdata, "copyright=")))
 	{
 		p1=gotoMyStrStart(pp);
 		p2=gotoMyStrEnd(pp);
@@ -474,10 +476,14 @@ void addToPatchInfo(char *pdata)
 		p2=gotoMyStrEnd(pp);
 		strnCopyWithEnd(ptcinfo->patchID, p1, p2-p1);
 	}
-	if((pp=strstrInQuote(pdata, "mem="))||(pp=strstrInQuote(pdata, "mem="))) //指定ptc长度
+	if((pp=strstrInQuote(pdata, "mem="))||(pp=strstrInQuote(pdata, "memory="))) //指定ptc长度
 	{
 		pp=gotoRealPos(pp);
 		str2num(pp, &ptcfgtop->memory, 0,0, 0);
+	}
+	if((pp=strstrInQuote(pdata, STR_DISPF1))||(pp=strstrInQuote(pdata, STR_DISPF2)))
+	{
+		ptcfgtop->disableProfile=1;
 	}
 	ptcfgtop->patchInfo=ptcinfo;
 }
@@ -1196,7 +1202,7 @@ char *doSubMenuJob(PATCH_SUBMENU *motherMenu, char *pdata)
 		{
 			if(*p=='{') //sirect string
 				break;
-			if(*p>X_CHAR)
+			if((*p>X_CHAR)&&(*p!=',')) //判断是这直接显示的字符
 			{
 				DATA_DRSTR *drstr=malloc(sizeof(DATA_DRSTR));
 				char *p1=p;
@@ -1301,7 +1307,7 @@ char *doTemplateWork(char *pdata)
 		{
 			if(*p=='{') //sirect string
 				break;
-			if(*p>X_CHAR)
+			if((*p>X_CHAR)&&(*p!=',')) //判断是这直接显示的字符
 			{
 				DATA_DRSTR *drstr=malloc(sizeof(DATA_DRSTR));
 				char *p1=p;
@@ -1552,7 +1558,7 @@ int readConfig(int type, char *tp) //type, 1,load one, 0,load all
 		if(!pp)
 			break;
 		//getnextpatch
-		if((p2=strstrInQuote(pp, "patch=")))
+		if((p2=strstrInQuote(pp, "patch="))||(p2=strstrInQuote(pp, "patch ")))
 		{
 			if(type)//读取完一个补丁就了事，用于重新载入一个补丁
 				goto END;
@@ -1641,7 +1647,7 @@ int readConfig(int type, char *tp) //type, 1,load one, 0,load all
 	sortPatchConfigList();
 END:
 #ifndef WINTEL_DEBUG
-	mfree(cfg_buf);
+	//mfree(cfg_buf);
 #endif
 	return 1;
 }

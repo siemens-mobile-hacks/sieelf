@@ -32,3 +32,5 @@ const char STR_USETEMPLATE1[]="usetemplate";
 const char STR_USRTEMPLATE2[]="usetp";
 const char STR_MS1[]="timeinms";
 const char STR_MS2[]=" ms ";
+const char STR_DISPF1[]=" pf=n";
+const char STR_DISPF2[]=" profile=n";

@@ -44,7 +44,6 @@ typedef struct
 __swi __arm void RunScaner(void);
 
 char *ptc_buf;
-//char *cfg_buf;
 int patch_n=0;
 int isSubMenuNeed=0;
 int colorEditing=0;
@@ -298,7 +297,6 @@ int createMainMenu(void)
 void maincsm_oncreate(CSM_RAM *data)
 {
 	MAIN_CSM *csm=(MAIN_CSM*)data;
-	patch_header(&menuheader);
 	csm->gui_id=MAIN_GUI_ID=createMainMenu();
 }
 
@@ -353,7 +351,6 @@ void Killer(void)
 {
 	saveAllConfig();
 	mfree(ptc_buf);
-	//mfree(cfg_buf);
 	fuckThemAll();
 	FreeWS(ews);
 	RunScaner();
@@ -411,7 +408,6 @@ int main(void)
 	S_ICONS[1]=GetPicNByUnicodeSymbol(CBOX_CHECKED);//icon_enabled;
 	S_ICONS[2]=0;
 	ptc_buf=malloc(PTC_SIZE);
-	//cfg_buf=malloc(CONFIG_SIZE);
 	ews=AllocWS(256); 
 	if(!getAllPatchData())
 	{

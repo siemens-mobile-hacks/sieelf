@@ -113,10 +113,49 @@ const MENU_DESC option_menu=
 	MAIN_MENU_ITEMS_N
 };
 
+const MENUPROCS_DESC option_menu_HNDLS_1[MAIN_MENU_ITEMS_N-1]=
+{
+	menu_info,
+	menu_del_this,
+	menu_del_unused,
+	menu_del_all,
+	menu_about,
+	menu_exit,
+};
+
+const MENUITEM_DESC option_menu_ITEMS_1[MAIN_MENU_ITEMS_N-1]=
+{
+	{NULL,(int)LGP_PATCH_INFO,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+	{NULL,(int)LGP_DEL_THIS,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+	{NULL,(int)LGP_DEL_UNUSED,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+	{NULL,(int)LGP_DEL_ALL,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+	{NULL,(int)LGP_ABOUT,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+	{NULL,(int)LGP_QUIT,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+};
+
+const MENU_DESC option_menu_1=
+{
+	8,NULL,option_menu_ghook,NULL,
+	mmenusoftkeys,
+	&mmenu_skt,
+	0x10,//MENU_FLAG,
+	NULL,
+	option_menu_ITEMS_1,//menuitems,
+	option_menu_HNDLS_1,//menuprocs,
+	MAIN_MENU_ITEMS_N-1
+};
+
 void show_option_menu(void)
 {
+	PTC_CONFIG *ptcfg;
 	patch_header(&option_menu_header);
-	CreateMenu(0, 0, &option_menu, &option_menu_header, 0, MAIN_MENU_ITEMS_N, 0, 0);
+	if(ptcfg=getPatchConfigItem(PTCFG_CUR))
+	{
+		if(ptcfg->disableProfile)
+			CreateMenu(0, 0, &option_menu_1, &option_menu_header, 0, MAIN_MENU_ITEMS_N-1, 0, 0);
+		else
+			CreateMenu(0, 0, &option_menu, &option_menu_header, 0, MAIN_MENU_ITEMS_N, 0, 0);
+	}
 }
 
 void deleteAllConfig(void)
