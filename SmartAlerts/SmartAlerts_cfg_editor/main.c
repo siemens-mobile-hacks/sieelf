@@ -17,7 +17,7 @@ unsigned int day[7][24];
 unsigned int miss[6];
 
 unsigned int bmenus[4];
-unsigned int backup[7];
+unsigned int backup[12];
 unsigned int other[8];
 unsigned int weeks[8];
 unsigned int name2[9];
@@ -28,7 +28,6 @@ unsigned int Y;
 unsigned int show_icon;
 
 GBSTMR mytmr;
-unsigned int input;
 
 unsigned int file;
 unsigned int sms;
@@ -37,14 +36,12 @@ unsigned int call;
 unsigned int amenu=0;
 unsigned int mmenu=0;
 unsigned int bmenu=0;
-unsigned int num=0;
 unsigned int onum=0;
 unsigned int num_alarm=0;
 unsigned int menu=0;
 unsigned int dat=0;
 unsigned int seven=0;
 unsigned int edit_level=1;
-unsigned int ch[12];
 unsigned int set=1;
 int lng;
 
@@ -214,7 +211,6 @@ amenus[8]=data[279];
 amenus[9]=data[280];
 amenus[10]=data[281];
 
-
 bmenus[0]=data[282];
 bmenus[1]=data[283];
 bmenus[2]=data[284];
@@ -300,34 +296,30 @@ data[291]=miss[5];
 
 void edit()
 {
-  if (input)
-  {
     switch(set)
     {
-    case 1: if(ch[1])
-      hour[num_alarm]=backup[1];
-    case 2: if(ch[2])
-      min[num_alarm]=backup[2];
-            if(ch[4])
-      weeks[7]=backup[2];   
-           if(ch[5])
-      bmenus[bmenu]=backup[2];   
-           if(ch[6])
-      miss[mmenu]=backup[2];
-            if(ch[7])
-      files[file]=backup[2];
-           if(ch[8])
-      calls[call]=backup[2];      
-           if(ch[9])
-      smss[sms]=backup[2];
-          if(ch[10])
-      amenus[amenu]=backup[2];
-          if(ch[11])
-      other[onum]=backup[2];
+    case 1: 
+      hour[num_alarm]=backup[1];break;
+    case 2: 
+      min[num_alarm]=backup[2];break;
     case 3: 
-      if(ch[3])
-      day[seven][dat]=backup[3];
-    }
+      day[seven][dat]=backup[3];break;
+    case 4:
+      weeks[7]=backup[4]; break;
+    case 5:
+      bmenus[bmenu]=backup[5]; break;
+    case 6:
+      miss[mmenu]=backup[6];break;
+    case 7:
+      files[file]=backup[7];break;
+    case 8:
+      calls[call]=backup[8]; break;
+    case 9:
+      smss[sms]=backup[9];break;
+    case 10:
+      amenus[amenu]=backup[10];break;
+    case 11:
+      other[onum]=backup[11];break;
     }
 }
 
@@ -341,44 +333,6 @@ void weekday_on_off()
 {
   if (weekdays[num_alarm][set]==1) weekdays[num_alarm][set]=0; else weekdays[num_alarm][set]=1;
 }
-
-void menuselect()
-{
-  switch(menu)
-  {
-      case 0:
-        mode=1;
-        break;
-      case 1:
-        mode=2;
-        break;
-      case 2:
-        mode=3;
-        break;
-      case 3:
-        mode=4;
-        break;
-      case 4:
-        mode=5;
-        break;
-      case 5:
-        mode=6;
-        break;
-      case 6:
-        mode=7;
-        break;
-      case 7:
-        mode=8;
-        break;
-      case 8:
-        mode=9;
-        break;      
-             
-      default:
-      break;
-  }
-}
-
 
 const char percent_t[]="%t";
 
@@ -710,6 +664,12 @@ void onUnfocus(MAIN_GUI *data, void (*mfree_adr)(void *))
   data->gui.state=1;
 }
 
+void control(unsigned int *name,unsigned int control)
+{
+  if (name[control]==1) name[control]=0; else name[control]=1;
+}
+
+
 int onkey(unsigned char keycode, int pressed)
 {
   switch(mode)
@@ -724,10 +684,10 @@ int onkey(unsigned char keycode, int pressed)
             switch(keycode)
             {
             case RED_BUTTON: return(1);
-            case ENTER_BUTTON: menuselect(); OnRedraw(); break;
+            case ENTER_BUTTON: mode=menu+1; OnRedraw(); break;
             case LEFT_SOFT: 
-              if (name2[num]==1) name2[num]=0; else name2[num]=1;
-            OnRedraw();break;
+              control(name2,menu);
+              break;
             case RIGHT_SOFT:
               {
                 save_settings();
@@ -739,8 +699,6 @@ int onkey(unsigned char keycode, int pressed)
               {
                 if (menu>0) menu--;
                   else menu=(menus-1);
-                if (num>0) num--;
-                  else num=(menus-1);
                 break;
               }
             case RIGHT_BUTTON:
@@ -748,11 +706,8 @@ int onkey(unsigned char keycode, int pressed)
               {
                 if (menu<(menus-1)) menu++;
                   else menu=0;
-                if (num<(menus-1)) num++;
-                  else num=0;
                   break;
               }
-            
             case GREEN_BUTTON: runFile(bcfgfile1); break;
             case '0':runFile(ring);  break;
            /*  
@@ -777,10 +732,10 @@ int onkey(unsigned char keycode, int pressed)
             {
             case RED_BUTTON: return(1);
             case ENTER_BUTTON:
-               mode=12; OnRedraw(); break;
+                 mode=12; OnRedraw(); break;
             case LEFT_SOFT: 
-               if (status[num_alarm]==1) status[num_alarm]=0; else status[num_alarm]=1;
-                OnRedraw(); break;
+                 control(status,num_alarm);
+                 break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
             case UP_BUTTON:
             case LEFT_BUTTON:
@@ -823,10 +778,11 @@ int onkey(unsigned char keycode, int pressed)
             case RED_BUTTON: return(1);
             case ENTER_BUTTON:
             case LEFT_SOFT: 
-            if(amenu<3)
-            {
-                if (amenus[amenu]==1) amenus[amenu]=0; else amenus[amenu]=1;}
-                OnRedraw(); break;
+              if(amenu<3)
+              {
+                control(amenus,amenu);
+              }
+              break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
             case GREEN_BUTTON: runFile(bcfgfile1); break;
             case UP_BUTTON:
@@ -847,15 +803,16 @@ int onkey(unsigned char keycode, int pressed)
           {
           if(amenu>2)
           {
-               set=2;  
-               if ((backup[set]<3&&(amenu==3||amenu==4))||(backup[set]<6&&amenu==5)||(backup[set]<10&&amenu==6)||(backup[set]<6&&amenu==7)||(backup[set]<10&&amenu==8)||(backup[set]<1&&amenu==9))
+               set=10;  
+               if ((backup[set]<3&&(amenu==3||amenu==4))||
+                   (backup[set]<6&&(amenu==5||amenu==7))||
+                   (backup[set]<10&&(amenu==6||amenu==8))||
+                   (backup[set]<1&&amenu==9))
                backup[set]=backup[set]*10+keycode-'0';
                 else
                 {
                   backup[set]=keycode-'0';
                 }
-               ch[10]=1;
-               input=1;
                edit();
                }
           }
@@ -879,7 +836,9 @@ int onkey(unsigned char keycode, int pressed)
                    mode=15; OnRedraw(); break;
             case LEFT_SOFT:
                 if(seven!=7)
-                {if (weeks[seven]==1) weeks[seven]=0; else weeks[seven]=1;} OnRedraw();break;
+                {
+                  control(weeks,seven);
+                } break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
             //case GREEN_BUTTON: open_bcfg(bcfgfile1); break;
             case UP_BUTTON:
@@ -900,14 +859,15 @@ int onkey(unsigned char keycode, int pressed)
              {
                if(seven==7)
                {  
-               set=2;
-               if (backup[set]<6) backup[set]=backup[set]*10+keycode-'0';
-                else
-                {
+               set=4;
+               if (backup[set]<6) 
+               {
+                  backup[set]=backup[set]*10+keycode-'0';
+               }
+               else
+               {
                   backup[set]=keycode-'0';
-                }
-               ch[4]=1;
-               input=1;
+               }
                edit();
                }
                 break;
@@ -930,12 +890,11 @@ int onkey(unsigned char keycode, int pressed)
             case LEFT_SOFT: 
                 if(mmenu<2)
                 {
-                if (miss[mmenu]==1) miss[mmenu]=0; else miss[mmenu]=1;
-			    }
-                OnRedraw(); break;
+                control(miss,mmenu);
+		}
+                break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
             case GREEN_BUTTON: runFile(bcfgfile1); break;
-
             case UP_BUTTON:
             case LEFT_BUTTON:
               {
@@ -954,14 +913,17 @@ int onkey(unsigned char keycode, int pressed)
           {
           if(mmenu>1)
           {
-               set=2;  
-               if ((backup[set]<3&&(mmenu==2||mmenu==3))||(backup[set]<10&&mmenu==4)||(backup[set]<2&&mmenu==5)) backup[set]=backup[set]*10+keycode-'0';
+               set=6;  
+               if ((backup[set]<3&&(mmenu==2||mmenu==3))||
+                   (backup[set]<10&&mmenu==4)||
+                   (backup[set]<2&&mmenu==5))
+                {
+                 backup[set]=backup[set]*10+keycode-'0';
+                }
                 else
                 {
                   backup[set]=keycode-'0';
                 }
-               ch[6]=1;
-               input=1;
                edit();
                }
             }
@@ -984,9 +946,9 @@ int onkey(unsigned char keycode, int pressed)
             case LEFT_SOFT: 
                 if(bmenu==0)
                 {
-                if (bmenus[0]==1) bmenus[0]=0; else bmenus[0]=1;
-			    }
-                OnRedraw(); break;
+                control(bmenus,0);
+                }
+                break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
             case GREEN_BUTTON: runFile(bcfgfile1); break;
 
@@ -1008,14 +970,14 @@ int onkey(unsigned char keycode, int pressed)
           {
           if(bmenu!=0)
           {
-               set=2;  
-               if ((backup[set]<2&&bmenu==3)||(backup[set]<10&&bmenu==1)||(backup[set]<10&&bmenu==2)) backup[set]=backup[set]*10+keycode-'0';
+               set=5;  
+               if ((backup[set]<2&&bmenu==3)||
+                   (backup[set]<10&&(bmenu==1||bmenu==2)))
+                backup[set]=backup[set]*10+keycode-'0';
                 else
                 {
                   backup[set]=keycode-'0';
                 }
-               ch[5]=1;
-               input=1;
                edit();
                }
             }
@@ -1037,9 +999,9 @@ int onkey(unsigned char keycode, int pressed)
             case LEFT_SOFT: 
                 if(file<2)
                 {
-                if (files[file]==1) files[file]=0; else files[file]=1;
-			    }
-                OnRedraw(); break;
+                control(files,file);
+                }
+                break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
             case GREEN_BUTTON: runFile(bcfgfile1); break;
 
@@ -1061,7 +1023,7 @@ int onkey(unsigned char keycode, int pressed)
           {
           if(file>2)
           {
-               set=2;  
+               set=7;  
                if ((backup[set]<10&&file==2)||
                    (backup[set]<1&&file==3)||
                    (backup[set]<2&&file==4)||
@@ -1073,8 +1035,6 @@ int onkey(unsigned char keycode, int pressed)
                 {
                   backup[set]=keycode-'0';
                 }
-               ch[7]=1;
-               input=1;
                edit();
                }
             }
@@ -1096,12 +1056,11 @@ int onkey(unsigned char keycode, int pressed)
             case LEFT_SOFT: 
                 if(call<2)
                 {
-                if (calls[call]==1) calls[call]=0; else calls[call]=1;
-			    }
-                OnRedraw(); break;
+                control(calls,call);
+		}
+                break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
             case GREEN_BUTTON: runFile(bcfgfile1); break;
-
             case UP_BUTTON:
             case LEFT_BUTTON:
               {
@@ -1120,20 +1079,18 @@ int onkey(unsigned char keycode, int pressed)
           {
           if(call>2)
           {
-               set=2;  
+               set=8;  
                if ((backup[set]<10&&call==2)||
                    (backup[set]<1&&call==3)||
-                     (backup[set]<2&&call==4)||
-                       (backup[set]<4&&call==5)||
-                         (backup[set]<3&&call==6)||
-                           (backup[set]<6&&call==7)) 
+                   (backup[set]<2&&call==4)||
+                   (backup[set]<4&&call==5)||
+                   (backup[set]<3&&call==6)||
+                   (backup[set]<6&&call==7)) 
                  backup[set]=backup[set]*10+keycode-'0';
                else
                 {
                   backup[set]=keycode-'0';
                 }
-               ch[8]=1;
-               input=1;
                edit();
                }
             }
@@ -1155,9 +1112,9 @@ int onkey(unsigned char keycode, int pressed)
             case LEFT_SOFT: 
                 if(sms<2)
                 {
-                if (smss[sms]==1) smss[sms]=0; else smss[sms]=1;
-			    }
-                OnRedraw(); break;
+                control(smss,sms);
+                }
+                break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
             case GREEN_BUTTON: runFile(bcfgfile1); break;
 
@@ -1179,20 +1136,18 @@ int onkey(unsigned char keycode, int pressed)
           {
           if(sms>2)
           {
-               set=2;  
+               set=9;  
                if ((backup[set]<10&&sms==2)||
                    (backup[set]<1&&sms==3)||
-                     (backup[set]<2&&sms==4)||
-                       (backup[set]<4&&sms==5)||
-                         (backup[set]<3&&sms==6)||
-                           (backup[set]<6&&sms==7)) 
+                   (backup[set]<2&&sms==4)||
+                   (backup[set]<4&&sms==5)||
+                   (backup[set]<3&&sms==6)||
+                   (backup[set]<6&&sms==7)) 
                  backup[set]=backup[set]*10+keycode-'0';
                 else
                 {
                   backup[set]=keycode-'0';
                 }
-               ch[9]=1;
-               input=1;
                edit();
                }
             }
@@ -1212,10 +1167,11 @@ int onkey(unsigned char keycode, int pressed)
             case RED_BUTTON: return(1);
             case ENTER_BUTTON:
             case LEFT_SOFT: 
-            if(onum<4)
-            {
-                if (other[onum]==1) other[onum]=0; else other[onum]=1;}
-                OnRedraw(); break;
+              if(onum<4)
+              {
+              control(other,onum);
+              }
+              break;
             case RIGHT_SOFT: mode=0; OnRedraw(); break;
             case GREEN_BUTTON: runFile(bcfgfile1); break;
             case UP_BUTTON:
@@ -1236,13 +1192,12 @@ int onkey(unsigned char keycode, int pressed)
           {
           if(onum>3)
           {
-               set=2;  
-               if (backup[set]<2&&(onum==4||onum==5)||(backup[set]<10&&onum==6)||(backup[set]<10&&onum==7)) 
+               set=11;  
+               if  ((backup[set]<1&&(onum==4||onum==5))||
+                   (backup[set]<10&&(onum==6||onum==7)))
                backup[set]=backup[set]*10+keycode-'0';
                 else
                   backup[set]=keycode-'0';
-               ch[11]=1;
-               input=1;
                edit();
                }
           }
@@ -1280,7 +1235,6 @@ int onkey(unsigned char keycode, int pressed)
               if (edit_level==3)
                 set=0;
               else set=1;
-              input=1;
               edit();
               break;
             }
@@ -1291,7 +1245,6 @@ int onkey(unsigned char keycode, int pressed)
               if (edit_level==3)
                 set=0;
               else set=1;
-            input=1;
             edit();
             break;
           }
@@ -1350,8 +1303,6 @@ int onkey(unsigned char keycode, int pressed)
                   backup[set]=keycode-'0';
                   lng=1;
                 }
-                ch[set]=1;
-                input=1;
                 edit();
                 if (lng==2) {if(set==1) {set=2; lng=0;} else {edit_level=1; lng=1;}}
             }
@@ -1413,10 +1364,9 @@ int onkey(unsigned char keycode, int pressed)
           }
         case RIGHT_SOFT: 
           {
-
              if (seven<6) seven++;
-                  else seven=0;
-                  OnRedraw(); break;
+               else seven=0;
+               OnRedraw(); break;
           }
         case UP_BUTTON:
            {
@@ -1448,10 +1398,8 @@ int onkey(unsigned char keycode, int pressed)
           }
         case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
           {
-                backup[3]=keycode-'0';
                 set=3;
-                ch[set]=1;
-                input=1;
+                backup[set]=keycode-'0';
                 edit();
                 
             break;

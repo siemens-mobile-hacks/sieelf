@@ -13,6 +13,9 @@ extern const char callnum[];
 extern const char smsnum[];
 extern const char content[];
 extern const char mname[];
+extern const int smsstyle;
+extern const char recname[];
+
 
 
 unsigned int files[8];
@@ -45,6 +48,7 @@ GBSTMR tmr_vibra;
 GBSTMR *xtmr;
 
 WSHDR* ws;
+WSHDR* smstemp;
 
 int count;
 int fb=0;
@@ -257,13 +261,73 @@ void alarm(int n)
   }
 }
 
+char* Opendata(char *recname)
+{
+  char *buf;
+  int f;
+  unsigned int fsize;  
+  unsigned int err;
+  f=fopen(recname,A_ReadOnly+A_BIN,P_READ,&err);
+  fsize=lseek(f,0,S_END,&err,&err);
+  if (fsize<=0)
+  {
+    fclose(f,&err);
+  }
+  lseek(f,0,S_SET,&err,&err);
+  buf=malloc(fsize+1);
+  fread(f,buf,fsize,&err);
+  buf[fsize]=0;
+  fclose(f,&err);
+  return (buf);
+}
+
+
+
+void copy_unicode_2ws(WSHDR* ws, unsigned short* unicode,int x)
+{
+	int i = 0;
+	for (; unicode[i]!=0 && i<=x; i++ )
+	{
+		ws->wsbody[i+1] = unicode[i];
+	}
+	ws->wsbody[0] = i;                  // set ws length
+}
+
+void sendsms()
+{
+  if(smsstyle==0)
+  {
+       utf8_2ws(ws,content,210);
+       if(strlen(smsnum)>0)
+       SendSMS(ws,smsnum,MMI_CEPID,MSG_SMS_RX-1, 6);
+  }
+  else
+  {
+     char *s;
+     s=Opendata((char *)recname);
+     smstemp=AllocWS(512);
+     if(strstr(recname,"txt"))
+     {
+      utf8_2ws(smstemp,s,210);
+      if(strlen(smsnum)>0)
+      SendSMS(smstemp,smsnum,MMI_CEPID,MSG_SMS_RX-1, 6);
+     }  
+     else if(strstr(recname,"tmo"))
+     {
+      s+=2;
+      copy_unicode_2ws(smstemp,(unsigned short *)s,280);
+      SendSMS(smstemp,smsnum,MMI_CEPID,MSG_SMS_RX-1, 6);
+      GeneralFuncF1(1);
+      }
+  }
+}
 
 void Check()
 {
 GetDateTime(&date,&time);
  if (!IsCalling())
  {
-   
+
   if(name2[0])
   {
    for (int i=0;i<5;i++)
@@ -300,13 +364,13 @@ GetDateTime(&date,&time);
                PlaySound(1,0,0,amenus[8],0);
                   _count=other[5];
                   start_();
-           }
+          }
         }
        }
   
         if(name2[5])
         {
-          if(!files[0]||(date.month==files[4]&&date.day==files[5]))
+          if(!files[0]||((files[2]/(date.month-files[4])*30+date.day-files[5]+1)>=1))
           {
           if((time.hour==files[6]||
               (
@@ -315,11 +379,11 @@ GetDateTime(&date,&time);
                   !files[3]||
                     (
                      (time.hour-files[6])%files[3]==0
-                       )
                     )
+                 )
                )
-                )&&
-                time.min==files[7])
+              )&&
+              time.min==files[7])
            {
            runFile((char*)name1);
            }
@@ -328,7 +392,7 @@ GetDateTime(&date,&time);
         
         if(name2[6])
         {
-          if(!calls[0]||(date.month==calls[4]&&date.day==calls[5]))
+          if(!calls[0]||(calls[2]/((date.month-calls[4])*30+date.day-calls[5]+1)>=1))
           {
           if((time.hour==calls[6]||
               (
@@ -337,11 +401,11 @@ GetDateTime(&date,&time);
                   !calls[3]||
                     (
                      (time.hour-calls[6])%calls[3]==0
-                       )
                     )
-               )
-                )&&
-                time.min==calls[7])
+                 )
+              )
+              )&&
+              time.min==calls[7])
            {
             if(strlen(callnum)>0)
             MakeVoiceCall(callnum,0x10,0x2FFF);
@@ -351,7 +415,7 @@ GetDateTime(&date,&time);
         
         if(name2[7])
         {
-         if(!smss[0]||(date.month==smss[4]&&date.day==smss[5]))
+          if(!smss[0]||(smss[2]/((date.month-smss[4])*30+date.day-smss[5]+1)>=1))
           {
           if((time.hour==smss[6]||
               (
@@ -360,15 +424,13 @@ GetDateTime(&date,&time);
                   !smss[3]||
                     (
                      (time.hour-smss[6])%smss[3]==0
-                       )
                     )
-               )
-                )&&
-                time.min==smss[7])
+                 )
+              )
+              )&&
+              time.min==smss[7])
           {
-                utf8_2ws(ws,content,210);
-                if(strlen(smsnum)>0)
-                SendSMS(ws,smsnum,MMI_CEPID,MSG_SMS_RX-1, 6);
+            sendsms();
           }
           }
         }  
@@ -523,6 +585,7 @@ static void maincsm_onclose(CSM_RAM *csm)
   GBS_DelTimer(&mytmr);
   GBS_DelTimer(&tmr_vibra);
   FreeWS(ws);
+  FreeWS(smstemp);
   SUBPROC((void *)Killer);
 }
 
