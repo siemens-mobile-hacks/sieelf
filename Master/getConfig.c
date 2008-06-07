@@ -1425,7 +1425,7 @@ void subMenuCopy(PATCH_SUBMENU *sbmdst, PATCH_SUBMENU *sbmsrc, int byteBase)
 				DATA_DRSTR *dstr1=(DATA_DRSTR *)pitem->itemData;
 				DATA_DRSTR *dstr=malloc(sizeof(DATA_DRSTR));
 				strcpy(dstr->str, dstr1->str);
-				addItemToConfig(dstr, sbmdst, TYPE_DRSTR, bytePos+byteBase, pitem->itemName);
+				addItemToConfig(dstr, sbmdst, TYPE_DRSTR, 0, NULL);
 				break;
 			}
 		case TYPE_CHECKBOX:

@@ -6,7 +6,7 @@
 //#define BUG
 
 #define PTC_SIZE	(2*1024)
-#define CONFIG_SIZE	(32*1024)
+#define CONFIG_SIZE	(48*1024)
 
 extern char *ptc_buf;
 //extern char *cfg_buf;

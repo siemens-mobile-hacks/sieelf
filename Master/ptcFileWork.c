@@ -220,7 +220,7 @@ void initPatchConfig(PTC_CONFIG *ptcfg)
 #endif
 	if(ptcfilesize<0)
 		return;
-	ptc_buf[ptcfilesize]=0;
+	//ptc_buf[ptcfilesize]=0;
 	ptcfg->patchonoff=ptc_buf[0];
 	initPatchItem(ptcfg->mainitem.item);
 }
