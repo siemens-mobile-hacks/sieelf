@@ -233,7 +233,7 @@ void stop_(void)
 	if (other[3])
 		SetIllumination(4, 1, 0, 0);
 #endif
-  if (other[0]) Vibration(0,5);
+  if (other[0]) SetVibration(0);
   if (--_count)
   {
     GBS_StartTimerProc(&tmr_vibra,TMR_SECOND>>1,start_);
@@ -282,7 +282,6 @@ char* Opendata(char *recname)
 }
 
 
-
 void copy_unicode_2ws(WSHDR* ws, unsigned short* unicode,int x)
 {
 	int i = 0;
@@ -293,7 +292,7 @@ void copy_unicode_2ws(WSHDR* ws, unsigned short* unicode,int x)
 	ws->wsbody[0] = i;                  // set ws length
 }
 
-void sendsms()
+void sendsms(void)
 {
   if(smsstyle==0)
   {
@@ -326,20 +325,47 @@ void sendsms()
   }
 }
 
+void alert(void)
+{}
+
 void Check()
 {
 GetDateTime(&date,&time);
  if (!IsCalling())
  {
 
-  if(name2[0])
-  {
-   for (int i=0;i<5;i++)
-  {
-    alarm(i);
-  }
-  }
+     if(name2[0])
+     {
+        for (int i=0;i<5;i++)
+        {
+          alarm(i);
+        }
+      }
 
+  
+        if(name2[7])
+        {
+          if(!smss[0]||(smss[2]/((date.month-smss[4])*30+date.day-smss[5]+1)>=1))
+          {
+          if((time.hour==smss[6]||
+              (
+               smss[1]&&
+                 (
+                  !smss[3]||
+                    (
+                     (time.hour-smss[6])%smss[3]==0
+                    )
+                 )
+              )
+              )&&
+              time.min==smss[7])
+          {
+            sendsms();
+          }
+          }
+        } 
+  
+  
    if(name2[1])
    {
      if ((time.hour>=amenus[3])&&(time.hour<=amenus[4]))
@@ -365,7 +391,7 @@ GetDateTime(&date,&time);
 	  }
           else if(time.min==amenus[7])
 	  { 
-               PlaySound(1,0,0,amenus[8],0);
+                  PlaySound(1,0,0,amenus[8],0);
                   _count=other[5];
                   start_();
           }
@@ -416,28 +442,6 @@ GetDateTime(&date,&time);
            }
           }
         }
-        
-        if(name2[7])
-        {
-          if(!smss[0]||(smss[2]/((date.month-smss[4])*30+date.day-smss[5]+1)>=1))
-          {
-          if((time.hour==smss[6]||
-              (
-               smss[1]&&
-                 (
-                  !smss[3]||
-                    (
-                     (time.hour-smss[6])%smss[3]==0
-                    )
-                 )
-              )
-              )&&
-              time.min==smss[7])
-          {
-            sendsms();
-          }
-          }
-        }  
      
         if (name2[4])
         {
