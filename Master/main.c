@@ -2,7 +2,7 @@
  * 文件名: main.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.06.05
+ * 最后修改日期: 2008.06.07
  *
  * 作用: 建立CSM，GUI，以及一些控制项目
  *
@@ -162,7 +162,7 @@ void hex2ws(WSHDR *ws, unsigned char *hex, int maxlen)
 	unsigned char *p=hex;
 	ws->wsbody[0]=0;
 	WSHDR *tws=AllocWS(8);
-	while(*p&&(maxlen==0||p-hex<=maxlen))
+	while(p-hex<maxlen)
 	{
 		wsprintf(tws, PERCENT_02X, *p);
 		wstrcat(ws, tws);
@@ -180,10 +180,20 @@ void ws2hex(WSHDR *ws, char *hex, int maxlen)
 	ws_2str(ws, s, maxlen);
 	while((c=*p1++))
 	{
-		c1=*p1++;
-		if(c1<='0'||c1>='z')
+		if((c>='0'&&c<='9')||(c>='a'&&c<='f')||(c>='A'&&c<='F'))
+		{
+			c1=*p1++;
+			if((c1>='0'&&c1<='9')||(c1>='a'&&c1<='f')||(c1>='A'&&c1<='F'))
+				hex[i++]=chr2num(c)*0x10+chr2num(c1);
+			else
+				break;
+		}
+		else
 			break;
-		hex[i++]=chr2num(c)*0x10+chr2num(c1);
+	}
+	for(;i<(maxlen/2);i++)
+	{
+		hex[i]=0;
 	}
 }
 int createEditGui(void);
@@ -463,8 +473,46 @@ int getMaxFocus(void)
 			i+=2;
 		pitem=pitem->next;
 	}
+	pitem=editItemList->submenu->item;
+	if(pitem) //get the last item
+	{
+		while(pitem->next)
+			pitem=pitem->next;
+		while(pitem)
+		{
+			if(pitem->itemType==TYPE_DRSTR)
+				i--;
+			else if(type>0&&type!=TYPE_TP)
+				break;
+			pitem=pitem->prev;
+		}
+	}
 	return i;
 }
+
+int getMinFocus(void)
+{
+	PATCH_ITEM *pitem;
+	int i=0;
+	int type;
+	if(!editItemList->submenu)
+		return 0;
+	pitem=editItemList->submenu->item;
+	while(pitem)
+	{
+		type=pitem->itemType;
+		if(type==TYPE_DRSTR)
+			i++;
+		else if(type>0&&type!=TYPE_TP)
+		{
+			i+=2;
+			break;
+		}
+		pitem=pitem->next;
+	}
+	return i;
+}
+
 void updateEdHdr(char *str)
 {
 	strcpy(ED_HDR_BODY, str);
@@ -545,7 +593,10 @@ int edOnKey(GUI *data, GUI_MSG *msg)
 		if((l==UP_BUTTON||l==VOL_UP_BUTTON))
 		{
 			int max=getMaxFocus();
-			if(i==2)
+			int min=getMinFocus();
+			if(!min||!max)
+				return -1;
+			if(i==min||i==1) //start
 			{
 				EDIT_SetFocus(data, max); 
 				return -1;
@@ -554,10 +605,13 @@ int edOnKey(GUI *data, GUI_MSG *msg)
 		else if((l==DOWN_BUTTON||l==VOL_DOWN_BUTTON))
 		{
 			int max=getMaxFocus();
+			int min=getMinFocus();
+			if(!min||!max)
+				return -1;
 			if(i==max)
 			{
-        		EDIT_SetFocus(data, 2); 
-		  		return(-1);
+        		EDIT_SetFocus(data, min); 
+		  		return -1;
 		  	}
 		}
 		PATCH_ITEM *pitem;
@@ -715,7 +769,7 @@ void edGHook(GUI *data, int cmd)
 			case TYPE_HEX:
 				{
 					DATA_HEX *hex=(DATA_HEX *)pitem->itemData;
-					ws2hex(ews, (char *)hex->hex, hex->maxlen?hex->maxlen:0x10);
+					ws2hex(ews, (char *)hex->hex, 2*(hex->maxlen?hex->maxlen:0x1));
 					break;
 				}
 			case TYPE_SF:
@@ -864,7 +918,7 @@ int createEditGui(void)
 		#else
 			wsprintf(ews, PERCENT_T, dstr->str);
 		#endif
-			ConstructEditControl(&ec,1,0x40,ews,256);
+			ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,256);
 			AddEditControlToEditQend(eq,&ec,ma);
 			goto NextItem;
 		}
@@ -938,8 +992,8 @@ int createEditGui(void)
 		case TYPE_HEX:
 			{
 				DATA_HEX *hex=(DATA_HEX *)pitem->itemData;
-				hex2ws(ews, hex->hex, hex->maxlen?hex->maxlen:0x10);
-				ConstructEditControl(&ec,4,0x40,ews,2*(hex->maxlen?hex->maxlen:0x10));
+				hex2ws(ews, hex->hex, hex->maxlen?hex->maxlen:0x1);
+				ConstructEditControl(&ec,4,0x40,ews,2*(hex->maxlen?hex->maxlen:0x1));
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
 			}
@@ -972,14 +1026,21 @@ int createEditGui(void)
 				DATA_CBOX *cbox=(DATA_CBOX *)pitem->itemData;
 				CBOX_ITEM *cboxitem=0;
 				int cur;
-				if(cboxitem=getInitCBoxItem(cbox, &cur))
+				int max=getMaxCBoxItem(cbox);
+				if((cboxitem=getInitCBoxItem(cbox, &cur)))
 				{
-					int max=getMaxCBoxItem(cbox);
 				#ifdef BUG
 					gb2ws(ews, cboxitem->name, 256);
 				#else
 					wsprintf(ews, PERCENT_T, cboxitem->name);
 				#endif
+					ConstructComboBox(&ec, 7, ECF_APPEND_EOL, ews, 32, 0, max, cur);
+					AddEditControlToEditQend(eq,&ec,ma);
+				}
+				else if(cboxitem=cbox->cboxitem)//use first item
+				{
+					cur=1;
+					wsprintf(ews, PERCENT_T, cboxitem->name);
 					ConstructComboBox(&ec, 7, ECF_APPEND_EOL, ews, 32, 0, max, cur);
 					AddEditControlToEditQend(eq,&ec,ma);
 				}

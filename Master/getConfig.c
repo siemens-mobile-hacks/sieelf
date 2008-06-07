@@ -2,7 +2,7 @@
  * 文件名: getConfig.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.06.05
+ * 最后修改日期: 2008.06.07
  *
  * 作用: 读取config.txt，并进行解析，储存结果，还提供了一些文字处理函数
  * 备注: WINTEL_DEBUG为使用在windows中使用编译器进行调试的条件编译项目
@@ -26,7 +26,7 @@
 
 #ifdef	WINTEL_DEBUG
 #define PATCH_DIR	"E:\\SRC\\SVN\\SieELF\\Master\\Patches\\"
-//#define CONFIG_SIZE	(32*1024)
+#define CONFIG_SIZE	(32*1024)
 char cfg_buf[CONFIG_SIZE];
 int patch_n=0;
 #define mfree free
@@ -652,6 +652,8 @@ void cboxItemColon(char *pdata, DATA_CBOX *cbox)
 	char *pp;
 	char *p1;
 	char *p2;
+	if(*p=='`')
+		p++;
 	pp=gotoRealPos(p);
 	while(*pp && *pp!='}')
 	{	
@@ -731,7 +733,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		p1=gotoMyStrStart(pp);
 		p2=gotoMyStrEnd(pp);
 		strnCopyWithEnd(temp, p1, p2-p1);
-		if(p1=strstrInQuote(p, STR_VOL))
+		if((p1=strstrInQuote(p, STR_VL))||(p1=strstrInQuote(p, STR_VL1)))
 			checkbox->onoff=1;
 		pp=gotoRealPos(p+1);
 		while(*pp>='0'&&*pp<='9')
@@ -786,7 +788,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		str2num(pp, &bytePos, 0, 0, 0);
 		addItemToConfig(pos, subMenu, TYPE_POS, bytePos, temp);
 	}
-	else if((p1=strstrInQuote(p, " b "))||(p1=strstrInQuote(p, "byte")))
+	else if((p1=strstrInQuote(p, " b "))||(p1=strstrInQuote(p, " byte ")))
 	{
 		DATA_BYTE *dbyte=malloc(sizeof(DATA_BYTE));
 		dbyte->initData=0;
@@ -796,16 +798,18 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		p1=gotoMyStrStart(pp);
 		p2=gotoMyStrEnd(pp);
 		strnCopyWithEnd(temp, p1, p2-p1);
-		if(p1=strstrInQuote(p, STR_VOL))
+		if((p1=strstrInQuote(p, STR_VL))||(p1=strstrInQuote(p, STR_VL1)))
 		{
 			pp=gotoRealPos(p1);
 			str2num_char(pp, &dbyte->initData, 0xFF, 0, 0);
 		}
-		if(p1=strstrInQuote(p, "r="))
+		if((p1=strstrInQuote(p, STR_RANGE1))||(p1=strstrInQuote(p, STR_RANGE2)))
 		{
 			pp=gotoRealPos(p1);
 			str2num_char(pp, &dbyte->min, 0xFF, 0, 0);
-			while(*pp>='0'&&*pp<='9') //leave min
+			//while(*pp>='0'&&*pp<='9') //leave min
+			//	pp++;
+			while(*pp&&*pp!='.')
 				pp++;
 			while(*pp<'0'||*pp>'9') //to max
 				pp++;
@@ -825,12 +829,12 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		p1=gotoMyStrStart(pp);
 		p2=gotoMyStrEnd(pp);
 		strnCopyWithEnd(temp, p1, p2-p1);
-		if(p1=strstrInQuote(p, STR_VOL))
+		if((p1=strstrInQuote(p, STR_VL))||(p1=strstrInQuote(p, STR_VL1)))
 		{
 			pp=gotoRealPos(p1);
 			str2num(pp, &dint->initData, 0, 0, 0);
 		}
-		if(p1=strstrInQuote(p, "r="))
+		if((p1=strstrInQuote(p, STR_RANGE1))||(p1=strstrInQuote(p, STR_RANGE2)))
 		{
 			pp=gotoRealPos(p1);
 			str2num(pp, &dint->min,0,0, 0);
@@ -861,7 +865,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		{
 			cboxItemColon(p2, cbox);
 		}
-		if(p1=strstrInQuote(p, STR_VOL))
+		if((p1=strstrInQuote(p, STR_VL))||(p1=strstrInQuote(p, STR_VL1)))
 		{
 			pp=gotoRealPos(p1);
 			str2num_char(pp, &cbox->initData,0xFF,0, 0);
@@ -879,7 +883,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		p1=gotoMyStrStart(pp);
 		p2=gotoMyStrEnd(pp);
 		strnCopyWithEnd(temp, p1, p2-p1);
-		if(p1=strstrInQuote(p, STR_VOL))
+		if((p1=strstrInQuote(p, STR_VL))||(p1=strstrInQuote(p, STR_VL1)))
 		{
 			pp=gotoRealPos(p1);
 			str2num(pp, col,0,0, 0);
@@ -896,7 +900,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		p1=gotoMyStrStart(pp);
 		p2=gotoMyStrEnd(pp);
 		strnCopyWithEnd(temp, p1, p2-p1);
-		if(p1=strstrInQuote(p, STR_VOL))
+		if((p1=strstrInQuote(p, STR_VL))||(p1=strstrInQuote(p, STR_VL1)))
 		{
 			pp=gotoRealPos(p1);
 			str2num(pp, (int *)&addr->addr,0,0, 0);
@@ -917,7 +921,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		p1=gotoMyStrStart(pp);
 		p2=gotoMyStrEnd(pp);
 		strnCopyWithEnd(temp, p1, p2-p1);
-		if(p1=strstrInQuote(p, STR_VOL))
+		if((p1=strstrInQuote(p, STR_VL))||(p1=strstrInQuote(p, STR_VL1)))
 		{
 			pp=gotoRealPos(p1);
 			p1=gotoMyStrStart(pp);
@@ -949,7 +953,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		p1=gotoMyStrStart(pp);
 		p2=gotoMyStrEnd(pp);
 		strnCopyWithEnd(temp, p1, p2-p1);
-		if(p1=strstrInQuote(p, STR_VOL))
+		if((p1=strstrInQuote(p, STR_VL))||(p1=strstrInQuote(p, STR_VL1)))
 		{
 			pp=gotoRealPos(p1);
 			p1=gotoMyStrStart(pp);
@@ -976,7 +980,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		p1=gotoMyStrStart(pp);
 		p2=gotoMyStrEnd(pp);
 		strnCopyWithEnd(temp, p1, p2-p1);
-		if(p1=strstrInQuote(p, STR_VOL))
+		if((p1=strstrInQuote(p, STR_VL))||(p1=strstrInQuote(p, STR_VL1)))
 		{
 			pp=gotoRealPos(p1);
 			p1=gotoMyStrStart(pp);
@@ -1003,7 +1007,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		p1=gotoMyStrStart(pp);
 		p2=gotoMyStrEnd(pp);
 		strnCopyWithEnd(temp, p1, p2-p1);
-		if(p1=strstrInQuote(p, STR_VOL))//添加UNICODE字符
+		if((p1=strstrInQuote(p, STR_VL))||(p1=strstrInQuote(p, STR_VL1)))//添加UNICODE字符
 		{
 			int i=0;
 			unsigned short c, c1;
@@ -1044,7 +1048,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		p1=gotoMyStrStart(pp);
 		p2=gotoMyStrEnd(pp);
 		strnCopyWithEnd(temp, p1, p2-p1);
-		if(p1=strstrInQuote(p, STR_VOL))
+		if((p1=strstrInQuote(p, STR_VL))||(p1=strstrInQuote(p, STR_VL1)))
 		{
 			unsigned char c, c1;
 			i=0;
@@ -1053,10 +1057,16 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 			p2=gotoMyStrEnd(pp);
 			while((c=*p1++)&& p1<p2)
 			{
-				c1=*p1++;
-				if(c1<='0'||c1>='z')
+				if((c>='0'&&c<='9')||(c>='a'&&c<='f')||(c>='A'&&c<='F'))
+				{
+					c1=*p1++;
+					if((c1>='0'&&c1<='9')||(c1>='a'&&c1<='f')||(c1>='A'&&c1<='F'))
+						hex->hex[i++]=chr2num(c)*0x10+chr2num(c1);
+					else
+						break;
+				}
+				else
 					break;
-				hex->hex[i++]=chr2num(c)*0x10+chr2num(c1);
 			}
 		}
 		if((p1=strstrInQuote(p, "ml="))||(p1=strstrInQuote(p, "maxlen=")))
@@ -1078,12 +1088,12 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		p1=gotoMyStrStart(pp);
 		p2=gotoMyStrEnd(pp);
 		strnCopyWithEnd(temp, p1, p2-p1);
-		if(p1=strstrInQuote(p, STR_VOL))
+		if((p1=strstrInQuote(p, STR_VL))||(p1=strstrInQuote(p, STR_VL1)))
 		{
 			pp=gotoRealPos(p1);
 			str2num_char(pp, &sl->initData, 0, 0, 0);
 		}
-		if(p1=strstrInQuote(p, "r="))
+		if((p1=strstrInQuote(p, STR_RANGE1))||(p1=strstrInQuote(p, STR_RANGE2)))
 		{
 			pp=gotoRealPos(p1);
 			str2num_char(pp, &sl->min,0,0, 0);
@@ -1119,7 +1129,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		p1=gotoMyStrStart(pp);
 		p2=gotoMyStrEnd(pp);
 		strnCopyWithEnd(temp, p1, p2-p1);
-		if(p1=strstrInQuote(p, STR_VOL))
+		if((p1=strstrInQuote(p, STR_VL))||(p1=strstrInQuote(p, STR_VL1)))
 		{
 			pp=gotoRealPos(p1);
 			str2num(pp, (int *)&ms->ms, 0, 0, 0);
@@ -1179,8 +1189,38 @@ char *doSubMenuJob(PATCH_SUBMENU *motherMenu, char *pdata)
 	p1=gotoMyStrStart(p);
 	p2=gotoMyStrEnd(p);
 	strnCopyWithEnd(subMenu->smName, p1, p2-p1);
-	p=gotoQuoteEnd(p);
-	p=gotoQuoteStart(p);
+	pp=gotoQuoteEnd(p);
+	if(!pp)
+		goto END;
+	p=++pp;
+	while(*p)
+	{
+		if(*p=='{') //sirect string
+			break;
+		if((*p>X_CHAR)&&(*p!=',')) //判断是这直接显示的字符
+		{
+			DATA_DRSTR *drstr=malloc(sizeof(DATA_DRSTR));
+			char *p1=p;
+			char *p2=gotoQuoteStart(p)-1;
+			while(*p2)
+			{
+				if(*p2>X_CHAR)
+					break;
+				p2--;
+			}
+			p2++;
+			strnCopyWithEnd(drstr->str, p1, p2-p1);
+			addItemToConfig(drstr, subMenu, TYPE_DRSTR, 0, NULL);
+			break;
+		}
+		p++;
+	}
+	pp=gotoQuoteStart(p);
+	if(!pp)
+		goto END;
+	p=pp;
+	if(!*p)
+		goto END;
 	while(!(strstrInQuote(p, STR_ENDSUBMENU2))&&!(strstrInQuote(p, STR_ENDSUBMENU1)))//判断结尾
 	{
 		if((p2=strstrInQuote(p, STR_SUBMENU1)))
@@ -1227,6 +1267,7 @@ char *doSubMenuJob(PATCH_SUBMENU *motherMenu, char *pdata)
 		if(!*p)
 			break;
 	}
+END:
 	addItemToConfig(subMenu, motherMenu, TYPE_SUBMENU, 0, subMenu->smName);
 	return (p);
 }
@@ -1284,8 +1325,38 @@ char *doTemplateWork(char *pdata)
 	p1=gotoMyStrStart(pp);
 	p2=gotoMyStrEnd(pp);
 	strnCopyWithEnd(tpl->useAs, p1, p2-p1);
-	p=gotoQuoteEnd(p);
-	p=gotoQuoteStart(p);
+	pp=gotoQuoteEnd(p);
+	if(!pp)
+		goto END;
+	p=++pp;
+	while(*p)
+	{
+		if(*p=='{') //sirect string
+			break;
+		if((*p>X_CHAR)&&(*p!=',')) //判断是这直接显示的字符
+		{
+			DATA_DRSTR *drstr=malloc(sizeof(DATA_DRSTR));
+			char *p1=p;
+			char *p2=gotoQuoteStart(p)-1;
+			while(*p2)
+			{
+				if(*p2>X_CHAR)
+					break;
+				p2--;
+			}
+			p2++;
+			strnCopyWithEnd(drstr->str, p1, p2-p1);
+			addItemToConfig(drstr, (PATCH_SUBMENU *)tpl, TYPE_DRSTR, 0, NULL);
+			break;
+		}
+		p++;
+	}
+	pp=gotoQuoteStart(p);
+	if(!pp)
+		goto END;
+	p=pp;
+	if(!*p)
+		goto END;
 	while(!(strstrInQuote(p, STR_ENDTEMPLATE1))&&!(strstrInQuote(p, STR_ENDTEMPLATE2)))
 	{
 		if((p2=strstrInQuote(p, STR_SUBMENU1)))
@@ -1332,6 +1403,7 @@ char *doTemplateWork(char *pdata)
 		if(!*p)
 			break;
 	}
+END:
 	addItemToConfig(tpl, &ptcfgtop->mainitem, TYPE_TP, 0, tpl->useAs);
 	return (p);
 }
@@ -1593,9 +1665,12 @@ int readConfig(int type, char *tp) //type, 1,load one, 0,load all
 		if((p2=strstrInQuote(pp, STR_TEMPLATE1)))
 		{
 			if(isThatItem(p2-3))
+			{
 				p=doTemplateWork(p2);
+				goto ANYWHERE;
+			}
 		}
-		if((p2=strstrInQuote(pp, STR_TEMPLATE1)))
+		if((p2=strstrInQuote(pp, STR_TEMPLATE2)))
 		{
 			p=doTemplateWork(p2);       
 		}
@@ -1646,9 +1721,6 @@ int readConfig(int type, char *tp) //type, 1,load one, 0,load all
 	}
 	sortPatchConfigList();
 END:
-#ifndef WINTEL_DEBUG
-	//mfree(cfg_buf);
-#endif
 	return 1;
 }
 
@@ -1730,7 +1802,7 @@ void freePatchItem(PATCH_SUBMENU *subMenuItem)
 					cboxItem=cItem;
 				}
 			}
-			else if(patchItem->itemType==TYPE_SUBMENU&&patchItem->itemType==TYPE_TP)
+			else if(patchItem->itemType==TYPE_SUBMENU||patchItem->itemType==TYPE_TP)
 			{
 				PATCH_SUBMENU *subMenu=(PATCH_SUBMENU *)patchItem->itemData;
 				freePatchItem(subMenu);
@@ -2120,11 +2192,12 @@ void showSubMenuItem(PATCH_SUBMENU *subMenuItem)
 				if(hex)
 				{
 					unsigned char *s=hex->hex;
+					int i=0;
+					int max=(hex->maxlen?hex->maxlen:1);
 					printf("HexData:");
-					while(*s)
+					for(;i<max;i++)
 					{
-						printf(PERCENT_02X, *s);
-						s++;
+						printf(PERCENT_02X, s[i]);
 					}
 					printf("\nMaxLen: %d\n", hex->maxlen);
 				}

@@ -9,7 +9,8 @@ extern const char PERCENT_02X[];
 extern const char PERCENT_02X_02X_[];
 extern const char STR_CHKBOX1[];
 extern const char STR_CHKBOX2[];
-extern const char STR_VOL[];
+extern const char STR_VL[];
+extern const char STR_VL1[];
 extern const char STR_XY1[];
 extern const char STR_XY2[];
 extern const char STR_X[];
@@ -35,7 +36,8 @@ extern const char STR_MS1[];
 extern const char STR_MS2[];
 extern const char STR_DISPF1[];
 extern const char STR_DISPF2[];
-
+extern const char STR_RANGE1[];
+extern const char STR_RANGE2[];
 #endif
 
 

@@ -98,8 +98,8 @@ typedef struct
 typedef struct
 {
 	unsigned char hex[128];
-	int maxlen;
-}DATA_HEX;//if 0, use default 0x10
+	int maxlen;//if 0, use default 0x1
+}DATA_HEX;
 
 typedef struct
 {

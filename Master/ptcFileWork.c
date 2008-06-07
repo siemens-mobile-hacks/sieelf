@@ -2,7 +2,7 @@
  * 文件名: ptcFileWork.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.06.05
+ * 最后修改日期: 2008.06.07
  *
  * 作用: 读取*.ptc进行初始化和写入*.ptc
  * 备注: WINTEL_DEBUG为使用在windows中使用编译器进行调试的条件编译项目
@@ -137,10 +137,11 @@ void initPatchItem(PATCH_ITEM *ptcitem)
 		case TYPE_HEX:
 			{
 				DATA_HEX *hex=(DATA_HEX *)pitem->itemData;
-				if(hex->maxlen)
-					memcpy(hex->hex, (ptc_buf+bpos), hex->maxlen);
-				else
-					memcpy(hex->hex, (ptc_buf+bpos), 0x10);
+				memcpy(hex->hex, (ptc_buf+bpos), (hex->maxlen?hex->maxlen:1));
+				//if(hex->maxlen)
+				//	memcpy(hex->hex, (ptc_buf+bpos), hex->maxlen);
+				//else
+				//	memcpy(hex->hex, (ptc_buf+bpos), 0x1);
 				break;
 			}
 		case TYPE_SF:
@@ -437,11 +438,11 @@ void fillItemDataToBuf(PATCH_ITEM *ptcitem)
 				char *p=ptc_buf+bpos;
 				char *p1=(char *)hex->hex;
 				int i=0;
-				int n;
-				if(!hex->maxlen)
-					n=0x10;
-				else
-					n=hex->maxlen;
+				int n=(hex->maxlen?hex->maxlen:1);
+				//if(!hex->maxlen)
+				//	n=0x1;
+				//else
+				//	n=hex->maxlen;
 				for(;i<n;i++)
 					p[i]=p1[i];
 				break;
@@ -562,10 +563,11 @@ int getPtcSize(PATCH_ITEM *ptcitem)
 		case TYPE_HEX:
 			{
 				DATA_HEX *hex=(DATA_HEX *)item->itemData;
-				if(hex->maxlen)
-					ptcsize+=hex->maxlen;
-				else
-					ptcsize+=0x10;
+				ptcsize+=(hex->maxlen?hex->maxlen:1);
+				//if(hex->maxlen)
+				//	ptcsize+=hex->maxlen;
+				//else
+				//	ptcsize+=0x1;
 				break;
 			}
 		case TYPE_SF:
