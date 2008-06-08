@@ -418,6 +418,26 @@ void str2num_char(char *str, char *num, int max, int min, int type)
 	*num=*p;
 }
 
+//清除一个字符串中的某个字符
+void cleanStrByChr(char *pdata, char chr)
+{
+	char *p=pdata;
+	char *t;
+	while(*p)
+	{
+		if(*p==chr)
+		{
+			t=p;
+			while(*t)
+			{
+				*t=*(t+1);
+				t++;
+			}
+		}
+		p++;
+	}
+}
+
 //将一个PTC_CONFIG指针添加到链表，即添加一个补丁
 void addPatchConfigList(void)
 {
@@ -431,6 +451,7 @@ void addPatchConfigList(void)
 	ptcfg->needSaveData=0;
 	ptcfg->memory=0;
 	ptcfg->disableProfile=0;
+	ptcfg->offset=0;
 	if(!ptcfgtop)
 		ptcfgtop=ptcfg;
 	else
@@ -511,7 +532,12 @@ void addItemToConfig(void *item, PATCH_SUBMENU *userPoint, int type, int bytePos
 	patchItem->next=0;
 	patchItem->bytePos=bytePos;
 	if(name)
+	{
+		cleanStrByChr(name, '`');
+		cleanStrByChr(name, 0xA);
+		cleanStrByChr(name, 0xD);
 		strcpy(patchItem->itemName, name);
+	}
 	else
 		patchItem->itemName[0]=0;
 	patchItem->itemType=type;
@@ -528,25 +554,6 @@ void addItemToConfig(void *item, PATCH_SUBMENU *userPoint, int type, int bytePos
 	}
 }
 
-//清除一个字符串中的某个字符
-void cleanStrByChr(char *pdata, char chr)
-{
-	char *p=pdata;
-	char *t;
-	while(*p)
-	{
-		if(*p==chr)
-		{
-			t=p;
-			while(*t)
-			{
-				*t=*(t+1);
-				t++;
-			}
-		}
-		p++;
-	}
-}
 
 //解析预置的选项，及其对应的数据，并添加到条目链表
 void addPrepareData(char *pdata)
@@ -592,10 +599,13 @@ void addPrepareData(char *pdata)
 void addPreDataToCBoxItem(DATA_CBOX *cbox, char *p)
 {
 	//CBOX_ITEM *cboxitem=cbox->cboxitem;
-	char *p1=p;
-	char *p2=gotoMyStrEnd(p1);
+	char *p1;
+	char *p2;
 	PATCH_ITEM *ptcitem=ptcfgtop->mainitem.item;
 	PREPARE_ITEM *preitem=0;
+	p=gotoRealPos(p);
+	p1=gotoMyStrStart(p);
+	p2=gotoMyStrEnd(p);
 	while(ptcitem)
 	{
 		if(ptcitem->itemType==TYPE_PRE)
@@ -751,12 +761,13 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 				pp++;
 			}
 		}
-		addItemToConfig(checkbox, subMenu, TYPE_CHECKBOX, bytePos, temp);
+		addItemToConfig(checkbox, subMenu, TYPE_CHECKBOX, bytePos+ptcfgtop->offset, temp);
 	}
 	else if((p1=strstrInQuote(p, STR_XY2)))
 	{
 		DATA_POS *pos=malloc(sizeof(DATA_POS));
 		pos->x=0;
+		pos->off=0;
 		pos->y=0;
 		pos->w=0;
 		pos->h=0;
@@ -786,7 +797,43 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		}
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos, 0, 0, 0);
-		addItemToConfig(pos, subMenu, TYPE_POS, bytePos, temp);
+		addItemToConfig(pos, subMenu, TYPE_POS, bytePos+ptcfgtop->offset, temp);
+	}
+	else if((p1=strstrInQuote(p, STR_XY1)))
+	{
+		DATA_POS *pos=malloc(sizeof(DATA_POS));
+		pos->x=0;
+		pos->off=0;
+		pos->y=0;
+		pos->w=0;
+		pos->h=0;
+		pp=gotoRealPos(p1);
+		p1=gotoMyStrStart(pp);
+		p2=gotoMyStrEnd(pp);
+		strnCopyWithEnd(temp, p1, p2-p1);
+		if(p1=strstrInQuote(p, STR_X))
+		{
+			pp=gotoRealPos(p1);
+			str2num_short(pp, &pos->x, 0xFFF, 0, 0);
+		}
+		if(p1=strstrInQuote(p, STR_Y))
+		{
+			pp=gotoRealPos(p1);
+			str2num_short(pp, &pos->y, 0xFFF, 0, 0);
+		}
+		if(p1=strstrInQuote(p, STR_WIDTH))
+		{
+			pp=gotoRealPos(p1);
+			str2num_short(pp, &pos->w, 0xFFF, 0, 0);
+		}
+		if(p1=strstrInQuote(p, STR_HIGHT))
+		{
+			pp=gotoRealPos(p1);
+			str2num_short(pp, &pos->h, 0xFFF, 0, 0);
+		}
+		pp=gotoRealPos(p+1);
+		str2num(pp, &bytePos, 0, 0, 0);
+		addItemToConfig(pos, subMenu, TYPE_POSB, bytePos+ptcfgtop->offset, temp);
 	}
 	else if((p1=strstrInQuote(p, " b "))||(p1=strstrInQuote(p, " byte ")))
 	{
@@ -817,7 +864,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		}
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos, 0, 0, 0);
-		addItemToConfig(dbyte, subMenu, TYPE_BYTE, bytePos, temp);
+		addItemToConfig(dbyte, subMenu, TYPE_BYTE, bytePos+ptcfgtop->offset, temp);
 	}
 	else if((p1=strstrInQuote(p, " int "))||(p1=strstrInQuote(p, " i ")))
 	{
@@ -846,7 +893,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		}
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
-		addItemToConfig(dint, subMenu, TYPE_INT, bytePos, temp);
+		addItemToConfig(dint, subMenu, TYPE_INT, bytePos+ptcfgtop->offset, temp);
 	}
 	else if((p1=strstrInQuote(p, " o "))||(p1=strstrInQuote(p, " option ")))
 	{
@@ -872,7 +919,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		}
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
-		addItemToConfig(cbox, subMenu, TYPE_CBOX, bytePos, temp);
+		addItemToConfig(cbox, subMenu, TYPE_CBOX, bytePos+ptcfgtop->offset, temp);
 	}
 	else if((p1=strstrInQuote(p, " co "))||(p1=strstrInQuote(p, " color ")))
 	{
@@ -890,7 +937,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		}
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
-		addItemToConfig(color, subMenu, TYPE_COLOR, bytePos, temp);
+		addItemToConfig(color, subMenu, TYPE_COLOR, bytePos+ptcfgtop->offset, temp);
 	}
 	else if((p1=strstrInQuote(p, " a "))||(p1=strstrInQuote(p, " address ")))
 	{
@@ -907,7 +954,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		}
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
-		addItemToConfig(addr, subMenu, TYPE_ADDRESS, bytePos, temp);
+		addItemToConfig(addr, subMenu, TYPE_ADDRESS, bytePos+ptcfgtop->offset, temp);
 	}
 	else if((p1=strstrInQuote(p, " sf "))||(p1=strstrInQuote(p, " selectfile ")))
 	{
@@ -942,7 +989,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		}
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
-		addItemToConfig(fs, subMenu, TYPE_SF, bytePos, temp);
+		addItemToConfig(fs, subMenu, TYPE_SF, bytePos+ptcfgtop->offset, temp);
 	}
 	else if((p1=strstrInQuote(p, " sd "))||(p1=strstrInQuote(p, " selectdir ")))
 	{
@@ -967,7 +1014,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		}
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
-		addItemToConfig(sd, subMenu, TYPE_SD, bytePos, temp);
+		addItemToConfig(sd, subMenu, TYPE_SD, bytePos+ptcfgtop->offset, temp);
 	}
 	else if((p1=strstrInQuote(p, " s "))||(p1=strstrInQuote(p, " string ")))
 	{
@@ -994,7 +1041,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		}
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
-		addItemToConfig(string, subMenu, TYPE_STRING, bytePos, temp);
+		addItemToConfig(string, subMenu, TYPE_STRING, bytePos+ptcfgtop->offset, temp);
 	}
 	else if((p1=strstrInQuote(p, " u "))||(p1=strstrInQuote(p, " ustring ")))
 	{
@@ -1035,7 +1082,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		}
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
-		addItemToConfig(uni, subMenu, TYPE_UNICODE, bytePos, temp);
+		addItemToConfig(uni, subMenu, TYPE_UNICODE, bytePos+ptcfgtop->offset, temp);
 	}
 	else if((p1=strstrInQuote(p, " h "))||(p1=strstrInQuote(p, " hex ")))
 	{
@@ -1076,7 +1123,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		}
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
-		addItemToConfig(hex, subMenu, TYPE_HEX, bytePos, temp);
+		addItemToConfig(hex, subMenu, TYPE_HEX, bytePos+ptcfgtop->offset, temp);
 	}
 	else if((p1=strstrInQuote(p, STR_SLIDER2))||(p1=strstrInQuote(p, STR_SLIDER1)))
 	{
@@ -1105,7 +1152,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		}
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
-		addItemToConfig(sl, subMenu, TYPE_SL, bytePos, temp);
+		addItemToConfig(sl, subMenu, TYPE_SL, bytePos+ptcfgtop->offset, temp);
 	}
 	else if((p1=strstrInQuote(p, STR_USETEMPLATE1))||(p1=strstrInQuote(p, STR_USRTEMPLATE2)))
 	{
@@ -1119,7 +1166,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
 		if(tpl=findTemplate(ptcfgtop, temp))
-			subMenuCopy(subMenu, (PATCH_SUBMENU *)tpl, bytePos);
+			subMenuCopy(subMenu, (PATCH_SUBMENU *)tpl, bytePos+ptcfgtop->offset);
 	}
 	else if((p1=strstrInQuote(p, STR_MS1))||(p1=strstrInQuote(p, STR_MS2)))
 	{
@@ -1136,42 +1183,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		}
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
-		addItemToConfig(ms, subMenu, TYPE_MS, bytePos, temp);
-	}
-	else if((p1=strstrInQuote(p, STR_XY1)))
-	{
-		DATA_POS *pos=malloc(sizeof(DATA_POS));
-		pos->x=0;
-		pos->y=0;
-		pos->w=0;
-		pos->h=0;
-		pp=gotoRealPos(p1);
-		p1=gotoMyStrStart(pp);
-		p2=gotoMyStrEnd(pp);
-		strnCopyWithEnd(temp, p1, p2-p1);
-		if(p1=strstrInQuote(p, STR_X))
-		{
-			pp=gotoRealPos(p1);
-			str2num_short(pp, &pos->x, 0xFFF, 0, 0);
-		}
-		if(p1=strstrInQuote(p, STR_Y))
-		{
-			pp=gotoRealPos(p1);
-			str2num_short(pp, &pos->y, 0xFFF, 0, 0);
-		}
-		if(p1=strstrInQuote(p, STR_WIDTH))
-		{
-			pp=gotoRealPos(p1);
-			str2num_short(pp, &pos->w, 0xFFF, 0, 0);
-		}
-		if(p1=strstrInQuote(p, STR_HIGHT))
-		{
-			pp=gotoRealPos(p1);
-			str2num_short(pp, &pos->h, 0xFFF, 0, 0);
-		}
-		pp=gotoRealPos(p+1);
-		str2num(pp, &bytePos, 0, 0, 0);
-		addItemToConfig(pos, subMenu, TYPE_POSB, bytePos, temp);
+		addItemToConfig(ms, subMenu, TYPE_MS, bytePos+ptcfgtop->offset, temp);
 	}
 }
 
@@ -1230,7 +1242,11 @@ char *doSubMenuJob(PATCH_SUBMENU *motherMenu, char *pdata)
 		else if((p2=strstrInQuote(p, STR_SUBMENU2)))
 		{
 			if(isThatItem(p2-3))
-				p=doSubMenuJob(subMenu, p2);
+			{
+				if(*p2=='=')
+					p2++;
+				p=doSubMenuJob(&ptcfgtop->mainitem, p2);
+			}
 		}
 		else
 			doItemJob(p, subMenu);
@@ -1366,7 +1382,11 @@ char *doTemplateWork(char *pdata)
 		else if((p2=strstrInQuote(p, STR_SUBMENU2)))
 		{
 			if(isThatItem(p2-3))
-				p=doSubMenuJob((PATCH_SUBMENU *)tpl, p2);
+			{
+				if(*p2=='=')
+					p2++;
+				p=doSubMenuJob(&ptcfgtop->mainitem, p2);
+			}
 		}
 		else
 			doItemJob(p, (PATCH_SUBMENU *)tpl);
@@ -1442,6 +1462,7 @@ void subMenuCopy(PATCH_SUBMENU *sbmdst, PATCH_SUBMENU *sbmsrc, int byteBase)
 				DATA_POS *pos1=(DATA_POS *)pitem->itemData;
 				DATA_POS *pos=malloc(sizeof(DATA_POS));
 				pos->x=pos1->x;
+				pos->off=pos1->off;
 				pos->y=pos1->y;
 				pos->w=pos1->w;
 				pos->h=pos1->h;
@@ -1596,6 +1617,7 @@ void subMenuCopy(PATCH_SUBMENU *sbmdst, PATCH_SUBMENU *sbmsrc, int byteBase)
 				DATA_POS *pos1=(DATA_POS *)pitem->itemData;
 				DATA_POS *pos=malloc(sizeof(DATA_POS));
 				pos->x=pos1->x;
+				pos->off=pos1->off;
 				pos->y=pos1->y;
 				pos->w=pos1->w;
 				pos->h=pos1->h;
@@ -1638,7 +1660,7 @@ int readConfig(int type, char *tp) //type, 1,load one, 0,load all
 			addToPatchInfo(p2); ////Jump to name
 			goto ANYWHERE;
 		}
-		else if((p2=strstrInQuote(pp, "p="))||(p2=strstrInQuote(pp, "p ")))
+		if((p2=strstrInQuote(pp, "p ")))
 		{
 			if(isThatItem(p2-3))
 			{
@@ -1649,15 +1671,72 @@ int readConfig(int type, char *tp) //type, 1,load one, 0,load all
 				goto ANYWHERE;
 			}
 		}
+		if((p2=strstrInQuote(pp, "p=")))
+		{
+			if(isThatItem(p2-3))
+			{
+				if(type)//读取完一个补丁就了事，用于重新载入一个补丁
+					goto END;
+				addPatchConfigList();
+				addToPatchInfo(p2); ////Jump to name
+				goto ANYWHERE;
+			}
+		}
+		if((p2=strstrInQuote(pp, "of")))
+		{
+			if(isThatItem(p2-3))
+			{
+				char *s=gotoRealPos(p2);
+				//if(*s=='-')
+				//{
+				//	s++;
+				//	str2num(s, &ptcfgtop->offset, 0, 0, 0);
+				//	ptcfgtop->offset=(-1)*(ptcfgtop->offset);
+				//}
+				//else
+				{
+					if(*s=='+')
+						s++;
+					str2num(s, &ptcfgtop->offset, 0, 0, 0);
+				}
+				goto ANYWHERE;
+			}
+		}
+		if((p2=strstrInQuote(pp, "offset")))
+		{
+			if(isThatItem(p2-7))
+			{
+				char *s=gotoRealPos(p2);
+				//if(*s=='-')
+				//{
+				//	s++;
+				//	str2num(s, &ptcfgtop->offset, 0, 0, 0);
+				//	ptcfgtop->offset=0-(ptcfgtop->offset);
+				//}
+				//else
+				{
+					if(*s=='+')
+						s++;
+					str2num(s, &ptcfgtop->offset, 0, 0, 0);
+				}
+				goto ANYWHERE;
+			}
+		}
 		if((p2=strstrInQuote(pp, "info")))
 		{
-			addInfoToPatchInfo(p2);
-			goto ANYWHERE;
+			if(isThatItem(p2-5))
+			{
+				addInfoToPatchInfo(p2);
+				goto ANYWHERE;
+			}
 		}
 		if((p2=strstrInQuote(pp, STR_CHOICE))||(p2=strstrInQuote(pp, STR_CHOICE1))||(p2=strstrInQuote(pp, STR_CHOICE2)))
 		{
 			if(isPrepareItem(p2))
+			{
 				addPrepareData(p2); //Jump to 
+				goto ANYWHERE;
+			}
 			//else
 			//	doItemJob(pp, &ptcfgtop->mainitem);
 			//goto ANYWHERE;
@@ -1679,7 +1758,11 @@ int readConfig(int type, char *tp) //type, 1,load one, 0,load all
 			if((p2=strstrInQuote(pp, STR_SUBMENU2)))
 			{
 				if(isThatItem(p2-3))
+				{
+					if(*p2=='=')
+						p2++;
 					p=doSubMenuJob(&ptcfgtop->mainitem, p2);
+				}
 			}
 			if((p2=strstrInQuote(pp, STR_SUBMENU1)))
 			{
@@ -2100,6 +2183,8 @@ void showSubMenuItem(PATCH_SUBMENU *subMenuItem)
 				DATA_POS *pos=(DATA_POS *)patchItem->itemData;
 				if(pos)
 				{
+					if(pos->off)
+						printf("POS is OFF");
 					printf("X: %d\n", pos->x);
 					printf("Y: %d\n", pos->y);
 					printf("W: %d\n", pos->w);
@@ -2236,6 +2321,8 @@ void showSubMenuItem(PATCH_SUBMENU *subMenuItem)
 				DATA_POS *pos=(DATA_POS *)patchItem->itemData;
 				if(pos)
 				{
+					if(pos->off)
+						printf("POS IS OFF");
 					printf("X: %d\n", pos->x);
 					printf("Y: %d\n", pos->y);
 					printf("W: %d\n", pos->w);

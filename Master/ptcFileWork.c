@@ -69,7 +69,10 @@ void initPatchItem(PATCH_ITEM *ptcitem)
 			{
 				DATA_POS *pos=(DATA_POS *)pitem->itemData;
 				short *sp=(short *)(ptc_buf+bpos);
-				pos->x=*sp;
+				pos->x=ptc_buf[bpos];
+				if(ptc_buf[bpos+1]==0x80)
+					pos->off=1;
+			//	pos->x=*sp;
 				pos->y=*(sp+1);
 				break;
 			}
@@ -176,9 +179,17 @@ void initPatchItem(PATCH_ITEM *ptcitem)
 		case TYPE_POSB:
 			{
 				DATA_POS *pos=(DATA_POS *)pitem->itemData;
-				char *sp=ptc_buf+bpos;
-				pos->x=*sp;
-				pos->y=*(sp+1);
+				if(ptc_buf[bpos]==0xFF&&ptc_buf[bpos+1]==0xFF)
+				{
+					pos->off=1;
+					pos->x=66;
+					pos->y=88;
+				}
+				else
+				{
+					pos->x=ptc_buf[bpos];
+					pos->y=ptc_buf[bpos+1];
+				}
 				break;
 			}
 		}
@@ -363,7 +374,11 @@ void fillItemDataToBuf(PATCH_ITEM *ptcitem)
 			{
 				DATA_POS *pos=(DATA_POS *)pitem->itemData;
 				short *sp=(short *)(ptc_buf+bpos);
-				*sp=pos->x;
+				unsigned char *xp=(unsigned char *)(ptc_buf+bpos+1);
+				char *px=(char *)&pos->x;
+				ptc_buf[bpos]=*px;
+				if(pos->off)
+					*xp=0x80;
 				*(sp+1)=pos->y;
 				break;
 			}
@@ -482,11 +497,21 @@ void fillItemDataToBuf(PATCH_ITEM *ptcitem)
 		case TYPE_POSB:
 			{
 				DATA_POS *pos=(DATA_POS *)pitem->itemData;
-				char *sp=ptc_buf+bpos;
+				unsigned char *sp=(unsigned char *)ptc_buf+bpos;
 				char *px=(char *)&pos->x;
 				char *py=(char *)&pos->y;
-				*sp=*px;
-				*(sp+1)=*py;
+				//*sp=*px;
+				//*(sp+1)=*py;
+				if(pos->off)
+				{
+					*sp=0xFF;
+					*(sp+1)=0xFF;
+				}
+				else
+				{
+					ptc_buf[bpos]=*px;
+					ptc_buf[bpos+1]=*py;
+				}
 				break;
 			}
 		}
@@ -543,21 +568,23 @@ int getPtcSize(PATCH_ITEM *ptcitem)
 		case TYPE_STRING:
 			{
 				DATA_STRING *str=(DATA_STRING *)item->itemData;
-				if(!str->maxlen)
-				{
-					ptcsize+=0x10;
-				}
-				else
-					ptcsize+=str->maxlen;
+				ptcsize+=(str->maxlen?(str->maxlen+1):0x10);
+				//if(!str->maxlen)
+				//{
+				//	ptcsize+=0x10;
+				//}
+				//else
+				//	ptcsize+=str->maxlen+1;
 				break;
 			}
 		case TYPE_UNICODE:
 			{
 				DATA_UNICODE *uni=(DATA_UNICODE *)item->itemData;
-				if(!uni->maxlen)
-					ptcsize+=0x20;
-				else
-					ptcsize+=uni->maxlen*2;
+				ptcsize+=(uni->maxlen?(2*(uni->maxlen+1)):0x20);
+				//if(!uni->maxlen)
+				//	ptcsize+=0x20;
+				//else
+				//	ptcsize+=uni->maxlen*2;
 				break;
 			}
 		case TYPE_HEX:

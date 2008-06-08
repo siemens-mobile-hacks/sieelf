@@ -38,10 +38,14 @@ typedef struct
 typedef struct
 {
 	short x;
+	char off;
 	short y;
 	short w;
 	short h;
 }DATA_POS;
+
+//xy2 1 x, 2 onoff,on->00, off->80 3,4 y
+//xy 1,x ,2,y, off,ffff, on use default, sw/2, sh/2
 
 typedef struct
 {
@@ -156,6 +160,7 @@ typedef struct
 	int needSaveData;
 	int disableProfile;
 	int memory;
+	int offset;
 	PATCH_INFO *patchInfo;
 	PATCH_SUBMENU mainitem; //理解为一个submenu
 }PTC_CONFIG;

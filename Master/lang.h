@@ -48,6 +48,7 @@
 #define LGP_BACKUP_PATH "备份文件路径:"
 #define LGP_RESTORE_PATH	"恢复备份路径:"
 #define LGP_ENTER_PATH	"输入文件夹路径"
+#define LGP_IS_OFF		"已关闭"
 #endif
 
 #ifdef LANG_EN
@@ -90,5 +91,6 @@
 #define LGP_BACKUP_PATH "Backup Path:"
 #define LGP_RESTORE_PATH	"Restore Path:"
 #define LGP_ENTER_PATH	"Enter Folder Path"
+#define LGP_IS_OFF		"Is Off"
 #endif
 #endif

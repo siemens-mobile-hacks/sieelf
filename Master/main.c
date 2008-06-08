@@ -654,6 +654,12 @@ int edOnKey(GUI *data, GUI_MSG *msg)
 				case TYPE_POS:
 					{
 						DATA_POS *pos=(DATA_POS *)pitem->itemData;
+						if(pos->off)
+						{
+							pos->off=0;
+							wsprintf(ews, PERCENT_D_D, pos->x, pos->y);
+							EDIT_SetTextToFocused(data, ews);
+						}
 						EditPostionGUI(&pos->x, &pos->y, pos->w, pos->h);
 						break;
 					}
@@ -663,6 +669,30 @@ int edOnKey(GUI *data, GUI_MSG *msg)
 						EditColors(color->color);
 						break;
 					}
+				}
+			}
+		}
+		if(l==RIGHT_BUTTON||l==LEFT_BUTTON)
+		{
+			if(pitem=findPatchItemInED(i))
+			{
+				if(pitem->itemType==TYPE_POS||pitem->itemType==TYPE_POSB)
+				{
+					DATA_POS *pos=(DATA_POS *)pitem->itemData;
+					if(pos->off)
+					{
+						pos->off=0;
+						wsprintf(ews, PERCENT_D_D, pos->x, pos->y);
+						EDIT_SetTextToFocused(data, ews);
+					}
+					else
+					{
+						pos->off=1;
+						wsprintf(ews, PERCENT_T, LGP_IS_OFF);
+						EDIT_SetTextToFocused(data, ews);
+					}
+					REDRAW();
+					return -1;
 				}
 			}
 		}
@@ -716,7 +746,11 @@ void edGHook(GUI *data, int cmd)
 			case TYPE_POS:
 				{
 					DATA_POS *pos=(DATA_POS *)pitem->itemData;
-					wsprintf(ews, PERCENT_D_D, pos->x, pos->y);
+					if(pos->off)
+						wsprintf(ews, PERCENT_T, LGP_IS_OFF);
+					else
+						wsprintf(ews, PERCENT_D_D, pos->x, pos->y);
+				//	wsprintf(ews, PERCENT_D_D, pos->x, pos->y);
 					EDIT_SetTextToFocused(data,ews);
 					sk_need=1;
 					break;
@@ -1018,7 +1052,10 @@ int createEditGui(void)
 		case TYPE_POS:
 			{
 				DATA_POS *dpos=(DATA_POS *)pitem->itemData;
-				wsprintf(ews, PERCENT_D_D, dpos->x, dpos->y);
+				if(dpos->off)
+					wsprintf(ews, PERCENT_T, LGP_IS_OFF);
+				else
+					wsprintf(ews, PERCENT_D_D, dpos->x, dpos->y);
 				ConstructEditControl(&ec,9,ECF_APPEND_EOL,ews,10);
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
