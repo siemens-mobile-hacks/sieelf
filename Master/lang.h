@@ -43,7 +43,11 @@
 #define LGP_PATCH_VERSION	"版本:"
 #define LGP_PATCH_INFO_OTH	"其它信息:"
 #define LGP_PATCH_INFO	"补丁信息"
-
+#define LGP_BACKUP		"备份配置"
+#define LGP_RESTORE		"恢复备份"
+#define LGP_BACKUP_PATH "备份文件路径:"
+#define LGP_RESTORE_PATH	"恢复备份路径:"
+#define LGP_ENTER_PATH	"输入文件夹路径"
 #endif
 
 #ifdef LANG_EN
@@ -74,12 +78,17 @@
 #define LGP_DEL_ALL		"Clear All Configs"
 #define LGP_RELOAD_CONFIG_ERR	"Reload Config Error!"
 #define LGP_DEL_THIS	"Clear This Config"
-#define LGP_DEL_UNUSED	"Clear Unused Config"
+#define LGP_DEL_UNUSED	"Clear Unused Configs"
 #define LGP_PATCH_NAME	"Name:"
 #define LGP_PATCH_AUTHOR	"Author:"
 #define LGP_PATCH_ID	"ID:"
 #define LGP_PATCH_VERSION	"Version:"
 #define LGP_PATCH_INFO_OTH	"Other Info:"
 #define LGP_PATCH_INFO	"Info"
+#define LGP_BACKUP		"Backup Configs"
+#define LGP_RESTORE		"Restore Configs"
+#define LGP_BACKUP_PATH "Backup Path:"
+#define LGP_RESTORE_PATH	"Restore Path:"
+#define LGP_ENTER_PATH	"Enter Folder Path"
 #endif
 #endif

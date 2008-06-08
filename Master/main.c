@@ -235,6 +235,8 @@ int menu_onkey(void *data, GUI_MSG *msg)
 						isSubMenuNeed=1;
 						return 1;
 					}
+					else
+						createProfileOnoffMenu();
 				}
 				return 0;
 			}

@@ -19,5 +19,5 @@ extern int S_ICONS[3];
 #define PATCH_DIR	"0:\\Misc\\Patches\\"
 #define PTC_FOLDR	"ptc\\"
 
-
+void on_sdec(USR_MENU_ITEM *item);
 #endif

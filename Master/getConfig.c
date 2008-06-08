@@ -1638,7 +1638,7 @@ int readConfig(int type, char *tp) //type, 1,load one, 0,load all
 			addToPatchInfo(p2); ////Jump to name
 			goto ANYWHERE;
 		}
-		else if(p2=strstrInQuote(pp, "p="))
+		else if((p2=strstrInQuote(pp, "p="))||(p2=strstrInQuote(pp, "p ")))
 		{
 			if(isThatItem(p2-3))
 			{

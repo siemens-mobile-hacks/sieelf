@@ -4,5 +4,6 @@
 #include "master.h"
 
 void show_option_menu(void);
+void createProfileOnoffMenu(void);
 
 #endif

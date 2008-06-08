@@ -16,7 +16,9 @@
 #include "getConfig.h"
 #include "usedstr.h"
 
-#define MAIN_MENU_ITEMS_N 7
+#define MAIN_MENU_ITEMS_N 9
+
+int PATH_TYPE=0; //0,backup, 1,restore
 
 const int mmenusoftkeys[]={0,1,2};
 
@@ -87,6 +89,22 @@ void menu_info(GUI *gui)
 	GeneralFuncF1(1);
 	showPatchInfo();
 }
+
+void pathInputDlg(void);
+void menu_backup(GUI *gui)
+{
+	GeneralFuncF1(1);
+	PATH_TYPE=0;
+	pathInputDlg();
+}
+
+void menu_restore(GUI *gui)
+{
+	GeneralFuncF1(1);
+	PATH_TYPE=1;
+	pathInputDlg();
+}
+
 const MENUPROCS_DESC option_menu_HNDLS[MAIN_MENU_ITEMS_N]=
 {
 	menu_profile,
@@ -94,6 +112,8 @@ const MENUPROCS_DESC option_menu_HNDLS[MAIN_MENU_ITEMS_N]=
 	menu_del_this,
 	menu_del_unused,
 	menu_del_all,
+	menu_backup,
+	menu_restore,
 	menu_about,
 	menu_exit,
 };
@@ -105,6 +125,8 @@ const MENUITEM_DESC option_menu_ITEMS[MAIN_MENU_ITEMS_N]=
 	{NULL,(int)LGP_DEL_THIS,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_DEL_UNUSED,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_DEL_ALL,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+	{NULL,(int)LGP_BACKUP,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+	{NULL,(int)LGP_RESTORE,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_ABOUT,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_QUIT,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 };
@@ -129,6 +151,8 @@ const MENUPROCS_DESC option_menu_HNDLS_1[MAIN_MENU_ITEMS_N-1]=
 	menu_del_this,
 	menu_del_unused,
 	menu_del_all,
+	menu_backup,
+	menu_restore,
 	menu_about,
 	menu_exit,
 };
@@ -139,6 +163,8 @@ const MENUITEM_DESC option_menu_ITEMS_1[MAIN_MENU_ITEMS_N-1]=
 	{NULL,(int)LGP_DEL_THIS,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_DEL_UNUSED,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_DEL_ALL,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+	{NULL,(int)LGP_BACKUP,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+	{NULL,(int)LGP_RESTORE,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_ABOUT,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_QUIT,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 };
@@ -431,5 +457,230 @@ void showPatchInfo(void)
 		patch_input(&INFO_DESC);
 		CreateInputTextDialog(&INFO_DESC, &INFO_HDR, eq, 1, 0);
 		FreeWS(ws);
+	}
+}
+
+const SOFTKEY_DESC SK_BACKUP={0x0FFF,0x0000,(int)LGP_BACKUP};
+const SOFTKEY_DESC SK_RESTORE={0x0FFF,0x0000,(int)LGP_RESTORE};
+
+//fcopy form mc
+#define BUF_SIZE 0x4000
+int fcopy(char *dst, char *src)
+{
+	unsigned int err;
+	int fi=-1, fo=-1;
+	char *buff=0;
+	int cb,left;
+	int res=0;
+	int attr=0;
+
+	fi=fopen(src, A_ReadOnly + A_BIN, P_READ, &err);
+	if(fi!=-1) 
+	{
+		fo=fopen(dst, A_ReadWrite+A_BIN+A_Create+A_Truncate, P_READ+P_WRITE, &err);
+		if(fo!=-1) 
+		{
+
+			left=lseek(fi, 0, S_END, &err, &err);
+			lseek(fi, 0, S_SET, &err, &err);
+			if(left)
+			{
+				buff=malloc(BUF_SIZE);
+				if(!buff)
+					goto L_EXIT;
+			}
+			while (left) 
+			{
+				cb=left<BUF_SIZE?left:BUF_SIZE;
+				left-=cb;
+				if(fread(fi, buff, cb, &err)!=cb) 
+					goto L_EXIT;
+				if(fwrite(fo, buff, cb, &err)!=cb) 
+					goto L_EXIT;
+			}
+			res=1;
+			GetFileAttrib(src, (unsigned char*)&attr, &err);
+			SetFileAttrib(dst, attr, &err);
+		}
+	}
+L_EXIT:
+	if(buff) 
+		mfree(buff);
+	if(fo!=-1) 
+		fclose(fo, &err);
+	if(fi!=-1) 
+		fclose(fi, &err);
+	return res;
+}
+
+void configRestore(char *path);
+void configBackUp(char *path);
+
+int pathInputOnKey(GUI *data, GUI_MSG *msg)
+{
+	EDITCONTROL ec;
+	char path[128];
+	if(msg->keys==0xFFF)
+	{
+		ExtractEditControl(data,2,&ec);
+		ws_2str(ec.pWS, path, 127);
+		if(PATH_TYPE)
+			configRestore(path);
+		else
+			configBackUp(path);
+		return 1;
+	}
+	if((msg->gbsmsg->msg==KEY_DOWN)&&(msg->gbsmsg->submess==ENTER_BUTTON))
+	{
+		EDIT_OpenOptionMenuWithUserItems(data,on_sdec,data,1);
+		return -1;
+	}
+	return 0;
+}
+
+void pathInputGHook(GUI *data, int cmd)
+{
+	if(cmd==0x0A)
+		DisableIDLETMR();
+	if(cmd==7)
+		SetSoftKey(data, PATH_TYPE?&SK_RESTORE:&SK_BACKUP, SET_SOFT_KEY_N);
+}
+
+INPUTDIA_DESC PATH_INPUT_DESC=
+{
+  1,
+  pathInputOnKey,
+  pathInputGHook,
+  (void *)info_locret,
+  0,
+  &mmenu_skt,
+  {0,0,0,0},
+  FONT_SMALL,
+  100,
+  101,
+  0,
+  0,
+  0x40000000
+};
+
+HEADER_DESC PATH_INPUT_HDR={0,0,0,0,NULL,(int)LGP_ENTER_PATH,LGP_NULL};
+
+void pathInputDlg(void)
+{
+	void *ma=malloc_adr();
+	void *eq;
+	EDITCONTROL ec;
+	WSHDR *ews;
+	
+	PrepareEditControl(&ec);
+	eq=AllocEQueue(ma,mfree_adr());
+	ews=AllocWS(128);
+	wsprintf(ews, PERCENT_T, PATH_TYPE?LGP_RESTORE_PATH:LGP_BACKUP_PATH);
+	ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,ews->wsbody[0]);
+	AddEditControlToEditQend(eq,&ec,ma);
+	
+	if(PATH_TYPE)
+		str_2ws(ews,"0:\\Misc\\Patches\\",127);
+	else
+	{
+		TDate date;
+		TTime time;
+		GetDateTime(&date, &time);
+		wsprintf(ews, "0:\\Misc\\Patches\\ptc_%d%02d%02d\\",date.year,date.month,date.day);
+	}
+	ConstructEditControl(&ec,ECT_CURSOR_STAY,ECF_APPEND_EOL,ews,128);
+	AddEditControlToEditQend(eq,&ec,ma);
+	
+	patch_header(&PATH_INPUT_HDR);
+	patch_input(&PATH_INPUT_DESC);
+	CreateInputTextDialog(&PATH_INPUT_DESC,&PATH_INPUT_HDR,eq,1,0);
+	FreeWS(ews);
+}
+
+void mkpath(char *path)
+{
+	unsigned int ferr;
+	char temp[128];
+	int len=strlen(path);
+	int i=0;
+	if(isdir(path, &ferr))
+		return;
+	for(;i<len;i++)
+	{
+		if(path[i]=='\\')
+		{
+			temp[i]=0;
+			if(!isdir(temp, &ferr))
+				mkdir(temp, &ferr);
+		}
+		temp[i]=path[i];
+	}
+	mkdir(path, &ferr);
+}
+
+void configBackUp(char *path)
+{
+	int len=strlen(path);
+	DIR_ENTRY de;
+	unsigned int ferr;
+	char folder[128]=PATCH_DIR;
+	char ptemp[128];
+	char tp[128];
+	char srcpath[128];
+	mkpath(path);
+	strcat(folder, PTC_FOLDR);
+	strcpy(srcpath, folder);
+	strcat(srcpath, "*.ptc");
+	if(FindFirstFile(&de, srcpath, &ferr))
+	{
+		do
+		{
+			if(path[len-1]!='\\')
+				sprintf(ptemp, "%s\\%s", path, de.file_name);
+			else
+				sprintf(ptemp, "%s%s", path, de.file_name);
+			sprintf(tp, "%s%s", folder, de.file_name);
+			fcopy(ptemp, tp);
+		}while(FindNextFile(&de,&ferr));
+	}
+	FindClose(&de,&ferr);
+}
+
+
+void configRestore(char *path)
+{
+	unsigned int ferr;
+	int len=strlen(path);
+	DIR_ENTRY de;
+	char ptemp[128];
+	char folder[128]=PATCH_DIR;
+	char tp[128];
+	char srcpath[128];
+	if(!(isdir(path, &ferr)))
+		return;
+	if(path[len-1]=='\\')
+		sprintf(srcpath, "%s*.ptc", path);
+	else
+		sprintf(srcpath, "%s\\*.ptc", path);
+	strcat(folder, PTC_FOLDR);
+	if(FindFirstFile(&de, srcpath, &ferr))
+	{
+		do
+		{
+			sprintf(ptemp, "%s%s", folder, de.file_name);
+			if(path[len-1]=='\\')
+				sprintf(tp, "%s%s", path, de.file_name);
+			else
+				sprintf(tp, "%s\\%s", path, de.file_name);
+			fcopy(ptemp, tp);
+		}while(FindNextFile(&de,&ferr));
+	}
+	FindClose(&de,&ferr);
+	fuckThemAll();
+	patch_n=0;
+	if(!getAllPatchData())
+	{
+		MsgBoxError(1, (int)LGP_RELOAD_CONFIG_ERR);
+		CloseCSM(MAIN_CSM_ID);
 	}
 }
