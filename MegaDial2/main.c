@@ -121,6 +121,8 @@ typedef struct
   WSHDR *pic;
 }CLIST;
 
+void ElfKiller(void);
+
 volatile CLIST *cltop; //Start
 
 char dstr[NUMBERS_MAX][40];
@@ -1916,7 +1918,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 		if(e_ws->wsbody[0]==2&&e_ws->wsbody[1]=='1'&&e_ws->wsbody[2]=='1')
 		{
 			ShowMSG(1,(int)"Megadial退出!");
-			SUBPROC((void *)ElfKiller);
+			ElfKiller();
 			return 1;
 		}
 		if(e_ws->wsbody[0]==2&&e_ws->wsbody[1]=='2'&&e_ws->wsbody[2]=='1')
