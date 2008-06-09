@@ -3,6 +3,7 @@
 #include "jabber_util.h"
 #include "bookmarks.h"
 #include "lang.h"
+#include "rect_patcher.h"
 
 BM_ITEM *BM_ROOT  = NULL;
 int reqbook = 0; //флаг запроса закладок
@@ -121,36 +122,6 @@ void Get_Bookmarks_List()
     if(BM_ROOT) Disp_BM_Menu();
 }
 
-
-//===============================================================================================
-// ELKA Compatibility
-#pragma inline
-void patch_header(HEADER_DESC* head)
-{
-  head->rc.x=0;
-  head->rc.y=YDISP;
-  head->rc.x2=ScreenW()-1;
-  head->rc.y2=HeaderH()+YDISP;
-}
-#pragma inline
-void patch_input(INPUTDIA_DESC* inp)
-{
-  inp->rc.x=0;
-  inp->rc.y=HeaderH()+1+YDISP;
-  inp->rc.x2=ScreenW()-1;
-  inp->rc.y2=ScreenH()-SoftkeyH()-1;
-}
-
-#pragma inline
-void patch_rect(RECT*rc,int x,int y, int x2, int y2)
-{
-  rc->x=x;
-  rc->y=y;
-  rc->x2=x2;
-  rc->y2=y2;
-}
-//===============================================================================================
-
 int BM_MenuID;
 int Req_Close_BM_Menu=0;
 extern BM_ITEM *BM_ROOT;
@@ -220,9 +191,9 @@ int bm_menu_onkey(void *data, GUI_MSG *msg)
       
     };
     extern const unsigned int DEFAULT_MUC_MSGCOUNT;
-      Enter_Conference(it->mucname, it->nick, it->pass, DEFAULT_MUC_MSGCOUNT);
+    Enter_Conference(it->mucname, it->nick, it->pass, DEFAULT_MUC_MSGCOUNT);
+    return 1;
   }
-//  Req_Close_BM_Menu = 1;
 return 0;
 }
 

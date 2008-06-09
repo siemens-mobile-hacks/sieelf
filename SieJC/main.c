@@ -21,6 +21,8 @@
 #include "smiles.h"
 #include "vCard.h"
 #include "siejc_ipc.h"
+#include "color.h"
+#include "rect_patcher.h"
 
 /*
 (c) Kibab
@@ -33,9 +35,8 @@ int autostatus_time;
 int as;
 int CLIST_FONT;
 int MESSAGEWIN_FONT;
-char color_cfg[2000];
 FSTATS fs;
-//extern int init_color(void);
+
 extern const char color_PATH[];
 extern const char colorshem_PATH_1[];
 extern const char colorshem_PATH_2[];
@@ -45,7 +46,6 @@ extern const char colorshem_PATH_5[];
 extern const int AUTOSTATUS_ENABLED;
 extern const unsigned int AUTOSTATUS_TIME;
 int color_num;
-int color_state=0;
 extern const char COLOR_CURSOR []; 
 
 extern const int ROSTER_FONT;
@@ -62,6 +62,7 @@ extern const int IS_IP;
 extern const int USE_SASL;
 extern const int USE_ZLIB;
 extern const unsigned int DEF_SKR;
+extern const int IDLE_ICON;
 extern const unsigned int IDLE_ICON_X;
 extern const unsigned int IDLE_ICON_Y;
 
@@ -96,7 +97,6 @@ char elf_path[256];
 
 char Is_Compression_Enabled = 0;
 
-const char percent_t[]="%t";
 const char percent_s[]="%s";
 const char empty_t[]="";
 const char conference_t[]="conference";
@@ -121,230 +121,28 @@ int sock=-1;
 
 volatile int is_gprs_online=1;
 
+
+/*int IB_NEWMESSAGE;
+int IB_ONLINE;
+int IB_CHAT;
+int IB_AWAY;
+int IB_XA;
+int IB_DND;
+int IB_INVISIBLE;
+int IB_OFFLINE;*/ // IconBar
+
 GBSTMR TMR_Send_Presence; // Посылка презенса
 GBSTMR reconnect_tmr;
 GBSTMR Ping_Timer;
-#ifndef NEWSGOLD
+/*#ifndef NEWSGOLD
 GBSTMR redraw_tmr;
-#define Redraw_Time TMR_SECOND*5
-#endif
+#define Redraw_Time TMR_SECOND*1
+#endif*/
 GBSTMR autostatus_tmr;
 
-//=============Некоторые цвета====================
 
-RGBA MAINBG_NOT_CONNECTED;
-RGBA MAINBG_CONNECTED;
-RGBA MAINBG_ERROR;
-RGBA MAINFONT_NOT_CONNECTED =   {200, 200, 200, 100};
-RGBA MAINFONT_CONNECTED;
-RGBA MAINFONT_ERROR;
-RGBA MESSAGEWIN_BGCOLOR;
-RGBA MESSAGEWIN_TITLE_BGCOLOR;
-RGBA MESSAGEWIN_TITLE_FONT;
-RGBA MESSAGEWIN_MY_BGCOLOR ;
-RGBA MESSAGEWIN_CH_BGCOLOR ;
-RGBA MESSAGEWIN_GCHAT_BGCOLOR_1 ;
-RGBA MESSAGEWIN_CURSOR_BGCOLOR;
-RGBA MESSAGEWIN_GCHAT_BGCOLOR_2 ;
-RGBA MESSAGEWIN_SYS_BGCOLOR ; 
-RGBA MESSAGEWIN_STATUS_BGCOLOR; 
-RGBA MESSAGEWIN_CHAT_FONT;
-RGBA CURSOR;
-RGBA CURSOR_BORDER;        
-RGBA CLIST_F_COLOR_0;        
-RGBA CLIST_F_COLOR_1 ;        
-RGBA CONTACT_BG_0 ;         
-RGBA CONTACT_BG_1 ;
-RGBA lineColor ;    
-RGBA borderColor;
 
-RGBA OnlineColor;
-RGBA ChatColor;
-RGBA AwayColor;
-RGBA XAColor;
-RGBA DNDColor;
-RGBA InvisibleColor;
-RGBA OfflineColor;
-RGBA ErrorColor;
-RGBA SubscribeColor;
-RGBA SubscribedColor;
-RGBA UnsubscribeColor;
-RGBA UnsubscribedColor;
 
-RGBA PRES_COLORS[PRES_COUNT] ;
-
-void colorload(void){
-CURSOR.r=color_cfg [44];
-CURSOR.g=color_cfg [45];
-CURSOR.b=color_cfg [46];
-CURSOR.a=color_cfg [47];
-
-OnlineColor.r=color_cfg [1196];
-OnlineColor.g=color_cfg [1197];
-OnlineColor.b=color_cfg [1198];
-OnlineColor.a=color_cfg [1199];
-PRES_COLORS[0]=OnlineColor;
-
-ChatColor.r=color_cfg [1244];
-ChatColor.g=color_cfg [1245];
-ChatColor.b=color_cfg [1246];
-ChatColor.a=color_cfg [1247];
-PRES_COLORS[1]=ChatColor;
-
-AwayColor.r=color_cfg [1292];
-AwayColor.g=color_cfg [1293];
-AwayColor.b=color_cfg [1294];
-AwayColor.a=color_cfg [1295];
-PRES_COLORS[2]=AwayColor;
-
-XAColor.r=color_cfg [1340];
-XAColor.g=color_cfg [1341];
-XAColor.b=color_cfg [1342];
-XAColor.a=color_cfg [1343];
-PRES_COLORS[3]=XAColor;
-
-DNDColor.r=color_cfg [1388];
-DNDColor.g=color_cfg [1389];
-DNDColor.b=color_cfg [1390];
-DNDColor.a=color_cfg [1391];
-PRES_COLORS[4]=DNDColor;
-
-InvisibleColor.r=color_cfg [1436];
-InvisibleColor.g=color_cfg [1437];
-InvisibleColor.b=color_cfg [1438];
-InvisibleColor.a=color_cfg [1439];
-PRES_COLORS[5]=InvisibleColor;
-
-OfflineColor.r=color_cfg [1484];
-OfflineColor.g=color_cfg [1485];
-OfflineColor.b=color_cfg [1486];
-OfflineColor.a=color_cfg [1487];
-PRES_COLORS[6]=OfflineColor;
-
-ErrorColor.r=color_cfg [1532];
-ErrorColor.g=color_cfg [1533];
-ErrorColor.b=color_cfg [1534];
-ErrorColor.a=color_cfg [1535];
-PRES_COLORS[7]=ErrorColor;
-
-SubscribeColor.r=color_cfg [1580];
-SubscribeColor.g=color_cfg [1581];
-SubscribeColor.b=color_cfg [1582];
-SubscribeColor.a=color_cfg [1583];
-PRES_COLORS[8]=SubscribeColor;
-
-SubscribedColor.r=color_cfg [1628];
-SubscribedColor.g=color_cfg [1629];
-SubscribedColor.b=color_cfg [1630];
-SubscribedColor.a=color_cfg [1631];
-PRES_COLORS[9]=SubscribedColor;
-
-UnsubscribeColor.r=color_cfg [1676];
-UnsubscribeColor.g=color_cfg [1677];
-UnsubscribeColor.b=color_cfg [1678];
-UnsubscribeColor.a=color_cfg [1679];
-PRES_COLORS[10]=UnsubscribeColor;
-
-UnsubscribedColor.r=color_cfg [1724];
-UnsubscribedColor.g=color_cfg [1725];
-UnsubscribedColor.b=color_cfg [1726];
-UnsubscribedColor.a=color_cfg [1727];
-PRES_COLORS[11]=UnsubscribedColor;
-
-CURSOR_BORDER.r=color_cfg [92];
-CURSOR_BORDER.g=color_cfg [93];
-CURSOR_BORDER.b=color_cfg [94];
-CURSOR_BORDER.a=color_cfg [95];
-CLIST_F_COLOR_0.r=color_cfg [140];
-CLIST_F_COLOR_0.g=color_cfg [141];
-CLIST_F_COLOR_0.b=color_cfg [142];
-CLIST_F_COLOR_0.a=color_cfg [143];
-CLIST_F_COLOR_1.r=color_cfg [188];
-CLIST_F_COLOR_1.g=color_cfg [189];
-CLIST_F_COLOR_1.b=color_cfg [190];
-CLIST_F_COLOR_1.a=color_cfg [191];
-CONTACT_BG_0.r=color_cfg [236];
-CONTACT_BG_0.g=color_cfg [237];
-CONTACT_BG_0.b=color_cfg [238];
-CONTACT_BG_0.a=color_cfg [239];
-CONTACT_BG_1.r=color_cfg [284];
-CONTACT_BG_1.g=color_cfg [285];
-CONTACT_BG_1.b=color_cfg [286];
-CONTACT_BG_1.a=color_cfg [287];
-lineColor.r=color_cfg [332];
-lineColor.g=color_cfg [333];
-lineColor.b=color_cfg [334];
-lineColor.a=color_cfg [335];
-borderColor.r=color_cfg [380];
-borderColor.g=color_cfg [381];
-borderColor.b=color_cfg [382];
-borderColor.a=color_cfg [383];
-     MAINBG_NOT_CONNECTED.r=color_cfg [428];
-     MAINBG_NOT_CONNECTED.g=color_cfg [429];
-     MAINBG_NOT_CONNECTED.b=color_cfg [430];
-     MAINBG_NOT_CONNECTED.a=color_cfg [431];
-     MAINBG_CONNECTED.r=color_cfg [476];
-     MAINBG_CONNECTED.g=color_cfg [477];
-     MAINBG_CONNECTED.b=color_cfg [478];
-     MAINBG_CONNECTED.a=color_cfg [479];
-     MAINBG_ERROR.r=color_cfg [524];
-     MAINBG_ERROR.g=color_cfg [525];
-     MAINBG_ERROR.b=color_cfg [526];
-     MAINBG_ERROR.a=color_cfg [527];
-     MAINFONT_CONNECTED.r=color_cfg [572];
-     MAINFONT_CONNECTED.g=color_cfg [573];
-     MAINFONT_CONNECTED.b=color_cfg [574];
-     MAINFONT_CONNECTED.a=color_cfg [575];
-     MAINFONT_ERROR.r=color_cfg [620];
-     MAINFONT_ERROR.g=color_cfg [621];
-     MAINFONT_ERROR.b=color_cfg [622];
-     MAINFONT_ERROR.a=color_cfg [623];
-     MESSAGEWIN_BGCOLOR.r=color_cfg [668];
-     MESSAGEWIN_BGCOLOR.g=color_cfg [669];
-     MESSAGEWIN_BGCOLOR.b=color_cfg [670];
-     MESSAGEWIN_BGCOLOR.a=color_cfg [671];
-     MESSAGEWIN_CURSOR_BGCOLOR.r=color_cfg [908];
-     MESSAGEWIN_CURSOR_BGCOLOR.g=color_cfg [909];
-     MESSAGEWIN_CURSOR_BGCOLOR.b=color_cfg [910];
-     MESSAGEWIN_CURSOR_BGCOLOR.a=color_cfg [911];
-     MESSAGEWIN_TITLE_BGCOLOR.r=color_cfg [716];
-     MESSAGEWIN_TITLE_BGCOLOR.g=color_cfg [717];
-     MESSAGEWIN_TITLE_BGCOLOR.b=color_cfg [718];
-     MESSAGEWIN_TITLE_BGCOLOR.a=color_cfg [719];
-     MESSAGEWIN_TITLE_FONT.r=color_cfg [764];
-     MESSAGEWIN_TITLE_FONT.g=color_cfg [765];
-     MESSAGEWIN_TITLE_FONT.b=color_cfg [766];
-     MESSAGEWIN_TITLE_FONT.a=color_cfg [767];
-     MESSAGEWIN_MY_BGCOLOR.r=color_cfg [812];
-     MESSAGEWIN_MY_BGCOLOR.g=color_cfg [813];
-     MESSAGEWIN_MY_BGCOLOR.b=color_cfg [814];
-     MESSAGEWIN_MY_BGCOLOR.a=color_cfg [815];
-     MESSAGEWIN_CH_BGCOLOR.r=color_cfg [860];
-     MESSAGEWIN_CH_BGCOLOR.g=color_cfg [861];
-     MESSAGEWIN_CH_BGCOLOR.b=color_cfg [862];
-     MESSAGEWIN_CH_BGCOLOR.a=color_cfg [863];
-     MESSAGEWIN_GCHAT_BGCOLOR_1.r=color_cfg [956];
-     MESSAGEWIN_GCHAT_BGCOLOR_1.g=color_cfg [957];
-     MESSAGEWIN_GCHAT_BGCOLOR_1.b=color_cfg [958];
-     MESSAGEWIN_GCHAT_BGCOLOR_1.a=color_cfg [959];
-     MESSAGEWIN_GCHAT_BGCOLOR_2.r=color_cfg [1004];
-     MESSAGEWIN_GCHAT_BGCOLOR_2.g=color_cfg [1005];
-     MESSAGEWIN_GCHAT_BGCOLOR_2.b=color_cfg [1006];
-     MESSAGEWIN_GCHAT_BGCOLOR_2.a=color_cfg [1007];
-     MESSAGEWIN_SYS_BGCOLOR.r=color_cfg [1052];
-     MESSAGEWIN_SYS_BGCOLOR.g=color_cfg [1053];
-     MESSAGEWIN_SYS_BGCOLOR.b=color_cfg [1054];
-     MESSAGEWIN_SYS_BGCOLOR.a=color_cfg [1055];
-     MESSAGEWIN_STATUS_BGCOLOR.r=color_cfg [1100];
-     MESSAGEWIN_STATUS_BGCOLOR.g=color_cfg [1101];
-     MESSAGEWIN_STATUS_BGCOLOR.b=color_cfg [1102];
-     MESSAGEWIN_STATUS_BGCOLOR.a=color_cfg [1103];
-     MESSAGEWIN_CHAT_FONT.r=color_cfg [1148];
-     MESSAGEWIN_CHAT_FONT.g=color_cfg [1149];
-     MESSAGEWIN_CHAT_FONT.b=color_cfg [1150];
-     MESSAGEWIN_CHAT_FONT.a=color_cfg [1151];
-     
-}
 
 
 /*
@@ -364,30 +162,61 @@ borderColor.a=color_cfg [383];
 };
 */
 
-int readfile(char *color_PATH, char *colorshem_PATH, char *buf)
+/*void addIconBar(short* num)
 {
-  unsigned int err=0;
-  int f;
-  char path[128];
+  #pragma swi_number=0x27 
+  __swi __arm void AddIconToIconBar(int pic, short *num);
+  int icon_num;
   
-  strcpy(path, color_PATH);
-  strcat(path, colorshem_PATH);  
-  
-  GetFileStats((char*)path,&fs,&err);
-  if (err) return err;
-  f=fopen((char*)path,A_ReadOnly+A_BIN,P_READ,&err);
-//buf=malloc(fs.size+1);
-//file=malloc(fs.size+1);
-
-  if (!err)
+  if (CList_GetUnreadMessages()>0)
   {
-    fread(f,buf,fs.size,&err);
-    fclose(f,&err);
+    icon_num = IB_NEWMESSAGE;
   }
-    else
-      return err;
- return 0;
-}
+  else
+  {
+    switch (My_Presence)
+    {
+    case PRESENCE_ONLINE:
+      {
+        icon_num = IB_ONLINE;
+        break;
+      }
+    case PRESENCE_CHAT:
+      {
+        icon_num = IB_CHAT;
+      break;
+    }
+    case PRESENCE_AWAY:
+      {
+        icon_num = IB_AWAY;
+        break;
+      }
+    case PRESENCE_XA:
+      {
+        icon_num = IB_XA;
+        break;
+      }
+    case PRESENCE_DND:
+      {
+        icon_num = IB_DND;
+        break;
+      }
+    case PRESENCE_INVISIBLE:
+      {
+        icon_num = IB_INVISIBLE;
+        break;
+      }
+    case PRESENCE_OFFLINE:
+      {
+        icon_num = IB_OFFLINE;
+        break;
+      }
+    }
+  }
+  AddIconToIconBar(icon_num, num);
+}*/ // IconBar
+
+
 
 int writefile(char *color_PATH, char *colorshem_PATH, char *buf)
 {
@@ -404,43 +233,6 @@ int writefile(char *color_PATH, char *colorshem_PATH, char *buf)
      fwrite(f,buf,fs.size,&err);
   fclose(f,&err);
 return err;
-}     
-
-
-int init_color(int num){
-  switch(num)
-    {
-    case 1:
-  if(readfile((char*) color_PATH, (char*)colorshem_PATH_1, color_cfg)==0)
-  { colorload(); 
-  return 1;
-  }
-   
-   case 2:
-  if(readfile((char*) color_PATH, (char*)colorshem_PATH_2, color_cfg)==0)
-  { colorload(); 
-  return 1;
-  }
-   
-   case 3:
-  if(readfile((char*) color_PATH, (char*)colorshem_PATH_3, color_cfg)==0)
-  { colorload(); 
-  return 1;
-  }
-    
-   case 4:
-  if(readfile((char*) color_PATH, (char*)colorshem_PATH_4, color_cfg)==0)
-  { colorload(); 
-  return 1;
-  }
-    
-   case 5:
-  if(readfile((char*) color_PATH, (char*)colorshem_PATH_5, color_cfg)==0)
-  { colorload(); 
-  return 1;
-  } 
-    }
-return 0;
 }
 
 //================================================
@@ -452,36 +244,7 @@ void ElfKiller(void)
   extern void *ELF_BEGIN;
   kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
 }
-//===============================================================================================
-// ELKA Compatibility
 
-//#pragma inline
-void patch_rect(RECT*rc,int x,int y, int x2, int y2)
-{
-  rc->x=x;
-  rc->y=y;
-  rc->x2=x2;
-  rc->y2=y2;
-}
-
-
-//#pragma inline
-void patch_header(HEADER_DESC* head)
-{
-  head->rc.x=0;
-  head->rc.y=YDISP;
-  head->rc.x2=ScreenW()-1;
-  head->rc.y2=HeaderH()+YDISP;
-}
-//#pragma inline
-void patch_input(INPUTDIA_DESC* inp)
-{
-  inp->rc.x=0;
-  inp->rc.y=HeaderH()+1+YDISP;
-  inp->rc.x2=ScreenW()-1;
-  inp->rc.y2=ScreenH()-SoftkeyH()-1;
-}
-//===============================================================================================
 extern int Message_gui_ID;
 int maingui_id;
 int maincsm_id;
@@ -1161,10 +924,10 @@ void Process_XML_Packet(IPC_BUFFER* xmlbuf)
   // Освобождаем память :)
   mfree(xmlbuf->xml_buffer);
   mfree(xmlbuf);
-#ifdef NEWSGOLD
+//#ifdef NEWSGOLD
   SMART_REDRAW();
-#else
-#endif
+//#else
+//#endif
 }
 
 
@@ -1353,9 +1116,9 @@ void Do_Reconnect()
   ClearSendQ();
   GBS_DelTimer(&Ping_Timer);
   GBS_DelTimer(&TMR_Send_Presence);
-#ifndef NEWSGOLD
+/*#ifndef NEWSGOLD
   GBS_DelTimer(&redraw_tmr);
-#endif
+#endif*/
   GBS_DelTimer(&reconnect_tmr);
   SetVibration(0);
 
@@ -1403,7 +1166,7 @@ void Do_Reconnect()
 }
 
 
-#ifndef NEWSGOLD
+/*#ifndef NEWSGOLD
 volatile char IsRedrawTimerStarted=0;
 
 void SGOLD_RedrawProc()
@@ -1419,16 +1182,16 @@ void SGOLD_RedrawProc_Starter()
   IsRedrawTimerStarted=1;
   SGOLD_RedrawProc();//GBS_StartTimerProc(&redraw_tmr, Redraw_Time, (void*)SGOLD_RedrawProc);
 }
-#endif
+#endif*/
 
 int onKey(MAIN_GUI *data, GUI_MSG *msg)
 {
   if(Quit_Required)return 1; //Происходит вызов GeneralFunc для тек. GUI -> закрытие GUI
-#ifndef NEWSGOLD
+/*#ifndef NEWSGOLD
   SGOLD_RedrawProc_Starter();
-#endif
+#endif*/
   //DirectRedrawGUI();
-  if (!color_state){if(msg->gbsmsg->msg==LONG_PRESS)
+  if(msg->gbsmsg->msg==LONG_PRESS)
   {
     switch(msg->gbsmsg->submess)
     {
@@ -1443,14 +1206,6 @@ int onKey(MAIN_GUI *data, GUI_MSG *msg)
         CList_MoveCursorDown(1);
         break;
       }
-      
-    case '0': 
-      { 
-        color_state=1;ShowMSG(1,(int)"enter color num ");
-        CList_ToggleOfflineDisplay();
-        break;
-      }
-   
     case UP_BUTTON:
     case '2':
       {
@@ -1488,6 +1243,33 @@ int onKey(MAIN_GUI *data, GUI_MSG *msg)
   {
     switch(msg->gbsmsg->submess)
     {
+    case '3': // Сворачивание/разворачивание конференции
+      {
+        LockSched();
+        extern CLIST *cltop;
+        CLIST* ClEx = cltop;
+        CLIST* ActiveContact = NULL;
+        char *gjid=CList_GetActiveContact()->full_name;
+        while(ClEx)
+        {
+          if(strcmp(gjid,ClEx->JID) == 0) 
+          {
+            ActiveContact = ClEx;
+            break;
+          }
+          ClEx = ClEx->next;
+        }
+        UnlockSched();
+        if (ActiveContact)
+        {
+          if(ActiveContact->res_list->entry_type == T_CONF_ROOT)
+          {
+            ActiveContact->IsVisible=!ActiveContact->IsVisible;
+            SMART_REDRAW();
+          }
+        }
+      }
+      break;
     case '5':
       {
         CList_Display_Popup_Info(CList_GetActiveContact());
@@ -1502,7 +1284,11 @@ int onKey(MAIN_GUI *data, GUI_MSG *msg)
         char *gjid=CList_GetActiveContact()->full_name;
         while(ClEx)
         {
-          if(stristr(gjid,ClEx->JID)==gjid) ActiveContact = ClEx;
+          if(strstr(gjid,ClEx->JID)==gjid) 
+              {
+                        ActiveContact = ClEx;
+                        break;
+              }
           ClEx = ClEx->next;
         }
         UnlockSched();
@@ -1514,7 +1300,6 @@ int onKey(MAIN_GUI *data, GUI_MSG *msg)
           }
           else
           {
-            //ActiveContact->IsVisible = ActiveContact->IsVisible==1?0:1;
             CList_ToggleVisibilityForGroup(ActiveContact->group);
             SMART_REDRAW();
           }
@@ -1606,17 +1391,13 @@ case '8':
         CList_MoveCursorUp(1);
         break;
       }
-   
-    
       case '9':
       {
         CList_MoveCursorEnd();
         break;
       }
-    
     case '0':
       {
-
         CList_ToggleOfflineDisplay();
         break;
       }
@@ -1632,33 +1413,7 @@ case '8':
         break;
       }
     }
-  }}else{
-    if (msg->gbsmsg->msg==KEY_DOWN)
-  {
-    switch(msg->gbsmsg->submess)
-    {
-    case '1': 
-    color_state=0;
-    if(!init_color(1)){ShowMSG(0,(int)"no color 1");}else{color_num=1;ShowMSG(0,(int)"load color 1");}
-    break;
-    case '2': 
-    color_state=0;
-    if(!init_color(2)){ShowMSG(0,(int)"no color 2");}else{color_num=2;ShowMSG(0,(int)"load color 2");}
-    break;
-    case '3': 
-    color_state=0;
-    if(!init_color(3)){ShowMSG(0,(int)"no color 3");}else{color_num=3;ShowMSG(0,(int)"load color 3");}
-    break;
-    case '4': 
-    color_state=0;
-    if(!init_color(4)){ShowMSG(0,(int)"no color 4");}else{color_num=4;ShowMSG(0,(int)"load color 4");}
-    break;
-    case '5': 
-    color_state=0;
-    if(!init_color(5)){ShowMSG(0,(int)"no color 5");}else{color_num=5;ShowMSG(0,(int)"load color 5");}
-    break;
-   
-    }}}
+  }
   //  onRedraw(data);
   return(0);
 }
@@ -1724,9 +1479,9 @@ void maincsm_onclose(CSM_RAM *csm)
   GBS_DelTimer(&tmr_vibra);
   GBS_DelTimer(&Ping_Timer);
   GBS_DelTimer(&TMR_Send_Presence);
-#ifndef NEWSGOLD
+/*#ifndef NEWSGOLD
   GBS_DelTimer(&redraw_tmr);
-#endif
+#endif*/
   GBS_DelTimer(&reconnect_tmr);
   GBS_DelTimer(&autostatus_tmr);
   RemoveKeybMsgHook((void *)status_keyhook);  
@@ -1747,6 +1502,8 @@ void maincsm_onclose(CSM_RAM *csm)
 
   void WriteDefSettings(char *elfpath);
   WriteDefSettings(elf_path);
+  
+  if (cur_color_name) mfree(cur_color_name);
   
   SUBPROC((void *)FreeSmiles);
   SUBPROC((void *)end_socket);
@@ -1821,14 +1578,18 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
           PRESENCE_INFO *pr_info = malloc(sizeof(PRESENCE_INFO));
           pr_info->priority=OnlineInfo.priority;
           pr_info->status=OnlineInfo.status;
-          WSHDR *ws = AllocWS(256);
-          int len;
           char *msg = malloc(256);
           if (ipc->data)
           {
-          wsprintf(ws, "%t: %t", DEFTEX_PLAYER, (char*)(ipc->data));
+          int len=0;
+          WSHDR *ws = AllocWS(256);
+          WSHDR *ws2 = AllocWS(256);
+          str_2ws(ws2, (char*)(ipc->data), 256);
+          wsprintf(ws, "%t%w", DEFTEX_PLAYER, ws2);
           ws_2utf8(ws, msg, &len, wstrlen(ws)*2+1);
           msg=realloc(msg, len+1);
+          FreeWS(ws);
+          FreeWS(ws2);
           msg[len]='\0';
           pr_info->message= msg ==NULL ? NULL : Mask_Special_Syms(msg);
           } else
@@ -1836,52 +1597,54 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
             pr_info->message= NULL;
           }
           SUBPROC((void *)Send_Presence,pr_info);
-          FreeWS(ws);
           mfree(msg);
           }
         }
       }
     }
 
-#define idlegui_id (((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])
-    CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
-    if (IsGuiOnTop(idlegui_id))
+    if (IDLE_ICON)
     {
-      GUI *igui=GetTopGUI();
-      if (igui) //И он существует
+#define idlegui_id (((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])
+      CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
+      if (IsGuiOnTop(idlegui_id))
       {
-#ifdef ELKA
+        GUI *igui=GetTopGUI();
+        if (igui) //И он существует
         {
-          void *canvasdata=BuildCanvas();
-#else
-          void *idata=GetDataOfItemByID(igui,2);
-          if (idata)
+#ifdef ELKA
           {
-            void *canvasdata=((void **)idata)[DISPLACE_OF_IDLECANVAS/4];
+            void *canvasdata=BuildCanvas();
+#else
+            void *idata=GetDataOfItemByID(igui,2);
+            if (idata)
+            {
+              void *canvasdata=((void **)idata)[DISPLACE_OF_IDLECANVAS/4];
 #endif
 
 #ifdef USE_PNG_EXT
-            char mypic[128];
+              char mypic[128];
 
-            if (CList_GetUnreadMessages()>0)
-              Roster_getIconByStatus(mypic,50); //иконка сообщения
-            else
-              Roster_getIconByStatus(mypic, My_Presence);
-            DrawCanvas(canvasdata,IDLE_ICON_X,IDLE_ICON_Y,IDLE_ICON_X+GetImgWidth((int)mypic)-1,IDLE_ICON_Y+GetImgHeight((int)mypic)-1,1);
-            DrawImg(IDLE_ICON_X,IDLE_ICON_Y,(int)mypic);
+              if (CList_GetUnreadMessages()>0)
+                Roster_getIconByStatus(mypic,50); //иконка сообщения
+              else
+                Roster_getIconByStatus(mypic, My_Presence);
+              DrawCanvas(canvasdata,IDLE_ICON_X,IDLE_ICON_Y,IDLE_ICON_X+GetImgWidth((int)mypic)-1,IDLE_ICON_Y+GetImgHeight((int)mypic)-1,1);
+              DrawImg(IDLE_ICON_X,IDLE_ICON_Y,(int)mypic);
 #else
-            int mypic=0;
-            if (CList_GetUnreadMessages()>0)
-              mypic=Roster_getIconByStatus(50); //иконка сообщения
-            else
-              mypic=Roster_getIconByStatus(My_Presence);
-            DrawCanvas(canvasdata,IDLE_ICON_X,IDLE_ICON_Y,IDLE_ICON_X+GetImgWidth(mypic)-1,IDLE_ICON_Y+GetImgHeight(mypic)-1,1);
-            DrawImg(IDLE_ICON_X,IDLE_ICON_Y,mypic);
+              int mypic=0;
+              if (CList_GetUnreadMessages()>0)
+                mypic=Roster_getIconByStatus(50); //иконка сообщения
+              else
+                mypic=Roster_getIconByStatus(My_Presence);
+              DrawCanvas(canvasdata,IDLE_ICON_X,IDLE_ICON_Y,IDLE_ICON_X+GetImgWidth(mypic)-1,IDLE_ICON_Y+GetImgHeight(mypic)-1,1);
+              DrawImg(IDLE_ICON_X,IDLE_ICON_Y,mypic);
 #endif
             //#ifdef ELKA
             //#else
             //}
             //#endif
+            }
           }
         }
       }
@@ -1978,15 +1741,21 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
     return(1);
   }
 
+/*typedef struct
+{
+  char check_name[8];
+  int addr;
+}ICONBAR_H;*/ // IconBar
 
   const int minus11=-11;
 
   unsigned short maincsm_name_body[140];
 
-  const struct
+  struct
   {
     CSM_DESC maincsm;
     WSHDR maincsm_name;
+    //ICONBAR_H iconbar_handler; // IconBar
   }MAINCSM =
   {
     {
@@ -2009,7 +1778,10 @@ sizeof(MAIN_CSM),
       NAMECSM_MAGIC2,
       0x0,
       139
-    }
+    }/*,
+    {
+      "IconBar"
+    }*/ // IconBar
   };
 
   void UpdateCSMname(void)
@@ -2052,7 +1824,9 @@ void ReadDefSettings(char *elfpath)
     Is_Vibra_Enabled=def_set.vibra_status;
     Is_Sounds_Enabled=def_set.sound_status;
     Display_Offline=def_set.off_contacts;
-    color_num=def_set.cl_num;
+    if (cur_color_name) mfree(cur_color_name);
+    cur_color_name = (char *)malloc(32);
+    strcpy(cur_color_name, def_set.color_name);
     Is_Autostatus_Enabled=def_set.auto_status;
     Is_Playerstatus_Enabled=def_set.player_status;;
   }
@@ -2063,7 +1837,9 @@ void ReadDefSettings(char *elfpath)
     Display_Offline=0;
     Is_Autostatus_Enabled=0;
     Is_Playerstatus_Enabled=0;
-    color_num=1;
+    if (cur_color_name) mfree(cur_color_name);
+    cur_color_name = (char *)malloc(32);
+    strcpy(cur_color_name, "default");
   }
 }  
 
@@ -2082,11 +1858,11 @@ void WriteDefSettings(char *elfpath)
     def_set.vibra_status=Is_Vibra_Enabled;
     def_set.sound_status=Is_Sounds_Enabled;
     def_set.off_contacts=Display_Offline;
-    def_set.cl_num=color_num;
+    strcpy(def_set.color_name, cur_color_name);
     def_set.auto_status=Is_Autostatus_Enabled;
     def_set.player_status=Is_Playerstatus_Enabled;
-    fwrite(f,&def_set,sizeof(DEF_SETTINGS),&err);
-    fclose(f,&err);
+    fwrite(f, &def_set, sizeof(DEF_SETTINGS), &err);
+    fclose(f, &err);
   }
 }
 
@@ -2094,17 +1870,18 @@ int status_keyhook(int submsg, int msg)
 {
 if(Is_Autostatus_Enabled)
 {
-  extern const char DEFTEX_ONLINE[256];
-  extern ONLINEINFO OnlineInfo;  
   if (as==1)
+  if (IsGuiOnTop(maingui_id)||IsGuiOnTop(Message_gui_ID))
   {
+    extern const char DEFTEX_ONLINE[256];
+    extern ONLINEINFO OnlineInfo;
     PRESENCE_INFO *pr_info = malloc(sizeof(PRESENCE_INFO));
     pr_info->priority=OnlineInfo.priority;
     pr_info->status=0;
     char *msg = malloc(256);
     WSHDR *ws = AllocWS(256);
     int len;
-    wsprintf(ws, percent_t, DEFTEX_ONLINE);
+    ascii2ws(ws, DEFTEX_ONLINE);
     ws_2utf8(ws, msg, &len, wstrlen(ws)*2+1);
     msg=realloc(msg, len+1);
     msg[len]='\0';
@@ -2154,6 +1931,29 @@ void AutoStatus(void)
   }else GBS_DelTimer(&autostatus_tmr);
 }
 
+/*void LoadIconSet(const char *fname)
+{
+  int hFile;
+  unsigned int err;
+  hFile = fopen(fname, A_ReadOnly + A_BIN, P_READ, &err);
+  if (hFile == -1) return;
+  FSTATS stats;
+  if (GetFileStats(fname, &stats, &err)) return;
+  int fs = stats.size;
+  char *buff = malloc(fs);
+  fread(hFile, buff, fs, &err);
+  IB_ONLINE = buff[0x2D] * 0x100 + buff[0x2C];
+  IB_CHAT = buff[0x5D] * 0x100 + buff[0x5C];
+  IB_AWAY = buff[0x8D] * 0x100 + buff[0x8C];
+  IB_XA = buff[0xBD] * 0x100 + buff[0xBC];
+  IB_DND = buff[0xED] * 0x100 + buff[0xEC];
+  IB_INVISIBLE = buff[0x11D] * 0x100 + buff[0x11C];
+  IB_OFFLINE = buff[0x14D] * 0x100 + buff[0x14C];
+  IB_NEWMESSAGE = buff[0x17D] * 0x100 + buff[0x17C];
+  fclose(hFile, &err);
+  mfree(buff);
+}*/ // IconBar
+
 void OpenSettings(void)
 {
   extern const char *successed_config_filename;
@@ -2164,125 +1964,110 @@ void OpenSettings(void)
   FreeWS(ws);
 }
 
-  int main(char *exename, char *fname)
+/*void SetIconBarHandler()
+{
+  MAINCSM.iconbar_handler.addr = (int)addIconBar;
+}*/ // IconBar
+  
+int main(char *exename, char *fname)
+{
+  MAIN_CSM main_csm;
+    
+  char * s=strrchr(exename,'\\');
+  int len = (s - exename) + 1;
+  strncpy(elf_path, exename, len);
+  elf_path[len] = 0;    
+    
+  exename2 = exename;
+  if(!IsGoodPlatform())
   {
-    char *s;
-    int len;
-    MAIN_CSM main_csm;
-    
-    s=strrchr(exename,'\\');
-    len=(s-exename)+1;
-    strncpy(elf_path,exename,len);
-    elf_path[len]=0;    
-    
-    exename2=exename;
-    if(!IsGoodPlatform())
-    {
-      ShowMSG(1,(int)LG_PLATFORMM);
-      return 0;
-    }
-//    char dummy[sizeof(MAIN_CSM)];
-     
-    InitConfig(fname);
-    ReadDefSettings(elf_path);
-    
-    if(!init_color(color_num))
-      {
-        ShowMSG(1,(int)"no color bcfg");
-        return 0;
-      }
-    
-    if(!strlen(USERNAME))
-    {
-      ShowMSG(1,(int)LG_ENTERLOGPAS);
-      OpenSettings();
-      return 0;
-    }
-   
-    extern TTime intimes;           // инициализация переменных
-    extern TDate indates;           // для idle
-    GetDateTime(&indates,&intimes); //
-
-    UpdateCSMname();
-
-    LockSched();
-    maincsm_id=CreateCSM(&MAINCSM.maincsm,&main_csm,0);
-    UnlockSched();
-
-    Check_Settings_Cleverness();
-    switch (ROSTER_FONT)
-    {
-    case 0:
-      {
-        CLIST_FONT=FONT_SMALL;
-        break;
-      }
-    case 1:
-      {
-        CLIST_FONT=FONT_SMALL_BOLD;
-        break;
-      }
-    case 2:
-      {
-        CLIST_FONT=FONT_MEDIUM;
-        break;
-      }
-    case 3:
-      {
-        CLIST_FONT=FONT_MEDIUM_BOLD;
-        break;
-      }
-    case 4:
-      {
-        CLIST_FONT=FONT_LARGE;
-        break;
-      }
-    case 5:
-      {
-        CLIST_FONT=FONT_LARGE_BOLD;
-        break;
-      }
-    }
-    switch (MESSAGES_FONT)
-    {
-    case 0:
-      {
-        MESSAGEWIN_FONT=FONT_SMALL;
-        break;
-      }
-    case 1:
-      {
-        MESSAGEWIN_FONT=FONT_SMALL_BOLD;
-        break;
-      }
-    case 2:
-      {
-        MESSAGEWIN_FONT=FONT_MEDIUM;
-        break;
-      }
-    case 3:
-      {
-        MESSAGEWIN_FONT=FONT_MEDIUM_BOLD;
-        break;
-      }
-    case 4:
-      {
-        MESSAGEWIN_FONT=FONT_LARGE;
-        break;
-      }
-    case 5:
-      {
-        MESSAGEWIN_FONT=FONT_LARGE_BOLD;
-        break;
-      }
-    }
-    if (AUTOSTATUS_ENABLED)
-    {
-      if(AUTOSTATUS_TIME<1) autostatus_time = 15000; //1min (интересный ефект если в конфиг внести 0 :)
-        else autostatus_time = 250*60*AUTOSTATUS_TIME;
-      AddKeybMsgHook((void *)status_keyhook);
-      GBS_StartTimerProc(&autostatus_tmr, autostatus_time, AutoStatus);
-      as = 0;
-    }
+    ShowMSG(1,(int)LG_PLATFORMM);
     return 0;
   }
+  
+  InitConfig(fname);
+  ReadDefSettings(elf_path);
+    
+  if(!ReadColor(cur_color_name))
+  {
+    MsgBoxError(1,(int)"No color bcfg");
+    return 0;
+  }
+    
+  if(!strlen(USERNAME))
+  {
+    ShowMSG(1,(int)LG_ENTERLOGPAS);
+    OpenSettings();
+    return 0;
+  }
+   
+  extern TTime intimes;           // инициализация переменных
+  extern TDate indates;           // для idle
+  GetDateTime(&indates,&intimes); //
+
+  UpdateCSMname();
+
+  LockSched();
+  maincsm_id=CreateCSM(&MAINCSM.maincsm,&main_csm,0);
+  UnlockSched();
+
+  Check_Settings_Cleverness();
+  switch (ROSTER_FONT)
+  {
+  case 0:
+    CLIST_FONT=FONT_SMALL;
+    break;
+  case 1:
+    CLIST_FONT=FONT_SMALL_BOLD;
+    break;
+  case 2:
+    CLIST_FONT=FONT_MEDIUM;
+    break;
+  case 3:
+    CLIST_FONT=FONT_MEDIUM_BOLD;
+    break;
+  case 4:
+    CLIST_FONT=FONT_LARGE;
+    break;
+  case 5:
+    CLIST_FONT=FONT_LARGE_BOLD;
+    break;
+  }
+  switch (MESSAGES_FONT)
+  {
+  case 0:
+    MESSAGEWIN_FONT=FONT_SMALL;
+    break;
+  case 1:
+    MESSAGEWIN_FONT=FONT_SMALL_BOLD;
+    break;
+  case 2:
+    MESSAGEWIN_FONT=FONT_MEDIUM;
+    break;
+  case 3:
+    MESSAGEWIN_FONT=FONT_MEDIUM_BOLD;
+    break;
+  case 4:
+    MESSAGEWIN_FONT=FONT_LARGE;
+    break;
+  case 5:
+    MESSAGEWIN_FONT=FONT_LARGE_BOLD;
+    break;
+  }
+  if (AUTOSTATUS_ENABLED)
+  {
+    if(AUTOSTATUS_TIME < 1) autostatus_time = 15000; //1min (интересный ефект если в конфиг внести 0 :)
+    else autostatus_time = 250*60*AUTOSTATUS_TIME;
+    AddKeybMsgHook((void *)status_keyhook);
+    GBS_StartTimerProc(&autostatus_tmr, autostatus_time, AutoStatus);
+    as = 0;
+  }
+  /*extern const int SHOW_ICONBAR_ICON;
+  if (SHOW_ICONBAR_ICON)
+  {
+    extern const char ICONSET_FILENAME[128];
+    LoadIconSet(ICONSET_FILENAME);
+    SetIconBarHandler();
+  }*/ // IconBar
+  return 0;
+}

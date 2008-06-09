@@ -10,27 +10,16 @@
 #include "lang.h"
 #include "../inc/pnglist.h"
 #include "smiles.h"
+#include "color.h"
+#include "rect_patcher.h"
 
 #define MSG_START_X 1    //X-координата начала рисовани€ строки сообщени€
 
-int flag2;int flag1;
-//-------------÷вета. ћного цветов :)
+int flag2;
+int flag1;
 extern const unsigned int DEF_SKR;
-extern RGBA MESSAGEWIN_BGCOLOR ; // ќбщий фон
-extern RGBA MESSAGEWIN_TITLE_BGCOLOR ; // ‘он заголовка
-extern RGBA MESSAGEWIN_TITLE_FONT ; // ÷вет шрифта заголовка
-extern RGBA MESSAGEWIN_MY_BGCOLOR ; // ÷вет фона исход€щих сообщений
-extern RGBA MESSAGEWIN_CH_BGCOLOR ; // ÷вет фона приватных сообщений
-extern RGBA MESSAGEWIN_CURSOR_BGCOLOR; // ÷вет фона курсора
-extern RGBA MESSAGEWIN_GCHAT_BGCOLOR_1 ; // „ередование: ÷вет фона сообщений конференции 1
-extern RGBA MESSAGEWIN_GCHAT_BGCOLOR_2 ; // „ередование: ÷вет фона сообщений конференции 2
-extern RGBA MESSAGEWIN_SYS_BGCOLOR ; // ÷вет фона сообщений уведомлений
-extern RGBA MESSAGEWIN_STATUS_BGCOLOR; // ÷вет фона сообщений смены статуса
-extern RGBA MESSAGEWIN_CHAT_FONT; // ÷вет шрифта сообщений
 extern int MESSAGEWIN_FONT;
-extern RGBA CURSOR_BORDER;
 extern const int pod_mess;
-//------------------
 
 extern const int KBD_LAYOUT;
 
@@ -41,24 +30,6 @@ TRESOURCE* Resource_Ex = NULL;
 
 int Message_gui_ID;
 int edmessage_id;
-
-#pragma inline
-void patch_header(HEADER_DESC* head)
-{
-  head->rc.x=0;
-  head->rc.y=YDISP;
-  head->rc.x2=ScreenW()-1;
-  head->rc.y2=HeaderH()+YDISP;
-}
-#pragma inline
-void patch_input(INPUTDIA_DESC* inp)
-{
-  inp->rc.x=0;
-  inp->rc.y=HeaderH()+1+YDISP;
-  inp->rc.x2=ScreenW()-1;
-  inp->rc.y2=ScreenH()-SoftkeyH()-1;
-}
-
 
 WSHDR* ws_eddata = NULL;
 int Terminate=0;
@@ -261,7 +232,7 @@ void Init_Message(TRESOURCE* ContEx, char *init_text)
   void *eq;
   PrepareEditControl(&ec);
   eq=AllocEQueue(ma,mfree_adr());
-  ConstructEditControl(&ec,4,0x40,ws_eddata,MAX_MSG_LEN);
+  ConstructEditControl(&ec,3,0x40,ws_eddata,MAX_MSG_LEN);
   AddEditControlToEditQend(eq,&ec,ma);
   edmessage_id=CreateInputTextDialog(&inp_desc,&inp_hdr,eq,1,0);
 }
@@ -828,16 +799,6 @@ const void * const mgui_methods[11]={
   (void *)mGUI_method9,
   0
 };
-////////////////////////////////////////////////////////////////////////////////
-#pragma inline
-void patch_rect(RECT*rc,int x,int y, int x2, int y2)
-{
-  rc->x=x;
-  rc->y=y;
-  rc->x2=x2;
-  rc->y2=y2;
-}
-
 
 const RECT mCanvas={0,0,0,0};
 

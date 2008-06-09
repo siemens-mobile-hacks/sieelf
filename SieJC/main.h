@@ -157,14 +157,6 @@ typedef struct
   char* message;
 }PRESENCE_INFO;
 
-typedef struct
-{
-  char r;
-  char g;
-  char b;
-  char a;
-}RGBA;
-
 #pragma pack(push)
 #pragma pack(1)
 typedef struct{
@@ -174,7 +166,7 @@ typedef struct{
   off_contacts:1,
   auto_status:1,
   player_status:1;
-  char cl_num;
+  char color_name[32];
 }DEF_SETTINGS;
 #pragma pack(pop)
 
@@ -194,8 +186,6 @@ void Play(const char *fname);
 
 void QuitCallbackProc(int decision);
 
-void patch_rect(RECT*rc,int x,int y, int x2, int y2);
-void patch_header(HEADER_DESC* head);
-void patch_input(INPUTDIA_DESC* inp);
 void OpenSettings(void);
+
 #endif

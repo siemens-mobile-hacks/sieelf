@@ -172,7 +172,8 @@ void Send_Auth()
   sprintf(My_JID_full,"%s/%s",My_JID, RESOURCE);
   char* payload = malloc(256);
   sprintf(payload,"<username>%s</username>\n<password>%s</password>\n<resource>%s</resource>",USERNAME, PASSWORD, RESOURCE);
-  SendIq(NULL, "set", auth_id, IQ_AUTH, payload);
+  SendIq(NULL, IQTYPE_SET, auth_id, IQ_AUTH, payload);
+  mfree(payload);
   LockSched();
   strcpy(logmsg,"Send auth");
   UnlockSched();
@@ -344,7 +345,7 @@ void Send_Presence(PRESENCE_INFO *pr_info)
     SendAnswer(presence);
     m_ex=m_ex->next;
   };
-
+  mfree(caps);
   mfree(presence);
   if(pr_info->message)mfree(pr_info->message);
   mfree(pr_info);
@@ -417,9 +418,8 @@ extern const int COMPOSING_EVENTS;
 void SendComposing(char* jid)
 {
   if(!COMPOSING_EVENTS)return;
-  char* _jid=malloc(128);
-  strcpy(_jid, Mask_Special_Syms(jid));
-  char mes_template[]="<message to='%s' id='SieJC_%d'><x xmlns='jabber:x:event'><composing/><id>SieJC_%d</id></x></message>";
+  char* _jid = Mask_Special_Syms(jid);
+  const char mes_template[]="<message to='%s' id='SieJC_%d'><x xmlns='jabber:x:event'><composing/><id>SieJC_%d</id></x></message>";
   char* msg_buf = malloc(MAX_MSG_LEN*2+200);
   sprintf(msg_buf, mes_template, _jid, m_num, m_num);
   mfree(_jid);
@@ -432,9 +432,8 @@ void SendComposing(char* jid)
 void CancelComposing(char* jid)
 {
   if(!COMPOSING_EVENTS)return;
-  char* _jid=malloc(128);
-  strcpy(_jid, Mask_Special_Syms(jid));
-  char mes_template[]="<message to='%s' id='SieJC_%d'><x xmlns='jabber:x:event'><id>SieJC_%d</id></x></message>";
+  char* _jid= Mask_Special_Syms(jid);
+  const char mes_template[]="<message to='%s' id='SieJC_%d'><x xmlns='jabber:x:event'><id>SieJC_%d</id></x></message>";
   char* msg_buf = malloc(MAX_MSG_LEN*2+200);
   sprintf(msg_buf, mes_template, _jid, m_num-1, m_num-1);
   mfree(_jid);
@@ -552,8 +551,7 @@ void Send_Initial_Presence_Helper()
   char *msg = malloc(256);
   int len;
   extern const char DEFTEX_ONLINE[256];
-  extern const char percent_t[];
-  wsprintf(ws, percent_t, DEFTEX_ONLINE);
+  ascii2ws(ws,  DEFTEX_ONLINE);
   ws_2utf8(ws, msg, &len, wstrlen(ws)*2+1);
   msg = realloc(msg, len+1);
   msg[len]='\0';
@@ -628,10 +626,10 @@ void Enter_Conference(char *room, char *roomnick, char *roompass, char N_message
     {
       CList_AddContact(room,room, SUB_BOTH, 0, 129);
     }
-    else  // Конфа могла остаться от предыдущего входа/выхода
-    {
-      Conference->res_list->status=PRESENCE_ONLINE;
-    }
+//    else  // Конфа могла остаться от предыдущего входа/выхода
+//    {
+//      Conference->res_list->status=PRESENCE_ONLINE;
+//    }
   }
   // Готовим структуру для передачи в HELPER
   MUC_ENTER_PARAM* par = malloc(sizeof(MUC_ENTER_PARAM));
@@ -688,7 +686,24 @@ void Enter_Conference(char *room, char *roomnick, char *roompass, char N_message
 //Context: HELPER
 void _leaveconference(char *conf_jid)
 {
-  Send_ShortPresence(conf_jid,PRESENCE_OFFLINE);
+  extern const char DEFTEX_MUCOFFLINE[];
+  if(strlen(DEFTEX_MUCOFFLINE))
+  {
+  char pr_templ[] = "<presence from='%s' to='%s' type='unavailable'><status>%s</status></presence>";
+  char* pr=malloc(1024);
+  char *msg = malloc(256);
+  WSHDR *ws = AllocWS(256);
+  int len;
+  ascii2ws(ws, DEFTEX_MUCOFFLINE);
+  ws_2utf8(ws, msg, &len, wstrlen(ws)*2+1);
+  msg=realloc(msg, len+1);
+  msg[len]='\0';
+  sprintf(pr, pr_templ, Mask_Special_Syms(My_JID_full), Mask_Special_Syms(conf_jid), Mask_Special_Syms(msg));
+  SendAnswer(pr);
+  FreeWS(ws);
+  mfree(msg);
+  mfree(pr);
+  } else Send_ShortPresence(conf_jid,PRESENCE_OFFLINE);
   mfree(conf_jid);
 }
 
@@ -867,9 +882,11 @@ void FillRoster(XMLNode* items)
       // Создаём псевдоконтакт, вставляем его
       CLIST *gr_pscontact = malloc(sizeof(CLIST));
       gr_pscontact->name = malloc(strlen(tmp_gpointer->name)+1);
-      gr_pscontact->JID = malloc(strlen(tmp_gpointer->name)+1);
+      gr_pscontact->JID = malloc(strlen(tmp_gpointer->name)+2+(strlen(My_JID_full)));
       strcpy(gr_pscontact->name, tmp_gpointer->name);
       strcpy(gr_pscontact->JID, tmp_gpointer->name);
+      strcat(gr_pscontact->JID, "@"); //присвоим группе несущемтвуюший JID, чтоб не сбивала с толку.
+      strcat(gr_pscontact->JID, My_JID_full);//но ресурс и контакт должны совпадать
       gr_pscontact->subscription = SUB_BOTH;
       gr_pscontact->wants_subscription = 0;
       gr_pscontact->group = cur_gid;
@@ -891,8 +908,10 @@ void FillRoster(XMLNode* items)
       ResEx->total_msg_count=0;
       ResEx->entry_type=T_GROUP;
       ResEx->name = NULL;
-      ResEx->full_name = malloc(strlen(tmp_gpointer->name)+1);
+      ResEx->full_name = malloc(strlen(tmp_gpointer->name)+2+(strlen(My_JID_full)));
       strcpy(ResEx->full_name, tmp_gpointer->name);
+      strcat(ResEx->full_name, "@");
+      strcat(ResEx->full_name, My_JID_full);
       // Коннектим ресурс к группе
       gr_pscontact->res_list = ResEx;
       NContacts++;
@@ -1350,6 +1369,7 @@ static char r[MAX_STATUS_LEN];       // Статик, чтобы не убило её при завершении
       {
         return;
       }
+      if (!CList_FindMUCByJID(Conference->JID)) return; //нету такой конференции, значит мы ёё несоздавали
       char* nick = Get_Resource_Name_By_FullJID(from);
 
       // Тут можно обрабатывать события входа/выхода в конфу
@@ -1408,6 +1428,7 @@ static char r[MAX_STATUS_LEN];       // Статик, чтобы не убило её при завершении
           sprintf(r, "%s joined as %s and %s", nick, affiliation, role);
           Req_Set_Role = 1;
         }
+        };
 
         char* my_nick = Get_Resource_Name_By_FullJID(CList_FindMUCByJID(Conference->JID)->conf_jid);
         if ((!strcmp(nick,my_nick))&&(Conference->res_list->status==PRESENCE_OFFLINE)) //если ето мы, входим в нее.
@@ -1415,8 +1436,6 @@ static char r[MAX_STATUS_LEN];       // Статик, чтобы не убило её при завершении
           Conference->res_list->status=PRESENCE_ONLINE;
           ShowMSG(1,(int)LG_MUCCROK);
         };
-        };
-
         CList_AddSystemMessage(Conference->JID,PRESENCE_ONLINE, r);
       }
 

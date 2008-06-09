@@ -62,6 +62,9 @@ __root const char DEFAULT_MUC_NICK[64]="";
 __root const CFG_HDR cfghdr59={CFG_UINT,LG_MUCDEFMSGCOUNT,0,20};
 __root const unsigned int DEFAULT_MUC_MSGCOUNT=20;
 
+__root const CFG_HDR cfghdrshowii={CFG_CHECKBOX, LG_SHOWIDLEICON, 0, 2};
+__root const int IDLE_ICON=1;
+
 __root const CFG_HDR cfghdr12={CFG_COORDINATES,LG_IDLEICON,0,0};
 __root const unsigned int IDLE_ICON_X=0;
 __root const unsigned int IDLE_ICON_Y=50;
@@ -157,7 +160,7 @@ __root const CFG_HDR cfghdr22={CFG_STR_UTF8,LG_PATHKNOWF,0,63};
 __root const char KNOW_FEATURES_PATH[64]=DEFAULT_DISK_CFG ":\\ZBin\\SieJC\\Templates\\known_features.txt";
 
 __root const CFG_HDR cfghdr23={CFG_STR_UTF8,LG_PATHSMILECFG,0,63};
-__root const char SMILE_FILE[64]=DEFAULT_DISK_CFG ":\\ZBin\\SieJC\\smiles\\smiles.cfg";
+__root const char SMILE_FILE[64]=DEFAULT_DISK_CFG ":\\ZBin\\SieJC\\Templates\\smiles.txt";
 
 __root const CFG_HDR cfghdr233={CFG_STR_UTF8,LG_PATHSMILEDIR,0,63};
 __root const char SMILE_PATH[64]=DEFAULT_DISK_CFG ":\\ZBin\\SieJC\\smiles";
@@ -165,27 +168,8 @@ __root const char SMILE_PATH[64]=DEFAULT_DISK_CFG ":\\ZBin\\SieJC\\smiles";
 __root const CFG_HDR cfghdr24={CFG_STR_WIN1251,LG_DEFAULTDISK,0,127};
 __root const char DEFAULT_DISC[128]=DEFAULT_DISK_CFG;
 
-__root const CFG_HDR cfghdr244={CFG_STR_UTF8,"color",0,63};
+__root const CFG_HDR cfghdr244={CFG_STR_UTF8, LG_COLORPATH,0, 63};
 __root const char color_PATH[64]=DEFAULT_DISK_CFG ":\\ZBin\\SieJC\\Color\\";
-
-__root const CFG_HDR cfghdr245={CFG_STR_UTF8,"color_shem1",0,63};
-__root const char colorshem_PATH_1[64]="default.bcfg";
-
-
-__root const CFG_HDR cfghdr246={CFG_STR_UTF8,"color_shem2",0,63};
-__root const char colorshem_PATH_2[64]="color2.bcfg";
-
-__root const CFG_HDR cfghdr247={CFG_STR_UTF8,"color_shem3",0,63};
-__root const char colorshem_PATH_3[64]="color3.bcfg";
-
-__root const CFG_HDR cfghdr248={CFG_STR_UTF8,"color_shem4",0,63};
-__root const char colorshem_PATH_4[64]="color4.bcfg";
-
-
-__root const CFG_HDR cfghdr249={CFG_STR_UTF8,"color_shem5",0,63};
-__root const char colorshem_PATH_5[64]="color5.bcfg";
-
-
 
 __root const CFG_HDR cfghdr_PATHS_LEVEL_END={CFG_LEVEL,"",0,0};
 
@@ -197,7 +181,7 @@ __root const CFG_HDR cfghdr25={CFG_STR_WIN1251,LG_STONLINE,0,255};
 __root const char DEFTEX_ONLINE[256]="В сети";
 
 __root const CFG_HDR cfghdr26={CFG_STR_WIN1251,LG_STCHAT,0,255};
-__root const char DEFTEX_CHAT[256]="Готов общатся";
+__root const char DEFTEX_CHAT[256]="Готов общаться";
 
 __root const CFG_HDR cfghdr27={CFG_STR_WIN1251,LG_STAWAY,0,255};
 __root const char DEFTEX_AWAY[256]="";
@@ -213,6 +197,9 @@ __root const char DEFTEX_INVISIBLE[256]="";
 
 __root const CFG_HDR cfghdr141={CFG_STR_WIN1251,"Player text",0,255};
 __root const char DEFTEX_PLAYER[256]="Слушаю";
+
+__root const CFG_HDR cfghdr142={CFG_STR_WIN1251,"MUC offline",0,255};
+__root const char DEFTEX_MUCOFFLINE[256]="Off";
 
 __root const CFG_HDR cfghdr_DEFTEXTSTAT_LEVEL_END={CFG_LEVEL,"",0,0};
 
@@ -267,4 +254,10 @@ __root const CFG_HDR cfghdr41={CFG_UINT,LG_AS_TIME,0,60};
 __root const unsigned int AUTOSTATUS_TIME = 5;
 
 __root const CFG_HDR cfghdr_AUTOSTATUS_END={CFG_LEVEL,"",0,0};
+
+/*__root const CFG_HDR cfghdr_IBI1={CFG_CHECKBOX, LG_ICONBAR_SI, 0, 2};
+__root const int SHOW_ICONBAR_ICON = 1;
+
+__root const CFG_HDR cfghdr_IBI2={CFG_STR_WIN1251, LG_ICONSET_FILENAME, 0, 127};
+__root const char ICONSET_FILENAME[128] = DEFAULT_DISK_CFG ":\\ZBin\\SieJC\\IconSets\\default.bcfg";*/ // IconBar
 // EOL, EOF
