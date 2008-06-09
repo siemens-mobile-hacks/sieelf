@@ -924,7 +924,7 @@ void ConstructReasonDlg(char *name, char *jid, MUC_ADMIN muccmd)
       
       wsprintf(ws, "SieJC_muc#admin");
       PrepareEditControl(&ec);
-      ConstructEditControl(&ec, ECT_NORMAL_TEXT, 0, ws, 256);
+      ConstructEditControl(&ec, 4, 0, ws, 256);
       reason_pos = AddEditControlToEditQend(eq,&ec,ma);
       
       patch_header(&reason_hdr);
