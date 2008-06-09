@@ -1786,6 +1786,8 @@ SieJC/bookmarks.c -text
 SieJC/bookmarks.h -text
 SieJC/clist_util.c -text
 SieJC/clist_util.h -text
+SieJC/color.c -text
+SieJC/color.h -text
 SieJC/conf_loader.c -text
 SieJC/conf_loader.h -text
 SieJC/config_data.c -text
@@ -1815,6 +1817,7 @@ SieJC/message_list.c -text
 SieJC/message_list.h -text
 SieJC/mkall.cmd -text
 SieJC/mkdist.cmd -text
+SieJC/rect_patcher.h -text
 SieJC/revision.h -text
 SieJC/roster_icons.c -text
 SieJC/roster_icons.h -text
