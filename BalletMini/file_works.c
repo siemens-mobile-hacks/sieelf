@@ -4,9 +4,11 @@
 
 extern char BALLET_PATH[256];
 
-void getSymbolicPath(char * path,const char * cFileName)
+char * getSymbolicPath(const char * cFileName)
 {
-  int ps=0,pp=0;
+  int ps = NULL;
+  int pp = NULL;
+  char * path = (char *)malloc(strlen(BALLET_PATH) + strlen(cFileName) + 32);
   while (ps<strlen(cFileName))
   {
     if (cFileName[ps]=='$')
@@ -17,7 +19,7 @@ void getSymbolicPath(char * path,const char * cFileName)
       case 'b':
         if (cFileName[ps+1]=='a') // ballet
         {
-          strcpy(path+pp,BALLET_PATH);
+          strcpy(path + pp, BALLET_PATH);
           pp+=strlen(BALLET_PATH)-1;
           ps+=6;
           continue;
@@ -70,6 +72,15 @@ void getSymbolicPath(char * path,const char * cFileName)
           ps+=4;
           continue;
         }
+      case 's': // search
+        {
+          strcpy(path + pp, BALLET_PATH);
+          pp+=strlen(BALLET_PATH);
+          strcpy(path+pp,"Search");
+          pp+=6;
+          ps+=6;
+          continue;
+        }
       case 'u': // urlcache
         {
           strcpy(path+pp,BALLET_PATH);
@@ -100,13 +111,34 @@ void getSymbolicPath(char * path,const char * cFileName)
     }
   }
   path[pp]=0;
+  make_dirs(path);
+  return path;
 }
 
 int ballet_fexists(const char * cFileName)
 {
-  char path[256];
-  getSymbolicPath(path,cFileName);
-	FSTATS fs;
+  char * path = getSymbolicPath(cFileName);
+  FSTATS fs;
   unsigned int ul;
-	return (GetFileStats(path,&fs,&ul)!=-1);
+  int res = (GetFileStats(path, &fs, &ul)!=-1);
+  mfree(path);
+  return res;
+}
+
+int make_dirs(const char * path)
+{
+  int c, i = 0;
+  unsigned int io_error;
+  char tmp[256], * s;
+  strcpy(tmp, path);
+  s = tmp;
+  while((s = strchr(s, '\\')))
+  {
+    s++;
+    c = *s;
+    *s = 0;
+    i += mkdir(tmp, &io_error);
+    *s = c;
+  }
+  return (i);
 }

@@ -12,9 +12,9 @@ AppEx/readme.txt -text
 BalletMini/BalletMini.ewp -text
 BalletMini/BalletMini.eww -text
 BalletMini/BalletMini.txt -text
+BalletMini/Files/BalletMini/Bookmarks/Google[!!-~]Search.url -text
 BalletMini/Files/BalletMini/Bookmarks/Google/GMail.url -text
 BalletMini/Files/BalletMini/Bookmarks/Google/GoogleReader.url -text
-BalletMini/Files/BalletMini/Bookmarks/Поиск[!!-~]в[!!-~]Google.url -text
 BalletMini/Files/BalletMini/Search/google.url -text
 BalletMini/Files/BalletMini/Search/wiki.url -text
 BalletMini/Files/BalletMini/Search/yandex.url -text
@@ -34,9 +34,9 @@ BalletMini/Files/Language/English.txt -text
 BalletMini/Files/Language/German.txt -text
 BalletMini/Files/Language/Russian.txt -text
 BalletMini/Files/Language/Ukrainian.txt -text
+BalletMini/Files/QVGA/Bookmarks/Google[!!-~]Search.url -text
 BalletMini/Files/QVGA/Bookmarks/Google/GMail.url -text
 BalletMini/Files/QVGA/Bookmarks/Google/GoogleReader.url -text
-BalletMini/Files/QVGA/Bookmarks/Поиск[!!-~]в[!!-~]Google.url -text
 BalletMini/Files/QVGA/Search/google.url -text
 BalletMini/Files/QVGA/Search/wiki.url -text
 BalletMini/Files/QVGA/Search/yandex.url -text
@@ -89,6 +89,7 @@ BalletMini/jpeglib/jerror.h -text
 BalletMini/jpeglib/jmorecfg.h -text
 BalletMini/jpeglib/jpeglib.h -text
 BalletMini/jpeglib/jpeglib.r79 -text
+BalletMini/lang.c -text
 BalletMini/lang.h -text
 BalletMini/local_ipc.h -text
 BalletMini/main.c -text
@@ -104,6 +105,8 @@ BalletMini/siemens_unicode.h -text
 BalletMini/string_works.c -text
 BalletMini/string_works.h -text
 BalletMini/test.xcl -text
+BalletMini/url_utils.c -text
+BalletMini/url_utils.h -text
 BalletMini/urlstack.c -text
 BalletMini/urlstack.h -text
 BalletMini/view.h -text

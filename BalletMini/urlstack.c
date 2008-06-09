@@ -1,18 +1,19 @@
 #include "..\inc\swilib.h"
 #include "urlstack.h"
+#include "file_works.h"
 
 static const int DMonth[]={0,31,59,90,120,151,181,212,243,273,304,334,365};
 
 unsigned long PageSTACK[PageSTACK_SIZE];
 
-extern char OMSCACHE_PATH[];
-
 static int stack_top;
 
-static char *pagename(int n)
+static char * pagename(int n)
 {
   char *s=malloc(300);
-  sprintf(s,"%s%d.oms",OMSCACHE_PATH,PageSTACK[n]);
+  char * omscache_path = getSymbolicPath("$omscache\\");
+  sprintf(s,"%s%d.oms", omscache_path, PageSTACK[n]);
+  mfree(omscache_path);
   return s;
 }
 
@@ -41,13 +42,11 @@ char *PushPageToStack(void)
   
   if (stack_top==PageSTACK_SIZE)
   {
-    //Убиваем лишнее
     killpage(0);
     memcpy(PageSTACK,PageSTACK+1,(PageSTACK_SIZE-1)*sizeof(int));
     PageSTACK[--stack_top]=0;
   }
   i=stack_top;
-  //Убираем возможность пойти вперед ;)
   while(i!=PageSTACK_SIZE)
   {
     if (PageSTACK[i]!=0)

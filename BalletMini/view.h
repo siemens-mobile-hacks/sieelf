@@ -1,6 +1,6 @@
 #ifndef _VIEW_H_
 #define _VIEW_H_
- 
+
 #include "../inc/pnglist.h"
 
 #define _NOREF (0xFFFFFFFF)
@@ -11,6 +11,7 @@ typedef struct
   int w_char;
   int index;
 }OMS_DYNPNGLIST;
+
 
 #pragma pack(push)
 #pragma pack(1)
@@ -49,8 +50,6 @@ typedef struct
   unsigned short red:5, green:6, blue: 5;
 }TAG_D;
 
-// §Ý§Ú§ß§Ú§ñ §Ü§à§ß§é§Ñ§Ö§ä§ã§ñ §ã §Õ§Ñ§ß§ß§í§Þ§Ú §á§Ñ§â§Ñ§Þ§Ö§ä§â§Ñ§Þ§Ú, §ä.§Ö. §ï§ä§à §á§Ñ§â§Ñ§Þ§Ö§ä§â§í §ã§Ý§Ö§Õ§å§ð§ë§Ö§Û §ã§ä§â§à§Ü§Ú
-// §Ó§í§â§Ñ§Ó§ß§Ú§Ó§Ñ§ß§Ú§Ö, §Ø§Ö, - §Õ§Ý§ñ §Õ§Ñ§ß§ß§à§Û §Ý§Ú§ß§Ú§Ú
 typedef struct
 {
   unsigned int   pos; // last line character
@@ -79,7 +78,7 @@ typedef struct
 
 typedef struct
 {
-  z_stream *zs;                // §±§à§ä§à§Ü §Õ§Ý§ñ ZLib
+  z_stream *zs;              
   
   int cached;
   
@@ -155,6 +154,5 @@ typedef struct
 //#define LIST            "list.png"
 
 #endif
-
 
 

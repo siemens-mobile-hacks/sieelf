@@ -26,8 +26,8 @@ int connect_state=0;
 
 static int sock=-1;
 
-static int sendq_l=0; //§¥§Ý§Ú§ß§ß§Ñ §à§é§Ö§â§Ö§Õ§Ú §Õ§Ý§ñ send
-static char *sendq_p=NULL; //§å§Ü§Ñ§Ù§Ñ§ä§Ö§Ý§î §à§é§Ö§â§Ö§Õ§Ú
+static int sendq_l=0; 
+static char *sendq_p=NULL;
 
 static int recvq_l=0;
 static char *recvq_p=NULL;
@@ -88,7 +88,6 @@ static void create_connect(void)
   int err;
   clooseip();
   SOCK_ADDR sa;
-  //§µ§ã§ä§Ñ§ß§Ñ§Ó§Ý§Ú§Ó§Ñ§Ö§Þ §ã§à§Ö§Õ§Ú§ß§Ö§ß§Ú§Ö
   connect_state = 0;
   receive_mode=0;
   if (!IsGPRSEnabled())
@@ -124,7 +123,7 @@ static void create_connect(void)
         ascii2ws(ws_console,lgpData[LGP_WaitDNR]);
         UnlockSched();
         SmartREDRAW();
-        return; //§¨§Õ§Ö§Þ §Ô§à§ä§à§Ó§ß§à§ã§ä§Ú DNR
+        return; 
             }
           }
           else
@@ -173,9 +172,8 @@ static void create_connect(void)
       }
       else
       {
-        //§¯§Ö §à§ã§Ú§Ý§Ú§Ý§Ú §ã§à§Ù§Õ§Ñ§ß§Ú§ñ §ã§à§Ü§Ö§ä§Ñ, §Ù§Ñ§Ü§â§í§Ó§Ñ§Ö§Þ GPRS-§ã§Ö§ã§ã§Ú§ð
         GPRS_OnOff(0,1);
-      }
+       }
     }	
   }
   else
@@ -239,7 +237,7 @@ static void resend(void)
 }
 #endif
 
-//§¢§å§æ§Ö§â§Ú§Ù§Ú§â§à§Ó§Ñ§ß§Ñ§ñ §á§à§ã§í§Ý§Ü§Ñ §Ó §ã§à§Ü§Ö§ä, c §á§à§ã§Ý§Ö§Õ§å§ð§ë§Ú§Þ §à§ã§Ó§à§Ò§à§Ø§Õ§Ö§ß§Ú§Ö§Þ §å§Ü§Ñ§Ù§Ñ§ä§Ö§Ý§ñ
+
 static void bsend(int len, void *p)
 {
   int i;
@@ -251,11 +249,9 @@ static void bsend(int len, void *p)
   }
   if (p)
   {
-    //§±§â§à§Ó§Ö§â§ñ§Ö§Þ, §ß§Ö §ß§Ñ§Õ§à §Ý§Ú §Õ§à§Ò§Ñ§Ó§Ú§ä§î §Ó §à§é§Ö§â§Ö§Õ§î
     if (sendq_p)
-    {
-      //§¦§ã§ä§î §à§é§Ö§â§Ö§Õ§î, §Õ§à§Ò§Ñ§Ó§Ý§ñ§Ö§Þ §Ó §ß§Ö§Ö
-      memcpy((sendq_p=realloc(sendq_p,sendq_l+len))+sendq_l,p,len);
+    {   
+    memcpy((sendq_p=realloc(sendq_p,sendq_l+len))+sendq_l,p,len);
       mfree(p);
       sendq_l+=len;
       return;
@@ -263,7 +259,6 @@ static void bsend(int len, void *p)
     sendq_p=p;
     sendq_l=len;
   }
-  //§°§ä§á§â§Ñ§Ó§Ý§ñ§Ö§Þ §å§Ø§Ö §ã§å§ë§Ö§ã§ä§Ó§å§ð§ë§Ö§Ö §Ó §à§é§Ö§â§Ö§Õ§Ú
   while((i=sendq_l)!=0)
   {
     if (i>0x400) i=0x400;
@@ -273,11 +268,11 @@ static void bsend(int len, void *p)
       j=*socklasterr();
       if ((j==0xC9)||(j==0xD6))
       {
-	      return; //§£§Ú§Õ§Ú§Þ§à, §ß§Ñ§Õ§à §Ø§Õ§Ñ§ä§î §ã§à§à§Ò§ë§Ö§ß§Ú§ñ ENIP_BUFFER_FREE
+	      return; 
       }
       else
       {
-        //§°§ê§Ú§Ò§Ü§Ñ
+
         //	LockSched();
         //	ShowMSG(1,(int)"BM: Send error!");
         //	UnlockSched();
@@ -285,14 +280,14 @@ static void bsend(int len, void *p)
         return;
       }
     }
-    memcpy(sendq_p,sendq_p+j,sendq_l-=j); //§µ§Õ§Ñ§Ý§Ú§Ý§Ú §á§Ö§â§Ö§Õ§Ñ§ß§ß§à§Ö
+    memcpy(sendq_p,sendq_p+j,sendq_l-=j); 
     if (j<i)
     {
-      //§±§Ö§â§Ö§Õ§Ñ§Ý§Ú §Þ§Ö§ß§î§ê§Ö §é§Ö§Þ §Ù§Ñ§Ü§Ñ§Ù§í§Ó§Ñ§Ý§Ú
+
 #ifdef SEND_TIMER
       GBS_StartTimerProc(&send_tmr,TMR_SECOND(5),resend);
 #endif
-      return; //§¨§Õ§Ö§Þ §ã§à§à§Ò§ë§Ö§ß§Ú§ñ ENIP_BUFFER_FREE1
+      return; 
     }
   }
   mfree(sendq_p);
@@ -342,16 +337,16 @@ static void get_answer(void)
     recvq_l+=i;
     recvq_p[recvq_l]=0;
     if (!(end_answer=strstr(recvq_p,"\r\n\r\n"))) return;
-    receive_mode=1; //§°§ã§ä§Ñ§Ý§î§ß§à§Ö §ä§â§Ñ§ß§ã§Ý§Ú§â§å§Ö§Þ §ß§Ñ§á§â§ñ§Þ§å§ð
+    receive_mode=1; 
     end_answer+=2;
     *end_answer=0;
     LockSched();
     wsprintf(ws_console,recvq_p);
     UnlockSched();
     SmartREDRAW();
-    end_answer+=2; //§´§Ö§á§Ö§â§î end_answer §å§Ü§Ñ§Ù§í§Ó§Ñ§Ö§ä §ß§Ñ §ä§Ö§Ý§à §à§ä§Ó§Ö§ä§Ñ, §Ü§à§ä§à§â§à§Ö §ß§Ñ§Õ§à §á§Ö§â§Ö§Õ§Ñ§Ó§Ñ§ä§î §Ó §à§Ò§â§Ñ§Ò§à§ä§é§Ú§Ü
+    end_answer+=2; 
     i=recvq_l-(end_answer-recvq_p);
-    if (!i) return; //§¯§Ö§ä §Õ§Ñ§ß§ß§í§ç, §ß§Ö§é§Ö§Ô§à §á§à§ã§í§Ý§Ñ§ä§î
+    if (!i) return;
     writecache(end_answer,i);
     LockSched();
     if ((!TERMINATED)&&(!STOPPED))
@@ -547,7 +542,6 @@ int ParseSocketMsg(GBS_MSG *msg)
     }
     if ((int)msg->data1==sock)
     {
-      //§¦§ã§Ý§Ú §ß§Ñ§ê §ã§à§Ü§Ö§ä
       switch((int)msg->data0)
       {
       case ENIP_SOCK_CONNECTED:
@@ -556,7 +550,6 @@ int ParseSocketMsg(GBS_MSG *msg)
         if (connect_state==1)
         {
           connect_state=2;
-          //§³§à§Ö§Õ§Ú§ß§Ö§ß§Ú§Ö §å§ã§ä§Ñ§ß§à§Ó§Ý§Ö§ß§ß§à, §á§à§ã§í§Ý§Ñ§Ö§Þ §á§Ñ§Ü§Ö§ä
           SUBPROC((void*)SendPost);
         }
         break;
@@ -571,11 +564,9 @@ int ParseSocketMsg(GBS_MSG *msg)
         break;
       case ENIP_BUFFER_FREE:
       case ENIP_BUFFER_FREE1:
-        //§¥§à§ã§í§Ý§Ñ§Ö§Þ §à§é§Ö§â§Ö§Õ§î
         SUBPROC((void *)bsend,0,0);
         break;
       case ENIP_SOCK_REMOTE_CLOSED:
-        //§©§Ñ§Ü§â§í§ä §ã§à §ã§ä§à§â§à§ß§í §ã§Ö§â§Ó§Ö§â§Ñ
         ascii2ws(ws_console,lgpData[LGP_RemoteClosed]);
         SmartREDRAW();
         goto ENIP_SOCK_CLOSED_ALL;
@@ -610,7 +601,7 @@ void StartINET(const char *url, char *fncache)
   if (connect_state)
   {
     LockSched();
-    ShowMSG(1,(int)lgpData[LGP_InetBussy]);
+    ShowMSG(1,(int)lgpData[LGP_InetBusy]);
     UnlockSched();
   ERR:
     mfree(fncache);
@@ -643,4 +634,3 @@ void StopINET(void)
   end_socket();
   free_socket();
 }
-

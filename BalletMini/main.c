@@ -16,124 +16,8 @@
 #include "file_works.h"
 #include "lang.h"
 #include "../inc/sieget_ipc.h"
-
+#include "url_utils.h"
 #define length 241
-
-char *lgpData[LGP_DATA_NUM];
-int lgpLoaded;
-
-void initDisplayUtilsLangPack();
-void initMainMenuLangPack();
-
-void lgpInitLangPack(void)
-{
-  unsigned int err;
-  char fname[128];
-  getSymbolicPath(fname,"$ballet\\lang.txt");
-  int f;
-  lgpLoaded=0;
-  char * buf;
-  FSTATS fstat;
-  if (GetFileStats(fname, &fstat, &err)!=-1)
-  {
-    if((f=fopen(fname, A_ReadOnly + A_BIN, P_READ, &err))!=-1)
-    {
-      if (buf =(char *)malloc(fstat.size+1))
-      {
-        buf[fread(f, buf, fstat.size, &err)]=0;
-        fclose(f, &err);
-        char line[128];
-        int lineSize=0;
-        int lp_id=0;
-        int buf_pos = 0;
-        while(buf[buf_pos]!=0 && buf_pos < fstat.size && lp_id < LGP_DATA_NUM)
-        {
-          if (buf[buf_pos]=='\n' || buf[buf_pos]=='\r')
-          {
-            if (lineSize > 0)
-            {
-              lgpData[lp_id] = (char *)malloc(lineSize+1);
-              memcpy(lgpData[lp_id], line, lineSize);
-              lgpData[lp_id][lineSize]=0;
-              lp_id++;
-              lineSize=0;
-            }
-          }
-          else
-            line[lineSize++]=buf[buf_pos];
-          buf_pos++;
-        }
-        if (lineSize > 0 && lp_id < LGP_DATA_NUM) // eof
-        {
-          lgpData[lp_id] = (char *)malloc(lineSize+1);
-          memcpy(lgpData[lp_id], line, lineSize);
-          lgpData[lp_id][lineSize]=0;
-          lp_id++;
-          lineSize=0;
-        }
-        mfree(buf);
-        initDisplayUtilsLangPack();
-        initMainMenuLangPack();
-        lgpLoaded=1;
-        
-        // old langpack
-        if (strlen(lgpData[LGP_LangCode])>2)
-        {
-          mfree(lgpData[LGP_LangCode]);
-          lgpData[LGP_LangCode]=malloc(3);
-          strcpy(lgpData[LGP_LangCode],"ru");
-        }
-        return;
-      }
-      fclose(f, &err);
-    }
-  }
-  lgpData[LGP_CantOpenFile]=         "Can't open file!";
-  lgpData[LGP_CantLoadAuthCode]=     "Can't load AuthCode!";
-  lgpData[LGP_HistoryFileFailed]=    "Can't open history.txt!";
-  lgpData[LGP_CfgUpdated]=           "Congif updated";
-  lgpData[LGP_RefUnderConstruction]= "Ref \'%c\' under construction!";
-  lgpData[LGP_RefEmpty]=             "RF empty!";
-  lgpData[LGP_Error]=                "Error!";
-  lgpData[LGP_Stop]=                 "Stop";
-  lgpData[LGP_WaitDNR]=              "Wait DNR ...";
-  lgpData[LGP_IpConnect]=            "Ip connect ...";
-  lgpData[LGP_GetHostByName]=        "Get host by name";
-  lgpData[LGP_FaultDNR]=             "DNR falut!";
-  lgpData[LGP_OkDNR]=                "DNR ok!";
-  lgpData[LGP_OpenSocket]=           "Open socket...";
-  lgpData[LGP_ConnectFault]=         "Connect fault...";
-  lgpData[LGP_AnswerDNR]=            "DNR answer...";
-  lgpData[LGP_Connected]=            "Connected...";
-  lgpData[LGP_DataReceived]=         "Data received...";
-  lgpData[LGP_RemoteClosed]=         "Remote closed!";
-  lgpData[LGP_LocalClosed]=          "Local closed!";
-  lgpData[LGP_InetBussy]=            "INET process bussy!";
-  lgpData[LGP_EnableGPRS]=           "Enable GPRS first!";
-  lgpData[LGP_UnderConstruction]=    "Under Construction!";
-  lgpData[LGP_Ok]=                   "Ok";
-  lgpData[LGP_Templates]=            "Templates";
-  lgpData[LGP_Save]=                 "Save";
-  lgpData[LGP_NameHeader]=           "Name:";
-  lgpData[LGP_NewBookmark]=          "New Bookmark";
-  lgpData[LGP_LinkHeader]=           "Link:";
-  lgpData[LGP_Absent]=               "Absent...";
-  lgpData[LGP_Search]=               "Search";
-  lgpData[LGP_TextHeader]=           "Text:";
-  lgpData[LGP_SearchEngine]=         "Search engine:";
-  lgpData[LGP_Go]=                   "Go";
-  lgpData[LGP_LangCode]=             "en";
-}
-
-void lgpFreeLangPack(void)
-{
-  if (!lgpLoaded) return;
-  for (int i=0;i<LGP_DATA_NUM;i++)
-  {
-    if (lgpData[i]!=NULL)
-      mfree(lgpData[i]);
-  }
-}
 
 extern const char DEFAULT_PARAM[128];
 
@@ -160,16 +44,9 @@ char *goto_url;
 char *from_url;
 char *goto_params;
 
-static const char percent_t[]="%t";
-
 WSHDR *ws_console;
 
 int maincsm_id;
-
-char OMSCACHE_PATH[256];
-char AUTHDATA_FILE[256];
-char BOOKMARKS_PATH[256];
-char SEARCH_PATH[256];
 
 char BALLET_PATH[256];
 char BALLET_EXE[256];
@@ -237,9 +114,7 @@ static void StartGetFile(int dummy, char *fncache)
     if (main_csm)
     {
       STOPPED=1;
-      char fname[256];
-      getSymbolicPath(fname,"$bookmarks\\");
-      main_csm->sel_bmk=CreateBookmarksMenu(fname);
+      main_csm->sel_bmk=CreateBookmarksMenu();
     }
   }
   if (view_url_mode==MODE_NONE)
@@ -460,7 +335,7 @@ char *collectItemsParams(VIEWDATA *vd, REFCACHE *rf)
         for (int i=0; i<ws->wsbody[0]; i++) *c++=char16to8(ws->wsbody[i+1]);
         *c=0;
         //b=ToWeb(b,1);
-        memcpy(s+pos,b,strlen(b));
+        memcpy(s+pos, b, strlen(b));
         pos+=strlen(b);
         mfree(b);
         FreeWS(ws);
@@ -484,7 +359,7 @@ char *collectItemsParams(VIEWDATA *vd, REFCACHE *rf)
         for (int i=0; i<strlen(se); i++) *c++=se[i];
         *c=0;
         //b=ToWeb(b,1);
-        memcpy(s+pos,b,strlen(b));
+        memcpy(s+pos, b, strlen(b));
         pos+=strlen(b);
         mfree(b);
       }
@@ -531,19 +406,19 @@ static void method0(VIEW_GUI *data)
         switch(connect_state)
         {
         case 1: case 2: case 3:
-//          wsprintf(data->ws1,percent_t,"§³§à§Ö§Õ§Ú§ß§Ö§ß§Ú§Ö...");
+
 //          break;
 //        case 2:
-//          wsprintf(data->ws1,percent_t,"§°§Ò§â§Ñ§Ò§à§ä§Ü§Ñ...");
+
           wstrcpy(data->ws1, ws_console);
           //wsprintf(data->ws1,percent_t,);
           break;
 //        case 3:
-//          wsprintf(data->ws1,percent_t,"§©§Ñ§Ô§â§å§Ù§Ü§Ñ...");
+
 //          break;
         }
       }
-      wsprintf(data->ws2,percent_t,lgpData[LGP_Stop]);
+      ascii2ws(data->ws2, lgpData[LGP_Stop]);
       
       h1=scr_h-GetFontYSIZE(FONT_SMALL)-2;
       w1=scr_w-Get_WS_width(data->ws2,FONT_SMALL)-2;
@@ -578,7 +453,7 @@ static void method1(VIEW_GUI *data,void *(*malloc_adr)(int))
   VIEWDATA *vd=malloc(sizeof(VIEWDATA));
   zeromem(vd,sizeof(VIEWDATA));
   vd->ws=AllocWS(256);
-  vd->pos_cur_ref=0xFFFFFFFF; //§¦§ë§Ö §Ó§à§à§Ò§ë§Ö §ß§Ö §ß§Ñ§Û§Õ§Ö§ß§Ñ §ã§ã§í§Ý§Ü§Ñ
+  vd->pos_cur_ref=0xFFFFFFFF; 
   *((unsigned short *)(&vd->current_tag_d))=0xFFFF;
   data->vd=vd;
   data->ws1=AllocWS(128);
@@ -639,12 +514,11 @@ static void method4(VIEW_GUI *data,void (*mfree_adr)(void *))
 
 static void RunOtherCopyByURL(const char *url, int isNativeBrowser)
 {
-  char fname[256];
   int f;
   unsigned int err;
   WSHDR *ws;
-  getSymbolicPath(fname,"$urlcache\\$date$time.url");
-  f=fopen(fname,A_Create+A_Truncate+A_BIN+A_ReadWrite,P_READ+P_WRITE,&err);
+  char * filename = getSymbolicPath("$urlcache\\$date$time.url");
+  f=fopen(filename,A_Create+A_Truncate+A_BIN+A_ReadWrite,P_READ+P_WRITE,&err);
   if (f!=-1)
   {
     fwrite(f,url,strlen(url),&err);
@@ -652,17 +526,18 @@ static void RunOtherCopyByURL(const char *url, int isNativeBrowser)
     ws=AllocWS(256);
     if (isNativeBrowser)
     {
-      gb2ws(ws,fname,255);
+      gb2ws(ws,filename,255);
       ExecuteFile(ws,NULL,NULL);
     }
     else
     {
       gb2ws(ws,BALLET_EXE,255);
-      ExecuteFile(ws,NULL,fname);
+      ExecuteFile(ws,NULL,filename);
     } 
     FreeWS(ws);
-    unlink(fname,&err);
+    unlink(filename,&err);
   }
+  mfree(filename);
 }
 
 static int method5(VIEW_GUI *data,GUI_MSG *msg)
@@ -686,6 +561,7 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
           {
             char *c=extract_omstr(vd,rf->id);
             unsigned int l=_rshort2(vd->oms+rf->id);
+            _safe_free(goto_url);
             goto_url=malloc(l-strlen(c)+1);
             strcpy(goto_url,c+strlen(c)+1);
             mfree(c);
@@ -695,8 +571,8 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
         case 'L':
           if (rf->id!=_NOREF)
           {
-            // 1/http:        §ß§Ö §Ò§í§Ó§Ñ§Ö§ä §Ù§Õ§Ö§ã§î §ä§Ñ§Ü§à§Ô§à
-            // 0/http:        §ß§Ö §Ù§Ñ§Ô§â§å§Ø§Ñ§ä§î
+
+            _safe_free(goto_url);
             goto_url=extract_omstr(vd,rf->id);
             // 0/javascript:  upload data
             if (!strncmp("0/javascript",goto_url,12))
@@ -734,6 +610,7 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
           }
           if (!rf->no_upload)
           {
+            _safe_free(goto_url);
             goto_url=malloc(strlen(vd->pageurl)+1);
             strcpy(goto_url,vd->pageurl);
             from_url=malloc(strlen(vd->pageurl)+1);
@@ -749,6 +626,7 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
             vd->rawtext[rf->begin+1]=vd->WCHAR_BUTTON_ON;
           if (!rf->no_upload)
           {
+            _safe_free(goto_url);
             goto_url=malloc(strlen(vd->pageurl)+1);
             strcpy(goto_url,vd->pageurl);
             from_url=malloc(strlen(vd->pageurl)+1);
@@ -771,6 +649,7 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
           break;
         case 'i':
         case 'u':
+          _safe_free(goto_url);
           goto_url=malloc(strlen(vd->pageurl)+1);
           strcpy(goto_url,vd->pageurl);
           from_url=malloc(strlen(vd->pageurl)+1);
@@ -875,7 +754,7 @@ static int method5(VIEW_GUI *data,GUI_MSG *msg)
               if (rf->tag == 'Z') s += strlen(s) + 1;
               
               if (sieget_ipc.data) mfree(sieget_ipc.data);
-              sieget_ipc.name_to = sieget_ipc_name; // §±§à§ã§í§Ý§Ü§Ñ url §Ó SieGet
+              sieget_ipc.name_to = sieget_ipc_name; 
               sieget_ipc.name_from = ipc_my_name;
               sieget_ipc.data = malloc(strlen(s) + 1);
               strcpy((char *)sieget_ipc.data, s);
@@ -1141,6 +1020,7 @@ static int CreateViewGUI(int cached)
 
 static void maincsm_oncreate(CSM_RAM *data)
 {
+  goto_url = NULL;
   MAIN_CSM *csm=(MAIN_CSM*)data;
   ws_console=AllocWS(1024);
   csm->csm.state=0;
@@ -1166,7 +1046,7 @@ static void Killer(void)
 static void maincsm_onclose(CSM_RAM *csm)
 {
   TERMINATED=1;
-  mfree(goto_url);
+  if (goto_url) mfree(goto_url);
   if (sieget_ipc.data) mfree(sieget_ipc.data);
   SUBPROC((void *)Killer);
 }
@@ -1213,7 +1093,7 @@ static int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
     {
       if (strcmp_nocase(ipc->name_to,ipc_my_name)==0)
       {
-        //§¦§ã§Ý§Ú §á§â§Ú§ß§ñ§Ý§Ú §ã§Ó§à§Ö §ã§à§Ò§ã§ä§Ó§Ö§ß§ß§à§Ö §ã§à§à§Ò§ë§Ö§ß§Ú§Ö, §Ù§ß§Ñ§é§Ú§ä §Ù§Ñ§á§å§ã§Ü§Ñ§Ö§Þ §é§Ö§Ü§Ö§â
+       
         switch (msg->submess)
         {
         case IPC_DATA_ARRIVED:
@@ -1234,7 +1114,7 @@ static int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
             }
             mfree(ipc->data);
             mfree(ipc);
-            csm_result=0;  //§°§Ò§â§Ñ§Ò§à§ä§Ñ§Ý§Ú §ã§à§à§Ò§ë§Ö§ß§Ú§Ö 
+            csm_result=0; 
           }
           break;
         case IPC_GOTO_URL:
@@ -1247,7 +1127,7 @@ static int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
             goto_url=NULL;
             UpdateCSMname();
             csm->view_id=CreateViewGUI(0);
-            csm_result=0;  //§°§Ò§â§Ñ§Ò§à§ä§Ñ§Ý§Ú §ã§à§à§Ò§ë§Ö§ß§Ú§Ö 
+            csm_result=0; 
           }
           break;
         case IPC_GOTO_FILE:
@@ -1259,9 +1139,8 @@ static int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
               UpdateCSMname();
               csm->view_id=CreateViewGUI(1);
             }
-            mfree(goto_url);
-            goto_url=NULL;
-            csm_result=0;   //§°§Ò§â§Ñ§Ò§à§ä§Ñ§Ý§Ú §ã§à§à§Ò§ë§Ö§ß§Ú§Ö 
+            _safe_free(goto_url);
+            csm_result=0;  
           }
           break;
         }
@@ -1284,14 +1163,14 @@ static int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
     {
       switch((int)msg->data1)
       {
-      case 0xFE: //§±§â§à§Ò§å§Ö§Þ §Ú§Õ§ä§Ú §á§à §ã§ä§Ö§Ü§å §ß§Ñ§Ù§Ñ§Õ
+      case 0xFE: 
         if ((goto_url=PopPageFromStack()))
         {
           SUBPROC((void*)GotoFile);
           break;
         }
         goto L_CLOSE;
-      case 0xFF: //§¦§ã§ä§î §Ü§å§Õ§Ñ §á§à§Û§ä§Ú
+      case 0xFF:
         if (goto_url)
         {
           SUBPROC((void*)GotoLink);
@@ -1445,9 +1324,11 @@ int LoadAuthCode(void)
   char *s;
   int c;
   FSTATS stat;
-  if (GetFileStats(AUTHDATA_FILE,&stat,&err)==-1) return 0;
+  char * authdata_file = getSymbolicPath("$ballet\\AuthCode");
+  if (GetFileStats(authdata_file,&stat,&err)==-1) return 0;
   if ((fsize=stat.size)<=0) return 0;
-  if ((f=fopen(AUTHDATA_FILE,A_ReadOnly+A_BIN,P_READ,&err))==-1) return 0;
+  if ((f=fopen(authdata_file,A_ReadOnly+A_BIN,P_READ,&err))==-1) return 0;
+  mfree(authdata_file);
   buf=malloc(fsize+1);
   buf[fread(f,buf,fsize,&err)]=0;
   fclose(f,&err);
@@ -1509,37 +1390,16 @@ void GenerateFile(char *path, char *name, unsigned char *from, unsigned size)
 int main(const char *exename, const char *filename)
 {
   char dummy[sizeof(MAIN_CSM)];
-  unsigned int ul;
   char *path=strrchr(exename,'\\');
   int l;
-  if (!path) return 0; //§¶§Ú§Ô§ß§ñ §Ü§Ñ§Ü§Ñ§ñ-§ä§à
+  if (!path) return 0; 
   path++;
   l=path-exename;
   InitConfig();
-  memcpy(OMSCACHE_PATH,exename,l);
-  strcat(OMSCACHE_PATH,"OmsCache");
-  memcpy(AUTHDATA_FILE,exename,l);
-  strcat(AUTHDATA_FILE,"AuthCode");
-  memcpy(BOOKMARKS_PATH,exename,l);
-  strcat(BOOKMARKS_PATH,"Bookmarks");
   
   memcpy(BALLET_PATH,exename,l);
   strcpy(BALLET_EXE, exename);
-  
-  memcpy(SEARCH_PATH,exename,l);
-  strcat(SEARCH_PATH,"Search");
-
-  //Create folders if not exists
-  if (!isdir(OMSCACHE_PATH,&ul))
-    mkdir(OMSCACHE_PATH,&ul);
-  if (!isdir(BOOKMARKS_PATH,&ul))
-    mkdir(BOOKMARKS_PATH,&ul);
-  if (!isdir(SEARCH_PATH,&ul))
-    mkdir(SEARCH_PATH,&ul);
-  
-  strcat(OMSCACHE_PATH,"\\");
-  strcat(BOOKMARKS_PATH,"\\");
-  strcat(SEARCH_PATH,"\\");
+ 
   
   //CheckHistory("http://perk11.info/elf");
 
@@ -1589,4 +1449,3 @@ int main(const char *exename, const char *filename)
   }
   return 0;
 }
-
