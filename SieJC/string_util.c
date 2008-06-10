@@ -2,14 +2,6 @@
 #include "string_util.h"
 
 /////////////////////////////////////////// Разный стафф для замены спецсимволов
-//utf8 toi gb2312
-void utf8_2_gb(char *gb,const char *utf8, int maxlen)
-{
-	WSHDR *ws=AllocWS(maxlen);
-	utf8_2ws(ws, utf8, maxlen);
-	ws2gb(ws, gb, maxlen);
-	FreeWS(ws);
-}
 
 // Структура, описывающая, что на что менять
 typedef struct
@@ -834,11 +826,6 @@ unsigned int char16to8(unsigned int c)
   return(c);
 }
 
-void ascii2ws(WSHDR *ws, const char *s)//gb2ws
-{
-gb2ws(ws, s, strlen(s));
-}
-/*
 void ascii2ws(WSHDR *ws, const char *s)
 {
   char c;
@@ -847,51 +834,14 @@ void ascii2ws(WSHDR *ws, const char *s)
   {
     wsAppendChar(ws,char8to16(c));
   }
-}*/
-
-void utf82win(char*d,const char *s)//utf8 to gb2312
-{
-utf8_2_gb(d, s, strlen(s));
 }
-
-/*
-void utf82win(char*d,const char *s)
+void utf8_2_gb(char *gb,char *utf8, int maxlen)
 {
-  for (; *s; s+=2)
-  {
-    unsigned char ub = *s, lb = *(s+1);
-    if (ub == 0xD0)
-    {
-                     if(lb == 0x81){*d = 0xA8;}//Ё
-		else if(lb == 0x86){*d = 0xB2;}//І
-		else if(lb == 0x87){*d = 0xAF;}//Ї
-		else if(lb == 0x84){*d = 0xAA;}//Є
-	  else {*d = lb + 48;}
-    } else
-    if (ub == 0xD1)
-    {
-                     if(lb == 0x91){*d = 0xB8;}//ё
-		else if(lb == 0x96){*d = 0xB3;}//і
-		else if(lb == 0x97){*d = 0xBF;}//ї
-		else if(lb == 0x94){*d = 0xBA;}//є
-	        else {*d = lb + 112;}
-    } else
-    if (ub == 0xD2)
-    {
-//        if(lb == 0x91){*d = 0xB4;}//ґ
-//        if(lb == 0x90){*d = 0xA5;}//Ґ
-        if(lb == 0x91){*d = 0xE3;}//ґ->г
-        if(lb == 0x90){*d = 0xC3;}//Ґ->Г
-    } else
-    {
-      *d = ub;
-      s--;
-    }
-      d++;
-  }
-  *d = 0;
+	WSHDR *ws=AllocWS(maxlen);
+	utf8_2ws(ws, utf8, maxlen);
+	ws2gb(ws, gb, maxlen);
+	FreeWS(ws);
 }
-*/
 
 long GetIDLETime(TTime intime, TDate indate)
 {

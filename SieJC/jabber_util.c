@@ -1728,7 +1728,7 @@ void Process_Incoming_Message(XMLNode* nodeEx)
         sprintf(m,"%s: %s", XML_Get_Attr_Value(from,nodeEx->attr), msgnode->value);
         //char *ansi_m=convUTF8_to_ANSI_STR(m);
         char *ansi_m = m;
-        utf82win(ansi_m, ansi_m);
+        utf8_2_gb(ansi_m, ansi_m,strlen(ansi_m));
         ShowMSG(1,(int)ansi_m);
         mfree(m);
         //mfree(ansi_m);

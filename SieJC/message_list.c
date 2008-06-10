@@ -321,17 +321,17 @@ void Init_Message(TRESOURCE* ContEx, char *init_text)
   WSHDR * ws = AllocWS(MAX_MSG_LEN);
   if(init_text)
   {
-    char * tmp_str = convUTF8_to_ANSI_STR(init_text);
-    CharsToSmiles(ws, tmp_str);
-    mfree(tmp_str);
-    //utf8_2ws(ws_eddata, init_text, MAX_MSG_LEN);
+    //char * tmp_str = convUTF8_to_ANSI_STR(init_text);
+    //CharsToSmiles(ws, tmp_str);
+    //mfree(tmp_str);
+    utf8_2ws(ws, init_text, MAX_MSG_LEN);
   }
   EDITCONTROL ec;
   void *ma=malloc_adr();
   void *eq;
   PrepareEditControl(&ec);
   eq=AllocEQueue(ma,mfree_adr());
-  ConstructEditControl(&ec, ECT_NORMAL_TEXT, ECF_APPEND_EOL, ws, MAX_MSG_LEN);
+  ConstructEditControl(&ec, 4, ECF_APPEND_EOL, ws, MAX_MSG_LEN);
   AddEditControlToEditQend(eq,&ec,ma);
   edmessage_id=CreateInputTextDialog(&inp_desc,&inp_hdr,eq,1,0);
   FreeWS(ws);
@@ -907,16 +907,7 @@ void ParseMessagesIntoList(TRESOURCE* ContEx)
     if(parsed_counter>=OLD_MessList_Count)
     {
       temp_ws_1 = AllocWS(strlen(MessEx->mess)*2);
-      if (Is_Smiles_Enabled && SmilesImgList)
-      {
-        char * tmp_str = convUTF8_to_ANSI_STR(MessEx->mess);
-        CharsToSmiles(temp_ws_1, tmp_str); // Добавляем иконки смайлов в сообщение
-        mfree(tmp_str);
-      }
-      else
-      {
         utf8_2ws(temp_ws_1, MessEx->mess, strlen(MessEx->mess)*2);
-      }
 
       //temp_ws_2 = AllocWS(CHAR_ON_LINE*2); WTF?
       temp_ws_2 = AllocWS(200); //ИМХО, так лучше
