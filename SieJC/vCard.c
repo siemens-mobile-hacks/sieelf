@@ -574,7 +574,7 @@ int Show_vCard(char *jid)
         ConstructEditControl(&ec, ECT_HEADER, ECF_APPEND_EOL, ws_info, MAX_VCARD_LINE_LEN);
         AddEditControlToEditQend(eq,&ec,ma);
         utf8_2ws(ws_info, vcard[i], MAX_VCARD_LINE_LEN);
-        ConstructEditControl(&ec, 4, ECF_APPEND_EOL, ws_info, MAX_VCARD_LINE_LEN);
+        ConstructEditControl(&ec, ECT_NORMAL_TEXT, ECF_APPEND_EOL, ws_info, MAX_VCARD_LINE_LEN);
         AddEditControlToEditQend(eq,&ec,ma);
       }
     }
