@@ -145,7 +145,7 @@ void SmilesToChars(WSHDR *ws)
       }
     }
     msg_buf[scur] = 0;
-    ascii2ws(ws, msg_buf);
+    utf8_2ws(ws, msg_buf, MAX_MSG_LEN);
     mfree(msg_buf);
   }
 }
@@ -161,6 +161,7 @@ GUI *ed_message_gui;
 void DispSelectMenu();
 char Mess_was_sent = 0;
 
+
 int inp_onkey(GUI *gui, GUI_MSG *msg)
 {
   if(msg->gbsmsg->submess==GREEN_BUTTON)
@@ -172,7 +173,10 @@ int inp_onkey(GUI *gui, GUI_MSG *msg)
     {
       WSHDR * ws = AllocWS(MAX_MSG_LEN);
       wstrcpy(ws, ec.pWS);
+      if (Is_Smiles_Enabled && SmilesImgList)
+      {
       SmilesToChars(ws);
+      		}
       int res_len;
       char * body = malloc(MAX_MSG_LEN);
       ws_2utf8(ws, body, &res_len, MAX_MSG_LEN);
