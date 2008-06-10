@@ -1935,7 +1935,6 @@ SieJC/setlang.h -text
 SieJC/siejc_ipc.h -text
 SieJC/smiles.c -text
 SieJC/smiles.h -text
-SieJC/smiles_loader.c -text
 SieJC/status_change.c -text
 SieJC/status_change.h -text
 SieJC/string_util.c -text
