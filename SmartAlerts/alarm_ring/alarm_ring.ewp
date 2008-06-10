@@ -2578,7 +2578,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.40A</state>
+          <state>4.42A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -2611,6 +2611,7 @@
           <state>NDEBUG</state>
           <state>NEWSGOLD</state>
           <state>ELKA</state>
+          <state>MP3</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -2879,6 +2880,7 @@
           <name>ADefines</name>
           <state>NEWSGOLD</state>
           <state>ELKA</state>
+          <state>MP3</state>
         </option>
         <option>
           <name>AList</name>
@@ -3437,6 +3439,7 @@
           <state>NDEBUG</state>
           <state>NEWSGOLD</state>
           <state>S68</state>
+          <state>MP3</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -3705,6 +3708,7 @@
           <name>ADefines</name>
           <state>NEWSGOLD</state>
           <state>S68</state>
+          <state>MP3</state>
         </option>
         <option>
           <name>AList</name>

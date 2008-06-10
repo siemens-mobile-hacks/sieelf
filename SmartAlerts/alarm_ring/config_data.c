@@ -20,8 +20,13 @@ __root const CFG_CBOX_ITEM cfgcbox0[2]={"文件","标准"};
 __root const CFG_HDR cfghdr1={CFG_STR_UTF8,"文件",0,127};
 __root const char melody[128]="2:\\Default\\AlarmMelody.wav";
 
+#ifndef NEWSGOLD
 __root const CFG_HDR cfghdr2={CFG_STR_WIN1251,"地址入口",0,63};
 __root const char shcut[64]="ELSE_COUNT_DOWN";
+#else
+__root const CFG_HDR cfghdr2={CFG_CHECKBOX,"MP3闹钟音频",0,2};
+__root const int mp3=0;
+#endif
 
 __root const CFG_HDR cfghdr3={CFG_UINT,"振动强度",0,100};
 __root const unsigned int vibra_power=50;

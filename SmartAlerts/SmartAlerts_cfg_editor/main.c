@@ -59,7 +59,7 @@ const char Pointer[5]={0x27,0x27,0xFF,0x27,0x27};
 const IMGHDR imgPointer = {5,5,0x1,(char *)Pointer};
 GBSTMR mytmr;
 
-WSHDR *ws;
+WSHDR *ws=NULL;
 
 typedef struct
 {
@@ -1325,9 +1325,9 @@ int onkey(unsigned char keycode, int pressed)
         switch(keycode)
           {
           case LEFT_BUTTON: case '4': if (X>0) X-=5; else X=scr_w; break;
-          case RIGHT_BUTTON: case '6': if (X<132) X+=5; else X=0; break;
+          case RIGHT_BUTTON: case '6': if (X<ScreenW()) X+=5; else X=0; break;
           case UP_BUTTON: case '2': if (Y>0) Y-=5; else Y=scr_h; break;
-          case DOWN_BUTTON: case '8': if (Y<176) Y+=5; else Y=0; break;
+          case DOWN_BUTTON: case '8': if (Y<ScreenH()) Y+=5; else Y=0; break;
           }
       case KEY_DOWN:
         switch(keycode)
@@ -1335,9 +1335,9 @@ int onkey(unsigned char keycode, int pressed)
         case RED_BUTTON:  mode=1; break;
         case LEFT_SOFT: if (show_icon==1) show_icon=0; else show_icon=1; break;
         case LEFT_BUTTON: case '4': if (X!=0) X--; else X=scr_w; break;
-        case RIGHT_BUTTON: case '6': if (X!=132) X++; else X=0; break;
+        case RIGHT_BUTTON: case '6': if (X!=ScreenW()) X++; else X=0; break;
         case UP_BUTTON: case '2': if (Y!=0) Y--; else Y=scr_h; break;
-        case DOWN_BUTTON: case '8': if (Y!=176) Y++; else Y=0; break;
+        case DOWN_BUTTON: case '8': if (Y!=ScreenH()) Y++; else Y=0; break;
         default: mode=1; break;
         }
       }

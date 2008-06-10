@@ -10,6 +10,7 @@ unsigned int my_csm_id = 0;
 unsigned int MAINGUI_ID = 0;
 
 extern const char melody[128];
+extern const int mp3;
 extern const unsigned int play_;
 extern const unsigned int vibra_power;
 extern const char shcut[64];
@@ -21,7 +22,7 @@ extern const char profile_pd_file[];
 
 GBSTMR mytmr;
 const int minus11=-11;
-WSHDR *ws;
+WSHDR *ws=NULL;
 int scr_w;
 int scr_h;
 
@@ -61,7 +62,44 @@ void restart_melody();
 int findlength(char *playy)
 {
 #ifdef NEWSGOLD
+#ifdef MP3
+      WSHDR* Path=AllocWS(128);
+      WSHDR* FName=AllocWS(128);
+      char s[128];
+      const char *p=strrchr(playy,'\\')+1;
+      str_2ws(FName,p,128);
+      strncpy(s,playy,p-playy);
+      s[p-playy]='\0';
+      str_2ws(Path,s,128);
+      
+  FILE_PROP wl;
+  zeromem(&wl, sizeof(wl));
+  if(mp3)
+  wl.type=0x1800;
+  else
+  wl.type=0x1000; 
+  WSHDR *w_3=AllocWS(128);        
+  wl.filename=AllocWS(128);     
+  str_2ws(wl.filename,playy,128);  
+  if(mp3)
+  {
+  wl.duration_mp3_ws=w_3; 
+  GetFileProp(&wl,FName,Path);
+  file_length=wl.duration_mp3/1000*216;
+  }
+  else
+  {
+  wl.duration_wav_ws=w_3;
+  GetFileProp(&wl,FName,Path);
+  file_length=wl.duration_wav/1000*216;
+  }
+  
+  FreeWS(wl.filename);
+  FreeWS(w_3); 
+  
+#else
   file_length=GetWavLen(playy)*216;
+#endif
   return(file_length);
 #else
   TWavLen wl;

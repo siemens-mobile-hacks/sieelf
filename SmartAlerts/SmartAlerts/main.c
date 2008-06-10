@@ -47,8 +47,8 @@ GBSTMR mytmr;
 GBSTMR tmr_vibra;
 GBSTMR *xtmr;
 
-WSHDR* ws;
-WSHDR* smstemp;
+WSHDR* ws=NULL;
+WSHDR* smstemp=NULL;
 
 int count;
 int fb=0;
