@@ -236,7 +236,7 @@ void Disp_JID_Enter_Dialog(CLIST* ClEx)
   PrepareEditControl(&ec);
   utf8_2ws(jews, jid, 64);
   if(jid_set.jid_add)ConstructEditControl(&ec,1,ECF_APPEND_EOL,jews,128);//2 если меняем контакт ЖИД недаем изменить
-   else ConstructEditControl(&ec,3,ECF_APPEND_EOL,jews,128);//2
+   else ConstructEditControl(&ec,4,ECF_APPEND_EOL,jews,128);//2
   AddEditControlToEditQend(eq,&ec,ma);  
 
   PrepareEditControl(&ec);
@@ -246,7 +246,7 @@ void Disp_JID_Enter_Dialog(CLIST* ClEx)
 
   PrepareEditControl(&ec);
   utf8_2ws(jews, name, 64);
-  ConstructEditControl(&ec,3,ECF_APPEND_EOL,jews,80);     // 4
+  ConstructEditControl(&ec,4,ECF_APPEND_EOL,jews,80);     // 4
   AddEditControlToEditQend(eq,&ec,ma);  
   
   PrepareEditControl(&ec);
@@ -256,7 +256,7 @@ void Disp_JID_Enter_Dialog(CLIST* ClEx)
 
   PrepareEditControl(&ec);
   utf8_2ws(jews, group, 64);
-  ConstructEditControl(&ec,3,ECF_APPEND_EOL,jews,80);    //6
+  ConstructEditControl(&ec,4,ECF_APPEND_EOL,jews,80);    //6
   AddEditControlToEditQend(eq,&ec,ma);
 
   PrepareEditControl(&ec);

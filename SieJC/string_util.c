@@ -2,6 +2,14 @@
 #include "string_util.h"
 
 /////////////////////////////////////////// Разный стафф для замены спецсимволов
+//utf8 toi gb2312
+void utf8_2_gb(char *gb,const char *utf8, int maxlen)
+{
+	WSHDR *ws=AllocWS(maxlen);
+	utf8_2ws(ws, utf8, maxlen);
+	ws2gb(ws, gb, maxlen);
+	FreeWS(ws);
+}
 
 // Структура, описывающая, что на что менять
 typedef struct
@@ -826,6 +834,11 @@ unsigned int char16to8(unsigned int c)
   return(c);
 }
 
+void ascii2ws(WSHDR *ws, const char *s)//gb2ws
+{
+gb2ws(ws, s, strlen(s));
+}
+/*
 void ascii2ws(WSHDR *ws, const char *s)
 {
   char c;
@@ -834,8 +847,14 @@ void ascii2ws(WSHDR *ws, const char *s)
   {
     wsAppendChar(ws,char8to16(c));
   }
+}*/
+
+void utf82win(char*d,const char *s)//utf8 to gb2312
+{
+utf8_2_gb(d, s, strlen(s));
 }
 
+/*
 void utf82win(char*d,const char *s)
 {
   for (; *s; s+=2)
@@ -872,6 +891,7 @@ void utf82win(char*d,const char *s)
   }
   *d = 0;
 }
+*/
 
 long GetIDLETime(TTime intime, TDate indate)
 {
