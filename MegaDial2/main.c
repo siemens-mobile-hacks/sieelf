@@ -121,8 +121,6 @@ typedef struct
   WSHDR *pic;
 }CLIST;
 
-void ElfKiller(void);
-
 volatile CLIST *cltop; //Start
 
 char dstr[NUMBERS_MAX][40];
@@ -1637,8 +1635,13 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
       
      case ENTER_BUTTON:
       {
-        EDIT_OpenOptionMenuWithUserItems(data,mmenuitem,data,2);
+        if(EDIT_IsBusy(data))
+        return(0);  
+        else 
+        {
+        EDIT_OpenOptionMenuWithUserItems(data,mmenuitem,data,1);
         return (-1);
+        }
       }
  
      case RED_BUTTON:
@@ -1855,12 +1858,14 @@ void ElfKiller(void)
 {
 	extern void *ELF_BEGIN;
         FreeWS(gwsName);
-	FreeWS(gwsTemp);
-	FreeWS(numTemp);
+        FreeWS(gwsTemp);
+        FreeWS(numTemp);
+        FreeWS(smstemp);
         FreeWS(ews);
         FreeCLIST();
         if(iReadFile && !cs_adr)
 	   mfree((void*)cs_adr);
+        if(my_pic) deleteIMGHDR(my_pic);
 	LockSched();
         CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
 	memcpy(&icsmd,icsm->constr,sizeof(icsmd));
@@ -1918,7 +1923,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 		if(e_ws->wsbody[0]==2&&e_ws->wsbody[1]=='1'&&e_ws->wsbody[2]=='1')
 		{
 			ShowMSG(1,(int)"Megadial退出!");
-			ElfKiller();
+			SUBPROC((void *)ElfKiller);
 			return 1;
 		}
 		if(e_ws->wsbody[0]==2&&e_ws->wsbody[1]=='2'&&e_ws->wsbody[2]=='1')
