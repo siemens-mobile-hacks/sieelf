@@ -321,10 +321,10 @@ void Init_Message(TRESOURCE* ContEx, char *init_text)
   WSHDR * ws = AllocWS(MAX_MSG_LEN);
   if(init_text)
   {
-    char * tmp_str = convUTF8_to_ANSI_STR(init_text);
+    /*char * tmp_str = convUTF8_to_ANSI_STR(init_text);
     ParseAnswer(ws, tmp_str);
-    mfree(tmp_str);
-    //utf8_2ws(ws_eddata, init_text, MAX_MSG_LEN);
+    mfree(tmp_str);*/
+    utf8_2ws(ws, init_text, MAX_MSG_LEN);
   }
   EDITCONTROL ec;
   void *ma=malloc_adr();
@@ -925,10 +925,10 @@ void ParseMessagesIntoList(TRESOURCE* ContEx)
     if(parsed_counter>=OLD_MessList_Count)
     {
       temp_ws_1 = AllocWS(strlen(MessEx->mess)*2);
-      char * tmp_str = convUTF8_to_ANSI_STR(MessEx->mess);
+      /*char * tmp_str = convUTF8_to_ANSI_STR(MessEx->mess);
       ParseAnswer(temp_ws_1, tmp_str);
-      mfree(tmp_str);
-      //utf8_2ws(temp_ws_1, MessEx->mess, strlen(MessEx->mess)*2);
+      mfree(tmp_str);*/
+      utf8_2ws(temp_ws_1, MessEx->mess, strlen(MessEx->mess)*2);
 
       //temp_ws_2 = AllocWS(CHAR_ON_LINE*2); WTF?
       temp_ws_2 = AllocWS(200); //ИМХО, так лучше
