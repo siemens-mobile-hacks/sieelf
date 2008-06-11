@@ -1814,7 +1814,6 @@ SieJC/Files/img/yahoo/noauth.png -text
 SieJC/Files/img/yahoo/online.png -text
 SieJC/Files/img/yahoo/unavailable.png -text
 SieJC/Files/img/yahoo/xa.png -text
-SieJC/Files/smiles.cfg -text
 SieJC/Files/smiles/aa.png -text
 SieJC/Files/smiles/ab.png -text
 SieJC/Files/smiles/ac.png -text
@@ -1875,6 +1874,7 @@ SieJC/Files/smiles/ce.png -text
 SieJC/Files/smiles/cf.png -text
 SieJC/Files/smiles/cg.png -text
 SieJC/Files/smiles/ch.png -text
+SieJC/Files/smiles/smiles.cfg -text
 SieJC/JID_Enter_UI.c -text
 SieJC/JID_Enter_UI.h -text
 SieJC/MUC_Enter_UI.c -text
