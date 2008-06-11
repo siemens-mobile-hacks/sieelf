@@ -17,9 +17,9 @@
 #include "lang.h"
 #include "../inc/sieget_ipc.h"
 #include "url_utils.h"
-#define length 241
 
 extern const char DEFAULT_PARAM[128];
+extern const int length;
 
 static void UpdateCSMname(void);
 static int ParseInputFilename(const char *fn);
@@ -219,7 +219,7 @@ char *collectItemsParams(VIEWDATA *vd, REFCACHE *rf)
       {
         pos+=_rshort2(vd->oms+prf->id)+2;
         char *c;
-        char se[length];
+        char se[1024];
         int utf8conv_res_len;
         ws_2utf8(prf->data,se,&utf8conv_res_len,length);
         char *b=c=(char *)malloc(length);
@@ -352,7 +352,7 @@ char *collectItemsParams(VIEWDATA *vd, REFCACHE *rf)
         mfree(c);
         s[pos]='=';
         pos++;
-        char se[length];
+        char se[1024];
         int utf8conv_res_len;
         ws_2utf8(prf->data,se,&utf8conv_res_len,length);
         char *b=c=(char *)malloc(length);

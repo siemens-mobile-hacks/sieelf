@@ -52,3 +52,7 @@ __root const CFG_HDR cfghdr3_end={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr4={CFG_STR_UTF8,"默认启动参数",0,127};
 __root const char DEFAULT_PARAM[128]="bookmarks";
+
+__root const CFG_HDR cfghdr5={CFG_UINT,"输入内容长度",128,1024};
+__root const int length=128;
+

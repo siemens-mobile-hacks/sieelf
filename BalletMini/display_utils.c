@@ -527,13 +527,15 @@ int RenderPage(VIEWDATA *vd, int do_draw)
         }
 	      DrawString(ws,x,ypos,scr_w,y2,
 		               lc[lprev].bold?FONT_SMALL_BOLD:FONT_SMALL,
-                   TEXT_NOFORMAT+(lc[lprev].underline?TEXT_UNDERLINE:0),
+                   TEXT_NOFORMAT+(lc[lprev].underline?TEXT_UNDERLINE:0)+1,
 		               def_ink,GetPaletteAdrByColorIndex(23));
-        
+              
+                
         if (rnd_rf) renderForm(vd,rnd_rf,rnd_x+x,ypos);
         
         if (y2>=scr_h||lcheck)
         {
+          
           if (rcs_num)
           {
             char cl[4];
@@ -909,7 +911,7 @@ static int input_box_onkey(GUI *data, GUI_MSG *msg)
   if (msg->gbsmsg->msg==KEY_DOWN&&msg->gbsmsg->submess==ENTER_BUTTON&&!EDIT_IsBusy(data))
 	{
     paste_gui=data;
-    EDIT_OpenOptionMenuWithUserItems(data,input_box_onkey_options,0,21);
+    EDIT_OpenOptionMenuWithUserItems(data,input_box_onkey_options,0,2);
     return (-1);
 	}
 	
