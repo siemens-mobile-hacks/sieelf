@@ -1,6 +1,6 @@
 #include "..\inc\cfg_items.h"
 #include "lang.h"
-//Конфигурация
+//РљРѕРЅС„РёРіСѓСЂР°С†РёСЏ
 
 #ifdef NEWSGOLD
 #define DEFAULT_DISK_CFG "4"
@@ -107,7 +107,7 @@ __root const CFG_CBOX_ITEM cfgcbox7_1[24]={
   "-11:00"
   };
 
-// Настройка звуков
+// РќР°СЃС‚СЂРѕР№РєР° Р·РІСѓРєРѕРІ
 ////////////////////////////////////////////////////////////////////////////////
 __root const CFG_HDR cfghdr_SOUNDS_SETUP={CFG_LEVEL,LG_SETUPSND,1,0};
 
@@ -137,7 +137,7 @@ __root const char sndComposing[64]=DEFAULT_DISK_CFG ":\\ZBin\\SieJC\\Sounds\\com
 
 __root const CFG_HDR cfghdr_SOUNDS_SETUP_END={CFG_LEVEL,"",0,0};
 
-////////////////////////////// Пути ////////////////////////////////////////////
+////////////////////////////// РџСѓС‚Рё ////////////////////////////////////////////
 
 __root const CFG_HDR cfghdr_PATHS_LEVEL={CFG_LEVEL,LG_SETUPPATH,1,0};
 
@@ -163,7 +163,7 @@ __root const CFG_HDR cfghdr23={CFG_STR_UTF8,LG_PATHSMILECFG,0,63};
 __root const char SMILE_FILE[64]=DEFAULT_DISK_CFG ":\\ZBin\\SieJC\\smiles.cfg";
 
 __root const CFG_HDR cfghdr233={CFG_STR_UTF8,LG_PATHSMILEDIR,0,63};
-__root const char SMILE_PATH[64]=DEFAULT_DISK_CFG ":\\ZBin\\SieJC\\smiles";
+__root const char SMILE_PATH[64]=DEFAULT_DISK_CFG ":\\ZBin\\SieJC\\smiles\\";
 
 __root const CFG_HDR cfghdr24={CFG_STR_WIN1251,LG_DEFAULTDISK,0,127};
 __root const char DEFAULT_DISC[128]=DEFAULT_DISK_CFG;
@@ -177,29 +177,29 @@ __root const CFG_HDR cfghdr_PATHS_LEVEL_END={CFG_LEVEL,"",0,0};
 
 __root const CFG_HDR cfghdr_DEFTEXTSTAT_LEVEL={CFG_LEVEL,LG_TEXTSTATUS,1,0};
 
-__root const CFG_HDR cfghdr25={CFG_STR_WIN1251,LG_STONLINE,0,255};
-__root const char DEFTEX_ONLINE[256]="В сети";
+__root const CFG_HDR cfghdr25={CFG_UTF8_STRING,LG_STONLINE,0,255};
+__root const char DEFTEX_ONLINE[256]="";
 
-__root const CFG_HDR cfghdr26={CFG_STR_WIN1251,LG_STCHAT,0,255};
-__root const char DEFTEX_CHAT[256]="Готов общаться";
+__root const CFG_HDR cfghdr26={CFG_UTF8_STRING,LG_STCHAT,0,255};
+__root const char DEFTEX_CHAT[256]="";
 
-__root const CFG_HDR cfghdr27={CFG_STR_WIN1251,LG_STAWAY,0,255};
+__root const CFG_HDR cfghdr27={CFG_UTF8_STRING,LG_STAWAY,0,255};
 __root const char DEFTEX_AWAY[256]="";
 
-__root const CFG_HDR cfghdr28={CFG_STR_WIN1251,LG_STXA,0,255};
+__root const CFG_HDR cfghdr28={CFG_UTF8_STRING,LG_STXA,0,255};
 __root const char DEFTEX_XA[256]="";
 
-__root const CFG_HDR cfghdr29={CFG_STR_WIN1251,LG_STDND,0,255};
-__root const char DEFTEX_DND[256]="Занят";
+__root const CFG_HDR cfghdr29={CFG_UTF8_STRING,LG_STDND,0,255};
+__root const char DEFTEX_DND[256]="";
 
-__root const CFG_HDR cfghdr30={CFG_STR_WIN1251,LG_STINVIS,0,255};
+__root const CFG_HDR cfghdr30={CFG_UTF8_STRING,LG_STINVIS,0,255};
 __root const char DEFTEX_INVISIBLE[256]="";
 
-__root const CFG_HDR cfghdr141={CFG_STR_WIN1251, LG_PLAYER_STATUS ,0,255};
-__root const char DEFTEX_PLAYER[256]="Слушаю";
+__root const CFG_HDR cfghdr141={CFG_UTF8_STRING, LG_PLAYER_STATUS ,0,255};
+__root const char DEFTEX_PLAYER[256]="";
 
-__root const CFG_HDR cfghdr142={CFG_STR_WIN1251,"MUC offline",0,255};
-__root const char DEFTEX_MUCOFFLINE[256]="Off";
+__root const CFG_HDR cfghdr142={CFG_UTF8_STRING,"MUC offline",0,255};
+__root const char DEFTEX_MUCOFFLINE[256]="з¦»ејЂ";
 
 __root const CFG_HDR cfghdr_DEFTEXTSTAT_LEVEL_END={CFG_LEVEL,"",0,0};
 
@@ -253,14 +253,14 @@ __root const int AUTOSTATUS_ENABLED = 0;
 __root const CFG_HDR cfghdr41={CFG_UINT,LG_AS_TIME,0,60};
 __root const unsigned int AUTOSTATUS_TIME = 5;
 
-__root const CFG_HDR cfghdr42={CFG_STR_WIN1251, LG_AS_TEXT, 0, 255};
-__root const char DEFTEX_AUTOSTATUS[256]="Автостатус \"Недоступен\" сработал";
+__root const CFG_HDR cfghdr42={CFG_UTF8_STRING, LG_AS_TEXT, 0, 255};
+__root const char DEFTEX_AUTOSTATUS[256]="и‡ЄеЉЁзЉ¶жЂЃпјљз¦»ејЂ";
 
 __root const CFG_HDR cfghdr_AUTOSTATUS_END={CFG_LEVEL,"",0,0};
 
 /*__root const CFG_HDR cfghdr_IBI1={CFG_CHECKBOX, LG_ICONBAR_SI, 0, 2};
 __root const int SHOW_ICONBAR_ICON = 1;
 
-__root const CFG_HDR cfghdr_IBI2={CFG_STR_WIN1251, LG_ICONSET_FILENAME, 0, 127};
+__root const CFG_HDR cfghdr_IBI2={CFG_UTF8_STRING, LG_ICONSET_FILENAME, 0, 127};
 __root const char ICONSET_FILENAME[128] = DEFAULT_DISK_CFG ":\\ZBin\\SieJC\\IconSets\\default.bcfg";*/ // IconBar
 // EOL, EOF
