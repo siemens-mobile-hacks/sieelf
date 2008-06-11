@@ -828,12 +828,13 @@ unsigned int char16to8(unsigned int c)
 
 void ascii2ws(WSHDR *ws, const char *s)
 {
-  char c;
-  CutWSTR(ws,0);
-  while((c=*s++))
-  {
-    wsAppendChar(ws,char8to16(c));
-  }
+	gb2ws(ws, s, strlen(s));
+  //char c;
+  //CutWSTR(ws,0);
+  //while((c=*s++))
+  //{
+  //  wsAppendChar(ws,char8to16(c));
+  //}
 }
 void utf8_2_gb(char *gb,char *utf8, int maxlen)
 {
