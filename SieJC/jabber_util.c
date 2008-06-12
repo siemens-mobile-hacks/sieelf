@@ -694,8 +694,8 @@ void _leaveconference(char *conf_jid)
   char *msg = malloc(256);
   WSHDR *ws = AllocWS(256);
   int len;
-  ascii2ws(ws, DEFTEX_MUCOFFLINE);
-  ws_2utf8(ws, msg, &len, wstrlen(ws)*2+1);
+  utf8_2ws(ws, DEFTEX_MUCOFFLINE,64);
+  ws_2utf8(ws, msg, &len, wstrlen(ws)*3+1);
   msg=realloc(msg, len+1);
   msg[len]='\0';
   sprintf(pr, pr_templ, Mask_Special_Syms(My_JID_full), Mask_Special_Syms(conf_jid), Mask_Special_Syms(msg));

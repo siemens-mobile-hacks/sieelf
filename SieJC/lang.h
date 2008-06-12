@@ -364,7 +364,7 @@
 #define LG_POSIBLCLIENT     "Client features:"
 #define LG_MUCSABJECT       "Sabject:"
 //#define LG_MUCNICK          "Nick:"
-#define LG_ISUBSCRIBE       "Subscibe:"
+#define LG_ISUBSCRIBE       "√Ë ˆ:"
 //history.c
 #define LG_ERRORWH          "I/O Error #%u while trying to write the history"
 //cont_menu.c

@@ -42,10 +42,10 @@ void AboutDlg(GUI *data)
 
 void Dummy(GUI *data)
 {
-  ShowMSG(1,(int)"Раздел в разработке :)");
+  ShowMSG(1,(int)"ХэФЪЅЁЙиЦР :)");
 };
 
-// Ad, сюда напиши номера, которые сочтёшь нужным!
+// Ad, §г§р§Х§С §Я§С§б§Ъ§к§Ъ §Я§а§Ю§Ц§в§С, §Ь§а§д§а§в§н§Ц §г§а§й§д§Ч§к§о §Я§е§Ш§Я§н§Ю!
 int icon[]={0x3DB,0};
 int about_icon[]={0x4DB,0};
 int dummy_icon[] = {0x50E,0};
@@ -151,14 +151,14 @@ static const char * const menutexts[N_ITEMS]=
 
 //MENUITEM_DESC menuitems[N_ITEMS]=
 //{
-//  {dummy_icon,(int)"Контакт",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-//  {dummy_icon,(int)"Статус",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-//  {dummy_icon,(int)"Конференция",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-//  {dummy_icon,(int)"Закладки",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-//  {icon_array,(int)"Режим вибры",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-//  {icon_array,(int)"Режим звука",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-//  {dummy_icon,(int)"Об эльфе...",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-//  {dummy_icon,(int)"Выход",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+//  {dummy_icon,(int)"§¬§а§Я§д§С§Ь§д",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+//  {dummy_icon,(int)"§і§д§С§д§е§г",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+//  {dummy_icon,(int)"§¬§а§Я§ж§Ц§в§Ц§Я§и§Ъ§с",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+//  {dummy_icon,(int)"§©§С§Ь§Э§С§Х§Ь§Ъ",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+//  {icon_array,(int)"§І§Ц§Ш§Ъ§Ю §У§Ъ§Т§в§н",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+//  {icon_array,(int)"§І§Ц§Ш§Ъ§Ю §Щ§У§е§Ь§С",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+//  {dummy_icon,(int)"§°§Т §п§Э§о§ж§Ц...",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+//  {dummy_icon,(int)"§Ј§н§з§а§Х",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
 //};
 
 static const MENUPROCS_DESC menuprocs[N_ITEMS]={
@@ -285,49 +285,49 @@ const char coloricon[] = "coloricon";
 void MM_Show()
 {
 #ifdef USE_PNG_EXT
-  // Контакт
+  // §¬§а§Я§д§С§Ь§д
   strcpy(infopic, PATH_TO_PIC);
   strcat(infopic,info_t);
   strcat(infopic,png_t);
   S_ICONS[0] = (int)infopic;
 
-  // Статус
+  // §і§д§С§д§е§г
   Roster_getIconByStatus(mypic, My_Presence);
   S_ICONS[1] = (int)mypic;
 
-  //Конференция...
+  //§¬§а§Я§ж§Ц§в§Ц§Я§и§Ъ§с...
   strcpy(confpic, PATH_TO_PIC);
   strcat(confpic,conference_t);
   strcat(confpic,png_t);
   S_ICONS[2] = (int)confpic;
 
-  // Закладки
+  // §©§С§Ь§Э§С§Х§Ь§Ъ
   S_ICONS[3] = (int)confpic;
 
   // Add Contact
   S_ICONS[4] = (int)confpic;
 
-  // Режим звука
+  // §І§Ц§Ш§Ъ§Ю §Щ§У§е§Ь§С
   // S_ICONS[5]
 
-  // Настройки
+  // §Ї§С§г§д§в§а§Ы§Ь§Ъ
   strcpy(settpic, PATH_TO_PIC);
   strcat(settpic,sett_t);
   strcat(settpic,png_t);
   S_ICONS[6] = (int)settpic;  
 
-  //цвета
+  //§и§У§Ц§д§С
   strcpy(color_icon, PATH_TO_PIC);
   strcat(color_icon,coloricon);
   strcat(color_icon,png_t);
   S_ICONS[9] =(int)color_icon;
-  // Об эльфе...
+  // §°§Т §п§Э§о§ж§Ц...
   strcpy(aboutpic, PATH_TO_PIC);
   strcat(aboutpic,about_t);
   strcat(aboutpic,png_t);
   S_ICONS[7] = (int)aboutpic;
 
-  // Выход
+  // §Ј§н§з§а§Х
   strcpy(exitpic, PATH_TO_PIC);
   strcat(exitpic,exit_t);
   strcat(exitpic,png_t);

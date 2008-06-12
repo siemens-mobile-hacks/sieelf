@@ -35,14 +35,14 @@ int jed1_onkey(GUI *data, GUI_MSG *msg)
   //-1 - do redraw
   //1: close
   
-  // Если зелёная кнопка либо нажата кнопка, которую мы повесили в cmd=7
+  // §¦§г§Э§Ъ §Щ§Ц§Э§Ч§Я§С§с §Ь§Я§а§б§Ь§С §Э§Ъ§Т§а §Я§С§Ш§С§д§С §Ь§Я§а§б§Ь§С, §Ь§а§д§а§в§е§р §Ю§н §б§а§У§Ц§г§Ъ§Э§Ъ §У cmd=7
   if(msg->gbsmsg->submess==GREEN_BUTTON || msg->keys==0x18)
   {
     jTerminate = 1;
     return 1;
   }
   
-  if (msg->keys==0x0FF0) //Левый софт СГОЛД
+  if (msg->keys==0x0FF0) //§­§Ц§У§н§Ы §г§а§ж§д §і§¤§°§­§Ґ
   {
     return(1);
   }
@@ -52,8 +52,8 @@ if (msg->gbsmsg->msg==KEY_DOWN)
     {
       if (EDIT_GetFocus(data)==8)
       {
-    jid_set.jid_ask=!jid_set.jid_ask;  //8 пункт при добавлении контакта "Запрос авторизации",
-    jid_set.jid_del=!jid_set.jid_del;  // а при удалении "Удалить"
+    jid_set.jid_ask=!jid_set.jid_ask;  //8 §б§е§Я§Ь§д §б§в§Ъ §Х§а§Т§С§У§Э§Ц§Я§Ъ§Ъ §Ь§а§Я§д§С§Ь§д§С "§©§С§б§в§а§г §С§У§д§а§в§Ъ§Щ§С§и§Ъ§Ъ",
+    jid_set.jid_del=!jid_set.jid_del;  // §С §б§в§Ъ §е§Х§С§Э§Ц§Я§Ъ§Ъ "§µ§Х§С§Э§Ъ§д§о"
     CutWSTR(jews,0);
     wsAppendChar(jews, jid_set.jid_del?CBOX_CHECKED:CBOX_UNCHECKED);
     EDIT_SetTextToFocused(data,jews);
@@ -86,9 +86,9 @@ void jed1_ghook(GUI *data, int cmd)
 #endif 
   }
   
-  if(cmd==0x0A)   // Фокусирование
+  if(cmd==0x0A)   // §¶§а§Ь§е§г§Ъ§в§а§У§С§Я§Ъ§Ц
   {
-     DisableIDLETMR();   // Отключаем таймер выхода по таймауту
+     DisableIDLETMR();   // §°§д§Ь§Э§р§й§С§Ц§Ю §д§С§Ы§Ю§Ц§в §У§н§з§а§Х§С §б§а §д§С§Ы§Ю§С§е§д§е
   }
 
   if(jTerminate)
@@ -153,7 +153,7 @@ void jed1_ghook(GUI *data, int cmd)
   {
     if(jid_set.jid_ask)
     {
-      Send_ShortPresence(jid_jid,8);//посылаем запрос авторизации
+      Send_ShortPresence(jid_jid,8);//§б§а§г§н§Э§С§Ц§Ю §Щ§С§б§в§а§г §С§У§д§а§в§Ъ§Щ§С§и§Ъ§Ъ
     }
   }
       if(jid_name) mfree(jid_name);
@@ -169,16 +169,17 @@ void jed1_ghook(GUI *data, int cmd)
   }
 }
 
-extern void dummy(GUI *data);
 
-HEADER_DESC jed1_hdr={0,0,131,21,NULL,(int)"Контакт",LGP_NULL};
+HEADER_DESC jed1_hdr={0,0,131,21,NULL,(int)"БЄПµИЛ",LGP_NULL};
+
+void jed1_locret(void){}
 
 INPUTDIA_DESC jed1_desc=
 {
   1,
   jed1_onkey,
   jed1_ghook,
-  (void *)dummy,
+  (void *)jed1_locret,
   0,
   &jid_menu_skt,
   {0,22,131,153},
@@ -187,17 +188,17 @@ INPUTDIA_DESC jed1_desc=
   101,
   0,
 
-//  0x00000001 - Выровнять по правому краю
-//  0x00000002 - Выровнять по центру
-//  0x00000004 - Инверсия знакомест
+//  0x00000001 - §Ј§н§в§а§У§Я§с§д§о §б§а §б§в§С§У§а§Ю§е §Ь§в§С§р
+//  0x00000002 - §Ј§н§в§а§У§Я§с§д§о §б§а §и§Ц§Я§д§в§е
+//  0x00000004 - §Є§Я§У§Ц§в§г§Ъ§с §Щ§Я§С§Ь§а§Ю§Ц§г§д
 //  0x00000008 - UnderLine
-//  0x00000020 - Не переносить слова
+//  0x00000020 - §Ї§Ц §б§Ц§в§Ц§Я§а§г§Ъ§д§о §г§Э§а§У§С
 //  0x00000200 - bold
   0,
 
 //  0x00000002 - ReadOnly
-//  0x00000004 - Не двигается курсор
-//  0x40000000 - Поменять местами софт-кнопки
+//  0x00000004 - §Ї§Ц §Х§У§Ъ§Ф§С§Ц§д§г§с §Ь§е§в§г§а§в
+//  0x40000000 - §±§а§Ю§Ц§Я§с§д§о §Ю§Ц§г§д§С§Ю§Ъ §г§а§ж§д-§Ь§Я§а§б§Ь§Ъ
   0x40000000
 };
 
@@ -235,7 +236,7 @@ void Disp_JID_Enter_Dialog(CLIST* ClEx)
 
   PrepareEditControl(&ec);
   utf8_2ws(jews, jid, 64);
-  if(jid_set.jid_add)ConstructEditControl(&ec,1,ECF_APPEND_EOL,jews,128);//2 если меняем контакт ЖИД недаем изменить
+  if(jid_set.jid_add)ConstructEditControl(&ec,1,ECF_APPEND_EOL,jews,128);//2 §Ц§г§Э§Ъ §Ю§Ц§Я§с§Ц§Ю §Ь§а§Я§д§С§Ь§д §Ё§Є§Ґ §Я§Ц§Х§С§Ц§Ю §Ъ§Щ§Ю§Ц§Я§Ъ§д§о
    else ConstructEditControl(&ec,4,ECF_APPEND_EOL,jews,128);//2
   AddEditControlToEditQend(eq,&ec,ma);  
 

@@ -14,7 +14,7 @@ MUC_ADMIN macmd;
 int reason_pos;
 extern void ConstructReasonDlg(char *name, char *jid, MUC_ADMIN muccmd);
 
-#define MAX_ITEMS 12       // Максимальное количество пунктов меню
+#define MAX_ITEMS 12       // §®§С§Ь§г§Ъ§Ю§С§Э§о§Я§а§Ц §Ь§а§Э§Ъ§й§Ц§г§д§У§а §б§е§Я§Ь§д§а§У §Ю§Ц§Я§р
 
 #define MI_CONF_LEAVE       1
 #define MI_QUERY_VERSION    2
@@ -105,7 +105,7 @@ MENU_DESC ma_menu=
   8,ma_menu_onkey,ma_menu_ghook,NULL,
   mamenusoftkeys,
   &ma_menu_skt,
-  0x10, // 0x11 если надо меню с иконками
+  0x10, // 0x11 §Ц§г§Э§Ъ §Я§С§Х§а §Ю§Ц§Я§р §г §Ъ§Ь§а§Я§Ь§С§Ю§Ъ
   ma_menu_iconhndl,
   NULL,   //Items
   NULL,   //Procs
@@ -122,69 +122,69 @@ void Disp_MA_Menu()
   TRESOURCE *Act_contact = CList_GetActiveContact();
   InitMAMenuArray();
   int n_items=0;
-  //Определяем, каие будут пункты в меню меню muc#admin для текущего контакта
+  //§°§б§в§Ц§Х§Ц§Э§с§Ц§Ю, §Ь§С§Ъ§Ц §Т§е§Х§е§д §б§е§Я§Ь§д§н §У §Ю§Ц§Я§р §Ю§Ц§Я§р muc#admin §Х§Э§с §д§Ц§Ь§е§л§Ц§Ф§а §Ь§а§Я§д§С§Ь§д§С
 
 TRESOURCE* MYMUCRES = CList_IsResourceInList(CList_FindMUCByJID(CList_FindContactByJID(Act_contact->full_name)->JID)->conf_jid);
-//MYMUCRES->muc_privs.role); //Вот наша роль
-//MYMUCRES->muc_privs.aff); //Вот наша афилатион
-//да извратно, но почемуто работает
-if (MYMUCRES->muc_privs.aff<AFFILIATION_ADMIN) //Если мы мембер-модератор или ноне-модератор, а текущий контакт не модератор(это мы раньше проверяли, когда думали, отображать ли muc#admin)
+//MYMUCRES->muc_privs.role); //§Ј§а§д §Я§С§к§С §в§а§Э§о
+//MYMUCRES->muc_privs.aff); //§Ј§а§д §Я§С§к§С §С§ж§Ъ§Э§С§д§Ъ§а§Я
+//§Х§С §Ъ§Щ§У§в§С§д§Я§а, §Я§а §б§а§й§Ц§Ю§е§д§а §в§С§Т§а§д§С§Ц§д
+if (MYMUCRES->muc_privs.aff<AFFILIATION_ADMIN) //§¦§г§Э§Ъ §Ю§н §Ю§Ц§Ю§Т§Ц§в-§Ю§а§Х§Ц§в§С§д§а§в §Ъ§Э§Ъ §Я§а§Я§Ц-§Ю§а§Х§Ц§в§С§д§а§в, §С §д§Ц§Ь§е§л§Ъ§Ы §Ь§а§Я§д§С§Ь§д §Я§Ц §Ю§а§Х§Ц§в§С§д§а§в(§п§д§а §Ю§н §в§С§Я§о§к§Ц §б§в§а§У§Ц§в§с§Э§Ъ, §Ь§а§Ф§Х§С §Х§е§Ю§С§Э§Ъ, §а§д§а§Т§в§С§Ш§С§д§о §Э§Ъ muc#admin)
   {
-   MA_Menu_Contents[n_items++]=MA_CONF_KICK_THIS; //кикать мы можем всех, кто прошел через условия
-  if(Act_contact->muc_privs.role==ROLE_VISITOR) // если текущий контакт визитор, ему можно давать голос
+   MA_Menu_Contents[n_items++]=MA_CONF_KICK_THIS; //§Ь§Ъ§Ь§С§д§о §Ю§н §Ю§а§Ш§Ц§Ю §У§г§Ц§з, §Ь§д§а §б§в§а§к§Ц§Э §й§Ц§в§Ц§Щ §е§г§Э§а§У§Ъ§с
+  if(Act_contact->muc_privs.role==ROLE_VISITOR) // §Ц§г§Э§Ъ §д§Ц§Ь§е§л§Ъ§Ы §Ь§а§Я§д§С§Ь§д §У§Ъ§Щ§Ъ§д§а§в, §Ц§Ю§е §Ю§а§Ш§Я§а §Х§С§У§С§д§о §Ф§а§Э§а§г
   {
        MA_Menu_Contents[n_items++]=MA_CONF_VGR_THIS;    
   }
-  else  //иначе его можно сделать визитором
+  else  //§Ъ§Я§С§й§Ц §Ц§Ф§а §Ю§а§Ш§Я§а §г§Х§Ц§Э§С§д§о §У§Ъ§Щ§Ъ§д§а§в§а§Ю
   {
        MA_Menu_Contents[n_items++]=MA_CONF_VREJ_THIS;
   }
-  //всё, на этом наши права закончились 
+  //§У§г§Ч, §Я§С §п§д§а§Ю §Я§С§к§Ъ §б§в§С§У§С §Щ§С§Ь§а§Я§й§Ъ§Э§Ъ§г§о 
   }
 
   else
   {
-  if(Act_contact->muc_privs.role!=ROLE_MODERATOR) //если текущий контакт не модератор, его можно кикать
+  if(Act_contact->muc_privs.role!=ROLE_MODERATOR) //§Ц§г§Э§Ъ §д§Ц§Ь§е§л§Ъ§Ы §Ь§а§Я§д§С§Ь§д §Я§Ц §Ю§а§Х§Ц§в§С§д§а§в, §Ц§Ф§а §Ю§а§Ш§Я§а §Ь§Ъ§Ь§С§д§о
   {
        MA_Menu_Contents[n_items++]=MA_CONF_KICK_THIS; 
   }
        
   if(MYMUCRES->muc_privs.aff==AFFILIATION_OWNER||MYMUCRES->muc_privs.aff>Act_contact->muc_privs.aff)
   {
-      MA_Menu_Contents[n_items++]=MA_CONF_BAN_THIS; // банить можно всех кто хуже нас по affiliation, или равны, если мы овнер
+      MA_Menu_Contents[n_items++]=MA_CONF_BAN_THIS; // §Т§С§Я§Ъ§д§о §Ю§а§Ш§Я§а §У§г§Ц§з §Ь§д§а §з§е§Ш§Ц §Я§С§г §б§а affiliation, §Ъ§Э§Ъ §в§С§У§Я§н, §Ц§г§Э§Ъ §Ю§н §а§У§Я§Ц§в
   }
   
-  if(Act_contact->muc_privs.role==ROLE_VISITOR) // если текущий контакт визитор, ему можно давать голос
+  if(Act_contact->muc_privs.role==ROLE_VISITOR) // §Ц§г§Э§Ъ §д§Ц§Ь§е§л§Ъ§Ы §Ь§а§Я§д§С§Ь§д §У§Ъ§Щ§Ъ§д§а§в, §Ц§Ю§е §Ю§а§Ш§Я§а §Х§С§У§С§д§о §Ф§а§Э§а§г
   {
        MA_Menu_Contents[n_items++]=MA_CONF_VGR_THIS;    
   }
-  else if(Act_contact->muc_privs.aff<AFFILIATION_ADMIN) //если текущий контакт не визитор, не админ, и не овнер, его можно сделать визитором
+  else if(Act_contact->muc_privs.aff<AFFILIATION_ADMIN) //§Ц§г§Э§Ъ §д§Ц§Ь§е§л§Ъ§Ы §Ь§а§Я§д§С§Ь§д §Я§Ц §У§Ъ§Щ§Ъ§д§а§в, §Я§Ц §С§Х§Ю§Ъ§Я, §Ъ §Я§Ц §а§У§Я§Ц§в, §Ц§Ф§а §Ю§а§Ш§Я§а §г§Х§Ц§Э§С§д§о §У§Ъ§Щ§Ъ§д§а§в§а§Ю
   {
        MA_Menu_Contents[n_items++]=MA_CONF_VREJ_THIS;
   }
   if(Act_contact->muc_privs.aff>AFFILIATION_NONE&&(MYMUCRES->muc_privs.aff>Act_contact->muc_privs.aff||MYMUCRES->muc_privs.aff==AFFILIATION_OWNER)) 
-    //если контакт не none и хуже нас или если мы овнер, его можно делать мембером
+    //§Ц§г§Э§Ъ §Ь§а§Я§д§С§Ь§д §Я§Ц none §Ъ §з§е§Ш§Ц §Я§С§г §Ъ§Э§Ъ §Ц§г§Э§Ъ §Ю§н §а§У§Я§Ц§в, §Ц§Ф§а §Ю§а§Ш§Я§а §Х§Ц§Э§С§д§о §Ю§Ц§Ю§Т§Ц§в§а§Ю
   {
        MA_Menu_Contents[n_items++]=MA_CONF_PARTICIPANT;
   }
   if(Act_contact->muc_privs.aff!=AFFILIATION_MEMBER&&(MYMUCRES->muc_privs.aff>Act_contact->muc_privs.aff||MYMUCRES->muc_privs.aff==AFFILIATION_OWNER)) 
-    //если текущий контакт не мембер и хуже нас, его можно делать мембером (и админов с овнерами можно)
+    //§Ц§г§Э§Ъ §д§Ц§Ь§е§л§Ъ§Ы §Ь§а§Я§д§С§Ь§д §Я§Ц §Ю§Ц§Ю§Т§Ц§в §Ъ §з§е§Ш§Ц §Я§С§г, §Ц§Ф§а §Ю§а§Ш§Я§а §Х§Ц§Э§С§д§о §Ю§Ц§Ю§Т§Ц§в§а§Ю (§Ъ §С§Х§Ю§Ъ§Я§а§У §г §а§У§Я§Ц§в§С§Ю§Ъ §Ю§а§Ш§Я§а)
   {
        MA_Menu_Contents[n_items++]=MA_CONF_MEMBER;
   }
-  if(Act_contact->muc_privs.role!=ROLE_MODERATOR) // если текущий не модератор, его можно делать модератором
+  if(Act_contact->muc_privs.role!=ROLE_MODERATOR) // §Ц§г§Э§Ъ §д§Ц§Ь§е§л§Ъ§Ы §Я§Ц §Ю§а§Х§Ц§в§С§д§а§в, §Ц§Ф§а §Ю§а§Ш§Я§а §Х§Ц§Э§С§д§о §Ю§а§Х§Ц§в§С§д§а§в§а§Ю
   {
       MA_Menu_Contents[n_items++]=MA_CONF_MODERATOR;
   }
-  else if(Act_contact->muc_privs.aff<AFFILIATION_ADMIN) // если текущий контакт модератор, но не админ или овнер, у него можно забирать модератора
+  else if(Act_contact->muc_privs.aff<AFFILIATION_ADMIN) // §Ц§г§Э§Ъ §д§Ц§Ь§е§л§Ъ§Ы §Ь§а§Я§д§С§Ь§д §Ю§а§Х§Ц§в§С§д§а§в, §Я§а §Я§Ц §С§Х§Ю§Ъ§Я §Ъ§Э§Ъ §а§У§Я§Ц§в, §е §Я§Ц§Ф§а §Ю§а§Ш§Я§а §Щ§С§Т§Ъ§в§С§д§о §Ю§а§Х§Ц§в§С§д§а§в§С
   {
       MA_Menu_Contents[n_items++]=MA_CONF_MGR;
   }
-  if(Act_contact->muc_privs.aff!=AFFILIATION_ADMIN&&MYMUCRES->muc_privs.aff==AFFILIATION_OWNER) // если текущий контакт не админ а мы овнер, его можо делать админом
+  if(Act_contact->muc_privs.aff!=AFFILIATION_ADMIN&&MYMUCRES->muc_privs.aff==AFFILIATION_OWNER) // §Ц§г§Э§Ъ §д§Ц§Ь§е§л§Ъ§Ы §Ь§а§Я§д§С§Ь§д §Я§Ц §С§Х§Ю§Ъ§Я §С §Ю§н §а§У§Я§Ц§в, §Ц§Ф§а §Ю§а§Ш§а §Х§Ц§Э§С§д§о §С§Х§Ю§Ъ§Я§а§Ю
   {
       MA_Menu_Contents[n_items++]=MA_CONF_ADMIN;
   }
-  if(Act_contact->muc_privs.aff!=AFFILIATION_OWNER&&MYMUCRES->muc_privs.aff==AFFILIATION_OWNER) // если текущий контакт не овнер а мы овнер, его можно делать овнером
+  if(Act_contact->muc_privs.aff!=AFFILIATION_OWNER&&MYMUCRES->muc_privs.aff==AFFILIATION_OWNER) // §Ц§г§Э§Ъ §д§Ц§Ь§е§л§Ъ§Ы §Ь§а§Я§д§С§Ь§д §Я§Ц §а§У§Я§Ц§в §С §Ю§н §а§У§Я§Ц§в, §Ц§Ф§а §Ю§а§Ш§Я§а §Х§Ц§Э§С§д§о §а§У§Я§Ц§в§а§Ю
   {
       MA_Menu_Contents[n_items++]=MA_CONF_OWNER; 
   }
@@ -203,7 +203,7 @@ if (MYMUCRES->muc_privs.aff<AFFILIATION_ADMIN) //Если мы мембер-модератор или но
 #define CONTC_UNSUBSCRIBE  4
 
 char CONTC_Menu_Contents[MAX_CONTC_ITEMS-1];
-const char contc_menu_header[]="Авторизация";
+const char contc_menu_header[]="КЪИЁ";
 int contcmenusoftkeys[]={0,1,2};
 HEADER_DESC contc_menuhdr={0,0,0,0,NULL,(int)contc_menu_header,LGP_NULL};
 SOFTKEY_DESC contc_menu_sk[]=
@@ -227,7 +227,7 @@ MENU_DESC contc_menu=
   8,contc_menu_onkey,contc_menu_ghook,NULL,
   contcmenusoftkeys,
   &contc_menu_skt,
-  0x10, // 0x11 если надо меню с иконками
+  0x10, // 0x11 §Ц§г§Э§Ъ §Я§С§Х§а §Ю§Ц§Я§р §г §Ъ§Ь§а§Я§Ь§С§Ю§Ъ
   contc_menu_iconhndl,
   NULL,   //Items
   NULL,   //Procs
@@ -250,7 +250,7 @@ void Disp_Cont_Menu()
    {
        CONTC_Menu_Contents[n_items++]=CONTC_UNSUBSCRIBE; //Otozvat` podpisku
    }
-//   if((Act_contact->status == PRESENCE_SUBSCRIBE))//Если контакт запрвшивает подписку...
+//   if((Act_contact->status == PRESENCE_SUBSCRIBE))//§¦§г§Э§Ъ §Ь§а§Я§д§С§Ь§д §Щ§С§б§в§У§к§Ъ§У§С§Ц§д §б§а§Х§б§Ъ§г§Ь§е...
    {
      CONTC_Menu_Contents[n_items++]=CONTC_UNSUBSCRIBED;//otkazat`
      CONTC_Menu_Contents[n_items++]=CONTC_SUBSCRIBED;//soglasitsja
@@ -274,7 +274,7 @@ void contact_menu_ghook(void *data, int cmd)
 }
 
 /*
-Обработчик нажатий клавиш меню. Отсюда следует вызывать необходимые действия
+§°§Т§в§С§Т§а§д§й§Ъ§Ь §Я§С§Ш§С§д§Ъ§Ы §Ь§Э§С§У§Ъ§к §Ю§Ц§Я§р. §°§д§г§р§Х§С §г§Э§Ц§Х§е§Ц§д §У§н§Щ§н§У§С§д§о §Я§Ц§а§Т§з§а§Х§Ъ§Ю§н§Ц §Х§Ц§Ы§г§д§У§Ъ§с
 
 */
 int contact_menu_onkey(void *data, GUI_MSG *msg)
@@ -397,10 +397,10 @@ void InitMenuArray()
 }
 
 /*
-Обработчик появления пунктов динамического меню
-Тут мы сами создаём каждый пункт, указывая для него иконку и текст.
-При создании мы опираемся на данные массива Menu_Contents, в котором описано,
-какие пункты и в каком порядке необходимо создать.
+§°§Т§в§С§Т§а§д§й§Ъ§Ь §б§а§с§У§Э§Ц§Я§Ъ§с §б§е§Я§Ь§д§а§У §Х§Ъ§Я§С§Ю§Ъ§й§Ц§г§Ь§а§Ф§а §Ю§Ц§Я§р
+§ґ§е§д §Ю§н §г§С§Ю§Ъ §г§а§Щ§Х§С§Ч§Ю §Ь§С§Ш§Х§н§Ы §б§е§Я§Ь§д, §е§Ь§С§Щ§н§У§С§с §Х§Э§с §Я§Ц§Ф§а §Ъ§Ь§а§Я§Ь§е §Ъ §д§Ц§Ь§г§д.
+§±§в§Ъ §г§а§Щ§Х§С§Я§Ъ§Ъ §Ю§н §а§б§Ъ§в§С§Ц§Ю§г§с §Я§С §Х§С§Я§Я§н§Ц §Ю§С§г§г§Ъ§У§С Menu_Contents, §У §Ь§а§д§а§в§а§Ю §а§б§Ъ§г§С§Я§а,
+§Ь§С§Ь§Ъ§Ц §б§е§Я§Ь§д§н §Ъ §У §Ь§С§Ь§а§Ю §б§а§в§с§Х§Ь§Ц §Я§Ц§а§Т§з§а§Х§Ъ§Ю§а §г§а§Щ§Х§С§д§о.
 */
 void contact_menu_iconhndl(void *data, int curitem, void *unk)
 {
@@ -408,7 +408,7 @@ void contact_menu_iconhndl(void *data, int curitem, void *unk)
   WSHDR *ws;
   char test_str[48];
   void *item=AllocMenuItem(data);
-  strcpy(test_str,"(ошибка)");
+  strcpy(test_str,"(ґнОу)");
 
   TRESOURCE *Act_contact = CList_GetActiveContact();
 
@@ -496,7 +496,7 @@ void contact_menu_iconhndl(void *data, int curitem, void *unk)
 
   SetMenuItemIconArray(data,item,cmS_ICONS+Menu_Contents[curitem]);
   SetMenuItemText(data,item,ws,curitem);
-  //SetMenuItemIcon(data,curitem,Menu_Contents[curitem]);  // 0 = индекс иконки
+  //SetMenuItemIcon(data,curitem,Menu_Contents[curitem]);  // 0 = §Ъ§Я§Х§Ц§Ь§г §Ъ§Ь§а§Я§Ь§Ъ
   /*
   CLIST *t;
   WSHDR *ws;
@@ -586,7 +586,7 @@ void Disp_Contact_Menu()
   InitMenuArray();
   Init_Icon_array();
   TRESOURCE *Act_contact = CList_GetActiveContact();
-  // Теперь определяем, какие пункты у нас будут, и сколько
+  // §ґ§Ц§б§Ц§в§о §а§б§в§Ц§Х§Ц§Э§с§Ц§Ю, §Ь§С§Ь§Ъ§Ц §б§е§Я§Ь§д§н §е §Я§С§г §Т§е§Х§е§д, §Ъ §г§Ь§а§Э§о§Ь§а
   if(!Act_contact)return;
   if(Act_contact->entry_type==T_CONF_ROOT)
   {
@@ -684,7 +684,7 @@ void ma_menu_iconhndl(void *data, int curitem, void *unk)
   WSHDR *ws;
   char test_str[48];
   void *item=AllocMenuItem(data);
-  strcpy(test_str,"(ошибка)");
+  strcpy(test_str,"(ґнОу)");
 
   TRESOURCE *Act_contact = CList_GetActiveContact();
 
@@ -806,7 +806,7 @@ void contc_menu_iconhndl(void *data, int curitem, void *unk)
   WSHDR *ws;
   char test_str[48];
   void *item=AllocMenuItem(data);
-  strcpy(test_str,"(ошибка)");
+  strcpy(test_str,"(ґнОу)");
 
   TRESOURCE *Act_contact = CList_GetActiveContact();
 
