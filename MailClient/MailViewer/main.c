@@ -69,8 +69,8 @@ POP_STAT *pop_stat;
 int menusoftkeys[]={0,1,2};
 SOFTKEY_DESC menu_sk[]=
 {
-  {0x0018,0x0000,(int)"Options"},
-  {0x0001,0x0000,(int)"Close"},
+  {0x0018,0x0000,(int)"选项"},
+  {0x0001,0x0000,(int)"关闭"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -83,7 +83,7 @@ SOFTKEYSTAB menu_skt=
 SOFTKEY_DESC menu_sk2[]=
 {
   {0x0000,0x0000,(int)""},
-  {0x0001,0x0000,(int)"Close"},
+  {0x0001,0x0000,(int)"关闭"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -2446,7 +2446,7 @@ MENU_DESC mainmenu_STRUCT=
 {
   8,main_menu_onkey,main_menu_ghook,NULL,
   menusoftkeys,
-  &menu_skt,
+  &menu_skt2,
   0x11,
   NULL,
   mainmenu_ITEMS,   //Items
