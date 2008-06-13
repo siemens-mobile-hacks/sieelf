@@ -9,7 +9,7 @@ const char mailer_db_name[]=MDB_NAME;
 const char ipc_viewer_name[]=IPC_VIEWER_NAME;
 const char ipc_my_name[]=IPC_DAEMON_NAME;
 
-volatile int viewer_present=-1; //Активен ли вьювер
+volatile int viewer_present=-1; //§Ў§Ь§д§Ъ§У§Ц§Я §Э§Ъ §У§о§р§У§Ц§в
 
 typedef struct
 {
@@ -55,7 +55,7 @@ const char eol[]="\r\n";
 
 
 POP_STAT pop_stat;
-//Флаг для больших сообщений
+//§¶§Э§С§Ф §Х§Э§с §Т§а§Э§о§к§Ъ§з §г§а§а§Т§л§Ц§Я§Ъ§Ы
 int mes_rec=0;
 
 
@@ -248,10 +248,10 @@ void send_str(char* str)
   if (str)
   {
     j=strlen(str);
-    // Проверяем не надо ли добавить в очередь
+    // §±§в§а§У§Ц§в§с§Ц§Ю §Я§Ц §Я§С§Х§а §Э§Ъ §Х§а§Т§С§У§Ъ§д§о §У §а§й§Ц§в§Ц§Х§о
     if (sendq_p)
     {
-      // Если есть то добавляем в нее
+      // §¦§г§Э§Ъ §Ц§г§д§о §д§а §Х§а§Т§С§У§Э§с§Ц§Ю §У §Я§Ц§Ц
       sendq_p=realloc((void *)sendq_p, sendq_l+j);
       memcpy((char *)sendq_p+sendq_l,str,j);
       sendq_l+=j;
@@ -261,7 +261,7 @@ void send_str(char* str)
     memcpy((char *)sendq_p,str,j);
     sendq_l=j;
   }
-  // отправляем уже существующие в очереди
+  // §а§д§б§в§С§У§Э§с§Ц§Ю §е§Ш§Ц §г§е§л§Ц§г§д§У§е§р§л§Ъ§Ц §У §а§й§Ц§в§Ц§Х§Ъ
   while((i=sendq_l)!=0)
   {
     i=i>0x400?0x400:i;
@@ -274,13 +274,13 @@ void send_str(char* str)
       j=*socklasterr();
       if ((j==0xC9) || (j==0xD6))
       {
-        // Передали что хотели
+        // §±§Ц§в§Ц§Х§С§Э§Ъ §й§д§а §з§а§д§Ц§Э§Ъ
         strcpy(pop_stat.log,"Send delayed...");
         return;
       }
       else
       {
-        // Ошибка 
+        // §°§к§Ъ§Т§Ь§С 
         LockSched();
         ShowMSG(1,(int)"send error!");
         UnlockSched();
@@ -291,7 +291,7 @@ void send_str(char* str)
     memcpy((void *)sendq_p,(char *)sendq_p+j,sendq_l-=j);
     if (j<i)
     {
-      // передали меньше чем заказывали
+      // §б§Ц§в§Ц§Х§С§Э§Ъ §Ю§Ц§Я§о§к§Ц §й§Ц§Ю §Щ§С§Ь§С§Щ§н§У§С§Э§Ъ
       return;
     }
   }
@@ -369,7 +369,7 @@ void end_connect(char *err)
   }
   if (fhandler!=-1)
   {
-    //Закроем поток если некорректно вышли
+    //§©§С§Ь§в§а§Ц§Ю §б§а§д§а§Ь §Ц§г§Э§Ъ §Я§Ц§Ь§а§в§в§Ц§Ь§д§Я§а §У§н§к§Э§Ъ
     unsigned int err;
     fclose(fhandler,&err);
   }
@@ -432,7 +432,7 @@ void process_line(char *rec_line)
     if (!pop_stat.in_pop3)
     {
       pop_stat.pop_state=0;
-      end_connect("Mailbox is empty");
+      end_connect("УКПдКЗїХµД");
       return;
     }
     send_get_uidl_list();
@@ -513,7 +513,7 @@ void process_line(char *rec_line)
         sprintf(fname,"%s%s.eml",EML_PATH,cur_ml->uidl);
         if ((fhandler=fopen(fname,A_WriteOnly+A_Create+A_Truncate+A_BIN,P_WRITE,&err))==-1)
         {
-          end_connect(pop_stat.pop_state==POP_RECEIVE_HEADERS?"Can't write headers!":"Can't write message!");
+          end_connect(pop_stat.pop_state==POP_RECEIVE_HEADERS?"І»ДЬРґИл±кМв!":"І»ДЬРґИлРЕПў!");
           return;
         }
         mes_rec=1;
@@ -553,7 +553,7 @@ void process_line(char *rec_line)
     {
       if (resp_ok(rec_line))
       {
-        end_connect("Can't delete!");
+        end_connect("І»ДЬЙѕіэ!");
         return;
       }
       pop_stat.pop3_del++;
@@ -594,7 +594,7 @@ void process_line(char *rec_line)
     }
     pop_stat.pop_state=0;
     write_mail_DB();
-    end_connect("Done!");
+    end_connect("НкіЙ!");
     return;
   }
 }
@@ -604,7 +604,7 @@ void get_answer(void)
 {
   char msg_buf[BUF_SIZE];
   char *s=msg_buf;
-  char *d; //Куда
+  char *d; //§¬§е§Х§С
   int c;
   int i;
   i=recv(sock,msg_buf,BUF_SIZE-1,0);
@@ -615,30 +615,30 @@ void get_answer(void)
     d=recived_line;
     if (d)
     {
-      //Уже была строка
-      d=recived_line=realloc(recived_line,strlen(d)+i+1); //Возможно, мы добавим весь буфер и \0
+      //§µ§Ш§Ц §Т§н§Э§С §г§д§в§а§Ь§С
+      d=recived_line=realloc(recived_line,strlen(d)+i+1); //§Ј§а§Щ§Ю§а§Ш§Я§а, §Ю§н §Х§а§Т§С§У§Ъ§Ю §У§Ц§г§о §Т§е§ж§Ц§в §Ъ \0
       d+=strlen(d);
     }
     else
     {
-      //Заново
+      //§©§С§Я§а§У§а
      L_NEWLINE:
-       d=recived_line=malloc(i+1); //Возможно, это будет целый буфер и \0
+       d=recived_line=malloc(i+1); //§Ј§а§Щ§Ю§а§Ш§Я§а, §п§д§а §Т§е§Х§Ц§д §и§Ц§Э§н§Ы §Т§е§ж§Ц§в §Ъ \0
     }
     while(i)
     {
       i--;
-      c=*d++=*s++; //Копируем символ
+      c=*d++=*s++; //§¬§а§б§Ъ§в§е§Ц§Ю §г§Ъ§Ю§У§а§Э
       if (c=='\n')
       {
-        //Конец строки
+        //§¬§а§Я§Ц§и §г§д§в§а§Ь§Ъ
         *d=0;
         process_line(recived_line);
         mfree(recived_line);
         goto L_NEWLINE;
       }
     }
-    *d=0; //Временно закончили строку
+    *d=0; //§Ј§в§Ц§Ю§Ц§Я§Я§а §Щ§С§Ь§а§Я§й§Ъ§Э§Ъ §г§д§в§а§Ь§е
   }
 }
 
@@ -657,7 +657,7 @@ void create_connect(void)
   
   void do_reconnect(void);
   SOCK_ADDR sa;
-  //Устанавливаем соединение
+  //§µ§г§д§С§Я§С§У§Э§Ъ§У§С§Ц§Ю §г§а§Ц§Х§Ъ§Я§Ц§Я§Ъ§Ц
   pop_stat.connect_state=0;
   GBS_DelTimer(&reconnect_tmr);
   ClearSendQ();
@@ -689,7 +689,7 @@ void create_connect(void)
     {
       if (DNR_ID)
       {
-	return; //Ждем готовности DNR
+	return; //§Ё§Х§Ц§Ю §Ф§а§д§а§У§Я§а§г§д§Ъ DNR
       }
     }
     else
@@ -727,7 +727,7 @@ void create_connect(void)
 	  closesocket(sock);
 	  sock=-1;
 	  LockSched();
-	  ShowMSG(1,(int)"Can't connect!");
+	  ShowMSG(1,(int)"І»ДЬБ¬ЅУ!");
 	  UnlockSched();
 	  GBS_StartTimerProc(&reconnect_tmr,TMR_SECOND*120,do_reconnect);
 	}
@@ -735,9 +735,9 @@ void create_connect(void)
       else
       {
 	LockSched();
-	ShowMSG(1,(int)"Can't create socket, GPRS restarted!");
+	ShowMSG(1,(int)"І»ДЬґґЅЁsocket,ЗлЦШРВЖф¶ЇGPRS!");
 	UnlockSched();
-	//Не осилили создания сокета, закрываем GPRS-сессию
+	//§Ї§Ц §а§г§Ъ§Э§Ъ§Э§Ъ §г§а§Щ§Х§С§Я§Ъ§с §г§а§Ь§Ц§д§С, §Щ§С§Ь§в§н§У§С§Ц§Ю GPRS-§г§Ц§г§г§Ъ§р
 	GPRS_OnOff(0,1);
       }
     }	
@@ -746,7 +746,7 @@ void create_connect(void)
   {
     DNR_TRIES--;
     LockSched();
-    ShowMSG(1,(int)"Host not found!");
+    ShowMSG(1,(int)"Цч»ъОґХТµЅ!");
     UnlockSched();
   }
 }
@@ -808,7 +808,7 @@ void CheckDoubleRun(void)
   {
     LockSched();
     CloseCSM(maincsm_id);
-    ShowMSG(1,(int)"MailDaemon already started!");
+    ShowMSG(1,(int)"MailDaemonТСѕ­ФЛРР!");
     UnlockSched();
   }
   else
@@ -826,11 +826,11 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
   {
     if (strcmp_nocase(successed_config_filename,(char *)msg->data0)==0)
     {
-      ShowMSG(1,(int)"MailDaemon config updated!");
+      ShowMSG(1,(int)"MailDaemonЕдЦГТСёьРВ!");
       InitConfig();
     }
   }
-  if (msg->msg==MSG_IPC)  // Пришло сообщение, возможно от вьювера
+  if (msg->msg==MSG_IPC)  // §±§в§Ъ§к§Э§а §г§а§а§Т§л§Ц§Я§Ъ§Ц, §У§а§Щ§Ю§а§Ш§Я§а §а§д §У§о§р§У§Ц§в§С
   { 
     IPC_REQ *ipc;
     if ((ipc=(IPC_REQ*)msg->data0))
@@ -853,7 +853,7 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
         case IPC_VIEWER_LOGFF:
           if (!viewer_present)
           {
-            viewer_present=-1;   // Вьювер вышел
+            viewer_present=-1;   // §Ј§о§р§У§Ц§в §У§н§к§Ц§Э
           }
           break;
           
@@ -874,12 +874,12 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
           
         case IPC_STOP_CHECKING:
           mfree(ipc);
-          SUBPROC((void *)end_connect,"Manually stopped");
+          SUBPROC((void *)end_connect,"КЦ¶ЇНЈЦ№");
           break;
           
         case IPC_CHECK_DOUBLERUN:
           ipc->data=(void *)((int)(ipc->data)+1);
-          //Если приняли свое собственное сообщение, значит запускаем чекер
+          //§¦§г§Э§Ъ §б§в§Ъ§Я§с§Э§Ъ §г§У§а§Ц §г§а§Т§г§д§У§Ц§Я§Я§а§Ц §г§а§а§Т§л§Ц§Я§Ъ§Ц, §Щ§Я§С§й§Ъ§д §Щ§С§б§е§г§Ь§С§Ц§Ю §й§Ц§Ь§Ц§в
           if (ipc->name_from==ipc_my_name) SUBPROC((void *)CheckDoubleRun);
           break;
         }
@@ -926,13 +926,13 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
     }
     if ((int)msg->data1==sock)
     {
-      //Если наш сокет
+      //§¦§г§Э§Ъ §Я§С§к §г§а§Ь§Ц§д
       switch((int)msg->data0)
       {
       case ENIP_SOCK_CONNECTED:
 	if (pop_stat.connect_state==1)
 	{
-	  //Соединение установленно, посылаем пакет login
+	  //§і§а§Ц§Х§Ъ§Я§Ц§Я§Ъ§Ц §е§г§д§С§Я§а§У§Э§Ц§Я§Я§а, §б§а§г§н§Э§С§Ц§Ю §б§С§Ь§Ц§д login
           InitMailDB();
 	  strcpy(pop_stat.log,"Try to login...");
           pop_stat.connect_state=2;
@@ -940,31 +940,31 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
 	}
 	else
 	{
-	  ShowMSG(1,(int)"Illegal message ENIP_SOCK_CONNECTED!");
+	  ShowMSG(1,(int)"І»єП·ЁµДУКјю ENIP_SOCK_CONNECTED!");
 	}
 	break;
       case ENIP_SOCK_DATA_READ:
 	if (pop_stat.connect_state>=2)
 	{
-	  //Если посылали send
+	  //§¦§г§Э§Ъ §б§а§г§н§Э§С§Э§Ъ send
 	  SUBPROC((void *)get_answer);
 	  //    REDRAW();
 	}
 	else
 	{
-	  ShowMSG(1,(int)"Illegal message ENIP_DATA_READ");
+	  ShowMSG(1,(int)"І»єП·ЁµДУКјю ENIP_DATA_READ");
 	}
 	break;
         
       case ENIP_BUFFER_FREE:
         if (!sendq_p)
         {
-          ShowMSG(1,(int)"Illegal ENIP_BUFFER_FREE!");
+          ShowMSG(1,(int)"І»єП·Ё ENIP_BUFFER_FREE!");
           SUBPROC((void *)end_socket);
         }
         else
         {
-          //Досылаем очередь
+          //§Ґ§а§г§н§Э§С§Ц§Ю §а§й§Ц§в§Ц§Х§о
           snprintf(pop_stat.log,255,"ENIP_BUFFER_FREE");
           REDRAW();
           SUBPROC((void *)send_str,0);
@@ -979,7 +979,7 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
         }
         else
         {
-          // Досылаем очередь
+          // §Ґ§а§г§н§Э§С§Ц§Ю §а§й§Ц§в§Ц§Х§о
           snprintf(pop_stat.log,255,"ENIP_BUFFER_FREE1");
           REDRAW();
           SUBPROC((void *)send_str,0);
@@ -988,7 +988,7 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
           
         
       case ENIP_SOCK_REMOTE_CLOSED:
-	//Закрыт со стороны сервера
+	//§©§С§Ь§в§н§д §г§а §г§д§а§в§а§Я§н §г§Ц§в§У§Ц§в§С
 	if (pop_stat.connect_state) SUBPROC((void *)end_socket);
 	break;
         
@@ -1101,10 +1101,10 @@ int GetSMSNumber(const PDU *sms, char *number)
   if ((*p++)!=0x11) return (0);
   if ((*p++)!=0x11) return (0);
   if (!(*p++)) return (0);
-  c=*p++; //Пропускаем SCA
+  c=*p++; //§±§в§а§б§е§г§Ь§С§Ц§Ю SCA
   p+=c;
-  if ((*p++)&3) return (0); //Неподходящий тип сообщения ;)
-  i=*p++; //Длина номера в нибблах
+  if ((*p++)&3) return (0); //§Ї§Ц§б§а§Х§з§а§Х§с§л§Ъ§Ы §д§Ъ§б §г§а§а§Т§л§Ц§Я§Ъ§с ;)
+  i=*p++; //§Ґ§Э§Ъ§Я§С §Я§а§Ю§Ц§в§С §У §Я§Ъ§Т§Т§Э§С§з
   if (*p++==0x91) *number++='+';
   m=0;
   c=0;

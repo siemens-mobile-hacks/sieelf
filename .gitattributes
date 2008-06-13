@@ -698,6 +698,8 @@ MailClient/MailViewer/img/mes_unread.png -text
 MailClient/MailViewer/img/mes_unread_att.png -text
 MailClient/MailViewer/img/only_head.png -text
 MailClient/MailViewer/img/only_head_att.png -text
+MailClient/MailViewer/leak_debug.c -text
+MailClient/MailViewer/leak_debug.h -text
 MailClient/MailViewer/main.c -text
 MailClient/MailViewer/sf_mime.h -text
 MailClient/MailViewer/statscreen.c -text

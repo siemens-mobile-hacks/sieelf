@@ -10,22 +10,22 @@ void patch_rect(RECT* rc)
 
 const char *c_states[]=
 {
-  "Disconnected",
-  "Verificating user",
-  "Verificating pass",
-  "Get stat",
-  "Create UIDL list",
-  "Create list",  
-  "Process List",
-  "Receive Headers",
-  "Receive Mail",   
-  "Delete Mail"
+  "¹Ø±ÕÁ¬½Ó",
+  "È·ÈÏÓÃ»§",
+  "È·ÈÏÃÜÂë",
+  "»ñÈ¡×´Ì¬",
+  "´´½¨UIDLÁÐ±í",
+  "´´½¨ÁÐ±í",  
+  "´¦ÀíÁÐ±í",
+  "½ÓÊÜ±êÌâ",
+  "½ÓÊÜÓÊ¼þ",   
+  "É¾³ýÓÊ¼þ"
 };
 
 extern POP_STAT *pop_stat;
 extern volatile int daemon_present;
 extern volatile int options_menu_id;
-extern void ascii2ws(WSHDR *ws, const char *s);
+extern void gb_2ws(WSHDR *ws, const char *s);
 extern void send_req_checkmailbox(void);
 extern void send_req_stopcheck(void);
 
@@ -46,24 +46,24 @@ void method0(MAIN_GUI *data)
 		   GetPaletteAdrByColorIndex(20));
   if (daemon_present==-1)
   {
-    ascii2ws(data->ws1,"Daemon not runned!");
+    gb_2ws(data->ws1,"DaemonÃ»ÓÐÔËÐÐ!");
     DrawString(data->ws1,3,3+YDISP,scr_w-4,scr_h-4-GetFontYSIZE(FONT_MEDIUM),FONT_SMALL,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   }
   else
   {
-    wsprintf(data->ws1,"State: %d POPState: %d\n%t\n%t",pop_stat->connect_state,
+    wsprintf(data->ws1,"%t: %d %t: %d\n%t\n%t","×´Ì¬",pop_stat->connect_state,"POP×´Ì¬",
              pop_stat->pop_state,c_states[pop_stat->pop_state],pop_stat->log);
     DrawString(data->ws1,3,3+YDISP,scr_w-4,scr_h-4-GetFontYSIZE(FONT_MEDIUM),FONT_SMALL,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
     
-    wsprintf(data->ws1,"send/recv bytes: %u/%u\nReceived: %u/%u\nDeleted: %u",pop_stat->total_send,pop_stat->total_recv,
-             pop_stat->pop3_recv,pop_stat->in_pop3,pop_stat->pop3_del);
+    wsprintf(data->ws1,"%t: %u/%u\n%t: %u/%u\n%t: %u","·¢ËÍ/½ÓÊÜ ×Ö½Ú",pop_stat->total_send,pop_stat->total_recv,"ÒÑ½ÓÊÜ",
+             pop_stat->pop3_recv,pop_stat->in_pop3,"ÒÑÉ¾³ý",pop_stat->pop3_del);
     DrawString(data->ws1,3,scr_h/3+YDISP,scr_w-4,scr_h-4-GetFontYSIZE(FONT_MEDIUM),FONT_SMALL,0,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));  
   }
    
-  ascii2ws(data->ws1,"Stop");
+  gb_2ws(data->ws1,"Í£Ö¹");
   DrawString(data->ws1,3,scr_h-4-GetFontYSIZE(FONT_MEDIUM),(scr_w>>1)-1,scr_h-4,FONT_MEDIUM,2,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
   
-  ascii2ws(data->ws1,"Close");
+  gb_2ws(data->ws1,"¹Ø±Õ");
   DrawString(data->ws1,(scr_w>>1),scr_h-4-GetFontYSIZE(FONT_MEDIUM),scr_w-4,scr_h-4,FONT_MEDIUM,2,GetPaletteAdrByColorIndex(0),GetPaletteAdrByColorIndex(23));
 }
 
@@ -105,7 +105,7 @@ int method5(MAIN_GUI *data,GUI_MSG *msg)
       
     case RIGHT_SOFT:
       if (pop_stat->connect_state==0 || daemon_present==-1)
-        return(1); //Ïðîèñõîäèò âûçîâ GeneralFunc äëÿ òåê. GUI -> çàêðûòèå GUI
+        return(1); //§±§â§à§Ú§ã§ç§à§Õ§Ú§ä §Ó§í§Ù§à§Ó GeneralFunc §Õ§Ý§ñ §ä§Ö§Ü. GUI -> §Ù§Ñ§Ü§â§í§ä§Ú§Ö GUI
       return (3);
       
       

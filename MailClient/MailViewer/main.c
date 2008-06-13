@@ -3,7 +3,8 @@
 #include "..\mailclient.h"
 #include "..\rect_patcher.h"
 #include "decode.h"
-
+//#include <time.h>
+#include "leak_debug.h"
 
 const char ipc_daemon_name[]=IPC_DAEMON_NAME;
 const char ipc_my_name[]=IPC_VIEWER_NAME;
@@ -16,107 +17,10 @@ const char eol[]="\r\n";
 const char d_eol[]="\r\n\r\n";
 // ------------------------------- Defines ----------------------------------------
 
-const char wintranslation[128]=
+void gb_2ws(WSHDR *ws, const char *s)//gb2ws
 {
-  0x5F,0x5F,0x27,0x5F,0x22,0x3A,0xC5,0xD8,0x5F,0x25,0x5F,0x3C,0x5F,0x5F,0x5F,0x5F,
-  0x5F,0x27,0x27,0x22,0x22,0x07,0x2D,0x2D,0x5F,0x54,0x5F,0x3E,0x5F,0x5F,0x5F,0x5F,
-  0xFF,0xF6,0xF7,0x5F,0xFD,0x83,0xB3,0x15,0xF0,0x63,0xF2,0x3C,0xBF,0x2D,0x52,0xF4,
-  0xF8,0x2B,'I' ,'i' ,0xA3,0xE7,0x14,0xFA,0xF1,0xFC,0xF3,0x3E,0x5F,0x5F,0x5F,0xF5,
-  0x80,0x81,0x82,0x83,0x84,0x85,0x86,0x87,0x88,0x89,0x8A,0x8B,0x8C,0x8D,0x8E,0x8F,
-  0x90,0x91,0x92,0x93,0x94,0x95,0x96,0x97,0x98,0x99,0x9A,0x9B,0x9C,0x9D,0x9E,0x9F,
-  0xA0,0xA1,0xA2,0xA3,0xA4,0xA5,0xA6,0xA7,0xA8,0xA9,0xAA,0xAB,0xAC,0xAD,0xAE,0xAF,
-  0xE0,0xE1,0xE2,0xE3,0xE4,0xE5,0xE6,0xE7,0xE8,0xE9,0xEA,0xEB,0xEC,0xED,0xEE,0xEF
-};
-
-const char koi8translation[128]=
-{
-  0x5F,0x5F,0x27,0x5F,0x22,0x3A,0xC5,0xD8,0x5F,0x25,0x5F,0x3C,0x5F,0x5F,0x5F,0x5F,
-  0x5F,0x27,0x27,0x22,0x22,0x07,0x2D,0x2D,0x5F,0x54,0x5F,0x3E,0x5F,0x5F,0x5F,0x5F,
-  0xFF,0xF6,0xF7,0xF1,0xF3,0x5F,'i' ,0xF5,0xF0,0x63,0xF2,0x3C,0xBF,0xA3,0x52,0xF4,
-  0xF8,0x2B,0x5F,0xF0,0xF2,0xE7,'I' ,0xF4,0xF1,0xFC,0xF3,0x3E,0x5F,0x83,0x5F,0xF5,
-
-  0xEE,0xA0,0xA1,0xE6,0xA4,0xA5,0xE4,0xA3,0xE5,0xA8,0xA9,0xAA,0xAB,0xAC,0xAD,0xAE,
-  0xAF,0xEF,0xE0,0xE1,0xE2,0xE3,0xA6,0xA2,0xEC,0xEB,0xA7,0xE8,0xED,0xE9,0xE7,0xEA,
-  0x9E,0x80,0x81,0x96,0x84,0x85,0x94,0x83,0x95,0x88,0x89,0x8A,0x8B,0x8C,0x8D,0x8E,
-  0x8F,0x9F,0x90,0x91,0x92,0x93,0x86,0x82,0x9C,0x9B,0x87,0x98,0x9D,0x99,0x97,0x9A
-};
-
-const unsigned short dos2unicode[128]=
-{
-  0x0410,0x0411,0x0412,0x0413,0x0414,0x0415,0x0416,0x0417,
-  0x0418,0x0419,0x041A,0x041B,0x041C,0x041D,0x041E,0x041F,
-  0x0420,0x0421,0x0422,0x0423,0x0424,0x0425,0x0426,0x0427,
-  0x0428,0x0429,0x042A,0x042B,0x042C,0x042D,0x042E,0x042F,
-  0x0430,0x0431,0x0432,0x0433,0x0434,0x0435,0x0436,0x0437,
-  0x0438,0x0439,0x043A,0x043B,0x043C,0x043D,0x043E,0x043F,
-  0x002D,0x002D,0x002D,0x00A6,0x002B,0x00A6,0x00A6,0x00AC,
-  0x00AC,0x00A6,0x00A6,0x00AC,0x002D,0x002D,0x002D,0x00AC,
-  0x004C,0x002B,0x0054,0x002B,0x002D,0x002B,0x00A6,0x00A6,
-  0x004C,0x0433,0x00A6,0x0054,0x00A6,0x003D,0x002B,0x00A6,
-  0x00A6,0x0054,0x0054,0x004C,0x004C,0x002D,0x0433,0x002B,
-  0x002B,0x002D,0x002D,0x002D,0x002D,0x00A6,0x00A6,0x002D,
-  0x0440,0x0441,0x0442,0x0443,0x0444,0x0445,0x0446,0x0447,
-  0x0448,0x0449,0x044A,0x044B,0x044C,0x044D,0x044E,0x044F,
-  0x0401,0x0451,0x0404,0x0454,0x0407,0x0457,0x040E,0x045E,
-  0x00B0,0x2022,0x00B7,0x0076,0x2116,0x00A4,0x00A6,0x00A0
-};
-
-
-
-unsigned int char8to16(int c, int type)
-{
-  if (c>=128)
-  {
-    switch(type)
-    {
-    case 1:
-      //Win->Dos
-      c=wintranslation[c-128];
-      break;
-    case 2:
-      //Koi8->Dos
-      c=koi8translation[c-128];
-      break;
-    case 3:
-      break;
-      //Dos
-    }
-    if (c<128) return(c);
-    return(dos2unicode[c-128]);
-  }
-  return(c);
+  gb2ws(ws, s, strlen(s));
 }
-
-
-void ascii2ws(WSHDR *ws, const char *s)
-{
-  char c;
-  CutWSTR(ws,0);
-  while((c=*s++))
-  {
-    wsAppendChar(ws,char8to16(c,1));
-  }
-}
-
-void koi2ws(WSHDR *ws, const char *s)
-{
-  char c;
-  CutWSTR(ws,0);
-  while((c=*s++))
-  {
-    wsAppendChar(ws,char8to16(c,2));
-  }
-}
-
-void dos2ws(WSHDR *ws, const char *s)
-{
-  int c;
-  CutWSTR(ws,0);
-  while((c=*s++))
-  {
-    wsAppendChar(ws,char8to16(c,3));
-  }
-}  
 
 
 void delspaces(char *s)
@@ -155,10 +59,11 @@ typedef struct
 #pragma segment="ELFBEGIN"
 void ElfKiller(void)
 {
+  Clean();
   kill_data(__segment_begin("ELFBEGIN"),(void (*)(void *))mfree_adr());
 }
 //-----------------------------------------------------------------------------------
-volatile int daemon_present=-1; //Àêòèâåí ëè äåìîí
+volatile int daemon_present=-1; //§¡§Ü§ä§Ú§Ó§Ö§ß §Ý§Ú §Õ§Ö§Þ§à§ß
 POP_STAT *pop_stat;
 
 int menusoftkeys[]={0,1,2};
@@ -224,22 +129,24 @@ volatile ML_VIEW *mails;
 void FreeMailDB()
 {
   ML_VIEW *ml_cur=(ML_VIEW *)mails;
+
   LockSched();
   mails=0;
   UnlockSched();
   ML_VIEW *ml_prev;
   while (ml_cur)
   {
-    mfree(ml_cur->uidl);
-    mfree(ml_cur->header);
-    mfree(ml_cur->subject);
-    mfree(ml_cur->from);
-    mfree(ml_cur->to);
-    mfree(ml_cur->content_type);
-    mfree(ml_cur->content_encoding);
+    if(ml_cur->uidl)             debug_mfree(ml_cur->uidl, "FreeMailDB (1)");
+    if(ml_cur->header)           debug_mfree(ml_cur->header, "FreeMailDB (2)");
+    if(ml_cur->subject)          debug_mfree(ml_cur->subject, "FreeMailDB (3)");
+    if(ml_cur->from)             debug_mfree(ml_cur->from, "FreeMailDB (4)");
+    if(ml_cur->to)               debug_mfree(ml_cur->to, "FreeMailDB (5)");
+    if(ml_cur->content_type)     debug_mfree(ml_cur->content_type, "FreeMailDB (6)");
+    if(ml_cur->content_encoding) debug_mfree(ml_cur->content_encoding, "FreeMailDB (7)");
+    if(ml_cur->date)             debug_mfree(ml_cur->date, "FreeMailDB (8)");
     ml_prev=ml_cur;
     ml_cur=ml_cur->next;
-    mfree(ml_prev);
+    debug_mfree(ml_prev, "FreeMailDB (8)");
   }
 }
 
@@ -251,6 +158,7 @@ int InitMailDB()
   MAIL_DB mail_db;
   char *uidl;
   int n=0;
+
   ML_VIEW *ml_cur=(ML_VIEW *)&mails;
   unsigned int err;
   strcpy(fname,EML_PATH);
@@ -268,26 +176,27 @@ int InitMailDB()
   {
     while (fread(f,&mail_db,sizeof(MAIL_DB),&err)==sizeof(MAIL_DB))
     {
+
       if(mail_db.magic!=MDB_MAGIC) break;
-      ml_cur=ml_cur->next=malloc(sizeof(ML_VIEW));
+      ml_cur=ml_cur->next=debug_malloc(sizeof(ML_VIEW), "InitMailDB (1)");
       zeromem(ml_cur,sizeof(ML_VIEW));
       ml_cur->prev_state = ml_cur->state=mail_db.state;
       ml_cur->is_read=mail_db.is_read;
       ml_cur->mail_size=mail_db.mail_size;
-      ml_cur->subject=malloc(129);
-      strcpy(ml_cur->subject, mail_db.hdr);
+      ml_cur->subject=debug_malloc(129, "InitMailDB (2)");
+      memcpy(ml_cur->subject, mail_db.hdr, 128);
       if (mail_db.uidl_len)
       {
-        uidl=malloc(mail_db.uidl_len+1);
+        uidl=debug_malloc(mail_db.uidl_len+1, "InitMailDB (3)");
         uidl[mail_db.uidl_len]=0;
-        fread(f,uidl,mail_db.uidl_len,&err);
+        fread(f,uidl,mail_db.uidl_len,&err); 
         ml_cur->uidl=uidl;
       }
       else ml_cur->uidl=0;
       n++;
     }
     fclose(f,&err);
-    InitHeaders();
+    InitHeaders(); 
   }
   return (n);
 }
@@ -297,6 +206,7 @@ void write_mail_DB()
   int f;
   unsigned int err;
   char fname[128];
+
   ML_VIEW *ml_list=(ML_VIEW *)&mails;
   MAIL_DB mail_db;
   strcpy(fname,EML_PATH);
@@ -349,7 +259,7 @@ int get_fsize(int f)
   return (fsize);
 }
 
-const char eml_not_found[]="Error! File not found!";
+const char eml_not_found[]="´íÎó! ÎÄ¼þÃ»ÓÐÕÒµ½!";
 
 char *get_content_type(ML_VIEW *ml_list);
 int get_ctype_index(char *str);
@@ -382,6 +292,7 @@ int tdiff (int year, int month, int day, int hour, int min, int sec)
 	  + (sec - 0));
 }
 
+//------------------------------------------------------------------------------
 
 int atoi (const char *str)
 {
@@ -397,10 +308,13 @@ int atoi (const char *str)
   return n?-r:r;
 } 
 
+//------------------------------------------------------------------------------
+
 unsigned get_date_from_str(const char *str)
 {
   static char *months[] =
-  {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+  {"Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
   static int day_tab[2][12] =
   {
     {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
@@ -408,8 +322,89 @@ unsigned get_date_from_str(const char *str)
   };
   int year, month, day, hour, min, sec, cor;
   char *buf, b[128];
+  const char *ptr;
   buf = strstr_nocase(str, ", ");
-  if(buf) str = buf + 2;
+
+  if(buf) 
+    str = buf + 2;
+  
+  for(ptr = str; *ptr && !((*ptr > 'A' && *ptr < 'Z') || 
+                           (*ptr > 'a' && *ptr < 'z')); ptr++);
+
+  if(!*ptr) 
+  {
+    buf = strstr_nocase(str, ".");
+    if(!buf) return 0;
+    
+    buf = b;
+    while(!(*str >= '0' && *str <= '9')) str++;
+    while(*str >= '0' && *str <= '9')
+    {
+     *buf = *str;
+     str++;
+     buf++;
+    }
+    *buf = 0;
+    buf = b;
+    month = atoi(buf);
+    
+    while(!(*str >= '0' && *str <= '9')) str++;
+    while(*str >= '0' && *str <= '9')
+    {
+     *buf = *str;
+     str++;
+     buf++;
+    }
+    *buf = 0;
+    buf = b;
+    day = atoi(buf);
+    
+    while(!(*str >= '0' && *str <= '9')) str++;
+    while(*str >= '0' && *str <= '9')
+    {
+     *buf = *str;
+     str++;
+     buf++;
+    }
+    *buf = 0;
+    buf = b;
+    year = atoi(buf);
+    
+    while(!(*str >= '0' && *str <= '9')) str++;
+    while(*str >= '0' && *str <= '9')
+    {
+     *buf = *str;
+     str++;
+     buf++;
+    }
+    *buf = 0;
+    buf = b;
+    hour = atoi(buf);
+
+    while(!(*str >= '0' && *str <= '9')) str++;
+    while(*str >= '0' && *str <= '9')
+    {
+     *buf = *str;
+     str++;
+     buf++;
+    }
+    *buf = 0;
+    buf = b;
+    min = atoi(buf);
+
+    while(!(*str >= '0' && *str <= '9')) str++;
+    while(*str >= '0' && *str <= '9')
+    {
+     *buf = *str;
+     str++;
+     buf++;
+    }
+    *buf = 0;
+    buf = b;
+    sec = atoi(buf);
+
+    return (tdiff(year, month, day, hour, min, sec));    
+  }
   buf = b;
   while(*str == ' ') str++;
   while(*str != ' ')
@@ -540,6 +535,29 @@ unsigned get_date_from_str(const char *str)
   return (tdiff(year, month, day, hour, min, sec));
 }
 
+//------------------------------------------------------------------------------
+
+int get_received_date(char * str)
+{
+  char * r = strstr_nocase(str, "Received:"), *s, *line;
+  if(!r) return 0;
+  
+  line = s = r;
+  while(*s)
+  {
+    if((*s == '\r' || *s == '\n') && (s[1] == '\t' || s[1] == ' '))
+      line = s+1;  //§ª§ë§Ö§Þ §ã§ä§â§à§Ü§å, §ß§Ñ§é§Ú§ß§Ñ§ð§ë§å§ð§ã§ñ §ã §á§â§à§Ò§Ö§Ý§à§Ó §Ú§Ý§Ú §ä§Ñ§Ò§å§Ý§ñ§è§Ú§Ú
+    if((*s == '\r' || *s == '\n') && ((s[1] >= 'a' && s[1] <= 'z') || 
+                                      (s[1] >= 'A' && s[1] <= 'Z')))
+      break;  //§±§à§ã§Ý§Ö§Õ§ß§ñ§ñ §Ý§Ú §ã§ä§â§à§Ü§Ñ §Ò§Ý§à§Ü§Ñ?
+    s++;
+  }
+  while(*line && (*line == ' ' || *line == '\t')) line++;
+  return get_date_from_str(line);
+}
+
+//------------------------------------------------------------------------------
+
 void InitHeaders()
 {
   int f, cd;
@@ -549,6 +567,7 @@ void InitHeaders()
   int fsize, flag=1;
   char *_eol;
   char *content_type;
+  
   ML_VIEW *ml_cur=(ML_VIEW *)&mails, *prev, *next;
   while((ml_cur=ml_cur->next))
   {
@@ -556,16 +575,19 @@ void InitHeaders()
     cd = TEXT;
     if (ml_cur->header)
     {
-      mfree(ml_cur->header);
+      debug_mfree(ml_cur->header, "InitHeaders (1)");
       ml_cur->header=0;
     }
+    
+    ml_cur->timestamp = 0;
     snprintf(fname,127,"%s%s.eml",EML_PATH,ml_cur->uidl);
     if ((f=fopen(fname,A_ReadOnly+A_BIN,P_READ,&err))==-1)
     {
+      ml_cur->header=0;
       continue;
     }
     fsize=get_fsize(f);
-    buf=malloc(fsize+1);
+    buf=debug_malloc(fsize+1, "InitHeaders (1)");
     fread(f,buf,fsize,&err);
     fclose(f,&err);
     buf[fsize]=0;
@@ -580,30 +602,33 @@ void InitHeaders()
     if (_eol)
     {
       *_eol=0;
-      buf=realloc(buf,strlen(buf)+1);
+      buf=debug_realloc(buf,strlen(buf)+1, "InitHeaders (1)");
     }
 
     ml_cur->header=buf;
-    content_type=get_content_type(ml_cur);  // Ïðîâåðèì êîäèðîâêó
+    content_type=get_content_type(ml_cur);  // §±§â§à§Ó§Ö§â§Ú§Þ §Ü§à§Õ§Ú§â§à§Ó§Ü§å
     
     if (get_param_from_string(content_type, "charset=", fname, 127))
       dec_str=unmime_header(buf, get_charset(fname));
     else
       dec_str=unmime_header(buf, UTF_8);
-    
-    date=get_date(ml_cur);
-    if (date)
-    {
-      date=strchr(date, ':')+1;
-      while (*date==' ' || *date==0x09) date++;
-      ml_cur->timestamp=get_date_from_str(date);
+       
+    if(!(ml_cur->timestamp = get_received_date(dec_str)))
+    {    
+      date=get_date(ml_cur);
+      if (date)
+      {
+        date=strchr(date, ':')+1;
+        while (*date==' ' || *date==0x09) date++;
+        ml_cur->timestamp=get_date_from_str(date);
+      }
     }
-
-    mfree(buf);
+        
+    debug_mfree(buf, "InitHeaders (2)");
     ml_cur->header=dec_str; 
 
     
-    content_type=get_content_type(ml_cur);  // Ïðîâåðèì íàëè÷èå àòòà÷åé
+    content_type=get_content_type(ml_cur);  // §±§â§à§Ó§Ö§â§Ú§Þ §ß§Ñ§Ý§Ú§é§Ú§Ö §Ñ§ä§ä§Ñ§é§Ö§Û
     if (content_type)
     {
       int l;
@@ -716,6 +741,7 @@ char *get_string_from_header(ML_VIEW *ml_list, char *str)
   char *end;
   char *subject;
   int len, prev_len, c_len;
+
   if (!ml_list) return (0);
   if (ml_list->header)
   {
@@ -729,7 +755,7 @@ char *get_string_from_header(ML_VIEW *ml_list, char *str)
       if (!strncmp_nocase(p, str,len))
       {
         len=cstrlen(p);
-        subject=malloc(len+1);
+        subject=debug_malloc(len+1, str);
         cstrcpy(subject,p);
         p+=len;
         while(*p!=0 && (*(p+2)=='\t' || *(p+2)==' '))
@@ -738,7 +764,7 @@ char *get_string_from_header(ML_VIEW *ml_list, char *str)
           prev_len=len;
           c_len=cstrlen(p);
           len+=c_len;
-          subject=realloc(subject,len+1);
+          subject=debug_realloc(subject,len+1, "get_string_from_header (realloc)");
           cstrcpy(subject+prev_len,p);
           p+=c_len;
         }
@@ -754,18 +780,18 @@ char *get_string_from_header(ML_VIEW *ml_list, char *str)
 
 char *get_subject(ML_VIEW *ml_list)
 {
-  char no_subject[]="Subject: <áåç òåìû>";
+  char no_subject[]="Ö÷Ìâ: <ÎÞÖ÷Ìâ>";
   char *subject;
   if (ml_list->subject[0]) return ml_list->subject;
-  subject=get_string_from_header(ml_list, "subject:");
+  subject=get_string_from_header(ml_list, "Subject:");
   if(!subject)
   {
-    subject=(char *)malloc(strlen(no_subject)+1);
+    subject=(char *)debug_malloc(strlen(no_subject)+1, "get_subject (1)");
     strcpy(subject,no_subject);
   }
 
   strcpy(ml_list->subject, subject);
-  mfree(subject);
+  debug_mfree(subject, "get_subject (1)");
   return (ml_list->subject);
 }
 
@@ -773,7 +799,7 @@ char *get_date(ML_VIEW *ml_list)
 {
   char *date;
   if (ml_list->date) return ml_list->date;
-  date=get_string_from_header(ml_list, "date:");
+  date=get_string_from_header(ml_list, "Date:");
   return (ml_list->date=date);
 }
 
@@ -781,7 +807,7 @@ char *get_from(ML_VIEW *ml_list)
 {
   char *from;
   if (ml_list->from) return ml_list->from;
-  from=get_string_from_header(ml_list, "from:");
+  from=get_string_from_header(ml_list, "From:");
   return (ml_list->from=from);
 }
 
@@ -789,7 +815,7 @@ char *get_to(ML_VIEW *ml_list)
 {
   char *to;
   if (ml_list->to) return ml_list->to;
-  to=get_string_from_header(ml_list, "to:");
+  to=get_string_from_header(ml_list, "To:");
   return (ml_list->to=to);
 }
 
@@ -827,7 +853,7 @@ char *get_from_multipartheader(char *begin_h, char *end_h, char *str)
       if (!strncmp_nocase(p, str,len))
       {
         len=cstrlen(p);
-        s=malloc(len+1);
+        s=debug_malloc(len+1, "get_from_multipartheader (1)");
         cstrcpy(s,p);
         p+=len;
         while(*p!=0 && (*(p+2)=='\t' || *(p+2)==' '))
@@ -836,7 +862,7 @@ char *get_from_multipartheader(char *begin_h, char *end_h, char *str)
           prev_len=len;
           c_len=cstrlen(p);
           len+=c_len;
-          s=realloc(s,len+1);
+          s=debug_realloc(s,len+1, "get_from_multipartheader (1)");
           cstrcpy(s+prev_len,p);
           p+=c_len;
         }
@@ -850,8 +876,8 @@ char *get_from_multipartheader(char *begin_h, char *end_h, char *str)
   return 0;
 }
 
-// Òðåáóåòñÿ äëÿ boundary= , name= , charset= 
-int get_param_from_string(char *str, char *param, char *to, int maxlen)  // Âûäåÿåò èç ñòðîêè âèäà charset="koi8-r" èëè charset=koi8-r ïîäñòðîêó è êîïèðóåò åå â ñòðîêó íàçíà÷åíèÿ
+// §´§â§Ö§Ò§å§Ö§ä§ã§ñ §Õ§Ý§ñ boundary= , name= , charset= 
+int get_param_from_string(char *str, char *param, char *to, int maxlen)  // §£§í§Õ§Ö§ñ§Ö§ä §Ú§Ù §ã§ä§â§à§Ü§Ú §Ó§Ú§Õ§Ñ charset="koi8-r" §Ú§Ý§Ú charset=koi8-r §á§à§Õ§ã§ä§â§à§Ü§å §Ú §Ü§à§á§Ú§â§å§Ö§ä §Ö§Ö §Ó §ã§ä§â§à§Ü§å §ß§Ñ§Ù§ß§Ñ§é§Ö§ß§Ú§ñ
 {
   int c, d;
   char *p, *s;
@@ -902,18 +928,18 @@ int saveas_onkey(GUI *data, GUI_MSG *msg)
 {
   MAIL_VIEW *mail_view;
   MAIL_PART *mail;
-  int f;
+  int f, len;
   unsigned int err;
   EDITCONTROL ec;
   char *p, *decoded;
-  size_t size;
+  size_t size = 0;
   char fname[128];
   mail_view=EDIT_GetUserPointer(data);
   if (msg->keys==0xFFF)
   {
     if (!mail_view)
     {
-      ShowMSG(1,(int)"Can't save attach!");
+      ShowMSG(1,(int)"²»ÄÜ±£´æ¸½¼þ!");
       return (1);
     }
     mail=mail_view->top;
@@ -928,28 +954,34 @@ int saveas_onkey(GUI *data, GUI_MSG *msg)
     case QPRINTABLE:
       decoded=quoted_printable_decode(p, &size);
       break;
+    case BIT8: case BIT7:
+      len=size?size:strlen(p);
+      decoded = debug_malloc(len+1, "saveas_onkey (1)");
+      decoded[len] = 0;
+      memcpy(decoded, p, len);
+      break;
       
     default:
-      ShowMSG(1,(int)"Unknown encoding!");
+      ShowMSG(1,(int)"Î´Öª±àÂë!");
       return (1);
     } 
     if (!decoded) 
     {
-      ShowMSG(1,(int)"Can't decode attach!");
+      ShowMSG(1,(int)"²»ÄÜ½âÂë¸½¼þ!");
       return (1);
     } 
     ExtractEditControl(data,2,&ec);
     ws_2str(ec.pWS,fname,128);
     if ((f=fopen(fname,A_WriteOnly+A_BIN+A_Truncate+A_Create, P_WRITE, &err))==-1)
     {
-      mfree(decoded);
-      ShowMSG(1,(int)"Can't create file!");
+      debug_mfree(decoded, "saveas_onkey (1)");
+      ShowMSG(1,(int)"²»ÄÜ´´½¨ÎÄ¼þ!");
       return (1);
     }
     fwrite(f, decoded, size, &err);
-    mfree(decoded);
+    debug_mfree(decoded, "saveas_onkey (2)");
     fclose(f, &err);
-    ShowMSG(1,(int)"Succesfully saved!");
+    ShowMSG(1,(int)"±£´æ³É¹¦!");
     return(1);
   }
   return(0); //Do standart keys
@@ -959,11 +991,11 @@ int saveas_onkey(GUI *data, GUI_MSG *msg)
 void saveas_ghook(GUI *data, int cmd)
 {
   MAIL_VIEW *mail_view;
-  static SOFTKEY_DESC sk={0x0FFF,0x0000,(int)"Save!"};
+  static SOFTKEY_DESC sk={0x0FFF,0x0000,(int)"±£´æ!"};
   mail_view=EDIT_GetUserPointer(data);
   if (cmd==3)
   {
-    mfree(mail_view);
+    debug_mfree(mail_view, "saveas_ghook (1)");
   }
   if (cmd==0x0A)
   {
@@ -976,7 +1008,7 @@ void saveas_ghook(GUI *data, int cmd)
 }
 
 
-HEADER_DESC saveas_hdr={0,0,0,0,NULL,(int)"Ñîõðàíåíèå",LGP_NULL};
+HEADER_DESC saveas_hdr={0,0,0,0,NULL,(int)"ÕýÔÚ±£´æÖÐ",LGP_NULL};
 
 INPUTDIA_DESC saveas_desc =
 {
@@ -991,16 +1023,16 @@ INPUTDIA_DESC saveas_desc =
   100,
   101,
   0,
-  //  0x00000001 - Âûðîâíÿòü ïî ïðàâîìó êðàþ
-  //  0x00000002 - Âûðîâíÿòü ïî öåíòðó
-  //  0x00000004 - Èíâåðñèÿ çíàêîìåñò
+  //  0x00000001 - §£§í§â§à§Ó§ß§ñ§ä§î §á§à §á§â§Ñ§Ó§à§Þ§å §Ü§â§Ñ§ð
+  //  0x00000002 - §£§í§â§à§Ó§ß§ñ§ä§î §á§à §è§Ö§ß§ä§â§å
+  //  0x00000004 - §ª§ß§Ó§Ö§â§ã§Ú§ñ §Ù§ß§Ñ§Ü§à§Þ§Ö§ã§ä
   //  0x00000008 - UnderLine
-  //  0x00000020 - Íå ïåðåíîñèòü ñëîâà
+  //  0x00000020 - §¯§Ö §á§Ö§â§Ö§ß§à§ã§Ú§ä§î §ã§Ý§à§Ó§Ñ
   //  0x00000200 - bold
   0,
   //  0x00000002 - ReadOnly
-  //  0x00000004 - Íå äâèãàåòñÿ êóðñîð
-  //  0x40000000 - Ïîìåíÿòü ìåñòàìè ñîôò-êíîïêè
+  //  0x00000004 - §¯§Ö §Õ§Ó§Ú§Ô§Ñ§Ö§ä§ã§ñ §Ü§å§â§ã§à§â
+  //  0x40000000 - §±§à§Þ§Ö§ß§ñ§ä§î §Þ§Ö§ã§ä§Ñ§Þ§Ú §ã§à§æ§ä-§Ü§ß§à§á§Ü§Ú
   0x40000000
 };
 
@@ -1016,7 +1048,7 @@ void create_save_as_dialog(MAIL_PART *top, char *eml)
   eq=AllocEQueue(ma,mfree_adr());
   WSHDR *ews=AllocWS(128);
   WSHDR *filename;
-  wsprintf(ews,"%t","Path Save File:");  
+  wsprintf(ews,"%t","ÎÄ¼þ±£´æÂ·¾¶:");  
   ConstructEditControl(&ec,ECT_HEADER,0x40,ews,wslen(ews));
   AddEditControlToEditQend(eq,&ec,ma);
   
@@ -1025,16 +1057,16 @@ void create_save_as_dialog(MAIL_PART *top, char *eml)
     
   p=unmime_header(fname, top->charset);
   filename=AllocWS(strlen(p));
-  ascii2ws(filename, p);
+  gb_2ws(filename, p);
   str_2ws(ews, SAVE_AS_FOLDER, 127);
   wstrcat(ews, filename);
   FreeWS(filename);
-  mfree(p);
+  debug_mfree(p, "create_save_as_dialog (1)");
   ConstructEditControl(&ec,ECT_NORMAL_TEXT,0x40,ews,128);
   AddEditControlToEditQend(eq,&ec,ma);  
     
   
-  mail_view=malloc(sizeof(MAIL_VIEW));
+  mail_view=debug_malloc(sizeof(MAIL_VIEW), "create_save_as_dialog (1)");
   mail_view->top=top;
   mail_view->eml=eml;
   patch_header(&saveas_hdr);
@@ -1044,9 +1076,9 @@ void create_save_as_dialog(MAIL_PART *top, char *eml)
 }
 
   
-HEADER_DESC ed1_hdr={0,0,0,0,NULL,(int)"Ïðîñìîòð",LGP_NULL};
+HEADER_DESC ed1_hdr={0,0,0,0,NULL,(int)"²é¿´",LGP_NULL};
 
-HEADER_DESC ed2_hdr={0,0,0,0,NULL,(int)"Èíôîðìàöèÿ",LGP_NULL};
+HEADER_DESC ed2_hdr={0,0,0,0,NULL,(int)"ÐÅÏ¢",LGP_NULL};
 
 void ed1_locret(void){}
 void ed2_locret(void){}
@@ -1064,83 +1096,86 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
   if (msg->gbsmsg->msg==LONG_PRESS)
   {
     l=msg->gbsmsg->submess;
-    if (l==UP_BUTTON)
+    if (!EDIT_IsMarkModeActive(data))  // §´§à§Ý§î§Ü§à §Ö§ã§Ý§Ú §ß§Ö §Ó§í§Õ§Ö§Ý§Ö§ß§Ú§Ö
     {
-      int pos;
-      top=view_list->top;
-      i=EDIT_GetFocus(data);
-
-      prev = top;            
-      while(top)
+      if (l==UP_BUTTON)
       {
-        if (top->ec_n==i)
+        int pos;
+        top=view_list->top;
+        i=EDIT_GetFocus(data);
+        
+        prev = top;
+        while(top)
         {
-          pos = EDIT_GetCursorPos(data);
-          if(pos == 1)
+          if (top->ec_n==i)
           {
-            if(top == ((MAIL_PART *)view_list->top)->next)
+            pos = EDIT_GetCursorPos(data);
+            if(pos == 1)
             {
-              EDIT_SetFocus(data,i-2);
-              EDIT_SetCursorPos(data, 1);
-            }
-            else
-            {
-              EDIT_SetFocus(data,prev->ec_n);
-              EDIT_SetCursorPos(data, prev->textlen+1);
-            }
-            return (-1);
-          }  
-            
-          for(j = 1; j < 512; j++)
-            if(top->scroll[j]+1 >= pos)
-            {
-              EDIT_SetCursorPos(data, top->scroll[j-1]+1);
-              return (-1);
-            }
-          return (-1);
-        }
-        prev = top;            
-        top=top->next;
-      }
-      EDIT_SetFocus(data,i-2);
-      EDIT_SetCursorPos(data, 1);
-      return (-1);
-    }
-    if (l==DOWN_BUTTON)
-    {
-      int pos;
-      top=view_list->top;
-      i=EDIT_GetFocus(data);
-      
-      while(top)
-      {
-        if (top->ec_n==i)
-        {
-          pos = EDIT_GetCursorPos(data);
-          for(j = 1; j < 512; j++)
-          {
-            if(top->scroll[j]+1 > pos)
-            {
-              EDIT_SetCursorPos(data, top->scroll[j]+1);
-              return (-1);
-            }
-            if(top->scroll[j] == top->textlen)
-            {
-              if(top->next)
+              if(top == ((MAIL_PART *)view_list->top)->next)
               {
-                EDIT_SetFocus(data,((MAIL_PART *)top->next)->ec_n);
+                EDIT_SetFocus(data,i-2);
                 EDIT_SetCursorPos(data, 1);
+              }
+              else
+              {
+                EDIT_SetFocus(data,prev->ec_n);
+                EDIT_SetCursorPos(data, prev->textlen+1);
               }
               return (-1);
             }
+            
+            for(j = 1; j < 512; j++)
+              if(top->scroll[j]+1 >= pos)
+              {
+                EDIT_SetCursorPos(data, top->scroll[j-1]+1);
+                return (-1);
+              }
+            return (-1);
           }
-          return (-1);
+          prev = top;
+          top=top->next;
         }
-        top=top->next;
+        EDIT_SetFocus(data,i-2);
+        EDIT_SetCursorPos(data, 1);
+        return (-1);
       }
-      EDIT_SetFocus(data,i+2);
-      EDIT_SetCursorPos(data, 1);
-      return (-1);
+      if (l==DOWN_BUTTON)
+      {
+        int pos;
+        top=view_list->top;
+        i=EDIT_GetFocus(data);
+        
+        while(top)
+        {
+          if (top->ec_n==i)
+          {
+            pos = EDIT_GetCursorPos(data);
+            for(j = 1; j < 512; j++)
+            {
+              if(top->scroll[j]+1 > pos)
+              {
+                EDIT_SetCursorPos(data, top->scroll[j]+1);
+                return (-1);
+              }
+              if(top->scroll[j] == top->textlen)
+              {
+                if(top->next)
+                {
+                  EDIT_SetFocus(data,((MAIL_PART *)top->next)->ec_n);
+                  EDIT_SetCursorPos(data, 1);
+                }
+                return (-1);
+              }
+            }
+            return (-1);
+          }
+          top=top->next;
+        }
+        EDIT_SetFocus(data,i+2);
+        EDIT_SetCursorPos(data, 1);
+        return (-1);
+      }
     }
   }
 
@@ -1227,10 +1262,10 @@ void ed1_ghook(GUI *data, int cmd)
       {
         prev=m;
         m=m->next;
-        mfree(prev);
+        debug_mfree(prev, "ed1_ghook (1)");
       }
-      mfree(view_list->eml);
-      mfree(view_list);
+      debug_mfree(view_list->eml, "ed1_ghook (2)");
+      debug_mfree(view_list, "ed1_ghook (3)");
     }
   }
   if (cmd==0x0C)
@@ -1377,7 +1412,7 @@ MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
     
   headers=AllocWS(100);
 
-  top=malloc(sizeof(MAIL_PART));
+  top=debug_malloc(sizeof(MAIL_PART), "ParseMailBody (1)");
   bot=top;
   top->next=0;
   top->offset=0;
@@ -1395,7 +1430,7 @@ MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
   f=fopen(fname,A_ReadOnly+A_BIN,P_READ,&err);
   if (f==-1)
   {
-    mfree(top);
+    debug_mfree(top, "ParseMailBody (1)");
     return (0);
   }
   
@@ -1403,25 +1438,25 @@ MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
   if (!size)
   {
     fclose(f, &err);
-    mfree(top);
+    debug_mfree(top, "ParseMailBody (2)");
     return (0);
   }
-  eml=malloc(size+1);
+  eml=debug_malloc(size+1, "ParseMailBody (2)");
   fread(f, eml, size, &err);
   fclose(f, &err);
   eml[size]=0;
   end_header=strstr(eml, d_eol);
   if (!end_header || (end_header+4)==(eml+size))
   {
-    mfree(eml);
-    mfree(top);
+    debug_mfree(eml, "ParseMailBody (3)");
+    debug_mfree(top, "ParseMailBody (4)");
     return (0);
   }
   strcpy(eml,end_header+4);
   size=strlen(eml);
   top->size=size;
-  eml=realloc(eml, size+1);
-  top->charset=WIN_1251;
+  eml=debug_realloc(eml, size+1, "ParseMailBody (1)");
+  top->charset=GB2312;
   top->textlen=0;
   while(bot)
   {
@@ -1441,7 +1476,7 @@ MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
       {
       default:
       case BIT8:
-        buf=malloc(bot->size+1);
+        buf=debug_malloc(bot->size+1, "ParseMailBody (3)");
         strncpy(buf,eml+bot->offset,bot->size);
         buf[bot->size]=0;
         break;
@@ -1458,20 +1493,12 @@ MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
       }
       switch(bot->charset)
       {
-      case WIN_1251:
+      case GB2312:
       default:
         break;
    
-      case KOI8_R:
-        koi2win(buf, buf);
-        break;
-   
-      case ISO_8859_5:
-        iso885952win(buf, buf);
-        break;
-
       case UTF_8:
-        utf82win(buf, buf);
+        utf82gb(buf, buf);
         break;
       }
       strip_html(buf);
@@ -1487,7 +1514,7 @@ MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
         }
       bot->scroll[scrolls] = bot->textlen;
       ws=AllocWS(strlen(buf));
-      ascii2ws(ws, buf);
+      gb_2ws(ws, buf);
         
       PrepareEditControl(&ec);
       ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL | ECF_DISABLE_T9,ws,wslen(ws));
@@ -1495,9 +1522,9 @@ MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
       ed_toitem=AddEditControlToEditQend(eq,&ec,ma); 
       bot->ec_n=ed_toitem;
       FreeWS(ws);
-      mfree(buf);
+      debug_mfree(buf, "ParseMailBody (5)");
 
-      ascii2ws(headers,"------------------");
+      gb_2ws(headers,"------------------");
       ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,headers,wslen(headers));
       SetFontToEditCOptions(&ec.ed_options,4);
       AddEditControlToEditQend(eq,&ec,ma);    
@@ -1514,7 +1541,7 @@ MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
       {
       default:
       case BIT8:
-        buf=malloc(bot->size+1);
+        buf=debug_malloc(bot->size+1, "ParseMailBody (4)");
         strncpy(buf,eml+bot->offset,bot->size);
         buf[bot->size]=0;
         break;
@@ -1531,20 +1558,13 @@ MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
       }
       switch(bot->charset)
       {
-      case WIN_1251:
+      case GB2312:
       default:
         break;
    
-      case KOI8_R:
-        koi2win(buf, buf);
-        break;
-   
-      case ISO_8859_5:
-        iso885952win(buf, buf);
-        break;
 
       case UTF_8:
-        utf82win(buf, buf);
+        utf82gb(buf, buf);
         break;
       }
       delspaces(buf);
@@ -1559,7 +1579,7 @@ MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
         }
       bot->scroll[scrolls] = bot->textlen;
       ws=AllocWS(strlen(buf));
-      ascii2ws(ws, buf);
+      gb_2ws(ws, buf);
         
       PrepareEditControl(&ec);
       ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL | ECF_DISABLE_T9,ws,wslen(ws));
@@ -1567,9 +1587,9 @@ MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
       ed_toitem=AddEditControlToEditQend(eq,&ec,ma); 
       bot->ec_n=ed_toitem;
       FreeWS(ws);
-      mfree(buf);
+      debug_mfree(buf, "ParseMailBody (6)");
 
-      ascii2ws(headers,"------------------");
+      gb_2ws(headers,"------------------");
       ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,headers,wslen(headers));
       SetFontToEditCOptions(&ec.ed_options,4);
       AddEditControlToEditQend(eq,&ec,ma);    
@@ -1600,7 +1620,7 @@ MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
         
         prev=bot;
         while(prev->next) prev=prev->next;
-        prev=prev->next=malloc(sizeof(MAIL_PART));
+        prev=prev->next=debug_malloc(sizeof(MAIL_PART), "ParseMailBody (5)");
         prev->next=0;
         prev->ec_n=-1;
         prev->offset=buf-eml;
@@ -1612,7 +1632,7 @@ MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
         if (content_type)
         {
           strcpy(prev->ct,content_type);  
-          mfree(content_type);
+          debug_mfree(content_type, "ParseMailBody (7)");
         }
         else strcpy(prev->ct,default_ctype);
         
@@ -1620,7 +1640,7 @@ MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
         if (content_encoding)
         {
           cstrcpy(prev->te,content_encoding);     
-          mfree(content_encoding);
+          debug_mfree(content_encoding, "ParseMailBody (8)");
         }
         else strcpy(prev->te,default_transfere);
 
@@ -1638,7 +1658,7 @@ MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
           
           if(get_cdisp_index(content_disposition) != TEXT) 
             prev->content_type=APPLICATION;
-          mfree(content_disposition);
+          debug_mfree(content_disposition, "ParseMailBody (9)");
         }
         
         if (get_param_from_string(prev->ct, "charset=", tmp, 127))
@@ -1664,8 +1684,8 @@ MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
       bot->scroll[1] = bot->textlen;
    
       ws=AllocWS(strlen(p));
-      ascii2ws(ws, p);
-      mfree(p);
+      gb_2ws(ws, p);
+      debug_mfree(p, "ParseMailBody (10)");
       PrepareEditControl(&ec);   
 
       ConstructEditControl(&ec,ECT_READ_ONLY_SELECTED,ECF_APPEND_EOL,ws,wslen(ws));
@@ -1674,7 +1694,7 @@ MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
       bot->ec_n=ed_toitem;
       FreeWS(ws);
 
-      ascii2ws(headers,"------------------");
+      gb_2ws(headers,"------------------");
       ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,headers,wslen(headers));
       SetFontToEditCOptions(&ec.ed_options,4);
       AddEditControlToEditQend(eq,&ec,ma);    
@@ -1684,13 +1704,13 @@ MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
       bot->scroll[0] = 0;
       bot->scroll[1] = 22;
       bot->textlen = 22;
-      ascii2ws(headers,"<unknown message type>");
+      gb_2ws(headers,"<Î´ÖªÐÅÏ¢ÀàÐÍ>");
       ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,headers,wslen(headers));
       SetFontToEditCOptions(&ec.ed_options,2);
       AddEditControlToEditQend(eq,&ec,ma);    
 
 
-      ascii2ws(headers,"------------------");
+      gb_2ws(headers,"------------------");
       ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,headers,wslen(headers));
       SetFontToEditCOptions(&ec.ed_options,4);
       AddEditControlToEditQend(eq,&ec,ma);    
@@ -1700,7 +1720,7 @@ MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
     bot=bot->next;
     
   }
-  view_list=malloc(sizeof(MAIL_VIEW));
+  view_list=debug_malloc(sizeof(MAIL_VIEW), "ParseMailBody (6)");
   view_list->top=top;
   view_list->eml=eml;
   FreeWS(headers);
@@ -1725,8 +1745,8 @@ int create_view(ML_VIEW *ml_list)
     from=strchr(from, ':')+1;
     while (*from==' ' || *from==0x09) from++;
     ws=AllocWS(strlen(from));
-    ascii2ws(ws,from);
-    ascii2ws(headers,"From: ");
+    gb_2ws(ws,from);
+    gb_2ws(headers,"·¢¼þÈË: ");
     
     ConstructEditControl(&ec,ECT_HEADER,ECF_NORMAL_STR,headers,wslen(headers));
     SetFontToEditCOptions(&ec.ed_options,2);
@@ -1744,8 +1764,8 @@ int create_view(ML_VIEW *ml_list)
     to=strchr(to, ':')+1;
     while (*to==' ' || *to==0x09) to++;
     ws=AllocWS(strlen(to));
-    ascii2ws(ws,to);
-    ascii2ws(headers,"To: ");
+    gb_2ws(ws,to);
+    gb_2ws(headers,"ÊÕ¼þÈË: ");
     
     ConstructEditControl(&ec,ECT_HEADER,ECF_NORMAL_STR,headers,wslen(headers));
     SetFontToEditCOptions(&ec.ed_options,2);
@@ -1763,8 +1783,8 @@ int create_view(ML_VIEW *ml_list)
     subject=strchr(subject, ':')+1;
     while (*subject==' ' || *subject==0x09) subject++;
     ws=AllocWS(strlen(subject));
-    ascii2ws(ws,subject);
-    ascii2ws(headers,"Subject: ");
+    gb_2ws(ws,subject);
+    gb_2ws(headers,"Ö÷Ìâ: ");
     
     ConstructEditControl(&ec,ECT_HEADER,ECF_NORMAL_STR,headers,wslen(headers));
     SetFontToEditCOptions(&ec.ed_options,2);
@@ -1775,7 +1795,7 @@ int create_view(ML_VIEW *ml_list)
     AddEditControlToEditQend(eq,&ec,ma); 
     FreeWS(ws);
   }
-  ascii2ws(headers,"------------------");
+  gb_2ws(headers,"------------------");
   ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,headers,wslen(headers));
   SetFontToEditCOptions(&ec.ed_options,4);
   AddEditControlToEditQend(eq,&ec,ma);  
@@ -1788,12 +1808,25 @@ int create_view(ML_VIEW *ml_list)
 }  
 
 //----------------------------------------------------------------------------------------------
+/*void ConvertTime(TDate *d, TTime *t, struct tm *dos )
+{
+  t->hour=dos->tm_hour;
+  t->min=dos->tm_min;
+  t->sec=dos->tm_sec;
+  t->millisec=0;
+  d->day=dos->tm_mday;
+  d->year=dos->tm_year+1900;
+  d->month=dos->tm_mon+1;
+  
+}*/
+//----------------------------------------------------------------------------------------------
 
 void PrintTimeDate(char *p, unsigned long x)
 {
   unsigned int sec,min,hrs,mon,yrs;
   unsigned int day,iday,day4,yrs4;
   const int DMonth[]={0,31,59,90,120,151,181,212,243,273,304,334,365};
+  unsigned long tmpx = x;
   
   x-=946684800;
   sec=x%60;
@@ -1812,7 +1845,41 @@ void PrintTimeDate(char *p, unsigned long x)
   if (iday) day++;
   day++;
   if (yrs>99) yrs=0;
-  sprintf(p,"%02d:%02d:%02d %02d.%02d.%04d GMT",hrs,min,sec,day,mon,yrs+2000);
+  
+  
+  TDateTimeSettings *ts=RamDateTimeSettings();
+  TDate d;
+  TTime t;  
+  
+  t.hour=hrs;
+  t.min=min;
+  t.sec=sec;
+  t.millisec=0;
+  d.day=day;
+  d.year=yrs+2000;
+  d.month=mon;
+ 
+  x=tmpx+GetTimeZoneShift(&d,&t,ts->timeZone)*60;
+ 
+  x-=946684800;
+  sec=x%60;
+  min=(x/60)%60;
+  hrs=(x/3600)%24;
+  iday=x/86400;
+  yrs4=x/((4*365+1)*86400);
+  day4=iday%(4*365+1);
+  iday=(day4==(31+28));
+  if (day4>=(31+28)) day4--;
+  yrs=(yrs4<<2)+day4/365;
+  day=day4%365;
+  mon=0;
+  while (DMonth[++mon]<=day);
+  day-=DMonth[mon-1];
+  if (iday) day++;
+  day++;
+  if (yrs>99) yrs=0;
+  
+  sprintf(p,"%02d:%02d:%02d %02d.%02d.%04d",hrs,min,sec,day,mon,yrs+2000);
 }
 
 //----------------------------------------------------------------------------------------------
@@ -1831,11 +1898,19 @@ int create_info_view(ML_VIEW *ml_list)
   eq=AllocEQueue(ma,mfree_adr());
   headers=AllocWS(100);
 
-    PrintTimeDate(buf, ml_list->timestamp);
+  date=get_date(ml_list);
+  if (date)
+  {
+    date=strchr(date, ':')+1;
+    while (*date==' ' || *date==0x09) date++;
+    memcpy(dbuf, date, 255);
+    dbuf[255] = 0;
+    fsize = get_date_from_str(dbuf);
+    PrintTimeDate(buf, fsize);
 
     ws=AllocWS(strlen(buf));
-    ascii2ws(ws,buf);
-    ascii2ws(headers,"Îòïðàâëåíî: ");
+    gb_2ws(ws,buf);
+    gb_2ws(headers,"·¢ËÍ: ");
     
     ConstructEditControl(&ec,ECT_HEADER,ECF_NORMAL_STR,headers,wslen(headers));
     SetFontToEditCOptions(&ec.ed_options,2);
@@ -1845,23 +1920,17 @@ int create_info_view(ML_VIEW *ml_list)
     SetFontToEditCOptions(&ec.ed_options,1);
     AddEditControlToEditQend(eq,&ec,ma); 
     FreeWS(ws);
+  }
 
     
-  date = strstr(ml_list->header, ";");
-  if(date)
+  if(fsize=get_received_date(ml_list->header))
   {
-    date++;
-    while(*date && (*date == ' ' || *date == '\r' || *date == '\n' || *date == '\t')) date++;
-    memcpy(dbuf, date, 255);
-    dbuf[255] = 0;
-
-    fsize = get_date_from_str(dbuf);
     buf[0] = 0;
     PrintTimeDate(buf, fsize);
     
     ws=AllocWS(strlen(buf));
-    ascii2ws(ws,buf);
-    ascii2ws(headers,"Ïîëó÷åíî: ");
+    gb_2ws(ws,buf);
+    gb_2ws(headers,"Èç¹û: ");
     
     ConstructEditControl(&ec,ECT_HEADER,ECF_NORMAL_STR,headers,wslen(headers));
     SetFontToEditCOptions(&ec.ed_options,2);
@@ -1874,11 +1943,11 @@ int create_info_view(ML_VIEW *ml_list)
   }
 
   snprintf(buf,127,"%d",ml_list->mail_size);
-  strcat(buf, " áàéò");
+  strcat(buf, " GB");
   
   ws=AllocWS(strlen(buf));
-  ascii2ws(ws,buf);
-  ascii2ws(headers,"Ðàçìåð: ");
+  gb_2ws(ws,buf);
+  gb_2ws(headers,"´óÐ¡: ");
   
   ConstructEditControl(&ec,ECT_HEADER,ECF_NORMAL_STR,headers,wslen(headers));
   SetFontToEditCOptions(&ec.ed_options,2);
@@ -1897,11 +1966,11 @@ int create_info_view(ML_VIEW *ml_list)
   }
   
   snprintf(buf,127,"%d",fsize);
-  strcat(buf, " áàéò");
+  strcat(buf, " B");
   
   ws=AllocWS(strlen(buf));
-  ascii2ws(ws,buf);
-  ascii2ws(headers,"Ñêà÷àíî: ");
+  gb_2ws(ws,buf);
+  gb_2ws(headers,"ÏÂÔØ: ");
   
   ConstructEditControl(&ec,ECT_HEADER,ECF_NORMAL_STR,headers,wslen(headers));
   SetFontToEditCOptions(&ec.ed_options,2);
@@ -1912,7 +1981,7 @@ int create_info_view(ML_VIEW *ml_list)
   AddEditControlToEditQend(eq,&ec,ma); 
   FreeWS(ws);
   
-  ascii2ws(headers,"------------------");
+  gb_2ws(headers,"------------------");
   ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,headers,wslen(headers));
   SetFontToEditCOptions(&ec.ed_options,4);
   AddEditControlToEditQend(eq,&ec,ma);  
@@ -1954,7 +2023,7 @@ void send_req_checkmailbox(void)
 {
   if (daemon_present!=-1)
   {
-    IPC_REQ *ipc=malloc(sizeof(IPC_REQ));
+    IPC_REQ *ipc=malloc(sizeof(IPC_REQ)); //debug_malloc(sizeof(IPC_REQ), "send_req_checkmailbox (1)");
     ipc->name_to=ipc_daemon_name;
     ipc->name_from=ipc_my_name;
     ipc->data=0;
@@ -1966,7 +2035,7 @@ void send_req_stopcheck(void)
 {
   if (daemon_present!=-1)
   {
-    IPC_REQ *ipc=malloc(sizeof(IPC_REQ));
+    IPC_REQ *ipc=malloc(sizeof(IPC_REQ)); //debug_malloc(sizeof(IPC_REQ), "send_req_stopcheck (1)");
     ipc->name_to=ipc_daemon_name;
     ipc->name_from=ipc_my_name;
     ipc->data=0;
@@ -2047,14 +2116,17 @@ void delete_record(GUI *data)
     if(!(strcmp(mail_cur->uidl,cur_menu->uidl)))
     {
       ml_prev->next=mail_cur->next;
-      mfree(mail_cur->uidl);
-      mfree(mail_cur->header);
-      mfree(mail_cur->subject);
-      mfree(mail_cur->from);
-      mfree(mail_cur->to);
-      mfree(mail_cur->content_type);
-      mfree(mail_cur->content_encoding);
-      mfree(mail_cur);
+
+      if(mail_cur->uidl)             debug_mfree(mail_cur->uidl, "delete_record (1)");
+      if(mail_cur->header)           debug_mfree(mail_cur->header, "delete_record (2)");
+      if(mail_cur->subject)          debug_mfree(mail_cur->subject, "delete_record (3)");
+      if(mail_cur->from)             debug_mfree(mail_cur->from, "delete_record (4)");
+      if(mail_cur->to)               debug_mfree(mail_cur->to, "delete_record (5)");
+      if(mail_cur->content_type)     debug_mfree(mail_cur->content_type, "delete_record (6)");
+      if(mail_cur->content_encoding) debug_mfree(mail_cur->content_encoding, "delete_record (7)");
+      if(mail_cur->date)             debug_mfree(mail_cur->date, "delete_record (8)");
+      debug_mfree(mail_cur, "delete_record (9)");
+
       request_recount_mailmenu=1;
       break;        
     }
@@ -2085,21 +2157,21 @@ void back(GUI *data)
 
 
 #define OPTIONS_ITEMS_N 11
-HEADER_DESC options_menuhdr={0,0,0,0,NULL,(int)"Îïöèè",LGP_NULL};
+HEADER_DESC options_menuhdr={0,0,0,0,NULL,(int)"Ñ¡Ïî",LGP_NULL};
 
 MENUITEM_DESC options_menu_ITEMS[OPTIONS_ITEMS_N]=
 {
-  {NULL,(int)"Ïðîâåðèòü ïî÷òó",     LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
-  {NULL,(int)"Äîãðóçèòü",           LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //1
-  {NULL,(int)"Íå çàãðóæàòü",        LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //2
-  {NULL,(int)"Óäàëèòü",             LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //3
-  {NULL,(int)"Íå óäàëÿòü",          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //4
-  {NULL,(int)"Óäàëèòü âñå",         LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //5
-  {NULL,(int)"Óäàëèòü çàïèñü",      LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //6
-  {NULL,(int)"Î÷èñòèòü ñïèñîê",     LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //7
-  {NULL,(int)"Äîãðóçèòü âñå",       LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //8
-  {NULL,(int)"Èíôîðìàöèÿ",          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //9
-  {NULL,(int)"Íàçàä",               LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //10
+  {NULL,(int)"¼ì²éÓÊ¼þ",     LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
+  {NULL,(int)"ÏÂÔØ",           LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //1
+  {NULL,(int)"²»ÒªÏÂÔØ",        LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //2
+  {NULL,(int)"É¾³ý",             LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //3
+  {NULL,(int)"²»ÒªÉ¾³ý",          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //4
+  {NULL,(int)"È«²¿É¾³ý",         LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //5
+  {NULL,(int)"ÒÆ³ý¼ÇÂ¼",      LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //6
+  {NULL,(int)"Çå¿ÕÁÐ±í",     LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //7
+  {NULL,(int)"ÏÂÔØÈ«²¿",       LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //8
+  {NULL,(int)"ÐÅÏ¢",          LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //9
+  {NULL,(int)"·µ»Ø",               LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //10
 };
 
 const MENUPROCS_DESC options_menu_HNDLS[OPTIONS_ITEMS_N]=
@@ -2182,7 +2254,7 @@ void create_options_menu(ML_VIEW *i)
 
 // ----------------------------------------------------------------------------------
 
-HEADER_DESC maillist_menuhdr={0,0,0,0,NULL,(int)"Âõîäÿùèå",LGP_NULL};
+HEADER_DESC maillist_menuhdr={0,0,0,0,NULL,(int)"ÊÕ¼þÏä",LGP_NULL};
 
 
 int maillist_menu_onkey(void *data, GUI_MSG *msg)
@@ -2239,6 +2311,7 @@ void maillist_menu_iconhndl(void *data, int curitem, void *unk)
   ML_VIEW *mail_cur;
   WSHDR *ws;
   char *subject;
+
   mail_cur=find_mlist_ByID(curitem);
   if (!mail_cur) return;
   void *item=AllocMenuItem(data);
@@ -2254,7 +2327,7 @@ void maillist_menu_iconhndl(void *data, int curitem, void *unk)
   else    
   {
     ws=AllocMenuWS(data,10);
-    wsprintf(ws,_percent_t,"Îøèáêà");
+    wsprintf(ws,_percent_t,"´íÎó");
   }
   SetMenuItemIconArray(data,item,S_ICONS+GetIconIndex(mail_cur));
   SetMenuItemText(data,item,ws,curitem);
@@ -2337,7 +2410,7 @@ void StatScr(GUI *data)
 
 void About(GUI *data)
 {
-  ShowMSG(2, (int)"MailClient v0.1\n(C) by Kren\nRst7/CBSIE");
+  ShowMSG(2, (int)"MailClient v0.1\n(C) by Kren\nRst7/CBSIE \nºº»¯£ºsnoopyhzy");
 }
 
 void Exit(GUI *data)
@@ -2350,12 +2423,12 @@ HEADER_DESC mainmenu_HDR={0,0,0,0,NULL,(int)"MailViewer",LGP_NULL};
 
 MENUITEM_DESC mainmenu_ITEMS[6]=
 {
-  {NULL,(int)"Âõîäÿùèå",  LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Èñõîäÿùèå", LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Íàñòðîéêè", LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Ñòàòèñòèêà",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Îá ýëüôå",  LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
-  {NULL,(int)"Âûõîä",     LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"ÊÕ¼þÏä",  LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"·¢¼þÏä", LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"Ñ¡Ïî", LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"Í³¼Æ",LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"¹ØÓÚ",  LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
+  {NULL,(int)"ÍË³ö",     LGP_NULL,0,NULL,MENU_FLAG3,MENU_FLAG2},
 };
 
 const MENUPROCS_DESC  mainmenu_HNDLS[6]=
@@ -2403,7 +2476,6 @@ void maincsm_onclose(CSM_RAM *csm)
   gipc.name_from=ipc_my_name;
   gipc.data=0;
   GBS_SendMessage(MMI_CEPID,MSG_IPC,IPC_VIEWER_LOGFF,&gipc);
-  
   FreeMailDB();
   SUBPROC((void *)ElfKiller);
 }
@@ -2429,7 +2501,7 @@ void CheckDoubleRun(void)
   {
     LockSched();
     CloseCSM(maincsm_id);
-    ShowMSG(1,(int)"MailViewer already started!");
+    ShowMSG(1,(int)"MailViewerÒÑ¾­ÔËÐÐ!");
     UnlockSched();
   }
   else
@@ -2448,11 +2520,11 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
   {
     if (strcmp_nocase(successed_config_filename,(char *)msg->data0)==0)
     {
-      ShowMSG(1,(int)"MailViewer config updated!");
+      ShowMSG(1,(int)"MailViewerÅäÖÃÒÑ¸üÐÂ!");
       ReInitConfig();
     }
   }
-  if (msg->msg==MSG_IPC)  // Ïðèøëî ñîîáùåíèå, âîçìîæíî îò äåìîíà
+  if (msg->msg==MSG_IPC)  // §±§â§Ú§ê§Ý§à §ã§à§à§Ò§ë§Ö§ß§Ú§Ö, §Ó§à§Ù§Þ§à§Ø§ß§à §à§ä §Õ§Ö§Þ§à§ß§Ñ
   { 
     IPC_REQ *ipc;
     if ((ipc=(IPC_REQ*)msg->data0))
@@ -2474,9 +2546,9 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
           break;
           
         case IPC_DAEMON_LOGOFF:
-          if (!daemon_present)   // òîëüêî åñëè äåìîí äî ýòîãî çàõîäèë
+          if (!daemon_present)   // §ä§à§Ý§î§Ü§à §Ö§ã§Ý§Ú §Õ§Ö§Þ§à§ß §Õ§à §ï§ä§à§Ô§à §Ù§Ñ§ç§à§Õ§Ú§Ý
           {
-            daemon_present=-1;   // Äåìîí âûøåë
+            daemon_present=-1;   // §¥§Ö§Þ§à§ß §Ó§í§ê§Ö§Ý
             pop_stat=NULL;
           }
           break;
@@ -2490,10 +2562,11 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
             break;
             
           case 0:
-            ShowMSG(1,(int)"Can't connect!");
+            ShowMSG(1,(int)"²»ÄÜÁ¬½Ó!");
             break;
           }
           mfree(ipc);
+          //debug_mfree(ipc, "csm1");
           break;
           
          
@@ -2503,11 +2576,12 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
             GeneralFunc_flag1(stat_gui_id,2);
           }
           mfree(ipc);
+          //debug_mfree(ipc, "csm2");
           break;
           
         case IPC_CHECK_DOUBLERUN:
           ipc->data=(void *)((int)(ipc->data)+1);
-          //Åñëè ïðèíÿëè ñâîå ñîáñòâåííîå ñîîáùåíèå, çíà÷èò çàïóñêàåì ÷åêåð
+          //§¦§ã§Ý§Ú §á§â§Ú§ß§ñ§Ý§Ú §ã§Ó§à§Ö §ã§à§Ò§ã§ä§Ó§Ö§ß§ß§à§Ö §ã§à§à§Ò§ë§Ö§ß§Ú§Ö, §Ù§ß§Ñ§é§Ú§ä §Ù§Ñ§á§å§ã§Ü§Ñ§Ö§Þ §é§Ö§Ü§Ö§â
           if (ipc->name_from==ipc_my_name) SUBPROC((void *)CheckDoubleRun);
           break;
         }
@@ -2535,7 +2609,7 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
     if ((int)msg->data0==stat_gui_id)
     {
       stat_gui_id=0;
-      if ((int)msg->data1==2)
+      if ((int)msg->data1==2) 
       {
         if (maillist_menu_id)
         {
