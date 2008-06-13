@@ -68,10 +68,10 @@ __root const int startY = 38;
 __root const int startY = 18;
   #endif
 #endif
-__root const CFG_HDR cfghdr5_1 = {CFG_UINT,"区号秀大头贴修正值",0,100};
+__root const CFG_HDR cfghdr5_1 = {CFG_UINT,"区号秀大头贴修正值",0,200};
 __root const int startfix = 0;
 
-__root const CFG_HDR cfghdr5_2 = {CFG_UINT,"列表修正值",0,100};
+__root const CFG_HDR cfghdr5_2 = {CFG_UINT,"列表修正值",0,200};
 __root const int startfix2 = 0;
 
 __root const CFG_HDR cfghdr5_3 = {CFG_COLOR,"区号秀颜色",0,99};

@@ -1104,28 +1104,34 @@ void my_ed_redraw(void *data)
   
   WSHDR *prws=AllocWS(256);
   
+  int startfix4;
+    if(startfix>100)
+      startfix4=100-startfix;
+    else
+      startfix4=startfix;
+  
 #ifdef ELKA
   (big_font)?(count_page=6):(count_page=8);
-  int csh=startY+startfix+44;
+  int csh=startY+startfix4+44;
   if(big_font)
-      z=startY+startfix+46;
+      z=startY+startfix4+46;
   else
-      z=startY+startfix+42;
+      z=startY+startfix4+42;
 #else
   #ifdef S68
   (big_font)?(count_page=6):(count_page=7);
-  int csh=startY+startfix+22;
+  int csh=startY+startfix4+22;
   if(big_font)
-      z=startY+startfix+19;
+      z=startY+startfix4+19;
   else
-      z=startY+startfix+22;
+      z=startY+startfix4+22;
   #else
   (big_font)?(count_page=7):(count_page=9);
-  int csh=startY+startfix+22;
+  int csh=startY+startfix4+22;
   if(big_font)
-      z=startY+startfix+24;
+      z=startY+startfix4+24;
   else
-      z=startY+startfix+20;
+      z=startY+startfix4+20;
   #endif
 #endif
   
@@ -1138,10 +1144,15 @@ void my_ed_redraw(void *data)
 
   if (p && e_ws && e_ws->wsbody[0]<MAX_ESTR_LEN) //Its length <MAX_ESTR_LEN 
   {
+    int startfix3;
+    if(startfix2>100)
+      startfix3=100-startfix2;
+    else
+      startfix3=startfix2;
   #ifdef S68
-    int y=ScreenH()-25-gfont_size*count_page+startfix2;
+    int y=ScreenH()-25-gfont_size*count_page+startfix3;
   #else
-    int y=ScreenH()-SoftkeyH()-gfont_size*count_page+startfix2;
+    int y=ScreenH()-SoftkeyH()-gfont_size*count_page+startfix3;
   #endif
     down_border=ScreenH()-SoftkeyH()+5;
     DrawRectangle(1,z,ScreenW()-2,down_border,0,color(COLOR_MENU_BRD),color(COLOR_MENU_BK));
@@ -1854,9 +1865,11 @@ void VoiceOrSMS(const char *num)
   }
 }
 
+
 void ElfKiller(void)
 {
 	extern void *ELF_BEGIN;
+	((void (*)(void *))(mfree_adr()))(&ELF_BEGIN);
         FreeWS(gwsName);
         FreeWS(gwsTemp);
         FreeWS(numTemp);
@@ -1868,13 +1881,12 @@ void ElfKiller(void)
         if(my_pic) deleteIMGHDR(my_pic);
 	LockSched();
         CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
-	memcpy(&icsmd,icsm->constr,sizeof(icsmd));
 	icsmd.onMessage=old_icsm_onMessage;
-	icsmd.onClose=old_icsm_onClose;
+	icsmd.onClose=old_icsm_onClose;  
         icsm->constr=old_icsmd;
 	UnlockSched();
-	((void (*)(void *))(mfree_adr()))(&ELF_BEGIN);
 }
+
 
 //-------------------------------------
 //ÆÁÄ»Ö÷¿Ø
@@ -2384,6 +2396,9 @@ void MyIDLECSM_onClose(CSM_RAM *data)
   Destructor();
   seqkill(data,old_icsm_onClose,&ELF_BEGIN,SEQKILLER_ADR());
 }
+
+
+
 
 int main(void)
 {
