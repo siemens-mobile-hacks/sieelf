@@ -325,8 +325,55 @@ void sendsms(void)
   }
 }
 
-void alert(void)
-{}
+int monthcount(int num)
+{
+GetDateTime(&date,&time); 
+int daycount;  
+switch(num)
+{
+  case 1:
+    daycount=31;
+    break;
+  case 2:
+    if((date.year/4==0&&date.year/100!=0)||(date.year/100==0&&date.year/400==0))
+    daycount=29;
+    else
+    daycount=28;
+    break;
+  case 3:
+    daycount=31;
+    break;
+  case 4:
+    daycount=30;
+    break;
+  case 5:
+    daycount=31;
+    break;
+  case 6:
+    daycount=30;
+    break;
+  case 7:
+    daycount=31;
+    break;
+  case 8:
+    daycount=31;
+    break;
+  case 9:
+    daycount=30;
+    break;
+  case 10:
+    daycount=31;
+    break;
+  case 11:
+    daycount=30;
+    break;
+  case 12:
+    daycount=31;
+    break;
+}
+
+return daycount;
+}
 
 void Check()
 {
@@ -342,10 +389,19 @@ GetDateTime(&date,&time);
         }
       }
 
+     
+     
   
         if(name2[7])
         {
-          if(!smss[0]||(smss[2]/((date.month-smss[4])*30+date.day-smss[5]+1)>=1))
+          int sum=0;
+          if(date.month > smss[4])
+          {
+            for(int i=0;(date.month-smss[4]-i)>0;i++)       
+            sum=sum+monthcount(smss[4]+i);
+          }
+          
+          if(!smss[0]||(smss[2]/(sum+date.day-smss[5]+1)>=1))
           {
           if((time.hour==smss[6]||
               (
@@ -400,7 +456,13 @@ GetDateTime(&date,&time);
   
         if(name2[5])
         {
-          if(!files[0]||((files[2]/(date.month-files[4])*30+date.day-files[5]+1)>=1))
+          int sum=0;
+          if(date.month > smss[4])
+          {
+            for(int i=0;(date.month-smss[4]-i)>0;i++)       
+            sum=sum+monthcount(smss[4]+i);
+          }
+          if(!files[0]||(files[2]/(sum+date.day-files[5]+1)>=1))
           {
           if((time.hour==files[6]||
               (
@@ -422,7 +484,13 @@ GetDateTime(&date,&time);
         
         if(name2[6])
         {
-          if(!calls[0]||(calls[2]/((date.month-calls[4])*30+date.day-calls[5]+1)>=1))
+          int sum=0;
+          if(date.month > smss[4])
+          {
+            for(int i=0;(date.month-smss[4]-i)>0;i++)       
+            sum=sum+monthcount(smss[4]+i);
+          }
+          if(!calls[0]||(calls[2]/(sum+date.day-calls[5]+1)>=1))
           {
           if((time.hour==calls[6]||
               (

@@ -149,15 +149,6 @@ void draw_pic(int num,int x, int y)
       img.bitmap = _wd_on;
       DrwImg(&img,x,y);
     } break;
-  case logo:
-    {
-      IMGHDR img;
-      img.w = 26;
-      img.h = 14;
-      img.bpnum = 0x85;
-      img.bitmap = _logo;
-      DrwImg(&img,x,y);
-    } break;
   }
 }
 
@@ -338,7 +329,6 @@ const char percent_t[]="%t";
 
 void CreateList(char const *header,char control,char const *list[],int num,int change,int boxend,int datanum,unsigned int data[],int fix,char const *LeftButton,char const *RightButton)
 {
-      //draw_pic(logo,2,2);     
       DrawRoundedFrame(0,0,scr_w,scr_h,0,0,0,GetPaletteAdrByColorIndex(2),GetPaletteAdrByColorIndex(2));
       draw_pic(fon,0,0);
       
