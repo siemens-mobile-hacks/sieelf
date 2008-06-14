@@ -1,5 +1,5 @@
 #include "..\inc\cfg_items.h"
-//Конфигурация
+//Конфигурац?
 
 #ifdef NEWSGOLD
 #define DEFAULT_DISK "4"
@@ -8,7 +8,7 @@
 #endif
 
 __root const CFG_HDR cfghdr0={CFG_STR_UTF8,"WorkFolder",0,63};
-__root const char WORKFOLDER[64]=DEFAULT_DISK":\\Zbin\\utilities\\MidletSigner\\";
+__root const char WORKFOLDER[64]=DEFAULT_DISK":\\Zbin\\MidletSigner\\";
 
 __root const CFG_HDR cfghdr1={CFG_STR_UTF8,"*.der File",0,31};
 __root const char DER_FILE[32]="cert.der";
@@ -17,10 +17,10 @@ __root const CFG_HDR cfghdr2={CFG_STR_UTF8,"*.key File",0,31};
 __root const char KEY_FILE[32]="cert.key";
 
 __root const CFG_HDR cfghdr3={CFG_STR_UTF8,"folder icon",0,63};
-__root const char FOLDER_ICON[64]=DEFAULT_DISK":\\Zbin\\utilities\\MidletSigner\\folder.png";
+__root const char FOLDER_ICON[64]=DEFAULT_DISK":\\Zbin\\MidletSigner\\folder.png";
 
 __root const CFG_HDR cfghdr4={CFG_STR_UTF8,"jar icon",0,63};
-__root const char JAR_ICON[64]=DEFAULT_DISK":\\Zbin\\utilities\\MidletSigner\\jar.png";
+__root const char JAR_ICON[64]=DEFAULT_DISK":\\Zbin\\MidletSigner\\jar.png";
 
 __root const CFG_HDR cfghdr5={CFG_CBOX,"Permissions:\nFREAD",0,3};
 __root const int FREAD=1;

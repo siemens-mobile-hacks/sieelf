@@ -1,4 +1,3 @@
-
 #include "..\inc\swilib.h"
 
 #include "objects.h"
@@ -954,7 +953,7 @@ void remove_record_sbp(GUI *data)
       if (!strncmp_nocase(s,DER_FILE,strlen(DER_FILE)-4))
         break;
     }
-    if (!s)  // Не нашли имя файла сертификита в мануфактурере
+    if (!s)  // §Ї§Ц §Я§С§к§Э§Ъ §Ъ§Ю§с §ж§С§Ы§Э§С §г§Ц§в§д§Ъ§ж§Ъ§Ь§Ъ§д§С §У §Ю§С§Я§е§ж§С§Ь§д§е§в§Ц§в§Ц
     {
       sbp_prev=malloc(sizeof(SBP_LIST));
       sbp_list=sbp_top?(sbp_list->next=sbp_prev):(sbp_top=sbp_prev);
@@ -962,15 +961,15 @@ void remove_record_sbp(GUI *data)
       sbp_list->hash=hash;   
       sbp_list->next=0;
     }
-    else  // Нашли - очишаем память и не заносим в список
+    else  // §Ї§С§к§Э§Ъ - §а§й§Ъ§к§С§Ц§Ю §б§С§Ю§с§д§о §Ъ §Я§Ц §Щ§С§Я§а§г§Ъ§Ю §У §г§б§Ъ§г§а§Ь
     {
       mfree(issuer);
       mfree(hash);
     }
     num--;
   }
-  curpos=lseek(f,0,S_CUR,&err,&err);  // проверяем не в конце ли мы стоим
-  oldsize=fsize-curpos;               // если не в конце то выделим память и запишем туда остаток
+  curpos=lseek(f,0,S_CUR,&err,&err);  // §б§в§а§У§Ц§в§с§Ц§Ю §Я§Ц §У §Ь§а§Я§и§Ц §Э§Ъ §Ю§н §г§д§а§Ъ§Ю
+  oldsize=fsize-curpos;               // §Ц§г§Э§Ъ §Я§Ц §У §Ь§а§Я§и§Ц §д§а §У§н§Х§Ц§Э§Ъ§Ю §б§С§Ю§с§д§о §Ъ §Щ§С§б§Ъ§к§Ц§Ю §д§е§Х§С §а§г§д§С§д§а§Ь
   if(oldsize)                   
   {
     oldbuf=malloc(oldsize);
@@ -1071,8 +1070,8 @@ void store_record_sbp(GUI *data)
     sbp_list->next=0;    
     clen--;
   }
-  curpos=lseek(f,0,S_CUR,&err,&err);  // проверяем не в конце ли мы стоим
-  oldsize=fsize-curpos;               // если не в конце то выделим память и запишем туда остаток
+  curpos=lseek(f,0,S_CUR,&err,&err);  // §б§в§а§У§Ц§в§с§Ц§Ю §Я§Ц §У §Ь§а§Я§и§Ц §Э§Ъ §Ю§н §г§д§а§Ъ§Ю
+  oldsize=fsize-curpos;               // §Ц§г§Э§Ъ §Я§Ц §У §Ь§а§Я§и§Ц §д§а §У§н§Х§Ц§Э§Ъ§Ю §б§С§Ю§с§д§о §Ъ §Щ§С§б§Ъ§к§Ц§Ю §д§е§Х§С §а§г§д§С§д§а§Ь
   if(oldsize)                   
   {
     oldbuf=malloc(oldsize);
@@ -1140,7 +1139,7 @@ SOFTKEYSTAB options_menu_skt=
   options_menu_sk,0
 };
 
-HEADER_DESC options_menuhdr={0,0,0,0,NULL,(int)"Опции",LGP_NULL};
+HEADER_DESC options_menuhdr={0,0,0,0,NULL,(int)"Options",LGP_NULL};
 
 MENUITEM_DESC options_menu_ITEMS[7]=
 {
@@ -1306,7 +1305,7 @@ void FindFiles(const char *path)
   
   int len;
   WSHDR *ws; 
-  if (GetFoldersLevel(path)>=2)  // Добавляем переход на уровень выше
+  if (GetFoldersLevel(path)>=1)  // §Ґ§а§Т§С§У§Э§с§Ц§Ю §б§Ц§в§Ц§з§а§Х §Я§С §е§в§а§У§Ц§Я§о §У§н§к§Ц
   {
     fl=malloc(sizeof(FLIST));
     fl->next=(FLIST*)fltop;
@@ -1322,6 +1321,18 @@ void FindFiles(const char *path)
     name[len]=0;
     ws=AllocWS(len);
     str_2ws(ws,name,len);
+    if (GetFoldersLevel(path)==1)
+      switch(ws->wsbody[1])
+      {
+      case '0':
+         ws->wsbody[1]='1';break;
+      case '1':
+         ws->wsbody[1]='2';break;
+      case '2':
+         ws->wsbody[1]='4';break;
+      case '4':
+         ws->wsbody[1]='0';break;
+      }
     fl->fullname=ws;  
     fl->is_dir=1;
     fltop=fl;
@@ -1394,7 +1405,7 @@ void create_menu_folder(void)
     fl=fl->next;
     i++;
   }
-  if (!i) return; //Нечего создавать
+  if (!i) return; //§Ї§Ц§й§Ц§Ф§а §г§а§Щ§Х§С§У§С§д§о
   patch_header(&filelist_HDR);
   strncpy(header,folder,24);
   patch_header(&filelist_HDR);
@@ -1677,3 +1688,4 @@ int main()
   CreateCSM(&MAINCSM.maincsm,&csm,0);
   UnlockSched();
 }
+
