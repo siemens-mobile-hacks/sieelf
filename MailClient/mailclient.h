@@ -1,13 +1,14 @@
 #ifndef _MAILCLIENT_H_
   #define _MAILCLIENT_H_
 /*
-  §´§Ú§á§í §Õ§Ñ§ß§ß§í§ç, §à§Ò§ë§Ú§Ö §Õ§Ý§ñ §Ó§ã§Ö§ç §Þ§à§Õ§å§Ý§Ö§Û §á§â§à§Ö§Ü§ä§Ñ
+  Òèïû äàííûõ, îáùèå äëÿ âñåõ ìîäóëåé ïðîåêòà
 */
 
 #define wslen(ws) ws->wsbody[0]
 
 extern long  strtol (const char *nptr,char **endptr,int base);
 extern unsigned long  strtoul (const char *nptr,char **endptr,int base);
+unsigned int char8to16(int c, int type);
 
 extern const char MAIL_LOGIN[];
 extern const char MAIL_PASS[];
