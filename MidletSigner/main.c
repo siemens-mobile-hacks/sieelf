@@ -8,6 +8,7 @@ extern void InitConfig();
 extern const char WORKFOLDER[];
 extern const char DER_FILE[];
 extern const char KEY_FILE[];
+extern const char folder[];
 
 extern const char FOLDER_ICON[];
 extern const char JAR_ICON[];
@@ -62,11 +63,6 @@ volatile FLIST *fltop;
 WSHDR* jar_file;
 int S_ICONS[3];
 
-#ifdef NEWSGOLD
-  const char folder[129]="0:\\Applications\\";  
-#else
-  const char folder[129]="0:\\Java\\jam\\";    
-#endif
 
 const char manufacturer_sbp[]="2:\\Policy\\manufacturer.sbp";
 const char certificate_store[]="2:\\Certificate store\\";
@@ -164,28 +160,28 @@ int strncmp_nocase(const char *s1,const char *s2,unsigned int n)
 
 const char* errors[22]=
 {  
-  "Done!",
-  "Can't open *.jad!",
-  "Bad *.jar!",
-  "*.jad already signed!",
-  "Can't read cerificate!",
+  "成功!",
+  "不能打开*.jad!",
+  "错误的*.jar!",
+  "*.jad已经被授权!",
+  "不能读取证书!",
   "Can't create SHA1 hash!",
   "Can't sign hash!",
   "Can't open *.jad for append!",
-  "*.jad file already exists!",
-  "Can't open *.jar!",
-  "Can't find MANIFEST.MF!",
-  "Can't create *.jad!",
-  "Bad *.key file!",
-  "Size of jad file is NULL!",
-  "File was not signed!",
-  "Can't open source cert!",
-  "Can't write dest cert!",
-  "Can't open manufacturer.sbp!",
-  "Can't write manufacturer.sbp!",
-  "Manufacturer already patched!",
-  "Manufacturer patched uncorrectly!",
-  "Manufacturer not patched!"
+  "*.jad文件已经存在!",
+  "不能打开*.jar!",
+  "不能找到MANIFEST.MF!",
+  "不能创建*.jad!",
+  "错误的*.key文件!",
+  "jad文件大小是 NULL!",
+  "文件没有被授权!",
+  "不能打开证书!",
+  "不能写入证书!",
+  "不能打开manufacturer.sbp!",
+  "不能写入manufacturer.sbp!",
+  "Manufacturer已经修改!",
+  "Manufacturer内容错误!",
+  "Manufacturer需要修改!"
 };
 
 int split_lines(char *dest,const char *str1,const char *str2)
@@ -953,7 +949,7 @@ void remove_record_sbp(GUI *data)
       if (!strncmp_nocase(s,DER_FILE,strlen(DER_FILE)-4))
         break;
     }
-    if (!s)  // Не нашли имя файла сертификита в мануфактурере
+    if (!s)  
     {
       sbp_prev=malloc(sizeof(SBP_LIST));
       sbp_list=sbp_top?(sbp_list->next=sbp_prev):(sbp_top=sbp_prev);
@@ -961,15 +957,15 @@ void remove_record_sbp(GUI *data)
       sbp_list->hash=hash;   
       sbp_list->next=0;
     }
-    else  // Нашли - очишаем память и не заносим в список
+    else  
     {
       mfree(issuer);
       mfree(hash);
     }
     num--;
   }
-  curpos=lseek(f,0,S_CUR,&err,&err);  // проверяем не в конце ли мы стоим
-  oldsize=fsize-curpos;               // если не в конце то выделим память и запишем туда остаток
+  curpos=lseek(f,0,S_CUR,&err,&err);  
+  oldsize=fsize-curpos;               
   if(oldsize)                   
   {
     oldbuf=malloc(oldsize);
@@ -1070,8 +1066,8 @@ void store_record_sbp(GUI *data)
     sbp_list->next=0;    
     clen--;
   }
-  curpos=lseek(f,0,S_CUR,&err,&err);  // проверяем не в конце ли мы стоим
-  oldsize=fsize-curpos;               // если не в конце то выделим память и запишем туда остаток
+  curpos=lseek(f,0,S_CUR,&err,&err);  
+  oldsize=fsize-curpos;               
   if(oldsize)                   
   {
     oldbuf=malloc(oldsize);
@@ -1130,7 +1126,7 @@ int options_softkeys[]={0,1,2};
 SOFTKEY_DESC options_menu_sk[]=
 {
   {0x0018,0x0000,(int)""},
-  {0x0001,0x0000,(int)"Select"},
+  {0x0001,0x0000,(int)"选择"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -1139,17 +1135,17 @@ SOFTKEYSTAB options_menu_skt=
   options_menu_sk,0
 };
 
-HEADER_DESC options_menuhdr={0,0,0,0,NULL,(int)"Options",LGP_NULL};
+HEADER_DESC options_menuhdr={0,0,0,0,NULL,(int)"选项",LGP_NULL};
 
 MENUITEM_DESC options_menu_ITEMS[7]=
 {
-  {NULL,(int)"Sign",                       LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-  {NULL,(int)"Generate jad",               LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-  {NULL,(int)"Remove signature",           LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-  {NULL,(int)"Copy Certificate to Config", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-  {NULL,(int)"Remove record from .sbp",    LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-  {NULL,(int)"Store record to .sbp",       LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-  {NULL,(int)"Back",                       LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"授权",                       LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"创建JAD",               LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"删除授权",           LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"复制证书到Config盘", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"从.sbp删除记录",    LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"储存记录到.sbp",       LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"返回",                       LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 };
 
 const MENUPROCS_DESC options_menu_HNDLS[7]=
@@ -1305,7 +1301,7 @@ void FindFiles(const char *path)
   
   int len;
   WSHDR *ws; 
-  if (GetFoldersLevel(path)>=1)  // Добавляем переход на уровень выше
+  if (GetFoldersLevel(path)>=1)  // §?§а§Т§С§У§Э§с§Ц§Ю §б§Ц§в§Ц§з§а§Х §Я§С §е§в§а§У§Ц§Я§о §У§н§к§Ц
   {
     fl=malloc(sizeof(FLIST));
     fl->next=(FLIST*)fltop;
@@ -1343,8 +1339,8 @@ void FindFiles(const char *path)
 int menusoftkeys[]={0,1,2};
 SOFTKEY_DESC menu_sk[]=
 {
-  {0x0018,0x0000,(int)"Select"},
-  {0x0001,0x0000,(int)"Close"},
+  {0x0018,0x0000,(int)"选择"},
+  {0x0001,0x0000,(int)"关闭"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -1405,7 +1401,7 @@ void create_menu_folder(void)
     fl=fl->next;
     i++;
   }
-  if (!i) return; //Нечего создавать
+  if (!i) return; 
   patch_header(&filelist_HDR);
   strncpy(header,folder,24);
   patch_header(&filelist_HDR);
@@ -1444,7 +1440,7 @@ void filelist_menu_iconhndl(void *data, int curitem, void *unk)
   else
   {
     ws=AllocMenuWS(data,10);
-    wsprintf(ws,"error");
+    wsprintf(ws,"%t","错误");
   }
   SetMenuItemIconArray(data,item,S_ICONS);
   SetMenuItemText(data,item,ws,curitem);
@@ -1494,8 +1490,8 @@ void remake_filelist(void)
 
 SOFTKEY_DESC edit_sk[]=
 {
-  {0x0018,0x0000,(int)"Options"},
-  {0x0001,0x0000,(int)"Close"},
+  {0x0018,0x0000,(int)"选项"},
+  {0x0001,0x0000,(int)"关闭"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -1588,7 +1584,7 @@ int CreateMainMenu(void)
   PrepareEditControl(&ec);
   eq=AllocEQueue(ma,mfree_adr());
   head=AllocWS(50);
-  wsprintf(head,"%t:","Jar file");
+  wsprintf(head,"%t:","Jar文件");
   ConstructEditControl(&ec,1,0x40,head,wslen(head));
   AddEditControlToEditQend(eq,&ec,ma);
   
