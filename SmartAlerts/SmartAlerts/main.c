@@ -51,7 +51,7 @@ WSHDR* ws=NULL;
 WSHDR* smstemp=NULL;
 
 int count;
-int fb=0;
+int fb,fa=0;
 volatile int _count;
 
 void getimgwh()
@@ -477,6 +477,9 @@ GetDateTime(&date,&time);
               )&&
               time.min==files[7])
            {
+           if(strcmp(name1,"r")==0)
+           RebootPhone();
+           else
            runFile((char*)name1);
            }
           }
@@ -520,6 +523,16 @@ GetDateTime(&date,&time);
            }
            else if(*RamCap()!=100)
                 fb=0;
+           
+           if(bmenus[0]&&(*RamCap()==bmenus[1])&&fa!=1)
+           { 
+           char bnum[50];  
+           sprintf(bnum,"电量已经只有%d％了",bmenus[1]);
+           ShowMSG(1,(int)bnum);
+           fa=1;
+           }
+           else if(*RamCap()>bmenus[1])
+                fa=0;
         }
         
         if(name2[3])
