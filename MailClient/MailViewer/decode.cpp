@@ -4,6 +4,7 @@
 #include "decode.h"
 #include "leak_debug.h"
 
+char *br = "<br>", *zerostr = "";
 
 extern int strncmp_nocase(const char *s1,const char *s2,unsigned int n);
 
@@ -320,8 +321,87 @@ void strip_html(char *s)
 {
   int d_ptr = 0;
   char *script, *script_end, *s1, *s2;
+  const char *valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$-_.+!*'(),%;:@&=/?~#";
 
-  s1 = strreplace(s, "\r\n\r\n", "<br>");
+  s1 = strreplace(s, "\r\n\r\n", br);
+  s2 = s1;
+  s1 = strreplace(s2, "<br />", br);
+  debug_mfree(s2, "strip_html (11)"); s2 = s1;
+  s1 = strreplace(s2, "<wbr />", zerostr);
+  debug_mfree(s2, "strip_html (12)"); s2 = s1;
+  s1 = strreplace(s2, "\r\r", br);
+  debug_mfree(s2, "strip_html (13)"); s2 = s1;
+  s1 = strreplace(s2, "\n\n", br);
+  debug_mfree(s2, "strip_html (14)"); s2 = s1;
+  s1 = strreplace(s2, "</ul>\n", "</ul><br>");
+  debug_mfree(s2, "strip_html (15)"); s2 = s1;
+  s1 = strreplace(s2, "</ul>\r", "</ul><br>");
+  debug_mfree(s2, "strip_html (16)"); s2 = s1;
+  s1 = strreplace(s2, "<li>", br);
+  debug_mfree(s2, "strip_html (17)"); s2 = s1;
+  s1 = strreplace(s2, "</li>", br);
+  debug_mfree(s2, "strip_html (1)"); s2 = s1;
+  s1 = strreplace(s2, "</ol>\r", "</ol><br>");
+  debug_mfree(s2, "strip_html (18)"); s2 = s1;
+  s1 = strreplace(s2, "</ol>\n", "</ol><br>");
+  debug_mfree(s2, "strip_html (19)"); s2 = s1;
+  s1 = strreplace(s2, "<br><br>", br);
+  debug_mfree(s2, "strip_html (20)"); s2 = s1;
+  //§©§Ñ§Þ§Ö§ß§Ú§Þ §ã§ã§í§Ý§Ü§Ú
+  char *a = strstr(s1, "<a "), *hrf, *he, *ea, *ss, *st1, *st2, *rpl;
+  int n;
+  while(a)  //§±§à§Ü§Ñ §Ö§ã§ä§î §ä§Ö§Ô§Ú <a ...
+  {
+    he = hrf = strstr(a, "href=");  //§ß§Ñ§ç§à§Õ§Ú§Þ §å§Ü§Ñ§Ù§Ñ§ä§Ö§Ý§î §ß§Ñ §Ñ§Õ§â§Ö§ã
+    if(hrf)
+    {
+      if(hrf[5] == '\"')            //§ã§Þ§à§ä§â§Ú§Þ §Ü§Ñ§Ü §à§æ§à§â§Þ§Ý§Ö§ß§Ñ §ã§ã§í§Ý§Ü§Ñ
+        he = strstr(hrf+6, "\""); //§Ó §Ü§Ñ§Ó§í§é§Ü§Ñ§ç
+      else
+        if(hrf[5] == '\'')          //§Ó §Ñ§á§à§ã§ä§â§à§æ§Ñ§ç
+          he = strstr(&hrf[5], "\'");
+        else
+          for(he = hrf+5; *he && strchr(valid, *he); he++);//§Ú§Ý§Ú §Ò§Ö§Ù §ß§Ú§é§Ö§Ô§à
+      ss = strstr(he, ">")+1;       //§Ú§ë§Ö§Þ §Ü§à§ß§Ö§è §à§ä§Ü§â§í§Ó§Ñ§ð§ë§Ö§Ô§à §ä§Ö§Ô§Ñ
+      ea = strstr(he, "</a>");      //§Ú §ß§Ñ§é§Ñ§Ý§à §Ù§Ñ§Ü§â§í§Ó§Ñ§ð§ë§Ö§Ô§à
+      rpl = strstr(he, "<a ");
+      if(rpl && ea > rpl)
+      {
+        a = rpl;
+        continue;
+      }
+
+      if(ss && ea)                  //§Ö§ã§Ý§Ú §ß§Ö §ß§Ñ§ê§Ý§Ú - §Ü§à§ã§ñ§Ü
+      {
+        st1 = (char*)debug_malloc(he-hrf-5, "strip_html (a1)"); //§Ó§í§Õ§Ö§Ý§ñ§Ö§Þ §á§Ñ§Þ§ñ§ä§î §á§à§Õ §á§â§à§Þ§Ö§Ø§å§ä§à§é§ß§í§Ö §ã§ä§â§à§Ü§Ú
+        st2 = (char*)debug_malloc(ea-ss+1,  "strip_html (a2)");
+        rpl = (char*)debug_malloc(ea-a+5,   "strip_html (a3)");
+        
+        memcpy(st1, hrf+6, he-hrf-6); st1[he-hrf-6] = 0; //§Ü§à§á§Ú§â§å§Ö§Þ §Ú§ç §ä§å§Õ§Ñ
+        memcpy(st2, ss, ea-ss);       st2[ea-ss]    = 0;
+        memcpy(rpl, a, ea-a+4);       rpl[ea-a+4]   = 0; //§é§ä§à §Ò§å§Õ§Ö§Þ §Ù§Ñ§Þ§Ö§ß§ñ§ä§î
+
+        ss = (char*)debug_malloc(strlen(st1) + strlen(st2) + 6, "strip_html (a4)");
+        memset(ss, 0, strlen(st1) + strlen(st2) + 6);
+        if(strcmp(st1, st2))
+          snprintf(ss, strlen(st1) + strlen(st2) + 5, " %s {%s} ", st2, st1); // §ß§Ñ §é§ä§à §Ù§Ñ§Þ§Ö§ß§ñ§Ö§Þ
+        else
+          snprintf(ss, strlen(st1) + strlen(st2) + 5, " {%s} ", st2, st1); // §ß§Ñ §é§ä§à §Ù§Ñ§Þ§Ö§ß§ñ§Ö§Þ
+
+        n = a-s1;                                        //§¯§Ñ§Û§Õ§×§Þ §ã§Þ§Ö§ë§Ö§ß§Ú§Ö, §à§ä§Ü§å§Õ§Ñ §á§Ý§ñ§ã§Ñ§ä§î §Õ§Ñ§Ý§î§ê§Ö
+        s2 = strreplace(s1, rpl, ss);                    //§³§à§Ò§ã§ä§Ó§Ö§ß§ß§à §Ù§Ñ§Þ§Ö§ß§Ñ
+        debug_mfree(s1, "strip_html (a4)"); s1 = s2;     //§ñ§Ó§Ü§Ú-§á§Ñ§â§à§Ý§Ú §á§à§Þ§Ö§ß§ñ§Ý§Ú§ã§î
+        a = s1 + n;                                      //§Õ§Ñ§Ý§î§ê§Ö §Ú§ã§Ü§Ñ§ä§î §à§ä§ã§ð§Õ§Ñ
+
+        debug_mfree(ss,  "strip_html (a4)");             //§Ó§ã§Ö§Þ §ã§á§Ñ§ã§Ú§Ò§à, §Ó§ã§Ö §ã§Ó§à§Ò§à§Õ§ß§í
+        debug_mfree(rpl, "strip_html (a3)");
+        debug_mfree(st2, "strip_html (a2)");
+        debug_mfree(st1, "strip_html (a1)");
+      }
+    }
+    if(ss) a = s1;
+    a = strstr(a+1, "<a ");
+  }
 
   for(int i = 0, j = 0; s1[i]; i++)
   {
@@ -347,32 +427,31 @@ void strip_html(char *s)
   }
 
   s2 = s1;
-  s1 = strreplace(s2, "<br>", "\r\n");
-  debug_mfree(s2, "strip_html (1)"); s2 = s1;
-  s1 = strreplace(s2, "<br />", "\r\n");
-  debug_mfree(s2, "strip_html (1)"); s2 = s1;
+  s1 = strreplace(s2, br, "\r\n");
+  debug_mfree(s2, "strip_html (21)"); s2 = s1;
   s1 = strreplace(s2, "<p>", "\r\n");
-  debug_mfree(s2, "strip_html (1)"); s2 = s1;
+  debug_mfree(s2, "strip_html (23)"); s2 = s1;
   s1 = strreplace(s2, "<blockquote", "\r\n<blockquote");
-  debug_mfree(s2, "strip_html (1)"); s2 = s1;
+  debug_mfree(s2, "strip_html (24)"); s2 = s1;
   s1 = strreplace(s2, "/blockquote>", "/blockquote>\r\n");
-  debug_mfree(s2, "strip_html (1)"); s2 = s1;
+  debug_mfree(s2, "strip_html (25)"); s2 = s1;
   s1 = strreplace(s2, "</td>", " ");
-  debug_mfree(s2, "strip_html (1)"); s2 = s1;
+  debug_mfree(s2, "strip_html (26)"); s2 = s1;
   s1 = strreplace(s2, "</tr>", "\r\n");
-  debug_mfree(s2, "strip_html (1)"); s2 = s1;
+  debug_mfree(s2, "strip_html (27)"); s2 = s1;
   s1 = strreplace(s2, "&quote;", "\"");
-  debug_mfree(s2, "strip_html (1)"); s2 = s1;
+  debug_mfree(s2, "strip_html (28)"); s2 = s1;
   s1 = strreplace(s2, "&nbsp;", " ");
-  debug_mfree(s2, "strip_html (1)"); s2 = s1;
+  debug_mfree(s2, "strip_html (29)"); s2 = s1;
   s1 = strreplace(s2, "&lt;", "<");
-  debug_mfree(s2, "strip_html (1)"); s2 = s1;
+  debug_mfree(s2, "strip_html (30)"); s2 = s1;
   s1 = strreplace(s2, "&gt;", ">");
-  debug_mfree(s2, "strip_html (1)"); s2 = s1;
+  debug_mfree(s2, "strip_html (31)"); s2 = s1;
   s1 = strreplace(s2, "&amp;", "&");
-  debug_mfree(s2, "strip_html (1)"); s2 = s1;
+  debug_mfree(s2, "strip_html (32)"); s2 = s1;
   s1 = strreplace(s2, "&copy;", "(c)");
-  debug_mfree(s2, "strip_html (1)");
+  debug_mfree(s2, "strip_html (33)");
+
 
   //§ã§ð§Õ§Ñ §Þ§í §Ò§å§Õ§Ö§Þ §Ò§â§à§ã§Ñ§ä§î §Ü§à§ã§ä§Ú
   char *d = (char*) debug_malloc(strlen(s)+1, "strip_html (1)");

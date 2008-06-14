@@ -703,6 +703,8 @@ MailClient/MailViewer/leak_debug.h -text
 MailClient/MailViewer/main.c -text
 MailClient/MailViewer/sf_mime.h -text
 MailClient/MailViewer/statscreen.c -text
+MailClient/MailViewer/strings.c -text
+MailClient/MailViewer/strings.h -text
 MailClient/MailViewer/test.xcl -text
 MailClient/conf_loader.c -text
 MailClient/conf_loader.h -text

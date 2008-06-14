@@ -3,7 +3,7 @@
 #include "..\mailclient.h"
 #include "..\rect_patcher.h"
 #include "decode.h"
-//#include <time.h>
+#include "strings.h"
 #include "leak_debug.h"
 
 const char ipc_daemon_name[]=IPC_DAEMON_NAME;
@@ -21,7 +21,6 @@ void gb_2ws(WSHDR *ws, const char *s)//gb2ws
 {
   gb2ws(ws, s, strlen(s));
 }
-
 
 void delspaces(char *s)
 {
@@ -92,38 +91,6 @@ SOFTKEYSTAB menu_skt2=
   menu_sk2,0
 };
 // ----------------------------------------------------------------------------------
-#pragma inline=forced
-int toupper(int c)
-{
-  if ((c>='a')&&(c<='z')) c+='A'-'a';
-  return(c);
-}
-
-int strcmp_nocase(const char *s,const char *d)
-{
-  int cs;
-  int ds;
-  do
-  {
-    cs=*s++;
-    if (cs&0x40) cs&=0xDF;
-    ds=*d++;
-    if (ds&0x40) ds&=0xDF;
-    cs-=ds;
-    if (cs) break;
-  }
-  while(ds);
-  return(cs);
-}
-
-int strncmp_nocase(const char *s1,const char *s2,unsigned int n)
-{
-  int i;
-  int c;
-  while(!(i=(c=toupper(*s1++))-toupper(*s2++))&&(--n)) if (!c) break;
-  return(i);
-}
-
 volatile ML_VIEW *mails;
 
 void FreeMailDB()
@@ -1075,6 +1042,46 @@ void create_save_as_dialog(MAIL_PART *top, char *eml)
   CreateInputTextDialog(&saveas_desc,&saveas_hdr,eq,1,mail_view);  
 }
 
+int IsUrl(WSHDR *ws, int pos, char *link)
+{
+  const char *valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$-_.+!*'(),%;:@&=/?~#";
+
+  int len = wstrlen(ws);
+  unsigned short *str = ws->wsbody+1, *tmp, *begin;
+  tmp = str;
+  
+  begin = str = wstrstr(str, "http://", &len, 7);
+
+  while(str && (begin-tmp <= pos))
+  {
+    while(len && strchr(valid, char16to8(*str))) {str++; len--;}
+    if(str-tmp >= pos-2)
+    {
+      for(;begin < str; begin++, link++)
+        *link = char16to8(*begin);
+      link[str-begin] = 0;
+      return 1;
+    }
+    begin = str = wstrstr(str, "http://", &len, 7);
+  }
+
+  len = wstrlen(ws);
+  begin = str = wstrstr(tmp, "www.", &len, 4);
+  while(str && (begin-tmp <= pos))
+  {
+    while(len && strchr(valid, char16to8(*str))) {str++; len--;}
+    if(str-tmp >= pos-2)
+    {
+      for(;begin < str; begin++, link++)
+        *link = char16to8(*begin);
+      link[str-begin] = 0;
+      return 1;
+    }
+    begin = str = wstrstr(str, "www.", &len, 4);
+  }
+  return 0;
+}
+
   
 HEADER_DESC ed1_hdr={0,0,0,0,NULL,(int)"²é¿´",LGP_NULL};
 
@@ -1189,9 +1196,45 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
       while(top)
       {
         if (top->ec_n==i)
-        {
-          if (top->content_type==APPLICATION) break;
+          if (top->content_type==APPLICATION)
+            break;
+          else
+          {
+            if (l==ENTER_BUTTON)
+            {
+        
+              int pos, len, f;
+              char *link, fn[256];
+              unsigned err;
+              WSHDR *ews;
+              EDITCONTROL ec;
+              
+              ExtractEditControl(data,i,&ec);
+              ews = AllocWS(wstrlen(ec.pWS)+1);
+              wstrcpy(ews,ec.pWS);
+              pos = EDIT_GetCursorPos(data);
+              len = wstrlen(ews);
+          
+              link = debug_malloc(len+1, "ed1_onkey (1)");
+                      
+              if(IsUrl(ews, pos, link))
+              {
+                snprintf(fn, 255, "%stmp%u.url", EML_PATH, GetTempName);                
+                if ((f=fopen(fn,A_WriteOnly+A_BIN+A_Create+A_Truncate,P_WRITE,&err))!=-1)
+                {
+                  fwrite(f,link,strlen(link),&err);
+                  fclose(f,&err);
+                  str_2ws(ews,fn,256);
+                  ExecuteFile(ews,0,0);            
+                  unlink(fn, &err);
+                }                        
+                debug_mfree(link, "ed1_onkey (1)");
+                return (-1);
+              }
+              debug_mfree(link, "ed1_onkey (1)");
+            }        
         }
+
         top=top->next;
       }
       if (!top) return (0);
@@ -1392,8 +1435,18 @@ int get_ctencoding_index(char *str)
   return BIT8;
 }
 
-const char default_ctype[]="Content-Type: text/plain; charset=\"windows-1251\"";
-const char default_transfere[]="Content-Transfer-Encoding: 8bit";
+#define UTF16_DIS_UNDERLINE (0xE002)
+#define UTF16_ENA_UNDERLINE (0xE001)
+
+void SearchUrl(WSHDR *ws, const char *s)
+{
+    if(s==strstr(s, "http://") || s == strstr(s, "www."))   wsAppendChar(ws,*s); 
+    gb_2ws(ws,s);
+}
+
+
+const char default_ctype[]="Content-Type: text/plain; charset=\"GB2312\"";
+const char default_transfere[]="Content-Transfer-Encoding: base64";
 
 MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
 {
@@ -1514,7 +1567,9 @@ MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
         }
       bot->scroll[scrolls] = bot->textlen;
       ws=AllocWS(strlen(buf));
-      gb_2ws(ws, buf);
+      SearchUrl(ws, buf);
+      CutWSTR(ws, wstrlen(ws)+1);
+//      gb_2ws(ws, buf);
         
       PrepareEditControl(&ec);
       ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL | ECF_DISABLE_T9,ws,wslen(ws));
@@ -1579,7 +1634,9 @@ MAIL_VIEW *ParseMailBody(void *eq,ML_VIEW *ml_list, void *ma)
         }
       bot->scroll[scrolls] = bot->textlen;
       ws=AllocWS(strlen(buf));
-      gb_2ws(ws, buf);
+      SearchUrl(ws, buf);
+      CutWSTR(ws, wstrlen(ws)+1);
+//      gb_2ws(ws, buf);
         
       PrepareEditControl(&ec);
       ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL | ECF_DISABLE_T9,ws,wslen(ws));
