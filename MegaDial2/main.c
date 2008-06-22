@@ -1968,11 +1968,14 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //°´¼ü¹¦ÄÜ
   {
     if (!cl) 
     {
-      if(is_sms_need && (e_ws->wsbody[0] > 1))
+      if(is_sms_need && e_ws&& (e_ws->wsbody[0] > 1))
       {
         char nx[40];
-        ws_2str((WSHDR *)e_ws,nx,e_ws->wsbody[0]);
-        gb2ws(gwsName,nx,e_ws->wsbody[0]);
+        WSHDR *sws=AllocWS(50);
+        wstrcpy(sws,(WSHDR *)e_ws);
+        ws_2str((WSHDR *)sws,nx,sws->wsbody[0]);
+        gb2ws(gwsName,nx,sws->wsbody[0]);
+        FreeWS(sws);
 #ifndef NEWSGOLD
         if(dewin&&is_sms_need)
         {
