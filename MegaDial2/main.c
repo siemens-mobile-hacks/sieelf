@@ -1866,27 +1866,36 @@ void VoiceOrSMS(const char *num)
 }
 
 
+void Destructor(void)
+{
+  //GBS_DelTimer(&hours_tmr);
+  //SaveCash();
+  //EndUSSDtimer();
+//  FreeWS(dbg_ws);
+  FreeWS(gwsName);
+  FreeWS(gwsTemp);
+  FreeWS(numTemp);
+  FreeWS(smstemp);
+  FreeWS(ews);
+}
+
 void ElfKiller(void)
 {
-	extern void *ELF_BEGIN;
-	((void (*)(void *))(mfree_adr()))(&ELF_BEGIN);
-        FreeWS(gwsName);
-        FreeWS(gwsTemp);
-        FreeWS(numTemp);
-        FreeWS(smstemp);
-        FreeWS(ews);
-        FreeCLIST();
-        if(iReadFile && !cs_adr)
-	   mfree((void*)cs_adr);
-        if(my_pic) deleteIMGHDR(my_pic);
-	LockSched();
+  	LockSched();
         CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
 	icsmd.onMessage=old_icsm_onMessage;
 	icsmd.onClose=old_icsm_onClose;  
         icsm->constr=old_icsmd;
 	UnlockSched();
+        FreeCLIST();
+        if(iReadFile && !cs_adr)
+	  mfree((void*)cs_adr);
+        if(my_pic) deleteIMGHDR(my_pic);
+        Destructor();
+	extern void *ELF_BEGIN;
+        extern void kill_data(void *p, void (*func_p)(void *));
+        kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
 }
-
 
 //-------------------------------------
 //ÆÁÄ»Ö÷¿Ø
@@ -2377,25 +2386,13 @@ int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
   return(csm_result);
 }
 
-
-void Destructor(void)
-{
-  //GBS_DelTimer(&hours_tmr);
-  //SaveCash();
-  //EndUSSDtimer();
-//  FreeWS(dbg_ws);
-  FreeWS(gwsName);
-  FreeWS(gwsTemp);
-  FreeWS(numTemp);
-  FreeWS(smstemp);
-  FreeWS(ews);
-}
-
 void MyIDLECSM_onClose(CSM_RAM *data)
 {
   extern void seqkill(void *data, void(*next_in_seq)(CSM_RAM *), void *data_to_kill, void *seqkiller);
   extern void *ELF_BEGIN;
   if(my_pic) deleteIMGHDR(my_pic);
+  if(iReadFile && !cs_adr)
+    mfree((void*)cs_adr);
   Destructor();
   seqkill(data,old_icsm_onClose,&ELF_BEGIN,SEQKILLER_ADR());
 }
