@@ -132,6 +132,22 @@ typedef struct
 
 typedef struct
 {
+	char min;
+	char max;
+	int len;
+	char bytes[128];
+}DATA_BYTES;
+
+typedef struct
+{
+	int min;
+	int max;
+	int len;
+	int ints[128];
+}DATA_INTS;
+
+typedef struct
+{
 	void *prev;
 	void *next;
 	int bytePos;
@@ -180,11 +196,11 @@ typedef struct
 #define TYPE_HEX	12 //hex
 #define TYPE_SF		13 //select file
 #define TYPE_SD		14 //selectdir
-#define TYPE_MS     15 //timeinms
-//#define TYPE_OF     16 //offset
-#define TYPE_SL     17 //slider
-//#define TYPE_CONST  18 //const
-#define TYPE_TP     19 //template
+#define TYPE_MS		15 //timeinms
+#define TYPE_BYTES	16 //bytes
+#define TYPE_SL		17 //slider
+#define TYPE_INTS	18 //ints
+#define TYPE_TP		19 //template
 #define TYPE_POSB	20 //pos in byte //use it the same as pos, except when save
-
+//#define TYPE_CONST	21 //const
 #endif

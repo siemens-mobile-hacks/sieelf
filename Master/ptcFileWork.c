@@ -2,7 +2,7 @@
  * 文件名: ptcFileWork.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.06.08
+ * 最后修改日期: 2008.06.24
  *
  * 作用: 读取*.ptc进行初始化和写入*.ptc
  * 备注: WINTEL_DEBUG为使用在windows中使用编译器进行调试的条件编译项目
@@ -190,6 +190,18 @@ void initPatchItem(PATCH_ITEM *ptcitem)
 					pos->x=ptc_buf[bpos];
 					pos->y=ptc_buf[bpos+1];
 				}
+				break;
+			}
+		case TYPE_BYTES:
+			{
+				DATA_BYTES *dbytes=(DATA_BYTES *)pitem->itemData;
+				memcpy(dbytes->bytes, ptc_buf+bpos, dbytes->len);
+				break;
+			}
+		case TYPE_INTS:
+			{
+				DATA_INTS *dints=(DATA_INTS *)pitem->itemData;
+				memcpy(dints->ints, ptc_buf+bpos, (dints->len)*sizeof(int));
 				break;
 			}
 		}
@@ -514,6 +526,18 @@ void fillItemDataToBuf(PATCH_ITEM *ptcitem)
 				}
 				break;
 			}
+		case TYPE_BYTES:
+			{
+				DATA_BYTES *dbytes=(DATA_BYTES *)pitem->itemData;
+				memcpy(ptc_buf+bpos, dbytes->bytes, dbytes->len);
+				break;
+			}
+		case TYPE_INTS:
+			{
+				DATA_INTS *dints=(DATA_INTS *)pitem->itemData;
+				memcpy(ptc_buf+bpos, dints->ints, (dints->len)*sizeof(int));
+				break;
+			}
 		}
 	}
 }
@@ -607,6 +631,18 @@ int getPtcSize(PATCH_ITEM *ptcitem)
 			{
 				DATA_SD *sd=(DATA_SD *)item->itemData;
 				ptcsize+=(sd->maxlen?sd->maxlen:58);
+				break;
+			}
+		case TYPE_BYTES:
+			{
+				DATA_BYTES *dbytes=(DATA_BYTES *)item->itemData;
+				ptcsize+=dbytes->len;
+				break;
+			}
+		case TYPE_INTS:
+			{
+				DATA_INTS *dints=(DATA_INTS *)item->itemData;
+				ptcsize+=(dints->len)*sizeof(int);
 				break;
 			}
 		//default :

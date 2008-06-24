@@ -21,6 +21,8 @@ void setPatchOnOff(PTC_CONFIG *ptcfg, int n);
 int getPatchOnOff(PTC_CONFIG *ptcfg, int n);
 int isPatchExistedByID(char *patchID);
 int strncmpNoCase(const char *s1,const char *s2,unsigned int n);
+void str2bytes(char *bytes, char *str, int maxlen);
+void str2ints(int *ints, char *str, int maxlen);
 #endif
 
 

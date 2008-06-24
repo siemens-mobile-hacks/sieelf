@@ -38,6 +38,11 @@ extern const char STR_DISPF1[];
 extern const char STR_DISPF2[];
 extern const char STR_RANGE1[];
 extern const char STR_RANGE2[];
+extern const char STR_BYTES1[];
+extern const char STR_BYTES2[];
+extern const char STR_INTS1[];
+extern const char STR_INTS2[];
+extern const char D_PERCENT_D[];
 #endif
 
 

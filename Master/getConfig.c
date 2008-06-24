@@ -2,7 +2,7 @@
  * 文件名: getConfig.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.06.08
+ * 最后修改日期: 2008.06.24
  *
  * 作用: 读取config.txt，并进行解析，储存结果，还提供了一些文字处理函数
  * 备注: WINTEL_DEBUG为使用在windows中使用编译器进行调试的条件编译项目
@@ -724,6 +724,65 @@ PATCH_TP *findTemplate(PTC_CONFIG *ptcfg, char *p)
 	}
 	return 0;
 }
+int isCurrectItem(char *p)
+{
+	char *s=p;
+	while(*s)
+	{
+		if(*s=='{')
+		{
+			char *pp=s+1;
+			//int i=0;
+			pp=gotoRealPos(pp);
+			pp=strchrInQuote(pp, ' ')+1;
+			pp=gotoRealPos(pp);
+			pp=strchrInQuote(pp, ' ');
+			while(*pp)
+			{
+				if(pp==p)
+					return 1;
+				if(*pp<=' ')
+					pp++;
+				else
+					return 0;
+			}
+			return 0;
+		}
+		s--;
+	}
+	return 0;
+}
+
+void str2bytes(char *bytes, char *str, int maxlen)
+{
+	int i=0;
+	while(i<maxlen)
+	{
+		str=gotoRealPos(str);
+		str2num_char(str, bytes+i, 127, 0, 0);
+		if(!(str=strchrInQuote(str+1, ',')))
+			break;
+		if(!(*str++)) //IAR编译器在处理while((*str)&&(i<maxlen))这一步时有问题,指针前进了一个
+			break;
+		i++;
+	}
+}
+
+void str2ints(int *ints, char *str, int maxlen)
+{
+	int i=0;
+	while(i<maxlen)
+	{
+		str=gotoRealPos(str);
+		str2num(str, ints+i, 0, 0, 0);
+		if(!(str=strchrInQuote(str+1, ',')))
+			break;
+		if(!(*str++)) //IAR编译器在处理while((*str)&&(i<maxlen))这一步时有问题,指针前进了一个
+			break;
+		i++;
+	}
+}
+
 void subMenuCopy(PATCH_SUBMENU *sbmdst, PATCH_SUBMENU *sbmsrc, int byteBase);
 //解析选择项条目
 void doItemJob(char *p, PATCH_SUBMENU *subMenu)
@@ -736,6 +795,8 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 	int bytePos=0;
 	if((p1=strstrInQuote(p, STR_CHKBOX1))||(p1=strstrInQuote(p, STR_CHKBOX2)))
 	{
+		if(isCurrectItem(p1))
+		{
 		DATA_CHECKBOX *checkbox=malloc(sizeof(DATA_CHECKBOX));
 		checkbox->bitPos=0;
 		checkbox->onoff=0;
@@ -746,25 +807,41 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		if((p1=strstrInQuote(p, STR_VL))||(p1=strstrInQuote(p, STR_VL1)))
 			checkbox->onoff=1;
 		pp=gotoRealPos(p+1);
-		while(*pp>='0'&&*pp<='9')
+		str2num(pp, &bytePos, 0, 0, 0);
+		//while(*pp>='0'&&*pp<='9')
+		//{
+		//	bytePos=bytePos*10+chr2num(*pp);
+		//	pp++;
+		//}
+		//pp=gotoRealPos(pp);
+		while(*pp>X_CHAR)
 		{
-			bytePos=bytePos*10+chr2num(*pp);
-			pp++;
-		}
-		pp=gotoRealPos(pp);
-		if(*pp=='.')
-		{
-			pp++;
-			while(*pp>='0'&&*pp<='9')
+			if(*pp=='.')
 			{
-				checkbox->bitPos=(checkbox->bitPos)*10+chr2num(*pp);
 				pp++;
+				str2num(pp, &checkbox->bitPos, 8, 0, 0);
+				break;
 			}
+			pp++;
 		}
+		//if(*pp=='.')
+		//{
+		//	pp++;
+		//	while(*pp>='0'&&*pp<='9')
+		//	{
+		//		checkbox->bitPos=(checkbox->bitPos)*10+chr2num(*pp);
+		//		pp++;
+		//	}
+		//}
 		addItemToConfig(checkbox, subMenu, TYPE_CHECKBOX, bytePos+ptcfgtop->offset, temp);
+		return;
+		}
 	}
-	else if((p1=strstrInQuote(p, STR_XY2)))
+	if((p1=strstrInQuote(p, STR_XY2)))
 	{
+		
+		if(isCurrectItem(p1))
+		{
 		DATA_POS *pos=malloc(sizeof(DATA_POS));
 		pos->x=0;
 		pos->off=0;
@@ -798,9 +875,13 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos, 0, 0, 0);
 		addItemToConfig(pos, subMenu, TYPE_POS, bytePos+ptcfgtop->offset, temp);
+		return;
+		}
 	}
-	else if((p1=strstrInQuote(p, STR_XY1)))
+	if((p1=strstrInQuote(p, STR_XY1)))
 	{
+		if(isCurrectItem(p1))
+		{
 		DATA_POS *pos=malloc(sizeof(DATA_POS));
 		pos->x=0;
 		pos->off=0;
@@ -834,9 +915,13 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos, 0, 0, 0);
 		addItemToConfig(pos, subMenu, TYPE_POSB, bytePos+ptcfgtop->offset, temp);
+		return;
+		}
 	}
-	else if((p1=strstrInQuote(p, " b "))||(p1=strstrInQuote(p, " byte ")))
+	if((p1=strstrInQuote(p, " b "))||(p1=strstrInQuote(p, " byte ")))
 	{
+		if(isCurrectItem(p1))
+		{
 		DATA_BYTE *dbyte=malloc(sizeof(DATA_BYTE));
 		dbyte->initData=0;
 		dbyte->min=0;
@@ -865,9 +950,13 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos, 0, 0, 0);
 		addItemToConfig(dbyte, subMenu, TYPE_BYTE, bytePos+ptcfgtop->offset, temp);
+		return;
+		}
 	}
-	else if((p1=strstrInQuote(p, " int "))||(p1=strstrInQuote(p, " i ")))
+	if((p1=strstrInQuote(p, " int "))||(p1=strstrInQuote(p, " i ")))
 	{
+		if(isCurrectItem(p1))
+		{
 		DATA_INT *dint=malloc(sizeof(DATA_INT));
 		dint->initData=0;
 		dint->max=0xFFFFFFF;
@@ -894,9 +983,13 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
 		addItemToConfig(dint, subMenu, TYPE_INT, bytePos+ptcfgtop->offset, temp);
+		return;
+		}
 	}
-	else if((p1=strstrInQuote(p, " o "))||(p1=strstrInQuote(p, " option ")))
+	if((p1=strstrInQuote(p, " o "))||(p1=strstrInQuote(p, " option ")))
 	{
+		if(isCurrectItem(p1))
+		{
 		DATA_CBOX *cbox=malloc(sizeof(DATA_CBOX));
 		cbox->cboxitem=0;
 		cbox->initData=0;
@@ -920,9 +1013,13 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
 		addItemToConfig(cbox, subMenu, TYPE_CBOX, bytePos+ptcfgtop->offset, temp);
+		return;
+		}
 	}
-	else if((p1=strstrInQuote(p, " co "))||(p1=strstrInQuote(p, " color ")))
+	if((p1=strstrInQuote(p, " co "))||(p1=strstrInQuote(p, " color ")))
 	{
+		if(isCurrectItem(p1))
+		{
 		DATA_COLOR *color=malloc(sizeof(DATA_COLOR));
 		int *col=(int *)color->color;
 		*col=0;
@@ -938,9 +1035,13 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
 		addItemToConfig(color, subMenu, TYPE_COLOR, bytePos+ptcfgtop->offset, temp);
+		return;
+		}
 	}
-	else if((p1=strstrInQuote(p, " a "))||(p1=strstrInQuote(p, " address ")))
+	if((p1=strstrInQuote(p, " a "))||(p1=strstrInQuote(p, " address ")))
 	{
+		if(isCurrectItem(p1))
+		{
 		DATA_ADDRESS *addr=malloc(sizeof(DATA_ADDRESS));
 		addr->addr=0;
 		pp=gotoRealPos(p1);
@@ -955,9 +1056,13 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
 		addItemToConfig(addr, subMenu, TYPE_ADDRESS, bytePos+ptcfgtop->offset, temp);
+		return;
+		}
 	}
-	else if((p1=strstrInQuote(p, " sf "))||(p1=strstrInQuote(p, " selectfile ")))
+	if((p1=strstrInQuote(p, " sf "))||(p1=strstrInQuote(p, " selectfile ")))
 	{
+		if(isCurrectItem(p1))
+		{
 		DATA_SF *fs=malloc(sizeof(DATA_SF));
 		int i=0;
 		for(;i<128;i++)
@@ -990,9 +1095,13 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
 		addItemToConfig(fs, subMenu, TYPE_SF, bytePos+ptcfgtop->offset, temp);
+		return;
+		}
 	}
-	else if((p1=strstrInQuote(p, " sd "))||(p1=strstrInQuote(p, " selectdir ")))
+	if((p1=strstrInQuote(p, " sd "))||(p1=strstrInQuote(p, " selectdir ")))
 	{
+		if(isCurrectItem(p1))
+		{
 		DATA_SD *sd=malloc(sizeof(DATA_SD));
 		sd->path[0]=0;
 		sd->maxlen=0;
@@ -1015,9 +1124,13 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
 		addItemToConfig(sd, subMenu, TYPE_SD, bytePos+ptcfgtop->offset, temp);
+		return;
+		}
 	}
-	else if((p1=strstrInQuote(p, " s "))||(p1=strstrInQuote(p, " string ")))
+	if((p1=strstrInQuote(p, " s "))||(p1=strstrInQuote(p, " string ")))
 	{
+		if(isCurrectItem(p1))
+		{
 		DATA_STRING *string=malloc(sizeof(DATA_STRING));
 		int i=0;
 		string->maxlen=0;
@@ -1042,9 +1155,13 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
 		addItemToConfig(string, subMenu, TYPE_STRING, bytePos+ptcfgtop->offset, temp);
+		return;
+		}
 	}
-	else if((p1=strstrInQuote(p, " u "))||(p1=strstrInQuote(p, " ustring ")))
+	if((p1=strstrInQuote(p, " u "))||(p1=strstrInQuote(p, " ustring ")))
 	{
+		if(isCurrectItem(p1))
+		{
 		DATA_UNICODE *uni=malloc(sizeof(DATA_UNICODE));
 		int j=0;
 		uni->maxlen=0;
@@ -1083,9 +1200,13 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
 		addItemToConfig(uni, subMenu, TYPE_UNICODE, bytePos+ptcfgtop->offset, temp);
+		return;
+		}
 	}
-	else if((p1=strstrInQuote(p, " h "))||(p1=strstrInQuote(p, " hex ")))
+	if((p1=strstrInQuote(p, " h "))||(p1=strstrInQuote(p, " hex ")))
 	{
+		if(isCurrectItem(p1))
+		{
 		DATA_HEX *hex=malloc(sizeof(DATA_HEX));
 		int i=0;
 		for(;i<128;i++)
@@ -1124,9 +1245,13 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
 		addItemToConfig(hex, subMenu, TYPE_HEX, bytePos+ptcfgtop->offset, temp);
+		return;
+		}
 	}
-	else if((p1=strstrInQuote(p, STR_SLIDER2))||(p1=strstrInQuote(p, STR_SLIDER1)))
+	if((p1=strstrInQuote(p, STR_SLIDER2))||(p1=strstrInQuote(p, STR_SLIDER1)))
 	{
+		if(isCurrectItem(p1))
+		{
 		DATA_SL *sl=malloc(sizeof(DATA_SL));
 		sl->initData=0;
 		sl->max=0;
@@ -1153,9 +1278,13 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
 		addItemToConfig(sl, subMenu, TYPE_SL, bytePos+ptcfgtop->offset, temp);
+		return;
+		}
 	}
-	else if((p1=strstrInQuote(p, STR_USETEMPLATE1))||(p1=strstrInQuote(p, STR_USRTEMPLATE2)))
+	if((p1=strstrInQuote(p, STR_USETEMPLATE1))||(p1=strstrInQuote(p, STR_USRTEMPLATE2)))
 	{
+		if(isCurrectItem(p1))
+		{
 		//DATA_USETP *usetp=malloc(sizeof(DATA_USETP));
 		//usetp->tpName[0]=0;
 		PATCH_TP *tpl;
@@ -1167,9 +1296,13 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		str2num(pp, &bytePos,0,0, 0);
 		if(tpl=findTemplate(ptcfgtop, temp))
 			subMenuCopy(subMenu, (PATCH_SUBMENU *)tpl, bytePos+ptcfgtop->offset);
+		return;
+		}
 	}
-	else if((p1=strstrInQuote(p, STR_MS1))||(p1=strstrInQuote(p, STR_MS2)))
+	if((p1=strstrInQuote(p, STR_MS1))||(p1=strstrInQuote(p, STR_MS2)))
 	{
+		if(isCurrectItem(p1))
+		{
 		DATA_MS *ms=malloc(sizeof(DATA_MS));
 		ms->ms=0;
 		pp=gotoRealPos(p1);
@@ -1184,6 +1317,111 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);
 		addItemToConfig(ms, subMenu, TYPE_MS, bytePos+ptcfgtop->offset, temp);
+		return;
+		}
+	}
+	if((p1=strstrInQuote(p, STR_BYTES1))||(p1=strstrInQuote(p, STR_BYTES2)))
+	{
+		char *p3=p1;
+		while(*p3)
+		{
+			if(*p3==')')
+				break;
+			if(*p3=='}')
+				return;
+			p3++;
+		}
+		p3++;
+		if(isCurrectItem(p3))
+		{
+		int i=0;
+		//char c;
+		DATA_BYTES *dbytes=malloc(sizeof(DATA_BYTES));
+		dbytes->min=0;
+		dbytes->max=127;
+		dbytes->len=0;
+		for(;i<128;i++)
+			dbytes->bytes[i]=0;
+		pp=gotoRealPos(p1);
+		str2num(pp, &dbytes->len, 0, 0, 0);
+		if((dbytes->len)>128)
+			dbytes->len=128;
+		pp=gotoRealPos(p3);
+		p1=gotoMyStrStart(pp);
+		p2=gotoMyStrEnd(pp);
+		strnCopyWithEnd(temp, p1, p2-p1);
+		if((p1=strstrInQuote(p, STR_VL))||(p1=strstrInQuote(p, STR_VL1)))
+		{
+			//pp=gotoRealPos(p1);
+			str2bytes(dbytes->bytes, p1, dbytes->len);
+		}
+		if((p1=strstrInQuote(p, STR_RANGE1))||(p1=strstrInQuote(p, STR_RANGE2)))
+		{
+			pp=gotoRealPos(p1);
+			str2num_char(pp, &dbytes->min, 0xFF, 0, 0);
+			//while(*pp>='0'&&*pp<='9') //leave min
+			//	pp++;
+			while(*pp&&*pp!='.')
+				pp++;
+			while(*pp<'0'||*pp>'9') //to max
+				pp++;
+			str2num_char(pp, &dbytes->max, 0xFF, 0, 0);
+		}
+		pp=gotoRealPos(p+1);
+		str2num(pp, &bytePos, 0, 0, 0);
+		addItemToConfig(dbytes, subMenu, TYPE_BYTES, bytePos+ptcfgtop->offset, temp);
+		return;
+		}
+	}
+	if((p1=strstrInQuote(p, STR_INTS1))||(p1=strstrInQuote(p, STR_INTS2)))
+	{
+		char *p3=p1;
+		while(*p3)
+		{
+			if(*p3==')')
+				break;
+			if(*p3=='}')
+				return;
+			p3++;
+		}
+		p3++;
+		if(isCurrectItem(p3))
+		{
+			int i=0;
+			//char c;
+			DATA_INTS *dints=malloc(sizeof(DATA_INTS));
+			dints->min=0;
+			dints->max=127;
+			dints->len=0;
+			for(;i<128;i++)
+				dints->ints[i]=0;
+			pp=gotoRealPos(p1);
+			str2num(pp, &dints->len, 0, 0, 0);
+			if((dints->len)>128)
+				dints->len=128;
+			pp=gotoRealPos(p3);
+			p1=gotoMyStrStart(pp);
+			p2=gotoMyStrEnd(pp);
+			strnCopyWithEnd(temp, p1, p2-p1);
+			if((p1=strstrInQuote(p, STR_VL))||(p1=strstrInQuote(p, STR_VL1)))
+			{
+				str2ints(dints->ints, p1, dints->len);
+			}
+			if((p1=strstrInQuote(p, STR_RANGE1))||(p1=strstrInQuote(p, STR_RANGE2)))
+			{
+				pp=gotoRealPos(p1);
+				str2num(pp, &dints->min, 0xFF, 0, 0);
+				while(*pp&&*pp!='.')
+					pp++;
+				while(*pp<'0'||*pp>'9') //to max
+					pp++;
+				str2num(pp, &dints->max, 0xFF, 0, 0);
+			}
+			pp=gotoRealPos(p+1);
+			str2num(pp, &bytePos, 0, 0, 0);
+			addItemToConfig(dints, subMenu, TYPE_INTS, bytePos+ptcfgtop->offset, temp);
+			return;
+		}
 	}
 }
 
@@ -1208,6 +1446,8 @@ char *doSubMenuJob(PATCH_SUBMENU *motherMenu, char *pdata)
 	while(*p)
 	{
 		if(*p=='{') //sirect string
+			break;
+		if(*p<0xA) //
 			break;
 		if((*p>X_CHAR)&&(*p!=',')) //判断是这直接显示的字符
 		{
@@ -1245,7 +1485,7 @@ char *doSubMenuJob(PATCH_SUBMENU *motherMenu, char *pdata)
 			{
 				if(*p2=='=')
 					p2++;
-				p=doSubMenuJob(&ptcfgtop->mainitem, p2);
+				p=doSubMenuJob(subMenu, p2);
 			}
 		}
 		else
@@ -1257,6 +1497,8 @@ char *doSubMenuJob(PATCH_SUBMENU *motherMenu, char *pdata)
 		while(*p)
 		{
 			if(*p=='{') //sirect string
+				break;
+			if(*p<0xA) //
 				break;
 			if((*p>X_CHAR)&&(*p!=',')) //判断是这直接显示的字符
 			{
@@ -1349,6 +1591,8 @@ char *doTemplateWork(char *pdata)
 	{
 		if(*p=='{') //sirect string
 			break;
+		if(*p<0xA) //
+			break;
 		if((*p>X_CHAR)&&(*p!=',')) //判断是这直接显示的字符
 		{
 			DATA_DRSTR *drstr=malloc(sizeof(DATA_DRSTR));
@@ -1385,7 +1629,7 @@ char *doTemplateWork(char *pdata)
 			{
 				if(*p2=='=')
 					p2++;
-				p=doSubMenuJob(&ptcfgtop->mainitem, p2);
+				p=doSubMenuJob((PATCH_SUBMENU *)tpl, p2);
 			}
 		}
 		else
@@ -1397,6 +1641,8 @@ char *doTemplateWork(char *pdata)
 		while(*p)
 		{
 			if(*p=='{') //sirect string
+				break;
+			if(*p<0xA) //
 				break;
 			if((*p>X_CHAR)&&(*p!=',')) //判断是这直接显示的字符
 			{
@@ -1624,6 +1870,22 @@ void subMenuCopy(PATCH_SUBMENU *sbmdst, PATCH_SUBMENU *sbmsrc, int byteBase)
 				addItemToConfig(pos, sbmdst, TYPE_POSB, bytePos+byteBase, pitem->itemName);
 				break;
 			}
+		case TYPE_BYTES:
+			{
+				DATA_BYTES *dbytes1=(DATA_BYTES *)pitem->itemData;
+				DATA_BYTES *dbytes=malloc(sizeof(DATA_BYTES));
+				memcpy(dbytes, dbytes1, sizeof(DATA_BYTES));
+				addItemToConfig(dbytes, sbmdst, TYPE_BYTES, bytePos+byteBase, pitem->itemName);
+				break;
+			}
+		case TYPE_INTS:
+			{
+				DATA_INTS *dints1=(DATA_INTS *)pitem->itemData;
+				DATA_INTS *dints=malloc(sizeof(DATA_INTS));
+				memcpy(dints, dints1, sizeof(DATA_INTS));
+				addItemToConfig(dints, sbmdst, TYPE_INTS, bytePos+byteBase, pitem->itemName);
+				break;
+			}
 		}
 		pitem=pitem->next;
 	}
@@ -1682,9 +1944,9 @@ int readConfig(int type, char *tp) //type, 1,load one, 0,load all
 				goto ANYWHERE;
 			}
 		}
-		if((p2=strstrInQuote(pp, "of")))
+		if((p2=strstrInQuote(pp, "of ")))
 		{
-			if(isThatItem(p2-3))
+			if(isThatItem(p2-4))
 			{
 				char *s=gotoRealPos(p2);
 				//if(*s=='-')
@@ -1702,9 +1964,9 @@ int readConfig(int type, char *tp) //type, 1,load one, 0,load all
 				goto ANYWHERE;
 			}
 		}
-		if((p2=strstrInQuote(pp, "offset")))
+		if((p2=strstrInQuote(pp, "offset ")))
 		{
-			if(isThatItem(p2-7))
+			if(isThatItem(p2-8))
 			{
 				char *s=gotoRealPos(p2);
 				//if(*s=='-')
@@ -1779,6 +2041,8 @@ int readConfig(int type, char *tp) //type, 1,load one, 0,load all
 		while(*p)
 		{
 			if(*p=='{')
+				break;
+			if(*p<0xA) //
 				break;
 			if((*p>X_CHAR)&&(*p!=',')) //判断是这直接显示的字符
 			{
@@ -2330,6 +2594,32 @@ void showSubMenuItem(PATCH_SUBMENU *subMenuItem)
 				}
 				break;
 			}
+		case TYPE_BYTES:
+			{
+				DATA_BYTES *dbytes=(DATA_BYTES *)patchItem->itemData;
+				if(dbytes)
+				{
+					int i=1;
+					printf("type: Bytes\nDATA:\n%d", dbytes->bytes[0]);
+					for(;i<dbytes->len;i++)
+						printf(",%d",dbytes->bytes[i]);
+					printf("\n");
+				}
+				break;
+			}
+		case TYPE_INTS:
+			{
+				DATA_INTS *dints=(DATA_INTS *)patchItem->itemData;
+				if(dints)
+				{
+					int i=1;
+					printf("type: Ints\nDATA:\n%d", dints->ints[0]);
+					for(;i<dints->len;i++)
+						printf(",%d",dints->ints[i]);
+					printf("\n");
+				}
+				break;
+			}
 		}
 		patchItem=patchItem->next;
 	}
@@ -2356,3 +2646,4 @@ int main(void)
 	return 0;
 }
 #endif
+
