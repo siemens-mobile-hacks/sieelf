@@ -2,7 +2,7 @@
  * 文件名: main.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.06.24
+ * 最后修改日期: 2008.06.25
  *
  * 作用: 建立CSM，GUI，以及一些控制项目
  *
@@ -19,6 +19,7 @@
 #include "visual.h"
 #include "master.h"
 #include "usedstr.h"
+#include "string.h"
 
 
 
@@ -30,7 +31,6 @@
 #define CBOX_UNCHECKED 0xE10C
 #endif
 
-#define MAX_WS_LEN	512
 typedef struct
 {
 	CSM_RAM csm;
@@ -133,109 +133,6 @@ int isTopSubMenu(void)
 	return 0;
 }
 
-int getnumwidth(unsigned int num)
-{
-	int i=1;
-	while(num>=10) 
-	{
-		num/=10;
-		i++;
-	}
-	return i;  
-}
-
-void uni2ws(WSHDR *ws, unsigned short *uni, int maxlen)
-{
-	unsigned short *p=uni;
-	ws->wsbody[0]=0;
-	int i=1;
-	while(*p && (maxlen==0||p-uni<=maxlen))
-	{
-		ws->wsbody[i]=*p;
-		i++;
-		p++;
-	}
-	ws->wsbody[0]=i-1;
-}
-
-void hex2ws(WSHDR *ws, unsigned char *hex, int maxlen)
-{
-	unsigned char *p=hex;
-	ws->wsbody[0]=0;
-	WSHDR *tws=AllocWS(8);
-	while(p-hex<maxlen)
-	{
-		wsprintf(tws, PERCENT_02X, *p);
-		wstrcat(ws, tws);
-		p++;
-	}
-	FreeWS(tws);
-}
-
-void ws2hex(WSHDR *ws, char *hex, int maxlen)
-{
-	char s[MAX_WS_LEN];
-	int i=0;
-	unsigned char c, c1;
-	char *p1=s;
-	ws_2str(ws, s, maxlen);
-	while((c=*p1++))
-	{
-		if((c>='0'&&c<='9')||(c>='a'&&c<='f')||(c>='A'&&c<='F'))
-		{
-			c1=*p1++;
-			if((c1>='0'&&c1<='9')||(c1>='a'&&c1<='f')||(c1>='A'&&c1<='F'))
-				hex[i++]=chr2num(c)*0x10+chr2num(c1);
-			else
-				break;
-		}
-		else
-			break;
-	}
-	for(;i<(maxlen/2);i++)
-	{
-		hex[i]=0;
-	}
-}
-
-void bytes_2ws(WSHDR *ws, char *bytes, int maxlen)
-{
-	WSHDR *tws;
-	int i=1;
-	//int t=bytes[0];
-	if(maxlen<=0)
-		return;
-	tws=AllocWS(8);
-	ws->wsbody[0]=0;
-	wsprintf(ws,PERCENT_D,bytes[0]);
-	for(;i<maxlen;i++)
-	{
-		//t=bytes[i];
-		wsprintf(tws, D_PERCENT_D, bytes[i]);
-		wstrcat(ws, tws);
-	}
-	FreeWS(tws);
-}
-
-void ints_2ws(WSHDR *ws, int *ints, int maxlen)
-{
-	WSHDR *tws;
-	int i=1;
-	//int t=bytes[0];
-	if(maxlen<=0)
-		return;
-	tws=AllocWS(16);
-	ws->wsbody[0]=0;
-	wsprintf(ws,PERCENT_D,ints[0]);
-	for(;i<maxlen;i++)
-	{
-		//t=bytes[i];
-		wsprintf(tws, D_PERCENT_D, ints[i]);
-		wstrcat(ws, tws);
-	}
-	FreeWS(tws);
-}
-
 int createEditGui(void);
 
 int menu_onkey(void *data, GUI_MSG *msg)
@@ -280,6 +177,13 @@ int menu_onkey(void *data, GUI_MSG *msg)
 				}
 				return 0;
 			}
+	#ifndef	NEWSGOLD
+		case RED_BUTTON:
+			{
+				CloseCSM(MAIN_CSM_ID);
+				return 0;
+			}
+	#endif
 		}
 	}
 	return 0;
@@ -298,7 +202,10 @@ void menu_iconhndl(void *data, int curitem, void *unk)
 	#ifdef BUG
 		gb2ws(ws, ptcfg->patchInfo->patchName, 128);
 	#else
-		wsprintf(ws, PERCENT_T, ptcfg->patchInfo->patchName);
+		if(isUniFormat(ptcfg->patchInfo->patchName))
+			uniFormatString2ws(ws, ptcfg->patchInfo->patchName);
+		else
+			wsprintf(ws, PERCENT_T, ptcfg->patchInfo->patchName);
 	#endif
 		if(getPatchOnOff(ptcfg, 7))
 			n=1;
@@ -557,7 +464,15 @@ int getMinFocus(void)
 
 void updateEdHdr(char *str)
 {
-	strcpy(ED_HDR_BODY, str);
+	if(isUniFormat(str))
+	{
+		WSHDR *ws=AllocWS(128);
+		uniFormatString2ws(ws, str);
+		ws2gb(ws, ED_HDR_BODY, 128);
+		FreeWS(ws);
+	}
+	else
+		strcpy(ED_HDR_BODY, str);
 }
 
 void ed_locret(void){}
@@ -628,7 +543,6 @@ int edOnKey(GUI *data, GUI_MSG *msg)
 	{
 		return (0xFF);
 	}
-	isSubMenuNeed=0;
 	if(msg->gbsmsg->msg==KEY_DOWN)
 	{
 		l=msg->gbsmsg->submess;
@@ -917,7 +831,10 @@ void edGHook(GUI *data, int cmd)
 					#ifdef BUG
 						gb2ws(ews, cboxitem->name, MAX_WS_LEN);
 					#else
-						wsprintf(ews, PERCENT_T, cboxitem->name);
+						if(isUniFormat(cboxitem->name))
+							uniFormatString2ws(ews, cboxitem->name);
+						else
+							wsprintf(ews, PERCENT_T, cboxitem->name);
 					#endif
 				}
 				else
@@ -995,7 +912,15 @@ int createEditGui(void)
 		if(type==TYPE_TP) //template
 			goto NextItem;
 		if(strlen(pitem->itemName))
-			wsprintf(ews, "%t:", pitem->itemName);
+		{
+			if(isUniFormat(pitem->itemName))
+			{
+				uniFormatString2ws(ews, pitem->itemName);
+				wsAppendChar(ews, ':');
+			}
+			else
+				wsprintf(ews, "%t:", pitem->itemName);
+		}
 		else
 			CutWSTR(ews,0);
 		if(type==TYPE_SUBMENU||type==TYPE_CHECKBOX||type==TYPE_SL)
@@ -1008,7 +933,10 @@ int createEditGui(void)
 		#ifdef BUG
 			gb2ws(ews, dstr->str, 128);
 		#else
-			wsprintf(ews, PERCENT_T, dstr->str);
+			if(isUniFormat(dstr->str))
+				uniFormatString2ws(ews, dstr->str);
+			else
+				wsprintf(ews, PERCENT_T, dstr->str);
 		#endif
 			ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,MAX_WS_LEN);
 			AddEditControlToEditQend(eq,&ec,ma);
@@ -1127,7 +1055,10 @@ int createEditGui(void)
 				#ifdef BUG
 					gb2ws(ews, cboxitem->name, MAX_WS_LEN);
 				#else
-					wsprintf(ews, PERCENT_T, cboxitem->name);
+					if(isUniFormat(cboxitem->name))
+						uniFormatString2ws(ews, cboxitem->name);	
+					else
+						wsprintf(ews, PERCENT_T, cboxitem->name);
 				#endif
 					ConstructComboBox(&ec, 7, ECF_APPEND_EOL, ews, 32, 0, max, cur);
 					AddEditControlToEditQend(eq,&ec,ma);
@@ -1198,6 +1129,14 @@ int createEditGui(void)
 				//CutWSTR(ews, 0);
 				ints_2ws(ews,dints->ints,dints->len);
 				ConstructEditControl(&ec,4,0x40,ews,MAX_WS_LEN);
+				AddEditControlToEditQend(eq,&ec,ma);
+				break;
+			}
+		case TYPE_CONST:
+			{
+				DATA_CONST *dconst=(DATA_CONST *)pitem->itemData;
+				wsprintf(ews, PERCENT_D, dconst->data);
+				ConstructEditControl(&ec,ECT_READ_ONLY,ECF_APPEND_EOL,ews,16);
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
 			}

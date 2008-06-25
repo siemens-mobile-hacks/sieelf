@@ -1,6 +1,6 @@
 ELF名称: Master.elf
 作者: BingK(binghelingxi), Email: bingkx@gmail.com
-版本: 1.9
+版本: 2.0
 感谢: 所有参与CfgEdit制作的人,CfgEdit给了我很多应用参考实例
       很大程度上方便了我制作这个ELF.
 作用: 和JAVA版本的Master一样,实现了对MasterPatch的配置,
@@ -8,11 +8,8 @@ ELF名称: Master.elf
 其它相关:
       1.和JAVA版本的一点不同,配置情景模式时请在补丁列表打开
         选项菜单,选择"情景模式"项目配置.
-      2.我查看过JAVA版本的Master的源码,由于对JAVA一窍不通,故
-        对于以下几种数据类型不是很了解,且不是很常用,因此没有
-        在1.9版本中加入支持:
-          //#define TYPE_CONST  18 //const
-        可能在以后的版本中会加入支持,或者如果你有什么好提议,请联系我.
+      2.我查看过JAVA版本的Master的源码,由于对JAVA一窍不通,所以对其中的一些
+        数据处理不了解或者如果你有什么好提议,请联系我.
       3.源代码中的各个文件作用:
         getConfig.c,解析config.txt,并将结果填入到对应的数据结构中,并
             提供一些处理数据的函数.
@@ -34,6 +31,13 @@ ELF名称: Master.elf
         过MasterPatch就不要尝试了.
 
 更新日志:
+v2.0 2008.06.25
++ const型数据支持
++ uncode格式的名称支持
++ 主菜单界面红键退出(SGOLD)
+* cbox类型数据修正
+* color类型数据修正
+
 v1.9 2008.06.24
 + byte型数组支持
 + int型数组支持

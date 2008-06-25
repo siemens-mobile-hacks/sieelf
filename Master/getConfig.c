@@ -2,7 +2,7 @@
  * 文件名: getConfig.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.06.24
+ * 最后修改日期: 2008.06.25
  *
  * 作用: 读取config.txt，并进行解析，储存结果，还提供了一些文字处理函数
  * 备注: WINTEL_DEBUG为使用在windows中使用编译器进行调试的条件编译项目
@@ -16,17 +16,16 @@
 #include <memory.h>
 #else
 #include "..\inc\swilib.h"
-#include "main.h"
 #endif
 #include "getConfig.h"
 #include "ptcFileWork.h"
 #include "usedstr.h"
+#include "string.h"
+#include "main.h"
 
-#define X_CHAR		0x20
 
 #ifdef	WINTEL_DEBUG
 #define PATCH_DIR	"E:\\SRC\\SVN\\SieELF\\Master\\Patches\\"
-#define CONFIG_SIZE	(32*1024)
 char cfg_buf[CONFIG_SIZE];
 int patch_n=0;
 #define mfree free
@@ -88,356 +87,6 @@ int loadConfig(void)
 #endif
 	return 1;
 }
-#ifndef	WINTEL_DEBUG
-#pragma inline=forced
-#endif
-int toupper(int c)
-{
-	if ((c>='a')&&(c<='z')) c+='A'-'a';
-	return(c);
-}
-
-//比较字符不分大小写函数
-int strncmpNoCase(const char *s1,const char *s2,unsigned int n)
-{
-	int i;
-	int c;
-	while(!(i=(c=toupper(*s1++))-toupper(*s2++))&&(--n)) if (!c) break;
-	return(i);
-}
-
-//字符转换为数字
-int chr2num(char chr)
-{
-	if(chr>='0'&&chr<='9')
-		return (chr-('0'-0));
-	if(chr>='A'&&chr<='Z')
-		return (chr-('A'-0xA));
-	if(chr>='a'&&chr<='z')
-		return (chr-('a'-0xA));
-	return 0;
-}
-
-//指针走到空格大的位置
-char *gotoRealPos(char *p)
-{
-	char *pp=p;
-	while(*pp)
-	{
-		if(*pp>X_CHAR)
-			break;
-		pp++;
-	}
-	return pp;
-}
-
-//在括号你搜索字符串，返回值指向搜索的字符尾部
-char *strstrInQuote(char *pdata, const char *s)
-{
-	int len=strlen(s);
-	while( *pdata && *pdata!='}' )
-	{
-		if(!strncmpNoCase(pdata, s, len))
-			return (pdata+len);
-		pdata++;
-	}
-	return 0;
-}
-
-//在括号内搜索字符
-char *strchrInQuote(char *pdata, char c)
-{
-	while( *pdata && *pdata!='}' )
-	{
-		if(*pdata==c)
-			return pdata;
-		pdata++;
-	}
-	return 0;
-}
-
-//走到括号开头
-char *gotoQuoteStart(char *pdata)
-{
-	while(*pdata)
-	{
-		if(*pdata=='{')
-			return pdata;
-		pdata++;
-	}
-	return 0;
-}
-
-//走到括号结尾
-char *gotoQuoteEnd(char *pdata)
-{
-	while(*pdata)
-	{
-		if(*pdata=='}')
-			return pdata;
-		pdata++;
-	}
-	return 0;
-}
-
-//当所用的字符串为使用"`"符号括起来时，这个函数用于走到下一个"`"符号
-char *gotoNextNameQuote(char *pdata)
-{
-	char *p=pdata;
-	while(*pdata)
-	{
-		if(*pdata=='`')
-		{
-			p=pdata;
-			break;
-		}
-		pdata++;
-	}
-	return p;
-}
-
-//指针走到制定的字符位置
-char *gotoStringEndByChr(char *p, char chr)
-{
-	char *pp=p;
-	while(*p)
-	{
-		if(*p<=chr || *p=='}')
-		{
-			pp=p;
-			break;
-		}
-		p++;
-	}
-	return pp;
-}
-
-//在括号内走到"`"之前的一个位置或比空格大的字符处
-char *gotoMyStrStart(char *p)
-{
-	p=gotoRealPos(p);
-	if(*p=='`')
-		return (p+1);
-	if(*p==0 || *p=='}')
-		return 0;
-	return p;
-}
-
-//在括号内走到下一个"`"或空格及比空格小的字符处
-char *gotoMyStrEnd(char *p)
-{
-	if(*p=='`')
-	{
-		p++;
-		return (gotoNextNameQuote(p));
-	}
-	else
-	{
-		p=gotoRealPos(p);
-		return (gotoStringEndByChr(p, X_CHAR));
-	}
-}
-
-//strncpy，并在后面加上字符串截止符
-void strnCopyWithEnd(char *dst, char *src, int n)
-{
-	strncpy(dst, src, n);
-	dst[n]=0;
-}
-
-//字符串转换为数字，int型
-void str2num(char *str, int *num, int max, int min, int type)
-{
-	//type, 1:hex, 0:dec
-	int t1=0;
-	int t=0;
-	if((*str=='0'&&*(str+1)=='x')) //hex
-	{
-		str+=2;
-		while((*str>='0')&&(*str<='z'))
-		{
-			t=(t)*0x10+chr2num(*str);
-			if(max<=0||t<=max)
-				t1=t;
-			else
-			{
-				t1=max;
-				break;
-			}
-			str++;
-		}
-	}
-	else if((*str=='A')||(*str=='a')||type) //ADDRESS
-	{
-		while((*str>='0')&&(*str<='z'))
-		{
-			t=(t)*0x10+chr2num(*str);
-			if(max<=0||t<=max)
-				t1=t;
-			else
-			{
-				t1=max;
-				break;
-			}
-			str++;
-		}
-	}
-	else //dec
-	{
-		while((*str>='0')&&(*str<='9'))
-		{
-			t=(t)*10+chr2num(*str);
-			if(max<=0||t<=max)
-				t1=t;
-			else
-			{
-				t1=max;
-				break;
-			}
-			str++;
-		}
-	}
-	if(t1>=0&&t1<min)
-		t1=min;
-	*num=t1;
-}
-
-//short型
-void str2num_short(char *str, short *num, int max, int min, int type)
-{
-	//type, 1:hex, 0:dec
-	int t1=0;
-	int t=0;
-	short *p=(short *)(&t1);
-	if((*str=='0'&&*(str+1)=='x')) //hex
-	{
-		str+=2;
-		while((*str>='0')&&(*str<='z'))
-		{
-			t=(t)*0x10+chr2num(*str);
-			if(max<=0||t<=max)
-				t1=t;
-			else
-			{
-				t1=max;
-				break;
-			}
-			str++;
-		}
-	}
-	else if(type) //hex
-	{
-		while((*str>='0')&&(*str<='z'))
-		{
-			t=(t)*0x10+chr2num(*str);
-			if(max<=0||t<=max)
-				t1=t;
-			else
-			{
-				t1=max;
-				break;
-			}
-			str++;
-		}
-	}
-	else //dec
-	{
-		while((*str>='0')&&(*str<='9'))
-		{
-			t=(t)*10+chr2num(*str);
-			if(max<=0||t<=max)
-				t1=t;
-			else
-			{
-				t1=max;
-				break;
-			}
-			str++;
-		}
-	}
-	if(t1>=0&&t1<min)
-		t1=min;
-	*num=*p;
-}
-
-//char型
-void str2num_char(char *str, char *num, int max, int min, int type)
-{
-	//type, 1:hex, 0:dec
-	int t1=0;
-	int t=0;
-	char *p=(char *)(&t1);
-	if((*str=='0'&&*(str+1)=='x')) //hex with 0x
-	{
-		str+=2;
-		while((*str>='0')&&(*str<='z'))
-		{
-			t=(t)*0x10+chr2num(*str);
-			if(max<=0||t<=max)
-				t1=t;
-			else
-			{
-				t1=max;
-				break;
-			}
-			str++;
-		}
-	}
-	else if(type) //hex
-	{
-		while((*str>='0')&&(*str<='z'))
-		{
-			t=(t)*0x10+chr2num(*str);
-			if(max<=0||t<=max)
-				t1=t;
-			else
-			{
-				t1=max;
-				break;
-			}
-			str++;
-		}
-	}
-	else //dec
-	{
-		while((*str>='0')&&(*str<='9'))
-		{
-			t=(t)*10+chr2num(*str);
-			if(max<=0||t<=max)
-				t1=t;
-			else
-			{
-				t1=max;
-				break;
-			}
-			str++;
-		}
-	}
-	if(t1>=0&&t1<min)
-		t1=min;
-	*num=*p;
-}
-
-//清除一个字符串中的某个字符
-void cleanStrByChr(char *pdata, char chr)
-{
-	char *p=pdata;
-	char *t;
-	while(*p)
-	{
-		if(*p==chr)
-		{
-			t=p;
-			while(*t)
-			{
-				*t=*(t+1);
-				t++;
-			}
-		}
-		p++;
-	}
-}
-
 //将一个PTC_CONFIG指针添加到链表，即添加一个补丁
 void addPatchConfigList(void)
 {
@@ -562,6 +211,7 @@ void addPrepareData(char *pdata)
 	char *pp;
 	char *p1;
 	char *p2;
+	char *p3=gotoQuoteEnd(p);
 	PREPARE_DATA *preData=malloc(sizeof(PREPARE_DATA));
 	preData->useAs[0]=0;
 	preData->prepareItem=0;
@@ -569,7 +219,7 @@ void addPrepareData(char *pdata)
 	p2=gotoMyStrEnd(p);
 	strnCopyWithEnd(preData->useAs, p1, p2-p1);
 	p=p2+1;
-	while((pp=gotoRealPos(p))&&(p1=gotoMyStrStart(pp)))
+	while((p<p3)&&(pp=gotoRealPos(p))&&(pp<p3)&&(p1=gotoMyStrStart(pp)))
 	{
 		PREPARE_ITEM *prepareItem=malloc(sizeof(PREPARE_ITEM));
 		prepareItem->next=0;
@@ -590,7 +240,13 @@ void addPrepareData(char *pdata)
 		}
 		str2num_char(p, &prepareItem->data, 0xff, 0, 0);
 		addPreItemToData(preData, prepareItem);
-		p=gotoStringEndByChr(p, X_CHAR);
+		while(*p)
+		{
+			if(*p<=X_CHAR||*p=='`')
+				break;
+			p++;
+		}
+		//p=gotoStringEndByChr(p, X_CHAR);
 	}
 	addItemToConfig(preData, &ptcfgtop->mainitem, TYPE_PRE, 0, NULL);
 }
@@ -658,14 +314,15 @@ void addItemToCBox(DATA_CBOX *cbox, CBOX_ITEM *cboxitem)
 //没有使用预置选择项条目，而直接在括号内读取选择项条目
 void cboxItemColon(char *pdata, DATA_CBOX *cbox)
 {
-	char *p=pdata;
-	char *pp;
+	//char *p=pdata;
+	char *pp=pdata;
 	char *p1;
 	char *p2;
-	if(*p=='`')
-		p++;
-	pp=gotoRealPos(p);
-	while(*pp && *pp!='}')
+	char *p3=gotoQuoteEnd(pdata);
+	if(*pp=='`')
+		pp++;
+	pp=gotoRealPos(pp);
+	while(*pp && pp<p3 )
 	{	
 		CBOX_ITEM *cboxitem=malloc(sizeof(CBOX_ITEM));
 		cboxitem->data=0;
@@ -673,7 +330,10 @@ void cboxItemColon(char *pdata, DATA_CBOX *cbox)
 		cboxitem->next=0;
 		cboxitem->prev=0;
 		p1=gotoMyStrStart(pp);
-		p2=gotoMyStrEnd(pp);
+		if(*pp=='`')
+			p2=gotoMyStrEnd(pp);
+		else
+			p2=gotoStringEndByChr(pp, '=');
 		strnCopyWithEnd(cboxitem->name, p1, p2-p1);
 		while(*p2)
 		{
@@ -684,7 +344,13 @@ void cboxItemColon(char *pdata, DATA_CBOX *cbox)
 		p2=gotoRealPos(p2+1);
 		str2num_char(p2, &cboxitem->data, 0xff, 0, 0);
 		addItemToCBox(cbox, cboxitem);
-		pp=gotoStringEndByChr(p2, X_CHAR);
+		pp=p2;
+		while(*pp)
+		{
+			if(*pp<=X_CHAR||*pp=='`')
+				break;
+			pp++;
+		}
 		pp=gotoRealPos(pp);
 	}
 }
@@ -753,36 +419,6 @@ int isCurrectItem(char *p)
 	return 0;
 }
 
-void str2bytes(char *bytes, char *str, int maxlen)
-{
-	int i=0;
-	while(i<maxlen)
-	{
-		str=gotoRealPos(str);
-		str2num_char(str, bytes+i, 127, 0, 0);
-		if(!(str=strchrInQuote(str+1, ',')))
-			break;
-		if(!(*str++)) //IAR编译器在处理while((*str)&&(i<maxlen))这一步时有问题,指针前进了一个
-			break;
-		i++;
-	}
-}
-
-void str2ints(int *ints, char *str, int maxlen)
-{
-	int i=0;
-	while(i<maxlen)
-	{
-		str=gotoRealPos(str);
-		str2num(str, ints+i, 0, 0, 0);
-		if(!(str=strchrInQuote(str+1, ',')))
-			break;
-		if(!(*str++)) //IAR编译器在处理while((*str)&&(i<maxlen))这一步时有问题,指针前进了一个
-			break;
-		i++;
-	}
-}
-
 void subMenuCopy(PATCH_SUBMENU *sbmdst, PATCH_SUBMENU *sbmsrc, int byteBase);
 //解析选择项条目
 void doItemJob(char *p, PATCH_SUBMENU *subMenu)
@@ -808,12 +444,6 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 			checkbox->onoff=1;
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos, 0, 0, 0);
-		//while(*pp>='0'&&*pp<='9')
-		//{
-		//	bytePos=bytePos*10+chr2num(*pp);
-		//	pp++;
-		//}
-		//pp=gotoRealPos(pp);
 		while(*pp>X_CHAR)
 		{
 			if(*pp=='.')
@@ -824,15 +454,6 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 			}
 			pp++;
 		}
-		//if(*pp=='.')
-		//{
-		//	pp++;
-		//	while(*pp>='0'&&*pp<='9')
-		//	{
-		//		checkbox->bitPos=(checkbox->bitPos)*10+chr2num(*pp);
-		//		pp++;
-		//	}
-		//}
 		addItemToConfig(checkbox, subMenu, TYPE_CHECKBOX, bytePos+ptcfgtop->offset, temp);
 		return;
 		}
@@ -1423,6 +1044,35 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 			return;
 		}
 	}
+	if(p1=strstrInQuote(p, STR_CONST))
+	{
+		if(isCurrectItem(p1))
+		{
+			DATA_CONST *dconst=malloc(sizeof(DATA_CONST));
+			dconst->data=0;
+			dconst->len=1;
+			pp=gotoRealPos(p1);
+			p1=gotoMyStrStart(pp);
+			p2=gotoMyStrEnd(pp);
+			strnCopyWithEnd(temp, p1, p2-p1);
+			if((p1=strstrInQuote(p, STR_VL))||(p1=strstrInQuote(p, STR_VL1)))
+			{
+				pp=gotoRealPos(p1);
+				str2num(pp, &dconst->data, 0, 0, 0);
+			}
+			if(p1=strstrInQuote(p, " size="))
+			{
+				pp=gotoRealPos(p1);
+				str2num(pp, &dconst->len, 0, 0, 0);
+				if(dconst->len>4)
+					dconst->len=4;
+			}
+			pp=gotoRealPos(p+1);
+			str2num(pp, &bytePos,0,0, 0);
+			addItemToConfig(dconst, subMenu, TYPE_CONST, bytePos+ptcfgtop->offset, temp);
+			return;
+		}
+	}
 }
 
 //解析SUBMENU，子菜单
@@ -1772,7 +1422,7 @@ void subMenuCopy(PATCH_SUBMENU *sbmdst, PATCH_SUBMENU *sbmsrc, int byteBase)
 			{
 				DATA_COLOR *color1=(DATA_COLOR *)pitem->itemData;
 				DATA_COLOR *color=malloc(sizeof(DATA_COLOR));
-				strncpy(color->color,color1->color, 4);
+				memcpy(color, color1, sizeof(DATA_COLOR));
 				addItemToConfig(color, sbmdst, TYPE_COLOR, bytePos+byteBase, pitem->itemName);
 				break;
 			}
@@ -1884,6 +1534,15 @@ void subMenuCopy(PATCH_SUBMENU *sbmdst, PATCH_SUBMENU *sbmsrc, int byteBase)
 				DATA_INTS *dints=malloc(sizeof(DATA_INTS));
 				memcpy(dints, dints1, sizeof(DATA_INTS));
 				addItemToConfig(dints, sbmdst, TYPE_INTS, bytePos+byteBase, pitem->itemName);
+				break;
+			}
+		case TYPE_CONST:
+			{
+				DATA_CONST *dconst1=(DATA_CONST *)pitem->itemData;
+				DATA_CONST *dconst=malloc(sizeof(DATA_CONST));
+				dconst->data=dconst1->data;
+				dconst->len=dconst1->len;
+				addItemToConfig(dconst, sbmdst, TYPE_CONST, bytePos+byteBase, pitem->itemName);
 				break;
 			}
 		}
@@ -2617,6 +2276,16 @@ void showSubMenuItem(PATCH_SUBMENU *subMenuItem)
 					for(;i<dints->len;i++)
 						printf(",%d",dints->ints[i]);
 					printf("\n");
+				}
+				break;
+			}
+		case TYPE_CONST:
+			{
+				DATA_CONST *dconst=(DATA_CONST *)patchItem->itemData;
+				if(dconst)
+				{
+					printf("Const: %d\n", dconst->data);
+					printf("Const, LEN: %d\n", dconst->len);
 				}
 				break;
 			}

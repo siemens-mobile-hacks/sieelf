@@ -42,3 +42,11 @@ const char STR_BYTES1[]=" b(";
 const char STR_BYTES2[]=" byte(";
 const char STR_INTS1[]=" i(";
 const char STR_INTS2[]=" int(";
+const char STR_CONST[]=" const ";
+
+
+
+
+
+
+

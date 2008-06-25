@@ -3330,6 +3330,12 @@
     <name>$PROJ_DIR$\rect_patcher.h</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\string.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\string.h</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\usedstr.c</name>
   </file>
   <file>

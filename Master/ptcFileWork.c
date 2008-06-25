@@ -2,7 +2,7 @@
  * 文件名: ptcFileWork.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.06.24
+ * 最后修改日期: 2008.06.25
  *
  * 作用: 读取*.ptc进行初始化和写入*.ptc
  * 备注: WINTEL_DEBUG为使用在windows中使用编译器进行调试的条件编译项目
@@ -16,11 +16,12 @@
 #include <memory.h>
 #else
 #include "..\inc\swilib.h"
-#include "main.h"
 #include "optionMenu.h"
 #endif
 #include "getConfig.h"
 #include "ptcFileWork.h"
+#include "string.h"
+#include "main.h"
 
 #define X_CHAR		0x20
 
@@ -202,6 +203,17 @@ void initPatchItem(PATCH_ITEM *ptcitem)
 			{
 				DATA_INTS *dints=(DATA_INTS *)pitem->itemData;
 				memcpy(dints->ints, ptc_buf+bpos, (dints->len)*sizeof(int));
+				break;
+			}
+		case TYPE_CONST:
+			{
+				DATA_CONST *dconst=(DATA_CONST *)pitem->itemData;
+				//读取INT型数据指针的是LDR指令，似乎只能是使用4字节对齐的地址，改用char型处理
+				char *p=(ptc_buf+bpos);
+				char *p1=(char *)(&dconst->data);
+				int i=0;
+				for(;i<(dconst->len);i++)
+					p1[i]=p[i];
 				break;
 			}
 		}
@@ -538,6 +550,16 @@ void fillItemDataToBuf(PATCH_ITEM *ptcitem)
 				memcpy(ptc_buf+bpos, dints->ints, (dints->len)*sizeof(int));
 				break;
 			}
+		case TYPE_CONST:
+			{
+				DATA_CONST *dconst=(DATA_CONST *)pitem->itemData;
+				char *p=ptc_buf+bpos;
+				char *p1=(char *)&dconst->data;
+				int i=0;
+				for(;i<(dconst->len);i++)
+					p[i]=p1[i];
+				break;
+			}
 		}
 	}
 }
@@ -643,6 +665,12 @@ int getPtcSize(PATCH_ITEM *ptcitem)
 			{
 				DATA_INTS *dints=(DATA_INTS *)item->itemData;
 				ptcsize+=(dints->len)*sizeof(int);
+				break;
+			}
+		case TYPE_CONST:
+			{
+				DATA_CONST *dconst=(DATA_CONST *)item->itemData;
+				ptcsize+=dconst->len;
 				break;
 			}
 		//default :

@@ -7,6 +7,10 @@
 
 #define PTC_SIZE	(2*1024)
 #define CONFIG_SIZE	(48*1024)
+#define MAX_WS_LEN	512
+#define X_CHAR		0x20
+
+#ifndef WINTEL_DEBUG
 
 extern char *ptc_buf;
 //extern char *cfg_buf;
@@ -18,6 +22,7 @@ extern int S_ICONS[3];
 
 #define PATCH_DIR	"0:\\Misc\\Patches\\"
 #define PTC_FOLDR	"ptc\\"
-
 void on_sdec(USR_MENU_ITEM *item);
+#endif
+
 #endif

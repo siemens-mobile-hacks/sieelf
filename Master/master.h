@@ -148,6 +148,12 @@ typedef struct
 
 typedef struct
 {
+	int data;
+	int len;
+}DATA_CONST;
+
+typedef struct
+{
 	void *prev;
 	void *next;
 	int bytePos;
@@ -202,5 +208,5 @@ typedef struct
 #define TYPE_INTS	18 //ints
 #define TYPE_TP		19 //template
 #define TYPE_POSB	20 //pos in byte //use it the same as pos, except when save
-//#define TYPE_CONST	21 //const
+#define TYPE_CONST	21 //const
 #endif

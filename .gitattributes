@@ -726,6 +726,8 @@ Master/optionMenu.h -text
 Master/ptcFileWork.c -text
 Master/ptcFileWork.h -text
 Master/rect_patcher.h -text
+Master/string.c -text
+Master/string.h -text
 Master/test.xcl -text
 Master/usedstr.c -text
 Master/usedstr.h -text

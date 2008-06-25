@@ -2,7 +2,7 @@
  * 文件名: optionMenu.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.06.06
+ * 最后修改日期: 2008.06.25
  *
  * 作用: 建立主菜单，以及实现主菜单中的功能，如显示信息，情景模式控制菜单，清除配置等
  *
@@ -15,6 +15,7 @@
 #include "optionMenu.h"
 #include "getConfig.h"
 #include "usedstr.h"
+#include "string.h"
 
 #define MAIN_MENU_ITEMS_N 9
 
