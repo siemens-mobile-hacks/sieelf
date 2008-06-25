@@ -306,7 +306,7 @@ char *gotoStringEndByChr(char *p, char chr)
 	char *pp=p;
 	while(*p)
 	{
-		if(*p<=chr || *p=='}')
+		if(*p==chr || *p=='}' || *p<0xA)
 		{
 			pp=p;
 			break;
