@@ -193,10 +193,12 @@ __root const int ACTIVE_KEY=RIGHT_SOFT;
 #endif
 #endif
 
- __root const CFG_HDR cfghdr6_4={CFG_CBOX, "列表高度", 0, 2};
- __root const int list_num = 0;
- __root const CFG_CBOX_ITEM cfgcbox4[2]={"两格", "三格"};
+__root const CFG_HDR cfghdr6_4={CFG_CBOX, "列表高度", 0, 2};
+__root const int list_num = 0;
+__root const CFG_CBOX_ITEM cfgcbox4[2]={"两格", "三格"};
 
+__root const CFG_HDR cfghdr6_5={CFG_STR_GB,"没有号码提示",3,63};
+__root const char no_num[64]="没电话";
 
 __root const CFG_HDR cfghdr_m12={CFG_LEVEL,"",0,0};
 

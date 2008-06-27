@@ -1233,12 +1233,13 @@ void my_ed_redraw(void *data)
          sumx=n;
 
          if(n==0)
-         gb2ws(prws,"此人没钱买电话",39);
+         gb2ws(prws,no_num,64);
          else
          str_2ws(prws,dstr[numx],39);
 
            int l=GetImgWidth(menu_icons[0]);
           //图标
+          if(n!=0)
           DrawString(cl->icons,right_border-1-icons_size,dy+cfg_item_gaps,right_border-2,dy+cfg_item_gaps+gfont_size,font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
     
           DrawString(prws,3+l,dy+(gfont_size+cfg_item_gaps)+2,right_border,dy+2*(gfont_size+cfg_item_gaps),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));

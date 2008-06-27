@@ -53,6 +53,8 @@ extern const unsigned int volume;
 extern const int list_num;
 extern const int ACTIVE_KEY;
 
+extern const char no_num[64];
+
 
 #endif
 
