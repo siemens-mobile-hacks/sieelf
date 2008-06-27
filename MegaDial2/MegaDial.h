@@ -50,6 +50,9 @@ extern const int startY;
 extern const int startfix;
 extern const int startfix2;
 extern const unsigned int volume;
+extern const int list_num;
+extern const int ACTIVE_KEY;
+
 
 #endif
 

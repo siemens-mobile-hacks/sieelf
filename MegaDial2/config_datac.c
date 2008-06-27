@@ -181,6 +181,23 @@ __root const char root_dir[128]="0:\\\x1F\xE7\xB3\xBB\xE7\xBB\x9F\\apo\\addr";
 __root const CFG_HDR cfghdr6_2={CFG_UINT,"音效音量",0,10};
 __root const unsigned int volume=6;
 
+
+__root const CFG_HDR cfghdr6_3={CFG_UINT,"激活热键",0,99};
+#ifdef ELKA
+__root const int ACTIVE_KEY=0x0E;
+#else
+#ifdef NEWSGOLD
+__root const int ACTIVE_KEY=LEFT_SOFT;
+#else
+__root const int ACTIVE_KEY=RIGHT_SOFT;
+#endif
+#endif
+
+ __root const CFG_HDR cfghdr6_4={CFG_CBOX, "列表高度", 0, 2};
+ __root const int list_num = 0;
+ __root const CFG_CBOX_ITEM cfgcbox4[2]={"两格", "三格"};
+
+
 __root const CFG_HDR cfghdr_m12={CFG_LEVEL,"",0,0};
 
 /*

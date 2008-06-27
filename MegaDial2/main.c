@@ -1188,10 +1188,10 @@ void my_ed_redraw(void *data)
 	if (e_ws) CompareStrT9(prws,(WSHDR *)e_ws,1);
 	DrawString(prws,3,dy+4,right_border-1,dy+cfg_item_gaps+gfont_size,font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));  
       }
-      else if(i=cp+1)
+      else if(i=cp+1+list_num)
       {
 	int icons_size=Get_WS_width(cl->icons,font_size);
-	DrawRectangle(2,dy+3,right_border,dy+2*(cfg_item_gaps+gfont_size)-2,0,color(COLOR_SELECTED_BRD),color(COLOR_SELECTED_BG));
+	DrawRectangle(2,dy+3,right_border,dy+2*(cfg_item_gaps+gfont_size)-2+list_num*gfont_size,0,color(COLOR_SELECTED_BRD),color(COLOR_SELECTED_BG));
 	DrawString(cl->name,3,dy+4,right_border-2-icons_size,dy+(cfg_item_gaps+gfont_size),font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
 
         //号码输出
@@ -1232,6 +1232,9 @@ void my_ed_redraw(void *data)
          while(c<NUMBERS_MAX);
          sumx=n;
 
+         if(n==0)
+         gb2ws(prws,"此人没钱买电话",39);
+         else
          str_2ws(prws,dstr[numx],39);
 
            int l=GetImgWidth(menu_icons[0]);
@@ -1243,7 +1246,8 @@ void my_ed_redraw(void *data)
             
 
           int dyx,dyy;
-          if(i!=1)
+          
+          if(i!=1&&list_num==0)
              {
                     dyx=dy;
                     dyy=dy;
@@ -2047,7 +2051,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
     if(n>0)
     {
 #ifdef ELKA
-          if(key==VOL_DOWN_BUTTON)
+          if(key==ACTIVE_KEY)
 #else
 #ifdef NEWSGOLD
           if(key==LEFT_SOFT)
