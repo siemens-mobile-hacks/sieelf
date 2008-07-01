@@ -46,24 +46,6 @@
 #define BASEADDRESS		0xA1580000
 #endif
 
-#ifdef SL7Cv47
-#define ADDR_strlen		0xA1426220+1
-#define ADDR_atou		0xA02C6650+1
-#define ADDR_WS_InitByZero	0xA01F7A76+1
-#define ADDR_GetCalleeNumber	0xA0981A66+1
-#define ADDR_UpdateWndItem	0xA0A34838+1
-#define ADDR_memcmp		0xA14253E0+1
-
-#define ADDR_wstrcat		0xA01F7C2C+1
-#define ADDR_wsAppendChar	0xA01F7CF4+1
-#define ADDR_IsCalling		0xA0DE8870+1
-#define ADDR_CallIN		0xA02FA488+1 //10B586B0????????00240004000C02A9
-#define ADDR_CallOUT		0xA02FA614+1 //2878042810D1????????01280CD1
-#define ADDR_ADDRBook		0xA01F8062+1 //F8B50027051C0C1C002817D0002C
-
-#define BASEADDRESS		0xA1580000
-#endif
-
 #ifdef ELC1v41
 #define ADDR_strlen 0xA0FFCF8C+1
 #define ADDR_atou 0xA06471E4+1
