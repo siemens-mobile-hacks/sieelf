@@ -1102,7 +1102,7 @@ void my_ed_redraw(void *data)
   CLIST *cl;
   old_ed_redraw(data);
   
-  WSHDR *prws=AllocWS(256);
+  WSHDR *prws=AllocWS(128);
   
   int startfix4;
     if(startfix>100)
@@ -1137,7 +1137,7 @@ void my_ed_redraw(void *data)
   
   
   //区号秀平时输出
-  if(e_ws)
+  if(e_ws&&!p)
   {
       ShowInputCodeShow((WSHDR*)e_ws,csh);
   }
@@ -1349,7 +1349,29 @@ void ChangeRC(GUI *gui)
 //-------------------------------------
 int mode;
 
-static void sendsms()
+
+char* Opendata(char *recname)
+{
+  char *buf;
+  int f;
+  unsigned int fsize;  
+  unsigned int err;
+  f=fopen(recname,A_ReadOnly+A_BIN,P_READ,&err);
+  fsize=lseek(f,0,S_END,&err,&err);
+  if (fsize<=0)
+  {
+    fclose(f,&err);
+  }
+  lseek(f,0,S_SET,&err,&err);
+  buf=malloc(fsize+1);
+  fread(f,buf,fsize,&err);
+  buf[fsize]=0;
+  fclose(f,&err);
+  return (buf);
+}
+
+
+static void sendsms(void)
 {
   if((smscount > 0) || (mode == 1))
   {
@@ -1369,6 +1391,12 @@ static void mm_settings(GUI *gui)
    sendsms();
 }
 
+
+static void call_number(GUI *gui)
+{
+  GeneralFuncF1(1);
+  MakeVoiceCall(smsnum,0x10,0x2FFF);
+}
 
 #ifndef NEWSGOLD
 static void sm_settings(GUI *gui)
@@ -1420,22 +1448,24 @@ static const SOFTKEYSTAB mmenu_skt=
 };
 
 #ifdef NEWSGOLD
-#define MAIN_MENU_ITEMS_N 2
+#define MAIN_MENU_ITEMS_N 3
 static HEADER_DESC mmenu_hdr={0,0,0,0,NULL,(int)"选项",LGP_NULL};
 
 static MENUITEM_DESC mmenu_ITEMS[MAIN_MENU_ITEMS_N]=
 {
   {NULL,(int)"发送短信", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
+  {NULL,(int)"拨打电话", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, 
   {NULL,(int)"MD设置", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}
 };
 
 static const MENUPROCS_DESC mmenu_HNDLS[MAIN_MENU_ITEMS_N]=
 {
   mm_settings,
+  call_number,
   md_setting,
 };
 #else
-#define MAIN_MENU_ITEMS_N 4
+#define MAIN_MENU_ITEMS_N 5
 static HEADER_DESC mmenu_hdr={0,0,0,0,NULL,(int)"选项",LGP_NULL};
 
 static MENUITEM_DESC mmenu_ITEMS[MAIN_MENU_ITEMS_N]=
@@ -1443,6 +1473,7 @@ static MENUITEM_DESC mmenu_ITEMS[MAIN_MENU_ITEMS_N]=
   {NULL,(int)"发送短信", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
   {NULL,(int)"默认菜单", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"短信菜单", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)"拨打电话", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"MD设置", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}
 };
 
@@ -1451,6 +1482,7 @@ static const MENUPROCS_DESC mmenu_HNDLS[MAIN_MENU_ITEMS_N]=
   mm_settings,
   sm_settings,
   sms_settings,
+  call_number,
   md_setting,
 };
 #endif
@@ -1971,12 +2003,12 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
    }
   
 #ifdef ELKA
-          if(key==VOL_DOWN_BUTTON||key==GREEN_BUTTON||is_sms_need)
+          if(key==ACTIVE_KEY||key==GREEN_BUTTON||is_sms_need)
 #else
 #ifdef NEWSGOLD
-          if(key==LEFT_SOFT||key==GREEN_BUTTON||is_sms_need)
+          if(key==ACTIVE_KEY||key==GREEN_BUTTON||is_sms_need)
 #else
-          if(key==RIGHT_SOFT||key==GREEN_BUTTON||is_sms_need)
+          if(key==ACTIVE_KEY||key==GREEN_BUTTON||is_sms_need)
 #endif
 #endif
   {
@@ -2055,9 +2087,9 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
           if(key==ACTIVE_KEY)
 #else
 #ifdef NEWSGOLD
-          if(key==LEFT_SOFT)
+          if(key==ACTIVE_KEY)
 #else
-          if(key==RIGHT_SOFT)
+          if(key==ACTIVE_KEY)
 #endif
 #endif
       {   
@@ -2133,11 +2165,11 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
   }
   else
   {
-    #ifdef NEWSGOLD
-    if ((key>='0'&&key<='9')||(key=='*')||(key=='#')||(key==RIGHT_SOFT))
-    #else
-    if ((key>='0'&&key<='9')||(key=='*')||(key=='#')||(key==LEFT_SOFT))
-    #endif
+   // #ifdef NEWSGOLD
+    //if ((key>='0'&&key<='9')||(key=='*')||(key=='#')||(key==ACTIVE_KEY))
+  //  #else
+    if ((key>='0'&&key<='9')||(key=='*')||(key=='#')||(key==ACTIVE_KEY))
+   // #endif
     {
       if (m==KEY_DOWN)
       {
@@ -2185,8 +2217,10 @@ void my_ed_ghook(GUI *gui, int cmd)
           {
              static SOFTKEY_DESC skIP={0x0018,0x0000,(int)"IP电话"};
 #ifdef NEWSGOLD
+             if(ACTIVE_KEY==LEFT_SOFT)
              SetSoftKey(gui,&skIP,0);
 #else
+             if(ACTIVE_KEY==RIGHT_SOFT)
              SetSoftKey(gui,&skIP,1);
 #endif
           }
@@ -2209,11 +2243,12 @@ void my_ed_ghook(GUI *gui, int cmd)
 	SUBPROC((void *)ConstructList);
       }
     }
-   if(cfg_disable_one_number&&((e_ws=ec.pWS)->wsbody[0]<2))
-      
-   {a=1;
-   FreeCLIST();}
-    if((e_ws=ec.pWS)->wsbody[0]>1)
+     if(cfg_disable_one_number&&((e_ws=ec.pWS)->wsbody[0]==1))   
+     {
+       a=1;
+       FreeCLIST();
+     }
+     else
        a=0;
   }
   if(!a)
