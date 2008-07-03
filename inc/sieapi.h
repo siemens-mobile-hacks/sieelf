@@ -4,7 +4,7 @@
   #pragma system_include
  #endif
 #include <ysizet.h>
-#include <siecxt.h>
+#include "siecxt.h"
 _C_STD_BEGIN
  //¶¨Òå±àÒëÄ¬ÈÏÅÌ·û
 #ifdef NEWSGOLD

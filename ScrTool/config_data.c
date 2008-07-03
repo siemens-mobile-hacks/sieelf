@@ -1,6 +1,6 @@
-#include <swilib.h>
-#include <cfg_items.h>
-#include <sieapi.h>
+#include "..\inc\swilib.h"
+#include "..\inc\cfg_items.h"
+#include "..\inc\sieapi.h"
 #include "scrtool.h"
 
 __root const CFG_HDR cfghdr0={CFG_CHECKBOX, "∆Ù”√≤Àµ•", 0,2}; 

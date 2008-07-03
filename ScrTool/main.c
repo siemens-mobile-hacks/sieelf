@@ -1,7 +1,7 @@
-#include <swilib.h>
-#include <cfg_items.h>
-#include <sieapi.h>
-#include <playsound.h>
+#include "..\inc\swilib.h"
+#include "..\inc\cfg_items.h"
+#include "..\inc\sieapi.h"
+#include "..\inc\playsound.h"
 #include "scrtool.h"
 #include "conf_loader.h"
 //注释这里编译成完全后台运行版本

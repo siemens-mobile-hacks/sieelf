@@ -1,6 +1,6 @@
-#include <swilib.h>
-#include <cfg_items.h>
-#include <sieapi.h>
+#include "..\inc\swilib.h"
+#include "..\inc\cfg_items.h"
+#include "..\inc\sieapi.h"
 #include "conf_loader.h"
 #include "scrtool.h"
 

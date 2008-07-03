@@ -1,6 +1,6 @@
 #ifndef _SCRTOOL_H_
  #define _SCRTOOL_H_ 
- #include <sieapi.h> 
+ #include "..\inc\sieapi.h"
 #define DAEMON
 #define SCRTOOL_NAME "ScrTool"
 #define UPDATE_STAT 1
