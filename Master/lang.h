@@ -4,8 +4,8 @@
 #define ELFNAME		"Master.elf"
 #define COPYRIGHT	"Master.elf\n(c) BingK(binghelingxi)\n(r) all the author of CfgEdit!"
 
-#define LANG_CN
-//#define LANG_EN
+//#define LANG_CN
+#define LANG_EN
 
 #ifdef LANG_CN
 

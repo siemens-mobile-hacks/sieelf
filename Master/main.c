@@ -2,7 +2,7 @@
  * 文件名: main.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.06.25
+ * 最后修改日期: 2008.06.29
  *
  * 作用: 建立CSM，GUI，以及一些控制项目
  *
@@ -665,16 +665,16 @@ void edGHook(GUI *data, int cmd)
 	EDITCONTROL ec;
 	PATCH_ITEM *pitem;
 	char ss[16];
-	if(cmd==2)
+	if(cmd==TI_CMD_CREATE)
 	{
 		if(editItemList)
 			EDIT_SetFocus(data, editItemList->editCurItem);
 	}
-	if(cmd==0x0A)
+	if(cmd==TI_CMD_FOCUS)
 	{
 		DisableIDLETMR();
 	}
-	if(cmd==7)
+	if(cmd==TI_CMD_REDRAW)
 	{
 		i=EDIT_GetFocus(data);
 		ExtractEditControl(data,i,&ec);
@@ -747,13 +747,13 @@ void edGHook(GUI *data, int cmd)
 			case TYPE_STRING:
 				{
 					DATA_STRING *str=(DATA_STRING *)pitem->itemData;
-					ws_2str(ews, str->string, str->maxlen?str->maxlen:0x10);
+					ws_2str(ews, str->string, (str->maxlen?str->maxlen:0x10)-1);
 					break;
 				}
 			case TYPE_UNICODE:
 				{
 					DATA_UNICODE *uni=(DATA_UNICODE *)pitem->itemData;
-					memcpy((ews->wsbody+1), uni->ustr, 2*(ews->wsbody[0]<(uni->maxlen?uni->maxlen:0x10)?ews->wsbody[0]:(uni->maxlen?uni->maxlen:0x10)));
+					ws2uni(ews, uni->ustr, (uni->maxlen?uni->maxlen:0x10)-1);
 					break;
 				}
 			case TYPE_HEX:
@@ -765,13 +765,13 @@ void edGHook(GUI *data, int cmd)
 			case TYPE_SF:
 				{
 					DATA_SF *sf=(DATA_SF *)pitem->itemData;
-					ws_2str(ews, sf->path, sf->maxlen?sf->maxlen:58);
+					ws_2str(ews, sf->path, (sf->maxlen?sf->maxlen:58)-1);
 					break;
 				}
 			case TYPE_SD:
 				{
 					DATA_SD *sd=(DATA_SD *)pitem->itemData;
-					ws_2str(ews, sd->path, sd->maxlen?sd->maxlen:58);
+					ws_2str(ews, sd->path, (sd->maxlen?sd->maxlen:58)-1);
 					break;
 				}
 			case TYPE_SL:
@@ -812,7 +812,7 @@ void edGHook(GUI *data, int cmd)
 			}
 		}
 	}
-	if(cmd==0x0D)
+	if(cmd==TI_CMD_COMBOBOX_FOCUS)
 	{
 		//onCombo
 		i=EDIT_GetFocus(data);
@@ -878,6 +878,11 @@ INPUTDIA_DESC ED_DESC=
 	0x40000000
 };
 
+#ifdef	LANG_CN
+#define TEXT_INPUT_OPTION	ECT_CURSOR_STAY
+#else
+#define	TEXT_INPUT_OPTION	ECT_NORMAL_TEXT
+#endif
 
 int createEditGui(void)
 {
@@ -925,7 +930,7 @@ int createEditGui(void)
 			CutWSTR(ews,0);
 		if(type==TYPE_SUBMENU||type==TYPE_CHECKBOX||type==TYPE_SL)
 		{
-			ConstructEditControl(&ec,1,0x00,ews,MAX_WS_LEN);
+			ConstructEditControl(&ec,ECT_HEADER,ECF_NORMAL_STR,ews,MAX_WS_LEN);
 		}
 		else if(type==TYPE_DRSTR)
 		{
@@ -943,7 +948,7 @@ int createEditGui(void)
 			goto NextItem;
 		}
 		else
-			ConstructEditControl(&ec,1,0x40,ews,MAX_WS_LEN);
+			ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,MAX_WS_LEN);
 		AddEditControlToEditQend(eq,&ec,ma); //EditControl n*2+2
 		switch(type)
 		{
@@ -952,7 +957,7 @@ int createEditGui(void)
 				DATA_CHECKBOX *chkbox=(DATA_CHECKBOX *)pitem->itemData;
 				CutWSTR(ews,0);
 				wsAppendChar(ews, chkbox->onoff?CBOX_CHECKED:CBOX_UNCHECKED);
-				ConstructEditControl(&ec,9,ECF_APPEND_EOL,ews,1);
+				ConstructEditControl(&ec,ECT_LINK,ECF_APPEND_EOL,ews,1);
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
 			}
@@ -977,7 +982,7 @@ int createEditGui(void)
 				DATA_COLOR *color=(DATA_COLOR *)pitem->itemData;
 				char *p=(char *)color->color;
 				wsprintf(ews, PERCENT_02X_02X_, *p, *(p+1), *(p+2), *(p+3));
-				ConstructEditControl(&ec,9,ECF_APPEND_EOL,ews,12);
+				ConstructEditControl(&ec,ECT_LINK,ECF_APPEND_EOL,ews,12);
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
 			}
@@ -997,7 +1002,7 @@ int createEditGui(void)
 			#else
 				wsprintf(ews, PERCENT_T, dstr->string);
 			#endif
-				ConstructEditControl(&ec,4,0x40,ews,dstr->maxlen?dstr->maxlen:0x10);
+				ConstructEditControl(&ec,TEXT_INPUT_OPTION,ECF_APPEND_EOL,ews,dstr->maxlen?dstr->maxlen:0x10);
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
 			}
@@ -1005,7 +1010,7 @@ int createEditGui(void)
 			{
 				DATA_UNICODE *ustr=(DATA_UNICODE *)pitem->itemData;
 				uni2ws(ews, ustr->ustr, ustr->maxlen?ustr->maxlen:0x10);
-				ConstructEditControl(&ec,4,0x40,ews,ustr->maxlen?ustr->maxlen:0x10);
+				ConstructEditControl(&ec,TEXT_INPUT_OPTION,ECF_APPEND_EOL,ews,ustr->maxlen?ustr->maxlen:0x10);
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
 			}
@@ -1013,7 +1018,7 @@ int createEditGui(void)
 			{
 				DATA_HEX *hex=(DATA_HEX *)pitem->itemData;
 				hex2ws(ews, hex->hex, hex->maxlen?hex->maxlen:0x1);
-				ConstructEditControl(&ec,4,0x40,ews,2*(hex->maxlen?hex->maxlen:0x1));
+				ConstructEditControl(&ec,TEXT_INPUT_OPTION,ECF_APPEND_EOL,ews,2*(hex->maxlen?hex->maxlen:0x1));
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
 			}
@@ -1025,7 +1030,7 @@ int createEditGui(void)
 				wsprintf(ews, PERCENT_T, LGP_ENTER);
 			#endif
 				EDITC_OPTIONS ec_options;
-				ConstructEditControl(&ec,8,ECF_APPEND_EOL,ews,MAX_WS_LEN);
+				ConstructEditControl(&ec,ECT_READ_ONLY_SELECTED,ECF_APPEND_EOL,ews,MAX_WS_LEN);
 				SetPenColorToEditCOptions(&ec_options,2);
 				SetFontToEditCOptions(&ec_options,1);
 				CopyOptionsToEditControl(&ec,&ec_options);
@@ -1040,7 +1045,7 @@ int createEditGui(void)
 					wsprintf(ews, PERCENT_T, LGP_IS_OFF);
 				else
 					wsprintf(ews, PERCENT_D_D, dpos->x, dpos->y);
-				ConstructEditControl(&ec,9,ECF_APPEND_EOL,ews,10);
+				ConstructEditControl(&ec,ECT_LINK,ECF_APPEND_EOL,ews,10);
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
 			}
@@ -1060,14 +1065,14 @@ int createEditGui(void)
 					else
 						wsprintf(ews, PERCENT_T, cboxitem->name);
 				#endif
-					ConstructComboBox(&ec, 7, ECF_APPEND_EOL, ews, 32, 0, max, cur);
+					ConstructComboBox(&ec, ECT_COMBO_BOX, ECF_APPEND_EOL, ews, 32, 0, max, cur);
 					AddEditControlToEditQend(eq,&ec,ma);
 				}
 				else if(cboxitem=cbox->cboxitem)//use first item
 				{
 					cur=1;
 					wsprintf(ews, PERCENT_T, cboxitem->name);
-					ConstructComboBox(&ec, 7, ECF_APPEND_EOL, ews, 32, 0, max, cur);
+					ConstructComboBox(&ec, ECT_COMBO_BOX, ECF_APPEND_EOL, ews, 32, 0, max, cur);
 					AddEditControlToEditQend(eq,&ec,ma);
 				}
 				else
@@ -1077,7 +1082,7 @@ int createEditGui(void)
 				#else
 					wsprintf(ews, PERCENT_T, LGP_CBOX_ERR);
 				#endif
-					ConstructEditControl(&ec,1,0x40,ews,MAX_WS_LEN);
+					ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,MAX_WS_LEN);
 					AddEditControlToEditQend(eq,&ec,ma);
 				}
 				break;
@@ -1086,7 +1091,7 @@ int createEditGui(void)
 			{
 				DATA_SF *fs=(DATA_SF *)pitem->itemData;
 				str_2ws(ews, fs->path, fs->maxlen?fs->maxlen:58);
-				ConstructEditControl(&ec,4,0x40,ews,fs->maxlen?fs->maxlen:58);
+				ConstructEditControl(&ec,TEXT_INPUT_OPTION,ECF_APPEND_EOL,ews,fs->maxlen?fs->maxlen:58);
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
 			}
@@ -1094,7 +1099,7 @@ int createEditGui(void)
 			{
 				DATA_SD *sd=(DATA_SD *)pitem->itemData;
 				str_2ws(ews, sd->path, sd->maxlen?sd->maxlen:58);
-				ConstructEditControl(&ec,4,0x40,ews,sd->maxlen?sd->maxlen:58);
+				ConstructEditControl(&ec,TEXT_INPUT_OPTION,ECF_APPEND_EOL,ews,sd->maxlen?sd->maxlen:58);
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
 			}
@@ -1102,7 +1107,7 @@ int createEditGui(void)
 			{
 				DATA_SL *sl=(DATA_SL *)pitem->itemData;
 				wsprintf(ews, PERCENT_D, sl->initData);
-				ConstructComboBox(&ec, 7, ECF_APPEND_EOL, ews, 8, 0, sl->max+1, sl->initData+1);
+				ConstructComboBox(&ec, ECT_COMBO_BOX, ECF_APPEND_EOL, ews, 8, 0, sl->max+1, sl->initData+1);
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
 			}
@@ -1119,7 +1124,7 @@ int createEditGui(void)
 				DATA_BYTES *dbytes=(DATA_BYTES *)pitem->itemData;
 				//CutWSTR(ews, 0);
 				bytes_2ws(ews,(char *)dbytes->bytes,dbytes->len);
-				ConstructEditControl(&ec,4,0x40,ews,MAX_WS_LEN);
+				ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL,ews,MAX_WS_LEN);
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
 			}
@@ -1128,7 +1133,7 @@ int createEditGui(void)
 				DATA_INTS *dints=(DATA_INTS *)pitem->itemData;
 				//CutWSTR(ews, 0);
 				ints_2ws(ews,dints->ints,dints->len);
-				ConstructEditControl(&ec,4,0x40,ews,MAX_WS_LEN);
+				ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL,ews,MAX_WS_LEN);
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
 			}
@@ -1142,7 +1147,7 @@ int createEditGui(void)
 			}
 		default:
 			wsprintf(ews, "%t:%d", LGP_NOTSUPPORT, type);
-			ConstructEditControl(&ec,1,ECF_APPEND_EOL,ews,MAX_WS_LEN);
+			ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,MAX_WS_LEN);
 			AddEditControlToEditQend(eq,&ec,ma);
 		}
 	NextItem:

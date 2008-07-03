@@ -31,6 +31,7 @@ int isUniFormat(char *s);
 void ws2hex(WSHDR *ws, char *hex, int maxlen);
 void bytes_2ws(WSHDR *ws, char *bytes, int maxlen);
 void ints_2ws(WSHDR *ws, int *ints, int maxlen);
+void ws2uni(WSHDR *ws, unsigned short *uni, int maxlen);
 #endif
 
 #endif

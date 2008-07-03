@@ -2,7 +2,7 @@
  * 文件名: getConfig.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.06.25
+ * 最后修改日期: 2008.06.29
  *
  * 作用: 提供一些字符处理函数
  * 备注: WINTEL_DEBUG为使用在windows中使用编译器进行调试的条件编译项目
@@ -45,6 +45,19 @@ void uni2ws(WSHDR *ws, unsigned short *uni, int maxlen)
 		p++;
 	}
 	ws->wsbody[0]=i-1;
+}
+
+void ws2uni(WSHDR *ws, unsigned short *uni, int maxlen)
+{
+	unsigned short *p=ws->wsbody+1;
+	int i=0;
+	while(i<ws->wsbody[0]&&(maxlen==0||i<maxlen))
+	{
+		uni[i]=p[i];
+		i++;
+	}
+	for(;i<maxlen;i++)
+		uni[i]=0;
 }
 
 void hex2ws(WSHDR *ws, unsigned char *hex, int maxlen)
@@ -141,7 +154,7 @@ void ws2hex(WSHDR *ws, char *hex, int maxlen)
 			if((c1>='0'&&c1<='9')||(c1>='a'&&c1<='f')||(c1>='A'&&c1<='F'))
 				hex[i++]=chr2num(c)*0x10+chr2num(c1);
 			else
-				break;
+				hex[i++]=chr2num(c);
 		}
 		else
 			break;

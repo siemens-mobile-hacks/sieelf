@@ -39,7 +39,7 @@ void patch_input(INPUTDIA_DESC* inp)
 }
 //===============================================================================================
 //  YDISP на?больше не нуже?та?ка?иконба?отключим
-#ifdef ELKA  
+#ifdef ELKA
 #undef YDISP
 #define   YDISP 0
 #endif
@@ -65,7 +65,7 @@ typedef struct
 typedef struct
 {
   GUI gui;
-  WSHDR*ws1; 
+  WSHDR*ws1;
   int r;
   int g;
   int b;
@@ -103,13 +103,13 @@ void method0_rect(RECT_GUI *data)
     for (int y_0=YDISP; y_0< scr_h;y_0+=10)
     {
       DrawLine(0,y_0,scr_w-1,y_0,1,colors[3]);
-    }  
+    }
     for (int x_0=0; x_0<scr_w;x_0+=10)
     {
       DrawLine(x_0,YDISP,x_0, scr_h-1,1,colors[3]);
     }
   }
-  
+
   if (data->is_rect_needed)
   {
     DrawRoundedFrame(data->rc->x,data->rc->y,data->rc->x2,data->rc->y2,
@@ -118,7 +118,7 @@ void method0_rect(RECT_GUI *data)
     {
       DrawRoundedFrame(data->x2_pos,data->y2_pos,data->x_pos,data->y_pos,
                        0,0,0,black,transparent);
-      wsprintf(data->ws1,"%u,%u,%u,%u",data->x2_pos,data->y2_pos,data->x_pos,data->y_pos); 
+      wsprintf(data->ws1,"%u,%u,%u,%u",data->x2_pos,data->y2_pos,data->x_pos,data->y_pos);
     }
     else
     {
@@ -131,7 +131,7 @@ void method0_rect(RECT_GUI *data)
     wsprintf(data->ws1,"%u,%u",data->x_pos,data->y_pos);
     DrawString(data->ws1,3,scr_h-GetFontYSIZE(FONT_SMALL)-1,scr_w-4,scr_h-1,FONT_SMALL,1,black,transparent);
   }
-  
+
   //Текущая позиция
   DrwImg((IMGHDR *)&imgPointer,data->x_pos-2,data->y_pos-2,black,transparent);
 }
@@ -151,9 +151,9 @@ void method2_rect(RECT_GUI *data, void (*mfree_adr)(void *))
 
 void method3_rect(RECT_GUI *data, void *(*malloc_adr)(int), void (*mfree_adr)(void *))
 {
-#ifdef ELKA  
+#ifdef ELKA
   DisableIconBar(1);
-#endif  
+#endif
   data->gui.state=2;
 }
 
@@ -185,10 +185,10 @@ int method5_rect(RECT_GUI *data, GUI_MSG *msg)
              break;
            }
          }
-         
+
        case RED_BUTTON:
          return (1);
-         
+
        case ENTER_BUTTON:
          if (data->is_rect_needed)
          {
@@ -216,12 +216,12 @@ int method5_rect(RECT_GUI *data, GUI_MSG *msg)
        }
     }
     if (msg->gbsmsg->msg==LONG_PRESS)
-#ifdef ELKA      
+#ifdef ELKA
       data->cstep=9;
 #else
-      data->cstep=5;    
-#endif    
-    
+      data->cstep=5;
+#endif
+
     switch(msg->gbsmsg->submess)
     {
     case '1':
@@ -230,56 +230,56 @@ int method5_rect(RECT_GUI *data, GUI_MSG *msg)
       if ((data->y_pos-=data->cstep)<YDISP)
         data->y_pos=YDISP;
       break;
-      
+
     case '2':
     case UP_BUTTON:
       if ((data->y_pos-=data->cstep)<YDISP)
         data->y_pos=YDISP;
       break;
-      
+
     case '3':
       if ((data->x_pos+=data->cstep)>ScreenW()-1)
         data->x_pos=ScreenW()-1;
       if ((data->y_pos-=data->cstep)<YDISP)
         data->y_pos=YDISP;
       break;
-     
+
     case '4':
     case LEFT_BUTTON:
       if ((data->x_pos-=data->cstep)<0)
         data->x_pos=0;
       break;
-      
+
     case '6':
     case RIGHT_BUTTON:
       if ((data->x_pos+=data->cstep)>ScreenW()-1)
         data->x_pos=ScreenW()-1;
       break;
-      
-    case '7': 
+
+    case '7':
       if ((data->x_pos-=data->cstep)<0)
-        data->x_pos=0;      
+        data->x_pos=0;
       if ((data->y_pos+=data->cstep)>ScreenH()-1)
         data->y_pos=ScreenH()-1;
       break;
-      
+
     case '8':
     case DOWN_BUTTON:
       if ((data->y_pos+=data->cstep)>ScreenH()-1)
         data->y_pos=ScreenH()-1;
       break;
-      
-    case '9': 
+
+    case '9':
       if ((data->x_pos+=data->cstep)>ScreenW()-1)
         data->x_pos=ScreenW()-1;
       if ((data->y_pos+=data->cstep)>ScreenH()-1)
         data->y_pos=ScreenH()-1;
-      break; 
+      break;
     }
   }
   if (msg->gbsmsg->msg==KEY_UP)
     data->cstep=1;
-  
+
   DirectRedrawGUI();
   return(0);
 }
@@ -314,7 +314,7 @@ void EditCoordinates(void *rect_or_xy, int is_rect)
 {
   RECT_GUI *rect_gui=malloc(sizeof(RECT_GUI));
   zeromem(rect_gui,sizeof(RECT_GUI));
-  
+
   rect_gui->is_rect_needed=is_rect;
   if (!is_rect)
   {
@@ -370,13 +370,13 @@ void method0_xy(XY_GUI *data)
     for (int y_0=YDISP; y_0< scr_h;y_0+=10)
     {
       DrawLine(0,y_0,scr_w-1,y_0,1,colors[3]);
-    }  
+    }
     for (int x_0=0; x_0<scr_w;x_0+=10)
     {
       DrawLine(x_0,YDISP,x_0, scr_h-1,1,colors[3]);
     }
   }
-  
+
   //if (data->is_rect_needed)
   //{
   //  DrawRoundedFrame(data->rc->x,data->rc->y,data->rc->x2,data->rc->y2,
@@ -385,7 +385,7 @@ void method0_xy(XY_GUI *data)
   //  {
   //    DrawRoundedFrame(data->x2_pos,data->y2_pos,data->x_pos,data->y_pos,
   //                     0,0,0,black,transparent);
-  //    wsprintf(data->ws1,"%u,%u,%u,%u",data->x2_pos,data->y2_pos,data->x_pos,data->y_pos); 
+  //    wsprintf(data->ws1,"%u,%u,%u,%u",data->x2_pos,data->y2_pos,data->x_pos,data->y_pos);
   //  }
   //  else
   //  {
@@ -398,7 +398,7 @@ void method0_xy(XY_GUI *data)
     wsprintf(data->ws1,"%u,%u",data->x_pos,data->y_pos);
     DrawString(data->ws1,3,scr_h-GetFontYSIZE(FONT_SMALL)-1,scr_w-4,scr_h-1,FONT_SMALL,1,black,transparent);
   }
-  
+
   //Текущая позиция
   DrwImg((IMGHDR *)&imgPointer,data->x_pos-2,data->y_pos-2,black,transparent);
   if(data->width || data->hight)
@@ -420,9 +420,9 @@ void method2_xy(XY_GUI *data, void (*mfree_adr)(void *))
 
 void method3_xy(XY_GUI *data, void *(*malloc_adr)(int), void (*mfree_adr)(void *))
 {
-#ifdef ELKA  
+#ifdef ELKA
   DisableIconBar(1);
-#endif  
+#endif
   data->gui.state=2;
 }
 
@@ -454,10 +454,10 @@ int method5_xy(XY_GUI *data, GUI_MSG *msg)
          //    break;
          //  }
          //}
-         
+
        case RED_BUTTON:
          return (1);
-         
+
        case ENTER_BUTTON:
          //if (data->is_rect_needed)
          //{
@@ -486,12 +486,12 @@ int method5_xy(XY_GUI *data, GUI_MSG *msg)
        }
     }
     if (msg->gbsmsg->msg==LONG_PRESS)
-#ifdef ELKA      
+#ifdef ELKA
       data->cstep=9;
 #else
-      data->cstep=5;    
-#endif    
-    
+      data->cstep=5;
+#endif
+
     switch(msg->gbsmsg->submess)
     {
     case '1':
@@ -500,56 +500,56 @@ int method5_xy(XY_GUI *data, GUI_MSG *msg)
       if ((data->y_pos-=data->cstep)<YDISP)
         data->y_pos=YDISP;
       break;
-      
+
     case '2':
     case UP_BUTTON:
       if ((data->y_pos-=data->cstep)<YDISP)
         data->y_pos=YDISP;
       break;
-      
+
     case '3':
       if ((data->x_pos+=data->cstep)>ScreenW()-1)
         data->x_pos=ScreenW()-1;
       if ((data->y_pos-=data->cstep)<YDISP)
         data->y_pos=YDISP;
       break;
-     
+
     case '4':
     case LEFT_BUTTON:
       if ((data->x_pos-=data->cstep)<0)
         data->x_pos=0;
       break;
-      
+
     case '6':
     case RIGHT_BUTTON:
       if ((data->x_pos+=data->cstep)>ScreenW()-1)
         data->x_pos=ScreenW()-1;
       break;
-      
-    case '7': 
+
+    case '7':
       if ((data->x_pos-=data->cstep)<0)
-        data->x_pos=0;      
+        data->x_pos=0;
       if ((data->y_pos+=data->cstep)>ScreenH()-1)
         data->y_pos=ScreenH()-1;
       break;
-      
+
     case '8':
     case DOWN_BUTTON:
       if ((data->y_pos+=data->cstep)>ScreenH()-1)
         data->y_pos=ScreenH()-1;
       break;
-      
-    case '9': 
+
+    case '9':
       if ((data->x_pos+=data->cstep)>ScreenW()-1)
         data->x_pos=ScreenW()-1;
       if ((data->y_pos+=data->cstep)>ScreenH()-1)
         data->y_pos=ScreenH()-1;
-      break; 
+      break;
     }
   }
   if (msg->gbsmsg->msg==KEY_UP)
     data->cstep=1;
-  
+
   DirectRedrawGUI();
   return(0);
 }
@@ -584,7 +584,7 @@ void EditPostionGUI(short *x, short *y, short width, short hight)
 {
   XY_GUI *xy_gui=malloc(sizeof(XY_GUI));
   zeromem(xy_gui,sizeof(XY_GUI));
-  
+
   xy_gui->x_pos=*x;
   xy_gui->y_pos=*y;
   xy_gui->x=x;
@@ -632,7 +632,7 @@ void method0_2(MAIN_GUI_2 *data)
       break;
     case 1:
       y_line=YDISP+fsize+column_height-(data->g*column_height)/0xFF;
-      break;      
+      break;
     case 2:
       y_line=YDISP+fsize+column_height-(data->b*column_height)/0xFF;
       break;
@@ -660,9 +660,9 @@ void method2_2(MAIN_GUI_2 *data, void (*mfree_adr)(void *))
 
 void method3_2(MAIN_GUI_2 *data, void *(*malloc_adr)(int), void (*mfree_adr)(void *))
 {
-#ifdef ELKA    
+#ifdef ELKA
   DisableIconBar(1);
-#endif  
+#endif
   data->gui.state=2;
 }
 
@@ -684,13 +684,13 @@ int method5_2(MAIN_GUI_2 *data, GUI_MSG *msg)
        case RIGHT_SOFT:
        case RED_BUTTON:
          return (1);
-         
+
        case ENTER_BUTTON:
          setColor(data->r,data->g,data->b,data->a,data->color);
          return (1);
        }
     }
-    if (msg->gbsmsg->msg==LONG_PRESS)  
+    if (msg->gbsmsg->msg==LONG_PRESS)
       data->cstep=8;
 
     switch(msg->gbsmsg->submess)
@@ -717,18 +717,18 @@ int method5_2(MAIN_GUI_2 *data, GUI_MSG *msg)
         break;
       }
       break;
-      
+
     case LEFT_BUTTON:
     case '4':
       if (--data->current_column<0)
         data->current_column=3;
-      break;  
+      break;
     case RIGHT_BUTTON:
     case '6':
       if (++data->current_column>3)
         data->current_column=0;
       break;
-      
+
     case DOWN_BUTTON:
     case '8':
       switch(data->current_column)
@@ -873,8 +873,8 @@ typedef struct
 {
   void *next;
   int is_folder;
-  char *fullname;  
-  char *name;  
+  char *fullname;
+  char *name;
 }FLIST;
 
 typedef struct
@@ -900,8 +900,8 @@ void Free_FLIST(void)
   }
 }
 
-enum TYPES {IS_BACK, IS_FOLDER, IS_FILE}; 
-const char back[]="..";             
+enum TYPES {IS_BACK, IS_FOLDER, IS_FILE};
+const char back[]="..";
 
 
 int strcmp_nocase(const char *s, const char *d)
@@ -962,7 +962,7 @@ int FindFiles(char *str, char *mask, int type)  // type == 0 SelectFolder, type 
   int i, c, n=0;
   char path[256];
   char name[128];
-  
+
   strcpy(path,str);
   Free_FLIST();
   s=path;
@@ -981,7 +981,7 @@ int FindFiles(char *str, char *mask, int type)  // type == 0 SelectFolder, type 
     AddToFList(name,back,IS_BACK);
   }
   n++;
-  
+
   i=strlen(path);
   path[i++]='*';
   path[i]='\0';
@@ -1042,12 +1042,12 @@ FLIST *FindFLISTtByNS(int *i, int si)
     {
       if (!(*i)) return (fl);
       (*i)--;
-    }    
+    }
     fl=fl->next;
   }
   return fl;
 }
-  
+
 FLIST *FindFLISTtByN(int n)
 {
   FLIST *fl;
@@ -1066,7 +1066,7 @@ void SavePath(void *ed_gui, FLIST *fl)
   EDIT_SetTextToFocused(ed_gui,ws);
   FreeWS(ws);
 }
-  
+
 
 char header[128];
 int filelist_menu_onkey(void *data, GUI_MSG *msg)
@@ -1076,10 +1076,10 @@ int filelist_menu_onkey(void *data, GUI_MSG *msg)
   int i, n;
   i=GetCurMenuItem(data);
   fl=FindFLISTtByN(i);
-  
+
   if (msg->keys==0x3D)
   {
-    if (fl) 
+    if (fl)
     {
       if (fl->is_folder==IS_FOLDER || fl->is_folder==IS_BACK)
       {
@@ -1095,14 +1095,14 @@ int filelist_menu_onkey(void *data, GUI_MSG *msg)
         {
           int CreateRootMenu();
           n=CreateRootMenu();
-        }         
+        }
         Menu_SetItemCountDyn(data,n);
         SetCursorToMenuItem(data, 0);
         RefreshGUI();
       }
       else
       {
-        SavePath(fview->gui,fl);        
+        SavePath(fview->gui,fl);
         return (1);
       }
     }
@@ -1117,8 +1117,8 @@ int filelist_menu_onkey(void *data, GUI_MSG *msg)
       {
         SavePath(fview->gui,fl);
         return (1);
-      }      
-    }   
+      }
+    }
     return (-1);
   }
   return (0);
@@ -1130,7 +1130,7 @@ void filelist_menu_ghook(void *data, int cmd)
   if (cmd==3)
   {
     Free_FLIST();
-    mfree(fview);    
+    mfree(fview);
   }
   if (cmd==0x0A)
   {
@@ -1225,7 +1225,7 @@ void open_select_file_gui(void *ed_gui, char *mask, int type)
   char path[128];
   char *s, *rev=0;
   int n, c, len;
-  
+
   fview=malloc(sizeof(FVIEW));
   fview->gui=ed_gui;
   fview->type=type;
@@ -1235,7 +1235,7 @@ void open_select_file_gui(void *ed_gui, char *mask, int type)
   s=path;
   while((c=*s++))
   {
-    if (c=='\\' && *s!='\0') rev=s;  
+    if (c=='\\' && *s!='\0') rev=s;
   }
   if (!rev)
     n=CreateRootMenu();
@@ -1246,7 +1246,7 @@ void open_select_file_gui(void *ed_gui, char *mask, int type)
     len=strlen(path);
     header[len>sizeof(header)-1?sizeof(header)-1:len]=0;
     n=FindFiles(path, mask, type);
-  }    
+  }
   patch_header(&filelist_HDR);
   CreateMenu(0,0,&filelist_STRUCT,&filelist_HDR,0,n,fview,0);
 }
