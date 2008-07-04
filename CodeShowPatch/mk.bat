@@ -1,4 +1,4 @@
-%1\..\tools\elf2vkp.exe %2\CodeShowPatch.elf %1\t.tmp e:\fullflash\lg8\%3.bin
+%1\..\tools\elf2vkp.exe %2\CodeShowPatch.elf %1\t.tmp D:\tools\%3.bin
 copy /b %1\about.txt+%1\t.tmp+%1\DataBase.vkp %1\CodeShowPatch_%3.vkp
 del *.tmp
 del *.dep

@@ -1,6 +1,6 @@
-;***区号秀手机版 v1.4***
-;(C) Bennie
-;(R) Along,starfriend,Robin,BingK(binghelingxi)
+;***区号秀手机版 v1.6***
+;(c) Bennie
+;(i) Along,starfriend,Robin,BingK(binghelingxi)
 ;V1.1-> 增加了对电话簿的支持
 ;V1.2-> 2006.04.12 增加对15号段的识别及重复区号的显示
 ;V1.21-> 2006.04.13 解决重复区号显示死机问题，支持自定义省市间的分割符
@@ -16,6 +16,8 @@
 ;V1.4-> 2008.04.21 SGOLD多号码选择菜单中区号秀支持,包括电话,短信,JAVA选择号码菜单,BingK(binghelingxi)
 ;V1.4-> 2008.04.25 ELKA多号码选择菜单中区号秀支持,包括电话,短信,JAVA选择号码菜单,BingK(binghelingxi)
 ;V1.5-> 2008.05.10 ELKA来短信窗口区号秀支持,BingK(binghelingxi)
+;V1.6-> 2008.07.03 移植到NEWSGOLD，多号码选择菜单中区号秀支持(增加一个条件，解决号码包含国际码时不显示区号的问题)，
+;		   来短信窗口区号秀支持，starfriend
 ;
 ;修改省市间的分割符(默认为点):
 ;例如：2720:点, 2000:空格, 4000:＠, 2A00:＃, 2300:*(即标准UniCode码高低字节倒序)

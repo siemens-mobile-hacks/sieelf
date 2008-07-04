@@ -63,6 +63,9 @@ void new_redraw_(void *data)
 	char *p=num;
 	while(*p) //判断是否是号码，可能是电子邮件地址
 	{
+          	if(*p == '+')
+		p += 3;
+                
 		if(*p<'0'||*p>'9')
 		{
 			is_num=0;

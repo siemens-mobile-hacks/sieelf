@@ -148,8 +148,6 @@ Hook4:
 	ADD		R2, #4
 	BX		R2
 #endif
-
-		
 		
 
 SIMBOOK:
@@ -204,7 +202,9 @@ AddrBookMenu:
 	extern	store_the_num_2_ram
 	extern	new_redraw_
 	extern	memcpy_n
+        
 NUM_SELECT_MENU:
+#ifdef ELKA
 	LSR		R0, R0, #0x10
 	ADD		R0, #1
 	ADD		R6, SP, #4
@@ -218,7 +218,19 @@ NUM_SELECT_MENU:
 	BLX		R1
 	ADD		R6, R6, #4
 	BX		R6
-	
+#endif
+
+#ifdef NEWSGOLD
+	ADD		R2, SP, #0
+	PUSH		{R0-R7, LR}
+	LSL		R0, R5, #3
+	MOV		R1, R2
+	BL		store_the_num_2_ram
+        POP             {R0-R7}
+        LSR		R0, R0, #0x10
+        POP             {PC}       
+#endif
+
 //NUM_SELECT_MENU1:
 //÷ÿΩ®redraw,by BingK(binghelingxi)
 	CODE16
@@ -251,13 +263,19 @@ NUM_SELECT_MENU1:
 	STR		R6, [R7, #4]		//STORE NEW METHODS
 	POP		{R0-R7}
 	ADD		R4, R0, #0
+#ifdef ELKA         
 	LDR		R1, =ADDR_MENU_DESC
 	LDR		R2, =ADDR_CREATE_SELECT_MENU
-	BLX		R2
+	BLX		R2       
 	POP		{R2}
 	ADD		R2, R2, #4
-	BX		R2
+	BX		R2 
+#endif
 
+#ifdef NEWSGOLD
+        POP             {PC}
+#endif        
+        
 	RSEG	CODE_X
 	EXTERN	GetProvAndCity
 	EXTERN	GetNumFromIncomingPDU
@@ -347,11 +365,6 @@ HOOKAddrBookWindow_DUMP:
 	BLX		SIMBOOK
 #endif	
 
-#ifndef ELKA
-	RSEG	AddrBookWindow2:DATA(1)
-	DCB		0xFF
-#endif
-
 /*
 	CODE16
 	RSEG	AddrBookMenu_HOOK1:CODE(1)
@@ -361,23 +374,43 @@ HOOKAddrBookWindow_DUMP:
 	RSEG	AddrBookMenu_HOOK:CODE(2)
 	LDR		R0, =AddrBookMenu
 	BLX		R0*/
+#ifdef ELKA
 	CODE16
 	RSEG	NUM_SELECT_MENU_HOOK
 	LDR		R6, =NUM_SELECT_MENU
 	BLX		R6
-	
+#endif
+
+#ifdef NEWSGOLD
+	CODE32
+	RSEG	NUM_SELECT_MENU_HOOK
+	BLX		NUM_SELECT_MENU
+#endif
+
+#ifdef ELKA
 	CODE16
 	RSEG	NUM_SELECT_MENU_HOOK1
 	LDR		R4, =NUM_SELECT_MENU1
 	BLX		R4
-	
+#endif
+
+#ifdef NEWSGOLD
+	CODE32
+	RSEG	NUM_SELECT_MENU_HOOK1
+	BLX		NUM_SELECT_MENU1
+#endif
 	CODE16
 	RSEG	SMS_IN_HOOK
 	LDR		R0, =SMS_IN
 	BLX		R0
-#else
-//SGOLD
 
+#ifndef ELKA
+	RSEG	AddrBookWindow2:DATA(1)
+	DCB		0xFF
+#endif
+
+#else
+//sgold
 Hook2:
 	MOV		R0, #0
 	MOV		R1, R4
