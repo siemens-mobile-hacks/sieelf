@@ -435,13 +435,20 @@ void showPatchInfo(void)
 	if(ptcfg)
 	{
 		WSHDR *ws=AllocWS(256);
+		WSHDR *ts=AllocWS(200);
 		void *ma=malloc_adr();
 		void *eq;
 		EDITCONTROL ec;
 		PrepareEditControl(&ec);
 		eq=AllocEQueue(ma,mfree_adr());
-		
-		wsprintf(ws, "%t%t", LGP_PATCH_NAME, ptcfg->patchInfo->patchName);
+		//Modify
+		wsprintf(ws, "%t", LGP_PATCH_NAME);
+		if(isUniFormat(ptcfg->patchInfo->patchName))
+			uniFormatString2ws(ts, ptcfg->patchInfo->patchName);
+		else
+			wsprintf(ts, PERCENT_T, ptcfg->patchInfo->patchName);
+		wstrcat(ws,ts);
+		//wsprintf(ws, "%t%t", LGP_PATCH_NAME, ptcfg->patchInfo->patchName);
 		ConstructEditControl(&ec,ECT_READ_ONLY,ECF_APPEND_EOL,ws,256);
 		AddEditControlToEditQend(eq,&ec,ma);
 		
@@ -459,7 +466,14 @@ void showPatchInfo(void)
 		
 		if(ptcfg->patchInfo->info)
 		{
-			wsprintf(ws, "%t%t", LGP_PATCH_INFO_OTH, ptcfg->patchInfo->info);
+			//Modify
+			wsprintf(ws, "%t", LGP_PATCH_INFO_OTH);
+			if(isUniFormat(ptcfg->patchInfo->info))
+				uniFormatString2ws(ts, ptcfg->patchInfo->info);
+			else
+				wsprintf(ts, PERCENT_T, ptcfg->patchInfo->info);
+			wstrcat(ws,ts);
+			//wsprintf(ws, "%t%t", LGP_PATCH_INFO_OTH, ptcfg->patchInfo->info);
 			ConstructEditControl(&ec,ECT_READ_ONLY,ECF_APPEND_EOL,ws,256);
 			AddEditControlToEditQend(eq,&ec,ma);
 		}
@@ -467,6 +481,7 @@ void showPatchInfo(void)
 		patch_input(&INFO_DESC);
 		CreateInputTextDialog(&INFO_DESC, &INFO_HDR, eq, 1, 0);
 		FreeWS(ws);
+		FreeWS(ts);
 	}
 }
 
