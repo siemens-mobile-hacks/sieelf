@@ -5798,6 +5798,7 @@
       <configuration>SK6Cv50</configuration>
       <configuration>S68Cv51</configuration>
       <configuration>M81Cv51</configuration>
+      <configuration>CX6Cv50</configuration>
     </excluded>
   </file>
 </project>
