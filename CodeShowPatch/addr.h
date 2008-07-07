@@ -1,3 +1,31 @@
+#ifdef CX6Cv50
+#define ADDR_strlen		0xA159BF14+1//
+#define ADDR_atou		0xA082BD88+1//
+#define ADDR_WS_InitByZero	0xA0A55266+1//
+#define ADDR_GetCalleeNumber	0xA0A634F2+1//
+#define ADDR_UpdateWndItem	0xA00B4D5E+1//
+#define ADDR_memcmp		0xA159B554+1//
+#define ADDR_DrawString		0xA00DA860+1//
+#define ADDR_FreeWS		0xA0A54C18+1//
+#define ADDR_AllocWS		0xA0A552CE+1//
+#define ADDR_GetCurMenuItem	0xA009B946+1//
+
+#define ADDR_wstrcat		0xA0A55434+1//
+#define ADDR_wsAppendChar	0xA0A5555C+1//
+#define ADDR_IsCalling		0xA00CD76E+1//
+#define ADDR_CallIN		0xA0974F2A+1//
+#define ADDR_CallOUT		0xA09742F8+1//
+#define ADDR_ADDRBook		0xA0A55A64+1//
+#define ADDR_SMS_SEND		0xA0AF7E60+1//
+
+#define UNUSERAM_NUM		0xA8000240
+#define UNUSERAM_METHOD		0xA8000300
+#define UNUSERAM_OLD_REDRAW	0xA80002F0
+#define ADDR_SELECT_MENU	0xA0ABF204+1//
+#define ADDR_MENU_DESC		0xA0C5E0F0 //
+
+#define BASEADDRESS		0xA0CC0000
+#endif
 
 #ifdef E71Cv41
 #define ADDR_strlen		0xA0FF1BFC+1

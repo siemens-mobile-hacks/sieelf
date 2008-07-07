@@ -1,5 +1,5 @@
 #include "addr.h"
-
+#ifndef CX6Cv50
 __thumb void Hex2Num(char *hex, char *num, int len) @ "CODE_X"
 {
 	int c;
@@ -53,4 +53,4 @@ __thumb int GetNumFromIncomingPDU(char *num) @ "CODE_X"
 	}
 	return 0;
 }
-
+#endif

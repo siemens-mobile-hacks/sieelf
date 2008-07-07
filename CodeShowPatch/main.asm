@@ -4,13 +4,20 @@
 	EXTERN	AppendInfoW
 	EXTERN	UpdateLocaleToItem
 	EXTERN	do_phonebook_work 
-
+/*
 #ifdef NEWSGOLD
 	RSEG	CODE
 #else
-	RSEG	CODE_2
+	RSEG	CODE_2       
 #endif
-	
+*/
+
+#ifndef SK6Cv50
+	RSEG	CODE
+#else
+	RSEG	CODE_2       
+#endif
+
 	CODE16
 	PUBLIC	strlen
 strlen:
