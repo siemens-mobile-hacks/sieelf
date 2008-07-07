@@ -545,7 +545,8 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		{
 		DATA_BYTE *dbyte=malloc(sizeof(DATA_BYTE));
 		dbyte->initData=0;
-		dbyte->min=0;
+		dbyte->min=127;
+		dbyte->min=~(dbyte->min)+1;
 		dbyte->max=127;
 		pp=gotoRealPos(p1);
 		p1=gotoMyStrStart(pp);
@@ -554,19 +555,19 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		if((p1=strstrInQuote(p, STR_VL))||(p1=strstrInQuote(p, STR_VL1)))
 		{
 			pp=gotoRealPos(p1);
-			str2num_char(pp, &dbyte->initData, 0xFF, 0, 0);
+			str2num_char(pp, &dbyte->initData, dbyte->max, dbyte->min, 0);
 		}
 		if((p1=strstrInQuote(p, STR_RANGE1))||(p1=strstrInQuote(p, STR_RANGE2)))
 		{
 			pp=gotoRealPos(p1);
-			str2num_char(pp, &dbyte->min, 0xFF, 0, 0);
+			str2num_char(pp, &dbyte->min, dbyte->max, dbyte->min, 0);
 			//while(*pp>='0'&&*pp<='9') //leave min
 			//	pp++;
 			while(*pp&&*pp!='.')
 				pp++;
 			while(*pp<'0'||*pp>'9') //to max
 				pp++;
-			str2num_char(pp, &dbyte->max, 0xFF, 0, 0);
+			str2num_char(pp, &dbyte->max, dbyte->max, dbyte->min, 0);
 		}
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos, 0, 0, 0);
@@ -581,7 +582,8 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		DATA_INT *dint=malloc(sizeof(DATA_INT));
 		dint->initData=0;
 		dint->max=0xFFFFFFF;
-		dint->min=0;
+		dint->min=0xFFFFFFF;
+		dint->min=~(dint->min);
 		pp=gotoRealPos(p1);
 		p1=gotoMyStrStart(pp);
 		p2=gotoMyStrEnd(pp);
@@ -589,17 +591,17 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		if((p1=strstrInQuote(p, STR_VL))||(p1=strstrInQuote(p, STR_VL1)))
 		{
 			pp=gotoRealPos(p1);
-			str2num(pp, &dint->initData, 0, 0, 0);
+			str2num(pp, &dint->initData, dint->max, dint->min, 0);
 		}
 		if((p1=strstrInQuote(p, STR_RANGE1))||(p1=strstrInQuote(p, STR_RANGE2)))
 		{
 			pp=gotoRealPos(p1);
-			str2num(pp, &dint->min,0,0, 0);
+			str2num(pp, &dint->min, dint->max, dint->min, 0);
 			while(*pp>='0'&&*pp<='9') //leave min
 				pp++;
 			while(*pp<'0'||*pp>'9') //to max
 				pp++;
-			str2num(pp, &dint->max,0,0, 0);
+			str2num(pp, &dint->max, dint->max, dint->min, 0);
 		}
 		pp=gotoRealPos(p+1);
 		str2num(pp, &bytePos,0,0, 0);

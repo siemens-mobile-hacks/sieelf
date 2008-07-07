@@ -420,13 +420,20 @@ void str2num(char *str, int *num, int max, int min, int type)
 			str++;
 		}
 	}
-	//if(t1>=0&&t1<min)
-	//	t1=min;
-	//*num=t1;
-	if(min>(1<<31))
-		min=(~min)+1;
-	if(t1>=0&&t1<min)
-		t1=min;
+	if(min>(1<<31)) //最小值小于0
+	{
+		int c=(~min)+1; //取绝对值
+		if(t1>c&&isNa)
+			t1=c;
+	}
+	else //大于0
+	{
+		if(/*min&&*/(t1<min||isNa))
+		{
+			t1=min;
+			isNa=0;
+		}
+	}
 	if(isNa)
 		*num=(~t1)+1;
 	else
@@ -550,10 +557,20 @@ void str2num_char(char *str, char *num, int max, int min, int type)
 			str++;
 		}
 	}
-	if(min>128)
-		min=(~min)+1;
-	if(t1>=0&&t1<min)
-		t1=min;
+	if(min>128)//负数
+	{
+		min=256-min; //绝对值
+		if(t1>min&&isNa)
+			t1=min;
+	}
+	else
+	{
+		if(/*min&&*/(t1<min||isNa))
+		{
+			t1=min;
+			isNa=0;
+		}
+	}
 	if(isNa)
 		*num=(~(*p))+1;
 	else
