@@ -2,7 +2,7 @@
  * 文件名: getConfig.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.06.29
+ * 最后修改日期: 2008.07.07
  *
  * 作用: 提供一些字符处理函数
  * 备注: WINTEL_DEBUG为使用在windows中使用编译器进行调试的条件编译项目
@@ -368,6 +368,12 @@ void str2num(char *str, int *num, int max, int min, int type)
 	//type, 1:hex, 0:dec
 	int t1=0;
 	int t=0;
+	int isNa=0;
+	if(*str=='-')
+	{
+		isNa=1;
+		str++;
+	}
 	if((*str=='0'&&*(str+1)=='x')) //hex
 	{
 		str+=2;
@@ -414,9 +420,17 @@ void str2num(char *str, int *num, int max, int min, int type)
 			str++;
 		}
 	}
+	//if(t1>=0&&t1<min)
+	//	t1=min;
+	//*num=t1;
+	if(min>(1<<31))
+		min=(~min)+1;
 	if(t1>=0&&t1<min)
 		t1=min;
-	*num=t1;
+	if(isNa)
+		*num=(~t1)+1;
+	else
+		*num=t1;
 }
 
 //short型
@@ -484,6 +498,12 @@ void str2num_char(char *str, char *num, int max, int min, int type)
 	int t1=0;
 	int t=0;
 	char *p=(char *)(&t1);
+	int isNa=0;
+	if(*str=='-')
+	{
+		isNa=1;
+		str++;
+	}
 	if((*str=='0'&&*(str+1)=='x')) //hex with 0x
 	{
 		str+=2;
@@ -530,9 +550,14 @@ void str2num_char(char *str, char *num, int max, int min, int type)
 			str++;
 		}
 	}
+	if(min>128)
+		min=(~min)+1;
 	if(t1>=0&&t1<min)
 		t1=min;
-	*num=*p;
+	if(isNa)
+		*num=(~(*p))+1;
+	else
+		*num=*p;
 }
 
 //清除一个字符串中的某个字符

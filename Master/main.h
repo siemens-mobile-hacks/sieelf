@@ -19,7 +19,7 @@ extern unsigned int MAIN_GUI_ID;
 extern unsigned int MAIN_CSM_ID;
 extern int PTCFG_CUR;
 extern int S_ICONS[3];
-
+extern int isRunScanerNeed;
 #define PATCH_DIR	"0:\\Misc\\Patches\\"
 #define PTC_FOLDR	"ptc\\"
 void on_sdec(USR_MENU_ITEM *item);

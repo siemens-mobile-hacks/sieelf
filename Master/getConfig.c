@@ -2,7 +2,7 @@
  * 文件名: getConfig.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.06.25
+ * 最后修改日期: 2008.07.07
  *
  * 作用: 读取config.txt，并进行解析，储存结果，还提供了一些文字处理函数
  * 备注: WINTEL_DEBUG为使用在windows中使用编译器进行调试的条件编译项目
@@ -1129,9 +1129,9 @@ char *doSubMenuJob(PATCH_SUBMENU *motherMenu, char *pdata)
 		{
 			p=doSubMenuJob(subMenu, p2);
 		}
-		else if((p2=strstrInQuote(p, STR_SUBMENU2)))
+		else if((p2=strstrInQuote(p, STR_SUBMENU2))&&(isThatItem(p2-3)))
 		{
-			if(isThatItem(p2-3))
+			//if(isThatItem(p2-3))
 			{
 				if(*p2=='=')
 					p2++;
@@ -1273,9 +1273,9 @@ char *doTemplateWork(char *pdata)
 		{
 			p=doSubMenuJob((PATCH_SUBMENU *)tpl, p2);
 		}
-		else if((p2=strstrInQuote(p, STR_SUBMENU2)))
+		else if((p2=strstrInQuote(p, STR_SUBMENU2))&&(isThatItem(p2-3)))
 		{
-			if(isThatItem(p2-3))
+			//if(isThatItem(p2-3))
 			{
 				if(*p2=='=')
 					p2++;

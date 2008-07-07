@@ -4,8 +4,8 @@
 #define ELFNAME		"Master.elf"
 #define COPYRIGHT	"Master.elf\n(c) BingK(binghelingxi)\n(r) all the author of CfgEdit!"
 
-//#define LANG_CN
-#define LANG_EN
+#define LANG_CN
+//#define LANG_EN
 
 #ifdef LANG_CN
 
@@ -49,6 +49,7 @@
 #define LGP_RESTORE_PATH	"恢复备份路径:"
 #define LGP_ENTER_PATH	"输入文件夹路径"
 #define LGP_IS_OFF		"已关闭"
+#define	LGP_QUIT_WITHOUT_RS	"不刷新MP退出"
 #endif
 
 #ifdef LANG_EN
@@ -92,5 +93,6 @@
 #define LGP_RESTORE_PATH	"Restore Path:"
 #define LGP_ENTER_PATH	"Enter Folder Path"
 #define LGP_IS_OFF		"Is Off"
+#define	LGP_QUIT_WITHOUT_RS	"Quit Without RunScaner"
 #endif
 #endif

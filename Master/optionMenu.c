@@ -2,7 +2,7 @@
  * 文件名: optionMenu.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.06.25
+ * 最后修改日期: 2008.07.07
  *
  * 作用: 建立主菜单，以及实现主菜单中的功能，如显示信息，情景模式控制菜单，清除配置等
  *
@@ -17,7 +17,7 @@
 #include "usedstr.h"
 #include "string.h"
 
-#define MAIN_MENU_ITEMS_N 9
+#define MAIN_MENU_ITEMS_N 10
 
 int PATH_TYPE=0; //0,backup, 1,restore
 
@@ -106,6 +106,13 @@ void menu_restore(GUI *gui)
 	pathInputDlg();
 }
 
+void menu_quit_without_rs(GUI *gui)
+{
+	GeneralFuncF1(1);
+	isRunScanerNeed=0;
+	CloseCSM(MAIN_CSM_ID);
+}
+
 const MENUPROCS_DESC option_menu_HNDLS[MAIN_MENU_ITEMS_N]=
 {
 	menu_profile,
@@ -116,6 +123,7 @@ const MENUPROCS_DESC option_menu_HNDLS[MAIN_MENU_ITEMS_N]=
 	menu_backup,
 	menu_restore,
 	menu_about,
+	menu_quit_without_rs,
 	menu_exit,
 };
 
@@ -129,6 +137,7 @@ const MENUITEM_DESC option_menu_ITEMS[MAIN_MENU_ITEMS_N]=
 	{NULL,(int)LGP_BACKUP,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_RESTORE,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_ABOUT,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+	{NULL,(int)LGP_QUIT_WITHOUT_RS,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_QUIT,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 };
 

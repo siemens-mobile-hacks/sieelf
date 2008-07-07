@@ -1,6 +1,6 @@
 ELF名称: Master.elf
 作者: BingK(binghelingxi), Email: bingkx@gmail.com
-版本: 2.0.3
+版本: 2.0.8
 感谢: 所有参与CfgEdit制作的人,CfgEdit给了我很多应用参考实例
       很大程度上方便了我制作这个ELF.
 作用: 和JAVA版本的Master一样,实现了对MasterPatch的配置,
@@ -31,6 +31,11 @@ ELF名称: Master.elf
         过MasterPatch就不要尝试了.
 
 更新日志:
+
+v2.0.8 2008.07.07
++ 主菜单增加一个不刷新MP退出项
+* 修正,允许在TYPE_BTYE和TYPE_INT中输入负数
+* 修正子菜单检测
 
 v2.0.3 2008.06.29
 * 修正unicode字符串保存问题

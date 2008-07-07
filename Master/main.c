@@ -2,7 +2,7 @@
  * 文件名: main.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.06.29
+ * 最后修改日期: 2008.07.07
  *
  * 作用: 建立CSM，GUI，以及一些控制项目
  *
@@ -55,6 +55,7 @@ unsigned int MAIN_EDGUI_ID=0;
 //unsigned int COLOR_EDITOR_GUI_ID=0;
 int S_ICONS[3];
 WSHDR *ews;
+int isRunScanerNeed=1;
 
 const HEADER_DESC menuheader={0, 0, 0, 0, NULL, (int)ELFNAME, LGP_NULL};
 const int menusoftkeys[]={0, 1, 2};
@@ -312,7 +313,7 @@ void Killer(void)
 	mfree(ptc_buf);
 	fuckThemAll();
 	FreeWS(ews);
-	RunScaner();
+	if(isRunScanerNeed) RunScaner();
 	extern void *ELF_BEGIN;
 	extern void kill_data(void *p, void (*func_p)(void *));
 	kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
@@ -964,8 +965,17 @@ int createEditGui(void)
 		case TYPE_BYTE:
 			{
 				DATA_BYTE *dbyte=(DATA_BYTE *)pitem->itemData;
-				wsprintf(ews, PERCENT_D, dbyte->initData);
-				ConstructEditControl(&ec,ECT_NORMAL_NUM,ECF_APPEND_EOL|ECF_DISABLE_MINUS|ECF_DISABLE_POINT,ews,getnumwidth(dbyte->max));
+				char c=dbyte->initData;
+				int t;
+				if(c<128)
+					t=c;
+				else
+				{
+					t=256-c;
+					t=(~t)+1;
+				}
+				wsprintf(ews, PERCENT_D, t);
+				ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL|ECF_DISABLE_MINUS|ECF_DISABLE_POINT,ews,4);
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
 			}
@@ -973,7 +983,7 @@ int createEditGui(void)
 			{
 				DATA_INT *dint=(DATA_INT *)pitem->itemData;
 				wsprintf(ews, PERCENT_D, dint->initData);
-				ConstructEditControl(&ec,ECT_NORMAL_NUM,ECF_APPEND_EOL|ECF_DISABLE_MINUS|ECF_DISABLE_POINT,ews,getnumwidth(dint->max));
+				ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL|ECF_DISABLE_MINUS|ECF_DISABLE_POINT,ews,getnumwidth(dint->max));
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
 			}
