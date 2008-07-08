@@ -52,7 +52,7 @@ extern const int startfix2;
 extern const unsigned int volume;
 extern const int list_num;
 extern const int ACTIVE_KEY;
-
+extern const int sms_list;
 extern const char no_num[64];
 
 

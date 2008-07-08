@@ -1178,20 +1178,25 @@ void my_ed_redraw(void *data)
     } 
     else right_border=ScreenW()-3;
     
+    int   list_num2=0;
     do
     {
       int dy=i*gfont_size+y;
       if (!cl) break;
+      if(i==0&&list_num==0)
+        list_num2=1;
+      else
+        list_num2=list_num;
       if (i!=cp)
       {
 	wstrcpy(prws,cl->name);
 	if (e_ws) CompareStrT9(prws,(WSHDR *)e_ws,1);
 	DrawString(prws,3,dy+4,right_border-1,dy+cfg_item_gaps+gfont_size,font_size,0x80,color(COLOR_NOTSELECTED),GetPaletteAdrByColorIndex(23));  
       }
-      else if(i=cp+1+list_num)
+      else if(i=cp+1+list_num2)
       {
 	int icons_size=Get_WS_width(cl->icons,font_size);
-	DrawRectangle(2,dy+3,right_border,dy+2*(cfg_item_gaps+gfont_size)-2+list_num*gfont_size,0,color(COLOR_SELECTED_BRD),color(COLOR_SELECTED_BG));
+	DrawRectangle(2,dy+3,right_border,dy+2*(cfg_item_gaps+gfont_size)-2+list_num2*gfont_size,0,color(COLOR_SELECTED_BRD),color(COLOR_SELECTED_BG));
 	DrawString(cl->name,3,dy+4,right_border-2-icons_size,dy+(cfg_item_gaps+gfont_size),font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
 
         //号码输出
@@ -1237,18 +1242,8 @@ void my_ed_redraw(void *data)
          else
          str_2ws(prws,dstr[numx],39);
 
-           int l=GetImgWidth(menu_icons[0]);
-          //图标
-          if(n!=0)
-          DrawString(cl->icons,right_border-1-icons_size,dy+cfg_item_gaps,right_border-2,dy+cfg_item_gaps+gfont_size,font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
-    
-          DrawString(prws,3+l,dy+(gfont_size+cfg_item_gaps)+2,right_border,dy+2*(gfont_size+cfg_item_gaps),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));
-          DrawImg(3,dy+(gfont_size+cfg_item_gaps),menu_icons[box[numx]]);
-            
-
           int dyx,dyy;
-          
-          if(i!=1&&list_num==0)
+          if(i==cp+1)
              {
                     dyx=dy;
                     dyy=dy;
@@ -1258,22 +1253,30 @@ void my_ed_redraw(void *data)
                     dyx=dy+3*(gfont_size+cfg_item_gaps)-7;
                     dyy=dy+(gfont_size+cfg_item_gaps)-3;
              }
+
+
+          if(n!=0)
+          {
+          //图标
+          int l=GetImgWidth(menu_icons[0]);
+          DrawString(cl->icons,right_border-1-icons_size,dy+cfg_item_gaps,right_border-2,dy+cfg_item_gaps+gfont_size,font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
+          DrawString(prws,3+l,dy+(gfont_size+cfg_item_gaps)+2,right_border,dy+2*(gfont_size+cfg_item_gaps),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));
+          DrawImg(3,dy+(gfont_size+cfg_item_gaps),menu_icons[box[numx]]);
           
           //区号秀
           if(!cfg_cs_part)
           ShowSelectedCodeShow(prws,dyx-(gfont_size+cfg_item_gaps)+6);
-          
+          }
                   //大头贴
-                  if(show_pic)
+                  if(show_pic&&wstrlen(cl->pic)>5)
                   {
                   ws_2str(cl->pic,pszNum2,100);
                   int x0=ScreenW()-4-GetImgWidth((int)pszNum2);
-                  unsigned int pic_size=100;
-                  
-                  if(x0<gfont_size*3)
-                  {
-                  x0=gfont_size*3;
-                  if(resampled)
+                   unsigned int pic_size=100;
+                   if(x0<gfont_size*3)
+                   {
+                   x0=gfont_size*3;
+                   if(resampled)
                    {
                     #ifdef NEWSGOLD
                     pic_size=100-(gfont_size*3-x0)*100/(ScreenW()-x0);
@@ -1282,15 +1285,13 @@ void my_ed_redraw(void *data)
                     pic_size=100-(gfont_size*3-x0)*100/(ScreenW()-x0);
                      #endif
                     }
-                  }
-                  
-                   if(wstrlen(cl->pic)>5)
-                   {
+                   }
+                     
                    if(resampled)
                    DrwPic(x0,dyy+2*(gfont_size+cfg_item_gaps)-1,pszNum2, pic_size);
                    else
                    DrawImg(x0,dyy+2*(gfont_size+cfg_item_gaps)-1,(unsigned int)pszNum2); 
-                   }
+                 
                   }
           
           //界面音效
@@ -1392,12 +1393,6 @@ static void mm_settings(GUI *gui)
 }
 
 
-static void call_number(GUI *gui)
-{
-  GeneralFuncF1(1);
-  MakeVoiceCall(smsnum,0x10,0x2FFF);
-}
-
 #ifndef NEWSGOLD
 static void sm_settings(GUI *gui)
 {
@@ -1447,33 +1442,28 @@ static const SOFTKEYSTAB mmenu_skt=
   mmenu_sk,0
 };
 
-#ifdef NEWSGOLD
-#define MAIN_MENU_ITEMS_N 3
 static HEADER_DESC mmenu_hdr={0,0,0,0,NULL,(int)"选项",LGP_NULL};
 
+#ifdef NEWSGOLD
+#define MAIN_MENU_ITEMS_N 2
 static MENUITEM_DESC mmenu_ITEMS[MAIN_MENU_ITEMS_N]=
 {
   {NULL,(int)"发送短信", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
-  {NULL,(int)"拨打电话", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, 
   {NULL,(int)"MD设置", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}
 };
 
 static const MENUPROCS_DESC mmenu_HNDLS[MAIN_MENU_ITEMS_N]=
 {
   mm_settings,
-  call_number,
   md_setting,
 };
 #else
-#define MAIN_MENU_ITEMS_N 5
-static HEADER_DESC mmenu_hdr={0,0,0,0,NULL,(int)"选项",LGP_NULL};
-
+#define MAIN_MENU_ITEMS_N 4
 static MENUITEM_DESC mmenu_ITEMS[MAIN_MENU_ITEMS_N]=
 {
   {NULL,(int)"发送短信", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}, //0
   {NULL,(int)"默认菜单", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"短信菜单", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-  {NULL,(int)"拨打电话", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)"MD设置", LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2}
 };
 
@@ -1482,7 +1472,6 @@ static const MENUPROCS_DESC mmenu_HNDLS[MAIN_MENU_ITEMS_N]=
   mm_settings,
   sm_settings,
   sms_settings,
-  call_number,
   md_setting,
 };
 #endif
@@ -1670,7 +1659,13 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
       wstrcpy(smstemp,ec.pWS);
       smscount=(int)ec.pWS->wsbody[0];
       ws_2str(numTemp,smsnum,wstrlen(numTemp));
+      if(sms_list)
       ShowMainMenu();
+      else
+      {
+      mode=6;
+      sendsms(); 
+      }
       }
       else
       {
@@ -1702,6 +1697,17 @@ int edsms_onkey(GUI *data, GUI_MSG *msg)
       break;
      }
      
+     case GREEN_BUTTON:
+     {
+      if(!sms_list)
+      { 
+      GeneralFuncF1(1);
+      MakeVoiceCall(smsnum,0x10,0x2FFF);
+      }
+      break;
+     }
+     
+  
      }
         
     }
@@ -2454,7 +2460,7 @@ int main(void)
   UnlockSched();
   ews=AllocWS(SMS_MAX_LEN);
 //dbg_ws=AllocWS(256);
-  gwsTemp=AllocWS(40);
+  gwsTemp=AllocWS(240);
   numTemp=AllocWS(40);
   gwsName=AllocWS(40);
   InitIcons();

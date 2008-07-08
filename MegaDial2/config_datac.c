@@ -75,10 +75,10 @@ __root const CFG_HDR cfghdr5_2 = {CFG_UINT,"列表修正值",0,200};
 __root const int startfix2 = 0;
 
 __root const CFG_HDR cfghdr5_3 = {CFG_COLOR,"区号秀颜色",0,99};
-__root const int cfg_cs_font_color=0;
+__root const int cfg_cs_font_color=1;
 
 __root const CFG_HDR cfghdr5_4 = {CFG_COLOR,"区号秀背景",0,99};
-__root const int CS_NUMBER_BG=2;
+__root const int CS_NUMBER_BG=6;
 
 __root const CFG_HDR cfghdr5_5 = {CFG_CBOX,"区号秀地址选择",0,10};
  __root const int cfg_cs_adrs = 1;
@@ -194,7 +194,10 @@ __root const CFG_HDR cfghdr6_4={CFG_CBOX, "列表高度", 0, 2};
 __root const int list_num = 0;
 __root const CFG_CBOX_ITEM cfgcbox4[2]={"两格", "三格"};
 
-__root const CFG_HDR cfghdr6_5={CFG_STR_GB,"没有号码提示",3,63};
+__root const CFG_HDR cfghdr6_5 = {CFG_CHECKBOX,"短信防误发",0,0};
+__root const int sms_list=1;
+
+__root const CFG_HDR cfghdr6_6={CFG_STR_GB,"没有号码提示",3,63};
 __root const char no_num[64]="没电话";
 
 __root const CFG_HDR cfghdr_m12={CFG_LEVEL,"",0,0};
