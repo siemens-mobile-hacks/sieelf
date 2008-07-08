@@ -416,6 +416,13 @@ GprsD/config_data.c -text
 GprsD/func.asm -text
 GprsD/main.c -text
 GprsD/test.xcl -text
+IME_PINYIN/2vkp.bat -text
+IME_PINYIN/E71Csw41.xcl -text
+IME_PINYIN/IME_PINYIN.asm -text
+IME_PINYIN/IME_PINYIN.ewp -text
+IME_PINYIN/IME_PINYIN.eww -text
+IME_PINYIN/about.txt -text
+IME_PINYIN/addr.h -text
 IdleLinks/IdleLinks.ewp -text
 IdleLinks/IdleLinks.eww -text
 IdleLinks/IdleLinks.h -text
