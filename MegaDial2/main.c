@@ -2171,11 +2171,11 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //°´¼ü¹¦ÄÜ
   }
   else
   {
-   // #ifdef NEWSGOLD
-    //if ((key>='0'&&key<='9')||(key=='*')||(key=='#')||(key==ACTIVE_KEY))
-  //  #else
-    if ((key>='0'&&key<='9')||(key=='*')||(key=='#')||(key==ACTIVE_KEY))
-   // #endif
+    #ifdef NEWSGOLD
+    if ((key>='0'&&key<='9')||(key=='*')||(key=='#')||(key==RIGHT_SOFT))
+    #else
+    if ((key>='0'&&key<='9')||(key=='*')||(key=='#')||(key==LEFT_SOFT))
+    #endif
     {
       if (m==KEY_DOWN)
       {
