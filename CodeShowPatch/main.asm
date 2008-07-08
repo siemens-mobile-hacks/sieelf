@@ -446,7 +446,27 @@ Hook4:
 	MOV		R1, R4
 	BL		AppendInfoW
 	POP		{PC}
+	
 
+#ifdef  S6Cv53
+  RSEG PHONEBOOK_BODY
+  CODE16
+Hook5:
+	PUSH		{LR}
+	LDR		R0, [SP,#0x174]
+        LDR R1, =AddNewLine
+        BLX R1
+	LDR		R1, [SP,#0x1D0]
+	LDR	R2, =AppendInfoW
+	BLX	R2 
+	MOV		R1, #0
+	ADD		R0, R7, #0
+	POP		{PC}
+
+
+  RSEG CODE
+  CODE16
+#else 
 Hook5:
 	PUSH		{LR}
 	LDR		R0, [SP,#0x174]
@@ -456,6 +476,7 @@ Hook5:
 	MOV		R1, #0
 	ADD		R0, R7, #0
 	POP		{PC}
+#endif 
 
 //短信发送动画窗口,by BingK(binghelingxi)
 	EXTERN		GetProvAndCity

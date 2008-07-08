@@ -27,6 +27,34 @@
 #define BASEADDRESS		0xA0CC0000
 #endif
 
+#ifdef S6Cv53
+#define ADDR_strlen		0xA1609C0D
+#define ADDR_atou		0xA082BD88+1
+#define ADDR_WS_InitByZero	0xA10010C3
+#define ADDR_GetCalleeNumber	0xA0A9650A+1
+#define ADDR_UpdateWndItem	0xA00B4F3E+1
+#define ADDR_memcmp		0xA160924D
+#define ADDR_DrawString		0xA00DAA41
+#define ADDR_FreeWS		0xA1000A75
+#define ADDR_AllocWS		0xA100112B
+#define ADDR_GetCurMenuItem	0xA009BB27
+
+#define ADDR_wstrcat		0xA1001291
+#define ADDR_wsAppendChar	0xA10013B9
+#define ADDR_IsCalling		0xA00CD94F
+#define ADDR_CallIN		0xA098FE1A+1
+#define ADDR_CallOUT		0xA098F1D4+1
+#define ADDR_ADDRBook		0xA10018C0+1
+#define ADDR_SMS_SEND		0xA101FE58+1
+#define UNUSERAM_NUM		0xA8000240
+#define UNUSERAM_METHOD		0xA8000300
+#define UNUSERAM_OLD_REDRAW	0xA80002F0
+#define ADDR_SELECT_MENU	0xA0B06B0C+1
+#define ADDR_MENU_DESC		0xA0CAE0E8
+
+#define BASEADDRESS		0xA0CC0000
+#endif
+
 #ifdef E71Cv41
 #define ADDR_strlen		0xA0FF1BFC+1
 #define ADDR_atou		0xA0643348+1
