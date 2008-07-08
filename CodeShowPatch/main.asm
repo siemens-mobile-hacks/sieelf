@@ -447,26 +447,6 @@ Hook4:
 	BL		AppendInfoW
 	POP		{PC}
 	
-
-#ifdef  S6Cv53
-  RSEG PHONEBOOK_BODY
-  CODE16
-Hook5:
-	PUSH		{LR}
-	LDR		R0, [SP,#0x174]
-        LDR R1, =AddNewLine
-        BLX R1
-	LDR		R1, [SP,#0x1D0]
-	LDR	R2, =AppendInfoW
-	BLX	R2 
-	MOV		R1, #0
-	ADD		R0, R7, #0
-	POP		{PC}
-
-
-  RSEG CODE
-  CODE16
-#else 
 Hook5:
 	PUSH		{LR}
 	LDR		R0, [SP,#0x174]
@@ -476,7 +456,7 @@ Hook5:
 	MOV		R1, #0
 	ADD		R0, R7, #0
 	POP		{PC}
-#endif 
+	
 
 //短信发送动画窗口,by BingK(binghelingxi)
 	EXTERN		GetProvAndCity
@@ -546,6 +526,19 @@ NUM_SELECT_MENU1:
 	ADD		R4, R0, #0
 	LDR		R1, =ADDR_MENU_DESC
 	POP		{PC}
+
+#ifdef S6Cv53
+	RSEG	JMP_BODY
+HOOK5_JMP
+	LDR	R0, =Hook5
+	BX	R0
+NUM_SELECT_MENU1_JMP
+	LDR	R1, =NUM_SELECT_MENU1
+	BX	R1
+NUM_SELECT_MENU_JMP
+	LDR	R1, =NUM_SELECT_MENU
+	BX	R1
+#endif
 //Hook
 // 通话记录修改
 	RSEG	RecordWindow:CODE(1)
@@ -573,8 +566,11 @@ NUM_SELECT_MENU1:
 // 电话本窗口修改
 	RSEG	PhonebookWindow:CODE(1)
 	CODE16
+#ifdef	S6Cv53
+	BL		HOOK5_JMP
+#else
 	BL		Hook5
-
+#endif
 //短信发送动画窗口,by BingK(binghelingxi)	
 	CODE16
 	RSEG	SMS_SEND_HOOK:CODE(2)
@@ -591,11 +587,20 @@ pSMS_SEND
 //用于将列表中的号码存到RAM中,by BingK(binghelingxi)
 	CODE16
 	RSEG	NUM_SELECT_MENU_HOOK:CODE(1)
+#ifdef	S6Cv53
+	BL		NUM_SELECT_MENU_JMP
+#else
 	BL		NUM_SELECT_MENU
+#endif
 
 //替换原来列表的methods,重建redraw,by BingK(binghelingxi)
 	CODE16
 	RSEG	NUM_SELECT_MENU_HOOK1:CODE(1)
+#ifdef	S6Cv53
+	BL		NUM_SELECT_MENU1_JMP
+#else
 	BL		NUM_SELECT_MENU1
+#endif
+
 #endif
 	END
