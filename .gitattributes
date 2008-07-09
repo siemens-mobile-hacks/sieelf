@@ -1614,6 +1614,12 @@ SCalka/rect_patcher.h -text
 SCalka/strings.c -text
 SCalka/strings.h -text
 SCalka/test.xcl -text
+SHNMSMSICWIN2/E71Csw41.xcl -text
+SHNMSMSICWIN2/SHNMSMSICWIN2.ewp -text
+SHNMSMSICWIN2/SHNMSMSICWIN2.eww -text
+SHNMSMSICWIN2/entry.asm -text
+SHNMSMSICWIN2/findName.c -text
+SHNMSMSICWIN2/mk.bat -text
 SMSCount/E71Cv41.xcl -text
 SMSCount/ELC1v41.xcl -text
 SMSCount/M81Cv51.xcl -text
