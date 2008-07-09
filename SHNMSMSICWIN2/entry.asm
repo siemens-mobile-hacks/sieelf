@@ -1,5 +1,3 @@
-
-
 	CODE16
 	RSEG	HOOK
 	LDR	R2, =CODE_

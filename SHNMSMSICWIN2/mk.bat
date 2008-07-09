@@ -1,1 +1,2 @@
-%1\..\tools\elf2vkp.exe %2\SHNMSMSICWIN2.elf %1\t_%3.vkp e:\fullflash\lg8\%3.bin
+%1\..\tools\elf2vkp.exe %2\SHNMSMSICWIN2.elf %1\1.vkp D:\tools\%3.bin
+copy /b %1\about.txt+%1\%3.txt+%1\1.vkp %1\%3.vkp
