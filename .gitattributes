@@ -1637,6 +1637,7 @@ SMSCount/about.txt -text
 SMSCount/additional.c -text
 SMSCount/addr.h -text
 SMSCount/main.asm -text
+SMSCount/mk.bat -text
 SMSCount/run_elf.c -text
 SMSCount/smsc.bat -text
 SMSCountReader/SMSCountReader.ewp -text

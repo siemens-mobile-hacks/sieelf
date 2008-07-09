@@ -219,7 +219,12 @@ _main
 _main_fix
 	PUSH	{LR}
 	//ADD	R0, R6, #0
+#ifdef E71Cv41        
 	LDR	R1, =0xA00AD03C+1
+#endif
+#ifdef S7Cv47
+	LDR	R1, =0xA00B1DBC+1
+#endif        
 	BLX	R1
 	CMP	R0, #1
 	BNE	fix_count
@@ -233,12 +238,11 @@ fix_count
 	POP	{R0-R7}
 	B	exit
 	
-	CODE16
+	CODE16        
 	RSEG	SMS_COUNT_JMP
 _JMP
 	LDR	R1, =_main_fix
-	BX	R1
-	
+	BX	R1	
 	
 	CODE16
 	RSEG	SMSHook
@@ -246,9 +250,8 @@ _JMP
 	BLX	R0
 	
 	CODE16
-	RSEG	SMS_FIX_HOOK
-	BL	_JMP
-	
+	RSEG	SMS_FIX_HOOK       
+	BL	_JMP       
 	END
     
     
