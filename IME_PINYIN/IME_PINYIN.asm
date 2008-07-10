@@ -1,6 +1,8 @@
 
 #include "addr.h"
 
+#define	V_1_3
+
 	RSEG	IME_HOOK
 	CODE16
 	LDR	R0, =IME_
@@ -53,6 +55,10 @@ IME_
 	LDRSH	R0, [R0, R3]
 	CMP	R0, #0			//非功能键短按输入为0
 	BEQ	IME_START
+#ifdef	V_1_3
+	CMP	R0, #0x15
+	BEQ	DO_KEY_JING		//#键
+#endif
 EX_BACK
 	LDR	R3, =DO_IME_BACK
 	BX	R3
@@ -99,7 +105,26 @@ IS_JAVA_K5
 DO_NOTHING_ALL
 	LDR	R3, =DO_NOTHING
 	BX	R3
+
+#ifdef	V_1_3
+DO_KEY_JING
+	CMP	R7, #1
+	BEQ	DO_JING
+	CMP	R7, #2
+	BNE	EX_BACK
+DO_JING
+	LDR	R3, =DO_DOWN
+	BX	R3
 	
+DO_KEY_K9
+	CMP	R7, #1
+	BEQ	DO_K9
+	CMP	R7, #2
+	BNE	EX_BACK
+DO_K9
+	LDR	R3, =DO_UP
+	BX	R3
+#else
 DO_KEY_K9
 	CMP	R7, #1
 	BEQ	DO_K9
@@ -108,7 +133,7 @@ DO_KEY_K9
 DO_K9
 	LDR	R3, =DO_DOWN
 	BX	R3
-
+#endif
 DO_KEY_XING
 	CMP	R7, #1
 	BEQ	DO_KXING

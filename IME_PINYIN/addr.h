@@ -4,6 +4,7 @@
 #define DO_RIGHT		0xA0B1F37E+1 //输入状态已检测
 #define	DO_LEFT			0xA0B1F314+1
 #define	DO_DOWN			0xA0B1F45C+1 //输入状态已检测
+#define	DO_UP			0xA0B1F43A+1
 #define	DO_SELECT		0xA0B1F248+1 //
 #define DO_DIRECT_SELECT	0xA0B1F6D0+1 //只能在非JAVA中使用
 #define DO_NOTHING		0xA0B1F55A+1 //不做任何改变
