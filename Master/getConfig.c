@@ -2,7 +2,7 @@
  * 文件名: getConfig.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.07.07
+ * 最后修改日期: 2008.07.11
  *
  * 作用: 读取config.txt，并进行解析，储存结果，还提供了一些文字处理函数
  * 备注: WINTEL_DEBUG为使用在windows中使用编译器进行调试的条件编译项目
