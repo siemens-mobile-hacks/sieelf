@@ -469,7 +469,11 @@ void updateEdHdr(char *str)
 	{
 		WSHDR *ws=AllocWS(128);
 		uniFormatString2ws(ws, str);
+	#ifdef LANG_EN
+		ws_2str(ws, ED_HDR_BODY, 128);
+	#else
 		ws2gb(ws, ED_HDR_BODY, 128);
+	#endif
 		FreeWS(ws);
 	}
 	else
@@ -967,7 +971,7 @@ int createEditGui(void)
 				DATA_BYTE *dbyte=(DATA_BYTE *)pitem->itemData;
 				char c=dbyte->initData;
 				int t;
-				if(c<128)
+				if(dbyte->max==0xFF||c<128) //判断是无上限则按照unsigned char处理
 					t=c;
 				else
 				{

@@ -31,6 +31,9 @@ ELF名称: Master.elf
         过MasterPatch就不要尝试了.
 
 更新日志:
+v2.1.0 2008.07.11
+* TYPE_BYTE无上限则按照unsigned byte处理,最大值255
+* 英文版使用ws_2str替换gb2ws
 
 v2.0.9 2008.07.07
 * 继续修正负数输入问题

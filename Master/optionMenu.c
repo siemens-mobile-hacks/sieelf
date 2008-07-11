@@ -442,7 +442,7 @@ void showPatchInfo(void)
 		PrepareEditControl(&ec);
 		eq=AllocEQueue(ma,mfree_adr());
 		//Modify
-		wsprintf(ws, "%t", LGP_PATCH_NAME);
+		wsprintf(ws, PERCENT_T, LGP_PATCH_NAME);
 		if(isUniFormat(ptcfg->patchInfo->patchName))
 			uniFormatString2ws(ts, ptcfg->patchInfo->patchName);
 		else
@@ -467,7 +467,7 @@ void showPatchInfo(void)
 		if(ptcfg->patchInfo->info)
 		{
 			//Modify
-			wsprintf(ws, "%t", LGP_PATCH_INFO_OTH);
+			wsprintf(ws, PERCENT_T, LGP_PATCH_INFO_OTH);
 			if(isUniFormat(ptcfg->patchInfo->info))
 				uniFormatString2ws(ts, ptcfg->patchInfo->info);
 			else

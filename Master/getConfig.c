@@ -547,7 +547,11 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 		dbyte->initData=0;
 		dbyte->min=127;
 		dbyte->min=~(dbyte->min)+1;
+	#ifdef	WINTEL_DEBUG
 		dbyte->max=127;
+	#else
+		dbyte->max=0xFF;
+	#endif
 		pp=gotoRealPos(p1);
 		p1=gotoMyStrStart(pp);
 		p2=gotoMyStrEnd(pp);
