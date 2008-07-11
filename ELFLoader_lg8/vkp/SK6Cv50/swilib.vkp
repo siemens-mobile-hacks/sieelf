@@ -156,7 +156,7 @@
 0224: 0xA0715A71   ; 89: __thumb GetLangMesIntoWS 
 0228: 0xA0990868   ; 8A: __arm int GetFreeFlexSpace(int DriveNum, unsigned int *ErrorNumber)
 022C: 0xA0990E2C   ; 8B: __arm int GetTotalFlexSpace(int DriveNum, unsigned int *ErrorNumber)
-0230: 0xA029F328   ; 8C: __thumb void RegExplorerExt(REGEXPLEXT *) 
+0230: 0xA029F328   ; 8C: __arm void RegExplorerExt(REGEXPLEXT *) 
 ;0234: 0x   ; 8D: GetProfileName
 0238: 0xA0990A2C   ; 8E: __arm int fmove(char *SourceFileName, char * DestFileName, unsigned int *ErrorNumber)
 023C: 0xA0990A64   ; 8F: __arm int rmdir(char *cDirectory, unsigned int *ErrorNumber)
