@@ -5358,11 +5358,11 @@
           </option>
           <option>
             <name>CCCodeFunctions</name>
-            <state>CODE</state>
+            <state>RUN_ELF_CODE</state>
           </option>
           <option>
             <name>CCData</name>
-            <state>DATA</state>
+            <state>RUN_ELF_DATA</state>
           </option>
           <option>
             <name>PreInclude</name>
