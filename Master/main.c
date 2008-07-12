@@ -2,7 +2,7 @@
  * 文件名: main.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.07.11
+ * 最后修改日期: 2008.07.12
  *
  * 作用: 建立CSM，GUI，以及一些控制项目
  *
@@ -971,7 +971,7 @@ int createEditGui(void)
 				DATA_BYTE *dbyte=(DATA_BYTE *)pitem->itemData;
 				char c=dbyte->initData;
 				int t;
-				if(dbyte->max==0xFF||c<128) //判断是无上限则按照unsigned char处理
+				if(dbyte->max>127||c<128) //判断是上限大于127则按照unsigned char处理
 					t=c;
 				else
 				{
