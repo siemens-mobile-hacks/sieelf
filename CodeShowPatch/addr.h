@@ -46,10 +46,10 @@
 #define ADDR_CallOUT		0xA098F1D4+1
 #define ADDR_ADDRBook		0xA10018C0+1
 #define ADDR_SMS_SEND		0xA101FE58+1
-#define UNUSERAM_NUM		0xA8000240
+#define UNUSERAM_NUM		0xA8000340
 #define UNUSERAM_METHOD		0xA8000300
-#define UNUSERAM_OLD_REDRAW	0xA80002F0
-#define ADDR_SELECT_MENU	0xA0B06B0C+1
+#define UNUSERAM_OLD_REDRAW	0xA80003F0
+#define ADDR_SELECT_MENU	0xA0B06B0D
 #define ADDR_MENU_DESC		0xA0CAE0E8
 
 #define BASEADDRESS		0xA0CC0000
@@ -121,6 +121,13 @@
 #define ADDR_UpdateWndItem	0xA0A55234+1
 #define ADDR_memcmp	0xA0FFC134+1
 
+#define ADDR_DrawString		0xA0977412+1
+#define ADDR_FreeWS		    0xA0515BF4+1
+#define ADDR_AllocWS		0xA096C674+1
+
+#define ADDR_GetCurMenuItem	0xA097FADA+1
+#define ADDR_IncommingPDU	0xA8F1EF70  
+
 #define ADDR_wstrcat 0xA0C4D128
 #define ADDR_wsAppendChar 0xA0C4D09C
 #define ADDR_IsCalling 0xA0D158C8+1
@@ -129,6 +136,14 @@
 #define ADDR_ADDRBook 0xA05168B6+1
 #define ADDR_GetPhoneBookNum 0xA095AEBE+1 ;//90b50c1c8bb06946
 #define BASEADDRESS			0xA1580000
+//以下应该对但不确定。。RAM不知道怎么弄。。。
+#define ADDR_CREATE_SELECT_MENU	0xA0980DFA+1
+#define ADDR_MENU_DESC		0xA08D2F34
+
+#define UNUSERAM_NUM		0x
+#define UNUSERAM_METHOD		0x
+#define UNUSERAM_OLD_REDRAW	0x
+//
 #endif
 
 #ifdef SK6Cv50
