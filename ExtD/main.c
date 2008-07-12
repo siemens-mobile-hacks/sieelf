@@ -53,11 +53,19 @@ int do_elf(WSHDR *filename, WSHDR *ext, void *param, int mode)
   {
     if (!strcmp(s,p->ext))
     {
-      WSHDR *elfname=AllocWS(256);
-      str_2ws(elfname,mode?p->altelf:p->elf,126);
-      ws_2str(filename,s,126);
-      i=ExecuteFile(elfname,NULL,s);
-      FreeWS(elfname);
+      const char *program=(mode?p->altelf:p->elf);
+      if(!strncmp(program, "MIDLET\\", 7))
+      {
+      	i=runMidletLinkablely(program+6, filename);
+      }
+      else
+      {
+        WSHDR *elfname=AllocWS(256);
+        str_2ws(elfname,program,126);
+        ws_2str(filename,s,126);
+        i=ExecuteFile(elfname,NULL,s);
+        FreeWS(elfname);
+      }
       return(i);
     }
     p++;
