@@ -1,0 +1,24 @@
+
+#ifdef E71Csw41
+#define	DO_DIRECT_SELECT	0xA0B214E6+1
+#define	DO_START_SELECT		0xA0B2113C+1
+#define	DO_EBACK		0xA0B20FF8+1
+#define	DO_NOTHING		0xA0B211FA+1
+#define	WGET_KBS_KSTATE		0xA0A49F4E+1 //1:ON, 0:OFF
+#define	UNK_RAM_adr		0xA8EBCA10 //可用于判断是否处于编辑状态
+#define	WSET_KBS_KSTATE		0xA0A49CB0+1
+#define	DO_SELECT_EBACK		0xA0B21678+1
+#define	KDB_KPOP_FUNC1_RAM	0xA8F2BED0
+#define	KDB_KPOP_EBACK		0xA06EF290+1
+#define	KDB_KPOP_EBNE_adr	0xA06EF328+1
+
+/* 以下部分和拼音输入法修改 v1.x 中的一样 */
+#define GBS_SendMessage_adr	0xA0091EAB
+#define	JAVA_EDIT_KOP		0xA8EB0A30
+#define	USE_RAM			0xA8D805C0   //空白RAM,4字节,和拼音输入法修改v1.x中一样
+#define	GET_INPUT_STATE		0xA06EF026+1 //获取输入状态,1为等待输入,0为拼音选择或选字状态
+#define	KEY0_FUNC1		0xA06EDDC6+1 //0键跳转位置的一个函数,返回时要先执行这个函数
+#define	KEY0_BACK		0xA06EF1DC+1 //0键跳转返回地址
+#define	KEY0_GOTO_IME		0xA06EF1EC+1 //0键跳转向常规输入
+
+#endif
