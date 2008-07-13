@@ -1,7 +1,7 @@
 
 #include "addr.h"
 
-#define	V_1_3
+#ifdef	V_1_3
 
 	RSEG	IME_HOOK
 	CODE16
@@ -83,9 +83,13 @@ DO_KEY_K0
 	CMP	R7, #2
 	BNE	DO_NOTHING_ALL
 DO_K0
+#ifdef	V_1_2_A //v1.2a
+	LDR	R3, =DO_DOWN
+	BX	R3
+#else
 	LDR	R3, =DO_RIGHT
 	BX	R3
-	
+#endif
 	
 DO_KEY_K5
 	CMP	R7, #1
@@ -106,7 +110,7 @@ DO_NOTHING_ALL
 	LDR	R3, =DO_NOTHING
 	BX	R3
 
-#ifdef	V_1_3
+#ifdef	V_1_3 //v1.3
 DO_KEY_JING
 	CMP	R7, #1
 	BEQ	DO_JING
@@ -131,8 +135,13 @@ DO_KEY_K9
 	CMP	R7, #2
 	BNE	EX_BACK
 DO_K9
+#ifdef	V_1_2_A //v1.2a
+	LDR	R3, =DO_UP
+	BX	R3
+#else
 	LDR	R3, =DO_DOWN
 	BX	R3
+#endif
 #endif
 DO_KEY_XING
 	CMP	R7, #1
@@ -140,9 +149,14 @@ DO_KEY_XING
 	CMP	R7, #2
 	BNE	EX_BACK
 DO_KXING
+#ifdef	V_1_2_A
+	LDR	R3, =DO_RIGHT
+	BX	R3
+#else
 	LDR	R3, =DO_LEFT
 	BX	R3
-	
+#endif
+
 DO_KEY_K1
 	CMP	R7, #1
 	BNE	EX_BACK
