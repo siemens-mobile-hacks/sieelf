@@ -32,7 +32,7 @@
  LG_TRANSLIT[] = "Translit";
 #endif
 
-#ifdef RUS
+#ifdef ZH
 	const char LG_SEL_NUM[]="选择号码",
  LG_ANSWER[]="回复",
  LG_CREATE[]="创建新短信",

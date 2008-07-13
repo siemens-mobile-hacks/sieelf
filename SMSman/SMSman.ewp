@@ -138,7 +138,7 @@
         <option>
           <name>CCDefines</name>
           <state>NEWSGOLD</state>
-          <state>RUS</state>
+          <state>ZH</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -963,7 +963,7 @@
           <name>CCDefines</name>
           <state>NEWSGOLD</state>
           <state>ELKA</state>
-          <state>RUS</state>
+          <state>ZH</state>
         </option>
         <option>
           <name>CCPreprocFile</name>

@@ -11,7 +11,7 @@
 
  __root const CFG_HDR cfghdr_m02={CFG_LEVEL,"待机文字",1,0};
 	 __root const CFG_HDR cfghdr00_0 = {CFG_STR_GB,"文字",0,127};
-	 __root const char IDLETXT[128]="%d new SMS";
+	 __root const char IDLETXT[128]="%d条新短信";
 	 
 	 __root const CFG_HDR cfghdr00_1={CFG_COORDINATES,"位置",0,0};
 	 __root const unsigned int IDLE_X=10;
@@ -31,7 +31,7 @@
  __root const int IN_NOTIFY = 1;
 
  __root const CFG_HDR cfghdr3 = {CFG_STR_UTF8,"提示音",0,127};
- __root const char InSMSSound[128]="4:\\Sounds\\sound.MP3";
+ __root const char InSMSSound[128]="2:\\Default\\MessageMelody.aac";
  
  
 __root const CFG_HDR cfghdr_m000={CFG_LEVEL,"情景模式",1,0};
