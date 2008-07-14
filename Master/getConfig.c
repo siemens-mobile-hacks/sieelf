@@ -1849,6 +1849,8 @@ void reloadThisPatch(PTC_CONFIG *ptcfg)
 			ptc_config->mainitem.item=0;
 			ptc_config->needSaveData=0;
 			ptc_config->memory=0;
+			ptc_config->offset=0;
+			ptc_config->disableProfile=0;
 			ptcfgtop=ptc_config;
 			while(*p) //goto Start Pos, maybe '`',
 			{

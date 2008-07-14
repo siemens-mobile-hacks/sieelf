@@ -752,13 +752,13 @@ void edGHook(GUI *data, int cmd)
 			case TYPE_STRING:
 				{
 					DATA_STRING *str=(DATA_STRING *)pitem->itemData;
-					ws_2str(ews, str->string, (str->maxlen?str->maxlen:0x10)-1);
+					ws_2str(ews, str->string, (str->maxlen?str->maxlen:0x10));
 					break;
 				}
 			case TYPE_UNICODE:
 				{
 					DATA_UNICODE *uni=(DATA_UNICODE *)pitem->itemData;
-					ws2uni(ews, uni->ustr, (uni->maxlen?uni->maxlen:0x10)-1);
+					ws2uni(ews, uni->ustr, (uni->maxlen?uni->maxlen:0x10));
 					break;
 				}
 			case TYPE_HEX:
