@@ -1046,7 +1046,6 @@ IMGHDR *resample(IMGHDR *img, int px, int py, int fast, int del)
   
 }
 
-
 void DrwPic(int x,int y,const char *pic_path,int pic_size)
 {
   //unsigned int pic_op = 50;
@@ -1085,6 +1084,36 @@ void DrwPic(int x,int y,const char *pic_path,int pic_size)
     }
     else my_pic=0;
   }
+}
+
+GBSTMR tmr_scroll;
+volatile int scroll_disp;
+volatile int max_scroll_disp;
+
+void scroll_timer_proc(void)
+{
+  int i=max_scroll_disp;
+  if (i)
+  {
+    if (scroll_disp>=i)
+    {
+      scroll_disp=0;
+      GBS_StartTimerProc(&tmr_scroll,TMR_SECOND,scroll_timer_proc);
+    }
+    else
+    {
+      scroll_disp++;
+      GBS_StartTimerProc(&tmr_scroll,scroll_disp!=i?TMR_SECOND>>3:TMR_SECOND,scroll_timer_proc);
+    }
+    REDRAW();
+  }
+}
+
+void DisableScroll(void)
+{
+  GBS_DelTimer(&tmr_scroll);
+  max_scroll_disp=0;
+  scroll_disp=0;
 }
 
 void my_ed_redraw(void *data)
@@ -1260,7 +1289,23 @@ void my_ed_redraw(void *data)
           //图标
           int l=GetImgWidth(menu_icons[0]);
           DrawString(cl->icons,right_border-1-icons_size,dy+cfg_item_gaps,right_border-2,dy+cfg_item_gaps+gfont_size,font_size,0x80,color(COLOR_SELECTED),GetPaletteAdrByColorIndex(23));
-          DrawString(prws,3+l,dy+(gfont_size+cfg_item_gaps)+2,right_border,dy+2*(gfont_size+cfg_item_gaps),font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));
+          
+	  int i=Get_WS_width(prws,font_size);
+	  i-=(ScreenW()-10-l);
+	  if (i<0)
+	  {
+	    DisableScroll();
+	  }
+	  else
+	  {
+	    if (!max_scroll_disp)
+	    {
+	      GBS_StartTimerProc(&tmr_scroll,TMR_SECOND,scroll_timer_proc);
+	    }
+	    max_scroll_disp=i;
+	  }
+          
+          DrawScrollString(prws,3+l,dy+(gfont_size+cfg_item_gaps)+2,ScreenW()-7,dy+2*(gfont_size+cfg_item_gaps),scroll_disp+1,font_size,0x80,color(COLOR_NUMBER),GetPaletteAdrByColorIndex(23));
           DrawImg(3,dy+(gfont_size+cfg_item_gaps),menu_icons[box[numx]]);
           
           //区号秀
@@ -1923,21 +1968,28 @@ void Destructor(void)
 }
 
 void ElfKiller(void)
-{
-  	LockSched();
-        CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
-	icsmd.onMessage=old_icsm_onMessage;
-	icsmd.onClose=old_icsm_onClose;  
-        icsm->constr=old_icsmd;
-	UnlockSched();
+{      
+	extern void *ELF_BEGIN;
+       // extern void kill_data(void *p, void (*func_p)(void *));
+  
         FreeCLIST();
+        
+	LockSched();
+	CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
+	memcpy(&icsmd,icsm->constr,sizeof(icsmd));
+	icsmd.onMessage=old_icsm_onMessage;
+	icsmd.onClose=old_icsm_onClose;
+	icsm->constr=old_icsmd;
+	UnlockSched();
+        
         if(iReadFile && !cs_adr)
 	  mfree((void*)cs_adr);
         if(my_pic) deleteIMGHDR(my_pic);
-        Destructor();
-	extern void *ELF_BEGIN;
-        extern void kill_data(void *p, void (*func_p)(void *));
-        kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
+        //Destructor();
+
+       // kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
+       ((void (*)(void *))(mfree_adr()))(&ELF_BEGIN);
+        
 }
 
 //-------------------------------------
@@ -2018,6 +2070,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
 #endif
 #endif
   {
+    DisableScroll();
     if (!cl) 
     {
       if(is_sms_need && e_ws&& (e_ws->wsbody[0] > 1))
@@ -2134,6 +2187,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
     msg->keys=0;
     if ((m==KEY_DOWN)||(m==LONG_PRESS))
     {
+      DisableScroll();
       is_pos_changed=1;
       if (key==UP_BUTTON)
       {
@@ -2179,6 +2233,7 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)   //按键功能
     {
       if (m==KEY_DOWN)
       {
+	DisableScroll();
         is_pos_changed=0;
 	if (hook_state>=2)  //Changes to the line input is required search 
         {
@@ -2362,6 +2417,7 @@ int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
       hook_state=0;
       e_ws=0;
       FreeCLIST();
+      DisableScroll();
     }
   }
   if(msg->msg == MSG_RECONFIGURE_REQ) 

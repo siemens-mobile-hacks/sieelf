@@ -75,7 +75,7 @@ __root const CFG_HDR cfghdr5_2 = {CFG_UINT,"列表修正值",0,200};
 __root const int startfix2 = 0;
 
 __root const CFG_HDR cfghdr5_3 = {CFG_COLOR,"区号秀颜色",0,99};
-__root const int cfg_cs_font_color=1;
+__root const int cfg_cs_font_color=2;
 
 __root const CFG_HDR cfghdr5_4 = {CFG_COLOR,"区号秀背景",0,99};
 __root const int CS_NUMBER_BG=6;
