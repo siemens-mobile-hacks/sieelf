@@ -140,9 +140,9 @@
 #define ADDR_CREATE_SELECT_MENU	0xA0980DFA+1
 #define ADDR_MENU_DESC		0xA08D2F34
 
-#define UNUSERAM_NUM		0x
-#define UNUSERAM_METHOD		0x
-#define UNUSERAM_OLD_REDRAW	0x
+//#define UNUSERAM_NUM		0x
+//#define UNUSERAM_METHOD		0x
+//#define UNUSERAM_OLD_REDRAW	0x
 //
 #endif
 
