@@ -1,7 +1,8 @@
 
 #include "addr.h"
 
-#ifdef	V_1_3
+//#define V_1_2_A //Брвы1.2a
+#define	V_1_3  //Брвы1.3
 
 	RSEG	IME_HOOK
 	CODE16
