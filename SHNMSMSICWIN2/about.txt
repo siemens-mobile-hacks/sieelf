@@ -1,5 +1,6 @@
 ;来短信显示对方姓名 v2
 ;(c) BingK(binghelingxi)
-;(p) starfriend
+;(p) starfriend ,DaiKangaroo
 ;(!)ElfLoader
 ;(!)撤销弹出信息消灭器 v2
+2008.07.17 移植到SGold, DaiKangaroo

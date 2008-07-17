@@ -31,7 +31,7 @@ __thumb void Hex2Num(char *hex, char *num, int len)
 int GetNumFromIncomingPDU(char *num)
 {
 	int c;
-	char *p=(char *)IncommingPDU();
+	char *p=(char *)IncommingPDU(); //直接调用函数获得地址
 	if ( *p++ != 0x11 )
 		return 0;
 	if ( *p++ != 0x11 )
@@ -99,11 +99,11 @@ typedef struct
 
 int FindName(WSHDR *wsrc, char *num_needed)
 {
-const char *s_ab_main="0:\\System\\apo\\addr\\main";
+const char *s_ab_main="2:\\System\\apo\\addr\\main"; 
 #ifdef NEWSGOLD
 const char *s_ab_entry="0:\\System\\apo\\addr\\data\\%02d\\%02d\\%02d";
 #else
-const char *s_ab_entry="0:\\System\\apo\\addr\\%02x\\%02x";
+const char *s_ab_entry="2:\\System\\apo\\addr\\%02x\\%02x";
 #endif
 
 	int fin;
@@ -287,13 +287,12 @@ void AddTheName(WSHDR *wsrc)
 	char num[32];
 	WSHDR *ws;
 	char new_msg[]="新信息!\n来自:\n";
-	if(!GetNumFromIncomingPDU(num))
-		return;
+	if(!GetNumFromIncomingPDU(num))return;
 	ws=AllocWS(32);
-	FindName(ws, num);
-	if(!FindName(ws, num))
-		str_2ws(ws, num, strlen(num));
-	gb2ws(wsrc, new_msg, strlen(new_msg));
+	//FindName(ws, num);重复了~删掉
+	if(!FindName(ws, num))//没有找到
+		str_2ws(ws, num, strlen(num));//输出号码 
+	gb2ws(wsrc, new_msg, strlen(new_msg));//new_msg转换到wsrc
 	wstrcat(wsrc, ws);
 	FreeWS(ws);
 }
