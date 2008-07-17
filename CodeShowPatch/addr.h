@@ -24,6 +24,8 @@
 #define ADDR_SELECT_MENU	0xA0ABF204+1//
 #define ADDR_MENU_DESC		0xA0C5E0F0 //
 
+#define ADDR_IncommingPDU	0xA873AC0C
+
 #define BASEADDRESS		0xA0CC0000
 #endif
 
@@ -140,9 +142,9 @@
 #define ADDR_CREATE_SELECT_MENU	0xA0980DFA+1
 #define ADDR_MENU_DESC		0xA08D2F34
 
-//#define UNUSERAM_NUM		0x
-//#define UNUSERAM_METHOD		0x
-//#define UNUSERAM_OLD_REDRAW	0x
+#define UNUSERAM_NUM		0x1
+#define UNUSERAM_METHOD		0x1
+#define UNUSERAM_OLD_REDRAW	0x1
 //
 #endif
 

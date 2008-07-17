@@ -601,6 +601,44 @@ pSMS_SEND
 #else
 	BL		NUM_SELECT_MENU1
 #endif
+//SGold来短信显示区号 By DaiKangaroo
+	RSEG	CODE_X
+	EXTERN	GetProvAndCity
+	EXTERN	GetNumFromIncomingPDU
+	CODE16
+        
+SMS_IN:
+	//原来Hook位置代码
+	//MOV R0, R4
+        //BLX Sub 函数功能:  STR R1, [R0, #78]
+        //MOV R1, #0
+        //代替为
+	STR		R1, [R4, #0x78]
+        MOV             R1, #0
+	PUSH		{R0-R7, LR}
+	SUB		SP, #0x20   //分配堆栈存放号码
+	LDR		R2, =0x272 //收到新的信息LGP
+	CMP		R7, R2
+	BNE		GoBack
+	ADD		R0, SP, #0
+	BL		GetNumFromIncomingPDU
+	CMP		R0, #0 //返回值
+	BEQ		GoBack
+	MOV		R0, R5 //R5保存WS指针
+	BL		AddNewLine //增加一行
+	LDR		R0, [R5, #0] //获得WS字符串
+	ADD		R1, SP, #0   //R1为号码
+	BL		GetProvAndCity
+GoBack:
+	ADD		SP, #0x20
+	POP		{R0-R7}
+	POP		{R0}
+	ADD		R0, #4
+	BX		R0
 
+	RSEG	SMS_IN_HOOK:CODE(2)
+        CODE16
+	LDR		R0, =SMS_IN
+	BLX		R0
 #endif
 	END
