@@ -99,11 +99,11 @@ typedef struct
 
 int FindName(WSHDR *wsrc, char *num_needed)
 {
-const char *s_ab_main="2:\\System\\apo\\addr\\main"; 
+const char *s_ab_main="0:\\System\\apo\\addr\\main"; 
 #ifdef NEWSGOLD
 const char *s_ab_entry="0:\\System\\apo\\addr\\data\\%02d\\%02d\\%02d";
 #else
-const char *s_ab_entry="2:\\System\\apo\\addr\\%02x\\%02x";
+const char *s_ab_entry="0:\\System\\apo\\addr\\%02x\\%02x";
 #endif
 
 	int fin;

@@ -3,4 +3,5 @@
 ;(p) starfriend ,DaiKangaroo
 ;(!)ElfLoader
 ;(!)撤销弹出信息消灭器 v2
-2008.07.17 移植到SGold, DaiKangaroo
+;2008.07.09 移植到NewSgold,starfriend
+;2008.07.17 移植到SGold, DaiKangaroo
