@@ -405,7 +405,8 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>NEWSGOLD</state>
+          <state>ELKA</state>
         </option>
         <option>
           <name>AList</name>
