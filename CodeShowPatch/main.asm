@@ -477,7 +477,8 @@ SMS_SEND_WINDOW:
 	POP		{R0}
 	ADD		R0, R0, #4
 	BX		R0
-	
+        
+#ifndef S6Cv53 //S65不增加多号码选择区号显示	
 	extern	store_the_num_2_ram
 	extern	new_redraw_
 	extern	memcpy_n
@@ -526,18 +527,21 @@ NUM_SELECT_MENU1:
 	ADD		R4, R0, #0
 	LDR		R1, =ADDR_MENU_DESC
 	POP		{PC}
+#endif
 
 #ifdef S6Cv53
 	RSEG	JMP_BODY
 HOOK5_JMP
 	LDR	R0, =Hook5
 	BX	R0
+/*//S65不增加多号码选择区号显示	
 NUM_SELECT_MENU1_JMP
 	LDR	R1, =NUM_SELECT_MENU1
 	BX	R1
 NUM_SELECT_MENU_JMP
 	LDR	R1, =NUM_SELECT_MENU
 	BX	R1
+*/
 #endif
 //Hook
 // 通话记录修改
@@ -584,23 +588,26 @@ pSMS_SEND
 	CODE16
 	NOP
 
+#ifndef S6Cv53 //S65不增加多号码选择区号显示	
 //用于将列表中的号码存到RAM中,by BingK(binghelingxi)
 	CODE16
 	RSEG	NUM_SELECT_MENU_HOOK:CODE(1)
-#ifdef	S6Cv53
-	BL		NUM_SELECT_MENU_JMP
-#else
+//#ifdef	S6Cv53
+	//BL		NUM_SELECT_MENU_JMP
+//#else
 	BL		NUM_SELECT_MENU
-#endif
+//#endif
 
 //替换原来列表的methods,重建redraw,by BingK(binghelingxi)
 	CODE16
 	RSEG	NUM_SELECT_MENU_HOOK1:CODE(1)
-#ifdef	S6Cv53
-	BL		NUM_SELECT_MENU1_JMP
-#else
+//#ifdef	S6Cv53
+	//BL		NUM_SELECT_MENU1_JMP
+//#else
 	BL		NUM_SELECT_MENU1
+//#endif
 #endif
+
 //SGold来短信显示区号 By DaiKangaroo
 	RSEG	CODE_X
 	EXTERN	GetProvAndCity
