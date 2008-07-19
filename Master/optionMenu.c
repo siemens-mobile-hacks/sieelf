@@ -2,7 +2,7 @@
  * 文件名: optionMenu.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.07.11
+ * 最后修改日期: 2008.07.19
  *
  * 作用: 建立主菜单，以及实现主菜单中的功能，如显示信息，情景模式控制菜单，清除配置等
  *
@@ -17,7 +17,8 @@
 #include "usedstr.h"
 #include "string.h"
 
-#define MAIN_MENU_ITEMS_N 10
+#define MAIN_MENU_ITEMS_N	10
+#define	MAIN_MENU_ITEMS_N_1	9
 
 int PATH_TYPE=0; //0,backup, 1,restore
 
@@ -155,7 +156,7 @@ const MENU_DESC option_menu=
 	MAIN_MENU_ITEMS_N
 };
 
-const MENUPROCS_DESC option_menu_HNDLS_1[MAIN_MENU_ITEMS_N-1]=
+const MENUPROCS_DESC option_menu_HNDLS_1[MAIN_MENU_ITEMS_N_1]=
 {
 	menu_info,
 	menu_del_this,
@@ -164,10 +165,11 @@ const MENUPROCS_DESC option_menu_HNDLS_1[MAIN_MENU_ITEMS_N-1]=
 	menu_backup,
 	menu_restore,
 	menu_about,
+	menu_quit_without_rs,
 	menu_exit,
 };
 
-const MENUITEM_DESC option_menu_ITEMS_1[MAIN_MENU_ITEMS_N-1]=
+const MENUITEM_DESC option_menu_ITEMS_1[MAIN_MENU_ITEMS_N_1]=
 {
 	{NULL,(int)LGP_PATCH_INFO,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_DEL_THIS,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
@@ -176,6 +178,7 @@ const MENUITEM_DESC option_menu_ITEMS_1[MAIN_MENU_ITEMS_N-1]=
 	{NULL,(int)LGP_BACKUP,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_RESTORE,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_ABOUT,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+	{NULL,(int)LGP_QUIT_WITHOUT_RS,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_QUIT,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 };
 
@@ -188,7 +191,7 @@ const MENU_DESC option_menu_1=
 	NULL,
 	option_menu_ITEMS_1,//menuitems,
 	option_menu_HNDLS_1,//menuprocs,
-	MAIN_MENU_ITEMS_N-1
+	MAIN_MENU_ITEMS_N_1
 };
 
 void show_option_menu(void)
@@ -198,7 +201,7 @@ void show_option_menu(void)
 	if(ptcfg=getPatchConfigItem(PTCFG_CUR))
 	{
 		if(ptcfg->disableProfile)
-			CreateMenu(0, 0, &option_menu_1, &option_menu_header, 0, MAIN_MENU_ITEMS_N-1, 0, 0);
+			CreateMenu(0, 0, &option_menu_1, &option_menu_header, 0, MAIN_MENU_ITEMS_N_1, 0, 0);
 		else
 			CreateMenu(0, 0, &option_menu, &option_menu_header, 0, MAIN_MENU_ITEMS_N, 0, 0);
 	}
