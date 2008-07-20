@@ -30,6 +30,10 @@ const char color_white[4]={255, 255, 255, 100};
 #define ME_POS_X	0
 #define ME_POS_Y	230
 
+#define	ICON		0x4DA
+#define	ICON_X		0x10
+#define	ICON_Y		289
+
 #pragma swi_number=0x221
 __swi __arm void SetCpuClockLow(int _2);
 
@@ -56,12 +60,14 @@ __no_init WSHDR *xws @ "RAMP_XWS";
 __no_init int IsKbdLocked @ "RAM_IsKbdLocked";
 __no_init unsigned int csm_id @ "RAM_CSM_ID";
 __no_init unsigned int gui_id @ "RAM_GUI_ID";
+__no_init int missed_events @ "MISSED_EVENS";
 #else
 GBSTMR mytmr;
 WSHDR *xws;
 int IsKbdLocked;
 unsigned int csm_id;
 unsigned int gui_id;
+int missed_events;
 #endif
 
 
@@ -80,37 +86,27 @@ void drawScreen(void)
 	
 	wsprintf(xws, "%02d:%02d", time.hour, time.min);
 	DrawString(xws, TIME_POS_X, TIME_POS_Y, SCREENW, SCREENH, FONT_LARGE_ITALIC_BOLD, TEXT_ALIGNMIDDLE, color_white, color_black);
-
-	wsprintf(xws, "%d Missed Event(s)!", GetMissedEventCount(0));
+	
+	wsprintf(xws, "%d Missed Event(s)!", missed_events);
 	DrawString(xws, ME_POS_X, ME_POS_Y, SCREENW, SCREENH, FONT_SMALL, TEXT_ALIGNMIDDLE, color_white, color_black);
+	
+	if(missed_events)
+		DrawImg(ICON_X, ICON_Y, ICON);
 }
 
 void TimerProc(void)
 {
 	GBS_SendMessage(MMI_CEPID, KEY_UP, EXT_BUTTON);
 	Update_MissedEventsPtr();
+	missed_events=GetMissedEventCount(0);
 	if(IsGuiOnTop(gui_id))
 		drawScreen();
-	else
-		CloseCSM(csm_id);
+	//else
+	//	CloseCSM(csm_id);
 	SetCpuClockLow(2);
 	GBS_StartTimerProc(&mytmr, TMR_SECOND*TIME, TimerProc);
 }
 
-/*
-PROCESSOR_MODE AddStrToWS(unsigned int *wsbody, char *str)
-{
-	int i=1;
-	int j=wsbody[0];
-	char *p=str;
-	while(p)
-	{
-		wsbody[j+i]=*p;
-		p++;
-		i++;
-	}
-	wsbody[0]=j+i-1;
-}*/
 
 void onRedraw(MAIN_GUI *data)
 {
@@ -124,6 +120,19 @@ int OnKey(MAIN_GUI *data, GUI_MSG *msg)
 		TempLightOn(3, 0x7FFF);
 		if(msg->gbsmsg->submess=='#')
 			return 1;
+	}
+	if(msg->gbsmsg->msg==KEY_DOWN)
+	{
+		if(msg->gbsmsg->submess==LEFT_SOFT)
+		{
+			extern	void OPEN_INBOX(void);
+			if(missed_events)
+			{
+				TempLightOn(3, 0x7FFF);
+				OPEN_INBOX();
+				//return 1;
+			}
+		}
 	}
 	//DirectRedrawGUI();
 	return 0;
@@ -204,6 +213,8 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 	{
 		csm->csm.state=-3;
 	}
+	if(!IsGuiOnTop(gui_id))
+		CloseCSM(csm_id);
 	return(1);
 }
 
@@ -217,6 +228,7 @@ void Killer(void)
 	xws=0;
 	csm_id=0;
 	gui_id=0;
+	missed_events=0;
 #ifndef VKP
 	extern void *ELF_BEGIN;
 	extern void kill_data(void *p, void (*func_p)(void *));

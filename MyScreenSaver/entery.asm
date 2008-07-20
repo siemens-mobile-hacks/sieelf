@@ -49,6 +49,11 @@ _JMP
 	//DATA
 	RSEG	SWILIB_KBDLOCK:DATA(2)
 	DCD	NewKeyLock
+	
+	RSEG	DISABLE_KEYLOCK_MSG_HOOK
+	CODE16
+	NOP
+	NOP
 #endif
 	
 	
@@ -75,6 +80,11 @@ Update_MissedEventsPtr
 	LDR	R12, Update_MissedEventsPtr_
 	BX	R12
 	
+	PUBLIC	OPEN_INBOX
+OPEN_INBOX
+	LDR	R12, =0xA070783B
+	BX	R12
+	
 	DATA
 	
 #ifdef VKP
@@ -86,8 +96,8 @@ new_IsUnlocked_
 
 Update_MissedEventsPtr_
 	DCD	Update_MissedEventsPtr_0
-Update_MissedEventsPtr_Func
-	DCD	0xA0685090+1
+//Update_MissedEventsPtr_Func
+//	DCD	0xA0685090+1
 
 	CODE16
 Update_MissedEventsPtr_0
@@ -97,7 +107,7 @@ Update_MissedEventsPtr_0
 	MOV	R2, #0
 	MOV	R3, #0
 	MOV	R4, #0
-	LDR	R7, =Update_MissedEventsPtr_Func
+	LDR	R7, =0xA0685090+1
 	BLX	R7
 	POP	{R1-R7, PC}
 	
