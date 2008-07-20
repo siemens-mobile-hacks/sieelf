@@ -335,6 +335,12 @@ ELFLoader_lg8/vkp/copyright -text
 ELFLoader_lg8/vkp/lib75.txt -text
 ELFLoader_lg8/vkp/lib_elka.ini -text
 ELFLoader_lg8/vkp/name -text
+ELFLoader_lg8/vkp/public/API_ELKA.vkp -text
+ELFLoader_lg8/vkp/public/API_x65.vkp -text
+ELFLoader_lg8/vkp/public/apicode_gb2ws_NEWSGOLD.vkp -text
+ELFLoader_lg8/vkp/public/apicode_gb2ws_SGOLD.vkp -text
+ELFLoader_lg8/vkp/public/gb2ws_codemap_newsgold.vkp -text
+ELFLoader_lg8/vkp/public/gb2ws_codemap_sgold.vkp -text
 ELFLoader_lg8/vkp/swi -text
 ELFLoader_lg8/vkp/更新记录，请更新者及时改写，方便普通机油查阅.txt -text
 ExtD/ExtD.ewp -text
