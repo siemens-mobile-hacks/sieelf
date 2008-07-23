@@ -1154,6 +1154,13 @@ NATICQ/status_change.h -text
 NATICQ/strings.c -text
 NATICQ/strings.h -text
 NATICQ/test.xcl -text
+OwnFolderIcon/E71Csw41.xcl -text
+OwnFolderIcon/MKvkp.cmd -text
+OwnFolderIcon/OwnFolderIcon.ewp -text
+OwnFolderIcon/OwnFolderIcon.eww -text
+OwnFolderIcon/S68Csw51.xcl -text
+OwnFolderIcon/doChange.c -text
+OwnFolderIcon/entry.asm -text
 OwnMelody/OwnMelody.ewp -text
 OwnMelody/OwnMelody.eww -text
 OwnMelody/SK6Cv50.xcl -text
