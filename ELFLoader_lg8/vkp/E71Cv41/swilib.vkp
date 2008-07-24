@@ -135,7 +135,7 @@
 ;1DC:              ;  77: set2color_byPaletteAdr
 ;1E0:              ;  78: GetTimeFormat
 01E4: 0xA08F816F   ;  79: DrawObject2Layer(LCD_Layer *, DRWOBJ *)
-01E8: 0x00006423   ;  7A:  GBS_Cmd_4200_UpdateScreen
+01E8: 0xA09732C1   ;  7A: UpdateDisplayByLayerPtr(LCD_Layer *);
 ;1EC:              ;  7B: GetProfileFilter
 01F0: 0xA04C2F9B   ;  7C: SetVibration(unsigned int power)
 01F4: 0xA0D0C943   ;  7D: IsIncognitoCall
@@ -673,3 +673,6 @@
 +0       
 ;********************************************************************************
 
+
+
+;locale=Chinese_People's Republic of China.936
