@@ -632,7 +632,13 @@
 ;928:              ; 24A:  char *RamChannel()
 
 0950: 0xA093E8A4   ; 254:  __arm int StartNativeExplorer(NativeExplorerData* data)
+
+0A0C: 0xA08F87EC   ; 283: __arm int runMidletLinkablely(const char *midlet_name, WSHDR *filename)
+
 #pragma disable old_equal_ff
 +0
 ;********************************************************************************
 
+
+
+;locale=Chinese_People's Republic of China.936
