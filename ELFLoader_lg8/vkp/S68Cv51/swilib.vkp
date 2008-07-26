@@ -230,7 +230,7 @@
 0340: 0xA8D64FA8   ;  D0: RamAccPoint
 ;344:              ;  D1: RamScreensaver
 ;348:              ;  D2: RamAutoTime
-034C: 0xA8A80000   ;  D3: RamStby
+034C: 0xA8D00000   ;  D3: RamStby
 0350: 0xA8DCD2C8   ;  D4: char *RamMissedMes()
 0354: 0xA8D339F4   ;  D5: RamIsLocked
 0358: 0xA8DA6928   ;  D6: RamNetOnline
@@ -354,7 +354,7 @@
 0514: 0xA0098A74   ; 145: int GBS_GetCurCepid(void)
 0518: 0xA009A9EC   ; 146: void LockSched(void)
 051C: 0xA009AAD8   ; 147: void UnlockSched(void)
-0520: 0xA08556CB   ; 148: extern int ShowMSG(int flag, int lgp_id)
+0520: 0xA08556CB   ; 148: int ShowMSG(int flag, int lgp_id)
 0524: 0xA0851505   ; 149: void SetPropToText(DRWOBJ *drwobj,void *rect,int rect_flag,WSHDR *wshdr,int font,int text_flag)
 0528: 0xA084F739   ; 14A: void FreeDrawObject_subobj(DRWOBJ *drwobj)
 052C: 0xA084F6A3   ; 14B: void SetColor(DRWOBJ *drwobj, char *color1, char *color2)
@@ -633,6 +633,18 @@
 0930: 0xA02DE105   ; 24C:  __thumb int  GetPeripheryState (int device, int check_state)
 
 0950: 0xA0308ABF   ; 254:  __arm int StartNativeExplorer(NativeExplorerData* data)
+
+0A0C: 0xA02F8225   ; 283: __arm int runMidletLinkablely(const char *midlet_name, WSHDR *filename)
+
+0A2C: 0xA8E070AC   ; 28B: char *RamTotalHeapSize()
+0A30: 0xA8E0711C   ; 28C: char *RamTemporaryHeapSize()
+0A34: 0xA8D22814   ; 28D: char *RamBluetoothNickname()
+0A38: 0xA8D21A00   ; 28E: char *RamActiveGPRSProfileName()
+;0A3C: 0x ; 28F: int *RamIsNumberTyping()
+
+;0A40: 0x ; 291: int *RamCallState()
+
+0A50: 0xA025ABB5   ; 296: __thumb void getProfileName(WSHDR *ws, int n, int _0);
 #pragma disable old_equal_ff
 +0
 
