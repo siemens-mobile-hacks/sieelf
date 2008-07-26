@@ -2,7 +2,7 @@
  * 文件名: optionMenu.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.07.19
+ * 最后修改日期: 2008.07.26
  *
  * 作用: 建立主菜单，以及实现主菜单中的功能，如显示信息，情景模式控制菜单，清除配置等
  *
@@ -285,6 +285,7 @@ int profile_menu_onkey(void *data, GUI_MSG *msg)
 	return 0;
 }
 
+/*
 char profileName[7][16]=
 {
 	LGP_PROFILE1,
@@ -295,7 +296,7 @@ char profileName[7][16]=
 	LGP_PROFILE6,
 	LGP_PROFILE7,
 };
-
+*/
 void profile_menu_iconhndl(void *data, int curitem, void *unk)
 {
 	PTC_CONFIG *ptcfg;
@@ -309,7 +310,12 @@ void profile_menu_iconhndl(void *data, int curitem, void *unk)
 	#ifdef BUG
 		gb2ws(ws, profileName[curitem], 128);
 	#else
-		wsprintf(ws, PERCENT_T, profileName[curitem]);
+		//wsprintf(ws, PERCENT_T, profileName[curitem]);
+#ifdef NEWSGOLD
+		getProfileName(ws, curitem, 0);
+#else
+		getProfileName(curitem, ws, 0);
+#endif
 	#endif
 		if(getPatchOnOff(ptcfg, curitem))
 			n=1;
