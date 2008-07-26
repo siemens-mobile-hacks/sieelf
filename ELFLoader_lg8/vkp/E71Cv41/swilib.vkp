@@ -684,7 +684,7 @@
 
 ;0A40: 0x ; 291: int *RamCallState()
 
-0A50: 0xA05C430F   ; 296: __thumb void getProfileName(WSHDR *ws, int n, int _0)
+0A58: 0xA05C430F   ; 296: __thumb void getProfileName(WSHDR *ws, int n, int _0)
 #pragma disable old_equal_ff
 +0       
 ;********************************************************************************
