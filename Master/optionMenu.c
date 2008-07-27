@@ -312,9 +312,9 @@ void profile_menu_iconhndl(void *data, int curitem, void *unk)
 	#else
 		//wsprintf(ws, PERCENT_T, profileName[curitem]);
 #ifdef NEWSGOLD
-		getProfileName(ws, curitem, 0);
+		getProfileNameByN(ws, curitem, 0);
 #else
-		getProfileName(curitem, ws, 0);
+		getProfileNameByN(curitem, ws, 0);
 #endif
 	#endif
 		if(getPatchOnOff(ptcfg, curitem))
