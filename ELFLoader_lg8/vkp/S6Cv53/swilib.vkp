@@ -140,7 +140,7 @@
 01F0: 0xA125DE54   ; 7C: SetVibration(unsigned int power)
 01F4: 0xA00CD369   ; 7D: IsIncognitoCall
 01F8: 0xA00E77C1   ; 7E: __swi __arm int rand(void)
-;1FC:              ; 7F: IsPlayerOn
+01FC: 0xA10B7D90   ; 7F: IsPlayerOn
 
 0200: 0xA0B7C4C9   ; 80: ShowCallList(int list, int zero)
 0204: 0xA16099A8   ; 81: HexToDec
@@ -622,18 +622,25 @@
 
 0900: 0xA157D145   ; 240: __swi __arm char *MD5_Hash(const unsigned char *data, unsigned long n, unsigned char *md_NULL)
 0904: 0xA0AA7367   ; 241: __thumb void SetDateTime(TDate *, TTime *)
-;908:              ; 242:   __arm void gb2ws(WSHDR *ws, const char *s, int len)
-;90C:              ; 243:   __arm void ws2gb(WSHDR *ws, char *s, int len)
-0910: 0xA15713B5   ; 244:   __arm int Base64Encode(void *inbuf, int insize, void *outbuf, int outsize)
-0914: 0xA1571465   ; 245:   __arm int Base64Decode(char *inbuf, int insize, void *outbuf, int outsize, char *_null, int *unk5)
-;91C:              ; 247:   __thumb void NetOff()
-;920:              ; 248:  char *RamFormatTrack()
-;924:              ; 249:  char *RamFreq()
-;928:              ; 24A:  char *RamChannel()
+;908:              ; 242: __arm void gb2ws(WSHDR *ws, const char *s, int len)
+;90C:              ; 243: __arm void ws2gb(WSHDR *ws, char *s, int len)
+0910: 0xA15713B5   ; 244: __arm int Base64Encode(void *inbuf, int insize, void *outbuf, int outsize)
+0914: 0xA1571465   ; 245: __arm int Base64Decode(char *inbuf, int insize, void *outbuf, int outsize, char *_null, int *unk5)
+0918: 0xA093CD54   ; 246: __arm int GetFileProp(FILE_PROP *wl,WSHDR *file,WSHDR *folder); 
+;91C:              ; 247: __thumb void NetOff()
+;920:              ; 248: char *RamFormatTrack()
+;924:              ; 249: char *RamFreq()
+;928:              ; 24A: char *RamChannel()
+
+0930: 0xA08D92B1   ; 24C: __thumb int  GetPeripheryState (int device, int check_state); // device: 4-gprs  0 -BT  1 -irda   2 -COM ?; ChechState:    4 -IsActive  (1|2) - IsOn  
 
 0950: 0xA093E8A4   ; 254:  __arm int StartNativeExplorer(NativeExplorerData* data)
 
 0A0C: 0xA08F87EC   ; 283: __arm int runMidletLinkablely(const char *midlet_name, WSHDR *filename)
+0A10: 0xA16960CB   ; 284: int IsGPRS()
+;A14: 0x           ; 285: int IsEDGE() No EDGE for SGOLD
+
+0A24: 0xA010B5A5   ; 289: int isDecryption()
 
 0A58: 0xA08D3D2B   ; 296: __thumb void getProfileNameByN(int n, WSHDR *ws, int _0);
 #pragma disable old_equal_ff
