@@ -635,6 +635,7 @@
 
 0A0C: 0xA08F87EC   ; 283: __arm int runMidletLinkablely(const char *midlet_name, WSHDR *filename)
 
+0A58: 0xA08D3D2B   ; 296: __thumb void getProfileNameByN(int n, WSHDR *ws, int _0);
 #pragma disable old_equal_ff
 +0
 ;********************************************************************************
