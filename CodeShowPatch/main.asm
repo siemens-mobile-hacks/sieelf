@@ -4,20 +4,15 @@
 	EXTERN	AppendInfoW
 	EXTERN	UpdateLocaleToItem
 	EXTERN	do_phonebook_work 
-/*
-#ifdef NEWSGOLD
-	RSEG	CODE
-#else
-	RSEG	CODE_2       
-#endif
-*/
 
 #ifndef SK6Cv50
 	RSEG	CODE
 #else
-	RSEG	CODE_2       
+	RSEG	CODE_X       
 #endif
-
+#ifdef CX7Av25 //原来空间不够
+        RSEG	CODE_X
+#endif
 	CODE16
 	PUBLIC	strlen
 strlen:
@@ -648,7 +643,7 @@ GoBack:
 
 //SGold阅读短信显示区号秀 By DaiKangaroo
 //0a21201c????????2a1c211c381c
-        RSEG	CODE_X
+	RSEG	CODE_X
 	CODE16
 
 READ_SMS:       

@@ -56,8 +56,11 @@ void memcpy(char *szDest, char *szSrc, int len)
     szDest[i] = szSrc[i];
   szDest[len] = 0;
 }
-//参考along代码
-char FindCRName(word *pBSTR, char *szNo)//国际代码
+//参考along代码 国际代码
+char FindCRName(word *pBSTR, char *szNo)
+#ifdef SK6Cv50
+@ "CODE_X"
+#endif
 {
 	if(memcmp(szNo, "86", 2) == 0)//中国内地
 		return 0;
