@@ -180,6 +180,7 @@ CfgEdit/main.c -text
 CfgEdit/test.xcl -text
 CfgEdit/visual.c -text
 CodeShowPatch/CX6Cv50.xcl -text
+CodeShowPatch/CX7Cv50.xcl -text
 CodeShowPatch/CodeShow.C -text
 CodeShowPatch/CodeShowPatch.ewp -text
 CodeShowPatch/CodeShowPatch.eww -text

@@ -1,3 +1,32 @@
+#ifdef CX7Cv50
+#define ADDR_strlen		0xA1F37014+1//OK
+#define ADDR_atou		0xA082BD88+1//OK
+#define ADDR_WS_InitByZero	0xA11C23BE+1//OK
+#define ADDR_GetCalleeNumber	0xA1005DDA+1//OK
+#define ADDR_UpdateWndItem	0xA00B5122+1//OK
+#define ADDR_memcmp		0xA1F362CC+1//OK
+#define ADDR_DrawString		0xA00DAC24+1//OK
+#define ADDR_FreeWS		0xA11C1D70+1//OK
+#define ADDR_AllocWS		0xA11C2426+1//OK
+#define ADDR_GetCurMenuItem	0xA009BD0A+1//OK
+
+#define ADDR_wstrcat		0xA11C258C+1//OK
+#define ADDR_wsAppendChar	0xA11C26B4+1//OK
+#define ADDR_IsCalling		0xA00CDB32+1//OK
+#define ADDR_CallIN		0xA0966EE2+1//OK
+#define ADDR_CallOUT		0xA09662B0+1//OK
+#define ADDR_ADDRBook		0xA11C2BBC+1//OK
+#define ADDR_SMS_SEND		0xA12204E4+1//OK
+
+#define UNUSERAM_NUM		0xA8000240
+#define UNUSERAM_METHOD		0xA8000300
+#define UNUSERAM_OLD_REDRAW	0xA80002F0
+#define ADDR_SELECT_MENU	0xA11F1F2C+1//OK
+#define ADDR_MENU_DESC		0xA0BA9DD0 //OK
+
+#define BASEADDRESS		0xA0E55A00
+#endif
+
 #ifdef M6Cv50
 #define ADDR_strlen		0xA159BB38+1
 #define ADDR_atou		0xA082BD88+1

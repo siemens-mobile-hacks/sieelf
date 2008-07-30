@@ -47,3 +47,7 @@ typedef struct {
     word CityNo;
 }LOCALE;
 
+typedef struct {
+    word CRNo;
+    byte Names[14];
+}CRNO;

@@ -603,6 +603,8 @@ pSMS_SEND
 	BL		NUM_SELECT_MENU1
 #endif
 
+#ifndef CX7Cv50 //排除CX7C，未找到来短信HOOK位置
+
 //SGold来短信显示区号 By DaiKangaroo
 	RSEG	CODE_X
 	EXTERN	GetProvAndCity
@@ -637,10 +639,39 @@ GoBack:
 	POP		{R0}
 	ADD		R0, #4
 	BX		R0
-
+//来短信修改
 	RSEG	SMS_IN_HOOK:CODE(2)
         CODE16
 	LDR		R0, =SMS_IN
 	BLX		R0
+#endif
+
+//SGold阅读短信显示区号秀 By DaiKangaroo
+//0a21201c????????2a1c211c381c
+        RSEG	CODE_X
+	CODE16
+
+READ_SMS:       
+        //增加
+        PUSH		{R0-R7, LR}
+        MOV             R0, R4
+        BL              AddNewLine
+        MOV             R1, R4
+        BL		AppendInfoW //增加号码区号秀
+        //原hook位置代码
+        //MOV   R1, #0xA
+        //ADD   R0, R4, #0
+        //BLX   CallwsInsertChar ; 号码后面插入0A换行
+        MOV             R0, R4
+        BL              AddNewLine //用这个替换原来的换行
+	POP		{R0-R7}
+	POP		{R1}
+	ADD		R1, #4
+	BX		R1
+//阅读短信修改
+	RSEG	READ_SMS_HOOK:CODE(2)
+        CODE16
+	LDR		R0, =READ_SMS
+	BLX		R0        
 #endif
 	END

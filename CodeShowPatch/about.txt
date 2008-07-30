@@ -1,4 +1,4 @@
-;***区号秀手机版 v1.6***
+;***区号秀手机版 v1.7***
 ;(c) Bennie
 ;(i) Along,starfriend,Robin,BingK(binghelingxi),DaiKangaroo
 ;V1.1-> 增加了对电话簿的支持
@@ -20,6 +20,7 @@
 ;		   来短信窗口区号秀支持，starfriend
 ;V1.4-> 2008.07.07 移植到CX6Cv50,DaiKangaroo
 ;V1.6-> 2008.07.17 SGOLD增加来短信窗口区号秀支持，DaiKangaroo
+;V1.7-> 2008.07.29 SGOLD增加阅读短信区号秀支持，DaiKangaroo，增加国际码识别，国际码识别功能代码来自along
 ;修改省市间的分割符(默认为点):
 ;例如：2720:点, 2000:空格, 4000:＠, 2A00:＃, 2300:*(即标准UniCode码高低字节倒序)
 ;

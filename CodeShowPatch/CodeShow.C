@@ -21,7 +21,7 @@
 #define CODESHOWFLAG		0xFB
 #define CODESHOWVERSION		2
 #define MAXCITYNO			0x1FF
-
+#define COUNTRYCODETABLE	(BASEADDRESS+0x1E100)
 
 #define LOBYTE(w) ((byte)(w))
 #define HIBYTE(w) ((byte)(((word)(w) >> 8) & 0xFF))
@@ -49,6 +49,81 @@ const word szAddInfo[] 		= { 0x20, 0 };
 /****************/
 /* main program */
 /****************/
+void memcpy(char *szDest, char *szSrc, int len)
+{
+  int i;
+  for(i=0; i<len; i++)
+    szDest[i] = szSrc[i];
+  szDest[len] = 0;
+}
+//参考along代码
+char FindCRName(word *pBSTR, char *szNo)//国际代码
+{
+	if(memcmp(szNo, "86", 2) == 0)//中国内地
+		return 0;
+	else
+	{
+          char szTemp[5]="\0";
+	  word wCRNo;
+	  word wTable=*(word *)COUNTRYCODETABLE;
+	  word wCount=*(word *)(COUNTRYCODETABLE+2);
+	  const word *pTable=(word *)(COUNTRYCODETABLE+4);
+	  CRNO *pCRNO=(CRNO *)(COUNTRYCODETABLE+(wTable+2<<1));
+	  int j = 0, k, nRepeatNum = 0;
+	  int i = 0, nStart = 0, nEnd = wCount;
+	  int len=strlen(szNo);
+	  if(len > 4)len = 4;
+	  for(k=len; k>0; k--)
+	    {
+		memcpy(szTemp, szNo, k);
+		nStart = 0, nEnd = wCount;
+		wCRNo = atou(szTemp);
+		while(nStart <= nEnd)
+		  {
+		      i = (nEnd+nStart)/2;
+		      if(wCRNo == pCRNO[i].CRNo)
+			{
+			  do{		  
+                              if(wCRNo != pCRNO[i].CRNo)break;
+			      i--;
+			    }while(i > 0);
+		          i++;
+		          j = i;
+			  do{
+			      if(wCRNo != pCRNO[j].CRNo)break;
+			      j++;
+			      nRepeatNum++;
+			    }while(j <= nEnd);
+			  break;
+			}
+		  if(wCRNo < pCRNO[i].CRNo)nStart = i+1;
+                  else nEnd = i-1;
+                }
+            if(nRepeatNum > 0)break;
+           }
+        if(nRepeatNum == 0)
+          {
+      	    BSTRAdd(pBSTR, szUnknownUser, 4);
+          }
+       else
+         {
+      	    for(j=0; j<nRepeatNum; j++)
+      	      {
+      		for(k=0; k<12; k++)
+      		{
+      		    wCRNo = GetCode(pCRNO[i+j].Names, k);
+      		    if(wCRNo == MAXCITYNO)break;
+      		    else BSTRAdd(pBSTR, pTable+wCRNo, 1);
+      		}
+      		if(j+1 != nRepeatNum)
+      		{
+      		    BSTRAdd(pBSTR, szAddInfo, 1);
+      		}
+      	    }
+         }
+      }
+      return 1;
+}
 
 void UpdateLocaleToItem(int Index, int NoIndex, void* Context)
 {
@@ -72,14 +147,6 @@ void AppendInfoW(WSTRING *pWS, WSTRING * pNo)
 	}
 	szPNo[i] = '\0';
 	GetProvAndCity(pWS->pstr, szPNo);			
-}
-
-void memcpy(char *szDest, char *szSrc, int len)
-{
-  int i;
-  for(i=0; i<len; i++)
-    szDest[i] = szSrc[i];
-  szDest[len] = 0;
 }
 
 word GetLocalNoInfo(char *szLocalNo, char *szLocalName)
@@ -132,8 +199,10 @@ int GetProvAndCity(word *pBSTR, char *pNoStr)
 	pCity = (CITY*)(CODESHOWDATAADDRESS+pHead->CityTableOffset);
 	//去掉国际码+86
 	if(*pNoStr == '+')
-		pNoStr += 3;
-
+        {
+	  if(FindCRName(pBSTR, pNoStr+1))return 0;
+	  else pNoStr += 3;
+        }
 	//如果长度大于12，则包括IP前缀，下面滤去已知IP前缀
 	CodeLen = strlen(pNoStr);
 	if(CodeLen > 12)
