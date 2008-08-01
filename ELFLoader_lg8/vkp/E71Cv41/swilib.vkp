@@ -683,7 +683,7 @@
 ;0A3C: 0x; 28F: int *RamIsNumberTyping() 
 
 0A40: 0xA8EC6D24   ; 8290: int *RamCallState()
-0A41: 0xA05DC528   ; 292: __arm int RefreshAlarmClock() 
+0A48: 0xA05DC528   ; 292: __arm int RefreshAlarmClock() 
 0A58: 0xA05C430F   ; 296: __thumb void getProfileNameByN(WSHDR *ws, int n, int _0)
 #pragma disable old_equal_ff
 +0       
