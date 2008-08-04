@@ -1,6 +1,6 @@
 ELF名称: Master.elf
 作者: BingK(binghelingxi), Email: bingkx@gmail.com
-版本: 2.1.4
+版本: 2.1.5
 感谢: 所有参与CfgEdit制作的人,CfgEdit给了我很多应用参考实例
       很大程度上方便了我制作这个ELF.
 作用: 和JAVA版本的Master一样,实现了对MasterPatch的配置,
@@ -31,6 +31,9 @@ ELF名称: Master.elf
         过MasterPatch就不要尝试了.
 
 更新日志:
+v2.1.5 2008.08.05
+* 修正读取unicode型字符串数据的最大长度
+* 修正指定大小的ptc文件保存问题
 
 v2.1.4 2008.07.26
 + 使用getProfileName函数获取情景模式名称

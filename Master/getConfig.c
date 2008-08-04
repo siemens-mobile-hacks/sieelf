@@ -2,7 +2,7 @@
  * 文件名: getConfig.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.07.11
+ * 最后修改日期: 2008.08.05
  *
  * 作用: 读取config.txt，并进行解析，储存结果，还提供了一些文字处理函数
  * 备注: WINTEL_DEBUG为使用在windows中使用编译器进行调试的条件编译项目
@@ -805,7 +805,7 @@ void doItemJob(char *p, PATCH_SUBMENU *subMenu)
 			pp=gotoRealPos(p1);
 			p1=gotoMyStrStart(pp);
 			p2=gotoMyStrEnd(pp);
-			while((p1<p2)&&(c=*p1++)&&i<16)
+			while((p1<p2)&&(c=*p1++)&&i<127) //max
 			{
 				if(c<=127)
 					uni->ustr[i++]=c;
