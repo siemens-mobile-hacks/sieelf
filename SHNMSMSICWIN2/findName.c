@@ -286,10 +286,18 @@ void AddTheName(WSHDR *wsrc)
 {
 	char num[32];
 	WSHDR *ws;
-	char new_msg[]="新信息!\n来自:\n";
+	char *new_msg;
 	if(!GetNumFromIncomingPDU(num))return;
+	if(strncmp(num,"1986",4)==0)//信息报告
+	{
+           new_msg="状态报告!\n来自:\n";
+           strcpy(num,num+4);//去掉1986
+	}
+	else
+	{
+	   new_msg="新信息!\n来自:\n";
+	}
 	ws=AllocWS(32);
-	//FindName(ws, num);重复了~删掉
 	if(!FindName(ws, num))//没有找到
 		str_2ws(ws, num, strlen(num));//输出号码 
 	gb2ws(wsrc, new_msg, strlen(new_msg));//new_msg转换到wsrc

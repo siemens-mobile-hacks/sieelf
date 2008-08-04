@@ -3006,7 +3006,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild>$PROJ_DIR$\mk.bat $PROJ_DIR$ $EXE_DIR$ CX6Cv50</postbuild>
+        <postbuild>$PROJ_DIR$\mk.bat $PROJ_DIR$ $EXE_DIR$ CX6Csw50</postbuild>
       </data>
     </settings>
     <settings>
@@ -3829,7 +3829,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild>$PROJ_DIR$\mk.bat $PROJ_DIR$ $EXE_DIR$ S6Cv53</postbuild>
+        <postbuild>$PROJ_DIR$\mk.bat $PROJ_DIR$ $EXE_DIR$ S6Csw53</postbuild>
       </data>
     </settings>
     <settings>
