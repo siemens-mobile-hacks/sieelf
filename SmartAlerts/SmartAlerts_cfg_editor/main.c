@@ -277,8 +277,6 @@ data[289]=miss[3];
 data[290]=miss[4];
 data[291]=miss[5];
 
-
-
     fwrite(handle,data,512,&err);
     mfree(data);
   }
@@ -700,7 +698,14 @@ int onkey(unsigned char keycode, int pressed)
               }
             case GREEN_BUTTON: runFile(bcfgfile1); break;
             case '0':runFile(ring);  break;
-           /*  
+           /* 
+            case '9':
+                GBS_SendMessage(MMI_CEPID, MSG_RECONFIGURE_REQ,0,"close");
+                ShowMSG(1,(int)"主程序关闭中!");
+                //runFile(sa);
+                return(1);
+               // break;
+            
             case '1': break;
             case '2': break;
             case '3': break;

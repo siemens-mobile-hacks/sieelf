@@ -45,10 +45,7 @@ TTime time;
 TDate week;
 GBSTMR mytmr;
 GBSTMR tmr_vibra;
-GBSTMR *xtmr;
-
-WSHDR* ws=NULL;
-WSHDR* smstemp=NULL;
+GBSTMR *xtmr=NULL;
 
 int count;
 int fb,fa=0;
@@ -132,6 +129,8 @@ miss[3]=data[289];
 miss[4]=data[290];
 miss[5]=data[291];
 
+//end=data[511];
+
     mfree(data);
     fclose(handle,&err);
   }
@@ -201,7 +200,7 @@ void Play(const char *fpath, const char *fname)
 void start_(void)
 {
   void stop_(void);
-  if(!name2[4]||!bmenus[0]||(*RamCap()<bmenus[1]))
+  if(!name2[4]||!bmenus[0]||(*RamCap()>bmenus[1]))
   {
   	if (other[1])
 		SetIllumination(0, 1, other[7]+1, 0);
@@ -281,7 +280,6 @@ char* Opendata(char *recname)
   return (buf);
 }
 
-
 void copy_unicode_2ws(WSHDR* ws, unsigned short* unicode,int x)
 {
 	int i = 0;
@@ -294,17 +292,18 @@ void copy_unicode_2ws(WSHDR* ws, unsigned short* unicode,int x)
 
 void sendsms(void)
 {
+  WSHDR* smstemp=NULL;
+  smstemp=AllocWS(1024);
   if(smsstyle==0)
   {
-       utf8_2ws(ws,content,210);
+       utf8_2ws(smstemp,content,210);
        if(strlen(smsnum)>0)
-       SendSMS(ws,smsnum,MMI_CEPID,MSG_SMS_RX-1, 6);
+       SendSMS(smstemp,smsnum,MMI_CEPID,MSG_SMS_RX-1, 6);
   }
   else
   {
      char *s;
      s=Opendata((char *)recname);
-     smstemp=AllocWS(512);
      if(strstr(recname,"txt"))
      {
       utf8_2ws(smstemp,s,210);
@@ -315,14 +314,14 @@ void sendsms(void)
      }  
      else if(strstr(recname,"tmo"))
      {
-      s+=2;
-      copy_unicode_2ws(smstemp,(unsigned short *)s,280);
+      copy_unicode_2ws(smstemp,(unsigned short *)(s+2),280);
       if(strlen(smsnum)>0)
       SendSMS(smstemp,smsnum,MMI_CEPID,MSG_SMS_RX-1, 6);
       else
       ShowMSG(1,(int)"Ã»ÓÐ¶ÌÐÅºÅÂë!");
       }
   }
+  FreeWS(smstemp);
 }
 
 int monthcount(int num)
@@ -389,9 +388,6 @@ GetDateTime(&date,&time);
         }
       }
 
-     
-     
-  
         if(name2[7])
         {
           int sum=0;
@@ -412,9 +408,8 @@ GetDateTime(&date,&time);
                      (time.hour-smss[6])%smss[3]==0
                     )
                  )
-              )
-              )&&
-              time.min==smss[7])
+              ))
+             &&time.min==smss[7])
           {
             sendsms();
           }
@@ -595,8 +590,17 @@ typedef struct
 
 int IDLECSM_ID=-1;
 
-extern void kill_data(void *p, void (*func_p)(void *));
 const int minus11=-11;
+
+static void Killer(void)
+{
+  extern void *ELF_BEGIN;
+  GBS_DelTimer(&mytmr);
+  GBS_DelTimer(&tmr_vibra);
+  //GBS_DelTimer(xtmr);
+  extern void kill_data(void *p, void (*func_p)(void *));
+  kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
+}
 
 int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
 {
@@ -612,6 +616,13 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
     {
       load_settings();
     }
+    
+   // if (strcmp_nocase("close",(char *)msg->data0)==0)
+   // {
+     // SUBPROC((void *)Killer);
+     // return(1);
+    //}
+    
   }
 
   if (msg->msg == MSG_IPC)
@@ -663,18 +674,10 @@ static void maincsm_oncreate(CSM_RAM *data)
   start();
 }
 
-static void Killer(void)
-{
-  FreeWS(smstemp);
-  extern void *ELF_BEGIN;
-  kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr()); 
-}
-
 static void maincsm_onclose(CSM_RAM *csm)
 {
-  GBS_DelTimer(&mytmr);
-  GBS_DelTimer(&tmr_vibra);
-  FreeWS(ws);
+  //GBS_DelTimer(&mytmr);
+  //GBS_DelTimer(&tmr_vibra);
   SUBPROC((void *)Killer);
 }
 
@@ -721,7 +724,6 @@ int main()
   InitConfig(); 
   load_settings();
   UpdateCSMname();
-  ws=AllocWS(210);
   LockSched(); 
   save_cmpc=CSM_root()->csm_q->current_msg_processing_csm;
   CSM_root()->csm_q->current_msg_processing_csm=CSM_root()->csm_q->csm.first;

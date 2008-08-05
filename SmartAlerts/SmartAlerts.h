@@ -39,6 +39,7 @@ char icon[]=alarm_dir"icon.png";
 const char param_new_cfg[]="new_cfg";
 char bcfgfile[]=DEFAULT_DISK":\\Zbin\\etc\\alarm_melody.bcfg";
 char bcfgfile1[]=DEFAULT_DISK":\\Zbin\\etc\\SmartAlerts.bcfg";
+char sa[]=DEFAULT_DISK":\\Zbin\\Daemons\\SmartAlertsC.elf";
 
 #pragma inline=forced
 int toupper(int c)
