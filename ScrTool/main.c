@@ -335,7 +335,14 @@ static void InitData(void)
       char cWeek[16];
       for(ubyte i=0;i<16;i++){cWeek[i]=cWeekName[WEEK_FMT][Week][i];}
       wsprintf(IDS[8].ws,cWeek,Week);
-    }else{
+    }
+    else if(WEEK_FMT==5)
+    {
+		const char weekgblt[][7]={"一","二","三","四","五","六","日"};
+		wsprintf(IDS[8].ws,_percent_t,weekgblt[Week]);
+    }
+    else
+    {
       wsprintf(IDS[8].ws,_percent_t,WeekGB[Week]);
     }
     FillScreen(&IDS[8],WEEK_XT,WEEK_X,WEEK_Y,FontType(WEEK_FONT),WEEK_CS,WEEK_CB);
