@@ -55,11 +55,6 @@
 const int MenuHeaderIcon=MENU_HEADER_ICON;
 const int MenuItenIcon=MENU_ITEM_ICON;
 #endif
-typedef struct
-{
-	CSM_RAM csm;
-	int gui_id;
-}MAIN_CSM;
 
 //UTF8
 //短信计数器|0:\ZBin\utilities\SMSCountReader.elf
@@ -73,8 +68,15 @@ typedef struct
 	int type;
 }MENU_LIST;
 
-char *buf;
-MENU_LIST *mltop;
+typedef struct
+{
+	CSM_RAM csm;
+	int gui_id;
+	char *buf;
+	MENU_LIST *mltop;
+}MAIN_CSM;
+//char *buf;
+//MENU_LIST *mltop;
 //int char_set;
 
 const int menusoftkeys[]={0, 1, 2};
@@ -129,7 +131,7 @@ PROCESSOR_MODE void utf8_2str(char *str, char *utf8)
 	str[i]=0;
 }
 
-PROCESSOR_MODE void AddtoMenuList(char *name, int name_len, char *path, int path_len,int type)
+PROCESSOR_MODE void AddtoMenuList(MAIN_CSM *csm, char *name, int name_len, char *path, int path_len,int type)
 {
 	MENU_LIST *ml=malloc(sizeof(MENU_LIST));
 	ml->next=0;
@@ -138,24 +140,24 @@ PROCESSOR_MODE void AddtoMenuList(char *name, int name_len, char *path, int path
 	ml->path=path;
 	ml->path_len=path_len;
 	ml->type=type;
-	if(!mltop)
+	if(!csm->mltop)
 	{
-		mltop=ml;
+		csm->mltop=ml;
 	}
 	else
 	{
-		MENU_LIST *ml_t=mltop;
+		MENU_LIST *ml_t=csm->mltop;
 		while(ml_t->next)
 			ml_t=ml_t->next;
 		ml_t->next=ml;
 	}
 }
 
-PROCESSOR_MODE void FreeMenuList(void)
+PROCESSOR_MODE void FreeMenuList(MAIN_CSM *csm)
 {
-	if(mltop)
+	if(csm->mltop)
 	{
-		MENU_LIST *ml=mltop;
+		MENU_LIST *ml=csm->mltop;
 		MENU_LIST *ml_t;
 		while(ml)
 		{
@@ -164,9 +166,10 @@ PROCESSOR_MODE void FreeMenuList(void)
 			ml=ml_t;
 		}
 	}
+	csm->mltop=0;
 }
 
-PROCESSOR_MODE MENU_LIST *get_mlitem(int curitem)
+PROCESSOR_MODE MENU_LIST *get_mlitem(MENU_LIST *mltop, int curitem)
 {
 	MENU_LIST *ml;
 	ml=mltop;
@@ -240,29 +243,31 @@ PROCESSOR_MODE int CheckType(char *p)
 	return TYPE_FILE;
 }
 
-PROCESSOR_MODE int read_cfg(void)
+PROCESSOR_MODE int read_cfg(MAIN_CSM *csm)
 {
-	FreeMenuList();
-	mltop=0; //必须初始化
 	int f;
 	char path[]=CFG_PATH;
 	unsigned int err;
+	char *p;
+	int name_len;
+	int path_len;
+	int item_n=0;
+	int size=0;
+	//MAIN_CSM *csm=(MAIN_CSM*)data;
+	p=csm->buf;
+	FreeMenuList(csm);
+	csm->mltop=0; //必须初始化
 	if((f=fopen(path, A_ReadOnly, P_READ, &err))==-1)
 	{
 		path[0]='4';
 		if((f=fopen(path, A_ReadOnly, P_READ, &err))==-1)
 			return 0;
 	}
-	int size=0;
-	size=fread(f, buf, BUF_SIZE, &err);
+	size=fread(f, csm->buf, BUF_SIZE, &err);
 	fclose(f, &err);
 	if(size<3)
 		return 0;
-	buf[size]=0;
-	char *p=buf;
-	int name_len;
-	int path_len;
-	int item_n=0;
+	csm->buf[size]=0;
 	//if(*p==0xEF && *(p+1)==0xBB && *(p+2)==0xBF)
 	//{
 	//	char_set=CHARSET_UTF8;
@@ -287,7 +292,7 @@ PROCESSOR_MODE int read_cfg(void)
 			char *p2=pp;
 			p2=gotoLineEnd(p2);
 			path_len=p2-pp;
-			AddtoMenuList(p, name_len, pp, path_len, CheckType(pp));
+			AddtoMenuList(csm, p, name_len, pp, path_len, CheckType(pp));
 			p=p2;
 		}
 		else
@@ -340,7 +345,7 @@ PROCESSOR_MODE int read_cfg(void)
 				break;
 			}
 			}
-			AddtoMenuList(p2, name_len, p, path_len, type);
+			AddtoMenuList(csm, p2, name_len, p, path_len, type);
 			p=pp;
 		}
 		item_n++;
@@ -462,7 +467,7 @@ PROCESSOR_MODE void run_ml(MENU_LIST *ml)
 		break;
 	}
 }
-
+/*
 typedef struct
 {
   int mode; //0-normal mode, 1-select mode 
@@ -482,7 +487,7 @@ typedef struct
   void* this_struct_addr;
   int unk16;
   int unk17_26[10]; 
-}NativeExplorerData;
+}NativeExplorerData;*/
 
 //by benj9
 // all params: if 0, not applied
@@ -497,8 +502,8 @@ typedef struct
 //exp_filter_scroll	equ		0x34	; func checks files to be shown by scrolling
 //exp_report_csm	equ		0x38	; *csm to report about everything
 
-#pragma swi_number=0x254
-__swi __arm int StartNativeExplorer(NativeExplorerData* data);
+//#pragma swi_number=0x254
+//__swi __arm int StartNativeExplorer(NativeExplorerData* data);
 
 
 void strpath_2ws(WSHDR *ws, char *path, int len)
@@ -552,7 +557,8 @@ void run_mymenu2_editor(void)
 
 int menu_onkey(void *data, GUI_MSG *msg)
 {
-	MENU_LIST *ml=get_mlitem(GetCurMenuItem(data));
+	MAIN_CSM *csm=MenuGetUserPointer(data);
+	MENU_LIST *ml=get_mlitem(csm->mltop, GetCurMenuItem(data));
 	if(msg->gbsmsg->msg==KEY_DOWN)
 	{
 		int i=msg->gbsmsg->submess;
@@ -578,7 +584,7 @@ int menu_onkey(void *data, GUI_MSG *msg)
 				i=9;
 			else
 				i-='1';
-			ml=get_mlitem(i);
+			ml=get_mlitem(csm->mltop, i);
 			if(ml)
 				run_ml(ml);
 			return 0;
@@ -601,8 +607,9 @@ void menu_ghook(void *data, int cmd)
 void menu_iconhndl(void *data, int curitem, void *unk)
 {
 	MENU_LIST *ml;
+	MAIN_CSM *csm=MenuGetUserPointer(data);
 	void *item=AllocMenuItem(data);
-	ml=get_mlitem(curitem);
+	ml=get_mlitem(csm->mltop, curitem);
 	WSHDR *ws;
 	if(ml)
 	{
@@ -637,10 +644,10 @@ const MENU_DESC main_menu=
 
 void maincsm_oncreate(CSM_RAM *data)
 {
-	buf=malloc(BUF_SIZE);
-	mltop=0; //必须初始化
 	MAIN_CSM *csm=(MAIN_CSM*)data;
-	csm->gui_id=CreateMenu(0, 0, &main_menu, &menuheader, 0, read_cfg(), 0, 0);
+	csm->buf=malloc(BUF_SIZE);
+	csm->mltop=0; //必须初始化
+	csm->gui_id=CreateMenu(0, 0, &main_menu, &menuheader, 0, read_cfg(csm), csm, 0);
 }
 
 int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
@@ -653,13 +660,11 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
 	return(1);
 }
 
-void Killer(void)
+void Killer(MAIN_CSM *csm)
 {
-	mfree(buf);
-	FreeMenuList();
 #ifdef VKP
-	buf=0; //退出时将RAM地址置零
-	mltop=0;
+/*	buf=0; //退出时将RAM地址置零
+	mltop=0;*/
 #else
 	extern void *ELF_BEGIN;
 	extern void kill_data(void *p, void (*func_p)(void *));
@@ -667,9 +672,14 @@ void Killer(void)
 #endif
 }
 
-void maincsm_onclose(CSM_RAM *csm)
+void maincsm_onclose(CSM_RAM *data)
 {
-	SUBPROC((void *)Killer);
+	MAIN_CSM *csm=(MAIN_CSM*)data;
+	mfree(csm->buf);
+	FreeMenuList(csm);
+#ifndef	VKP
+	SUBPROC((void *)Killer,csm);
+#endif
 }
 
 const int minus11=-11;
@@ -714,13 +724,14 @@ void UpdateCSMname(void)
 int main(void)
 {
 #ifdef VKP
-	if(buf||mltop) //检测是否已经有mymenu启动
+/*	if(buf||mltop) //检测是否已经有mymenu启动
 	{
 		MsgBoxError(1, (int)ERR_STR);
 		return 0;
-	}
+	}*/
 #endif
 	char dummy[sizeof(MAIN_CSM)];
+	zeromem(dummy, sizeof(MAIN_CSM));
 #ifndef VKP
 	UpdateCSMname();
 #endif
