@@ -196,7 +196,10 @@ CodeShowPatch/S7Cv47.xcl -text
 CodeShowPatch/SK6Cv50.xcl -text
 CodeShowPatch/about.txt -text
 CodeShowPatch/addr.h -text
+CodeShowPatch/entry_elka.asm -text
+CodeShowPatch/func.asm -text
 CodeShowPatch/main.asm -text
+CodeShowPatch/menuText.c -text
 CodeShowPatch/mk.bat -text
 CodeShowPatch/select_menu.c -text
 CodeShowPatch/sms_num.c -text

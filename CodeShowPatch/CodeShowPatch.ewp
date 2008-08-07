@@ -9073,11 +9073,59 @@
     <name>$PROJ_DIR$\CodeShow.C</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\entry_elka.asm</name>
+    <excluded>
+      <configuration>S7Cv47</configuration>
+      <configuration>SK6Cv50</configuration>
+      <configuration>S68Cv51</configuration>
+      <configuration>M81Cv51</configuration>
+      <configuration>CX6Cv50</configuration>
+      <configuration>S6Cv53</configuration>
+      <configuration>M6Cv50</configuration>
+      <configuration>CX7Cv50</configuration>
+      <configuration>CX7Av25</configuration>
+    </excluded>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\func.asm</name>
+    <excluded>
+      <configuration>S7Cv47</configuration>
+      <configuration>SK6Cv50</configuration>
+      <configuration>S68Cv51</configuration>
+      <configuration>M81Cv51</configuration>
+      <configuration>CX6Cv50</configuration>
+      <configuration>S6Cv53</configuration>
+      <configuration>M6Cv50</configuration>
+      <configuration>CX7Cv50</configuration>
+      <configuration>CX7Av25</configuration>
+    </excluded>
+  </file>
+  <file>
     <name>$PROJ_DIR$\main.asm</name>
+    <excluded>
+      <configuration>E71Cv41</configuration>
+      <configuration>ELC1v41</configuration>
+    </excluded>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\menuText.c</name>
+    <excluded>
+      <configuration>S7Cv47</configuration>
+      <configuration>SK6Cv50</configuration>
+      <configuration>S68Cv51</configuration>
+      <configuration>M81Cv51</configuration>
+      <configuration>CX6Cv50</configuration>
+      <configuration>S6Cv53</configuration>
+      <configuration>M6Cv50</configuration>
+      <configuration>CX7Cv50</configuration>
+      <configuration>CX7Av25</configuration>
+    </excluded>
   </file>
   <file>
     <name>$PROJ_DIR$\select_menu.c</name>
     <excluded>
+      <configuration>E71Cv41</configuration>
+      <configuration>ELC1v41</configuration>
       <configuration>S68Cv51</configuration>
       <configuration>M81Cv51</configuration>
     </excluded>
