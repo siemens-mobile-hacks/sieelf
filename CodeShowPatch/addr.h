@@ -202,6 +202,41 @@
 #define SetMLMenuItemText_adr	0xA097DDBF
 #endif
 
+
+#ifdef ELC1v41
+#define ADDR_strlen 0xA0FFCF8C+1
+#define ADDR_atou 0xA06471E4+1
+#define ADDR_WS_InitByZero	0xA05162CA+1
+#define ADDR_GetCalleeNumber	0xA095391E+1
+#define ADDR_UpdateWndItem	0xA0A55234+1
+#define ADDR_memcmp	0xA0FFC134+1
+//#define ADDR_DrawString		0xA0977412+1
+//#define ADDR_FreeWS		    0xA0515BF4+1
+#define ADDR_AllocWS		0xA096C674+1
+//#define ADDR_GetCurMenuItem	0xA097FADA+1
+#define ADDR_IncommingPDU	0xA8F1EF70  
+//#define ADDR_wstrcat 0xA0C4D128
+#define ADDR_wsAppendChar 0xA0C4D09C
+#define ADDR_IsCalling 0xA0D158C8+1
+
+#define ADDR_CallIN 0xA0681B64+1
+//#define ADDR_CallOUT 0xA0681E44+1
+#define ADDR_ADDRBook 0xA05168B6+1
+#define ADDR_GetPhoneBookNum 0xA095AEBE+1 ;//90b50c1c8bb06946
+#define BASEADDRESS			0xA1580000
+//#define ADDR_CREATE_SELECT_MENU	0xA0980DFA+1
+//#define ADDR_MENU_DESC		0xA08D2F34
+//#define UNUSERAM_NUM		0xA8D80800
+//#define UNUSERAM_METHOD		0xA8D808E0
+//#define UNUSERAM_OLD_REDRAW	0xA8D808D0
+#define	AllocMLMenuItem_adr	0xA081A7AC
+#define GetMLMenuGUI_adr	0xA081AE80
+#define ADDR_CallOUT2		0xA0AD2552+1
+#define AllocMenuWS_adr		0xA09813BD
+#define SetMLMenuItemText_adr	0xA098457F
+#endif
+
+
 #ifdef S7Cv47
 #define ADDR_strlen		0xA14270BC+1
 #define ADDR_atou		0xA02C6AA0+1
@@ -231,38 +266,6 @@
 #define UNUSERAM_OLD_REDRAW	0xA8A7F3D0
 #endif
 
-#ifdef ELC1v41
-#define ADDR_strlen 0xA0FFCF8C+1
-#define ADDR_atou 0xA06471E4+1
-#define ADDR_WS_InitByZero	0xA05162CA+1
-#define ADDR_GetCalleeNumber	0xA095391E+1
-#define ADDR_UpdateWndItem	0xA0A55234+1
-#define ADDR_memcmp	0xA0FFC134+1
-
-#define ADDR_DrawString		0xA0977412+1
-#define ADDR_FreeWS		    0xA0515BF4+1
-#define ADDR_AllocWS		0xA096C674+1
-
-#define ADDR_GetCurMenuItem	0xA097FADA+1
-#define ADDR_IncommingPDU	0xA8F1EF70  
-
-#define ADDR_wstrcat 0xA0C4D128
-#define ADDR_wsAppendChar 0xA0C4D09C
-#define ADDR_IsCalling 0xA0D158C8+1
-#define ADDR_CallIN 0xA0681B64+1
-#define ADDR_CallOUT 0xA0681E44+1
-#define ADDR_ADDRBook 0xA05168B6+1
-#define ADDR_GetPhoneBookNum 0xA095AEBE+1 ;//90b50c1c8bb06946
-#define BASEADDRESS			0xA1580000
-//以下应该对但不确定。。RAM不知道怎么弄。。。
-#define ADDR_CREATE_SELECT_MENU	0xA0980DFA+1
-#define ADDR_MENU_DESC		0xA08D2F34
-
-#define UNUSERAM_NUM		0x1
-#define UNUSERAM_METHOD		0x1
-#define UNUSERAM_OLD_REDRAW	0x1
-//
-#endif
 
 #ifdef SK6Cv50
 #define ADDR_strlen		0xA0D9626C+1
