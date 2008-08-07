@@ -1,53 +1,78 @@
 #include "..\inc\swilib.h"
 
-__thumb void Hex2Num(char *hex, char *num, int len)
+
+__thumb int Hex2Num(char *hex, char *num, int len) //返回长度
 {
 	int c;
-	int i=0,j;
+	int i=0,j=0;
 	char *p=hex;
 	if(*p==0x91)
 	{
 		p++;
+		len-=2; //按+86算
 	}
 	p++;
-	for (j=0; j<len; j++)
+	while(i<len)
 	{
 		c=p[j]%0x10;
 		if(c>=0&&c<=9)
-			num[i]=c+'0';
+			num[i++]=c+'0';
 		else
 			break;
-		i++;
+		if(i>=len)
+			break;
 		c=p[j]/0x10;
 		if(c>=0&&c<=9)
-			num[i]=c+'0';
+			num[i++]=c+'0';
 		else
 			break;
-		i++;
+		j++;
 	}
 	num[i]=0;
+	return i;
 }
+#define	TYPE_NORMAL 0
+#define	TYPE_REPORT 1
 
-int GetNumFromIncomingPDU(char *num)
+char *GetIncomingPDU(void)
+{
+	return ((char *)IncommingPDU());
+}
+__thumb int GetNumFromIncomingPDU(char *num, int *type)
 {
 	int c;
-	char *p=(char *)IncommingPDU(); //直接调用函数获得地址
+	int i;
+	char *p=GetIncomingPDU(); //直接调用函数获得地址
 	if ( *p++ != 0x11 )
 		return 0;
 	if ( *p++ != 0x11 )
 		return 0;
-	p++;
-	c=*p++;
+	if(!(*p++))
+		return 0;
+	c=*p++; //信息中心长度
 	p+=c+1;
-	c=*p++;
+	if(p[1]==0x91||p[1]==0xA1) //常规短信
+	{
+		*type=TYPE_NORMAL;
+	}
+	else
+	{
+		for(i=1;i<5;i++) //查找下面4字节
+		{
+			if(p[i]==0x91||p[i]==0xA1)
+			{
+				*type=TYPE_REPORT;
+				p+=i-1; //走到长度位置
+				goto GET_L;
+			}
+		}
+		return 0;//未知情况直接放弃
+	}
+GET_L:
+	c=*p++; //号码长度
 	if(c)
 	{
-		if(c%2)
-			c=c/2+2;
-		else
-			c=c/2+1;
-		Hex2Num(p, num, c);
-		return 1;
+		return(Hex2Num(p, num, c));
 	}
 	return 0;
 }
@@ -287,19 +312,21 @@ void AddTheName(WSHDR *wsrc)
 	char num[32];
 	WSHDR *ws;
 	char *new_msg;
-	if(!GetNumFromIncomingPDU(num))return;
-	if(strncmp(num,"1986",4)==0)//信息报告
+	int len;
+	int type=TYPE_NORMAL; //默认初始化
+	if(!(len=GetNumFromIncomingPDU(num, &type)))
+		return;
+	if(type==TYPE_NORMAL)
 	{
-           new_msg="状态报告!\n来自:\n";
-           strcpy(num,num+4);//去掉1986
+		new_msg="新信息!\n来自:\n";
 	}
 	else
 	{
-	   new_msg="新信息!\n来自:\n";
+		new_msg="状态报告!\n来自:\n";
 	}
 	ws=AllocWS(32);
-	if(!FindName(ws, num))//没有找到
-		str_2ws(ws, num, strlen(num));//输出号码 
+	if(!FindName(ws, len>11?(num+len-11):num))//如果号码大于11位,直接查找后11位,
+		str_2ws(ws, num, len);//没找到,输出号码 
 	gb2ws(wsrc, new_msg, strlen(new_msg));//new_msg转换到wsrc
 	wstrcat(wsrc, ws);
 	FreeWS(ws);
