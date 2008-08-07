@@ -1,4 +1,4 @@
-;***区号秀手机版 v1.7***
+;***区号秀手机版 v1.8***
 ;(c) Bennie
 ;(i) Along,starfriend,Robin,BingK(binghelingxi),DaiKangaroo,jpg001
 ;V1.1-> 增加了对电话簿的支持
