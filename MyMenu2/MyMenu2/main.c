@@ -635,7 +635,11 @@ const MENU_DESC main_menu=
 	NULL,
 	menusoftkeys,
 	&menu_skt,
+#ifdef	VKP
+	0x11,
+#else
 	0x10,
+#endif
 	menu_iconhndl,
 	NULL,   //Items
 	NULL,   //Procs
