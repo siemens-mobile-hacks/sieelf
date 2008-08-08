@@ -1,10 +1,13 @@
+
+#ifndef	NEW
+
+	EXTERN	AddTheName
 	CODE16
 	RSEG	HOOK
 	LDR	R2, =CODE_
 	BLX	R2
 
 
-	EXTERN	AddTheName
 	CODE16
 	RSEG	CODE
 #ifdef NEWSGOLD
@@ -44,5 +47,68 @@ exit
 	POP	{R0}
 	ADD	R0, R0, #4
 	BX	R0
+#endif
+
+#ifdef	NEW
+	RSEG	HOOK_NEW
+	CODE16
+	LDR	R0, =CODE_NEW
+	BLX	R0
 	
+	RSEG	CODE
+	DATA
+PERCENT_T
+	DCD	"%t"
+PSTR_NORMAL
+	DCD	"新信息!\n来自:\n"
+PSTR_REPORT
+	DCD	"状态报告!\n来自:\n"
+	
+	CODE16
+CODE_NEW
+
+	EXTERN	GetNumFromIncomingPDU
+	EXTERN	AddTheName_N
+	PUSH	{R0-R7, LR}
+	SUB	SP, #0x28
+	MOV	R0, #0
+	STR	R0, [SP, #0x24] //长度默认为0
+	STR	R0, [SP, #0x20] //类型默认为0
+	LDR	R7, =0xAC5
+	MOV	R6, R2
+	CMP	R2, R7 //比较LGP
+	BNE	PRINTWS
+	MOV	R0, SP
+	MOV	R1, R0
+	ADD	R1, #0x20
+	BL	GetNumFromIncomingPDU
+	CMP	R0, #0
+	BEQ	PRINTWS
+	STR	R0, [SP, #0x24] //存储标志
+	LDR	R0, [SP, #0x20]
+	CMP	R0, #0
+	BNE	PSTR_RE
+	LDR	R5, =PSTR_NORMAL
+	B	PRINTWS
+PSTR_RE
+	LDR	R5, =PSTR_REPORT
+PRINTWS
+	MOV	R2, R6
+	LDR	R1, =PERCENT_T
+	MOV	R0, R4
+	SWI	0xA0 //;  A0: wsprintf(WSHDR *,const char *format,...)
+	LDR	R2, [SP, #0x24]
+	CMP	R2, #0
+	BEQ	EXPBACK
+	MOV	R0, R4
+	MOV	R1, SP
+	MOV	R3, R5
+	BLX	AddTheName_N
+EXPBACK
+	ADD	SP, #0x28
+	POP	{R0-R7}
+	POP	{R3}
+	ADD	R3, #4
+	BX	R3
+#endif
 	END

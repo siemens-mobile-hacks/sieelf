@@ -407,6 +407,7 @@
           <name>ADefines</name>
           <state>NEWSGOLD</state>
           <state>ELKA</state>
+          <state>NEW</state>
         </option>
         <option>
           <name>AList</name>

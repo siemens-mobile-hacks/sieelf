@@ -332,3 +332,38 @@ void AddTheName(WSHDR *wsrc)
 	FreeWS(ws);
 }
 
+void AddTheName_N(WSHDR *wsrc, char *num, int len, char *str)
+{
+	//将区号秀,对方姓名,及原有字符修改,重排
+	WSHDR wsname, *wsn;
+	unsigned short usname[32];
+	WSHDR wscs, *wsc;
+	unsigned short uscs[16];
+	int i, j;
+	unsigned short *p=wsrc->wsbody+1;
+	int wslen=wsrc->wsbody[0];
+	wsn=CreateLocalWS(&wsname, usname, 32);
+	wsc=CreateLocalWS(&wscs, uscs, 16);
+	for(i=0;i<wslen;i++)
+	{
+		if(p[i]==0xD) //查找0xD换行符,如果有刷区号秀的话
+		{
+			p+=i;
+			while(*p<0x20)
+			{
+				i++;
+				p++;
+			}
+			for(j=0;j<((wslen-i)<16?(wslen-i):16);j++) //copy 区号秀
+				wsc->wsbody[j+1]=p[j];
+			wsc->wsbody[0]=j;
+			break;
+		}
+	}
+	if(!FindName(wsn, len>11?(num+len-11):num))//如果号码大于11位,直接查找后11位,
+		str_2ws(wsn, num, len);//没找到,输出号码 
+	gb2ws(wsrc, str, strlen(str));
+	wstrcat(wsrc, wsn);
+	wsAppendChar(wsrc, '\n');
+	wstrcat(wsrc, wsc);
+}
