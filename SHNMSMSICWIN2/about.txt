@@ -1,4 +1,4 @@
-;来短信显示对方姓名 v2.1
+;来短信显示对方姓名 v2.2
 ;(c) BingK(binghelingxi)
 ;(p) starfriend ,DaiKangaroo
 ;(!)ElfLoader
