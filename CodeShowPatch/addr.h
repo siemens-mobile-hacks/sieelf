@@ -229,7 +229,7 @@
 //#define UNUSERAM_NUM		0xA8D80800
 //#define UNUSERAM_METHOD		0xA8D808E0
 //#define UNUSERAM_OLD_REDRAW	0xA8D808D0
-#define	AllocMLMenuItem_adr	0xA081A7AC
+#define	AllocMLMenuItem_adr	0xA081A860
 #define GetMLMenuGUI_adr	0xA081AE80
 #define ADDR_CallOUT2		0xA0AD2552+1
 #define AllocMenuWS_adr		0xA09813BD
