@@ -162,9 +162,9 @@ void load_settings(void)
     char *data=malloc(512);
     fread(handle,data,512,&err);
       
-show_icon=data[2];
-X=data[3];
-Y=data[4];
+show_icon=data[1];
+X=data[2];
+Y=data[3]*256+data[4];
 //5
 for(int i=0;i<5;i++)
 {
@@ -228,9 +228,10 @@ void save_settings(void)
   {
     char *data=malloc(512);
 
-data[2]=show_icon;
-data[3]=X;
-data[4]=Y;
+data[1]=show_icon;
+data[2]=X;
+data[3]=Y/256;
+data[4]=Y%256;
 //5
 for(int i=0;i<5;i++)
 {
@@ -1320,19 +1321,19 @@ int onkey(unsigned char keycode, int pressed)
         switch(keycode)
           {
           case LEFT_BUTTON: case '4': if (X>0) X-=5; else X=scr_w; break;
-          case RIGHT_BUTTON: case '6': if (X<ScreenW()) X+=5; else X=0; break;
+          case RIGHT_BUTTON: case '6': if (X<scr_w) X+=5; else X=0; break;
           case UP_BUTTON: case '2': if (Y>0) Y-=5; else Y=scr_h; break;
-          case DOWN_BUTTON: case '8': if (Y<ScreenH()) Y+=5; else Y=0; break;
+          case DOWN_BUTTON: case '8': if (Y<scr_h) Y+=5; else Y=0; break;
           }
       case KEY_DOWN:
         switch(keycode)
         {
         case RED_BUTTON:  mode=1; break;
         case LEFT_SOFT: if (show_icon==1) show_icon=0; else show_icon=1; break;
-        case LEFT_BUTTON: case '4': if (X!=0) X--; else X=scr_w; break;
-        case RIGHT_BUTTON: case '6': if (X!=ScreenW()) X++; else X=0; break;
-        case UP_BUTTON: case '2': if (Y!=0) Y--; else Y=scr_h; break;
-        case DOWN_BUTTON: case '8': if (Y!=ScreenH()) Y++; else Y=0; break;
+        case LEFT_BUTTON: case '4': if (X>0) X--; else X=scr_w; break;
+        case RIGHT_BUTTON: case '6': if (X<scr_w) X++; else X=0; break;
+        case UP_BUTTON: case '2': if (Y>0) Y--; else Y=scr_h; break;
+        case DOWN_BUTTON: case '8': if (Y<scr_h) Y++; else Y=0; break;
         default: mode=1; break;
         }
       }

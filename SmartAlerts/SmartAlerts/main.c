@@ -48,7 +48,7 @@ GBSTMR tmr_vibra;
 GBSTMR *xtmr=NULL;
 
 int count;
-int fb,fa=0;
+int fb,fa,missfix=0;
 volatile int _count;
 
 void getimgwh()
@@ -76,9 +76,9 @@ void load_settings(void)
     fread(handle,data,512,&err);
 
       
-show_icon=data[2];
-X=data[3];
-Y=data[4];
+show_icon=data[1];
+X=data[2];
+Y=data[3]*256+data[4];
 //5
 for(int i=0;i<5;i++)
 {
@@ -542,6 +542,12 @@ GetDateTime(&date,&time);
             if (GetMissedCallsCount()||HasNewSMS()) 
           #endif
           {
+            if(!missfix)
+            {
+              missfix=1;
+            }  
+            else
+            {  
             if(!miss[0])
             {
              if(miss[1])
@@ -551,6 +557,11 @@ GetDateTime(&date,&time);
             }
              _count=other[5];
              start_();
+            }
+          }
+          else
+          {
+            missfix=0;
           }
           }
           }
@@ -656,7 +667,7 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
           {
             void *canvasdata = ((void **)idata)[DISPLACE_OF_IDLECANVAS / 4];
 #endif
-          if((IsUnlocked())&&(show_icon)&&(status_icon))
+          if((name2[0])&&(IsUnlocked())&&(show_icon)&&(status_icon))
           {
             DrawCanvas(canvasdata, X, Y, X + imgh, Y + imgh, 1);
             DrawImg(X, Y, (int)icon);

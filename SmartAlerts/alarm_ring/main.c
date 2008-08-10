@@ -62,6 +62,7 @@ void restart_melody();
 int findlength(char *playy)
 {
 #ifdef NEWSGOLD
+  
 #ifdef MP3
       WSHDR* Path=AllocWS(128);
       WSHDR* FName=AllocWS(128);
