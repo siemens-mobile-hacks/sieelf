@@ -59,3 +59,23 @@
 #define	KEY0_BACK		0xA05B4374+1 //0键跳转返回地址
 #define	KEY0_GOTO_IME		0xA05B4384+1 //0键跳转向常规输入
 #endif
+
+#ifdef	S68Csw51
+#define GBS_SendMessage_adr	0xA0092A04   //k
+#define DO_IME_BACK		0xA094799A+1 //k
+#define DO_RIGHT		0xA0947BA6+1 //K
+#define	DO_LEFT			0xA0947B3C+1 //K
+#define	DO_DOWN			0xA0947C84+1 //K
+#define	DO_UP			0xA0947C62+1 //k
+#define	DO_SELECT		0xA0947A70+1 //K
+#define DO_DIRECT_SELECT	0xA0947EF8+1 //K
+#define DO_NOTHING		0xA0947D82+1 //k
+#define	DO_KEY1_BACK		0xA0947FA4+1 //k
+#define	JAVA_EDIT_KOP		0xA8DDE794   //k
+#define	USE_RAM			0xA8D7C010   //k 4
+#define DO_XING_FIX		0xA04D6BCC+1 //k
+#define	GET_INPUT_STATE		0xA04D710A+1 //k
+#define	KEY0_FUNC1		0xA0329D56+1 //k
+#define	KEY0_BACK		0xA04D72C0+1 //k
+#define	KEY0_GOTO_IME		0xA04D72D0+1 //k
+#endif
