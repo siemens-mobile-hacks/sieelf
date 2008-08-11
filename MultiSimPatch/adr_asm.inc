@@ -29,3 +29,7 @@
 #ifdef M6Cv50
 	#include "xls\M6Cv50\adr_asm.inc"
 #endif
+
+#ifdef CX6Cv50
+	#include "xls\M6Cv50\adr_asm.inc"
+#endif

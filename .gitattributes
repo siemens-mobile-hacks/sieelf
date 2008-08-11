@@ -865,6 +865,9 @@ MultiSimPatch/vkp/blocksamples/5402.txt -text
 MultiSimPatch/vkp/blocksamples/5403.tid -text
 MultiSimPatch/vkp/blocksamples/5403.txt -text
 MultiSimPatch/vkp/blocksamples/block_formats.txt -text
+MultiSimPatch/xls/CX6Cv50/adr_asm.inc -text
+MultiSimPatch/xls/CX6Cv50/adr_c.h -text
+MultiSimPatch/xls/CX6Cv50/multisim.xcl -text
 MultiSimPatch/xls/E71Cv41/adr_asm.inc -text
 MultiSimPatch/xls/E71Cv41/adr_c.h -text
 MultiSimPatch/xls/E71Cv41/multisim.xcl -text
