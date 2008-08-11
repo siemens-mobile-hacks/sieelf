@@ -244,26 +244,33 @@
 #define ADDR_GetCalleeNumber	0xA09833EE+1
 #define ADDR_UpdateWndItem	0xA0A35900+1
 #define ADDR_memcmp		0xA142627C+1
-#define ADDR_DrawString		0xA09A150F
-#define ADDR_FreeWS		0xA01F73A1
-#define ADDR_AllocWS		0xA09974F9
-#define ADDR_GetCurMenuItem	0xA09A997B
+//#define ADDR_DrawString		0xA09A150F
+//#define ADDR_FreeWS		0xA01F73A1
+//#define ADDR_AllocWS		0xA09974F9
+//#define ADDR_GetCurMenuItem	0xA09A997B
 #define ADDR_IncommingPDU	0xA8E57F90
 
-#define ADDR_wstrcat		0xA06A0FE8
-#define ADDR_wsAppendChar	0xA06A0FF4
+//#define ADDR_wstrcat		0xA01F7C2C+1
+#define ADDR_wsAppendChar	0xA01F7CF4+1
 #define ADDR_IsCalling		0xA0DE7EA4+1
 #define ADDR_CallIN		0xA02FCB7C+1
-#define ADDR_CallOUT		0xA02FCD22+1
-#define ADDR_ADDRBook		0xA01F8062+1
+//#define ADDR_CallOUT		0xA02FCD22+1
+//#define ADDR_ADDRBook		0xA01F8062+1
 
 #define BASEADDRESS		0xA1580000
 
 #define ADDR_GetPhoneBookNum	0xA098A4CE+1
-#define BASEADDRESS		0xA1580000
-#define UNUSERAM_NUM		0xA8A7F300
-#define UNUSERAM_METHOD		0xA8A7F3E0
-#define UNUSERAM_OLD_REDRAW	0xA8A7F3D0
+//#define BASEADDRESS		0xA1580000
+//#define UNUSERAM_NUM		0xA8A7F300
+//#define UNUSERAM_METHOD		0xA8A7F3E0
+//#define UNUSERAM_OLD_REDRAW	0xA8A7F3D0
+
+#define ADDR_CallOUT2		0xA0A7D666+1
+#define	AllocMLMenuItem_adr	0xA09AE477
+#define GetMLMenuGUI_adr	0xA09ADC68+1
+#define AllocMenuWS_adr		0xA09AB25D
+#define SetMLMenuItemText_adr	0xA09AE04F
+
 #endif
 
 

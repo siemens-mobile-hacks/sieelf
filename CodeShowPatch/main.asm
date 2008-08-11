@@ -3,7 +3,7 @@
 
 	EXTERN	AppendInfoW
 	EXTERN	UpdateLocaleToItem
-	EXTERN	do_phonebook_work 
+	//EXTERN	do_phonebook_work 
 
 #ifndef SK6Cv50
 	RSEG	CODE

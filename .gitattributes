@@ -197,6 +197,7 @@ CodeShowPatch/SK6Cv50.xcl -text
 CodeShowPatch/about.txt -text
 CodeShowPatch/addr.h -text
 CodeShowPatch/entry_elka.asm -text
+CodeShowPatch/entry_newsgold.asm -text
 CodeShowPatch/func.asm -text
 CodeShowPatch/main.asm -text
 CodeShowPatch/menuText.c -text
