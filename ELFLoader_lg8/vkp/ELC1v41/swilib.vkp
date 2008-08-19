@@ -674,7 +674,7 @@
 0A30: 0xA8ED97D4   ; 828C: char *RamTemporaryHeapSize()
 
 0A40: 0xA8EC6CA0   ; 8290: int *RamCallState()
-0A48: 0xA05E0388   ; 292: __arm int RefreshAlarmClock() 
+0A44: 0xA05E0388   ; 291: __arm int RefreshAlarmClock() 
 0A58: 0xA05C7A8B   ; 296: __thumb void getProfileNameByN(WSHDR *ws, int n, int _0)
 #pragma disable old_equal_ff
 +0
