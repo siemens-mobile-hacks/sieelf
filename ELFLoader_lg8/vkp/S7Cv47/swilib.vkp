@@ -595,5 +595,10 @@
 0928: 0xA8D06FEE   ; 24A:  char *RamChannel()
 
 0950: 0xA031EA63   ; 254:  __arm int StartNativeExplorer(NativeExplorerData* data)
+
+0A44: 0xA029FDB0   ; 291: int RefreshAlarmClock()
 #pragma disable old_equal_ff
 +0
+
+
+;locale=Chinese_People's Republic of China.936
