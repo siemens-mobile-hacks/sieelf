@@ -1,0 +1,1006 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    13/Aug/2008  18:45:21 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  G:\Arm\SieELF\cbn_SRC\MP3Player\mp3dec\dct32.c       #
+#    Command line    =  G:\Arm\SieELF\cbn_SRC\MP3Player\mp3dec\dct32.c -lC   #
+#                       G:\Arm\SieELF\cbn_SRC\MP3Player\Release\List\ -lA    #
+#                       G:\Arm\SieELF\cbn_SRC\MP3Player\Release\List\ -o     #
+#                       G:\Arm\SieELF\cbn_SRC\MP3Player\Release\Obj\ -s9     #
+#                       --no_unroll --cpu_mode arm --endian little --cpu     #
+#                       ARM926EJ-S --stack_align 4 --interwork -e            #
+#                       --char_is_signed --fpu None -I                       #
+#                       D:\ewarm_442\arm\INC\ --inline_threshold=2           #
+#    List file       =  G:\Arm\SieELF\cbn_SRC\MP3Player\Release\List\dct32.l #
+#                       st                                                   #
+#    Object file     =  G:\Arm\SieELF\cbn_SRC\MP3Player\Release\Obj\dct32.r7 #
+#                       9                                                    #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+G:\Arm\SieELF\cbn_SRC\MP3Player\mp3dec\dct32.c
+      1          /* ***** BEGIN LICENSE BLOCK ***** 
+                                                   ^
+Warning[Pa050]: non-native end of line sequence detected (this diagnostic is
+          only issued once)
+      2           * Version: RCSL 1.0/RPSL 1.0 
+      3           *  
+      4           * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+      5           *      
+      6           * The contents of this file, and the files included with this file, are 
+      7           * subject to the current version of the RealNetworks Public Source License 
+      8           * Version 1.0 (the "RPSL") available at 
+      9           * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+     10           * the file under the RealNetworks Community Source License Version 1.0 
+     11           * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+     12           * in which case the RCSL will apply. You may also obtain the license terms 
+     13           * directly from RealNetworks.  You may not use this file except in 
+     14           * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+     15           * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+     16           * RCSL for the rights, obligations and limitations governing use of the 
+     17           * contents of the file.  
+     18           *  
+     19           * This file is part of the Helix DNA Technology. RealNetworks is the 
+     20           * developer of the Original Code and owns the copyrights in the portions 
+     21           * it created. 
+     22           *  
+     23           * This file, and the files included with this file, is distributed and made 
+     24           * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+     25           * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+     26           * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+     27           * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+     28           * 
+     29           * Technology Compatibility Kit Test Suite(s) Location: 
+     30           *    http://www.helixcommunity.org/content/tck 
+     31           * 
+     32           * Contributor(s): 
+     33           *  
+     34           * ***** END LICENSE BLOCK ***** */ 
+     35          
+     36          /**************************************************************************************
+     37           * Fixed-point MP3 decoder
+     38           * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+     39           * June 2003
+     40           *
+     41           * dct32.c - optimized implementations of 32-point DCT for matrixing stage of 
+     42           *             polyphase filter
+     43           **************************************************************************************/
+     44          
+     45          #include "coder.h"
+     46          #include "assembly.h"
+     47          
+     48          #define COS0_0  0x4013c251	/* Q31 */
+     49          #define COS0_1  0x40b345bd	/* Q31 */
+     50          #define COS0_2  0x41fa2d6d	/* Q31 */
+     51          #define COS0_3  0x43f93421	/* Q31 */
+     52          #define COS0_4  0x46cc1bc4	/* Q31 */
+     53          #define COS0_5  0x4a9d9cf0	/* Q31 */
+     54          #define COS0_6  0x4fae3711	/* Q31 */
+     55          #define COS0_7  0x56601ea7	/* Q31 */
+     56          #define COS0_8  0x5f4cf6eb	/* Q31 */
+     57          #define COS0_9  0x6b6fcf26	/* Q31 */
+     58          #define COS0_10 0x7c7d1db3	/* Q31 */
+     59          #define COS0_11 0x4ad81a97	/* Q30 */
+     60          #define COS0_12 0x5efc8d96	/* Q30 */
+     61          #define COS0_13 0x41d95790	/* Q29 */
+     62          #define COS0_14 0x6d0b20cf	/* Q29 */
+     63          #define COS0_15 0x518522fb	/* Q27 */
+     64          
+     65          #define COS1_0  0x404f4672	/* Q31 */
+     66          #define COS1_1  0x42e13c10	/* Q31 */
+     67          #define COS1_2  0x48919f44	/* Q31 */
+     68          #define COS1_3  0x52cb0e63	/* Q31 */
+     69          #define COS1_4  0x64e2402e	/* Q31 */
+     70          #define COS1_5  0x43e224a9	/* Q30 */
+     71          #define COS1_6  0x6e3c92c1	/* Q30 */
+     72          #define COS1_7  0x519e4e04	/* Q28 */
+     73          
+     74          #define COS2_0  0x4140fb46	/* Q31 */
+     75          #define COS2_1  0x4cf8de88	/* Q31 */
+     76          #define COS2_2  0x73326bbf	/* Q31 */
+     77          #define COS2_3  0x52036742	/* Q29 */
+     78          
+     79          #define COS3_0  0x4545e9ef	/* Q31 */
+     80          #define COS3_1  0x539eba45	/* Q30 */
+     81          
+     82          #define COS4_0  0x5a82799a	/* Q31 */
+     83          
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     84          static const int dcttab[48] = {
+   \                     dcttab:
+   \   00000000   51C21340FB22       DC32 1075036753, 1367679739, 1078937202, 1085490621, 1829445839
+   \              855172464F40
+   \              BD45B340CF20
+   \              0B6D        
+   \   00000014   103CE1426D2D       DC32 1122057232, 1106914669, 1104762768, 1217503044, 1140405281
+   \              FA419057D941
+   \              449F91482134
+   \              F943        
+   \   00000028   968DFC5E630E       DC32 1593609622, 1389039203, 1187781572, 1255676567, 1692549166
+   \              CB52C41BCC46
+   \              971AD84A2E40
+   \              E264        
+   \   0000003C   F09C9D4AB31D       DC32 1251843312, 2088574387, 1138893993, 1336817425, 1802489638
+   \              7D7CA924E243
+   \              1137AE4F26CF
+   \              6F6B        
+   \   00000050   C1923C6EA71E       DC32 1849463489, 1449139879, 1598879467, 1369329156, 1094777670
+   \              6056EBF64C5F
+   \              044E9E5146FB
+   \              4041        
+   \   00000064   42670352EFE9       DC32 1375954754, 1162209775, 1291378312, 1932684223, 1402911301
+   \              454588DEF84C
+   \              BF6B327345BA
+   \              9E53        
+   \   00000078   BA04BFBEBE98       DC32 -1094777670, -1375954754, 1162209775, -1291378312, -1932684223
+   \              FCADEFE94545
+   \              782107B34194
+   \              CD8C        
+   \   0000008C   45BA9E5346FB       DC32 1402911301, 1094777670, 1375954754, 1162209775, 1291378312
+   \              404142670352
+   \              EFE9454588DE
+   \              F84C        
+   \   000000A0   BF6B327345BA       DC32 1932684223, 1402911301, -1094777670, -1375954754, 1162209775
+   \              9E53BA04BFBE
+   \              BE98FCADEFE9
+   \              4545        
+   \   000000B4   782107B34194       DC32 -1291378312, -1932684223, 1402911301
+   \              CD8C45BA9E53
+     85          	/* first pass */
+     86          	COS0_0, COS0_15, COS1_0,	/* 31, 27, 31 */
+     87          	COS0_1, COS0_14, COS1_1,	/* 31, 29, 31 */
+     88          	COS0_2, COS0_13, COS1_2,	/* 31, 29, 31 */
+     89          	COS0_3, COS0_12, COS1_3,	/* 31, 30, 31 */
+     90          	COS0_4, COS0_11, COS1_4,	/* 31, 30, 31 */
+     91          	COS0_5, COS0_10, COS1_5,	/* 31, 31, 30 */
+     92          	COS0_6, COS0_9,  COS1_6,	/* 31, 31, 30 */
+     93          	COS0_7, COS0_8,  COS1_7,	/* 31, 31, 28 */
+     94          	/* second pass */
+     95          	 COS2_0,  COS2_3, COS3_0,	/* 31, 29, 31 */
+     96          	 COS2_1,  COS2_2, COS3_1,	/* 31, 31, 30 */
+     97          	-COS2_0, -COS2_3, COS3_0, 	/* 31, 29, 31 */
+     98          	-COS2_1, -COS2_2, COS3_1, 	/* 31, 31, 30 */
+     99          	 COS2_0,  COS2_3, COS3_0, 	/* 31, 29, 31 */
+    100          	 COS2_1,  COS2_2, COS3_1, 	/* 31, 31, 30 */
+    101          	-COS2_0, -COS2_3, COS3_0, 	/* 31, 29, 31 */
+    102          	-COS2_1, -COS2_2, COS3_1, 	/* 31, 31, 30 */
+    103          };
+    104          
+    105          #define D32FP(i, s0, s1, s2) { \
+    106              a0 = buf[i];			a3 = buf[31-i]; \
+    107          	a1 = buf[15-i];			a2 = buf[16+i]; \
+    108              b0 = a0 + a3;			b3 = MULSHIFT32(*cptr++, a0 - a3) << (s0);	\
+    109          	b1 = a1 + a2;			b2 = MULSHIFT32(*cptr++, a1 - a2) << (s1);	\
+    110          	buf[i] = b0 + b1;		buf[15-i] = MULSHIFT32(*cptr,   b0 - b1) << (s2); \
+    111          	buf[16+i] = b2 + b3;    buf[31-i] = MULSHIFT32(*cptr++, b3 - b2) << (s2); \
+    112          }
+    113          
+    114          /**************************************************************************************
+    115           * Function:    FDCT32
+    116           *
+    117           * Description: Ken's highly-optimized 32-point DCT (radix-4 + radix-8) 
+    118           *
+    119           * Inputs:      input buffer, length = 32 samples
+    120           *              require at least 6 guard bits in input vector x to avoid possibility
+    121           *                of overflow in internal calculations (see bbtest_imdct test app)
+    122           *              buffer offset and oddblock flag for polyphase filter input buffer
+    123           *              number of guard bits in input
+    124           *
+    125           * Outputs:     output buffer, data copied and interleaved for polyphase filter
+    126           *              no guarantees about number of guard bits in output
+    127           *
+    128           * Return:      none
+    129           *
+    130           * Notes:       number of muls = 4*8 + 12*4 = 80
+    131           *              final stage of DCT is hardcoded to shuffle data into the proper order
+    132           *                for the polyphase filterbank
+    133           *              fully unrolled stage 1, for max precision (scale the 1/cos() factors
+    134           *                differently, depending on magnitude)
+    135           *              guard bit analysis verified by exhaustive testing of all 2^32 
+    136           *                combinations of max pos/max neg values in x[]
+    137           *
+    138           * TODO:        code organization and optimization for ARM
+    139           *              possibly interleave stereo (cut # of coef loads in half - may not have
+    140           *                enough registers)
+    141           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    142          void FDCT32(int *buf, int *dest, int offset, int oddBlock, int gb)
+    143          {
+   \                     xmp3_FDCT32:
+   \   00000000   FE4F2DE9           PUSH     {R1-R11,LR}
+   \   00000004   1CD04DE2           SUB      SP,SP,#+28
+   \   00000008   0040A0E1           MOV      R4,R0
+   \   0000000C   4C009DE5           LDR      R0,[SP, #+76]
+    144              int i, s, tmp, es;
+    145              const int *cptr = dcttab;
+    146              int a0, a1, a2, a3, a4, a5, a6, a7;
+    147              int b0, b1, b2, b3, b4, b5, b6, b7;
+    148          	int *d;
+    149          
+    150          	/* scaling - ensure at least 6 guard bits for DCT 
+    151          	 * (in practice this is already true 99% of time, so this code is
+    152          	 *  almost never triggered)
+    153          	 */
+    154          	es = 0;
+   \   00000010   0020A0E3           MOV      R2,#+0
+   \   00000014   00208DE5           STR      R2,[SP, #+0]
+    155          	if (gb < 6) {
+   \   00000018   060050E3           CMP      R0,#+6
+   \   0000001C   090000AA           BGE      ??xmp3_FDCT32_0
+    156          		es = 6 - gb;
+   \   00000020   060060E2           RSB      R0,R0,#+6
+   \   00000024   00008DE5           STR      R0,[SP, #+0]
+    157          		for (i = 0; i < 32; i++)
+   \   00000028   0000A0E3           MOV      R0,#+0
+    158          			buf[i] >>= es;
+   \                     ??xmp3_FDCT32_1:
+   \   0000002C   001194E7           LDR      R1,[R4, +R0, LSL #+2]
+   \   00000030   00209DE5           LDR      R2,[SP, #+0]
+   \   00000034   5112A0E1           ASR      R1,R1,R2
+   \   00000038   001184E7           STR      R1,[R4, +R0, LSL #+2]
+   \   0000003C   010080E2           ADD      R0,R0,#+1
+   \   00000040   200050E3           CMP      R0,#+32
+   \   00000044   F8FFFFBA           BLT      ??xmp3_FDCT32_1
+    159          	}
+    160          
+    161          	/* first pass */    
+    162          	D32FP(0, 1, 5, 1);
+   \                     ??xmp3_FDCT32_0:
+   \   00000048   000094E5           LDR      R0,[R4, #+0]
+   \   0000004C   7C1094E5           LDR      R1,[R4, #+124]
+   \   00000050   3C8094E5           LDR      R8,[R4, #+60]
+   \   00000054   409094E5           LDR      R9,[R4, #+64]
+   \   00000058   005081E0           ADD      R5,R1,R0
+   \   0000005C   011040E0           SUB      R1,R0,R1
+   \   00000060   EC089FE5           LDR      R0,??xmp3_FDCT32_2  ;; 0x4013c251
+   \   00000064   087089E0           ADD      R7,R9,R8
+   \   00000068   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   0000006C   8060A0E1           LSL      R6,R0,#+1
+   \   00000070   E0089FE5           LDR      R0,??xmp3_FDCT32_2+0x4  ;; 0x518522fb
+   \   00000074   091048E0           SUB      R1,R8,R9
+   \   00000078   DC989FE5           LDR      R9,??xmp3_FDCT32_2+0x8  ;; 0x404f4672
+   \   0000007C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000080   8082A0E1           LSL      R8,R0,#+5
+   \   00000084   050087E0           ADD      R0,R7,R5
+   \   00000088   000084E5           STR      R0,[R4, #+0]
+   \   0000008C   071045E0           SUB      R1,R5,R7
+   \   00000090   0900A0E1           MOV      R0,R9
+   \   00000094   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000098   8000A0E1           LSL      R0,R0,#+1
+   \   0000009C   3C0084E5           STR      R0,[R4, #+60]
+   \   000000A0   080086E0           ADD      R0,R6,R8
+   \   000000A4   400084E5           STR      R0,[R4, #+64]
+   \   000000A8   081046E0           SUB      R1,R6,R8
+   \   000000AC   0900A0E1           MOV      R0,R9
+   \   000000B0   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000000B4   8000A0E1           LSL      R0,R0,#+1
+   \   000000B8   7C0084E5           STR      R0,[R4, #+124]
+    163          	D32FP(1, 1, 3, 1);
+   \   000000BC   040094E5           LDR      R0,[R4, #+4]
+   \   000000C0   781094E5           LDR      R1,[R4, #+120]
+   \   000000C4   388094E5           LDR      R8,[R4, #+56]
+   \   000000C8   449094E5           LDR      R9,[R4, #+68]
+   \   000000CC   005081E0           ADD      R5,R1,R0
+   \   000000D0   011040E0           SUB      R1,R0,R1
+   \   000000D4   84089FE5           LDR      R0,??xmp3_FDCT32_2+0xC  ;; 0x40b345bd
+   \   000000D8   087089E0           ADD      R7,R9,R8
+   \   000000DC   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000000E0   8060A0E1           LSL      R6,R0,#+1
+   \   000000E4   78089FE5           LDR      R0,??xmp3_FDCT32_2+0x10  ;; 0x6d0b20cf
+   \   000000E8   091048E0           SUB      R1,R8,R9
+   \   000000EC   74989FE5           LDR      R9,??xmp3_FDCT32_2+0x14  ;; 0x42e13c10
+   \   000000F0   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000000F4   8081A0E1           LSL      R8,R0,#+3
+   \   000000F8   050087E0           ADD      R0,R7,R5
+   \   000000FC   040084E5           STR      R0,[R4, #+4]
+   \   00000100   071045E0           SUB      R1,R5,R7
+   \   00000104   0900A0E1           MOV      R0,R9
+   \   00000108   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   0000010C   8000A0E1           LSL      R0,R0,#+1
+   \   00000110   380084E5           STR      R0,[R4, #+56]
+   \   00000114   080086E0           ADD      R0,R6,R8
+   \   00000118   440084E5           STR      R0,[R4, #+68]
+   \   0000011C   081046E0           SUB      R1,R6,R8
+   \   00000120   0900A0E1           MOV      R0,R9
+   \   00000124   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000128   8000A0E1           LSL      R0,R0,#+1
+   \   0000012C   780084E5           STR      R0,[R4, #+120]
+    164          	D32FP(2, 1, 3, 1);
+   \   00000130   080094E5           LDR      R0,[R4, #+8]
+   \   00000134   741094E5           LDR      R1,[R4, #+116]
+   \   00000138   348094E5           LDR      R8,[R4, #+52]
+   \   0000013C   489094E5           LDR      R9,[R4, #+72]
+   \   00000140   005081E0           ADD      R5,R1,R0
+   \   00000144   011040E0           SUB      R1,R0,R1
+   \   00000148   1C089FE5           LDR      R0,??xmp3_FDCT32_2+0x18  ;; 0x41fa2d6d
+   \   0000014C   087089E0           ADD      R7,R9,R8
+   \   00000150   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000154   8060A0E1           LSL      R6,R0,#+1
+   \   00000158   10089FE5           LDR      R0,??xmp3_FDCT32_2+0x1C  ;; 0x41d95790
+   \   0000015C   091048E0           SUB      R1,R8,R9
+   \   00000160   0C989FE5           LDR      R9,??xmp3_FDCT32_2+0x20  ;; 0x48919f44
+   \   00000164   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000168   8081A0E1           LSL      R8,R0,#+3
+   \   0000016C   050087E0           ADD      R0,R7,R5
+   \   00000170   080084E5           STR      R0,[R4, #+8]
+   \   00000174   071045E0           SUB      R1,R5,R7
+   \   00000178   0900A0E1           MOV      R0,R9
+   \   0000017C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000180   8000A0E1           LSL      R0,R0,#+1
+   \   00000184   340084E5           STR      R0,[R4, #+52]
+   \   00000188   080086E0           ADD      R0,R6,R8
+   \   0000018C   480084E5           STR      R0,[R4, #+72]
+   \   00000190   081046E0           SUB      R1,R6,R8
+   \   00000194   0900A0E1           MOV      R0,R9
+   \   00000198   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   0000019C   8000A0E1           LSL      R0,R0,#+1
+   \   000001A0   740084E5           STR      R0,[R4, #+116]
+    165          	D32FP(3, 1, 2, 1);
+   \   000001A4   0C0094E5           LDR      R0,[R4, #+12]
+   \   000001A8   701094E5           LDR      R1,[R4, #+112]
+   \   000001AC   308094E5           LDR      R8,[R4, #+48]
+   \   000001B0   4C9094E5           LDR      R9,[R4, #+76]
+   \   000001B4   005081E0           ADD      R5,R1,R0
+   \   000001B8   011040E0           SUB      R1,R0,R1
+   \   000001BC   B4079FE5           LDR      R0,??xmp3_FDCT32_2+0x24  ;; 0x43f93421
+   \   000001C0   087089E0           ADD      R7,R9,R8
+   \   000001C4   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000001C8   8060A0E1           LSL      R6,R0,#+1
+   \   000001CC   A8079FE5           LDR      R0,??xmp3_FDCT32_2+0x28  ;; 0x5efc8d96
+   \   000001D0   091048E0           SUB      R1,R8,R9
+   \   000001D4   A4979FE5           LDR      R9,??xmp3_FDCT32_2+0x2C  ;; 0x52cb0e63
+   \   000001D8   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000001DC   0081A0E1           LSL      R8,R0,#+2
+   \   000001E0   050087E0           ADD      R0,R7,R5
+   \   000001E4   0C0084E5           STR      R0,[R4, #+12]
+   \   000001E8   071045E0           SUB      R1,R5,R7
+   \   000001EC   0900A0E1           MOV      R0,R9
+   \   000001F0   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000001F4   8000A0E1           LSL      R0,R0,#+1
+   \   000001F8   300084E5           STR      R0,[R4, #+48]
+   \   000001FC   080086E0           ADD      R0,R6,R8
+   \   00000200   4C0084E5           STR      R0,[R4, #+76]
+   \   00000204   081046E0           SUB      R1,R6,R8
+   \   00000208   0900A0E1           MOV      R0,R9
+   \   0000020C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000210   8000A0E1           LSL      R0,R0,#+1
+   \   00000214   700084E5           STR      R0,[R4, #+112]
+    166          	D32FP(4, 1, 2, 1);
+   \   00000218   100094E5           LDR      R0,[R4, #+16]
+   \   0000021C   6C1094E5           LDR      R1,[R4, #+108]
+   \   00000220   2C8094E5           LDR      R8,[R4, #+44]
+   \   00000224   509094E5           LDR      R9,[R4, #+80]
+   \   00000228   005081E0           ADD      R5,R1,R0
+   \   0000022C   011040E0           SUB      R1,R0,R1
+   \   00000230   4C079FE5           LDR      R0,??xmp3_FDCT32_2+0x30  ;; 0x46cc1bc4
+   \   00000234   087089E0           ADD      R7,R9,R8
+   \   00000238   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   0000023C   8060A0E1           LSL      R6,R0,#+1
+   \   00000240   40079FE5           LDR      R0,??xmp3_FDCT32_2+0x34  ;; 0x4ad81a97
+   \   00000244   091048E0           SUB      R1,R8,R9
+   \   00000248   3C979FE5           LDR      R9,??xmp3_FDCT32_2+0x38  ;; 0x64e2402e
+   \   0000024C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000250   0081A0E1           LSL      R8,R0,#+2
+   \   00000254   050087E0           ADD      R0,R7,R5
+   \   00000258   100084E5           STR      R0,[R4, #+16]
+   \   0000025C   071045E0           SUB      R1,R5,R7
+   \   00000260   0900A0E1           MOV      R0,R9
+   \   00000264   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000268   8000A0E1           LSL      R0,R0,#+1
+   \   0000026C   2C0084E5           STR      R0,[R4, #+44]
+   \   00000270   080086E0           ADD      R0,R6,R8
+   \   00000274   500084E5           STR      R0,[R4, #+80]
+   \   00000278   081046E0           SUB      R1,R6,R8
+   \   0000027C   0900A0E1           MOV      R0,R9
+   \   00000280   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000284   8000A0E1           LSL      R0,R0,#+1
+   \   00000288   6C0084E5           STR      R0,[R4, #+108]
+    167          	D32FP(5, 1, 1, 2);
+   \   0000028C   140094E5           LDR      R0,[R4, #+20]
+   \   00000290   681094E5           LDR      R1,[R4, #+104]
+   \   00000294   288094E5           LDR      R8,[R4, #+40]
+   \   00000298   549094E5           LDR      R9,[R4, #+84]
+   \   0000029C   005081E0           ADD      R5,R1,R0
+   \   000002A0   011040E0           SUB      R1,R0,R1
+   \   000002A4   E4069FE5           LDR      R0,??xmp3_FDCT32_2+0x3C  ;; 0x4a9d9cf0
+   \   000002A8   087089E0           ADD      R7,R9,R8
+   \   000002AC   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000002B0   8060A0E1           LSL      R6,R0,#+1
+   \   000002B4   D8069FE5           LDR      R0,??xmp3_FDCT32_2+0x40  ;; 0x7c7d1db3
+   \   000002B8   091048E0           SUB      R1,R8,R9
+   \   000002BC   D4969FE5           LDR      R9,??xmp3_FDCT32_2+0x44  ;; 0x43e224a9
+   \   000002C0   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000002C4   8080A0E1           LSL      R8,R0,#+1
+   \   000002C8   050087E0           ADD      R0,R7,R5
+   \   000002CC   140084E5           STR      R0,[R4, #+20]
+   \   000002D0   071045E0           SUB      R1,R5,R7
+   \   000002D4   0900A0E1           MOV      R0,R9
+   \   000002D8   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000002DC   0001A0E1           LSL      R0,R0,#+2
+   \   000002E0   280084E5           STR      R0,[R4, #+40]
+   \   000002E4   080086E0           ADD      R0,R6,R8
+   \   000002E8   540084E5           STR      R0,[R4, #+84]
+   \   000002EC   081046E0           SUB      R1,R6,R8
+   \   000002F0   0900A0E1           MOV      R0,R9
+   \   000002F4   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000002F8   0001A0E1           LSL      R0,R0,#+2
+   \   000002FC   680084E5           STR      R0,[R4, #+104]
+    168          	D32FP(6, 1, 1, 2);
+   \   00000300   180094E5           LDR      R0,[R4, #+24]
+   \   00000304   641094E5           LDR      R1,[R4, #+100]
+   \   00000308   248094E5           LDR      R8,[R4, #+36]
+   \   0000030C   589094E5           LDR      R9,[R4, #+88]
+   \   00000310   005081E0           ADD      R5,R1,R0
+   \   00000314   011040E0           SUB      R1,R0,R1
+   \   00000318   7C069FE5           LDR      R0,??xmp3_FDCT32_2+0x48  ;; 0x4fae3711
+   \   0000031C   087089E0           ADD      R7,R9,R8
+   \   00000320   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000324   8060A0E1           LSL      R6,R0,#+1
+   \   00000328   70069FE5           LDR      R0,??xmp3_FDCT32_2+0x4C  ;; 0x6b6fcf26
+   \   0000032C   091048E0           SUB      R1,R8,R9
+   \   00000330   6C969FE5           LDR      R9,??xmp3_FDCT32_2+0x50  ;; 0x6e3c92c1
+   \   00000334   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000338   8080A0E1           LSL      R8,R0,#+1
+   \   0000033C   050087E0           ADD      R0,R7,R5
+   \   00000340   180084E5           STR      R0,[R4, #+24]
+   \   00000344   071045E0           SUB      R1,R5,R7
+   \   00000348   0900A0E1           MOV      R0,R9
+   \   0000034C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000350   0001A0E1           LSL      R0,R0,#+2
+   \   00000354   240084E5           STR      R0,[R4, #+36]
+   \   00000358   080086E0           ADD      R0,R6,R8
+   \   0000035C   580084E5           STR      R0,[R4, #+88]
+   \   00000360   081046E0           SUB      R1,R6,R8
+   \   00000364   0900A0E1           MOV      R0,R9
+    169          	D32FP(7, 1, 1, 4);
+   \   00000368   38969FE5           LDR      R9,??xmp3_FDCT32_2+0x54  ;; dcttab + 96
+   \   0000036C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000370   0001A0E1           LSL      R0,R0,#+2
+   \   00000374   640084E5           STR      R0,[R4, #+100]
+   \   00000378   1C1094E5           LDR      R1,[R4, #+28]
+    170          
+    171          	/* second pass */
+    172          	for (i = 4; i > 0; i--) {
+   \   0000037C   04A0A0E3           MOV      R10,#+4
+   \   00000380   04108DE5           STR      R1,[SP, #+4]
+   \   00000384   201094E5           LDR      R1,[R4, #+32]
+   \   00000388   605094E5           LDR      R5,[R4, #+96]
+   \   0000038C   08108DE5           STR      R1,[SP, #+8]
+   \   00000390   04009DE5           LDR      R0,[SP, #+4]
+   \   00000394   006085E0           ADD      R6,R5,R0
+   \   00000398   5CB094E5           LDR      R11,[R4, #+92]
+   \   0000039C   051040E0           SUB      R1,R0,R5
+   \   000003A0   04069FE5           LDR      R0,??xmp3_FDCT32_2+0x58  ;; 0x56601ea7
+   \   000003A4   04569FE5           LDR      R5,??xmp3_FDCT32_2+0x5C  ;; 0x519e4e04
+   \   000003A8   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000003AC   8070A0E1           LSL      R7,R0,#+1
+   \   000003B0   08009DE5           LDR      R0,[SP, #+8]
+   \   000003B4   00808BE0           ADD      R8,R11,R0
+   \   000003B8   0B1040E0           SUB      R1,R0,R11
+   \   000003BC   F0059FE5           LDR      R0,??xmp3_FDCT32_2+0x60  ;; 0x5f4cf6eb
+   \   000003C0   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000003C4   80B0A0E1           LSL      R11,R0,#+1
+   \   000003C8   060088E0           ADD      R0,R8,R6
+   \   000003CC   1C0084E5           STR      R0,[R4, #+28]
+   \   000003D0   081046E0           SUB      R1,R6,R8
+   \   000003D4   0500A0E1           MOV      R0,R5
+   \   000003D8   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000003DC   0002A0E1           LSL      R0,R0,#+4
+   \   000003E0   200084E5           STR      R0,[R4, #+32]
+   \   000003E4   0B0087E0           ADD      R0,R7,R11
+   \   000003E8   5C0084E5           STR      R0,[R4, #+92]
+   \   000003EC   0B1047E0           SUB      R1,R7,R11
+   \   000003F0   0500A0E1           MOV      R0,R5
+   \   000003F4   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000003F8   0002A0E1           LSL      R0,R0,#+4
+   \   000003FC   600084E5           STR      R0,[R4, #+96]
+    173          		a0 = buf[0]; 	    a7 = buf[7];		a3 = buf[3];	    a4 = buf[4];
+   \                     ??xmp3_FDCT32_3:
+   \   00000400   ........           LDR      R0,[R4], #+28
+   \   00000404   ........           LDR      R1,[R4], #-16
+   \   00000408   ........           LDR      R8,[R4], #+4
+   \   0000040C   ........           LDR      R11,[R4], #-12
+    174          		b0 = a0 + a7;	    b7 = MULSHIFT32(*cptr++, a0 - a7) << 1;
+   \   00000410   006081E0           ADD      R6,R1,R0
+   \   00000414   011040E0           SUB      R1,R0,R1
+   \   00000418   ........           LDR      R0,[R9], #+4
+    175          		b3 = a3 + a4;	    b4 = MULSHIFT32(*cptr++, a3 - a4) << 3;
+   \   0000041C   08508BE0           ADD      R5,R11,R8
+   \   00000420   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000424   8070A0E1           LSL      R7,R0,#+1
+   \   00000428   ........           LDR      R0,[R9], #+4
+   \   0000042C   0B1048E0           SUB      R1,R8,R11
+   \   00000430   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000434   8081A0E1           LSL      R8,R0,#+3
+    176          		a0 = b0 + b3;	    a3 = MULSHIFT32(*cptr,   b0 - b3) << 1;
+   \   00000438   061085E0           ADD      R1,R5,R6
+   \   0000043C   04108DE5           STR      R1,[SP, #+4]
+   \   00000440   000099E5           LDR      R0,[R9, #+0]
+   \   00000444   051046E0           SUB      R1,R6,R5
+   \   00000448   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   0000044C   8050A0E1           LSL      R5,R0,#+1
+    177          		a4 = b4 + b7;		a7 = MULSHIFT32(*cptr++, b7 - b4) << 1;
+   \   00000450   081087E0           ADD      R1,R7,R8
+   \   00000454   10108DE5           STR      R1,[SP, #+16]
+   \   00000458   ........           LDR      R0,[R9], #+4
+   \   0000045C   081047E0           SUB      R1,R7,R8
+   \   00000460   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000464   8000A0E1           LSL      R0,R0,#+1
+   \   00000468   14008DE5           STR      R0,[SP, #+20]
+    178          
+    179          		a1 = buf[1];	    a6 = buf[6];	    a2 = buf[2];	    a5 = buf[5];
+   \   0000046C   ........           LDR      R0,[R4], #+20
+   \   00000470   ........           LDR      R1,[R4], #-16
+   \   00000474   ........           LDR      R7,[R4], #+12
+   \   00000478   ........           LDR      R8,[R4], #-20
+    180          		b1 = a1 + a6;	    b6 = MULSHIFT32(*cptr++, a1 - a6) << 1;
+   \   0000047C   003081E0           ADD      R3,R1,R0
+   \   00000480   0C308DE5           STR      R3,[SP, #+12]
+   \   00000484   011040E0           SUB      R1,R0,R1
+   \   00000488   ........           LDR      R0,[R9], #+4
+    181          		b2 = a2 + a5;	    b5 = MULSHIFT32(*cptr++, a2 - a5) << 1;
+   \   0000048C   07B088E0           ADD      R11,R8,R7
+   \   00000490   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000494   8060A0E1           LSL      R6,R0,#+1
+   \   00000498   ........           LDR      R0,[R9], #+4
+   \   0000049C   081047E0           SUB      R1,R7,R8
+   \   000004A0   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+    182          		a1 = b1 + b2;		a2 = MULSHIFT32(*cptr,   b1 - b2) << 2;
+   \   000004A4   0C109DE5           LDR      R1,[SP, #+12]
+   \   000004A8   8070A0E1           LSL      R7,R0,#+1
+   \   000004AC   01108BE0           ADD      R1,R11,R1
+   \   000004B0   08108DE5           STR      R1,[SP, #+8]
+   \   000004B4   0C009DE5           LDR      R0,[SP, #+12]
+    183          		a5 = b5 + b6;	    a6 = MULSHIFT32(*cptr++, b6 - b5) << 2;
+    184          
+    185          		b0 = a0 + a1;	    b1 = MULSHIFT32(COS4_0, a0 - a1) << 1;
+    186          		b2 = a2 + a3;	    b3 = MULSHIFT32(COS4_0, a3 - a2) << 1;
+    187          		buf[0] = b0;	    buf[1] = b1;
+    188          		buf[2] = b2 + b3;	buf[3] = b3;
+    189          
+    190          		b4 = a4 + a5;	    b5 = MULSHIFT32(COS4_0, a4 - a5) << 1;
+    191          		b6 = a6 + a7;	    b7 = MULSHIFT32(COS4_0, a7 - a6) << 1;
+    192          		b6 += b7;
+    193          		buf[4] = b4 + b6;	buf[5] = b5 + b7;
+    194          		buf[6] = b5 + b6;	buf[7] = b7;
+    195          
+    196          		buf += 8;
+    197          	}
+   \   000004B8   01A04AE2           SUB      R10,R10,#+1
+   \   000004BC   0B1040E0           SUB      R1,R0,R11
+   \   000004C0   000099E5           LDR      R0,[R9, #+0]
+   \   000004C4   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000004C8   00B1A0E1           LSL      R11,R0,#+2
+   \   000004CC   071086E0           ADD      R1,R6,R7
+   \   000004D0   0C108DE5           STR      R1,[SP, #+12]
+   \   000004D4   ........           LDR      R0,[R9], #+4
+   \   000004D8   071046E0           SUB      R1,R6,R7
+   \   000004DC   D4649FE5           LDR      R6,??xmp3_FDCT32_2+0x64  ;; 0x5a82799a
+   \   000004E0   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000004E4   0001A0E1           LSL      R0,R0,#+2
+   \   000004E8   18008DE5           STR      R0,[SP, #+24]
+   \   000004EC   04009DE5           LDR      R0,[SP, #+4]
+   \   000004F0   08109DE5           LDR      R1,[SP, #+8]
+   \   000004F4   011040E0           SUB      R1,R0,R1
+   \   000004F8   0600A0E1           MOV      R0,R6
+   \   000004FC   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000500   8080A0E1           LSL      R8,R0,#+1
+   \   00000504   0B1045E0           SUB      R1,R5,R11
+   \   00000508   0600A0E1           MOV      R0,R6
+   \   0000050C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000510   08109DE5           LDR      R1,[SP, #+8]
+   \   00000514   8070A0E1           LSL      R7,R0,#+1
+   \   00000518   04009DE5           LDR      R0,[SP, #+4]
+   \   0000051C   000081E0           ADD      R0,R1,R0
+   \   00000520   ........           STR      R0,[R4], #+4
+   \   00000524   ........           STR      R8,[R4], #+4
+   \   00000528   0B0085E0           ADD      R0,R5,R11
+   \   0000052C   000087E0           ADD      R0,R7,R0
+   \   00000530   ........           STR      R0,[R4], #+4
+   \   00000534   ........           STR      R7,[R4], #+4
+   \   00000538   10009DE5           LDR      R0,[SP, #+16]
+   \   0000053C   0C109DE5           LDR      R1,[SP, #+12]
+   \   00000540   011040E0           SUB      R1,R0,R1
+   \   00000544   0600A0E1           MOV      R0,R6
+   \   00000548   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   0000054C   18109DE5           LDR      R1,[SP, #+24]
+   \   00000550   8050A0E1           LSL      R5,R0,#+1
+   \   00000554   14009DE5           LDR      R0,[SP, #+20]
+   \   00000558   011040E0           SUB      R1,R0,R1
+   \   0000055C   0600A0E1           MOV      R0,R6
+   \   00000560   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000564   18109DE5           LDR      R1,[SP, #+24]
+   \   00000568   14209DE5           LDR      R2,[SP, #+20]
+   \   0000056C   0C309DE5           LDR      R3,[SP, #+12]
+   \   00000570   011082E0           ADD      R1,R2,R1
+   \   00000574   10209DE5           LDR      R2,[SP, #+16]
+   \   00000578   8000A0E1           LSL      R0,R0,#+1
+   \   0000057C   011080E0           ADD      R1,R0,R1
+   \   00000580   022083E0           ADD      R2,R3,R2
+   \   00000584   022081E0           ADD      R2,R1,R2
+   \   00000588   ........           STR      R2,[R4], #+4
+   \   0000058C   052080E0           ADD      R2,R0,R5
+   \   00000590   ........           STR      R2,[R4], #+4
+   \   00000594   051081E0           ADD      R1,R1,R5
+   \   00000598   ........           STR      R1,[R4], #+4
+   \   0000059C   ........           STR      R0,[R4], #+4
+   \   000005A0   01005AE3           CMP      R10,#+1
+   \   000005A4   95FFFFAA           BGE      ??xmp3_FDCT32_3
+    198          	buf -= 32;	/* reset */
+    199          
+    200          	/* sample 0 - always delayed one block */
+    201          	d = dest + 64*16 + ((offset - oddBlock) & 7) + (oddBlock ? 0 : VBUF_LENGTH);
+   \   000005A8   24309DE5           LDR      R3,[SP, #+36]
+   \   000005AC   7F00E0E3           MVN      R0,#+127
+   \   000005B0   042080E0           ADD      R2,R0,R4
+   \   000005B4   24009DE5           LDR      R0,[SP, #+36]
+    202          	s = buf[ 0];				d[0] = d[8] = s;
+   \   000005B8   004092E5           LDR      R4,[R2, #+0]
+   \   000005BC   000050E3           CMP      R0,#+0
+   \   000005C0   20009DE5           LDR      R0,[SP, #+32]
+   \   000005C4   0010A013           MOVNE    R1,#+0
+   \   000005C8   030040E0           SUB      R0,R0,R3
+   \   000005CC   1C309DE5           LDR      R3,[SP, #+28]
+   \   000005D0   441EA003           MOVEQ    R1,#+1088
+   \   000005D4   070000E2           AND      R0,R0,#0x7
+   \   000005D8   000183E0           ADD      R0,R3,R0, LSL #+2
+   \   000005DC   403DA0E3           MOV      R3,#+4096
+   \   000005E0   011180E0           ADD      R1,R0,R1, LSL #+2
+   \   000005E4   011083E0           ADD      R1,R3,R1
+   \   000005E8   204081E5           STR      R4,[R1, #+32]
+   \   000005EC   004081E5           STR      R4,[R1, #+0]
+    203              
+    204          	/* samples 16 to 31 */
+    205          	d = dest + offset + (oddBlock ? VBUF_LENGTH  : 0);
+   \   000005F0   24109DE5           LDR      R1,[SP, #+36]
+   \   000005F4   1C509DE5           LDR      R5,[SP, #+28]
+   \   000005F8   000051E3           CMP      R1,#+0
+   \   000005FC   20109DE5           LDR      R1,[SP, #+32]
+   \   00000600   444EA013           MOVNE    R4,#+1088
+   \   00000604   011185E0           ADD      R1,R5,R1, LSL #+2
+    206          
+    207          	s = buf[ 1];				d[0] = d[8] = s;	d += 64;
+   \   00000608   045092E5           LDR      R5,[R2, #+4]
+   \   0000060C   0040A003           MOVEQ    R4,#+0
+   \   00000610   044181E0           ADD      R4,R1,R4, LSL #+2
+   \   00000614   205084E5           STR      R5,[R4, #+32]
+   \   00000618   ........           STR      R5,[R4], #+256
+    208          
+    209          	tmp = buf[25] + buf[29];
+   \   0000061C   645092E5           LDR      R5,[R2, #+100]
+   \   00000620   746092E5           LDR      R6,[R2, #+116]
+   \   00000624   055086E0           ADD      R5,R6,R5
+    210          	s = buf[17] + tmp;			d[0] = d[8] = s;	d += 64;
+   \   00000628   446092E5           LDR      R6,[R2, #+68]
+   \   0000062C   066085E0           ADD      R6,R5,R6
+   \   00000630   206084E5           STR      R6,[R4, #+32]
+   \   00000634   ........           STR      R6,[R4], #+256
+    211          	s = buf[ 9] + buf[13];		d[0] = d[8] = s;	d += 64;
+   \   00000638   246092E5           LDR      R6,[R2, #+36]
+   \   0000063C   347092E5           LDR      R7,[R2, #+52]
+   \   00000640   066087E0           ADD      R6,R7,R6
+   \   00000644   206084E5           STR      R6,[R4, #+32]
+   \   00000648   ........           STR      R6,[R4], #+256
+    212          	s = buf[21] + tmp;			d[0] = d[8] = s;	d += 64;
+   \   0000064C   546092E5           LDR      R6,[R2, #+84]
+   \   00000650   065085E0           ADD      R5,R5,R6
+   \   00000654   205084E5           STR      R5,[R4, #+32]
+   \   00000658   ........           STR      R5,[R4], #+256
+    213          
+    214          	tmp = buf[29] + buf[27];
+   \   0000065C   745092E5           LDR      R5,[R2, #+116]
+   \   00000660   6C6092E5           LDR      R6,[R2, #+108]
+   \   00000664   055086E0           ADD      R5,R6,R5
+    215          	s = buf[ 5];				d[0] = d[8] = s;	d += 64;
+   \   00000668   146092E5           LDR      R6,[R2, #+20]
+   \   0000066C   206084E5           STR      R6,[R4, #+32]
+   \   00000670   ........           STR      R6,[R4], #+256
+    216          	s = buf[21] + tmp;			d[0] = d[8] = s;	d += 64;
+   \   00000674   546092E5           LDR      R6,[R2, #+84]
+   \   00000678   066085E0           ADD      R6,R5,R6
+   \   0000067C   206084E5           STR      R6,[R4, #+32]
+   \   00000680   ........           STR      R6,[R4], #+256
+    217          	s = buf[13] + buf[11];		d[0] = d[8] = s;	d += 64;
+   \   00000684   346092E5           LDR      R6,[R2, #+52]
+   \   00000688   2C7092E5           LDR      R7,[R2, #+44]
+   \   0000068C   066087E0           ADD      R6,R7,R6
+   \   00000690   206084E5           STR      R6,[R4, #+32]
+   \   00000694   ........           STR      R6,[R4], #+256
+    218          	s = buf[19] + tmp;			d[0] = d[8] = s;	d += 64;
+   \   00000698   4C6092E5           LDR      R6,[R2, #+76]
+   \   0000069C   065085E0           ADD      R5,R5,R6
+   \   000006A0   205084E5           STR      R5,[R4, #+32]
+   \   000006A4   ........           STR      R5,[R4], #+256
+    219          
+    220          	tmp = buf[27] + buf[31];
+   \   000006A8   6C5092E5           LDR      R5,[R2, #+108]
+   \   000006AC   7C6092E5           LDR      R6,[R2, #+124]
+   \   000006B0   055086E0           ADD      R5,R6,R5
+    221          	s = buf[ 3];				d[0] = d[8] = s;	d += 64;
+   \   000006B4   0C6092E5           LDR      R6,[R2, #+12]
+   \   000006B8   206084E5           STR      R6,[R4, #+32]
+   \   000006BC   ........           STR      R6,[R4], #+256
+    222          	s = buf[19] + tmp;			d[0] = d[8] = s;	d += 64;
+   \   000006C0   4C6092E5           LDR      R6,[R2, #+76]
+   \   000006C4   066085E0           ADD      R6,R5,R6
+   \   000006C8   206084E5           STR      R6,[R4, #+32]
+   \   000006CC   ........           STR      R6,[R4], #+256
+    223          	s = buf[11] + buf[15];		d[0] = d[8] = s;	d += 64;
+   \   000006D0   2C6092E5           LDR      R6,[R2, #+44]
+   \   000006D4   3C7092E5           LDR      R7,[R2, #+60]
+   \   000006D8   066087E0           ADD      R6,R7,R6
+   \   000006DC   206084E5           STR      R6,[R4, #+32]
+   \   000006E0   ........           STR      R6,[R4], #+256
+    224          	s = buf[23] + tmp;			d[0] = d[8] = s;	d += 64;
+   \   000006E4   5C6092E5           LDR      R6,[R2, #+92]
+   \   000006E8   065085E0           ADD      R5,R5,R6
+   \   000006EC   205084E5           STR      R5,[R4, #+32]
+   \   000006F0   ........           STR      R5,[R4], #+256
+    225          
+    226          	tmp = buf[31];
+    227          	s = buf[ 7];				d[0] = d[8] = s;	d += 64;
+   \   000006F4   1C6092E5           LDR      R6,[R2, #+28]
+   \   000006F8   7C5092E5           LDR      R5,[R2, #+124]
+   \   000006FC   206084E5           STR      R6,[R4, #+32]
+   \   00000700   ........           STR      R6,[R4], #+256
+    228          	s = buf[23] + tmp;			d[0] = d[8] = s;	d += 64;
+   \   00000704   5C6092E5           LDR      R6,[R2, #+92]
+   \   00000708   066085E0           ADD      R6,R5,R6
+   \   0000070C   206084E5           STR      R6,[R4, #+32]
+   \   00000710   ........           STR      R6,[R4], #+256
+    229          	s = buf[15];				d[0] = d[8] = s;	d += 64;
+   \   00000714   3C6092E5           LDR      R6,[R2, #+60]
+   \   00000718   206084E5           STR      R6,[R4, #+32]
+   \   0000071C   ........           STR      R6,[R4], #+256
+    230          	s = tmp;					d[0] = d[8] = s;
+   \   00000720   205084E5           STR      R5,[R4, #+32]
+   \   00000724   005084E5           STR      R5,[R4, #+0]
+    231          
+    232          	/* samples 16 to 1 (sample 16 used again) */
+    233          	d = dest + 16 + ((offset - oddBlock) & 7) + (oddBlock ? 0 : VBUF_LENGTH);
+   \   00000728   24409DE5           LDR      R4,[SP, #+36]
+    234          
+    235          	s = buf[ 1];				d[0] = d[8] = s;	d += 64;
+   \   0000072C   045092E5           LDR      R5,[R2, #+4]
+   \   00000730   000054E3           CMP      R4,#+0
+   \   00000734   0040A013           MOVNE    R4,#+0
+   \   00000738   444EA003           MOVEQ    R4,#+1088
+   \   0000073C   044180E0           ADD      R4,R0,R4, LSL #+2
+   \   00000740   404084E2           ADD      R4,R4,#+64
+   \   00000744   205084E5           STR      R5,[R4, #+32]
+   \   00000748   ........           STR      R5,[R4], #+256
+    236          
+    237          	tmp = buf[30] + buf[25];
+   \   0000074C   785092E5           LDR      R5,[R2, #+120]
+   \   00000750   646092E5           LDR      R6,[R2, #+100]
+   \   00000754   055086E0           ADD      R5,R6,R5
+    238          	s = buf[17] + tmp;			d[0] = d[8] = s;	d += 64;
+   \   00000758   446092E5           LDR      R6,[R2, #+68]
+   \   0000075C   066085E0           ADD      R6,R5,R6
+   \   00000760   206084E5           STR      R6,[R4, #+32]
+   \   00000764   ........           STR      R6,[R4], #+256
+    239          	s = buf[14] + buf[ 9];		d[0] = d[8] = s;	d += 64;
+   \   00000768   386092E5           LDR      R6,[R2, #+56]
+   \   0000076C   247092E5           LDR      R7,[R2, #+36]
+   \   00000770   066087E0           ADD      R6,R7,R6
+   \   00000774   206084E5           STR      R6,[R4, #+32]
+   \   00000778   ........           STR      R6,[R4], #+256
+    240          	s = buf[22] + tmp;			d[0] = d[8] = s;	d += 64;
+   \   0000077C   586092E5           LDR      R6,[R2, #+88]
+   \   00000780   065085E0           ADD      R5,R5,R6
+   \   00000784   205084E5           STR      R5,[R4, #+32]
+   \   00000788   ........           STR      R5,[R4], #+256
+    241          	s = buf[ 6];				d[0] = d[8] = s;	d += 64;
+   \   0000078C   185092E5           LDR      R5,[R2, #+24]
+   \   00000790   205084E5           STR      R5,[R4, #+32]
+   \   00000794   ........           STR      R5,[R4], #+256
+    242          
+    243          	tmp = buf[26] + buf[30];
+   \   00000798   685092E5           LDR      R5,[R2, #+104]
+   \   0000079C   786092E5           LDR      R6,[R2, #+120]
+   \   000007A0   055086E0           ADD      R5,R6,R5
+    244          	s = buf[22] + tmp;			d[0] = d[8] = s;	d += 64;
+   \   000007A4   586092E5           LDR      R6,[R2, #+88]
+   \   000007A8   066085E0           ADD      R6,R5,R6
+   \   000007AC   206084E5           STR      R6,[R4, #+32]
+   \   000007B0   ........           STR      R6,[R4], #+256
+    245          	s = buf[10] + buf[14];		d[0] = d[8] = s;	d += 64;
+   \   000007B4   286092E5           LDR      R6,[R2, #+40]
+   \   000007B8   387092E5           LDR      R7,[R2, #+56]
+   \   000007BC   066087E0           ADD      R6,R7,R6
+   \   000007C0   206084E5           STR      R6,[R4, #+32]
+   \   000007C4   ........           STR      R6,[R4], #+256
+    246          	s = buf[18] + tmp;			d[0] = d[8] = s;	d += 64;
+   \   000007C8   486092E5           LDR      R6,[R2, #+72]
+   \   000007CC   065085E0           ADD      R5,R5,R6
+   \   000007D0   205084E5           STR      R5,[R4, #+32]
+   \   000007D4   ........           STR      R5,[R4], #+256
+    247          	s = buf[ 2];				d[0] = d[8] = s;	d += 64;
+   \   000007D8   085092E5           LDR      R5,[R2, #+8]
+   \   000007DC   205084E5           STR      R5,[R4, #+32]
+   \   000007E0   ........           STR      R5,[R4], #+256
+    248          
+    249          	tmp = buf[28] + buf[26];
+   \   000007E4   705092E5           LDR      R5,[R2, #+112]
+   \   000007E8   686092E5           LDR      R6,[R2, #+104]
+   \   000007EC   055086E0           ADD      R5,R6,R5
+    250          	s = buf[18] + tmp;			d[0] = d[8] = s;	d += 64;
+   \   000007F0   486092E5           LDR      R6,[R2, #+72]
+   \   000007F4   066085E0           ADD      R6,R5,R6
+   \   000007F8   206084E5           STR      R6,[R4, #+32]
+   \   000007FC   ........           STR      R6,[R4], #+256
+    251          	s = buf[12] + buf[10];		d[0] = d[8] = s;	d += 64;
+   \   00000800   306092E5           LDR      R6,[R2, #+48]
+   \   00000804   287092E5           LDR      R7,[R2, #+40]
+   \   00000808   066087E0           ADD      R6,R7,R6
+   \   0000080C   206084E5           STR      R6,[R4, #+32]
+   \   00000810   ........           STR      R6,[R4], #+256
+    252          	s = buf[20] + tmp;			d[0] = d[8] = s;	d += 64;
+   \   00000814   506092E5           LDR      R6,[R2, #+80]
+   \   00000818   065085E0           ADD      R5,R5,R6
+   \   0000081C   205084E5           STR      R5,[R4, #+32]
+   \   00000820   ........           STR      R5,[R4], #+256
+    253          	s = buf[ 4];				d[0] = d[8] = s;	d += 64;
+   \   00000824   105092E5           LDR      R5,[R2, #+16]
+   \   00000828   205084E5           STR      R5,[R4, #+32]
+   \   0000082C   ........           STR      R5,[R4], #+256
+    254          
+    255          	tmp = buf[24] + buf[28];
+   \   00000830   605092E5           LDR      R5,[R2, #+96]
+   \   00000834   706092E5           LDR      R6,[R2, #+112]
+   \   00000838   055086E0           ADD      R5,R6,R5
+    256          	s = buf[20] + tmp;			d[0] = d[8] = s;	d += 64;
+   \   0000083C   506092E5           LDR      R6,[R2, #+80]
+   \   00000840   066085E0           ADD      R6,R5,R6
+   \   00000844   206084E5           STR      R6,[R4, #+32]
+   \   00000848   ........           STR      R6,[R4], #+256
+    257          	s = buf[ 8] + buf[12];		d[0] = d[8] = s;	d += 64;
+   \   0000084C   206092E5           LDR      R6,[R2, #+32]
+   \   00000850   307092E5           LDR      R7,[R2, #+48]
+   \   00000854   066087E0           ADD      R6,R7,R6
+   \   00000858   206084E5           STR      R6,[R4, #+32]
+   \   0000085C   ........           STR      R6,[R4], #+256
+    258          	s = buf[16] + tmp;			d[0] = d[8] = s;
+   \   00000860   402092E5           LDR      R2,[R2, #+64]
+   \   00000864   022085E0           ADD      R2,R5,R2
+   \   00000868   202084E5           STR      R2,[R4, #+32]
+   \   0000086C   002084E5           STR      R2,[R4, #+0]
+    259          
+    260          	/* this is so rarely invoked that it's not worth making two versions of the output
+    261          	 *   shuffle code (one for no shift, one for clip + variable shift) like in IMDCT
+    262          	 * here we just load, clip, shift, and store on the rare instances that es != 0
+    263          	 */
+    264          	if (es) {
+   \   00000870   00209DE5           LDR      R2,[SP, #+0]
+   \   00000874   000052E3           CMP      R2,#+0
+   \   00000878   3300000A           BEQ      ??xmp3_FDCT32_4
+    265          		d = dest + 64*16 + ((offset - oddBlock) & 7) + (oddBlock ? 0 : VBUF_LENGTH);
+   \   0000087C   24209DE5           LDR      R2,[SP, #+36]
+   \   00000880   000052E3           CMP      R2,#+0
+   \   00000884   0020A013           MOVNE    R2,#+0
+   \   00000888   442EA003           MOVEQ    R2,#+1088
+   \   0000088C   022180E0           ADD      R2,R0,R2, LSL #+2
+   \   00000890   024083E0           ADD      R4,R3,R2
+    266          		s = d[0];	CLIP_2N(s, 31 - es);	d[0] = d[8] = (s << es);
+   \   00000894   005094E5           LDR      R5,[R4, #+0]
+   \   00000898   00209DE5           LDR      R2,[SP, #+0]
+   \   0000089C   C56FA0E1           ASR      R6,R5,#+31
+   \   000008A0   1F2062E2           RSB      R2,R2,#+31
+   \   000008A4   0130A0E3           MOV      R3,#+1
+   \   000008A8   1332A0E1           LSL      R3,R3,R2
+   \   000008AC   013043E2           SUB      R3,R3,#+1
+   \   000008B0   550256E1           CMP      R6,R5, ASR R2
+   \   000008B4   06502310           EORNE    R5,R3,R6
+   \   000008B8   00609DE5           LDR      R6,[SP, #+0]
+   \   000008BC   1556A0E1           LSL      R5,R5,R6
+   \   000008C0   205084E5           STR      R5,[R4, #+32]
+   \   000008C4   005084E5           STR      R5,[R4, #+0]
+    267          	
+    268          		d = dest + offset + (oddBlock ? VBUF_LENGTH  : 0);
+   \   000008C8   24409DE5           LDR      R4,[SP, #+36]
+   \   000008CC   000054E3           CMP      R4,#+0
+   \   000008D0   444EA013           MOVNE    R4,#+1088
+   \   000008D4   041181E0           ADD      R1,R1,R4, LSL #+2
+    269          		for (i = 16; i <= 31; i++) {
+   \   000008D8   1040A0E3           MOV      R4,#+16
+    270          			s = d[0];	CLIP_2N(s, 31 - es);	d[0] = d[8] = (s << es);	d += 64;
+   \                     ??xmp3_FDCT32_5:
+   \   000008DC   005091E5           LDR      R5,[R1, #+0]
+    271          		}
+   \   000008E0   014084E2           ADD      R4,R4,#+1
+   \   000008E4   C56FA0E1           ASR      R6,R5,#+31
+   \   000008E8   550256E1           CMP      R6,R5, ASR R2
+   \   000008EC   06502310           EORNE    R5,R3,R6
+   \   000008F0   00609DE5           LDR      R6,[SP, #+0]
+   \   000008F4   200054E3           CMP      R4,#+32
+   \   000008F8   1556A0E1           LSL      R5,R5,R6
+   \   000008FC   205081E5           STR      R5,[R1, #+32]
+   \   00000900   ........           STR      R5,[R1], #+256
+   \   00000904   F4FFFFBA           BLT      ??xmp3_FDCT32_5
+    272          
+    273          		d = dest + 16 + ((offset - oddBlock) & 7) + (oddBlock ? 0 : VBUF_LENGTH);
+   \   00000908   24109DE5           LDR      R1,[SP, #+36]
+    274          		for (i = 15; i >= 0; i--) {
+   \   0000090C   0FA0A0E3           MOV      R10,#+15
+   \   00000910   000051E3           CMP      R1,#+0
+   \   00000914   0010A013           MOVNE    R1,#+0
+   \   00000918   441EA003           MOVEQ    R1,#+1088
+   \   0000091C   010180E0           ADD      R0,R0,R1, LSL #+2
+   \   00000920   404080E2           ADD      R4,R0,#+64
+    275          			s = d[0];	CLIP_2N(s, 31 - es);	d[0] = d[8] = (s << es);	d += 64;
+   \                     ??xmp3_FDCT32_6:
+   \   00000924   005094E5           LDR      R5,[R4, #+0]
+   \   00000928   C50FA0E1           ASR      R0,R5,#+31
+   \   0000092C   550250E1           CMP      R0,R5, ASR R2
+   \   00000930   00502310           EORNE    R5,R3,R0
+   \   00000934   00009DE5           LDR      R0,[SP, #+0]
+    276          		}
+   \   00000938   01A05AE2           SUBS     R10,R10,#+1
+   \   0000093C   1500A0E1           LSL      R0,R5,R0
+   \   00000940   200084E5           STR      R0,[R4, #+32]
+   \   00000944   ........           STR      R0,[R4], #+256
+   \   00000948   F5FFFF5A           BPL      ??xmp3_FDCT32_6
+    277          	}
+    278          }
+   \                     ??xmp3_FDCT32_4:
+   \   0000094C   28D08DE2           ADD      SP,SP,#+40       ;; stack cleaning
+   \   00000950   F08FBDE8           POP      {R4-R11,PC}      ;; return
+   \                     ??xmp3_FDCT32_2:
+   \   00000954   51C21340           DC32     0x4013c251
+   \   00000958   FB228551           DC32     0x518522fb
+   \   0000095C   72464F40           DC32     0x404f4672
+   \   00000960   BD45B340           DC32     0x40b345bd
+   \   00000964   CF200B6D           DC32     0x6d0b20cf
+   \   00000968   103CE142           DC32     0x42e13c10
+   \   0000096C   6D2DFA41           DC32     0x41fa2d6d
+   \   00000970   9057D941           DC32     0x41d95790
+   \   00000974   449F9148           DC32     0x48919f44
+   \   00000978   2134F943           DC32     0x43f93421
+   \   0000097C   968DFC5E           DC32     0x5efc8d96
+   \   00000980   630ECB52           DC32     0x52cb0e63
+   \   00000984   C41BCC46           DC32     0x46cc1bc4
+   \   00000988   971AD84A           DC32     0x4ad81a97
+   \   0000098C   2E40E264           DC32     0x64e2402e
+   \   00000990   F09C9D4A           DC32     0x4a9d9cf0
+   \   00000994   B31D7D7C           DC32     0x7c7d1db3
+   \   00000998   A924E243           DC32     0x43e224a9
+   \   0000099C   1137AE4F           DC32     0x4fae3711
+   \   000009A0   26CF6F6B           DC32     0x6b6fcf26
+   \   000009A4   C1923C6E           DC32     0x6e3c92c1
+   \   000009A8   ........           DC32     dcttab + 96
+   \   000009AC   A71E6056           DC32     0x56601ea7
+   \   000009B0   044E9E51           DC32     0x519e4e04
+   \   000009B4   EBF64C5F           DC32     0x5f4cf6eb
+   \   000009B8   9A79825A           DC32     0x5a82799a
+
+   Maximum stack usage in bytes:
+
+     Function    CSTACK
+     --------    ------
+     xmp3_FDCT32    76
+
+
+   Segment part sizes:
+
+     Function/Label Bytes
+     -------------- -----
+     dcttab          192
+     xmp3_FDCT32    2492
+      Others          16
+
+ 
+ 2 508 bytes in segment CODE
+   192 bytes in segment DATA_C
+ 
+ 2 492 bytes of CODE  memory (+ 16 bytes shared)
+   192 bytes of CONST memory
+
+Errors: none
+Warnings: 1

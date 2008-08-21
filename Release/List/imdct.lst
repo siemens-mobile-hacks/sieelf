@@ -1,0 +1,2182 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    13/Aug/2008  18:45:27 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  G:\Arm\SieELF\cbn_SRC\MP3Player\mp3dec\imdct.c       #
+#    Command line    =  G:\Arm\SieELF\cbn_SRC\MP3Player\mp3dec\imdct.c -lC   #
+#                       G:\Arm\SieELF\cbn_SRC\MP3Player\Release\List\ -lA    #
+#                       G:\Arm\SieELF\cbn_SRC\MP3Player\Release\List\ -o     #
+#                       G:\Arm\SieELF\cbn_SRC\MP3Player\Release\Obj\ -s9     #
+#                       --no_unroll --cpu_mode arm --endian little --cpu     #
+#                       ARM926EJ-S --stack_align 4 --interwork -e            #
+#                       --char_is_signed --fpu None -I                       #
+#                       D:\ewarm_442\arm\INC\ --inline_threshold=2           #
+#    List file       =  G:\Arm\SieELF\cbn_SRC\MP3Player\Release\List\imdct.l #
+#                       st                                                   #
+#    Object file     =  G:\Arm\SieELF\cbn_SRC\MP3Player\Release\Obj\imdct.r7 #
+#                       9                                                    #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+G:\Arm\SieELF\cbn_SRC\MP3Player\mp3dec\imdct.c
+      1          /* ***** BEGIN LICENSE BLOCK *****
+                                                  ^
+Warning[Pa050]: non-native end of line sequence detected (this diagnostic is
+          only issued once)
+      2           * Version: RCSL 1.0/RPSL 1.0
+      3           *
+      4           * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved.
+      5           *
+      6           * The contents of this file, and the files included with this file, are
+      7           * subject to the current version of the RealNetworks Public Source License
+      8           * Version 1.0 (the "RPSL") available at
+      9           * http://www.helixcommunity.org/content/rpsl unless you have licensed
+     10           * the file under the RealNetworks Community Source License Version 1.0
+     11           * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl,
+     12           * in which case the RCSL will apply. You may also obtain the license terms
+     13           * directly from RealNetworks.  You may not use this file except in
+     14           * compliance with the RPSL or, if you have a valid RCSL with RealNetworks
+     15           * applicable to this file, the RCSL.  Please see the applicable RPSL or
+     16           * RCSL for the rights, obligations and limitations governing use of the
+     17           * contents of the file.
+     18           *
+     19           * This file is part of the Helix DNA Technology. RealNetworks is the
+     20           * developer of the Original Code and owns the copyrights in the portions
+     21           * it created.
+     22           *
+     23           * This file, and the files included with this file, is distributed and made
+     24           * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
+     25           * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES,
+     26           * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS
+     27           * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
+     28           *
+     29           * Technology Compatibility Kit Test Suite(s) Location:
+     30           *    http://www.helixcommunity.org/content/tck
+     31           *
+     32           * Contributor(s):
+     33           *
+     34           * ***** END LICENSE BLOCK ***** */
+     35          
+     36          /**************************************************************************************
+     37           * Fixed-point MP3 decoder
+     38           * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+     39           * June 2003
+     40           *
+     41           * imdct.c - antialias, inverse transform (short/long/mixed), windowing,
+     42           *             overlap-add, frequency inversion
+     43           **************************************************************************************/
+     44          
+     45          #include "coder.h"
+     46          #include "assembly.h"
+     47          
+     48          /**************************************************************************************
+     49           * Function:    AntiAlias
+     50           *
+     51           * Description: smooth transition across DCT block boundaries (every 18 coefficients)
+     52           *
+     53           * Inputs:      vector of dequantized coefficients, length = (nBfly+1) * 18
+     54           *              number of "butterflies" to perform (one butterfly means one
+     55           *                inter-block smoothing operation)
+     56           *
+     57           * Outputs:     updated coefficient vector x
+     58           *
+     59           * Return:      none
+     60           *
+     61           * Notes:       weighted average of opposite bands (pairwise) from the 8 samples
+     62           *                before and after each block boundary
+     63           *              nBlocks = (nonZeroBound + 7) / 18, since nZB is the first ZERO sample
+     64           *                above which all other samples are also zero
+     65           *              max gain per sample = 1.372
+     66           *                MAX(i) (abs(csa[i][0]) + abs(csa[i][1]))
+     67           *              bits gained = 0
+     68           *              assume at least 1 guard bit in x[] to avoid overflow
+     69           *                (should be guaranteed from dequant, and max gain from stproc * max
+     70           *                 gain from AntiAlias < 2.0)
+     71           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+     72          static void AntiAlias(int *x, int nBfly)
+     73          {
+   \                     AntiAlias:
+   \   00000000   F04F2DE9           PUSH     {R4-R11,LR}
+   \   00000004   08D04DE2           SUB      SP,SP,#+8
+   \   00000008   0040A0E1           MOV      R4,R0
+     74          	int k, a0, b0, c0, c1;
+     75          	const int *c;
+     76          
+     77          	/* csa = Q31 */
+     78          	for (k = nBfly; k > 0; k--) {
+   \   0000000C   00108DE5           STR      R1,[SP, #+0]
+   \   00000010   010051E3           CMP      R1,#+1
+   \   00000014   F38FBDB8           POPLT    {R0,R1,R4-R11,PC}
+   \   00000018   24539FE5           LDR      R5,??AntiAlias_0  ;; xmp3_csa
+   \   0000001C   041095E5           LDR      R1,[R5, #+4]
+   \   00000020   04108DE5           STR      R1,[SP, #+4]
+     79          		c = csa[0];
+     80          		x += 18;
+     81          
+     82          		a0 = x[-1];			c0 = *c;	c++;	b0 = x[0];		c1 = *c;	c++;
+   \                     ??AntiAlias_1:
+   \   00000024   009095E5           LDR      R9,[R5, #+0]
+   \   00000028   04809DE5           LDR      R8,[SP, #+4]
+   \   0000002C   484084E2           ADD      R4,R4,#+72
+   \   00000030   047014E5           LDR      R7,[R4, #-4]
+   \   00000034   00A094E5           LDR      R10,[R4, #+0]
+     83          		x[-1] = (MULSHIFT32(c0, a0) - MULSHIFT32(c1, b0)) << 1;
+   \   00000038   0710A0E1           MOV      R1,R7
+   \   0000003C   0900A0E1           MOV      R0,R9
+   \   00000040   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000044   00B0A0E1           MOV      R11,R0
+   \   00000048   206044E2           SUB      R6,R4,#+32
+   \   0000004C   0A10A0E1           MOV      R1,R10
+   \   00000050   0800A0E1           MOV      R0,R8
+   \   00000054   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000058   00004BE0           SUB      R0,R11,R0
+   \   0000005C   8000A0E1           LSL      R0,R0,#+1
+   \   00000060   1C0086E5           STR      R0,[R6, #+28]
+     84          		x[0] =  (MULSHIFT32(c0, b0) + MULSHIFT32(c1, a0)) << 1;
+   \   00000064   0A10A0E1           MOV      R1,R10
+   \   00000068   0900A0E1           MOV      R0,R9
+   \   0000006C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000070   0090A0E1           MOV      R9,R0
+   \   00000074   0710A0E1           MOV      R1,R7
+   \   00000078   0800A0E1           MOV      R0,R8
+   \   0000007C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000080   090080E0           ADD      R0,R0,R9
+   \   00000084   8000A0E1           LSL      R0,R0,#+1
+   \   00000088   000084E5           STR      R0,[R4, #+0]
+     85          
+     86          		a0 = x[-2];			c0 = *c;	c++;	b0 = x[1];		c1 = *c;	c++;
+   \   0000008C   187096E5           LDR      R7,[R6, #+24]
+   \   00000090   089095E5           LDR      R9,[R5, #+8]
+   \   00000094   04A094E5           LDR      R10,[R4, #+4]
+   \   00000098   0C8095E5           LDR      R8,[R5, #+12]
+     87          		x[-2] = (MULSHIFT32(c0, a0) - MULSHIFT32(c1, b0)) << 1;
+   \   0000009C   0710A0E1           MOV      R1,R7
+   \   000000A0   0900A0E1           MOV      R0,R9
+   \   000000A4   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000000A8   00B0A0E1           MOV      R11,R0
+   \   000000AC   0A10A0E1           MOV      R1,R10
+   \   000000B0   0800A0E1           MOV      R0,R8
+   \   000000B4   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000000B8   00004BE0           SUB      R0,R11,R0
+   \   000000BC   8000A0E1           LSL      R0,R0,#+1
+   \   000000C0   180086E5           STR      R0,[R6, #+24]
+     88          		x[1] =  (MULSHIFT32(c0, b0) + MULSHIFT32(c1, a0)) << 1;
+   \   000000C4   0A10A0E1           MOV      R1,R10
+   \   000000C8   0900A0E1           MOV      R0,R9
+   \   000000CC   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000000D0   0090A0E1           MOV      R9,R0
+   \   000000D4   0710A0E1           MOV      R1,R7
+   \   000000D8   0800A0E1           MOV      R0,R8
+   \   000000DC   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000000E0   090080E0           ADD      R0,R0,R9
+   \   000000E4   8000A0E1           LSL      R0,R0,#+1
+   \   000000E8   040084E5           STR      R0,[R4, #+4]
+     89          
+     90          		a0 = x[-3];			c0 = *c;	c++;	b0 = x[2];		c1 = *c;	c++;
+   \   000000EC   147096E5           LDR      R7,[R6, #+20]
+   \   000000F0   109095E5           LDR      R9,[R5, #+16]
+   \   000000F4   08A094E5           LDR      R10,[R4, #+8]
+   \   000000F8   148095E5           LDR      R8,[R5, #+20]
+     91          		x[-3] = (MULSHIFT32(c0, a0) - MULSHIFT32(c1, b0)) << 1;
+   \   000000FC   0710A0E1           MOV      R1,R7
+   \   00000100   0900A0E1           MOV      R0,R9
+   \   00000104   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000108   00B0A0E1           MOV      R11,R0
+   \   0000010C   0A10A0E1           MOV      R1,R10
+   \   00000110   0800A0E1           MOV      R0,R8
+   \   00000114   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000118   00004BE0           SUB      R0,R11,R0
+   \   0000011C   8000A0E1           LSL      R0,R0,#+1
+   \   00000120   140086E5           STR      R0,[R6, #+20]
+     92          		x[2] =  (MULSHIFT32(c0, b0) + MULSHIFT32(c1, a0)) << 1;
+   \   00000124   0A10A0E1           MOV      R1,R10
+   \   00000128   0900A0E1           MOV      R0,R9
+   \   0000012C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000130   0090A0E1           MOV      R9,R0
+   \   00000134   0710A0E1           MOV      R1,R7
+   \   00000138   0800A0E1           MOV      R0,R8
+   \   0000013C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000140   090080E0           ADD      R0,R0,R9
+   \   00000144   8000A0E1           LSL      R0,R0,#+1
+   \   00000148   080084E5           STR      R0,[R4, #+8]
+     93          
+     94          		a0 = x[-4];			c0 = *c;	c++;	b0 = x[3];		c1 = *c;	c++;
+   \   0000014C   107096E5           LDR      R7,[R6, #+16]
+   \   00000150   189095E5           LDR      R9,[R5, #+24]
+   \   00000154   0CA094E5           LDR      R10,[R4, #+12]
+   \   00000158   1C8095E5           LDR      R8,[R5, #+28]
+     95          		x[-4] = (MULSHIFT32(c0, a0) - MULSHIFT32(c1, b0)) << 1;
+   \   0000015C   0710A0E1           MOV      R1,R7
+   \   00000160   0900A0E1           MOV      R0,R9
+   \   00000164   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000168   00B0A0E1           MOV      R11,R0
+   \   0000016C   0A10A0E1           MOV      R1,R10
+   \   00000170   0800A0E1           MOV      R0,R8
+   \   00000174   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000178   00004BE0           SUB      R0,R11,R0
+   \   0000017C   8000A0E1           LSL      R0,R0,#+1
+   \   00000180   100086E5           STR      R0,[R6, #+16]
+     96          		x[3] =  (MULSHIFT32(c0, b0) + MULSHIFT32(c1, a0)) << 1;
+   \   00000184   0A10A0E1           MOV      R1,R10
+   \   00000188   0900A0E1           MOV      R0,R9
+   \   0000018C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000190   0090A0E1           MOV      R9,R0
+   \   00000194   0710A0E1           MOV      R1,R7
+   \   00000198   0800A0E1           MOV      R0,R8
+   \   0000019C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000001A0   090080E0           ADD      R0,R0,R9
+   \   000001A4   8000A0E1           LSL      R0,R0,#+1
+   \   000001A8   0C0084E5           STR      R0,[R4, #+12]
+     97          
+     98          		a0 = x[-5];			c0 = *c;	c++;	b0 = x[4];		c1 = *c;	c++;
+   \   000001AC   0C7096E5           LDR      R7,[R6, #+12]
+   \   000001B0   209095E5           LDR      R9,[R5, #+32]
+   \   000001B4   10A094E5           LDR      R10,[R4, #+16]
+   \   000001B8   248095E5           LDR      R8,[R5, #+36]
+     99          		x[-5] = (MULSHIFT32(c0, a0) - MULSHIFT32(c1, b0)) << 1;
+   \   000001BC   0710A0E1           MOV      R1,R7
+   \   000001C0   0900A0E1           MOV      R0,R9
+   \   000001C4   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000001C8   00B0A0E1           MOV      R11,R0
+   \   000001CC   0A10A0E1           MOV      R1,R10
+   \   000001D0   0800A0E1           MOV      R0,R8
+   \   000001D4   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000001D8   00004BE0           SUB      R0,R11,R0
+   \   000001DC   8000A0E1           LSL      R0,R0,#+1
+   \   000001E0   0C0086E5           STR      R0,[R6, #+12]
+    100          		x[4] =  (MULSHIFT32(c0, b0) + MULSHIFT32(c1, a0)) << 1;
+   \   000001E4   0A10A0E1           MOV      R1,R10
+   \   000001E8   0900A0E1           MOV      R0,R9
+   \   000001EC   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000001F0   0090A0E1           MOV      R9,R0
+   \   000001F4   0710A0E1           MOV      R1,R7
+   \   000001F8   0800A0E1           MOV      R0,R8
+   \   000001FC   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000200   090080E0           ADD      R0,R0,R9
+   \   00000204   8000A0E1           LSL      R0,R0,#+1
+   \   00000208   100084E5           STR      R0,[R4, #+16]
+    101          
+    102          		a0 = x[-6];			c0 = *c;	c++;	b0 = x[5];		c1 = *c;	c++;
+   \   0000020C   087096E5           LDR      R7,[R6, #+8]
+   \   00000210   289095E5           LDR      R9,[R5, #+40]
+   \   00000214   14A094E5           LDR      R10,[R4, #+20]
+   \   00000218   2C8095E5           LDR      R8,[R5, #+44]
+    103          		x[-6] = (MULSHIFT32(c0, a0) - MULSHIFT32(c1, b0)) << 1;
+   \   0000021C   0710A0E1           MOV      R1,R7
+   \   00000220   0900A0E1           MOV      R0,R9
+   \   00000224   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000228   00B0A0E1           MOV      R11,R0
+   \   0000022C   0A10A0E1           MOV      R1,R10
+   \   00000230   0800A0E1           MOV      R0,R8
+   \   00000234   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000238   00004BE0           SUB      R0,R11,R0
+   \   0000023C   8000A0E1           LSL      R0,R0,#+1
+   \   00000240   080086E5           STR      R0,[R6, #+8]
+    104          		x[5] =  (MULSHIFT32(c0, b0) + MULSHIFT32(c1, a0)) << 1;
+   \   00000244   0A10A0E1           MOV      R1,R10
+   \   00000248   0900A0E1           MOV      R0,R9
+   \   0000024C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000250   0090A0E1           MOV      R9,R0
+   \   00000254   0710A0E1           MOV      R1,R7
+   \   00000258   0800A0E1           MOV      R0,R8
+   \   0000025C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000260   090080E0           ADD      R0,R0,R9
+   \   00000264   8000A0E1           LSL      R0,R0,#+1
+   \   00000268   140084E5           STR      R0,[R4, #+20]
+    105          
+    106          		a0 = x[-7];			c0 = *c;	c++;	b0 = x[6];		c1 = *c;	c++;
+   \   0000026C   047096E5           LDR      R7,[R6, #+4]
+   \   00000270   309095E5           LDR      R9,[R5, #+48]
+   \   00000274   18A094E5           LDR      R10,[R4, #+24]
+   \   00000278   348095E5           LDR      R8,[R5, #+52]
+    107          		x[-7] = (MULSHIFT32(c0, a0) - MULSHIFT32(c1, b0)) << 1;
+   \   0000027C   0710A0E1           MOV      R1,R7
+   \   00000280   0900A0E1           MOV      R0,R9
+   \   00000284   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000288   00B0A0E1           MOV      R11,R0
+   \   0000028C   0A10A0E1           MOV      R1,R10
+   \   00000290   0800A0E1           MOV      R0,R8
+   \   00000294   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000298   00004BE0           SUB      R0,R11,R0
+   \   0000029C   8000A0E1           LSL      R0,R0,#+1
+   \   000002A0   040086E5           STR      R0,[R6, #+4]
+    108          		x[6] =  (MULSHIFT32(c0, b0) + MULSHIFT32(c1, a0)) << 1;
+   \   000002A4   0A10A0E1           MOV      R1,R10
+   \   000002A8   0900A0E1           MOV      R0,R9
+   \   000002AC   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000002B0   0090A0E1           MOV      R9,R0
+   \   000002B4   0710A0E1           MOV      R1,R7
+   \   000002B8   0800A0E1           MOV      R0,R8
+   \   000002BC   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000002C0   090080E0           ADD      R0,R0,R9
+   \   000002C4   8000A0E1           LSL      R0,R0,#+1
+   \   000002C8   180084E5           STR      R0,[R4, #+24]
+    109          
+    110          		a0 = x[-8];			c0 = *c;	c++;	b0 = x[7];		c1 = *c;	c++;
+   \   000002CC   007096E5           LDR      R7,[R6, #+0]
+   \   000002D0   389095E5           LDR      R9,[R5, #+56]
+   \   000002D4   1CA094E5           LDR      R10,[R4, #+28]
+   \   000002D8   3C8095E5           LDR      R8,[R5, #+60]
+    111          		x[-8] = (MULSHIFT32(c0, a0) - MULSHIFT32(c1, b0)) << 1;
+   \   000002DC   0710A0E1           MOV      R1,R7
+   \   000002E0   0900A0E1           MOV      R0,R9
+   \   000002E4   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000002E8   00B0A0E1           MOV      R11,R0
+   \   000002EC   0A10A0E1           MOV      R1,R10
+   \   000002F0   0800A0E1           MOV      R0,R8
+   \   000002F4   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000002F8   00004BE0           SUB      R0,R11,R0
+   \   000002FC   8000A0E1           LSL      R0,R0,#+1
+   \   00000300   000086E5           STR      R0,[R6, #+0]
+    112          		x[7] =  (MULSHIFT32(c0, b0) + MULSHIFT32(c1, a0)) << 1;
+   \   00000304   0A10A0E1           MOV      R1,R10
+   \   00000308   0900A0E1           MOV      R0,R9
+   \   0000030C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000310   0060A0E1           MOV      R6,R0
+   \   00000314   0710A0E1           MOV      R1,R7
+   \   00000318   0800A0E1           MOV      R0,R8
+   \   0000031C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000320   060080E0           ADD      R0,R0,R6
+   \   00000324   8000A0E1           LSL      R0,R0,#+1
+   \   00000328   1C0084E5           STR      R0,[R4, #+28]
+    113          	}
+   \   0000032C   00109DE5           LDR      R1,[SP, #+0]
+   \   00000330   011041E2           SUB      R1,R1,#+1
+   \   00000334   00108DE5           STR      R1,[SP, #+0]
+   \   00000338   010051E3           CMP      R1,#+1
+   \   0000033C   38FFFFAA           BGE      ??AntiAlias_1
+    114          }
+   \   00000340   F38FBDE8           POP      {R0,R1,R4-R11,PC}  ;; return
+   \                     ??AntiAlias_0:
+   \   00000344   ........           DC32     xmp3_csa
+    115          
+    116          /**************************************************************************************
+    117           * Function:    WinPrevious
+    118           *
+    119           * Description: apply specified window to second half of previous IMDCT (overlap part)
+    120           *
+    121           * Inputs:      vector of 9 coefficients (xPrev)
+    122           *
+    123           * Outputs:     18 windowed output coefficients (gain 1 integer bit)
+    124           *              window type (0, 1, 2, 3)
+    125           *
+    126           * Return:      none
+    127           *
+    128           * Notes:       produces 9 output samples from 18 input samples via symmetry
+    129           *              all blocks gain at least 1 guard bit via window (long blocks get extra
+    130           *                sign bit, short blocks can have one addition but max gain < 1.0)
+    131           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    132          static void WinPrevious(int *xPrev, int *xPrevWin, int btPrev)
+    133          {
+   \                     WinPrevious:
+   \   00000000   F04F2DE9           PUSH     {R4-R11,LR}
+    134          	int i, x, *xp, *xpwLo, *xpwHi, wLo, wHi;
+    135          	const int *wpLo, *wpHi;
+    136          
+    137          	xp = xPrev;
+    138          	/* mapping (see IMDCT12x3): xPrev[0-2] = sum[6-8], xPrev[3-8] = sum[12-17] */
+    139          	if (btPrev == 2) {
+   \   00000004   ........           LDR      R6,??DataTable4  ;; xmp3_imdctWin
+   \   00000008   0040A0E1           MOV      R4,R0
+   \   0000000C   0150A0E1           MOV      R5,R1
+   \   00000010   020052E3           CMP      R2,#+2
+   \   00000014   5900001A           BNE      ??WinPrevious_0
+   \   00000018   380196E5           LDR      R0,[R6, #+312]
+   \   0000001C   081094E5           LDR      R1,[R4, #+8]
+    140          		/* this could be reordered for minimum loads/stores */
+    141          		wpLo = imdctWin[btPrev];
+    142          		xPrevWin[ 0] = MULSHIFT32(wpLo[ 6], xPrev[2]) + MULSHIFT32(wpLo[0], xPrev[6]);
+   \   00000020   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000024   181094E5           LDR      R1,[R4, #+24]
+   \   00000028   0070A0E1           MOV      R7,R0
+   \   0000002C   200196E5           LDR      R0,[R6, #+288]
+   \   00000030   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000034   070080E0           ADD      R0,R0,R7
+   \   00000038   000085E5           STR      R0,[R5, #+0]
+   \   0000003C   3C0196E5           LDR      R0,[R6, #+316]
+   \   00000040   041094E5           LDR      R1,[R4, #+4]
+    143          		xPrevWin[ 1] = MULSHIFT32(wpLo[ 7], xPrev[1]) + MULSHIFT32(wpLo[1], xPrev[7]);
+   \   00000044   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000048   1C1094E5           LDR      R1,[R4, #+28]
+   \   0000004C   0070A0E1           MOV      R7,R0
+   \   00000050   240196E5           LDR      R0,[R6, #+292]
+   \   00000054   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000058   070080E0           ADD      R0,R0,R7
+   \   0000005C   040085E5           STR      R0,[R5, #+4]
+   \   00000060   407196E5           LDR      R7,[R6, #+320]
+   \   00000064   001094E5           LDR      R1,[R4, #+0]
+   \   00000068   0700A0E1           MOV      R0,R7
+    144          		xPrevWin[ 2] = MULSHIFT32(wpLo[ 8], xPrev[0]) + MULSHIFT32(wpLo[2], xPrev[8]);
+   \   0000006C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000070   201094E5           LDR      R1,[R4, #+32]
+   \   00000074   0080A0E1           MOV      R8,R0
+   \   00000078   280196E5           LDR      R0,[R6, #+296]
+   \   0000007C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000080   080080E0           ADD      R0,R0,R8
+   \   00000084   080085E5           STR      R0,[R5, #+8]
+   \   00000088   448196E5           LDR      R8,[R6, #+324]
+   \   0000008C   001094E5           LDR      R1,[R4, #+0]
+   \   00000090   0800A0E1           MOV      R0,R8
+    145          		xPrevWin[ 3] = MULSHIFT32(wpLo[ 9], xPrev[0]) + MULSHIFT32(wpLo[3], xPrev[8]);
+   \   00000094   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000098   201094E5           LDR      R1,[R4, #+32]
+   \   0000009C   0090A0E1           MOV      R9,R0
+   \   000000A0   2C0196E5           LDR      R0,[R6, #+300]
+   \   000000A4   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000000A8   090080E0           ADD      R0,R0,R9
+   \   000000AC   0C0085E5           STR      R0,[R5, #+12]
+   \   000000B0   489196E5           LDR      R9,[R6, #+328]
+   \   000000B4   041094E5           LDR      R1,[R4, #+4]
+   \   000000B8   0900A0E1           MOV      R0,R9
+    146          		xPrevWin[ 4] = MULSHIFT32(wpLo[10], xPrev[1]) + MULSHIFT32(wpLo[4], xPrev[7]);
+   \   000000BC   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000000C0   1C1094E5           LDR      R1,[R4, #+28]
+   \   000000C4   00A0A0E1           MOV      R10,R0
+   \   000000C8   300196E5           LDR      R0,[R6, #+304]
+   \   000000CC   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000000D0   0A0080E0           ADD      R0,R0,R10
+   \   000000D4   100085E5           STR      R0,[R5, #+16]
+   \   000000D8   4CA196E5           LDR      R10,[R6, #+332]
+   \   000000DC   081094E5           LDR      R1,[R4, #+8]
+   \   000000E0   0A00A0E1           MOV      R0,R10
+    147          		xPrevWin[ 5] = MULSHIFT32(wpLo[11], xPrev[2]) + MULSHIFT32(wpLo[5], xPrev[6]);
+   \   000000E4   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000000E8   181094E5           LDR      R1,[R4, #+24]
+   \   000000EC   00B0A0E1           MOV      R11,R0
+   \   000000F0   340196E5           LDR      R0,[R6, #+308]
+   \   000000F4   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000000F8   0B0080E0           ADD      R0,R0,R11
+   \   000000FC   140085E5           STR      R0,[R5, #+20]
+    148          		xPrevWin[ 6] = MULSHIFT32(wpLo[ 6], xPrev[5]);
+   \   00000100   380196E5           LDR      R0,[R6, #+312]
+   \   00000104   141094E5           LDR      R1,[R4, #+20]
+   \   00000108   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   0000010C   180085E5           STR      R0,[R5, #+24]
+    149          		xPrevWin[ 7] = MULSHIFT32(wpLo[ 7], xPrev[4]);
+   \   00000110   3C0196E5           LDR      R0,[R6, #+316]
+   \   00000114   101094E5           LDR      R1,[R4, #+16]
+   \   00000118   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   0000011C   1C0085E5           STR      R0,[R5, #+28]
+    150          		xPrevWin[ 8] = MULSHIFT32(wpLo[ 8], xPrev[3]);
+   \   00000120   0C1094E5           LDR      R1,[R4, #+12]
+   \   00000124   0700A0E1           MOV      R0,R7
+   \   00000128   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   0000012C   200085E5           STR      R0,[R5, #+32]
+    151          		xPrevWin[ 9] = MULSHIFT32(wpLo[ 9], xPrev[3]);
+   \   00000130   0C1094E5           LDR      R1,[R4, #+12]
+   \   00000134   0800A0E1           MOV      R0,R8
+   \   00000138   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   0000013C   240085E5           STR      R0,[R5, #+36]
+    152          		xPrevWin[10] = MULSHIFT32(wpLo[10], xPrev[4]);
+   \   00000140   101094E5           LDR      R1,[R4, #+16]
+   \   00000144   0900A0E1           MOV      R0,R9
+   \   00000148   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   0000014C   280085E5           STR      R0,[R5, #+40]
+    153          		xPrevWin[11] = MULSHIFT32(wpLo[11], xPrev[5]);
+   \   00000150   141094E5           LDR      R1,[R4, #+20]
+   \   00000154   0A00A0E1           MOV      R0,R10
+   \   00000158   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   0000015C   2C0085E5           STR      R0,[R5, #+44]
+    154          		xPrevWin[12] = xPrevWin[13] = xPrevWin[14] = xPrevWin[15] = xPrevWin[16] = xPrevWin[17] = 0;
+   \   00000160   0000A0E3           MOV      R0,#+0
+   \   00000164   440085E5           STR      R0,[R5, #+68]
+   \   00000168   400085E5           STR      R0,[R5, #+64]
+   \   0000016C   3C0085E5           STR      R0,[R5, #+60]
+   \   00000170   380085E5           STR      R0,[R5, #+56]
+   \   00000174   340085E5           STR      R0,[R5, #+52]
+   \   00000178   300085E5           STR      R0,[R5, #+48]
+   \   0000017C   F08FBDE8           POP      {R4-R11,PC}
+    155          	} else {
+    156          		/* use ARM-style pointers (*ptr++) so that ADS compiles well */
+    157          		wpLo = imdctWin[btPrev] + 18;
+   \                     ??WinPrevious_0:
+   \   00000180   9000A0E3           MOV      R0,#+144
+   \   00000184   906221E0           MLA      R1,R0,R2,R6
+    158          		wpHi = wpLo + 17;
+    159          		xpwLo = xPrevWin;
+    160          		xpwHi = xPrevWin + 17;
+   \   00000188   448085E2           ADD      R8,R5,#+68
+   \   0000018C   486081E2           ADD      R6,R1,#+72
+   \   00000190   447086E2           ADD      R7,R6,#+68
+    161          		for (i = 9; i > 0; i--) {
+   \   00000194   0990A0E3           MOV      R9,#+9
+    162          			x = *xp++;	wLo = *wpLo++;	wHi = *wpHi--;
+   \                     ??WinPrevious_1:
+   \   00000198   ........           LDR      R10,[R4], #+4
+   \   0000019C   ........           LDR      R0,[R6], #+4
+   \   000001A0   ........           LDR      R11,[R7], #-4
+    163          			*xpwLo++ = MULSHIFT32(wLo, x);
+   \   000001A4   0A10A0E1           MOV      R1,R10
+   \   000001A8   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000001AC   ........           STR      R0,[R5], #+4
+    164          			*xpwHi-- = MULSHIFT32(wHi, x);
+   \   000001B0   0A10A0E1           MOV      R1,R10
+   \   000001B4   0B00A0E1           MOV      R0,R11
+   \   000001B8   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000001BC   ........           STR      R0,[R8], #-4
+    165          		}
+   \   000001C0   019049E2           SUB      R9,R9,#+1
+   \   000001C4   010059E3           CMP      R9,#+1
+   \   000001C8   F2FFFFAA           BGE      ??WinPrevious_1
+    166          	}
+    167          }
+   \   000001CC   F08FBDE8           POP      {R4-R11,PC}      ;; return
+    168          
+    169          /**************************************************************************************
+    170           * Function:    FreqInvertRescale
+    171           *
+    172           * Description: do frequency inversion (odd samples of odd blocks) and rescale
+    173           *                if necessary (extra guard bits added before IMDCT)
+    174           *
+    175           * Inputs:      output vector y (18 new samples, spaced NBANDS apart)
+    176           *              previous sample vector xPrev (9 samples)
+    177           *              index of current block
+    178           *              number of extra shifts added before IMDCT (usually 0)
+    179           *
+    180           * Outputs:     inverted and rescaled (as necessary) outputs
+    181           *              rescaled (as necessary) previous samples
+    182           *
+    183           * Return:      updated mOut (from new outputs y)
+    184           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    185          static int FreqInvertRescale(int *y, int *xPrev, int blockIdx, int es)
+    186          {
+   \                     FreqInvertRescale:
+   \   00000000   F0032DE9           PUSH     {R4-R9}
+    187          	int i, d, mOut;
+    188          	int y0, y1, y2, y3, y4, y5, y6, y7, y8;
+    189          
+    190          	if (es == 0) {
+   \   00000004   000053E3           CMP      R3,#+0
+   \   00000008   2200001A           BNE      ??FreqInvertRescale_0
+    191          		/* fast case - frequency invert only (no rescaling) - can fuse into overlap-add for speed, if desired */
+    192          		if (blockIdx & 0x01) {
+   \   0000000C   010012E3           TST      R2,#0x1
+   \   00000010   1D00000A           BEQ      ??FreqInvertRescale_1
+    193          			y += NBANDS;
+    194          			y0 = *y;	y += 2*NBANDS;
+   \   00000014   80C0B0E5           LDR      R12,[R0, #+128]!
+    195          			y1 = *y;	y += 2*NBANDS;
+   \   00000018   006190E5           LDR      R6,[R0, #+256]
+    196          			y2 = *y;	y += 2*NBANDS;
+   \   0000001C   007290E5           LDR      R7,[R0, #+512]
+    197          			y3 = *y;	y += 2*NBANDS;
+   \   00000020   0083B0E5           LDR      R8,[R0, #+768]!
+    198          			y4 = *y;	y += 2*NBANDS;
+   \   00000024   001190E5           LDR      R1,[R0, #+256]
+    199          			y5 = *y;	y += 2*NBANDS;
+   \   00000028   002290E5           LDR      R2,[R0, #+512]
+    200          			y6 = *y;	y += 2*NBANDS;
+   \   0000002C   0033B0E5           LDR      R3,[R0, #+768]!
+    201          			y7 = *y;	y += 2*NBANDS;
+   \   00000030   004190E5           LDR      R4,[R0, #+256]
+    202          			y8 = *y;	y += 2*NBANDS;
+   \   00000034   0052B0E5           LDR      R5,[R0, #+512]!
+    203          
+    204          			y -= 18*NBANDS;
+    205          			*y = -y0;	y += 2*NBANDS;
+   \   00000038   FF90E0E3           MVN      R9,#+255
+   \   0000003C   709EC9E3           BIC      R9,R9,#0x700
+   \   00000040   090080E0           ADD      R0,R0,R9
+   \   00000044   00906CE2           RSB      R9,R12,#+0
+   \   00000048   009080E5           STR      R9,[R0, #+0]
+    206          			*y = -y1;	y += 2*NBANDS;
+   \   0000004C   006066E2           RSB      R6,R6,#+0
+   \   00000050   006180E5           STR      R6,[R0, #+256]
+    207          			*y = -y2;	y += 2*NBANDS;
+   \   00000054   006067E2           RSB      R6,R7,#+0
+   \   00000058   006280E5           STR      R6,[R0, #+512]
+    208          			*y = -y3;	y += 2*NBANDS;
+   \   0000005C   006068E2           RSB      R6,R8,#+0
+   \   00000060   0063A0E5           STR      R6,[R0, #+768]!
+    209          			*y = -y4;	y += 2*NBANDS;
+   \   00000064   001061E2           RSB      R1,R1,#+0
+   \   00000068   001180E5           STR      R1,[R0, #+256]
+    210          			*y = -y5;	y += 2*NBANDS;
+   \   0000006C   001062E2           RSB      R1,R2,#+0
+   \   00000070   001280E5           STR      R1,[R0, #+512]
+    211          			*y = -y6;	y += 2*NBANDS;
+   \   00000074   001063E2           RSB      R1,R3,#+0
+   \   00000078   0013A0E5           STR      R1,[R0, #+768]!
+    212          			*y = -y7;	y += 2*NBANDS;
+   \   0000007C   001064E2           RSB      R1,R4,#+0
+   \   00000080   0011A0E5           STR      R1,[R0, #+256]!
+    213          			*y = -y8;	y += 2*NBANDS;
+   \   00000084   001065E2           RSB      R1,R5,#+0
+   \   00000088   001180E5           STR      R1,[R0, #+256]
+    214          		}
+    215          		return 0;
+   \                     ??FreqInvertRescale_1:
+   \   0000008C   F003BDE8           POP      {R4-R9}
+   \   00000090   0000A0E3           MOV      R0,#+0
+   \   00000094   1EFF2FE1           BX       LR
+    216          	} else {
+    217          		/* undo pre-IMDCT scaling, clipping if necessary */
+    218          		mOut = 0;
+   \                     ??FreqInvertRescale_0:
+   \   00000098   00C0A0E3           MOV      R12,#+0
+    219          		if (blockIdx & 0x01) {
+   \   0000009C   0340A0E1           MOV      R4,R3
+   \   000000A0   1F4064E2           RSB      R4,R4,#+31
+   \   000000A4   0150A0E3           MOV      R5,#+1
+   \   000000A8   1554A0E1           LSL      R5,R5,R4
+   \   000000AC   015045E2           SUB      R5,R5,#+1
+   \   000000B0   010012E3           TST      R2,#0x1
+   \   000000B4   0020A0E3           MOV      R2,#+0
+   \   000000B8   2000000A           BEQ      ??FreqInvertRescale_2
+    220          			/* frequency invert */
+    221          			for (i = 0; i < 18; i+=2) {
+    222          				d = *y;		CLIP_2N(d, 31 - es);	*y = d << es;	mOut |= FASTABS(*y);	y += NBANDS;
+   \                     ??FreqInvertRescale_3:
+   \   000000BC   006090E5           LDR      R6,[R0, #+0]
+    223          				d = -*y;	CLIP_2N(d, 31 - es);	*y = d << es;	mOut |= FASTABS(*y);	y += NBANDS;
+    224          				d = *xPrev;	CLIP_2N(d, 31 - es);	*xPrev++ = d << es;
+    225          			}
+   \   000000C0   022082E2           ADD      R2,R2,#+2
+   \   000000C4   C67FA0E1           ASR      R7,R6,#+31
+   \   000000C8   560457E1           CMP      R7,R6, ASR R4
+   \   000000CC   07602510           EORNE    R6,R5,R7
+   \   000000D0   1663A0E1           LSL      R6,R6,R3
+   \   000000D4   006080E5           STR      R6,[R0, #+0]
+   \   000000D8   ........           LDR      R6,[R0], #+128
+   \   000000DC   C67FA0E1           ASR      R7,R6,#+31
+   \   000000E0   066027E0           EOR      R6,R7,R6
+   \   000000E4   076046E0           SUB      R6,R6,R7
+   \   000000E8   0CC086E1           ORR      R12,R6,R12
+   \   000000EC   006090E5           LDR      R6,[R0, #+0]
+   \   000000F0   006066E2           RSB      R6,R6,#+0
+   \   000000F4   C67FA0E1           ASR      R7,R6,#+31
+   \   000000F8   560457E1           CMP      R7,R6, ASR R4
+   \   000000FC   07602510           EORNE    R6,R5,R7
+   \   00000100   1663A0E1           LSL      R6,R6,R3
+   \   00000104   006080E5           STR      R6,[R0, #+0]
+   \   00000108   ........           LDR      R6,[R0], #+128
+   \   0000010C   C67FA0E1           ASR      R7,R6,#+31
+   \   00000110   066027E0           EOR      R6,R7,R6
+   \   00000114   076046E0           SUB      R6,R6,R7
+   \   00000118   0CC086E1           ORR      R12,R6,R12
+   \   0000011C   006091E5           LDR      R6,[R1, #+0]
+   \   00000120   C67FA0E1           ASR      R7,R6,#+31
+   \   00000124   560457E1           CMP      R7,R6, ASR R4
+   \   00000128   07602510           EORNE    R6,R5,R7
+   \   0000012C   1663A0E1           LSL      R6,R6,R3
+   \   00000130   ........           STR      R6,[R1], #+4
+   \   00000134   120052E3           CMP      R2,#+18
+   \   00000138   1F0000AA           BGE      ??FreqInvertRescale_4
+   \   0000013C   DEFFFFEA           B        ??FreqInvertRescale_3
+    226          		} else {
+    227          			for (i = 0; i < 18; i+=2) {
+    228          				d = *y;		CLIP_2N(d, 31 - es);	*y = d << es;	mOut |= FASTABS(*y);	y += NBANDS;
+   \                     ??FreqInvertRescale_2:
+   \   00000140   006090E5           LDR      R6,[R0, #+0]
+    229          				d = *y;		CLIP_2N(d, 31 - es);	*y = d << es;	mOut |= FASTABS(*y);	y += NBANDS;
+    230          				d = *xPrev;	CLIP_2N(d, 31 - es);	*xPrev++ = d << es;
+    231          			}
+   \   00000144   022082E2           ADD      R2,R2,#+2
+   \   00000148   C67FA0E1           ASR      R7,R6,#+31
+   \   0000014C   560457E1           CMP      R7,R6, ASR R4
+   \   00000150   07602510           EORNE    R6,R5,R7
+   \   00000154   1663A0E1           LSL      R6,R6,R3
+   \   00000158   006080E5           STR      R6,[R0, #+0]
+   \   0000015C   ........           LDR      R6,[R0], #+128
+   \   00000160   C67FA0E1           ASR      R7,R6,#+31
+   \   00000164   066027E0           EOR      R6,R7,R6
+   \   00000168   076046E0           SUB      R6,R6,R7
+   \   0000016C   007090E5           LDR      R7,[R0, #+0]
+   \   00000170   0C6086E1           ORR      R6,R6,R12
+   \   00000174   C78FA0E1           ASR      R8,R7,#+31
+   \   00000178   570458E1           CMP      R8,R7, ASR R4
+   \   0000017C   08702510           EORNE    R7,R5,R8
+   \   00000180   1773A0E1           LSL      R7,R7,R3
+   \   00000184   007080E5           STR      R7,[R0, #+0]
+   \   00000188   ........           LDR      R7,[R0], #+128
+   \   0000018C   C78FA0E1           ASR      R8,R7,#+31
+   \   00000190   077028E0           EOR      R7,R8,R7
+   \   00000194   087047E0           SUB      R7,R7,R8
+   \   00000198   06C087E1           ORR      R12,R7,R6
+   \   0000019C   006091E5           LDR      R6,[R1, #+0]
+   \   000001A0   C67FA0E1           ASR      R7,R6,#+31
+   \   000001A4   560457E1           CMP      R7,R6, ASR R4
+   \   000001A8   07602510           EORNE    R6,R5,R7
+   \   000001AC   1663A0E1           LSL      R6,R6,R3
+   \   000001B0   ........           STR      R6,[R1], #+4
+   \   000001B4   120052E3           CMP      R2,#+18
+   \   000001B8   E0FFFFBA           BLT      ??FreqInvertRescale_2
+    232          		}
+    233          		return mOut;
+   \                     ??FreqInvertRescale_4:
+   \   000001BC   F003BDE8           POP      {R4-R9}
+   \   000001C0   0C00A0E1           MOV      R0,R12
+   \   000001C4   1EFF2FE1           BX       LR               ;; return
+    234          	}
+    235          }
+    236          
+    237          /* format = Q31
+    238           * #define M_PI 3.14159265358979323846
+    239           * double u = 2.0 * M_PI / 9.0;
+    240           * float c0 = sqrt(3.0) / 2.0;
+    241           * float c1 = cos(u);
+    242           * float c2 = cos(2*u);
+    243           * float c3 = sin(u);
+    244           * float c4 = sin(2*u);
+    245           */
+    246          static const int c9_0 = 0x6ed9eba1;
+    247          static const int c9_1 = 0x620dbe8b;
+    248          static const int c9_2 = 0x163a1a7e;
+    249          static const int c9_3 = 0x5246dd49;
+    250          static const int c9_4 = 0x7e0e2e32;
+    251          
+    252          /* format = Q31
+    253           * cos(((0:8) + 0.5) * (pi/18))
+    254           */
+    255          static const int c18[9] = {
+    256          	0x7f834ed0, 0x7ba3751d, 0x7401e4c1, 0x68d9f964, 0x5a82799a, 0x496af3e2, 0x36185aee, 0x2120fb83, 0x0b27eb5c,
+    257          };
+    258          
+    259          /* require at least 3 guard bits in x[] to ensure no overflow */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    260          static  void idct9(int *x)
+    261          {
+   \                     idct9:
+   \   00000000   F04F2DE9           PUSH     {R4-R11,LR}
+   \   00000004   1CD04DE2           SUB      SP,SP,#+28
+   \   00000008   0040A0E1           MOV      R4,R0
+    262          	int a1, a2, a3, a4, a5, a6, a7, a8, a9;
+    263          	int a10, a11, a12, a13, a14, a15, a16, a17, a18;
+    264          	int a19, a20, a21, a22, a23, a24, a25, a26, a27;
+    265          	int m1, m3, m5, m6, m7, m8, m9, m10, m11, m12;
+    266          	int x0, x1, x2, x3, x4, x5, x6, x7, x8;
+    267          
+    268          	x0 = x[0]; x1 = x[1]; x2 = x[2]; x3 = x[3]; x4 = x[4];
+   \   0000000C   045094E5           LDR      R5,[R4, #+4]
+    269          	x5 = x[5]; x6 = x[6]; x7 = x[7]; x8 = x[8];
+   \   00000010   148094E5           LDR      R8,[R4, #+20]
+    270          
+    271          	a1 = x0 - x6;
+   \   00000014   006094E5           LDR      R6,[R4, #+0]
+   \   00000018   187094E5           LDR      R7,[R4, #+24]
+   \   0000001C   080094E5           LDR      R0,[R4, #+8]
+   \   00000020   101094E5           LDR      R1,[R4, #+16]
+   \   00000024   1CA094E5           LDR      R10,[R4, #+28]
+   \   00000028   202094E5           LDR      R2,[R4, #+32]
+   \   0000002C   076046E0           SUB      R6,R6,R7
+   \   00000030   08608DE5           STR      R6,[SP, #+8]
+    272          	a2 = x1 - x5;
+    273          	a3 = x1 + x5;
+   \   00000034   056088E0           ADD      R6,R8,R5
+   \   00000038   00608DE5           STR      R6,[SP, #+0]
+    274          	a4 = x2 - x4;
+    275          	a5 = x2 + x4;
+    276          	a6 = x2 + x8;
+    277          	a7 = x1 + x7;
+    278          
+    279          	a8 = a6 - a5;		/* ie x[8] - x[4] */
+    280          	a9 = a3 - a7;		/* ie x[5] - x[7] */
+   \   0000003C   00B09DE5           LDR      R11,[SP, #+0]
+   \   00000040   05908AE0           ADD      R9,R10,R5
+   \   00000044   09B04BE0           SUB      R11,R11,R9
+   \   00000048   04B08DE5           STR      R11,[SP, #+4]
+    281          	a10 = a2 - x7;		/* ie x[1] - x[5] - x[7] */
+    282          	a11 = a4 - x8;		/* ie x[2] - x[4] - x[8] */
+    283          
+    284          	/* do the << 1 as constant shifts where mX is actually used (free, no stall or extra inst.) */
+    285          	m1 =  MULSHIFT32(c9_0, x3);
+   \   0000004C   ........           LDR      R11,??DataTable3  ;; 0x6ed9eba1
+   \   00000050   007081E0           ADD      R7,R1,R0
+   \   00000054   006082E0           ADD      R6,R2,R0
+   \   00000058   010040E0           SUB      R0,R0,R1
+   \   0000005C   020040E0           SUB      R0,R0,R2
+   \   00000060   0C008DE5           STR      R0,[SP, #+12]
+   \   00000064   0C1094E5           LDR      R1,[R4, #+12]
+   \   00000068   0B00A0E1           MOV      R0,R11
+   \   0000006C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000070   10008DE5           STR      R0,[SP, #+16]
+    286          	m3 =  MULSHIFT32(c9_0, a10);
+   \   00000074   080045E0           SUB      R0,R5,R8
+    287          	m5 =  MULSHIFT32(c9_1, a5);
+   \   00000078   60819FE5           LDR      R8,??idct9_0     ;; 0x620dbe8b
+   \   0000007C   0A1040E0           SUB      R1,R0,R10
+    288          	m6 =  MULSHIFT32(c9_2, a6);
+   \   00000080   5CA19FE5           LDR      R10,??idct9_0+0x4  ;; 0x163a1a7e
+   \   00000084   0B00A0E1           MOV      R0,R11
+    289          	m7 =  MULSHIFT32(c9_1, a8);
+    290          	m8 =  MULSHIFT32(c9_2, a5);
+    291          	m9 =  MULSHIFT32(c9_3, a9);
+    292          	m10 = MULSHIFT32(c9_4, a7);
+   \   00000088   58B19FE5           LDR      R11,??idct9_0+0x8  ;; 0x7e0e2e32
+   \   0000008C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000090   18008DE5           STR      R0,[SP, #+24]
+   \   00000094   0710A0E1           MOV      R1,R7
+   \   00000098   0800A0E1           MOV      R0,R8
+   \   0000009C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000000A0   14008DE5           STR      R0,[SP, #+20]
+   \   000000A4   0610A0E1           MOV      R1,R6
+   \   000000A8   0A00A0E1           MOV      R0,R10
+   \   000000AC   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000000B0   0050A0E1           MOV      R5,R0
+   \   000000B4   071046E0           SUB      R1,R6,R7
+   \   000000B8   0800A0E1           MOV      R0,R8
+   \   000000BC   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000000C0   0060A0E1           MOV      R6,R0
+   \   000000C4   0A00A0E1           MOV      R0,R10
+   \   000000C8   1CA19FE5           LDR      R10,??idct9_0+0xC  ;; 0x5246dd49
+   \   000000CC   0710A0E1           MOV      R1,R7
+   \   000000D0   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000000D4   04109DE5           LDR      R1,[SP, #+4]
+   \   000000D8   0070A0E1           MOV      R7,R0
+   \   000000DC   0A00A0E1           MOV      R0,R10
+   \   000000E0   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000000E4   0080A0E1           MOV      R8,R0
+   \   000000E8   0910A0E1           MOV      R1,R9
+   \   000000EC   0B00A0E1           MOV      R0,R11
+   \   000000F0   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+    293          	m11 = MULSHIFT32(c9_3, a3);
+   \   000000F4   00109DE5           LDR      R1,[SP, #+0]
+   \   000000F8   0090A0E1           MOV      R9,R0
+   \   000000FC   0A00A0E1           MOV      R0,R10
+   \   00000100   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+    294          	m12 = MULSHIFT32(c9_4, a9);
+   \   00000104   04109DE5           LDR      R1,[SP, #+4]
+   \   00000108   00A0A0E1           MOV      R10,R0
+   \   0000010C   0B00A0E1           MOV      R0,R11
+   \   00000110   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+    295          
+    296          	a12 = x[0] +  (x[6] >> 1);
+   \   00000114   001094E5           LDR      R1,[R4, #+0]
+   \   00000118   182094E5           LDR      R2,[R4, #+24]
+    297          	a13 = a12  +  (  m1 << 1);
+    298          	a14 = a12  -  (  m1 << 1);
+    299          	a15 = a1   +  ( a11 >> 1);
+   \   0000011C   0CB09DE5           LDR      R11,[SP, #+12]
+   \   00000120   C22081E0           ADD      R2,R1,R2, ASR #+1
+   \   00000124   10109DE5           LDR      R1,[SP, #+16]
+    300          	a16 = ( m5 << 1) + (m6 << 1);
+    301          	a17 = ( m7 << 1) - (m8 << 1);
+    302          	a18 = a16 + a17;
+    303          	a19 = ( m9 << 1) + (m10 << 1);
+   \   00000128   088089E0           ADD      R8,R9,R8
+   \   0000012C   8130A0E1           LSL      R3,R1,#+1
+   \   00000130   021083E0           ADD      R1,R3,R2
+   \   00000134   032042E0           SUB      R2,R2,R3
+   \   00000138   08309DE5           LDR      R3,[SP, #+8]
+   \   0000013C   8880A0E1           LSL      R8,R8,#+1
+   \   00000140   CB3083E0           ADD      R3,R3,R11, ASR #+1
+   \   00000144   14B09DE5           LDR      R11,[SP, #+20]
+    304          	a20 = (m11 << 1) - (m12 << 1);
+   \   00000148   00004AE0           SUB      R0,R10,R0
+   \   0000014C   0B5085E0           ADD      R5,R5,R11
+   \   00000150   8550A0E1           LSL      R5,R5,#+1
+    305          
+    306          	a21 = a20 - a19;
+    307          	a22 = a13 + a16;
+    308          	a23 = a14 + a16;
+    309          	a24 = a14 + a17;
+    310          	a25 = a13 + a17;
+    311          	a26 = a14 - a18;
+    312          	a27 = a13 - a18;
+    313          
+    314          	x0 = a22 + a19;			x[0] = x0;
+   \   00000154   01A085E0           ADD      R10,R5,R1
+   \   00000158   0AA088E0           ADD      R10,R8,R10
+   \   0000015C   00A084E5           STR      R10,[R4, #+0]
+    315          	x1 = a15 + (m3 << 1);	x[1] = x1;
+   \   00000160   18A09DE5           LDR      R10,[SP, #+24]
+   \   00000164   076046E0           SUB      R6,R6,R7
+   \   00000168   8660A0E1           LSL      R6,R6,#+1
+   \   0000016C   057086E0           ADD      R7,R6,R5
+   \   00000170   8000A0E1           LSL      R0,R0,#+1
+   \   00000174   089040E0           SUB      R9,R0,R8
+   \   00000178   8AA0A0E1           LSL      R10,R10,#+1
+   \   0000017C   03B08AE0           ADD      R11,R10,R3
+   \   00000180   04B084E5           STR      R11,[R4, #+4]
+    316          	x2 = a24 + a20;			x[2] = x2;
+   \   00000184   02B086E0           ADD      R11,R6,R2
+   \   00000188   0BB080E0           ADD      R11,R0,R11
+   \   0000018C   08B084E5           STR      R11,[R4, #+8]
+    317          	x3 = a26 - a21;			x[3] = x3;
+   \   00000190   07B042E0           SUB      R11,R2,R7
+   \   00000194   09B04BE0           SUB      R11,R11,R9
+   \   00000198   0CB084E5           STR      R11,[R4, #+12]
+    318          	x4 = a1 - a11;			x[4] = x4;
+   \   0000019C   08B09DE5           LDR      R11,[SP, #+8]
+   \   000001A0   0CC09DE5           LDR      R12,[SP, #+12]
+    319          	x5 = a27 + a21;			x[5] = x5;
+   \   000001A4   077041E0           SUB      R7,R1,R7
+   \   000001A8   0CB04BE0           SUB      R11,R11,R12
+   \   000001AC   10B084E5           STR      R11,[R4, #+16]
+   \   000001B0   077089E0           ADD      R7,R9,R7
+   \   000001B4   147084E5           STR      R7,[R4, #+20]
+    320          	x6 = a25 - a20;			x[6] = x6;
+   \   000001B8   011086E0           ADD      R1,R6,R1
+   \   000001BC   000041E0           SUB      R0,R1,R0
+   \   000001C0   180084E5           STR      R0,[R4, #+24]
+    321          	x7 = a15 - (m3 << 1);	x[7] = x7;
+   \   000001C4   0A0043E0           SUB      R0,R3,R10
+   \   000001C8   1C0084E5           STR      R0,[R4, #+28]
+    322          	x8 = a23 - a19;			x[8] = x8;
+   \   000001CC   020085E0           ADD      R0,R5,R2
+   \   000001D0   080040E0           SUB      R0,R0,R8
+   \   000001D4   200084E5           STR      R0,[R4, #+32]
+    323          }
+   \   000001D8   1CD08DE2           ADD      SP,SP,#+28
+   \   000001DC   F08FBDE8           POP      {R4-R11,PC}      ;; return
+   \                     ??idct9_0:
+   \   000001E0   8BBE0D62           DC32     0x620dbe8b
+   \   000001E4   7E1A3A16           DC32     0x163a1a7e
+   \   000001E8   322E0E7E           DC32     0x7e0e2e32
+   \   000001EC   49DD4652           DC32     0x5246dd49
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     c18:
+   \   00000000   D04E837F1D75       DC32 2139311824, 2074309917, 1946281153, 1759115620, 1518500250
+   \              A37BC1E40174
+   \              64F9D9689A79
+   \              825A        
+   \   00000014   E2F36A49EE5A       DC32 1231746018, 907565806, 555809667, 187165532
+   \              183683FB2021
+   \              5CEB270B    
+   \   00000024   8BCEAA422427       DC32 1118490251, -1024907484, 1194400808, -916495974, 1250332651
+   \              E9C2281C3147
+   \              9A615FC9EB8F
+   \              864A        
+   \   00000038   8C9D85D0513B       DC32 -796549748, 1284586321, -668713312, 1296121036, -536870912
+   \              914CA03E24D8
+   \              CC3C414D0000
+   \              00E0        
+   \   0000004C   513B914C61C1       DC32 1284586321, -405028511, 1250332651, -277192075, 1194400808
+   \              DBE7EB8F864A
+   \              75627AEF281C
+   \              3147        
+   \   00000060   679EA0F68BCE       DC32 -157245849, 1118490251, -48834339
+   \              AA42DDD816FD
+    324          
+    325          /* let c(j) = cos(M_PI/36 * ((j)+0.5)), s(j) = sin(M_PI/36 * ((j)+0.5))
+    326           * then fastWin[2*j+0] = c(j)*(s(j) + c(j)), j = [0, 8]
+    327           *      fastWin[2*j+1] = c(j)*(s(j) - c(j))
+    328           * format = Q30
+    329           */
+    330          static const int fastWin36[18] = {
+    331          	0x42aace8b, 0xc2e92724, 0x47311c28, 0xc95f619a, 0x4a868feb, 0xd0859d8c,
+    332          	0x4c913b51, 0xd8243ea0, 0x4d413ccc, 0xe0000000, 0x4c913b51, 0xe7dbc161,
+    333          	0x4a868feb, 0xef7a6275, 0x47311c28, 0xf6a09e67, 0x42aace8b, 0xfd16d8dd,
+    334          };
+    335          
+    336          /**************************************************************************************
+    337           * Function:    IMDCT36
+    338           *
+    339           * Description: 36-point modified DCT, with windowing and overlap-add (50% overlap)
+    340           *
+    341           * Inputs:      vector of 18 coefficients (N/2 inputs produces N outputs, by symmetry)
+    342           *              overlap part of last IMDCT (9 samples - see output comments)
+    343           *              window type (0,1,2,3) of current and previous block
+    344           *              current block index (for deciding whether to do frequency inversion)
+    345           *              number of guard bits in input vector
+    346           *
+    347           * Outputs:     18 output samples, after windowing and overlap-add with last frame
+    348           *              second half of (unwindowed) 36-point IMDCT - save for next time
+    349           *                only save 9 xPrev samples, using symmetry (see WinPrevious())
+    350           *
+    351           * Notes:       this is Ken's hyper-fast algorithm, including symmetric sin window
+    352           *                optimization, if applicable
+    353           *              total number of multiplies, general case:
+    354           *                2*10 (idct9) + 9 (last stage imdct) + 36 (for windowing) = 65
+    355           *              total number of multiplies, btCurr == 0 && btPrev == 0:
+    356           *                2*10 (idct9) + 9 (last stage imdct) + 18 (for windowing) = 47
+    357           *
+    358           *              blockType == 0 is by far the most common case, so it should be
+    359           *                possible to use the fast path most of the time
+    360           *              this is the fastest known algorithm for performing
+    361           *                long IMDCT + windowing + overlap-add in MP3
+    362           *
+    363           * Return:      mOut (OR of abs(y) for all y calculated here)
+    364           *
+    365           * TODO:        optimize for ARM (reorder window coefs, ARM-style pointers in C,
+    366           *                inline asm may or may not be helpful)
+    367           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    368          static int IMDCT36(int *xCurr, int *xPrev, int *y, int btCurr, int btPrev, int blockIdx, int gb)
+    369          {
+   \                     IMDCT36:
+   \   00000000   F44F2DE9           PUSH     {R2,R4-R11,LR}
+   \   00000004   9CD04DE2           SUB      SP,SP,#+156
+   \   00000008   CC209DE5           LDR      R2,[SP, #+204]
+   \   0000000C   C4909DE5           LDR      R9,[SP, #+196]
+   \   00000010   0140A0E1           MOV      R4,R1
+   \   00000014   0380A0E1           MOV      R8,R3
+    370          	int i, es, xBuf[18], xPrevWin[18];
+    371          	int acc1, acc2, s, d, t, mOut;
+    372          	int xo, xe, c, *xp, yLo, yHi;
+    373          	const int *cp, *wp;
+    374          
+    375          	acc1 = acc2 = 0;
+   \   00000018   0010A0E3           MOV      R1,#+0
+   \   0000001C   0030A0E3           MOV      R3,#+0
+    376          	xCurr += 17;
+   \   00000020   440080E2           ADD      R0,R0,#+68
+    377          
+    378          	/* 7 gb is always adequate for antialias + accumulator loop + idct9 */
+    379          	if (gb < 7) {
+   \   00000024   070052E3           CMP      R2,#+7
+   \   00000028   100000AA           BGE      ??IMDCT36_0
+    380          		/* rarely triggered - 5% to 10% of the time on normal clips (with Q25 input) */
+    381          		es = 7 - gb;
+   \   0000002C   075062E2           RSB      R5,R2,#+7
+    382          		for (i = 8; i >= 0; i--) {
+   \   00000030   0820A0E3           MOV      R2,#+8
+    383          			acc1 = ((*xCurr--) >> es) - acc1;
+   \                     ??IMDCT36_1:
+   \   00000034   ........           LDR      R6,[R0], #-4
+   \   00000038   563563E0           RSB      R3,R3,R6, ASR R5
+    384          			acc2 = acc1 - acc2;
+    385          			acc1 = ((*xCurr--) >> es) - acc1;
+   \   0000003C   ........           LDR      R6,[R0], #-4
+   \   00000040   011043E0           SUB      R1,R3,R1
+   \   00000044   563563E0           RSB      R3,R3,R6, ASR R5
+    386          			xBuf[i+9] = acc2;	/* odd */
+   \   00000048   0C608DE2           ADD      R6,SP,#+12
+   \   0000004C   026186E0           ADD      R6,R6,R2, LSL #+2
+   \   00000050   241086E5           STR      R1,[R6, #+36]
+    387          			xBuf[i+0] = acc1;	/* even */
+   \   00000054   003086E5           STR      R3,[R6, #+0]
+    388          			xPrev[i] >>= es;
+   \   00000058   026194E7           LDR      R6,[R4, +R2, LSL #+2]
+   \   0000005C   5665A0E1           ASR      R6,R6,R5
+   \   00000060   026184E7           STR      R6,[R4, +R2, LSL #+2]
+    389          		}
+   \   00000064   012052E2           SUBS     R2,R2,#+1
+   \   00000068   0D00004A           BMI      ??IMDCT36_2
+   \   0000006C   F0FFFFEA           B        ??IMDCT36_1
+    390          	} else {
+    391          		es = 0;
+   \                     ??IMDCT36_0:
+   \   00000070   0050A0E3           MOV      R5,#+0
+    392          		/* max gain = 18, assume adequate guard bits */
+    393          		for (i = 8; i >= 0; i--) {
+   \   00000074   0820A0E3           MOV      R2,#+8
+    394          			acc1 = (*xCurr--) - acc1;
+   \                     ??IMDCT36_3:
+   \   00000078   ........           LDR      R6,[R0], #-4
+   \   0000007C   033046E0           SUB      R3,R6,R3
+    395          			acc2 = acc1 - acc2;
+    396          			acc1 = (*xCurr--) - acc1;
+   \   00000080   ........           LDR      R6,[R0], #-4
+   \   00000084   011043E0           SUB      R1,R3,R1
+   \   00000088   033046E0           SUB      R3,R6,R3
+    397          			xBuf[i+9] = acc2;	/* odd */
+   \   0000008C   0C608DE2           ADD      R6,SP,#+12
+   \   00000090   026186E0           ADD      R6,R6,R2, LSL #+2
+   \   00000094   241086E5           STR      R1,[R6, #+36]
+    398          			xBuf[i+0] = acc1;	/* even */
+   \   00000098   003086E5           STR      R3,[R6, #+0]
+    399          		}
+   \   0000009C   012052E2           SUBS     R2,R2,#+1
+   \   000000A0   F4FFFF5A           BPL      ??IMDCT36_3
+    400          	}
+    401          	/* xEven[0] and xOdd[0] scaled by 0.5 */
+    402          	xBuf[9] >>= 1;
+   \                     ??IMDCT36_2:
+   \   000000A4   30109DE5           LDR      R1,[SP, #+48]
+    403          	xBuf[0] >>= 1;
+    404          
+    405          	/* do 9-point IDCT on even and odd */
+    406          	idct9(xBuf+0);	/* even */
+   \   000000A8   0C008DE2           ADD      R0,SP,#+12
+   \   000000AC   C110A0E1           ASR      R1,R1,#+1
+   \   000000B0   30108DE5           STR      R1,[SP, #+48]
+   \   000000B4   0C109DE5           LDR      R1,[SP, #+12]
+    407          	idct9(xBuf+9);	/* odd */
+    408          
+    409          	xp = xBuf + 8;
+    410          	cp = c18 + 8;
+    411          	mOut = 0;
+   \   000000B8   0070A0E3           MOV      R7,#+0
+   \   000000BC   C110A0E1           ASR      R1,R1,#+1
+   \   000000C0   0C108DE5           STR      R1,[SP, #+12]
+   \   000000C4   ........           BL       idct9
+   \   000000C8   30008DE2           ADD      R0,SP,#+48
+   \   000000CC   ........           BL       idct9
+   \   000000D0   C8019FE5           LDR      R0,??IMDCT36_4   ;; c18
+   \   000000D4   2C608DE2           ADD      R6,SP,#+44
+   \   000000D8   202080E2           ADD      R2,R0,#+32
+   \   000000DC   08208DE5           STR      R2,[SP, #+8]
+    412          	if (btPrev == 0 && btCurr == 0) {
+   \   000000E0   000059E3           CMP      R9,#+0
+   \   000000E4   00005803           CMPEQ    R8,#+0
+   \   000000E8   2C00001A           BNE      ??IMDCT36_5
+    413          		/* fast path - use symmetry of sin window to reduce windowing multiplies to 18 (N/2) */
+    414          		wp = fastWin36;
+   \   000000EC   248080E2           ADD      R8,R0,#+36
+    415          		for (i = 0; i < 9; i++) {
+    416          			/* do ARM-style pointer arithmetic (i still needed for y[] indexing - compiler spills if 2 y pointers) */
+    417          			c = *cp--;	xo = *(xp + 9);		xe = *xp--;
+   \                     ??IMDCT36_6:
+   \   000000F0   08209DE5           LDR      R2,[SP, #+8]
+   \   000000F4   ........           LDR      R0,[R2], #-4
+   \   000000F8   08208DE5           STR      R2,[SP, #+8]
+   \   000000FC   241096E5           LDR      R1,[R6, #+36]
+   \   00000100   ........           LDR      R10,[R6], #-4
+    418          			/* gain 2 int bits here */
+    419          			xo = MULSHIFT32(c, xo);			/* 2*c18*xOdd (mul by 2 implicit in scaling)  */
+   \   00000104   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+    420          			xe >>= 2;
+    421          
+    422          			s = -(*xPrev);		/* sum from last block (always at least 2 guard bits) */
+   \   00000108   003094E5           LDR      R3,[R4, #+0]
+   \   0000010C   4A11A0E1           ASR      R1,R10,#+2
+   \   00000110   003063E2           RSB      R3,R3,#+0
+   \   00000114   00308DE5           STR      R3,[SP, #+0]
+    423          			d = -(xe - xo);		/* gain 2 int bits, don't shift xo (effective << 1 to eat sign bit, << 1 for mul by 2) */
+   \   00000118   01A040E0           SUB      R10,R0,R1
+    424          			(*xPrev++) = xe + xo;			/* symmetry - xPrev[i] = xPrev[17-i] for long blocks */
+   \   0000011C   010080E0           ADD      R0,R0,R1
+   \   00000120   ........           STR      R0,[R4], #+4
+    425          			t = s - d;
+   \   00000124   00109DE5           LDR      R1,[SP, #+0]
+   \   00000128   0A1041E0           SUB      R1,R1,R10
+   \   0000012C   04108DE5           STR      R1,[SP, #+4]
+    426          
+    427          			yLo = (d + (MULSHIFT32(t, *wp++) << 2));
+   \   00000130   04009DE5           LDR      R0,[SP, #+4]
+   \   00000134   ........           LDR      R1,[R8], #+4
+   \   00000138   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+    428          			yHi = (s + (MULSHIFT32(t, *wp++) << 2));
+   \   0000013C   ........           LDR      R1,[R8], #+4
+   \   00000140   00B18AE0           ADD      R11,R10,R0, LSL #+2
+   \   00000144   00A09DE5           LDR      R10,[SP, #+0]
+   \   00000148   04009DE5           LDR      R0,[SP, #+4]
+   \   0000014C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+    429          			y[(i)*NBANDS]    = 	yLo;
+   \   00000150   9C109DE5           LDR      R1,[SP, #+156]
+   \   00000154   00018AE0           ADD      R0,R10,R0, LSL #+2
+   \   00000158   89B381E7           STR      R11,[R1, +R9, LSL #+7]
+    430          			y[(17-i)*NBANDS] =  yHi;
+   \   0000015C   9C209DE5           LDR      R2,[SP, #+156]
+   \   00000160   0910A0E1           MOV      R1,R9
+   \   00000164   001061E2           RSB      R1,R1,#+0
+   \   00000168   811382E0           ADD      R1,R2,R1, LSL #+7
+   \   0000016C   800881E5           STR      R0,[R1, #+2176]
+    431          			mOut |= FASTABS(yLo);
+   \   00000170   CB1FA0E1           ASR      R1,R11,#+31
+    432          			mOut |= FASTABS(yHi);
+   \   00000174   C02FA0E1           ASR      R2,R0,#+31
+   \   00000178   0B3021E0           EOR      R3,R1,R11
+   \   0000017C   011043E0           SUB      R1,R3,R1
+   \   00000180   000022E0           EOR      R0,R2,R0
+   \   00000184   020040E0           SUB      R0,R0,R2
+   \   00000188   010080E1           ORR      R0,R0,R1
+   \   0000018C   077080E1           ORR      R7,R0,R7
+    433          		}
+   \   00000190   019089E2           ADD      R9,R9,#+1
+   \   00000194   090059E3           CMP      R9,#+9
+   \   00000198   380000AA           BGE      ??IMDCT36_7
+   \   0000019C   D3FFFFEA           B        ??IMDCT36_6
+    434          	} else {
+    435          		/* slower method - either prev or curr is using window type != 0 so do full 36-point window
+    436          		 * output xPrevWin has at least 3 guard bits (xPrev has 2, gain 1 in WinPrevious)
+    437          		 */
+    438          		WinPrevious(xPrev, xPrevWin, btPrev);
+   \                     ??IMDCT36_5:
+   \   000001A0   0920A0E1           MOV      R2,R9
+   \   000001A4   54108DE2           ADD      R1,SP,#+84
+   \   000001A8   0400A0E1           MOV      R0,R4
+   \   000001AC   ........           BL       WinPrevious
+    439          
+    440          		wp = imdctWin[btCurr];
+   \   000001B0   ........           LDR      R1,??DataTable4  ;; xmp3_imdctWin
+   \   000001B4   9000A0E3           MOV      R0,#+144
+   \   000001B8   901828E0           MLA      R8,R0,R8,R1
+    441          		for (i = 0; i < 9; i++) {
+   \   000001BC   0090A0E3           MOV      R9,#+0
+    442          			c = *cp--;	xo = *(xp + 9);		xe = *xp--;
+   \                     ??IMDCT36_8:
+   \   000001C0   08209DE5           LDR      R2,[SP, #+8]
+   \   000001C4   ........           LDR      R0,[R2], #-4
+   \   000001C8   08208DE5           STR      R2,[SP, #+8]
+   \   000001CC   241096E5           LDR      R1,[R6, #+36]
+   \   000001D0   ........           LDR      R10,[R6], #-4
+    443          			/* gain 2 int bits here */
+    444          			xo = MULSHIFT32(c, xo);			/* 2*c18*xOdd (mul by 2 implicit in scaling)  */
+   \   000001D4   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+    445          			xe >>= 2;
+   \   000001D8   4A11A0E1           ASR      R1,R10,#+2
+    446          
+    447          			d = xe - xo;
+   \   000001DC   00A041E0           SUB      R10,R1,R0
+    448          			(*xPrev++) = xe + xo;	/* symmetry - xPrev[i] = xPrev[17-i] for long blocks */
+   \   000001E0   010080E0           ADD      R0,R0,R1
+   \   000001E4   ........           STR      R0,[R4], #+4
+    449          
+    450          			yLo = (xPrevWin[i]    + MULSHIFT32(d, wp[i])) << 2;
+   \   000001E8   091198E7           LDR      R1,[R8, +R9, LSL #+2]
+   \   000001EC   0A00A0E1           MOV      R0,R10
+   \   000001F0   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000001F4   54108DE2           ADD      R1,SP,#+84
+   \   000001F8   091191E7           LDR      R1,[R1, +R9, LSL #+2]
+   \   000001FC   010080E0           ADD      R0,R0,R1
+   \   00000200   00B1A0E1           LSL      R11,R0,#+2
+   \   00000204   0900A0E1           MOV      R0,R9
+   \   00000208   000060E2           RSB      R0,R0,#+0
+   \   0000020C   000188E0           ADD      R0,R8,R0, LSL #+2
+   \   00000210   441090E5           LDR      R1,[R0, #+68]
+   \   00000214   0A00A0E1           MOV      R0,R10
+    451          			yHi = (xPrevWin[17-i] + MULSHIFT32(d, wp[17-i])) << 2;
+   \   00000218   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   0000021C   0910A0E1           MOV      R1,R9
+   \   00000220   001061E2           RSB      R1,R1,#+0
+   \   00000224   54208DE2           ADD      R2,SP,#+84
+   \   00000228   011182E0           ADD      R1,R2,R1, LSL #+2
+   \   0000022C   441091E5           LDR      R1,[R1, #+68]
+   \   00000230   010080E0           ADD      R0,R0,R1
+    452          			y[(i)*NBANDS]    = yLo;
+   \   00000234   9C109DE5           LDR      R1,[SP, #+156]
+   \   00000238   0001A0E1           LSL      R0,R0,#+2
+   \   0000023C   89B381E7           STR      R11,[R1, +R9, LSL #+7]
+    453          			y[(17-i)*NBANDS] = yHi;
+   \   00000240   9C209DE5           LDR      R2,[SP, #+156]
+   \   00000244   0910A0E1           MOV      R1,R9
+   \   00000248   001061E2           RSB      R1,R1,#+0
+   \   0000024C   811382E0           ADD      R1,R2,R1, LSL #+7
+   \   00000250   800881E5           STR      R0,[R1, #+2176]
+    454          			mOut |= FASTABS(yLo);
+   \   00000254   CB1FA0E1           ASR      R1,R11,#+31
+    455          			mOut |= FASTABS(yHi);
+   \   00000258   C02FA0E1           ASR      R2,R0,#+31
+   \   0000025C   0B3021E0           EOR      R3,R1,R11
+   \   00000260   011043E0           SUB      R1,R3,R1
+   \   00000264   000022E0           EOR      R0,R2,R0
+   \   00000268   020040E0           SUB      R0,R0,R2
+   \   0000026C   010080E1           ORR      R0,R0,R1
+   \   00000270   077080E1           ORR      R7,R0,R7
+    456          		}
+   \   00000274   019089E2           ADD      R9,R9,#+1
+   \   00000278   090059E3           CMP      R9,#+9
+   \   0000027C   CFFFFFBA           BLT      ??IMDCT36_8
+    457          	}
+    458          
+    459          	xPrev -= 9;
+    460          	mOut |= FreqInvertRescale(y, xPrev, blockIdx, es);
+   \                     ??IMDCT36_7:
+   \   00000280   9C009DE5           LDR      R0,[SP, #+156]
+   \   00000284   C8209DE5           LDR      R2,[SP, #+200]
+   \   00000288   0530A0E1           MOV      R3,R5
+   \   0000028C   241044E2           SUB      R1,R4,#+36
+   \   00000290   ........           BL       FreqInvertRescale
+   \   00000294   070080E1           ORR      R0,R0,R7
+    461          
+    462          	return mOut;
+   \   00000298   A0D08DE2           ADD      SP,SP,#+160
+   \   0000029C   F08FBDE8           POP      {R4-R11,PC}      ;; return
+   \                     ??IMDCT36_4:
+   \   000002A0   ........           DC32     c18
+    463          }
+    464          
+    465          static const int c3_0 = 0x6ed9eba1;	/* format = Q31, cos(pi/6) */
+    466          static const int c6[3] = { 0x7ba3751d, 0x5a82799a, 0x2120fb83 };	/* format = Q31, cos(((0:2) + 0.5) * (pi/6)) */
+    467          
+    468          /* 12-point inverse DCT, used in IMDCT12x3()
+    469           * 4 input guard bits will ensure no overflow
+    470           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    471          static  void imdct12 (int *x, int *out)
+    472          {
+   \                     imdct12:
+   \   00000000   F04F2DE9           PUSH     {R4-R11,LR}
+    473          	int a0, a1, a2;
+    474          	int x0, x1, x2, x3, x4, x5;
+    475          
+    476          	x0 = *x;	x+=3;	x1 = *x;	x+=3;
+   \   00000004   ........           LDR      R2,[R0], #+12
+   \   00000008   ........           LDR      R3,[R0], #+12
+    477          	x2 = *x;	x+=3;	x3 = *x;	x+=3;
+    478          	x4 = *x;	x+=3;	x5 = *x;	x+=3;
+    479          
+    480          	x4 -= x5;
+    481          	x3 -= x4;
+    482          	x2 -= x3;
+    483          	x3 -= x5;
+    484          	x1 -= x2;
+    485          	x0 -= x1;
+    486          	x1 -= x3;
+    487          
+    488          	x0 >>= 1;
+    489          	x1 >>= 1;
+    490          
+    491          	a0 = MULSHIFT32(c3_0, x2) << 1;
+   \   0000000C   ........           LDR      R9,??DataTable3  ;; 0x6ed9eba1
+   \   00000010   0150A0E1           MOV      R5,R1
+   \   00000014   ........           LDR      R1,[R0], #+12
+   \   00000018   ........           LDR      R7,[R0], #+12
+   \   0000001C   0C6090E5           LDR      R6,[R0, #+12]
+   \   00000020   000090E5           LDR      R0,[R0, #+0]
+   \   00000024   064040E0           SUB      R4,R0,R6
+   \   00000028   040047E0           SUB      R0,R7,R4
+   \   0000002C   001041E0           SUB      R1,R1,R0
+   \   00000030   067040E0           SUB      R7,R0,R6
+   \   00000034   010043E0           SUB      R0,R3,R1
+   \   00000038   002042E0           SUB      R2,R2,R0
+   \   0000003C   C2A0A0E1           ASR      R10,R2,#+1
+   \   00000040   070040E0           SUB      R0,R0,R7
+   \   00000044   C080A0E1           ASR      R8,R0,#+1
+   \   00000048   0900A0E1           MOV      R0,R9
+   \   0000004C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000050   8000A0E1           LSL      R0,R0,#+1
+    492          	a1 = x0 + (x4 >> 1);
+   \   00000054   C4108AE0           ADD      R1,R10,R4, ASR #+1
+    493          	a2 = x0 - x4;
+   \   00000058   04404AE0           SUB      R4,R10,R4
+    494          	x0 = a1 + a0;
+   \   0000005C   01A080E0           ADD      R10,R0,R1
+    495          	x2 = a2;
+    496          	x4 = a1 - a0;
+   \   00000060   00B041E0           SUB      R11,R1,R0
+    497          
+    498          	a0 = MULSHIFT32(c3_0, x3) << 1;
+   \   00000064   0710A0E1           MOV      R1,R7
+   \   00000068   0900A0E1           MOV      R0,R9
+   \   0000006C   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000070   8070A0E1           LSL      R7,R0,#+1
+    499          	a1 = x1 + (x5 >> 1);
+    500          	a2 = x1 - x5;
+    501          
+    502          	/* cos window odd samples, mul by 2, eat sign bit */
+    503          	x1 = MULSHIFT32(c6[0], a1 + a0) << 2;
+   \   00000074   64009FE5           LDR      R0,??imdct12_0   ;; 0x7ba3751d
+   \   00000078   C69088E0           ADD      R9,R8,R6, ASR #+1
+   \   0000007C   068048E0           SUB      R8,R8,R6
+   \   00000080   091087E0           ADD      R1,R7,R9
+   \   00000084   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000088   0061A0E1           LSL      R6,R0,#+2
+    504          	x3 = MULSHIFT32(c6[1], a2) << 2;
+   \   0000008C   50009FE5           LDR      R0,??imdct12_0+0x4  ;; 0x5a82799a
+   \   00000090   0810A0E1           MOV      R1,R8
+   \   00000094   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000098   0081A0E1           LSL      R8,R0,#+2
+    505          	x5 = MULSHIFT32(c6[2], a1 - a0) << 2;
+   \   0000009C   44009FE5           LDR      R0,??imdct12_0+0x8  ;; 0x2120fb83
+   \   000000A0   071049E0           SUB      R1,R9,R7
+   \   000000A4   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000000A8   0001A0E1           LSL      R0,R0,#+2
+    506          
+    507          	*out = x0 + x1;	out++;
+   \   000000AC   0A1086E0           ADD      R1,R6,R10
+   \   000000B0   ........           STR      R1,[R5], #+4
+    508          	*out = x2 + x3;	out++;
+   \   000000B4   041088E0           ADD      R1,R8,R4
+   \   000000B8   ........           STR      R1,[R5], #+4
+    509          	*out = x4 + x5;	out++;
+   \   000000BC   0B1080E0           ADD      R1,R0,R11
+   \   000000C0   ........           STR      R1,[R5], #+4
+    510          	*out = x4 - x5;	out++;
+   \   000000C4   00004BE0           SUB      R0,R11,R0
+   \   000000C8   ........           STR      R0,[R5], #+4
+    511          	*out = x2 - x3;	out++;
+   \   000000CC   080044E0           SUB      R0,R4,R8
+   \   000000D0   ........           STR      R0,[R5], #+4
+    512          	*out = x0 - x1;
+   \   000000D4   06004AE0           SUB      R0,R10,R6
+   \   000000D8   000085E5           STR      R0,[R5, #+0]
+    513          }
+   \   000000DC   F08FBDE8           POP      {R4-R11,PC}      ;; return
+   \                     ??imdct12_0:
+   \   000000E0   1D75A37B           DC32     0x7ba3751d
+   \   000000E4   9A79825A           DC32     0x5a82799a
+   \   000000E8   83FB2021           DC32     0x2120fb83
+    514          
+    515          /**************************************************************************************
+    516           * Function:    IMDCT12x3
+    517           *
+    518           * Description: three 12-point modified DCT's for short blocks, with windowing,
+    519           *                short block concatenation, and overlap-add
+    520           *
+    521           * Inputs:      3 interleaved vectors of 6 samples each
+    522           *                (block0[0], block1[0], block2[0], block0[1], block1[1]....)
+    523           *              overlap part of last IMDCT (9 samples - see output comments)
+    524           *              window type (0,1,2,3) of previous block
+    525           *              current block index (for deciding whether to do frequency inversion)
+    526           *              number of guard bits in input vector
+    527           *
+    528           * Outputs:     updated sample vector x, net gain of 1 integer bit
+    529           *              second half of (unwindowed) IMDCT's - save for next time
+    530           *                only save 9 xPrev samples, using symmetry (see WinPrevious())
+    531           *
+    532           * Return:      mOut (OR of abs(y) for all y calculated here)
+    533           *
+    534           * TODO:        optimize for ARM
+    535           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    536          static int IMDCT12x3(int *xCurr, int *xPrev, int *y, int btPrev, int blockIdx, int gb)
+    537          {
+   \                     IMDCT12x3:
+   \   00000000   F44F2DE9           PUSH     {R2,R4-R11,LR}
+   \   00000004   BCD04DE2           SUB      SP,SP,#+188
+   \   00000008   0060A0E1           MOV      R6,R0
+   \   0000000C   E8009DE5           LDR      R0,[SP, #+232]
+   \   00000010   0150A0E1           MOV      R5,R1
+   \   00000014   0370A0E1           MOV      R7,R3
+    538          	int i, es, mOut, yLo, xBuf[18], xPrevWin[18];	/* need temp buffer for reordering short blocks */
+    539          	const int *wp;
+    540          
+    541          	es = 0;
+   \   00000018   0040A0E3           MOV      R4,#+0
+    542          	/* 7 gb is always adequate for accumulator loop + idct12 + window + overlap */
+    543          	if (gb < 7) {
+   \   0000001C   070050E3           CMP      R0,#+7
+   \   00000020   110000AA           BGE      ??IMDCT12x3_0
+    544          		es = 7 - gb;
+   \   00000024   074060E2           RSB      R4,R0,#+7
+    545          		for (i = 0; i < 18; i+=2) {
+   \   00000028   0000A0E3           MOV      R0,#+0
+    546          			xCurr[i+0] >>= es;
+   \                     ??IMDCT12x3_1:
+   \   0000002C   001186E0           ADD      R1,R6,R0, LSL #+2
+   \   00000030   002091E5           LDR      R2,[R1, #+0]
+    547          			xCurr[i+1] >>= es;
+    548          			*xPrev++ >>= es;
+    549          		}
+   \   00000034   020080E2           ADD      R0,R0,#+2
+   \   00000038   5224A0E1           ASR      R2,R2,R4
+   \   0000003C   002081E5           STR      R2,[R1, #+0]
+   \   00000040   042091E5           LDR      R2,[R1, #+4]
+   \   00000044   120050E3           CMP      R0,#+18
+   \   00000048   5224A0E1           ASR      R2,R2,R4
+   \   0000004C   042081E5           STR      R2,[R1, #+4]
+   \   00000050   0510A0E1           MOV      R1,R5
+   \   00000054   002091E5           LDR      R2,[R1, #+0]
+   \   00000058   045081E2           ADD      R5,R1,#+4
+   \   0000005C   5224A0E1           ASR      R2,R2,R4
+   \   00000060   002081E5           STR      R2,[R1, #+0]
+   \   00000064   F0FFFFBA           BLT      ??IMDCT12x3_1
+    550          		xPrev -= 9;
+   \   00000068   245045E2           SUB      R5,R5,#+36
+    551          	}
+    552          
+    553          	/* requires 4 input guard bits for each imdct12 */
+    554          	imdct12(xCurr + 0, xBuf + 0);
+   \                     ??IMDCT12x3_0:
+   \   0000006C   2C108DE2           ADD      R1,SP,#+44
+   \   00000070   0600A0E1           MOV      R0,R6
+   \   00000074   ........           BL       imdct12
+    555          	imdct12(xCurr + 1, xBuf + 6);
+   \   00000078   44108DE2           ADD      R1,SP,#+68
+   \   0000007C   040086E2           ADD      R0,R6,#+4
+   \   00000080   ........           BL       imdct12
+    556          	imdct12(xCurr + 2, xBuf + 12);
+   \   00000084   5C108DE2           ADD      R1,SP,#+92
+   \   00000088   080086E2           ADD      R0,R6,#+8
+   \   0000008C   ........           BL       imdct12
+    557          
+    558          	/* window previous from last time */
+    559          	WinPrevious(xPrev, xPrevWin, btPrev);
+   \   00000090   0720A0E1           MOV      R2,R7
+   \   00000094   74108DE2           ADD      R1,SP,#+116
+   \   00000098   0500A0E1           MOV      R0,R5
+   \   0000009C   ........           BL       WinPrevious
+    560          
+    561          	/* could unroll this for speed, minimum loads (short blocks usually rare, so doesn't make much overall difference)
+    562          	 * xPrevWin[i] << 2 still has 1 gb always, max gain of windowed xBuf stuff also < 1.0 and gain the sign bit
+    563          	 * so y calculations won't overflow
+    564          	 */
+    565          	wp = imdctWin[2];
+    566          	mOut = 0;
+   \   000000A0   0010A0E3           MOV      R1,#+0
+   \   000000A4   04108DE5           STR      R1,[SP, #+4]
+    567          	for (i = 0; i < 3; i++) {
+   \   000000A8   0060A0E3           MOV      R6,#+0
+    568          		yLo = (xPrevWin[ 0+i] << 2);
+   \                     ??IMDCT12x3_2:
+   \   000000AC   74008DE2           ADD      R0,SP,#+116
+   \   000000B0   067180E0           ADD      R7,R0,R6, LSL #+2
+   \   000000B4   000097E5           LDR      R0,[R7, #+0]
+   \   000000B8   0001A0E1           LSL      R0,R0,#+2
+    569          		mOut |= FASTABS(yLo);	y[( 0+i)*NBANDS] = yLo;
+   \   000000BC   08008DE5           STR      R0,[SP, #+8]
+   \   000000C0   0020A0E1           MOV      R2,R0
+   \   000000C4   C22FA0E1           ASR      R2,R2,#+31
+   \   000000C8   0C208DE5           STR      R2,[SP, #+12]
+   \   000000CC   BC109DE5           LDR      R1,[SP, #+188]
+   \   000000D0   868381E0           ADD      R8,R1,R6, LSL #+7
+   \   000000D4   000088E5           STR      R0,[R8, #+0]
+    570          		yLo = (xPrevWin[ 3+i] << 2);
+   \   000000D8   0C0097E5           LDR      R0,[R7, #+12]
+    571          		mOut |= FASTABS(yLo);	y[( 3+i)*NBANDS] = yLo;
+    572          		yLo = (xPrevWin[ 6+i] << 2) + (MULSHIFT32(wp[0+i], xBuf[3+i]));
+   \   000000DC   2C108DE2           ADD      R1,SP,#+44
+   \   000000E0   0001A0E1           LSL      R0,R0,#+2
+   \   000000E4   10008DE5           STR      R0,[SP, #+16]
+   \   000000E8   0020A0E1           MOV      R2,R0
+   \   000000EC   C22FA0E1           ASR      R2,R2,#+31
+   \   000000F0   14208DE5           STR      R2,[SP, #+20]
+   \   000000F4   800188E5           STR      R0,[R8, #+384]
+   \   000000F8   ........           LDR      R0,??DataTable4  ;; xmp3_imdctWin
+   \   000000FC   061181E0           ADD      R1,R1,R6, LSL #+2
+   \   00000100   069180E0           ADD      R9,R0,R6, LSL #+2
+   \   00000104   00108DE5           STR      R1,[SP, #+0]
+   \   00000108   0C1091E5           LDR      R1,[R1, #+12]
+   \   0000010C   200199E5           LDR      R0,[R9, #+288]
+   \   00000110   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000114   181097E5           LDR      R1,[R7, #+24]
+   \   00000118   010180E0           ADD      R0,R0,R1, LSL #+2
+    573          		mOut |= FASTABS(yLo);	y[( 6+i)*NBANDS] = yLo;
+   \   0000011C   18008DE5           STR      R0,[SP, #+24]
+   \   00000120   0020A0E1           MOV      R2,R0
+   \   00000124   C22FA0E1           ASR      R2,R2,#+31
+   \   00000128   1C208DE5           STR      R2,[SP, #+28]
+   \   0000012C   000388E5           STR      R0,[R8, #+768]
+   \   00000130   0600A0E1           MOV      R0,R6
+   \   00000134   000060E2           RSB      R0,R0,#+0
+   \   00000138   2C108DE2           ADD      R1,SP,#+44
+   \   0000013C   00A181E0           ADD      R10,R1,R0, LSL #+2
+   \   00000140   14109AE5           LDR      R1,[R10, #+20]
+   \   00000144   2C0199E5           LDR      R0,[R9, #+300]
+    574          		yLo = (xPrevWin[ 9+i] << 2) + (MULSHIFT32(wp[3+i], xBuf[5-i]));
+   \   00000148   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   0000014C   241097E5           LDR      R1,[R7, #+36]
+   \   00000150   010180E0           ADD      R0,R0,R1, LSL #+2
+    575          		mOut |= FASTABS(yLo);	y[( 9+i)*NBANDS] = yLo;
+   \   00000154   20008DE5           STR      R0,[SP, #+32]
+   \   00000158   0020A0E1           MOV      R2,R0
+   \   0000015C   C22FA0E1           ASR      R2,R2,#+31
+   \   00000160   24208DE5           STR      R2,[SP, #+36]
+   \   00000164   800488E5           STR      R0,[R8, #+1152]
+    576          		yLo = (xPrevWin[12+i] << 2) + (MULSHIFT32(wp[6+i], xBuf[2-i]) + MULSHIFT32(wp[0+i], xBuf[(6+3)+i]));
+   \   00000168   380199E5           LDR      R0,[R9, #+312]
+   \   0000016C   08109AE5           LDR      R1,[R10, #+8]
+   \   00000170   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000174   00B0A0E1           MOV      R11,R0
+   \   00000178   00009DE5           LDR      R0,[SP, #+0]
+   \   0000017C   241090E5           LDR      R1,[R0, #+36]
+   \   00000180   200199E5           LDR      R0,[R9, #+288]
+   \   00000184   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   00000188   301097E5           LDR      R1,[R7, #+48]
+   \   0000018C   01118BE0           ADD      R1,R11,R1, LSL #+2
+   \   00000190   010080E0           ADD      R0,R0,R1
+    577          		mOut |= FASTABS(yLo);	y[(12+i)*NBANDS] = yLo;
+   \   00000194   00008DE5           STR      R0,[SP, #+0]
+   \   00000198   0020A0E1           MOV      R2,R0
+   \   0000019C   C22FA0E1           ASR      R2,R2,#+31
+   \   000001A0   28208DE5           STR      R2,[SP, #+40]
+   \   000001A4   000688E5           STR      R0,[R8, #+1536]
+    578          		yLo = (xPrevWin[15+i] << 2) + (MULSHIFT32(wp[9+i], xBuf[0+i]) + MULSHIFT32(wp[3+i], xBuf[(6+5)-i]));
+   \   000001A8   2C008DE2           ADD      R0,SP,#+44
+   \   000001AC   061190E7           LDR      R1,[R0, +R6, LSL #+2]
+   \   000001B0   440199E5           LDR      R0,[R9, #+324]
+    579          		mOut |= FASTABS(yLo);	y[(15+i)*NBANDS] = yLo;
+    580          	}
+   \   000001B4   016086E2           ADD      R6,R6,#+1
+   \   000001B8   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000001BC   2C109AE5           LDR      R1,[R10, #+44]
+   \   000001C0   00B0A0E1           MOV      R11,R0
+   \   000001C4   2C0199E5           LDR      R0,[R9, #+300]
+   \   000001C8   ........           _BLF     MULSHIFT32,??MULSHIFT32??rA
+   \   000001CC   3C1097E5           LDR      R1,[R7, #+60]
+   \   000001D0   08709DE5           LDR      R7,[SP, #+8]
+   \   000001D4   0C909DE5           LDR      R9,[SP, #+12]
+   \   000001D8   14A09DE5           LDR      R10,[SP, #+20]
+   \   000001DC   04309DE5           LDR      R3,[SP, #+4]
+   \   000001E0   077029E0           EOR      R7,R9,R7
+   \   000001E4   097047E0           SUB      R7,R7,R9
+   \   000001E8   10909DE5           LDR      R9,[SP, #+16]
+   \   000001EC   01118BE0           ADD      R1,R11,R1, LSL #+2
+   \   000001F0   09902AE0           EOR      R9,R10,R9
+   \   000001F4   0A9049E0           SUB      R9,R9,R10
+   \   000001F8   1CA09DE5           LDR      R10,[SP, #+28]
+   \   000001FC   077089E1           ORR      R7,R9,R7
+   \   00000200   18909DE5           LDR      R9,[SP, #+24]
+   \   00000204   010080E0           ADD      R0,R0,R1
+   \   00000208   09902AE0           EOR      R9,R10,R9
+   \   0000020C   0A9049E0           SUB      R9,R9,R10
+   \   00000210   24A09DE5           LDR      R10,[SP, #+36]
+   \   00000214   077089E1           ORR      R7,R9,R7
+   \   00000218   20909DE5           LDR      R9,[SP, #+32]
+   \   0000021C   C01FA0E1           ASR      R1,R0,#+31
+   \   00000220   09902AE0           EOR      R9,R10,R9
+   \   00000224   0A9049E0           SUB      R9,R9,R10
+   \   00000228   28A09DE5           LDR      R10,[SP, #+40]
+   \   0000022C   077089E1           ORR      R7,R9,R7
+   \   00000230   00909DE5           LDR      R9,[SP, #+0]
+   \   00000234   030056E3           CMP      R6,#+3
+   \   00000238   09902AE0           EOR      R9,R10,R9
+   \   0000023C   0A9049E0           SUB      R9,R9,R10
+   \   00000240   077089E1           ORR      R7,R9,R7
+   \   00000244   009021E0           EOR      R9,R1,R0
+   \   00000248   011049E0           SUB      R1,R9,R1
+   \   0000024C   071081E1           ORR      R1,R1,R7
+   \   00000250   031081E1           ORR      R1,R1,R3
+   \   00000254   04108DE5           STR      R1,[SP, #+4]
+   \   00000258   800788E5           STR      R0,[R8, #+1920]
+   \   0000025C   92FFFFBA           BLT      ??IMDCT12x3_2
+    581          
+    582          	/* save previous (unwindowed) for overlap - only need samples 6-8, 12-17 */
+    583          	for (i = 6; i < 9; i++)
+   \   00000260   0600A0E3           MOV      R0,#+6
+    584          		*xPrev++ = xBuf[i] >> 2;
+   \                     ??IMDCT12x3_3:
+   \   00000264   2C108DE2           ADD      R1,SP,#+44
+   \   00000268   001191E7           LDR      R1,[R1, +R0, LSL #+2]
+   \   0000026C   010080E2           ADD      R0,R0,#+1
+   \   00000270   4111A0E1           ASR      R1,R1,#+2
+   \   00000274   ........           STR      R1,[R5], #+4
+   \   00000278   090050E3           CMP      R0,#+9
+   \   0000027C   F8FFFFBA           BLT      ??IMDCT12x3_3
+    585          	for (i = 12; i < 18; i++)
+   \   00000280   0C00A0E3           MOV      R0,#+12
+    586          		*xPrev++ = xBuf[i] >> 2;
+   \                     ??IMDCT12x3_4:
+   \   00000284   2C108DE2           ADD      R1,SP,#+44
+   \   00000288   001191E7           LDR      R1,[R1, +R0, LSL #+2]
+   \   0000028C   010080E2           ADD      R0,R0,#+1
+   \   00000290   4111A0E1           ASR      R1,R1,#+2
+   \   00000294   ........           STR      R1,[R5], #+4
+   \   00000298   120050E3           CMP      R0,#+18
+   \   0000029C   F8FFFFBA           BLT      ??IMDCT12x3_4
+    587          
+    588          	xPrev -= 9;
+    589          	mOut |= FreqInvertRescale(y, xPrev, blockIdx, es);
+   \   000002A0   04609DE5           LDR      R6,[SP, #+4]
+   \   000002A4   BC009DE5           LDR      R0,[SP, #+188]
+   \   000002A8   E4209DE5           LDR      R2,[SP, #+228]
+   \   000002AC   0430A0E1           MOV      R3,R4
+   \   000002B0   241045E2           SUB      R1,R5,#+36
+   \   000002B4   ........           BL       FreqInvertRescale
+   \   000002B8   060080E1           ORR      R0,R0,R6
+    590          
+    591          	return mOut;
+   \   000002BC   C0D08DE2           ADD      SP,SP,#+192
+   \   000002C0   F08FBDE8           POP      {R4-R11,PC}      ;; return
+    592          }
+    593          
+    594          /**************************************************************************************
+    595           * Function:    HybridTransform
+    596           *
+    597           * Description: IMDCT's, windowing, and overlap-add on long/short/mixed blocks
+    598           *
+    599           * Inputs:      vector of input coefficients, length = nBlocksTotal * 18)
+    600           *              vector of overlap samples from last time, length = nBlocksPrev * 9)
+    601           *              buffer for output samples, length = MAXNSAMP
+    602           *              SideInfoSub struct for this granule/channel
+    603           *              BlockCount struct with necessary info
+    604           *                number of non-zero input and overlap blocks
+    605           *                number of long blocks in input vector (rest assumed to be short blocks)
+    606           *                number of blocks which use long window (type) 0 in case of mixed block
+    607           *                  (bc->currWinSwitch, 0 for non-mixed blocks)
+    608           *
+    609           * Outputs:     transformed, windowed, and overlapped sample buffer
+    610           *              does frequency inversion on odd blocks
+    611           *              updated buffer of samples for overlap
+    612           *
+    613           * Return:      number of non-zero IMDCT blocks calculated in this call
+    614           *                (including overlap-add)
+    615           *
+    616           * TODO:        examine mixedBlock/winSwitch logic carefully (test he_mode.bit)
+    617           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    618          static int HybridTransform(int *xCurr, int *xPrev, int y[BLOCK_SIZE][NBANDS], SideInfoSub *sis, BlockCount *bc)
+    619          {
+   \                     HybridTransform:
+   \   00000000   F04F2DE9           PUSH     {R4-R11,LR}
+   \   00000004   4CD04DE2           SUB      SP,SP,#+76
+   \   00000008   70509DE5           LDR      R5,[SP, #+112]
+   \   0000000C   0090A0E1           MOV      R9,R0
+    620          	int xPrevWin[18], currWinIdx, prevWinIdx;
+    621          	int i, j, nBlocksOut, nonZero, mOut;
+    622          	int fiBit, xp;
+    623          
+    624          	ASSERT(bc->nBlocksLong  <= NBANDS);
+    625          	ASSERT(bc->nBlocksTotal <= NBANDS);
+    626          	ASSERT(bc->nBlocksPrev  <= NBANDS);
+    627          
+    628          	mOut = 0;
+    629          
+    630          	/* do long blocks, if any */
+    631          	for(i = 0; i < bc->nBlocksLong; i++) {
+   \   00000010   000095E5           LDR      R0,[R5, #+0]
+   \   00000014   0170A0E1           MOV      R7,R1
+   \   00000018   0260A0E1           MOV      R6,R2
+   \   0000001C   03A0A0E1           MOV      R10,R3
+   \   00000020   0040A0E3           MOV      R4,#+0
+   \   00000024   0080A0E3           MOV      R8,#+0
+   \   00000028   010050E3           CMP      R0,#+1
+   \   0000002C   190000AA           BGE      ??HybridTransform_0
+   \   00000030   1B0000EA           B        ??HybridTransform_1
+    632          		/* currWinIdx picks the right window for long blocks (if mixed, long blocks use window type 0) */
+    633          		currWinIdx = sis->blockType;
+    634          		if (sis->mixedBlock && i < bc->currWinSwitch)
+   \                     ??HybridTransform_2:
+   \   00000034   18009AE5           LDR      R0,[R10, #+24]
+   \   00000038   14309AE5           LDR      R3,[R10, #+20]
+   \   0000003C   000050E3           CMP      R0,#+0
+   \   00000040   0200000A           BEQ      ??HybridTransform_3
+   \   00000044   140095E5           LDR      R0,[R5, #+20]
+   \   00000048   000058E1           CMP      R8,R0
+    635          			currWinIdx = 0;
+   \   0000004C   0030A0B3           MOVLT    R3,#+0
+    636          
+    637          		prevWinIdx = bc->prevType;
+    638          		if (i < bc->prevWinSwitch)
+   \                     ??HybridTransform_3:
+   \   00000050   100095E5           LDR      R0,[R5, #+16]
+   \   00000054   0C2095E5           LDR      R2,[R5, #+12]
+   \   00000058   000058E1           CMP      R8,R0
+    639          			 prevWinIdx = 0;
+    640          
+    641          		/* do 36-point IMDCT, including windowing and overlap-add */
+    642          		mOut |= IMDCT36(xCurr, xPrev, &(y[0][i]), currWinIdx, prevWinIdx, i, bc->gbIn);
+   \   0000005C   180095E5           LDR      R0,[R5, #+24]
+   \   00000060   0020A0B3           MOVLT    R2,#+0
+   \   00000064   01002DE9           PUSH     {R0}
+   \   00000068   0710A0E1           MOV      R1,R7
+    643          		xCurr += 18;
+    644          		xPrev += 9;
+   \   0000006C   247087E2           ADD      R7,R7,#+36
+   \   00000070   0800A0E1           MOV      R0,R8
+   \   00000074   01002DE9           PUSH     {R0}
+   \   00000078   04002DE9           PUSH     {R2}
+   \   0000007C   082186E0           ADD      R2,R6,R8, LSL #+2
+   \   00000080   0900A0E1           MOV      R0,R9
+   \   00000084   489089E2           ADD      R9,R9,#+72
+   \   00000088   ........           BL       IMDCT36
+   \   0000008C   044080E1           ORR      R4,R0,R4
+    645          	}
+   \   00000090   018088E2           ADD      R8,R8,#+1
+   \   00000094   0CD08DE2           ADD      SP,SP,#+12
+   \                     ??HybridTransform_0:
+   \   00000098   000095E5           LDR      R0,[R5, #+0]
+   \   0000009C   000058E1           CMP      R8,R0
+   \   000000A0   E3FFFFBA           BLT      ??HybridTransform_2
+    646          
+    647          	/* do short blocks (if any) */
+    648          	for (   ; i < bc->nBlocksTotal; i++) {
+   \                     ??HybridTransform_1:
+   \   000000A4   040095E5           LDR      R0,[R5, #+4]
+   \   000000A8   000058E1           CMP      R8,R0
+   \   000000AC   120000AA           BGE      ??HybridTransform_4
+    649          		ASSERT(sis->blockType == 2);
+    650          
+    651          		prevWinIdx = bc->prevType;
+    652          		if (i < bc->prevWinSwitch)
+   \   000000B0   100095E5           LDR      R0,[R5, #+16]
+   \   000000B4   0C2095E5           LDR      R2,[R5, #+12]
+   \   000000B8   000058E1           CMP      R8,R0
+    653          			 prevWinIdx = 0;
+    654          
+    655          		mOut |= IMDCT12x3(xCurr, xPrev, &(y[0][i]), prevWinIdx, i, bc->gbIn);
+   \   000000BC   180095E5           LDR      R0,[R5, #+24]
+   \   000000C0   0020A0B3           MOVLT    R2,#+0
+   \   000000C4   01002DE9           PUSH     {R0}
+   \   000000C8   0230A0E1           MOV      R3,R2
+   \   000000CC   082186E0           ADD      R2,R6,R8, LSL #+2
+   \   000000D0   0710A0E1           MOV      R1,R7
+   \   000000D4   0800A0E1           MOV      R0,R8
+   \   000000D8   01002DE9           PUSH     {R0}
+    656          		xCurr += 18;
+    657          		xPrev += 9;
+   \   000000DC   247087E2           ADD      R7,R7,#+36
+    658          	}
+   \   000000E0   018088E2           ADD      R8,R8,#+1
+   \   000000E4   0900A0E1           MOV      R0,R9
+   \   000000E8   ........           BL       IMDCT12x3
+   \   000000EC   044080E1           ORR      R4,R0,R4
+   \   000000F0   489089E2           ADD      R9,R9,#+72
+   \   000000F4   08D08DE2           ADD      SP,SP,#+8
+   \   000000F8   E9FFFFEA           B        ??HybridTransform_1
+    659          	nBlocksOut = i;
+   \                     ??HybridTransform_4:
+   \   000000FC   00808DE5           STR      R8,[SP, #+0]
+   \   00000100   080095E5           LDR      R0,[R5, #+8]
+   \   00000104   0090A0E3           MOV      R9,#+0
+   \   00000108   000058E1           CMP      R8,R0
+   \   0000010C   2B0000AA           BGE      ??HybridTransform_5
+    660          
+    661          	/* window and overlap prev if prev longer that current */
+    662          	for (   ; i < bc->nBlocksPrev; i++) {
+    663          		prevWinIdx = bc->prevType;
+   \                     ??HybridTransform_6:
+   \   00000110   0C2095E5           LDR      R2,[R5, #+12]
+    664          		if (i < bc->prevWinSwitch)
+   \   00000114   100095E5           LDR      R0,[R5, #+16]
+    665          			 prevWinIdx = 0;
+    666          		WinPrevious(xPrev, xPrevWin, prevWinIdx);
+   \   00000118   04108DE2           ADD      R1,SP,#+4
+   \   0000011C   000058E1           CMP      R8,R0
+   \   00000120   0020A0B3           MOVLT    R2,#+0
+   \   00000124   0700A0E1           MOV      R0,R7
+   \   00000128   ........           BL       WinPrevious
+    667          
+    668          		nonZero = 0;
+   \   0000012C   00E0A0E3           MOV      LR,#+0
+    669          		fiBit = i << 31;
+   \   00000130   881FA0E1           LSL      R1,R8,#+31
+    670          		for (j = 0; j < 9; j++) {
+   \   00000134   0920A0E1           MOV      R2,R9
+    671          			xp = xPrevWin[2*j+0] << 2;	/* << 2 temp for scaling */
+   \                     ??HybridTransform_7:
+   \   00000138   04008DE2           ADD      R0,SP,#+4
+   \   0000013C   823180E0           ADD      R3,R0,R2, LSL #+3
+   \   00000140   000093E5           LDR      R0,[R3, #+0]
+    672          			nonZero |= xp;
+    673          			y[2*j+0][i] = xp;
+   \   00000144   08C186E0           ADD      R12,R6,R8, LSL #+2
+   \   00000148   0001A0E1           LSL      R0,R0,#+2
+   \   0000014C   02048CE7           STR      R0,[R12, +R2, LSL #+8]
+    674          			mOut |= FASTABS(xp);
+    675          
+    676          			/* frequency inversion on odd blocks/odd samples (flip sign if i odd, j odd) */
+    677          			xp = xPrevWin[2*j+1] << 2;
+    678          			xp = (xp ^ (fiBit >> 31)) + (i & 0x01);
+   \   00000150   043093E5           LDR      R3,[R3, #+4]
+   \   00000154   0EE080E1           ORR      LR,R0,LR
+   \   00000158   C0AFA0E1           ASR      R10,R0,#+31
+   \   0000015C   C1BFA0E1           ASR      R11,R1,#+31
+   \   00000160   03312BE0           EOR      R3,R11,R3, LSL #+2
+   \   00000164   01B008E2           AND      R11,R8,#0x1
+   \   00000168   03308BE0           ADD      R3,R11,R3
+    679          			nonZero |= xp;
+   \   0000016C   0EE083E1           ORR      LR,R3,LR
+    680          			y[2*j+1][i] = xp;
+   \   00000170   02B48CE0           ADD      R11,R12,R2, LSL #+8
+   \   00000174   80308BE5           STR      R3,[R11, #+128]
+    681          			mOut |= FASTABS(xp);
+   \   00000178   C3CFA0E1           ASR      R12,R3,#+31
+   \   0000017C   00002AE0           EOR      R0,R10,R0
+   \   00000180   0A0040E0           SUB      R0,R0,R10
+   \   00000184   03302CE0           EOR      R3,R12,R3
+   \   00000188   0C3043E0           SUB      R3,R3,R12
+   \   0000018C   000083E1           ORR      R0,R3,R0
+   \   00000190   044080E1           ORR      R4,R0,R4
+    682          
+    683          			xPrev[j] = 0;
+   \   00000194   029187E7           STR      R9,[R7, +R2, LSL #+2]
+    684          		}
+   \   00000198   012082E2           ADD      R2,R2,#+1
+   \   0000019C   090052E3           CMP      R2,#+9
+   \   000001A0   E4FFFFBA           BLT      ??HybridTransform_7
+    685          		xPrev += 9;
+    686          		if (nonZero)
+   \   000001A4   00005EE3           CMP      LR,#+0
+    687          			nBlocksOut = i;
+   \   000001A8   00808D15           STRNE    R8,[SP, #+0]
+    688          	}
+   \   000001AC   080095E5           LDR      R0,[R5, #+8]
+   \   000001B0   247087E2           ADD      R7,R7,#+36
+   \   000001B4   018088E2           ADD      R8,R8,#+1
+   \   000001B8   000058E1           CMP      R8,R0
+   \   000001BC   D3FFFFBA           BLT      ??HybridTransform_6
+    689          
+    690          	/* clear rest of blocks */
+    691          	for (   ; i < 32; i++) {
+   \                     ??HybridTransform_5:
+   \   000001C0   200058E3           CMP      R8,#+32
+   \   000001C4   070000AA           BGE      ??HybridTransform_8
+    692          		for (j = 0; j < 18; j++)
+   \   000001C8   0020A0E3           MOV      R2,#+0
+   \   000001CC   080186E0           ADD      R0,R6,R8, LSL #+2
+    693          			y[j][i] = 0;
+   \                     ??HybridTransform_9:
+   \   000001D0   829380E7           STR      R9,[R0, +R2, LSL #+7]
+   \   000001D4   012082E2           ADD      R2,R2,#+1
+   \   000001D8   120052E3           CMP      R2,#+18
+   \   000001DC   FBFFFFBA           BLT      ??HybridTransform_9
+    694          	}
+   \   000001E0   018088E2           ADD      R8,R8,#+1
+   \   000001E4   F5FFFFEA           B        ??HybridTransform_5
+    695          
+    696          	bc->gbOut = CLZ(mOut) - 1;
+   \                     ??HybridTransform_8:
+   \   000001E8   000054E3           CMP      R4,#+0
+   \   000001EC   2000A003           MOVEQ    R0,#+32
+   \   000001F0   0600000A           BEQ      ??HybridTransform_10
+   \   000001F4   0000A0E3           MOV      R0,#+0
+   \   000001F8   800414E3           TST      R4,#0x80000000
+   \   000001FC   0300001A           BNE      ??HybridTransform_10
+   \                     ??HybridTransform_11:
+   \   00000200   010080E2           ADD      R0,R0,#+1
+   \   00000204   8440A0E1           LSL      R4,R4,#+1
+   \   00000208   800414E3           TST      R4,#0x80000000
+   \   0000020C   FBFFFF0A           BEQ      ??HybridTransform_11
+   \                     ??HybridTransform_10:
+   \   00000210   010040E2           SUB      R0,R0,#+1
+   \   00000214   1C0085E5           STR      R0,[R5, #+28]
+    697          
+    698          	return nBlocksOut;
+   \   00000218   00009DE5           LDR      R0,[SP, #+0]
+   \   0000021C   4CD08DE2           ADD      SP,SP,#+76
+   \   00000220   F08FBDE8           POP      {R4-R11,PC}      ;; return
+    699          }
+    700          
+    701          /**************************************************************************************
+    702           * Function:    IMDCT
+    703           *
+    704           * Description: do alias reduction, inverse MDCT, overlap-add, and frequency inversion
+    705           *
+    706           * Inputs:      MP3DecInfo structure filled by UnpackFrameHeader(), UnpackSideInfo(),
+    707           *                UnpackScaleFactors(), and DecodeHuffman() (for this granule, channel)
+    708           *                includes PCM samples in overBuf (from last call to IMDCT) for OLA
+    709           *              index of current granule and channel
+    710           *
+    711           * Outputs:     PCM samples in outBuf, for input to subband transform
+    712           *              PCM samples in overBuf, for OLA next time
+    713           *              updated hi->nonZeroBound index for this channel
+    714           *
+    715           * Return:      0 on success,  -1 if null input pointers
+    716           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    717          int IMDCT(MP3DecInfo *mp3DecInfo, int gr, int ch)
+    718          {
+   \                     xmp3_IMDCT:
+   \   00000000   F04F2DE9           PUSH     {R4-R11,LR}
+   \   00000004   24D04DE2           SUB      SP,SP,#+36
+    719          	int nBfly, blockCutoff;
+    720          	FrameHeader *fh;
+    721          	SideInfo *si;
+    722          	HuffmanInfo *hi;
+    723          	IMDCTInfo *mi;
+    724          	BlockCount bc;
+    725          
+    726          	/* validate pointers */
+    727          	if (!mp3DecInfo || !mp3DecInfo->FrameHeaderPS || !mp3DecInfo->SideInfoPS ||
+    728          		!mp3DecInfo->HuffmanInfoPS || !mp3DecInfo->IMDCTInfoPS)
+   \   00000008   000050E3           CMP      R0,#+0
+   \   0000000C   00509015           LDRNE    R5,[R0, #+0]
+   \   00000010   0240A0E1           MOV      R4,R2
+   \   00000014   00005513           CMPNE    R5,#+0
+   \   00000018   04309015           LDRNE    R3,[R0, #+4]
+   \   0000001C   00005313           CMPNE    R3,#+0
+   \   00000020   0C209015           LDRNE    R2,[R0, #+12]
+   \   00000024   00005213           CMPNE    R2,#+0
+   \   00000028   14009015           LDRNE    R0,[R0, #+20]
+   \   0000002C   00005013           CMPNE    R0,#+0
+    729          		return -1;
+   \   00000030   0000E003           MVNEQ    R0,#+0
+   \   00000034   6800000A           BEQ      ??xmp3_IMDCT_0
+    730          
+    731          	/* si is an array of up to 4 structs, stored as gr0ch0, gr0ch1, gr1ch0, gr1ch1 */
+    732          	fh = (FrameHeader *)(mp3DecInfo->FrameHeaderPS);
+    733          	si = (SideInfo *)(mp3DecInfo->SideInfoPS);
+    734          	hi = (HuffmanInfo*)(mp3DecInfo->HuffmanInfoPS);
+    735          	mi = (IMDCTInfo *)(mp3DecInfo->IMDCTInfoPS);
+   \   00000038   00008DE5           STR      R0,[SP, #+0]
+    736          
+    737          	/* anti-aliasing done on whole long blocks only
+    738          	 * for mixed blocks, nBfly always 1, except 3 for 8 kHz MPEG 2.5 (see sfBandTab)
+    739               *   nLongBlocks = number of blocks with (possibly) non-zero power
+    740          	 *   nBfly = number of butterflies to do (nLongBlocks - 1, unless no long blocks)
+    741          	 */
+    742          	blockCutoff = fh->sfBand->l[(fh->ver == MPEG1 ? 8 : 6)] / 18;	/* same as 3* num short sfb's in spec */
+   \   0000003C   D000D5E1           LDRSB    R0,[R5, #+0]
+   \   00000040   345095E5           LDR      R5,[R5, #+52]
+   \   00000044   000050E3           CMP      R0,#+0
+   \   00000048   0800A003           MOVEQ    R0,#+8
+   \   0000004C   0600A013           MOVNE    R0,#+6
+   \   00000050   800085E0           ADD      R0,R5,R0, LSL #+1
+   \   00000054   F000D0E1           LDRSH    R0,[R0, #+0]
+   \   00000058   84519FE5           LDR      R5,??xmp3_IMDCT_1  ;; 0x38e38e39
+   \   0000005C   9560C7E0           SMULL    R6,R7,R5,R0
+    743          	if (si->sis[gr][ch].blockType != 2) {
+   \   00000060   485DA0E3           MOV      R5,#+4608
+   \   00000064   4771A0E1           ASR      R7,R7,#+2
+   \   00000068   A0BF87E0           ADD      R11,R7,R0, LSR #+31
+   \   0000006C   040182E0           ADD      R0,R2,R4, LSL #+2
+   \   00000070   006085E0           ADD      R6,R5,R0
+   \   00000074   4800A0E3           MOV      R0,#+72
+   \   00000078   9070A0E3           MOV      R7,#+144
+   \   0000007C   973121E0           MLA      R1,R7,R1,R3
+   \   00000080   901427E0           MLA      R7,R0,R4,R1
+   \   00000084   3C0097E5           LDR      R0,[R7, #+60]
+   \   00000088   020050E3           CMP      R0,#+2
+   \   0000008C   1300000A           BEQ      ??xmp3_IMDCT_2
+    744          		/* all long transforms */
+    745          		bc.nBlocksLong = MIN((hi->nonZeroBound[ch] + 7) / 18 + 1, 32);
+   \   00000090   000096E5           LDR      R0,[R6, #+0]
+   \   00000094   48119FE5           LDR      R1,??xmp3_IMDCT_1  ;; 0x38e38e39
+   \   00000098   070080E2           ADD      R0,R0,#+7
+   \   0000009C   9130C8E0           SMULL    R3,R8,R1,R0
+   \   000000A0   4881A0E1           ASR      R8,R8,#+2
+   \   000000A4   A00F88E0           ADD      R0,R8,R0, LSR #+31
+   \   000000A8   010080E2           ADD      R0,R0,#+1
+   \   000000AC   200050E3           CMP      R0,#+32
+   \   000000B0   060000AA           BGE      ??xmp3_IMDCT_3
+   \   000000B4   000096E5           LDR      R0,[R6, #+0]
+   \   000000B8   070080E2           ADD      R0,R0,#+7
+   \   000000BC   9130C8E0           SMULL    R3,R8,R1,R0
+   \   000000C0   4881A0E1           ASR      R8,R8,#+2
+   \   000000C4   A00F88E0           ADD      R0,R8,R0, LSR #+31
+   \   000000C8   010080E2           ADD      R0,R0,#+1
+   \   000000CC   000000EA           B        ??xmp3_IMDCT_4
+   \                     ??xmp3_IMDCT_3:
+   \   000000D0   2000A0E3           MOV      R0,#+32
+   \                     ??xmp3_IMDCT_4:
+   \   000000D4   04008DE5           STR      R0,[SP, #+4]
+    746          		nBfly = bc.nBlocksLong - 1;
+   \   000000D8   01A040E2           SUB      R10,R0,#+1
+   \   000000DC   080000EA           B        ??xmp3_IMDCT_5
+    747          	} else if (si->sis[gr][ch].blockType == 2 && si->sis[gr][ch].mixedBlock) {
+   \                     ??xmp3_IMDCT_2:
+   \   000000E0   0400001A           BNE      ??xmp3_IMDCT_6
+   \   000000E4   400097E5           LDR      R0,[R7, #+64]
+   \   000000E8   000050E3           CMP      R0,#+0
+    748          		/* mixed block - long transforms until cutoff, then short transforms */
+    749          		bc.nBlocksLong = blockCutoff;
+   \   000000EC   04B08D15           STRNE    R11,[SP, #+4]
+    750          		nBfly = bc.nBlocksLong - 1;
+   \   000000F0   01A04B12           SUBNE    R10,R11,#+1
+   \   000000F4   0200001A           BNE      ??xmp3_IMDCT_5
+    751          	} else {
+    752          		/* all short transforms */
+    753          		bc.nBlocksLong = 0;
+   \                     ??xmp3_IMDCT_6:
+   \   000000F8   0010A0E3           MOV      R1,#+0
+   \   000000FC   04108DE5           STR      R1,[SP, #+4]
+    754          		nBfly = 0;
+   \   00000100   00A0A0E3           MOV      R10,#+0
+    755          	}
+    756          
+    757          	AntiAlias(hi->huffDecBuf[ch], nBfly);
+   \                     ??xmp3_IMDCT_5:
+   \   00000104   900EA0E3           MOV      R0,#+2304
+   \   00000108   900408E0           MUL      R8,R0,R4
+   \   0000010C   0A10A0E1           MOV      R1,R10
+   \   00000110   029088E0           ADD      R9,R8,R2
+   \   00000114   0900A0E1           MOV      R0,R9
+   \   00000118   ........           BL       AntiAlias
+    758          	hi->nonZeroBound[ch] = MAX(hi->nonZeroBound[ch], (nBfly * 18) + 8);
+    759          
+    760          	ASSERT(hi->nonZeroBound[ch] <= MAX_NSAMP);
+    761          
+    762          	/* for readability, use a struct instead of passing a million parameters to HybridTransform() */
+    763          	bc.nBlocksTotal = (hi->nonZeroBound[ch] + 17) / 18;
+   \   0000011C   C0209FE5           LDR      R2,??xmp3_IMDCT_1  ;; 0x38e38e39
+   \   00000120   1200A0E3           MOV      R0,#+18
+   \   00000124   900A01E0           MUL      R1,R0,R10
+   \   00000128   080081E2           ADD      R0,R1,#+8
+   \   0000012C   001096E5           LDR      R1,[R6, #+0]
+   \   00000130   010050E1           CMP      R0,R1
+   \   00000134   0100A0B1           MOVLT    R0,R1
+   \   00000138   111080E2           ADD      R1,R0,#+17
+   \   0000013C   9231CAE0           SMULL    R3,R10,R2,R1
+   \   00000140   000086E5           STR      R0,[R6, #+0]
+   \   00000144   4AA1A0E1           ASR      R10,R10,#+2
+   \   00000148   A11F8AE0           ADD      R1,R10,R1, LSR #+31
+   \   0000014C   08108DE5           STR      R1,[SP, #+8]
+    764          	bc.nBlocksPrev = mi->numPrevIMDCT[ch];
+   \   00000150   00009DE5           LDR      R0,[SP, #+0]
+    765          	bc.prevType = mi->prevType[ch];
+    766          	bc.prevWinSwitch = mi->prevWinSwitch[ch];
+    767          	bc.currWinSwitch = (si->sis[gr][ch].mixedBlock ? blockCutoff : 0);	/* where WINDOW switches (not nec. transform) */
+    768          	bc.gbIn = hi->gb[ch];
+    769          
+    770          	mi->numPrevIMDCT[ch] = HybridTransform(hi->huffDecBuf[ch], mi->overBuf[ch], mi->outBuf[ch], &si->sis[gr][ch], &bc);
+   \   00000154   283087E2           ADD      R3,R7,#+40
+   \   00000158   040180E0           ADD      R0,R0,R4, LSL #+2
+   \   0000015C   6CAD80E2           ADD      R10,R0,#+6912
+   \   00000160   00109AE5           LDR      R1,[R10, #+0]
+   \   00000164   0C108DE5           STR      R1,[SP, #+12]
+   \   00000168   08109AE5           LDR      R1,[R10, #+8]
+   \   0000016C   10108DE5           STR      R1,[SP, #+16]
+   \   00000170   10109AE5           LDR      R1,[R10, #+16]
+   \   00000174   14108DE5           STR      R1,[SP, #+20]
+   \   00000178   400097E5           LDR      R0,[R7, #+64]
+   \   0000017C   000050E3           CMP      R0,#+0
+   \   00000180   00B0A003           MOVEQ    R11,#+0
+   \   00000184   18B08DE5           STR      R11,[SP, #+24]
+   \   00000188   081096E5           LDR      R1,[R6, #+8]
+   \   0000018C   04008DE2           ADD      R0,SP,#+4
+   \   00000190   1C108DE5           STR      R1,[SP, #+28]
+   \   00000194   01002DE9           PUSH     {R0}
+   \   00000198   04109DE5           LDR      R1,[SP, #+4]
+   \   0000019C   04009DE5           LDR      R0,[SP, #+4]
+   \   000001A0   002088E0           ADD      R2,R8,R0
+   \   000001A4   480EA0E3           MOV      R0,#+1152
+   \   000001A8   901421E0           MLA      R1,R0,R4,R1
+   \   000001AC   0900A0E1           MOV      R0,R9
+   \   000001B0   011085E0           ADD      R1,R5,R1
+   \   000001B4   ........           BL       HybridTransform
+   \   000001B8   00008AE5           STR      R0,[R10, #+0]
+    771          	mi->prevType[ch] = si->sis[gr][ch].blockType;
+   \   000001BC   3C0097E5           LDR      R0,[R7, #+60]
+   \   000001C0   08008AE5           STR      R0,[R10, #+8]
+    772          	mi->prevWinSwitch[ch] = bc.currWinSwitch;		/* 0 means not a mixed block (either all short or all long) */
+   \   000001C4   1C009DE5           LDR      R0,[SP, #+28]
+   \   000001C8   10008AE5           STR      R0,[R10, #+16]
+    773          	mi->gb[ch] = bc.gbOut;
+   \   000001CC   24009DE5           LDR      R0,[SP, #+36]
+   \   000001D0   18008AE5           STR      R0,[R10, #+24]
+    774          
+    775          	ASSERT(mi->numPrevIMDCT[ch] <= NBANDS);
+    776          
+    777          	/* output has gained 2 int bits */
+    778          	return 0;
+   \   000001D4   0000A0E3           MOV      R0,#+0
+   \   000001D8   04D08DE2           ADD      SP,SP,#+4
+   \                     ??xmp3_IMDCT_0:
+   \   000001DC   24D08DE2           ADD      SP,SP,#+36       ;; stack cleaning
+   \   000001E0   F08FBDE8           POP      {R4-R11,PC}      ;; return
+   \                     ??xmp3_IMDCT_1:
+   \   000001E4   398EE338           DC32     0x38e38e39
+    779          }
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable3:
+   \   00000000   A1EBD96E           DC32     0x6ed9eba1
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable4:
+   \   00000000   ........           DC32     xmp3_imdctWin
+
+   Maximum stack usage in bytes:
+
+     Function          CSTACK
+     --------          ------
+     AntiAlias            44
+     FreqInvertRescale    24
+     HybridTransform     124
+     IMDCT12x3           228
+     IMDCT36             196
+     WinPrevious          36
+     idct9                64
+     imdct12              36
+     xmp3_IMDCT           76
+
+
+   Segment part sizes:
+
+     Function/Label    Bytes
+     --------------    -----
+     AntiAlias          840
+     WinPrevious        464
+     FreqInvertRescale  456
+     idct9              496
+     c18                108
+     IMDCT36            676
+     imdct12            236
+     IMDCT12x3          708
+     HybridTransform    548
+     xmp3_IMDCT         488
+     ??DataTable3         4
+     ??DataTable4         4
+      Others             48
+
+ 
+ 4 968 bytes in segment CODE
+   108 bytes in segment DATA_C
+ 
+ 4 920 bytes of CODE  memory (+ 48 bytes shared)
+   108 bytes of CONST memory
+
+Errors: none
+Warnings: 1

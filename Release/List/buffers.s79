@@ -1,0 +1,523 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   13/Aug/2008  18:45:20 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  G:\Arm\SieELF\cbn_SRC\MP3Player\mp3dec\buffers.c    /
+//    Command line    =  G:\Arm\SieELF\cbn_SRC\MP3Player\mp3dec\buffers.c    /
+//                       -lC G:\Arm\SieELF\cbn_SRC\MP3Player\Release\List\   /
+//                       -lA G:\Arm\SieELF\cbn_SRC\MP3Player\Release\List\   /
+//                       -o G:\Arm\SieELF\cbn_SRC\MP3Player\Release\Obj\     /
+//                       -s9 --no_unroll --cpu_mode arm --endian little      /
+//                       --cpu ARM926EJ-S --stack_align 4 --interwork -e     /
+//                       --char_is_signed --fpu None -I                      /
+//                       D:\ewarm_442\arm\INC\ --inline_threshold=2          /
+//    List file       =  G:\Arm\SieELF\cbn_SRC\MP3Player\Release\List\buffer /
+//                       s.s79                                               /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME buffers
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        MULTWEAK ??xmp3_AllocateBuffers??rT
+        MULTWEAK ??xmp3_FreeBuffers??rT
+        PUBWEAK ?init?tab?DATA_Z
+        PUBLIC xmp3_AllocateBuffers
+        FUNCTION xmp3_AllocateBuffers,0203H
+        LOCFRAME CSTACK, 8, STACK
+        PUBLIC xmp3_FreeBuffers
+        FUNCTION xmp3_FreeBuffers,0203H
+        LOCFRAME CSTACK, 12, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+xmp3_AllocateBuffers SYMBOL "xmp3_AllocateBuffers"
+??xmp3_AllocateBuffers??rT SYMBOL "??rT", xmp3_AllocateBuffers
+xmp3_FreeBuffers    SYMBOL "xmp3_FreeBuffers"
+??xmp3_FreeBuffers??rT SYMBOL "??rT", xmp3_FreeBuffers
+
+// G:\Arm\SieELF\cbn_SRC\MP3Player\mp3dec\buffers.c
+//    1 /* ***** BEGIN LICENSE BLOCK ***** 
+//    2  * Version: RCSL 1.0/RPSL 1.0 
+//    3  *  
+//    4  * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+//    5  *      
+//    6  * The contents of this file, and the files included with this file, are 
+//    7  * subject to the current version of the RealNetworks Public Source License 
+//    8  * Version 1.0 (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the RealNetworks Community Source License Version 1.0 
+//   11  * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+//   12  * in which case the RCSL will apply. You may also obtain the license terms 
+//   13  * directly from RealNetworks.  You may not use this file except in 
+//   14  * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+//   15  * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+//   16  * RCSL for the rights, obligations and limitations governing use of the 
+//   17  * contents of the file.  
+//   18  *  
+//   19  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   20  * developer of the Original Code and owns the copyrights in the portions 
+//   21  * it created. 
+//   22  *  
+//   23  * This file, and the files included with this file, is distributed and made 
+//   24  * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+//   25  * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+//   26  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+//   27  * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+//   28  * 
+//   29  * Technology Compatibility Kit Test Suite(s) Location: 
+//   30  *    http://www.helixcommunity.org/content/tck 
+//   31  * 
+//   32  * Contributor(s): 
+//   33  *  
+//   34  * ***** END LICENSE BLOCK ***** */ 
+//   35 
+//   36 /**************************************************************************************
+//   37  * Fixed-point MP3 decoder
+//   38  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+//   39  * June 2003
+//   40  *
+//   41  * buffers.c - allocation and freeing of internal MP3 decoder buffers
+//   42  *
+//   43  * All memory allocation for the codec is done in this file, so if you don't want 
+//   44  *  to use other the default system malloc() and free() for heap management this is 
+//   45  *  the only file you'll need to change.
+//   46  **************************************************************************************/
+//   47 
+//   48 //#include "hlxclib/stdlib.h"		/* for malloc, free */ 
+//   49 //#include <stdlib.h>
+//   50 #include "..\..\swilib.h"
+//   51 #include "coder.h"
+//   52 
+//   53 /**************************************************************************************
+//   54  * Function:    ClearBuffer
+//   55  *
+//   56  * Description: fill buffer with 0's
+//   57  *
+//   58  * Inputs:      pointer to buffer
+//   59  *              number of bytes to fill with 0
+//   60  *
+//   61  * Outputs:     cleared buffer
+//   62  *
+//   63  * Return:      none
+//   64  *
+//   65  * Notes:       slow, platform-independent equivalent to memset(buf, 0, nBytes)
+//   66  **************************************************************************************/
+//   67 static void ClearBuffer(void *buf, int nBytes)
+//   68 {
+//   69 	int i;
+//   70 	unsigned char *cbuf = (unsigned char *)buf;
+//   71 
+//   72 	for (i = 0; i < nBytes; i++)
+//   73 		cbuf[i] = 0;
+//   74 
+//   75 	return;
+//   76 }
+//   77 
+//   78 /**************************************************************************************
+//   79  * Function:    AllocateBuffers
+//   80  *
+//   81  * Description: allocate all the memory needed for the MP3 decoder
+//   82  *
+//   83  * Inputs:      none
+//   84  *
+//   85  * Outputs:     none
+//   86  *
+//   87  * Return:      pointer to MP3DecInfo structure (initialized with pointers to all 
+//   88  *                the internal buffers needed for decoding, all other members of 
+//   89  *                MP3DecInfo structure set to 0)
+//   90  *
+//   91  * Notes:       if one or more mallocs fail, function frees any buffers already
+//   92  *                allocated before returning
+//   93  **************************************************************************************/
+//   94 MP3DecInfo *AllocateBuffers(void)
+//   95 {
+//   96 #ifdef xxx	
+//   97 	MP3DecInfo *mp3DecInfo;
+//   98 	FrameHeader *fh;
+//   99 	SideInfo *si;
+//  100 	ScaleFactorInfo *sfi;
+//  101 	HuffmanInfo *hi;
+//  102 	DequantInfo *di;
+//  103 	IMDCTInfo *mi;
+//  104 	SubbandInfo *sbi;
+//  105 
+//  106 	mp3DecInfo = (MP3DecInfo *)malloc(sizeof(MP3DecInfo));
+//  107 	if (!mp3DecInfo)
+//  108 		return 0;
+//  109 	ClearBuffer(mp3DecInfo, sizeof(MP3DecInfo));
+//  110 	
+//  111 	fh =  (FrameHeader *)     malloc(sizeof(FrameHeader));
+//  112 	si =  (SideInfo *)        malloc(sizeof(SideInfo));
+//  113 	sfi = (ScaleFactorInfo *) malloc(sizeof(ScaleFactorInfo));
+//  114 	hi =  (HuffmanInfo *)     malloc(sizeof(HuffmanInfo));
+//  115 	di =  (DequantInfo *)     malloc(sizeof(DequantInfo));
+//  116 	mi =  (IMDCTInfo *)       malloc(sizeof(IMDCTInfo));
+//  117 	sbi = (SubbandInfo *)     malloc(sizeof(SubbandInfo));
+//  118 
+//  119 	mp3DecInfo->FrameHeaderPS =     (void *)fh;
+//  120 	mp3DecInfo->SideInfoPS =        (void *)si;
+//  121 	mp3DecInfo->ScaleFactorInfoPS = (void *)sfi;
+//  122 	mp3DecInfo->HuffmanInfoPS =     (void *)hi;
+//  123 	mp3DecInfo->DequantInfoPS =     (void *)di;
+//  124 	mp3DecInfo->IMDCTInfoPS =       (void *)mi;
+//  125 	mp3DecInfo->SubbandInfoPS =     (void *)sbi;
+//  126 
+//  127 	if (!fh || !si || !sfi || !hi || !di || !mi || !sbi) {
+//  128 		FreeBuffers(mp3DecInfo);	/* safe to call - only frees memory that was successfully allocated */
+//  129 		return 0;
+//  130 	}
+//  131 
+//  132 	/* important to do this - DSP primitives assume a bunch of state variables are 0 on first use */
+//  133 	ClearBuffer(fh,  sizeof(FrameHeader));
+//  134 	ClearBuffer(si,  sizeof(SideInfo));
+//  135 	ClearBuffer(sfi, sizeof(ScaleFactorInfo));
+//  136 	ClearBuffer(hi,  sizeof(HuffmanInfo));
+//  137 	ClearBuffer(di,  sizeof(DequantInfo));
+//  138 	ClearBuffer(mi,  sizeof(IMDCTInfo));
+//  139 	ClearBuffer(sbi, sizeof(SubbandInfo));
+//  140 
+//  141 	return mp3DecInfo;
+//  142 #endif // xxx
+//  143 
+//  144 
+//  145 //---------------------------------------------------------------------------------
+
+        RSEG DATA_Z:DATA:SORT:NOROOT(2)
+//  146 	static MP3DecInfo mp3DecInfo;
+??mp3DecInfo:
+        DS8 2032
+        DS8 56
+        DS8 328
+        DS8 284
+        DS8 840
+//  147 	static FrameHeader fh;
+//  148 	static SideInfo si;
+//  149 	static ScaleFactorInfo sfi;
+
+        RSEG DATA_Z:DATA:SORT:NOROOT(2)
+//  150 	static HuffmanInfo hi;
+??hi:
+        DS8 4624
+//  151 	static DequantInfo di;
+
+        RSEG DATA_Z:DATA:SORT:NOROOT(2)
+//  152 	static IMDCTInfo mi;
+??mi:
+        DS8 6944
+
+        RSEG DATA_Z:DATA:SORT:NOROOT(2)
+//  153 	static SubbandInfo sbi;
+??sbi:
+        DS8 8708
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??xmp3_AllocateBuffers??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE xmp3_AllocateBuffers
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function xmp3_AllocateBuffers
+        ARM
+//  154 	
+//  155 
+//  156 	mp3DecInfo.FrameHeaderPS =     (void *)&fh;
+xmp3_AllocateBuffers:
+        LDR      R0,??xmp3_AllocateBuffers_0  ;; ??mp3DecInfo
+//  157 	mp3DecInfo.SideInfoPS =        (void *)&si;
+//  158 	mp3DecInfo.ScaleFactorInfoPS = (void *)&sfi;
+//  159 	mp3DecInfo.HuffmanInfoPS =     (void *)&hi;
+        LDR      R12,??xmp3_AllocateBuffers_0+0x4  ;; ??hi
+//  160 	mp3DecInfo.DequantInfoPS =     (void *)&di;
+//  161 	mp3DecInfo.IMDCTInfoPS =       (void *)&mi;
+        LDR      R3,??xmp3_AllocateBuffers_0+0x8  ;; ??mi
+        PUSH     {R4,R5}
+        CFI R5 Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+        ADD      R1,R0,#+2032
+        STR      R1,[R0, #+0]
+        MOV      R1,#+40
+        ORR      R1,R1,#0x800
+        ADD      R1,R1,R0
+        STR      R1,[R0, #+4]
+        ADD      R1,R0,#+2416
+        STR      R1,[R0, #+8]
+        MOV      R1,#+140
+        ORR      R1,R1,#0xA00
+        ADD      R1,R1,R0
+        STR      R1,[R0, #+16]
+//  162 	mp3DecInfo.SubbandInfoPS =     (void *)&sbi;
+        LDR      R1,??xmp3_AllocateBuffers_0+0xC  ;; ??sbi
+        STR      R12,[R0, #+12]
+        STR      R3,[R0, #+20]
+        STR      R1,[R0, #+24]
+//  163 
+//  164 	/* important to do this - DSP primitives assume a bunch of state variables are 0 on first use */
+//  165 	ClearBuffer((void *)&fh,  sizeof(FrameHeader));
+        MOV      R4,#+0
+        MOV      R2,#+0
+??xmp3_AllocateBuffers_1:
+        ADD      R5,R4,R0
+        STRB     R2,[R5, #+2032]
+        ADD      R4,R4,#+1
+        CMP      R4,#+56
+        BLT      ??xmp3_AllocateBuffers_1
+//  166 	ClearBuffer((void *)&si,  sizeof(SideInfo));
+        MOV      R4,#+0
+??xmp3_AllocateBuffers_2:
+        ADD      R5,R4,R0
+        STRB     R2,[R5, #+2088]
+        ADD      R4,R4,#+1
+        CMP      R4,#+328
+        BLT      ??xmp3_AllocateBuffers_2
+//  167 	ClearBuffer((void *)&sfi, sizeof(ScaleFactorInfo));
+        MOV      R4,#+0
+??xmp3_AllocateBuffers_3:
+        ADD      R5,R4,R0
+        STRB     R2,[R5, #+2416]
+        ADD      R4,R4,#+1
+        CMP      R4,#+284
+        BLT      ??xmp3_AllocateBuffers_3
+//  168 	ClearBuffer((void *)&hi,  sizeof(HuffmanInfo));
+        MOV      R4,#+0
+        MOV      R5,#+16
+        ORR      R5,R5,#0x1200
+??xmp3_AllocateBuffers_4:
+        STRB     R2,[R4, +R12]
+        ADD      R4,R4,#+1
+        CMP      R4,R5
+        BLT      ??xmp3_AllocateBuffers_4
+//  169 	ClearBuffer((void *)&di,  sizeof(DequantInfo));
+        MOV      R4,#+0
+??xmp3_AllocateBuffers_5:
+        ADD      R5,R4,R0
+        STRB     R2,[R5, #+2700]
+        ADD      R4,R4,#+1
+        CMP      R4,#+840
+        BLT      ??xmp3_AllocateBuffers_5
+//  170 	ClearBuffer((void *)&mi,  sizeof(IMDCTInfo));
+        MOV      R4,#+0
+        MOV      R5,#+32
+        ORR      R5,R5,#0x1B00
+??xmp3_AllocateBuffers_6:
+        STRB     R2,[R4, +R3]
+        ADD      R4,R4,#+1
+        CMP      R4,R5
+        BLT      ??xmp3_AllocateBuffers_6
+//  171 	ClearBuffer((void *)&sbi, sizeof(SubbandInfo));
+        MOV      R3,#+0
+        MOV      R4,#+4
+        ORR      R4,R4,#0x2200
+??xmp3_AllocateBuffers_7:
+        STRB     R2,[R3, +R1]
+        ADD      R3,R3,#+1
+        CMP      R3,R4
+        BLT      ??xmp3_AllocateBuffers_7
+//  172 
+//  173 	return &mp3DecInfo;	
+        POP      {R4,R5}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        DATA
+??xmp3_AllocateBuffers_0:
+        DC32     ??mp3DecInfo
+        DC32     ??hi
+        DC32     ??mi
+        DC32     ??sbi
+        CFI EndBlock cfiBlock1
+//  174 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??xmp3_FreeBuffers??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE xmp3_FreeBuffers
+//  175 
+//  176 #define SAFE_FREE(x)	{if (x)	mfree(x);	(x) = 0;}	/* helper macro */
+//  177 
+//  178 /**************************************************************************************
+//  179  * Function:    FreeBuffers
+//  180  *
+//  181  * Description: frees all the memory used by the MP3 decoder
+//  182  *
+//  183  * Inputs:      pointer to initialized MP3DecInfo structure
+//  184  *
+//  185  * Outputs:     none
+//  186  *
+//  187  * Return:      none
+//  188  *
+//  189  * Notes:       safe to call even if some buffers were not allocated (uses SAFE_FREE)
+//  190  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function xmp3_FreeBuffers
+        ARM
+//  191 void FreeBuffers(MP3DecInfo *mp3DecInfo)
+//  192 {
+xmp3_FreeBuffers:
+        PUSH     {R4,R5,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+        MOVS     R4,R0
+//  193 	if (!mp3DecInfo)
+        POPEQ    {R4,R5,PC}
+//  194 		return;
+//  195 
+//  196 	SAFE_FREE(mp3DecInfo->FrameHeaderPS);
+        LDR      R0,[R4, #+0]
+        CMP      R0,#+0
+        BEQ      ??xmp3_FreeBuffers_0
+        SWI      +21
+??xmp3_FreeBuffers_0:
+        MOV      R5,#+0
+        STR      R5,[R4, #+0]
+//  197 	SAFE_FREE(mp3DecInfo->SideInfoPS);
+        LDR      R0,[R4, #+4]
+        CMP      R0,#+0
+        BEQ      ??xmp3_FreeBuffers_1
+        SWI      +21
+??xmp3_FreeBuffers_1:
+        STR      R5,[R4, #+4]
+//  198 	SAFE_FREE(mp3DecInfo->ScaleFactorInfoPS);
+        LDR      R0,[R4, #+8]
+        CMP      R0,#+0
+        BEQ      ??xmp3_FreeBuffers_2
+        SWI      +21
+??xmp3_FreeBuffers_2:
+        STR      R5,[R4, #+8]
+//  199 	SAFE_FREE(mp3DecInfo->HuffmanInfoPS);
+        LDR      R0,[R4, #+12]
+        CMP      R0,#+0
+        BEQ      ??xmp3_FreeBuffers_3
+        SWI      +21
+??xmp3_FreeBuffers_3:
+        STR      R5,[R4, #+12]
+//  200 	SAFE_FREE(mp3DecInfo->DequantInfoPS);
+        LDR      R0,[R4, #+16]
+        CMP      R0,#+0
+        BEQ      ??xmp3_FreeBuffers_4
+        SWI      +21
+??xmp3_FreeBuffers_4:
+        STR      R5,[R4, #+16]
+//  201 	SAFE_FREE(mp3DecInfo->IMDCTInfoPS);
+        LDR      R0,[R4, #+20]
+        CMP      R0,#+0
+        BEQ      ??xmp3_FreeBuffers_5
+        SWI      +21
+??xmp3_FreeBuffers_5:
+        STR      R5,[R4, #+20]
+//  202 	SAFE_FREE(mp3DecInfo->SubbandInfoPS);
+        LDR      R0,[R4, #+24]
+        CMP      R0,#+0
+        BEQ      ??xmp3_FreeBuffers_6
+        SWI      +21
+??xmp3_FreeBuffers_6:
+        STR      R5,[R4, #+24]
+//  203 
+//  204 	SAFE_FREE(mp3DecInfo);
+        MOV      R0,R4
+        SWI      +21
+        POP      {R4,R5,PC}       ;; return
+        CFI EndBlock cfiBlock3
+//  205 }
+
+        RSEG INITTAB:CODE:ROOT(2)
+        DATA
+?init?tab?DATA_Z:
+        DCD      sfe(DATA_Z) - sfb(DATA_Z), sfb(DATA_Z), sfb(DATA_Z)
+
+        END
+//  206 
+// 
+//    464 bytes in segment CODE
+// 23 816 bytes in segment DATA_Z
+//     12 bytes in segment INITTAB
+// 
+//    456 bytes of CODE memory (+ 20 bytes shared)
+// 23 816 bytes of DATA memory
+//
+//Errors: none
+//Warnings: 1

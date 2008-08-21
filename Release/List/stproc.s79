@@ -1,0 +1,1108 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   13/Aug/2008  18:45:30 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  G:\Arm\SieELF\cbn_SRC\MP3Player\mp3dec\stproc.c     /
+//    Command line    =  G:\Arm\SieELF\cbn_SRC\MP3Player\mp3dec\stproc.c     /
+//                       -lC G:\Arm\SieELF\cbn_SRC\MP3Player\Release\List\   /
+//                       -lA G:\Arm\SieELF\cbn_SRC\MP3Player\Release\List\   /
+//                       -o G:\Arm\SieELF\cbn_SRC\MP3Player\Release\Obj\     /
+//                       -s9 --no_unroll --cpu_mode arm --endian little      /
+//                       --cpu ARM926EJ-S --stack_align 4 --interwork -e     /
+//                       --char_is_signed --fpu None -I                      /
+//                       D:\ewarm_442\arm\INC\ --inline_threshold=2          /
+//    List file       =  G:\Arm\SieELF\cbn_SRC\MP3Player\Release\List\stproc /
+//                       .s79                                                /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME stproc
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+??DataTable0 EQU 0
+??DataTable1 EQU 0
+??DataTable2 EQU 0
+        MULTWEAK ??MULSHIFT32??rA
+        MULTWEAK ??xmp3_IntensityProcMPEG1??rT
+        MULTWEAK ??xmp3_IntensityProcMPEG2??rT
+        MULTWEAK ??xmp3_MidSideProc??rT
+        PUBLIC xmp3_IntensityProcMPEG1
+        FUNCTION xmp3_IntensityProcMPEG1,0203H
+        LOCFRAME CSTACK, 116, STACK
+        PUBLIC xmp3_IntensityProcMPEG2
+        FUNCTION xmp3_IntensityProcMPEG2,0203H
+        LOCFRAME CSTACK, 160, STACK
+        PUBLIC xmp3_MidSideProc
+        FUNCTION xmp3_MidSideProc,0203H
+        LOCFRAME CSTACK, 20, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+MULSHIFT32          SYMBOL "MULSHIFT32"
+??MULSHIFT32??rA    SYMBOL "??rA", MULSHIFT32
+xmp3_IntensityProcMPEG1 SYMBOL "xmp3_IntensityProcMPEG1"
+??xmp3_IntensityProcMPEG1??rT SYMBOL "??rT", xmp3_IntensityProcMPEG1
+xmp3_IntensityProcMPEG2 SYMBOL "xmp3_IntensityProcMPEG2"
+??xmp3_IntensityProcMPEG2??rT SYMBOL "??rT", xmp3_IntensityProcMPEG2
+xmp3_MidSideProc    SYMBOL "xmp3_MidSideProc"
+??xmp3_MidSideProc??rT SYMBOL "??rT", xmp3_MidSideProc
+
+        EXTERN MULSHIFT32
+        FUNCTION MULSHIFT32,0202H
+        EXTERN xmp3_ISFIIP
+        EXTERN xmp3_ISFMpeg1
+        EXTERN xmp3_ISFMpeg2
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??xmp3_MidSideProc??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE xmp3_MidSideProc
+// G:\Arm\SieELF\cbn_SRC\MP3Player\mp3dec\stproc.c
+//    1 /* ***** BEGIN LICENSE BLOCK ***** 
+//    2  * Version: RCSL 1.0/RPSL 1.0 
+//    3  *  
+//    4  * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+//    5  *      
+//    6  * The contents of this file, and the files included with this file, are 
+//    7  * subject to the current version of the RealNetworks Public Source License 
+//    8  * Version 1.0 (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the RealNetworks Community Source License Version 1.0 
+//   11  * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+//   12  * in which case the RCSL will apply. You may also obtain the license terms 
+//   13  * directly from RealNetworks.  You may not use this file except in 
+//   14  * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+//   15  * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+//   16  * RCSL for the rights, obligations and limitations governing use of the 
+//   17  * contents of the file.  
+//   18  *  
+//   19  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   20  * developer of the Original Code and owns the copyrights in the portions 
+//   21  * it created. 
+//   22  *  
+//   23  * This file, and the files included with this file, is distributed and made 
+//   24  * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+//   25  * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+//   26  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+//   27  * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+//   28  * 
+//   29  * Technology Compatibility Kit Test Suite(s) Location: 
+//   30  *    http://www.helixcommunity.org/content/tck 
+//   31  * 
+//   32  * Contributor(s): 
+//   33  *  
+//   34  * ***** END LICENSE BLOCK ***** */ 
+//   35 
+//   36 /**************************************************************************************
+//   37  * Fixed-point MP3 decoder
+//   38  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+//   39  * June 2003
+//   40  *
+//   41  * stproc.c - mid-side and intensity (MPEG1 and MPEG2) stereo processing
+//   42  **************************************************************************************/
+//   43 
+//   44 #include "coder.h"
+//   45 #include "assembly.h"
+//   46 
+//   47 /**************************************************************************************
+//   48  * Function:    MidSideProc
+//   49  *
+//   50  * Description: sum-difference stereo reconstruction
+//   51  *
+//   52  * Inputs:      vector x with dequantized samples from left and right channels
+//   53  *              number of non-zero samples (MAX of left and right)
+//   54  *              assume 1 guard bit in input
+//   55  *              guard bit mask (left and right channels)
+//   56  *
+//   57  * Outputs:     updated sample vector x
+//   58  *              updated guard bit mask
+//   59  *
+//   60  * Return:      none
+//   61  *
+//   62  * Notes:       assume at least 1 GB in input
+//   63  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function xmp3_MidSideProc
+        ARM
+//   64 void MidSideProc(int x[MAX_NCHAN][MAX_NSAMP], int nSamps, int mOut[2])  
+//   65 {
+xmp3_MidSideProc:
+        PUSH     {R4-R8}
+        CFI R8 Frame(CFA, -4)
+        CFI R7 Frame(CFA, -8)
+        CFI R6 Frame(CFA, -12)
+        CFI R5 Frame(CFA, -16)
+        CFI R4 Frame(CFA, -20)
+        CFI CFA R13+20
+//   66 	int i, xr, xl, mOutL, mOutR;
+//   67 	
+//   68 	/* L = (M+S)/sqrt(2), R = (M-S)/sqrt(2) 
+//   69 	 * NOTE: 1/sqrt(2) done in DequantChannel() - see comments there
+//   70 	 */
+//   71 	mOutL = mOutR = 0;
+        MOV      R3,#+0
+        MOV      R12,#+0
+//   72 	for(i = 0; i < nSamps; i++) {
+        MOV      R4,R3
+        CMP      R1,#+1
+        BGE      ??xmp3_MidSideProc_0
+        B        ??xmp3_MidSideProc_1
+//   73 		xl = x[0][i];
+??xmp3_MidSideProc_2:
+        LDR      R6,[R0, +R4, LSL #+2]
+//   74 		xr = x[1][i];
+        ADD      R5,R0,R4, LSL #+2
+        LDR      R7,[R5, #+2304]
+//   75 		x[0][i] = xl + xr;
+        ADD      R8,R7,R6
+        STR      R8,[R0, +R4, LSL #+2]
+//   76 		x[1][i] = xl - xr;
+        SUB      R6,R6,R7
+        STR      R6,[R5, #+2304]
+//   77 		mOutL |= FASTABS(x[0][i]);
+//   78 		mOutR |= FASTABS(x[1][i]);
+        LDR      R5,[R5, #+2304]
+        ASR      R7,R8,#+31
+        EOR      R6,R7,R8
+        SUB      R6,R6,R7
+        ORR      R12,R6,R12
+        ASR      R6,R5,#+31
+        EOR      R5,R6,R5
+        SUB      R5,R5,R6
+        ORR      R3,R5,R3
+//   79 	}
+        ADD      R4,R4,#+1
+??xmp3_MidSideProc_0:
+        CMP      R4,R1
+        BLT      ??xmp3_MidSideProc_2
+//   80 	mOut[0] |= mOutL;
+??xmp3_MidSideProc_1:
+        LDR      R0,[R2, #+0]
+        ORR      R0,R12,R0
+        STR      R0,[R2, #+0]
+//   81 	mOut[1] |= mOutR;
+        LDR      R0,[R2, #+4]
+        ORR      R0,R3,R0
+        STR      R0,[R2, #+4]
+//   82 }
+        POP      {R4-R8}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock1
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??xmp3_IntensityProcMPEG1??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE xmp3_IntensityProcMPEG1
+//   83 
+//   84 /**************************************************************************************
+//   85  * Function:    IntensityProcMPEG1
+//   86  *
+//   87  * Description: intensity stereo processing for MPEG1
+//   88  *
+//   89  * Inputs:      vector x with dequantized samples from left and right channels
+//   90  *              number of non-zero samples in left channel
+//   91  *              valid FrameHeader struct
+//   92  *              two each of ScaleFactorInfoSub, CriticalBandInfo structs (both channels)
+//   93  *              flags indicating midSide on/off, mixedBlock on/off
+//   94  *              guard bit mask (left and right channels)
+//   95  *
+//   96  * Outputs:     updated sample vector x
+//   97  *              updated guard bit mask
+//   98  *
+//   99  * Return:      none
+//  100  *
+//  101  * Notes:       assume at least 1 GB in input
+//  102  *
+//  103  * TODO:        combine MPEG1/2 into one function (maybe)
+//  104  *              make sure all the mixed-block and IIP logic is right
+//  105  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function xmp3_IntensityProcMPEG1
+        ARM
+//  106 void IntensityProcMPEG1(int x[MAX_NCHAN][MAX_NSAMP], int nSamps, FrameHeader *fh, ScaleFactorInfoSub *sfis, 
+//  107 						CriticalBandInfo *cbi, int midSideFlag, int mixFlag, int mOut[2])
+//  108 {
+xmp3_IntensityProcMPEG1:
+        PUSH     {R2-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+44
+        SUB      SP,SP,#+72
+        CFI CFA R13+116
+        MOV      R5,R0
+        LDR      R0,[SP, #+116]
+//  109 	int i=0, j=0, n=0, cb=0, w=0;
+//  110 	int sampsLeft, isf, mOutL, mOutR, xl, xr;
+//  111 	int fl, fr, fls[3], frs[3];
+//  112 	int cbStartL=0, cbStartS=0, cbEndL=0, cbEndS=0;
+        MOV      R4,#+0
+        MOV      R3,R4
+        STR      R3,[SP, #+0]
+        STR      R3,[SP, #+16]
+        STR      R3,[SP, #+44]
+//  113 	int *isfTab;
+//  114 	
+//  115 	/* NOTE - this works fine for mixed blocks, as long as the switch point starts in the
+//  116 	 *  short block section (i.e. on or after sample 36 = sfBand->l[8] = 3*sfBand->s[3]
+//  117 	 * is this a safe assumption?
+//  118 	 * TODO - intensity + mixed not quite right (diff = 11 on he_mode)
+//  119 	 *  figure out correct implementation (spec ambiguous about when to do short block reorder)
+//  120 	 */
+//  121 	if (cbi[1].cbType == 0) {
+        LDR      R3,[R0, #+24]
+        LDR      R2,[R2, #+52]
+        MOV      R6,#+0
+        CMP      R3,#+0
+        BNE      ??xmp3_IntensityProcMPEG1_0
+//  122 		/* long block */
+//  123 		cbStartL = cbi[1].cbEndL + 1;
+        LDR      R3,[R0, #+44]
+//  124 		cbEndL =   cbi[0].cbEndL + 1;
+        LDR      R0,[R0, #+20]
+        ADD      R4,R3,#+1
+        ADD      R0,R0,#+1
+        STR      R0,[SP, #+16]
+//  125 		cbStartS = cbEndS = 0;
+//  126 		i = fh->sfBand->l[cbStartL];
+        ADD      R0,R2,R4, LSL #+1
+        LDRSH    R6,[R0, #+0]
+        B        ??xmp3_IntensityProcMPEG1_1
+//  127 	} else if (cbi[1].cbType == 1 || cbi[1].cbType == 2) {
+??xmp3_IntensityProcMPEG1_0:
+        CMP      R3,#+1
+        CMPNE    R3,#+2
+        BNE      ??xmp3_IntensityProcMPEG1_1
+//  128 		/* short or mixed block */
+//  129 		cbStartS = cbi[1].cbEndSMax + 1;
+        LDR      R6,[R0, #+40]
+        ADD      R6,R6,#+1
+        STR      R6,[SP, #+0]
+//  130 		cbEndS =   cbi[0].cbEndSMax + 1;
+        LDR      R0,[R0, #+16]
+        ADD      R0,R0,#+1
+        STR      R0,[SP, #+44]
+//  131 		cbStartL = cbEndL = 0;
+//  132 		i = 3 * fh->sfBand->s[cbStartS];
+        ADD      R0,R2,R6, LSL #+1
+        LDRSH    R0,[R0, #+46]
+        ADD      R6,R0,R0, LSL #+1
+//  133 	}
+//  134 
+//  135 	sampsLeft = nSamps - i;		/* process to length of left */
+//  136 	isfTab = (int *)ISFMpeg1[midSideFlag];
+??xmp3_IntensityProcMPEG1_1:
+        LDR      R3,??xmp3_IntensityProcMPEG1_2  ;; xmp3_ISFMpeg1
+        SUB      R9,R1,R6
+        LDR      R1,[SP, #+120]
+        MOV      R2,#+28
+        MLA      R1,R2,R1,R3
+//  137 	mOutL = mOutR = 0;
+        MOV      R7,#+0
+        STR      R1,[SP, #+20]
+        MOV      R8,#+0
+//  138 
+//  139 	/* long blocks */
+//  140 	for (cb = cbStartL; cb < cbEndL && sampsLeft > 0; cb++) {
+        B        ??xmp3_IntensityProcMPEG1_3
+//  141 		isf = sfis->l[cb];
+//  142 		if (isf == 7) {
+//  143 			fl = ISFIIP[midSideFlag][0];
+//  144 			fr = ISFIIP[midSideFlag][1];
+//  145 		} else {
+//  146 			fl = isfTab[isf];	
+//  147 			fr = isfTab[6] - isfTab[isf];
+//  148 		}
+//  149 
+//  150 		n = fh->sfBand->l[cb + 1] - fh->sfBand->l[cb];
+//  151 		for (j = 0; j < n && sampsLeft > 0; j++, i++) {
+//  152 			xr = MULSHIFT32(fr, x[0][i]) << 2;	x[1][i] = xr; mOutR |= FASTABS(xr);
+??xmp3_IntensityProcMPEG1_4:
+        LDR      R0,[SP, #+12]
+        ADD      R11,R5,R6, LSL #+2
+        LDR      R1,[R11, #+0]
+//  153 			xl = MULSHIFT32(fl, x[0][i]) << 2;	x[0][i] = xl; mOutL |= FASTABS(xl);
+//  154 			sampsLeft--;
+        SUB      R9,R9,#+1
+        _BLF     MULSHIFT32,??MULSHIFT32??rA
+        LSL      R0,R0,#+2
+        ADD      R1,R5,R6, LSL #+2
+        STR      R0,[R1, #+2304]
+        ASR      R1,R0,#+31
+        EOR      R0,R1,R0
+        SUB      R0,R0,R1
+        LDR      R1,[R11, #+0]
+        ORR      R7,R0,R7
+        LDR      R0,[SP, #+8]
+//  155 		}
+        ADD      R10,R10,#+1
+        _BLF     MULSHIFT32,??MULSHIFT32??rA
+        LSL      R0,R0,#+2
+        STR      R0,[R11, #+0]
+        ASR      R1,R0,#+31
+        EOR      R0,R1,R0
+        SUB      R0,R0,R1
+        ORR      R8,R0,R8
+        ADD      R6,R6,#+1
+??xmp3_IntensityProcMPEG1_5:
+        LDR      R0,[SP, #+28]
+        CMP      R10,R0
+        BGE      ??xmp3_IntensityProcMPEG1_6
+        CMP      R9,#+1
+        BGE      ??xmp3_IntensityProcMPEG1_4
+??xmp3_IntensityProcMPEG1_6:
+        ADD      R4,R4,#+1
+??xmp3_IntensityProcMPEG1_3:
+        LDR      R1,[SP, #+120]
+        LDR      R2,??DataTable3  ;; xmp3_ISFIIP
+        ADD      R1,R2,R1, LSL #+3
+        STR      R1,[SP, #+24]
+        LDR      R0,[SP, #+16]
+        CMP      R4,R0
+        BGE      ??xmp3_IntensityProcMPEG1_7
+        CMP      R9,#+1
+        BLT      ??xmp3_IntensityProcMPEG1_7
+        LDR      R0,[SP, #+76]
+        LDRSB    R2,[R4, +R0]
+        CMP      R2,#+7
+        BNE      ??xmp3_IntensityProcMPEG1_8
+        LDR      R1,[R1, #+0]
+        STR      R1,[SP, #+8]
+        LDR      R1,[SP, #+24]
+        LDR      R1,[R1, #+4]
+        STR      R1,[SP, #+12]
+        B        ??xmp3_IntensityProcMPEG1_9
+??xmp3_IntensityProcMPEG1_8:
+        LDR      R0,[SP, #+20]
+        ADD      R0,R0,R2, LSL #+2
+        LDR      R2,[R0, #+0]
+        STR      R2,[SP, #+8]
+        LDR      R2,[SP, #+20]
+        LDR      R0,[R0, #+0]
+        LDR      R2,[R2, #+24]
+        SUB      R0,R2,R0
+        STR      R0,[SP, #+12]
+??xmp3_IntensityProcMPEG1_9:
+        LDR      R0,[SP, #+72]
+        MOV      R10,#+0
+        LDR      R0,[R0, #+52]
+        ADD      R2,R0,R4, LSL #+1
+        LDRSH    R2,[R2, #+2]
+        ADD      R0,R0,R4, LSL #+1
+        LDRSH    R0,[R0, #+0]
+        SUB      R0,R2,R0
+        STR      R0,[SP, #+28]
+        B        ??xmp3_IntensityProcMPEG1_5
+//  156 	}
+//  157 
+//  158 	/* short blocks */
+//  159 	for (cb = cbStartS; cb < cbEndS && sampsLeft >= 3; cb++) {
+??xmp3_IntensityProcMPEG1_7:
+        LDR      R1,[SP, #+0]
+        B        ??xmp3_IntensityProcMPEG1_10
+//  160 		for (w = 0; w < 3; w++) {
+//  161 			isf = sfis->s[cb][w];
+//  162 			if (isf == 7) {
+//  163 				fls[w] = ISFIIP[midSideFlag][0];
+//  164 				frs[w] = ISFIIP[midSideFlag][1];
+//  165 			} else {
+//  166 				fls[w] = isfTab[isf];
+//  167 				frs[w] = isfTab[6] - isfTab[isf];
+//  168 			}
+//  169 		}
+//  170 
+//  171 		n = fh->sfBand->s[cb + 1] - fh->sfBand->s[cb];
+//  172 		for (j = 0; j < n && sampsLeft >= 3; j++, i+=3) {
+//  173 			xr = MULSHIFT32(frs[0], x[0][i+0]) << 2;	x[1][i+0] = xr;	mOutR |= FASTABS(xr);
+??xmp3_IntensityProcMPEG1_11:
+        LDR      R0,[SP, #+60]
+        ADD      R11,R5,R6, LSL #+2
+        LDR      R1,[R11, #+0]
+        ADD      R4,R5,R6, LSL #+2
+        _BLF     MULSHIFT32,??MULSHIFT32??rA
+        LSL      R0,R0,#+2
+        STR      R0,[R4, #+2304]
+        STR      R0,[SP, #+0]
+        MOV      R1,R0
+        ASR      R1,R1,#+31
+        STR      R1,[SP, #+8]
+//  174 			xl = MULSHIFT32(fls[0], x[0][i+0]) << 2;	x[0][i+0] = xl;	mOutL |= FASTABS(xl);
+        LDR      R1,[R11, #+0]
+        LDR      R0,[SP, #+48]
+//  175 			xr = MULSHIFT32(frs[1], x[0][i+1]) << 2;	x[1][i+1] = xr;	mOutR |= FASTABS(xr);
+//  176 			xl = MULSHIFT32(fls[1], x[0][i+1]) << 2;	x[0][i+1] = xl;	mOutL |= FASTABS(xl);
+//  177 			xr = MULSHIFT32(frs[2], x[0][i+2]) << 2;	x[1][i+2] = xr;	mOutR |= FASTABS(xr);
+//  178 			xl = MULSHIFT32(fls[2], x[0][i+2]) << 2;	x[0][i+2] = xl;	mOutL |= FASTABS(xl);
+//  179 			sampsLeft -= 3;
+        SUB      R9,R9,#+3
+        _BLF     MULSHIFT32,??MULSHIFT32??rA
+        LSL      R0,R0,#+2
+        STR      R0,[R11, #+0]
+        STR      R0,[SP, #+32]
+        MOV      R1,R0
+        ASR      R1,R1,#+31
+        STR      R1,[SP, #+36]
+        LDR      R1,[R4, #+4]
+        LDR      R0,[SP, #+64]
+//  180 		}
+        ADD      R10,R10,#+1
+        _BLF     MULSHIFT32,??MULSHIFT32??rA
+        LSL      R0,R0,#+2
+        ADD      R1,R6,#+1
+        ADD      R1,R5,R1, LSL #+2
+        STR      R0,[R1, #+2304]
+        STR      R0,[SP, #+12]
+        MOV      R1,R0
+        ASR      R1,R1,#+31
+        STR      R1,[SP, #+16]
+        LDR      R0,[SP, #+52]
+        LDR      R1,[R4, #+4]
+        _BLF     MULSHIFT32,??MULSHIFT32??rA
+        LSL      R0,R0,#+2
+        STR      R0,[R4, #+4]
+        STR      R0,[SP, #+40]
+        LDR      R1,[R4, #+8]
+        ASR      R11,R0,#+31
+        LDR      R0,[SP, #+68]
+        _BLF     MULSHIFT32,??MULSHIFT32??rA
+        LSL      R0,R0,#+2
+        ADD      R1,R6,#+2
+        ADD      R1,R5,R1, LSL #+2
+        STR      R0,[R1, #+2304]
+        LDR      R2,[SP, #+0]
+        LDR      R3,[SP, #+8]
+        LDR      R12,[SP, #+16]
+        EOR      R2,R3,R2
+        SUB      R2,R2,R3
+        LDR      R3,[SP, #+12]
+        ASR      R1,R0,#+31
+        EOR      R3,R12,R3
+        SUB      R3,R3,R12
+        ORR      R2,R3,R2
+        EOR      R0,R1,R0
+        SUB      R0,R0,R1
+        LDR      R1,[R4, #+8]
+        ORR      R0,R0,R2
+        ORR      R7,R0,R7
+        LDR      R0,[SP, #+56]
+        ADD      R6,R6,#+3
+        _BLF     MULSHIFT32,??MULSHIFT32??rA
+        LSL      R0,R0,#+2
+        STR      R0,[R4, #+8]
+        LDR      R2,[SP, #+32]
+        LDR      R3,[SP, #+36]
+        ASR      R1,R0,#+31
+        EOR      R2,R3,R2
+        SUB      R2,R2,R3
+        LDR      R3,[SP, #+40]
+        EOR      R0,R1,R0
+        EOR      R3,R11,R3
+        SUB      R3,R3,R11
+        ORR      R2,R3,R2
+        SUB      R0,R0,R1
+        ORR      R0,R0,R2
+        ORR      R8,R0,R8
+??xmp3_IntensityProcMPEG1_12:
+        LDR      R0,[SP, #+28]
+        CMP      R10,R0
+        BGE      ??xmp3_IntensityProcMPEG1_13
+        CMP      R9,#+3
+        BGE      ??xmp3_IntensityProcMPEG1_11
+??xmp3_IntensityProcMPEG1_13:
+        LDR      R1,[SP, #+4]
+        ADD      R1,R1,#+1
+??xmp3_IntensityProcMPEG1_10:
+        STR      R1,[SP, #+4]
+        LDR      R0,[SP, #+4]
+        LDR      R1,[SP, #+44]
+        CMP      R0,R1
+        BGE      ??xmp3_IntensityProcMPEG1_14
+        CMP      R9,#+3
+        BLT      ??xmp3_IntensityProcMPEG1_14
+        MOV      R0,#+0
+??xmp3_IntensityProcMPEG1_15:
+        LDR      R1,[SP, #+4]
+        LDR      R2,[SP, #+76]
+        ADD      R1,R1,R1, LSL #+1
+        ADD      R1,R1,R2
+        ADD      R1,R0,R1
+        LDRSB    R2,[R1, #+23]
+        ADD      R1,SP,#+60
+        ADD      R1,R1,R0, LSL #+2
+        ADD      R3,SP,#+48
+        ADD      R3,R3,R0, LSL #+2
+        CMP      R2,#+7
+        BNE      ??xmp3_IntensityProcMPEG1_16
+        LDR      R2,[SP, #+24]
+        LDR      R2,[R2, #+0]
+        STR      R2,[R3, #+0]
+        LDR      R2,[SP, #+24]
+        LDR      R2,[R2, #+4]
+        B        ??xmp3_IntensityProcMPEG1_17
+??xmp3_IntensityProcMPEG1_16:
+        LDR      R4,[SP, #+20]
+        ADD      R2,R4,R2, LSL #+2
+        LDR      R4,[R2, #+0]
+        STR      R4,[R3, #+0]
+        LDR      R3,[SP, #+20]
+        LDR      R2,[R2, #+0]
+        LDR      R3,[R3, #+24]
+        SUB      R2,R3,R2
+??xmp3_IntensityProcMPEG1_17:
+        STR      R2,[R1, #+0]
+        ADD      R0,R0,#+1
+        CMP      R0,#+3
+        BLT      ??xmp3_IntensityProcMPEG1_15
+        LDR      R0,[SP, #+72]
+        LDR      R2,[SP, #+4]
+        LDR      R1,[R0, #+52]
+        LDR      R3,[SP, #+4]
+        ADD      R2,R2,#+1
+        ADD      R2,R1,R2, LSL #+1
+        LDRSH    R2,[R2, #+46]
+        ADD      R1,R1,R3, LSL #+1
+        LDRSH    R1,[R1, #+46]
+        MOV      R10,#+0
+        SUB      R1,R2,R1
+        STR      R1,[SP, #+28]
+        B        ??xmp3_IntensityProcMPEG1_12
+//  181 	}
+//  182 	mOut[0] = mOutL;
+??xmp3_IntensityProcMPEG1_14:
+        LDR      R0,[SP, #+128]
+        STR      R8,[R0, #+0]
+//  183 	mOut[1] = mOutR;
+        LDR      R0,[SP, #+128]
+        STR      R7,[R0, #+4]
+//  184 	
+//  185 	return;
+        ADD      SP,SP,#+80
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        DATA
+??xmp3_IntensityProcMPEG1_2:
+        DC32     xmp3_ISFMpeg1
+        CFI EndBlock cfiBlock3
+//  186 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??xmp3_IntensityProcMPEG2??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE xmp3_IntensityProcMPEG2
+//  187 
+//  188 /**************************************************************************************
+//  189  * Function:    IntensityProcMPEG2
+//  190  *
+//  191  * Description: intensity stereo processing for MPEG2
+//  192  *
+//  193  * Inputs:      vector x with dequantized samples from left and right channels
+//  194  *              number of non-zero samples in left channel
+//  195  *              valid FrameHeader struct
+//  196  *              two each of ScaleFactorInfoSub, CriticalBandInfo structs (both channels)
+//  197  *              ScaleFactorJS struct with joint stereo info from UnpackSFMPEG2()
+//  198  *              flags indicating midSide on/off, mixedBlock on/off
+//  199  *              guard bit mask (left and right channels)
+//  200  *
+//  201  * Outputs:     updated sample vector x
+//  202  *              updated guard bit mask
+//  203  *
+//  204  * Return:      none
+//  205  *
+//  206  * Notes:       assume at least 1 GB in input
+//  207  *
+//  208  * TODO:        combine MPEG1/2 into one function (maybe)
+//  209  *              make sure all the mixed-block and IIP logic is right
+//  210  *                probably redo IIP logic to be simpler
+//  211  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function xmp3_IntensityProcMPEG2
+        ARM
+//  212 void IntensityProcMPEG2(int x[MAX_NCHAN][MAX_NSAMP], int nSamps, FrameHeader *fh, ScaleFactorInfoSub *sfis, 
+//  213 						CriticalBandInfo *cbi, ScaleFactorJS *sfjs, int midSideFlag, int mixFlag, int mOut[2])
+//  214 {
+xmp3_IntensityProcMPEG2:
+        PUSH     {R0,R2-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+48
+//  215 	int i, j, k, n, r, cb, w;
+//  216 	int fl, fr, mOutL, mOutR, xl, xr;
+//  217 	int sampsLeft;
+//  218 	int isf, sfIdx, tmp, il[23];
+//  219 	int *isfTab;
+//  220 	int cbStartL, cbStartS, cbEndL, cbEndS;
+//  221 	
+//  222 	isfTab = (int *)ISFMpeg2[sfjs->intensityScale][midSideFlag];
+        LDR      R5,??xmp3_IntensityProcMPEG2_0  ;; xmp3_ISFMpeg2
+        SUB      SP,SP,#+112
+        CFI CFA R13+160
+        LDR      R0,[SP, #+164]
+        LDR      R3,[SP, #+168]
+        LDR      R4,[R0, #+0]
+//  223 	mOutL = mOutR = 0;
+        MOV      R6,#+0
+        ADD      R4,R5,R4, LSL #+7
+        ADD      R3,R4,R3, LSL #+6
+        STR      R3,[SP, #+12]
+        MOV      R5,#+0
+//  224 
+//  225 	/* fill buffer with illegal intensity positions (depending on slen) */
+//  226 	for (k = r = 0; r < 4; r++) {
+        MOV      R2,R5
+        MOV      R7,R2
+        MOV      R3,#+1
+//  227 		tmp = (1 << sfjs->slen[r]) - 1;
+??xmp3_IntensityProcMPEG2_1:
+        ADD      R4,R0,R2, LSL #+2
+        LDR      R8,[R4, #+4]
+//  228 		for (j = 0; j < sfjs->nr[r]; j++, k++) 
+        LDR      R10,[R4, #+20]
+        LSL      R8,R3,R8
+        SUB      R9,R8,#+1
+        MOV      R8,#+0
+        CMP      R10,#+1
+        BGE      ??xmp3_IntensityProcMPEG2_2
+        B        ??xmp3_IntensityProcMPEG2_3
+//  229 			il[k] = tmp;
+??xmp3_IntensityProcMPEG2_4:
+        ADD      R10,SP,#+20
+        STR      R9,[R10, +R7, LSL #+2]
+        ADD      R8,R8,#+1
+        ADD      R7,R7,#+1
+??xmp3_IntensityProcMPEG2_2:
+        LDR      R10,[R4, #+20]
+        CMP      R8,R10
+        BLT      ??xmp3_IntensityProcMPEG2_4
+//  230 	}
+??xmp3_IntensityProcMPEG2_3:
+        ADD      R2,R2,#+1
+        CMP      R2,#+4
+        BLT      ??xmp3_IntensityProcMPEG2_1
+//  231 
+//  232 	if (cbi[1].cbType == 0) {
+        LDR      R2,[SP, #+168]
+        LDR      R4,??DataTable3  ;; xmp3_ISFIIP
+        LDR      R0,[SP, #+160]
+        ADD      R2,R4,R2, LSL #+3
+        STR      R2,[SP, #+16]
+        LDR      R0,[R0, #+24]
+        CMP      R0,#+0
+        BNE      ??xmp3_IntensityProcMPEG2_5
+//  233 		/* long blocks */
+//  234 		il[21] = il[22] = 1;
+//  235 		cbStartL = cbi[1].cbEndL + 1;	/* start at end of right */
+        LDR      R0,[SP, #+160]
+//  236 		cbEndL =   cbi[0].cbEndL + 1;	/* process to end of left */
+        LDR      R2,[SP, #+160]
+        STR      R3,[SP, #+108]
+        STR      R3,[SP, #+104]
+        LDR      R0,[R0, #+44]
+        LDR      R2,[R2, #+20]
+        ADD      R4,R0,#+1
+//  237 		i = fh->sfBand->l[cbStartL];
+        LDR      R0,[SP, #+116]
+        ADD      R2,R2,#+1
+        STR      R2,[SP, #+4]
+        LDR      R0,[R0, #+52]
+        ADD      R0,R0,R4, LSL #+1
+        LDRSH    R7,[R0, #+0]
+//  238 		sampsLeft = nSamps - i;
+        SUB      R1,R1,R7
+        STR      R1,[SP, #+0]
+//  239 
+//  240 		for(cb = cbStartL; cb < cbEndL; cb++) {
+        B        ??xmp3_IntensityProcMPEG2_6
+//  241 			sfIdx = sfis->l[cb];
+//  242 			if (sfIdx == il[cb]) {
+//  243 				fl = ISFIIP[midSideFlag][0];
+//  244 				fr = ISFIIP[midSideFlag][1];
+//  245 			} else {
+//  246 				isf = (sfis->l[cb] + 1) >> 1;
+//  247 				fl = isfTab[(sfIdx & 0x01 ? isf : 0)];
+//  248 				fr = isfTab[(sfIdx & 0x01 ? 0 : isf)];
+//  249 			}
+//  250 			n = MIN(fh->sfBand->l[cb + 1] - fh->sfBand->l[cb], sampsLeft);
+//  251 
+//  252 			for(j = 0; j < n; j++, i++) {
+//  253 				xr = MULSHIFT32(fr, x[0][i]) << 2;	x[1][i] = xr;	mOutR |= FASTABS(xr);
+??xmp3_IntensityProcMPEG2_7:
+        LDR      R0,[SP, #+112]
+//  254 				xl = MULSHIFT32(fl, x[0][i]) << 2;	x[0][i] = xl;	mOutL |= FASTABS(xl);
+//  255 			}
+        ADD      R8,R8,#+1
+        ADD      R11,R0,R7, LSL #+2
+        LDR      R1,[R11, #+0]
+        MOV      R0,R9
+        _BLF     MULSHIFT32,??MULSHIFT32??rA
+        LDR      R1,[SP, #+112]
+        LSL      R0,R0,#+2
+        ADD      R1,R1,R7, LSL #+2
+        STR      R0,[R1, #+2304]
+        ASR      R1,R0,#+31
+        EOR      R0,R1,R0
+        SUB      R0,R0,R1
+        LDR      R1,[R11, #+0]
+        ORR      R5,R0,R5
+        MOV      R0,R10
+        _BLF     MULSHIFT32,??MULSHIFT32??rA
+        LSL      R0,R0,#+2
+        STR      R0,[R11, #+0]
+        ASR      R1,R0,#+31
+        EOR      R0,R1,R0
+        SUB      R0,R0,R1
+        ORR      R6,R0,R6
+        ADD      R7,R7,#+1
+??xmp3_IntensityProcMPEG2_8:
+        LDR      R0,[SP, #+8]
+        CMP      R8,R0
+        BLT      ??xmp3_IntensityProcMPEG2_7
+//  256 
+//  257 			/* early exit once we've used all the non-zero samples */
+//  258 			sampsLeft -= n;
+??xmp3_IntensityProcMPEG2_9:
+        LDR      R1,[SP, #+0]
+        LDR      R2,[SP, #+8]
+        SUB      R1,R1,R2
+        STR      R1,[SP, #+0]
+//  259 			if (sampsLeft == 0)		
+        CMP      R1,#+0
+        BEQ      ??xmp3_IntensityProcMPEG2_10
+        ADD      R4,R4,#+1
+??xmp3_IntensityProcMPEG2_6:
+        LDR      R0,[SP, #+4]
+        CMP      R4,R0
+        BGE      ??xmp3_IntensityProcMPEG2_10
+        LDR      R0,[SP, #+120]
+        ADD      R1,SP,#+20
+        LDRSB    R0,[R4, +R0]
+        LDR      R1,[R1, +R4, LSL #+2]
+        CMP      R0,R1
+        BNE      ??xmp3_IntensityProcMPEG2_11
+        LDR      R0,[SP, #+168]
+        LDR      R1,??DataTable3  ;; xmp3_ISFIIP
+        LDR      R10,[R1, +R0, LSL #+3]
+        LDR      R0,[SP, #+16]
+        LDR      R9,[R0, #+4]
+        B        ??xmp3_IntensityProcMPEG2_12
+??xmp3_IntensityProcMPEG2_11:
+        LDR      R3,[SP, #+12]
+        ADD      R1,R0,#+1
+        ASR      R1,R1,#+1
+        TST      R0,#0x1
+        MOVNE    R2,R1
+        MOVEQ    R2,#+0
+        LDR      R10,[R3, +R2, LSL #+2]
+        MOVNE    R1,#+0
+        LDR      R9,[R3, +R1, LSL #+2]
+??xmp3_IntensityProcMPEG2_12:
+        LDR      R0,[SP, #+116]
+        LDR      R1,[R0, #+52]
+        ADD      R0,R1,R4, LSL #+1
+        LDRSH    R3,[R0, #+0]
+        ADD      R1,R1,R4, LSL #+1
+        LDRSH    R2,[R1, #+2]
+        SUB      R2,R2,R3
+        LDR      R3,[SP, #+0]
+        CMP      R2,R3
+        BGE      ??xmp3_IntensityProcMPEG2_13
+        LDRSH    R1,[R1, #+2]
+        LDRSH    R0,[R0, #+0]
+        SUB      R0,R1,R0
+        STR      R0,[SP, #+8]
+        B        ??xmp3_IntensityProcMPEG2_14
+??xmp3_IntensityProcMPEG2_13:
+        MOV      R1,R3
+        STR      R1,[SP, #+8]
+??xmp3_IntensityProcMPEG2_14:
+        LDR      R0,[SP, #+8]
+        MOV      R8,#+0
+        CMP      R0,#+1
+        BGE      ??xmp3_IntensityProcMPEG2_8
+        B        ??xmp3_IntensityProcMPEG2_9
+//  260 				break;
+//  261 		}
+//  262 	} else {
+//  263 		/* short or mixed blocks */
+//  264 		il[12] = 1;
+??xmp3_IntensityProcMPEG2_5:
+        STR      R3,[SP, #+68]
+//  265 
+//  266 		for(w = 0; w < 3; w++) {
+        MOV      R1,#+0
+        STR      R1,[SP, #+4]
+//  267 			cbStartS = cbi[1].cbEndS[w] + 1;		/* start at end of right */
+??xmp3_IntensityProcMPEG2_15:
+        LDR      R0,[SP, #+4]
+        LDR      R1,[SP, #+160]
+        ADD      R0,R1,R0, LSL #+2
+        LDR      R1,[R0, #+28]
+//  268 			cbEndS =   cbi[0].cbEndS[w] + 1;		/* process to end of left */
+        LDR      R0,[R0, #+4]
+        ADD      R4,R1,#+1
+        ADD      R0,R0,#+1
+        STR      R0,[SP, #+0]
+//  269 			i = 3 * fh->sfBand->s[cbStartS] + w;
+        LDR      R0,[SP, #+116]
+        LDR      R1,[SP, #+4]
+        LDR      R0,[R0, #+52]
+        ADD      R0,R0,R4, LSL #+1
+        LDRSH    R0,[R0, #+46]
+        ADD      R0,R0,R0, LSL #+1
+        ADD      R7,R1,R0
+//  270 
+//  271 			/* skip through sample array by 3, so early-exit logic would be more tricky */
+//  272 			for(cb = cbStartS; cb < cbEndS; cb++) {
+        LDR      R0,[SP, #+0]
+        CMP      R4,R0
+        BGE      ??xmp3_IntensityProcMPEG2_16
+//  273 				sfIdx = sfis->s[cb][w];
+??xmp3_IntensityProcMPEG2_17:
+        LDR      R1,[SP, #+4]
+        LDR      R2,[SP, #+120]
+        ADD      R0,R4,R4, LSL #+1
+        ADD      R1,R1,R2
+        ADD      R1,R0,R1
+        LDRSB    R0,[R1, #+23]
+//  274 				if (sfIdx == il[cb]) {
+        ADD      R2,SP,#+20
+        LDR      R2,[R2, +R4, LSL #+2]
+        CMP      R0,R2
+        BNE      ??xmp3_IntensityProcMPEG2_18
+//  275 					fl = ISFIIP[midSideFlag][0];
+        LDR      R0,[SP, #+168]
+        LDR      R1,??DataTable3  ;; xmp3_ISFIIP
+        LDR      R10,[R1, +R0, LSL #+3]
+//  276 					fr = ISFIIP[midSideFlag][1];
+        LDR      R0,[SP, #+16]
+        LDR      R9,[R0, #+4]
+        B        ??xmp3_IntensityProcMPEG2_19
+//  277 				} else {
+//  278 					isf = (sfis->s[cb][w] + 1) >> 1;
+//  279 					fl = isfTab[(sfIdx & 0x01 ? isf : 0)];
+??xmp3_IntensityProcMPEG2_18:
+        LDR      R3,[SP, #+12]
+        ADD      R1,R0,#+1
+        ASR      R1,R1,#+1
+        TST      R0,#0x1
+        MOVNE    R2,R1
+        MOVEQ    R2,#+0
+        LDR      R10,[R3, +R2, LSL #+2]
+//  280 					fr = isfTab[(sfIdx & 0x01 ? 0 : isf)];
+        MOVNE    R1,#+0
+        LDR      R9,[R3, +R1, LSL #+2]
+//  281 				}
+//  282 				n = fh->sfBand->s[cb + 1] - fh->sfBand->s[cb];
+??xmp3_IntensityProcMPEG2_19:
+        LDR      R0,[SP, #+116]
+        ADD      R2,R4,#+1
+        LDR      R0,[R0, #+52]
+//  283 
+//  284 				for(j = 0; j < n; j++, i+=3) {
+        MOV      R8,#+0
+        ADD      R2,R0,R2, LSL #+1
+        LDRSH    R2,[R2, #+46]
+        ADD      R0,R0,R4, LSL #+1
+        LDRSH    R0,[R0, #+46]
+        SUB      R0,R2,R0
+        STR      R0,[SP, #+8]
+        CMP      R0,#+1
+        BGE      ??xmp3_IntensityProcMPEG2_20
+        B        ??xmp3_IntensityProcMPEG2_21
+//  285 					xr = MULSHIFT32(fr, x[0][i]) << 2;	x[1][i] = xr;	mOutR |= FASTABS(xr);
+??xmp3_IntensityProcMPEG2_22:
+        LDR      R0,[SP, #+112]
+//  286 					xl = MULSHIFT32(fl, x[0][i]) << 2;	x[0][i] = xl;	mOutL |= FASTABS(xl);
+//  287 				}
+        ADD      R8,R8,#+1
+        ADD      R11,R0,R7, LSL #+2
+        LDR      R1,[R11, #+0]
+        MOV      R0,R9
+        _BLF     MULSHIFT32,??MULSHIFT32??rA
+        LDR      R1,[SP, #+112]
+        LSL      R0,R0,#+2
+        ADD      R1,R1,R7, LSL #+2
+        STR      R0,[R1, #+2304]
+        ASR      R1,R0,#+31
+        EOR      R0,R1,R0
+        SUB      R0,R0,R1
+        LDR      R1,[R11, #+0]
+        ORR      R5,R0,R5
+        MOV      R0,R10
+        _BLF     MULSHIFT32,??MULSHIFT32??rA
+        LSL      R0,R0,#+2
+        STR      R0,[R11, #+0]
+        ASR      R1,R0,#+31
+        EOR      R0,R1,R0
+        SUB      R0,R0,R1
+        ORR      R6,R0,R6
+        ADD      R7,R7,#+3
+??xmp3_IntensityProcMPEG2_20:
+        LDR      R0,[SP, #+8]
+        CMP      R8,R0
+        BLT      ??xmp3_IntensityProcMPEG2_22
+//  288 			}
+??xmp3_IntensityProcMPEG2_21:
+        LDR      R0,[SP, #+0]
+        ADD      R4,R4,#+1
+        CMP      R4,R0
+        BLT      ??xmp3_IntensityProcMPEG2_17
+//  289 		}
+??xmp3_IntensityProcMPEG2_16:
+        LDR      R1,[SP, #+4]
+        ADD      R1,R1,#+1
+        STR      R1,[SP, #+4]
+        CMP      R1,#+3
+        BLT      ??xmp3_IntensityProcMPEG2_15
+//  290 	}
+//  291 	mOut[0] = mOutL;
+??xmp3_IntensityProcMPEG2_10:
+        LDR      R0,[SP, #+176]
+        STR      R6,[R0, #+0]
+//  292 	mOut[1] = mOutR;
+        LDR      R0,[SP, #+176]
+        STR      R5,[R0, #+4]
+//  293 
+//  294 	return;
+        ADD      SP,SP,#+124
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        DATA
+??xmp3_IntensityProcMPEG2_0:
+        DC32     xmp3_ISFMpeg2
+        CFI EndBlock cfiBlock5
+//  295 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable3:
+        DC32     xmp3_ISFIIP
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??MULSHIFT32??rA:
+        LDR      R12,??Subroutine3_0  ;; MULSHIFT32
+        BX       R12
+        DATA
+??Subroutine3_0:
+        DC32     MULSHIFT32
+        CFI EndBlock cfiBlock6
+
+        END
+//  296 
+// 
+// 2 148 bytes in segment CODE
+// 
+// 2 124 bytes of CODE memory (+ 24 bytes shared)
+//
+//Errors: none
+//Warnings: 1

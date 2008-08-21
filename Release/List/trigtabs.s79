@@ -1,0 +1,468 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   13/Aug/2008  18:45:31 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  G:\Arm\SieELF\cbn_SRC\MP3Player\mp3dec\trigtabs.c   /
+//    Command line    =  G:\Arm\SieELF\cbn_SRC\MP3Player\mp3dec\trigtabs.c   /
+//                       -lC G:\Arm\SieELF\cbn_SRC\MP3Player\Release\List\   /
+//                       -lA G:\Arm\SieELF\cbn_SRC\MP3Player\Release\List\   /
+//                       -o G:\Arm\SieELF\cbn_SRC\MP3Player\Release\Obj\     /
+//                       -s9 --no_unroll --cpu_mode arm --endian little      /
+//                       --cpu ARM926EJ-S --stack_align 4 --interwork -e     /
+//                       --char_is_signed --fpu None -I                      /
+//                       D:\ewarm_442\arm\INC\ --inline_threshold=2          /
+//    List file       =  G:\Arm\SieELF\cbn_SRC\MP3Player\Release\List\trigta /
+//                       bs.s79                                              /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME trigtabs
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        PUBLIC xmp3_ISFIIP
+        PUBLIC xmp3_ISFMpeg1
+        PUBLIC xmp3_ISFMpeg2
+        PUBLIC xmp3_coef32
+        PUBLIC xmp3_csa
+        PUBLIC xmp3_imdctWin
+        PUBLIC xmp3_polyCoef
+        PUBLIC xmp3_uniqueIDTab
+// G:\Arm\SieELF\cbn_SRC\MP3Player\mp3dec\trigtabs.c
+//    1 /* ***** BEGIN LICENSE BLOCK ***** 
+//    2  * Version: RCSL 1.0/RPSL 1.0 
+//    3  *  
+//    4  * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+//    5  *      
+//    6  * The contents of this file, and the files included with this file, are 
+//    7  * subject to the current version of the RealNetworks Public Source License 
+//    8  * Version 1.0 (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the RealNetworks Community Source License Version 1.0 
+//   11  * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+//   12  * in which case the RCSL will apply. You may also obtain the license terms 
+//   13  * directly from RealNetworks.  You may not use this file except in 
+//   14  * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+//   15  * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+//   16  * RCSL for the rights, obligations and limitations governing use of the 
+//   17  * contents of the file.  
+//   18  *  
+//   19  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   20  * developer of the Original Code and owns the copyrights in the portions 
+//   21  * it created. 
+//   22  *  
+//   23  * This file, and the files included with this file, is distributed and made 
+//   24  * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+//   25  * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+//   26  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+//   27  * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+//   28  * 
+//   29  * Technology Compatibility Kit Test Suite(s) Location: 
+//   30  *    http://www.helixcommunity.org/content/tck 
+//   31  * 
+//   32  * Contributor(s): 
+//   33  *  
+//   34  * ***** END LICENSE BLOCK ***** */ 
+//   35 
+//   36 /**************************************************************************************
+//   37  * Fixed-point MP3 decoder
+//   38  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+//   39  * June 2003
+//   40  *
+//   41  * trigtabs.c - global ROM tables for pre-calculated trig coefficients
+//   42  **************************************************************************************/
+//   43 
+//   44 #include "coder.h"
+//   45 
+//   46 /* post-IMDCT window, win[blockType][i]
+//   47  * format = Q31
+//   48  * Fused sin window with final stage of IMDCT
+//   49  * includes 1/sqrt(2) scaling, since we scale by sqrt(2) in dequant in order
+//   50  *   for fast IMDCT36 to be usable
+//   51  * 
+//   52  * 	for(i=0;i<9;i++)   win[0][i] = sin(pi/36 *(i+0.5));
+//   53  * 	for(i=9;i<36;i++)  win[0][i] = -sin(pi/36 *(i+0.5));
+//   54  * 
+//   55  * 	for(i=0;i<9;i++)   win[1][i] = sin(pi/36 *(i+0.5));
+//   56  * 	for(i=9;i<18;i++)  win[1][i] = -sin(pi/36 *(i+0.5));
+//   57  * 	for(i=18;i<24;i++) win[1][i] = -1;
+//   58  * 	for(i=24;i<30;i++) win[1][i] = -sin(pi/12 *(i+0.5-18));
+//   59  * 	for(i=30;i<36;i++) win[1][i] = 0;
+//   60  * 
+//   61  * 	for(i=0;i<6;i++)   win[3][i] = 0;
+//   62  * 	for(i=6;i<9;i++)   win[3][i] = sin(pi/12 *(i+0.5-6));
+//   63  * 	for(i=9;i<12;i++)  win[3][i] = -sin(pi/12 *(i+0.5-6));
+//   64  * 	for(i=12;i<18;i++) win[3][i] = -1;
+//   65  * 	for(i=18;i<36;i++) win[3][i] = -sin(pi/36*(i+0.5));
+//   66  * 
+//   67  * 	for(i=0;i<3;i++)   win[2][i] = sin(pi/12*(i+0.5));
+//   68  * 	for(i=3;i<12;i++)  win[2][i] = -sin(pi/12*(i+0.5));
+//   69  * 	for(i=12;i<36;i++) win[2][i] = 0;
+//   70  * 
+//   71  * 	for (i = 0; i < 4; i++) {
+//   72  * 		if (i == 2) {
+//   73  * 			win[i][8]  *= cos(pi/12 * (0+0.5));
+//   74  * 			win[i][9]  *= cos(pi/12 * (0+0.5));
+//   75  * 			win[i][7]  *= cos(pi/12 * (1+0.5));
+//   76  * 			win[i][10] *= cos(pi/12 * (1+0.5));
+//   77  * 			win[i][6]  *= cos(pi/12 * (2+0.5));
+//   78  * 			win[i][11] *= cos(pi/12 * (2+0.5));
+//   79  * 			win[i][0]  *= cos(pi/12 * (3+0.5));
+//   80  * 			win[i][5]  *= cos(pi/12 * (3+0.5));
+//   81  * 			win[i][1]  *= cos(pi/12 * (4+0.5));
+//   82  * 			win[i][4]  *= cos(pi/12 * (4+0.5));
+//   83  * 			win[i][2]  *= cos(pi/12 * (5+0.5));
+//   84  * 			win[i][3]  *= cos(pi/12 * (5+0.5));
+//   85  * 		} else {
+//   86  * 			for (j = 0; j < 9; j++) {
+//   87  * 				win[i][8-j] *= cos(pi/36 * (17-j+0.5));
+//   88  * 				win[i][9+j] *= cos(pi/36 * (17-j+0.5));
+//   89  * 			}
+//   90  * 			for (j = 0; j < 9; j++) {
+//   91  * 				win[i][18+8-j] *= cos(pi/36 * (j+0.5));
+//   92  * 				win[i][18+9+j] *= cos(pi/36 * (j+0.5));
+//   93  * 			}
+//   94  * 		}
+//   95  * 	}
+//   96  *	for (i = 0; i < 4; i++)
+//   97  *		for (j = 0; j < 36; j++)
+//   98  * 			win[i][j] *= 1.0 / sqrt(2);
+//   99  */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  100 const int imdctWin[4][36] = {
+xmp3_imdctWin:
+        DATA
+        DC32 44748427, 120658984, 176590828, 210844498, 222379213, 210844498
+        DC32 176590828, 120658984, 44748427, -48834339, -157245850, -277192075
+        DC32 -405028511, -536870912, -668713313, -796549749, -916495974
+        DC32 -1024907485, -1118490251, -1194400808, -1250332652, -1284586322
+        DC32 -1296121037, -1284586322, -1250332652, -1194400808, -1118490251
+        DC32 -1024907485, -916495974, -796549749, -668713313, -536870912
+        DC32 -405028511, -277192075, -157245850, -48834339, 44748427, 120658984
+        DC32 176590828, 210844498, 222379213, 210844498, 176590828, 120658984
+        DC32 44748427, -48834339, -157245850, -277192075, -405028511
+        DC32 -536870912, -668713313, -796549749, -916495974, -1024907485
+        DC32 -1119555820, -1204707246, -1280690121, -1346926172, -1402911301
+        DC32 -1448219428, -1469822689, -1390909200, -1203560631, -923524554
+        DC32 -576133455, -193505828, 0, 0, 0, 0, 0, 0, 120658984, 222379213
+        DC32 120658984, -157245850, -536870912, -916495974, -1194400808
+        DC32 -1296121037, -1194400808, -916495974, -536870912, -157245850, 0, 0
+        DC32 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC32 0, 0, 0, 0, 0, 0, 42899209, 75849408, 40321953, -52548592
+        DC32 -183116670, -325851845, -456621832, -581104888, -701165385
+        DC32 -815889590, -924404382, -1025883899, -1118490251, -1194400808
+        DC32 -1250332652, -1284586322, -1296121037, -1284586322, -1250332652
+        DC32 -1194400808, -1118490251, -1024907485, -916495974, -796549749
+        DC32 -668713313, -536870912, -405028511, -277192075, -157245850
+        DC32 -48834339
+//  101 	{
+//  102 	0x02aace8b, 0x07311c28, 0x0a868fec, 0x0c913b52, 0x0d413ccd, 0x0c913b52, 0x0a868fec, 0x07311c28, 
+//  103 	0x02aace8b, 0xfd16d8dd, 0xf6a09e66, 0xef7a6275, 0xe7dbc161, 0xe0000000, 0xd8243e9f, 0xd0859d8b, 
+//  104 	0xc95f619a, 0xc2e92723, 0xbd553175, 0xb8cee3d8, 0xb5797014, 0xb36ec4ae, 0xb2bec333, 0xb36ec4ae, 
+//  105 	0xb5797014, 0xb8cee3d8, 0xbd553175, 0xc2e92723, 0xc95f619a, 0xd0859d8b, 0xd8243e9f, 0xe0000000, 
+//  106 	0xe7dbc161, 0xef7a6275, 0xf6a09e66, 0xfd16d8dd, 
+//  107 	},
+//  108 	{
+//  109 	0x02aace8b, 0x07311c28, 0x0a868fec, 0x0c913b52, 0x0d413ccd, 0x0c913b52, 0x0a868fec, 0x07311c28, 
+//  110 	0x02aace8b, 0xfd16d8dd, 0xf6a09e66, 0xef7a6275, 0xe7dbc161, 0xe0000000, 0xd8243e9f, 0xd0859d8b, 
+//  111 	0xc95f619a, 0xc2e92723, 0xbd44ef14, 0xb831a052, 0xb3aa3837, 0xafb789a4, 0xac6145bb, 0xa9adecdc, 
+//  112 	0xa864491f, 0xad1868f0, 0xb8431f49, 0xc8f42236, 0xdda8e6b1, 0xf47755dc, 0x00000000, 0x00000000, 
+//  113 	0x00000000, 0x00000000, 0x00000000, 0x00000000, 
+//  114 	},
+//  115 	{
+//  116 	0x07311c28, 0x0d413ccd, 0x07311c28, 0xf6a09e66, 0xe0000000, 0xc95f619a, 0xb8cee3d8, 0xb2bec333, 
+//  117 	0xb8cee3d8, 0xc95f619a, 0xe0000000, 0xf6a09e66, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 
+//  118 	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 
+//  119 	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 
+//  120 	0x00000000, 0x00000000, 0x00000000, 0x00000000, 
+//  121 	},
+//  122 	{
+//  123 	0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x028e9709, 0x04855ec0, 
+//  124 	0x026743a1, 0xfcde2c10, 0xf515dc82, 0xec93e53b, 0xe4c880f8, 0xdd5d0b08, 0xd63510b7, 0xcf5e834a, 
+//  125 	0xc8e6b562, 0xc2da4105, 0xbd553175, 0xb8cee3d8, 0xb5797014, 0xb36ec4ae, 0xb2bec333, 0xb36ec4ae, 
+//  126 	0xb5797014, 0xb8cee3d8, 0xbd553175, 0xc2e92723, 0xc95f619a, 0xd0859d8b, 0xd8243e9f, 0xe0000000, 
+//  127 	0xe7dbc161, 0xef7a6275, 0xf6a09e66, 0xfd16d8dd, 
+//  128 	},
+//  129 };
+//  130 
+//  131 /* indexing = [mid-side off/on][intensity scale factor]
+//  132  * format = Q30, range = [0.0, 1.414]
+//  133  *
+//  134  * mid-side off: 
+//  135  *   ISFMpeg1[0][i] = tan(i*pi/12) / [1 + tan(i*pi/12)]  (left scalefactor)
+//  136  *                  =      1       / [1 + tan(i*pi/12)]  (right scalefactor)
+//  137  *
+//  138  * mid-side on: 
+//  139  *   ISFMpeg1[1][i] = sqrt(2) * ISFMpeg1[0][i]
+//  140  *
+//  141  * output L = ISFMpeg1[midSide][isf][0] * input L
+//  142  * output R = ISFMpeg1[midSide][isf][1] * input L
+//  143  *
+//  144  * obviously left scalefactor + right scalefactor = 1 (m-s off) or sqrt(2) (m-s on)
+//  145  *   so just store left and calculate right as 1 - left 
+//  146  *  (can derive as right = ISFMpeg1[x][6] - left)
+//  147  *
+//  148  * if mid-side enabled, multiply joint stereo scale factors by sqrt(2)
+//  149  *   - we scaled whole spectrum by 1/sqrt(2) in Dequant for the M+S/sqrt(2) in MidSideProc
+//  150  *   - but the joint stereo part of the spectrum doesn't need this, so we have to undo it
+//  151  *
+//  152  * if scale factor is and illegal intensity position, this becomes a passthrough
+//  153  *   - gain = [1, 0] if mid-side off, since L is coded directly and R = 0 in this region
+//  154  *   - gain = [1, 1] if mid-side on, since L = (M+S)/sqrt(2), R = (M-S)/sqrt(2)
+//  155  *     - and since S = 0 in the joint stereo region (above NZB right) then L = R = M * 1.0
+//  156  */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  157 const int ISFMpeg1[2][7] = {
+xmp3_ISFMpeg1:
+        DATA
+        DC32 0, 226908346, 393016784, 536870912, 680725039, 846833477
+        DC32 1073741824, 0, 320896860, 555809667, 759250124, 962690582
+        DC32 1197603389, 1518500249
+//  158 	{0x00000000, 0x0d8658ba, 0x176cf5d0, 0x20000000, 0x28930a2f, 0x3279a745, 0x40000000},
+//  159 	{0x00000000, 0x13207f5c, 0x2120fb83, 0x2d413ccc, 0x39617e16, 0x4761fa3d, 0x5a827999}
+//  160 };
+//  161 
+//  162 /* indexing = [intensity scale on/off][mid-side off/on][intensity scale factor]
+//  163  * format = Q30, range = [0.0, 1.414]
+//  164  *
+//  165  * if (isf == 0)                 kl = 1.0             kr = 1.0
+//  166  * else if (isf & 0x01 == 0x01)  kl = i0^((isf+1)/2), kr = 1.0
+//  167  * else if (isf & 0x01 == 0x00)  kl = 1.0,            kr = i0^(isf/2)
+//  168  *
+//  169  * if (intensityScale == 1)      i0 = 1/sqrt(2)       = 0x2d413ccc (Q30)
+//  170  * else                          i0 = 1/sqrt(sqrt(2)) = 0x35d13f32 (Q30)
+//  171  *
+//  172  * see comments for ISFMpeg1 (just above) regarding scaling, sqrt(2), etc.
+//  173  *
+//  174  * compress the MPEG2 table using the obvious identities above...
+//  175  * for isf = [0, 1, 2, ... 30], let sf = table[(isf+1) >> 1] 
+//  176  *   - if isf odd,  L = sf*L,     R = tab[0]*R
+//  177  *   - if isf even, L = tab[0]*L, R = sf*R
+//  178  */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  179 const int ISFMpeg2[2][2][16] = {
+xmp3_ISFMpeg2:
+        DATA
+        DC32 1073741824, 902905650, 759250124, 638450708, 536870911, 451452825
+        DC32 379625062, 319225354, 268435455, 225726412, 189812531, 159612677
+        DC32 134217727, 112863206, 94906265, 79806338, 1518500249, 1276901415
+        DC32 1073741823, 902905650, 759250124, 638450707, 536870911, 451452825
+        DC32 379625062, 319225353, 268435455, 225726412, 189812531, 159612676
+        DC32 134217727, 112863206, 1073741824, 759250124, 536870912, 379625062
+        DC32 268435456, 189812531, 134217728, 94906265, 67108864, 47453132
+        DC32 33554432, 23726566, 16777216, 11863283, 8388608, 5931641
+        DC32 1518500249, 1073741823, 759250124, 536870911, 379625062, 268435455
+        DC32 189812531, 134217727, 94906265, 67108863, 47453132, 33554431
+        DC32 23726566, 16777215, 11863283, 8388607
+//  180 {
+//  181 	{
+//  182 		/* intensityScale off, mid-side off */
+//  183 		0x40000000, 0x35d13f32, 0x2d413ccc, 0x260dfc14, 0x1fffffff, 0x1ae89f99, 0x16a09e66, 0x1306fe0a, 
+//  184 		0x0fffffff, 0x0d744fcc, 0x0b504f33, 0x09837f05, 0x07ffffff, 0x06ba27e6, 0x05a82799, 0x04c1bf82,
+//  185 	},
+//  186 	{
+//  187 		/* intensityScale off, mid-side on */
+//  188 		0x5a827999, 0x4c1bf827, 0x3fffffff, 0x35d13f32, 0x2d413ccc, 0x260dfc13, 0x1fffffff, 0x1ae89f99, 
+//  189 		0x16a09e66, 0x1306fe09, 0x0fffffff, 0x0d744fcc, 0x0b504f33, 0x09837f04, 0x07ffffff, 0x06ba27e6, 
+//  190 	},
+//  191 },
+//  192 {
+//  193 	{
+//  194 		/* intensityScale on, mid-side off */
+//  195 		0x40000000, 0x2d413ccc, 0x20000000, 0x16a09e66, 0x10000000, 0x0b504f33, 0x08000000, 0x05a82799, 
+//  196 		0x04000000, 0x02d413cc, 0x02000000, 0x016a09e6, 0x01000000, 0x00b504f3, 0x00800000, 0x005a8279, 
+//  197 	},
+//  198 		/* intensityScale on, mid-side on */
+//  199 	{
+//  200 		0x5a827999, 0x3fffffff, 0x2d413ccc, 0x1fffffff, 0x16a09e66, 0x0fffffff, 0x0b504f33, 0x07ffffff, 
+//  201 		0x05a82799, 0x03ffffff, 0x02d413cc, 0x01ffffff, 0x016a09e6, 0x00ffffff, 0x00b504f3, 0x007fffff, 
+//  202 	}
+//  203 }
+//  204 };
+//  205 
+//  206 /* indexing = [intensity scale on/off][left/right]
+//  207  * format = Q30, range = [0.0, 1.414]
+//  208  *
+//  209  * illegal intensity position scalefactors (see comments on ISFMpeg1)
+//  210  */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  211 const int ISFIIP[2][2] = {
+xmp3_ISFIIP:
+        DATA
+        DC32 1073741824, 0, 1073741824, 1073741824
+//  212 	{0x40000000, 0x00000000}, /* mid-side off */
+//  213 	{0x40000000, 0x40000000}, /* mid-side on */
+//  214 };
+//  215 
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  216 const unsigned char uniqueIDTab[8] = {0x5f, 0x4b, 0x43, 0x5f, 0x5f, 0x4a, 0x52, 0x5f};
+xmp3_uniqueIDTab:
+        DATA
+        DC8 95, 75, 67, 95, 95, 74, 82, 95
+//  217 
+//  218 /* anti-alias coefficients - see spec Annex B, table 3-B.9 
+//  219  *   csa[0][i] = CSi, csa[1][i] = CAi
+//  220  * format = Q31
+//  221  */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  222 const int csa[8][2] = {
+xmp3_csa:
+        DATA
+        DC32 1841452016, -1104871254, 1893526500, -1013036727, 2039311987
+        DC32 -672972982, 2111652007, -390655626, 2137858231, -203096529
+        DC32 2145680960, -87972921, 2147267171, -30491194, 2147468948, -7945635
+//  223 	{0x6dc253f0, 0xbe2500aa}, 
+//  224 	{0x70dcebe4, 0xc39e4949},
+//  225 	{0x798d6e73, 0xd7e33f4a},
+//  226 	{0x7ddd40a7, 0xe8b71176},
+//  227 	{0x7f6d20b7, 0xf3e4fe2f},
+//  228 	{0x7fe47e40, 0xfac1a3c7}, 
+//  229 	{0x7ffcb263, 0xfe2ebdc6}, 
+//  230 	{0x7fffc694, 0xff86c25d}, 
+//  231 };
+//  232 
+//  233 /* format = Q30, range = [0.0981, 1.9976]
+//  234  *
+//  235  * n = 16;
+//  236  * k = 0;
+//  237  * for(i=0; i<5; i++, n=n/2) {
+//  238  *   for(p=0; p<n; p++, k++) {
+//  239  *     t = (PI / (4*n)) * (2*p + 1);
+//  240  *     coef32[k] = 2.0 * cos(t);
+//  241  *   }
+//  242  * }
+//  243  * coef32[30] *= 0.5;	/ *** for initial back butterfly (i.e. two-point DCT) *** /
+//  244  */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  245 const int coef32[31] = {
+xmp3_coef32:
+        DATA
+        DC32 2144896909, 2124240380, 2083126254, 2021950483, 1941302224
+        DC32 1841958164, 1724875039, 1591180425, 1442161874, 1279254515
+        DC32 1104027236, 918167571, 723465451, 521795963, 315101294, 105372028
+        DC32 2137142927, 2055013723, 1893911494, 1660027308, 1362349204
+        DC32 1012316784, 623381597, 210490206, 2106220351, 1785567396
+        DC32 1193077990, 418953276, 1984016188, 821806413, 759250124
+//  246 	0x7fd8878d, 0x7e9d55fc, 0x7c29fbee, 0x78848413, 0x73b5ebd0, 0x6dca0d14, 0x66cf811f, 0x5ed77c89, 
+//  247 	0x55f5a4d2, 0x4c3fdff3, 0x41ce1e64, 0x36ba2013, 0x2b1f34eb, 0x1f19f97b, 0x12c8106e, 0x0647d97c, 
+//  248 	0x7f62368f, 0x7a7d055b, 0x70e2cbc6, 0x62f201ac, 0x5133cc94, 0x3c56ba70, 0x25280c5d, 0x0c8bd35e, 
+//  249 	0x7d8a5f3f, 0x6a6d98a4, 0x471cece6, 0x18f8b83c, 0x7641af3c, 0x30fbc54d, 0x2d413ccc, 
+//  250 };
+//  251 
+//  252 /* format = Q30, right shifted by 12 (sign bits only in top 12 - undo this when rounding to short)
+//  253  *   this is to enable early-terminating multiplies on ARM
+//  254  * range = [-1.144287109, 1.144989014]
+//  255  * max gain of filter (per output sample) ~= 2.731
+//  256  *
+//  257  * new (properly sign-flipped) values 
+//  258  *  - these actually are correct to 32 bits, (floating-pt coefficients in spec
+//  259  *      chosen such that only ~20 bits are required)
+//  260  *
+//  261  * Reordering - see table 3-B.3 in spec (appendix B)
+//  262  *
+//  263  * polyCoef[i] = 
+//  264  *   D[ 0, 32, 64, ... 480],   i = [  0, 15]
+//  265  *   D[ 1, 33, 65, ... 481],   i = [ 16, 31]
+//  266  *   D[ 2, 34, 66, ... 482],   i = [ 32, 47]
+//  267  *     ...
+//  268  *   D[15, 47, 79, ... 495],   i = [240,255]
+//  269  *
+//  270  * also exploits symmetry: D[i] = -D[512 - i], for i = [1, 255]
+//  271  * 
+//  272  * polyCoef[256, 257, ... 263] are for special case of sample 16 (out of 0)
+//  273  *   see PolyphaseStereo() and PolyphaseMono()
+//  274  */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  275 const int polyCoef[264] = {
+xmp3_polyCoef:
+        DATA
+        DC32 0, 116, 852, 1836, 8148, 20612, 26296, 149956, 300152, -149956
+        DC32 26296, -20612, 8148, -1836, 852, -116, -4, 104, 872, 1604, 8000
+        DC32 19152, 23836, 142560, 299968, -157344, 28536, -22068, 8252, -2076
+        DC32 832, -124, -4, 96, 888, 1388, 7808, 17700, 21152, 135164, 299424
+        DC32 -164704, 30560, -23516, 8320, -2324, 808, -140, -4, 84, 900, 1176
+        DC32 7572, 16252, 18244, 127788, 298520, -172024, 32368, -24948, 8348
+        DC32 -2580, 784, -152, -4, 76, 908, 976, 7288, 14820, 15104, 120448
+        DC32 297252, -179284, 33968, -26356, 8340, -2844, 760, -164, -4, 68
+        DC32 912, 788, 6956, 13404, 11740, 113156, 295632, -186468, 35360
+        DC32 -27740, 8300, -3116, 732, -180, -4, 64, 912, 612, 6576, 12016
+        DC32 8148, 105928, 293660, -193560, 36556, -29084, 8228, -3392, 704
+        DC32 -196, -8, 56, 908, 444, 6140, 10652, 4328, 98776, 291340, -200548
+        DC32 37556, -30388, 8128, -3676, 676, -212, -8, 52, 896, 288, 5656
+        DC32 9320, 280, 91716, 288676, -207412, 38368, -31640, 8004, -3964, 644
+        DC32 -232, -8, 44, 884, 144, 5120, 8024, -3992, 84756, 285680, -214136
+        DC32 39000, -32836, 7848, -4256, 616, -252, -8, 40, 860, 8, 4524, 6768
+        DC32 -8488, 77912, 282360, -220712, 39452, -33964, 7676, -4548, 588
+        DC32 -272, -12, 36, 832, -116, 3880, 5552, -13200, 71196, 278716
+        DC32 -227112, 39740, -35020, 7480, -4840, 556, -292, -12, 32, 800, -228
+        DC32 3176, 4380, -18132, 64620, 274768, -233332, 39864, -35992, 7268
+        DC32 -5132, 528, -316, -16, 28, 756, -332, 2420, 3256, -23272, 58192
+        DC32 270516, -239352, 39836, -36876, 7036, -5424, 500, -340, -16, 28
+        DC32 708, -424, 1608, 2180, -28616, 51920, 265976, -245156, 39664
+        DC32 -37664, 6792, -5712, 468, -364, -20, 24, 652, -508, 740, 1152
+        DC32 -34160, 45820, 261160, -250736, 39352, -38340, 6536, -5992, 444
+        DC32 -388, 416, 6268, 38908, 256076, -39900, -180, 584, -20
+
+        END
+//  276 	/* shuffled vs. original from 0, 1, ... 15 to 0, 15, 2, 13, ... 14, 1 */
+//  277 	0x00000000, 0x00000074, 0x00000354, 0x0000072c, 0x00001fd4, 0x00005084, 0x000066b8, 0x000249c4,
+//  278 	0x00049478, 0xfffdb63c, 0x000066b8, 0xffffaf7c, 0x00001fd4, 0xfffff8d4, 0x00000354, 0xffffff8c,
+//  279 	0xfffffffc, 0x00000068, 0x00000368, 0x00000644, 0x00001f40, 0x00004ad0, 0x00005d1c, 0x00022ce0,
+//  280 	0x000493c0, 0xfffd9960, 0x00006f78, 0xffffa9cc, 0x0000203c, 0xfffff7e4, 0x00000340, 0xffffff84,
+//  281 	0xfffffffc, 0x00000060, 0x00000378, 0x0000056c, 0x00001e80, 0x00004524, 0x000052a0, 0x00020ffc,
+//  282 	0x000491a0, 0xfffd7ca0, 0x00007760, 0xffffa424, 0x00002080, 0xfffff6ec, 0x00000328, 0xffffff74,
+//  283 	0xfffffffc, 0x00000054, 0x00000384, 0x00000498, 0x00001d94, 0x00003f7c, 0x00004744, 0x0001f32c,
+//  284 	0x00048e18, 0xfffd6008, 0x00007e70, 0xffff9e8c, 0x0000209c, 0xfffff5ec, 0x00000310, 0xffffff68,
+//  285 	0xfffffffc, 0x0000004c, 0x0000038c, 0x000003d0, 0x00001c78, 0x000039e4, 0x00003b00, 0x0001d680,
+//  286 	0x00048924, 0xfffd43ac, 0x000084b0, 0xffff990c, 0x00002094, 0xfffff4e4, 0x000002f8, 0xffffff5c,
+//  287 	0xfffffffc, 0x00000044, 0x00000390, 0x00000314, 0x00001b2c, 0x0000345c, 0x00002ddc, 0x0001ba04,
+//  288 	0x000482d0, 0xfffd279c, 0x00008a20, 0xffff93a4, 0x0000206c, 0xfffff3d4, 0x000002dc, 0xffffff4c,
+//  289 	0xfffffffc, 0x00000040, 0x00000390, 0x00000264, 0x000019b0, 0x00002ef0, 0x00001fd4, 0x00019dc8,
+//  290 	0x00047b1c, 0xfffd0be8, 0x00008ecc, 0xffff8e64, 0x00002024, 0xfffff2c0, 0x000002c0, 0xffffff3c,
+//  291 	0xfffffff8, 0x00000038, 0x0000038c, 0x000001bc, 0x000017fc, 0x0000299c, 0x000010e8, 0x000181d8,
+//  292 	0x0004720c, 0xfffcf09c, 0x000092b4, 0xffff894c, 0x00001fc0, 0xfffff1a4, 0x000002a4, 0xffffff2c,
+//  293 	0xfffffff8, 0x00000034, 0x00000380, 0x00000120, 0x00001618, 0x00002468, 0x00000118, 0x00016644,
+//  294 	0x000467a4, 0xfffcd5cc, 0x000095e0, 0xffff8468, 0x00001f44, 0xfffff084, 0x00000284, 0xffffff18,
+//  295 	0xfffffff8, 0x0000002c, 0x00000374, 0x00000090, 0x00001400, 0x00001f58, 0xfffff068, 0x00014b14,
+//  296 	0x00045bf0, 0xfffcbb88, 0x00009858, 0xffff7fbc, 0x00001ea8, 0xffffef60, 0x00000268, 0xffffff04,
+//  297 	0xfffffff8, 0x00000028, 0x0000035c, 0x00000008, 0x000011ac, 0x00001a70, 0xffffded8, 0x00013058,
+//  298 	0x00044ef8, 0xfffca1d8, 0x00009a1c, 0xffff7b54, 0x00001dfc, 0xffffee3c, 0x0000024c, 0xfffffef0,
+//  299 	0xfffffff4, 0x00000024, 0x00000340, 0xffffff8c, 0x00000f28, 0x000015b0, 0xffffcc70, 0x0001161c,
+//  300 	0x000440bc, 0xfffc88d8, 0x00009b3c, 0xffff7734, 0x00001d38, 0xffffed18, 0x0000022c, 0xfffffedc,
+//  301 	0xfffffff4, 0x00000020, 0x00000320, 0xffffff1c, 0x00000c68, 0x0000111c, 0xffffb92c, 0x0000fc6c,
+//  302 	0x00043150, 0xfffc708c, 0x00009bb8, 0xffff7368, 0x00001c64, 0xffffebf4, 0x00000210, 0xfffffec4,
+//  303 	0xfffffff0, 0x0000001c, 0x000002f4, 0xfffffeb4, 0x00000974, 0x00000cb8, 0xffffa518, 0x0000e350,
+//  304 	0x000420b4, 0xfffc5908, 0x00009b9c, 0xffff6ff4, 0x00001b7c, 0xffffead0, 0x000001f4, 0xfffffeac,
+//  305 	0xfffffff0, 0x0000001c, 0x000002c4, 0xfffffe58, 0x00000648, 0x00000884, 0xffff9038, 0x0000cad0,
+//  306 	0x00040ef8, 0xfffc425c, 0x00009af0, 0xffff6ce0, 0x00001a88, 0xffffe9b0, 0x000001d4, 0xfffffe94,
+//  307 	0xffffffec, 0x00000018, 0x0000028c, 0xfffffe04, 0x000002e4, 0x00000480, 0xffff7a90, 0x0000b2fc,
+//  308 	0x0003fc28, 0xfffc2c90, 0x000099b8, 0xffff6a3c, 0x00001988, 0xffffe898, 0x000001bc, 0xfffffe7c,
+//  309 	0x000001a0, 0x0000187c, 0x000097fc, 0x0003e84c, 0xffff6424, 0xffffff4c, 0x00000248, 0xffffffec, 
+//  310 };
+//  311 
+// 
+// 2 156 bytes in segment DATA_C
+// 
+// 2 156 bytes of CONST memory
+//
+//Errors: none
+//Warnings: 1
