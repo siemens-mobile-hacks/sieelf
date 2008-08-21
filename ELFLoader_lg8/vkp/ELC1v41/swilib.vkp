@@ -657,7 +657,15 @@
 0988: 0xA0CF9720   ; 262: __arm int Obs_GetInfo (HObj hObj, int unk_0or1)
 098C: 0xA0D07AA8   ; 263: __arm Obs_SetScaling (HObj hObj, int unk5)
 0990: 0xA0D0DC7C   ; 264: __arm int Obs_TranslateMessageGBS (GBS_MSG *msg, OBSevent *event_handler)
-
+0994: 0xA0CF9B24   ; 265: __arm int Obs_Pause (HObj hObj)
+0998: 0xA0CF9CE0   ; 266: __arm int Obs_Resume (HObj hObj)
+099C: 0xA0CF9C14   ; 267: __arm int Obs_Stop (HObj hObj)
+09A0: 0xA0CF9824   ; 268: __arm int Obs_Prepare (HObj hObj)
+09A4: 0xA0D50968   ; 269: __arm int Obs_SetRenderOffset (HObj hObj,short x,short y)
+09A8: 0xA0CF684C   ; 26A: __arm int Obs_SetPosition (HObj hObj,int ms)
+09AC: 0xA0CF9FE4   ; 26B: __arm int Obs_Mam_SetPurpose (HObj hObj,int ms)
+09B0: 0xA0D01A60   ; 26C: __arm int Obs_Sound_SetVolumeEx (HObj hObj, char vol, char delta)
+09B4: 0xA0D03468   ; 26D: __arm int Obs_Sound_GetVolume (HObj hObj, char *vol)
 09B8: 0xA0D0290C   ; 26E: int Obs_Sound_SetEqulizer(HObj hObj, char bass, char mid, char treble, char balance) 
 09BC: 0xA0D0297C   ; 26F: int Obs_Sound_Set3dAudio(HObj hObj, int aud) 
 
