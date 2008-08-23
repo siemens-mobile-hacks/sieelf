@@ -246,6 +246,10 @@ int my_keyhook(int submsg, int msg)
       mode=0;
       return KEYHOOK_BREAK;
     case KEY_UP:
+	if (ACTIVE_KEY_STYLE==0)
+	{
+		return KEYHOOK_BREAK;
+	}
       if (mode==0)
       {
         mode=2;
