@@ -10744,7 +10744,6 @@
       <configuration>E71Cv41</configuration>
       <configuration>ELC1v41</configuration>
       <configuration>SK6Cv50</configuration>
-      <configuration>S68Cv51</configuration>
       <configuration>M81Cv51</configuration>
       <configuration>CX6Cv50</configuration>
       <configuration>S6Cv53</configuration>
@@ -10757,7 +10756,6 @@
     <name>$PROJ_DIR$\func.asm</name>
     <excluded>
       <configuration>SK6Cv50</configuration>
-      <configuration>S68Cv51</configuration>
       <configuration>M81Cv51</configuration>
       <configuration>CX6Cv50</configuration>
       <configuration>S6Cv53</configuration>
@@ -10772,6 +10770,7 @@
       <configuration>E71Cv41</configuration>
       <configuration>S7Cv47</configuration>
       <configuration>ELC1v41</configuration>
+      <configuration>S68Cv51</configuration>
       <configuration>C81Cv50</configuration>
       <configuration>SL7Cv47</configuration>
     </excluded>
@@ -10780,7 +10779,6 @@
     <name>$PROJ_DIR$\menuText.c</name>
     <excluded>
       <configuration>SK6Cv50</configuration>
-      <configuration>S68Cv51</configuration>
       <configuration>M81Cv51</configuration>
       <configuration>CX6Cv50</configuration>
       <configuration>S6Cv53</configuration>
@@ -10804,7 +10802,6 @@
   <file>
     <name>$PROJ_DIR$\sms_num.c</name>
     <excluded>
-      <configuration>S68Cv51</configuration>
       <configuration>M81Cv51</configuration>
       <configuration>CX7Cv50</configuration>
     </excluded>
