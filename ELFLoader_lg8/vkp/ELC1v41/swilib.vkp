@@ -675,7 +675,8 @@
 0A10: 0xA0D64B01   ; 284: __thumb int IsGPRS()
 0A14: 0xA0D64B07   ; 285: __thumb int IsEDGE()
 0A18: 0xA0D5BC31   ; 286: __thumb int GetSMSState()
-
+0A1C: 0xA065E785   ; 287: __thumb int BT_GetLocVisibility()
+0A20: 0xA0678D6D   ; 288: __thumb int GetCurrAudioPath()
 0A24: 0xA0DD0FD5   ; 289: __thumb int isDecryption()
 0A28: 0xA8E371CC   ; 28A: __arm char *RamIsFileCache()
 0A2C: 0xA8ED9764   ; 828B: char *RamTotalHeapSize()
