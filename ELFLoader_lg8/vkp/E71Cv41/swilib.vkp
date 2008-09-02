@@ -685,8 +685,18 @@
 ;0A3C: 0x; 28F: int *RamIsNumberTyping() 
 
 0A40: 0xA8EC6D24   ; 8290: int *RamCallState()
-0A44: 0xA05DC528   ; 291: __arm int RefreshAlarmClock() 
-0A58: 0xA05C430F   ; 296: __thumb void getProfileNameByN(WSHDR *ws, int n, int _0)
+0A44: 0xA05DC528   ; 291: __swi __arm int RefreshAlarmClock()
+0A48: 0xA8F2B898   ; 8292:  char *RamIsAlarmAutorepeatOn()
+0A4C: 0xA8F2B8A0   ; 8293: __swi __arm char *RamAlarmclockHour()
+0A50: 0xA8F2B8A1   ; 8294: __swi __arm char *RamAlarmclockMinute()
+0A58: 0xA05C430F   ; 296: __swi __arm void getProfileNameByN(WSHDR *ws, int n, int _0)
+0A5C: 0xA8F23CB0   ; 8297: __swi __arm char *RamIsSoundRecord()
+0A60: 0xA8F23D0C   ; 8298: __swi __arm char *RamIsSoundRecordQuality()
+0A64: 0xA8E37854   ; 8299: __swi __arm char *RamExtendedCameraState()
+0A68: 0xA05CFB85   ; 829A: SwitchAudioToBTHeadset(TypeOfHeadset, unk_0xFFFE0001)
+0A6C: 0xA05D6631   ; 29B: GetTypeOfBTHeadset
+0A70: 0xA8DA7E85   ; 829C: __swi __arm char *RamInputLanguage()
+0A74: 0xA8F28730   ; 829D: __swi __arm char *RamDisplayLanguage()
 #pragma disable old_equal_ff
 +0       
 ;********************************************************************************
