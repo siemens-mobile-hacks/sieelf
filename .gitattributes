@@ -1681,6 +1681,7 @@ SHNMSMSICWIN2/addr.h -text
 SHNMSMSICWIN2/entry.asm -text
 SHNMSMSICWIN2/findName.c -text
 SHNMSMSICWIN2/mk.bat -text
+SMSCount/C81Cv50.xcl -text
 SMSCount/E71Cv41.xcl -text
 SMSCount/ELC1v41.xcl -text
 SMSCount/M81Cv51.xcl -text

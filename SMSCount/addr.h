@@ -44,3 +44,9 @@
 #endif
 
 #endif
+
+#ifdef C81Cv50
+#define RamSMSNum	0xA8ED6AED  //
+#define uitostr		0xA01F6758+1
+#define	RamUnuse  0xA8ED0730 //Î´¸Ä.Ô­Ê¼S7CV47
+#endif
