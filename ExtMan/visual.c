@@ -271,7 +271,7 @@ void filelist_menu_iconhndl(void *data, int curitem, void *user_pointer)
   else
   {
     ws=AllocMenuWS(data,10);
-    wsprintf(ws, "Ошибка");
+    wsprintf(ws, "Error!");
   }
   SetMenuItemText(data, item, ws, curitem);
 }
@@ -281,7 +281,7 @@ SOFTKEY_DESC fmenu_sk[]=
 {
   {0x0018,0x0000,(int)"Select"},
   {0x0001,0x0000,(int)"Close"},
-  {0x003D,0x0000,(int)"+"}
+  {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
 SOFTKEYSTAB fmenu_skt=
