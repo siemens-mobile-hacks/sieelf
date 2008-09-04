@@ -21,6 +21,7 @@
 0034: 0xA0253794   ;   D: void fclose(int FileHandler, unsigned int *ErrorNumber)
 ;038: 0x   ;   E: 
 003C: 0xA02537F4   ;   F: unsigned int lseek(int FileHandler, unsigned int offset, unsigned int origin, unsigned int *ErrorNumber, unsigned int *ErrorNumber2)
+
 0040: 0xA0253438   ;  10: int mkdir(const char *cFileName, unsigned int *ErrorNumber)
 0044: 0xA006F001   ;  11: OpenReadCloseFile
 0048: 0xA0253298   ;  12: int GetFileAttrib(const char *cFileName, unsigned char *cAttribute, unsigned int *ErrorNumber)
@@ -36,12 +37,13 @@
 0070: 0xA01F7CF5   ;  1C: void wsAppendChar(WSHDR *ws,int wchar)
 0074: 0xA01F7CA9   ;  1D: int wsInsertChar(WSHDR *ws,int wchar, int pos)
 0078: 0xA09A3F21   ;  1E: IMGHDR *GetPITaddr(int num)
-;07C:              ;  1F: DrawMainScreen
-;080:              ;  20: DrawScreenSaver
+007C: 0xA030762B   ;  1F: DrawMainScreen
+
+0080: 0xA035E2FF   ;  20: DrawScreenSaver
 0084: 0xA09A404B   ;  21: int GetImgHeight(int picture)
 0088: 0xA09A405B   ;  22: int GetImgWidth(int picture)
 008C: 0xA029E1B1   ;  23: void DrawImg(unsigned int x, unsigned int y, unsigned int picture)
-;090:              ;  24: DrawImage2
+0090: 0xA0A1BF5B   ;  24: DrawImage2
 0094: 0xA029D6AB   ;  25: void DrawCanvas(void *data, int x1, int y1, int x2, int y2, int flag_one)
 0098: 0xA0A1BE85   ;  26: void DrawImgBW(unsigned int x, unsigned int y, unsigned int picture, char *pen, char *brush)
 009C: 0xA029D8D1   ;  27: AddIconToIconbar
@@ -53,6 +55,7 @@
 00B4: 0xA145A5A0   ;  2D: double fp_add(double addend1, double addend2)
 00B8: 0xA145B500   ;  2E: double fp_mul(double factor1, double factor2)
 00BC: 0xA145ABB4   ;  2F: double fp_div(double divisor, double divident
+
 ;0C0:              ;  30: 
 00C4: 0xA1427205   ;  31: char *strrchr_2(const char *s,int c)
 00C8: 0xA0283464   ;  32: void PlaySound(long param1, long param2, long param3, long tone, long param5)
@@ -69,6 +72,7 @@
 ;0F4:              ;  3D: editOrNewTXTModule
 00F8: 0xA058FC4D   ;  3E: Registry_GetResourcePathFromLevel(int HMIKeyID, int Prio, int *HMIKeyID, WSHDR *Path)
 00FC: 0xA099F1AD   ;  3F: char *GetPaletteAdrByColorIndex_2(int ColorIndex)
+
 0100: 0xA028C371   ;  40: GetVibraStatus
 0104: 0xA095E88B   ;  41: GetProvider
 0108: 0xA0308693   ;  42: int IsScreenSaver()
@@ -76,15 +80,16 @@
 0110: 0xA0960909   ;  44: TempLightOn
 0114: 0xA006F241   ;  45: GetWavLen
 ;118:              ;  46: HasNewSMS
-;11C:              ;  47: HasFlashSMS
+011C: 0xA029CDEF   ;  47: HasFlashSMS
 ;120:              ;  48: ReadNewSMS
-;124:              ;  49: ReadFlashSMS
+0124: 0xA03031C1   ;  49: ReadFlashSMS(void)
 0128: 0xA027BC74   ;  4A: short PlayFile(int flags, WSHDR *foldername, WSHDR *filename, int zero, int CepId, int Msg, const PLAYFILE_OPT *sfo)
 012C: 0xA0AAC51C   ;  4B: StartMidlet
 0130: 0xA09CE2DD   ;  4C: GetMissedCallsCount
 0134: 0xA0093278   ;  4D: void GBS_StartTimerProc(void *htimer, long ms, void ptr())
 0138: 0xA09A56A9   ;  4E: int MsgBoxError(int flag, int LgpId)
 013C: 0xA09A5709   ;  4F: int MsgBoxYesNo(int flag, int LgpID, void CallBackProc(int))
+
 0140: 0xA09A5713   ;  50: int MsgBoxOkCancel(int flag, int LgpID, void CallBackProc(int))
 0144: 0xA0E46AEB   ;  51: GetNetAccessMode
 0148: 0xA8D07CEC   ;  52: char *GetIlluminationDataTable()
@@ -101,14 +106,15 @@
 0174: 0xA034A61B   ;  5D: unsigned char GetCPULoad()
 0178: 0xA034A5E9   ;  5E: GetMMIMemUsed
 017C: 0xA0094BE8   ;  5F: int GetFreeRamAvail()
+
 0180: 0xA03461E1   ;  60: ShowMainMenu
 0184: 0xA02D31DB   ;  61: ShowNativeMenu
 0188: 0xA028C339   ;  62: SetVibraStatus
 018C: 0xA029EF39   ;  63: void MMI_CanvasBuffer_FlushV(int CanvasID)
 0190: 0xA09A619F   ;  64: TriggerUpdate
-;194:              ;  65: EndCall
-;198:              ;  66: EndCallBusy
-;19C:              ;  67: IsDirectCallActive
+0194: 0xA09D0945   ;  65: EndCall
+0198: 0xA09CF8D3   ;  66: EndCallBusy
+019C: 0xA035D589   ;  67: IsDirectCallActive
 ;1A0:              ;  68: GetScreenSaverRAM
 01A4: 0xA009B180   ;  69: void LockSched_2(void)
 01A8: 0xA009B26C   ;  6A: void UnlockSched_2(void)
@@ -117,9 +123,10 @@
 01B4: 0xA0253258   ;  6D: int FindClose(DIR_ENTRY *DIRENTRY,unsigned int *ErrorNumber)
 01B8: 0xA0DE7EA5   ;  6E: int IsCalling()
 01BC: 0xA097FD98   ;  6F: void RefreshGPRSTraffic()
+
 01C0: 0xA097FDC8   ;  70: int *GetGPRSTrafficPointer()
-;1C4:                ;  71:
-;1C8:              ;  72: SetCurrentSecondOfCall
+0540: 0xA0A1B907   ;  71: void DrawRoundedFrame(int x1,int y1,int x2,int y2,int x_round,int y_round,int flags,const char *pen,const char *brush)
+01C8: 0xA095E635   ;  72: SetCurrentSecondOfCall
 01CC: 0xA0DE86A7   ;  73: int GetTypeOfCall(int type)
 01D0: 0xA02CE399   ;  74: SHORTCUTREC *GetShortcutRecordByName(char *szShortcutName)
 01D4: 0xA029F451   ;  75: IsCanvasBufferSet(char CanvasID)
@@ -133,6 +140,7 @@
 01F4: 0xA0DE7867   ;  7D: IsIncognitoCall
 01F8: 0xA0DE6F21   ;  7E: int rand(void)
 01FC: 0xA05864DD   ;  7F: IsPlayerOn
+
 0200: 0xA06325DD   ;  80: int ShowCallList(int list, int zero)
 0204: 0xA1426AD0   ;  81: HexToDec
 0208: 0xA05865BF   ;  82: GetCurrentTrackFilename
@@ -149,6 +157,7 @@
 0234: 0xA0306C83   ;  8D: GetProfileName
 0238: 0xA02534A0   ;  8E: int fmove(const char *SourceFileName, const char *DestFileName, unsigned int *ErrorNumber)
 023C: 0xA0253524   ;  8F: int rmdir(const char *cDirectory, unsigned int *ErrorNumber)
+
 0240: 0xA02539B8   ;  90: int truncate(int FileHandler, int length, int *errornumber)
 0244: 0xA02533D0   ;  91: int isdir(const char *cDirectory, unsigned int *ErrorNumber)
 0248: 0xA0A042F4   ;  92: void *calloc(size_t nelem, size_t elsize)
@@ -165,6 +174,7 @@
 0274: 0xA0303317   ;  9D: GetMissedEventsPtr
 0278: 0xA006F2B1   ;  9E: int GetMissedEventCount(unsigned int Event)
 ;27C:              ;  9F: DrawRect
+
 0280: 0xA0996A35   ;  A0: int wsprintf_2(WSHDR *,const char *format,...)
 0284: 0xA01F7BE7   ;  A1: WSHDR *wstrcpy_2(WSHDR *wshdr_d,WSHDR *wshdr_s)
 ;288:              ;  A2: Unicode_GetCharByPosition
@@ -181,6 +191,7 @@
 ;2B4:              ;  AD: StrAnsi2Uni
 ;2B8:              ;  AE: StrUni2Ansi
 02BC: 0xA034A3E5   ;  AF: Hex2Int
+
 ;2C0:              ;  B0: DrawPicWithCanvas
 02C4: 0xA006F101   ;  B1: DrawColorPicWithCanvas
 ;2C8:              ;  B2: GetBuildCanvas
@@ -197,6 +208,7 @@
 02F4: 0xA1426A8C   ;  BD: int DivBy10(int divident)
 02F8: 0xA0060C91   ;  BE: RunScaner
 02FC: 0xA0063001   ;  BF: SpellTime
+
 ;300:              ;  C0: MiniGPS
 0304: 0xA0060C51   ;  C1: RunDispatcher
 ;308:              ;  C2: GetAllPatchesByInject
@@ -213,6 +225,7 @@
 ;334:              ;  CD: char *RamMissedSMS()
 0338: 0xA8D2988C   ;  CE: RamDateTime
 ;33C:              ;  CF: RamAlarm
+
 0340: 0xA8D6A470   ;  D0: RamAccPoint
 ;344:              ;  D1: RamScreensaver
 ;348:              ;  D2: RamAutoTime
@@ -222,13 +235,14 @@
 0358: 0xA8DACBE0   ;  D6: RamNetOnline
 035C: 0xA8DADCBC   ;  D7: RamScreenBrightness
 ;360:              ;  D8: RamMenuAnywhere
-;364:                ;  D9: RamShutdownMode
+;364:              ;  D9: RamShutdownMode
 0368: 0xA8D6CE28   ;  DA: RamIsShutdown
 036C: 0xA8E62194   ;  DB: RamMainscreenAccuIcon
 0370: 0xA8DCCD48   ;  DC: int *RamRandSeed(void)
 0374: 0xA899F2BC   ;  DD: RamCurrentTrack
 0378: 0xA8D7808C   ;  DE: RamIsSimPresent
 037C: 0xA8D35004   ;  DF: char *RamPressedKey()
+
 0380: 0xA8D29A18   ;  E0: char *RamScreenBuffer()
 0384: 0xA8E0EB6C   ;  E1: unsigned int RamMPlayer_CtrlCode()
 ;388:              ;  E2: RamKeyBuffer
@@ -245,6 +259,7 @@
 03B4: 0x00001137   ;  ED: LP_MonthsLong
 03B8: 0x000003EB   ;  EE: LP_Weekdays
 03BC: 0x000005B0   ;  EF: Pic_Calendar
+
 03C0: 0x00001200   ;  F0: Pic_AccuGraph
 03C4: 0xA0305A05   ;  F1: void *BuildCanvas()
 ;3C8:              ;  F2: lpRAM_PIT
@@ -261,6 +276,7 @@
 ;3F4:              ;  FD: PictureRelocationBase
 ;3F8:              ;  FE: NextPictureMagic
 03FC: 0xA0074000   ;  FF: unsigned int AddrLibrary()
+
 0400: 0xA0092A94   ; 100: void GBS_SendMessage(int cepid_to, int msg, ...)
 0404: 0xA0091950   ; 101: int GBS_ReciveMessage(GBS_MSG *)
 0408: 0xA009209C   ; 102: void GBS_AcceptMessage(void)
@@ -277,6 +293,7 @@
 ;434:              ; 10D: unsigned short *GetCI()
 ;438:              ; 10E: void Vibration(unsigned int power, unsigned int duration)
 043C: 0xA029C7CD   ; 10F: void freeUSSD()
+
 0440: 0xA02705ED   ; 110: char *wstrcopy(unsigned short *dst, const unsigned short *src)
 0444: 0xA029C809   ; 111: char GetTypeUSSD()
 0448: 0xA029C819   ; 112: unsigned int SetUSSD(StructUSSDStr *)
@@ -293,6 +310,7 @@
 0474: 0xA14266D8   ; 11D: void zeromem(void *dest,int n)
 0478: 0xA142677C   ; 11E: void *memcpy(void *dest,const void *source,int cnt)
 047C: 0xA01F7BE7   ; 11F: WSHDR *wstrcpy(WSHDR *wshdr_d,WSHDR *wshdr_s)
+
 0480: 0xA01F7C09   ; 120: WSHDR *wstrncpy(WSHDR *,WSHDR *,int)
 0484: 0xA01F7C2D   ; 121: WSHDR *wstrcat(WSHDR *wshdr_d,WSHDR *wshdr_s)
 0488: 0xA01F7C61   ; 122: WSHDR *wstrncat(WSHDR *wshdr_d,WSHDR *wshdr_s,int n)
@@ -309,6 +327,7 @@
 04B4: 0xA099DD19   ; 12D: void RemoveKeybMsgHook(void *proc)
 04B8: 0xA099F1AD   ; 12E: char *GetPaletteAdrByColorIndex(int ColorIndex)
 04BC: 0xA099F1D1   ; 12F: void getRGBcolor(int ColorIndex,void *dest)
+
 04C0: 0xA099F1E1   ; 130: void getRGBbyPaletteAdr(int *paletteAdr,void *dest)
 04C4: 0xA099F1FF   ; 131: void setColor(int a,int r,int g,int b,void *dest)
 04C8: 0xA1426834   ; 132: void *memmove(void *dest,const void *source,int cnt)
@@ -325,6 +344,7 @@
 04F4: 0xA09A61BB   ; 13D: void GeneralFunc_flag1(int id,int cmd)
 04F8: 0xA09A61CB   ; 13E: void GeneralFunc_flag0(int id,int cmd)
 04FC: 0xA09A625F   ; 13F: void DirectRedrawGUI(void)
+
 0500: 0xA09A6277   ; 140: void DirectRedrawGUI_ID(int id)
 0504: 0xA09A626B   ; 141: void PendedRedrawGUI(void)
 0508: 0xA0A19A2F   ; 142: CSM_RAM *FindCSM(void *csm_q,int id)
@@ -341,6 +361,7 @@
 0534: 0xA09A6011   ; 14D: GUI *GetTopGUI(void)
 0538: 0xA0A34C6D   ; 14E: void *FindItemByID(GUI *gui,int id)
 053C: 0xA0A34CB9   ; 14F: void *GetDataOfItemByID(GUI *gui,int id)
+
 0540: 0xA0A1B907   ; 150: void DrawRoundedFrame(int x1,int y1,int x2,int y2,int x_round,int y_round,int flags,const char *pen,const char *brush)
 0544: 0xA0A1BE5B   ; 151: void SetPropTo_Obj5(DRWOBJ *, RECT *, int flags, IMGHDR *Image)
 0548: 0xA09A521B   ; 152: int CreateMenu(int is_small,int zero1,const MENU_DESC *menu, const HEADER_DESC *hdr,int start_item,int n_items,void *user_pointer,int *to_remove)
@@ -357,6 +378,7 @@
 0574: 0xA013777D   ; 15D: void png_read_end(png_structp png_ptr, png_infop info_ptr)
 0578: 0xA01363C1   ; 15E: png_voidp png_get_io_ptr(png_structp png_ptr)
 057C: 0xA013663B   ; 15F: png_uint_32 png_get_rowbytes(png_structp png_ptr,png_infop info_ptr)
+
 0580: 0xA01372D3   ; 160: void png_read_row(png_structp png_ptr,png_bytep row,png_bytep dsp_row)
 0584: 0xA00E26AC   ; 161: void png_init_io(png_structp png_ptr, int fp)
 0588: 0xA14274F4   ; 162: int setjmp(jmp_buf jmpbuf)
@@ -373,6 +395,7 @@
 05B4: 0xA05BF90C   ; 16D: int UnpackABentry(AB_UNPRES *,void *abentry,int filesz,int flag)
 05B8: 0xA054F0D0   ; 16E: int FreeUnpackABentry(AB_UNPRES *, void *mfree_adr)
 05BC: 0xA054FF44   ; 16F: int GetTypeOfAB_UNPRES_ITEM(int)
+
 05C0: 0xA09838D1   ; 170: int MakeVoiceCall(const char *number,int _0x10, int _0x20C0)
 ;5C4:              ; 171: void SUBPROC(void *,...)
 ;5C8:              ; 172: void REDRAW(void)
@@ -389,6 +412,7 @@
 05F4: 0xA09A61DB   ; 17D: void SetIDLETMR(int time_ms,int msg)
 05F8: 0xA09A61EB   ; 17E: void RestartIDLETMR(void)
 05FC: 0xA09A61F7   ; 17F: void DisableIDLETMR(void)
+
 0600: 0xA0A2BEBD   ; 180: int EDIT_GetItemNumInFocusedComboBox(void *gui)
 0604: 0xA0A2BE15   ; 181: void EDIT_SetTextToFocused(void *gui,WSHDR *ws)
 0608: 0xA0A2BE5D   ; 182: int EDIT_GetFocus(void *gui)
@@ -405,6 +429,7 @@
 0634: 0xA0A0FEE4   ; 18D: int available0(int sock)
 0638: 0xA0E3A8EF   ; 18E: void GPRS_OnOff(int on, int _1)
 063C: 0xA09A997B   ; 18F: int GetCurMenuItem(void *gui)
+
 0640: 0xA009A858   ; 190: void MutexCreate(MUTEX *mtx)
 0644: 0xA009A9BC   ; 191: void MutexDestroy(MUTEX *mtx)
 0648: 0xA009AD28   ; 192: void MutexLock(MUTEX *mtx)
@@ -421,6 +446,7 @@
 0674: 0xA01D205C   ; 19D: long long getCpuUsedTime_if_ena(void)
 0678: 0xA01D2000   ; 19E: void StartCpuUsageCount(void)
 067C: 0xA0132971   ; 19F: int inflateInit2_(z_streamp strm, int windowBits,const char *version, int stream_size)
+
 0680: 0xA0132AA7   ; 1A0: int inflate(z_streamp strm, int flush)
 0684: 0xA01338E3   ; 1A1: int inflateEnd(z_streamp strm)
 ;688:              ; 1A2: int ActivateDialUpProfile(unsigned int cep_id,int profile_num)
@@ -437,6 +463,7 @@
 06B4: 0xA0137D3D   ; 1AD: void png_set_tRNS_to_alpha(png_structp png_ptr)
 06B8: 0xA0139849   ; 1AE: void png_set_filler(png_structp png_ptr,png_uint_32 filler, int flags)
 06BC: 0xA0137D21   ; 1AF: void png_set_strip_16(png_structp png_ptr)
+
 06C0: 0xA01397DF   ; 1B0: void png_set_packing(png_structp png_ptr)
 06C4: 0xA0137D75   ; 1B1: void png_set_gray_to_rgb(png_structp png_ptr)
 06C8: 0xA0135FFD   ; 1B2: int png_check_sig(png_bytep sig, int num)
@@ -453,6 +480,7 @@
 06F4: 0xA1279163   ; 1BD: void SHA1_Update(SHA_CTX *c, const void *data, unsigned long len)
 06F8: 0xA127935F   ; 1BE: void SHA1_Final(char *md, SHA_CTX *c)
 06FC: 0xA0F92C65   ; 1BF: RSA *RSA_new_method(RSA_METHOD *method)
+
 0700: 0xA0F92CF3   ; 1C0: void RSA_free (RSA *r)
 0704: 0xA0F92EBF   ; 1C1: int RSA_sign(int type, char *m, unsigned int m_len, char *sigret, unsigned int *siglen, RSA *rsa)
 0708: 0xA0F8FBC3   ; 1C2: BIGNUM *BN_bin2bn(const char *s,int len,BIGNUM *ret)
@@ -469,6 +497,7 @@
 0734: 0xA0A25329   ; 1CD: void SetBrushColorToEditCOptions(EDITC_OPTIONS *ec_options, int brush)
 0738: 0xA0A25411   ; 1CE: void CopyOptionsToEditControl(EDITCONTROL *ec,EDITC_OPTIONS *ec_options)
 073C: 0xA05203BF   ; 1CF: TREGEXPLEXT *get_regextpnt_by_uid(int uid)
+
 0740: 0xA0520277   ; 1D0: int GetExtUid_ws(WSHDR * ext)
 0744: 0xA0A2BFE5   ; 1D1: void EDIT_RemoveEditControl(void *gui,int n)
 0748: 0xA0A2BFF1   ; 1D2: void EDIT_InsertEditControl(void *gui,int n,EDITCONTROL *)
@@ -485,6 +514,7 @@
 0774: 0xA01F758D   ; 1DD: short wstrrchr(WSHDR *ws,unsigned int max_pos,unsigned int wchar)
 0778: 0xA0A2BFAD   ; 1DE: int EDIT_SetTextToEditControl(void *gui,int n,WSHDR *ws)
 077C: 0xA0A2C05B   ; 1DF: void *EDIT_GetUserPointer(void *gui)
+
 0780: 0xA09ACDAF   ; 1E0: void *MenuGetUserPointer(void *gui)
 0784: 0xA0965AFD   ; 1E1: int GetSymbolWidth(int wchar,int font)
 0788: 0xA01F813D   ; 1E2: int ws_2utf8(WSHDR *from, char *to, int *result_length, int max_len)
@@ -501,6 +531,7 @@
 07B4: 0xA09A4753   ; 1ED: int IsDynIconBusy(int picture)
 ;7B8:              ; 1EE: ProgressCalculate(int current, int total)
 07BC: 0xA09A4655   ; 1EF: void SetDynIcon(int picture,IMGHDR *img,char *bitmap)
+
 ;7C0:              ; 1F0: filecopy
 ;7C4:              ; 1F1: filecopy_op_announce
 07C8: 0xA01DF730   ; 1F2: devmenu_config_IsCheckboxOff
@@ -517,6 +548,7 @@
 07F4: 0xA0A1B7B7   ; 1FD: SetProp2Square_v2
 07F8: 0xA8D07F4F   ; 1FE: char *RamLighterPower()
 07FC: 0xA0345FFB   ; 1FF: void MEDIA_PLAYLAST()
+
 0800: 0xA0067301   ; 200: ScreenShoot
 0804: 0xA0A1BF81   ; 201: void SetProp2ImageOrCanvas(DRWOBJ *, RECT *, int flags, IMGHDR *Image, int bleed_x, int bleed_y)
 0808: 0xA0A21F43   ; 202: void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, int flag, char *pen, char *brush)
@@ -533,6 +565,7 @@
 0834: 0xA0A2BF89   ; 20D: void EDIT_GetTime(void *gui,int n,TTime *tt)
 0838: 0xA0A2569F   ; 20E: int ConstructEditTime(EDITCONTROL *EditControl,TTime *time)
 083C: 0xA0A25585   ; 20F: int ConstructEditDate(EDITCONTROL *EditControl,TDate *date)
+
 0840: 0xA09A5FFD   ; 210: int GetCurGuiID(void)
 0844: 0x000061E8   ; 211: GBS_Cmd_4209_RefreshScreensaver
 ;848:              ; 212: __swi __arm int CardExplGetCurItem(void *csm)
@@ -549,6 +582,7 @@
 0874: 0xA0981DE9   ; 21D: int GSMTXT_Decode(WSHDR *dest,void *pkt,int len,int encoding_type, void *(*malloc_adr)(int), void (*mfree_adr)(void))
 0878: 0xA09A6237   ; 21E: void FocusGUI(int id)
 087C: 0xA09A6247   ; 21F: void UnfocusGUI(void)
+
 0880: 0xA096702F   ; 220: int IsSliderClosed(void)
 0884: 0xA01D180C   ; 221: SetCpuClockLow(2)
 0888: 0xA01D17F4   ; 222: SetCpuClockTempHi(2)
