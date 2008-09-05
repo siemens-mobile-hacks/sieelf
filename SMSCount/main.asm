@@ -224,7 +224,10 @@ _main_fix
 #endif
 #ifdef S7Cv47
 	LDR	R1, =0xA00B1DBC+1
-#endif        
+#endif  
+#ifdef C81Cv50
+	LDR	R1, =0xA00B1DBC+1
+#endif       
 	BLX	R1
 	CMP	R0, #1
 	BNE	fix_count
