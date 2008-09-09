@@ -125,7 +125,7 @@
 01BC: 0xA097FD98   ;  6F: void RefreshGPRSTraffic()
 
 01C0: 0xA097FDC8   ;  70: int *GetGPRSTrafficPointer()
-0540: 0xA0A1B907   ;  71: void DrawRoundedFrame(int x1,int y1,int x2,int y2,int x_round,int y_round,int flags,const char *pen,const char *brush)
+01C4: 0xA0A1B907   ;  71: void DrawRoundedFrame(int x1,int y1,int x2,int y2,int x_round,int y_round,int flags,const char *pen,const char *brush)
 01C8: 0xA095E635   ;  72: SetCurrentSecondOfCall
 01CC: 0xA0DE86A7   ;  73: int GetTypeOfCall(int type)
 01D0: 0xA02CE399   ;  74: SHORTCUTREC *GetShortcutRecordByName(char *szShortcutName)
