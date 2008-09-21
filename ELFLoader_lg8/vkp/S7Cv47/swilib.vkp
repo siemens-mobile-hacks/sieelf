@@ -695,5 +695,20 @@
 0A6C: 0xA029C729   ; 29B:  __arm int GetTypeOfHeadset()
 0A70: 0xA0000006   ; 29C:  __arm char *RamInputLanguage()
 0A74: 0xA8D3557C   ; 29D:  __arm char *RamDisplayLanguage()
+
+0A80: 0xA8DADE14   ; 2A0:  short *RAM_SMS_dat_FileHandler
+0A84: 0xA8DADE16   ; 2A1:  short *RAM_WB_dat_FileHandler
+0A88: 0xA8DEEA20   ; 2A2:  short *RAM_EMS_Admin_dat_FileHandler
+0A8C: 0xA09A9ED9   ; 2A3:  __thumb void UpdateMenuCursorItem(void *gui, int n)
+0A90: 0xA09A6D3B   ; 2A4:  __thumb void *GetMenuGUI(void *malloc_adr, void *mfree_adr)
+0A94: 0xA09ADC69   ; 2A5:  __thumb void *GetMultiLinesMenuGUI(void *malloc_adr, void *mfree_adr)
+0A98: 0xA09A6341   ; 2A6:  __thumb void SetHeaderToMenu(void *gui, const HEADER_DESC *hdr, void *malloc_adr)
+0A9C: 0xA09AAC9B   ; 2A7:  __thumb void SetMenuToGUI(void *gui, const void *menu_desc)
+0AA0: 0xA09A7B0B   ; 2A8:  __thumb int GetMenuItemCount(void *gui)
+0AA4: 0xA09A54DF   ; 2A9:  __thumb int CreatePopupGUI(int flag, void *user_pointer, const POPUP_DESC *, int lgp_msg)
+0AA8: 0xA09A5451   ; 2AA:  __thumb int CreatePopupGUI_ws(int flag, void *user_pointer, const POPUP_DESC *, WSHDR *msg)
+0AAC: 0xA09ADB0F   ; 2AB:  __thumb void *GetPopupUserPointer(void *gui)
+0AB0: 0xA0B0ED67   ; 2AC:  __thumb int DeleteSMS(int index, int _1)
+0AB4: 0xA0B0F045   ; 2AD:  __thumb int SetNewSMSToReaded(int index, int _1)
 #pragma disable old_equal_ff
 +0
