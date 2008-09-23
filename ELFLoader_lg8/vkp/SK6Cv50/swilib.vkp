@@ -615,7 +615,7 @@
 ;90C: ; 243:   __arm void ws2gb(WSHDR *ws, char *s, int len)
 0910: 0xA0CEA429   ; 244:   __arm int Base64Encode(void *inbuf, int insize, void *outbuf, int outsize)
 0914: 0xA0CEA4D9   ; 245:   __arm int Base64Decode(char *inbuf, int insize, void *outbuf, int outsize, char *_null, int *unk5)
-;91C: ; 247:   __thumb void NetOff()
+091C: 0xA09D7FE5   ; 247:  __thumb void NetOff();
 ;920: ; 248:  char *RamFormatTrack()
 ;924: ; 249:  char *RamFreq()
 ;928: ; 24A:  char *RamChannel()
