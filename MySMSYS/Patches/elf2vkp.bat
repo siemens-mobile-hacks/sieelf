@@ -1,0 +1,1 @@
+..\..\tools\elf2vkp.exe Release\Exe\Patches.elf t_s7c.vkp e:\fullflash\lg8\s7cv47.bin

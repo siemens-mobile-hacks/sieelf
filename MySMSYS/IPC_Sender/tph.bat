@@ -1,0 +1,1 @@
+..\..\tools\obexcopy.exe Release\Exe\IPC_Sender.elf Data\

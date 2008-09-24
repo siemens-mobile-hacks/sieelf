@@ -1,0 +1,146 @@
+#include "..\inc\swilib.h"
+#include "language.h"
+#include "sms_dat.h"
+#include "popGui.h"
+#include "main.h"
+#include "edGui.h"
+#include "adrList.h"
+#include "CodeShow.h" 
+
+#pragma swi_number=0x44
+__swi __arm void TempLightOn(int x, int y);
+
+const int popup_softkeys[]={0, 1, 2};
+const SOFTKEY_DESC popup_sk[]=
+{
+  {0x0018,0x0000,(int)STR_VIEW},
+  {0x0001,0x0000,(int)LGP_BACK},
+  {0x003D,0x0000,LGP_DOIT_PIC}
+};
+const SOFTKEYSTAB popup_skt={popup_sk, 0};
+
+#ifdef ELKA
+const int popup_icons[]={0x52C, 0};
+#else
+const int popup_icons[]={0x558, 0};
+#endif
+
+#define TIME_SECOND 216
+
+typedef struct
+{
+	void *dlg_csm;
+	GBSTMR tmr;
+}POP_UP;
+
+int popup_onkey(void *data, GUI_MSG *msg)
+{
+	POP_UP *pu=(POP_UP *)GetPopupUserPointer(data);
+	if((msg->keys==0x18)||(msg->keys==0x3D))
+	{
+		DLG_CSM *dlg_csm=(DLG_CSM *)(pu->dlg_csm);
+		if(dlg_csm)
+		{
+			if(!(dlg_csm->gui_id=viewTheLastNew(dlg_csm)))
+				dlg_csm->gui_id=CreateMainMenu(dlg_csm);
+		}
+		return 1;
+	}
+	if(msg->keys==0x1)
+		return 1;
+	if(msg->gbsmsg->msg==KEY_DOWN)
+	{	 
+		if(!IsUnlocked())
+			TempLightOn(3, 0x7FFF);
+
+		SetVibration(0);
+		if(IsTimerProc(&(pu->tmr)))
+		{
+			GBS_StopTimer(&(pu->tmr));
+		}
+	}
+	return 0;
+}
+void StopVibra(void)
+{
+	GeneralFuncF1(0x1C);
+	SetVibration(0);
+	GBS_SendMessage(MMI_CEPID,KEY_DOWN,0x63); //update
+}
+void popup_ghook(void *data, int cmd)
+{
+	POP_UP *pu=(POP_UP *)GetPopupUserPointer(data);
+	if(cmd==2) //Create
+	{
+		if(!IsUnlocked())
+			TempLightOn(3, 0x7FFF);
+
+		SetVibration(50);
+		GBS_StartTimerProc(&(pu->tmr), TIME_SECOND*10, StopVibra);
+	}
+	else if(cmd==3) //Close
+	{
+		GBS_DelTimer(&(pu->tmr));
+		SetVibration(0);
+		mfree(pu);
+	}
+}
+
+const POPUP_DESC popup=
+{
+  8,
+  popup_onkey,
+  popup_ghook,
+  NULL,
+  popup_softkeys,
+  &popup_skt,
+  0x1,
+  LGP_NULL,
+  popup_icons,
+  0,
+  2,
+  100,
+  101,
+  0
+};
+
+int StartIncomingWin(void *dlg_csm)
+{
+	SMS_DATA *sd=getLastTheLast(TYPE_IN_N);
+	WSHDR *ws=AllocWS(150);
+	WSHDR wsloc, *wn;
+	WSHDR csloc, *cs;
+	unsigned short csb[30];
+	unsigned short wsb[150];
+	POP_UP *pu=malloc(sizeof(POP_UP));
+	zeromem(pu, sizeof(POP_UP));
+	pu->dlg_csm=dlg_csm;
+	wn=CreateLocalWS(&wsloc,wsb,150);
+	cs=CreateLocalWS(&csloc,csb,30);
+	if(sd)
+	{
+	#ifdef NO_CS 
+		if(findNameByNum(wn, sd->Number))
+			wsprintf(ws, "%t\n%t\n%w", STR_NEW_MSG, STR_FROM, wn);
+		else
+			wsprintf(ws, "%t\n%t\n%s", STR_NEW_MSG, STR_FROM, sd->Number);
+	#else
+		char num[32];
+		strcpy(num, sd->Number);
+		GetProvAndCity(cs->wsbody, num);
+		if(findNameByNum(wn, sd->Number))
+			wsprintf(ws, "%t\n%t\n%w\n%w", STR_NEW_MSG, STR_FROM, wn, cs);
+		else
+			wsprintf(ws, "%t\n%t\n%s\n%w", STR_NEW_MSG, STR_FROM, sd->Number, cs);
+	#endif
+	}
+	else
+	{
+		wsprintf(ws, PERCENT_T, STR_NEW_MSG);
+	}
+	return (CreatePopupGUI_ws(1, pu, &popup, ws));
+}
+
+
+
+
