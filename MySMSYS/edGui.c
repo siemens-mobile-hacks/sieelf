@@ -558,7 +558,7 @@ void edGHook(GUI *data, int cmd)
 		if(!EDIT_IsBusy(data))
 			SetSoftKey(data,&SK_OPTIONS,SET_SOFT_KEY_N);
 		if(uo->sd->type==TYPE_IN_N)
-			newToReaded(uo->sd);
+			newToRead(uo->sd);
 		if(uo->gui_type==ED_VIEW)
 			SetSoftKey(data,&SK_OP_PIC,SET_SOFT_KEY_M);
 

@@ -45,7 +45,7 @@ int readAllSMS(void);
 int getCountByType(int type);
 SMS_DATA *getSMSDataByType(int n, int type);
 SMS_DATA *findInSMSByTxtTime(WSHDR *ws, char *time);
-int newToReaded(SMS_DATA *sd);
+int newToRead(SMS_DATA *sd);
 int saveFile(WSHDR *ws, char *number, SMS_DATA *sd, int type, int need_reload);
 int readFile(int type);
 int deleteFile(SMS_DATA *sd, int need_reload);

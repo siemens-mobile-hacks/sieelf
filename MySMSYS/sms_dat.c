@@ -444,11 +444,11 @@ int readAllSMS(void)
 //write
 
 
-int newToReaded(SMS_DATA *sd)
+int newToRead(SMS_DATA *sd)
 {
 	if((sd==0)||(sd->isfile==1)||(sd->id==0))
 		return 0;
-	if(SetNewSMSToReaded(sd->id, 1)!=0x3E8)
+	if(SetNewSMSToRead(sd->id, 1)!=0x3E8)
 		return 0;
 	sd->type=TYPE_IN_R;
 	return 1;

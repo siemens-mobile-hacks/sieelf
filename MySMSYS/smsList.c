@@ -366,7 +366,7 @@ void sms_menu_ghook(void *data, int cmd)
 			break;
 		}
 		SetHeaderText(GetHeaderPointer(data), hdr_t, malloc_adr(), mfree_adr());
-		if(n) SetSoftKey(data,&SK_VIEW_PIC,SET_SOFT_KEY_M);
+		//if(n) SetSoftKey(data,&SK_VIEW_PIC,SET_SOFT_KEY_M);
 	}
 	if(cmd==3)
 	{
