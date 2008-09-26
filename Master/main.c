@@ -2,7 +2,7 @@
  * 文件名: main.c
  * 作者: BingK(binghelingxi)
  *
- * 最后修改日期: 2008.07.12
+ * 最后修改日期: 2008.09.26
  *
  * 作用: 建立CSM，GUI，以及一些控制项目
  *
@@ -550,18 +550,34 @@ int edOnKey(GUI *data, GUI_MSG *msg)
 	}
 	if(msg->gbsmsg->msg==KEY_DOWN)
 	{
+		EDITCONTROL ec;
+		ExtractEditControl(data,i,&ec);
 		l=msg->gbsmsg->submess;
 		if((l==UP_BUTTON||l==VOL_UP_BUTTON))
 		{
 			int max=getMaxFocus();
 			int min=getMinFocus();
+			//char s[32];
 			if(!min||!max)
 				return -1;
-			if(i==min||i==1) //start
+			if((i==min||i==1)
+			   &&(!(EDIT_IsMarkModeActive(data)))
+			     &&(((ec.type!=ECT_NORMAL_TEXT)
+				 &&(ec.type!=ECT_CURSOR_STAY)
+				   &&(ec.type!=ECT_FIXED_STR_NUM)
+				     &&(ec.type!=ECT_NORMAL_NUM)
+				     )
+				||(EDIT_GetCursorPos(data)<=1))
+			       &&(!EDIT_IsBusy(data))) //start
 			{
 				EDIT_SetFocus(data, max); 
 				return -1;
 			}
+			//else
+			//{
+			//  sprintf(s, PERCENT_D, ec.type);
+			//  ShowMSG(1, (int)s);
+			//}
 		}
 		else if((l==DOWN_BUTTON||l==VOL_DOWN_BUTTON))
 		{
@@ -569,11 +585,19 @@ int edOnKey(GUI *data, GUI_MSG *msg)
 			int min=getMinFocus();
 			if(!min||!max)
 				return -1;
-			if(i==max)
+			if((i==max)
+			   &&(!(EDIT_IsMarkModeActive(data)))
+			     &&(((ec.type!=ECT_NORMAL_TEXT)
+				 &&(ec.type!=ECT_CURSOR_STAY)
+				   &&(ec.type!=ECT_FIXED_STR_NUM)
+				     &&(ec.type!=ECT_NORMAL_NUM)
+				     )
+				||(EDIT_GetCursorPos(data)>=(ec.pWS->wsbody[0]+1)))
+			       &&(!EDIT_IsBusy(data)))
 			{
         		EDIT_SetFocus(data, min); 
 		  		return -1;
-		  	}
+		  }
 		}
 		PATCH_ITEM *pitem;
 		if(l==LEFT_SOFT||l==ENTER_BUTTON)
@@ -653,6 +677,32 @@ int edOnKey(GUI *data, GUI_MSG *msg)
 					REDRAW();
 					return -1;
 				}
+				else if(pitem->itemType==TYPE_SL)
+				{
+					DATA_SL *sl=(DATA_SL *)pitem->itemData;
+					char ss[512];
+					char *p=ss;
+					int k=sl->min;
+					if((l==RIGHT_BUTTON)&&((sl->initData)<(sl->max)))
+						(sl->initData)++;
+					if((l==LEFT_BUTTON)&&((sl->initData)>(sl->min)))
+						(sl->initData)--;
+					*p++='[';
+					for(;k<sl->initData;k++)
+					{
+						*p++='=';
+					}
+					for(k=sl->initData;k<sl->max;k++)
+					{
+						*p++='-';
+					}
+					*p++=']';
+					*p=0;
+					wsprintf(ews, ss);
+					EDIT_SetTextToFocused(data, ews);
+					REDRAW();
+					return -1;
+				}
 			}
 		}
 	}
@@ -662,7 +712,7 @@ const SOFTKEY_DESC SK_OK={0x0FFF,0x0000,(int)LGP_OK};
 const SOFTKEY_DESC SK_BACK={0x0FFE,0x0000,(int)LGP_BACK};
 const SOFTKEY_DESC SK_CLOSE={0x0FFE,0x0000,(int)LGP_CLOSE};
 
-
+const char PT_PTM_FMT[]="%t:";
 void edGHook(GUI *data, int cmd)
 {
 	int sk_need=0;
@@ -781,9 +831,44 @@ void edGHook(GUI *data, int cmd)
 				}
 			case TYPE_SL:
 				{
-					int j=EDIT_GetItemNumInFocusedComboBox(data);
+					//int j=EDIT_GetItemNumInFocusedComboBox(data);
 					DATA_SL *sl=(DATA_SL *)pitem->itemData;
-					sl->initData=j-1;
+					int j=0;
+					EDITCONTROL ec;
+					WSHDR wsloc, *wn;
+					unsigned short wsb[16];
+					wn=CreateLocalWS(&wsloc,wsb,16);
+					//EDITC_OPTIONS ec_options;
+					ExtractEditControl(data, i, &ec);
+					if((ec.pWS->wsbody[0]>0)&&(ec.pWS->wsbody[1]=='['))
+					{
+						for(;(j<((sl->max)-(sl->min)+1))&&(j<ec.pWS->wsbody[0]);j++)
+						{
+							if(ec.pWS->wsbody[2+j]!='=')
+								break;
+						}
+					}
+					sl->initData=(sl->min)+j;
+					if(strlen(pitem->itemName))
+					{
+						if(isUniFormat(pitem->itemName))
+						{
+							uniFormatString2ws(ews, pitem->itemName);
+							wsAppendChar(ews, ':');
+						}
+						else
+							wsprintf(ews, PT_PTM_FMT, pitem->itemName);
+					}
+					else
+						CutWSTR(ews,0);    
+					wsprintf(wn, PERCENT_D, sl->initData);
+					wstrcat(ews, wn);
+					EDIT_SetTextToEditControl(data, i-1, ews);
+					//PrepareEditCOptions(&ec_options);
+					//SetFontToEditCOptions(&ec_options,FONT_SMALL_BOLD);
+					//SetPenColorToEditCOptions(&ec_options,2);
+					//CopyOptionsToEditControl(&ec,&ec_options);
+					//StoreEditControl(data, i ,&ec);
 					break;
 				}
 			case TYPE_MS:
@@ -849,7 +934,7 @@ void edGHook(GUI *data, int cmd)
 				}
 				EDIT_SetTextToFocused(data,ews);
 			}
-			else if(pitem->itemType==TYPE_SL)
+			/*else if(pitem->itemType==TYPE_SL)
 			{
 				if((j=EDIT_GetItemNumInFocusedComboBox(data)))
 				{
@@ -862,7 +947,7 @@ void edGHook(GUI *data, int cmd)
 					wstrcpy(ews,ec.pWS);
 				}
 				EDIT_SetTextToFocused(data,ews);
-			}
+			}*/
 		}
 	}
 }
@@ -895,6 +980,7 @@ int createEditGui(void)
 	void *ma=malloc_adr();
 	void *eq;
 	EDITCONTROL ec;
+	//EDITC_OPTIONS ec_options;
 	int type;
 	if(!editItemList)
 		goto ex_back;
@@ -929,11 +1015,11 @@ int createEditGui(void)
 				wsAppendChar(ews, ':');
 			}
 			else
-				wsprintf(ews, "%t:", pitem->itemName);
+				wsprintf(ews, PT_PTM_FMT, pitem->itemName);
 		}
 		else
 			CutWSTR(ews,0);
-		if(type==TYPE_SUBMENU||type==TYPE_CHECKBOX||type==TYPE_SL)
+		if(type==TYPE_SUBMENU||type==TYPE_CHECKBOX/*||type==TYPE_SL*/)
 		{
 			ConstructEditControl(&ec,ECT_HEADER,ECF_NORMAL_STR,ews,MAX_WS_LEN);
 		}
@@ -951,6 +1037,16 @@ int createEditGui(void)
 			ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,MAX_WS_LEN);
 			AddEditControlToEditQend(eq,&ec,ma);
 			goto NextItem;
+		}
+		else if(type==TYPE_SL)
+		{
+			DATA_SL *sl=(DATA_SL *)pitem->itemData;
+			WSHDR wsloc, *wn;
+			unsigned short wsb[16];
+			wn=CreateLocalWS(&wsloc,wsb,16);
+			wsprintf(wn, PERCENT_D, sl->initData);
+			wstrcat(ews, wn);
+			ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,MAX_WS_LEN);
 		}
 		else
 			ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,MAX_WS_LEN);
@@ -1120,8 +1216,27 @@ int createEditGui(void)
 		case TYPE_SL:
 			{
 				DATA_SL *sl=(DATA_SL *)pitem->itemData;
-				wsprintf(ews, PERCENT_D, sl->initData);
-				ConstructComboBox(&ec, ECT_COMBO_BOX, ECF_APPEND_EOL, ews, 8, 0, sl->max+1, sl->initData+1);
+				char ss[512];
+				char *p=ss;
+				int i=sl->min;
+				*p++='[';
+				for(;i<sl->initData;i++)
+				{
+					*p++='=';
+				}
+				for(i=sl->initData;i<sl->max;i++)
+				{
+					*p++='-';
+				}
+				*p++=']';
+				*p=0;
+				wsprintf(ews, ss);
+				ConstructEditControl(&ec,ECT_READ_ONLY,ECF_APPEND_EOL,ews,(sl->max)-(sl->min)+2);			
+				///PrepareEditCOptions(&ec_options);
+				///SetFontToEditCOptions(&ec_options,FONT_SMALL);
+				///CopyOptionsToEditControl(&ec,&ec_options);
+				//wsprintf(ews, PERCENT_D, sl->initData);
+				//ConstructComboBox(&ec, ECT_COMBO_BOX, ECF_APPEND_EOL, ews, 8, 0, sl->max+1, sl->initData+1);
 				AddEditControlToEditQend(eq,&ec,ma);
 				break;
 			}

@@ -1,6 +1,6 @@
 ELF名称: Master.elf
 作者: BingK(binghelingxi), Email: bingkx@gmail.com
-版本: 2.1.5
+版本: 2.1.6
 感谢: 所有参与CfgEdit制作的人,CfgEdit给了我很多应用参考实例
       很大程度上方便了我制作这个ELF.
 作用: 和JAVA版本的Master一样,实现了对MasterPatch的配置,
@@ -31,6 +31,10 @@ ELF名称: Master.elf
         过MasterPatch就不要尝试了.
 
 更新日志:
+v2.1.6 2008.09.26
+  修改滑块显示方式,使用=-
+  修正循环代码,加了一些限制
+  
 v2.1.5 2008.08.05
 * 修正读取unicode型字符串数据的最大长度
 * 修正指定大小的ptc文件保存问题
