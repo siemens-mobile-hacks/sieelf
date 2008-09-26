@@ -924,17 +924,25 @@ unsigned int char16to8(unsigned int c)
 void UpdateCSMname(const char *fname)
 {
   char *s;
+  int isfname=1;
 //  int i;
   WSHDR *ws=AllocWS(256);
   if ((s=strrchr(fname,'\\'))==0)
   {
     if ((s=strrchr(fname,'/'))==0)
     {
-      if ((s=strrchr(fname,':'))==0) s=(char *)fname-1;
+      if ((s=strrchr(fname,':'))==0)
+      {
+	s=(char *)fname-1;
+	isfname=0;
+      }
     }
   }
   s++;
-  str_2ws(ws,s,128);
+  if(isfname)
+    str_2ws(ws,s,128);
+  else
+    wsprintf(ws, "%t", fname);
   wsprintf((WSHDR *)(&MAINCSM.maincsm_name),"%t%w","≈‰÷√:",ws);
   FreeWS(ws);
 }
