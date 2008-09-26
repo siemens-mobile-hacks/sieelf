@@ -100,6 +100,7 @@ typedef struct{
 #define LGP_NULL 0x7FFFFFFF
 #define SET_SOFT_KEY_N 0
 #define LGP_DOIT_PIC 0x7FFFC0FB
+#define SET_SOFT_KEY_M 2 //mid
 #else
 
 #define DISPLACE_OF_EDGUI 0x50
@@ -143,6 +144,7 @@ typedef struct{
 #define LGP_NULL 0x7FFF
 #define SET_SOFT_KEY_N 1
 #define LGP_DOIT_PIC 0x7FFFC0FB
+#define SET_SOFT_KEY_M 2 //mid
 
 #ifdef X75
 #define MSG_PLAYFILE_REPORT 0x174
@@ -3620,7 +3622,7 @@ __swi __arm int DeleteSMS(int index, int n); //return 0x3E8
 
 
 #pragma swi_number=0x2AD
-__swi __arm int SetNewSMSToReaded(int index, int _1); //return 0x3E8
+__swi __arm int SetNewSMSToRead(int index, int _1); //return 0x3E8
 //thumb
 //pattern_NSG=??,B5,??,1C,??,4C,??,49,??,B0,??,1C,??,??,??,??,??,AB,??,8A,??,1C+1
 
@@ -3633,5 +3635,10 @@ __swi __arm void *GetHeaderPointer(void *gui);
 __swi __arm void SetHeaderText(void *hdr_pointer, WSHDR *txt, void *malloc_adr, void *mfree_adr);
 //thumb
 //pattern_NSG=??,B5,??,1C,??,1C,??,1C,??,1C,??,28,??,D0,??,2E,??,D0,??,2D,??,D0,??,6A,??,28,??,D0,??,??,??,??,??,90,??,28,??,D0,??,1C,??,6A+1
+
+#pragma swi_number=0x2B0
+__swi __arm void SetMenuSoftKey(void *gui, const SOFTKEY_DESC *,int n);
+//thumb
+//pattern_NSG=??,BD,??,21,??,??,??,??,??,1C,??,1C,_blf(??,B5,??,68,??,00,??,19,??,68,??,68,??,60,??,60,??,1C,??,??,??,??,??,BD),??,BD,-39
 
 #endif
