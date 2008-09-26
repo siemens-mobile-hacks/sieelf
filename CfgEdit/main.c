@@ -213,7 +213,12 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
       //循环代码
       if((n==0)&&((l==UP_BUTTON)||(l==VOL_UP_BUTTON))
 	 &&(!(EDIT_IsMarkModeActive(data)))
-	    &&(EDIT_GetCursorPos(data)<=1)//第一行第一个字符
+	    &&(((ec.type!=ECT_NORMAL_TEXT)
+		&&(ec.type!=ECT_CURSOR_STAY)
+		  &&(ec.type!=ECT_FIXED_STR_NUM)
+		    &&(ec.type!=ECT_NORMAL_NUM)
+		      )
+	       ||(EDIT_GetCursorPos(data)<=1))//第一行第一个字符
 	      &&(!EDIT_IsBusy(data))
 		)
       {  
@@ -222,7 +227,12 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
       }
       else if ((n>=total_items-1)&&((l==DOWN_BUTTON)||(l==VOL_DOWN_BUTTON))
 	       &&(!(EDIT_IsMarkModeActive(data)))
-		  &&(EDIT_GetCursorPos(data)>=(ec.pWS->wsbody[0]+1))//最后一个字
+		  &&(((ec.type!=ECT_NORMAL_TEXT)
+		      &&(ec.type!=ECT_CURSOR_STAY)
+			&&(ec.type!=ECT_FIXED_STR_NUM)
+			  &&(ec.type!=ECT_NORMAL_NUM)
+			    )
+		     ||(EDIT_GetCursorPos(data)>=(ec.pWS->wsbody[0]+1)))//最后一个字
 		    &&(!EDIT_IsBusy(data))
 		      )
       {
