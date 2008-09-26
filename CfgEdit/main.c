@@ -208,11 +208,26 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
     {
       n=(i-3)>>1; //软溴犟 屐屙蜞 ?爨耨桠?cfg_h
       hp=cfg_h[n];
+      EDITCONTROL ec;
+      ExtractEditControl(data,i,&ec);
       //循环代码
-      if((n==0)&&(l==UP_BUTTON || l==VOL_UP_BUTTON)){  
-        EDIT_SetFocus(data, total_items*2+1); return(-1);
-      }else if ((n>=total_items-1)&&(l==DOWN_BUTTON || l==VOL_DOWN_BUTTON)){
-        EDIT_SetFocus(data, 3); return(-1);
+      if((n==0)&&((l==UP_BUTTON)||(l==VOL_UP_BUTTON))
+	 &&(!(EDIT_IsMarkModeActive(data)))
+	    &&(EDIT_GetCursorPos(data)<=1)//第一行第一个字符
+	      &&(!EDIT_IsBusy(data))
+		)
+      {  
+        EDIT_SetFocus(data, total_items*2+1); 
+	return(-1);
+      }
+      else if ((n>=total_items-1)&&((l==DOWN_BUTTON)||(l==VOL_DOWN_BUTTON))
+	       &&(!(EDIT_IsMarkModeActive(data)))
+		  &&(EDIT_GetCursorPos(data)>=(ec.pWS->wsbody[0]+1))//最后一个字
+		    &&(!EDIT_IsBusy(data))
+		      )
+      {
+        EDIT_SetFocus(data, 3); 
+	return(-1);
       }
       //--------------------
       if (l==LEFT_SOFT||l==ENTER_BUTTON)
