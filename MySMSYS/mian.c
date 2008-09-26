@@ -422,8 +422,41 @@ static void daemoncsm_oncreate(CSM_RAM *data)
 	GBS_SendMessage(MMI_CEPID,MSG_IPC,MY_SMSYS_IPC_START,&daemon_ipc);
 }
 
+#ifdef BROWSER_KILLER 
+const IPC_REQ my_ipc_n=
+{
+	my_ipc_name,
+	my_ipc_name,
+	NULL
+};
+
+GBSTMR chk_tmr;
+
+void CheckNewProc(void)
+{
+		readAllSMS();
+		if(getCountByType(TYPE_IN_N))
+		{
+			GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_NEW_IN_WIN,&my_ipc_n);
+		}
+}
+#endif
 int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 {
+#ifdef BROWSER_KILLER 
+//EMS_FFS write 0x61CB
+//0x61CC ?? SMS_incoming
+//如果使用Browser-killer之类的补丁,将不会有新信息弹出窗口,使用这个MSG可以进行检查是否来新短信了
+#ifdef ELKA
+	if(msg->msg==0x6106) //ELKA,来自smsman
+#else
+	if(msg->msg==0x61CC)
+#endif
+	{
+		if(!IsTimerProc(&chk_tmr)) //接收到MSG半秒之后开始检查,直接开始检查会死机.
+			GBS_StartTimerProc(&chk_tmr, 216/2, CheckNewProc);
+	}
+#endif
 	if(msg->msg==MSG_IPC)
 	{
 		IPC_REQ *ipc;
@@ -500,6 +533,9 @@ static void ElfKiller(void)
 	closeAllDlgCSM(DlgCsmIDs);
 	FreeCLIST();
 	freeSDList();
+#ifdef BROWSER_KILLER 
+	GBS_DelTimer(&chk_tmr);
+#endif
 	kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
 }
 

@@ -33,7 +33,7 @@ typedef struct
 	int isems;
 	int cnt;
 	char *fname;
-	char SMS_CENTER[32];
+//	char SMS_CENTER[32];
 	char Number[32];
 	char Time[32];
 	WSHDR *SMS_TEXT;

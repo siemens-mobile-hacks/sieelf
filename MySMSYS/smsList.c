@@ -337,6 +337,7 @@ void sms_menu_ghook(void *data, int cmd)
 	}
 	if(cmd==7)
 	{
+		//extern void SetMenuSoftKey(void *gui, const SOFTKEY_DESC *,int n);
 		int n=getCountByType(so->type);
 		int cur_n=GetCurMenuItem(data)+1;
 		if(!n) cur_n=0;
@@ -367,6 +368,7 @@ void sms_menu_ghook(void *data, int cmd)
 		}
 		SetHeaderText(GetHeaderPointer(data), hdr_t, malloc_adr(), mfree_adr());
 		//if(n) SetSoftKey(data,&SK_VIEW_PIC,SET_SOFT_KEY_M);
+		if(n) SetMenuSoftKey(data,&SK_VIEW_PIC,SET_SOFT_KEY_M);
 	}
 	if(cmd==3)
 	{

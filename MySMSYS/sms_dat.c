@@ -286,9 +286,14 @@ char *FindNextPartOfEMS(char *data, int cnt_a, int cnt_n, int sig, char *buf_end
 		if(!memcmp_wo1(d2, data, size))
 		{
 			char *p=d2;
-			int skip=0;
+			int skip;
 			p+=cmp_size+2;
-			skip=*p;
+			//skip=*p;
+			skip=p[1];
+			if(skip==8)
+				skip=6;
+			else
+				skip=5;
 			if((p[skip-2]==sig)&&(p[skip-1]==cnt_a)&&(p[skip]==cnt_n+1))
 				return d2;
 		}
@@ -336,7 +341,12 @@ int IsPartOfEMS(char *data) //return 1, first,
 	//...text,
 	if(isems)
 	{
-		skip=*p;
+		//skip=*p;
+			skip=p[1];
+			if(skip==8)
+				skip=6;
+			else
+				skip=5;
 		//if(p[skip]!=1) //非EMS 的开头部分
 		//	return 1;
 		return (p[skip]);
@@ -389,6 +399,7 @@ void GetEMSText(char *data, WSHDR *text, int cnt_a, int cnt_n, int type, char *b
 	//...text,
 	if(isems)
 	{
+		int sk=p[1];
 		cmp_size=p-data-2;
 		skip=*p;
 		p2=p;
@@ -397,6 +408,10 @@ void GetEMSText(char *data, WSHDR *text, int cnt_a, int cnt_n, int type, char *b
 			p+=skip+1;
 			c-=skip+1;
 		}
+		if(sk==8)
+			skip=6;
+		else
+			skip=5;
 	}
 	if(ttype==0x8)
 	{
@@ -671,7 +686,7 @@ typedef struct
 	int type;
 	int cnt;
 	int isused;
-	char sms_center[32];
+//	char sms_center[32];
 	char number[32];
 	char time[32];
 	WSHDR *text;
@@ -768,7 +783,7 @@ void DoSMS(SMS_DATA *sdl, char *data)
 	}
 	
 	c=*p++; //sms center
-	Hex2Num(p, sdl->SMS_CENTER, c);
+//	Hex2Num(p, sdl->SMS_CENTER, c);
 	p+=c;
 	c=*p++;
 	if((c>>4)%2) isplus=1;
@@ -858,7 +873,7 @@ void DoEMS(EMS_DATA *edl, char *data, char *sms_dat_buf_end)
 	}
 	
 	c=*p++; //sms center
-	Hex2Num(p, edl->sms_center, c);
+//	Hex2Num(p, edl->sms_center, c);
 	p+=c;
 	c=*p++;
 	if((c>>4)%2) isplus=1;
@@ -898,14 +913,20 @@ void DoEMS(EMS_DATA *edl, char *data, char *sms_dat_buf_end)
 	//...text,
 	if(isems)
 	{
+		int sk;
 		cmp_size=p-data-2;
 		skip=*p;
+		sk=p[1];
 		p2=p;
 		if(ttype==8)
 		{
 			p+=skip+1;
 			c-=skip+1;
 		}
+		if(sk==8)
+			skip=6;
+		else
+			skip=5;
 	}
 	edl->cnt=p2[skip-1];
 	if(ttype==0x8)
@@ -1029,7 +1050,7 @@ int DoDat(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_size)
 					sdltop->type=edx->type;
 					sdltop->isems=1;
 					sdltop->cnt=edx->cnt;
-					strcpy(sdltop->SMS_CENTER, edx->sms_center);
+				//	strcpy(sdltop->SMS_CENTER, edx->sms_center);
 					strcpy(sdltop->Number, edx->number);
 					strcpy(sdltop->Time, edx->time);
 					wstrcpy(sdltop->SMS_TEXT, edx->text);
