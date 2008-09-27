@@ -1186,7 +1186,7 @@ typedef struct
 	int lgp_null; //?
 	const int *icons;
 	int zero0; //0
-	int _2; //2
+	int font; //2
 	int _100;
 	int _101;
 	int zero1; //0

@@ -450,7 +450,9 @@ __swi __arm void TempLightOn(int x, int y);
 			if(n==uo->focus_n)
 				EDIT_OpenOptionMenuWithUserItems(data,on_ed_ec,data,3);
 			if(n<=(uo->focus_n-2)) //ºÅÂëÎ»ÖÃ
+			{
 				EDIT_OpenOptionMenuWithUserItems(data,on_adr_ec,data,4);
+			}
 			return (-1);
 		}
 	}
@@ -459,6 +461,10 @@ __swi __arm void TempLightOn(int x, int y);
 	{
 		popGS(uo->dlg_csm);
 		return 1;
+	}
+	else if(msg->keys==0x0F00)
+	{
+		CreateAdrMenu(data);
 	}
 	if(((msg->gbsmsg->msg==KEY_DOWN)||(msg->gbsmsg->msg==LONG_PRESS))&&(!EDIT_IsBusy(data)))
 	{
@@ -524,6 +530,8 @@ __swi __arm void TempLightOn(int x, int y);
 
 
 const SOFTKEY_DESC SK_OPTIONS={0x0018,0x0000,(int)LGP_OPTIONS};
+const SOFTKEY_DESC SK_ADRBK={0x0F00,0x0000,(int)LGP_ADRBK};
+const SOFTKEY_DESC SK_CANCEL={0x0001,0x0000,(int)LGP_CANCEL};
 const SOFTKEY_DESC SK_OP_PIC={0x0029,0x0000,(int)LGP_OPTION_PIC};
 
 void edGHook(GUI *data, int cmd)
@@ -555,8 +563,13 @@ void edGHook(GUI *data, int cmd)
 		EDITCONTROL ec;
 		int n=EDIT_GetFocus(data);
 		ExtractEditControl(data,n,&ec);
-		if(!EDIT_IsBusy(data))
-			SetSoftKey(data,&SK_OPTIONS,SET_SOFT_KEY_N);
+/*		if(!EDIT_IsBusy(data))
+		{
+			if((n<=(uo->focus_n-2))&&(ec.pWS->wsbody[0]==0))
+				SetSoftKey(data,&SK_ADRBK,SET_SOFT_KEY_N);
+			else
+				SetSoftKey(data,&SK_OPTIONS,SET_SOFT_KEY_N);
+		}*/
 		if(uo->sd->type==TYPE_IN_N)
 			newToRead(uo->sd);
 		if(uo->gui_type==ED_VIEW)
@@ -599,9 +612,20 @@ void edGHook(GUI *data, int cmd)
 							EDIT_SetFocus(data, n);
 					}
 					else
+					{
 						EDIT_SetTextToEditControl(data, n, ((NUM_LIST *)(uo->nltop))->name);
+						SetSoftKey(data,&SK_CANCEL,!SET_SOFT_KEY_N);
+					}
 				}
 			}
+		}
+		ExtractEditControl(data,n,&ec);
+		if(!EDIT_IsBusy(data))
+		{
+			if((n<=(uo->focus_n-2))&&(ec.pWS->wsbody[0]==0))
+				SetSoftKey(data,&SK_ADRBK,SET_SOFT_KEY_N);
+			else
+				SetSoftKey(data,&SK_OPTIONS,SET_SOFT_KEY_N);
 		}
 	}
 }

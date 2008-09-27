@@ -787,15 +787,18 @@ void DoSMS(SMS_DATA *sdl, char *data)
 	p+=c;
 	c=*p++;
 	if((c>>4)%2) isplus=1;
+		else isplus=0;
 	if((sdl->type==TYPE_OUT)||(sdl->type==TYPE_DRAFT)) //out
+	{
 		p++;
+	}
 	c=*p++;
 	if(c%2)
-		c=c/2+1;
+		c=c/2+2;
 	else
-		c=c/2;
+		c=c/2+1;
 	Hex2Num(p, sdl->Number, c);
-	p+=c+2; //num
+	p+=c+1; //num
 	ttype=*p++;
 	if((sdl->type==TYPE_IN_R)||(sdl->type==TYPE_IN_N))
 	{
@@ -1013,9 +1016,16 @@ int DoDat(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_size)
 			addSDList();
 			if(ped->data_id!=0xFFF4)
 			{
+//----------------
+//	int x=GetCPUClock();
+//----------------
 				sdltop->opmsg_id=ped->opmsg_id;
 				sdltop->id=ped->index_id;
+			#ifdef ELKA
+				pn=sms_buf+(ped->data_id-0x34)*sizeof(PDU);
+			#else
 				pn=sms_buf+(ped->data_id-0x2A)*sizeof(PDU);
+			#endif
 				DoSMS(sdltop, pn);
 			}
 			else

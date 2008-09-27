@@ -98,7 +98,7 @@ const POPUP_DESC popup=
   LGP_NULL,
   popup_icons,
   0,
-  2,
+  FONT_MEDIUM,
   100,
   101,
   0

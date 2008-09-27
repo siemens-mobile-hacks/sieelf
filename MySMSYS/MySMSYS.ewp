@@ -535,7 +535,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild>$PROJ_DIR$\tph.cmd $EXE_DIR$\MySMSYS_nsg.elf</postbuild>
+        <postbuild></postbuild>
       </data>
     </settings>
     <settings>
@@ -5503,7 +5503,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>MySMSYS_elka.elf</state>
+          <state>MySMSYS_elka_bk.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
