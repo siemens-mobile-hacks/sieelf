@@ -956,11 +956,13 @@ MySMSYS/IPC_Sender/tph.bat -text
 MySMSYS/MySMSYS.ewp -text
 MySMSYS/MySMSYS.eww -text
 MySMSYS/MySMSYS_ipc.h -text
+MySMSYS/Patches/E71Csw41.xcl -text
 MySMSYS/Patches/Patches.ewp -text
 MySMSYS/Patches/S7Csw47.xcl -text
 MySMSYS/Patches/add-on.c -text
 MySMSYS/Patches/elf2vkp.bat -text
 MySMSYS/Patches/entery.asm -text
+MySMSYS/Patches/entry_elka.asm -text
 MySMSYS/adrList.c -text
 MySMSYS/adrList.h -text
 MySMSYS/createMenu.c -text
