@@ -385,10 +385,10 @@ void GetEMSText(char *data, WSHDR *text, int cnt_a, int cnt_n, int type, char *b
 		p++;
 	c=*p++;
 	if(c%2)
-		c=c/2+1;
+		c=c/2+2;
 	else
-		c=c/2;
-	p+=c+2; //num
+		c=c/2+1;
+	p+=c+1; //num
 	ttype=*p++;
 	if((type==TYPE_IN_R)||(type==TYPE_IN_N))
 		p+=7; //time
@@ -887,11 +887,11 @@ void DoEMS(EMS_DATA *edl, char *data, char *sms_dat_buf_end)
 		p++;
 	c=*p++;
 	if(c%2)
-		c=c/2+1;
+		c=c/2+2;
 	else
-		c=c/2;
+		c=c/2+1;
 	Hex2Num(p, edl->number, c);
-	p+=c+2; //num
+	p+=c+1; //num
 	ttype=*p++;
 	if((edl->type!=TYPE_OUT)&&(edl->type!=TYPE_DRAFT))
 	{
@@ -996,6 +996,8 @@ EMS_DATA *FindEMSByNumTxt(EMS_DATA *edltop, char *num, WSHDR *txt)
 	}
 	return 0;
 }
+
+//#define TEST
 int DoDat(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_size)
 {
 	char *pn;
@@ -1024,7 +1026,11 @@ int DoDat(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_size)
 			#ifdef ELKA
 				pn=sms_buf+(ped->data_id-0x34)*sizeof(PDU);
 			#else
+			#ifdef TEST
+				pn=sms_buf+(ped->data_id-0x34)*sizeof(PDU);
+			#else
 				pn=sms_buf+(ped->data_id-0x2A)*sizeof(PDU);
+			#endif
 			#endif
 				DoSMS(sdltop, pn);
 			}
@@ -1077,8 +1083,13 @@ int DoDat(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_size)
 
 int ReadSMS(void)
 {
+#ifdef TEST
+	const char sms_dat[]="0:\\ZBin\\MySMSYS\\SMS.dat";
+	const char ems_admin_dat[]="0:\\ZBin\\MySMSYS\\EMS_Admin.dat";
+#else
 	const char sms_dat[]="0:\\System\\SMS\\SMS.dat";
 	const char ems_admin_dat[]="0:\\System\\SMS\\EMS_Admin.dat";
+#endif
 	int fin;
 	unsigned int err;
 	char *sms_buf;

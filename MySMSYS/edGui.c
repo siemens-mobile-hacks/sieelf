@@ -17,7 +17,6 @@
 #define	TEXT_INPUT_OPTION	ECT_NORMAL_TEXT
 #endif
 
-
 HEADER_DESC ED_HDR={0,0,0,0,NULL,LGP_NULL,LGP_NULL};
 const int ed_menusoftkeys[]={0,1,2};
 const SOFTKEY_DESC ed_menu_sk[]=
@@ -466,6 +465,10 @@ __swi __arm void TempLightOn(int x, int y);
 	{
 		CreateAdrMenu(data);
 	}
+	//else if((msg->keys==0)&&(uo->gui_type==ED_VIEW)) //禁止输入编辑
+	//{
+	//	return -1;
+	//}
 	if(((msg->gbsmsg->msg==KEY_DOWN)||(msg->gbsmsg->msg==LONG_PRESS))&&(!EDIT_IsBusy(data)))
 	{
 		int i=msg->gbsmsg->submess;
@@ -539,7 +542,11 @@ void edGHook(GUI *data, int cmd)
 	USER_OP *uo=EDIT_GetUserPointer(data);
 	if(cmd==TI_CMD_CREATE)
 	{
-		EDIT_SetFocus(data, uo->focus_n);//光标跳到文本位置
+		if(uo->gui_type==ED_VIEW)
+			EDIT_SetFocus(data, 1); //从号码开始看
+		else
+			EDIT_SetFocus(data, uo->focus_n);//光标跳到文本位置
+		//EDIT_SetCursorPos(data, 1);
 	}
 	else if(cmd==TI_CMD_DESTROY)
 	{
@@ -562,7 +569,7 @@ void edGHook(GUI *data, int cmd)
 		NUM_LIST *nl;
 		EDITCONTROL ec;
 		int n=EDIT_GetFocus(data);
-		ExtractEditControl(data,n,&ec);
+		//ExtractEditControl(data,n,&ec);
 /*		if(!EDIT_IsBusy(data))
 		{
 			if((n<=(uo->focus_n-2))&&(ec.pWS->wsbody[0]==0))
@@ -575,8 +582,9 @@ void edGHook(GUI *data, int cmd)
 		if(uo->gui_type==ED_VIEW)
 			SetSoftKey(data,&SK_OP_PIC,SET_SOFT_KEY_M);
 
-		if((n==uo->focus_n)&&(!EDIT_IsBusy(data)))
+		//if((n==uo->focus_n)&&(!EDIT_IsBusy(data)))
 		{
+			ExtractEditControl(data, uo->focus_n, &ec);
 			WSHDR *hdr_t=AllocWS(64);
 		#ifdef DEBUG
 			wsprintf(hdr_t, "%t:%d,p:%d", LGP_CHAR_COUNT, ec.pWS->wsbody[0], EDIT_GetCursorPos(data));
@@ -635,7 +643,7 @@ void ed_locret(void)
 	;
 }
 
-INPUTDIA_DESC ED_DESC=
+const INPUTDIA_DESC ED_DESC=
 {
 	1,
 	edOnKey,
@@ -652,12 +660,30 @@ INPUTDIA_DESC ED_DESC=
 	0x40000000
 };
 
+const INPUTDIA_DESC ED_DESC_RO=
+{
+	1,
+	edOnKey,
+	edGHook,
+	(void *)ed_locret,
+	0,
+	&ed_menu_skt,
+	{0,0,0,0},
+	FONT_SMALL,
+	100,
+	101,
+	0,
+	0,
+	0x00000002
+};
+
 int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, view
 {
 	int gui_id;
 	void *ma=malloc_adr();
 	void *eq;
 	WSHDR *ews;
+	const INPUTDIA_DESC *edd;
 	EDITCONTROL ec;
 	EDITC_OPTIONS ec_options;
 //----------- uo
@@ -730,7 +756,7 @@ int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, 
 	switch(type)
 	{
 	case ED_VIEW:
-		ConstructEditControl(&ec,ECT_READ_ONLY,ECF_APPEND_EOL,ews,256);
+		ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL,ews,256);
 		break;
 	case ED_FREE:
 	case ED_EDIT:
@@ -754,9 +780,13 @@ int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, 
 //----------	
 	FreeWS(ews);
 	
+	if(type==ED_VIEW)
+		edd=&ED_DESC_RO;
+	else
+		edd=&ED_DESC;
 	patch_header(&ED_HDR);
-	patch_input(&ED_DESC);
-	gui_id=CreateInputTextDialog(&ED_DESC, &ED_HDR, eq, 1, uo);
+	patch_input(edd);
+	gui_id=CreateInputTextDialog(edd, &ED_HDR, eq, 1, uo);
 	pushGS(dlg_csm, gui_id);
 	return gui_id;
 }
