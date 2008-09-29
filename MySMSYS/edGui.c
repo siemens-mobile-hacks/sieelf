@@ -595,6 +595,7 @@ void edGHook(GUI *data, int cmd)
 		}
 		if((uo->gui_type!=ED_VIEW)&&(n<=(uo->focus_n-2))&&(nl=GetNumListCur(uo, n)))
 		{
+			ExtractEditControl(data,n,&ec);
 			if(isNum(ec.pWS))
 			{
 				char num[50];
