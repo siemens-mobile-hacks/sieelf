@@ -50,10 +50,15 @@
 #endif
 
 #ifdef VKP
+#ifdef ELKA
 #define MENU_HEADER_ICON	0x491
 #define MENU_ITEM_ICON		0x538
-const int MenuHeaderIcon=MENU_HEADER_ICON;
-const int MenuItenIcon=MENU_ITEM_ICON;
+#else
+#define MENU_HEADER_ICON	0x4BB
+#define MENU_ITEM_ICON		0x564
+#endif
+const int MenuHeaderIcon[]={MENU_HEADER_ICON,0};
+const int MenuItemIcon[]={MENU_ITEM_ICON,0};
 #endif
 
 //UTF8
@@ -94,7 +99,7 @@ const SOFTKEYSTAB menu_skt=
 };
 
 #ifdef VKP
-const HEADER_DESC menuheader={HEADER_X1, HEADER_Y1, HEADER_X2, HEADER_Y2, (int *)&MenuHeaderIcon, (int)ELFNAME, LGP_NULL};
+const HEADER_DESC menuheader={HEADER_X1, HEADER_Y1, HEADER_X2, HEADER_Y2, (int *)MenuHeaderIcon, (int)ELFNAME, LGP_NULL};
 #define PROCESSOR_MODE __thumb
 #else
 const HEADER_DESC menuheader={HEADER_X1, HEADER_Y1, HEADER_X2, HEADER_Y2, NULL, (int)ELFNAME, LGP_NULL};
@@ -622,7 +627,7 @@ void menu_iconhndl(void *data, int curitem, void *unk)
 		wsprintf(ws,ERR_STR);
 	}
 	#ifdef VKP
-	SetMenuItemIconArray(data, item, &MenuItenIcon);
+	SetMenuItemIconArray(data, item, MenuItemIcon);
 	#endif
 	SetMenuItemText(data,item,ws,curitem);
 }
