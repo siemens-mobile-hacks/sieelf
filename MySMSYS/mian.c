@@ -14,6 +14,9 @@
 #include "guiIdMan.h"
 
 #include "popGui.h"
+#include "config_data.h"
+#include "conf_loader.h"
+
 extern void kill_data(void *p, void (*func_p)(void *));
 
 unsigned int DAEMON_CSM_ID=0;
@@ -296,6 +299,26 @@ int dialogcsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 		if((int)msg->data0==csm->gui_id)
 			data->state=-3;
 	}
+/*	if(msg->msg==MSG_IPC)
+	{
+		IPC_REQ *ipc;
+		if(ipc=(IPC_REQ *)msg->data0)
+		{
+			if(!strcmp(ipc->name_to, my_ipc_name))
+			{
+				if(msg->submess==SMSYS_IPC_SMS_DATA_UPDATE)
+				{
+					SGUI_ID *gs=(SGUI_ID *)(csm->gstop);
+					while(gs)
+					{
+						DirectRedrawGUI_ID(gs->id);
+						gs=gs->next;
+					}
+					//RefreshGUI();
+				}
+			}
+		}
+	}*/
 	return 1;
 }
 static void dialogcsm_oncreate(CSM_RAM *data)
@@ -410,7 +433,8 @@ unsigned int CreateDialogCSM(void)
 	UpdateDialogCSMname();
 	
 	if(!cltop)
-		ConstructList();
+		SUBPROC((void *)ConstructList);
+		//ConstructList();
 	return (CreateCSM(&DIALOGCSM.dialogcsm,&dlg_csm,2));
 }
 
@@ -422,7 +446,7 @@ static void daemoncsm_oncreate(CSM_RAM *data)
 	GBS_SendMessage(MMI_CEPID,MSG_IPC,MY_SMSYS_IPC_START,&daemon_ipc);
 }
 
-#ifdef BROWSER_KILLER 
+
 const IPC_REQ my_ipc_n=
 {
 	my_ipc_name,
@@ -440,23 +464,47 @@ void CheckNewProc(void)
 			GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_NEW_IN_WIN,&my_ipc_n);
 		}
 }
-#endif
+
+#pragma inline=forced
+int toupper(int c)
+{
+  if ((c>='a')&&(c<='z')) c+='A'-'a';
+  return(c);
+}
+#pragma inline
+int strcmp_nocase(const char *s1,const char *s2)
+{
+  int i;
+  int c;
+  while(!(i=(c=toupper(*s1++))-toupper(*s2++))) if (!c) break;
+  return(i);
+}
+
 int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 {
-#ifdef BROWSER_KILLER 
 //EMS_FFS write 0x61CB
 //0x61CC ?? SMS_incoming
 //如果使用Browser-killer之类的补丁,将不会有新信息弹出窗口,使用这个MSG可以进行检查是否来新短信了
 #ifdef ELKA
-	if(msg->msg==0x6106) //ELKA,来自smsman
+	if((msg->msg==0x6106)&&(CFG_ENA_NOTIFY)) //ELKA,来自smsman
 #else
-	if(msg->msg==0x61CC)
+	if((msg->msg==0x61CC)&&(CFG_ENA_NOTIFY))
 #endif
 	{
 		if(!IsTimerProc(&chk_tmr)) //接收到MSG半秒之后开始检查,直接开始检查会死机.
 			GBS_StartTimerProc(&chk_tmr, 216/2, CheckNewProc);
 	}
-#endif
+	if(msg->msg==MSG_RECONFIGURE_REQ)
+	{
+		extern const char *successed_config_filename;
+		if(!strcmp_nocase(successed_config_filename,(char *)msg->data0))
+		{
+			InitConfig();
+			ShowMSG(1,(int)LGP_CONFIG_UPDATE);
+			if(!cltop)
+				SUBPROC((void *)ConstructList);
+		}
+	}
 	if(msg->msg==MSG_IPC)
 	{
 		IPC_REQ *ipc;
@@ -519,7 +567,8 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 				}
 				else if(msg->submess == SMSYS_IPC_UPDATE_CLIST)
 				{
-					ConstructList();
+					SUBPROC((void *)ConstructList);
+					//ConstructList();
 				}
 			}
 		}
@@ -533,9 +582,7 @@ static void ElfKiller(void)
 	closeAllDlgCSM(DlgCsmIDs);
 	FreeCLIST();
 	freeSDList();
-#ifdef BROWSER_KILLER 
 	GBS_DelTimer(&chk_tmr);
-#endif
 	kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
 }
 
@@ -588,6 +635,7 @@ int main(void)
 	zeromem(&d_csm, sizeof(DEAMON_CSM));
 	UpdateDaemonCSMname();
 	dlgIDsInit();
+	InitConfig();
 	LockSched();
 	save_cmpc=csmr->csm_q->current_msg_processing_csm;
 	csmr->csm_q->current_msg_processing_csm=csmr->csm_q->csm.first;

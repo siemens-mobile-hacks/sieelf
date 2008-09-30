@@ -6,6 +6,7 @@
 #include "edGui.h"
 #include "adrList.h"
 #include "CodeShow.h" 
+#include "config_data.h"
 
 #pragma swi_number=0x44
 __swi __arm void TempLightOn(int x, int y);
@@ -74,9 +75,11 @@ void popup_ghook(void *data, int cmd)
 	{
 		if(!IsUnlocked())
 			TempLightOn(3, 0x7FFF);
-
-		SetVibration(50);
-		GBS_StartTimerProc(&(pu->tmr), TIME_SECOND*10, StopVibra);
+		if(CFG_NOTIFY_TIME)
+		{
+			SetVibration(CFG_VIBRA_POWER);
+			GBS_StartTimerProc(&(pu->tmr), TIME_SECOND*CFG_NOTIFY_TIME, StopVibra);
+		}
 	}
 	else if(cmd==3) //Close
 	{

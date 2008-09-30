@@ -17,7 +17,7 @@ const char STR_UNK_TYPE[]="Unknow Type (%d)!";
 const char FLDR_IN[]="In\\";
 const char FLDR_OUT[]="Out\\";
 const char FLDR_DRAFT[]="Draft\\";
-const char FLDR_MAIN[]="0:\\ZBin\\MySMSYS\\";
+//const char FLDR_MAIN[]="0:\\ZBin\\MySMSYS\\";
 const char FLDR_UNK[]="Unknow\\";
 
 #ifdef LANG_EN
@@ -56,6 +56,7 @@ const char STR_REPLY[]="Reply";
 const char STR_NEW_MSG[]="New Message!";
 const char STR_FROM[]="From:";
 const char LGP_SAVEALL[]="Save All As File";
+const char LGP_CONFIG_UPDATE[]="MySMSYS Config Updated!";
 #endif
 
 #ifdef LANG_CN
@@ -93,5 +94,6 @@ const char STR_REPLY[]="回复";
 const char STR_NEW_MSG[]="新信息!";
 const char STR_FROM[]="来自:";
 const char LGP_SAVEALL[]="保存所有为文件";
+const char LGP_CONFIG_UPDATE[]="MySMSYS 配置更新!";
 #endif
 

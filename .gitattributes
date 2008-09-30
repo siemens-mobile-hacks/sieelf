@@ -965,6 +965,10 @@ MySMSYS/Patches/entery.asm -text
 MySMSYS/Patches/entry_elka.asm -text
 MySMSYS/adrList.c -text
 MySMSYS/adrList.h -text
+MySMSYS/conf_loader.c -text
+MySMSYS/conf_loader.h -text
+MySMSYS/config_data.c -text
+MySMSYS/config_data.h -text
 MySMSYS/createMenu.c -text
 MySMSYS/createMenu.h -text
 MySMSYS/edGui.c -text

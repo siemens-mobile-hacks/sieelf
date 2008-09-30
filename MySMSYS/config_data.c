@@ -1,0 +1,25 @@
+
+#include "..\inc\cfg_items.h"
+#include "language.h"
+
+__root const CFG_HDR cfghdr0 = {CFG_STR_UTF8, LGP_CFG_MAIN_FOLDER, 3, 127};
+__root const char CFG_MAIN_FOLDER[128] = "0:\\ZBin\\MySMSYS\\";
+
+__root const CFG_HDR cfghdr1 = {CFG_STR_UTF8, LGP_CFG_SYSTEM_FOLDER, 3, 127};
+__root const char CFG_SYSTEM_FOLDER[128] = "0:\\System\\";
+
+__root const CFG_HDR cfghdr1_0 = {CFG_LEVEL, LGP_CFG_NOTIFY_SET, 1, 0};
+
+__root const CFG_HDR cfghdr1_1 = {CFG_CHECKBOX, LGP_CFG_ENA_NOTIFY, 0, 3};
+__root const int CFG_ENA_NOTIFY = 1;
+
+__root const CFG_HDR cfghdr1_2 = {CFG_UINT, LGP_CFG_VIBRA_POWER, 0, 100};
+__root const unsigned int CFG_VIBRA_POWER = 50;
+
+__root const CFG_HDR cfghdr1_3 = {CFG_UINT, LGP_CFG_NOTIFY_TIME, 0, 100};
+__root const int CFG_NOTIFY_TIME = 10;
+
+__root const CFG_HDR cfghdr1_9 = {CFG_LEVEL, "", 0, 0};
+
+
+

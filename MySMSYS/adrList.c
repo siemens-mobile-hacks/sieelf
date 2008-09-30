@@ -6,12 +6,14 @@
 #include "edGui.h"
 #include "createMenu.h"
 #include "numList.h"
-char *s_ab_main="0:\\System\\apo\\addr\\main";
-#ifdef NEWSGOLD
-char *s_ab_entry="0:\\System\\apo\\addr\\data\\%02d\\%02d\\%02d";
-#else
-char *s_ab_entry="0:\\System\\apo\\addr\\%02x\\%02x";
-#endif
+#include "config_data.h"
+
+//char *s_ab_main="0:\\System\\apo\\addr\\main";
+//#ifdef NEWSGOLD
+//char *s_ab_entry="0:\\System\\apo\\addr\\data\\%02d\\%02d\\%02d";
+//#else
+//char *s_ab_entry="0:\\System\\apo\\addr\\%02x\\%02x";
+//#endif
 
 #pragma swi_number=0x44
 __swi __arm void TempLightOn(int x, int y);
@@ -91,7 +93,9 @@ void ConstructList(void)
 	int fin;
 	unsigned int ul;
 	char recname[128];
-
+	char s_ab_main[128];
+	char s_ab_entry[128];
+	
 	AB_UNPRES ur;
 	void *buffer;
 
@@ -110,10 +114,29 @@ void ConstructList(void)
 
 	unsigned int rec=0;
 	int fsz;
+	int x, xl;
 	CLIST contact;
 
 	FreeCLIST();
 	cl_n=0;
+	strcpy(s_ab_main, CFG_SYSTEM_FOLDER);
+	
+	if((xl=strlen(s_ab_main))>0)
+		x=s_ab_main[xl-1];
+	if((x!='\\')&&(x!='/'))
+		strcat(s_ab_main, "\\");
+	strcat(s_ab_main, "apo\\addr\\main");
+	
+	strcpy(s_ab_entry, CFG_SYSTEM_FOLDER);
+	if((xl=strlen(s_ab_entry))>0)
+		x=s_ab_entry[xl-1];
+	if((x!='\\')&&(x!='/'))
+		strcat(s_ab_entry, "\\");
+#ifdef NEWSGOLD
+	strcat(s_ab_entry, "apo\\addr\\data\\%02d\\%02d\\%02d");
+#else
+	strcat(s_ab_entry, "apo\\addr\\%02x\\%02x");
+#endif
 	zeromem(&contact,sizeof(contact));
 	if ((buffer=malloc(65536)))
 	{

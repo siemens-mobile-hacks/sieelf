@@ -46,7 +46,26 @@ extern const char STR_FROM[];
 extern const char FLDR_IN[];
 extern const char FLDR_OUT[];
 extern const char FLDR_DRAFT[];
-extern const char FLDR_MAIN[];
+//extern const char FLDR_MAIN[];
 extern const char FLDR_UNK[];
 
 extern const char LGP_SAVEALL[];
+extern const char LGP_CONFIG_UPDATE[];
+
+#ifdef LANG_CN
+#define LGP_CFG_MAIN_FOLDER "MySMSYS文件夹"
+#define LGP_CFG_SYSTEM_FOLDER "系统文件夹"
+#define LGP_CFG_ENA_NOTIFY "弹出新信息窗口"
+#define LGP_CFG_VIBRA_POWER "振动强度"
+#define LGP_CFG_NOTIFY_SET "新信息提醒设置"
+#define LGP_CFG_NOTIFY_TIME "提醒时间长度(秒)"
+#endif
+
+#ifdef LANG_EN
+#define LGP_CFG_MAIN_FOLDER "MySMSYS Folder"
+#define LGP_CFG_SYSTEM_FOLDER "System Folder"
+#define LGP_CFG_ENA_NOTIFY "Popup New SMS"
+#define LGP_CFG_VIBRA_POWER "Vibra Power"
+#define LGP_CFG_NOTIFY_SET "Notify Setup"
+#define LGP_CFG_NOTIFY_TIME "Notify Time (s)"
+#endif

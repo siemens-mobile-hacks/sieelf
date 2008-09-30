@@ -2,6 +2,9 @@
 #include "sms_dat.h"
 #include "adrList.h"
 #include "language.h"
+#include "config_data.h"
+
+#include "MySMSYS_ipc.h"
 
 SMS_DATA *sdltop=0;
 void addSDList(void)
@@ -84,13 +87,14 @@ void sortByTime(void)
 	SMS_DATA *sdx;
 	while(sdl)
 	{
-		sdx=sdl=sdl->next;
+		sdx=sdl->next;
 		while(sdx)
 		{
 			if(strncmp(sdx->Time, sdl->Time, 14)>0) //time
 				sdlSwaper(sdx, sdl);
 			sdx=sdx->next;
 		}
+		sdl=sdl->next;
 	}
 }
 int getCountByType(int type) //0, all
@@ -275,9 +279,9 @@ int memcmp_wo1(void *d1, void *d2, int n)
 	}
 	return 0;
 }
-char *FindNextPartOfEMS(char *data, int cnt_a, int cnt_n, int sig, char *buf_end, int cmp_size, int type)
+char *FindNextPartOfEMS(char *data, int cnt_a, int cnt_n, int sig, char *buf_start, char *buf_end, int cmp_size, int type)
 {
-	char *d2=data+sizeof(PDU);
+	char *d2=buf_start;
 	int size=cmp_size;
 	if((type==TYPE_IN_N)||(type==TYPE_IN_R))
 		size-=3;
@@ -354,7 +358,7 @@ int IsPartOfEMS(char *data) //return 1, first,
 	return 0;
 }
 
-void GetEMSText(char *data, WSHDR *text, int cnt_a, int cnt_n, int type, char *buf_end)
+void GetEMSText(char *data, WSHDR *text, int cnt_a, int cnt_n, int type, char *buf_start, char *buf_end)
 {
 	int c;
 	int ttype;
@@ -434,11 +438,18 @@ void GetEMSText(char *data, WSHDR *text, int cnt_a, int cnt_n, int type, char *b
 	}
 	if(isems&&(p2)&&(skip)&&(p2[skip]<p2[skip-1]))
 	{
-		if(cmp_size) ems_next=FindNextPartOfEMS(data, p2[skip-1], p2[skip], p2[skip-2], buf_end, cmp_size, type);
-		if(ems_next) GetEMSText(ems_next, text, p2[skip-1], p2[skip], type, buf_end);
+		if(cmp_size) ems_next=FindNextPartOfEMS(data, p2[skip-1], p2[skip], p2[skip-2], buf_start, buf_end, cmp_size, type);
+		if(ems_next) GetEMSText(ems_next, text, p2[skip-1], p2[skip], type, buf_start, buf_end);
 	}
 }
-
+/*
+IPC_REQ up_ipc=
+{
+	my_ipc_name,
+	my_ipc_name,
+	NULL
+};
+*/
 int ReadSMS(void);
 int readAllSMS(void)
 {
@@ -451,6 +462,7 @@ int readAllSMS(void)
 	n+=readFile(TYPE_OUT);
 	n+=readFile(TYPE_DRAFT);
 	sortByTime();
+//	GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&up_ipc);
 	return n;
 }
 
@@ -471,7 +483,7 @@ int newToRead(SMS_DATA *sd)
 
 //-------------------------------------
 //filework
-#define MAIN_PATH "0:\\ZBin\\MySMSYS\\"
+//#define MAIN_PATH "0:\\ZBin\\MySMSYS\\"
 #define HEADER	"MySMSYS"
 //const char main_path[]=MAIN_PATH;
 typedef struct
@@ -511,14 +523,14 @@ int saveFile(WSHDR *ws, char *number, SMS_DATA *sd, int type, int need_reload)
 	MSS_FILE_P1 *msf=malloc(sizeof(MSS_FILE_P1));
 	zeromem(msf, sizeof(MSS_FILE_P1));
 	GetDateTime(&date, &time);
-	if(!isdir(FLDR_MAIN, &err))
-		mkdir(FLDR_MAIN, &err);
-	strcpy(dir, FLDR_MAIN);
+	if(!isdir(CFG_MAIN_FOLDER, &err))
+		mkdir(CFG_MAIN_FOLDER, &err);
+	strcpy(dir, CFG_MAIN_FOLDER);
 	strcat(dir, folder);
 	if(!isdir(dir, &err))
 		mkdir(dir, &err);
 	sprintf(path, "%s%s%04d%02d%02d%02d%02d%02d.mss", 
-						FLDR_MAIN, folder,
+						CFG_MAIN_FOLDER, folder,
 						 date.year,
 						 date.month, date.day,
 						  time.hour, time.min,
@@ -584,7 +596,7 @@ int readFile(int type)
 		folder=FLDR_UNK;
 		break;
 	}
-	strcpy(dir, FLDR_MAIN);
+	strcpy(dir, CFG_MAIN_FOLDER);
 	strcat(dir, folder);
 	if(!isdir(dir, &err))
 		return 0;
@@ -683,6 +695,7 @@ int deleteDat(SMS_DATA *sd, int need_reload)
 typedef struct
 {
 	void *next;
+	void *prev;
 	int type;
 	int cnt;
 	int isused;
@@ -729,8 +742,10 @@ void AddToEDL(EMS_DATA **edltop)
 		(*edltop)=edl;
 	else
 	{
-		edl->next=(*edltop);
+		EMS_DATA *edx=(*edltop);
+		edl->next=edx;
 		(*edltop)=edl;
+		edx->prev=edl;
 	}
 }
 
@@ -838,7 +853,7 @@ void DoSMS(SMS_DATA *sdl, char *data)
 		wsprintf(sdl->SMS_TEXT, STR_UNK_TXTT, ttype);
 	}
 }
-void DoEMS(EMS_DATA *edl, char *data, char *sms_dat_buf_end)
+void DoEMS(EMS_DATA *edl, char *data, char *sms_dat_buf_start, char *sms_dat_buf_end)
 {
 	int c;
 	int ttype;
@@ -952,9 +967,9 @@ void DoEMS(EMS_DATA *edl, char *data, char *sms_dat_buf_end)
 	{
 		if(cmp_size)
 		{
-			ems_next=FindNextPartOfEMS(data, p2[skip-1], p2[skip], p2[skip-2], sms_dat_buf_end, cmp_size, edl->type);
+			ems_next=FindNextPartOfEMS(data, p2[skip-1], p2[skip], p2[skip-2], sms_dat_buf_start, sms_dat_buf_end, cmp_size, edl->type);
 		}
-		if(ems_next) GetEMSText(ems_next, edl->text, p2[skip-1], p2[skip], edl->type, sms_dat_buf_end);
+		if(ems_next) GetEMSText(ems_next, edl->text, p2[skip-1], p2[skip], edl->type, sms_dat_buf_start, sms_dat_buf_end);
 	}
 	
 }
@@ -969,7 +984,7 @@ void ReadAllEMS(EMS_DATA **edltop, char *sms_dat_buf, char *sms_dat_buf_end)
 		{
 			AddToEDL(edltop);
 			edl=(*edltop);
-			DoEMS(edl, p, sms_dat_buf_end);
+			DoEMS(edl, p, sms_dat_buf, sms_dat_buf_end);
 		}
 		p+=sizeof(PDU);
 	}
@@ -980,9 +995,31 @@ char *findDataByIndexId(char *data, char *end, int index_id)
 	return 0;
 }
 
+int IsTextInWs(unsigned short *wsbody, unsigned short *txt, int wslen, int txtlen)
+{
+	unsigned short *p=wsbody;
+	unsigned short *maxlen=wsbody+wslen-txtlen;
+	int n=txtlen*(sizeof(unsigned short));
+	if(wslen<txtlen)
+		return 0;
+	while(p<maxlen)
+	{
+		if(!memcmp(p, txt, n))
+			return 1;
+		p++;
+	}
+	return 0;
+}
+
 EMS_DATA *FindEMSByNumTxt(EMS_DATA *edltop, char *num, WSHDR *txt)
 {
+	EMS_DATA *edx;
 	EMS_DATA *edl=edltop;
+	if(!edl)
+		return 0;
+	while(edl->next)
+		edl=edl->next;
+	edx=edl;
 	while(edl)
 	{
 		if((!edl->isused)
@@ -992,7 +1029,19 @@ EMS_DATA *FindEMSByNumTxt(EMS_DATA *edltop, char *num, WSHDR *txt)
 			edl->isused=1;
 			return edl;
 		}
-		edl=edl->next;
+		edl=edl->prev;
+	}
+	edl=edx;
+	while(edl) // 退而求其次,号码相同,文字能找到
+	{
+		if((!edl->isused)
+				&&(!strcmp(num, edl->number))
+				&&(IsTextInWs(edl->text->wsbody+1, txt->wsbody+1, edl->text->wsbody[0], txt->wsbody[0])))
+		{
+			edl->isused=1;
+			return edl;
+		}
+		edl=edl->prev;
 	}
 	return 0;
 }
@@ -1018,9 +1067,6 @@ int DoDat(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_size)
 			addSDList();
 			if(ped->data_id!=0xFFF4)
 			{
-//----------------
-//	int x=GetCPUClock();
-//----------------
 				sdltop->opmsg_id=ped->opmsg_id;
 				sdltop->id=ped->index_id;
 			#ifdef ELKA
@@ -1059,6 +1105,9 @@ int DoDat(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_size)
 					Hex2Num(p, num, c);
 				}
 				len=ped->txt_len;
+//----------------
+//				int x=GetCPUClock();
+//----------------
 				memcpy(wn->wsbody, &(ped->txt_len), (len+1)*sizeof(short)); 
 				edx=FindEMSByNumTxt(edl, num, wn);
 				if(edx)
@@ -1083,18 +1132,39 @@ int DoDat(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_size)
 
 int ReadSMS(void)
 {
+/*	
 #ifdef TEST
 	const char sms_dat[]="0:\\ZBin\\MySMSYS\\SMS.dat";
 	const char ems_admin_dat[]="0:\\ZBin\\MySMSYS\\EMS_Admin.dat";
 #else
 	const char sms_dat[]="0:\\System\\SMS\\SMS.dat";
 	const char ems_admin_dat[]="0:\\System\\SMS\\EMS_Admin.dat";
-#endif
+#endif*/
+	char sms_dat[128];
+	char ems_admin_dat[128];
+
 	int fin;
 	unsigned int err;
 	char *sms_buf;
 	char *ems_admin_buf;
 	int res=0, sms_size, ems_admin_size;
+
+	int x, xl;
+	
+	strcpy(sms_dat, CFG_SYSTEM_FOLDER);
+	if((xl=strlen(sms_dat))>0)
+		x=sms_dat[xl-1];
+	if((x!='\\')&&(x!='/'))
+		strcat(sms_dat, "\\");
+	strcat(sms_dat, "SMS\\SMS.dat");
+	
+	strcpy(ems_admin_dat, CFG_SYSTEM_FOLDER);
+	if((xl=strlen(ems_admin_dat))>0)
+		x=ems_admin_dat[xl-1];
+	if((x!='\\')&&(x!='/'))
+		strcat(ems_admin_dat, "\\");
+	strcat(ems_admin_dat, "SMS\\EMS_Admin.dat");
+
 	if((fin=fopen(sms_dat, A_BIN+A_ReadOnly, P_READ, &err))<0)
 		return 0;
 	sms_size=lseek(fin, 0, S_END, &err, &err)-2;
