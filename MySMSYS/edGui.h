@@ -9,6 +9,7 @@
 
 #define TYPE_SET 0
 #define TYPE_INSERT 1
+#define TYPE_TXT 2
 
 typedef struct
 {

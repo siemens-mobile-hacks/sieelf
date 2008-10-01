@@ -92,7 +92,8 @@ const char STR_EDIT[]="编辑";
 const char STR_REPLY[]="回复";
 
 const char STR_NEW_MSG[]="新信息!";
-const char STR_FROM[]="来自:";
+const char STR_FROM[]="来自";
+const char STR_CODESHOW[]="区号秀";
 const char LGP_SAVEALL[]="保存所有为文件";
 const char LGP_CONFIG_UPDATE[]="MySMSYS 配置更新!";
 #endif

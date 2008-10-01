@@ -404,7 +404,8 @@ int findNameByNum(WSHDR *name_to, char *num)
 	char bn[50];
 	char *p1;
 	char *pp;
-
+	if((!num)||(!name_to)||(strlen(num)<=3))
+		return 0;
 	while(cl)
 	{
 		i=0;
@@ -503,8 +504,8 @@ const SOFTKEYSTAB adrmenu_skt=
 char numhdr[50];
 HEADER_DESC nummenuhdr={0,0,0,0,NULL,(int)numhdr,LGP_NULL};
 
-#define TYPE_SET 0
-#define TYPE_INSERT 1
+//#define TYPE_SET 0
+//#define TYPE_INSERT 1
 
 typedef struct
 {
@@ -512,9 +513,55 @@ typedef struct
 	CLIST *cl;
 }NUM_MENU_UP;
 
+void wsInsert(WSHDR *ws, WSHDR *txt, int pos, int max) //start form 0;
+{
+	unsigned short *st;
+	int cplen;	
+	if((!ws)||(!txt)||(!wstrlen(txt)))
+		return;
+	if(pos>(ws->wsbody[0]))
+		return;
+	if((pos+(txt->wsbody[0]))>=max)
+	{
+		CutWSTR(ws, pos);
+		wstrncat(ws, txt, max-pos); 
+		return;
+	}
+	if(ws->wsbody[0]+txt->wsbody[0] >= max)
+		cplen=max-(pos+txt->wsbody[0]);
+	else
+		cplen=ws->wsbody[0]-pos;
+	st=malloc(cplen*sizeof(unsigned short));
+	memcpy(st, ws->wsbody+pos+1, cplen*sizeof(unsigned short));
+	memcpy(ws->wsbody+pos+1, txt->wsbody+1, (txt->wsbody[0])*sizeof(unsigned short));
+	memcpy(ws->wsbody+1+pos+(txt->wsbody[0]), st, cplen*sizeof(unsigned short));
+	ws->wsbody[0]=pos+(txt->wsbody[0])+cplen;
+	mfree(st);
+}
+
+void InsertAsTxt(void *ed_gui, WSHDR *num)
+{
+	WSHDR csloc, *wcs;
+	EDITCONTROL ec;
+	int k=EDIT_GetCursorPos(ed_gui);
+	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
+	unsigned short csb[MAX_TEXT];
+	int n=EDIT_GetFocus(ed_gui);
+	if(n!=(uo->focus_n))
+		return;
+	if(k<=0)
+		return;
+	wcs=CreateLocalWS(&csloc,csb,MAX_TEXT);
+	ExtractEditControl(ed_gui,n,&ec);
+	wstrcpy(wcs, ec.pWS);
+	wsInsert(wcs, num, k-1, MAX_TEXT);
+	EDIT_SetTextToEditControl(ed_gui, n, wcs);
+	EDIT_SetCursorPos(ed_gui, k+num->wsbody[0]);
+}
+
 void SetNumToED(void *ed_gui, WSHDR *num, WSHDR *name)
 {
-	EDITCONTROL ec;
+	//EDITCONTROL ec;
 	NUM_LIST *nl;
 	
 	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
@@ -523,7 +570,7 @@ void SetNumToED(void *ed_gui, WSHDR *num, WSHDR *name)
 		return;
 	if(!(nl=GetNumListCur(uo, n)))
 		return;
-	ExtractEditControl(ed_gui,n,&ec);
+	//ExtractEditControl(ed_gui,n,&ec);
 	ws_2str(num, nl->num, 49);
 	wstrcpy(nl->name, name);
 	EDIT_SetTextToEditControl(ed_gui, n, name);
@@ -575,6 +622,10 @@ int nummenu_onkey(void *data, GUI_MSG *msg)
 					wsprintf(xws, "%w|%s",up->cl->name, num);
 					if(uo->adr_type==TYPE_INSERT)
 						InsertNumToED(up->ed_gui, num, xws);
+					else if(uo->adr_type==TYPE_TXT)
+					{
+						InsertAsTxt(up->ed_gui, num);
+					}
 					else
 						SetNumToED(up->ed_gui, num, xws);
 					FreeWS(xws);
@@ -582,6 +633,10 @@ int nummenu_onkey(void *data, GUI_MSG *msg)
 			#else
 				if(uo->adr_type==TYPE_INSERT)
 					InsertNumToED(up->ed_gui, num, up->cl->name);
+				else if(uo->adr_type==TYPE_TXT)
+				{
+					InsertAsTxt(up->ed_gui, num);
+				}
 				else
 					SetNumToED(up->ed_gui, num, up->cl->name);
 			#endif
@@ -680,6 +735,10 @@ static int adrmenu_keyhook(void *data, GUI_MSG *msg)
 						wsprintf(xws, "%w|%s",cl->name, num);
 						if(uo->adr_type==TYPE_INSERT)
 							InsertNumToED(ed_gui, num, xws);
+						else if(uo->adr_type==TYPE_TXT)
+						{
+							InsertAsTxt(ed_gui, num);
+						}
 						else
 							SetNumToED(ed_gui, num, xws);
 						FreeWS(xws);
@@ -687,6 +746,10 @@ static int adrmenu_keyhook(void *data, GUI_MSG *msg)
 			#else
 					if(uo->adr_type==TYPE_INSERT)
 						InsertNumToED(ed_gui, num, cl->name);
+					else if(uo->adr_type==TYPE_TXT)
+					{
+						InsertAsTxt(ed_gui, num);
+					}
 					else
 						SetNumToED(ed_gui, num, cl->name);
 			#endif

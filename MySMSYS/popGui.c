@@ -7,6 +7,7 @@
 #include "adrList.h"
 #include "CodeShow.h" 
 #include "config_data.h"
+#include "lgp_pic.h"
 
 #pragma swi_number=0x44
 __swi __arm void TempLightOn(int x, int y);
@@ -124,17 +125,17 @@ int StartIncomingWin(void *dlg_csm)
 	{
 	#ifdef NO_CS 
 		if(findNameByNum(wn, sd->Number))
-			wsprintf(ws, "%t\n%t\n%w", STR_NEW_MSG, STR_FROM, wn);
+			wsprintf(ws, "%t\n%t:\n%w", STR_NEW_MSG, STR_FROM, wn);
 		else
-			wsprintf(ws, "%t\n%t\n%s", STR_NEW_MSG, STR_FROM, sd->Number);
+			wsprintf(ws, "%t\n%t:\n%s", STR_NEW_MSG, STR_FROM, sd->Number);
 	#else
 		char num[32];
 		strcpy(num, sd->Number);
 		GetProvAndCity(cs->wsbody, num);
 		if(findNameByNum(wn, sd->Number))
-			wsprintf(ws, "%t\n%t\n%w\n%w", STR_NEW_MSG, STR_FROM, wn, cs);
+			wsprintf(ws, "%t\n%t:\n%w\n%w", STR_NEW_MSG, STR_FROM, wn, cs);
 		else
-			wsprintf(ws, "%t\n%t\n%s\n%w", STR_NEW_MSG, STR_FROM, sd->Number, cs);
+			wsprintf(ws, "%t\n%t:\n%s\n%w", STR_NEW_MSG, STR_FROM, sd->Number, cs);
 	#endif
 	}
 	else
@@ -144,6 +145,40 @@ int StartIncomingWin(void *dlg_csm)
 	return (CreatePopupGUI_ws(1, pu, &popup, ws));
 }
 
+const SOFTKEY_DESC msg_popup_sk[]=
+{
+  {0x0018,0x0000,(int)LGP_OK},
+  {0x0001,0x0000,(int)LGP_NONE_PIC},
+  {0x003D,0x0000,LGP_DOIT_PIC}
+};
+const SOFTKEYSTAB msg_popup_skt={msg_popup_sk, 0};
 
+int msg_popup_onkey(void *data, GUI_MSG *msg)
+{
+	if((msg->keys==0x18)||(msg->keys==0x3D))
+		return 1;
+	return 0;
+}
+const POPUP_DESC msg_popup=
+{
+  0,
+  msg_popup_onkey,
+  NULL,
+  NULL,
+  popup_softkeys,
+  &msg_popup_skt,
+  0x1,
+  LGP_NULL,
+  popup_icons,
+  0,
+  FONT_MEDIUM,
+  100,
+  101,
+  0x7D0 //flag2 ? auto off time?
+};
 
+int ShowMSG_ws(int flag, WSHDR *msg)
+{
+	return (CreatePopupGUI_ws(flag, 0, &msg_popup, msg));
+}
 

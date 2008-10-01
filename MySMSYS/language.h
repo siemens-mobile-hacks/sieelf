@@ -52,6 +52,10 @@ extern const char FLDR_UNK[];
 extern const char LGP_SAVEALL[];
 extern const char LGP_CONFIG_UPDATE[];
 
+#ifndef NO_CS
+extern const char STR_CODESHOW[];
+#endif
+
 #ifdef LANG_CN
 #define LGP_CFG_MAIN_FOLDER "MySMSYS文件夹"
 #define LGP_CFG_SYSTEM_FOLDER "系统文件夹"
@@ -59,6 +63,7 @@ extern const char LGP_CONFIG_UPDATE[];
 #define LGP_CFG_VIBRA_POWER "振动强度"
 #define LGP_CFG_NOTIFY_SET "新信息提醒设置"
 #define LGP_CFG_NOTIFY_TIME "提醒时间长度(秒)"
+#define LGP_CFG_ENA_AUTO_SAF "自动保存为文件"
 #endif
 
 #ifdef LANG_EN
@@ -68,4 +73,5 @@ extern const char LGP_CONFIG_UPDATE[];
 #define LGP_CFG_VIBRA_POWER "Vibra Power"
 #define LGP_CFG_NOTIFY_SET "Notify Setup"
 #define LGP_CFG_NOTIFY_TIME "Notify Time (s)"
+#define LGP_CFG_ENA_AUTO_SAF "Auto Save As File"
 #endif

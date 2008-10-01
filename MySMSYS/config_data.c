@@ -8,6 +8,9 @@ __root const char CFG_MAIN_FOLDER[128] = "0:\\ZBin\\MySMSYS\\";
 __root const CFG_HDR cfghdr1 = {CFG_STR_UTF8, LGP_CFG_SYSTEM_FOLDER, 3, 127};
 __root const char CFG_SYSTEM_FOLDER[128] = "0:\\System\\";
 
+__root const CFG_HDR cfghdr2 = {CFG_CHECKBOX, LGP_CFG_ENA_AUTO_SAF, 0, 3};
+__root const int CFG_ENA_AUTO_SAF = 1;
+
 __root const CFG_HDR cfghdr1_0 = {CFG_LEVEL, LGP_CFG_NOTIFY_SET, 1, 0};
 
 __root const CFG_HDR cfghdr1_1 = {CFG_CHECKBOX, LGP_CFG_ENA_NOTIFY, 0, 3};

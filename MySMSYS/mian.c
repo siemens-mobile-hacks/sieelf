@@ -386,9 +386,7 @@ static void dialogcsm_oncreate(CSM_RAM *data)
 static void dialogcsm_onclose(CSM_RAM *data)
 {
 	DLG_CSM *dlg_csm=(DLG_CSM *)data;
-	freeSDList();
 	delCSMid(DlgCsmIDs, dlg_csm->csm.id);
-
 }
 static unsigned short dialogcsm_name_body[140];
 static const struct

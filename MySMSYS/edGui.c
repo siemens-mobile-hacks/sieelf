@@ -10,6 +10,9 @@
 #include "numList.h"
 #include "MySMSYS_ipc.h"
 #include "lgp_pic.h"
+#include "CodeShow.h"
+#include "popGui.h"
+#include "config_data.h"
 
 #ifdef	LANG_CN
 #define TEXT_INPUT_OPTION	ECT_CURSOR_STAY
@@ -367,7 +370,7 @@ void on_adr_ec(USR_MENU_ITEM *item)
 			}
 			break;
 		case 1:
-			uo->adr_type=TYPE_SET;
+//			uo->adr_type=TYPE_SET;
 			CreateAdrMenu(item->user_pointer);
 			break;
 //		case 2:
@@ -447,9 +450,14 @@ __swi __arm void TempLightOn(int x, int y);
 		else
 		{
 			if(n==uo->focus_n)
-				EDIT_OpenOptionMenuWithUserItems(data,on_ed_ec,data,3);
-			if(n<=(uo->focus_n-2)) //号码位置
 			{
+				uo->adr_type=TYPE_TXT;
+				EDIT_OpenOptionMenuWithUserItems(data,on_adr_ec,data,4);
+				//EDIT_OpenOptionMenuWithUserItems(data,on_ed_ec,data,3);
+			}
+			else if(n<=(uo->focus_n-2)) //号码位置
+			{
+				uo->adr_type=TYPE_SET;
 				EDIT_OpenOptionMenuWithUserItems(data,on_adr_ec,data,4);
 			}
 			return (-1);
@@ -463,6 +471,7 @@ __swi __arm void TempLightOn(int x, int y);
 	}
 	else if(msg->keys==0x0F00)
 	{
+		uo->adr_type=TYPE_SET;
 		CreateAdrMenu(data);
 	}
 	//else if((msg->keys==0)&&(uo->gui_type==ED_VIEW)) //禁止输入编辑
@@ -478,9 +487,16 @@ __swi __arm void TempLightOn(int x, int y);
 		if((i==ENTER_BUTTON)&&(uo->gui_type!=ED_VIEW))
 		{
 			if(n==uo->focus_n)
-				EDIT_OpenOptionMenuWithUserItems(data,on_ed_ec,data,3);
-			if(n<=(uo->focus_n-2)) //号码位置
+			{
+				uo->adr_type=TYPE_TXT;
 				EDIT_OpenOptionMenuWithUserItems(data,on_adr_ec,data,4);
+				//EDIT_OpenOptionMenuWithUserItems(data,on_ed_ec,data,3);
+			}
+			else if(n<=(uo->focus_n-2)) //号码位置
+			{
+				uo->adr_type=TYPE_SET;
+				EDIT_OpenOptionMenuWithUserItems(data,on_adr_ec,data,4);
+			}
 			return (-1);
 		}
 		//上方向, 侧上键
@@ -526,6 +542,25 @@ __swi __arm void TempLightOn(int x, int y);
 			else
 				createEditGUI(uo->dlg_csm, sdl, ED_VIEW, uo->list_type);
 			return 1;
+		}
+		//*键,查看号码信息
+		if((i=='*')&&(uo->gui_type==ED_VIEW)&&(uo->sd))
+		{
+			WSHDR *msg=AllocWS(128);
+		#ifdef NO_CS
+			wsprintf(msg, "%t:\n%s", STR_FROM, uo->sd->Number);
+		#else
+			{
+				char num[32];
+				WSHDR csloc, *cs;
+				unsigned short csb[30];
+				cs=CreateLocalWS(&csloc,csb,30);
+				strcpy(num, uo->sd->Number);
+				GetProvAndCity(cs->wsbody, num);
+				wsprintf(msg, "%t:\n%s\n%t:\n%w", STR_FROM, uo->sd->Number, STR_CODESHOW, cs);
+			}
+		#endif
+			ShowMSG_ws(1, msg);
 		}
 	}
 	return 0;
@@ -581,7 +616,38 @@ void edGHook(GUI *data, int cmd)
 			newToRead(uo->sd);
 		if(uo->gui_type==ED_VIEW)
 			SetSoftKey(data,&SK_OP_PIC,SET_SOFT_KEY_M);
-
+//auto save as file
+		if((uo->gui_type==ED_VIEW)&&(CFG_ENA_AUTO_SAF)&&(!uo->sd->isfile)&&(uo->sd->id))      
+		{
+			char time[32];
+			SMS_DATA *sdx;
+			DLG_CSM *dlg_csm=(DLG_CSM *)(uo->dlg_csm);
+			SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);	
+			WSHDR *ws=AllocWS(MAX_TEXT);
+			wstrcpy(ws, uo->sd->SMS_TEXT);
+			strcpy(time, uo->sd->Time);
+			if(saveFile(uo->sd->SMS_TEXT, uo->sd->Number, uo->sd, uo->sd->type, 0))
+			{
+				deleteDat(uo->sd, 1);
+				if(!(sdx=findInSMSByTxtTime(ws, time))) //重新查找sd失败,直接返回列表
+				{
+					if(gstop!=0)
+					{
+						GeneralFunc_flag1(gstop->id, 1);
+						popGS(dlg_csm);
+					}
+					else
+					{
+					//如果完全出错,直接退出
+						GeneralFunc_flag1(dlg_csm->gui_id, 1);
+					}
+				}
+				else
+					uo->sd=sdx;
+			}
+			FreeWS(ws);
+		}
+//-------------------
 		//if((n==uo->focus_n)&&(!EDIT_IsBusy(data)))
 		{
 			ExtractEditControl(data, uo->focus_n, &ec);

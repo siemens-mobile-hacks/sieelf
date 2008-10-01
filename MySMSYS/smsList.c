@@ -11,6 +11,8 @@
 #include "guiIdMan.h"
 
 #include "lgp_pic.h"
+#include "CodeShow.h"
+#include "popGui.h"
 
 #define MENU_MAX_TXT 30
 
@@ -270,6 +272,31 @@ __swi __arm void TempLightOn(int x, int y);
 			delSDList(sd);
 			RefreshGUI();
 			return (-1);
+		}
+		else if((i=='9')&&(sd)&&(!sd->isfile))
+		{
+			if(saveFile(sd->SMS_TEXT, sd->Number, sd, sd->type, 0))
+				deleteDat(sd, 1);
+			RefreshGUI();
+			return (-1);
+		}
+		else if((i=='*')&&(sd)) //*键,查看号码信息
+		{
+			WSHDR *msg=AllocWS(128);
+		#ifdef NO_CS
+			wsprintf(msg, "%t:\n%s", STR_FROM, sd->Number);
+		#else
+			{
+				char num[32];
+				WSHDR csloc, *cs;
+				unsigned short csb[30];
+				cs=CreateLocalWS(&csloc,csb,30);
+				strcpy(num, sd->Number);
+				GetProvAndCity(cs->wsbody, num);
+				wsprintf(msg, "%t:\n%s\n%t:\n%w", STR_FROM, sd->Number, STR_CODESHOW, cs);
+			}
+		#endif
+			ShowMSG_ws(1, msg);
 		}
 	}
 	return 0;
