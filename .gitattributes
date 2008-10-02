@@ -961,6 +961,7 @@ MySMSYS/MySMSYS.ewp -text
 MySMSYS/MySMSYS.eww -text
 MySMSYS/MySMSYS_ipc.h -text
 MySMSYS/Patches/E71Csw41.xcl -text
+MySMSYS/Patches/E71sw45.xcl -text
 MySMSYS/Patches/ELC1sw41.xcl -text
 MySMSYS/Patches/Patches.ewp -text
 MySMSYS/Patches/S7Csw47.xcl -text
