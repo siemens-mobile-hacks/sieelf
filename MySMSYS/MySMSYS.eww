@@ -5,6 +5,9 @@
     <path>$WS_DIR$\IPC_Sender\IPC_Sender.ewp</path>
   </project>
   <project>
+    <path>$WS_DIR$\MssLinker\MssLinker.ewp</path>
+  </project>
+  <project>
     <path>$WS_DIR$\MySMSYS.ewp</path>
   </project>
   <project>

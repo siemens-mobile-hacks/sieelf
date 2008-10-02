@@ -23,13 +23,15 @@
 #define SMSYS_IPC_QR_OPMSG 0x86 //quote to reply,基于opmsg_id引用原信息回复短信,data=opmsg_id,可用于多功能收件箱
 #define SMSYS_IPC_QN_OPMSG 0x87 //quote to new,基于opmsg_id引用原信息新建短信,data=opmsg_id,可用于多功能收件箱
 
+#define SMSYS_IPC_FVIEW 0x90 //直接查看文件,data=filename,filename使用malloc申请内存,完成后将在MySMSYS中被释放,
+
 #define SMSYS_IPC_CREATE_DLG	0xFF //创建图形界面,(未使用)
 #define SMSYS_IPC_UPDATE_CLIST	0x100 //更新通讯录,data=NULL
 #define SMSYS_IPC_SMS_DATA_UPDATE 0x101 //更新短信数据链表,data=NULL,(未使用)
-
 //----------------
 #define MY_SMSYS_CREATE	0
 #define MY_SMSYS_CLOSE	1
+#define MY_SMSYS_FVIEW	2
 //----------------
 
 

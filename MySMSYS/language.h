@@ -64,6 +64,9 @@ extern const char STR_CODESHOW[];
 #define LGP_CFG_NOTIFY_SET "新信息提醒设置"
 #define LGP_CFG_NOTIFY_TIME "提醒时间长度(秒)"
 #define LGP_CFG_ENA_AUTO_SAF "自动保存为文件"
+#define LGP_CFG_ENA_NEWSMS_ICON "待机显示新短信图标"
+#define LGP_CFG_ICONNEW_PATH "图标文件路径"
+#define LGP_CFG_ICONNEW_POS "图标坐标"
 #endif
 
 #ifdef LANG_EN
@@ -74,4 +77,7 @@ extern const char STR_CODESHOW[];
 #define LGP_CFG_NOTIFY_SET "Notify Setup"
 #define LGP_CFG_NOTIFY_TIME "Notify Time (s)"
 #define LGP_CFG_ENA_AUTO_SAF "Auto Save As File"
+#define LGP_CFG_ENA_NEWSMS_ICON "Show NewSMS Icon Idle"
+#define LGP_CFG_ICONNEW_PATH "Icon Path"
+#define LGP_CFG_ICONNEW_POS "Icon Position"
 #endif

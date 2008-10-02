@@ -52,10 +52,21 @@ void ed_menu_reply(GUI *gui)
 	}
 	if(uo->sd)
 	{
-		if(update)
-			dlg_csm->gui_id=createEditGUI(dlg_csm, uo->sd, ED_REPLY, 0);
+		if(uo->gui_type==ED_FVIEW)
+		{
+			SMS_DATA *sd=SdCopyOne(uo->sd);
+			if(update)
+				dlg_csm->gui_id=createEditGUI(dlg_csm, sd, ED_FREPLY, 0);
+			else
+				createEditGUI(dlg_csm, sd, ED_FREPLY, 0);
+		}
 		else
-			createEditGUI(dlg_csm, uo->sd, ED_REPLY, 0);
+		{
+			if(update)
+				dlg_csm->gui_id=createEditGUI(dlg_csm, uo->sd, ED_REPLY, 0);
+			else
+				createEditGUI(dlg_csm, uo->sd, ED_REPLY, 0);
+		}
 	}
 	GeneralFuncF1(1);
 }
@@ -75,10 +86,21 @@ void ed_menu_edit(GUI *gui)
 	}
 	if(uo->sd)
 	{
-		if(update)
-			dlg_csm->gui_id=createEditGUI(dlg_csm, uo->sd, ED_EDIT, 0);
+		if(uo->gui_type==ED_FVIEW)
+		{
+			SMS_DATA *sd=SdCopyOne(uo->sd);
+			if(update)
+				dlg_csm->gui_id=createEditGUI(dlg_csm, sd, ED_FEDIT, 0);
+			else
+				createEditGUI(dlg_csm, sd, ED_FEDIT, 0);
+		}
 		else
-			createEditGUI(dlg_csm, uo->sd, ED_EDIT, 0);
+		{
+			if(update)
+				dlg_csm->gui_id=createEditGUI(dlg_csm, uo->sd, ED_EDIT, 0);
+			else
+				createEditGUI(dlg_csm, uo->sd, ED_EDIT, 0);
+		}
 	}
 	GeneralFuncF1(1);
 }
@@ -112,7 +134,7 @@ void ed_menu_del(GUI *gui)
 			deleteFile(uo->sd, 0);
 		else
 			deleteDat(uo->sd, 0);
-		delSDList(uo->sd);
+		if(uo->gui_type!=ED_FVIEW) delSDList(uo->sd);
 	}
 	GeneralFuncF1(1);
 }
@@ -125,14 +147,16 @@ void ed_menu_save_as_file(GUI *gui)
 	if((uo->sd!=0)&&(uo->sd->isfile==0)&&(uo->sd->SMS_TEXT))
 	{
 		char time[32];
+		char sdnum[32];
 		SMS_DATA *sdx;
 		WSHDR *ws=AllocWS(MAX_TEXT);
 		wstrcpy(ws, uo->sd->SMS_TEXT);
 		strcpy(time, uo->sd->Time);
+		strcpy(sdnum, uo->sd->Number);
 		if(saveFile(uo->sd->SMS_TEXT, uo->sd->Number, uo->sd, uo->sd->type, 0))
 		{
 			deleteDat(uo->sd, 1);
-			if(!(sdx=findInSMSByTxtTime(ws, time))) //重新查找sd失败,直接返回列表
+			if(!(sdx=FindSdByTxtTimeNum(ws, time, sdnum))) //重新查找sd失败,直接返回列表
 			{
 				if(gstop!=0)
 				{
@@ -428,6 +452,19 @@ __swi __arm void TempLightOn(int x, int y);
 				createEditGUI(uo->dlg_csm, uo->sd, ED_REPLY, 0);
 			return 1;
 		}
+		else if((uo->gui_type==ED_FVIEW)&&(uo->sd))
+		{
+			SMS_DATA *sd=SdCopyOne(uo->sd);
+			int update=0;
+			if(gstop->id==dlg_csm->gui_id)
+				update=1;
+			popGS(uo->dlg_csm);
+			if(update)
+				dlg_csm->gui_id=createEditGUI(uo->dlg_csm, sd, ED_FREPLY, 0);
+			else
+				createEditGUI(uo->dlg_csm, sd, ED_FREPLY, 0);
+			return 1;
+		}
 		else
 		{
 			if(!Ed_SendSMS(data))
@@ -437,13 +474,13 @@ __swi __arm void TempLightOn(int x, int y);
 		popGS(uo->dlg_csm);
 		return 1;
 	}
-	else if((msg->keys==0x29)&&(uo->gui_type==ED_VIEW))
+	else if((msg->keys==0x29)&&((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW)))
 	{
 		createEditOpMenu(uo);
 	}
 	else if(msg->keys==0x18)
 	{
-		if(uo->gui_type==ED_VIEW)
+		if((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW))
 		{
 			createEditOpMenu(uo);
 		}
@@ -484,7 +521,7 @@ __swi __arm void TempLightOn(int x, int y);
 		EDITCONTROL ec;
 		ExtractEditControl(data,n,&ec);
 		//中键
-		if((i==ENTER_BUTTON)&&(uo->gui_type!=ED_VIEW))
+		if((i==ENTER_BUTTON)&&(uo->gui_type!=ED_VIEW)&&(uo->gui_type!=ED_FVIEW))
 		{
 			if(n==uo->focus_n)
 			{
@@ -544,20 +581,21 @@ __swi __arm void TempLightOn(int x, int y);
 			return 1;
 		}
 		//*键,查看号码信息
-		if((i=='*')&&(uo->gui_type==ED_VIEW)&&(uo->sd))
+		if((i=='*')&&((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW))&&(uo->sd))
 		{
+			NUM_LIST *nl=(NUM_LIST *)(uo->nltop);
 			WSHDR *msg=AllocWS(128);
 		#ifdef NO_CS
-			wsprintf(msg, "%t:\n%s", STR_FROM, uo->sd->Number);
+			wsprintf(msg, "%t:\n%s", STR_FROM, nl->num);
 		#else
 			{
 				char num[32];
 				WSHDR csloc, *cs;
 				unsigned short csb[30];
 				cs=CreateLocalWS(&csloc,csb,30);
-				strcpy(num, uo->sd->Number);
+				strcpy(num, nl->num);
 				GetProvAndCity(cs->wsbody, num);
-				wsprintf(msg, "%t:\n%s\n%t:\n%w", STR_FROM, uo->sd->Number, STR_CODESHOW, cs);
+				wsprintf(msg, "%t:\n%s\n%t:\n%w", STR_FROM, nl->num, STR_CODESHOW, cs);
 			}
 		#endif
 			ShowMSG_ws(1, msg);
@@ -577,7 +615,7 @@ void edGHook(GUI *data, int cmd)
 	USER_OP *uo=EDIT_GetUserPointer(data);
 	if(cmd==TI_CMD_CREATE)
 	{
-		if(uo->gui_type==ED_VIEW)
+		if((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW))
 			EDIT_SetFocus(data, 1); //从号码开始看
 		else
 			EDIT_SetFocus(data, uo->focus_n);//光标跳到文本位置
@@ -586,11 +624,13 @@ void edGHook(GUI *data, int cmd)
 	else if(cmd==TI_CMD_DESTROY)
 	{
 
-		if((uo->gui_type==ED_FREE)&&(uo->sd))
+		if(((uo->gui_type==ED_FREE)
+				||(uo->gui_type==ED_FVIEW)
+				||(uo->gui_type==ED_FEDIT)
+				||(uo->gui_type==ED_FREPLY)
+				)&&(uo->sd))
 		{
-			if(uo->sd->SMS_TEXT)
-				FreeWS(uo->sd->SMS_TEXT);
-			mfree(uo->sd);
+			FreeSdOne(uo->sd);
 		}
 		FreeNumList(uo);
 		mfree(uo);
@@ -604,32 +644,27 @@ void edGHook(GUI *data, int cmd)
 		NUM_LIST *nl;
 		EDITCONTROL ec;
 		int n=EDIT_GetFocus(data);
-		//ExtractEditControl(data,n,&ec);
-/*		if(!EDIT_IsBusy(data))
-		{
-			if((n<=(uo->focus_n-2))&&(ec.pWS->wsbody[0]==0))
-				SetSoftKey(data,&SK_ADRBK,SET_SOFT_KEY_N);
-			else
-				SetSoftKey(data,&SK_OPTIONS,SET_SOFT_KEY_N);
-		}*/
-		if(uo->sd->type==TYPE_IN_N)
+
+		if((uo->gui_type==ED_VIEW)&&(uo->sd->type==TYPE_IN_N))
 			newToRead(uo->sd);
-		if(uo->gui_type==ED_VIEW)
+		if((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW))
 			SetSoftKey(data,&SK_OP_PIC,SET_SOFT_KEY_M);
 //auto save as file
 		if((uo->gui_type==ED_VIEW)&&(CFG_ENA_AUTO_SAF)&&(!uo->sd->isfile)&&(uo->sd->id))      
 		{
 			char time[32];
+			char sdnum[32];
 			SMS_DATA *sdx;
 			DLG_CSM *dlg_csm=(DLG_CSM *)(uo->dlg_csm);
 			SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);	
 			WSHDR *ws=AllocWS(MAX_TEXT);
 			wstrcpy(ws, uo->sd->SMS_TEXT);
 			strcpy(time, uo->sd->Time);
+			strcpy(sdnum, uo->sd->Number);
 			if(saveFile(uo->sd->SMS_TEXT, uo->sd->Number, uo->sd, uo->sd->type, 0))
 			{
 				deleteDat(uo->sd, 1);
-				if(!(sdx=findInSMSByTxtTime(ws, time))) //重新查找sd失败,直接返回列表
+				if(!(sdx=FindSdByTxtTimeNum(ws, time, sdnum))) //重新查找sd失败,直接返回列表
 				{
 					if(gstop!=0)
 					{
@@ -659,7 +694,7 @@ void edGHook(GUI *data, int cmd)
 		#endif
 			SetHeaderText(GetHeaderPointer(data), hdr_t, malloc_adr(), mfree_adr());
 		}
-		if((uo->gui_type!=ED_VIEW)&&(n<=(uo->focus_n-2))&&(nl=GetNumListCur(uo, n)))
+		if((uo->gui_type!=ED_VIEW)&&(uo->gui_type!=ED_FVIEW)&&(n<=(uo->focus_n-2))&&(nl=GetNumListCur(uo, n)))
 		{
 			ExtractEditControl(data,n,&ec);
 			if(isNum(ec.pWS))
@@ -791,7 +826,7 @@ int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, 
 		}
 #endif
 		wstrcpy(((NUM_LIST *)(uo->nltop))->name, ews);
-		ConstructEditControl(&ec,(type==ED_VIEW)?ECT_READ_ONLY:ECT_NORMAL_TEXT,ECF_DEFAULT_DIGIT+ECF_APPEND_EOL,ews,256);
+		ConstructEditControl(&ec,(type==ED_VIEW||type==ED_FVIEW)?ECT_READ_ONLY:ECT_NORMAL_TEXT,ECF_DEFAULT_DIGIT+ECF_APPEND_EOL,ews,256);
 		//ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,256);
 		PrepareEditCOptions(&ec_options);
 		SetFontToEditCOptions(&ec_options,FONT_SMALL);
@@ -801,7 +836,7 @@ int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, 
 	}
 //------------
 //------------ time
-	if(type==ED_VIEW&&strlen(sd->Time)) //time
+	if((type==ED_FVIEW)||(type==ED_VIEW)&&strlen(sd->Time)) //time
 	{
 		str_2ws(ews, sd->Time, 256);
 		ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,256);
@@ -823,14 +858,17 @@ int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, 
 	switch(type)
 	{
 	case ED_VIEW:
+	case ED_FVIEW:
 		ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL,ews,256);
 		break;
 	case ED_FREE:
 	case ED_EDIT:
+	case ED_FEDIT:
 		ConstructEditControl(&ec,TEXT_INPUT_OPTION,ECF_APPEND_EOL,ews,256);
 		break;
 	case ED_NEW:
 	case ED_REPLY:
+	case ED_FREPLY:
 		CutWSTR(ews, 0);
 		ConstructEditControl(&ec,TEXT_INPUT_OPTION,ECF_APPEND_EOL,ews,256);
 		break;
@@ -847,7 +885,7 @@ int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, 
 //----------	
 	FreeWS(ews);
 	
-	if(type==ED_VIEW)
+	if (type==ED_VIEW || type==ED_FVIEW)
 		edd=&ED_DESC_RO;
 	else
 		edd=&ED_DESC;
@@ -923,3 +961,20 @@ int DoByOpmsgId(void *dlg_csm, int msg, int opmsg_id)
 	}
 	return 0;
 }
+
+unsigned int ViewFile(void *dlg_csm, char *fname)
+{
+	SMS_DATA *sd;
+	if(!strlen(fname))
+		return 0;
+	sd=malloc(sizeof(SMS_DATA));
+	zeromem(sd, sizeof(SMS_DATA));
+	sd->SMS_TEXT=AllocWS(MAX_TEXT);
+	if(!ReadMSS(fname, sd))
+	{
+		FreeSdOne(sd);
+		return 0;
+	}
+	return (createEditGUI(dlg_csm, sd, ED_FVIEW, 0));
+}
+

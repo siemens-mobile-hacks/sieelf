@@ -27,6 +27,7 @@ typedef struct
 {
 	unsigned int csm_id;
 	int code;
+	char *fname;
 }IPC_DATA_DAEMON;
 
 typedef struct
@@ -63,6 +64,10 @@ const int minus11=-11;
 char *num_from_ipc=0;
 char *text_utf8=0;
 int opmsg_id=0;
+
+int is_fview=0;
+char filename[128]={0};
+int new_sms_n=0;
 //---------------------------------------
 //csm_id man
 
@@ -117,6 +122,17 @@ void closeAllDlgCSM(unsigned int *id_pool)
 			id_pool[i]=0;
 		}
 	}
+}
+
+int IsNoDlg(unsigned int *id_pool)
+{
+	int i=0;
+	for(;i<MAX_DLG;i++)
+	{
+		if(id_pool[i])
+			return 0;
+	}
+	return 1;
 }
 
 int isTheLastDlg(unsigned int *id_pool, unsigned int id)
@@ -324,7 +340,7 @@ int dialogcsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 static void dialogcsm_oncreate(CSM_RAM *data)
 {
 	DLG_CSM *csm=(DLG_CSM *)data;
-	readAllSMS();
+	if(IPC_SUB_MSG!=SMSYS_IPC_FVIEW) readAllSMS();
 	switch(IPC_SUB_MSG)
 	{
 	case MY_SMSYS_IPC_START:
@@ -376,6 +392,14 @@ static void dialogcsm_oncreate(CSM_RAM *data)
 		if(!(csm->gui_id=DoByOpmsgId(csm, IPC_SUB_MSG, opmsg_id)))
 			csm->gui_id=CreateMainMenu(csm);
 		opmsg_id=0;
+		break;
+	case SMSYS_IPC_FVIEW:
+		if (!strlen(filename) || !(csm->gui_id=ViewFile(csm, filename)))
+		{
+			readAllSMS();
+			csm->gui_id=CreateMainMenu(csm);
+		}
+		filename[0]=0;
 		break;
 	default:
 		csm->gui_id=CreateMainMenu(csm);
@@ -440,7 +464,16 @@ static void daemoncsm_oncreate(CSM_RAM *data)
 {
 	daemon_ipc.data=&ipc_data_daemon;
 	ipc_data_daemon.csm_id=DAEMON_CSM_ID;
-	ipc_data_daemon.code=MY_SMSYS_CREATE;
+	if(is_fview&&strlen(filename))
+	{
+		ipc_data_daemon.code=MY_SMSYS_FVIEW;
+		ipc_data_daemon.fname=filename;
+	}
+	else
+	{
+		ipc_data_daemon.code=MY_SMSYS_CREATE;
+		ipc_data_daemon.fname=0;
+	}
 	GBS_SendMessage(MMI_CEPID,MSG_IPC,MY_SMSYS_IPC_START,&daemon_ipc);
 }
 
@@ -453,6 +486,7 @@ const IPC_REQ my_ipc_n=
 };
 
 GBSTMR chk_tmr;
+GBSTMR n_update_tmr;
 
 void CheckNewProc(void)
 {
@@ -461,6 +495,15 @@ void CheckNewProc(void)
 		{
 			GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_NEW_IN_WIN,&my_ipc_n);
 		}
+}
+
+void UpdateNProc(void)
+{
+	if(IsNoDlg(DlgCsmIDs))
+	{
+		readAllSMS(); //更新未查看短信数量
+		//ShowMSG(1, (int)"kao");
+	}
 }
 
 #pragma inline=forced
@@ -480,7 +523,7 @@ int strcmp_nocase(const char *s1,const char *s2)
 
 int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 {
-//EMS_FFS write 0x61CB
+#define MSG_EMS_FFS_WRITE 0x61CB
 //0x61CC ?? SMS_incoming
 //如果使用Browser-killer之类的补丁,将不会有新信息弹出窗口,使用这个MSG可以进行检查是否来新短信了
 #ifdef ELKA
@@ -492,6 +535,20 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 		if(!IsTimerProc(&chk_tmr)) //接收到MSG半秒之后开始检查,直接开始检查会死机.
 			GBS_StartTimerProc(&chk_tmr, 216/2, CheckNewProc);
 	}
+#ifndef ELKA
+  if(msg->msg==MSG_EMS_FFS_WRITE)
+  {
+  	if(IsNoDlg(DlgCsmIDs))
+  	{
+  		if(!IsTimerProc(&n_update_tmr))
+  			GBS_StartTimerProc(&n_update_tmr, 216, UpdateNProc);
+  	}
+  	else
+  	{
+  		//GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&dlg_ipc);
+  	}
+  }
+#endif
 	if(msg->msg==MSG_RECONFIGURE_REQ)
 	{
 		extern const char *successed_config_filename;
@@ -513,24 +570,38 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 				if(msg->submess==MY_SMSYS_IPC_START)
 				{
 					IPC_DATA_DAEMON *ipcd=(IPC_DATA_DAEMON *)ipc->data;
-					if(ipcd)
+					if((ipcd)&&(ipcd->csm_id!=DAEMON_CSM_ID))
 					{
 						switch(ipcd->code)
 						{
 						case MY_SMSYS_CREATE:
-							if(ipcd->csm_id!=DAEMON_CSM_ID)
+							//if(ipcd->csm_id!=DAEMON_CSM_ID)
 							{
 								daemon_ipc.data=&ipc_data_daemon;
 								ipc_data_daemon.csm_id=ipcd->csm_id;
 								ipc_data_daemon.code=MY_SMSYS_CLOSE;
+								ipc_data_daemon.fname=0;
 								GBS_SendMessage(MMI_CEPID,MSG_IPC,MY_SMSYS_IPC_START,&daemon_ipc);
 								IPC_SUB_MSG=MY_SMSYS_IPC_START;
 								CreateDialogCSM();
 							}
 							break;
 						case MY_SMSYS_CLOSE:
-							if(ipcd->csm_id!=DAEMON_CSM_ID)
+							//if(ipcd->csm_id!=DAEMON_CSM_ID)
 								CloseCSM(ipcd->csm_id);
+							break;
+						case MY_SMSYS_FVIEW:
+							daemon_ipc.data=&ipc_data_daemon;
+							ipc_data_daemon.csm_id=ipcd->csm_id;
+							ipc_data_daemon.code=MY_SMSYS_CLOSE;
+							ipc_data_daemon.fname=0;
+							if(ipcd->fname)
+								strcpy(filename, ipcd->fname);
+							else
+								filename[0]=0;
+							GBS_SendMessage(MMI_CEPID,MSG_IPC,MY_SMSYS_IPC_START,&daemon_ipc);
+							IPC_SUB_MSG=SMSYS_IPC_FVIEW;
+							CreateDialogCSM();
 							break;
 						}
 					}
@@ -563,11 +634,36 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 					IPC_SUB_MSG=msg->submess;
 					CreateDialogCSM();
 				}
+				else if(msg->submess == SMSYS_IPC_FVIEW)
+				{
+					IPC_SUB_MSG=SMSYS_IPC_FVIEW;
+					if(ipc->data)
+					{
+						strcpy(filename, (char *)ipc->data);
+						mfree(ipc->data);
+					}
+					else
+						filename[0]=0;
+					CreateDialogCSM();
+				}
 				else if(msg->submess == SMSYS_IPC_UPDATE_CLIST)
 				{
 					SUBPROC((void *)ConstructList);
 					//ConstructList();
 				}
+			}
+		}
+	}
+	if((new_sms_n>0)&&(CFG_ENA_NEWSMS_ICON))
+	{
+		#define idlegui_id (((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])
+		CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
+		if(IsGuiOnTop(idlegui_id))
+		{
+			GUI *igui=GetTopGUI();
+			if(igui)
+			{
+				DrawImg(CFG_ICONNEW_POS_X, CFG_ICONNEW_POS_Y, (int)CFG_ICONNEW_PATH);
 			}
 		}
 	}
@@ -581,6 +677,7 @@ static void ElfKiller(void)
 	FreeCLIST();
 	freeSDList();
 	GBS_DelTimer(&chk_tmr);
+	GBS_DelTimer(&n_update_tmr);
 	kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
 }
 
@@ -625,7 +722,7 @@ static void UpdateDaemonCSMname(void)
 	wsprintf((WSHDR *)(&DAEMONCSM.daemoncsm_name),ELFNAME_D);
 }
 
-int main(void)
+int main(char *exename, char *fname)
 {
 	DEAMON_CSM d_csm;
 	CSM_RAM *save_cmpc;
@@ -634,6 +731,16 @@ int main(void)
 	UpdateDaemonCSMname();
 	dlgIDsInit();
 	InitConfig();
+	if(fname)
+	{
+		if ( fname[0] < '0' || fname[0] > '4' || fname[1] != ':' || strlen(fname) > 128 )
+		{
+			SUBPROC((void *)ElfKiller);
+			return 0;
+		}
+		strcpy(filename, fname);
+		is_fview=1;
+	}
 	LockSched();
 	save_cmpc=csmr->csm_q->current_msg_processing_csm;
 	csmr->csm_q->current_msg_processing_csm=csmr->csm_q->csm.first;

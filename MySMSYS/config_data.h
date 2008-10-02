@@ -8,4 +8,8 @@ extern const int CFG_ENA_NOTIFY;
 extern const int CFG_ENA_AUTO_SAF;
 extern const unsigned int CFG_VIBRA_POWER;
 extern const int CFG_NOTIFY_TIME;
+extern const int CFG_ENA_NEWSMS_ICON;
+extern const char CFG_ICONNEW_PATH[128];
+extern const unsigned int CFG_ICONNEW_POS_X;
+extern const unsigned int CFG_ICONNEW_POS_Y;
 #endif

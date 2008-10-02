@@ -44,7 +44,7 @@ void freeSDList(void);
 int readAllSMS(void);
 int getCountByType(int type);
 SMS_DATA *getSMSDataByType(int n, int type);
-SMS_DATA *findInSMSByTxtTime(WSHDR *ws, char *time);
+//SMS_DATA *findInSMSByTxtTime(WSHDR *ws, char *time);
 int newToRead(SMS_DATA *sd);
 int saveFile(WSHDR *ws, char *number, SMS_DATA *sd, int type, int need_reload);
 int readFile(int type);
@@ -56,5 +56,7 @@ SMS_DATA *FindSDByOpmsgId(int opmsg_id);
 //void SaveAllAsFile(void);
 SMS_DATA *FindNextByType(SMS_DATA *sdl, int type);
 SMS_DATA *FindPrevByType(SMS_DATA *sdl, int type);
-
-
+int ReadMSS(char *fname, SMS_DATA *sd);
+void FreeSdOne(SMS_DATA *sd);
+SMS_DATA *SdCopyOne(SMS_DATA *sdx);
+SMS_DATA *FindSdByTxtTimeNum(WSHDR *ws, char *time, char *num);

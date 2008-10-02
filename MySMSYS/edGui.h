@@ -5,7 +5,9 @@
 #define ED_REPLY 2
 #define ED_NEW 3
 #define ED_FREE 4
-
+#define ED_FVIEW 5
+#define ED_FEDIT 6
+#define ED_FREPLY 7
 
 #define TYPE_SET 0
 #define TYPE_INSERT 1
@@ -41,3 +43,5 @@ int viewTheLastNew(void *dlg_csm);
 int newSMSWithNum(void *dlg_csm, char *num);
 int newSMSWithUtf8Text(void *dlg_csm, char *text_utf8);
 int DoByOpmsgId(void *dlg_csm, int msg, int opmsg_id);
+unsigned int ViewFile(void *dlg_csm, char *fname);
+

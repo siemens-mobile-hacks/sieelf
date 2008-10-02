@@ -6,6 +6,7 @@
 
 #include "MySMSYS_ipc.h"
 
+#include "main.h"
 SMS_DATA *sdltop=0;
 void addSDList(void)
 {
@@ -13,7 +14,7 @@ void addSDList(void)
 	SMS_DATA *sdn;
 	zeromem(sdl, sizeof(SMS_DATA));
 	sdl->SMS_TEXT=AllocWS(MAX_TEXT);
-//	LockSched();
+	LockSched();
 	if(!sdltop)
 	{
 		sdltop=sdl;
@@ -25,7 +26,7 @@ void addSDList(void)
 		sdltop->next=sdn;
 		sdn->prev=sdltop;
 	}
-//	UnlockSched();
+	UnlockSched();
 }
 
 void delSDList(SMS_DATA *sdl)
@@ -34,6 +35,7 @@ void delSDList(SMS_DATA *sdl)
 	SMS_DATA *sdp;
 	if(sdl)
 	{
+		LockSched();
 		sdn=sdl->next;
 		sdp=sdl->prev;
 		if(sdl==sdltop)
@@ -42,7 +44,7 @@ void delSDList(SMS_DATA *sdl)
 			sdn->prev=sdp;
 		if(sdp)
 			sdp->next=sdn;
-			
+		UnlockSched();
 		if((sdl->isfile==1)&&(sdl->fname!=0))
 			mfree(sdl->fname);
 		if(sdl->SMS_TEXT)
@@ -54,10 +56,10 @@ void delSDList(SMS_DATA *sdl)
 void freeSDList(void)
 {
 	SMS_DATA *sdl;
-//	LockSched();
+	LockSched();
 	sdl=sdltop;
 	sdltop=0;
-//	UnlockSched();
+	UnlockSched();
 	while(sdl)
 	{
 		SMS_DATA *sdlx;
@@ -169,6 +171,7 @@ SMS_DATA *getSMSDataByType(int n, int type)//0, all
 	return 0;
 }
 
+/*
 SMS_DATA *findInSMSByTxtTime(WSHDR *ws, char *time)
 {
 	SMS_DATA *sdl=sdltop;
@@ -184,7 +187,7 @@ SMS_DATA *findInSMSByTxtTime(WSHDR *ws, char *time)
 	}
 	return 0;
 }
-
+*/
 SMS_DATA *getLastTheLast(int type)
 {
 	SMS_DATA *sdl=sdltop;
@@ -462,6 +465,7 @@ int readAllSMS(void)
 	n+=readFile(TYPE_OUT);
 	n+=readFile(TYPE_DRAFT);
 	sortByTime();
+	new_sms_n=getCountByType(TYPE_IN_N);
 //	GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&up_ipc);
 	return n;
 }
@@ -478,6 +482,7 @@ int newToRead(SMS_DATA *sd)
 	if(SetNewSMSToRead(sd->id, 1)!=0x3E8)
 		return 0;
 	sd->type=TYPE_IN_R;
+	if(new_sms_n>0) new_sms_n--;
 	return 1;
 }
 
@@ -1285,6 +1290,86 @@ SMS_DATA *FindPrevByType(SMS_DATA *sdl, int type)
 	else
 	{
 		return sdl;
+	}
+	return 0;
+}
+
+int ReadMSS(char *fname, SMS_DATA *sd)
+{
+	unsigned int err;
+	int fin;
+	int size;
+	MSS_FILE_P1 msf;
+	if((fin=fopen(fname, A_BIN+A_ReadOnly, P_READ, &err))<0)
+		return 0;
+	size=lseek(fin, 0, S_END, &err, &err);
+	if(size<sizeof(MSS_FILE_P1))
+		goto EX_BACK0;
+	lseek(fin, 0, S_SET, &err, &err);
+	if(fread(fin, &msf, sizeof(MSS_FILE_P1), &err)!=sizeof(MSS_FILE_P1))
+		goto EX_BACK0;
+	if(strncmp(msf.header, ELFNAME, 7))
+		goto EX_BACK0;
+	if(fread(fin, sd->SMS_TEXT->wsbody, size-sizeof(MSS_FILE_P1), &err)!=(size-sizeof(MSS_FILE_P1)))
+		goto EX_BACK0;
+	fclose(fin, &err);
+	strcpy(sd->Time, msf.time);
+	strcpy(sd->Number, msf.number);
+	sd->isfile=1;
+	sd->fname=malloc(128);
+	strcpy(sd->fname, fname);
+	return 1;
+EX_BACK0:
+	fclose(fin, &err);
+	return 0;
+}
+
+
+void FreeSdOne(SMS_DATA *sd)
+{
+	if(sd->SMS_TEXT)
+		FreeWS(sd->SMS_TEXT);
+	if(sd->fname)
+		mfree(sd->fname);
+	mfree(sd);
+}
+
+SMS_DATA *SdCopyOne(SMS_DATA *sdx)
+{
+	SMS_DATA *sd;
+	if(!sdx)
+		return 0;
+	sd=malloc(sizeof(SMS_DATA));
+	memcpy(sd, sdx, sizeof(SMS_DATA));
+	if(sdx->fname)
+	{
+		sd->fname=malloc(128);
+		strcpy(sd->fname, sdx->fname);
+	}
+	if(sdx->SMS_TEXT)
+	{
+		sd->SMS_TEXT=AllocWS(MAX_TEXT);
+		wstrcpy(sd->SMS_TEXT, sdx->SMS_TEXT);
+	}
+	return sd;
+}
+
+
+SMS_DATA *FindSdByTxtTimeNum(WSHDR *ws, char *time, char *num)
+{
+	SMS_DATA *sdl=sdltop;
+	GetCPUClock();
+	while(sdl)
+	{
+		if(!wstrncmp_nocase(sdl->SMS_TEXT, ws, ws->wsbody[0])
+				&& !strncmp(sdl->Number, num, strlen(num)))
+		{
+			if(!time || !strlen(time))
+				return sdl;
+			if(!strncmp(sdl->Time, time, strlen(time)))
+				return sdl;
+		}
+		sdl=sdl->next;
 	}
 	return 0;
 }

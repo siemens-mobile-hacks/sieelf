@@ -953,6 +953,10 @@ MySMSYS/CodeShow.h -text
 MySMSYS/IPC_Sender/IPC_Sender.ewp -text
 MySMSYS/IPC_Sender/main.c -text
 MySMSYS/IPC_Sender/tph.bat -text
+MySMSYS/MssLinker/MssLinker.ewp -text
+MySMSYS/MssLinker/func.asm -text
+MySMSYS/MssLinker/main.c -text
+MySMSYS/MssLinker/test.xcl -text
 MySMSYS/MySMSYS.ewp -text
 MySMSYS/MySMSYS.eww -text
 MySMSYS/MySMSYS_ipc.h -text

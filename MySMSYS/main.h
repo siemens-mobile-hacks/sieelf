@@ -12,6 +12,7 @@ typedef struct
 {
   CSM_RAM csm;
   int gui_id;
+  int sdl_update;
   void *gstop;
 }DLG_CSM;
 
@@ -22,5 +23,6 @@ typedef struct
 	WSHDR *time;
 }INBOX_DATA;
 
+extern int new_sms_n;
 int CreateMainMenu(DLG_CSM *dlg_csm);
 
