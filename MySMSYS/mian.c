@@ -340,6 +340,7 @@ int dialogcsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 static void dialogcsm_oncreate(CSM_RAM *data)
 {
 	DLG_CSM *csm=(DLG_CSM *)data;
+	csm->gstop=0;
 	if(IPC_SUB_MSG!=SMSYS_IPC_FVIEW) readAllSMS();
 	switch(IPC_SUB_MSG)
 	{
@@ -543,10 +544,10 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
   		if(!IsTimerProc(&n_update_tmr))
   			GBS_StartTimerProc(&n_update_tmr, 216, UpdateNProc);
   	}
-  	else
-  	{
-  		//GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&dlg_ipc);
-  	}
+  	//else
+  	//{
+  	//	//GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&dlg_ipc);
+  	//}
   }
 #endif
 	if(msg->msg==MSG_RECONFIGURE_REQ)

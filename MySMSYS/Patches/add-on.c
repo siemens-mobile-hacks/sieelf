@@ -302,6 +302,23 @@ void CreateSmsWithNum_2(char *num)
   my_ipc3.data=data;
   GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_NEWSMS_NUM,&my_ipc3);*/
 }
+
+void CreateSmsWithNum_3(char *num)
+{
+
+  IPC_REQ *my_ipc3;
+  char *data;
+  LockSched();
+  my_ipc3=malloc(sizeof(IPC_REQ));
+  data=malloc(strlen(num)+2);
+  my_ipc3->name_to=my_ipc_name;
+  my_ipc3->name_from=my_ipc_name;
+  strcpy(data, num);
+  my_ipc3->data=data;
+  GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_NEWSMS_NUM,my_ipc3);
+  UnlockSched();
+}
+
 void OrgSendText(char *text) //utf8
 {
    IPC_REQ my_ipc4=

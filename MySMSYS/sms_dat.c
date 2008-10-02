@@ -1358,7 +1358,6 @@ SMS_DATA *SdCopyOne(SMS_DATA *sdx)
 SMS_DATA *FindSdByTxtTimeNum(WSHDR *ws, char *time, char *num)
 {
 	SMS_DATA *sdl=sdltop;
-	GetCPUClock();
 	while(sdl)
 	{
 		if(!wstrncmp_nocase(sdl->SMS_TEXT, ws, ws->wsbody[0])
@@ -1374,3 +1373,14 @@ SMS_DATA *FindSdByTxtTimeNum(WSHDR *ws, char *time, char *num)
 	return 0;
 }
 
+int IsSdInList(SMS_DATA *sd)
+{
+	SMS_DATA *sdl=sdltop;
+	while(sdl)
+	{
+		if(sdl==sd)
+			return 1;
+		sdl=sdl->next;
+	}
+	return 0;
+}

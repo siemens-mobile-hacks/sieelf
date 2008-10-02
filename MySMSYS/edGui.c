@@ -619,7 +619,6 @@ void edGHook(GUI *data, int cmd)
 			EDIT_SetFocus(data, 1); //从号码开始看
 		else
 			EDIT_SetFocus(data, uo->focus_n);//光标跳到文本位置
-		//EDIT_SetCursorPos(data, 1);
 	}
 	else if(cmd==TI_CMD_DESTROY)
 	{
@@ -643,8 +642,45 @@ void edGHook(GUI *data, int cmd)
 	{
 		NUM_LIST *nl;
 		EDITCONTROL ec;
+		char time[32];
+		char num[32];
+		WSHDR txtl, *text;
+		unsigned short txtb[MAX_TEXT];
+		SMS_DATA *sdx;
+		DLG_CSM *dlg_csm=(DLG_CSM *)(uo->dlg_csm);
+		SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);	
 		int n=EDIT_GetFocus(data);
-
+		text=CreateLocalWS(&txtl, txtb, MAX_TEXT);
+		if((uo->gui_type==ED_VIEW)&&(!IsSdInList(uo->sd)))
+		{
+			ExtractEditControl(data, uo->focus_n, &ec);
+			wstrcpy(text, ec.pWS);
+			if(uo->focus_n>2) //简单判断时间是否存在
+			{
+				ExtractEditControl(data, uo->focus_n-2, &ec);
+				ws_2str(ec.pWS, time, 31);
+			}
+			else
+				time[0]=0;
+			nl=uo->nltop;
+			if(nl) strcpy(num, nl->num);
+			else num[0]=0;
+			if(!(sdx=FindSdByTxtTimeNum(text, time, num)))
+			{
+				if(gstop)
+				{
+					GeneralFunc_flag1(gstop->id, 1);
+					popGS(dlg_csm);
+				}
+				else
+				{
+				//如果完全出错,直接退出
+					GeneralFunc_flag1(dlg_csm->gui_id, 1);
+				}
+			}
+			else
+				uo->sd=sdx;
+		}
 		if((uo->gui_type==ED_VIEW)&&(uo->sd->type==TYPE_IN_N))
 			newToRead(uo->sd);
 		if((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW))
@@ -652,19 +688,13 @@ void edGHook(GUI *data, int cmd)
 //auto save as file
 		if((uo->gui_type==ED_VIEW)&&(CFG_ENA_AUTO_SAF)&&(!uo->sd->isfile)&&(uo->sd->id))      
 		{
-			char time[32];
-			char sdnum[32];
-			SMS_DATA *sdx;
-			DLG_CSM *dlg_csm=(DLG_CSM *)(uo->dlg_csm);
-			SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);	
-			WSHDR *ws=AllocWS(MAX_TEXT);
-			wstrcpy(ws, uo->sd->SMS_TEXT);
+			wstrcpy(text, uo->sd->SMS_TEXT);
 			strcpy(time, uo->sd->Time);
-			strcpy(sdnum, uo->sd->Number);
+			strcpy(num, uo->sd->Number);
 			if(saveFile(uo->sd->SMS_TEXT, uo->sd->Number, uo->sd, uo->sd->type, 0))
 			{
 				deleteDat(uo->sd, 1);
-				if(!(sdx=FindSdByTxtTimeNum(ws, time, sdnum))) //重新查找sd失败,直接返回列表
+				if(!(sdx=FindSdByTxtTimeNum(text, time, num))) //重新查找sd失败,直接返回列表
 				{
 					if(gstop!=0)
 					{
@@ -680,7 +710,6 @@ void edGHook(GUI *data, int cmd)
 				else
 					uo->sd=sdx;
 			}
-			FreeWS(ws);
 		}
 //-------------------
 		//if((n==uo->focus_n)&&(!EDIT_IsBusy(data)))

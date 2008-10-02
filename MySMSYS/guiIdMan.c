@@ -11,33 +11,23 @@
 void pushGS(void *dlg_csm, unsigned int id)
 {
 	SGUI_ID *gs=malloc(sizeof(SGUI_ID));
+	DLG_CSM *dg=(DLG_CSM *)dlg_csm;
+	SGUI_ID *gstop=(SGUI_ID *)(dg->gstop);
 	zeromem(gs, sizeof(SGUI_ID));
 	gs->id=id;
-//	LockSched();
-	if(!((DLG_CSM *)dlg_csm)->gstop)
-	{
-		((DLG_CSM *)dlg_csm)->gstop=gs;
-	}
-	else
-	{
-		SGUI_ID *gst=(SGUI_ID *)(((DLG_CSM *)dlg_csm)->gstop);
-		((DLG_CSM *)dlg_csm)->gstop=gs;
-		((SGUI_ID *)(((DLG_CSM *)dlg_csm)->gstop))->next=gst;
-	}
-//	UnlockSched();
+	dg->gstop=gs;
+	gs->next=gstop;
 }
 
 void popGS(void *dlg_csm)
 {
-	SGUI_ID *gs;
-//	LockSched();
-	if(((DLG_CSM *)dlg_csm)->gstop)
+	DLG_CSM *dg=(DLG_CSM *)dlg_csm;
+	SGUI_ID *gs=(SGUI_ID *)(dg->gstop);
+	if(gs)
 	{
-		gs=(SGUI_ID *)((DLG_CSM *)dlg_csm)->gstop;
-		((DLG_CSM *)dlg_csm)->gstop=((SGUI_ID *)(((DLG_CSM *)dlg_csm)->gstop))->next;
+		dg->gstop=gs->next;
 		mfree(gs);
 	}
-//	UnlockSched();
 }
 
 void freeAllGS(void *dlg_csm)

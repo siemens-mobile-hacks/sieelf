@@ -12,7 +12,6 @@ typedef struct
 {
   CSM_RAM csm;
   int gui_id;
-  int sdl_update;
   void *gstop;
 }DLG_CSM;
 
