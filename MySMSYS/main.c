@@ -341,7 +341,15 @@ static void dialogcsm_oncreate(CSM_RAM *data)
 {
 	DLG_CSM *csm=(DLG_CSM *)data;
 	csm->gstop=0;
-	if(IPC_SUB_MSG!=SMSYS_IPC_FVIEW) readAllSMS();
+	if(
+		(IPC_SUB_MSG!=SMSYS_IPC_FVIEW)
+		&&(IPC_SUB_MSG!=SMSYS_IPC_NEWSMS)
+		&&(IPC_SUB_MSG!=SMSYS_IPC_NEWSMS_NUM)
+		&&(IPC_SUB_MSG!=SMSYS_IPC_SEND_UTF8)
+		)
+	{
+		readAllSMS();
+	}
 	switch(IPC_SUB_MSG)
 	{
 	case MY_SMSYS_IPC_START:
@@ -491,8 +499,8 @@ GBSTMR n_update_tmr;
 
 void CheckNewProc(void)
 {
-		readAllSMS();
-		if(getCountByType(TYPE_IN_N))
+		//readAllSMS();
+		if(IsHaveNewSMS())
 		{
 			GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_NEW_IN_WIN,&my_ipc_n);
 		}
@@ -500,11 +508,9 @@ void CheckNewProc(void)
 
 void UpdateNProc(void)
 {
-	if(IsNoDlg(DlgCsmIDs))
-	{
-		readAllSMS(); //更新未查看短信数量
-		//ShowMSG(1, (int)"kao");
-	}
+	new_sms_n=IsHaveNewSMS();
+	if((!new_sms_n)&&(CFG_ENA_NOTIFY))
+		SetVibration(0);
 }
 
 #pragma inline=forced
@@ -524,32 +530,33 @@ int strcmp_nocase(const char *s1,const char *s2)
 
 int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 {
+#ifdef NEWSGOLD
+
+#ifdef ELKA
+#define MSG_EMS_FFS_WRITE 0x6105
+#else
 #define MSG_EMS_FFS_WRITE 0x61CB
+#endif
+
+#ifdef ELKA
+#define MSG_EMS_INCOMING 0x6106 //ELKA,来自smsman
+#else
+#define MSG_EMS_INCOMING 0x61CC
+#endif
+
+#endif
 //0x61CC ?? SMS_incoming
 //如果使用Browser-killer之类的补丁,将不会有新信息弹出窗口,使用这个MSG可以进行检查是否来新短信了
-#ifdef ELKA
-	if((msg->msg==0x6106)&&(CFG_ENA_NOTIFY)) //ELKA,来自smsman
-#else
-	if((msg->msg==0x61CC)&&(CFG_ENA_NOTIFY))
-#endif
+	if((msg->msg==MSG_EMS_INCOMING)&&(CFG_ENA_NOTIFY))
 	{
 		if(!IsTimerProc(&chk_tmr)) //接收到MSG半秒之后开始检查,直接开始检查会死机.
 			GBS_StartTimerProc(&chk_tmr, 216/2, CheckNewProc);
 	}
-#ifndef ELKA
-  if(msg->msg==MSG_EMS_FFS_WRITE)
-  {
-  	if(IsNoDlg(DlgCsmIDs))
-  	{
-  		if(!IsTimerProc(&n_update_tmr))
-  			GBS_StartTimerProc(&n_update_tmr, 216, UpdateNProc);
-  	}
-  	//else
-  	//{
-  	//	//GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&dlg_ipc);
-  	//}
-  }
-#endif
+	if(msg->msg==MSG_EMS_FFS_WRITE)
+	{
+		if(!IsTimerProc(&n_update_tmr))
+			GBS_StartTimerProc(&n_update_tmr, 216, UpdateNProc);
+	}
 	if(msg->msg==MSG_RECONFIGURE_REQ)
 	{
 		extern const char *successed_config_filename;

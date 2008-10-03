@@ -575,7 +575,7 @@ void SetNumToED(void *ed_gui, WSHDR *num, WSHDR *name)
 	wstrcpy(nl->name, name);
 	EDIT_SetTextToEditControl(ed_gui, n, name);
 }
-
+/*
 void InsertNumToED(void *ed_gui, WSHDR *num, WSHDR *name) //插入到列表光标后面
 {
 	EDITCONTROL ec;
@@ -603,6 +603,7 @@ void InsertNumToED(void *ed_gui, WSHDR *num, WSHDR *name) //插入到列表光标后面
 	(uo->focus_n)++;
 	EDIT_SetFocus(ed_gui, n+1);
 }
+*/
 int nummenu_onkey(void *data, GUI_MSG *msg)
 {
 		
@@ -620,25 +621,31 @@ int nummenu_onkey(void *data, GUI_MSG *msg)
 				{
 					WSHDR *xws=AllocWS(150);
 					wsprintf(xws, "%w|%s",up->cl->name, num);
-					if(uo->adr_type==TYPE_INSERT)
-						InsertNumToED(up->ed_gui, num, xws);
-					else if(uo->adr_type==TYPE_TXT)
+					//if(uo->adr_type==TYPE_INSERT)
+					//	InsertNumToED(up->ed_gui, num, xws);
+					//else if(uo->adr_type==TYPE_TXT)
+					if(uo->adr_type==TYPE_TXT)
 					{
 						InsertAsTxt(up->ed_gui, num);
 					}
-					else
+					else if(uo->adr_type==TYPE_SET)
+					{
 						SetNumToED(up->ed_gui, num, xws);
+					}
 					FreeWS(xws);
 				}
 			#else
-				if(uo->adr_type==TYPE_INSERT)
-					InsertNumToED(up->ed_gui, num, up->cl->name);
-				else if(uo->adr_type==TYPE_TXT)
+				//if(uo->adr_type==TYPE_INSERT)
+				//	InsertNumToED(up->ed_gui, num, up->cl->name);
+				//else if(uo->adr_type==TYPE_TXT)
+				if(uo->adr_type==TYPE_TXT)
 				{
 					InsertAsTxt(up->ed_gui, num);
 				}
-				else
+				else if(uo->adr_type==TYPE_SET)
+				{
 					SetNumToED(up->ed_gui, num, up->cl->name);
+				}
 			#endif
 				return 1;
 		}
@@ -733,25 +740,31 @@ static int adrmenu_keyhook(void *data, GUI_MSG *msg)
 					{
 						WSHDR *xws=AllocWS(150);
 						wsprintf(xws, "%w|%s",cl->name, num);
-						if(uo->adr_type==TYPE_INSERT)
-							InsertNumToED(ed_gui, num, xws);
-						else if(uo->adr_type==TYPE_TXT)
+						//if(uo->adr_type==TYPE_INSERT)
+						//	InsertNumToED(ed_gui, num, xws);
+						//else if(uo->adr_type==TYPE_TXT)
+						if(uo->adr_type==TYPE_TXT)
 						{
 							InsertAsTxt(ed_gui, num);
 						}
-						else
+						else if(uo->adr_type==TYPE_SET)
+						{
 							SetNumToED(ed_gui, num, xws);
+						}
 						FreeWS(xws);
 					}
 			#else
-					if(uo->adr_type==TYPE_INSERT)
-						InsertNumToED(ed_gui, num, cl->name);
-					else if(uo->adr_type==TYPE_TXT)
+					//if(uo->adr_type==TYPE_INSERT)
+					//	InsertNumToED(ed_gui, num, cl->name);
+					//else if(uo->adr_type==TYPE_TXT)
+					if(uo->adr_type==TYPE_TXT)
 					{
 						InsertAsTxt(ed_gui, num);
 					}
-					else
+					else if(uo->adr_type==TYPE_SET)
+					{
 						SetNumToED(ed_gui, num, cl->name);
+					}
 			#endif
 				}
 			}

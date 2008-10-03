@@ -985,8 +985,8 @@ MySMSYS/guiIdMan.h -text
 MySMSYS/language.c -text
 MySMSYS/language.h -text
 MySMSYS/lgp_pic.h -text
+MySMSYS/main.c -text
 MySMSYS/main.h -text
-MySMSYS/mian.c -text
 MySMSYS/numList.c -text
 MySMSYS/numList.h -text
 MySMSYS/popGui.c -text

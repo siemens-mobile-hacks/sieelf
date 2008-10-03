@@ -61,3 +61,4 @@ void FreeSdOne(SMS_DATA *sd);
 SMS_DATA *SdCopyOne(SMS_DATA *sdx);
 SMS_DATA *FindSdByTxtTimeNum(WSHDR *ws, char *time, char *num);
 int IsSdInList(SMS_DATA *sd);
+int IsHaveNewSMS(void);

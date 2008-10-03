@@ -5280,9 +5280,17 @@
   </file>
   <file>
     <name>$PROJ_DIR$\CodeShow.c</name>
+    <excluded>
+      <configuration>Release_ELKA_EN</configuration>
+      <configuration>Release_NEWSGOLD_LG3_EN</configuration>
+    </excluded>
   </file>
   <file>
     <name>$PROJ_DIR$\CodeShow.h</name>
+    <excluded>
+      <configuration>Release_ELKA_EN</configuration>
+      <configuration>Release_NEWSGOLD_LG3_EN</configuration>
+    </excluded>
   </file>
   <file>
     <name>$PROJ_DIR$\createMenu.c</name>
@@ -5315,7 +5323,7 @@
     <name>$PROJ_DIR$\language.h</name>
   </file>
   <file>
-    <name>$PROJ_DIR$\mian.c</name>
+    <name>$PROJ_DIR$\main.c</name>
   </file>
   <file>
     <name>$PROJ_DIR$\MySMSYS_ipc.h</name>
