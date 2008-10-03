@@ -3310,19 +3310,6 @@
     <name>$PROJ_DIR$\add-on.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$\E71Csw41.xcl</name>
-    <excluded>
-      <configuration>ELC1sw41</configuration>
-      <configuration>E71sw45</configuration>
-    </excluded>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\ELC1sw41.xcl</name>
-    <excluded>
-      <configuration>E71sw45</configuration>
-    </excluded>
-  </file>
-  <file>
     <name>$PROJ_DIR$\entery.asm</name>
     <excluded>
       <configuration>E71Csw41</configuration>
@@ -3334,14 +3321,6 @@
     <name>$PROJ_DIR$\entry_elka.asm</name>
     <excluded>
       <configuration>S7Csw47</configuration>
-    </excluded>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\S7Csw47.xcl</name>
-    <excluded>
-      <configuration>E71Csw41</configuration>
-      <configuration>ELC1sw41</configuration>
-      <configuration>E71sw45</configuration>
     </excluded>
   </file>
 </project>

@@ -36,6 +36,13 @@ AB_UPDATE_CODE
 	
 	EXTERN	OpmsgIDSend
 INBOX_VIEW_CODE
+#ifdef ELC1v41
+	ADD	LR, LR, #4
+	LDR	R2, [SP,#0x174]
+	LDR	R3, [SP,#0x178]
+	LDR	R0, [R6,#0xC]
+	LDR	R1, [R6,#0x10]	
+#else
 	ADD	LR, LR, #6
 	//LDR	R2, [SP, #0x178]
 	LDR	R3, [SP, #0x178]
@@ -47,15 +54,13 @@ INBOX_VIEW_CODE
 #ifdef E71Cv41
 #define IBVIEW_ADR	0xA051A4C7
 #endif
-#ifdef ELC1v41
-#define IBVIEW_ADR	0xA0520063 //B430B5C7B006A9
-#endif
 #ifdef E71v45
 #define IBVIEW_ADR	0xA0504D67 //B430B5C7B006A9
 #endif
 	LDR	R12, =IBVIEW_ADR
 	BX	R12
-	
+
+#endif
 INBOX_V
 	CMP	R0, #0x4
 	CMPNE	R2, #0x4
@@ -68,9 +73,16 @@ INBOX_V1
 	LDMFD	SP!,{R1-R7, PC}
 
 INBOX_OPVIEW_CODE
+#ifdef ELC1v41
+	ADD	LR, LR, #6
+	ADD	R0, R0, #0x80
+	LDR	R2, [SP,#0x170]
+	LDR	R3, [SP,#0x174]
+#else
 	ADD	LR, LR, #4
 	LDR	R2, [SP,#0x16C]
 	LDR	R3, [SP,#0x170]
+#endif
 	LDR	R1, [R0,#0x10]
 	LDR	R0, [R0,#0xC]
 	B	INBOX_V
@@ -259,7 +271,10 @@ INBOX_REC_CODE
 	BLX	R1
 	
 #ifdef ELC1v41     
-
+        RSEG	INBOX_VIEW_HOOK
+	CODE16
+	LDR	R0, =INBOX_VIEW_CODE
+	BLX	R0
 #else
         RSEG	INBOX_VIEW_HOOK
 	CODE16
