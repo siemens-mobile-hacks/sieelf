@@ -32,7 +32,6 @@ int char16to8(int c)
 #else
 #define CODEMAP_ADDR 0xA0FA0200
 #endif
-#endif
 
 void ws2ascii(WSHDR *ws, char *s, int maxlen)
 {
@@ -128,6 +127,7 @@ void ws2ascii(WSHDR *ws, char *s, int maxlen)
   s[j] = 0;
 }
 
+#endif
 void ws_2ascii(WSHDR *ws, char *str, int maxlen)
 {
 #ifdef LANG_CN
