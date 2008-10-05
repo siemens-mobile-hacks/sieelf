@@ -5,7 +5,7 @@ const char my_ipc_name[]=MY_SMSYS_IPC_NAME;
 
 const char ELFNAME[]="MySMSYS";
 const char ELFNAME_D[]="MySMSYS_D";
-const char COPY_RIGHT[]="MySMSYS\n(c)BingK(binghelingxi)\n(r)titron";
+const char COPY_RIGHT[]="MySMSYS\n(c)BingK (binghelingxi)\n(r)titron";
 
 const char PERCENT_T[]="%t";
 
