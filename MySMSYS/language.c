@@ -19,6 +19,7 @@ const char FLDR_OUT[]="Out\\";
 const char FLDR_DRAFT[]="Draft\\";
 //const char FLDR_MAIN[]="0:\\ZBin\\MySMSYS\\";
 const char FLDR_UNK[]="Unknow\\";
+const char FLDR_ARCHIVE[]="Archive\\";
 
 #ifdef LANG_EN
 const char LGP_OK[]="OK";
@@ -57,6 +58,33 @@ const char STR_NEW_MSG[]="New Message!";
 const char STR_FROM[]="From:";
 const char LGP_SAVEALL[]="Save All As File";
 const char LGP_CONFIG_UPDATE[]="MySMSYS Config Updated!";
+const char STR_UNK_NUM[]="Unknow Number";
+const char STR_NUMBER[]="Number";
+const char STR_TEXT[]="Text";
+const char STR_TO[]="To";
+const char STR_TIME[]="Time";
+const char STR_UNK[]="Unknow";
+const char LGP_CONFIG[]="Setting";
+const char LGP_SAVE_ALL_ONE[]="Export All To One TXT";
+const char LGP_PLS_INPUT_PATH[]="Please Input The File Path:";
+const char LGP_OTHERS[]="Others";
+const char STR_UNK_NUM_UTF8[]="Unknow Number";
+const char STR_NUMBER_UTF8[]="Number";
+const char STR_TEXT_UTF8[]="Text";
+const char STR_TO_UTF8[]="To";
+const char STR_FROM_UTF8[]="From";
+const char STR_TIME_UTF8[]="Time";
+const char STR_UNK_UTF8[]="Unknow";
+const char LGP_FILE_FAILED[]="File Operate Failed!";
+const char LGP_FILE_EXIST[]="File Existed!";
+const char LGP_EXPORT_TXT[]="Export As Txt";
+const char LGP_MOVE_ARCHIVE[]="Move To Archive";
+const char LGP_MOVE_ALL_MSS[]="Move All MSS To Archive";
+const char LGP_OPEN_ARCHIVE[]="Open Archive";
+const char STR_EXPORT_N[]="Export %d SMS Successful!";
+const char STR_MOVE_MSSARCHIVER_N[]="Move %d Mss File to Archive Successful!";
+const char LGP_DEL_ALL_MSS[]="Delete All Mss File?";
+const char LGP_ABOUT[]="About...";
 #endif
 
 #ifdef LANG_CN
@@ -96,5 +124,32 @@ const char STR_FROM[]="来自";
 const char STR_CODESHOW[]="区号秀";
 const char LGP_SAVEALL[]="保存所有为文件";
 const char LGP_CONFIG_UPDATE[]="MySMSYS 配置更新!";
+const char STR_UNK_NUM[]="未知号码";
+const char STR_NUMBER[]="号码";
+const char STR_TEXT[]="正文";
+const char STR_TO[]="发送到";
+const char STR_TIME[]="时间";
+const char STR_UNK[]="未知";
+const char LGP_CONFIG[]="配置...";
+const char LGP_SAVE_ALL_ONE[]="导出所有到TXT";
+const char LGP_PLS_INPUT_PATH[]="请输入文件路径:";
+const char LGP_OTHERS[]="其它...";
+const char STR_UNK_NUM_UTF8[]="\xE6\x9C\xAA\xE7\x9F\xA5\xE5\x8F\xB7\xE7\xA0\x81";
+const char STR_NUMBER_UTF8[]="\xE5\x8F\xB7\xE7\xA0\x81";
+const char STR_TEXT_UTF8[]="\xE6\xAD\xA3\xE6\x96\x87";
+const char STR_TO_UTF8[]="\xE5\x8F\x91\xE9\x80\x81\xE5\x88\xB0";
+const char STR_FROM_UTF8[]="\xE6\x9D\xA5\xE8\x87\xAA";
+const char STR_TIME_UTF8[]="\xE6\x97\xB6\xE9\x97\xB4";
+const char STR_UNK_UTF8[]="\xE6\x9C\xAA\xE7\x9F\xA5";
+const char LGP_FILE_FAILED[]="文件操作失败!";
+const char LGP_FILE_EXIST[]="文件已存在!";
+const char LGP_EXPORT_TXT[]="导出为TXT";
+const char LGP_MOVE_ARCHIVE[]="移动到档案柜";
+const char LGP_MOVE_ALL_MSS[]="全部MSS移到档案柜";
+const char LGP_OPEN_ARCHIVE[]="打开档案柜";
+const char STR_EXPORT_N[]="成功导出%d条短信!";
+const char STR_MOVE_MSSARCHIVER_N[]="成功转移%d个Mss文件!";
+const char LGP_DEL_ALL_MSS[]="删除所有Mss文件?";
+const char LGP_ABOUT[]="关于...";
 #endif
 

@@ -158,7 +158,7 @@ const SOFTKEYSTAB main_menu_skt=
   main_menu_sk,0
 };
 HEADER_DESC main_menuhdr={0,0,0,0,NULL,(int)ELFNAME,LGP_NULL};
-#define MAIN_MENU_N 6
+#define MAIN_MENU_N 7
 
 void mm_newsms(GUI *gui)
 {
@@ -202,6 +202,14 @@ void mm_allsms(GUI *gui)
 	showSMSList(dlg_csm, 0);
 }
 
+unsigned int CreateOthMenu(void);
+
+void mm_oth(GUI *gui)
+{
+	CreateOthMenu();
+}
+
+
 const char *MENU_TEXT[MAIN_MENU_N]=
 {
 	LGP_NEW,
@@ -209,7 +217,8 @@ const char *MENU_TEXT[MAIN_MENU_N]=
 	LGP_IN_A,
 	LGP_OUT,
 	LGP_DRAFT,
-	LGP_ALL
+	LGP_ALL,
+	LGP_OTHERS
 };
 int main_menu_onkey(void *data, GUI_MSG *msg)
 {
@@ -248,6 +257,9 @@ __swi __arm void TempLightOn(int x, int y);
 		case 5: 
 			mm_allsms((GUI *)data);
 			break;
+		case 6:
+			mm_oth((GUI *)data);
+			break;
 		}
 	}
 	return 0;
@@ -260,6 +272,7 @@ void main_menu_itemhndl(void *data, int curitem, void *user_pointer)
 	WSHDR *ws=AllocMenuWS(data, 150);
 	switch(curitem)
 	{
+	case 6:
 	case 0:
 		wsprintf(ws, PERCENT_T, MENU_TEXT[curitem]);
 		break;
@@ -757,3 +770,142 @@ int main(char *exename, char *fname)
 	UnlockSched();
 	return 0;
 }
+
+//--------------------------------------------------------
+//Others Menu
+#define OTH_MENU_N 5
+const SOFTKEY_DESC oth_menu_sk[]=
+{
+  {0x0018,0x0000,(int)LGP_SELECT},
+  {0x0001,0x0000,(int)LGP_BACK},
+  {0x003D,0x0000,(int)LGP_DOIT_PIC}
+};
+
+
+const SOFTKEYSTAB oth_menu_skt=
+{
+  oth_menu_sk,0
+};
+
+void OpenConfig(void)
+{
+  extern const char *successed_config_filename;
+  WSHDR *file=AllocWS(128);
+  str_2ws(file, successed_config_filename, 128);
+  ExecuteFile(file, 0, 0);
+  FreeWS(file);
+}
+
+void oth_menu_config(GUI *data)
+{
+  GeneralFuncF1(1);
+  OpenConfig();
+}
+
+void oth_save_one_txt(GUI *data)
+{
+  GeneralFuncF1(1);
+  PathInputDlg();
+}
+
+void oth_move_all_mss(GUI *data)
+{
+  int k;
+  char msg[64];
+  GeneralFuncF1(1);
+  k=MoveAllMssToArchive();
+  sprintf(msg, STR_MOVE_MSSARCHIVER_N, k);
+  ShowMSG(1, (int)msg);
+}
+
+
+void OpenArchive(void);
+
+void oth_open_archive(GUI *data)
+{
+  GeneralFuncF1(1);
+  OpenArchive();
+}
+
+void oth_about(GUI *data)
+{
+  GeneralFuncF1(1);
+  ShowMSG_noff(1, COPY_RIGHT);
+}
+
+const MENUPROCS_DESC oth_menuprocs[OTH_MENU_N]=
+{
+  oth_menu_config,
+  oth_open_archive,
+  oth_save_one_txt,
+  oth_move_all_mss,
+  oth_about
+};
+
+const MENUITEM_DESC oth_menuitems[OTH_MENU_N]=
+{
+  {NULL,(int)LGP_CONFIG,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)LGP_OPEN_ARCHIVE,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)LGP_SAVE_ALL_ONE,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)LGP_MOVE_ALL_MSS,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)LGP_ABOUT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+};
+
+const MENU_DESC oth_menu=
+{
+  8,NULL,NULL,NULL,
+  main_menusoftkeys,
+  &oth_menu_skt,
+  0x10,//Right align
+  NULL,
+  oth_menuitems,//menuitems,
+  oth_menuprocs,//menuprocs,
+  OTH_MENU_N
+};
+
+HEADER_DESC oth_menuhdr={0,0,0,0,NULL,(int)LGP_OTHERS,LGP_NULL};
+
+unsigned int CreateOthMenu(void)
+{
+  patch_header(&oth_menuhdr);
+  return (CreateSLMenu(&oth_menu, &oth_menuhdr, 0, OTH_MENU_N, 0));
+}
+
+//open archive
+void OpenArchive(void)
+{
+  int len, c;
+  char folder[128];
+  unsigned int err;
+  NativeExplorerData data;
+  WSHDR *ws, wsn;
+  unsigned short wsb[128];
+  ws=CreateLocalWS(&wsn, wsb, 128);
+  strcpy(folder, CFG_MAIN_FOLDER);
+  len=strlen(folder);
+  c=folder[len-1];
+  if(c!='\\' && c!='/')
+  {
+    folder[len]='\\';
+    folder[len+1]=0;
+  }
+  if(!isdir(folder, &err))
+    mkdir(folder, &err);
+  strcat(folder, FLDR_ARCHIVE);
+  if(!isdir(folder, &err))
+    mkdir(folder, &err);
+  if(!isdir(folder, &err))
+    return;
+  str_2ws(ws, folder, 128);
+  zeromem(&data,sizeof(NativeExplorerData));
+  data.mode=0;
+  data.dir_enum=0x26;
+  data.path_to_file=ws;
+  data.is_exact_dir=1;
+  data.full_filename=ws;
+  data.unk9=1;
+  //data.this_struct_addr=&data;
+  StartNativeExplorer(&data);
+}
+
+

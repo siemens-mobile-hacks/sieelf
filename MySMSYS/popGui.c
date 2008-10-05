@@ -74,8 +74,8 @@ void popup_ghook(void *data, int cmd)
 	POP_UP *pu=(POP_UP *)GetPopupUserPointer(data);
 	if(cmd==2) //Create
 	{
-		if(!IsUnlocked())
-			TempLightOn(3, 0x7FFF);
+		//if(!IsUnlocked())
+		TempLightOn(3, 0x7FFF);
 		if(CFG_NOTIFY_TIME)
 		{
 			SetVibration(CFG_VIBRA_POWER);
@@ -182,3 +182,63 @@ int ShowMSG_ws(int flag, WSHDR *msg)
 	return (CreatePopupGUI_ws(flag, 0, &msg_popup, msg));
 }
 
+
+int offproc_popup_onkey(void *data, GUI_MSG *msg)
+{
+	if((msg->keys==0x18)||(msg->keys==0x3D))
+		return 1;
+	return 0;
+}
+void offproc_popup_ghook(void *data, int cmd)
+{
+	if(cmd==3)
+	{
+		void *proc=GetPopupUserPointer(data);
+		((void (*)(void))proc)();
+	}
+}
+const POPUP_DESC offproc_popup=
+{
+  0,
+  offproc_popup_onkey,
+  offproc_popup_ghook,
+  NULL,
+  popup_softkeys,
+  &msg_popup_skt,
+  0x1,
+  LGP_NULL,
+  popup_icons,
+  0,
+  FONT_MEDIUM,
+  100,
+  101,
+  0x7D0 //flag2 ? auto off time?
+};
+
+int ShowMSG_offproc(int flag, const char *msg, void proc(void))
+{
+	return (CreatePopupGUI(flag, (void *)proc, &offproc_popup, (int)msg));
+}
+
+const POPUP_DESC msg_noff_popup=
+{
+  0,
+  msg_popup_onkey,
+  NULL,
+  NULL,
+  popup_softkeys,
+  &msg_popup_skt,
+  0x1,
+  LGP_NULL,
+  popup_icons,
+  0,
+  FONT_MEDIUM,
+  100,
+  101,
+  0 //flag2 ? auto off time?
+};
+
+int ShowMSG_noff(int flag, const char *msg)
+{
+	return (CreatePopupGUI(flag, 0, &msg_noff_popup, (int)msg));
+}

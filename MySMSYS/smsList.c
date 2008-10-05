@@ -40,7 +40,7 @@ const HEADER_DESC sms_menuhdr={0,0,0,0,NULL,LGP_NULL,LGP_NULL};
 
 //------------------------------------------------------
 
-#define SLOP_MENU_N 5
+#define SLOP_MENU_N 7
 #define SLOP_MENU_N_2 (SLOP_MENU_N-1)
 const int slop_menusoftkeys[]={0,1,2};
 const SOFTKEY_DESC slop_menu_sk[]=
@@ -106,12 +106,39 @@ void slop_menu_save_as_file(GUI *data)
 	}
 }
 
+void slop_menu_export_txt(GUI *data)
+{
+	SL_UP *su=MenuGetUserPointer(data);
+	GeneralFuncF1(1);
+	if(su->sd)
+		ShowFileErrCode(ExportOneToTxt(su->sd));
+}
+
+void slop_menu_move_to_archive(GUI *data)
+{
+	SL_UP *su=MenuGetUserPointer(data);
+	GeneralFuncF1(1);
+	if(su->sd)
+	{
+		int k=MoveToArchive(su->sd);
+		if(k==1)
+		{
+			if(!su->sd->isfile) deleteDat(su->sd, 0);
+			delSDList(su->sd);
+		}
+		else
+			ShowFileErrCode(k);
+	}
+}
+
 const MENUPROCS_DESC slop_menuprocs[SLOP_MENU_N]=
 {
 	slop_menu_reply,
 	slop_menu_edit,
 	slop_menu_del,
 	slop_menu_save_as_file,
+	slop_menu_export_txt,
+	slop_menu_move_to_archive,
 	slop_menu_exit,
 };
 
@@ -121,6 +148,8 @@ const MENUITEM_DESC slop_menuitems[SLOP_MENU_N]=
 	{NULL,(int)STR_EDIT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_DEL,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},	
 	{NULL,(int)LGP_SAVE_AS_FILE,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+	{NULL,(int)LGP_EXPORT_TXT,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},	
+	{NULL,(int)LGP_MOVE_ARCHIVE,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},	
 	{NULL,(int)LGP_EXIT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 };
 
@@ -129,6 +158,8 @@ const MENUPROCS_DESC slop_menuprocs_2[SLOP_MENU_N_2]=
 	slop_menu_reply,
 	slop_menu_edit,
 	slop_menu_del,
+	slop_menu_export_txt,
+	slop_menu_move_to_archive,
 	slop_menu_exit,
 };
 
@@ -137,6 +168,8 @@ const MENUITEM_DESC slop_menuitems_2[SLOP_MENU_N_2]=
 	{NULL,(int)STR_REPLY,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)STR_EDIT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_DEL,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+	{NULL,(int)LGP_EXPORT_TXT,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},	
+	{NULL,(int)LGP_MOVE_ARCHIVE,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},	
 	{NULL,(int)LGP_EXIT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 };
 
@@ -260,10 +293,10 @@ __swi __arm void TempLightOn(int x, int y);
 		popGS(so->dlg_csm);
 		return 1;
 	}
-	if((msg->gbsmsg->msg==KEY_DOWN)&&(n>0))
+	if((msg->gbsmsg->msg==KEY_DOWN)&&(n>0)&&(sd))
 	{
 		int i=msg->gbsmsg->submess;
-		if((i=='7')&&(sd)) //key 7 for delete
+		if((i=='7')) //key 7 for delete
 		{
 			if(sd->isfile)
 				deleteFile(sd, 0);
@@ -273,14 +306,14 @@ __swi __arm void TempLightOn(int x, int y);
 			RefreshGUI();
 			return (-1);
 		}
-		else if((i=='9')&&(sd)&&(!sd->isfile))
+		else if((i=='9')&&(!sd->isfile))
 		{
 			if(saveFile(sd->SMS_TEXT, sd->Number, sd, sd->type, 0))
 				deleteDat(sd, 1);
 			RefreshGUI();
 			return (-1);
 		}
-		else if((i=='*')&&(sd)) //*键,查看号码信息
+		else if((i=='*')) //*键,查看号码信息
 		{
 			WSHDR *msg=AllocWS(128);
 		#ifdef NO_CS
@@ -297,6 +330,27 @@ __swi __arm void TempLightOn(int x, int y);
 			}
 		#endif
 			ShowMSG_ws(1, msg);
+		}
+		else if((i=='8'))
+		{
+			int k;
+		//	extern int ExportOneToTxt(SMS_DATA *sd);
+			k=ExportOneToTxt(sd);
+			ShowFileErrCode(k);
+		}
+		else if(i=='4')
+		{
+			int k;
+			extern int MoveToArchive(SMS_DATA *sd);
+			k=MoveToArchive(sd);
+			if(k==1)
+			{
+				if(!sd->isfile) deleteDat(sd, 0);
+				delSDList(sd);
+				RefreshGUI();
+				return (-1);
+			}
+			ShowFileErrCode(k);
 		}
 	}
 	return 0;

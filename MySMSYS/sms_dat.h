@@ -39,6 +39,25 @@ typedef struct
 	WSHDR *SMS_TEXT;
 }SMS_DATA;
 
+#define MSS_VERSION 2 //add type;
+typedef struct
+{
+	char header[8];
+	int version;
+	char time[32];
+	char number[32];
+}MSS_FILE_P1;
+
+
+typedef struct
+{
+	char header[8];
+	int version;
+	int type;
+	char time[32];
+	char number[32];
+}MSS_FILE_P2;
+
 extern SMS_DATA *sdltop;
 void freeSDList(void);
 int readAllSMS(void);
@@ -62,3 +81,12 @@ SMS_DATA *SdCopyOne(SMS_DATA *sdx);
 SMS_DATA *FindSdByTxtTimeNum(WSHDR *ws, char *time, char *num);
 int IsSdInList(SMS_DATA *sd);
 int IsHaveNewSMS(void);
+void DeleteAllMss(void);
+//---------------------------
+int ExportAllToOneTxt(char *filename);
+int ExportOneToTxt(SMS_DATA *sd);
+int MoveToArchive(SMS_DATA *sd);
+int MoveAllMssToArchive(void);
+void ShowFileErrCode(int code);
+
+

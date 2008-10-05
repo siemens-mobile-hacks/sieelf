@@ -34,7 +34,7 @@ const SOFTKEYSTAB ed_menu_skt=
 };
 
 HEADER_DESC ed_menuhdr={0,0,0,0,NULL,(int)ELFNAME,LGP_NULL};
-#define ED_MENU_N 4
+#define ED_MENU_N 6
 #define ED_MENU_N_1 (ED_MENU_N+1)
 
 void ed_menu_reply(GUI *gui)
@@ -176,6 +176,43 @@ void ed_menu_save_as_file(GUI *gui)
 	}
 	GeneralFuncF1(1);
 } 
+
+void ed_menu_move_to_archive(GUI *gui)
+{
+	USER_OP *uo=MenuGetUserPointer(gui);
+	DLG_CSM *dlg_csm=(DLG_CSM *)(uo->dlg_csm);
+	SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);	
+	if(gstop)
+	{
+		GeneralFunc_flag1(gstop->id, 1);
+		popGS(dlg_csm);
+	}
+	if(uo->sd)
+	{
+		int k=MoveToArchive(uo->sd);
+		if(k==1)
+		{
+			if(!uo->sd->isfile) deleteDat(uo->sd, 0);
+			if(uo->gui_type!=ED_FVIEW) delSDList(uo->sd);
+		}
+		else
+			ShowFileErrCode(k);
+	}
+	GeneralFuncF1(1);
+}
+
+void ed_menu_export_txt(GUI *gui)
+{
+	USER_OP *uo=MenuGetUserPointer(gui);
+	//DLG_CSM *dlg_csm=(DLG_CSM *)(uo->dlg_csm);
+	//SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);
+	if(uo->sd)
+	{
+		ShowFileErrCode(ExportOneToTxt(uo->sd));
+	}
+	GeneralFuncF1(1);
+}
+
 /*
 int ed_menuonkey(void *data, GUI_MSG *msg)
 {
@@ -203,6 +240,8 @@ const MENUPROCS_DESC ed_menuprocs[ED_MENU_N]=
 	ed_menu_reply,
 	ed_menu_edit,
 	ed_menu_del,
+	ed_menu_export_txt,
+	ed_menu_move_to_archive,
 	ed_menu_exit,
 };
 
@@ -211,6 +250,8 @@ const MENUITEM_DESC ed_menuitems[ED_MENU_N]=
 	{NULL,(int)STR_REPLY,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)STR_EDIT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_DEL,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+	{NULL,(int)LGP_EXPORT_TXT,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},	
+	{NULL,(int)LGP_MOVE_ARCHIVE,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},	
 	{NULL,(int)LGP_EXIT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 };
 
@@ -232,6 +273,8 @@ const MENUPROCS_DESC ed_menuprocs_1[ED_MENU_N_1]=
 	ed_menu_edit,
 	ed_menu_del,
 	ed_menu_save_as_file,
+	ed_menu_export_txt,
+	ed_menu_move_to_archive,
 	ed_menu_exit,
 };
 
@@ -241,6 +284,8 @@ const MENUITEM_DESC ed_menuitems_1[ED_MENU_N_1]=
 	{NULL,(int)STR_EDIT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_DEL,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_SAVE_AS_FILE,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+	{NULL,(int)LGP_EXPORT_TXT,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},	
+	{NULL,(int)LGP_MOVE_ARCHIVE,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},	
 	{NULL,(int)LGP_EXIT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 };
 
@@ -651,6 +696,7 @@ void edGHook(GUI *data, int cmd)
 		SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);	
 		int n=EDIT_GetFocus(data);
 		text=CreateLocalWS(&txtl, txtb, MAX_TEXT);
+//check sd in list
 		if((uo->gui_type==ED_VIEW)&&(!IsSdInList(uo->sd)))
 		{
 			ExtractEditControl(data, uo->focus_n, &ec);
@@ -758,10 +804,10 @@ void edGHook(GUI *data, int cmd)
 				}
 			}
 		}
-		ExtractEditControl(data,n,&ec);
 		if(!EDIT_IsBusy(data))
 		{
-			if((n<=(uo->focus_n-2))&&(ec.pWS->wsbody[0]==0))
+			ExtractEditControl(data,n,&ec);
+			if((n<=(uo->focus_n-2))&&(ec.pWS->wsbody[0]==0)&&(uo->gui_type!=ED_VIEW))
 				SetSoftKey(data,&SK_ADRBK,SET_SOFT_KEY_N);
 			else
 				SetSoftKey(data,&SK_OPTIONS,SET_SOFT_KEY_N);
@@ -841,7 +887,12 @@ int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, 
 //------------ num
 	{
 		if((!strlen(sd->Number))||(!findNameByNum(ews, sd->Number)))
-			str_2ws(ews, sd->Number, 256);
+		{
+			if((!strlen(sd->Number))&&(type==ED_VIEW || type==ED_FVIEW))
+				wsprintf(ews, "%c", ' ');
+			else
+				str_2ws(ews, sd->Number, 256);
+		}
 #ifdef DEBUG
 		{
 			if(strlen(sd->Number))
@@ -1006,4 +1057,86 @@ unsigned int ViewFile(void *dlg_csm, char *fname)
 	}
 	return (createEditGUI(dlg_csm, sd, ED_FVIEW, 0));
 }
+#define IDYES	0
+#define IDNO	1
 
+void DeleteAllMss_proc(int id)
+{
+	if(id==IDYES)
+		DeleteAllMss();
+}
+void delallproc(void)
+{
+	MsgBoxYesNo(1, (int)LGP_DEL_ALL_MSS, DeleteAllMss_proc);
+}
+int PathInputOnKey(GUI *data, GUI_MSG *msg)
+{
+  EDITCONTROL ec;
+  char path[128];
+  if(msg->keys==0x1A)
+  {
+    int k;
+    ExtractEditControl(data,2,&ec);
+    ws_2str(ec.pWS, path, 128);
+    k=ExportAllToOneTxt(path);
+    if(k>0)
+    {
+    	char msg[64];
+    	sprintf(msg, STR_EXPORT_N, k);
+    	//ShowMSG(1, (int)msg);
+    	//extern int ShowMSG_offproc(int flag, char *msg, void proc(void));
+    	ShowMSG_offproc(1, msg, delallproc);
+    }
+    else
+	    ShowFileErrCode(k);
+    return 1;
+  }
+  return 0;
+}
+
+void PathInputGHook(GUI *data, int cmd)
+{
+  if(cmd==0x0A)
+    DisableIDLETMR();
+}
+
+INPUTDIA_DESC PATH_INPUT_DESC=
+{
+  1,
+  PathInputOnKey,
+  PathInputGHook,
+  (void *)ed_locret,
+  0,
+  &ed_menu_skt,
+  {0,0,0,0},
+  FONT_SMALL,
+  100,
+  101,
+  0,
+  0,
+  0x40000000
+};
+
+void PathInputDlg(void)
+{
+  void *ma=malloc_adr();
+  void *eq;
+  EDITCONTROL ec;
+  WSHDR *ews;
+  TDate date;
+  TTime time;
+  GetDateTime(&date, &time);
+  PrepareEditControl(&ec);
+  eq=AllocEQueue(ma,mfree_adr());
+  ews=AllocWS(128);
+  wsprintf(ews, PERCENT_T, LGP_PLS_INPUT_PATH);
+  ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,ews->wsbody[0]);
+  AddEditControlToEditQend(eq,&ec,ma);
+  wsprintf(ews, "%sText\\%d%02d%02d.txt", CFG_MAIN_FOLDER, date.year, date.month, date.day);
+  ConstructEditControl(&ec,ECT_CURSOR_STAY,ECF_APPEND_EOL,ews,128);
+  AddEditControlToEditQend(eq,&ec,ma);
+  patch_header(&ED_HDR);
+  patch_input(&PATH_INPUT_DESC);
+  CreateInputTextDialog(&PATH_INPUT_DESC,&ED_HDR,eq,1,0);
+  FreeWS(ews);
+}

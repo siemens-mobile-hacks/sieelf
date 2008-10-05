@@ -996,6 +996,8 @@ MySMSYS/smsList.c -text
 MySMSYS/smsList.h -text
 MySMSYS/sms_dat.c -text
 MySMSYS/sms_dat.h -text
+MySMSYS/string_works.c -text
+MySMSYS/string_works.h -text
 MySMSYS/test.xcl -text
 MySMSYS/tph.cmd -text
 MyScreenSaver/E71Csw41.xcl -text

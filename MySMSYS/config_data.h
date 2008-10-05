@@ -12,4 +12,5 @@ extern const int CFG_ENA_NEWSMS_ICON;
 extern const char CFG_ICONNEW_PATH[128];
 extern const unsigned int CFG_ICONNEW_POS_X;
 extern const unsigned int CFG_ICONNEW_POS_Y;
+extern const int CFG_EXPORT_CHARSET;
 #endif

@@ -5,6 +5,13 @@ extern const char ELFNAME[];
 extern const char ELFNAME_D[];
 extern const char COPY_RIGHT[];
 
+extern const char FLDR_IN[];
+extern const char FLDR_OUT[];
+extern const char FLDR_DRAFT[];
+//extern const char FLDR_MAIN[];
+extern const char FLDR_UNK[];
+extern const char FLDR_ARCHIVE[];
+
 extern const char PERCENT_T[];
 extern const char LGP_OK[];
 extern const char LGP_BACK[];
@@ -43,12 +50,6 @@ extern const char STR_UNK_TXTT[];
 extern const char STR_UNK_TYPE[];
 extern const char STR_NEW_MSG[];
 extern const char STR_FROM[];
-extern const char FLDR_IN[];
-extern const char FLDR_OUT[];
-extern const char FLDR_DRAFT[];
-//extern const char FLDR_MAIN[];
-extern const char FLDR_UNK[];
-
 extern const char LGP_SAVEALL[];
 extern const char LGP_CONFIG_UPDATE[];
 
@@ -56,6 +57,34 @@ extern const char LGP_CONFIG_UPDATE[];
 extern const char STR_CODESHOW[];
 #endif
 
+extern const char STR_UNK_NUM[];
+extern const char STR_NUMBER[];
+extern const char STR_TEXT[];
+extern const char STR_TO[];
+extern const char LGP_CONFIG[];
+extern const char LGP_CONFIG[];
+extern const char LGP_SAVE_ALL_ONE[];
+extern const char LGP_PLS_INPUT_PATH[];
+extern const char LGP_OTHERS[];
+extern const char STR_UNK_NUM_UTF8[];
+extern const char STR_NUMBER_UTF8[];
+extern const char STR_TEXT_UTF8[];
+extern const char STR_TO_UTF8[];
+extern const char STR_FROM_UTF8[];
+extern const char LGP_FILE_FAILED[];
+extern const char LGP_FILE_EXIST[];
+extern const char LGP_EXPORT_TXT[];
+extern const char LGP_MOVE_ARCHIVE[];
+extern const char LGP_MOVE_ALL_MSS[];
+extern const char LGP_OPEN_ARCHIVE[];
+extern const char STR_EXPORT_N[];
+extern const char STR_MOVE_MSSARCHIVER_N[];
+extern const char STR_TIME_UTF8[];
+extern const char STR_UNK_UTF8[];
+extern const char STR_TIME[];
+extern const char STR_UNK[];
+extern const char LGP_DEL_ALL_MSS[];
+extern const char LGP_ABOUT[];
 #ifdef LANG_CN
 #define LGP_CFG_MAIN_FOLDER "MySMSYS文件夹"
 #define LGP_CFG_SYSTEM_FOLDER "系统文件夹"
@@ -67,6 +96,7 @@ extern const char STR_CODESHOW[];
 #define LGP_CFG_ENA_NEWSMS_ICON "待机显示新短信图标"
 #define LGP_CFG_ICONNEW_PATH "图标文件路径"
 #define LGP_CFG_ICONNEW_POS "图标坐标"
+#define LGP_CFG_EXPORT_CHARSET "导出文本字符编码"
 #endif
 
 #ifdef LANG_EN
@@ -80,4 +110,5 @@ extern const char STR_CODESHOW[];
 #define LGP_CFG_ENA_NEWSMS_ICON "Show NewSMS Icon Idle"
 #define LGP_CFG_ICONNEW_PATH "Icon Path"
 #define LGP_CFG_ICONNEW_POS "Icon Position"
+#define LGP_CFG_EXPORT_CHARSET "Export Text Charset"
 #endif

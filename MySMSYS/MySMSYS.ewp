@@ -5314,9 +5314,6 @@
     <name>$PROJ_DIR$\guiIdMan.h</name>
   </file>
   <file>
-    <name>$PROJ_DIR$\lang.h</name>
-  </file>
-  <file>
     <name>$PROJ_DIR$\language.c</name>
   </file>
   <file>
@@ -5354,6 +5351,12 @@
   </file>
   <file>
     <name>$PROJ_DIR$\smsList.h</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\string_works.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\string_works.h</name>
   </file>
 </project>
 

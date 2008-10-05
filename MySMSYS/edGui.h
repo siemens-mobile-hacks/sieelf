@@ -44,4 +44,4 @@ int newSMSWithNum(void *dlg_csm, char *num);
 int newSMSWithUtf8Text(void *dlg_csm, char *text_utf8);
 int DoByOpmsgId(void *dlg_csm, int msg, int opmsg_id);
 unsigned int ViewFile(void *dlg_csm, char *fname);
-
+void PathInputDlg(void);
