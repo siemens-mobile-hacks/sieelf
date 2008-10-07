@@ -60,6 +60,4 @@ void ConstructList(void);
 void FreeCLIST(void);
 int CreateAdrMenu(void *user_pointer);
 int findNameByNum(WSHDR *name_to, char *num);
-int wstrncmp_nocase(WSHDR *ws1, WSHDR *ws2, int n);
-int wstrcmp_nocase(WSHDR *ws1, WSHDR *ws2);
 

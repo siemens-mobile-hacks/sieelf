@@ -73,8 +73,14 @@ int main(void)
 //	CreatePopupGUI(1, 0, &popup, 0xF63);
 //  	GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_NEW_IN_WIN,&myipc);
 //	myipc.data=(void *)0xE7C;
-//	GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_QN_OPMSG,&myipc);
-  	ShowMSG(1, LGP_DOIT_PIC);
+
+//  IPC_REQ *ipcr=malloc(sizeof(IPC_REQ));
+//  ipcr->name_to=MY_SMSYS_IPC_NAME;
+//  ipcr->name_from=MY_SMSYS_IPC_NAME;
+//  ipcr->data=NULL;
+//  GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_ARCHIVE,ipcr);
+	GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_ARCHIVE,&myipc);
+//  	ShowMSG(1, LGP_DOIT_PIC);
 	SUBPROC((void *)ElfKiller);
 	return 0;
 }

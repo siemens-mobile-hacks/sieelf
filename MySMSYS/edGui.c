@@ -13,6 +13,7 @@
 #include "CodeShow.h"
 #include "popGui.h"
 #include "config_data.h"
+#include "string_works.h"
 
 #ifdef	LANG_CN
 #define TEXT_INPUT_OPTION	ECT_CURSOR_STAY

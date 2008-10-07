@@ -627,10 +627,14 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 						}
 					}
 				}
-				else if(msg->submess <= SMSYS_IPC_MSG_MAX)
+				else if((msg->submess > 0)&&(msg->submess <= SMSYS_IPC_MSG_MAX))
 				{
 					IPC_SUB_MSG=msg->submess;
 					CreateDialogCSM();
+				}
+				else if(msg->submess == SMSYS_IPC_ARCHIVE)
+				{
+					SUBPROC((void *)OpenArchive);
 				}
 				else if(msg->submess == SMSYS_IPC_NEW_IN_WIN)
 				{
@@ -819,8 +823,6 @@ void oth_move_all_mss(GUI *data)
   readAllSMS();
 }
 
-
-void OpenArchive(void);
 
 void oth_open_archive(GUI *data)
 {

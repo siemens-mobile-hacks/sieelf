@@ -7,7 +7,7 @@
 #include "createMenu.h"
 #include "numList.h"
 #include "config_data.h"
-
+#include "string_works.h"
 //char *s_ab_main="0:\\System\\apo\\addr\\main";
 //#ifdef NEWSGOLD
 //char *s_ab_entry="0:\\System\\apo\\addr\\data\\%02d\\%02d\\%02d";
@@ -20,49 +20,6 @@ __swi __arm void TempLightOn(int x, int y);
 
 volatile CLIST *cltop=0;
 int cl_n;
-
-int wstrcmp_nocase(WSHDR *ws1, WSHDR *ws2)
-{
-  int l1=wslen(ws1);
-  int l2=wslen(ws2);
-  int pos=1;
-  int cs, ds;
-  while((pos<=l1)&&(pos<=l2))
-  {
-    cs=ws1->wsbody[pos];
-    if(cs>='A'&&cs<='Z')
-    	cs+='a'-'A';
-    ds=ws2->wsbody[pos];
-    if(ds>='A'&&ds<='Z')
-    	ds+='a'-'A';
-    cs-=ds;
-    if (cs) return cs;
-    pos++;
-  }
-  return(l1-l2);
-}
-
-int wstrncmp_nocase(WSHDR *ws1, WSHDR *ws2, int n)
-{
-  int l1=wslen(ws1);
-  int l2=wslen(ws2);
-  int pos=1;
-  int cs, ds;
-  n++;
-  while((pos<=l1)&&(pos<=l2)&&(pos<=n))
-  {
-    cs=ws1->wsbody[pos];
-    if(cs>='A'&&cs<='Z')
-    	cs+='a'-'A';
-    ds=ws2->wsbody[pos];
-    if(ds>='A'&&ds<='Z')
-    	ds+='a'-'A';
-    cs-=ds;
-    if (cs) return cs;
-    pos++;
-  }
-  return 0;
-}
 
 void FreeCLIST(void)
 {

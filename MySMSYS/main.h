@@ -24,4 +24,5 @@ typedef struct
 
 extern int new_sms_n;
 int CreateMainMenu(DLG_CSM *dlg_csm);
+void OpenArchive(void);
 

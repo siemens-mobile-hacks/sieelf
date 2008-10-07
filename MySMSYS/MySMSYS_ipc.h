@@ -13,6 +13,8 @@
 #define SMSYS_IPC_TLAST		8 //查看最新一条短信, data=NULL
 #define SMSYS_IPC_IN_ALL  9 //打开所有来短信列表, data=NULL
 
+#define SMSYS_IPC_ARCHIVE 0x40 //打开信息档案柜,data=NULL
+
 //#define SMSYS_IPC_INBOX_VIEW 0x80
 #define SMSYS_IPC_NEW_IN_WIN 0x81 //弹出新信息窗口,data=NULL
 #define SMSYS_IPC_NEWSMS_NUM 0x82 //根据号码新建短信,data=Number,Number使用malloc申请内存,完成后将在MySMSYS中被释放,可用于通讯录/通话记录中信建短信

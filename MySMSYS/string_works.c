@@ -144,3 +144,53 @@ void ws_2ascii(WSHDR *ws, char *str, int maxlen)
 #endif
 }
 
+#define wslen(ARG) (ARG->wsbody[0])
+
+int wstrcmp_nocase(WSHDR *ws1, WSHDR *ws2)
+{
+  int l1=wslen(ws1);
+  int l2=wslen(ws2);
+  int pos=1;
+  int cs, ds;
+  while((pos<=l1)&&(pos<=l2))
+  {
+    cs=ws1->wsbody[pos];
+    ds=ws2->wsbody[pos];
+    if(cs<0x1000 && ds<0x1000)
+    {
+    	cs=char16to8(cs);
+    	ds=char16to8(ds);
+    	if(cs&0x40) cs&=0xDF;
+    	if(ds&0x40) ds&=0xDF;
+    }
+    cs-=ds;
+    if (cs) return cs;
+    pos++;
+  }
+  return(l1-l2);
+}
+
+int wstrncmp_nocase(WSHDR *ws1, WSHDR *ws2, int n)
+{
+  int l1=wslen(ws1);
+  int l2=wslen(ws2);
+  int pos=1;
+  int cs, ds;
+  n++;
+  while((pos<=l1)&&(pos<=l2)&&(pos<=n))
+  {
+    cs=ws1->wsbody[pos];
+    ds=ws2->wsbody[pos];
+    if(cs<0x1000 && ds<0x1000)
+    {
+    	cs=char16to8(cs);
+    	ds=char16to8(ds);
+    	if(cs&0x40) cs&=0xDF;
+    	if(ds&0x40) ds&=0xDF;
+    }
+    cs-=ds;
+    if (cs) return cs;
+    pos++;
+  }
+  return 0;
+}
