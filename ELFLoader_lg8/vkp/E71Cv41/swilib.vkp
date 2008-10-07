@@ -713,10 +713,9 @@
 0ABC: 0xA0A5373D   ; 2AF:  __thumb void SetHeaderText(void *hdr_pointer, WSHDR *txt, void *malloc_adr, void *mfree_adr)
 
 0AC0: 0xA097C591   ; 2B0:  __thumb void SetMenuSoftKey(void *gui, const SOFTKEY_DESC *,int n)
+0AC4: 0xA8EB99B8   ; 82B1:  __arm SMS_DATA_ROOT *SmsDataRoot()
+0AC8: 0xA0D637F9   ; 2B2:  __thumb int GetSmsPosIndex(SMS_POS_INDEX_DATA *buf, int data_id)
 #pragma disable old_equal_ff
 +0       
 ;********************************************************************************
 
-
-
-;locale=Chinese_People's Republic of China.936
