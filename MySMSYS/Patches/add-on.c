@@ -139,7 +139,11 @@ __thumb int getFileCount(int type)
 	}
 //	strcat(dir, folder);
 	if(!isdir(dir, &err))
-		return 0;
+	{
+		dir[0]='4';
+		if(!isdir(dir, &err))
+			return 0;
+	}
 	strcat(dir, "*.mss");
 	if(FindFirstFile(&de, dir, &err))
 	{
