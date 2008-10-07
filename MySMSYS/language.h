@@ -85,6 +85,7 @@ extern const char STR_TIME[];
 extern const char STR_UNK[];
 extern const char LGP_DEL_ALL_MSS[];
 extern const char LGP_ABOUT[];
+extern const char LGP_COV_DAT_TXT[];
 #ifdef LANG_CN
 #define LGP_CFG_MAIN_FOLDER "MySMSYS文件夹"
 #define LGP_CFG_SYSTEM_FOLDER "系统文件夹"
@@ -97,6 +98,7 @@ extern const char LGP_ABOUT[];
 #define LGP_CFG_ICONNEW_PATH "图标文件路径"
 #define LGP_CFG_ICONNEW_POS "图标坐标"
 #define LGP_CFG_EXPORT_CHARSET "导出文本字符编码"
+#define LGP_CFG_ENA_SAVE_SENT "保存已发送短信"
 #endif
 
 #ifdef LANG_EN
@@ -111,4 +113,5 @@ extern const char LGP_ABOUT[];
 #define LGP_CFG_ICONNEW_PATH "Icon Path"
 #define LGP_CFG_ICONNEW_POS "Icon Position"
 #define LGP_CFG_EXPORT_CHARSET "Export Text Charset"
+#define LGP_CFG_ENA_SAVE_SENT "Save Sent SMS"
 #endif

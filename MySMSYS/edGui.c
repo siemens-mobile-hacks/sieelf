@@ -331,7 +331,7 @@ int Ed_SendSMS(void *gui)
 			WSHDR *ws=AllocWS(ec.pWS->wsbody[0]);
 			wstrcpy(ws,ec.pWS);
 			SendSMS(ws,nl->num,MMI_CEPID,MSG_SMS_RX-1,6);
-			saveFile(ec.pWS, nl->num, uo->sd, TYPE_OUT, 1);
+			if(CFG_ENA_SAVE_SENT) saveFile(ec.pWS, nl->num, uo->sd, TYPE_OUT, 1);
 		}
 		nl=nl->next;
 	}
@@ -1059,7 +1059,11 @@ unsigned int ViewFile(void *dlg_csm, char *fname)
 }
 #define IDYES	0
 #define IDNO	1
-
+typedef struct
+{
+  int type;
+  char *path;
+}PI_UP;
 void DeleteAllMss_proc(int id)
 {
 	if(id==IDYES)
@@ -1073,22 +1077,42 @@ int PathInputOnKey(GUI *data, GUI_MSG *msg)
 {
   EDITCONTROL ec;
   char path[128];
+  PI_UP *iu=EDIT_GetUserPointer(data);
   if(msg->keys==0x1A)
   {
     int k;
     ExtractEditControl(data,2,&ec);
     ws_2str(ec.pWS, path, 128);
-    k=ExportAllToOneTxt(path);
-    if(k>0)
+    if(iu->type==INPUT_EXP_TXT)
     {
-    	char msg[64];
+      k=ExportAllToOneTxt(path);
+      if(k>0)
+      {
+	char msg[64];
     	sprintf(msg, STR_EXPORT_N, k);
     	//ShowMSG(1, (int)msg);
     	//extern int ShowMSG_offproc(int flag, char *msg, void proc(void));
-    	ShowMSG_offproc(1, msg, delallproc);
+	ShowMSG_offproc(1, msg, delallproc);
+      }
+      else
+	ShowFileErrCode(k);
     }
-    else
-	    ShowFileErrCode(k);
+    else if(iu->type==INPUT_COV_DAT)
+    {
+      PathInputDlg(INPUT_COV_TXT, path);
+    }
+    else if(iu->type==INPUT_COV_TXT && iu->path)
+    {
+      k=CovDatToTxt(iu->path, path);
+      if(k>0)
+      {
+	char msg[64];
+    	sprintf(msg, STR_EXPORT_N, k);
+	ShowMSG(1, (int)msg);
+      }
+      else
+	ShowFileErrCode(k);
+    }
     return 1;
   }
   return 0;
@@ -1098,6 +1122,13 @@ void PathInputGHook(GUI *data, int cmd)
 {
   if(cmd==0x0A)
     DisableIDLETMR();
+  else if(cmd==TI_CMD_DESTROY)
+  {
+    PI_UP *iu=EDIT_GetUserPointer(data);
+    if(iu->path)
+      mfree(iu->path);
+    mfree(iu);
+  }
 }
 
 INPUTDIA_DESC PATH_INPUT_DESC=
@@ -1117,7 +1148,7 @@ INPUTDIA_DESC PATH_INPUT_DESC=
   0x40000000
 };
 
-void PathInputDlg(void)
+void PathInputDlg(int type, char *path)
 {
   void *ma=malloc_adr();
   void *eq;
@@ -1125,6 +1156,15 @@ void PathInputDlg(void)
   WSHDR *ews;
   TDate date;
   TTime time;
+  PI_UP *iu=malloc(sizeof(PI_UP));
+  iu->type=type;
+  if(path)
+  {
+    iu->path=malloc(128);
+    strcpy(iu->path, path);
+  }
+  else
+    iu->path=0;
   GetDateTime(&date, &time);
   PrepareEditControl(&ec);
   eq=AllocEQueue(ma,mfree_adr());
@@ -1132,11 +1172,14 @@ void PathInputDlg(void)
   wsprintf(ews, PERCENT_T, LGP_PLS_INPUT_PATH);
   ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,ews->wsbody[0]);
   AddEditControlToEditQend(eq,&ec,ma);
-  wsprintf(ews, "%sText\\%d%02d%02d.txt", CFG_MAIN_FOLDER, date.year, date.month, date.day);
+  if(type==INPUT_COV_DAT)
+    wsprintf(ews, "%sSMS\\SMS.dat", CFG_SYSTEM_FOLDER);
+  else
+    wsprintf(ews, "%sText\\%d%02d%02d.txt", CFG_MAIN_FOLDER, date.year, date.month, date.day);
   ConstructEditControl(&ec,ECT_CURSOR_STAY,ECF_APPEND_EOL,ews,128);
   AddEditControlToEditQend(eq,&ec,ma);
   patch_header(&ED_HDR);
   patch_input(&PATH_INPUT_DESC);
-  CreateInputTextDialog(&PATH_INPUT_DESC,&ED_HDR,eq,1,0);
+  CreateInputTextDialog(&PATH_INPUT_DESC,&ED_HDR,eq,1,iu);
   FreeWS(ews);
 }

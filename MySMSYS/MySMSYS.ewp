@@ -5272,11 +5272,57 @@
       <name>$PROJ_DIR$\config_data.h</name>
     </file>
   </group>
+  <group>
+    <name>Header</name>
+    <file>
+      <name>$PROJ_DIR$\adrList.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\CodeShow.h</name>
+      <excluded>
+        <configuration>Release_ELKA_EN</configuration>
+        <configuration>Release_NEWSGOLD_LG3_EN</configuration>
+      </excluded>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\createMenu.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\edGui.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\guiIdMan.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\language.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\MySMSYS_ipc.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\NewDatReader.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\numList.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\popGui.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\rect_patcher.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\sms_dat.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\smsList.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\string_works.h</name>
+    </file>
+  </group>
   <file>
     <name>$PROJ_DIR$\adrList.c</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\adrList.h</name>
   </file>
   <file>
     <name>$PROJ_DIR$\CodeShow.c</name>
@@ -5286,23 +5332,10 @@
     </excluded>
   </file>
   <file>
-    <name>$PROJ_DIR$\CodeShow.h</name>
-    <excluded>
-      <configuration>Release_ELKA_EN</configuration>
-      <configuration>Release_NEWSGOLD_LG3_EN</configuration>
-    </excluded>
-  </file>
-  <file>
     <name>$PROJ_DIR$\createMenu.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$\createMenu.h</name>
-  </file>
-  <file>
     <name>$PROJ_DIR$\edGui.c</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\edGui.h</name>
   </file>
   <file>
     <name>$PROJ_DIR$\func.asm</name>
@@ -5311,52 +5344,28 @@
     <name>$PROJ_DIR$\guiIdMan.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$\guiIdMan.h</name>
-  </file>
-  <file>
     <name>$PROJ_DIR$\language.c</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\language.h</name>
   </file>
   <file>
     <name>$PROJ_DIR$\main.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$\MySMSYS_ipc.h</name>
+    <name>$PROJ_DIR$\newDatReader.c</name>
   </file>
   <file>
     <name>$PROJ_DIR$\numList.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$\numList.h</name>
-  </file>
-  <file>
     <name>$PROJ_DIR$\popGui.c</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\popGui.h</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\rect_patcher.h</name>
   </file>
   <file>
     <name>$PROJ_DIR$\sms_dat.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$\sms_dat.h</name>
-  </file>
-  <file>
     <name>$PROJ_DIR$\smsList.c</name>
   </file>
   <file>
-    <name>$PROJ_DIR$\smsList.h</name>
-  </file>
-  <file>
     <name>$PROJ_DIR$\string_works.c</name>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\string_works.h</name>
   </file>
 </project>
 

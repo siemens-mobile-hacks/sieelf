@@ -85,6 +85,7 @@ const char STR_EXPORT_N[]="Export %d SMS Successful!";
 const char STR_MOVE_MSSARCHIVER_N[]="Move %d Mss File to Archive Successful!";
 const char LGP_DEL_ALL_MSS[]="Delete All Mss File?";
 const char LGP_ABOUT[]="About...";
+const char LGP_COV_DAT_TXT[]="Cov SMS.dat To Txt";
 #endif
 
 #ifdef LANG_CN
@@ -151,5 +152,6 @@ const char STR_EXPORT_N[]="成功导出%d条短信!";
 const char STR_MOVE_MSSARCHIVER_N[]="成功转移%d个Mss文件!";
 const char LGP_DEL_ALL_MSS[]="删除所有Mss文件?";
 const char LGP_ABOUT[]="关于...";
+const char LGP_COV_DAT_TXT[]="转换SMS.dat到Txt";
 #endif
 

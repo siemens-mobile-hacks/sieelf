@@ -773,7 +773,7 @@ int main(char *exename, char *fname)
 
 //--------------------------------------------------------
 //Others Menu
-#define OTH_MENU_N 5
+#define OTH_MENU_N 6
 const SOFTKEY_DESC oth_menu_sk[]=
 {
   {0x0018,0x0000,(int)LGP_SELECT},
@@ -805,7 +805,7 @@ void oth_menu_config(GUI *data)
 void oth_save_one_txt(GUI *data)
 {
   GeneralFuncF1(1);
-  PathInputDlg();
+  PathInputDlg(INPUT_EXP_TXT, 0);
 }
 
 void oth_move_all_mss(GUI *data)
@@ -816,6 +816,7 @@ void oth_move_all_mss(GUI *data)
   k=MoveAllMssToArchive();
   sprintf(msg, STR_MOVE_MSSARCHIVER_N, k);
   ShowMSG(1, (int)msg);
+  readAllSMS();
 }
 
 
@@ -833,13 +834,28 @@ void oth_about(GUI *data)
   ShowMSG_noff(1, COPY_RIGHT);
 }
 
+void oth_cov_dat_txt(GUI *data)
+{
+  GeneralFuncF1(1);
+  PathInputDlg(INPUT_COV_DAT, 0);
+}
+/*
+void oth_func_test(GUI *data)
+{
+  GeneralFuncF1(1);
+  extern void FuncTest(void);
+  FuncTest();
+}*/
+
 const MENUPROCS_DESC oth_menuprocs[OTH_MENU_N]=
 {
   oth_menu_config,
   oth_open_archive,
   oth_save_one_txt,
   oth_move_all_mss,
-  oth_about
+  oth_cov_dat_txt,
+  oth_about,
+  //oth_func_test
 };
 
 const MENUITEM_DESC oth_menuitems[OTH_MENU_N]=
@@ -848,7 +864,9 @@ const MENUITEM_DESC oth_menuitems[OTH_MENU_N]=
   {NULL,(int)LGP_OPEN_ARCHIVE,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)LGP_SAVE_ALL_ONE,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)LGP_MOVE_ALL_MSS,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)LGP_COV_DAT_TXT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)LGP_ABOUT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  //{NULL,(int)"FuncTest",	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 };
 
 const MENU_DESC oth_menu=

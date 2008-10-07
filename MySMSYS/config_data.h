@@ -13,4 +13,5 @@ extern const char CFG_ICONNEW_PATH[128];
 extern const unsigned int CFG_ICONNEW_POS_X;
 extern const unsigned int CFG_ICONNEW_POS_Y;
 extern const int CFG_EXPORT_CHARSET;
+extern const int CFG_ENA_SAVE_SENT;
 #endif

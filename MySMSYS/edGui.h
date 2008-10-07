@@ -13,6 +13,10 @@
 #define TYPE_INSERT 1
 #define TYPE_TXT 2
 
+#define INPUT_EXP_TXT 0
+#define INPUT_COV_TXT 1
+#define INPUT_COV_DAT 2
+
 typedef struct
 {
 	SMS_DATA *sd;
@@ -44,4 +48,4 @@ int newSMSWithNum(void *dlg_csm, char *num);
 int newSMSWithUtf8Text(void *dlg_csm, char *text_utf8);
 int DoByOpmsgId(void *dlg_csm, int msg, int opmsg_id);
 unsigned int ViewFile(void *dlg_csm, char *fname);
-void PathInputDlg(void);
+void PathInputDlg(int type, char *path);

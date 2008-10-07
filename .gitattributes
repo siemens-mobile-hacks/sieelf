@@ -960,6 +960,8 @@ MySMSYS/MssLinker/test.xcl -text
 MySMSYS/MySMSYS.ewp -text
 MySMSYS/MySMSYS.eww -text
 MySMSYS/MySMSYS_ipc.h -text
+MySMSYS/NewDatReader.c -text
+MySMSYS/NewDatReader.h -text
 MySMSYS/Patches/E71Csw41.xcl -text
 MySMSYS/Patches/E71sw45.xcl -text
 MySMSYS/Patches/ELC1sw41.xcl -text

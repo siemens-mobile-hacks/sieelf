@@ -8,6 +8,7 @@
 
 #include "main.h"
 #include "string_works.h"
+#include "NewDatReader.h"
 SMS_DATA *sdltop=0;
 
 /*
@@ -459,14 +460,15 @@ IPC_REQ up_ipc=
 	NULL
 };
 */
-int ReadSMS(void);
+//int ReadSMS(void);
 int readAllSMS(void)
 {
 
 	int n;
 
 	freeSDList();
-	n=ReadSMS();
+	//n=ReadSMS();
+	n=NewMsgReader();
 	n+=readFile(TYPE_IN_ALL);
 	n+=readFile(TYPE_OUT);
 	n+=readFile(TYPE_DRAFT);
@@ -485,7 +487,7 @@ int newToRead(SMS_DATA *sd)
 {
 	if((sd==0)||(sd->isfile==1)||(sd->id==0))
 		return 0;
-	if(SetNewSMSToRead(sd->id, 1)!=0x3E8)
+	if(SetSmsStatus(sd->id, 1)!=0x3E8)
 		return 0;
 	sd->type=TYPE_IN_R;
 	if(new_sms_n>0) new_sms_n--;
@@ -585,8 +587,10 @@ int readFile(int type)
 	const char *folder;
 	char dir[128];
 	char fullpath[128];
-	int n=0;
+	int n=0, wlen;
 	DIR_ENTRY de;
+	WSHDR *ws, wsn;
+	unsigned short wsb[MAX_TEXT];
 	switch(type)
 	{
 	case TYPE_DRAFT:
@@ -609,6 +613,7 @@ int readFile(int type)
 	if(!isdir(dir, &err))
 		return 0;
 	strcat(dir, "*.mss");
+	ws=CreateLocalWS(&wsn, wsb, MAX_TEXT);
 	if(FindFirstFile(&de, dir, &err))
 	{
 		do
@@ -629,7 +634,6 @@ int readFile(int type)
 				{
 					if(!strncmp(buf, ELFNAME, 7))
 					{
-						WSHDR *ws;
 						unsigned short *sp;
 						MSS_FILE_P1 *msf1;
 						MSS_FILE_P2 *msf2;
@@ -638,16 +642,16 @@ int readFile(int type)
 						SMS_DATA *sdx=AllocSD();
 						n++;
 						//addSDList();
-						ws=sdx->SMS_TEXT;//=AllocWS(MAX_TEXT);
+						//ws=sdx->SMS_TEXT;//=AllocWS(MAX_TEXT);
 						fname=malloc(128);
 						zeromem(fname, 128);
-						sdx->type=type;
 						sdx->isfile=1;
 						strcpy(fname, fullpath);
 						sdx->fname=fname;
 						version=*(int *)(buf+8); //header len
 						if(version==1)
 						{
+							sdx->type=type;
 							msf1=(MSS_FILE_P1 *)buf;
 							strcpy(sdx->Time, msf1->time);
 							strncpy(sdx->Number, msf1->number, 32);
@@ -662,10 +666,15 @@ int readFile(int type)
 							strcpy(sdx->Time, msf2->time);
 							strncpy(sdx->Number, msf2->number, 32);
 							strncpy(sdx->Time, msf2->time, 32);
+							sdx->type=msf2->type;
 							sp=(unsigned short *)(((char *)buf)+sizeof(MSS_FILE_P2));
 							len=*sp;
 							memcpy(ws->wsbody, sp, (((len>MAX_TEXT)?MAX_TEXT:len)+1)*(sizeof(unsigned short)));
 						}
+						wlen=wstrlen(ws);
+						if(!wlen) wlen=1;
+						sdx->SMS_TEXT=AllocWS(wlen);
+						wstrcpy(sdx->SMS_TEXT, ws);
 						LockSched();
 						AddToSdlByTime(sdx);
 						UnlockSched();
@@ -1148,7 +1157,6 @@ char *findDataByIndexId(char *data, char *end, int index_id)
 {
 	return 0;
 }
-*/
 int IsTextInWs(unsigned short *wsbody, unsigned short *txt, int wslen, int txtlen)
 {
 	unsigned short *p=wsbody;
@@ -1228,7 +1236,6 @@ EMS_DATA *FindEMSByNumTxt(EMS_DATA *edltop, char *num, WSHDR *txt)
 }
 
 //#define TEST
-/*
 int DoDat(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_size)
 {
 	char *pn;
@@ -1318,7 +1325,7 @@ SMS_DATA *AllocSD(void)
 {
 	SMS_DATA *sd=malloc(sizeof(SMS_DATA));
 	zeromem(sd, sizeof(SMS_DATA));
-	sd->SMS_TEXT=AllocWS(MAX_TEXT);
+	//sd->SMS_TEXT=AllocWS(MAX_TEXT);
 	return sd;
 }
 
@@ -1356,6 +1363,7 @@ void AddToSdlByTime(SMS_DATA *sd)
 	sd->prev=sdl;
 }
 
+/*
 int DoDat_E(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_size)
 {
 //	char *pn;
@@ -1429,7 +1437,6 @@ int DoDat_E(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_size
 	return rec;
 }
 
-/*
 int DoDat_2(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_size)
 {
 	char *pn;
@@ -1512,17 +1519,17 @@ int DoDat_2(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_size
 	FreeEDL(&edl);
 	return rec;
 }
-*/
+
 int ReadSMS(void)
 {
-/*	
-#ifdef TEST
-	const char sms_dat[]="0:\\ZBin\\MySMSYS\\SMS.dat";
-	const char ems_admin_dat[]="0:\\ZBin\\MySMSYS\\EMS_Admin.dat";
-#else
-	const char sms_dat[]="0:\\System\\SMS\\SMS.dat";
-	const char ems_admin_dat[]="0:\\System\\SMS\\EMS_Admin.dat";
-#endif*/
+
+//#ifdef TEST
+//	const char sms_dat[]="0:\\ZBin\\MySMSYS\\SMS.dat";
+//	const char ems_admin_dat[]="0:\\ZBin\\MySMSYS\\EMS_Admin.dat";
+//#else
+//	const char sms_dat[]="0:\\System\\SMS\\SMS.dat";
+//	const char ems_admin_dat[]="0:\\System\\SMS\\EMS_Admin.dat";
+//#endif
 	char sms_dat[128];
 	char ems_admin_dat[128];
 
@@ -1583,7 +1590,7 @@ EXIT1:
 EXIT0:
 	mfree(sms_buf);
 	return res;
-}
+}*/
 
 SMS_DATA *FindSDByOpmsgId(int opmsg_id)
 {
@@ -1674,7 +1681,6 @@ SMS_DATA *FindPrevByType(SMS_DATA *sdl, int type)
 	return 0;
 }
 
-
 int ReadMSS(char *fname, SMS_DATA *sd)
 {
 	unsigned int err;
@@ -1730,7 +1736,6 @@ EX_BACK0:
 	return 0;
 }
 
-
 void FreeSdOne(SMS_DATA *sd)
 {
 	if(sd->SMS_TEXT)
@@ -1752,11 +1757,16 @@ SMS_DATA *SdCopyOne(SMS_DATA *sdx)
 		sd->fname=malloc(128);
 		strcpy(sd->fname, sdx->fname);
 	}
-	sd->SMS_TEXT=AllocWS(MAX_TEXT);
+	//sd->SMS_TEXT=AllocWS(MAX_TEXT);
 	if(sdx->SMS_TEXT)
 	{
+		int len=wstrlen(sdx->SMS_TEXT);
+		if(!len) len=1;
+		sd->SMS_TEXT=AllocWS(len);
 		wstrcpy(sd->SMS_TEXT, sdx->SMS_TEXT);
 	}
+	else
+	  sd->SMS_TEXT=AllocWS(1);
 	return sd;
 }
 
@@ -1825,9 +1835,17 @@ int IsHaveNewSMS(void)
 		if((p[2]==0x03))
 		{
 			k=IsPartOfEMS(p);
-			if((k==0xFF)||(k==0xFE))
+			if((k==0xFF))
 			{
 				res=1;
+				break;
+			}
+			else if(k==0xFE)
+			{
+				freeSDList();
+				NewMsgReader();
+				if(getLastTheLast(TYPE_IN_N))
+					res=1;
 				break;
 			}
 		}
@@ -2160,6 +2178,9 @@ int MoveToArchive(SMS_DATA *sd)
   unsigned int err;
   MSS_FILE_P2 msf;
   int fin, len, c;
+  TTime time;
+  TDate date;
+  GetDateTime(&date, &time);
   strcpy(folder, CFG_MAIN_FOLDER);
   len=strlen(folder);
   c=folder[len-1];
@@ -2171,6 +2192,10 @@ int MoveToArchive(SMS_DATA *sd)
   if(!isdir(folder, &err))
     mkdir(folder, &err);
   strcat(folder, FLDR_ARCHIVE);
+  if(!isdir(folder, &err))
+    mkdir(folder, &err);
+  sprintf(fullpath, "%04d%02d\\", date.year, date.month); //借用~_~ , 按月份存储
+  strcat(folder, fullpath);
   if(!isdir(folder, &err))
     mkdir(folder, &err);
   switch(sd->type)
@@ -2213,9 +2238,6 @@ int MoveToArchive(SMS_DATA *sd)
     strcpy(msf.time, sd->Time);
   else
   {
-    TTime time;
-    TDate date;
-    GetDateTime(&date, &time);
     sprintf(msf.time, "%02d-%02d-%02d %02d:%02d:%02d", 
 	    date.year%2000, // ? //2008 ->08
 	    date.month, date.day,
@@ -2275,4 +2297,153 @@ void DeleteAllMss(void)
 		sdl=sdl->next;
 	}
 	readAllSMS();
+}
+
+int CovDatToTxt_ASCII(char *dat_path, char *txt_path)
+{
+  int fin, ft, size, res=0, len;
+  unsigned int err;
+  char *buf;
+  EMS_DATA *edl=0;
+  EMS_DATA *edx;
+  char temp[MAX_TEXT+256];
+  char text[MAX_TEXT];
+  WSHDR *wname, nm;
+  unsigned short nmb[64];
+  char sname[65];
+  wname=CreateLocalWS(&nm, nmb, 64);
+  if(IsFileExist(txt_path))
+    return -1;
+  GetCPUClock();
+  if((fin=fopen(dat_path, A_BIN+A_ReadOnly, P_WRITE, &err))<0)
+    return 0;
+  size=lseek(fin, 0, S_END, &err, &err)-2;
+  if(!size)
+    goto EXIT2;
+  lseek(fin, 2, S_SET, &err, &err);
+  buf=malloc(size);
+  if(fread(fin, buf, size, &err)!=size)
+    goto EXIT3;
+  fclose(fin, &err);
+  ReadAllEMS(&edl, buf, buf+size-sizeof(PDU));
+  if(edl)
+  {
+    edx=edl;
+    if((ft=fopen(txt_path, A_WriteOnly+A_Create+A_Truncate, P_WRITE, &err))!=-1)
+    {
+      while(edx)
+      {
+	res++;
+	ws_2ascii(edx->text, text, MAX_TEXT);
+	if(!findNameByNum(wname, edx->number))
+	  strcpy(sname, STR_UNK_NUM);
+	else
+	  ws_2ascii(wname, sname, 64);
+	sprintf(temp, "%s: %s\r\n%s: %s\r\n%s: %s\r\n%s:\r\n%s\r\n\r\n",
+		STR_FROM,
+		sname,
+		STR_NUMBER,
+		edx->number,
+		STR_TIME,
+		(strlen(edx->time))?edx->time:STR_UNK,
+		STR_TEXT,
+		text);
+	len=strlen(temp);
+	if(fwrite(ft, temp, len, &err)!=len)
+	  break;
+	edx=edx->next;
+      }
+      fclose(ft, &err);
+    }
+  }
+  FreeEDL(&edl);
+  mfree(buf);
+  return res;
+EXIT3:
+  mfree(buf);
+EXIT2:
+  fclose(fin, &err);
+  return 0;
+}
+
+int CovDatToTxt_UTF8(char *dat_path, char *txt_path)
+{
+  int fin, ft, size, res=0, len, utf8_cov_len;
+  unsigned int err;
+  char *buf;
+  EMS_DATA *edl=0;
+  EMS_DATA *edx;
+  char temp[MAX_TEXT+256];
+  char text[MAX_TEXT];
+  WSHDR *wname, nm;
+  unsigned short nmb[64];
+  char sname[65];
+  wname=CreateLocalWS(&nm, nmb, 64);
+  if(IsFileExist(txt_path))
+    return -1;
+  GetCPUClock();
+  if((fin=fopen(dat_path, A_BIN+A_ReadOnly, P_WRITE, &err))<0)
+    return 0;
+  size=lseek(fin, 0, S_END, &err, &err)-2;
+  if(!size)
+    goto EXIT2;
+  lseek(fin, 2, S_SET, &err, &err);
+  buf=malloc(size);
+  if(fread(fin, buf, size, &err)!=size)
+    goto EXIT3;
+  fclose(fin, &err);
+  ReadAllEMS(&edl, buf, buf+size-sizeof(PDU));
+  if(edl)
+  {
+    edx=edl;
+    if((ft=fopen(txt_path, A_WriteOnly+A_Create+A_Truncate, P_WRITE, &err))!=-1)
+    {
+      temp[0]=0xEF;
+      temp[1]=0xBB;
+      temp[2]=0xBF;
+      if(fwrite(ft, temp, 3, &err)==3)
+      {
+      while(edx)
+      {
+	res++;
+	ws_2utf8(edx->text, text, &utf8_cov_len, MAX_TEXT);
+	if(!findNameByNum(wname, edx->number))
+	  strcpy(sname, STR_UNK_NUM_UTF8);
+	else
+	  ws_2utf8(wname, sname, &utf8_cov_len, 64);
+	sprintf(temp, "%s: %s\r\n%s: %s\r\n%s: %s\r\n%s:\r\n%s\r\n\r\n",
+		STR_FROM_UTF8,
+		sname,
+		STR_NUMBER_UTF8,
+		edx->number,
+		STR_TIME_UTF8,
+		(strlen(edx->time))?edx->time:STR_UNK_UTF8,
+		STR_TEXT_UTF8,
+		text);
+	len=strlen(temp);
+	if(fwrite(ft, temp, len, &err)!=len)
+	  break;
+	edx=edx->next;
+      }
+      }
+      fclose(ft, &err);
+    }
+  }
+  FreeEDL(&edl);
+  mfree(buf);
+  return res;
+EXIT3:
+  mfree(buf);
+EXIT2:
+  fclose(fin, &err);
+  return 0;
+}
+
+int CovDatToTxt(char *dat_path, char *txt_path)
+{
+  if (CFG_EXPORT_CHARSET==CHARSET_ASCII)
+    return (CovDatToTxt_ASCII(dat_path, txt_path));
+  else if (CFG_EXPORT_CHARSET==CHARSET_UTF8)
+    return (CovDatToTxt_UTF8(dat_path, txt_path));
+  return 0;
 }
