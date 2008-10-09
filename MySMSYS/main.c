@@ -777,7 +777,7 @@ int main(char *exename, char *fname)
 
 //--------------------------------------------------------
 //Others Menu
-#define OTH_MENU_N 7
+#define OTH_MENU_N 8
 const SOFTKEY_DESC oth_menu_sk[]=
 {
   {0x0018,0x0000,(int)LGP_SELECT},
@@ -817,7 +817,7 @@ void oth_move_all_mss(GUI *data)
   int k;
   char msg[64];
   GeneralFuncF1(1);
-  k=MoveAllMssToArchive();
+  k=MoveAllToArchive();
   sprintf(msg, STR_MOVE_MSSARCHIVER_N, k);
   ShowMSG(1, (int)msg);
 }
@@ -854,6 +854,15 @@ void oth_save_all_as_file(GUI *data)
   sprintf(msg, STR_SAF_N, SaveAllAsFile());
   ShowMSG(1, (int)msg);;
 }
+
+
+void oth_del_all(GUI *data)
+{
+  GeneralFuncF1(1);
+  extern void delallproc(void);// ed_gui.c
+  delallproc();
+}
+
 const MENUPROCS_DESC oth_menuprocs[OTH_MENU_N]=
 {
   oth_menu_config,
@@ -862,6 +871,7 @@ const MENUPROCS_DESC oth_menuprocs[OTH_MENU_N]=
   oth_move_all_mss,
   oth_cov_dat_txt,
   oth_save_all_as_file,
+  oth_del_all,
   oth_about,
 };
 
@@ -870,9 +880,10 @@ const MENUITEM_DESC oth_menuitems[OTH_MENU_N]=
   {NULL,(int)LGP_CONFIG,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)LGP_OPEN_ARCHIVE,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)LGP_SAVE_ALL_ONE,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-  {NULL,(int)LGP_MOVE_ALL_MSS,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)LGP_MOVE_ALL,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)LGP_COV_DAT_TXT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)LGP_SAVE_ALL_AS_FILE,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)LGP_DEL_ALL_MSG,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
   {NULL,(int)LGP_ABOUT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 };
 

@@ -613,6 +613,18 @@ __swi __arm void TempLightOn(int x, int y);
 				createEditGUI(uo->dlg_csm, sdl, ED_VIEW, uo->list_type);
 			return 1;
 		}
+		if((i==RIGHT_BUTTON)&&(uo->gui_type==ED_FVIEW)&&(sdl=FindNextMss(uo->sd)))
+		{
+			int update=0;
+			if(gstop->id==dlg_csm->gui_id)
+				update=1;
+			popGS(uo->dlg_csm);
+			if(update)
+				dlg_csm->gui_id=createEditGUI(uo->dlg_csm, sdl, ED_FVIEW, 0);
+			else
+				createEditGUI(uo->dlg_csm, sdl, ED_FVIEW, 0);
+			return 1;
+		}
 		//左方向键,上一条
 		if((i==LEFT_BUTTON)&&(uo->gui_type==ED_VIEW)&&(sdl=FindPrevByType(uo->sd, uo->list_type)))
 		{
@@ -624,6 +636,18 @@ __swi __arm void TempLightOn(int x, int y);
 				dlg_csm->gui_id=createEditGUI(uo->dlg_csm, sdl, ED_VIEW, uo->list_type);
 			else
 				createEditGUI(uo->dlg_csm, sdl, ED_VIEW, uo->list_type);
+			return 1;
+		}
+		if((i==LEFT_BUTTON)&&(uo->gui_type==ED_FVIEW)&&(sdl=FindPrevMss(uo->sd)))
+		{
+			int update=0;
+			if(gstop->id==dlg_csm->gui_id)
+				update=1;
+			popGS(uo->dlg_csm);
+			if(update)
+				dlg_csm->gui_id=createEditGUI(uo->dlg_csm, sdl, ED_FVIEW, 0);
+			else
+				createEditGUI(uo->dlg_csm, sdl, ED_FVIEW, 0);
 			return 1;
 		}
 		//*键,查看号码信息
@@ -860,10 +884,12 @@ int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, 
 	int gui_id;
 	void *ma=malloc_adr();
 	void *eq;
-	WSHDR *ews;
+	WSHDR *ews, ewsn;
+	unsigned short ewsb[MAX_TEXT];
 	const INPUTDIA_DESC *edd;
 	EDITCONTROL ec;
 	EDITC_OPTIONS ec_options;
+	ews=CreateLocalWS(&ewsn, ewsb, MAX_TEXT);
 //----------- uo
 	USER_OP *uo=malloc(sizeof(USER_OP));
 	zeromem(uo, sizeof(USER_OP));
@@ -878,7 +904,7 @@ int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, 
 //----------
 	eq=AllocEQueue(ma,mfree_adr());
 	PrepareEditControl(&ec);
-	ews=AllocWS(256);
+//	ews=AllocWS(256);
 //-----------
 
 //----------- header
@@ -969,21 +995,21 @@ int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, 
 	{
 	case ED_VIEW:
 	case ED_FVIEW:
-		ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL,ews,256);
+		ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL,ews,MAX_TEXT);
 		break;
 	case ED_FREE:
 	case ED_EDIT:
 	case ED_FEDIT:
-		ConstructEditControl(&ec,TEXT_INPUT_OPTION,ECF_APPEND_EOL|ECF_DEFAULT_BIG_LETTER,ews,256);
+		ConstructEditControl(&ec,TEXT_INPUT_OPTION,ECF_APPEND_EOL|ECF_DEFAULT_BIG_LETTER,ews,MAX_TEXT);
 		break;
 	case ED_NEW:
 	case ED_REPLY:
 	case ED_FREPLY:
 		CutWSTR(ews, 0);
-		ConstructEditControl(&ec,TEXT_INPUT_OPTION,ECF_APPEND_EOL|ECF_DEFAULT_BIG_LETTER,ews,256);
+		ConstructEditControl(&ec,TEXT_INPUT_OPTION,ECF_APPEND_EOL|ECF_DEFAULT_BIG_LETTER,ews,MAX_TEXT);
 		break;
 	default:
-		ConstructEditControl(&ec,ECT_READ_ONLY,ECF_APPEND_EOL,ews,256);
+		ConstructEditControl(&ec,ECT_READ_ONLY,ECF_APPEND_EOL,ews,MAX_TEXT);
 		break;
 	}
 	//
@@ -993,7 +1019,7 @@ int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, 
 	AddEditControlToEditQend(eq,&ec,ma);
 	uo->focus_n++;
 //----------	
-	FreeWS(ews);
+//	FreeWS(ews);
 	
 	if (type==ED_VIEW || type==ED_FVIEW)
 		edd=&ED_DESC_RO;
@@ -1079,7 +1105,7 @@ unsigned int ViewFile(void *dlg_csm, char *fname)
 		return 0;
 	sd=malloc(sizeof(SMS_DATA));
 	zeromem(sd, sizeof(SMS_DATA));
-	sd->SMS_TEXT=AllocWS(MAX_TEXT);
+	//sd->SMS_TEXT=AllocWS(MAX_TEXT);
 	if(!ReadMSS(fname, sd))
 	{
 		FreeSdOne(sd);
@@ -1097,11 +1123,11 @@ typedef struct
 void DeleteAllMss_proc(int id)
 {
 	if(id==IDYES)
-		DeleteAllMss();
+		DeleteAll();
 }
 void delallproc(void)
 {
-	MsgBoxYesNo(1, (int)LGP_DEL_ALL_MSS, DeleteAllMss_proc);
+	MsgBoxYesNo(1, (int)LGP_DEL_ALL, DeleteAllMss_proc);
 }
 int PathInputOnKey(GUI *data, GUI_MSG *msg)
 {

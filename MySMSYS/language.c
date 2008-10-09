@@ -90,6 +90,9 @@ const char LGP_ABOUT[]="About...";
 const char LGP_COV_DAT_TXT[]="Cov SMS.dat To Txt";
 const char LGP_SAVE_ALL_AS_FILE[]="Save All As Files";
 const char STR_SAF_N[]="Save %d SMS Successfully!";
+const char LGP_DEL_ALL[]="Delete All?";
+const char LGP_DEL_ALL_MSG[]="Delete All Message";
+const char LGP_MOVE_ALL[]="Move All To Archive";
 #endif
 
 #ifdef LANG_CN
@@ -160,5 +163,8 @@ const char LGP_ABOUT[]="关于...";
 const char LGP_COV_DAT_TXT[]="转换SMS.dat到Txt";
 const char LGP_SAVE_ALL_AS_FILE[]="保存所有到文件";
 const char STR_SAF_N[]="成功保存%d条短信!";
+const char LGP_DEL_ALL[]="删除所有信息?";
+const char LGP_DEL_ALL_MSG[]="删除所有信息";
+const char LGP_MOVE_ALL[]="全部移到档案柜";
 #endif
 

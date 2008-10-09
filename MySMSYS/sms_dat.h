@@ -20,7 +20,7 @@
 #define TYPE_IN_ALL 5
 
 
-#define MAX_TEXT 256
+#define MAX_TEXT 512
 
 typedef struct
 {
@@ -84,14 +84,18 @@ SMS_DATA *getLastTheLast(int type);
 int SaveAllAsFile(void);
 SMS_DATA *FindNextByType(SMS_DATA *sdl, int type);
 SMS_DATA *FindPrevByType(SMS_DATA *sdl, int type);
+SMS_DATA *FindNextMss(SMS_DATA *sd);
+SMS_DATA *FindPrevMss(SMS_DATA *sd);
 int ReadMSS(char *fname, SMS_DATA *sd);
 int IsHaveNewSMS(void);
 void DeleteAllMss(void);
+void DeleteAll(void);
 //---------------------------
 int ExportAllToOneTxt(char *filename);
 int ExportOneToTxt(SMS_DATA *sd);
 int MoveToArchive(SMS_DATA *sd);
 int MoveAllMssToArchive(void);
+int MoveAllToArchive(void);
 void ShowFileErrCode(int code);
 int CovDatToTxt(char *dat_path, char *txt_path);
 //--------------

@@ -1690,10 +1690,12 @@ int ReadMSS(char *fname, SMS_DATA *sd)
 {
 	unsigned int err;
 	int fin;
-	int size, js;
+	int size, js, len;
 	MSS_FILE_P1 msf1;
 	MSS_FILE_P2 msf2;
 	int version;
+	WSHDR *ws, wsn;
+	unsigned short wsb[MAX_TEXT];
 	if((fin=fopen(fname, A_BIN+A_ReadOnly, P_READ, &err))<0)
 		return 0;
 	size=lseek(fin, 0, S_END, &err, &err);
@@ -1729,9 +1731,14 @@ int ReadMSS(char *fname, SMS_DATA *sd)
 	}
 	else
 		goto EX_BACK0;
-	if(fread(fin, sd->SMS_TEXT->wsbody, size-js, &err)!=(size-js))
+	ws=CreateLocalWS(&wsn, wsb, MAX_TEXT);
+	if(fread(fin, ws->wsbody, size-js, &err)!=(size-js))
 		goto EX_BACK0;
 	fclose(fin, &err);
+	if(!(len=wstrlen(ws)))
+		len=1;
+	sd->SMS_TEXT=AllocWS(len);
+	wstrcpy(sd->SMS_TEXT, ws);
 	sd->isfile=1;
 	sd->fname=malloc(128);
 	strcpy(sd->fname, fname);
@@ -2324,6 +2331,20 @@ void DeleteAllMss(void)
 	readAllSMS();
 }
 
+void DeleteAll(void)
+{
+	SMS_DATA *sdl=sdltop;
+	while(sdl)
+	{
+		if(sdl->isfile && sdl->fname)
+			deleteFile(sdl, 0);
+		else if(sdl->id > 0)
+			deleteDat(sdl, 0);
+		sdl=sdl->next;
+	}
+	readAllSMS();
+}
+
 int CovDatToTxt_ASCII(char *dat_path, char *txt_path)
 {
   int fin, ft, size, res=0, len;
@@ -2471,4 +2492,112 @@ int CovDatToTxt(char *dat_path, char *txt_path)
   else if (CFG_EXPORT_CHARSET==CHARSET_UTF8)
     return (CovDatToTxt_UTF8(dat_path, txt_path));
   return 0;
+}
+
+SMS_DATA *FindNextMss(SMS_DATA *sd)
+{
+  char folder[128];
+  char filename[128];
+  char dir[128];
+  char *p;
+  unsigned int err;
+  int is_find=0, len;
+  SMS_DATA *sdx=0;
+  DIR_ENTRY de;
+  char *pp=sd->fname;
+  GetCPUClock();
+  if (!sd || !sd->isfile || !pp)
+    return 0;
+  if(!(p=strrchr(pp, '\\')) && !(p=strrchr(pp, '/')))
+    return 0;
+  strncpy(folder, pp, p-pp+1);
+  if(!isdir(folder, &err))
+    return 0;
+  strcpy(filename, p+1);
+  strcpy(dir, folder);
+  strcat(dir, "*.mss");
+  if(FindFirstFile(&de, dir, &err))
+  {
+    do
+    {
+      if(is_find)
+      {
+	strcpy(filename, de.folder_name);
+	len=strlen(filename);
+	if(filename[len-1]!='\\'&&filename[len-1]!='/')
+	{
+	  filename[len++]='\\';
+	  filename[len]='\0';
+	}
+	strcat(filename, de.file_name);
+	sdx=malloc(sizeof(SMS_DATA));
+	zeromem(sdx, sizeof(SMS_DATA));
+	//sdx->SMS_TEXT=AllocWS(MAX_TEXT);
+	if(!ReadMSS(filename, sdx))
+	{
+	  FreeSdOne(sdx);
+	  sdx=0;
+	}
+	break;
+      }
+      if(!strcmp(de.file_name, filename))
+	is_find=1;
+    }while(FindNextFile(&de, &err));
+  }
+  FindClose(&de, &err);
+  return sdx;
+}
+
+SMS_DATA *FindPrevMss(SMS_DATA *sd)
+{
+  char folder[128];
+  char filename[128];
+  char dir[128];
+  char temp[128]={0};
+  char *p;
+  unsigned int err;
+  int len;
+  SMS_DATA *sdx=0;
+  DIR_ENTRY de;
+  char *pp=sd->fname;
+  GetCPUClock();
+  if (!sd || !sd->isfile || !pp)
+    return 0;
+  if(!(p=strrchr(pp, '\\')) && !(p=strrchr(pp, '/')))
+    return 0;
+  strncpy(folder, pp, p-pp+1);
+  if(!isdir(folder, &err))
+    return 0;
+  strcpy(filename, p+1);
+  strcpy(dir, folder);
+  strcat(dir, "*.mss");
+  if(FindFirstFile(&de, dir, &err))
+  {
+    do
+    {
+      if(strlen(temp) && !strcmp(de.file_name, filename))
+      {
+	strcpy(filename, de.folder_name);
+	len=strlen(filename);
+	if(filename[len-1]!='\\'&&filename[len-1]!='/')
+	{
+	  filename[len++]='\\';
+	  filename[len]='\0';
+	}
+	strcat(filename, temp);
+	sdx=malloc(sizeof(SMS_DATA));
+	zeromem(sdx, sizeof(SMS_DATA));
+	//sdx->SMS_TEXT=AllocWS(MAX_TEXT);
+	if(!ReadMSS(filename, sdx))
+	{
+	  FreeSdOne(sdx);
+	  sdx=0;
+	}
+	break;
+      }
+      strcpy(temp, de.file_name);
+    }while(FindNextFile(&de, &err));
+  }
+  FindClose(&de, &err);
+  return sdx;
 }

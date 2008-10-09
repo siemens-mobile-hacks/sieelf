@@ -92,6 +92,9 @@ extern const char LGP_ABOUT[];
 extern const char LGP_COV_DAT_TXT[];
 extern const char LGP_SAVE_ALL_AS_FILE[];
 extern const char STR_SAF_N[];
+extern const char LGP_DEL_ALL[];
+extern const char LGP_MOVE_ALL[];
+extern const char LGP_DEL_ALL_MSG[];
 #ifdef LANG_CN
 #define LGP_CFG_MAIN_FOLDER "MySMSYS文件夹"
 #define LGP_CFG_SYSTEM_FOLDER "系统文件夹"
