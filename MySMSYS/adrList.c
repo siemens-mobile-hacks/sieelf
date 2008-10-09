@@ -31,13 +31,14 @@ void FreeCLIST(void)
 	{
 		CLIST *p;
 		if(cl0->name) FreeWS(cl0->name);
-		if(cl0->nm[0]) FreeWS(cl0->nm[0]);
-		if(cl0->nm[1]) FreeWS(cl0->nm[1]);
-		if(cl0->nm[2]) FreeWS(cl0->nm[2]);
+		//if(cl0->nm[0]) FreeWS(cl0->nm[0]);
+		//if(cl0->nm[1]) FreeWS(cl0->nm[1]);
+		//if(cl0->nm[2]) FreeWS(cl0->nm[2]);
 		for(int i=0;i<NUMBERS_MAX;i++) 
 		{
 			if(cl0->num[i])
-				FreeWS(cl0->num[i]);
+				mfree(cl0->num[i]);
+				//FreeWS(cl0->num[i]);
 		}
 		p=cl0;
 		cl0=(CLIST*)(cl0->next);
@@ -169,6 +170,18 @@ void ConstructList(void)
 													if (!contact.name)
 													{
 														cl_n++;
+														wstrcpy(contact.name=AllocWS(150),(WSHDR *)(r->data));
+													}
+													else
+													{
+														wsAppendChar(contact.name,',');
+														wsAppendChar(contact.name,' ');
+														wstrcat(contact.name, (WSHDR*)(r->data));
+													}
+													contact.next = (void*)1;
+/*													if (!contact.name)
+													{
+														cl_n++;
 														wstrcpy(contact.nm[0]=AllocWS(150),(WSHDR *)(r->data));
 														wstrcpy(contact.name=AllocWS(150),(WSHDR *)(r->data));
 														contact.next = (void*)1;
@@ -188,7 +201,7 @@ void ConstructList(void)
 														wsAppendChar(contact.name,' ');
 														wstrcat(contact.name, (WSHDR*)(r->data));
 														contact.next = (void*)1;
-													}
+													}*/
 												}
 											}
 											break;
@@ -198,7 +211,8 @@ void ConstructList(void)
 											unsigned int n=r->item_type;
 											int j;
 											unsigned int c;
-											WSHDR *ws0;
+											char *nump;
+											//WSHDR *ws0;
 #ifdef NEWSGOLD
 											if (n!=106) n-=0x62;
 											else n=4;
@@ -225,7 +239,28 @@ void ConstructList(void)
 												{
 													unsigned int c1;
 													int m;
-													ws0=contact.num[n]=AllocWS(50);
+													nump=contact.num[n]=malloc(50);
+													j=0;
+													m=0;
+													if (p->format==0x91)
+														*nump++='+';
+													while(j<p->data_size)
+													{
+														if (m&1) {c1=c>>4; j++;}
+														else c1=(c=p->data[j])&0x0F;
+														if (c1==0x0F) break;
+
+														if (c1==0xA) c1='*';
+														else if (c1==0xB) c1='#';
+														else if (c1==0xC) c1='+';
+														else if (c1==0xD) c1='?';
+														else c1+='0';
+														*nump++=c1;
+														//wsAppendChar(ws0,c1);
+														m++;
+													}
+													*nump=0;
+/*													ws0=contact.num[n]=AllocWS(50);
 													j=0;
 													m=0;
 													if (p->format==0x91)
@@ -243,7 +278,7 @@ void ConstructList(void)
 														else c1+='0';
 														wsAppendChar(ws0,c1);
 														m++;
-													}
+													}*/
 													contact.next = (void*)1;
 												}
 											}
@@ -256,13 +291,14 @@ void ConstructList(void)
 							if (!contact.next)
 							{
 								if(contact.name) FreeWS(contact.name);
-								if(contact.nm[0]) FreeWS(contact.nm[0]);
-								if(contact.nm[1]) FreeWS(contact.nm[1]);
-								if(contact.nm[2]) FreeWS(contact.nm[2]);
+								//if(contact.nm[0]) FreeWS(contact.nm[0]);
+								//if(contact.nm[1]) FreeWS(contact.nm[1]);
+								//if(contact.nm[2]) FreeWS(contact.nm[2]);
 								for(int i=0;i<NUMBERS_MAX;i++)
 								{
 									if(contact.num[i])
-										FreeWS(contact.num[i]);
+										mfree(contact.num[i]);
+										//FreeWS(contact.num[i]);
 								}
 							}
 							FreeUnpackABentry(&ur,mfree_adr());
@@ -313,13 +349,14 @@ void ConstructList(void)
 	if (contact.next)
 	{
 		if(contact.name) FreeWS(contact.name);
-		if(contact.nm[0]) FreeWS(contact.nm[0]);
-		if(contact.nm[1]) FreeWS(contact.nm[1]);
-		if(contact.nm[2]) FreeWS(contact.nm[2]);
+		//if(contact.nm[0]) FreeWS(contact.nm[0]);
+		//if(contact.nm[1]) FreeWS(contact.nm[1]);
+		//if(contact.nm[2]) FreeWS(contact.nm[2]);
 		for(int i=0;i<NUMBERS_MAX;i++) 
 		{
 			if(contact.num[i])
-				FreeWS(contact.num[i]);
+				mfree(contact.num[i]);
+				//FreeWS(contact.num[i]);
 		}
 	}
 }
@@ -353,12 +390,14 @@ int SearchInCList(WSHDR *searchstr)
 	}
 	return -1;
 }
-
-int findNameByNum(WSHDR *name_to, char *num)
+#define MAX(A, B) ((A>B)?A:B)
+#define MIN(A, B) ((A<B)?A:B)
+/*
+int FindNameByNumXM(WSHDR *name_to, char *num)
 {
 	CLIST *cl=(CLIST *)cltop;
 	int i, la, lb, ld;
-	char bn[50];
+	//char bn[50];
 	char *p1;
 	char *pp;
 	if((!num)||(!name_to)||(strlen(num)<=3))
@@ -371,8 +410,9 @@ int findNameByNum(WSHDR *name_to, char *num)
 			if(cl->num[i])
 			{
 				//号码查找比较,根据短的比较长的后面部分
-				ws_2str(cl->num[i], bn, 49);
-				p1=bn;
+				//ws_2str(cl->num[i], bn, 49);
+				//p1=bn;
+				p1=cl->num[i];
 				if(*p1=='+')
 					p1++;
 				pp=num;
@@ -380,6 +420,62 @@ int findNameByNum(WSHDR *name_to, char *num)
 					pp++;
 				la=strlen(pp);
 				lb=strlen(p1);
+				if(MAX(la, lb)-MIN(la, lb) > 3)
+					break;
+				if(la>lb)
+				{
+					ld=lb;
+					pp+=la-lb;
+				}
+				else
+				{
+					ld=la;
+					p1+=lb-la;
+				}
+				if(!strncmp(pp, p1, ld))
+				{
+					if(cl->name)
+					{
+						wstrcpy(name_to, cl->name);
+						return 1;
+					}
+				}
+			}
+		}
+		cl=cl->next;
+	}
+	return 0;
+}
+*/
+int findNameByNum(WSHDR *name_to, char *num)
+{
+	CLIST *cl=(CLIST *)cltop;
+	int i, la, lb, ld;
+	//char bn[50];
+	char *p1;
+	char *pp;
+	if((!num)||(!name_to)||(strlen(num)<=3))
+		return 0;
+	while(cl)
+	{
+		i=0;
+		for(;i<NUMBERS_MAX;i++)
+		{
+			if(cl->num[i])
+			{
+				//号码查找比较,根据短的比较长的后面部分
+				//ws_2str(cl->num[i], bn, 49);
+				//p1=bn;
+				p1=cl->num[i];
+				if(*p1=='+')
+					p1++;
+				pp=num;
+				if(*pp=='+')
+					pp++;
+				la=strlen(pp);
+				lb=strlen(p1);
+				if(MAX(la, lb)-MIN(la, lb) > 3)
+					break;
 				if(la>lb)
 				{
 					ld=lb;
@@ -417,7 +513,7 @@ int getNumCount(CLIST *cl)
 	return i;
 }
 
-WSHDR *getNumFromCL(CLIST *cl, int n)
+char *getNumFromCL(CLIST *cl, int n)
 {
 	int i=0, j=0;
 	for(;j<NUMBERS_MAX;j++)
@@ -433,7 +529,7 @@ WSHDR *getNumFromCL(CLIST *cl, int n)
 	return 0;
 }
 
-WSHDR *getPrefNumFromCL(CLIST *cl)
+char *getPrefNumFromCL(CLIST *cl)
 {
 	int i=NUMBERS_MAX-1;
 	for(;i>=0;i--)
@@ -496,39 +592,43 @@ void wsInsert(WSHDR *ws, WSHDR *txt, int pos, int max) //start form 0;
 	mfree(st);
 }
 
-void InsertAsTxt(void *ed_gui, WSHDR *num)
+void InsertAsTxt(void *ed_gui, char *num)
 {
 	WSHDR csloc, *wcs;
 	EDITCONTROL ec;
+	unsigned short csb[MAX_TEXT];
+	WSHDR *wnum, wnumn;
+	unsigned short wnumb[50];
 	int k=EDIT_GetCursorPos(ed_gui);
 	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
-	unsigned short csb[MAX_TEXT];
 	int n=EDIT_GetFocus(ed_gui);
 	if(n!=(uo->focus_n))
 		return;
 	if(k<=0)
 		return;
 	wcs=CreateLocalWS(&csloc,csb,MAX_TEXT);
+	wnum=CreateLocalWS(&wnumn,wnumb,50);
+	wsprintf(wnum, PERCENT_S, num);
 	ExtractEditControl(ed_gui,n,&ec);
 	wstrcpy(wcs, ec.pWS);
-	wsInsert(wcs, num, k-1, MAX_TEXT);
+	wsInsert(wcs, wnum, k-1, MAX_TEXT);
 	EDIT_SetTextToEditControl(ed_gui, n, wcs);
-	EDIT_SetCursorPos(ed_gui, k+num->wsbody[0]);
+	EDIT_SetCursorPos(ed_gui, k+strlen(num));
 }
 
-void SetNumToED(void *ed_gui, WSHDR *num, WSHDR *name)
+void SetNumToED(void *ed_gui, char *num, WSHDR *name)
 {
 	//EDITCONTROL ec;
 	NUM_LIST *nl;
-	
 	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
 	int n=EDIT_GetFocus(ed_gui);
 	if(n>(uo->focus_n-2))
 		return;
 	if(!(nl=GetNumListCur(uo, n)))
 		return;
+	strcpy(nl->num, num);
 	//ExtractEditControl(ed_gui,n,&ec);
-	ws_2str(num, nl->num, 49);
+	//ws_2str(num, nl->num, 49);
 	wstrcpy(nl->name, name);
 	EDIT_SetTextToEditControl(ed_gui, n, name);
 }
@@ -570,7 +670,7 @@ int nummenu_onkey(void *data, GUI_MSG *msg)
 	if((msg->keys==0x18)||(msg->keys==0x3D))
 	{
 		NUM_MENU_UP *up=MenuGetUserPointer(data);
-		WSHDR *num=getNumFromCL(up->cl, GetCurMenuItem(data));
+		char *num=getNumFromCL(up->cl, GetCurMenuItem(data));
 		if(num)
 		{
 			USER_OP *uo=EDIT_GetUserPointer(up->ed_gui);
@@ -626,9 +726,10 @@ void nummenuitemhdl(void *data, int curitem, void *user_pointer)
 	NUM_MENU_UP *up=(NUM_MENU_UP *)user_pointer;
 	void *item=AllocMenuItem(data);
 	WSHDR *ws=AllocMenuWS(data, 150);
-	WSHDR *ws1=getNumFromCL(up->cl, curitem);
-	if(ws1)
-		wstrcpy(ws, ws1);
+	char *num=getNumFromCL(up->cl, curitem);
+	if(num)
+		wsprintf(ws, PERCENT_S, num);
+		//wstrcpy(ws, ws1);
 	else
 		wsprintf(ws, PERCENT_T, LGP_ERR);
 	SetMenuItemText(data, item, ws, curitem);
@@ -682,7 +783,7 @@ static int adrmenu_keyhook(void *data, GUI_MSG *msg)
 			else
 			{
 				USER_OP *uo=EDIT_GetUserPointer(ed_gui);
-				WSHDR *num=0;
+				char *num=0;
 				for(n=0;n<NUMBERS_MAX;n++)
 				{
 					if(cl->num[n])
@@ -756,7 +857,7 @@ static void adrmenuitemhdl(void *data, int curitem, void *user_pointer)
 	void *item=AllocMLMenuItem(data);
 	WSHDR *ws1=AllocMenuWS(data, 150);
 	WSHDR *ws2=AllocMenuWS(data, 50);
-	WSHDR *wn;
+	char *num;
 	CLIST *cl=GetClistItem(curitem);
 	if(cl)
 	{
@@ -764,8 +865,9 @@ static void adrmenuitemhdl(void *data, int curitem, void *user_pointer)
 			wstrcpy(ws1, cl->name);
 		else
 			goto M_ERR;
-		if((wn=getPrefNumFromCL(cl))!=0)
-			wstrcpy(ws2, wn);
+		if((num=getPrefNumFromCL(cl))!=0)
+			wsprintf(ws2, PERCENT_S, num);
+			//wstrcpy(ws2, wn);
 		else
 			CutWSTR(ws2, 0);
 	}

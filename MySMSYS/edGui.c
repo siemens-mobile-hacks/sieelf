@@ -887,12 +887,41 @@ int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, 
 
 //------------ num
 	{
-		if((!strlen(sd->Number))||(!findNameByNum(ews, sd->Number)))
+/*		if((!strlen(sd->Number))||
+			((type==ED_VIEW || type==ED_FVIEW)?(!findNameByNum(ews, sd->Number)):(!FindNameByNumXM(ews, sd->Number)))
+				)
 		{
 			if((!strlen(sd->Number))&&(type==ED_VIEW || type==ED_FVIEW))
 				wsprintf(ews, "%c", ' ');
 			else
 				str_2ws(ews, sd->Number, 256);
+		}*/
+		if(strlen(sd->Number))
+		{
+		#ifdef LANG_CN
+			WSHDR *wsname, wsnamen;
+			unsigned short wsnameb[50];
+			int is_fetion=0;
+			wsname=CreateLocalWS(&wsnamen, wsnameb, 50);
+			if(!strncmp(num_fetion, sd->Number, 5)) is_fetion=1;
+			if(!findNameByNum(wsname, is_fetion?(sd->Number+5):sd->Number))
+				str_2ws(ews, sd->Number, 50);
+			else
+			{
+				if(is_fetion) wsprintf(ews, "%w(%t)", wsname, STR_FETION);
+				else wstrcpy(ews, wsname);
+			}
+		#else
+			if(!findNameByNum(ews, sd->Number))
+				str_2ws(ews, sd->Number, 50);
+		#endif
+		}
+		else
+		{
+			if((type==ED_VIEW || type==ED_FVIEW))
+				wsprintf(ews, "%c", ' ');
+			else
+				CutWSTR(ews, 0);
 		}
 #ifdef DEBUG
 		{
@@ -945,13 +974,13 @@ int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, 
 	case ED_FREE:
 	case ED_EDIT:
 	case ED_FEDIT:
-		ConstructEditControl(&ec,TEXT_INPUT_OPTION,ECF_APPEND_EOL,ews,256);
+		ConstructEditControl(&ec,TEXT_INPUT_OPTION,ECF_APPEND_EOL|ECF_DEFAULT_BIG_LETTER,ews,256);
 		break;
 	case ED_NEW:
 	case ED_REPLY:
 	case ED_FREPLY:
 		CutWSTR(ews, 0);
-		ConstructEditControl(&ec,TEXT_INPUT_OPTION,ECF_APPEND_EOL,ews,256);
+		ConstructEditControl(&ec,TEXT_INPUT_OPTION,ECF_APPEND_EOL|ECF_DEFAULT_BIG_LETTER,ews,256);
 		break;
 	default:
 		ConstructEditControl(&ec,ECT_READ_ONLY,ECF_APPEND_EOL,ews,256);

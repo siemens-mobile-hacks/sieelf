@@ -376,21 +376,24 @@ void sms_menu_itemhndl(void *data, int curitem, void *user_pointer)
 			
 		if(!strlen(sdl->Number))
 			CutWSTR(ws2, 0);
-		else if(findNameByNum(wn, sdl->Number))
-	#ifdef	DEBUG
-		{
-			wsprintf(ws2, "%w id:%d", wn, sdl->id);
-		}
+	#ifdef LANG_CN
 		else
 		{
-			str_2ws(wn, sdl->Number, 32);
-			CutWSTR(wn, 4);
-			wsprintf(ws2, "%w id:%d", wn, sdl->id);
+			int is_fetion=0;
+			if(!strncmp(num_fetion, sdl->Number, 5)) is_fetion=1;
+			if(findNameByNum(wn, is_fetion?(sdl->Number+5):sdl->Number))
+			{
+				if(is_fetion) wsprintf(ws2, "%w(%t)", wn, STR_FETION);
+				else	wstrcpy(ws2, wn);
+			}
+			else
+				wsprintf(ws2, PERCENT_S, sdl->Number);
 		}
 	#else
+		else if(findNameByNum(wn, sdl->Number))
 			wstrcpy(ws2, wn);
 		else
-			str_2ws(ws2, sdl->Number, 32);
+			wsprintf(ws2, PERCENT_S, sdl->Number);
 	#endif
 	}
 	else

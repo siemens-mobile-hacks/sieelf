@@ -13,6 +13,9 @@ extern const char FLDR_UNK[];
 extern const char FLDR_ARCHIVE[];
 
 extern const char PERCENT_T[];
+extern const char PERCENT_S[];
+extern const char num_fetion[];
+
 extern const char LGP_OK[];
 extern const char LGP_BACK[];
 extern const char LGP_ADRBK[];
@@ -55,6 +58,7 @@ extern const char LGP_CONFIG_UPDATE[];
 
 #ifndef NO_CS
 extern const char STR_CODESHOW[];
+extern const char STR_FETION[];
 #endif
 
 extern const char STR_UNK_NUM[];
@@ -86,6 +90,8 @@ extern const char STR_UNK[];
 extern const char LGP_DEL_ALL_MSS[];
 extern const char LGP_ABOUT[];
 extern const char LGP_COV_DAT_TXT[];
+extern const char LGP_SAVE_ALL_AS_FILE[];
+extern const char STR_SAF_N[];
 #ifdef LANG_CN
 #define LGP_CFG_MAIN_FOLDER "MySMSYS文件夹"
 #define LGP_CFG_SYSTEM_FOLDER "系统文件夹"

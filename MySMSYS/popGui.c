@@ -130,10 +130,15 @@ int StartIncomingWin(void *dlg_csm)
 			wsprintf(ws, "%t\n%t:\n%s", STR_NEW_MSG, STR_FROM, sd->Number);
 	#else
 		char num[32];
+		int is_fetion=0;
+		if(!strncmp(num_fetion, sd->Number, 5)) is_fetion=1;
 		strcpy(num, sd->Number);
 		GetProvAndCity(cs->wsbody, num);
-		if(findNameByNum(wn, sd->Number))
-			wsprintf(ws, "%t\n%t:\n%w\n%w", STR_NEW_MSG, STR_FROM, wn, cs);
+		if(findNameByNum(wn, is_fetion?(sd->Number+5):sd->Number))
+		{
+			if(is_fetion) wsprintf(ws, "%t\n%t:\n%w(%t)\n%w", STR_NEW_MSG, STR_FROM, wn, STR_FETION, cs);
+			else wsprintf(ws, "%t\n%t:\n%w\n%w", STR_NEW_MSG, STR_FROM, wn, cs);
+		}
 		else
 			wsprintf(ws, "%t\n%t:\n%s\n%w", STR_NEW_MSG, STR_FROM, sd->Number, cs);
 	#endif

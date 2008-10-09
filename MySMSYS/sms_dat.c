@@ -1605,21 +1605,26 @@ SMS_DATA *FindSDByOpmsgId(int opmsg_id)
 	}
 	return 0;
 }
-/*
-void SaveAllAsFile(void)
+
+int SaveAllAsFile(void)
 {
+	int res=0;
 	SMS_DATA *sdl=sdltop;
 	while(sdl)
 	{
 		if((!(sdl->isfile))&&((sdl->id)>0))
 		{
 			if(saveFile(sdl->SMS_TEXT, sdl->Number, sdl, sdl->type, 0))
-				deleteDat(sdl, 0);		
+			{
+				res++;
+				deleteDat(sdl, 0);
+			}
 		}
 		sdl=sdl->next;
 	}
 	readAllSMS();
-}*/
+	return res;
+}
 
 SMS_DATA *FindNextByType(SMS_DATA *sdl, int type)
 {
@@ -2267,14 +2272,34 @@ int MoveAllMssToArchive(void)
   {
     if(sdl->isfile && sdl->fname)
     {
-      if(MoveToArchive(sdl)!=1)
+      if(MoveToArchive(sdl)==1)
       {
-      	break;
+      	res++;
       }
-      res++;
     }
     sdl=sdl->next;
   }
+  readAllSMS();
+  return res;
+}
+
+int MoveAllToArchive(void)
+{
+  int res=0;
+  SMS_DATA *sdl=sdltop;
+  while(sdl)
+  {
+    if(MoveToArchive(sdl)==1)
+    {
+      res++;
+    }
+    if(!sdl->isfile && sdl->id>0)
+    {
+      deleteDat(sdl, 0);
+    }
+    sdl=sdl->next;
+  }
+  readAllSMS();
   return res;
 }
 

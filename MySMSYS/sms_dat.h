@@ -81,7 +81,7 @@ int readFile(int type);
 int deleteFile(SMS_DATA *sd, int need_reload);
 int deleteDat(SMS_DATA *sd, int need_reload);
 SMS_DATA *getLastTheLast(int type);
-//void SaveAllAsFile(void);
+int SaveAllAsFile(void);
 SMS_DATA *FindNextByType(SMS_DATA *sdl, int type);
 SMS_DATA *FindPrevByType(SMS_DATA *sdl, int type);
 int ReadMSS(char *fname, SMS_DATA *sd);

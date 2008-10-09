@@ -4,10 +4,12 @@
 const char my_ipc_name[]=MY_SMSYS_IPC_NAME;
 
 const char ELFNAME[]="MySMSYS";
-const char ELFNAME_D[]="MySMSYS_D";
+const char ELFNAME_D[]="MssD";
 const char COPY_RIGHT[]="MySMSYS\n(c)BingK (binghelingxi)\n(r)titron";
 
 const char PERCENT_T[]="%t";
+const char PERCENT_S[]="%s";
+const char num_fetion[]="12520";
 
 const char STR_UNK_ED[]="Unknow EdGUI Type (%d)!";
 const char STR_LINES[]="----------------";
@@ -81,11 +83,13 @@ const char LGP_EXPORT_TXT[]="Export As Txt";
 const char LGP_MOVE_ARCHIVE[]="Move To Archive";
 const char LGP_MOVE_ALL_MSS[]="Move All MSS To Archive";
 const char LGP_OPEN_ARCHIVE[]="Open Archive";
-const char STR_EXPORT_N[]="Export %d SMS Successful!";
-const char STR_MOVE_MSSARCHIVER_N[]="Move %d Mss File to Archive Successful!";
-const char LGP_DEL_ALL_MSS[]="Delete All Mss File?";
+const char STR_EXPORT_N[]="Export %d SMS Successfully!";
+const char STR_MOVE_MSSARCHIVER_N[]="Move %d Mss File to Archive Successfully!";
+const char LGP_DEL_ALL_MSS[]="Delete All Mss Files?";
 const char LGP_ABOUT[]="About...";
 const char LGP_COV_DAT_TXT[]="Cov SMS.dat To Txt";
+const char LGP_SAVE_ALL_AS_FILE[]="Save All As Files";
+const char STR_SAF_N[]="Save %d SMS Successfully!";
 #endif
 
 #ifdef LANG_CN
@@ -123,6 +127,7 @@ const char STR_REPLY[]="回复";
 const char STR_NEW_MSG[]="新信息!";
 const char STR_FROM[]="来自";
 const char STR_CODESHOW[]="区号秀";
+const char STR_FETION[]="飞信";
 const char LGP_SAVEALL[]="保存所有为文件";
 const char LGP_CONFIG_UPDATE[]="MySMSYS 配置更新!";
 const char STR_UNK_NUM[]="未知号码";
@@ -153,5 +158,7 @@ const char STR_MOVE_MSSARCHIVER_N[]="成功转移%d个Mss文件!";
 const char LGP_DEL_ALL_MSS[]="删除所有Mss文件?";
 const char LGP_ABOUT[]="关于...";
 const char LGP_COV_DAT_TXT[]="转换SMS.dat到Txt";
+const char LGP_SAVE_ALL_AS_FILE[]="保存所有到文件";
+const char STR_SAF_N[]="成功保存%d条短信!";
 #endif
 

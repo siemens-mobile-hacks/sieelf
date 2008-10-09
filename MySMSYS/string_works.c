@@ -2,7 +2,58 @@
 #include "string_works.h"
 
 
-int char16to8(int c)
+typedef struct
+{
+  unsigned short u;
+  unsigned short a;
+} TUNICODE2ANSI;
+
+const TUNICODE2ANSI u2a[]=
+{
+  0x2014,'—',
+  0x2018,'‘',
+  0x201C,'“',
+  0x201D,'”',
+  0x2103,'℃',
+  0x3001,'、',
+  0x3002,'。',
+  0xFF01,'！',
+  0xFF08,'（',
+  0xFF09,'）',
+  0xFF0C,'，',
+  0xFF1A,'：',
+  0xFF1B,'；',
+  0xFF1F,'？',
+  0xFF5E,'～',
+  0xFFE5,'￥',
+  0,0
+};
+
+int unicode2ansi(int c) //
+{
+  int i;
+  const TUNICODE2ANSI *p=u2a;
+  if(c>=0x400 && c<0x1000)
+  {
+    int d;
+    c-=0x400;
+    c+=0xA791;
+    d=c>>8;
+    c=(c<<24)>>16;
+    return (c|d);
+  }
+  else
+  {
+    while((i=p->u))
+    {
+      if(c==i)
+	return p->a;
+      p++;
+    }
+    return 0x2020;
+  }
+}
+int char16to8(int c) //unicode2win1251
 {
   if (c<0x400) return (c);
   c-=0x400;
@@ -48,78 +99,15 @@ void ws2ascii(WSHDR *ws, char *s, int maxlen)
       s[j++] = (unsigned char)(codemap[temp-0x4E00]>>8);
       s[j++] = (unsigned char)((codemap[temp-0x4E00]<<8)>>8);
     }
+    else if(temp<0x400)
+    {
+      s[j++]=temp;
+    }
     else
     {
-      switch(temp)
-      {
-	//CODEMAP不支持的部分字符，这里只写出少量几个常用的
-      case 0x2014:
-	s[j++]=0xA1; //'—'
-	s[j++]=0xAA;
-	break;
-      case 0x2018:
-	s[j++]=0xA1; //'‘'
-	s[j++]=0xAE;
-	break;
-      case 0x201C:
-	s[j++]=0xA1;//'“'
-	s[j++]=0xB0;
-	break;
-      case 0x201D:
-	s[j++]=0xA1;//'”'
-	s[j++]=0xB1;//'”'
-	break;
-      case 0x2103:
-	s[j++]=0xA1;//'℃'
-	s[j++]=0xE6;//'℃'
-	break;
-      case 0x3001:
-	s[j++]=0xA1;//'、'
-	s[j++]=0xA2;//'、'
-	break;
-      case 0x3002:
-	s[j++]=0xA1;//'。'
-	s[j++]=0xA3;//'。'
-	break;
-      case 0xFF01:
-	s[j++]='！'/0x100;
-	s[j++]='！'%0x100;
-	break;
-      case 0xFF08:
-	s[j++]='（'/0x100;
-	s[j++]='（'%0x100;
-	break;
-      case 0xFF09:
-	s[j++]='）'/0x100;
-	s[j++]='）'%0x100;
-	break;
-      case 0xFF0C:
-	s[j++]='，'/0x100;
-	s[j++]='，'%0x100;
-	break;
-      case 0xFF1A:
-	s[j++]='：'/0x100;
-	s[j++]='：'%0x100;
-	break;
-      case 0xFF1B:
-	s[j++]='；'/0x100;
-	s[j++]='；'%0x100;
-	break;
-      case 0xFF1F:
-	s[j++]='？'/0x100;
-	s[j++]='？'%0x100;
-	break;
-      case 0xFF5E:
-	s[j++]='～'/0x100;
-	s[j++]='～'%0x100;
-	break;
-      case 0xFFE5:
-	s[j++]='￥'/0x100;
-	s[j++]='￥'%0x100;
-	break;
-      default :
-	s[j++]=char16to8(temp);
-      }
+      temp=unicode2ansi(temp);
+      s[j++]=temp>>8;
+      s[j++]=(temp<<8)>>8;
     }
     if(maxlen != 0 && j >= maxlen)
       break;

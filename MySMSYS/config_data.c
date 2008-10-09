@@ -16,8 +16,11 @@ __root const int CFG_ENA_SAVE_SENT = 1;
 
 __root const CFG_HDR cfghdr3 = {CFG_CBOX, LGP_CFG_EXPORT_CHARSET, 0, 2};
 __root const int CFG_EXPORT_CHARSET = 1;
+#ifdef LANG_CN
 __root const CFG_CBOX_ITEM cfgcbox0[2] = {"ASCII", "UTF8"};
-
+#else
+__root const CFG_CBOX_ITEM cfgcbox0[2] = {"WIN1251", "UTF8"};
+#endif
 __root const CFG_HDR cfghdr1_0 = {CFG_LEVEL, LGP_CFG_NOTIFY_SET, 1, 0};
 
 __root const CFG_HDR cfghdr1_1 = {CFG_CHECKBOX, LGP_CFG_ENA_NOTIFY, 0, 3};
