@@ -1,5 +1,5 @@
 #include "..\inc\swilib.h"
-
+#include "..\inc\playsound.h"
 #include "MySMSYS_ipc.h"
 #include "adrList.h"
 #include "rect_patcher.h"
@@ -23,6 +23,11 @@ unsigned int DAEMON_CSM_ID=0;
 unsigned int DIALOG_CSM_ID=0;
 unsigned int DIALOG_GUI_ID=0;
 
+typedef struct
+{
+	CSM_DESC csmd;
+	WSHDR name;
+}DLGCSM_DESC;
 typedef struct
 {
 	unsigned int csm_id;
@@ -353,6 +358,8 @@ int dialogcsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 static void dialogcsm_oncreate(CSM_RAM *data)
 {
 	DLG_CSM *csm=(DLG_CSM *)data;
+	DLGCSM_DESC *dcd=csm->csm.constr;
+	WSHDR *name=&dcd->name;
 	csm->gstop=0;
 	if(
 		(IPC_SUB_MSG!=SMSYS_IPC_FVIEW)
@@ -370,21 +377,33 @@ static void dialogcsm_oncreate(CSM_RAM *data)
 		csm->gui_id=CreateMainMenu(csm);
 		break;
 	case SMSYS_IPC_NEWSMS:
+		name->wsbody=malloc(32*sizeof(short));
+		wsprintf(name, PERCENT_T, LGP_NEW);
 		csm->gui_id=newSMS(csm);
 		break;
 	case SMSYS_IPC_IN_NEW:
+		name->wsbody=malloc(32*sizeof(short));
+		wsprintf(name, PERCENT_T, LGP_IN_N);
 		csm->gui_id=showSMSList(csm, TYPE_IN_N);
 		break;
 	case SMSYS_IPC_IN_RD:
+		name->wsbody=malloc(32*sizeof(short));
+		wsprintf(name, PERCENT_T, LGP_IN_R);
 		csm->gui_id=showSMSList(csm, TYPE_IN_R);
 		break;
 	case SMSYS_IPC_OUT:
+		name->wsbody=malloc(32*sizeof(short));
+		wsprintf(name, PERCENT_T, LGP_OUT);
 		csm->gui_id=showSMSList(csm, TYPE_OUT);
 		break;
 	case SMSYS_IPC_DRAFT:
+		name->wsbody=malloc(32*sizeof(short));
+		wsprintf(name, PERCENT_T, LGP_DRAFT);
 		csm->gui_id=showSMSList(csm, TYPE_DRAFT);
 		break;
 	case SMSYS_IPC_ALL:
+		name->wsbody=malloc(32*sizeof(short));
+		wsprintf(name, PERCENT_T, LGP_ALL);
 		csm->gui_id=showSMSList(csm, 0);
 		break;
 	case SMSYS_IPC_TLAST:
@@ -392,6 +411,8 @@ static void dialogcsm_oncreate(CSM_RAM *data)
 			csm->gui_id=CreateMainMenu(csm);
 		break;
 	case SMSYS_IPC_IN_ALL:
+		name->wsbody=malloc(32*sizeof(short));
+		wsprintf(name, PERCENT_T, LGP_IN_A);
 		csm->gui_id=showSMSList(csm, TYPE_IN_ALL);
 		break;
 	case SMSYS_IPC_NEW_IN_WIN:
@@ -400,11 +421,21 @@ static void dialogcsm_oncreate(CSM_RAM *data)
 	case SMSYS_IPC_NEWSMS_NUM:
 		if((!num_from_ipc)||(!(csm->gui_id=newSMSWithNum(csm, num_from_ipc))))
 			csm->gui_id=CreateMainMenu(csm);
+		else
+		{
+			name->wsbody=malloc(32*sizeof(short));
+			wsprintf(name, PERCENT_T, LGP_NEW);
+		}
 		num_from_ipc=0;
 		break;
 	case SMSYS_IPC_SEND_UTF8:
 		if((!text_utf8)||(!(csm->gui_id=newSMSWithUtf8Text(csm, text_utf8))))
 			csm->gui_id=CreateMainMenu(csm);
+		else
+		{
+			name->wsbody=malloc(32*sizeof(short));
+			wsprintf(name, PERCENT_T, LGP_NEW);
+		}
 		text_utf8=0;
 		break;
 	case SMSYS_IPC_QN_OPMSG:
@@ -421,6 +452,11 @@ static void dialogcsm_oncreate(CSM_RAM *data)
 			readAllSMS();
 			csm->gui_id=CreateMainMenu(csm);
 		}
+		else
+		{
+			name->wsbody=malloc(32*sizeof(short));
+			wsprintf(name, PERCENT_T, STR_VIEW);
+		}
 		filename[0]=0;
 		break;
 	default:
@@ -429,17 +465,28 @@ static void dialogcsm_oncreate(CSM_RAM *data)
 	if(addCSMid(DlgCsmIDs, csm->csm.id)<0)
 		addCSMidForced0(DlgCsmIDs, csm->csm.id);
 }
+
+void FreeCsmd(void *csmd)
+{
+	mfree(csmd);
+}
+static unsigned short dialogcsm_name_body[]={7,'M','y','S','M','S','Y','S'};
 static void dialogcsm_onclose(CSM_RAM *data)
 {
 	DLG_CSM *dlg_csm=(DLG_CSM *)data;
+	DLGCSM_DESC *dcd=dlg_csm->csm.constr;
 	delCSMid(DlgCsmIDs, dlg_csm->csm.id);
+	//SUBPROC((void *)FreeCsmd, dlg_csm->csm.constr);
+	if(dcd->name.wsbody!=dialogcsm_name_body && dcd->name.wsbody!=0)
+		mfree(dcd->name.wsbody);
+	mfree(dcd);
 }
-static unsigned short dialogcsm_name_body[140];
-static const struct
-{
-	CSM_DESC dialogcsm;
-	WSHDR dialogcsm_name;
-}DIALOGCSM =
+//static const struct
+//{
+//	CSM_DESC dialogcsm;
+//	WSHDR dialogcsm_name;
+//}
+DLGCSM_DESC DIALOGCSM =
 {
 	{
 	dialogcsm_onmessage,
@@ -464,22 +511,24 @@ static const struct
 	}
 };
 
-static void UpdateDialogCSMname(void)
-{
-	wsprintf((WSHDR *)(&DIALOGCSM.dialogcsm_name),ELFNAME);
-}
+//static void UpdateDialogCSMname(void)
+//{
+//	wsprintf((WSHDR *)(&DIALOGCSM.name),ELFNAME);
+//}
 
 unsigned int CreateDialogCSM(void)
 {
 
 	DLG_CSM dlg_csm;
+	DLGCSM_DESC *dcd=malloc(sizeof(DLGCSM_DESC));
 	zeromem(&dlg_csm, sizeof(DLG_CSM));
-	UpdateDialogCSMname();
+	memcpy(dcd, &DIALOGCSM, sizeof(DLGCSM_DESC));
+//	UpdateDialogCSMname();
 	
 	if(!cltop)
 		SUBPROC((void *)ConstructList);
 		//ConstructList();
-	return (CreateCSM(&DIALOGCSM.dialogcsm,&dlg_csm,2));
+	return (CreateCSM(&dcd->csmd,&dlg_csm,2));
 }
 
 static void daemoncsm_oncreate(CSM_RAM *data)
@@ -541,6 +590,7 @@ int strcmp_nocase(const char *s1,const char *s2)
   return(i);
 }
 
+extern short PLAY_ID;
 int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 {
 #ifdef NEWSGOLD
@@ -579,6 +629,21 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 			ShowMSG(1,(int)LGP_CONFIG_UPDATE);
 			if(!cltop)
 				SUBPROC((void *)ConstructList);
+		}
+	}
+	if(PLAY_ID && (msg->msg==MSG_INCOMMING_CALL || IsCalling()))
+	{
+		PlayMelody_StopPlayback(PLAY_ID);
+		PLAY_ID=0;
+	}
+	if(msg->msg==MSG_PLAYFILE_REPORT && PLAY_ID) 
+	{
+		GBS_PSOUND_MSG *pmsg=(GBS_PSOUND_MSG *)msg;
+		if(pmsg->handler==PLAY_ID)
+		{
+			int z=pmsg->cmd;
+			if(z==M_SAE_PLAYBACK_ERROR || z==M_SAE_PLAYBACK_DONE)
+				PLAY_ID=0;
 		}
 	}
 	if(msg->msg==MSG_IPC)

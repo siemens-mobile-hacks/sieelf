@@ -356,6 +356,23 @@ __swi __arm void TempLightOn(int x, int y);
 	return 0;
 }
 
+#ifdef ELKA
+#define ICON_UNK 0x5B8
+#define ICON_OUT 0x5B8
+#define ICON_IN_R 0x5B5
+#define ICON_IN_N	0x5B6
+#define ICON_DRAFT 0x5B8
+#define ICON_IN_ALL 0x5B5
+#else
+#define ICON_UNK 0x5E4
+#define ICON_OUT 0x5E4
+#define ICON_IN_R 0x5E1
+#define ICON_IN_N	0x5E2
+#define ICON_DRAFT 0x5E4
+#define ICON_IN_ALL 0x5E1
+#endif
+
+const int SL_ICONS[7]={ICON_UNK, ICON_OUT, ICON_IN_R, ICON_IN_N, ICON_DRAFT, ICON_IN_ALL, 0};
 void sms_menu_itemhndl(void *data, int curitem, void *user_pointer)
 {
 	SML_OP *so=(SML_OP *)user_pointer;
@@ -402,6 +419,8 @@ AL_ERR:
 		wsprintf(ws1, PERCENT_T, LGP_ERR);
 		CutWSTR(ws2, 0);
 	}
+	SetMenuItemIconArray(data, item, SL_ICONS);
+	SetMenuItemIcon(data, curitem, (sdl)?(sdl->type):6);
 	SetMLMenuItemText(data, item, ws1, ws2, curitem);
 }
 
@@ -464,7 +483,7 @@ const ML_MENU_DESC sms_menu=
   8,sms_menu_onkey,sms_menu_ghook,NULL,
   sms_menusoftkeys,
   &sms_menu_skt,
-  0x10,//0x11,
+  0x11,//0x11,
   sms_menu_itemhndl,
   NULL,   //Items
   NULL,   //Procs

@@ -1,4 +1,5 @@
 #include "..\inc\swilib.h"
+#include "..\inc\mplayer.h"
 #include "language.h"
 #include "sms_dat.h"
 #include "popGui.h"
@@ -8,6 +9,48 @@
 #include "CodeShow.h" 
 #include "config_data.h"
 #include "lgp_pic.h"
+
+//int sndVolume=5;
+short PLAY_ID=0;
+void Play(const char *fname)
+{
+  PLAYFILE_OPT _sfo1;
+  WSHDR *sndPath,sndPathn;
+  WSHDR *sndFName,sndFNamen;
+  unsigned short sndPathb[128];
+  unsigned short sndFNameb[128];
+  char s[128];
+  const char *p;
+  if(!IsFileExist(fname))
+    return;
+  sndPath=CreateLocalWS(&sndPathn, sndPathb, 128);
+  sndFName=CreateLocalWS(&sndFNamen, sndFNameb, 128);
+  p=strrchr(fname,'\\')+1;
+  str_2ws(sndFName,p,128);
+  strncpy(s,fname,p-fname);
+  s[p-fname]='\0';
+  str_2ws(sndPath,s,128);
+  zeromem(&_sfo1,sizeof(PLAYFILE_OPT));
+  _sfo1.repeat_num=1;
+  _sfo1.time_between_play=0;
+  _sfo1.play_first=0;
+  _sfo1.volume=CFG_SOUND_VOL;//
+#ifdef NEWSGOLD
+  _sfo1.unk6=1;
+  _sfo1.unk7=1;
+  _sfo1.unk9=2;
+  PLAY_ID=PlayFile(0x10, sndPath, sndFName, GBS_GetCurCepid(), MSG_PLAYFILE_REPORT, &_sfo1);
+#else
+#ifdef X75
+  _sfo1.unk4=0x80000000;
+  _sfo1.unk5=1;
+  PLAY_ID=PlayFile(0xC, sndPath, sndFName, 0,GBS_GetCurCepid(), MSG_PLAYFILE_REPORT, &_sfo1);
+#else
+  _sfo1.unk5=1;
+  PLAY_ID=PlayFile(0xC, sndPath, sndFName, GBS_GetCurCepid(), MSG_PLAYFILE_REPORT, &_sfo1);
+#endif
+#endif
+}
 
 #pragma swi_number=0x44
 __swi __arm void TempLightOn(int x, int y);
@@ -55,18 +98,24 @@ int popup_onkey(void *data, GUI_MSG *msg)
 		if(!IsUnlocked())
 			TempLightOn(3, 0x7FFF);
 
+		if(PLAY_ID) PlayMelody_StopPlayback(PLAY_ID);
+		PLAY_ID=0;
+		if(CFG_ENA_SOUND && IsPlayerOn() && !GetPlayStatus()) MPlayer_Start();
 		SetVibration(0);
-		if(IsTimerProc(&(pu->tmr)))
-		{
-			GBS_StopTimer(&(pu->tmr));
-		}
+		//if(IsTimerProc(&(pu->tmr)))
+		//{
+		//	GBS_StopTimer(&(pu->tmr));
+		//}
 	}
 	return 0;
 }
 void StopVibra(void)
 {
-	GeneralFuncF1(0x1C);
-	SetVibration(0);
+	GeneralFuncF1(0x1);
+//	SetVibration(0);
+//	if(PLAY_ID) PlayMelody_StopPlayback(PLAY_ID);
+//	PLAY_ID=0;
+//	if(GetPlayStatus()==1) MPlayer_Start();
 	GBS_SendMessage(MMI_CEPID,KEY_DOWN,0x63); //update
 }
 void popup_ghook(void *data, int cmd)
@@ -76,16 +125,24 @@ void popup_ghook(void *data, int cmd)
 	{
 		//if(!IsUnlocked())
 		TempLightOn(3, 0x7FFF);
-		if(CFG_NOTIFY_TIME)
+		if(CFG_NOTIFY_TIME && !IsCalling())
 		{
+			if(CFG_ENA_SOUND && IsFileExist(CFG_SOUND_PATH))
+			{
+				if(GetPlayStatus()) MPlayer_Stop();
+				if(!PLAY_ID) Play(CFG_SOUND_PATH);
+			}
 			SetVibration(CFG_VIBRA_POWER);
 			GBS_StartTimerProc(&(pu->tmr), TIME_SECOND*CFG_NOTIFY_TIME, StopVibra);
 		}
 	}
 	else if(cmd==3) //Close
 	{
-		GBS_DelTimer(&(pu->tmr));
+		if(PLAY_ID) PlayMelody_StopPlayback(PLAY_ID);
+		PLAY_ID=0;
+		if(CFG_ENA_SOUND && IsPlayerOn() && !GetPlayStatus()) MPlayer_Start();
 		SetVibration(0);
+		GBS_DelTimer(&(pu->tmr));
 		mfree(pu);
 	}
 }

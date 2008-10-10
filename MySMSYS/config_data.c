@@ -42,6 +42,15 @@ __root const CFG_HDR cfghdr1_6= {CFG_COORDINATES, LGP_CFG_ICONNEW_POS, 0, 0};
 __root const unsigned int CFG_ICONNEW_POS_X = 2;
 __root const unsigned int CFG_ICONNEW_POS_Y = 140;
 
+__root const CFG_HDR cfghdr1_7 = {CFG_CHECKBOX, LGP_CFG_ENA_SOUND, 0, 3};
+__root const int CFG_ENA_SOUND = 1;
+
+__root const CFG_HDR cfghdr1_8= {CFG_STR_UTF8, LGP_CFG_SOUND_PATH, 3, 127};
+__root const char CFG_SOUND_PATH[128] = "2:\\Default\\MessageMelody.wav";
+
+__root const CFG_HDR cfghdr1_a = {CFG_UINT, LGP_CFG_SOUND_VOL, 0, 10};
+__root const unsigned int CFG_SOUND_VOL = 5;
+
 __root const CFG_HDR cfghdr1_9 = {CFG_LEVEL, "", 0, 0};
 
 

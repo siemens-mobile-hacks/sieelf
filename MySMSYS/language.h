@@ -108,6 +108,9 @@ extern const char LGP_DEL_ALL_MSG[];
 #define LGP_CFG_ICONNEW_POS "图标坐标"
 #define LGP_CFG_EXPORT_CHARSET "导出文本字符编码"
 #define LGP_CFG_ENA_SAVE_SENT "保存已发送短信"
+#define LGP_CFG_ENA_SOUND "使用声音提醒"
+#define LGP_CFG_SOUND_VOL "音量"
+#define LGP_CFG_SOUND_PATH "声音文件路径"
 #endif
 
 #ifdef LANG_EN
@@ -123,4 +126,7 @@ extern const char LGP_DEL_ALL_MSG[];
 #define LGP_CFG_ICONNEW_POS "Icon Position"
 #define LGP_CFG_EXPORT_CHARSET "Export Text Charset"
 #define LGP_CFG_ENA_SAVE_SENT "Save Sent SMS"
+#define LGP_CFG_ENA_SOUND "Enable Sound Notify"
+#define LGP_CFG_SOUND_VOL "Volume"
+#define LGP_CFG_SOUND_PATH "Sound File Path"
 #endif

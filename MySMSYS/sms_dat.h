@@ -98,6 +98,7 @@ int MoveAllMssToArchive(void);
 int MoveAllToArchive(void);
 void ShowFileErrCode(int code);
 int CovDatToTxt(char *dat_path, char *txt_path);
+int IsFileExist(const char *filename);
 //--------------
 void Add2WS(char *data, char *wsbody, int len);
 void Hex2Num(char *hex, char *num, int len);

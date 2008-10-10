@@ -14,4 +14,7 @@ extern const unsigned int CFG_ICONNEW_POS_X;
 extern const unsigned int CFG_ICONNEW_POS_Y;
 extern const int CFG_EXPORT_CHARSET;
 extern const int CFG_ENA_SAVE_SENT;
+extern const int CFG_ENA_SOUND;
+extern const char CFG_SOUND_PATH[];
+extern const unsigned int CFG_SOUND_VOL;
 #endif

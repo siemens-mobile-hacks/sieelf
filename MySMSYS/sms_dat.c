@@ -1868,7 +1868,7 @@ int IsHaveNewSMS(void)
 
 //-----------------------------------------------
 //file works
-int IsFileExist(char *filename)
+int IsFileExist(const char *filename)
 {
   FSTATS fst;
   unsigned int err;
