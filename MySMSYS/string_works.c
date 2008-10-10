@@ -99,15 +99,15 @@ void ws2ascii(WSHDR *ws, char *s, int maxlen)
       s[j++] = (unsigned char)(codemap[temp-0x4E00]>>8);
       s[j++] = (unsigned char)((codemap[temp-0x4E00]<<8)>>8);
     }
-    else if(temp<0x400)
-    {
-      s[j++]=temp;
-    }
-    else
+    else if(temp>=0x400)
     {
       temp=unicode2ansi(temp);
       s[j++]=temp>>8;
       s[j++]=(temp<<8)>>8;
+    }
+    else
+    {
+      s[j++]=' ';
     }
     if(maxlen != 0 && j >= maxlen)
       break;
