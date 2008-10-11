@@ -950,9 +950,6 @@ MyMenu2/test.xcl -text
 MySMSYS/About.txt -text
 MySMSYS/CodeShow.c -text
 MySMSYS/CodeShow.h -text
-MySMSYS/IPC_Sender/IPC_Sender.ewp -text
-MySMSYS/IPC_Sender/main.c -text
-MySMSYS/IPC_Sender/tph.bat -text
 MySMSYS/MssLinker/MssLinker.ewp -text
 MySMSYS/MssLinker/func.asm -text
 MySMSYS/MssLinker/main.c -text
