@@ -1206,9 +1206,15 @@ typedef struct
   short index; //1,2,3 ...
   char unk[6];
   short unk1; //another index ?
-  char cnt0;
-  char cnt1; // =cnt0;
+  char cnt_all;
+  char cnt_received; // =cnt0;
   short *data_id; //depend on cnt, for GetSmsPosIndex to get pos_index
+  short unk2; //0, 0x700
+  short unk3; //0
+  char unk4; // 3
+  char unk5; //0,3
+  char type; // 0, in read, 1, in new, 3,sent
+  char new_cnt_data; // ? 
 }INDEX_ID_DATA;
 
 typedef struct
@@ -1233,6 +1239,19 @@ typedef struct
 {
   SMS_DATA_LLIST in_msg;
   SMS_DATA_LLIST out_msg;
+	short unk_0xFFFF;
+	short unk_0_1;
+	short cnt_msg_in_read;
+	short cnt_in_new_sms_dat;
+	short cnt_in_new_opwv; //? ems ?
+	short cnt_sms_sent;
+	short cnt_sms_draft;
+	short unk_0_2;
+	short cnt_freespace_data; // -0x28 == ?
+	short cnt_in_data;
+	short unk_0_3;
+	short cnt_sent_data;
+	short cnt_draft_data;
 }SMS_DATA_ROOT;
 
 #pragma diag_suppress=Ta035
