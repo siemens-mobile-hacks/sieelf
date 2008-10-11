@@ -4,7 +4,7 @@
   #pragma system_include
  #endif
 #include <ysizet.h>
-#include "siecxt.h"
+#include <siecxt.h>
 _C_STD_BEGIN
  //定义编译默认盘符
 #ifdef NEWSGOLD
@@ -37,7 +37,7 @@ _C_STD_BEGIN
 #define CTYPE2 1
 //定义字体索引类型0-16!
 #define FontSyEN "Large","Large bold","Large italic","Large italic bold","Medium","Medium bold","Medium italic","Medium italic bold","Small","Small bold","Small italic","Small italic bold","Numeric small","Numeric small bold","Numeric xsmall","Numeric large","Numeric medium"
-#define FontSyCN "大号字体","大号加粗","大号斜体","大号粗斜","中号字体","中号加粗","中号倾斜","中号粗斜","小号字体","小号加粗","小号斜体","小号粗斜","小号数体","小号数粗","最小数体","大号数体","中号数体"
+#define FontSyCN "大字体","大加粗","大斜体","大粗斜","中字体","中加粗","中倾斜","中粗斜","小字体","小加粗","小斜体","小粗斜","小数体","小数粗","微数体","大数体","中数体"
  //#define IS_FOLDER 1 //定义文件夹操作
  //#define IS_FILE 0  //定义文件操作
  

@@ -1,6 +1,7 @@
 #ifndef _SIECXT_H_
  #define _SIECXT_H_ 
 static const char _percent_t[]="%t";
+static const char _percent_e[]="%t%t";
 static const char cWeekName[4][7][12]={{"MONDAY","TUESDAY","WEDNESDAY","THUSDAY","FRIDAY","SATURDAY","SUNDAY"},{"MON","TUES","WED","THU","FRI","SAT","SUN"},{"Monday","Tuesday","Wednesday","Thusday","Friday","Saturday","Sunday"},{"Mon","Tues","Wed","Thu","Fri","Sat","Sun"}};
 static const char cDataFmt[8][16]={"%02d/%02d/%02d", "%02d-%02d-%02d", "%02d.%02d.%02d", "%02d %02d %02d", "%02d/%02d", "%02d-%02d", "%02d.%02d", "%02d %02d"};  
 static const unsigned short wMonthAdd[12]={0,31,59,90,120,151,181,212,243,273,304,334};
@@ -13,8 +14,10 @@ static const unsigned long wLunar[100]={/*农历数据*/
 0x00497,0x0064B,0x30D4A,0x00EA5,0x80D65,0x005AC,0x00AB6,0x5126D,0x0092E,0x00C96,0x41A95,0x00D4A,0x00DA5,0x20B55,
 0x0056A,0x7155B,0x0025D,0x0092D,0x5192B,0x00A95,0x00B4A,0x416AA,0x00AD5,0x90AB5,0x004BA,0x00A5B,0x60A57,0x0052B,
 0x00A93,0x40E95};
-static const unsigned short XINGQI[]={0x661F,0x671F,0}; //星期
 static const char WeekGB[][7]={"星期一","星期二","星期三","星期四","星期五","星期六","星期日"};//一二三四五六日
+static const char WeekID[][7]={"一","二","三","四","五","六","日"};//一二三四五六日
+static const char WeekHD[]={"星期"};//星期
+static const unsigned short XINGQI[]={0x661F,0x671F,0}; //星期
 static const unsigned short UniNum[]={0x4E00,0x4E8C,0x4E09,0x56DB,0x4E94,0x516D,0x65E5,0};//一二三四五六日
 static const unsigned short UniDate[]={0x5E74,0x6708,0x65E5,0};//年月日
 static const unsigned short UniTime[]={0x70B9,0x5206,0x79D2,0x4E0A,0x4E0B,0x5348,0};//点分秒上下午
@@ -22,9 +25,15 @@ static const char cTGan[][3]={"甲","乙","丙","丁","戊","己","庚","辛","壬","癸"}
 static const char cDZhi[][3]={"子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"};/*地支名称*/
 static const char cSXin[][3]={"鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"};/*属相名称*/
 /*农历日期名:初一...三十*/
-static const char cDName[][5] = {"*","初一","初二","初三","初四","初五","初六","初七","初八","初九","初十","十一","十二","十三","十四","十五",
-                                "十六","十七","十八","十九","二十","廿一","廿二","廿三","廿四","廿五","廿六","廿七","廿八","廿九","三十"};
-static const char cMName[][3]={"*","正","二","三","四","五","六","七","八","九","十","冬","腊"};/*农历月份名*/
+static const char cDName[][5] = {
+"*","初一","初二","初三","初四","初五","初六",
+    "初七","初八","初九","初十","十一","十二",
+    "十三","十四","十五","十六","十七","十八",
+    "十九","二十","廿一","廿二","廿三","廿四",
+    "廿五","廿六","廿七","廿八","廿九","三十"};
+static const char cMName[][3]={
+"*","正","二","三","四","五","六",
+    "七","八","九","十","冬","腊"};/*农历月份名*/
 static const char cOName[][3]={"年","月","闰"};/*其它名称:年,月,闰*/
 //定义二十四节气数据表
 static const unsigned char HolDay[]={    
@@ -78,7 +87,7 @@ static const unsigned char HolDay[]={
 0xA5,0xB4,0x96,0xA5,0xA6,0x96,0x88,0x88,0x78,0x78,0x87,0x87,  //2047
 0x95,0xB4,0xA5,0xB4,0xA5,0xA5,0x97,0x87,0x87,0x88,0x86,0x96,  //2048
 0xA4,0xC3,0xA5,0xA5,0xA5,0xA6,0x97,0x87,0x87,0x78,0x87,0x86,  //2049
-0xA5,0xC3,0xA5,0xB5,0xA6,0xA6,0x87,0x88,0x78,0x78,0x87,0x87};  //2050
+0xA5,0xC3,0xA5,0xB5,0xA6,0xA6,0x87,0x88,0x78,0x78,0x87,0x87}; //2050
 static const unsigned short cDay[][2]={
 {0x5C0F,0x5BD2},{0x5927,0x5BD2},{0x7ACB,0x6625},{0x96E8,0x6C34},
 {0x60CA,0x86F0},{0x6625,0x5206},{0x6E05,0x660E},{0x8C37,0x96E8},
