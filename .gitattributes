@@ -321,6 +321,7 @@ ELFLoader_lg8/vkp/ELFPack.bat -text
 ELFLoader_lg8/vkp/ELFloader说明及生成.txt -text
 ELFLoader_lg8/vkp/GetELFPackbyyourself.bat -text
 ELFLoader_lg8/vkp/Lib65.ini -text
+ELFLoader_lg8/vkp/Lib_nsg.ini -text
 ELFLoader_lg8/vkp/M6Cv50/ELFLoader_M6Cv50_ANSI_Standard.vkp -text
 ELFLoader_lg8/vkp/M6Cv50/swilib.vkp -text
 ELFLoader_lg8/vkp/M75Cv25/ELFLoader_M75Cv25_ANSI_Standard.vkp -text

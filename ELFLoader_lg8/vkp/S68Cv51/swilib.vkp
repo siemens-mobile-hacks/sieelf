@@ -631,7 +631,14 @@
 0928: 0xA8D06E9A   ; 24A:  char *RamChannel()
 092C: 0xA085B687   ; 24B:  __thumb void SetMenuSearchCallBack(void *gui, MenuSearchCallBack proc)
 0930: 0xA02DE105   ; 24C:  __thumb int  GetPeripheryState (int device, int check_state)
+0934: 0xA024C494   ; 24D: int PlayMelody_SetPosition(int handle, int pos_ms)
+0938: 0xA02BEC34   ; 24E: void *GetPlayObjById(int handle)
+093C: 0xA0BF1174   ; 24F: int GetPlayObjPosition(void *playobj_3D0, int *pos_ms)
 
+0940: 0xA0BF0F0C   ; 250: int GetPlayObjDuration(void *playobj_3D0, int *pos_ms)
+;944:              ; 251: char *RamDataSendFName()
+;948:              ; 252: char *RamDataReceiveFName()
+094C: 0xA8DDEDAA   ; 253: char *RamLastCallNum()
 0950: 0xA0308ABF   ; 254:  __arm int StartNativeExplorer(NativeExplorerData* data)
 0954: 0xA085CDEB   ; 255:  __thumb void MenuSetUserPointer(void *gui,void *user_pointer)
 0958: 0xA037765B   ; 256:  __thumb isSetupTheme()
@@ -659,6 +666,7 @@
 09AC: 0xA0C74058   ; 26B: __arm int Obs_Mam_SetPurpose (HObj hObj,int ms)
 09B0: 0xA0C73B40   ; 26C: __arm int Obs_Sound_SetVolumeEx (HObj hObj, char vol, char delta)
 ;9B4:              ; 26D: __arm int Obs_Sound_GetVolume (HObj hObj, char *vol)
+09B8: 0xA0C74058   ; 26E: __swi __arm int Obs_SetPurpose (HObj hObj,char purpose)
 
 0A04: 0xA8DEA210   ; 281:  char *RamIsRunJava()
 0A08: 0xA8DCD5B4   ; 282:  char *RamIsRunCamera()
@@ -675,9 +683,42 @@
 0A34: 0xA8D22814   ; 28D: char *RamBluetoothNickname()
 0A38: 0xA8D21A00   ; 28E: char *RamActiveGPRSProfileName()
 
+0A40: 0xA8DF53F8   ; 290: __swi __arm char *RamCallState()
+0A44: 0xA026F098   ; 291: __swi __arm int RefreshAlarmClock()
+0A48: 0xA8E53210   ; 292: __swi __arm char *RamIsAlarmAutorepeatOn()
+0A4C: 0xA8E53218   ; 293: __swi __arm char *RamAlarmclockHour()
+0A50: 0xA8E53219   ; 294: __swi __arm char *RamAlarmclockMinute()
 0A58: 0xA025ABB5   ; 296: __thumb void getProfileNameByN(WSHDR *ws, int n, int _0);
+0A5C: 0xA8E4BF5C   ; 297: __swi __arm char *RamIsSoundRecord()
+0A60: 0xA8E4BFB8   ; 298: __swi __arm char *RamIsSoundRecordQuality()
+;A64:              ; 299: __swi __arm char *RamExtendedCameraState()
+0A68: 0xA0264255   ; 29A: SwitchAudioToBTHeadset(TypeOfHeadset, unk_0xFFFE0001)
+0A6C: 0xA026B275   ; 29B: GetTypeOfBTHeadset
+0A70: 0xA0000006   ; 29C: __swi __arm char *RamInputLanguage()
+0A74: 0x00006208   ; 29D: __swi __arm char *RamDisplayLanguage()
+
+0A8C: 0xA0859F19   ; 2A3: __swi __arm void UpdateMenuCursorItem(void *gui, int n)
+0A90: 0xA0856D7B   ; 2A4: __swi __arm void *GetMenuGUI(void *malloc_adr, void *mfree_adr)
+0A94: 0xA085DCA9   ; 2A5: __swi __arm void *GetMultiLinesMenuGUI(void *malloc_adr, void *mfree_adr)G
+0A98: 0xA0856381   ; 2A6: __swi __arm void SetHeaderToMenu(void *gui, const HEADER_DESC *hdr, void *malloc_adr)
+0A9C: 0xA085ACDB   ; 2A7: __swi __arm void SetMenuToGUI(void *gui, const void *menu_desc)
+0AA0: 0xA0857B4B   ; 2A8: __swi __arm int GetMenuItemCount(void *gui)
+0AA4: 0xA085551F   ; 2A9: __swi __arm int CreatePopupGUI(int flag, void *user_pointer, const POPUP_DESC *, int lgp_msg)
+0AA8: 0xA0855491   ; 2AA: __swi __arm int CreatePopupGUI_ws(int flag, void *user_pointer, const POPUP_DESC *, WSHDR *msg)
+0AAC: 0xA085DB4F   ; 2AB: __swi __arm void *GetPopupUserPointer(void *gui)
+0AB0: 0xA0973D8B   ; 2AC: __swi __arm int DeleteSMS(int index, int n)
+0AB4: 0xA0974069   ; 2AD: __swi __arm int SetSmsStatus(int index, int type)
+0AB8: 0xA085B9A9   ; 2AE: __swi __arm void *GetHeaderPointer(void *gui)
+0ABC: 0xA08D8DD5   ; 2AF: __swi __arm void SetHeaderText(void *hdr_pointer, WSHDR *txt, void *malloc_adr, void *mfree_adr)
+
+0AC0: 0xA085C9A9   ; 2B0: __swi __arm void SetMenuSoftKey(void *gui, const SOFTKEY_DESC *,int n)
+0AC4: 0xA8DE7708   ; 2B1: __swi __arm SMS_DATA_ROOT *SmsDataRoot()
+0AC8: 0xA0CA7835   ; 2B2: __swi __arm int GetSmsPosIndex(SMS_POS_INDEX_DATA *buf, int data_id)
 #pragma disable old_equal_ff
 +0
 
 ;********************************************************************************
 
+
+
+;locale=chinese

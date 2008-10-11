@@ -669,6 +669,8 @@
 09AC: 0xA0E01080   ; 26B: __arm int Obs_Mam_SetPurpose (HObj hObj,int ms)\par
 09B0: 0xA0E00B68   ; 26C: __arm int Obs_Sound_SetVolumeEx (HObj hObj, char vol, char delta)\par
 09B4: 0xA0E01842   ; 26D: __arm int Obs_Sound_GetVolume (HObj hObj, char *vol)\par
+09B8: 0xA0E01080   ; 26E: __swi __arm int Obs_SetPurpose (HObj hObj,char purpose)\par
+\par
 0A04: 0xA8E6F120   ; 281:  char *RamIsRunJava()\par
 0A08: 0xA8E52428   ; 282:  char *RamIsRunCamera()\par
 0A0C: 0xA0310891   ; 283: int runMidletLinkablely(const char *midlet_name, WSHDR *filename)\par
@@ -679,8 +681,41 @@
 0A20: 0xA0F520BB   ; 288: int GetCurrAudioPath()\par
 0A24: 0xA0EAA5ED   ; 289: int isDecryption()\par
 ;A28:              ; 28A: char *RamIsFileCache()\par
-0A44: 0xA029FBA4    ; 291: int RefreshAlarmClock()\par
+0A2C: 0xA8E91D90   ; 28B: __swi __arm char *RamTotalHeapSize()\par
+0A30: 0xA8E91E00   ; 28C: __swi __arm char *RamTemporaryHeapSize()\par
+0A34: 0xA8DA2B88   ; 28D: __swi __arm char *RamBTNameDevice()\par
+0A38: 0xA8DA1D74   ; 28E: __swi __arm char *RamActiveGPRSProfileName()\par
+\par
+0A40: 0xA8E7A308   ; 290: __swi __arm char *RamCallState()\par
+0A44: 0xA029FBA4   ; 291: __swi __arm int RefreshAlarmClock()\par
+0A48: 0xA8EE25B4   ; 292: __swi __arm char *RamIsAlarmAutorepeatOn()\par
+0A4C: 0xA8EE25BC   ; 293: __swi __arm char *RamAlarmclockHour()\par
+0A50: 0xA8EE25BD   ; 294: __swi __arm char *RamAlarmclockMinute()\par
 0A58: 0xA028B201   ; 296: __thumb void getProfileNameByN(WSHDR *ws, int n, int _0);\par
+0A5C: 0xA8EDB234   ; 297: __swi __arm char *RamIsSoundRecord()\par
+0A60: 0xA8EDB290   ; 298: __swi __arm char *RamIsSoundRecordQuality()\par
+0A64: 0xA8DF83D8   ; 299: __swi __arm char *RamExtendedCameraState()\par
+0A68: 0xA0294D61   ; 29A: SwitchAudioToBTHeadset(TypeOfHeadset, unk_0xFFFE0001)\par
+0A6C: 0xA029BD81   ; 29B: GetTypeOfBTHeadset\par
+0A70: 0xA8DA833C   ; 29C: __swi __arm char *RamInputLanguage()\par
+0A74: 0xA8DB430C   ; 29D: __swi __arm char *RamDisplayLanguage()\par
+0A8C: 0xA09A0DFD   ; 2A3: __swi __arm void UpdateMenuCursorItem(void *gui, int n)\par
+0A90: 0xA099DC5F   ; 2A4: __swi __arm void *GetMenuGUI(void *malloc_adr, void *mfree_adr)\par
+0A94: 0xA09A4B8D   ; 2A5: __swi __arm void *GetMultiLinesMenuGUI(void *malloc_adr, void *mfree_adr)G\par
+0A98: 0xA099D265   ; 2A6: __swi __arm void SetHeaderToMenu(void *gui, const HEADER_DESC *hdr, void *malloc_adr)\par
+0A9C: 0xA09A1BBF   ; 2A7: __swi __arm void SetMenuToGUI(void *gui, const void *menu_desc)\par
+0AA0: 0xA099EA2F   ; 2A8: __swi __arm int GetMenuItemCount(void *gui)\par
+0AA4: 0xA099C403   ; 2A9: __swi __arm int CreatePopupGUI(int flag, void *user_pointer, const POPUP_DESC *, int lgp_msg)\par
+0AA8: 0xA099C375   ; 2AA: __swi __arm int CreatePopupGUI_ws(int flag, void *user_pointer, const POPUP_DESC *, WSHDR *msg)\par
+0AAC: 0xA09A4A33   ; 2AB: __swi __arm void *GetPopupUserPointer(void *gui)\par
+0AB0: 0xA0B1A007   ; 2AC: __swi __arm int DeleteSMS(int index, int n)\par
+0AB4: 0xA0B1A2E5   ; 2AD: __swi __arm int SetSmsStatus(int index, int type)\par
+0AB8: 0xA09A288D   ; 2AE: __swi __arm void *GetHeaderPointer(void *gui)\par
+0ABC: 0xA0A3C3A5   ; 2AF: __swi __arm void SetHeaderText(void *hdr_pointer, WSHDR *txt, void *malloc_adr, void *mfree_adr)\par
+\par
+0AC0: 0xA09A388D   ; 2B0: __swi __arm void SetMenuSoftKey(void *gui, const SOFTKEY_DESC *,int n)\par
+0AC4: 0xA8E6C618   ; 2B1: __swi __arm SMS_DATA_ROOT *SmsDataRoot()\par
+0AC8: 0xA0E34871   ; 2B2: __swi __arm int GetSmsPosIndex(SMS_POS_INDEX_DATA *buf, int data_id)\par
 #pragma disable old_equal_ff\par
 +0\par
 \par
