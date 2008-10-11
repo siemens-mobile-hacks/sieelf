@@ -192,7 +192,7 @@ SMS_DATA *findInSMSByTxtTime(WSHDR *ws, char *time)
 	}
 	return 0;
 }
-*/
+
 SMS_DATA *getLastTheLast(int type)
 {
 	SMS_DATA *sdl=sdltop;
@@ -213,7 +213,7 @@ SMS_DATA *getLastTheLast(int type)
 	}
 	return sd;
 }
-
+*/
 int getSDPos(SMS_DATA *sd)
 {
 	SMS_DATA *sdl=sdltop;
@@ -465,7 +465,6 @@ int readAllSMS(void)
 {
 
 	int n;
-
 	freeSDList();
 	//n=ReadSMS();
 	n=NewMsgReader();
@@ -494,11 +493,43 @@ int newToRead(SMS_DATA *sd)
 	return 1;
 }
 
+#define MAX_FILE 10000
 //-------------------------------------
 //filework
 //#define MAIN_PATH "0:\\ZBin\\MySMSYS\\"
 #define HEADER	"MySMSYS"
 //const char main_path[]=MAIN_PATH;
+int GetMssPath(char *path, char *folder, TTime *time, TDate *date)
+{
+  char temp[128];
+  int i=0;
+  sprintf(path, "%04d%02d%02d%02d%02d%02d", 
+	  date->year,
+	  date->month,
+	  date->day,
+	  time->hour,
+	  time->min,
+	  time->sec);
+  strcpy(temp, folder);
+  strcat(temp, path);
+  strcat(temp, ".mss");
+  if(!IsFileExist(temp))
+  {
+    strcpy(path, temp);
+    return 1;
+  }
+  while(i<MAX_FILE)
+  {
+    sprintf(temp, "%s%s_%04d%s", folder, path, i, ".mss");
+    if(!IsFileExist(temp))
+    {
+      strcpy(path, temp);
+      return 1;
+    }
+    i++;
+  }
+  return 0;
+}
 
 int saveFile(WSHDR *ws, char *number, SMS_DATA *sd, int type, int need_reload)
 {
@@ -535,12 +566,14 @@ int saveFile(WSHDR *ws, char *number, SMS_DATA *sd, int type, int need_reload)
 	strcat(dir, folder);
 	if(!isdir(dir, &err))
 		mkdir(dir, &err);
-	sprintf(path, "%s%s%04d%02d%02d%02d%02d%02d.mss", 
-						CFG_MAIN_FOLDER, folder,
-						 date.year,
-						 date.month, date.day,
-						  time.hour, time.min,
-						   time.sec);
+	if(!GetMssPath(path, dir, &time, &date))
+		return 0;
+	//sprintf(path, "%s%s%04d%02d%02d%02d%02d%02d.mss", 
+	//					CFG_MAIN_FOLDER, folder,
+	//					 date.year,
+	//					 date.month, date.day,
+	//					  time.hour, time.min,
+	//					   time.sec);
 	if((f=fopen(path, A_BIN+A_WriteOnly+A_Create+A_Truncate, P_WRITE, &err))<0)
 	{
 		mfree(msf);
@@ -1812,7 +1845,7 @@ int IsSdInList(SMS_DATA *sd)
 	}
 	return 0;
 }
-
+/*
 int IsHaveNewSMS(void)
 {
 	char sms_dat[128];
@@ -1865,7 +1898,7 @@ int IsHaveNewSMS(void)
 	mfree(sms_buf);
 	return res;
 }
-
+*/
 //-----------------------------------------------
 //file works
 int IsFileExist(const char *filename)
@@ -1899,7 +1932,7 @@ void StrClearChr(char *str, int chr)
 
 #define FTYPE_TXT 0
 #define FTYPE_MSS 1
-
+/*
 void GetFileNameBySd(SMS_DATA *sd, char *filename, int ftype)
 {
   int hasname;
@@ -1950,6 +1983,79 @@ void GetFileNameBySd(SMS_DATA *sd, char *filename, int ftype)
   StrClearChr(filename, '\\');
   StrClearChr(filename, '/');
 }
+*/
+int GetFilePathBySd(SMS_DATA *sd, char *folder, char *filepath, int ftype)
+{
+  int hasname;
+  WSHDR *wname, nm;
+  unsigned short nmb[64];
+  char sname[65];
+  char temp[128];
+  TTime time;
+  TDate date;
+  int i=0;
+  GetDateTime(&date, &time);
+  wname=CreateLocalWS(&nm, nmb, 64);
+  if(strlen(sd->Number))
+  {
+    if(!findNameByNum(wname, sd->Number))
+    {
+      hasname=0;
+    }
+    else
+    {
+      hasname=1;
+      ws_2str(wname, sname, 64);
+    }
+  }
+  else
+  {
+    hasname=1;
+    strcpy(sname, "Unk");
+  }
+  if(strlen(sd->Time))
+  {
+    snprintf(filepath, 128, "%s_%s", (hasname)?sname:sd->Number, sd->Time/*, (ftype==FTYPE_MSS)?"mss":"txt"*/);
+  }
+  else
+    snprintf(filepath, 128, "%s_%02d-%02d-%02d %02d%02d%02d", (hasname)?sname:sd->Number, 
+	    date.year%2000,
+	    date.month, 
+	    date.day,
+	    time.hour,
+	    time.min,
+	    time.sec
+	      );
+  StrClearChr(filepath, ':');
+  StrClearChr(filepath, '*');
+  StrClearChr(filepath, '?');
+  StrClearChr(filepath, '<');
+  StrClearChr(filepath, '>');
+  StrClearChr(filepath, '|');
+  StrClearChr(filepath, '\\');
+  StrClearChr(filepath, '/');
+  strcpy(temp, folder);
+  strcat(temp, filepath);
+  strcat(temp, (ftype==FTYPE_MSS)?".mss":".txt");
+  if(!IsFileExist(temp))
+  {
+    strcpy(filepath, temp);
+    //strcat(filename, (ftype==FTYPE_MSS)?".mss":".txt");
+    return 1;
+  }
+  while(i<MAX_FILE)
+  {
+    sprintf(temp, "%s%s_%04d%s", folder, filepath, i, (ftype==FTYPE_MSS)?".mss":".txt");
+    if(!IsFileExist(temp))
+    {
+      strcpy(filepath, temp);
+      return 1;
+    }
+    i++;
+  }
+  return 0;
+}
+
 int ExportAllToOneTxt_ASCII(char *filename)
 {
   SMS_DATA *sdl=sdltop;
@@ -1993,7 +2099,7 @@ int ExportAllToOneTxt_ASCII(char *filename)
 
 int ExportOneToTxt_ASCII(SMS_DATA *sd)
 {
-  char filename[128];
+//  char filename[128];
   char folder[128];
   char fullpath[128];
   int fin, len, c;
@@ -2017,11 +2123,13 @@ int ExportOneToTxt_ASCII(SMS_DATA *sd)
   strcat(folder, "Text\\");
   if(!isdir(folder, &err))
     mkdir(folder, &err);
-  GetFileNameBySd(sd, filename, FTYPE_TXT);
-  strcpy(fullpath, folder);
-  strcat(fullpath, filename);
-  if(IsFileExist(fullpath))
+  //GetFileNameBySd(sd, filename, FTYPE_TXT);
+  //strcpy(fullpath, folder);
+  //strcat(fullpath, filename);
+  if(!GetFilePathBySd(sd, folder, fullpath, FTYPE_TXT))
     return -1;
+  //if(IsFileExist(fullpath))
+  // return -1;
   if((fin=fopen(fullpath, A_WriteOnly+A_Create+A_Truncate, P_WRITE, &err))<0)
     return 0;
   ws_2ascii(sd->SMS_TEXT, text, MAX_TEXT);
@@ -2097,7 +2205,7 @@ int ExportAllToOneTxt_UTF8(char *filename)
 
 int ExportOneToTxt_UTF8(SMS_DATA *sd)
 {
-  char filename[128];
+//  char filename[128];
   char folder[128];
   char fullpath[128];
   int fin, len, c, utf8_res_len;
@@ -2121,10 +2229,12 @@ int ExportOneToTxt_UTF8(SMS_DATA *sd)
   strcat(folder, "Text\\");
   if(!isdir(folder, &err))
     mkdir(folder, &err);
-  GetFileNameBySd(sd, filename, FTYPE_TXT);
-  strcpy(fullpath, folder);
-  strcat(fullpath, filename);
-  if(IsFileExist(fullpath))
+  //GetFileNameBySd(sd, filename, FTYPE_TXT);
+  //strcpy(fullpath, folder);
+  //strcat(fullpath, filename);
+  //if(IsFileExist(fullpath))
+  //  return -1;
+  if(!GetFilePathBySd(sd, folder, fullpath, FTYPE_TXT))
     return -1;
   if((fin=fopen(fullpath, A_WriteOnly+A_Create+A_Truncate, P_WRITE, &err))<0)
     return 0;
@@ -2184,7 +2294,7 @@ int ExportOneToTxt(SMS_DATA *sd)
 
 int MoveToArchive(SMS_DATA *sd)
 {
-  char filename[128];
+//  char filename[128];
   char fullpath[128];
   char folder[128];
   unsigned int err;
@@ -2229,10 +2339,12 @@ int MoveToArchive(SMS_DATA *sd)
   }
   if(!isdir(folder, &err))
     mkdir(folder, &err);
-  GetFileNameBySd(sd, filename, FTYPE_MSS);
-  strcpy(fullpath, folder);
-  strcat(fullpath, filename);
-  if (IsFileExist(fullpath))
+  //GetFileNameBySd(sd, filename, FTYPE_MSS);
+  //strcpy(fullpath, folder);
+  //strcat(fullpath, filename);
+  //if (IsFileExist(fullpath))
+  //  return -1;
+  if(!GetFilePathBySd(sd, folder, fullpath, FTYPE_MSS))
     return -1;
   if (sd->isfile && sd->fname)
   {

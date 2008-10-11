@@ -9,7 +9,7 @@
 #include "CodeShow.h" 
 #include "config_data.h"
 #include "lgp_pic.h"
-
+#include "NewDatReader.h"
 //int sndVolume=5;
 short PLAY_ID=0;
 void Play(const char *fname)
@@ -109,7 +109,7 @@ int popup_onkey(void *data, GUI_MSG *msg)
 	}
 	return 0;
 }
-void StopVibra(void)
+void StopVibra()
 {
 	GeneralFuncF1(0x1);
 //	SetVibration(0);
@@ -167,13 +167,27 @@ const POPUP_DESC popup=
 
 int StartIncomingWin(void *dlg_csm)
 {
-	SMS_DATA *sd=getLastTheLast(TYPE_IN_N);
-	WSHDR *ws=AllocWS(150);
+	//SMS_DATA *sd=getLastTheLast(TYPE_IN_N);
+	SMS_DATA *sd;
+	WSHDR *ws;
 	WSHDR wsloc, *wn;
 	WSHDR csloc, *cs;
 	unsigned short csb[30];
 	unsigned short wsb[150];
-	POP_UP *pu=malloc(sizeof(POP_UP));
+	POP_UP *pu;
+	extern unsigned int DlgCsmIDs[]; //main.c
+	extern int IsNoDlg(unsigned int *id_pool); //main.c
+	if(IsNoDlg(DlgCsmIDs))
+		sd=GetTheLastNew(1);
+	else
+	{
+	  readAllSMS();
+	  sd=GetTheLastNew(0);
+	}
+	if(!sd)
+		return 0;
+	ws=AllocWS(150);
+	pu=malloc(sizeof(POP_UP));
 	zeromem(pu, sizeof(POP_UP));
 	pu->dlg_csm=dlg_csm;
 	wn=CreateLocalWS(&wsloc,wsb,150);
@@ -200,10 +214,10 @@ int StartIncomingWin(void *dlg_csm)
 			wsprintf(ws, "%t\n%t:\n%s\n%w", STR_NEW_MSG, STR_FROM, sd->Number, cs);
 	#endif
 	}
-	else
-	{
-		wsprintf(ws, PERCENT_T, STR_NEW_MSG);
-	}
+//	else
+//	{
+//		wsprintf(ws, PERCENT_T, STR_NEW_MSG);
+//	}
 	return (CreatePopupGUI_ws(1, pu, &popup, ws));
 }
 

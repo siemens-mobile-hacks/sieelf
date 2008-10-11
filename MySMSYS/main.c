@@ -17,6 +17,8 @@
 #include "config_data.h"
 #include "conf_loader.h"
 
+#include "NewDatReader.h"
+
 extern void kill_data(void *p, void (*func_p)(void *));
 
 unsigned int DAEMON_CSM_ID=0;
@@ -366,6 +368,7 @@ static void dialogcsm_oncreate(CSM_RAM *data)
 		&&(IPC_SUB_MSG!=SMSYS_IPC_NEWSMS)
 		&&(IPC_SUB_MSG!=SMSYS_IPC_NEWSMS_NUM)
 		&&(IPC_SUB_MSG!=SMSYS_IPC_SEND_UTF8)
+		&&(IPC_SUB_MSG!=SMSYS_IPC_NEW_IN_WIN)
 		)
 	{
 		readAllSMS();
@@ -416,7 +419,8 @@ static void dialogcsm_oncreate(CSM_RAM *data)
 		csm->gui_id=showSMSList(csm, TYPE_IN_ALL);
 		break;
 	case SMSYS_IPC_NEW_IN_WIN:
-		csm->gui_id=StartIncomingWin(csm);
+		if(!(csm->gui_id=StartIncomingWin(csm)))
+			data->state=-3; //close
 		break;
 	case SMSYS_IPC_NEWSMS_NUM:
 		if((!num_from_ipc)||(!(csm->gui_id=newSMSWithNum(csm, num_from_ipc))))
@@ -568,11 +572,19 @@ void CheckNewProc(void)
 		}
 }
 
+extern short PLAY_ID;
 void UpdateNProc(void)
 {
-	new_sms_n=IsHaveNewSMS();
-	if((!new_sms_n)&&(CFG_ENA_NOTIFY))
+	new_sms_n=(SmsDataRoot())->cnt_in_new_sms_dat;
+	if((!IsHaveNewSMS())&&(CFG_ENA_NOTIFY))
+	{
 		SetVibration(0);
+		if(PLAY_ID)
+		{
+			PlayMelody_StopPlayback(PLAY_ID);
+			PLAY_ID=0;
+		}
+	}
 }
 
 #pragma inline=forced
@@ -590,7 +602,6 @@ int strcmp_nocase(const char *s1,const char *s2)
   return(i);
 }
 
-extern short PLAY_ID;
 int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 {
 #ifdef NEWSGOLD

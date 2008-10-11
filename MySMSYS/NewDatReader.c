@@ -396,7 +396,7 @@ int DoMsgList(SMS_DATA_LIST *lst, char *sms_buf, char *ems_admin_buf, int sms_si
     return 0;
   if(!(pid=idd->data_id))
     return 0;
-  if(!(cnt=idd->cnt1))
+  if(!(cnt=idd->cnt_received))
     return 0;
   index=idd->index;
   if(!index || index>MAX_SMS)
@@ -545,4 +545,40 @@ EXIT0:
   return res;
 }
 
+int IsHaveNewSMS(void)
+{
+  SMS_DATA_ROOT *sdroot=SmsDataRoot();
+  SMS_DATA_LLIST inll;
+  SMS_DATA_LIST *lst;
+  INDEX_ID_DATA *idd;
+  if(!sdroot->cnt_in_new_sms_dat)
+    return 0;
+  inll=sdroot->in_msg;
+  if(!(lst=inll.last))
+    return 0;
+  if(!(idd=lst->index_id_data))
+    return 0;
+  if(idd->cnt_all != idd->cnt_received)
+    return 0;
+  if(idd->type==1)
+    return 1;
+  return 0;
+}
 
+SMS_DATA *GetTheLastNew(int reload) //1, reload, 0, no
+{
+  SMS_DATA *sdl;
+  if(reload)
+  {
+    freeSDList();
+    NewMsgReader();
+  }
+  sdl=sdltop;
+  while(sdl)
+  {
+    if(sdl->type==TYPE_IN_N)
+      return sdl;
+    sdl=sdl->next;
+  }
+  return 0;
+}

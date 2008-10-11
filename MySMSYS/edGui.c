@@ -14,7 +14,7 @@
 #include "popGui.h"
 #include "config_data.h"
 #include "string_works.h"
-
+#include "NewDatReader.h"
 #ifdef	LANG_CN
 #define TEXT_INPUT_OPTION	ECT_CURSOR_STAY
 #else
@@ -37,6 +37,7 @@ const SOFTKEYSTAB ed_menu_skt=
 HEADER_DESC ed_menuhdr={0,0,0,0,NULL,(int)ELFNAME,LGP_NULL};
 #define ED_MENU_N 6
 #define ED_MENU_N_1 (ED_MENU_N+1)
+#define ED_MENU_N_2 (ED_MENU_N-1)
 
 void ed_menu_reply(GUI *gui)
 {
@@ -302,14 +303,64 @@ const MENU_DESC ed_menu_1=
 	ED_MENU_N_1
 };
 
+const MENUPROCS_DESC ed_menuprocs_2[ED_MENU_N]=
+{
+	ed_menu_reply,
+	ed_menu_edit,
+	ed_menu_del,
+	ed_menu_export_txt,
+	ed_menu_exit,
+};
+
+const MENUITEM_DESC ed_menuitems_2[ED_MENU_N]=
+{
+	{NULL,(int)STR_REPLY,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+	{NULL,(int)STR_EDIT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+	{NULL,(int)LGP_DEL,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+	{NULL,(int)LGP_EXPORT_TXT,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},	
+	{NULL,(int)LGP_EXIT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+};
+
+const MENU_DESC ed_menu_2=
+{
+	8,NULL,NULL,NULL,
+	ed_menusoftkeys,
+	&ed_menu_skt,
+	0x10,//Right align
+	NULL,
+	ed_menuitems_2,//menuitems,
+	ed_menuprocs_2,//menuprocs,
+	ED_MENU_N_2
+};
+
+int IsFileInArchive(const char *fpath)
+{
+	int len,c;
+	char folder[128];
+	strcpy(folder, CFG_MAIN_FOLDER);
+	len=strlen(folder);
+  c=folder[len-1];
+  if(c!='\\' && c!='/')
+  {
+    folder[len]='\\';
+    folder[len+1]=0;
+  }
+  strcat(folder, FLDR_ARCHIVE);
+  if(!strncmp(fpath, folder, strlen(folder)))
+  	return 1;
+  return 0;
+}
 int createEditOpMenu(USER_OP *uo)
 {
 	patch_header(&ed_menuhdr);
 
 	if(uo->sd->isfile)
+	{
+		if(uo->sd->fname && IsFileInArchive(uo->sd->fname))
+			return (CreateSLMenu(&ed_menu_2, &ed_menuhdr, 0, ED_MENU_N_2, uo));
 		return (CreateSLMenu(&ed_menu, &ed_menuhdr, 0, ED_MENU_N, uo));
-	else
-		return (CreateSLMenu(&ed_menu_1, &ed_menuhdr, 0, ED_MENU_N_1, uo));
+	}
+	return (CreateSLMenu(&ed_menu_1, &ed_menuhdr, 0, ED_MENU_N_1, uo));
 }
 
 
@@ -1040,7 +1091,8 @@ int newSMS(void *dlg_csm)
 }
 int viewTheLastNew(void *dlg_csm)
 {
-	SMS_DATA *sd=getLastTheLast(TYPE_IN_N);
+	//SMS_DATA *sd=getLastTheLast(TYPE_IN_N);
+	SMS_DATA *sd=GetTheLastNew(0);
 	if(!sd)
 		return 0;
 	return(createEditGUI(dlg_csm, sd, ED_VIEW, TYPE_IN_N));

@@ -971,6 +971,10 @@ MySMSYS/Patches/add-on.c -text
 MySMSYS/Patches/elf2vkp.bat -text
 MySMSYS/Patches/entery.asm -text
 MySMSYS/Patches/entry_elka.asm -text
+MySMSYS/Plugin/Plugin.ewp -text
+MySMSYS/Plugin/func.asm -text
+MySMSYS/Plugin/main.c -text
+MySMSYS/Plugin/test.xcl -text
 MySMSYS/adrList.c -text
 MySMSYS/adrList.h -text
 MySMSYS/conf_loader.c -text

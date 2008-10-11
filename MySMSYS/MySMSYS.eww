@@ -2,9 +2,6 @@
 
 <workspace>
   <project>
-    <path>$WS_DIR$\IPC_Sender\IPC_Sender.ewp</path>
-  </project>
-  <project>
     <path>$WS_DIR$\MssLinker\MssLinker.ewp</path>
   </project>
   <project>
@@ -12,6 +9,9 @@
   </project>
   <project>
     <path>$WS_DIR$\Patches\Patches.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$\Plugin\Plugin.ewp</path>
   </project>
   <batchBuild/>
 </workspace>
