@@ -5,7 +5,7 @@ const char my_ipc_name[]=MY_SMSYS_IPC_NAME;
 
 const char ELFNAME[]="MySMSYS";
 const char ELFNAME_D[]="MssD";
-const char COPY_RIGHT[]="MySMSYS\n(c)BingK (binghelingxi)\n(r)titron";
+const char COPY_RIGHT[]="MySMSYS v1.8.4\n(c)BingK (binghelingxi)\n(r)titron";
 
 const char PERCENT_T[]="%t";
 const char PERCENT_S[]="%s";
@@ -93,6 +93,8 @@ const char STR_SAF_N[]="Save %d SMS Successfully!";
 const char LGP_DEL_ALL[]="Delete All?";
 const char LGP_DEL_ALL_MSG[]="Delete All Message";
 const char LGP_MOVE_ALL[]="Move All To Archive";
+const char LGP_DEL_ALL_MSG_MSS[]="Delete All Mss";
+const char LGP_SAVE[]="Save"; 
 #endif
 
 #ifdef LANG_CN
@@ -166,5 +168,7 @@ const char STR_SAF_N[]="成功保存%d条短信!";
 const char LGP_DEL_ALL[]="删除所有信息?";
 const char LGP_DEL_ALL_MSG[]="删除所有信息";
 const char LGP_MOVE_ALL[]="全部移到档案柜";
+const char LGP_DEL_ALL_MSG_MSS[]="删除所有Mss文件";
+const char LGP_SAVE[]="保存";
 #endif
 

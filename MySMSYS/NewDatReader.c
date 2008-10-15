@@ -554,22 +554,24 @@ int IsHaveNewSMS(void)
   if(!sdroot->cnt_in_new_sms_dat)
     return 0;
   inll=sdroot->in_msg;
-  if(!(lst=inll.first))
+//  if(!(lst=inll.first))
+//    return 0;
+//  while(lst)
+//  {
+//    if(!(idd=lst->index_id_data))
+//      return 0;
+//    if(idd->cnt_all != idd->cnt_received)
+//      return 0;
+//    lst=lst->next;
+//  }
+  if(!(lst=inll.last))
     return 0;
-  while(lst)
-  {
-    if(!(idd=lst->index_id_data))
-      return 0;
-    if(idd->cnt_all != idd->cnt_received)
-      return 0;
-    lst=lst->next;
-  }
-//  if(!(idd=lst->index_id_data))
-//    return 0;
-//  if(idd->cnt_all != idd->cnt_received)
-//    return 0;
-//  if(idd->type==1)
-//    return 1;
+  if(!(idd=lst->index_id_data))
+    return 0;
+  if(idd->cnt_all != idd->cnt_received)
+    return 0;
+  if(idd->type==1)
+    return 1;
   return 1;
 }
 

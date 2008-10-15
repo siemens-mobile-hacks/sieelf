@@ -400,7 +400,7 @@ void Ed_SaveFile(WSHDR *txt, USER_OP *uo, int type)
 	}
 	readAllSMS();
 }
-
+/*
 void on_ed_ec(USR_MENU_ITEM *item)
 {
 	if(item->type==0)
@@ -449,10 +449,11 @@ void on_ed_ec(USR_MENU_ITEM *item)
 		}
 	}
 }
-
+*/
 
 void on_adr_ec(USR_MENU_ITEM *item)
 {
+	USER_OP *uo=EDIT_GetUserPointer(item->user_pointer);
 	if(item->type==0)
 	{
 		switch(item->cur_item)
@@ -470,13 +471,12 @@ void on_adr_ec(USR_MENU_ITEM *item)
 			wsprintf(item->ws, PERCENT_T, LGP_CANCEL);
 			break;
 		case 3:
-			wsprintf(item->ws, PERCENT_T, LGP_SAVE_AS_DRAFT);
+			wsprintf(item->ws, PERCENT_T, (uo->sd->type==TYPE_DRAFT && uo->sd->isfile)?LGP_SAVE:LGP_SAVE_AS_DRAFT);
 			break;
 		}
 	}
 	else if(item->type==1)
 	{
-		USER_OP *uo=EDIT_GetUserPointer(item->user_pointer);
 		DLG_CSM *dlg_csm=(DLG_CSM *)uo->dlg_csm;
 		SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);
 		switch(item->cur_item)
@@ -927,7 +927,7 @@ const INPUTDIA_DESC ED_DESC_RO=
 	101,
 	0,
 	0,
-	0x00000002
+	0x40000002
 };
 
 int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, view
@@ -1175,11 +1175,12 @@ typedef struct
 void DeleteAllMss_proc(int id)
 {
 	if(id==IDYES)
-		DeleteAll();
+		DeleteAllMss();
+		//DeleteAll();
 }
 void delallproc(void)
 {
-	MsgBoxYesNo(1, (int)LGP_DEL_ALL, DeleteAllMss_proc);
+	MsgBoxYesNo(1, (int)LGP_DEL_ALL_MSS, DeleteAllMss_proc);
 }
 int PathInputOnKey(GUI *data, GUI_MSG *msg)
 {

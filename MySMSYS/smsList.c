@@ -361,14 +361,14 @@ __swi __arm void TempLightOn(int x, int y);
 #define ICON_OUT 0x5B8
 #define ICON_IN_R 0x5B5
 #define ICON_IN_N	0x5B6
-#define ICON_DRAFT 0x5B8
+#define ICON_DRAFT 0x5B2
 #define ICON_IN_ALL 0x5B5
 #else
 #define ICON_UNK 0x5E4
 #define ICON_OUT 0x5E4
 #define ICON_IN_R 0x5E1
 #define ICON_IN_N	0x5E2
-#define ICON_DRAFT 0x5E4
+#define ICON_DRAFT 0x5DE
 #define ICON_IN_ALL 0x5E1
 #endif
 
