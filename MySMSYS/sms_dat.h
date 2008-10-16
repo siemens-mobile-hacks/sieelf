@@ -19,6 +19,10 @@
 #define TYPE_DRAFT	4
 #define TYPE_IN_ALL 5
 
+//msg_type
+#define ISSMS 0
+#define ISEMS 1
+#define ISREPORT 2
 
 #define MAX_TEXT 512
 
@@ -30,7 +34,7 @@ typedef struct
 	int id; //index of sms.dat
 	int opmsg_id;
 	int isfile;
-	int isems;
+	int msg_type;
 	int cnt;
 	char *fname;
 //	char SMS_CENTER[32];

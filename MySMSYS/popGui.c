@@ -164,7 +164,7 @@ const POPUP_DESC popup=
   101,
   0
 };
-
+int ShowMSG_report(SMS_DATA *sd);
 int StartIncomingWin(void *dlg_csm)
 {
 	//SMS_DATA *sd=getLastTheLast(TYPE_IN_N);
@@ -186,6 +186,8 @@ int StartIncomingWin(void *dlg_csm)
 	}
 	if(!sd)
 		return 0;
+	if(sd->msg_type==ISREPORT)
+		return (ShowMSG_report(sd));
 	ws=AllocWS(150);
 	pu=malloc(sizeof(POP_UP));
 	zeromem(pu, sizeof(POP_UP));
@@ -317,4 +319,63 @@ const POPUP_DESC msg_noff_popup=
 int ShowMSG_noff(int flag, const char *msg)
 {
 	return (CreatePopupGUI(flag, 0, &msg_noff_popup, (int)msg));
+}
+
+void report_popup_ghook(void *data, int cmd)
+{
+	if(cmd==3)
+	{
+		SMS_DATA *sd=GetPopupUserPointer(data);
+		if(CFG_ENA_AUTO_DEL_RP && IsSdInList(sd) && deleteDat(sd, 0))
+			delSDList(sd);
+	}
+}
+
+const POPUP_DESC msg_report=
+{
+  0,
+  msg_popup_onkey,
+  report_popup_ghook,
+  NULL,
+  popup_softkeys,
+  &msg_popup_skt,
+  0x1,
+  LGP_NULL,
+  NULL,
+  0,
+  FONT_MEDIUM,
+  100,
+  101,
+  0x7D0 //flag2 ? auto off time?
+};
+
+int ShowMSG_report(SMS_DATA *sd)
+{
+	WSHDR wsloc, *wn;
+	WSHDR csloc, *cs;
+	unsigned short csb[30];
+	unsigned short wsb[150];
+	WSHDR *ws=AllocWS(256);
+	wn=CreateLocalWS(&wsloc,wsb,150);
+	cs=CreateLocalWS(&csloc,csb,30);
+	#ifdef NO_CS 
+		if(findNameByNum(wn, sd->Number))
+			wsprintf(ws, "%w\n%t:\n%w", sd->SMS_TEXT, STR_FROM, wn);
+		else
+			wsprintf(ws, "%w\n%t:\n%s", sd->SMS_TEXT, STR_FROM, sd->Number);
+	#else
+		char num[32];
+		int is_fetion=0;
+		if(!strncmp(num_fetion, sd->Number, 5)) is_fetion=1;
+		strcpy(num, sd->Number);
+		GetProvAndCity(cs->wsbody, num);
+		if(findNameByNum(wn, is_fetion?(sd->Number+5):sd->Number))
+		{
+			if(is_fetion) wsprintf(ws, "%w\n%t:\n%w(%t)\n%w", sd->SMS_TEXT, STR_FROM, wn, STR_FETION, cs);
+			else wsprintf(ws, "%w\n%t:\n%w\n%w", sd->SMS_TEXT, STR_FROM, wn, cs);
+		}
+		else
+			wsprintf(ws, "%w\n%t:\n%s\n%w", sd->SMS_TEXT, STR_FROM, sd->Number, cs);
+	#endif
+	return (CreatePopupGUI_ws(0, sd, &msg_report, ws));
 }

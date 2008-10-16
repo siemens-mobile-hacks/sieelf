@@ -231,7 +231,7 @@ int main_menu_onkey(void *data, GUI_MSG *msg)
 {
 #pragma swi_number=0x44
 __swi __arm void TempLightOn(int x, int y);
-	
+	int n;
 	if(!IsUnlocked())
 		TempLightOn(3, 0x7FFF);
 
@@ -243,7 +243,8 @@ __swi __arm void TempLightOn(int x, int y);
 	}
 	if((msg->keys==0x18)||(msg->keys==0x3D))
 	{
-		int n=GetCurMenuItem(data);
+		n=GetCurMenuItem(data);
+DO_P:
 		switch(n)
 		{
 		case 0:
@@ -267,6 +268,16 @@ __swi __arm void TempLightOn(int x, int y);
 		case 6:
 			mm_oth((GUI *)data);
 			break;
+		}
+		return 0;
+	}
+	if(msg->gbsmsg->msg==KEY_DOWN)
+	{
+		n=msg->gbsmsg->submess;
+		if(n>='1' && n<='9')
+		{
+			n-='1';
+			goto DO_P;
 		}
 	}
 	return 0;
@@ -616,12 +627,20 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 #define MSG_EMS_INCOMING 0x6106 //ELKA,来自smsman
 #else
 #define MSG_EMS_INCOMING 0x61CC
+#define MSG_EMS_INCOMING_2 0x61D6
 #endif
 
-#endif
+#endif 
 //0x61CC ?? SMS_incoming
 //如果使用Browser-killer之类的补丁,将不会有新信息弹出窗口,使用这个MSG可以进行检查是否来新短信了
-	if((msg->msg==MSG_EMS_INCOMING)&&(CFG_ENA_NOTIFY))
+
+#ifdef ELKA
+	if((CFG_ENA_NOTIFY)&&(msg->msg==MSG_EMS_INCOMING))
+#else
+	if((CFG_ENA_NOTIFY)&&(msg->msg==MSG_EMS_INCOMING))
+//	if((CFG_ENA_NOTIFY)&&(msg->msg==MSG_EMS_INCOMING_2))
+//	if((CFG_ENA_NOTIFY)&&((msg->msg==MSG_EMS_INCOMING) || (msg->msg==MSG_EMS_INCOMING_2)))
+#endif
 	{
 		if(!IsTimerProc(&chk_tmr)) //接收到MSG半秒之后开始检查,直接开始检查会死机.
 			GBS_StartTimerProc(&chk_tmr, 216/2, CheckNewProc);

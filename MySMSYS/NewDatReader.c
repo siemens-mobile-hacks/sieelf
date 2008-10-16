@@ -257,11 +257,36 @@ int PduDecodeTxt(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
   }
   return 1;
 }
+
+void DoMsgReport(SMS_DATA *sd, char *data, WSHDR *ws)
+{
+  char time[32];
+  int status, i;
+  char *pp=time, *p=data;
+  for(i=0;i<6;i++) //time
+  {
+    *pp++=p[i]%0x10+'0';
+    *pp++=p[i]/0x10+'0';
+    if(i<2)
+      *pp++='-';
+    if(i==2)
+      *pp++=' ';
+    if(i>2&&i<5)
+      *pp++=':';
+  }
+  *pp=0;
+  p+=7; //time 
+  status=*p;
+  if(status==0)
+    wsprintf(ws, "%t\r%t: 20%s", LGP_MSG_REPORT, LGP_MSG_REVEICED, time);
+  else
+    wsprintf(ws, "%t\r%t: 20%s\r%s (%d)!", LGP_MSG_REPORT, STR_TIME, time, LGP_UNK_RP_STATUS, status);
+}
 int PduDecodeAll(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktype
 {
   int c;
   int ttype, wlen;
-  int isplus, isems, skip;
+  int isplus, isems, skip, isreport=0;
   char *p;
   WSHDR *ws, wsn;
   unsigned short wsb[150];
@@ -299,6 +324,11 @@ int PduDecodeAll(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
 //  Hex2Num(p, sd->SMS_CENTER, c);
   p+=c;
   c=*p++;
+  if(c==0x6)
+  {
+    isreport=1;
+    p++;
+  }
   if((c>>4)%2) isplus=1;
   else isplus=0;
   if((c>>6)%2) isems=1;
@@ -321,8 +351,13 @@ int PduDecodeAll(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
     c=1;
     sd->Number[0]=0;
   }
-  p+=c+1; //num
-  ttype=*p++;
+  if(isreport)
+    p+=c;
+  else
+  {
+    p+=c+1; //num
+    ttype=*p++;
+  }
   if((sd->type==TYPE_IN_R)||(sd->type==TYPE_IN_N))
   {
     char *pp=sd->Time;
@@ -340,6 +375,12 @@ int PduDecodeAll(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
     }
     *pp=0;
     p+=7; //time
+  }
+  if(isreport)
+  {
+    sd->msg_type=ISREPORT;
+    DoMsgReport(sd, p, ws);
+    goto TEND;
   }
   if(isplus&&((sd->type==TYPE_OUT)||(sd->type==TYPE_DRAFT))) p++; //
   c=*p++;
@@ -451,7 +492,7 @@ int DoMsgList(SMS_DATA_LIST *lst, char *sms_buf, char *ems_admin_buf, int sms_si
       res++;
       sdx->opmsg_id=pea->opmsg_id;
       sdx->id=index;
-      sdx->isems=1;
+      sdx->msg_type=ISEMS;
       sdx->cnt=cnt;
       LockSched();
       AddToSdlByTime(sdx);

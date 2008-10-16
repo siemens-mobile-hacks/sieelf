@@ -97,6 +97,10 @@ extern const char LGP_MOVE_ALL[];
 extern const char LGP_DEL_ALL_MSG[];
 extern const char LGP_DEL_ALL_MSG_MSS[];
 extern const char LGP_SAVE[];
+extern const char LGP_MSG_REPORT[];
+extern const char LGP_MSG_REVEICED[]; //后加时间
+extern const char LGP_UNK_RP_STATUS[];
+
 #ifdef LANG_CN
 #define LGP_CFG_MAIN_FOLDER "MySMSYS文件夹"
 #define LGP_CFG_SYSTEM_FOLDER "系统文件夹"
@@ -113,6 +117,7 @@ extern const char LGP_SAVE[];
 #define LGP_CFG_ENA_SOUND "使用声音提醒"
 #define LGP_CFG_SOUND_VOL "音量"
 #define LGP_CFG_SOUND_PATH "声音文件路径"
+#define LGP_CFG_ENA_AUTO_DEL_RP "自动删除信息报告"
 #endif
 
 #ifdef LANG_EN
@@ -131,4 +136,5 @@ extern const char LGP_SAVE[];
 #define LGP_CFG_ENA_SOUND "Enable Sound Notify"
 #define LGP_CFG_SOUND_VOL "Volume"
 #define LGP_CFG_SOUND_PATH "Sound File Path"
+#define LGP_CFG_ENA_AUTO_DEL_RP "Auto Delete Message Report"
 #endif

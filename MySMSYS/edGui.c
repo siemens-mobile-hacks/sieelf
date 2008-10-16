@@ -453,9 +453,9 @@ void on_ed_ec(USR_MENU_ITEM *item)
 
 void on_adr_ec(USR_MENU_ITEM *item)
 {
-	USER_OP *uo=EDIT_GetUserPointer(item->user_pointer);
 	if(item->type==0)
 	{
+		USER_OP *uo=EDIT_GetUserPointer(item->user_pointer);
 		switch(item->cur_item)
 		{
 		case 0:
@@ -477,6 +477,7 @@ void on_adr_ec(USR_MENU_ITEM *item)
 	}
 	else if(item->type==1)
 	{
+		USER_OP *uo=EDIT_GetUserPointer(item->user_pointer);
 		DLG_CSM *dlg_csm=(DLG_CSM *)uo->dlg_csm;
 		SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);
 		switch(item->cur_item)
@@ -743,7 +744,11 @@ void edGHook(GUI *data, int cmd)
 	}
 	else if(cmd==TI_CMD_DESTROY)
 	{
-
+		if((CFG_ENA_AUTO_DEL_RP)&&(uo->gui_type==ED_VIEW)&&(uo->sd)&&(uo->sd->msg_type==ISREPORT)&&(uo->sd->id > 0)&&(!uo->sd->isfile))
+		{
+			if(IsSdInList(uo->sd) && deleteDat(uo->sd, 0))
+				delSDList(uo->sd);
+		}
 		if(((uo->gui_type==ED_FREE)
 				||(uo->gui_type==ED_FVIEW)
 				||(uo->gui_type==ED_FEDIT)
@@ -808,7 +813,7 @@ void edGHook(GUI *data, int cmd)
 		if((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW))
 			SetSoftKey(data,&SK_OP_PIC,SET_SOFT_KEY_M);
 //auto save as file
-		if((uo->gui_type==ED_VIEW)&&(CFG_ENA_AUTO_SAF)&&(!uo->sd->isfile)&&(uo->sd->id))      
+		if((uo->gui_type==ED_VIEW)&&(CFG_ENA_AUTO_SAF)&&(!uo->sd->isfile)&&(uo->sd->id)&&(uo->sd->msg_type!=ISREPORT || !CFG_ENA_AUTO_DEL_RP))      
 		{
 			wstrcpy(text, uo->sd->SMS_TEXT);
 			strcpy(time, uo->sd->Time);
@@ -1085,9 +1090,10 @@ int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, 
 
 int newSMS(void *dlg_csm)
 {
-	SMS_DATA sd;
-	zeromem(&sd, sizeof(SMS_DATA));
-	return (createEditGUI(dlg_csm, &sd, ED_NEW, 0));
+	//SMS_DATA sd;
+	//zeromem(&sd, sizeof(SMS_DATA));
+	SMS_DATA *sd=AllocSD();
+	return (createEditGUI(dlg_csm, sd, ED_FREE, 0));
 }
 int viewTheLastNew(void *dlg_csm)
 {
@@ -1100,13 +1106,19 @@ int viewTheLastNew(void *dlg_csm)
 
 int newSMSWithNum(void *dlg_csm, char *num)
 {
-	SMS_DATA sd;
+	//SMS_DATA sd;
+	//if(!num)
+	//	return 0;
+	//zeromem(&sd, sizeof(SMS_DATA));
+	//strcpy(sd.Number, num);
+	//mfree(num);
+	SMS_DATA *sd;
 	if(!num)
 		return 0;
-	zeromem(&sd, sizeof(SMS_DATA));
-	strcpy(sd.Number, num);
+	sd=AllocSD();
+	strcpy(sd->Number, num);
 	mfree(num);
-	return (createEditGUI(dlg_csm, &sd, ED_NEW, 0));
+	return (createEditGUI(dlg_csm, sd, ED_FREE, 0));
 }
 
 int newSMSWithUtf8Text(void *dlg_csm, char *text_utf8)
