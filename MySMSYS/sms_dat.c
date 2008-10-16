@@ -742,7 +742,7 @@ int deleteDat(SMS_DATA *sd, int need_reload)
 {
 	if((sd==0)||(sd->isfile)||(sd->id==0))
 		return 0;
-	if(!sd->isems)
+	if(sd->msg_type!=ISEMS)
 	{
 		if(DeleteSMS(sd->id, 1)!=0x3E8)
 		return 0;
