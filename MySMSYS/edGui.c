@@ -15,6 +15,7 @@
 #include "config_data.h"
 #include "string_works.h"
 #include "NewDatReader.h"
+#include "template.h"
 #ifdef	LANG_CN
 #define TEXT_INPUT_OPTION	ECT_CURSOR_STAY
 #else
@@ -451,6 +452,7 @@ void on_ed_ec(USR_MENU_ITEM *item)
 }
 */
 
+#define OPTION_N 5
 void on_adr_ec(USR_MENU_ITEM *item)
 {
 	if(item->type==0)
@@ -472,6 +474,9 @@ void on_adr_ec(USR_MENU_ITEM *item)
 			break;
 		case 3:
 			wsprintf(item->ws, PERCENT_T, (uo->sd->type==TYPE_DRAFT && uo->sd->isfile)?LGP_SAVE:LGP_SAVE_AS_DRAFT);
+			break;
+		case 4:
+			wsprintf(item->ws, PERCENT_T, LGP_TEMPLATE);
 			break;
 		}
 	}
@@ -512,6 +517,14 @@ void on_adr_ec(USR_MENU_ITEM *item)
 				ExtractEditControl(item->user_pointer,uo->focus_n,&ec);
 				Ed_SaveFile(ec.pWS, uo, TYPE_DRAFT);
 			}
+			if(CFG_ENA_EXIT_SAVE_DRAFT && gstop)
+			{
+				GeneralFunc_flag1(gstop->id, 1);
+				popGS(dlg_csm);
+			}
+			break;
+		case 4:
+			CreateTplMenu(item->user_pointer);
 			break;
 		}
 	}
@@ -587,13 +600,13 @@ __swi __arm void TempLightOn(int x, int y);
 			if(n==uo->focus_n)
 			{
 				uo->adr_type=TYPE_TXT;
-				EDIT_OpenOptionMenuWithUserItems(data,on_adr_ec,data,4);
+				EDIT_OpenOptionMenuWithUserItems(data,on_adr_ec,data,OPTION_N);
 				//EDIT_OpenOptionMenuWithUserItems(data,on_ed_ec,data,3);
 			}
 			else if(n<=(uo->focus_n-2)) //ºÅÂëÎ»ÖÃ
 			{
 				uo->adr_type=TYPE_SET;
-				EDIT_OpenOptionMenuWithUserItems(data,on_adr_ec,data,4);
+				EDIT_OpenOptionMenuWithUserItems(data,on_adr_ec,data,OPTION_N-1);
 			}
 			return (-1);
 		}
@@ -624,13 +637,13 @@ __swi __arm void TempLightOn(int x, int y);
 			if(n==uo->focus_n)
 			{
 				uo->adr_type=TYPE_TXT;
-				EDIT_OpenOptionMenuWithUserItems(data,on_adr_ec,data,4);
+				EDIT_OpenOptionMenuWithUserItems(data,on_adr_ec,data,OPTION_N);
 				//EDIT_OpenOptionMenuWithUserItems(data,on_ed_ec,data,3);
 			}
 			else if(n<=(uo->focus_n-2)) //ºÅÂëÎ»ÖÃ
 			{
 				uo->adr_type=TYPE_SET;
-				EDIT_OpenOptionMenuWithUserItems(data,on_adr_ec,data,4);
+				EDIT_OpenOptionMenuWithUserItems(data,on_adr_ec,data,OPTION_N-1);
 			}
 			return (-1);
 		}

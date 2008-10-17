@@ -554,8 +554,8 @@ const SOFTKEYSTAB adrmenu_skt=
 {
   adrmenu_sk,0
 };
-char numhdr[50];
-HEADER_DESC nummenuhdr={0,0,0,0,NULL,(int)numhdr,LGP_NULL};
+//char numhdr[50];
+HEADER_DESC nummenuhdr={0,0,0,0,NULL,LGP_NULL,LGP_NULL};
 
 //#define TYPE_SET 0
 //#define TYPE_INSERT 1
@@ -566,31 +566,6 @@ typedef struct
 	CLIST *cl;
 }NUM_MENU_UP;
 
-void wsInsert(WSHDR *ws, WSHDR *txt, int pos, int max) //start form 0;
-{
-	unsigned short *st;
-	int cplen;	
-	if((!ws)||(!txt)||(!wstrlen(txt)))
-		return;
-	if(pos>(ws->wsbody[0]))
-		return;
-	if((pos+(txt->wsbody[0]))>=max)
-	{
-		CutWSTR(ws, pos);
-		wstrncat(ws, txt, max-pos); 
-		return;
-	}
-	if(ws->wsbody[0]+txt->wsbody[0] >= max)
-		cplen=max-(pos+txt->wsbody[0]);
-	else
-		cplen=ws->wsbody[0]-pos;
-	st=malloc(cplen*sizeof(unsigned short));
-	memcpy(st, ws->wsbody+pos+1, cplen*sizeof(unsigned short));
-	memcpy(ws->wsbody+pos+1, txt->wsbody+1, (txt->wsbody[0])*sizeof(unsigned short));
-	memcpy(ws->wsbody+1+pos+(txt->wsbody[0]), st, cplen*sizeof(unsigned short));
-	ws->wsbody[0]=pos+(txt->wsbody[0])+cplen;
-	mfree(st);
-}
 
 void InsertAsTxt(void *ed_gui, char *num)
 {
@@ -720,6 +695,17 @@ void nummenu_ghook(void *gui, int cmd)
 		NUM_MENU_UP *up=MenuGetUserPointer(gui);
 		mfree(up);
 	}
+	if(cmd==0xA)
+	{
+		NUM_MENU_UP *up=MenuGetUserPointer(gui);
+		if(up && up->cl && up->cl->name)
+		{
+			WSHDR *hdr_t=AllocWS(64);
+			wstrcpy(hdr_t, up->cl->name);
+			SetHeaderText(GetHeaderPointer(gui), hdr_t, malloc_adr(), mfree_adr());
+		}
+		//DisableIDLETMR();
+	}
 }
 void nummenuitemhdl(void *data, int curitem, void *user_pointer)
 {
@@ -753,12 +739,12 @@ int CreateNumMenu(CLIST *cl, void *ed_gui, int n)
 	up->ed_gui=ed_gui;
 	up->cl=cl;
 	patch_header(&nummenuhdr);
-	if(cl->name)
-#ifdef LANG_CN
-		ws2gb(cl->name, numhdr, 49);
-#else
-		ws_2str(cl->name, numhdr, 49);
-#endif 
+//	if(cl->name)
+//#ifdef LANG_CN
+//		ws2gb(cl->name, numhdr, 49);
+//#else
+//		ws_2str(cl->name, numhdr, 49);
+//#endif 
 	return (CreateMenu(0,0,&nummenu,&nummenuhdr,n-1,n,up,0));
 }
 

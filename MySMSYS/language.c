@@ -98,6 +98,7 @@ const char LGP_SAVE[]="Save";
 const char LGP_MSG_REPORT[]="Message Report";
 const char LGP_MSG_REVEICED[]="Message received at"; //后加时间
 const char LGP_UNK_RP_STATUS[]="SMS Report: Unknow Status";
+const char LGP_TEMPLATE[]="Template";
 #endif
 
 #ifdef LANG_CN
@@ -176,5 +177,6 @@ const char LGP_SAVE[]="保存";
 const char LGP_MSG_REPORT[]="信息报告";
 const char LGP_MSG_REVEICED[]="信息已收到于"; //后加时间
 const char LGP_UNK_RP_STATUS[]="SMS Report: Unknow Status";
+const char LGP_TEMPLATE[]="模板";
 #endif
 

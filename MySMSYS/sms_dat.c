@@ -566,8 +566,8 @@ int saveFile(WSHDR *ws, char *number, SMS_DATA *sd, int type, int need_reload)
 	strcat(dir, folder);
 	if(!isdir(dir, &err))
 		mkdir(dir, &err);
-	if(type==TYPE_DRAFT && sd && sd->isfile && sd->fname)
-		strcpy(path, sd->fname);
+	if(sd && sd->type==TYPE_DRAFT && sd->isfile && sd->fname)
+		strcpy(path, sd->fname); 
 	else if(!GetMssPath(path, dir, &time, &date))
 		return 0;
 	//sprintf(path, "%s%s%04d%02d%02d%02d%02d%02d.mss", 
@@ -760,7 +760,20 @@ int deleteDat(SMS_DATA *sd, int need_reload)
 		return (readAllSMS());
 	return 1;
 }
-
+/*
+int deleteDat(SMS_DATA *sd, int need_reload)
+{
+	short cnt;
+	if((sd==0)||(sd->isfile)||(sd->id==0))
+		return 0;
+	extern int DeltetSmsNew(int index, short *del_cnt);
+	if(DeltetSmsNew(sd->id, &cnt)!=0x3E8)
+		return 0;
+	if(need_reload)
+		return (readAllSMS());
+	return 1;
+}
+*/
 /*-----------------------------------------------------------*/
 // new reader
 #define MAX_DAT 100

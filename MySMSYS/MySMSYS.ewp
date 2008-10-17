@@ -5320,6 +5320,9 @@
     <file>
       <name>$PROJ_DIR$\string_works.h</name>
     </file>
+    <file>
+      <name>$PROJ_DIR$\template.h</name>
+    </file>
   </group>
   <file>
     <name>$PROJ_DIR$\adrList.c</name>
@@ -5366,6 +5369,9 @@
   </file>
   <file>
     <name>$PROJ_DIR$\string_works.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\template.c</name>
   </file>
 </project>
 

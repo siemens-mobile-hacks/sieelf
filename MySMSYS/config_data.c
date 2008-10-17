@@ -17,6 +17,9 @@ __root const int CFG_ENA_SAVE_SENT = 1;
 __root const CFG_HDR cfghdr5 = {CFG_CHECKBOX, LGP_CFG_ENA_AUTO_DEL_RP, 0, 3};
 __root const int CFG_ENA_AUTO_DEL_RP = 1;
 
+__root const CFG_HDR cfghdr6 = {CFG_CHECKBOX, LGP_CFG_ENA_EXIT_SAVE_DRAFT, 0, 3};
+__root const int CFG_ENA_EXIT_SAVE_DRAFT = 1;
+
 __root const CFG_HDR cfghdr3 = {CFG_CBOX, LGP_CFG_EXPORT_CHARSET, 0, 2};
 __root const int CFG_EXPORT_CHARSET = 1;
 #ifdef LANG_CN
