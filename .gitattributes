@@ -1893,7 +1893,6 @@ SieJC/Files/Templates/commands.txt -text
 SieJC/Files/Templates/known_features.txt -text
 SieJC/Files/Templates/messages.txt -text
 SieJC/Files/Templates/smiles.txt -text
-SieJC/Files/bombus_smiles/Thumbs.db -text
 SieJC/Files/bombus_smiles/aa.png -text
 SieJC/Files/bombus_smiles/ab.png -text
 SieJC/Files/bombus_smiles/ac.png -text
