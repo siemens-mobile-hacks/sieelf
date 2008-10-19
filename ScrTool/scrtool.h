@@ -1,13 +1,12 @@
 #ifndef _SCRTOOL_H_
  #define _SCRTOOL_H_ 
- #include "..\inc\sieapi.h"
+ #include <sieapi.h> 
 #define DAEMON
-#define SCRTOOL_NAME "ScrTool"
+#define SCR_NAME "ScrTool"
 #define UPDATE_STAT 1
 #define TMR_SECOND 216
 #define MAX_IDS 15
 #define MAX_APP 14
-#define MAX_BIR 8
 #define SCR_ALARM 3
 #define SCR_MENUS 2
 #define SCR_TASKS 1
@@ -17,47 +16,46 @@
 #define ExcuteTycn "文件", "快捷", "地址", "目录"
 #define AgainEN "Default", "AgainLeft", "Center", "AgainRight"
 #define AgainCN "默认", "靠左", "居中", "靠右"
+#define ScrMode "锁键", "解锁", "总是", "禁止"
 #define ExcuteLen 4
 #define DateFmt "YYYY/MM/DD","YYYY-MM-DD","YYYY.MM.DD","YYYY MM DD","MM/DD","MM-DD","MM.DD","MM DD","年月日","月日"
 #define TimeFmt "13:00","PM 01:00","01:00","13:00:00","PM 01:00:00","=点分=","点分秒"
 
  typedef struct{
-  CSM_RAM csm;
+  CSM_RAM CSM;
  }DAEMON_CSM;
-
  typedef struct{
-  CSM_RAM csm;
+  CSM_RAM CSM;
   int TaskID; 
  }TASK_GUI;
-
  typedef struct{  
   WSHDR *ws;
   char  Pen[4];
   char  Brush[4];
-  short Size;
+  short Font;
   short Type;
   short Show;
   short l;//left
   short t;//top
   short r;//right
   short b;//bottom
- }TSCR;
- 
+ }TSCR; 
  typedef struct{
-  WSHDR *ws;  
   char *Pic;
   char *File;
   char *Name;
   short Type;
- }TAPP;
- 
+ }TAPP; 
+  //刷新速度
+ extern const uint REFRESH;
  extern const uint TASK_ENA;
  extern const uint INFO_ENA;
  extern const uint SHOW_EXT;
- extern const uint EXIT_BTN;
+ //extern const uint EXIT_BTN;
  extern const uint MODE_KBD;
  extern const uint CALL_BTN; 
  extern const uint DEST_ENA; 
+ extern const uint PicSize;
 //运行软件
  extern const uint OFFSET;
  extern const uint AUTO_CLOSE;
@@ -116,9 +114,7 @@
  extern const char AF11[];
  extern const char AF12[];
  extern const char AF13[];
- //刷新速度
- extern const uint REFRESH;
-//定义阳历节日
+//定义节日参数
  extern const int  NBIR_ENA;
  extern const uint NBIR_XT;
  extern const uint NBIR_X;
@@ -126,7 +122,7 @@
  extern const char NBIR_CS[];
  extern const char NBIR_CB[];
  extern const uint NBIR_FONT; 
-//定义阴历节日
+ //定义阴历节日
  extern const int  OBIR_ENA;
  extern const uint OBIR_XT;
  extern const uint OBIR_X;
@@ -134,6 +130,7 @@
  extern const char OBIR_CS[];
  extern const char OBIR_CB[];
  extern const uint OBIR_FONT;
+//节日文件
  extern const char BIRS_FILE[];
 //显示文本
  extern const int  TEXT_ENA;
@@ -270,4 +267,7 @@
 //自动关机
  extern const int   SHUT_ENA;
  extern const TTime SHUT_TIME;
+//自动重启
+ extern const int   ROOT_ENA;
+ extern const TTime ROOT_TIME;
 #endif

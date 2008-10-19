@@ -1373,7 +1373,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>scrtool_newsgold.elf</state>
+          <state>ScrTool_newsgold.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -3020,7 +3020,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>scrtool_sgold.elf</state>
+          <state>ScrTool_sgold.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
