@@ -1,6 +1,6 @@
 #ifndef _SIECXT_H_
  #define _SIECXT_H_ 
-static const char _percent_t[]="%t";
+static const char PFMT_STR[]="%t";
 static const char _percent_e[]="%t%t";
 static const char cWeekName[4][7][12]={{"MONDAY","TUESDAY","WEDNESDAY","THUSDAY","FRIDAY","SATURDAY","SUNDAY"},{"MON","TUES","WED","THU","FRI","SAT","SUN"},{"Monday","Tuesday","Wednesday","Thusday","Friday","Saturday","Sunday"},{"Mon","Tues","Wed","Thu","Fri","Sat","Sun"}};
 static const char cDataFmt[8][16]={"%02d/%02d/%02d", "%02d-%02d-%02d", "%02d.%02d.%02d", "%02d %02d %02d", "%02d/%02d", "%02d-%02d", "%02d.%02d", "%02d %02d"};  

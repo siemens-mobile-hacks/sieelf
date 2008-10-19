@@ -38,6 +38,7 @@ _C_STD_BEGIN
 //定义字体索引类型0-16!
 #define FontSyEN "Large","Large bold","Large italic","Large italic bold","Medium","Medium bold","Medium italic","Medium italic bold","Small","Small bold","Small italic","Small italic bold","Numeric small","Numeric small bold","Numeric xsmall","Numeric large","Numeric medium"
 #define FontSyCN "大字体","大加粗","大斜体","大粗斜","中字体","中加粗","中倾斜","中粗斜","小字体","小加粗","小斜体","小粗斜","小数体","小数粗","微数体","大数体","中数体"
+#define KeyName "左软键","右软键","左按键","右按键","回车键","绿键","红键"
  //#define IS_FOLDER 1 //定义文件夹操作
  //#define IS_FILE 0  //定义文件操作
  
@@ -164,6 +165,7 @@ _C_LIB_DECL
  __INTRINSIC ubyte FileExists(char *FileName,int *Handle);//判断文件是否存在!
  __INTRINSIC void *CreateCanvas();//创建画布指针
  __INTRINSIC void  SearchSub(const char *source,const char *sub,char *result);//获取子字串
+ __INTRINSIC int   FindSub(char *source,const char *sub,char *result,uword len);
 //PNG转换相关函数 
  __INTRINSIC IMGHDR_Draw(IMGHDR *Handle, int x, int y, char *pen, char *brush);
  __INTRINSIC IMGHDR_Delete(IMGHDR *Handle);
@@ -172,9 +174,23 @@ _C_LIB_DECL
  __INTRINSIC IMGHDR *IMGHDR_Alpha(IMGHDR *Handle, char a, int nw, int del);
  __INTRINSIC IMGHDR *IMGHDR_Sample(IMGHDR *Handle, int px, int py, int fast, int del);
  __INTRINSIC IMGHDR *IMGHDR_Handle(int x,int y,const char *pic_path,int pic_size);
+ __INTRINSIC uint  KeyButton(uint Button);
 _END_C_LIB_DECL
 _C_STD_END
 //函数执行代码
+#pragma inline
+static uint KeyButton(uint Button)
+{
+  switch(Button){
+   case  0:return(LEFT_SOFT);
+   case  1:return(RIGHT_SOFT);
+   case  2:return(LEFT_BUTTON);
+   case  3:return(RIGHT_BUTTON);
+   case  4:return(ENTER_BUTTON);
+   case  5:return(GREEN_BUTTON);
+   default:return(RED_BUTTON);
+  }
+}
 #pragma inline//获取c在str字串的位置
 static int getstrpos(char *str,char c)
 {
@@ -1154,10 +1170,21 @@ static IMGHDR_Draw(IMGHDR *Handle, int x, int y, char *pen, char *brush)
   SetColor(&drwobj,pen,brush);
   DrawObject(&drwobj);
 }
+#pragma inline//搜索字串
+static int FindSub(char *source,const char *sub,char *result,uword len)
+{
+  char *p = strstr(source,sub);
+  if(p){
+    char *pa = strchr(p,0x0A);
+    strncpy(result,p+len,pa-p-len);
+    return 1;
+  }else{return 0;}
+}
 #endif/*SIEAPI_H_*/
 
 //导出函数引用表
 #if defined(_STD_USING)
+ using _CSTD FindSub;
  using _CSTD strtoul;
  using _CSTD strtol;
  using _CSTD kill_data;
@@ -1212,6 +1239,7 @@ static IMGHDR_Draw(IMGHDR *Handle, int x, int y, char *pen, char *brush)
  using _CSTD FileExists;
  using _CSTD CreateCanvas;
  using _CSTD SearchSub;
+ using _CSTD KeyButton;
  using _CSTD IMGHDR_Draw;
  using _CSTD IMGHDR_Delete;
  using _CSTD IMGHDR_Free;
