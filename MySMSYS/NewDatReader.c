@@ -493,7 +493,7 @@ int DoMsgList(SMS_DATA_LIST *lst, char *sms_buf, char *ems_admin_buf, int sms_si
       sdx->opmsg_id=pea->opmsg_id;
       sdx->id=index;
       sdx->msg_type=ISEMS;
-      sdx->cnt=cnt;
+//      sdx->cnt=cnt;
       LockSched();
       AddToSdlByTime(sdx);
       UnlockSched();

@@ -13,7 +13,7 @@
 #include "lgp_pic.h"
 #include "CodeShow.h"
 #include "popGui.h"
-
+#include "config_data.h"
 #define MENU_MAX_TXT 30
 
 
@@ -40,8 +40,11 @@ const HEADER_DESC sms_menuhdr={0,0,0,0,NULL,LGP_NULL,LGP_NULL};
 
 //------------------------------------------------------
 
-#define SLOP_MENU_N 7
-#define SLOP_MENU_N_2 (SLOP_MENU_N-1)
+//#define SLOP_MENU_N 7
+//#define SLOP_MENU_N_2 (SLOP_MENU_N-1)
+#define SLOP_MENU_N_DAT 7
+#define SLOP_MENU_N_FILE (SLOP_MENU_N_DAT-1)
+
 const int slop_menusoftkeys[]={0,1,2};
 const SOFTKEY_DESC slop_menu_sk[]=
 {
@@ -131,6 +134,31 @@ void slop_menu_move_to_archive(GUI *data)
 	}
 }
 
+void slop_menu_send(GUI *data)
+{
+	char *num;
+	WSHDR *wst;
+	SL_UP *su=MenuGetUserPointer(data);
+	GeneralFuncF1(1);
+	if(su->sd)
+	{
+		num=su->sd->Number;
+		wst=su->sd->SMS_TEXT;
+		if(strlen(num))
+		{
+			WSHDR *ws=AllocWS(wst->wsbody[0]);
+			wstrcpy(ws, wst);
+			SendSMS(ws, num, MMI_CEPID, MSG_SMS_RX-1, 6);
+			if(CFG_ENA_SAVE_SENT) saveFile(wst, num, su->sd, TYPE_OUT, 0);
+			if(!su->sd->isfile) deleteDat(su->sd, 0);
+			else deleteFile(su->sd, 0);
+			delSDList(su->sd);
+			readAllSMS();
+		}
+	}
+}
+
+/*
 const MENUPROCS_DESC slop_menuprocs[SLOP_MENU_N]=
 {
 	slop_menu_reply,
@@ -182,6 +210,49 @@ const MENUITEM_DESC slop_menuitems_3[1]=
 {
 	{NULL,(int)LGP_EXIT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 };
+*/
+
+const MENUPROCS_DESC slop_procs_dat[SLOP_MENU_N_DAT]=
+{
+	slop_menu_reply,
+	slop_menu_edit,
+	slop_menu_del,
+	slop_menu_save_as_file,
+	slop_menu_export_txt,
+	slop_menu_move_to_archive,
+	slop_menu_exit,
+};
+
+const int slop_lgp_dat[SLOP_MENU_N_DAT]=
+{
+	(int)STR_REPLY,
+	(int)STR_EDIT,
+	(int)LGP_DEL,
+	(int)LGP_SAVE_AS_FILE,
+	(int)LGP_EXPORT_TXT,
+	(int)LGP_MOVE_ARCHIVE,
+	(int)LGP_EXIT,
+};
+
+const MENUPROCS_DESC slop_procs_file[SLOP_MENU_N_FILE]=
+{
+	slop_menu_reply,
+	slop_menu_edit,
+	slop_menu_del,
+	slop_menu_export_txt,
+	slop_menu_move_to_archive,
+	slop_menu_exit,
+};
+
+const int slop_lgp_file[SLOP_MENU_N_FILE]=
+{
+	(int)STR_REPLY,
+	(int)STR_EDIT,
+	(int)LGP_DEL,
+	(int)LGP_EXPORT_TXT,
+	(int)LGP_MOVE_ARCHIVE,
+	(int)LGP_EXIT,
+};
 
 void slop_menu_ghook(void *data, int cmd)
 {
@@ -192,11 +263,89 @@ void slop_menu_ghook(void *data, int cmd)
 	}
 }
 
+#pragma swi_number=0x44
+__swi __arm void TempLightOn(int x, int y);
 int slop_menu_onkey(void *data, GUI_MSG *msg)
 {
+	int n;
+	SL_UP *su;
+	if(!IsUnlocked())
+		TempLightOn(3, 0x7FFF);
+	if(msg->keys==0x1)
+	{
+		return 1;
+	}
+	if((msg->keys==0x18)||(msg->keys==0x3D))
+	{
+		n=GetCurMenuItem(data);
+	DO_PROC:
+		su=MenuGetUserPointer(data);
+		if(!su->sd)
+			return 1;
+		if(n==0 && su->sd->type==TYPE_DRAFT)
+		{
+			slop_menu_send(data);
+			return 1;
+		}
+		if(su->sd->isfile)
+		{
+			if(n>=SLOP_MENU_N_FILE)
+				return 0;
+			slop_procs_file[n](data);
+			return 1;
+		}
+		else
+		{
+			if(n>=SLOP_MENU_N_DAT)
+				return 0;
+			slop_procs_dat[n](data);
+			return 1;
+		}
+	}
+	if(msg->gbsmsg->msg==KEY_DOWN)
+	{
+		n=msg->gbsmsg->submess;
+		if(n>='1' && n<='9')
+		{
+			n-='1';
+			goto DO_PROC;
+		}
+	}
 	return 0;
 }
+void slop_menu_itemhndl(void *data, int curitem, void *user_pointer)
+{
+	SL_UP *su=MenuGetUserPointer(data);
+	void *item=AllocMenuItem(data);
+	WSHDR *ws=AllocMenuWS(data, 150);
+	if(su->sd)
+	{
+		if(curitem==0 && su->sd->type==TYPE_DRAFT)
+		{
+			wsprintf(ws, PERCENT_T, LGP_SEND);
+			goto GO_P;
+		}
+		if(su->sd->isfile)
+		{
+			if(curitem>=SLOP_MENU_N_FILE)
+				goto SLOP_ERR;
+			wsprintf(ws, PERCENT_T, slop_lgp_file[curitem]);
+		}
+		else
+		{
+			if(curitem>=SLOP_MENU_N_DAT)
+				goto SLOP_ERR;
+			wsprintf(ws, PERCENT_T, slop_lgp_dat[curitem]);
+		}
+	}
+	else
+SLOP_ERR:
+		wsprintf(ws, PERCENT_T, LGP_ERR);
+GO_P:
+	SetMenuItemText(data, item, ws, curitem);
+}
 
+/*
 const MENU_DESC slop_menu=
 {
 	8,slop_menu_onkey,slop_menu_ghook,NULL,
@@ -232,20 +381,37 @@ const MENU_DESC slop_menu_3=
 	slop_menuprocs_3,//menuprocs,
 	1
 };
-
+*/
+const MENU_DESC slop_menu=
+{
+	8,slop_menu_onkey,slop_menu_ghook,NULL,
+	slop_menusoftkeys,
+	&slop_menu_skt,
+	0x10,//Right align
+	slop_menu_itemhndl,
+	0,//menuitems,
+	0,//menuprocs,
+	0
+};
 int CreateslOpMenu(DLG_CSM *dlg_csm, SMS_DATA *sd, int type)
 {
+	int item_n;
 	SL_UP *su=malloc(sizeof(SL_UP));
 	su->dlg_csm=dlg_csm;
 	su->sd=sd;
 
 	patch_header(&sms_menuhdr);
-	if(!sd)
-		return (CreateSLMenu(&slop_menu_3,&sms_menuhdr,0, 1, su));
-	else if(sd->isfile==1)
-		return (CreateSLMenu(&slop_menu_2,&sms_menuhdr,0,SLOP_MENU_N_2, su));
+	if(sd->isfile==1)
+		item_n=SLOP_MENU_N_FILE;
 	else
-		return (CreateSLMenu(&slop_menu,&sms_menuhdr,0,SLOP_MENU_N, su));
+		item_n=SLOP_MENU_N_DAT;
+	return (CreateSLMenu(&slop_menu,&sms_menuhdr,0,item_n, su));
+//	if(!sd)
+//		return (CreateSLMenu(&slop_menu_3,&sms_menuhdr,0, 1, su));
+//	if(sd->isfile==1)
+//		return (CreateSLMenu(&slop_menu_2,&sms_menuhdr,0,SLOP_MENU_N_FILE, su));
+//	else
+//		return (CreateSLMenu(&slop_menu,&sms_menuhdr,0,SLOP_MENU_N_DAT, su));
 }
 
 //------------------------------------------------------
@@ -267,26 +433,26 @@ int sms_menu_onkey(void *data, GUI_MSG *msg)
 	SML_OP *so=MenuGetUserPointer(data);
 	SMS_DATA *sd=getSMSDataByType(GetCurMenuItem(data), so->type);
 	int n=GetMenuItemCount(data);
-#pragma swi_number=0x44
-__swi __arm void TempLightOn(int x, int y);
 	
 	if(!IsUnlocked())
 		TempLightOn(3, 0x7FFF);
 
 	if(msg->keys==0x05)
 	{
-		if(n) createEditGUI(so->dlg_csm, sd, ED_REPLY, 0);
+	  if(n) createEditGUI(so->dlg_csm, sd, (sd->type==TYPE_DRAFT)?ED_EDIT:ED_REPLY, 0);
 	}
 	else if((msg->keys==0x18))//||(msg->keys==0x3D))
 	{
-		if(!n)
-			CreateslOpMenu(so->dlg_csm, 0, so->type);
-		else
-			CreateslOpMenu(so->dlg_csm, sd, so->type);
+		//if(!n)
+		//	CreateslOpMenu(so->dlg_csm, 0, so->type);
+		//else
+		if(n)	CreateslOpMenu(so->dlg_csm, sd, so->type);
+		else return 1;
 	}
 	else if(msg->keys==0x3D)
 	{
 		if(n) createEditGUI(so->dlg_csm, sd, ED_VIEW, so->type);
+		else return 1;
 	}
 	else if(msg->keys==0x1)
 	{
@@ -426,6 +592,7 @@ AL_ERR:
 
 const char SM_FORMAT[]="%t%c%d/%d";
 const SOFTKEY_DESC SK_VIEW_PIC={0x003D,0x0000,(int)LGP_VIEW_PIC};
+const SOFTKEY_DESC SK_OK2={0x0018,0x0000,(int)LGP_OK};
 void sms_menu_ghook(void *data, int cmd)
 {
 	SML_OP *so=MenuGetUserPointer(data);
@@ -472,6 +639,7 @@ void sms_menu_ghook(void *data, int cmd)
 		SetHeaderText(GetHeaderPointer(data), hdr_t, malloc_adr(), mfree_adr());
 		//if(n) SetSoftKey(data,&SK_VIEW_PIC,SET_SOFT_KEY_M);
 		if(n) SetMenuSoftKey(data,&SK_VIEW_PIC,SET_SOFT_KEY_M);
+		else SetMenuSoftKey(data,&SK_OK2,SET_SOFT_KEY_N);
 	}
 	if(cmd==3)
 	{

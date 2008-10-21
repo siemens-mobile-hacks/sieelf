@@ -17,6 +17,15 @@
 #define INPUT_COV_TXT 1
 #define INPUT_COV_DAT 2
 
+#define NAB_AF 0 //allow to free
+#define NAB_DN 1 //do nothing
+#define NAB_NS 2 //need to set flag
+
+//dat type
+#define NML_FILE 0
+#define NML_DAT 1
+#define ARCHIVE_FILE 2
+
 typedef struct
 {
 	SMS_DATA *sd;
@@ -25,10 +34,13 @@ typedef struct
 //	char num[50];
 //	WHSDR *name;
 //	char hdr_txt[50];
+//	void *nab_data;
+//	int nab_flag;
 	int gui_type;
 	int adr_type; //0 SET, 1 insert
 	int list_type; //
 	int focus_n;
+	int dat_type; //
 }USER_OP;
 
 /*

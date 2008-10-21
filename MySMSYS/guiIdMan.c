@@ -46,4 +46,21 @@ void freeAllGS(void *dlg_csm)
 //	UnlockSched();
 }
 
+int IsGuiExist(CSM_RAM *csm, GUI *gui)
+{
+  DLG_CSM *dlg_csm=(DLG_CSM *)csm;
+  SGUI_ID *gs=(SGUI_ID *)(dlg_csm->gstop);
+  GUI *gui0;
+  while(gs)
+  {
+    if((gui0=FindGUIbyId(gs->id, &csm)))
+    {
+      if((gui0 == gui)&&(gui0->methods == gui->methods))
+	return 1;
+    }
+    gs=gs->next;
+  }
+  return 0;
+}
+
 

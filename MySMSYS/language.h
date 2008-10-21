@@ -101,6 +101,7 @@ extern const char LGP_MSG_REPORT[];
 extern const char LGP_MSG_REVEICED[]; //后加时间
 extern const char LGP_UNK_RP_STATUS[];
 extern const char LGP_TEMPLATE[];
+extern const char LGP_CALL_ADDRESSBOOK[];
 #ifdef LANG_CN
 #define LGP_CFG_MAIN_FOLDER "MySMSYS文件夹"
 #define LGP_CFG_SYSTEM_FOLDER "系统文件夹"
@@ -119,6 +120,14 @@ extern const char LGP_TEMPLATE[];
 #define LGP_CFG_SOUND_PATH "声音文件路径"
 #define LGP_CFG_ENA_AUTO_DEL_RP "自动删除信息报告"
 #define LGP_CFG_ENA_EXIT_SAVE_DRAFT "保存草稿后退出"
+#define LGP_CFG_TEXT_FONT "文本字体"
+#define LGP_EDIT_FONT_DEFAULT "使用默认" 
+#define LGP_EDIT_FONT_SMALL "小号字体"
+#define LGP_EDIT_FONT_SMALL_BOLD "小字体加粗"
+#define LGP_EDIT_FONT_MEDIUM "中号字体"
+#define LGP_EDIT_FONT_MEDIUM_BOLD "中字体加粗"
+#define LGP_EDIT_FONT_LARGE "大号字体"
+#define LGP_EDIT_FONT_LARGE_BOLD "大字体加粗"
 #endif
 
 #ifdef LANG_EN
@@ -139,4 +148,12 @@ extern const char LGP_TEMPLATE[];
 #define LGP_CFG_SOUND_PATH "Sound File Path"
 #define LGP_CFG_ENA_AUTO_DEL_RP "Auto Delete Message Report"
 #define LGP_CFG_ENA_EXIT_SAVE_DRAFT "Exit After Save Draft"
+#define LGP_CFG_TEXT_FONT "Text Font"
+#define LGP_EDIT_FONT_DEFAULT "Default" 
+#define LGP_EDIT_FONT_SMALL "Small"
+#define LGP_EDIT_FONT_SMALL_BOLD "Small+Bold"
+#define LGP_EDIT_FONT_MEDIUM "Medium"
+#define LGP_EDIT_FONT_MEDIUM_BOLD "Medium+Bold"
+#define LGP_EDIT_FONT_LARGE "Large"
+#define LGP_EDIT_FONT_LARGE_BOLD "Large+Bold"
 #endif

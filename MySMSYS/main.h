@@ -23,6 +23,10 @@ typedef struct
 }INBOX_DATA;
 
 extern int new_sms_n;
+extern unsigned int DlgCsmIDs[];
 int CreateMainMenu(DLG_CSM *dlg_csm);
 void OpenArchive(void);
-
+void addCSMidForced0(unsigned int *id_pool, unsigned int id);
+int addCSMid(unsigned int *id_pool, unsigned int id);
+void delCSMid(unsigned int *id_pool, unsigned int id);
+int IsCsmExist(void *dlg_csm);

@@ -737,7 +737,7 @@ int deleteFile(SMS_DATA *sd, int need_reload)
 	}
 	return 0;
 }
-
+/*
 int deleteDat(SMS_DATA *sd, int need_reload)
 {
 	if((sd==0)||(sd->isfile)||(sd->id==0))
@@ -759,21 +759,22 @@ int deleteDat(SMS_DATA *sd, int need_reload)
 	if(need_reload)
 		return (readAllSMS());
 	return 1;
-}
-/*
+}*/
+
 int deleteDat(SMS_DATA *sd, int need_reload)
 {
 	short cnt;
 	if((sd==0)||(sd->isfile)||(sd->id==0))
 		return 0;
-	extern int DeltetSmsNew(int index, short *del_cnt);
-	if(DeltetSmsNew(sd->id, &cnt)!=0x3E8)
+	//extern int DeltetSmsNew(int index, short *del_cnt);
+	//if(DeltetSmsNew(sd->id, &cnt)!=0x3E8)
+	if(DeleteSMS(sd->id, &cnt)!=0x3E8)
 		return 0;
 	if(need_reload)
 		return (readAllSMS());
 	return 1;
 }
-*/
+
 /*-----------------------------------------------------------*/
 // new reader
 #define MAX_DAT 100

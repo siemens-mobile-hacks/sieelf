@@ -27,6 +27,20 @@ __root const CFG_CBOX_ITEM cfgcbox0[2] = {"ASCII", "UTF8"};
 #else
 __root const CFG_CBOX_ITEM cfgcbox0[2] = {"WIN1251", "UTF8"};
 #endif
+
+__root const CFG_HDR cfghdr7 = {CFG_CBOX, LGP_CFG_TEXT_FONT, 0, 7};
+__root const unsigned int CFG_TEXT_FONT = 1;
+__root const CFG_CBOX_ITEM cfgcbox1[7] = 
+{
+	LGP_EDIT_FONT_DEFAULT, 
+	LGP_EDIT_FONT_SMALL,
+	LGP_EDIT_FONT_SMALL_BOLD,
+	LGP_EDIT_FONT_MEDIUM,
+	LGP_EDIT_FONT_MEDIUM_BOLD,
+	LGP_EDIT_FONT_LARGE,
+	LGP_EDIT_FONT_LARGE_BOLD
+};
+
 __root const CFG_HDR cfghdr1_0 = {CFG_LEVEL, LGP_CFG_NOTIFY_SET, 1, 0};
 
 __root const CFG_HDR cfghdr1_1 = {CFG_CHECKBOX, LGP_CFG_ENA_NOTIFY, 0, 3};

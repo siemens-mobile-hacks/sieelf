@@ -142,6 +142,21 @@ int IsNoDlg(unsigned int *id_pool)
 	return 1;
 }
 
+int IsCsmExist(void *dlg_csm)
+{
+  int i=0;
+  unsigned int id;
+  for(;i<MAX_DLG;i++)
+  {
+    if((id=DlgCsmIDs[i]))
+    {
+      if(FindCSMbyID(id)==dlg_csm)
+	return 1;
+    }
+  }
+  return 0;
+}
+
 int isTheLastDlg(unsigned int *id_pool, unsigned int id)
 {
 	return 0;
@@ -227,6 +242,19 @@ const char *MENU_TEXT[MAIN_MENU_N]=
 	LGP_ALL,
 	LGP_OTHERS
 };
+
+const MENUPROCS_DESC procs_mmenu[MAIN_MENU_N]=
+{
+	mm_newsms,
+	mm_insms_n,
+	mm_insms_all,
+	mm_outsms,
+	mm_draftsms,
+	mm_allsms,
+	mm_oth,
+};
+
+
 int main_menu_onkey(void *data, GUI_MSG *msg)
 {
 #pragma swi_number=0x44
@@ -245,7 +273,10 @@ __swi __arm void TempLightOn(int x, int y);
 	{
 		n=GetCurMenuItem(data);
 DO_P:
-		switch(n)
+		if(n<0 || n>=MAIN_MENU_N)
+			return 0;
+		procs_mmenu[n](data);
+/*		switch(n)
 		{
 		case 0:
 			mm_newsms((GUI *)data);
@@ -268,7 +299,7 @@ DO_P:
 		case 6:
 			mm_oth((GUI *)data);
 			break;
-		}
+		}*/
 		return 0;
 	}
 	if(msg->gbsmsg->msg==KEY_DOWN)
@@ -368,11 +399,21 @@ int dialogcsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 	}*/
 	return 1;
 }
+
+static unsigned short dialogcsm_name_body[32]={7,'M','y','S','M','S','Y','S'};
+void UpdateDlgCsmName(DLG_CSM *csm, const char *lgp)
+{
+  DLGCSM_DESC *dcd=csm->csm.constr;
+  WSHDR *name=&dcd->name;
+  if(!name->wsbody || name->wsbody==dialogcsm_name_body)
+    name->wsbody=malloc(32*sizeof(short));
+  wsprintf(name, PERCENT_T, lgp);
+}
 static void dialogcsm_oncreate(CSM_RAM *data)
 {
 	DLG_CSM *csm=(DLG_CSM *)data;
-	DLGCSM_DESC *dcd=csm->csm.constr;
-	WSHDR *name=&dcd->name;
+	//DLGCSM_DESC *dcd=csm->csm.constr;
+	//WSHDR *name=&dcd->name;
 	csm->gstop=0;
 	if(
 		(IPC_SUB_MSG!=SMSYS_IPC_FVIEW)
@@ -391,33 +432,39 @@ static void dialogcsm_oncreate(CSM_RAM *data)
 		csm->gui_id=CreateMainMenu(csm);
 		break;
 	case SMSYS_IPC_NEWSMS:
-		name->wsbody=malloc(32*sizeof(short));
-		wsprintf(name, PERCENT_T, LGP_NEW);
+		//name->wsbody=malloc(32*sizeof(short));
+		//wsprintf(name, PERCENT_T, LGP_NEW);
+		UpdateDlgCsmName(csm, LGP_NEW);
 		csm->gui_id=newSMS(csm);
 		break;
 	case SMSYS_IPC_IN_NEW:
-		name->wsbody=malloc(32*sizeof(short));
-		wsprintf(name, PERCENT_T, LGP_IN_N);
+		//name->wsbody=malloc(32*sizeof(short));
+		//wsprintf(name, PERCENT_T, LGP_IN_N);
+		UpdateDlgCsmName(csm, LGP_IN_N);
 		csm->gui_id=showSMSList(csm, TYPE_IN_N);
 		break;
 	case SMSYS_IPC_IN_RD:
-		name->wsbody=malloc(32*sizeof(short));
-		wsprintf(name, PERCENT_T, LGP_IN_R);
+		//name->wsbody=malloc(32*sizeof(short));
+		//wsprintf(name, PERCENT_T, LGP_IN_R);
+		UpdateDlgCsmName(csm, LGP_IN_R);
 		csm->gui_id=showSMSList(csm, TYPE_IN_R);
 		break;
 	case SMSYS_IPC_OUT:
-		name->wsbody=malloc(32*sizeof(short));
-		wsprintf(name, PERCENT_T, LGP_OUT);
+		//name->wsbody=malloc(32*sizeof(short));
+		//wsprintf(name, PERCENT_T, LGP_OUT);
+		UpdateDlgCsmName(csm, LGP_OUT);
 		csm->gui_id=showSMSList(csm, TYPE_OUT);
 		break;
 	case SMSYS_IPC_DRAFT:
-		name->wsbody=malloc(32*sizeof(short));
-		wsprintf(name, PERCENT_T, LGP_DRAFT);
+		//name->wsbody=malloc(32*sizeof(short));
+		//wsprintf(name, PERCENT_T, LGP_DRAFT);
+		UpdateDlgCsmName(csm, LGP_DRAFT);
 		csm->gui_id=showSMSList(csm, TYPE_DRAFT);
 		break;
 	case SMSYS_IPC_ALL:
-		name->wsbody=malloc(32*sizeof(short));
-		wsprintf(name, PERCENT_T, LGP_ALL);
+		//name->wsbody=malloc(32*sizeof(short));
+		//wsprintf(name, PERCENT_T, LGP_ALL);
+		UpdateDlgCsmName(csm, LGP_ALL);
 		csm->gui_id=showSMSList(csm, 0);
 		break;
 	case SMSYS_IPC_TLAST:
@@ -425,8 +472,9 @@ static void dialogcsm_oncreate(CSM_RAM *data)
 			csm->gui_id=CreateMainMenu(csm);
 		break;
 	case SMSYS_IPC_IN_ALL:
-		name->wsbody=malloc(32*sizeof(short));
-		wsprintf(name, PERCENT_T, LGP_IN_A);
+		//name->wsbody=malloc(32*sizeof(short));
+		//wsprintf(name, PERCENT_T, LGP_IN_A);
+		UpdateDlgCsmName(csm, LGP_IN_A);
 		csm->gui_id=showSMSList(csm, TYPE_IN_ALL);
 		break;
 	case SMSYS_IPC_NEW_IN_WIN:
@@ -438,8 +486,9 @@ static void dialogcsm_oncreate(CSM_RAM *data)
 			csm->gui_id=CreateMainMenu(csm);
 		else
 		{
-			name->wsbody=malloc(32*sizeof(short));
-			wsprintf(name, PERCENT_T, LGP_NEW);
+			UpdateDlgCsmName(csm, LGP_NEW);
+			//name->wsbody=malloc(32*sizeof(short));
+			//wsprintf(name, PERCENT_T, LGP_NEW);
 		}
 		num_from_ipc=0;
 		break;
@@ -448,8 +497,9 @@ static void dialogcsm_oncreate(CSM_RAM *data)
 			csm->gui_id=CreateMainMenu(csm);
 		else
 		{
-			name->wsbody=malloc(32*sizeof(short));
-			wsprintf(name, PERCENT_T, LGP_NEW);
+			UpdateDlgCsmName(csm, LGP_NEW);
+			//name->wsbody=malloc(32*sizeof(short));
+			//wsprintf(name, PERCENT_T, LGP_NEW);
 		}
 		text_utf8=0;
 		break;
@@ -469,8 +519,9 @@ static void dialogcsm_oncreate(CSM_RAM *data)
 		}
 		else
 		{
-			name->wsbody=malloc(32*sizeof(short));
-			wsprintf(name, PERCENT_T, STR_VIEW);
+			UpdateDlgCsmName(csm, STR_VIEW);
+			//name->wsbody=malloc(32*sizeof(short));
+			//wsprintf(name, PERCENT_T, STR_VIEW);
 		}
 		filename[0]=0;
 		break;
@@ -485,7 +536,6 @@ void FreeCsmd(void *csmd)
 {
 	mfree(csmd);
 }
-static unsigned short dialogcsm_name_body[]={7,'M','y','S','M','S','Y','S'};
 static void dialogcsm_onclose(CSM_RAM *data)
 {
 	DLG_CSM *dlg_csm=(DLG_CSM *)data;
@@ -513,7 +563,7 @@ DLGCSM_DESC DIALOGCSM =
 	0,
 #endif
 	dialogcsm_onclose,
-	sizeof(CSM_RAM),
+	sizeof(DLG_CSM),
 	1,
 	&minus11
 	},
@@ -522,7 +572,7 @@ DLGCSM_DESC DIALOGCSM =
 		NAMECSM_MAGIC1,
 		NAMECSM_MAGIC2,
 		0x0,
-		139
+		31
 	}
 };
 
@@ -793,20 +843,20 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 static void ElfKiller(void)
 {
 	extern void *ELF_BEGIN;
-	closeAllDlgCSM(DlgCsmIDs);
-	FreeCLIST();
-	freeSDList();
-	GBS_DelTimer(&chk_tmr);
-	GBS_DelTimer(&n_update_tmr);
 	kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
 }
 
 static void daemoncsm_onclose(CSM_RAM *csm)
 {
+	closeAllDlgCSM(DlgCsmIDs);
+	FreeCLIST();
+	freeSDList();
+	GBS_DelTimer(&chk_tmr);
+	GBS_DelTimer(&n_update_tmr);
 	SUBPROC((void *)ElfKiller);
 }
 
-static unsigned short daemoncsm_name_body[140];
+static unsigned short daemoncsm_name_body[32];
 
 static const struct
 {
@@ -833,7 +883,7 @@ static const struct
 		NAMECSM_MAGIC1,
 		NAMECSM_MAGIC2,
 		0x0,
-		139
+		31
 	}
 };
 

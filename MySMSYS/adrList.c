@@ -542,6 +542,7 @@ char *getPrefNumFromCL(CLIST *cl)
 //---------------------------------------------
 //menu.
 //---------------------------------------------
+/*
 const int adrmenusoftkeys[]={0,1,2};
 const SOFTKEY_DESC adrmenu_sk[]=
 {
@@ -607,7 +608,6 @@ void SetNumToED(void *ed_gui, char *num, WSHDR *name)
 	wstrcpy(nl->name, name);
 	EDIT_SetTextToEditControl(ed_gui, n, name);
 }
-/*
 void InsertNumToED(void *ed_gui, WSHDR *num, WSHDR *name) //插入到列表光标后面
 {
 	EDITCONTROL ec;
@@ -635,7 +635,6 @@ void InsertNumToED(void *ed_gui, WSHDR *num, WSHDR *name) //插入到列表光标后面
 	(uo->focus_n)++;
 	EDIT_SetFocus(ed_gui, n+1);
 }
-*/
 int nummenu_onkey(void *data, GUI_MSG *msg)
 {
 		
@@ -884,3 +883,4 @@ int CreateAdrMenu(void *user_pointer)
 	patch_header(&adrmenuhdr);
 	return (CreateMLMenu(&adrmenu, &adrmenuhdr, 0, cl_n, user_pointer));
 }
+*/

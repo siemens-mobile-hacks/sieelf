@@ -5,7 +5,7 @@ const char my_ipc_name[]=MY_SMSYS_IPC_NAME;
 
 const char ELFNAME[]="MySMSYS";
 const char ELFNAME_D[]="MssD";
-const char COPY_RIGHT[]="MySMSYS v1.8.5\n(c)BingK (binghelingxi)\n(r)titron";
+const char COPY_RIGHT[]="MySMSYS v1.9\n(c)BingK (binghelingxi)\n(r)titron";
 
 const char PERCENT_T[]="%t";
 const char PERCENT_S[]="%s";
@@ -99,6 +99,7 @@ const char LGP_MSG_REPORT[]="Message Report";
 const char LGP_MSG_REVEICED[]="Message received at"; //后加时间
 const char LGP_UNK_RP_STATUS[]="SMS Report: Unknow Status";
 const char LGP_TEMPLATE[]="Template";
+const char LGP_CALL_ADDRESSBOOK[]="Call Addressbook";
 #endif
 
 #ifdef LANG_CN
@@ -178,5 +179,6 @@ const char LGP_MSG_REPORT[]="信息报告";
 const char LGP_MSG_REVEICED[]="信息已收到于"; //后加时间
 const char LGP_UNK_RP_STATUS[]="SMS Report: Unknow Status";
 const char LGP_TEMPLATE[]="模板";
+const char LGP_CALL_ADDRESSBOOK[]="通讯录调用";
 #endif
 

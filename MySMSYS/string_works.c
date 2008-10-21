@@ -275,3 +275,38 @@ void wsInsert(WSHDR *ws, WSHDR *txt, int pos, int max) //start form 0;
   ws->wsbody[0]=pos+(txt->wsbody[0])+cplen;
   mfree(st);
 }
+
+int num_2ws(WSHDR *ws, const char *num, int maxlen)
+{
+  int i=0, c;
+  const char *p=num;
+  unsigned short *ps=ws->wsbody+1;
+  int max2;
+  if( !ws || !num || !maxlen)
+    return 0;
+  max2=(maxlen < ws->maxlen)?maxlen:ws->maxlen;
+  while(i<max2 && (c=*p++))
+  {
+    ps[i++]=c;
+  }
+  ps[i]=0;
+  return (ws->wsbody[0]=i);
+}
+
+int ws_2num(WSHDR *ws, char *num, int maxlen)
+{
+  int i=0, c;
+  int max2;
+  unsigned short *ps=ws->wsbody+1;
+  if( !ws || !num || !maxlen)
+    return 0;
+  max2=(ws->wsbody[0] < maxlen)?ws->wsbody[0]:maxlen;
+  while(i<max2 && (c=*ps++))
+  {
+    num[i++]=c;
+  }
+  num[i]=0;
+  return i;
+}
+
+

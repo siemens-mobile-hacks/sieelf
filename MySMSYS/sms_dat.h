@@ -35,7 +35,7 @@ typedef struct
 	int opmsg_id;
 	int isfile;
 	int msg_type;
-	int cnt;
+//	int cnt;
 	char *fname;
 //	char SMS_CENTER[32];
 	char Number[32];

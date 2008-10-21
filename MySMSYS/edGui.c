@@ -16,6 +16,7 @@
 #include "string_works.h"
 #include "NewDatReader.h"
 #include "template.h"
+#include "NativeAddressbook.h"
 #ifdef	LANG_CN
 #define TEXT_INPUT_OPTION	ECT_CURSOR_STAY
 #else
@@ -36,14 +37,13 @@ const SOFTKEYSTAB ed_menu_skt=
 };
 
 HEADER_DESC ed_menuhdr={0,0,0,0,NULL,(int)ELFNAME,LGP_NULL};
-#define ED_MENU_N 6
-#define ED_MENU_N_1 (ED_MENU_N+1)
-#define ED_MENU_N_2 (ED_MENU_N-1)
 
 void ed_menu_reply(GUI *gui)
 {
 	int update=0;
-	USER_OP *uo=MenuGetUserPointer(gui);
+	//USER_OP *uo=MenuGetUserPointer(gui);
+	void *ed_gui=MenuGetUserPointer(gui);
+	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
 	DLG_CSM *dlg_csm=(DLG_CSM *)uo->dlg_csm;
 	SGUI_ID *gstop=(SGUI_ID *)dlg_csm->gstop;
 	if(gstop->id==dlg_csm->gui_id)
@@ -77,7 +77,9 @@ void ed_menu_reply(GUI *gui)
 void ed_menu_edit(GUI *gui)
 {
 	int update=0;
-	USER_OP *uo=MenuGetUserPointer(gui);
+	//USER_OP *uo=MenuGetUserPointer(gui);
+	void *ed_gui=MenuGetUserPointer(gui);
+	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
 	DLG_CSM *dlg_csm=(DLG_CSM *)uo->dlg_csm;
 	SGUI_ID *gstop=(SGUI_ID *)dlg_csm->gstop;
 	if(gstop->id==dlg_csm->gui_id)
@@ -110,7 +112,9 @@ void ed_menu_edit(GUI *gui)
 
 void ed_menu_exit(GUI *gui)
 {
-	USER_OP *uo=MenuGetUserPointer(gui);
+	//USER_OP *uo=MenuGetUserPointer(gui);
+	void *ed_gui=MenuGetUserPointer(gui);
+	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
 	DLG_CSM *dlg_csm=(DLG_CSM *)(uo->dlg_csm);
 	SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);
 	if(gstop)
@@ -123,7 +127,9 @@ void ed_menu_exit(GUI *gui)
 
 void ed_menu_del(GUI *gui)
 {
-	USER_OP *uo=MenuGetUserPointer(gui);
+	//USER_OP *uo=MenuGetUserPointer(gui);
+	void *ed_gui=MenuGetUserPointer(gui);
+	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
 	DLG_CSM *dlg_csm=(DLG_CSM *)(uo->dlg_csm);
 	SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);	
 	if(gstop)
@@ -144,7 +150,9 @@ void ed_menu_del(GUI *gui)
 
 void ed_menu_save_as_file(GUI *gui)
 {
-	USER_OP *uo=MenuGetUserPointer(gui);
+	//USER_OP *uo=MenuGetUserPointer(gui);
+	void *ed_gui=MenuGetUserPointer(gui);
+	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
 	DLG_CSM *dlg_csm=(DLG_CSM *)(uo->dlg_csm);
 	SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);	
 	if((uo->sd!=0)&&(uo->sd->isfile==0)&&(uo->sd->SMS_TEXT))
@@ -182,7 +190,9 @@ void ed_menu_save_as_file(GUI *gui)
 
 void ed_menu_move_to_archive(GUI *gui)
 {
-	USER_OP *uo=MenuGetUserPointer(gui);
+	//USER_OP *uo=MenuGetUserPointer(gui);
+	void *ed_gui=MenuGetUserPointer(gui);
+	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
 	DLG_CSM *dlg_csm=(DLG_CSM *)(uo->dlg_csm);
 	SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);	
 	if(gstop)
@@ -206,7 +216,9 @@ void ed_menu_move_to_archive(GUI *gui)
 
 void ed_menu_export_txt(GUI *gui)
 {
-	USER_OP *uo=MenuGetUserPointer(gui);
+	//USER_OP *uo=MenuGetUserPointer(gui);
+	void *ed_gui=MenuGetUserPointer(gui);
+	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
 	//DLG_CSM *dlg_csm=(DLG_CSM *)(uo->dlg_csm);
 	//SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);
 	if(uo->sd)
@@ -238,11 +250,267 @@ void ed_menughook(void *data, int cmd)
 	}
 }
 */
+
+#define LGP_SAVE_TO_AB 0xD50
+//#define TYPE_SELECT 0
+//#define TYPE_SAVE 1
+//extern int CreateNAbCSM(void *dlg_csm, void *ed_gui, int type);
+//extern int StartSaveNum(void *ed_gui);
+//extern int FreeSaveNAbData(void *ed_gui);
+void ed_menu_save_ab(GUI *gui)
+{
+	void *ed_gui=MenuGetUserPointer(gui);
+	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
+	CreateNAbCSM(uo->dlg_csm, ed_gui, TYPE_SAVE);
+	//uo->nab_flag=NAB_NS;
+	//StartSaveNum(ed_gui);
+	GeneralFuncF1(1);
+}
+
+int Ed_SendSMS(void *gui);
+void ed_menu_send(GUI *gui)
+{
+	void *ed_gui=MenuGetUserPointer(gui);
+	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
+	DLG_CSM *dlg_csm=(DLG_CSM *)(uo->dlg_csm);
+	SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);
+	if(gstop)
+	{
+		GeneralFunc_flag1(gstop->id, 1);
+		popGS(dlg_csm);
+	}
+	Ed_SendSMS(ed_gui);
+	GeneralFuncF1(1);
+}
+
+//#define ED_MENU_N 7
+//#define ED_MENU_N_1 (ED_MENU_N+1)
+//#define ED_MENU_N_2 (ED_MENU_N-1)
+
+#define MENU_N_NML_FILE 7
+#define MENU_N_NML_DAT 8
+#define MENU_N_ARCHIVE_FILE 6
+
+const MENUPROCS_DESC procs_nml_file[MENU_N_NML_FILE]=
+{
+	ed_menu_reply,
+	ed_menu_edit,
+	ed_menu_del,
+	ed_menu_save_ab,
+	ed_menu_export_txt,
+	ed_menu_move_to_archive,
+	ed_menu_exit,
+};
+
+const int items_lgp_nml_file[MENU_N_NML_FILE]=
+{
+	(int)STR_REPLY,
+	(int)STR_EDIT,
+	(int)LGP_DEL,
+	(int)LGP_SAVE_TO_AB,
+	(int)LGP_EXPORT_TXT,
+	(int)LGP_MOVE_ARCHIVE,
+	(int)LGP_EXIT,
+};
+
+
+const MENUPROCS_DESC procs_nml_dat[MENU_N_NML_DAT]=
+{
+	ed_menu_reply,
+	ed_menu_edit,
+	ed_menu_del,
+	ed_menu_save_ab,
+	ed_menu_save_as_file,
+	ed_menu_export_txt,
+	ed_menu_move_to_archive,
+	ed_menu_exit,
+};
+
+const int items_lgp_nml_dat[MENU_N_NML_DAT]=
+{
+	(int)STR_REPLY,
+	(int)STR_EDIT,
+	(int)LGP_DEL,
+	(int)LGP_SAVE_TO_AB,
+	(int)LGP_SAVE_AS_FILE,
+	(int)LGP_EXPORT_TXT,
+	(int)LGP_MOVE_ARCHIVE,
+	(int)LGP_EXIT,
+};
+
+const MENUPROCS_DESC procs_archive_file[MENU_N_ARCHIVE_FILE]=
+{
+	ed_menu_reply,
+	ed_menu_edit,
+	ed_menu_del,
+	ed_menu_save_ab,
+	ed_menu_export_txt,
+	ed_menu_exit,
+};
+
+const int items_lgp_archive_file[MENU_N_ARCHIVE_FILE]=
+{
+	(int)STR_REPLY,
+	(int)STR_EDIT,
+	(int)LGP_DEL,
+	(int)LGP_SAVE_TO_AB,
+	(int)LGP_EXPORT_TXT,
+	(int)LGP_EXIT,
+};
+
+int IsFileInArchive(const char *fpath)
+{
+	int len,c;
+	char folder[128];
+	strcpy(folder, CFG_MAIN_FOLDER);
+	len=strlen(folder);
+  c=folder[len-1];
+  if(c!='\\' && c!='/')
+  {
+    folder[len]='\\';
+    folder[len+1]=0;
+  }
+  strcat(folder, FLDR_ARCHIVE);
+  if(!strncmp(fpath, folder, strlen(folder)))
+  	return 1;
+  return 0;
+}
+
+void ed_menu_itemhndl(void *data, int curitem, void *user_pointer)
+{
+	void *ed_gui=MenuGetUserPointer(data);
+	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
+	void *item=AllocMenuItem(data);
+	WSHDR *ws=AllocMenuWS(data, 150);
+	if(curitem==0 && uo->sd && uo->sd->type==TYPE_DRAFT)
+	{
+		wsprintf(ws, PERCENT_T, LGP_SEND);
+		goto GOGO;
+	}
+	switch(uo->dat_type)
+	{
+	case NML_FILE:
+		if(curitem>=MENU_N_NML_FILE)
+			goto ITEM_ERR;
+		wsprintf(ws, PERCENT_T, items_lgp_nml_file[curitem]);
+		break;
+	case ARCHIVE_FILE:
+		if(curitem>=MENU_N_ARCHIVE_FILE)
+			goto ITEM_ERR;
+		wsprintf(ws, PERCENT_T, items_lgp_archive_file[curitem]);
+		break;
+	case NML_DAT:
+		if(curitem>=MENU_N_NML_DAT)
+			goto ITEM_ERR;
+		wsprintf(ws, PERCENT_T, items_lgp_nml_dat[curitem]);
+		break;
+	default:
+ITEM_ERR:
+		wsprintf(ws, PERCENT_T, LGP_ERR);
+	}
+GOGO:
+	SetMenuItemText(data, item, ws, curitem);
+}
+
+#pragma swi_number=0x44
+__swi __arm void TempLightOn(int x, int y);
+int ed_menu_onkey(void *data, GUI_MSG *msg)
+{
+	int n;
+	void *ed_gui;
+	USER_OP *uo;
+	if(!IsUnlocked())
+		TempLightOn(3, 0x7FFF);
+	if(msg->keys==0x1)
+	{
+		return 1;
+	}
+	if((msg->keys==0x18)||(msg->keys==0x3D))
+	{
+		n=GetCurMenuItem(data);
+	DO_PROC:
+		ed_gui=MenuGetUserPointer(data);
+		uo=EDIT_GetUserPointer(ed_gui);
+		//if(!GetMenuItemCount(data))
+		//	return 1;
+		if(n==0 && uo->sd && uo->sd->type==TYPE_DRAFT)
+		{
+			ed_menu_send(data);
+			return 1;
+		}
+		switch(uo->dat_type)
+		{
+		case NML_FILE:
+			if(n>=MENU_N_NML_FILE)
+				return 0;
+			procs_nml_file[n](data);
+			return 1;
+		case ARCHIVE_FILE:
+			if(n>=MENU_N_ARCHIVE_FILE)
+				return 0;
+			procs_archive_file[n](data);
+			return 1;
+		case NML_DAT:
+			if(n>=MENU_N_NML_DAT)
+				return 0;
+			procs_nml_dat[n](data);
+			return 1;
+		default :
+			return 0;
+		}
+	}
+	if(msg->gbsmsg->msg==KEY_DOWN)
+	{
+		n=msg->gbsmsg->submess;
+		if(n>='1' && n<='9')
+		{
+			n-='1';
+			goto DO_PROC;
+		}
+	}
+	return 0;
+}
+const MENU_DESC ed_menu=
+{
+	8,ed_menu_onkey,NULL,NULL,
+	ed_menusoftkeys,
+	&ed_menu_skt,
+	0x10,//Right align
+	ed_menu_itemhndl,
+	0,//menuitems,
+	0,//menuprocs,
+	0
+};
+
+int createEditOpMenu(void *ed_gui)
+{
+	int item_n;
+	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
+	patch_header(&ed_menuhdr);
+	switch(uo->dat_type)
+	{
+	case NML_FILE:
+		item_n=MENU_N_NML_FILE;
+		break;
+	case ARCHIVE_FILE:
+		item_n=MENU_N_ARCHIVE_FILE;
+		break;
+	case NML_DAT:
+		item_n=MENU_N_NML_DAT;
+		break;
+	default:
+		item_n=0;
+	}
+	return (CreateSLMenu(&ed_menu, &ed_menuhdr, 0, item_n, ed_gui));
+}
+
+/*
 const MENUPROCS_DESC ed_menuprocs[ED_MENU_N]=
 {
 	ed_menu_reply,
 	ed_menu_edit,
 	ed_menu_del,
+	ed_menu_save_ab,
 	ed_menu_export_txt,
 	ed_menu_move_to_archive,
 	ed_menu_exit,
@@ -253,6 +521,7 @@ const MENUITEM_DESC ed_menuitems[ED_MENU_N]=
 	{NULL,(int)STR_REPLY,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)STR_EDIT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_DEL,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+	{NULL,(int)LGP_SAVE_TO_AB,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_EXPORT_TXT,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},	
 	{NULL,(int)LGP_MOVE_ARCHIVE,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},	
 	{NULL,(int)LGP_EXIT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
@@ -275,6 +544,7 @@ const MENUPROCS_DESC ed_menuprocs_1[ED_MENU_N_1]=
 	ed_menu_reply,
 	ed_menu_edit,
 	ed_menu_del,
+	ed_menu_save_ab,
 	ed_menu_save_as_file,
 	ed_menu_export_txt,
 	ed_menu_move_to_archive,
@@ -286,6 +556,7 @@ const MENUITEM_DESC ed_menuitems_1[ED_MENU_N_1]=
 	{NULL,(int)STR_REPLY,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)STR_EDIT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_DEL,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+	{NULL,(int)LGP_SAVE_TO_AB,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_SAVE_AS_FILE,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_EXPORT_TXT,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},	
 	{NULL,(int)LGP_MOVE_ARCHIVE,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},	
@@ -309,6 +580,7 @@ const MENUPROCS_DESC ed_menuprocs_2[ED_MENU_N]=
 	ed_menu_reply,
 	ed_menu_edit,
 	ed_menu_del,
+	ed_menu_save_ab,
 	ed_menu_export_txt,
 	ed_menu_exit,
 };
@@ -318,6 +590,7 @@ const MENUITEM_DESC ed_menuitems_2[ED_MENU_N]=
 	{NULL,(int)STR_REPLY,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)STR_EDIT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_DEL,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+	{NULL,(int)LGP_SAVE_TO_AB,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 	{NULL,(int)LGP_EXPORT_TXT,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},	
 	{NULL,(int)LGP_EXIT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 };
@@ -334,36 +607,21 @@ const MENU_DESC ed_menu_2=
 	ED_MENU_N_2
 };
 
-int IsFileInArchive(const char *fpath)
+//int createEditOpMenu(USER_OP *uo)
+int createEditOpMenu(void *ed_gui)
 {
-	int len,c;
-	char folder[128];
-	strcpy(folder, CFG_MAIN_FOLDER);
-	len=strlen(folder);
-  c=folder[len-1];
-  if(c!='\\' && c!='/')
-  {
-    folder[len]='\\';
-    folder[len+1]=0;
-  }
-  strcat(folder, FLDR_ARCHIVE);
-  if(!strncmp(fpath, folder, strlen(folder)))
-  	return 1;
-  return 0;
-}
-int createEditOpMenu(USER_OP *uo)
-{
+//	GetCPUClock();
+	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
 	patch_header(&ed_menuhdr);
-
 	if(uo->sd->isfile)
 	{
 		if(uo->sd->fname && IsFileInArchive(uo->sd->fname))
-			return (CreateSLMenu(&ed_menu_2, &ed_menuhdr, 0, ED_MENU_N_2, uo));
-		return (CreateSLMenu(&ed_menu, &ed_menuhdr, 0, ED_MENU_N, uo));
+			return (CreateSLMenu(&ed_menu_2, &ed_menuhdr, 0, ED_MENU_N_2, ed_gui));
+		return (CreateSLMenu(&ed_menu, &ed_menuhdr, 0, ED_MENU_N, ed_gui));
 	}
-	return (CreateSLMenu(&ed_menu_1, &ed_menuhdr, 0, ED_MENU_N_1, uo));
+	return (CreateSLMenu(&ed_menu_1, &ed_menuhdr, 0, ED_MENU_N_1, ed_gui));
 }
-
+*/
 
 
 int Ed_SendSMS(void *gui)
@@ -453,7 +711,8 @@ void on_ed_ec(USR_MENU_ITEM *item)
 */
 
 #define OPTION_N 5
-void on_adr_ec(USR_MENU_ITEM *item)
+//extern int StartSelectNum(void *ed_gui);
+void on_adr_ec(USR_MENU_ITEM *item) //MENU WOULD BE CLOSED FIRST
 {
 	if(item->type==0)
 	{
@@ -498,7 +757,10 @@ void on_adr_ec(USR_MENU_ITEM *item)
 			break;
 		case 1:
 //			uo->adr_type=TYPE_SET;
-			CreateAdrMenu(item->user_pointer);
+			//uo->nab_flag=NAB_NS; //这个菜单会先有一个关闭的过程
+			//StartSelectNum(item->user_pointer);
+			CreateNAbCSM(dlg_csm, item->user_pointer, TYPE_SELECT);
+//			CreateAdrMenu(item->user_pointer);
 			break;
 //		case 2:
 //			uo->adr_type=TYPE_INSERT;
@@ -543,8 +805,6 @@ int edOnKey(GUI *data, GUI_MSG *msg)
 	DLG_CSM *dlg_csm=(DLG_CSM *)(uo->dlg_csm);
 	SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);
 	SMS_DATA *sdl=0;
-#pragma swi_number=0x44
-__swi __arm void TempLightOn(int x, int y);
 	
 	if(!IsUnlocked())
 		TempLightOn(3, 0x7FFF);
@@ -558,9 +818,9 @@ __swi __arm void TempLightOn(int x, int y);
 				update=1;
 			popGS(uo->dlg_csm);
 			if(update)
-				dlg_csm->gui_id=createEditGUI(uo->dlg_csm, uo->sd, ED_REPLY, 0);
+				dlg_csm->gui_id=createEditGUI(uo->dlg_csm, uo->sd, (uo->sd->type==TYPE_DRAFT)?ED_EDIT:ED_REPLY, 0);
 			else
-				createEditGUI(uo->dlg_csm, uo->sd, ED_REPLY, 0);
+				createEditGUI(uo->dlg_csm, uo->sd, (uo->sd->type==TYPE_DRAFT)?ED_EDIT:ED_REPLY, 0);
 			return 1;
 		}
 		else if((uo->gui_type==ED_FVIEW)&&(uo->sd))
@@ -571,9 +831,9 @@ __swi __arm void TempLightOn(int x, int y);
 				update=1;
 			popGS(uo->dlg_csm);
 			if(update)
-				dlg_csm->gui_id=createEditGUI(uo->dlg_csm, sd, ED_FREPLY, 0);
+				dlg_csm->gui_id=createEditGUI(uo->dlg_csm, sd, (uo->sd->type==TYPE_DRAFT)?ED_FEDIT:ED_FREPLY, 0);
 			else
-				createEditGUI(uo->dlg_csm, sd, ED_FREPLY, 0);
+				createEditGUI(uo->dlg_csm, sd, (uo->sd->type==TYPE_DRAFT)?ED_FEDIT:ED_FREPLY, 0);
 			return 1;
 		}
 		else
@@ -587,13 +847,15 @@ __swi __arm void TempLightOn(int x, int y);
 	}
 	else if((msg->keys==0x29)&&((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW)))
 	{
-		createEditOpMenu(uo);
+		//createEditOpMenu(uo);
+		createEditOpMenu(data);
 	}
 	else if(msg->keys==0x18)
 	{
 		if((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW))
 		{
-			createEditOpMenu(uo);
+			//createEditOpMenu(uo);
+			createEditOpMenu(data);
 		}
 		else
 		{
@@ -619,8 +881,12 @@ __swi __arm void TempLightOn(int x, int y);
 	}
 	else if(msg->keys==0x0F00)
 	{
+	  //extern int CreateNAbCSM(void *dlg_csm, void *ed_gui, int type);
 		uo->adr_type=TYPE_SET;
-		CreateAdrMenu(data);
+		CreateNAbCSM(dlg_csm, data, TYPE_SELECT);
+		//uo->nab_flag=NAB_AF;
+		//StartSelectNum(data);
+		//CreateAdrMenu(data);
 	}
 	//else if((msg->keys==0)&&(uo->gui_type==ED_VIEW)) //禁止输入编辑
 	//{
@@ -745,11 +1011,21 @@ const SOFTKEY_DESC SK_ADRBK={0x0F00,0x0000,(int)LGP_ADRBK};
 const SOFTKEY_DESC SK_CANCEL={0x0001,0x0000,(int)LGP_CANCEL};
 const SOFTKEY_DESC SK_OP_PIC={0x0029,0x0000,(int)LGP_OPTION_PIC};
 
+#define TI_CMD_GOTOTOP 0x5
+
+
 void edGHook(GUI *data, int cmd)
 {
 	USER_OP *uo=EDIT_GetUserPointer(data);
 	if(cmd==TI_CMD_CREATE)
 	{
+//		EDITCONTROL ec;
+//		ExtractEditControl(data, uo->focus_n, &ec);
+//		EDITC_OPTIONS ec_options;
+//		PrepareEditCOptions(&ec_options);
+//		SetFontToEditCOptions(&ec_options,5);
+//		CopyOptionsToEditControl(&ec,&ec_options);
+//		StoreEditControl(data, uo->focus_n, &ec);
 		if((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW))
 			EDIT_SetFocus(data, 1); //从号码开始看
 		else
@@ -776,6 +1052,12 @@ void edGHook(GUI *data, int cmd)
 	else if(cmd==TI_CMD_FOCUS)
 	{
 		DisableIDLETMR();
+	}
+	else if(cmd==TI_CMD_GOTOTOP)
+	{
+		//extern int SetNumberToED(void *ed_gui);
+		//if((uo->gui_type!=ED_VIEW)&&(uo->gui_type!=ED_FVIEW)) SetNumberToED(data);
+		//else FreeSaveNAbData(data);
 	}
 	else if(cmd==TI_CMD_REDRAW)
 	{
@@ -948,6 +1230,14 @@ const INPUTDIA_DESC ED_DESC_RO=
 	0x40000002
 };
 
+#define EDIT_FONT_DEFAULT 0
+#define EDIT_FONT_SMALL 1
+#define EDIT_FONT_SMALL_BOLD 2
+#define EDIT_FONT_MEDIUM 3
+#define EDIT_FONT_MEDIUM_BOLD 4
+#define EDIT_FONT_LARGE 5
+#define EDIT_FONT_LARGE_BOLD 6
+
 int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, view
 {
 	int gui_id;
@@ -970,9 +1260,19 @@ int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, 
 	uo->gui_type=type;
 	uo->list_type=list_type;
 	uo->focus_n=0;
+	if(uo->sd->isfile)
+	{
+		if(uo->sd->fname && IsFileInArchive(uo->sd->fname))
+			uo->dat_type=ARCHIVE_FILE;
+		else
+			uo->dat_type=NML_FILE;
+	}
+	else
+		uo->dat_type=NML_DAT;
 //----------
 	eq=AllocEQueue(ma,mfree_adr());
 	PrepareEditControl(&ec);
+	PrepareEditCOptions(&ec_options);
 //	ews=AllocWS(256);
 //-----------
 
@@ -1033,8 +1333,7 @@ int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, 
 		wstrcpy(((NUM_LIST *)(uo->nltop))->name, ews);
 		ConstructEditControl(&ec,(type==ED_VIEW||type==ED_FVIEW)?ECT_READ_ONLY:ECT_NORMAL_TEXT,ECF_DEFAULT_DIGIT+ECF_APPEND_EOL,ews,256);
 		//ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,256);
-		PrepareEditCOptions(&ec_options);
-		SetFontToEditCOptions(&ec_options,FONT_SMALL);
+		SetFontToEditCOptions(&ec_options,EDIT_FONT_SMALL);
 		CopyOptionsToEditControl(&ec,&ec_options);
 		AddEditControlToEditQend(eq,&ec,ma);
 		uo->focus_n++;
@@ -1082,8 +1381,8 @@ int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, 
 		break;
 	}
 	//
-	PrepareEditCOptions(&ec_options);
-	SetFontToEditCOptions(&ec_options,FONT_SMALL);
+	//PrepareEditCOptions(&ec_options);
+	SetFontToEditCOptions(&ec_options,CFG_TEXT_FONT);
 	CopyOptionsToEditControl(&ec,&ec_options);
 	AddEditControlToEditQend(eq,&ec,ma);
 	uo->focus_n++;

@@ -19,4 +19,5 @@ extern const char CFG_SOUND_PATH[];
 extern const unsigned int CFG_SOUND_VOL;
 extern const int CFG_ENA_AUTO_DEL_RP;
 extern const int CFG_ENA_EXIT_SAVE_DRAFT;
+extern const unsigned int CFG_TEXT_FONT;
 #endif
