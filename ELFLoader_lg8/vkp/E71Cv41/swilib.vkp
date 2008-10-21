@@ -707,7 +707,7 @@
 0AA4: 0xA0974E21   ; 2A9:  __thumb int CreatePopupGUI(int flag, void *user_pointer, const POPUP_DESC *, int lgp_msg)
 0AA8: 0xA0974D63   ; 2AA:  __thumb int CreatePopupGUI_ws(int flag, void *user_pointer, const POPUP_DESC *, WSHDR *msg)
 0AAC: 0xA097D859   ; 2AB:  __thumb void *GetPopupUserPointer(void *gui)
-0AB0: 0xA0B8D8C7   ; 2AC:  __thumb int DeleteSMS(int index, int n)
+0AB0: 0xA0B8DB2B   ; 2AC:  __thumb int DeleteSMS(int index, short *del_cnt)
 0AB4: 0xA0B8DED9   ; 2AD:  __thumb int SetNewSMSToReaded(int index, int _1)
 0AB8: 0xA097B39D   ; 2AE:  __thumb void *GetHeaderPointer(void *gui)
 0ABC: 0xA0A5373D   ; 2AF:  __thumb void SetHeaderText(void *hdr_pointer, WSHDR *txt, void *malloc_adr, void *mfree_adr)
@@ -715,6 +715,13 @@
 0AC0: 0xA097C591   ; 2B0:  __thumb void SetMenuSoftKey(void *gui, const SOFTKEY_DESC *,int n)
 0AC4: 0xA8EB99B8   ; 82B1:  __arm SMS_DATA_ROOT *SmsDataRoot()
 0AC8: 0xA0D637F9   ; 2B2:  __thumb int GetSmsPosIndex(SMS_POS_INDEX_DATA *buf, int data_id)
+0ACC: 0xA061585D   ; 2B3:  __thumb NativeAbData *AllocNativeAbData(void)
+0AD0: 0xA0615905   ; 2B4:  __thumb int FreeNativeAbData(NativeAbData *ab_data)
+0AD4: 0xA0615A8B   ; 2B5:  __thumb int GetNativeAbDataType(NativeAbData *nab, int unk0)
+0AD8: 0xA0615E99   ; 2B6:  __thumb WSHDR *GetNumFromNativeAbData(NativeAbData *nab, int type, int unk0)
+0ADC: 0xA0615A9F   ; 2B7:  __thumb int GetNativeAbDataStatus(NativeAbData *nab, int _0)
+0AE0: 0xA061600F   ; 2B8:  __thumb int SetNumToNativeAbData(NativeAbData *abd, int unk, WSHDR *num)
+0AE4: 0xA06F173B   ; 2B9:  __thumb unsigned int OpenNativeAddressbook(int type, int unk1, int unk2, void *data)
 #pragma disable old_equal_ff
 +0       
 ;********************************************************************************

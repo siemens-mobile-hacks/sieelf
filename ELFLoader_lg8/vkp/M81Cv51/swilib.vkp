@@ -700,7 +700,7 @@
 0AA4: 0xA099CF3B   ; 2A9: __swi __arm int CreatePopupGUI(int flag, void *user_pointer, const POPUP_DESC *, int lgp_msg)
 0AA8: 0xA099CEAD   ; 2AA: __swi __arm int CreatePopupGUI_ws(int flag, void *user_pointer, const POPUP_DESC *, WSHDR *msg)
 0AAC: 0xA09A556B   ; 2AB: __swi __arm void *GetPopupUserPointer(void *gui)
-0AB0: 0xA0B1AB83   ; 2AC: __swi __arm int DeleteSMS(int index, int n)
+0AB0: 0xA0B1AC59   ; 2AC:  __thumb int DeleteSMS(int index, short *del_cnt)
 0AB4: 0xA0B1AE61   ; 2AD: __swi __arm int SetSmsStatus(int index, int type)
 0AB8: 0xA09A33C5   ; 2AE: __swi __arm void *GetHeaderPointer(void *gui)
 0ABC: 0xA0A3CED9   ; 2AF: __swi __arm void SetHeaderText(void *hdr_pointer, WSHDR *txt, void *malloc_adr, void *mfree_adr)
@@ -708,10 +708,15 @@
 0AC0: 0xA09A43C5   ; 2B0: __swi __arm void SetMenuSoftKey(void *gui, const SOFTKEY_DESC *,int n)
 0AC4: 0xA8E6C618   ; 2B1: __swi __arm SMS_DATA_ROOT *SmsDataRoot()
 0AC8: 0xA0E39CF5   ; 2B2: __swi __arm int GetSmsPosIndex(SMS_POS_INDEX_DATA *buf, int data_id)
+0ACC: 0xA05647A4   ; 2B3:  __arm NativeAbData *AllocNativeAbData(void)
+0AD0: 0xA05648B4   ; 2B4:  __arm int FreeNativeAbData(NativeAbData *ab_data)
+0AD4: 0xA0564B3C   ; 2B5:  __arm int GetNativeAbDataType(NativeAbData *nab, int unk0)
+0AD8: 0xA05651F4   ; 2B6:  __arm WSHDR *GetNumFromNativeAbData(NativeAbData *nab, int type, int unk0)
+0ADC: 0xA0564B5C   ; 2B7:  __arm int GetNativeAbDataStatus(NativeAbData *nab, int _0)
+0AE0: 0xA0565450   ; 2B8:  __arm int SetNumToNativeAbData(NativeAbData *abd, int unk, WSHDR *num)
+0AE4: 0xA0601C1C   ; 2B9:  __arm unsigned int OpenNativeAddressbook(int type, int unk1, int unk2, void *data)
 #pragma disable old_equal_ff
 +0
 
 ;********************************************************************************
 
-
-;locale=chinese
