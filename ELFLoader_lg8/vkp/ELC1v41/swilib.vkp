@@ -559,7 +559,7 @@
 0818: 0xA0FFC4CD   ; 206: __swi __arm void srand(unsigned int seed)
 081C: 0xA0A40FA7   ; 207: __swi __arm DrawScrollString(WSHDR *WSHDR,int x1,int y1,int x2,int y2,int xdisp,int font,int text_attribute,const char *Pen,const char *Brush)
 0820: 0xA08FE15F   ; 208: __swi __arm int Get_WS_width(WSHDR *ws, int font)
-0824: 0xA0973A1A   ; 209: __swi __arm void *FindGUIbyId(int id, CSM_RAM **csm)
+0824: 0xA0973A1B   ; 209: __thumb void *FindGUIbyId(int id, CSM_RAM **csm)
 0828: 0xA0A4B689   ; 20A: __swi __arm void EDIT_SetDate(void *gui,int n,TDate *dd)
 082C: 0xA0A4B6A1   ; 20B: __swi __arm void EDIT_SetTime(void *gui,int n,TTime *tt)
 0830: 0xA0A4B6B9   ; 20C: __swi __arm void EDIT_GetDate(void *gui,int n,TDate *dd)
