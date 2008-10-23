@@ -208,12 +208,37 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
     {
       n=(i-3)>>1; //Èíäåêñ ýëåìåíòà ?ìàññèâ?cfg_h
       hp=cfg_h[n];
+      EDITCONTROL ec;
+      ExtractEditControl(data,i,&ec);
+      //Ñ­»·´úÂë
+      if((n==0)&&((l==UP_BUTTON)||(l==VOL_UP_BUTTON))
+	 &&(!(EDIT_IsMarkModeActive(data)))
+	 &&(((ec.type!=ECT_NORMAL_TEXT)
+	 &&(ec.type!=ECT_CURSOR_STAY)
+	 &&(ec.type!=ECT_FIXED_STR_NUM)
+	 &&(ec.type!=ECT_NORMAL_NUM))
+	 ||(EDIT_GetCursorPos(data)<=1))//µÚÒ»ÐÐµÚÒ»¸ö×Ö·û
+	 &&(!EDIT_IsBusy(data))){  
+        EDIT_SetFocus(data, total_items*2+1); 
+	return(-1);
+      }else if ((n>=total_items-1)&&((l==DOWN_BUTTON)||(l==VOL_DOWN_BUTTON))
+	 &&(!(EDIT_IsMarkModeActive(data)))
+	 &&(((ec.type!=ECT_NORMAL_TEXT)
+	 &&(ec.type!=ECT_CURSOR_STAY)
+	 &&(ec.type!=ECT_FIXED_STR_NUM)
+	 &&(ec.type!=ECT_NORMAL_NUM))
+         ||(EDIT_GetCursorPos(data)>=(ec.pWS->wsbody[0]+1)))//×îºóÒ»¸ö×Ö
+	 &&(!EDIT_IsBusy(data))){
+        EDIT_SetFocus(data, 3); 
+	return(-1);
+      }
+      /*
       //Ñ­»·´úÂë
       if((n==0)&&(l==UP_BUTTON || l==VOL_UP_BUTTON)){  
         EDIT_SetFocus(data, total_items*2+1); return(-1);
       }else if ((n>=total_items-1)&&(l==DOWN_BUTTON || l==VOL_DOWN_BUTTON)){
         EDIT_SetFocus(data, 3); return(-1);
-      }
+      }*/
       //--------------------
       if (l==LEFT_SOFT||l==ENTER_BUTTON)
       {
@@ -254,6 +279,82 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
   }
   return(0); //Do standart keys
   //1: close
+}
+
+typedef struct{
+  unsigned short u;
+  unsigned short a;
+} TUNI2ANSI;
+
+const TUNI2ANSI TABLE[]=
+{
+  0x2014,'¡ª',
+  0x2018,'¡®',
+  0x201C,'¡°',
+  0x201D,'¡±',
+  0x2103,'¡æ',
+  0x3001,'¡¢',
+  0x3002,'¡£',
+  0xFF01,'£¡',
+  0xFF08,'£¨',
+  0xFF09,'£©',
+  0xFF0C,'£¬',
+  0xFF1A,'£º',
+  0xFF1B,'£»',
+  0xFF1F,'£¿',
+  0xFF5E,'¡«',
+  0xFFE5,'£¤',
+  0,0
+};
+
+int unicode2ansi(int c){
+  int i;
+  const TUNI2ANSI *p=TABLE;
+  if(c>=0x400 && c<0x1000){
+    int d;
+    c-=0x400;
+    c+=0xA791;
+    d=c>>8;
+    c=(c<<24)>>16;
+    return (c|d);
+  } else {
+    while((i=p->u)){
+      if(c==i)
+	return p->a;
+      p++;
+    }
+    return 0x2020;
+  }
+}
+
+#ifdef NEWSGOLD
+#define CODEMAP_ADDR 0xA1568200  //-0xA157A24F
+#else
+#define CODEMAP_ADDR 0xA0FA0200
+#endif
+
+void ws2ascii(WSHDR *ws, char *s, int maxlen){
+  unsigned short *codemap=(unsigned short *)(CODEMAP_ADDR+32004);
+  int i,j=0;
+  unsigned short temp;
+  for(i=1; i<=ws->wsbody[0]; i++){
+    temp=ws->wsbody[i];
+    if(temp < 256)
+      s[j++] = (unsigned char)temp;
+    else if(temp >= 0x4E00 && temp <= 0x9FA5){
+      s[j++] = (unsigned char)(codemap[temp-0x4E00]>>8);
+      s[j++] = (unsigned char)((codemap[temp-0x4E00]<<8)>>8);
+    }else if(temp>=0x400){
+      temp=unicode2ansi(temp);
+      s[j++]=temp>>8;
+      s[j++]=(temp<<8)>>8;
+    }else{
+      s[j++]=' ';
+    }
+    if(maxlen != 0 && j >= maxlen)
+      break;
+  }
+  s[j] = 0;
 }
 
 void ed1_ghook(GUI *data, int cmd)
@@ -314,9 +415,6 @@ void ed1_ghook(GUI *data, int cmd)
         // ws_2utf8( WSHDR *from, char *to , int *result_length, int max_len);
         ws_2utf8(ews,(char *)(hp+1),&utf8conv_res_len,hp->max);
         break;
-      case CFG_STR_GB:
-      	ws2gb(ews,(char *)(hp+1),hp->max);
-      	break;  
       case CFG_STR_PASS:
       case CFG_STR_WIN1251:
         j=0;
@@ -367,7 +465,10 @@ void ed1_ghook(GUI *data, int cmd)
         break;
       case CFG_LEVEL:
         need_set_sk=1;
-        break;        
+        break;       
+      case CFG_STR_GB://ws2gb(ews,(char *)(hp+1),hp->max);
+        ws2ascii(ews,(char *)(hp+1),hp->max);
+      	break;  
       default:
         break;      
       }
@@ -414,7 +515,7 @@ void ed1_ghook(GUI *data, int cmd)
   }
 }
 
-HEADER_DESC ed1_hdr={0,0,0,0,NULL,(int)"±à¼­ÅäÖÃ",LGP_NULL};
+HEADER_DESC ed1_hdr={0,0,0,0,NULL,(int)"ÅäÖÃÆ÷ v1.2",LGP_NULL};
 
 INPUTDIA_DESC ed1_desc=
 {
@@ -561,7 +662,7 @@ SOFTKEYSTAB selbcfg_skt=
 {
   selbcfg_sk,0
 };
-HEADER_DESC selbcfg_HDR={0,0,0,0,NULL,(int)"Ñ¡Ôñ BCFG",LGP_NULL};
+HEADER_DESC selbcfg_HDR={0,0,0,0,NULL,(int)"ÅäÖÃÎÄ¼þ",LGP_NULL};
 
 
 MENU_DESC selbcfg_STRUCT=
@@ -895,18 +996,25 @@ unsigned int char16to8(unsigned int c)
 void UpdateCSMname(const char *fname)
 {
   char *s;
+  int isfname=1;
 //  int i;
   WSHDR *ws=AllocWS(256);
   if ((s=strrchr(fname,'\\'))==0)
   {
     if ((s=strrchr(fname,'/'))==0)
     {
-      if ((s=strrchr(fname,':'))==0) s=(char *)fname-1;
+      if ((s=strrchr(fname,':'))==0){
+	s=(char *)fname-1;
+	isfname=0;
+      }
     }
   }
   s++;
-  str_2ws(ws,s,128);
-  wsprintf((WSHDR *)(&MAINCSM.maincsm_name),"%t%w","ÅäÖÃ:",ws);
+  if(isfname)
+    str_2ws(ws,s,128);
+  else
+    wsprintf(ws, "%t", fname);
+  wsprintf((WSHDR *)(&MAINCSM.maincsm_name),"%t%w","ÎÄ¼þ:",ws);
   FreeWS(ws);
 }
 
@@ -960,7 +1068,7 @@ int create_ed(CFG_HDR *need_to_focus)
   eq=AllocEQueue(ma,mfree_adr());
 
   //Èìÿ êîíôèãóðàöèè
-  ConstructEditControl(&ec,1,0x40,(WSHDR *)(&MAINCSM.maincsm_name),256);
+  ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,(WSHDR *)(&MAINCSM.maincsm_name),256);
   AddEditControlToEditQend(eq,&ec,ma); //EditControl 1
   parents[0]=NULL;
 
@@ -977,7 +1085,7 @@ int create_ed(CFG_HDR *need_to_focus)
       {
         if ((curlev==level)&&(parent==levelstack[level]))
 	{
-	  ConstructEditControl(&ec,1,0x00,ews,256);
+	  ConstructEditControl(&ec,ECT_HEADER,0x00,ews,256);
 	  AddEditControlToEditQend(eq,&ec,ma); //EditControl n*2+2
 	}
       }
@@ -994,11 +1102,11 @@ int create_ed(CFG_HDR *need_to_focus)
       {
         if (hp->type!=CFG_CHECKBOX)
         {
-          ConstructEditControl(&ec,1,0x40,ews,256);
+          ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,256);
         }
         else 
         {
-          ConstructEditControl(&ec,1,0x00,ews,256);
+          ConstructEditControl(&ec,ECT_HEADER,0x00,ews,256);
         }
 	AddEditControlToEditQend(eq,&ec,ma); //EditControl n*2+2
       }
@@ -1014,7 +1122,7 @@ int create_ed(CFG_HDR *need_to_focus)
       L_ERRCONSTR:
         wsprintf(ews,_percent_t,"²»¿ÉÔ¤ÁÏµÄ½ØÖ¹Î»ÖÃ!!!");
       L_ERRCONSTR1:
-        ConstructEditControl(&ec,1,0x40,ews,256);
+        ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,256);
         AddEditControlToEditQend(eq,&ec,ma);
         goto L_ENDCONSTR;
       }
@@ -1048,7 +1156,7 @@ int create_ed(CFG_HDR *need_to_focus)
       if ((curlev==level)&&(parent==levelstack[level]))
       {
         str_2ws(ews,p,hp->max);
-	ConstructEditControl(&ec,4,0x40,ews,hp->max);
+	ConstructEditControl(&ec,ECT_CURSOR_STAY,ECF_APPEND_EOL,ews,hp->max);
 	AddEditControlToEditQend(eq,&ec,ma); //EditControl n*2+3
       }
       p+=(hp->max+1+3)&(~3);
@@ -1060,7 +1168,7 @@ int create_ed(CFG_HDR *need_to_focus)
       if ((curlev==level)&&(parent==levelstack[level]))
       {
         wsprintf(ews,_percent_t,p);
-	ConstructEditControl(&ec,4,0x40,ews,hp->max);
+	ConstructEditControl(&ec,ECT_CURSOR_STAY,ECF_APPEND_EOL,ews,hp->max);
 	AddEditControlToEditQend(eq,&ec,ma); //EditControl n*2+3
       }
       p+=(hp->max+1+3)&(~3);
@@ -1072,7 +1180,7 @@ int create_ed(CFG_HDR *need_to_focus)
       if ((curlev==level)&&(parent==levelstack[level]))
       {
         utf8_2ws(ews,p,hp->max);
-	ConstructEditControl(&ec,4,0x40,ews,hp->max);
+	ConstructEditControl(&ec,ECT_CURSOR_STAY,ECF_APPEND_EOL,ews,hp->max);
 	AddEditControlToEditQend(eq,&ec,ma); //EditControl n*2+3
       }
       p+=(hp->max+1+3)&(~3);
@@ -1090,7 +1198,7 @@ int create_ed(CFG_HDR *need_to_focus)
       if ((curlev==level)&&(parent==levelstack[level]))
       {
         wsprintf(ews,_percent_t,((CFG_CBOX_ITEM*)(p+4))+i);
-	ConstructComboBox(&ec,7,ECF_APPEND_EOL,ews,32,0,hp->max,i+1);
+	ConstructComboBox(&ec,ECT_COMBO_BOX,ECF_APPEND_EOL,ews,32,0,hp->max,i+1);
 	AddEditControlToEditQend(eq,&ec,ma);
       }
       p+=hp->max*sizeof(CFG_CBOX_ITEM)+4;
@@ -1101,7 +1209,7 @@ int create_ed(CFG_HDR *need_to_focus)
       if ((curlev==level)&&(parent==levelstack[level]))
       {
         wsprintf(ews,_percent_t,p);
-	ConstructEditControl(&ec,3,ECF_APPEND_EOL|ECF_PASSW,ews,hp->max);
+	ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL|ECF_PASSW,ews,hp->max);
 	AddEditControlToEditQend(eq,&ec,ma); //EditControl n*2+3
       }
       p+=(hp->max+1+3)&(~3);
@@ -1112,7 +1220,7 @@ int create_ed(CFG_HDR *need_to_focus)
       if ((curlev==level)&&(parent==levelstack[level]))
       {
         wsprintf(ews,"%d,%d",*((int *)p),*((int *)p+1));
-	ConstructEditControl(&ec,9,ECF_APPEND_EOL,ews,10);
+	ConstructEditControl(&ec,ECT_LINK,ECF_APPEND_EOL,ews,10);
 	AddEditControlToEditQend(eq,&ec,ma); 
       }
       p+=8;
@@ -1123,7 +1231,7 @@ int create_ed(CFG_HDR *need_to_focus)
       if ((curlev==level)&&(parent==levelstack[level]))
       {
         wsprintf(ews,"%02X,%02X,%02X,%02X",*((char *)p),*((char *)p+1),*((char *)p+2),*((char *)p+3));
-	ConstructEditControl(&ec,9,ECF_APPEND_EOL,ews,12);
+	ConstructEditControl(&ec,ECT_LINK,ECF_APPEND_EOL,ews,12);
 	AddEditControlToEditQend(eq,&ec,ma);           
       }
       p+=4;
@@ -1137,7 +1245,7 @@ int create_ed(CFG_HDR *need_to_focus)
 	{
           int n_edit;
 	  EDITC_OPTIONS ec_options;
-	  ConstructEditControl(&ec,8,ECF_APPEND_EOL,ews,256);
+	  ConstructEditControl(&ec,ECT_READ_ONLY_SELECTED,ECF_APPEND_EOL,ews,256);
 	  SetPenColorToEditCOptions(&ec_options,2);
 	  SetFontToEditCOptions(&ec_options,1);
 	  CopyOptionsToEditControl(&ec,&ec_options);
@@ -1160,7 +1268,7 @@ int create_ed(CFG_HDR *need_to_focus)
       wsAppendChar(ews, *((int *)p)?CBOX_CHECKED:CBOX_UNCHECKED);
       if ((curlev==level)&&(parent==levelstack[level]))
       {
-	ConstructEditControl(&ec,9,ECF_APPEND_EOL,ews,1);
+	ConstructEditControl(&ec,ECT_LINK,ECF_APPEND_EOL,ews,1);
 	AddEditControlToEditQend(eq,&ec,ma);           
       }
       p+=4;
@@ -1199,7 +1307,7 @@ int create_ed(CFG_HDR *need_to_focus)
         EDITC_OPTIONS ec_options;
         RECT *rc=(RECT *)p;
         wsprintf(ews,"RECT:%03d;%03d;%03d;%03d;",rc->x,rc->y,rc->x2,rc->y2);
-	ConstructEditControl(&ec,9,ECF_APPEND_EOL,ews,ews->wsbody[0]);
+	ConstructEditControl(&ec,ECT_LINK,ECF_APPEND_EOL,ews,ews->wsbody[0]);
         SetFontToEditCOptions(&ec_options,1);
 	CopyOptionsToEditControl(&ec,&ec_options);
 	AddEditControlToEditQend(eq,&ec,ma);  
@@ -1209,7 +1317,7 @@ int create_ed(CFG_HDR *need_to_focus)
       
     default:
       wsprintf(ews,_percent_t,"²»Ö§³ÖµÄÏîÄ¿ %d",hp->type);
-      ConstructEditControl(&ec,1,ECF_APPEND_EOL,ews,256);
+      ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,256);
       AddEditControlToEditQend(eq,&ec,ma);
       goto L_ENDCONSTR;
     }
