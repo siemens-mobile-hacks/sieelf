@@ -6,7 +6,6 @@
 /*
 由于在菜单里面没有办法直接关闭edgui,只好暂时用这个来记录GUI_ID
 */
-//SGUI_ID *gstop=0;
 
 void pushGS(void *dlg_csm, unsigned int id)
 {
@@ -34,7 +33,6 @@ void freeAllGS(void *dlg_csm)
 {
 	SGUI_ID *gst;
 	SGUI_ID *gs;
-//	LockSched();
 	gs=(SGUI_ID *)((DLG_CSM *)dlg_csm)->gstop;
 	((DLG_CSM *)dlg_csm)->gstop=0;
 	while(gs)
@@ -43,7 +41,6 @@ void freeAllGS(void *dlg_csm)
 		gs=gs->next;
 		mfree(gst);
 	}
-//	UnlockSched();
 }
 
 int IsGuiExist(CSM_RAM *csm, GUI *gui)

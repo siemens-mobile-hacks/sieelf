@@ -102,6 +102,12 @@ extern const char LGP_MSG_REVEICED[]; //后加时间
 extern const char LGP_UNK_RP_STATUS[];
 extern const char LGP_TEMPLATE[];
 extern const char LGP_CALL_ADDRESSBOOK[];
+extern const char LGP_STATISTICS[];
+extern const char LGP_IN_SMSDAT[];
+extern const char LGP_IS_MSSFILE[];
+extern const char LGP_DAT_FREE[];
+extern const char LGP_DISK_FREE[];
+
 #ifdef LANG_CN
 #define LGP_CFG_MAIN_FOLDER "MySMSYS文件夹"
 #define LGP_CFG_SYSTEM_FOLDER "系统文件夹"
@@ -111,7 +117,7 @@ extern const char LGP_CALL_ADDRESSBOOK[];
 #define LGP_CFG_NOTIFY_TIME "提醒时间长度(秒)"
 #define LGP_CFG_ENA_AUTO_SAF "自动保存为文件"
 #define LGP_CFG_ENA_NEWSMS_ICON "待机显示新短信图标"
-#define LGP_CFG_ICONNEW_PATH "图标文件路径"
+#define LGP_CFG_ICONNEW_PATH "图标"
 #define LGP_CFG_ICONNEW_POS "图标坐标"
 #define LGP_CFG_EXPORT_CHARSET "导出文本字符编码"
 #define LGP_CFG_ENA_SAVE_SENT "保存已发送短信"
@@ -139,7 +145,7 @@ extern const char LGP_CALL_ADDRESSBOOK[];
 #define LGP_CFG_NOTIFY_TIME "Notify Time (s)"
 #define LGP_CFG_ENA_AUTO_SAF "Auto Save As File"
 #define LGP_CFG_ENA_NEWSMS_ICON "Show NewSMS Icon Idle"
-#define LGP_CFG_ICONNEW_PATH "Icon Path"
+#define LGP_CFG_ICONNEW_PATH "Icon"
 #define LGP_CFG_ICONNEW_POS "Icon Position"
 #define LGP_CFG_EXPORT_CHARSET "Export Text Charset"
 #define LGP_CFG_ENA_SAVE_SENT "Save Sent SMS"

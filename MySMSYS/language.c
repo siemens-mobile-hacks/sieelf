@@ -19,7 +19,6 @@ const char STR_UNK_TYPE[]="Unknow Type (%d)!";
 const char FLDR_IN[]="In\\";
 const char FLDR_OUT[]="Out\\";
 const char FLDR_DRAFT[]="Draft\\";
-//const char FLDR_MAIN[]="0:\\ZBin\\MySMSYS\\";
 const char FLDR_UNK[]="Unknow\\";
 const char FLDR_ARCHIVE[]="Archive\\";
 
@@ -100,6 +99,11 @@ const char LGP_MSG_REVEICED[]="Message received at"; //后加时间
 const char LGP_UNK_RP_STATUS[]="SMS Report: Unknow Status";
 const char LGP_TEMPLATE[]="Template";
 const char LGP_CALL_ADDRESSBOOK[]="Call Addressbook";
+const char LGP_STATISTICS[]="Statistics";
+const char LGP_IN_SMSDAT[]="in SMS.dat";
+const char LGP_IS_MSSFILE[]="is Mss File";
+const char LGP_DAT_FREE[]="Free in SMS.dat";
+const char LGP_DISK_FREE[]="Free in Disk";
 #endif
 
 #ifdef LANG_CN
@@ -180,5 +184,10 @@ const char LGP_MSG_REVEICED[]="信息已收到于"; //后加时间
 const char LGP_UNK_RP_STATUS[]="SMS Report: Unknow Status";
 const char LGP_TEMPLATE[]="模板";
 const char LGP_CALL_ADDRESSBOOK[]="通讯录调用";
+const char LGP_STATISTICS[]="容量统计";
+const char LGP_IN_SMSDAT[]="在SMS.dat";
+const char LGP_IS_MSSFILE[]="为Mss文件";
+const char LGP_DAT_FREE[]="空余在SMS.dat";
+const char LGP_DISK_FREE[]="磁盘空间空余";
 #endif
 

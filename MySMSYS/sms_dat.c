@@ -11,28 +11,6 @@
 #include "NewDatReader.h"
 SMS_DATA *sdltop=0;
 
-/*
-void addSDList(void)
-{
-	SMS_DATA *sdl=malloc(sizeof(SMS_DATA));
-	SMS_DATA *sdn;
-	zeromem(sdl, sizeof(SMS_DATA));
-	sdl->SMS_TEXT=AllocWS(MAX_TEXT);
-	LockSched();
-	if(!sdltop)
-	{
-		sdltop=sdl;
-	}
-	else
-	{
-		sdn=sdltop;
-		sdltop=sdl;
-		sdltop->next=sdn;
-		sdn->prev=sdltop;
-	}
-	UnlockSched();
-}
-*/
 void delSDList(SMS_DATA *sdl)
 {
 	SMS_DATA *sdn;
@@ -76,34 +54,7 @@ void freeSDList(void)
 		mfree(sdlx);
 	}
 }
-/*
-void sdlSwaper(SMS_DATA *sd1, SMS_DATA *sd2)
-{
-	SMS_DATA *temp=malloc(sizeof(SMS_DATA));
-	int n=2*sizeof(void *); //KEEP next, prev
-	memcpy(temp, sd1, sizeof(SMS_DATA));
-	memcpy(((char *)sd1)+n, ((char *)sd2)+n, sizeof(SMS_DATA)-n);
-	memcpy(((char *)sd2)+n, ((char *)temp)+n, sizeof(SMS_DATA)-n);
-	mfree(temp);
-}
 
-void sortByTime(void)
-{
-	SMS_DATA *sdl=sdltop;
-	SMS_DATA *sdx;
-	while(sdl)
-	{
-		sdx=sdl->next;
-		while(sdx)
-		{
-			if(strncmp(sdx->Time, sdl->Time, 14)>0) //time
-				sdlSwaper(sdx, sdl);
-			sdx=sdx->next;
-		}
-		sdl=sdl->next;
-	}
-}
-*/
 int getCountByType(int type) //0, all
 {
 	int i=0;
@@ -135,6 +86,43 @@ int getCountByType(int type) //0, all
 		}
 	}
 	return i;
+}
+
+
+int GetCountByIsFileType(int isfile, int type) //0, all
+{
+  int i=0;
+  SMS_DATA *sdl=sdltop;
+  if(type>0&&type<5)
+  {
+    while(sdl)
+    {
+      if((sdl->type==type) && sdl->isfile==isfile)
+	i++;
+      sdl=sdl->next;
+    }
+  }
+  else if(type==TYPE_IN_ALL)
+  {
+    int t;
+    while(sdl)
+    {
+      t=sdl->type;
+      if(((t==TYPE_IN_R)||(t==TYPE_IN_N)||(t==TYPE_IN_ALL)) && sdl->isfile==isfile)
+	i++;
+      sdl=sdl->next;
+    }
+  }
+  else
+  {
+    while(sdl)
+    {
+      if(sdl->isfile==isfile)
+	i++;
+      sdl=sdl->next;
+    }
+  }
+  return i;
 }
 
 SMS_DATA *getSMSDataByType(int n, int type)//0, all
@@ -176,44 +164,6 @@ SMS_DATA *getSMSDataByType(int n, int type)//0, all
 	return 0;
 }
 
-/*
-SMS_DATA *findInSMSByTxtTime(WSHDR *ws, char *time)
-{
-	SMS_DATA *sdl=sdltop;
-	while(sdl)
-	{
-		if((sdl->type==TYPE_IN_R)||(sdl->type==TYPE_IN_N)||(sdl->type==TYPE_IN_ALL))
-		{
-			if(!wstrncmp_nocase(sdl->SMS_TEXT, ws, ws->wsbody[0])
-					&& !strncmp(sdl->Time, time, strlen(time)))
-			return sdl;
-		}
-		sdl=sdl->next;
-	}
-	return 0;
-}
-
-SMS_DATA *getLastTheLast(int type)
-{
-	SMS_DATA *sdl=sdltop;
-	SMS_DATA *sd=0;
-	while(sdl)
-	{
-		if(sdl->type==type)
-		{
-			if(!sd)
-				sd=sdl;
-			else
-			{
-				if(strcmp(sdl->Time, sd->Time)>0)
-					sd=sdl;
-			}
-		}
-		sdl=sdl->next;
-	}
-	return sd;
-}
-*/
 int getSDPos(SMS_DATA *sd)
 {
 	SMS_DATA *sdl=sdltop;
@@ -452,28 +402,17 @@ void GetEMSText(char *data, WSHDR *text, int cnt_a, int cnt_n, int type, char *b
 		if(ems_next) GetEMSText(ems_next, text, p2[skip-1], p2[skip], type, buf_start, buf_end);
 	}
 }
-/*
-IPC_REQ up_ipc=
-{
-	my_ipc_name,
-	my_ipc_name,
-	NULL
-};
-*/
-//int ReadSMS(void);
+
 int readAllSMS(void)
 {
 
 	int n;
 	freeSDList();
-	//n=ReadSMS();
 	n=NewMsgReader();
 	n+=readFile(TYPE_IN_ALL);
 	n+=readFile(TYPE_OUT);
 	n+=readFile(TYPE_DRAFT);
-//	sortByTime();
 	new_sms_n=getCountByType(TYPE_IN_N);
-//	GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&up_ipc);
 	return n;
 }
 
@@ -495,10 +434,8 @@ int newToRead(SMS_DATA *sd)
 
 #define MAX_FILE 10000
 //-------------------------------------
-//filework
-//#define MAIN_PATH "0:\\ZBin\\MySMSYS\\"
+
 #define HEADER	"MySMSYS"
-//const char main_path[]=MAIN_PATH;
 int GetMssPath(char *path, char *folder, TTime *time, TDate *date)
 {
   char temp[128];
@@ -570,12 +507,6 @@ int saveFile(WSHDR *ws, char *number, SMS_DATA *sd, int type, int need_reload)
 		strcpy(path, sd->fname); 
 	else if(!GetMssPath(path, dir, &time, &date))
 		return 0;
-	//sprintf(path, "%s%s%04d%02d%02d%02d%02d%02d.mss", 
-	//					CFG_MAIN_FOLDER, folder,
-	//					 date.year,
-	//					 date.month, date.day,
-	//					  time.hour, time.min,
-	//					   time.sec);
 	if((f=fopen(path, A_BIN+A_WriteOnly+A_Create+A_Truncate, P_WRITE, &err))<0)
 	{
 		mfree(msf);
@@ -676,8 +607,6 @@ int readFile(int type)
 						int version;
 						SMS_DATA *sdx=AllocSD();
 						n++;
-						//addSDList();
-						//ws=sdx->SMS_TEXT;//=AllocWS(MAX_TEXT);
 						fname=malloc(128);
 						zeromem(fname, 128);
 						sdx->isfile=1;
@@ -737,29 +666,6 @@ int deleteFile(SMS_DATA *sd, int need_reload)
 	}
 	return 0;
 }
-/*
-int deleteDat(SMS_DATA *sd, int need_reload)
-{
-	if((sd==0)||(sd->isfile)||(sd->id==0))
-		return 0;
-	if(sd->msg_type!=ISEMS)
-	{
-		if(DeleteSMS(sd->id, 1)!=0x3E8)
-		return 0;
-	}
-	else if(sd->cnt)
-	{
-		int i=1;
-		for(;i<=sd->cnt;i++)
-		{
-			if(DeleteSMS(sd->id, i)!=0x3E8)
-				return 0;
-		}
-	}
-	if(need_reload)
-		return (readAllSMS());
-	return 1;
-}*/
 
 int deleteDat(SMS_DATA *sd, int need_reload)
 {
@@ -785,7 +691,6 @@ typedef struct
 	int type;
 	int cnt;
 	int isused;
-//	char sms_center[32];
 	char number[32];
 	char time[32];
 	WSHDR *text;
@@ -884,7 +789,6 @@ void DoSMS(SMS_DATA *sdl, char *data)
 	}
 	
 	c=*p++; //sms center
-//	Hex2Num(p, sdl->SMS_CENTER, c);
 	p+=c;
 	c=*p++;
 	if((c>>4)%2) isplus=1;
@@ -985,7 +889,6 @@ void DoSMS_E(EMS_DATA *edl, char *data)
 	}
 	
 	c=*p++; //sms center
-//	Hex2Num(p, sdl->SMS_CENTER, c);
 	p+=c;
 	c=*p++;
 	if((c>>4)%2) isplus=1;
@@ -1087,7 +990,6 @@ void DoEMS(EMS_DATA *edl, char *data, char *sms_dat_buf_start, char *sms_dat_buf
 	}
 	
 	c=*p++; //sms center
-//	Hex2Num(p, edl->sms_center, c);
 	p+=c;
 	c=*p++;
 	if((c>>4)%2) isplus=1;
@@ -1180,7 +1082,6 @@ void DoEMS(EMS_DATA *edl, char *data, char *sms_dat_buf_start, char *sms_dat_buf
 void ReadAllEMS(EMS_DATA **edltop, char *sms_dat_buf, char *sms_dat_buf_end)
 {
 	char *p=sms_dat_buf;
-	//char *pp;
 	int i;
 	EMS_DATA *edl;
 	while(p<sms_dat_buf_end)
@@ -1201,173 +1102,7 @@ void ReadAllEMS(EMS_DATA **edltop, char *sms_dat_buf, char *sms_dat_buf_end)
 		p+=sizeof(PDU);
 	}
 }
-/*
-char *findDataByIndexId(char *data, char *end, int index_id)
-{
-	return 0;
-}
-int IsTextInWs(unsigned short *wsbody, unsigned short *txt, int wslen, int txtlen)
-{
-	unsigned short *p=wsbody;
-	unsigned short *maxlen=wsbody+wslen-txtlen;
-	int n=txtlen*(sizeof(unsigned short));
-	if(wslen<txtlen)
-		return 0;
-	while(p<=maxlen)
-	{
-		if(!memcmp(p, txt, n))
-			return 1;
-		p++;
-	}
-	return 0;
-}
 
-EMS_DATA *FindEMSByNumTxt(EMS_DATA *edltop, char *num, WSHDR *txt)
-{
-	EMS_DATA *edx;
-	EMS_DATA *edl=edltop;
-	if(!edl)
-		return 0;
-	while(edl->next)
-		edl=edl->next;
-	edx=edl;
-	if(!strlen(num)) //在号码长度为0的情况下
-	{
-		while(edl)
-		{
-			if((!edl->isused)
-				&&(!strlen(edl->number))
-				&&(!wstrncmp_nocase(txt, edl->text, txt->wsbody[0])))
-			{
-				edl->isused=1;
-				return edl;
-			}
-			edl=edl->prev;
-		}
-		edl=edx;
-		while(edl) // 退而求其次,号码相同,文字能找到
-		{
-			if((!edl->isused)
-				&&(!strlen(edl->number))
-				&&(IsTextInWs(edl->text->wsbody+1, txt->wsbody+1, edl->text->wsbody[0], txt->wsbody[0])))
-			{
-				edl->isused=1;
-				return edl;
-			}
-			edl=edl->prev;
-		}
-		return 0;
-	}
-	while(edl)
-	{
-		if((!edl->isused)
-				&&(!strcmp(num, edl->number))
-				&&(!wstrncmp_nocase(txt, edl->text, txt->wsbody[0])))
-		{
-			edl->isused=1;
-			return edl;
-		}
-		edl=edl->prev;
-	}
-	edl=edx;
-	while(edl) // 退而求其次,号码相同,文字能找到
-	{
-		if((!edl->isused)
-				&&(!strcmp(num, edl->number))
-				&&(IsTextInWs(edl->text->wsbody+1, txt->wsbody+1, edl->text->wsbody[0], txt->wsbody[0])))
-		{
-			edl->isused=1;
-			return edl;
-		}
-		edl=edl->prev;
-	}
-	return 0;
-}
-
-//#define TEST
-int DoDat(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_size)
-{
-	char *pn;
-	int rec=0;
-	EMS_DATA *edl=0;
-	EMS_ADM *ped=(EMS_ADM *)(ems_admin_buf+0x9A4);
-	char *sb_end=sms_buf+sms_size;
-	char *eab_end=ems_admin_buf+ems_admin_size;
-	int i=0;
-	if((void *)ped>=(void *)eab_end) 
-		return 0;
-	ReadAllEMS(&edl, sms_buf, sb_end);
-	for(;i<MAX_DAT;i++)
-	{
-		if((ped->index_id!=0xFFFF))
-		{
-			rec++;
-			addSDList();
-			if(ped->data_id!=0xFFF4)
-			{
-				sdltop->opmsg_id=ped->opmsg_id;
-				sdltop->id=ped->index_id;
-			#ifdef ELKA
-				pn=sms_buf+(ped->data_id-0x34)*sizeof(PDU);
-			#else
-			#ifdef TEST
-				pn=sms_buf+(ped->data_id-0x34)*sizeof(PDU);
-			#else
-				pn=sms_buf+(ped->data_id-0x2A)*sizeof(PDU);
-			#endif
-			#endif
-				DoSMS(sdltop, pn);
-			}
-			else
-			{
-				char num[32];
-				WSHDR wsloc, *wn;
-				int c, len;
-				char *p;
-				EMS_DATA *edx;
-				unsigned short wsb[32];
-				wn=CreateLocalWS(&wsloc,wsb,32);
-				
-				sdltop->opmsg_id=ped->opmsg_id;
-				sdltop->id=ped->index_id;
-				p=ped->num;
-				c=*p++;
-				if(!c)
-					num[0]=0;
-				else
-				{
-					if(c%2)
-						c=c/2+2;
-					else
-						c=c/2+1;
-					Hex2Num(p, num, c);
-				}
-				len=ped->txt_len;
-//----------------
-//				int x=GetCPUClock();
-//----------------
-				memcpy(wn->wsbody, &(ped->txt_len), (len+1)*sizeof(short)); 
-				edx=FindEMSByNumTxt(edl, num, wn);
-				if(edx)
-				{
-					sdltop->type=edx->type;
-					sdltop->isems=1;
-					sdltop->cnt=edx->cnt;
-				//	strcpy(sdltop->SMS_CENTER, edx->sms_center);
-					strcpy(sdltop->Number, edx->number);
-					strcpy(sdltop->Time, edx->time);
-					wstrcpy(sdltop->SMS_TEXT, edx->text);
-				}
-			}
-		}
-		ped++;
-		if((void *)ped>=(void *)eab_end)
-			break;
-	}
-	FreeEDL(&edl);
-	return rec;
-}
-*/
 /////////////////////////////////////////////
 //NEW LIST
 SMS_DATA *AllocSD(void)
@@ -1412,234 +1147,6 @@ void AddToSdlByTime(SMS_DATA *sd)
 	sd->prev=sdl;
 }
 
-/*
-int DoDat_E(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_size)
-{
-//	char *pn;
-	int rec=0;
-	EMS_DATA *edl=0;
-	EMS_ADM *ped=(EMS_ADM *)(ems_admin_buf+0x9A4);
-	//EMS_INDEX *pei=(EMS_INDEX *)(ems_admin_buf+0x10);
-	char *sb_end=sms_buf+sms_size;
-	char *eab_end=ems_admin_buf+ems_admin_size;
-	int i=0;
-	if((void *)ped>=(void *)eab_end) 
-		return 0;
-	ReadAllEMS(&edl, sms_buf, sb_end);
-	for(;i<MAX_DAT;i++)
-	{//&&(pei->is_xms==0x1)
-		if((ped->index_id!=0xFFFF))
-		{
-			SMS_DATA *sdx=AllocSD();
-			char num[32];
-			WSHDR wsloc, *wn;
-			int c, len;
-			char *p;
-			EMS_DATA *edx;
-			unsigned short wsb[32];
-			
-			sdx->opmsg_id=ped->opmsg_id;
-			sdx->id=ped->index_id;
-			
-			wn=CreateLocalWS(&wsloc,wsb,32);
-			
-			p=ped->num;
-			c=*p++;
-			if(!c)
-				num[0]=0;
-			else
-			{
-				if(c%2)
-					c=c/2+2;
-				else
-					c=c/2+1;
-				Hex2Num(p, num, c);
-			}
-			len=ped->txt_len;
-			memcpy(wn->wsbody, &(ped->txt_len), (len+1)*sizeof(short)); 
-			edx=FindEMSByNumTxt(edl, num, wn);
-			if(edx)
-			{
-				rec++;
-				sdx->type=edx->type;
-				if(ped->data_id==0xFFF4)
-				{
-					sdx->isems=1;
-					sdx->cnt=edx->cnt;
-				}
-				strcpy(sdx->Number, edx->number);
-				strcpy(sdx->Time, edx->time);
-				wstrcpy(sdx->SMS_TEXT, edx->text);
-				LockSched();
-				AddToSdlByTime(sdx);
-				UnlockSched();
-			}
-			else
-				FreeSdOne(sdx);
-		}
-		//pei++;
-		ped++;
-		if((void *)ped>=(void *)eab_end)
-			break;
-	}
-	FreeEDL(&edl);
-	return rec;
-}
-
-int DoDat_2(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_size)
-{
-	char *pn;
-	int rec=0;
-	EMS_DATA *edl=0;
-	EMS_ADM *ped=(EMS_ADM *)(ems_admin_buf+0x9A4);
-	//EMS_INDEX *pei=(EMS_INDEX *)(ems_admin_buf+0x10);
-	char *sb_end=sms_buf+sms_size;
-	char *eab_end=ems_admin_buf+ems_admin_size;
-	int i=0;
-	if((void *)ped>=(void *)eab_end) 
-		return 0;
-	ReadAllEMS(&edl, sms_buf, sb_end);
-	for(;i<MAX_DAT;i++)
-	{//&&(pei->is_xms==0x1)
-		if((ped->index_id!=0xFFFF))
-		{
-			SMS_DATA *sdx=AllocSD();
-			rec++;
-			sdx->opmsg_id=ped->opmsg_id;
-			sdx->id=ped->index_id;
-			if(ped->data_id!=0xFFF4)
-			{
-			#ifdef ELKA
-				pn=sms_buf+(ped->data_id-0x34)*sizeof(PDU);
-			#else
-			//#define TEST
-			#ifdef TEST
-				pn=sms_buf+(ped->data_id-0x34)*sizeof(PDU);
-			#else
-				pn=sms_buf+(ped->data_id-0x2A)*sizeof(PDU);
-			#endif
-			#endif
-				DoSMS(sdx, pn);
-			}
-			else
-			{
-				char num[32];
-				WSHDR wsloc, *wn;
-				int c, len;
-				char *p;
-				EMS_DATA *edx;
-				unsigned short wsb[32];
-				wn=CreateLocalWS(&wsloc,wsb,32);
-				
-				p=ped->num;
-				c=*p++;
-				if(!c)
-					num[0]=0;
-				else
-				{
-					if(c%2)
-						c=c/2+2;
-					else
-						c=c/2+1;
-					Hex2Num(p, num, c);
-				}
-				len=ped->txt_len;
-				memcpy(wn->wsbody, &(ped->txt_len), (len+1)*sizeof(short)); 
-				edx=FindEMSByNumTxt(edl, num, wn);
-				if(edx)
-				{
-					sdx->type=edx->type;
-					sdx->isems=1;
-					sdx->cnt=edx->cnt;
-					strcpy(sdx->Number, edx->number);
-					strcpy(sdx->Time, edx->time);
-					wstrcpy(sdx->SMS_TEXT, edx->text);
-				}
-			}
-			LockSched();
-			AddToSdlByTime(sdx);
-			UnlockSched();
-		}
-		//pei++;
-		ped++;
-		if((void *)ped>=(void *)eab_end)
-			break;
-	}
-	FreeEDL(&edl);
-	return rec;
-}
-
-int ReadSMS(void)
-{
-
-//#ifdef TEST
-//	const char sms_dat[]="0:\\ZBin\\MySMSYS\\SMS.dat";
-//	const char ems_admin_dat[]="0:\\ZBin\\MySMSYS\\EMS_Admin.dat";
-//#else
-//	const char sms_dat[]="0:\\System\\SMS\\SMS.dat";
-//	const char ems_admin_dat[]="0:\\System\\SMS\\EMS_Admin.dat";
-//#endif
-	char sms_dat[128];
-	char ems_admin_dat[128];
-
-	int fin;
-	unsigned int err;
-	char *sms_buf;
-	char *ems_admin_buf;
-	int res=0, sms_size, ems_admin_size;
-
-	int x, xl;
-	
-	strcpy(sms_dat, CFG_SYSTEM_FOLDER);
-	if((xl=strlen(sms_dat))>0)
-		x=sms_dat[xl-1];
-	if((x!='\\')&&(x!='/'))
-		strcat(sms_dat, "\\");
-	strcat(sms_dat, "SMS\\SMS.dat");
-	
-	strcpy(ems_admin_dat, CFG_SYSTEM_FOLDER);
-	if((xl=strlen(ems_admin_dat))>0)
-		x=ems_admin_dat[xl-1];
-	if((x!='\\')&&(x!='/'))
-		strcat(ems_admin_dat, "\\");
-	strcat(ems_admin_dat, "SMS\\EMS_Admin.dat");
-
-	if((fin=fopen(sms_dat, A_BIN+A_ReadOnly, P_READ, &err))<0)
-		return 0;
-	sms_size=lseek(fin, 0, S_END, &err, &err)-2;
-	sms_buf=malloc(sms_size);
-	lseek(fin, 2, S_SET, &err, &err);
-	if(fread(fin, sms_buf, sms_size, &err)!=sms_size)
-	{
-		fclose(fin, &err);
-		res=0;
-		goto EXIT0;
-	}
-	fclose(fin, &err);
-	if((fin=fopen(ems_admin_dat, A_BIN+A_ReadOnly, P_READ, &err))<0)
-	{
-		res=0;
-		goto EXIT0;
-	}
-	ems_admin_size=lseek(fin, 0, S_END, &err, &err);
-	ems_admin_buf=malloc(ems_admin_size);
-	lseek(fin, 0, S_SET, &err, &err);
-	if(fread(fin, ems_admin_buf, ems_admin_size, &err)!=ems_admin_size)
-	{
-		fclose(fin, &err);
-		res=0;
-		goto EXIT1;
-	}
-	fclose(fin, &err);
-	//res=DoDat(sms_buf, ems_admin_buf, sms_size, ems_admin_size);
-	//res=DoDat_2(sms_buf, ems_admin_buf, sms_size, ems_admin_size);
-	res=DoDat_E(sms_buf, ems_admin_buf, sms_size, ems_admin_size);
-EXIT1:
-	mfree(ems_admin_buf);
-EXIT0:
-	mfree(sms_buf);
-	return res;
-}*/
 
 SMS_DATA *FindSDByOpmsgId(int opmsg_id)
 {
@@ -1818,7 +1325,6 @@ SMS_DATA *SdCopyOne(SMS_DATA *sdx)
 		sd->fname=malloc(128);
 		strcpy(sd->fname, sdx->fname);
 	}
-	//sd->SMS_TEXT=AllocWS(MAX_TEXT);
 	if(sdx->SMS_TEXT)
 	{
 		int len=wstrlen(sdx->SMS_TEXT);
@@ -1861,60 +1367,7 @@ int IsSdInList(SMS_DATA *sd)
 	}
 	return 0;
 }
-/*
-int IsHaveNewSMS(void)
-{
-	char sms_dat[128];
-	int fin, x, xl, sms_size, res=0, k;
-	unsigned int err;
-	char *sms_buf, *p;
-	strcpy(sms_dat, CFG_SYSTEM_FOLDER);
-	if((xl=strlen(sms_dat))>0)
-		x=sms_dat[xl-1];
-	if((x!='\\')&&(x!='/'))
-	{
-		sms_dat[xl]='\\';
-		sms_dat[xl+1]=0;
-	}
-	strcat(sms_dat, "SMS\\SMS.dat");
-	if((fin=fopen(sms_dat, A_BIN+A_ReadOnly, P_READ, &err))<0)
-		return 0;
-	sms_size=lseek(fin, 0, S_END, &err, &err)-2;
-	sms_buf=malloc(sms_size);
-	lseek(fin, 2, S_SET, &err, &err);
-	if(fread(fin, sms_buf, sms_size, &err)!=sms_size)
-	{
-		fclose(fin, &err);
-		mfree(sms_buf);
-		return 0;
-	}
-	fclose(fin, &err);
-	xl=sms_size/(sizeof(PDU));
-	for(x=0;x<xl;x++)
-	{
-		p=sms_buf+x*(sizeof(PDU));
-		if((p[2]==0x03))
-		{
-			k=IsPartOfEMS(p);
-			if((k==0xFF))
-			{
-				res=1;
-				break;
-			}
-			else if(k==0xFE)
-			{
-				freeSDList();
-				NewMsgReader();
-				if(getLastTheLast(TYPE_IN_N))
-					res=1;
-				break;
-			}
-		}
-	}
-	mfree(sms_buf);
-	return res;
-}
-*/
+
 //-----------------------------------------------
 //file works
 int IsFileExist(const char *filename)
@@ -1948,58 +1401,7 @@ void StrClearChr(char *str, int chr)
 
 #define FTYPE_TXT 0
 #define FTYPE_MSS 1
-/*
-void GetFileNameBySd(SMS_DATA *sd, char *filename, int ftype)
-{
-  int hasname;
-  WSHDR *wname, nm;
-  unsigned short nmb[64];
-  char sname[65];
-  TTime time;
-  TDate date;
-  GetDateTime(&date, &time);
-  wname=CreateLocalWS(&nm, nmb, 64);
-  if(strlen(sd->Number))
-  {
-    if(!findNameByNum(wname, sd->Number))
-    {
-      hasname=0;
-    }
-    else
-    {
-      hasname=1;
-      ws_2str(wname, sname, 64);
-    }
-  }
-  else
-  {
-    hasname=1;
-    strcpy(sname, "Unk");
-  }
-  if(strlen(sd->Time))
-  {
-    snprintf(filename, 128, "%s_%s.%s", (hasname)?sname:sd->Number, sd->Time, (ftype==FTYPE_MSS)?"mss":"txt");
-  }
-  else
-    snprintf(filename, 128, "%s_%02d-%02d-%02d %02d%02d%02d.%s", (hasname)?sname:sd->Number, 
-	    date.year%2000,
-	    date.month, 
-	    date.day,
-	    time.hour,
-	    time.min,
-	    time.sec,
-	    (ftype==FTYPE_MSS)?"mss":"txt"
-	      );
-  StrClearChr(filename, ':');
-  StrClearChr(filename, '*');
-  StrClearChr(filename, '?');
-  StrClearChr(filename, '<');
-  StrClearChr(filename, '>');
-  StrClearChr(filename, '|');
-  StrClearChr(filename, '\\');
-  StrClearChr(filename, '/');
-}
-*/
+
 int GetFilePathBySd(SMS_DATA *sd, char *folder, char *filepath, int ftype)
 {
   int hasname;
@@ -2056,7 +1458,6 @@ int GetFilePathBySd(SMS_DATA *sd, char *folder, char *filepath, int ftype)
   if(!IsFileExist(temp))
   {
     strcpy(filepath, temp);
-    //strcat(filename, (ftype==FTYPE_MSS)?".mss":".txt");
     return 1;
   }
   while(i<MAX_FILE)
@@ -2115,7 +1516,6 @@ int ExportAllToOneTxt_ASCII(char *filename)
 
 int ExportOneToTxt_ASCII(SMS_DATA *sd)
 {
-//  char filename[128];
   char folder[128];
   char fullpath[128];
   int fin, len, c;
@@ -2139,13 +1539,8 @@ int ExportOneToTxt_ASCII(SMS_DATA *sd)
   strcat(folder, "Text\\");
   if(!isdir(folder, &err))
     mkdir(folder, &err);
-  //GetFileNameBySd(sd, filename, FTYPE_TXT);
-  //strcpy(fullpath, folder);
-  //strcat(fullpath, filename);
   if(!GetFilePathBySd(sd, folder, fullpath, FTYPE_TXT))
     return -1;
-  //if(IsFileExist(fullpath))
-  // return -1;
   if((fin=fopen(fullpath, A_WriteOnly+A_Create+A_Truncate, P_WRITE, &err))<0)
     return 0;
   ws_2ascii(sd->SMS_TEXT, text, MAX_TEXT);
@@ -2221,7 +1616,6 @@ int ExportAllToOneTxt_UTF8(char *filename)
 
 int ExportOneToTxt_UTF8(SMS_DATA *sd)
 {
-//  char filename[128];
   char folder[128];
   char fullpath[128];
   int fin, len, c, utf8_res_len;
@@ -2245,11 +1639,6 @@ int ExportOneToTxt_UTF8(SMS_DATA *sd)
   strcat(folder, "Text\\");
   if(!isdir(folder, &err))
     mkdir(folder, &err);
-  //GetFileNameBySd(sd, filename, FTYPE_TXT);
-  //strcpy(fullpath, folder);
-  //strcat(fullpath, filename);
-  //if(IsFileExist(fullpath))
-  //  return -1;
   if(!GetFilePathBySd(sd, folder, fullpath, FTYPE_TXT))
     return -1;
   if((fin=fopen(fullpath, A_WriteOnly+A_Create+A_Truncate, P_WRITE, &err))<0)
@@ -2310,7 +1699,6 @@ int ExportOneToTxt(SMS_DATA *sd)
 
 int MoveToArchive(SMS_DATA *sd)
 {
-//  char filename[128];
   char fullpath[128];
   char folder[128];
   unsigned int err;
@@ -2355,11 +1743,6 @@ int MoveToArchive(SMS_DATA *sd)
   }
   if(!isdir(folder, &err))
     mkdir(folder, &err);
-  //GetFileNameBySd(sd, filename, FTYPE_MSS);
-  //strcpy(fullpath, folder);
-  //strcat(fullpath, filename);
-  //if (IsFileExist(fullpath))
-  //  return -1;
   if(!GetFilePathBySd(sd, folder, fullpath, FTYPE_MSS))
     return -1;
   if (sd->isfile && sd->fname)
@@ -2660,7 +2043,6 @@ SMS_DATA *FindNextMss(SMS_DATA *sd)
 	strcat(filename, de.file_name);
 	sdx=malloc(sizeof(SMS_DATA));
 	zeromem(sdx, sizeof(SMS_DATA));
-	//sdx->SMS_TEXT=AllocWS(MAX_TEXT);
 	if(!ReadMSS(filename, sdx))
 	{
 	  FreeSdOne(sdx);
@@ -2715,7 +2097,6 @@ SMS_DATA *FindPrevMss(SMS_DATA *sd)
 	strcat(filename, temp);
 	sdx=malloc(sizeof(SMS_DATA));
 	zeromem(sdx, sizeof(SMS_DATA));
-	//sdx->SMS_TEXT=AllocWS(MAX_TEXT);
 	if(!ReadMSS(filename, sdx))
 	{
 	  FreeSdOne(sdx);

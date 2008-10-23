@@ -3,74 +3,6 @@
 #include "sms_dat.h"
 #include "language.h"
 
-//------------------------
-// new new new !!! reader with new functions.
-/*
-typedef struct
-{
-  char unk0;
-  char unk1;
-  short pos_index;
-}SMS_POS_INDEX_DATA;
-*/
-//function test ~_~ nice!
-void FuncTest(void)
-{
-//  extern int GetSmsPosIndex(SMS_POS_INDEX_DATA *buf, int data_id);
-  SMS_POS_INDEX_DATA sid;
-  if(!GetSmsPosIndex(&sid, 0x2A))
-    ShowMSG(1, (int)"Failed");
-  else
-  {
-    char msg[32];
-    sprintf(msg, "Pos: 0x%d", sid.pos_index);
-    ShowMSG(1, (int)msg);
-  }
-}
-//---------------------------
-/*
-typedef struct
-{
-  void *unk_proc0; //0xA09D901D S7Cv47
-  void *unk_proc1; //0xA09D9025 S7Cv47
-  short index; //1,2,3 ...
-  char unk[6];
-  short unk1; //another index ?
-  char cnt0;
-  char cnt1; // =cnt0;
-  short *data_id; //depend on cnt
-}INDEX_ID_DATA;
-
-typedef struct
-{
-  void *next;
-  void *prev;
-  INDEX_ID_DATA *index_id_data;
-  //short unk0; //0xB2 pdu_size ?
-  //short unk1; //0x4077 SMS_SIMIF_SM_CEPID ?
-  //int unk2; //0x190 ?
-  //void *unk3; //a list ?
-}SMS_DATA_LIST;
-
-typedef struct
-{
-  SMS_DATA_LIST *first;
-  SMS_DATA_LIST *last;
-  void *unk_proc; //0xA09DA18D //S7Cv47
-}SMS_DATA_LLIST;
-
-typedef struct
-{
-  SMS_DATA_LLIST in_msg;
-  SMS_DATA_LLIST out_msg;
-}SMS_DATA_ROOT;
-*/
-//#define SmsDataRootPointer 0xA8DED874 // S7Cv47 
-//#define SmsDataRootPointer 0xA8EB99B8 // E71Cv41
-//#define SmsDataRootPointer 0xA8EB992C // ELC1v41
-//#define SmsDataRootPointer 0xA8EB9A84 // E71v45
-//#define SmsDataRootPointer 0xA8EB99F8 // EL71v45
-//pattern_NSG/ELKA=&(??,22,??,49,??,00,??,B5,??,39,??,??,??,??,??,BD,+2)+0x12C
 #define MAX_SMS 100
 typedef struct
 {
@@ -88,30 +20,7 @@ typedef struct
   unsigned short data_id;//SMS: (data_id-0x2A)*sizeof(PDU)= the position of this sms in sms.dat, EMS: 0xFFF4 ?
   short unk5; //0xA800 ?
 }EMS_ADM;
-/*
-typedef struct
-{
-  void *next;
-  void *prev;
-  int type;
-  int id; //index of sms.dat
-  int opmsg_id;
-  int isfile;
-  int isems;
-  int cnt;
-  char *fname;
-  char Number[32];
-  char Time[32];
-  WSHDR *SMS_TEXT;
-}SMS_DATA;
 
-SMS_DATA *AllocSD_NEW(void)
-{
-  SMS_DATA *sd=malloc(sizeof(SMS_DATA));
-  zeromem(sd, sizeof(SMS_DATA));
-  return sd;
-}
-*/
 void Add2WS_NEW(char *data, unsigned short *wsbody, int len)
 {
   int i;
@@ -124,7 +33,6 @@ void Add2WS_NEW(char *data, unsigned short *wsbody, int len)
   wsbody[0]=len/2;
 }
 
-//extern void Hex2Num(char *hex, char *num, int len);
 int PduDecodeTxt(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktype
 {
   int c;
@@ -134,7 +42,6 @@ int PduDecodeTxt(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
   WSHDR *ws, wsn, *wst;
   unsigned short wsb[150];
   ws=CreateLocalWS(&wsn, wsb, 150);
-//  GetCPUClock();
   p=data;
   if(*p++!=0x11)
     return 0;
@@ -143,28 +50,7 @@ int PduDecodeTxt(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
   c=*p++;
   if(!c)
     return 0;
-/*  switch(c)
-  {
-  case 0x01:
-    sd->type=TYPE_IN_R;
-    break;
-  case 0x03:
-    sd->type=TYPE_IN_N;
-    break;
-  case 0x05:
-    sd->type=TYPE_OUT;
-    break;
-  case 0x07:
-    sd->type=TYPE_DRAFT;
-    break;
-  default:
-    sd->type=TYPE_UNK;
-    wsprintf(ws, STR_UNK_TYPE, c);
-    goto TEND;
-    //return 2; //back 
-  }*/
   c=*p++; //sms center
-//  Hex2Num(p, sd->SMS_CENTER, c);
   p+=c;
   c=*p++;
   if((c>>4)%2) isplus=1;
@@ -182,7 +68,6 @@ int PduDecodeTxt(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
       c=c/2+2;
     else
       c=c/2+1;
-    //Hex2Num(p, sd->Number, c);
   }
   else
   {
@@ -193,20 +78,6 @@ int PduDecodeTxt(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
   ttype=*p++;
   if((sd->type==TYPE_IN_R)||(sd->type==TYPE_IN_N))
   {
-/*    char *pp=sd->Time;
-    int i;
-    for(i=0;i<6;i++) //time
-    {
-      *pp++=p[i]%0x10+'0';
-      *pp++=p[i]/0x10+'0';
-      if(i<2)
-	*pp++='-';
-      if(i==2)
-	*pp++=' ';
-      if(i>2&&i<5)
-	*pp++=':';
-    }
-    *pp=0;*/
     p+=7; //time
   }
   if(isplus&&((sd->type==TYPE_OUT)||(sd->type==TYPE_DRAFT))) p++; //
@@ -291,7 +162,6 @@ int PduDecodeAll(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
   WSHDR *ws, wsn;
   unsigned short wsb[150];
   ws=CreateLocalWS(&wsn, wsb, 150);
-//  GetCPUClock();
   p=data;
   if(*p++!=0x11)
     return 0;
@@ -321,7 +191,6 @@ int PduDecodeAll(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
     //return 2; //back 
   }
   c=*p++; //sms center
-//  Hex2Num(p, sd->SMS_CENTER, c);
   p+=c;
   c=*p++;
   if(c==0x6)
@@ -421,7 +290,6 @@ TEND:
 
 int DoMsgList(SMS_DATA_LIST *lst, char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_size)
 {
-//  extern int GetSmsPosIndex(SMS_POS_INDEX_DATA *buf, int data_id);
   extern void AddToSdlByTime(SMS_DATA *sd);
   extern void FreeSdOne(SMS_DATA *sd);
   SMS_POS_INDEX_DATA sid;
@@ -438,6 +306,8 @@ int DoMsgList(SMS_DATA_LIST *lst, char *sms_buf, char *ems_admin_buf, int sms_si
   if(!(pid=idd->data_id))
     return 0;
   if(!(cnt=idd->cnt_received))
+    return 0;
+  if(cnt!=idd->cnt_all)
     return 0;
   index=idd->index;
   if(!index || index>MAX_SMS)
@@ -468,7 +338,6 @@ int DoMsgList(SMS_DATA_LIST *lst, char *sms_buf, char *ems_admin_buf, int sms_si
   }
   else //ems
   {
-//    GetCPUClock();
     sdx=AllocSD();
     for(i=0;i<cnt;i++)
     {
@@ -493,7 +362,6 @@ int DoMsgList(SMS_DATA_LIST *lst, char *sms_buf, char *ems_admin_buf, int sms_si
       sdx->opmsg_id=pea->opmsg_id;
       sdx->id=index;
       sdx->msg_type=ISEMS;
-//      sdx->cnt=cnt;
       LockSched();
       AddToSdlByTime(sdx);
       UnlockSched();
@@ -595,16 +463,6 @@ int IsHaveNewSMS(void)
   if(!sdroot->cnt_in_new_sms_dat)
     return 0;
   inll=sdroot->in_msg;
-//  if(!(lst=inll.first))
-//    return 0;
-//  while(lst)
-//  {
-//    if(!(idd=lst->index_id_data))
-//      return 0;
-//    if(idd->cnt_all != idd->cnt_received)
-//      return 0;
-//    lst=lst->next;
-//  }
   if(!(lst=inll.last))
     return 0;
   if(!(idd=lst->index_id_data))

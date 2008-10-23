@@ -8,12 +8,6 @@
 #include "numList.h"
 #include "config_data.h"
 #include "string_works.h"
-//char *s_ab_main="0:\\System\\apo\\addr\\main";
-//#ifdef NEWSGOLD
-//char *s_ab_entry="0:\\System\\apo\\addr\\data\\%02d\\%02d\\%02d";
-//#else
-//char *s_ab_entry="0:\\System\\apo\\addr\\%02x\\%02x";
-//#endif
 
 #pragma swi_number=0x44
 __swi __arm void TempLightOn(int x, int y);
@@ -31,14 +25,10 @@ void FreeCLIST(void)
 	{
 		CLIST *p;
 		if(cl0->name) FreeWS(cl0->name);
-		//if(cl0->nm[0]) FreeWS(cl0->nm[0]);
-		//if(cl0->nm[1]) FreeWS(cl0->nm[1]);
-		//if(cl0->nm[2]) FreeWS(cl0->nm[2]);
 		for(int i=0;i<NUMBERS_MAX;i++) 
 		{
 			if(cl0->num[i])
 				mfree(cl0->num[i]);
-				//FreeWS(cl0->num[i]);
 		}
 		p=cl0;
 		cl0=(CLIST*)(cl0->next);
@@ -179,29 +169,6 @@ void ConstructList(void)
 														wstrcat(contact.name, (WSHDR*)(r->data));
 													}
 													contact.next = (void*)1;
-/*													if (!contact.name)
-													{
-														cl_n++;
-														wstrcpy(contact.nm[0]=AllocWS(150),(WSHDR *)(r->data));
-														wstrcpy(contact.name=AllocWS(150),(WSHDR *)(r->data));
-														contact.next = (void*)1;
-													}
-													else if (!contact.nm[1])
-													{
-														wstrcpy(contact.nm[1]=AllocWS(150),(WSHDR *)(r->data));
-														wsAppendChar(contact.name,',');
-														wsAppendChar(contact.name,' ');
-														wstrcat(contact.name, (WSHDR*)(r->data));
-														contact.next = (void*)1;
-													}
-													else
-													{
-														wstrcpy(contact.nm[2]=AllocWS(150),(WSHDR *)(r->data));
-														wsAppendChar(contact.name,',');
-														wsAppendChar(contact.name,' ');
-														wstrcat(contact.name, (WSHDR*)(r->data));
-														contact.next = (void*)1;
-													}*/
 												}
 											}
 											break;
@@ -260,25 +227,6 @@ void ConstructList(void)
 														m++;
 													}
 													*nump=0;
-/*													ws0=contact.num[n]=AllocWS(50);
-													j=0;
-													m=0;
-													if (p->format==0x91)
-														wsAppendChar(ws0,'+');
-													while(j<p->data_size)
-													{
-														if (m&1) {c1=c>>4; j++;}
-														else c1=(c=p->data[j])&0x0F;
-														if (c1==0x0F) break;
-
-														if (c1==0xA) c1='*';
-														else if (c1==0xB) c1='#';
-														else if (c1==0xC) c1='+';
-														else if (c1==0xD) c1='?';
-														else c1+='0';
-														wsAppendChar(ws0,c1);
-														m++;
-													}*/
 													contact.next = (void*)1;
 												}
 											}
@@ -291,14 +239,10 @@ void ConstructList(void)
 							if (!contact.next)
 							{
 								if(contact.name) FreeWS(contact.name);
-								//if(contact.nm[0]) FreeWS(contact.nm[0]);
-								//if(contact.nm[1]) FreeWS(contact.nm[1]);
-								//if(contact.nm[2]) FreeWS(contact.nm[2]);
 								for(int i=0;i<NUMBERS_MAX;i++)
 								{
 									if(contact.num[i])
 										mfree(contact.num[i]);
-										//FreeWS(contact.num[i]);
 								}
 							}
 							FreeUnpackABentry(&ur,mfree_adr());
@@ -306,12 +250,15 @@ void ConstructList(void)
 							LockSched();
 							if (contact.next)
 							{
-								int n=0;
+								//int n=0;
 								CLIST *p=malloc(sizeof(contact));
-								CLIST *t;
-								CLIST *b=(CLIST *)(&cltop);
+								//CLIST *t;
+								//CLIST *b=(CLIST *)(&cltop);
 								contact.next=0;
 								memcpy(p,&contact,sizeof(contact));
+								p->next=(CLIST *)cltop;
+								cltop=p;
+								/*
 								for(;;)
 								{
 									if (t=b->next)
@@ -331,6 +278,7 @@ void ConstructList(void)
 										break;
 									}
 								}
+								*/
 							}
 							UnlockSched();
 						}
@@ -349,14 +297,10 @@ void ConstructList(void)
 	if (contact.next)
 	{
 		if(contact.name) FreeWS(contact.name);
-		//if(contact.nm[0]) FreeWS(contact.nm[0]);
-		//if(contact.nm[1]) FreeWS(contact.nm[1]);
-		//if(contact.nm[2]) FreeWS(contact.nm[2]);
 		for(int i=0;i<NUMBERS_MAX;i++) 
 		{
 			if(contact.num[i])
 				mfree(contact.num[i]);
-				//FreeWS(contact.num[i]);
 		}
 	}
 }
@@ -392,66 +336,10 @@ int SearchInCList(WSHDR *searchstr)
 }
 #define MAX(A, B) ((A>B)?A:B)
 #define MIN(A, B) ((A<B)?A:B)
-/*
-int FindNameByNumXM(WSHDR *name_to, char *num)
-{
-	CLIST *cl=(CLIST *)cltop;
-	int i, la, lb, ld;
-	//char bn[50];
-	char *p1;
-	char *pp;
-	if((!num)||(!name_to)||(strlen(num)<=3))
-		return 0;
-	while(cl)
-	{
-		i=0;
-		for(;i<NUMBERS_MAX;i++)
-		{
-			if(cl->num[i])
-			{
-				//号码查找比较,根据短的比较长的后面部分
-				//ws_2str(cl->num[i], bn, 49);
-				//p1=bn;
-				p1=cl->num[i];
-				if(*p1=='+')
-					p1++;
-				pp=num;
-				if(*pp=='+')
-					pp++;
-				la=strlen(pp);
-				lb=strlen(p1);
-				if(MAX(la, lb)-MIN(la, lb) > 3)
-					break;
-				if(la>lb)
-				{
-					ld=lb;
-					pp+=la-lb;
-				}
-				else
-				{
-					ld=la;
-					p1+=lb-la;
-				}
-				if(!strncmp(pp, p1, ld))
-				{
-					if(cl->name)
-					{
-						wstrcpy(name_to, cl->name);
-						return 1;
-					}
-				}
-			}
-		}
-		cl=cl->next;
-	}
-	return 0;
-}
-*/
 int findNameByNum(WSHDR *name_to, char *num)
 {
 	CLIST *cl=(CLIST *)cltop;
 	int i, la, lb, ld;
-	//char bn[50];
 	char *p1;
 	char *pp;
 	if((!num)||(!name_to)||(strlen(num)<=3))
@@ -464,8 +352,6 @@ int findNameByNum(WSHDR *name_to, char *num)
 			if(cl->num[i])
 			{
 				//号码查找比较,根据短的比较长的后面部分
-				//ws_2str(cl->num[i], bn, 49);
-				//p1=bn;
 				p1=cl->num[i];
 				if(*p1=='+')
 					p1++;
@@ -539,348 +425,3 @@ char *getPrefNumFromCL(CLIST *cl)
 	}
 	return 0;
 }
-//---------------------------------------------
-//menu.
-//---------------------------------------------
-/*
-const int adrmenusoftkeys[]={0,1,2};
-const SOFTKEY_DESC adrmenu_sk[]=
-{
-  {0x0018,0x0000,(int)LGP_OK},
-  {0x0001,0x0000,(int)LGP_BACK},
-  {0x003D,0x0000,(int)LGP_DOIT_PIC}
-};
-
-const SOFTKEYSTAB adrmenu_skt=
-{
-  adrmenu_sk,0
-};
-//char numhdr[50];
-HEADER_DESC nummenuhdr={0,0,0,0,NULL,LGP_NULL,LGP_NULL};
-
-//#define TYPE_SET 0
-//#define TYPE_INSERT 1
-
-typedef struct
-{
-	void *ed_gui;
-	CLIST *cl;
-}NUM_MENU_UP;
-
-
-void InsertAsTxt(void *ed_gui, char *num)
-{
-	WSHDR csloc, *wcs;
-	EDITCONTROL ec;
-	unsigned short csb[MAX_TEXT];
-	WSHDR *wnum, wnumn;
-	unsigned short wnumb[50];
-	int k=EDIT_GetCursorPos(ed_gui);
-	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
-	int n=EDIT_GetFocus(ed_gui);
-	if(n!=(uo->focus_n))
-		return;
-	if(k<=0)
-		return;
-	wcs=CreateLocalWS(&csloc,csb,MAX_TEXT);
-	wnum=CreateLocalWS(&wnumn,wnumb,50);
-	wsprintf(wnum, PERCENT_S, num);
-	ExtractEditControl(ed_gui,n,&ec);
-	wstrcpy(wcs, ec.pWS);
-	wsInsert(wcs, wnum, k-1, MAX_TEXT);
-	EDIT_SetTextToEditControl(ed_gui, n, wcs);
-	EDIT_SetCursorPos(ed_gui, k+strlen(num));
-}
-
-void SetNumToED(void *ed_gui, char *num, WSHDR *name)
-{
-	//EDITCONTROL ec;
-	NUM_LIST *nl;
-	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
-	int n=EDIT_GetFocus(ed_gui);
-	if(n>(uo->focus_n-2))
-		return;
-	if(!(nl=GetNumListCur(uo, n)))
-		return;
-	strcpy(nl->num, num);
-	//ExtractEditControl(ed_gui,n,&ec);
-	//ws_2str(num, nl->num, 49);
-	wstrcpy(nl->name, name);
-	EDIT_SetTextToEditControl(ed_gui, n, name);
-}
-void InsertNumToED(void *ed_gui, WSHDR *num, WSHDR *name) //插入到列表光标后面
-{
-	EDITCONTROL ec;
-	EDITC_OPTIONS ec_options;
-
-	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
-	int n=EDIT_GetFocus(ed_gui);
-	NUM_LIST *nl=malloc(sizeof(NUM_LIST));
-	zeromem(nl, sizeof(NUM_LIST));
-	nl->name=AllocWS(150);
-	if((n>(uo->focus_n-2))||(!InsertToNumList(uo, nl, n))) //insert fail
-	{
-		FreeWS(nl->name);
-		mfree(nl);
-		return;
-	}
-	ws_2str(num, nl->num, 49);
-	wstrcpy(nl->name, name);
-	PrepareEditControl(&ec);
-	PrepareEditCOptions(&ec_options);
-	SetFontToEditCOptions(&ec_options,FONT_SMALL);
-	CopyOptionsToEditControl(&ec,&ec_options);
-	ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_DEFAULT_DIGIT+ECF_APPEND_EOL,name,150);
-	EDIT_InsertEditControl(ed_gui, n+1, &ec);
-	(uo->focus_n)++;
-	EDIT_SetFocus(ed_gui, n+1);
-}
-int nummenu_onkey(void *data, GUI_MSG *msg)
-{
-		
-	if(!IsUnlocked())
-		TempLightOn(3, 0x7FFF);
-
-	if((msg->keys==0x18)||(msg->keys==0x3D))
-	{
-		NUM_MENU_UP *up=MenuGetUserPointer(data);
-		char *num=getNumFromCL(up->cl, GetCurMenuItem(data));
-		if(num)
-		{
-			USER_OP *uo=EDIT_GetUserPointer(up->ed_gui);
-			#ifdef DEBUG
-				{
-					WSHDR *xws=AllocWS(150);
-					wsprintf(xws, "%w|%s",up->cl->name, num);
-					//if(uo->adr_type==TYPE_INSERT)
-					//	InsertNumToED(up->ed_gui, num, xws);
-					//else if(uo->adr_type==TYPE_TXT)
-					if(uo->adr_type==TYPE_TXT)
-					{
-						InsertAsTxt(up->ed_gui, num);
-					}
-					else if(uo->adr_type==TYPE_SET)
-					{
-						SetNumToED(up->ed_gui, num, xws);
-					}
-					FreeWS(xws);
-				}
-			#else
-				//if(uo->adr_type==TYPE_INSERT)
-				//	InsertNumToED(up->ed_gui, num, up->cl->name);
-				//else if(uo->adr_type==TYPE_TXT)
-				if(uo->adr_type==TYPE_TXT)
-				{
-					InsertAsTxt(up->ed_gui, num);
-				}
-				else if(uo->adr_type==TYPE_SET)
-				{
-					SetNumToED(up->ed_gui, num, up->cl->name);
-				}
-			#endif
-				return 1;
-		}
-	}
-	if(msg->keys==0x1)
-	{
-		return 1;
-	}
-	return 0;
-}
-void nummenu_ghook(void *gui, int cmd)
-{
-	if(cmd==3)
-	{
-		NUM_MENU_UP *up=MenuGetUserPointer(gui);
-		mfree(up);
-	}
-	if(cmd==0xA)
-	{
-		NUM_MENU_UP *up=MenuGetUserPointer(gui);
-		if(up && up->cl && up->cl->name)
-		{
-			WSHDR *hdr_t=AllocWS(64);
-			wstrcpy(hdr_t, up->cl->name);
-			SetHeaderText(GetHeaderPointer(gui), hdr_t, malloc_adr(), mfree_adr());
-		}
-		//DisableIDLETMR();
-	}
-}
-void nummenuitemhdl(void *data, int curitem, void *user_pointer)
-{
-	NUM_MENU_UP *up=(NUM_MENU_UP *)user_pointer;
-	void *item=AllocMenuItem(data);
-	WSHDR *ws=AllocMenuWS(data, 150);
-	char *num=getNumFromCL(up->cl, curitem);
-	if(num)
-		wsprintf(ws, PERCENT_S, num);
-		//wstrcpy(ws, ws1);
-	else
-		wsprintf(ws, PERCENT_T, LGP_ERR);
-	SetMenuItemText(data, item, ws, curitem);
-}
-const MENU_DESC nummenu=
-{
-	8,nummenu_onkey,nummenu_ghook,NULL,
-	adrmenusoftkeys,
-	&adrmenu_skt,
-	0x10,//
-	nummenuitemhdl,
-	NULL,//menuitems,
-	NULL,//menuprocs,
-	0
-};
-
-int CreateNumMenu(CLIST *cl, void *ed_gui, int n)
-{
-//	return 0;
-	NUM_MENU_UP *up=malloc(sizeof(NUM_MENU_UP));
-	up->ed_gui=ed_gui;
-	up->cl=cl;
-	patch_header(&nummenuhdr);
-//	if(cl->name)
-//#ifdef LANG_CN
-//		ws2gb(cl->name, numhdr, 49);
-//#else
-//		ws_2str(cl->name, numhdr, 49);
-//#endif 
-	return (CreateMenu(0,0,&nummenu,&nummenuhdr,n-1,n,up,0));
-}
-
-
-HEADER_DESC adrmenuhdr={0,0,0,0,NULL,(int)LGP_ADRBK,LGP_NULL};
-
-static int adrmenu_keyhook(void *data, GUI_MSG *msg)
-{
-	
-	if(!IsUnlocked())
-		TempLightOn(3, 0x7FFF);
-
-	if((msg->keys==0x18)||(msg->keys==0x3D))
-	{
-		void *ed_gui=MenuGetUserPointer(data);
-		CLIST *cl=GetClistItem(GetCurMenuItem(data));
-		int n;
-		if((cl!=0)&&((n=getNumCount(cl))!=0))
-		{
-			if(n>1)
-				CreateNumMenu(cl, ed_gui, n);
-			else
-			{
-				USER_OP *uo=EDIT_GetUserPointer(ed_gui);
-				char *num=0;
-				for(n=0;n<NUMBERS_MAX;n++)
-				{
-					if(cl->num[n])
-					{
-						num=cl->num[n];
-						break;
-					}
-				}
-				if(num)
-				{
-			#ifdef DEBUG
-					{
-						WSHDR *xws=AllocWS(150);
-						wsprintf(xws, "%w|%s",cl->name, num);
-						//if(uo->adr_type==TYPE_INSERT)
-						//	InsertNumToED(ed_gui, num, xws);
-						//else if(uo->adr_type==TYPE_TXT)
-						if(uo->adr_type==TYPE_TXT)
-						{
-							InsertAsTxt(ed_gui, num);
-						}
-						else if(uo->adr_type==TYPE_SET)
-						{
-							SetNumToED(ed_gui, num, xws);
-						}
-						FreeWS(xws);
-					}
-			#else
-					//if(uo->adr_type==TYPE_INSERT)
-					//	InsertNumToED(ed_gui, num, cl->name);
-					//else if(uo->adr_type==TYPE_TXT)
-					if(uo->adr_type==TYPE_TXT)
-					{
-						InsertAsTxt(ed_gui, num);
-					}
-					else if(uo->adr_type==TYPE_SET)
-					{
-						SetNumToED(ed_gui, num, cl->name);
-					}
-			#endif
-				}
-			}
-			return 1;
-		}
-	}
-	if(msg->keys==0x1)
-	{
-		return 1;
-	}
-	return 0;
-}
-
-int adrMenuSearchProc(void *gui, WSHDR *searchstr)
-{
-	int n;
-	if(wslen(searchstr)>0&&(n=SearchInCList(searchstr))>=0)
-	{
-		UpdateMenuCursorItem(gui, n);
-	}
-	return -1;
-}
-
-void adrmenu_ghook(void *gui, int cmd)
-{
-	if(cmd==1) //?
-		SetMenuSearchCallBack(gui, adrMenuSearchProc);
-}
-
-static void adrmenuitemhdl(void *data, int curitem, void *user_pointer)
-{
-	void *item=AllocMLMenuItem(data);
-	WSHDR *ws1=AllocMenuWS(data, 150);
-	WSHDR *ws2=AllocMenuWS(data, 50);
-	char *num;
-	CLIST *cl=GetClistItem(curitem);
-	if(cl)
-	{
-		if(cl->name)
-			wstrcpy(ws1, cl->name);
-		else
-			goto M_ERR;
-		if((num=getPrefNumFromCL(cl))!=0)
-			wsprintf(ws2, PERCENT_S, num);
-			//wstrcpy(ws2, wn);
-		else
-			CutWSTR(ws2, 0);
-	}
-	else
-	{
-M_ERR:
-		wsprintf(ws1, PERCENT_T, LGP_ERR);
-		CutWSTR(ws2, 0);
-	}
-	SetMLMenuItemText(data, item, ws1, ws2, curitem);
-}
-static const ML_MENU_DESC adrmenu=
-{
-	8,adrmenu_keyhook,adrmenu_ghook,NULL,
-	adrmenusoftkeys,
-	&adrmenu_skt,
-	0x10010,//Right align+Enable search
-	adrmenuitemhdl,
-	NULL,//menuitems,
-	NULL,//menuprocs,
-	0,
-	1
-};
-
-
-int CreateAdrMenu(void *user_pointer)
-{
-	patch_header(&adrmenuhdr);
-	return (CreateMLMenu(&adrmenu, &adrmenuhdr, 0, cl_n, user_pointer));
-}
-*/

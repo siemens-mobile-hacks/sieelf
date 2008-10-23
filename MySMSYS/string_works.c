@@ -309,4 +309,26 @@ int ws_2num(WSHDR *ws, char *num, int maxlen)
   return i;
 }
 
-
+int str2int(const char *str)
+{
+  int i, r=0, c, len, n;
+  if(!str || !(len=strlen(str)))
+    return 0;
+  if(len>10) len=10;
+  len--;
+  for(i=len;i>=0;i--)
+  {
+    c=str[i];
+    if(c<'0' || c>'9')
+      break;
+    n=len-i;
+    c-='0';
+    while(n)
+    {
+      c*=10;
+      n--;
+    }
+    r+=c;
+  }
+  return r;
+}

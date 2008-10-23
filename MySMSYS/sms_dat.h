@@ -77,6 +77,7 @@ SMS_DATA *FindSDByOpmsgId(int opmsg_id);
 //------------------------
 int readAllSMS(void);
 int getCountByType(int type);
+int GetCountByIsFileType(int isfile, int type); //0, all
 SMS_DATA *getSMSDataByType(int n, int type);
 //SMS_DATA *findInSMSByTxtTime(WSHDR *ws, char *time);
 int newToRead(SMS_DATA *sd);
