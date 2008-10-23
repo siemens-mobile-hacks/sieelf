@@ -5,7 +5,7 @@
 #define SCR_NAME "ScrTool"
 #define UPDATE_STAT 1
 #define TMR_SECOND 216
-#define MAX_IDS 15
+#define MAX_SCR 15
 #define MAX_APP 14
 #define SCR_ALARM 3
 #define SCR_MENUS 2
@@ -29,16 +29,16 @@
   int TaskID; 
  }TASK_GUI;
  typedef struct{  
-  WSHDR *ws;
-  char  Pen[4];
-  char  Brush[4];
-  short Font;
-  short Type;
-  short Show;
-  short l;//left
-  short t;//top
-  short r;//right
-  short b;//bottom
+  WSHDR *WS;
+  char  PEN[4];
+  char  BUH[4];
+  short FNT;
+  short STY;
+  short ENA;
+  short L;//left
+  short T;//top
+  short R;//right
+  short B;//bottom
  }TSCR; 
  typedef struct{
   char *Pic;
@@ -51,7 +51,6 @@
  extern const uint TASK_ENA;
  extern const uint INFO_ENA;
  extern const uint SHOW_EXT;
- //extern const uint EXIT_BTN;
  extern const uint MODE_KBD;
  extern const uint CALL_BTN; 
  extern const uint DEST_ENA; 
@@ -163,13 +162,13 @@
  extern const uint VOLT_FONT;
  extern const char VOLT_FMT[];
 //显示内存
- extern const int  RAM_ENA;
- extern const uint RAM_XT;
- extern const uint RAM_X;
- extern const uint RAM_Y;
- extern const char RAM_CS[];
- extern const char RAM_CB[];
- extern const uint RAM_FONT;
+ extern const int  RAMT_ENA;
+ extern const uint RAMT_XT;
+ extern const uint RAMT_X;
+ extern const uint RAMT_Y;
+ extern const char RAMT_CS[];
+ extern const char RAMT_CB[];
+ extern const uint RAMT_FONT;
 //显示星期
  extern const int  WEEK_ENA;
  extern const uint WEEK_XT;
@@ -198,30 +197,30 @@
  extern const uint TIME_FONT;
  extern const int  TIME_FMT;
 //显示农历年
- extern const int  CYEAR_ENA;
- extern const uint CYEAR_XT;
- extern const uint CYEAR_X;
- extern const uint CYEAR_Y;
- extern const char CYEAR_CS[];
- extern const char CYEAR_CB[];
- extern const uint CYEAR_FONT;
+ extern const int  CHSY_ENA;
+ extern const uint CHSY_XT;
+ extern const uint CHSY_X;
+ extern const uint CHSY_Y;
+ extern const char CHSY_CS[];
+ extern const char CHSY_CB[];
+ extern const uint CHSY_FONT;
 //显示农历月日
- extern const int  CDATE_ENA;
- extern const uint CDATE_XT;
- extern const uint CDATE_X;
- extern const uint CDATE_Y;
- extern const char CDATE_CS[];
- extern const char CDATE_CB[];
- extern const uint CDATE_FONT;
+ extern const int  CHSD_ENA;
+ extern const uint CHSD_XT;
+ extern const uint CHSD_X;
+ extern const uint CHSD_Y;
+ extern const char CHSD_CS[];
+ extern const char CHSD_CB[];
+ extern const uint CHSD_FONT;
 //显示信号强度
- extern const int  NET_ENA;
- extern const uint NET_XT;
- extern const uint NET_X;
- extern const uint NET_Y;
- extern const char NET_CS[];
- extern const char NET_CB[];
- extern const uint NET_FONT;
- extern const char NET_FMT[];
+ extern const int  NETI_ENA;
+ extern const uint NETI_XT;
+ extern const uint NETI_X;
+ extern const uint NETI_Y;
+ extern const char NETI_CS[];
+ extern const char NETI_CB[];
+ extern const uint NETI_FONT;
+ extern const char NETI_FMT[];
 //显示CPU使用率
  extern const int  ACCU_ENA;
  extern const uint ACCU_XT;
@@ -240,18 +239,18 @@
  extern const char GPRS_CB[];
  extern const uint GPRS_FONT;
  //显示CPU使用率
- extern const int  CPU_ENA;
- extern const uint CPU_XT;
- extern const uint CPU_X;
- extern const uint CPU_Y;
- extern const char CPU_CS[];
- extern const char CPU_CB[];
- extern const uint CPU_FONT;
- extern const char CPU_FMT[];
+ extern const int  CPUI_ENA;
+ extern const uint CPUI_XT;
+ extern const uint CPUI_X;
+ extern const uint CPUI_Y;
+ extern const char CPUI_CS[];
+ extern const char CPUI_CB[];
+ extern const uint CPUI_FONT;
+ extern const char CPUI_FMT[];
 //转换格式
  extern const char BYTES_FMT[];
  extern const char BYTES_SG[];
- extern const char KBYTES_SG[];
+ extern const char KBYTS_SG[];
 //铃声参数
  extern const char ALRM_FILE[];
  extern const char ALRM_PIC[];
@@ -262,12 +261,14 @@
  extern const uint ALRM_COT;
  extern const int  ALRM_ENA;
  extern const uint ALRM_NUM;
+ extern const int  ALRV_ENA;
  extern const uint ALRM_VIB;
- extern const int  VIB_ENA;
+
 //自动关机
- extern const int   SHUT_ENA;
+ extern const uint  SHUT_ENA;
  extern const TTime SHUT_TIME;
 //自动重启
- extern const int   ROOT_ENA;
+ extern const uint  ROOT_ENA;
  extern const TTime ROOT_TIME;
+
 #endif

@@ -3,38 +3,32 @@
 #include <sieapi.h>
 #include "scrtool.h"
 
-__root const CFG_HDR cfghdr0={CFG_CHECKBOX, "启用菜单", 0,2}; 
+__root const CFG_HDR cfghdr0={CFG_CHECKBOX, "快捷菜单", 0,2}; 
 __root const uint TASK_ENA= 1;
-
-__root const CFG_HDR cfghdrSCR={CFG_CBOX, "屏显模式", 0,4}; 
+//菜单配置信息//开始按键配置
+__root const CFG_HDR cfghdr_mBAR1={CFG_LEVEL,"公共设置",1,0};
+__root const CFG_HDR cfghdrBAR_0={CFG_CHECKBOX, "菜单功能描述", 0,2}; 
+__root const uint DEST_ENA=1;
+__root const CFG_HDR cfghdrSCR={CFG_CBOX, "启用屏显模式", 0,4}; 
 __root const uint INFO_ENA= 2;
 __root const CFG_CBOX_ITEM cfgcboxSCR[4] = {ScrMode};
-
-//菜单配置信息
-//开始按键配置
-__root const CFG_HDR cfghdr_mBAR1={CFG_LEVEL,"菜单设置",1,0};
-__root const CFG_HDR cfghdrBAR_0={CFG_CHECKBOX, "启用功能描述", 0,2}; 
-__root const uint DEST_ENA=1;
+__root const CFG_HDR cfghdrBAR_3={CFG_CBOX,"显示关闭按键",0,7};
+__root const uint CALL_BTN=6;
+__root const CFG_CBOX_ITEM cfgcboxBAR_3[7] = {KeyName};
 __root const CFG_HDR cfghdrBAR_1={CFG_UINT,"自动刷新屏显(秒)",0,50};
 __root const uint REFRESH=5;
-__root const CFG_HDR cfghdrBAR_2={CFG_UINT,"自动关闭菜单(秒)",0,20};
+__root const CFG_HDR cfghdrBAR_2={CFG_UINT,"菜单自动关闭(秒)",0,20};
 __root const uint AUTO_CLOSE=3;
-__root const CFG_HDR cfghdrBAR_3={CFG_CBOX,"显示关闭按键",0,7};
-__root const uint CALL_BTN=6;//EXIT_BTN=1;//RIGHT_SOFT
-__root const CFG_CBOX_ITEM cfgcboxBAR_3[7] = {KeyName};
-//__root const CFG_HDR cfghdrBAR_4={CFG_CBOX,"调用菜单按键",0,7};
-//__root const uint CALL_BTN=5;//RED_BUTTON;
-//__root const CFG_CBOX_ITEM cfgcboxBAR_4[7] = {KeyName};
 __root const CFG_HDR cfghdrBAR_5={CFG_CBOX,"调用菜单模式",0,3};
 __root const uint MODE_KBD=0;
 __root const CFG_CBOX_ITEM cfgcbox03[3]={"短按","弹起","长按"};
-__root const CFG_HDR cfghdrBAR_7={CFG_UINT,"菜单垂直偏移",0,400};
+__root const CFG_HDR cfghdrBAR_7={CFG_UINT, "菜单垂直偏移",0,400};
 __root const uint OFFSET=0;
-__root const CFG_HDR cfghdrPSize={CFG_UINT,"菜单图标尺寸",0,33};
+__root const CFG_HDR cfghdrPSize={CFG_UINT, "菜单图标尺寸",0,33};
 __root const uint PicSize=30;
 __root const CFG_HDR cfghdrBAR_8={CFG_COLOR,"菜单文本颜色",0,0};
 __root const char ATEXT_CS[4]={255,255,255,100};
-__root const CFG_HDR cfghdrBAR_9={CFG_CBOX,"菜单文本字体",0,17};
+__root const CFG_HDR cfghdrBAR_9={CFG_CBOX, "菜单文本字体",0,17};
 __root const uint ATEXT_FONT=8;
 __root const CFG_CBOX_ITEM cfgcboxBAR[17]={FontSyCN};
 __root const CFG_HDR cfghdrBAR_A={CFG_COLOR,"菜单边框颜色",0,0};
@@ -59,9 +53,9 @@ __root const CFG_HDR cfghdrBIRFILE={CFG_STR_UTF8,"节日文件",0,63};
 __root const char BIRS_FILE[64]=DEFAULT_DISK ":\\ZBin\\ScrTool\\DAY.TXT";
 __root const CFG_HDR cfghdr_mBAR0={CFG_LEVEL,"",0,0};
 //程序设置
-__root const CFG_HDR cfghdr_mAPP1={CFG_LEVEL,"菜单程序",1,0};
+__root const CFG_HDR cfghdr_mAPP1={CFG_LEVEL,"菜单设置",1,0};
 //-------------------------------------------------
-__root const CFG_HDR cfghdr_mA041={CFG_LEVEL,"程序01",1,0};
+__root const CFG_HDR cfghdr_mA041={CFG_LEVEL,"菜单01",1,0};
 __root const CFG_HDR cfghdrA04_4 ={CFG_CBOX,"类型", 0,ExcuteLen}; 
 __root const int  AT04=3; 
 __root const CFG_CBOX_ITEM cfgcboxA04[ExcuteLen]={ExcuteTycn};
@@ -73,19 +67,19 @@ __root const CFG_HDR cfghdrA04_3={CFG_STR_UTF8,"调用",0,63};
 __root const char AF04[64]=DEFAULT_DISK ":\\ZBin\\ETC\\*.bcfg";
 __root const CFG_HDR cfghdr_mA040={CFG_LEVEL,"",0,0};
 //-------------------------------------------------
-__root const CFG_HDR cfghdr_mA051={CFG_LEVEL,"程序02",1,0};
+__root const CFG_HDR cfghdr_mA051={CFG_LEVEL,"菜单02",1,0};
 __root const CFG_HDR cfghdrA05_4 ={CFG_CBOX,"类型", 0,ExcuteLen}; 
 __root const int  AT05=3; 
 __root const CFG_CBOX_ITEM cfgcboxA05[ExcuteLen]={ExcuteTycn};
 __root const CFG_HDR cfghdrA05_1={CFG_STR_GB,"描述",0,LEN-1};
-__root const char AN05[LEN]="程序程序";
+__root const char AN05[LEN]="应用软件";
 __root const CFG_HDR cfghdrA05_2={CFG_STR_UTF8,"图标",0,63};
 __root const char AI05[64]=DEFAULT_DISK ":\\ZBin\\ScrTool\\elf.png";;
 __root const CFG_HDR cfghdrA05_3={CFG_STR_UTF8,"调用",0,63};
 __root const char AF05[64]=DEFAULT_DISK ":\\ZBin\\APP\\*.elf";
 __root const CFG_HDR cfghdr_mA050={CFG_LEVEL,"",0,0};
 //-------------------------------------------------
-__root const CFG_HDR cfghdr_mA061={CFG_LEVEL,"程序03",1,0};
+__root const CFG_HDR cfghdr_mA061={CFG_LEVEL,"菜单03",1,0};
 __root const CFG_HDR cfghdrA06_4 ={CFG_CBOX,"类型", 0,ExcuteLen}; 
 __root const int  AT06=0; 
 __root const CFG_CBOX_ITEM cfgcboxA06[ExcuteLen]={ExcuteTycn};
@@ -97,7 +91,7 @@ __root const CFG_HDR cfghdrA06_3={CFG_STR_UTF8,"调用",0,63};
 __root const char AF06[64]="";
 __root const CFG_HDR cfghdr_mA060={CFG_LEVEL,"",0,0};
 //-------------------------------------------------
-__root const CFG_HDR cfghdr_mA071={CFG_LEVEL,"程序04",1,0};
+__root const CFG_HDR cfghdr_mA071={CFG_LEVEL,"菜单04",1,0};
 __root const CFG_HDR cfghdrA07_4 ={CFG_CBOX,"类型", 0,ExcuteLen}; 
 __root const int  AT07=0; 
 __root const CFG_CBOX_ITEM cfgcboxA07[ExcuteLen]={ExcuteTycn};
@@ -109,7 +103,7 @@ __root const CFG_HDR cfghdrA07_3={CFG_STR_UTF8,"调用",0,63};
 __root const char AF07[64]="";
 __root const CFG_HDR cfghdr_mA070={CFG_LEVEL,"",0,0};
 //-------------------------------------------------
-__root const CFG_HDR cfghdr_mA081={CFG_LEVEL,"程序05",1,0};
+__root const CFG_HDR cfghdr_mA081={CFG_LEVEL,"菜单05",1,0};
 __root const CFG_HDR cfghdrA08_4 ={CFG_CBOX,"类型", 0,ExcuteLen}; 
 __root const int  AT08=0; 
 __root const CFG_CBOX_ITEM cfgcboxA08[ExcuteLen]={ExcuteTycn};
@@ -121,7 +115,7 @@ __root const CFG_HDR cfghdrA08_3={CFG_STR_UTF8,"调用",0,63};
 __root const char AF08[64]="";
 __root const CFG_HDR cfghdr_mA080={CFG_LEVEL,"",0,0};
 //-------------------------------------------------
-__root const CFG_HDR cfghdr_mA091={CFG_LEVEL,"程序06",1,0};
+__root const CFG_HDR cfghdr_mA091={CFG_LEVEL,"菜单06",1,0};
 __root const CFG_HDR cfghdrA09_4 ={CFG_CBOX,"类型", 0,ExcuteLen}; 
 __root const int  AT09=0; 
 __root const CFG_CBOX_ITEM cfgcboxA09[ExcuteLen]={ExcuteTycn};
@@ -133,7 +127,7 @@ __root const CFG_HDR cfghdrA09_3={CFG_STR_UTF8,"调用",0,63};
 __root const char AF09[64]="";
 __root const CFG_HDR cfghdr_mA090={CFG_LEVEL,"",0,0};
 //-------------------------------------------------
-__root const CFG_HDR cfghdr_mA101={CFG_LEVEL,"程序07",1,0};
+__root const CFG_HDR cfghdr_mA101={CFG_LEVEL,"菜单07",1,0};
 __root const CFG_HDR cfghdrA10_4 ={CFG_CBOX,"类型", 0,ExcuteLen}; 
 __root const int  AT10=0; 
 __root const CFG_CBOX_ITEM cfgcboxA10[ExcuteLen]={ExcuteTycn};
@@ -145,7 +139,7 @@ __root const CFG_HDR cfghdrA10_3={CFG_STR_UTF8,"调用",0,63};
 __root const char AF10[64]="";
 __root const CFG_HDR cfghdr_mA100={CFG_LEVEL,"",0,0};
 //-------------------------------------------------
-__root const CFG_HDR cfghdr_mA111={CFG_LEVEL,"程序08",1,0};
+__root const CFG_HDR cfghdr_mA111={CFG_LEVEL,"菜单08",1,0};
 __root const CFG_HDR cfghdrA11_4 ={CFG_CBOX,"类型", 0,ExcuteLen}; 
 __root const int  AT11=0; 
 __root const CFG_CBOX_ITEM cfgcboxA11[ExcuteLen]={ExcuteTycn};
@@ -157,7 +151,7 @@ __root const CFG_HDR cfghdrA11_3={CFG_STR_UTF8,"调用",0,63};
 __root const char AF11[64]="";
 __root const CFG_HDR cfghdr_mA110={CFG_LEVEL,"",0,0};
 //-------------------------------------------------
-__root const CFG_HDR cfghdr_mA121={CFG_LEVEL,"程序09",1,0};
+__root const CFG_HDR cfghdr_mA121={CFG_LEVEL,"菜单09",1,0};
 __root const CFG_HDR cfghdrA12_4 ={CFG_CBOX,"类型", 0,ExcuteLen}; 
 __root const int  AT12=0; 
 __root const CFG_CBOX_ITEM cfgcboxA12[ExcuteLen]={ExcuteTycn};
@@ -169,7 +163,7 @@ __root const CFG_HDR cfghdrA12_3={CFG_STR_UTF8,"调用",0,63};
 __root const char AF12[64]="";
 __root const CFG_HDR cfghdr_mA120={CFG_LEVEL,"",0,0};
 //-------------------------------------------------
-__root const CFG_HDR cfghdr_mA131={CFG_LEVEL,"程序10",1,0};
+__root const CFG_HDR cfghdr_mA131={CFG_LEVEL,"菜单10",1,0};
 __root const CFG_HDR cfghdrA13_4 ={CFG_CBOX,"类型", 0,ExcuteLen}; 
 __root const int  AT13=0; 
 __root const CFG_CBOX_ITEM cfgcboxA13[ExcuteLen]={ExcuteTycn};
@@ -218,7 +212,7 @@ __root const CFG_HDR cfghdrTSI2_3={CFG_CBOX,"字号",0,17};
 __root const uint TEMP_FONT=8;
 __root const CFG_CBOX_ITEM cfgcboxTSI21[17]={FontSyCN};
 __root const CFG_HDR cfghdrTSI2_4={CFG_STR_GB,"格式",0,15};
-__root const char TEMP_FMT[16]="%d.%d℃";
+__root const char TEMP_FMT[16]="%d.%d癈";
 __root const CFG_HDR cfghdrTSI2_5={CFG_COLOR,"颜色",0,0};
 __root const char TEMP_CS[4]={0,0,255,75};
 __root const CFG_HDR cfghdrTSI2_6={CFG_COLOR,"边色",0,0};
@@ -254,41 +248,41 @@ __root const CFG_HDR cfghdr_mTSI30={CFG_LEVEL,"",0,0};
 //显示内存
 __root const CFG_HDR cfghdr_mTSI41={CFG_LEVEL,"内存",1,0};
 __root const CFG_HDR cfghdrTSI4_1={CFG_CHECKBOX, "屏显", 0, 2};
-__root const int RAM_ENA=1;
+__root const int RAMT_ENA=1;
 __root const CFG_HDR cfghdrTSI4_7={CFG_CBOX,"对齐",0,4};
-__root const uint RAM_XT=1;
+__root const uint RAMT_XT=1;
 __root const CFG_CBOX_ITEM cfgcboxTSI42[4]={AgainCN};
 __root const CFG_HDR cfghdrTSI4_2={CFG_COORDINATES,"位置",0,0};
-__root const uint RAM_X=0;
-__root const uint RAM_Y=293;
+__root const uint RAMT_X=0;
+__root const uint RAMT_Y=293;
 __root const CFG_HDR cfghdrTSI4_3={CFG_COLOR,"颜色",0,0};
-__root const char RAM_CS[4]={0,0,255,75};
+__root const char RAMT_CS[4]={0,0,255,75};
 __root const CFG_HDR cfghdrTSI4_5={CFG_COLOR,"边色",0,0};
-__root const char RAM_CB[4]={255,255,255,100};
+__root const char RAMT_CB[4]={255,255,255,100};
 __root const CFG_HDR cfghdrTSI4_6={CFG_CBOX,"字号",0,17};
-__root const uint RAM_FONT=8;
+__root const uint RAMT_FONT=8;
 __root const CFG_CBOX_ITEM cfgcboxTSI41[17]={FontSyCN};
 __root const CFG_HDR cfghdr_mTSI40={CFG_LEVEL,"",0,0};
 
 //NET begin
 __root const CFG_HDR cfghdr_mTSIC1={CFG_LEVEL,"信号",1,0};
 __root const CFG_HDR cfghdrTSIA_1={CFG_CHECKBOX, "屏显", 0, 2};
-__root const int NET_ENA=0;
+__root const int NETI_ENA=0;
 __root const CFG_HDR cfghdrTSIA_7={CFG_CBOX,"对齐",0,4};
-__root const uint NET_XT=0;
+__root const uint NETI_XT=0;
 __root const CFG_CBOX_ITEM cfgcboxTSIA2[4]={AgainCN};
 __root const CFG_HDR cfghdrTSIA_2={CFG_COORDINATES,"位置",0,0};
-__root const uint NET_X=0;
-__root const uint NET_Y=50;
+__root const uint NETI_X=0;
+__root const uint NETI_Y=50;
 __root const CFG_HDR cfghdrTSIA_3={CFG_COLOR,"颜色",0,0};
-__root const char NET_CS[4]={0,0,0,100};
+__root const char NETI_CS[4]={0,0,0,100};
 __root const CFG_HDR cfghdrTSIA_4={CFG_COLOR,"边色",0,0};
-__root const char NET_CB[4]={255,255,255,100};
+__root const char NETI_CB[4]={255,255,255,100};
 __root const CFG_HDR cfghdrTSIA_5={CFG_CBOX,"字号",0,17};
-__root const uint NET_FONT=8;
+__root const uint NETI_FONT=8;
 __root const CFG_CBOX_ITEM cfgcboxTSIA1[17]={FontSyCN};
 __root const CFG_HDR cfghdrTSIA_6={CFG_STR_GB,"格式",0,15};
-__root const char NET_FMT[16]="%c%ddB";
+__root const char NETI_FMT[16]="%c%ddB";
 __root const CFG_HDR cfghdr_mTSIC0={CFG_LEVEL,"",0,0};
 //NET end
 //AccuCAP begin
@@ -334,22 +328,22 @@ __root const CFG_HDR cfghdr_mTSIE0={CFG_LEVEL,"",0,0};
 //CPULoad begin
 __root const CFG_HDR cfghdr_mTSIF1={CFG_LEVEL,"内核",1,0};
 __root const CFG_HDR cfghdrTSID_1={CFG_CHECKBOX, "屏显", 0, 2};
-__root const int CPU_ENA=0;
+__root const int CPUI_ENA=0;
 __root const CFG_HDR cfghdrTSID_7={CFG_CBOX,"对齐",0,4};
-__root const uint CPU_XT=0;
+__root const uint CPUI_XT=0;
 __root const CFG_CBOX_ITEM cfgcboxTSID2[4]={AgainCN};
 __root const CFG_HDR cfghdrTSID_2={CFG_COORDINATES,"位置",0,0};
-__root const uint CPU_X=90;
-__root const uint CPU_Y=293;
+__root const uint CPUI_X=90;
+__root const uint CPUI_Y=293;
 __root const CFG_HDR cfghdrTSID_3={CFG_COLOR,"颜色",0,0};
-__root const char CPU_CS[4]={0,0,255,75};
+__root const char CPUI_CS[4]={0,0,255,75};
 __root const CFG_HDR cfghdrTSID_6={CFG_COLOR,"边色",0,0};
-__root const char CPU_CB[4]={255,255,255,100};
+__root const char CPUI_CB[4]={255,255,255,100};
 __root const CFG_HDR cfghdrTSID_4={CFG_CBOX,"字号",0,17};
-__root const uint CPU_FONT=8;
+__root const uint CPUI_FONT=8;
 __root const CFG_CBOX_ITEM cfgcboxTSID1[17]={FontSyCN};
 __root const CFG_HDR cfghdrTSID_5={CFG_STR_GB,"格式",0,15};
-__root const char CPU_FMT[16]="%02d%%";
+__root const char CPUI_FMT[16]="%02d%%";
 __root const CFG_HDR cfghdr_mTSIF0={CFG_LEVEL,"",0,0};
 //CPULoad end
 //Format begin
@@ -359,7 +353,7 @@ __root const char BYTES_FMT[16]="%u%s";
 __root const CFG_HDR cfghdrTSIE_2={CFG_STR_GB,"字节",0,7};
 __root const char BYTES_SG[8]="B";
 __root const CFG_HDR cfghdrTSIE_3={CFG_STR_GB,"千字节",0,7};
-__root const char KBYTES_SG[8]="KB";
+__root const char KBYTS_SG[8]="KB";
 __root const CFG_HDR cfghdr_mTSIG0={CFG_LEVEL,"",0,0};
 //Format end
 __root const CFG_HDR cfghdr_mTSI0={CFG_LEVEL,"",0,0};
@@ -432,42 +426,43 @@ __root const CFG_HDR cfghdr_mTSI60={CFG_LEVEL,"",0,0};
 //显示农历年份
 __root const CFG_HDR cfghdr_mTSI81={CFG_LEVEL,"阴历年份",1,0};
 __root const CFG_HDR cfghdrTSI8_1={CFG_CHECKBOX, "屏显", 0, 2};
-__root const int CYEAR_ENA=0;
+__root const int CHSY_ENA=0;
 __root const CFG_HDR cfghdrTSI8_7={CFG_CBOX,"对齐",0,4};
-__root const uint CYEAR_XT=0;
+__root const uint CHSY_XT=0;
 __root const CFG_CBOX_ITEM cfgcboxTSI82[4]={AgainCN};
 __root const CFG_HDR cfghdrTSI8_2={CFG_COORDINATES,"位置",0,0};
-__root const uint CYEAR_X=80;
-__root const uint CYEAR_Y=260;
+__root const uint CHSY_X=80;
+__root const uint CHSY_Y=260;
 __root const CFG_HDR cfghdrTSI8_3={CFG_COLOR,"颜色",0,0};
-__root const char CYEAR_CS[4]={0,0,255,75};
+__root const char CHSY_CS[4]={0,0,255,75};
 __root const CFG_HDR cfghdrTSI8_4={CFG_COLOR,"边色",0,0};
-__root const char CYEAR_CB[4]={255,255,255,100};
+__root const char CHSY_CB[4]={255,255,255,100};
 __root const CFG_HDR cfghdrTSI8_5={CFG_CBOX,"字号",0,17};
-__root const uint CYEAR_FONT=8;
+__root const uint CHSY_FONT=8;
 __root const CFG_CBOX_ITEM cfgcboxTSI81[17]={FontSyCN};
 __root const CFG_HDR cfghdr_mTSI80={CFG_LEVEL,"",0,0};
 //显示农历日期
 __root const CFG_HDR cfghdr_mTSI91={CFG_LEVEL,"阴历日期",1,0};
 __root const CFG_HDR cfghdrTSI9_1={CFG_CHECKBOX, "屏显", 0, 2};
-__root const int CDATE_ENA=1;
+__root const int CHSD_ENA=1;
 __root const CFG_HDR cfghdrTSI9_7={CFG_CBOX,"对齐",0,4};
-__root const uint CDATE_XT=3;
+__root const uint CHSD_XT=3;
 __root const CFG_CBOX_ITEM cfgcboxTSI92[4]={AgainCN};
 __root const CFG_HDR cfghdrTSI9_2={CFG_COORDINATES,"位置",0,0};
-__root const uint CDATE_X=150;
-__root const uint CDATE_Y=293;
+__root const uint CHSD_X=150;
+__root const uint CHSD_Y=293;
 __root const CFG_HDR cfghdrTSI9_3={CFG_COLOR,"颜色",0,0};
-__root const char CDATE_CS[4]={0,0,255,75};
+__root const char CHSD_CS[4]={0,0,255,75};
 __root const CFG_HDR cfghdrTSI9_4={CFG_COLOR,"边色",0,0};
-__root const char CDATE_CB[4]={255,255,255,100};
+__root const char CHSD_CB[4]={255,255,255,100};
 __root const CFG_HDR cfghdrTSI9_5={CFG_CBOX,"字号",0,17};
-__root const uint CDATE_FONT=8;
+__root const uint CHSD_FONT=8;
 __root const CFG_CBOX_ITEM cfgcboxTSI91[17]={FontSyCN};
 __root const CFG_HDR cfghdr_mTSI90={CFG_LEVEL,"",0,0};
 //结束日历屏显
 __root const CFG_HDR cfghdr_mNEW0={CFG_LEVEL,"",0,0};
 //阳历节日选项设置
+__root const CFG_HDR cfghdr_mBIR1={CFG_LEVEL,"节日屏显",1,0};
 __root const CFG_HDR cfghdr_mTSIB1={CFG_LEVEL,"阳历节日",1,0};
 __root const CFG_HDR cfghdrNBIR_1={CFG_CHECKBOX, "屏显", 0, 2};
 __root const int NBIR_ENA=1;
@@ -503,12 +498,13 @@ __root const CFG_HDR cfghdrOBIR_5={CFG_CBOX,"字号",0,17};
 __root const uint OBIR_FONT=8;
 __root const CFG_CBOX_ITEM cfgcboxOBIR1[17]={FontSyCN};
 __root const CFG_HDR cfghdr_mTSIA0={CFG_LEVEL,"",0,0};
+__root const CFG_HDR cfghdr_mBIR0={CFG_LEVEL,"",0,0};
 //铃声设置
 __root const CFG_HDR cfghdr_mRIN1={CFG_LEVEL,"闹钟设置",1,0};
 __root const CFG_HDR cfghdrALRM_ENA={CFG_CHECKBOX, "启用闹钟", 0, 2};
 __root const int ALRM_ENA=1;
 __root const CFG_HDR cfghdrVIB_ENA={CFG_CHECKBOX, "启用振动", 0, 2};
-__root const int VIB_ENA=1;
+__root const int ALRV_ENA=1;
 __root const CFG_HDR cfghdrALRM_CBK={CFG_COLOR,"窗口背景",0,0};
 __root const char ALRM_CBK[4]={255,255,255,100};
 __root const CFG_HDR cfghdrALRM_CTX={CFG_COLOR,"字体颜色",0,0};
@@ -525,21 +521,22 @@ __root const uint ALRM_VIB=30;
 __root const CFG_HDR cfghdrALRM_COT={CFG_UINT,"图片总数[1-10]",0,11};
 __root const uint ALRM_COT=4;
 __root const CFG_HDR cfghdrRINFILE={CFG_STR_UTF8,"闹钟铃声",0,63};
-__root const char ALRM_FILE[64]=DEFAULT_DISK ":\\ZBin\\ScrTool\\BLO.MP3";
+__root const char ALRM_FILE[64]=DEFAULT_DISK ":\\ZBin\\ScrTool\\ALM.MP3";
 __root const CFG_HDR cfghdrRINPIC={CFG_STR_UTF8,"闹钟图片",0,63};
 __root const char ALRM_PIC[64]=DEFAULT_DISK ":\\ZBin\\ScrTool\\AL%d.PNG";
 __root const CFG_HDR cfghdr_mRIN0={CFG_LEVEL,"",0,0};
 //自动关机
 __root const CFG_HDR cfghdr_mSHUT1={CFG_LEVEL,"自动关机",1,0};
 __root const CFG_HDR cfghdrSHUT_ENA={CFG_CHECKBOX, "启用", 0, 2};
-__root const int SHUT_ENA=0;
+__root const uint SHUT_ENA=0;
 __root const CFG_HDR cfghdrSHUT_TIME={CFG_TIME, "时间", 0, 0};
 __root const TTime SHUT_TIME={2,0,0,0};
 __root const CFG_HDR cfghdr_mSHUT0={CFG_LEVEL,"",0,0};
 //自动关机
 __root const CFG_HDR cfghdr_mROOT1={CFG_LEVEL,"自动重启",1,0};
 __root const CFG_HDR cfghdrROOT_ENA={CFG_CHECKBOX, "启用", 0, 2};
-__root const int ROOT_ENA=0;
+__root const uint ROOT_ENA=0;
 __root const CFG_HDR cfghdrROOT_TIME={CFG_TIME, "时间", 0, 0};
 __root const TTime ROOT_TIME={2,0,0,0};
 __root const CFG_HDR cfghdr_mROOT0={CFG_LEVEL,"",0,0};
+
