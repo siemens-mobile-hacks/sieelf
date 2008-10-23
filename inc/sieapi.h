@@ -114,7 +114,8 @@ _C_LIB_DECL
  __INTRINSIC void DrawStringExt(WSHDR *ws,RECT rc,TFont Font,int text_attribute);
  __INTRINSIC void DrawStringRect(WSHDR *ws,TRect rc,TFont Font,int text_attribute);
  //释放程序内存
- __INTRINSIC void kill_data(void *p, void (*func_p)(void *));
+ __INTRINSIC void kill_data(void *data, void (*func_p)(void *));
+ __INTRINSIC void seqkill(void *data, void(*next_in_seq)(CSM_RAM *), void *data_to_kill, void *seqkiller);
  //字串转换函数
  __INTRINSIC void str2ws_unicode(WSHDR* ws, char* str, int len);
  __INTRINSIC void ws2str_unicode(char* str, WSHDR* ws, int *len);
@@ -1188,6 +1189,7 @@ static int FindSub(char *source,const char *sub,char *result,uword len)
  using _CSTD strtoul;
  using _CSTD strtol;
  using _CSTD kill_data;
+ using _CSTD seqkill;
  using _CSTD RunCUT;
  using _CSTD RunAPP;
  using _CSTD RunADR;
