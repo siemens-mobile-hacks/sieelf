@@ -412,7 +412,7 @@
         </option>
         <option>
           <name>AList</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>AListHeader</name>
@@ -436,15 +436,15 @@
         </option>
         <option>
           <name>MacExec</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OnlyAssed</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>MultiLine</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>PageLengthCheck</name>
@@ -538,7 +538,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild>$PROJ_DIR$\elf2vkp.bat</postbuild>
+        <postbuild>$PROJ_DIR$\elf2vkp.bat $PROJ_DIR$ $EXE_DIR$ E71Cv41</postbuild>
       </data>
     </settings>
     <settings>
@@ -1235,7 +1235,7 @@
         </option>
         <option>
           <name>AList</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>AListHeader</name>
@@ -1259,15 +1259,15 @@
         </option>
         <option>
           <name>MacExec</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OnlyAssed</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>MultiLine</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>PageLengthCheck</name>
@@ -1361,7 +1361,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild>$PROJ_DIR$\elf2vkp.bat</postbuild>
+        <postbuild>$PROJ_DIR$\elf2vkp.bat $PROJ_DIR$ $EXE_DIR$ S7Cv47</postbuild>
       </data>
     </settings>
     <settings>

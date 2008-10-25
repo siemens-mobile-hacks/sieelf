@@ -1,1 +1,1 @@
-..\..\tools\elf2vkp.exe S7Csw47\Exe\Patches.elf t_s7c.vkp e:\fullflash\lg8\s7cv47.bin
+%1\..\..\tools\elf2vkp.exe %2\Patches.elf %1\t_%3.vkp e:\fullflash\lg8\%3.bin
