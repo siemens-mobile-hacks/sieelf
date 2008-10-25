@@ -239,7 +239,7 @@
 0368: 0xA8D6CE28   ;  DA: RamIsShutdown
 036C: 0xA8E62194   ;  DB: RamMainscreenAccuIcon
 0370: 0xA8DCCD48   ;  DC: int *RamRandSeed(void)
-0374: 0xA899F2BC   ;  DD: RamCurrentTrack
+0374: 0xA89A32F4   ;  DD: RamCurrentTrack
 0378: 0xA8D7808C   ;  DE: RamIsSimPresent
 037C: 0xA8D35004   ;  DF: char *RamPressedKey()
 
