@@ -491,3 +491,87 @@ SMS_DATA *GetTheLastNew(int reload) //1, reload, 0, no
   }
   return 0;
 }
+
+SMS_DATA *FindSmsByIndex(int index)
+{
+  SMS_DATA *sdl=sdltop;
+  while(sdl)
+  {
+    if(sdl->id==index)
+      return sdl;
+    sdl=sdl->next;
+  }
+  return 0;
+}
+
+int CheckThisSMS(int index) //return, 0:do nothing, 1:need to reload all, 2:need to refresh gui
+{
+  SMS_DATA *sd;
+  SMS_DATA_ROOT *sdroot=SmsDataRoot();
+  SMS_DATA_LLIST inll=sdroot->in_msg;
+  SMS_DATA_LLIST outll=sdroot->out_msg;
+  SMS_DATA_LIST *lst;
+  INDEX_ID_DATA *idd;
+  //int exist=0;
+  if(!index)
+    return 0;
+  lst=inll.first;
+  while(lst)
+  {
+    if((idd=lst->index_id_data))
+    {
+      if(idd->index==index)
+      {
+	//exist=1;
+	if(idd->cnt_all != idd->cnt_received)
+	  return 0;
+	if((sd=FindSmsByIndex(index)))
+	{
+	  if(idd->type==1)
+	  {
+	    if(sd->type!=TYPE_IN_N)
+	    {
+	      sd->type=TYPE_IN_N;
+	      return 2;
+	    }
+	  }
+	  else
+	  {
+	    if(sd->type==TYPE_IN_N)
+	    {
+	      sd->type=TYPE_IN_R;
+	      return 2;
+	    }
+	  }
+	}
+	else return 1;
+	return 0;
+      }
+    }
+    lst=lst->next;
+  }
+  lst=outll.first;
+  while(lst)
+  {
+    if((idd=lst->index_id_data))
+    {
+      if(idd->index==index)
+      {
+	//exist=1;
+	if(idd->cnt_all != idd->cnt_received)
+	  return 0;
+	if(!(sd=FindSmsByIndex(index))) return 1;
+	return 0;
+      }
+    }
+    lst=lst->next;
+  }
+  //is not exist, del form list
+  if((sd=FindSmsByIndex(index)))
+  {
+    delSDList(sd);
+    return 2;
+  }
+  return 0;
+}
+

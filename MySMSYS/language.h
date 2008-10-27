@@ -107,6 +107,7 @@ extern const char LGP_IN_SMSDAT[];
 extern const char LGP_IS_MSSFILE[];
 extern const char LGP_DAT_FREE[];
 extern const char LGP_DISK_FREE[];
+extern const char LGP_MSS_MAINMENU[];
 
 #ifdef LANG_CN
 #define LGP_CFG_MAIN_FOLDER "MySMSYSÎÄ¼þ¼Ð"

@@ -169,20 +169,23 @@ int abcsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
   WSHDR *wn, *wloc, wlocn;
   unsigned short wlocb[150];
   USER_OP *uo;
+  int status;
   if((msg->msg==MSG_CSM_DESTROYED)&&((int)msg->data0==abcsm->ab_csm_id))
   {
 //    GetCPUClock();
     if(!(nabd=abcsm->nab_data))
       goto CLOSE_CSM;
-    if(IsCsmExist(abcsm->dlg_csm) 
+    //GetCPUClock();
+    if((abcsm->type==TYPE_SELECT)
+       && IsCsmExist(abcsm->dlg_csm) 
        && IsGuiExist(abcsm->dlg_csm, abcsm->ed_gui)
 	 &&(uo=EDIT_GetUserPointer(abcsm->ed_gui)) 
-	   && abcsm->type==TYPE_SELECT
-	     && (GetNativeAbDataStatus(nabd, 0)==1))
+	   //&& abcsm->type==TYPE_SELECT
+	     && ((status=GetNativeAbDataStatus(nabd, 0))!=9))
       {
 	if((wn=GetNumFromNativeAbData(nabd, GetNativeAbDataType(nabd, 0), 0))!=0)
 	{
-	  if(uo->adr_type==TYPE_SET)
+	  if((uo->adr_type==TYPE_SET)&&(status==1))
 	  {
 	    ws_2num(wn, num, 49);
 	    wloc=CreateLocalWS(&wlocn, wlocb, 150);
@@ -190,7 +193,7 @@ int abcsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 	      wstrcpy(wloc, wn);
 	    SetNumToED(abcsm->ed_gui, wn, wloc);
 	  }
-	  else if(uo->adr_type==TYPE_TXT)
+	  else if((uo->adr_type==TYPE_TXT)&&((status==1)||(status==5)))
 	  {
 	    InsertAsTxt(abcsm->ed_gui, wn);
 	  }
@@ -222,11 +225,21 @@ void abcsm_oncreate(CSM_RAM *data)
   }
   nabd=AllocNativeAbData();
   abcsm->nab_data=nabd;
+  if(!abcsm->ed_gui || !(uo=EDIT_GetUserPointer(abcsm->ed_gui)))
+    goto CLOSE_CSM;
   if(abcsm->type==TYPE_SELECT)
-    abcsm->ab_csm_id=OpenNativeAddressbook(4, 1, 0, nabd);
+  {
+    
+    if(uo->adr_type==TYPE_SET)
+      abcsm->ab_csm_id=OpenNativeAddressbook(4, 1, 0, nabd);
+    else if(uo->adr_type==TYPE_TXT)
+      abcsm->ab_csm_id=OpenNativeAddressbook(0xB, 0, 0, nabd);
+    else
+      goto CLOSE_CSM;
+  }
   else if(abcsm->type==TYPE_SAVE)
   {
-    uo=EDIT_GetUserPointer(abcsm->ed_gui);
+    //uo=EDIT_GetUserPointer(abcsm->ed_gui);
     if(!(nl=GetNumListCur(uo, EDIT_GetFocus(abcsm->ed_gui))))
     {
       if(!(nl=GetNumListCur(uo, 1)))

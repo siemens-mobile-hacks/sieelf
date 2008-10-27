@@ -158,6 +158,30 @@ int IsCsmExist(void *dlg_csm)
   return 0;
 }
 
+int IsHaveDlgGuiOnTop(void)
+{
+  int i=0;
+  unsigned int id;
+  DLG_CSM *dlg_csm;
+  SGUI_ID *gs;
+  for(;i<MAX_DLG;i++)
+  {
+    if((id=DlgCsmIDs[i]))
+    {
+      if((dlg_csm=(DLG_CSM *)FindCSMbyID(id)))
+      {
+	gs=(SGUI_ID *)(dlg_csm->gstop);
+	while(gs)
+	{
+	  if(IsGuiOnTop(gs->id)) return 1;
+	  gs=gs->next;
+	}
+      }
+    }
+  }
+  return 0;
+}
+
 int isTheLastDlg(unsigned int *id_pool, unsigned int id)
 {
 	return 0;
@@ -225,11 +249,12 @@ void mm_allsms(GUI *gui)
 	showSMSList(dlg_csm, 0);
 }
 
-unsigned int CreateOthMenu(void);
+unsigned int CreateOthMenu(void *dlg_csm);
 
 void mm_oth(GUI *gui)
 {
-	CreateOthMenu();
+  DLG_CSM *dlg_csm=MenuGetUserPointer(gui);
+  CreateOthMenu(dlg_csm);
 }
 
 
@@ -323,9 +348,17 @@ void main_menu_itemhndl(void *data, int curitem, void *user_pointer)
 	}
 	SetMenuItemText(data, item, ws, curitem);
 }
+void main_menu_ghook(void *gui, int cmd)
+{
+  if(cmd==5)
+  {
+    void *dlg_csm=MenuGetUserPointer(gui);
+    UpdateDlgCsmName(dlg_csm, LGP_MSS_MAINMENU);
+  }
+}
 const MENU_DESC main_menu=
 {
-	8,main_menu_onkey,NULL,NULL,
+	8,main_menu_onkey,main_menu_ghook,NULL,
 	main_menusoftkeys,
 	&main_menu_skt,
 	0x10,//Right align
@@ -368,105 +401,105 @@ void UpdateDlgCsmName(DLG_CSM *csm, const char *lgp)
 }
 static void dialogcsm_oncreate(CSM_RAM *data)
 {
-	DLG_CSM *csm=(DLG_CSM *)data;
-	csm->gstop=0;
-	if(
-		(IPC_SUB_MSG!=SMSYS_IPC_FVIEW)
-		&&(IPC_SUB_MSG!=SMSYS_IPC_NEWSMS)
-		&&(IPC_SUB_MSG!=SMSYS_IPC_NEWSMS_NUM)
-		&&(IPC_SUB_MSG!=SMSYS_IPC_SEND_UTF8)
-		&&(IPC_SUB_MSG!=SMSYS_IPC_NEW_IN_WIN)
-		)
-	{
-		readAllSMS();
-	}
-	switch(IPC_SUB_MSG)
-	{
-	case MY_SMSYS_IPC_START:
-	case SMSYS_IPC_MAIN:
-		csm->gui_id=CreateMainMenu(csm);
-		break;
-	case SMSYS_IPC_NEWSMS:
-		UpdateDlgCsmName(csm, LGP_NEW);
-		csm->gui_id=newSMS(csm);
-		break;
-	case SMSYS_IPC_IN_NEW:
-		UpdateDlgCsmName(csm, LGP_IN_N);
-		csm->gui_id=showSMSList(csm, TYPE_IN_N);
-		break;
-	case SMSYS_IPC_IN_RD:
-		UpdateDlgCsmName(csm, LGP_IN_R);
-		csm->gui_id=showSMSList(csm, TYPE_IN_R);
-		break;
-	case SMSYS_IPC_OUT:
-		UpdateDlgCsmName(csm, LGP_OUT);
-		csm->gui_id=showSMSList(csm, TYPE_OUT);
-		break;
-	case SMSYS_IPC_DRAFT:
-		UpdateDlgCsmName(csm, LGP_DRAFT);
-		csm->gui_id=showSMSList(csm, TYPE_DRAFT);
-		break;
-	case SMSYS_IPC_ALL:
-		UpdateDlgCsmName(csm, LGP_ALL);
-		csm->gui_id=showSMSList(csm, 0);
-		break;
-	case SMSYS_IPC_TLAST:
-		if(!(csm->gui_id=viewTheLastNew(csm)))
-			csm->gui_id=CreateMainMenu(csm);
-		break;
-	case SMSYS_IPC_IN_ALL:
-		UpdateDlgCsmName(csm, LGP_IN_A);
-		csm->gui_id=showSMSList(csm, TYPE_IN_ALL);
-		break;
-	case SMSYS_IPC_NEW_IN_WIN:
-		if(!(csm->gui_id=StartIncomingWin(csm)))
-			data->state=-3; //close
-		break;
-	case SMSYS_IPC_NEWSMS_NUM:
-		if((!num_from_ipc)||(!(csm->gui_id=newSMSWithNum(csm, num_from_ipc))))
-			csm->gui_id=CreateMainMenu(csm);
-		else
-		{
-			UpdateDlgCsmName(csm, LGP_NEW);
-		}
-		num_from_ipc=0;
-		break;
-	case SMSYS_IPC_SEND_UTF8:
-		if((!text_utf8)||(!(csm->gui_id=newSMSWithUtf8Text(csm, text_utf8))))
-			csm->gui_id=CreateMainMenu(csm);
-		else
-		{
-			UpdateDlgCsmName(csm, LGP_NEW);
-		}
-		text_utf8=0;
-		break;
-	case SMSYS_IPC_QN_OPMSG:
-	case SMSYS_IPC_QR_OPMSG:
-	case SMSYS_IPC_VIEW_OPMSG:
-	case SMSYS_IPC_REPLY_OPMSG:
-		if(!(csm->gui_id=DoByOpmsgId(csm, IPC_SUB_MSG, opmsg_id)))
-			csm->gui_id=CreateMainMenu(csm);
-		opmsg_id=0;
-		break;
-	case SMSYS_IPC_FVIEW:
-		if (!strlen(filename) || !(csm->gui_id=ViewFile(csm, filename)))
-		{
-			readAllSMS();
-			csm->gui_id=CreateMainMenu(csm);
-		}
-		else
-		{
-			UpdateDlgCsmName(csm, STR_VIEW);
-			//name->wsbody=malloc(32*sizeof(short));
-			//wsprintf(name, PERCENT_T, STR_VIEW);
-		}
-		filename[0]=0;
-		break;
-	default:
-		csm->gui_id=CreateMainMenu(csm);
-	}
-	if(addCSMid(DlgCsmIDs, csm->csm.id)<0)
-		addCSMidForced0(DlgCsmIDs, csm->csm.id);
+  DLG_CSM *csm=(DLG_CSM *)data;
+  csm->gstop=0;
+  if(
+     (IPC_SUB_MSG!=SMSYS_IPC_FVIEW)
+       &&(IPC_SUB_MSG!=SMSYS_IPC_NEWSMS)
+	 &&(IPC_SUB_MSG!=SMSYS_IPC_NEWSMS_NUM)
+	   &&(IPC_SUB_MSG!=SMSYS_IPC_SEND_UTF8)
+	     &&(IPC_SUB_MSG!=SMSYS_IPC_NEW_IN_WIN)
+	       )
+  {
+    readAllSMS();
+  }
+  switch(IPC_SUB_MSG)
+  {
+  case MY_SMSYS_IPC_START:
+  case SMSYS_IPC_MAIN:
+    csm->gui_id=CreateMainMenu(csm);
+    break;
+  case SMSYS_IPC_NEWSMS:
+    //UpdateDlgCsmName(csm, LGP_NEW);
+    csm->gui_id=newSMS(csm);
+    break;
+  case SMSYS_IPC_IN_NEW:
+    //UpdateDlgCsmName(csm, LGP_IN_N);
+    csm->gui_id=showSMSList(csm, TYPE_IN_N);
+    break;
+  case SMSYS_IPC_IN_RD:
+    //UpdateDlgCsmName(csm, LGP_IN_R);
+    csm->gui_id=showSMSList(csm, TYPE_IN_R);
+    break;
+  case SMSYS_IPC_OUT:
+    //UpdateDlgCsmName(csm, LGP_OUT);
+    csm->gui_id=showSMSList(csm, TYPE_OUT);
+    break;
+  case SMSYS_IPC_DRAFT:
+    //UpdateDlgCsmName(csm, LGP_DRAFT);
+    csm->gui_id=showSMSList(csm, TYPE_DRAFT);
+    break;
+  case SMSYS_IPC_ALL:
+    //UpdateDlgCsmName(csm, LGP_ALL);
+    csm->gui_id=showSMSList(csm, 0);
+    break;
+  case SMSYS_IPC_TLAST:
+    if(!(csm->gui_id=viewTheLastNew(csm)))
+      csm->gui_id=CreateMainMenu(csm);
+    break;
+  case SMSYS_IPC_IN_ALL:
+    //UpdateDlgCsmName(csm, LGP_IN_A);
+    csm->gui_id=showSMSList(csm, TYPE_IN_ALL);
+    break;
+  case SMSYS_IPC_NEW_IN_WIN:
+    if(!(csm->gui_id=StartIncomingWin(csm)))
+      data->state=-3; //close
+    break;
+  case SMSYS_IPC_NEWSMS_NUM:
+    if((!num_from_ipc)||(!(csm->gui_id=newSMSWithNum(csm, num_from_ipc))))
+      csm->gui_id=CreateMainMenu(csm);
+    //else
+    //{
+    //  UpdateDlgCsmName(csm, LGP_NEW);
+    //}
+    num_from_ipc=0;
+    break;
+  case SMSYS_IPC_SEND_UTF8:
+    if((!text_utf8)||(!(csm->gui_id=newSMSWithUtf8Text(csm, text_utf8))))
+      csm->gui_id=CreateMainMenu(csm);
+    //else
+    //{
+    //  UpdateDlgCsmName(csm, LGP_NEW);
+    //}
+    text_utf8=0;
+    break;
+  case SMSYS_IPC_QN_OPMSG:
+  case SMSYS_IPC_QR_OPMSG:
+  case SMSYS_IPC_VIEW_OPMSG:
+  case SMSYS_IPC_REPLY_OPMSG:
+    if(!(csm->gui_id=DoByOpmsgId(csm, IPC_SUB_MSG, opmsg_id)))
+      csm->gui_id=CreateMainMenu(csm);
+    opmsg_id=0;
+    break;
+  case SMSYS_IPC_FVIEW:
+    if (!strlen(filename) || !(csm->gui_id=ViewFile(csm, filename)))
+    {
+      readAllSMS();
+      csm->gui_id=CreateMainMenu(csm);
+    }
+    //else
+    //{
+    //  UpdateDlgCsmName(csm, STR_VIEW);
+      //name->wsbody=malloc(32*sizeof(short));
+      //wsprintf(name, PERCENT_T, STR_VIEW);
+    //}
+    filename[0]=0;
+    break;
+  default:
+    csm->gui_id=CreateMainMenu(csm);
+  }
+  if(addCSMid(DlgCsmIDs, csm->csm.id)<0)
+    addCSMidForced0(DlgCsmIDs, csm->csm.id);
 }
 
 void FreeCsmd(void *csmd)
@@ -483,7 +516,7 @@ static void dialogcsm_onclose(CSM_RAM *data)
 	mfree(dcd);
 }
 
-DLGCSM_DESC DIALOGCSM =
+const DLGCSM_DESC DIALOGCSM =
 {
 	{
 	dialogcsm_onmessage,
@@ -557,7 +590,18 @@ void CheckNewProc(void)
 		}
 }
 
+void DoNewProc(void)
+{
+  if(CFG_ENA_NOTIFY) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_NEW_IN_WIN,&my_ipc_n);
+  else if(!IsNoDlg(DlgCsmIDs))
+  {
+    readAllSMS();
+    if(IsHaveDlgGuiOnTop()) RefreshGUI();
+  }
+}
+
 extern short PLAY_ID;
+/*
 void UpdateNProc(void)
 {
 	new_sms_n=(SmsDataRoot())->cnt_in_new_sms_dat;
@@ -570,6 +614,20 @@ void UpdateNProc(void)
 			PLAY_ID=0;
 		}
 	}
+}
+*/
+
+void UpdateNProc(void)
+{
+  if(!IsNoDlg(DlgCsmIDs))
+  {
+    readAllSMS();
+    if(IsHaveDlgGuiOnTop())
+    {
+      RefreshGUI();
+      GBS_SendMessage(MMI_CEPID,KEY_DOWN,0x63); //update screen
+    }
+  }
 }
 
 #pragma inline=forced
@@ -639,20 +697,54 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 //如果使用Browser-killer之类的补丁,将不会有新信息弹出窗口,使用这个MSG可以进行检查是否来新短信了
 
 #ifdef ELKA
-	if((CFG_ENA_NOTIFY)&&(msg->msg==MSG_EMS_INCOMING))
+	if(/*(CFG_ENA_NOTIFY)&&*/(msg->msg==MSG_EMS_INCOMING)&&IsHaveNewSMS())
 #else
-	if((CFG_ENA_NOTIFY)&&(msg->msg==MSG_EMS_INCOMING))
+	if(/*(CFG_ENA_NOTIFY)&&*/(msg->msg==MSG_EMS_INCOMING)&&IsHaveNewSMS())
 //	if((CFG_ENA_NOTIFY)&&(msg->msg==MSG_EMS_INCOMING_2))
 //	if((CFG_ENA_NOTIFY)&&((msg->msg==MSG_EMS_INCOMING) || (msg->msg==MSG_EMS_INCOMING_2)))
 #endif
 	{
 	  if(!IsTimerProc(&chk_tmr)) //接收到MSG半秒之后开始检查,直接开始检查会死机.
-	    GBS_StartTimerProc(&chk_tmr, 216/2, CheckNewProc);
+	    GBS_StartTimerProc(&chk_tmr, 216/2, DoNewProc);
+	    //GBS_StartTimerProc(&chk_tmr, 216/2, CheckNewProc);
 	}
 	if(msg->msg==MSG_EMS_FFS_WRITE)
 	{
-	  if(!IsTimerProc(&n_update_tmr))
-	    GBS_StartTimerProc(&n_update_tmr, 216, UpdateNProc);
+	  int x;
+	  new_sms_n=(SmsDataRoot())->cnt_in_new_sms_dat;
+	  if((!IsHaveNewSMS())&&(CFG_ENA_NOTIFY))
+	  {
+	    SetVibration(0);
+	    if(PLAY_ID)
+	    {
+	      PlayMelody_StopPlayback(PLAY_ID);
+	      PLAY_ID=0;
+	    }
+	  }
+	  if((int)msg->data1==0x8 && !IsNoDlg(DlgCsmIDs))
+	  {
+	    if((x=CheckThisSMS((int)msg->data0)))
+	    {
+	      if(x==1)
+	      {
+		if(!IsTimerProc(&n_update_tmr) && !IsTimerProc(&chk_tmr))
+		  GBS_StartTimerProc(&n_update_tmr, 216*2/3, UpdateNProc);
+	      }
+	      else if(x==2)
+	      {
+		if(IsHaveDlgGuiOnTop()) RefreshGUI();
+	      }
+	    }
+	  }
+	  //char str[64];
+	  //sprintf(str, "submess:0x%X\ndata0:0x%08X\ndata1:0x%08X", msg->submess, msg->data0, msg->data1);
+	  //ShowMSG(0, (int)str);
+	  //        submess,data0,data1
+	  //NEW in 97,index,0x408
+	  //set to read 97,index,0x8
+	  //del 97,index,0x8
+	  //if(!IsTimerProc(&n_update_tmr) && !IsTimerProc(&chk_tmr))
+	  //  GBS_StartTimerProc(&n_update_tmr, 216, UpdateNProc);
 	}
 	if(msg->msg==MSG_RECONFIGURE_REQ)
 	{
@@ -683,7 +775,7 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 	if(msg->msg==MSG_IPC)
 	{
 	  IPC_REQ *ipc;
-	  if(ipc=(IPC_REQ *)msg->data0)
+	  if((ipc=(IPC_REQ *)msg->data0))
 	  {
 	    if(!strcmp(ipc->name_to, my_ipc_name))
 	    {
@@ -825,7 +917,7 @@ static const struct
 	0,
 #endif
 	daemoncsm_onclose,
-	sizeof(CSM_RAM),
+	sizeof(DEAMON_CSM),
 	1,
 	&minus11
 	},
@@ -955,8 +1047,10 @@ void oth_del_all(GUI *data) //mss
 
 void oth_show_count(GUI *data) //mss
 {
+  DLG_CSM *dlg_csm=MenuGetUserPointer(data);
   GeneralFuncF1(1);
   extern int ShowCount(void);
+  UpdateDlgCsmName(dlg_csm, LGP_STATISTICS);
   ShowCount();
 }
 
@@ -985,9 +1079,17 @@ const MENUITEM_DESC oth_menuitems[OTH_MENU_N]=
   {NULL,(int)LGP_ABOUT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 };
 
+void oth_menu_ghook(void *data, int cmd)
+{
+  if(cmd==5)
+  {
+    DLG_CSM *dlg_csm=MenuGetUserPointer(data);
+    UpdateDlgCsmName(dlg_csm, LGP_OTHERS);
+  }
+}
 const MENU_DESC oth_menu=
 {
-  8,NULL,NULL,NULL,
+  8,NULL,oth_menu_ghook,NULL,
   main_menusoftkeys,
   &oth_menu_skt,
   0x10,//Right align
@@ -999,10 +1101,10 @@ const MENU_DESC oth_menu=
 
 HEADER_DESC oth_menuhdr={0,0,0,0,NULL,(int)LGP_OTHERS,LGP_NULL};
 
-unsigned int CreateOthMenu(void)
+unsigned int CreateOthMenu(void *dlg_csm)
 {
   patch_header(&oth_menuhdr);
-  return (CreateSLMenu(&oth_menu, &oth_menuhdr, 0, OTH_MENU_N, 0));
+  return (CreateSLMenu(&oth_menu, &oth_menuhdr, 0, OTH_MENU_N, dlg_csm));
 }
 
 //open archive

@@ -605,7 +605,7 @@ void sms_menu_ghook(void *data, int cmd)
 		Menu_SetItemCountDyn(data, n);
 		DisableIDLETMR();
 	}
-	if(cmd==7)
+	else if(cmd==7)
 	{
 		//extern void SetMenuSoftKey(void *gui, const SOFTKEY_DESC *,int n);
 		int n=getCountByType(so->type);
@@ -641,9 +641,37 @@ void sms_menu_ghook(void *data, int cmd)
 		if(n) SetMenuSoftKey(data,&SK_VIEW_PIC,SET_SOFT_KEY_M);
 		else SetMenuSoftKey(data,&SK_OK2,SET_SOFT_KEY_N);
 	}
-	if(cmd==3)
+	else if(cmd==3)
 	{
 		mfree(so);
+	}
+	else if(cmd==5)
+	{
+	  const char *lgp;
+	  switch(so->type)
+	  {
+	  case 0:
+	    lgp=LGP_ALL;
+	    break;
+	  case TYPE_IN_R:
+	    lgp=LGP_IN_R;
+	    break;
+	  case TYPE_IN_N:
+	    lgp=LGP_IN_N;
+	    break;
+	  case TYPE_OUT:
+	    lgp=LGP_OUT;
+	    break;
+	  case TYPE_DRAFT:
+	    lgp=LGP_DRAFT;
+	    break;
+	  case TYPE_IN_ALL:
+	    lgp=LGP_IN_A;
+	    break;
+	  default:
+	    lgp=0;
+	  }
+	  if(lgp) UpdateDlgCsmName(so->dlg_csm, lgp);
 	}
 }
 const ML_MENU_DESC sms_menu=

@@ -41,49 +41,49 @@ const char FLDR_MAIN[]="0:\\ZBin\\MySMSYS\\";
 
 __thumb int getFileCount(int type, int count_old, SMS_DATA_ROOT *sdr)
 {
-	unsigned int err;
-	char dir[128];
-	int n=0;
-	DIR_ENTRY de;
-	strcpy(dir, FLDR_MAIN);
-	switch(type)
-	{
-	case TYPE_DRAFT:
-		if(!count_old) n+=sdr->cnt_sms_draft;
-		strcat(dir, FLDR_DRAFT);
-		break;
-	case TYPE_OUT:
-		if(!count_old) n+=sdr->cnt_sms_sent;
-		strcat(dir, FLDR_OUT);
-		break;
-	case TYPE_IN_ALL:
-		if(!count_old)
-		{
-			n+=sdr->cnt_msg_in_read;
-			n+=sdr->cnt_in_new_sms_dat;
-			n+=sdr->cnt_in_new_opwv;
-		}
-		strcat(dir, FLDR_IN);
-		break;
-	}
-	if(!isdir(dir, &err))
-	{
-		dir[0]='4';
-		if(!isdir(dir, &err))
-			return 0;
-	}
-	strcat(dir, "*.mss");
-	if(FindFirstFile(&de, dir, &err))
-	{
-		do
-		{
-		  if(de.file_size>=(sizeof(MSS_FILE_P1)))
-		    n++;
-		}
-		while(FindNextFile(&de, &err));
-	}
-	FindClose(&de, &err);
-	return n;
+  unsigned int err;
+  char dir[128];
+  int n=0;
+  DIR_ENTRY de;
+  strcpy(dir, FLDR_MAIN);
+  switch(type)
+  {
+  case TYPE_DRAFT:
+    if(!count_old) n+=sdr->cnt_sms_draft;
+    strcat(dir, FLDR_DRAFT);
+    break;
+  case TYPE_OUT:
+    if(!count_old) n+=sdr->cnt_sms_sent;
+    strcat(dir, FLDR_OUT);
+    break;
+  case TYPE_IN_ALL:
+    if(!count_old)
+    {
+      n+=sdr->cnt_msg_in_read;
+      n+=sdr->cnt_in_new_sms_dat;
+      n+=sdr->cnt_in_new_opwv;
+    }
+    strcat(dir, FLDR_IN);
+    break;
+  }
+  if(!isdir(dir, &err))
+  {
+    dir[0]='4';
+    if(!isdir(dir, &err))
+      return n;
+  }
+  strcat(dir, "*.mss");
+  if(FindFirstFile(&de, dir, &err))
+  {
+    do
+    {
+      if(de.file_size>=(sizeof(MSS_FILE_P1)))
+	n++;
+    }
+    while(FindNextFile(&de, &err));
+  }
+  FindClose(&de, &err);
+  return n;
 }
 
 void CreateSmsWithNum(char *num)

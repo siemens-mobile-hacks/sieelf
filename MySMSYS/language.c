@@ -5,7 +5,7 @@ const char my_ipc_name[]=MY_SMSYS_IPC_NAME;
 
 const char ELFNAME[]="MySMSYS";
 const char ELFNAME_D[]="MssD";
-const char COPY_RIGHT[]="MySMSYS v1.9.1\n(c)BingK (binghelingxi)\n(r)titron";
+const char COPY_RIGHT[]="MySMSYS v1.9.2\n(c)BingK (binghelingxi)\n(r)titron";
 
 const char PERCENT_T[]="%t";
 const char PERCENT_S[]="%s";
@@ -49,7 +49,7 @@ const char LGP_SAVE_AS_DRAFT[]="Save As Draft";
 
 const char LGP_INSERT_ADRNUM[]="Insert Number Form AddressBook";
 const char LGP_INSERT_BLANKNUM[]="Inert Blank Number";
-const char LGP_CHAR_COUNT[]="";
+const char LGP_CHAR_COUNT[]="Word Count";
 
 const char STR_VIEW[]="View";
 const char STR_EDIT[]="Edit";
@@ -104,6 +104,7 @@ const char LGP_IN_SMSDAT[]="in SMS.dat";
 const char LGP_IS_MSSFILE[]="is Mss File";
 const char LGP_DAT_FREE[]="Free in SMS.dat";
 const char LGP_DISK_FREE[]="Free in Disk";
+const char LGP_MSS_MAINMENU[]="Mss MainMenu";
 #endif
 
 #ifdef LANG_CN
@@ -189,5 +190,6 @@ const char LGP_IN_SMSDAT[]="在SMS.dat";
 const char LGP_IS_MSSFILE[]="为Mss文件";
 const char LGP_DAT_FREE[]="空余在SMS.dat";
 const char LGP_DISK_FREE[]="磁盘空间空余";
+const char LGP_MSS_MAINMENU[]="Mss主菜单";
 #endif
 

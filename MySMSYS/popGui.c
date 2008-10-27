@@ -71,19 +71,22 @@ const int popup_icons[]={0x558, 0};
 #endif
 
 #define TIME_SECOND 216
-
+/*
 typedef struct
 {
 	void *dlg_csm;
 	GBSTMR tmr;
 }POP_UP;
+*/
 
+GBSTMR poptmr;
 int popup_onkey(void *data, GUI_MSG *msg)
 {
-	POP_UP *pu=(POP_UP *)GetPopupUserPointer(data);
+	//POP_UP *pu=(POP_UP *)GetPopupUserPointer(data);
 	if((msg->keys==0x18)||(msg->keys==0x3D))
 	{
-		DLG_CSM *dlg_csm=(DLG_CSM *)(pu->dlg_csm);
+		//DLG_CSM *dlg_csm=(DLG_CSM *)(pu->dlg_csm);
+		DLG_CSM *dlg_csm=GetPopupUserPointer(data);
 		if(dlg_csm)
 		{
 			if(!(dlg_csm->gui_id=viewTheLastNew(dlg_csm)))
@@ -120,7 +123,7 @@ void StopVibra()
 }
 void popup_ghook(void *data, int cmd)
 {
-	POP_UP *pu=(POP_UP *)GetPopupUserPointer(data);
+	//POP_UP *pu=(POP_UP *)GetPopupUserPointer(data);
 	if(cmd==2) //Create
 	{
 		//if(!IsUnlocked())
@@ -133,7 +136,8 @@ void popup_ghook(void *data, int cmd)
 				if(!PLAY_ID) Play(CFG_SOUND_PATH);
 			}
 			SetVibration(CFG_VIBRA_POWER);
-			GBS_StartTimerProc(&(pu->tmr), TIME_SECOND*CFG_NOTIFY_TIME, StopVibra);
+			//GBS_StartTimerProc(&(pu->tmr), TIME_SECOND*CFG_NOTIFY_TIME, StopVibra);
+			GBS_StartTimerProc(&poptmr, TIME_SECOND*CFG_NOTIFY_TIME, StopVibra);
 		}
 	}
 	else if(cmd==3) //Close
@@ -142,8 +146,9 @@ void popup_ghook(void *data, int cmd)
 		PLAY_ID=0;
 		if(CFG_ENA_SOUND && IsPlayerOn() && !GetPlayStatus()) MPlayer_Start();
 		SetVibration(0);
-		GBS_DelTimer(&(pu->tmr));
-		mfree(pu);
+		//GBS_DelTimer(&(pu->tmr));
+		GBS_DelTimer(&poptmr);
+		//mfree(pu);
 	}
 }
 
@@ -174,7 +179,7 @@ int StartIncomingWin(void *dlg_csm)
 	WSHDR csloc, *cs;
 	unsigned short csb[30];
 	unsigned short wsb[150];
-	POP_UP *pu;
+	//POP_UP *pu;
 	extern unsigned int DlgCsmIDs[]; //main.c
 	extern int IsNoDlg(unsigned int *id_pool); //main.c
 	if(IsNoDlg(DlgCsmIDs))
@@ -184,14 +189,13 @@ int StartIncomingWin(void *dlg_csm)
 	  readAllSMS();
 	  sd=GetTheLastNew(0);
 	}
-	if(!sd)
-		return 0;
-	if(sd->msg_type==ISREPORT)
-		return (ShowMSG_report(sd));
+	if(!sd) return 0;
+	if(sd->msg_type==ISREPORT) return (ShowMSG_report(sd));
+	if(IsTimerProc(&poptmr)) return 0;
 	ws=AllocWS(150);
-	pu=malloc(sizeof(POP_UP));
-	zeromem(pu, sizeof(POP_UP));
-	pu->dlg_csm=dlg_csm;
+	//pu=malloc(sizeof(POP_UP));
+	//zeromem(pu, sizeof(POP_UP));
+	//pu->dlg_csm=dlg_csm;
 	wn=CreateLocalWS(&wsloc,wsb,150);
 	cs=CreateLocalWS(&csloc,csb,30);
 	if(sd)
@@ -220,7 +224,7 @@ int StartIncomingWin(void *dlg_csm)
 //	{
 //		wsprintf(ws, PERCENT_T, STR_NEW_MSG);
 //	}
-	return (CreatePopupGUI_ws(1, pu, &popup, ws));
+	return (CreatePopupGUI_ws(1, dlg_csm, &popup, ws));
 }
 
 const SOFTKEY_DESC msg_popup_sk[]=

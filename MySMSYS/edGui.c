@@ -788,6 +788,16 @@ void edGHook(GUI *data, int cmd)
 	}
 	else if(cmd==TI_CMD_DESTROY)
 	{
+	  //auto save at exit
+//	  if((uo->gui_type==ED_VIEW)
+//	     &&(CFG_ENA_AUTO_SAF)
+//	       &&(!uo->sd->isfile)
+//		 &&(uo->sd->id)
+//		   &&(uo->sd->msg_type!=ISREPORT || !CFG_ENA_AUTO_DEL_RP))
+//	  {
+//	    if(saveFile(uo->sd->SMS_TEXT, uo->sd->Number, uo->sd, uo->sd->type, 0))
+//	      deleteDat(uo->sd, 1);
+//	  }
 		if((CFG_ENA_AUTO_DEL_RP)&&(uo->gui_type==ED_VIEW)&&(uo->sd)&&(uo->sd->msg_type==ISREPORT)&&(uo->sd->id > 0)&&(!uo->sd->isfile))
 		{
 			if(IsSdInList(uo->sd) && deleteDat(uo->sd, 0))
@@ -807,6 +817,33 @@ void edGHook(GUI *data, int cmd)
 	else if(cmd==TI_CMD_FOCUS)
 	{
 		DisableIDLETMR();
+	}
+	else if(cmd==TI_CMD_GOTOTOP)
+	{
+	  const char *lgp;
+	  switch(uo->gui_type)
+	  {
+	  case ED_VIEW:
+	  case ED_FVIEW:
+	    lgp=STR_VIEW;
+	    break;
+	  case ED_EDIT:
+	  case ED_FEDIT:
+	    lgp=STR_EDIT;
+	    break;
+	  case ED_NEW:
+	  case ED_FREE:
+	    lgp=LGP_NEW;
+	    break;
+	  case ED_REPLY:
+	  case ED_FREPLY:
+	    lgp=STR_REPLY;
+	    break;
+	  default:
+	    lgp=0;
+	    break;
+	  }
+	  if(lgp) UpdateDlgCsmName(uo->dlg_csm, lgp);
 	}
 	else if(cmd==TI_CMD_REDRAW)
 	{
@@ -857,6 +894,7 @@ void edGHook(GUI *data, int cmd)
 		if((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW))
 			SetSoftKey(data,&SK_OP_PIC,SET_SOFT_KEY_M);
 //auto save as file
+		
 		if((uo->gui_type==ED_VIEW)&&(CFG_ENA_AUTO_SAF)&&(!uo->sd->isfile)&&(uo->sd->id)&&(uo->sd->msg_type!=ISREPORT || !CFG_ENA_AUTO_DEL_RP))      
 		{
 			wstrcpy(text, uo->sd->SMS_TEXT);
@@ -882,6 +920,7 @@ void edGHook(GUI *data, int cmd)
 					uo->sd=sdx;
 			}
 		}
+		
 //-------------------
 		{
 			ExtractEditControl(data, uo->focus_n, &ec);
