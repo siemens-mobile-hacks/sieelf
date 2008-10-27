@@ -1189,7 +1189,7 @@ typedef struct
   int font; //2
   int _100;
   int _101;
-  int zero1; //0
+  int time; //0
 }POPUP_DESC;
 
 typedef struct
@@ -1249,9 +1249,10 @@ typedef struct
   short unk_0_2;
   short cnt_freespace_data; // -0x28 == ?
   short cnt_in_data;
-  short unk_0_3;
+  short cnt_new_in_data;
   short cnt_sent_data;
   short cnt_draft_data;
+  short unk_0_3; //maybe sending box
 }SMS_DATA_ROOT;
 
 typedef struct{
