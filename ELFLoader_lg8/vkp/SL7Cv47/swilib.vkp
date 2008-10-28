@@ -720,6 +720,7 @@
 0ADC: 0xA05610BC   ; 2B7:  __arm int GetNativeAbDataStatus(NativeAbData *nab, int _0)
 0AE0: 0xA05619B0   ; 2B8:  __arm int SetNumToNativeAbData(NativeAbData *abd, int unk, WSHDR *num)
 0AE4: 0xA05ECD64   ; 2B9:  __arm unsigned int OpenNativeAddressbook(int type, int unk1, int unk2, void *data)
+0AE8: 0xA0A395EB   ; 2BA:  __thumb void SetHeaderIcon(void *hdr_pointer, const int *icon, void *malloc_adr, void *mfree_adr)
 #pragma disable old_equal_ff
 +0
 
