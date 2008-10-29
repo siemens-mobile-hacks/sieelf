@@ -5297,6 +5297,9 @@
       <name>$PROJ_DIR$\language.h</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\main.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\MySMSYS_ipc.h</name>
     </file>
     <file>

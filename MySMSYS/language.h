@@ -55,12 +55,6 @@ extern const char STR_NEW_MSG[];
 extern const char STR_FROM[];
 extern const char LGP_SAVEALL[];
 extern const char LGP_CONFIG_UPDATE[];
-
-#ifndef NO_CS
-extern const char STR_CODESHOW[];
-extern const char STR_FETION[];
-#endif
-
 extern const char STR_UNK_NUM[];
 extern const char STR_NUMBER[];
 extern const char STR_TEXT[];
@@ -135,6 +129,8 @@ extern const char LGP_MSS_MAINMENU[];
 #define LGP_EDIT_FONT_MEDIUM_BOLD "中字体加粗"
 #define LGP_EDIT_FONT_LARGE "大号字体"
 #define LGP_EDIT_FONT_LARGE_BOLD "大字体加粗"
+extern const char STR_CODESHOW[];
+extern const char STR_FETION[];
 #endif
 
 #ifdef LANG_EN
@@ -163,4 +159,5 @@ extern const char LGP_MSS_MAINMENU[];
 #define LGP_EDIT_FONT_MEDIUM_BOLD "Medium+Bold"
 #define LGP_EDIT_FONT_LARGE "Large"
 #define LGP_EDIT_FONT_LARGE_BOLD "Large+Bold"
+extern const char LGP_TRANSLIT[];
 #endif

@@ -9,6 +9,7 @@
 	history:    2005-06-22 V2
 *********************************************************************/
 #include "..\inc\swilib.h"
+#include "string_works.h"
 #include "CodeShow.h"
 
 #define VERSION "2.0b"
@@ -97,7 +98,8 @@ extern  unsigned  long   strtoul  (const  char  *nptr,char  **endptr,int  base);
 
 unsigned long atou(char *str)
 {
-	return (strtoul(str,&str,10));
+  return (str2int(str));
+//return (strtoul(str,&str,10));
 }
 //参考along代码 国际代码
 char FindCRName(word *pBSTR, char *szNo)

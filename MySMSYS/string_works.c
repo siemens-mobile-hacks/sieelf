@@ -2,6 +2,32 @@
 #include "string_works.h"
 
 
+int char16to8(int c) //unicode2win1251
+{
+  if (c<0x400) return (c);
+  c-=0x400;
+  if (c<16)
+  {
+    if (c==1) c=0;
+    else if (c==4) c=2;
+    else if (c==6) c=10;
+    else return (c);
+  }
+  else if (c>79)
+  {
+    if (c==0x51) c=16;
+    else if (c==0x54) c=18;
+    else if (c==0x56) c=11;
+    else if (c==0x57) c=23;
+    else return (c);
+  }
+  else c+=8;
+  c+=168;
+  return (c);
+}
+
+#ifdef LANG_CN
+
 typedef struct
 {
   unsigned short u;
@@ -53,32 +79,6 @@ int unicode2ansi(int c) //
     return 0x2020;
   }
 }
-int char16to8(int c) //unicode2win1251
-{
-  if (c<0x400) return (c);
-  c-=0x400;
-  if (c<16)
-  {
-    if (c==1) c=0;
-    else if (c==4) c=2;
-    else if (c==6) c=10;
-    else return (c);
-  }
-  else if (c>79)
-  {
-    if (c==0x51) c=16;
-    else if (c==0x54) c=18;
-    else if (c==0x56) c=11;
-    else if (c==0x57) c=23;
-    else return (c);
-  }
-  else c+=8;
-  c+=168;
-  return (c);
-}
-
-#ifdef LANG_CN
-
 #ifdef NEWSGOLD
 #define CODEMAP_ADDR 0xA1568200  //-0xA157A24F
 #else

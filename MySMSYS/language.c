@@ -105,6 +105,7 @@ const char LGP_IS_MSSFILE[]="is Mss File";
 const char LGP_DAT_FREE[]="Free in SMS.dat";
 const char LGP_DISK_FREE[]="Free in Disk";
 const char LGP_MSS_MAINMENU[]="Mss MainMenu";
+const char LGP_TRANSLIT[]="Translit";
 #endif
 
 #ifdef LANG_CN

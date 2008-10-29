@@ -204,7 +204,7 @@ const SOFTKEYSTAB main_menu_skt=
 {
   main_menu_sk,0
 };
-HEADER_DESC main_menuhdr={0,0,0,0,NULL,(int)ELFNAME,LGP_NULL};
+HEADER_DESC main_menuhdr={0,0,0,0,NULL,(int)LGP_MSS_MAINMENU,LGP_NULL};
 #define MAIN_MENU_N 7
 
 void mm_newsms(GUI *gui)
@@ -420,27 +420,21 @@ static void dialogcsm_oncreate(CSM_RAM *data)
     csm->gui_id=CreateMainMenu(csm);
     break;
   case SMSYS_IPC_NEWSMS:
-    //UpdateDlgCsmName(csm, LGP_NEW);
     csm->gui_id=newSMS(csm);
     break;
   case SMSYS_IPC_IN_NEW:
-    //UpdateDlgCsmName(csm, LGP_IN_N);
     csm->gui_id=showSMSList(csm, TYPE_IN_N);
     break;
   case SMSYS_IPC_IN_RD:
-    //UpdateDlgCsmName(csm, LGP_IN_R);
     csm->gui_id=showSMSList(csm, TYPE_IN_R);
     break;
   case SMSYS_IPC_OUT:
-    //UpdateDlgCsmName(csm, LGP_OUT);
     csm->gui_id=showSMSList(csm, TYPE_OUT);
     break;
   case SMSYS_IPC_DRAFT:
-    //UpdateDlgCsmName(csm, LGP_DRAFT);
     csm->gui_id=showSMSList(csm, TYPE_DRAFT);
     break;
   case SMSYS_IPC_ALL:
-    //UpdateDlgCsmName(csm, LGP_ALL);
     csm->gui_id=showSMSList(csm, 0);
     break;
   case SMSYS_IPC_TLAST:
@@ -448,7 +442,6 @@ static void dialogcsm_oncreate(CSM_RAM *data)
       csm->gui_id=CreateMainMenu(csm);
     break;
   case SMSYS_IPC_IN_ALL:
-    //UpdateDlgCsmName(csm, LGP_IN_A);
     csm->gui_id=showSMSList(csm, TYPE_IN_ALL);
     break;
   case SMSYS_IPC_NEW_IN_WIN:
@@ -458,19 +451,11 @@ static void dialogcsm_oncreate(CSM_RAM *data)
   case SMSYS_IPC_NEWSMS_NUM:
     if((!num_from_ipc)||(!(csm->gui_id=newSMSWithNum(csm, num_from_ipc))))
       csm->gui_id=CreateMainMenu(csm);
-    //else
-    //{
-    //  UpdateDlgCsmName(csm, LGP_NEW);
-    //}
     num_from_ipc=0;
     break;
   case SMSYS_IPC_SEND_UTF8:
     if((!text_utf8)||(!(csm->gui_id=newSMSWithUtf8Text(csm, text_utf8))))
       csm->gui_id=CreateMainMenu(csm);
-    //else
-    //{
-    //  UpdateDlgCsmName(csm, LGP_NEW);
-    //}
     text_utf8=0;
     break;
   case SMSYS_IPC_QN_OPMSG:
@@ -487,12 +472,6 @@ static void dialogcsm_oncreate(CSM_RAM *data)
       readAllSMS();
       csm->gui_id=CreateMainMenu(csm);
     }
-    //else
-    //{
-    //  UpdateDlgCsmName(csm, STR_VIEW);
-      //name->wsbody=malloc(32*sizeof(short));
-      //wsprintf(name, PERCENT_T, STR_VIEW);
-    //}
     filename[0]=0;
     break;
   default:

@@ -36,6 +36,8 @@ typedef struct
 //const HEADER_DESC sms_menuhdr_draft={0,0,0,0,NULL,(int)LGP_DRAFT,LGP_NULL};
 //const HEADER_DESC sms_menuhdr_in_a={0,0,0,0,NULL,(int)LGP_IN_A,LGP_NULL};
 
+//const HEADER_DESC sms_menuhdr={0,0,0,0,NULL,LGP_NULL,LGP_NULL};
+//const int hdr_icon[]={(int)"0:\\ZBin\\MySMSYS\\new.png",0};
 const HEADER_DESC sms_menuhdr={0,0,0,0,NULL,LGP_NULL,LGP_NULL};
 
 //------------------------------------------------------
@@ -538,6 +540,44 @@ int sms_menu_onkey(void *data, GUI_MSG *msg)
 #define ICON_IN_ALL 0x5E1
 #endif
 
+//const int hdr_icon[]={0X5D0,0};
+//main 0x347
+//sent 0x515
+//draft 0x5C4
+//inbox 0x5C5
+//edit 0x4BD
+//view 0x29A
+//adrbk 0x290
+const int HDRIC_UNK[]={0x347, 0};
+const int HDRIC_OUT[]={0x515, 0};
+const int HDRIC_IN_R[]={0x5C5, 0};
+const int HDRIC_IN_N[]={0x5C5, 0};
+const int HDRIC_DRAFT[]={0x5C4, 0};
+const int HDRIC_IN_ALL[]={0x5C5, 0};
+
+const int SL_HDR_ICONS[7][2]=
+{
+#ifdef NEWSGOLD
+#ifdef ELKA
+  {0x2AB, 0},
+  {0x5A4, 0},
+  {0x2AB, 0},
+  {0x2AB, 0},
+  {0x598, 0},
+  {0x2AB, 0},
+  {0,0}
+#else
+  {0x347, 0},
+  {0x515, 0},
+  {0x5C5, 0},
+  {0x5C5, 0},
+  {0x5C4, 0},
+  {0x5C5, 0},
+  {0,0}
+#endif
+#endif
+};
+//extern void SetHeaderIcon(void *hdr_pointer, const int *icon, void *malloc_adr, void *mfree_adr);
 const int SL_ICONS[7]={ICON_UNK, ICON_OUT, ICON_IN_R, ICON_IN_N, ICON_DRAFT, ICON_IN_ALL, 0};
 void sms_menu_itemhndl(void *data, int curitem, void *user_pointer)
 {
@@ -600,8 +640,7 @@ void sms_menu_ghook(void *data, int cmd)
 	{
 		int n=getCountByType(so->type);
 		int cur=GetCurMenuItem(data);
-		if(cur>=n)
-			SetCursorToMenuItem(data, 0);
+		if(cur>=n) SetCursorToMenuItem(data, 0);
 		Menu_SetItemCountDyn(data, n);
 		DisableIDLETMR();
 	}
@@ -612,6 +651,9 @@ void sms_menu_ghook(void *data, int cmd)
 		int cur_n=GetCurMenuItem(data)+1;
 		if(!n) cur_n=0;
 		WSHDR *hdr_t=AllocWS(64);
+		void *hdr_p=GetHeaderPointer(data);
+		void *ma=malloc_adr();
+		void *mf=mfree_adr();
 		switch(so->type)
 		{
 		case 0:
@@ -636,7 +678,8 @@ void sms_menu_ghook(void *data, int cmd)
 			CutWSTR(hdr_t, 0);
 			break;
 		}
-		SetHeaderText(GetHeaderPointer(data), hdr_t, malloc_adr(), mfree_adr());
+		SetHeaderText(hdr_p, hdr_t, ma, mf);
+		SetHeaderIcon(hdr_p, SL_HDR_ICONS[(so->type>6)?0:so->type], ma, mf);
 		//if(n) SetSoftKey(data,&SK_VIEW_PIC,SET_SOFT_KEY_M);
 		if(n) SetMenuSoftKey(data,&SK_VIEW_PIC,SET_SOFT_KEY_M);
 		else SetMenuSoftKey(data,&SK_OK2,SET_SOFT_KEY_N);

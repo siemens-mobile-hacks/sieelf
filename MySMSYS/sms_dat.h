@@ -24,7 +24,7 @@
 #define ISEMS 1
 #define ISREPORT 2
 
-#define MAX_TEXT 512
+#define MAX_TEXT 2048
 
 typedef struct
 {

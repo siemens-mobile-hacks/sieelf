@@ -460,8 +460,154 @@ int createEditOpMenu(void *ed_gui)
 	return (CreateSLMenu(&ed_menu, &ed_menuhdr, 0, item_n, ed_gui));
 }
 
-int Ed_SendSMS(void *gui)
+#ifndef LANG_CN
+
+//translit from smsman (c)titron
+typedef struct
 {
+  char *r;
+  char *e;
+}trstruct;
+
+const trstruct tr_r[]=
+{
+ {"\xC0","A"}, {"\xE0","a"},
+ {"\xC1","B"}, {"\xE1","b"},
+ {"\xC2","V"}, {"\xE2","v"},
+ {"\xC3","G"}, {"\xE3","g"},
+ {"\xC4","D"}, {"\xE4","d"},
+ {"\xC5","E"}, {"\xE5","e"},
+ {"\xA8","Yo"}, {"\xB8","yo"},
+ {"\xC6","J"}, {"\xE6","j"},
+ {"\xC7","Z"}, {"\xE7","z"},
+ {"\xC8","I"}, {"\xE8","i"},
+ {"\xC9","Y"}, {"\xE9","y"},
+ {"\xCA","K"}, {"\xEA","k"},
+ {"\xCB","L"}, {"\xEB","l"},
+ {"\xCC","M"}, {"\xEC","m"},
+ {"\xCD","N"}, {"\xED","n"},
+ {"\xCE","O"}, {"\xEE","o"},
+ {"\xCF","P"}, {"\xEF","p"},
+ {"\xD0","R"}, {"\xF0","r"},
+ {"\xD1","S"}, {"\xF1","s"},
+ {"\xD2","T"}, {"\xF2","t"},
+ {"\xD3","U"}, {"\xF3","u"},
+ {"\xD4","F"}, {"\xF4","f"},
+ {"\xD5","H"}, {"\xF5","h"},
+ {"\xD6","C"}, {"\xF6","c"},
+ {"\xD7","Ch"}, {"\xF7","ch"},
+ {"\xD8","Sh"}, {"\xF8","sh"},
+ {"\xD9","Sch"}, {"\xF9","sch"},
+ {"\xDA","\""}, {"\xFA","\""},
+ {"\xDB","Y"}, {"\xFB","Y"},
+ {"\xDC","'"}, {"\xFC","'"},
+ {"\xDD","E"}, {"\xFD","e"},
+ {"\xDE","Yu"}, {"\xFE","yu"},
+ {"\xDF","Ya"}, {"\xFF","ya"},
+ 0,0
+};
+/*
+WSHDR *translit(WSHDR *ws0)
+{
+  int wlen, i, c, c1;
+  const trstruct *p;
+  char *txt;
+  WSHDR *tws;
+  extern int char16to8(int c);
+  if(!ws0 || !(wlen=ws0->wsbody[0])) return 0;
+  txt=malloc(wlen*2);
+  zeromem(txt, wlen*2);
+  for(i=0; i<wlen; i++)
+  {
+    c=ws0->wsbody[i+1];
+    if(c<0x80)
+    {
+      txt[strlen(txt)]=c;
+      continue;
+    }
+    c=char16to8(c)&0xff;
+    p=tr_r;
+    while((p->r) && (p->e))
+    {
+      c1=*(p->r);
+      if(c1==c) strcat(txt, p->e);
+      p++;
+    }
+    if(p->r) continue;
+    else txt[strlen(txt)]=c;
+  }
+  tws=AllocWS(strlen(txt));
+  wsprintf(tws,txt);
+  mfree(txt);
+  return (tws);
+}
+
+0x105, 'a'
+0x107, 'c'
+0x119, 'e'
+0xF3, 'o'
+0x142, 'l'
+0x144, 'n'
+0x15B, 's'
+0x17C, 'z'
+0x17A, 'z'*/
+extern int char16to8(int c); //string_works.c
+WSHDR *translit(WSHDR *ws0)
+{
+  int c;
+  if(!wstrlen(ws0)) return ws0;
+  char *txt=malloc(wstrlen(ws0)*2);
+  zeromem(txt, wstrlen(ws0)*2);
+  for(int i=0; i<wstrlen(ws0); i++)
+  {
+    c=ws0->wsbody[i+1];
+    switch(c) //PL
+    {
+    case 0x105:c='a';goto ADD;
+    case 0x107:c='c';goto ADD;
+    case 0x119:c='e';goto ADD;
+    case 0x0F3:c='o';goto ADD;
+    case 0x142:c='l';goto ADD;
+    case 0x144:c='n';goto ADD;
+    case 0x15B:c='s';goto ADD;
+    case 0x17C:
+    case 0x17A:c='z';goto ADD;
+    }
+    c=char16to8(c);
+    for(int j=0; j<66; j++)
+    {
+      if(c==*tr_r[j].r)
+      {
+	c=0;
+	strcat(txt, tr_r[j].e);
+	j=66;
+      }
+    }
+  ADD:
+    if(c) txt[strlen(txt)]=c;
+  }
+  WSHDR *tws=AllocWS(strlen(txt));
+  wsprintf(tws,txt);
+  mfree(txt);
+  return tws;
+}
+
+int add_translit(void *edsms_gui)
+{
+  EDITCONTROL ec;
+  EDIT_ExtractFocusedControl(edsms_gui,&ec);
+  WSHDR *ws0=translit(ec.pWS);
+  if(ws0!=ec.pWS)
+  {
+    EDIT_SetTextToFocused(edsms_gui,ws0);
+    FreeWS(ws0);
+  }
+  return 1;
+}
+
+#endif
+int Ed_SendSMS(void *gui)
+{    
 	EDITCONTROL ec;
 	USER_OP *uo=EDIT_GetUserPointer(gui);
 	NUM_LIST *nl=(NUM_LIST *)(uo->nltop);
@@ -496,73 +642,89 @@ void Ed_SaveFile(WSHDR *txt, USER_OP *uo, int type)
 	readAllSMS();
 }
 
+#ifdef LANG_CN
 #define OPTION_N 5
-
+#define OPTION_N_N (OPTION_N-1)
+#else
+#define OPTION_N 6
+#define OPTION_N_N (OPTION_N-2)
+#endif
 void on_adr_ec(USR_MENU_ITEM *item) //MENU WOULD BE CLOSED FIRST
 {
-	if(item->type==0)
-	{
-		USER_OP *uo=EDIT_GetUserPointer(item->user_pointer);
-		switch(item->cur_item)
-		{
-		case 0:
-			wsprintf(item->ws, PERCENT_T, LGP_SEND);
-			break;
-		case 1:
-			wsprintf(item->ws, PERCENT_T, LGP_ADRBK);
-			break;
-		case 2:
-			wsprintf(item->ws, PERCENT_T, LGP_CANCEL);
-			break;
-		case 3:
-			wsprintf(item->ws, PERCENT_T, (uo->sd->type==TYPE_DRAFT && uo->sd->isfile)?LGP_SAVE:LGP_SAVE_AS_DRAFT);
-			break;
-		case 4:
-			wsprintf(item->ws, PERCENT_T, LGP_TEMPLATE);
-			break;
-		}
-	}
-	else if(item->type==1)
-	{
-		USER_OP *uo=EDIT_GetUserPointer(item->user_pointer);
-		DLG_CSM *dlg_csm=(DLG_CSM *)uo->dlg_csm;
-		SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);
-		switch(item->cur_item)
-		{
-		case 0:
-			if((Ed_SendSMS(item->user_pointer))&&(gstop))
-			{
-				GeneralFunc_flag1(gstop->id, 1);
-				popGS(dlg_csm);
-			}
-			break;
-		case 1:
-			CreateNAbCSM(dlg_csm, item->user_pointer, TYPE_SELECT);
-			break;
-		case 2:
-			if(gstop)
-			{
-				GeneralFunc_flag1(gstop->id, 1);
-				popGS(dlg_csm);
-			}
-			break;
-		case 3:
-			{
-				EDITCONTROL ec;
-				ExtractEditControl(item->user_pointer,uo->focus_n,&ec);
-				Ed_SaveFile(ec.pWS, uo, TYPE_DRAFT);
-			}
-			if(CFG_ENA_EXIT_SAVE_DRAFT && gstop)
-			{
-				GeneralFunc_flag1(gstop->id, 1);
-				popGS(dlg_csm);
-			}
-			break;
-		case 4:
-			CreateTplMenu(item->user_pointer);
-			break;
-		}
-	}
+  if(item->type==0)
+  {
+    USER_OP *uo=EDIT_GetUserPointer(item->user_pointer);
+    switch(item->cur_item)
+    {
+    case 0:
+      wsprintf(item->ws, PERCENT_T, LGP_SEND);
+      break;
+    case 1:
+      wsprintf(item->ws, PERCENT_T, LGP_ADRBK);
+      break;
+    case 2:
+      wsprintf(item->ws, PERCENT_T, LGP_CANCEL);
+      break;
+    case 3:
+      wsprintf(item->ws, PERCENT_T, (uo->sd->type==TYPE_DRAFT && uo->sd->isfile)?LGP_SAVE:LGP_SAVE_AS_DRAFT);
+      break;
+    case 4:
+      wsprintf(item->ws, PERCENT_T, LGP_TEMPLATE);
+      break;
+#ifndef LANG_CN
+    case 5:
+      wsprintf(item->ws, PERCENT_T, LGP_TRANSLIT);
+      break;
+#endif
+    }
+  }
+  else if(item->type==1)
+  {
+    USER_OP *uo=EDIT_GetUserPointer(item->user_pointer);
+    DLG_CSM *dlg_csm=(DLG_CSM *)uo->dlg_csm;
+    SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);
+    switch(item->cur_item)
+    {
+    case 0:
+      if((Ed_SendSMS(item->user_pointer))&&(gstop))
+      {
+	GeneralFunc_flag1(gstop->id, 1);
+	popGS(dlg_csm);
+      }
+      break;
+    case 1:
+      CreateNAbCSM(dlg_csm, item->user_pointer, TYPE_SELECT);
+      break;
+    case 2:
+      if(gstop)
+      {
+	GeneralFunc_flag1(gstop->id, 1);
+	popGS(dlg_csm);
+      }
+      break;
+    case 3:
+      {
+	EDITCONTROL ec;
+	ExtractEditControl(item->user_pointer,uo->focus_n,&ec);
+	Ed_SaveFile(ec.pWS, uo, TYPE_DRAFT);
+      }
+      if(CFG_ENA_EXIT_SAVE_DRAFT && gstop)
+      {
+	GeneralFunc_flag1(gstop->id, 1);
+	popGS(dlg_csm);
+      }
+      break;
+    case 4:
+      CreateTplMenu(item->user_pointer);
+      break;
+#ifndef LANG_CN
+    case 5:
+      if(EDIT_GetFocus(item->user_pointer)==uo->focus_n)
+	add_translit(item->user_pointer);
+      break;
+#endif
+    }
+  }
 }
 
 int edOnKey(GUI *data, GUI_MSG *msg)
@@ -638,7 +800,7 @@ int edOnKey(GUI *data, GUI_MSG *msg)
 			else if(n<=(uo->focus_n-2)) //ºÅÂëÎ»ÖÃ
 			{
 				uo->adr_type=TYPE_SET;
-				EDIT_OpenOptionMenuWithUserItems(data,on_adr_ec,data,OPTION_N-1);
+				EDIT_OpenOptionMenuWithUserItems(data,on_adr_ec,data,OPTION_N_N);
 			}
 			return (-1);
 		}
@@ -671,7 +833,7 @@ int edOnKey(GUI *data, GUI_MSG *msg)
 			else if(n<=(uo->focus_n-2)) //ºÅÂëÎ»ÖÃ
 			{
 				uo->adr_type=TYPE_SET;
-				EDIT_OpenOptionMenuWithUserItems(data,on_adr_ec,data,OPTION_N-1);
+				EDIT_OpenOptionMenuWithUserItems(data,on_adr_ec,data,OPTION_N_N);
 			}
 			return (-1);
 		}
@@ -775,7 +937,19 @@ const SOFTKEY_DESC SK_OP_PIC={0x0029,0x0000,(int)LGP_OPTION_PIC};
 
 #define TI_CMD_GOTOTOP 0x5
 
-
+//const int ed_hdr_icon[]={0x4BD,0};
+#ifdef NEWSGOLD
+#ifdef ELKA
+const int EDHDRIC_VIEW[]={0x2A5,0};
+const int EDHDRIC_EDIT[]={0x4DB,0};
+const int EDHDRIC_ADRBK[]={0x28C,0};
+#else
+const int EDHDRIC_VIEW[]={0x29A,0};
+const int EDHDRIC_EDIT[]={0x505,0};
+const int EDHDRIC_ADRBK[]={0x1A1,0};
+#endif
+#endif
+//extern void SetHeaderIcon(void *hdr_pointer, const int *icon, void *malloc_adr, void *mfree_adr);
 void edGHook(GUI *data, int cmd)
 {
 	USER_OP *uo=EDIT_GetUserPointer(data);
@@ -925,12 +1099,24 @@ void edGHook(GUI *data, int cmd)
 		{
 			ExtractEditControl(data, uo->focus_n, &ec);
 			WSHDR *hdr_t=AllocWS(64);
+			void *hdr_p=GetHeaderPointer(data);
+			void *ma=malloc_adr();
+			void *mf=mfree_adr();
 		#ifdef DEBUG
 			wsprintf(hdr_t, "%t:%d,p:%d", LGP_CHAR_COUNT, ec.pWS->wsbody[0], EDIT_GetCursorPos(data));
 		#else
 			wsprintf(hdr_t, "%t: %d", LGP_CHAR_COUNT, ec.pWS->wsbody[0]);
 		#endif
-			SetHeaderText(GetHeaderPointer(data), hdr_t, malloc_adr(), mfree_adr());
+			SetHeaderText(hdr_p, hdr_t, ma, mf);
+			if((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW))
+			  SetHeaderIcon(hdr_p, EDHDRIC_VIEW, ma, mf);
+			else
+			{
+			  if(n<=(uo->focus_n-2))
+			    SetHeaderIcon(hdr_p, EDHDRIC_ADRBK, ma, mf);
+			  else
+			    SetHeaderIcon(hdr_p, EDHDRIC_EDIT, ma, mf);
+			}
 		}
 		if((uo->gui_type!=ED_VIEW)&&(uo->gui_type!=ED_FVIEW)&&(n<=(uo->focus_n-2))&&(nl=GetNumListCur(uo, n)))
 		{
@@ -1467,7 +1653,7 @@ int ShowCount(void)
   hdr=CreateLocalWS(&hdrn, hdrb, 128);
   msg=CreateLocalWS(&msgn, msgb, 512);
   wsprintf(hdr, PERCENT_T, LGP_STATISTICS);
-  wsprintf(msg, "%t: %c%d\n----------------\n%d%c %t\n%t: %c%d%c\n%t: %c%d%c\n%t: %c%d\n----------------\n%d%c %t\n%t: %c%d%c\n%t: %c%d%c\n%t: %c%d\n----------------\n%d%c\n%t\n----------------\n%c%dKb%c\n%t",
+  wsprintf(msg, "%t: %c%d\n----------------\n%d%c %t\n%t: %c%d%c\n%t: %c%d%c\n%t: %c%d%c\n%t: %c%d\n----------------\n%d%c %t\n%t: %c%d%c\n%t: %c%d%c\n%t: %c%d\n----------------\n%dKb%c\n%t%c%c%c",
 	   LGP_ALL,
 	   0xE013,
 	   getCountByType(0),
@@ -1485,6 +1671,10 @@ int ShowCount(void)
 	   LGP_DRAFT,
 	   0xE013,
 	   GetCountByIsFileType(0, TYPE_DRAFT),
+	   0xE012,
+	   LGP_DAT_FREE,
+	   0xE013,
+	   100 - sdr->cnt_in_data - sdr->cnt_new_in_data - sdr->cnt_sent_data - sdr->cnt_draft_data -sdr->unk_0_3,
 	   GetCountByIsFileType(1, 0),
 	   0xE012,
 	   LGP_IS_MSSFILE,
@@ -1499,13 +1689,12 @@ int ShowCount(void)
 	   LGP_DRAFT,
 	   0xE013,
 	   GetCountByIsFileType(1, TYPE_DRAFT),
-	   100 - sdr->cnt_in_data - sdr->cnt_new_in_data - sdr->cnt_sent_data - sdr->cnt_draft_data -sdr->unk_0_3,
-	   0xE012,
-	   LGP_DAT_FREE,
-	   0xE013,
 	   GetFreeFlexSpace(CFG_MAIN_FOLDER[0]-'0', &err)/1024,
 	   0xE012,
-	   LGP_DISK_FREE
+	   LGP_DISK_FREE,
+	   0xE013,
+	   CFG_MAIN_FOLDER[0],
+	   0xE012
 	   );
   return (CreateSimpleShowMsgGui(hdr, msg));
 }

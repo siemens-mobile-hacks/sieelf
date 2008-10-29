@@ -548,110 +548,122 @@ void AddToSdlByTime(SMS_DATA *sd);
 
 int readFile(int type)
 {
-	unsigned int err;
-	int fp;
-	const char *folder;
-	char dir[128];
-	char fullpath[128];
-	int n=0, wlen;
-	DIR_ENTRY de;
-	WSHDR *ws, wsn;
-	unsigned short wsb[MAX_TEXT];
-	switch(type)
+  unsigned int err;
+  int fp;
+  const char *folder;
+  char dir[128];
+  char fullpath[128];
+  int n=0/*, wlen*/;
+  DIR_ENTRY de;
+  //WSHDR *ws, wsn;
+  //unsigned short wsb[MAX_TEXT];
+  switch(type)
+  {
+  case TYPE_DRAFT:
+    folder=FLDR_DRAFT;
+    break;
+  case TYPE_OUT:
+    folder=FLDR_OUT;
+    break;
+  case TYPE_IN_N:
+  case TYPE_IN_R:
+  case TYPE_IN_ALL:
+    folder=FLDR_IN;
+    break;
+  default:
+    folder=FLDR_UNK;
+    break;
+  }
+  strcpy(dir, CFG_MAIN_FOLDER);
+  strcat(dir, folder);
+  if(!isdir(dir, &err))
+    return 0;
+  strcat(dir, "*.mss");
+  //ws=CreateLocalWS(&wsn, wsb, MAX_TEXT);
+  if(FindFirstFile(&de, dir, &err))
+  {
+    do
+    {
+      int len;
+      char *buf=malloc((de.file_size+3)&(~3));
+      strcpy(fullpath, de.folder_name);
+      len=strlen(fullpath);
+      if(fullpath[len-1]!='\\'&&fullpath[len-1]!='/')
+      {
+	fullpath[len++]='\\';
+	fullpath[len]='\0';
+      }
+      strcat(fullpath, de.file_name);
+      if((de.file_size>=sizeof(MSS_FILE_P1))&&((fp=fopen(fullpath, A_BIN+A_ReadOnly, P_READ, &err))>=0))
+      {
+	if(fread(fp, buf, de.file_size, &err)==de.file_size)
 	{
-	case TYPE_DRAFT:
-		folder=FLDR_DRAFT;
-		break;
-	case TYPE_OUT:
-		folder=FLDR_OUT;
-		break;
-	case TYPE_IN_N:
-	case TYPE_IN_R:
-	case TYPE_IN_ALL:
-		folder=FLDR_IN;
-		break;
-	default:
-		folder=FLDR_UNK;
-		break;
+	  if(!strncmp(buf, ELFNAME, 7))
+	  {
+	    unsigned short *sp;
+	    MSS_FILE_P1 *msf1;
+	    MSS_FILE_P2 *msf2;
+	    char *fname;
+	    int version;
+	    SMS_DATA *sdx=AllocSD();
+	    n++;
+//	    GetCPUClock();
+	    fname=malloc(128);
+	    zeromem(fname, 128);
+	    sdx->isfile=1;
+	    strcpy(fname, fullpath);
+	    sdx->fname=fname;
+	    version=*(int *)(buf+8); //header len
+	    if(version==1)
+	    {
+	      sdx->type=type;
+	      msf1=(MSS_FILE_P1 *)buf;
+	      strcpy(sdx->Time, msf1->time);
+	      strncpy(sdx->Number, msf1->number, 32);
+	      strncpy(sdx->Time, msf1->time, 32);
+	      sp=(unsigned short *)(((char *)buf)+sizeof(MSS_FILE_P1));
+	      len=*sp;
+	      sdx->SMS_TEXT=AllocWS(len);
+	      memcpy(sdx->SMS_TEXT->wsbody, sp, (len+1)*sizeof(short));
+	      LockSched();
+	      AddToSdlByTime(sdx);
+	      UnlockSched();
+	      //memcpy(ws->wsbody, sp, (((len>MAX_TEXT)?MAX_TEXT:len)+1)*(sizeof(unsigned short)));
+	    }
+	    else if(version==2)
+	    {
+	      msf2=(MSS_FILE_P2 *)buf;
+	      strcpy(sdx->Time, msf2->time);
+	      strncpy(sdx->Number, msf2->number, 32);
+	      strncpy(sdx->Time, msf2->time, 32);
+	      sdx->type=msf2->type;
+	      sp=(unsigned short *)(((char *)buf)+sizeof(MSS_FILE_P2));
+	      len=*sp;
+	      sdx->SMS_TEXT=AllocWS(len);
+	      memcpy(sdx->SMS_TEXT->wsbody, sp, (len+1)*sizeof(short));
+	      LockSched();
+	      AddToSdlByTime(sdx);
+	      UnlockSched();
+	      //memcpy(ws->wsbody, sp, (((len>MAX_TEXT)?MAX_TEXT:len)+1)*(sizeof(unsigned short)));
+	    }
+	    else FreeSdOne(sdx);
+	    //wlen=wstrlen(ws);
+	    //if(!wlen) wlen=1;
+	    //sdx->SMS_TEXT=AllocWS(wlen);
+	    //wstrcpy(sdx->SMS_TEXT, ws);
+	    //LockSched();
+	    //AddToSdlByTime(sdx);
+	    //UnlockSched();
+	  }
 	}
-	strcpy(dir, CFG_MAIN_FOLDER);
-	strcat(dir, folder);
-	if(!isdir(dir, &err))
-		return 0;
-	strcat(dir, "*.mss");
-	ws=CreateLocalWS(&wsn, wsb, MAX_TEXT);
-	if(FindFirstFile(&de, dir, &err))
-	{
-		do
-		{
-			int len;
-			char *buf=malloc((de.file_size+3)&(~3));
-			strcpy(fullpath, de.folder_name);
-			len=strlen(fullpath);
-			if(fullpath[len-1]!='\\'&&fullpath[len-1]!='/')
-			{
-				fullpath[len++]='\\';
-				fullpath[len]='\0';
-			}
-			strcat(fullpath, de.file_name);
-			if((de.file_size>=sizeof(MSS_FILE_P1))&&((fp=fopen(fullpath, A_BIN+A_ReadOnly, P_READ, &err))>=0))
-			{
-				if(fread(fp, buf, de.file_size, &err)==de.file_size)
-				{
-					if(!strncmp(buf, ELFNAME, 7))
-					{
-						unsigned short *sp;
-						MSS_FILE_P1 *msf1;
-						MSS_FILE_P2 *msf2;
-						char *fname;
-						int version;
-						SMS_DATA *sdx=AllocSD();
-						n++;
-						fname=malloc(128);
-						zeromem(fname, 128);
-						sdx->isfile=1;
-						strcpy(fname, fullpath);
-						sdx->fname=fname;
-						version=*(int *)(buf+8); //header len
-						if(version==1)
-						{
-							sdx->type=type;
-							msf1=(MSS_FILE_P1 *)buf;
-							strcpy(sdx->Time, msf1->time);
-							strncpy(sdx->Number, msf1->number, 32);
-							strncpy(sdx->Time, msf1->time, 32);
-							sp=(unsigned short *)(((char *)buf)+sizeof(MSS_FILE_P1));
-							len=*sp;
-							memcpy(ws->wsbody, sp, (((len>MAX_TEXT)?MAX_TEXT:len)+1)*(sizeof(unsigned short)));
-						}
-						else if(version==2)
-						{
-							msf2=(MSS_FILE_P2 *)buf;
-							strcpy(sdx->Time, msf2->time);
-							strncpy(sdx->Number, msf2->number, 32);
-							strncpy(sdx->Time, msf2->time, 32);
-							sdx->type=msf2->type;
-							sp=(unsigned short *)(((char *)buf)+sizeof(MSS_FILE_P2));
-							len=*sp;
-							memcpy(ws->wsbody, sp, (((len>MAX_TEXT)?MAX_TEXT:len)+1)*(sizeof(unsigned short)));
-						}
-						wlen=wstrlen(ws);
-						if(!wlen) wlen=1;
-						sdx->SMS_TEXT=AllocWS(wlen);
-						wstrcpy(sdx->SMS_TEXT, ws);
-						LockSched();
-						AddToSdlByTime(sdx);
-						UnlockSched();
-					}
-				}
-				fclose(fp, &err);
-			}
-			mfree(buf);
-		}
-		while(FindNextFile(&de, &err));
-	}
-	FindClose(&de, &err);
-	return n;
+	fclose(fp, &err);
+      }
+      mfree(buf);
+    }
+    while(FindNextFile(&de, &err));
+  }
+  FindClose(&de, &err);
+  return n;
 }
 
 int deleteFile(SMS_DATA *sd, int need_reload)
@@ -1244,64 +1256,70 @@ SMS_DATA *FindPrevByType(SMS_DATA *sdl, int type)
 
 int ReadMSS(char *fname, SMS_DATA *sd)
 {
-	unsigned int err;
-	int fin;
-	int size, js, len;
-	MSS_FILE_P1 msf1;
-	MSS_FILE_P2 msf2;
-	int version;
-	WSHDR *ws, wsn;
-	unsigned short wsb[MAX_TEXT];
-	if((fin=fopen(fname, A_BIN+A_ReadOnly, P_READ, &err))<0)
-		return 0;
-	size=lseek(fin, 0, S_END, &err, &err);
-	lseek(fin, 8, S_SET, &err, &err);
-	if(fread(fin, &version, sizeof(int), &err)!=sizeof(int))
-		goto EX_BACK0;
-	if(version==1)
-	{
-		js=sizeof(MSS_FILE_P1);
-		if(size<js)
-			goto EX_BACK0;
-		lseek(fin, 0, S_SET, &err, &err);
-		if(fread(fin, &msf1, js, &err)!=js)
-			goto EX_BACK0;
-		if(strncmp(msf1.header, ELFNAME, 7))
-			goto EX_BACK0; 
-		strcpy(sd->Time, msf1.time);
-		strcpy(sd->Number, msf1.number);
-	}
-	else if(version==2)
-	{
-		js=sizeof(MSS_FILE_P2);
-		if(size<js)
-			goto EX_BACK0;
-		lseek(fin, 0, S_SET, &err, &err);
-		if(fread(fin, &msf2, js, &err)!=js)
-			goto EX_BACK0;
-		if(strncmp(msf2.header, ELFNAME, 7))
-			goto EX_BACK0; 
-		strcpy(sd->Time, msf2.time);
-		strcpy(sd->Number, msf2.number);
-		sd->type=msf2.type;
-	}
-	else
-		goto EX_BACK0;
-	ws=CreateLocalWS(&wsn, wsb, MAX_TEXT);
-	if(fread(fin, ws->wsbody, size-js, &err)!=(size-js))
-		goto EX_BACK0;
-	fclose(fin, &err);
-	if(!(len=wstrlen(ws)))
-		len=1;
-	sd->SMS_TEXT=AllocWS(len);
-	wstrcpy(sd->SMS_TEXT, ws);
-	sd->isfile=1;
-	sd->fname=malloc(128);
-	strcpy(sd->fname, fname);
-	return 1;
+  unsigned int err;
+  int fin;
+  int size, js, len=0;
+  MSS_FILE_P1 msf1;
+  MSS_FILE_P2 msf2;
+  int version;
+  //WSHDR *ws, wsn;
+  //unsigned short wsb[MAX_TEXT];
+  if((fin=fopen(fname, A_BIN+A_ReadOnly, P_READ, &err))<0)
+    return 0;
+//  GetCPUClock();
+  size=lseek(fin, 0, S_END, &err, &err);
+  lseek(fin, 8, S_SET, &err, &err);
+  if(fread(fin, &version, sizeof(int), &err)!=sizeof(int))
+    goto EX_BACK0;
+  if(version==1)
+  {
+    js=sizeof(MSS_FILE_P1);
+    if(size<js)
+      goto EX_BACK0;
+    lseek(fin, 0, S_SET, &err, &err);
+    if(fread(fin, &msf1, js, &err)!=js)
+      goto EX_BACK0;
+    if(strncmp(msf1.header, ELFNAME, 7))
+      goto EX_BACK0; 
+    strcpy(sd->Time, msf1.time);
+    strcpy(sd->Number, msf1.number);
+  }
+  else if(version==2)
+  {
+    js=sizeof(MSS_FILE_P2);
+    if(size<js)
+      goto EX_BACK0;
+    lseek(fin, 0, S_SET, &err, &err);
+    if(fread(fin, &msf2, js, &err)!=js)
+      goto EX_BACK0;
+    if(strncmp(msf2.header, ELFNAME, 7))
+      goto EX_BACK0; 
+    strcpy(sd->Time, msf2.time);
+    strcpy(sd->Number, msf2.number);
+    sd->type=msf2.type;
+  }
+  else goto EX_BACK0;
+  //ws=CreateLocalWS(&wsn, wsb, MAX_TEXT);
+  if(fread(fin, &len, 2, &err)!=2)
+    goto EX_BACK0;
+  sd->SMS_TEXT=AllocWS(len);
+  if(fread(fin, sd->SMS_TEXT->wsbody+1, len*2, &err)!=len*2)
+    goto EX_BACK0;
+  sd->SMS_TEXT->wsbody[0]=len;
+  //if(fread(fin, ws->wsbody, size-js, &err)!=(size-js))
+  //  goto EX_BACK0;
+  fclose(fin, &err);
+//  if(!(len=wstrlen(ws)))
+//    len=1;
+//  sd->SMS_TEXT=AllocWS(len);
+//  wstrcpy(sd->SMS_TEXT, ws);
+  sd->isfile=1;
+  sd->fname=malloc(128);
+  strcpy(sd->fname, fname);
+  return 1;
 EX_BACK0:
-	fclose(fin, &err);
-	return 0;
+  fclose(fin, &err);
+  return 0;
 }
 
 void FreeSdOne(SMS_DATA *sd)
@@ -1478,8 +1496,8 @@ int ExportAllToOneTxt_ASCII(char *filename)
   SMS_DATA *sdl=sdltop;
   int fin, s_n=0, len;
   unsigned int err;
-  char text[MAX_TEXT+1];
-  char buf[MAX_TEXT+256];
+  char text[MAX_TEXT*2];
+  char buf[MAX_TEXT*2+256];
   WSHDR *wname, nm;
   unsigned short nmb[64];
   char sname[65];
@@ -1491,7 +1509,7 @@ int ExportAllToOneTxt_ASCII(char *filename)
   while(sdl)
   {
     s_n++;
-    ws_2ascii(sdl->SMS_TEXT, text, MAX_TEXT);
+    ws_2ascii(sdl->SMS_TEXT, text, MAX_TEXT*2);
     if(!findNameByNum(wname, sdl->Number))
       strcpy(sname, STR_UNK_NUM);
     else
@@ -1520,8 +1538,8 @@ int ExportOneToTxt_ASCII(SMS_DATA *sd)
   char fullpath[128];
   int fin, len, c;
   unsigned int err;
-  char text[MAX_TEXT+1];
-  char buf[MAX_TEXT+256];
+  char text[MAX_TEXT*2];
+  char buf[MAX_TEXT*2+256];
   WSHDR *wname, nm;
   char sname[65];
   unsigned short nmb[64];
@@ -1543,7 +1561,7 @@ int ExportOneToTxt_ASCII(SMS_DATA *sd)
     return -1;
   if((fin=fopen(fullpath, A_WriteOnly+A_Create+A_Truncate, P_WRITE, &err))<0)
     return 0;
-  ws_2ascii(sd->SMS_TEXT, text, MAX_TEXT);
+  ws_2ascii(sd->SMS_TEXT, text, MAX_TEXT*2);
   if(!findNameByNum(wname, sd->Number))
     strcpy(sname, STR_UNK_NUM);
   else
@@ -1863,15 +1881,15 @@ int CovDatToTxt_ASCII(char *dat_path, char *txt_path)
   char *buf;
   EMS_DATA *edl=0;
   EMS_DATA *edx;
-  char temp[MAX_TEXT+256];
-  char text[MAX_TEXT];
+  char temp[MAX_TEXT*2+256];
+  char text[MAX_TEXT*2];
   WSHDR *wname, nm;
   unsigned short nmb[64];
   char sname[65];
   wname=CreateLocalWS(&nm, nmb, 64);
   if(IsFileExist(txt_path))
     return -1;
-  GetCPUClock();
+//  GetCPUClock();
   if((fin=fopen(dat_path, A_BIN+A_ReadOnly, P_WRITE, &err))<0)
     return 0;
   size=lseek(fin, 0, S_END, &err, &err)-2;
@@ -1891,7 +1909,7 @@ int CovDatToTxt_ASCII(char *dat_path, char *txt_path)
       while(edx)
       {
 	res++;
-	ws_2ascii(edx->text, text, MAX_TEXT);
+	ws_2ascii(edx->text, text, MAX_TEXT*2);
 	if(!findNameByNum(wname, edx->number))
 	  strcpy(sname, STR_UNK_NUM);
 	else
@@ -1930,15 +1948,15 @@ int CovDatToTxt_UTF8(char *dat_path, char *txt_path)
   char *buf;
   EMS_DATA *edl=0;
   EMS_DATA *edx;
-  char temp[MAX_TEXT+256];
-  char text[MAX_TEXT];
+  char temp[MAX_TEXT*3+256];
+  char text[MAX_TEXT*3];
   WSHDR *wname, nm;
   unsigned short nmb[64];
   char sname[65];
   wname=CreateLocalWS(&nm, nmb, 64);
   if(IsFileExist(txt_path))
     return -1;
-  GetCPUClock();
+//  GetCPUClock();
   if((fin=fopen(dat_path, A_BIN+A_ReadOnly, P_WRITE, &err))<0)
     return 0;
   size=lseek(fin, 0, S_END, &err, &err)-2;
@@ -1963,7 +1981,7 @@ int CovDatToTxt_UTF8(char *dat_path, char *txt_path)
       while(edx)
       {
 	res++;
-	ws_2utf8(edx->text, text, &utf8_cov_len, MAX_TEXT);
+	ws_2utf8(edx->text, text, &utf8_cov_len, MAX_TEXT*3);
 	if(!findNameByNum(wname, edx->number))
 	  strcpy(sname, STR_UNK_NUM_UTF8);
 	else
@@ -2016,7 +2034,7 @@ SMS_DATA *FindNextMss(SMS_DATA *sd)
   SMS_DATA *sdx=0;
   DIR_ENTRY de;
   char *pp=sd->fname;
-  GetCPUClock();
+//  GetCPUClock();
   if (!sd || !sd->isfile || !pp)
     return 0;
   if(!(p=strrchr(pp, '\\')) && !(p=strrchr(pp, '/')))
@@ -2070,7 +2088,7 @@ SMS_DATA *FindPrevMss(SMS_DATA *sd)
   SMS_DATA *sdx=0;
   DIR_ENTRY de;
   char *pp=sd->fname;
-  GetCPUClock();
+//  GetCPUClock();
   if (!sd || !sd->isfile || !pp)
     return 0;
   if(!(p=strrchr(pp, '\\')) && !(p=strrchr(pp, '/')))
@@ -2085,8 +2103,10 @@ SMS_DATA *FindPrevMss(SMS_DATA *sd)
   {
     do
     {
-      if(strlen(temp) && !strcmp(de.file_name, filename))
+      if(!strcmp(de.file_name, filename))
       {
+	if(!strlen(temp))
+	  break;
 	strcpy(filename, de.folder_name);
 	len=strlen(filename);
 	if(filename[len-1]!='\\'&&filename[len-1]!='/')
