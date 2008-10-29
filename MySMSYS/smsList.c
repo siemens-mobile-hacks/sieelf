@@ -48,16 +48,19 @@ const HEADER_DESC sms_menuhdr={0,0,0,0,NULL,LGP_NULL,LGP_NULL};
 #define SLOP_MENU_N_FILE (SLOP_MENU_N_DAT-1)
 
 const int slop_menusoftkeys[]={0,1,2};
+/*
 const SOFTKEY_DESC slop_menu_sk[]=
 {
   {0x0018,0x0000,(int)LGP_SELECT},
   {0x0001,0x0000,(int)LGP_BACK},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
-
+*/
+extern SOFTKEY_DESC ed_menu_sk[];
 const SOFTKEYSTAB slop_menu_skt=
 {
-  slop_menu_sk,0
+  ed_menu_sk,0
+  //slop_menu_sk,0
 };
 
 //char slop_hdr_text[64];
@@ -225,15 +228,15 @@ const MENUPROCS_DESC slop_procs_dat[SLOP_MENU_N_DAT]=
 	slop_menu_exit,
 };
 
-const int slop_lgp_dat[SLOP_MENU_N_DAT]=
+int slop_lgp_dat[SLOP_MENU_N_DAT]=
 {
-	(int)STR_REPLY,
-	(int)STR_EDIT,
-	(int)LGP_DEL,
-	(int)LGP_SAVE_AS_FILE,
-	(int)LGP_EXPORT_TXT,
-	(int)LGP_MOVE_ARCHIVE,
-	(int)LGP_EXIT,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
 };
 
 const MENUPROCS_DESC slop_procs_file[SLOP_MENU_N_FILE]=
@@ -246,14 +249,14 @@ const MENUPROCS_DESC slop_procs_file[SLOP_MENU_N_FILE]=
 	slop_menu_exit,
 };
 
-const int slop_lgp_file[SLOP_MENU_N_FILE]=
+int slop_lgp_file[SLOP_MENU_N_FILE]=
 {
-	(int)STR_REPLY,
-	(int)STR_EDIT,
-	(int)LGP_DEL,
-	(int)LGP_EXPORT_TXT,
-	(int)LGP_MOVE_ARCHIVE,
-	(int)LGP_EXIT,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
 };
 
 void slop_menu_ghook(void *data, int cmd)
@@ -324,7 +327,7 @@ void slop_menu_itemhndl(void *data, int curitem, void *user_pointer)
 	{
 		if(curitem==0 && su->sd->type==TYPE_DRAFT)
 		{
-			wsprintf(ws, PERCENT_T, LGP_SEND);
+			wsprintf(ws, PERCENT_T, lgp.LGP_SEND);
 			goto GO_P;
 		}
 		if(su->sd->isfile)
@@ -342,7 +345,7 @@ void slop_menu_itemhndl(void *data, int curitem, void *user_pointer)
 	}
 	else
 SLOP_ERR:
-		wsprintf(ws, PERCENT_T, LGP_ERR);
+		wsprintf(ws, PERCENT_T, lgp.LGP_ERR);
 GO_P:
 	SetMenuItemText(data, item, ws, curitem);
 }
@@ -419,10 +422,11 @@ int CreateslOpMenu(DLG_CSM *dlg_csm, SMS_DATA *sd, int type)
 //------------------------------------------------------
 
 const int sms_menusoftkeys[]={0,1,2};
-const SOFTKEY_DESC sms_menu_sk[]=
+
+SOFTKEY_DESC sms_menu_sk[]=
 {
-  {0x0018,0x0000,(int)LGP_OPTIONS},
-  {0x0001,0x0000,(int)LGP_EXIT},
+  {0x0018,0x0000,(int)LGP_NULL},
+  {0x0001,0x0000,(int)LGP_NULL},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -494,7 +498,7 @@ int sms_menu_onkey(void *data, GUI_MSG *msg)
 				cs=CreateLocalWS(&csloc,csb,30);
 				strcpy(num, sd->Number);
 				GetProvAndCity(cs->wsbody, num);
-				wsprintf(msg, "%t:\n%s\n%t:\n%w", STR_FROM, sd->Number, STR_CODESHOW, cs);
+				wsprintf(msg, "%t:\n%s\n%t:\n%w", lgp.LGP_FROM, sd->Number, lgp.LGP_CODESHOW, cs);
 			}
 		#endif
 			ShowMSG_ws(1, msg);
@@ -606,7 +610,7 @@ void sms_menu_itemhndl(void *data, int curitem, void *user_pointer)
 			if(!strncmp(num_fetion, sdl->Number, 5)) is_fetion=1;
 			if(findNameByNum(wn, is_fetion?(sdl->Number+5):sdl->Number))
 			{
-				if(is_fetion) wsprintf(ws2, "%w(%t)", wn, STR_FETION);
+				if(is_fetion) wsprintf(ws2, "%w(%t)", wn, lgp.LGP_FETION);
 				else	wstrcpy(ws2, wn);
 			}
 			else
@@ -622,7 +626,7 @@ void sms_menu_itemhndl(void *data, int curitem, void *user_pointer)
 	else
 	{
 AL_ERR:
-		wsprintf(ws1, PERCENT_T, LGP_ERR);
+		wsprintf(ws1, PERCENT_T, lgp.LGP_ERR);
 		CutWSTR(ws2, 0);
 	}
 	SetMenuItemIconArray(data, item, SL_ICONS);
@@ -632,7 +636,7 @@ AL_ERR:
 
 const char SM_FORMAT[]="%t%c%d/%d";
 const SOFTKEY_DESC SK_VIEW_PIC={0x003D,0x0000,(int)LGP_VIEW_PIC};
-const SOFTKEY_DESC SK_OK2={0x0018,0x0000,(int)LGP_OK};
+SOFTKEY_DESC SK_OK2={0x0018,0x0000,LGP_NULL};
 void sms_menu_ghook(void *data, int cmd)
 {
 	SML_OP *so=MenuGetUserPointer(data);
@@ -657,22 +661,22 @@ void sms_menu_ghook(void *data, int cmd)
 		switch(so->type)
 		{
 		case 0:
-			wsprintf(hdr_t, SM_FORMAT, LGP_ALL, 0xE01D, cur_n, n);
+			wsprintf(hdr_t, SM_FORMAT, lgp.LGP_ALL, 0xE01D, cur_n, n);
 			break;
 		case TYPE_IN_R:
-			wsprintf(hdr_t, SM_FORMAT, LGP_IN_R, 0xE01D, cur_n, n);
+			wsprintf(hdr_t, SM_FORMAT, lgp.LGP_IN_R, 0xE01D, cur_n, n);
 			break;
 		case TYPE_IN_N:
-			wsprintf(hdr_t, SM_FORMAT, LGP_IN_N, 0xE01D, cur_n, n);
+			wsprintf(hdr_t, SM_FORMAT, lgp.LGP_IN_N, 0xE01D, cur_n, n);
 			break;
 		case TYPE_OUT:
-			wsprintf(hdr_t, SM_FORMAT, LGP_OUT, 0xE01D, cur_n, n);
+			wsprintf(hdr_t, SM_FORMAT, lgp.LGP_OUT, 0xE01D, cur_n, n);
 			break;
 		case TYPE_DRAFT:
-			wsprintf(hdr_t, SM_FORMAT, LGP_DRAFT, 0xE01D, cur_n, n);
+			wsprintf(hdr_t, SM_FORMAT, lgp.LGP_DRAFT, 0xE01D, cur_n, n);
 			break;
 		case TYPE_IN_ALL:
-			wsprintf(hdr_t, SM_FORMAT, LGP_IN_A, 0xE01D, cur_n, n);
+			wsprintf(hdr_t, SM_FORMAT, lgp.LGP_IN_A, 0xE01D, cur_n, n);
 			break;
 		default:
 			CutWSTR(hdr_t, 0);
@@ -690,31 +694,31 @@ void sms_menu_ghook(void *data, int cmd)
 	}
 	else if(cmd==5)
 	{
-	  const char *lgp;
+	  const char *lgpN;
 	  switch(so->type)
 	  {
 	  case 0:
-	    lgp=LGP_ALL;
+	    lgpN=lgp.LGP_ALL;
 	    break;
 	  case TYPE_IN_R:
-	    lgp=LGP_IN_R;
+	    lgpN=lgp.LGP_IN_R;
 	    break;
 	  case TYPE_IN_N:
-	    lgp=LGP_IN_N;
+	    lgpN=lgp.LGP_IN_N;
 	    break;
 	  case TYPE_OUT:
-	    lgp=LGP_OUT;
+	    lgpN=lgp.LGP_OUT;
 	    break;
 	  case TYPE_DRAFT:
-	    lgp=LGP_DRAFT;
+	    lgpN=lgp.LGP_DRAFT;
 	    break;
 	  case TYPE_IN_ALL:
-	    lgp=LGP_IN_A;
+	    lgpN=lgp.LGP_IN_A;
 	    break;
 	  default:
-	    lgp=0;
+	    lgpN=0;
 	  }
-	  if(lgp) UpdateDlgCsmName(so->dlg_csm, lgp);
+	  if(lgpN) UpdateDlgCsmName(so->dlg_csm, lgpN);
 	}
 }
 const ML_MENU_DESC sms_menu=

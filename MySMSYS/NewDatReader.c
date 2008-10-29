@@ -149,9 +149,9 @@ void DoMsgReport(SMS_DATA *sd, char *data, WSHDR *ws)
   p+=7; //time 
   status=*p;
   if(status==0)
-    wsprintf(ws, "%t\r%t: 20%s", LGP_MSG_REPORT, LGP_MSG_REVEICED, time);
+    wsprintf(ws, "%t\r%t: 20%s", lgp.LGP_MSG_REPORT, lgp.LGP_MSG_REVEICED, time);
   else
-    wsprintf(ws, "%t\r%t: 20%s\r%s (%d)!", LGP_MSG_REPORT, STR_TIME, time, LGP_UNK_RP_STATUS, status);
+    wsprintf(ws, "%t\r%t: 20%s\r%s (%d)!", lgp.LGP_MSG_REPORT, lgp.LGP_TIME, time, lgp.LGP_UNK_RP_STATUS, status);
 }
 int PduDecodeAll(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktype
 {

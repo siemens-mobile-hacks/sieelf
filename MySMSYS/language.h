@@ -1,4 +1,3 @@
-//#define LANG_CN
 
 extern const char my_ipc_name[];
 extern const char ELFNAME[];
@@ -8,100 +7,15 @@ extern const char COPY_RIGHT[];
 extern const char FLDR_IN[];
 extern const char FLDR_OUT[];
 extern const char FLDR_DRAFT[];
-//extern const char FLDR_MAIN[];
 extern const char FLDR_UNK[];
 extern const char FLDR_ARCHIVE[];
 
 extern const char PERCENT_T[];
 extern const char PERCENT_S[];
 extern const char num_fetion[];
-
-extern const char LGP_OK[];
-extern const char LGP_BACK[];
-extern const char LGP_ADRBK[];
-extern const char LGP_ERR[];
-extern const char LGP_SELECT[];
-extern const char LGP_QUIT[];
-
-extern const char LGP_NEW[];
-extern const char LGP_IN_R[];
-extern const char LGP_IN_N[];
-extern const char LGP_IN_A[];
-extern const char LGP_OUT[];
-extern const char LGP_DRAFT[];
-extern const char LGP_ALL[];
-extern const char LGP_OPTIONS[];
-
-extern const char LGP_ERR_0NUM[];
-extern const char LGP_EXIT[];
-
-extern const char LGP_CANCEL[];
-extern const char LGP_SEND[];
-extern const char LGP_DEL[];
-//extern const char LGP_BACK[];
-extern const char LGP_SAVE_AS_DRAFT[];
-extern const char LGP_SAVE_AS_FILE[];
-extern const char LGP_INSERT_ADRNUM[];
-extern const char LGP_INSERT_BLANKNUM[];
-extern const char LGP_CHAR_COUNT[];
-extern const char STR_REPLY[];
-extern const char STR_UNK_ED[];
-extern const char STR_VIEW[];
-extern const char STR_EDIT[];
 extern const char STR_LINES[];
 extern const char STR_UNK_TXTT[];
 extern const char STR_UNK_TYPE[];
-extern const char STR_NEW_MSG[];
-extern const char STR_FROM[];
-extern const char LGP_SAVEALL[];
-extern const char LGP_CONFIG_UPDATE[];
-extern const char STR_UNK_NUM[];
-extern const char STR_NUMBER[];
-extern const char STR_TEXT[];
-extern const char STR_TO[];
-extern const char LGP_CONFIG[];
-extern const char LGP_CONFIG[];
-extern const char LGP_SAVE_ALL_ONE[];
-extern const char LGP_PLS_INPUT_PATH[];
-extern const char LGP_OTHERS[];
-extern const char STR_UNK_NUM_UTF8[];
-extern const char STR_NUMBER_UTF8[];
-extern const char STR_TEXT_UTF8[];
-extern const char STR_TO_UTF8[];
-extern const char STR_FROM_UTF8[];
-extern const char LGP_FILE_FAILED[];
-extern const char LGP_FILE_EXIST[];
-extern const char LGP_EXPORT_TXT[];
-extern const char LGP_MOVE_ARCHIVE[];
-extern const char LGP_MOVE_ALL_MSS[];
-extern const char LGP_OPEN_ARCHIVE[];
-extern const char STR_EXPORT_N[];
-extern const char STR_MOVE_MSSARCHIVER_N[];
-extern const char STR_TIME_UTF8[];
-extern const char STR_UNK_UTF8[];
-extern const char STR_TIME[];
-extern const char STR_UNK[];
-extern const char LGP_DEL_ALL_MSS[];
-extern const char LGP_ABOUT[];
-extern const char LGP_COV_DAT_TXT[];
-extern const char LGP_SAVE_ALL_AS_FILE[];
-extern const char STR_SAF_N[];
-extern const char LGP_DEL_ALL[];
-extern const char LGP_MOVE_ALL[];
-extern const char LGP_DEL_ALL_MSG[];
-extern const char LGP_DEL_ALL_MSG_MSS[];
-extern const char LGP_SAVE[];
-extern const char LGP_MSG_REPORT[];
-extern const char LGP_MSG_REVEICED[]; //后加时间
-extern const char LGP_UNK_RP_STATUS[];
-extern const char LGP_TEMPLATE[];
-extern const char LGP_CALL_ADDRESSBOOK[];
-extern const char LGP_STATISTICS[];
-extern const char LGP_IN_SMSDAT[];
-extern const char LGP_IS_MSSFILE[];
-extern const char LGP_DAT_FREE[];
-extern const char LGP_DISK_FREE[];
-extern const char LGP_MSS_MAINMENU[];
 
 #ifdef LANG_CN
 #define LGP_CFG_MAIN_FOLDER "MySMSYS文件夹"
@@ -129,8 +43,6 @@ extern const char LGP_MSS_MAINMENU[];
 #define LGP_EDIT_FONT_MEDIUM_BOLD "中字体加粗"
 #define LGP_EDIT_FONT_LARGE "大号字体"
 #define LGP_EDIT_FONT_LARGE_BOLD "大字体加粗"
-extern const char STR_CODESHOW[];
-extern const char STR_FETION[];
 #endif
 
 #ifdef LANG_EN
@@ -159,5 +71,106 @@ extern const char STR_FETION[];
 #define LGP_EDIT_FONT_MEDIUM_BOLD "Medium+Bold"
 #define LGP_EDIT_FONT_LARGE "Large"
 #define LGP_EDIT_FONT_LARGE_BOLD "Large+Bold"
-extern const char LGP_TRANSLIT[];
 #endif
+
+typedef struct{
+  const char *LGP_OK;
+  const char *LGP_BACK;
+  const char *LGP_ADRBK;
+  const char *LGP_ERR;
+  const char *LGP_SELECT;
+  const char *LGP_QUIT;
+  const char *LGP_NEW;
+  const char *LGP_IN_R;
+  const char *LGP_IN_N;
+  const char *LGP_IN_A;
+  const char *LGP_OUT;
+  const char *LGP_DRAFT;
+  const char *LGP_ALL;
+  const char *LGP_OPTIONS;
+  const char *LGP_ERR_0NUM;
+  const char *LGP_EXIT;
+  const char *LGP_CANCEL;
+  const char *LGP_SEND;
+  const char *LGP_DEL;
+  const char *LGP_SAVE_AS_FILE;
+  const char *LGP_SAVE_AS_DRAFT;
+  const char *LGP_INSERT_ADRNUM;
+  const char *LGP_INSERT_BLANKNUM;
+  const char *LGP_CHAR_COUNT;
+  const char *LGP_VIEW;
+  const char *LGP_EDIT;
+  const char *LGP_REPLY;
+  const char *LGP_NEW_MSG;
+  const char *LGP_FROM;
+  const char *LGP_CODESHOW;
+  const char *LGP_FETION;
+  const char *LGP_SAVEALL;
+  const char *LGP_CONFIG_UPDATE;
+  const char *LGP_CONFIG;
+  const char *LGP_SAVE_ALL_ONE;
+  const char *LGP_PLS_INPUT_PATH;
+  const char *LGP_OTHERS;
+  const char *LGP_FILE_FAILED;
+  const char *LGP_FILE_EXIST;
+  const char *LGP_EXPORT_TXT;
+  const char *LGP_MOVE_ARCHIVE;
+  const char *LGP_MOVE_ALL_MSS;
+  const char *LGP_OPEN_ARCHIVE;
+  const char *LGP_EXPORT_N;
+  const char *LGP_MOVE_MSSARCHIVER_N;
+  const char *LGP_DEL_ALL_MSS;
+  const char *LGP_ABOUT;
+  const char *LGP_COV_DAT_TXT;
+  const char *LGP_SAVE_ALL_AS_FILE;
+  const char *LGP_SAF_N;
+  const char *LGP_DEL_ALL;
+  const char *LGP_DEL_ALL_MSG;
+  const char *LGP_MOVE_ALL;
+  const char *LGP_DEL_ALL_MSG_MSS;
+  const char *LGP_SAVE;
+  const char *LGP_MSG_REPORT;
+  const char *LGP_MSG_REVEICED; //后加时间
+  const char *LGP_UNK_RP_STATUS;
+  const char *LGP_TEMPLATE;
+  const char *LGP_CALL_ADDRESSBOOK;
+  const char *LGP_STATISTICS;
+  const char *LGP_IN_SMSDAT;
+  const char *LGP_IS_MSSFILE;
+  const char *LGP_DAT_FREE;
+  const char *LGP_DISK_FREE;
+  const char *LGP_MSS_MAINMENU;
+  const char *LGP_TRANSLIT;
+  const char *LGP_TIME;
+  const char *LGP_UNK_NUM;
+  const char *LGP_NUMBER;
+  const char *LGP_TEXT;
+  const char *LGP_TO;
+  const char *LGP_UNK;
+}LGPACK;
+
+extern LGPACK lgp;
+/*
+extern const char STR_FROM[];
+extern const char STR_UNK_NUM[];
+extern const char STR_NUMBER[];
+extern const char STR_TEXT[];
+extern const char STR_TO[];
+extern const char STR_TIME[];
+extern const char STR_UNK[];
+*/
+extern const char STR_UNK_NUM_UTF8[];
+extern const char STR_NUMBER_UTF8[];
+extern const char STR_TEXT_UTF8[];
+extern const char STR_TO_UTF8[];
+extern const char STR_FROM_UTF8[];
+extern const char STR_TIME_UTF8[];
+extern const char STR_UNK_UTF8[];
+
+//-------------
+void LoadLangPack(void);
+void FreeLangPack(void);
+
+
+
+

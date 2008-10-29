@@ -1511,17 +1511,17 @@ int ExportAllToOneTxt_ASCII(char *filename)
     s_n++;
     ws_2ascii(sdl->SMS_TEXT, text, MAX_TEXT*2);
     if(!findNameByNum(wname, sdl->Number))
-      strcpy(sname, STR_UNK_NUM);
+      strcpy(sname, lgp.LGP_UNK_NUM);
     else
       ws_2ascii(wname, sname, 64);
     sprintf(buf, "%s: %s\r\n%s: %s\r\n%s: %s\r\n%s:\r\n%s\r\n\r\n",
-	    STR_FROM,
+	    lgp.LGP_FROM,
 	    sname,
-	    STR_NUMBER,
+	    lgp.LGP_NUMBER,
 	    sdl->Number,
-	    STR_TIME,
-	    (strlen(sdl->Time))?sdl->Time:STR_UNK,
-	    STR_TEXT,
+	    lgp.LGP_TIME,
+	    (strlen(sdl->Time))?sdl->Time:lgp.LGP_UNK,
+	    lgp.LGP_TEXT,
 	    text);
     len=strlen(buf);
     if(fwrite(fin, buf, len, &err)!=len)
@@ -1563,17 +1563,17 @@ int ExportOneToTxt_ASCII(SMS_DATA *sd)
     return 0;
   ws_2ascii(sd->SMS_TEXT, text, MAX_TEXT*2);
   if(!findNameByNum(wname, sd->Number))
-    strcpy(sname, STR_UNK_NUM);
+    strcpy(sname, lgp.LGP_UNK_NUM);
   else
     ws_2ascii(wname, sname, 64);
   sprintf(buf, "%s: %s\r\n%s: %s\r\n%s: %s\r\n%s:\r\n%s\r\n",
-	  (sd->type==TYPE_OUT||sd->type==TYPE_DRAFT)?STR_TO:STR_FROM,
+	  (sd->type==TYPE_OUT||sd->type==TYPE_DRAFT)?lgp.LGP_TO:lgp.LGP_FROM,
 	  sname,
-	  STR_NUMBER,
+	  lgp.LGP_NUMBER,
 	  sd->Number,
-	  STR_TIME,
-	  (strlen(sd->Time))?sd->Time:STR_UNK,
-	  STR_TEXT,
+	  lgp.LGP_TIME,
+	  (strlen(sd->Time))?sd->Time:lgp.LGP_UNK,
+	  lgp.LGP_TEXT,
 	  text);
   len=strlen(buf);
   if(fwrite(fin, buf, len, &err)!=len)
@@ -1843,9 +1843,9 @@ int MoveAllToArchive(void)
 void ShowFileErrCode(int code)
 {
   if (code==0)
-    MsgBoxError(1, (int)LGP_FILE_FAILED);
+    MsgBoxError(1, (int)lgp.LGP_FILE_FAILED);
   else if (code==-1)
-    MsgBoxError(1, (int)LGP_FILE_EXIST);
+    MsgBoxError(1, (int)lgp.LGP_FILE_EXIST);
 }
 
 void DeleteAllMss(void)
@@ -1911,17 +1911,17 @@ int CovDatToTxt_ASCII(char *dat_path, char *txt_path)
 	res++;
 	ws_2ascii(edx->text, text, MAX_TEXT*2);
 	if(!findNameByNum(wname, edx->number))
-	  strcpy(sname, STR_UNK_NUM);
+	  strcpy(sname, lgp.LGP_UNK_NUM);
 	else
 	  ws_2ascii(wname, sname, 64);
 	sprintf(temp, "%s: %s\r\n%s: %s\r\n%s: %s\r\n%s:\r\n%s\r\n\r\n",
-		STR_FROM,
+		lgp.LGP_FROM,
 		sname,
-		STR_NUMBER,
+		lgp.LGP_NUMBER,
 		edx->number,
-		STR_TIME,
-		(strlen(edx->time))?edx->time:STR_UNK,
-		STR_TEXT,
+		lgp.LGP_TIME,
+		(strlen(edx->time))?edx->time:lgp.LGP_UNK,
+		lgp.LGP_TEXT,
 		text);
 	len=strlen(temp);
 	if(fwrite(ft, temp, len, &err)!=len)

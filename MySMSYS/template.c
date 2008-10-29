@@ -136,10 +136,10 @@ int ReadTp(void)
 }
 
 const int tplmenusoftkeys[]={0,1,2};
-const SOFTKEY_DESC tplmenu_sk[]=
+SOFTKEY_DESC tplmenu_sk[]=
 {
-  {0x0018,0x0000,(int)LGP_OK},
-  {0x0001,0x0000,(int)LGP_BACK},
+  {0x0018,0x0000,(int)LGP_NULL},
+  {0x0001,0x0000,(int)LGP_NULL},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -148,7 +148,7 @@ const SOFTKEYSTAB tplmenu_skt=
   tplmenu_sk,0
 };
 
-HEADER_DESC tplmenuhdr={0,0,0,0,NULL,(int)LGP_TEMPLATE,LGP_NULL};
+HEADER_DESC tplmenuhdr={0,0,0,0,NULL,(int)LGP_NULL,LGP_NULL};
 
 int tplmenu_onkey(void *data, GUI_MSG *msg)
 {
@@ -189,7 +189,7 @@ void tplmenuitemhdl(void *data, int curitem, void *user_pointer)
   if(tp)
     wstrcpy(ws, tp->text);
   else
-    wsprintf(ws, PERCENT_T, LGP_ERR);
+    wsprintf(ws, PERCENT_T, lgp.LGP_ERR);
   SetMenuItemText(data, item, ws, curitem);
 }
 
@@ -218,7 +218,7 @@ int CreateTplMenu(void *ed_gui)
   int n;
   if((n=ReadTp())==-1)
   {
-    MsgBoxError(1, (int)LGP_ERR);
+    MsgBoxError(1, (int)lgp.LGP_ERR);
     return 0;
   }
   patch_header(&tplmenuhdr);

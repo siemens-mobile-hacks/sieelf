@@ -192,10 +192,10 @@ int isTheLastDlg(unsigned int *id_pool, unsigned int id)
 //---------------------------------------
 //main menu
 const int main_menusoftkeys[]={0,1,2};
-const SOFTKEY_DESC main_menu_sk[]=
+SOFTKEY_DESC main_menu_sk[]=
 {
-  {0x0018,0x0000,(int)LGP_SELECT},
-  {0x0001,0x0000,(int)LGP_QUIT},
+  {0x0018,0x0000,(int)LGP_NULL},
+  {0x0001,0x0000,(int)LGP_NULL},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -204,7 +204,7 @@ const SOFTKEYSTAB main_menu_skt=
 {
   main_menu_sk,0
 };
-HEADER_DESC main_menuhdr={0,0,0,0,NULL,(int)LGP_MSS_MAINMENU,LGP_NULL};
+HEADER_DESC main_menuhdr={0,0,0,0,NULL,(int)LGP_NULL,LGP_NULL};
 #define MAIN_MENU_N 7
 
 void mm_newsms(GUI *gui)
@@ -258,15 +258,15 @@ void mm_oth(GUI *gui)
 }
 
 
-const char *MENU_TEXT[MAIN_MENU_N]=
+int MENU_TEXT[MAIN_MENU_N]=
 {
-	LGP_NEW,
-	LGP_IN_N,
-	LGP_IN_A,
-	LGP_OUT,
-	LGP_DRAFT,
-	LGP_ALL,
-	LGP_OTHERS
+  LGP_NULL,
+  LGP_NULL,
+  LGP_NULL,
+  LGP_NULL,
+  LGP_NULL,
+  LGP_NULL,
+  LGP_NULL
 };
 
 const MENUPROCS_DESC procs_mmenu[MAIN_MENU_N]=
@@ -343,7 +343,7 @@ void main_menu_itemhndl(void *data, int curitem, void *user_pointer)
 		wsprintf(ws, MM_FORMAT, MENU_TEXT[curitem], 0xE01D, getCountByType(0));
 		break;
 	default:
-		wsprintf(ws, PERCENT_T, LGP_ERR);
+		wsprintf(ws, PERCENT_T, lgp.LGP_ERR);
 		break;
 	}
 	SetMenuItemText(data, item, ws, curitem);
@@ -353,7 +353,7 @@ void main_menu_ghook(void *gui, int cmd)
   if(cmd==5)
   {
     void *dlg_csm=MenuGetUserPointer(gui);
-    UpdateDlgCsmName(dlg_csm, LGP_MSS_MAINMENU);
+    UpdateDlgCsmName(dlg_csm, lgp.LGP_MSS_MAINMENU);
   }
 }
 const MENU_DESC main_menu=
@@ -477,6 +477,7 @@ static void dialogcsm_oncreate(CSM_RAM *data)
   default:
     csm->gui_id=CreateMainMenu(csm);
   }
+  LoadLangPack();
   if(addCSMid(DlgCsmIDs, csm->csm.id)<0)
     addCSMidForced0(DlgCsmIDs, csm->csm.id);
 }
@@ -487,12 +488,12 @@ void FreeCsmd(void *csmd)
 }
 static void dialogcsm_onclose(CSM_RAM *data)
 {
-	DLG_CSM *dlg_csm=(DLG_CSM *)data;
-	DLGCSM_DESC *dcd=dlg_csm->csm.constr;
-	delCSMid(DlgCsmIDs, dlg_csm->csm.id);
-	if(dcd->name.wsbody!=dialogcsm_name_body && dcd->name.wsbody!=0)
-		mfree(dcd->name.wsbody);
-	mfree(dcd);
+  DLG_CSM *dlg_csm=(DLG_CSM *)data;
+  DLGCSM_DESC *dcd=dlg_csm->csm.constr;
+  delCSMid(DlgCsmIDs, dlg_csm->csm.id);
+  if(dcd->name.wsbody!=dialogcsm_name_body && dcd->name.wsbody!=0)
+    mfree(dcd->name.wsbody);
+  mfree(dcd);
 }
 
 const DLGCSM_DESC DIALOGCSM =
@@ -731,7 +732,7 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 	  if(!strcmp_nocase(successed_config_filename,(char *)msg->data0))
 	  {
 	    InitSetting();
-	    ShowMSG(1,(int)LGP_CONFIG_UPDATE);
+	    ShowMSG(1,(int)lgp.LGP_CONFIG_UPDATE);
 	    if(!cltop)
 	      SUBPROC((void *)ConstructList);
 	  }
@@ -875,6 +876,7 @@ static void daemoncsm_onclose(CSM_RAM *csm)
 	freeSDList();
 	GBS_DelTimer(&chk_tmr);
 	GBS_DelTimer(&n_update_tmr);
+	FreeLangPack();
 	SUBPROC((void *)ElfKiller);
 }
 
@@ -945,17 +947,20 @@ int main(char *exename, char *fname)
 //--------------------------------------------------------
 //Others Menu
 #define OTH_MENU_N 8
+/*
 const SOFTKEY_DESC oth_menu_sk[]=
 {
   {0x0018,0x0000,(int)LGP_SELECT},
   {0x0001,0x0000,(int)LGP_BACK},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
+*/
 
-
+extern SOFTKEY_DESC ed_menu_sk[];
 const SOFTKEYSTAB oth_menu_skt=
 {
-  oth_menu_sk,0
+  ed_menu_sk,0
+  //oth_menu_sk,0
 };
 
 void OpenConfig(void)
@@ -985,7 +990,7 @@ void oth_move_all_mss(GUI *data)
   char msg[64];
   GeneralFuncF1(1);
   k=MoveAllMssToArchive();
-  sprintf(msg, STR_MOVE_MSSARCHIVER_N, k);
+  sprintf(msg, lgp.LGP_MOVE_MSSARCHIVER_N, k);
   ShowMSG(1, (int)msg);
 }
 
@@ -1029,7 +1034,7 @@ void oth_show_count(GUI *data) //mss
   DLG_CSM *dlg_csm=MenuGetUserPointer(data);
   GeneralFuncF1(1);
   extern int ShowCount(void);
-  UpdateDlgCsmName(dlg_csm, LGP_STATISTICS);
+  UpdateDlgCsmName(dlg_csm, lgp.LGP_STATISTICS);
   ShowCount();
 }
 
@@ -1046,16 +1051,16 @@ const MENUPROCS_DESC oth_menuprocs[OTH_MENU_N]=
   oth_about,
 };
 
-const MENUITEM_DESC oth_menuitems[OTH_MENU_N]=
+MENUITEM_DESC oth_menuitems[OTH_MENU_N]=
 {
-  {NULL,(int)LGP_CONFIG,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-  {NULL,(int)LGP_OPEN_ARCHIVE,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-  {NULL,(int)LGP_SAVE_ALL_ONE,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-  {NULL,(int)LGP_MOVE_ALL_MSS,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-  {NULL,(int)LGP_COV_DAT_TXT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-  {NULL,(int)LGP_DEL_ALL_MSG_MSS,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-  {NULL,(int)LGP_STATISTICS,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-  {NULL,(int)LGP_ABOUT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)LGP_NULL,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)LGP_NULL,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)LGP_NULL,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)LGP_NULL,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)LGP_NULL,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)LGP_NULL,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)LGP_NULL,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
+  {NULL,(int)LGP_NULL,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
 };
 
 void oth_menu_ghook(void *data, int cmd)
@@ -1063,7 +1068,7 @@ void oth_menu_ghook(void *data, int cmd)
   if(cmd==5)
   {
     DLG_CSM *dlg_csm=MenuGetUserPointer(data);
-    UpdateDlgCsmName(dlg_csm, LGP_OTHERS);
+    UpdateDlgCsmName(dlg_csm, lgp.LGP_OTHERS);
   }
 }
 const MENU_DESC oth_menu=
@@ -1078,7 +1083,7 @@ const MENU_DESC oth_menu=
   OTH_MENU_N
 };
 
-HEADER_DESC oth_menuhdr={0,0,0,0,NULL,(int)LGP_OTHERS,LGP_NULL};
+HEADER_DESC oth_menuhdr={0,0,0,0,NULL,(int)LGP_NULL,LGP_NULL};
 
 unsigned int CreateOthMenu(void *dlg_csm)
 {

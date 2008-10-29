@@ -324,7 +324,7 @@ int CreateNAbCSM(void *dlg_csm, void *ed_gui, int type)
   data.ed_gui=ed_gui;
   data.dlg_csm=dlg_csm;
   data.type=type;
-  wsprintf((WSHDR *)(&ABCSM_DESC.abcsm_name), PERCENT_T, LGP_CALL_ADDRESSBOOK);
+  wsprintf((WSHDR *)(&ABCSM_DESC.abcsm_name), PERCENT_T, lgp.LGP_CALL_ADDRESSBOOK);
   //id=CreateCSM(&abcsm, &data, 0);
   //return id;
   return (CreateCSM(&(ABCSM_DESC.abcsm), &data, 0));

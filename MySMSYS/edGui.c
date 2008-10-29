@@ -25,10 +25,10 @@
 
 HEADER_DESC ED_HDR={0,0,0,0,NULL,LGP_NULL,LGP_NULL};
 const int ed_menusoftkeys[]={0,1,2};
-const SOFTKEY_DESC ed_menu_sk[]=
+SOFTKEY_DESC ed_menu_sk[]=
 {
-	{0x0018,0x0000,(int)LGP_SELECT},
-	{0x0001,0x0000,(int)LGP_BACK},
+	{0x0018,0x0000,(int)LGP_NULL},
+	{0x0001,0x0000,(int)LGP_NULL},
 	{0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 const SOFTKEYSTAB ed_menu_skt=
@@ -260,15 +260,15 @@ const MENUPROCS_DESC procs_nml_file[MENU_N_NML_FILE]=
 	ed_menu_exit,
 };
 
-const int items_lgp_nml_file[MENU_N_NML_FILE]=
+int items_lgp_nml_file[MENU_N_NML_FILE]=
 {
-	(int)STR_REPLY,
-	(int)STR_EDIT,
-	(int)LGP_DEL,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
 	(int)LGP_SAVE_TO_AB,
-	(int)LGP_EXPORT_TXT,
-	(int)LGP_MOVE_ARCHIVE,
-	(int)LGP_EXIT,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
 };
 
 
@@ -284,16 +284,16 @@ const MENUPROCS_DESC procs_nml_dat[MENU_N_NML_DAT]=
 	ed_menu_exit,
 };
 
-const int items_lgp_nml_dat[MENU_N_NML_DAT]=
+int items_lgp_nml_dat[MENU_N_NML_DAT]=
 {
-	(int)STR_REPLY,
-	(int)STR_EDIT,
-	(int)LGP_DEL,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
 	(int)LGP_SAVE_TO_AB,
-	(int)LGP_SAVE_AS_FILE,
-	(int)LGP_EXPORT_TXT,
-	(int)LGP_MOVE_ARCHIVE,
-	(int)LGP_EXIT,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
 };
 
 const MENUPROCS_DESC procs_archive_file[MENU_N_ARCHIVE_FILE]=
@@ -306,14 +306,14 @@ const MENUPROCS_DESC procs_archive_file[MENU_N_ARCHIVE_FILE]=
 	ed_menu_exit,
 };
 
-const int items_lgp_archive_file[MENU_N_ARCHIVE_FILE]=
+int items_lgp_archive_file[MENU_N_ARCHIVE_FILE]=
 {
-	(int)STR_REPLY,
-	(int)STR_EDIT,
-	(int)LGP_DEL,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
 	(int)LGP_SAVE_TO_AB,
-	(int)LGP_EXPORT_TXT,
-	(int)LGP_EXIT,
+	(int)LGP_NULL,
+	(int)LGP_NULL,
 };
 
 int IsFileInArchive(const char *fpath)
@@ -342,7 +342,7 @@ void ed_menu_itemhndl(void *data, int curitem, void *user_pointer)
 	WSHDR *ws=AllocMenuWS(data, 150);
 	if(curitem==0 && uo->sd && uo->sd->type==TYPE_DRAFT)
 	{
-		wsprintf(ws, PERCENT_T, LGP_SEND);
+		wsprintf(ws, PERCENT_T, lgp.LGP_SEND);
 		goto GOGO;
 	}
 	switch(uo->dat_type)
@@ -364,7 +364,7 @@ void ed_menu_itemhndl(void *data, int curitem, void *user_pointer)
 		break;
 	default:
 ITEM_ERR:
-		wsprintf(ws, PERCENT_T, LGP_ERR);
+		wsprintf(ws, PERCENT_T, lgp.LGP_ERR);
 	}
 GOGO:
 	SetMenuItemText(data, item, ws, curitem);
@@ -613,7 +613,7 @@ int Ed_SendSMS(void *gui)
 	NUM_LIST *nl=(NUM_LIST *)(uo->nltop);
 	if(!(IsHaveNumInList(uo)))
 	{
-		ShowMSG(1, (int)LGP_ERR_0NUM);
+		ShowMSG(1, (int)lgp.LGP_ERR_0NUM);
 		return 0;
 	}
 	ExtractEditControl(gui,uo->focus_n,&ec);
@@ -657,19 +657,19 @@ void on_adr_ec(USR_MENU_ITEM *item) //MENU WOULD BE CLOSED FIRST
     switch(item->cur_item)
     {
     case 0:
-      wsprintf(item->ws, PERCENT_T, LGP_SEND);
+      wsprintf(item->ws, PERCENT_T, lgp.LGP_SEND);
       break;
     case 1:
-      wsprintf(item->ws, PERCENT_T, LGP_ADRBK);
+      wsprintf(item->ws, PERCENT_T, lgp.LGP_ADRBK);
       break;
     case 2:
-      wsprintf(item->ws, PERCENT_T, LGP_CANCEL);
+      wsprintf(item->ws, PERCENT_T, lgp.LGP_CANCEL);
       break;
     case 3:
-      wsprintf(item->ws, PERCENT_T, (uo->sd->type==TYPE_DRAFT && uo->sd->isfile)?LGP_SAVE:LGP_SAVE_AS_DRAFT);
+      wsprintf(item->ws, PERCENT_T, (uo->sd->type==TYPE_DRAFT && uo->sd->isfile)?lgp.LGP_SAVE:lgp.LGP_SAVE_AS_DRAFT);
       break;
     case 4:
-      wsprintf(item->ws, PERCENT_T, LGP_TEMPLATE);
+      wsprintf(item->ws, PERCENT_T, lgp.LGP_TEMPLATE);
       break;
 #ifndef LANG_CN
     case 5:
@@ -911,7 +911,7 @@ int edOnKey(GUI *data, GUI_MSG *msg)
 			NUM_LIST *nl=(NUM_LIST *)(uo->nltop);
 			WSHDR *msg=AllocWS(128);
 		#ifdef NO_CS
-			wsprintf(msg, "%t:\n%s", STR_FROM, nl->num);
+			wsprintf(msg, "%t:\n%s", lgp.LGP_FROM, nl->num);
 		#else
 			{
 				char num[32];
@@ -920,7 +920,7 @@ int edOnKey(GUI *data, GUI_MSG *msg)
 				cs=CreateLocalWS(&csloc,csb,30);
 				strcpy(num, nl->num);
 				GetProvAndCity(cs->wsbody, num);
-				wsprintf(msg, "%t:\n%s\n%t:\n%w", STR_FROM, nl->num, STR_CODESHOW, cs);
+				wsprintf(msg, "%t:\n%s\n%t:\n%w", lgp.LGP_FROM, nl->num, lgp.LGP_CODESHOW, cs);
 			}
 		#endif
 			ShowMSG_ws(1, msg);
@@ -930,10 +930,10 @@ int edOnKey(GUI *data, GUI_MSG *msg)
 }
 
 
-const SOFTKEY_DESC SK_OPTIONS={0x0018,0x0000,(int)LGP_OPTIONS};
-const SOFTKEY_DESC SK_ADRBK={0x0F00,0x0000,(int)LGP_ADRBK};
-const SOFTKEY_DESC SK_CANCEL={0x0001,0x0000,(int)LGP_CANCEL};
-const SOFTKEY_DESC SK_OP_PIC={0x0029,0x0000,(int)LGP_OPTION_PIC};
+SOFTKEY_DESC SK_OPTIONS={0x0018,0x0000,(int)LGP_NULL};
+SOFTKEY_DESC SK_ADRBK={0x0F00,0x0000,(int)LGP_NULL};
+SOFTKEY_DESC SK_CANCEL={0x0001,0x0000,(int)LGP_NULL};
+SOFTKEY_DESC SK_OP_PIC={0x0029,0x0000,(int)LGP_OPTION_PIC};
 
 #define TI_CMD_GOTOTOP 0x5
 
@@ -994,30 +994,30 @@ void edGHook(GUI *data, int cmd)
 	}
 	else if(cmd==TI_CMD_GOTOTOP)
 	{
-	  const char *lgp;
+	  const char *lgpN;
 	  switch(uo->gui_type)
 	  {
 	  case ED_VIEW:
 	  case ED_FVIEW:
-	    lgp=STR_VIEW;
+	    lgpN=lgp.LGP_VIEW;
 	    break;
 	  case ED_EDIT:
 	  case ED_FEDIT:
-	    lgp=STR_EDIT;
+	    lgpN=lgp.LGP_EDIT;
 	    break;
 	  case ED_NEW:
 	  case ED_FREE:
-	    lgp=LGP_NEW;
+	    lgpN=lgp.LGP_NEW;
 	    break;
 	  case ED_REPLY:
 	  case ED_FREPLY:
-	    lgp=STR_REPLY;
+	    lgpN=lgp.LGP_REPLY;
 	    break;
 	  default:
-	    lgp=0;
+	    lgpN=0;
 	    break;
 	  }
-	  if(lgp) UpdateDlgCsmName(uo->dlg_csm, lgp);
+	  if(lgpN) UpdateDlgCsmName(uo->dlg_csm, lgpN);
 	}
 	else if(cmd==TI_CMD_REDRAW)
 	{
@@ -1103,9 +1103,9 @@ void edGHook(GUI *data, int cmd)
 			void *ma=malloc_adr();
 			void *mf=mfree_adr();
 		#ifdef DEBUG
-			wsprintf(hdr_t, "%t:%d,p:%d", LGP_CHAR_COUNT, ec.pWS->wsbody[0], EDIT_GetCursorPos(data));
+			wsprintf(hdr_t, "%t:%d,p:%d", lgp.LGP_CHAR_COUNT, ec.pWS->wsbody[0], EDIT_GetCursorPos(data));
 		#else
-			wsprintf(hdr_t, "%t: %d", LGP_CHAR_COUNT, ec.pWS->wsbody[0]);
+			wsprintf(hdr_t, "%t: %d", lgp.LGP_CHAR_COUNT, ec.pWS->wsbody[0]);
 		#endif
 			SetHeaderText(hdr_p, hdr_t, ma, mf);
 			if((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW))
@@ -1266,7 +1266,7 @@ int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, 
 				str_2ws(ews, sd->Number, 50);
 			else
 			{
-				if(is_fetion) wsprintf(ews, "%w(%t)", wsname, STR_FETION);
+				if(is_fetion) wsprintf(ews, "%w(%t)", wsname, lgp.LGP_FETION);
 				else wstrcpy(ews, wsname);
 			}
 		#else
@@ -1453,7 +1453,7 @@ void DeleteAllMss_proc(int id)
 }
 void delallproc(void)
 {
-	MsgBoxYesNo(1, (int)LGP_DEL_ALL_MSS, DeleteAllMss_proc);
+	MsgBoxYesNo(1, (int)lgp.LGP_DEL_ALL_MSS, DeleteAllMss_proc);
 }
 int PathInputOnKey(GUI *data, GUI_MSG *msg)
 {
@@ -1471,7 +1471,7 @@ int PathInputOnKey(GUI *data, GUI_MSG *msg)
       if(k>0)
       {
 	char msg[64];
-    	sprintf(msg, STR_EXPORT_N, k);
+    	sprintf(msg, lgp.LGP_EXPORT_N, k);
 	ShowMSG_offproc(1, msg, delallproc);
       }
       else
@@ -1487,7 +1487,7 @@ int PathInputOnKey(GUI *data, GUI_MSG *msg)
       if(k>0)
       {
 	char msg[64];
-    	sprintf(msg, STR_EXPORT_N, k);
+    	sprintf(msg, lgp.LGP_EXPORT_N, k);
 	ShowMSG(1, (int)msg);
       }
       else
@@ -1549,7 +1549,7 @@ void PathInputDlg(int type, char *path)
   PrepareEditControl(&ec);
   eq=AllocEQueue(ma,mfree_adr());
   ews=AllocWS(128);
-  wsprintf(ews, PERCENT_T, LGP_PLS_INPUT_PATH);
+  wsprintf(ews, PERCENT_T, lgp.LGP_PLS_INPUT_PATH);
   ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,ews->wsbody[0]);
   AddEditControlToEditQend(eq,&ec,ma);
   if(type==INPUT_COV_DAT)
@@ -1652,46 +1652,46 @@ int ShowCount(void)
   SMS_DATA_ROOT *sdr=SmsDataRoot();
   hdr=CreateLocalWS(&hdrn, hdrb, 128);
   msg=CreateLocalWS(&msgn, msgb, 512);
-  wsprintf(hdr, PERCENT_T, LGP_STATISTICS);
+  wsprintf(hdr, PERCENT_T, lgp.LGP_STATISTICS);
   wsprintf(msg, "%t: %c%d\n----------------\n%d%c %t\n%t: %c%d%c\n%t: %c%d%c\n%t: %c%d%c\n%t: %c%d\n----------------\n%d%c %t\n%t: %c%d%c\n%t: %c%d%c\n%t: %c%d\n----------------\n%dKb%c\n%t%c%c%c",
-	   LGP_ALL,
+	   lgp.LGP_ALL,
 	   0xE013,
 	   getCountByType(0),
 	   GetCountByIsFileType(0, 0),
 	   0xE012,
-	   LGP_IN_SMSDAT,
-	   LGP_IN_A,
+	   lgp.LGP_IN_SMSDAT,
+	   lgp.LGP_IN_A,
 	   0xE013,
 	   GetCountByIsFileType(0, TYPE_IN_ALL),
 	   0xE012,
-	   LGP_OUT,
+	   lgp.LGP_OUT,
 	   0xE013,
 	   GetCountByIsFileType(0, TYPE_OUT),
 	   0xE012,
-	   LGP_DRAFT,
+	   lgp.LGP_DRAFT,
 	   0xE013,
 	   GetCountByIsFileType(0, TYPE_DRAFT),
 	   0xE012,
-	   LGP_DAT_FREE,
+	   lgp.LGP_DAT_FREE,
 	   0xE013,
 	   100 - sdr->cnt_in_data - sdr->cnt_new_in_data - sdr->cnt_sent_data - sdr->cnt_draft_data -sdr->unk_0_3,
 	   GetCountByIsFileType(1, 0),
 	   0xE012,
-	   LGP_IS_MSSFILE,
-	   LGP_IN_A,
+	   lgp.LGP_IS_MSSFILE,
+	   lgp.LGP_IN_A,
 	   0xE013,
 	   GetCountByIsFileType(1, TYPE_IN_ALL),
 	   0xE012,
-	   LGP_OUT,
+	   lgp.LGP_OUT,
 	   0xE013,
 	   GetCountByIsFileType(1, TYPE_OUT),
 	   0xE012,
-	   LGP_DRAFT,
+	   lgp.LGP_DRAFT,
 	   0xE013,
 	   GetCountByIsFileType(1, TYPE_DRAFT),
 	   GetFreeFlexSpace(CFG_MAIN_FOLDER[0]-'0', &err)/1024,
 	   0xE012,
-	   LGP_DISK_FREE,
+	   lgp.LGP_DISK_FREE,
 	   0xE013,
 	   CFG_MAIN_FOLDER[0],
 	   0xE012

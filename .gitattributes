@@ -987,6 +987,8 @@ MySMSYS/edGui.h -text
 MySMSYS/func.asm -text
 MySMSYS/guiIdMan.c -text
 MySMSYS/guiIdMan.h -text
+MySMSYS/lang_cn.txt -text
+MySMSYS/lang_en.txt -text
 MySMSYS/language.c -text
 MySMSYS/language.h -text
 MySMSYS/lgp_pic.h -text

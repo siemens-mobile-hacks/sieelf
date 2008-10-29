@@ -56,10 +56,10 @@ void Play(const char *fname)
 __swi __arm void TempLightOn(int x, int y);
 
 const int popup_softkeys[]={0, 1, 2};
-const SOFTKEY_DESC popup_sk[]=
+SOFTKEY_DESC popup_sk[]=
 {
-  {0x0018,0x0000,(int)STR_VIEW},
-  {0x0001,0x0000,(int)LGP_BACK},
+  {0x0018,0x0000,(int)LGP_NULL},
+  {0x0001,0x0000,(int)LGP_NULL},
   {0x003D,0x0000,LGP_DOIT_PIC}
 };
 const SOFTKEYSTAB popup_skt={popup_sk, 0};
@@ -178,9 +178,9 @@ int StartIncomingWin(void *dlg_csm)
   {
 #ifdef NO_CS 
     if(findNameByNum(wn, sd->Number))
-      wsprintf(ws, "%t\n%t:\n%w", STR_NEW_MSG, STR_FROM, wn);
+      wsprintf(ws, "%t\n%t:\n%w", STR_NEW_MSG, LGP_FROM, wn);
     else
-      wsprintf(ws, "%t\n%t:\n%s", STR_NEW_MSG, STR_FROM, sd->Number);
+      wsprintf(ws, "%t\n%t:\n%s", STR_NEW_MSG, LGP_FROM, sd->Number);
 #else
     char num[32];
     int is_fetion=0;
@@ -189,23 +189,23 @@ int StartIncomingWin(void *dlg_csm)
     GetProvAndCity(cs->wsbody, num);
     if(findNameByNum(wn, is_fetion?(sd->Number+5):sd->Number))
     {
-      if(is_fetion) wsprintf(ws, "%t\n%t:\n%w(%t)\n%w", STR_NEW_MSG, STR_FROM, wn, STR_FETION, cs);
-      else wsprintf(ws, "%t\n%t:\n%w\n%w", STR_NEW_MSG, STR_FROM, wn, cs);
+      if(is_fetion) wsprintf(ws, "%t\n%t:\n%w(%t)\n%w", lgp.LGP_NEW_MSG, lgp.LGP_FROM, wn, lgp.LGP_FETION, cs);
+      else wsprintf(ws, "%t\n%t:\n%w\n%w", lgp.LGP_NEW_MSG, lgp.LGP_FROM, wn, cs);
     }
     else
-      wsprintf(ws, "%t\n%t:\n%s\n%w", STR_NEW_MSG, STR_FROM, sd->Number, cs);
+      wsprintf(ws, "%t\n%t:\n%s\n%w", lgp.LGP_NEW_MSG, lgp.LGP_FROM, sd->Number, cs);
 #endif
   }
   pd=malloc(sizeof(POPUP_DESC));
   memcpy(pd, &popup, sizeof(POPUP_DESC));
   pd->time=CFG_NOTIFY_TIME*1300; //1300=1s
-  UpdateDlgCsmName(dlg_csm, STR_NEW_MSG);
+  UpdateDlgCsmName(dlg_csm, lgp.LGP_NEW_MSG);
   return (CreatePopupGUI_ws(1, dlg_csm, pd, ws));
 }
 
-const SOFTKEY_DESC msg_popup_sk[]=
+SOFTKEY_DESC msg_popup_sk[]=
 {
-  {0x0018,0x0000,(int)LGP_OK},
+  {0x0018,0x0000,(int)LGP_NULL},
   {0x0001,0x0000,(int)LGP_NONE_PIC},
   {0x003D,0x0000,LGP_DOIT_PIC}
 };
@@ -351,12 +351,12 @@ int ShowMSG_report(void *dlg_csm, SMS_DATA *sd)
   GetProvAndCity(cs->wsbody, num);
   if(findNameByNum(wn, is_fetion?(sd->Number+5):sd->Number))
   {
-    if(is_fetion) wsprintf(ws, "%w\n%t:\n%w(%t)\n%w", sd->SMS_TEXT, STR_FROM, wn, STR_FETION, cs);
-    else wsprintf(ws, "%w\n%t:\n%w\n%w", sd->SMS_TEXT, STR_FROM, wn, cs);
+    if(is_fetion) wsprintf(ws, "%w\n%t:\n%w(%t)\n%w", sd->SMS_TEXT, lgp.LGP_FROM, wn, lgp.LGP_FETION, cs);
+    else wsprintf(ws, "%w\n%t:\n%w\n%w", sd->SMS_TEXT, lgp.LGP_FROM, wn, cs);
   }
   else
-    wsprintf(ws, "%w\n%t:\n%s\n%w", sd->SMS_TEXT, STR_FROM, sd->Number, cs);
+    wsprintf(ws, "%w\n%t:\n%s\n%w", sd->SMS_TEXT, lgp.LGP_FROM, sd->Number, cs);
 #endif
-  UpdateDlgCsmName(dlg_csm, LGP_MSG_REPORT);
+  UpdateDlgCsmName(dlg_csm, lgp.LGP_MSG_REPORT);
   return (CreatePopupGUI_ws(0, sd, &msg_report, ws));
 }
