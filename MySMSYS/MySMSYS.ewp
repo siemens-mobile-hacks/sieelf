@@ -5294,6 +5294,9 @@
       <name>$PROJ_DIR$\guiIdMan.h</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\iconpack.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\language.h</name>
     </file>
     <file>
@@ -5348,6 +5351,9 @@
   </file>
   <file>
     <name>$PROJ_DIR$\guiIdMan.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\iconpack.c</name>
   </file>
   <file>
     <name>$PROJ_DIR$\language.c</name>

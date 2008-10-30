@@ -481,7 +481,11 @@ int sms_menu_onkey(void *data, GUI_MSG *msg)
 		else if((i=='9')&&(!sd->isfile))
 		{
 			if(saveFile(sd->SMS_TEXT, sd->Number, sd, sd->type, 0))
+			{
+				int k=GetCurMenuItem(data);
 				deleteDat(sd, 1);
+				SetCursorToMenuItem(data, (k==(n-1))?k:(k+1));
+			}
 			RefreshGUI();
 			return (-1);
 		}
@@ -552,14 +556,15 @@ int sms_menu_onkey(void *data, GUI_MSG *msg)
 //edit 0x4BD
 //view 0x29A
 //adrbk 0x290
+/*
 const int HDRIC_UNK[]={0x347, 0};
 const int HDRIC_OUT[]={0x515, 0};
 const int HDRIC_IN_R[]={0x5C5, 0};
 const int HDRIC_IN_N[]={0x5C5, 0};
 const int HDRIC_DRAFT[]={0x5C4, 0};
 const int HDRIC_IN_ALL[]={0x5C5, 0};
-
-const int SL_HDR_ICONS[7][2]=
+*/
+int SL_HDR_ICONS[7][2]=
 {
 #ifdef NEWSGOLD
 #ifdef ELKA
@@ -582,7 +587,7 @@ const int SL_HDR_ICONS[7][2]=
 #endif
 };
 //extern void SetHeaderIcon(void *hdr_pointer, const int *icon, void *malloc_adr, void *mfree_adr);
-const int SL_ICONS[7]={ICON_UNK, ICON_OUT, ICON_IN_R, ICON_IN_N, ICON_DRAFT, ICON_IN_ALL, 0};
+int SL_ICONS[7]={ICON_UNK, ICON_OUT, ICON_IN_R, ICON_IN_N, ICON_DRAFT, ICON_IN_ALL, 0};
 void sms_menu_itemhndl(void *data, int curitem, void *user_pointer)
 {
 	SML_OP *so=(SML_OP *)user_pointer;

@@ -65,9 +65,11 @@ SOFTKEY_DESC popup_sk[]=
 const SOFTKEYSTAB popup_skt={popup_sk, 0};
 
 #ifdef ELKA
-const int popup_icons[]={0x52C, 0};
+int pp_incoming_icons[]={0x282, 0};
+int pp_showmsg_icons[]={0x52C, 0};
 #else
-const int popup_icons[]={0x558, 0};
+int pp_incoming_icons[]={0x278, 0};
+int pp_showmsg_icons[]={0x558, 0};
 #endif
 
 #define TIME_SECOND 216
@@ -142,7 +144,7 @@ const POPUP_DESC popup=
   &popup_skt,
   0x1,
   LGP_NULL,
-  NULL,//popup_icons,
+  pp_incoming_icons,//popup_icons,
   0,
   FONT_MEDIUM,
   100,
@@ -189,7 +191,7 @@ int StartIncomingWin(void *dlg_csm)
     GetProvAndCity(cs->wsbody, num);
     if(findNameByNum(wn, is_fetion?(sd->Number+5):sd->Number))
     {
-      if(is_fetion) wsprintf(ws, "%t\n%t:\n%w(%t)\n%w", lgp.LGP_NEW_MSG, lgp.LGP_FROM, wn, lgp.LGP_FETION, cs);
+      if(is_fetion) wsprintf(ws, "%t\n%t:\n%w (%t)\n%w", lgp.LGP_NEW_MSG, lgp.LGP_FROM, wn, lgp.LGP_FETION, cs);
       else wsprintf(ws, "%t\n%t:\n%w\n%w", lgp.LGP_NEW_MSG, lgp.LGP_FROM, wn, cs);
     }
     else
@@ -227,7 +229,7 @@ const POPUP_DESC msg_popup=
   &msg_popup_skt,
   0x1,
   LGP_NULL,
-  NULL,
+  pp_showmsg_icons,
   0,
   FONT_MEDIUM,
   100,
@@ -265,7 +267,7 @@ const POPUP_DESC offproc_popup=
   &msg_popup_skt,
   0x1,
   LGP_NULL,
-  popup_icons,
+  pp_showmsg_icons,
   0,
   FONT_MEDIUM,
   100,

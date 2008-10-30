@@ -940,13 +940,13 @@ SOFTKEY_DESC SK_OP_PIC={0x0029,0x0000,(int)LGP_OPTION_PIC};
 //const int ed_hdr_icon[]={0x4BD,0};
 #ifdef NEWSGOLD
 #ifdef ELKA
-const int EDHDRIC_VIEW[]={0x2A5,0};
-const int EDHDRIC_EDIT[]={0x4DB,0};
-const int EDHDRIC_ADRBK[]={0x28C,0};
+int EDHDRIC_VIEW[]={0x2A5,0};
+int EDHDRIC_EDIT[]={0x4DB,0};
+int EDHDRIC_ADRBK[]={0x28C,0};
 #else
-const int EDHDRIC_VIEW[]={0x29A,0};
-const int EDHDRIC_EDIT[]={0x505,0};
-const int EDHDRIC_ADRBK[]={0x1A1,0};
+int EDHDRIC_VIEW[]={0x29A,0};
+int EDHDRIC_EDIT[]={0x505,0};
+int EDHDRIC_ADRBK[]={0x1A1,0};
 #endif
 #endif
 //extern void SetHeaderIcon(void *hdr_pointer, const int *icon, void *malloc_adr, void *mfree_adr);

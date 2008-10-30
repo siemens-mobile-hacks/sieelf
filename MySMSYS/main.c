@@ -19,7 +19,7 @@
 
 #include "NewDatReader.h"
 #include "string_works.h"
-
+#include "iconpack.h"
 extern void kill_data(void *p, void (*func_p)(void *));
 
 unsigned int DAEMON_CSM_ID=0;
@@ -271,82 +271,84 @@ int MENU_TEXT[MAIN_MENU_N]=
 
 const MENUPROCS_DESC procs_mmenu[MAIN_MENU_N]=
 {
-	mm_newsms,
-	mm_insms_n,
-	mm_insms_all,
-	mm_outsms,
-	mm_draftsms,
-	mm_allsms,
-	mm_oth,
+  mm_newsms,
+  mm_insms_n,
+  mm_insms_all,
+  mm_outsms,
+  mm_draftsms,
+  mm_allsms,
+  mm_oth,
 };
 
-
+int MM_ITEM_ICONS[]={0x564,0x564,0x564,0x564,0x564,0x564,0x564,0};
+int MM_HDR_ICONS[]={0x5C5, 0};
 int main_menu_onkey(void *data, GUI_MSG *msg)
 {
 #pragma swi_number=0x44
 __swi __arm void TempLightOn(int x, int y);
-	int n;
-	if(!IsUnlocked())
-		TempLightOn(3, 0x7FFF);
+  int n;
+  if(!IsUnlocked()) TempLightOn(3, 0x7FFF);
 
-	if(msg->keys==0x1)
-	{
-		void *dlg_csm=MenuGetUserPointer(data);
-		popGS(dlg_csm);
-		return 1;
-	}
-	if((msg->keys==0x18)||(msg->keys==0x3D))
-	{
-		n=GetCurMenuItem(data);
-DO_P:
-		if(n<0 || n>=MAIN_MENU_N)
-			return 0;
-		procs_mmenu[n](data);
-		return 0;
-	}
-	if(msg->gbsmsg->msg==KEY_DOWN)
-	{
-		n=msg->gbsmsg->submess;
-		if(n>='1' && n<='9')
-		{
-			n-='1';
-			goto DO_P;
-		}
-	}
-	return 0;
+  if(msg->keys==0x1)
+  {
+    void *dlg_csm=MenuGetUserPointer(data);
+    popGS(dlg_csm);
+    return 1;
+  }
+  if((msg->keys==0x18)||(msg->keys==0x3D))
+  {
+    n=GetCurMenuItem(data);
+  DO_P:
+    if(n<0 || n>=MAIN_MENU_N)
+      return 0;
+    procs_mmenu[n](data);
+    return 0;
+  }
+  if(msg->gbsmsg->msg==KEY_DOWN)
+  {
+    n=msg->gbsmsg->submess;
+    if(n>='1' && n<='9')
+    {
+      n-='1';
+      goto DO_P;
+    }
+  }
+  return 0;
 }
 
 const char MM_FORMAT[]="%t%c%d";
 void main_menu_itemhndl(void *data, int curitem, void *user_pointer)
 {
-	void *item=AllocMenuItem(data);
-	WSHDR *ws=AllocMenuWS(data, 150);
-	switch(curitem)
-	{
-	case 6:
-	case 0:
-		wsprintf(ws, PERCENT_T, MENU_TEXT[curitem]);
-		break;
-	case 1:
-		wsprintf(ws, MM_FORMAT, MENU_TEXT[curitem], 0xE01D, getCountByType(TYPE_IN_N));
-		break;
-	case 2:
-		wsprintf(ws, MM_FORMAT, MENU_TEXT[curitem], 0xE01D, getCountByType(TYPE_IN_ALL));
-		break;
-	case 3:
-		wsprintf(ws, MM_FORMAT, MENU_TEXT[curitem], 0xE01D, getCountByType(TYPE_OUT));
-		break;
-	case 4:
-		wsprintf(ws, MM_FORMAT, MENU_TEXT[curitem], 0xE01D, getCountByType(TYPE_DRAFT));
-		break;
-	case 5:
-		wsprintf(ws, MM_FORMAT, MENU_TEXT[curitem], 0xE01D, getCountByType(0));
-		break;
-	default:
-		wsprintf(ws, PERCENT_T, lgp.LGP_ERR);
-		break;
-	}
-	SetMenuItemText(data, item, ws, curitem);
+  void *item=AllocMenuItem(data);
+  WSHDR *ws=AllocMenuWS(data, 150);
+  switch(curitem)
+  {
+  case 6:
+  case 0:
+    wsprintf(ws, PERCENT_T, MENU_TEXT[curitem]);
+    break;
+  case 1:
+    wsprintf(ws, MM_FORMAT, MENU_TEXT[curitem], 0xE01D, getCountByType(TYPE_IN_N));
+    break;
+  case 2:
+    wsprintf(ws, MM_FORMAT, MENU_TEXT[curitem], 0xE01D, getCountByType(TYPE_IN_ALL));
+    break;
+  case 3:
+    wsprintf(ws, MM_FORMAT, MENU_TEXT[curitem], 0xE01D, getCountByType(TYPE_OUT));
+    break;
+  case 4:
+    wsprintf(ws, MM_FORMAT, MENU_TEXT[curitem], 0xE01D, getCountByType(TYPE_DRAFT));
+    break;
+  case 5:
+    wsprintf(ws, MM_FORMAT, MENU_TEXT[curitem], 0xE01D, getCountByType(0));
+    break;
+  default:
+    wsprintf(ws, PERCENT_T, lgp.LGP_ERR);
+    break;
+  }
+  SetMenuItemIconArray(data, item, MM_ITEM_ICONS);
+  SetMenuItemIcon(data, curitem, curitem);
+  SetMenuItemText(data, item, ws, curitem);
 }
 void main_menu_ghook(void *gui, int cmd)
 {
@@ -355,26 +357,30 @@ void main_menu_ghook(void *gui, int cmd)
     void *dlg_csm=MenuGetUserPointer(gui);
     UpdateDlgCsmName(dlg_csm, lgp.LGP_MSS_MAINMENU);
   }
+  if(cmd==7)
+  {
+    SetHeaderIcon(GetHeaderPointer(gui), MM_HDR_ICONS, malloc_adr(), mfree_adr());
+  }
 }
 const MENU_DESC main_menu=
 {
-	8,main_menu_onkey,main_menu_ghook,NULL,
-	main_menusoftkeys,
-	&main_menu_skt,
-	0x10,//Right align
-	main_menu_itemhndl,
-	NULL,//main_menuitems,//menuitems,
-	NULL, //main_menuprocs,//menuprocs,
-	MAIN_MENU_N
+  8,main_menu_onkey,main_menu_ghook,NULL,
+  main_menusoftkeys,
+  &main_menu_skt,
+  0x11,//
+  main_menu_itemhndl,
+  NULL,//main_menuitems,//menuitems,
+  NULL, //main_menuprocs,//menuprocs,
+  MAIN_MENU_N
 };
 
 int CreateMainMenu(DLG_CSM *dlg_csm)
 {
-	int id;
-	patch_header(&main_menuhdr);
-	id=CreateSLMenu(&main_menu, &main_menuhdr, 0, MAIN_MENU_N, dlg_csm);
-	pushGS(dlg_csm, id);
-	return id;
+  int id;
+  patch_header(&main_menuhdr);
+  id=CreateSLMenu(&main_menu, &main_menuhdr, 0, MAIN_MENU_N, dlg_csm);
+  pushGS(dlg_csm, id);
+  return id;
 }
 
 //--------------------------------------------------
@@ -477,7 +483,6 @@ static void dialogcsm_oncreate(CSM_RAM *data)
   default:
     csm->gui_id=CreateMainMenu(csm);
   }
-  LoadLangPack();
   if(addCSMid(DlgCsmIDs, csm->csm.id)<0)
     addCSMidForced0(DlgCsmIDs, csm->csm.id);
 }
@@ -498,40 +503,40 @@ static void dialogcsm_onclose(CSM_RAM *data)
 
 const DLGCSM_DESC DIALOGCSM =
 {
-	{
-	dialogcsm_onmessage,
-	dialogcsm_oncreate,
+  {
+    dialogcsm_onmessage,
+    dialogcsm_oncreate,
 #ifdef NEWSGOLD
-	0,
-	0,
-	0,
-	0,
+    0,
+    0,
+    0,
+    0,
 #endif
-	dialogcsm_onclose,
-	sizeof(DLG_CSM),
-	1,
-	&minus11
-	},
-	{
-		dialogcsm_name_body,
-		NAMECSM_MAGIC1,
-		NAMECSM_MAGIC2,
-		0x0,
-		31
-	}
+    dialogcsm_onclose,
+    sizeof(DLG_CSM),
+    1,
+    &minus11
+  },
+  {
+    dialogcsm_name_body,
+    NAMECSM_MAGIC1,
+    NAMECSM_MAGIC2,
+    0x0,
+    31
+  }
 };
 
 
 unsigned int CreateDialogCSM(void)
 {
-
-	DLG_CSM dlg_csm;
-	DLGCSM_DESC *dcd=malloc(sizeof(DLGCSM_DESC));
-	zeromem(&dlg_csm, sizeof(DLG_CSM));
-	memcpy(dcd, &DIALOGCSM, sizeof(DLGCSM_DESC));
-	if(!cltop)
-		SUBPROC((void *)ConstructList);
-	return (CreateCSM(&dcd->csmd,&dlg_csm,2));
+  DLG_CSM dlg_csm;
+  DLGCSM_DESC *dcd=malloc(sizeof(DLGCSM_DESC));
+  zeromem(&dlg_csm, sizeof(DLG_CSM));
+  memcpy(dcd, &DIALOGCSM, sizeof(DLGCSM_DESC));
+  if(!cltop) SUBPROC((void *)ConstructList);
+  LoadLangPack();
+  LoadIconPack();
+  return (CreateCSM(&dcd->csmd,&dlg_csm,2));
 }
 
 static void daemoncsm_oncreate(CSM_RAM *data)
@@ -877,6 +882,7 @@ static void daemoncsm_onclose(CSM_RAM *csm)
 	GBS_DelTimer(&chk_tmr);
 	GBS_DelTimer(&n_update_tmr);
 	FreeLangPack();
+	FreeIconPack();
 	SUBPROC((void *)ElfKiller);
 }
 
@@ -925,6 +931,7 @@ int main(char *exename, char *fname)
 	UpdateDaemonCSMname();
 	dlgIDsInit();
 	InitSetting();
+	ZeroIconPack();
 	if(fname)
 	{
 		if ( fname[0] < '0' || fname[0] > '4' || fname[1] != ':' || strlen(fname) > 128 )
