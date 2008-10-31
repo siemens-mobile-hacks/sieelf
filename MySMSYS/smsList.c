@@ -556,6 +556,7 @@ int sms_menu_onkey(void *data, GUI_MSG *msg)
 #define ICON_IN_N	0x5B6
 #define ICON_DRAFT 0x5B2
 #define ICON_IN_ALL 0x5B5
+#define ICON_LINE 0x537
 #else
 #define ICON_UNK 0x5E4
 #define ICON_OUT 0x5E4
@@ -563,6 +564,7 @@ int sms_menu_onkey(void *data, GUI_MSG *msg)
 #define ICON_IN_N	0x5E2
 #define ICON_DRAFT 0x5DE
 #define ICON_IN_ALL 0x5E1
+#define ICON_LINE 0x563
 #endif
 
 //const int hdr_icon[]={0X5D0,0};
@@ -604,7 +606,7 @@ int SL_HDR_ICONS[7][2]=
 #endif
 };
 //extern void SetHeaderIcon(void *hdr_pointer, const int *icon, void *malloc_adr, void *mfree_adr);
-int SL_ICONS[7]={ICON_UNK, ICON_OUT, ICON_IN_R, ICON_IN_N, ICON_DRAFT, ICON_IN_ALL, 0};
+int SL_ICONS[7]={ICON_UNK, ICON_OUT, ICON_IN_R, ICON_IN_N, ICON_DRAFT, ICON_IN_ALL, ICON_LINE};
 void sms_menu_itemhndl(void *data, int curitem, void *user_pointer)
 {
 	SML_OP *so=(SML_OP *)user_pointer;
