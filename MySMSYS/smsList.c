@@ -493,7 +493,7 @@ int sms_menu_onkey(void *data, GUI_MSG *msg)
 		{
 			WSHDR *msg=AllocWS(128);
 		#ifdef NO_CS
-			wsprintf(msg, "%t:\n%s", STR_FROM, sd->Number);
+			wsprintf(msg, "%t:\n%s", lgp.LGP_FROM, sd->Number);
 		#else
 			{
 				char num[32];
