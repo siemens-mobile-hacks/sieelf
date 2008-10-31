@@ -673,7 +673,7 @@ void on_adr_ec(USR_MENU_ITEM *item) //MENU WOULD BE CLOSED FIRST
       break;
 #ifndef LANG_CN
     case 5:
-      wsprintf(item->ws, PERCENT_T, LGP_TRANSLIT);
+      wsprintf(item->ws, PERCENT_T, lgp.LGP_TRANSLIT);
       break;
 #endif
     }

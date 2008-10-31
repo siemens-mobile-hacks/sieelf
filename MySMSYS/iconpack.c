@@ -100,12 +100,12 @@ void InitIconPack(void)
   //smsList.c
   extern int SL_HDR_ICONS[7][2];
   extern int SL_ICONS[7];
-  SL_HDR_ICONS[0][0]=ip.hdr_mmenu;
+  SL_HDR_ICONS[0][0]=ip.hdr_allsms;
   SL_HDR_ICONS[1][0]=ip.hdr_sent;
   SL_HDR_ICONS[2][0]=ip.hdr_inbox;
   SL_HDR_ICONS[3][0]=ip.hdr_smsnew;
   SL_HDR_ICONS[4][0]=ip.hdr_draft;
-  SL_HDR_ICONS[5][0]=ip.hdr_allsms;
+  SL_HDR_ICONS[5][0]=ip.hdr_inbox;
   //SL_HDR_ICONS[5][0]=0
   SL_ICONS[0]=ip.sms_inread;
   SL_ICONS[1]=ip.sms_sent;
