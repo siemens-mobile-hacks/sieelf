@@ -40,8 +40,8 @@ int PduDecodeTxt(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
   int isplus, wlen, isems, skip;
   char *p;
   WSHDR *ws, wsn, *wst;
-  unsigned short wsb[150];
-  ws=CreateLocalWS(&wsn, wsb, 150);
+  unsigned short wsb[300];
+  ws=CreateLocalWS(&wsn, wsb, 300);
   p=data;
   if(*p++!=0x11)
     return 0;
@@ -160,8 +160,8 @@ int PduDecodeAll(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
   int isplus, isems, skip, isreport=0;
   char *p;
   WSHDR *ws, wsn;
-  unsigned short wsb[150];
-  ws=CreateLocalWS(&wsn, wsb, 150);
+  unsigned short wsb[300];
+  ws=CreateLocalWS(&wsn, wsb, 300);
   p=data;
   if(*p++!=0x11)
     return 0;
