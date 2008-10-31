@@ -36,7 +36,7 @@ const SOFTKEYSTAB ed_menu_skt=
 	ed_menu_sk,0
 };
 
-HEADER_DESC ed_menuhdr={0,0,0,0,NULL,(int)ELFNAME,LGP_NULL};
+HEADER_DESC ed_menuhdr={0,0,0,0,NULL,LGP_NULL/*(int)ELFNAME*/,LGP_NULL};
 
 void ed_menu_reply(GUI *gui)
 {
@@ -318,10 +318,10 @@ int items_lgp_archive_file[MENU_N_ARCHIVE_FILE]=
 
 int IsFileInArchive(const char *fpath)
 {
-	int len,c;
-	char folder[128];
-	strcpy(folder, CFG_MAIN_FOLDER);
-	len=strlen(folder);
+  int len,c;
+  char folder[128];
+  strcpy(folder, CFG_MAIN_FOLDER);
+  len=strlen(folder);
   c=folder[len-1];
   if(c!='\\' && c!='/')
   {
@@ -330,108 +330,127 @@ int IsFileInArchive(const char *fpath)
   }
   strcat(folder, FLDR_ARCHIVE);
   if(!strncmp(fpath, folder, strlen(folder)))
-  	return 1;
+    return 1;
   return 0;
 }
 
+#ifdef NEWSGOLD
+#ifdef ELKA
+int ed_menu_item_icons[]={0x538,0};
+#else
+int ed_menu_item_icons[]={0x564,0};
+#endif
+#endif
+
 void ed_menu_itemhndl(void *data, int curitem, void *user_pointer)
 {
-	void *ed_gui=MenuGetUserPointer(data);
-	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
-	void *item=AllocMenuItem(data);
-	WSHDR *ws=AllocMenuWS(data, 150);
-	if(curitem==0 && uo->sd && uo->sd->type==TYPE_DRAFT)
-	{
-		wsprintf(ws, PERCENT_T, lgp.LGP_SEND);
-		goto GOGO;
-	}
-	switch(uo->dat_type)
-	{
-	case NML_FILE:
-		if(curitem>=MENU_N_NML_FILE)
-			goto ITEM_ERR;
-		wsprintf(ws, PERCENT_T, items_lgp_nml_file[curitem]);
-		break;
-	case ARCHIVE_FILE:
-		if(curitem>=MENU_N_ARCHIVE_FILE)
-			goto ITEM_ERR;
-		wsprintf(ws, PERCENT_T, items_lgp_archive_file[curitem]);
-		break;
-	case NML_DAT:
-		if(curitem>=MENU_N_NML_DAT)
-			goto ITEM_ERR;
-		wsprintf(ws, PERCENT_T, items_lgp_nml_dat[curitem]);
-		break;
-	default:
+  void *ed_gui=MenuGetUserPointer(data);
+  USER_OP *uo=EDIT_GetUserPointer(ed_gui);
+  void *item=AllocMenuItem(data);
+  WSHDR *ws=AllocMenuWS(data, 150);
+  if(curitem==0 && uo->sd && uo->sd->type==TYPE_DRAFT)
+  {
+    wsprintf(ws, PERCENT_T, lgp.LGP_SEND);
+    goto GOGO;
+  }
+  switch(uo->dat_type)
+  {
+  case NML_FILE:
+    if(curitem>=MENU_N_NML_FILE)
+      goto ITEM_ERR;
+    wsprintf(ws, PERCENT_T, items_lgp_nml_file[curitem]);
+    break;
+  case ARCHIVE_FILE:
+    if(curitem>=MENU_N_ARCHIVE_FILE)
+      goto ITEM_ERR;
+    wsprintf(ws, PERCENT_T, items_lgp_archive_file[curitem]);
+    break;
+  case NML_DAT:
+    if(curitem>=MENU_N_NML_DAT)
+      goto ITEM_ERR;
+    wsprintf(ws, PERCENT_T, items_lgp_nml_dat[curitem]);
+    break;
+  default:
 ITEM_ERR:
-		wsprintf(ws, PERCENT_T, lgp.LGP_ERR);
-	}
+  wsprintf(ws, PERCENT_T, lgp.LGP_ERR);
+  }
 GOGO:
-	SetMenuItemText(data, item, ws, curitem);
+  SetMenuItemIconArray(data, item, ed_menu_item_icons);
+  SetMenuItemIcon(data, curitem, 0);
+  SetMenuItemText(data, item, ws, curitem);
 }
 
 #pragma swi_number=0x44
 __swi __arm void TempLightOn(int x, int y);
 int ed_menu_onkey(void *data, GUI_MSG *msg)
 {
-	int n;
-	void *ed_gui;
-	USER_OP *uo;
-	if(!IsUnlocked())
-		TempLightOn(3, 0x7FFF);
-	if(msg->keys==0x1)
-	{
-		return 1;
-	}
-	if((msg->keys==0x18)||(msg->keys==0x3D))
-	{
-		n=GetCurMenuItem(data);
-	DO_PROC:
-		ed_gui=MenuGetUserPointer(data);
-		uo=EDIT_GetUserPointer(ed_gui);
-		if(n==0 && uo->sd && uo->sd->type==TYPE_DRAFT)
-		{
-			ed_menu_send(data);
-			return 1;
-		}
-		switch(uo->dat_type)
-		{
-		case NML_FILE:
-			if(n>=MENU_N_NML_FILE)
-				return 0;
-			procs_nml_file[n](data);
-			return 1;
-		case ARCHIVE_FILE:
-			if(n>=MENU_N_ARCHIVE_FILE)
-				return 0;
-			procs_archive_file[n](data);
-			return 1;
-		case NML_DAT:
-			if(n>=MENU_N_NML_DAT)
-				return 0;
-			procs_nml_dat[n](data);
-			return 1;
-		default :
-			return 0;
-		}
-	}
-	if(msg->gbsmsg->msg==KEY_DOWN)
-	{
-		n=msg->gbsmsg->submess;
-		if(n>='1' && n<='9')
-		{
-			n-='1';
-			goto DO_PROC;
-		}
-	}
+  int n;
+  void *ed_gui;
+  USER_OP *uo;
+  if(!IsUnlocked()) TempLightOn(3, 0x7FFF);
+  if(msg->keys==0x1)
+  {
+    return 1;
+  }
+  if((msg->keys==0x18)||(msg->keys==0x3D))
+  {
+    n=GetCurMenuItem(data);
+  DO_PROC:
+    ed_gui=MenuGetUserPointer(data);
+    uo=EDIT_GetUserPointer(ed_gui);
+    if(n==0 && uo->sd && uo->sd->type==TYPE_DRAFT)
+    {
+      ed_menu_send(data);
+      return 1;
+    }
+    switch(uo->dat_type)
+    {
+    case NML_FILE:
+      if(n>=MENU_N_NML_FILE)
 	return 0;
+      procs_nml_file[n](data);
+      return 1;
+    case ARCHIVE_FILE:
+      if(n>=MENU_N_ARCHIVE_FILE)
+	return 0;
+      procs_archive_file[n](data);
+      return 1;
+    case NML_DAT:
+      if(n>=MENU_N_NML_DAT)
+	return 0;
+      procs_nml_dat[n](data);
+      return 1;
+    default :
+      return 0;
+    }
+  }
+  if(msg->gbsmsg->msg==KEY_DOWN)
+  {
+    n=msg->gbsmsg->submess;
+    if(n>='1' && n<='9')
+    {
+      n-='1';
+      goto DO_PROC;
+    }
+  }
+  return 0;
+}
+
+void ed_menu_ghook(void *data, int cmd)
+{
+  if(cmd==2) //create
+  {
+    WSHDR *hdr_t=AllocWS(32);
+    wsprintf(hdr_t, PERCENT_T, lgp.LGP_OPTIONS);
+    SetHeaderText(GetHeaderPointer(data), hdr_t, malloc_adr(), mfree_adr());
+  }
 }
 const MENU_DESC ed_menu=
 {
-	8,ed_menu_onkey,NULL,NULL,
+	8,ed_menu_onkey,ed_menu_ghook,NULL,
 	ed_menusoftkeys,
 	&ed_menu_skt,
-	0x10,//Right align
+	0x11,//Right align
 	ed_menu_itemhndl,
 	0,//menuitems,
 	0,//menuprocs,
@@ -442,7 +461,7 @@ int createEditOpMenu(void *ed_gui)
 {
 	int item_n;
 	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
-	patch_header(&ed_menuhdr);
+	patch_option_header(&ed_menuhdr);
 	switch(uo->dat_type)
 	{
 	case NML_FILE:
@@ -457,7 +476,7 @@ int createEditOpMenu(void *ed_gui)
 	default:
 		item_n=0;
 	}
-	return (CreateSLMenu(&ed_menu, &ed_menuhdr, 0, item_n, ed_gui));
+	return (CreateSLMenu_30or2(&ed_menu, &ed_menuhdr, 0, item_n, ed_gui));
 }
 
 #ifndef LANG_CN

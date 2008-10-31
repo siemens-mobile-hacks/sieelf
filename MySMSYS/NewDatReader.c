@@ -523,8 +523,8 @@ int CheckThisSMS(int index) //return, 0:do nothing, 1:need to reload all, 2:need
       if(idd->index==index)
       {
 	//exist=1;
-	if(idd->cnt_all != idd->cnt_received)
-	  return 0;
+	if(idd->cnt_all != idd->cnt_received) //not full received or not full deleted
+	  goto FindAndDel;
 	if((sd=FindSmsByIndex(index)))
 	{
 	  if(idd->type==1)
@@ -558,8 +558,8 @@ int CheckThisSMS(int index) //return, 0:do nothing, 1:need to reload all, 2:need
       if(idd->index==index)
       {
 	//exist=1;
-	if(idd->cnt_all != idd->cnt_received)
-	  return 0;
+	if(idd->cnt_all != idd->cnt_received) //not full received or not full deleted
+	  goto FindAndDel;
 	if(!(sd=FindSmsByIndex(index))) return 1;
 	return 0;
       }
@@ -567,10 +567,38 @@ int CheckThisSMS(int index) //return, 0:do nothing, 1:need to reload all, 2:need
     lst=lst->next;
   }
   //is not exist, del form list
+FindAndDel:
   if((sd=FindSmsByIndex(index)))
   {
     delSDList(sd);
     return 2;
+  }
+  return 0;
+}
+
+int IsThisSmsNewIn(int index)
+{
+  SMS_DATA_ROOT *sdroot=SmsDataRoot();
+  SMS_DATA_LLIST inll=sdroot->in_msg;
+  SMS_DATA_LIST *lst;
+  INDEX_ID_DATA *idd;
+  //int exist=0;
+  if(!index)
+    return 0;
+  lst=inll.last;
+  while(lst)
+  {
+    if((idd=lst->index_id_data))
+    {
+      if(idd->index == index)
+      {
+	if(idd->cnt_all != idd->cnt_received)
+	  return 0;
+	if(idd->type==1)
+	  return 1;
+      }
+    }
+    lst=lst->prev;
   }
   return 0;
 }

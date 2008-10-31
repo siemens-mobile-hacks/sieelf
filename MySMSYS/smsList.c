@@ -261,93 +261,109 @@ int slop_lgp_file[SLOP_MENU_N_FILE]=
 
 void slop_menu_ghook(void *data, int cmd)
 {
-	if(cmd==3)
-	{
-		SL_UP *su=MenuGetUserPointer(data);
-		mfree(su);
-	}
+  if(cmd==3)
+  {
+    SL_UP *su=MenuGetUserPointer(data);
+    mfree(su);
+  }
+  if(cmd==2) //create
+  {
+    WSHDR *hdr_t=AllocWS(32);
+    wsprintf(hdr_t, PERCENT_T, lgp.LGP_OPTIONS);
+    SetHeaderText(GetHeaderPointer(data), hdr_t, malloc_adr(), mfree_adr());
+  }
 }
 
 #pragma swi_number=0x44
 __swi __arm void TempLightOn(int x, int y);
 int slop_menu_onkey(void *data, GUI_MSG *msg)
 {
-	int n;
-	SL_UP *su;
-	if(!IsUnlocked())
-		TempLightOn(3, 0x7FFF);
-	if(msg->keys==0x1)
-	{
-		return 1;
-	}
-	if((msg->keys==0x18)||(msg->keys==0x3D))
-	{
-		n=GetCurMenuItem(data);
-	DO_PROC:
-		su=MenuGetUserPointer(data);
-		if(!su->sd)
-			return 1;
-		if(n==0 && su->sd->type==TYPE_DRAFT)
-		{
-			slop_menu_send(data);
-			return 1;
-		}
-		if(su->sd->isfile)
-		{
-			if(n>=SLOP_MENU_N_FILE)
-				return 0;
-			slop_procs_file[n](data);
-			return 1;
-		}
-		else
-		{
-			if(n>=SLOP_MENU_N_DAT)
-				return 0;
-			slop_procs_dat[n](data);
-			return 1;
-		}
-	}
-	if(msg->gbsmsg->msg==KEY_DOWN)
-	{
-		n=msg->gbsmsg->submess;
-		if(n>='1' && n<='9')
-		{
-			n-='1';
-			goto DO_PROC;
-		}
-	}
+  int n;
+  SL_UP *su;
+  if(!IsUnlocked()) TempLightOn(3, 0x7FFF);
+  if(msg->keys==0x1)
+  {
+    return 1;
+  }
+  if((msg->keys==0x18)||(msg->keys==0x3D))
+  {
+    n=GetCurMenuItem(data);
+  DO_PROC:
+    su=MenuGetUserPointer(data);
+    if(!su->sd)
+      return 1;
+    if(n==0 && su->sd->type==TYPE_DRAFT)
+    {
+      slop_menu_send(data);
+      return 1;
+    }
+    if(su->sd->isfile)
+    {
+      if(n>=SLOP_MENU_N_FILE)
 	return 0;
+      slop_procs_file[n](data);
+      return 1;
+    }
+    else
+    {
+      if(n>=SLOP_MENU_N_DAT)
+	return 0;
+      slop_procs_dat[n](data);
+      return 1;
+    }
+  }
+  if(msg->gbsmsg->msg==KEY_DOWN)
+  {
+    n=msg->gbsmsg->submess;
+    if(n>='1' && n<='9')
+    {
+      n-='1';
+      goto DO_PROC;
+    }
+  }
+  return 0;
 }
+
+#ifdef NEWSGOLD
+#ifdef ELKA
+int slop_item_icons[]={0x538,0};
+#else
+int slop_item_icons[]={0x564,0};
+#endif
+#endif
+
 void slop_menu_itemhndl(void *data, int curitem, void *user_pointer)
 {
-	SL_UP *su=MenuGetUserPointer(data);
-	void *item=AllocMenuItem(data);
-	WSHDR *ws=AllocMenuWS(data, 150);
-	if(su->sd)
-	{
-		if(curitem==0 && su->sd->type==TYPE_DRAFT)
-		{
-			wsprintf(ws, PERCENT_T, lgp.LGP_SEND);
-			goto GO_P;
-		}
-		if(su->sd->isfile)
-		{
-			if(curitem>=SLOP_MENU_N_FILE)
-				goto SLOP_ERR;
-			wsprintf(ws, PERCENT_T, slop_lgp_file[curitem]);
-		}
-		else
-		{
-			if(curitem>=SLOP_MENU_N_DAT)
-				goto SLOP_ERR;
-			wsprintf(ws, PERCENT_T, slop_lgp_dat[curitem]);
-		}
-	}
-	else
+  SL_UP *su=MenuGetUserPointer(data);
+  void *item=AllocMenuItem(data);
+  WSHDR *ws=AllocMenuWS(data, 150);
+  if(su->sd)
+  {
+    if(curitem==0 && su->sd->type==TYPE_DRAFT)
+    {
+      wsprintf(ws, PERCENT_T, lgp.LGP_SEND);
+      goto GO_P;
+    }
+    if(su->sd->isfile)
+    {
+      if(curitem>=SLOP_MENU_N_FILE)
+	goto SLOP_ERR;
+      wsprintf(ws, PERCENT_T, slop_lgp_file[curitem]);
+    }
+    else
+    {
+      if(curitem>=SLOP_MENU_N_DAT)
+	goto SLOP_ERR;
+      wsprintf(ws, PERCENT_T, slop_lgp_dat[curitem]);
+    }
+  }
+  else
 SLOP_ERR:
-		wsprintf(ws, PERCENT_T, lgp.LGP_ERR);
+  wsprintf(ws, PERCENT_T, lgp.LGP_ERR);
 GO_P:
-	SetMenuItemText(data, item, ws, curitem);
+  SetMenuItemIconArray(data, item, slop_item_icons);
+  SetMenuItemIcon(data, curitem, 0);
+  SetMenuItemText(data, item, ws, curitem);
 }
 
 /*
@@ -392,7 +408,7 @@ const MENU_DESC slop_menu=
 	8,slop_menu_onkey,slop_menu_ghook,NULL,
 	slop_menusoftkeys,
 	&slop_menu_skt,
-	0x10,//Right align
+	0x11,//Right align
 	slop_menu_itemhndl,
 	0,//menuitems,
 	0,//menuprocs,
@@ -405,12 +421,13 @@ int CreateslOpMenu(DLG_CSM *dlg_csm, SMS_DATA *sd, int type)
 	su->dlg_csm=dlg_csm;
 	su->sd=sd;
 
-	patch_header(&sms_menuhdr);
+	//patch_header(&sms_menuhdr);
+	patch_option_header(&sms_menuhdr);
 	if(sd->isfile==1)
 		item_n=SLOP_MENU_N_FILE;
 	else
 		item_n=SLOP_MENU_N_DAT;
-	return (CreateSLMenu(&slop_menu,&sms_menuhdr,0,item_n, su));
+	return (CreateSLMenu_30or2(&slop_menu,&sms_menuhdr,0,item_n, su));
 //	if(!sd)
 //		return (CreateSLMenu(&slop_menu_3,&sms_menuhdr,0, 1, su));
 //	if(sd->isfile==1)
@@ -644,87 +661,88 @@ const SOFTKEY_DESC SK_VIEW_PIC={0x003D,0x0000,(int)LGP_VIEW_PIC};
 SOFTKEY_DESC SK_OK2={0x0018,0x0000,LGP_NULL};
 void sms_menu_ghook(void *data, int cmd)
 {
-	SML_OP *so=MenuGetUserPointer(data);
-	if(cmd==0x0A)
-	{
-		int n=getCountByType(so->type);
-		int cur=GetCurMenuItem(data);
-		if(cur>=n) SetCursorToMenuItem(data, 0);
-		Menu_SetItemCountDyn(data, n);
-		DisableIDLETMR();
-	}
-	else if(cmd==7)
-	{
-		//extern void SetMenuSoftKey(void *gui, const SOFTKEY_DESC *,int n);
-		int n=getCountByType(so->type);
-		int cur_n=GetCurMenuItem(data)+1;
-		if(!n) cur_n=0;
-		WSHDR *hdr_t=AllocWS(64);
-		void *hdr_p=GetHeaderPointer(data);
-		void *ma=malloc_adr();
-		void *mf=mfree_adr();
-		switch(so->type)
-		{
-		case 0:
-			wsprintf(hdr_t, SM_FORMAT, lgp.LGP_ALL, 0xE01D, cur_n, n);
-			break;
-		case TYPE_IN_R:
-			wsprintf(hdr_t, SM_FORMAT, lgp.LGP_IN_R, 0xE01D, cur_n, n);
-			break;
-		case TYPE_IN_N:
-			wsprintf(hdr_t, SM_FORMAT, lgp.LGP_IN_N, 0xE01D, cur_n, n);
-			break;
-		case TYPE_OUT:
-			wsprintf(hdr_t, SM_FORMAT, lgp.LGP_OUT, 0xE01D, cur_n, n);
-			break;
-		case TYPE_DRAFT:
-			wsprintf(hdr_t, SM_FORMAT, lgp.LGP_DRAFT, 0xE01D, cur_n, n);
-			break;
-		case TYPE_IN_ALL:
-			wsprintf(hdr_t, SM_FORMAT, lgp.LGP_IN_A, 0xE01D, cur_n, n);
-			break;
-		default:
-			CutWSTR(hdr_t, 0);
-			break;
-		}
-		SetHeaderText(hdr_p, hdr_t, ma, mf);
-		SetHeaderIcon(hdr_p, SL_HDR_ICONS[(so->type>6)?0:so->type], ma, mf);
-		//if(n) SetSoftKey(data,&SK_VIEW_PIC,SET_SOFT_KEY_M);
-		if(n) SetMenuSoftKey(data,&SK_VIEW_PIC,SET_SOFT_KEY_M);
-		else SetMenuSoftKey(data,&SK_OK2,SET_SOFT_KEY_N);
-	}
-	else if(cmd==3)
-	{
-		mfree(so);
-	}
-	else if(cmd==5)
-	{
-	  const char *lgpN;
-	  switch(so->type)
-	  {
-	  case 0:
-	    lgpN=lgp.LGP_ALL;
-	    break;
-	  case TYPE_IN_R:
-	    lgpN=lgp.LGP_IN_R;
-	    break;
-	  case TYPE_IN_N:
-	    lgpN=lgp.LGP_IN_N;
-	    break;
-	  case TYPE_OUT:
-	    lgpN=lgp.LGP_OUT;
-	    break;
-	  case TYPE_DRAFT:
-	    lgpN=lgp.LGP_DRAFT;
-	    break;
-	  case TYPE_IN_ALL:
-	    lgpN=lgp.LGP_IN_A;
-	    break;
-	  default:
-	    lgpN=0;
-	  }
-	  if(lgpN) UpdateDlgCsmName(so->dlg_csm, lgpN);
-	}
+  SML_OP *so=MenuGetUserPointer(data);
+  if(cmd==0x0A)
+  {
+    int n=getCountByType(so->type);
+    int cur=GetCurMenuItem(data);
+    if(cur>=n) SetCursorToMenuItem(data, 0);
+    Menu_SetItemCountDyn(data, n);
+    patch_header(&sms_menuhdr);
+    DisableIDLETMR();
+  }
+  else if(cmd==7)
+  {
+    //extern void SetMenuSoftKey(void *gui, const SOFTKEY_DESC *,int n);
+    int n=getCountByType(so->type);
+    int cur_n=GetCurMenuItem(data)+1;
+    if(!n) cur_n=0;
+    WSHDR *hdr_t=AllocWS(64);
+    void *hdr_p=GetHeaderPointer(data);
+    void *ma=malloc_adr();
+    void *mf=mfree_adr();
+    switch(so->type)
+    {
+    case 0:
+      wsprintf(hdr_t, SM_FORMAT, lgp.LGP_ALL, 0xE01D, cur_n, n);
+      break;
+    case TYPE_IN_R:
+      wsprintf(hdr_t, SM_FORMAT, lgp.LGP_IN_R, 0xE01D, cur_n, n);
+      break;
+    case TYPE_IN_N:
+      wsprintf(hdr_t, SM_FORMAT, lgp.LGP_IN_N, 0xE01D, cur_n, n);
+      break;
+    case TYPE_OUT:
+      wsprintf(hdr_t, SM_FORMAT, lgp.LGP_OUT, 0xE01D, cur_n, n);
+      break;
+    case TYPE_DRAFT:
+      wsprintf(hdr_t, SM_FORMAT, lgp.LGP_DRAFT, 0xE01D, cur_n, n);
+      break;
+    case TYPE_IN_ALL:
+      wsprintf(hdr_t, SM_FORMAT, lgp.LGP_IN_A, 0xE01D, cur_n, n);
+      break;
+    default:
+      CutWSTR(hdr_t, 0);
+      break;
+    }
+    SetHeaderText(hdr_p, hdr_t, ma, mf);
+    SetHeaderIcon(hdr_p, SL_HDR_ICONS[(so->type>6)?0:so->type], ma, mf);
+    //if(n) SetSoftKey(data,&SK_VIEW_PIC,SET_SOFT_KEY_M);
+    if(n) SetMenuSoftKey(data,&SK_VIEW_PIC,SET_SOFT_KEY_M);
+    else SetMenuSoftKey(data,&SK_OK2,SET_SOFT_KEY_N);
+  }
+  else if(cmd==3)
+  {
+    mfree(so);
+  }
+  else if(cmd==5)
+  {
+    const char *lgpN;
+    switch(so->type)
+    {
+    case 0:
+      lgpN=lgp.LGP_ALL;
+      break;
+    case TYPE_IN_R:
+      lgpN=lgp.LGP_IN_R;
+      break;
+    case TYPE_IN_N:
+      lgpN=lgp.LGP_IN_N;
+      break;
+    case TYPE_OUT:
+      lgpN=lgp.LGP_OUT;
+      break;
+    case TYPE_DRAFT:
+      lgpN=lgp.LGP_DRAFT;
+      break;
+    case TYPE_IN_ALL:
+      lgpN=lgp.LGP_IN_A;
+      break;
+    default:
+      lgpN=0;
+    }
+    if(lgpN) UpdateDlgCsmName(so->dlg_csm, lgpN);
+  }
 }
 const ML_MENU_DESC sms_menu=
 {

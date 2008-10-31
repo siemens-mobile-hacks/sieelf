@@ -361,6 +361,10 @@ void main_menu_ghook(void *gui, int cmd)
   {
     SetHeaderIcon(GetHeaderPointer(gui), MM_HDR_ICONS, malloc_adr(), mfree_adr());
   }
+  if(cmd==0xA)
+  {
+    DisableIDLETMR();
+  }
 }
 const MENU_DESC main_menu=
 {
@@ -565,16 +569,16 @@ const IPC_REQ my_ipc_n=
 };
 
 GBSTMR chk_tmr;
-GBSTMR n_update_tmr;
-
+//GBSTMR n_update_tmr;
+/*
 void CheckNewProc(void)
 {
-		if(IsHaveNewSMS())
-		{
-			GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_NEW_IN_WIN,&my_ipc_n);
-		}
+  if(IsHaveNewSMS())
+  {
+    GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_NEW_IN_WIN,&my_ipc_n);
+  }
 }
-
+*/
 void DoNewProc(void)
 {
   if(CFG_ENA_NOTIFY) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_NEW_IN_WIN,&my_ipc_n);
@@ -682,22 +686,22 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 //如果使用Browser-killer之类的补丁,将不会有新信息弹出窗口,使用这个MSG可以进行检查是否来新短信了
 
 #ifdef ELKA
-	if(/*(CFG_ENA_NOTIFY)&&*/(msg->msg==MSG_EMS_INCOMING)&&IsHaveNewSMS())
+	//if(/*(CFG_ENA_NOTIFY)&&*/(msg->msg==MSG_EMS_INCOMING)&&IsHaveNewSMS())
 #else
-	if(/*(CFG_ENA_NOTIFY)&&*/(msg->msg==MSG_EMS_INCOMING)&&IsHaveNewSMS())
+	//if(/*(CFG_ENA_NOTIFY)&&*/(msg->msg==MSG_EMS_INCOMING)&&IsHaveNewSMS())
 //	if((CFG_ENA_NOTIFY)&&(msg->msg==MSG_EMS_INCOMING_2))
 //	if((CFG_ENA_NOTIFY)&&((msg->msg==MSG_EMS_INCOMING) || (msg->msg==MSG_EMS_INCOMING_2)))
 #endif
-	{
-	  if(!IsTimerProc(&chk_tmr)) //接收到MSG半秒之后开始检查,直接开始检查会死机.
-	    GBS_StartTimerProc(&chk_tmr, 216/2, DoNewProc);
-	    //GBS_StartTimerProc(&chk_tmr, 216/2, CheckNewProc);
-	}
+	//{
+	//  if(!IsTimerProc(&chk_tmr)) //接收到MSG半秒之后开始检查,直接开始检查会死机.
+	//    GBS_StartTimerProc(&chk_tmr, 216/2, DoNewProc);
+	//    //GBS_StartTimerProc(&chk_tmr, 216/2, CheckNewProc);
+	//}
 	if(msg->msg==MSG_EMS_FFS_WRITE)
 	{
 	  int x;
 	  new_sms_n=(SmsDataRoot())->cnt_in_new_sms_dat;
-	  if((!IsHaveNewSMS())&&(CFG_ENA_NOTIFY))
+	  if((CFG_ENA_NOTIFY)&&(!new_sms_n)) //主要用于simoco链接手机时会读取所有短信并将其设置为已读
 	  {
 	    SetVibration(0);
 	    if(PLAY_ID)
@@ -706,14 +710,31 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 	      PLAY_ID=0;
 	    }
 	  }
-	  if((int)msg->data1==0x8 && !IsNoDlg(DlgCsmIDs))
+#ifdef ELKA
+#pragma swi_number=0x36
+__swi __arm void SLI_SetState(unsigned char state);
+	  if(new_sms_n>0) SLI_SetState(1);
+	  else SLI_SetState(0);
+#endif
+	  if((int)msg->data1!=0x8)
+	  {
+	    if(IsThisSmsNewIn((int)msg->data0))// SUBPROC((void *)DoNewProc);
+	    {
+	      if(IsTimerProc(&chk_tmr)) GBS_DelTimer(&chk_tmr);
+	      GBS_StartTimerProc(&chk_tmr, 216/2, DoNewProc);
+	    }
+	  }
+	  else if((int)msg->data1==0x8 && !IsNoDlg(DlgCsmIDs))
 	  {
 	    if((x=CheckThisSMS((int)msg->data0)))
 	    {
 	      if(x==1)
 	      {
-		if(!IsTimerProc(&n_update_tmr) && !IsTimerProc(&chk_tmr))
-		  GBS_StartTimerProc(&n_update_tmr, 216*2/3, UpdateNProc);
+		if(!IsTimerProc(&chk_tmr))
+		  GBS_StartTimerProc(&chk_tmr, 216/2, UpdateNProc);
+		//SUBPROC((void *)UpdateNProc);
+		//if(!IsTimerProc(&n_update_tmr)/* && !IsTimerProc(&chk_tmr)*/)
+		//  GBS_StartTimerProc(&n_update_tmr, 216*2/3, UpdateNProc);
 	      }
 	      else if(x==2)
 	      {
@@ -724,6 +745,9 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 	  //char str[64];
 	  //sprintf(str, "submess:0x%X\ndata0:0x%08X\ndata1:0x%08X", msg->submess, msg->data0, msg->data1);
 	  //ShowMSG(0, (int)str);
+	  //WSHDR *ws=AllocWS(64);
+	  //wsprintf(ws, "submess:0x%X\ndata0:0x%08X\ndata1:0x%08X", msg->submess, msg->data0, msg->data1);
+	  //ShowMSG_ws(0, ws);
 	  //        submess,data0,data1
 	  //NEW in 97,index,0x408
 	  //set to read 97,index,0x8
@@ -880,7 +904,7 @@ static void daemoncsm_onclose(CSM_RAM *csm)
 	FreeCLIST();
 	freeSDList();
 	GBS_DelTimer(&chk_tmr);
-	GBS_DelTimer(&n_update_tmr);
+	//GBS_DelTimer(&n_update_tmr);
 	FreeLangPack();
 	FreeIconPack();
 	SUBPROC((void *)ElfKiller);

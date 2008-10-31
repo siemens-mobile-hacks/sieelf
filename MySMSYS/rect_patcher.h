@@ -28,4 +28,12 @@ void patch_input(const INPUTDIA_DESC* inp)
   ((INPUTDIA_DESC*)inp)->rc.y2=ScreenH()-SoftkeyH()-1;
 }
 
+#pragma inline
+void patch_option_header(const HEADER_DESC* head)
+{
+  ((HEADER_DESC*)head)->rc.x=0;
+  ((HEADER_DESC*)head)->rc.y=YDISP+HeaderH();
+  ((HEADER_DESC*)head)->rc.x2=ScreenW()-1;
+  ((HEADER_DESC*)head)->rc.y2=HeaderH()+HeaderH()+YDISP-1-1;
+}
 #endif

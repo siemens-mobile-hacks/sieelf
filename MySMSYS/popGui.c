@@ -55,6 +55,9 @@ void Play(const char *fname)
 #pragma swi_number=0x44
 __swi __arm void TempLightOn(int x, int y);
 
+#pragma swi_number=0x80CB
+__swi __arm char *RamRingtoneStatus(); //0 on, 1, off
+
 const int popup_softkeys[]={0, 1, 2};
 SOFTKEY_DESC popup_sk[]=
 {
@@ -110,7 +113,7 @@ void popup_ghook(void *data, int cmd)
     TempLightOn(3, 0x7FFF);
     if(CFG_NOTIFY_TIME && !IsCalling())
     {
-      if(CFG_ENA_SOUND && IsFileExist(CFG_SOUND_PATH))
+      if(CFG_ENA_SOUND && !(*(RamRingtoneStatus())) && IsFileExist(CFG_SOUND_PATH))
       {
 	if(GetPlayStatus()) MPlayer_Stop();
 	if(!PLAY_ID) Play(CFG_SOUND_PATH);
@@ -180,9 +183,9 @@ int StartIncomingWin(void *dlg_csm)
   {
 #ifdef NO_CS 
     if(findNameByNum(wn, sd->Number))
-      wsprintf(ws, "%t\n%t:\n%w", STR_NEW_MSG, LGP_FROM, wn);
+      wsprintf(ws, "%t\n%t:\n%w", lgp.LGP_NEW_MSG, lgp.LGP_FROM, wn);
     else
-      wsprintf(ws, "%t\n%t:\n%s", STR_NEW_MSG, LGP_FROM, sd->Number);
+      wsprintf(ws, "%t\n%t:\n%s", lgp.LGP_NEW_MSG, lgp.LGP_FROM, sd->Number);
 #else
     char num[32];
     int is_fetion=0;
@@ -342,9 +345,9 @@ int ShowMSG_report(void *dlg_csm, SMS_DATA *sd)
   cs=CreateLocalWS(&csloc,csb,30);
 #ifdef NO_CS 
   if(findNameByNum(wn, sd->Number))
-    wsprintf(ws, "%w\n%t:\n%w", sd->SMS_TEXT, STR_FROM, wn);
+    wsprintf(ws, "%w\n%t:\n%w", sd->SMS_TEXT, lgp.LGP_FROM, wn);
   else
-    wsprintf(ws, "%w\n%t:\n%s", sd->SMS_TEXT, STR_FROM, sd->Number);
+    wsprintf(ws, "%w\n%t:\n%s", sd->SMS_TEXT, lgp.LGP_FROM, sd->Number);
 #else
   char num[32];
   int is_fetion=0;
