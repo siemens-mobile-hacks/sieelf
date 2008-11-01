@@ -1208,7 +1208,7 @@ typedef struct
   short unk1; //another index ?
   char cnt_all;
   char cnt_received; // =cnt0;
-  short *data_id; //depend on cnt, for GetSmsPosIndex to get pos_index
+  unsigned short *data_id; //depend on cnt, for GetSmsPosIndex to get pos_index
   short unk2; //0, 0x700
   short unk3; //0
   char unk4; // 3
