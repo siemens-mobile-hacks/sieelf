@@ -20,9 +20,10 @@
 #define TYPE_IN_ALL 5
 
 //msg_type
-#define ISSMS 0
-#define ISEMS 1
-#define ISREPORT 2
+#define ISSMS 0 //00000000
+#define ISEMS 1 //00000001
+#define ISREPORT 2 //00000010
+#define ISDES 4 //00000100 //is destroyed, or not full received
 
 #define MAX_TEXT 2048
 

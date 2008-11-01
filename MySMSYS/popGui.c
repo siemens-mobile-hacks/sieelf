@@ -175,7 +175,7 @@ int StartIncomingWin(void *dlg_csm)
   }
   if(!sd) return 0;
   if(!CFG_NOTIFY_TIME) return 0;
-  if(sd->msg_type==ISREPORT) return (ShowMSG_report(dlg_csm, sd));
+  if((sd->msg_type&ISREPORT)) return (ShowMSG_report(dlg_csm, sd));
   ws=AllocWS(150);
   wn=CreateLocalWS(&wsloc,wsb,150);
   cs=CreateLocalWS(&csloc,csb,30);

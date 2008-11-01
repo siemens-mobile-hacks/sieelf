@@ -33,6 +33,29 @@ void Add2WS_NEW(char *data, unsigned short *wsbody, int len)
   wsbody[0]=len/2;
 }
 
+void Bit7Decode(WSHDR *ws, char *pdata, int skip, int len) //big respect to Rst7(LogSms),
+{
+  char *p=pdata;
+  int c, c2, i=0;
+  while(len)
+  {
+    c=0x80;
+    do
+    {
+      if(!i) {c2=*p++; i=8;}
+      c>>=1;
+      if(c2&1) c|=0x80;
+      c2>>=1; i--;
+    }while(!(c&1));
+    c>>=1;
+    if(!c) c='@';
+    if(c==2) c='$';
+    if(skip) skip--;
+    else wsAppendChar(ws, c);
+    len--;
+  }
+}
+
 int PduDecodeTxt(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktype
 {
   int c;
@@ -85,11 +108,12 @@ int PduDecodeTxt(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
   //...text,
   if(isems)
   {
-    skip=*p;
-    if(ttype==8)
+    skip=*p+1;
+    if(ttype!=8) skip=((skip*8)+6)/7;
+    else
     {
-      p+=skip+1;
-      c-=skip+1;
+      p+=skip;
+      c-=skip;
     }
   }
   if(ttype==0x8)
@@ -98,7 +122,8 @@ int PduDecodeTxt(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
   }
   else if(ttype==0x0) //7bit
   {
-    GSMTXT_Decode(ws,(void*)p,c*7/8+1, ttype, (void*(*)(int))malloc_adr(),(void(*)(void))mfree_adr());
+    //GSMTXT_Decode(ws,(void*)p,c*7/8+1, ttype, (void*(*)(int))malloc_adr(),(void(*)(void))mfree_adr());
+    Bit7Decode(ws, p, skip, c);
     if(wstrlen(ws)>c)
     {
       CutWSTR(ws, c);
@@ -153,6 +178,8 @@ void DoMsgReport(SMS_DATA *sd, char *data, WSHDR *ws)
   else
     wsprintf(ws, "%t\r%t: 20%s\r%s (%d)!", lgp.LGP_MSG_REPORT, lgp.LGP_TIME, time, lgp.LGP_UNK_RP_STATUS, status);
 }
+
+
 int PduDecodeAll(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktype
 {
   int c;
@@ -247,7 +274,7 @@ int PduDecodeAll(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
   }
   if(isreport)
   {
-    sd->msg_type=ISREPORT;
+    sd->msg_type=sd->msg_type|ISREPORT;
     DoMsgReport(sd, p, ws);
     goto TEND;
   }
@@ -256,11 +283,12 @@ int PduDecodeAll(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
   //...text,
   if(isems)
   {
-    skip=*p;
-    if(ttype==8)
+    skip=*p+1;
+    if(ttype!=8) skip=((skip*8)+6)/7;
+    else
     {
-      p+=skip+1;
-      c-=skip+1;
+      p+=skip;
+      c-=skip;
     }
   }
   if(ttype==0x8)
@@ -269,7 +297,8 @@ int PduDecodeAll(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
   }
   else if(ttype==0x0) //7bit
   {
-    GSMTXT_Decode(ws,(void*)p,c*7/8+1, ttype, (void*(*)(int))malloc_adr(),(void(*)(void))mfree_adr());
+    //GSMTXT_Decode(ws,(void*)p, c, ttype, (void*(*)(int))malloc_adr(),(void(*)(void))mfree_adr());
+    Bit7Decode(ws, p, skip, c);
     if(wstrlen(ws)>c)
     {
       CutWSTR(ws, c);
@@ -298,24 +327,25 @@ int DoMsgList(SMS_DATA_LIST *lst, char *sms_buf, char *ems_admin_buf, int sms_si
   char *ems_admin_buf_end=ems_admin_buf+ems_admin_size-sizeof(EMS_ADM);
   EMS_ADM *pea;
   INDEX_ID_DATA *idd;
-  short *pid;
+  unsigned short *pid;
   char *pd;
-  int cnt, index, i, res=0;
+  int cnt, index, i, msg_type=0;
   if(!(idd=lst->index_id_data))
     return 0;
   if(!(pid=idd->data_id))
     return 0;
-  if(!(cnt=idd->cnt_received))
+  if(!(cnt=idd->cnt_all))
     return 0;
-  if(cnt!=idd->cnt_all)
-    return 0;
+  if(cnt!=idd->cnt_received)
+    msg_type=msg_type|ISDES;
+    //return 0;
   index=idd->index;
   if(!index || index>MAX_SMS)
     return 0;
   pea=(EMS_ADM *)(ems_admin_buf+(index-1)*sizeof(EMS_ADM));
   if(pea>(EMS_ADM *)ems_admin_buf_end)
     return 0;
-  if(pea->data_id != 0xFFF4) //sms
+/*  if(pea->data_id != 0xFFF4) //sms
   {
     if(cnt!=1) //¶ÌÐÅÌõÊý
       return res;
@@ -324,6 +354,7 @@ int DoMsgList(SMS_DATA_LIST *lst, char *sms_buf, char *ems_admin_buf, int sms_si
     if((pd=sms_buf+sid.pos_index*sizeof(PDU))>sms_buf_end)
       return res;
     sdx=AllocSD();
+    sdx->msg_type=msg_type;
     if(PduDecodeAll(sdx, pd))
     {
       res++;
@@ -339,8 +370,10 @@ int DoMsgList(SMS_DATA_LIST *lst, char *sms_buf, char *ems_admin_buf, int sms_si
   else //ems
   {
     sdx=AllocSD();
+    sdx->msg_type=msg_type;
     for(i=0;i<cnt;i++)
     {
+      if(pid[i]==0xFFF4) continue;
       if(!GetSmsPosIndex(&sid, pid[i]))
 	break;
       if((pd=sms_buf+sid.pos_index*sizeof(PDU))>sms_buf_end)
@@ -361,15 +394,35 @@ int DoMsgList(SMS_DATA_LIST *lst, char *sms_buf, char *ems_admin_buf, int sms_si
       res++;
       sdx->opmsg_id=pea->opmsg_id;
       sdx->id=index;
-      sdx->msg_type=ISEMS;
+      sdx->msg_type=sdx->msg_type|ISEMS;
       LockSched();
       AddToSdlByTime(sdx);
       UnlockSched();
     }
     else
       FreeSdOne(sdx);
+  }*/
+  sdx=AllocSD();
+  sdx->msg_type=msg_type;
+  for(i=0;i<cnt;i++)
+  {
+    if(pid[i]==0xFFF4) continue;
+    if(!GetSmsPosIndex(&sid, pid[i])) continue;
+    if((pd=sms_buf+sid.pos_index*sizeof(PDU))>sms_buf_end) continue;
+    if(!sdx->SMS_TEXT) PduDecodeAll(sdx, pd);
+    else PduDecodeTxt(sdx, pd);
   }
-  return res;
+  if(sdx->SMS_TEXT)
+  {
+    if(i>1) sdx->msg_type=sdx->msg_type|ISEMS;
+    sdx->opmsg_id=pea->opmsg_id;
+    sdx->id=index;
+    LockSched();
+    AddToSdlByTime(sdx);
+    UnlockSched();
+  }
+  else FreeSdOne(sdx);
+  return 1;
 }
 int DoAllDatMsg(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_size)
 {
@@ -524,7 +577,8 @@ int CheckThisSMS(int index) //return, 0:do nothing, 1:need to reload all, 2:need
       {
 	//exist=1;
 	if(idd->cnt_all != idd->cnt_received) //not full received or not full deleted
-	  goto FindAndDel;
+	  return 0;
+	  //goto FindAndDel;
 	if((sd=FindSmsByIndex(index)))
 	{
 	  if(idd->type==1)
@@ -559,7 +613,8 @@ int CheckThisSMS(int index) //return, 0:do nothing, 1:need to reload all, 2:need
       {
 	//exist=1;
 	if(idd->cnt_all != idd->cnt_received) //not full received or not full deleted
-	  goto FindAndDel;
+	  return 0;
+	  //goto FindAndDel;
 	if(!(sd=FindSmsByIndex(index))) return 1;
 	return 0;
       }
@@ -567,7 +622,7 @@ int CheckThisSMS(int index) //return, 0:do nothing, 1:need to reload all, 2:need
     lst=lst->next;
   }
   //is not exist, del form list
-FindAndDel:
+//FindAndDel:
   if((sd=FindSmsByIndex(index)))
   {
     delSDList(sd);

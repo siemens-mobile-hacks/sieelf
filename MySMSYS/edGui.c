@@ -971,16 +971,16 @@ int EDHDRIC_ADRBK[]={0x1A1,0};
 //extern void SetHeaderIcon(void *hdr_pointer, const int *icon, void *malloc_adr, void *mfree_adr);
 void edGHook(GUI *data, int cmd)
 {
-	USER_OP *uo=EDIT_GetUserPointer(data);
-	if(cmd==TI_CMD_CREATE)
-	{
-		if((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW))
-			EDIT_SetFocus(data, 1); //从号码开始看
-		else
-			EDIT_SetFocus(data, uo->focus_n);//光标跳到文本位置
-	}
-	else if(cmd==TI_CMD_DESTROY)
-	{
+  USER_OP *uo=EDIT_GetUserPointer(data);
+  if(cmd==TI_CMD_CREATE)
+  {
+    if((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW))
+      EDIT_SetFocus(data, 1); //从号码开始看
+    else
+      EDIT_SetFocus(data, uo->focus_n);//光标跳到文本位置
+  }
+  else if(cmd==TI_CMD_DESTROY)
+  {
 	  //auto save at exit
 //	  if((uo->gui_type==ED_VIEW)
 //	     &&(CFG_ENA_AUTO_SAF)
@@ -991,196 +991,208 @@ void edGHook(GUI *data, int cmd)
 //	    if(saveFile(uo->sd->SMS_TEXT, uo->sd->Number, uo->sd, uo->sd->type, 0))
 //	      deleteDat(uo->sd, 1);
 //	  }
-		if((CFG_ENA_AUTO_DEL_RP)&&(uo->gui_type==ED_VIEW)&&(uo->sd)&&(uo->sd->msg_type==ISREPORT)&&(uo->sd->id > 0)&&(!uo->sd->isfile))
-		{
-			if(IsSdInList(uo->sd) && deleteDat(uo->sd, 0))
-				delSDList(uo->sd);
-		}
-		if(((uo->gui_type==ED_FREE)
-				||(uo->gui_type==ED_FVIEW)
-				||(uo->gui_type==ED_FEDIT)
-				||(uo->gui_type==ED_FREPLY)
-				)&&(uo->sd))
-		{
-			FreeSdOne(uo->sd);
-		}
-		FreeNumList(uo);
-		mfree(uo);
-	}
-	else if(cmd==TI_CMD_FOCUS)
-	{
-		DisableIDLETMR();
-	}
-	else if(cmd==TI_CMD_GOTOTOP)
-	{
-	  const char *lgpN;
-	  switch(uo->gui_type)
-	  {
-	  case ED_VIEW:
-	  case ED_FVIEW:
-	    lgpN=lgp.LGP_VIEW;
-	    break;
-	  case ED_EDIT:
-	  case ED_FEDIT:
-	    lgpN=lgp.LGP_EDIT;
-	    break;
-	  case ED_NEW:
-	  case ED_FREE:
-	    lgpN=lgp.LGP_NEW;
-	    break;
-	  case ED_REPLY:
-	  case ED_FREPLY:
-	    lgpN=lgp.LGP_REPLY;
-	    break;
-	  default:
-	    lgpN=0;
-	    break;
-	  }
-	  if(lgpN) UpdateDlgCsmName(uo->dlg_csm, lgpN);
-	}
-	else if(cmd==TI_CMD_REDRAW)
-	{
-		NUM_LIST *nl;
-		EDITCONTROL ec;
-		char time[32];
-		char num[32];
-		WSHDR txtl, *text;
-		unsigned short txtb[MAX_TEXT];
-		SMS_DATA *sdx;
-		DLG_CSM *dlg_csm=(DLG_CSM *)(uo->dlg_csm);
-		SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);	
-		int n=EDIT_GetFocus(data);
-		text=CreateLocalWS(&txtl, txtb, MAX_TEXT);
+    if((CFG_ENA_AUTO_DEL_RP)&&(uo->gui_type==ED_VIEW)&&(uo->sd)&&(uo->sd->msg_type==ISREPORT)&&(uo->sd->id > 0)&&(!uo->sd->isfile))
+    {
+      if(IsSdInList(uo->sd) && deleteDat(uo->sd, 0))
+	delSDList(uo->sd);
+    }
+    if(((uo->gui_type==ED_FREE)
+	||(uo->gui_type==ED_FVIEW)
+	  ||(uo->gui_type==ED_FEDIT)
+	    ||(uo->gui_type==ED_FREPLY)
+	      )&&(uo->sd))
+    {
+      FreeSdOne(uo->sd);
+    }
+    FreeNumList(uo);
+    mfree(uo);
+  }
+  else if(cmd==TI_CMD_FOCUS)
+  {
+    DisableIDLETMR();
+  }
+  else if(cmd==TI_CMD_GOTOTOP)
+  {
+    const char *lgpN;
+    switch(uo->gui_type)
+    {
+    case ED_VIEW:
+    case ED_FVIEW:
+      lgpN=lgp.LGP_VIEW;
+      break;
+    case ED_EDIT:
+    case ED_FEDIT:
+      lgpN=lgp.LGP_EDIT;
+      break;
+    case ED_NEW:
+    case ED_FREE:
+      lgpN=lgp.LGP_NEW;
+      break;
+    case ED_REPLY:
+    case ED_FREPLY:
+      lgpN=lgp.LGP_REPLY;
+      break;
+    default:
+      lgpN=0;
+      break;
+    }
+    if(lgpN) UpdateDlgCsmName(uo->dlg_csm, lgpN);
+  }
+  else if(cmd==TI_CMD_REDRAW)
+  {
+    NUM_LIST *nl;
+    EDITCONTROL ec;
+    char time[32];
+    char num[32];
+    WSHDR txtl, *text;
+    unsigned short txtb[MAX_TEXT];
+    SMS_DATA *sdx;
+    DLG_CSM *dlg_csm=(DLG_CSM *)(uo->dlg_csm);
+    SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);	
+    int n=EDIT_GetFocus(data);
+    text=CreateLocalWS(&txtl, txtb, MAX_TEXT);
+    
 //check sd in list
-		if((uo->gui_type==ED_VIEW)&&(!IsSdInList(uo->sd)))
-		{
-			ExtractEditControl(data, uo->focus_n, &ec);
-			wstrcpy(text, ec.pWS);
-			if(uo->focus_n>2) //简单判断时间是否存在
-			{
-				ExtractEditControl(data, uo->focus_n-2, &ec);
-				ws_2str(ec.pWS, time, 31);
-			}
-			else
-				time[0]=0;
-			nl=uo->nltop;
-			if(nl) strcpy(num, nl->num);
-			else num[0]=0;
-			if(!(sdx=FindSdByTxtTimeNum(text, time, num)))
-			{
-				if(gstop)
-				{
-					GeneralFunc_flag1(gstop->id, 1);
-					popGS(dlg_csm);
-				}
-				else
-				{
-				//如果完全出错,直接退出
-					GeneralFunc_flag1(dlg_csm->gui_id, 1);
-				}
-			}
-			else
-				uo->sd=sdx;
-		}
-		if((uo->gui_type==ED_VIEW)&&(uo->sd->type==TYPE_IN_N))
-			newToRead(uo->sd);
-		if((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW))
-			SetSoftKey(data,&SK_OP_PIC,SET_SOFT_KEY_M);
+    if((uo->gui_type==ED_VIEW)&&(!IsSdInList(uo->sd)))
+    {
+      ExtractEditControl(data, uo->focus_n, &ec);
+      wstrcpy(text, ec.pWS);
+      if(uo->focus_n>2) //简单判断时间是否存在
+      {
+	ExtractEditControl(data, uo->focus_n-2, &ec);
+	ws_2str(ec.pWS, time, 31);
+      }
+      else
+	time[0]=0;
+      nl=uo->nltop;
+      if(nl) strcpy(num, nl->num);
+      else num[0]=0;
+      if(!(sdx=FindSdByTxtTimeNum(text, time, num)))
+      {
+	if(gstop)
+	{
+	  GeneralFunc_flag1(gstop->id, 1);
+	  popGS(dlg_csm);
+	}
+	else
+	{
+	  //如果完全出错,直接退出
+	  GeneralFunc_flag1(dlg_csm->gui_id, 1);
+	}
+      }
+      else
+	uo->sd=sdx;
+    }
+    
+    //set status
+    if((uo->gui_type==ED_VIEW)
+       &&(uo->sd->type==TYPE_IN_N)
+	 &&(!(uo->sd->msg_type&ISDES)))
+      newToRead(uo->sd);
+    
+    //set mid softkey
+    if((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW))
+      SetSoftKey(data,&SK_OP_PIC,SET_SOFT_KEY_M);
+    
 //auto save as file
-		
-		if((uo->gui_type==ED_VIEW)&&(CFG_ENA_AUTO_SAF)&&(!uo->sd->isfile)&&(uo->sd->id)&&(uo->sd->msg_type!=ISREPORT || !CFG_ENA_AUTO_DEL_RP))      
-		{
-			wstrcpy(text, uo->sd->SMS_TEXT);
-			strcpy(time, uo->sd->Time);
-			strcpy(num, uo->sd->Number);
-			if(saveFile(uo->sd->SMS_TEXT, uo->sd->Number, uo->sd, uo->sd->type, 0))
-			{
-				deleteDat(uo->sd, 1);
-				if(!(sdx=FindSdByTxtTimeNum(text, time, num))) //重新查找sd失败,直接返回列表
-				{
-					if(gstop!=0)
-					{
-						GeneralFunc_flag1(gstop->id, 1);
-						popGS(dlg_csm);
-					}
-					else
-					{
-					//如果完全出错,直接退出
-						GeneralFunc_flag1(dlg_csm->gui_id, 1);
-					}
-				}
-				else
-					uo->sd=sdx;
-			}
-		}
+    if((uo->gui_type==ED_VIEW)
+       &&(CFG_ENA_AUTO_SAF)
+	 &&(!uo->sd->isfile)
+	   &&(uo->sd->id)
+	     &&(!(uo->sd->msg_type&ISDES))
+	       &&(uo->sd->msg_type!=ISREPORT || !CFG_ENA_AUTO_DEL_RP))      
+    {
+      wstrcpy(text, uo->sd->SMS_TEXT);
+      strcpy(time, uo->sd->Time);
+      strcpy(num, uo->sd->Number);
+      if(saveFile(uo->sd->SMS_TEXT, uo->sd->Number, uo->sd, uo->sd->type, 0))
+      {
+	deleteDat(uo->sd, 1);
+	if(!(sdx=FindSdByTxtTimeNum(text, time, num))) //重新查找sd失败,直接返回列表
+	{
+	  if(gstop!=0)
+	  {
+	    GeneralFunc_flag1(gstop->id, 1);
+	    popGS(dlg_csm);
+	  }
+	  else
+	  {
+	    //如果完全出错,直接退出
+	    GeneralFunc_flag1(dlg_csm->gui_id, 1);
+	  }
+	}
+	else
+	  uo->sd=sdx;
+      }
+    }
 		
 //-------------------
-		{
-			ExtractEditControl(data, uo->focus_n, &ec);
-			WSHDR *hdr_t=AllocWS(64);
-			void *hdr_p=GetHeaderPointer(data);
-			void *ma=malloc_adr();
-			void *mf=mfree_adr();
-		#ifdef DEBUG
-			wsprintf(hdr_t, "%t:%d,p:%d", lgp.LGP_CHAR_COUNT, ec.pWS->wsbody[0], EDIT_GetCursorPos(data));
-		#else
-			wsprintf(hdr_t, "%t: %d", lgp.LGP_CHAR_COUNT, ec.pWS->wsbody[0]);
-		#endif
-			SetHeaderText(hdr_p, hdr_t, ma, mf);
-			if((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW))
-			  SetHeaderIcon(hdr_p, EDHDRIC_VIEW, ma, mf);
-			else
-			{
-			  if(n<=(uo->focus_n-2))
-			    SetHeaderIcon(hdr_p, EDHDRIC_ADRBK, ma, mf);
-			  else
-			    SetHeaderIcon(hdr_p, EDHDRIC_EDIT, ma, mf);
-			}
-		}
-		if((uo->gui_type!=ED_VIEW)&&(uo->gui_type!=ED_FVIEW)&&(n<=(uo->focus_n-2))&&(nl=GetNumListCur(uo, n)))
-		{
-			ExtractEditControl(data,n,&ec);
-			if(isNum(ec.pWS))
-			{
-				char num[50];
-				ws_2str(ec.pWS, num, 49);
-				if(strcmp(num, nl->num))
-				{
-					strcpy(nl->num, num);
-					str_2ws(nl->name, num, 50);
-				}
-			}
-			else
-			{
-				if(wstrcmp_nocase(ec.pWS, nl->name))
-				{
-					DelNumList(uo, nl);
-					if((uo->focus_n-2)>1) //多于一个号码就直接删除这个
-					{
-						EDIT_RemoveEditControl(data, n);
-						(uo->focus_n)--;
-						if(n>(uo->focus_n-2))
-							n=(uo->focus_n-2);
-						if(n>0)
-							EDIT_SetFocus(data, n);
-					}
-					else
-					{
-						EDIT_SetTextToEditControl(data, n, ((NUM_LIST *)(uo->nltop))->name);
-						SetSoftKey(data,&SK_CANCEL,!SET_SOFT_KEY_N);
-					}
-				}
-			}
-		}
-		if(!EDIT_IsBusy(data))
-		{
-			ExtractEditControl(data,n,&ec);
-			if((n<=(uo->focus_n-2))&&(ec.pWS->wsbody[0]==0)&&(uo->gui_type!=ED_VIEW))
-				SetSoftKey(data,&SK_ADRBK,SET_SOFT_KEY_N);
-			else
-				SetSoftKey(data,&SK_OPTIONS,SET_SOFT_KEY_N);
-		}
+    {
+      ExtractEditControl(data, uo->focus_n, &ec);
+      WSHDR *hdr_t=AllocWS(64);
+      void *hdr_p=GetHeaderPointer(data);
+      void *ma=malloc_adr();
+      void *mf=mfree_adr();
+#ifdef DEBUG
+      wsprintf(hdr_t, "%t:%d,p:%d", lgp.LGP_CHAR_COUNT, ec.pWS->wsbody[0], EDIT_GetCursorPos(data));
+#else
+      wsprintf(hdr_t, "%t: %d", lgp.LGP_CHAR_COUNT, ec.pWS->wsbody[0]);
+#endif
+      SetHeaderText(hdr_p, hdr_t, ma, mf);
+      if((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW))
+	SetHeaderIcon(hdr_p, EDHDRIC_VIEW, ma, mf);
+      else
+      {
+	if(n<=(uo->focus_n-2))
+	  SetHeaderIcon(hdr_p, EDHDRIC_ADRBK, ma, mf);
+	else
+	  SetHeaderIcon(hdr_p, EDHDRIC_EDIT, ma, mf);
+      }
+    }
+    if((uo->gui_type!=ED_VIEW)&&(uo->gui_type!=ED_FVIEW)&&(n<=(uo->focus_n-2))&&(nl=GetNumListCur(uo, n)))
+    {
+      ExtractEditControl(data,n,&ec);
+      if(isNum(ec.pWS))
+      {
+	char num[50];
+	ws_2str(ec.pWS, num, 49);
+	if(strcmp(num, nl->num))
+	{
+	  strcpy(nl->num, num);
+	  str_2ws(nl->name, num, 50);
 	}
+      }
+      else
+      {
+	if(wstrcmp_nocase(ec.pWS, nl->name))
+	{
+	  DelNumList(uo, nl);
+	  if((uo->focus_n-2)>1) //多于一个号码就直接删除这个
+	  {
+	    EDIT_RemoveEditControl(data, n);
+	    (uo->focus_n)--;
+	    if(n>(uo->focus_n-2))
+	      n=(uo->focus_n-2);
+	    if(n>0)
+	      EDIT_SetFocus(data, n);
+	  }
+	  else
+	  {
+	    EDIT_SetTextToEditControl(data, n, ((NUM_LIST *)(uo->nltop))->name);
+	    SetSoftKey(data,&SK_CANCEL,!SET_SOFT_KEY_N);
+	  }
+	}
+      }
+    }
+    if(!EDIT_IsBusy(data))
+    {
+      ExtractEditControl(data,n,&ec);
+      if((n<=(uo->focus_n-2))&&(ec.pWS->wsbody[0]==0)&&(uo->gui_type!=ED_VIEW))
+	SetSoftKey(data,&SK_ADRBK,SET_SOFT_KEY_N);
+      else
+	SetSoftKey(data,&SK_OPTIONS,SET_SOFT_KEY_N);
+    }
+  }
 }
 
 void ed_locret(void)
