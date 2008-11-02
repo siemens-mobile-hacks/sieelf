@@ -2,6 +2,7 @@
 #include "config_data.h"
 #include "sms_dat.h"
 #include "language.h"
+#include "main.h"
 
 #define MAX_SMS 100
 typedef struct
@@ -431,14 +432,14 @@ int DoAllDatMsg(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_
 
 int NewMsgReader(void)
 {
-  char sms_dat[128];
-  char ems_admin_dat[128];
+//  char sms_dat[128];
+//  char ems_admin_dat[128];
   int fin;
   unsigned int err;
   char *sms_buf;
   char *ems_admin_buf;
-  int res=0, sms_size, ems_admin_size, x, xl;
-  strcpy(sms_dat, CFG_SYSTEM_FOLDER);
+  int res=0, sms_size, ems_admin_size/*, x, xl*/;
+/*  strcpy(sms_dat, CFG_SYSTEM_FOLDER);
   if((xl=strlen(sms_dat))>0)
     x=sms_dat[xl-1];
   if((x!='\\')&&(x!='/'))
@@ -455,7 +456,7 @@ int NewMsgReader(void)
     ems_admin_dat[xl]='\\';
     ems_admin_dat[xl+1]=0;
   }
-  strcat(ems_admin_dat, "SMS\\EMS_Admin.dat");
+  strcat(ems_admin_dat, "SMS\\EMS_Admin.dat");*/
   if((fin=fopen(sms_dat, A_BIN+A_ReadOnly, P_READ, &err))<0)
     return 0;
   sms_size=lseek(fin, 0, S_END, &err, &err)-2;
@@ -767,15 +768,15 @@ int ReadThisSms(int index)
   
   //-----------------------open read dat-------------------
   
-  char sms_dat[128];
-  char ems_admin_dat[128];
+//  char sms_dat[128];
+//  char ems_admin_dat[128];
   int fsd, fea;
   unsigned int err;
-  int sms_size, ems_admin_size, x, xl, i;
+  int sms_size, ems_admin_size,/* x,*/ xl, i;
   char pdu[sizeof(PDU)];
   EMS_ADM pea;
   SMS_POS_INDEX_DATA sid;
-  strcpy(sms_dat, CFG_SYSTEM_FOLDER);
+/*  strcpy(sms_dat, CFG_SYSTEM_FOLDER);
   if((xl=strlen(sms_dat))>0)
     x=sms_dat[xl-1];
   if((x!='\\')&&(x!='/'))
@@ -792,7 +793,7 @@ int ReadThisSms(int index)
     ems_admin_dat[xl]='\\';
     ems_admin_dat[xl+1]=0;
   }
-  strcat(ems_admin_dat, "SMS\\EMS_Admin.dat");
+  strcat(ems_admin_dat, "SMS\\EMS_Admin.dat");*/
   if((fsd=fopen(sms_dat, A_BIN+A_ReadOnly, P_READ, &err))<0)
     return 0;
   sms_size=lseek(fsd, 0, S_END, &err, &err)/*-2*/;

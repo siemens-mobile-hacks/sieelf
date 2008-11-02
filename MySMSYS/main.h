@@ -24,6 +24,9 @@ typedef struct
 
 extern int new_sms_n;
 extern unsigned int DlgCsmIDs[];
+extern char sms_dat[128];
+extern char ems_admin_dat[128];
+
 int CreateMainMenu(DLG_CSM *dlg_csm);
 void OpenArchive(void);
 void addCSMidForced0(unsigned int *id_pool, unsigned int id);

@@ -76,6 +76,8 @@ int opmsg_id=0;
 int is_fview=0;
 char filename[128]={0};
 int new_sms_n=0;
+char sms_dat[128];
+char ems_admin_dat[128];
 //---------------------------------------
 //csm_id man
 
@@ -573,7 +575,7 @@ const IPC_REQ my_ipc_n=
 GBSTMR chk_tmr;
 int tindex=0;
 int isnewp=0;
-extern int ReadThisSms(int index);
+//extern int ReadThisSms(int index);
 //GBSTMR n_update_tmr;
 /*
 void CheckNewProc(void)
@@ -673,10 +675,34 @@ int GetIcon(void)
   return 0;
 }
 
+void InitDatPath(void)
+{
+  int x, xl;
+  strcpy(sms_dat, CFG_SYSTEM_FOLDER);
+  if((xl=strlen(sms_dat))>0)
+    x=sms_dat[xl-1];
+  if((x!='\\')&&(x!='/'))
+  {
+    sms_dat[xl]='\\';
+    sms_dat[xl+1]=0;
+  }
+  strcat(sms_dat, "SMS\\SMS.dat");
+  strcpy(ems_admin_dat, CFG_SYSTEM_FOLDER);
+  if((xl=strlen(ems_admin_dat))>0)
+    x=ems_admin_dat[xl-1];
+  if((x!='\\')&&(x!='/'))
+  {
+    ems_admin_dat[xl]='\\';
+    ems_admin_dat[xl+1]=0;
+  }
+  strcat(ems_admin_dat, "SMS\\EMS_Admin.dat");
+}
+
 int NEW_SMS_ICON;
 void InitSetting(void)
 {
   InitConfig();
+  InitDatPath();
   NEW_SMS_ICON=GetIcon();
 }
 
