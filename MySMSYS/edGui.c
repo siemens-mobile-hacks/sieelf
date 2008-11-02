@@ -1175,17 +1175,20 @@ void edGHook(GUI *data, int cmd)
 	{
 	  if(!(z=uo->sd->cnt_r))
 	  {
-	    if((uo->sd->msg_type&IS7BIT)||(IsWsSmall(ec.pWS)))
-	      z=ec.pWS->wsbody[0]/SEG7_MAX+1;
+	    if(!ec.pWS->wsbody[0])
+	      z=1;
+	    else if((uo->sd->msg_type&IS7BIT)||(IsWsSmall(ec.pWS)))
+	      z=(ec.pWS->wsbody[0]-1)/SEG7_MAX+1;
 	    else
-	      z=ec.pWS->wsbody[0]/SEGN_MAX+1;
+	      z=(ec.pWS->wsbody[0]-1)/SEGN_MAX+1;
 	  }
 	}
       }
       else
       {
-	if(IsWsSmall(ec.pWS)) z=ec.pWS->wsbody[0]/SEG7_MAX+1;
-	else z=ec.pWS->wsbody[0]/SEGN_MAX+1;
+	if(!ec.pWS->wsbody[0]) z=1;
+	else if(IsWsSmall(ec.pWS)) z=(ec.pWS->wsbody[0]-1)/SEG7_MAX+1;
+	else z=(ec.pWS->wsbody[0]-1)/SEGN_MAX+1;
       }
 #ifdef DEBUG
       wsprintf(hdr_t, "%t:%d,p:%d", lgp.LGP_CHAR_COUNT, ec.pWS->wsbody[0], EDIT_GetCursorPos(data));
