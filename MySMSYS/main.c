@@ -768,7 +768,7 @@ __swi __arm void SLI_SetState(unsigned char state);
 	      GBS_StartTimerProc(&chk_tmr, 216/2, DoNewProc);
 	    }
 	  }
-	  else if((int)msg->data1==0x8 && !IsNoDlg(DlgCsmIDs))
+	  else/* if((int)msg->data1==0x8 && !IsNoDlg(DlgCsmIDs))*/
 	  {
 	    if((x=CheckThisSMS((int)msg->data0)))
 	    {
