@@ -413,7 +413,7 @@ static void dialogcsm_oncreate(CSM_RAM *data)
 {
   DLG_CSM *csm=(DLG_CSM *)data;
   csm->gstop=0;
-  if(
+/*  if(
      (IPC_SUB_MSG!=SMSYS_IPC_FVIEW)
        &&(IPC_SUB_MSG!=SMSYS_IPC_NEWSMS)
 	 &&(IPC_SUB_MSG!=SMSYS_IPC_NEWSMS_NUM)
@@ -422,7 +422,7 @@ static void dialogcsm_oncreate(CSM_RAM *data)
 	       )
   {
     readAllSMS();
-  }
+  }*/
   switch(IPC_SUB_MSG)
   {
   case MY_SMSYS_IPC_START:
@@ -478,11 +478,12 @@ static void dialogcsm_oncreate(CSM_RAM *data)
     break;
   case SMSYS_IPC_FVIEW:
     if (!strlen(filename) || !(csm->gui_id=ViewFile(csm, filename)))
-    {
-      readAllSMS();
-      csm->gui_id=CreateMainMenu(csm);
-    }
+    //{
+    //  readAllSMS();
+    //  csm->gui_id=CreateMainMenu(csm);
+    //}
     filename[0]=0;
+    data->state=-3; //close
     break;
   default:
     csm->gui_id=CreateMainMenu(csm);
@@ -538,6 +539,7 @@ unsigned int CreateDialogCSM(void)
   zeromem(&dlg_csm, sizeof(DLG_CSM));
   memcpy(dcd, &DIALOGCSM, sizeof(DLGCSM_DESC));
   if(!cltop) SUBPROC((void *)ConstructList);
+  if(!sdltop) readAllSMS();
   LoadLangPack();
   LoadIconPack();
   return (CreateCSM(&dcd->csmd,&dlg_csm,2));
@@ -545,19 +547,19 @@ unsigned int CreateDialogCSM(void)
 
 static void daemoncsm_oncreate(CSM_RAM *data)
 {
-	daemon_ipc.data=&ipc_data_daemon;
-	ipc_data_daemon.csm_id=DAEMON_CSM_ID;
-	if(is_fview&&strlen(filename))
-	{
-		ipc_data_daemon.code=MY_SMSYS_FVIEW;
-		ipc_data_daemon.fname=filename;
-	}
-	else
-	{
-		ipc_data_daemon.code=MY_SMSYS_CREATE;
-		ipc_data_daemon.fname=0;
-	}
-	GBS_SendMessage(MMI_CEPID,MSG_IPC,MY_SMSYS_IPC_START,&daemon_ipc);
+  daemon_ipc.data=&ipc_data_daemon;
+  ipc_data_daemon.csm_id=DAEMON_CSM_ID;
+  if(is_fview&&strlen(filename))
+  {
+    ipc_data_daemon.code=MY_SMSYS_FVIEW;
+    ipc_data_daemon.fname=filename;
+  }
+  else
+  {
+    ipc_data_daemon.code=MY_SMSYS_CREATE;
+    ipc_data_daemon.fname=0;
+  }
+  GBS_SendMessage(MMI_CEPID,MSG_IPC,MY_SMSYS_IPC_START,&daemon_ipc);
 }
 
 
@@ -569,6 +571,9 @@ const IPC_REQ my_ipc_n=
 };
 
 GBSTMR chk_tmr;
+int tindex=0;
+int isnewp=0;
+extern int ReadThisSms(int index);
 //GBSTMR n_update_tmr;
 /*
 void CheckNewProc(void)
@@ -581,12 +586,18 @@ void CheckNewProc(void)
 */
 void DoNewProc(void)
 {
+  if(tindex)
+  {
+    ReadThisSms(tindex);
+    tindex=0;
+  }
   if(CFG_ENA_NOTIFY) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_NEW_IN_WIN,&my_ipc_n);
   else if(!IsNoDlg(DlgCsmIDs))
   {
-    readAllSMS();
+    //readAllSMS();
     if(IsHaveDlgGuiOnTop()) RefreshGUI();
   }
+  isnewp=0;
 }
 
 extern short PLAY_ID;
@@ -610,7 +621,12 @@ void UpdateNProc(void)
 {
   if(!IsNoDlg(DlgCsmIDs))
   {
-    readAllSMS();
+    //readAllSMS();
+    if(tindex)
+    {
+      ReadThisSms(tindex);
+      tindex=0;
+    }
     if(IsHaveDlgGuiOnTop())
     {
       RefreshGUI();
@@ -721,6 +737,8 @@ __swi __arm void SLI_SetState(unsigned char state);
 	    if(IsThisSmsNewIn((int)msg->data0))// SUBPROC((void *)DoNewProc);
 	    {
 	      if(IsTimerProc(&chk_tmr)) GBS_DelTimer(&chk_tmr);
+	      isnewp=1;
+	      tindex=(int)msg->data0;
 	      GBS_StartTimerProc(&chk_tmr, 216/2, DoNewProc);
 	    }
 	  }
@@ -730,8 +748,12 @@ __swi __arm void SLI_SetState(unsigned char state);
 	    {
 	      if(x==1)
 	      {
-		if(!IsTimerProc(&chk_tmr))
+		if(!IsTimerProc(&chk_tmr) || !isnewp)
+		{
+		  GBS_DelTimer(&chk_tmr);
+		  tindex=(int)msg->data0;
 		  GBS_StartTimerProc(&chk_tmr, 216/2, UpdateNProc);
+		}
 		//SUBPROC((void *)UpdateNProc);
 		//if(!IsTimerProc(&n_update_tmr)/* && !IsTimerProc(&chk_tmr)*/)
 		//  GBS_StartTimerProc(&n_update_tmr, 216*2/3, UpdateNProc);

@@ -468,83 +468,94 @@ int GetMssPath(char *path, char *folder, TTime *time, TDate *date)
   return 0;
 }
 
-int saveFile(WSHDR *ws, char *number, SMS_DATA *sd, int type, int need_reload)
+int saveFile(WSHDR *ws, char *number, SMS_DATA *sd, int type, int need_reload) //need_reload,0 not, 1 all, 2 this
 {
-	char path[128];
-	TTime time;
-	TDate date;
-	unsigned int err;
-	int f;
-	const char *folder;
-	char dir[128];
-	switch(type)
-	{
-	case TYPE_DRAFT:
-		folder=FLDR_DRAFT;
-		break;
-	case TYPE_OUT:
-		folder=FLDR_OUT;
-		break;
-	case TYPE_IN_N:
-	case TYPE_IN_R:
-	case TYPE_IN_ALL:
-		folder=FLDR_IN;
-		break;
-	default:
-		folder=FLDR_UNK;
-		break;
-	}
-	MSS_FILE_P2 *msf=malloc(sizeof(MSS_FILE_P2));
-	zeromem(msf, sizeof(MSS_FILE_P2));
-	GetDateTime(&date, &time);
-	if(!isdir(CFG_MAIN_FOLDER, &err))
-		mkdir(CFG_MAIN_FOLDER, &err);
-	strcpy(dir, CFG_MAIN_FOLDER);
-	strcat(dir, folder);
-	if(!isdir(dir, &err))
-		mkdir(dir, &err);
-	if(sd && sd->type==TYPE_DRAFT && sd->isfile && sd->fname)
-		strcpy(path, sd->fname); 
-	else if(!GetMssPath(path, dir, &time, &date))
-		return 0;
-	if((f=fopen(path, A_BIN+A_WriteOnly+A_Create+A_Truncate, P_WRITE, &err))<0)
-	{
-		mfree(msf);
-		return 0;
-	}
-	strcpy(msf->header, ELFNAME);
-	strncpy(msf->number, number, 32);
-	msf->type=type;
-	msf->version=MSS_VERSION;
-	//如果是来短信,直接使用短信中的时间保存
-	if(((type==TYPE_IN_N)||(type==TYPE_IN_R)||(type==TYPE_IN_ALL))
-		&&(sd!=0)
-		&&(strlen(sd->Time)))
-	{
-		strcpy(msf->time, sd->Time);
-	}
-	else
-		sprintf(msf->time, "%02d-%02d-%02d %02d:%02d:%02d", 
-						date.year%2000, // ? //2008 ->08
-						 date.month, date.day,
-						  time.hour, time.min,
-						   time.sec);
-	if(fwrite(f, msf, sizeof(MSS_FILE_P2), &err)!=sizeof(MSS_FILE_P2))
-	{
-		mfree(msf);
-		fclose(f, &err);
-		return 0;
-	}
-	fwrite(f, ws->wsbody, (ws->wsbody[0]+1)*2, &err);
-	fclose(f, &err);
-	mfree(msf);
-	if(need_reload)
-		return (readAllSMS());
-	return 1;
+  char path[128];
+  TTime time;
+  TDate date;
+  unsigned int err;
+  int f;
+  const char *folder;
+  char dir[128];
+  switch(type)
+  {
+  case TYPE_DRAFT:
+    folder=FLDR_DRAFT;
+    break;
+  case TYPE_OUT:
+    folder=FLDR_OUT;
+    break;
+  case TYPE_IN_N:
+  case TYPE_IN_R:
+  case TYPE_IN_ALL:
+    folder=FLDR_IN;
+    break;
+  default:
+    folder=FLDR_UNK;
+    break;
+  }
+  MSS_FILE_P2 *msf=malloc(sizeof(MSS_FILE_P2));
+  zeromem(msf, sizeof(MSS_FILE_P2));
+  GetDateTime(&date, &time);
+  if(!isdir(CFG_MAIN_FOLDER, &err))
+    mkdir(CFG_MAIN_FOLDER, &err);
+  strcpy(dir, CFG_MAIN_FOLDER);
+  strcat(dir, folder);
+  if(!isdir(dir, &err))
+    mkdir(dir, &err);
+  if(sd && sd->type==TYPE_DRAFT && sd->isfile && sd->fname)
+    strcpy(path, sd->fname); 
+  else if(!GetMssPath(path, dir, &time, &date))
+    return 0;
+  if((f=fopen(path, A_BIN+A_WriteOnly+A_Create+A_Truncate, P_WRITE, &err))<0)
+  {
+    mfree(msf);
+    return 0;
+  }
+  strcpy(msf->header, ELFNAME);
+  strncpy(msf->number, number, 32);
+  msf->type=type;
+  msf->version=MSS_VERSION;
+  //如果是来短信,直接使用短信中的时间保存
+  if(((type==TYPE_IN_N)||(type==TYPE_IN_R)||(type==TYPE_IN_ALL))
+     &&(sd!=0)
+       &&(strlen(sd->Time)))
+  {
+    strcpy(msf->time, sd->Time);
+  }
+  else
+    sprintf(msf->time, "%02d-%02d-%02d %02d:%02d:%02d", 
+	    date.year%2000, // ? //2008 ->08
+	    date.month, date.day,
+	    time.hour, time.min,
+	    time.sec);
+  if(fwrite(f, msf, sizeof(MSS_FILE_P2), &err)!=sizeof(MSS_FILE_P2))
+  {
+    mfree(msf);
+    fclose(f, &err);
+    return 0;
+  }
+  fwrite(f, ws->wsbody, (ws->wsbody[0]+1)*2, &err);
+  fclose(f, &err);
+  mfree(msf);
+  if(need_reload==1) readAllSMS();
+  else if(need_reload==2)
+  {
+    //int ReadMSS(char *fname, SMS_DATA *sd)
+    SMS_DATA *sdx=AllocSD();
+    if(ReadMSS(path, sdx))
+    {
+      LockSched();
+      AddToSdlByTime(sdx);
+      UnlockSched();
+    }
+    else FreeSdOne(sdx);
+  }
+  return 1;
 }
 
-SMS_DATA *AllocSD(void);
-void AddToSdlByTime(SMS_DATA *sd);
+//SMS_DATA *AllocSD(void);
+//void AddToSdlByTime(SMS_DATA *sd);
 
 int readFile(int type)
 {
@@ -1173,7 +1184,7 @@ SMS_DATA *FindSDByOpmsgId(int opmsg_id)
 	}
 	return 0;
 }
-
+/*
 int SaveAllAsFile(void)
 {
 	int res=0;
@@ -1193,7 +1204,7 @@ int SaveAllAsFile(void)
 	readAllSMS();
 	return res;
 }
-
+*/
 SMS_DATA *FindNextByType(SMS_DATA *sdl, int type)
 {
 	if(!sdl)
@@ -1859,7 +1870,7 @@ void DeleteAllMss(void)
 	}
 	readAllSMS();
 }
-
+/*
 void DeleteAll(void)
 {
 	SMS_DATA *sdl=sdltop;
@@ -1873,7 +1884,7 @@ void DeleteAll(void)
 	}
 	readAllSMS();
 }
-
+*/
 int CovDatToTxt_ASCII(char *dat_path, char *txt_path)
 {
   int fin, ft, size, res=0, len;

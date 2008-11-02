@@ -144,43 +144,55 @@ void ed_menu_del(GUI *gui)
 	GeneralFuncF1(1);
 }
 
+int IsFileInArchive(const char *fpath);
 void ed_menu_save_as_file(GUI *gui)
 {
-	void *ed_gui=MenuGetUserPointer(gui);
-	USER_OP *uo=EDIT_GetUserPointer(ed_gui);
-	DLG_CSM *dlg_csm=(DLG_CSM *)(uo->dlg_csm);
-	SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);	
-	if((uo->sd!=0)&&(uo->sd->isfile==0)&&(uo->sd->SMS_TEXT))
+  void *ed_gui=MenuGetUserPointer(gui);
+  USER_OP *uo=EDIT_GetUserPointer(ed_gui);
+  DLG_CSM *dlg_csm=(DLG_CSM *)(uo->dlg_csm);
+  SGUI_ID *gstop=(SGUI_ID *)(dlg_csm->gstop);	
+  if((uo->sd!=0)&&(uo->sd->isfile==0)&&(uo->sd->SMS_TEXT))
+  {
+    char time[32];
+    char sdnum[32];
+    SMS_DATA *sdx;
+    WSHDR *ws=AllocWS(MAX_TEXT);
+    wstrcpy(ws, uo->sd->SMS_TEXT);
+    strcpy(time, uo->sd->Time);
+    strcpy(sdnum, uo->sd->Number);
+    if(saveFile(uo->sd->SMS_TEXT, uo->sd->Number, uo->sd, uo->sd->type, 2))
+    {
+      deleteDat(uo->sd, 0);
+      delSDList(uo->sd);
+      if(!(sdx=FindSdByTxtTimeNum(ws, time, sdnum))) //重新查找sd失败,直接返回列表
+      {
+	if(gstop!=0)
 	{
-		char time[32];
-		char sdnum[32];
-		SMS_DATA *sdx;
-		WSHDR *ws=AllocWS(MAX_TEXT);
-		wstrcpy(ws, uo->sd->SMS_TEXT);
-		strcpy(time, uo->sd->Time);
-		strcpy(sdnum, uo->sd->Number);
-		if(saveFile(uo->sd->SMS_TEXT, uo->sd->Number, uo->sd, uo->sd->type, 0))
-		{
-			deleteDat(uo->sd, 1);
-			if(!(sdx=FindSdByTxtTimeNum(ws, time, sdnum))) //重新查找sd失败,直接返回列表
-			{
-				if(gstop!=0)
-				{
-					GeneralFunc_flag1(gstop->id, 1);
-					popGS(dlg_csm);
-				}
-				else
-				{
-				//如果完全出错,直接退出
-					GeneralFunc_flag1(dlg_csm->gui_id, 1);
-				}
-			}
-			else
-				uo->sd=sdx;
-		}
-		FreeWS(ws);
+	  GeneralFunc_flag1(gstop->id, 1);
+	  popGS(dlg_csm);
 	}
-	GeneralFuncF1(1);
+	else
+	{
+	  //如果完全出错,直接退出
+	  GeneralFunc_flag1(dlg_csm->gui_id, 1);
+	}
+      }
+      else
+      {
+	uo->sd=sdx;
+	if(uo->sd->isfile)
+	{
+	  if(uo->sd->fname && IsFileInArchive(uo->sd->fname))
+	    uo->dat_type=ARCHIVE_FILE;
+	  else
+	    uo->dat_type=NML_FILE;
+	}
+	else uo->dat_type=NML_DAT;
+      }
+    }
+    FreeWS(ws);
+  }
+  GeneralFuncF1(1);
 } 
 
 void ed_menu_move_to_archive(GUI *gui)
@@ -334,12 +346,16 @@ int IsFileInArchive(const char *fpath)
   return 0;
 }
 
+#ifndef WITHOUT_OP_ICON
+
 #ifdef NEWSGOLD
 #ifdef ELKA
 int ed_menu_item_icons[]={0x538,0};
 #else
 int ed_menu_item_icons[]={0x564,0};
 #endif
+#endif
+
 #endif
 
 void ed_menu_itemhndl(void *data, int curitem, void *user_pointer)
@@ -375,8 +391,10 @@ ITEM_ERR:
   wsprintf(ws, PERCENT_T, lgp.LGP_ERR);
   }
 GOGO:
+#ifndef WITHOUT_OP_ICON
   SetMenuItemIconArray(data, item, ed_menu_item_icons);
   SetMenuItemIcon(data, curitem, 0);
+#endif
   SetMenuItemText(data, item, ws, curitem);
 }
 
@@ -447,14 +465,18 @@ void ed_menu_ghook(void *data, int cmd)
 }
 const MENU_DESC ed_menu=
 {
-	8,ed_menu_onkey,ed_menu_ghook,NULL,
-	ed_menusoftkeys,
-	&ed_menu_skt,
-	0x11,//Right align
-	ed_menu_itemhndl,
-	0,//menuitems,
-	0,//menuprocs,
-	0
+  8,ed_menu_onkey,ed_menu_ghook,NULL,
+  ed_menusoftkeys,
+  &ed_menu_skt,
+#ifdef WITHOUT_OP_ICON
+  0x10,
+#else
+  0x11,//Right align
+#endif
+  ed_menu_itemhndl,
+  0,//menuitems,
+  0,//menuprocs,
+  0
 };
 
 int createEditOpMenu(void *ed_gui)
@@ -643,7 +665,7 @@ int Ed_SendSMS(void *gui)
 			WSHDR *ws=AllocWS(ec.pWS->wsbody[0]);
 			wstrcpy(ws,ec.pWS);
 			SendSMS(ws,nl->num,MMI_CEPID,MSG_SMS_RX-1,6);
-			if(CFG_ENA_SAVE_SENT) saveFile(ec.pWS, nl->num, uo->sd, TYPE_OUT, 1);
+			if(CFG_ENA_SAVE_SENT) saveFile(ec.pWS, nl->num, uo->sd, TYPE_OUT, 2);
 		}
 		nl=nl->next;
 	}
@@ -655,10 +677,10 @@ void Ed_SaveFile(WSHDR *txt, USER_OP *uo, int type)
 	NUM_LIST *nl=(NUM_LIST *)(uo->nltop);
 	while(nl)
 	{
-		saveFile(txt, nl->num, uo->sd, type, 0);
+		saveFile(txt, nl->num, uo->sd, type, 2);
 		nl=nl->next;
 	}
-	readAllSMS();
+	//readAllSMS();
 }
 
 #ifdef LANG_CN
@@ -1105,9 +1127,10 @@ void edGHook(GUI *data, int cmd)
       wstrcpy(text, uo->sd->SMS_TEXT);
       strcpy(time, uo->sd->Time);
       strcpy(num, uo->sd->Number);
-      if(saveFile(uo->sd->SMS_TEXT, uo->sd->Number, uo->sd, uo->sd->type, 0))
+      if(saveFile(uo->sd->SMS_TEXT, uo->sd->Number, uo->sd, uo->sd->type, 2))
       {
-	deleteDat(uo->sd, 1);
+	deleteDat(uo->sd, 0);
+	delSDList(uo->sd);
 	if(!(sdx=FindSdByTxtTimeNum(text, time, num))) //重新查找sd失败,直接返回列表
 	{
 	  if(gstop!=0)
@@ -1122,7 +1145,18 @@ void edGHook(GUI *data, int cmd)
 	  }
 	}
 	else
+	{
 	  uo->sd=sdx;
+	  //update dat type
+	  if(uo->sd->isfile)
+	  {
+	    if(uo->sd->fname && IsFileInArchive(uo->sd->fname))
+	      uo->dat_type=ARCHIVE_FILE;
+	    else
+	      uo->dat_type=NML_FILE;
+	  }
+	  else uo->dat_type=NML_DAT;
+	}
       }
     }
 		
@@ -1133,10 +1167,30 @@ void edGHook(GUI *data, int cmd)
       void *hdr_p=GetHeaderPointer(data);
       void *ma=malloc_adr();
       void *mf=mfree_adr();
+      int z=0;
+      extern int IsWsSmall(WSHDR *ws);
+      if(uo->gui_type==ED_VIEW || uo->gui_type==ED_FVIEW)
+      {
+	if(uo->sd)
+	{
+	  if(!(z=uo->sd->cnt_r))
+	  {
+	    if((uo->sd->msg_type&IS7BIT)||(IsWsSmall(ec.pWS)))
+	      z=ec.pWS->wsbody[0]/SEG7_MAX+1;
+	    else
+	      z=ec.pWS->wsbody[0]/SEGN_MAX+1;
+	  }
+	}
+      }
+      else
+      {
+	if(IsWsSmall(ec.pWS)) z=ec.pWS->wsbody[0]/SEG7_MAX+1;
+	else z=ec.pWS->wsbody[0]/SEGN_MAX+1;
+      }
 #ifdef DEBUG
       wsprintf(hdr_t, "%t:%d,p:%d", lgp.LGP_CHAR_COUNT, ec.pWS->wsbody[0], EDIT_GetCursorPos(data));
 #else
-      wsprintf(hdr_t, "%t: %d", lgp.LGP_CHAR_COUNT, ec.pWS->wsbody[0]);
+      wsprintf(hdr_t, "%t: %d %d", lgp.LGP_CHAR_COUNT, ec.pWS->wsbody[0], z);
 #endif
       SetHeaderText(hdr_p, hdr_t, ma, mf);
       if((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW))

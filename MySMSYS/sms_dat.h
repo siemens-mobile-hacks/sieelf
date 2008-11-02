@@ -24,8 +24,12 @@
 #define ISEMS 1 //00000001
 #define ISREPORT 2 //00000010
 #define ISDES 4 //00000100 //is destroyed, or not full received
-
+#define IS7BIT 8 //00001000
 #define MAX_TEXT 2048
+
+//
+#define SEGN_MAX 70
+#define SEG7_MAX 160
 
 typedef struct
 {
@@ -36,7 +40,7 @@ typedef struct
 	int opmsg_id;
 	int isfile;
 	int msg_type;
-//	int cnt;
+	int cnt_r;
 	char *fname;
 //	char SMS_CENTER[32];
 	char Number[32];

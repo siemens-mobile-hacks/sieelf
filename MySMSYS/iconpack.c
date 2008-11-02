@@ -19,6 +19,11 @@ const char *icon_names[]=
   "sms_inread.png",
   "sms_sent.png",
   "sms_draft.png",
+  //ems
+  "ems_innew.png",
+  "ems_inread.png",
+  "ems_sent.png",
+  "ems_draft.png",
   //headr icon
   //hdr menu
   "hdr_mmenu.png",
@@ -44,6 +49,7 @@ const int icon_default[]=
 #ifdef ELKA
   0x538,0x538,0x538,0x538,0x538,0x538,0x538,
   0x5B6,0x5B5,0x5B8,0x5B2,
+  0x5B3,0x5B4,0x5B4,0x5B4,
   0x2AB,0x2AB,0x2AB,0x5A4,0x2AB,0x598,
   0x2A5,0x4DB,0x28C,
   0x282,0x52C,
@@ -51,6 +57,7 @@ const int icon_default[]=
 #else
   0x564,0x564,0x564,0x564,0x564,0x564,0x564, //blank
   0x5E2,0x5E1,0x5E4,0x5DE,
+  0x5DF,0x5E0,0x5E0,0x5E0,
   0x5C5,0x29E,0x5C5,0x515,0x5C4,0x5C5,
   0x29A,0x505,0x1A1,
   0x278,0x558,
@@ -75,6 +82,11 @@ typedef struct
   int sms_inread;
   int sms_sent;
   int sms_draft;
+  //ems
+  int ems_innew;
+  int ems_inread;
+  int ems_sent;
+  int ems_draft;
   //headr icon
   //hdr menu
   int hdr_mmenu;
@@ -100,6 +112,7 @@ void InitIconPack(void)
   //smsList.c
   extern int SL_HDR_ICONS[7][2];
   extern int SL_ICONS[7];
+  extern int ESL_ICONS[7];
   SL_HDR_ICONS[0][0]=ip.hdr_allsms;
   SL_HDR_ICONS[1][0]=ip.hdr_sent;
   SL_HDR_ICONS[2][0]=ip.hdr_inbox;
@@ -114,6 +127,13 @@ void InitIconPack(void)
   SL_ICONS[4]=ip.sms_draft;
   SL_ICONS[5]=ip.sms_inread;
   //SL_ICONS[6]=0
+  ESL_ICONS[0]=ip.ems_inread;
+  ESL_ICONS[1]=ip.ems_sent;
+  ESL_ICONS[2]=ip.ems_inread;
+  ESL_ICONS[3]=ip.ems_innew;
+  ESL_ICONS[4]=ip.ems_draft;
+  ESL_ICONS[5]=ip.ems_inread;
+  //ESL_ICONS[6]=0
   
   //edGui.c
   extern int EDHDRIC_VIEW[];
@@ -163,7 +183,7 @@ void FreeIconPack(void)
     z=p[i];
     if(((unsigned int)z>>28)==0xA)
     {
-      GetCPUClock();
+      //GetCPUClock();
       mfree((void *)z);
     }
   }
@@ -205,7 +225,6 @@ void LoadIconPack(void)
       strcat(ftemp, icon_names[i]);
       if(IsFileExist(ftemp))
       {
-	GetCPUClock();
 	tt=malloc(128);
 	strcpy(tt, ftemp);
 	p[i]=(int)tt;

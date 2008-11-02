@@ -105,13 +105,16 @@ void slop_menu_del(GUI *data)
 
 void slop_menu_save_as_file(GUI *data)
 {
-	SL_UP *su=MenuGetUserPointer(data);
-	GeneralFuncF1(1);
-	if((!(su->sd->isfile))&&((su->sd->id)>0))
-	{
-		if(saveFile(su->sd->SMS_TEXT, su->sd->Number, su->sd, su->sd->type, 0))
-			deleteDat(su->sd, 1);		
-	}
+  SL_UP *su=MenuGetUserPointer(data);
+  GeneralFuncF1(1);
+  if((!(su->sd->isfile))&&((su->sd->id)>0))
+  {
+    if(saveFile(su->sd->SMS_TEXT, su->sd->Number, su->sd, su->sd->type, 2))
+    {
+      deleteDat(su->sd, 0);
+      delSDList(su->sd);
+    }
+  }
 }
 
 void slop_menu_export_txt(GUI *data)
@@ -154,68 +157,14 @@ void slop_menu_send(GUI *data)
 			WSHDR *ws=AllocWS(wst->wsbody[0]);
 			wstrcpy(ws, wst);
 			SendSMS(ws, num, MMI_CEPID, MSG_SMS_RX-1, 6);
-			if(CFG_ENA_SAVE_SENT) saveFile(wst, num, su->sd, TYPE_OUT, 0);
+			if(CFG_ENA_SAVE_SENT) saveFile(wst, num, su->sd, TYPE_OUT, 2);
 			if(!su->sd->isfile) deleteDat(su->sd, 0);
 			else deleteFile(su->sd, 0);
 			delSDList(su->sd);
-			readAllSMS();
+			//readAllSMS();
 		}
 	}
 }
-
-/*
-const MENUPROCS_DESC slop_menuprocs[SLOP_MENU_N]=
-{
-	slop_menu_reply,
-	slop_menu_edit,
-	slop_menu_del,
-	slop_menu_save_as_file,
-	slop_menu_export_txt,
-	slop_menu_move_to_archive,
-	slop_menu_exit,
-};
-
-const MENUITEM_DESC slop_menuitems[SLOP_MENU_N]=
-{
-	{NULL,(int)STR_REPLY,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-	{NULL,(int)STR_EDIT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-	{NULL,(int)LGP_DEL,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},	
-	{NULL,(int)LGP_SAVE_AS_FILE,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-	{NULL,(int)LGP_EXPORT_TXT,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},	
-	{NULL,(int)LGP_MOVE_ARCHIVE,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},	
-	{NULL,(int)LGP_EXIT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-};
-
-const MENUPROCS_DESC slop_menuprocs_2[SLOP_MENU_N_2]=
-{
-	slop_menu_reply,
-	slop_menu_edit,
-	slop_menu_del,
-	slop_menu_export_txt,
-	slop_menu_move_to_archive,
-	slop_menu_exit,
-};
-
-const MENUITEM_DESC slop_menuitems_2[SLOP_MENU_N_2]=
-{
-	{NULL,(int)STR_REPLY,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-	{NULL,(int)STR_EDIT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-	{NULL,(int)LGP_DEL,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-	{NULL,(int)LGP_EXPORT_TXT,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},	
-	{NULL,(int)LGP_MOVE_ARCHIVE,		LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},	
-	{NULL,(int)LGP_EXIT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-};
-
-const MENUPROCS_DESC slop_menuprocs_3[1]=
-{
-	slop_menu_exit,
-};
-
-const MENUITEM_DESC slop_menuitems_3[1]=
-{
-	{NULL,(int)LGP_EXIT,	LGP_NULL, 0, NULL, MENU_FLAG3, MENU_FLAG2},
-};
-*/
 
 const MENUPROCS_DESC slop_procs_dat[SLOP_MENU_N_DAT]=
 {
@@ -324,12 +273,16 @@ int slop_menu_onkey(void *data, GUI_MSG *msg)
   return 0;
 }
 
+#ifndef WITHOUT_OP_ICON
+
 #ifdef NEWSGOLD
 #ifdef ELKA
 int slop_item_icons[]={0x538,0};
 #else
 int slop_item_icons[]={0x564,0};
 #endif
+#endif
+
 #endif
 
 void slop_menu_itemhndl(void *data, int curitem, void *user_pointer)
@@ -361,58 +314,27 @@ void slop_menu_itemhndl(void *data, int curitem, void *user_pointer)
 SLOP_ERR:
   wsprintf(ws, PERCENT_T, lgp.LGP_ERR);
 GO_P:
+#ifndef WITHOUT_OP_ICON
   SetMenuItemIconArray(data, item, slop_item_icons);
   SetMenuItemIcon(data, curitem, 0);
+#endif
   SetMenuItemText(data, item, ws, curitem);
 }
 
-/*
 const MENU_DESC slop_menu=
 {
-	8,slop_menu_onkey,slop_menu_ghook,NULL,
-	slop_menusoftkeys,
-	&slop_menu_skt,
-	0x10,//Right align
-	NULL,
-	slop_menuitems,//menuitems,
-	slop_menuprocs,//menuprocs,
-	SLOP_MENU_N
-};
-
-const MENU_DESC slop_menu_2=
-{
-	8,slop_menu_onkey,slop_menu_ghook,NULL,
-	slop_menusoftkeys,
-	&slop_menu_skt,
-	0x10,//Right align
-	NULL,
-	slop_menuitems_2,//menuitems,
-	slop_menuprocs_2,//menuprocs,
-	SLOP_MENU_N_2
-};
-
-const MENU_DESC slop_menu_3=
-{
-	8,slop_menu_onkey,slop_menu_ghook,NULL,
-	slop_menusoftkeys,
-	&slop_menu_skt,
-	0x10,//Right align
-	NULL,
-	slop_menuitems_3,//menuitems,
-	slop_menuprocs_3,//menuprocs,
-	1
-};
-*/
-const MENU_DESC slop_menu=
-{
-	8,slop_menu_onkey,slop_menu_ghook,NULL,
-	slop_menusoftkeys,
-	&slop_menu_skt,
-	0x11,//Right align
-	slop_menu_itemhndl,
-	0,//menuitems,
-	0,//menuprocs,
-	0
+  8,slop_menu_onkey,slop_menu_ghook,NULL,
+  slop_menusoftkeys,
+  &slop_menu_skt,
+#ifdef WITHOUT_OP_ICON
+  0x10,
+#else
+  0x11,//Right align
+#endif
+  slop_menu_itemhndl,
+  0,//menuitems,
+  0,//menuprocs,
+  0
 };
 int CreateslOpMenu(DLG_CSM *dlg_csm, SMS_DATA *sd, int type)
 {
@@ -497,10 +419,11 @@ int sms_menu_onkey(void *data, GUI_MSG *msg)
 		}
 		else if((i=='9')&&(!sd->isfile))
 		{
-			if(saveFile(sd->SMS_TEXT, sd->Number, sd, sd->type, 0))
+			if(saveFile(sd->SMS_TEXT, sd->Number, sd, sd->type, 2))
 			{
 				int k=GetCurMenuItem(data);
-				deleteDat(sd, 1);
+				deleteDat(sd, 0);
+				delSDList(sd);
 				SetCursorToMenuItem(data, (k==(n-1))?k:(k+1));
 			}
 			RefreshGUI();
@@ -607,10 +530,12 @@ int SL_HDR_ICONS[7][2]=
 };
 //extern void SetHeaderIcon(void *hdr_pointer, const int *icon, void *malloc_adr, void *mfree_adr);
 int SL_ICONS[7]={ICON_UNK, ICON_OUT, ICON_IN_R, ICON_IN_N, ICON_DRAFT, ICON_IN_ALL, ICON_LINE};
+int ESL_ICONS[7]={ICON_UNK, ICON_OUT, ICON_IN_R, ICON_IN_N, ICON_DRAFT, ICON_IN_ALL, ICON_LINE};
 void sms_menu_itemhndl(void *data, int curitem, void *user_pointer)
 {
 	SML_OP *so=(SML_OP *)user_pointer;
 	int type=so->type;
+	int isems=0;
 	void *item=AllocMLMenuItem(data);
 	WSHDR *ws1=AllocMenuWS(data, MENU_MAX_TXT);
 	WSHDR *ws2=AllocMenuWS(data, 150);
@@ -653,7 +578,24 @@ AL_ERR:
 		wsprintf(ws1, PERCENT_T, lgp.LGP_ERR);
 		CutWSTR(ws2, 0);
 	}
-	SetMenuItemIconArray(data, item, SL_ICONS);
+	if(sdl)
+	{
+	  extern int IsWsSmall(WSHDR *ws);
+	  if((sdl->msg_type&ISEMS) || sdl->cnt_r>1)
+	    isems=1;
+	  else
+	  {
+	    if((sdl->msg_type&IS7BIT) || IsWsSmall(sdl->SMS_TEXT))
+	    {
+	      if(sdl->SMS_TEXT->wsbody[0]>SEG7_MAX) isems=1;
+	    }
+	    else
+	    {
+	      if(sdl->SMS_TEXT->wsbody[0]>SEGN_MAX) isems=1;
+	    }
+	  }
+	}
+	SetMenuItemIconArray(data, item, (isems)?ESL_ICONS:SL_ICONS);
 	SetMenuItemIcon(data, curitem, (sdl)?(sdl->type):6);
 	SetMLMenuItemText(data, item, ws1, ws2, curitem);
 }

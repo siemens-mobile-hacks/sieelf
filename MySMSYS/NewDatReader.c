@@ -33,6 +33,47 @@ void Add2WS_NEW(char *data, unsigned short *wsbody, int len)
   wsbody[0]=len/2;
 }
 
+void Hex2Num_NEW(char *hex, char *num, int len)
+{
+  char *p=hex;
+  char *pp=num;
+  int m=0;
+  int c=0;
+  int c1;
+  if((c1=*p++)==0x91) {*pp='+'; pp++;}
+  else if(c1==0xD0) //7bit ?
+  {
+    len=((len&1)?1:0) + (len>>1);
+    while(len)
+    {
+      c=0x80;
+      do
+      {
+	if(!m) {c1=*p++; m=8;}
+	c>>=1;
+	if(c1&1) c|=0x80;
+	c1>>=1; m--;
+      }while(!(c&1));
+      c>>=1;
+      if(!c) c='@';
+      if(c==2) c='$';
+      *pp=c;
+      pp++;
+      len--;
+    }
+    *pp=0;
+    return;
+  }
+  while(m<len)
+  {
+    if(m&1) c1=c>>4;
+    else c1=(c=(*p++))&0x0F;
+    *pp=c1+0x30; pp++;
+    m++;
+  }
+  *pp=0;
+}
+
 void Bit7Decode(WSHDR *ws, char *pdata, int skip, int len) //big respect to Rst7(LogSms),
 {
   char *p=pdata;
@@ -60,7 +101,7 @@ int PduDecodeTxt(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
 {
   int c;
   int ttype;
-  int isplus, wlen, isems, skip;
+  int isplus, wlen, isems, skip=0;
   char *p;
   WSHDR *ws, wsn, *wst;
   unsigned short wsb[300];
@@ -85,7 +126,8 @@ int PduDecodeTxt(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
     p++;
   }
   c=*p++;
-  if(c)
+  c=((c&1)?1:0) + (c>>1) +1;
+/*  if(c)
   {
     if(c%2)
       c=c/2+2;
@@ -96,7 +138,7 @@ int PduDecodeTxt(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
   {
     c=1;
     //sd->Number[0]=0;
-  }
+  }*/
   p+=c+1; //num
   ttype=*p++;
   if((sd->type==TYPE_IN_R)||(sd->type==TYPE_IN_N))
@@ -108,7 +150,7 @@ int PduDecodeTxt(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
   //...text,
   if(isems)
   {
-    skip=*p+1;
+    skip=(*p)+1;
     if(ttype!=8) skip=((skip*8)+6)/7;
     else
     {
@@ -184,7 +226,7 @@ int PduDecodeAll(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
 {
   int c;
   int ttype, wlen;
-  int isplus, isems, skip, isreport=0;
+  int isplus, isems, skip=0, isreport=0;
   char *p;
   WSHDR *ws, wsn;
   unsigned short wsb[300];
@@ -236,11 +278,8 @@ int PduDecodeAll(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
   c=*p++;
   if(c)
   {
-    if(c%2)
-      c=c/2+2;
-    else
-      c=c/2+1;
-    Hex2Num(p, sd->Number, c);
+    Hex2Num_NEW(p, sd->Number, c);
+    c=((c&1)?1:0) + (c>>1) +1;
   }
   else
   {
@@ -283,7 +322,7 @@ int PduDecodeAll(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
   //...text,
   if(isems)
   {
-    skip=*p+1;
+    skip=(*p)+1;
     if(ttype!=8) skip=((skip*8)+6)/7;
     else
     {
@@ -299,6 +338,7 @@ int PduDecodeAll(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
   {
     //GSMTXT_Decode(ws,(void*)p, c, ttype, (void*(*)(int))malloc_adr(),(void(*)(void))mfree_adr());
     Bit7Decode(ws, p, skip, c);
+    sd->msg_type=sd->msg_type|IS7BIT;
     if(wstrlen(ws)>c)
     {
       CutWSTR(ws, c);
@@ -345,63 +385,6 @@ int DoMsgList(SMS_DATA_LIST *lst, char *sms_buf, char *ems_admin_buf, int sms_si
   pea=(EMS_ADM *)(ems_admin_buf+(index-1)*sizeof(EMS_ADM));
   if(pea>(EMS_ADM *)ems_admin_buf_end)
     return 0;
-/*  if(pea->data_id != 0xFFF4) //sms
-  {
-    if(cnt!=1) //¶ÌÐÅÌõÊý
-      return res;
-    if(!GetSmsPosIndex(&sid, pid[0]))
-      return res;
-    if((pd=sms_buf+sid.pos_index*sizeof(PDU))>sms_buf_end)
-      return res;
-    sdx=AllocSD();
-    sdx->msg_type=msg_type;
-    if(PduDecodeAll(sdx, pd))
-    {
-      res++;
-      sdx->opmsg_id=pea->opmsg_id;
-      sdx->id=index;
-      LockSched();
-      AddToSdlByTime(sdx);
-      UnlockSched();
-    }
-    else
-      FreeSdOne(sdx);
-  }
-  else //ems
-  {
-    sdx=AllocSD();
-    sdx->msg_type=msg_type;
-    for(i=0;i<cnt;i++)
-    {
-      if(pid[i]==0xFFF4) continue;
-      if(!GetSmsPosIndex(&sid, pid[i]))
-	break;
-      if((pd=sms_buf+sid.pos_index*sizeof(PDU))>sms_buf_end)
-	break;
-      if(i==0)
-      {
-	if(!PduDecodeAll(sdx, pd))
-	  break;
-      }
-      else
-      {
-	if(!PduDecodeTxt(sdx, pd))
-	  break;
-      }
-    }
-    if(i)
-    {
-      res++;
-      sdx->opmsg_id=pea->opmsg_id;
-      sdx->id=index;
-      sdx->msg_type=sdx->msg_type|ISEMS;
-      LockSched();
-      AddToSdlByTime(sdx);
-      UnlockSched();
-    }
-    else
-      FreeSdOne(sdx);
-  }*/
   sdx=AllocSD();
   sdx->msg_type=msg_type;
   for(i=0;i<cnt;i++)
@@ -417,6 +400,7 @@ int DoMsgList(SMS_DATA_LIST *lst, char *sms_buf, char *ems_admin_buf, int sms_si
     if(i>1) sdx->msg_type=sdx->msg_type|ISEMS;
     sdx->opmsg_id=pea->opmsg_id;
     sdx->id=index;
+    sdx->cnt_r=idd->cnt_received;
     LockSched();
     AddToSdlByTime(sdx);
     UnlockSched();
@@ -576,11 +560,12 @@ int CheckThisSMS(int index) //return, 0:do nothing, 1:need to reload all, 2:need
       if(idd->index==index)
       {
 	//exist=1;
-	if(idd->cnt_all != idd->cnt_received) //not full received or not full deleted
-	  return 0;
+	//if(idd->cnt_all != idd->cnt_received) //not full received or not full deleted
+	//  return 0;
 	  //goto FindAndDel;
 	if((sd=FindSmsByIndex(index)))
 	{
+	  if(sd->cnt_r < idd->cnt_received) return 1;
 	  if(idd->type==1)
 	  {
 	    if(sd->type!=TYPE_IN_N)
@@ -612,10 +597,11 @@ int CheckThisSMS(int index) //return, 0:do nothing, 1:need to reload all, 2:need
       if(idd->index==index)
       {
 	//exist=1;
-	if(idd->cnt_all != idd->cnt_received) //not full received or not full deleted
-	  return 0;
+	//if(idd->cnt_all != idd->cnt_received) //not full received or not full deleted
+	//  return 0;
 	  //goto FindAndDel;
 	if(!(sd=FindSmsByIndex(index))) return 1;
+	else if(sd->cnt_r < idd->cnt_received) return 1;
 	return 0;
       }
     }
@@ -658,3 +644,206 @@ int IsThisSmsNewIn(int index)
   return 0;
 }
 
+/*
+int GetSmsDat(char **sms_buf, char **ems_admin_buf, int *sms_size, int *ems_admin_size)
+{
+  char sms_dat[128];
+  char ems_admin_dat[128];
+  int fin;
+  unsigned int err;
+  char *sms_buf_2;
+  char *ems_admin_buf_2;
+  int sms_size_2, ems_admin_size_2, x, xl;
+  strcpy(sms_dat, CFG_SYSTEM_FOLDER);
+  if((xl=strlen(sms_dat))>0)
+    x=sms_dat[xl-1];
+  if((x!='\\')&&(x!='/'))
+  {
+    sms_dat[xl]='\\';
+    sms_dat[xl+1]=0;
+  }
+  strcat(sms_dat, "SMS\\SMS.dat");
+  strcpy(ems_admin_dat, CFG_SYSTEM_FOLDER);
+  if((xl=strlen(ems_admin_dat))>0)
+    x=ems_admin_dat[xl-1];
+  if((x!='\\')&&(x!='/'))
+  {
+    ems_admin_dat[xl]='\\';
+    ems_admin_dat[xl+1]=0;
+  }
+  strcat(ems_admin_dat, "SMS\\EMS_Admin.dat");
+  if((fin=fopen(sms_dat, A_BIN+A_ReadOnly, P_READ, &err))<0)
+    return 0;
+  sms_size_2=lseek(fin, 0, S_END, &err, &err)-2;
+  sms_buf_2=malloc(sms_size_2);
+  lseek(fin, 2, S_SET, &err, &err);
+  if(fread(fin, sms_buf_2, sms_size_2, &err)!=sms_size_2)
+  {
+    fclose(fin, &err);
+    return 0;
+  }
+  fclose(fin, &err);
+  *sms_buf=sms_buf_2;
+  *sms_size=sms_size_2;
+  if((fin=fopen(ems_admin_dat, A_BIN+A_ReadOnly, P_READ, &err))<0)
+  {
+    return 0;
+  }
+  ems_admin_size_2=lseek(fin, 0, S_END, &err, &err)-0x9A4;
+  ems_admin_buf_2=malloc(ems_admin_size_2);
+  lseek(fin, 0x9A4, S_SET, &err, &err);
+  if(fread(fin, ems_admin_buf_2, ems_admin_size_2, &err)!=ems_admin_size_2)
+  {
+    fclose(fin, &err);
+    return 0;
+  }
+  fclose(fin, &err);
+  *ems_admin_buf=ems_admin_buf_2;
+  *ems_admin_size=ems_admin_size_2;
+  return 1;
+}
+*/
+//int DoMsgList(SMS_DATA_LIST *lst, char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_size)
+
+int ReadThisSms(int index)
+{
+  SMS_DATA_ROOT *sdroot=SmsDataRoot();
+  SMS_DATA_LLIST inll=sdroot->in_msg;
+  SMS_DATA_LLIST outll=sdroot->out_msg;
+  SMS_DATA_LIST *lst;
+  INDEX_ID_DATA *idd;
+  SMS_DATA *sdx;
+  //char *sms_buf=0;
+  //char *ems_admin_buf=0;
+  int /*sms_size=0, ems_admin_size=0, res=0,*/ msg_type=0, cnt;
+  unsigned short *pid;
+  if(!index) return 0;
+  if((sdx=FindSmsByIndex(index))) delSDList(sdx);
+  lst=inll.first;
+  while(lst)
+  {
+    if((idd=lst->index_id_data))
+    {
+      if(idd->index==index)
+      {
+	/*if(GetSmsDat(&sms_buf, &ems_admin_buf, &sms_size, &ems_admin_size))
+	{
+	  if(DoMsgList(lst, sms_buf, ems_admin_buf, sms_size, ems_admin_size))
+	    res=1;
+	}
+	if(sms_buf) mfree(sms_buf);
+	if(ems_admin_buf) mfree(ems_admin_buf);
+	return res;*/
+	break;
+      }
+    }
+    lst=lst->next;
+  }
+  if(!lst) lst=outll.first;
+  while(lst)
+  {
+    if((idd=lst->index_id_data))
+    {
+      if(idd->index==index)
+      {
+	/*if(GetSmsDat(&sms_buf, &ems_admin_buf, &sms_size, &ems_admin_size))
+	{
+	  if(DoMsgList(lst, sms_buf, ems_admin_buf, sms_size, ems_admin_size))
+	    res=1;
+	}
+	if(sms_buf) mfree(sms_buf);
+	if(ems_admin_buf) mfree(ems_admin_buf);
+	return res;*/
+	break;
+      }
+    }
+    lst=lst->next;
+  }
+  if(!lst) return 0;
+  if(!(idd=lst->index_id_data)) return 0;
+  if(!(pid=idd->data_id)) return 0;
+  if(!(cnt=idd->cnt_all)) return 0;
+  if(cnt!=idd->cnt_received) msg_type=msg_type|ISDES;
+  
+  //-----------------------open read dat-------------------
+  
+  char sms_dat[128];
+  char ems_admin_dat[128];
+  int fsd, fea;
+  unsigned int err;
+  int sms_size, ems_admin_size, x, xl, i;
+  char pdu[sizeof(PDU)];
+  EMS_ADM pea;
+  SMS_POS_INDEX_DATA sid;
+  strcpy(sms_dat, CFG_SYSTEM_FOLDER);
+  if((xl=strlen(sms_dat))>0)
+    x=sms_dat[xl-1];
+  if((x!='\\')&&(x!='/'))
+  {
+    sms_dat[xl]='\\';
+    sms_dat[xl+1]=0;
+  }
+  strcat(sms_dat, "SMS\\SMS.dat");
+  strcpy(ems_admin_dat, CFG_SYSTEM_FOLDER);
+  if((xl=strlen(ems_admin_dat))>0)
+    x=ems_admin_dat[xl-1];
+  if((x!='\\')&&(x!='/'))
+  {
+    ems_admin_dat[xl]='\\';
+    ems_admin_dat[xl+1]=0;
+  }
+  strcat(ems_admin_dat, "SMS\\EMS_Admin.dat");
+  if((fsd=fopen(sms_dat, A_BIN+A_ReadOnly, P_READ, &err))<0)
+    return 0;
+  sms_size=lseek(fsd, 0, S_END, &err, &err)/*-2*/;
+  if((fea=fopen(ems_admin_dat, A_BIN+A_ReadOnly, P_READ, &err))<0)
+  {
+    fclose(fsd, &err);
+    return 0;
+  }
+  ems_admin_size=lseek(fea, 0, S_END, &err, &err)/*-0x9A4*/;
+  if((xl=(index-1)*sizeof(EMS_ADM)+0x9A4)>(ems_admin_size-sizeof(EMS_ADM)))
+  {
+    fclose(fsd, &err);
+    fclose(fea, &err);
+    return 0;
+  }
+  lseek(fea, xl, S_SET, &err, &err);
+  if(fread(fea, &pea, sizeof(EMS_ADM), &err)!=sizeof(EMS_ADM))
+  {
+    fclose(fsd, &err);
+    fclose(fea, &err);
+    return 0;
+  }
+  fclose(fea, &err);
+  
+  sdx=AllocSD();
+  sdx->msg_type=msg_type;
+  for(i=0;i<cnt;i++)
+  {
+    if(pid[i]==0xFFF4) continue;
+    if(!GetSmsPosIndex(&sid, pid[i])) continue;
+    if((xl=sid.pos_index*sizeof(PDU)+2)>(sms_size-sizeof(PDU))) continue;
+    lseek(fsd, xl, S_SET, &err, &err);
+    if(fread(fsd, &pdu, sizeof(pdu), &err)!=sizeof(PDU)) continue;
+    if(!sdx->SMS_TEXT) PduDecodeAll(sdx, (char *)(&pdu));
+    else PduDecodeTxt(sdx, (char *)(&pdu));
+  }
+  fclose(fsd, &err);
+  if(sdx->SMS_TEXT)
+  {
+    if(i>1) sdx->msg_type=sdx->msg_type|ISEMS;
+    sdx->opmsg_id=pea.opmsg_id;
+    sdx->id=index;
+    sdx->cnt_r=idd->cnt_received;
+    LockSched();
+    AddToSdlByTime(sdx);
+    UnlockSched();
+  }
+  else 
+  {
+    FreeSdOne(sdx);
+    return 0;
+  }
+  return 1;
+}

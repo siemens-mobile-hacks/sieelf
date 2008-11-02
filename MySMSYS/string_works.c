@@ -332,3 +332,80 @@ int str2int(const char *str)
   }
   return r;
 }
+
+char *GotoCurChar(char *p, int c)
+{
+  int i;
+  while((i=*p++))
+  {
+    if(i==c) return p;
+  }
+  return 0;
+}
+
+int IsHaveBigChar(char *p, int len)
+{
+  int c;
+  char *pp=p;
+  while((pp-p<len) && (c=*p++))
+  {
+    if(c>0x80) return 1;
+  }
+  return 0;
+}
+
+void NmlUtf8P_2SieUtf8P(char *utf8s)
+{
+  char *p=utf8s;
+  char *p1;
+  while((p=GotoCurChar(p, '\\')) || (p=GotoCurChar(p, '/')))
+  {
+    if(*p==0x1F) continue;
+    if(!(p1=GotoCurChar(p, '\\')) && !(p1=GotoCurChar(p, '/')))
+      p1=p+strlen(p);
+    if(IsHaveBigChar(p, p1-p))
+    {
+      //后移
+      p1=p+strlen(p);
+      while(p1>p)
+      {
+	*(p1+1)=*p1;
+	p1--;
+      }
+      *p=0x1F;
+    }
+  }
+}
+
+void SieUtf8P_2NmlUtf8P(char *s)
+{
+  //直接清理掉0x1F就行
+  char *p=s;
+  int c;
+  char *p1;
+  while((c=*p))
+  {
+    if(c==0x1F)
+    {
+      p1=p;
+      while(*p1)
+      {
+	*p1=*(p1+1);
+	p1++;
+      }
+    }
+    p++;
+  }
+}
+
+int IsWsSmall(WSHDR *ws)
+{
+  int i;
+  if(!ws) return 0;
+  for(i=0;i<ws->wsbody[0];i++)
+  {
+    if(ws->wsbody[i+1]>0x80) return 0;
+  }
+  return 1;
+}
+

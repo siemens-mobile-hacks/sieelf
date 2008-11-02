@@ -166,13 +166,14 @@ int StartIncomingWin(void *dlg_csm)
   POPUP_DESC *pd;
   extern unsigned int DlgCsmIDs[]; //main.c
   extern int IsNoDlg(unsigned int *id_pool); //main.c
-  if(IsNoDlg(DlgCsmIDs))
-    sd=GetTheLastNew(1);
-  else
-  {
-    readAllSMS();
-    sd=GetTheLastNew(0);
-  }
+  //if(IsNoDlg(DlgCsmIDs))
+  //  sd=GetTheLastNew(1);
+  //else
+  //{
+  //  readAllSMS();
+  //  sd=GetTheLastNew(0);
+  //}
+  sd=GetTheLastNew(0);
   if(!sd) return 0;
   if(!CFG_NOTIFY_TIME) return 0;
   if((sd->msg_type&ISREPORT)) return (ShowMSG_report(dlg_csm, sd));
