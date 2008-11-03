@@ -55,6 +55,7 @@ __root const int CFG_NOTIFY_TIME = 10;
 __root const CFG_HDR cfghdr1_4 = {CFG_CHECKBOX, LGP_CFG_ENA_NEWSMS_ICON, 0, 3};
 __root const int CFG_ENA_NEWSMS_ICON = 1;
 
+/*
 __root const CFG_HDR cfghdr1_5= {CFG_STR_UTF8, LGP_CFG_ICONNEW_PATH, 0, 127};
 #ifdef NEWSGOLD
 #ifdef ELKA
@@ -63,7 +64,7 @@ __root const char CFG_ICONNEW_PATH[128] = "426";//"0:\\ZBin\\MySMSYS\\new.png";
 __root const char CFG_ICONNEW_PATH[128] = "467";//"0:\\ZBin\\MySMSYS\\new.png";
 #endif
 #endif
-
+*/
 __root const CFG_HDR cfghdr1_6= {CFG_COORDINATES, LGP_CFG_ICONNEW_POS, 0, 0};
 __root const unsigned int CFG_ICONNEW_POS_X = 2;
 __root const unsigned int CFG_ICONNEW_POS_Y = 140;

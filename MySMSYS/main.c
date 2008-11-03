@@ -480,12 +480,12 @@ static void dialogcsm_oncreate(CSM_RAM *data)
     break;
   case SMSYS_IPC_FVIEW:
     if (!strlen(filename) || !(csm->gui_id=ViewFile(csm, filename)))
+      data->state=-3; //close
     //{
     //  readAllSMS();
     //  csm->gui_id=CreateMainMenu(csm);
     //}
     filename[0]=0;
-    data->state=-3; //close
     break;
   default:
     csm->gui_id=CreateMainMenu(csm);
@@ -651,7 +651,7 @@ int strcmp_nocase(const char *s1,const char *s2)
   while(!(i=(c=toupper(*s1++))-toupper(*s2++))) if (!c) break;
   return(i);
 }
-
+/*
 int GetIcon(void)
 {
   int is_file=0, c;
@@ -674,7 +674,7 @@ int GetIcon(void)
     return (str2int(p));
   return 0;
 }
-
+*/
 void InitDatPath(void)
 {
   int x, xl;
@@ -698,14 +698,40 @@ void InitDatPath(void)
   strcat(ems_admin_dat, "SMS\\EMS_Admin.dat");
 }
 
-int NEW_SMS_ICON;
+//int NEW_SMS_ICON;
 void InitSetting(void)
 {
   InitConfig();
   InitDatPath();
-  NEW_SMS_ICON=GetIcon();
+//  NEW_SMS_ICON=GetIcon();
 }
 
+#ifdef ELKA
+
+#pragma swi_number=0x36
+__swi __arm void SLI_SetState(unsigned char state);
+
+GBSTMR sli_tmr;
+int sli_cnt=0;
+int sli_sta=0;
+void SLI_PROC(void)
+{
+  if(sli_cnt==1) SLI_SetState(0);
+  else if(sli_cnt==0) SLI_SetState(1);
+  
+  if(sli_cnt>5) sli_cnt=0;
+  else sli_cnt++;
+  GBS_StartTimerProc(&sli_tmr, 216/6, SLI_PROC);
+}
+
+void STOP_SLI(void)
+{
+  GBS_DelTimer(&sli_tmr);
+  sli_cnt=0;
+  sli_sta=0;
+  SLI_SetState(0);
+}
+#endif
 int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 {
 #ifdef NEWSGOLD
@@ -753,10 +779,12 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 	    }
 	  }
 #ifdef ELKA
-#pragma swi_number=0x36
-__swi __arm void SLI_SetState(unsigned char state);
-	  if(new_sms_n>0) SLI_SetState(1);
-	  else SLI_SetState(0);
+	  if(new_sms_n>0)
+	  {
+	    sli_sta=1;
+	    SLI_PROC();
+	  }
+	  else if(sli_sta) STOP_SLI();
 #endif
 	  if((int)msg->data1!=0x8)
 	  {
@@ -924,7 +952,7 @@ __swi __arm void SLI_SetState(unsigned char state);
 	    }
 	  }
 	}
-	if((new_sms_n>0)&& (CFG_ENA_NEWSMS_ICON) && (NEW_SMS_ICON))
+	if((new_sms_n>0)&& (CFG_ENA_NEWSMS_ICON)/* && (NEW_SMS_ICON)*/)
 	{
 #define idlegui_id (((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])
 	  CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
@@ -933,7 +961,7 @@ __swi __arm void SLI_SetState(unsigned char state);
 	    GUI *igui=GetTopGUI();
 	    if(igui)
 	    {
-	      DrawImg(CFG_ICONNEW_POS_X, CFG_ICONNEW_POS_Y, NEW_SMS_ICON);
+	      DrawImg(CFG_ICONNEW_POS_X, CFG_ICONNEW_POS_Y, ip.dis_smsnew);
 	    }
 	  }
 	}
@@ -948,14 +976,17 @@ static void ElfKiller(void)
 
 static void daemoncsm_onclose(CSM_RAM *csm)
 {
-	closeAllDlgCSM(DlgCsmIDs);
-	FreeCLIST();
-	freeSDList();
-	GBS_DelTimer(&chk_tmr);
-	//GBS_DelTimer(&n_update_tmr);
-	FreeLangPack();
-	FreeIconPack();
-	SUBPROC((void *)ElfKiller);
+  closeAllDlgCSM(DlgCsmIDs);
+  FreeCLIST();
+  freeSDList();
+  GBS_DelTimer(&chk_tmr);
+#ifdef ELKA
+  STOP_SLI();
+#endif
+  //GBS_DelTimer(&n_update_tmr);
+  FreeLangPack();
+  FreeIconPack();
+  SUBPROC((void *)ElfKiller);
 }
 
 static unsigned short daemoncsm_name_body[32];

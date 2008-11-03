@@ -40,6 +40,9 @@ const char *icon_names[]=
   //pop-up window icon
   "pp_incoming.png",
   "pp_showmsg.png",
+  
+  //display
+  "dis_smsnew.png", //show in display
   "",""
 };
 
@@ -53,6 +56,7 @@ const int icon_default[]=
   0x2AB,0x2AB,0x2AB,0x5A4,0x2AB,0x598,
   0x2A5,0x4DB,0x28C,
   0x282,0x52C,
+  426,
   0,0
 #else
   0x564,0x564,0x564,0x564,0x564,0x564,0x564, //blank
@@ -61,49 +65,11 @@ const int icon_default[]=
   0x5C5,0x29E,0x5C5,0x515,0x5C4,0x5C5,
   0x29A,0x505,0x1A1,
   0x278,0x558,
+  467,
   0,0
 #endif
 #endif
 };
-
-typedef struct
-{
-  //main menu
-  int mm_crtsms; //create
-  int mm_smsnew; //new in sms
-  int mm_inbox; //inbox
-  int mm_sent;
-  int mm_draft;
-  int mm_allsms;
-  int mm_others;
-  
-  //sms type
-  int sms_innew;
-  int sms_inread;
-  int sms_sent;
-  int sms_draft;
-  //ems
-  int ems_innew;
-  int ems_inread;
-  int ems_sent;
-  int ems_draft;
-  //headr icon
-  //hdr menu
-  int hdr_mmenu;
-  int hdr_smsnew; //new in list
-  int hdr_inbox;
-  int hdr_sent;
-  int hdr_draft;
-  int hdr_allsms;
-  //hdr edit_gui
-  int hdr_ed_view;
-  int hdr_ed_edit;
-  int hdr_ed_adrbk; //addressbook
-  
-  //pop-up window icon
-  int pp_incoming;
-  int pp_showmsg;
-}ICONPACK;
 
 ICONPACK ip;
 
