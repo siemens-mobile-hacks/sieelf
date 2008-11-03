@@ -59,5 +59,11 @@ typedef struct
 	defadr GetNativeAbDataStatus,0xA055E554 //int GetNativeAbDataStatus(NativeAbData *nab, int _0) //9,not filled, 1, filled
 	defadr SetNumToNativeAbData,0xA055EE48 //int SetNumToNativeAbData(NativeAbData *abd, int unk, WSHDR *num); //unk=0x1D, maxlen ?
 	*/
+	//A8B88320 //ABDATA ?
+//ROM:A02D79B6 0E 99                       LDR     R1, [SP,#0x38]
+//ROM:A02D79B8 4C F1 6E EA                 BLX     sub_A0423E98
+
+	defadr EDIT_SetHeaderInputIcon,0xA0A3A719 //void EDIT_SetHeaderInputIcon(void *header_pointer, const int *icons, void *malloc_adr, void *mfree_adr)
+//	defadr SetHeaderIcon,0xA0A3A6B3 //void SetHeaderIcon(void *hdr_pointer, const int *icon, void *malloc_adr, void *mfree_adr)
 	END
 	
