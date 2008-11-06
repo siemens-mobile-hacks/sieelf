@@ -116,7 +116,7 @@
 ;194:              ;  65: EndCall
 ;198:              ;  66: EndCallBusy
 ;19C:              ;  67: IsDirectCallActive
-;1A0:              ;  68: GetScreenSaverRAM
+01A0: 0xA03066D1   ;  68:  __thumb SS_RAM *GetScreenSaverRAM(void)
 01A4: 0xA009B180   ;  69: void LockSched_2(void)
 01A8: 0xA009B26C   ;  6A: void UnlockSched_2(void)
 01AC: 0xA0253204   ;  6B: int FindFirstFile(DIR_ENTRY *DIRENTRY,char *mask,unsigned int *ErrorNumber)

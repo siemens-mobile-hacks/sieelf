@@ -1255,19 +1255,29 @@ typedef struct
   short unk_0_3; //maybe sending box
 }SMS_DATA_ROOT;
 
-typedef struct{
-	int unk0; //0
-	int unk1; //0
-	int flag_data; //type?
-	void *num_data;
+typedef struct
+{
+  int unk0; //0
+  int unk1; //0
+  int flag_data; //type?
+  void *num_data;
 }AbNum;
 
-typedef struct{
-	AbNum *an1;
-	AbNum *an2; //an1=an2;
-	void *mfree_adr;
-	void *unk;
+typedef struct
+{
+  AbNum *an1;
+  AbNum *an2; //an1=an2;
+  void *mfree_adr;
+  void *unk;
 }NativeAbData;
+
+typedef struct
+{
+  CSM_RAM ss_csm;
+  void *unk;
+  int ss_gui_id; //draw screensaver
+  int keylock_gui_id; //keylock screen
+}SS_RAM;
 
 #pragma diag_suppress=Ta035
 
@@ -1574,6 +1584,12 @@ __swi __arm unsigned char GetCPULoad();
 __swi __arm int GetFreeRamAvail();
 //arm
 //pattern=04,E0,2D,E5,??,??,??,E5,??,??,??,EB,??,??,??,E5,??,20,91,E5,??,10,91,E5,01,10,42,E0,01,00,80,E0,20,00,40,E2,04,F0,9D,E4
+
+#pragma swi_number=0x68
+__swi __arm SS_RAM *GetScreenSaverRAM(void);
+//arm
+//pattern_NSG=??,48,??,68,??,47,??,48,??,B5,??,68,??,29,??,D1,??,68,??,28,??,D1,+1
+
 
 #pragma swi_number=107
 __swi	__arm	int  FindFirstFile (DIR_ENTRY *DIRENTRY,char *mask,unsigned int *ErrorNumber);
