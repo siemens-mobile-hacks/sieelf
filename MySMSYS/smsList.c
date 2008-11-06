@@ -615,10 +615,10 @@ void sms_menu_ghook(void *data, int cmd)
   SML_OP *so=MenuGetUserPointer(data);
   if(cmd==0x0A)
   {
-//    int n=getCountByType(so->type);
-//    int cur=GetCurMenuItem(data);
-//    if(cur>=n) SetCursorToMenuItem(data, 0);
-//    Menu_SetItemCountDyn(data, n);
+    int n=getCountByType(so->type);
+    int cur=GetCurMenuItem(data);
+    if(cur>=n) SetCursorToMenuItem(data, 0);
+    Menu_SetItemCountDyn(data, n);
     patch_header(&sms_menuhdr);
     DisableIDLETMR();
   }
