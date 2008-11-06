@@ -4677,7 +4677,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>MySMSYS_nsg.elf</state>
+          <state>MySMSYS_S68.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -5504,7 +5504,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>MySMSYS_nsg_lg3_en.elf</state>
+          <state>MySMSYS_s68_lg3_en.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
