@@ -989,9 +989,74 @@ int CheckDat(void)
   return res;
 }
 
+int IsDatExsit(int index)
+{
+  SMS_DATA_ROOT *sdroot=SmsDataRoot();
+  SMS_DATA_LLIST inll=sdroot->in_msg;
+  SMS_DATA_LLIST outll=sdroot->out_msg;
+  SMS_DATA_LIST *lst;
+  INDEX_ID_DATA *idd;
+  lst=inll.first;
+  while(lst)
+  {
+    if((idd=lst->index_id_data))
+    {
+      if(idd->index==index)
+	return 1;
+    }
+    lst=lst->next;
+  }
+  lst=outll.first;
+  while(lst)
+  {
+    if((idd=lst->index_id_data))
+    {
+      if(idd->index==index)
+	return 1;
+    }
+    lst=lst->next;
+  }
+  return 0;
+}
+
+int CheckBack(void)
+{
+  SMS_DATA *sdl=sdltop;
+  SMS_DATA *sdx;
+  while(sdl)
+  {
+    if(sdl->isfile)
+    {
+      if(sdl->fname)
+      {
+	if(!IsFileExist(sdl->fname))
+	{
+	  sdx=sdl;
+	  sdl=sdl->next;
+	  delSDList(sdx);
+	  continue;
+	}
+      }
+    }
+    else if(sdl->id)
+    {
+      if(!IsDatExsit(sdl->id))
+      {
+	sdx=sdl;
+	sdl=sdl->next;
+	delSDList(sdx);
+	continue;
+      }
+    }
+    sdl=sdl->next;
+  }
+  return 0;
+}
+
 int CheckAll(void)
 {
   int res=0;
+  CheckBack();
   res=CheckDat();
   res+=CheckFile(TYPE_IN_ALL);
   res+=CheckFile(TYPE_OUT);

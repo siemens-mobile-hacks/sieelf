@@ -972,12 +972,13 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 	//if(new_sms_n>0) replace_allss_methods();
 	return 1;
 }
-/*
+
 void LdProc(void)
 {
-  SUBPROC((void *)readAllSMS);
+  if(!cltop) SUBPROC((void *)ConstructList);
+  if(!sdltop) SUBPROC((void *)readAllSMS);
 }
-GBSTMR ld_tmr;*/
+GBSTMR ld_tmr;
 //extern int MyKeyHook(int submsg, int msg);
 //extern void restore_allss_methods(void);
 //extern void replace_allss_methods(void);
@@ -998,7 +999,7 @@ void daemoncsm_oncreate(CSM_RAM *data)
   }
   GBS_SendMessage(MMI_CEPID,MSG_IPC,MY_SMSYS_IPC_START,&daemon_ipc);
   AddKeybMsgHook((void *)MyKeyHook);
-  //GBS_StartTimerProc(&ld_tmr, 216, LdProc);
+  GBS_StartTimerProc(&ld_tmr, 216*2, LdProc);
 }
 
 void ElfKiller(void)
@@ -1010,12 +1011,12 @@ void ElfKiller(void)
 void daemoncsm_onclose(CSM_RAM *csm)
 {
   //restore_allss_methods();
+  GBS_DelTimer(&chk_tmr);
+  GBS_DelTimer(&ld_tmr);
   RemoveKeybMsgHook((void *)MyKeyHook);
   closeAllDlgCSM(DlgCsmIDs);
   FreeCLIST();
   freeSDList();
-  GBS_DelTimer(&chk_tmr);
-  //GBS_DelTimer(&ld_tmr);
 #ifdef ELKA
   STOP_SLI();
 #endif

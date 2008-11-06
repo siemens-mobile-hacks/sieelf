@@ -279,7 +279,11 @@ int slop_menu_onkey(void *data, GUI_MSG *msg)
 #ifdef ELKA
 int slop_item_icons[]={0x538,0};
 #else
+#ifdef S68
+int slop_item_icons[]={0x576,0};
+#else
 int slop_item_icons[]={0x564,0};
+#endif
 #endif
 #endif
 

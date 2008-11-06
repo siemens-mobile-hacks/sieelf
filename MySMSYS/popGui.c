@@ -148,7 +148,7 @@ const POPUP_DESC popup=
   0x1,
   LGP_NULL,
   pp_incoming_icons,//popup_icons,
-  1,
+  0,
   FONT_MEDIUM,
   100,
   101,
@@ -234,7 +234,7 @@ const POPUP_DESC msg_popup=
   0x1,
   LGP_NULL,
   pp_showmsg_icons,
-  1, // pos, 0:left, 1:top mid, 2:top right, 3: top left
+  0, // pos, 0:left, 1:top mid, 2:top right, 3: top left
   FONT_MEDIUM,
   100,
   101,
