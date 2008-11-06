@@ -332,8 +332,8 @@ int str2int(const char *str)
   }
   return r;
 }
-
-char *GotoCurChar(char *p, int c)
+#ifdef MM
+char *GotoCurChar(unsigned char *p, int c)
 {
   int i;
   while((i=*p++))
@@ -343,10 +343,10 @@ char *GotoCurChar(char *p, int c)
   return 0;
 }
 
-int IsHaveBigChar(char *p, int len)
+int IsHaveBigChar(unsigned char *p, int len)
 {
   int c;
-  char *pp=p;
+  unsigned char *pp=p;
   while((pp-p<len) && (c=*p++))
   {
     if(c>0x80) return 1;
@@ -356,13 +356,17 @@ int IsHaveBigChar(char *p, int len)
 
 void NmlUtf8P_2SieUtf8P(char *utf8s)
 {
-  char *p=utf8s;
+  char *p;
   char *p1;
-  while((p=GotoCurChar(p, '\\')) || (p=GotoCurChar(p, '/')))
+  char *p2=utf8s;
+  while((p=GotoCurChar(p2, '\\')) || (p=GotoCurChar(p2, '/')))
   {
     if(*p==0x1F) continue;
-    if(!(p1=GotoCurChar(p, '\\')) && !(p1=GotoCurChar(p, '/')))
-      p1=p+strlen(p);
+    if(!(p1=GotoCurChar(p, '\\')))
+    {
+      if(!(p1=GotoCurChar(p, '/')))
+	 p1=p+strlen(p);
+    }
     if(IsHaveBigChar(p, p1-p))
     {
       //∫Û“∆
@@ -374,6 +378,7 @@ void NmlUtf8P_2SieUtf8P(char *utf8s)
       }
       *p=0x1F;
     }
+    p2=p;
   }
 }
 
@@ -397,7 +402,7 @@ void SieUtf8P_2NmlUtf8P(char *s)
     p++;
   }
 }
-
+#endif
 int IsWsSmall(WSHDR *ws)
 {
   int i;

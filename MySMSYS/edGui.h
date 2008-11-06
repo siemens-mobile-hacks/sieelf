@@ -28,19 +28,16 @@
 
 typedef struct
 {
-	SMS_DATA *sd;
-	void *dlg_csm;
-	void *nltop; //num list
-//	char num[50];
-//	WHSDR *name;
-//	char hdr_txt[50];
-//	void *nab_data;
-//	int nab_flag;
-	int gui_type;
-	int adr_type; //0 SET, 1 insert
-	int list_type; //
-	int focus_n;
-	int dat_type; //
+  SMS_DATA *sd;
+  void *dlg_csm;
+  void *nltop; //num list
+  int gui_type;
+  int adr_type; //0 SET, 1 insert
+  int list_type; //
+  int focus_n;
+  int dat_type; //
+  int chr_cnt; //word count
+  int nd_sfd; //need to save draft
 }USER_OP;
 
 /*

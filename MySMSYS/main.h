@@ -34,3 +34,4 @@ int addCSMid(unsigned int *id_pool, unsigned int id);
 void delCSMid(unsigned int *id_pool, unsigned int id);
 int IsCsmExist(void *dlg_csm);
 void UpdateDlgCsmName(DLG_CSM *csm, const char *lgp);
+int IsSSOnTop(void);

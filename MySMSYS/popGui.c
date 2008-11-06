@@ -148,7 +148,7 @@ const POPUP_DESC popup=
   0x1,
   LGP_NULL,
   pp_incoming_icons,//popup_icons,
-  0,
+  1,
   FONT_MEDIUM,
   100,
   101,
@@ -225,7 +225,7 @@ int msg_popup_onkey(void *data, GUI_MSG *msg)
 }
 const POPUP_DESC msg_popup=
 {
-  0,
+  8,
   msg_popup_onkey,
   NULL,
   NULL,
@@ -234,13 +234,21 @@ const POPUP_DESC msg_popup=
   0x1,
   LGP_NULL,
   pp_showmsg_icons,
-  0,
+  1, // pos, 0:left, 1:top mid, 2:top right, 3: top left
   FONT_MEDIUM,
   100,
   101,
   0x7D0 //flag2 ? auto off time?
 };
 
+/*
+// pos, 0:left, 1:top mid, 2:top right, 3: top left
+// p, t
+0: left, right
+1: mid top, left
+2: top right, left top
+3: top left, left top
+*/
 int ShowMSG_ws(int flag, WSHDR *msg)
 {
   return (CreatePopupGUI_ws(flag, 0, &msg_popup, msg));

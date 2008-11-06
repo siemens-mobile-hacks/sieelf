@@ -20,6 +20,7 @@
 #include "NewDatReader.h"
 #include "string_works.h"
 #include "iconpack.h"
+#include "key_hook.h"
 extern void kill_data(void *p, void (*func_p)(void *));
 
 unsigned int DAEMON_CSM_ID=0;
@@ -533,7 +534,7 @@ const DLGCSM_DESC DIALOGCSM =
   }
 };
 
-
+extern int CheckAll(void);
 unsigned int CreateDialogCSM(void)
 {
   DLG_CSM dlg_csm;
@@ -541,27 +542,11 @@ unsigned int CreateDialogCSM(void)
   zeromem(&dlg_csm, sizeof(DLG_CSM));
   memcpy(dcd, &DIALOGCSM, sizeof(DLGCSM_DESC));
   if(!cltop) SUBPROC((void *)ConstructList);
-  if(!sdltop) readAllSMS();
+  if(sdltop && IPC_SUB_MSG!=SMSYS_IPC_FVIEW) SUBPROC((void *)CheckAll);
+  if(!sdltop && IPC_SUB_MSG!=SMSYS_IPC_FVIEW) readAllSMS();
   LoadLangPack();
   LoadIconPack();
   return (CreateCSM(&dcd->csmd,&dlg_csm,2));
-}
-
-static void daemoncsm_oncreate(CSM_RAM *data)
-{
-  daemon_ipc.data=&ipc_data_daemon;
-  ipc_data_daemon.csm_id=DAEMON_CSM_ID;
-  if(is_fview&&strlen(filename))
-  {
-    ipc_data_daemon.code=MY_SMSYS_FVIEW;
-    ipc_data_daemon.fname=filename;
-  }
-  else
-  {
-    ipc_data_daemon.code=MY_SMSYS_CREATE;
-    ipc_data_daemon.fname=0;
-  }
-  GBS_SendMessage(MMI_CEPID,MSG_IPC,MY_SMSYS_IPC_START,&daemon_ipc);
 }
 
 
@@ -732,6 +717,20 @@ void STOP_SLI(void)
   SLI_SetState(0);
 }
 #endif
+
+
+int IsSSOnTop(void)
+{
+//  extern SS_RAM *GetScreenSaverRam(void);
+  SS_RAM *ss_ram;
+  if(!(ss_ram=GetScreenSaverRAM())) return 0;
+  if((ss_ram->ss_gui_id) && IsGuiOnTop(ss_ram->ss_gui_id))
+    return 1;
+  if((ss_ram->keylock_gui_id) && IsGuiOnTop(ss_ram->keylock_gui_id))
+    return 1;
+  return 0;
+}
+
 int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 {
 #ifdef NEWSGOLD
@@ -779,12 +778,15 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 	    }
 	  }
 #ifdef ELKA
-	  if(new_sms_n>0)
+	  if(CFG_ENA_SLI)
 	  {
-	    sli_sta=1;
-	    SLI_PROC();
+	    if(new_sms_n>0)
+	    {
+	      sli_sta=1;
+	      SLI_PROC();
+	    }
+	    else if(sli_sta) STOP_SLI();
 	  }
-	  else if(sli_sta) STOP_SLI();
 #endif
 	  if((int)msg->data1!=0x8)
 	  {
@@ -840,6 +842,7 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 	    ShowMSG(1,(int)lgp.LGP_CONFIG_UPDATE);
 	    if(!cltop)
 	      SUBPROC((void *)ConstructList);
+	    if(!sdltop) SUBPROC((void *)readAllSMS);
 	  }
 	}
 	if(PLAY_ID && (msg->msg==MSG_INCOMMING_CALL || IsCalling()))
@@ -956,7 +959,7 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 	{
 #define idlegui_id (((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])
 	  CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
-	  if(IsGuiOnTop(idlegui_id))
+	  if(IsGuiOnTop(idlegui_id) || IsSSOnTop())
 	  {
 	    GUI *igui=GetTopGUI();
 	    if(igui)
@@ -965,21 +968,54 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 	    }
 	  }
 	}
+	//isexit_ss();
+	//if(new_sms_n>0) replace_allss_methods();
 	return 1;
 }
-
-static void ElfKiller(void)
+/*
+void LdProc(void)
 {
-	extern void *ELF_BEGIN;
-	kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
+  SUBPROC((void *)readAllSMS);
+}
+GBSTMR ld_tmr;*/
+//extern int MyKeyHook(int submsg, int msg);
+//extern void restore_allss_methods(void);
+//extern void replace_allss_methods(void);
+//extern void isexit_ss(void);
+void daemoncsm_oncreate(CSM_RAM *data)
+{
+  daemon_ipc.data=&ipc_data_daemon;
+  ipc_data_daemon.csm_id=DAEMON_CSM_ID;
+  if(is_fview&&strlen(filename))
+  {
+    ipc_data_daemon.code=MY_SMSYS_FVIEW;
+    ipc_data_daemon.fname=filename;
+  }
+  else
+  {
+    ipc_data_daemon.code=MY_SMSYS_CREATE;
+    ipc_data_daemon.fname=0;
+  }
+  GBS_SendMessage(MMI_CEPID,MSG_IPC,MY_SMSYS_IPC_START,&daemon_ipc);
+  AddKeybMsgHook((void *)MyKeyHook);
+  //GBS_StartTimerProc(&ld_tmr, 216, LdProc);
 }
 
-static void daemoncsm_onclose(CSM_RAM *csm)
+void ElfKiller(void)
 {
+  extern void *ELF_BEGIN;
+  kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
+}
+
+void daemoncsm_onclose(CSM_RAM *csm)
+{
+  //restore_allss_methods();
+  RemoveKeybMsgHook((void *)MyKeyHook);
   closeAllDlgCSM(DlgCsmIDs);
   FreeCLIST();
   freeSDList();
   GBS_DelTimer(&chk_tmr);
+  //GBS_DelTimer(&ld_tmr);
 #ifdef ELKA
   STOP_SLI();
 #endif
@@ -991,67 +1027,99 @@ static void daemoncsm_onclose(CSM_RAM *csm)
 
 static unsigned short daemoncsm_name_body[32];
 
+#define ICONBAR
+#ifdef ICONBAR
+
+void addIconBar(short* num)
+{
+#pragma swi_number=0x27 
+__swi __arm void AddIconToIconBar(int pic, short *num);
+
+  if(CFG_ENA_IB && new_sms_n>0) AddIconToIconBar(CFG_ICON_IB, num);
+}
+
+
+typedef struct
+{
+  char check_name[8];
+  int addr;
+}ICONBAR_H;
+#endif
 static const struct
 {
-	CSM_DESC daemoncsm;
-	WSHDR daemoncsm_name;
+  CSM_DESC daemoncsm;
+  WSHDR daemoncsm_name;
+#ifdef ICONBAR
+  ICONBAR_H iconbar_handler;
+#endif
 }DAEMONCSM =
 {
-	{
-	daemoncsm_onmessage,
-	daemoncsm_oncreate,
+  {
+    daemoncsm_onmessage,
+    daemoncsm_oncreate,
 #ifdef NEWSGOLD
-	0,
-	0,
-	0,
-	0,
+    0,
+    0,
+    0,
+    0,
 #endif
-	daemoncsm_onclose,
-	sizeof(DEAMON_CSM),
-	1,
-	&minus11
-	},
-	{
-		daemoncsm_name_body,
-		NAMECSM_MAGIC1,
-		NAMECSM_MAGIC2,
-		0x0,
-		31
-	}
+    daemoncsm_onclose,
+    sizeof(DEAMON_CSM),
+    1,
+    &minus11
+  },
+  {
+    daemoncsm_name_body,
+    NAMECSM_MAGIC1,
+    NAMECSM_MAGIC2,
+    0x0,
+    31
+  }
+#ifdef ICONBAR
+  ,
+  {
+    "IconBar",
+    (int)addIconBar
+  }
+#endif
 };
 
-static void UpdateDaemonCSMname(void)
+void UpdateDaemonCSMname(void)
 {
-	wsprintf((WSHDR *)(&DAEMONCSM.daemoncsm_name),ELFNAME_D);
+  wsprintf((WSHDR *)(&DAEMONCSM.daemoncsm_name),ELFNAME_D);
 }
 
 int main(char *exename, char *fname)
 {
-	DEAMON_CSM d_csm;
-	CSM_RAM *save_cmpc;
-	CSMROOT *csmr=CSM_root();
-	zeromem(&d_csm, sizeof(DEAMON_CSM));
-	UpdateDaemonCSMname();
-	dlgIDsInit();
-	InitSetting();
-	ZeroIconPack();
-	if(fname)
-	{
-		if ( fname[0] < '0' || fname[0] > '4' || fname[1] != ':' || strlen(fname) > 128 )
-		{
-			SUBPROC((void *)ElfKiller);
-			return 0;
-		}
-		strcpy(filename, fname);
-		is_fview=1;
-	}
-	LockSched();
-	save_cmpc=csmr->csm_q->current_msg_processing_csm;
-	csmr->csm_q->current_msg_processing_csm=csmr->csm_q->csm.first;
-	DAEMON_CSM_ID=CreateCSM(&DAEMONCSM.daemoncsm,&d_csm,0);
-	csmr->csm_q->current_msg_processing_csm=save_cmpc;
-	UnlockSched();
-	return 0;
+  DEAMON_CSM d_csm;
+  CSM_RAM *save_cmpc;
+  CSMROOT *csmr=CSM_root();
+  zeromem(&d_csm, sizeof(DEAMON_CSM));
+  UpdateDaemonCSMname();
+  dlgIDsInit();
+  InitSetting();
+  ZeroIconPack();
+  LoadIconPack();
+  if(fname)
+  {
+    if ( fname[0] < '0' || fname[0] > '4' || fname[1] != ':' || strlen(fname) > 128 )
+    {
+      SUBPROC((void *)ElfKiller);
+      return 0;
+    }
+    strcpy(filename, fname);
+    is_fview=1;
+  }
+  LockSched();
+  save_cmpc=csmr->csm_q->current_msg_processing_csm;
+  csmr->csm_q->current_msg_processing_csm=csmr->csm_q->csm.first;
+  DAEMON_CSM_ID=CreateCSM(&DAEMONCSM.daemoncsm,&d_csm,0);
+  csmr->csm_q->current_msg_processing_csm=save_cmpc;
+  UnlockSched();
+#ifdef ICONBAR
+  //SetIconBarHandler();
+#endif
+  return 0;
 }
 
 //--------------------------------------------------------

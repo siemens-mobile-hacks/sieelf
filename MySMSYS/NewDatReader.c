@@ -848,3 +848,157 @@ int ReadThisSms(int index)
   }
   return 1;
 }
+
+
+SMS_DATA *FindSdByFileName(char *filename)
+{
+  SMS_DATA *sdl=sdltop;
+  while(sdl)
+  {
+    if(sdl->isfile && sdl->fname && !strcmp(filename, sdl->fname))
+      return sdl;
+    sdl=sdl->next;
+  }
+  return 0;
+}
+
+int CheckFile(int type)
+{
+  char filepath[128];
+  const char *folder;
+  char dir[128];
+  int x, len, res=0;
+  unsigned int err;
+  DIR_ENTRY de;
+  SMS_DATA *sdx;
+  switch(type)
+  {
+  case TYPE_DRAFT:
+    folder=FLDR_DRAFT;
+    break;
+  case TYPE_OUT:
+    folder=FLDR_OUT;
+    break;
+  case TYPE_IN_N:
+  case TYPE_IN_R:
+  case TYPE_IN_ALL:
+    folder=FLDR_IN;
+    break;
+  default:
+    folder=FLDR_UNK;
+    break;
+  }
+  if(!isdir(CFG_MAIN_FOLDER, &err)) return 0;
+  strcpy(dir, CFG_MAIN_FOLDER);
+  if((len=strlen(dir))<=0) return 0;
+  x=dir[len-1];
+  if((x!='\\')&&(x!='/'))
+  {
+    dir[len]='\\';
+    dir[len+1]=0;
+  }
+  strcat(dir, folder);
+  if(!isdir(dir, &err)) return 0;
+  strcat(dir, "*.mss");
+  if(FindFirstFile(&de, dir, &err))
+  {
+    do
+    {
+      strcpy(filepath, de.folder_name);
+      strcat(filepath, de.file_name);
+      if(!(sdx=FindSdByFileName(filepath)))
+      {
+	sdx=AllocSD();
+	if(ReadMSS(filepath, sdx))
+	{
+	  res++;
+	  LockSched();
+	  AddToSdlByTime(sdx);
+	  UnlockSched();
+	}
+	else FreeSdOne(sdx);
+      }
+    }while(FindNextFile(&de, &err));
+  }
+  FindClose(&de, &err);
+  return res;
+}
+
+int CheckDat(void)
+{
+  SMS_DATA *sd;
+  SMS_DATA_ROOT *sdroot=SmsDataRoot();
+  SMS_DATA_LLIST inll=sdroot->in_msg;
+  SMS_DATA_LLIST outll=sdroot->out_msg;
+  SMS_DATA_LIST *lst;
+  INDEX_ID_DATA *idd;
+  int res=0;
+  lst=inll.first;
+  while(lst)
+  {
+    if((idd=lst->index_id_data))
+    {
+      if((sd=FindSmsByIndex(idd->index)))
+      {
+	if(sd->cnt_r < idd->cnt_received)
+	{
+	  if(ReadThisSms(idd->index))
+	    res++;
+	  continue;
+	}
+	if(idd->type==1)
+	{
+	  if(sd->type!=TYPE_IN_N)
+	  {
+	    sd->type=TYPE_IN_N;
+	    res++;
+	    continue;
+	  }
+	}
+	else
+	{
+	  if(sd->type==TYPE_IN_N)
+	  {
+	    sd->type=TYPE_IN_R;
+	    res++;
+	    continue;
+	  }
+	}
+      }
+      else
+      {
+	if(ReadThisSms(idd->index))
+	  res++;
+      }
+    }
+    lst=lst->next;
+  }
+  lst=outll.first;
+  while(lst)
+  {
+    if((idd=lst->index_id_data))
+    {
+      if(!(sd=FindSmsByIndex(idd->index)) || sd->cnt_r < idd->cnt_received)
+      {
+	if(ReadThisSms(idd->index))
+	  res++;
+      }
+    }
+    lst=lst->next;
+  }
+  return res;
+}
+
+int CheckAll(void)
+{
+  int res=0;
+  res=CheckDat();
+  res+=CheckFile(TYPE_IN_ALL);
+  res+=CheckFile(TYPE_OUT);
+  res+=CheckFile(TYPE_DRAFT);
+  new_sms_n=getCountByType(TYPE_IN_N);
+  return res;
+}
+
+
+

@@ -20,6 +20,9 @@ __root const int CFG_ENA_AUTO_DEL_RP = 1;
 __root const CFG_HDR cfghdr6 = {CFG_CHECKBOX, LGP_CFG_ENA_EXIT_SAVE_DRAFT, 0, 3};
 __root const int CFG_ENA_EXIT_SAVE_DRAFT = 1;
 
+__root const CFG_HDR cfghdr8 = {CFG_CHECKBOX, LGP_CFG_ENA_AUTO_SAVE_DRAFT, 0, 3};
+__root const int CFG_ENA_AUTO_SAVE_DRAFT = 1;
+
 __root const CFG_HDR cfghdr3 = {CFG_CBOX, LGP_CFG_EXPORT_CHARSET, 0, 2};
 __root const int CFG_EXPORT_CHARSET = 1;
 #ifdef LANG_CN
@@ -40,7 +43,10 @@ __root const CFG_CBOX_ITEM cfgcbox1[7] =
 	LGP_EDIT_FONT_LARGE,
 	LGP_EDIT_FONT_LARGE_BOLD
 };
-
+/*
+__root const CFG_HDR cfghdr8= {CFG_UTF8_STRING, "Utf8≤‚ ‘", 0, 127};
+__root const char UTF8_TEST[128]="";
+*/
 __root const CFG_HDR cfghdr1_0 = {CFG_LEVEL, LGP_CFG_NOTIFY_SET, 1, 0};
 
 __root const CFG_HDR cfghdr1_1 = {CFG_CHECKBOX, LGP_CFG_ENA_NOTIFY, 0, 3};
@@ -78,7 +84,36 @@ __root const char CFG_SOUND_PATH[128] = "2:\\Default\\MessageMelody.wav";
 __root const CFG_HDR cfghdr1_a = {CFG_UINT, LGP_CFG_SOUND_VOL, 0, 10};
 __root const unsigned int CFG_SOUND_VOL = 5;
 
+#ifdef ELKA
+__root const CFG_HDR cfghdr1_5 = {CFG_CHECKBOX, LGP_CFG_ENA_SLI, 0, 3};
+__root const int CFG_ENA_SLI = 1;
+#endif
 __root const CFG_HDR cfghdr1_9 = {CFG_LEVEL, "", 0, 0};
 
+__root const CFG_HDR cfghdr2_0 = {CFG_LEVEL, LGP_CFG_KEYHOOK_SETTING, 1, 0};
+
+__root const CFG_HDR cfghdr2_1 = {CFG_UINT, LGP_CFG_1ST_KEY, 0, 100};
+__root const unsigned int KEY1 = '*';
+
+__root const CFG_HDR cfghdr2_2 = {CFG_UINT, LGP_CFG_2ND_KEY, 0, 100};
+__root const unsigned int KEY2 = '#';
+
+__root const CFG_HDR cfghdr2_9 = {CFG_LEVEL, "", 0, 0};
+
+__root const CFG_HDR cfghdr3_0 = {CFG_LEVEL, LGP_CFG_ICONBAR_SETTING, 1, 0};
+
+__root const CFG_HDR cfghdr3_1 = {CFG_CHECKBOX, LGP_CFG_ENA_IB, 0, 3};
+__root const int CFG_ENA_IB = 1;
+
+__root const CFG_HDR cfghdr3_2 = {CFG_UINT, LGP_CFG_ICON_IB, 0, 9999};
+#ifdef NEWSGOLD
+#ifdef ELKA
+__root const unsigned int CFG_ICON_IB = 426;
+#else
+__root const unsigned int CFG_ICON_IB = 467;
+#endif
+#endif
+
+__root const CFG_HDR cfghdr3_9 = {CFG_LEVEL, "", 0, 0};
 
 

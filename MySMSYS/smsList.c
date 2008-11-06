@@ -373,6 +373,7 @@ const SOFTKEYSTAB sms_menu_skt=
 {
   sms_menu_sk,0
 };
+
 int sms_menu_onkey(void *data, GUI_MSG *msg)
 {
 	SML_OP *so=MenuGetUserPointer(data);
@@ -414,6 +415,7 @@ int sms_menu_onkey(void *data, GUI_MSG *msg)
 			else
 				deleteDat(sd, 0);
 			delSDList(sd);
+			Menu_SetItemCountDyn(data, getCountByType(so->type));
 			RefreshGUI();
 			return (-1);
 		}
@@ -529,8 +531,13 @@ int SL_HDR_ICONS[7][2]=
 #endif
 };
 //extern void SetHeaderIcon(void *hdr_pointer, const int *icon, void *malloc_adr, void *mfree_adr);
-int SL_ICONS[7]={ICON_UNK, ICON_OUT, ICON_IN_R, ICON_IN_N, ICON_DRAFT, ICON_IN_ALL, ICON_LINE};
-int ESL_ICONS[7]={ICON_UNK, ICON_OUT, ICON_IN_R, ICON_IN_N, ICON_DRAFT, ICON_IN_ALL, ICON_LINE};
+#ifdef S68
+int SL_ICONS[8]={0, 0, 0, 0, 0, 0, 0x575, 0};
+int ESL_ICONS[8]={0, 0, 0, 0, 0, 0, 0x575, 0};
+#else
+int SL_ICONS[8]={ICON_UNK, ICON_OUT, ICON_IN_R, ICON_IN_N, ICON_DRAFT, ICON_IN_ALL, ICON_LINE, 0};
+int ESL_ICONS[8]={ICON_UNK, ICON_OUT, ICON_IN_R, ICON_IN_N, ICON_DRAFT, ICON_IN_ALL, ICON_LINE, 0};
+#endif
 void sms_menu_itemhndl(void *data, int curitem, void *user_pointer)
 {
 	SML_OP *so=(SML_OP *)user_pointer;
@@ -608,10 +615,10 @@ void sms_menu_ghook(void *data, int cmd)
   SML_OP *so=MenuGetUserPointer(data);
   if(cmd==0x0A)
   {
-    int n=getCountByType(so->type);
-    int cur=GetCurMenuItem(data);
-    if(cur>=n) SetCursorToMenuItem(data, 0);
-    Menu_SetItemCountDyn(data, n);
+//    int n=getCountByType(so->type);
+//    int cur=GetCurMenuItem(data);
+//    if(cur>=n) SetCursorToMenuItem(data, 0);
+//    Menu_SetItemCountDyn(data, n);
     patch_header(&sms_menuhdr);
     DisableIDLETMR();
   }

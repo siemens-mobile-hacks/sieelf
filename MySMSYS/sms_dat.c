@@ -423,13 +423,15 @@ int readAllSMS(void)
 
 int newToRead(SMS_DATA *sd)
 {
-	if((sd==0)||(sd->isfile==1)||(sd->id==0))
-		return 0;
-	if(SetSmsStatus(sd->id, 1)!=0x3E8)
-		return 0;
-	sd->type=TYPE_IN_R;
-	if(new_sms_n>0) new_sms_n--;
-	return 1;
+  if(!sd) return 0;
+  if(!sd->isfile)
+  {
+    if(!sd->id) return 0;
+    if(SetSmsStatus(sd->id, 1)!=0x3E8) return 0;
+  }
+  sd->type=TYPE_IN_R;
+  if(new_sms_n>0) new_sms_n--;
+  return 1;
 }
 
 #define MAX_FILE 10000
@@ -474,7 +476,7 @@ int saveFile(WSHDR *ws, char *number, SMS_DATA *sd, int type, int need_reload) /
   TTime time;
   TDate date;
   unsigned int err;
-  int f;
+  int f, len, x;
   const char *folder;
   char dir[128];
   switch(type)
@@ -500,6 +502,13 @@ int saveFile(WSHDR *ws, char *number, SMS_DATA *sd, int type, int need_reload) /
   if(!isdir(CFG_MAIN_FOLDER, &err))
     mkdir(CFG_MAIN_FOLDER, &err);
   strcpy(dir, CFG_MAIN_FOLDER);
+  if((len=strlen(dir))<=0) return 0;
+  x=dir[len-1];
+  if((x!='\\')&&(x!='/'))
+  {
+    dir[len]='\\';
+    dir[len+1]=0;
+  }
   strcat(dir, folder);
   if(!isdir(dir, &err))
     mkdir(dir, &err);
@@ -560,12 +569,14 @@ int saveFile(WSHDR *ws, char *number, SMS_DATA *sd, int type, int need_reload) /
 int readFile(int type)
 {
   unsigned int err;
-  int fp;
+//  int fp;
   const char *folder;
   char dir[128];
   char fullpath[128];
   int n=0/*, wlen*/;
   DIR_ENTRY de;
+  int len, x;
+  SMS_DATA *sdx;
   //WSHDR *ws, wsn;
   //unsigned short wsb[MAX_TEXT];
   switch(type)
@@ -586,6 +597,13 @@ int readFile(int type)
     break;
   }
   strcpy(dir, CFG_MAIN_FOLDER);
+  if((len=strlen(dir))<=0) return 0;
+  x=dir[len-1];
+  if((x!='\\')&&(x!='/'))
+  {
+    dir[len]='\\';
+    dir[len+1]=0;
+  }
   strcat(dir, folder);
   if(!isdir(dir, &err))
     return 0;
@@ -595,8 +613,7 @@ int readFile(int type)
   {
     do
     {
-      int len;
-      char *buf=malloc((de.file_size+3)&(~3));
+//      char *buf=malloc((de.file_size+3)&(~3));
       strcpy(fullpath, de.folder_name);
       len=strlen(fullpath);
       if(fullpath[len-1]!='\\'&&fullpath[len-1]!='/')
@@ -605,7 +622,15 @@ int readFile(int type)
 	fullpath[len]='\0';
       }
       strcat(fullpath, de.file_name);
-      if((de.file_size>=sizeof(MSS_FILE_P1))&&((fp=fopen(fullpath, A_BIN+A_ReadOnly, P_READ, &err))>=0))
+      sdx=AllocSD();
+      if(ReadMSS(fullpath, sdx))
+      {
+	LockSched();
+	AddToSdlByTime(sdx);
+	UnlockSched();
+      }
+      else FreeSdOne(sdx);
+/*      if((de.file_size>=sizeof(MSS_FILE_P1))&&((fp=fopen(fullpath, A_BIN+A_ReadOnly, P_READ, &err))>=0))
       {
 	if(fread(fp, buf, de.file_size, &err)==de.file_size)
 	{
@@ -669,7 +694,7 @@ int readFile(int type)
 	}
 	fclose(fp, &err);
       }
-      mfree(buf);
+      mfree(buf);*/
     }
     while(FindNextFile(&de, &err));
   }

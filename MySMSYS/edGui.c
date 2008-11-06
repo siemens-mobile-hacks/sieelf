@@ -352,7 +352,11 @@ int IsFileInArchive(const char *fpath)
 #ifdef ELKA
 int ed_menu_item_icons[]={0x538,0};
 #else
+#ifdef S68
+int ed_menu_item_icons[]={0x576,0};
+#else
 int ed_menu_item_icons[]={0x564,0};
+#endif
 #endif
 #endif
 
@@ -648,28 +652,29 @@ int add_translit(void *edsms_gui)
 
 #endif
 int Ed_SendSMS(void *gui)
-{    
-	EDITCONTROL ec;
-	USER_OP *uo=EDIT_GetUserPointer(gui);
-	NUM_LIST *nl=(NUM_LIST *)(uo->nltop);
-	if(!(IsHaveNumInList(uo)))
-	{
-		ShowMSG(1, (int)lgp.LGP_ERR_0NUM);
-		return 0;
-	}
-	ExtractEditControl(gui,uo->focus_n,&ec);
-	while(nl)
-	{
-		if(strlen(nl->num))
-		{
-			WSHDR *ws=AllocWS(ec.pWS->wsbody[0]);
-			wstrcpy(ws,ec.pWS);
-			SendSMS(ws,nl->num,MMI_CEPID,MSG_SMS_RX-1,6);
-			if(CFG_ENA_SAVE_SENT) saveFile(ec.pWS, nl->num, uo->sd, TYPE_OUT, 2);
-		}
-		nl=nl->next;
-	}
-	return 1;
+{
+  EDITCONTROL ec;
+  USER_OP *uo=EDIT_GetUserPointer(gui);
+  NUM_LIST *nl=(NUM_LIST *)(uo->nltop);
+  if(!(IsHaveNumInList(uo)))
+  {
+    ShowMSG(1, (int)lgp.LGP_ERR_0NUM);
+    return 0;
+  }
+  ExtractEditControl(gui,uo->focus_n,&ec);
+  while(nl)
+  {
+    if(strlen(nl->num))
+    {
+      WSHDR *ws=AllocWS(ec.pWS->wsbody[0]);
+      wstrcpy(ws,ec.pWS);
+      SendSMS(ws,nl->num,MMI_CEPID,MSG_SMS_RX-1,6);
+      if(CFG_ENA_SAVE_SENT) saveFile(ec.pWS, nl->num, uo->sd, TYPE_OUT, 2);
+    }
+    nl=nl->next;
+  }
+  uo->nd_sfd=0;
+  return 1;
 }
 
 void Ed_SaveFile(WSHDR *txt, USER_OP *uo, int type)
@@ -1013,7 +1018,13 @@ void edGHook(GUI *data, int cmd)
 //	    if(saveFile(uo->sd->SMS_TEXT, uo->sd->Number, uo->sd, uo->sd->type, 0))
 //	      deleteDat(uo->sd, 1);
 //	  }
-    if((CFG_ENA_AUTO_DEL_RP)&&(uo->gui_type==ED_VIEW)&&(uo->sd)&&(uo->sd->msg_type==ISREPORT)&&(uo->sd->id > 0)&&(!uo->sd->isfile))
+    if(uo->nd_sfd && uo->gui_type!=ED_VIEW && uo->gui_type!=ED_FVIEW && (CFG_ENA_AUTO_SAVE_DRAFT))
+    {
+      EDITCONTROL ec;
+      ExtractEditControl(data, uo->focus_n, &ec);
+      if(ec.pWS->wsbody[0]) Ed_SaveFile(ec.pWS, uo, TYPE_DRAFT);
+    }
+    if((CFG_ENA_AUTO_DEL_RP)&&(uo->gui_type==ED_VIEW)&&(uo->sd)&&(uo->sd->msg_type&ISREPORT)&&(uo->sd->id > 0)&&(!uo->sd->isfile))
     {
       if(IsSdInList(uo->sd) && deleteDat(uo->sd, 0))
 	delSDList(uo->sd);
@@ -1122,7 +1133,7 @@ void edGHook(GUI *data, int cmd)
 	 &&(!uo->sd->isfile)
 	   &&(uo->sd->id)
 	     &&(!(uo->sd->msg_type&ISDES))
-	       &&(uo->sd->msg_type!=ISREPORT || !CFG_ENA_AUTO_DEL_RP))      
+	       &&(!(uo->sd->msg_type&ISREPORT) || !CFG_ENA_AUTO_DEL_RP))      
     {
       wstrcpy(text, uo->sd->SMS_TEXT);
       strcpy(time, uo->sd->Time);
@@ -1186,6 +1197,11 @@ void edGHook(GUI *data, int cmd)
       }
       else
       {
+	if(uo->chr_cnt!=ec.pWS->wsbody[0])
+	{
+	  uo->chr_cnt=ec.pWS->wsbody[0];
+	  uo->nd_sfd=1;
+	}
 	if(!ec.pWS->wsbody[0]) z=1;
 	else if(IsWsSmall(ec.pWS)) z=(ec.pWS->wsbody[0]-1)/SEG7_MAX+1;
 	else z=(ec.pWS->wsbody[0]-1)/SEGN_MAX+1;
@@ -1301,39 +1317,39 @@ const INPUTDIA_DESC ED_DESC_RO=
 
 int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, view
 {
-	int gui_id;
-	void *ma=malloc_adr();
-	void *eq;
-	WSHDR *ews, ewsn;
-	unsigned short ewsb[MAX_TEXT];
-	const INPUTDIA_DESC *edd;
-	EDITCONTROL ec;
-	EDITC_OPTIONS ec_options;
-	ews=CreateLocalWS(&ewsn, ewsb, MAX_TEXT);
+  int gui_id;
+  void *ma=malloc_adr();
+  void *eq;
+  WSHDR *ews, ewsn;
+  unsigned short ewsb[MAX_TEXT];
+  const INPUTDIA_DESC *edd;
+  EDITCONTROL ec;
+  EDITC_OPTIONS ec_options;
+  ews=CreateLocalWS(&ewsn, ewsb, MAX_TEXT);
 //----------- uo
-	USER_OP *uo=malloc(sizeof(USER_OP));
-	zeromem(uo, sizeof(USER_OP));
+  USER_OP *uo=malloc(sizeof(USER_OP));
+  zeromem(uo, sizeof(USER_OP));
 
-	AddToNumList(uo);
-	uo->sd=sd; //?
-	uo->dlg_csm=dlg_csm;
-	strcpy(((NUM_LIST *)(uo->nltop))->num, sd->Number);
-	uo->gui_type=type;
-	uo->list_type=list_type;
-	uo->focus_n=0;
-	if(uo->sd->isfile)
-	{
-		if(uo->sd->fname && IsFileInArchive(uo->sd->fname))
-			uo->dat_type=ARCHIVE_FILE;
-		else
-			uo->dat_type=NML_FILE;
-	}
-	else
-		uo->dat_type=NML_DAT;
+  AddToNumList(uo);
+  uo->sd=sd; //?
+  uo->dlg_csm=dlg_csm;
+  strcpy(((NUM_LIST *)(uo->nltop))->num, sd->Number);
+  uo->gui_type=type;
+  uo->list_type=list_type;
+  uo->focus_n=0;
+  if(uo->sd->isfile)
+  {
+    if(uo->sd->fname && IsFileInArchive(uo->sd->fname))
+      uo->dat_type=ARCHIVE_FILE;
+    else
+      uo->dat_type=NML_FILE;
+  }
+  else
+    uo->dat_type=NML_DAT;
 //----------
-	eq=AllocEQueue(ma,mfree_adr());
-	PrepareEditControl(&ec);
-	PrepareEditCOptions(&ec_options);
+  eq=AllocEQueue(ma,mfree_adr());
+  PrepareEditControl(&ec);
+  PrepareEditCOptions(&ec_options);
 //-----------
 
 //----------- header
@@ -1341,111 +1357,114 @@ int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, 
 //------------
 
 //------------ num
-	{
-		if(strlen(sd->Number))
-		{
-		#ifdef LANG_CN
-			WSHDR *wsname, wsnamen;
-			unsigned short wsnameb[50];
-			int is_fetion=0;
-			wsname=CreateLocalWS(&wsnamen, wsnameb, 50);
-			if(!strncmp(num_fetion, sd->Number, 5)) is_fetion=1;
-			if(!findNameByNum(wsname, is_fetion?(sd->Number+5):sd->Number))
-				str_2ws(ews, sd->Number, 50);
-			else
-			{
-				if(is_fetion) wsprintf(ews, "%w(%t)", wsname, lgp.LGP_FETION);
-				else wstrcpy(ews, wsname);
-			}
-		#else
-			if(!findNameByNum(ews, sd->Number))
-				str_2ws(ews, sd->Number, 50);
-		#endif
-		}
-		else
-		{
-			if((type==ED_VIEW || type==ED_FVIEW))
-				wsprintf(ews, "%c", ' ');
-			else
-				CutWSTR(ews, 0);
-		}
-#ifdef DEBUG
-		{
-			if(strlen(sd->Number))
-			{
-				WSHDR *ws=AllocWS(50);
-				str_2ws(ws, sd->Number, 50);
-				wsAppendChar(ews, '|');
-				wstrcat(ews, ws);
-				FreeWS(ws);
-			}
-		}
+  {
+    if(strlen(sd->Number))
+    {
+#ifdef LANG_CN
+      WSHDR *wsname, wsnamen;
+      unsigned short wsnameb[50];
+      int is_fetion=0;
+      wsname=CreateLocalWS(&wsnamen, wsnameb, 50);
+      if(!strncmp(num_fetion, sd->Number, 5)) is_fetion=1;
+      if(!findNameByNum(wsname, is_fetion?(sd->Number+5):sd->Number))
+	str_2ws(ews, sd->Number, 50);
+      else
+      {
+	if(is_fetion) wsprintf(ews, "%w(%t)", wsname, lgp.LGP_FETION);
+	else wstrcpy(ews, wsname);
+      }
+#else
+      if(!findNameByNum(ews, sd->Number))
+	str_2ws(ews, sd->Number, 50);
 #endif
-		wstrcpy(((NUM_LIST *)(uo->nltop))->name, ews);
-		ConstructEditControl(&ec,(type==ED_VIEW||type==ED_FVIEW)?ECT_READ_ONLY:ECT_NORMAL_TEXT,ECF_DEFAULT_DIGIT+ECF_APPEND_EOL,ews,256);
-		SetFontToEditCOptions(&ec_options,EDIT_FONT_SMALL);
-		CopyOptionsToEditControl(&ec,&ec_options);
-		AddEditControlToEditQend(eq,&ec,ma);
-		uo->focus_n++;
-	}
+    }
+    else
+    {
+      if((type==ED_VIEW || type==ED_FVIEW))
+	wsprintf(ews, "%c", ' ');
+      else
+	CutWSTR(ews, 0);
+    }
+#ifdef DEBUG
+    {
+      if(strlen(sd->Number))
+      {
+	WSHDR *ws=AllocWS(50);
+	str_2ws(ws, sd->Number, 50);
+	wsAppendChar(ews, '|');
+	wstrcat(ews, ws);
+	FreeWS(ws);
+      }
+    }
+#endif
+    wstrcpy(((NUM_LIST *)(uo->nltop))->name, ews);
+    ConstructEditControl(&ec,(type==ED_VIEW||type==ED_FVIEW)?ECT_READ_ONLY:ECT_NORMAL_TEXT,ECF_DEFAULT_DIGIT+ECF_APPEND_EOL,ews,256);
+    SetFontToEditCOptions(&ec_options,EDIT_FONT_SMALL);
+    CopyOptionsToEditControl(&ec,&ec_options);
+    AddEditControlToEditQend(eq,&ec,ma);
+    uo->focus_n++;
+  }
 //------------
 //------------ time
-	if((type==ED_FVIEW)||(type==ED_VIEW)&&strlen(sd->Time)) //time
-	{
-		str_2ws(ews, sd->Time, 256);
-		ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,256);
-		AddEditControlToEditQend(eq,&ec,ma);
-		uo->focus_n++;
-	}
+  if((type==ED_FVIEW)||(type==ED_VIEW)&&strlen(sd->Time)) //time
+  {
+    str_2ws(ews, sd->Time, 256);
+    ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,256);
+    AddEditControlToEditQend(eq,&ec,ma);
+    uo->focus_n++;
+  }
 //------------
 //------------ line
-	str_2ws(ews, STR_LINES,256);
-	ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,256);
-	AddEditControlToEditQend(eq,&ec,ma);
-	uo->focus_n++;
+  str_2ws(ews, STR_LINES,256);
+  ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,256);
+  AddEditControlToEditQend(eq,&ec,ma);
+  uo->focus_n++;
 //------------
 //------------ TXT
-	if(sd->SMS_TEXT)
-		wstrcpy(ews, sd->SMS_TEXT);
-	else
-		CutWSTR(ews, 0);
-	switch(type)
-	{
-	case ED_VIEW:
-	case ED_FVIEW:
-		ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL,ews,MAX_TEXT);
-		break;
-	case ED_FREE:
-	case ED_EDIT:
-	case ED_FEDIT:
-		ConstructEditControl(&ec,TEXT_INPUT_OPTION,ECF_APPEND_EOL|ECF_DEFAULT_BIG_LETTER,ews,MAX_TEXT);
-		break;
-	case ED_NEW:
-	case ED_REPLY:
-	case ED_FREPLY:
-		CutWSTR(ews, 0);
-		ConstructEditControl(&ec,TEXT_INPUT_OPTION,ECF_APPEND_EOL|ECF_DEFAULT_BIG_LETTER,ews,MAX_TEXT);
-		break;
-	default:
-		ConstructEditControl(&ec,ECT_READ_ONLY,ECF_APPEND_EOL,ews,MAX_TEXT);
-		break;
-	}
-	//
-	SetFontToEditCOptions(&ec_options,CFG_TEXT_FONT);
-	CopyOptionsToEditControl(&ec,&ec_options);
-	AddEditControlToEditQend(eq,&ec,ma);
-	uo->focus_n++;
+  if(sd->SMS_TEXT)
+  {
+    wstrcpy(ews, sd->SMS_TEXT);
+    uo->chr_cnt=ews->wsbody[0];
+  }
+  else
+    CutWSTR(ews, 0);
+  switch(type)
+  {
+  case ED_VIEW:
+  case ED_FVIEW:
+    ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL,ews,MAX_TEXT);
+    break;
+  case ED_FREE:
+  case ED_EDIT:
+  case ED_FEDIT:
+    ConstructEditControl(&ec,TEXT_INPUT_OPTION,ECF_APPEND_EOL|ECF_DEFAULT_BIG_LETTER,ews,MAX_TEXT);
+    break;
+  case ED_NEW:
+  case ED_REPLY:
+  case ED_FREPLY:
+    CutWSTR(ews, 0);
+    ConstructEditControl(&ec,TEXT_INPUT_OPTION,ECF_APPEND_EOL|ECF_DEFAULT_BIG_LETTER,ews,MAX_TEXT);
+    break;
+  default:
+    ConstructEditControl(&ec,ECT_READ_ONLY,ECF_APPEND_EOL,ews,MAX_TEXT);
+    break;
+  }
+  //
+  SetFontToEditCOptions(&ec_options,CFG_TEXT_FONT);
+  CopyOptionsToEditControl(&ec,&ec_options);
+  AddEditControlToEditQend(eq,&ec,ma);
+  uo->focus_n++;
 //----------	
 	
-	if (type==ED_VIEW || type==ED_FVIEW)
-		edd=&ED_DESC_RO;
-	else
-		edd=&ED_DESC;
-	patch_header(&ED_HDR);
-	patch_input(edd);
-	gui_id=CreateInputTextDialog(edd, &ED_HDR, eq, 1, uo);
-	pushGS(dlg_csm, gui_id);
-	return gui_id;
+  if (type==ED_VIEW || type==ED_FVIEW)
+    edd=&ED_DESC_RO;
+  else
+    edd=&ED_DESC;
+  patch_header(&ED_HDR);
+  patch_input(edd);
+  gui_id=CreateInputTextDialog(edd, &ED_HDR, eq, 1, uo);
+  pushGS(dlg_csm, gui_id);
+  return gui_id;
 }
 
 int newSMS(void *dlg_csm)

@@ -43,6 +43,16 @@ extern const char STR_UNK_TYPE[];
 #define LGP_EDIT_FONT_MEDIUM_BOLD "中字体加粗"
 #define LGP_EDIT_FONT_LARGE "大号字体"
 #define LGP_EDIT_FONT_LARGE_BOLD "大字体加粗"
+#ifdef ELKA
+#define LGP_CFG_ENA_SLI "使用SLI"
+#endif
+#define LGP_CFG_KEYHOOK_SETTING "按键组合启动设置"
+#define LGP_CFG_1ST_KEY "按键1"
+#define LGP_CFG_2ND_KEY "按键2"
+#define LGP_CFG_ICONBAR_SETTING "新信息图标栏设置"
+#define LGP_CFG_ENA_IB "使用图标栏"
+#define LGP_CFG_ICON_IB "图标ID"
+#define LGP_CFG_ENA_AUTO_SAVE_DRAFT "自动保存草稿"
 #endif
 
 #ifdef LANG_EN
@@ -71,6 +81,16 @@ extern const char STR_UNK_TYPE[];
 #define LGP_EDIT_FONT_MEDIUM_BOLD "Medium+Bold"
 #define LGP_EDIT_FONT_LARGE "Large"
 #define LGP_EDIT_FONT_LARGE_BOLD "Large+Bold"
+#ifdef ELKA
+#define LGP_CFG_ENA_SLI "Enable SLI"
+#endif
+#define LGP_CFG_KEYHOOK_SETTING "KeyHook Settings"
+#define LGP_CFG_1ST_KEY "1st Key"
+#define LGP_CFG_2ND_KEY "2nd Key"
+#define LGP_CFG_ICONBAR_SETTING "Iconbar Settings"
+#define LGP_CFG_ENA_IB "Enable Iconbar"
+#define LGP_CFG_ICON_IB "Picture ID"
+#define LGP_CFG_ENA_AUTO_SAVE_DRAFT "Auto Save Draft"
 #endif
 
 typedef struct{

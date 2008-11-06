@@ -20,4 +20,12 @@ extern const unsigned int CFG_SOUND_VOL;
 extern const int CFG_ENA_AUTO_DEL_RP;
 extern const int CFG_ENA_EXIT_SAVE_DRAFT;
 extern const unsigned int CFG_TEXT_FONT;
+#ifdef ELKA
+extern const int CFG_ENA_SLI;
+#endif
+extern const unsigned int KEY1;
+extern const unsigned int KEY2;
+extern const unsigned int CFG_ICON_IB;
+extern const int CFG_ENA_IB;
+extern const int CFG_ENA_AUTO_SAVE_DRAFT;
 #endif

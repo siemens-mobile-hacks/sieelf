@@ -1018,6 +1018,8 @@ MySMSYS/guiIdMan.c -text
 MySMSYS/guiIdMan.h -text
 MySMSYS/iconpack.c -text
 MySMSYS/iconpack.h -text
+MySMSYS/key_hook.c -text
+MySMSYS/key_hook.h -text
 MySMSYS/language.c -text
 MySMSYS/language.h -text
 MySMSYS/lgp_pic.h -text
