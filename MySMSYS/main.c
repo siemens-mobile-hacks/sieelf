@@ -543,7 +543,7 @@ unsigned int CreateDialogCSM(void)
   memcpy(dcd, &DIALOGCSM, sizeof(DLGCSM_DESC));
   if(!cltop) SUBPROC((void *)ConstructList);
   if(sdltop && IPC_SUB_MSG!=SMSYS_IPC_FVIEW) SUBPROC((void *)CheckAll);
-  if(!sdltop && IPC_SUB_MSG!=SMSYS_IPC_FVIEW) readAllSMS();
+  if(!sdltop && IPC_SUB_MSG!=SMSYS_IPC_FVIEW) SUBPROC((void *)readAllSMS);
   LoadLangPack();
   LoadIconPack();
   return (CreateCSM(&dcd->csmd,&dlg_csm,2));
@@ -951,6 +951,10 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 	      else if(msg->submess == SMSYS_IPC_UPDATE_CLIST)
 	      {
 		SUBPROC((void *)ConstructList);
+	      }
+	      else if(msg->submess == SMSYS_IPC_SMS_DATA_UPDATE)
+	      {
+		if(IsHaveDlgGuiOnTop()) RefreshGUI();
 	      }
 	    }
 	  }

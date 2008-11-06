@@ -403,6 +403,13 @@ void GetEMSText(char *data, WSHDR *text, int cnt_a, int cnt_n, int type, char *b
 	}
 }
 
+const IPC_REQ my_ipc_upd=
+{
+  my_ipc_name,
+  my_ipc_name,
+  NULL
+};
+
 int readAllSMS(void)
 {
 
@@ -413,6 +420,7 @@ int readAllSMS(void)
 	n+=readFile(TYPE_OUT);
 	n+=readFile(TYPE_DRAFT);
 	new_sms_n=getCountByType(TYPE_IN_N);
+	GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
 	return n;
 }
 
@@ -615,7 +623,7 @@ int readFile(int type)
     {
 //      char *buf=malloc((de.file_size+3)&(~3));
       strcpy(fullpath, de.folder_name);
-      len=strlen(fullpath);
+      if((len=strlen(fullpath))<=0) continue;
       if(fullpath[len-1]!='\\'&&fullpath[len-1]!='/')
       {
 	fullpath[len++]='\\';

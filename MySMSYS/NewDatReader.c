@@ -3,7 +3,7 @@
 #include "sms_dat.h"
 #include "language.h"
 #include "main.h"
-
+#include "MySMSYS_ipc.h"
 #define MAX_SMS 100
 typedef struct
 {
@@ -905,6 +905,13 @@ int CheckFile(int type)
     do
     {
       strcpy(filepath, de.folder_name);
+      if((len=strlen(filepath))<=0) continue;
+      x=filepath[len-1];
+      if((x!='\\')&&(x!='/'))
+      {
+	filepath[len]='\\';
+	filepath[len+1]=0;
+      }
       strcat(filepath, de.file_name);
       if(!(sdx=FindSdByFileName(filepath)))
       {
@@ -1053,15 +1060,18 @@ int CheckBack(void)
   return 0;
 }
 
+extern const IPC_REQ my_ipc_upd; //sms_dat.c
 int CheckAll(void)
 {
   int res=0;
   CheckBack();
   res=CheckDat();
+  GetCPUClock();
   res+=CheckFile(TYPE_IN_ALL);
   res+=CheckFile(TYPE_OUT);
   res+=CheckFile(TYPE_DRAFT);
   new_sms_n=getCountByType(TYPE_IN_N);
+  GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
   return res;
 }
 
