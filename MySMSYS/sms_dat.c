@@ -723,6 +723,7 @@ int deleteFile(SMS_DATA *sd, int need_reload)
 		unlink(sd->fname, &err);
 		if(need_reload)
 			return(readAllSMS());
+		if(sd->type==TYPE_IN_N && new_sms_n) new_sms_n--;
 		return 1;
 	}
 	return 0;
