@@ -1565,7 +1565,7 @@ int ExportAllToOneTxt_ASCII(char *filename)
     else
       ws_2ascii(wname, sname, 64);
     sprintf(buf, "%s: %s\r\n%s: %s\r\n%s: %s\r\n%s:\r\n%s\r\n\r\n",
-	    lgp.LGP_FROM,
+	    (sdl->type==TYPE_OUT||sdl->type==TYPE_DRAFT)?lgp.LGP_TO:lgp.LGP_FROM,
 	    sname,
 	    lgp.LGP_NUMBER,
 	    sdl->Number,
