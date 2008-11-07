@@ -46,4 +46,5 @@ extern const unsigned int CFG_VIBRA_POWER7;
 extern const unsigned int CFG_SOUND_VOL7;
 extern const unsigned int CFG_VIBRA_POWER8;
 extern const unsigned int CFG_SOUND_VOL8;
+extern const int CFG_ENA_AUTO_SAF_RT;
 #endif

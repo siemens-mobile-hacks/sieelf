@@ -11,6 +11,9 @@ __root const char CFG_SYSTEM_FOLDER[128] = "0:\\System\\";
 __root const CFG_HDR cfghdr2 = {CFG_CHECKBOX, LGP_CFG_ENA_AUTO_SAF, 0, 3};
 __root const int CFG_ENA_AUTO_SAF = 1;
 
+__root const CFG_HDR cfghdr9 = {CFG_CHECKBOX, LGP_CFG_ENA_AUTO_SAF_RT, 0, 3};
+__root const int CFG_ENA_AUTO_SAF_RT = 1;
+
 __root const CFG_HDR cfghdr4 = {CFG_CHECKBOX, LGP_CFG_ENA_SAVE_SENT, 0, 3};
 __root const int CFG_ENA_SAVE_SENT = 1;
 

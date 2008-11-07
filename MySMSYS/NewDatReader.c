@@ -837,7 +837,7 @@ int ReadThisSms(int index, int saf) //saf,0:do nothing,1:save as file
     sdx->opmsg_id=pea.opmsg_id;
     sdx->id=index;
     sdx->cnt_r=idd->cnt_received;
-    if(!(sdx->msg_type&ISDES) && saf==1 && saveFile(sdx->SMS_TEXT, sdx->Number, sdx, sdx->type, 2))
+    if(CFG_ENA_AUTO_SAF_RT && !(sdx->msg_type&ISDES) && saf==1 && saveFile(sdx->SMS_TEXT, sdx->Number, sdx, sdx->type, 2))
     {
       deleteDat(sdx, 0);
       FreeSdOne(sdx);
