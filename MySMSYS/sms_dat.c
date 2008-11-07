@@ -638,80 +638,18 @@ int readFile(int type)
       sdx=AllocSD();
       if(ReadMSS(fullpath, sdx))
       {
+	n++;
 	LockSched();
 	AddToSdlByTime(sdx);
 	UnlockSched();
+	if(!(n%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
       }
       else FreeSdOne(sdx);
-/*      if((de.file_size>=sizeof(MSS_FILE_P1))&&((fp=fopen(fullpath, A_BIN+A_ReadOnly, P_READ, &err))>=0))
-      {
-	if(fread(fp, buf, de.file_size, &err)==de.file_size)
-	{
-	  if(!strncmp(buf, ELFNAME, 7))
-	  {
-	    unsigned short *sp;
-	    MSS_FILE_P1 *msf1;
-	    MSS_FILE_P2 *msf2;
-	    char *fname;
-	    int version;
-	    SMS_DATA *sdx=AllocSD();
-	    n++;
-//	    GetCPUClock();
-	    fname=malloc(128);
-	    zeromem(fname, 128);
-	    sdx->isfile=1;
-	    strcpy(fname, fullpath);
-	    sdx->fname=fname;
-	    version=*(int *)(buf+8); //header len
-	    if(version==1)
-	    {
-	      sdx->type=type;
-	      msf1=(MSS_FILE_P1 *)buf;
-	      strcpy(sdx->Time, msf1->time);
-	      strncpy(sdx->Number, msf1->number, 32);
-	      strncpy(sdx->Time, msf1->time, 32);
-	      sp=(unsigned short *)(((char *)buf)+sizeof(MSS_FILE_P1));
-	      len=*sp;
-	      sdx->SMS_TEXT=AllocWS(len);
-	      memcpy(sdx->SMS_TEXT->wsbody, sp, (len+1)*sizeof(short));
-	      LockSched();
-	      AddToSdlByTime(sdx);
-	      UnlockSched();
-	      //memcpy(ws->wsbody, sp, (((len>MAX_TEXT)?MAX_TEXT:len)+1)*(sizeof(unsigned short)));
-	    }
-	    else if(version==2)
-	    {
-	      msf2=(MSS_FILE_P2 *)buf;
-	      strcpy(sdx->Time, msf2->time);
-	      strncpy(sdx->Number, msf2->number, 32);
-	      strncpy(sdx->Time, msf2->time, 32);
-	      sdx->type=msf2->type;
-	      sp=(unsigned short *)(((char *)buf)+sizeof(MSS_FILE_P2));
-	      len=*sp;
-	      sdx->SMS_TEXT=AllocWS(len);
-	      memcpy(sdx->SMS_TEXT->wsbody, sp, (len+1)*sizeof(short));
-	      LockSched();
-	      AddToSdlByTime(sdx);
-	      UnlockSched();
-	      //memcpy(ws->wsbody, sp, (((len>MAX_TEXT)?MAX_TEXT:len)+1)*(sizeof(unsigned short)));
-	    }
-	    else FreeSdOne(sdx);
-	    //wlen=wstrlen(ws);
-	    //if(!wlen) wlen=1;
-	    //sdx->SMS_TEXT=AllocWS(wlen);
-	    //wstrcpy(sdx->SMS_TEXT, ws);
-	    //LockSched();
-	    //AddToSdlByTime(sdx);
-	    //UnlockSched();
-	  }
-	}
-	fclose(fp, &err);
-      }
-      mfree(buf);*/
     }
     while(FindNextFile(&de, &err));
   }
   FindClose(&de, &err);
+  if((n%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
   return n;
 }
 

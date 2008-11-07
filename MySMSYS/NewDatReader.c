@@ -406,7 +406,11 @@ int DoMsgList(SMS_DATA_LIST *lst, char *sms_buf, char *ems_admin_buf, int sms_si
     AddToSdlByTime(sdx);
     UnlockSched();
   }
-  else FreeSdOne(sdx);
+  else
+  {
+    FreeSdOne(sdx);
+    return 0;
+  }
   return 1;
 }
 int DoAllDatMsg(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_size)
@@ -415,19 +419,29 @@ int DoAllDatMsg(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_
   SMS_DATA_LLIST inll=sdroot->in_msg;
   SMS_DATA_LLIST outll=sdroot->out_msg;
   SMS_DATA_LIST *lst;
+  int res=0;
   lst=inll.first;
   while(lst)
   {
-    DoMsgList(lst, sms_buf, ems_admin_buf, sms_size, ems_admin_size);
+    if(DoMsgList(lst, sms_buf, ems_admin_buf, sms_size, ems_admin_size))
+    {
+      res++;
+      if(!(res%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
+    }
     lst=lst->next;
   }
   lst=outll.first;
   while(lst)
   {
-    DoMsgList(lst, sms_buf, ems_admin_buf, sms_size, ems_admin_size);
+    if(DoMsgList(lst, sms_buf, ems_admin_buf, sms_size, ems_admin_size))
+    {
+      res++;
+      if(!(res%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
+    }
     lst=lst->next;
   }
-  return 0;
+  if((res%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
+  return res;
 }
 
 int NewMsgReader(void)
@@ -928,12 +942,14 @@ int CheckFile(int type)
 	  LockSched();
 	  AddToSdlByTime(sdx);
 	  UnlockSched();
+	  if(!(res%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
 	}
 	else FreeSdOne(sdx);
       }
     }while(FindNextFile(&de, &err));
   }
   FindClose(&de, &err);
+  if((res%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
   return res;
 }
 
@@ -957,6 +973,7 @@ int CheckDat(void)
 	{
 	  if(ReadThisSms(idd->index, 0))
 	    res++;
+	  if(res && !(res%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
 	  continue;
 	}
 	if(idd->type==1)
@@ -965,6 +982,7 @@ int CheckDat(void)
 	  {
 	    sd->type=TYPE_IN_N;
 	    res++;
+	    if(!(res%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
 	    continue;
 	  }
 	}
@@ -974,6 +992,7 @@ int CheckDat(void)
 	  {
 	    sd->type=TYPE_IN_R;
 	    res++;
+	    if(!(res%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
 	    continue;
 	  }
 	}
@@ -995,10 +1014,12 @@ int CheckDat(void)
       {
 	if(ReadThisSms(idd->index, 0))
 	  res++;
+	if(res && !(res%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
       }
     }
     lst=lst->next;
   }
+  if((res%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
   return res;
 }
 
@@ -1036,6 +1057,7 @@ int CheckBack(void)
 {
   SMS_DATA *sdl=sdltop;
   SMS_DATA *sdx;
+  int n=0;
   while(sdl)
   {
     if(sdl->isfile)
@@ -1047,6 +1069,8 @@ int CheckBack(void)
 	  sdx=sdl;
 	  sdl=sdl->next;
 	  delSDList(sdx);
+	  n++;
+	  if(!(n%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
 	  continue;
 	}
       }
@@ -1058,21 +1082,23 @@ int CheckBack(void)
 	sdx=sdl;
 	sdl=sdl->next;
 	delSDList(sdx);
+	n++;
+	if(!(n%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
 	continue;
       }
     }
     sdl=sdl->next;
   }
-  return 0;
+  if((n%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
+  return n;
 }
 
-extern const IPC_REQ my_ipc_upd; //sms_dat.c
+//extern const IPC_REQ my_ipc_upd; //sms_dat.c
 int CheckAll(void)
 {
   int res=0;
   CheckBack();
   res=CheckDat();
-  GetCPUClock();
   res+=CheckFile(TYPE_IN_ALL);
   res+=CheckFile(TYPE_OUT);
   res+=CheckFile(TYPE_DRAFT);
