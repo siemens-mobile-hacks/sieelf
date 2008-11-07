@@ -12,6 +12,52 @@
 #include "NewDatReader.h"
 //int sndVolume=5;
 short PLAY_ID=0;
+
+int vibra_power=0;
+int sound_vol=0;
+void SetSoundVibraByProfile(void)
+{
+  int c=GetProfile()+1;
+  switch(c)
+  {
+  case 1:
+    vibra_power=CFG_VIBRA_POWER1;
+    sound_vol=CFG_SOUND_VOL1;
+    break;
+  case 2:
+    vibra_power=CFG_VIBRA_POWER2;
+    sound_vol=CFG_SOUND_VOL2;
+    break;
+  case 3:
+    vibra_power=CFG_VIBRA_POWER3;
+    sound_vol=CFG_SOUND_VOL3;
+    break;
+  case 4:
+    vibra_power=CFG_VIBRA_POWER4;
+    sound_vol=CFG_SOUND_VOL4;
+    break;
+  case 5:
+    vibra_power=CFG_VIBRA_POWER5;
+    sound_vol=CFG_SOUND_VOL5;
+    break;
+  case 6:
+    vibra_power=CFG_VIBRA_POWER6;
+    sound_vol=CFG_SOUND_VOL6;
+    break;
+  case 7:
+    vibra_power=CFG_VIBRA_POWER7;
+    sound_vol=CFG_SOUND_VOL7;
+    break;
+  case 8:
+    vibra_power=CFG_VIBRA_POWER8;
+    sound_vol=CFG_SOUND_VOL8;
+    break;
+  default:
+    vibra_power=0;
+    sound_vol=0;
+    break;
+  }
+}
 void Play(const char *fname)
 {
   PLAYFILE_OPT _sfo1;
@@ -34,7 +80,7 @@ void Play(const char *fname)
   _sfo1.repeat_num=1;
   _sfo1.time_between_play=0;
   _sfo1.play_first=0;
-  _sfo1.volume=CFG_SOUND_VOL;//
+  _sfo1.volume=sound_vol;//
 #ifdef NEWSGOLD
   _sfo1.unk6=1;
   _sfo1.unk7=1;
@@ -113,12 +159,13 @@ void popup_ghook(void *data, int cmd)
     TempLightOn(3, 0x7FFF);
     if(CFG_NOTIFY_TIME && !IsCalling())
     {
-      if(CFG_ENA_SOUND && !(*(RamRingtoneStatus())) && IsFileExist(CFG_SOUND_PATH))
+      SetSoundVibraByProfile();
+      if(CFG_ENA_SOUND&& sound_vol && !(*(RamRingtoneStatus())) && IsFileExist(CFG_SOUND_PATH))
       {
 	if(GetPlayStatus()) MPlayer_Stop();
 	if(!PLAY_ID) Play(CFG_SOUND_PATH);
       }
-      SetVibration(CFG_VIBRA_POWER);
+      SetVibration(vibra_power);
     }
   }
   else if(cmd==3) //Close

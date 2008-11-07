@@ -52,8 +52,8 @@ __root const CFG_HDR cfghdr1_0 = {CFG_LEVEL, LGP_CFG_NOTIFY_SET, 1, 0};
 __root const CFG_HDR cfghdr1_1 = {CFG_CHECKBOX, LGP_CFG_ENA_NOTIFY, 0, 3};
 __root const int CFG_ENA_NOTIFY = 1;
 
-__root const CFG_HDR cfghdr1_2 = {CFG_UINT, LGP_CFG_VIBRA_POWER, 0, 100};
-__root const unsigned int CFG_VIBRA_POWER = 50;
+//__root const CFG_HDR cfghdr1_2 = {CFG_UINT, LGP_CFG_VIBRA_POWER, 0, 100};
+//__root const unsigned int CFG_VIBRA_POWER = 50;
 
 __root const CFG_HDR cfghdr1_3 = {CFG_UINT, LGP_CFG_NOTIFY_TIME, 0, 100};
 __root const int CFG_NOTIFY_TIME = 10;
@@ -81,13 +81,98 @@ __root const int CFG_ENA_SOUND = 1;
 __root const CFG_HDR cfghdr1_8= {CFG_STR_UTF8, LGP_CFG_SOUND_PATH, 3, 127};
 __root const char CFG_SOUND_PATH[128] = "2:\\Default\\MessageMelody.wav";
 
-__root const CFG_HDR cfghdr1_a = {CFG_UINT, LGP_CFG_SOUND_VOL, 0, 10};
-__root const unsigned int CFG_SOUND_VOL = 5;
+//__root const CFG_HDR cfghdr1_a = {CFG_UINT, LGP_CFG_SOUND_VOL, 0, 10};
+//__root const unsigned int CFG_SOUND_VOL = 5;
 
 #ifdef ELKA
 __root const CFG_HDR cfghdr1_5 = {CFG_CHECKBOX, LGP_CFG_ENA_SLI, 0, 3};
 __root const int CFG_ENA_SLI = 1;
 #endif
+
+//------------------------ profile
+
+__root const CFG_HDR cfghdr1_10 = {CFG_LEVEL, LGP_CFG_PROFILE1_SET, 1, 0};
+
+__root const CFG_HDR cfghdr1_11 = {CFG_UINT, LGP_CFG_SOUND_VOL, 0, 10};
+__root const unsigned int CFG_SOUND_VOL1 = 5;
+
+__root const CFG_HDR cfghdr1_12 = {CFG_UINT, LGP_CFG_VIBRA_POWER, 0, 100};
+__root const unsigned int CFG_VIBRA_POWER1 = 50;
+
+__root const CFG_HDR cfghdr1_19 = {CFG_LEVEL, "", 0, 0};
+
+__root const CFG_HDR cfghdr1_20 = {CFG_LEVEL, LGP_CFG_PROFILE2_SET, 1, 0};
+
+__root const CFG_HDR cfghdr1_21 = {CFG_UINT, LGP_CFG_SOUND_VOL, 0, 10};
+__root const unsigned int CFG_SOUND_VOL2 = 0;
+
+__root const CFG_HDR cfghdr1_22 = {CFG_UINT, LGP_CFG_VIBRA_POWER, 0, 100};
+__root const unsigned int CFG_VIBRA_POWER2 = 50;
+
+__root const CFG_HDR cfghdr1_29 = {CFG_LEVEL, "", 0, 0};
+
+__root const CFG_HDR cfghdr1_30 = {CFG_LEVEL, LGP_CFG_PROFILE3_SET, 1, 0};
+
+__root const CFG_HDR cfghdr1_31 = {CFG_UINT, LGP_CFG_SOUND_VOL, 0, 10};
+__root const unsigned int CFG_SOUND_VOL3 = 5;
+
+__root const CFG_HDR cfghdr1_32 = {CFG_UINT, LGP_CFG_VIBRA_POWER, 0, 100};
+__root const unsigned int CFG_VIBRA_POWER3 = 50;
+
+__root const CFG_HDR cfghdr1_39 = {CFG_LEVEL, "", 0, 0};
+
+__root const CFG_HDR cfghdr1_40 = {CFG_LEVEL, LGP_CFG_PROFILE4_SET, 1, 0};
+
+__root const CFG_HDR cfghdr1_41 = {CFG_UINT, LGP_CFG_SOUND_VOL, 0, 10};
+__root const unsigned int CFG_SOUND_VOL4 = 5;
+
+__root const CFG_HDR cfghdr1_42 = {CFG_UINT, LGP_CFG_VIBRA_POWER, 0, 100};
+__root const unsigned int CFG_VIBRA_POWER4 = 50;
+
+__root const CFG_HDR cfghdr1_49 = {CFG_LEVEL, "", 0, 0};
+
+__root const CFG_HDR cfghdr1_50 = {CFG_LEVEL, LGP_CFG_PROFILE5_SET, 1, 0};
+
+__root const CFG_HDR cfghdr1_51 = {CFG_UINT, LGP_CFG_SOUND_VOL, 0, 10};
+__root const unsigned int CFG_SOUND_VOL5 = 5;
+
+__root const CFG_HDR cfghdr1_52 = {CFG_UINT, LGP_CFG_VIBRA_POWER, 0, 100};
+__root const unsigned int CFG_VIBRA_POWER5 = 50;
+
+__root const CFG_HDR cfghdr1_59 = {CFG_LEVEL, "", 0, 0};
+
+__root const CFG_HDR cfghdr1_60 = {CFG_LEVEL, LGP_CFG_PROFILE6_SET, 1, 0};
+
+__root const CFG_HDR cfghdr1_61 = {CFG_UINT, LGP_CFG_SOUND_VOL, 0, 10};
+__root const unsigned int CFG_SOUND_VOL6 = 5;
+
+__root const CFG_HDR cfghdr1_62 = {CFG_UINT, LGP_CFG_VIBRA_POWER, 0, 100};
+__root const unsigned int CFG_VIBRA_POWER6 = 50;
+
+__root const CFG_HDR cfghdr1_69 = {CFG_LEVEL, "", 0, 0};
+
+__root const CFG_HDR cfghdr1_70 = {CFG_LEVEL, LGP_CFG_PROFILE7_SET, 1, 0};
+
+__root const CFG_HDR cfghdr1_71 = {CFG_UINT, LGP_CFG_SOUND_VOL, 0, 10};
+__root const unsigned int CFG_SOUND_VOL7 = 5;
+
+__root const CFG_HDR cfghdr1_72 = {CFG_UINT, LGP_CFG_VIBRA_POWER, 0, 100};
+__root const unsigned int CFG_VIBRA_POWER7 = 50;
+
+__root const CFG_HDR cfghdr1_79 = {CFG_LEVEL, "", 0, 0};
+
+__root const CFG_HDR cfghdr1_80 = {CFG_LEVEL, LGP_CFG_PROFILE8_SET, 1, 0};
+
+__root const CFG_HDR cfghdr1_81 = {CFG_UINT, LGP_CFG_SOUND_VOL, 0, 10};
+__root const unsigned int CFG_SOUND_VOL8 = 2;
+
+__root const CFG_HDR cfghdr1_82 = {CFG_UINT, LGP_CFG_VIBRA_POWER, 0, 100};
+__root const unsigned int CFG_VIBRA_POWER8 = 50;
+
+__root const CFG_HDR cfghdr1_89 = {CFG_LEVEL, "", 0, 0};
+
+//-----------------------------
+
 __root const CFG_HDR cfghdr1_9 = {CFG_LEVEL, "", 0, 0};
 
 __root const CFG_HDR cfghdr2_0 = {CFG_LEVEL, LGP_CFG_KEYHOOK_SETTING, 1, 0};
@@ -110,7 +195,7 @@ __root const CFG_HDR cfghdr3_2 = {CFG_UINT, LGP_CFG_ICON_IB, 0, 9999};
 #ifdef ELKA
 __root const unsigned int CFG_ICON_IB = 426;
 #else
-__root const unsigned int CFG_ICON_IB = 467;
+__root const unsigned int CFG_ICON_IB = 475;
 #endif
 #endif
 

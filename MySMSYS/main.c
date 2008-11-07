@@ -575,7 +575,7 @@ void DoNewProc(void)
 {
   if(tindex)
   {
-    ReadThisSms(tindex);
+    ReadThisSms(tindex, 1);
     tindex=0;
   }
   if(CFG_ENA_NOTIFY) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_NEW_IN_WIN,&my_ipc_n);
@@ -611,7 +611,7 @@ void UpdateNProc(void)
     //readAllSMS();
     if(tindex)
     {
-      ReadThisSms(tindex);
+      ReadThisSms(tindex, 1);
       tindex=0;
     }
     if(IsHaveDlgGuiOnTop())
@@ -768,6 +768,7 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 	{
 	  int x;
 	  new_sms_n=(SmsDataRoot())->cnt_in_new_sms_dat;
+	  if(!new_sms_n) new_sms_n=getCountByType(TYPE_IN_N);
 	  if((CFG_ENA_NOTIFY)&&(!new_sms_n)) //主要用于simoco链接手机时会读取所有短信并将其设置为已读
 	  {
 	    SetVibration(0);

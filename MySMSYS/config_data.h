@@ -6,7 +6,7 @@ extern const char CFG_SYSTEM_FOLDER[128];
 
 extern const int CFG_ENA_NOTIFY;
 extern const int CFG_ENA_AUTO_SAF;
-extern const unsigned int CFG_VIBRA_POWER;
+//extern const unsigned int CFG_VIBRA_POWER;
 extern const int CFG_NOTIFY_TIME;
 extern const int CFG_ENA_NEWSMS_ICON;
 //extern const char CFG_ICONNEW_PATH[128];
@@ -16,7 +16,7 @@ extern const int CFG_EXPORT_CHARSET;
 extern const int CFG_ENA_SAVE_SENT;
 extern const int CFG_ENA_SOUND;
 extern const char CFG_SOUND_PATH[];
-extern const unsigned int CFG_SOUND_VOL;
+//extern const unsigned int CFG_SOUND_VOL;
 extern const int CFG_ENA_AUTO_DEL_RP;
 extern const int CFG_ENA_EXIT_SAVE_DRAFT;
 extern const unsigned int CFG_TEXT_FONT;
@@ -28,4 +28,22 @@ extern const unsigned int KEY2;
 extern const unsigned int CFG_ICON_IB;
 extern const int CFG_ENA_IB;
 extern const int CFG_ENA_AUTO_SAVE_DRAFT;
+
+//profile
+extern const unsigned int CFG_VIBRA_POWER1;
+extern const unsigned int CFG_SOUND_VOL1;
+extern const unsigned int CFG_VIBRA_POWER2;
+extern const unsigned int CFG_SOUND_VOL2;
+extern const unsigned int CFG_VIBRA_POWER3;
+extern const unsigned int CFG_SOUND_VOL3;
+extern const unsigned int CFG_VIBRA_POWER4;
+extern const unsigned int CFG_SOUND_VOL4;
+extern const unsigned int CFG_VIBRA_POWER5;
+extern const unsigned int CFG_SOUND_VOL5;
+extern const unsigned int CFG_VIBRA_POWER6;
+extern const unsigned int CFG_SOUND_VOL6;
+extern const unsigned int CFG_VIBRA_POWER7;
+extern const unsigned int CFG_SOUND_VOL7;
+extern const unsigned int CFG_VIBRA_POWER8;
+extern const unsigned int CFG_SOUND_VOL8;
 #endif

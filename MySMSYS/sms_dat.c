@@ -437,6 +437,11 @@ int newToRead(SMS_DATA *sd)
     if(!sd->id) return 0;
     if(SetSmsStatus(sd->id, 1)!=0x3E8) return 0;
   }
+  else
+  {
+    if(NewToRead_File(sd)) return 1;
+    else return 0;
+  }
   sd->type=TYPE_IN_R;
   if(new_sms_n>0) new_sms_n--;
   return 1;

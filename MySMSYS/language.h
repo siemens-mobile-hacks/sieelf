@@ -53,6 +53,14 @@ extern const char STR_UNK_TYPE[];
 #define LGP_CFG_ENA_IB "使用图标栏"
 #define LGP_CFG_ICON_IB "图标ID"
 #define LGP_CFG_ENA_AUTO_SAVE_DRAFT "自动保存草稿"
+#define LGP_CFG_PROFILE1_SET "情景模式1"
+#define LGP_CFG_PROFILE2_SET "情景模式2"
+#define LGP_CFG_PROFILE3_SET "情景模式3"
+#define LGP_CFG_PROFILE4_SET "情景模式4"
+#define LGP_CFG_PROFILE5_SET "情景模式5"
+#define LGP_CFG_PROFILE6_SET "情景模式6"
+#define LGP_CFG_PROFILE7_SET "情景模式7"
+#define LGP_CFG_PROFILE8_SET "情景模式8"
 #endif
 
 #ifdef LANG_EN
@@ -91,6 +99,14 @@ extern const char STR_UNK_TYPE[];
 #define LGP_CFG_ENA_IB "Enable Iconbar"
 #define LGP_CFG_ICON_IB "Picture ID"
 #define LGP_CFG_ENA_AUTO_SAVE_DRAFT "Auto Save Draft"
+#define LGP_CFG_PROFILE1_SET "Profile1"
+#define LGP_CFG_PROFILE2_SET "Profile2"
+#define LGP_CFG_PROFILE3_SET "Profile3"
+#define LGP_CFG_PROFILE4_SET "Profile4"
+#define LGP_CFG_PROFILE5_SET "Profile5"
+#define LGP_CFG_PROFILE6_SET "Profile6"
+#define LGP_CFG_PROFILE7_SET "Profile7"
+#define LGP_CFG_PROFILE8_SET "Profile8"
 #endif
 
 typedef struct{

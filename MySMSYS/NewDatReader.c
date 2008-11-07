@@ -706,7 +706,7 @@ int GetSmsDat(char **sms_buf, char **ems_admin_buf, int *sms_size, int *ems_admi
 */
 //int DoMsgList(SMS_DATA_LIST *lst, char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_size)
 
-int ReadThisSms(int index)
+int ReadThisSms(int index, int saf) //saf,0:do nothing,1:save as file
 {
   SMS_DATA_ROOT *sdroot=SmsDataRoot();
   SMS_DATA_LLIST inll=sdroot->in_msg;
@@ -837,6 +837,12 @@ int ReadThisSms(int index)
     sdx->opmsg_id=pea.opmsg_id;
     sdx->id=index;
     sdx->cnt_r=idd->cnt_received;
+    if(!(sdx->msg_type&ISDES) && saf==1 && saveFile(sdx->SMS_TEXT, sdx->Number, sdx, sdx->type, 2))
+    {
+      deleteDat(sdx, 0);
+      FreeSdOne(sdx);
+      return 1;
+    }
     LockSched();
     AddToSdlByTime(sdx);
     UnlockSched();
@@ -949,7 +955,7 @@ int CheckDat(void)
       {
 	if(sd->cnt_r < idd->cnt_received)
 	{
-	  if(ReadThisSms(idd->index))
+	  if(ReadThisSms(idd->index, 0))
 	    res++;
 	  continue;
 	}
@@ -974,7 +980,7 @@ int CheckDat(void)
       }
       else
       {
-	if(ReadThisSms(idd->index))
+	if(ReadThisSms(idd->index, 0))
 	  res++;
       }
     }
@@ -987,7 +993,7 @@ int CheckDat(void)
     {
       if(!(sd=FindSmsByIndex(idd->index)) || sd->cnt_r < idd->cnt_received)
       {
-	if(ReadThisSms(idd->index))
+	if(ReadThisSms(idd->index, 0))
 	  res++;
       }
     }
@@ -1076,4 +1082,79 @@ int CheckAll(void)
 }
 
 
+int NewToRead_File(SMS_DATA *sd)
+{
+  int fin, size, version, lsize;
+  char *buf;
+  unsigned int err;
+  MSS_FILE_P1 mfp1;
+  MSS_FILE_P2 mfp2;
+  char filepath[128];
+  if(!sd || !sd->isfile || !sd->fname)
+    return 0;
+//  sd->type=TYPE_IN_R;
+//  if(new_sms_n>0) new_sms_n--;
+  
+  //先修改文件
+  strcpy(filepath, sd->fname);
+  if((fin=fopen(filepath, A_BIN+A_ReadOnly, P_READ, &err))<0)
+    return 0;
+  size=lseek(fin, 0, S_END, &err, &err);
+  if(size<sizeof(MSS_FILE_P1))
+  {
+  FERR:
+    fclose(fin, &err);
+    return 0;
+  }
+  lseek(fin, 8, S_SET, &err, &err); //version;
+  if(fread(fin, &version, sizeof(int), &err)!=sizeof(int))
+  {
+    goto FERR;
+  }
+  lseek(fin, 0, S_SET, &err, &err);
+  if(version==1)
+  {
+    if(fread(fin, &mfp1, sizeof(MSS_FILE_P1), &err)!=sizeof(MSS_FILE_P1))
+      goto FERR;
+    lsize=size-sizeof(MSS_FILE_P1);
+    mfp2.version=MSS_VERSION;
+    mfp2.type=TYPE_IN_R;
+    strcpy(mfp2.header, mfp1.header);
+    strcpy(mfp2.time, mfp1.time);
+    strcpy(mfp2.number, mfp1.number);
+  }
+  else if(version==2)
+  {
+    if(fread(fin, &mfp2, sizeof(MSS_FILE_P2), &err)!=sizeof(MSS_FILE_P2))
+      goto FERR;
+    lsize=size-sizeof(MSS_FILE_P2);
+    mfp2.type=TYPE_IN_R;
+  }
+  else
+  {
+    goto FERR;
+  }
+  buf=malloc(lsize);
+  if(fread(fin, buf, lsize, &err)!=lsize)
+  {
+  FERR1:
+    mfree(buf);
+    goto FERR;
+  }
+  fclose(fin, &err);
+  if((fin=fopen(filepath, A_BIN+A_WriteOnly+A_Create+A_Truncate, P_WRITE, &err))<0)
+  {
+    mfree(buf);
+    return 0;
+  }
+  if(fwrite(fin, &mfp2, sizeof(MSS_FILE_P2), &err)!=sizeof(MSS_FILE_P2))
+    goto FERR1;
+  if(fwrite(fin, buf, lsize, &err)!=lsize)
+    goto FERR1;
+  mfree(buf);
+  fclose(fin, &err);
+  sd->type=TYPE_IN_R;
+  if(new_sms_n>0) new_sms_n--;
+  return 1;
+}
 

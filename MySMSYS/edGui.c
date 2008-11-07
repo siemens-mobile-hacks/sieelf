@@ -1117,11 +1117,6 @@ void edGHook(GUI *data, int cmd)
 	uo->sd=sdx;
     }
     
-    //set status
-    if((uo->gui_type==ED_VIEW)
-       &&(uo->sd->type==TYPE_IN_N)
-	 &&(!(uo->sd->msg_type&ISDES)))
-      newToRead(uo->sd);
     
     //set mid softkey
     if((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW))
@@ -1131,6 +1126,7 @@ void edGHook(GUI *data, int cmd)
     if((uo->gui_type==ED_VIEW)
        &&(CFG_ENA_AUTO_SAF)
 	 &&(!uo->sd->isfile)
+	   &&(uo->sd->type!=TYPE_IN_N) //set status first
 	   &&(uo->sd->id)
 	     &&(!(uo->sd->msg_type&ISDES))
 	       &&(!(uo->sd->msg_type&ISREPORT) || !CFG_ENA_AUTO_DEL_RP))      
@@ -1170,7 +1166,12 @@ void edGHook(GUI *data, int cmd)
 	}
       }
     }
-		
+    
+    //set status
+    if((uo->gui_type==ED_VIEW)
+       &&(uo->sd->type==TYPE_IN_N)
+	 &&(!(uo->sd->msg_type&ISDES)))
+      newToRead(uo->sd);
 //-------------------
     {
       ExtractEditControl(data, uo->focus_n, &ec);
