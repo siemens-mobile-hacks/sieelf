@@ -990,6 +990,7 @@ MySMSYS/NativeAddressbook.c -text
 MySMSYS/NativeAddressbook.h -text
 MySMSYS/NewDatReader.c -text
 MySMSYS/NewDatReader.h -text
+MySMSYS/Patches/C81Csw50.xcl -text
 MySMSYS/Patches/E71Csw41.xcl -text
 MySMSYS/Patches/E71sw45.xcl -text
 MySMSYS/Patches/ELC1sw41.xcl -text
