@@ -1152,7 +1152,7 @@ void edGHook(GUI *data, int cmd)
     if((uo->gui_type==ED_VIEW)
        &&(CFG_ENA_AUTO_SAF)
 	 &&(!uo->sd->isfile)
-	   &&(uo->sd->type!=TYPE_IN_N) //set status first
+	   //&&(uo->sd->type!=TYPE_IN_N) //set status first
 	   &&(uo->sd->id)
 	     &&(!(uo->sd->msg_type&ISDES))
 	       &&(!(uo->sd->msg_type&ISREPORT) || !CFG_ENA_AUTO_DEL_RP))      
