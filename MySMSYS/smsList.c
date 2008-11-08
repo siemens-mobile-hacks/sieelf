@@ -419,7 +419,7 @@ int sms_menu_onkey(void *data, GUI_MSG *msg)
       else
 	deleteDat(sd, 0);
       delSDList(sd);
-      Menu_SetItemCountDyn(data, getCountByType(so->type));
+      //Menu_SetItemCountDyn(data, getCountByType(so->type));
       RefreshGUI();
       return (-1);
     }

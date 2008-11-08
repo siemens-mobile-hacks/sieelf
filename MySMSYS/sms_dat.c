@@ -412,16 +412,18 @@ const IPC_REQ my_ipc_upd=
 
 int readAllSMS(void)
 {
-
-	int n;
-	freeSDList();
-	n=NewMsgReader();
-	n+=readFile(TYPE_IN_ALL);
-	n+=readFile(TYPE_OUT);
-	n+=readFile(TYPE_DRAFT);
-	new_sms_n=getCountByType(TYPE_IN_N);
-	GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
-	return n;
+  int n;
+  if(is_readall) return 0;
+  is_readall=1;
+  freeSDList();
+  n=NewMsgReader();
+  n+=readFile(TYPE_IN_ALL);
+  n+=readFile(TYPE_OUT);
+  n+=readFile(TYPE_DRAFT);
+  new_sms_n=getCountByType(TYPE_IN_N);
+  is_readall=0;
+  GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
+  return n;
 }
 
 //------------------------------------------------------
@@ -492,6 +494,7 @@ int saveFile(WSHDR *ws, char *number, SMS_DATA *sd, int type, int need_reload) /
   int f, len, x;
   const char *folder;
   char dir[128];
+  SMS_DATA *sdx=0;
   switch(type)
   {
   case TYPE_DRAFT:
@@ -564,12 +567,13 @@ int saveFile(WSHDR *ws, char *number, SMS_DATA *sd, int type, int need_reload) /
   else if(need_reload==2)
   {
     //int ReadMSS(char *fname, SMS_DATA *sd)
-    SMS_DATA *sdx=AllocSD();
+    sdx=AllocSD();
     if(ReadMSS(path, sdx))
     {
       LockSched();
       AddToSdlByTime(sdx);
       UnlockSched();
+      return ((int)sdx);
     }
     else FreeSdOne(sdx);
   }

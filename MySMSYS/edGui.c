@@ -673,19 +673,36 @@ int Ed_SendSMS(void *gui)
     }
     nl=nl->next;
   }
+  //²Ý¸å·¢ËÍÍê³ÉÉ¾³ý
+  if(uo->sd && uo->sd->type==TYPE_DRAFT)
+  {
+    if(!uo->sd->isfile) deleteDat(uo->sd, 0);
+    else deleteFile(uo->sd, 0);
+    delSDList(uo->sd);
+    uo->sd=0;
+  }
   uo->nd_sfd=0;
   return 1;
 }
 
 void Ed_SaveFile(WSHDR *txt, USER_OP *uo, int type)
 {
-	NUM_LIST *nl=(NUM_LIST *)(uo->nltop);
-	while(nl)
-	{
-		saveFile(txt, nl->num, uo->sd, type, 2);
-		nl=nl->next;
-	}
-	//readAllSMS();
+  NUM_LIST *nl=(NUM_LIST *)(uo->nltop);
+  SMS_DATA *sdx=0;
+  while(nl)
+  {
+    sdx=(SMS_DATA *)saveFile(txt, nl->num, uo->sd, type, 2);
+    nl=nl->next;
+  }
+  if(type==TYPE_DRAFT && uo->sd && uo->sd->type==TYPE_DRAFT && (int)sdx!=1)
+  {
+    if(!uo->sd->isfile && uo->sd->id)
+      deleteDat(uo->sd, 0);
+    delSDList(uo->sd);
+    uo->sd=sdx;
+  }
+  uo->nd_sfd=0;
+  //readAllSMS();
 }
 
 #ifdef LANG_CN
@@ -754,7 +771,7 @@ void on_adr_ec(USR_MENU_ITEM *item) //MENU WOULD BE CLOSED FIRST
 	ExtractEditControl(item->user_pointer,uo->focus_n,&ec);
 	Ed_SaveFile(ec.pWS, uo, TYPE_DRAFT);
       }
-      if(CFG_ENA_EXIT_SAVE_DRAFT && gstop)
+      if(!uo->sd || (CFG_ENA_EXIT_SAVE_DRAFT && gstop))
       {
 	GeneralFunc_flag1(gstop->id, 1);
 	popGS(dlg_csm);
@@ -1022,7 +1039,10 @@ void edGHook(GUI *data, int cmd)
     {
       EDITCONTROL ec;
       ExtractEditControl(data, uo->focus_n, &ec);
-      if(ec.pWS->wsbody[0]) Ed_SaveFile(ec.pWS, uo, TYPE_DRAFT);
+      if(ec.pWS->wsbody[0])
+      {
+	Ed_SaveFile(ec.pWS, uo, TYPE_DRAFT);
+      }
     }
     if((CFG_ENA_AUTO_DEL_RP)&&(uo->gui_type==ED_VIEW)&&(uo->sd)&&(uo->sd->msg_type&ISREPORT)&&(uo->sd->id > 0)&&(!uo->sd->isfile))
     {
@@ -1085,6 +1105,12 @@ void edGHook(GUI *data, int cmd)
     int n=EDIT_GetFocus(data);
     text=CreateLocalWS(&txtl, txtb, MAX_TEXT);
     
+    //---
+    if(!uo->sd)
+    {
+      GeneralFuncF1(1);
+      return;
+    }
 //check sd in list
     if((uo->gui_type==ED_VIEW)&&(!IsSdInList(uo->sd)))
     {
@@ -1271,7 +1297,7 @@ void edGHook(GUI *data, int cmd)
 
 void ed_locret(void)
 {
-	;
+  ;
 }
 
 const INPUTDIA_DESC ED_DESC=

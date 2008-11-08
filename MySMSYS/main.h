@@ -23,6 +23,7 @@ typedef struct
 }INBOX_DATA;
 
 extern int new_sms_n;
+extern int is_readall;
 extern unsigned int DlgCsmIDs[];
 extern char sms_dat[128];
 extern char ems_admin_dat[128];

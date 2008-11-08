@@ -534,6 +534,10 @@ const DLGCSM_DESC DIALOGCSM =
   }
 };
 
+
+GBSTMR ld_tmr;
+
+int is_readall=0;
 extern int CheckAll(void);
 unsigned int CreateDialogCSM(void)
 {
@@ -542,8 +546,20 @@ unsigned int CreateDialogCSM(void)
   zeromem(&dlg_csm, sizeof(DLG_CSM));
   memcpy(dcd, &DIALOGCSM, sizeof(DLGCSM_DESC));
   if(!cltop) SUBPROC((void *)ConstructList);
-  if(sdltop && IPC_SUB_MSG!=SMSYS_IPC_FVIEW) SUBPROC((void *)CheckAll);
-  if(!sdltop && IPC_SUB_MSG!=SMSYS_IPC_FVIEW) SUBPROC((void *)readAllSMS);
+  if(IPC_SUB_MSG!=SMSYS_IPC_FVIEW)
+  {
+    if(sdltop)
+    {
+      if(!is_readall) SUBPROC((void *)CheckAll);
+    }
+    else
+    {
+      GBS_DelTimer(&ld_tmr);
+      SUBPROC((void *)readAllSMS);
+    }
+  }
+  //if(sdltop && IPC_SUB_MSG!=SMSYS_IPC_FVIEW) SUBPROC((void *)CheckAll);
+  //if(!sdltop && IPC_SUB_MSG!=SMSYS_IPC_FVIEW) SUBPROC((void *)readAllSMS);
   LoadLangPack();
   LoadIconPack();
   return (CreateCSM(&dcd->csmd,&dlg_csm,2));
@@ -983,7 +999,6 @@ void LdProc(void)
   if(!cltop) SUBPROC((void *)ConstructList);
   if(!sdltop) SUBPROC((void *)readAllSMS);
 }
-GBSTMR ld_tmr;
 //extern int MyKeyHook(int submsg, int msg);
 //extern void restore_allss_methods(void);
 //extern void replace_allss_methods(void);

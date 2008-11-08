@@ -1097,6 +1097,7 @@ int CheckBack(void)
 int CheckAll(void)
 {
   int res=0;
+  if(is_readall) return 0;
   CheckBack();
   res=CheckDat();
   res+=CheckFile(TYPE_IN_ALL);
