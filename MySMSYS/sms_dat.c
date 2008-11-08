@@ -441,11 +441,24 @@ int newToRead(SMS_DATA *sd)
   }
   else
   {
-    if(NewToRead_File(sd)) return 1;
+    if(NewToRead_File(sd))
+    {
+#ifdef ELKA
+      extern int sli_sta;
+      extern void STOP_SLI(void);
+      if(!new_sms_n && sli_sta) STOP_SLI();
+      return 1;
+#endif
+    }
     else return 0;
   }
   sd->type=TYPE_IN_R;
   if(new_sms_n>0) new_sms_n--;
+#ifdef ELKA
+  extern int sli_sta;
+  extern void STOP_SLI(void);
+  if(!new_sms_n && sli_sta) STOP_SLI();
+#endif
   return 1;
 }
 
