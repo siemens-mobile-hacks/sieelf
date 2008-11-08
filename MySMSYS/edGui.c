@@ -957,7 +957,7 @@ int edOnKey(GUI *data, GUI_MSG *msg)
 			NUM_LIST *nl=(NUM_LIST *)(uo->nltop);
 			WSHDR *msg=AllocWS(128);
 		#ifdef NO_CS
-			wsprintf(msg, "%t:\n%s", lgp.LGP_FROM, nl->num);
+			wsprintf(msg, "%t:\n%s", (uo->sd->type==TYPE_OUT||uo->sd->type==TYPE_DRAFT)?lgp.LGP_TO:lgp.LGP_FROM, nl->num);
 		#else
 			{
 				char num[32];
@@ -966,7 +966,7 @@ int edOnKey(GUI *data, GUI_MSG *msg)
 				cs=CreateLocalWS(&csloc,csb,30);
 				strcpy(num, nl->num);
 				GetProvAndCity(cs->wsbody, num);
-				wsprintf(msg, "%t:\n%s\n%t:\n%w", lgp.LGP_FROM, nl->num, lgp.LGP_CODESHOW, cs);
+				wsprintf(msg, "%t:\n%s\n%t:\n%w", (uo->sd->type==TYPE_OUT||uo->sd->type==TYPE_DRAFT)?lgp.LGP_TO:lgp.LGP_FROM, nl->num, lgp.LGP_CODESHOW, cs);
 			}
 		#endif
 			ShowMSG_ws(1, msg);

@@ -380,102 +380,102 @@ const SOFTKEYSTAB sms_menu_skt=
 
 int sms_menu_onkey(void *data, GUI_MSG *msg)
 {
-	SML_OP *so=MenuGetUserPointer(data);
-	SMS_DATA *sd=getSMSDataByType(GetCurMenuItem(data), so->type);
-	int n=GetMenuItemCount(data);
+  SML_OP *so=MenuGetUserPointer(data);
+  SMS_DATA *sd=getSMSDataByType(GetCurMenuItem(data), so->type);
+  int n=GetMenuItemCount(data);
 	
-	if(!IsUnlocked())
-		TempLightOn(3, 0x7FFF);
+  if(!IsUnlocked())
+    TempLightOn(3, 0x7FFF);
 
-	if(msg->keys==0x05)
-	{
-	  if(n) createEditGUI(so->dlg_csm, sd, (sd->type==TYPE_DRAFT)?ED_EDIT:ED_REPLY, 0);
-	}
-	else if((msg->keys==0x18))//||(msg->keys==0x3D))
-	{
-		//if(!n)
-		//	CreateslOpMenu(so->dlg_csm, 0, so->type);
-		//else
-		if(n)	CreateslOpMenu(so->dlg_csm, sd, so->type);
-		else return 1;
-	}
-	else if(msg->keys==0x3D)
-	{
-		if(n) createEditGUI(so->dlg_csm, sd, ED_VIEW, so->type);
-		else return 1;
-	}
-	else if(msg->keys==0x1)
-	{
-		popGS(so->dlg_csm);
-		return 1;
-	}
-	if((msg->gbsmsg->msg==KEY_DOWN)&&(n>0)&&(sd))
-	{
-		int i=msg->gbsmsg->submess;
-		if((i=='7')) //key 7 for delete
-		{
-			if(sd->isfile)
-				deleteFile(sd, 0);
-			else
-				deleteDat(sd, 0);
-			delSDList(sd);
-			Menu_SetItemCountDyn(data, getCountByType(so->type));
-			RefreshGUI();
-			return (-1);
-		}
-		else if((i=='9')&&(!sd->isfile))
-		{
-			if(saveFile(sd->SMS_TEXT, sd->Number, sd, sd->type, 2))
-			{
-				int k=GetCurMenuItem(data);
-				deleteDat(sd, 0);
-				delSDList(sd);
-				SetCursorToMenuItem(data, (k==(n-1))?k:(k+1));
-			}
-			RefreshGUI();
-			return (-1);
-		}
-		else if((i=='*')) //*键,查看号码信息
-		{
-			WSHDR *msg=AllocWS(128);
-		#ifdef NO_CS
-			wsprintf(msg, "%t:\n%s", lgp.LGP_FROM, sd->Number);
-		#else
-			{
-				char num[32];
-				WSHDR csloc, *cs;
-				unsigned short csb[30];
-				cs=CreateLocalWS(&csloc,csb,30);
-				strcpy(num, sd->Number);
-				GetProvAndCity(cs->wsbody, num);
-				wsprintf(msg, "%t:\n%s\n%t:\n%w", lgp.LGP_FROM, sd->Number, lgp.LGP_CODESHOW, cs);
-			}
-		#endif
-			ShowMSG_ws(1, msg);
-		}
-		else if((i=='8'))
-		{
-			int k;
-		//	extern int ExportOneToTxt(SMS_DATA *sd);
-			k=ExportOneToTxt(sd);
-			ShowFileErrCode(k);
-		}
-		else if(i=='4')
-		{
-			int k;
-			extern int MoveToArchive(SMS_DATA *sd);
-			k=MoveToArchive(sd);
-			if(k==1)
-			{
-				if(!sd->isfile) deleteDat(sd, 0);
-				delSDList(sd);
-				RefreshGUI();
-				return (-1);
-			}
-			ShowFileErrCode(k);
-		}
-	}
-	return 0;
+  if(msg->keys==0x05)
+  {
+    if(n) createEditGUI(so->dlg_csm, sd, (sd->type==TYPE_DRAFT)?ED_EDIT:ED_REPLY, 0);
+  }
+  else if((msg->keys==0x18))//||(msg->keys==0x3D))
+  {
+    //if(!n)
+    //	CreateslOpMenu(so->dlg_csm, 0, so->type);
+    //else
+    if(n) CreateslOpMenu(so->dlg_csm, sd, so->type);
+    else return 1;
+  }
+  else if(msg->keys==0x3D)
+  {
+    if(n) createEditGUI(so->dlg_csm, sd, ED_VIEW, so->type);
+    else return 1;
+  }
+  else if(msg->keys==0x1)
+  {
+    popGS(so->dlg_csm);
+    return 1;
+  }
+  if((msg->gbsmsg->msg==KEY_DOWN)&&(n>0)&&(sd))
+  {
+    int i=msg->gbsmsg->submess;
+    if((i=='7')) //key 7 for delete
+    {
+      if(sd->isfile)
+	deleteFile(sd, 0);
+      else
+	deleteDat(sd, 0);
+      delSDList(sd);
+      Menu_SetItemCountDyn(data, getCountByType(so->type));
+      RefreshGUI();
+      return (-1);
+    }
+    else if((i=='9')&&(!sd->isfile))
+    {
+      if(saveFile(sd->SMS_TEXT, sd->Number, sd, sd->type, 2))
+      {
+	int k=GetCurMenuItem(data);
+	deleteDat(sd, 0);
+	delSDList(sd);
+	SetCursorToMenuItem(data, (k==(n-1))?k:(k+1));
+      }
+      RefreshGUI();
+      return (-1);
+    }
+    else if((i=='*')) //*键,查看号码信息
+    {
+      WSHDR *msg=AllocWS(128);
+#ifdef NO_CS
+      wsprintf(msg, "%t:\n%s", (sd->type==TYPE_OUT||sd->type==TYPE_DRAFT)?lgp.LGP_TO:lgp.LGP_FROM, sd->Number);
+#else
+      {
+	char num[32];
+	WSHDR csloc, *cs;
+	unsigned short csb[30];
+	cs=CreateLocalWS(&csloc,csb,30);
+	strcpy(num, sd->Number);
+	GetProvAndCity(cs->wsbody, num);
+	wsprintf(msg, "%t:\n%s\n%t:\n%w", (sd->type==TYPE_OUT||sd->type==TYPE_DRAFT)?lgp.LGP_TO:lgp.LGP_FROM, sd->Number, lgp.LGP_CODESHOW, cs);
+      }
+#endif
+      ShowMSG_ws(1, msg);
+    }
+    else if((i=='8'))
+    {
+      int k;
+      //	extern int ExportOneToTxt(SMS_DATA *sd);
+      k=ExportOneToTxt(sd);
+      ShowFileErrCode(k);
+    }
+    else if(i=='4')
+    {	
+      int k;
+      //extern int MoveToArchive(SMS_DATA *sd);
+      k=MoveToArchive(sd);
+      if(k==1)
+      {
+	if(!sd->isfile) deleteDat(sd, 0);
+	delSDList(sd);
+	RefreshGUI();
+	return (-1);
+      }
+      ShowFileErrCode(k);
+    }
+  }
+  return 0;
 }
 
 #ifdef ELKA

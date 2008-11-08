@@ -1106,6 +1106,7 @@ int main(char *exename, char *fname)
   InitSetting();
   ZeroIconPack();
   LoadIconPack();
+  LoadLangPack();
   if(fname)
   {
     if ( fname[0] < '0' || fname[0] > '4' || fname[1] != ':' || strlen(fname) > 128 )

@@ -1903,7 +1903,7 @@ int CovDatToTxt_ASCII(char *dat_path, char *txt_path)
 	else
 	  ws_2ascii(wname, sname, 64);
 	sprintf(temp, "%s: %s\r\n%s: %s\r\n%s: %s\r\n%s:\r\n%s\r\n\r\n",
-		lgp.LGP_FROM,
+		(edx->type==TYPE_OUT||edx->type==TYPE_DRAFT)?lgp.LGP_TO:lgp.LGP_FROM,
 		sname,
 		lgp.LGP_NUMBER,
 		edx->number,
@@ -1975,7 +1975,7 @@ int CovDatToTxt_UTF8(char *dat_path, char *txt_path)
 	else
 	  ws_2utf8(wname, sname, &utf8_cov_len, 64);
 	sprintf(temp, "%s: %s\r\n%s: %s\r\n%s: %s\r\n%s:\r\n%s\r\n\r\n",
-		STR_FROM_UTF8,
+		(edx->type==TYPE_OUT||edx->type==TYPE_DRAFT)?STR_TO_UTF8:STR_FROM_UTF8,
 		sname,
 		STR_NUMBER_UTF8,
 		edx->number,
