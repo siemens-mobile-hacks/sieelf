@@ -4,7 +4,7 @@
 
 ;Library
 
-;2008-8-28
+;2008-11-08
 
 +0074000
 #pragma enable  old_equal_ff
@@ -581,7 +581,7 @@
 0864: 0xA09A539B   ; 219: void *AllocMLMenuItem(void *data)
 0868: 0xA0A2DF9D   ; 21A: int EDIT_SetTextInvert(void *gui,int cursor_pos,int len)
 086C: 0xA0A2DFA9   ; 21B: void EDIT_RemoveTextInvert(void *gui)
-0870: 0x00A2DFD9   ; 21C: void EDIT_IsBusy(void *gui)
+0870: 0xA0A2DFD9   ; 21C: void EDIT_IsBusy(void *gui)
 0874: 0xA0978DA9   ; 21D: int GSMTXT_Decode(WSHDR *dest,void *pkt,int len,int encoding_type, void *(*malloc_adr)(int), void (*mfree_adr)(void))
 0878: 0xA099D15B   ; 21E: void FocusGUI(int id)
 087C: 0xA099D16B   ; 21F: void UnfocusGUI(void)
