@@ -549,7 +549,7 @@ const trstruct tr_r[]=
  {"\xDD","E"}, {"\xFD","e"},
  {"\xDE","Yu"}, {"\xFE","yu"},
  {"\xDF","Ya"}, {"\xFF","ya"},
- 0,0
+ "",""
 };
 /*
 WSHDR *translit(WSHDR *ws0)
@@ -600,12 +600,14 @@ extern int char16to8(int c); //string_works.c
 WSHDR *translit(WSHDR *ws0)
 {
   int c;
-  if(!wstrlen(ws0)) return ws0;
-  char *txt=malloc(wstrlen(ws0)*2);
-  zeromem(txt, wstrlen(ws0)*2);
-  for(int i=0; i<wstrlen(ws0); i++)
+  int wlen;
+  if(!(wlen=ws0->wsbody[0])) return ws0;
+  char *txt=malloc(wlen*2);
+  zeromem(txt, wlen*2);
+  for(int i=0; i<wlen; i++)
   {
     c=ws0->wsbody[i+1];
+    if(c<0x80) goto ADD;
     switch(c) //PL
     {
     case 0x105:c='a';goto ADD;
@@ -618,6 +620,7 @@ WSHDR *translit(WSHDR *ws0)
     case 0x17C:
     case 0x17A:c='z';goto ADD;
     }
+    if(c<0x400) goto ADD;
     c=char16to8(c);
     for(int j=0; j<66; j++)
     {
@@ -632,7 +635,7 @@ WSHDR *translit(WSHDR *ws0)
     if(c) txt[strlen(txt)]=c;
   }
   WSHDR *tws=AllocWS(strlen(txt));
-  wsprintf(tws,txt);
+  wsprintf(tws,PERCENT_T,txt);
   mfree(txt);
   return tws;
 }
