@@ -783,28 +783,6 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 	if(msg->msg==MSG_EMS_FFS_WRITE)
 	{
 	  int x;
-	  new_sms_n=(SmsDataRoot())->cnt_in_new_sms_dat;
-	  if(!new_sms_n) new_sms_n=getCountByType(TYPE_IN_N);
-	  if((CFG_ENA_NOTIFY)&&(!new_sms_n)) //主要用于simoco链接手机时会读取所有短信并将其设置为已读
-	  {
-	    SetVibration(0);
-	    if(PLAY_ID)
-	    {
-	      PlayMelody_StopPlayback(PLAY_ID);
-	      PLAY_ID=0;
-	    }
-	  }
-#ifdef ELKA
-	  if(CFG_ENA_SLI)
-	  {
-	    if(new_sms_n>0)
-	    {
-	      sli_sta=1;
-	      SLI_PROC();
-	    }
-	    else if(sli_sta) STOP_SLI();
-	  }
-#endif
 	  if((int)msg->data1!=0x8)
 	  {
 	    if(IsThisSmsNewIn((int)msg->data0))// SUBPROC((void *)DoNewProc);
@@ -837,6 +815,30 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 	      }
 	    }
 	  }
+	  
+	  //new_sms_n=(SmsDataRoot())->cnt_in_new_sms_dat;
+	  //if(!new_sms_n) 
+	  new_sms_n=getCountByType(TYPE_IN_N);
+	  if((CFG_ENA_NOTIFY)&&(!new_sms_n)) //主要用于simoco链接手机时会读取所有短信并将其设置为已读
+	  {
+	    SetVibration(0);
+	    if(PLAY_ID)
+	    {
+	      PlayMelody_StopPlayback(PLAY_ID);
+	      PLAY_ID=0;
+	    }
+	  }
+#ifdef ELKA
+	  if(CFG_ENA_SLI)
+	  {
+	    if(new_sms_n>0)
+	    {
+	      sli_sta=1;
+	      SLI_PROC();
+	    }
+	    else if(sli_sta) STOP_SLI();
+	  }
+#endif
 	  //char str[64];
 	  //sprintf(str, "submess:0x%X\ndata0:0x%08X\ndata1:0x%08X", msg->submess, msg->data0, msg->data1);
 	  //ShowMSG(0, (int)str);
