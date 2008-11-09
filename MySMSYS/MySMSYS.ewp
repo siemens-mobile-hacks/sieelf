@@ -4661,7 +4661,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild>$PROJ_DIR$\tph.cmd $EXE_DIR$\MySMSYS_nsg.elf</postbuild>
+        <postbuild></postbuild>
       </data>
     </settings>
     <settings>
