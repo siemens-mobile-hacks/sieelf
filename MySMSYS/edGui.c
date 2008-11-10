@@ -1562,6 +1562,19 @@ int DoByOpmsgId(void *dlg_csm, int msg, int opmsg_id)
 	return 0;
 }
 
+int CreateSmsWS(void *dlg_csm, WSHDR *text)
+{
+  SMS_DATA *sd;
+  WSHDR *ws;
+  if(!text) return 0;
+  sd=AllocSD();
+  ws=AllocWS(text->wsbody[0]);
+  wstrcpy(ws, text);
+  FreeWS(text);
+  sd->SMS_TEXT=ws;
+  return (createEditGUI(dlg_csm, sd, ED_FREE, 0));
+}
+
 unsigned int ViewFile(void *dlg_csm, char *fname)
 {
 	SMS_DATA *sd;

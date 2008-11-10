@@ -361,7 +361,7 @@ int findNameByNum(WSHDR *name_to, char *num)
 				la=strlen(pp);
 				lb=strlen(p1);
 				if(MAX(la, lb)-MIN(la, lb) > 3)
-					break;
+					continue;
 				if(la>lb)
 				{
 					ld=lb;

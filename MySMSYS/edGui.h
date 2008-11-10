@@ -58,3 +58,4 @@ int newSMSWithUtf8Text(void *dlg_csm, char *text_utf8);
 int DoByOpmsgId(void *dlg_csm, int msg, int opmsg_id);
 unsigned int ViewFile(void *dlg_csm, char *fname);
 void PathInputDlg(int type, char *path);
+int CreateSmsWS(void *dlg_csm, WSHDR *text);

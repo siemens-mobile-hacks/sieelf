@@ -73,6 +73,7 @@ const int minus11=-11;
 char *num_from_ipc=0;
 char *text_utf8=0;
 int opmsg_id=0;
+WSHDR *text_ws=0;
 
 int is_fview=0;
 char filename[128]={0};
@@ -478,6 +479,11 @@ static void dialogcsm_oncreate(CSM_RAM *data)
     if(!(csm->gui_id=DoByOpmsgId(csm, IPC_SUB_MSG, opmsg_id)))
       csm->gui_id=CreateMainMenu(csm);
     opmsg_id=0;
+    break;
+  case SMSYS_IPC_SEND_WS:
+    if(!text_ws || !(csm->gui_id=CreateSmsWS(csm, text_ws)))
+      data->state=-3;
+    text_ws=0;
     break;
   case SMSYS_IPC_FVIEW:
     if (!strlen(filename) || !(csm->gui_id=ViewFile(csm, filename)))
@@ -949,9 +955,15 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 		IPC_SUB_MSG=msg->submess;
 		CreateDialogCSM();
 	      }
-	      else if((msg->submess>=SMSYS_IPC_VIEW_OPMSG)&&(msg->submess<=SMSYS_IPC_QN_OPMSG))
+	      else if((msg->submess >= SMSYS_IPC_VIEW_OPMSG)&&(msg->submess <= SMSYS_IPC_QN_OPMSG))
 	      {
 		opmsg_id=(int)ipc->data;
+		IPC_SUB_MSG=msg->submess;
+		CreateDialogCSM();
+	      }
+	      else if(msg->submess==SMSYS_IPC_SEND_WS)
+	      {
+		text_ws=(WSHDR *)ipc->data;
 		IPC_SUB_MSG=msg->submess;
 		CreateDialogCSM();
 	      }
