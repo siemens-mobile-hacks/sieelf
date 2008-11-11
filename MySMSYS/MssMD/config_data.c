@@ -209,6 +209,10 @@ __root const CFG_HDR cfghdr3_9 = {CFG_LEVEL, "", 0, 0};
 //megadial
 #ifdef MEGADIAL
 __root const CFG_HDR cfghdr10_0 = {CFG_LEVEL, LGP_CFG_MDSETTING, 1, 0};
+
+__root const CFG_HDR cfghdr107 = {CFG_CHECKBOX, LGP_CFG_ENA_MD, 0, 3};
+__root const int CFG_ENA_MD = 1;
+
 __root const CFG_HDR cfghdr100={CFG_COLOR,LGP_CFG_MDBGCOL,0,0};
 __root const char COLOR_MENU_BK[4]={0xFF,0xFF,0x0,0x64};
 

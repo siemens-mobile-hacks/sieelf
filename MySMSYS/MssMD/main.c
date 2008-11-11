@@ -1038,7 +1038,8 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 	}
 	int z;*/
 	//if(IsGuiOnTop((z=edialgui_id)) || IsGuiOnTop((z=edialgui_id2)))
-	if(IsGuiOnTop(edialgui_id) || IsGuiOnTop(edialgui_id2))
+	extern const int CFG_ENA_MD;
+	if(CFG_ENA_MD && (IsGuiOnTop(edialgui_id) || IsGuiOnTop(edialgui_id2)))
 	{
 	  if(!cltop) SUBPROC((void *)ConstructListN);
 	  GUI *igui=GetTopGUI();

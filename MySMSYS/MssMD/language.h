@@ -72,6 +72,7 @@ extern const char STR_UNK_TYPE[];
 #define LGP_CFG_MDSLBGCOL "选中条目背景色"
 #define LGP_CFG_MDSLBDCOL "选中条目外框色"
 #define LGP_CFG_MDSHMKCOL "搜索关键字颜色"
+#define LGP_CFG_ENA_MD "使用MegaDial"
 #endif
 
 #endif
@@ -131,6 +132,7 @@ extern const char STR_UNK_TYPE[];
 #define LGP_CFG_MDSLBGCOL "Color Selected background"
 #define LGP_CFG_MDSLBDCOL "Color Selected border"
 #define LGP_CFG_MDSHMKCOL "Color Search mark"
+#define LGP_CFG_ENA_MD "Enable MegaDial"
 #endif
 
 #endif
