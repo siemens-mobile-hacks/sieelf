@@ -233,6 +233,12 @@ __root const char COLOR_SELECTED_BRD[4]={0x0,0x0,0xFF,0x64};
 
 __root const CFG_HDR cfghdr106={CFG_COLOR,LGP_CFG_MDSHMKCOL,0,0};
 __root const char COLOR_SEARCH_MARK[4]={0xFF,0x0,0x0,0x64};
+
+#ifdef LANG_CN
+__root const CFG_HDR cfghdr108={CFG_COLOR,LGP_CFG_MDCSCOL,0,0};
+__root const char COLOR_CODE_SHOW[4]={0xFF,0xFF,0xFF,0x64};
+#endif
+
 __root const CFG_HDR cfghdr10_9 = {CFG_LEVEL, "", 0, 0};
 #endif
 //-------------------

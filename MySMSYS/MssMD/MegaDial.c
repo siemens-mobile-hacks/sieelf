@@ -520,6 +520,7 @@ void my_ed_redraw(void *data)
     extern int ws_2num(WSHDR *ws, char *num, int maxlen);
     extern int GetProvAndCity(unsigned short *pBSTR, char *pNoStr);
     extern int isNum(WSHDR *num);
+    extern const char COLOR_CODE_SHOW[4];
     if(!(wlen=e_ws->wsbody[0])) return;
     if(e_ws->wsbody[1]=='0') 
     {
@@ -530,7 +531,7 @@ void my_ed_redraw(void *data)
     int y=ScreenH()-SoftkeyH()-(GetFontYSIZE(FONT_MEDIUM)+1)*5-5;
     ws_2num((WSHDR *)e_ws, num, 49);
     GetProvAndCity(prws->wsbody, num);
-    DrawString(prws,3,4*(GetFontYSIZE(FONT_MEDIUM)+1)+y+4,ScreenW()-4,5*(GetFontYSIZE(FONT_MEDIUM)+1)+y+3,FONT_SMALL,TEXT_ALIGNRIGHT|TEXT_NOFORMAT,COLOR_SELECTED,COLOR_MENU_BK);
+    DrawString(prws,3,4*(GetFontYSIZE(FONT_MEDIUM)+1)+y+4,ScreenW()-4,5*(GetFontYSIZE(FONT_MEDIUM)+1)+y+3,FONT_SMALL,TEXT_ALIGNRIGHT|TEXT_NOFORMAT,COLOR_CODE_SHOW,GetPaletteAdrByColorIndex(23));
     return;
   }
 #else
@@ -591,6 +592,7 @@ void my_ed_redraw(void *data)
 	  if(cl->num[z])
 	  {
 	    extern void AppendInfoW(WSHDR *pWS, WSHDR * pNo);
+	    extern const char COLOR_CODE_SHOW[4];
 	    CutWSTR(prws, 0);
 	    AppendInfoW(prws, cl->num[z]);
 	    DrawString(prws,
@@ -600,8 +602,8 @@ void my_ed_redraw(void *data)
 		       y,
 		       FONT_SMALL,
 		       0x80,
-		       COLOR_SELECTED,
-		       COLOR_SELECTED_BG
+		       COLOR_CODE_SHOW,
+		       GetPaletteAdrByColorIndex(23)
 			 );
 	    break;
 	  }
