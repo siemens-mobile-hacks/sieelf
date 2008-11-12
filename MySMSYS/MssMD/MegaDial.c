@@ -968,11 +968,11 @@ void RestoreMegaDial(void)
     if(gui->definition == &my_ed)
     {
       gui->definition=old_ed;
-    }
-    void **m=GetDataOfItemByID(gui,4);
-    if(m && m[1] && m[1]==methods)
-    {
-      m[1]=old_methods;
+      void **m=GetDataOfItemByID(gui,4);
+      if(m && m[1] && m[1]==methods)
+      {
+	m[1]=old_methods;
+      }
     }
   }
   if(edialgui_id2 && (gui=FindGUIbyId(edialgui_id2, NULL)))
@@ -980,11 +980,11 @@ void RestoreMegaDial(void)
     if(gui->definition == &my_ed)
     {
       gui->definition=old_ed;
-    }
-    void **m=GetDataOfItemByID(gui,4);
-    if(m && m[1] && m[1]==methods)
-    {
-      m[1]=old_methods;
+      void **m=GetDataOfItemByID(gui,4);
+      if(m && m[1] && m[1]==methods)
+      {
+	m[1]=old_methods;
+      }
     }
   }
 }

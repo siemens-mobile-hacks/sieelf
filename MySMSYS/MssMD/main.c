@@ -1024,7 +1024,7 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 	    CloseMegaDial();
 	    MDgui_id=0;
 	  }
-	}
+	}*/
 	if(msg->msg==MSG_IPC)
 	{
 	  IPC_REQ *ipc;
@@ -1032,14 +1032,28 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 	  {
 	    if(!strcmp(ipc->name_to, EDIAL_IPC_NAME))
 	    {
-	      GetCPUClock();
+	      if(msg->submess==EDIAL_MSG_CRT)
+	      {
+		extern const int CFG_ENA_MD;
+		if(!cltop) SUBPROC((void *)ConstructListN);
+		if(CFG_ENA_MD && (IsGuiOnTop(edialgui_id) || IsGuiOnTop(edialgui_id2)))
+		{
+		  GUI *igui=GetTopGUI();
+		  if(igui)
+		  {
+		    extern void DoMegaDial(void *igui);
+		    DoMegaDial(igui);
+		  }
+		  return 1;
+		}
+	      }
 	    }
 	  }
 	}
-	int z;*/
+	//int z;
 	//if(IsGuiOnTop((z=edialgui_id)) || IsGuiOnTop((z=edialgui_id2)))
 	extern const int CFG_ENA_MD;
-	if(CFG_ENA_MD && (IsGuiOnTop(edialgui_id) || IsGuiOnTop(edialgui_id2)))
+	if(CFG_ENA_MD && (IsGuiOnTop(edialgui_id)/* || IsGuiOnTop(edialgui_id2)*/))
 	{
 	  if(!cltop) SUBPROC((void *)ConstructListN);
 	  GUI *igui=GetTopGUI();
