@@ -708,7 +708,7 @@ void gotomenu_ghook(void *data, int cmd)
       mfree(nl);
     }
   }
-  else if(cmd==2)
+/*  else if(cmd==2)
   {
     WSHDR *hdr_t=AllocWS(64);
 #ifdef LANG_CN
@@ -717,7 +717,7 @@ void gotomenu_ghook(void *data, int cmd)
     wsprintf(hdr_t, "%t %t...", lgp.LGP_SELECT, lgp.LGP_NUMBER);
 #endif
     SetHeaderText(GetHeaderPointer(data), hdr_t, malloc_adr(), mfree_adr());
-  }
+  }*/
 }
     
 
@@ -859,10 +859,20 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)
     }
     if (n==0) goto L_OLDKEY; //妖快?志抉抉忌投快 找快抖快扳抉扶抉?    //妞抉抖我折快扼找志抉 扶抉技快把抉?忌抉抖抆扮快 1, 把我扼批快技 技快扶攻
     patch_header((HEADER_DESC *)&gotomenu_HDR);
+    WSHDR *hdr_t=AllocWS(64);
+    if(!cl->name || !cl->name->wsbody[0])
+    {
 #ifdef LANG_CN
-    CreateMLMenu(&gotomenu_STRUCT, &gotomenu_HDR, n-1, n, nltop);
+      wsprintf(hdr_t, "%t%t...", lgp.LGP_SELECT, lgp.LGP_NUMBER);
 #else
-    CreateMenu(0,0,&gotomenu_STRUCT,&gotomenu_HDR,0,n,nltop,0);
+      wsprintf(hdr_t, "%t %t...", lgp.LGP_SELECT, lgp.LGP_NUMBER);
+#endif
+    }
+    else wstrcpy(hdr_t, cl->name);
+#ifdef LANG_CN
+    CreateMLMenuWSHDR(&gotomenu_STRUCT, &gotomenu_HDR, hdr_t, n-1, n, nltop);
+#else
+    CreateSLMenuWSHDR(&gotomenu_STRUCT, &gotomenu_HDR, hdr_t, n-1, n, nltop);
 #endif
     return(1);
   }
