@@ -7386,6 +7386,7 @@
       <excluded>
         <configuration>Release_ELKA_EN</configuration>
         <configuration>Release_NEWSGOLD_LG3_EN</configuration>
+        <configuration>Release_S68_LG3_EN</configuration>
       </excluded>
     </file>
     <file>
@@ -7454,6 +7455,7 @@
     <excluded>
       <configuration>Release_ELKA_EN</configuration>
       <configuration>Release_NEWSGOLD_LG3_EN</configuration>
+      <configuration>Release_S68_LG3_EN</configuration>
     </excluded>
   </file>
   <file>
