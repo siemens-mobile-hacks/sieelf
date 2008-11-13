@@ -62,3 +62,4 @@ void FreeCLIST(void);
 int findNameByNum(WSHDR *name_to, char *num);
 //void InsertAsTxt(void *ed_gui, char *num);
 //void SetNumToED(void *ed_gui, char *num, WSHDR *name);
+void ConstructListN(void);

@@ -6356,6 +6356,9 @@
       <name>$PROJ_DIR$\createMenu.h</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\CSMswaper.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\edGui.h</name>
     </file>
     <file>
@@ -6365,13 +6368,22 @@
       <name>$PROJ_DIR$\iconpack.h</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\key_hook.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\language.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\lgp_pic.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\main.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\MySMSYS_ipc.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\NativeAddressbook.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\NewDatReader.h</name>
@@ -6411,6 +6423,9 @@
   </file>
   <file>
     <name>$PROJ_DIR$\createMenu.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\CSMswaper.c</name>
   </file>
   <file>
     <name>$PROJ_DIR$\edGui.c</name>

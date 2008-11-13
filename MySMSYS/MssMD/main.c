@@ -21,11 +21,15 @@
 #include "string_works.h"
 #include "iconpack.h"
 #include "key_hook.h"
+#include "CSMswaper.h"
+
 extern void kill_data(void *p, void (*func_p)(void *));
 
 unsigned int DAEMON_CSM_ID=0;
 unsigned int DIALOG_CSM_ID=0;
 unsigned int DIALOG_GUI_ID=0;
+
+unsigned int SNEDSMS_CSM_ID=0;
 
 typedef struct
 {
@@ -721,15 +725,7 @@ __swi __arm void SLI_SetState(unsigned char state);
 GBSTMR sli_tmr;
 int sli_cnt=0;
 int sli_sta=0;
-void SLI_PROC(void)
-{
-  if(sli_cnt==1) SLI_SetState(0);
-  else if(sli_cnt==0) SLI_SetState(1);
-  
-  if(sli_cnt>5) sli_cnt=0;
-  else sli_cnt++;
-  GBS_StartTimerProc(&sli_tmr, 216/6, SLI_PROC);
-}
+
 
 void STOP_SLI(void)
 {
@@ -738,6 +734,18 @@ void STOP_SLI(void)
   sli_sta=0;
   SLI_SetState(0);
 }
+
+void SLI_PROC(void)
+{
+  if(sli_cnt==1) SLI_SetState(0);
+  else if(sli_cnt==0) SLI_SetState(1);
+  
+  if(sli_cnt>5) sli_cnt=0;
+  else sli_cnt++;
+  if(new_sms_n>0) GBS_StartTimerProc(&sli_tmr, 216/6, SLI_PROC);
+  else STOP_SLI();
+}
+
 #endif
 
 
@@ -993,6 +1001,16 @@ int daemoncsm_onmessage(CSM_RAM *data,GBS_MSG* msg)
 	    }
 	  }
 	}
+	if(msg->msg==MSG_CSM_DESTROYED)
+	{
+	  if(SNEDSMS_CSM_ID)
+	  {
+	    if((int)msg->data0==SNEDSMS_CSM_ID)
+	      SNEDSMS_CSM_ID=0;
+	    else if(!FindCSMbyID(SNEDSMS_CSM_ID))
+	      SNEDSMS_CSM_ID=0;
+	  }
+	}
 	CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
 	if((new_sms_n>0)&& (CFG_ENA_NEWSMS_ICON)/* && (NEW_SMS_ICON)*/)
 	{
@@ -1141,8 +1159,8 @@ void addIconBar(short* num)
 {
 #pragma swi_number=0x27 
 __swi __arm void AddIconToIconBar(int pic, short *num);
-
-  if(CFG_ENA_IB && new_sms_n>0) AddIconToIconBar(CFG_ICON_IB, num);
+  if(SNEDSMS_CSM_ID) AddIconToIconBar(CFG_ICONSNED_IB, num);
+  else if(CFG_ENA_IB && new_sms_n>0) AddIconToIconBar(CFG_ICON_IB, num);
 }
 
 
@@ -1224,6 +1242,8 @@ int main(char *exename, char *fname)
   DAEMON_CSM_ID=CreateCSM(&DAEMONCSM.daemoncsm,&d_csm,0);
   csmr->csm_q->current_msg_processing_csm=save_cmpc;
   UnlockSched();
+  // for swaper
+  InitUnderIdleCSM();
 #ifdef ICONBAR
   //SetIconBarHandler();
 #endif

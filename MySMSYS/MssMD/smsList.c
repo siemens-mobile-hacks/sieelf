@@ -14,6 +14,9 @@
 #include "CodeShow.h"
 #include "popGui.h"
 #include "config_data.h"
+
+#include "CSMswaper.h"
+
 #define MENU_MAX_TXT 30
 
 
@@ -156,11 +159,12 @@ void slop_menu_send(GUI *data)
 		{
 			WSHDR *ws=AllocWS(wst->wsbody[0]);
 			wstrcpy(ws, wst);
-			SendSMS(ws, num, MMI_CEPID, MSG_SMS_RX-1, 6);
+			SNEDSMS_CSM_ID=SendSMS(ws, num, MMI_CEPID, MSG_SMS_RX-1, 6);
 			if(CFG_ENA_SAVE_SENT) saveFile(wst, num, su->sd, TYPE_OUT, 2);
 			if(!su->sd->isfile) deleteDat(su->sd, 0);
 			else deleteFile(su->sd, 0);
 			delSDList(su->sd);
+			DoSendBackGround(su->dlg_csm);
 			//readAllSMS();
 		}
 	}

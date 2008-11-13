@@ -410,6 +410,12 @@ const IPC_REQ my_ipc_upd=
   NULL
 };
 
+int ReadAllSmsN(void)
+{
+  if(!sdltop) return(readAllSMS());
+  return 0;
+}
+
 int readAllSMS(void)
 {
   int n;

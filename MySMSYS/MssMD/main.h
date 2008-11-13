@@ -27,6 +27,7 @@ extern int is_readall;
 extern unsigned int DlgCsmIDs[];
 extern char sms_dat[128];
 extern char ems_admin_dat[128];
+extern unsigned int SNEDSMS_CSM_ID;
 
 int CreateMainMenu(DLG_CSM *dlg_csm);
 void OpenArchive(void);

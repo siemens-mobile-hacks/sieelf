@@ -7,7 +7,7 @@ const char my_ipc_name[]=MY_SMSYS_IPC_NAME;
 
 const char ELFNAME[]="MySMSYS";
 const char ELFNAME_D[]="MssD";
-const char COPY_RIGHT[]="My SMS System v2.2.4\n(c)BingK (binghelingxi)\n(r)titron";
+const char COPY_RIGHT[]="My SMS System v2.2.5\n(c)BingK (binghelingxi)\n(r)titron,Rst7";
 
 const char PERCENT_T[]="%t";
 const char PERCENT_S[]="%s";

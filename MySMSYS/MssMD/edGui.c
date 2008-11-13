@@ -17,6 +17,7 @@
 #include "NewDatReader.h"
 #include "template.h"
 #include "NativeAddressbook.h"
+#include "CSMswaper.h"
 #ifdef	LANG_CN
 #define TEXT_INPUT_OPTION	ECT_CURSOR_STAY
 #else
@@ -253,7 +254,7 @@ void ed_menu_send(GUI *gui)
 		GeneralFunc_flag1(gstop->id, 1);
 		popGS(dlg_csm);
 	}
-	Ed_SendSMS(ed_gui);
+	if(Ed_SendSMS(ed_gui)) DoSendBackGround(dlg_csm);
 	GeneralFuncF1(1);
 }
 
@@ -661,17 +662,22 @@ int Ed_SendSMS(void *gui)
   NUM_LIST *nl=(NUM_LIST *)(uo->nltop);
   if(!(IsHaveNumInList(uo)))
   {
-    ShowMSG(1, (int)lgp.LGP_ERR_0NUM);
+    MsgBoxError(1, (int)lgp.LGP_ERR_0NUM);
     return 0;
   }
   ExtractEditControl(gui,uo->focus_n,&ec);
+  if(!(ec.pWS->wsbody[0]))
+  {
+    MsgBoxError(1, (int)"Nothing For Sent!");
+    return 0;
+  }
   while(nl)
   {
     if(strlen(nl->num))
     {
       WSHDR *ws=AllocWS(ec.pWS->wsbody[0]);
       wstrcpy(ws,ec.pWS);
-      SendSMS(ws,nl->num,MMI_CEPID,MSG_SMS_RX-1,6);
+      SNEDSMS_CSM_ID=SendSMS(ws,nl->num,MMI_CEPID,MSG_SMS_RX-1,6);
       if(CFG_ENA_SAVE_SENT) saveFile(ec.pWS, nl->num, uo->sd, TYPE_OUT, 2);
     }
     nl=nl->next;
@@ -756,6 +762,7 @@ void on_adr_ec(USR_MENU_ITEM *item) //MENU WOULD BE CLOSED FIRST
       {
 	GeneralFunc_flag1(gstop->id, 1);
 	popGS(dlg_csm);
+	DoSendBackGround(dlg_csm);
       }
       break;
     case 1:
@@ -841,10 +848,15 @@ int edOnKey(GUI *data, GUI_MSG *msg)
 		{
 			if(!Ed_SendSMS(data))
 				return 0;
+			else
+			{
+			  popGS(uo->dlg_csm);
+			  DoSendBackGround(uo->dlg_csm);
+			  return 1;
+			}
 		}
-
-		popGS(uo->dlg_csm);
-		return 1;
+		//popGS(uo->dlg_csm);
+		//return 1;
 	}
 	else if((msg->keys==0x29)&&((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW)))
 	{
@@ -1151,6 +1163,23 @@ void edGHook(GUI *data, int cmd)
     if((uo->gui_type==ED_VIEW)||(uo->gui_type==ED_FVIEW))
       SetSoftKey(data,&SK_OP_PIC,SET_SOFT_KEY_M);
     
+    //num to name at unfocus
+    if((uo->gui_type!=ED_VIEW)&&(uo->gui_type!=ED_FVIEW))
+    {
+      int u=EDIT_GetUnFocus(data);
+      if(u<=(uo->focus_n-2) && (nl=GetNumListCur(uo, u)))
+      {
+	if(isNum(nl->name))
+	{
+	  if(findNameByNum(text, nl->num))
+	  {
+	    wstrcpy(nl->name, text);
+	    EDIT_SetTextToEditControl(data, u, text);
+	  }
+	}
+      }
+    }
+    
 //auto save as file
     if((uo->gui_type==ED_VIEW)
        &&(CFG_ENA_AUTO_SAF)
@@ -1252,6 +1281,8 @@ void edGHook(GUI *data, int cmd)
 	  SetHeaderIcon(hdr_p, EDHDRIC_EDIT, ma, mf);
       }
     }
+    
+    //check number
     if((uo->gui_type!=ED_VIEW)&&(uo->gui_type!=ED_FVIEW)&&(n<=(uo->focus_n-2))&&(nl=GetNumListCur(uo, n)))
     {
       ExtractEditControl(data,n,&ec);

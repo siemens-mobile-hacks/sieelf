@@ -82,6 +82,7 @@ int IsSdInList(SMS_DATA *sd);
 SMS_DATA *FindSDByOpmsgId(int opmsg_id);
 //------------------------
 int readAllSMS(void);
+int ReadAllSmsN(void);
 int getCountByType(int type);
 int GetCountByIsFileType(int isfile, int type); //0, all
 SMS_DATA *getSMSDataByType(int n, int type);

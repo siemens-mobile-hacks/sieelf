@@ -52,7 +52,7 @@ extern const char STR_UNK_TYPE[];
 #define LGP_CFG_2ND_KEY "按键2"
 #define LGP_CFG_ICONBAR_SETTING "新信息图标栏设置"
 #define LGP_CFG_ENA_IB "使用图标栏"
-#define LGP_CFG_ICON_IB "图标ID"
+#define LGP_CFG_ICON_IB "新短信图标ID"
 #define LGP_CFG_ENA_AUTO_SAVE_DRAFT "自动保存草稿"
 #define LGP_CFG_PROFILE1_SET "情景模式1"
 #define LGP_CFG_PROFILE2_SET "情景模式2"
@@ -76,6 +76,8 @@ extern const char STR_UNK_TYPE[];
 #define LGP_CFG_MDCSCOL "区号秀颜色"
 #endif
 
+#define LGP_CFG_ENA_SNED_ON_BG "后台发送短信"
+#define LGP_CFG_ICONSNED_IB "短信发送图标ID"
 #endif
 
 #ifdef LANG_EN
@@ -113,7 +115,7 @@ extern const char STR_UNK_TYPE[];
 #define LGP_CFG_2ND_KEY "2nd Key"
 #define LGP_CFG_ICONBAR_SETTING "Iconbar Settings"
 #define LGP_CFG_ENA_IB "Enable Iconbar"
-#define LGP_CFG_ICON_IB "Picture ID"
+#define LGP_CFG_ICON_IB "New SMS Picture ID"
 #define LGP_CFG_ENA_AUTO_SAVE_DRAFT "Auto Save Draft"
 #define LGP_CFG_PROFILE1_SET "Profile1"
 #define LGP_CFG_PROFILE2_SET "Profile2"
@@ -136,6 +138,8 @@ extern const char STR_UNK_TYPE[];
 #define LGP_CFG_ENA_MD "Enable MegaDial"
 #endif
 
+#define LGP_CFG_ENA_SNED_ON_BG "Send SMS on Background"
+#define LGP_CFG_ICONSNED_IB "Sending Picture ID"
 #endif
 
 typedef struct{

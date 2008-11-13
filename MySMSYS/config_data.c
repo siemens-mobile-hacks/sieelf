@@ -26,6 +26,10 @@ __root const int CFG_ENA_EXIT_SAVE_DRAFT = 1;
 __root const CFG_HDR cfghdr8 = {CFG_CHECKBOX, LGP_CFG_ENA_AUTO_SAVE_DRAFT, 0, 3};
 __root const int CFG_ENA_AUTO_SAVE_DRAFT = 1;
 
+
+__root const CFG_HDR cfghdra = {CFG_CHECKBOX, LGP_CFG_ENA_SNED_ON_BG, 0, 3};
+__root const int CFG_ENA_SNED_ON_BG = 1;
+
 __root const CFG_HDR cfghdr3 = {CFG_CBOX, LGP_CFG_EXPORT_CHARSET, 0, 2};
 __root const int CFG_EXPORT_CHARSET = 1;
 #ifdef LANG_CN
@@ -202,6 +206,14 @@ __root const unsigned int CFG_ICON_IB = 475;
 #endif
 #endif
 
-__root const CFG_HDR cfghdr3_9 = {CFG_LEVEL, "", 0, 0};
+__root const CFG_HDR cfghdr3_3 = {CFG_UINT, LGP_CFG_ICONSNED_IB, 0, 9999};
+#ifdef NEWSGOLD
+#ifdef ELKA
+__root const unsigned int CFG_ICONSNED_IB = 428;
+#else
+__root const unsigned int CFG_ICONSNED_IB = 477;
+#endif
+#endif
 
+__root const CFG_HDR cfghdr3_9 = {CFG_LEVEL, "", 0, 0};
 

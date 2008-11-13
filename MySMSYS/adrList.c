@@ -36,6 +36,11 @@ void FreeCLIST(void)
 	}
 }
 
+void ConstructListN(void)
+{
+  if(!cltop) ConstructList();
+}
+
 void ConstructList(void)
 {
 	int fin;

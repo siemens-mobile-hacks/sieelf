@@ -1,6 +1,10 @@
 #include "..\..\inc\swilib.h"
 #include "conf_loader.h"
 #include "language.h"
+#include "createMenu.h"
+#include "string_works.h"
+#include "adrList.h"
+
 #ifdef MEGADIAL
 
 GBSTMR tmr_scroll;
@@ -362,16 +366,6 @@ int CompareStrT9(WSHDR *ws, WSHDR *ss, int need_insert_color)
 // §¬§à§ß§ã§ä§â§å§Ü§ä§à?§ã§á§Ú§ã§Ü§Ñ
 //=====================================================
 
-typedef struct
-{
-  void *next;
-  //WSHDR *nm[3];
-  WSHDR *name;
-  char *num[NUMBERS_MAX];
-}CLIST;
-
-extern volatile CLIST *cltop;
-
 void ConstructList2(void)
 {
   CLIST2 contact;
@@ -408,7 +402,6 @@ void ConstructList2(void)
       if(!(nm=cl->num[n])) continue;
       WSHDR *ws=contact.num[n]=AllocWS(50);
       wsAppendChar(contact.icons,utf_symbs[n]);
-      extern int num_2ws(WSHDR *ws, const char *num, int maxlen);
       num_2ws(ws, nm, 50);
       *((int *)(&contact.next))|=CompareStrT9(ws,sws,0);
     }
@@ -517,7 +510,6 @@ void my_ed_redraw(void *data)
   {
     char num[50];
     int wlen;
-    extern int ws_2num(WSHDR *ws, char *num, int maxlen);
     extern int GetProvAndCity(unsigned short *pBSTR, char *pNoStr);
     extern int isNum(WSHDR *num);
     extern const char COLOR_CODE_SHOW[4];
@@ -698,7 +690,7 @@ int gotomenu_onkey(void *data, GUI_MSG *msg)
     if (nltop)
     {
       VoiceOrSMS(dstr[nltop->index]);
-      return (0);
+      return (1);
     }
   }
   return(0);
@@ -729,6 +721,45 @@ void gotomenu_ghook(void *data, int cmd)
 }
     
 
+const HEADER_DESC gotomenu_HDR={0,0,131,21,/*icon*/0,LGP_NULL,LGP_NULL};
+
+#ifdef LANG_CN
+void gotomenu_itemhandler(void *data, int curitem, void *user_pointer)
+{
+  WSHDR *ws1, *ws2;
+  NUMLIST *nltop=user_pointer;
+  void *item=AllocMLMenuItem(data);
+  for(int d=0; d!=curitem && nltop; d++) nltop=nltop->next;
+  if (nltop)
+  {
+    extern void AppendInfoW(WSHDR *pWS, WSHDR * pNo);
+    ws1=AllocMenuWS(data,40);
+    ws2=AllocMenuWS(data,40);
+    num_2ws(ws1,dstr[nltop->index],39);
+    AppendInfoW(ws2, ws1);
+    SetMenuItemIconArray(data, item, menu_icons);
+    //SetMenuItemText(data, item, ws, curitem);
+    SetMLMenuItemText(data, item, ws1, ws2, curitem);
+    SetMenuItemIcon(data,curitem,nltop->index);
+  }
+}
+
+
+ML_MENU_DESC gotomenu_STRUCT=
+{
+  8,gotomenu_onkey,gotomenu_ghook,NULL,
+  menusoftkeys,
+  &menu_skt,
+  1|0x10,
+  gotomenu_itemhandler,
+  NULL,
+  NULL,
+  0,
+  1
+};
+
+#else
+
 void gotomenu_itemhandler(void *data, int curitem, void *user_pointer)
 {
   WSHDR *ws;
@@ -745,7 +776,6 @@ void gotomenu_itemhandler(void *data, int curitem, void *user_pointer)
   }
 }
 
-const HEADER_DESC gotomenu_HDR={0,0,131,21,/*icon*/0,LGP_NULL,LGP_NULL};
 
 MENU_DESC gotomenu_STRUCT=
 {
@@ -759,7 +789,7 @@ MENU_DESC gotomenu_STRUCT=
   0
 };
 
-
+#endif
 
 int my_ed_onkey(GUI *gui, GUI_MSG *msg)
 {
@@ -781,7 +811,19 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)
     if (ec.pWS->wsbody[0]==EDIT_GetCursorPos(gui)-1)
     {
 //      ShowMSG(1,(int)"Try to write SMS!");
-      is_sms_need=1;
+      if(!cl)
+      {
+	DisableScroll();
+	//create new sms
+	char *dt=malloc(50);
+	ws_2num(ec.pWS, dt, 49);
+	LockSched();
+	mss_ipc.data=dt;
+	GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_NEWSMS_NUM,&mss_ipc);
+	UnlockSched();
+	return(1);
+      }
+      else is_sms_need=1;
     }
   }
   if (key==GREEN_BUTTON||is_sms_need)
@@ -817,8 +859,12 @@ int my_ed_onkey(GUI *gui, GUI_MSG *msg)
     }
     if (n==0) goto L_OLDKEY; //§¯§Ö?§Ó§à§à§Ò§ë§Ö §ä§Ö§Ý§Ö§æ§à§ß§à?    //§¬§à§Ý§Ú§é§Ö§ã§ä§Ó§à §ß§à§Þ§Ö§â§à?§Ò§à§Ý§î§ê§Ö 1, §â§Ú§ã§å§Ö§Þ §Þ§Ö§ß§ð
     patch_header((HEADER_DESC *)&gotomenu_HDR);
+#ifdef LANG_CN
+    CreateMLMenu(&gotomenu_STRUCT, &gotomenu_HDR, n-1, n, nltop);
+#else
     CreateMenu(0,0,&gotomenu_STRUCT,&gotomenu_HDR,0,n,nltop,0);
-    return(0);
+#endif
+    return(1);
   }
   if ((key==UP_BUTTON)||(key==DOWN_BUTTON))
   {

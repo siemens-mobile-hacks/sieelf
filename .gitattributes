@@ -948,6 +948,8 @@ MyMenu2/MyMenu2_Editor/type.h -text
 MyMenu2/func.asm -text
 MyMenu2/test.xcl -text
 MySMSYS/About.txt -text
+MySMSYS/CSMswaper.c -text
+MySMSYS/CSMswaper.h -text
 MySMSYS/CodeShow.c -text
 MySMSYS/CodeShow.h -text
 MySMSYS/Files/Img/hdr_ed_adrbk.png -text
@@ -983,6 +985,8 @@ MySMSYS/MssLinker/MssLinker.ewp -text
 MySMSYS/MssLinker/func.asm -text
 MySMSYS/MssLinker/main.c -text
 MySMSYS/MssLinker/test.xcl -text
+MySMSYS/MssMD/CSMswaper.c -text
+MySMSYS/MssMD/CSMswaper.h -text
 MySMSYS/MssMD/CodeShow.c -text
 MySMSYS/MssMD/CodeShow.h -text
 MySMSYS/MssMD/MakeAll_CN.cmd -text
