@@ -444,7 +444,7 @@
 0660: 0xA09A2181   ; 198: WSHDR *AllocMenuWS(void *gui, int len)
 0664: 0xA09A1FDB   ; 199: void SetMenuItemIconArray(void *gui,void *item,const int *icons)
 0668: 0xA09A197B   ; 19A: void SetMenuItemText(void *gui,void *item,WSHDR *text,int item_n)
-066C: 0xA0A2D7D9       ; 19B: void EDIT_SetFocus(void *gui, int item)
+066C: 0xA0A2D7E5   ; 19B: void EDIT_SetFocus(void *gui, int item)
 ;670:              ; 19C: void SEQKILLER(void *data, void(*next_in_seq)(void *), void *data_to_kill)
 0674: 0xA01D1608   ; 19D: long long getCpuUsedTime_if_ena(void)
 0678: 0xA01D15AC   ; 19E: void StartCpuUsageCount(void)
