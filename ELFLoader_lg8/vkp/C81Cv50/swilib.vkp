@@ -46,7 +46,7 @@
 0084: 0xA099AF6F   ;  21: int GetImgHeight(int picture)
 0088: 0xA099AF7F   ;  22: int GetImgWidth(int picture)
 008C: 0xA029D789   ;  23: void DrawImg(unsigned int x, unsigned int y, unsigned int picture)
-;090:              ;  24: DrawImage2
+0090: 0xA0A1DE7F   ;  24: DrawImage2
 0094: 0xA029CCEB   ;  25: void DrawCanvas(void *data, int x1, int y1, int x2, int y2, int flag_one)
 0098: 0xA0A1DDA9   ;  26: void DrawImgBW(unsigned int x, unsigned int y, unsigned int picture, char *pen, char *brush)
 009C: 0xA029CF11   ;  27: AddIconToIconbar
@@ -83,7 +83,7 @@
 0110: 0xA0965E09   ;  44: TempLightOn
 0114: 0xA006F241   ;  45: int GetWavLen(char *filename)
 ;118:              ;  46: int HasNewSMS()
-;11C:              ;  47: HasFlashSMS
+011C: 0xA029C447   ;  47: HasFlashSMS
 ;120:              ;  48: ReadNewSMS
 ;124:              ;  49: ReadFlashSMS
 0128: 0xA027B620   ;  4A: short PlayFile(int flags, WSHDR *foldername, WSHDR *filename, int zero, int CepId, int Msg, const PLAYFILE_OPT *sfo)
@@ -128,10 +128,10 @@
 01BC: 0xA0976D58   ;  6F: void RefreshGPRSTraffic()
 
 01C0: 0xA0976D88   ;  70: int *GetGPRSTrafficPointer()
-;1C4:              ;  71: 
-;1C8:              ;  72: SetCurrentSecondOfCall
+01C4: 0xA0A1B907   ;  71: void DrawRoundedFrame(int x1,int y1,int x2,int y2,int x_round,int y_round,int flags,const char *pen,const char *brush)
+01C8: 0xA0963B35   ;  72: SetCurrentSecondOfCall
 01CC: 0xA0DDF847   ;  73: int GetTypeOfCall(int type)
-;1D0:              ;  74: SHORTCUTREC *GetShortcutRecordByName(char *szShortcutName)
+01D0: 0xA02CF0F1   ;  74: SHORTCUTREC *GetShortcutRecordByName(char *szShortcutName)
 01D4: 0xA029EA25   ;  75: IsCanvasBufferSet(char CanvasID)
 01D8: 0xA029E9D5   ;  76: GetCanvasBufferPicPtr(char CanvasID)
 ;1DC:              ;  77: set2color_byPaletteAdr
