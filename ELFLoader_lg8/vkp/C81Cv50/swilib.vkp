@@ -42,7 +42,7 @@
 0078: 0xA099AE45   ;  1E: IMGHDR *GetPITaddr(int num)
 ;07C:              ;  1F: DrawMainScreen
 
-;080:              ;  20: DrawScreenSaver
+0080: 0xA03073D7   ;  20: DrawScreenSaver
 0084: 0xA099AF6F   ;  21: int GetImgHeight(int picture)
 0088: 0xA099AF7F   ;  22: int GetImgWidth(int picture)
 008C: 0xA029D789   ;  23: void DrawImg(unsigned int x, unsigned int y, unsigned int picture)
@@ -114,10 +114,10 @@
 0184: 0xA02D3F33   ;  61: ShowNativeMenu
 0188: 0xA028BD25   ;  62: SetVibraStatus
 018C: 0xA029E50D   ;  63: void MMI_CanvasBuffer_FlushV(int CanvasID)
-;190:              ;  64: TriggerUpdate
-;194:              ;  65: EndCall
-;198:              ;  66: EndCallBusy
-;19C:              ;  67: IsDirectCallActive
+0190: 0xA099D0C3   ;  64: TriggerUpdate
+0194: 0xA09D32A1   ;  65: EndCall
+0198: 0xA09D222F   ;  66: EndCallBusy
+019C: 0xA035A9A1   ;  67: IsDirectCallActive
 01A0: 0xA0306FE1   ;  68:  __thumb SS_RAM *GetScreenSaverRam(void)
 01A4: 0xA009B180   ;  69: void LockSched_2(void)
 01A8: 0xA009B26C   ;  6A: void UnlockSched_2(void)
