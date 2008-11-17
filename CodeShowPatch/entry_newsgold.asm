@@ -99,6 +99,7 @@ SIMBOOK:
 	MOV	R3, #3
 	POP	{PC}
 
+#ifndef WITHOUT_SMS_IN_WIN
 SMS_IN
 	LDR	R0, [SP, #8]
 	LDR	R2, [SP, #4]
@@ -126,7 +127,9 @@ GoBack
 	STR	R0, [SP,#0xD8]
 	ADD	R2, R2, #4
 	BX	R2
-	
+
+#endif
+
 NUM_SELECT_MENU_PSETTEXT: //R2, WS, 
 	MOV	R4, LR
 	BL	setMenuText
@@ -166,12 +169,12 @@ P_CallOutWindow_
 	CODE32
 	BLX	SIMBOOK
 	
-	
+#ifndef WITHOUT_SMS_IN_WIN
 	RSEG	SMS_IN_HOOK:CODE(2)
 	CODE16
 	LDR	R0, =SMS_IN
 	BLX	R0
-	
+#endif
 	
 	RSEG	NUM_SELECT_MENU_HDR_ICON:DATA(2)
 	DATA

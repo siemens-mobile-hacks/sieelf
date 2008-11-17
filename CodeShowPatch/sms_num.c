@@ -1,5 +1,6 @@
 #include "addr.h"
 
+#ifndef WITHOUT_SMS_IN_WIN
 __thumb int Hex2Num(char *hex, char *num, int len) @ "CODE_X" //·µ»Ø³¤¶È
 {
 	int c;
@@ -64,4 +65,5 @@ GET_L:
 	}
 	return 0;
 }
+#endif
 

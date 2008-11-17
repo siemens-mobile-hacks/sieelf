@@ -18,7 +18,10 @@ void setMenuText(void *gui, void *item, WSTRING *text,int item_n)
 	int is_num=1;
 	WSTRING *ws2=AllocMenuWS(gui, 24);
 	if(*p=='+')
+	{
 		p+=3;
+		wslen-=3;
+	}
 	for(;i<wslen;i++) //¼ì²éÊÇ·ñÊÇºÅÂë
 	{
 		if(p[i]>'9'||p[i]<'0')
