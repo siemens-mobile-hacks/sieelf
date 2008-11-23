@@ -230,6 +230,14 @@ DiskMonitor/main.c -text
 DiskMonitor/test.xcl -text
 ECDict/ECDict.ewp -text
 ECDict/ECDict.eww -text
+ECDict/ECDictM/ECDict.ewp -text
+ECDict/ECDictM/ECDict.eww -text
+ECDict/ECDictM/MenuGui.c -text
+ECDict/ECDictM/dict.c -text
+ECDict/ECDictM/dict.h -text
+ECDict/ECDictM/func.asm -text
+ECDict/ECDictM/rect_patcher.h -text
+ECDict/ECDictM/test.xcl -text
 ECDict/about.c -text
 ECDict/about.h -text
 ECDict/conf_loader.c -text
