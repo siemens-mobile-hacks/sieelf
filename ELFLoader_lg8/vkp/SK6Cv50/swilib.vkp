@@ -625,6 +625,21 @@
 0A0C: 0xA02DBBAC   ; 283: __arm int runMidletLinkablely(const char *midlet_name, WSHDR *filename)
 
 0A58: 0xA02B6CFF   ; 296: __thumb void getProfileNameByN(int n, WSHDR *ws, int _0);
+
+0A8C: 0xA098BEDF   ; 2A3:  __thumb void UpdateMenuCursorItem(void *gui, int n)
+0A90: 0xA0989543   ; 2A4:  __thumb void *GetMenuGUI(void *malloc_adr, void *mfree_adr)
+0A94: 0xA09EBA51   ; 2A5:  __thumb void *GetMultiLinesMenuGUI(void *malloc_adr, void *mfree_adr)
+0A98: 0xA02A32FD   ; 2A6:  __thumb void SetHeaderToMenu(void *gui, const HEADER_DESC *hdr, void *malloc_adr)
+0A9C: 0xA098CAD5   ; 2A7:  __thumb void SetMenuToGUI(void *gui, const void *menu_desc)
+0AA0: 0xA098A113   ; 2A8:  __thumb int GetMenuItemCount(void *gui)
+0AA4: 0xA098873F   ; 2A9:  __thumb int CreatePopupGUI(int flag, void *user_pointer, const POPUP_DESC *, int lgp_msg)
+0AA8: 0xA09886B1   ; 2AA:  __thumb int CreatePopupGUI_ws(int flag, void *user_pointer, const POPUP_DESC *, WSHDR *msg)
+0AAC: 0xA099A9C9   ; 2AB:  __thumb void *GetPopupUserPointer(void *gui)
+0AB8: 0xA098D533   ; 2AE:  __thumb void *GetHeaderPointer(void *gui)
+0ABC: 0xA099C639   ; 2AF:  __thumb void SetHeaderText(void *hdr_pointer, WSHDR *txt, void *malloc_adr, void *mfree_adr)
+
+0AC0: 0xA098DE0F   ; 2B0:  __thumb void SetMenuSoftKey(void *gui, const SOFTKEY_DESC *,int n)
+0AE8: 0xA099C8F3   ; 2BA:  __thumb void SetHeaderIcon(void *hdr_pointer, const int *icon, void *malloc_adr, void *mfree_adr)
 #pragma disable old_equal_ff
 +0
 ;********************************************************************************

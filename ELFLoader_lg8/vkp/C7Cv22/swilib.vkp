@@ -627,6 +627,21 @@
 ;928:              ; 24A:  char *RamChannel()
 
 0950: 0xA033FD08   ; 254:  __arm int StartNativeExplorer(NativeExplorerData* data)
+
+0A8C: 0xA009C36B   ; 2A3:  __thumb void UpdateMenuCursorItem(void *gui, int n)
+0A90: 0xA00999CF   ; 2A4:  __thumb void *GetMenuGUI(void *malloc_adr, void *mfree_adr)
+0A94: 0xA00E61A9   ; 2A5:  __thumb void *GetMultiLinesMenuGUI(void *malloc_adr, void *mfree_adr)
+0A98: 0xA02A4B31   ; 2A6:  __thumb void SetHeaderToMenu(void *gui, const HEADER_DESC *hdr, void *malloc_adr)
+0A9C: 0xA009CF61   ; 2A7:  __thumb void SetMenuToGUI(void *gui, const void *menu_desc)
+0AA0: 0xA009A59F   ; 2A8:  __thumb int GetMenuItemCount(void *gui)
+0AA4: 0xA0098BCB   ; 2A9:  __thumb int CreatePopupGUI(int flag, void *user_pointer, const POPUP_DESC *, int lgp_msg)
+0AA8: 0xA0098B3D   ; 2AA:  __thumb int CreatePopupGUI_ws(int flag, void *user_pointer, const POPUP_DESC *, WSHDR *msg)
+0AAC: 0xA00B66BD   ; 2AB:  __thumb void *GetPopupUserPointer(void *gui)
+0AB8: 0xA009D9F5   ; 2AE:  __thumb void *GetHeaderPointer(void *gui)
+0ABC: 0xA00B832D   ; 2AF:  __thumb void SetHeaderText(void *hdr_pointer, WSHDR *txt, void *malloc_adr, void *mfree_adr)
+
+0AC0: 0xA009E2E1   ; 2B0:  __thumb void SetMenuSoftKey(void *gui, const SOFTKEY_DESC *,int n)
+0AE8: 0xA00B85E7   ; 2BA:  __thumb void SetHeaderIcon(void *hdr_pointer, const int *icon, void *malloc_adr, void *mfree_adr)
 #pragma disable old_equal_ff
 +0
 
