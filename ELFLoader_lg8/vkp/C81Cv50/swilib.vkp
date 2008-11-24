@@ -240,7 +240,7 @@
 ;360:              ;  D8: RamMenuAnywhere
 ;364:              ;  D9: 
 0368: 0xA8DEBBB8   ;  DA: RamIsShutdown
-;36C:              ;  DB: RamMainscreenAccuIcon
+036C: 0xA8EE0DFC   ;  DB: RamMainscreenAccuIcon
 0370: 0xA8E4BAE0   ;  DC: int *RamRandSeed(void)
 0374: 0xA899F2BC   ;  DD: RamCurrentTrack
 0378: 0xA8DF6E1C   ;  DE: RamIsSimPresent
