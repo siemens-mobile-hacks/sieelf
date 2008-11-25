@@ -153,6 +153,30 @@ int CreateMenuGui(void)
   return (CreateGUI(gui));
 }
 
+//--------------------send sms----------------------
+
+IPC_REQ mss_ipc=
+{
+  "MySMSYS",
+  "MySMSYS",
+  NULL
+};
+
+#define SMSYS_IPC_SEND_WS 0x88 //基于ws新建短信,data=ws
+
+int SendMySMS(WSHDR *ws)
+{
+  WSHDR *data;
+  if(!ws || !ws->wsbody[0]) return 0;
+  data=AllocWS(ws->wsbody[0]);
+  wstrcpy(data, ws);
+  LockSched();
+  mss_ipc.data=data;
+  GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SEND_WS,&mss_ipc);
+  UnlockSched();
+  return 1;
+}
+
 //--------------------Create a Edit GUI from Show Words----------------------------
 #define MAX_UNICODE_STR 512
 
@@ -188,6 +212,12 @@ int sd_onkey(GUI *gui, GUI_MSG *msg)
       EDIT_SetTextToEditControl(gui, 1, ws);
       REDRAW();
     }
+  }
+  else if(keys==0x5)
+  {
+    EDITCONTROL ec;
+    ExtractEditControl(gui, 1, &ec);
+    if(SendMySMS(ec.pWS)) return 1;
   }
   return 0;
 }
