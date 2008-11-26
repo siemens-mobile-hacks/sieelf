@@ -619,12 +619,14 @@
 ;920: ; 248:  char *RamFormatTrack()
 ;924: ; 249:  char *RamFreq()
 ;928: ; 24A:  char *RamChannel()
+092C: 0xA098D35B   ; 24B:  __thumb void SetMenuSearchCallBack(void *gui, MenuSearchCallBack proc)
 
 0950: 0xA032DD98   ; 254:  __arm int StartNativeExplorer(NativeExplorerData* data)
+0954: 0xA098DF45   ; 255:  __thumb void MenuSetUserPointer(void *gui,void *user_pointer)
 
-0A0C: 0xA02DBBAC   ; 283: __arm int runMidletLinkablely(const char *midlet_name, WSHDR *filename)
+0A0C: 0xA02DBBAC   ; 283:  __arm int runMidletLinkablely(const char *midlet_name, WSHDR *filename)
 
-0A58: 0xA02B6CFF   ; 296: __thumb void getProfileNameByN(int n, WSHDR *ws, int _0);
+0A58: 0xA02B6CFF   ; 296:  __thumb void getProfileNameByN(int n, WSHDR *ws, int _0);
 
 0A8C: 0xA098BEDF   ; 2A3:  __thumb void UpdateMenuCursorItem(void *gui, int n)
 0A90: 0xA0989543   ; 2A4:  __thumb void *GetMenuGUI(void *malloc_adr, void *mfree_adr)
