@@ -174,6 +174,7 @@ int PduDecodeTxt(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
   }
   else 
   {
+    sd->msg_type=sd->msg_type|ISUNKE;
     wsprintf(ws, STR_UNK_TXTT, ttype);
   }
   wst=sd->SMS_TEXT;
@@ -256,6 +257,7 @@ int PduDecodeAll(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
     break;
   default:
     sd->type=TYPE_UNK;
+    sd->msg_type=sd->msg_type|ISUNKT;
     wsprintf(ws, STR_UNK_TYPE, c);
     goto TEND;
     //return 2; //back 
@@ -347,6 +349,7 @@ int PduDecodeAll(SMS_DATA *sd, char *data) //0: fail, 1: successful, //2: unktyp
   }
   else 
   {
+    sd->msg_type=sd->msg_type|ISUNKE;
     wsprintf(ws, STR_UNK_TXTT, ttype);
   }
 TEND:

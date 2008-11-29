@@ -478,6 +478,15 @@ int sms_menu_onkey(void *data, GUI_MSG *msg)
       }
       ShowFileErrCode(k);
     }
+    else if(i==RIGHT_BUTTON)
+    {
+      createEditGUI(so->dlg_csm, sd, ED_EDIT, 0);
+      return 1;
+    }
+    else if(i==LEFT_BUTTON)
+    {
+      return 1;
+    }
   }
   return 0;
 }

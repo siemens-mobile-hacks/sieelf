@@ -297,13 +297,13 @@ __swi __arm void TempLightOn(int x, int y);
   int n;
   if(!IsUnlocked()) TempLightOn(3, 0x7FFF);
 
-  if(msg->keys==0x1)
+  if((msg->keys==0x1) || (msg->keys==0x28))
   {
     void *dlg_csm=MenuGetUserPointer(data);
     popGS(dlg_csm);
     return 1;
   }
-  if((msg->keys==0x18)||(msg->keys==0x3D))
+  if((msg->keys==0x18)||(msg->keys==0x3D)||(msg->keys==0x27))
   {
     n=GetCurMenuItem(data);
   DO_P:

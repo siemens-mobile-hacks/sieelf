@@ -25,6 +25,9 @@
 #define ISREPORT 2 //00000010
 #define ISDES 4 //00000100 //is destroyed, or not full received
 #define IS7BIT 8 //00001000
+#define ISUNKE 16 //00010000 //unk text encode type
+#define ISUNKT 32 //00100000 //unk sms type
+
 #define MAX_TEXT 2048
 
 //

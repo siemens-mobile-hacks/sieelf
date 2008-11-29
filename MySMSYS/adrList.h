@@ -25,6 +25,9 @@
 #define COMPANY_NAME 0x29
 #define POST_NAME 0x6F
 #define DISPLAY_NAME 0x60
+#define SMS_MELODY 0x68
+#define PICTURE 0x33
+#define CALL_MELODY 0x66
 #else
 #define NICKNAME 0x12
 #define LAST_NAME 0x23
@@ -49,10 +52,11 @@
 
 typedef struct
 {
-	void *next;
-	//WSHDR *nm[3];
-	WSHDR *name;
-	char *num[NUMBERS_MAX];
+  void *next;
+  //WSHDR *nm[3];
+  WSHDR *name;
+  char *num[NUMBERS_MAX];
+  char *sms_melody_filepath;
 }CLIST;
 
 extern volatile CLIST *cltop;
@@ -63,3 +67,5 @@ int findNameByNum(WSHDR *name_to, char *num);
 //void InsertAsTxt(void *ed_gui, char *num);
 //void SetNumToED(void *ed_gui, char *num, WSHDR *name);
 void ConstructListN(void);
+CLIST *FindClByNum(const char *num);
+

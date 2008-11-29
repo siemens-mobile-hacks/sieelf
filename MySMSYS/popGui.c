@@ -154,7 +154,7 @@ int popup_onkey(void *data, GUI_MSG *msg)
 
 void popup_ghook(void *data, int cmd)
 {
-  if(cmd==2) //Create
+/*  if(cmd==2) //Create
   {
     TempLightOn(3, 0x7FFF);
     if(CFG_NOTIFY_TIME && !IsCalling())
@@ -163,12 +163,16 @@ void popup_ghook(void *data, int cmd)
       if(CFG_ENA_SOUND&& sound_vol && !(*(RamRingtoneStatus())) && IsFileExist(CFG_SOUND_PATH))
       {
 	if(GetPlayStatus()) MPlayer_Stop();
-	if(!PLAY_ID) Play(CFG_SOUND_PATH);
+	if(!PLAY_ID)
+	{
+	  Play(CFG_SOUND_PATH);
+	}
       }
       SetVibration(vibra_power);
     }
   }
-  else if(cmd==3) //Close
+  else*/
+  if(cmd==3) //Close
   {
     POPUP_DESC *pd;
     if(PLAY_ID)
@@ -206,11 +210,11 @@ int StartIncomingWin(void *dlg_csm)
 {
   SMS_DATA *sd;
   WSHDR *ws;
-  WSHDR wsloc, *wn;
-  WSHDR csloc, *cs;
-  unsigned short csb[30];
-  unsigned short wsb[150];
+//  WSHDR wsloc, *wn;
+//  unsigned short wsb[150];
   POPUP_DESC *pd;
+  CLIST *cl;
+  const char *melody_filepath;
   extern unsigned int DlgCsmIDs[]; //main.c
   extern int IsNoDlg(unsigned int *id_pool); //main.c
   //if(IsNoDlg(DlgCsmIDs))
@@ -225,9 +229,55 @@ int StartIncomingWin(void *dlg_csm)
   if(!CFG_NOTIFY_TIME) return 0;
   if((sd->msg_type&ISREPORT)) return (ShowMSG_report(dlg_csm, sd));
   ws=AllocWS(150);
-  wn=CreateLocalWS(&wsloc,wsb,150);
+//  wn=CreateLocalWS(&wsloc,wsb,150);
+  cl=FindClByNum(sd->Number);
+#ifndef LANG_CN
+  if(cl)
+  {
+    wsprintf(ws, "%t\n%t:\n%w", lgp.LGP_NEW_MSG, lgp.LGP_FROM, cl->name);
+  }
+  else
+  {
+    wsprintf(ws, "%t\n%t:\n%s", lgp.LGP_NEW_MSG, lgp.LGP_FROM, sd->Number);
+  }
+#else
+  char num[32];
+  int is_fetion=0;
+  WSHDR csloc, *cs;
+  unsigned short csb[30];
   cs=CreateLocalWS(&csloc,csb,30);
-  if(sd)
+  if(!strncmp(num_fetion, sd->Number, 5)) is_fetion=1;
+  strcpy(num, is_fetion?(sd->Number+5):sd->Number);
+  GetProvAndCity(cs->wsbody, num);
+  if(cl)
+  {
+    if(is_fetion) wsprintf(ws, "%t\n%t:\n%w (%t)\n%w", lgp.LGP_NEW_MSG, lgp.LGP_FROM, cl->name, lgp.LGP_FETION, cs);
+    else wsprintf(ws, "%t\n%t:\n%w\n%w", lgp.LGP_NEW_MSG, lgp.LGP_FROM, cl->name, cs);
+  }
+  else
+  {
+    wsprintf(ws, "%t\n%t:\n%s\n%w", lgp.LGP_NEW_MSG, lgp.LGP_FROM, sd->Number, cs);
+  }
+#endif
+  //---------------------- notify
+  TempLightOn(3, 0x7FFF);
+  if(CFG_NOTIFY_TIME && !IsCalling())
+  {
+    SetSoundVibraByProfile();
+    if(!cl || !cl->sms_melody_filepath) melody_filepath=CFG_SOUND_PATH;
+    else melody_filepath=cl->sms_melody_filepath;
+    if(CFG_ENA_SOUND&& sound_vol && !(*(RamRingtoneStatus())) && IsFileExist(melody_filepath))
+    {
+      if(GetPlayStatus()) MPlayer_Stop();
+      if(!PLAY_ID)
+      {
+	Play(melody_filepath);
+      }
+    }
+    SetVibration(vibra_power);
+  }
+  //---------------------
+/*  if(sd)
   {
 #ifdef NO_CS 
     if(findNameByNum(wn, sd->Number))
@@ -248,7 +298,7 @@ int StartIncomingWin(void *dlg_csm)
     else
       wsprintf(ws, "%t\n%t:\n%s\n%w", lgp.LGP_NEW_MSG, lgp.LGP_FROM, sd->Number, cs);
 #endif
-  }
+  }*/
   pd=malloc(sizeof(POPUP_DESC));
   memcpy(pd, &popup, sizeof(POPUP_DESC));
   pd->time=CFG_NOTIFY_TIME*1300; //1300=1s
@@ -393,12 +443,9 @@ const POPUP_DESC msg_report=
 int ShowMSG_report(void *dlg_csm, SMS_DATA *sd)
 {
   WSHDR wsloc, *wn;
-  WSHDR csloc, *cs;
-  unsigned short csb[30];
   unsigned short wsb[150];
   WSHDR *ws=AllocWS(256);
   wn=CreateLocalWS(&wsloc,wsb,150);
-  cs=CreateLocalWS(&csloc,csb,30);
 #ifdef NO_CS 
   if(findNameByNum(wn, sd->Number))
     wsprintf(ws, "%w\n%t:\n%w", sd->SMS_TEXT, lgp.LGP_FROM, wn);
@@ -407,6 +454,9 @@ int ShowMSG_report(void *dlg_csm, SMS_DATA *sd)
 #else
   char num[32];
   int is_fetion=0;
+  WSHDR csloc, *cs;
+  unsigned short csb[30];
+  cs=CreateLocalWS(&csloc,csb,30);
   if(!strncmp(num_fetion, sd->Number, 5)) is_fetion=1;
   strcpy(num, sd->Number);
   GetProvAndCity(cs->wsbody, num);

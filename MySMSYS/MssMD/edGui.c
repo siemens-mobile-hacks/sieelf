@@ -703,7 +703,7 @@ void Ed_SaveFile(WSHDR *txt, USER_OP *uo, int type)
     sdx=(SMS_DATA *)saveFile(txt, nl->num, uo->sd, type, 2);
     nl=nl->next;
   }
-  if(type==TYPE_DRAFT && uo->sd && uo->sd->type==TYPE_DRAFT && (int)sdx!=1)
+  if(type==TYPE_DRAFT && uo->sd && uo->sd->type==TYPE_DRAFT && (int)sdx!=1 && sdx!=0)
   {
     if(!uo->sd->isfile && uo->sd->id)
       deleteDat(uo->sd, 0);
@@ -1187,6 +1187,8 @@ void edGHook(GUI *data, int cmd)
 	   //&&(uo->sd->type!=TYPE_IN_N) //set status first
 	   &&(uo->sd->id)
 	     &&(!(uo->sd->msg_type&ISDES))
+	       &&(!(uo->sd->msg_type&ISUNKE))
+	       &&(!(uo->sd->msg_type&ISUNKT))
 	       &&(!(uo->sd->msg_type&ISREPORT) || !CFG_ENA_AUTO_DEL_RP))      
     {
       wstrcpy(text, uo->sd->SMS_TEXT);

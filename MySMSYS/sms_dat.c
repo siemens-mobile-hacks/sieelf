@@ -547,7 +547,7 @@ int saveFile(WSHDR *ws, char *number, SMS_DATA *sd, int type, int need_reload) /
   strcat(dir, folder);
   if(!isdir(dir, &err))
     mkdir(dir, &err);
-  if(sd && sd->type==TYPE_DRAFT && sd->isfile && sd->fname)
+  if(type==TYPE_DRAFT && sd && sd->type==TYPE_DRAFT && sd->isfile && sd->fname)
     strcpy(path, sd->fname); 
   else if(!GetMssPath(path, dir, &time, &date))
     return 0;

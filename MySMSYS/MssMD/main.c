@@ -290,6 +290,7 @@ const MENUPROCS_DESC procs_mmenu[MAIN_MENU_N]=
 
 int MM_ITEM_ICONS[]={0x564,0x564,0x564,0x564,0x564,0x564,0x564,0};
 int MM_HDR_ICONS[]={0x5C5, 0};
+
 int main_menu_onkey(void *data, GUI_MSG *msg)
 {
 #pragma swi_number=0x44
@@ -297,13 +298,13 @@ __swi __arm void TempLightOn(int x, int y);
   int n;
   if(!IsUnlocked()) TempLightOn(3, 0x7FFF);
 
-  if(msg->keys==0x1)
+  if((msg->keys==0x1) || (msg->keys==0x28))
   {
     void *dlg_csm=MenuGetUserPointer(data);
     popGS(dlg_csm);
     return 1;
   }
-  if((msg->keys==0x18)||(msg->keys==0x3D))
+  if((msg->keys==0x18)||(msg->keys==0x3D)||(msg->keys==0x27))
   {
     n=GetCurMenuItem(data);
   DO_P:
