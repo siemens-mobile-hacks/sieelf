@@ -49,4 +49,5 @@ extern const unsigned int CFG_SOUND_VOL8;
 extern const int CFG_ENA_AUTO_SAF_RT;
 extern const unsigned int CFG_ICONSNED_IB;
 extern const int CFG_ENA_SNED_ON_BG;
+extern const char CFG_DEFAULT_SENT_NUM[32];
 #endif

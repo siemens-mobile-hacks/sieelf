@@ -50,6 +50,10 @@ __root const CFG_CBOX_ITEM cfgcbox1[7] =
 	LGP_EDIT_FONT_LARGE,
 	LGP_EDIT_FONT_LARGE_BOLD
 };
+
+
+__root const CFG_HDR cfghdrb = {CFG_UTF8_STRING, LGP_CFG_DEFAULT_SENT_NUM, 0, 31};
+__root const char CFG_DEFAULT_SENT_NUM[32] = "";
 /*
 __root const CFG_HDR cfghdr8= {CFG_UTF8_STRING, "Utf8≤‚ ‘", 0, 127};
 __root const char UTF8_TEST[128]="";

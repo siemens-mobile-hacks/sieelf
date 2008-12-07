@@ -64,6 +64,7 @@ extern const char STR_UNK_TYPE[];
 #define LGP_CFG_PROFILE8_SET "情景模式8"
 #define LGP_CFG_ENA_SNED_ON_BG "后台发送短信"
 #define LGP_CFG_ICONSNED_IB "短信发送图标ID"
+#define LGP_CFG_DEFAULT_SENT_NUM "默认发送号码"
 #endif
 
 #ifdef LANG_EN
@@ -113,6 +114,7 @@ extern const char STR_UNK_TYPE[];
 #define LGP_CFG_PROFILE8_SET "Profile8"
 #define LGP_CFG_ENA_SNED_ON_BG "Send SMS on Background"
 #define LGP_CFG_ICONSNED_IB "Sending Picture ID"
+#define LGP_CFG_DEFAULT_SENT_NUM "Default Sent Number"
 #endif
 
 typedef struct{

@@ -1421,24 +1421,27 @@ int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, 
 
 //------------ num
   {
+    char *pnn;
+    WSHDR *wsname, wsnamen;
+    unsigned short wsnameb[50];
+    int is_fetion=0;
     if(strlen(sd->Number))
     {
+      pnn=sd->Number;
+    DO_NUM:
 #ifdef LANG_CN
-      WSHDR *wsname, wsnamen;
-      unsigned short wsnameb[50];
-      int is_fetion=0;
       wsname=CreateLocalWS(&wsnamen, wsnameb, 50);
-      if(!strncmp(num_fetion, sd->Number, 5)) is_fetion=1;
-      if(!findNameByNum(wsname, is_fetion?(sd->Number+5):sd->Number))
-	str_2ws(ews, sd->Number, 50);
+      if(!strncmp(num_fetion, pnn, 5)) is_fetion=1;
+      if(!findNameByNum(wsname, is_fetion?(pnn+5):pnn))
+	str_2ws(ews, pnn, 50);
       else
       {
 	if(is_fetion) wsprintf(ews, "%w(%t)", wsname, lgp.LGP_FETION);
 	else wstrcpy(ews, wsname);
       }
 #else
-      if(!findNameByNum(ews, sd->Number))
-	str_2ws(ews, sd->Number, 50);
+      if(!findNameByNum(ews, pnn))
+	str_2ws(ews, pnn, 50);
 #endif
     }
     else
@@ -1446,7 +1449,22 @@ int createEditGUI(void *dlg_csm, SMS_DATA *sd, int type, int list_type) //edit, 
       if((type==ED_VIEW || type==ED_FVIEW))
 	wsprintf(ews, "%c", ' ');
       else
-	CutWSTR(ews, 0);
+      {
+	if((type==ED_FREE || type==ED_NEW) && strlen((pnn=(char *)CFG_DEFAULT_SENT_NUM)))
+	{
+	  //is number
+	  for(int xl=0; xl<strlen(pnn); xl++)
+	  {
+	    if(pnn[xl]<'0' || pnn[xl]>'9')
+	      goto N_BLANK;
+	  }
+	  strcpy(((NUM_LIST *)(uo->nltop))->num, pnn);
+	  goto DO_NUM;
+	}
+	else
+      N_BLANK:
+	  CutWSTR(ews, 0);
+      }
     }
 #ifdef DEBUG
     {
