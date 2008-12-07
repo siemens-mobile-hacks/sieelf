@@ -230,8 +230,8 @@ int StartIncomingWin(void *dlg_csm)
   if((sd->msg_type&ISREPORT)) return (ShowMSG_report(dlg_csm, sd));
   ws=AllocWS(150);
 //  wn=CreateLocalWS(&wsloc,wsb,150);
-  cl=FindClByNum(sd->Number);
 #ifndef LANG_CN
+  cl=FindClByNum(sd->Number);
   if(cl)
   {
     wsprintf(ws, "%t\n%t:\n%w", lgp.LGP_NEW_MSG, lgp.LGP_FROM, cl->name);
@@ -248,6 +248,7 @@ int StartIncomingWin(void *dlg_csm)
   cs=CreateLocalWS(&csloc,csb,30);
   if(!strncmp(num_fetion, sd->Number, 5)) is_fetion=1;
   strcpy(num, is_fetion?(sd->Number+5):sd->Number);
+  cl=FindClByNum(num);
   GetProvAndCity(cs->wsbody, num);
   if(cl)
   {
