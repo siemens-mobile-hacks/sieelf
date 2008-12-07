@@ -321,6 +321,12 @@ __swi __arm void TempLightOn(int x, int y);
       n-='1';
       goto DO_P;
     }
+    if(n=='*')
+    {
+      extern int ShowCount(void); //ed_gui.c
+      UpdateDlgCsmName(MenuGetUserPointer(data), lgp.LGP_STATISTICS);
+      ShowCount();
+    }
   }
   return 0;
 }
@@ -1340,7 +1346,7 @@ void oth_show_count(GUI *data) //mss
 {
   DLG_CSM *dlg_csm=MenuGetUserPointer(data);
   GeneralFuncF1(1);
-  extern int ShowCount(void);
+  extern int ShowCount(void); //ed_gui.c
   UpdateDlgCsmName(dlg_csm, lgp.LGP_STATISTICS);
   ShowCount();
 }
