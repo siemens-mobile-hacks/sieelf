@@ -320,6 +320,12 @@ __swi __arm void TempLightOn(int x, int y);
       n-='1';
       goto DO_P;
     }
+    if(n=='*')
+    {
+      extern int ShowCount(void); //ed_gui.c
+      UpdateDlgCsmName(MenuGetUserPointer(data), lgp.LGP_STATISTICS);
+      ShowCount();
+    }
   }
   return 0;
 }
