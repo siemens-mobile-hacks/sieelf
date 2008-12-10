@@ -1034,6 +1034,8 @@ MySMSYS/MssMD/NativeAddressbook.c -text
 MySMSYS/MssMD/NativeAddressbook.h -text
 MySMSYS/MssMD/NewDatReader.c -text
 MySMSYS/MssMD/NewDatReader.h -text
+MySMSYS/MssMD/TabGUI.h -text
+MySMSYS/MssMD/TabGui.c -text
 MySMSYS/MssMD/adrList.c -text
 MySMSYS/MssMD/adrList.h -text
 MySMSYS/MssMD/conf_loader.c -text

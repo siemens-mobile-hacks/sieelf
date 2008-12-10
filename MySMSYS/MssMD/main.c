@@ -22,6 +22,7 @@
 #include "iconpack.h"
 #include "key_hook.h"
 #include "CSMswaper.h"
+#include "TabGui.h"
 
 extern void kill_data(void *p, void (*func_p)(void *));
 
@@ -197,6 +198,17 @@ int isTheLastDlg(unsigned int *id_pool, unsigned int id)
 
 //---------------------------------------
 
+const IPC_REQ smp_ipc=
+{
+  my_ipc_name,
+  my_ipc_name,
+  NULL
+};
+
+void SendSimpleIpcMsg(int submess)
+{
+  GBS_SendMessage(MMI_CEPID,MSG_IPC,submess,&smp_ipc);
+}
 //---------------------------------------
 //main menu
 const int main_menusoftkeys[]={0,1,2};
@@ -213,7 +225,7 @@ const SOFTKEYSTAB main_menu_skt=
   main_menu_sk,0
 };
 HEADER_DESC main_menuhdr={0,0,0,0,NULL,(int)LGP_NULL,LGP_NULL};
-#define MAIN_MENU_N 7
+#define MAIN_MENU_N 6
 
 void mm_newsms(GUI *gui)
 {
@@ -250,13 +262,13 @@ void mm_draftsms(GUI *gui)
 	DLG_CSM *dlg_csm=MenuGetUserPointer(gui);
 	showSMSList(dlg_csm, TYPE_DRAFT);
 }
-
+/*
 void mm_allsms(GUI *gui)
 {
 	DLG_CSM *dlg_csm=MenuGetUserPointer(gui);
 	showSMSList(dlg_csm, 0);
 }
-
+*/
 unsigned int CreateOthMenu(void *dlg_csm);
 
 void mm_oth(GUI *gui)
@@ -273,7 +285,7 @@ int MENU_TEXT[MAIN_MENU_N]=
   LGP_NULL,
   LGP_NULL,
   LGP_NULL,
-  LGP_NULL,
+  //LGP_NULL,
   LGP_NULL
 };
 
@@ -284,7 +296,7 @@ const MENUPROCS_DESC procs_mmenu[MAIN_MENU_N]=
   mm_insms_all,
   mm_outsms,
   mm_draftsms,
-  mm_allsms,
+  //mm_allsms,
   mm_oth,
 };
 
@@ -298,13 +310,13 @@ __swi __arm void TempLightOn(int x, int y);
   int n;
   if(!IsUnlocked()) TempLightOn(3, 0x7FFF);
 
-  if((msg->keys==0x1) || (msg->keys==0x28))
+  if((msg->keys==0x1)/* || (msg->keys==0x28)*/)
   {
     void *dlg_csm=MenuGetUserPointer(data);
     popGS(dlg_csm);
     return 1;
   }
-  if((msg->keys==0x18)||(msg->keys==0x3D)||(msg->keys==0x27))
+  if((msg->keys==0x18)||(msg->keys==0x3D)/*||(msg->keys==0x27)*/)
   {
     n=GetCurMenuItem(data);
   DO_P:
@@ -338,7 +350,8 @@ void main_menu_itemhndl(void *data, int curitem, void *user_pointer)
   WSHDR *ws=AllocMenuWS(data, 150);
   switch(curitem)
   {
-  case 6:
+  //case 6:
+  case 5:
   case 0:
     wsprintf(ws, PERCENT_T, MENU_TEXT[curitem]);
     break;
@@ -354,9 +367,9 @@ void main_menu_itemhndl(void *data, int curitem, void *user_pointer)
   case 4:
     wsprintf(ws, MM_FORMAT, MENU_TEXT[curitem], 0xE01D, getCountByType(TYPE_DRAFT));
     break;
-  case 5:
-    wsprintf(ws, MM_FORMAT, MENU_TEXT[curitem], 0xE01D, getCountByType(0));
-    break;
+  //case 5:
+  //  wsprintf(ws, MM_FORMAT, MENU_TEXT[curitem], 0xE01D, getCountByType(0));
+  //  break;
   default:
     wsprintf(ws, PERCENT_T, lgp.LGP_ERR);
     break;
@@ -424,6 +437,7 @@ void UpdateDlgCsmName(DLG_CSM *csm, const char *lgp)
     name->wsbody=malloc(32*sizeof(short));
   wsprintf(name, PERCENT_T, lgp);
 }
+
 static void dialogcsm_oncreate(CSM_RAM *data)
 {
   DLG_CSM *csm=(DLG_CSM *)data;
@@ -442,7 +456,8 @@ static void dialogcsm_oncreate(CSM_RAM *data)
   {
   case MY_SMSYS_IPC_START:
   case SMSYS_IPC_MAIN:
-    csm->gui_id=CreateMainMenu(csm);
+    //csm->gui_id=CreateMainMenu(csm);
+    csm->gui_id=CreateTabMenu(csm);
     break;
   case SMSYS_IPC_NEWSMS:
     csm->gui_id=newSMS(csm);
@@ -464,7 +479,8 @@ static void dialogcsm_oncreate(CSM_RAM *data)
     break;
   case SMSYS_IPC_TLAST:
     if(!(csm->gui_id=viewTheLastNew(csm)))
-      csm->gui_id=CreateMainMenu(csm);
+      data->state=-3;//csm->gui_id=CreateTabMenu(csm);
+      //csm->gui_id=CreateMainMenu(csm);
     break;
   case SMSYS_IPC_IN_ALL:
     csm->gui_id=showSMSList(csm, TYPE_IN_ALL);
@@ -475,12 +491,12 @@ static void dialogcsm_oncreate(CSM_RAM *data)
     break;
   case SMSYS_IPC_NEWSMS_NUM:
     if((!num_from_ipc)||(!(csm->gui_id=newSMSWithNum(csm, num_from_ipc))))
-      csm->gui_id=CreateMainMenu(csm);
+      data->state=-3;//csm->gui_id=CreateTabMenu(csm);//csm->gui_id=CreateMainMenu(csm);
     num_from_ipc=0;
     break;
   case SMSYS_IPC_SEND_UTF8:
     if((!text_utf8)||(!(csm->gui_id=newSMSWithUtf8Text(csm, text_utf8))))
-      csm->gui_id=CreateMainMenu(csm);
+      data->state=-3;//csm->gui_id=CreateTabMenu(csm);//csm->gui_id=CreateMainMenu(csm);
     text_utf8=0;
     break;
   case SMSYS_IPC_QN_OPMSG:
@@ -488,7 +504,7 @@ static void dialogcsm_oncreate(CSM_RAM *data)
   case SMSYS_IPC_VIEW_OPMSG:
   case SMSYS_IPC_REPLY_OPMSG:
     if(!(csm->gui_id=DoByOpmsgId(csm, IPC_SUB_MSG, opmsg_id)))
-      csm->gui_id=CreateMainMenu(csm);
+      data->state=-3;//csm->gui_id=CreateTabMenu(csm);//csm->gui_id=CreateMainMenu(csm);
     opmsg_id=0;
     break;
   case SMSYS_IPC_SEND_WS:
@@ -506,7 +522,7 @@ static void dialogcsm_oncreate(CSM_RAM *data)
     filename[0]=0;
     break;
   default:
-    csm->gui_id=CreateMainMenu(csm);
+    data->state=-3;//csm->gui_id=CreateTabMenu(csm);//csm->gui_id=CreateMainMenu(csm);
   }
   if(addCSMid(DlgCsmIDs, csm->csm.id)<0)
     addCSMidForced0(DlgCsmIDs, csm->csm.id);

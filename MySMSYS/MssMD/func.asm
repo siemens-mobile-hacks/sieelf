@@ -65,5 +65,14 @@ typedef struct
 //	defadr EDIT_SetHeaderInputIcon,0xA0A3A719 //void EDIT_SetHeaderInputIcon(void *header_pointer, const int *icons, void *malloc_adr, void *mfree_adr)
 //	defadr SetHeaderIcon,0xA0A3A6B3 //void SetHeaderIcon(void *hdr_pointer, const int *icon, void *malloc_adr, void *mfree_adr)
 //	defadr GetScreenSaverRAM,0xA030866D //SS_RAM *GetScreenSaverRam();
+
+	defadr GetTabGUI,0xA0A374BB//	; void *GetTabGUI(void *malloc_adr, void *mfree_adr)
+	defadr SetGUIDefinition,0xA0A34585//	; void SetGUIDefinition(void *gui, const void *definition)
+	//defadr A0A345EA+1	; void SetBViewRect(void *gui, int x, int y, int x2, int y2)
+	defadr SetGUIToTabGUI,0xA0A3796F//	; int SetGUIToTabGUI(void *tabgui, int n, int icons[4], void *gui)
+	defadr SetCursorTab,0xA0A37A8B//	; int SetCursorTab(void *tab_gui, int n)
+	defadr UpdateTab1stItem,0xA0A37BED//	; int UpdateTab1stItem(void *tab_gui, int unk_0)
+	defadr GetCursorTab,0xA0A37AA9//	; int GetCursorTab(void *tab_gui)
+	defadr GetGuiByTab,0xA0A37525//	; void *GetGuiByTab(void *tab_gui, int n)
 	END
 	

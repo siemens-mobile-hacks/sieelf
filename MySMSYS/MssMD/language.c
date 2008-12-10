@@ -11,7 +11,7 @@ const char ELFNAME_D[]="MssMD";
 #else
 const char ELFNAME_D[]="MssD";
 #endif
-const char COPY_RIGHT[]="My SMS System v2.2.7\n(c)BingK (binghelingxi)\n(r)titron,Rst7";
+const char COPY_RIGHT[]="My SMS System v2.3\n(c)BingK (binghelingxi)\n(r)titron,Rst7";
 
 const char PERCENT_T[]="%t";
 const char PERCENT_S[]="%s";
@@ -282,8 +282,9 @@ extern HEADER_DESC oth_menuhdr;
   MENU_TEXT[2]=(int)lgp.LGP_IN_A;
   MENU_TEXT[3]=(int)lgp.LGP_OUT;
   MENU_TEXT[4]=(int)lgp.LGP_DRAFT;
-  MENU_TEXT[5]=(int)lgp.LGP_ALL;
-  MENU_TEXT[6]=(int)lgp.LGP_OTHERS;
+  //MENU_TEXT[5]=(int)lgp.LGP_ALL;
+  //MENU_TEXT[6]=(int)lgp.LGP_OTHERS;
+  MENU_TEXT[5]=(int)lgp.LGP_OTHERS;
   
   oth_menuitems[0].lgp_id_small=(int)lgp.LGP_CONFIG;
   oth_menuitems[1].lgp_id_small=(int)lgp.LGP_OPEN_ARCHIVE;
