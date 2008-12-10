@@ -724,5 +724,13 @@
 0AE0: 0xA055EE48   ; 2B8:  __arm int SetNumToNativeAbData(NativeAbData *abd, int unk, WSHDR *num)
 0AE4: 0xA05EA1FC   ; 2B9:  __arm unsigned int OpenNativeAddressbook(int type, int unk1, int unk2, void *data)
 0AE8: 0xA0A3A6B3   ; 2BA:  __thumb void SetHeaderIcon(void *hdr_pointer, const int *icon, void *malloc_adr, void *mfree_adr)
+0AEC: 0xA0A374BB   ; 2BB:  __thumb void *GetTabGUI(void *malloc_adr, void *mfree_adr)
+0AF0: 0xA0A34585   ; 2BC:  __thumb void SetGUIDefinition(void *gui, const void *definition)
+0AF4: 0xA0A3796F   ; 2BD:  __thumb int SetGUIToTabGUI(void *tabgui, int n, const int *tabicons, void *gui)
+0AF8: 0xA0A37A8B   ; 2BE:  __thumb int SetCursorTab(void *tab_gui, int n)
+0AFC: 0xA0A37BED   ; 2BF:  __thumb int UpdateTab1stItem(void *tab_gui, int unk_0)
+
+0B00: 0xA0A37AA9   ; 2C0:  __thumb int GetCursorTab(void *tab_gui)
+0B04: 0xA0A37525   ; 2C1:  __thumb void *GetGuiByTab(void *tab_gui, int n)
 #pragma disable old_equal_ff
 +0
