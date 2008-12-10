@@ -43,6 +43,7 @@ const char *icon_names[]=
   
   //display
   "dis_smsnew.png", //show in display
+  "icon_mysmsys.png"
   "",""
 };
 
@@ -57,6 +58,7 @@ const int icon_default[]=
   0x2A5,0x4DB,0x28C,
   0x282,0x52C,
   426,
+  0x2AB,
   0,0
 #else
 #ifdef S68
@@ -68,6 +70,7 @@ const int icon_default[]=
   0x4CF,0x2BA,0x2D6,
   0x576,0x576,
   0x5FA,
+  0x5FA,
   0,0
 #else
   0x564,0x564,0x564,0x564,0x564,0x564,0x564, //blank
@@ -77,6 +80,7 @@ const int icon_default[]=
   0x29A,0x505,0x1A1,
   0x278,0x558,
   467,
+  0x5C5,
   0,0
 #endif
 #endif
@@ -129,16 +133,43 @@ void InitIconPack(void)
   MM_ITEM_ICONS[2]=ip.mm_inbox;
   MM_ITEM_ICONS[3]=ip.mm_sent;
   MM_ITEM_ICONS[4]=ip.mm_draft;
-  MM_ITEM_ICONS[5]=ip.mm_allsms;
-  MM_ITEM_ICONS[6]=ip.mm_others;
+  //MM_ITEM_ICONS[5]=ip.mm_allsms;
+  //MM_ITEM_ICONS[6]=ip.mm_others;
+  MM_ITEM_ICONS[5]=ip.mm_others;
+  
   //MM_ITEM_ICONS[7]=0;
-  MM_HDR_ICONS[0]=ip.hdr_mmenu;
+  //MM_HDR_ICONS[0]=ip.hdr_mmenu;
+  MM_HDR_ICONS[0]=ip.icon_mysmsys;
   
   //popGui.c
   extern int pp_incoming_icons[];
   extern int pp_showmsg_icons[];
   pp_incoming_icons[0]=ip.pp_incoming;
   pp_showmsg_icons[0]=ip.pp_showmsg;
+  
+  //TabGui.c
+  extern int TabIcons[5][4];
+  int i;
+  for(i=0;i<4;i++)
+  {
+    TabIcons[0][i]=ip.hdr_mmenu;
+  }
+  for(i=0;i<4;i++)
+  {
+    TabIcons[1][i]=ip.hdr_inbox;
+  }
+  for(i=0;i<4;i++)
+  {
+    TabIcons[2][i]=ip.hdr_sent;
+  }
+  for(i=0;i<4;i++)
+  {
+    TabIcons[3][i]=ip.hdr_draft;
+  }
+  for(i=0;i<4;i++)
+  {
+    TabIcons[4][i]=ip.hdr_allsms;
+  }
 }
 
 void LoadDefaultIP(void)

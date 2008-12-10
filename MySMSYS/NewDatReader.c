@@ -429,7 +429,7 @@ int DoAllDatMsg(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_
     if(DoMsgList(lst, sms_buf, ems_admin_buf, sms_size, ems_admin_size))
     {
       res++;
-      if(!(res%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
+      if(!(res%4)) SendSimpleIpcMsg(SMSYS_IPC_SMS_DATA_UPDATE);//GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
     }
     lst=lst->next;
   }
@@ -439,11 +439,11 @@ int DoAllDatMsg(char *sms_buf, char *ems_admin_buf, int sms_size, int ems_admin_
     if(DoMsgList(lst, sms_buf, ems_admin_buf, sms_size, ems_admin_size))
     {
       res++;
-      if(!(res%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
+      if(!(res%4)) SendSimpleIpcMsg(SMSYS_IPC_SMS_DATA_UPDATE);//GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
     }
     lst=lst->next;
   }
-  if((res%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
+  if((res%4)) SendSimpleIpcMsg(SMSYS_IPC_SMS_DATA_UPDATE);//GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
   return res;
 }
 
@@ -945,14 +945,14 @@ int CheckFile(int type)
 	  LockSched();
 	  AddToSdlByTime(sdx);
 	  UnlockSched();
-	  if(!(res%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
+	  if(!(res%4)) SendSimpleIpcMsg(SMSYS_IPC_SMS_DATA_UPDATE);//GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
 	}
 	else FreeSdOne(sdx);
       }
     }while(FindNextFile(&de, &err));
   }
   FindClose(&de, &err);
-  if((res%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
+  if((res%4)) SendSimpleIpcMsg(SMSYS_IPC_SMS_DATA_UPDATE);//GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
   return res;
 }
 
@@ -976,7 +976,7 @@ int CheckDat(void)
 	{
 	  if(ReadThisSms(idd->index, 0))
 	    res++;
-	  if(res && !(res%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
+	  if(res && !(res%4)) SendSimpleIpcMsg(SMSYS_IPC_SMS_DATA_UPDATE);//GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
 	  continue;
 	}
 	if(idd->type==1)
@@ -985,7 +985,7 @@ int CheckDat(void)
 	  {
 	    sd->type=TYPE_IN_N;
 	    res++;
-	    if(!(res%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
+	    if(!(res%4)) SendSimpleIpcMsg(SMSYS_IPC_SMS_DATA_UPDATE);//GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
 	    continue;
 	  }
 	}
@@ -995,7 +995,7 @@ int CheckDat(void)
 	  {
 	    sd->type=TYPE_IN_R;
 	    res++;
-	    if(!(res%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
+	    if(!(res%4)) SendSimpleIpcMsg(SMSYS_IPC_SMS_DATA_UPDATE);//GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
 	    continue;
 	  }
 	}
@@ -1017,12 +1017,12 @@ int CheckDat(void)
       {
 	if(ReadThisSms(idd->index, 0))
 	  res++;
-	if(res && !(res%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
+	if(res && !(res%4)) SendSimpleIpcMsg(SMSYS_IPC_SMS_DATA_UPDATE);//GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
       }
     }
     lst=lst->next;
   }
-  if((res%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
+  if((res%4)) SendSimpleIpcMsg(SMSYS_IPC_SMS_DATA_UPDATE);//GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
   return res;
 }
 
@@ -1073,7 +1073,7 @@ int CheckBack(void)
 	  sdl=sdl->next;
 	  delSDList(sdx);
 	  n++;
-	  if(!(n%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
+	  if(!(n%4)) SendSimpleIpcMsg(SMSYS_IPC_SMS_DATA_UPDATE);//GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
 	  continue;
 	}
       }
@@ -1086,13 +1086,13 @@ int CheckBack(void)
 	sdl=sdl->next;
 	delSDList(sdx);
 	n++;
-	if(!(n%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
+	if(!(n%4)) SendSimpleIpcMsg(SMSYS_IPC_SMS_DATA_UPDATE);//GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
 	continue;
       }
     }
     sdl=sdl->next;
   }
-  if((n%4)) GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
+  if((n%4)) SendSimpleIpcMsg(SMSYS_IPC_SMS_DATA_UPDATE);//GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
   return n;
 }
 
@@ -1107,7 +1107,7 @@ int CheckAll(void)
   res+=CheckFile(TYPE_OUT);
   res+=CheckFile(TYPE_DRAFT);
   new_sms_n=getCountByType(TYPE_IN_N);
-  GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
+  SendSimpleIpcMsg(SMSYS_IPC_SMS_DATA_UPDATE);//GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SMS_DATA_UPDATE,&my_ipc_upd);
   return res;
 }
 

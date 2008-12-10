@@ -39,6 +39,8 @@ typedef struct
   
   //display
   int dis_smsnew;
+  
+  int icon_mysmsys;
 }ICONPACK;
 
 extern ICONPACK ip;

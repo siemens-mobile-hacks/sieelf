@@ -6,8 +6,12 @@
 const char my_ipc_name[]=MY_SMSYS_IPC_NAME;
 
 const char ELFNAME[]="MySMSYS";
+#ifdef MEGADIAL
+const char ELFNAME_D[]="MssMD";
+#else
 const char ELFNAME_D[]="MssD";
-const char COPY_RIGHT[]="My SMS System v2.2.7\n(c)BingK (binghelingxi)\n(r)titron,Rst7";
+#endif
+const char COPY_RIGHT[]="My SMS System v2.3\n(c)BingK (binghelingxi)\n(r)titron,Rst7";
 
 const char PERCENT_T[]="%t";
 const char PERCENT_S[]="%s";
@@ -278,8 +282,9 @@ extern HEADER_DESC oth_menuhdr;
   MENU_TEXT[2]=(int)lgp.LGP_IN_A;
   MENU_TEXT[3]=(int)lgp.LGP_OUT;
   MENU_TEXT[4]=(int)lgp.LGP_DRAFT;
-  MENU_TEXT[5]=(int)lgp.LGP_ALL;
-  MENU_TEXT[6]=(int)lgp.LGP_OTHERS;
+  //MENU_TEXT[5]=(int)lgp.LGP_ALL;
+  //MENU_TEXT[6]=(int)lgp.LGP_OTHERS;
+  MENU_TEXT[5]=(int)lgp.LGP_OTHERS;
   
   oth_menuitems[0].lgp_id_small=(int)lgp.LGP_CONFIG;
   oth_menuitems[1].lgp_id_small=(int)lgp.LGP_OPEN_ARCHIVE;
@@ -320,6 +325,11 @@ extern HEADER_DESC tplmenuhdr;
   tplmenu_sk[0].lgp_id=(int)lgp.LGP_OK;
   tplmenu_sk[1].lgp_id=(int)lgp.LGP_BACK;
   tplmenuhdr.lgp_id=(int)lgp.LGP_TEMPLATE;
+#ifdef MEGADIAL
+  extern SOFTKEY_DESC menu_sk[];
+  menu_sk[0].lgp_id=(int)lgp.LGP_SELECT;
+  menu_sk[1].lgp_id=(int)lgp.LGP_BACK;
+#endif
 }
 char *GotoLineStart(char *buf)    
 {                                 

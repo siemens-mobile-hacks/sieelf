@@ -7507,6 +7507,9 @@
     <name>$PROJ_DIR$\string_works.c</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\TabGui.c</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\template.c</name>
   </file>
 </project>

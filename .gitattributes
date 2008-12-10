@@ -1093,6 +1093,8 @@ MySMSYS/Plugin/Plugin.ewp -text
 MySMSYS/Plugin/func.asm -text
 MySMSYS/Plugin/main.c -text
 MySMSYS/Plugin/test.xcl -text
+MySMSYS/TabGUI.h -text
+MySMSYS/TabGui.c -text
 MySMSYS/adrList.c -text
 MySMSYS/adrList.h -text
 MySMSYS/conf_loader.c -text

@@ -22,8 +22,9 @@
 
 typedef struct
 {
-	int type;
-	DLG_CSM *dlg_csm;
+  int type;
+  int is_tab;
+  DLG_CSM *dlg_csm;
 }SML_OP; //sms list menu user pointer
 
 typedef struct
@@ -478,12 +479,12 @@ int sms_menu_onkey(void *data, GUI_MSG *msg)
       }
       ShowFileErrCode(k);
     }
-    else if(i==RIGHT_BUTTON)
+    else if(i==RIGHT_BUTTON && !so->is_tab)
     {
       createEditGUI(so->dlg_csm, sd, ED_EDIT, 0);
       return 1;
     }
-    else if(i==LEFT_BUTTON)
+    else if(i==LEFT_BUTTON && !so->is_tab)
     {
       return 1;
     }
@@ -674,7 +675,9 @@ void sms_menu_ghook(void *data, int cmd)
       break;
     }
     SetHeaderText(hdr_p, hdr_t, ma, mf);
-    SetHeaderIcon(hdr_p, SL_HDR_ICONS[(so->type>6)?0:so->type], ma, mf);
+    extern int MM_HDR_ICONS[]; //main.c
+    if(!so->is_tab) SetHeaderIcon(hdr_p, SL_HDR_ICONS[(so->type>6)?0:so->type], ma, mf);
+    else SetHeaderIcon(hdr_p, MM_HDR_ICONS, ma, mf);
     //if(n) SetSoftKey(data,&SK_VIEW_PIC,SET_SOFT_KEY_M);
     if(n) SetMenuSoftKey(data,&SK_VIEW_PIC,SET_SOFT_KEY_M);
     else SetMenuSoftKey(data,&SK_OK2,SET_SOFT_KEY_N);
@@ -725,15 +728,24 @@ const ML_MENU_DESC sms_menu=
   1 //line
 };
 
+void *GetSLUserPointer(void *dlg_csm, int type, int is_tab)
+{
+  SML_OP *so=malloc(sizeof(SML_OP));
+  so->type=type;
+  so->is_tab=is_tab;
+  so->dlg_csm=dlg_csm;
+  return so;
+}
+
 int showSMSList(void *dlg_csm, int type)
 {
-	unsigned int id;
-	SML_OP *so=malloc(sizeof(SML_OP));
-	so->type=type;
-	so->dlg_csm=dlg_csm;
-
-	patch_header(&sms_menuhdr);
-	id=CreateMLMenu(&sms_menu,&sms_menuhdr,0,getCountByType(type), so);
-	pushGS(dlg_csm, id);
-	return id;
+  unsigned int id;
+  SML_OP *so=GetSLUserPointer(dlg_csm, type, 0);//=malloc(sizeof(SML_OP));
+  //so->type=type;
+  //so->is_tab=0;
+  //so->dlg_csm=dlg_csm;
+  patch_header(&sms_menuhdr);
+  id=CreateMLMenu(&sms_menu,&sms_menuhdr,0,getCountByType(type), so);
+  pushGS(dlg_csm, id);
+  return id;
 }

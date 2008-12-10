@@ -71,7 +71,7 @@ typedef struct
 }MSS_FILE_P2;
 
 extern SMS_DATA *sdltop;
-extern const IPC_REQ my_ipc_upd;
+//extern const IPC_REQ my_ipc_upd;
 //sdl
 SMS_DATA *AllocSD(void);
 void AddToSdlByTime(SMS_DATA *sd);

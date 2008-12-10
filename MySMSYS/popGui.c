@@ -131,7 +131,8 @@ int popup_onkey(void *data, GUI_MSG *msg)
     if(dlg_csm)
     {
       if(!(dlg_csm->gui_id=viewTheLastNew(dlg_csm)))
-	dlg_csm->gui_id=CreateMainMenu(dlg_csm);
+        dlg_csm->csm.state=-3; //close
+	//dlg_csm->gui_id=CreateMainMenu(dlg_csm);
     }
     return 1;
   }
