@@ -100,6 +100,7 @@ int CreateTabMenu(void *dlg_csm)
   //sms list
   extern const HEADER_DESC sms_menuhdr;
   extern const ML_MENU_DESC sms_menu;
+  patch_header(&sms_menuhdr);
   for(n=1; n<TAB_N; n++)
   {
     void *so;
@@ -121,7 +122,6 @@ int CreateTabMenu(void *dlg_csm)
     SetMenuItemCount(m_gui, getCountByType(type));
     MenuSetUserPointer(m_gui, so);
     SetCursorToMenuItem(m_gui, 0);
-    patch_header(&sms_menuhdr);
     SetHeaderToMenu(m_gui, &sms_menuhdr, ma);
     SetGUIToTabGUI(tab_gui, n, TabIcons[n], m_gui);
   }

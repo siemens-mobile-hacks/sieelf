@@ -44,6 +44,7 @@ typedef struct
 //const int hdr_icon[]={(int)"0:\\ZBin\\MySMSYS\\new.png",0};
 const HEADER_DESC sms_menuhdr={0,0,0,0,NULL,LGP_NULL,LGP_NULL};
 
+const HEADER_DESC slop_menuhdr={0,0,0,0,NULL,LGP_NULL,LGP_NULL};
 //------------------------------------------------------
 
 //#define SLOP_MENU_N 7
@@ -353,12 +354,12 @@ int CreateslOpMenu(DLG_CSM *dlg_csm, SMS_DATA *sd, int type)
 	su->sd=sd;
 
 	//patch_header(&sms_menuhdr);
-	patch_option_header(&sms_menuhdr);
+	patch_option_header(&slop_menuhdr);
 	if(sd->isfile==1)
 		item_n=SLOP_MENU_N_FILE;
 	else
 		item_n=SLOP_MENU_N_DAT;
-	return (CreateSLMenu_30or2(&slop_menu,&sms_menuhdr,0,item_n, su));
+	return (CreateSLMenu_30or2(&slop_menu,&slop_menuhdr,0,item_n, su));
 //	if(!sd)
 //		return (CreateSLMenu(&slop_menu_3,&sms_menuhdr,0, 1, su));
 //	if(sd->isfile==1)
@@ -637,7 +638,7 @@ void sms_menu_ghook(void *data, int cmd)
     int cur=GetCurMenuItem(data);
     if(cur>=n) SetCursorToMenuItem(data, 0);
     Menu_SetItemCountDyn(data, n);
-    patch_header(&sms_menuhdr);
+    //patch_header(&sms_menuhdr);
     DisableIDLETMR();
   }
   else if(cmd==7)
