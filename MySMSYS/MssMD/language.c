@@ -11,7 +11,7 @@ const char ELFNAME_D[]="MssMD";
 #else
 const char ELFNAME_D[]="MssD";
 #endif
-const char COPY_RIGHT[]="My SMS System v2.3\n(c)BingK (binghelingxi)\n(r)titron,Rst7";
+const char COPY_RIGHT[]="My SMS System v2.4\n(c)BingK (binghelingxi)\n(r)titron,Rst7";
 
 const char PERCENT_T[]="%t";
 const char PERCENT_S[]="%s";
@@ -141,6 +141,7 @@ const char df_LGP_NUMBER[]="Number";
 const char df_LGP_TEXT[]="Text";
 const char df_LGP_TO[]="To";
 const char df_LGP_UNK[]="Unknow";
+const char df_LGP_FILTER[]="Fliter";
 
 LGPACK lgp;
 char *lang_buf=0;
@@ -219,6 +220,7 @@ void LoadLgpDefault(void)
   lgp.LGP_TEXT              =df_LGP_TEXT;
   lgp.LGP_TO                =df_LGP_TO;
   lgp.LGP_UNK               =df_LGP_UNK;
+  lgp.LGP_FILTER            =df_LGP_FILTER;
 }
 
 

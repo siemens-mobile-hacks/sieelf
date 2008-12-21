@@ -65,6 +65,21 @@ extern const char STR_UNK_TYPE[];
 #define LGP_CFG_ENA_SNED_ON_BG "后台发送短信"
 #define LGP_CFG_ICONSNED_IB "短信发送图标ID"
 #define LGP_CFG_DEFAULT_SENT_NUM "默认发送号码"
+#define LGP_CFG_FILTERSET "过滤设置"
+#define LGP_CFG_FILTEROP "过滤选项"
+#define LGP_FILTER_ALL "全部"
+#define LGP_FILTER_NEW "未读短信"
+#define LGP_FILTER_DAT "来自SMS.dat"
+#define LGP_FILTER_FILE "来自文件"
+#define LGP_FILTER_NUM "号码"
+#define LGP_FILTER_STR "字符串"
+#define LGP_CFG_STRORNUM "字符串或号码"
+#define LGP_CFG_DEFAULT_TAB "默认标签"
+#define LGP_CFG_MAINMENU "主菜单"
+#define LGP_CFG_INBOX "收件箱"
+#define LGP_CFG_SENT "已发送"
+#define LGP_CFG_FILTER "筛选显示"
+#define LGP_CFG_DRAFT "草稿"
 #endif
 
 #ifdef LANG_EN
@@ -115,6 +130,21 @@ extern const char STR_UNK_TYPE[];
 #define LGP_CFG_ENA_SNED_ON_BG "Send SMS on Background"
 #define LGP_CFG_ICONSNED_IB "Sending Picture ID"
 #define LGP_CFG_DEFAULT_SENT_NUM "Default Sent Number"
+#define LGP_CFG_FILTERSET "Filter Settings"
+#define LGP_CFG_FILTEROP "Filter Options"
+#define LGP_FILTER_ALL "All"
+#define LGP_FILTER_NEW "New SMS"
+#define LGP_FILTER_DAT "From SMS.dat"
+#define LGP_FILTER_FILE "From Files"
+#define LGP_FILTER_NUM "Number"
+#define LGP_FILTER_STR "Strings"
+#define LGP_CFG_STRORNUM "Str Or Num"
+#define LGP_CFG_DEFAULT_TAB "Default Tab"
+#define LGP_CFG_MAINMENU "MainMenu"
+#define LGP_CFG_INBOX "Inbox"
+#define LGP_CFG_SENT "Sent"
+#define LGP_CFG_FILTER "Filter"
+#define LGP_CFG_DRAFT "Draft"
 #endif
 
 typedef struct{
@@ -191,6 +221,7 @@ typedef struct{
   const char *LGP_TEXT;
   const char *LGP_TO;
   const char *LGP_UNK;
+  const char *LGP_FILTER;
 }LGPACK;
 
 extern LGPACK lgp;

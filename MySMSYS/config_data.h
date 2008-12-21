@@ -50,4 +50,7 @@ extern const int CFG_ENA_AUTO_SAF_RT;
 extern const unsigned int CFG_ICONSNED_IB;
 extern const int CFG_ENA_SNED_ON_BG;
 extern const char CFG_DEFAULT_SENT_NUM[32];
+extern const unsigned int CFG_FILTEROP;
+extern const char CFG_STRORNUM[32];
+extern const unsigned int CFG_DEFAULT_TAB;
 #endif

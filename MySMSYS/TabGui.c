@@ -5,7 +5,7 @@
 #include "guiIdMan.h"
 #include "MySMSYS_ipc.h"
 #include "smsList.h"
-
+#include "config_data.h"
 
 #define TAB_N 5
 
@@ -39,7 +39,8 @@ void TabGuiGHook(void *gui, int cmd)
       case 1: type=TYPE_IN_ALL;break;
       case 2: type=TYPE_OUT;break;
       case 3: type=TYPE_DRAFT;break;
-      case 4: type=0;break;
+      //case 4: type=0;break;
+      case 4: type=TYPE_FILTER;break;
       default : type=0;
       }
       m_gui=GetGuiByTab(gui, n);
@@ -111,7 +112,8 @@ int CreateTabMenu(void *dlg_csm)
     case 1: type=TYPE_IN_ALL;break;
     case 2: type=TYPE_OUT;break;
     case 3: type=TYPE_DRAFT;break;
-    case 4: type=0;break;
+    //case 4: type=0;break;
+    case 4: type=TYPE_FILTER;break;
     }
     so=GetSLUserPointer(dlg_csm, type, 1);
     //so=malloc(sizeof(SML_OP));
@@ -125,7 +127,8 @@ int CreateTabMenu(void *dlg_csm)
     SetHeaderToMenu(m_gui, &sms_menuhdr, ma);
     SetGUIToTabGUI(tab_gui, n, TabIcons[n], m_gui);
   }
-  SetCursorTab(tab_gui, 0);
+  //SetCursorTab(tab_gui, 0);
+  SetCursorTab(tab_gui, CFG_DEFAULT_TAB);
   UpdateTab1stItem(tab_gui, 0);
   gui_id=CreateGUI(tab_gui);
   pushGS(dlg_csm, gui_id);

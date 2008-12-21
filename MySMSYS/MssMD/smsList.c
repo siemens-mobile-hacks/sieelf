@@ -672,6 +672,9 @@ void sms_menu_ghook(void *data, int cmd)
     case TYPE_IN_ALL:
       wsprintf(hdr_t, SM_FORMAT, lgp.LGP_IN_A, 0xE01D, cur_n, n);
       break;
+    case TYPE_FILTER:
+      wsprintf(hdr_t, SM_FORMAT, lgp.LGP_FILTER, 0xE01D, cur_n, n);
+      break;
     default:
       CutWSTR(hdr_t, 0);
       break;
@@ -710,6 +713,9 @@ void sms_menu_ghook(void *data, int cmd)
       break;
     case TYPE_IN_ALL:
       lgpN=lgp.LGP_IN_A;
+      break;
+    case TYPE_FILTER:
+      lgpN=lgp.LGP_FILTER;
       break;
     default:
       lgpN=0;

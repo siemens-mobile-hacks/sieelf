@@ -54,6 +54,17 @@ __root const CFG_CBOX_ITEM cfgcbox1[7] =
 
 __root const CFG_HDR cfghdrb = {CFG_UTF8_STRING, LGP_CFG_DEFAULT_SENT_NUM, 0, 31};
 __root const char CFG_DEFAULT_SENT_NUM[32] = "";
+
+__root const CFG_HDR cfghdrc = {CFG_CBOX, LGP_CFG_DEFAULT_TAB, 0, 5};
+__root const unsigned int CFG_DEFAULT_TAB = 0;
+__root const CFG_CBOX_ITEM cfgcboxc[5] = 
+{
+	LGP_CFG_MAINMENU, 
+	LGP_CFG_INBOX,
+	LGP_CFG_SENT,
+	LGP_CFG_DRAFT,
+	LGP_CFG_FILTER,
+};
 /*
 __root const CFG_HDR cfghdr8= {CFG_UTF8_STRING, "Utf8≤‚ ‘", 0, 127};
 __root const char UTF8_TEST[128]="";
@@ -221,3 +232,21 @@ __root const unsigned int CFG_ICONSNED_IB = 477;
 
 __root const CFG_HDR cfghdr3_9 = {CFG_LEVEL, "", 0, 0};
 
+__root const CFG_HDR cfghdr11_0 = {CFG_LEVEL, LGP_CFG_FILTERSET, 1, 0};
+
+__root const CFG_HDR cfghdr11_1 = {CFG_CBOX, LGP_CFG_FILTEROP, 0, 6};
+__root const unsigned int CFG_FILTEROP = 0;
+__root const CFG_CBOX_ITEM cfgcbox11_1[6] = 
+{
+	LGP_FILTER_ALL, 
+	LGP_FILTER_NEW,
+        LGP_FILTER_DAT,
+        LGP_FILTER_FILE,
+	LGP_FILTER_NUM,
+	LGP_FILTER_STR,
+};
+
+__root const CFG_HDR cfghdr11_2 = {CFG_UTF8_STRING, LGP_CFG_STRORNUM, 0, 31};
+__root const char CFG_STRORNUM[32] = "";
+
+__root const CFG_HDR cfghdr11_9 = {CFG_LEVEL, "", 0, 0};

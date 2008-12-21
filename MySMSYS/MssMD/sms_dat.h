@@ -19,6 +19,7 @@
 #define TYPE_DRAFT	4
 #define TYPE_IN_ALL 5
 
+#define TYPE_FILTER 0xF
 //msg_type
 #define ISSMS 0 //00000000
 #define ISEMS 1 //00000001

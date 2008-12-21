@@ -6431,6 +6431,9 @@
     <name>$PROJ_DIR$\edGui.c</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\Filter.c</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\func.asm</name>
   </file>
   <file>

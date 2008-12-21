@@ -28,6 +28,7 @@ typedef struct
   int hdr_sent;
   int hdr_draft;
   int hdr_allsms;
+  int hdr_filter;
   //hdr edit_gui
   int hdr_ed_view;
   int hdr_ed_edit;

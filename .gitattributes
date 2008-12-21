@@ -1015,6 +1015,8 @@ MySMSYS/Files/Img_windes/sms_sent.png -text
 MySMSYS/Files/lang_cn.txt -text
 MySMSYS/Files/lang_en.txt -text
 MySMSYS/Files/lang_ru.txt -text
+MySMSYS/Filter.c -text
+MySMSYS/Filter.h -text
 MySMSYS/MssLinker/MssLinker.ewp -text
 MySMSYS/MssLinker/func.asm -text
 MySMSYS/MssLinker/main.c -text
@@ -1023,6 +1025,8 @@ MySMSYS/MssMD/CSMswaper.c -text
 MySMSYS/MssMD/CSMswaper.h -text
 MySMSYS/MssMD/CodeShow.c -text
 MySMSYS/MssMD/CodeShow.h -text
+MySMSYS/MssMD/Filter.c -text
+MySMSYS/MssMD/Filter.h -text
 MySMSYS/MssMD/MakeAll_CN.cmd -text
 MySMSYS/MssMD/MakeAll_EN.cmd -text
 MySMSYS/MssMD/MakeMe.cmd -text

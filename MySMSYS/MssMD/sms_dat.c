@@ -9,6 +9,9 @@
 #include "main.h"
 #include "string_works.h"
 #include "NewDatReader.h"
+
+
+#include "Filter.h"
 SMS_DATA *sdltop=0;
 
 void delSDList(SMS_DATA *sdl)
@@ -57,35 +60,39 @@ void freeSDList(void)
 
 int getCountByType(int type) //0, all
 {
-	int i=0;
-	SMS_DATA *sdl=sdltop;
-	if(type>0&&type<5)
-	{
-		while(sdl)
-		{
-			if(sdl->type==type)
-				i++;
-			sdl=sdl->next;
-		}
-	}
-	else if(type==TYPE_IN_ALL)
-	{
-		while(sdl)
-		{
-			if((sdl->type==TYPE_IN_R)||(sdl->type==TYPE_IN_N)||(sdl->type==TYPE_IN_ALL))
-				i++;
-			sdl=sdl->next;
-		}
-	}
-	else
-	{
-		while(sdl)
-		{
-			i++;
-			sdl=sdl->next;
-		}
-	}
-	return i;
+  int i=0;
+  SMS_DATA *sdl=sdltop;
+  if(type>0&&type<5)
+  {
+    while(sdl)
+    {
+      if(sdl->type==type)
+	i++;
+      sdl=sdl->next;
+    }
+  }
+  else if(type==TYPE_IN_ALL)
+  {
+    while(sdl)
+    {
+      if((sdl->type==TYPE_IN_R)||(sdl->type==TYPE_IN_N)||(sdl->type==TYPE_IN_ALL))
+	i++;
+      sdl=sdl->next;
+    }
+  }
+  else if(type==TYPE_FILTER)
+  {
+    return (FilterGetCountSDL());
+  }
+  else
+  {
+    while(sdl)
+    {
+      i++;
+      sdl=sdl->next;
+    }
+  }
+  return i;
 }
 
 
@@ -150,6 +157,10 @@ SMS_DATA *getSMSDataByType(int n, int type)//0, all
 				i++;
 			sdl=sdl->next;
 		}
+	}
+	else if(type==TYPE_FILTER)
+	{
+	  return (FilterFindSDL(n));
 	}
 	else
 	{
@@ -515,6 +526,11 @@ int saveFile(WSHDR *ws, char *number, SMS_DATA *sd, int type, int need_reload) /
   const char *folder;
   char dir[128];
   SMS_DATA *sdx=0;
+  if(type==TYPE_FILTER)
+  {
+    if(sd) type=sd->type;
+    else type=0;
+  }
   switch(type)
   {
   case TYPE_DRAFT:
@@ -1208,62 +1224,72 @@ int SaveAllAsFile(void)
 */
 SMS_DATA *FindNextByType(SMS_DATA *sdl, int type)
 {
-	if(!sdl)
-		return 0;
-	sdl=sdl->next;
-	if((type==TYPE_OUT)||(type==TYPE_DRAFT))
-	{
-		while(sdl)
-		{
-			if(sdl->type==type)
-				return sdl;
-			sdl=sdl->next;
-		}
-	}
-	else if((type==TYPE_IN_ALL)||(type==TYPE_IN_N)||(type==TYPE_IN_R))
-	{
-		while(sdl)
-		{
-			if((sdl->type==TYPE_IN_R)||(sdl->type==TYPE_IN_N)||(sdl->type==TYPE_IN_ALL))
-				return sdl;
-			sdl=sdl->next;
-		}
-	}
-	else
-	{
-		return sdl;
-	}
-	return 0;
+  if(!sdl) return 0;
+  if((type==TYPE_OUT)||(type==TYPE_DRAFT))
+  {
+    sdl=sdl->next;
+    while(sdl)
+    {
+      if(sdl->type==type)
+	return sdl;
+      sdl=sdl->next;
+    }
+  }
+  else if((type==TYPE_IN_ALL)||(type==TYPE_IN_N)||(type==TYPE_IN_R))
+  {
+    sdl=sdl->next;
+    while(sdl)
+    {
+      if((sdl->type==TYPE_IN_R)||(sdl->type==TYPE_IN_N)||(sdl->type==TYPE_IN_ALL))
+	return sdl;
+      sdl=sdl->next;
+    }
+  }
+  else if(type==TYPE_FILTER)
+  {
+    return FindNextFilterSDL(sdl);
+  }
+  else
+  {
+    sdl=sdl->next;
+    return sdl;
+  }
+  return 0;
 }
 
 SMS_DATA *FindPrevByType(SMS_DATA *sdl, int type)
 {
-	if(!sdl)
-		return 0;
-	sdl=sdl->prev;
-	if((type==TYPE_OUT)||(type==TYPE_DRAFT))
-	{
-		while(sdl)
-		{
-			if(sdl->type==type)
-				return sdl;
-			sdl=sdl->prev;
-		}
-	}
-	else if((type==TYPE_IN_ALL)||(type==TYPE_IN_N)||(type==TYPE_IN_R))
-	{
-		while(sdl)
-		{
-			if((sdl->type==TYPE_IN_R)||(sdl->type==TYPE_IN_N)||(sdl->type==TYPE_IN_ALL))
-				return sdl;
-			sdl=sdl->prev;
-		}
-	}
-	else
-	{
-		return sdl;
-	}
-	return 0;
+  if(!sdl) return 0;
+  if((type==TYPE_OUT)||(type==TYPE_DRAFT))
+  {
+    sdl=sdl->prev;
+    while(sdl)
+    {
+      if(sdl->type==type)
+	return sdl;
+      sdl=sdl->prev;
+    }
+  }
+  else if((type==TYPE_IN_ALL)||(type==TYPE_IN_N)||(type==TYPE_IN_R))
+  {
+    sdl=sdl->prev;
+    while(sdl)
+    {
+      if((sdl->type==TYPE_IN_R)||(sdl->type==TYPE_IN_N)||(sdl->type==TYPE_IN_ALL))
+	return sdl;
+      sdl=sdl->prev;
+    }
+  }
+  else if(type==TYPE_FILTER)
+  {
+    return (FindPrevFilterSDL(sdl));
+  }
+  else
+  {
+    sdl=sdl->prev;
+    return sdl;
+  }
+  return 0;
 }
 
 int ReadMSS(char *fname, SMS_DATA *sd)
