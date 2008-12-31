@@ -732,5 +732,8 @@
 
 0B00: 0xA0A37AA9   ; 2C0:  __thumb int GetCursorTab(void *tab_gui)
 0B04: 0xA0A37525   ; 2C1:  __thumb void *GetGuiByTab(void *tab_gui, int n)
+0B08: 0xA095E66D   ; 2C2:  __thumb int GetSubprovider(WSHDR* ws)
+0B0C: 0xA095E8A1   ; 2C3:  __thumb int GetRoamingState()
+0B10: 0xA028B143   ; 2C4:  __thumb int GetPrfileVolumeSetting(int profile, int type)
 #pragma disable old_equal_ff
 +0
