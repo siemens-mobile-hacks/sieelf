@@ -1,0 +1,356 @@
+#include "include.h"
+
+#include "SiemensPDU.h"
+#include "MyIpcMessage.h"
+#include "File.h"
+#include "SmsData.h"
+#include "CreateMenu.h"
+#include "SmsListMenu.h"
+
+#include "AdrList.h"
+#include "EditGUI.h"
+
+#include "NativeAddressbook.h"
+
+SOFTKEY_DESC sms_menu_sk[]=
+{
+  {0x0018,0x0000,(int)LGP_NULL},
+  {0x0001,0x0000,(int)LGP_NULL},
+  {0x003D,0x0000,(int)LGP_DOIT_PIC}
+};
+
+const SOFTKEYSTAB sms_menu_skt=
+{
+  sms_menu_sk,0
+};
+
+const HEADER_DESC sms_menuhdr={0,0,0,0,NULL,LGP_NULL,LGP_NULL};
+
+SmsListMenu::~SmsListMenu()
+{
+}
+
+SmsListMenu::SmsListMenu()
+{
+  menu.flag=8;
+  menu.onkey=OnKey;
+  menu.ghook=GHook;
+  menu.proc3=NULL;
+  menu.softkeys=softkeys;
+  menu.softkeystab=&sms_menu_skt;
+  menu.flags2=0x11; //icon
+  menu.itemproc=ItemProc;
+  menu.items=NULL;
+  menu.procs=NULL;
+  menu.n_items=0;
+  menu.n_lines=1; //2
+}
+
+int SmsListMenu::OnKey(void *data, GUI_MSG *msg)
+{
+  SmsListMenu *slm=(SmsListMenu *)MenuGetUserPointer(data);
+  int cur=GetCurMenuItem(data);
+  SDLIST *sdl;
+  if(msg->keys==1)
+    return 1;
+  if(msg->keys==0x3D)
+  {
+    if((sdl=SMSDATA->FindSDL(slm->type, cur)))
+    {
+      EditGUI *edg=new EditGUI;
+      edg->CreateEditGUI(slm->dlg_csm, sdl, ED_VIEW, slm->type, 0);
+    }
+  }
+  else if (msg->keys==0x5)
+  {
+    if((sdl=SMSDATA->FindSDL(slm->type, cur)))
+    {
+      EditGUI *edg=new EditGUI;
+      edg->CreateEditGUI(slm->dlg_csm, sdl, ED_REPLY, slm->type, 0);
+    }
+  }
+  else if (msg->keys==0x18)
+  {
+    if((sdl=SMSDATA->FindSDL(slm->type, cur)))
+    {
+      SmsOptionMenu *sop=new SmsOptionMenu;
+      sop->CreateSmsOptionMenu(slm->dlg_csm, slm->gui_id, slm->type, sdl);
+    }
+  }
+  else if (msg->keys==0x14)
+  {
+    if((sdl=SMSDATA->FindSDL(slm->type, cur)))
+    {
+      ShowMSG(1, (int)(sdl->number));
+    }
+  }
+  return 0;
+}
+
+int SLM_HDR_LGPS[]={LGP_NULL,LGP_NULL,LGP_NULL,LGP_NULL,LGP_NULL,LGP_NULL,LGP_NULL};
+
+void SmsListMenu::GHook(void *data, int cmd)
+{
+  SmsListMenu *slm=(SmsListMenu *)MenuGetUserPointer(data);
+  if(cmd==0xA)
+  {
+    int n=SMSDATA->GetSMSCount(slm->type);
+    int cur=GetCurMenuItem(data);
+    if(cur>=n) SetCursorToMenuItem(data, 0);
+    Menu_SetItemCountDyn(data, n);
+    DisableIDLETMR();
+  }
+  else if(cmd==0x2)
+  {
+    WSHDR *hdr_t=AllocWS(64);
+    void *hdr_p=GetHeaderPointer(data);
+    void *ma=malloc_adr();
+    void *mf=mfree_adr();
+    wsprintf(hdr_t, PERCENT_T, SLM_HDR_LGPS[slm->type<6?slm->type:0]);
+    SetHeaderText(hdr_p, hdr_t, ma, mf);
+  }
+  else if(cmd==0x3)
+  {
+    delete slm;
+  }
+  else if (cmd==0x5)
+  {
+    const char *lgpN;
+    switch(slm->type)
+    {
+    case 0:
+      lgpN=LGP->lgp.LGP_ALL;
+      break;
+    case TYPE_IN_R:
+      lgpN=LGP->lgp.LGP_IN_R;
+      break;
+    case TYPE_IN_N:
+      lgpN=LGP->lgp.LGP_IN_N;
+      break;
+    case TYPE_OUT:
+      lgpN=LGP->lgp.LGP_OUT;
+      break;
+    case TYPE_DRAFT:
+      lgpN=LGP->lgp.LGP_DRAFT;
+      break;
+    case TYPE_IN_ALL:
+      lgpN=LGP->lgp.LGP_IN_A;
+      break;
+    case TYPE_FILTER:
+      lgpN=LGP->lgp.LGP_FILTER;
+      break;
+    default:
+      lgpN=0;
+    }
+    slm->UpdateCSMName(slm->dlg_csm, (int)lgpN);
+  }
+}
+
+#define MENU_MAX_TXT 50
+int SLM_ICONS[8]={ICON_BLANK, ICON_BLANK, ICON_BLANK, ICON_BLANK, ICON_BLANK, ICON_BLANK, ICON_BLANK, 0};
+void SmsListMenu::ItemProc(void *data, int curitem, void *user_pointer)
+{
+  SDLIST *sdl;
+  void *item=AllocMLMenuItem(data);
+  WSHDR *ws1=AllocMenuWS(data, MENU_MAX_TXT);
+  WSHDR *ws2=AllocMenuWS(data, 150);
+  SmsListMenu *slm=(SmsListMenu *)MenuGetUserPointer(data);
+  if((sdl=SMSDATA->FindSDL(slm->type, curitem)))
+  {
+    if(sdl->text) wstrncpy(ws1, sdl->text, MENU_MAX_TXT);
+    else goto SL_ERR;
+    if(!strlen(sdl->number))
+      CutWSTR(ws2, 0);
+    else
+    {
+      if(!ADRLST->FindName(ws2, sdl->number))
+	wsprintf(ws2, PERCENT_S, sdl->number);
+    }
+  }
+  else
+  {
+  SL_ERR:
+    wsprintf(ws1, PERCENT_T, LGP->lgp.LGP_ERR);
+    CutWSTR(ws2, 0);
+  }
+  SetMenuItemIconArray(data, item, SLM_ICONS);
+  SetMenuItemIcon(data, curitem, (sdl)?(sdl->type):0);
+  SetMLMenuItemText(data, item, ws1, ws2, curitem);
+}
+
+int SmsListMenu::CreateSmsListMenu(int type, int is_tab, DLG_CSM *dlg_csm)
+{
+  this->type=type;
+  this->is_tab=is_tab;
+  this->dlg_csm=dlg_csm;
+  patch_header(&sms_menuhdr);
+  this->gui_id=CreateMenu(&menu, &sms_menuhdr, 0, SMSDATA->GetSMSCount(type), this);
+  return this->gui_id;
+}
+
+void *SmsListMenu::GetSmsListMenuGUI(int type, int is_tab, DLG_CSM *dlg_csm)
+{
+  void *m_gui;
+  void *ma=malloc_adr();
+  void *mf=mfree_adr();
+  this->type=type;
+  this->dlg_csm=dlg_csm;
+  this->gui_id=0;
+  this->is_tab=is_tab;
+  m_gui=GetMultiLinesMenuGUI(ma, mf);
+  SetMenuToGUI(m_gui, &this->menu);
+  SetMenuItemCount(m_gui, SMSDATA->GetSMSCount(type));
+  MenuSetUserPointer(m_gui, this);
+  SetCursorToMenuItem(m_gui, 0);
+  patch_header(&sms_menuhdr);
+  SetHeaderToMenu(m_gui, &sms_menuhdr, ma);
+  return m_gui;
+}
+
+/*
+SOFTKEY_DESC sop_menu_sk[]=
+{
+  {0x0018,0x0000,(int)LGP_NULL},
+  {0x0001,0x0000,(int)LGP_NULL},
+  {0x003D,0x0000,(int)LGP_DOIT_PIC}
+};
+
+const SOFTKEYSTAB sop_menu_skt=
+{
+  sop_menu_sk,0
+};
+*/
+const HEADER_DESC sop_menuhdr={0,0,0,0,NULL,LGP_NULL,LGP_NULL};
+
+#define SOP_MENU_ITEM_N 6
+SmsOptionMenu::SmsOptionMenu()
+{
+  this->menu.flag=8;
+  this->menu.onkey=this->OnKey;
+  this->menu.ghook=this->GHook;
+  this->menu.proc3=NULL;
+  this->menu.softkeys=softkeys;
+  this->menu.softkeystab=&sel_menu_skt;
+  this->menu.flags2=0x11; //icon
+  this->menu.itemproc=this->ItemProc;
+  this->menu.items=NULL;
+  this->menu.procs=NULL;
+  this->menu.n_items=0;
+}
+
+SmsOptionMenu::~SmsOptionMenu()
+{
+}
+
+int SmsOptionMenu::OnKey(void *data, GUI_MSG *msg)
+{
+  SmsOptionMenu *sop=(SmsOptionMenu *)MenuGetUserPointer(data);
+  int cur=GetCurMenuItem(data);
+  if(msg->keys==1)
+    return 1;
+  if(msg->keys==0x3D || msg->keys==0x18)
+  {
+DO_OP:
+    switch(cur)
+    {
+    case 0:
+      {
+	EditGUI *edg=new EditGUI;
+	edg->CreateEditGUI(sop->dlg_csm, sop->sdl, ED_REPLY, sop->list_type, 0);
+      }
+      break;
+    case 1:
+      {
+	EditGUI *edg=new EditGUI;
+	edg->CreateEditGUI(sop->dlg_csm, sop->sdl, ED_EDIT, sop->list_type, 0);
+      }
+      break;
+    case 2:
+      SMSDATA->DeleteMessage(sop->sdl);
+      break;
+    case 3:
+      if (sop->sdl)
+      {
+	NAbCSM *nab=new NAbCSM;
+	nab->CreateNAbCSM(NULL, 0, sop->sdl->number, NAB_SAVE);
+      }
+      break;
+    case 4:
+      SMSDATA->MoveToArchive(sop->sdl);
+      break;
+    case 5:
+      if(!sop->slm_id) GeneralFunc_flag1(sop->dlg_csm->gui_id, 1);
+      else GeneralFunc_flag1(sop->slm_id, 1);
+      break;
+    }
+    return 1;
+  }
+  if(msg->gbsmsg->msg==KEY_DOWN)
+  {
+    cur=msg->gbsmsg->submess;
+    if(cur>='1' && cur<='9')
+    {
+      cur-='1';
+      goto DO_OP;
+    }
+  }
+  return 0;
+}
+
+void SmsOptionMenu::GHook(void *data, int cmd)
+{
+  SmsOptionMenu *sop=(SmsOptionMenu *)MenuGetUserPointer(data);
+  if(cmd==0xA)
+  {
+    DisableIDLETMR();
+  }
+  else if (cmd==0x3)
+  {
+    delete sop;
+  }
+  else if (cmd==0x2)
+  {
+    WSHDR *hdr_t=AllocWS(32);
+    wsprintf(hdr_t, PERCENT_T, LGP->lgp.LGP_OPTIONS);
+    SetHeaderText(GetHeaderPointer(data), hdr_t, malloc_adr(), mfree_adr());
+  }
+}
+
+int SOP_ITEM_LGPS[SOP_MENU_ITEM_N]=
+{
+  LGP_NULL, //reply
+    LGP_NULL, //edit
+    LGP_NULL, //delete
+    LGP_SAVE_TO_AB,
+    LGP_NULL, //move to archive
+    LGP_NULL, //leave
+};
+
+const int SOP_ITEM_ICONS[]={0x564,0};
+void SmsOptionMenu::ItemProc(void *data, int curitem, void *user_pointer)
+{
+  void *item=AllocMenuItem(data);
+  WSHDR *ws=AllocMenuWS(data, 150);
+  wsprintf(ws, PERCENT_T, SOP_ITEM_LGPS[curitem]);
+  SetMenuItemIconArray(data, item, SOP_ITEM_ICONS);
+  SetMenuItemIcon(data, curitem, 0);
+  SetMenuItemText(data, item, ws, curitem);
+}
+
+int SmsOptionMenu::CreateSmsOptionMenu(DLG_CSM *dlg_csm, int slm_id, int list_type, SDLIST *sdl)
+{
+  this->dlg_csm=dlg_csm;
+  this->sdl=sdl;
+  this->slm_id=slm_id;
+  this->list_type=list_type;
+  patch_option_header(&sop_menuhdr);
+  return CreateMenu(&this->menu, &sop_menuhdr, 0, SOP_MENU_ITEM_N, this, 1);
+}
+
+
+
+
+void SmsListMenu::UpdateCSMName(DLG_CSM *dlg_csm, int lgp)
+{
+  wsprintf(&((DLGCSM_DESC *)dlg_csm->csm_ram.constr)->csm_name, PERCENT_T, lgp);
+}
