@@ -564,20 +564,24 @@ int EditOptionMenu::OnKey(void *data, GUI_MSG *msg)
     case 0:
       {
 	SDLIST *sdx;
+	int id;
 	EditGUI *edg=new EditGUI;
 	if(edo->nd_free) sdx=SMSDATA->CopyOneSDL(edo->sdl);
 	else sdx=edo->sdl;
-	edg->CreateEditGUI(edo->dlg_csm, sdx, ED_REPLY, edo->list_type, edo->nd_free);
+	id=edg->CreateEditGUI(edo->dlg_csm, sdx, ED_REPLY, edo->list_type, edo->nd_free);
+	if(edo->dlg_csm->gui_id==edo->edit_id && id) edo->dlg_csm->gui_id=id;
       }
       GeneralFunc_flag1(edo->edit_id, 1);
       break;
     case 1:
       {
 	SDLIST *sdx;
+	int id;
 	EditGUI *edg=new EditGUI;
 	if(edo->nd_free) sdx=SMSDATA->CopyOneSDL(edo->sdl);
 	else sdx=edo->sdl;
-	edg->CreateEditGUI(edo->dlg_csm, sdx, ED_EDIT, edo->list_type, edo->nd_free);
+	id=edg->CreateEditGUI(edo->dlg_csm, sdx, ED_EDIT, edo->list_type, edo->nd_free);
+	if(edo->dlg_csm->gui_id==edo->edit_id && id) edo->dlg_csm->gui_id=id;
       }
       GeneralFunc_flag1(edo->edit_id, 1);
       break;

@@ -326,7 +326,7 @@ int SOP_ITEM_LGPS[SOP_MENU_ITEM_N]=
     LGP_NULL, //leave
 };
 
-const int SOP_ITEM_ICONS[]={0x564,0};
+const int SOP_ITEM_ICONS[]={ICON_BLANK,0};
 void SmsOptionMenu::ItemProc(void *data, int curitem, void *user_pointer)
 {
   void *item=AllocMenuItem(data);
