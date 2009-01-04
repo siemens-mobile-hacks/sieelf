@@ -1182,8 +1182,11 @@ void addIconBar(short* num)
 {
 #pragma swi_number=0x27 
 __swi __arm void AddIconToIconBar(int pic, short *num);
-  if(SNEDSMS_CSM_ID) AddIconToIconBar(CFG_ICONSNED_IB, num);
-  else if(CFG_ENA_IB && new_sms_n>0) AddIconToIconBar(CFG_ICON_IB, num);
+  if(CFG_ENA_IB)
+  {
+	if(SNEDSMS_CSM_ID) AddIconToIconBar(CFG_ICONSNED_IB, num);
+	else if(new_sms_n>0) AddIconToIconBar(CFG_ICON_IB, num);
+  }
 }
 
 

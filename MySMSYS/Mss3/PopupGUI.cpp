@@ -185,7 +185,7 @@ void PopupNewIn::GHook(void *data, int cmd)
     TempLightOn(3, 0x7FFF);
     if(CFG_NOTIFY_TIME && !IsCalling())
     {
-      sound_vol=GetPrfileVolumeSetting(GetProfile(), VOLUME);//pni->GetSoundVol();
+      sound_vol=GetProfileVolumeSetting(GetProfile(), VOLUME);//pni->GetSoundVol();
       if(!pni->cl || !pni->cl->sms_melody_filepath) melody_filepath=CFG_SOUND_PATH;
       else melody_filepath=pni->cl->sms_melody_filepath;
       if(CFG_ENA_SOUND&& sound_vol && !(*(RamRingtoneStatus())) && pni->IsFileExist(melody_filepath))

@@ -1769,7 +1769,15 @@ int MoveToArchive(SMS_DATA *sd)
   strcat(folder, FLDR_ARCHIVE);
   if(!isdir(folder, &err))
     mkdir(folder, &err);
-  sprintf(fullpath, "%04d%02d\\", date.year, date.month); //借用~_~ , 按月份存储
+  if(strlen(sdl->time)>4)
+  {
+    strcpy(fullpath, "20");
+    strncat(fullpath, sdl->time, 5);
+    fullpath[7]='\\';
+    fullpath[8]='\0';
+    StrClearChr(fullpath, '-');
+  }
+  else sprintf(fullpath, "%04d%02d\\", date.year, date.month); //借用~_~ , 按月份存储
   strcat(folder, fullpath);
   if(!isdir(folder, &err))
     mkdir(folder, &err);

@@ -1573,7 +1573,16 @@ int SmsData::MoveToArchive(SDLIST *sdl) //只支持mss
   strcat(folder, FLDR_ARCHIVE);
   if(!IsDir(folder))
     MkDir(folder);
-  sprintf(fullpath, "%04d%02d\\", date.year, date.month); //借用~_~ , 按月份存储
+  if(strlen(sdl->time)>4)
+  {
+    strcpy(fullpath, "20");
+    strncat(fullpath, sdl->time, 5);
+    fullpath[7]='\\';
+    fullpath[8]='\0';
+    //sprintf(fullpath, "20%05s\\", sdl->time);
+    StrClearChr(fullpath, '-');
+  }
+  else sprintf(fullpath, "%04d%02d\\", date.year, date.month); //借用~_~ , 按月份存储
   strcat(folder, fullpath);
   if(!IsDir(folder))
     MkDir(folder);

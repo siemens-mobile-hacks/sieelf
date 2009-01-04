@@ -11,7 +11,7 @@ const char ELFNAME_D[]="MssMD";
 #else
 const char ELFNAME_D[]="MssD";
 #endif
-const char COPY_RIGHT[]="My SMS System v2.4\n(c)BingK (binghelingxi)\n(r)titron,Rst7";
+const char COPY_RIGHT[]="My SMS System v2.4.1\n(c)BingK (binghelingxi)\n(r)titron,Rst7";
 
 const char PERCENT_T[]="%t";
 const char PERCENT_S[]="%s";

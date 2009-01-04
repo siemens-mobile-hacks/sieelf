@@ -216,7 +216,7 @@ __root const int CFG_ENA_IB = 1;
 __root const CFG_HDR cfghdr3_2 = {CFG_UINT, LGP_CFG_ICON_IB, 0, 9999};
 #ifdef NEWSGOLD
 #ifdef ELKA
-__root const unsigned int CFG_ICON_IB = 426;
+__root const unsigned int CFG_ICON_IB = 597;
 #else
 __root const unsigned int CFG_ICON_IB = 475;
 #endif

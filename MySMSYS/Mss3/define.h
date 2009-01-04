@@ -118,7 +118,7 @@ __swi __arm int GetRoamingState();
 #define VOLUME_INCALL 2
 
 #pragma swi_number=0x2C4
-__swi __arm int GetPrfileVolumeSetting(int profile, int type);
+__swi __arm int GetProfileVolumeSetting(int profile, int type);
 //thumb
 //pattern_NSG=??,B5,??,4D,??,1C,??,1C,??,21,??,1C,??,35,+1
 //pattern_ELKA=??,B5,??,4E,??,24,??,1C,??,1C,??,21,??,43,??,1C,??,3E,+1
