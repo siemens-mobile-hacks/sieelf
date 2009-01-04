@@ -7,6 +7,7 @@
 #include "SmsData.h"
 
 #define MAX_SMS 100
+/*
 typedef struct _EMS_ADM
 {
   char unk0;
@@ -23,7 +24,7 @@ typedef struct _EMS_ADM
   unsigned short data_id;//SMS: (data_id-0x2A)*sizeof(PDU)= the position of this sms in sms.dat, EMS: 0xFFF4 ?
   short unk5; //0xA800 ?
 }EMS_ADM;
-
+*/
 //sd list---------
 
 
@@ -111,6 +112,7 @@ void SmsData::AddByTimeSDL(SDLIST *sdl)
 
 void SmsData::FreeOneSDL(SDLIST *sdl)
 {
+  if(IsExistSDL(sdl)) return; //if is in list
   if(sdl->text)
     FreeWS(sdl->text);
   if((sdl->msg_prop&ISFILE) && sdl->fname)
@@ -151,11 +153,20 @@ SDLIST *SmsData::FindSDL(int dat_index)
 
 SDLIST *SmsData::FindOpmsgSDL(int opmsg_id)
 {
+  RAM_EMS_ADMIN *ram_eam=RAM_EMS_Admin();
   SDLIST *sdl=sdltop;
   while(sdl)
   {
     if(sdl->opmsg_id==opmsg_id)
       return sdl;
+    if(!(sdl->msg_prop&ISFILE) && sdl->dat_index)
+    {
+      if(opmsg_id==ram_eam->data[sdl->dat_index].opmsg_id)
+      {
+	sdl->opmsg_id=opmsg_id;
+	return sdl;
+      }
+    }
     sdl=(SDLIST *)sdl->next;
   }
   return 0;
@@ -316,7 +327,7 @@ int SmsData::ReadDat(void)
 {
   int fin, res=1;
   if(sms_buf) delete sms_buf;
-  if(eam_buf) delete eam_buf;
+//  if(eam_buf) delete eam_buf;
   if((fin=FOpen(sms_dat, A_BIN+A_ReadOnly, P_READ))!=-1)
   {
     sms_size=LSeek(fin, 0, S_END)-2;
@@ -326,7 +337,7 @@ int SmsData::ReadDat(void)
     FClose(fin);
   }
   else res=0;
-  if((fin=FOpen(ems_admin_dat, A_BIN+A_ReadOnly, P_READ))!=-1)
+/*  if((fin=FOpen(ems_admin_dat, A_BIN+A_ReadOnly, P_READ))!=-1)
   {
     eam_size=LSeek(fin, 0, S_END);
     if(eam_size>0x9A4)
@@ -339,7 +350,7 @@ int SmsData::ReadDat(void)
     else res=0;
     FClose(fin);
   }
-  else res=0;
+  else res=0;*/
   return res;
 }
 
@@ -347,16 +358,17 @@ int SmsData::DeMsgDataList(SMS_DATA_LIST *lst)
 {
   SMS_POS_INDEX_DATA sid;
   SDLIST *sdx;
-  EMS_ADM *pea;
+//  EMS_ADM *pea;
+  EAM_DATA *ead;
   INDEX_ID_DATA *idd;
   unsigned short *pid;
   char *pd;
   int cnt, index, i, msg_prop=0;
   char *sms_buf_end;
-  char *eam_buf_end;
-  if(!sms_buf || !eam_buf || !sms_size || !eam_size) return 0;
+//  char *eam_buf_end;
+  if(!sms_buf ||/* !eam_buf || */!sms_size/* || !eam_size*/) return 0;
   sms_buf_end=sms_buf+sms_size-sizeof(PDU);
-  eam_buf_end=eam_buf+eam_size-sizeof(EMS_ADM);
+//  eam_buf_end=eam_buf+eam_size-sizeof(EMS_ADM);
   if(!(idd=lst->index_id_data))
     return 0;
   if(!(pid=idd->data_id))
@@ -368,9 +380,10 @@ int SmsData::DeMsgDataList(SMS_DATA_LIST *lst)
   index=idd->index;
   if(!index || index>MAX_SMS)
     return 0;
-  pea=(EMS_ADM *)(eam_buf+(index-1)*sizeof(EMS_ADM));
-  if(pea>(EMS_ADM *)eam_buf_end)
-    return 0;
+  ead=&RAM_EMS_Admin()->data[index];
+//  pea=(EMS_ADM *)(eam_buf+(index-1)*sizeof(EMS_ADM));
+//  if(pea>(EMS_ADM *)eam_buf_end)
+//    return 0;
   sdx=AllocSDL();
   sdx->msg_prop=msg_prop;
   for(i=0;i<cnt;i++)
@@ -384,7 +397,8 @@ int SmsData::DeMsgDataList(SMS_DATA_LIST *lst)
   if(sdx->text)
   {
     if(i>1) sdx->msg_prop=sdx->msg_prop|ISEMS;
-    sdx->opmsg_id=pea->opmsg_id;
+    //sdx->opmsg_id=pea->opmsg_id;
+    sdx->opmsg_id=ead->opmsg_id;
     sdx->dat_index=index;
     sdx->cnt_r=idd->cnt_received;
     LockSched();
@@ -484,11 +498,11 @@ int SmsData::ReadMessageOne(int dat_index)
 void SmsData::FreeDatBuf(void)
 {
   if(sms_buf) delete sms_buf;
-  if(eam_buf) delete eam_buf;
+//  if(eam_buf) delete eam_buf;
   sms_buf=NULL;
-  eam_buf=NULL;
+//  eam_buf=NULL;
   sms_size=0;
-  eam_size=0;
+//  eam_size=0;
 }
 //-----------FileReader----------
 #define ELFNAME "MySMSYS"
@@ -787,9 +801,9 @@ int SmsData::ReadAllMessageFRC(SmsData *data)
 SmsData::SmsData()
 {
   sms_buf=NULL;
-  eam_buf=NULL;
+//  eam_buf=NULL;
   sms_size=0;
-  eam_size=0;
+//  eam_size=0;
   sdltop=NULL;
   is_reading=0;
   this->n_new=0;
@@ -799,9 +813,9 @@ SmsData::SmsData()
 SmsData::~SmsData()
 {
   if(sms_buf) delete sms_buf;
-  if(eam_buf) delete eam_buf;
+//  if(eam_buf) delete eam_buf;
   sms_size=0;
-  eam_size=0;
+//  eam_size=0;
   FreeAllSDL();
 }
 

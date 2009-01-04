@@ -149,7 +149,7 @@ void DialogCSM::OnCreate(CSM_RAM *data)
       if(dlg->ipc_data && (sdl=SMSDATA->FindOpmsgSDL((int)dlg->ipc_data)))
       {
 	EditGUI *edg=new EditGUI;
-	dlg_csm->gui_id=edg->CreateEditGUI((::DLG_CSM *)dlg_csm, sdl, ED_EDIT, 0, 1);
+	dlg_csm->gui_id=edg->CreateEditGUI((::DLG_CSM *)dlg_csm, sdl, ED_EDIT, TYPE_IN_ALL, 0);
       }
       else dlg_csm->csm_ram.state=-3;
     }
@@ -160,7 +160,7 @@ void DialogCSM::OnCreate(CSM_RAM *data)
       if(dlg->ipc_data && (sdl=SMSDATA->FindOpmsgSDL((int)dlg->ipc_data)))
       {
 	EditGUI *edg=new EditGUI;
-	dlg_csm->gui_id=edg->CreateEditGUI((::DLG_CSM *)dlg_csm, sdl, ED_VIEW, 0, 1);
+	dlg_csm->gui_id=edg->CreateEditGUI((::DLG_CSM *)dlg_csm, sdl, ED_VIEW, TYPE_IN_ALL, 0);
       }
       else dlg_csm->csm_ram.state=-3;
     }
@@ -171,7 +171,7 @@ void DialogCSM::OnCreate(CSM_RAM *data)
       if(dlg->ipc_data && (sdl=SMSDATA->FindOpmsgSDL((int)dlg->ipc_data)))
       {
 	EditGUI *edg=new EditGUI;
-	dlg_csm->gui_id=edg->CreateEditGUI((::DLG_CSM *)dlg_csm, sdl, ED_REPLY, 0, 1);
+	dlg_csm->gui_id=edg->CreateEditGUI((::DLG_CSM *)dlg_csm, sdl, ED_REPLY, TYPE_IN_ALL, 0);
       }
       else dlg_csm->csm_ram.state=-3;
     }

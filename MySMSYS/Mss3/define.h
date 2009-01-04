@@ -122,5 +122,28 @@ __swi __arm int GetProfileVolumeSetting(int profile, int type);
 //thumb
 //pattern_NSG=??,B5,??,4D,??,1C,??,1C,??,21,??,1C,??,35,+1
 //pattern_ELKA=??,B5,??,4E,??,24,??,1C,??,1C,??,21,??,43,??,1C,??,3E,+1
+
+
+typedef struct _EAM_DATA
+{
+  short dat_index; //
+  char unk_FF[2];
+  int opmsg_id; //browser killer, -1
+  char unk[8];
+}EAM_DATA;
+
+typedef struct _RAM_EMS_ADMIN
+{
+//  char unk_FF[0x10];
+  int unk;
+  EAM_DATA data[0x48];
+}RAM_EMS_ADMIN;
+
+#pragma swi_number=0x82C5
+__swi __arm RAM_EMS_ADMIN *RAM_EMS_Admin();
+//arm
+//pattern_NSG=&(??,48,??,47,??,20,??,30,??,04,??,0C,??,28,??,D3,??,47)
+//pattern_ELKA=&(??,48,??,47,??,B5,??,B0,??,1C,??,D1,??,20)
+
 #endif
 

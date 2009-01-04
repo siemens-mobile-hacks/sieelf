@@ -57,7 +57,7 @@ void InitDatPath(void)
     }
     strcat(sms_dat, "SMS\\SMS.dat");
   }
-  strcpy(ems_admin_dat, CFG_SYSTEM_FOLDER);
+/*  strcpy(ems_admin_dat, CFG_SYSTEM_FOLDER);
   if((xl=strlen(ems_admin_dat))>0)
   {
     x=ems_admin_dat[xl-1];
@@ -67,7 +67,7 @@ void InitDatPath(void)
       ems_admin_dat[xl+1]=0;
     }
     strcat(ems_admin_dat, "SMS\\EMS_Admin.dat");
-  }
+  }*/
 }
 
 extern "C"

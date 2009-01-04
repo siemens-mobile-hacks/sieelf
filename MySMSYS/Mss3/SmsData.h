@@ -15,6 +15,9 @@
 #define FTYPE_TXT 0
 #define FTYPE_MSS 1
 
+//#define RAM_EAM_BUF 0xA8DAD298 //?? 48 ?? 47 ?? 20 ?? 30 ?? 04 ?? 0C ?? 28 ?? D3 ?? 47
+//ELKA &(??48??47??B5??B0??1C??D1??20)
+
 class SmsData : 
   public SiememPDU,
   public MyIpcMessage,
@@ -85,9 +88,9 @@ public:
   int n_new; //新短信条数
 private:
   char *sms_buf;
-  char *eam_buf;
+//  char *eam_buf;
   int sms_size;
-  int eam_size;
+//  int eam_size;
   SDLIST *sdltop;
   int is_reading;
   int ReadDat(void);
