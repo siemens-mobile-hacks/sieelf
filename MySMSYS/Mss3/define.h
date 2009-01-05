@@ -136,7 +136,7 @@ typedef struct _RAM_EMS_ADMIN
 {
 //  char unk_FF[0x10];
   int unk;
-  EAM_DATA data[0x48];
+  EAM_DATA data[101];
 }RAM_EMS_ADMIN;
 
 #pragma swi_number=0x82C5

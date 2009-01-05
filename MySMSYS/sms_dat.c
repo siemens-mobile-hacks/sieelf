@@ -1769,10 +1769,10 @@ int MoveToArchive(SMS_DATA *sd)
   strcat(folder, FLDR_ARCHIVE);
   if(!isdir(folder, &err))
     mkdir(folder, &err);
-  if(strlen(sdl->time)>4)
+  if(strlen(sd->Time)>4)
   {
     strcpy(fullpath, "20");
-    strncat(fullpath, sdl->time, 5);
+    strncat(fullpath, sd->Time, 5);
     fullpath[7]='\\';
     fullpath[8]='\0';
     StrClearChr(fullpath, '-');
