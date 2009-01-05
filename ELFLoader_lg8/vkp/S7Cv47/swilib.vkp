@@ -735,5 +735,6 @@
 0B08: 0xA095E66D   ; 2C2:  __thumb int GetSubprovider(WSHDR* ws)
 0B0C: 0xA095E8A1   ; 2C3:  __thumb int GetRoamingState()
 0B10: 0xA028B143   ; 2C4:  __thumb int GetPrfileVolumeSetting(int profile, int type)
+0B14: 0xA8DAD298   ; 82C5:  __arm RAM_EMS_ADMIN *RAM_EMS_Admin()
 #pragma disable old_equal_ff
 +0
