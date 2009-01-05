@@ -11,6 +11,7 @@
 
 #include "AdrList.h"
 #include "..\..\inc\playsound.h"
+#include "..\..\inc\mplayer.h"
 
 DaemonCSM::DaemonCSM()
 {
@@ -39,6 +40,8 @@ DaemonCSM::DaemonCSM()
   strcpy(this->daemon_csm_desc.iconbar_handler.check_name, "IconBar");
   this->daemon_csm_desc.iconbar_handler.addr=(int)this->AddIconBar;
 #endif
+  this->vba_power=0;
+  this->PLAY_ID=0;
 }
 
 DaemonCSM::~DaemonCSM()
@@ -89,6 +92,8 @@ int strcmp_nocase(const char *s1,const char *s2)
 //int temp_tmr_index=0;
 //int is_new_proc=0;
 
+#define VBA_POWERS_N 11
+const int VBA_POWERS[VBA_POWERS_N]={0,90,10,60,20,70,40,0,80,30,50}; //[0], stop
 int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 {
 #ifdef NEWSGOLD
@@ -108,7 +113,7 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 
 #endif
 
-  extern short PLAY_ID;//popup new
+//  extern short PLAY_ID;//popup new
   DAEMON_CSM *daemon_csm=(DAEMON_CSM *)data;
   DaemonCSM *daemon=daemon_csm->daemon;
   if (msg->msg==MSG_EMS_FFS_WRITE)
@@ -147,10 +152,10 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
     if((!(SMSDATA->n_new=SMSDATA->GetSMSCount(TYPE_IN_N)))&&(CFG_ENA_NOTIFY))
     {
       SetVibration(0);
-      if(PLAY_ID)
+      if(daemon->PLAY_ID)
       {
-	PlayMelody_StopPlayback(PLAY_ID);
-	PLAY_ID=0;
+	PlayMelody_StopPlayback(daemon->PLAY_ID);
+	daemon->PLAY_ID=0;
       }
     }
   }
@@ -207,8 +212,66 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	  }
 	  break;
 	case SMSYS_IPC_ARCHIVE:
-extern void OpenArchive(void); //othmenu.cpp
+	  extern void OpenArchive(void); //othmenu.cpp
 	  SUBPROC((void *)OpenArchive);
+	  break;
+	case SMSYS_IPC_VIBRA_START:
+	  if(CFG_NOTIFY_TIME && (CFG_VIBRA_POWER) && !IsCalling())
+	  {
+	    daemon->vba_power=1;
+	    //SetVibration(daemon->vba_power);
+	    //GBS_StartTimerProc(&daemon->vbatmr, 216/4, daemon->VibraProc);
+	    daemon->VibraProc();
+	  }
+	  break;
+	case SMSYS_IPC_VIBRA_STOP:
+	  {
+	    daemon->vba_power=0;
+	    GBS_DelTimer(&daemon->vbatmr);
+	    SetVibration(0);
+	  }
+	  break;
+	case SMSYS_IPC_VIBRA_CONTINUE:
+	  //if (CFG_NOTIFY_TIME && !IsCalling())
+	  {
+	    if (CFG_NOTIFY_TIME && daemon->vba_power && !IsCalling())
+	    {
+	      SetVibration(VBA_POWERS[daemon->vba_power]);
+	      //if(daemon->vba_power>=CFG_VIBRA_POWER) daemon->vba_power=0;
+	      //else daemon->vba_power+=10;
+	      if(daemon->vba_power<VBA_POWERS_N) daemon->vba_power++;
+	      else daemon->vba_power=1;
+	      GBS_StartTimerProc(&daemon->vbatmr, 216/4, daemon->VibraProc);
+	    }
+	    else
+	    {
+	      daemon->vba_power=0;
+	      GBS_DelTimer(&daemon->vbatmr);
+	      SetVibration(0);
+	    }
+	  }
+	  break;
+	case SMSYS_IPC_SOUND_PLAY:
+	  if(ipc->data && CFG_ENA_SOUND && !(*(RamRingtoneStatus())) && CFG_NOTIFY_TIME && !IsCalling())
+	  {
+	    if(GetPlayStatus()) MPlayer_Stop();
+	    if(daemon->PLAY_ID)
+	    {
+	      PlayMelody_StopPlayback(daemon->PLAY_ID);
+	      daemon->PLAY_ID=0;
+	    }
+	    SUBPROC((void *)daemon->PlayNotifySound, daemon, (char *)ipc->data);
+	  }
+	  break;
+	case SMSYS_IPC_SOUND_STOP:
+	  {
+	    if(daemon->PLAY_ID)
+	    {
+	      PlayMelody_StopPlayback(daemon->PLAY_ID);
+	      daemon->PLAY_ID=0;
+	    }
+	    if(CFG_ENA_SOUND && IsPlayerOn() && !GetPlayStatus()) MPlayer_Start();
+	  }
 	  break;
 	default:
 	  {
@@ -238,18 +301,18 @@ extern void OpenArchive(void); //othmenu.cpp
   {
     daemon->DelDlgCsmID((int)msg->data0);
   }
-  if(PLAY_ID && (msg->msg==MSG_INCOMMING_CALL || IsCalling()))
+  if(daemon->PLAY_ID && (msg->msg==MSG_INCOMMING_CALL || IsCalling()))
   {
-    PlayMelody_StopPlayback(PLAY_ID);
-    PLAY_ID=0;
+    PlayMelody_StopPlayback(daemon->PLAY_ID);
+    daemon->PLAY_ID=0;
   }
-  if(msg->msg==MSG_PLAYFILE_REPORT && PLAY_ID) 
+  if(msg->msg==MSG_PLAYFILE_REPORT && daemon->PLAY_ID) 
   {
     GBS_PSOUND_MSG *pmsg=(GBS_PSOUND_MSG *)msg;
-    if(pmsg->handler==PLAY_ID)
+    if(pmsg->handler==daemon->PLAY_ID)
     {
       if(pmsg->cmd==M_SAE_PLAYBACK_ERROR || pmsg->cmd==M_SAE_PLAYBACK_DONE)
-	PLAY_ID=0;
+	daemon->PLAY_ID=0;
     }
   }
   return 1;
@@ -259,6 +322,8 @@ void DaemonCSM::OnClose(CSM_RAM *data)
 {
   DAEMON_CSM *daemon_csm=(DAEMON_CSM *)data;
   daemon_csm->daemon->CloseAllDlgCSM();
+  GBS_DelTimer(&daemon_csm->daemon->vbatmr);
+  GBS_DelTimer(&daemon_csm->daemon->chktmr);
   delete LGP;
   delete IP;
   delete ADRLST;
@@ -368,4 +433,58 @@ void DaemonCSM::AddIconBar(short* num)
   if(CFG_ENA_IB && SMSDATA->n_new) AddIconToIconBar(CFG_ICON_IB, num);
 }
 #endif
+
+void DaemonCSM::VibraProc(void)
+{
+  MyIpcMessage myipc;
+  myipc.SendIpc(SMSYS_IPC_VIBRA_CONTINUE);
+}
+
+void DaemonCSM::PlayNotifySound(DaemonCSM *daemon, char *filepath)
+{
+  PLAYFILE_OPT _sfo1;
+  WSHDR *sndPath,sndPathn;
+  WSHDR *sndFName,sndFNamen;
+  unsigned short sndPathb[128];
+  unsigned short sndFNameb[128];
+  char s[128];
+  const char *p;
+  CFile file;
+  int snd_vol;
+  if(
+    !daemon
+    || !filepath
+    || !file.IsFileExist(filepath)
+    || !CFG_ENA_SOUND
+    || !(snd_vol=GetProfileVolumeSetting(GetProfile(), VOLUME))
+    )
+    return;
+  sndPath=CreateLocalWS(&sndPathn, sndPathb, 128);
+  sndFName=CreateLocalWS(&sndFNamen, sndFNameb, 128);
+  p=strrchr(filepath,'\\')+1;
+  str_2ws(sndFName,p,128);
+  strncpy(s,filepath,p-filepath);
+  s[p-filepath]='\0';
+  str_2ws(sndPath,s,128);
+  zeromem(&_sfo1,sizeof(PLAYFILE_OPT));
+  _sfo1.repeat_num=1;
+  _sfo1.time_between_play=0;
+  _sfo1.play_first=0;
+  _sfo1.volume=snd_vol;//
+#ifdef NEWSGOLD
+  _sfo1.unk6=1;
+  _sfo1.unk7=1;
+  _sfo1.unk9=2;
+  daemon->PLAY_ID=PlayFile(0x10, sndPath, sndFName, GBS_GetCurCepid(), MSG_PLAYFILE_REPORT, &_sfo1);
+#else
+#ifdef X75
+  _sfo1.unk4=0x80000000;
+  _sfo1.unk5=1;
+  daemon->PLAY_ID=PlayFile(0xC, sndPath, sndFName, 0,GBS_GetCurCepid(), MSG_PLAYFILE_REPORT, &_sfo1);
+#else
+  _sfo1.unk5=1;
+  daemon->PLAY_ID=PlayFile(0xC, sndPath, sndFName, GBS_GetCurCepid(), MSG_PLAYFILE_REPORT, &_sfo1);
+#endif
+#endif
+}
 

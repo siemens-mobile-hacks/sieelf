@@ -1,7 +1,9 @@
 #ifndef _POPUPGUI_H_
 #define _POPUPGUI_H_
 
-class PopupNewIn : public CFile
+class PopupNewIn :
+  public CFile,
+    public MyIpcMessage
 {
 public:
   PopupNewIn();

@@ -8,7 +8,7 @@ CSM_RAM *under_idle=0;
 static int do_CSMtoTop(CSMQ *csm_q, void *_cmd)
 {
 //  static const char my_color[]={0x00,0x00,0x00,0x32};
-  MMICMD *cmd=_cmd;
+  MMICMD *cmd=(MMICMD *)_cmd;
   int *gui;
   CSM_RAM *wcsm;
   CSM_RAM *top_csm=FindCSM(csm_q,cmd->parent_id);
@@ -33,7 +33,7 @@ static int do_CSMtoTop(CSMQ *csm_q, void *_cmd)
     }
     else
     {
-      wcsm=csm_q->csm.last;
+      wcsm=(CSM_RAM *)csm_q->csm.last;
     }
     ((CSM_RAM *)(wcsm->prev))->next=top_csm; //CSM 扭快把快忱 扭快把快技快投忘快技抑技 找快扭快把抆 批抗忘戒抑志忘快找 扶忘 志快把抒扶我抄 CSM
     if (top_csm)
@@ -57,7 +57,7 @@ static int do_CSMtoTop(CSMQ *csm_q, void *_cmd)
 
   if (!top_csm)
   {
-    if ((gui=((CSM_RAM *)(csm_q->csm.last))->gui_ll.last))
+    if ((gui=(int *)((CSM_RAM *)(csm_q->csm.last))->gui_ll.last))
     {
       FocusGUI(gui[3]);
     }
@@ -70,7 +70,7 @@ static int do_CSMtoTop(CSMQ *csm_q, void *_cmd)
 #pragma optimize=no_inline
 __thumb static void LLaddToEnd(LLQ *ll, void *data)
 {
-  LLIST *d=data;
+  LLIST *d=(LLIST *)data;
   d->next=NULL;
   d->prev=ll->last;
   if (ll->last)
@@ -92,7 +92,7 @@ void CSMtoTop(int id, int top_id)
   MMICMD *cmd;
   if (!FindCSMbyID(id)) return;
   if (id==top_id) return; //妖快折快忍抉
-  cmd=malloc(sizeof(MMICMD));
+  cmd=(MMICMD *)malloc(sizeof(MMICMD));
   cmd->csm_q=csm_q;
 
   cmd->flag1=5;
@@ -109,7 +109,7 @@ void CSMtoTop(int id, int top_id)
 
 void InitUnderIdleCSM(void)
 {
-  under_idle=(FindCSMbyID(CSM_root()->idle_id))->prev;
+  under_idle=(CSM_RAM *)(FindCSMbyID(CSM_root()->idle_id))->prev;
 }
 
 
@@ -125,7 +125,7 @@ void DoSendBackGround(void *dialog_csm)
     csm=&(dlg_csm->csm_ram);
     if(csm->prev)
     {
-      csm=csm->prev;
+      csm=(CSM_RAM *)csm->prev;
       CSMtoTop(csm->id, -1);
     }
   }

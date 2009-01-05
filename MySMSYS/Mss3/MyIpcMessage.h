@@ -37,6 +37,14 @@
 #define SMSYS_IPC_SMS_DATA_UPDATE 0x101 //更新短信数据链表,data=NULL
 //#define SMSYS_IPC_READ_NEW_SECC 0x102 //data=NULL
 #define SMSYS_IPC_NAB_CREATE 0x104 //data=csm_id
+
+//vibra play
+#define SMSYS_IPC_VIBRA_START 0x120 //data=NULL
+#define SMSYS_IPC_VIBRA_STOP 0x121 //data=NULL
+#define SMSYS_IPC_VIBRA_CONTINUE 0x122 //data=NULL
+
+#define SMSYS_IPC_SOUND_PLAY 0x130 //data=filepath
+#define SMSYS_IPC_SOUND_STOP 0x131 //data=NULL
 class MyIpcMessage
 {
 public:

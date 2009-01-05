@@ -1020,7 +1020,7 @@ MySMSYS/Filter.h -text
 MySMSYS/Mss3/AdrList.cpp -text
 MySMSYS/Mss3/AdrList.h -text
 MySMSYS/Mss3/CSMSwaper.h -text
-MySMSYS/Mss3/CSMswaper.c -text
+MySMSYS/Mss3/CSMswaper.cpp -text
 MySMSYS/Mss3/CreateMenu.cpp -text
 MySMSYS/Mss3/CreateMenu.h -text
 MySMSYS/Mss3/DaemonCSM.cpp -text

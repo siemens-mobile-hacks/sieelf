@@ -9,11 +9,11 @@
 #include "..\..\inc\mplayer.h"
 #include "PopupGUI.h"
 
-short PLAY_ID=0;
+//short PLAY_ID=0;
 //int vibra_power=0;
 //int sound_vol=0;
 
-
+/*
 void PopupNewIn::Play(const char *fname, int sound_vol)
 {
   PLAYFILE_OPT _sfo1;
@@ -53,7 +53,7 @@ void PopupNewIn::Play(const char *fname, int sound_vol)
 #endif
 #endif
 }
-
+*/
 SOFTKEY_DESC pni_sk[]=
 {
   {0x0018,0x0000,(int)LGP_NULL},
@@ -134,11 +134,11 @@ PopupNewIn::~PopupNewIn()
 
 int PopupNewIn::OnKey(void *data, GUI_MSG *msg)
 {
+  PopupNewIn *pni=(PopupNewIn *)GetPopupUserPointer(data);
   if(msg->keys==0x18 || msg->keys==0x3D)
   {
     SDLIST *sdl;
     int id;
-    PopupNewIn *pni=(PopupNewIn *)GetPopupUserPointer(data);
     if((sdl=SMSDATA->FindSDL(pni->dat_index)))
     {
       EditGUI *edg=new EditGUI;
@@ -153,13 +153,15 @@ int PopupNewIn::OnKey(void *data, GUI_MSG *msg)
   {	 
     if(!IsUnlocked())
       TempLightOn(3, 0x7FFF);
-    if(PLAY_ID)
-    {
-      PlayMelody_StopPlayback(PLAY_ID);
-      PLAY_ID=0;
-    }
-    if(CFG_ENA_SOUND && IsPlayerOn() && !GetPlayStatus()) MPlayer_Start();
-    SetVibration(0);
+    //if(PLAY_ID)
+    //{
+    //  PlayMelody_StopPlayback(PLAY_ID);
+    //  PLAY_ID=0;
+    //}
+    //if(CFG_ENA_SOUND && IsPlayerOn() && !GetPlayStatus()) MPlayer_Start();
+    //SetVibration(0);
+    pni->SendIpc(SMSYS_IPC_SOUND_STOP);
+    pni->SendIpc(SMSYS_IPC_VIBRA_STOP);
   }
   return 0;
 }
@@ -169,13 +171,15 @@ void PopupNewIn::GHook(void *data, int cmd)
   PopupNewIn *pni=(PopupNewIn *)GetPopupUserPointer(data);
   if (cmd==0x3)
   {
-    if(PLAY_ID)
+/*    if(PLAY_ID)
     {
       PlayMelody_StopPlayback(PLAY_ID);
       PLAY_ID=0;
     }
     if(CFG_ENA_SOUND && IsPlayerOn() && !GetPlayStatus()) MPlayer_Start();
-    SetVibration(0);
+    SetVibration(0);*/
+    pni->SendIpc(SMSYS_IPC_SOUND_STOP);
+    pni->SendIpc(SMSYS_IPC_VIBRA_STOP);
     delete pni;
   }
   else if (cmd==0x2)
@@ -191,12 +195,14 @@ void PopupNewIn::GHook(void *data, int cmd)
       if(CFG_ENA_SOUND&& sound_vol && !(*(RamRingtoneStatus())) && pni->IsFileExist(melody_filepath))
       {
 	if(GetPlayStatus()) MPlayer_Stop();
-	if(!PLAY_ID)
-	{
-	  pni->Play(melody_filepath, sound_vol);
-	}
+	pni->SendIpc(SMSYS_IPC_SOUND_PLAY, (void *)melody_filepath);
+	//if(!PLAY_ID)
+	//{
+	//  pni->Play(melody_filepath, sound_vol);
+	//}
       }
-      SetVibration(CFG_VIBRA_POWER);
+      pni->SendIpc(SMSYS_IPC_VIBRA_START);
+      //SetVibration(CFG_VIBRA_POWER);
     }
   }
   else if (cmd==0x5)
