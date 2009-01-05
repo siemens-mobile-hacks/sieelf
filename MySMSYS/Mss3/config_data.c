@@ -75,8 +75,11 @@ __root const CFG_HDR cfghdr1_0 = {CFG_LEVEL, LGP_CFG_NOTIFY_SET, 1, 0};
 __root const CFG_HDR cfghdr1_1 = {CFG_CHECKBOX, LGP_CFG_ENA_NOTIFY, 0, 3};
 __root const int CFG_ENA_NOTIFY = 1;
 
-__root const CFG_HDR cfghdr1_2 = {CFG_UINT, LGP_CFG_VIBRA_POWER, 0, 100};
-__root const unsigned int CFG_VIBRA_POWER = 50;
+//__root const CFG_HDR cfghdr1_2 = {CFG_UINT, LGP_CFG_VIBRA_POWER, 0, 100};
+//__root const unsigned int CFG_VIBRA_POWER = 50;
+
+__root const CFG_HDR cfghdr1_2 = {CFG_CHECKBOX, LGP_CFG_ENA_VIBRA, 0, 3};
+__root const int CFG_ENA_VIBRA = 1;
 
 __root const CFG_HDR cfghdr1_3 = {CFG_UINT, LGP_CFG_NOTIFY_TIME, 0, 100};
 __root const int CFG_NOTIFY_TIME = 4;

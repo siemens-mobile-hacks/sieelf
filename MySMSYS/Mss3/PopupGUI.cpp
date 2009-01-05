@@ -201,7 +201,7 @@ void PopupNewIn::GHook(void *data, int cmd)
 	//  pni->Play(melody_filepath, sound_vol);
 	//}
       }
-      pni->SendIpc(SMSYS_IPC_VIBRA_START);
+      if(CFG_ENA_VIBRA) pni->SendIpc(SMSYS_IPC_VIBRA_START);
       //SetVibration(CFG_VIBRA_POWER);
     }
   }

@@ -216,7 +216,7 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	  SUBPROC((void *)OpenArchive);
 	  break;
 	case SMSYS_IPC_VIBRA_START:
-	  if(CFG_NOTIFY_TIME && (CFG_VIBRA_POWER) && !IsCalling())
+	  if(CFG_NOTIFY_TIME &&/* (CFG_VIBRA_POWER) &&*/ CFG_ENA_VIBRA && !IsCalling())
 	  {
 	    daemon->vba_power=1;
 	    //SetVibration(daemon->vba_power);
@@ -234,7 +234,7 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	case SMSYS_IPC_VIBRA_CONTINUE:
 	  //if (CFG_NOTIFY_TIME && !IsCalling())
 	  {
-	    if (CFG_NOTIFY_TIME && daemon->vba_power && !IsCalling())
+	    if (CFG_NOTIFY_TIME && CFG_ENA_VIBRA && daemon->vba_power && !IsCalling())
 	    {
 	      SetVibration(VBA_POWERS[daemon->vba_power]);
 	      //if(daemon->vba_power>=CFG_VIBRA_POWER) daemon->vba_power=0;
