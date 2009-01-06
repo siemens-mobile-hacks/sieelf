@@ -151,6 +151,8 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
     }
     if((!(SMSDATA->n_new=SMSDATA->GetSMSCount(TYPE_IN_N)))&&(CFG_ENA_NOTIFY))
     {
+      daemon->vba_power=0;
+      GBS_DelTimer(&daemon->vbatmr);
       SetVibration(0);
       if(daemon->PLAY_ID)
       {
@@ -234,7 +236,7 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	case SMSYS_IPC_VIBRA_NEXT:
 	  //if (CFG_NOTIFY_TIME && !IsCalling())
 	  {
-	    if (CFG_NOTIFY_TIME && CFG_ENA_VIBRA && daemon->vba_power && !IsCalling())
+	    if (CFG_NOTIFY_TIME && CFG_ENA_VIBRA && daemon->vba_power && SMSDATA->n_new && !IsCalling())
 	    {
 	      SetVibration(VBA_POWERS[daemon->vba_power]);
 	      //if(daemon->vba_power>=CFG_VIBRA_POWER) daemon->vba_power=0;
