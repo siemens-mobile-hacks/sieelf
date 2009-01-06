@@ -20,10 +20,11 @@
 
 class SmsData : 
   public SiememPDU,
-  public MyIpcMessage,
+//  public MyIpcMessage,
   public CFile
 {
 public:
+	SDLIST * FindLastNew(void);
   SmsData();
   ~SmsData();
   int ReadAllDatMsg(void);

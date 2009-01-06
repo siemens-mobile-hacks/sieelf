@@ -167,7 +167,7 @@ int NAbCSM::CreateNAbCSM(void *ed_gui, int ed_gui_id, char *number, int type)
   nabcsm.nab=this;
   wsprintf(&this->nab_csm_desc.csm_name, PERCENT_T, LGP->lgp.LGP_CALL_ADDRESSBOOK);
   csm_id=CreateCSM(&this->nab_csm_desc.csm_desc, &nabcsm, 2);
-  SendIpc(SMSYS_IPC_NAB_CREATE, (void *)csm_id);
+  SendMyIpc(SMSYS_IPC_NAB_CREATE, (void *)csm_id);
   return csm_id;
 }
 

@@ -186,8 +186,8 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	  {
 	    if (SMSDATA->ReadMessageOne(daemon->temp_tmr_index))
 	    {
-	      MyIpcMessage myipc;
-	      if (CFG_ENA_NOTIFY) myipc.SendIpc(SMSYS_IPC_NEW_IN_WIN, (void *)daemon->temp_tmr_index);
+	      //MyIpcMessage myipc;
+	      if (CFG_ENA_NOTIFY) SendMyIpc(SMSYS_IPC_NEW_IN_ME, (void *)daemon->temp_tmr_index);//myipc.SendIpc(SMSYS_IPC_NEW_IN_WIN, (void *)daemon->temp_tmr_index);
 	      else if (daemon->IsOnTopMyCSM()) RefreshGUI();
 	    }
 	    daemon->temp_tmr_index=0;
@@ -231,7 +231,7 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	    SetVibration(0);
 	  }
 	  break;
-	case SMSYS_IPC_VIBRA_CONTINUE:
+	case SMSYS_IPC_VIBRA_NEXT:
 	  //if (CFG_NOTIFY_TIME && !IsCalling())
 	  {
 	    if (CFG_NOTIFY_TIME && CFG_ENA_VIBRA && daemon->vba_power && !IsCalling())
@@ -408,8 +408,9 @@ void DaemonCSM::DoNewProc(void)
     temp_tmr_index=0;
   }
   is_new_proc=0;*/
-  MyIpcMessage myipc;
-  myipc.SendIpc(SMSYS_IPC_READ_NEW);
+  //MyIpcMessage myipc;
+  //myipc.SendIpc(SMSYS_IPC_READ_NEW);
+  SendMyIpc(SMSYS_IPC_READ_NEW);
 }
 
 void DaemonCSM::UpdateNProc()
@@ -423,8 +424,9 @@ void DaemonCSM::UpdateNProc()
     }
     temp_tmr_index=0;
   }*/
-  MyIpcMessage myipc;
-  myipc.SendIpc(SMSYS_IPC_READ_SMS);
+  //MyIpcMessage myipc;
+  //myipc.SendIpc(SMSYS_IPC_READ_SMS);
+  SendMyIpc(SMSYS_IPC_READ_SMS);
 }
 
 #ifdef ICONBAR
@@ -436,8 +438,9 @@ void DaemonCSM::AddIconBar(short* num)
 
 void DaemonCSM::VibraProc(void)
 {
-  MyIpcMessage myipc;
-  myipc.SendIpc(SMSYS_IPC_VIBRA_CONTINUE);
+  //MyIpcMessage myipc;
+  //myipc.SendIpc(SMSYS_IPC_VIBRA_CONTINUE);
+  SendMyIpc(SMSYS_IPC_VIBRA_NEXT);
 }
 
 void DaemonCSM::PlayNotifySound(DaemonCSM *daemon, char *filepath)

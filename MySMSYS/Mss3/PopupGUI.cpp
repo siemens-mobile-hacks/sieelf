@@ -137,12 +137,13 @@ int PopupNewIn::OnKey(void *data, GUI_MSG *msg)
   PopupNewIn *pni=(PopupNewIn *)GetPopupUserPointer(data);
   if(msg->keys==0x18 || msg->keys==0x3D)
   {
-    SDLIST *sdl;
+    //SDLIST *sdl;
     int id;
-    if((sdl=SMSDATA->FindSDL(pni->dat_index)))
+    //if((sdl=SMSDATA->FindSDL(pni->dat_index)))
+    if(pni->sdl)
     {
       EditGUI *edg=new EditGUI;
-      id=edg->CreateEditGUI(pni->dlg_csm, sdl, ED_VIEW, sdl->type, 0);
+      id=edg->CreateEditGUI(pni->dlg_csm, pni->sdl, ED_VIEW, pni->sdl->type, 0);
       if(id) pni->dlg_csm->gui_id=id;
     }
     return 1;
@@ -160,8 +161,10 @@ int PopupNewIn::OnKey(void *data, GUI_MSG *msg)
     //}
     //if(CFG_ENA_SOUND && IsPlayerOn() && !GetPlayStatus()) MPlayer_Start();
     //SetVibration(0);
-    pni->SendIpc(SMSYS_IPC_SOUND_STOP);
-    pni->SendIpc(SMSYS_IPC_VIBRA_STOP);
+    //pni->SendIpc(SMSYS_IPC_SOUND_STOP);
+    //pni->SendIpc(SMSYS_IPC_VIBRA_STOP);
+    SendMyIpc(SMSYS_IPC_SOUND_STOP);
+    SendMyIpc(SMSYS_IPC_VIBRA_STOP);
   }
   return 0;
 }
@@ -178,8 +181,10 @@ void PopupNewIn::GHook(void *data, int cmd)
     }
     if(CFG_ENA_SOUND && IsPlayerOn() && !GetPlayStatus()) MPlayer_Start();
     SetVibration(0);*/
-    pni->SendIpc(SMSYS_IPC_SOUND_STOP);
-    pni->SendIpc(SMSYS_IPC_VIBRA_STOP);
+    //pni->SendIpc(SMSYS_IPC_SOUND_STOP);
+    //pni->SendIpc(SMSYS_IPC_VIBRA_STOP);
+    SendMyIpc(SMSYS_IPC_SOUND_STOP);
+    SendMyIpc(SMSYS_IPC_VIBRA_STOP);
     delete pni;
   }
   else if (cmd==0x2)
@@ -195,13 +200,14 @@ void PopupNewIn::GHook(void *data, int cmd)
       if(CFG_ENA_SOUND&& sound_vol && !(*(RamRingtoneStatus())) && pni->IsFileExist(melody_filepath))
       {
 	if(GetPlayStatus()) MPlayer_Stop();
-	pni->SendIpc(SMSYS_IPC_SOUND_PLAY, (void *)melody_filepath);
+	//pni->SendIpc(SMSYS_IPC_SOUND_PLAY, (void *)melody_filepath);
+	SendMyIpc(SMSYS_IPC_SOUND_PLAY, (void *)melody_filepath);
 	//if(!PLAY_ID)
 	//{
 	//  pni->Play(melody_filepath, sound_vol);
 	//}
       }
-      if(CFG_ENA_VIBRA) pni->SendIpc(SMSYS_IPC_VIBRA_START);
+      if(CFG_ENA_VIBRA) SendMyIpc(SMSYS_IPC_VIBRA_START);//pni->SendIpc(SMSYS_IPC_VIBRA_START);
       //SetVibration(CFG_VIBRA_POWER);
     }
   }
@@ -211,17 +217,17 @@ void PopupNewIn::GHook(void *data, int cmd)
   }
 }
 
-int PopupNewIn::CreatePopupNewIn(DLG_CSM *dlg_csm, int dat_index)
+int PopupNewIn::CreatePopupNewIn(DLG_CSM *dlg_csm, SDLIST *sdl)
 {
-  SDLIST *sdl;
   WSHDR *ws;
-  if(!(sdl=SMSDATA->FindSDL(dat_index)) || !CFG_NOTIFY_TIME)
+  if(!sdl || !CFG_NOTIFY_TIME)
   {
     delete this;
     return 0;
   }
   this->dlg_csm=dlg_csm;
-  this->dat_index=dat_index;
+  this->sdl=sdl;
+  //this->dat_index=dat_index;
   ws=AllocWS(150);
   if(!(this->cl=ADRLST->FindCList(sdl->number)))
   {

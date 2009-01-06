@@ -27,8 +27,8 @@
 
 typedef struct _SDLIST
 {
-  void *next;
-  void *prev;
+  _SDLIST *next;
+  _SDLIST *prev;
   int type;
   int dat_index;
   int opmsg_id;

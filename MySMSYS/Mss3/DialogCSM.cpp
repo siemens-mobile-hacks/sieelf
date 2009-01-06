@@ -67,8 +67,26 @@ void DialogCSM::OnCreate(CSM_RAM *data)
     break;
   case SMSYS_IPC_NEW_IN_WIN:
     {
-      PopupNewIn *pni=new PopupNewIn;
-      dlg_csm->gui_id=pni->CreatePopupNewIn((::DLG_CSM *)dlg_csm, (int)dlg->ipc_data);
+      SDLIST *sdl;
+      if((sdl=SMSDATA->FindLastNew()))
+      {
+	PopupNewIn *pni=new PopupNewIn;
+	dlg_csm->gui_id=pni->CreatePopupNewIn((::DLG_CSM *)dlg_csm, sdl);
+      }
+      else dlg_csm->gui_id=0;
+      //PopupNewIn *pni=new PopupNewIn;
+      //dlg_csm->gui_id=pni->CreatePopupNewIn((::DLG_CSM *)dlg_csm, (int)dlg->ipc_data);
+    }
+    break;
+  case SMSYS_IPC_NEW_IN_ME:
+    {
+      SDLIST *sdl;
+      if((sdl=SMSDATA->FindSDL((int)dlg->ipc_data)))
+      {
+	PopupNewIn *pni=new PopupNewIn;
+	dlg_csm->gui_id=pni->CreatePopupNewIn((::DLG_CSM *)dlg_csm, sdl);
+      }
+      else dlg_csm->gui_id=0;
     }
     break;
   case SMSYS_IPC_NEWSMS:

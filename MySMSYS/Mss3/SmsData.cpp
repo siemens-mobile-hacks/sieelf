@@ -427,7 +427,7 @@ int SmsData::ReadAllDatMsg(void)
     if(DeMsgDataList(lst))
     {
       res++;
-      if(!(res%4)) SendIpc(SMSYS_IPC_SMS_DATA_UPDATE);
+      if(!(res%4)) SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
     }
     lst=(SMS_DATA_LIST *)lst->next;
   }
@@ -437,11 +437,11 @@ int SmsData::ReadAllDatMsg(void)
     if(DeMsgDataList(lst))
     {
       res++;
-      if(!(res%4)) SendIpc(SMSYS_IPC_SMS_DATA_UPDATE);
+      if(!(res%4)) SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
     }
     lst=(SMS_DATA_LIST *)lst->next;
   }
-  if((res%4)) SendIpc(SMSYS_IPC_SMS_DATA_UPDATE);
+  if((res%4)) SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
   return res;
 }
 
@@ -615,14 +615,14 @@ int SmsData::ReadFolder(int type)
 	LockSched();
 	AddByTimeSDL(sdx);
 	UnlockSched();
-	if(!(n%4)) SendIpc(SMSYS_IPC_SMS_DATA_UPDATE);
+	if(!(n%4)) SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
       }
       else FreeOneSDL(sdx);
     }
     while(FindNextFile(&de));
   }
   FindClose(&de);
-  if((n%4)) SendIpc(SMSYS_IPC_SMS_DATA_UPDATE);
+  if((n%4)) SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
   return n;
 }
 //-----------SmsDataMan--------------
@@ -780,7 +780,7 @@ int SmsData::ReadAllMessage(void)
   n+=ReadFolder(TYPE_IN_ALL);
   n+=ReadFolder(TYPE_OUT);
   n+=ReadFolder(TYPE_DRAFT);
-  SendIpc(SMSYS_IPC_SMS_DATA_UPDATE);
+  SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
   is_reading=0;
   this->n_new=GetSMSCount(TYPE_IN_N);
   return n;
@@ -946,7 +946,7 @@ int SmsData::CheckDat(void)
 	  if(ReadMessageOne(idd->index))
 	  {
 	    res++;
-	    if(!(res%4)) SendIpc(SMSYS_IPC_SMS_DATA_UPDATE);
+	    if(!(res%4)) SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
 	  }
 	  continue;
 	}
@@ -956,7 +956,7 @@ int SmsData::CheckDat(void)
 	  {
 	    sdl->type=TYPE_IN_N;
 	    res++;
-	    if(!(res%4)) SendIpc(SMSYS_IPC_SMS_DATA_UPDATE);
+	    if(!(res%4)) SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
 	    continue;
 	  }
 	}
@@ -966,7 +966,7 @@ int SmsData::CheckDat(void)
 	  {
 	    sdl->type=TYPE_IN_R;
 	    res++;
-	    if(!(res%4)) SendIpc(SMSYS_IPC_SMS_DATA_UPDATE);
+	    if(!(res%4)) SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
 	    continue;
 	  }
 	}
@@ -976,7 +976,7 @@ int SmsData::CheckDat(void)
 	if(ReadMessageOne(idd->index))
 	{
 	  res++;
-	  if(!(res%4)) SendIpc(SMSYS_IPC_SMS_DATA_UPDATE);
+	  if(!(res%4)) SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
 	}
       }
     }
@@ -992,13 +992,13 @@ int SmsData::CheckDat(void)
 	if(ReadMessageOne(idd->index))
 	{
 	  res++;
-	  if(res && !(res%4)) SendIpc(SMSYS_IPC_SMS_DATA_UPDATE);
+	  if(res && !(res%4)) SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
 	}
       }
     }
     lst=(SMS_DATA_LIST *)lst->next;
   }
-  if((res%4)) SendIpc(SMSYS_IPC_SMS_DATA_UPDATE);
+  if((res%4)) SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
   return res;
 }
 
@@ -1061,14 +1061,14 @@ int SmsData::CheckFolder(int type)
 	  LockSched();
 	  AddByTimeSDL(sdx);
 	  UnlockSched();
-	  if(!(res%4)) SendIpc(SMSYS_IPC_SMS_DATA_UPDATE);
+	  if(!(res%4)) SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
 	}
 	else FreeOneSDL(sdx);
       }
     }while(FindNextFile(&de));
   }
   FindClose(&de);
-  if((res%4)) SendIpc(SMSYS_IPC_SMS_DATA_UPDATE);
+  if((res%4)) SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
   return res;
 }
 
@@ -1119,7 +1119,7 @@ int SmsData::CheckSDList(void)
 	  sdl=(SDLIST *)sdl->next;
 	  DeleteSDL(sdx);
 	  n++;
-	  if(!(n%4)) SendIpc(SMSYS_IPC_SMS_DATA_UPDATE);
+	  if(!(n%4)) SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
 	  continue;
 	}
       }
@@ -1132,13 +1132,13 @@ int SmsData::CheckSDList(void)
 	sdl=(SDLIST *)sdl->next;
 	DeleteSDL(sdx);
 	n++;
-	if(!(n%4)) SendIpc(SMSYS_IPC_SMS_DATA_UPDATE);
+	if(!(n%4)) SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
 	continue;
       }
     }
     sdl=(SDLIST *)sdl->next;
   }
-  if((n%4)) SendIpc(SMSYS_IPC_SMS_DATA_UPDATE);
+  if((n%4)) SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
   return n;
 }
 
@@ -1150,7 +1150,7 @@ int SmsData::CheckAll(void)
   res+=CheckFolder(TYPE_IN_ALL);
   res+=CheckFolder(TYPE_OUT);
   res+=CheckFolder(TYPE_DRAFT);
-  SendIpc(SMSYS_IPC_SMS_DATA_UPDATE);
+  SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
   this->n_new=GetSMSCount(TYPE_IN_N);
   return res;
 }
@@ -1714,7 +1714,7 @@ int SmsData::MoveAllToArchive(void)
     if(MoveToArchive(sdl))
     {
       res++;
-      if(res%4) SendIpc(SMSYS_IPC_SMS_DATA_UPDATE);
+      if(res%4) SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
     }
     sdl=sdx;
   }
@@ -1731,3 +1731,15 @@ void SmsData::MoveAllToArchiveBG(SmsData *data)
 
 
 
+
+SDLIST * SmsData::FindLastNew(void)
+{
+  SDLIST *sdl=this->sdltop;
+  while(sdl)
+  {
+    if(sdl->type==TYPE_IN_N)
+      return sdl;
+    sdl=sdl->next;
+  }
+  return 0;
+}

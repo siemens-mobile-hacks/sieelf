@@ -85,14 +85,16 @@ int main(char *exename, char *fname)
 {
   if(IsAlreadyRuning())
   {
-    MyIpcMessage IPC;
+    //MyIpcMessage IPC;
     if(!fname)// || fname[0] < '0' || fname[0] > '4' || fname[1] != ':' || strlen(fname) > 128)
-      IPC.SendIpc(SMSYS_IPC_MAIN);
+      SendMyIpc(SMSYS_IPC_MAIN);
+    //  IPC.SendIpc(SMSYS_IPC_MAIN);
     else if (fname[0] >= '0' && fname[0] >= '4' && fname[1] == ':' && strlen(fname) < 128)
     {
       char *filename=new char[128];
       strcpy(filename, fname);
-      IPC.SendIpc(SMSYS_IPC_FVIEW, filename);
+      SendMyIpc(SMSYS_IPC_FVIEW, filename);
+      //IPC.SendIpc(SMSYS_IPC_FVIEW, filename);
     }
     SUBPROC((void *)ElfKiller);
     return 0;
