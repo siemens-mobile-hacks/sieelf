@@ -4,8 +4,6 @@
 class SiememPDU
 {
 public:
-//  SiememPDU();
-//  ~SiememPDU();
   void Bit7Decode(WSHDR *ws, char *pdata, int skip, int len);
   int PduDecodeTxt(SDLIST *sd, char *data);
   int PduDecodeAll(SDLIST *sd, char *data);

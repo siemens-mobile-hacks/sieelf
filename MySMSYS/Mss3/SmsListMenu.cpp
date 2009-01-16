@@ -57,7 +57,6 @@ int SmsListMenu::OnKey(void *data, GUI_MSG *msg)
   if(!sdl) return 0;
   if(msg->keys==0x3D)
   {
-    //if((sdl=SMSDATA->FindSDL(slm->type, cur)))
     {
       EditGUI *edg=new EditGUI;
       edg->CreateEditGUI(slm->dlg_csm, sdl, ED_VIEW, slm->type, 0);
@@ -65,7 +64,6 @@ int SmsListMenu::OnKey(void *data, GUI_MSG *msg)
   }
   else if (msg->keys==0x5)
   {
-    //if((sdl=SMSDATA->FindSDL(slm->type, cur)))
     {
       EditGUI *edg=new EditGUI;
       edg->CreateEditGUI(slm->dlg_csm, sdl, ED_REPLY, slm->type, 0);
@@ -73,7 +71,6 @@ int SmsListMenu::OnKey(void *data, GUI_MSG *msg)
   }
   else if (msg->keys==0x18)
   {
-    //if((sdl=SMSDATA->FindSDL(slm->type, cur)))
     {
       SmsOptionMenu *sop=new SmsOptionMenu;
       sop->CreateSmsOptionMenu(slm->dlg_csm, slm->gui_id, slm->type, sdl);
@@ -81,7 +78,6 @@ int SmsListMenu::OnKey(void *data, GUI_MSG *msg)
   }
   else if (msg->keys==0x14)
   {
-    //if((sdl=SMSDATA->FindSDL(slm->type, cur)))
     {
       ShowMSG(1, (int)(sdl->number));
     }
@@ -93,25 +89,11 @@ int SmsListMenu::OnKey(void *data, GUI_MSG *msg)
     {
       if(SMSDATA->DeleteMessage(sdl))
       {
-/*	int id=0;
-	if(slm->is_tab)
-	{
-	  TabGUI tab;
-	  id=tab.ReCreateTabGUI(slm->dlg_csm);
-	  if(id) slm->dlg_csm->gui_id=id;
-	}
-	else
-	{
-	  SmsListMenu *sl=new SmsListMenu;
-	  id=sl->CreateSmsListMenu(slm->type, cur, slm->dlg_csm);
-	  if(slm->dlg_csm->gui_id == slm->gui_id && id)
-	    slm->dlg_csm->gui_id=id;
-	}*/
 	slm->ReCreateMe(data);
 	return 1;
       }
     }
-    else if (key=='4')
+    else if (key=='4') //move to archive
     {
       if (SMSDATA->MoveToArchive(sdl))
       {
@@ -219,7 +201,6 @@ int SmsListMenu::CreateSmsListMenu(int type, int is_tab, DLG_CSM *dlg_csm)
   this->type=type;
   this->is_tab=is_tab;
   this->dlg_csm=dlg_csm;
-  //patch_header(&sms_menuhdr);
   this->gui_id=CreateMenu(&menu, &sms_menuhdr, 0, SMSDATA->GetSMSCount(type), this);
   return this->gui_id;
 }
@@ -397,7 +378,6 @@ int SmsOptionMenu::CreateSmsOptionMenu(DLG_CSM *dlg_csm, int slm_id, int list_ty
   this->sdl=sdl;
   this->slm_id=slm_id;
   this->list_type=list_type;
-  //patch_option_header(&sop_menuhdr);
   return CreateMenu30or2(&this->menu, &sop_menuhdr, 0, SOP_MENU_ITEM_N, this);
 }
 

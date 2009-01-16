@@ -48,7 +48,6 @@ MainMenu::~MainMenu()
 int MainMenu::CreateMainMenu(DLG_CSM *dlg_csm)
 {
   this->dlg_csm=dlg_csm;
-  //patch_header(&main_menuhdr);
   this->gui_id=CreateMenu(&this->menu, &main_menuhdr, 0, MAINMENU_N, this);
   return this->gui_id;
 }

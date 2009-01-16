@@ -13,7 +13,7 @@ public:
   ~EditGUI();
   int CreateEditGUI(DLG_CSM *dlg_csm, SDLIST *sdl, int gui_prop, int list_type, int need_free);
 private:
-	void UpdateCSMName(DLG_CSM *dlg_csm, int lgp);
+  void UpdateCSMName(DLG_CSM *dlg_csm, int lgp);
   INPUTDIA_DESC edit;
   int gui_prop;
   int gui_id;
@@ -31,8 +31,7 @@ private:
   static void EdOpUserItem(USR_MENU_ITEM *item);
 };
 
-class EditOptionMenu// :
-//  public CrtMenu
+class EditOptionMenu
 {
 public:
   EditOptionMenu();

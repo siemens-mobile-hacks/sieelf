@@ -20,7 +20,6 @@
 
 class SmsData : 
   public SiememPDU,
-//  public MyIpcMessage,
   public CFile
 {
 public:
@@ -89,9 +88,7 @@ public:
   int n_new; //新短信条数
 private:
   char *sms_buf;
-//  char *eam_buf;
   int sms_size;
-//  int eam_size;
   SDLIST *sdltop;
   int is_reading;
   int ReadDat(void);

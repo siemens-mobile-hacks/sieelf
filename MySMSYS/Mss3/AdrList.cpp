@@ -184,7 +184,6 @@ void AdrList::ConstructList()
 			  int j;
 			  unsigned int c;
 			  char *nump;
-			  //WSHDR *ws0;
 #ifdef NEWSGOLD
 			  if (n!=106) n-=0x62;
 			  else n=4;
@@ -351,39 +350,5 @@ CLIST *AdrList::FindCList(const char *num)
   }
   return 0;
 }
-/*
-int AdrList::NumberMatch(const char *num1, const char *num2)
-{
-  int len1, len2, lx;
-  const char *p1=num1;
-  const char *p2=num2;
-  if(!p1 || !p2)
-    return 0;
-  if(*p1=='+') p1++;
-  if(*p2=='+') p2++;
-  if(!(len1=strlen(p1)) || !(len2=strlen(p2)))
-    return 0;
-  if(len1>=len2)
-  {
-    lx=len1-len2;
-    p1+=lx;
-  }
-  else
-  {
-    lx=len2-len1;
-    p2+=lx;
-  }
-  if(lx>3)
-  {
-    if(!strncmp(num2, num_fetion, 5))
-    {
-      if(!strcmp(p1, p2)) return MATCH_FETION;
-    }
-    return MATCH_FAIL;
-  }
-  if(!strcmp(p1, p2)) return MATCH_NML;
-  return MATCH_FAIL;
-}
-*/
 
 

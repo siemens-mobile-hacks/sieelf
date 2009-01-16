@@ -7,7 +7,7 @@
 #define NAB_TEXT 1
 #define NAB_SETC 2
 
-class NAbCSM// : public MyIpcMessage
+class NAbCSM
 {
 public:
   NAbCSM();

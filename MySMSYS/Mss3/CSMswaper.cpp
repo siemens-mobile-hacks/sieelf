@@ -1,13 +1,11 @@
 #include "..\..\inc\swilib.h"
 #include "define.h"
-//#include "CSMswaper.h"
 #include "config_data.h"
 
 CSM_RAM *under_idle=0;
 
 static int do_CSMtoTop(CSMQ *csm_q, void *_cmd)
 {
-//  static const char my_color[]={0x00,0x00,0x00,0x32};
   MMICMD *cmd=(MMICMD *)_cmd;
   int *gui;
   CSM_RAM *wcsm;
@@ -51,9 +49,6 @@ static int do_CSMtoTop(CSMQ *csm_q, void *_cmd)
   }
   while((top_csm?top_csm->prev:csm_q->csm.last)!=work_csm);
 //  
-/*  DrawRectangle(0,0+YDISP,ScreenW()-1,ScreenH()-1,0,
-			my_color,
-			my_color);*/
 
   if (!top_csm)
   {

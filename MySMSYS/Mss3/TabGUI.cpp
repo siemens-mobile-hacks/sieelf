@@ -115,52 +115,19 @@ void TabGUI::Locret(void)
 {
 }
 
-/*
-
-int TabGUI::CreateTabGUI(DLG_CSM *dlg_csm, int cur1, int cur2, int cur3, int cur4, int cur5)
-{
-  int n, type, t_cur;
-  void *m_gui;
-  void *ma=malloc_adr();
-  void *mf=mfree_adr();
-  void *tab_gui=GetTabGUI(ma, mf);
-  SetGUIDefinition(tab_gui, this->tab_desc);
-  MainMenu *mm=new MainMenu;
-  m_gui=mm->GetMainMenuGUI(dlg_csm, cur1);
-  SetGUIToTabGUI(tab_gui, 0, TABICONS[0], m_gui);
-  for(n=1;n<TAB_ITEM_N;n++)
-  {
-    switch(n)
-    {
-    case 1: type=TYPE_IN_ALL;t_cur=cur2;break;
-    case 2: type=TYPE_OUT;t_cur=cur3;break;
-    case 3: type=TYPE_DRAFT;t_cur=cur4;break;
-    //case 4: type=0;break;
-    case 4: type=TYPE_FILTER;t_cur=cur5;break;
-    }
-    SmsListMenu *slm=new SmsListMenu;
-    m_gui=slm->GetSmsListMenuGUI(type, 1, dlg_csm, t_cur);
-    SetGUIToTabGUI(tab_gui, n, TABICONS[n], m_gui);
-  }
-  SetCursorTab(tab_gui, CFG_DEFAULT_TAB);
-  UpdateTab1stItem(tab_gui, 0);
-  return CreateGUI(tab_gui);
-}
-*/
 int TabGUI::ReCreateTabGUI(DLG_CSM *dlg_csm)
 {
+  int n, type;
+  void *old_gui, *t_gui, *m_gui, *tab_gui, *ma, *mf;
   if(!dlg_csm)
     return 0;
-  void *old_gui;
   if(!(old_gui=FindGUIbyId(dlg_csm->gui_id, NULL)))
     return 0;
-  void *ma=malloc_adr();
-  void *mf=mfree_adr();
-  void *tab_gui=GetTabGUI(ma, mf);
+  ma=malloc_adr();
+  mf=mfree_adr();
+  tab_gui=GetTabGUI(ma, mf);
   if(((GUI *)old_gui)->methods != ((GUI *)tab_gui)->methods)
     return 0;
-  int n, type;
-  void *t_gui, *m_gui;
   if(!(t_gui=GetGuiByTab(old_gui, 0)))
     return 0;
   SetGUIDefinition(tab_gui, this->tab_desc);

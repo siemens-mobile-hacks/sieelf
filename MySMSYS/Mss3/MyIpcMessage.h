@@ -3,7 +3,6 @@
 
 #define MY_SMSYS_IPC_START	0 //启动,data=IPC_DATA_DAEMON
 
-//#define SMSYS_IPC_MSG_MAX	9 //常规submsg最大值
 
 #define SMSYS_IPC_MAIN		1 //打开主菜单, data=NULL
 #define SMSYS_IPC_NEWSMS	2 //新建短信, data=NULL
@@ -46,14 +45,6 @@
 
 #define SMSYS_IPC_SOUND_PLAY 0x130 //data=filepath
 #define SMSYS_IPC_SOUND_STOP 0x131 //data=NULL
-/*
-class MyIpcMessage
-{
-public:
-  void SendIpc(int submess);
-  void SendIpc(int submess, void *data);
-};
-*/
 
 
 void SendMyIpc(int submess);
