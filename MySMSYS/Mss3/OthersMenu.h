@@ -1,7 +1,7 @@
 #ifndef _OTHERSMENU_H_
 #define _OTHERSMENU_H_
 
-class OthMenu : public CrtMenu
+class OthMenu// : public CrtMenu
 {
 public:
 	int CreateOthMenu(DLG_CSM *dlg_csm);

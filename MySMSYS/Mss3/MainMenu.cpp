@@ -48,7 +48,7 @@ MainMenu::~MainMenu()
 int MainMenu::CreateMainMenu(DLG_CSM *dlg_csm)
 {
   this->dlg_csm=dlg_csm;
-  patch_header(&main_menuhdr);
+  //patch_header(&main_menuhdr);
   this->gui_id=CreateMenu(&this->menu, &main_menuhdr, 0, MAINMENU_N, this);
   return this->gui_id;
 }
@@ -169,7 +169,7 @@ void MainMenu::ItemProc(void *data, int curitem, void *user_pointer)
   SetMenuItemIcon(data, curitem, curitem);
   SetMenuItemText(data, item, ws, curitem);
 }
-
+/*
 void *MainMenu::GetMainMenuGUI(DLG_CSM *dlg_csm)
 {
   void *m_gui;
@@ -186,7 +186,7 @@ void *MainMenu::GetMainMenuGUI(DLG_CSM *dlg_csm)
   SetHeaderToMenu(m_gui, &main_menuhdr, ma);
   return m_gui;
 }
-
+*/
 
 
 
@@ -194,4 +194,21 @@ void *MainMenu::GetMainMenuGUI(DLG_CSM *dlg_csm)
 void MainMenu::UpdateCSMName(DLG_CSM *dlg_csm, int lgp)
 {
   wsprintf(&((DLGCSM_DESC *)dlg_csm->csm_ram.constr)->csm_name, PERCENT_T, lgp);
+}
+
+void * MainMenu::GetMainMenuGUI(DLG_CSM *dlg_csm, int cur)
+{
+  void *m_gui;
+  void *ma=malloc_adr();
+  void *mf=mfree_adr();
+  this->dlg_csm=dlg_csm;
+  this->gui_id=0;
+  m_gui=GetMenuGUI(ma, mf);
+  SetMenuToGUI(m_gui, &this->menu);
+  SetMenuItemCount(m_gui, MAINMENU_N);
+  MenuSetUserPointer(m_gui, this);
+  SetCursorToMenuItem(m_gui, cur);
+  patch_header(&main_menuhdr);
+  SetHeaderToMenu(m_gui, &main_menuhdr, ma);
+  return m_gui;
 }

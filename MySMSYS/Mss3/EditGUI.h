@@ -31,8 +31,8 @@ private:
   static void EdOpUserItem(USR_MENU_ITEM *item);
 };
 
-class EditOptionMenu :
-  public CrtMenu
+class EditOptionMenu// :
+//  public CrtMenu
 {
 public:
   EditOptionMenu();

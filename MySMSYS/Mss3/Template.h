@@ -8,8 +8,8 @@ typedef struct _TPLIST
 }TPLIST;
 
 class TplMenu :
-  public CFile,
-  public CrtMenu
+  public CFile//,
+//  public CrtMenu
 {
 public:
   TplMenu();

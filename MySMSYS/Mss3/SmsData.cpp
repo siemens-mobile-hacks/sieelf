@@ -41,7 +41,7 @@ void SmsData::DeleteSDL(SDLIST *sdl)
   SDLIST *sdp;
   if(sdl)
   {
-    //LockSched();
+    LockSched();
     sdn=(SDLIST *)sdl->next;
     sdp=(SDLIST *)sdl->prev;
     if(sdp)
@@ -50,7 +50,7 @@ void SmsData::DeleteSDL(SDLIST *sdl)
       sdltop=sdn;
     if(sdn)
       sdn->prev=sdp;
-    //UnlockSched();
+    UnlockSched();
     if((sdl->msg_prop&ISFILE) && sdl->fname)
       delete sdl->fname;
     if(sdl->text) FreeWS(sdl->text);

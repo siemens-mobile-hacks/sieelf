@@ -6,6 +6,7 @@
 #include "SmsData.h"
 #include "CreateMenu.h"
 #include "SmsListMenu.h"
+#include "TabGUI.h"
 
 #include "AdrList.h"
 #include "EditGUI.h"
@@ -50,12 +51,13 @@ int SmsListMenu::OnKey(void *data, GUI_MSG *msg)
 {
   SmsListMenu *slm=(SmsListMenu *)MenuGetUserPointer(data);
   int cur=GetCurMenuItem(data);
-  SDLIST *sdl;
+  SDLIST *sdl=SMSDATA->FindSDL(slm->type, cur);
   if(msg->keys==1)
     return 1;
+  if(!sdl) return 0;
   if(msg->keys==0x3D)
   {
-    if((sdl=SMSDATA->FindSDL(slm->type, cur)))
+    //if((sdl=SMSDATA->FindSDL(slm->type, cur)))
     {
       EditGUI *edg=new EditGUI;
       edg->CreateEditGUI(slm->dlg_csm, sdl, ED_VIEW, slm->type, 0);
@@ -63,7 +65,7 @@ int SmsListMenu::OnKey(void *data, GUI_MSG *msg)
   }
   else if (msg->keys==0x5)
   {
-    if((sdl=SMSDATA->FindSDL(slm->type, cur)))
+    //if((sdl=SMSDATA->FindSDL(slm->type, cur)))
     {
       EditGUI *edg=new EditGUI;
       edg->CreateEditGUI(slm->dlg_csm, sdl, ED_REPLY, slm->type, 0);
@@ -71,7 +73,7 @@ int SmsListMenu::OnKey(void *data, GUI_MSG *msg)
   }
   else if (msg->keys==0x18)
   {
-    if((sdl=SMSDATA->FindSDL(slm->type, cur)))
+    //if((sdl=SMSDATA->FindSDL(slm->type, cur)))
     {
       SmsOptionMenu *sop=new SmsOptionMenu;
       sop->CreateSmsOptionMenu(slm->dlg_csm, slm->gui_id, slm->type, sdl);
@@ -79,9 +81,43 @@ int SmsListMenu::OnKey(void *data, GUI_MSG *msg)
   }
   else if (msg->keys==0x14)
   {
-    if((sdl=SMSDATA->FindSDL(slm->type, cur)))
+    //if((sdl=SMSDATA->FindSDL(slm->type, cur)))
     {
       ShowMSG(1, (int)(sdl->number));
+    }
+  }
+  if(msg->gbsmsg->msg==KEY_DOWN)
+  {
+    int key=msg->gbsmsg->submess;
+    if(key=='7') //delete
+    {
+      if(SMSDATA->DeleteMessage(sdl))
+      {
+/*	int id=0;
+	if(slm->is_tab)
+	{
+	  TabGUI tab;
+	  id=tab.ReCreateTabGUI(slm->dlg_csm);
+	  if(id) slm->dlg_csm->gui_id=id;
+	}
+	else
+	{
+	  SmsListMenu *sl=new SmsListMenu;
+	  id=sl->CreateSmsListMenu(slm->type, cur, slm->dlg_csm);
+	  if(slm->dlg_csm->gui_id == slm->gui_id && id)
+	    slm->dlg_csm->gui_id=id;
+	}*/
+	slm->ReCreateMe(data);
+	return 1;
+      }
+    }
+    else if (key=='4')
+    {
+      if (SMSDATA->MoveToArchive(sdl))
+      {
+	slm->ReCreateMe(data);
+	return 1;
+      }
     }
   }
   return 0;
@@ -183,11 +219,11 @@ int SmsListMenu::CreateSmsListMenu(int type, int is_tab, DLG_CSM *dlg_csm)
   this->type=type;
   this->is_tab=is_tab;
   this->dlg_csm=dlg_csm;
-  patch_header(&sms_menuhdr);
+  //patch_header(&sms_menuhdr);
   this->gui_id=CreateMenu(&menu, &sms_menuhdr, 0, SMSDATA->GetSMSCount(type), this);
   return this->gui_id;
 }
-
+/*
 void *SmsListMenu::GetSmsListMenuGUI(int type, int is_tab, DLG_CSM *dlg_csm)
 {
   void *m_gui;
@@ -206,7 +242,25 @@ void *SmsListMenu::GetSmsListMenuGUI(int type, int is_tab, DLG_CSM *dlg_csm)
   SetHeaderToMenu(m_gui, &sms_menuhdr, ma);
   return m_gui;
 }
-
+*/
+void * SmsListMenu::GetSmsListMenuGUI(int type, int is_tab, DLG_CSM *dlg_csm, int cur)
+{
+  void *m_gui;
+  void *ma=malloc_adr();
+  void *mf=mfree_adr();
+  this->type=type;
+  this->dlg_csm=dlg_csm;
+  this->gui_id=0;
+  this->is_tab=is_tab;
+  m_gui=GetMultiLinesMenuGUI(ma, mf);
+  SetMenuToGUI(m_gui, &this->menu);
+  SetMenuItemCount(m_gui, SMSDATA->GetSMSCount(type));
+  MenuSetUserPointer(m_gui, this);
+  SetCursorToMenuItem(m_gui, cur);
+  patch_header(&sms_menuhdr);
+  SetHeaderToMenu(m_gui, &sms_menuhdr, ma);
+  return m_gui;
+}
 /*
 SOFTKEY_DESC sop_menu_sk[]=
 {
@@ -343,8 +397,8 @@ int SmsOptionMenu::CreateSmsOptionMenu(DLG_CSM *dlg_csm, int slm_id, int list_ty
   this->sdl=sdl;
   this->slm_id=slm_id;
   this->list_type=list_type;
-  patch_option_header(&sop_menuhdr);
-  return CreateMenu(&this->menu, &sop_menuhdr, 0, SOP_MENU_ITEM_N, this, 1);
+  //patch_option_header(&sop_menuhdr);
+  return CreateMenu30or2(&this->menu, &sop_menuhdr, 0, SOP_MENU_ITEM_N, this);
 }
 
 
@@ -353,4 +407,43 @@ int SmsOptionMenu::CreateSmsOptionMenu(DLG_CSM *dlg_csm, int slm_id, int list_ty
 void SmsListMenu::UpdateCSMName(DLG_CSM *dlg_csm, int lgp)
 {
   wsprintf(&((DLGCSM_DESC *)dlg_csm->csm_ram.constr)->csm_name, PERCENT_T, lgp);
+}
+
+/*
+int SmsListMenu::ReCreateMe(void *data)
+{
+  int cur;
+  SmsListMenu *slm;
+  if(!data)
+    return 0;
+  cur=GetCurMenuItem(data);
+  slm=new SmsListMenu;
+  slm->dlg_csm=this->dlg_csm;
+  slm->is_tab=this->is_tab;
+  slm->type=this->type;
+  slm->gui_id=CreateMenu(&slm->menu, &sms_menuhdr, cur, SMSDATA->GetSMSCount(slm->type), slm);
+  return slm->gui_id;
+}
+
+int SmsListMenu::ReCreateTab(void *data)
+{
+}
+*/
+
+void SmsListMenu::ReCreateMe(void *data)
+{
+  int id=0;
+  if(this->is_tab)
+  {
+    TabGUI tab;
+    id=tab.ReCreateTabGUI(this->dlg_csm);
+    if(id) this->dlg_csm->gui_id=id;
+  }
+  else
+  {
+    SmsListMenu *sl=new SmsListMenu;
+    id=sl->CreateSmsListMenu(this->type, GetCurMenuItem(data), this->dlg_csm);
+    if(this->dlg_csm->gui_id == this->gui_id && id)
+      this->dlg_csm->gui_id=id;
+  }
 }

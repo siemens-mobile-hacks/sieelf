@@ -2,14 +2,18 @@
 #define _SMSLISTMENU_H_
 
 
-class SmsListMenu :
-  public CrtMenu
+class SmsListMenu// :
+//  public CrtMenu
 {
 public:
+	void ReCreateMe(void *data);
+//	int ReCreateTab(void *data);
+	void * GetSmsListMenuGUI(int type, int is_tab, DLG_CSM *dlg_csm, int cur);
+//	int ReCreateMe(void *data/*, SmsListMenu *slm*/);
   SmsListMenu();
   ~SmsListMenu();
   int CreateSmsListMenu(int type, int is_tab, DLG_CSM *dlg_csm);
-  void *GetSmsListMenuGUI(int type, int is_tab, DLG_CSM *dlg_csm);
+//  void *GetSmsListMenuGUI(int type, int is_tab, DLG_CSM *dlg_csm);
 private:
 	void UpdateCSMName(DLG_CSM *dlg_csm, int lgp);
   ML_MENU_DESC menu;
@@ -23,8 +27,8 @@ private:
 };
 
 
-class SmsOptionMenu :
-  public CrtMenu
+class SmsOptionMenu// :
+//  public CrtMenu
 {
 public :
   SmsOptionMenu();

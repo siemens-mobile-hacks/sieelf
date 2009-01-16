@@ -141,7 +141,7 @@ void OthMenu::ItemProc(void *data, int curitem, void *user_pointer)
 int OthMenu::CreateOthMenu(DLG_CSM *dlg_csm)
 {
   this->dlg_csm=dlg_csm;
-  patch_header(&oth_menuhdr);
+  //patch_header(&oth_menuhdr);
   return CreateMenu(&this->menu, &oth_menuhdr, 0, OTH_MENU_ITEM_N, this);
 }
 

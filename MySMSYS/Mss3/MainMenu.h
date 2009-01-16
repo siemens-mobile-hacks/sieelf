@@ -1,13 +1,14 @@
 #ifndef _MAINMENU_H_
 #define _MAINMENU_H_
-class MainMenu :
-  public CrtMenu
+class MainMenu// :
+//  public CrtMenu
 {
 public:
+	void * GetMainMenuGUI(DLG_CSM *dlg_csm, int cur);
   MainMenu();
   ~MainMenu();
   int CreateMainMenu(DLG_CSM *dlg_csm);
-  void *GetMainMenuGUI(DLG_CSM *dlg_csm);
+//  void *GetMainMenuGUI(DLG_CSM *dlg_csm);
 private:
   MENU_DESC menu;
   int gui_id;

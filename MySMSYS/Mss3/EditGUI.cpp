@@ -80,7 +80,7 @@ void EditGUI::EditSendSMS(DLG_CSM *dlg_csm, WSHDR *text, const char *number)
   DoSendBackGround(dlg_csm);
 }
 
-#define USER_ITEM_N 4
+#define USER_ITEM_N 5
 void EditGUI::EdOpUserItem(USR_MENU_ITEM *item)
 {
   if(item->type==0)
@@ -97,6 +97,9 @@ void EditGUI::EdOpUserItem(USR_MENU_ITEM *item)
       wsprintf(item->ws, PERCENT_T, LGP->lgp.LGP_TEMPLATE);
       break;
     case 3:
+      wsprintf(item->ws, PERCENT_T, LGP->lgp.LGP_SAVE_AS_DRAFT);
+      break;
+    case 4:
       wsprintf(item->ws, PERCENT_T, LGP->lgp.LGP_CANCEL);
       break;
     }
@@ -130,6 +133,29 @@ void EditGUI::EdOpUserItem(USR_MENU_ITEM *item)
       break;
       //template
     case 3:
+      {
+	EDITCONTROL ec;
+	int res;
+	ExtractEditControl(item->user_pointer, 3, &ec);
+	if(ec.pWS->wsbody[0])
+	{
+	  EditGUI *edg=(EditGUI *)EDIT_GetUserPointer(item->user_pointer);
+	  res=SMSDATA->SaveMss(ec.pWS, edg->number, edg->sdl, TYPE_DRAFT, 2);
+	  if(!(edg->sdl->msg_prop&ND_FREE) && edg->sdl->type==TYPE_DRAFT)
+	  {
+	    SMSDATA->DeleteSDL(edg->sdl);
+	    if((unsigned int)res>>28==0xA)
+	    {
+	      edg->sdl=(SDLIST *)res;
+	    }
+	    else edg->sdl=NULL;
+	  }
+	  GeneralFunc_flag1(edg->gui_id, 1);
+	}
+      }
+      break;
+      //save draft
+    case 4:
       {
 	EditGUI *edg=(EditGUI *)EDIT_GetUserPointer(item->user_pointer);
 	GeneralFunc_flag1(edg->gui_id, 1);
@@ -662,8 +688,8 @@ int EditOptionMenu::CreateEditOptionMenu(DLG_CSM *dlg_csm, SDLIST *sdl, int edit
   this->dlg_csm=dlg_csm;
   this->nd_free=nd_free;
   this->list_type=list_type;
-  patch_option_header(&edo_menuhdr);
-  return CreateMenu(&this->menu, &edo_menuhdr, 0, EDO_MENU_ITEM_N, this, 1);
+  //patch_option_header(&edo_menuhdr);
+  return CreateMenu30or2(&this->menu, &edo_menuhdr, 0, EDO_MENU_ITEM_N, this);
 }
 
 

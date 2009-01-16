@@ -36,7 +36,6 @@ DaemonCSM::DaemonCSM()
   this->is_new_proc=0;
   this->temp_tmr_index=0;
 #ifdef ICONBAR
-  //this->daemon_csm_desc.iconbar_handler.check_name="IconBar";
   strcpy(this->daemon_csm_desc.iconbar_handler.check_name, "IconBar");
   this->daemon_csm_desc.iconbar_handler.addr=(int)this->AddIconBar;
 #endif
@@ -89,8 +88,6 @@ int strcmp_nocase(const char *s1,const char *s2)
   return(i);
 }
 
-//int temp_tmr_index=0;
-//int is_new_proc=0;
 
 #define VBA_POWERS_N 11
 const int VBA_POWERS[VBA_POWERS_N]={0,90,10,60,20,70,40,0,80,30,50}; //[0], stop
@@ -113,7 +110,6 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 
 #endif
 
-//  extern short PLAY_ID;//popup new
   DAEMON_CSM *daemon_csm=(DAEMON_CSM *)data;
   DaemonCSM *daemon=daemon_csm->daemon;
   if (msg->msg==MSG_EMS_FFS_WRITE)
@@ -177,18 +173,11 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	case SMSYS_IPC_UPDATE_CLIST:
 	  SUBPROC((void *)ADRLST->ConstructListFRC, ADRLST);
 	  break;
-	//case SMSYS_IPC_READ_NEW_SECC:
-	//  if (!CFG_ENA_NOTIFY && daemon->IsOnTopMyCSM())
-	//  {
-	//    RefreshGUI();
-	//  }
-	//  break;
 	case SMSYS_IPC_READ_NEW:
 	  if (daemon->temp_tmr_index)
 	  {
 	    if (SMSDATA->ReadMessageOne(daemon->temp_tmr_index))
 	    {
-	      //MyIpcMessage myipc;
 	      if (CFG_ENA_NOTIFY) SendMyIpc(SMSYS_IPC_NEW_IN_ME, (void *)daemon->temp_tmr_index);//myipc.SendIpc(SMSYS_IPC_NEW_IN_WIN, (void *)daemon->temp_tmr_index);
 	      else if (daemon->IsOnTopMyCSM()) RefreshGUI();
 	    }
@@ -221,8 +210,6 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	  if(CFG_NOTIFY_TIME &&/* (CFG_VIBRA_POWER) &&*/ CFG_ENA_VIBRA && !IsCalling())
 	  {
 	    daemon->vba_power=1;
-	    //SetVibration(daemon->vba_power);
-	    //GBS_StartTimerProc(&daemon->vbatmr, 216/4, daemon->VibraProc);
 	    daemon->VibraProc();
 	  }
 	  break;
@@ -234,13 +221,10 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	  }
 	  break;
 	case SMSYS_IPC_VIBRA_NEXT:
-	  //if (CFG_NOTIFY_TIME && !IsCalling())
 	  {
 	    if (CFG_NOTIFY_TIME && CFG_ENA_VIBRA && daemon->vba_power && SMSDATA->n_new && !IsCalling())
 	    {
 	      SetVibration(VBA_POWERS[daemon->vba_power]);
-	      //if(daemon->vba_power>=CFG_VIBRA_POWER) daemon->vba_power=0;
-	      //else daemon->vba_power+=10;
 	      if(daemon->vba_power<VBA_POWERS_N) daemon->vba_power++;
 	      else daemon->vba_power=1;
 	      GBS_StartTimerProc(&daemon->vbatmr, 216/4, daemon->VibraProc);
@@ -399,35 +383,11 @@ int DaemonCSM::IsOnTopMyCSM(void)
 
 void DaemonCSM::DoNewProc(void)
 {
-/*  if (temp_tmr_index)
-  {
-    if (SMSDATA->ReadMessageOne(temp_tmr_index))
-    {
-      MyIpcMessage myipc;
-      if (CFG_ENA_NOTIFY) myipc.SendIpc(SMSYS_IPC_NEW_IN_WIN, (void *)temp_tmr_index);
-      else myipc.SendIpc(SMSYS_IPC_READ_NEW_SECC);
-    }
-    temp_tmr_index=0;
-  }
-  is_new_proc=0;*/
-  //MyIpcMessage myipc;
-  //myipc.SendIpc(SMSYS_IPC_READ_NEW);
   SendMyIpc(SMSYS_IPC_READ_NEW);
 }
 
 void DaemonCSM::UpdateNProc()
 {
-/*  if (temp_tmr_index)
-  {
-    if (SMSDATA->ReadMessageOne(temp_tmr_index))
-    {
-      MyIpcMessage myipc;
-      myipc.SendIpc(SMSYS_IPC_READ_NEW_SECC);
-    }
-    temp_tmr_index=0;
-  }*/
-  //MyIpcMessage myipc;
-  //myipc.SendIpc(SMSYS_IPC_READ_SMS);
   SendMyIpc(SMSYS_IPC_READ_SMS);
 }
 
@@ -440,8 +400,6 @@ void DaemonCSM::AddIconBar(short* num)
 
 void DaemonCSM::VibraProc(void)
 {
-  //MyIpcMessage myipc;
-  //myipc.SendIpc(SMSYS_IPC_VIBRA_CONTINUE);
   SendMyIpc(SMSYS_IPC_VIBRA_NEXT);
 }
 

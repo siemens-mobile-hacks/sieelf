@@ -211,7 +211,7 @@ void TplMenu::ItemProc(void *data, int curitem, void *user_pointer)
 int TplMenu::CreateTplMenu(void *edgui)
 {
   this->edgui=edgui;
-  patch_header(&tpl_menuhdr);
+  //patch_header(&tpl_menuhdr);
   return CreateMenu(&this->menu, &tpl_menuhdr, 0, this->ReadTpl(), this);
 }
 
