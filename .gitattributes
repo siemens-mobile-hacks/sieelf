@@ -1062,6 +1062,8 @@ MySMSYS/Mss3/TabGUI.cpp -text
 MySMSYS/Mss3/TabGUI.h -text
 MySMSYS/Mss3/Template.cpp -text
 MySMSYS/Mss3/Template.h -text
+MySMSYS/Mss3/Vibra.cpp -text
+MySMSYS/Mss3/Vibra.h -text
 MySMSYS/Mss3/_cpp2.cpp -text
 MySMSYS/Mss3/conf_loader.c -text
 MySMSYS/Mss3/conf_loader.h -text

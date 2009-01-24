@@ -81,6 +81,9 @@ __root const int CFG_ENA_NOTIFY = 1;
 __root const CFG_HDR cfghdr1_2 = {CFG_CHECKBOX, LGP_CFG_ENA_VIBRA, 0, 3};
 __root const int CFG_ENA_VIBRA = 1;
 
+__root const CFG_HDR cfghdr1_5 = {CFG_UTF8_STRING, LGP_CFG_VIBRA_RHYTHM, 0, 31};
+__root const char CFG_VIBRA_RHYTHM[128] = "90;10;70;;30;80;";
+
 __root const CFG_HDR cfghdr1_3 = {CFG_UINT, LGP_CFG_NOTIFY_TIME, 0, 100};
 __root const int CFG_NOTIFY_TIME = 4;
 

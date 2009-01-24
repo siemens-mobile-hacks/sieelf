@@ -96,6 +96,7 @@ extern const char STR_UNK_TYPE[];
 #define LGP_CFG_FILTER "筛选显示"
 #define LGP_CFG_DRAFT "草稿"
 #define LGP_CFG_ENA_VIBRA "使用振动"
+#define LGP_CFG_VIBRA_RHYTHM "振动节奏"
 #endif
 
 #ifdef LANG_EN
@@ -174,6 +175,7 @@ extern const char STR_UNK_TYPE[];
 #define LGP_CFG_FILTER "Filter"
 #define LGP_CFG_DRAFT "Draft"
 #define LGP_CFG_ENA_VIBRA "Enable Vibra"
+#define LGP_CFG_VIBRA_RHYTHM "Vibra Rhythm"
 #endif
 
 #endif

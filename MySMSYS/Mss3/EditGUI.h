@@ -9,6 +9,7 @@
 class EditGUI
 {
 public:
+  int n_focus;
   EditGUI();
   ~EditGUI();
   int CreateEditGUI(DLG_CSM *dlg_csm, SDLIST *sdl, int gui_prop, int list_type, int need_free);
@@ -17,7 +18,6 @@ private:
   INPUTDIA_DESC edit;
   int gui_prop;
   int gui_id;
-  int n_focus;
   int list_type;
   SDLIST *sdl;
   DLG_CSM *dlg_csm;

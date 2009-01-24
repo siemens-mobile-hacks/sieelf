@@ -31,7 +31,7 @@ DialogCSM::DialogCSM()
   dlg_csm_desc.csm_name.ws_mfree=NAMECSM_MAGIC2;
   dlg_csm_desc.csm_name.isbody_allocated=0;
   dlg_csm_desc.csm_name.maxlen=DLGCSM_NAME_LEN;
-  SUBPROC((void *)SMSDATA->CheckAllCHK, SMSDATA);
+  //SUBPROC((void *)SMSDATA->CheckAllCHK, SMSDATA);
 }
 
 DialogCSM::~DialogCSM()
@@ -244,6 +244,15 @@ int DialogCSM::CreateDialogCSM(int submsg, void *ipc_data)
   this->submsg=submsg;
   this->ipc_data=ipc_data;
   dlg_csm.dlg=this;
+  if(submsg==SMSYS_IPC_MAIN
+    ||submsg==SMSYS_IPC_IN_NEW
+    ||submsg==SMSYS_IPC_IN_RD
+    ||submsg==SMSYS_IPC_OUT
+    ||submsg==SMSYS_IPC_DRAFT
+    ||submsg==SMSYS_IPC_ALL
+    ||submsg==SMSYS_IPC_IN_ALL
+    )
+    SUBPROC((void *)SMSDATA->CheckAllCHK, SMSDATA);
   return (CreateCSM(&dlg_csm_desc.csm_desc, &dlg_csm, 2));
 }
 

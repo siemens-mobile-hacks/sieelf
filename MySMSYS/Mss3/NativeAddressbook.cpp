@@ -1,5 +1,11 @@
 #include "include.h"
+#include "SiemensPDU.h"
 #include "MyIpcMessage.h"
+#include "File.h"
+#include "SmsData.h"
+#include "CreateMenu.h"
+#include "AdrList.h"
+#include "EditGUI.h"
 #include "NativeAddressbook.h"
 
 NAbCSM::NAbCSM()
@@ -33,6 +39,7 @@ int NAbCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
   NAb_CSM *nabcsm=(NAb_CSM *)data;
   void *ed_gui;
   WSHDR *wn;
+  EditGUI *edg;
   if((msg->msg==MSG_CSM_DESTROYED)&&((int)msg->data0==nabcsm->ab_csm_id))
   {
     if(!(nabd=nabcsm->nabd))
@@ -42,6 +49,7 @@ int NAbCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
       if(nabcsm->ed_gui==ed_gui 
 	&& ((GUI *)nabcsm->ed_gui)->methods==((GUI *)ed_gui)->methods 
 	&& ((GUI *)nabcsm->ed_gui)->definition==((GUI *)ed_gui)->definition
+	&& (edg=(EditGUI *)EDIT_GetUserPointer(ed_gui))
 	)
       {
 	if(nabcsm->type==NAB_TEXT)
@@ -49,21 +57,21 @@ int NAbCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	  if(
 	     GetNativeAbDataStatus(nabcsm->nabd, 0)!=9
 	    && (wn=GetNumFromNativeAbData(nabd, GetNativeAbDataType(nabd, 0), 0))
-	    && EDIT_GetFocus(ed_gui)==3
+	    && EDIT_GetFocus(ed_gui)==edg->n_focus
 	    )
 	  {
 	    int n;
 	    EDITCONTROL ec;
 	    WSHDR *ews;
 	    int pos=EDIT_GetCursorPos(ed_gui);
-	    ExtractEditControl(ed_gui,3,&ec);
+	    ExtractEditControl(ed_gui,edg->n_focus,&ec);
 	    ews=AllocWS(ec.pWS->wsbody[0]+wn->wsbody[0]+4);
 	    wstrcpy(ews, ec.pWS);
 	    for(n=wn->wsbody[0];n>0;n--)
 	    {
 	      wsInsertChar(ews, wn->wsbody[n], pos);
 	    }
-	    EDIT_SetTextToEditControl(ed_gui, 3, ews);
+	    EDIT_SetTextToEditControl(ed_gui, edg->n_focus, ews);
 	    EDIT_SetCursorPos(ed_gui, pos+wn->wsbody[0]);
 	    FreeWS(ews);
 	    FreeWS(wn);
@@ -73,10 +81,10 @@ int NAbCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	{
 	  if(GetNativeAbDataStatus(nabcsm->nabd, 0)==1
 	    && (wn=GetNumFromNativeAbData(nabd, GetNativeAbDataType(nabd, 0), 0))
-	    && EDIT_GetFocus(ed_gui)==1
+	    && EDIT_GetFocus(ed_gui) < edg->n_focus-1
 	    )
 	  {
-	    EDIT_SetTextToEditControl(ed_gui, 1, wn);
+	    EDIT_SetTextToFocused(ed_gui, wn);
 	    FreeWS(wn);
 	  }
 	}

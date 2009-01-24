@@ -57,4 +57,5 @@ extern const char CFG_DEFAULT_SENT_NUM[32];
 extern const unsigned int CFG_FILTEROP;
 extern const char CFG_STRORNUM[32];
 extern const unsigned int CFG_DEFAULT_TAB;
+extern const char CFG_VIBRA_RHYTHM[128];
 #endif

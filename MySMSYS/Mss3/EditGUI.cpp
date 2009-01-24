@@ -76,8 +76,8 @@ void EditGUI::EditSendSMS(DLG_CSM *dlg_csm, WSHDR *text, const char *number)
   ws=AllocWS(len+3);
   wstrcpy(ws, text);
   SendSMS(ws, number, MMI_CEPID, MSG_SMS_RX-1, 6);
-  if(CFG_ENA_SAVE_SENT) SMSDATA->SaveMss(text, number, NULL, TYPE_OUT, 2);
   DoSendBackGround(dlg_csm);
+  if(CFG_ENA_SAVE_SENT) SMSDATA->SaveMss(text, number, NULL, TYPE_OUT, 2);
 }
 
 #define USER_ITEM_N 5
@@ -112,8 +112,9 @@ void EditGUI::EdOpUserItem(USR_MENU_ITEM *item)
       {
 	EditGUI *edg=(EditGUI *)EDIT_GetUserPointer(item->user_pointer);
 	EDITCONTROL ec;
-	ExtractEditControl(item->user_pointer, 3, &ec);
+	ExtractEditControl(item->user_pointer, edg->n_focus, &ec);
 	edg->EditSendSMS(edg->dlg_csm, ec.pWS, edg->number);
+	GeneralFunc_flag1(edg->gui_id, 1);
       }
       //send
       break;
@@ -136,7 +137,8 @@ void EditGUI::EdOpUserItem(USR_MENU_ITEM *item)
       {
 	EDITCONTROL ec;
 	int res;
-	ExtractEditControl(item->user_pointer, 3, &ec);
+	EditGUI *edg=(EditGUI *)EDIT_GetUserPointer(item->user_pointer);
+	ExtractEditControl(item->user_pointer, edg->n_focus, &ec);
 	if(ec.pWS->wsbody[0])
 	{
 	  EditGUI *edg=(EditGUI *)EDIT_GetUserPointer(item->user_pointer);

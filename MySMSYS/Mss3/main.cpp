@@ -7,6 +7,7 @@
 #include "SmsListMenu.h"
 #include "DialogCSM.h"
 #include "LangPack.h"
+#include "Vibra.h"
 #include "DaemonCSM.h"
 
 #include "CSMswaper.h"

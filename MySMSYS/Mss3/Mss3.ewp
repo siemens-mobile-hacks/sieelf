@@ -7288,6 +7288,12 @@
   <file>
     <name>$PROJ_DIR$\Template.h</name>
   </file>
+  <file>
+    <name>$PROJ_DIR$\Vibra.cpp</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\Vibra.h</name>
+  </file>
 </project>
 
 
