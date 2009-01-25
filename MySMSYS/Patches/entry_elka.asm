@@ -131,6 +131,32 @@ COUNT_READ
 	BLX	getFileCount
 	ADD	R7, R7, R0
 	LDMFD	SP!,{R0-R6, PC}
+/*
+ROM:A0345B48 02 1C                       ADD     R2, R0, #0
+ROM:A0345B4A 23 1C                       ADD     R3, R4, #0
+ROM:A0345B4C 28 1C                       ADD     R0, R5, #0
+ROM:A0345B4E 60 A1                       ADR     R1, s_DD_1      ; "%d/%d"*/
+MMENU_INBOX_CNT_CODE
+	ADD	LR, LR, #4
+	STMFD	SP!, {LR}
+	MOV	R7, R0 //CNT NEW OLD
+	SWI	0x82B1
+	MOV	R2, R0
+	CMP	R7, #0
+	BNE	CNT_IN_ALL
+	LDRH	R7, [R2, #0x1E]
+CNT_IN_ALL
+	MOV	R0, #5 //TYPE_IN_ALL 	5
+	MOV	R1, R4
+	BLX	getFileCount
+	ADD	R3, R4, R0
+	MOV	R2, R7
+	MOV	R0, R5
+	MOV	R1, #0x7F
+	ORR	R1, R1, #0x100
+	LDMFD	SP!, {LR}
+	ADD	R1, R1, LR
+	BX	LR
 
 	EXTERN	getOtherCount
 OTHER_COUNT_CODE
@@ -155,8 +181,44 @@ GO
 	ADD	R5, R5, R0
 	LDMFD	SP!, {R0-R4,R6,R7, PC}
 
+/*
+ROM:A0345BB0 28 1C                       ADD     R0, R5, #0
+ROM:A0345BB2 4E A1                       ADR     R1, s_D_16      ; "%d"
+ROM:A0345BB4 DC F0 78 EC                 BLX     sub_A04224A8    ; void wsprintf(WSHDR *,const char *format,...)
+*/
+MMENU_DRAFT_CNT_CODE
+	ADD	LR, LR, #4
+	STMFD	SP!,{LR}
+	MOV	R7, R2
+	SWI	0x82B1
+	MOV	R2, R0
+	MOV	R0, #4
+	MOV	R1, R7
+	BLX	getFileCount
+	ADD	R2, R7, R0
+	MOV	R0, R5
+	MOV	R1, #0x33
+	ORR	R1, R1, #0x100
+	LDR	LR, [SP, #0]
+	ADD	R1, R1, LR
+	SWI	0xA0
+	LDMFD	SP!,{PC}
 
-
+MMENU_SENT_CNT_CODE
+	ADD	LR, LR, #6
+	STMFD	SP!,{LR}
+	MOV	R7, R1
+	SWI	0x82B1
+	MOV	R2, R0
+	MOV	R0, #1
+	MOV	R1, R4
+	BLX	getFileCount
+	ADD	R2, R4, R0
+	SUB 	R1, R7, #0x30
+	MOV	R0, R5
+	SWI	0xA0
+	LDMFD	SP!,{PC}
+	
 NEW_IN_WIN_CODE
 	ADD	LR, LR, #4
 	LSL	R6, R6, #0x1F
@@ -437,4 +499,23 @@ pINBOX_VIEW_CODE
 	LDR	R0, =NMENU_ARCHIVE_CODE
 	BX	R0
 	
+	RSEG	MMENU_INBOX_CNT_HOOK
+	CODE16
+	LDR	R2, =MMENU_INBOX_CNT_CODE
+	BLX	R2
+	
+	RSEG	MMENU_DRAFT_CNT_HOOK
+	CODE16
+	LDR	R0, =MMENU_DRAFT_CNT_CODE
+	BLX	R0
+	
+	RSEG	MMENU_SENT_CNT_HOOK
+	CODE16
+	LDR	R0, pMMENU_SENT_CNT_CODE
+	BLX	R0
+	DATA
+pMMENU_SENT_CNT_CODE
+	DCD	MMENU_SENT_CNT_CODE
+	CODE16
+	NOP
 	END
