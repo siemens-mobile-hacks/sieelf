@@ -199,11 +199,13 @@ CodeShowPatch/about.txt -text
 CodeShowPatch/addr.h -text
 CodeShowPatch/entry_elka.asm -text
 CodeShowPatch/entry_newsgold.asm -text
+CodeShowPatch/entry_sgold.asm -text
 CodeShowPatch/func.asm -text
 CodeShowPatch/main.asm -text
 CodeShowPatch/menuText.c -text
 CodeShowPatch/mk.bat -text
 CodeShowPatch/select_menu.c -text
+CodeShowPatch/setHeaderText.c -text
 CodeShowPatch/sms_num.c -text
 CodeShowPatch/type_.h -text
 DialExt/DialExt.ewp -text

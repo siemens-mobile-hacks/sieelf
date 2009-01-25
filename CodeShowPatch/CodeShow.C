@@ -45,6 +45,7 @@ const word szErrorData[] 	= { 0x6570, 0x636E, 0x5E93, 0x9519, 0x8BEF, 0};
 const word szLocalCode[] 	= { 0x672C, 0x5730, 0x53F7,0x7801, 0};
 const word szSplit[] 		= { 0x2027, 0 };
 const word szAddInfo[] 		= { 0x20, 0 };
+const word szShortNo[]          = { 0x96C6, 0x56E2, 0x77ED, 0x53F7, 0};//集团短号Unicode
 
 /****************/
 /* main program */
@@ -244,7 +245,7 @@ int GetProvAndCity(word *pBSTR, char *pNoStr)
 		CityNo = FindLocale(pLocale, pHead->LocaleCount, atou(pNoStr), &nRepeatNum); 
 	}
 	//如果是13x，则判定为移动电话
-	else if(*pNoStr == '1' && (*(pNoStr+1) == '3' || *(pNoStr+1) == '5'))
+	else if(*pNoStr == '1' && (*(pNoStr+1) == '3' || *(pNoStr+1) == '5') ||*(pNoStr+1) == '8')
 	{
 		char chTemp=*(pNoStr+1);
 		bLocal = 2;
@@ -259,15 +260,24 @@ int GetProvAndCity(word *pBSTR, char *pNoStr)
 	//如果不是长话和移动电话，判断为本地区号。或者不能在IP表中找到对应项。
 	else
 	{
-		BSTRAdd(pBSTR, szLocalCode, 4);	
-		if(nLocalNum > 0 && nLocalNum < 200)
+		//集团短号规则：61-69开头，3-6位短号
+                int len=strlen(pNoStr);//包括最后的'\0'                
+		if(*pNoStr=='6'&&len>=4&&len<=7)
 		{
-		  memcpy(szLocalNo, pNoStr, 4);
-		  if(GetLocalNoInfo(szLocalNo, szLocalInfo))
-		  {
-		    BSTRAdd(pBSTR, szAddInfo, 1);
-			BSTRAdd(pBSTR, (word *)szLocalInfo, 5);
-		  }
+		  BSTRAdd(pBSTR, szShortNo, 4);
+		}
+		else //本地号码
+                {
+			BSTRAdd(pBSTR, szLocalCode, 4);	
+			if(nLocalNum > 0 && nLocalNum < 200)
+			{
+		  	   memcpy(szLocalNo, pNoStr, 4);
+		  	   if(GetLocalNoInfo(szLocalNo, szLocalInfo))
+		  	   {
+		    		BSTRAdd(pBSTR, szAddInfo, 1);
+				BSTRAdd(pBSTR, (word *)szLocalInfo, 5);
+		 	   }
+			}
 		}
 		return 0;
 	}

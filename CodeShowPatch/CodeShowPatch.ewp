@@ -10753,11 +10753,13 @@
     </excluded>
   </file>
   <file>
+    <name>$PROJ_DIR$\entry_sgold.asm</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\func.asm</name>
     <excluded>
       <configuration>SK6Cv50</configuration>
       <configuration>M81Cv51</configuration>
-      <configuration>CX6Cv50</configuration>
       <configuration>S6Cv53</configuration>
       <configuration>M6Cv50</configuration>
       <configuration>CX7Cv50</configuration>
@@ -10771,6 +10773,7 @@
       <configuration>S7Cv47</configuration>
       <configuration>ELC1v41</configuration>
       <configuration>S68Cv51</configuration>
+      <configuration>CX6Cv50</configuration>
       <configuration>C81Cv50</configuration>
       <configuration>SL7Cv47</configuration>
     </excluded>
@@ -10780,7 +10783,6 @@
     <excluded>
       <configuration>SK6Cv50</configuration>
       <configuration>M81Cv51</configuration>
-      <configuration>CX6Cv50</configuration>
       <configuration>S6Cv53</configuration>
       <configuration>M6Cv50</configuration>
       <configuration>CX7Cv50</configuration>
@@ -10795,9 +10797,13 @@
       <configuration>ELC1v41</configuration>
       <configuration>S68Cv51</configuration>
       <configuration>M81Cv51</configuration>
+      <configuration>CX6Cv50</configuration>
       <configuration>C81Cv50</configuration>
       <configuration>SL7Cv47</configuration>
     </excluded>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\setHeaderText.c</name>
   </file>
   <file>
     <name>$PROJ_DIR$\sms_num.c</name>

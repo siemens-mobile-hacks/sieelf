@@ -5,7 +5,6 @@
 //UpdateWndItem B0B500680D1C91004018C4680021201C
 //ADDRBook F8B50027051C0C1C002817D0
 //SMS_SEND F7B584B0051C059800270290
-//SELECT_MENU 002374E7F7B5FFB0151C83B0
 /*查找MENU_DESC地址方法
 先查找80B50223C95E0022052901D0获得地址，然后地址+1
 把地址按字节逆序查找，得到另外一个地址，减去4便是
@@ -13,10 +12,49 @@
 //CallIN ????????????70B5061C01200C1C4002
 //CallOUT 3078042811D1????????00280DD0
 //SMS_SEND_HOOK 0022391C281C????????281C????????251C
-//NUM_SELECT_MENU_HOOK 01a9????????01A8????????01300204120c 得到地址+2
-//NUM_SELECT_MENU_HOOK1 041C??49????????291C201C
 //SMS_IN_HOOK 201c??????????49201C????????0021201C????????0121201C 得到地址+8
-//READ_SMS_HOOK 0A21201C????????2A1C211C
+
+//NUM_SELECT_MENU_ALITEM	8298????????0090+2
+//NUM_SELECT_MENU_TEXT	8298839B0099
+//NUM_SELECT_MENU_GUI	381C6649+4
+//NUM_SELECT_MENU_HDR_ICON	6162656469747669657773F70000+16h
+//NUM_SELECT_MENU_LINE地址为：NUM_SELECT_MENU_HDR_ICON+38h
+
+//SMSHeader_HOOK	2B1C221C04980399
+/*
+调用swilib.vkp中函数地址时，超出跳转范围的解决方法
+例如：函数地址为0xA1234567 ->逆序：67,45,23,A1
+新地址：搜索00C09FE51CFF2FE1,67,45,23,A1,得到地址+1
+*/
+#ifdef CX6Cv50
+#define ADDR_strlen		0xA159BF14+1//
+#define ADDR_atou		0xA082BD88+1//
+#define ADDR_WS_InitByZero	0xA0A55266+1//
+#define ADDR_GetCalleeNumber	0xA0A634F2+1//
+#define ADDR_UpdateWndItem	0xA00B4D5E+1//
+#define ADDR_memcmp		0xA159B554+1//
+
+#define ADDR_wstrcat		0xA0A55434+1//
+#define ADDR_wsAppendChar	0xA0A5555C+1//
+#define ADDR_IsCalling		0xA00CD76E+1//
+#define ADDR_CallIN		0xA0974F2A+1//
+#define ADDR_CallOUT		0xA09742F8+1//
+#define ADDR_ADDRBook		0xA0A55A64+1//
+#define ADDR_SMS_SEND		0xA0AF7E60+1//
+
+#define AllocMLMenuItem_adr     0xA0A0AF64+1 //or 0xA00E4A86+1
+#define SetMLMenuItemText_adr   0xA00E47CE+1 //
+#define AllocMenuWS_adr         0xA009CF68+1
+#define GetMLMenuGUI_adr	0xA0A0AF7C+1 //or 0xA00E4648+1 GetMultiLinesMenuGUI
+
+#define ADDR_AllocWS		0xA0A552CE+1//
+#define GetHeaderPointer_addr   0xA009D496+1//
+#define SetHeaderText_addr      0xA00B7938+1//
+
+#define ADDR_IncommingPDU	0xA873AC0C
+
+#define BASEADDRESS		0xA0CC0000
+#endif
 
 #ifdef CX7Av25
 #define ADDR_strlen		0xA0E98C64+1//OK
@@ -106,37 +144,6 @@
 
 #define ADDR_IncommingPDU	0xA873AA8C
 
-#endif
-
-#ifdef CX6Cv50
-#define ADDR_strlen		0xA159BF14+1//
-#define ADDR_atou		0xA082BD88+1//
-#define ADDR_WS_InitByZero	0xA0A55266+1//
-#define ADDR_GetCalleeNumber	0xA0A634F2+1//
-#define ADDR_UpdateWndItem	0xA00B4D5E+1//
-#define ADDR_memcmp		0xA159B554+1//
-#define ADDR_DrawString		0xA00DA860+1//
-#define ADDR_FreeWS		0xA0A54C18+1//
-#define ADDR_AllocWS		0xA0A552CE+1//
-#define ADDR_GetCurMenuItem	0xA009B946+1//
-
-#define ADDR_wstrcat		0xA0A55434+1//
-#define ADDR_wsAppendChar	0xA0A5555C+1//
-#define ADDR_IsCalling		0xA00CD76E+1//
-#define ADDR_CallIN		0xA0974F2A+1//
-#define ADDR_CallOUT		0xA09742F8+1//
-#define ADDR_ADDRBook		0xA0A55A64+1//
-#define ADDR_SMS_SEND		0xA0AF7E60+1//
-
-#define UNUSERAM_NUM		0xA8000240
-#define UNUSERAM_METHOD		0xA8000300
-#define UNUSERAM_OLD_REDRAW	0xA80002F0
-#define ADDR_SELECT_MENU	0xA0ABF204+1//
-#define ADDR_MENU_DESC		0xA0C5E0F0 //
-
-#define ADDR_IncommingPDU	0xA873AC0C
-
-#define BASEADDRESS		0xA0CC0000
 #endif
 
 #ifdef S6Cv53
