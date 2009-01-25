@@ -47,13 +47,104 @@
 #define AllocMenuWS_adr         0xA009CF68+1
 #define GetMLMenuGUI_adr	0xA0A0AF7C+1 //or 0xA00E4648+1 GetMultiLinesMenuGUI
 
-#define ADDR_AllocWS		0xA0A552CE+1//
 #define GetHeaderPointer_addr   0xA009D496+1//
 #define SetHeaderText_addr      0xA00B7938+1//
+#define ADDR_AllocWS		0xA0A552CE+1//
 
 #define ADDR_IncommingPDU	0xA873AC0C
 
 #define BASEADDRESS		0xA0CC0000
+#endif
+
+#ifdef M6Cv50
+#define ADDR_strlen		0xA159BB38+1
+#define ADDR_atou		0xA082BD88+1
+#define ADDR_WS_InitByZero      0xA0A55262+1
+#define ADDR_GetCalleeNumber    0xA0A634EE+1
+#define ADDR_UpdateWndItem	0xA00B4D62+1
+#define ADDR_memcmp		0xA159B178+1
+
+#define ADDR_wstrcat            0xA0A55430+1
+#define ADDR_wsAppendChar       0xA0A55558+1
+#define ADDR_IsCalling		0xA00CD772+1
+#define ADDR_CallIN		0xA0974F2A+1
+#define ADDR_CallOUT		0xA09742F8+1
+#define ADDR_ADDRBook           0xA0A55A60+1
+#define ADDR_SMS_SEND           0xA0AF7E58+1
+
+#define AllocMLMenuItem_adr     0xA0A0AF60+1 //or 0xA00E4A8B
+#define SetMLMenuItemText_adr   0xA00E47D3 //
+#define AllocMenuWS_adr         0xA009CF6D
+#define GetMLMenuGUI_adr	0xA0A0AF78+1 //or 0xA00E464D GetMultiLinesMenuGUI
+
+#define GetHeaderPointer_addr   0xA009D49B//
+#define SetHeaderText_addr      0xA00B793D//
+#define ADDR_AllocWS            0xA0A552CA+1
+
+#define ADDR_IncommingPDU	0xA873AA8C
+
+#define BASEADDRESS		0xA0C61220
+#endif
+
+#ifdef S6Cv53
+#define ADDR_strlen		0xA1609C0C+1
+#define ADDR_atou		0xA082BD88+1
+#define ADDR_WS_InitByZero	0xA10010C2+1
+#define ADDR_GetCalleeNumber	0xA0A9650A+1
+#define ADDR_UpdateWndItem	0xA00B4F3E+1
+#define ADDR_memcmp		0xA160924C+1
+
+#define ADDR_wstrcat		0xA1001290+1
+#define ADDR_wsAppendChar	0xA10013B8+1
+#define ADDR_IsCalling		0xA00CD94E+1
+#define ADDR_CallIN		0xA098FE1A+1
+#define ADDR_CallOUT		0xA098F1D4+1
+#define ADDR_ADDRBook		0xA10018C0+1
+#define ADDR_SMS_SEND		0xA101FE58+1
+
+#define AllocMLMenuItem_adr     0xA0A2FA20+1 //or 0xA00E4C67
+#define SetMLMenuItemText_adr   0xA00E49AF //
+#define AllocMenuWS_adr         0xA009D149
+#define GetMLMenuGUI_adr	0xA0A2FA38+1 //or 0xA00E4829 GetMultiLinesMenuGUI
+
+#define GetHeaderPointer_addr   0xA009D677//
+#define SetHeaderText_addr      0xA00B7B19//
+#define ADDR_AllocWS		0xA100112A+1
+
+#define ADDR_IncommingPDU	0xA87A092C
+
+#define BASEADDRESS		0xA0CC0000
+#endif
+
+#ifdef SK6Cv50
+#define ADDR_strlen		0xA0D9626C+1
+#define ADDR_atou		0xA020E4CC+1
+#define ADDR_WS_InitByZero	0xA07197EA+1
+#define ADDR_GetCalleeNumber	0xA0733432+1
+#define ADDR_UpdateWndItem	0xA0999A5E+1
+#define ADDR_memcmp		0xA0D958AC+1
+
+#define ADDR_wstrcat		0xA07199B8+1
+#define ADDR_wsAppendChar	0xA0719AE0+1
+#define ADDR_IsCalling		0xA09E5142+1
+#define ADDR_CallIN		0xA038F496+1
+#define ADDR_CallOUT		0xA038E854+1
+#define ADDR_ADDRBook		0xA0719FE8+1
+#define ADDR_SMS_SEND		0xA07D3BC0+1
+
+
+#define AllocMLMenuItem_adr     0xA044F40C+1 //or 0xA09EBE8F
+#define SetMLMenuItemText_adr   0xA09EBBD7 //
+#define AllocMenuWS_adr         0xA098D005
+#define GetMLMenuGUI_adr	0xA044F424+1 //or 0xA09EBA51 GetMultiLinesMenuGUI
+
+#define GetHeaderPointer_addr   0xA098D533//
+#define SetHeaderText_addr      0xA099C639//
+#define ADDR_AllocWS		0xA0719852+1
+
+#define ADDR_IncommingPDU	0xA8F40F78
+
+#define BASEADDRESS		0xA0E30000
 #endif
 
 #ifdef CX7Av25
@@ -114,66 +205,6 @@
 #define ADDR_MENU_DESC		0xA0BA9DD0 //OK
 
 #define BASEADDRESS		0xA0E55A00
-#endif
-
-#ifdef M6Cv50
-#define ADDR_strlen		0xA159BB38+1
-#define ADDR_atou		0xA082BD88+1
-#define ADDR_WS_InitByZero      0xA0A55262+1
-#define ADDR_GetCalleeNumber    0xA0A634EE+1
-#define ADDR_UpdateWndItem	0xA00B4D62+1
-#define ADDR_memcmp		0xA159B178+1
-#define ADDR_DrawString		0xA00DA864+1
-#define ADDR_FreeWS             0xA0A55306+1
-#define ADDR_AllocWS            0xA0A552CA+1
-#define ADDR_GetCurMenuItem	0xA009B914+1
-
-#define ADDR_wstrcat            0xA0A55430+1
-#define ADDR_wsAppendChar       0xA0A55558+1
-#define ADDR_IsCalling		0xA00CD772+1
-#define ADDR_CallIN		0xA0974F2A+1
-#define ADDR_CallOUT		0xA09742F8+1
-#define ADDR_ADDRBook           0xA0A55A60+1
-#define ADDR_SMS_SEND           0xA0AF7E58+1
-#define BASEADDRESS		0xA0C61220
-#define UNUSERAM_NUM		0xA8000240
-#define UNUSERAM_METHOD		0xA8000300
-#define UNUSERAM_OLD_REDRAW	0xA80002F0
-#define ADDR_SELECT_MENU        0xA0ABF1FC+1
-#define ADDR_MENU_DESC          0xA0C5E4C0
-
-#define ADDR_IncommingPDU	0xA873AA8C
-
-#endif
-
-#ifdef S6Cv53
-#define ADDR_strlen		0xA1609C0C+1
-#define ADDR_atou		0xA082BD88+1
-#define ADDR_WS_InitByZero	0xA10010C2+1
-#define ADDR_GetCalleeNumber	0xA0A9650A+1
-#define ADDR_UpdateWndItem	0xA00B4F3E+1
-#define ADDR_memcmp		0xA160924C+1
-#define ADDR_DrawString		0xA00DAA40+1
-#define ADDR_FreeWS		0xA1000A74+1
-#define ADDR_AllocWS		0xA100112A+1
-#define ADDR_GetCurMenuItem	0xA009BB26+1
-
-#define ADDR_wstrcat		0xA1001290+1
-#define ADDR_wsAppendChar	0xA10013B8+1
-#define ADDR_IsCalling		0xA00CD94E+1
-#define ADDR_CallIN		0xA098FE1A+1
-#define ADDR_CallOUT		0xA098F1D4+1
-#define ADDR_ADDRBook		0xA10018C0+1
-#define ADDR_SMS_SEND		0xA101FE58+1
-#define UNUSERAM_NUM		0xA8000240
-#define UNUSERAM_METHOD		0xA8000300
-#define UNUSERAM_OLD_REDRAW	0xA80002F0
-#define ADDR_SELECT_MENU	0xA0B06B0C+1
-#define ADDR_MENU_DESC		0xA0CAE0E8
-
-#define ADDR_IncommingPDU	0xA87A092C
-
-#define BASEADDRESS		0xA0CC0000
 #endif
 
 #ifdef E71Cv41
@@ -331,34 +362,7 @@
 #endif
 
 
-#ifdef SK6Cv50
-#define ADDR_strlen		0xA0D9626C+1
-#define ADDR_atou		0xA020E4CC+1
-#define ADDR_WS_InitByZero	0xA07197EA+1
-#define ADDR_GetCalleeNumber	0xA0733432+1
-#define ADDR_UpdateWndItem	0xA0999A5E+1
-#define ADDR_memcmp		0xA0D958AC+1
-#define ADDR_DrawString		0xA07F43B8+1
-#define ADDR_FreeWS		0xA071988E+1
-#define ADDR_AllocWS		0xA0719852+1
-#define ADDR_GetCurMenuItem	0xA098B9E2+1
 
-#define ADDR_wstrcat		0xA07199B8+1
-#define ADDR_wsAppendChar	0xA0719AE0+1
-#define ADDR_IsCalling		0xA09E5142+1
-#define ADDR_CallIN		0xA038F496+1
-#define ADDR_CallOUT		0xA038E854+1
-#define ADDR_ADDRBook		0xA0719FE8+1
-#define ADDR_SMS_SEND		0xA07D3BC0+1
-#define BASEADDRESS		0xA0E30000
-#define UNUSERAM_NUM		0xA8000240
-#define UNUSERAM_METHOD		0xA8000300
-#define UNUSERAM_OLD_REDRAW	0xA80002F0
-#define ADDR_SELECT_MENU	0xA079188C+1
-#define ADDR_MENU_DESC		0xA0711F5C
-#define ADDR_IncommingPDU	0xA8F40F78
-
-#endif
 
 #ifdef S68Cv51
 #define ADDR_strlen		0xA110632C+1 //30B4441C810708D001780130

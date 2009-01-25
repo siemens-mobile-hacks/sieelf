@@ -1,5 +1,9 @@
 #include "addr.h"
+
 	RSEG	CODE
+#ifdef SK6Cv50 //原来空间不够
+        RSEG	CODE_X
+#endif
 	CODE16
 	
 	PUBLIC	strlen

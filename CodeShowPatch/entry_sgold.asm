@@ -5,11 +5,10 @@
 	EXTERN	UpdateLocaleToItem
 	EXTERN	do_phonebook_work 
         EXTERN  AddNewLine
-        
-#ifndef SK6Cv50
+       
 	RSEG	CODE
-#else
-	RSEG	CODE_X       
+#ifdef SK6Cv50 //原来空间不够
+        RSEG	CODE_X
 #endif
 #ifdef CX7Av25 //原来空间不够
         RSEG	CODE_X
@@ -19,6 +18,15 @@
 MENU_HDR_ICON //多号码选择 标题图标ID
 #ifdef CX6Cv50
         DCD	0x307
+#endif
+#ifdef M6Cv50
+        DCD	0x2F2
+#endif
+#ifdef S6Cv53
+        DCD	0x2CD
+#endif
+#ifdef SK6Cv50
+        DCD	0x2E2
 #endif
 	DCD	0
        

@@ -60,7 +60,7 @@ void memcpy(char *szDest, char *szSrc, int len)
 //参考along代码 国际代码
 char FindCRName(word *pBSTR, char *szNo)
 #ifdef SK6Cv50
-@ "CODE_X"
+ @ "CODE_X"
 #endif
 {
 	if(memcmp(szNo, "86", 2) == 0)//中国内地
@@ -130,6 +130,9 @@ char FindCRName(word *pBSTR, char *szNo)
 }
 
 void UpdateLocaleToItem(int Index, int NoIndex, void* Context)
+#ifdef SK6Cv50
+ @ "CODE_X"
+#endif
 {
 	WSTRING ws1, ws2, *pws1, *pws2;
 	word buf1[0x3E], buf2[0x3E];

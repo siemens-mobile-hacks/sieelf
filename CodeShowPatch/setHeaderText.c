@@ -13,6 +13,9 @@ extern void SetHeaderText(void *hdr_pointer, WSTRING *txt, void *malloc_adr, voi
 extern void *GetHeaderPointer(void *gui);
 
 void ChangeHeaderText(void *gui,char *num,void *malloc_adr, void *mfree_adr)
+#ifdef SK6Cv50
+ @ "CODE_X"
+#endif
 {
      WSTRING *ws=AllocWS(10);
      GetProvAndCity(ws->pstr, num);
