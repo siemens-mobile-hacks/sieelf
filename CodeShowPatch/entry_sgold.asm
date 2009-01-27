@@ -3,14 +3,16 @@
 
 	EXTERN	AppendInfoW
 	EXTERN	UpdateLocaleToItem
-	EXTERN	do_phonebook_work 
         EXTERN  AddNewLine
-       
+//需要中间跳转
+#ifdef S6Cv53
+#define Jmp
+#elif C6Cv53
+#define Jmp
+#endif
+
 	RSEG	CODE
 #ifdef SK6Cv50 //原来空间不够
-        RSEG	CODE_X
-#endif
-#ifdef CX7Av25 //原来空间不够
         RSEG	CODE_X
 #endif
 
@@ -27,6 +29,18 @@ MENU_HDR_ICON //多号码选择 标题图标ID
 #endif
 #ifdef SK6Cv50
         DCD	0x2E2
+#endif
+#ifdef CX7Cv50
+        DCD	0x30D
+#endif
+#ifdef CX7Av25
+        DCD	0x2E7
+#endif
+#ifdef SL6Cv50
+        DCD	0x2C2
+#endif
+#ifdef C6Cv53
+        DCD	0x2C5
 #endif
 	DCD	0
        
@@ -115,8 +129,8 @@ SMS_SEND_WINDOW:
 	POP		{R0}
 	ADD		R0, R0, #4
 	BX		R0
-        
-#ifdef S6Cv53
+      
+#ifdef Jmp
 	RSEG	JMP_BODY
 HOOK5_JMP
 	LDR	R0, =Hook5
@@ -150,7 +164,7 @@ HOOK5_JMP
 // 电话本窗口修改
 	RSEG	PhonebookWindow:CODE(1)
 	CODE16
-#ifdef	S6Cv53
+#ifdef	Jmp
 	BL		HOOK5_JMP
 #else
 	BL		Hook5
@@ -171,8 +185,7 @@ pSMS_SEND
         RSEG	SMS_SEND_FIX:DATA(1) //增加ws串长度
 	DCB	        0x25
     
-#ifndef CX7Cv50 //排除CX7C，未找到来短信HOOK位置
-
+#ifndef WITHOUT_SMS_IN_WIN
 //SGold来短信显示区号 By DaiKangaroo
 	RSEG	CODE
 	EXTERN	GetProvAndCity
@@ -180,18 +193,31 @@ pSMS_SEND
 	CODE16
         
 SMS_IN:
-	//原来Hook位置代码
+#ifdef CX7Cv50 //特别处理,hook位置比其他机型下移2个字节，以达到4字节对齐
+        //原来Hook位置代码
+        //BLX Sub 函数功能:  STR R1, [R0, #78]
+        //MOV R1, #0
+        //MOV R0, R4
+        STR		R1, [R0, #0x78]
+        MOV             R1, #0
+        MOV             R0, R4
+#else //其他SGold机型
+        //原来Hook位置代码
 	//MOV R0, R4
         //BLX Sub 函数功能:  STR R1, [R0, #78]
         //MOV R1, #0
         //代替为
 	STR		R1, [R4, #0x78]
         MOV             R1, #0
+#endif  
 	PUSH		{R0-R7, LR}
-	SUB		SP, #0x30   //分配堆栈存放号码
 	LDR		R2, =0x272 //收到新的信息LGP
+#ifdef CX7Cv50 //特别处理，[SP,#0xC]存放LGP_ID
+        LDR             R7,[SP,#0xC]
+#endif
 	CMP		R7, R2
 	BNE		GoBack
+        SUB		SP, #0x30   //分配堆栈存放号码
 	ADD		R0, SP, #0
 	BL		GetNumFromIncomingPDU
 	CMP		R0, #0 //返回值
@@ -200,20 +226,20 @@ SMS_IN:
 	BL		AddNewLine //增加一行
 	LDR		R0, [R5, #0] //获得WS字符串
 	ADD		R1, SP, #0   //R1为号码
-	BL		GetProvAndCity
+	BL		GetProvAndCity	
+        ADD		SP, #0x30
 GoBack:
-	ADD		SP, #0x30
 	POP		{R0-R7}
 	POP		{R0}
 	ADD		R0, #4
 	BX		R0
+        
 //来短信修改
 	RSEG	SMS_IN_HOOK:CODE(2)
         CODE16
-	LDR		R0, =SMS_IN
-	BLX		R0
+	LDR		R3, =SMS_IN
+	BLX		R3
 #endif
-
 
 //sgold多号码选择 移植by DaiKangaroo
         RSEG CODE

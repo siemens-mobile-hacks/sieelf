@@ -178,6 +178,7 @@ CfgEdit/func.asm -text
 CfgEdit/main.c -text
 CfgEdit/test.xcl -text
 CfgEdit/visual.c -text
+CodeShowPatch/C6Cv53.xcl -text
 CodeShowPatch/C81Cv50.xcl -text
 CodeShowPatch/CX6Cv50.xcl -text
 CodeShowPatch/CX7Av25.xcl -text
@@ -194,6 +195,8 @@ CodeShowPatch/S68Cv51.xcl -text
 CodeShowPatch/S6Cv53.xcl -text
 CodeShowPatch/S7Cv47.xcl -text
 CodeShowPatch/SK6Cv50.xcl -text
+CodeShowPatch/SL6Cv50.xcl -text
+CodeShowPatch/SL6Cv50与C6Cv53额外补丁.txt -text
 CodeShowPatch/SL7Cv47.xcl -text
 CodeShowPatch/about.txt -text
 CodeShowPatch/addr.h -text
