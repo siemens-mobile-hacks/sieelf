@@ -194,11 +194,12 @@ pSMS_SEND
         
 SMS_IN:
 #ifdef CX7Cv50 //特别处理,hook位置比其他机型下移2个字节，以达到4字节对齐
+        //Hook之前一条指令 MOV R0, R4
         //原来Hook位置代码
         //BLX Sub 函数功能:  STR R1, [R0, #78]
         //MOV R1, #0
         //MOV R0, R4
-        STR		R1, [R0, #0x78]
+        STR		R1, [R4, #0x78]
         MOV             R1, #0
         MOV             R0, R4
 #else //其他SGold机型
@@ -211,13 +212,13 @@ SMS_IN:
         MOV             R1, #0
 #endif  
 	PUSH		{R0-R7, LR}
+        SUB		SP, #0x30   //分配堆栈存放号码
 	LDR		R2, =0x272 //收到新的信息LGP
 #ifdef CX7Cv50 //特别处理，[SP,#0xC]存放LGP_ID
         LDR             R7,[SP,#0xC]
 #endif
 	CMP		R7, R2
 	BNE		GoBack
-        SUB		SP, #0x30   //分配堆栈存放号码
 	ADD		R0, SP, #0
 	BL		GetNumFromIncomingPDU
 	CMP		R0, #0 //返回值
@@ -227,18 +228,18 @@ SMS_IN:
 	LDR		R0, [R5, #0] //获得WS字符串
 	ADD		R1, SP, #0   //R1为号码
 	BL		GetProvAndCity	
-        ADD		SP, #0x30
 GoBack:
+        ADD		SP, #0x30
 	POP		{R0-R7}
-	POP		{R0}
-	ADD		R0, #4
-	BX		R0
+	POP		{R3}
+	ADD		R3, #4
+	BX		R3
         
 //来短信修改
 	RSEG	SMS_IN_HOOK:CODE(2)
         CODE16
-	LDR		R3, =SMS_IN
-	BLX		R3
+	LDR		R0, =SMS_IN
+	BLX		R0
 #endif
 
 //sgold多号码选择 移植by DaiKangaroo
