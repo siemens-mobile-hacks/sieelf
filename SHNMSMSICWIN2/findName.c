@@ -133,11 +133,11 @@ const char *s_ab_entry="0:\\¡°¡°\x1F\xE7\xB3\xBB\xE7\xBB\x9F¡±¡±\\apo\\addr\\dat
 const char *s_ab_entry="0:\\¡°¡°\x1F\xE7\xB3\xBB\xE7\xBB\x9F¡±¡±\\apo\\addr\\%02x\\%02x";
 #endif
 #else //Ó¢ÎÄÄ¿Â¼
-const char *s_ab_main="2:\\System\\apo\\addr\\main"; 
+const char *s_ab_main="0:\\System\\apo\\addr\\main"; 
 #ifdef NEWSGOLD
-const char *s_ab_entry="2:\\System\\apo\\addr\\data\\%02d\\%02d\\%02d";
+const char *s_ab_entry="0:\\System\\apo\\addr\\data\\%02d\\%02d\\%02d";
 #else
-const char *s_ab_entry="2:\\System\\apo\\addr\\%02x\\%02x";
+const char *s_ab_entry="0:\\System\\apo\\addr\\%02x\\%02x";
 #endif
 #endif
 	int fin;
