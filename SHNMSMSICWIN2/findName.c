@@ -1,5 +1,6 @@
 #include "..\inc\swilib.h"
 
+//#define cnPath //中文目录
 
 __thumb int Hex2Num(char *hex, char *num, int len) //返回长度
 {
@@ -124,13 +125,21 @@ typedef struct
 
 int FindName(WSHDR *wsrc, char *num_needed)
 {
-const char *s_ab_main="0:\\System\\apo\\addr\\main"; 
+#ifdef cnPath  //中文目录
+const char *s_ab_main="0:\\““\x1F\xE7\xB3\xBB\xE7\xBB\x9F””\\apo\\addr\\main";
 #ifdef NEWSGOLD
-const char *s_ab_entry="0:\\System\\apo\\addr\\data\\%02d\\%02d\\%02d";
+const char *s_ab_entry="0:\\““\x1F\xE7\xB3\xBB\xE7\xBB\x9F””\\apo\\addr\\data\\%02d\\%02d\\%02d";
 #else
-const char *s_ab_entry="0:\\System\\apo\\addr\\%02x\\%02x";
+const char *s_ab_entry="0:\\““\x1F\xE7\xB3\xBB\xE7\xBB\x9F””\\apo\\addr\\%02x\\%02x";
 #endif
-
+#else //英文目录
+const char *s_ab_main="2:\\System\\apo\\addr\\main"; 
+#ifdef NEWSGOLD
+const char *s_ab_entry="2:\\System\\apo\\addr\\data\\%02d\\%02d\\%02d";
+#else
+const char *s_ab_entry="2:\\System\\apo\\addr\\%02x\\%02x";
+#endif
+#endif
 	int fin;
 	unsigned int ul;
 	char recname[128];
@@ -270,7 +279,8 @@ const char *s_ab_entry="0:\\System\\apo\\addr\\%02x\\%02x";
 														m++;
 													}
 													num0[k]=0;
-													if(strstr(num0, num_needed))
+                                                                                                        //如果一个电话号码是：13810086123的时候，收到10086的短信就会显示姓名出错。
+													if(strstr(num0, num_needed))//有BUG
 														isFound=1;
 												}
 											}

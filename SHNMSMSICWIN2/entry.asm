@@ -25,7 +25,17 @@ CODE_
 	BLX	AddTheName
 #else //SGOLD by DaiKangaroo
 CODE_
-	//原来Hook位置代码
+#ifdef CX7Csw50//特别处理,hook位置比其他机型上移2个字节，以达到4字节对齐
+        //原来Hook位置代码
+	//MOV R1, R5
+        //MOV R0, R4
+        //BLX Sub 函数功能:ADD R0, #0x80  STR R1, [R0, #4]
+        //代替为
+        MOV     R0, R4
+        ADD 	R0, #0x80
+	STR 	R5, [R0, #4]
+#else
+        //原来Hook位置代码
 	//MOV R0, R4
         //BLX Sub 函数功能:ADD R0, #0x80  STR R1, [R0, #4]
         //MOV R1, R6
@@ -34,9 +44,12 @@ CODE_
 	ADD 	R0, #0x80
 	STR 	R1, [R0, #4]
         MOV     R1, R6	
-
+#endif
 	PUSH	{R0-R7, LR}
 	LDR	R2, =0x272 //收到新的信息LGP
+#ifdef CX7Csw50 //特别处理，[SP,#0xC]存放LGP_ID
+        LDR     R7,[SP,#0xC]
+#endif        
 	CMP	R7, R2
 	BNE	exit
 	MOV	R0, R5 //WS
