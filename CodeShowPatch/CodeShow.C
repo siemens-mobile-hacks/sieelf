@@ -220,7 +220,7 @@ int GetProvAndCity(word *pBSTR, char *pNoStr)
 		{
 			if(!memcmp(pNoStr, pIPCode+1, *pIPCode)){
 				pNoStr += *pIPCode;	
-				if(!memcmp(pNoStr, "013", 3) || !memcmp(pNoStr, "015", 3))
+				if(!memcmp(pNoStr, "013", 3) || !memcmp(pNoStr, "015", 3) /*|| !memcmp(pNoStr, "018", 3)*/)//删除手机号前的0
 					++pNoStr;
 				break;
 			}
@@ -247,32 +247,33 @@ int GetProvAndCity(word *pBSTR, char *pNoStr)
 		//得到区号，在区号表中查找对应的城市号
 		CityNo = FindLocale(pLocale, pHead->LocaleCount, atou(pNoStr), &nRepeatNum); 
 	}
-	//如果是13x，则判定为移动电话
-	else if(*pNoStr == '1' && (*(pNoStr+1) == '3' || *(pNoStr+1) == '5') ||*(pNoStr+1) == '8')
+	//如果是13x，15x，18x，则判定为移动电话
+	else if(*pNoStr == '1' && (*(pNoStr+1) == '3' || *(pNoStr+1) == '5' /*|| *(pNoStr+1) == '8'*/))
 	{
 		char chTemp=*(pNoStr+1);
 		bLocal = 2;
 		pNoStr += 2;
 		*(pNoStr+5) = '\0';
 		//得到手机号码的前五位，在手机号码表中查找对应的城市号
-		if(chTemp == '3')
+		if(chTemp == '3')//13X
 		  CityNo = GetCode((byte *)(CODESHOWDATAADDRESS+pHead->CodeTableOffset), atou(pNoStr));
-		else
+		else //if(chTemp == '5')//15X
 		  CityNo = GetCode((byte *)(CODESHOWDATAADDRESS+0x20000), atou(pNoStr));
+                //else //18x
+                //CityNo = GetCode((byte *)(CODESHOWDATAADDRESS+?????), atou(pNoStr));
 	}
 	//如果不是长话和移动电话，判断为本地区号。或者不能在IP表中找到对应项。
 	else
 	{
-		//集团短号规则：61-69开头，3-6位短号
-                int len=strlen(pNoStr);//包括最后的'\0'                
-		if(*pNoStr=='6'&&len>=4&&len<=7)
+		//集团短号规则：61-69开头，3-6位短号              
+                if(*pNoStr=='6'&&CodeLen>=4&&CodeLen<=7)//包括最后的'\0'
 		{
 		  BSTRAdd(pBSTR, szShortNo, 4);
 		}
 		else //本地号码
                 {
 			BSTRAdd(pBSTR, szLocalCode, 4);	
-			if(nLocalNum > 0 && nLocalNum < 200)
+			if(nLocalNum > 0 && nLocalNum < 200)//?????
 			{
 		  	   memcpy(szLocalNo, pNoStr, 4);
 		  	   if(GetLocalNoInfo(szLocalNo, szLocalInfo))
@@ -310,7 +311,7 @@ int GetProvAndCity(word *pBSTR, char *pNoStr)
 			   BSTRAdd(pBSTR, szAddInfo, 1);
 		     BSTRAdd(pBSTR, pCity[pLocale[i+CityNo].CityNo].CityName, 5);
 			 if(bLocal == 0)
-			   bLocal = (memcmp(LocalCity.CityName, pCity[CityNo].CityName, 10) == 0);
+			   bLocal = (memcmp(LocalCity.CityName, pCity[CityNo].CityName, 10) == 0);//如果城市名相同，bLocal=1，显示区级地名
 		   }
 		}
 		if(bLocal == 1 && nLocalNum > 0 && nLocalNum < 200 && (memcmp(LocalProvince.ProvinceName, pProvince[pCity[CityNo].ProvinceNo].ProvinceName, 6) == 0))
