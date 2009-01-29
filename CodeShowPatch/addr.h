@@ -29,6 +29,36 @@
 例如：函数地址为0xA00E4567 ->逆序：67,45,0E,A0
 新地址：搜索00C09FE51CFF2FE1,67,45,0E,A0,得到地址+1
 */
+#ifdef C7Cv22 //无Fullflash，未完成
+#define ADDR_strlen		0xA0DE4835//OK
+#define ADDR_atou		0xA020EB00+1//no
+#define ADDR_WS_InitByZero	0xA073B9DB//OK
+#define ADDR_GetCalleeNumber	0xA0797F2A+1//no
+#define ADDR_UpdateWndItem	0xA00B59A2+1//no
+#define ADDR_memcmp		0xA0DE3AED//OK
+
+#define ADDR_wstrcat		0xA073BBA9//OK
+#define ADDR_wsAppendChar	0xA073BCD1//OK
+#define ADDR_IsCalling		0xA00CEA7F//OK
+#define ADDR_CallIN		0xA033D766+1//no
+#define ADDR_CallOUT		0xA033A8A6+1//no
+#define ADDR_ADDRBook		0xA078A1D0+1//no
+#define ADDR_SMS_SEND		0xA0835F70+1//no
+
+#define AllocMLMenuItem_adr     0xA00E65E7 //or 0xA00E6847
+#define SetMLMenuItemText_adr   0xA00E632F //ok
+#define AllocMenuWS_adr         0xA009D491 //ok
+#define GetMLMenuGUI_adr	0xA00E61A9 //or 0xA00E6409 GetMultiLinesMenuGUI
+
+#define GetHeaderPointer_addr   0xA009D9F5//ok
+#define SetHeaderText_addr      0xA00B832D//ok
+#define ADDR_AllocWS		0xA073BA43//OK
+
+#define ADDR_IncommingPDU	0xA8751C60 //OK
+
+#define BASEADDRESS		0xA0E70B60//0xA0E80000 which?
+#endif
+
 #ifdef C6Cv53
 #define ADDR_strlen		0xA164ACCD//
 #define ADDR_atou		0xA082BD88+1//
@@ -456,13 +486,23 @@
 #define ADDR_UpdateWndItem	0xA0A38380+1
 #define ADDR_memcmp	0xA14173C0+1
 
-#define ADDR_wstrcat 0xA0BB5114
+//#define ADDR_wstrcat 0xA0BB5114
 #define ADDR_wsAppendChar 0xA0BB5050
 #define ADDR_IsCalling 0xA0DE44C8+1
 #define ADDR_CallIN 0xA02FB630+1
-#define ADDR_CallOUT 0xA02FB7D6+1
-#define ADDR_ADDRBook 0xA01F7732+1
+//#define ADDR_CallOUT 0xA02FB7D6+1
+//#define ADDR_ADDRBook 0xA01F7732+1
 
 #define BASEADDRESS			0xA1580000
+
+#define ADDR_IncommingPDU	0xA8ED6ABC //lib
+
+#define ADDR_GetPhoneBookNum	0xA0981FC6+1 //90B50C1C8BB069462A22
+
+#define ADDR_CallOUT2		0xA0A86812+1 //F0B5051C0E1C91B006A9
+#define	AllocMLMenuItem_adr	0xA09A5ED3 //B5051CFCF763FE041C
+#define GetMLMenuGUI_adr	0xA09A56C5 //B0B5041C11200D1C4001A047
+#define AllocMenuWS_adr		0xA09A2CB9 //1C011CFF31813180B51204
+#define SetMLMenuItemText_adr	0xA09A5AAB //B587B01099051CFFF7
 #endif
 
