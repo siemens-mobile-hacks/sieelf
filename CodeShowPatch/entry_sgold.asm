@@ -10,6 +10,12 @@
 #elif C6Cv53
 #define Jmp
 #endif
+//需特殊处理SIM电话簿
+#ifdef C6Cv53
+#define SIM128
+#elif SL6Cv50
+#define SIM128
+#endif
 
 	RSEG	CODE
 #ifdef SK6Cv50 //原来空间不够
@@ -98,7 +104,18 @@ Hook4:
 	MOV		R1, R4
 	BL		AppendInfoW
 	POP		{PC}
-	
+        
+#ifdef 	SIM128 //SIM电话簿,SL6C与C6C需特殊处理
+Hook5:
+	PUSH		{LR}
+	LDR		R0, [SP,#0x178]
+	BL		AddNewLine
+	LDR		R1, [SP,#0x1D4]
+	BL		AppendInfoW
+	MOV		R1, #0
+	LDR	        R0, [SP, #0x12C]
+	POP		{PC}
+#else   //其他机型     
 Hook5:
 	PUSH		{LR}
 	LDR		R0, [SP,#0x174]
@@ -107,8 +124,8 @@ Hook5:
 	BL		AppendInfoW
 	MOV		R1, #0
 	ADD		R0, R7, #0
-	POP		{PC}
-	
+	POP		{PC}	
+#endif
 
 //短信发送动画窗口,by BingK(binghelingxi)
 	EXTERN		GetProvAndCity
