@@ -232,7 +232,7 @@ SMS_IN:
         SUB		SP, #0x30   //分配堆栈存放号码
 	LDR		R2, =0x272 //收到新的信息LGP
 #ifdef CX7Cv50 //特别处理，[SP,#0xC]存放LGP_ID
-        LDR             R7,[SP,#0xC]
+        LDR             R7,[SP,#0x3C]
 #endif
 	CMP		R7, R2
 	BNE		GoBack
