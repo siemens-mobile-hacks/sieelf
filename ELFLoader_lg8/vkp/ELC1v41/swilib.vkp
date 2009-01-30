@@ -739,7 +739,22 @@
 0AE0: 0xA061A807   ; 2B8:  __thumb int SetNumToNativeAbData(NativeAbData *abd, int unk, WSHDR *num)
 0AE4: 0xA06197CF   ; 2B9:  __thumb unsigned int OpenNativeAddressbook(int type, int unk1, int unk2, void *data)
 0AE8: 0xA0A5A17F   ; 2BA:  __thumb void SetHeaderIcon(void *hdr_pointer, const int *icon, void *malloc_adr, void *mfree_adr)
+0AEC: 0xA0A56F3F   ; 2BB:  __thumb void *GetTabGUI(void *malloc_adr, void *mfree_adr)
+0AF0: 0xA0A53E8D   ; 2BC:  __thumb void SetGUIDefinition(void *gui, const void *definition)
+0AF4: 0xA0A573F3   ; 2BD:  __thumb int SetGUIToTabGUI(void *tabgui, int n, const int *tabicons, void *gui)
+0AF8: 0xA0A5750F   ; 2BE:  __thumb int SetCursorTab(void *tab_gui, int n)
+0AFC: 0xA0A57671   ; 2BF:  __thumb int UpdateTab1stItem(void *tab_gui, int unk_0)
+
+0B00: 0xA0A5752D   ; 2C0:  __thumb int GetCursorTab(void *tab_gui)
+0B04: 0xA0A56FA9   ; 2C1:  __thumb void *GetGuiByTab(void *tab_gui, int n)
+0B08: 0xA08F4ED1   ; 2C2:  __thumb int GetSubprovider(WSHDR* ws)
+0B0C: 0xA08F5105   ; 2C3:  __thumb int GetRoamingState()
+0B10: 0xA05C74F1   ; 2C4:  __thumb int GetPrfileVolumeSetting(int profile, int type)
+0B14: 0xA8E69718   ; 82C5:  __arm RAM_EMS_ADMIN *RAM_EMS_Admin()
 #pragma disable old_equal_ff
 +0
 
 ;********************************************************************************
+
+
+;locale=Chinese_People's Republic of China.936
