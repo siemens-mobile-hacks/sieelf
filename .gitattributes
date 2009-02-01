@@ -1153,6 +1153,7 @@ MySMSYS/Patches/E71Csw41.xcl -text
 MySMSYS/Patches/E71sw45.xcl -text
 MySMSYS/Patches/ELC1sw41.xcl -text
 MySMSYS/Patches/Patches.ewp -text
+MySMSYS/Patches/S68Csw51.xcl -text
 MySMSYS/Patches/S7Csw47.xcl -text
 MySMSYS/Patches/add-on.c -text
 MySMSYS/Patches/elf2vkp.bat -text
