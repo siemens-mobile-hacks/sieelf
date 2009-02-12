@@ -20,6 +20,19 @@ Vibra::~Vibra()
   this->VibraStop();
 }
 
+inline int mystr2int(const char *p)
+{
+  int r=0;
+  int c;
+  while(c=*p++)
+  {
+    if(c>'9' || c<'0')
+      break;
+    r=r*10+c-'0';
+  }
+  return r;
+}
+
 void Vibra::InitThythm()
 {
   int n=1;
@@ -36,7 +49,7 @@ void Vibra::InitThythm()
     }
     else
     {
-      this->thythm[n]=str2int(p);
+      this->thythm[n]=mystr2int(p);
       n++;
       while((c=*p))
       {
@@ -54,6 +67,8 @@ void Vibra::ReInitThythm()
   zeromem(&this->thythm, sizeof(int)*VBA_MAX);
   this->vba_cnt=0;
   this->vba_pp=0;
+  GBS_DelTimer(&this->vba_tmr);
+  SetVibration(0);
   this->InitThythm();
 }
 

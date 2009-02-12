@@ -1,8 +1,8 @@
 #ifndef _POPUPGUI_H_
 #define _POPUPGUI_H_
 
-class PopupNewIn :
-  public CFile
+class PopupNewIn// :
+//  public CFile
 {
 public:
   PopupNewIn();
@@ -18,6 +18,16 @@ private:
   static void GHook(void *data, int cmd);
 };
 
+class MyShowMsg
+{
+public:
+  static int MyShow(WSHDR *msg);
+  static int MyShow(char *msg);
+private:
+  static POPUP_DESC popup;
+  static int OnKey(void *data, GUI_MSG *msg);
+  static void GHook(void *data, int cmd);
+};
 #endif
 
 

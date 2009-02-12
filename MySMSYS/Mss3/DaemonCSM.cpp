@@ -287,6 +287,7 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
       InitSetting();
       ShowMSG(1,(int)LGP->lgp.LGP_CONFIG_UPDATE);
       ADRLST->ConstructListCFGUPD();
+      daemon->vibra->ReInitThythm();
     }
   }
   if(msg->msg==MSG_CSM_DESTROYED)

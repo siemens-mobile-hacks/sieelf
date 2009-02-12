@@ -6,7 +6,7 @@
 #include "CreateMenu.h"
 #include "AdrList.h"
 #include "EditGUI.h"
-#include "..\..\inc\mplayer.h"
+//#include "..\..\inc\mplayer.h"
 #include "PopupGUI.h"
 
 //short PLAY_ID=0;
@@ -197,9 +197,9 @@ void PopupNewIn::GHook(void *data, int cmd)
       sound_vol=GetProfileVolumeSetting(GetProfile(), VOLUME);//pni->GetSoundVol();
       if(!pni->cl || !pni->cl->sms_melody_filepath) melody_filepath=CFG_SOUND_PATH;
       else melody_filepath=pni->cl->sms_melody_filepath;
-      if(CFG_ENA_SOUND&& sound_vol && !(*(RamRingtoneStatus())) && pni->IsFileExist(melody_filepath))
+      if(CFG_ENA_SOUND&& sound_vol && !(*(RamRingtoneStatus()))/* && pni->IsFileExist(melody_filepath)*/)
       {
-	if(GetPlayStatus()) MPlayer_Stop();
+	//if(GetPlayStatus()) MPlayer_Stop();
 	//pni->SendIpc(SMSYS_IPC_SOUND_PLAY, (void *)melody_filepath);
 	SendMyIpc(SMSYS_IPC_SOUND_PLAY, (void *)melody_filepath);
 	//if(!PLAY_ID)
@@ -333,3 +333,64 @@ void PopupNewIn::UpdateCSMName(DLG_CSM *dlg_csm, int lgp)
 {
   wsprintf(&((DLGCSM_DESC *)dlg_csm->csm_ram.constr)->csm_name, PERCENT_T, lgp);
 }
+
+
+const SOFTKEY_DESC msm_sk[]=
+{
+  {0x0018,0x0000,(int)LGP_NULL},
+  {0x0001,0x0000,(int)LGP_NULL},
+  {0x003D,0x0000,LGP_DOIT_PIC}
+};
+
+const SOFTKEYSTAB msm_skt={msm_sk, 0};
+
+POPUP_DESC MyShowMsg::popup=
+{
+  8,
+    MyShowMsg::OnKey,
+    MyShowMsg::GHook,
+    NULL,
+    softkeys,
+    &msm_skt,
+    0x1,
+    LGP_NULL,
+    NULL,
+    0,
+    FONT_MEDIUM,
+    100,
+    101,
+    0x7D4
+};
+
+void MyShowMsg::GHook(void *data, int cmd)
+{
+//  if(cmd==0x3)
+//  {
+//    MyShowMsg *p=(MyShowMsg *)GetPopupUserPointer(data);
+//    delete p;
+//  }
+}
+
+int MyShowMsg::OnKey(void *data, GUI_MSG *msg)
+{
+  if(msg->keys==1
+    || msg->keys==0x18
+    || msg->keys==0x3D
+    )
+    return 1;
+  return 0;
+}
+
+int MyShowMsg::MyShow(WSHDR *msg)
+{
+  if(!msg) return 0;
+  return CreatePopupGUI_ws(1, NULL, &MyShowMsg::popup, msg);
+}
+
+int MyShowMsg::MyShow(char *msg)
+{
+  if(!msg) return 0;
+  return CreatePopupGUI(1, NULL, &MyShowMsg::popup, (int)msg);
+}
+
+

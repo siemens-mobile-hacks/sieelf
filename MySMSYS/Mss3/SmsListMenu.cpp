@@ -11,6 +11,8 @@
 #include "AdrList.h"
 #include "EditGUI.h"
 
+#include "PopupGUI.h"
+
 #include "NativeAddressbook.h"
 
 SOFTKEY_DESC sms_menu_sk[]=
@@ -78,9 +80,10 @@ int SmsListMenu::OnKey(void *data, GUI_MSG *msg)
   }
   else if (msg->keys==0x14)
   {
-    {
-      ShowMSG(1, (int)(sdl->number));
-    }
+    MyShowMsg::MyShow(sdl->number);
+    //{
+    //  ShowMSG(1, (int)(sdl->number));
+    //}
   }
   if(msg->gbsmsg->msg==KEY_DOWN)
   {

@@ -6,6 +6,7 @@
 #include "CreateMenu.h"
 #include "AdrList.h"
 #include "EditGUI.h"
+#include "PopupGUI.h"
 
 #include "NativeAddressbook.h"
 #include "CSMswaper.h"
@@ -231,7 +232,10 @@ enter: 0x3
     }
     else if (msg->keys==0x14)
     {
-      ShowMSG(1, (int)(edg->sdl->number));
+      //MyShowMsg *msm=new MyShowMsg;
+      //msm->MyShow(edg->sdl->number);
+      //ShowMSG(1, (int)(edg->sdl->number));
+      MyShowMsg::MyShow(edg->sdl->number);
     }
   }
   else
