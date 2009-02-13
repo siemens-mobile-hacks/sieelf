@@ -349,3 +349,15 @@ void NumList::ClearNL(NLST *nl)
   nl->number[0]='\0';
   CutWSTR(nl->name,0);
 }
+
+int NumList::IsNumExist(const char *number)
+{
+  NLST *nl=this->nltop;
+  while(nl)
+  {
+    if(NumberMatch(number, nl->number)==MATCH_NML)
+      return 1;
+    nl=nl->next;
+  }
+  return 0;
+}

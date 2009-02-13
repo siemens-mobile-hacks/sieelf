@@ -12,11 +12,11 @@ typedef struct _SNDLST
 class SendList
 {
 public:
+	void CatList(SNDLST *sl);
 	int IsSendCSM(int csm_id);
 	int SendEnd(int csm_id);
 	int SendStart(void);
 	int IsSending(void);
-	void CatList(SendList *lst);
 	SNDLST * FindSL(int csm_id);
 	void DeleteSL(SNDLST *sl);
 	void AddToList(const char *number, WSHDR *text);

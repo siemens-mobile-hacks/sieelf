@@ -273,10 +273,11 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	  break;
 	case SMSYS_IPC_SEND_LIST:
 	  {
+	    //GetCPUClock();
 	    CSM_RAM *tcsm=daemon->GetTopCSM();
 	    if(ipc->data)
 	    {
-	      daemon->sndlst->CatList((SendList *)ipc->data);
+	      daemon->sndlst->CatList((SNDLST *)ipc->data);
 	    }
 	    if(daemon->sndlst->SendStart() && tcsm->id) //send on bg
 	    {
@@ -314,6 +315,7 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
     //if(daemon->sndlst->IsSendCSM((int)msg->data0))
     //{
     //}
+    //GetCPUClock();
     CSM_RAM *tcsm=daemon->GetTopCSM();
     daemon->sndlst->SendEnd((int)msg->data0);
     if(daemon->sndlst->SendStart() && tcsm->id) //send on bg

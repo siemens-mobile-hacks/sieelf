@@ -14,6 +14,7 @@ typedef struct _NLST
 class NumList
 {
 public:
+	int IsNumExist(const char *number);
 	void ClearNL(NLST *nl);
 	NLST * InsertNL_behind(NLST *nl, const char *number);
 	NLST * AllocNL(const char *number);

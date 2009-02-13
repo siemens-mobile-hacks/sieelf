@@ -106,24 +106,24 @@ SNDLST * SendList::FindSL(int csm_id)
   return 0;
 }
 
-void SendList::CatList(SendList *lst)
-{
-  SNDLST *sl;
-  LockSched();
-  sl=this->sltop;
-  if(sl)
-  {
-    this->sltop=lst->sltop;
-  }
-  else
-  {
-    while(sl->next)
-      sl=sl->next;
-    sl->next=lst->sltop;
-    lst->sltop->prev=sl;
-  }
-  UnlockSched();
-}
+//DEL void SendList::CatList(SendList *lst)
+//DEL {
+//DEL   SNDLST *sl;
+//DEL   LockSched();
+//DEL   sl=this->sltop;
+//DEL   if(sl)
+//DEL   {
+//DEL     this->sltop=lst->sltop;
+//DEL   }
+//DEL   else
+//DEL   {
+//DEL     while(sl->next)
+//DEL       sl=sl->next;
+//DEL     sl->next=lst->sltop;
+//DEL     lst->sltop->prev=sl;
+//DEL   }
+//DEL   UnlockSched();
+//DEL }
 
 int SendList::IsSending()
 {
@@ -146,9 +146,11 @@ int SendList::SendStart()
   if(IsSending())
     return 0;
   sl=this->sltop;
-  if(!strlen(sl->number)
+  if(
+    !sl
+    ||!strlen(sl->number)
     ||!sl->text
-    ||(len=sl->text->wsbody[0])
+    ||!(len=sl->text->wsbody[0])
     )
     return 0;
   ws=AllocWS(len+4);
@@ -190,4 +192,24 @@ int SendList::IsSendCSM(int csm_id)
     sl=sl->next;
   }
   return 0;
+}
+
+void SendList::CatList(SNDLST *sl)
+{
+  if(!sl)
+    return;
+  LockSched();
+  if(!this->sltop)
+  {
+    this->sltop=sl;
+  }
+  else
+  {
+    SNDLST *s0=this->sltop;
+    while(s0->next)
+      s0=s0->next;
+    s0->next=sl;
+    sl->prev=s0;
+  }
+  UnlockSched();
 }

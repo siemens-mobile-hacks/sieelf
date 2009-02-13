@@ -144,7 +144,7 @@ void EditGUI::EdOpUserItem(USR_MENU_ITEM *item)
       //template
     case 3:
       {
-	EDITCONTROL ec;
+	/*EDITCONTROL ec;
 	int res;
 	EditGUI *edg=(EditGUI *)EDIT_GetUserPointer(item->user_pointer);
 	ExtractEditControl(item->user_pointer, edg->n_focus, &ec);
@@ -162,7 +162,7 @@ void EditGUI::EdOpUserItem(USR_MENU_ITEM *item)
 	    else edg->sdl=NULL;
 	  }
 	  GeneralFunc_flag1(edg->gui_id, 1);
-	}
+	}*/
       }
       break;
       //save draft
@@ -395,7 +395,6 @@ void EditGUI::GHook(void *data, int cmd)
     if(!(edg->gui_prop&ED_VIEW)/* && focus < edg->n_focus-1 */&& !EDIT_IsBusy(data)) //number
     {
       NLST *nl;
-      GetCPUClock();
       if(focus < edg->n_focus-1)
       {
       ExtractEditControl(data, focus, &ec);
@@ -968,9 +967,11 @@ int EditGUI::InsertNumber(void *data, WSHDR *number)
     || focus<1
     )
     return -1;
+  res=ws_2num(number, temp, 127);
+  if(this->nlst->IsNumExist(temp))
+    return -1;
   if(!(nl=this->nlst->FindNL(focus-1)))
     return -1;
-  res=ws_2num(number, temp, 127);
   if(EDIT_GetCursorPos(data)==1) //front
   {
     nl=this->nlst->InsertNL_front(nl, temp);
@@ -996,6 +997,7 @@ void EditGUI::EditSendSMS(WSHDR *text)
 {
   NLST *nl;
   SendList *sl;
+  //GetCPUClock();
   if(!text
     || !text->wsbody[0]
     || !(nl=this->nlst->nltop)
@@ -1006,7 +1008,7 @@ void EditGUI::EditSendSMS(WSHDR *text)
   {
     if(strlen(nl->number))
     {
-      sl->AddToList(number, text);
+      sl->AddToList(nl->number, text);
     }
     nl=nl->next;
   }
@@ -1015,5 +1017,7 @@ void EditGUI::EditSendSMS(WSHDR *text)
     delete sl;
     return;
   }
-  SendMyIpc(SMSYS_IPC_SEND_LIST, sl);
+  SendMyIpc(SMSYS_IPC_SEND_LIST, sl->sltop);
+  sl->sltop=NULL;
+  delete sl;
 }
