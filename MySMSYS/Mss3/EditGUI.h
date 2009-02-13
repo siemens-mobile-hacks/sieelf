@@ -9,7 +9,13 @@
 class EditGUI
 {
 public:
+	void EditSendSMS(WSHDR *text);
+	int InsertNumber(void *data, WSHDR *number);
+	int SetNumber(void *data, WSHDR *number);
+	int InsertText(void *data, WSHDR *text);
+	int CreateEditGUI(DLG_CSM *dlg_csm, const char *nums);
   int n_focus;
+  NumList *nlst;
   EditGUI();
   ~EditGUI();
   int CreateEditGUI(DLG_CSM *dlg_csm, SDLIST *sdl, int gui_prop, int list_type, int need_free);
@@ -21,7 +27,7 @@ private:
   int list_type;
   SDLIST *sdl;
   DLG_CSM *dlg_csm;
-  CLIST *cl;
+//  CLIST *cl;
   char number[50];
   void EditSendSMS(DLG_CSM *dlg_csm, WSHDR *text, const char *number);
   static int OnKey(void *data, GUI_MSG *msg);

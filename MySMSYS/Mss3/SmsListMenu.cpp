@@ -9,6 +9,7 @@
 #include "TabGUI.h"
 
 #include "AdrList.h"
+#include "NumList.h"
 #include "EditGUI.h"
 
 #include "PopupGUI.h"

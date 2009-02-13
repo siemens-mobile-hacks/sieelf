@@ -78,6 +78,7 @@ typedef struct _LGPACK
   const char *LGP_TO;
   const char *LGP_UNK;
   const char *LGP_FILTER;
+  const char *LGP_INSERT_NUM;
 }LGPACK;
 
 class LangPack : public CFile

@@ -3,9 +3,10 @@
 
 #define NAB_CSM_NAME_LEN 32
 
-#define NAB_SAVE 0
-#define NAB_TEXT 1
-#define NAB_SETC 2
+#define NAB_SAVE 0 //save to adrbk
+#define NAB_TEXT 1 //insert as text
+#define NAB_SETC 2 //set as number
+#define NAB_INSN 3 //insert as number
 
 class NAbCSM
 {

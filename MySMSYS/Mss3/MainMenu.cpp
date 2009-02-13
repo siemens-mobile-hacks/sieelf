@@ -6,6 +6,7 @@
 #include "CreateMenu.h"
 #include "SmsListMenu.h"
 #include "AdrList.h"
+#include "NumList.h"
 #include "EditGUI.h"
 #include "OthersMenu.h"
 #include "MainMenu.h"

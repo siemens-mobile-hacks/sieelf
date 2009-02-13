@@ -46,6 +46,8 @@
 #define SMSYS_IPC_SOUND_PLAY 0x130 //data=filepath
 #define SMSYS_IPC_SOUND_STOP 0x131 //data=NULL
 
+//send list
+#define SMSYS_IPC_SEND_LIST 0x140 //data= SendList
 
 void SendMyIpc(int submess);
 void SendMyIpc(int submess, void *data);

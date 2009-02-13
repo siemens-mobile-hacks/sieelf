@@ -5,6 +5,7 @@
 #include "SmsData.h"
 #include "CreateMenu.h"
 #include "AdrList.h"
+#include "NumList.h"
 #include "EditGUI.h"
 //#include "..\..\inc\mplayer.h"
 #include "PopupGUI.h"

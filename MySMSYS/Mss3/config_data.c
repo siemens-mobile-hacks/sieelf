@@ -52,8 +52,8 @@ __root const CFG_CBOX_ITEM cfgcbox1[7] =
 };
 
 
-__root const CFG_HDR cfghdrb = {CFG_UTF8_STRING, LGP_CFG_DEFAULT_SENT_NUM, 0, 31};
-__root const char CFG_DEFAULT_SENT_NUM[32] = "";
+__root const CFG_HDR cfghdrb = {CFG_UTF8_STRING, LGP_CFG_DEFAULT_SENT_NUM, 0, 127};
+__root const char CFG_DEFAULT_SENT_NUM[128] = "";
 
 __root const CFG_HDR cfghdrc = {CFG_CBOX, LGP_CFG_DEFAULT_TAB, 0, 5};
 __root const unsigned int CFG_DEFAULT_TAB = 0;

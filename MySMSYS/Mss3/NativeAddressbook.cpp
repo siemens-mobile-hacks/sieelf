@@ -5,6 +5,7 @@
 #include "SmsData.h"
 #include "CreateMenu.h"
 #include "AdrList.h"
+#include "NumList.h"
 #include "EditGUI.h"
 #include "NativeAddressbook.h"
 
@@ -52,6 +53,7 @@ int NAbCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	&& (edg=(EditGUI *)EDIT_GetUserPointer(ed_gui))
 	)
       {
+	GetCPUClock();
 	if(nabcsm->type==NAB_TEXT)
 	{
 	  if(
@@ -60,7 +62,7 @@ int NAbCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	    && EDIT_GetFocus(ed_gui)==edg->n_focus
 	    )
 	  {
-	    int n;
+	  /*  int n;
 	    EDITCONTROL ec;
 	    WSHDR *ews;
 	    int pos=EDIT_GetCursorPos(ed_gui);
@@ -73,7 +75,8 @@ int NAbCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	    }
 	    EDIT_SetTextToEditControl(ed_gui, edg->n_focus, ews);
 	    EDIT_SetCursorPos(ed_gui, pos+wn->wsbody[0]);
-	    FreeWS(ews);
+	    FreeWS(ews);*/
+	    edg->InsertText(ed_gui, wn);
 	    FreeWS(wn);
 	  }
 	}
@@ -84,7 +87,20 @@ int NAbCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	    && EDIT_GetFocus(ed_gui) < edg->n_focus-1
 	    )
 	  {
-	    EDIT_SetTextToFocused(ed_gui, wn);
+	    //EDIT_SetTextToFocused(ed_gui, wn);
+	    edg->SetNumber(ed_gui, wn);
+	    FreeWS(wn);
+	  }
+	}
+	else if (nabcsm->type==NAB_INSN)
+	{
+	  if(
+	    GetNativeAbDataStatus(nabcsm->nabd, 0)==1
+	    && (wn=GetNumFromNativeAbData(nabd, GetNativeAbDataType(nabd, 0), 0))
+	    && EDIT_GetFocus(ed_gui) < edg->n_focus-1
+	    )
+	  {
+	    edg->InsertNumber(ed_gui, wn);
 	    FreeWS(wn);
 	  }
 	}
@@ -116,7 +132,7 @@ void NAbCSM::OnCreate(CSM_RAM *data)
   {
     nabcsm->ab_csm_id=OpenNativeAddressbook(0xB, 0, 0, nabcsm->nabd);
   }
-  else if (nabcsm->type==NAB_SETC)
+  else if (nabcsm->type==NAB_SETC || nabcsm->type==NAB_INSN)
   {
     nabcsm->ab_csm_id=OpenNativeAddressbook(4, 1, 0, nabcsm->nabd);
   }
@@ -125,7 +141,7 @@ void NAbCSM::OnCreate(CSM_RAM *data)
 
 void NAbCSM::OnClose(CSM_RAM *data)
 {
-  GetCPUClock();
+  //GetCPUClock();
   NAb_CSM *nabcsm=(NAb_CSM *)data;
   if(nabcsm->nabd)
   {

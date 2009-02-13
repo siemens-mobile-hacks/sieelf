@@ -9,6 +9,7 @@
 #include "TabGUI.h"
 #include "DialogCSM.h"
 #include "AdrList.h"
+#include "NumList.h"
 #include "EditGUI.h"
 #include "PopupGUI.h"
 
@@ -134,10 +135,11 @@ void DialogCSM::OnCreate(CSM_RAM *data)
     {
       if(dlg->ipc_data)
       {
-	SDLIST *sdl=SMSDATA->AllocSDL();
+	//SDLIST *sdl=SMSDATA->AllocSDL();
 	EditGUI *edg=new EditGUI;
-	strcpy(sdl->number, (char *)dlg->ipc_data);
-	dlg_csm->gui_id=edg->CreateEditGUI((::DLG_CSM *)dlg_csm, sdl, ED_REPLY, 0, 1);
+	//strcpy(sdl->number, (char *)dlg->ipc_data);
+	//dlg_csm->gui_id=edg->CreateEditGUI((::DLG_CSM *)dlg_csm, sdl, ED_REPLY, 0, 1);
+	dlg_csm->gui_id=edg->CreateEditGUI((::DLG_CSM *)dlg_csm, (char *)dlg->ipc_data);
 	delete dlg->ipc_data;
       }
       else dlg_csm->csm_ram.state=-3;

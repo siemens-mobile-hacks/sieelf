@@ -8,6 +8,7 @@
 #include "DialogCSM.h"
 #include "LangPack.h"
 #include "Vibra.h"
+#include "SendList.h"
 #include "DaemonCSM.h"
 
 #include "CSMswaper.h"

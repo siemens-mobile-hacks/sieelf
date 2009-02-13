@@ -27,6 +27,7 @@ class DaemonCSM
     DaemonCSM *daemon;
   }DAEMON_CSM;
 public:
+	SendList * sndlst;
   DaemonCSM();
   ~DaemonCSM();
   void CreateDaemonCSM(void);

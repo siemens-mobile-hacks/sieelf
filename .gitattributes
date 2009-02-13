@@ -1050,10 +1050,14 @@ MySMSYS/Mss3/MyIpcMessage.cpp -text
 MySMSYS/Mss3/MyIpcMessage.h -text
 MySMSYS/Mss3/NativeAddressbook.cpp -text
 MySMSYS/Mss3/NativeAddressbook.h -text
+MySMSYS/Mss3/NumList.cpp -text
+MySMSYS/Mss3/NumList.h -text
 MySMSYS/Mss3/OthersMenu.cpp -text
 MySMSYS/Mss3/OthersMenu.h -text
 MySMSYS/Mss3/PopupGUI.cpp -text
 MySMSYS/Mss3/PopupGUI.h -text
+MySMSYS/Mss3/SendList.cpp -text
+MySMSYS/Mss3/SendList.h -text
 MySMSYS/Mss3/SiemensPDU.cpp -text
 MySMSYS/Mss3/SiemensPDU.h -text
 MySMSYS/Mss3/SmsData.cpp -text

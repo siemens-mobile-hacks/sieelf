@@ -7235,6 +7235,12 @@
     <name>$PROJ_DIR$\NativeAddressbook.h</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\NumList.cpp</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\NumList.h</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\OthersMenu.cpp</name>
   </file>
   <file>
@@ -7245,6 +7251,12 @@
   </file>
   <file>
     <name>$PROJ_DIR$\PopupGUI.h</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\SendList.cpp</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\SendList.h</name>
   </file>
   <file>
     <name>$PROJ_DIR$\SiemensPDU.cpp</name>

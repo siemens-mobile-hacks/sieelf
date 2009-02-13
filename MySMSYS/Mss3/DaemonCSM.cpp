@@ -8,6 +8,9 @@
 #include "SmsListMenu.h"
 #include "DialogCSM.h"
 #include "Vibra.h"
+
+#include "SendList.h"
+#include "CSMswaper.h"
 #include "DaemonCSM.h"
 
 #include "AdrList.h"
@@ -43,10 +46,13 @@ DaemonCSM::DaemonCSM()
 //  this->vba_power=0;
 //  this->PLAY_ID=0;
   this->vibra=new Vibra;
+  this->sndlst=new SendList;
 }
 
 DaemonCSM::~DaemonCSM()
 {
+  delete this->vibra;
+  delete this->sndlst;
 }
 
 void DaemonCSM::CreateDaemonCSM(void)
@@ -265,6 +271,19 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	    if(CFG_ENA_SOUND && IsPlayerOn() && !GetPlayStatus()) MPlayer_Start();
 	  }
 	  break;
+	case SMSYS_IPC_SEND_LIST:
+	  {
+	    CSM_RAM *tcsm=daemon->GetTopCSM();
+	    if(ipc->data)
+	    {
+	      daemon->sndlst->CatList((SendList *)ipc->data);
+	    }
+	    if(daemon->sndlst->SendStart() && tcsm->id) //send on bg
+	    {
+	      CSMtoTop(tcsm->id, -1);
+	    }
+	  }
+	  break;
 	default:
 	  {
 	    int id;
@@ -292,6 +311,15 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
   }
   if(msg->msg==MSG_CSM_DESTROYED)
   {
+    //if(daemon->sndlst->IsSendCSM((int)msg->data0))
+    //{
+    //}
+    CSM_RAM *tcsm=daemon->GetTopCSM();
+    daemon->sndlst->SendEnd((int)msg->data0);
+    if(daemon->sndlst->SendStart() && tcsm->id) //send on bg
+    {
+      CSMtoTop(tcsm->id, -1);
+    }
     daemon->DelDlgCsmID((int)msg->data0);
   }
   if(daemon->PLAY_ID && (msg->msg==MSG_INCOMMING_CALL || IsCalling()))
@@ -321,7 +349,7 @@ void DaemonCSM::OnClose(CSM_RAM *data)
   delete IP;
   delete ADRLST;
   delete SMSDATA;
-  delete daemon_csm->daemon->vibra;
+  //delete daemon_csm->daemon->vibra;
   delete daemon_csm->daemon;
   extern void ElfKiller(void); //main.cpp
   SUBPROC((void *)ElfKiller);

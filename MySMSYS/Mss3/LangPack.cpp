@@ -78,7 +78,7 @@ const char df_LGP_TEXT[]="Text";
 const char df_LGP_TO[]="To";
 const char df_LGP_UNK[]="Unknow";
 const char df_LGP_FILTER[]="Fliter";
-
+const char df_LGP_INSERT_NUM[]="Ins. Num";
 
 const char *df_LGPS[]=
 {
@@ -156,6 +156,7 @@ const char *df_LGPS[]=
   df_LGP_TO,
   df_LGP_UNK,
   df_LGP_FILTER,
+  df_LGP_INSERT_NUM,
   0,
 };
 
@@ -294,10 +295,12 @@ void LangPack::InitLgp(void)
   extern SOFTKEY_DESC SK_OPTIONS;
   extern SOFTKEY_DESC SK_ADRBK;
   extern SOFTKEY_DESC SK_CANCEL;
+  extern SOFTKEY_DESC SK_INSNM;
   extern int EDO_ITEM_LGPS[];
   SK_OPTIONS.lgp_id=(int)lgp.LGP_OPTIONS;
   SK_CANCEL.lgp_id=(int)lgp.LGP_CANCEL;
   SK_ADRBK.lgp_id=(int)lgp.LGP_ADRBK;
+  SK_INSNM.lgp_id=(int)lgp.LGP_INSERT_NUM;
   EDO_ITEM_LGPS[0]=(int)lgp.LGP_REPLY;
   EDO_ITEM_LGPS[1]=(int)lgp.LGP_EDIT;
   EDO_ITEM_LGPS[2]=(int)lgp.LGP_DEL;
