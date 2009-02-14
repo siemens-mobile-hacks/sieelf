@@ -18,7 +18,7 @@
 //#define RAM_EAM_BUF 0xA8DAD298 //?? 48 ?? 47 ?? 20 ?? 30 ?? 04 ?? 0C ?? 28 ?? D3 ?? 47
 //ELKA &(??48??47??B5??B0??1C??D1??20)
 
-class SmsData : 
+class SmsData :
   public SiememPDU,
   public CFile
 {
@@ -65,7 +65,7 @@ public:
   SDLIST *FindSDL(int type, int n);
   SDLIST *FindSDL(int dat_index);
   SDLIST *FindOpmsgSDL(int opmsg_id);
-  
+
   int GetSMSCount(int type);
   int GetSMSCount(int isfile, int type);
 
@@ -86,6 +86,9 @@ public:
   SDLIST *FilterFindPrev(SDLIST *sdl, const char *number);
   SDLIST *FilterFindPrev(SDLIST *sdl, WSHDR *str);
   int n_new; //新短信条数
+
+  //导出txt
+//  int ExportText(SDLIST *sdl);
 private:
   char *sms_buf;
   int sms_size;

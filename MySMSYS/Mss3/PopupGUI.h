@@ -21,8 +21,8 @@ private:
 class MyShowMsg
 {
 public:
-  static int MyShow(WSHDR *msg);
-  static int MyShow(char *msg);
+  static int MyShow(int flag, WSHDR *msg);
+  static int MyShow(int flag, char *msg);
 private:
   static POPUP_DESC popup;
   static int OnKey(void *data, GUI_MSG *msg);

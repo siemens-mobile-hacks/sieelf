@@ -869,7 +869,7 @@ int SmsData::CheckSMS(int dat_index)
       {
 	if((sdl=FindSDL(dat_index)))
 	{
-	  if(sdl->cnt_r < idd->cnt_received) 
+	  if(sdl->cnt_r < idd->cnt_received)
 	  {
 	    //DeleteSDL(sdl);
 	    return CHK_RES_RELOAD;
@@ -1666,9 +1666,9 @@ int SmsData::GetFilePathSDL(SDLIST *sdl, char *folder, char *filepath, int ftype
     snprintf(filepath, 128, "%s_%s", (hasname)?sname:sdl->number, sdl->time/*, (ftype==FTYPE_MSS)?"mss":"txt"*/);
   }
   else
-    snprintf(filepath, 128, "%s_%02d-%02d-%02d %02d%02d%02d", (hasname)?sname:sdl->number, 
+    snprintf(filepath, 128, "%s_%02d-%02d-%02d %02d%02d%02d", (hasname)?sname:sdl->number,
 	    date.year%2000,
-	    date.month, 
+	    date.month,
 	    date.day,
 	    time.hour,
 	    time.min,
@@ -1743,3 +1743,45 @@ SDLIST * SmsData::FindLastNew(void)
   }
   return 0;
 }
+/*
+int SmsData::ExportText(SDLIST *sdl)
+{
+	if(!sdl)
+		return 0;
+	char *buf;
+	char folder[128];
+	char filepath[128];
+	char sname[64];
+	int len;
+	int c;
+	int fin;
+	strcpy(folder, CFG_MAIN_FOLDER);
+	if(!(len=strlen(folder)))
+		return 0;
+	c=folder[len-1];
+	if(c!='\\' && c!='/')
+	{
+		folder[len]='\\';
+		folder[le]='\0';
+	}
+	if(!IsDir(folder))
+		MkDir(folder);
+	strcat(folder, "Text\\");
+	if(!IsDir(folder))
+		MkDir(folder);
+	if(GetFilePathSDL(sdl, folder, filepath, FTYPE_TXT))
+		return 0;
+	if((fin=FOpen(filepath, A_BIN+A_WriteOnly+A_Create+A_Truncate, P_WRITE))==-1)
+		return 0;
+	len=sdl->text->wsbody[0]*3+4;
+	buf=new char[len];
+	buf[0]=0xEF;
+	buf[1]=0xBB;
+	buf[2]=0xBF;
+	if(FWrite(fin, buf, 3)!=3)
+	{
+		delete buf;
+		return 0;
+	}
+	ws_2utf8(sdl->text, buf, len);
+}*/

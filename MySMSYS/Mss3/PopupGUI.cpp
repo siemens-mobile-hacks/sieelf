@@ -382,16 +382,16 @@ int MyShowMsg::OnKey(void *data, GUI_MSG *msg)
   return 0;
 }
 
-int MyShowMsg::MyShow(WSHDR *msg)
+int MyShowMsg::MyShow(int flag, WSHDR *msg)
 {
   if(!msg) return 0;
-  return CreatePopupGUI_ws(1, NULL, &MyShowMsg::popup, msg);
+  return CreatePopupGUI_ws(flag, NULL, &MyShowMsg::popup, msg);
 }
 
-int MyShowMsg::MyShow(char *msg)
+int MyShowMsg::MyShow(int flag, char *msg)
 {
   if(!msg) return 0;
-  return CreatePopupGUI(1, NULL, &MyShowMsg::popup, (int)msg);
+  return CreatePopupGUI(flag, NULL, &MyShowMsg::popup, (int)msg);
 }
 
 

@@ -243,7 +243,7 @@ enter: 0x3
       //MyShowMsg *msm=new MyShowMsg;
       //msm->MyShow(edg->sdl->number);
       //ShowMSG(1, (int)(edg->sdl->number));
-      MyShowMsg::MyShow(edg->sdl->number);
+      MyShowMsg::MyShow(1, edg->sdl->number);
     }
   }
   else

@@ -81,7 +81,7 @@ int SmsListMenu::OnKey(void *data, GUI_MSG *msg)
   }
   else if (msg->keys==0x14)
   {
-    MyShowMsg::MyShow(sdl->number);
+    MyShowMsg::MyShow(1, sdl->number);
     //{
     //  ShowMSG(1, (int)(sdl->number));
     //}

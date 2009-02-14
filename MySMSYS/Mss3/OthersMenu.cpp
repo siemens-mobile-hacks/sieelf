@@ -4,6 +4,10 @@
 #include "File.h"
 #include "SmsData.h"
 #include "CreateMenu.h"
+#include "AdrList.h"
+#include "NumList.h"
+#include "EditGUI.h"
+#include "PopupGUI.h"
 #include "OthersMenu.h"
 
 #define OTH_MENU_ITEM_N 4
@@ -167,5 +171,7 @@ void OthMenu::MoveAllMss(void)
 
 void OthMenu::ShowAbout()
 {
-  ShowMSG(1, (int)CP_RIGHT);
+  char msg[128];
+  sprintf(msg, "%s\nCompile at\n%s %s", CP_RIGHT, __DATE__, __TIME__);
+  MyShowMsg::MyShow(0, msg);
 }
