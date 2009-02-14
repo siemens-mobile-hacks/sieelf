@@ -1306,7 +1306,7 @@ SDLIST *SmsData::FilterFindSDL(int n)
   case FILTER_DAT:
     return (FilterFindSDL(0, n));
   case FILTER_FILE:
-    return (FilterFindSDL(1, n));
+    return (FilterFindSDL(ISFILE, n));
   case FILTER_NUM:
     return (FilterFindSDL(CFG_STRORNUM, n));
   case FILTER_STR:
@@ -1328,7 +1328,7 @@ SDLIST *SmsData::FilterFindSDL(int isfile, int n)
   SDLIST *sdl=sdltop;
   while(sdl)
   {
-    if((sdl->msg_prop&ISFILE))
+    if((sdl->msg_prop&ISFILE)==isfile)
     {
       if(i==n) return sdl;
       i++;
@@ -1385,7 +1385,7 @@ int SmsData::FilterGetCount(void)
   case FILTER_DAT:
     return (GetSMSCount(0, 0));
   case FILTER_FILE:
-    return (GetSMSCount(1, 0));
+    return (GetSMSCount(ISFILE, 0));
   case FILTER_NUM:
     return (FilterGetCount(CFG_STRORNUM));
   case FILTER_STR:
