@@ -172,7 +172,11 @@ int SendList::SendEnd(int csm_id)
     || !(sl=FindSL(csm_id))
     )
     return 0;
-  if(CFG_ENA_SAVE_SENT) SMSDATA->SaveMss(sl->text, sl->number, NULL, TYPE_OUT, 2);
+  if(CFG_ENA_SAVE_SENT)
+  {
+    SMSDATA->SaveMss(sl->text, sl->number, NULL, TYPE_SENT, 2);
+    SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
+  }
   DeleteSL(sl);
   return 1;
 }
@@ -212,4 +216,19 @@ void SendList::CatList(SNDLST *sl)
     sl->prev=s0;
   }
   UnlockSched();
+}
+
+//DEL void SendList::SendOnBG(SendList *sndlst)
+//DEL {
+//DEL   CSM_RAM *tcsm;
+//DEL   tcsm=DaemonCSM::GetTopCSM();
+//DEL   if(sndlst->SendStart() && CFG_ENA_SNED_ON_BG && tcsm && tcsm->id)
+//DEL   {
+//DEL     CSMtoTop(tcsm->id, -1);
+//DEL   }
+//DEL }
+
+void SendList::SendOnTop(SendList *sndlst)
+{
+  sndlst->SendStart();
 }

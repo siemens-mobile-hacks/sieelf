@@ -110,7 +110,7 @@ void DialogCSM::OnCreate(CSM_RAM *data)
   case SMSYS_IPC_OUT:
     {
       SmsListMenu *slm=new SmsListMenu;
-      dlg_csm->gui_id=slm->CreateSmsListMenu(TYPE_OUT, 0, (::DLG_CSM *)dlg_csm);
+      dlg_csm->gui_id=slm->CreateSmsListMenu(TYPE_SENT, 0, (::DLG_CSM *)dlg_csm);
     }
     break;
   case SMSYS_IPC_DRAFT:

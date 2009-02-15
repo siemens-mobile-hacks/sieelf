@@ -5,7 +5,8 @@
 
 extern const char IPC_NAME[];
 extern const char FLDR_IN[];
-extern const char FLDR_OUT[];
+//extern const char FLDR_OUT[];
+extern const char FLDR_SENT[];
 extern const char FLDR_DRAFT[];
 extern const char FLDR_UNK[];
 extern const char FLDR_ARCHIVE[];

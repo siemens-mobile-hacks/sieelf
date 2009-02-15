@@ -572,8 +572,8 @@ int SmsData::ReadFolder(int type)
   case TYPE_DRAFT:
     folder=FLDR_DRAFT;
     break;
-  case TYPE_OUT:
-    folder=FLDR_OUT;
+  case TYPE_SENT:
+    folder=FLDR_SENT;
     break;
   case TYPE_IN_N:
   case TYPE_IN_R:
@@ -644,8 +644,8 @@ int SmsData::SaveMss(WSHDR *ws, const char *number, SDLIST *sdl, int type, int n
   case TYPE_DRAFT:
     folder=FLDR_DRAFT;
     break;
-  case TYPE_OUT:
-    folder=FLDR_OUT;
+  case TYPE_SENT:
+    folder=FLDR_SENT;
     break;
   case TYPE_IN_N:
   case TYPE_IN_R:
@@ -778,7 +778,7 @@ int SmsData::ReadAllMessage(void)
   is_reading=1;
   n=ReadAllDatMsg();
   n+=ReadFolder(TYPE_IN_ALL);
-  n+=ReadFolder(TYPE_OUT);
+  n+=ReadFolder(TYPE_SENT);
   n+=ReadFolder(TYPE_DRAFT);
   SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
   is_reading=0;
@@ -1015,8 +1015,8 @@ int SmsData::CheckFolder(int type)
   case TYPE_DRAFT:
     folder=FLDR_DRAFT;
     break;
-  case TYPE_OUT:
-    folder=FLDR_OUT;
+  case TYPE_SENT:
+    folder=FLDR_SENT;
     break;
   case TYPE_IN_N:
   case TYPE_IN_R:
@@ -1148,7 +1148,7 @@ int SmsData::CheckAll(void)
   res=CheckSDList();
   res+=CheckDat();
   res+=CheckFolder(TYPE_IN_ALL);
-  res+=CheckFolder(TYPE_OUT);
+  res+=CheckFolder(TYPE_SENT);
   res+=CheckFolder(TYPE_DRAFT);
   SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
   this->n_new=GetSMSCount(TYPE_IN_N);
@@ -1227,7 +1227,7 @@ int SmsData::IsExistSDL(SDLIST *sdl)
 SDLIST *SmsData::FindNextSDL(SDLIST *sdl, int type)
 {
   if(!sdl) return 0;
-  if((type==TYPE_OUT)||(type==TYPE_DRAFT))
+  if((type==TYPE_SENT)||(type==TYPE_DRAFT))
   {
     sdl=(SDLIST *)sdl->next;
     while(sdl)
@@ -1262,7 +1262,7 @@ SDLIST *SmsData::FindNextSDL(SDLIST *sdl, int type)
 SDLIST *SmsData::FindPrevSDL(SDLIST *sdl, int type)
 {
   if(!sdl) return 0;
-  if((type==TYPE_OUT)||(type==TYPE_DRAFT))
+  if((type==TYPE_SENT)||(type==TYPE_DRAFT))
   {
     sdl=(SDLIST *)sdl->prev;
     while(sdl)
@@ -1605,8 +1605,8 @@ int SmsData::MoveToArchive(SDLIST *sdl) //Ö»Ö§³Ömss
   case TYPE_DRAFT:
     strcat(folder, FLDR_DRAFT);
     break;
-  case TYPE_OUT:
-    strcat(folder, FLDR_OUT);
+  case TYPE_SENT:
+    strcat(folder, FLDR_SENT);
     break;
   case TYPE_IN_N:
   case TYPE_IN_R:

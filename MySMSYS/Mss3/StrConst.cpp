@@ -10,7 +10,8 @@ const char STR_UNK_TXTT[]="Unkown Text Encode Type (%d)!";
 const char STR_UNK_TYPE[]="Unknow Type (%d)!";
 
 const char FLDR_IN[]="In\\";
-const char FLDR_OUT[]="Out\\";
+//const char FLDR_OUT[]="Out\\";
+const char FLDR_SENT[]="Out\\";//"Sent\\";
 const char FLDR_DRAFT[]="Draft\\";
 const char FLDR_UNK[]="Unknow\\";
 const char FLDR_ARCHIVE[]="Archive\\";

@@ -118,7 +118,7 @@ int SiememPDU::PduDecodeTxt(SDLIST *sd, char *data) //0: fail, 1: successful, //
   else isplus=0;
   if((c>>6)%2) isems=1;
   else isems=0;
-  if((sd->type==TYPE_OUT)||(sd->type==TYPE_DRAFT)) //out
+  if((sd->type==TYPE_SENT)||(sd->type==TYPE_DRAFT)) //out
   {
     p++;
   }
@@ -131,7 +131,7 @@ int SiememPDU::PduDecodeTxt(SDLIST *sd, char *data) //0: fail, 1: successful, //
   {
     p+=7; //time
   }
-  if(isplus&&((sd->type==TYPE_OUT)||(sd->type==TYPE_DRAFT))) p++; //
+  if(isplus&&((sd->type==TYPE_SENT)||(sd->type==TYPE_DRAFT))) p++; //
   c=*p++;
   //...text,
   if(isems)
@@ -209,7 +209,7 @@ int SiememPDU::PduDecodeAll(SDLIST *sd, char *data) //0: fail, 1: successful, //
     sd->type=TYPE_IN_N;
     break;
   case 0x05:
-    sd->type=TYPE_OUT;
+    sd->type=TYPE_SENT;
     break;
   case 0x07:
     sd->type=TYPE_DRAFT;
@@ -233,7 +233,7 @@ int SiememPDU::PduDecodeAll(SDLIST *sd, char *data) //0: fail, 1: successful, //
   else isplus=0;
   if((c>>6)%2) isems=1;
   else isems=0;
-  if((sd->type==TYPE_OUT)||(sd->type==TYPE_DRAFT)) //out
+  if((sd->type==TYPE_SENT)||(sd->type==TYPE_DRAFT)) //out
   {
     p++;
   }
@@ -279,7 +279,7 @@ int SiememPDU::PduDecodeAll(SDLIST *sd, char *data) //0: fail, 1: successful, //
     DoSmsReport(sd, p, ws);
     goto TEND;
   }
-  if(isplus&&((sd->type==TYPE_OUT)||(sd->type==TYPE_DRAFT))) p++; //
+  if(isplus&&((sd->type==TYPE_SENT)||(sd->type==TYPE_DRAFT))) p++; //
   c=*p++;
   //...text,
   if(isems)

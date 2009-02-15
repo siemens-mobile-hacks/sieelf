@@ -3,7 +3,8 @@
 
 
 #define TYPE_UNK	0
-#define TYPE_OUT	1
+//#define TYPE_OUT	1
+#define TYPE_SENT       1
 #define TYPE_IN_R	2 //readed
 #define TYPE_IN_N 3 //new
 #define TYPE_DRAFT	4

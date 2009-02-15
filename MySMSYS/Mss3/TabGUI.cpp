@@ -50,7 +50,7 @@ int TabGUI::CreateTabGUI(DLG_CSM *dlg_csm)
     switch(n)
     {
     case 1: type=TYPE_IN_ALL;break;
-    case 2: type=TYPE_OUT;break;
+    case 2: type=TYPE_SENT;break;
     case 3: type=TYPE_DRAFT;break;
     //case 4: type=0;break;
     case 4: type=TYPE_FILTER;break;
@@ -86,7 +86,7 @@ void TabGUI::GHook(void *data, int cmd)
       switch(n)
       {
       case 1: type=TYPE_IN_ALL;break;
-      case 2: type=TYPE_OUT;break;
+      case 2: type=TYPE_SENT;break;
       case 3: type=TYPE_DRAFT;break;
       //case 4: type=0;break;
       case 4: type=TYPE_FILTER;break;
@@ -139,7 +139,7 @@ int TabGUI::ReCreateTabGUI(DLG_CSM *dlg_csm)
     switch(n)
     {
     case 1: type=TYPE_IN_ALL;break;
-    case 2: type=TYPE_OUT;break;
+    case 2: type=TYPE_SENT;break;
     case 3: type=TYPE_DRAFT;break;
     case 4: type=TYPE_FILTER;break;
     }

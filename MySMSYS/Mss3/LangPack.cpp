@@ -14,7 +14,7 @@ const char df_LGP_NEW[]="NewSMS";
 const char df_LGP_IN_R[]="InReaded";
 const char df_LGP_IN_N[]="InNew";
 const char df_LGP_IN_A[]="InBox";
-const char df_LGP_OUT[]="Sent";
+const char df_LGP_SENT[]="Sent";
 const char df_LGP_DRAFT[]="Draft";
 const char df_LGP_ALL[]="AllSMS";
 const char df_LGP_OPTIONS[]="Options";
@@ -92,7 +92,7 @@ const char *df_LGPS[]=
   df_LGP_IN_R,
   df_LGP_IN_N,
   df_LGP_IN_A,
-  df_LGP_OUT,
+  df_LGP_SENT,
   df_LGP_DRAFT,
   df_LGP_ALL,
   df_LGP_OPTIONS,
@@ -268,7 +268,7 @@ void LangPack::InitLgp(void)
   MM_ITEM_LGPS[0]=(int)lgp.LGP_NEW;
   MM_ITEM_LGPS[1]=(int)lgp.LGP_IN_N;
   MM_ITEM_LGPS[2]=(int)lgp.LGP_IN_A;
-  MM_ITEM_LGPS[3]=(int)lgp.LGP_OUT;
+  MM_ITEM_LGPS[3]=(int)lgp.LGP_SENT;
   MM_ITEM_LGPS[4]=(int)lgp.LGP_DRAFT;
   MM_ITEM_LGPS[5]=(int)lgp.LGP_OTHERS;
 
@@ -279,7 +279,7 @@ void LangPack::InitLgp(void)
   sms_menu_sk[0].lgp_id=(int)lgp.LGP_OPTIONS;
   sms_menu_sk[1].lgp_id=(int)lgp.LGP_BACK;
   SLM_HDR_LGPS[0]=(int)lgp.LGP_FILTER;
-  SLM_HDR_LGPS[1]=(int)lgp.LGP_OUT;
+  SLM_HDR_LGPS[1]=(int)lgp.LGP_SENT;
   SLM_HDR_LGPS[2]=(int)lgp.LGP_IN_R;
   SLM_HDR_LGPS[3]=(int)lgp.LGP_IN_N;
   SLM_HDR_LGPS[4]=(int)lgp.LGP_DRAFT;

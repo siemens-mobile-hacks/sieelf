@@ -31,8 +31,8 @@ public:
   DaemonCSM();
   ~DaemonCSM();
   void CreateDaemonCSM(void);
+  static CSM_RAM * GetTopCSM(void);
 private:
-  CSM_RAM * GetTopCSM(void);
 #ifdef ICONBAR
   static void AddIconBar(short* num);
 #endif
@@ -40,8 +40,6 @@ private:
   int DLGCSM_IDS[DLGCSM_ID_MAX];
   unsigned short csm_name_body[DAEMON_NAME_LEN];
   GBSTMR chktmr;
-/*  GBSTMR vbatmr;
-  int vba_power;*/
   int temp_tmr_index;
   int is_new_proc;
   short PLAY_ID;
@@ -56,7 +54,6 @@ private:
   static void OnClose(CSM_RAM *data);
   static void DoNewProc(void);
   static void UpdateNProc(void);
-//  static void VibraProc(void);
   static void PlayNotifySound(DaemonCSM *daemon, char *filepath);
 };
 

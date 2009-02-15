@@ -149,8 +149,8 @@ void SmsListMenu::GHook(void *data, int cmd)
     case TYPE_IN_N:
       lgpN=LGP->lgp.LGP_IN_N;
       break;
-    case TYPE_OUT:
-      lgpN=LGP->lgp.LGP_OUT;
+    case TYPE_SENT:
+      lgpN=LGP->lgp.LGP_SENT;
       break;
     case TYPE_DRAFT:
       lgpN=LGP->lgp.LGP_DRAFT;
@@ -416,18 +416,23 @@ int SmsListMenu::ReCreateTab(void *data)
 
 void SmsListMenu::ReCreateMe(void *data)
 {
-  int id=0;
   if(this->is_tab)
   {
+    int id=0;
     TabGUI tab;
     id=tab.ReCreateTabGUI(this->dlg_csm);
     if(id) this->dlg_csm->gui_id=id;
   }
   else
   {
+    //SmsListMenu *sl=new SmsListMenu;
+    //id=sl->CreateSmsListMenu(this->type, GetCurMenuItem(data), this->dlg_csm);
     SmsListMenu *sl=new SmsListMenu;
-    id=sl->CreateSmsListMenu(this->type, GetCurMenuItem(data), this->dlg_csm);
-    if(this->dlg_csm->gui_id == this->gui_id && id)
-      this->dlg_csm->gui_id=id;
+    sl->type=this->type;
+    sl->is_tab=this->is_tab;
+    sl->dlg_csm=this->dlg_csm;
+    sl->gui_id=CreateMenu(&sl->menu, &sms_menuhdr, GetCurMenuItem(data), SMSDATA->GetSMSCount(this->type), sl);
+    if(this->dlg_csm->gui_id == this->gui_id && sl->gui_id)
+      this->dlg_csm->gui_id=sl->gui_id;
   }
 }

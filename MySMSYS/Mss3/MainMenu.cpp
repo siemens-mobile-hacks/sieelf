@@ -87,7 +87,7 @@ int MainMenu::OnKey(void *data, GUI_MSG *msg)
     case 3:
       {
 	SmsListMenu *slm=new SmsListMenu;
-	slm->CreateSmsListMenu(TYPE_OUT, 0, mm->dlg_csm);
+	slm->CreateSmsListMenu(TYPE_SENT, 0, mm->dlg_csm);
 	break;
       }
     case 4:
@@ -156,7 +156,7 @@ void MainMenu::ItemProc(void *data, int curitem, void *user_pointer)
     wsprintf(ws, MM_FORMAT, MM_ITEM_LGPS[curitem], 0xE01D, SMSDATA->GetSMSCount(TYPE_IN_ALL));
     break;
   case 3:
-    wsprintf(ws, MM_FORMAT, MM_ITEM_LGPS[curitem], 0xE01D, SMSDATA->GetSMSCount(TYPE_OUT));
+    wsprintf(ws, MM_FORMAT, MM_ITEM_LGPS[curitem], 0xE01D, SMSDATA->GetSMSCount(TYPE_SENT));
     break;
   case 4:
     wsprintf(ws, MM_FORMAT, MM_ITEM_LGPS[curitem], 0xE01D, SMSDATA->GetSMSCount(TYPE_DRAFT));

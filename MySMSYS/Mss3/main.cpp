@@ -104,7 +104,7 @@ int main(char *exename, char *fname)
   InitSetting();
   DaemonCSM *daemon=new DaemonCSM;
   daemon->CreateDaemonCSM();
-  InitUnderIdleCSM();
+  //InitUnderIdleCSM();
   return 0;
 }
 

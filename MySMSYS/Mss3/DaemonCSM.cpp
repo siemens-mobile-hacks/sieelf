@@ -43,8 +43,6 @@ DaemonCSM::DaemonCSM()
   strcpy(this->daemon_csm_desc.iconbar_handler.check_name, "IconBar");
   this->daemon_csm_desc.iconbar_handler.addr=(int)this->AddIconBar;
 #endif
-//  this->vba_power=0;
-//  this->PLAY_ID=0;
   this->vibra=new Vibra;
   this->sndlst=new SendList;
 }
@@ -97,8 +95,6 @@ int strcmp_nocase(const char *s1,const char *s2)
 }
 
 
-#define VBA_POWERS_N 11
-//const int VBA_POWERS[VBA_POWERS_N]={0,90,10,60,20,70,40,0,80,30,50}; //[0], stop
 int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 {
 #ifdef NEWSGOLD
@@ -155,9 +151,6 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
     }
     if((!(SMSDATA->n_new=SMSDATA->GetSMSCount(TYPE_IN_N)))&&(CFG_ENA_NOTIFY))
     {
-      //daemon->vba_power=0;
-      //GBS_DelTimer(&daemon->vbatmr);
-      //SetVibration(0);
       daemon->vibra->VibraStop();
       if(daemon->PLAY_ID)
       {
@@ -216,37 +209,12 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	  SUBPROC((void *)OpenArchive);
 	  break;
 	case SMSYS_IPC_VIBRA_START:
-	  /*if(CFG_NOTIFY_TIME && CFG_ENA_VIBRA && !IsCalling())
-	  {
-	    daemon->vba_power=1;
-	    daemon->VibraProc();
-	  }*/
 	  daemon->vibra->VibraStart();
 	  break;
 	case SMSYS_IPC_VIBRA_STOP:
-	  /*{
-	    daemon->vba_power=0;
-	    GBS_DelTimer(&daemon->vbatmr);
-	    SetVibration(0);
-	  }*/
 	  daemon->vibra->VibraStop();
 	  break;
 	case SMSYS_IPC_VIBRA_NEXT:
-	  /*{
-	    if (CFG_NOTIFY_TIME && CFG_ENA_VIBRA && daemon->vba_power && SMSDATA->n_new && !IsCalling())
-	    {
-	      SetVibration(VBA_POWERS[daemon->vba_power]);
-	      if(daemon->vba_power<VBA_POWERS_N) daemon->vba_power++;
-	      else daemon->vba_power=1;
-	      GBS_StartTimerProc(&daemon->vbatmr, 216/4, daemon->VibraProc);
-	    }
-	    else
-	    {
-	      daemon->vba_power=0;
-	      GBS_DelTimer(&daemon->vbatmr);
-	      SetVibration(0);
-	    }
-	  }*/
 	  daemon->vibra->VibraNext();
 	  break;
 	case SMSYS_IPC_SOUND_PLAY:
@@ -273,16 +241,14 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	  break;
 	case SMSYS_IPC_SEND_LIST:
 	  {
-	    //GetCPUClock();
-	    CSM_RAM *tcsm=daemon->GetTopCSM();
 	    if(ipc->data)
 	    {
 	      daemon->sndlst->CatList((SNDLST *)ipc->data);
 	    }
-	    if(daemon->sndlst->SendStart() && tcsm->id) //send on bg
-	    {
-	      CSMtoTop(tcsm->id, -1);
-	    }
+            if(CFG_ENA_SNED_ON_BG)
+              daemon->sndlst->SendStart();
+            else
+              SUBPROC((void *)daemon->sndlst->SendOnTop, daemon->sndlst);
 	  }
 	  break;
 	default:
@@ -312,16 +278,11 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
   }
   if(msg->msg==MSG_CSM_DESTROYED)
   {
-    //if(daemon->sndlst->IsSendCSM((int)msg->data0))
-    //{
-    //}
-    //GetCPUClock();
-    CSM_RAM *tcsm=daemon->GetTopCSM();
     daemon->sndlst->SendEnd((int)msg->data0);
-    if(daemon->sndlst->SendStart() && tcsm->id) //send on bg
-    {
-      CSMtoTop(tcsm->id, -1);
-    }
+    if(CFG_ENA_SNED_ON_BG)
+      daemon->sndlst->SendStart();
+    else
+      SUBPROC((void *)daemon->sndlst->SendOnTop, daemon->sndlst);
     daemon->DelDlgCsmID((int)msg->data0);
   }
   if(daemon->PLAY_ID && (msg->msg==MSG_INCOMMING_CALL || IsCalling()))
@@ -345,13 +306,11 @@ void DaemonCSM::OnClose(CSM_RAM *data)
 {
   DAEMON_CSM *daemon_csm=(DAEMON_CSM *)data;
   daemon_csm->daemon->CloseAllDlgCSM();
-//  GBS_DelTimer(&daemon_csm->daemon->vbatmr);
   GBS_DelTimer(&daemon_csm->daemon->chktmr);
   delete LGP;
   delete IP;
   delete ADRLST;
   delete SMSDATA;
-  //delete daemon_csm->daemon->vibra;
   delete daemon_csm->daemon;
   extern void ElfKiller(void); //main.cpp
   SUBPROC((void *)ElfKiller);
@@ -408,11 +367,6 @@ int DaemonCSM::IsOnTopMyCSM(void)
 {
   int i;
   CSM_RAM *icsm;
-  /*
-  CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
-  if(!icsm) return 0;
-  while(icsm->next) icsm=(CSM_RAM *)icsm->next;
-  if(!icsm->id) return 0;*/
   if(!(icsm=this->GetTopCSM()) || !icsm->id)
     return 0;
   for(i=0;i<DLGCSM_ID_MAX;i++)
@@ -439,12 +393,6 @@ void DaemonCSM::AddIconBar(short* num)
   if(CFG_ENA_IB && SMSDATA->n_new) AddIconToIconBar(CFG_ICON_IB, num);
 }
 #endif
-/*
-void DaemonCSM::VibraProc(void)
-{
-  SendMyIpc(SMSYS_IPC_VIBRA_NEXT);
-}
-*/
 void DaemonCSM::PlayNotifySound(DaemonCSM *daemon, char *filepath)
 {
   PLAYFILE_OPT _sfo1;

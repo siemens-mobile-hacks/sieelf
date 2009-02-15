@@ -14,7 +14,8 @@ typedef struct _LGPACK
   const char *LGP_IN_R;
   const char *LGP_IN_N;
   const char *LGP_IN_A;
-  const char *LGP_OUT;
+  //const char *LGP_OUT;
+  const char *LGP_SENT;
   const char *LGP_DRAFT;
   const char *LGP_ALL;
   const char *LGP_OPTIONS;

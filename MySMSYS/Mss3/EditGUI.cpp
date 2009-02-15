@@ -85,7 +85,7 @@ void EditGUI::EditSendSMS(DLG_CSM *dlg_csm, WSHDR *text, const char *number)
   wstrcpy(ws, text);
   SendSMS(ws, number, MMI_CEPID, MSG_SMS_RX-1, 6);
   DoSendBackGround(dlg_csm);
-  if(CFG_ENA_SAVE_SENT) SMSDATA->SaveMss(text, number, NULL, TYPE_OUT, 2);
+  if(CFG_ENA_SAVE_SENT) SMSDATA->SaveMss(text, number, NULL, TYPE_SENT, 2);
 }
 
 #define USER_ITEM_N 5
