@@ -6,33 +6,37 @@
 #include "conf_loader.h"
 //注释这里编译成完全后台运行版本
 static char ANST[]="软件配置";//配置
-static char ANTO[]="关机-玫瑰v2.22";//关机
+static char ANTO[]="关机-玫瑰v2.27";//关机
 static char ANRT[]="重启手机";//重启
 static char ANLK[]="锁住键盘";//锁键
 static char TASK[]="任务菜单";//任务菜单
 static char ALRM[]="酷酷闹钟";//闹钟界面
-static const  IPC_REQ SCR_IPC={SCR_NAME, SCR_NAME, NULL};
+static const IPC_REQ SCR_IPC={SCR_NAME, SCR_NAME, NULL};
 static const int MINUSLL=-11;
-static int  TASK_ID   = 0;//记录图形界面
-static int  RING_ID   = 0;//记录闹钟响铃
-static int  DMON_ID   = 0;//记录内存运行
+static int   TASK_ID   = 0;//记录图形界面
+static int   RING_ID   = 0;//记录闹钟响铃
 static char  TASK_STATE;//记录运行界面类型,1为菜单,2为快捷菜单,3为闹钟界面
 static ubyte AUTO_EXIT = 0;//记录自动退出菜单状态
 static ubyte SUCC_HOOK = 0;//记录HOOK状态
-static int  mCount,mSelet,aCur;
-//定义数据缓存
-static char *BirsData;
+static int   mCount,mSelet,aCur;
+//定义数据缓存区
+static char *Gala;
 //配置菜单
-static char  PATHS[64];
-static char  TITLE[32];
+static char  PATHS[64],TITLE[32];
 static TSCR  SCR[MAX_SCR];
 static TAPP  APP[MAX_APP];
 static TLunar NLi;
 static GBSTMR tskTimer,scrTimer;
 static short OLScr;//屏幕亮灯原值
 static TTime t; 
-static TDate d; 
-static short week;
+static TDate d;
+static short week=0;
+static short SWYD=0;
+
+CSM_DESC  icsmd;
+//CSM_DESC* ocsmd;
+int  (*OICSMOnMessage)(CSM_RAM*,GBS_MSG*);
+void (*OICSMOnClose)(CSM_RAM*);
 //菜单标题信息
 HEADER_DESC MENU_HDR={0,0,0,0,NULL,(int)TITLE,LGP_NULL};
 //关闭有的菜单
@@ -173,157 +177,126 @@ static int BrowserFileMenu(){
 }
 //结束配置菜单
 //初始化生日显示数据
-static void SetIDS(TSCR *INFO,int ENA,int TYPE,int FONT,const char *PEN,const char *BUH){
-  INFO->ENA = ENA;
-  INFO->FNT = FontType(FONT);
-  INFO->STY = TYPE;    
+static void SetIDS(TSCR *INFO,int ENA,uint TYPE,int FONT,const char *PEN,const char *BUH){
+  INFO->Show  = ENA;
+  INFO->Size  = FontType(FONT);
+  INFO->Style = TYPE;    
   memcpy(INFO->PEN,PEN,4);
   memcpy(INFO->BUH,BUH,4);
 }
 static void InitShow(void){
- SetIDS(&SCR[ 0],TEMP_ENA,TEMP_XT,TEMP_FONT,TEMP_CS,TEMP_CB);
- SetIDS(&SCR[ 1],VOLT_ENA,VOLT_XT,VOLT_FONT,VOLT_CS,VOLT_CB);
- SetIDS(&SCR[ 2],RAMT_ENA,RAMT_XT,RAMT_FONT,RAMT_CS,RAMT_CB);
- SetIDS(&SCR[ 3],TEXT_ENA,TEXT_XT,TEXT_FONT,TEXT_CS,TEXT_CB);
- SetIDS(&SCR[ 4],NETI_ENA,NETI_XT,NETI_FONT,NETI_CS,NETI_CB);
- SetIDS(&SCR[ 5],ACCU_ENA,ACCU_XT,ACCU_FONT,ACCU_CS,ACCU_CB);
- SetIDS(&SCR[ 6],CPUI_ENA,CPUI_XT,CPUI_FONT,CPUI_CS,CPUI_CB);
- SetIDS(&SCR[ 7],GPRS_ENA,GPRS_XT,GPRS_FONT,GPRS_CS,GPRS_CB);
- SetIDS(&SCR[ 8],WEEK_ENA,WEEK_XT,WEEK_FONT,WEEK_CS,WEEK_CB);
- SetIDS(&SCR[ 9],DATE_ENA,DATE_XT,DATE_FONT,DATE_CS,DATE_CB);
- SetIDS(&SCR[10],TIME_ENA,TIME_XT,TIME_FONT,TIME_CS,TIME_CB);
- SetIDS(&SCR[11],CHSY_ENA,CHSY_XT,CHSY_FONT,CHSY_CS,CHSY_CB);
- SetIDS(&SCR[12],CHSD_ENA,CHSD_XT,CHSD_FONT,CHSD_CS,CHSD_CB);
- SetIDS(&SCR[13],NBIR_ENA,NBIR_XT,NBIR_FONT,NBIR_CS,NBIR_CB);
- SetIDS(&SCR[14],OBIR_ENA,OBIR_XT,OBIR_FONT,OBIR_CS,OBIR_CB);
+ SetIDS(&SCR[ 0],TEMP_ENA,TEMP_XT,TEMP_FT,TEMP_CS,TEMP_CB);
+ SetIDS(&SCR[ 1],VOLT_ENA,VOLT_XT,VOLT_FT,VOLT_CS,VOLT_CB);
+ SetIDS(&SCR[ 2],RAMT_ENA,RAMT_XT,RAMT_FT,RAMT_CS,RAMT_CB);
+ SetIDS(&SCR[ 3],TEXT_ENA,TEXT_XT,TEXT_FT,TEXT_CS,TEXT_CB);
+ SetIDS(&SCR[ 4],NETI_ENA,NETI_XT,NETI_FT,NETI_CS,NETI_CB);
+ SetIDS(&SCR[ 5],CPUI_ENA,CPUI_XT,CPUI_FT,CPUI_CS,CPUI_CB);
+ SetIDS(&SCR[ 6],GPRS_ENA,GPRS_XT,GPRS_FT,GPRS_CS,GPRS_CB);
+ SetIDS(&SCR[ 7],WEEK_ENA,WEEK_XT,WEEK_FT,WEEK_CS,WEEK_CB);
+ SetIDS(&SCR[ 8],DATE_ENA,DATE_XT,DATE_FT,DATE_CS,DATE_CB);
+ SetIDS(&SCR[ 9],TIME_ENA,TIME_XT,TIME_FT,TIME_CS,TIME_CB);
+ SetIDS(&SCR[10],CHSD_ENA,CHSD_XT,CHSD_FT,CHSD_CS,CHSD_CB);
+ SetIDS(&SCR[11],NBIR_ENA,NBIR_XT,NBIR_FT,NBIR_CS,NBIR_CB);
+ SetIDS(&SCR[12],OBIR_ENA,OBIR_XT,OBIR_FT,OBIR_CS,OBIR_CB);
 }
 #pragma inline  
-static int wsprintf_bytes(WSHDR *ws, uint bytes)
-{
+static int wsprintf_bytes(WSHDR *ws, uint bytes){
   if(bytes<=1024)
-    return(wsprintf(ws,BYTES_FMT,bytes,BYTES_SG));
+    return(wsprintf(ws,"%uB",bytes));
   else{
     bytes>>=10;
-    return(wsprintf(ws,BYTES_FMT,bytes,KBYTS_SG));
+    return(wsprintf(ws,"%uKB",bytes));
   }  
 }
 //显示内容配色和位置显示等
-static void FillScreen(TSCR *INFO,int x,int y)
-{  
-  int wd =PixlsWidth(INFO->WS,INFO->FNT);
-  int cd =(ScreenW()-wd-1)/2;
-  int rd = ScreenW()-wd-1;
-  switch(INFO->STY){
-    case 1:INFO->L=0;   INFO->R=wd;break;
-    case 2:INFO->L=cd;  INFO->R=cd+wd;break;
-    case 3:INFO->L=rd;  INFO->R=rd+wd;break;
-   default:INFO->L=x;   INFO->R=x+wd;break;
-  }
+static void FillScreen(TSCR *INFO,uint x,uint y){  
+  int wstyle =PixlsWidth(INFO->WS,INFO->Size);
+  switch(INFO->Style){
+    case 1:INFO->L=0;break;
+    case 2:INFO->L=(ScreenW()-wstyle-1)/2;break;
+    case 3:INFO->L=ScreenW()-wstyle-1;break;
+   default:INFO->L=x;break;
+  }  
   INFO->T=y;
-  INFO->B=y+GetFontYSIZE(INFO->FNT);
+  INFO->R=INFO->L+wstyle;  
+  INFO->B=INFO->T+GetFontYSIZE(INFO->Size);
 }
 
 
 //菜单功能
-static void APP_TRAF(char *Name, int i, int Type,char *Pic,char *File)
-{
+static void APP_TRAF(char *Name, int i, int Type,char *Pic,char *File){
   APP[i].Type = Type;
   APP[i].Pic  = Pic;
   APP[i].File = File;
   APP[i].Name = Name;
   if((File)&&(strlen(File)))mCount+=1;
 }
-//搜索自定义节日操作
-static int FindBirName(WSHDR *ws,const char *sub){  
-  char *p = strstr(BirsData,sub);
-  if(p){
-    char *pa = strchr(p,0x0A);
-    char TEMP[LEN];
-    strncpy(TEMP,p+7,pa-p-7);
-    wsprintf(ws,PFMT_STR,TEMP);
-    return 1;
-  }else{return 0;}
-}
 //对所有显示数据进行补始化
-static void InitScreen(void)
-{  
-  for(int i=0;i<MAX_SCR;i++){CutWSTR(SCR[i].WS,0);}
-  if(SCR[0].ENA){//显示温度信息 
+static void InitScreen(void){  
+  if(SCR[0].Show){//显示温度信息 
     int c=GetAkku(1,3)-0xAAA+15;
-    wsprintf(SCR[0].WS,TEMP_FMT,c/10,c%10);
+    wsprintf(SCR[0].WS,"%d.%d癈",c/10,c%10);
     FillScreen(&SCR[0],TEMP_X,TEMP_Y);
   }   
-  if(SCR[1].ENA){//显示电压信息
-    int c=GetAkku(0,9);
-    if(VOLT_TY==0)
-       wsprintf(SCR[1].WS,VOLT_FMT,c/1000,(c%1000)/10);
-    elif(VOLT_TY==1){
-      int ct=VOLT_TS-VOLT_TE;
-      c=(c-VOLT_TE)*100;
-      if(VOLT_TE>VOLT_TS)ct=VOLT_TE-VOLT_TS;
-      if(ct>0)c=(c/ct);else c=0;
-      if(c>100)c=100;elif(c<0)c=0;
-      wsprintf(SCR[1].WS,"%d%%",c);
+  if(SCR[1].Show){//显示电压信息    
+    if(VOLT_TY==0){
+      int c=GetAkku(0,9);
+      wsprintf(SCR[1].WS,"%d.%02dV",c/1000,(c%1000)/10);
+    }elif(VOLT_TY==1){
+      wsprintf(SCR[1].WS,"%3d%%",*RamCap());
     }
     FillScreen(&SCR[1],VOLT_X,VOLT_Y);
   }
-  if(SCR[2].ENA){//显示剩余信息    
-    int c=GetFreeRamAvail();
-    wsprintf_bytes(SCR[2].WS,c);
+  if(SCR[2].Show){//显示剩余信息  
+    wsprintf_bytes(SCR[2].WS,GetFreeRamAvail());
     FillScreen(&SCR[2],RAMT_X,RAMT_Y);  
   } 
-  if(SCR[3].ENA){//显示定义信息
-    wsprintf(SCR[3].WS,PFMT_STR,TEXT_FMT);
+  if(SCR[3].Show){//显示定义信息
+    wsprintf(SCR[3].WS,PFMT_STR,TEXT_CP);
     FillScreen(&SCR[3],TEXT_X,TEXT_Y);
   }         
-  if(SCR[4].ENA){//显示网络信息
+  if(SCR[4].Show){//显示网络信息
     RAMNET *net_data=RamNet();
     int c=(net_data->ch_number>=255)?'=':'-';
-    wsprintf(SCR[4].WS,NETI_FMT,c,net_data->power);
+    wsprintf(SCR[4].WS,"%c%ddB",c,net_data->power);
     FillScreen(&SCR[4],NETI_X,NETI_Y);
-  }     
-  if(SCR[5].ENA){//显示CAP信息
-    int c=*RamCap();
-    wsprintf(SCR[5].WS,ACCU_FMT,c);
-    FillScreen(&SCR[5],ACCU_X,ACCU_Y);
-  }    
-  if(SCR[6].ENA){//显示CPU使用率
-    int c=GetCPULoad();
-    if(c==100) c=99;
-    wsprintf(SCR[6].WS,CPUI_FMT,c);
-    FillScreen(&SCR[6],CPUI_X,CPUI_Y);
   }       
-  if(SCR[7].ENA){//显示GPRS流量
+  if(SCR[5].Show){//显示CPU使用率
+    wsprintf(SCR[5].WS,"%3d%%",GetCPULoad());
+    FillScreen(&SCR[5],CPUI_X,CPUI_Y);
+  }       
+  if(SCR[6].Show){//显示GPRS流量
     //RefreshGPRSTraffic();
-    int c=*GetGPRSTrafficPointer();
-    wsprintf_bytes(SCR[7].WS,c);
-    FillScreen(&SCR[7],GPRS_X,GPRS_Y);
+   // int c=*GetGPRSTrafficPointer();
+    wsprintf_bytes(SCR[6].WS,*GetGPRSTrafficPointer());
+    FillScreen(&SCR[6],GPRS_X,GPRS_Y);
   }
   //定义时间信息
   uword UniToday[8];  
-  if(SCR[8].ENA){//显示当前星期    
+  if(SCR[7].Show){//显示当前星期    
     if(WEEK_FMT <4){
       char cWeek[16];
       for(ubyte i=0;i<16;i++){cWeek[i]=cWeekName[WEEK_FMT][week][i];}
-      wsprintf(SCR[8].WS,cWeek,week);
+      wsprintf(SCR[7].WS,cWeek,week);
     }else if(WEEK_FMT==4){
-      wsprintf(SCR[8].WS,_percent_e,WeekHD,WeekID[week]);
+      wsprintf(SCR[7].WS,_percent_e,WeekHD,WeekID[week]);
     }else{
-      wsprintf(SCR[8].WS,PFMT_STR,WeekID[week]); 
+      wsprintf(SCR[7].WS,PFMT_STR,WeekID[week]); 
     }
-    FillScreen(&SCR[8],WEEK_X,WEEK_Y);
+    FillScreen(&SCR[7],WEEK_X,WEEK_Y);
   }
-  if(SCR[9].ENA){//显示当前日期
+  if(SCR[8].Show){//显示当前日期
     char cData[16]; 
     for(ubyte i=0;i<16;i++){cData[i]=cDataFmt[DATE_FMT][i]; }
     if(DATE_FMT < 4)
-      wsprintf(SCR[9].WS,cData,d.year,d.month,d.day);
+      wsprintf(SCR[8].WS,cData,d.year,d.month,d.day);
     else if(DATE_FMT <8)
-      wsprintf(SCR[9].WS,cData,d.month,d.day);
+      wsprintf(SCR[8].WS,cData,d.month,d.day);
     else {
       short inx=-1;
+      CutWSTR(SCR[8].WS,0);
       if(DATE_FMT == 8) {
-        wsprintf(SCR[9].WS,"%04d",d.year);
+        wsprintf(SCR[8].WS,"%04d",d.year);
         UniToday[++inx] = UniDate[0];
       }
       UniToday[++inx] = d.month/10 + 0x30;
@@ -332,47 +305,47 @@ static void InitScreen(void)
       UniToday[++inx] = d.day/10 + 0x30;
       UniToday[++inx] = d.day%10 + 0x30;
       UniToday[++inx] = UniDate[2];
-      BSTRAdd(SCR[9].WS->wsbody,UniToday, ++inx);     
+      BSTRAdd(SCR[8].WS->wsbody,UniToday, ++inx);     
     }
-    FillScreen(&SCR[9],DATE_X,DATE_Y);
+    FillScreen(&SCR[8],DATE_X,DATE_Y);
   }  
-  if(SCR[10].ENA){//显示当前时间
+  if(SCR[9].Show){//显示当前时间
     switch(TIME_FMT) {
-    case 0: wsprintf(SCR[10].WS,"%02d:%02d",t.hour,t.min); 
+    case 0: wsprintf(SCR[9].WS,"%02d:%02d",t.hour,t.min); 
       break;      
     case 1:
       if(t.hour <= 12) {
-        wsprintf(SCR[10].WS,"AM %02d:%02d",t.hour,t.min);
+        wsprintf(SCR[9].WS,"AM %02d:%02d",t.hour,t.min);
       } else {
         t.hour = t.hour - 12;
-        wsprintf(SCR[10].WS,"PM %02d:%02d",t.hour,t.min);
+        wsprintf(SCR[9].WS,"PM %02d:%02d",t.hour,t.min);
       } 
       break;      
     case 2:
       if(t.hour > 12) t.hour = t.hour - 12;
-      wsprintf(SCR[10].WS,"%02d:%02d",t.hour,t.min);
+      wsprintf(SCR[9].WS,"%02d:%02d",t.hour,t.min);
       break;      
     case 3: 
-      wsprintf(SCR[10].WS,"%02d:%02d:%02d",t.hour,t.min,t.sec); 
+      wsprintf(SCR[9].WS,"%02d:%02d:%02d",t.hour,t.min,t.sec); 
       break;      
     case 4:
       if(t.hour <= 12){
-        wsprintf(SCR[10].WS,"AM %02d:%02d:%02d",t.hour,t.min,t.sec);
+        wsprintf(SCR[9].WS,"AM %02d:%02d:%02d",t.hour,t.min,t.sec);
       } else {
         t.hour = t.hour - 12;
-        wsprintf(SCR[10].WS,"PM %02d:%02d:%02d",t.hour,t.min,t.sec);
+        wsprintf(SCR[9].WS,"PM %02d:%02d:%02d",t.hour,t.min,t.sec);
       }
       break;
     case 5:
-      wsprintf(SCR[10].WS,"%02d",t.hour);
+      wsprintf(SCR[9].WS,"%02d",t.hour);
       UniToday[0] = UniTime[0];  
       UniToday[1] = t.min/10 + 0x30;
       UniToday[2] = t.min%10 + 0x30;
       UniToday[3] = UniTime[1];
-      BSTRAdd(SCR[10].WS->wsbody,UniToday, 4);
+      BSTRAdd(SCR[9].WS->wsbody,UniToday, 4);
       break;
     case 6:
-      wsprintf(SCR[10].WS,"%02d",t.hour);
+      wsprintf(SCR[9].WS,"%02d",t.hour);
       UniToday[0] = UniTime[0];   
       UniToday[1] = t.min/10 + 0x30;
       UniToday[2] = t.min%10 + 0x30;
@@ -380,51 +353,55 @@ static void InitScreen(void)
       UniToday[4] = t.sec/10 + 0x30;
       UniToday[5] = t.sec%10 + 0x30;
       UniToday[6] = UniTime[2];
-      BSTRAdd(SCR[10].WS->wsbody,UniToday, 7);
+      BSTRAdd(SCR[9].WS->wsbody,UniToday, 7);
       break;
     default: break;      
     }   
-    FillScreen(&SCR[10],TIME_X,TIME_Y);
+    FillScreen(&SCR[9],TIME_X,TIME_Y);
   }  
-  if(SCR[11].ENA){//显示农历年份
+  if(SCR[10].Show){//显示农历信息
+    CutWSTR(SCR[10].WS,0);
     GetDayOf(d,&NLi);
-    memcpy(SCR[11].WS->wsbody,NLi.year->wsbody,16);
-    FillScreen(&SCR[11],CHSY_X,CHSY_Y);
-  } 
-  if(SCR[12].ENA){//显示农历日期
-    uword lunar = LunarHolId(d);
-    if(lunar)
-      LunarHolDay(SCR[12].WS,lunar);
-    else{
-      GetDayOf(d,&NLi);
-      memcpy(SCR[12].WS->wsbody,NLi.mday->wsbody,16);
+    if((SWYD>=0)&&(SWYD<3)){//显示农历日期 
+      memcpy(SCR[10].WS->wsbody,NLi.year->wsbody,16);
+    }elif((SWYD>=3)&&(SWYD<6)){//显示农历年份     
+      memcpy(SCR[10].WS->wsbody,NLi.mday->wsbody,16); 
+    }else{//显示农历节气
+      uword lunar;
+      if(lunar=LunarHolId(d))
+         LunarHolDay(SCR[10].WS,lunar);
+      else
+         SWYD=9;
     }
-    FillScreen(&SCR[12],CHSD_X,CHSD_Y);
+    if(SWYD++>=9)SWYD=0;
+    FillScreen(&SCR[10],CHSD_X,CHSD_Y);
   }
-  if(NBIR_ENA){//显示公历节日
-    char nDay[8];  
+  if(SCR[11].Show){//显示公历节日
+    char nDay[8],nRes[LEN];  
     sprintf(nDay,"N%02d.%02d:",d.month,d.day);
-    SCR[13].ENA=FindBirName(SCR[13].WS,nDay);
-    FillScreen(&SCR[13],NBIR_X,NBIR_Y);
-  }  
-  if(OBIR_ENA){//显示农历节日      
-    char oDay[8];   
+    MidStr(Gala,nDay,nRes);
+    wsprintf(SCR[11].WS,PFMT_STR,nRes);
+    FillScreen(&SCR[11],NBIR_X,NBIR_Y);
+  }
+  if(SCR[12].Show){//显示农历节日      
+    char oDay[8],oRes[LEN];   
     TDate o=GetOldDay(d);
     sprintf(oDay,"P%02d.%02d:",o.month,o.day);
-    SCR[14].ENA = FindBirName(SCR[14].WS,oDay);
-    FillScreen(&SCR[14],OBIR_X,OBIR_Y);
+    MidStr(Gala,oDay,oRes);
+    wsprintf(SCR[12].WS,PFMT_STR,oRes);
+    FillScreen(&SCR[12],OBIR_X,OBIR_Y);
   }
 }
 
 //在屏幕上画主菜单图标位置和文本信息
-static void DrawPanel(void){ 
-  GBS_StartTimerProc(&tskTimer,10,DrawPanel); 
+static void DrawGUI(void){ 
+  GBS_StartTimerProc(&tskTimer,10,DrawGUI); 
+  int fSize,TextH=0;
   WSHDR *MWS=AllocWS(50);
-  void *TskCanvas=BuildCanvas();//CreateCanvas();
-  if(TskCanvas){
-   //--------文本区域--------
-   int fSize = FontType(ATEXT_FONT);
-   int TextH = 0;
+  void *TskCanvas=BuildCanvas();
+  if((SUCC_HOOK)&&(TASK_ENA)&&(TASK_STATE==SCR_TASKS))
+  {//开始菜单代码--------文本区域--------
+   fSize = FontType(ATEXT_FT);
    if(DEST_ENA){
     TextH = GetFontYSIZE(fSize)+4;//文本高度
     if(TextH < SoftkeyH()) TextH = SoftkeyH(); 
@@ -459,68 +436,63 @@ static void DrawPanel(void){
     if(++z>((ScreenW())/(n))-1) break;
    }  
    DrawRectangle(fRc.l,fRc.t,fRc.r,fRc.b,0,cfgBBDCol,TRAN_CBK);
+   //自动关闭菜单
+   if((++AUTO_EXIT>=AUTO_CLOSE*TMR_SECOND/5)&&(TASK_ID)) CloseTask();
+   //结束菜单
   }
-  //自动关闭菜单
-  if((++AUTO_EXIT>=AUTO_CLOSE*TMR_SECOND/5)&&(TASK_ID)) CloseTask();
-  FreeWS(MWS);
-}
-//闹钟界面
-static void DrawAlarm(void){     
-  GBS_StartTimerProc(&tskTimer,10,DrawAlarm); 
-  WSHDR *AWS=AllocWS(50);
-  void *TskCanvas=BuildCanvas();//CreateCanvas();
-  if(TskCanvas){   
+  else if((ALRM_ENA)&&(TASK_STATE==SCR_ALARM))
+  {//闹钟界面 
    TRect Alarm={0,YDISP,ScreenW()-1,ScreenH()-1};
    DrawCanvas(TskCanvas, Alarm.l,Alarm.t,Alarm.r,Alarm.b, 1);
    char PIC[64];
    sprintf(PIC,ALRM_PIC,aCur);
-   wsprintf(AWS,PFMT_STR,ALRM); 
-   int fSize=FontType(ALRM_FONT);
-   int wsh=GetFontYSIZE(fSize)+4;
-   int wso=(Alarm.r-Alarm.l-PixlsWidth(AWS,fSize))/2;
+   wsprintf(MWS,PFMT_STR,ALRM); 
+   fSize=FontType(ALRM_FT);
+   TextH=GetFontYSIZE(fSize)+4;
+   int wso=(Alarm.r-Alarm.l-PixlsWidth(MWS,fSize))/2;
    int pio=(Alarm.r-Alarm.l-GetImgWidth((int)PIC))/2;
    int pih=GetImgHeight((int)PIC);     
-   TRect Altxt={Alarm.l,Alarm.t,Alarm.r,Alarm.t+wsh}; 
+   TRect Altxt={Alarm.l,Alarm.t,Alarm.r,Alarm.t+TextH}; 
    TRect Alpic={Alarm.l+pio,Altxt.b,Alarm.l-pio,Alarm.b+pih};
    DrawRectangle(Alarm.l, Alarm.t, Alarm.r, Alarm.b,0, ALRM_CBK, ALRM_CBK);  
   //标题     
-   DrawString(AWS, Altxt.l+wso, Altxt.t+2, Altxt.r-wso, Altxt.b-2,fSize,1,ALRM_CTX, TRAN_CBK); 
+   DrawString(MWS, Altxt.l+wso, Altxt.t+2, Altxt.r-wso, Altxt.b-2,fSize,1,ALRM_CTX, TRAN_CBK); 
   //图标
    DrawImg(Alpic.l,Alpic.t,(uint)PIC);
   //定义
-   wsprintf(AWS,PFMT_STR,WeekGB[week]);
-   wso=(Alarm.r-Alarm.l-PixlsWidth(AWS,fSize))/2;
-   TRect Alwek={Alarm.l+wso,Altxt.b+pih,Alarm.r-wso,Altxt.b+pih+wsh}; 
-   DrawString(AWS, Alwek.l, Alwek.t+2,Alwek.r,Alwek.b-2,fSize,1,ALRM_CTX, TRAN_CBK);
+   wsprintf(MWS,PFMT_STR,WeekGB[week]);
+   wso=(Alarm.r-Alarm.l-PixlsWidth(MWS,fSize))/2;
+   TRect Alwek={Alarm.l+wso,Altxt.b+pih,Alarm.r-wso,Altxt.b+pih+TextH}; 
+   DrawString(MWS, Alwek.l, Alwek.t+2,Alwek.r,Alwek.b-2,fSize,1,ALRM_CTX, TRAN_CBK);
   //时间
-   wsprintf(AWS,"%02d:%02d:%02d",t.hour,t.min,t.sec); 
-   wso=(Alarm.r-Alarm.l-PixlsWidth(AWS,fSize))/2;
-   TRect Altim={Alarm.l+wso,Alwek.b,Alarm.r-wso,Alwek.b+wsh}; 
-   DrawString(AWS, Altim.l, Altim.t+2,Altim.r,Altim.b-2,fSize,1,ALRM_CTX, TRAN_CBK);
+   wsprintf(MWS,"%02d:%02d:%02d",t.hour,t.min,t.sec); 
+   wso=(Alarm.r-Alarm.l-PixlsWidth(MWS,fSize))/2;
+   TRect Altim={Alarm.l+wso,Alwek.b,Alarm.r-wso,Alwek.b+TextH}; 
+   DrawString(MWS, Altim.l, Altim.t+2,Altim.r,Altim.b-2,fSize,1,ALRM_CTX, TRAN_CBK);
   //显示日期
-   wsprintf(AWS,"%04d%t%02d%t%02d%t",d.year,"年",d.month,"月",d.day,"日");
-   wso=(Alarm.r-Alarm.l-PixlsWidth(AWS,fSize))/2;
-   TRect Aldat={Alarm.l+wso,Altim.b,Alarm.r-wso,Altim.b+wsh}; 
-   DrawString(AWS, Aldat.l, Aldat.t+2,Aldat.r,Aldat.b-2,fSize,1,ALRM_CTX, TRAN_CBK);
+   wsprintf(MWS,"%04d%t%02d%t%02d%t",d.year,"年",d.month,"月",d.day,"日");
+   wso=(Alarm.r-Alarm.l-PixlsWidth(MWS,fSize))/2;
+   TRect Aldat={Alarm.l+wso,Altim.b,Alarm.r-wso,Altim.b+TextH}; 
+   DrawString(MWS, Aldat.l, Aldat.t+2,Aldat.r,Aldat.b-2,fSize,1,ALRM_CTX, TRAN_CBK);
    //循环图片
    if(aCur%2){
      SetIllumination(0,1,100,0);
      if(ALRV_ENA)SetVibration(ALRM_VIB);
    }else{
-     SetIllumination(0,1,5,0);
+     if(ALIU_ENA)
+        SetIllumination(0,1,5,0);
+     else
+        SetIllumination(0,1,100,0);
      if(ALRV_ENA)SetVibration(0);
    }
    if(aCur>=ALRM_COT)aCur=0;
    aCur++;
-  }
-  FreeWS(AWS);
+  }//结束闹钟代码
+  FreeWS(MWS);
 }
 //重画响应事件
 static void TaskRedraw(GUI *gui){
-  if(SUCC_HOOK&&TASK_ENA&&(TASK_STATE==SCR_TASKS))
-     DrawPanel();
-  else if((ALRM_ENA)&&(TASK_STATE==SCR_ALARM))
-     DrawAlarm();
+     DrawGUI();
 }
 //创建响应事件
 static void TaskCreate(GUI *gui, void *(*malloc_adr)(int)){
@@ -541,7 +513,7 @@ static void TaskFocus(GUI *gui, void *(*malloc_adr)(int), void(*mfree_adr)(void 
   gui->state=2;
 }
 //取消聚焦响应事件
-static void TaskUnfocus(GUI *gui, void(*mfree_adr)(void *)){
+static void TaskUnfus(GUI *gui, void(*mfree_adr)(void *)){
   if(gui->state!=2) return;
   gui->state=1; 
   CloseTask();
@@ -577,7 +549,7 @@ static const void * const TaskMethods[11]={
  (void *)TaskCreate,	//创建
  (void *)TaskClose,	//关闭
  (void *)TaskFocus,	//聚焦
- (void *)TaskUnfocus,	//取消聚焦
+ (void *)TaskUnfus,	//取消聚焦
  (void *)TaskKeypress,	//按键操作
   0,
  (void *)kill_data,
@@ -649,7 +621,7 @@ static void BuildGUI(short MODE,char *NAME){
   TASK_STATE=MODE;
   static char DUMMY[sizeof(TASK_GUI)];
   wsprintf((WSHDR *)(&TASK_CSM.NAME),PFMT_STR,NAME);
-  TASK_ID=CreateCSM(&TASK_CSM.CSM,DUMMY,2);  
+  TASK_ID=CreateCSM(&TASK_CSM.CSM,DUMMY,0);  
   UnlockSched();
 }
 //执行指定目录
@@ -707,37 +679,50 @@ static void InitMenu(void){
 //搜索自定义闹钟操作
 static int ExcuteRing(const char *sub,int Week){ 
   char TEMP[LEN];
-  if(FindSub(BirsData,sub,TEMP,7)){
+  if(MidStr(Gala,sub,TEMP)){
     if(strlen(TEMP)>=7){
      if(TEMP[Week]=='1'){
+      KbdUnlock();
       BuildGUI(SCR_ALARM,ALRM);
-      return(PlayMusic(ALRM_FILE, ALRM_VOLUME,ALRM_NUM));
+      return(PlayMusic(ALRM_FILE, ALRM_VOL,ALRM_NUM));
      }
     }
   }
   return(0);
 }
 //挂勾系统时间刷新操作
-static void TimerProc(void)
-{
-  InitScreen();  
+static void TimerProc(void){
+  InitScreen();//自定义功能显示  
   GBS_SendMessage(MMI_CEPID,MSG_IPC,UPDATE_STAT,&SCR_IPC);  
 }
-static int DaemonOnMessage(CSM_RAM* data,GBS_MSG* msg){   
+static int DaemonOnMessage(CSM_RAM* data,GBS_MSG* msg){  
+  //获取系统时间和日期,星期
+  GetDateTime(&d,&t);
+  week = GetWeek(&d);  
   // 更新配置
   if(msg->msg == MSG_RECONFIGURE_REQ){
     extern const char *successed_config_filename;
     if(strcmp_nocase(successed_config_filename,(char *)msg->data0)==0){                
       InitConfig();
       //重新加载节日文件数据
-      if(FreeFileBuf(BirsData)) BirsData=LoadFileBuf(BIRS_FILE); 
+      if(FreeFileBuf(Gala)) Gala=LoadFileBuf(BIRS_FILE); 
       InitMenu();
       InitShow();
       ShowMSG(1,(int)"参数已更新!");  
     }
-  } 
-  GetDateTime(&d,&t);
-  week = GetWeek(&d);
+  }   
+  //调用旧的消息事件
+  int Result=OICSMOnMessage(data,msg);
+  //自动关机 
+   if((SHUT_ENA)&&(SHUT_TIME.hour==t.hour)&&(SHUT_TIME.min==t.min)&&(t.sec<3)){
+     SwitchPhoneOff();//自动关机后,会不能释放内存
+     return(Result);
+   }
+  //自动重启
+   if((ROOT_ENA)&&(ROOT_TIME.hour==t.hour)&&(ROOT_TIME.min==t.min)&&(t.sec<3)){
+     RebootPhone();
+     return(Result);
+   }
   //自定义手机启动管理
   if((TASK_ENA)&&(!SUCC_HOOK)){      
       AddKeybMsgHook((void *)DaemonKeyHook);
@@ -760,33 +745,32 @@ static int DaemonOnMessage(CSM_RAM* data,GBS_MSG* msg){
         }
       }
     }
-   }
-  //屏显功能
-  uword ScrShow;
+  }     
+  //屏显功能  
+  static short ScrShow=0;
   switch(INFO_ENA){
    case 0: ScrShow = !IsUnlocked();  break;
    case 1: ScrShow =  IsUnlocked();  break;
    case 2: ScrShow = 1;  break;
    default:ScrShow = 0;  break;
-  }
+  }      
   CSM_RAM *icsm;
   if(icsm=FindCSMbyID(CSM_root()->idle_id)){
     if(IsGuiOnTop(idlegui_id(icsm))&&ScrShow){
       GUI *igui=GetTopGUI();
       if(igui){      
+       //InitScreen();//自定义功能显示
        #ifdef ELKA
         {void *ScrCanvas = BuildCanvas();
        #else
         void *idata  = GetDataOfItemByID(igui,2);
         if(idata)
         {void *ScrCanvas =((void **)idata)[DISPLACE_OF_IDLECANVAS/4];         
-       #endif
-        InitScreen();//自定义功能显示
+       #endif       
         for(int i=0; i<(sizeof(SCR)/sizeof(TSCR)); i++){
-        //for(int i=0; i<MAX_SCR; i++){
-        if(SCR[i].ENA){
+        if(SCR[i].Show){
           DrawCanvas(ScrCanvas,SCR[i].L,SCR[i].T,SCR[i].R,SCR[i].B,1);
-          DrawString(SCR[i].WS,SCR[i].L,SCR[i].T,SCR[i].R,SCR[i].B,SCR[i].FNT,32,SCR[i].PEN,SCR[i].BUH);
+          DrawString(SCR[i].WS,SCR[i].L,SCR[i].T,SCR[i].R,SCR[i].B,SCR[i].Size,32,SCR[i].PEN,SCR[i].BUH);
          }          
         }
        }  
@@ -794,7 +778,6 @@ static int DaemonOnMessage(CSM_RAM* data,GBS_MSG* msg){
     }
   }
   //获取日期信息    
-  //if((ALRM_ENA)&&(!RING_ID)&&(!IsCalling())&&(GetPlayStatus()!=2)&&(t.sec<3)){//闹钟
   if((ALRM_ENA)&&(!RING_ID)&&(!IsCalling())&&(t.sec<3)){//闹钟
     char cTime[12];
     sprintf(cTime,"R%02d:%02d.",t.hour,t.min);
@@ -803,81 +786,50 @@ static int DaemonOnMessage(CSM_RAM* data,GBS_MSG* msg){
   if((msg->msg==MSG_PLAYFILE_REPORT)&&(ALRM_ENA)&&(RING_ID)){//停止铃声
     GBS_PSOUND_MSG *pmsg=(GBS_PSOUND_MSG *)msg;
     if(pmsg->handler==RING_ID){
-      if(pmsg->cmd==M_SAE_PLAYBACK_ERROR || pmsg->cmd==M_SAE_PLAYBACK_DONE){  
+      if(pmsg->cmd==M_SAE_PLAYBACK_ERROR || pmsg->cmd==M_SAE_PLAYBACK_DONE){ 
+       KbdLock();
        CloseTask();
       }
     }  
-   }
-  //自动关机 
-   if((SHUT_ENA)&&(SHUT_TIME.hour==t.hour)&&(SHUT_TIME.min==t.min)&&(t.sec<3)){
-     CloseCSM(DMON_ID);
-     SwitchPhoneOff();
-   }
-  //自动重启
-   if((ROOT_ENA)&&(ROOT_TIME.hour==t.hour)&&(ROOT_TIME.min==t.min)&&(t.sec<3)){
-     CloseCSM(DMON_ID);
-     RebootPhone();
-   }
- return(1);
+  }  
+  return(Result);
 }  
 
-static void DaemonOnCreate(CSM_RAM *data){
+static void DaemonInit(void){
   for(int i=0;i<MAX_SCR; i++) SCR[i].WS=AllocWS(50);
-  BirsData=LoadFileBuf(BIRS_FILE);
+  Gala=LoadFileBuf(BIRS_FILE);
   NLi.year=AllocWS(50);
   NLi.mday=AllocWS(50);
   InitMenu();
   InitShow();
-  if(INFO_ENA) GBS_SendMessage(MMI_CEPID,MSG_IPC,UPDATE_STAT,&SCR_IPC);
+  GBS_SendMessage(MMI_CEPID,MSG_IPC,UPDATE_STAT,&SCR_IPC);
 }
-static void DaemonKiller(void){  
-  extern void *ELF_BEGIN;   
-  if(SUCC_HOOK) RemoveKeybMsgHook((void *)DaemonKeyHook);   
-  kill_data(&ELF_BEGIN,(void(*)(void *))mfree_adr());
+
+static void Destructor(void){  
+  extern void *ELF_BEGIN;
+  kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
 }
-static void DaemonOnClose(CSM_RAM *csm){    
+static void DaemonOnClose(CSM_RAM *data){ 
+  if(SUCC_HOOK) RemoveKeybMsgHook((void *)DaemonKeyHook);
   if(IsTimerProc(&scrTimer))GBS_DelTimer(&scrTimer);
-  for(int i=0;i<MAX_SCR; i++) FreeWS(SCR[i].WS);
-  FreeFileBuf(BirsData);
+  for(int i=0;i!=MAX_SCR; i++) FreeWS(SCR[i].WS);
+  FreeFileBuf(Gala);
   FreeWS(NLi.year);
   FreeWS(NLi.mday);
-  SUBPROC((void *)DaemonKiller);  
-}
-static uword DaemonBody[LEN];
-static const struct{
-  CSM_DESC CSM;
-  WSHDR NAME;
-}MAIN_CSM={{
-  DaemonOnMessage,
-  DaemonOnCreate,
-#ifdef NEWSGOLD
-  0,0,0,0,
-#endif
-  DaemonOnClose,
-  sizeof(DAEMON_CSM),
-  1,
-  &MINUSLL},{
-  DaemonBody,
-  NAMECSM_MAGIC1,
-  NAMECSM_MAGIC2,
-  0x0,
-  139}
-};
-
-static void UpdateCSMName(void){ 
-  wsprintf((WSHDR *)(&MAIN_CSM.NAME),PFMT_STR,(char *)(strrchr(ANTO,'-')+1));
+  SUBPROC((void *)Destructor);  
 }
 
-int main()
-{
+int main(){
   InitConfig();  
   LockSched();    
-  UpdateCSMName();   
-  char DUMMY[sizeof(DAEMON_CSM)];    
-  CSM_RAM *save_cmpc=CSM_root()->csm_q->current_msg_processing_csm;
-  CSM_root()->csm_q->current_msg_processing_csm=CSM_root()->csm_q->csm.first;  
-  DMON_ID=CreateCSM(&MAIN_CSM.CSM,DUMMY,0);
-  CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
+  CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
+  memcpy(&icsmd,icsm->constr,sizeof(icsmd));
+  OICSMOnClose   = icsmd.onClose;
+  OICSMOnMessage = icsmd.onMessage;
+  icsmd.onClose  = DaemonOnClose;
+  icsmd.onMessage= DaemonOnMessage;
+  icsm->constr   = &icsmd;
+  DaemonInit();
   if(TASK_ENA){      
      AddKeybMsgHook((void *)DaemonKeyHook);   
      SUCC_HOOK = 1;
