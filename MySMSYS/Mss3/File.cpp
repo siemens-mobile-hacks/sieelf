@@ -71,3 +71,43 @@ int CFile::FMove(const char * SourceFileName, const char * DestFileName)
 }
 
 
+#define MAX_CNT 40
+// -1:err, -2: >MAX_CNT
+int CFile::GetFileCountOfDir(const char *dirpath)
+{
+  char folder[128];
+  DIR_ENTRY de;
+  int len;
+  int c;
+  int cnt=0;
+  if(!dirpath
+    || !IsDir(dirpath)
+    )
+    return -1;
+  strcpy(folder, dirpath);
+  if((len=strlen(folder))<3)
+    return -1;
+  c=folder[len-1];
+  if(c!='\\'
+    && c!='/'
+    )
+  {
+    folder[len++]='\\';
+    folder[len]='\0';
+  }
+  strcat(folder, "*.*");
+  if(FindFirstFile(&de, folder))
+  {
+    do
+    {
+      if(cnt>=MAX_CNT)
+      {
+	cnt=-2;
+	break;
+      }
+      cnt++;
+    }while(FindNextFile(&de));
+  }
+  FindClose(&de);
+  return cnt;
+}

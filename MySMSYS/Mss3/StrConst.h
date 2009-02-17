@@ -1,7 +1,7 @@
 #ifndef _STRCONST_H_
 #define _STRCONST_H_
 
-#define CP_RIGHT "My SMS System v3 C++\n(c)BingK\n(r)titron,Rst7"
+#define CP_RIGHT "My SMS System C++\nv3 Beta\n(c)BingK\n(r)titron,Rst7"
 
 extern const char IPC_NAME[];
 extern const char FLDR_IN[];

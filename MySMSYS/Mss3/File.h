@@ -5,6 +5,7 @@ class CFile
 private:
   unsigned int ferr;
 public:
+	int GetFileCountOfDir(const char *dirpath);
   int FOpen(const char * cFileName, unsigned int iFileFlags, unsigned int iFileMode);
   int FRead(int FileHandler, void *cBuffer, int iByteCount);
   int FWrite(int FileHandler, void const * cBuffer, int iByteCount);

@@ -163,6 +163,14 @@ void EditGUI::EdOpUserItem(USR_MENU_ITEM *item)
 	  }
 	  GeneralFunc_flag1(edg->gui_id, 1);
 	}*/
+	EDITCONTROL ec;
+	EditGUI *edg=(EditGUI *)EDIT_GetUserPointer(item->user_pointer);
+	ExtractEditControl(item->user_pointer, edg->n_focus, &ec);
+	if(edg && ec.pWS->wsbody[0])
+	{
+	  if(edg->SaveDraft(ec.pWS))
+	    GeneralFunc_flag1(edg->gui_id, 1);
+	}
       }
       break;
       //save draft
@@ -1020,4 +1028,26 @@ void EditGUI::EditSendSMS(WSHDR *text)
   SendMyIpc(SMSYS_IPC_SEND_LIST, sl->sltop);
   sl->sltop=NULL;
   delete sl;
+}
+
+
+int EditGUI::SaveDraft(WSHDR *text)
+{
+  int res=0;
+  NLST *nl;
+  if(!text
+    || !text->wsbody[0]
+    || !(nl=this->nlst->nltop)
+    )
+    return 0;
+  while(nl)
+  {
+    if(
+      strlen(nl->number)
+      && SMSDATA->SaveMss(text, nl->number, NULL, TYPE_DRAFT, 2)
+      )
+      res++;
+    nl=nl->next;
+  }
+  return res;
 }

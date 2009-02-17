@@ -9,6 +9,7 @@
 class EditGUI
 {
 public:
+	int SaveDraft(WSHDR *text);
 	void EditSendSMS(WSHDR *text);
 	int InsertNumber(void *data, WSHDR *number);
 	int SetNumber(void *data, WSHDR *number);
