@@ -58,6 +58,9 @@
 #define	KEY0_FUNC1		0xA05B2F5E+1 //0键跳转位置的一个函数,返回时要先执行这个函数
 #define	KEY0_BACK		0xA05B4374+1 //0键跳转返回地址
 #define	KEY0_GOTO_IME		0xA05B4384+1 //0键跳转向常规输入
+
+//v1.4
+#define	GET_PINYIN_CUR		0xA0A30DCC+1 //获得光标所在拼音
 #endif
 
 #ifdef	S68Csw51

@@ -1,8 +1,4 @@
-
 #include "addr.h"
-
-#define V_1_2_A //编译1.2a
-//#define	V_1_3  //编译1.3
 
 	RSEG	IME_HOOK
 	CODE16
@@ -48,6 +44,15 @@ SEND_LONGPRESS_MSG
 	BLX	R7
 	POP	{R0-R7, PC}
 
+NULL_PINYIN_CHK
+	PUSH	{R0, LR}
+	LDR	R0, =GET_PINYIN_CUR
+	BLX	R0
+	CMP	R0, #0
+	POP	{R0, R3}
+	BEQ	EX_BACK
+	BX	R3
+	
 IME_
 	MOV	R0, #1
 	STR	R0, [SP, #0x84]
@@ -56,10 +61,11 @@ IME_
 	LDRSH	R0, [R0, R3]
 	CMP	R0, #0			//非功能键短按输入为0
 	BEQ	IME_START
-#ifdef	V_1_3
-	CMP	R0, #0x15
-	BEQ	DO_KEY_JING		//#键
-#endif
+	//1.4
+	//right key
+	CMP	R0, #0x27
+	BEQ	FIX_RIGHT_KEY
+	//
 EX_BACK
 	LDR	R3, =DO_IME_BACK
 	BX	R3
@@ -79,23 +85,24 @@ IME_START
 	B	EX_BACK
 
 DO_KEY_K0
-	CMP	R7, #1
-	BEQ	DO_K0
 	CMP	R7, #2
+	BEQ	DO_K0
+	CMP	R7, #1
 	BNE	DO_NOTHING_ALL
+	//1.4
+	BL	NULL_PINYIN_CHK
+	//
 DO_K0
-#ifdef	V_1_2_A //v1.2a
 	LDR	R3, =DO_DOWN
 	BX	R3
-#else
-	LDR	R3, =DO_RIGHT
-	BX	R3
-#endif
+	
 	
 DO_KEY_K5
 	CMP	R7, #1
 	BNE	EX_BACK
-	
+	//1.4
+	BL	NULL_PINYIN_CHK
+	//
 	LDR	R0, [SP,#0xA0]
 	LDR	R3, _JAVA_EDIT_KOP
 	CMP	R0, R3			//判断是否在JAVA中
@@ -111,52 +118,29 @@ DO_NOTHING_ALL
 	LDR	R3, =DO_NOTHING
 	BX	R3
 
-#ifdef	V_1_3 //v1.3
-DO_KEY_JING
-	CMP	R7, #1
-	BEQ	DO_JING
+DO_KEY_K9
 	CMP	R7, #2
+	BEQ	DO_K9
+	CMP	R7, #1
 	BNE	EX_BACK
-DO_JING
-	LDR	R3, =DO_DOWN
+	//1.4
+	BL	NULL_PINYIN_CHK
+	//
+DO_K9
+	LDR	R3, =DO_UP
 	BX	R3
 	
-DO_KEY_K9
-	CMP	R7, #1
-	BEQ	DO_K9
-	CMP	R7, #2
-	BNE	EX_BACK
-DO_K9
-	LDR	R3, =DO_UP
-	BX	R3
-#else
-DO_KEY_K9
-	CMP	R7, #1
-	BEQ	DO_K9
-	CMP	R7, #2
-	BNE	EX_BACK
-DO_K9
-#ifdef	V_1_2_A //v1.2a
-	LDR	R3, =DO_UP
-	BX	R3
-#else
-	LDR	R3, =DO_DOWN
-	BX	R3
-#endif
-#endif
 DO_KEY_XING
-	CMP	R7, #1
-	BEQ	DO_KXING
 	CMP	R7, #2
+	BEQ	DO_KXING
+	CMP	R7, #1
 	BNE	EX_BACK
+	//1.4
+	BL	NULL_PINYIN_CHK
+	//
 DO_KXING
-#ifdef	V_1_2_A
 	LDR	R3, =DO_RIGHT
 	BX	R3
-#else
-	LDR	R3, =DO_LEFT
-	BX	R3
-#endif
 
 DO_KEY_K1
 	CMP	R7, #1
@@ -175,6 +159,19 @@ IME_KEY1_
 	BHI	DO_NOTHING_ALL
 	LDR	R0, =DO_KEY1_BACK
 	BX	R0
+
+FIX_RIGHT_KEY
+	CMP	R7, #1
+	BNE	EX_BACK
+	//1.4
+	PUSH	{R0}
+	LDR	R0, =GET_PINYIN_CUR
+	BLX	R0
+	CMP	R0, #0
+	POP	{R0}
+	BEQ	DO_NOTHING_ALL
+	B	EX_BACK
+	//
 	
 DO_K1_PP
 	LDR	R0, [SP,#0xA0]

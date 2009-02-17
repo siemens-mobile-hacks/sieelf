@@ -3311,6 +3311,17 @@
   </file>
   <file>
     <name>$PROJ_DIR$\IME_PINYIN.asm</name>
+    <excluded>
+      <configuration>S7Csw47</configuration>
+    </excluded>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\IME_PINYIN_1_4.asm</name>
+    <excluded>
+      <configuration>E71Csw41</configuration>
+      <configuration>ELC1sw41</configuration>
+      <configuration>S68Csw51</configuration>
+    </excluded>
   </file>
 </project>
 
