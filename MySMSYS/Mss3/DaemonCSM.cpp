@@ -245,10 +245,11 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	    {
 	      daemon->sndlst->CatList((SNDLST *)ipc->data);
 	    }
-            if(CFG_ENA_SNED_ON_BG)
-              daemon->sndlst->SendStart();
-            else
-              SUBPROC((void *)daemon->sndlst->SendOnTop, daemon->sndlst);
+	    SUBPROC((void *)SendList::Send, daemon->sndlst);
+            //if(CFG_ENA_SNED_ON_BG)
+            //  daemon->sndlst->SendStart();
+            //else
+            //  SUBPROC((void *)daemon->sndlst->SendOnTop, daemon->sndlst);
 	  }
 	  break;
 	default:
@@ -279,10 +280,11 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
   if(msg->msg==MSG_CSM_DESTROYED)
   {
     daemon->sndlst->SendEnd((int)msg->data0);
-    if(CFG_ENA_SNED_ON_BG)
-      daemon->sndlst->SendStart();
-    else
-      SUBPROC((void *)daemon->sndlst->SendOnTop, daemon->sndlst);
+    SUBPROC((void *)SendList::Send, daemon->sndlst);
+    //if(CFG_ENA_SNED_ON_BG)
+    //  daemon->sndlst->SendStart();
+    //else
+    //  SUBPROC((void *)daemon->sndlst->SendOnTop, daemon->sndlst);
     daemon->DelDlgCsmID((int)msg->data0);
   }
   if(daemon->PLAY_ID && (msg->msg==MSG_INCOMMING_CALL || IsCalling()))

@@ -59,17 +59,6 @@ void InitDatPath(void)
     }
     strcat(sms_dat, "SMS\\SMS.dat");
   }
-/*  strcpy(ems_admin_dat, CFG_SYSTEM_FOLDER);
-  if((xl=strlen(ems_admin_dat))>0)
-  {
-    x=ems_admin_dat[xl-1];
-    if((x!='\\')&&(x!='/'))
-    {
-      ems_admin_dat[xl]='\\';
-      ems_admin_dat[xl+1]=0;
-    }
-    strcat(ems_admin_dat, "SMS\\EMS_Admin.dat");
-  }*/
 }
 
 extern "C"
@@ -87,16 +76,13 @@ int main(char *exename, char *fname)
 {
   if(IsAlreadyRuning())
   {
-    //MyIpcMessage IPC;
-    if(!fname)// || fname[0] < '0' || fname[0] > '4' || fname[1] != ':' || strlen(fname) > 128)
+    if(!fname)
       SendMyIpc(SMSYS_IPC_MAIN);
-    //  IPC.SendIpc(SMSYS_IPC_MAIN);
     else if (fname[0] >= '0' && fname[0] >= '4' && fname[1] == ':' && strlen(fname) < 128)
     {
       char *filename=new char[128];
       strcpy(filename, fname);
       SendMyIpc(SMSYS_IPC_FVIEW, filename);
-      //IPC.SendIpc(SMSYS_IPC_FVIEW, filename);
     }
     SUBPROC((void *)ElfKiller);
     return 0;
@@ -104,7 +90,7 @@ int main(char *exename, char *fname)
   InitSetting();
   DaemonCSM *daemon=new DaemonCSM;
   daemon->CreateDaemonCSM();
-  //InitUnderIdleCSM();
+  InitUnderIdleCSM();
   return 0;
 }
 

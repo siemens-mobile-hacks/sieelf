@@ -7158,19 +7158,9 @@
   </file>
   <file>
     <name>$PROJ_DIR$\CSMswaper.cpp</name>
-    <excluded>
-      <configuration>Release</configuration>
-      <configuration>Release_S68</configuration>
-      <configuration>Release_ELKA</configuration>
-    </excluded>
   </file>
   <file>
     <name>$PROJ_DIR$\CSMswaper.h</name>
-    <excluded>
-      <configuration>Release</configuration>
-      <configuration>Release_S68</configuration>
-      <configuration>Release_ELKA</configuration>
-    </excluded>
   </file>
   <file>
     <name>$PROJ_DIR$\DaemonCSM.cpp</name>

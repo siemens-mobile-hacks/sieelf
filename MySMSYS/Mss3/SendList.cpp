@@ -4,6 +4,9 @@
 #include "File.h"
 #include "SmsData.h"
 #include "SendList.h"
+#include "Vibra.h"
+#include "DaemonCSM.h"
+#include "CSMswaper.h"
 
 
 SNDLST * SendList::AllocSL()
@@ -106,24 +109,6 @@ SNDLST * SendList::FindSL(int csm_id)
   return 0;
 }
 
-//DEL void SendList::CatList(SendList *lst)
-//DEL {
-//DEL   SNDLST *sl;
-//DEL   LockSched();
-//DEL   sl=this->sltop;
-//DEL   if(sl)
-//DEL   {
-//DEL     this->sltop=lst->sltop;
-//DEL   }
-//DEL   else
-//DEL   {
-//DEL     while(sl->next)
-//DEL       sl=sl->next;
-//DEL     sl->next=lst->sltop;
-//DEL     lst->sltop->prev=sl;
-//DEL   }
-//DEL   UnlockSched();
-//DEL }
 
 int SendList::IsSending()
 {
@@ -160,10 +145,6 @@ int SendList::SendStart()
   return csm_id;
 }
 
-//DEL int SendList::SendEnd()
-//DEL {
-//DEL 
-//DEL }
 
 int SendList::SendEnd(int csm_id)
 {
@@ -181,10 +162,6 @@ int SendList::SendEnd(int csm_id)
   return 1;
 }
 
-//DEL int SendList::IsSendCSM()
-//DEL {
-//DEL 
-//DEL }
 
 int SendList::IsSendCSM(int csm_id)
 {
@@ -218,17 +195,24 @@ void SendList::CatList(SNDLST *sl)
   UnlockSched();
 }
 
-//DEL void SendList::SendOnBG(SendList *sndlst)
-//DEL {
-//DEL   CSM_RAM *tcsm;
-//DEL   tcsm=DaemonCSM::GetTopCSM();
-//DEL   if(sndlst->SendStart() && CFG_ENA_SNED_ON_BG && tcsm && tcsm->id)
-//DEL   {
-//DEL     CSMtoTop(tcsm->id, -1);
-//DEL   }
-//DEL }
 
 void SendList::SendOnTop(SendList *sndlst)
 {
   sndlst->SendStart();
+}
+
+void SendList::Send(SendList *sndlst)
+{
+  CSM_RAM *tcsm;
+  tcsm=DaemonCSM::GetTopCSM();
+  if(
+    sndlst
+    && sndlst->SendStart()
+    && CFG_ENA_SNED_ON_BG
+    && tcsm
+    && tcsm->id
+    )
+  {
+    CSMtoTop(tcsm->id, -1);
+  }
 }

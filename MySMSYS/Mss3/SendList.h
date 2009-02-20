@@ -12,6 +12,7 @@ typedef struct _SNDLST
 class SendList
 {
 public:
+	static void Send(SendList *sndlst);
 	static void SendOnTop(SendList *sndlst);
 	void CatList(SNDLST *sl);
 	int IsSendCSM(int csm_id);

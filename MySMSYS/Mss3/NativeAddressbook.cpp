@@ -34,9 +34,6 @@ NAbCSM::~NAbCSM()
 {
 }
 
-//#define GetFilledNAbDataCount_adr 0xA055EFD0 //int GetFilledNAbDataCount(NativeAbData *nab)
-//#define GetDataFromNAbData_adr 0xA055E578 //void *GetDataFromNAbData(NativeAbData *nab, int n)
-//#define ExtractNumPkt_adr (0xA098A282+1) //void ExtractNumPkt(PKT_NUM *pkt, char *buf, int len)
 int NAbCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 {
   NativeAbData *nabd;
@@ -64,48 +61,10 @@ int NAbCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	    && EDIT_GetFocus(ed_gui)==edg->n_focus
 	    )
 	  {
-	  /*  int n;
-	    EDITCONTROL ec;
-	    WSHDR *ews;
-	    int pos=EDIT_GetCursorPos(ed_gui);
-	    ExtractEditControl(ed_gui,edg->n_focus,&ec);
-	    ews=AllocWS(ec.pWS->wsbody[0]+wn->wsbody[0]+4);
-	    wstrcpy(ews, ec.pWS);
-	    for(n=wn->wsbody[0];n>0;n--)
-	    {
-	      wsInsertChar(ews, wn->wsbody[n], pos);
-	    }
-	    EDIT_SetTextToEditControl(ed_gui, edg->n_focus, ews);
-	    EDIT_SetCursorPos(ed_gui, pos+wn->wsbody[0]);
-	    FreeWS(ews);*/
 	    edg->InsertText(ed_gui, wn);
 	    FreeWS(wn);
 	  }
 	}
-	/*else if (nabcsm->type==NAB_SETC)
-	{
-	  if(GetNativeAbDataStatus(nabd, 0)==1
-	    && (wn=GetNumFromNativeAbData(nabd, GetNativeAbDataType(nabd, 0), 0))
-	    && EDIT_GetFocus(ed_gui) < edg->n_focus-1
-	    )
-	  {
-	    //EDIT_SetTextToFocused(ed_gui, wn);
-	    edg->SetNumber(ed_gui, wn);
-	    FreeWS(wn);
-	  }
-	}
-	else if (nabcsm->type==NAB_INSN)
-	{
-	  if(
-	    GetNativeAbDataStatus(nabd, 0)==1
-	    && (wn=GetNumFromNativeAbData(nabd, GetNativeAbDataType(nabd, 0), 0))
-	    && EDIT_GetFocus(ed_gui) < edg->n_focus-1
-	    )
-	  {
-	    edg->InsertNumber(ed_gui, wn);
-	    FreeWS(wn);
-	  }
-	}*/
 	else if (
 	  (nabcsm->type==NAB_SETC
 	  || nabcsm->type==NAB_INSN)
@@ -114,24 +73,17 @@ int NAbCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	  int n;
 	  int z=0;
 	  int k=0;
-	  //int t;
 	  PKT_NUM *pkt;
 	  char *buf=new char[50];
-	  //n=((int (*)(NativeAbData *nab))GetFilledNAbDataCount_adr)(nabd);
 	  n=GetFilledNAbDataCount(nabd);
 	  for(;k<n;k++)
 	  {
 	    if(
 	      GetNativeAbDataStatus(nabd, k)==1
-	      //&& (t=GetNativeAbDataType(nabd, k))!=0xFF
-	      //&& (wn=GetNumFromNativeAbData(nabd, t, k))
 	      && GetNativeAbDataType(nabd, k)!=0xFF
-	      //&& (pkt=(PKT_NUM *)((void *(*)(NativeAbData *, int))GetDataFromNAbData_adr)(nabd, k))
 	      && (pkt=(PKT_NUM *)GetDataFromNAbData(nabd, k))
 	      )
 	    {
-	      //void ExtractNumPkt(PKT_NUM *pkt, char *buf, int len)
-	      //((void (*)(PKT_NUM *, char *, int))ExtractNumPkt_adr)(pkt, buf, 49);
 	      UnpackNumPkt(pkt, buf, 49);
 	      if(nabcsm->type==NAB_SETC
 		&& z==0)
@@ -143,7 +95,6 @@ int NAbCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	      {
 		edg->InsertNumber(ed_gui, buf);
 	      }
-	      //FreeWS(wn);
 	    }
 	  }
 	  delete buf;
@@ -186,7 +137,6 @@ void NAbCSM::OnCreate(CSM_RAM *data)
 
 void NAbCSM::OnClose(CSM_RAM *data)
 {
-  //GetCPUClock();
   NAb_CSM *nabcsm=(NAb_CSM *)data;
   if(nabcsm->nabd)
   {
@@ -206,11 +156,6 @@ int NAbCSM::CreateNAbCSM(void *ed_gui, int ed_gui_id, char *number, int type)
 {
   int csm_id;
   NAb_CSM nabcsm;
-//  if(!ed_gui || !ed_gui_id || (type==NAB_SAVE && !number))
-//  {
-//    delete this;
-//    return 0;
-//  }
   if(type==NAB_SAVE)
   {
     if(!number)
