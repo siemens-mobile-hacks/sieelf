@@ -181,9 +181,9 @@ void AdrList::ConstructList()
 			{
 			  PKT_NUM *p=(PKT_NUM*)r->data;
 			  unsigned int n=r->item_type;
-			  int j;
-			  unsigned int c;
-			  char *nump;
+			  //int j;
+			  //unsigned int c;
+			  //char *nump;
 #ifdef NEWSGOLD
 			  if (n!=106) n-=0x62;
 			  else n=4;
@@ -208,9 +208,10 @@ void AdrList::ConstructList()
 			  {
 			    if (p)
 			    {
-			      unsigned int c1;
+			      /*unsigned int c1;
 			      int m;
 			      nump=contact.num[n]=new char[50];
+			      
 			      j=0;
 			      m=0;
 			      if (p->format==0x91)
@@ -229,7 +230,9 @@ void AdrList::ConstructList()
 				*nump++=c1;
 				m++;
 			      }
-			      *nump=0;
+			      *nump=0;*/
+			      contact.num[n]=new char[50];
+			      UnpackNumPkt(p, contact.num[n], 49);
 			      contact.next = (void*)1;
 			    }
 			  }

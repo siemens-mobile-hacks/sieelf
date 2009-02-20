@@ -1051,3 +1051,61 @@ int EditGUI::SaveDraft(WSHDR *text)
   }
   return res;
 }
+
+int EditGUI::InsertNumber(void *data, char *number)
+{
+  int res;
+  int focus;
+//  char temp[128];
+  NLST *nl;
+  EDITCONTROL ec;
+  EDITC_OPTIONS ec_options;
+  if(
+    (focus=EDIT_GetFocus(data)) > this->n_focus-2
+    || focus<1
+    || !(res=strlen(number))
+    )
+    return -1;
+//  res=ws_2num(number, temp, 127);
+  if(this->nlst->IsNumExist(number))
+    return -1;
+  if(!(nl=this->nlst->FindNL(focus-1)))
+    return -1;
+  if(EDIT_GetCursorPos(data)==1) //front
+  {
+    nl=this->nlst->InsertNL_front(nl, number);
+  }
+  else //behind
+  {
+    nl=this->nlst->InsertNL_behind(nl, number);
+    focus++;
+  }
+  if(!nl)
+    return -1;
+  PrepareEditControl(&ec);
+  PrepareEditCOptions(&ec_options);
+  ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_DEFAULT_DIGIT+ECF_APPEND_EOL,nl->name,256);
+  SetFontToEditCOptions(&ec_options,EDIT_FONT_SMALL);
+  CopyOptionsToEditControl(&ec,&ec_options);
+  EDIT_InsertEditControl(data, focus, &ec);
+  this->n_focus++;
+  return res;
+}
+
+int EditGUI::SetNumber(void *data, char *number)
+{
+  int res;
+  int focus;
+//  char temp[128];
+  NLST *nl;
+  if((focus=EDIT_GetFocus(data)) > this->n_focus-2
+    || focus<1
+    || !(nl=this->nlst->FindNL(focus-1))
+    || !(res=strlen(number))
+    )
+    return -1;
+//  res=ws_2num(number, temp, 127);
+  this->nlst->UpdateNL(nl, number);
+  EDIT_SetTextToEditControl(data, focus, nl->name);
+  return res;
+}
