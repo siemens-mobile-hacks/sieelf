@@ -1257,16 +1257,16 @@ typedef struct
 
 typedef struct
 {
-  int unk0; //0
-  int unk1; //0
+  void *next; //0
+  void *prev; //0
   int flag_data; //type?
-  void *num_data;
-}AbNum;
+  void *data; //pkt_num
+}AbNumList;
 
 typedef struct
 {
-  AbNum *an1;
-  AbNum *an2; //an1=an2;
+  AbNumList *first;
+  AbNumList *last;
   void *mfree_adr;
   void *unk;
 }NativeAbData;
@@ -1288,6 +1288,23 @@ typedef struct
   const int *softkeys;//,null
   const SOFTKEYSTAB *softkeystab; //,null
 }TABGUI_DESC;
+
+
+typedef struct _EAM_DATA
+{
+  short dat_index; //
+  char unk_FF[2];
+  int opmsg_id; //browser killer, -1
+  char unk[8];
+}EAM_DATA;
+
+typedef struct _RAM_EMS_ADMIN
+{
+//  char unk_FF[0x10];
+  int unk;
+  EAM_DATA data[101];
+}RAM_EMS_ADMIN;
+
 
 #pragma diag_suppress=Ta035
 
@@ -3773,7 +3790,7 @@ __swi __arm int FreeNativeAbData(NativeAbData *ab_data);
 //pattern_ELKA=??,B5,??,1C,??,??,??,??,??,28,??,D0,??,1C,??,??,??,??,??,1C,??,??,??,??,??,20,??,BD,??,20,??,BD,+1
 
 #pragma swi_number=0x2B5
-__swi __arm int GetNativeAbDataType(NativeAbData *nab, int unk0); //unk0=0
+__swi __arm int GetNativeAbDataType(NativeAbData *nab, int n);
 //arm
 //pattern_NSG=??,??,??,E9,??,??,??,E3,??,??,??,EB,??,??,??,E3,??,??,??,15,??,??,??,12,??,??,??,E1,??,??,??,E8
 //thumb
@@ -3787,7 +3804,7 @@ __swi __arm WSHDR *GetNumFromNativeAbData(NativeAbData *nab, int type, int unk0)
 //pattern_ELKA=??,B5,??,AB,??,26,??,72,??,1C,??,AA,??,92,??,1C,??,24+1
 
 #pragma swi_number=0x2B7
-__swi __arm int GetNativeAbDataStatus(NativeAbData *nab, int _0); //9,not filled, 1, filled
+__swi __arm int GetNativeAbDataStatus(NativeAbData *nab, int n); //9,not filled, 1, filled
 //arm
 //pattern_NSG=??,??,??,E9,??,??,??,E3,??,??,??,EB,??,??,??,E3,??,??,??,15,??,??,??,11,??,??,??,11,??,??,??,E1,??,??,??,E8
 //thumb
@@ -3846,5 +3863,117 @@ __swi __arm int GetCursorTab(void *tab_gui);
 __swi __arm void *GetGuiByTab(void *tab_gui, int n);
 //thumb
 //pattern_NSG=??,B5,??,24,??,28,??,D0,??,30,??,??,??,28,??,D0,??,??,??,??,??,28,??,D0,??,6E,??,1C,??,BD,+1
+
+
+#pragma swi_number=0x2C2
+__swi __arm int GetSubprovider(WSHDR* ws);
+//thumb
+//30,B5,05,1C,85,B0,68,46,00,24 + 1
+
+#pragma swi_number=0x2C3
+__swi __arm int GetRoamingState(); 
+//thumb
+//10,B5,??,??,??,??,04,1C,01,28,05,D1,12,48 + 1
+
+//type
+#define VOLUME 0x12
+#define VOLUME_ALARMCLOCK 0xD
+#define VOLUME_INCALL 2
+
+#pragma swi_number=0x2C4
+__swi __arm int GetProfileVolumeSetting(int profile, int type);
+//thumb
+//pattern_NSG=??,B5,??,4D,??,1C,??,1C,??,21,??,1C,??,35,+1
+//pattern_ELKA=??,B5,??,4E,??,24,??,1C,??,1C,??,21,??,43,??,1C,??,3E,+1
+
+#pragma swi_number=0x82C5
+__swi __arm RAM_EMS_ADMIN *RAM_EMS_Admin();
+//arm
+//pattern_NSG=&(??,48,??,47,??,20,??,30,??,04,??,0C,??,28,??,D3,??,47)
+//pattern_ELKA=&(??,48,??,47,??,B5,??,B0,??,1C,??,D1,??,20)
+
+#pragma swi_number=0x2C6
+__swi __arm int GetSecondsFromDateTime(int *result, TDate *t_date, TTime *time, TDate *s_date);
+//thumb
+//pattern=F8,B5,1F,1C,16,1C,0D,1C,04,1C,00,28,??,D0,00,2D,??,D0
+
+#pragma swi_number=0x2C7
+__swi __arm int GetSecondsFromDateTimeSince1997(int *result, TDate *date, TTime *time);
+//thumb
+//pattern=7C,B5,0D,1C,04,1C,16,1C,01,23,01,22,68,46
+
+#pragma swi_number=0x2C8
+__swi __arm int GetSecondsFromTime(TTime *time);
+//thumb
+//pattern=01,78,3C,23,42,78,59,43,80,78,89,18
+
+#pragma swi_number=0x2C9
+__swi __arm int GetDateTimeFromSeconds(int *seconds, TDate *t_date, TTime *time, TDate *s_date);
+//thumb
+//pattern=F8,B5,1E,1C,15,1C,0C,1C,00,28,??,D0,00,2C,??,D0
+
+#pragma swi_number=0x2CA
+__swi __arm int GetDateTimeFromSecondsSince1997(int *seconds, TDate *date, TTime *time);
+//thumb
+//pattern=7C,B5,0D,1C,04,1C,16,1C,01,23,01,22,68,46
+
+#pragma swi_number=0x2CB
+__swi __arm void GetTimeFromSeconds(TTime *time, int seconds);
+//thumb
+//pattern=10,B5,04,1C,00,20,60,60,3C,20
+
+#pragma swi_number=0x2CC
+__swi __arm void InitDate(TDate *date, unsigned long year, unsigned char month, unsigned char day);
+//thumb
+//pattern=01,60,02,71,43,71,70,47
+
+#pragma swi_number=0x2CD
+__swi __arm void InitTime(TDate *time, unsigned char hour, unsigned char min, unsigned char sec, unsigned long millisec);
+//thumb
+//pattern=10,B5,02,9C,01,70,42,70,83,70,44,60,10,BD
+
+#pragma swi_number=0x2CE
+__swi __arm int CmpDates(TDate *date1, TDate *date2);
+//thumb
+//pattern=02,68,0B,68,9A,42,??,D1,02,79,0B,79,9A,42,??,D1
+
+#pragma swi_number=0x2CF
+__swi __arm int CmpTimes(TTime *time1, TTime *time2);
+//thumb
+//pattern=02,78,0B,78,9A,42,??,D1,42,78,4B,78,9A,42,??,D1
+
+#pragma swi_number=0x2D0
+__swi __arm int GetDaysFromMonth(TDate *date);
+//thumb
+//pattern=10,B5,04,1C,00,79,02,28,??,D1,20,1C
+
+#pragma swi_number=0x2D1
+__swi __arm int IsLeapYear(TDate *date);
+//thumb
+//pattern=10,B5,04,68,A0,07,??,D1,21,1C,19,20
+
+#pragma swi_number=0x2D2
+__swi __arm void StartNativeBrowserCore();
+//thumb
+//pattern_SGOLD=??B5????????4068002872D1032000F0 +1
+
+#pragma swi_number=0x2D3
+__swi __arm int GetFilledNAbDataCount(NativeAbData *nab);
+//arm
+//pattern_NSG=??,??,??,E1,??,??,??,E3,??,??,??,03,??,??,??,01,??,??,??,E5,??,??,??,EA,??,??,??,E2,??,??,??,E3
+//thumb
+//pattern_ELKA=??,1C,??,20,??,29,??,D1,??,47,??,68,??,E0,??,30,??,04,??,0C,??,E7,+1
+
+#pragma swi_number=0x2D4
+__swi __arm void *GetDataFromNAbData(NativeAbData *nab, int n);
+//arm
+//pattern_NSG=??,??,??,E9,??,??,??,E3,_blf(??,??,??,E5,??,??,??,EA,??,??,??,E2,??,??,??,E1,??,??,??,E5,??,??,??,E1),??,??,??,E3,??,??,??,15,??,??,??,E1,??,??,??,E8
+//thumb
+//pattern_ELKA=??,B5,??,24,??,??,??,??,??,28,??,D0,??,68,??,1C,??,BD,+1
+
+#pragma swi_number=0x2D5
+__swi __arm void UnpackNumPkt(PKT_NUM *pkt, char *buf, int maxlen);
+//thumb
+//pattern_NSG/ELKA=??,21,??,18,??,54,??,E7,??,23,??,E7,+9
 
 #endif
