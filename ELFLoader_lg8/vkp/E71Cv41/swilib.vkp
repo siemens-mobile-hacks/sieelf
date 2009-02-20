@@ -735,6 +735,23 @@
 0B0C: 0xA08EF2A9   ; 2C3:  __thumb int GetRoamingState()
 0B10: 0xA05C3D75   ; 2C4:  __thumb int GetPrfileVolumeSetting(int profile, int type)
 0B14: 0xA8E69A2C   ; 82C5:  __arm RAM_EMS_ADMIN *RAM_EMS_Admin()
+0B18: 0xA05A0ABF   ; 2C6:  __thumb int GetSecondsFromDateTime(int *result, TDate *t_date, TTime *time, TDate *s_date)
+0B1C: 0xA05A0B11   ; 2C7:  __thumb int GetSecondsFromDateTimeSince1997(int *result, TDate *date, TTime *time)
+0B20: 0xA05A0F9B   ; 2C8:  __thumb int GetSecondsFromTime(TTime *time)
+0B24: 0xA05A09F9   ; 2C9:  __thumb int GetDateTimeFromSeconds(int *seconds, TDate *t_date, TTime *time, TDate *s_date)
+0B28: 0xA05A0B33   ; 2CA:  __thumb int GetDateTimeFromSecondsSince1997(int *seconds, TDate *date, TTime *time)
+0B2C: 0xA05A0FAD   ; 2CB:  __thumb void GetTimeFromSeconds(TTime *time, int seconds)
+0B30: 0xA05A08E5   ; 2CC:  __thumb void InitDate(TDate *date, unsigned long year, unsigned char month, unsigned char day)
+0B34: 0xA05A12D5   ; 2CD:  __thumb void InitTime(TDate *time, unsigned char hour, unsigned char min, unsigned char sec, unsigned long millisec)
+0B38: 0xA05A02C9   ; 2CE:  __thumb int CmpDates(TDate *date1, TDate *date2)
+0B3C: 0xA05A0F3D   ; 2CF:  __thumb int CmpTimes(TTime *time1, TTime *time2)
+
+0B40: 0xA05A0319   ; 2D0:  __thumb int GetDaysFromMonth(TDate *date)
+0B44: 0xA05A02F9   ; 2D1:  __thumb int IsLeapYear(TDate *date)
+;B48:              ; 2D2:  __thumb void StartNativeBrowserCore()
+0B4C: 0xA0616109   ; 2D3:  __arm int GetFilledNAbDataCount(NativeAbData *nab)
+0B50: 0xA0615AB5   ; 2D4:  __arm void *GetDataFromNAbData(NativeAbData *nab, int n)
+0B54: 0xA09544B3   ; 2D5:  __thumb void UnpackNumPkt(PKT_NUM *pkt, char *buf, int maxlen)
 #pragma disable old_equal_ff
 +0       
 ;********************************************************************************
