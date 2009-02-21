@@ -1306,6 +1306,22 @@ typedef struct _RAM_EMS_ADMIN
 }RAM_EMS_ADMIN;
 
 
+typedef struct
+{
+  int flag;
+  int (*onkey)(void *, GUI_MSG *);
+  void (*ghook)(void *, int);
+  void (*locret)(void);
+  const int *softkeys;
+  const SOFTKEYSTAB *softkeystab;
+  RECT rc;
+  int font;
+  int unk1; //0x64, 0x81
+  int unk2; //0x65, 0x82
+  int unk3; //0
+  int unk4; //0,1,2
+}TVIEW_DESC;
+
 #pragma diag_suppress=Ta035
 
 #pragma swi_number=0
@@ -3976,4 +3992,30 @@ __swi __arm void UnpackNumPkt(PKT_NUM *pkt, char *buf, int maxlen);
 //thumb
 //pattern_NSG/ELKA=??,21,??,18,??,54,??,E7,??,23,??,E7,+9
 
+#pragma swi_number=0x2D6
+__swi __arm void *TViewGetGUI(void *malloc_adr, void *mfree_adr);
+//thumb
+//pattern_NSG/ELKA=??,B5,??,1C,??,1C,??,20,??,47,??,1C,??,1C,_blf(??,B5,??,1C,??,1C,??,1C,??,49,??,??,??,??,??,48,??,65,??,1C,??,BD),??,BD,+1
+
+#pragma swi_number=0x2D7
+__swi __arm void TViewSetDefinition(void *gui, const TVIEW_DESC *);
+//thumb
+//pattern_NSG/ELKA=??,B5,??,1C,??,1C,??,??,??,??,??,21,??,1C,??,??,??,??,??,1C,??,31,??,??,??,??,??,BD,??,30,+1
+
+#pragma swi_number=0x2D8
+__swi __arm void TViewSetText(void *gui, WSHDR *text, void *malloc_adr, void *mfree_adr);
+//thumb
+//pattern_NSG/ELKA=??,B5,??,1C,??,1C,??,1C,??,21,??,B0,??,??,??,??,??,90,??,21,??,1C,+1
+
+#pragma swi_number=0x2D9
+__swi __arm void TViewSetUserPointer(void *gui,void *user_pointer);
+//thumb
+//pattern_NSG=80,30,C1,61,70,47,80,30,C0,69,70,47,+1
+//pattern_ELKA=80,30,41,62,70,47,80,30,40,6A,70,47,+1
+
+#pragma swi_number=0x2DA
+__swi __arm void *TViewGetUserPointer(void *gui);
+//thumb
+//pattern_NSG=80,30,C1,61,70,47,80,30,C0,69,70,47,+7
+//pattern_ELKA=80,30,41,62,70,47,80,30,40,6A,70,47,+7
 #endif
