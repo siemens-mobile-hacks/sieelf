@@ -75,16 +75,16 @@ const int DefaultIcons[]=
 void IconPack::LoadIconPack(void)
 {
   int max=sizeof(ICONPACK)/sizeof(int);
-  int len, c, i, *p;
+  int /*len, c, */i, *p;
   char folder[128], ftemp[128], *tt;
-  strcpy(folder, CFG_MAIN_FOLDER);
-  len=strlen(folder);
-  c=folder[len-1];
-  if(c!='\\' && c!='/')
-  {
-    folder[len]='\\';
-    folder[len+1]=0;
-  }
+  strcpy(folder, main_folder);
+  //len=strlen(folder);
+  //c=folder[len-1];
+  //if(c!='\\' && c!='/')
+  //{
+  //  folder[len]='\\';
+  //  folder[len+1]=0;
+  //}
   if(!IsDir(folder))
     return;
   strcat(folder, "Img\\");

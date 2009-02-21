@@ -23,6 +23,10 @@ class SmsData :
   public CFile
 {
 public:
+	static void DeleteAllMssBG(SmsData *smsdata);
+	int DeleteAllMss();
+	static void ExportAllToTextBG(SmsData *smsdata);
+	int ExportAllToText();
 	SDLIST * FindLastNew(void);
   SmsData();
   ~SmsData();

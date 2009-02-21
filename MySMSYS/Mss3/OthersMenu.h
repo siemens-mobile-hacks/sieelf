@@ -8,6 +8,9 @@ public:
 	OthMenu();
 	~OthMenu();
 private:
+	void DelAllMss();
+	void ExportTxtAll();
+	void ShowHelp(void);
 	void ShowAbout(void);
 	void MoveAllMss(void);
 	void OpenArchiveOTH();

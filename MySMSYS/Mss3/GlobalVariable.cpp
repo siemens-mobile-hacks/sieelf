@@ -3,6 +3,7 @@
 //SDLIST *sdltop=0;
 
 char sms_dat[128];
+char main_folder[128];
 //char ems_admin_dat[128];
 
 const int softkeys[]={0,1,2};

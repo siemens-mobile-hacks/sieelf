@@ -10,28 +10,30 @@
 #include "PopupGUI.h"
 #include "OthersMenu.h"
 
-#define OTH_MENU_ITEM_N 4
+#include "TViewGUI.h"
+
+#define OTH_MENU_ITEM_N 7
 
 const HEADER_DESC oth_menuhdr={0,0,0,0,NULL,LGP_NULL,LGP_NULL};
 
 
 void OpenArchive(void)
 {
-  int len, c;
+  //int len, c;
   char folder[128];
   unsigned int err;
   NativeExplorerData data;
   WSHDR *ws, wsn;
   unsigned short wsb[128];
   ws=CreateLocalWS(&wsn, wsb, 128);
-  strcpy(folder, CFG_MAIN_FOLDER);
-  len=strlen(folder);
-  c=folder[len-1];
-  if(c!='\\' && c!='/')
-  {
-    folder[len]='\\';
-    folder[len+1]=0;
-  }
+  strcpy(folder, main_folder);
+  //len=strlen(folder);
+  //c=folder[len-1];
+  //if(c!='\\' && c!='/')
+  //{
+  //  folder[len]='\\';
+  //  folder[len+1]=0;
+  //}
   if(!isdir(folder, &err))
     mkdir(folder, &err);
   strcat(folder, FLDR_ARCHIVE);
@@ -90,6 +92,15 @@ DO_OTH:
       oth->MoveAllMss();
       break;
     case 3:
+      oth->ExportTxtAll();
+      break;
+    case 4:
+      oth->DelAllMss();
+      break;
+    case 5:
+      oth->ShowHelp();
+      break;
+    case 6:
       oth->ShowAbout();
       break;
     }
@@ -131,6 +142,9 @@ int OTH_ITEM_LGPS[OTH_MENU_ITEM_N]=
   LGP_NULL, //config
     LGP_NULL, //open archive
     LGP_NULL, //move all mss to archive
+    LGP_NULL, //export all
+    LGP_NULL, //del all mss
+    LGP_NULL, //help
     LGP_NULL, //about
 };
 
@@ -174,4 +188,74 @@ void OthMenu::ShowAbout()
   char msg[128];
   sprintf(msg, "%s\nCompile at\n%s %s", CP_RIGHT, __DATE__, __TIME__);
   MyShowMsg::MyShow(0, msg);
+}
+
+const char *help_str=
+"HotKeys In SMS List:\n\
+4: MoveToArchive\n\
+7: Delete SMS\n\
+*: Show Number Info\n\
+Green: Reply\n\n\
+HotKeys When View:\n\
+*: Show Number Info\n\
+Green: Reply\n\
+Left: The Prev One\n\
+Right: TheNext One\n\n\
+HotKeys When Edit:\n\
+Green: Send";
+void OthMenu::ShowHelp()
+{
+  char filepath[128];
+  CFile file;
+  int fin;
+  int len;
+  WSHDR *ws;
+  strcpy(filepath, main_folder);
+  strcat(filepath, "help.txt");
+  if((fin=file.FOpen(filepath, A_ReadOnly, P_READ))!=-1)
+  {
+    if((len=file.LSeek(fin, 0, S_END)))
+    {
+      char *buf=new char[len+4];
+      file.LSeek(fin, 0, S_SET);
+      if(file.FRead(fin, buf, len)!=len)
+      {
+	delete buf;
+	goto HLP_FERR;
+      }
+      file.FClose(fin);
+      buf[len]=0;
+      ws=AllocWS(len);
+      wsprintf(ws, PERCENT_T, buf);
+      delete buf;
+    }
+    else
+    {
+HLP_FERR:
+      file.FClose(fin);
+      goto HLP_DEFAUT;
+    }
+  }
+  else
+  {
+HLP_DEFAUT:
+    ws=AllocWS(256);
+    wsprintf(ws, PERCENT_T, help_str);
+  }
+  WSHDR *hdr_t=AllocWS(32);
+  wsprintf(hdr_t, PERCENT_T, LGP->lgp.LGP_HELP);
+  TViewGUI *tv=new TViewGUI;
+  tv->CreateTViewGUI(ws, hdr_t);
+}
+
+void OthMenu::ExportTxtAll()
+{
+  SUBPROC((void *)SMSDATA->ExportAllToTextBG, SMSDATA);
+}
+
+
+
+void OthMenu::DelAllMss()
+{
+  SUBPROC((void*)SMSDATA->DeleteAllMssBG, SMSDATA);
 }

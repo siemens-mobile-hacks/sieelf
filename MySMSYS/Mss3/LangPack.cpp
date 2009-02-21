@@ -79,6 +79,8 @@ const char df_LGP_TO[]="To";
 const char df_LGP_UNK[]="Unknow";
 const char df_LGP_FILTER[]="Fliter";
 const char df_LGP_INSERT_NUM[]="Ins. Num";
+const char df_LGP_HELP[]="Help";
+const char df_LGP_DEL_N[]="%d SMS Deleted!";
 
 const char *df_LGPS[]=
 {
@@ -157,6 +159,8 @@ const char *df_LGPS[]=
   df_LGP_UNK,
   df_LGP_FILTER,
   df_LGP_INSERT_NUM,
+  df_LGP_HELP,
+  df_LGP_DEL_N,
   0,
 };
 
@@ -180,15 +184,15 @@ void LangPack::LoadLangPack(void)
 void LangPack::LoadLangFile(void)
 {
   char fpath[128], *p, **lp, *pp;
-  int len, c, fin, size, mn, i;
-  strcpy(fpath, CFG_MAIN_FOLDER);
-  len=strlen(fpath);
-  c=fpath[len-1];
-  if(c!='\\' && c!='/')
-  {
-    fpath[len]='\\';
-    fpath[len+1]=0;
-  }
+  int /*len, c,*/ fin, size, mn, i;
+  strcpy(fpath, main_folder);
+  //len=strlen(fpath);
+  //c=fpath[len-1];
+  //if(c!='\\' && c!='/')
+  //{
+  //  fpath[len]='\\';
+  //  fpath[len+1]=0;
+  //}
   if(!IsDir(fpath))
     return;
   strcat(fpath, "lang.txt");
@@ -327,7 +331,15 @@ void LangPack::InitLgp(void)
   OTH_ITEM_LGPS[0]=(int)lgp.LGP_CONFIG;
   OTH_ITEM_LGPS[1]=(int)lgp.LGP_OPEN_ARCHIVE;
   OTH_ITEM_LGPS[2]=(int)lgp.LGP_MOVE_ALL_MSS;
-  OTH_ITEM_LGPS[3]=(int)lgp.LGP_ABOUT;
+  OTH_ITEM_LGPS[3]=(int)lgp.LGP_EXPORT_TXT;
+  OTH_ITEM_LGPS[4]=(int)lgp.LGP_DEL_ALL_MSG_MSS;
+  OTH_ITEM_LGPS[5]=(int)lgp.LGP_HELP;
+  OTH_ITEM_LGPS[6]=(int)lgp.LGP_ABOUT;
+
+  //TViewGUI.cpp
+  extern SOFTKEY_DESC tview_sk[];
+  tview_sk[0].lgp_id=(int)lgp.LGP_OK;
+  tview_sk[1].lgp_id=(int)lgp.LGP_BACK;
 }
 
 LangPack::LangPack()

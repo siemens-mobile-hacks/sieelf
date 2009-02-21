@@ -111,3 +111,5 @@ int CFile::GetFileCountOfDir(const char *dirpath)
   FindClose(&de);
   return cnt;
 }
+
+

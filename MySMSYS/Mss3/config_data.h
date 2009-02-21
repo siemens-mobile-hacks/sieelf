@@ -2,7 +2,7 @@
 #define _CONFIG_DATA_H_
 
 
-extern const char CFG_MAIN_FOLDER[128];
+//extern const char CFG_MAIN_FOLDER[128];
 extern const char CFG_SYSTEM_FOLDER[128];
 
 extern const int CFG_ENA_NOTIFY;

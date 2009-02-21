@@ -18,6 +18,13 @@ extern const char STR_LINES[];
 extern const char STR_UNK_TXTT[];
 extern const char STR_UNK_TYPE[];
 
+extern const char STR_UNK_NUM_UTF8[];
+extern const char STR_NUMBER_UTF8[];
+extern const char STR_TEXT_UTF8[];
+extern const char STR_TO_UTF8[];
+extern const char STR_FROM_UTF8[];
+extern const char STR_TIME_UTF8[];
+extern const char STR_UNK_UTF8[];
 
 #ifdef LANG_CN
 #define LGP_CFG_MAIN_FOLDER "MySMSYSÎÄ¼þ¼Ð"

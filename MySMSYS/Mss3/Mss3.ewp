@@ -7301,6 +7301,12 @@
     <name>$PROJ_DIR$\Template.h</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\TViewGUI.cpp</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\TViewGUI.h</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\Vibra.cpp</name>
   </file>
   <file>

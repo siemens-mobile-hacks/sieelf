@@ -15,7 +15,7 @@ const char FLDR_SENT[]="Out\\";//"Sent\\";
 const char FLDR_DRAFT[]="Draft\\";
 const char FLDR_UNK[]="Unknow\\";
 const char FLDR_ARCHIVE[]="Archive\\";
-/*
+
 #ifdef LANG_EN
 const char STR_UNK_NUM_UTF8[]="Unknow Number";
 const char STR_NUMBER_UTF8[]="Number";
@@ -36,7 +36,7 @@ const char STR_FROM_UTF8[]="\xE6\x9D\xA5\xE8\x87\xAA";
 const char STR_TIME_UTF8[]="\xE6\x97\xB6\xE9\x97\xB4";
 const char STR_UNK_UTF8[]="\xE6\x9C\xAA\xE7\x9F\xA5";
 #endif
-*/
+
 
 
 

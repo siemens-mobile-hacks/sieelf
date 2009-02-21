@@ -59,6 +59,17 @@ void InitDatPath(void)
     }
     strcat(sms_dat, "SMS\\SMS.dat");
   }
+  extern const char CFG_MAIN_FOLDER[128];
+  strcpy(main_folder, CFG_MAIN_FOLDER);
+  if((xl=strlen(main_folder))>0)
+  {
+    x=main_folder[xl-1];
+    if((x!='\\')&&(x!='/'))
+    {
+      main_folder[xl]='\\';
+      main_folder[xl+1]=0;
+    }
+  }
 }
 
 extern "C"

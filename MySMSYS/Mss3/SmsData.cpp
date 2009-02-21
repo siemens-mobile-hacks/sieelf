@@ -564,7 +564,7 @@ int SmsData::ReadFolder(int type)
   const char *folder;
   char dir[128];
   char fullpath[128];
-  int n=0,len, x;
+  int n=0,len;//, x;
   DIR_ENTRY de;
   SDLIST *sdx;
   switch(type)
@@ -584,14 +584,14 @@ int SmsData::ReadFolder(int type)
     folder=FLDR_UNK;
     break;
   }
-  strcpy(dir, CFG_MAIN_FOLDER);
-  if((len=strlen(dir))<=0) return 0;
-  x=dir[len-1];
-  if((x!='\\')&&(x!='/'))
-  {
-    dir[len]='\\';
-    dir[len+1]=0;
-  }
+  strcpy(dir, main_folder);
+  //if((len=strlen(dir))<=0) return 0;
+  //x=dir[len-1];
+  //if((x!='\\')&&(x!='/'))
+  //{
+  //  dir[len]='\\';
+  //  dir[len+1]=0;
+  //}
   strcat(dir, folder);
   if(!IsDir(dir))
     return 0;
@@ -632,7 +632,7 @@ int SmsData::SaveMss(WSHDR *ws, const char *number, SDLIST *sdl, int type, int n
   char path[128];
   TTime time;
   TDate date;
-  int f, len, x;
+  int f;//, len, x;
   const char *folder;
   char dir[128];
   SDLIST *sdx=0;
@@ -658,16 +658,16 @@ int SmsData::SaveMss(WSHDR *ws, const char *number, SDLIST *sdl, int type, int n
   }
   zeromem(&msf, sizeof(MSS_FILE_P2));
   GetDateTime(&date, &time);
-  if(!IsDir(CFG_MAIN_FOLDER))
-    MkDir(CFG_MAIN_FOLDER);
-  strcpy(dir, CFG_MAIN_FOLDER);
-  if((len=strlen(dir))<=0) return 0;
-  x=dir[len-1];
-  if((x!='\\')&&(x!='/'))
-  {
-    dir[len]='\\';
-    dir[len+1]=0;
-  }
+  strcpy(dir, main_folder);
+  //if((len=strlen(dir))<=0) return 0;
+  //x=dir[len-1];
+  //if((x!='\\')&&(x!='/'))
+  //{
+  //  dir[len]='\\';
+  //  dir[len+1]=0;
+  //}
+  if(!IsDir(dir))
+    MkDir(dir);
   strcat(dir, folder);
   if(!IsDir(dir))
     MkDir(dir);
@@ -1027,15 +1027,16 @@ int SmsData::CheckFolder(int type)
     folder=FLDR_UNK;
     break;
   }
-  if(!IsDir(CFG_MAIN_FOLDER)) return 0;
-  strcpy(dir, CFG_MAIN_FOLDER);
-  if((len=strlen(dir))<=0) return 0;
-  x=dir[len-1];
-  if((x!='\\')&&(x!='/'))
-  {
-    dir[len]='\\';
-    dir[len+1]=0;
-  }
+  //if(!IsDir(CFG_MAIN_FOLDER)) return 0;
+  strcpy(dir, main_folder);
+  //if((len=strlen(dir))<=0) return 0;
+  //x=dir[len-1];
+  //if((x!='\\')&&(x!='/'))
+  //{
+  //  dir[len]='\\';
+  //  dir[len+1]=0;
+  //}
+  if(!IsDir(dir)) return 0;
   strcat(dir, folder);
   if(!IsDir(dir)) return 0;
   strcat(dir, "*.mss");
@@ -1568,20 +1569,20 @@ int SmsData::MoveToArchive(SDLIST *sdl) //Ö»Ö§³Ömss
   char folder[128];
 //  unsigned int err;
 //  MSS_FILE_P2 msf;
-  int /*fin,*/ len, c;
+  //int /*fin,*/ len, c;
   TTime time;
   TDate date;
   if(!sdl || !(sdl->msg_prop&ISFILE))
     return 0;
   GetDateTime(&date, &time);
-  strcpy(folder, CFG_MAIN_FOLDER);
-  len=strlen(folder);
-  c=folder[len-1];
-  if(c!='\\' && c!='/')
-  {
-    folder[len]='\\';
-    folder[len+1]=0;
-  }
+  strcpy(folder, main_folder);
+  //len=strlen(folder);
+  //c=folder[len-1];
+  //if(c!='\\' && c!='/')
+  //{
+  //  folder[len]='\\';
+  //  folder[len+1]=0;
+  //}
   if(!IsDir(folder))
     MkDir(folder);
   strcat(folder, FLDR_ARCHIVE);
@@ -1785,3 +1786,129 @@ int SmsData::ExportText(SDLIST *sdl)
 	}
 	ws_2utf8(sdl->text, buf, len);
 }*/
+
+const char *utf8_hdr="\xEF\xBB\xBF";
+int SmsData::ExportAllToText()
+{
+  int fin;
+  int res=0;
+  //int c;
+  int len;
+  int utf8_res_len;
+  char *buf;
+  char folder[128];
+  char filename[128];
+  char temp[256];
+  char sname[64];
+  TTime time;
+  TDate date;
+  SDLIST *sdl;
+  strcpy(folder, main_folder);
+  //if(!(len=strlen(folder)))
+  //  return 0;
+  //c=folder[len-1];
+  //if(c!='\\' && c!='/')
+  //{
+  //  folder[len++]='\\';
+  //  folder[len]='\0';
+  //}
+  if(!IsDir(folder))
+    MkDir(folder);
+  strcat(folder, "Text\\");
+  if(!IsDir(folder))
+    MkDir(folder);
+  GetDateTime(&date, &time);
+  sprintf(filename, "%s%04d%02d%02d_%02d%02d.txt",
+    folder,
+    date.year,
+    date.month,
+    date.day,
+    time.hour,
+    time.min);
+  if(IsFileExist(filename))
+    return 0;
+  if((fin=FOpen(filename, A_BIN+A_WriteOnly+A_Create+A_Truncate, P_WRITE))==-1)
+    return 0;
+  if(FWrite(fin, utf8_hdr, 3)!=3)
+  {
+    FClose(fin);
+    return 0;
+  }
+  sdl=this->sdltop;
+  buf=new char[MAX_TEXT*3];
+  while(sdl)
+  {
+    CLIST *cl;
+    if((cl=ADRLST->FindCList(sdl->number))
+      && cl->name
+      )
+    {
+      ws_2utf8(cl->name, sname, &utf8_res_len, 64);
+    }
+    else
+    {
+      strcpy(sname, sdl->number);
+    }
+    sprintf(temp, "%s: %s\r\n%s: %s\r\n%s: %s\r\n%s:\r\n",
+      (sdl->type==TYPE_SENT||sdl->type==TYPE_DRAFT)?STR_TO_UTF8:STR_FROM_UTF8,
+      sname,
+      STR_NUMBER_UTF8,
+      sdl->number,
+      STR_TIME_UTF8,
+      (strlen(sdl->time))?sdl->time:STR_UNK_UTF8,
+      STR_TEXT_UTF8
+      );
+    len=strlen(temp);
+    if(FWrite(fin, temp, len)!=len)
+      break;
+    ws_2utf8(sdl->text, buf, &utf8_res_len, MAX_TEXT*3);
+    strcat(buf, "\r\n\r\n");
+    len=strlen(buf);
+    if(FWrite(fin, buf, len)!=len)
+      break;
+    res++;
+    sdl=sdl->next;
+  }
+  delete buf;
+  FClose(fin);
+  return res;
+}
+
+void SmsData::ExportAllToTextBG(SmsData *smsdata)
+{
+  char msgt[64];
+  int res=smsdata->ExportAllToText();
+  sprintf(msgt, LGP->lgp.LGP_EXPORT_N, res);
+  ShowMSG(1, (int)msgt);
+}
+
+int SmsData::DeleteAllMss()
+{
+  int res=0;
+  SDLIST *s0;
+  SDLIST *sdl=this->sdltop;
+  while(sdl)
+  {
+    s0=sdl->next;
+    if(
+      (sdl->msg_prop&ISFILE)
+      && sdl->fname
+      && FDelete(sdl->fname)
+      )
+    {
+      DeleteSDL(sdl);
+      res++;
+      if(res%4) SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
+    }
+    sdl=s0;
+  }
+  return res;
+}
+
+void SmsData::DeleteAllMssBG(SmsData *smsdata)
+{
+  char msgt[64];
+  int res=smsdata->DeleteAllMss();
+  sprintf(msgt, LGP->lgp.LGP_DEL_N, res);
+  ShowMSG(1, (int)msgt);
+}

@@ -79,14 +79,14 @@ int TplMenu::ReadTpl(void)
   int len, c, res=0, fp, size, wlen;
   DIR_ENTRY de;
   TPLIST *tp;
-  strcpy(folder, CFG_MAIN_FOLDER);
-  len=strlen(folder);
-  c=folder[len-1];
-  if(c!='\\' && c!='/')
-  {
-    folder[len]='\\';
-    folder[len+1]=0;
-  }
+  strcpy(folder, main_folder);
+  //len=strlen(folder);
+  //c=folder[len-1];
+  //if(c!='\\' && c!='/')
+  //{
+  //  folder[len]='\\';
+  //  folder[len+1]=0;
+  //}
   if(!IsDir(folder))
     MkDir(folder);
   strcat(folder, "Text\\");

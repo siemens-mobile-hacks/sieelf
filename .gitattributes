@@ -1067,6 +1067,8 @@ MySMSYS/Mss3/SmsListMenu.cpp -text
 MySMSYS/Mss3/SmsListMenu.h -text
 MySMSYS/Mss3/StrConst.cpp -text
 MySMSYS/Mss3/StrConst.h -text
+MySMSYS/Mss3/TViewGUI.cpp -text
+MySMSYS/Mss3/TViewGUI.h -text
 MySMSYS/Mss3/TabGUI.cpp -text
 MySMSYS/Mss3/TabGUI.h -text
 MySMSYS/Mss3/Template.cpp -text
