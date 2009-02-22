@@ -5784,6 +5784,12 @@
     <name>$PROJ_DIR$\AdrList.h</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\AFile.cpp</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\AFile.h</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\conf_loader.c</name>
   </file>
   <file>

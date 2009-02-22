@@ -76,7 +76,7 @@ int TplMenu::ReadTpl(void)
   char folder[128], dir[128], filepath[128], buf[MAX_TEXT*2], *pp;
   WSHDR *ws, wsn;
   unsigned short wsb[MAX_TEXT];
-  int len, c, res=0, fp, size, wlen;
+  int len, /*c,*/ res=0, fp, size, wlen;
   DIR_ENTRY de;
   TPLIST *tp;
   strcpy(folder, main_folder);

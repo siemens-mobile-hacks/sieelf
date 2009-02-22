@@ -86,7 +86,7 @@ int unicode2ansi(int c) //
 #define CODEMAP_ADDR 0xA0FA0200
 #endif
 
-void ws2ascii(WSHDR *ws, char *s, int maxlen)
+inline void ws2ascii(WSHDR *ws, char *s, int maxlen)
 {
   unsigned short *codemap=(unsigned short *)(CODEMAP_ADDR+32004);
   int i,j=0;
@@ -117,16 +117,23 @@ void ws2ascii(WSHDR *ws, char *s, int maxlen)
   s[j] = 0;
 }
 
-void ascii2ws(WSHDR *ws, const char *s, int maxlen)
+inline void ascii2ws(WSHDR *ws, const char *s, int maxlen)
 {
   unsigned short *codemap=(unsigned short *)(CODEMAP_ADDR);
   char *p=(char *)s;
   unsigned char uc,uc2;
-  ws->wsbody[0] = 0;
+  //ws->wsbody[0] = 0;
+  CutWSTR(ws, 0);
   while((uc=*p++) && (maxlen == 0 || p-s<=maxlen))
   {
     if(uc <= 128)
+    {
       wsAppendChar(ws,uc);
+      if(uc=='\r' && *p=='\n')
+      {
+	p++;
+      }
+    }
     else
     {
       uc2=*p++;

@@ -11,6 +11,7 @@
 #include "OthersMenu.h"
 
 #include "TViewGUI.h"
+#include "AFile.h"
 
 #define OTH_MENU_ITEM_N 7
 
@@ -190,19 +191,43 @@ void OthMenu::ShowAbout()
   MyShowMsg::MyShow(0, msg);
 }
 
-const char *help_str=
-"HotKeys In SMS List:\n\
-4: MoveToArchive\n\
-7: Delete SMS\n\
-*: Show Number Info\n\
-Green: Reply\n\n\
-HotKeys When View:\n\
-*: Show Number Info\n\
-Green: Reply\n\
-Left: The Prev One\n\
-Right: TheNext One\n\n\
-HotKeys When Edit:\n\
-Green: Send";
+#define HLP_BUF_SIZE (16*1024)
+char help_buf[HLP_BUF_SIZE];
+
+void OthMenu::ShowHelp()
+{
+  char filepath[128];
+  AFile file;
+  int len;
+  WSHDR *ws;
+  strcpy(filepath, main_folder);
+  strcat(filepath, "help.txt");
+  if((file.FOpen(filepath, A_ReadOnly, P_READ))!=-1)
+  {
+    len=file.FRead(help_buf, HLP_BUF_SIZE);
+    file.FClose();
+    if(!len)
+      goto HLP_DEFAUT;
+    help_buf[len]='\0';
+    ws=AllocWS(len);
+#ifdef LANG_CN
+    ascii_2ws(ws, help_buf, len);
+#else
+    wsprintf(ws, PERCENT_T, help_buf);
+#endif
+  }
+  else
+  {
+HLP_DEFAUT:
+    ws=AllocWS(256);
+    wsprintf(ws, PERCENT_T, DEFAUT_HLP_STR);
+  }
+  WSHDR *hdr_t=AllocWS(32);
+  wsprintf(hdr_t, PERCENT_T, LGP->lgp.LGP_HELP);
+  TViewGUI *tv=new TViewGUI;
+  tv->CreateTViewGUI(ws, hdr_t);
+}
+/*
 void OthMenu::ShowHelp()
 {
   char filepath[128];
@@ -240,14 +265,14 @@ HLP_FERR:
   {
 HLP_DEFAUT:
     ws=AllocWS(256);
-    wsprintf(ws, PERCENT_T, help_str);
+    wsprintf(ws, PERCENT_T, DEFAUT_HLP_STR);
   }
   WSHDR *hdr_t=AllocWS(32);
   wsprintf(hdr_t, PERCENT_T, LGP->lgp.LGP_HELP);
   TViewGUI *tv=new TViewGUI;
   tv->CreateTViewGUI(ws, hdr_t);
 }
-
+*/
 void OthMenu::ExportTxtAll()
 {
   SUBPROC((void *)SMSDATA->ExportAllToTextBG, SMSDATA);

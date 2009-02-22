@@ -1022,6 +1022,8 @@ MySMSYS/Files/lang_en.txt -text
 MySMSYS/Files/lang_ru.txt -text
 MySMSYS/Filter.c -text
 MySMSYS/Filter.h -text
+MySMSYS/Mss3/AFile.cpp -text
+MySMSYS/Mss3/AFile.h -text
 MySMSYS/Mss3/AdrList.cpp -text
 MySMSYS/Mss3/AdrList.h -text
 MySMSYS/Mss3/CSMSwaper.h -text

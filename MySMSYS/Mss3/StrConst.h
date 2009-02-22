@@ -25,6 +25,7 @@ extern const char STR_TO_UTF8[];
 extern const char STR_FROM_UTF8[];
 extern const char STR_TIME_UTF8[];
 extern const char STR_UNK_UTF8[];
+extern const char DEFAUT_HLP_STR[];
 
 #ifdef LANG_CN
 #define LGP_CFG_MAIN_FOLDER "MySMSYSÎÄ¼þ¼Ð"
