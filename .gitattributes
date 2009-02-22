@@ -1085,6 +1085,8 @@ MySMSYS/Mss3/config_data.h -text
 MySMSYS/Mss3/define.h -text
 MySMSYS/Mss3/func.asm -text
 MySMSYS/Mss3/include.h -text
+MySMSYS/Mss3/lang_cn.txt -text
+MySMSYS/Mss3/lang_en.txt -text
 MySMSYS/Mss3/lgp_pic.h -text
 MySMSYS/Mss3/main.cpp -text
 MySMSYS/Mss3/rect_patcher.h -text

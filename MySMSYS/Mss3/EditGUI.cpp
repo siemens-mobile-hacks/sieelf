@@ -718,7 +718,7 @@ const SOFTKEYSTAB edo_menu_skt=
 */
 const HEADER_DESC edo_menuhdr={0,0,0,0,NULL,LGP_NULL,LGP_NULL};
 
-#define EDO_MENU_ITEM_N 6
+#define EDO_MENU_ITEM_N 7
 
 EditOptionMenu::EditOptionMenu()
 {
@@ -787,12 +787,20 @@ int EditOptionMenu::OnKey(void *data, GUI_MSG *msg)
       }
       break;
     case 4:
+      if (edo->sdl
+	&& strlen(edo->sdl->number)
+	)
+      {
+	MakeVoiceCall(edo->sdl->number,0x10,0x2FFF);
+      }
+      break;
+    case 5:
       {
 	SMSDATA->MoveToArchive(edo->sdl);
       }
       GeneralFunc_flag1(edo->edit_id, 1);
       break;
-    case 5:
+    case 6:
       GeneralFunc_flag1(edo->edit_id, 1);
       break;
     }
@@ -827,6 +835,7 @@ int EDO_ITEM_LGPS[EDO_MENU_ITEM_N]=
   LGP_NULL, //edit
   LGP_NULL, //del
   LGP_SAVE_TO_AB,
+  LGP_NULL, //call
   LGP_NULL, //move to archive
   LGP_NULL, //exit
 };

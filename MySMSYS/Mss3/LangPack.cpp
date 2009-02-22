@@ -81,6 +81,7 @@ const char df_LGP_FILTER[]="Fliter";
 const char df_LGP_INSERT_NUM[]="Ins. Num";
 const char df_LGP_HELP[]="Help";
 const char df_LGP_DEL_N[]="%d SMS Deleted!";
+const char df_LGP_CALL[]="Call";
 
 const char *df_LGPS[]=
 {
@@ -161,6 +162,7 @@ const char *df_LGPS[]=
   df_LGP_INSERT_NUM,
   df_LGP_HELP,
   df_LGP_DEL_N,
+  df_LGP_CALL,
   0,
 };
 
@@ -292,8 +294,9 @@ void LangPack::InitLgp(void)
   SOP_ITEM_LGPS[0]=(int)lgp.LGP_REPLY;
   SOP_ITEM_LGPS[1]=(int)lgp.LGP_EDIT;
   SOP_ITEM_LGPS[2]=(int)lgp.LGP_DEL;
-  SOP_ITEM_LGPS[4]=(int)lgp.LGP_MOVE_ARCHIVE;
-  SOP_ITEM_LGPS[5]=(int)lgp.LGP_EXIT;
+  SOP_ITEM_LGPS[4]=(int)lgp.LGP_CALL;
+  SOP_ITEM_LGPS[5]=(int)lgp.LGP_MOVE_ARCHIVE;
+  SOP_ITEM_LGPS[6]=(int)lgp.LGP_EXIT;
 
   //EditGUI.cpp
   extern SOFTKEY_DESC SK_OPTIONS;
@@ -308,8 +311,9 @@ void LangPack::InitLgp(void)
   EDO_ITEM_LGPS[0]=(int)lgp.LGP_REPLY;
   EDO_ITEM_LGPS[1]=(int)lgp.LGP_EDIT;
   EDO_ITEM_LGPS[2]=(int)lgp.LGP_DEL;
-  EDO_ITEM_LGPS[4]=(int)lgp.LGP_MOVE_ARCHIVE;
-  EDO_ITEM_LGPS[5]=(int)lgp.LGP_EXIT;
+  EDO_ITEM_LGPS[4]=(int)lgp.LGP_CALL;
+  EDO_ITEM_LGPS[5]=(int)lgp.LGP_MOVE_ARCHIVE;
+  EDO_ITEM_LGPS[6]=(int)lgp.LGP_EXIT;
   
   //popupgui.cpp
   extern SOFTKEY_DESC pni_sk[];

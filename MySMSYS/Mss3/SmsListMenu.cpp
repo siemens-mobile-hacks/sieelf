@@ -261,7 +261,7 @@ const SOFTKEYSTAB sop_menu_skt=
 */
 const HEADER_DESC sop_menuhdr={0,0,0,0,NULL,LGP_NULL,LGP_NULL};
 
-#define SOP_MENU_ITEM_N 6
+#define SOP_MENU_ITEM_N 7
 SmsOptionMenu::SmsOptionMenu()
 {
   this->menu.flag=8;
@@ -315,9 +315,17 @@ DO_OP:
       }
       break;
     case 4:
-      SMSDATA->MoveToArchive(sop->sdl);
+      if (sop->sdl
+	&& strlen(sop->sdl->number)
+	)
+      {
+	MakeVoiceCall(sop->sdl->number,0x10,0x2FFF);
+      }
       break;
     case 5:
+      SMSDATA->MoveToArchive(sop->sdl);
+      break;
+    case 6:
       if(!sop->slm_id) GeneralFunc_flag1(sop->dlg_csm->gui_id, 1);
       else GeneralFunc_flag1(sop->slm_id, 1);
       break;
@@ -361,6 +369,7 @@ int SOP_ITEM_LGPS[SOP_MENU_ITEM_N]=
     LGP_NULL, //edit
     LGP_NULL, //delete
     LGP_SAVE_TO_AB,
+    LGP_NULL, //call
     LGP_NULL, //move to archive
     LGP_NULL, //leave
 };

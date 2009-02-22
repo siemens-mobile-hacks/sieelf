@@ -82,6 +82,7 @@ typedef struct _LGPACK
   const char *LGP_INSERT_NUM;
   const char *LGP_HELP;
   const char *LGP_DEL_N;
+  const char *LGP_CALL;
 }LGPACK;
 
 class LangPack : public CFile
