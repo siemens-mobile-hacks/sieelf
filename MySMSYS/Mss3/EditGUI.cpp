@@ -15,6 +15,7 @@
 #include "NativeAddressbook.h"
 #include "CSMswaper.h"
 #include "Template.h"
+#include "CodeShow.h"
 
 #ifdef	LANG_CN
 #define TEXT_INPUT_OPTION ECT_CURSOR_STAY
@@ -251,7 +252,21 @@ enter: 0x3
       //MyShowMsg *msm=new MyShowMsg;
       //msm->MyShow(edg->sdl->number);
       //ShowMSG(1, (int)(edg->sdl->number));
+#ifdef LANG_CN
+      unsigned short wscsb[32];
+      WSHDR *wmsg, *wscs, _wscs;
+      wmsg=AllocWS(150);
+      wscs=CreateLocalWS(&_wscs, wscsb, 32);
+      GetProvAndCity(wscs->wsbody, edg->sdl->number);
+      wsprintf(wmsg, "%s\n%t:\n%w",
+	edg->sdl->number,
+	LGP->lgp.LGP_CODESHOW,
+	wscs
+	);
+      MyShowMsg::MyShow(1, wmsg);
+#else
       MyShowMsg::MyShow(1, edg->sdl->number);
+#endif
     }
   }
   else

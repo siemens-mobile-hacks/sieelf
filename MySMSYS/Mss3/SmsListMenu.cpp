@@ -15,6 +15,7 @@
 #include "PopupGUI.h"
 
 #include "NativeAddressbook.h"
+#include "CodeShow.h"
 
 SOFTKEY_DESC sms_menu_sk[]=
 {
@@ -81,7 +82,21 @@ int SmsListMenu::OnKey(void *data, GUI_MSG *msg)
   }
   else if (msg->keys==0x14)
   {
+#ifdef LANG_CN
+    unsigned short wscsb[32];
+    WSHDR *wmsg, *wscs, _wscs;
+    wmsg=AllocWS(150);
+    wscs=CreateLocalWS(&_wscs, wscsb, 32);
+    GetProvAndCity(wscs->wsbody, sdl->number);
+    wsprintf(wmsg, "%s\n%t:\n%w",
+      sdl->number,
+      LGP->lgp.LGP_CODESHOW,
+      wscs
+      );
+    MyShowMsg::MyShow(1, wmsg);
+#else
     MyShowMsg::MyShow(1, sdl->number);
+#endif
     //{
     //  ShowMSG(1, (int)(sdl->number));
     //}

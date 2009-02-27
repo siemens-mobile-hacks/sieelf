@@ -5790,6 +5790,22 @@
     <name>$PROJ_DIR$\AFile.h</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\CodeShow.cpp</name>
+    <excluded>
+      <configuration>Release_NSG_EN</configuration>
+      <configuration>Release_S68_EN</configuration>
+      <configuration>Release_ELKA_EN</configuration>
+    </excluded>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\CodeShow.h</name>
+    <excluded>
+      <configuration>Release_NSG_EN</configuration>
+      <configuration>Release_S68_EN</configuration>
+      <configuration>Release_ELKA_EN</configuration>
+    </excluded>
+  </file>
+  <file>
     <name>$PROJ_DIR$\conf_loader.c</name>
   </file>
   <file>

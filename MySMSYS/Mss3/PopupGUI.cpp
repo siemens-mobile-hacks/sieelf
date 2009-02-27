@@ -9,7 +9,7 @@
 #include "EditGUI.h"
 //#include "..\..\inc\mplayer.h"
 #include "PopupGUI.h"
-
+#include "CodeShow.h"
 //short PLAY_ID=0;
 //int vibra_power=0;
 //int sound_vol=0;
@@ -230,13 +230,39 @@ int PopupNewIn::CreatePopupNewIn(DLG_CSM *dlg_csm, SDLIST *sdl)
   this->sdl=sdl;
   //this->dat_index=dat_index;
   ws=AllocWS(150);
+#ifdef LANG_CN
+  unsigned short wscs_b[32];
+  WSHDR *wscs, _wscs;
+  wscs=CreateLocalWS(&_wscs, wscs_b, 32);
+  GetProvAndCity(wscs->wsbody, sdl->number);
+#endif
   if(!(this->cl=ADRLST->FindCList(sdl->number)))
   {
+#ifdef LANG_CN
+    wsprintf(ws, "%t\n%t:\n%s\n%t:\n%w",
+      LGP->lgp.LGP_NEW_MSG,
+      LGP->lgp.LGP_FROM,
+      sdl->number,
+      LGP->lgp.LGP_CODESHOW,
+      wscs
+      );
+#else
     wsprintf(ws, "%t\n%t:\n%s", LGP->lgp.LGP_NEW_MSG, LGP->lgp.LGP_FROM, sdl->number);
+#endif
   }
   else
   {
+#ifdef LANG_CN
+    wsprintf(ws, "%t\n%t:\n%w\n%t:\n%w",
+      LGP->lgp.LGP_NEW_MSG,
+      LGP->lgp.LGP_FROM,
+      this->cl->name,
+      LGP->lgp.LGP_CODESHOW,
+      wscs
+      );
+#else
     wsprintf(ws, "%t\n%t:\n%w", LGP->lgp.LGP_NEW_MSG, LGP->lgp.LGP_FROM, this->cl->name);
+#endif
   }
   return CreatePopupGUI_ws(1, this, &this->popup, ws);
 }

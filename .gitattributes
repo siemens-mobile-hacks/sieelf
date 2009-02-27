@@ -1028,6 +1028,8 @@ MySMSYS/Mss3/AdrList.cpp -text
 MySMSYS/Mss3/AdrList.h -text
 MySMSYS/Mss3/CSMSwaper.h -text
 MySMSYS/Mss3/CSMswaper.cpp -text
+MySMSYS/Mss3/CodeShow.cpp -text
+MySMSYS/Mss3/CodeShow.h -text
 MySMSYS/Mss3/CreateMenu.cpp -text
 MySMSYS/Mss3/CreateMenu.h -text
 MySMSYS/Mss3/DaemonCSM.cpp -text

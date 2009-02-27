@@ -19,12 +19,12 @@ Vibra::~Vibra()
 {
   this->VibraStop();
 }
-
+/*
 inline int mystr2int(const char *p)
 {
   int r=0;
   int c;
-  while(c=*p++)
+  while((c=*p++))
   {
     if(c>'9' || c<'0')
       break;
@@ -32,7 +32,7 @@ inline int mystr2int(const char *p)
   }
   return r;
 }
-
+*/
 void Vibra::InitThythm()
 {
   int n=1;
@@ -49,7 +49,8 @@ void Vibra::InitThythm()
     }
     else
     {
-      this->thythm[n]=mystr2int(p);
+      //this->thythm[n]=mystr2int(p);
+      this->thythm[n]=str2int(p);
       n++;
       while((c=*p))
       {

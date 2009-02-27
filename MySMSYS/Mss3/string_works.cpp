@@ -319,7 +319,7 @@ int ws_2num(WSHDR *ws, char *num, int maxlen)
   num[i]=0;
   return i;
 }
-
+/*
 int str2int(const char *str)
 {
   int i, r=0, c, len, n;
@@ -342,7 +342,23 @@ int str2int(const char *str)
     r+=c;
   }
   return r;
+}*/
+
+int str2int(const char *p)
+{
+  int r=0;
+  int c;
+  if(!p)
+    return 0;
+  while((c=*p++))
+  {
+    if(c>'9' || c<'0')
+      break;
+    r=r*10+c-'0';
+  }
+  return r;
 }
+
 #ifdef MM
 char *GotoCurChar(unsigned char *p, int c)
 {
