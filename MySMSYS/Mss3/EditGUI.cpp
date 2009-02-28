@@ -70,24 +70,24 @@ EditGUI::~EditGUI()
   this->nlst=NULL;
 }
 
-void EditGUI::EditSendSMS(DLG_CSM *dlg_csm, WSHDR *text, const char *number)
-{
-  WSHDR *ws;
-  int len;
-  if(!dlg_csm || !text || !number)
-    return;
-  len=text->wsbody[0];
-  if(!len || !strlen(number))
-  {
-    MsgBoxError(1, (int)"Nothing!!!");
-    return;
-  }
-  ws=AllocWS(len+3);
-  wstrcpy(ws, text);
-  SendSMS(ws, number, MMI_CEPID, MSG_SMS_RX-1, 6);
-  DoSendBackGround(dlg_csm);
-  if(CFG_ENA_SAVE_SENT) SMSDATA->SaveMss(text, number, NULL, TYPE_SENT, 2);
-}
+//DEL void EditGUI::EditSendSMS(DLG_CSM *dlg_csm, WSHDR *text, const char *number)
+//DEL {
+//DEL   WSHDR *ws;
+//DEL   int len;
+//DEL   if(!dlg_csm || !text || !number)
+//DEL     return;
+//DEL   len=text->wsbody[0];
+//DEL   if(!len || !strlen(number))
+//DEL   {
+//DEL     MsgBoxError(1, (int)"Nothing!!!");
+//DEL     return;
+//DEL   }
+//DEL   ws=AllocWS(len+3);
+//DEL   wstrcpy(ws, text);
+//DEL   SendSMS(ws, number, MMI_CEPID, MSG_SMS_RX-1, 6);
+//DEL   DoSendBackGround(dlg_csm);
+//DEL   if(CFG_ENA_SAVE_SENT) SMSDATA->SaveMss(text, number, NULL, TYPE_SENT, 2);
+//DEL }
 
 #define USER_ITEM_N 5
 void EditGUI::EdOpUserItem(USR_MENU_ITEM *item)
@@ -257,7 +257,7 @@ enter: 0x3
       WSHDR *wmsg, *wscs, _wscs;
       wmsg=AllocWS(150);
       wscs=CreateLocalWS(&_wscs, wscsb, 32);
-      GetProvAndCity(wscs->wsbody, edg->sdl->number);
+      CodeShow::GetProvAndCity(wscs->wsbody, edg->sdl->number);
       wsprintf(wmsg, "%s\n%t:\n%w",
 	edg->sdl->number,
 	LGP->lgp.LGP_CODESHOW,

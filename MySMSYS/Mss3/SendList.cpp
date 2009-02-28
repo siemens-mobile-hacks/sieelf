@@ -213,6 +213,6 @@ void SendList::Send(SendList *sndlst)
     && tcsm->id
     )
   {
-    CSMtoTop(tcsm->id, -1);
+    CSMSwaper::CSMtoTop(tcsm->id, -1);
   }
 }

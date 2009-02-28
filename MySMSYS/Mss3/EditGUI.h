@@ -32,7 +32,6 @@ private:
   DLG_CSM *dlg_csm;
 //  CLIST *cl;
 //  char number[50];
-  void EditSendSMS(DLG_CSM *dlg_csm, WSHDR *text, const char *number);
   static int OnKey(void *data, GUI_MSG *msg);
   static void GHook(void *data, int cmd);
   static void Locret(void);

@@ -1,86 +1,13 @@
-/********************************************************************
-   (C) Copyright free source ,by Bennie.Joe@Gmail.com  
+// CodeShow.cpp: implementation of the CCodeShow class.
+//
+//////////////////////////////////////////////////////////////////////
 
-	filename: 	CodeShow.c
-	created:	2005-10-1
-	author:		Bennie
-	
-	describe:	replaces provider name with custom format
-	history:    2005-06-22 V2
-*********************************************************************/
-#include "..\..\inc\swilib.h"
-#include "string_works.h"
+#include "include.h"
 #include "CodeShow.h"
 
-#define VERSION "2.0b"
-
-#define BASEADDRESS			0xA1580000
-#define CODESHOWDATAADDRESS	BASEADDRESS
-#define IPCODETABLECOUNT	(BASEADDRESS+0x1E000)
-#define REPEATSELECTTABLE	(BASEADDRESS+0x1F000)
-#define LOCALNOINFOTABLE	(BASEADDRESS+0x1F100)
-#define CODESHOWFLAG		0xFB
-#define CODESHOWVERSION		2
-#define MAXCITYNO			0x1FF
-#define COUNTRYCODETABLE	(BASEADDRESS+0x1E100)
-
-#define LOBYTE(w) ((byte)(w))
-#define HIBYTE(w) ((byte)(((word)(w) >> 8) & 0xFF))
-
-typedef unsigned char  byte;
-typedef unsigned short word;
-typedef unsigned int   dword;
-typedef unsigned int   uint;
-
-typedef struct {
-    byte Flag;
-    byte ID;
-    byte Version;
-    byte Year;
-    byte Month;
-    byte Day;
-    byte ProvinceNameLen;
-    byte CityNameLen;
-    dword CodeTableOffset;
-    dword CodeCount;
-    dword LocaleTableOffset;
-    dword LocaleCount;
-    dword ProvinceTableOffset;
-    dword ProvinceCount;
-    dword CityTableOffset;
-    dword CityCount;
-}CODESHOWHEAD;
-
-#pragma pack(2)
-typedef struct {
-    word ProvinceName[3];
-    word StartOffset;
-    word EndOffset;
-}PROVINCE;
-
-typedef struct {
-    word CityName[6];
-    word LocaleNo     :10;
-    word ProvinceNo   :6;
-}CITY;
-#pragma pack()
-
-typedef struct {
-    word LocaleNo;
-    word CityNo;
-}LOCALE;
-
-typedef struct {
-    word CRNo;
-    byte Names[14];
-}CRNO;
-
-
-int GetProvAndCity(word *pBSTR, char *pNoStr);
-void BSTRAdd(word *pDst, const word * pSrc, int Count );
-word GetCode(byte *pBuf, dword Index);
-word FindLocale(LOCALE *pLocale, int LocaleCount, int LocaleNo, int *nRepeatNum);
-void AppendInfoW(WSHDR *pWS, WSHDR * pNo);
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
 
 const word szUnknownUser[] 	= { 0x672A, 0x77E5, 0x53F7,0x7801, 0};
 const word szErrorData[] 	= { 0x6570, 0x636E, 0x5E93, 0x9519, 0x8BEF, 0};
@@ -88,126 +15,22 @@ const word szLocalCode[] 	= { 0x672C, 0x5730, 0x53F7,0x7801, 0};
 const word szSplit[] 		= { 0x2027, 0 };
 const word szAddInfo[] 		= { 0x20, 0 };
 
-/****************/
-/* main program */
-/****************/
+CodeShow::CodeShow()
+{
 
+}
 
+CodeShow::~CodeShow()
+{
 
-//extern  unsigned  long   strtoul  (const  char  *nptr,char  **endptr,int  base);
+}
 
 inline unsigned long atou(char *str)
 {
   return (str2int(str));
-//return (strtoul(str,&str,10));
-}
-//参考along代码 国际代码
-char FindCRName(word *pBSTR, char *szNo)
-{
-	if(memcmp(szNo, "86", 2) == 0)//中国内地
-		return 0;
-	else
-	{
-          char szTemp[5]="\0";
-	  word wCRNo;
-	  word wTable=*(word *)COUNTRYCODETABLE;
-	  word wCount=*(word *)(COUNTRYCODETABLE+2);
-	  const word *pTable=(word *)(COUNTRYCODETABLE+4);
-	  CRNO *pCRNO=(CRNO *)(COUNTRYCODETABLE+(wTable+2<<1));
-	  int j = 0, k, nRepeatNum = 0;
-	  int i = 0, nStart = 0, nEnd = wCount;
-	  int len=strlen(szNo);
-	  if(len > 4)len = 4;
-	  for(k=len; k>0; k--)
-	    {
-		memcpy(szTemp, szNo, k);
-		nStart = 0, nEnd = wCount;
-		wCRNo = atou(szTemp);
-		while(nStart <= nEnd)
-		  {
-		      i = (nEnd+nStart)/2;
-		      if(wCRNo == pCRNO[i].CRNo)
-			{
-			  do{		  
-                              if(wCRNo != pCRNO[i].CRNo)break;
-			      i--;
-			    }while(i > 0);
-		          i++;
-		          j = i;
-			  do{
-			      if(wCRNo != pCRNO[j].CRNo)break;
-			      j++;
-			      nRepeatNum++;
-			    }while(j <= nEnd);
-			  break;
-			}
-		  if(wCRNo < pCRNO[i].CRNo)nStart = i+1;
-                  else nEnd = i-1;
-                }
-            if(nRepeatNum > 0)break;
-           }
-        if(nRepeatNum == 0)
-          {
-      	    BSTRAdd(pBSTR, szUnknownUser, 4);
-          }
-       else
-         {
-      	    for(j=0; j<nRepeatNum; j++)
-      	      {
-      		for(k=0; k<12; k++)
-      		{
-      		    wCRNo = GetCode(pCRNO[i+j].Names, k);
-      		    if(wCRNo == MAXCITYNO)break;
-      		    else BSTRAdd(pBSTR, pTable+wCRNo, 1);
-      		}
-      		if(j+1 != nRepeatNum)
-      		{
-      		    BSTRAdd(pBSTR, szAddInfo, 1);
-      		}
-      	    }
-         }
-      }
-      return 1;
 }
 
-
-//WSHDR号码版本
-void AppendInfoW(WSHDR *pWS, WSHDR * pNo)
-{
-	char szPNo[0x30];
-	int i=0;
-	for(; i<*pNo->wsbody && i<0x2B; ++i)
-	{
-		szPNo[i] = pNo->wsbody[i+1];
-	}
-	szPNo[i] = '\0';
-	GetProvAndCity(pWS->wsbody, szPNo);			
-}
-
-word GetLocalNoInfo(char *szLocalNo, char *szLocalName)
-{
-	int i = 0;
-	word len = 0;
-	word no1, no2;
-	int nLocalNo=atou(szLocalNo);
-	int nLocalNum=*(int*)LOCALNOINFOTABLE;
-	const char * pLocalInfo = (const char *)(LOCALNOINFOTABLE+20);
-	for(; i< nLocalNum; ++i, pLocalInfo += 14)
-	{
-	    no1 = *(word *)(pLocalInfo);
-	    no2 = *(word *)(pLocalInfo+2);
-		if(no1 <= nLocalNo && nLocalNo <= no2)
-		{
-		    len = 5;
-		    memcpy(szLocalName, (char *)(pLocalInfo+4), 10);
-			break;
-		}
-	}
-	return len;
-}
-
-//得到号码所对应的省市字串  
-int GetProvAndCity(word *pBSTR, char *pNo)
+int CodeShow::GetProvAndCity(word *pBSTR, char *pNo)
 {
   char NoStr[0x30];
   char *pNoStr=NoStr;
@@ -347,8 +170,15 @@ int GetProvAndCity(word *pBSTR, char *pNo)
 	}
 }
 
-//从手机号码表中查找对应的城市号
-word GetCode(byte *pBuf, dword Index)
+void CodeShow::BSTRAdd(word *pDst, const word *pSrc, int Count)
+{
+	uint nSize = *pDst, i=1;
+	while(*pSrc != '\0' && i<=Count)
+		*(pDst+ nSize + i++) = *pSrc++;
+	*pDst = nSize+i-1;
+}
+
+word CodeShow::GetCode(byte *pBuf, dword Index)
 {
     word CodeL, CodeH;
     pBuf = pBuf + (Index + (Index>>3));					//每条记录9个bit,即Index*9/8
@@ -358,8 +188,7 @@ word GetCode(byte *pBuf, dword Index)
     return (CodeH + CodeL);								//拼接高低字节,共9位
 }
 
-//从长话区号表中查找对应的城市号
-word FindLocale(LOCALE *pLocale, int LocaleCount, int LocaleNo, int *nRepeatNum)
+word CodeShow::FindLocale(LOCALE *pLocale, int LocaleCount, int LocaleNo, int *nRepeatNum)
 {
 	//长话区号表是顺序存储的,下面是个简单的二分法查找.
 	int j = 0;
@@ -413,13 +242,104 @@ word FindLocale(LOCALE *pLocale, int LocaleCount, int LocaleNo, int *nRepeatNum)
       return	(nStart > nEnd)? MAXCITYNO:pLocale[i].CityNo;
 }
 
-//附加UNICODE字串到另一个字串上,结束标志是L'\0'或Count个字符
-void BSTRAdd(word *pDst, const word * pSrc, int Count)
+void CodeShow::AppendInfoW(WSHDR *pWS, WSHDR *pNo)
 {
-	uint nSize = *pDst, i=1;
-	while(*pSrc != '\0' && i<=Count)
-		*(pDst+ nSize + i++) = *pSrc++;
-	*pDst = nSize+i-1;
+	char szPNo[0x30];
+	int i=0;
+	for(; i<*pNo->wsbody && i<0x2B; ++i)
+	{
+		szPNo[i] = pNo->wsbody[i+1];
+	}
+	szPNo[i] = '\0';
+	GetProvAndCity(pWS->wsbody, szPNo);	
 }
 
+word CodeShow::GetLocalNoInfo(char *szLocalNo, char *szLocalName)
+{
+	int i = 0;
+	word len = 0;
+	word no1, no2;
+	int nLocalNo=atou(szLocalNo);
+	int nLocalNum=*(int*)LOCALNOINFOTABLE;
+	const char * pLocalInfo = (const char *)(LOCALNOINFOTABLE+20);
+	for(; i< nLocalNum; ++i, pLocalInfo += 14)
+	{
+	    no1 = *(word *)(pLocalInfo);
+	    no2 = *(word *)(pLocalInfo+2);
+		if(no1 <= nLocalNo && nLocalNo <= no2)
+		{
+		    len = 5;
+		    memcpy(szLocalName, (char *)(pLocalInfo+4), 10);
+			break;
+		}
+	}
+	return len;
+}
 
+char CodeShow::FindCRName(word *pBSTR, char *szNo)
+{
+	if(memcmp(szNo, "86", 2) == 0)//中国内地
+		return 0;
+	else
+	{
+          char szTemp[5]="\0";
+	  word wCRNo;
+	  word wTable=*(word *)COUNTRYCODETABLE;
+	  word wCount=*(word *)(COUNTRYCODETABLE+2);
+	  const word *pTable=(word *)(COUNTRYCODETABLE+4);
+	  CRNO *pCRNO=(CRNO *)(COUNTRYCODETABLE+(wTable+2<<1));
+	  int j = 0, k, nRepeatNum = 0;
+	  int i = 0, nStart = 0, nEnd = wCount;
+	  int len=strlen(szNo);
+	  if(len > 4)len = 4;
+	  for(k=len; k>0; k--)
+	    {
+		memcpy(szTemp, szNo, k);
+		nStart = 0, nEnd = wCount;
+		wCRNo = atou(szTemp);
+		while(nStart <= nEnd)
+		  {
+		      i = (nEnd+nStart)/2;
+		      if(wCRNo == pCRNO[i].CRNo)
+			{
+			  do{		  
+                              if(wCRNo != pCRNO[i].CRNo)break;
+			      i--;
+			    }while(i > 0);
+		          i++;
+		          j = i;
+			  do{
+			      if(wCRNo != pCRNO[j].CRNo)break;
+			      j++;
+			      nRepeatNum++;
+			    }while(j <= nEnd);
+			  break;
+			}
+		  if(wCRNo < pCRNO[i].CRNo)nStart = i+1;
+                  else nEnd = i-1;
+                }
+            if(nRepeatNum > 0)break;
+           }
+        if(nRepeatNum == 0)
+          {
+      	    BSTRAdd(pBSTR, szUnknownUser, 4);
+          }
+       else
+         {
+      	    for(j=0; j<nRepeatNum; j++)
+      	      {
+      		for(k=0; k<12; k++)
+      		{
+      		    wCRNo = GetCode(pCRNO[i+j].Names, k);
+      		    if(wCRNo == MAXCITYNO)break;
+      		    else BSTRAdd(pBSTR, pTable+wCRNo, 1);
+      		}
+      		if(j+1 != nRepeatNum)
+      		{
+      		    BSTRAdd(pBSTR, szAddInfo, 1);
+      		}
+      	    }
+         }
+      }
+      return 1;
+}

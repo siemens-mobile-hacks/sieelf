@@ -221,8 +221,10 @@ int wstrcmp_nocase(WSHDR *ws1, WSHDR *ws2)
     ds=ws2->wsbody[pos];
     if(cs<0x1000 && ds<0x1000)
     {
+#ifndef LANG_CN
     	cs=char16to8(cs);
     	ds=char16to8(ds);
+#endif
     	if(cs&0x40) cs&=0xDF;
     	if(ds&0x40) ds&=0xDF;
     }
@@ -246,8 +248,10 @@ int wstrncmp_nocase(WSHDR *ws1, WSHDR *ws2, int n)
     ds=ws2->wsbody[pos];
     if(cs<0x1000 && ds<0x1000)
     {
+#ifndef LANG_CN
     	cs=char16to8(cs);
     	ds=char16to8(ds);
+#endif
     	if(cs&0x40) cs&=0xDF;
     	if(ds&0x40) ds&=0xDF;
     }
@@ -462,9 +466,10 @@ int w_charcmp_nocase(unsigned short *t1, unsigned short *t2, int len)
     ds=t2[pos];
     if(cs<0x1000 && ds<0x1000)
     {
-      extern int char16to8(int c);
-      cs=char16to8(cs);
-      ds=char16to8(ds);
+#ifndef LANG_CN
+    	cs=char16to8(cs);
+    	ds=char16to8(ds);
+#endif
       if(cs&0x40) cs&=0xDF;
       if(ds&0x40) ds&=0xDF;
     }

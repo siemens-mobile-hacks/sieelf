@@ -4,13 +4,13 @@
 class SiememPDU
 {
 public:
-  void Bit7Decode(WSHDR *ws, char *pdata, int skip, int len);
-  int PduDecodeTxt(SDLIST *sd, char *data);
-  int PduDecodeAll(SDLIST *sd, char *data);
-  void DoSmsReport(SDLIST *sd, char *data, WSHDR *ws);
+  static int PduDecodeTxt(SDLIST *sd, char *data);
+  static int PduDecodeAll(SDLIST *sd, char *data);
+  static void DoSmsReport(SDLIST *sd, char *data, WSHDR *ws);
 private:
-  void Add2WS(char *data, WSHDR *ws, int len);
-  void Hex2Num(char *hex, char *num, int len);
+  static void Add2WS(char *data, WSHDR *ws, int len);
+  static void Hex2Num(char *hex, char *num, int len);
+  static void Bit7Decode(WSHDR *ws, char *pdata, int skip, int len);
 };
 
 #endif

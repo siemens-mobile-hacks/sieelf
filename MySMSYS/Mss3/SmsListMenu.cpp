@@ -87,7 +87,7 @@ int SmsListMenu::OnKey(void *data, GUI_MSG *msg)
     WSHDR *wmsg, *wscs, _wscs;
     wmsg=AllocWS(150);
     wscs=CreateLocalWS(&_wscs, wscsb, 32);
-    GetProvAndCity(wscs->wsbody, sdl->number);
+    CodeShow::GetProvAndCity(wscs->wsbody, sdl->number);
     wsprintf(wmsg, "%s\n%t:\n%w",
       sdl->number,
       LGP->lgp.LGP_CODESHOW,

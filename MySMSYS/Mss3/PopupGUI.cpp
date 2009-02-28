@@ -234,7 +234,7 @@ int PopupNewIn::CreatePopupNewIn(DLG_CSM *dlg_csm, SDLIST *sdl)
   unsigned short wscs_b[32];
   WSHDR *wscs, _wscs;
   wscs=CreateLocalWS(&_wscs, wscs_b, 32);
-  GetProvAndCity(wscs->wsbody, sdl->number);
+  CodeShow::GetProvAndCity(wscs->wsbody, sdl->number);
 #endif
   if(!(this->cl=ADRLST->FindCList(sdl->number)))
   {

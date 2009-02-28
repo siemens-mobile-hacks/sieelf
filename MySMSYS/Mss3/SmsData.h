@@ -58,12 +58,12 @@ public:
   static void MoveAllToArchiveBG(SmsData *data);
 
 //list
-  SDLIST *AllocSDL(void);
+  static SDLIST *AllocSDL(void);
   void AddByTimeSDL(SDLIST *sdl);
   void DeleteSDL(SDLIST *sdl);
   void FreeAllSDL(void);
   void FreeOneSDL(SDLIST *sdl);
-  SDLIST *CopyOneSDL(SDLIST *sdl);
+  static SDLIST *CopyOneSDL(SDLIST *sdl);
   SDLIST *FindSDL(WSHDR *text, char *time, char *num);
   SDLIST *FindSDL(char *filename);
   SDLIST *FindSDL(int type, int n);
