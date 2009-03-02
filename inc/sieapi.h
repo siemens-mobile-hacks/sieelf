@@ -139,7 +139,7 @@ _C_LIB_DECL
  //获取手机内部对应的字体
  __INTRINSIC uint FontType(int index);
  //播放声音文件,支持手机内部所有声音文件
- __INTRINSIC int PlayMusic(const char *fname, uint VOLUME, uint RepeatNum);
+ __INTRINSIC int PlayMusic(const char *fname, uint VOL, uint REP);
  //动态菜单创建函数
  __INTRINSIC TMenu *BuildMenu(char *Title[]);
  __INTRINSIC void DrawMenu(void *gui, int cur_item, void *user_pointer);
@@ -165,8 +165,8 @@ _C_LIB_DECL
  __INTRINSIC uword GetDayFromYearBegin(ulong AYear,ubyte AMonth,ubyte ADay);// 取某日期到年初的天数
  __INTRINSIC ubyte FileExists(char *FileName,int *Handle);//判断文件是否存在!
  __INTRINSIC void *CreateCanvas();//创建画布指针
- __INTRINSIC void  SearchSub(const char *source,const char *sub,char *result);//获取子字串
- __INTRINSIC int   FindSub(char *source,const char *sub,char *result,uword len);
+ __INTRINSIC short MidStr(const char *src,const char *sub,char *result);//获取子字串
+ __INTRINSIC short FindSub(const char *src,const char *sub,char *result);
 //PNG转换相关函数 
  __INTRINSIC IMGHDR_Draw(IMGHDR *Handle, int x, int y, char *pen, char *brush);
  __INTRINSIC IMGHDR_Delete(IMGHDR *Handle);
@@ -639,7 +639,7 @@ static uint FontType(int index)
  }
 }
 #pragma inline//播放音乐文件
-static int PlayMusic(const char *fname, uint VOLUME, uint RepeatNum)
+static int PlayMusic(const char *fname, uint VOL, uint REP)
 {
     int Handle=0;
     FSTATS fstats;
@@ -656,10 +656,10 @@ static int PlayMusic(const char *fname, uint VOLUME, uint RepeatNum)
       str_2ws(sndPath,s,128);
       
       zeromem(&INFO,sizeof(PLAYFILE_OPT));
-      INFO.repeat_num=RepeatNum;
+      INFO.repeat_num=REP;
       INFO.time_between_play=0;
       INFO.play_first=0;
-      INFO.volume=VOLUME;
+      INFO.volume=VOL;
      #ifdef NEWSGOLD
       INFO.unk6=1;
       INFO.unk7=1;
@@ -1002,19 +1002,30 @@ static void *CreateCanvas()
   return NULL;
 }
 #pragma inline//获取字串
-static void SearchSub(const char *source,const char *sub,char *result)
-{
-  char *s=strstr(source,sub);
+static short MidStr(const char *src,const char *sub,char *res){
+  char *s=strstr(src,sub);
   if(s){  
       int c,i=0;
-      char TEMP[256];
+      char tmp[256];
       s+=strlen(sub);       
-      while((c=*s++)!=0x0A){if (i<(sizeof(TEMP)-1)) TEMP[i++]=c;}
-      TEMP[i]=0;
-      strcpy(result,TEMP);
-      return;
-  }
-  result=NULL;
+      while(((c=*s++)!=0x0A)&&(i<(sizeof(tmp)-1))){
+        tmp[i++]=c;
+      }
+      tmp[i]=0;
+      strcpy(res,tmp);
+      return 1;
+  }else{res[0]=0; return 0;}
+}
+#pragma inline//搜索字串
+static short FindSub(const char *src,const char *s,char *res)
+{
+  char *p = strstr(src,s);
+  if(p){
+    char *sub = strchr(p,0x0A);
+    uword len = strlen(s);
+    strncpy(res,p+len,sub-p-len);
+    return 1;
+  }else{return 0;}
 }
 #pragma inline//初始IMGHDR
 static color IMGHDR_Color(IMGHDR *Handle, int x, int y)
@@ -1171,16 +1182,7 @@ static IMGHDR_Draw(IMGHDR *Handle, int x, int y, char *pen, char *brush)
   SetColor(&drwobj,pen,brush);
   DrawObject(&drwobj);
 }
-#pragma inline//搜索字串
-static int FindSub(char *source,const char *sub,char *result,uword len)
-{
-  char *p = strstr(source,sub);
-  if(p){
-    char *pa = strchr(p,0x0A);
-    strncpy(result,p+len,pa-p-len);
-    return 1;
-  }else{return 0;}
-}
+
 #endif/*SIEAPI_H_*/
 
 //导出函数引用表
@@ -1240,7 +1242,7 @@ static int FindSub(char *source,const char *sub,char *result,uword len)
  using _CSTD GetDayFromYearBegin;
  using _CSTD FileExists;
  using _CSTD CreateCanvas;
- using _CSTD SearchSub;
+ using _CSTD MidStr;
  using _CSTD KeyButton;
  using _CSTD IMGHDR_Draw;
  using _CSTD IMGHDR_Delete;
