@@ -1,4 +1,4 @@
-;***区号秀手机版 v1.85***
+;***区号秀手机版 v2.0***
 ;(c) Bennie
 ;(i) Along,starfriend,Robin,BingK(binghelingxi),DaiKangaroo,jpg001
 ;V1.1-> 增加了对电话簿的支持
@@ -23,8 +23,10 @@
 ;V1.7-> 2008.07.29 SGOLD增加阅读短信区号秀支持,DaiKangaroo,增加国际码识别,国际码识别功能代码来自along
 ;V1.8-> 2008.08.07 使用多行菜单来显示多号码选择菜单中的区号秀,BingK(binghelingxi)
 ;V1.8.1-> 2008.11.17 修正号码菜单中带+86的号码的区号显示,BingK(binghelingxi)
-;V1.8-> 2009.01.15 多行菜单显示多号码选择区号秀移植到SGold,可识别18X段号码和集团短号,DaiKangaroo
+;V1.8-> 2009.01.15 多行菜单显示多号码选择区号秀移植到SGold,可识别集团短号,DaiKangaroo
 ;V1.85-> 2009.01.25 SGold通过修改阅读短信标题栏显示区号秀,DaiKangaroo
+;V2.0-> 2009.03.05 采用新版本数据库By Along，支持18X，14X号码段，代码更新By Daikangaroo
+;
 ;修改省市间的分割符(默认为点):
 ;例如：2720:点, 2000:空格, 4000:＠, 2A00:＃, 2300:*(即标准UniCode码高低字节倒序)
 ;

@@ -15,13 +15,21 @@
 
 //#define BASEADDRESS			0xA1580000
 #define CODESHOWDATAADDRESS	BASEADDRESS
-#define IPCODETABLECOUNT	(BASEADDRESS+0x1E000)
-#define REPEATSELECTTABLE	(BASEADDRESS+0x1F000)
-#define LOCALNOINFOTABLE	(BASEADDRESS+0x1F100)
+#ifdef OLD_VER // 老版数据库格式
+#define IPCODETABLECOUNT (BASEADDRESS+0x1E000)
+#define COUNTRYCODETABLE (BASEADDRESS+0x1E100)
+#define REPEATSELECTTABLE (BASEADDRESS+0x1F200)
+#define LOCALNOINFOTABLE (BASEADDRESS+0x1F300)
+#else
+#define IPCODETABLECOUNT (BASEADDRESS+0x0080)
+#define COUNTRYCODETABLE (BASEADDRESS+0x0180)
+#define REPEATSELECTTABLE (BASEADDRESS+0x1280)
+#define LOCALNOINFOTABLE (BASEADDRESS+0x1380)
+#endif
 #define CODESHOWFLAG		0xFB
 #define CODESHOWVERSION		2
-#define MAXCITYNO			0x1FF
-#define COUNTRYCODETABLE	(BASEADDRESS+0x1E100)
+#define MAXCITYNO		0x1FF
+
 
 #define LOBYTE(w) ((byte)(w))
 #define HIBYTE(w) ((byte)(((word)(w) >> 8) & 0xFF))
@@ -33,12 +41,14 @@ extern uint atou(const char*);
 extern WSTRING*  WS_InitByZero(WSTRING*, word* buf, int count);
 extern void GetCalleeNumber(int index, WSTRING *ws);
 extern void UpdateWndItem(void* Countext, WSTRING* ws, int index); 
- 
 int GetProvAndCity(word *pBSTR, char *pNoStr);
 void BSTRAdd(word *pDst, const word * pSrc, int Count );
-word GetCode(byte *pBuf, dword Index);
 word FindLocale(LOCALE *pLocale, int LocaleCount, int LocaleNo, int *nRepeatNum);
 void AppendInfoW(WSTRING *pWS, WSTRING * pNo);
+word GetCode(byte *pBuf, dword Index);
+#ifndef OLD_VER
+word GetCodeRange(CRANGE *pBuf, uint dwNum, uint dwNo);
+#endif
 
 const word szUnknownUser[] 	= { 0x672A, 0x77E5, 0x53F7,0x7801, 0};
 const word szErrorData[] 	= { 0x6570, 0x636E, 0x5E93, 0x9519, 0x8BEF, 0};
@@ -57,6 +67,7 @@ void memcpy(char *szDest, char *szSrc, int len)
     szDest[i] = szSrc[i];
   szDest[len] = 0;
 }
+
 //参考along代码 国际代码
 char FindCRName(word *pBSTR, char *szNo)
 #ifdef SK6Cv50
@@ -115,7 +126,7 @@ char FindCRName(word *pBSTR, char *szNo)
       	      {
       		for(k=0; k<12; k++)
       		{
-      		    wCRNo = GetCode(pCRNO[i+j].Names, k);
+      		    wCRNo = GetCode(pCRNO[i+j].Names, k);//????
       		    if(wCRNo == MAXCITYNO)break;
       		    else BSTRAdd(pBSTR, pTable+wCRNo, 1);
       		}
@@ -216,12 +227,17 @@ int GetProvAndCity(word *pBSTR, char *pNoStr)
 	{
 		int i = 0;
 		const char * pIPCode = (const char *)(IPCODETABLECOUNT+4);
-		for(; i< *(const int *)IPCODETABLECOUNT; ++i, pIPCode += 8)
+		for(; i< *(const int *)IPCODETABLECOUNT; ++i, pIPCode += 10)//原来为8
 		{
 			if(!memcmp(pNoStr, pIPCode+1, *pIPCode)){
-				pNoStr += *pIPCode;	
-				if(!memcmp(pNoStr, "013", 3) || !memcmp(pNoStr, "015", 3) /*|| !memcmp(pNoStr, "018", 3)*/)//删除手机号前的0
-					++pNoStr;
+			  pNoStr += *pIPCode;	//过滤已知IP
+#ifdef OLD_VER //过滤手机号码前的0
+			  if(!memcmp(pNoStr, "013", 3) || !memcmp(pNoStr, "015", 3) || !memcmp(pNoStr, "018", 3))//删除手机号前的0
+				++pNoStr;
+#else
+                          if(!memcmp(pNoStr,"01",2) && pHead->RangeOffset[*(pNoStr+2)-'0'][0] != 0xFFFFFFFF)//是手机号码
+                            ++pNoStr;
+#endif
 				break;
 			}
 		}
@@ -248,19 +264,29 @@ int GetProvAndCity(word *pBSTR, char *pNoStr)
 		CityNo = FindLocale(pLocale, pHead->LocaleCount, atou(pNoStr), &nRepeatNum); 
 	}
 	//如果是13x，15x，18x，则判定为移动电话
-	else if(*pNoStr == '1' && (*(pNoStr+1) == '3' || *(pNoStr+1) == '5' /*|| *(pNoStr+1) == '8'*/))
+	else if(*pNoStr == '1' /*&& (*(pNoStr+1) == '3' || *(pNoStr+1) == '5' || *(pNoStr+1) == '8')*/)
 	{
-		char chTemp=*(pNoStr+1);
 		bLocal = 2;
+#ifdef OLD_VER
+                char chTemp=*(pNoStr+1);
 		pNoStr += 2;
 		*(pNoStr+5) = '\0';
 		//得到手机号码的前五位，在手机号码表中查找对应的城市号
 		if(chTemp == '3')//13X
 		  CityNo = GetCode((byte *)(CODESHOWDATAADDRESS+pHead->CodeTableOffset), atou(pNoStr));
-		else //if(chTemp == '5')//15X
+		else if(chTemp == '5')//15X
 		  CityNo = GetCode((byte *)(CODESHOWDATAADDRESS+0x20000), atou(pNoStr));
-                //else //18x
-                //CityNo = GetCode((byte *)(CODESHOWDATAADDRESS+?????), atou(pNoStr));
+                else if(chTemp == '8')//18x
+                CityNo = GetCode((byte *)(CODESHOWDATAADDRESS+0x3B774), atou(pNoStr));
+                else CityNo = MAXCITYNO;
+#else
+                char chTemp=(*(pNoStr+1)-'0');
+                pNoStr += 2;
+		*(pNoStr+5) = '\0';
+                if(pHead->RangeOffset[chTemp][0] == 0xFFFFFFFF)CityNo = MAXCITYNO;
+                else
+CityNo = GetCodeRange((CRANGE *)(CODESHOWDATAADDRESS+0x4000+(pHead->RangeOffset[chTemp][0]<<2)), pHead->RangeOffset[chTemp][1], atou(pNoStr));          
+#endif
 	}
 	//如果不是长话和移动电话，判断为本地区号。或者不能在IP表中找到对应项。
 	else
@@ -325,7 +351,6 @@ int GetProvAndCity(word *pBSTR, char *pNoStr)
 		return 1;
 	}
 }
-
 //从手机号码表中查找对应的城市号
 word GetCode(byte *pBuf, dword Index)
 {
@@ -336,7 +361,26 @@ word GetCode(byte *pBuf, dword Index)
     CodeH = ((pBuf[1]<<(15-Index)) & 0xFFFF)>>7;	    //高字节去掉高处无效位,并左移到合适的位置
     return (CodeH + CodeL);								//拼接高低字节,共9位
 }
-
+#ifndef OLD_VER
+//二分法查找城市代码
+word GetCodeRange(CRANGE *pBuf, uint dwNum, uint dwNo)
+{
+CRANGE test;
+int left = 0, right = dwNum-1, index = 0;
+while(left <= right)
+{
+  index = (left+right)/2;
+  test = pBuf[index];
+  if(test.dwNum <= dwNo && dwNo <= test.dwNum+test.dwRange) 
+  {
+   return test.wCityNo;
+  }
+  else if(dwNo > test.dwNum+test.dwRange)  left = index+1;
+  else  right = index-1;
+}
+  return MAXCITYNO;
+}
+#endif
 //从长话区号表中查找对应的城市号
 word FindLocale(LOCALE *pLocale, int LocaleCount, int LocaleNo, int *nRepeatNum)
 {

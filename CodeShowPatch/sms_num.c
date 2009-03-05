@@ -1,10 +1,7 @@
 #include "addr.h"
 
 #ifndef WITHOUT_SMS_IN_WIN
-__thumb int Hex2Num(char *hex, char *num, int len)
-#ifndef CX7Av25
-@ "CODE_X" //返回长度
-#endif
+__thumb int Hex2Num(char *hex, char *num, int len)@ "CODE_X" //返回长度
 {
 	int c;
 	int i=0,j=0;
@@ -35,10 +32,7 @@ __thumb int Hex2Num(char *hex, char *num, int len)
 	return i;
 }
 
-__thumb int GetNumFromIncomingPDU(char *num)
-#ifndef CX7Av25
-@ "CODE_X"
-#endif
+__thumb int GetNumFromIncomingPDU(char *num)@ "CODE_X"
 {	
 	int c;
 	int i;
