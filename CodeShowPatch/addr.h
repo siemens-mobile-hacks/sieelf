@@ -45,10 +45,10 @@
 #define ADDR_ADDRBook		0xA078A1D0+1//no
 #define ADDR_SMS_SEND		0xA0835F70+1//no
 
-#define AllocMLMenuItem_adr     0xA00E65E7 //or 0xA00E6847
+#define AllocMLMenuItem_adr     0xA05AF650 //or 0xA00E65E7   ; 219: __thumb void *AllocMLMenuItem(void *data)
 #define SetMLMenuItemText_adr   0xA00E632F //ok
 #define AllocMenuWS_adr         0xA009D491 //ok
-#define GetMLMenuGUI_adr	0xA00E61A9 //or 0xA00E6409 GetMultiLinesMenuGUI
+#define GetMLMenuGUI_adr	0xA05AFAA8 //or 0xA00E61A9   ; 2A5:  __thumb void *GetMultiLinesMenuGUI(void *malloc_adr, void *mfree_adr)
 
 #define GetHeaderPointer_addr   0xA009D9F5//ok
 #define SetHeaderText_addr      0xA00B832D//ok
@@ -75,10 +75,10 @@
 #define ADDR_ADDRBook		0xA0A954E4+1//
 #define ADDR_SMS_SEND		0xA0B3BF44+1//
 
-#define AllocMLMenuItem_adr     0xA0A48C54+1 //or 0xA00E4E2F
+#define AllocMLMenuItem_adr     0xA0A48C54 //or 0xA00E4E2F
 #define SetMLMenuItemText_adr   0xA00E4B77 //
 #define AllocMenuWS_adr         0xA009D329
-#define GetMLMenuGUI_adr	0xA0A48C6C+1 //or 0xA00E49F1 GetMultiLinesMenuGUI
+#define GetMLMenuGUI_adr	0xA0A48C6C //or 0xA00E49F1 GetMultiLinesMenuGUI
 
 #define GetHeaderPointer_addr   0xA009D857//
 #define SetHeaderText_addr      0xA00B7CE1//
@@ -105,10 +105,10 @@
 #define ADDR_ADDRBook		0xA1000A0C+1//
 #define ADDR_SMS_SEND		0xA0B06700+1//
 
-#define AllocMLMenuItem_adr     0xA0A123C0+1 //or 0xA00E4A73
+#define AllocMLMenuItem_adr     0xA0A123C0 //or 0xA00E4A73
 #define SetMLMenuItemText_adr   0xA00E47BB //
 #define AllocMenuWS_adr         0xA009CF6D
-#define GetMLMenuGUI_adr	0xA0A123D8+1 //or 0xA00E4635 GetMultiLinesMenuGUI
+#define GetMLMenuGUI_adr	0xA0A123D8 //or 0xA00E4635 GetMultiLinesMenuGUI
 
 #define GetHeaderPointer_addr   0xA009D49B//
 #define SetHeaderText_addr      0xA00B7925//
@@ -135,10 +135,10 @@
 #define ADDR_ADDRBook		0xA0A55A64+1//
 #define ADDR_SMS_SEND		0xA0AF7E60+1//
 
-#define AllocMLMenuItem_adr     0xA0A0AF64+1 //or 0xA00E4A86+1
+#define AllocMLMenuItem_adr     0xA0A0AF64 //or 0xA00E4A86+1
 #define SetMLMenuItemText_adr   0xA00E47CE+1 //
 #define AllocMenuWS_adr         0xA009CF68+1
-#define GetMLMenuGUI_adr	0xA0A0AF7C+1 //or 0xA00E4648+1 GetMultiLinesMenuGUI
+#define GetMLMenuGUI_adr	0xA0A0AF7C //or 0xA00E4648+1 GetMultiLinesMenuGUI
 
 #define GetHeaderPointer_addr   0xA009D496+1//
 #define SetHeaderText_addr      0xA00B7938+1//
@@ -165,10 +165,10 @@
 #define ADDR_ADDRBook           0xA0A55A60+1
 #define ADDR_SMS_SEND           0xA0AF7E58+1
 
-#define AllocMLMenuItem_adr     0xA0A0AF60+1 //or 0xA00E4A8B
+#define AllocMLMenuItem_adr     0xA0A0AF60 //or 0xA00E4A8B
 #define SetMLMenuItemText_adr   0xA00E47D3 //
 #define AllocMenuWS_adr         0xA009CF6D
-#define GetMLMenuGUI_adr	0xA0A0AF78+1 //or 0xA00E464D GetMultiLinesMenuGUI
+#define GetMLMenuGUI_adr	0xA0A0AF78 //or 0xA00E464D GetMultiLinesMenuGUI
 
 #define GetHeaderPointer_addr   0xA009D49B//
 #define SetHeaderText_addr      0xA00B793D//
@@ -195,10 +195,10 @@
 #define ADDR_ADDRBook		0xA10018C0+1
 #define ADDR_SMS_SEND		0xA101FE58+1
 
-#define AllocMLMenuItem_adr     0xA0A2FA20+1 //or 0xA00E4C67
+#define AllocMLMenuItem_adr     0xA0A2FA20 //or 0xA00E4C67
 #define SetMLMenuItemText_adr   0xA00E49AF //
 #define AllocMenuWS_adr         0xA009D149
-#define GetMLMenuGUI_adr	0xA0A2FA38+1 //or 0xA00E4829 GetMultiLinesMenuGUI
+#define GetMLMenuGUI_adr	0xA0A2FA38 //or 0xA00E4829 GetMultiLinesMenuGUI
 
 #define GetHeaderPointer_addr   0xA009D677//
 #define SetHeaderText_addr      0xA00B7B19//
@@ -225,10 +225,10 @@
 #define ADDR_ADDRBook		0xA0719FE8+1
 #define ADDR_SMS_SEND		0xA07D3BC0+1
 
-#define AllocMLMenuItem_adr     0xA044F40C+1 //or 0xA09EBE8F
+#define AllocMLMenuItem_adr     0xA044F40C //or 0xA09EBE8F
 #define SetMLMenuItemText_adr   0xA09EBBD7 //
 #define AllocMenuWS_adr         0xA098D005
-#define GetMLMenuGUI_adr	0xA044F424+1 //or 0xA09EBA51 GetMultiLinesMenuGUI
+#define GetMLMenuGUI_adr	0xA044F424 //or 0xA09EBA51 GetMultiLinesMenuGUI
 
 #define GetHeaderPointer_addr   0xA098D533//
 #define SetHeaderText_addr      0xA099C639//
@@ -255,10 +255,10 @@
 #define ADDR_ADDRBook		0xA11C2BBC+1//OK
 #define ADDR_SMS_SEND		0xA12204E4+1//OK
 
-#define AllocMLMenuItem_adr     0xA09CD040+1 //or 0xA00E4E4B
+#define AllocMLMenuItem_adr     0xA09CD040 //or 0xA00E4E4B
 #define SetMLMenuItemText_adr   0xA00E4B93 //
 #define AllocMenuWS_adr         0xA009D32D
-#define GetMLMenuGUI_adr	0xA09CD058+1 //or 0xA00E4A0D GetMultiLinesMenuGUI
+#define GetMLMenuGUI_adr	0xA09CD058 //or 0xA00E4A0D GetMultiLinesMenuGUI
 
 #define GetHeaderPointer_addr   0xA009D85B//
 #define SetHeaderText_addr      0xA00B7CFD//
@@ -285,10 +285,10 @@
 #define ADDR_ADDRBook		0xA078A1D0+1//OK
 #define ADDR_SMS_SEND		0xA0835F70+1//OK
 
-#define AllocMLMenuItem_adr     0xA0485488+1 //or 0xA00E6847
+#define AllocMLMenuItem_adr     0xA0485488 //or 0xA00E6847
 #define SetMLMenuItemText_adr   0xA00E658F //
 #define AllocMenuWS_adr         0xA009D6C5
-#define GetMLMenuGUI_adr	0xA04854A0+1 //or 0xA00E6409 GetMultiLinesMenuGUI
+#define GetMLMenuGUI_adr	0xA04854A0 //or 0xA00E6409 GetMultiLinesMenuGUI
 
 #define GetHeaderPointer_addr   0xA009DC29//
 #define SetHeaderText_addr      0xA00B858D//
