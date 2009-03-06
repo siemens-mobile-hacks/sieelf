@@ -263,7 +263,9 @@ GoBack:
         RSEG CODE
         EXTERN	setMenuText
 NUM_SELECT_MENU_PSETTEXT: //R2, WS, 
+#ifndef CX7Av25 //CX7Av25的hook位置+2，跳过这句
 	LDR	R0, [SP, #0x208] //GUI
+#endif
 	LDR	R3, [SP, #0x20C] //item_n
 	LDR	R1, [SP, #0] //item
 	MOV	R4, LR
@@ -285,6 +287,10 @@ NUM_SELECT_MENU_PSETTEXT: //R2, WS,
         
 	RSEG	NUM_SELECT_MENU_TEXT:CODE(2)
 	CODE16
+#ifdef CX7Av25 //hook位置+2
+        LDR	R1, =NUM_SELECT_MENU_PSETTEXT
+        BLX	R1
+#else
 	LDR	R1, P_NUM_SELECT_MENU_PSETTEXT
 	BLX	R1
 	DATA
@@ -292,7 +298,7 @@ P_NUM_SELECT_MENU_PSETTEXT
 	DCD	NUM_SELECT_MENU_PSETTEXT
 	CODE16
 	NOP
-
+#endif
         RSEG	NUM_SELECT_MENU_GUI:CODE(1)
 	CODE16
 	BLX	GetMLMenuGUI_adr //ml menu gui
