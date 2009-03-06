@@ -24,9 +24,18 @@ ROM:A035E352 4D E0                       B       loc_A035E3F0
 */
 
 #define PATCH_ID 0x8800
-/*
+/*S7Cv47
 #pragma enable old_equal_ff
 0061B00: 0xB1C2D3E4,0x00008800,0000000000000000,"\
+{p=`SP NSG MP` ver=1.0 cp=BingK id=8800}\
+{16 u `Provider MS` ml=64}\
+{144 u Subprovier ml=64}\
+{272 u `Provider SS` ml=64}",00
+#pragma disable old_equal_ff
+*/
+/*ELKA
+#pragma enable old_equal_ff
+0061600: 0xB1C2D3E4,0x00008800,0000000000000000,"\
 {p=`SP NSG MP` ver=1.0 cp=BingK id=8800}\
 {16 u `Provider MS` ml=64}\
 {144 u Subprovier ml=64}\

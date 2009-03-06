@@ -69,11 +69,13 @@ __swi __arm void GetProvider(WSHDR *ws, int _0);
 
 //#pragma swi_number=0x80DD
 //__swi __arm char *RamCurrentTrack(void);
-
+#ifdef ELKA
+#define RamTrack1 0xAD2B3D60
+#else
 #define RamTrack3 0xA892C6B0
 #define RamTrack2 0xA89A32F4
 #define RamTrack1 0xA899F2BC
-
+#endif
 #define MAX_LEN 64 //UNICODE
 __arm void GetRepString(WSHDR *pws, const unsigned short *pformat) 
 {
@@ -233,6 +235,7 @@ TempChange:
 	if(GetPlayStatus())
 	{
 	  qp=(char *)RamTrack1;
+#ifndef ELKA
 	  if(*qp==0xFB)
 	  {
 	    qp=(char *)RamTrack2;
@@ -242,6 +245,7 @@ TempChange:
 	    }
 	    else qp=(char *)RamTrack3;
 	  }
+#endif
 	  z=qp[0x104];
 	  if(z==0x3) //utf8
 	    utf8_2ws(wst, qp, 32);
