@@ -29,21 +29,21 @@
 例如：函数地址为0xA00E4567 ->逆序：67,45,0E,A0
 新地址：搜索00C09FE51CFF2FE1,67,45,0E,A0,得到地址+1
 */
-#ifdef C7Cv22 //无Fullflash，未完成
+#ifdef C7Cv22 
 #define ADDR_strlen		0xA0DE4835//OK
-#define ADDR_atou		0xA020EB00+1//no
+#define ADDR_atou		0xA020EB00+1//OK
 #define ADDR_WS_InitByZero	0xA073B9DB//OK
-#define ADDR_GetCalleeNumber	0xA0797F2A+1//no
-#define ADDR_UpdateWndItem	0xA00B59A2+1//no
+#define ADDR_GetCalleeNumber	0xA0745002+1//OK
+#define ADDR_UpdateWndItem	0xA00B5742+1//OK
 #define ADDR_memcmp		0xA0DE3AED//OK
 
 #define ADDR_wstrcat		0xA073BBA9//OK
 #define ADDR_wsAppendChar	0xA073BCD1//OK
 #define ADDR_IsCalling		0xA00CEA7F//OK
-#define ADDR_CallIN		0xA033D766+1//no
-#define ADDR_CallOUT		0xA033A8A6+1//no
-#define ADDR_ADDRBook		0xA078A1D0+1//no
-#define ADDR_SMS_SEND		0xA0835F70+1//no
+#define ADDR_CallIN		0xA033569E+1//OK
+#define ADDR_CallOUT		0xA03327DE+1//OK
+#define ADDR_ADDRBook		0xA073C1D8+1//OK
+#define ADDR_SMS_SEND		0xA07DBFE8+1//OK
 
 #define AllocMLMenuItem_adr     0xA05AF650 //or 0xA00E65E7   ; 219: __thumb void *AllocMLMenuItem(void *data)
 #define SetMLMenuItemText_adr   0xA00E632F //ok
@@ -56,7 +56,7 @@
 
 #define ADDR_IncommingPDU	0xA8751C60 //OK
 
-#define BASEADDRESS		0xA0E70B60//0xA0E80000 which?
+#define BASEADDRESS		0xA0E70B60 //0xA0E80000 which?
 #endif
 
 #ifdef C6Cv53

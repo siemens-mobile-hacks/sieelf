@@ -48,6 +48,9 @@ MENU_HDR_ICON //多号码选择 标题图标ID
 #ifdef C6Cv53
         DCD	0x2C5
 #endif
+#ifdef C7Cv22
+        DCD	0x374
+#endif
 	DCD	0
        
 	CODE16        
