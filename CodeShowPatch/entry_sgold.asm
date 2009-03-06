@@ -16,6 +16,13 @@
 #elif SL6Cv50
 #define SIM128
 #endif
+//需特殊处理多号码选择
+#ifdef C7Cv22
+#define SeleNum
+#elif CX7Av25
+#define SeleNum
+#endif
+
 
 	RSEG	CODE
 #ifdef SK6Cv50 //原来空间不够
@@ -266,7 +273,7 @@ GoBack:
         RSEG CODE
         EXTERN	setMenuText
 NUM_SELECT_MENU_PSETTEXT: //R2, WS, 
-#ifndef CX7Av25 //CX7Av25的hook位置+2，跳过这句
+#ifndef SeleNum //C7C和CX7Av25的hook位置+2，跳过这句
 	LDR	R0, [SP, #0x208] //GUI
 #endif
 	LDR	R3, [SP, #0x20C] //item_n
@@ -290,7 +297,7 @@ NUM_SELECT_MENU_PSETTEXT: //R2, WS,
         
 	RSEG	NUM_SELECT_MENU_TEXT:CODE(2)
 	CODE16
-#ifdef CX7Av25 //hook位置+2
+#ifdef SeleNum //C7C和CX7A的hook位置+2
         LDR	R1, =NUM_SELECT_MENU_PSETTEXT
         BLX	R1
 #else
