@@ -14,6 +14,7 @@
 #include "DaemonCSM.h"
 
 #include "AdrList.h"
+#include "CodeShow.h"
 #include "..\..\inc\playsound.h"
 #include "..\..\inc\mplayer.h"
 
@@ -77,6 +78,7 @@ void DaemonCSM::OnCreate(CSM_RAM *data)
   IP=new IconPack;
   ADRLST=new AdrList;
   SMSDATA=new SmsData;
+  //CodeShow::LoadDB();
 }
 
 #pragma inline=forced
@@ -313,6 +315,7 @@ void DaemonCSM::OnClose(CSM_RAM *data)
   delete IP;
   delete ADRLST;
   delete SMSDATA;
+  //CodeShow::UnloadDB();
   delete daemon_csm->daemon;
   extern void ElfKiller(void); //main.cpp
   SUBPROC((void *)ElfKiller);

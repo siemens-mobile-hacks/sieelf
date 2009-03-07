@@ -12,6 +12,7 @@
 const word szUnknownUser[] 	= { 0x672A, 0x77E5, 0x53F7,0x7801, 0};
 const word szErrorData[] 	= { 0x6570, 0x636E, 0x5E93, 0x9519, 0x8BEF, 0};
 const word szLocalCode[] 	= { 0x672C, 0x5730, 0x53F7,0x7801, 0};
+const word szChineseTaiBei[] = { 0x4E2D, 0x56FD, 0x53F0,0x6E7E, 0};
 const word szSplit[] 		= { 0x2027, 0 };
 const word szAddInfo[] 		= { 0x20, 0 };
 
@@ -43,6 +44,11 @@ int CodeShow::GetProvAndCity(word *pBSTR, char *pNo)
 	LOCALE *pLocale;
 	const CODESHOWHEAD * pHead;
 	int CodeLen;
+	//if(!mBASEADDRESS)
+	//{
+	//	BSTRAdd(pBSTR, szErrorData, 4);
+	//	return 0;
+	//}
 	int nLocalNum=*(int*)LOCALNOINFOTABLE;
 	const PROVINCE LocalProvince=*(PROVINCE*)(LOCALNOINFOTABLE+4);
 	const CITY LocalCity=*(CITY*)(LOCALNOINFOTABLE+10);
@@ -66,13 +72,13 @@ int CodeShow::GetProvAndCity(word *pBSTR, char *pNo)
         }
 	//如果长度大于12，则包括IP前缀，下面滤去已知IP前缀
 	CodeLen = strlen(pNoStr);
-	if(CodeLen > 12)
+	if(CodeLen > 7)
 	{
 		int i = 0;
 		const char * pIPCode = (const char *)(IPCODETABLECOUNT+4);
-		for(; i< *(const int *)IPCODETABLECOUNT; ++i, pIPCode += 8)
+		for(; i< *(const int *)IPCODETABLECOUNT; ++i, pIPCode += 10)
 		{
-			if(!memcmp(pNoStr, pIPCode+1, *pIPCode)){
+			if(!memcmp(pNoStr, (void*)(pIPCode+1), *pIPCode)){
 				pNoStr += *pIPCode;	
 				if(!memcmp(pNoStr, "013", 3) || !memcmp(pNoStr, "015", 3))
 					++pNoStr;
@@ -102,17 +108,29 @@ int CodeShow::GetProvAndCity(word *pBSTR, char *pNo)
 		CityNo = FindLocale(pLocale, pHead->LocaleCount, atou(pNoStr), &nRepeatNum); 
 	}
 	//如果是13x，则判定为移动电话
-	else if(*pNoStr == '1' && (*(pNoStr+1) == '3' || *(pNoStr+1) == '5'))
+	else if(*pNoStr == '1' && *(pNoStr+1) >= '2')//(*(pNoStr+1) == '3' || *(pNoStr+1) == '5'))
 	{
-		char chTemp=*(pNoStr+1);
+		char chTemp=(*(pNoStr+1)-'0');
 		bLocal = 2;
 		pNoStr += 2;
 		*(pNoStr+5) = '\0';
 		//得到手机号码的前五位，在手机号码表中查找对应的城市号
-		if(chTemp == '3')
+#ifdef OLD_VER
+		if(chTemp == '3')//13X
 		  CityNo = GetCode((byte *)(CODESHOWDATAADDRESS+pHead->CodeTableOffset), atou(pNoStr));
 		else
 		  CityNo = GetCode((byte *)(CODESHOWDATAADDRESS+0x20000), atou(pNoStr));
+#else
+		if(strlen(pNoStr) != 5)
+			CityNo = MAXCITYNO;
+		else
+		{
+			if(pHead->RangeOffset[chTemp][0] == 0xFFFFFFFF)
+				CityNo = MAXCITYNO;
+			else
+				CityNo = GetCodeRange((CRANGE *)(CODESHOWDATAADDRESS+0x4000+(pHead->RangeOffset[chTemp][0]<<2)), pHead->RangeOffset[chTemp][1], str2int(pNoStr));
+		}
+#endif
 	}
 	//如果不是长话和移动电话，判断为本地区号。或者不能在IP表中找到对应项。
 	else
@@ -135,7 +153,8 @@ int CodeShow::GetProvAndCity(word *pBSTR, char *pNo)
 		BSTRAdd(pBSTR, szUnknownUser, 4);	
 		return 0;
 	}
-	else{
+	else
+	{
 		if(nRepeatNum == 1)
 		{
 		  BSTRAdd(pBSTR, pProvince[pCity[CityNo].ProvinceNo].ProvinceName, 3);
@@ -187,6 +206,7 @@ word CodeShow::GetCode(byte *pBuf, dword Index)
     CodeH = ((pBuf[1]<<(15-Index)) & 0xFFFF)>>7;	    //高字节去掉高处无效位,并左移到合适的位置
     return (CodeH + CodeL);								//拼接高低字节,共9位
 }
+
 
 word CodeShow::FindLocale(LOCALE *pLocale, int LocaleCount, int LocaleNo, int *nRepeatNum)
 {
@@ -280,19 +300,54 @@ char CodeShow::FindCRName(word *pBSTR, char *szNo)
 {
 	if(memcmp(szNo, "86", 2) == 0)//中国内地
 		return 0;
+	if(memcmp(szNo, "886", 3) == 0)
+	{
+		BSTRAdd(pBSTR, szChineseTaiBei, 4);
+		BSTRAdd(pBSTR, szSplit, 1);
+		if(memcmp(szNo+3, "0836", 4) == 0)
+			BSTRAdd(pBSTR, (const word *)"\x6C\x9A\x56\x79", 2);
+		else if(memcmp(szNo+3, "0827", 4) == 0)
+			BSTRAdd(pBSTR, (const word *)"\x1C\x4E\x99\x6C\x20\x00\x57\x53\x99\x6C", 5);				
+		else if(memcmp(szNo+3, "0826", 4) == 0)
+			BSTRAdd(pBSTR, (const word *)"\x4C\x4E\x18\x4E", 2);
+		else if(memcmp(szNo+3, "0823", 4) == 0)
+			BSTRAdd(pBSTR, (const word *)"\xD1\x91\xE8\x95", 2);
+		else if(memcmp(szNo+3, "089", 3) == 0)
+			BSTRAdd(pBSTR, (const word *)"\xF0\x53\x1C\x4E", 2);
+		else if(memcmp(szNo+3, "049", 3) == 0)
+			BSTRAdd(pBSTR, (const word *)"\x57\x53\x95\x62", 5);
+		else if(memcmp(szNo+3, "037", 3) == 0)
+			BSTRAdd(pBSTR, (const word *)"\xD7\x82\x17\x68", 2);
+		else if(memcmp(szNo+3, "02", 2) == 0)
+			BSTRAdd(pBSTR, (const word *)"\xF0\x53\x17\x53\x20\x00\xFA\x57\x86\x96", 5);
+		else if(memcmp(szNo+3, "03", 2) == 0)
+			BSTRAdd(pBSTR, (const word *)"\x43\x68\xED\x56\xB0\x65\xF9\x7A\xB1\x82\xB2\x83\x9C\x5B\x70\x51", 8);
+		else if(memcmp(szNo+3, "04", 2) == 0)
+			BSTRAdd(pBSTR, (const word *)"\x70\x5F\x16\x53\x20\x00\xF0\x53\x2D\x4E", 5);
+		else if(memcmp(szNo+3, "05", 2) == 0)
+			BSTRAdd(pBSTR, (const word *)"\x09\x56\x49\x4E\x20\x00\x91\x4E\x97\x67", 5);
+		else if(memcmp(szNo+3, "06", 2) == 0)
+			BSTRAdd(pBSTR, (const word *)"\xF0\x53\x57\x53\x20\x00\x8E\x6F\x56\x6E", 5);
+		else if(memcmp(szNo+3, "07", 2) == 0)
+			BSTRAdd(pBSTR, (const word *)"\xD8\x9A\xC4\x96", 2);
+		else if(memcmp(szNo+3, "08", 2) == 0)
+			BSTRAdd(pBSTR, (const word *)"\x4F\x5C\x1C\x4E", 2);
+		else
+			BSTRAdd(pBSTR, szUnknownUser, 2);
+	}
 	else
 	{
-          char szTemp[5]="\0";
-	  word wCRNo;
-	  word wTable=*(word *)COUNTRYCODETABLE;
-	  word wCount=*(word *)(COUNTRYCODETABLE+2);
-	  const word *pTable=(word *)(COUNTRYCODETABLE+4);
-	  CRNO *pCRNO=(CRNO *)(COUNTRYCODETABLE+(wTable+2<<1));
-	  int j = 0, k, nRepeatNum = 0;
-	  int i = 0, nStart = 0, nEnd = wCount;
-	  int len=strlen(szNo);
-	  if(len > 4)len = 4;
-	  for(k=len; k>0; k--)
+		char szTemp[5]="\0";
+		word wCRNo;
+		word wTable=*(word *)COUNTRYCODETABLE;
+		word wCount=*(word *)(COUNTRYCODETABLE+2);
+		const word *pTable=(word *)(COUNTRYCODETABLE+4);
+		CRNO *pCRNO=(CRNO *)(COUNTRYCODETABLE+(wTable+2<<1));
+		int j = 0, k, nRepeatNum = 0;
+		int i = 0, nStart = 0, nEnd = wCount;
+		int len=strlen(szNo);
+		if(len > 4)len = 4;
+		for(k=len; k>0; k--)
 	    {
 		memcpy(szTemp, szNo, k);
 		nStart = 0, nEnd = wCount;
@@ -343,3 +398,52 @@ char CodeShow::FindCRName(word *pBSTR, char *szNo)
       }
       return 1;
 }
+
+word CodeShow::GetCodeRange(CRANGE *pBuf, uint32 dwNum, uint32 dwNo)
+{
+	CRANGE test;
+	int left = 0, right = 0, index = 0;
+	right = dwNum-1;
+	while(left <= right)
+	{
+		 index = (left+right)/2;
+		 test = pBuf[index];
+		 if(test.dwNum <= dwNo && dwNo <= test.dwNum+test.dwRange) 
+		 {
+			 return test.wCityNo;
+		 }
+		 else if(dwNo > test.dwNum+test.dwRange)  left = index+1;
+		 else  right = index-1;
+	}
+	return MAXCITYNO;
+}
+
+//char *CodeShow::mBASEADDRESS=NULL;
+//DEL void CodeShow::LoadDB()
+//DEL {
+//DEL 	unsigned int ferr;
+//DEL 	int fin;
+//DEL 	int len;
+//DEL 	char *buf;
+//DEL 	if((fin=fopen("4:\\ZBin\\MySMSYS\\codeshow.bin", A_BIN+A_ReadOnly, P_READ, &ferr))!=-1)
+//DEL 	{
+//DEL 		if((len=lseek(fin, 0, S_END, &ferr, &ferr)))
+//DEL 		{
+//DEL 			buf=new char[len];
+//DEL 			lseek(fin, 0, S_SET, &ferr, &ferr);
+//DEL 			if(fread(fin, buf, len, &ferr)==len)
+//DEL 			{
+//DEL 				mBASEADDRESS=buf;
+//DEL 			}
+//DEL 			else
+//DEL 				delete buf;
+//DEL 		}
+//DEL 		fclose(fin, &ferr);
+//DEL 	}
+//DEL }
+
+//DEL void CodeShow::UnloadDB()
+//DEL {
+//DEL 	if(mBASEADDRESS)
+//DEL 		delete mBASEADDRESS;
+//DEL }
