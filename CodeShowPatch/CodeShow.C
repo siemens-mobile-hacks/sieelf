@@ -61,6 +61,9 @@ const word szShortNo[]          = { 0x96C6, 0x56E2, 0x77ED, 0x53F7, 0};//¼¯ÍÅ¶Ìº
 /* main program */
 /****************/
 void memcpy(char *szDest, char *szSrc, int len)
+#ifdef SK6Cv50
+ @ "CODE_X"
+#endif
 {
   int i;
   for(i=0; i<len; i++)
@@ -218,7 +221,7 @@ int GetProvAndCity(word *pBSTR, char *pNoStr)
 	//È¥µô¹ú¼ÊÂë+86
 	if(*pNoStr == '+')
         {
-	  if(FindCRName(pBSTR, pNoStr+1))return 0;
+	  if(FindCRName(pBSTR, pNoStr+1))return 1;
 	  else pNoStr += 3;
         }
 	//Èç¹û³¤¶È´óÓÚ12£¬Ôò°üÀ¨IPÇ°×º£¬ÏÂÃæÂËÈ¥ÒÑÖªIPÇ°×º
@@ -263,11 +266,11 @@ int GetProvAndCity(word *pBSTR, char *pNoStr)
 		//µÃµ½ÇøºÅ£¬ÔÚÇøºÅ±íÖÐ²éÕÒ¶ÔÓ¦µÄ³ÇÊÐºÅ
 		CityNo = FindLocale(pLocale, pHead->LocaleCount, atou(pNoStr), &nRepeatNum); 
 	}
+#ifdef OLD_VER
 	//Èç¹ûÊÇ13x£¬15x£¬18x£¬ÔòÅÐ¶¨ÎªÒÆ¶¯µç»°
-	else if(*pNoStr == '1' /*&& (*(pNoStr+1) == '3' || *(pNoStr+1) == '5' || *(pNoStr+1) == '8')*/)
+	else if(*pNoStr == '1' && (*(pNoStr+1) == '3' || *(pNoStr+1) == '5' || *(pNoStr+1) == '8'))
 	{
 		bLocal = 2;
-#ifdef OLD_VER
                 char chTemp=*(pNoStr+1);
 		pNoStr += 2;
 		*(pNoStr+5) = '\0';
@@ -278,13 +281,14 @@ int GetProvAndCity(word *pBSTR, char *pNoStr)
 		  CityNo = GetCode((byte *)(CODESHOWDATAADDRESS+0x20000), atou(pNoStr));
                 else if(chTemp == '8')//18x
                 CityNo = GetCode((byte *)(CODESHOWDATAADDRESS+0x3B774), atou(pNoStr));
-                else CityNo = MAXCITYNO;
 #else
+	//ÊÖ»úºÅÂë
+	else if(*pNoStr == '1' && pHead->RangeOffset[*(pNoStr+1)-'0'][0] != 0xFFFFFFFF)
+	{
+		bLocal = 2;
                 char chTemp=(*(pNoStr+1)-'0');
                 pNoStr += 2;
 		*(pNoStr+5) = '\0';
-                if(pHead->RangeOffset[chTemp][0] == 0xFFFFFFFF)CityNo = MAXCITYNO;
-                else
 CityNo = GetCodeRange((CRANGE *)(CODESHOWDATAADDRESS+0x4000+(pHead->RangeOffset[chTemp][0]<<2)), pHead->RangeOffset[chTemp][1], atou(pNoStr));          
 #endif
 	}
@@ -375,8 +379,8 @@ while(left <= right)
   {
    return test.wCityNo;
   }
-  else if(dwNo > test.dwNum+test.dwRange)  left = index+1;
-  else  right = index-1;
+  else if(dwNo < test.dwNum) right = index-1;
+  else left = index+1;
 }
   return MAXCITYNO;
 }
