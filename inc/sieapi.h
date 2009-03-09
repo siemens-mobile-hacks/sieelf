@@ -166,6 +166,7 @@ _C_LIB_DECL
  __INTRINSIC ubyte FileExists(char *FileName,int *Handle);//判断文件是否存在!
  __INTRINSIC void *CreateCanvas();//创建画布指针
  __INTRINSIC short MidStr(const char *src,const char *sub,char *result);//获取子字串
+ __INTRINSIC short MidCat(const char *src,const char *sub,char *res,char cat);
  __INTRINSIC short FindSub(const char *src,const char *sub,char *result);
 //PNG转换相关函数 
  __INTRINSIC IMGHDR_Draw(IMGHDR *Handle, int x, int y, char *pen, char *brush);
@@ -176,9 +177,42 @@ _C_LIB_DECL
  __INTRINSIC IMGHDR *IMGHDR_Sample(IMGHDR *Handle, int px, int py, int fast, int del);
  __INTRINSIC IMGHDR *IMGHDR_Handle(int x,int y,const char *pic_path,int pic_size);
  __INTRINSIC uint  KeyButton(uint Button);
+ __INTRINSIC int SumDays(int m,int y);
+ __INTRINSIC TRect SetRect(short Left,short Top, short Rigth,short Bottom);
 _END_C_LIB_DECL
 _C_STD_END
 //函数执行代码
+
+static TRect SetRect(short Left,short Top, short Right,short Bottom){
+ TRect RC={Left,Top,Right,Bottom};
+ return(RC);
+}
+
+
+static int SumDays(int Year,int Month){
+  int b;
+  switch(Month)
+  {
+  case  1:b=0;break;
+  case  2:b=31; break;
+  case  3:b=59; break;
+  case  4:b=90; break;
+  case  5:b=120; break;
+  case  6:b=151; break;
+  case  7:b=181; break;
+  case  8:b=212; break;
+  case  9:b=243; break;
+  case 10:b=273; break;
+  case 11:b=304; break;
+  case 12:b=334; break;
+  default:
+      break;
+  }
+  if(Year%4==0&&b>2)
+    b=b+1;
+  return(b);
+}
+
 #pragma inline
 static uint KeyButton(uint Button)
 {
@@ -1016,6 +1050,21 @@ static short MidStr(const char *src,const char *sub,char *res){
       return 1;
   }else{res[0]=0; return 0;}
 }
+#pragma inline//获取字串
+static short MidCat(const char *src,const char *sub,char *res,char cat){
+  char *s=strstr(src,sub);
+  if(s){  
+      int c,i=0;
+      char tmp[256];
+      s+=strlen(sub);       
+      while(((c=*s++)!=cat)&&(i<(sizeof(tmp)-1))){
+        tmp[i++]=c;
+      }
+      tmp[i]=0;
+      strcpy(res,tmp);
+      return 1;
+  }else{res[0]=0; return 0;}
+}
 #pragma inline//搜索字串
 static short FindSub(const char *src,const char *s,char *res)
 {
@@ -1243,6 +1292,7 @@ static IMGHDR_Draw(IMGHDR *Handle, int x, int y, char *pen, char *brush)
  using _CSTD FileExists;
  using _CSTD CreateCanvas;
  using _CSTD MidStr;
+ using _CSTD MidCat;
  using _CSTD KeyButton;
  using _CSTD IMGHDR_Draw;
  using _CSTD IMGHDR_Delete;
@@ -1251,6 +1301,8 @@ static IMGHDR_Draw(IMGHDR *Handle, int x, int y, char *pen, char *brush)
  using _CSTD IMGHDR_Alpha;
  using _CSTD IMGHDR_Sample;
  using _CSTD IMGHDR_Handle;
+ using _CSTD SumDays;
+ using _CSTD SetRect;
 #endif /* 导出函数引用表 */
  
 
