@@ -537,6 +537,16 @@ KCB/kcb/help.tmo -text
 KCB/kcb/help.txt -text
 KCB/main.C -text
 KCB/test.xcl -text
+KCBX/KCB.PNG -text
+KCBX/conf_loader.c -text
+KCBX/conf_loader.h -text
+KCBX/config_data.c -text
+KCBX/func.asm -text
+KCBX/kcb.ewp -text
+KCBX/kcb.eww -text
+KCBX/kcb.txt -text
+KCBX/main.c -text
+KCBX/test.xcl -text
 KeyExten/KeyExten.ewp -text
 KeyExten/KeyExten.eww -text
 KeyExten/conf_loader.c -text
