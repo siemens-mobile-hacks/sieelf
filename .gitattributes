@@ -1455,6 +1455,16 @@ NATICQ/status_change.h -text
 NATICQ/strings.c -text
 NATICQ/strings.h -text
 NATICQ/test.xcl -text
+NatAlarm/AltMyMenu.ewp -text
+NatAlarm/AltMyMenu.eww -text
+NatAlarm/cl_work.c -text
+NatAlarm/cl_work.h -text
+NatAlarm/func.asm -text
+NatAlarm/language.h -text
+NatAlarm/local_ipc.h -text
+NatAlarm/main.c -text
+NatAlarm/main.h -text
+NatAlarm/test.xcl -text
 OwnFolderIcon/E71Csw41.xcl -text
 OwnFolderIcon/MKvkp.cmd -text
 OwnFolderIcon/OwnFolderIcon.ewp -text
