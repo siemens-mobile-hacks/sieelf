@@ -9,6 +9,7 @@
 class EditGUI
 {
 public:
+	int AddNumberBlank(void *data);
 	int SetNumber(void *data, char*number);
 	int InsertNumber(void *data, char *number);
 	int SaveDraft(WSHDR *text);
