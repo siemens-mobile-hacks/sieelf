@@ -90,6 +90,7 @@
  //¹¦ÄÜÍ¼±ê 
  extern const char AIST[];
  extern const char AITO[];
+// extern const char AILT[];
  extern const char AIRT[];
  extern const char AILK[];
  extern const char AI04[]; 

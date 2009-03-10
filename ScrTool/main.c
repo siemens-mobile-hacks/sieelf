@@ -32,6 +32,7 @@ static TTime t;
 static TDate d;
 static short week=0;
 static short SWYD=0;
+static short dmin=-1;
 
 CSM_DESC  icsmd;
 //CSM_DESC* ocsmd;
@@ -370,16 +371,16 @@ static void InitScreen(void){
     FillScreen(&SCR[12],OBIR_X,OBIR_Y);
   }
 }
-
+#define color(x) (x<24)?GetPaletteAdrByColorIndex(x):(char *)(&(x))
 //在屏幕上画主菜单图标位置和文本信息
 static void DrawGUI(void){ 
   GBS_StartTimerProc(&TSKTMR,10,DrawGUI); 
-  int fSize,TextH=0;
-  WSHDR *MWS=AllocWS(50);
-  void *TskCanvas=BuildCanvas();
-  if((SUCC_HOOK)&&(TASK_ENA)&&(TASK_STATE==SCR_TASKS))
-  {//开始菜单代码--------文本区域--------
-   fSize = FontType(ATEXT_FT);
+  short fSize,TextH=0;
+  WSHDR *MWS=AllocWS(50);  
+  void *TskCanvas=BuildCanvas(); 
+  if((SUCC_HOOK)&&(TASK_ENA)&&(TASK_STATE==SCR_TASKS))   
+  {//开始菜单代码--------文本区域-------- 
+   fSize = FontType(ATEXT_FT);  
    if(DEST_ENA){
     TextH = GetFontYSIZE(fSize)+4;//文本高度
     if(TextH < SoftkeyH()) TextH = SoftkeyH(); 
@@ -387,71 +388,67 @@ static void DrawGUI(void){
    short top=ScreenH()-TextH-OFFSET-1;//文本顶部位置 
    TRect tRC={0,top,ScreenW()-1,ScreenH()-OFFSET-1};//生成文本绘制区域   
    TRect iRC={0,top-PicSize-1,PicSize-1,top-1};//生成图标绘制区域
-   TRect fRc=iRC; 
-   int y=0,z=0,i=0,n=ScreenW()/PicSize;  
-   int ts=(tRC.b-tRC.t-GetFontYSIZE(fSize))/2;//计算文本垂直偏移  
+   short y=0,z=0,i=0,n=ScreenW()/PicSize;  
+   short ts=(tRC.b-tRC.t-GetFontYSIZE(fSize))/2;//计算文本垂直偏移  
    n = PicSize +(ScreenW()-n*PicSize)/(n-1);//计算图标显示数
-   if(mCnt>((ScreenW())/(n))){ i=mSlt-((ScreenW())/(n))+1; if(i<0)i=0;} else i=0;
+   if(mCnt>((ScreenW())/(n))){ i=mSlt-((ScreenW())/(n))+1; if(i<0)i=0;} else i=0;   
    //--------绘制图标和文本--
-   if(DEST_ENA)DrawRectangle(tRC.l, tRC.t, tRC.r, tRC.b,0, cfgPBDCol, cfgPBGCol);
    while(i<mCnt){
     const char *s=APP[i].Pic;
     if(!((s)&&(strlen(s)))) s=AINO;    
-    TRect tmp=iRC; tmp.l+=y; tmp.r+=y;  
-    DrawCanvas(TskCanvas, tmp.l,tmp.t,tmp.r,tmp.b, 1);
-    int picw =(PicSize-GetImgWidth((int)s))/2;  if(picw<0)picw=0;
-    int pich =(PicSize-GetImgHeight((int)s))/2; if(pich<0)pich=0; 
-    DrawImg(tmp.l+picw,tmp.t+pich,(uint)s);  
+    TRect tmp=iRC; tmp.l+=y; tmp.r+=y;     
+    short picw =(PicSize-GetImgWidth((int)s))/2;  if(picw<0)picw=0;
+    short pich =(PicSize-GetImgHeight((int)s))/2; if(pich<0)pich=0; 
+    DrawCanvas(TskCanvas, tmp.l,tmp.t,tmp.r,tmp.b, 1);  
+    DrawImg(tmp.l+picw,tmp.t+pich,(uint)s);     
     if(i==mSlt){
+      DrawRectangle(tmp.l,tmp.t,tmp.r,tmp.b,0,cfgBBDCol,TRAN_CBK);
       if(DEST_ENA){
         wsprintf(MWS,PNT_ONE,APP[i].Name);
+        DrawRectangle(tRC.l, tRC.t, tRC.r, tRC.b,0, cfgPBDCol, cfgPBGCol);        
         DrawString(MWS,tRC.l+3,tRC.t+ts,tRC.r-3,tRC.b-ts,fSize,1,ATEXT_CS,TRAN_CBK); 
-      }
-      fRc = tmp;
+      }       
     }
     y+=n;
     i++;
     if(++z>((ScreenW())/(n))-1) break;
-   }  
-   DrawRectangle(fRc.l,fRc.t,fRc.r,fRc.b,0,cfgBBDCol,TRAN_CBK);
+   }     
    //自动关闭菜单
    if((++AUTO_EXIT>=AUTO_CLOSE*TMR_SECOND/5)&&(TASK_ID)) CloseTask();
    //结束菜单
-  }
-  else if((ALRM_ENA)&&(TASK_STATE==SCR_ALARM))
-  {//闹钟界面 
-   TRect Alarm={0,YDISP,ScreenW()-1,ScreenH()-1};
-   DrawCanvas(TskCanvas, Alarm.l,Alarm.t,Alarm.r,Alarm.b, 1);
+  }else if((ALRM_ENA)&&(TASK_STATE==SCR_ALARM)){//闹钟界面 
+   TRect ac={0,YDISP,ScreenW()-1,ScreenH()-1};
+   DrawCanvas(TskCanvas, ac.l,ac.t,ac.r,ac.b, 1);
+   DrawRectangle(ac.l, ac.t, ac.r, ac.b,0, ALRM_CBK, ALRM_CBK);  
    char PIC[64];
    sprintf(PIC,ALRM_PIC,mCur);
    wsprintf(MWS,PNT_ONE,ALRM); 
    fSize=FontType(ALRM_FT);
    TextH=GetFontYSIZE(fSize)+4;
-   int wso=(Alarm.r-Alarm.l-PixlsWidth(MWS,fSize))/2;
-   int pio=(Alarm.r-Alarm.l-GetImgWidth((int)PIC))/2;
-   int pih=GetImgHeight((int)PIC);     
-   TRect Altxt={Alarm.l,Alarm.t,Alarm.r,Alarm.t+TextH}; 
-   TRect Alpic={Alarm.l+pio,Altxt.b,Alarm.l-pio,Alarm.b+pih};
-   DrawRectangle(Alarm.l, Alarm.t, Alarm.r, Alarm.b,0, ALRM_CBK, ALRM_CBK);  
+   short wso=(ac.r-ac.l-PixlsWidth(MWS,fSize))/2;
+   short pio=(ac.r-ac.l-GetImgWidth((int)PIC))/2;
+   short pih=GetImgHeight((int)PIC);     
+   TRect at={ac.l,ac.t,ac.r,ac.t+TextH}; 
+   TRect ap={ac.l+pio,at.b,ac.l-pio,ac.b+pih};   
   //标题     
-   DrawString(MWS, Altxt.l+wso, Altxt.t+2, Altxt.r-wso, Altxt.b-2,fSize,1,ALRM_CTX, TRAN_CBK); 
+   DrawString(MWS, at.l+wso, at.t+2, at.r-wso, at.b-2,fSize,1,ALRM_CTX, TRAN_CBK); 
   //图标
-   DrawImg(Alpic.l,Alpic.t,(uint)PIC);
+   DrawImg(ap.l,ap.t,(uint)PIC);
   //定义
    wsprintf(MWS,PNT_ONE,WeekGB[week]);
-   wso=(Alarm.r-Alarm.l-PixlsWidth(MWS,fSize))/2;
-   TRect Alwek={Alarm.l+wso,Altxt.b+pih,Alarm.r-wso,Altxt.b+pih+TextH}; 
-   DrawString(MWS, Alwek.l, Alwek.t+2,Alwek.r,Alwek.b-2,fSize,1,ALRM_CTX, TRAN_CBK);
+   wso=(ac.r-ac.l-PixlsWidth(MWS,fSize))/2;
+   TRect aw={ac.l+wso,at.b+pih,ac.r-wso,at.b+pih+TextH}; 
+   DrawString(MWS, aw.l, aw.t+2,aw.r,aw.b-2,fSize,1,ALRM_CTX, TRAN_CBK);
   //时间
    wsprintf(MWS,"%02d:%02d:%02d",t.hour,t.min,t.sec); 
-   wso=(Alarm.r-Alarm.l-PixlsWidth(MWS,fSize))/2;
-   TRect Altim={Alarm.l+wso,Alwek.b,Alarm.r-wso,Alwek.b+TextH}; 
-   DrawString(MWS, Altim.l, Altim.t+2,Altim.r,Altim.b-2,fSize,1,ALRM_CTX, TRAN_CBK);
+   wso=(ac.r-ac.l-PixlsWidth(MWS,fSize))/2;
+   TRect al={ac.l+wso,aw.b,ac.r-wso,aw.b+TextH}; 
+   DrawString(MWS, al.l, al.t+2,al.r,al.b-2,fSize,1,ALRM_CTX, TRAN_CBK);
   //显示日期PNT_YMD
    wsprintf(MWS,PNT_YMD,d.year,"年",d.month,"月",d.day,"日");
-   wso=(Alarm.r-Alarm.l-PixlsWidth(MWS,fSize))/2;
-   TRect Aldat={Alarm.l+wso,Altim.b,Alarm.r-wso,Altim.b+TextH}; 
-   DrawString(MWS, Aldat.l, Aldat.t+2,Aldat.r,Aldat.b-2,fSize,1,ALRM_CTX, TRAN_CBK);
+   wso=(ac.r-ac.l-PixlsWidth(MWS,fSize))/2;
+   TRect ad={ac.l+wso,al.b,ac.r-wso,al.b+TextH}; 
+   DrawString(MWS, ad.l, ad.t+2,ad.r,ad.b-2,fSize,1,ALRM_CTX, TRAN_CBK);
    //循环图片
    if(mCur%2){
      SetIllumination(0,1,100,0);
@@ -537,7 +534,6 @@ static const void * const TaskMethods[11]={
 };
 
 const RECT Canvas={0, 0, 0, 0};
-
 static void TaskOnCreate(CSM_RAM *data){   
   GUI *TaskGui=malloc(sizeof(GUI));
   TASK_GUI *TaskCsm=(TASK_GUI*)data;
@@ -756,8 +752,9 @@ static int DaemonOnMessage(CSM_RAM* data,GBS_MSG* msg){
     }
   }
   //获取日期信息    
-  if((ALRM_ENA)&&(!RING_ID)&&(!IsCalling())&&(t.sec<3)){//闹钟
+  if((ALRM_ENA)&&(!RING_ID)&&(!IsCalling())&&(t.min!=dmin)){//闹钟
     char cTime[12];
+    dmin = t.min;
     sprintf(cTime,"R%02d:%02d.",t.hour,t.min);
     RING_ID=ExcuteRing(cTime,week);
   }    
