@@ -17,15 +17,14 @@ extern const char BGC_COLOR[];//选中
 extern const char BGA_COLOR[];//全部
 extern const char BGW_COLOR[];//周次
 extern const char BGT_COLOR[];//标题
-extern const char BGAM_COLOR[];//上午
-extern const char BGPM_COLOR[];//下午
-extern const char BGNT_COLOR[];//晚上
+extern const char BGM_COLOR[];//上午
+extern const char BGP_COLOR[];//下午
+extern const char BGN_COLOR[];//晚上
 
 static short point_x=1, point_y=1; //移动查看选中项
 static char *Data;
 
-#define color(x) (x<24)?GetPaletteAdrByColorIndex(x):(char *)(&(x))
-#define ColorIdx GetPaletteAdrByColorIndex(23)
+#define tsColor GetPaletteAdrByColorIndex(23)
 
 typedef struct{
   CSM_RAM csm;
@@ -37,7 +36,7 @@ typedef struct{
 } MAIN_GUI;
 
 
-static const char ver[16] = "课程表v2.02";
+static const char ver[16] = "课程表v2.03";
 
 unsigned short daylist=0;
 unsigned int err;
@@ -49,7 +48,7 @@ static short ac=10;
 
 static void onRedraw(MAIN_GUI *data){
   WSHDR* ws = AllocWS(20);
-  int week,i,j;
+  static short LW,week,i,j;
 #ifdef ELKA
   static short aa=2;
   static short ad=24;
@@ -64,7 +63,7 @@ static void onRedraw(MAIN_GUI *data){
   static short ww=16;  
 #endif
   short OHigh=y1+y2+ad;  
-  short Right=ww*8+aa;
+  short Right=ww*8+aa+2;
   short Left =aa+1;
   short YSize =GetFontYSIZE(FONT_SMALL);
   //时间日期星期
@@ -75,7 +74,7 @@ static void onRedraw(MAIN_GUI *data){
   DrawRectangle(0,YDISP,ScreenW()-1,ScreenH()-1,0,BGA_COLOR,BGA_COLOR);
   //课程表标题
   wsprintf(ws,PNT_ONE,ver);
-  DrawString(ws,-1,YDISP+2, ScreenW()-1,3+YDISP+YSize,8,2,FNT_COLOR,ColorIdx);
+  DrawString(ws,-1,YDISP+2, ScreenW()-1,3+YDISP+YSize,8,2,FNT_COLOR,tsColor);
   //画周次时间信息
   WSHDR* wsL = AllocWS(4);
   wsAppendChar(wsL,0xE405);  
@@ -86,75 +85,79 @@ static void onRedraw(MAIN_GUI *data){
      wsprintf(ws, "%w:%dW %02d-%02d %02d:%02dA",wsL,week,d.month,d.day,t.hour,t.min);
   }     
   
-  DrawString(ws,-1,YDISP+YSize+6,ScreenW()-1,YDISP+YSize*2+6,FONT_SMALL_BOLD,2,FNT_COLOR,ColorIdx);
+  DrawString(ws,-1,YDISP+YSize+6,ScreenW()-1,YDISP+YSize*2+6,FONT_SMALL_BOLD,2,FNT_COLOR,tsColor);
   FreeWS(wsL);
   //画背景框  1.时间；2.星期；3.上午；4.下午；5.晚上 width*2+aa
-  DrawRectangle(Left,OHigh,   ww*2+aa,y1+ad+y2*11,0,BGT_COLOR, BGT_COLOR); // 1.时间
-  DrawRectangle(Left,OHigh,   Right,y1+ad+y2*2 ,0,BGW_COLOR ,BGW_COLOR); // 2.星期
-  DrawRectangle(Left,y1+y2*2+ad, Right,y1+ad+y2*6 ,0,BGAM_COLOR,BGAM_COLOR); // 3.上午
-  DrawRectangle(Left,y1+y2*6+ad, Right,y1+ad+y2*ac,0,BGPM_COLOR,BGPM_COLOR); // 4.下午
-  DrawRectangle(Left,y1+y2*ac+1, Right,y1+ad+y2*11,0,BGNT_COLOR,BGNT_COLOR); // 5.晚上
+  DrawRectangle(Left,OHigh,      ww*2+aa+2,y1+ad+y2*11,0,BGT_COLOR,BGT_COLOR);  // 1.时间
+  DrawRectangle(Left,OHigh,      Right,    y1+ad+y2*2 ,0,BGW_COLOR,BGW_COLOR);  // 2.星期
+  DrawRectangle(Left,y1+y2*2+ad, Right,    y1+ad+y2*6 ,0,BGM_COLOR,BGM_COLOR); // 3.上午
+  DrawRectangle(Left,y1+y2*6+ad, Right,    y1+ad+y2*ac,0,BGP_COLOR,BGP_COLOR); // 4.下午
+  DrawRectangle(Left,y1+y2*ac+1, Right,    y1+ad+y2*11,0,BGN_COLOR,BGN_COLOR); // 5.晚上
  //选中背景
-  TRect rc={ww*2+2,y1+y2*(point_y+1)+1,ww*8+2,y1+y2*(point_y+2)};
+  TRect rc={ww*2+4,y1+y2*(point_y+1)+1,ww*8+4,y1+y2*(point_y+2)};
   if(daylist==0){
-    rc=SetRect(ww*(point_x+1)+2,y1+y2*(point_y+1)+1,ww*(point_x+2)+2,y1+y2*(point_y+2));  
+    rc=SetRect(ww*(point_x+1)+4,y1+y2*(point_y+1)+1,ww*(point_x+2)+4,y1+y2*(point_y+2));  
   }
   DrawRectangle(rc.l,rc.t,rc.r,rc.b,0,BGC_COLOR,BGC_COLOR); 
-  wsprintf(ws,PNT_ONE,"时间");
-  DrawString(ws,10,OHigh+2,ww*8,ScreenH(),8,32,FNW_COLOR,ColorIdx);
+  short L=rc.l,R=rc.r;
   //课程表线及课程数据
   for(i=0;i<=7;i++){
    for(j=0;j<=ac;j++){
-  //画线框
-  //DrawLine(Left, y1+ad-aa,ww*(7+1)+1,y1+ad-aa,0,FNL_COLOR); //上
-  DrawLine(Left, y1+ad+y2*(j+1),ww*(7+1)+1,y1+ad+y2*(j+1),0,FNL_COLOR); //下
-  DrawLine(Left, y1+ad*2,Left,y1+y2*(ac+1)+ad,0,FNL_COLOR); //左
-  DrawLine(Right,y1+ad*2,Right,y1+y2*(ac+1)+ad,0,FNL_COLOR); //右
-  rc=SetRect(ww*(i+1)+aa,y1+y2+ad,ww*(i+1)+aa,y1+ad+y2*(ac+1)); 
-  if(!daylist && i && i!=7)
-   DrawLine(rc.l,rc.t,rc.r,rc.b,0,FNL_COLOR); //其它竖线，短
-  else if(i==1)
-   DrawLine(rc.l,rc.t,rc.r,rc.b,0,FNL_COLOR); //第二根竖线，重复，粗线
-  //星期
-  if(j==0 && i>0){  
-   short center=32;
-   if(daylist==0){
-    wsprintf(ws,PNT_ONE,WeekID[i-1]);
-    rc=SetRect(ww*(i+1)+5,OHigh+2,ww*8,ScreenH()); 
-   }else if(daylist==1 && i==point_x){
-    center = 2;
-    wsprintf(ws,PNT_ONE,WeekGB[i-1]);
-    rc=SetRect(ww*2+5,OHigh+3,ww*8,ScreenH());
+   //画线框
+   DrawLine(Left, y1+ad+y2*(j+1),ww*(7+1)+3,y1+ad+y2*(j+1), 0,FNL_COLOR); //下
+   DrawLine(Left, y1+ad*2,       Left,      y1+y2*(ac+1)+ad,0,FNL_COLOR); //左
+   DrawLine(Right,y1+ad*2,       Right,     y1+y2*(ac+1)+ad,0,FNL_COLOR); //右
+   rc=SetRect(ww*(i+1)+aa+2,y1+y2+ad,ww*(i+1)+aa+2,y1+ad+y2*(ac+1)); 
+   if(!daylist && i && i!=7){
+     DrawLine(rc.l,rc.t,rc.r,rc.b,0,FNL_COLOR); //其它竖线，短
+   }else if(i==1){
+     DrawLine(rc.l,rc.t,rc.r,rc.b,0,FNL_COLOR); //第二根竖线，重复，粗线
    }
-   DrawString(ws,rc.l,rc.t,rc.r,rc.b,8,center,FNW_COLOR,ColorIdx);   
-  }
-  //课程数据
-  if(j<9){
+   LW=ww*(i+1)+5;
+   //星期
+   if(j==0 && i>0){  
+     wsprintf(ws,PNT_ONE,"时间");
+     rc=SetRect(3,OHigh+3,ww*2+5,OHigh+YSize);
+     DrawString(ws,rc.l,rc.t,rc.r,rc.b,8,2,FNW_COLOR,tsColor);
+     if(daylist==0){
+       wsprintf(ws,PNT_ONE,WeekID[i-1]);
+       rc.l=LW;
+       rc.r=LW+R-L;
+     }else if(daylist==1 && i==point_x){
+       wsprintf(ws,PNT_ONE,WeekGB[i-1]);
+       rc.l=L;
+       rc.r=R;
+     }
+     DrawString(ws,rc.l,rc.t,rc.r,rc.b,8,2,FNW_COLOR,tsColor);   
+   }
+   //课程数据
+   if(j<9){
     char TEMP[6],Res[16];
     sprintf(TEMP,"%d.%d:",i,j+1);
     MidStr(Data,TEMP,Res);
     wsprintf(ws,PNT_ONE,Res);
-    rc=SetRect(ww*(i+1)+5,OHigh+YSize+j*(YSize+2)+4,ww*8,OHigh+YSize*2+j*(YSize+2)+4); 
-    if(i==0) rc.l=3; else if(daylist==1) rc.l = ww*2+5;     
+    week=OHigh+j*(YSize+2)+4+YSize;
+    rc=SetRect(LW,week,LW+R-L,week+YSize); 
     if(daylist==1 && i==point_x){      
-      DrawString(ws,rc.l,rc.t,rc.r,rc.b,8,2,FNC_COLOR,ColorIdx);    
-    }else if(i==0){
-      DrawString(ws,rc.l,rc.t,rc.r,rc.b,8,32,FNM_COLOR,ColorIdx);       
+      DrawString(ws,L,rc.t,R,rc.b,8,2,FNC_COLOR,tsColor);    
+    }else if(i==0){  
+      rc=SetRect(3, week,ww*2+5,week+YSize);
+      DrawString(ws,rc.l,rc.t,rc.r,rc.b,8,2,FNM_COLOR,tsColor);       
     }else if(daylist==0 && i>0){
       strncpy(TEMP,Res,2);      
       TEMP[2]=0;
       wsprintf(ws,PNT_ONE,TEMP);      
       if(i==GetWeek(&d)+1){
          if(j+2==point_y)
-           DrawString(ws,rc.l,rc.t,rc.r,rc.b,8,32,FNC_COLOR,ColorIdx);   
+           DrawString(ws,rc.l,rc.t,rc.r,rc.b,8,2,FNC_COLOR,tsColor);   
          else
-           DrawString(ws,rc.l,rc.t,rc.r,rc.b,8,32,FND_COLOR,ColorIdx);
+           DrawString(ws,rc.l,rc.t,rc.r,rc.b,8,2,FND_COLOR,tsColor);
       }else{
-        DrawString(ws,rc.l,rc.t,rc.r,rc.b,8,32,FNC_COLOR,ColorIdx);      
+        DrawString(ws,rc.l,rc.t,rc.r,rc.b,8,2,FNC_COLOR,tsColor);      
       }
     }
+   }
   }
- }
 }
 FreeWS(ws);
 }

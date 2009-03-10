@@ -2,7 +2,7 @@
 #include "..\inc\swilib.h"
 //==============
 __root const CFG_HDR cfghdr31 = {CFG_DATE,"开始年份:",0,0};
-__root const TDate ymd={2009,2,11};
+__root const TDate ymd={2009,2,8};
 //==============
 __root const CFG_HDR cfghdr_m1_1={CFG_LEVEL,"文本颜色",1,0};
 
@@ -41,13 +41,13 @@ __root const CFG_HDR cfghdr23={CFG_COLOR,"时间底色",0,0};
 __root const char BGT_COLOR[4]={104,255,104,100};
 
 __root const CFG_HDR cfghdr24={CFG_COLOR,"上午底色",0,0};
-__root const char BGAM_COLOR[4]={255,255,100,32};
+__root const char BGM_COLOR[4]={255,255,100,32};
 
 __root const CFG_HDR cfghdr25={CFG_COLOR,"下午底色",0,0};
-__root const char BGPM_COLOR[4]={255,255,100,48};
+__root const char BGP_COLOR[4]={255,255,100,48};
 
 __root const CFG_HDR cfghdr26={CFG_COLOR,"晚上底色",0,0};
-__root const char BGNT_COLOR[4]={255,255,100,64};
+__root const char BGN_COLOR[4]={255,255,100,64};
 
 __root const CFG_HDR cfghdr_m2_2={CFG_LEVEL,"",0,0};
 //===============
