@@ -173,7 +173,7 @@
 ;26C: 0xA876C5A0   ; 9B: Audio params addr
 ;270:              ; 9C: CloseScreensaver
 0274: 0xA0C04CA1   ; 9D: __thumb int GetMissedEventsPtr()
-0278: 0xA006F2B1   ; 9E: int GetMissedEventCount(unsigned int Event)
+;0278: 0xA006F2B1   ; 9E: int GetMissedEventCount(unsigned int Event)
 027C: 0xA00A15C7   ; 9F: DrawRect
 
 0280: 0xA1000933   ; A0: wsprintf(WSHDR *,const char *format,...)
@@ -660,6 +660,8 @@
 
 0AC0: 0xA009DF53   ; 2B0:  __thumb void SetMenuSoftKey(void *gui, const SOFTKEY_DESC *,int n)
 0AE8: 0xA00B7DD3   ; 2BA:  __thumb void SetHeaderIcon(void *hdr_pointer, const int *icon, void *malloc_adr, void *mfree_adr)
+
+0B48: 0xA0AD98FB   ; 2D2:  __thumb void StartNativeBrowserCore()
 #pragma disable old_equal_ff
 +0
 ;********************************************************************************

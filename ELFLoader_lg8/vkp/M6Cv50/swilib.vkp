@@ -655,6 +655,8 @@
 
 0AC0: 0xA009DD77   ; 2B0:  __thumb void SetMenuSoftKey(void *gui, const SOFTKEY_DESC *,int n)
 0AE8: 0xA00B7BF7   ; 2BA:  __thumb void SetHeaderIcon(void *hdr_pointer, const int *icon, void *malloc_adr, void *mfree_adr)
+
+0B48: 0xA0AA7273   ; 2D2:  __thumb void StartNativeBrowserCore()
 #pragma disable old_equal_ff
 +0
 ;********************************************************************************
