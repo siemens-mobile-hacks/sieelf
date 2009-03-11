@@ -47,7 +47,8 @@ UpdateWndItem:
 	LDR	R4, =ADDR_UpdateWndItem
 	BLX	R4
 	POP	{R4, PC}
-
+	
+/*
 	PUBLIC		AddNewLine
 AddNewLine:
 	PUSH	{R0-R7, LR}
@@ -55,6 +56,7 @@ AddNewLine:
 	LDR	R2, =ADDR_wsAppendChar
 	BLX	R2
 	POP	{R0-R7, PC}
+
 	
 	PUBLIC	AllocMenuWS
 AllocMenuWS
@@ -68,5 +70,5 @@ SetMLMenuItemText
 	MOV	R12, R3
 	POP	{R3}
 	BX	R12
-	
+	*/
 	END

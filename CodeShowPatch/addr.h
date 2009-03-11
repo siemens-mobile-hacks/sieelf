@@ -210,20 +210,20 @@
 #endif
 
 #ifdef SK6Cv50
-#define ADDR_strlen		0xA0D9626C+1
-#define ADDR_atou		0xA020E4CC+1
-#define ADDR_WS_InitByZero	0xA07197EA+1
-#define ADDR_GetCalleeNumber	0xA0733432+1
-#define ADDR_UpdateWndItem	0xA0999A5E+1
-#define ADDR_memcmp		0xA0D958AC+1
+#define ADDR_strlen		(0xA0D9626C+1)
+#define ADDR_atou		(0xA020E4CC+1)
+#define ADDR_WS_InitByZero	(0xA07197EA+1)
+#define ADDR_GetCalleeNumber	(0xA0733432+1)
+#define ADDR_UpdateWndItem	(0xA0999A5E+1)
+#define ADDR_memcmp		(0xA0D958AC+1)
 
-#define ADDR_wstrcat		0xA07199B8+1
-#define ADDR_wsAppendChar	0xA0719AE0+1
-#define ADDR_IsCalling		0xA09E5142+1
-#define ADDR_CallIN		0xA038F496+1
-#define ADDR_CallOUT		0xA038E854+1
-#define ADDR_ADDRBook		0xA0719FE8+1
-#define ADDR_SMS_SEND		0xA07D3BC0+1
+#define ADDR_wstrcat		(0xA07199B8+1)
+#define ADDR_wsAppendChar	(0xA0719AE0+1)
+#define ADDR_IsCalling		(0xA09E5142+1)
+#define ADDR_CallIN		(0xA038F496+1)
+#define ADDR_CallOUT		(0xA038E854+1)
+#define ADDR_ADDRBook		(0xA0719FE8+1)
+#define ADDR_SMS_SEND		(0xA07D3BC0+1)
 
 #define AllocMLMenuItem_adr     0xA044F40C //or 0xA09EBE8F
 #define SetMLMenuItemText_adr   0xA09EBBD7 //
@@ -232,7 +232,7 @@
 
 #define GetHeaderPointer_addr   0xA098D533//
 #define SetHeaderText_addr      0xA099C639//
-#define ADDR_AllocWS		0xA0719852+1
+#define ADDR_AllocWS		(0xA0719852+1)
 
 #define ADDR_IncommingPDU	0xA8F40F78
 
@@ -369,38 +369,35 @@
 
 //NewSGold
 #ifdef S7Cv47
-#define ADDR_strlen		0xA14270BC+1
-#define ADDR_atou		0xA02C6AA0+1
-#define ADDR_WS_InitByZero	0xA01F7A76+1
-#define ADDR_GetCalleeNumber	0xA09833EE+1
-#define ADDR_UpdateWndItem	0xA0A35900+1
-#define ADDR_memcmp		0xA142627C+1
-//#define ADDR_DrawString		0xA09A150F
-//#define ADDR_FreeWS		0xA01F73A1
-//#define ADDR_AllocWS		0xA09974F9
-//#define ADDR_GetCurMenuItem	0xA09A997B
+#define ADDR_strlen		(0xA14270BC+1)
+#define ADDR_atou		(0xA02C6AA0+1)
+#define ADDR_WS_InitByZero	(0xA01F7A76+1)
+#define ADDR_GetCalleeNumber	(0xA09833EE+1)
+#define ADDR_UpdateWndItem	(0xA0A35900+1)
+#define ADDR_memcmp		(0xA142627C+1)
 #define ADDR_IncommingPDU	0xA8E57F90
 
-//#define ADDR_wstrcat		0xA01F7C2C+1
-#define ADDR_wsAppendChar	0xA01F7CF4+1
-#define ADDR_IsCalling		0xA0DE7EA4+1
-#define ADDR_CallIN		0xA02FCB7C+1
-//#define ADDR_CallOUT		0xA02FCD22+1
-//#define ADDR_ADDRBook		0xA01F8062+1
+#define ADDR_wsAppendChar	(0xA01F7CF4+1)
+#define ADDR_IsCalling		(0xA0DE7EA4+1)
+#define ADDR_CallIN		(0xA02FCB7C+1)
 
 #define BASEADDRESS		0xA1580000
 
-#define ADDR_GetPhoneBookNum	0xA098A4CE+1
-//#define BASEADDRESS		0xA1580000
-//#define UNUSERAM_NUM		0xA8A7F300
-//#define UNUSERAM_METHOD		0xA8A7F3E0
-//#define UNUSERAM_OLD_REDRAW	0xA8A7F3D0
+#define ADDR_GetPhoneBookNum	(0xA098A4CE+1)
 
-#define ADDR_CallOUT2		0xA0A7D666+1
+#define ADDR_CallOUT2		(0xA0A7D666+1)
 #define	AllocMLMenuItem_adr	0xA09AE477
-#define GetMLMenuGUI_adr	0xA09ADC68+1
+#define GetMLMenuGUI_adr	(0xA09ADC68+1)
 #define AllocMenuWS_adr		0xA09AB25D
 #define SetMLMenuItemText_adr	0xA09AE04F
+#define ConstructEditControl_adr	0xA0A256E5
+#define SetFontToEditCOptions_adr	0xA0A25363
+#define CopyOptionsToEditControl_adr	0xA0A25411
+#define AddEditControlToEditQend_adr	0xA0A26133
+#define ExtractEditControl_adr		0xA0A2BFB9
+#define EDIT_SetTextToEditControl_adr	0xA0A2BFAD
+#define wsInsertChar_adr		0xA01F7CA9
+#define ADDR_EDIT_UNK_VOID_INT_INT	0xA0A2BFFD
 
 #endif
 

@@ -24,6 +24,8 @@ RecoedWindow_:
 	BEQ	EX_PBACK
 	MOV	R0, R4
 	BL	AddNewLine
+	MOV	R0, R4
+	LDR	R1, [R5, #4]
 	BL	AppendInfoW
 EX_PBACK
 	MOV	R0, R4
@@ -84,6 +86,7 @@ AddrBookWindow_:
 	BLX	R2
 	MOV	R0, R4
 	BL	AddNewLine
+	MOV	R0, R4
 	MOV	R1, R4
 	BL	AppendInfoW
 	POP	{R0}
@@ -98,8 +101,9 @@ SIMBOOK:
 	LDR	R3, =ADDR_GetPhoneBookNum
 	BLX	R3
 	MOV	R0,R4
-	MOV	R1,R4
 	BL	AddNewLine
+	MOV	R0,R4
+	MOV	R1,R4
 	BL	AppendInfoW
 	POP	{R3}
 	ADD	R3, #4

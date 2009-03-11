@@ -13189,7 +13189,20 @@
     </settings>
   </configuration>
   <file>
+    <name>$PROJ_DIR$\about.txt</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\addr.h</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\CodeShow.C</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\EDial.c</name>
+    <excluded>
+      <configuration>ELC1v41</configuration>
+      <configuration>SK6Cv50</configuration>
+    </excluded>
   </file>
   <file>
     <name>$PROJ_DIR$\entry_elka.asm</name>
@@ -13258,6 +13271,9 @@
   </file>
   <file>
     <name>$PROJ_DIR$\sms_num.c</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\type_.h</name>
   </file>
 </project>
 

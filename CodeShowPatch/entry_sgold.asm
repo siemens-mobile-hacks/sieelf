@@ -111,6 +111,7 @@ Hook4:
 	BLX		R2
 	MOV		R0, R4
 	BL		AddNewLine
+	MOV		R0, R4
 	MOV		R1, R4
 	BL		AppendInfoW
 	POP		{PC}
@@ -120,6 +121,7 @@ Hook5:
 	PUSH		{LR}
 	LDR		R0, [SP,#0x178]
 	BL		AddNewLine
+	LDR		R0, [SP,#0x178]
 	LDR		R1, [SP,#0x1D4]
 	BL		AppendInfoW
 	MOV		R1, #0
@@ -130,6 +132,7 @@ Hook5:
 	PUSH		{LR}
 	LDR		R0, [SP,#0x174]
 	BL		AddNewLine
+	LDR		R0, [SP,#0x174]
 	LDR		R1, [SP,#0x1D0]
 	BL		AppendInfoW
 	MOV		R1, #0
