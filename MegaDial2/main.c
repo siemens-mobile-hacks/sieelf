@@ -179,39 +179,39 @@ void RereadSettings()
 	{
           switch(cfg_cs_adrs)
           {
-          case 0:
+          case 0://здЪф
             cs_adr=cfg_cs_adr;
             break;
             
-          case 1:
+          case 1://S65/CX65
             cs_adr=0xA0CC0000;
             break;
             
-          case 2:
+          case 2://SK65
             cs_adr=0xA0E30000;
             break;
             
-          case 3:
+          case 3:C65/SL65
             cs_adr=0xA0F60000;
             break;
             
-          case 4:
+          case 4://CX70
             cs_adr=0xA0E55A00;
             break;
             
-          case 5:
+          case 5://M65
             cs_adr=0xA0C61220;
             break;
             
-          case 6:
+          case 6://C7C
             cs_adr=0xA0E70B60;
             break;            
             
-          case 7:
+          case 7://CX7A
             cs_adr=0xA0F294B0;
             break;
             
-          case 8:
+          case 8://E71/EL71/M81/S68/SL75/S75
             cs_adr=0xA1580000;
             break;
           }  
