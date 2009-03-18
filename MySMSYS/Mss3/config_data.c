@@ -203,7 +203,7 @@ __root const CFG_HDR cfghdr1_89 = {CFG_LEVEL, "", 0, 0};
 //-----------------------------
 
 __root const CFG_HDR cfghdr1_9 = {CFG_LEVEL, "", 0, 0};
-/*
+
 __root const CFG_HDR cfghdr2_0 = {CFG_LEVEL, LGP_CFG_KEYHOOK_SETTING, 1, 0};
 
 __root const CFG_HDR cfghdr2_1 = {CFG_UINT, LGP_CFG_1ST_KEY, 0, 100};
@@ -213,7 +213,7 @@ __root const CFG_HDR cfghdr2_2 = {CFG_UINT, LGP_CFG_2ND_KEY, 0, 100};
 __root const unsigned int KEY2 = '#';
 
 __root const CFG_HDR cfghdr2_9 = {CFG_LEVEL, "", 0, 0};
-*/
+
 __root const CFG_HDR cfghdr3_0 = {CFG_LEVEL, LGP_CFG_ICONBAR_SETTING, 1, 0};
 
 __root const CFG_HDR cfghdr3_1 = {CFG_CHECKBOX, LGP_CFG_ENA_IB, 0, 3};

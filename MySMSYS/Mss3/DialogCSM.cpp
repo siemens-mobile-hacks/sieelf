@@ -229,6 +229,7 @@ void DialogCSM::OnCreate(CSM_RAM *data)
     dlg_csm->csm_ram.state=-3;
     break;
   }
+  dlg->ipc_data=NULL;
   if(!dlg_csm->gui_id) dlg_csm->csm_ram.state=-3;
 }
 
@@ -255,7 +256,7 @@ int DialogCSM::CreateDialogCSM(int submsg, void *ipc_data)
     ||submsg==SMSYS_IPC_IN_ALL
     )
     SUBPROC((void *)SMSDATA->CheckAllCHK, SMSDATA);
-  return (CreateCSM(&dlg_csm_desc.csm_desc, &dlg_csm, 2));
+  return (CreateCSM(&dlg_csm_desc.csm_desc, &dlg_csm, 0));
 }
 
 void DialogCSM::UpdateNameDlgCSM(DLG_CSM *dlg_csm, int lgp)

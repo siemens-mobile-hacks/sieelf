@@ -27,6 +27,7 @@ class DaemonCSM
     DaemonCSM *daemon;
   }DAEMON_CSM;
 public:
+	static void StartDialog(int submess, void *data);
 	SendList * sndlst;
   DaemonCSM();
   ~DaemonCSM();

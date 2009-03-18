@@ -153,7 +153,7 @@ int SendList::SendEnd(int csm_id)
     || !(sl=FindSL(csm_id))
     )
     return 0;
-  if(CFG_ENA_SAVE_SENT)
+  if(CFG_ENA_SAVE_SENT/* && !sl->send_fail*/)
   {
     SMSDATA->SaveMss(sl->text, sl->number, NULL, TYPE_SENT, 2);
     SendMyIpc(SMSYS_IPC_SMS_DATA_UPDATE);
@@ -216,3 +216,29 @@ void SendList::Send(SendList *sndlst)
     CSMSwaper::CSMtoTop(tcsm->id, -1);
   }
 }
+
+
+//DEL void SendList::SendGUIDesMSG(GBS_MSG *msg)
+//DEL {
+//DEL   CSM_RAM *icsm;
+//DEL   SNDLST *sl;
+//DEL   sl=this->sltop;
+//DEL   while(sl)
+//DEL   {
+//DEL     if(sl->csm_id
+//DEL       && (icsm=FindCSMbyID(sl->csm_id))
+//DEL       )
+//DEL     {
+//DEL       GetCPUClock();
+//DEL       if((int)msg->data0 == ((int*)icsm)[0x30/4])
+//DEL       {
+//DEL 	if((int)msg->data1==1) //cancal
+//DEL 	  sl->send_fail=0;
+//DEL 	else
+//DEL 	  sl->send_fail=1;
+//DEL 	return;
+//DEL       }
+//DEL     }
+//DEL     sl=sl->next;
+//DEL   }
+//DEL }

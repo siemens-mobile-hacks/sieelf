@@ -17,6 +17,8 @@
 #include "CodeShow.h"
 #include "..\..\inc\playsound.h"
 #include "..\..\inc\mplayer.h"
+#include "Mss3App.h"
+#include "KeyHook.h"
 
 DaemonCSM::DaemonCSM()
 {
@@ -78,6 +80,7 @@ void DaemonCSM::OnCreate(CSM_RAM *data)
   IP=new IconPack;
   ADRLST=new AdrList;
   SMSDATA=new SmsData;
+  KeyHook::Create();
   //CodeShow::LoadDB();
 }
 
@@ -199,11 +202,13 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	    daemon->temp_tmr_index=0;
 	  }
 	  break;
-	case SMSYS_IPC_NAB_CREATE:
+	//case SMSYS_IPC_NAB_CREATE:
+	case SMSYS_IPC_ADD_CSMID:
 	  if(ipc->data)
 	  {
 	    if(!daemon->AddDlgCsmID((int)ipc->data))
 	      daemon->AddDlgCsmID_Forced0((int)ipc->data);
+	    ipc->data=NULL;
 	  }
 	  break;
 	case SMSYS_IPC_ARCHIVE:
@@ -229,6 +234,7 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	      daemon->PLAY_ID=0;
 	    }
 	    SUBPROC((void *)daemon->PlayNotifySound, daemon, (char *)ipc->data);
+	    ipc->data=NULL;
 	  }
 	  break;
 	case SMSYS_IPC_SOUND_STOP:
@@ -246,6 +252,7 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	    if(ipc->data)
 	    {
 	      daemon->sndlst->CatList((SNDLST *)ipc->data);
+	      ipc->data=NULL;
 	    }
 	    SUBPROC((void *)SendList::Send, daemon->sndlst);
             //if(CFG_ENA_SNED_ON_BG)
@@ -256,11 +263,13 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	  break;
 	default:
 	  {
-	    int id;
-	    DialogCSM *dlg=new DialogCSM;
-	    id=dlg->CreateDialogCSM(msg->submess, ipc->data);
-	    if(!daemon->AddDlgCsmID(id))
-	      daemon->AddDlgCsmID_Forced0(id);
+	    //int id;
+	    //DialogCSM *dlg=new DialogCSM;
+	    //id=dlg->CreateDialogCSM(msg->submess, ipc->data);
+	    //if(!daemon->AddDlgCsmID(id))
+	    //  daemon->AddDlgCsmID_Forced0(id);
+	    SUBPROC((void *)DaemonCSM::StartDialog, msg->submess, ipc->data);
+	    ipc->data=NULL;
 	  }
 	  break;
 	}
@@ -273,7 +282,7 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
     extern void InitSetting(void); //main.cpp
     if(!strcmp_nocase(successed_config_filename,(char *)msg->data0))
     {
-      InitSetting();
+      Mss3App::InitSetting();
       ShowMSG(1,(int)LGP->lgp.LGP_CONFIG_UPDATE);
       ADRLST->ConstructListCFGUPD();
       daemon->vibra->ReInitThythm();
@@ -289,6 +298,10 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
     //  SUBPROC((void *)daemon->sndlst->SendOnTop, daemon->sndlst);
     daemon->DelDlgCsmID((int)msg->data0);
   }
+  //if(msg->msg==MSG_GUI_DESTROYED)
+  //{
+  //  daemon->sndlst->SendGUIDesMSG(msg);
+  //}
   if(daemon->PLAY_ID && (msg->msg==MSG_INCOMMING_CALL || IsCalling()))
   {
     PlayMelody_StopPlayback(daemon->PLAY_ID);
@@ -315,10 +328,11 @@ void DaemonCSM::OnClose(CSM_RAM *data)
   delete IP;
   delete ADRLST;
   delete SMSDATA;
+  KeyHook::Remove();
   //CodeShow::UnloadDB();
   delete daemon_csm->daemon;
   extern void ElfKiller(void); //main.cpp
-  SUBPROC((void *)ElfKiller);
+  SUBPROC((void *)Mss3App::Killer);
 }
 
 
@@ -453,4 +467,12 @@ CSM_RAM * DaemonCSM::GetTopCSM()
   if(!icsm) return 0;
   while(icsm->next) icsm=(CSM_RAM *)icsm->next;
   return icsm;
+}
+
+void DaemonCSM::StartDialog(int submess, void *data)
+{
+  int id;
+  DialogCSM *dlg=new DialogCSM;
+  id=dlg->CreateDialogCSM(submess, data);
+  if(id) SendMyIpc(SMSYS_IPC_ADD_CSMID, (void *)id);
 }

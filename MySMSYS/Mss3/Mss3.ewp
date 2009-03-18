@@ -7230,6 +7230,12 @@
     <name>$PROJ_DIR$\include.h</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\KeyHook.cpp</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\KeyHook.h</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\LangPack.cpp</name>
   </file>
   <file>
@@ -7243,6 +7249,12 @@
   </file>
   <file>
     <name>$PROJ_DIR$\MainMenu.h</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\Mss3App.cpp</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\Mss3App.h</name>
   </file>
   <file>
     <name>$PROJ_DIR$\MyIpcMessage.cpp</name>

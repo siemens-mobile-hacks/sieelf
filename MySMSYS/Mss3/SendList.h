@@ -5,6 +5,7 @@ typedef struct _SNDLST
   _SNDLST *next;
   _SNDLST *prev;
   int csm_id;
+  //int send_fail;
   char number[50];
   WSHDR *text;
 }SNDLST;
