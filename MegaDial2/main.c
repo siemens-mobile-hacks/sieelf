@@ -191,7 +191,7 @@ void RereadSettings()
             cs_adr=0xA0E30000;
             break;
             
-          case 3:C65/SL65
+          case 3://C65/SL65
             cs_adr=0xA0F60000;
             break;
             
