@@ -42,6 +42,7 @@ DaemonCSM::DaemonCSM()
   zeromem(this->DLGCSM_IDS, sizeof(this->DLGCSM_IDS));
   this->is_new_proc=0;
   this->temp_tmr_index=0;
+  this->PLAY_ID=0;
 #ifdef ICONBAR
   strcpy(this->daemon_csm_desc.iconbar_handler.check_name, "IconBar");
   this->daemon_csm_desc.iconbar_handler.addr=(int)this->AddIconBar;

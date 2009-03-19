@@ -43,7 +43,7 @@ private:
   GBSTMR chktmr;
   int temp_tmr_index;
   int is_new_proc;
-  short PLAY_ID;
+  int PLAY_ID;
   Vibra *vibra;
   int AddDlgCsmID(int id);
   void AddDlgCsmID_Forced0(int id);
