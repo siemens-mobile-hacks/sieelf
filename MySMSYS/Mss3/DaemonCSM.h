@@ -1,6 +1,7 @@
 #ifndef _DAEMONCSM_H_
 #define _DAEMONCSM_H_
 
+#include "..\..\INC\swilib.h"	// Added by ClassView
 #define DLGCSM_ID_MAX 32
 #define DAEMON_NAME_LEN 32
 
@@ -27,6 +28,7 @@ class DaemonCSM
     DaemonCSM *daemon;
   }DAEMON_CSM;
 public:
+//	static const CSM_DESC csm_desc_tpl;
 	static void StartDialog(int submess, void *data);
 	SendList * sndlst;
   DaemonCSM();

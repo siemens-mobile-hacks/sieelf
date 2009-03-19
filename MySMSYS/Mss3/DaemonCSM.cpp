@@ -19,7 +19,20 @@
 #include "..\..\inc\mplayer.h"
 #include "Mss3App.h"
 #include "KeyHook.h"
-
+/*
+const CSM_DESC DaemonCSM::csm_desc_tpl=
+{
+  DaemonCSM::OnMessage,
+  DaemonCSM::OnCreate,
+#ifdef NEWSGOLD
+  0,0,0,0,
+#endif
+  DaemonCSM::OnClose,
+  sizeof(DAEMON_CSM),
+  1,
+  &minus11
+};
+*/
 DaemonCSM::DaemonCSM()
 {
   daemon_csm_desc.csm_desc.onMessage=OnMessage;
@@ -34,6 +47,7 @@ DaemonCSM::DaemonCSM()
   daemon_csm_desc.csm_desc.datasize=sizeof(DAEMON_CSM);
   daemon_csm_desc.csm_desc.statesize=1;
   daemon_csm_desc.csm_desc.states=&minus11;
+  //memcpy(&daemon_csm_desc.csm_desc, &DaemonCSM::csm_desc_tpl, sizeof(CSM_DESC));
   daemon_csm_desc.csm_name.wsbody=this->csm_name_body;
   daemon_csm_desc.csm_name.ws_malloc=NAMECSM_MAGIC1;
   daemon_csm_desc.csm_name.ws_mfree=NAMECSM_MAGIC2;
@@ -209,7 +223,7 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	  {
 	    if(!daemon->AddDlgCsmID((int)ipc->data))
 	      daemon->AddDlgCsmID_Forced0((int)ipc->data);
-	    ipc->data=NULL;
+	  //  ipc->data=NULL;
 	  }
 	  break;
 	case SMSYS_IPC_ARCHIVE:
@@ -235,7 +249,7 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	      daemon->PLAY_ID=0;
 	    }
 	    SUBPROC((void *)daemon->PlayNotifySound, daemon, (char *)ipc->data);
-	    ipc->data=NULL;
+	  //  ipc->data=NULL;
 	  }
 	  break;
 	case SMSYS_IPC_SOUND_STOP:
@@ -253,7 +267,7 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	    if(ipc->data)
 	    {
 	      daemon->sndlst->CatList((SNDLST *)ipc->data);
-	      ipc->data=NULL;
+	    //  ipc->data=NULL;
 	    }
 	    SUBPROC((void *)SendList::Send, daemon->sndlst);
             //if(CFG_ENA_SNED_ON_BG)
@@ -270,7 +284,12 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	    //if(!daemon->AddDlgCsmID(id))
 	    //  daemon->AddDlgCsmID_Forced0(id);
 	    SUBPROC((void *)DaemonCSM::StartDialog, msg->submess, ipc->data);
-	    ipc->data=NULL;
+	    //if(ipc->data
+	    //  && ((unsigned int)ipc>>27)==0x15
+	    //  )
+	    //{
+	    //  ipc->data=NULL;
+	    //}
 	  }
 	  break;
 	}
