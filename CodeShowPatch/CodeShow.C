@@ -159,6 +159,9 @@ void UpdateLocaleToItem(int Index, int NoIndex, void* Context)
 
 //WStringºÅÂë°æ±¾
 void AppendInfoW(WSTRING *pWS, WSTRING * pNo)
+#ifdef SK6Cv50
+ @ "CODE_X"
+#endif
 {
 	char szPNo[0x30];
 	int i=0;
@@ -171,6 +174,9 @@ void AppendInfoW(WSTRING *pWS, WSTRING * pNo)
 }
 
 word GetLocalNoInfo(char *szLocalNo, char *szLocalName)
+#ifdef SK6Cv50
+ @ "CODE_X"
+#endif
 {
 	int i = 0;
 	word len = 0;
