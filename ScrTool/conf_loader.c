@@ -4,7 +4,7 @@
 #include "conf_loader.h"
 #include "scrtool.h"
 
-const char *successed_config_filename="";
+const char *cfn="";
 
 #pragma segment="CONFIG_C"
 int LoadConfigData(const char *fname)
@@ -46,7 +46,7 @@ int LoadConfigData(const char *fname)
       result=-1;
   }
   mfree(buf);
-  if (result>=0) successed_config_filename=fname;
+  if (result>=0) cfn=fname;
   return(result);
 }
 
