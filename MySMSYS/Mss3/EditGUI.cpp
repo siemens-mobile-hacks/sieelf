@@ -123,8 +123,10 @@ void EditGUI::EdOpUserItem(USR_MENU_ITEM *item)
 	EDITCONTROL ec;
 	ExtractEditControl(item->user_pointer, edg->n_focus, &ec);
 	//edg->EditSendSMS(edg->dlg_csm, ec.pWS, edg->number);
-	edg->EditSendSMS(ec.pWS);
-	GeneralFunc_flag1(edg->gui_id, 1);
+	if(edg->EditSendSMS(ec.pWS))
+	{
+	  GeneralFunc_flag1(edg->gui_id, 1);
+	}
       }
       //send
       break;
@@ -298,8 +300,10 @@ enter: 0x3
       EDITCONTROL ec;
       ExtractEditControl(data, edg->n_focus, &ec);
       //edg->EditSendSMS(edg->dlg_csm, ec.pWS, edg->number);
-      edg->EditSendSMS(ec.pWS);
-      return 1;
+      if(edg->EditSendSMS(ec.pWS))
+      {
+	return 1;
+      }
     }
     else if (msg->keys==0x25) //down
     {
@@ -1041,7 +1045,7 @@ int EditGUI::InsertNumber(void *data, WSHDR *number)
   return res;
 }
 
-void EditGUI::EditSendSMS(WSHDR *text)
+int EditGUI::EditSendSMS(WSHDR *text)
 {
   NLST *nl;
   SendList *sl;
@@ -1050,7 +1054,7 @@ void EditGUI::EditSendSMS(WSHDR *text)
     || !text->wsbody[0]
     || !(nl=this->nlst->nltop)
     )
-    return;
+    return 0;
   sl=new SendList;
   while(nl)
   {
@@ -1063,11 +1067,12 @@ void EditGUI::EditSendSMS(WSHDR *text)
   if(!sl->sltop)
   {
     delete sl;
-    return;
+    return 0;
   }
   SendMyIpc(SMSYS_IPC_SEND_LIST, sl->sltop);
   sl->sltop=NULL;
   delete sl;
+  return 1;
 }
 
 

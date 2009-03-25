@@ -13,7 +13,7 @@ public:
 	int SetNumber(void *data, char*number);
 	int InsertNumber(void *data, char *number);
 	int SaveDraft(WSHDR *text);
-	void EditSendSMS(WSHDR *text);
+	int EditSendSMS(WSHDR *text);
 	int InsertNumber(void *data, WSHDR *number);
 	int SetNumber(void *data, WSHDR *number);
 	int InsertText(void *data, WSHDR *text);
