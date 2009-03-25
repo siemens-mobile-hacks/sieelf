@@ -1087,10 +1087,11 @@ int EditGUI::SaveDraft(WSHDR *text)
     return 0;
   while(nl)
   {
-    if(
-      strlen(nl->number)
-      && SMSDATA->SaveMss(text, nl->number, NULL, TYPE_DRAFT, 2)
-      )
+    //if(
+    //  strlen(nl->number)
+    //  && SMSDATA->SaveMss(text, nl->number, NULL, TYPE_DRAFT, 2)
+    //  )
+    if(SMSDATA->SaveMss(text, nl->number, NULL, TYPE_DRAFT, 2))
       res++;
     nl=nl->next;
   }
