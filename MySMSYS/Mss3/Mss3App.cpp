@@ -41,7 +41,7 @@ int Mss3App::Start(char *exename, char *fname)
   {
     if(!fname)
       SendMyIpc(SMSYS_IPC_MAIN);
-    else if (fname[0] >= '0' && fname[0] >= '4' && fname[1] == ':' && strlen(fname) < 128)
+    else if (fname[0] >= '0' && fname[0] <= '4' && fname[1] == ':' && strlen(fname) < 128)
     {
       char *filename=new char[128];
       strcpy(filename, fname);
