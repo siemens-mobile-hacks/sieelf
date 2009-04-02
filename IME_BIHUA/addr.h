@@ -70,3 +70,25 @@
 #define	KEY0_GOTO_IME		0xA05CBBF8+1 //0键跳转向常规输入
 
 #endif
+
+#ifdef	S7Csw47
+#define	DO_DIRECT_SELECT	0xA0AD03AF
+//#define	DO_START_SELECT		0xA0AD0005
+#define	DO_EBACK		0xA0ACFEC1
+#define	DO_NOTHING		0xA0AD00C3
+//#define	WGET_KBS_KSTATE		0xA0A30E2F
+//#define	UNK_RAM_adr		0xA8DF0908
+//#define	WSET_KBS_KSTATE		0xA0A30B91
+//#define	DO_SELECT_EBACK		0xA0ACFEC1
+
+#define	KDB_KPOP_FUNC1_RAM	0xA8E63F88
+
+#define GBS_SendMessage_adr	0xA0092A94
+
+#define	JAVA_EDIT_KOP		0xA8DE4900	//在JAVA中,这个地址不变
+#define	USE_RAM			0xA8A7F100	//4字节,用于存储JAVA中输入法选择菜单状态
+#define	GET_INPUT_STATE		0xA05B41BF	//获取输入状态,1为等待输入,0为拼音选择或选字状态
+#define	KEY0_FUNC1		0xA05B2F5F	//0键跳转位置的一个函数,返回时要先执行这个函数
+#define	KEY0_BACK		0xA05B4375	//0键跳转返回地址
+#define	KEY0_GOTO_IME		0xA05B4385	//0键跳转向常规输入
+#endif
