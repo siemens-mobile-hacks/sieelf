@@ -1,7 +1,6 @@
 #define CFG_UINT 1
 #define CFG_STR_UTF8 2
 #define CFG_INT 3
-#define CFG_STR_GB 15
 #define CFG_STR_WIN1251 4
 #define CFG_CBOX 5
 #define CFG_STR_PASS 6
@@ -19,6 +18,8 @@
 //TDate
 #define CFG_RECT 14  
 //RECT
+#define CFG_STR_GB 15
+#define CFG_UTF8_STRING_PASS 16
 
 typedef struct
 {
