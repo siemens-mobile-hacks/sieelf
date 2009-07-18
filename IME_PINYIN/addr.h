@@ -82,3 +82,26 @@
 #define	KEY0_BACK		0xA04D72C0+1 //k
 #define	KEY0_GOTO_IME		0xA04D72D0+1 //k
 #endif
+
+#ifdef	M81Csw51
+#define GBS_SendMessage_adr	0xA0092A94	//0xA0092A94
+#define DO_IME_BACK		0xA0AD6D33	//0xA0ACE03A+1 //
+#define DO_RIGHT		0xA0AD6F3F	//0xA0ACE246+1 //输入状态已检测
+#define	DO_LEFT			0xA0AD6ED5	//0xA0ACE1DC+1
+#define	DO_DOWN			0xA0AD701D	//0xA0ACE324+1 //输入状态已检测
+#define	DO_UP			0xA0AD6FFB	//0xA0ACE302+1
+#define	DO_SELECT		0xA0AD6E09	//0xA0ACE110+1 //
+#define DO_DIRECT_SELECT	0xA0AD7291	//0xA0ACE598+1 //只能在非JAVA中使用
+#define DO_NOTHING		0xA0AD711B	//0xA0ACE422+1 //不做任何改变
+#define	DO_KEY1_BACK		0xA0AD733D	//0xA0ACE644+1 //1键返回g
+#define	JAVA_EDIT_KOP		0xA8E636A4	//0xA8DE4900   //在JAVA中,这个地址不变
+#define	USE_RAM			0xA8D89C00	//0xA8A7F100   //4字节,用于存储JAVA中输入法选择菜单状态
+#define DO_XING_FIX		0xA05CB67D	//0xA05B3C80+1 //解决*键在JAVA中选字状态向右无用问题
+#define	GET_INPUT_STATE		0xA05CBBBB	//0xA05B41BE+1 //获取输入状态,1为等待输入,0为拼音选择或选字状态
+#define	KEY0_FUNC1		0xA05CA95B	//0xA05B2F5E+1 //0键跳转位置的一个函数,返回时要先执行这个函数
+#define	KEY0_BACK		0xA05CBD71	//0xA05B4374+1 //0键跳转返回地址
+#define	KEY0_GOTO_IME		0xA05CBD81	//0xA05B4384+1 //0键跳转向常规输入
+
+//v1.4
+#define	GET_PINYIN_CUR		0xA0A3382D	//0xA0A30DCC+1 //获得光标所在拼音
+#endif
