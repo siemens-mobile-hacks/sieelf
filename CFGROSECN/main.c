@@ -1,40 +1,14 @@
 #include "..\inc\swilib.h"
 #include "..\inc\cfg_items.h"
+#include "rect_patcher.h"
 #include <errno.h>
 
 extern long  strtol (const char *nptr,char **endptr,int base);
 extern unsigned long  strtoul (const char *nptr,char **endptr,int base);
 
-void EditCoordinates(void *rect_or_xy, int is_rect);
-extern void EditColors(char*color);
-#pragma inline
-//===============================================================================================
-#pragma inline
-void patch_rect(RECT*rc,int x,int y, int x2, int y2)
-{
-  rc->x=x;
-  rc->y=y;
-  rc->x2=x2;
-  rc->y2=y2;
-}
-
-#pragma inline
-void patch_header(HEADER_DESC* head)
-{
-  head->rc.x=0;
-  head->rc.y=YDISP;
-  head->rc.x2=ScreenW()-1;
-  head->rc.y2=HeaderH()+YDISP-1;
-}
-#pragma inline
-void patch_input(INPUTDIA_DESC* inp)
-{
-  inp->rc.x=0;
-  inp->rc.y=HeaderH()+1+YDISP;
-  inp->rc.x2=ScreenW()-1;
-  inp->rc.y2=ScreenH()-SoftkeyH()-1;
-}
-//===============================================================================================
+extern void EditKeys(void *key);
+extern void EditCoordinates(void *rect_or_xy, int is_rect);
+extern void EditColors(char *color);
 
 #ifdef NEWSGOLD
 #define CBOX_CHECKED 0xE116
@@ -134,8 +108,7 @@ int IsFieldCorrect(void *data, int ec_index)
         wsprintf(ws1,_percent_u,vui);
         EDIT_SetTextToEditControl(data,ec_index,ws1);
       }
-      break;
-      
+      break;      
     case CFG_INT:
       vi=strtol(ss,0,10);
       if (vi<(int)hp->min || vi>(int)hp->max || !ws1->wsbody[0] || (err=*_Geterrno())==ERANGE)
@@ -231,15 +204,7 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
 	 &&(!EDIT_IsBusy(data))){
         EDIT_SetFocus(data, 3); 
 	return(-1);
-      }
-      /*
-      //Ñ­»·´úÂë
-      if((n==0)&&(l==UP_BUTTON || l==VOL_UP_BUTTON)){  
-        EDIT_SetFocus(data, total_items*2+1); return(-1);
-      }else if ((n>=total_items-1)&&(l==DOWN_BUTTON || l==VOL_DOWN_BUTTON)){
-        EDIT_SetFocus(data, 3); return(-1);
-      }*/
-      //--------------------
+      }  
       if (l==LEFT_SOFT||l==ENTER_BUTTON)
       {
         if (l==ENTER_BUTTON)
@@ -257,6 +222,9 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
           break;
         case CFG_COLOR:
           EditColors((char *)(hp+1));
+          break;
+        case CFG_KEYCODE:
+          EditKeys((unsigned int *)(hp+1));
           break;
 	case CFG_LEVEL:
 	  level++;
@@ -376,18 +344,18 @@ void ed1_ghook(GUI *data, int cmd)
 
   CFG_HDR *hp;
   
-  if (cmd==2)
+  if (cmd==TI_CMD_CREATE)
   {
     //Create
     int need_to_jump=(int)EDIT_GetUserPointer(data);
     EDIT_SetFocus(data,need_to_jump);
   }
-  if (cmd==3)
+  if (cmd==TI_CMD_DESTROY)
   {
     i=EDIT_GetFocus(data);
     IsFieldCorrect(data,i);
   }
-  if (cmd==7)
+  if (cmd==TI_CMD_REDRAW)
   {
     i=EDIT_GetFocus(data);
     ExtractEditControl(data,i,&ec);
@@ -411,6 +379,8 @@ void ed1_ghook(GUI *data, int cmd)
       case CFG_STR_UTF8:
         ws_2str(ews,(char *)(hp+1),hp->max);
         break;
+        
+      case CFG_UTF8_STRING_PASS:  
       case CFG_UTF8_STRING:
         // ws_2utf8( WSHDR *from, char *to , int *result_length, int max_len);
         ws_2utf8(ews,(char *)(hp+1),&utf8conv_res_len,hp->max);
@@ -441,6 +411,11 @@ void ed1_ghook(GUI *data, int cmd)
         EDIT_SetTextToFocused(data,ews);  
         need_set_sk=1;
         break;
+      case CFG_KEYCODE:
+        wsprintf(ews,"%02X",*((unsigned int *)(hp+1)));
+        EDIT_SetTextToFocused(data,ews);  
+        need_set_sk=1;
+        break;
       case CFG_CHECKBOX:
         CutWSTR(ews,0);
         wsAppendChar(ews, *((int *)(hp+1))?CBOX_CHECKED:CBOX_UNCHECKED);
@@ -466,8 +441,9 @@ void ed1_ghook(GUI *data, int cmd)
       case CFG_LEVEL:
         need_set_sk=1;
         break;       
-      case CFG_STR_GB://ws2gb(ews,(char *)(hp+1),hp->max);
-        ws2ascii(ews,(char *)(hp+1),hp->max);
+      case CFG_STR_GB:
+        ws2gb(ews,(char *)(hp+1),hp->max);
+        //ws2ascii(ews,(char *)(hp+1),hp->max);
       	break;  
       default:
         break;      
@@ -480,16 +456,16 @@ void ed1_ghook(GUI *data, int cmd)
       }
     }
   }
-  if (cmd==0x0A)
+  if (cmd==TI_CMD_FOCUS)
   {
     DisableIDLETMR();
   }
-  if (cmd==0x0C)
+  if (cmd==TI_CMD_SUBFOCUS_CHANGE)
   {
     i=EDIT_GetUnFocus(data);
     IsFieldCorrect(data,i);
   }
-  if (cmd==0x0D)
+  if (cmd==TI_CMD_COMBOBOX_FOCUS)
   {
     //onCombo
     i=EDIT_GetFocus(data);
@@ -515,7 +491,7 @@ void ed1_ghook(GUI *data, int cmd)
   }
 }
 
-HEADER_DESC ed1_hdr={0,0,0,0,NULL,(int)"ÅäÖÃÆ÷ v1.2",LGP_NULL};
+HEADER_DESC ed1_hdr={0,0,0,0,NULL,(int)"ÅäÖÃÆ÷v1.3",LGP_NULL};
 
 INPUTDIA_DESC ed1_desc=
 {
@@ -564,14 +540,14 @@ int LoadCfg(char *cfgname)
       size_cfg=fstat.size;
       if (size_cfg<=0)
       {
-        ErrorMsg(".bcfgÎÄ¼þ³¤¶ÈÎª0!");
+        ErrorMsg(".BCFG´óÐ¡ÊÇÁã×Ö½Ú!");
       }
       else
       {
         cfg=malloc((size_cfg+3)&(~3));
         if (fread(f,cfg,size_cfg,&err)!=size_cfg)
         {
-          ErrorMsg("²»ÄÜ¶ÁÈ¡.bcfgÎÄ¼þ!");
+          ErrorMsg("¶ÁÈ¡.BCFGÊ§°Ü!");
           mfree(cfg);
         }
         else result=1;
@@ -589,41 +565,181 @@ typedef struct
   char fullpath[128];
 }SEL_BCFG;
 
+SEL_BCFG *sbtop;
+//------------------- ? ------------------//
+
+//Êëþ÷?äëÿ ïîèñêà ïî T9
+static const char table_T9Key[256]=
+"11111111111111111111111111111111"
+"10001**0***0000*012345678900***0"
+"0222333444555666777788899991*110"
+"122233344455566677778889999111*1"
+"11111111111111111111111111111111"
+"11111111311111111111111131111111"
+"22223333444455566677778888899999"
+"22223333444455566677778888899999";
+
+
+char T9Key[32];
+int sel_bcfg_id;
+char bcfg_hdr_text[32];
+char bcfgmenu_sk_r[16];
+volatile int prev_bcfg_itemcount;
+
+SEL_BCFG *FindBCFGByNS(int *i)
+{
+  SEL_BCFG *t;
+  t=(SEL_BCFG *)sbtop;
+  char *s;
+  char *d;
+  int c;
+  while(t)
+  {
+   s=T9Key;
+   d=t->cfgname;
+   while(c=*s++)
+   {
+    if(c!=table_T9Key[*d++]) goto L_NOT9;
+   }
+   if(!(*i)) return(t);
+   (*i)--;
+ L_NOT9:
+    t=t->next;
+  }
+  return(t);
+}
+
+int CountBCFG(void)
+{
+  int l=-1;
+  FindBCFGByNS(&l);
+  l=-1-l;
+  return l;
+}
+
+SEL_BCFG *FindBCFGByN(int i)
+{
+  SEL_BCFG *t;
+  t=FindBCFGByNS(&i);
+  return t;
+}
+
+//----------------------------------//
+
+void ClearT9Key(void)
+{
+  zeromem(T9Key,sizeof(T9Key));
+}
+
+void UpdateBCFGHeader(void)
+{
+  if (strlen(T9Key))
+  {
+    strcpy(bcfg_hdr_text,"T9¼ü:");
+    strcat(bcfg_hdr_text,T9Key);
+    strcpy(bcfgmenu_sk_r,"Çå³ý");
+  }
+  else
+  {
+    strcpy(bcfg_hdr_text,"ÅäÖÃÁÐ±í");
+    strcpy(bcfgmenu_sk_r,"¹Ø±Õ");
+  }
+}
+
+void AddT9Key(int chr)
+{
+  int l=strlen(T9Key);
+  if (l<(sizeof(T9Key)-1))
+  {
+    T9Key[l]=chr;
+  }
+}
+
+void BackSpaceT9(void)
+{
+  int l=strlen(T9Key);
+  if (l)
+  {
+    l--;
+    T9Key[l]=0;
+  }
+}
+
+void RecountMenuBCFG()
+{
+  int i;
+  void *data;
+  UpdateBCFGHeader();
+  if (!sel_bcfg_id) return; //Íå÷åãî ñ÷èòàò?
+  data=FindGUIbyId(sel_bcfg_id,NULL);
+
+  i=CountBCFG();
+  if (i!=prev_bcfg_itemcount)
+  {
+    prev_bcfg_itemcount=i;
+    Menu_SetItemCountDyn(data,i);
+  }
+  SetCursorToMenuItem(data,0);
+  if (IsGuiOnTop(sel_bcfg_id)) RefreshGUI();
+}
+
+//-------------------------------------------//
 
 int selbcfg_menu_onkey(void *gui, GUI_MSG *msg)
 {
-  SEL_BCFG *sbtop=MenuGetUserPointer(gui);
+  int i=GetCurMenuItem(gui);
   if (msg->keys==0x3D || msg->keys==0x18)
   {
-    int i=GetCurMenuItem(gui);
-    for (int n=0; n!=i; n++) sbtop=sbtop->next;
-    if (sbtop)
+    SEL_BCFG *sb=FindBCFGByN(i);
+    if (sb)
     {
+      ClearT9Key();
       MAIN_CSM *csm=(MAIN_CSM *)FindCSMbyID(maincsm_id);
-      if (LoadCfg(sbtop->fullpath))
+      if (LoadCfg(sb->fullpath))
       {
-        UpdateCSMname(sbtop->fullpath);
+        UpdateCSMname(sb->fullpath);
         csm->gui_id=create_ed(0);
         return (1);
       }
     }
+  } 
+  
+  if (msg->gbsmsg->msg==KEY_DOWN)
+  {
+    int key=msg->gbsmsg->submess;
+    if (((key>='0')&&(key<='9'))||(key=='#')||(key=='*'))
+    {
+      AddT9Key(key);
+      RecountMenuBCFG();
+      return(-1);
+    }
+  }  
+  if (msg->keys==1)
+  {
+    if (strlen(T9Key))
+    {
+      BackSpaceT9();
+      RecountMenuBCFG();
+      return(-1);
+    }
   }
+ 
   return (0);
 }
 
 void selbcfg_menu_ghook(void *gui, int cmd)
 {
-  SEL_BCFG *sbtop=MenuGetUserPointer(gui);
-  if (cmd==3)
+  SEL_BCFG *sb=MenuGetUserPointer(gui);
+  if (cmd==TI_CMD_DESTROY)
   {
-    while(sbtop)
+    while(sb)
     {
-      SEL_BCFG *sb=sbtop;
-      sbtop=sbtop->next;
-      mfree(sb);
+      SEL_BCFG *st=sb;
+      sb=sb->next;
+      mfree(st);
     }    
   }
-  if (cmd==0x0A)
+  if (cmd==TI_CMD_FOCUS)
   {
     DisableIDLETMR();
   }
@@ -631,16 +747,14 @@ void selbcfg_menu_ghook(void *gui, int cmd)
 
 void selbcfg_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
 {
-  SEL_BCFG *sbtop=user_pointer;
-  WSHDR *ws;
-  int len;
-  for (int n=0; n!=cur_item; n++) sbtop=sbtop->next;
+  SEL_BCFG *sb=FindBCFGByN(cur_item);
+  WSHDR *ws;  
   void *item=AllocMenuItem(gui);
-  if (sbtop)
+  if (sb)
   {
-    len=strlen(sbtop->cfgname);
+    int len=strlen(sb->cfgname);    
     ws=AllocMenuWS(gui,len+4);
-    str_2ws(ws,sbtop->cfgname,128);
+    wsprintf(ws,_percent_t,sb->cfgname);
   }
   else
   {
@@ -654,7 +768,7 @@ int selbcfg_softkeys[]={0,1,2};
 SOFTKEY_DESC selbcfg_sk[]=
 {
   {0x0018,0x0000,(int)"Ñ¡Ôñ"},
-  {0x0001,0x0000,(int)"¹Ø±Õ"},
+  {0x0001,0x0000,(int)bcfgmenu_sk_r},
   {0x003D,0x0000,(int)"+"}
 };
 
@@ -662,7 +776,7 @@ SOFTKEYSTAB selbcfg_skt=
 {
   selbcfg_sk,0
 };
-HEADER_DESC selbcfg_HDR={0,0,0,0,NULL,(int)"ÅäÖÃÎÄ¼þ",LGP_NULL};
+HEADER_DESC selbcfg_HDR={0,0,0,0,NULL,(int)bcfg_hdr_text,LGP_NULL};
 
 
 MENU_DESC selbcfg_STRUCT=
@@ -679,10 +793,10 @@ MENU_DESC selbcfg_STRUCT=
 
 int CreateSelectBCFGMenu()
 {
+  UpdateBCFGHeader();
   unsigned int err;
   DIR_ENTRY de;
   const char *s;
-  SEL_BCFG *sbtop=0;
   SEL_BCFG *sb;
   int n_bcfg=0;
   char str[128];
@@ -729,8 +843,9 @@ int CreateSelectBCFGMenu()
     while(FindNextFile(&de,&err));
   }
   FindClose(&de,&err);
+  prev_bcfg_itemcount=n_bcfg;
   patch_header(&selbcfg_HDR);
-  return CreateMenu(0,0,&selbcfg_STRUCT,&selbcfg_HDR,0,n_bcfg,sbtop,0);
+  return sel_bcfg_id=CreateMenu(0,0,&selbcfg_STRUCT,&selbcfg_HDR,0,n_bcfg,sbtop,0);
 }
 
 void maincsm_oncreate(CSM_RAM *data)
@@ -1053,7 +1168,6 @@ int create_ed(CFG_HDR *need_to_focus)
   void *ma=malloc_adr();
   void *eq;
   EDITCONTROL ec;
-  
   char *p=cfg;
   int n=size_cfg;
   CFG_HDR *hp;
@@ -1085,7 +1199,7 @@ int create_ed(CFG_HDR *need_to_focus)
       {
         if ((curlev==level)&&(parent==levelstack[level]))
 	{
-	  ConstructEditControl(&ec,ECT_HEADER,0x00,ews,256);
+	  ConstructEditControl(&ec,ECT_HEADER,ECF_NORMAL_STR,ews,256);
 	  AddEditControlToEditQend(eq,&ec,ma); //EditControl n*2+2
 	}
       }
@@ -1106,7 +1220,7 @@ int create_ed(CFG_HDR *need_to_focus)
         }
         else 
         {
-          ConstructEditControl(&ec,ECT_HEADER,0x00,ews,256);
+          ConstructEditControl(&ec,ECT_HEADER,ECF_NORMAL_STR,ews,256);
         }
 	AddEditControlToEditQend(eq,&ec,ma); //EditControl n*2+2
       }
@@ -1120,7 +1234,7 @@ int create_ed(CFG_HDR *need_to_focus)
       if (n<0)
       {
       L_ERRCONSTR:
-        wsprintf(ews,_percent_t,"²»¿ÉÔ¤ÁÏµÄ½ØÖ¹Î»ÖÃ!!!");
+        wsprintf(ews,_percent_t,"²»¿ÉÔ¤ÁÏÎ»ÖÃ!!!");
       L_ERRCONSTR1:
         ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,256);
         AddEditControlToEditQend(eq,&ec,ma);
@@ -1184,6 +1298,17 @@ int create_ed(CFG_HDR *need_to_focus)
 	AddEditControlToEditQend(eq,&ec,ma); //EditControl n*2+3
       }
       p+=(hp->max+1+3)&(~3);
+      break;
+    case CFG_UTF8_STRING_PASS:
+      n-=(hp->max+1+3)&(~3);
+      if (n<0) goto L_ERRCONSTR;
+      if ((curlev==level)&&(parent==levelstack[level]))
+      {
+        utf8_2ws(ews,p,hp->max);
+	ConstructEditControl(&ec,ECT_NORMAL_TEXT,ECF_APPEND_EOL|ECF_PASSW,ews,hp->max);
+	AddEditControlToEditQend(eq,&ec,ma); //EditControl n*2+3
+      }
+      p+=(hp->max+1+3)&(~3);
       break;      
       
     case CFG_CBOX:
@@ -1192,7 +1317,7 @@ int create_ed(CFG_HDR *need_to_focus)
       i=*((int *)p);
       if (i>=hp->max)
       {
-        wsprintf(ews,_percent_t,"´íÎóµÄÑ¡ÔñÏîË÷Òý!!!");
+        wsprintf(ews,_percent_t,"´íÎóË÷ÒýÏî!!!");
         goto L_ERRCONSTR1;
       }
       if ((curlev==level)&&(parent==levelstack[level]))
@@ -1232,8 +1357,19 @@ int create_ed(CFG_HDR *need_to_focus)
       {
         wsprintf(ews,"%02X,%02X,%02X,%02X",*((char *)p),*((char *)p+1),*((char *)p+2),*((char *)p+3));
 	ConstructEditControl(&ec,ECT_LINK,ECF_APPEND_EOL,ews,12);
-	AddEditControlToEditQend(eq,&ec,ma);           
+	AddEditControlToEditQend(eq,&ec,ma);
       }
+      p+=4;
+      break;
+    case CFG_KEYCODE:
+      n-=4;
+      if (n<0) goto L_ERRCONSTR;
+      if ((curlev==level)&&(parent==levelstack[level]))
+      {
+        wsprintf(ews,"%02X",*(unsigned int *)p);
+	ConstructEditControl(&ec,ECT_LINK,ECF_APPEND_EOL,ews,12);
+	AddEditControlToEditQend(eq,&ec,ma);
+      } 
       p+=4;
       break;
     case CFG_LEVEL:
@@ -1316,7 +1452,7 @@ int create_ed(CFG_HDR *need_to_focus)
       break;
       
     default:
-      wsprintf(ews,_percent_t,"²»Ö§³ÖµÄÏîÄ¿ %d",hp->type);
+      wsprintf(ews,"%t%d","²»Ö§³ÖÏî:",hp->type);
       ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ews,256);
       AddEditControlToEditQend(eq,&ec,ma);
       goto L_ENDCONSTR;

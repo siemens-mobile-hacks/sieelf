@@ -122,8 +122,11 @@ C++/_cpp.C -text
 C++/_cpp2.cpp -text
 CFGROSECN/CfgEdit.ewp -text
 CFGROSECN/CfgEdit.eww -text
+CFGROSECN/color.c -text
 CFGROSECN/func.asm -text
+CFGROSECN/keycodes.c -text
 CFGROSECN/main.c -text
+CFGROSECN/rect_patcher.h -text
 CFGROSECN/test.xcl -text
 CFGROSECN/visual.c -text
 CSMShow/CSMShow.ewp -text
