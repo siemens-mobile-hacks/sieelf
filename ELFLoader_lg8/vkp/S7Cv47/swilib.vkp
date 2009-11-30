@@ -19,7 +19,7 @@
 002C: 0xA0253900   ;   B: int fread(int FileHandler, void *cBuffer, int iByteCount, unsigned int *ErrorNumber)
 0030: 0xA0253A30   ;   C: unsigned int fwrite(int FileHandler, void const *cBuffer, int iByteCount, unsigned int *ErrorNumber)
 0034: 0xA0253794   ;   D: void fclose(int FileHandler, unsigned int *ErrorNumber)
-;038: 0x   ;   E: 
+0038: 0xA02536B8   ;   E: fflush 
 003C: 0xA02537F4   ;   F: unsigned int lseek(int FileHandler, unsigned int offset, unsigned int origin, unsigned int *ErrorNumber, unsigned int *ErrorNumber2)
 
 0040: 0xA0253438   ;  10: int mkdir(const char *cFileName, unsigned int *ErrorNumber)
@@ -95,7 +95,7 @@
 0148: 0xA8D07CEC   ;  52: char *GetIlluminationDataTable()
 014C: 0xA142627D   ;  53: int memcmp_2(void *m1,void *m2,int n)
 0150: 0xA02C6B05   ;  54: StrToInt
-;154:              ;  55: SwitchVibraOnOff
+0154: 0xA02BC383   ; 55: __thumb int SwitchVibraOnOff(void)
 0158: 0xA006F131   ;  56: PlayVibra
 ;15C:              ;  57: IsCallAfterTimerStillRunning
 0160: 0xA14266D8   ;  58: void zeromem_2(void *dest,int n)
@@ -167,7 +167,7 @@
 0258: 0xA02ABF5F   ;  96: GetWavLenByContent
 025C: 0xA006F261   ;  97: CreatePath
 0260: 0xA006F211   ;  98: void PlaySoundVibra(char SndNum, char VibraPower, unsigned int VibraDuration, char VibraIfOff)
-;264:              ;  99: int PlayMelodyInMem(char Unk_0x11,void *MelAddr,int MelSize,int unk2_0xFFFF,int Unk3_0,int Unk4_0)
+0264: 0xA027BEE4   ;  99: int PlayMelodyInMem(char Unk_0x11,void *MelAddr,int MelSize,int unk2_0xFFFF,int Unk3_0,int Unk4_0)
 ;268:              ;  9A: int ChangeVolume(unsigned char Volume)
 ;26C:              ;  9B: RamAudioParamsAddr
 0270: 0xA0308B79   ;  9C: CloseScreensaver
@@ -224,7 +224,7 @@
 0330: 0xA8DE97E8   ;  CC: char *RamMissedCalls()
 ;334:              ;  CD: char *RamMissedSMS()
 0338: 0xA8D2988C   ;  CE: RamDateTime
-;33C:              ;  CF: RamAlarm
+033C: 0xA8E63948   ;  CF: char *RamAlarm()
 
 0340: 0xA8D6A470   ;  D0: RamAccPoint
 ;344:              ;  D1: RamScreensaver
@@ -247,7 +247,8 @@
 0384: 0xA8E0EB6C   ;  E1: unsigned int RamMPlayer_CtrlCode()
 ;388:              ;  E2: RamKeyBuffer
 ;38C:              ;  E3: RamProfileNum
-0390: 0xA8A80000   ;  E4: FreeRAM
+0390: 0xA8A80000   ;  E4: FreeRAM    without cut_heap.vkp
+;0390: 0xA8000000   ;  E4: FreeRAM   with cut_heap.vkp
 0394: 0x0000123D   ;  E5: LP_MonthsShort
 0398: 0x00000260   ;  E6: Pic_Big0
 039C: 0x00000830   ;  E7: Pic_Little0
@@ -586,8 +587,8 @@
 0880: 0xA096702F   ; 220: int IsSliderClosed(void)
 0884: 0xA01D180C   ; 221: SetCpuClockLow(2)
 0888: 0xA01D17F4   ; 222: SetCpuClockTempHi(2)
-;88C:  ;223:IsMediaPlayerInBackground
-;890:  ;224:CloseMediaPlayer
+088C: 0xA0586427   ; 223: IsMediaPlayerInBackground 
+0890: 0xA0586D0F   ; 224: CloseMediaPlayer
 0894: 0xA027C590   ; 225: int PlayMelody_ChangeVolume(int handle,int volume)
 0898: 0xA027D000   ; 226: int PlayMelody_StopPlayback(int handle)
 089C: 0xA027D0A0   ; 227: int PlayMelody_PausePlayback(int handle)
@@ -758,5 +759,28 @@
 0B60: 0xA09AEB1B   ; 2D8:  __thumb void TViewSetText(void *gui, WSHDR *text, void *malloc_adr, void *mfree_adr)
 0B64: 0xA09AEBBF   ; 2D9:  __thumb void TViewSetUserPointer(void *gui,void *user_pointer)
 0B68: 0xA09AEBC5   ; 2DA:  __thumb void *TViewGetUserPointer(void *gui)
+0B6C: 0xA03B3505   ; 2DB: void SendMedia(WSHDR *file, WSHDR *path)
+0B70: 0xA0960A79   ; 2DC: void SaveMaxIllumination(int level)
+0B74: 0xA0960A8D   ; 2DD: void SetIlluminationoffTimeout(int time_sec)
+0B78: 0xA0960AF5   ; 2DE: __thumb void IllumTimeRequest(int TimeMode, int Counter);
+0B7C: 0xA0960B33   ; 2DF: __thumb void IllumTimeRelease(int TimeMode, int Counter);
+#pragma disable old_equal_ff
++0
+
+;下面部分自己根据需要选刷
++0074000
+#pragma enable  old_equal_ff
+;00A0: 0xA01E6C5C   ;  28: getEELiteMaxID
+;00A4: 0xA01E5DFC   ;  29: getEEFullMaxID
+;00A8: 0xA01E61E0   ;  2A: int *GetEELiteBlockAddress(short blocknum)
+;00AC: 0xA01E6B6C   ;  2B: getEELiteBlockSizeVersion
+;00B0: 0xA01E58C0   ;  2C: getEEFullBlockSizeVersion(int block, void *buf1, void *buf2)
+;00B4: 0xA01E6DE0   ;  2D: StartWriteEELiteBlock
+;00B8: 0xA01E70D8   ;  2E: FinishWriteEELiteBlock
+;00BC: 0xA01E6CC4   ;  2F: DeleteEELiteBlock
+;00C0: 0xA01E6FC0   ;  30: WriteEELiteBlock
+;0A80: 0xA8DADE14   ; 2A0: short *RAM_SMS_dat_FileHandler
+;0A84: 0xA8DADE16   ; 2A1: short *RAM_WB_dat_FileHandler
+;0A88: 0xA8DEEA20   ; 2A2: short *
 #pragma disable old_equal_ff
 +0
