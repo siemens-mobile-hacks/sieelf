@@ -83,14 +83,13 @@
 ;118:              ;  46: HasNewSMS
 011C: 0xA05D586B   ;  47: HasFlashSMS
 ;120:              ;  48: ReadNewSMS
-;124:              ;  49: ReadFlashSMS
+0124: 0xA0684F29   ;  49: __thumb int ReadFlashSMS(void);
 0128: 0xA05AFB68   ;  4A: PlayFile(int flags, WSHDR *foldername, WSHDR *filename, int CepId, int zero1, int zero2)
 012C: 0xA0AFCBD8   ;  4B: StartMidlet
 0130: 0xA09DD19D   ;  4C: GetMissedCallsCount
 0134: 0xA0092531   ;  4D: GBS_StartTimerProc(void *htimer, long ms, void *func)
 0138: 0xA0974FE9   ;  4E: __swi __arm int MsgBoxError(int flag, int LgpId)
 013C: 0xA0975057   ;  4F: __swi __arm int MsgBoxYesNo(int flag, int LgpID, void CallBackProc(int))
-
 0140: 0xA0975061   ;  50: __swi __arm int MsgBoxOkCancel(int flag, int LgpID, void CallBackProc(int))
 0144: 0xA0D66443   ;  51: GetNetAccessMode
 0148: 0xA8D87270   ;  52: GetIlluminationDataTable
@@ -113,7 +112,7 @@
 0188: 0xA05C58A5   ;  62: SetVibraStatus
 018C: 0xA05DAE75   ;  63: MMI_CanvasBuffer_FlushV(int CanvasID)
 0190: 0xA0975AF7   ;  64: TriggerUpdate
-;194:              ;  65: EndCall
+0194: 0xA09DFB33   ;  65: EndCall
 0198: 0xA09DE7F7   ;  66: EndCallBusy
 019C: 0xA0681415   ;  67: IsDirectCallActive
 01A0: 0xA068918D   ;  68:  __thumb SS_RAM *GetScreenSaverRam(void)
@@ -168,7 +167,7 @@
 0258: 0xA0618E3B   ;  96: GetWavLenByContent
 025C: 0xA006F261   ;  97: CreatePath
 0260: 0xA006F211   ;  98: void PlaySoundVibra(char SndNum, char VibraPower, unsigned int VibraDuration, char VibraIfOff)
-;264:              ;  99: 
+0264: 0xA05AFDD8   ; 099: __arm short PlayMelodyInMem(char flags,void *MelAddr,int MelSize,int CepId,int msg,PLAYFILE_OPT *PlayFileStruct); 
 ;268:              ;  9A: 
 ;26C:              ;  9B: 
 0270: 0xA06896E1   ;  9C: CloseScreensaver
@@ -217,7 +216,7 @@
 0310: 0xA0060C01   ;  C4: GetBuffer
 0314: 0xA0685033   ;  C5: IsIdleUiOnTop
 0318: 0xA01A2784   ;  C6: unsigned short GetAkkuCapacity()
-;31C:              ;  C7: SWI_C7
+;031C: 0xA063C2A0   ;  C7: SetCpuClockTempHi(2)
 0320: 0xA8D8378C   ;  C8: RamCap
 0324: 0xA8D837BE   ;  C9: RamLS
 0328: 0xA8ECA526   ;  CA: RamNet
@@ -757,6 +756,11 @@
 0B60: 0xA097E8C7   ; 2D8:  __thumb void TViewSetText(void *gui, WSHDR *text, void *malloc_adr, void *mfree_adr)
 0B64: 0xA097E96B   ; 2D9:  __thumb void TViewSetUserPointer(void *gui,void *user_pointer)
 0B68: 0xA097E971   ; 2DA:  __thumb void *TViewGetUserPointer(void *gui)
+0B6C: 0xA07A8E14   ; 2DB: void SendMedia(WSHDR *file, WSHDR *path);
+0B70: 0xA08F20A1   ; 2DC: __thumb void SaveMaxIllumination(int level);
+0B74: 0xA08F20C9   ; 2DD: __thumb void SetIlluminationoffTimeout(int time_sec);
+0B78: 0xA08F2255   ; 2DE: __thumb void IllumTimeRequest(int TimeMode, int Counter);
+0B7C: 0xA08F228B   ; 2DF: __thumb void IllumTimeRelease(int TimeMode, int Counter);
 #pragma disable old_equal_ff
 +0       
 ;********************************************************************************
