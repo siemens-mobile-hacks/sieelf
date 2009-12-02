@@ -5,6 +5,8 @@
 #include "SmsData.h"
 #include "SendList.h"
 #include "Vibra.h"
+#include "PlaySound.h"
+#include "ShortVibra.h"
 #include "DaemonCSM.h"
 #include "CSMswaper.h"
 

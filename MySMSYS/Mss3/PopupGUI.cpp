@@ -141,7 +141,7 @@ int PopupNewIn::OnKey(void *data, GUI_MSG *msg)
     //SDLIST *sdl;
     int id;
     //if((sdl=SMSDATA->FindSDL(pni->dat_index)))
-    if(pni->sdl)
+    if(pni->sdl && SMSDATA->IsExistSDL(pni->sdl))
     {
       EditGUI *edg=new EditGUI;
       id=edg->CreateEditGUI(pni->dlg_csm, pni->sdl, ED_VIEW, pni->sdl->type, 0);
@@ -215,6 +215,10 @@ void PopupNewIn::GHook(void *data, int cmd)
   else if (cmd==0x5)
   {
     pni->UpdateCSMName(pni->dlg_csm, (int)LGP->lgp.LGP_NEW_MSG);
+    if(!SMSDATA->IsExistSDL(pni->sdl))
+    {
+      GeneralFuncF1(1);
+    }
   }
 }
 

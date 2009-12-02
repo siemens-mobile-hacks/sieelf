@@ -45,8 +45,10 @@ private:
   GBSTMR chktmr;
   int temp_tmr_index;
   int is_new_proc;
-  int PLAY_ID;
+//  int PLAY_ID;
+  PlaySouNd *playsound;
   Vibra *vibra;
+  //ShortVibra *shortvibra;
   int AddDlgCsmID(int id);
   void AddDlgCsmID_Forced0(int id);
   void DelDlgCsmID(int id);
@@ -57,7 +59,6 @@ private:
   static void OnClose(CSM_RAM *data);
   static void DoNewProc(void);
   static void UpdateNProc(void);
-  static void PlayNotifySound(DaemonCSM *daemon, char *filepath);
 };
 
 #endif

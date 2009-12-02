@@ -74,7 +74,7 @@ void DialogCSM::OnCreate(CSM_RAM *data)
 	PopupNewIn *pni=new PopupNewIn;
 	dlg_csm->gui_id=pni->CreatePopupNewIn((::DLG_CSM *)dlg_csm, sdl);
       }
-      else dlg_csm->gui_id=0;
+      //else dlg_csm->gui_id=0;
     }
     break;
   case SMSYS_IPC_NEW_IN_ME:
@@ -85,7 +85,7 @@ void DialogCSM::OnCreate(CSM_RAM *data)
 	PopupNewIn *pni=new PopupNewIn;
 	dlg_csm->gui_id=pni->CreatePopupNewIn((::DLG_CSM *)dlg_csm, sdl);
       }
-      else dlg_csm->gui_id=0;
+      //else dlg_csm->gui_id=0;
     }
     break;
   case SMSYS_IPC_NEWSMS:
@@ -142,7 +142,7 @@ void DialogCSM::OnCreate(CSM_RAM *data)
 	dlg_csm->gui_id=edg->CreateEditGUI((::DLG_CSM *)dlg_csm, (char *)dlg->ipc_data);
 	delete dlg->ipc_data;
       }
-      else dlg_csm->csm_ram.state=-3;
+      //else dlg_csm->csm_ram.state=-3;
     }
     break;
   case SMSYS_IPC_SEND_UTF8:
@@ -157,7 +157,7 @@ void DialogCSM::OnCreate(CSM_RAM *data)
 	dlg_csm->gui_id=edg->CreateEditGUI((::DLG_CSM *)dlg_csm, sdl, ED_EDIT, 0, 1);
 	delete dlg->ipc_data;
       }
-      else dlg_csm->csm_ram.state=-3;
+      //else dlg_csm->csm_ram.state=-3;
     }
     break;
   case SMSYS_IPC_QR_OPMSG:
@@ -169,7 +169,7 @@ void DialogCSM::OnCreate(CSM_RAM *data)
 	EditGUI *edg=new EditGUI;
 	dlg_csm->gui_id=edg->CreateEditGUI((::DLG_CSM *)dlg_csm, sdl, ED_EDIT, TYPE_IN_ALL, 0);
       }
-      else dlg_csm->csm_ram.state=-3;
+      //else dlg_csm->csm_ram.state=-3;
     }
     break;
   case SMSYS_IPC_VIEW_OPMSG:
@@ -180,7 +180,7 @@ void DialogCSM::OnCreate(CSM_RAM *data)
 	EditGUI *edg=new EditGUI;
 	dlg_csm->gui_id=edg->CreateEditGUI((::DLG_CSM *)dlg_csm, sdl, ED_VIEW, TYPE_IN_ALL, 0);
       }
-      else dlg_csm->csm_ram.state=-3;
+      //else dlg_csm->csm_ram.state=-3;
     }
     break;
   case SMSYS_IPC_REPLY_OPMSG:
@@ -191,7 +191,7 @@ void DialogCSM::OnCreate(CSM_RAM *data)
 	EditGUI *edg=new EditGUI;
 	dlg_csm->gui_id=edg->CreateEditGUI((::DLG_CSM *)dlg_csm, sdl, ED_REPLY, TYPE_IN_ALL, 0);
       }
-      else dlg_csm->csm_ram.state=-3;
+      //else dlg_csm->csm_ram.state=-3;
     }
     break;
   case SMSYS_IPC_SEND_WS:
@@ -206,7 +206,7 @@ void DialogCSM::OnCreate(CSM_RAM *data)
 	dlg_csm->gui_id=edg->CreateEditGUI((::DLG_CSM *)dlg_csm, sdl, ED_EDIT, 0, 1);
 	FreeWS((WSHDR *)dlg->ipc_data);
       }
-      else dlg_csm->csm_ram.state=-3;
+      //else dlg_csm->csm_ram.state=-3;
     }
     break;
   case SMSYS_IPC_FVIEW:
@@ -219,14 +219,14 @@ void DialogCSM::OnCreate(CSM_RAM *data)
 	  EditGUI *edg=new EditGUI;
 	  dlg_csm->gui_id=edg->CreateEditGUI((::DLG_CSM *)dlg_csm, sdl, ED_VIEW, 0, 1);
 	}
-	else dlg_csm->csm_ram.state=-3;
+	//else dlg_csm->csm_ram.state=-3;
 	delete dlg->ipc_data;
       }
-      else dlg_csm->csm_ram.state=-3;
+      //else dlg_csm->csm_ram.state=-3;
     }
     break;
   default:
-    dlg_csm->csm_ram.state=-3;
+    //dlg_csm->csm_ram.state=-3;
     break;
   }
   dlg->ipc_data=NULL;

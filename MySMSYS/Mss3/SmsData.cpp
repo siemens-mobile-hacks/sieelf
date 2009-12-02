@@ -1586,6 +1586,8 @@ int SmsData::MoveToArchive(SDLIST *sdl) //只支持mss
   if(!IsDir(folder))
     MkDir(folder);
   strcat(folder, FLDR_ARCHIVE);
+  if(!strncmp(sdl->fname, folder, strlen(folder))) //判断是否已经在档案柜文件夹中
+    return 0;
   if(!IsDir(folder))
     MkDir(folder);
   if(strlen(sdl->time)>4)

@@ -369,7 +369,7 @@ void EditGUI::DoSmsWorkBG(void *ed_gui, int gui_id)
 	int res;
 	//GetCPUClock();
 	res=SMSDATA->SaveMss(sdl->text, sdl->number, sdl, sdl->type, 2);
-	if((unsigned int)res>>28==0xA)
+	if(((unsigned int)res>>27)==0x15)
 	{
 	  edg->sdl=(SDLIST *)res;
 	  SMSDATA->DeleteMessage(sdl);
@@ -390,7 +390,7 @@ void EditGUI::GHook(void *data, int cmd)
   }
   else if (cmd==TI_CMD_REDRAW)
   {
-    SDLIST *sdl;
+    //SDLIST *sdl;
     EDITCONTROL ec;
     int focus=EDIT_GetFocus(data);
     if((edg->gui_prop&ED_VIEW))
@@ -399,7 +399,7 @@ void EditGUI::GHook(void *data, int cmd)
       SetSoftKey(data,&SK_OPTIONS,SET_SOFT_KEY_N);
       SetSoftKey(data,&SK_CANCEL,!SET_SOFT_KEY_N);
     }
-    sdl=edg->sdl;
+    //sdl=edg->sdl;
     // set sms state and save as file on backround
     //if(sdl && (!(sdl->msg_prop&ISFILE) || sdl->type==TYPE_IN_N))
     //{
@@ -408,10 +408,10 @@ void EditGUI::GHook(void *data, int cmd)
     //is sdl exist
     if(!(edg->gui_prop&ND_FREE))
     {
-      if(sdl && (!(sdl->msg_prop&ISFILE) || sdl->type==TYPE_IN_N))
-      {
-	SUBPROC((void *)edg->DoSmsWorkBG, data, edg->gui_id);
-      }
+      //if(sdl && (!(sdl->msg_prop&ISFILE) || sdl->type==TYPE_IN_N))
+      //{
+	//SUBPROC((void *)edg->DoSmsWorkBG, data, edg->gui_id);
+      //}
       if(!SMSDATA->IsExistSDL(edg->sdl))
       {
 	GeneralFunc_flag1(edg->gui_id, 1);
@@ -608,6 +608,15 @@ CLEAR_NUM:
     if(!(edg->gui_prop&ED_VIEW))
     {
       EDIT_SetFocus(data, edg->n_focus);
+    }
+    if(!(edg->gui_prop&ND_FREE))
+    {
+      SDLIST *sdl;
+      sdl=edg->sdl;
+      if(sdl && (!(sdl->msg_prop&ISFILE) || sdl->type==TYPE_IN_N))
+      {
+	SUBPROC((void *)edg->DoSmsWorkBG, data, edg->gui_id);
+      }
     }
   }
   else if (cmd==0xA)

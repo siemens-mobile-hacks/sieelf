@@ -7281,6 +7281,12 @@
     <name>$PROJ_DIR$\OthersMenu.h</name>
   </file>
   <file>
+    <name>$PROJ_DIR$\PlaySound.cpp</name>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\PlaySound.h</name>
+  </file>
+  <file>
     <name>$PROJ_DIR$\PopupGUI.cpp</name>
   </file>
   <file>

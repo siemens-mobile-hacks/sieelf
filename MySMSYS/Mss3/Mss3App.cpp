@@ -11,6 +11,8 @@
 #include "DialogCSM.h"
 #include "LangPack.h"
 #include "Vibra.h"
+#include "PlaySound.h"
+#include "ShortVibra.h"
 #include "SendList.h"
 #include "DaemonCSM.h"
 #include "CSMswaper.h"

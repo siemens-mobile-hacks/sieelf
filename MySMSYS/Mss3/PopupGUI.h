@@ -9,7 +9,7 @@ public:
   ~PopupNewIn();
   int CreatePopupNewIn(DLG_CSM *dlg_csm, SDLIST *sdl);
 private:
-  void UpdateCSMName(DLG_CSM *dlg_csm, int lgp);
+  static void UpdateCSMName(DLG_CSM *dlg_csm, int lgp);
   POPUP_DESC popup;
   DLG_CSM *dlg_csm;
   SDLIST *sdl;

@@ -1081,6 +1081,8 @@ MySMSYS/Mss3/NumList.cpp -text
 MySMSYS/Mss3/NumList.h -text
 MySMSYS/Mss3/OthersMenu.cpp -text
 MySMSYS/Mss3/OthersMenu.h -text
+MySMSYS/Mss3/PlaySound.cpp -text
+MySMSYS/Mss3/PlaySound.h -text
 MySMSYS/Mss3/PopupGUI.cpp -text
 MySMSYS/Mss3/PopupGUI.h -text
 MySMSYS/Mss3/SendList.cpp -text
