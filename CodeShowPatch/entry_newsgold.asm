@@ -12,7 +12,7 @@
 MENU_HDR_ICON
 	DCD	0x156
 	DCD	0
-	
+/*	
 	CODE16
 RecoedWindow_:
 	PUSH	{LR}
@@ -36,7 +36,28 @@ EX_PBACK
 	POP	{R0}
 	ADD	R0, #4
 	BX	R0
-
+	*/
+	CODE32
+RecoedWindow_
+	ADD	LR, LR, #4
+	MOV	R2, #1
+	STMFD	SP!,{R2, LR}
+	BLX	AddNewLine
+	LDRB	R0, [R5, #9]
+	CMP	R0, #7
+	LDMEQFD	SP!,{R2, PC}
+	LDR	R0, [R5, #4] //ºÅÂë WS ,ÅÐ¶ÏÒþ²ØºÅÂë
+	LDR	R0, [R0, #0] //wsbody
+	LDRH	R0, [R0, #0] //wslen
+	CMP	R0, #0
+	LDMEQFD	SP!,{R2, PC}
+	MOV	R0, R4
+	LDR	R1, [R5, #4]
+	BLX	AppendInfoW
+	MOV	R0, R4
+	BLX	AddNewLine
+	LDMFD	SP!,{R2, PC}
+	CODE16
 Callinwindow_:
 	PUSH	{LR}
 	LDR	R0, =ADDR_IsCalling
@@ -141,6 +162,30 @@ NUM_SELECT_MENU_PSETTEXT: //R2, WS,
 
 	EXTERN	AddDialEQ
 	EXTERN	DialGHookRedraw
+#ifdef  S68Cv51
+	CODE16
+EDIAL_CREATE
+	//ADD	LR, LR, #4
+	//STMFD	SP!,{LR}
+	//LDR	R0, [SP, #0x64] //EDITQ
+	//LDR	R1, [SP, #0x34] //ec
+	//LDR	R2, [SP, #0x20] //ecop
+	//MOV	R3, R7
+	LDR	R0, [SP, #0x60] //EDITQ
+	LDR	R1, [SP, #0x30] //ec
+	LDR	R2, [SP, #0x1C] //ecop
+	BL	AddDialEQ
+	MOV	R3, R7 //gui
+	MOV	R2, #1
+	MOV	R0, R4
+	//LDR	R1, [SP, #0x64] //editq
+	//LDMFD	SP!,{PC}
+	LDR	R1, [SP, #0x60] //editq
+	LDR	R7, =0xA08CA5AC+1
+	BLX	R7
+	ADD	SP, #0x6C
+	POP	{R4-R7,PC}
+#else
 	CODE32
 EDIAL_CREATE
 	ADD	LR, LR, #4
@@ -155,7 +200,8 @@ EDIAL_CREATE
 	MOV	R0, R4
 	LDR	R1, [SP, #0x64] //editq
 	LDMFD	SP!,{PC}
-	
+#endif
+
 	CODE32
 EDIAL_REDRAW
 	ADD	LR, LR, #4
@@ -313,14 +359,17 @@ P_CallOutWindow_
 	RSEG	EDIAL_CREATE_HOOK
 	CODE16
 	LDR	R0, =EDIAL_CREATE
+#ifdef	S68Cv51
+	BX	R0
+#else
 	BLX	R0
-	
+#endif
 	RSEG	EDIAL_REDRAW_HOOK
 	CODE16
 	LDR	R0, =EDIAL_REDRAW
 	BLX	R0
 
-	RSEG	EDIAL_ATTR_HOOK
+	RSEG	EDIAL_ATTR_HOOK:CODE(1)
 	CODE16
 	STR	R1, [SP,#8]
 	STR	R2, [SP,#4]
