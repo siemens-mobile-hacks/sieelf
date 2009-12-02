@@ -177,7 +177,9 @@ CfgEdit/CfgEdit.ewp -text
 CfgEdit/CfgEdit.eww -text
 CfgEdit/CfgEdit_IAR_old.ewp -text
 CfgEdit/CfgEdit_IAR_old.eww -text
+CfgEdit/color.c -text
 CfgEdit/func.asm -text
+CfgEdit/keycodes.c -text
 CfgEdit/main.c -text
 CfgEdit/test.xcl -text
 CfgEdit/visual.c -text

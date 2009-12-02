@@ -1,39 +1,15 @@
 #include "..\inc\swilib.h"
 #include "..\inc\cfg_items.h"
+#include "rect_patcher.h"
 #include <errno.h>
 
 extern long  strtol (const char *nptr,char **endptr,int base);
 extern unsigned long  strtoul (const char *nptr,char **endptr,int base);
 
+void GetKeyCodes(void *key);
 void EditCoordinates(void *rect_or_xy, int is_rect);
 extern void EditColors(char*color);
-#pragma inline
-//===============================================================================================
-#pragma inline
-void patch_rect(RECT*rc,int x,int y, int x2, int y2)
-{
-  rc->x=x;
-  rc->y=y;
-  rc->x2=x2;
-  rc->y2=y2;
-}
 
-#pragma inline
-void patch_header(HEADER_DESC* head)
-{
-  head->rc.x=0;
-  head->rc.y=YDISP;
-  head->rc.x2=ScreenW()-1;
-  head->rc.y2=HeaderH()+YDISP-1;
-}
-#pragma inline
-void patch_input(INPUTDIA_DESC* inp)
-{
-  inp->rc.x=0;
-  inp->rc.y=HeaderH()+1+YDISP;
-  inp->rc.x2=ScreenW()-1;
-  inp->rc.y2=ScreenH()-SoftkeyH()-1;
-}
 //===============================================================================================
 
 #ifdef NEWSGOLD
@@ -258,6 +234,9 @@ int ed1_onkey(GUI *data, GUI_MSG *msg)
         case CFG_COLOR:
           EditColors((char *)(hp+1));
           break;
+	case CFG_KEYCODE:
+	  GetKeyCodes((unsigned int *)(hp+1));
+	  break;
 	case CFG_LEVEL:
 	  level++;
 	  levelstack[level]=hp;
@@ -367,6 +346,11 @@ void ed1_ghook(GUI *data, int cmd)
         wsprintf(ews,"%02X,%02X,%02X,%02X",*((char *)(hp+1)),*((char *)(hp+1)+1),*((char *)(hp+1)+2),*((char *)(hp+1)+3));
         EDIT_SetTextToFocused(data,ews);  
         need_set_sk=1;
+        break;
+      case CFG_KEYCODE:
+	wsprintf(ews,"%02X",*((int *)(hp+1)));
+	EDIT_SetTextToFocused(data,ews);
+	need_set_sk=1;
         break;
       case CFG_CHECKBOX:
         CutWSTR(ews,0);
@@ -517,27 +501,171 @@ typedef struct
   char fullpath[128];
 }SEL_BCFG;
 
+SEL_BCFG *sbtop;
+
+//------------------- ? ------------------//
+
+// Î˛˜?‰Îˇ ÔÓËÒÍ‡ ÔÓ T9
+static const char table_T9Key[256]=
+"11111111111111111111111111111111"
+"10001**0***0000*012345678900***0"
+"0222333444555666777788899991*110"
+"122233344455566677778889999111*1"
+"11111111111111111111111111111111"
+"11111111311111111111111131111111"
+"22223333444455566677778888899999"
+"22223333444455566677778888899999";
+
+
+char T9Key[32];
+int sel_bcfg_id;
+char bcfg_hdr_text[32];
+char bcfgmenu_sk_r[16];
+volatile int prev_bcfg_itemcount;
+
+SEL_BCFG *FindBCFGByNS(int *i)
+{
+  SEL_BCFG *t;
+  t=(SEL_BCFG *)sbtop;
+  char *s;
+  char *d;
+  int c;
+  while(t)
+  {
+   s=T9Key;
+   d=t->cfgname;
+   while(c=*s++)
+   {
+    if(c!=table_T9Key[*d++]) goto L_NOT9;
+   }
+   if(!(*i)) return(t);
+   (*i)--;
+ L_NOT9:
+    t=t->next;
+  }
+  return(t);
+}
+
+int CountBCFG(void)
+{
+  int l=-1;
+  FindBCFGByNS(&l);
+  l=-1-l;
+  return l;
+}
+
+SEL_BCFG *FindBCFGByN(int i)
+{
+  SEL_BCFG *t;
+  t=FindBCFGByNS(&i);
+  return t;
+}
+
+//----------------------------------//
+
+void ClearT9Key(void)
+{
+  zeromem(T9Key,sizeof(T9Key));
+}
+
+void UpdateBCFGHeader(void)
+{
+  if (strlen(T9Key))
+  {
+    strcpy(bcfg_hdr_text," ‰»Î T9:");
+    strcat(bcfg_hdr_text,T9Key);
+    strcpy(bcfgmenu_sk_r,"<C");
+  }
+  else
+  {
+    strcpy(bcfg_hdr_text,"—°‘Ò BCFG");
+    strcpy(bcfgmenu_sk_r,"πÿ±’");
+  }
+}
+
+void AddT9Key(int chr)
+{
+  int l=strlen(T9Key);
+  if (l<(sizeof(T9Key)-1))
+  {
+    T9Key[l]=chr;
+  }
+}
+
+void BackSpaceT9(void)
+{
+  int l=strlen(T9Key);
+  if (l)
+  {
+    l--;
+    T9Key[l]=0;
+  }
+}
+
+void RecountMenuBCFG()
+{
+  int i;
+  void *data;
+  UpdateBCFGHeader();
+  if (!sel_bcfg_id) return; //
+  data=FindGUIbyId(sel_bcfg_id,NULL);
+
+  i=CountBCFG();
+  if (i!=prev_bcfg_itemcount)
+  {
+    prev_bcfg_itemcount=i;
+    Menu_SetItemCountDyn(data,i);
+  }
+  SetCursorToMenuItem(data,0);
+  if (IsGuiOnTop(sel_bcfg_id)) RefreshGUI();
+}
+
+//-------------------------------------------//
 
 int selbcfg_menu_onkey(void *gui, GUI_MSG *msg)
 {
-  SEL_BCFG *sbtop=MenuGetUserPointer(gui);
+  SEL_BCFG *t;
+  int i;  
+  i=GetCurMenuItem(gui);
   if (msg->keys==0x3D || msg->keys==0x18)
   {
-    int i=GetCurMenuItem(gui);
-    for (int n=0; n!=i; n++) sbtop=sbtop->next;
-    if (sbtop)
+    t=FindBCFGByN(i);
+    if (t)
     {
+      ClearT9Key();
       MAIN_CSM *csm=(MAIN_CSM *)FindCSMbyID(maincsm_id);
-      if (LoadCfg(sbtop->fullpath))
+      if (LoadCfg(t->fullpath))
       {
-        UpdateCSMname(sbtop->fullpath);
+        UpdateCSMname(t->fullpath);
         csm->gui_id=create_ed(0);
         return (1);
       }
     }
+  } 
+  
+  if (msg->gbsmsg->msg==KEY_DOWN)
+  {
+    int key=msg->gbsmsg->submess;
+    if (((key>='0')&&(key<='9'))||(key=='#')||(key=='*'))
+    {
+      AddT9Key(key);
+      RecountMenuBCFG();
+      return(-1);
+    }
+  }  
+  if (msg->keys==1)
+  {
+    if (strlen(T9Key))
+    {
+      BackSpaceT9();
+      RecountMenuBCFG();
+      return(-1);
+    }
   }
+ 
   return (0);
 }
+
 
 void selbcfg_menu_ghook(void *gui, int cmd)
 {
@@ -559,21 +687,21 @@ void selbcfg_menu_ghook(void *gui, int cmd)
 
 void selbcfg_menu_iconhndl(void *gui, int cur_item, void *user_pointer)
 {
-  SEL_BCFG *sbtop=user_pointer;
+  SEL_BCFG  *t;
   WSHDR *ws;
   int len;
-  for (int n=0; n!=cur_item; n++) sbtop=sbtop->next;
   void *item=AllocMenuItem(gui);
-  if (sbtop)
+  t=FindBCFGByN(cur_item);
+  if (t)
   {
-    len=strlen(sbtop->cfgname);
+    len=strlen(t->cfgname);
     ws=AllocMenuWS(gui,len+4);
-    str_2ws(ws,sbtop->cfgname,128);
+    wsprintf(ws,_percent_t,t->cfgname);
   }
   else
   {
     ws=AllocMenuWS(gui,10);
-    wsprintf(ws,_percent_t,"Œ¥÷™");
+    wsprintf(ws,_percent_t,"¥ÌŒÛ!");
   }
   SetMenuItemText(gui, item, ws, cur_item);
 }
@@ -582,7 +710,7 @@ int selbcfg_softkeys[]={0,1,2};
 SOFTKEY_DESC selbcfg_sk[]=
 {
   {0x0018,0x0000,(int)"—°‘Ò"},
-  {0x0001,0x0000,(int)"πÿ±’"},
+  {0x0001,0x0000,(int)bcfgmenu_sk_r},
   {0x003D,0x0000,(int)"+"}
 };
 
@@ -590,8 +718,7 @@ SOFTKEYSTAB selbcfg_skt=
 {
   selbcfg_sk,0
 };
-HEADER_DESC selbcfg_HDR={0,0,0,0,NULL,(int)"—°‘Ò BCFG",LGP_NULL};
-
+HEADER_DESC selbcfg_HDR={0,0,0,0,NULL,(int)bcfg_hdr_text,LGP_NULL};
 
 MENU_DESC selbcfg_STRUCT=
 {
@@ -610,10 +737,11 @@ int CreateSelectBCFGMenu()
   unsigned int err;
   DIR_ENTRY de;
   const char *s;
-  SEL_BCFG *sbtop=0;
+  //SEL_BCFG *sbtop=0;
   SEL_BCFG *sb;
   int n_bcfg=0;
   char str[128];
+  UpdateBCFGHeader();
   if (!isdir((s=_mmc_etc_path),&err))
   {
     s=_data_etc_path;
@@ -657,8 +785,9 @@ int CreateSelectBCFGMenu()
     while(FindNextFile(&de,&err));
   }
   FindClose(&de,&err);
+  prev_bcfg_itemcount=n_bcfg;
   patch_header(&selbcfg_HDR);
-  return CreateMenu(0,0,&selbcfg_STRUCT,&selbcfg_HDR,0,n_bcfg,sbtop,0);
+  return sel_bcfg_id=CreateMenu(0,0,&selbcfg_STRUCT,&selbcfg_HDR,0,n_bcfg,sbtop,0);
 }
 
 void maincsm_oncreate(CSM_RAM *data)
@@ -1175,6 +1304,17 @@ int create_ed(CFG_HDR *need_to_focus)
         wsprintf(ews,"%02X,%02X,%02X,%02X",*((char *)p),*((char *)p+1),*((char *)p+2),*((char *)p+3));
 	ConstructEditControl(&ec,9,ECF_APPEND_EOL,ews,12);
 	AddEditControlToEditQend(eq,&ec,ma);           
+      }
+      p+=4;
+      break;
+    case CFG_KEYCODE:
+      n-=4;
+      if (n<0) goto L_ERRCONSTR;
+      if ((curlev==level)&&(parent==levelstack[level]))
+      {
+	wsprintf(ews,"%02X",*(int *)p);
+	ConstructEditControl(&ec,ECT_LINK,ECF_APPEND_EOL,ews,12);
+	AddEditControlToEditQend(eq,&ec,ma);
       }
       p+=4;
       break;
