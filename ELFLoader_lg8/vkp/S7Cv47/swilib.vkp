@@ -779,8 +779,5 @@
 ;00B8: 0xA01E70D8   ;  2E: FinishWriteEELiteBlock
 ;00BC: 0xA01E6CC4   ;  2F: DeleteEELiteBlock
 ;00C0: 0xA01E6FC0   ;  30: WriteEELiteBlock
-;0A80: 0xA8DADE14   ; 2A0: short *RAM_SMS_dat_FileHandler
-;0A84: 0xA8DADE16   ; 2A1: short *RAM_WB_dat_FileHandler
-;0A88: 0xA8DEEA20   ; 2A2: short *
 #pragma disable old_equal_ff
 +0
