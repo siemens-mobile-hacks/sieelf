@@ -38,13 +38,13 @@
 0070: 0xA01F7CF5   ;  1C: void wsAppendChar(WSHDR *ws,int wchar)
 0074: 0xA01F7CA9   ;  1D: int wsInsertChar(WSHDR *ws,int wchar, int pos)
 0078: 0xA09A24FD   ;  1E: IMGHDR *GetPITaddr(int num)
-;07C:              ;  1F: DrawMainScreen
+007C:  0xA030568F            ;  1F: DrawMainScreen
 
-;080:              ;  20: DrawScreenSaver
+0080: 0xA035C3B9            ;  20: DrawScreenSaver
 0084: 0xA09A2627   ;  21: int GetImgHeight(int picture)
 0088: 0xA09A2637   ;  22: int GetImgWidth(int picture)
 008C: 0xA029E159   ;  23: void DrawImg(unsigned int x, unsigned int y, unsigned int picture)
-;090:              ;  24: DrawImage2
+0090: 0xA0A1AE93            ;  24: DrawImage2
 0094: 0xA029D6BB   ;  25: void DrawCanvas(void *data, int x1, int y1, int x2, int y2, int flag_one)
 0098: 0xA0A1ADBD   ;  26: void DrawImgBW(unsigned int x, unsigned int y, unsigned int picture, char *pen, char *brush)
 009C: 0xA029D8E1   ;  27: AddIconToIconbar
@@ -76,14 +76,14 @@
 
 0100: 0xA028C269   ;  40: GetVibraStatus
 0104: 0xA095CEFB   ;  41: GetProvider
-;108:              ;  42: IsScreenSaver
+0108: 0xA03066F7             ;  42: IsScreenSaver
 010C: 0xA0964ECF   ;  43: int IsUnlocked(void)
 0110: 0xA095EF79   ;  44: TempLightOn
 0114: 0xA006F241   ;  45: GetWavLen
 ;118:              ;  46: HasNewSMS
-;11C:              ;  47: HasFlashSMS
+011C: 0xA029CDFF             ;  47: HasFlashSMS
 ;120:              ;  48: ReadNewSMS
-;124:              ;  49: ReadFlashSMS
+0124: 0xA0300E01              ;  49: ReadFlashSMS
 0128: 0xA027BB6C   ;  4A: short PlayFile(int flags, WSHDR *foldername, WSHDR *filename, int zero, int CepId, int Msg, const PLAYFILE_OPT *sfo)
 012C: 0xA0AABFA0   ;  4B: StartMidlet
 0130: 0xA09CD1ED   ;  4C: int GetMissedCallsCount()
@@ -112,10 +112,10 @@
 0184: 0xA02D2D8B   ;  61: ShowNativeMenu
 0188: 0xA028C231   ;  62: SetVibraStatus
 018C: 0xA029EEDD   ;  63: void MMI_CanvasBuffer_FlushV(int CanvasID)
-;190:              ;  64: TriggerUpdate
-;194:              ;  65: EndCall
-;198:              ;  66: EndCallBusy
-;19C:              ;  67: IsDirectCallActive
+0190: 0xA09A477B              ;  64: TriggerUpdate
+0194:  0xA09CF855             ;  65: EndCall
+0198:  0xA09CE713            ;  66: EndCallBusy
+019C:  0xA035B56B            ;  67: IsDirectCallActive
 01A0: 0xA03066D1   ;  68:  __thumb SS_RAM *GetScreenSaverRAM(void)
 01A4: 0xA009B180   ;  69: void LockSched_2(void)
 01A8: 0xA009B26C   ;  6A: void UnlockSched_2(void)
@@ -126,8 +126,8 @@
 01BC: 0xA097E410   ;  6F: void RefreshGPRSTraffic()
 
 01C0: 0xA097E440   ;  70: int *GetGPRSTrafficPointer()
-;1C4:              ;  71: DrawRoundRect
-;1C8:              ;  72: SetCurrentSecondOfCall
+01C4:  0xA0A1A83F            ;  71: DrawRoundRect
+01C8:  0xA095CCA5            ;  72: SetCurrentSecondOfCall
 01CC: 0xA0DE9073   ;  73: int GetTypeOfCall(int type)
 01D0: 0xA02CDF49   ;  74: SHORTCUTREC *GetShortcutRecordByName(char *szShortcutName)
 01D4: 0xA029F3F5   ;  75: IsCanvasBufferSet(char CanvasID)
@@ -196,7 +196,7 @@
 ;2C0:              ;  B0: DrawPicWithCanvas
 02C4: 0xA006F101   ;  B1: DrawColorPicWithCanvas
 ;2C8:              ;  B2: GetBuildCanvas
-;2CC:              ;  B3: Seconds2iTime
+02CC: 0xA006F551   ;  B3: long Seconds2iTime(int timeval)
 02D0: 0xA096148B   ;  B4: void GetDateTime(TDate *, TTime *)
 02D4: 0xA026F0CF   ;  B5: char GetWeek(TDate *)
 02D8: 0xA028B5A3   ;  B6: char GetProfile()
@@ -470,7 +470,7 @@
 06C8: 0xA0135FFD   ; 1B2: int png_check_sig(png_bytep sig, int num)
 06CC: 0xA0A1C6AF   ; 1B3: void DrawLine(int x,int y,int x2,int y2,int type,const char *pen)
 06D0: 0xA0A1A70B   ; 1B4: void DrawRectangle(int x,int y,int x2,int y2,int flags,const char *pen,const char *brush)
-;6D4:              ; 1B5: 
+06D4: 0x00000001   ; 1B5: int isnewSGold(void)
 06D8: 0xA0A6625D   ; 1B6: int async_gethostbyname(const char *host_name,int ****DNR_RES,int *DNR_ID)
 06DC: 0xA0DD352D   ; 1B7: unsigned int str2ip(const char *)
 ;6E0:              ; 1B8: void *EXT_TOP(void)
@@ -508,7 +508,7 @@
 0758: 0xA0137D3D   ; 1D6: void png_set_gray_1_2_4_to_8(png_structp png_ptr)
 075C: 0xA01398AB   ; 1D7: void png_set_invert_mono(png_structp png_ptr)
 0760: 0xA0A2AE25   ; 1D8: int EDIT_IsMarkModeActive(void *gui)
-;764:              ; 1D9: int EDIT_GetMarkedText(void *gui,WSHDR *dest)
+0764:  0xA0A2AE31  ; 1D9: int EDIT_GetMarkedText(void *gui,WSHDR *dest)
 0768: 0xA0594EBD   ; 1DA: void SendSMS(WSHDR *ws,const char *num,int cepid,int msg,int flag)
 076C: 0xA8E57F20   ; 1DB: PDU *IncommingPDU(void)
 0770: 0xA01F756B   ; 1DC: short wstrchr(WSHDR *ws,unsigned int start_pos,unsigned int wchar)
@@ -525,7 +525,7 @@
 0798: 0xA09A8411   ; 1E6: void Menu_SetItemCountDyn(void *gui, int n)
 079C: 0xA0ADE8B0   ; 1E7: char *GetLastJavaApplication()
 07A0: 0xA0A15EB8   ; 1E8: int IsNoJava()
-;7A4:              ; 1E9: 
+;7A4:               ; 1E9: IMGHDR *CreateIMGHDRFromPngFile(const char *fname, int type)
 07A8: 0xA09A2BCB   ; 1EA: int GetMaxDynIcon(void)
 07AC: 0xA8DCD21A   ; 1EB: char *RAM_IMSI()
 07B0: 0xA09A2BCF   ; 1EC: void FreeDynIcon(int picture)
@@ -580,11 +580,11 @@
 0868: 0xA0A2AFB1   ; 21A: int EDIT_SetTextInvert(void *gui,int cursor_pos,int len)
 086C: 0xA0A2AFBD   ; 21B: void EDIT_RemoveTextInvert(void *gui)
 0870: 0xA0A2AFF9   ; 21C: void EDIT_IsBusy(void *gui)
-0874: 0xA0980461   ; 21D: int GSMTXT_Decode(WSHDR *dest,void *pkt,int len,int encoding_type, void *(*malloc_adr)(int), void (*mfree_adr)(void))
+0874: 0xA0980461   ; 21D: int GSMTXT_Decode(WSHDR *dest,void *pkt,int len,int enco由于非常钦佩楼主，不得不说声好！_type, void *(*malloc_adr)(int), void (*mfree_adr)(void))
 0878: 0xA09A4813   ; 21E: void FocusGUI(int id)
 087C: 0xA09A4823   ; 21F: void UnfocusGUI(void)
 
-;880:              ; 220: IsSliderClosed
+0880:  0xA09656A7            ; 220:int IsSliderClosed(void)
 0884: 0xA01D180C   ; 221: void SetCpuClockLow
 0888: 0xA01D17F4   ; 222: void SetCpuClockTempHi
 ;88C:              ; 223: IsMediaPlayerInBackground
@@ -656,15 +656,15 @@
 0988: 0xA0DC5A50   ; 262: int Obs_GetInfo(HObj hObj, int unk_0or1)
 098C: 0xA0E1820C   ; 263: intObs_SetScaling(HObj hObj, int unk5)
 0990: 0xA0DE3B18   ; 264: int Obs_TranslateMessageGBS(GBS_MSG *msg, OBSevent *event_handler)
-;994:              ; 265: int Obs_Pause(HObj hObj)
-;998:              ; 266: int Obs_Resume(HObj hObj)
-;99C:              ; 267: int Obs_Stop(HObj hObj)
-;9A0:              ; 268: int Obs_Prepare(HObj hObj)
-;9A4:              ; 269: int Obs_SetRenderOffset(HObj hObj,short x,short y)
-;9A8:              ; 26A: int Obs_SetPosition(HObj hObj,int ms)
+0994:  0xA0DC6144            ; 265: int Obs_Pause(HObj hObj)
+0998:  0xA0DC64A0            ; 266: int Obs_Resume(HObj hObj)
+099C:   0xA0DC62CC           ; 267: int Obs_Stop(HObj hObj)
+09A0:  0xA0DC5C64            ; 268: int Obs_Prepare(HObj hObj)
+09A4:   0xA0E82E88           ; 269: int Obs_SetRenderOffset(HObj hObj,short x,short y)
+09A8:  0xA0DC2EA0            ; 26A: int Obs_SetPosition(HObj hObj,int ms)
 ;9AC:              ; 26B: int Obs_Mam_SetPurpose(HObj hObj,int ms)
-;9B0:              ; 26C: int Obs_Sound_SetVolumeEx(HObj hObj, char vol, char delta)
-;9B4:              ; 26D: int Obs_Sound_GetVolume(HObj hObj, char *vol)
+09B0:   0xA0E10048           ; 26C: int Obs_Sound_SetVolumeEx(HObj hObj, char vol, char delta)
+009B4:   0xA0E10D24           ; 26D: int Obs_Sound_GetVolume(HObj hObj, char *vol)
 09B8: 0xA0E10560   ; 26E: __swi __arm int Obs_SetPurpose (HObj hObj,char purpose)
 
 0A04: 0xA8DF0390   ; 281: char *RamIsRunJava()
@@ -755,5 +755,3 @@
 0B68: 0xA09AD1A1   ; 2DA: __swi __arm void *TViewGetUserPointer(void *gui)
 #pragma disable old_equal_ff
 +0
-
-;********************************************************************************
