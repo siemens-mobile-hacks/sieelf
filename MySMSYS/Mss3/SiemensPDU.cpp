@@ -158,8 +158,17 @@ int SiememPDU::PduDecodeTxt(SDLIST *sd, char *data) //0: fail, 1: successful, //
   }
   else 
   {
-    sd->msg_prop=sd->msg_prop|ISUNKE;
-    wsprintf(ws, STR_UNK_TXTT, ttype);
+    //sd->msg_prop=sd->msg_prop|ISUNKE;
+	GSMTXT_Decode(ws, p, c, ttype, (void *(*)(int))malloc_adr(), (void (*)())mfree_adr());
+	if (ws->wsbody[0] == 0)
+	{
+		wsprintf(ws, STR_UNK_TXTT, ttype);
+		sd->msg_prop |= ISUNKE;
+	}
+	else
+	{
+		CutWSTR(ws, c);
+	}
   }
   wst=sd->text;
   wlen=wstrlen(ws);
@@ -307,8 +316,17 @@ int SiememPDU::PduDecodeAll(SDLIST *sd, char *data) //0: fail, 1: successful, //
   }
   else 
   {
-    sd->msg_prop=sd->msg_prop|ISUNKE;
-    wsprintf(ws, STR_UNK_TXTT, ttype);
+    //sd->msg_prop=sd->msg_prop|ISUNKE;
+	GSMTXT_Decode(ws, p, c, ttype, (void *(*)(int))malloc_adr(), (void (*)())mfree_adr());
+	if (ws->wsbody[0] == 0)
+	{
+		wsprintf(ws, STR_UNK_TXTT, ttype);
+		sd->msg_prop |= ISUNKE;
+	}
+	else
+	{
+		CutWSTR(ws, c);
+	}
   }
 TEND:
   wlen=wstrlen(ws);

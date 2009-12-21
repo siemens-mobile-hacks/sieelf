@@ -202,7 +202,7 @@ void OthMenu::ShowHelp()
   WSHDR *ws;
   strcpy(filepath, main_folder);
   strcat(filepath, "help.txt");
-  if((file.FOpen(filepath, A_ReadOnly, P_READ))!=-1)
+  if ((file.FOpen(filepath, A_BIN+A_ReadOnly, P_READ)) != -1)
   {
     len=file.FRead(help_buf, HLP_BUF_SIZE);
     file.FClose();

@@ -7180,9 +7180,17 @@
   </file>
   <file>
     <name>$PROJ_DIR$\CSMswaper.cpp</name>
+    <excluded>
+      <configuration>Release</configuration>
+      <configuration>Release_ELKA_EN</configuration>
+    </excluded>
   </file>
   <file>
     <name>$PROJ_DIR$\CSMswaper.h</name>
+    <excluded>
+      <configuration>Release</configuration>
+      <configuration>Release_ELKA_EN</configuration>
+    </excluded>
   </file>
   <file>
     <name>$PROJ_DIR$\DaemonCSM.cpp</name>

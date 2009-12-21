@@ -12,7 +12,7 @@
 #include "LangPack.h"
 #include "Vibra.h"
 #include "PlaySound.h"
-#include "ShortVibra.h"
+//#include "ShortVibra.h"
 #include "SendList.h"
 #include "DaemonCSM.h"
 #include "CSMswaper.h"
@@ -55,7 +55,7 @@ int Mss3App::Start(char *exename, char *fname)
   InitSetting();
   DaemonCSM *daemon=new DaemonCSM;
   daemon->CreateDaemonCSM();
-  CSMSwaper::InitUnderIdleCSM();
+  //CSMSwaper::InitUnderIdleCSM();
   return 0;
 }
 

@@ -6,9 +6,10 @@
 #include "SendList.h"
 #include "Vibra.h"
 #include "PlaySound.h"
-#include "ShortVibra.h"
+//#include "ShortVibra.h"
 #include "DaemonCSM.h"
 #include "CSMswaper.h"
+#include "..\..\inc\xtask_ipc.h"
 
 
 SNDLST * SendList::AllocSL()
@@ -215,7 +216,8 @@ void SendList::Send(SendList *sndlst)
     && tcsm->id
     )
   {
-    CSMSwaper::CSMtoTop(tcsm->id, -1);
+    CsmToTop(tcsm->id);
+    //CSMSwaper::CSMtoTop(tcsm->id, -1);
   }
 }
 
@@ -244,3 +246,17 @@ void SendList::Send(SendList *sndlst)
 //DEL     sl=sl->next;
 //DEL   }
 //DEL }
+IPC_REQ SendList::ipc_xtask=
+{
+  IPC_XTASK_NAME,
+  IPC_NAME,
+  NULL
+};
+
+void SendList::CsmToTop(int csm_id)
+{
+  LockSched();
+  ipc_xtask.data=(void *)csm_id;
+  GBS_SendMessage(MMI_CEPID, MSG_IPC, IPC_XTASK_SHOW_CSM, &ipc_xtask);
+  UnlockSched();
+}

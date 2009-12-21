@@ -13,21 +13,27 @@ typedef struct _SNDLST
 class SendList
 {
 public:
+	SendList();
+	~SendList();
 	static void Send(SendList *sndlst);
-	static void SendOnTop(SendList *sndlst);
 	void CatList(SNDLST *sl);
-	int IsSendCSM(int csm_id);
 	int SendEnd(int csm_id);
+	void AddToList(const char *number, WSHDR *text);
+	
+	SNDLST * sltop;
+
+private:
+	static void SendOnTop(SendList *sndlst);
+	int IsSendCSM(int csm_id);
 	int SendStart(void);
 	int IsSending(void);
 	SNDLST * FindSL(int csm_id);
 	void DeleteSL(SNDLST *sl);
-	void AddToList(const char *number, WSHDR *text);
 	void AddToList(SNDLST *sl);
-	SendList();
-	~SendList();
 	void FreeList();
 	SNDLST * AllocSL();
-	SNDLST * sltop;
+	static void CsmToTop(int csm_id);
+	
+	static IPC_REQ ipc_xtask;
 };
 #endif

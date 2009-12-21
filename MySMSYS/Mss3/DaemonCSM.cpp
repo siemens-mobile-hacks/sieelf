@@ -9,7 +9,7 @@
 #include "DialogCSM.h"
 #include "Vibra.h"
 #include "PlaySound.h"
-#include "ShortVibra.h"
+//#include "ShortVibra.h"
 
 #include "SendList.h"
 #include "CSMswaper.h"
