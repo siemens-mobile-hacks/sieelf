@@ -4115,7 +4115,6 @@ sieGet/url_input.cpp -text
 sieGet/url_input.h -text
 sieGet/url_utils.cpp -text
 sieGet/url_utils.h -text
-/sk65_50.xcl -text
 tools/7z.dll -text
 tools/7z.exe -text
 tools/Language/english.lng -text
