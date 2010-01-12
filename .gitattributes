@@ -393,6 +393,8 @@ ExtMan/main.c -text
 ExtMan/rect_patcher.h -text
 ExtMan/test.xcl -text
 ExtMan/visual.c -text
+/Extra_Info.ewp -text
+/Extra_Info.eww -text
 FastRun/FastRun/DIV.R79 -text
 FastRun/FastRun/FastRun.ewp -text
 FastRun/FastRun/FastRun.eww -text
@@ -2802,6 +2804,7 @@ XTASK3/rect_patcher.h -text
 XTASK3/swaper.c -text
 XTASK3/swaper.h -text
 XTASK3/test.xcl -text
+/additional.c -text
 alarm/alarm.eww -text
 alarm/alarm.h -text
 alarm/alarm_cfg_editor/alarm_cfg_editor.ewp -text
@@ -3902,6 +3905,8 @@ cbn_SRC/vNes/SETTINGS/Ted.wsdt -text
 cbn_SRC/vNes/TED.DEP -text
 cbn_SRC/vNes/TED.EWP -text
 cbn_SRC/vNes/TED.EWW -text
+/conf_loader.c -text
+/config_data.c -text
 cpumon/conf_loader.c -text
 cpumon/conf_loader.h -text
 cpumon/config.c -text
@@ -3912,6 +3917,8 @@ cpumon/main.c -text
 cpumon/strlib.c -text
 cpumon/strlib.h -text
 cpumon/test.xcl -text
+/cx75_13.xcl -text
+/e71_45.xcl -text
 gb2ws/NEWSGOLD.xcl -text
 gb2ws/SGOLD.xcl -text
 gb2ws/about.txt -text
@@ -3983,6 +3990,7 @@ jpeglib/jpeglib.h -text
 jpeglib/jutils.c -text
 jpeglib/jversion.h -text
 jpeglib/main.c -text
+/main.asm -text
 mini_GPS/conf_loader.c -text
 mini_GPS/conf_loader.h -text
 mini_GPS/config_data.c -text
@@ -4016,6 +4024,9 @@ openwith2/main.c -text
 openwith2/openwith2.ewp -text
 openwith2/openwith2.eww -text
 openwith2/test.xcl -text
+/rets_CX75sw13.asm -text
+/rets_E71_45.asm -text
+/rets_SK65sw50.asm -text
 sieGet/Files/Img/about.png -text
 sieGet/Files/Img/bookmark.png -text
 sieGet/Files/Img/complete.png -text
@@ -4105,6 +4116,7 @@ sieGet/url_input.cpp -text
 sieGet/url_input.h -text
 sieGet/url_utils.cpp -text
 sieGet/url_utils.h -text
+/sk65_50.xcl -text
 tools/7z.dll -text
 tools/7z.exe -text
 tools/Language/english.lng -text
