@@ -2804,7 +2804,6 @@ XTASK3/rect_patcher.h -text
 XTASK3/swaper.c -text
 XTASK3/swaper.h -text
 XTASK3/test.xcl -text
-/additional.c -text
 alarm/alarm.eww -text
 alarm/alarm.h -text
 alarm/alarm_cfg_editor/alarm_cfg_editor.ewp -text
