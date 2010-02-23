@@ -269,8 +269,6 @@ ECDict/menu.c -text
 ECDict/menu.h -text
 ECDict/rect_patcher.h -text
 ECDict/test.xcl -text
-ELFLoader_lg8/ELFLoader.dep -text
-ELFLoader_lg8/ELFLoader.ewd -text
 ELFLoader_lg8/ELFLoader.ewp -text
 ELFLoader_lg8/ESI.asm -text
 ELFLoader_lg8/EXT2.asm -text
@@ -279,7 +277,6 @@ ELFLoader_lg8/FSWI.asm -text
 ELFLoader_lg8/IMB.asm -text
 ELFLoader_lg8/Lg8/C6Cv53.xcl -text
 ELFLoader_lg8/Lg8/C7Cv22.xcl -text
-ELFLoader_lg8/Lg8/C7Cv24.xcl -text
 ELFLoader_lg8/Lg8/C81Cv50.xcl -text
 ELFLoader_lg8/Lg8/CX6Cv50.xcl -text
 ELFLoader_lg8/Lg8/CX7Av25.xcl -text
@@ -297,7 +294,6 @@ ELFLoader_lg8/Lg8/SL6Cv50.xcl -text
 ELFLoader_lg8/Lg8/SL7Cv47.xcl -text
 ELFLoader_lg8/Lg8/rets_C6Cv53.asm -text
 ELFLoader_lg8/Lg8/rets_C7Cv22.asm -text
-ELFLoader_lg8/Lg8/rets_C7Cv24.asm -text
 ELFLoader_lg8/Lg8/rets_C81Cv50.asm -text
 ELFLoader_lg8/Lg8/rets_CX6Cv50.asm -text
 ELFLoader_lg8/Lg8/rets_CX7Av25.asm -text
@@ -323,8 +319,6 @@ ELFLoader_lg8/vkp/C6Cv53/ELFLoader_C6Cv53_ANSI_Standard.vkp -text
 ELFLoader_lg8/vkp/C6Cv53/swilib.vkp -text
 ELFLoader_lg8/vkp/C7Cv22/ELFLoader_C7Cv22_ANSI_Standard.vkp -text
 ELFLoader_lg8/vkp/C7Cv22/swilib.vkp -text
-ELFLoader_lg8/vkp/C7Cv24/elfloader_C7Cv24.vkp -text
-ELFLoader_lg8/vkp/C7Cv24/swilib.vkp -text
 ELFLoader_lg8/vkp/C81Cv50/API.vkp -text
 ELFLoader_lg8/vkp/C81Cv50/ELFLoader_C81Cv50.vkp -text
 ELFLoader_lg8/vkp/C81Cv50/swilib.vkp -text
