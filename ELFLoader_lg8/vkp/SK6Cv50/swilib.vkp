@@ -47,7 +47,7 @@
 0098: 0xA075B4F5   ; 26: __thumb void DrawImgBW(unsigned int x, unsigned int y, unsigned int picture, char *pen, char *brush);    
 009C: 0xA02A2C2F   ; 27: __thumb AddIconToIconbar 
 00A0: 0xA0DAD2EC   ; 28: __arm double fp_sint2fp(signed int i);
-;00A4: 0x ; 29: 
+00A4: 0xA073647B   ; 29: __thumb void AutoAnswer() 
 00A8: 0xA09B1A60   ; 2A: __arm int *GetEELiteBlockAddress(short blocknum)
 00AC: 0xA0DAD18C   ; 2B: __arm int fp_fp2sint(double f);
 00B0: 0xA098F27C   ; 2C: __arm int EEFullGetBlockInfo(unsigned int block,int *size,char *version);
