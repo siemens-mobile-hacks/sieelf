@@ -325,9 +325,9 @@
 04A0: 0xA073B9F7   ; 128: CreateWS(void *malloc,void *mfree,int len)
 04A4: 0xA073B371   ; 129: FreeWS(WSHDR *wshdr)
 04A8: 0xA00A34CB   ; 12A: DrawObject_2(DRWOBJ *)
-04AC: 0xA0002070   ; 12B: AddKeybMsgHook(void *proc)
-04B0: 0xA0FFF073   ; 12C: AddKeybMsgHook_end(void *proc)
-04B4: 0xA0FFF0A3   ; 12D: RemoveKeybMsgHook(void *proc)
+;04AC: 0xA0002070   ; 12B: AddKeybMsgHook(void *proc)
+;04B0: 0xA0FFF073   ; 12C: AddKeybMsgHook_end(void *proc)
+;04B4: 0xA0FFF0A3   ; 12D: RemoveKeybMsgHook(void *proc)
 04B8: 0xA00A2AED   ; 12E: GetPaletteAdrByColorIndex_2(int ColorIndex)
 04BC: 0xA00A2B11   ; 12F: getRGBcolor(int ColorIndex,void *dest)
 
@@ -682,7 +682,7 @@
 0B28: 0xA020E0FF   ; 2CA:  __thumb int GetDateTimeFromSecondsSince1997(int *seconds, TDate *date, TTime *time)
 0B2C: 0xA020E5ED   ; 2CB:  __thumb void GetTimeFromSeconds(TTime *time, int seconds)
 0B30: 0xA020DEB1   ; 2CC:  __thumb void InitDate(TDate *date, unsigned long year, unsigned char month, unsigned char day)
-0B34: 0xA02OE915   ; 2CD:  __thumb void InitTime(TDate *time, unsigned char hour, unsigned char min, unsigned char sec, unsigned long millisec)
+0B34: 0xA020E915   ; 2CD:  __thumb void InitTime(TDate *time, unsigned char hour, unsigned char min, unsigned char sec, unsigned long millisec)
 0B38: 0xA020D895   ; 2CE:  __thumb int CmpDates(TDate *date1, TDate *date2)
 0B3C: 0xA020E57D   ; 2CF:  __thumb int CmpTimes(TTime *time1, TTime *time2)
 
