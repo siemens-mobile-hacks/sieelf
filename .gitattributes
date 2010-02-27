@@ -2119,6 +2119,15 @@ SSMS/config.c -text
 SSMS/func.asm -text
 SSMS/main.c -text
 SSMS/test.xcl -text
+SafeMode/Safe.ewd -text
+SafeMode/Safe.ewp -text
+SafeMode/Safe.eww -text
+SafeMode/conf_loader.c -text
+SafeMode/conf_loader.h -text
+SafeMode/config_data.c -text
+SafeMode/func.asm -text
+SafeMode/main.c -text
+SafeMode/test.xcl -text
 ScrEngWords/CET4.txt -text
 ScrEngWords/CET6.txt -text
 ScrEngWords/ScrEngWords.ewp -text
