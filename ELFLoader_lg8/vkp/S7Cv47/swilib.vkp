@@ -626,9 +626,7 @@
 0914: 0xA0F841BD   ; 245:  __arm int Base64Decode(char *inbuf, int insize, void *outbuf, int outsize, char *_null, int *unk5)
 0918: 0xA0368F53   ; 246:  __thumb int GetFileProp(FILE_PROP *wl,WSHDR *file,WSHDR *folder)
 091C: 0xA0DD9C61   ; 247:  __thumb void NetOff()
-0920: 0xA8D06BCE   ; 248:  char *RamFormatTrack()
-0924: 0xA8D06E36   ; 249:  char *RamFreq()
-0928: 0xA8D06FEE   ; 24A:  char *RamChannel()
+
 092C: 0xA09AB647   ; 24B:  __thumb void SetMenuSearchCallBack(void *gui, MenuSearchCallBack proc)
 0930: 0xA02EF96D   ; 24C:  __thumb int  GetPeripheryState (int device, int check_state)
 0934: 0xA027D100   ; 24D:  __arm int PlayMelody_SetPosition(int handle, int pos_ms)
