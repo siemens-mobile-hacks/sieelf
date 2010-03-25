@@ -246,6 +246,8 @@ DialExt/conf_loader.h -text
 DialExt/config.c -text
 DialExt/func.asm -text
 DialExt/main.c -text
+DialExt/main_DaiKangroo_CG1.c -text
+DialExt/main_DaiKangroo_CG2.c -text
 DialExt/test.xcl -text
 Dictionary/dictionary.ewp -text
 Dictionary/dictionary.eww -text
