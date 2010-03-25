@@ -91,7 +91,7 @@ int runSystem(char *text) {
   if (strlen(text) == strlen(REFRESH)) {
     p = strstr(REFRESH, text);
     if (p) {
-      DoIDLE();
+      DoIDLE(0);
       ShowMSG(1, (int)"Reflashing seting!");
       if (!RereadSettings()) {
         SUBPROC((void *)ElfKiller);
@@ -103,7 +103,7 @@ int runSystem(char *text) {
   if (strlen(text) == strlen(QUIT)) {  
     p = strstr(QUIT, text);
     if (p) {
-      DoIDLE();
+      DoIDLE(0);
       ShowMSG(1, (int)"Quit DialExt!");
       SUBPROC((void *)ElfKiller);
       r = 1;
@@ -113,7 +113,7 @@ int runSystem(char *text) {
   if (strlen(text) == strlen(REBOOT)) {  
     p = strstr(REBOOT, text);
     if (p) {
-      DoIDLE();
+      DoIDLE(0);
       ShowMSG(1, (int)"Rebooting phone!");
       RebootPhone();
       r = 1;
@@ -123,7 +123,7 @@ int runSystem(char *text) {
   if (strlen(text) == strlen(SHUTOFF)) {
     p = strstr(SHUTOFF, text);
     if (p) {
-      DoIDLE();
+      DoIDLE(0);
       ShowMSG(1, (int)"Switching phone off!");
       SwitchPhoneOff();
       r = 1;
@@ -187,6 +187,28 @@ int runFile(char *file) {
   return 0;
 }
 
+int runFolder(char *path)
+{
+if(path && strlen(path))
+{
+	WSHDR *ws=AllocWS(128);
+	str_2ws(ws,path,128);
+	NativeExplorerData data;
+	zeromem(&data,sizeof(NativeExplorerData));
+	data.mode=0;
+	data.dir_enum=0x26;
+	data.path_to_file=ws;
+	data.is_exact_dir=1;
+	data.full_filename=ws;
+	data.unk9=1;
+	//data.this_struct_addr=&data;
+	StartNativeExplorer(&data);
+	FreeWS(ws);
+	return 1;
+}
+	return 0;
+}
+
 int runShorcut(char *shorcut) 
 {
 
@@ -214,18 +236,21 @@ int runAddress(long address)
 
 int runFunc(char *func) {
   if (!func) return 0;
-  DoIDLE();
-  if (func[0] >= '0' && func[0] <= '9') {
+  DoIDLE(0);
+  if (func[0] >= '0' && func[0] <= '9') { 
     if (func[1] == 'x' || func[1] == 'X') { //地址
       char *p;
       p = func + 2;
       runAddress(StrToLong(p));
     }
-    else {
-      runFile(func);
+    else //文件或文件夹
+    { 
+     int last=strlen(func)-1; //最后一个字符位置
+     if(func[last]=='\\')runFolder(func);
+      else runFile(func);
     }
   }
-  else {
+  else { //快捷方式
     runShorcut(func);
   }
   return 1;
