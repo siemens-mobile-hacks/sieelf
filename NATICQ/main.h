@@ -98,4 +98,11 @@ extern unsigned long  strtoul (const char *nptr,char **endptr,int base);
 
 #define T_SETCLIENT_ID 32
 
+#define T_REMOVECONTACT 33
+#define T_CONTACTREMOVED 34
+
 #endif
+
+void OpenConfig();
+void UpdateCSMname();
+

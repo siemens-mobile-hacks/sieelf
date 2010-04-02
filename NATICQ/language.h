@@ -4,9 +4,9 @@
 #define LG_COPYRIGHT     "NATICQ v2.0\nRevision %d\n(C) by Rst7/CBSIE\nKren\nKibab\nShadow\nSeklth"
 
 //Оставляем только один дефайн иначе будет кака
-//#define LANG_RU
+#define LANG_RU
 //#define LANG_UA
-#define LANG_EN
+//#define LANG_EN
 
 #ifdef LANG_RU
 
@@ -76,6 +76,7 @@
 #define LG_CHGSTATUS "Сменить статус"
 #define LG_CHGXSTATUS "Сменить X-статус"
 
+
 #define LG_STONLINE "В сети"
 #define LG_STAWAY   "Отошёл"
 #define LG_STNA     "Недоступен"
@@ -88,6 +89,8 @@
 #define LG_STHOME "Дома"
 #define LG_STLUNCH "Жру"
 #define LG_STWORK "На работе"
+
+#define LG_COMMENT "Комментарий:"
 
 //================================
 
@@ -122,7 +125,8 @@
 
 //=================================
 
-#define LG_GRSTATESTRING "State: %d, RXstate: %d\nRx: %db, Tx: %db\nQueue: %db\n%t"
+#define LG_GRSTATESTRING "State: %d, RXstate: %d\nRx:%db,Tx:%db\nQueue: %db\n%s\n%t"
+
 #define LG_GRSKEYEXIT    "Exit"
 #define LG_GRSKEYCLIST   "CList"
 
@@ -136,7 +140,10 @@
 #define LG_GRSTATUSCHNG  "SC%d: %04X"
 #define LG_GRERROR       "ERR: %s"
 #define LG_GRRECVMSG     "MSG%d: %s"
-#define LG_GRGPRSUP      "GPRS up, wait 10 sec..."
+#define LG_GRGPRSUP      "GPRS сессия запущена, подключение через %d секунд..."
+#define LG_GRDBLCONNECT  "Номером зашли с другого клиента"
+#define LG_GRRECONNECT   "%s\nОшибка, переподключение через %d секунд..."
+
 
 #endif
 
@@ -221,6 +228,8 @@
 #define LG_STLUNCH "Їм"
 #define LG_STWORK "На роботі"
 
+#define LG_COMMENT "Комментарий:"
+
 //================================
 
 #define LG_ALL_CAN_SEE          "Видимий для всіх"
@@ -253,7 +262,7 @@
 #define LG_HISTIOERR "Помилка I/O  #%u"
 
 //=================================
-#define LG_GRSTATESTRING "State: %d, RXstate: %d\nRx: %db, Tx: %db\nQueue: %db\n%t"
+#define LG_GRSTATESTRING "State: %d, RXstate: %d\nRx: %db, Tx: %db\nQueue: %db\n%s\n%t"
 #define LG_GRSKEYEXIT    "Exit"
 #define LG_GRSKEYCLIST   "CList"
 
@@ -267,7 +276,9 @@
 #define LG_GRSTATUSCHNG  "SC%d: %04X"
 #define LG_GRERROR       "ERR: %s"
 #define LG_GRRECVMSG     "MSG%d: %s"
-#define LG_GRGPRSUP      "GPRS up, wait 10 sec..."
+#define LG_GRGPRSUP      "GPRS up, wait %d sec..."
+#define LG_GRDBLCONNECT  "Another client connected"
+#define LG_GRRECONNECT   "%s\nReconect after %d second..."
 
 #endif
 
@@ -352,6 +363,8 @@
 #define LG_STLUNCH "Lunch"
 #define LG_STWORK "Work"
 
+#define LG_COMMENT "Comment:"
+
 //================================
 
 #define LG_ALL_CAN_SEE          "Visible for all"
@@ -385,7 +398,7 @@
 
 //=================================
 
-#define LG_GRSTATESTRING "State: %d, RXstate: %d\nRx: %db, Tx: %db\nQueue: %db\n%t"
+#define LG_GRSTATESTRING "State: %d, RXstate: %d\nRx: %db, Tx: %db\nQueue: %db\n%s\n%t"
 #define LG_GRSKEYEXIT    "Exit"
 #define LG_GRSKEYCLIST   "CList"
 
@@ -399,7 +412,9 @@
 #define LG_GRSTATUSCHNG  "SC%d: %04X"
 #define LG_GRERROR       "ERR: %s"
 #define LG_GRRECVMSG     "MSG%d: %s"
-#define LG_GRGPRSUP      "GPRS up, wait 10 sec..."
+#define LG_GRGPRSUP      "GPRS up, wait %d sec..."
+#define LG_GRDBLCONNECT  "Another client connected"
+#define LG_GRRECONNECT   "%s\nReconect after %d second..."
 
 #endif
 

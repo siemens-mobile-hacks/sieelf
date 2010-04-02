@@ -22,6 +22,7 @@ typedef struct
   unsigned int uin;
   unsigned int group;
   char name[64];
+  char nickname[64];
   unsigned short state;
   unsigned short xstate;
   int isunread;
@@ -34,6 +35,8 @@ typedef struct
   int msg_count;
   char *xtext;
   int req_xtext;
+  int local;  
+  int unreaded;
 }CLIST;
 
 typedef struct

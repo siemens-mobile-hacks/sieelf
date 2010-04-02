@@ -8,7 +8,7 @@
 #include "main.h"
 #include "status_change.h"
 #include "strings.h"
-#include "language.h"
+#include "lang.h"
 
 //===============================================================================================
 // ELKA Compatibility
@@ -31,7 +31,7 @@ void patch_input(const INPUTDIA_DESC* inp)
 //===============================================================================================
 
 extern const char TEMPLATES_PATH[];
-static const char XS_FILE_NAME[]="\\XStatuses.txt";
+static const char XS_FILE_NAME[]="XStatuses.txt";
 
 
 char *XStatusText;
@@ -127,20 +127,20 @@ static int st_onkey(void *data, GUI_MSG *msg)
 
 #define STATUSES_NUM 12
 
-static const char * const menutexts[STATUSES_NUM]=
+static char * menutexts[STATUSES_NUM]=
 {
-  LG_STONLINE,
-  LG_STAWAY,
-  LG_STNA,
-  LG_STDND,
-  LG_STOCCUP,
-  LG_STFFC,
-  LG_STINVIS,
-  LG_STDEPRESSION,
-  LG_STEVIL,
-  LG_STHOME,
-  LG_STLUNCH,
-  LG_STWORK
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL
 };
 
 void st_icons_set(void *data, int curitem, void *unk)
@@ -154,14 +154,14 @@ void st_icons_set(void *data, int curitem, void *unk)
   SetMenuItemText(data, item, ws, curitem);
 }
 
-static const HEADER_DESC st_menuhdr={0,0,0,0,NULL,(int)LG_CHGSTATUS,LGP_NULL};
+static HEADER_DESC st_menuhdr={0,0,0,0,NULL,NULL,LGP_NULL};
 
 static const int st_menusoftkeys[]={0,1,2};
 
-static const SOFTKEY_DESC st_menu_sk[]=
+static SOFTKEY_DESC st_menu_sk[]=
 {
-  {0x0018,0x0000,(int)LG_SELECT},
-  {0x0001,0x0000,(int)LG_BACK},
+  {0x0018,0x0000,NULL},
+  {0x0001,0x0000,NULL},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -195,6 +195,25 @@ void DispStatusChangeMenu()
 {
   *((int **)(&st_menuhdr.icon))=S_ICONS+CurrentStatus;
   patch_header(&st_menuhdr);
+  
+  //Инициализация ленгпака
+  st_menuhdr.lgp_id=(int)lgpData[LGP_ChgStatus];
+  st_menu_sk[0].lgp_id=(int)lgpData[LGP_Select];
+  st_menu_sk[1].lgp_id=(int)lgpData[LGP_Back];
+  
+  menutexts[0]=(char *)lgpData[LGP_StOnline];
+  menutexts[1]=(char *)lgpData[LGP_StAway];
+  menutexts[2]=(char *)lgpData[LGP_StNa];
+  menutexts[3]=(char *)lgpData[LGP_StDnd];
+  menutexts[4]=(char *)lgpData[LGP_StOccup];
+  menutexts[5]=(char *)lgpData[LGP_StFfc];
+  menutexts[6]=(char *)lgpData[LGP_StInvis];
+  menutexts[7]=(char *)lgpData[LGP_StDepression];
+  menutexts[8]=(char *)lgpData[LGP_StEvil];
+  menutexts[9]=(char *)lgpData[LGP_StHome];
+  menutexts[10]=(char *)lgpData[LGP_StLunch];
+  menutexts[11]=(char *)lgpData[LGP_StWork];
+  
   CreateMenu(0,0,&st_tmenu,&st_menuhdr,GetStatusIndexInMenu(CurrentStatus),STATUSES_NUM,0,0);
 }
 
@@ -338,7 +357,7 @@ void edit_xstatus_ghook(GUI *data, int cmd)
   }
 }
 
-HEADER_DESC edit_xstatus_hdr={0,0,0,0,NULL,(int)"X-Статус",LGP_NULL};
+HEADER_DESC edit_xstatus_hdr={0,0,0,0,NULL,NULL,LGP_NULL};
 
 INPUTDIA_DESC edit_xstatus_desc =
 {
@@ -378,7 +397,7 @@ static void EditXStatus(int xstatus)
    
   eq=AllocEQueue(ma,mfree_adr());    
   WSHDR *ews=AllocWS(128);
-  ascii2ws(ews,"Комментарий:");   // Коментарий
+  ascii2ws(ews, (char*)lgpData[LGP_Comment] );   // Коментарий
   PrepareEditControl(&ec);
   ConstructEditControl(&ec,ECT_HEADER,0x40,ews,ews->wsbody[0]);
   AddEditControlToEditQend(eq,&ec,ma);    //1
@@ -520,10 +539,10 @@ static void xst_itemh(void *data, int curitem, void *unk)
   SetMLMenuItemText(data, item, ws2, ws4, curitem);
 }
 
-static const SOFTKEY_DESC xst_menu_sk[]=
+static SOFTKEY_DESC xst_menu_sk[]=
 {
-  {0x0018,0x0000,(int)LG_TEXT},
-  {0x0001,0x0000,(int)LG_BACK},
+  {0x0018,0x0000,NULL},
+  {0x0001,0x0000,NULL},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -532,7 +551,7 @@ static const SOFTKEYSTAB xst_menu_skt=
   xst_menu_sk,0
 };
 
-static const HEADER_DESC xst_menuhdr={0,0,0,0,NULL,(int)LG_CHGXSTATUS,LGP_NULL};
+static HEADER_DESC xst_menuhdr={0,0,0,0,NULL,NULL,LGP_NULL};
 
 static const ML_MENU_DESC xst_menu=
 {
@@ -551,12 +570,20 @@ void DispXStatusChangeMenu(void)
 {
   patch_header(&xst_menuhdr);
   *((int **)(&xst_menuhdr.icon))=XStatusesIconArray+CurrentXStatus;
+  
+  //Инициализация ленгпака
+  xst_menuhdr.lgp_id=(int)lgpData[LGP_ChgXStatus];
+  edit_xstatus_hdr.lgp_id=(int)lgpData[LGP_MnuXStatus];
+  xst_menu_sk[0].lgp_id=(int)lgpData[LGP_Text];
+  xst_menu_sk[1].lgp_id=(int)lgpData[LGP_Back];
+ 
   CreateMultiLinesMenu(0,0,&xst_menu,&xst_menuhdr,CurrentXStatus,total_xstatuses);
 }
 
 void LoadXStatusText(void)
 {
   FSTATS stat;
+  const char _slash[]="\\";
   char fn[256];
   int f;
   unsigned int ul;
@@ -565,6 +592,7 @@ void LoadXStatusText(void)
   int c;
   FreeXStatusText();
   strcpy(fn,TEMPLATES_PATH);
+  if (fn[strlen(fn)-1]!='\\') strcat(fn,_slash);
   strcat(fn,XS_FILE_NAME);
   if (GetFileStats(fn,&stat,&ul)==-1) return;
   if ((fsize=stat.size)<=0) return;
@@ -593,9 +621,11 @@ void SaveXStatusText(void)
 {
   int f;
   char fn[256];
+  const char _slash[]="\\";
   unsigned int ul;
   if (!XStatusText) return;
   strcpy(fn,TEMPLATES_PATH);
+  if (fn[strlen(fn)-1]!='\\') strcat(fn,_slash);
   strcat(fn,XS_FILE_NAME);
   if ((f=fopen(fn,A_ReadWrite+A_Create+A_Truncate+A_BIN,P_READ+P_WRITE,&ul))==-1) return;
   fwrite(f,XStatusText,strlen(XStatusText),&ul);

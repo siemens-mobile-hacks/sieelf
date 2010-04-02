@@ -207,3 +207,12 @@ void ascii2ws(WSHDR *ws, const char *s)
     wsAppendChar(ws,char8to16(c));
   }
 }
+
+// Удаление расширения из имени файла
+void del_ext(char * source)
+{
+  while(*source)source++;
+  while(*source!='.')source--;
+  *source=0;
+};
+

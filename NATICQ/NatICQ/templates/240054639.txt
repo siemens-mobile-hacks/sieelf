@@ -1,4 +1,0 @@
-#w
-#quit
-#join
-#history 20

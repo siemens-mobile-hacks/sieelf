@@ -2,10 +2,7 @@
 #include "..\inc\cfg_items.h"
 #include "conf_loader.h"
 
-const char *successed_config_filename="";
-
-
-
+char *successed_config_filename;
 
 #pragma segment="CONFIG_C"
 int SaveConfigData(const char *fname)
@@ -44,6 +41,7 @@ int LoadConfigData(const char *fname)
   if (!(buf=malloc(len))) return -1;
   if ((f=fopen(fname,A_ReadOnly+A_BIN,P_READ,&ul))!=-1)
   {
+    result = 0;
     rlen=fread(f,buf,len,&ul);
     end=lseek(f,0,S_END,&ul,&ul);
     fclose(f,&ul);
@@ -56,14 +54,24 @@ int LoadConfigData(const char *fname)
     result=SaveConfigData(fname);
   }
   mfree(buf);
-  if (result>=0) successed_config_filename=fname;
+  if (result>=0)
+  {
+    successed_config_filename = malloc(strlen(fname)*2);
+    strcpy(successed_config_filename, fname);
+    //successed_config_filename = fname;
+  }
   return(result);
 }
 
-void InitConfig()
+void InitConfig(const char *config)
 {
-  if (LoadConfigData("4:\\ZBin\\etc\\NATICQ.bcfg")<0)
-  {
-    LoadConfigData("0:\\ZBin\\etc\\NATICQ.bcfg");
-  }
+  // tridog, 18 april 2009
+  // Делаем многопрофильность
+    if (LoadConfigData(config)<0)
+    {
+      if (LoadConfigData("4:\\ZBin\\etc\\NATICQ.bcfg")<0)
+      {
+        LoadConfigData("0:\\ZBin\\etc\\NATICQ.bcfg");
+      }
+    }
 }
