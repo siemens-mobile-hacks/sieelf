@@ -113,7 +113,7 @@
 0188: 0xA05C9021   ; 62: SetVibraStatus
 018C: 0xA05DECD5   ; 63: MMI_CanvasBuffer_FlushV(int CanvasID)
 0190: 0xA097C2B7   ; 64: TriggerUpdate
-;194:              ; 65: EndCall
+0194:   0xA09E62F3    ; 65: EndCall
 0198: 0xA09E4FB7   ; 66: EndCallBusy
 019C: 0xA06855FD   ; 67: IsDirectCallActive
 01A0: 0xA068DB29   ; 68:  __thumb SS_RAM *GetScreenSaverRam(void)
