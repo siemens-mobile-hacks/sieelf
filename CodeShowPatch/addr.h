@@ -317,6 +317,16 @@
 #define ADDR_CallOUT2		0xA0ACACCA+1
 #define	AllocMLMenuItem_adr	0xA08198E4
 #define GetMLMenuGUI_adr	0xA0819FB8
+#define AllocMenuWS_adr		0xA097ABFD
+#define SetMLMenuItemText_adr	0xA097DDBF
+#define ConstructEditControl_adr	0xA0A3E639
+#define SetFontToEditCOptions_adr	0xA0A3E2B7
+#define CopyOptionsToEditControl_adr	0xA0A3E365
+#define AddEditControlToEditQend_adr	0xA0A3F087
+#define ExtractEditControl_adr		0xA0A44F19
+#define EDIT_SetTextToEditControl_adr	0xA0A44F0D
+#define wsInsertChar_adr		0xA0510961
+#define ADDR_EDIT_UNK_VOID_INT_INT	0xA0A44F5D
 
 //#define ADDR_DrawString		0xA0970C52+1
 //#define ADDR_FreeWS		0xA0510058+1
@@ -333,8 +343,7 @@
 
 
 
-#define AllocMenuWS_adr		0xA097ABFD
-#define SetMLMenuItemText_adr	0xA097DDBF
+
 #endif
 
 
