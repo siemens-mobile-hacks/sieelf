@@ -521,15 +521,6 @@ ELFLoader_lg8/additional.c -text
 ELFLoader_lg8/conf_loader.c -text
 ELFLoader_lg8/conf_loader.h -text
 ELFLoader_lg8/config_data.c -text
-ELFLoader_lg8/drawhook/Other/CX70v56/List/drawalpha.lst -text
-ELFLoader_lg8/drawhook/Other/CX70v56/List/drawhook.lst -text
-ELFLoader_lg8/drawhook/Other/CX70v56/List/sub_CX6Csw50.lst -text
-ELFLoader_lg8/drawhook/Other/CX70v56/Obj/drawalpha.r79 -text
-ELFLoader_lg8/drawhook/Other/CX70v56/Obj/drawhook.pbd -text
-ELFLoader_lg8/drawhook/Other/CX70v56/Obj/drawhook.r79 -text
-ELFLoader_lg8/drawhook/Other/CX70v56/Obj/sub_CX6Csw50.r79 -text
-ELFLoader_lg8/drawhook/Other/CX75v25/Obj/drawhook.pbd -text
-ELFLoader_lg8/drawhook/Other/SL65v53/Obj/drawhook.pbd -text
 ELFLoader_lg8/drawhook/VKP/alpha_sl65v53/dh_sl65v53.vkp -text
 ELFLoader_lg8/drawhook/VKP/alpha_sl65v53/ep23_24bit_sl65v53.vkp -text
 ELFLoader_lg8/drawhook/VKP/drawhook_CX6Cv50.vkp -text
