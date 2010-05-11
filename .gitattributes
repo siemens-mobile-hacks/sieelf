@@ -872,11 +872,6 @@ LastFM/md5.h -text
 LastFM/test.xcl -text
 LastFM/urlwork.c -text
 LastFM/urlwork.h -text
-LaunchElf/Launch_elf.ewp -text
-LaunchElf/Launch_elf.eww -text
-LaunchElf/Launch_elf.xcl -text
-LaunchElf/additional.c -text
-LaunchElf/start_elf.bcfg -text
 Link/Link.ewp -text
 Link/Link.eww -text
 Link/Main.c -text
