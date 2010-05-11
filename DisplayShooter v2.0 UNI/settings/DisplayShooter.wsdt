@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Workspace>
+  <ConfigDictionary>
+    
+  <CurrentConfigs><Project>DisplayShooter/sgold</Project></CurrentConfigs></ConfigDictionary>
+  <Desktop>
+    <Static>
+      <Build>
+        
+        
+        
+        
+      <PreferedWindows><Position>3</Position><ScreenPosX>0</ScreenPosX><ScreenPosY>0</ScreenPosY><Windows><Window><Factory>Find-in-Files</Factory></Window></Windows></PreferedWindows><ColumnWidth0>20</ColumnWidth0><ColumnWidth1>723</ColumnWidth1><ColumnWidth2>193</ColumnWidth2><ColumnWidth3>48</ColumnWidth3></Build>
+      <Workspace>
+        <ColumnWidths>
+          
+          
+          
+          
+        <Column0>116</Column0><Column1>18</Column1><Column2>27</Column2><Column3>2010398933</Column3></ColumnWidths>
+      <PreferedWindows><Position>1</Position><ScreenPosX>0</ScreenPosX><ScreenPosY>0</ScreenPosY><Windows/></PreferedWindows></Workspace>
+    <SourceBrowser><PreferedWindows><Position>1</Position><ScreenPosX>0</ScreenPosX><ScreenPosY>0</ScreenPosY><Windows><Window><Factory>Workspace</Factory></Window></Windows></PreferedWindows></SourceBrowser><TerminalIO/><CodeCoveragePlugin/><Profiling/><Find-in-Files><ColumnWidth0>350</ColumnWidth0><ColumnWidth1>50</ColumnWidth1><ColumnWidth2>601</ColumnWidth2></Find-in-Files></Static>
+    <Windows>
+      
+      
+    <Wnd1><Tabs><Tab><Identity>TabID-27482-13714</Identity><TabName>Workspace</TabName><Factory>Workspace</Factory><Session><NodeDict><ExpandedNode>DisplayShooter</ExpandedNode></NodeDict></Session></Tab></Tabs><SelectedTab>0</SelectedTab></Wnd1><Wnd2><Tabs><Tab><Identity>TabID-7791-5039</Identity><TabName>Build</TabName><Factory>Build</Factory><Session/></Tab><Tab><Identity>TabID-4214-29891</Identity><TabName>Find in Files</TabName><Factory>Find-in-Files</Factory><Session/></Tab></Tabs><SelectedTab>0</SelectedTab></Wnd2></Windows>
+    <Editor>
+      
+      
+      
+      
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>E:\ARM\&#x41C;&#x43e;&#x451;\DisplayShooter\main.c</Filename><XPos>0</XPos><YPos>99</YPos><SelStart>2773</SelStart><SelEnd>2773</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>E:\ARM\&#x41C;&#x43e;&#x451;\DisplayShooter\jpeglib.h</Filename><XPos>0</XPos><YPos>296</YPos><SelStart>12382</SelStart><SelEnd>12382</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>E:\ARM\&#x41C;&#x43e;&#x451;\DisplayShooter\jmorecfg.h</Filename><XPos>0</XPos><YPos>383</YPos><SelStart>12866</SelStart><SelEnd>12866</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>E:\ARM\&#x41C;&#x43e;&#x451;\DisplayShooter\config_data.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>469</SelStart><SelEnd>469</SelEnd></Tab><ActiveTab>3</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>E:\ARM\&#x41C;&#x43e;&#x451;\DisplayShooter\jcinit.c</Filename><XPos>0</XPos><YPos>40</YPos><SelStart>1751</SelStart><SelEnd>1751</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>E:\ARM\&#x41C;&#x43e;&#x451;\DisplayShooter\jcmaster.c</Filename><XPos>0</XPos><YPos>427</YPos><SelStart>15307</SelStart><SelEnd>15307</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>E:\ARM\&#x41C;&#x43e;&#x451;\DisplayShooter\jcparam.c</Filename><XPos>0</XPos><YPos>382</YPos><SelStart>14667</SelStart><SelEnd>14667</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Positions>
+      
+      
+      
+      
+      
+    <Top><Row0><Sizes><Toolbar-008ee518><key>iaridepm1</key></Toolbar-008ee518></Sizes></Row0></Top><Left><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>455</Bottom><Right>198</Right><x>-2</x><y>-2</y><xscreen>200</xscreen><yscreen>200</yscreen><sizeHorzCX>195313</sizeHorzCX><sizeHorzCY>286944</sizeHorzCY><sizeVertCX>195313</sizeVertCX><sizeVertCY>655667</sizeVertCY></Rect></Wnd1></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>198</Bottom><Right>1026</Right><x>-2</x><y>-2</y><xscreen>1028</xscreen><yscreen>200</yscreen><sizeHorzCX>1003906</sizeHorzCX><sizeHorzCY>286944</sizeHorzCY><sizeVertCX>195313</sizeVertCX><sizeVertCY>286944</sizeVertCY></Rect></Wnd2></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+  </Desktop>
+</Workspace>
+
+

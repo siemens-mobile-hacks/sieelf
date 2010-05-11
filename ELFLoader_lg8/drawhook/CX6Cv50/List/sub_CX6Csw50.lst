@@ -1,0 +1,39 @@
+###############################################################################
+#                                                                             #
+#     IAR Systems ARM Assembler V4.42A/W32 09/May/2010  02:40:45              #
+#     Copyright 1999-2007 IAR Systems. All rights reserved.                   #
+#                                                                             #
+#           Source file   =  E:\ELFLoader\config\sub_CX6Csw50.asm             #
+#           List file     =  E:\ELFLoader\CX6Cv50\List\sub_CX6Csw50.lst       #
+#           Object file   =  E:\ELFLoader\CX6Cv50\Obj\sub_CX6Csw50.r79        #
+#           Command line  =  E:\ELFLoader\config\sub_CX6Csw50.asm             #
+#                            -OE:\ELFLoader\CX6Cv50\Obj\ -s+ -M<> -w+         #
+#                            -DNOTALIGN -LE:\ELFLoader\CX6Cv50\List\ -cE -t8  #
+#                            --cpu ARM926EJ-S --fpu None                      #
+#                            -IF:\software\Embedded Workbench 4.0 Evaluation\ARM\INC\ #
+#                                                                             #
+###############################################################################
+
+    1    00000000              //CX6Cv50 by loquat
+    2    00000000                      RSEG    CODE:CODE
+    3    00000000                      
+    4    00000000                      PUBLIC  oldDrawObj_sub_1
+    5    00000000              oldDrawObj_sub_1:
+    6    00000000 5D0C0AA0             DCD 0xA00A0C5C+1
+    7    00000004                
+    8    00000000                      PUBLIC  oldDrawObj_sub_2
+    9    00000004              oldDrawObj_sub_2:
+   10    00000004 492E0AA0             DCD 0xA00A2E48+1
+   11    00000008              
+   12    00000008              
+   13    00000008                      END
+##############################
+#          CRC:A94B          #
+#        Errors:   0         #
+#        Warnings: 0         #
+#          Bytes: 8          #
+##############################
+
+
+
+

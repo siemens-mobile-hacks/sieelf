@@ -1,0 +1,143 @@
+###############################################################################
+#                                                                             #
+#     IAR Systems ARM Assembler V4.42A/W32 09/May/2010  02:45:41              #
+#     Copyright 1999-2007 IAR Systems. All rights reserved.                   #
+#                                                                             #
+#           Source file   =  E:\ELFLoader\drawhook.asm                        #
+#           List file     =  E:\ELFLoader\Other\CX70v56\List\drawhook.lst     #
+#           Object file   =  E:\ELFLoader\Other\CX70v56\Obj\drawhook.r79      #
+#           Command line  =  E:\ELFLoader\drawhook.asm                        #
+#                            -OE:\ELFLoader\Other\CX70v56\Obj\ -s+ -M<> -w+   #
+#                            -DNOTALIGN -LE:\ELFLoader\Other\CX70v56\List\    #
+#                            -cE -t8 --cpu ARM926EJ-S --fpu None              #
+#                            -IF:\software\Embedded Workbench 4.0 Evaluation\ARM\INC\ #
+#                                                                             #
+###############################################################################
+
+    1    00000000              //drawhook.asm  
+    2    00000000              //(c)Dimadze
+    3    00000000              //DRAW_HOOK
+    4    00000000              
+    5    00000000                                  EXTERN DrawObject_5_0x0A
+    6    00000000                                  EXTERN oldDrawObj_sub_1
+    7    00000000                                  EXTERN oldDrawObj_sub_2
+    8    00000000                                  
+    9    00000000                                  CODE16  //We cut in the mode
+                                THUMB
+   10    00000000                                  
+   11    00000000                                     
+   12    00000000                                  RSEG PATCH_DRAWOBJECT:CODE
+   13    00000000                                  
+   14    00000000              #ifndef NOTALIGN    //If address (address - 1)
+                                DrawObject aligned multiple of four, then use
+                                this Products DirectiveNOTALIGN, in xcl-fail to
+                                enter address - 1 
+   19    00000000              #endif
+   20    00000000                                  PUBLIC start
+   21    00000000              
+   22    00000000                           start:
+   23    00000000                                  
+   24    00000000 10B5                             PUSH  {R4,LR}
+   25    00000002              
+   26    00000002 014C                             LDR   R4,=drawobj_new
+   27    00000004 A047                             BLX   R4 //§±§à§Û§Õ§×§Þ §ß§Ñ
+                                                             §à§Ò§ß§à§Ó§Ý§×§ß§ß
+                                                            §å§ð §æ-§Ú§ð
+                                                             §à§ä§â§Ú§ã§à§Ó§Ü§Ú
+   28    00000006                                  
+   29    00000006 10BD                             POP   {R4,PC}
+   30    00000008                                  
+   31    00000008                                  
+   32    00000008                                  RSEG PATCH_BODY:CODE
+   32.1  00000008                       TABLE
+   32.2  00000008 ........             Reference on line 26 
+   32.3  00000000                      RSEG (including table)
+   32    00000000                                  RSEG PATCH_BODY:CODE
+   33    00000000                                  
+   34    00000000              
+   35    00000000                     drawobj_new:
+   36    00000000                                  
+   37    00000000 30B5                             PUSH  {R4,R5,LR}
+   38    00000002                                  
+   39    00000002 0578                             LDRB  R5, [R0, #0x00] //Load
+                                                              the first byte
+                                                              DRWOBJ
+   40    00000004                                  
+   41    00000004 052D                             CMP   R5, #0x05      
+                                                              //Checking
+                                                              whether an object
+                                                              is the fifth
+                                                              drawing?
+   42    00000006 0AD0                             BEQ   alpha_check    
+                                                                          //Dep
+                                                                         ending
+                                                                          on
+                                                                          the
+                                                                          test
+                                                                          proce
+                                                                         ed to
+                                                                          check
+                                                                          the
+                                                                          alpha
+                                                                          chann
+                                                                         el
+   43    00000008                                  
+   44    00000008                       not_alpha: //No, no alpha channel, draw
+                                the old-fashioned
+   45    00000008                                  
+   46    00000008 041C                             MOV   R4, R0
+   47    0000000A                                  
+   48    0000000A 084D                             LDR   R5 ,=oldDrawObj_sub_1
+   49    0000000C 2D68                             LDR   R5 ,[R5, #0x00]
+   50    0000000E A847                             BLX   R5
+   51    00000010                             
+   52    00000010                                  
+   53    00000010 0028                             CMP   R0, #0x00 
+   54    00000012 03D0                             BEQ   end_drawobj_new
+   55    00000014 211C                             MOV   R1, R4
+   56    00000016                                  
+   57    00000016 064D                             LDR   R5 ,=oldDrawObj_sub_2
+   58    00000018 2D68                             LDR   R5 ,[R5, #0x00]
+   59    0000001A A847                             BLX   R5
+   60    0000001C                                  
+   61    0000001C                                  
+   62    0000001C                 end_drawobj_new:
+   63    0000001C                                      
+   64    0000001C 30BD                             POP   {R4,R5,PC}
+   65    0000001E                                  
+   66    0000001E                     alpha_check: //Yeah, still a 5 object
+                                rendering
+   67    0000001E                         
+   68    0000001E 4569                             LDR   R5, [R0, #20]
+   69    00000020 6D88                             LDRH  R5, [R5, #0x02]
+   70    00000022                                  
+   71    00000022 0A2D                             CMP   R5, #0x000A //Checking
+                                                              whether the alpha
+                                                              channel?
+   72    00000024 F0D1                             BNE   not_alpha
+   73    00000026                                  
+   74    00000026                                  //Yeah, the alpha channel
+                                is! Draw a special function...
+   75    00000026 034D                             LDR   R5, =DrawObject_5_0x0A
+                                                                        
+                                                              
+   76    00000028 A847                             BLX   R5
+   77    0000002A                                  
+   78    0000002A 30BD                             POP   {R4,R5,PC}
+   79    0000002C                            
+   80    0000002C                                  END ;start
+   80.1  0000002C                       TABLE
+   80.2  0000002C ........             Reference on line 48 
+   80.3  00000030 ........             Reference on line 57 
+   80.4  00000034 ........             Reference on line 75 
+   80.5  00000038                      END (including table)
+##############################
+#          CRC:B020          #
+#        Errors:   0         #
+#        Warnings: 0         #
+#         Bytes: 68          #
+##############################
+
+
+
+

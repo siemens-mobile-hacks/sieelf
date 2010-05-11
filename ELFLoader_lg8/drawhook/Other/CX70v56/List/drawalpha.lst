@@ -1,0 +1,335 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    09/May/2010  02:45:44 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  E:\ELFLoader\drawalpha.c                             #
+#    Command line    =  E:\ELFLoader\drawalpha.c -D SCR_132X176 -D CX70sw56  #
+#                       -lCN E:\ELFLoader\Other\CX70v56\List\ -o             #
+#                       E:\ELFLoader\Other\CX70v56\Obj\ -z9 --cpu_mode       #
+#                       thumb --endian little --cpu ARM926EJ-S               #
+#                       --stack_align 4 --interwork -e --fpu None            #
+#                       --dlib_config "F:\software\Embedded Workbench 4.0    #
+#                       Evaluation\ARM\LIB\dl5tptinl8n.h" -I                 #
+#                       "F:\software\Embedded Workbench 4.0                  #
+#                       Evaluation\ARM\INC\" --inline_threshold=2            #
+#    List file       =  E:\ELFLoader\Other\CX70v56\List\drawalpha.lst        #
+#    Object file     =  E:\ELFLoader\Other\CX70v56\Obj\drawalpha.r79         #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+E:\ELFLoader\drawalpha.c
+      1          //drawalpha.c
+      2          //(c)Dimadze
+      3          
+      4          #include "config\defines.h"
+      5          
+      6          //24 битный пиксель преобразуем в 16 битный
+      7          #define RGB16(R,G,B) ((B>>3)+((G>>2)<<5)+((R>>3)<<11))
+      8          
+      9          
+     10          typedef struct{
+     11            short x;
+     12            short y;
+     13            short x2;
+     14            short y2;
+     15          } RECT;
+     16          
+     17          
+     18          typedef struct
+     19          {
+     20          #ifdef ELKA
+     21            unsigned short w;
+     22            unsigned short h;
+     23            long bpnum;  //For BW=1, 8bit=5, 16bit=8, 32bit=0x0A, 0x80 - packed
+     24          #else
+     25            char w;
+     26            char h;
+     27            unsigned short bpnum; //For BW=1, 8bit=5, 16bit=8, 32bit=0x0A, 0x80 - packed
+     28          #endif
+     29            char *bitmap;
+     30          }IMGHDR;
+     31          
+     32          
+     33          typedef struct{
+     34            char   unk_5;    // 0x05
+     35            char   unk_zero; // 0x00 (Не факт!)
+     36            char   unk_0_0;  // 0x00
+     37            char   und_0[9]; // Незаполненный массив char'ов 
+     38            RECT   rc;  
+     39            IMGHDR *img;
+     40            short  unk_0_1;  // 0x0000
+     41            char   und_1;    // Незаполненный байт
+     42            char   unk_0_2;  // 0x00
+     43          }DRWOBJ_5;
+     44          
+     45          // Производная от SetPropTo_Obj5()
+     46          // Незаполненный, значит ф-ия этот участок памяти и не трогала!
+     47          
+
+   \                                 In segment CODE, align 4, keep-with-next
+     48          __thumb short mixcolor(short bg, char *font)
+     49          {
+   \                     mixcolor:
+   \   00000000   30B5               PUSH     {R4,R5,LR}
+   \   00000002   0B00               MOVS     R3,R1
+     50           char r = (((bg&0xF800)>>8)*(255-font[3])+font[0]*font[3])/255;
+     51           char g = (((bg&0x7E0)>>3)*(255-font[3])+font[1]*font[3])/255;
+     52           char b = (((bg&0x1F)<<3)*(255-font[3])+font[2]*font[3])/255;
+     53           return RGB16(r,g,b);
+   \   00000004   DC78               LDRB     R4,[R3, #+3]
+   \   00000006   DD78               LDRB     R5,[R3, #+3]
+   \   00000008   0200               MOVS     R2,R0
+   \   0000000A   D006               LSLS     R0,R2,#+27
+   \   0000000C   000E               LSRS     R0,R0,#+24
+   \   0000000E   FF21               MOVS     R1,#+255
+   \   00000010   091B               SUBS     R1,R1,R4
+   \   00000012   4843               MULS     R0,R1,R0
+   \   00000014   9978               LDRB     R1,[R3, #+2]
+   \   00000016   6143               MULS     R1,R4,R1
+   \   00000018   4018               ADDS     R0,R0,R1
+   \   0000001A   FF21               MOVS     R1,#+255
+   \   0000001C   ........           _BLF     ??div32_t,??rT??div32_t
+   \   00000020   0C06               LSLS     R4,R1,#+24
+   \   00000022   FC20               MOVS     R0,#+252
+   \   00000024   C000               LSLS     R0,R0,#+3
+   \   00000026   1040               ANDS     R0,R0,R2
+   \   00000028   C010               ASRS     R0,R0,#+3
+   \   0000002A   FF21               MOVS     R1,#+255
+   \   0000002C   491B               SUBS     R1,R1,R5
+   \   0000002E   4843               MULS     R0,R1,R0
+   \   00000030   5978               LDRB     R1,[R3, #+1]
+   \   00000032   E40E               LSRS     R4,R4,#+27
+   \   00000034   6943               MULS     R1,R5,R1
+   \   00000036   4018               ADDS     R0,R0,R1
+   \   00000038   FF21               MOVS     R1,#+255
+   \   0000003A   ........           _BLF     ??div32_t,??rT??div32_t
+   \   0000003E   0806               LSLS     R0,R1,#+24
+   \   00000040   800E               LSRS     R0,R0,#+26
+   \   00000042   4001               LSLS     R0,R0,#+5
+   \   00000044   2418               ADDS     R4,R4,R0
+   \   00000046   F820               MOVS     R0,#+248
+   \   00000048   0002               LSLS     R0,R0,#+8
+   \   0000004A   1040               ANDS     R0,R0,R2
+   \   0000004C   000A               LSRS     R0,R0,#+8
+   \   0000004E   FF21               MOVS     R1,#+255
+   \   00000050   2A00               MOVS     R2,R5
+   \   00000052   891A               SUBS     R1,R1,R2
+   \   00000054   4843               MULS     R0,R1,R0
+   \   00000056   1978               LDRB     R1,[R3, #+0]
+   \   00000058   5143               MULS     R1,R2,R1
+   \   0000005A   4018               ADDS     R0,R0,R1
+   \   0000005C   FF21               MOVS     R1,#+255
+   \   0000005E   ........           _BLF     ??div32_t,??rT??div32_t
+   \   00000062   0806               LSLS     R0,R1,#+24
+   \   00000064   C00E               LSRS     R0,R0,#+27
+   \   00000066   C002               LSLS     R0,R0,#+11
+   \   00000068   2018               ADDS     R0,R4,R0
+   \   0000006A   0004               LSLS     R0,R0,#+16
+   \   0000006C   0014               ASRS     R0,R0,#+16
+   \   0000006E   30BD               POP      {R4,R5,PC}       ;; return
+     54          }
+     55          
+
+   \                                 In segment CODE, align 4, keep-with-next
+     56          __thumb void DrawObject_5_0x0A(DRWOBJ_5 *obj)
+     57          {
+   \                     DrawObject_5_0x0A:
+   \   00000000   F1B5               PUSH     {R0,R4-R7,LR}
+   \   00000002   0400               MOVS     R4,R0
+   \   00000004   0025               MOVS     R5,#+0
+   \   00000006   00E0               B        ??DrawObject_5_0x0A_0
+     58           char *scrbuf = (char *) RamScreenPhoneCache;
+     59           for (int h=0;h<obj->img->h;h++) 
+   \                     ??DrawObject_5_0x0A_1:
+   \   00000008   6D1C               ADDS     R5,R5,#+1
+   \                     ??DrawObject_5_0x0A_0:
+   \   0000000A   6069               LDR      R0,[R4, #+20]
+   \   0000000C   4078               LDRB     R0,[R0, #+1]
+   \   0000000E   8542               CMP      R5,R0
+   \   00000010   76DA               BGE      ??DrawObject_5_0x0A_2
+     60            {
+     61             for (int w=0;w<obj->img->w*4;w+=4) 
+   \   00000012   0026               MOVS     R6,#+0
+   \   00000014   16E0               B        ??DrawObject_5_0x0A_3
+     62              {
+     63                if (obj->rc.x+w/4 < SCRW && obj->rc.x+w/4 >= 0 && obj->rc.y+h < SCRH && obj->rc.y+h >= 0)
+     64                 {
+     65                  char color[4];
+     66                 
+     67                  color[3]=obj->img->bitmap[w + obj->img->w*4*h + 3]; 
+     68                  
+     69                  if (color[3]>0x00)  
+     70                   { 
+     71                    color[0]=obj->img->bitmap[w + obj->img->w*4*h + 2];
+     72                    color[1]=obj->img->bitmap[w + obj->img->w*4*h + 1];
+     73                    color[2]=obj->img->bitmap[w + obj->img->w*4*h + 0];  
+     74                   
+     75                  
+     76                    if (color[3]==0xFF) *(unsigned short *)((char *)scrbuf + obj->rc.y*SCRW*PIXEL + 2*obj->rc.x + w/2 + h*SCRW*PIXEL) = RGB16(color[0],color[1],color[2]);
+     77                    else
+     78                     *(unsigned short *)((char *)scrbuf + obj->rc.y*SCRW*PIXEL + 2*obj->rc.x + w/2 + h*SCRW*PIXEL) = mixcolor(*(unsigned short *)((char *)scrbuf + obj->rc.y*SCRW*PIXEL + 2*obj->rc.x + w/2 + h*SCRW*PIXEL),color); 
+   \                     ??DrawObject_5_0x0A_4:
+   \   00000016   0E20               MOVS     R0,#+14
+   \   00000018   205E               LDRSH    R0,[R4, R0]
+   \   0000001A   3A4B               LDR      R3,??DrawObject_5_0x0A_5  ;; 0xffffffffa8123456
+   \   0000001C   0C22               MOVS     R2,#+12
+   \   0000001E   A25E               LDRSH    R2,[R4, R2]
+   \   00000020   7843               MULS     R0,R7,R0
+   \   00000022   F10F               LSRS     R1,R6,#+31
+   \   00000024   8919               ADDS     R1,R1,R6
+   \   00000026   4910               ASRS     R1,R1,#+1
+   \   00000028   5200               LSLS     R2,R2,#+1
+   \   0000002A   6F43               MULS     R7,R5,R7
+   \   0000002C   DB19               ADDS     R3,R3,R7
+   \   0000002E   9A18               ADDS     R2,R3,R2
+   \   00000030   5118               ADDS     R1,R2,R1
+   \   00000032   0F18               ADDS     R7,R1,R0
+   \   00000034   3888               LDRH     R0,[R7, #+0]
+   \   00000036   6946               MOV      R1,SP
+   \   00000038   0004               LSLS     R0,R0,#+16
+   \   0000003A   0014               ASRS     R0,R0,#+16
+   \   0000003C   ........           BL       mixcolor
+   \   00000040   3880               STRH     R0,[R7, #+0]
+   \                     ??DrawObject_5_0x0A_6:
+   \   00000042   361D               ADDS     R6,R6,#+4
+   \                     ??DrawObject_5_0x0A_3:
+   \   00000044   6069               LDR      R0,[R4, #+20]
+   \   00000046   0178               LDRB     R1,[R0, #+0]
+   \   00000048   8900               LSLS     R1,R1,#+2
+   \   0000004A   8E42               CMP      R6,R1
+   \   0000004C   DCDA               BGE      ??DrawObject_5_0x0A_1
+   \   0000004E   0C21               MOVS     R1,#+12
+   \   00000050   615E               LDRSH    R1,[R4, R1]
+   \   00000052   7210               ASRS     R2,R6,#+1
+   \   00000054   920F               LSRS     R2,R2,#+30
+   \   00000056   9219               ADDS     R2,R2,R6
+   \   00000058   9210               ASRS     R2,R2,#+2
+   \   0000005A   8918               ADDS     R1,R1,R2
+   \   0000005C   8429               CMP      R1,#+132
+   \   0000005E   F0DA               BGE      ??DrawObject_5_0x0A_6
+   \   00000060   0029               CMP      R1,#+0
+   \   00000062   EED4               BMI      ??DrawObject_5_0x0A_6
+   \   00000064   0E21               MOVS     R1,#+14
+   \   00000066   615E               LDRSH    R1,[R4, R1]
+   \   00000068   4919               ADDS     R1,R1,R5
+   \   0000006A   B029               CMP      R1,#+176
+   \   0000006C   E9DA               BGE      ??DrawObject_5_0x0A_6
+   \   0000006E   0029               CMP      R1,#+0
+   \   00000070   E7D4               BMI      ??DrawObject_5_0x0A_6
+   \   00000072   0178               LDRB     R1,[R0, #+0]
+   \   00000074   4068               LDR      R0,[R0, #+4]
+   \   00000076   6943               MULS     R1,R5,R1
+   \   00000078   8900               LSLS     R1,R1,#+2
+   \   0000007A   7118               ADDS     R1,R6,R1
+   \   0000007C   4018               ADDS     R0,R0,R1
+   \   0000007E   C378               LDRB     R3,[R0, #+3]
+   \   00000080   6846               MOV      R0,SP
+   \   00000082   C370               STRB     R3,[R0, #+3]
+   \   00000084   002B               CMP      R3,#+0
+   \   00000086   DCD0               BEQ      ??DrawObject_5_0x0A_6
+   \   00000088   6169               LDR      R1,[R4, #+20]
+   \   0000008A   0A78               LDRB     R2,[R1, #+0]
+   \   0000008C   4968               LDR      R1,[R1, #+4]
+   \   0000008E   6A43               MULS     R2,R5,R2
+   \   00000090   9200               LSLS     R2,R2,#+2
+   \   00000092   B218               ADDS     R2,R6,R2
+   \   00000094   8918               ADDS     R1,R1,R2
+   \   00000096   8978               LDRB     R1,[R1, #+2]
+   \   00000098   0170               STRB     R1,[R0, #+0]
+   \   0000009A   6169               LDR      R1,[R4, #+20]
+   \   0000009C   0A78               LDRB     R2,[R1, #+0]
+   \   0000009E   4968               LDR      R1,[R1, #+4]
+   \   000000A0   6A43               MULS     R2,R5,R2
+   \   000000A2   9200               LSLS     R2,R2,#+2
+   \   000000A4   B218               ADDS     R2,R6,R2
+   \   000000A6   8918               ADDS     R1,R1,R2
+   \   000000A8   4978               LDRB     R1,[R1, #+1]
+   \   000000AA   4170               STRB     R1,[R0, #+1]
+   \   000000AC   6269               LDR      R2,[R4, #+20]
+   \   000000AE   1778               LDRB     R7,[R2, #+0]
+   \   000000B0   5268               LDR      R2,[R2, #+4]
+   \   000000B2   6F43               MULS     R7,R5,R7
+   \   000000B4   BF00               LSLS     R7,R7,#+2
+   \   000000B6   F719               ADDS     R7,R6,R7
+   \   000000B8   D25D               LDRB     R2,[R2, R7]
+   \   000000BA   8427               MOVS     R7,#+132
+   \   000000BC   7F00               LSLS     R7,R7,#+1
+   \   000000BE   8270               STRB     R2,[R0, #+2]
+   \   000000C0   FF2B               CMP      R3,#+255
+   \   000000C2   A8D1               BNE      ??DrawObject_5_0x0A_4
+   \   000000C4   0E23               MOVS     R3,#+14
+   \   000000C6   E35E               LDRSH    R3,[R4, R3]
+   \   000000C8   D208               LSRS     R2,R2,#+3
+   \   000000CA   8908               LSRS     R1,R1,#+2
+   \   000000CC   7B43               MULS     R3,R7,R3
+   \   000000CE   08B4               PUSH     {R3}
+   \   000000D0   F30F               LSRS     R3,R6,#+31
+   \   000000D2   9B19               ADDS     R3,R3,R6
+   \   000000D4   5B10               ASRS     R3,R3,#+1
+   \   000000D6   08B4               PUSH     {R3}
+   \   000000D8   0C23               MOVS     R3,#+12
+   \   000000DA   E35E               LDRSH    R3,[R4, R3]
+   \   000000DC   6F43               MULS     R7,R5,R7
+   \   000000DE   5B00               LSLS     R3,R3,#+1
+   \   000000E0   9C46               MOV      R12,R3
+   \   000000E2   084B               LDR      R3,??DrawObject_5_0x0A_5  ;; 0xffffffffa8123456
+   \   000000E4   4901               LSLS     R1,R1,#+5
+   \   000000E6   DB19               ADDS     R3,R3,R7
+   \   000000E8   6746               MOV      R7,R12
+   \   000000EA   DB19               ADDS     R3,R3,R7
+   \   000000EC   80BC               POP      {R7}
+   \   000000EE   5118               ADDS     R1,R2,R1
+   \   000000F0   DB19               ADDS     R3,R3,R7
+   \   000000F2   80BC               POP      {R7}
+   \   000000F4   0078               LDRB     R0,[R0, #+0]
+   \   000000F6   C008               LSRS     R0,R0,#+3
+   \   000000F8   C002               LSLS     R0,R0,#+11
+   \   000000FA   0818               ADDS     R0,R1,R0
+   \   000000FC   D853               STRH     R0,[R3, R7]
+   \   000000FE   A0E7               B        ??DrawObject_5_0x0A_6
+     79                   }
+     80                 }
+     81              }
+     82            }
+     83          }
+   \                     ??DrawObject_5_0x0A_2:
+   \   00000100   F8BD               POP      {R3-R7,PC}       ;; return
+   \   00000102   C046               Nop      
+   \                     ??DrawObject_5_0x0A_5:
+   \   00000104   563412A8           DC32     0xffffffffa8123456
+     84          
+     85          
+     86          
+     87          
+     88          
+     89          
+     90          
+
+   Maximum stack usage in bytes:
+
+     Function          CSTACK
+     --------          ------
+     DrawObject_5_0x0A    32
+     mixcolor             12
+
+
+   Segment part sizes:
+
+     Function/Label    Bytes
+     --------------    -----
+     mixcolor           112
+     DrawObject_5_0x0A  264
+      Others             32
+
+ 
+ 408 bytes in segment CODE
+ 
+ 376 bytes of CODE memory (+ 32 bytes shared)
+
+Errors: none
+Warnings: none
