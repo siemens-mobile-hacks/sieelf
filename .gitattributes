@@ -2867,16 +2867,8 @@ TextInfoX/test.xcl -text
 Tripper/strip.cpp -text
 Tripper/strip.h -text
 Tripper/tripper.cpp -text
-TurnOff/Files/off.png -text
-TurnOff/Files/reboot.png -text
-TurnOff/Files/sleep.png -text
-TurnOff/Files/unlock.png -text
 TurnOff/TurnOff.ewp -text
 TurnOff/TurnOff.eww -text
-TurnOff/TurnOff/off.png -text
-TurnOff/TurnOff/reboot.png -text
-TurnOff/TurnOff/sleep.png -text
-TurnOff/TurnOff/unlock.png -text
 TurnOff/conf_loader.c -text
 TurnOff/conf_loader.h -text
 TurnOff/config_data.c -text
