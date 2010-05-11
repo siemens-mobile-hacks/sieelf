@@ -1,0 +1,49 @@
+;S7Cv47 - 黑(白)名单
+;S7Cv47 - Black list
+;(c) ThE TrIFoN, SiNgle
+;(p) starfriend
+#pragma enable old_equal_ff
+0x084100: FFB50B2803D10020034B984703E0FFBC
+0x084110: F5F198EE00BDFFBDD3F89CA0
+#pragma disable old_equal_ff
+0x359736: 20F786EB 2AF5E3FC
+0x084102: 0B 0B
+; 此处修改需要设置为黑名单的群组,00表示取消黑名单,03表示"家人",04表示"朋友",后面的顺序排列
+; 默认设置的群组是"同好2"
+;需要设置为白名单请加刷下面这行(似乎无效)
+;0x9CD59C: 201CDBF15CEC 002002F098F9
+
+
+;S7Cv47 - black(white)list
+;S7Cv47 - Black list
+;(c) ThE TrIFoN, SiNgle
+;(p) starfriend
+;;
+$arm9e
+$include(..\x65.inc)
+AREA   STARTUPCODE, CODE,AT 0xa0084100        //空白地址
+                CODE16
+main:
+           PUSH {R0-R7,LR}
+            CMP R0, #0xB
+            BNE 0xa008410E
+            MOV R0, #0
+            LDR R3, =0xA09CF8D3     ;EndCallBusy
+            BLX R3
+            B 0xa0084116
+
+            POP {R0-R7}
+            TCA 0xA0279E44
+            POP {PC}
+exit:
+            POP {R0-R7,PC}
+
+
+AREA   HOOK1, CODE, AT 0xA0359736 ;-Z(CODE)RHOOKBLACKLIST=A0359736-FFFFFFFF
+                CODE16
+         BL  main 
+AREA   HOOK2, CODE, AT 0xA09CD59C ;201C????????051C1DD06846
+                CODE16
+    MOV  R0, #0
+         BL  0xA09CF8D2
+END

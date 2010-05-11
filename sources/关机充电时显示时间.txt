@@ -1,0 +1,83 @@
+__arm void drawTime(void) @ "SHOW_TIME_OFFLINE_CHARGE_BODY"
+{
+#pragma swi_number=0xB1
+__swi __arm void DrawColorPicWithCanvas(int x, int y, int pic, char *color);
+
+#ifdef    ELKA
+	#define _PIC_0 0x268
+	#define _PIC_COMB 0x273
+	#define _WIDTH_	12 //((240-30-144-18)/4)
+	TTime time;
+	TDate date;
+	char colorWhite[4]={0xFF, 0xFF, 0xFF, 0x64};
+	char colorBlack[4]={0x0, 0x0, 0x0, 0x64};
+	GetDateTime(&date, &time);
+	DrawRectangle(YDISP, YDISP, 239, 319, 0, colorWhite, colorWhite);	
+                //(int x,int y,int x2,int y2,int flags,char *pen,char *brush)
+	DrawImgBW(15, 100, _PIC_0+time.hour/10, colorBlack, colorWhite);
+	DrawImgBW(15+_WIDTH_+36, 100, _PIC_0+time.hour%10, colorBlack, colorWhite);
+	DrawImgBW(15+_WIDTH_*2+36*2, 100, _PIC_COMB, colorBlack, colorWhite);
+	DrawImgBW(15+_WIDTH_*3+36*2+18, 100,_PIC_0+time.min/10, colorBlack, colorWhite);
+	DrawImgBW(15+_WIDTH_*4+36*3+18, 100,_PIC_0+time.min%10, colorBlack, colorWhite);
+                //DrawImgBW(unsigned int x, unsigned int y, unsigned int picture, char *pen, char *brush)
+#endif
+#ifdef         NSG
+	#define _PIC_0 0x260
+	#define _PIC_COMB 0x26B
+	#define _WIDTH_	12 //((240-30-144-18)/4)
+	TTime time;
+	TDate date;
+	char colorWhite[4]={0xFF, 0xFF, 0xFF, 0x64};
+	char colorBlack[4]={0x0, 0x0, 0x0, 0x64};
+	GetDateTime(&date, &time);
+	DrawRectangle(YDISP, YDISP, 239, 319, 0, colorWhite, colorWhite);	
+                //(int x,int y,int x2,int y2,int flags,char *pen,char *brush)
+	DrawImgBW(15, 100, _PIC_0+time.hour/10, colorBlack, colorWhite);
+	DrawImgBW(15+_WIDTH_+36, 100, _PIC_0+time.hour%10, colorBlack, colorWhite);
+	DrawImgBW(15+_WIDTH_*2+36*2, 100, _PIC_COMB, colorBlack, colorWhite);
+	DrawImgBW(15+_WIDTH_*3+36*2+18, 100,_PIC_0+time.min/10, colorBlack, colorWhite);
+	DrawImgBW(15+_WIDTH_*4+36*3+18, 100,_PIC_0+time.min%10, colorBlack, colorWhite);
+                //DrawImgBW(unsigned int x, unsigned int y, unsigned int picture, char *pen, char *brush)
+#endif
+
+}
+
+//#define SHOW_TIME_OFFLINE_CHARGE
+#ifdef	SHOW_TIME_OFFLINE_CHARGE
+//ROM:A05D7764 22 1C				   ADD	R2, R4, #0
+//ROM:A05D7766 04 21				   MOV	R1, #4
+//ROM:A05D7768 B6 20				   MOV	R0, #0xB6
+//ROM:A05D776A 00 F0 47 FD			   BL	 sub_A05D81FC	; DrawImg(unsigned char x, unsigned char y, short picture)
+//ROM:A05D776A
+
+	RSEG	SHOW_TIME_OFFLINE_CHARGE_HOOK
+	CODE16
+	LDR	R0, SHOW_TIME_OFFLINE_CHARGE_P
+	BLX	R0
+	
+	DATA
+SHOW_TIME_OFFLINE_CHARGE_P
+	DCD	SHOW_TIME_OFFLINE_CHARGE_
+	
+	CODE16
+	NOP
+	
+	EXTERN	drawTime
+	RSEG	SHOW_TIME_OFFLINE_CHARGE_BODY
+	CODE16
+SHOW_TIME_OFFLINE_CHARGE_
+	PUSH	{R0-R7, LR}
+	ADD	R2, R4, #0
+	MOV	R1, #4
+	MOV	R0, #0xB6
+	SWI	35    //DrawImg(unsigned int x, unsigned int y, unsigned int picture)
+	BLX	drawTime
+	POP	{R0-R7}
+	POP	{R0}
+	ADD	R0, #4
+	BX	R0
+#endif
+
+//关机充电时显示时间
+-Z(CODE)SHOW_TIME_OFFLINE_CHARGE_HOOK=A05D7764-FFFFFFFF
+-Z(CODE)SHOW_TIME_OFFLINE_CHARGE_BODY,DATA_C,ICODE,CODE=A135C400-FFFFFFFF

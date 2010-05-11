@@ -1,0 +1,92 @@
+;S7Cv47 - 来电时闪光灯闪亮 v1.1 [F:084150-0841D3,A8A7F000-A8A7F010)
+;S7Cv47 - Lighter during incoming call v1.1
+;(c) ThE TrIFoN
+;(r) BoBa, 1nvisible
+;(p) starfriend
+
+;0x084194: 25 25 ;闪烁频率:25=16次/分
+;;
+
+$arm9e
+$include(..\x65.inc)
+
+UserRam		EQU		0xA8A7F000
+
+
+AREA   STARTUPCODE, CODE
+                CODE16
+loc_A008FEA0:
+            PUSH	{R0-R3,LR}
+            CMP	R5, #0xF
+            BEQ	l_A008FEB0
+            LDR	R0, =UserRam+0x10
+            MOV	R1, #0
+            STRB	R1, [R0]
+            LDR	R3, =function
+            BLX	R3
+l_A008FEB0:
+            POP	{R0-R3}
+            MOV	R2, R6
+            MOV	R0, R5
+            POP	{PC}
+l_A008FEB8:
+            PUSH	{R0-R4,LR}
+            LDR	R0, =UserRam+0x10
+            MOV	R1, #1
+            STRB	R1, [R0]
+            LDR	R0, =UserRam
+            LDR	R1, =0x26
+            LDR	R2, =function2
+            LDR	R3, =0xA0093278 ;70402DE90160A0E10250B0E10040A0E1????????2010A0E3
+            BLX	R3
+            POP	{R0-R4}
+            BL	0xA03597AA ;补hook1
+            POP	{PC}
+function2:
+            PUSH	{R0-R7,LR}
+            MOV	R0, #4
+            MOV	R1, #1
+            MOV	R2, #0
+            LDR	R3, =0xA01B6958 ;FF4D2DE90080A0E1740D9FE508D04DE2
+            BLX	R3
+            POP	{R0-R7,PC}
+            
+function:
+            PUSH	{R0-R7,LR}
+            LDR	R0, =UserRam
+            LDR	R1, =0x25
+            LDR	R2, =function3
+            LDR	R3, =0xA0093278 ;70402DE90160A0E10250B0E10040A0E1????????2010A0E3
+            BLX	R3
+            POP	{R0-R7,PC}
+function3:
+            PUSH	{R0-R7,LR}
+            LDR	R1, =UserRam+0x10
+            LDRB	R1, [R1]
+            CMP	R1, #0
+            BNE	exit
+            LDR	R3, =0xA0346E88+1 ;8CB5012104206B46
+            BLX	R3
+            BL	function 
+exit:			            
+           POP	{R0-R7,PC}
+
+
+
+
+
+
+AREA   HOOK1, CODE, AT 0xA02FD712 ;????????2E821223E8560A2803D0
+                CODE16
+             BL    l_A008FEB8
+ 
+
+AREA   HOOK2, CODE, AT 0xA0359728 ;321C281C????????03E0
+                CODE16
+         BL  loc_A008FEA0
+
+AREA   HOOK3, CODE, AT 0xA0359732 ;HOOK2+0xA
+                CODE16
+         BL  loc_A008FEA0
+END
+

@@ -1,0 +1,122 @@
+#define        IME_5
+#ifdef        IME_5
+//ROM:A0B1F158 28 98                       LDR     R0, [SP,#0xA0]
+//ROM:A0B1F15A 40 68                       LDR     R0, [R0,#4]
+//ROM:A0B1F15C 80 68                       LDR     R0, [R0,#8]
+//ROM:A0B1F15E 22 90                       STR     R0, [SP,#0x88]
+//0400: 0xA0091EAB   ; 100: GBS_SendMessage(int cepid_to, int msg, ...)
+
+#define GBS_SendMessage_adr        0xA0091EAB
+        CODE16
+        RSEG        IME_5_HOOK
+        LDR        R0,=IME_5_
+        BLX        R0
+        
+        RSEG        IME_5_BODY
+IME_5_
+        LDR        R0, [SP,#0xA0]
+        LDR        R0, [R0,#4]
+        LDR        R0, [R0,#8]
+        STR        R0, [SP,#0x88]
+        LDR        R0, [SP,#0x8C]
+        PUSH        {R0-R7, LR}
+        MOV        R4, #0
+        LDR        R6, KEY_1
+        LDR        R1, [SP,#0xAC]
+        CMP        R1, R6
+        BEQ        IS_KEY_1_RELEASE
+        CMP        R1, #0x35 //5
+        BNE        E_BACK
+        LDR        R0, [R0,#0]
+        LDRB        R0, [R0,#8] //获得输入状态
+        CMP        R0, #1 //拼音输入状态
+        BNE        E_BACK
+        LDR        R5, [SP,#0xC4]
+        
+        LDR        R1, JAVA_EDIT_KOP //is java
+        CMP        R5, R1
+        BNE        IS_NOT_JAVA
+        MOV        R1, #2
+        LDRH        R0, [R5, R1]
+        
+        CMP        R0, #0x16
+        BNE        LongPress
+        
+SEND_KEY_UP
+        LDR        R0, MMI_CEPID
+        LDR        R1, KEY_UP
+        MOV        R2, #0x37 //做无关键
+        //LDR        R2, KEY_1
+        LDR        R7, _GBS_SendMessage_adr
+        BLX        R7
+        B        E_BACK
+        
+LongPress
+        LDR        R1, JAVA_EDIT_KOP
+        CMP        R5, R1
+        BNE        N_J
+        MOV        R4, #1
+N_J
+        LDR        R0, MMI_CEPID
+        LDR        R1, LONG_PRESS
+        MOV        R2, R6
+        //LDR        R2, KEY_1
+        LDR        R7, _GBS_SendMessage_adr
+        BLX        R7
+        B        E_BACK
+IS_NOT_JAVA
+        MOV        R1, #2
+        LDRH        R0, [R5, R1]
+        CMP        R0, #0x16
+        BEQ        LongPress
+        B        E_BACK
+IS_KEY_1_RELEASE
+        LDR        R2, [SP,#0xC4] //IS_JAVA
+        LDR        R1, JAVA_EDIT_KOP
+        CMP        R2, R1
+        BNE        E_BACK
+        MOV        R1, #2
+        LDRH        R0, [R2, R1]
+        CMP        R0, #0x16 //
+        BNE        E_BACK
+        LDR        R0, [SP,#0xB0]
+        LDR        R0, [R0,#0]
+        LDRB        R0, [R0,#8] //获得输入状态
+        CMP        R0, #1 //等待输入状态
+        BNE        E_BACK
+        LDR        R0, USE_RAM
+        LDR        R0, [R0, #0]
+        CMP        R0, #1
+        BEQ        SEND_KEY_UP
+E_BACK
+        LDR        R0, USE_RAM
+        STR        R4, [R0, #0]
+        POP        {R0-R7}
+        POP        {R0}
+        ADD        R0, #4
+        BX        R0
+        NOP
+        
+        DATA        
+_GBS_SendMessage_adr
+        DCD        GBS_SendMessage_adr
+MMI_CEPID
+        DCD        0x4209
+LONG_PRESS
+        DCD        0x195
+KEY_UP
+        DCD        0x194
+JAVA_EDIT_KOP
+        DCD        0xA8EB0A30
+USE_RAM
+        DCD        0xA8D805C0
+//KEY_5
+//        DCD        0x35
+KEY_1
+        DCD        0x31
+
+#endif
+
+//拼音输入法输入状态时短按5选字
+-Z(CODE)IME_5_HOOK=A0B1F158-FFFFFFFF
+-Z(CODE)IME_5_BODY=A135C600-FFFFFFFF

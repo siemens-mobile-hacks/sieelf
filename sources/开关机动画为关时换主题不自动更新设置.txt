@@ -1,0 +1,45 @@
+#define        PKEEP_ONOFF_ANI
+#ifdef        PKEEP_ONOFF_ANI
+
+//return 0
+        RSEG        PKEEP_ONOFF_ANI_HOOK1
+        CODE32
+        BL        PKEEP_ONOFF_ANI_
+        
+        RSEG        PKEEP_ONOFF_ANI_HOOK2
+        CODE32
+        BL        PKEEP_ONOFF_ANI_
+        
+        RSEG        PKEEP_ONOFF_ANI_PBODY
+        CODE32
+PKEEP_ONOFF_ANI_
+        STMFD        SP!, {R3-R7, LR}
+        SUB        SP, SP, #0x118
+        MOV        R7, R0
+        MOV        R6, R1
+        MOV        R5, R2
+        CMP        R0, #0x67
+        CMPNE        R0, #0x68
+        BNE        DREG
+        MOV        R0, SP
+        ADD        R1, SP, #0x14
+        MOV        R2, #0x80
+        BLX        0xA051072E+1 //WSHDR *CreateLocalWS(WSHDR *wshdr,unsigned __int16 *wsbody,int len)
+        MOV        R4, R0
+        MOV        R3, R4
+        ADD        R2, SP, #0x94
+        MOV        R1, #3 //3, now, 1, default
+        MOV        R0, R7
+        BL        0xA06C9910  //int Registry_GetResourcePathFromLevel(int HMIKeyID, int Prio, int *HMIKeyID, WSHDR *Path)
+        CMP        R0, #2
+        MOV        R0, #0
+        BEQ        EX_P
+DREG
+        MOV        R0, R7
+        MOV        R1, R6
+        MOV        R2, R5
+        BL        0xA06CA270 //int Registry_SetResourcePath(int HMIKeyID, int Prio, WSHDR *Path)
+EX_P
+        ADD        SP, SP, #0x118
+        LDMFD        SP!, {R3-R7, PC}
+#endif

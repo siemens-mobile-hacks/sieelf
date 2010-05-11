@@ -1,0 +1,45 @@
+#define        _RAMTMR                        0xA8A7F180
+#define        PDO_VIBRA                0xA01B11F3
+#define        GBS_StartTimerProc_adr        0xA0093278
+
+        RSEG        VIBRA_AT_CALL_PEND_HOOK
+        CODE16
+        LDR        R4, =VIBRA_AT_CALL_PEND_
+        BLX        R4
+        
+        RSEG        VIBRA_AT_CALL_PEND_BODY
+        CODE16
+VIBRA_AT_CALL_PEND_            //S7Cv47 ROM:A1562000
+        MOV        R4, LR
+        LDR        R0, POWER
+        LDR        R1, =PDO_VIBRA
+        BLX        R1
+        LDR        R0, =_RAMTMR
+        LDR        R1, TIME
+        LDR        R2, =VIBRA_OFF
+        LDR        R3, =GBS_StartTimerProc_adr //0134: 0xA0093278  ; 4D: void GBS_StartTimerProc(void *htimer, long ms, void ptr())
+        BLX        R3
+
+        MOV        R3, R5
+        MOV        R1, #0
+        MOV        R0, #0xFF
+        ADD        R0, #0x10
+        LDR        R2, [R4, R0]   ////+10F, //A02F9AE4    DCD dword_A04645D0
+        ADD        R2, #0x70
+        ADD        R4, #4
+        BX        R4
+        
+VIBRA_OFF
+        MOV        R0, #0
+        LDR        R1, =PDO_VIBRA //unsigned int SetVibration(unsigned int power)
+        BX           R1
+        
+        DATA
+TIME
+        DCD        100
+POWER
+        DCD        50
+
+
+-Z(CODE)VIBRA_AT_CALL_PEND_BODY=A1562000-FFFFFFFF
+-Z(CODE)VIBRA_AT_CALL_PEND_HOOK=A02F99D0-FFFFFFFF

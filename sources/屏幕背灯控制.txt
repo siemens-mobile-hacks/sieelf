@@ -1,0 +1,36 @@
+;S7Cv47 - unending light the screen illumination v0.01
+;S7Cv47 - ÆÁÄ»±³µÆ¿ØÖÆ v0.01
+;(c) benj9
+;(i) StarFriend
+;2006-11-14
+;01B695C:0080A0E1740D9FE5 785D9FE52636FBEB
+;;
+$arm9e
+$include(..\x65.inc)
+AREA   STARTUPCODE, CODE
+                CODE32
+main:
+STMFD   SP!,{R0-R5,LR}
+  LDR R0, =0xA028B6AB ;GetProfile()
+  BLX R0
+  MOV R6, R0
+LDMFD   SP!,{R0-R5}
+  CMP R6, #5
+  BNE Exit
+  CMP R0, #0
+  BNE Exit
+//  CMP R2, #0
+//  BNE Exit
+  MOV R2, #2
+Exit:
+  MOV R8, R0
+  MOV R0, R5
+LDMFD   SP!,{PC}
+
+
+
+AREA   HOOK1, CODE, AT 0xA01B6960
+                CODE32
+  BL    main
+
+END
