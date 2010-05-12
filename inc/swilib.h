@@ -1564,6 +1564,11 @@ __swi __arm int GetMissedCallsCount(void);
 //thumb
 //pattern_SGOLD=??,B5,??,??,??,??,??,48,??,68,??,??,??,??,??,1C,??,BD,??,B5,??,??,??,??,??,48,??,68,??,??,??,??,??,1C,??,BD
 
+#pragma swi_number=0x0055
+__swi __arm int SwitchVibraOnOff(void);
+//arm
+//pattern_NSG=88,40,9F,E5,06,10,A0,E1,04,00,A0,E1,??,??,??,??,00,00,50,E3,+3
+
 #pragma swi_number=77
 __swi __arm void GBS_StartTimerProc(void *htimer, long ms, void ptr());
 //arm
@@ -1633,6 +1638,10 @@ __swi __arm SS_RAM *GetScreenSaverRAM(void);
 //arm
 //pattern_NSG=??,48,??,68,??,47,??,48,??,B5,??,68,??,29,??,D1,??,68,??,28,??,D1,+1
 
+#pragma swi_number=0x99
+__swi __arm int PlayMelodyInMem(char Unk_0x11,void *MelAddr,int MelSize,int unk2_0xFFFF,int Unk3_0,int Unk4_0)
+//arm
+//pattern_NSG=FF,4D,2D,E9,08,D0,4D,E2,00,50,A0,E1,84,06,9F,E5,+1
 
 #pragma swi_number=107
 __swi	__arm	int  FindFirstFile (DIR_ENTRY *DIRENTRY,char *mask,unsigned int *ErrorNumber);
@@ -3355,6 +3364,16 @@ __swi __arm void UnfocusGUI(void);
 //thumb
 //pattern_SGOLD_X75=??,B5,??,??,??,??,??,49,??,4A,??,42,??,D1,??,68,??,E0,??,68,_blf(??,B5,??,1C,??,68,??,68,??,28,??,D0,??,68,??,29,??,D0,??,68,??,2A,??,D0,??,21,??,47,??,6C,??,68,??,68,??,68,??,68,??,69,??,47,??,1C,??,??,??,??,??,1C,??,??,??,??,??,68,??,20,??,60,??,BD),??,BD
 
+#pragma swi_number=0x223
+__swi __arm void IsMediaPlayerInBackground();
+//thumb
+pattern_NSG=00,B5,FF,F7,??,??,00,28,01,D1,01,20,00,BD,00,20,00,BD,21,48,C0,68,+1
+
+#pragma swi_number=0x224
+__swi __arm void CloseMediaPlayer();
+//thumb
+pattern_NSG=10,BD,10,B5,??,??,A0,68,FF,F7,??,FF,60,68,+3
+
 #pragma swi_number=0x225
 __swi __arm int PlayMelody_ChangeVolume(int handle,int volume);
 //arm
@@ -3395,11 +3414,15 @@ __swi __arm void FreeGSMTXTpkt(void *pkt);
 //thumb
 //pattern_SGOLD=??,B5,??,1C,??,??,??,??,??,??,??,20,??,35,??,00,??,58,??,42,??,D1,??,??,??,32,??,5C,??,31,??,06,??,0E,??,54,??,D1,??,00,??,59,??,??,??,??,??,20,??,51,??,E0,??,30,??,06,??,0E,??,28,??,D3,??,??,??,??,??,BD
 
+#pragma swi_number=0x233
+__swi __arm void GetAllEmail()  ;
+//thumb
+//pattern_NSG=80,BD,80,B5,00,21,4F,A0,??,??,??,??,80,BD,80,B5,+3
 
 #pragma swi_number=0x234
 __swi __arm int GetLunarDate(TDate* pdate, TDate* pLdate);
 //thumb
-//pattern=??B593B0051C05AE0C1C311C0068FFF7ADFF286800AB2060286803A90390187D1874587D587428+1
+//pattern=??,B5,93,B0,05,1C,05,AE,0C,1C,31,1C,00,68,FF,F7,AD,FF,28,68,00,AB,20,60,28,68,03,A9,03,90,18,7D,18,74,58,7D,58,74,28,+1
 
 #pragma swi_number=0x235
 __swi __arm int GetLunarYearID(int year);
@@ -4019,4 +4042,29 @@ __swi __arm void *TViewGetUserPointer(void *gui);
 //thumb
 //pattern_NSG=80,30,C1,61,70,47,80,30,C0,69,70,47,+7
 //pattern_ELKA=80,30,41,62,70,47,80,30,40,6A,70,47,+7
+
+#pragma swi_number=0x2DB
+__swi __arm void SendMedia(WSHDR *file, WSHDR *path);
+//thumb
+//pattern_NSG=01,20,70,47,B0,B5,04,1C,0D,1C,80,20,+6
+
+#pragma swi_number=0x2DC
+__swi __arm void SaveMaxIllumination(int level);
+//thumb
+//pattern_NSG=08,BD,10,B5,04,1C,01,1C,03,20,FF,F7,+3
+
+#pragma swi_number=0x2DD
+__swi __arm void SetIlluminationoffTimeout(int time_sec);
+//thumb
+//pattern_NSG=10,BD,80,B5,2F,F0,??,??,80,BD,80,B5,+3
+
+#pragma swi_number=0x2DE
+__swi __arm void IllumTimeRequest(int TimeMode, int Counter);
+//thumb
+//pattern_NSG=38,BD,FE,B5,05,1C,17,1C,0E,1C,+3
+
+#pragma swi_number=0x2DF
+__swi __arm void IllumTimeRelease(int TimeMode, int Counter);
+//thumb
+//pattern_NSG=FE,BD,F8,B5,04,1C,16,1C,0D,1C,1F,1C,+3
 #endif
