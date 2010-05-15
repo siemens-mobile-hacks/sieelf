@@ -177,7 +177,7 @@
 
 0280: 0xA0996A35   ;  A0: int wsprintf_2(WSHDR *,const char *format,...)
 0284: 0xA01F7BE7   ;  A1: WSHDR *wstrcpy_2(WSHDR *wshdr_d,WSHDR *wshdr_s)
-;288:              ;  A2: Unicode_GetCharByPosition
+0288: 0xA01F75CD ; 0A2: Unicode_GetCharByPosition  
 028C: 0xA0253F80   ;  A3: void ws2str(WSHDR *ws, char *str, unsigned int size)
 0290: 0xA09974F9   ;  A4: WSHDR *AllocWS_2(int len)
 0294: 0xA01F73A1   ;  A5: void FreeWS_2(WSHDR *wshdr)
@@ -227,14 +227,14 @@
 033C: 0xA8E63948   ;  CF: char *RamAlarm()
 
 0340: 0xA8D6A470   ;  D0: RamAccPoint
-;344:              ;  D1: RamScreensaver
-;348:              ;  D2: RamAutoTime
+0344: 0xA8DD35B4 ; 0D1: RamScreensaver
+0348: 0xA8D197D8 ; 0D2: RamAutoTime
+
 034C: 0xA8A80000   ;  D3: RamStby
 0350: 0xA8DD33A0   ;  D4: char *RamMissedMes()
 0354: 0xA8D3502C   ;  D5: RamIsLocked
 0358: 0xA8DACBE0   ;  D6: RamNetOnline
 035C: 0xA8DADCBC   ;  D7: RamScreenBrightness
-;360:              ;  D8: RamMenuAnywhere
 ;364:              ;  D9: RamShutdownMode
 0368: 0xA8D6CE28   ;  DA: RamIsShutdown
 036C: 0xA8E62194   ;  DB: RamMainscreenAccuIcon
@@ -247,8 +247,8 @@
 0384: 0xA8E0EB6C   ;  E1: unsigned int RamMPlayer_CtrlCode()
 ;388:              ;  E2: RamKeyBuffer
 ;38C:              ;  E3: RamProfileNum
-0390: 0xA8A80000   ;  E4: FreeRAM    without cut_heap.vkp
-;0390: 0xA8000000   ;  E4: FreeRAM   with cut_heap.vkp
+;0390: 0xA8A80000   ;  E4: FreeRAM    without cut_heap.vkp
+0390: 0xA8000000   ;  E4: FreeRAM   with cut_heap.vkp
 0394: 0x0000123D   ;  E5: LP_MonthsShort
 0398: 0x00000260   ;  E6: Pic_Big0
 039C: 0x00000830   ;  E7: Pic_Little0
@@ -528,13 +528,11 @@
 ;7A4:              ; 1E9: IMGHDR *CreateIMGHDRFromPngFile(const char *fname, int type)
 07A8: 0xA09A45EF   ; 1EA: int GetMaxDynIcon(void)
 07AC: 0xA8DCD20E   ; 1EB: char *RAM_IMSI()
+07B8: 0xA0319D05 ; 1EE: ProgressCalculate(int current, int total)
 07B0: 0xA09A45F3   ; 1EC: void FreeDynIcon(int picture)
 07B4: 0xA09A4753   ; 1ED: int IsDynIconBusy(int picture)
-;7B8:              ; 1EE: ProgressCalculate(int current, int total)
 07BC: 0xA09A4655   ; 1EF: void SetDynIcon(int picture,IMGHDR *img,char *bitmap)
-
-;7C0:              ; 1F0: filecopy
-;7C4:              ; 1F1: filecopy_op_announce
+07C4: 0xA031D646  ; 1F1: Filecopy_Op_Announce 
 07C8: 0xA01DF730   ; 1F2: devmenu_config_IsCheckboxOff
 07CC: 0xA00A8954   ; 1F3: unsigned int GetSessionAge()
 07D0: 0xA8DCD5D3   ; 1F4: char *RamServiceProviderName()
@@ -608,11 +606,11 @@
 08D0: 0xA0658935   ; 234:  __thumb int GetLunarDate(TDate* pdate, TDate* pLdate)
 08D4: 0xA067D059   ; 235:  __thumb int GetLunarYearID(int year)
 08D8: 0xA067D06F   ; 236:  __thumb int GetLunarAnimal(int year)
-;8DC:              ; 237:  __arm char *RamIconBar()
+
 08E0: 0xA0989917   ; 238:  __thumb void SendAutoUSSDack(void)
 08E4: 0xA01E5D5C   ; 239:  __arm int EEFullDeleteBlock(unsigned int block,int cepid,int msg)
 08E8: 0xA01E5EC8   ; 23A:  __arm  int EEFullCreateBlock(unsigned int block,int size,int version,int cepid,int msg)
-;8EC:              ; 23B:  __thumb void DisableIconBar(int disable)
+
 ;8F0:              ; 23C:  __arm int SetCurrentGPRSProfile(int profile)
 08F4: 0xA1038F01   ; 23D:  __thumb void MD5_Init(MD5_CTX *c)
 08F8: 0xA1038B71   ; 23E:  __thumb void MD5_Update(MD5_CTX *c, const void *data, unsigned long len)
@@ -661,7 +659,7 @@
 09A0: 0xA0DC4964   ; 268:  __arm int Obs_Prepare (HObj hObj)
 09A4: 0xA0E84BFC   ; 269:  __arm int Obs_SetRenderOffset (HObj hObj,short x,short y)
 09A8: 0xA0DC1BA0   ; 26A:  __arm int Obs_SetPosition (HObj hObj,int ms)
-;9AC:              ; 26B:  __arm int Obs_Mam_SetPurpose (HObj hObj,int ms)
+
 09B0: 0xA0E101C8   ; 26C:  __arm int Obs_Sound_SetVolumeEx (HObj hObj, char vol, char delta)
 09B4: 0xA0E10EA4   ; 26D:  __arm int Obs_Sound_GetVolume (HObj hObj, char *vol)
 09B8: 0xA0E106E0   ; 26E:  __arm int Obs_SetPurpose (HObj hObj,char purpose)
@@ -675,7 +673,7 @@
 0A1C: 0xA02D7CAF   ; 287:  __thumb int BT_GetLocVisibility()
 0A20: 0xA02F2A79   ; 288:  __thumb int GetCurrAudioPath()
 0A24: 0xA0EB7B71   ; 289:  __thumb int isDecryption()
-;A28:              ; 28A:  __arm char *RamIsFileCache()
+
 0A2C: 0xA8E1307C   ; 28B:  __arm char *RamTotalHeapSize()
 0A30: 0xA8E130EC   ; 28C:  __arm char *RamTemporaryHeapSize()
 0A34: 0xA8D23DF8   ; 28D:  __arm char *RamBTNameDevice()
@@ -694,6 +692,7 @@
 0A6C: 0xA029C729   ; 29B:  __arm int GetTypeOfHeadset()
 0A70: 0xA0000006   ; 29C:  __arm char *RamInputLanguage()
 0A74: 0xA8D3557C   ; 29D:  __arm char *RamDisplayLanguage()
+
 
 ;0A80: 0x   ; 2A0:  
 ;0A84: 0x   ; 2A1:  
@@ -762,6 +761,8 @@
 0B74: 0xA0960A8D   ; 2DD: void SetIlluminationoffTimeout(int time_sec)
 0B78: 0xA0960AF5   ; 2DE: __thumb void IllumTimeRequest(int TimeMode, int Counter);
 0B7C: 0xA0960B33   ; 2DF: __thumb void IllumTimeRelease(int TimeMode, int Counter);
+0B80: 0xA0A38D57 ;2E0 __thumb IMGHDR *GetIMGHDRFromThemeCache(int index);
+0B84: 0xA05202F9  ;2E1 __thumb int GetExtUidByFileName_ws(WSHDR * fn);
 #pragma disable old_equal_ff
 +0
 
@@ -777,5 +778,8 @@
 ;00B8: 0xA01E70D8   ;  2E: FinishWriteEELiteBlock
 ;00BC: 0xA01E6CC4   ;  2F: DeleteEELiteBlock
 ;00C0: 0xA01E6FC0   ;  30: WriteEELiteBlock
+;0A80: 0xA02A0150 ; 2A0: int GetAlarmclockState(int state);  
+;031C: 0xA01D17F4 ; 0C7: SetCpuClockTempHi(2) 
+;07C0: 0xA031BEB4 ; 1F0: Filecopy  ;可能需要修正，移植自E71v45 lg91
 #pragma disable old_equal_ff
 +0

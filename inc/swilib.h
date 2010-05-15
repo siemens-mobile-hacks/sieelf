@@ -371,6 +371,21 @@ typedef struct
   unsigned const int *icon2;
 }REGEXPLEXT_ARM_NEW;
 
+typedef struct
+{ 
+char timeout; // Timeout blanking 
+char unk0; // Something zagadochtnoe, is 0 or 5 
+char perm_illum; // It is not clear, it seems the level, which will be held when calling IllumTimeRequest, 
+rewritten calling SaveMaxIllumination (), and for some reason limited to 80% 
+char max_illum; // Well, here known as the brightness 
+
+//setIlluminationHook (50) // Set the backlight in the settings to 50% 
+//SetIlluminationoffTimeout (10) // Put the timeout quenching illumination at 10 seconds 
+//IllumTimeRequest (1, 1); // Initializes a constant illumination 
+//IllumTimeRelease (1, 1); // Disables the constant illumination 
+//Current values lights / timers are in the * RamScreenBrightness ()
+} LIGHT_PARAM;
+
 #ifdef NEWSGOLD
 typedef struct
 {
@@ -4067,4 +4082,16 @@ __swi __arm void IllumTimeRequest(int TimeMode, int Counter);
 __swi __arm void IllumTimeRelease(int TimeMode, int Counter);
 //thumb
 //pattern_NSG=FE,BD,F8,B5,04,1C,16,1C,0D,1C,1F,1C,+3
+
+#pragma swi_number=0x2E0
+__swi arm__ IMGHDR *GetIMGHDRFromThemeCache(int index)
+//thumb
+//pattern_NSG/ELKA=01,1C,??,??,1C,30,??,29,??,??,??,??,5B,5C,5B,00,9F,44,+1
+
+#pragma swi_number=0x2E1
+__swi __arm int GetExtUidByFileName_ws(WSHDR * fn);
+//arm
+//pattern_ELKA=??,??,??,E9,??,??,??,E3,??,??,??,E1,??,??,??,0A,??,??,??,E1,??,??,??,FB,??,??,??,E3,??,??,??,0A,??,??,??,E1,??,??,??,FB,??,??,??,E1,??,??,??,E1,??,??,??,E3
+//thumb
+//pattern_NSG=09,B0,F0,BD,F8,B5,04,1C,00,20,+5
 #endif

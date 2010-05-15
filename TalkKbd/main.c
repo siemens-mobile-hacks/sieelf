@@ -20,15 +20,15 @@ typedef struct
 
 int IDLECSM_ID=-1;
 
-//=============================Проигрывание звука===============================
+//============================= Playing sound ==============================
 void Play(const char *fpath, const char *fname)
 {
   /*char s[40];
   sprintf(s,RamMediaIsPlaying());
 #ifdef NEWSGOLD
-  if ((!IsCalling())&&(s[0]!=1)) // для SGOLD s[0]!=2
+  if ((!IsCalling())&&(s[0]!=1)) // for SGOLD s[0]!=2
 #else
-  if ((!IsCalling())&&(s[0]!=2)) // для SGOLD s[0]!=2    
+  if ((!IsCalling())&&(s[0]!=2)) // for SGOLD s[0]!=2    
 #endif    
   {*/
   
