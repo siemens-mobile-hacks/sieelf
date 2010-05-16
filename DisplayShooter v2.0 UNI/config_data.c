@@ -1,4 +1,4 @@
-#include "\ARM\inc\cfg_items.h"
+#include "..\inc\cfg_items.h"
 
 __root const CFG_HDR hdr0={CFG_STR_UTF8,"Save path",3,127};
 __root const char SAVE_PATH[128]="0:\\Misc\\Shots\\";

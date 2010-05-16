@@ -3,7 +3,7 @@
 <Workspace>
   <ConfigDictionary>
     
-  <CurrentConfigs><Project>DisplayShooter/sgold</Project></CurrentConfigs></ConfigDictionary>
+  <CurrentConfigs><Project>DisplayShooter/newsgold</Project></CurrentConfigs></ConfigDictionary>
   <Desktop>
     <Static>
       <Build>
@@ -18,7 +18,7 @@
           
           
           
-        <Column0>116</Column0><Column1>18</Column1><Column2>27</Column2><Column3>2010398933</Column3></ColumnWidths>
+        <Column0>309</Column0><Column1>18</Column1><Column2>27</Column2><Column3>2010398933</Column3></ColumnWidths>
       <PreferedWindows><Position>1</Position><ScreenPosX>0</ScreenPosX><ScreenPosY>0</ScreenPosY><Windows/></PreferedWindows></Workspace>
     <SourceBrowser><PreferedWindows><Position>1</Position><ScreenPosX>0</ScreenPosX><ScreenPosY>0</ScreenPosY><Windows><Window><Factory>Workspace</Factory></Window></Windows></PreferedWindows></SourceBrowser><TerminalIO/><CodeCoveragePlugin/><Profiling/><Find-in-Files><ColumnWidth0>350</ColumnWidth0><ColumnWidth1>50</ColumnWidth1><ColumnWidth2>601</ColumnWidth2></Find-in-Files></Static>
     <Windows>
@@ -30,14 +30,14 @@
       
       
       
-    <Pane><Tab><Factory>TextEditor</Factory><Filename>E:\ARM\&#x41C;&#x43e;&#x451;\DisplayShooter\main.c</Filename><XPos>0</XPos><YPos>99</YPos><SelStart>2773</SelStart><SelEnd>2773</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>E:\ARM\&#x41C;&#x43e;&#x451;\DisplayShooter\jpeglib.h</Filename><XPos>0</XPos><YPos>296</YPos><SelStart>12382</SelStart><SelEnd>12382</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>E:\ARM\&#x41C;&#x43e;&#x451;\DisplayShooter\jmorecfg.h</Filename><XPos>0</XPos><YPos>383</YPos><SelStart>12866</SelStart><SelEnd>12866</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>E:\ARM\&#x41C;&#x43e;&#x451;\DisplayShooter\config_data.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>469</SelStart><SelEnd>469</SelEnd></Tab><ActiveTab>3</ActiveTab><Tab><Factory>TextEditor</Factory><Filename>E:\ARM\&#x41C;&#x43e;&#x451;\DisplayShooter\jcinit.c</Filename><XPos>0</XPos><YPos>40</YPos><SelStart>1751</SelStart><SelEnd>1751</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>E:\ARM\&#x41C;&#x43e;&#x451;\DisplayShooter\jcmaster.c</Filename><XPos>0</XPos><YPos>427</YPos><SelStart>15307</SelStart><SelEnd>15307</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>E:\ARM\&#x41C;&#x43e;&#x451;\DisplayShooter\jcparam.c</Filename><XPos>0</XPos><YPos>382</YPos><SelStart>14667</SelStart><SelEnd>14667</SelEnd></Tab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>F:\SVN\cn\DisplayShooter v2.0 UNI\conf_loader.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>69</SelStart><SelEnd>69</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>F:\SVN\cn\DisplayShooter v2.0 UNI\config_data.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>10</SelStart><SelEnd>12</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>F:\SVN\cn\DisplayShooter v2.0 UNI\func.asm</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>F:\SVN\cn\DisplayShooter v2.0 UNI\jcapimin.c</Filename><XPos>0</XPos><YPos>110</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>F:\SVN\cn\DisplayShooter v2.0 UNI\jcapistd.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>F:\SVN\cn\DisplayShooter v2.0 UNI\jccoefct.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>F:\SVN\cn\DisplayShooter v2.0 UNI\jccolor.c</Filename><XPos>0</XPos><YPos>5</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>F:\SVN\cn\DisplayShooter v2.0 UNI\jcdctmgr.c</Filename><XPos>0</XPos><YPos>5</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>F:\SVN\cn\DisplayShooter v2.0 UNI\jchuff.c</Filename><XPos>0</XPos><YPos>15</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>F:\SVN\cn\DisplayShooter v2.0 UNI\jcinit.c</Filename><XPos>0</XPos><YPos>50</YPos><SelStart>0</SelStart><SelEnd>0</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>F:\SVN\cn\DisplayShooter v2.0 UNI\jinclude.h</Filename><XPos>0</XPos><YPos>26</YPos><SelStart>712</SelStart><SelEnd>712</SelEnd></Tab><ActiveTab>10</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
     <Positions>
       
       
       
       
       
-    <Top><Row0><Sizes><Toolbar-008ee518><key>iaridepm1</key></Toolbar-008ee518></Sizes></Row0></Top><Left><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>455</Bottom><Right>198</Right><x>-2</x><y>-2</y><xscreen>200</xscreen><yscreen>200</yscreen><sizeHorzCX>195313</sizeHorzCX><sizeHorzCY>286944</sizeHorzCY><sizeVertCX>195313</sizeVertCX><sizeVertCY>655667</sizeVertCY></Rect></Wnd1></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>198</Bottom><Right>1026</Right><x>-2</x><y>-2</y><xscreen>1028</xscreen><yscreen>200</yscreen><sizeHorzCX>1003906</sizeHorzCX><sizeHorzCY>286944</sizeHorzCY><sizeVertCX>195313</sizeVertCX><sizeVertCY>286944</sizeVertCY></Rect></Wnd2></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+    <Top><Row0><Sizes><Toolbar-003bebc0><key>iaridepm.enu1</key></Toolbar-003bebc0></Sizes></Row0></Top><Left><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>319</Bottom><Right>390</Right><x>-2</x><y>-2</y><xscreen>186</xscreen><yscreen>146</yscreen><sizeHorzCX>195378</sizeHorzCX><sizeHorzCY>287402</sizeHorzCY><sizeVertCX>411765</sizeVertCX><sizeVertCY>631890</sizeVertCY></Rect></Wnd1></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>144</Bottom><Right>954</Right><x>-2</x><y>-2</y><xscreen>956</xscreen><yscreen>146</yscreen><sizeHorzCX>1004202</sizeHorzCX><sizeHorzCY>287402</sizeHorzCY><sizeVertCX>195378</sizeVertCX><sizeVertCY>287402</sizeVertCY></Rect></Wnd2></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
   </Desktop>
 </Workspace>
 

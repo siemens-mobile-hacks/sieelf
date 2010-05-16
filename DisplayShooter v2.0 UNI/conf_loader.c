@@ -1,5 +1,5 @@
-#include "\ARM\inc\swilib.h"
-#include "\ARM\inc\cfg_items.h"
+#include "..\inc\swilib.h"
+#include "..\inc\cfg_items.h"
 #include "conf_loader.h"
 
 #pragma segment="CONFIG_C"
