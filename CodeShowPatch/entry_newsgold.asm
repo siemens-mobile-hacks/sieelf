@@ -12,6 +12,7 @@
 MENU_HDR_ICON
 	DCD	0x156
 	DCD	0
+
 /*	
 	CODE16
 RecoedWindow_:
@@ -36,7 +37,8 @@ EX_PBACK
 	POP	{R0}
 	ADD	R0, #4
 	BX	R0
-	*/
+*/
+
 	CODE32
 RecoedWindow_
 	ADD	LR, LR, #4

@@ -4,6 +4,10 @@
 	EXTERN	UpdateLocaleToItem
 	EXTERN	AddNewLine	
 	
+	EXTERN	GetProvAndCity         //2.1.1
+	EXTERN	GetNumFromIncomingPDU  //2.1.1
+	EXTERN	setMenuText            //2.1.1
+
 	RSEG	CODE
 	
 	DATA
