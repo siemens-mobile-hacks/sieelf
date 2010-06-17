@@ -1,0 +1,3595 @@
+ROM:A06842DC             sub_A06842DC                            ; A06850F8p
+ROM:A06842DC
+ROM:A06842DC             var_24          = -0x24
+ROM:A06842DC
+ROM:A06842DC F0 4D 2D E9                 STMFD   SP!, {R4-R8,R10,R11,LR}
+ROM:A06842E0 82 DF 4D E2                 SUB     SP, SP, #0x208
+ROM:A06842E4 02 B0 A0 E1                 MOV     R11, R2
+ROM:A06842E8 01 A0 A0 E1                 MOV     R10, R1
+ROM:A06842EC 00 70 A0 E3                 MOV     R7, #0
+ROM:A06842F0 04 72 8D E5                 STR     R7, [SP,#0x204]
+ROM:A06842F4 81 1F 8D E2                 ADD     R1, SP, #0x204
+ROM:A06842F8 50 20 A0 E3                 MOV     R2, #0x50
+ROM:A06842FC FF 80 A0 E3                 MOV     R8, #0xFF
+ROM:A0684300 00 60 A0 E3                 MOV     R6, #0
+ROM:A0684304 00 50 A0 E1                 MOV     R5, R0
+ROM:A0684308 A9 FF FF EB                 BL      sub_A06841B4
+ROM:A0684308
+ROM:A068430C 00 00 50 E3                 CMP     R0, #0
+ROM:A0684310 03 00 00 0A                 BEQ     loc_A0684324
+ROM:A0684310
+ROM:A0684314 77 4C 0C FA                 BLX     sub_A09974F8    ; WSHDR *AllocWS(int len)
+ROM:A0684314
+ROM:A0684318 00 60 A0 E1                 MOV     R6, R0
+ROM:A068431C 04 12 9D E5                 LDR     R1, [SP,#0x204]
+ROM:A0684320 41 CE ED FA                 BLX     sub_A01F7C2C    ;  WSHDR *wstrcat(WSHDR *wshdr_d,WSHDR *wshdr_s)
+ROM:A0684320
+ROM:A0684324
+ROM:A0684324             loc_A0684324                            ; A0684310j
+ROM:A0684324 00 20 A0 E3                 MOV     R2, #0
+ROM:A0684328 1D 10 A0 E3                 MOV     R1, #0x1D
+ROM:A068432C F8 00 95 E5                 LDR     R0, [R5,#0xF8]
+ROM:A0684330 F1 2B FB EB                 BL      sub_A054F2FC
+ROM:A0684330
+ROM:A0684334 00 10 A0 E1                 MOV     R1, R0
+ROM:A0684338 F8 00 95 E5                 LDR     R0, [R5,#0xF8]
+ROM:A068433C 55 30 FB EB                 BL      sub_A0550498
+ROM:A068433C
+ROM:A0684340 00 00 50 E3                 CMP     R0, #0
+ROM:A0684344 16 00 00 0A                 BEQ     loc_A06843A4
+ROM:A0684344
+ROM:A0684348 00 20 A0 E3                 MOV     R2, #0
+ROM:A068434C 1D 10 A0 E3                 MOV     R1, #0x1D
+ROM:A0684350 F8 00 95 E5                 LDR     R0, [R5,#0xF8]
+ROM:A0684354 E8 2B FB EB                 BL      sub_A054F2FC
+ROM:A0684354
+ROM:A0684358 00 10 A0 E1                 MOV     R1, R0
+ROM:A068435C F8 00 95 E5                 LDR     R0, [R5,#0xF8]
+ROM:A0684360 4C 30 FB EB                 BL      sub_A0550498
+ROM:A0684360
+ROM:A0684364 1D 80 A0 E3                 MOV     R8, #0x1D
+ROM:A0684368 00 00 50 E3                 CMP     R0, #0
+ROM:A068436C 0C 00 00 0A                 BEQ     loc_A06843A4
+ROM:A068436C
+ROM:A0684370 80 2F A0 E3                 MOV     R2, #0x200
+ROM:A0684374 0D 10 A0 E1                 MOV     R1, SP
+ROM:A0684378 C0 17 0C FB                 BLX     sub_A098A282    ; void UnpackNumPkt(PKT_NUM *pkt, char *buf, int maxlen)
+ROM:A0684378
+ROM:A068437C 0D 00 A0 E1                 MOV     R0, SP
+ROM:A0684380 4D 8B 36 FA                 BLX     sub_A14270BC    ; unsigned int strlen(const char *)
+ROM:A0684380
+ROM:A0684384 00 78 A0 E1                 MOV     R7, R0,LSL#16
+ROM:A0684388 27 78 A0 E1                 MOV     R7, R7,LSR#16
+
+//ADRBKLST_ALLOCWS_HOOK2
+ROM:A068438C 07 00 A0 E1                 MOV     R0, R7
+ROM:A0684390 58 4C 0C FA                 BLX     sub_A09974F8    ; WSHDR *AllocWS(int len)
+ROM:A0684390
+ROM:A0684394 00 40 A0 E1                 MOV     R4, R0
+ROM:A0684398 0D 10 A0 E1                 MOV     R1, SP
+ROM:A068439C 2F CF ED FB                 BLX     sub_A01F8062    ; void num_2ws(WSHDR *ws, char *num)
+ROM:A068439C
+ROM:A06843A0 05 00 00 EA                 B       loc_A06843BC
+ROM:A06843A0
+ROM:A06843A4             ; ---------------------------------------------------------------------------
+ROM:A06843A4
+ROM:A06843A4             loc_A06843A4                            ; A0684344j
+ROM:A06843A4                                                     ; A068436Cj
+ROM:A06843A4 36 00 A0 E3                 MOV     R0, #0x36
+ROM:A06843A8 52 4C 0C FA                 BLX     sub_A09974F8    ; WSHDR *AllocWS(int len)
+ROM:A06843A8
+ROM:A06843AC 00 40 A0 E1                 MOV     R4, R0
+ROM:A06843B0 00 10 A0 E1                 MOV     R1, R0
+ROM:A06843B4 D8 00 9F E5                 LDR     R0, =0x1108A
+ROM:A06843B8 3F 92 0B EB                 BL      sub_A0968CBC    ; void GetLangMesIntoWS(int lgp, WSHDR *ws)
+ROM:A06843B8
+ROM:A06843BC
+ROM:A06843BC             loc_A06843BC                            ; A06843A0j
+ROM:A06843BC 04 02 9D E5                 LDR     R0, [SP,#0x204]
+ROM:A06843C0 00 00 50 E3                 CMP     R0, #0
+ROM:A06843C4 05 00 00 1A                 BNE     loc_A06843E0
+ROM:A06843C4
+ROM:A06843C8 07 00 A0 E1                 MOV     R0, R7
+ROM:A06843CC 49 4C 0C FA                 BLX     sub_A09974F8    ; WSHDR *AllocWS(int len)
+ROM:A06843CC
+ROM:A06843D0 04 10 A0 E1                 MOV     R1, R4
+ROM:A06843D4 04 02 8D E5                 STR     R0, [SP,#0x204]
+ROM:A06843D8 01 CE ED FB                 BLX     sub_A01F7BE6    ; WSHDR *wstrcpy(WSHDR *wshdr_d,WSHDR *wshdr_s)
+ROM:A06843D8
+ROM:A06843DC 04 62 9D E5                 LDR     R6, [SP,#0x204]
+ROM:A06843DC
+ROM:A06843E0
+ROM:A06843E0             loc_A06843E0                            ; A06843C4j
+ROM:A06843E0 08 00 A0 E1                 MOV     R0, R8
+ROM:A06843E4 54 FF FF EB                 BL      sub_A068413C    ; WSHDR *GetIconByABType(int type)
+ROM:A06843E4
+ROM:A06843E8 00 80 A0 E1                 MOV     R8, R0
+ROM:A06843EC 05 00 A0 E1                 MOV     R0, R5
+ROM:A06843F0 04 10 A0 E1                 MOV     R1, R4
+ROM:A06843F4 18 FF FF EB                 BL      sub_A068405C
+ROM:A06843F4
+
+//ADRBKLST_CATWS_HOOK2
+ROM:A06843F8 04 00 A0 E1                 MOV     R0, R4
+ROM:A06843FC 1A CC ED FB                 BLX     sub_A01F746E    ; int wstrlen(WSHDR *wshdr)
+ROM:A06843FC
+ROM:A0684400 04 00 80 E2                 ADD     R0, R0, #4
+ROM:A0684404 3B 4C 0C FA                 BLX     sub_A09974F8    ; WSHDR *AllocWS(int len)
+ROM:A0684404
+ROM:A0684408 00 70 A0 E1                 MOV     R7, R0
+ROM:A068440C 84 10 8F E2                 ADR     R1, asc_A0684498 ; "    "
+ROM:A0684410 87 49 0C FA                 BLX     sub_A0996A34    ; void wsprintf(WSHDR *,const char *format,...)
+ROM:A0684410
+ROM:A0684414 04 10 A0 E1                 MOV     R1, R4
+ROM:A0684418 07 00 A0 E1                 MOV     R0, R7
+ROM:A068441C 02 CE ED FA                 BLX     sub_A01F7C2C    ;  WSHDR *wstrcat(WSHDR *wshdr_d,WSHDR *wshdr_s)
+ROM:A068441C
+ROM:A0684420 BC 49 F1 FA                 BLX     sub_A02D6B18    ; DISPLAY_BIG_LETTERS
+ROM:A0684420
+ROM:A0684424 00 00 50 E3                 CMP     R0, #0
+ROM:A0684428 F4 10 95 15                 LDRNE   R1, [R5,#0xF4]
+ROM:A068442C 04 02 9D 15                 LDRNE   R0, [SP,#0x204]
+ROM:A0684430 11 5C 00 1B                 BLNE    sub_A069B47C
+ROM:A0684430
+ROM:A0684434 00 00 58 E3                 CMP     R8, #0
+ROM:A0684438 08 00 A0 11                 MOVNE   R0, R8
+ROM:A068443C 10 C2 EB 1B                 BLNE    sub_A0174C84    ; int FreeWS(WSHDR *ws) //1,suc
+ROM:A068443C
+ROM:A0684440 00 00 54 E3                 CMP     R4, #0
+ROM:A0684444 04 00 A0 11                 MOVNE   R0, R4
+ROM:A0684448 0D C2 EB 1B                 BLNE    sub_A0174C84    ; int FreeWS(WSHDR *ws) //1,suc
+ROM:A0684448
+ROM:A068444C 04 02 9D E5                 LDR     R0, [SP,#0x204]
+ROM:A0684450 00 00 50 E3                 CMP     R0, #0
+ROM:A0684454 06 00 50 11                 CMPNE   R0, R6
+ROM:A0684458 09 C2 EB 1B                 BLNE    sub_A0174C84    ; int FreeWS(WSHDR *ws) //1,suc
+ROM:A0684458
+ROM:A068445C 00 60 8A E5                 STR     R6, [R10]
+ROM:A0684460 00 70 8B E5                 STR     R7, [R11]
+ROM:A0684464 82 DF 8D E2                 ADD     SP, SP, #0x208
+ROM:A0684468 F0 8D BD E8                 LDMFD   SP!, {R4-R8,R10,R11,PC}
+ROM:A0684468
+ROM:A0684468             ; End of function sub_A06842DC
+ROM:A0684468
+ROM:A0684468             ; ---------------------------------------------------------------------------
+ROM:A068446C B8 4B 09 A0 off_A068446C    DCD sub_A0094BB8        ; A0683DD8r
+ROM:A068446C                                                     ; A0683E24r
+ROM:A068446C                                                     ; A0683F0Cr
+ROM:A068446C                                                     ; void mfree(void *)
+ROM:A0684470 5C 4B 09 A0 off_A0684470    DCD SWI_0x14_malloc_adr ; A0683DDCr
+ROM:A0684470                                                     ; A0683E20r
+ROM:A0684470                                                     ; A0683F10r
+ROM:A0684470                                                     ; void *malloc(unsigned int size)
+ROM:A0684474 A4 A0 95 A0 off_A0684474    DCD dword_A095A0A4      ; A0683E60r
+ROM:A0684474                                                     ; A0683F64r
+ROM:A0684478 D4 A0 95 A0 off_A0684478    DCD dword_A095A0D4      ; A0683E64r
+ROM:A0684478                                                     ; loc_A0683F6Cr
+ROM:A068447C 34 A1 95 A0 off_A068447C    DCD unk_A095A134        ; A0683E78r
+ROM:A0684480 04 A1 95 A0 off_A0684480    DCD unk_A095A104        ; A0683E7Cr
+ROM:A0684484 C8 A1 95 A0 off_A0684484    DCD dword_A095A1C8      ; A0683EF4r
+ROM:A0684484                                                     ; loc_A0684008r
+ROM:A0684488 64 A1 95 A0 off_A0684488    DCD dword_A095A164      ; A0683F40r
+ROM:A068448C 68 9E 95 A0 off_A068448C    DCD unk_A0959E68        ; A0683F90r
+ROM:A0684490 64 9F 95 A0 off_A0684490    DCD unk_A0959F64        ; A0683F98r
+ROM:A0684494 8A 10 01 00 dword_A0684494  DCD 0x1108A             ; A06843B4r
+ROM:A0684494                                                     ; A0684888r
+ROM:A0684494                                                     ; A0684BE8r
+ROM:A0684498 20 20 20 20+asc_A0684498    DCB "    ",0            ; A068440Co
+ROM:A068449D 00                          DCB    0
+ROM:A068449E 00                          DCB    0
+ROM:A068449F 00                          DCB    0
+ROM:A06844A0
+ROM:A06844A0             ; *************** S U B R O U T I N E ***************************************
+
+
+//X
+ROM:A06844A0             sub_A06844A0                            ; A06848C0p
+ROM:A06844A0                                                     ; A0684C18p
+ROM:A06844A0                                                     ; A069E288p
+ROM:A06844A0
+ROM:A06844A0             var_38          = -0x38
+ROM:A06844A0             var_2C          = -0x2C
+ROM:A06844A0             arg_0           =  0
+ROM:A06844A0             arg_C           =  0xC
+ROM:A06844A0
+ROM:A06844A0 FF 4D 2D E9                 STMFD   SP!, {R0-R8,R10,R11,LR}
+ROM:A06844A4 08 D0 4D E2                 SUB     SP, SP, #8
+ROM:A06844A8 44 A0 8D E2                 ADD     R10, SP, #0x38+arg_C
+ROM:A06844AC 02 80 A0 E1                 MOV     R8, R2
+ROM:A06844B0 06 04 9A E8                 LDMIA   R10, {R1,R2,R10}
+ROM:A06844B4 38 C0 8D E2                 ADD     R12, SP, #0x38+arg_0
+ROM:A06844B8 03 70 A0 E1                 MOV     R7, R3
+ROM:A06844BC 00 30 A0 E3                 MOV     R3, #0
+ROM:A06844C0 40 18 9C E8                 LDMIA   R12, {R6,R11,R12}
+ROM:A06844C4 00 E0 A0 E3                 MOV     LR, #0
+ROM:A06844C8 00 50 A0 E3                 MOV     R5, #0
+ROM:A06844CC 00 40 A0 E3                 MOV     R4, #0
+ROM:A06844D0 00 00 50 E3                 CMP     R0, #0
+ROM:A06844D4 3F 00 00 0A                 BEQ     loc_A06845D8
+ROM:A06844D4
+ROM:A06844D8 02 00 50 E3                 CMP     R0, #2
+ROM:A06844DC 17 00 00 0A                 BEQ     loc_A0684540
+ROM:A06844DC
+ROM:A06844E0 03 00 50 E3                 CMP     R0, #3
+ROM:A06844E4 3B 00 00 1A                 BNE     loc_A06845D8
+ROM:A06844E4
+ROM:A06844E8 00 00 52 E3                 CMP     R2, #0
+ROM:A06844EC 06 50 A0 11                 MOVNE   R5, R6
+ROM:A06844F0 02 E0 A0 11                 MOVNE   LR, R2
+ROM:A06844F4 06 00 00 1A                 BNE     loc_A0684514
+ROM:A06844F4
+ROM:A06844F8 00 00 5C E3                 CMP     R12, #0
+ROM:A06844FC 08 50 A0 11                 MOVNE   R5, R8
+ROM:A0684500 0C E0 A0 11                 MOVNE   LR, R12
+ROM:A0684504 02 00 00 1A                 BNE     loc_A0684514
+ROM:A0684504
+ROM:A0684508 00 00 51 E3                 CMP     R1, #0
+ROM:A068450C 07 50 A0 11                 MOVNE   R5, R7
+ROM:A0684510 01 E0 A0 11                 MOVNE   LR, R1
+ROM:A0684510
+ROM:A0684514
+ROM:A0684514             loc_A0684514                            ; A06844F4j
+ROM:A0684514                                                     ; A0684504j
+ROM:A0684514 00 00 52 E3                 CMP     R2, #0
+ROM:A0684518 04 00 00 0A                 BEQ     loc_A0684530
+ROM:A0684518
+ROM:A068451C 00 00 5C E3                 CMP     R12, #0
+ROM:A0684520 19 00 00 1A                 BNE     loc_A068458C
+ROM:A0684520
+ROM:A0684524 00 00 51 E3                 CMP     R1, #0
+ROM:A0684528 44 00 00 0A                 BEQ     loc_A0684640
+ROM:A0684528
+ROM:A068452C 38 00 00 EA                 B       loc_A0684614
+ROM:A068452C
+ROM:A0684530             ; ---------------------------------------------------------------------------
+ROM:A0684530
+ROM:A0684530             loc_A0684530                            ; A0684518j
+ROM:A0684530 00 00 5C E3                 CMP     R12, #0
+ROM:A0684534 00 00 51 13                 CMPNE   R1, #0
+ROM:A0684538 40 00 00 0A                 BEQ     loc_A0684640
+ROM:A0684538
+ROM:A068453C 34 00 00 EA                 B       loc_A0684614
+ROM:A068453C
+ROM:A0684540             ; ---------------------------------------------------------------------------
+ROM:A0684540
+ROM:A0684540             loc_A0684540                            ; A06844DCj
+ROM:A0684540 00 00 5A E3                 CMP     R10, #0
+ROM:A0684544 0B 50 A0 11                 MOVNE   R5, R11
+ROM:A0684548 0A E0 A0 11                 MOVNE   LR, R10
+ROM:A068454C 0A 00 00 1A                 BNE     loc_A068457C
+ROM:A068454C
+ROM:A0684550 00 00 5C E3                 CMP     R12, #0
+ROM:A0684554 08 50 A0 11                 MOVNE   R5, R8
+ROM:A0684558 0C E0 A0 11                 MOVNE   LR, R12
+ROM:A068455C 06 00 00 1A                 BNE     loc_A068457C
+ROM:A068455C
+ROM:A0684560 00 00 51 E3                 CMP     R1, #0
+ROM:A0684564 07 50 A0 11                 MOVNE   R5, R7
+ROM:A0684568 01 E0 A0 11                 MOVNE   LR, R1
+ROM:A068456C 02 00 00 1A                 BNE     loc_A068457C
+ROM:A068456C
+ROM:A0684570 00 00 52 E3                 CMP     R2, #0
+ROM:A0684574 06 50 A0 11                 MOVNE   R5, R6
+ROM:A0684578 02 E0 A0 11                 MOVNE   LR, R2
+ROM:A0684578
+ROM:A068457C
+ROM:A068457C             loc_A068457C                            ; A068454Cj
+ROM:A068457C                                                     ; A068455Cj
+ROM:A068457C                                                     ; A068456Cj
+ROM:A068457C 00 00 5A E3                 CMP     R10, #0
+ROM:A0684580 09 00 00 0A                 BEQ     loc_A06845AC
+ROM:A0684580
+ROM:A0684584 00 00 5C E3                 CMP     R12, #0
+ROM:A0684588 02 00 00 0A                 BEQ     loc_A0684598
+ROM:A0684588
+ROM:A068458C
+ROM:A068458C             loc_A068458C                            ; A0684520j
+ROM:A068458C 08 40 A0 E1                 MOV     R4, R8
+ROM:A0684590 0C 30 A0 E1                 MOV     R3, R12
+ROM:A0684594 29 00 00 EA                 B       loc_A0684640
+ROM:A0684594
+ROM:A0684598             ; ---------------------------------------------------------------------------
+ROM:A0684598
+ROM:A0684598             loc_A0684598                            ; A0684588j
+ROM:A0684598 00 00 51 E3                 CMP     R1, #0
+ROM:A068459C 1C 00 00 1A                 BNE     loc_A0684614
+ROM:A068459C
+ROM:A06845A0 00 00 52 E3                 CMP     R2, #0
+ROM:A06845A4 25 00 00 0A                 BEQ     loc_A0684640
+ROM:A06845A4
+ROM:A06845A8 22 00 00 EA                 B       loc_A0684638
+ROM:A06845A8
+ROM:A06845AC             ; ---------------------------------------------------------------------------
+ROM:A06845AC
+ROM:A06845AC             loc_A06845AC                            ; A0684580j
+ROM:A06845AC 00 00 5C E3                 CMP     R12, #0
+ROM:A06845B0 04 00 00 0A                 BEQ     loc_A06845C8
+ROM:A06845B0
+ROM:A06845B4 00 00 51 E3                 CMP     R1, #0
+ROM:A06845B8 15 00 00 1A                 BNE     loc_A0684614
+ROM:A06845B8
+ROM:A06845BC 00 00 52 E3                 CMP     R2, #0
+ROM:A06845C0 1E 00 00 0A                 BEQ     loc_A0684640
+ROM:A06845C0
+ROM:A06845C4 1B 00 00 EA                 B       loc_A0684638
+ROM:A06845C4
+ROM:A06845C8             ; ---------------------------------------------------------------------------
+ROM:A06845C8
+ROM:A06845C8             loc_A06845C8                            ; A06845B0j
+ROM:A06845C8 00 00 51 E3                 CMP     R1, #0
+ROM:A06845CC 00 00 52 13                 CMPNE   R2, #0
+ROM:A06845D0 1A 00 00 0A                 BEQ     loc_A0684640
+ROM:A06845D0
+ROM:A06845D4 17 00 00 EA                 B       loc_A0684638
+ROM:A06845D4
+ROM:A06845D8             ; ---------------------------------------------------------------------------
+ROM:A06845D8
+ROM:A06845D8             loc_A06845D8                            ; A06844D4j
+ROM:A06845D8                                                     ; A06844E4j
+ROM:A06845D8 00 00 5C E3                 CMP     R12, #0
+ROM:A06845DC 08 50 A0 11                 MOVNE   R5, R8
+ROM:A06845E0 0C E0 A0 11                 MOVNE   LR, R12
+ROM:A06845E4 06 00 00 1A                 BNE     loc_A0684604
+ROM:A06845E4
+ROM:A06845E8 00 00 51 E3                 CMP     R1, #0
+ROM:A06845EC 07 50 A0 11                 MOVNE   R5, R7
+ROM:A06845F0 01 E0 A0 11                 MOVNE   LR, R1
+ROM:A06845F4 02 00 00 1A                 BNE     loc_A0684604
+ROM:A06845F4
+ROM:A06845F8 00 00 52 E3                 CMP     R2, #0
+ROM:A06845FC 06 50 A0 11                 MOVNE   R5, R6
+ROM:A0684600 02 E0 A0 11                 MOVNE   LR, R2
+ROM:A0684600
+ROM:A0684604
+ROM:A0684604             loc_A0684604                            ; A06845E4j
+ROM:A0684604                                                     ; A06845F4j
+ROM:A0684604 00 00 5C E3                 CMP     R12, #0
+ROM:A0684608 07 00 00 0A                 BEQ     loc_A068462C
+ROM:A0684608
+ROM:A068460C 00 00 51 E3                 CMP     R1, #0
+ROM:A0684610 02 00 00 0A                 BEQ     loc_A0684620
+ROM:A0684610
+ROM:A0684614
+ROM:A0684614             loc_A0684614                            ; A068452Cj
+ROM:A0684614                                                     ; A068453Cj
+ROM:A0684614                                                     ; A068459Cj
+ROM:A0684614                                                     ; A06845B8j
+ROM:A0684614 07 40 A0 E1                 MOV     R4, R7
+ROM:A0684618 01 30 A0 E1                 MOV     R3, R1
+ROM:A068461C 07 00 00 EA                 B       loc_A0684640
+ROM:A068461C
+ROM:A0684620             ; ---------------------------------------------------------------------------
+ROM:A0684620
+ROM:A0684620             loc_A0684620                            ; A0684610j
+ROM:A0684620 00 00 52 E3                 CMP     R2, #0
+ROM:A0684624 05 00 00 0A                 BEQ     loc_A0684640
+ROM:A0684624
+
+//I
+ROM:A0684628 02 00 00 EA                 B       loc_A0684638
+ROM:A0684628
+ROM:A068462C             ; ---------------------------------------------------------------------------
+ROM:A068462C
+ROM:A068462C             loc_A068462C                            ; A0684608j
+ROM:A068462C 00 00 51 E3                 CMP     R1, #0
+ROM:A0684630 00 00 52 13                 CMPNE   R2, #0
+ROM:A0684634 01 00 00 0A                 BEQ     loc_A0684640
+ROM:A0684634
+ROM:A0684638
+ROM:A0684638             loc_A0684638                            ; A06845A8j
+ROM:A0684638                                                     ; A06845C4j
+ROM:A0684638                                                     ; A06845D4j
+ROM:A0684638                                                     ; A0684628j
+ROM:A0684638 06 40 A0 E1                 MOV     R4, R6
+ROM:A068463C 02 30 A0 E1                 MOV     R3, R2
+ROM:A068463C
+ROM:A0684640
+ROM:A0684640             loc_A0684640                            ; A0684528j
+ROM:A0684640                                                     ; A0684538j
+ROM:A0684640                                                     ; A0684594j
+ROM:A0684640                                                     ; A06845A4j
+ROM:A0684640                                                     ; A06845C0j
+ROM:A0684640                                                     ; A06845D0j ...
+ROM:A0684640 00 00 53 E3                 CMP     R3, #0
+ROM:A0684644 05 00 00 1A                 BNE     loc_A0684660
+ROM:A0684644
+ROM:A0684648 0E 00 A0 E1                 MOV     R0, LR
+ROM:A068464C A9 4B 0C FA                 BLX     sub_A09974F8    ; WSHDR *AllocWS(int len)
+ROM:A068464C
+ROM:A0684650 00 A0 A0 E1                 MOV     R10, R0
+ROM:A0684654 05 10 A0 E1                 MOV     R1, R5
+ROM:A0684658 61 CD ED FB                 BLX     sub_A01F7BE6    ; WSHDR *wstrcpy(WSHDR *wshdr_d,WSHDR *wshdr_s)
+ROM:A0684658
+ROM:A068465C 08 00 00 EA                 B       loc_A0684684
+ROM:A068465C
+ROM:A0684660             ; ---------------------------------------------------------------------------
+ROM:A0684660
+ROM:A0684660             loc_A0684660                            ; A0684644j
+ROM:A0684660 03 00 8E E0                 ADD     R0, LR, R3
+ROM:A0684664 04 00 80 E2                 ADD     R0, R0, #4
+ROM:A0684668 A2 4B 0C FA                 BLX     sub_A09974F8    ; WSHDR *AllocWS(int len)
+ROM:A0684668
+ROM:A068466C 00 A0 A0 E1                 MOV     R10, R0
+ROM:A0684670 58 30 8F E2                 ADR     R3, asc_A06846D0 ; ","
+ROM:A0684674 05 20 A0 E1                 MOV     R2, R5
+ROM:A0684678 54 10 8F E2                 ADR     R1, s_WSW_0     ; "%w%s %w"
+ROM:A068467C 00 40 8D E5                 STR     R4, [SP,#0x38+var_38]
+ROM:A0684680 EB 48 0C FA                 BLX     sub_A0996A34    ; void wsprintf(WSHDR *,const char *format,...)
+ROM:A0684680
+ROM:A0684684
+ROM:A0684684             loc_A0684684                            ; A068465Cj
+ROM:A0684684 00 00 58 E3                 CMP     R8, #0
+ROM:A0684688 08 00 A0 11                 MOVNE   R0, R8
+ROM:A068468C 7C C1 EB 1B                 BLNE    sub_A0174C84    ; int FreeWS(WSHDR *ws) //1,suc
+ROM:A068468C
+ROM:A0684690 00 00 57 E3                 CMP     R7, #0
+ROM:A0684694 07 00 A0 11                 MOVNE   R0, R7
+ROM:A0684698 79 C1 EB 1B                 BLNE    sub_A0174C84    ; int FreeWS(WSHDR *ws) //1,suc
+ROM:A0684698
+ROM:A068469C 00 00 56 E3                 CMP     R6, #0
+ROM:A06846A0 06 00 A0 11                 MOVNE   R0, R6
+ROM:A06846A4 76 C1 EB 1B                 BLNE    sub_A0174C84    ; int FreeWS(WSHDR *ws) //1,suc
+ROM:A06846A4
+ROM:A06846A8 00 00 5B E3                 CMP     R11, #0
+ROM:A06846AC 0B 00 A0 11                 MOVNE   R0, R11
+ROM:A06846B0 73 C1 EB 1B                 BLNE    sub_A0174C84    ; int FreeWS(WSHDR *ws) //1,suc
+ROM:A06846B0
+ROM:A06846B4 0A 00 A0 E1                 MOV     R0, R10
+ROM:A06846B8 6B CB ED FB                 BLX     sub_A01F746E    ; int wstrlen(WSHDR *wshdr)
+ROM:A06846B8
+
+//G
+ROM:A06846BC 0C 10 9D E5                 LDR     R1, [SP,#0x38+var_2C]
+ROM:A06846C0 B0 00 C1 E1                 STRH    R0, [R1]
+ROM:A06846C4 18 D0 8D E2                 ADD     SP, SP, #0x18
+ROM:A06846C8 0A 00 A0 E1                 MOV     R0, R10
+ROM:A06846CC F0 8D BD E8                 LDMFD   SP!, {R4-R8,R10,R11,PC}
+ROM:A06846CC
+ROM:A06846CC             ; End of function sub_A06844A0
+ROM:A06846CC
+ROM:A06846CC             ; ---------------------------------------------------------------------------
+
+
+ROM:A06846D0 2C 00       asc_A06846D0    DCB ",",0               ; A0684670o
+ROM:A06846D2 00                          DCB    0
+ROM:A06846D3 00                          DCB    0
+ROM:A06846D4 25 77 25 73+s_WSW_0         DCB "%w%s %w",0         ; A0684678o
+ROM:A06846DC
+ROM:A06846DC             ; *************** S U B R O U T I N E ***************************************
+
+
+//F
+ROM:A06846DC
+ROM:A06846DC             sub_A06846DC                            ; A06850E4p
+ROM:A06846DC                                                     ; A0685BF0p
+ROM:A06846DC
+ROM:A06846DC             var_258         = -0x258
+ROM:A06846DC             var_244         = -0x244
+ROM:A06846DC             var_60          = -0x60
+ROM:A06846DC             var_40          = -0x40
+ROM:A06846DC             var_3C          = -0x3C
+ROM:A06846DC             var_38          = -0x38
+ROM:A06846DC             var_34          = -0x34
+ROM:A06846DC             var_30          = -0x30
+ROM:A06846DC             var_28          = -0x28
+ROM:A06846DC             var_24          = -0x24
+ROM:A06846DC
+ROM:A06846DC F7 4D 2D E9                 STMFD   SP!, {R0-R2,R4-R8,R10,R11,LR}
+ROM:A06846E0 8D DF 4D E2                 SUB     SP, SP, #0x234
+ROM:A06846E4 00 40 A0 E1                 MOV     R4, R0
+ROM:A06846E8 00 00 A0 E3                 MOV     R0, #0
+ROM:A06846EC 80 CF 8D E2                 ADD     R12, SP, #0x200
+ROM:A06846F0 B0 03 CC E1                 STRH    R0, [R12,#0x30]
+ROM:A06846F4 2C 02 8D E5                 STR     R0, [SP,#0x22C]
+ROM:A06846F8 28 02 8D E5                 STR     R0, [SP,#0x228]
+ROM:A06846FC 24 02 8D E5                 STR     R0, [SP,#0x224]
+ROM:A0684700 20 02 8D E5                 STR     R0, [SP,#0x220]
+ROM:A0684704 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684708 8B 1F 8D E2                 ADD     R1, SP, #0x22C
+ROM:A068470C FF 60 A0 E3                 MOV     R6, #0xFF
+ROM:A0684710 23 20 A0 E3                 MOV     R2, #0x23
+ROM:A0684714 A6 FE FF EB                 BL      sub_A06841B4
+ROM:A0684714
+ROM:A0684718 00 70 A0 E1                 MOV     R7, R0
+ROM:A068471C 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684720 24 20 A0 E3                 MOV     R2, #0x24
+ROM:A0684724 8A 1F 8D E2                 ADD     R1, SP, #0x228
+ROM:A0684728 A1 FE FF EB                 BL      sub_A06841B4
+ROM:A0684728
+ROM:A068472C 00 80 A0 E1                 MOV     R8, R0
+ROM:A0684730 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684734 29 20 A0 E3                 MOV     R2, #0x29
+ROM:A0684738 89 1F 8D E2                 ADD     R1, SP, #0x224
+ROM:A068473C 9C FE FF EB                 BL      sub_A06841B4
+ROM:A068473C
+ROM:A0684740 00 A0 A0 E1                 MOV     R10, R0
+ROM:A0684744 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684748 60 20 A0 E3                 MOV     R2, #0x60
+ROM:A068474C 88 1F 8D E2                 ADD     R1, SP, #0x220
+ROM:A0684750 97 FE FF EB                 BL      sub_A06841B4
+ROM:A0684750
+ROM:A0684754 00 B0 A0 E1                 MOV     R11, R0
+ROM:A0684758 F8 00 94 E5                 LDR     R0, [R4,#0xF8]
+ROM:A068475C 00 20 A0 E3                 MOV     R2, #0
+ROM:A0684760 A1 10 A0 E3                 MOV     R1, #0xA1
+ROM:A0684764 E4 2A FB EB                 BL      sub_A054F2FC
+ROM:A0684764
+ROM:A0684768 00 10 A0 E1                 MOV     R1, R0
+ROM:A068476C F8 00 94 E5                 LDR     R0, [R4,#0xF8]
+ROM:A0684770 48 2F FB EB                 BL      sub_A0550498
+ROM:A0684770
+ROM:A0684774 00 00 50 E3                 CMP     R0, #0
+ROM:A0684778 3E 00 00 0A                 BEQ     loc_A0684878
+ROM:A0684778
+ROM:A068477C 00 20 A0 E3                 MOV     R2, #0
+ROM:A0684780 A1 10 A0 E3                 MOV     R1, #0xA1
+ROM:A0684784 F8 00 94 E5                 LDR     R0, [R4,#0xF8]
+ROM:A0684788 DB 2A FB EB                 BL      sub_A054F2FC
+ROM:A0684788
+ROM:A068478C 00 10 A0 E1                 MOV     R1, R0
+ROM:A0684790 F8 00 94 E5                 LDR     R0, [R4,#0xF8]
+ROM:A0684794 3F 2F FB EB                 BL      sub_A0550498
+ROM:A0684794
+ROM:A0684798 00 50 A0 E1                 MOV     R5, R0
+ROM:A068479C F8 00 94 E5                 LDR     R0, [R4,#0xF8]
+ROM:A06847A0 00 20 A0 E3                 MOV     R2, #0
+ROM:A06847A4 64 10 A0 E3                 MOV     R1, #0x64
+ROM:A06847A8 D3 2A FB EB                 BL      sub_A054F2FC
+ROM:A06847A8
+ROM:A06847AC 00 10 A0 E1                 MOV     R1, R0
+ROM:A06847B0 F8 00 94 E5                 LDR     R0, [R4,#0xF8]
+ROM:A06847B4 37 2F FB EB                 BL      sub_A0550498
+ROM:A06847B4
+ROM:A06847B8 00 00 50 E3                 CMP     R0, #0
+ROM:A06847BC 64 60 A0 13                 MOVNE   R6, #0x64
+ROM:A06847C0 1D 00 00 1A                 BNE     loc_A068483C
+ROM:A06847C0
+ROM:A06847C4 00 20 A0 E3                 MOV     R2, #0
+ROM:A06847C8 65 10 A0 E3                 MOV     R1, #0x65
+ROM:A06847CC F8 00 94 E5                 LDR     R0, [R4,#0xF8]
+ROM:A06847D0 C9 2A FB EB                 BL      sub_A054F2FC
+ROM:A06847D0
+ROM:A06847D4 00 10 A0 E1                 MOV     R1, R0
+ROM:A06847D8 F8 00 94 E5                 LDR     R0, [R4,#0xF8]
+ROM:A06847DC 2D 2F FB EB                 BL      sub_A0550498
+ROM:A06847DC
+ROM:A06847E0 00 00 50 E3                 CMP     R0, #0
+ROM:A06847E4 65 60 A0 13                 MOVNE   R6, #0x65
+ROM:A06847E8 13 00 00 1A                 BNE     loc_A068483C
+ROM:A06847E8
+ROM:A06847EC 00 20 A0 E3                 MOV     R2, #0
+ROM:A06847F0 62 10 A0 E3                 MOV     R1, #0x62
+ROM:A06847F4 F8 00 94 E5                 LDR     R0, [R4,#0xF8]
+ROM:A06847F8 BF 2A FB EB                 BL      sub_A054F2FC
+ROM:A06847F8
+ROM:A06847FC 00 10 A0 E1                 MOV     R1, R0
+ROM:A0684800 F8 00 94 E5                 LDR     R0, [R4,#0xF8]
+ROM:A0684804 23 2F FB EB                 BL      sub_A0550498
+ROM:A0684804
+ROM:A0684808 00 00 50 E3                 CMP     R0, #0
+ROM:A068480C 09 00 00 1A                 BNE     loc_A0684838
+ROM:A068480C
+ROM:A0684810 00 20 A0 E3                 MOV     R2, #0
+ROM:A0684814 63 10 A0 E3                 MOV     R1, #0x63
+ROM:A0684818 F8 00 94 E5                 LDR     R0, [R4,#0xF8]
+ROM:A068481C B6 2A FB EB                 BL      sub_A054F2FC
+ROM:A068481C
+ROM:A0684820 00 10 A0 E1                 MOV     R1, R0
+ROM:A0684824 F8 00 94 E5                 LDR     R0, [R4,#0xF8]
+ROM:A0684828 1A 2F FB EB                 BL      sub_A0550498
+ROM:A0684828
+ROM:A068482C 00 00 50 E3                 CMP     R0, #0
+ROM:A0684830 63 60 A0 13                 MOVNE   R6, #0x63
+ROM:A0684834 00 00 00 1A                 BNE     loc_A068483C
+ROM:A0684834
+ROM:A0684838
+ROM:A0684838             loc_A0684838                            ; A068480Cj
+ROM:A0684838 62 60 A0 E3                 MOV     R6, #0x62
+ROM:A0684838
+ROM:A068483C
+ROM:A068483C             loc_A068483C                            ; A06847C0j
+ROM:A068483C                                                     ; A06847E8j
+ROM:A068483C                                                     ; A0684834j
+ROM:A068483C 00 00 55 E3                 CMP     R5, #0
+ROM:A0684840 0C 00 00 0A                 BEQ     loc_A0684878
+ROM:A0684840
+ROM:A0684844 80 2F A0 E3                 MOV     R2, #0x200
+ROM:A0684848 1C 10 8D E2                 ADD     R1, SP, #0x1C
+ROM:A068484C 05 00 A0 E1                 MOV     R0, R5
+ROM:A0684850 8A 16 0C FB                 BLX     sub_A098A282    ; void UnpackNumPkt(PKT_NUM *pkt, char *buf, int maxlen)
+ROM:A0684850
+ROM:A0684854 1C 00 8D E2                 ADD     R0, SP, #0x1C
+ROM:A0684858 17 8A 36 FA                 BLX     sub_A14270BC    ; unsigned int strlen(const char *)
+ROM:A0684858
+
+
+//ADRBKLST_ALLOCWS_HOOK
+ROM:A068485C 00 08 A0 E1                 MOV     R0, R0,LSL#16
+ROM:A0684860 20 08 A0 E1                 MOV     R0, R0,LSR#16
+ROM:A0684864 23 4B 0C FA                 BLX     sub_A09974F8    ; WSHDR *AllocWS(int len)
+ROM:A0684864
+ROM:A0684868 00 50 A0 E1                 MOV     R5, R0
+ROM:A068486C 1C 10 8D E2                 ADD     R1, SP, #0x1C
+ROM:A0684870 FA CD ED FB                 BLX     sub_A01F8062    ; void num_2ws(WSHDR *ws, char *num)
+ROM:A0684870
+ROM:A0684874 05 00 00 EA                 B       loc_A0684890
+ROM:A0684874
+ROM:A0684878             ; ---------------------------------------------------------------------------
+ROM:A0684878
+
+//E
+ROM:A0684878             loc_A0684878                            ; A0684778j
+ROM:A0684878                                                     ; A0684840j
+ROM:A0684878 36 00 A0 E3                 MOV     R0, #0x36
+ROM:A068487C 1D 4B 0C FA                 BLX     sub_A09974F8    ; WSHDR *AllocWS(int len)
+ROM:A068487C
+ROM:A0684880 00 50 A0 E1                 MOV     R5, R0
+ROM:A0684884 00 10 A0 E1                 MOV     R1, R0
+ROM:A0684888 FC 03 1F E5                 LDR     R0, =0x1108A
+ROM:A068488C 0A 91 0B EB                 BL      sub_A0968CBC    ; void GetLangMesIntoWS(int lgp, WSHDR *ws)
+ROM:A068488C
+ROM:A0684890
+ROM:A0684890             loc_A0684890                            ; A0684874j
+ROM:A0684890 06 00 A0 E1                 MOV     R0, R6
+ROM:A0684894 28 FE FF EB                 BL      sub_A068413C    ; WSHDR *GetIconByABType(int type)
+ROM:A0684894
+ROM:A0684898 00 60 A0 E1                 MOV     R6, R0
+ROM:A068489C 08 00 8D E2                 ADD     R0, SP, #8
+ROM:A06848A0 80 0D 80 E8                 STMIA   R0, {R7,R8,R10,R11}
+ROM:A06848A4 24 22 9D E5                 LDR     R2, [SP,#0x224]
+ROM:A06848A8 20 32 9D E5                 LDR     R3, [SP,#0x220]
+ROM:A06848AC 0C 00 8D E8                 STMEA   SP, {R2,R3}
+ROM:A06848B0 14 01 D4 E5                 LDRB    R0, [R4,#0x114]
+ROM:A06848B4 2C 22 9D E5                 LDR     R2, [SP,#0x22C]
+ROM:A06848B8 28 32 9D E5                 LDR     R3, [SP,#0x228]
+ROM:A06848BC 8C 1F 8D E2                 ADD     R1, SP, #0x230
+ROM:A06848C0 F6 FE FF EB                 BL      sub_A06844A0
+ROM:A06848C0
+ROM:A06848C4 00 70 A0 E1                 MOV     R7, R0
+ROM:A06848C8 92 48 F1 FA                 BLX     sub_A02D6B18    ; DISPLAY_BIG_LETTERS
+ROM:A06848C8
+ROM:A06848CC 00 00 50 E3                 CMP     R0, #0
+ROM:A06848D0 07 00 A0 11                 MOVNE   R0, R7
+ROM:A06848D4 F4 10 94 15                 LDRNE   R1, [R4,#0xF4]
+ROM:A06848D8 E7 5A 00 1B                 BLNE    sub_A069B47C
+ROM:A06848D8
+ROM:A06848DC 38 02 9D E5                 LDR     R0, [SP,#0x238]
+ROM:A06848E0 00 70 80 E5                 STR     R7, [R0]
+ROM:A06848E4 F8 00 94 E5                 LDR     R0, [R4,#0xF8]
+ROM:A06848E8 74 2A FB EB                 BL      sub_A054F2C0
+ROM:A06848E8
+ROM:A06848EC 42 1F A0 E3                 MOV     R1, #0x108
+ROM:A06848F0 B4 10 91 E1                 LDRH    R1, [R1,R4]
+ROM:A06848F4 01 00 50 E1                 CMP     R0, R1
+ROM:A06848F8 0C 01 94 05                 LDREQ   R0, [R4,#0x10C]
+ROM:A06848FC 01 00 50 03                 CMPEQ   R0, #1
+ROM:A0684900 06 00 00 1A                 BNE     loc_A0684920
+ROM:A0684900
+ROM:A0684904 25 00 A0 E3                 MOV     R0, #0x25
+ROM:A0684908 FA 4A 0C FA                 BLX     sub_A09974F8    ; WSHDR *AllocWS(int len)
+ROM:A0684908
+ROM:A068490C 00 40 A0 E1                 MOV     R4, R0
+ROM:A0684910 00 10 A0 E1                 MOV     R1, R0
+ROM:A0684914 C8 0A 9F E5                 LDR     R0, =0xDAA
+ROM:A0684918 E7 90 0B EB                 BL      sub_A0968CBC    ; void GetLangMesIntoWS(int lgp, WSHDR *ws)
+ROM:A0684918
+ROM:A068491C 13 00 00 EA                 B       loc_A0684970
+ROM:A068491C
+ROM:A0684920             ; ---------------------------------------------------------------------------
+ROM:A0684920
+ROM:A0684920             loc_A0684920                            ; A0684900j
+ROM:A0684920 05 10 A0 E1                 MOV     R1, R5
+ROM:A0684924 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684928 CB FD FF EB                 BL      sub_A068405C
+ROM:A0684928
+
+//ADRBKLST_CATWS_HOOK
+ROM:A068492C 05 00 A0 E1                 MOV     R0, R5
+ROM:A0684930 CD CA ED FB                 BLX     sub_A01F746E    ; int wstrlen(WSHDR *wshdr)
+ROM:A0684930
+ROM:A0684934 00 40 A0 E1                 MOV     R4, R0
+ROM:A0684938 06 00 A0 E1                 MOV     R0, R6
+ROM:A068493C CA CA ED FB                 BLX     sub_A01F746E    ; int wstrlen(WSHDR *wshdr)
+ROM:A068493C
+ROM:A0684940 00 00 84 E0                 ADD     R0, R4, R0
+ROM:A0684944 01 00 80 E2                 ADD     R0, R0, #1
+ROM:A0684948 EA 4A 0C FA                 BLX     sub_A09974F8    ; WSHDR *AllocWS(int len)
+ROM:A0684948
+ROM:A068494C 00 40 A0 E1                 MOV     R4, R0
+ROM:A0684950 20 10 A0 E3                 MOV     R1, #0x20
+ROM:A0684954 E6 CC ED FA                 BLX     sub_A01F7CF4    ; void wsAppendChar(WSHDR *ws,int wchar)
+ROM:A0684954
+ROM:A0684958 06 10 A0 E1                 MOV     R1, R6
+ROM:A068495C 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684960 9F CC ED FB                 BLX     sub_A01F7BE6    ; WSHDR *wstrcpy(WSHDR *wshdr_d,WSHDR *wshdr_s)
+ROM:A0684960
+ROM:A0684964 05 10 A0 E1                 MOV     R1, R5
+ROM:A0684968 04 00 A0 E1                 MOV     R0, R4
+ROM:A068496C AE CC ED FA                 BLX     sub_A01F7C2C    ;  WSHDR *wstrcat(WSHDR *wshdr_d,WSHDR *wshdr_s)
+ROM:A068496C
+ROM:A0684970
+ROM:A0684970             loc_A0684970                            ; A068491Cj
+ROM:A0684970 00 00 56 E3                 CMP     R6, #0
+ROM:A0684974 06 00 A0 11                 MOVNE   R0, R6
+ROM:A0684978 C1 C0 EB 1B                 BLNE    sub_A0174C84    ; int FreeWS(WSHDR *ws) //1,suc
+ROM:A0684978
+ROM:A068497C 00 00 55 E3                 CMP     R5, #0
+ROM:A0684980 05 00 A0 11                 MOVNE   R0, R5
+ROM:A0684984 BE C0 EB 1B                 BLNE    sub_A0174C84    ; int FreeWS(WSHDR *ws) //1,suc
+ROM:A0684984
+ROM:A0684988 3C 02 9D E5                 LDR     R0, [SP,#0x23C]
+ROM:A068498C 00 40 80 E5                 STR     R4, [R0]
+ROM:A0684990 90 DF 8D E2                 ADD     SP, SP, #0x240
+ROM:A0684994 F0 8D BD E8                 LDMFD   SP!, {R4-R8,R10,R11,PC}
+ROM:A0684994
+ROM:A0684994             ; End of function sub_A06846DC
+ROM:A0684994
+ROM:A0684998
+ROM:A0684998             ; *************** S U B R O U T I N E ***************************************
+
+
+//D
+ROM:A0684998
+ROM:A0684998             sub_A0684998                            ; A06850C8p
+ROM:A0684998
+ROM:A0684998             var_250         = -0x250
+ROM:A0684998             var_244         = -0x244
+ROM:A0684998             var_23C         = -0x23C
+ROM:A0684998             var_58          = -0x58
+ROM:A0684998             var_38          = -0x38
+ROM:A0684998             var_34          = -0x34
+ROM:A0684998             var_30          = -0x30
+ROM:A0684998             var_2C          = -0x2C
+ROM:A0684998             var_28          = -0x28
+ROM:A0684998             var_24          = -0x24
+ROM:A0684998
+ROM:A0684998 F0 4D 2D E9                 STMFD   SP!, {R4-R8,R10,R11,LR}
+ROM:A068499C 8E DF 4D E2                 SUB     SP, SP, #0x238
+ROM:A06849A0 00 40 A0 E1                 MOV     R4, R0
+ROM:A06849A4 00 00 A0 E3                 MOV     R0, #0
+ROM:A06849A8 80 CF 8D E2                 ADD     R12, SP, #0x200
+ROM:A06849AC B4 03 CC E1                 STRH    R0, [R12,#0x34]
+ROM:A06849B0 30 02 8D E5                 STR     R0, [SP,#0x230]
+ROM:A06849B4 2C 02 8D E5                 STR     R0, [SP,#0x22C]
+ROM:A06849B8 28 02 8D E5                 STR     R0, [SP,#0x228]
+ROM:A06849BC 24 02 8D E5                 STR     R0, [SP,#0x224]
+ROM:A06849C0 20 02 8D E5                 STR     R0, [SP,#0x220]
+ROM:A06849C4 02 B0 A0 E1                 MOV     R11, R2
+ROM:A06849C8 01 A0 A0 E1                 MOV     R10, R1
+ROM:A06849CC 8C 1F 8D E2                 ADD     R1, SP, #0x230
+ROM:A06849D0 23 20 A0 E3                 MOV     R2, #0x23
+ROM:A06849D4 04 00 A0 E1                 MOV     R0, R4
+ROM:A06849D8 F5 FD FF EB                 BL      sub_A06841B4
+ROM:A06849D8
+ROM:A06849DC 00 60 A0 E1                 MOV     R6, R0
+ROM:A06849E0 04 00 A0 E1                 MOV     R0, R4
+ROM:A06849E4 24 20 A0 E3                 MOV     R2, #0x24
+ROM:A06849E8 8B 1F 8D E2                 ADD     R1, SP, #0x22C
+ROM:A06849EC F0 FD FF EB                 BL      sub_A06841B4
+ROM:A06849EC
+ROM:A06849F0 00 70 A0 E1                 MOV     R7, R0
+ROM:A06849F4 04 00 A0 E1                 MOV     R0, R4
+ROM:A06849F8 29 20 A0 E3                 MOV     R2, #0x29
+ROM:A06849FC 8A 1F 8D E2                 ADD     R1, SP, #0x228
+ROM:A0684A00 EB FD FF EB                 BL      sub_A06841B4
+ROM:A0684A00
+ROM:A0684A04 00 80 A0 E1                 MOV     R8, R0
+ROM:A0684A08 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684A0C 60 20 A0 E3                 MOV     R2, #0x60
+ROM:A0684A10 89 1F 8D E2                 ADD     R1, SP, #0x224
+ROM:A0684A14 E6 FD FF EB                 BL      sub_A06841B4
+ROM:A0684A14
+ROM:A0684A18 00 50 A0 E1                 MOV     R5, R0
+ROM:A0684A1C 15 01 D4 E5                 LDRB    R0, [R4,#0x115]
+ROM:A0684A20 06 00 50 E3                 CMP     R0, #6
+ROM:A0684A24 00 F1 8F 90                 ADDLS   PC, PC, R0,LSL#2
+
+
+//C
+ROM:A0684A28 49 00 00 EA                 B       loc_A0684B54
+ROM:A0684A28
+ROM:A0684A2C             ; ---------------------------------------------------------------------------
+ROM:A0684A2C
+ROM:A0684A2C             loc_A0684A2C                            ; A0684A24j
+ROM:A0684A2C 48 00 00 EA                 B       loc_A0684B54
+ROM:A0684A2C
+ROM:A0684A30             ; ---------------------------------------------------------------------------
+ROM:A0684A30
+ROM:A0684A30             loc_A0684A30                            ; A0684A24j
+ROM:A0684A30 04 00 00 EA                 B       loc_A0684A48
+ROM:A0684A30
+ROM:A0684A34             ; ---------------------------------------------------------------------------
+ROM:A0684A34
+ROM:A0684A34             loc_A0684A34                            ; A0684A24j
+ROM:A0684A34 05 00 00 EA                 B       loc_A0684A50
+ROM:A0684A34
+ROM:A0684A38             ; ---------------------------------------------------------------------------
+ROM:A0684A38
+ROM:A0684A38             loc_A0684A38                            ; A0684A24j
+ROM:A0684A38 13 00 00 EA                 B       loc_A0684A8C
+ROM:A0684A38
+ROM:A0684A3C             ; ---------------------------------------------------------------------------
+ROM:A0684A3C
+ROM:A0684A3C             loc_A0684A3C                            ; A0684A24j
+ROM:A0684A3C 14 00 00 EA                 B       loc_A0684A94
+ROM:A0684A3C
+ROM:A0684A40             ; ---------------------------------------------------------------------------
+ROM:A0684A40
+ROM:A0684A40             loc_A0684A40                            ; A0684A24j
+ROM:A0684A40 1A 00 00 EA                 B       loc_A0684AB0
+ROM:A0684A40
+ROM:A0684A44             ; ---------------------------------------------------------------------------
+ROM:A0684A44
+ROM:A0684A44             loc_A0684A44                            ; A0684A24j
+ROM:A0684A44 22 00 00 EA                 B       loc_A0684AD4
+ROM:A0684A44
+ROM:A0684A48             ; ---------------------------------------------------------------------------
+ROM:A0684A48
+ROM:A0684A48             loc_A0684A48                            ; A0684A24j
+ROM:A0684A48                                                     ; loc_A0684A30j
+ROM:A0684A48             ; jumptable A0684A24 entry 1
+ROM:A0684A48 69 20 A0 E3                 MOV     R2, #0x69
+ROM:A0684A4C 3C 00 00 EA                 B       loc_A0684B44
+ROM:A0684A4C
+ROM:A0684A50             ; ---------------------------------------------------------------------------
+ROM:A0684A50
+ROM:A0684A50             loc_A0684A50                            ; A0684A24j
+ROM:A0684A50                                                     ; loc_A0684A34j
+ROM:A0684A50             ; jumptable A0684A24 entry 2
+ROM:A0684A50 2F 20 A0 E3                 MOV     R2, #0x2F
+ROM:A0684A54 88 1F 8D E2                 ADD     R1, SP, #0x220
+ROM:A0684A58 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684A5C D4 FD FF EB                 BL      sub_A06841B4
+ROM:A0684A5C
+ROM:A0684A60 00 00 50 E3                 CMP     R0, #0
+ROM:A0684A64 2F 20 A0 13                 MOVNE   R2, #0x2F
+ROM:A0684A68 35 00 00 1A                 BNE     loc_A0684B44
+ROM:A0684A68
+ROM:A0684A6C 73 20 A0 E3                 MOV     R2, #0x73
+ROM:A0684A70 88 1F 8D E2                 ADD     R1, SP, #0x220
+ROM:A0684A74 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684A78 CD FD FF EB                 BL      sub_A06841B4
+ROM:A0684A78
+ROM:A0684A7C 00 00 50 E3                 CMP     R0, #0
+ROM:A0684A80 73 20 A0 13                 MOVNE   R2, #0x73
+ROM:A0684A84 2E 00 00 1A                 BNE     loc_A0684B44
+ROM:A0684A84
+ROM:A0684A88 58 00 00 EA                 B       loc_A0684BF0
+ROM:A0684A88
+ROM:A0684A8C             ; ---------------------------------------------------------------------------
+ROM:A0684A8C
+ROM:A0684A8C             loc_A0684A8C                            ; A0684A24j
+ROM:A0684A8C                                                     ; loc_A0684A38j
+ROM:A0684A8C             ; jumptable A0684A24 entry 3
+ROM:A0684A8C 30 20 A0 E3                 MOV     R2, #0x30
+ROM:A0684A90 2B 00 00 EA                 B       loc_A0684B44
+ROM:A0684A90
+ROM:A0684A94             ; ---------------------------------------------------------------------------
+ROM:A0684A94
+ROM:A0684A94             loc_A0684A94                            ; A0684A24j
+ROM:A0684A94                                                     ; loc_A0684A3Cj
+ROM:A0684A94             ; jumptable A0684A24 entry 4
+ROM:A0684A94 33 20 A0 E3                 MOV     R2, #0x33
+ROM:A0684A98 88 1F 8D E2                 ADD     R1, SP, #0x220
+ROM:A0684A9C 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684AA0 C3 FD FF EB                 BL      sub_A06841B4
+ROM:A0684AA0
+ROM:A0684AA4 00 00 50 E3                 CMP     R0, #0
+ROM:A0684AA8 50 00 00 0A                 BEQ     loc_A0684BF0
+ROM:A0684AA8
+ROM:A0684AAC 05 00 00 EA                 B       loc_A0684AC8
+ROM:A0684AAC
+ROM:A0684AB0             ; ---------------------------------------------------------------------------
+ROM:A0684AB0
+ROM:A0684AB0             loc_A0684AB0                            ; A0684A24j
+ROM:A0684AB0                                                     ; loc_A0684A40j
+ROM:A0684AB0             ; jumptable A0684A24 entry 5
+ROM:A0684AB0 66 20 A0 E3                 MOV     R2, #0x66
+ROM:A0684AB4 88 1F 8D E2                 ADD     R1, SP, #0x220
+ROM:A0684AB8 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684ABC BC FD FF EB                 BL      sub_A06841B4
+ROM:A0684ABC
+ROM:A0684AC0 00 00 50 E3                 CMP     R0, #0
+ROM:A0684AC4 49 00 00 0A                 BEQ     loc_A0684BF0
+ROM:A0684AC4
+ROM:A0684AC8
+ROM:A0684AC8             loc_A0684AC8                            ; A0684AACj
+ROM:A0684AC8 20 02 9D E5                 LDR     R0, [SP,#0x220]
+ROM:A0684ACC 87 25 FA EB                 BL      sub_A050E0F0
+ROM:A0684ACC
+ROM:A0684AD0 46 00 00 EA                 B       loc_A0684BF0
+ROM:A0684AD0
+ROM:A0684AD4             ; ---------------------------------------------------------------------------
+ROM:A0684AD4
+ROM:A0684AD4             loc_A0684AD4                            ; A0684A24j
+ROM:A0684AD4                                                     ; loc_A0684A44j
+ROM:A0684AD4             ; jumptable A0684A24 entry 6
+ROM:A0684AD4 6B 20 A0 E3                 MOV     R2, #0x6B
+ROM:A0684AD8 88 1F 8D E2                 ADD     R1, SP, #0x220
+ROM:A0684ADC 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684AE0 B3 FD FF EB                 BL      sub_A06841B4
+ROM:A0684AE0
+ROM:A0684AE4 00 00 50 E3                 CMP     R0, #0
+ROM:A0684AE8 6B 20 A0 13                 MOVNE   R2, #0x6B
+ROM:A0684AEC 14 00 00 1A                 BNE     loc_A0684B44
+ROM:A0684AEC
+ROM:A0684AF0 5D 20 A0 E3                 MOV     R2, #0x5D
+ROM:A0684AF4 88 1F 8D E2                 ADD     R1, SP, #0x220
+ROM:A0684AF8 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684AFC AC FD FF EB                 BL      sub_A06841B4
+ROM:A0684AFC
+ROM:A0684B00 00 00 50 E3                 CMP     R0, #0
+ROM:A0684B04 5D 20 A0 13                 MOVNE   R2, #0x5D
+ROM:A0684B08 0D 00 00 1A                 BNE     loc_A0684B44
+ROM:A0684B08
+ROM:A0684B0C 71 20 A0 E3                 MOV     R2, #0x71
+ROM:A0684B10 88 1F 8D E2                 ADD     R1, SP, #0x220
+ROM:A0684B14 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684B18 A5 FD FF EB                 BL      sub_A06841B4
+ROM:A0684B18
+ROM:A0684B1C 00 00 50 E3                 CMP     R0, #0
+ROM:A0684B20 71 20 A0 13                 MOVNE   R2, #0x71
+ROM:A0684B24 06 00 00 1A                 BNE     loc_A0684B44
+ROM:A0684B24
+ROM:A0684B28 72 20 A0 E3                 MOV     R2, #0x72
+ROM:A0684B2C 88 1F 8D E2                 ADD     R1, SP, #0x220
+ROM:A0684B30 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684B34 9E FD FF EB                 BL      sub_A06841B4
+ROM:A0684B34
+ROM:A0684B38 00 00 50 E3                 CMP     R0, #0
+ROM:A0684B3C 2B 00 00 0A                 BEQ     loc_A0684BF0
+ROM:A0684B3C
+ROM:A0684B40 72 20 A0 E3                 MOV     R2, #0x72
+ROM:A0684B40
+ROM:A0684B44
+ROM:A0684B44             loc_A0684B44                            ; A0684A4Cj
+ROM:A0684B44                                                     ; A0684A68j
+ROM:A0684B44                                                     ; A0684A84j
+ROM:A0684B44                                                     ; A0684A90j
+ROM:A0684B44                                                     ; A0684AECj
+ROM:A0684B44                                                     ; A0684B08j ...
+ROM:A0684B44 88 1F 8D E2                 ADD     R1, SP, #0x220
+ROM:A0684B48 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684B4C 98 FD FF EB                 BL      sub_A06841B4
+ROM:A0684B4C
+ROM:A0684B50 26 00 00 EA                 B       loc_A0684BF0
+ROM:A0684B50
+ROM:A0684B54             ; ---------------------------------------------------------------------------
+ROM:A0684B54
+ROM:A0684B54             loc_A0684B54                            ; A0684A24j
+ROM:A0684B54                                                     ; A0684A28j
+ROM:A0684B54                                                     ; loc_A0684A2Cj
+ROM:A0684B54             ; jumptable A0684A24 default entry
+ROM:A0684B54             ; jumptable A0684A24 entry 0
+
+
+//A
+ROM:A0684B54 00 20 A0 E3                 MOV     R2, #0
+ROM:A0684B58 A1 10 A0 E3                 MOV     R1, #0xA1
+ROM:A0684B5C F8 00 94 E5                 LDR     R0, [R4,#0xF8]
+ROM:A0684B60 E5 29 FB EB                 BL      sub_A054F2FC
+ROM:A0684B60
+ROM:A0684B64 00 10 A0 E1                 MOV     R1, R0
+ROM:A0684B68 F8 00 94 E5                 LDR     R0, [R4,#0xF8]
+ROM:A0684B6C 49 2E FB EB                 BL      sub_A0550498
+ROM:A0684B6C
+ROM:A0684B70 00 00 50 E3                 CMP     R0, #0
+ROM:A0684B74 17 00 00 0A                 BEQ     loc_A0684BD8
+ROM:A0684B74
+ROM:A0684B78 00 20 A0 E3                 MOV     R2, #0
+ROM:A0684B7C A1 10 A0 E3                 MOV     R1, #0xA1
+ROM:A0684B80 F8 00 94 E5                 LDR     R0, [R4,#0xF8]
+ROM:A0684B84 DC 29 FB EB                 BL      sub_A054F2FC
+ROM:A0684B84
+ROM:A0684B88 00 10 A0 E1                 MOV     R1, R0
+ROM:A0684B8C F8 00 94 E5                 LDR     R0, [R4,#0xF8]
+ROM:A0684B90 40 2E FB EB                 BL      sub_A0550498
+ROM:A0684B90
+ROM:A0684B94 00 00 50 E3                 CMP     R0, #0
+ROM:A0684B98 0E 00 00 0A                 BEQ     loc_A0684BD8
+ROM:A0684B98
+ROM:A0684B9C 80 2F A0 E3                 MOV     R2, #0x200
+ROM:A0684BA0 1C 10 8D E2                 ADD     R1, SP, #0x1C
+ROM:A0684BA4 B5 15 0C FB                 BLX     sub_A098A282    ; void UnpackNumPkt(PKT_NUM *pkt, char *buf, int maxlen)
+ROM:A0684BA4
+ROM:A0684BA8 1C 00 8D E2                 ADD     R0, SP, #0x1C
+ROM:A0684BAC 42 89 36 FA                 BLX     sub_A14270BC    ; unsigned int strlen(const char *)
+ROM:A0684BAC
+
+//ADRBKLST_ALLOCWS_HOOK3
+ROM:A0684BB0 00 08 A0 E1                 MOV     R0, R0,LSL#16
+ROM:A0684BB4 20 08 A0 E1                 MOV     R0, R0,LSR#16
+ROM:A0684BB8 4E 4A 0C FA                 BLX     sub_A09974F8    ; WSHDR *AllocWS(int len)
+ROM:A0684BB8
+ROM:A0684BBC 20 02 8D E5                 STR     R0, [SP,#0x220]
+ROM:A0684BC0 1C 10 8D E2                 ADD     R1, SP, #0x1C
+ROM:A0684BC4 25 CD ED FB                 BLX     sub_A01F8062    ; void num_2ws(WSHDR *ws, char *num)
+ROM:A0684BC4
+ROM:A0684BC8 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684BCC 20 12 9D E5                 LDR     R1, [SP,#0x220]
+ROM:A0684BD0 21 FD FF EB                 BL      sub_A068405C
+ROM:A0684BD0
+ROM:A0684BD4 05 00 00 EA                 B       loc_A0684BF0
+
+
+//B
+ROM:A0684BD8             ; ---------------------------------------------------------------------------
+ROM:A0684BD8
+ROM:A0684BD8             loc_A0684BD8                            ; A0684B74j
+ROM:A0684BD8                                                     ; A0684B98j
+ROM:A0684BD8 36 00 A0 E3                 MOV     R0, #0x36
+ROM:A0684BDC 45 4A 0C FA                 BLX     sub_A09974F8    ; WSHDR *AllocWS(int len)
+ROM:A0684BDC
+ROM:A0684BE0 20 02 8D E5                 STR     R0, [SP,#0x220]
+ROM:A0684BE4 00 10 A0 E1                 MOV     R1, R0
+ROM:A0684BE8 5C 07 1F E5                 LDR     R0, =0x1108A
+ROM:A0684BEC 32 90 0B EB                 BL      sub_A0968CBC    ; void GetLangMesIntoWS(int lgp, WSHDR *ws)
+ROM:A0684BEC
+ROM:A0684BF0
+ROM:A0684BF0             loc_A0684BF0                            ; A0684A88j
+ROM:A0684BF0                                                     ; A0684AA8j
+ROM:A0684BF0                                                     ; A0684AC4j
+ROM:A0684BF0                                                     ; A0684AD0j
+ROM:A0684BF0                                                     ; A0684B3Cj
+ROM:A0684BF0                                                     ; A0684B50j ...
+ROM:A0684BF0 14 50 8D E5                 STR     R5, [SP,#0x14]
+ROM:A0684BF4 08 00 8D E2                 ADD     R0, SP, #8
+ROM:A0684BF8 C0 01 80 E8                 STMIA   R0, {R6-R8}
+ROM:A0684BFC 28 22 9D E5                 LDR     R2, [SP,#0x228]
+ROM:A0684C00 24 32 9D E5                 LDR     R3, [SP,#0x224]
+ROM:A0684C04 0C 00 8D E8                 STMEA   SP, {R2,R3}
+ROM:A0684C08 14 01 D4 E5                 LDRB    R0, [R4,#0x114]
+ROM:A0684C0C 30 22 9D E5                 LDR     R2, [SP,#0x230]
+ROM:A0684C10 2C 32 9D E5                 LDR     R3, [SP,#0x22C]
+ROM:A0684C14 8D 1F 8D E2                 ADD     R1, SP, #0x234
+ROM:A0684C18 20 FE FF EB                 BL      sub_A06844A0
+ROM:A0684C18
+ROM:A0684C1C 00 50 A0 E1                 MOV     R5, R0
+ROM:A0684C20 BC 47 F1 FA                 BLX     sub_A02D6B18    ; DISPLAY_BIG_LETTERS
+ROM:A0684C20
+ROM:A0684C24 00 00 50 E3                 CMP     R0, #0
+ROM:A0684C28 05 00 A0 11                 MOVNE   R0, R5
+ROM:A0684C2C F4 10 94 15                 LDRNE   R1, [R4,#0xF4]
+ROM:A0684C30 11 5A 00 1B                 BLNE    sub_A069B47C
+ROM:A0684C30
+ROM:A0684C34 00 50 8A E5                 STR     R5, [R10]
+ROM:A0684C38 20 12 9D E5                 LDR     R1, [SP,#0x220]
+ROM:A0684C3C 00 00 51 E3                 CMP     R1, #0
+ROM:A0684C40 18 00 00 0A                 BEQ     loc_A0684CA8
+ROM:A0684C40
+ROM:A0684C44 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684C48 03 FD FF EB                 BL      sub_A068405C
+ROM:A0684C48
+
+//ADRBKLST_CATWS_HOOK3
+ROM:A0684C4C 20 02 9D E5                 LDR     R0, [SP,#0x220]
+ROM:A0684C50 05 CA ED FB                 BLX     sub_A01F746E    ; int wstrlen(WSHDR *wshdr)
+ROM:A0684C50
+ROM:A0684C54 04 00 80 E2                 ADD     R0, R0, #4
+ROM:A0684C58 26 4A 0C FA                 BLX     sub_A09974F8    ; WSHDR *AllocWS(int len)
+ROM:A0684C58
+ROM:A0684C5C 00 40 A0 E1                 MOV     R4, R0
+ROM:A0684C60 20 10 A0 E3                 MOV     R1, #0x20
+ROM:A0684C64 22 CC ED FA                 BLX     sub_A01F7CF4    ; void wsAppendChar(WSHDR *ws,int wchar)
+ROM:A0684C64
+ROM:A0684C68 20 10 A0 E3                 MOV     R1, #0x20
+ROM:A0684C6C 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684C70 1F CC ED FA                 BLX     sub_A01F7CF4    ; void wsAppendChar(WSHDR *ws,int wchar)
+ROM:A0684C70
+ROM:A0684C74 20 10 A0 E3                 MOV     R1, #0x20
+ROM:A0684C78 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684C7C 1C CC ED FA                 BLX     sub_A01F7CF4    ; void wsAppendChar(WSHDR *ws,int wchar)
+ROM:A0684C7C
+ROM:A0684C80 20 10 A0 E3                 MOV     R1, #0x20
+ROM:A0684C84 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684C88 19 CC ED FA                 BLX     sub_A01F7CF4    ; void wsAppendChar(WSHDR *ws,int wchar)
+ROM:A0684C88
+ROM:A0684C8C 04 00 A0 E1                 MOV     R0, R4
+ROM:A0684C90 20 12 9D E5                 LDR     R1, [SP,#0x220]
+ROM:A0684C94 E4 CB ED FA                 BLX     sub_A01F7C2C    ;  WSHDR *wstrcat(WSHDR *wshdr_d,WSHDR *wshdr_s)
+ROM:A0684C94
+ROM:A0684C98 00 40 8B E5                 STR     R4, [R11]
+ROM:A0684C9C 20 02 9D E5                 LDR     R0, [SP,#0x220]
+ROM:A0684CA0 00 00 50 E3                 CMP     R0, #0
+ROM:A0684CA4 F6 BF EB 1B                 BLNE    sub_A0174C84    ; int FreeWS(WSHDR *ws) //1,suc
+ROM:A0684CA4
+ROM:A0684CA8
+ROM:A0684CA8             loc_A0684CA8                            ; A0684C40j
+ROM:A0684CA8 8E DF 8D E2                 ADD     SP, SP, #0x238
+ROM:A0684CAC F0 8D BD E8                 LDMFD   SP!, {R4-R8,R10,R11,PC}
+ROM:A0684CB0             ; *************** S U B R O U T I N E ***************************************
+ROM:A0684CB0
+ROM:A0684CB0
+ROM:A0684CB0             sub_A0684CB0                            ; A0685084p
+ROM:A0684CB0
+ROM:A0684CB0             var_28          = -0x28
+ROM:A0684CB0
+ROM:A0684CB0 FC 4D 2D E9                 STMFD   SP!, {R2-R8,R10,R11,LR}
+ROM:A0684CB4 01 60 D0 E5                 LDRB    R6, [R0,#1]
+ROM:A0684CB8 2C B7 9F E5                 LDR     R11, =unk_A09564E6
+ROM:A0684CBC 24 A7 9F E5                 LDR     R10, =0xEC10
+ROM:A0684CC0 01 80 A0 E1                 MOV     R8, R1
+ROM:A0684CC4 00 50 A0 E1                 MOV     R5, R0
+ROM:A0684CC8 00 40 A0 E3                 MOV     R4, #0
+ROM:A0684CCC 54 00 00 EA                 B       loc_A0684E24
+ROM:A0684CCC
+ROM:A0684CD0             ; ---------------------------------------------------------------------------
+ROM:A0684CD0
+ROM:A0684CD0             loc_A0684CD0                            ; A0684E28j
+ROM:A0684CD0 60 0F 1F E5                 LDR     R0, =0xFFFF
+ROM:A0684CD4 09 00 54 E3                 CMP     R4, #9
+ROM:A0684CD8 84 00 84 30                 ADDCC   R0, R4, R4,LSL#1
+ROM:A0684CDC 00 01 85 30                 ADDCC   R0, R5, R0,LSL#2
+ROM:A0684CE0 B8 02 D0 31                 LDRCCH  R0, [R0,#0x28]
+ROM:A0684CE4 00 00 56 E3                 CMP     R6, #0
+ROM:A0684CE8 02 00 00 0A                 BEQ     loc_A0684CF8
+ROM:A0684CE8
+ROM:A0684CEC 08 00 50 E1                 CMP     R0, R8
+ROM:A0684CF0 0A 40 A0 03                 MOVEQ   R4, #0xA
+ROM:A0684CF4 4A 00 00 0A                 BEQ     loc_A0684E24
+ROM:A0684CF4
+ROM:A0684CF8
+ROM:A0684CF8             loc_A0684CF8                            ; A0684CE8j
+ROM:A0684CF8 06 00 54 E1                 CMP     R4, R6
+ROM:A0684CFC 46 00 00 1A                 BNE     loc_A0684E1C
+ROM:A0684CFC
+ROM:A0684D00 04 00 D5 E5                 LDRB    R0, [R5,#4]
+ROM:A0684D04 26 00 50 E3                 CMP     R0, #0x26
+ROM:A0684D08 0F 00 00 1A                 BNE     loc_A0684D4C
+ROM:A0684D08
+ROM:A0684D0C 08 40 A0 E3                 MOV     R4, #8
+ROM:A0684D0C
+ROM:A0684D10
+ROM:A0684D10             loc_A0684D10                            ; A0684D30j
+ROM:A0684D10 84 00 84 E0                 ADD     R0, R4, R4,LSL#1
+ROM:A0684D14 00 01 85 E0                 ADD     R0, R5, R0,LSL#2
+ROM:A0684D18 1C 10 80 E2                 ADD     R1, R0, #0x1C
+ROM:A0684D1C 4C 00 91 E8                 LDMIA   R1, {R2,R3,R6}
+ROM:A0684D20 28 00 80 E2                 ADD     R0, R0, #0x28
+ROM:A0684D24 4C 00 80 E8                 STMIA   R0, {R2,R3,R6}
+ROM:A0684D28 01 00 44 E2                 SUB     R0, R4, #1
+ROM:A0684D2C FF 40 10 E2                 ANDS    R4, R0, #0xFF
+ROM:A0684D30 F6 FF FF 1A                 BNE     loc_A0684D10
+ROM:A0684D30
+ROM:A0684D34 01 00 D5 E5                 LDRB    R0, [R5,#1]
+ROM:A0684D38 00 60 A0 E3                 MOV     R6, #0
+ROM:A0684D3C 09 00 50 E3                 CMP     R0, #9
+ROM:A0684D40 01 00 80 32                 ADDCC   R0, R0, #1
+ROM:A0684D44 01 00 C5 35                 STRCCB  R0, [R5,#1]
+ROM:A0684D48 10 00 00 EA                 B       loc_A0684D90
+ROM:A0684D48
+ROM:A0684D4C             ; ---------------------------------------------------------------------------
+ROM:A0684D4C
+ROM:A0684D4C             loc_A0684D4C                            ; A0684D08j
+ROM:A0684D4C 01 00 D5 E5                 LDRB    R0, [R5,#1]
+ROM:A0684D50 09 00 50 E3                 CMP     R0, #9
+ROM:A0684D54 01 00 80 32                 ADDCC   R0, R0, #1
+ROM:A0684D58 01 00 C5 35                 STRCCB  R0, [R5,#1]
+ROM:A0684D5C 0B 00 00 3A                 BCC     loc_A0684D90
+ROM:A0684D5C
+ROM:A0684D60 00 40 A0 E3                 MOV     R4, #0
+ROM:A0684D60
+ROM:A0684D64
+ROM:A0684D64             loc_A0684D64                            ; A0684D88j
+ROM:A0684D64 84 00 84 E0                 ADD     R0, R4, R4,LSL#1
+ROM:A0684D68 00 01 85 E0                 ADD     R0, R5, R0,LSL#2
+ROM:A0684D6C 34 10 80 E2                 ADD     R1, R0, #0x34
+ROM:A0684D70 4C 00 91 E8                 LDMIA   R1, {R2,R3,R6}
+ROM:A0684D74 28 00 80 E2                 ADD     R0, R0, #0x28
+ROM:A0684D78 4C 00 80 E8                 STMIA   R0, {R2,R3,R6}
+ROM:A0684D7C 01 00 84 E2                 ADD     R0, R4, #1
+ROM:A0684D80 FF 40 00 E2                 AND     R4, R0, #0xFF
+ROM:A0684D84 08 00 54 E3                 CMP     R4, #8
+ROM:A0684D88 F5 FF FF 3A                 BCC     loc_A0684D64
+ROM:A0684D88
+ROM:A0684D8C 08 60 A0 E3                 MOV     R6, #8
+ROM:A0684D8C
+ROM:A0684D90
+ROM:A0684D90             loc_A0684D90                            ; A0684D48j
+ROM:A0684D90                                                     ; A0684D5Cj
+ROM:A0684D90 86 00 86 E0                 ADD     R0, R6, R6,LSL#1
+ROM:A0684D94 00 71 85 E0                 ADD     R7, R5, R0,LSL#2
+ROM:A0684D98 B8 82 C7 E1                 STRH    R8, [R7,#0x28]
+ROM:A0684D9C F8 00 95 E5                 LDR     R0, [R5,#0xF8]
+ROM:A0684DA0 46 29 FB EB                 BL      sub_A054F2C0
+ROM:A0684DA0
+ROM:A0684DA4 BA 02 C7 E1                 STRH    R0, [R7,#0x2A]
+ROM:A0684DA8 F8 00 95 E5                 LDR     R0, [R5,#0xF8]
+ROM:A0684DAC C1 29 FB EB                 BL      sub_A054F4B8
+ROM:A0684DAC
+ROM:A0684DB0 2C 00 87 E5                 STR     R0, [R7,#0x2C]
+ROM:A0684DB4 F8 00 95 E5                 LDR     R0, [R5,#0xF8]
+ROM:A0684DB8 DF D9 FE EB                 BL      sub_A063B53C
+ROM:A0684DB8
+ROM:A0684DBC 80 0E 80 E3                 ORR     R0, R0, #0x800
+ROM:A0684DC0 B0 03 C7 E1                 STRH    R0, [R7,#0x30]
+ROM:A0684DC4 F8 00 95 E5                 LDR     R0, [R5,#0xF8]
+ROM:A0684DC8 DC 00 D0 E5                 LDRB    R0, [R0,#0xDC]
+ROM:A0684DCC 00 00 50 E3                 CMP     R0, #0
+ROM:A0684DD0 11 00 00 0A                 BEQ     loc_A0684E1C
+ROM:A0684DD0
+ROM:A0684DD4 0B 10 A0 E1                 MOV     R1, R11
+ROM:A0684DD8 02 00 A0 E3                 MOV     R0, #2
+ROM:A0684DDC C3 29 ED EB                 BL      sub_A01CF4F0
+ROM:A0684DDC
+ROM:A0684DE0 00 00 50 E3                 CMP     R0, #0
+ROM:A0684DE4 06 00 00 0A                 BEQ     loc_A0684E04
+ROM:A0684DE4
+ROM:A0684DE8 02 00 00 EF                 SWI     2
+ROM:A0684DEC 0A 30 A0 E1                 MOV     R3, R10
+ROM:A0684DF0 03 20 A0 E3                 MOV     R2, #3
+ROM:A0684DF4 0B 10 A0 E1                 MOV     R1, R11
+ROM:A0684DF8 02 00 A0 E3                 MOV     R0, #2
+ROM:A0684DFC 39 29 ED EB                 BL      sub_A01CF2E8    ; void StoreErrInfoAndAbort(int code,const char *module_name,int type,int unk3);
+ROM:A0684DFC
+ROM:A0684E00 05 00 00 EA                 B       loc_A0684E1C
+ROM:A0684E00
+ROM:A0684E04             ; ---------------------------------------------------------------------------
+ROM:A0684E04
+ROM:A0684E04             loc_A0684E04                            ; A0684DE4j
+ROM:A0684E04 03 00 00 EF                 SWI     3
+ROM:A0684E08 0A 30 A0 E1                 MOV     R3, R10
+ROM:A0684E0C 03 20 A0 E3                 MOV     R2, #3
+ROM:A0684E10 0B 10 A0 E1                 MOV     R1, R11
+ROM:A0684E14 02 00 A0 E3                 MOV     R0, #2
+ROM:A0684E18 64 29 ED EB                 BL      sub_A01CF3B0
+ROM:A0684E18
+ROM:A0684E1C
+ROM:A0684E1C             loc_A0684E1C                            ; A0684CFCj
+ROM:A0684E1C                                                     ; A0684DD0j
+ROM:A0684E1C                                                     ; A0684E00j
+ROM:A0684E1C 01 00 84 E2                 ADD     R0, R4, #1
+ROM:A0684E20 FF 40 00 E2                 AND     R4, R0, #0xFF
+ROM:A0684E20
+ROM:A0684E24
+ROM:A0684E24             loc_A0684E24                            ; A0684CCCj
+ROM:A0684E24                                                     ; A0684CF4j
+ROM:A0684E24 06 00 54 E1                 CMP     R4, R6
+ROM:A0684E28 A8 FF FF 9A                 BLS     loc_A0684CD0
+ROM:A0684E28
+ROM:A0684E2C 02 00 D5 E5                 LDRB    R0, [R5,#2]
+ROM:A0684E30 01 00 50 E3                 CMP     R0, #1
+ROM:A0684E34 0F 00 00 1A                 BNE     locret_A0684E78
+ROM:A0684E34
+ROM:A0684E38 B0 05 9F E5                 LDR     R0, =0xA8E5C6D8
+ROM:A0684E3C 00 20 A0 E3                 MOV     R2, #0
+ROM:A0684E40 00 10 90 E5                 LDR     R1, [R0]
+ROM:A0684E44 01 00 51 E3                 CMP     R1, #1
+ROM:A0684E48 04 10 90 05                 LDREQ   R1, [R0,#4]
+ROM:A0684E4C 01 00 51 03                 CMPEQ   R1, #1
+ROM:A0684E50 00 20 80 15                 STRNE   R2, [R0]
+ROM:A0684E54 07 00 00 1A                 BNE     locret_A0684E78
+ROM:A0684E54
+ROM:A0684E58 04 20 80 E5                 STR     R2, [R0,#4]
+ROM:A0684E5C 02 00 A0 E1                 MOV     R0, R2
+ROM:A0684E60 00 00 8D E5                 STR     R0, [SP,#0x28+var_28]
+ROM:A0684E64 88 05 9F E5                 LDR     R0, =0x4209
+ROM:A0684E68 81 20 A0 E3                 MOV     R2, #0x81
+ROM:A0684E6C 91 30 A0 E3                 MOV     R3, #0x91
+ROM:A0684E70 6C 1C A0 E3                 MOV     R1, #0x6C00
+ROM:A0684E74 06 37 E8 EB                 BL      SWI_0x100_GBS_SendMessage ; void GBS_SendMessage(int cepid_to, int msg, ...)
+ROM:A0684E74
+ROM:A0684E78
+ROM:A0684E78             locret_A0684E78                         ; A0684E34j
+ROM:A0684E78                                                     ; A0684E54j
+ROM:A0684E78 FC 8D BD E8                 LDMFD   SP!, {R2-R8,R10,R11,PC}
+ROM:A0684E78
+ROM:A0684E78             ; End of function sub_A0684CB0
+ROM:A0684E78
+ROM:A0684E7C
+ROM:A0684E7C             ; *************** S U B R O U T I N E ***************************************
+ROM:A0684E7C
+ROM:A0684E7C
+ROM:A0684E7C             sub_A0684E7C                            ; A0685440j
+ROM:A0684E7C                                                     ; A0685470p
+ROM:A0684E7C
+ROM:A0684E7C             var_98          = -0x98
+ROM:A0684E7C             var_94          = -0x94
+ROM:A0684E7C             var_80          = -0x80
+ROM:A0684E7C             var_2C          = -0x2C
+ROM:A0684E7C             var_28          = -0x28
+ROM:A0684E7C             var_24          = -0x24
+ROM:A0684E7C
+ROM:A0684E7C F0 4D 2D E9                 STMFD   SP!, {R4-R8,R10,R11,LR}
+ROM:A0684E80 78 D0 4D E2                 SUB     SP, SP, #0x78
+ROM:A0684E84 00 50 A0 E3                 MOV     R5, #0
+ROM:A0684E88 00 10 A0 E3                 MOV     R1, #0
+ROM:A0684E8C 70 10 8D E5                 STR     R1, [SP,#0x70]
+ROM:A0684E90 74 50 8D E5                 STR     R5, [SP,#0x74]
+ROM:A0684E94 00 40 A0 E1                 MOV     R4, R0
+ROM:A0684E98 B2 81 D4 E1                 LDRH    R8, [R4,#0x12]
+ROM:A0684E9C 00 00 A0 E3                 MOV     R0, #0
+ROM:A0684EA0 00 70 A0 E3                 MOV     R7, #0
+ROM:A0684EA4 6C 80 8D E5                 STR     R8, [SP,#0x6C]
+ROM:A0684EA8 00 10 D4 E5                 LDRB    R1, [R4]
+ROM:A0684EAC 00 60 A0 E3                 MOV     R6, #0
+ROM:A0684EB0 08 00 51 E1                 CMP     R1, R8
+ROM:A0684EB4 5C 00 00 9A                 BLS     loc_A068502C
+ROM:A0684EB4
+ROM:A0684EB8 F4 00 94 E5                 LDR     R0, [R4,#0xF4]
+ROM:A0684EBC 00 00 50 E3                 CMP     R0, #0
+ROM:A0684EC0 0D 01 00 0A                 BEQ     loc_A06852FC
+ROM:A0684EC0
+ROM:A0684EC4 C5 BD 0E FB                 BLX     sub_A0A345E2    ; int GetGUIState(void *gui)
+ROM:A0684EC4
+ROM:A0684EC8 02 00 50 E3                 CMP     R0, #2
+ROM:A0684ECC 0A 01 00 1A                 BNE     loc_A06852FC
+ROM:A0684ECC
+ROM:A0684ED0 F4 00 94 E5                 LDR     R0, [R4,#0xF4]
+ROM:A0684ED4 66 A5 0C FB                 BLX     sub_A09AE476    ; void *AllocMLMenuItem(void *data)
+ROM:A0684ED4
+ROM:A0684ED8 00 B0 A0 E1                 MOV     R11, R0
+ROM:A0684EDC FC 00 D4 E5                 LDRB    R0, [R4,#0xFC]
+ROM:A0684EE0 0E 00 50 E3                 CMP     R0, #0xE
+ROM:A0684EE4 14 00 00 1A                 BNE     loc_A0684F3C
+ROM:A0684EE4
+ROM:A0684EE8 2A 20 A0 E3                 MOV     R2, #0x2A
+ROM:A0684EEC 18 10 8D E2                 ADD     R1, SP, #0x18
+ROM:A0684EF0 04 00 8D E2                 ADD     R0, SP, #4
+ROM:A0684EF4 DE CA ED FB                 BLX     sub_A01F7A76    ; WSHDR *CreateLocalWS(WSHDR *wshdr,unsigned __int16 *wsbody,int len)
+ROM:A0684EF4
+ROM:A0684EF8 00 70 A0 E1                 MOV     R7, R0
+ROM:A0684EFC 10 01 94 E5                 LDR     R0, [R4,#0x110]
+ROM:A0684F00 08 11 88 E0                 ADD     R1, R8, R8,LSL#2
+ROM:A0684F04 B8 08 D0 E1                 LDRH    R0, [R0,#0x88]
+ROM:A0684F08 01 11 84 E0                 ADD     R1, R4, R1,LSL#2
+ROM:A0684F0C B8 00 81 E5                 STR     R0, [R1,#0xB8]
+ROM:A0684F10 07 10 A0 E1                 MOV     R1, R7
+ROM:A0684F14 68 8F 0B EB                 BL      sub_A0968CBC    ; void GetLangMesIntoWS(int lgp, WSHDR *ws)
+ROM:A0684F14
+ROM:A0684F18 07 00 A0 E1                 MOV     R0, R7
+ROM:A0684F1C 52 C9 ED FB                 BLX     sub_A01F746E    ; int wstrlen(WSHDR *wshdr)
+ROM:A0684F1C
+ROM:A0684F20 00 10 A0 E1                 MOV     R1, R0
+ROM:A0684F24 F4 00 94 E5                 LDR     R0, [R4,#0xF4]
+ROM:A0684F28 CB 98 0C FA                 BLX     sub_A09AB25C    ; WSHDR *AllocMenuWS(void *gui, int len)
+ROM:A0684F28
+ROM:A0684F2C 00 50 A0 E1                 MOV     R5, R0
+ROM:A0684F30 07 10 A0 E1                 MOV     R1, R7
+ROM:A0684F34 2A CB ED FB                 BLX     sub_A01F7BE6    ; WSHDR *wstrcpy(WSHDR *wshdr_d,WSHDR *wshdr_s)
+ROM:A0684F34
+ROM:A0684F38 24 00 00 EA                 B       loc_A0684FD0
+ROM:A0684F38
+ROM:A0684F3C             ; ---------------------------------------------------------------------------
+ROM:A0684F3C
+ROM:A0684F3C             loc_A0684F3C                            ; A0684EE4j
+ROM:A0684F3C 08 11 88 E0                 ADD     R1, R8, R8,LSL#2
+ROM:A0684F40 01 A1 84 E0                 ADD     R10, R4, R1,LSL#2
+ROM:A0684F44 B8 10 9A E5                 LDR     R1, [R10,#0xB8]
+ROM:A0684F48 00 00 51 E3                 CMP     R1, #0
+ROM:A0684F4C 13 00 00 1A                 BNE     loc_A0684FA0
+ROM:A0684F4C
+ROM:A0684F50 00 00 50 E3                 CMP     R0, #0
+ROM:A0684F54 1E 00 00 1A                 BNE     loc_A0684FD4
+ROM:A0684F54
+ROM:A0684F58 00 01 94 E5                 LDR     R0, [R4,#0x100]
+ROM:A0684F5C 42 C9 ED FB                 BLX     sub_A01F746E    ; int wstrlen(WSHDR *wshdr)
+ROM:A0684F5C
+ROM:A0684F60 00 10 A0 E1                 MOV     R1, R0
+ROM:A0684F64 F4 00 94 E5                 LDR     R0, [R4,#0xF4]
+ROM:A0684F68 BB 98 0C FA                 BLX     sub_A09AB25C    ; WSHDR *AllocMenuWS(void *gui, int len)
+ROM:A0684F68
+ROM:A0684F6C 00 50 A0 E1                 MOV     R5, R0
+ROM:A0684F70 00 11 94 E5                 LDR     R1, [R4,#0x100]
+ROM:A0684F74 1A CB ED FB                 BLX     sub_A01F7BE6    ; WSHDR *wstrcpy(WSHDR *wshdr_d,WSHDR *wshdr_s)
+ROM:A0684F74
+ROM:A0684F78 04 01 94 E5                 LDR     R0, [R4,#0x104]
+ROM:A0684F7C 3A C9 ED FB                 BLX     sub_A01F746E    ; int wstrlen(WSHDR *wshdr)
+ROM:A0684F7C
+ROM:A0684F80 00 10 A0 E1                 MOV     R1, R0
+ROM:A0684F84 F4 00 94 E5                 LDR     R0, [R4,#0xF4]
+ROM:A0684F88 B3 98 0C FA                 BLX     sub_A09AB25C    ; WSHDR *AllocMenuWS(void *gui, int len)
+ROM:A0684F88
+ROM:A0684F8C 70 00 8D E5                 STR     R0, [SP,#0x70]
+ROM:A0684F90 04 11 94 E5                 LDR     R1, [R4,#0x104]
+ROM:A0684F94 12 CB ED FB                 BLX     sub_A01F7BE6    ; WSHDR *wstrcpy(WSHDR *wshdr_d,WSHDR *wshdr_s)
+ROM:A0684F94
+ROM:A0684F98 58 74 9F E5                 LDR     R7, =unk_A095A2B8
+ROM:A0684F9C 0C 00 00 EA                 B       loc_A0684FD4
+ROM:A0684F9C
+ROM:A0684FA0             ; ---------------------------------------------------------------------------
+ROM:A0684FA0
+ROM:A0684FA0             loc_A0684FA0                            ; A0684F4Cj
+ROM:A0684FA0 BC 10 9A E5                 LDR     R1, [R10,#0xBC]
+ROM:A0684FA4 F4 00 94 E5                 LDR     R0, [R4,#0xF4]
+ROM:A0684FA8 AB 98 0C FA                 BLX     sub_A09AB25C    ; WSHDR *AllocMenuWS(void *gui, int len)
+ROM:A0684FA8
+ROM:A0684FAC 00 50 A0 E1                 MOV     R5, R0
+ROM:A0684FB0 05 10 A0 E1                 MOV     R1, R5
+ROM:A0684FB4 B8 00 9A E5                 LDR     R0, [R10,#0xB8]
+ROM:A0684FB8 3F 8F 0B EB                 BL      sub_A0968CBC    ; void GetLangMesIntoWS(int lgp, WSHDR *ws)
+ROM:A0684FB8
+ROM:A0684FBC C4 00 9A E5                 LDR     R0, [R10,#0xC4]
+ROM:A0684FC0 04 10 80 E2                 ADD     R1, R0, #4
+ROM:A0684FC4 F4 00 94 E5                 LDR     R0, [R4,#0xF4]
+ROM:A0684FC8 A3 98 0C FA                 BLX     sub_A09AB25C    ; WSHDR *AllocMenuWS(void *gui, int len)
+ROM:A0684FC8
+ROM:A0684FCC 70 00 8D E5                 STR     R0, [SP,#0x70]
+ROM:A0684FCC
+ROM:A0684FD0
+ROM:A0684FD0             loc_A0684FD0                            ; A0684F38j
+ROM:A0684FD0 24 74 9F E5                 LDR     R7, =dword_A0BC333C
+ROM:A0684FD0
+ROM:A0684FD4
+ROM:A0684FD4             loc_A0684FD4                            ; A0684F54j
+ROM:A0684FD4                                                     ; A0684F9Cj
+ROM:A0684FD4 07 20 A0 E1                 MOV     R2, R7
+ROM:A0684FD8 0B 10 A0 E1                 MOV     R1, R11
+ROM:A0684FDC F4 00 94 E5                 LDR     R0, [R4,#0xF4]
+ROM:A0684FE0 33 98 0C FB                 BLX     sub_A09AB0B6    ; void SetMenuItemIconArray(void *gui,void *item,const int *icons)
+ROM:A0684FE0
+ROM:A0684FE4 08 01 88 E0                 ADD     R0, R8, R8,LSL#2
+ROM:A0684FE8 00 01 84 E0                 ADD     R0, R4, R0,LSL#2
+ROM:A0684FEC C8 00 D0 E5                 LDRB    R0, [R0,#0xC8]
+ROM:A0684FF0 08 20 A0 E1                 MOV     R2, R8
+ROM:A0684FF4 04 10 A0 E1                 MOV     R1, R4
+ROM:A0684FF8 FD 02 00 EB                 BL      sub_A0685BF4
+ROM:A0684FF8
+ROM:A0684FFC 00 80 8D E5                 STR     R8, [SP]
+ROM:A0685000 F4 00 94 E5                 LDR     R0, [R4,#0xF4]
+ROM:A0685004 70 30 9D E5                 LDR     R3, [SP,#0x70]
+ROM:A0685008 05 20 A0 E1                 MOV     R2, R5
+ROM:A068500C 0B 10 A0 E1                 MOV     R1, R11
+ROM:A0685010 0D A4 0C FB                 BLX     sub_A09AE04E    ; void SetMLMenuItemText(void *data,void *item,WSHDR *ws1,WSHDR *ws2,int unk0or1,int n)
+ROM:A0685010
+ROM:A0685014 B4 02 D4 E1                 LDRH    R0, [R4,#0x24]
+ROM:A0685018 00 00 50 E3                 CMP     R0, #0
+ROM:A068501C B6 00 00 0A                 BEQ     loc_A06852FC
+ROM:A068501C
+ROM:A0685020
+ROM:A0685020             loc_A0685020                            ; A06852F8j
+ROM:A0685020 01 00 40 E2                 SUB     R0, R0, #1
+ROM:A0685024 B4 02 C4 E1                 STRH    R0, [R4,#0x24]
+ROM:A0685028 B3 00 00 EA                 B       loc_A06852FC
+ROM:A0685028
+ROM:A068502C             ; ---------------------------------------------------------------------------
+ROM:A068502C
+ROM:A068502C             loc_A068502C                            ; A0684EB4j
+ROM:A068502C 01 10 48 E0                 SUB     R1, R8, R1
+ROM:A0685030 01 58 A0 E1                 MOV     R5, R1,LSL#16
+ROM:A0685034 BE 10 D4 E1                 LDRH    R1, [R4,#0xE]
+ROM:A0685038 25 58 A0 E1                 MOV     R5, R5,LSR#16
+ROM:A068503C 05 00 51 E1                 CMP     R1, R5
+ROM:A0685040 AF 00 00 1A                 BNE     loc_A0685304
+ROM:A0685040
+ROM:A0685044 F8 10 94 E5                 LDR     R1, [R4,#0xF8]
+ROM:A0685048 DC 10 D1 E5                 LDRB    R1, [R1,#0xDC]
+ROM:A068504C 06 00 51 E3                 CMP     R1, #6
+ROM:A0685050 07 00 51 13                 CMPNE   R1, #7
+ROM:A0685054 C9 00 00 0A                 BEQ     loc_A0685380
+ROM:A0685054
+ROM:A0685058 F4 00 94 E5                 LDR     R0, [R4,#0xF4]
+ROM:A068505C 00 00 50 E3                 CMP     R0, #0
+ROM:A0685060 A5 00 00 0A                 BEQ     loc_A06852FC
+ROM:A0685060
+ROM:A0685064 5D BD 0E FB                 BLX     sub_A0A345E2    ; int GetGUIState(void *gui)
+ROM:A0685064
+ROM:A0685068 02 00 50 E3                 CMP     R0, #2
+ROM:A068506C A2 00 00 1A                 BNE     loc_A06852FC
+ROM:A068506C
+ROM:A0685070 F4 00 94 E5                 LDR     R0, [R4,#0xF4]
+ROM:A0685074 FE A4 0C FB                 BLX     sub_A09AE476    ; void *AllocMLMenuItem(void *data)
+ROM:A0685074
+ROM:A0685078 00 80 A0 E1                 MOV     R8, R0
+ROM:A068507C 04 00 A0 E1                 MOV     R0, R4
+ROM:A0685080 05 10 A0 E1                 MOV     R1, R5
+ROM:A0685084 09 FF FF EB                 BL      sub_A0684CB0
+ROM:A0685084
+ROM:A0685088 B0 51 C4 E1                 STRH    R5, [R4,#0x10]
+ROM:A068508C 2C 01 94 E5                 LDR     R0, [R4,#0x12C]
+ROM:A0685090 00 00 50 E3                 CMP     R0, #0
+ROM:A0685094 F8 00 94 E5                 LDR     R0, [R4,#0xF8]
+ROM:A0685098 0C 00 90 E5                 LDR     R0, [R0,#0xC]
+ROM:A068509C 18 00 90 E5                 LDR     R0, [R0,#0x18]
+ROM:A06850A0 20 0D A0 E1                 MOV     R0, R0,LSR#26
+ROM:A06850A4 09 00 00 0A                 BEQ     loc_A06850D0
+ROM:A06850A4
+ROM:A06850A8 28 00 50 E3                 CMP     R0, #0x28
+ROM:A06850AC 0E 00 00 1A                 BNE     loc_A06850EC
+ROM:A06850AC
+ROM:A06850B0 15 01 D4 E5                 LDRB    R0, [R4,#0x115]
+ROM:A06850B4 01 00 50 E3                 CMP     R0, #1
+ROM:A06850B8 06 00 00 0A                 BEQ     loc_A06850D8
+ROM:A06850B8
+ROM:A06850BC 70 20 8D E2                 ADD     R2, SP, #0x70
+ROM:A06850C0 74 10 8D E2                 ADD     R1, SP, #0x74
+ROM:A06850C4 04 00 A0 E1                 MOV     R0, R4
+ROM:A06850C8 32 FE FF EB                 BL      sub_A0684998
+ROM:A06850C8
+ROM:A06850CC 0A 00 00 EA                 B       loc_A06850FC
+ROM:A06850CC
+ROM:A06850D0             ; ---------------------------------------------------------------------------
+ROM:A06850D0
+ROM:A06850D0             loc_A06850D0                            ; A06850A4j
+ROM:A06850D0 28 00 50 E3                 CMP     R0, #0x28
+ROM:A06850D4 04 00 00 1A                 BNE     loc_A06850EC
+ROM:A06850D4
+ROM:A06850D8
+ROM:A06850D8             loc_A06850D8                            ; A06850B8j
+ROM:A06850D8 70 20 8D E2                 ADD     R2, SP, #0x70
+ROM:A06850DC 74 10 8D E2                 ADD     R1, SP, #0x74
+ROM:A06850E0 04 00 A0 E1                 MOV     R0, R4
+ROM:A06850E4 7C FD FF EB                 BL      sub_A06846DC
+ROM:A06850E4
+ROM:A06850E8 03 00 00 EA                 B       loc_A06850FC
+ROM:A06850E8
+ROM:A06850EC             ; ---------------------------------------------------------------------------
+ROM:A06850EC
+ROM:A06850EC             loc_A06850EC                            ; A06850ACj
+ROM:A06850EC                                                     ; A06850D4j
+ROM:A06850EC 70 20 8D E2                 ADD     R2, SP, #0x70
+ROM:A06850F0 74 10 8D E2                 ADD     R1, SP, #0x74
+ROM:A06850F4 04 00 A0 E1                 MOV     R0, R4
+ROM:A06850F8 77 FC FF EB                 BL      sub_A06842DC
+ROM:A06850F8
+ROM:A06850FC
+ROM:A06850FC             loc_A06850FC                            ; A06850CCj
+ROM:A06850FC                                                     ; A06850E8j
+ROM:A06850FC 74 00 9D E5                 LDR     R0, [SP,#0x74]
+ROM:A0685100 D9 C8 ED FB                 BLX     sub_A01F746E    ; int wstrlen(WSHDR *wshdr)
+ROM:A0685100
+ROM:A0685104 08 00 80 E2                 ADD     R0, R0, #8
+ROM:A0685108 00 18 A0 E1                 MOV     R1, R0,LSL#16
+ROM:A068510C 21 18 A0 E1                 MOV     R1, R1,LSR#16
+ROM:A0685110 F4 00 94 E5                 LDR     R0, [R4,#0xF4]
+ROM:A0685114 50 98 0C FA                 BLX     sub_A09AB25C    ; WSHDR *AllocMenuWS(void *gui, int len)
+ROM:A0685114
+ROM:A0685118 00 70 A0 E1                 MOV     R7, R0
+ROM:A068511C 74 10 9D E5                 LDR     R1, [SP,#0x74]
+ROM:A0685120 AF CA ED FB                 BLX     sub_A01F7BE6    ; WSHDR *wstrcpy(WSHDR *wshdr_d,WSHDR *wshdr_s)
+ROM:A0685120
+ROM:A0685124 74 00 9D E5                 LDR     R0, [SP,#0x74]
+ROM:A0685128 FA 48 0C FB                 BLX     sub_A099751A    ; int FreeWS(WSHDR *ws) //1,suc
+ROM:A0685128
+ROM:A068512C F8 00 94 E5                 LDR     R0, [R4,#0xF8]
+ROM:A0685130 0C 00 90 E5                 LDR     R0, [R0,#0xC]
+ROM:A0685134 18 00 90 E5                 LDR     R0, [R0,#0x18]
+ROM:A0685138 20 0D A0 E1                 MOV     R0, R0,LSR#26
+ROM:A068513C 01 00 50 E3                 CMP     R0, #1
+ROM:A0685140 B8 A2 9F 05                 LDREQ   R10, =unk_A095A2B0
+ROM:A0685144 02 00 00 0A                 BEQ     loc_A0685154
+ROM:A0685144
+ROM:A0685148 B4 A2 9F E5                 LDR     R10, =unk_A095A2A8
+ROM:A068514C 04 00 50 E3                 CMP     R0, #4
+ROM:A0685150 04 A0 8A 02                 ADDEQ   R10, R10, #4
+ROM:A0685150
+ROM:A0685154
+ROM:A0685154             loc_A0685154                            ; A0685144j
+ROM:A0685154 28 01 94 E5                 LDR     R0, [R4,#0x128]
+ROM:A0685158 00 00 50 E3                 CMP     R0, #0
+ROM:A068515C 25 00 00 0A                 BEQ     loc_A06851F8
+ROM:A068515C
+ROM:A0685160 05 10 A0 E1                 MOV     R1, R5
+ROM:A0685164 04 00 A0 E1                 MOV     R0, R4
+ROM:A0685168 AA FB FF EB                 BL      sub_A0684018
+ROM:A0685168
+ROM:A068516C 00 10 A0 E1                 MOV     R1, R0
+ROM:A0685170 01 18 A0 E1                 MOV     R1, R1,LSL#16
+ROM:A0685174 21 18 A0 E1                 MOV     R1, R1,LSR#16
+ROM:A0685178 F8 00 94 E5                 LDR     R0, [R4,#0xF8]
+ROM:A068517C D4 36 FB EB                 BL      sub_A0552CD4
+ROM:A068517C
+ROM:A0685180 00 B0 A0 E1                 MOV     R11, R0
+ROM:A0685184 F8 00 94 E5                 LDR     R0, [R4,#0xF8]
+ROM:A0685188 DC 00 D0 E5                 LDRB    R0, [R0,#0xDC]
+ROM:A068518C 00 00 50 E3                 CMP     R0, #0
+ROM:A0685190 12 00 00 0A                 BEQ     loc_A06851E0
+ROM:A0685190
+ROM:A0685194 50 A2 9F E5                 LDR     R10, =unk_A09564E6
+ROM:A0685198 02 00 A0 E3                 MOV     R0, #2
+ROM:A068519C 0A 10 A0 E1                 MOV     R1, R10
+ROM:A06851A0 D2 28 ED EB                 BL      sub_A01CF4F0
+ROM:A06851A0
+ROM:A06851A4 00 00 50 E3                 CMP     R0, #0
+ROM:A06851A8 06 00 00 0A                 BEQ     loc_A06851C8
+ROM:A06851A8
+ROM:A06851AC 02 00 00 EF                 SWI     2
+ROM:A06851B0 03 20 A0 E3                 MOV     R2, #3
+ROM:A06851B4 0A 10 A0 E1                 MOV     R1, R10
+ROM:A06851B8 02 00 A0 E3                 MOV     R0, #2
+ROM:A06851BC 24 32 9F E5                 LDR     R3, =0xEC10
+ROM:A06851C0 48 28 ED EB                 BL      sub_A01CF2E8    ; void StoreErrInfoAndAbort(int code,const char *module_name,int type,int unk3);
+ROM:A06851C0
+ROM:A06851C4 05 00 00 EA                 B       loc_A06851E0
+ROM:A06851C4
+ROM:A06851C8             ; ---------------------------------------------------------------------------
+ROM:A06851C8
+ROM:A06851C8             loc_A06851C8                            ; A06851A8j
+ROM:A06851C8 03 00 00 EF                 SWI     3
+ROM:A06851CC 03 20 A0 E3                 MOV     R2, #3
+ROM:A06851D0 0A 10 A0 E1                 MOV     R1, R10
+ROM:A06851D4 02 00 A0 E3                 MOV     R0, #2
+ROM:A06851D8 08 32 9F E5                 LDR     R3, =0xEC10
+ROM:A06851DC 73 28 ED EB                 BL      sub_A01CF3B0
+ROM:A06851DC
+ROM:A06851E0
+ROM:A06851E0             loc_A06851E0                            ; A0685190j
+ROM:A06851E0                                                     ; A06851C4j
+ROM:A06851E0 01 00 5B E3                 CMP     R11, #1
+ROM:A06851E4 1C A2 9F 15                 LDRNE   R10, =dword_A0BC334C
+ROM:A06851E8 07 B0 A0 13                 MOVNE   R11, #7
+ROM:A06851EC 18 A2 9F 05                 LDREQ   R10, =dword_A0BC3344
+ROM:A06851F0 08 B0 A0 03                 MOVEQ   R11, #8
+ROM:A06851F4 19 00 00 EA                 B       loc_A0685260
+ROM:A06851F4
+ROM:A06851F8             ; ---------------------------------------------------------------------------
+ROM:A06851F8
+ROM:A06851F8             loc_A06851F8                            ; A068515Cj
+ROM:A06851F8 10 01 94 E5                 LDR     R0, [R4,#0x110]
+ROM:A06851FC 00 00 D0 E5                 LDRB    R0, [R0]
+ROM:A0685200 0E 00 50 E3                 CMP     R0, #0xE
+ROM:A0685204 00 F1 8F 90                 ADDLS   PC, PC, R0,LSL#2
+ROM:A0685204
+ROM:A0685208 10 00 00 EA                 B       loc_A0685250
+ROM:A0685208
+ROM:A068520C             ; ---------------------------------------------------------------------------
+ROM:A068520C
+ROM:A068520C             loc_A068520C                            ; A0685204j
+ROM:A068520C 0F 00 00 EA                 B       loc_A0685250
+ROM:A068520C
+ROM:A0685210             ; ---------------------------------------------------------------------------
+ROM:A0685210
+ROM:A0685210             loc_A0685210                            ; A0685204j
+ROM:A0685210 0C 00 00 EA                 B       loc_A0685248
+ROM:A0685210
+ROM:A0685214             ; ---------------------------------------------------------------------------
+ROM:A0685214
+ROM:A0685214             loc_A0685214                            ; A0685204j
+ROM:A0685214 0D 00 00 EA                 B       loc_A0685250
+ROM:A0685214
+ROM:A0685218             ; ---------------------------------------------------------------------------
+ROM:A0685218
+ROM:A0685218             loc_A0685218                            ; A0685204j
+ROM:A0685218 0C 00 00 EA                 B       loc_A0685250
+ROM:A0685218
+ROM:A068521C             ; ---------------------------------------------------------------------------
+ROM:A068521C
+ROM:A068521C             loc_A068521C                            ; A0685204j
+ROM:A068521C 09 00 00 EA                 B       loc_A0685248
+ROM:A068521C
+ROM:A0685220             ; ---------------------------------------------------------------------------
+ROM:A0685220
+ROM:A0685220             loc_A0685220                            ; A0685204j
+ROM:A0685220 08 00 00 EA                 B       loc_A0685248
+ROM:A0685220
+ROM:A0685224             ; ---------------------------------------------------------------------------
+ROM:A0685224
+ROM:A0685224             loc_A0685224                            ; A0685204j
+ROM:A0685224 07 00 00 EA                 B       loc_A0685248
+ROM:A0685224
+ROM:A0685228             ; ---------------------------------------------------------------------------
+ROM:A0685228
+ROM:A0685228             loc_A0685228                            ; A0685204j
+ROM:A0685228 06 00 00 EA                 B       loc_A0685248
+ROM:A0685228
+ROM:A068522C             ; ---------------------------------------------------------------------------
+ROM:A068522C
+ROM:A068522C             loc_A068522C                            ; A0685204j
+ROM:A068522C 07 00 00 EA                 B       loc_A0685250
+ROM:A068522C
+ROM:A0685230             ; ---------------------------------------------------------------------------
+ROM:A0685230
+ROM:A0685230             loc_A0685230                            ; A0685204j
+ROM:A0685230 06 00 00 EA                 B       loc_A0685250
+ROM:A0685230
+ROM:A0685234             ; ---------------------------------------------------------------------------
+ROM:A0685234
+ROM:A0685234             loc_A0685234                            ; A0685204j
+ROM:A0685234 05 00 00 EA                 B       loc_A0685250
+ROM:A0685234
+ROM:A0685238             ; ---------------------------------------------------------------------------
+ROM:A0685238
+ROM:A0685238             loc_A0685238                            ; A0685204j
+ROM:A0685238 02 00 00 EA                 B       loc_A0685248
+ROM:A0685238
+ROM:A068523C             ; ---------------------------------------------------------------------------
+ROM:A068523C
+ROM:A068523C             loc_A068523C                            ; A0685204j
+ROM:A068523C 01 00 00 EA                 B       loc_A0685248
+ROM:A068523C
+ROM:A0685240             ; ---------------------------------------------------------------------------
+ROM:A0685240
+ROM:A0685240             loc_A0685240                            ; A0685204j
+ROM:A0685240 02 00 00 EA                 B       loc_A0685250
+ROM:A0685240
+ROM:A0685244             ; ---------------------------------------------------------------------------
+ROM:A0685244
+ROM:A0685244             loc_A0685244                            ; A0685204j
+ROM:A0685244 FF FF FF EA                 B       loc_A0685248
+ROM:A0685244
+ROM:A0685248
+ROM:A0685248             loc_A0685248                            ; A0685204j
+ROM:A0685248                                                     ; loc_A0685210j
+ROM:A0685248                                                     ; loc_A068521Cj
+ROM:A0685248                                                     ; loc_A0685220j
+ROM:A0685248                                                     ; loc_A0685224j
+ROM:A0685248                                                     ; loc_A0685228j ...
+ROM:A0685248             ; jumptable A0685204 entries 1,4-7,11,12,14
+ROM:A0685248 06 B0 A0 E3                 MOV     R11, #6
+ROM:A068524C 03 00 00 EA                 B       loc_A0685260
+ROM:A068524C
+ROM:A0685250             ; ---------------------------------------------------------------------------
+ROM:A0685250
+ROM:A0685250             loc_A0685250                            ; A0685204j
+ROM:A0685250                                                     ; A0685208j
+ROM:A0685250                                                     ; loc_A068520Cj
+ROM:A0685250                                                     ; loc_A0685214j
+ROM:A0685250                                                     ; loc_A0685218j
+ROM:A0685250                                                     ; loc_A068522Cj ...
+ROM:A0685250             ; jumptable A0685204 default entry
+ROM:A0685250             ; jumptable A0685204 entries 0,2,3,8-10,13
+ROM:A0685250 30 01 94 E5                 LDR     R0, [R4,#0x130]
+ROM:A0685254 01 00 50 E3                 CMP     R0, #1
+ROM:A0685258 01 B0 A0 13                 MOVNE   R11, #1
+ROM:A068525C 0C B0 A0 03                 MOVEQ   R11, #0xC
+ROM:A068525C
+ROM:A0685260
+ROM:A0685260             loc_A0685260                            ; A06851F4j
+ROM:A0685260                                                     ; A068524Cj
+ROM:A0685260 10 01 94 E5                 LDR     R0, [R4,#0x110]
+ROM:A0685264 F8 10 94 E5                 LDR     R1, [R4,#0xF8]
+ROM:A0685268 33 D9 FE EB                 BL      sub_A063B73C
+ROM:A0685268
+ROM:A068526C 01 00 50 E3                 CMP     R0, #1
+ROM:A0685270 F4 00 94 E5                 LDR     R0, [R4,#0xF4]
+ROM:A0685274 08 00 00 1A                 BNE     loc_A068529C
+ROM:A0685274
+ROM:A0685278 01 20 A0 E3                 MOV     R2, #1
+ROM:A068527C 6C 10 9D E5                 LDR     R1, [SP,#0x98+var_2C]
+ROM:A0685280 0A 99 0C FB                 BLX     sub_A09AB6B2
+ROM:A0685280
+ROM:A0685284 00 00 D4 E5                 LDRB    R0, [R4]
+ROM:A0685288 04 10 A0 E1                 MOV     R1, R4
+ROM:A068528C 05 00 80 E0                 ADD     R0, R0, R5
+ROM:A0685290 40 2B C0 E3                 BIC     R2, R0, #0x10000
+ROM:A0685294 0B 00 A0 E1                 MOV     R0, R11
+ROM:A0685298 08 00 00 EA                 B       loc_A06852C0
+ROM:A0685298
+ROM:A068529C             ; ---------------------------------------------------------------------------
+ROM:A068529C
+ROM:A068529C             loc_A068529C                            ; A0685274j
+ROM:A068529C 00 20 A0 E3                 MOV     R2, #0
+ROM:A06852A0 6C 10 9D E5                 LDR     R1, [SP,#0x98+var_2C]
+ROM:A06852A4 01 99 0C FB                 BLX     sub_A09AB6B2
+ROM:A06852A4
+ROM:A06852A8 00 10 D4 E5                 LDRB    R1, [R4]
+ROM:A06852AC 48 A1 9F E5                 LDR     R10, =dword_A0BC333C
+ROM:A06852B0 0D 00 A0 E3                 MOV     R0, #0xD
+ROM:A06852B4 05 10 81 E0                 ADD     R1, R1, R5
+ROM:A06852B8 40 2B C1 E3                 BIC     R2, R1, #0x10000
+ROM:A06852BC 04 10 A0 E1                 MOV     R1, R4
+ROM:A06852BC
+ROM:A06852C0
+ROM:A06852C0             loc_A06852C0                            ; A0685298j
+ROM:A06852C0 4B 02 00 EB                 BL      sub_A0685BF4
+ROM:A06852C0
+ROM:A06852C4 0A 20 A0 E1                 MOV     R2, R10
+ROM:A06852C8 08 10 A0 E1                 MOV     R1, R8
+ROM:A06852CC F4 00 94 E5                 LDR     R0, [R4,#0xF4]
+ROM:A06852D0 77 97 0C FB                 BLX     sub_A09AB0B6    ; void SetMenuItemIconArray(void *gui,void *item,const int *icons)
+ROM:A06852D0
+ROM:A06852D4 B2 31 D4 E1                 LDRH    R3, [R4,#0x12]
+ROM:A06852D8 07 20 A0 E1                 MOV     R2, R7
+ROM:A06852DC 08 10 A0 E1                 MOV     R1, R8
+ROM:A06852E0 00 30 8D E5                 STR     R3, [SP]
+ROM:A06852E4 F4 00 94 E5                 LDR     R0, [R4,#0xF4]
+ROM:A06852E8 70 30 9D E5                 LDR     R3, [SP,#0x70]
+ROM:A06852EC 56 A3 0C FB                 BLX     sub_A09AE04E    ; void SetMLMenuItemText(void *data,void *item,WSHDR *ws1,WSHDR *ws2,int unk0or1,int n)
+ROM:A06852EC
+ROM:A06852F0 B4 02 D4 E1                 LDRH    R0, [R4,#0x24]
+ROM:A06852F4 00 00 50 E3                 CMP     R0, #0
+ROM:A06852F8 48 FF FF 1A                 BNE     loc_A0685020
+ROM:A06852F8
+ROM:A06852FC
+ROM:A06852FC             loc_A06852FC                            ; A0684EC0j
+ROM:A06852FC                                                     ; A0684ECCj
+ROM:A06852FC                                                     ; A068501Cj
+ROM:A06852FC                                                     ; A0685028j
+ROM:A06852FC                                                     ; A0685060j
+ROM:A06852FC                                                     ; A068506Cj
+ROM:A06852FC 01 00 A0 E3                 MOV     R0, #1
+ROM:A0685300 2C 00 00 EA                 B       loc_A06853B8
+ROM:A0685300
+ROM:A0685304             ; ---------------------------------------------------------------------------
+ROM:A0685304
+ROM:A0685304             loc_A0685304                            ; A0685040j
+ROM:A0685304 01 20 D4 E5                 LDRB    R2, [R4,#1]
+ROM:A0685308 00 00 A0 E3                 MOV     R0, #0
+ROM:A068530C 00 00 52 E3                 CMP     R2, #0
+ROM:A0685310 FF CC 41 02                 SUBEQ   R12, R1, #0xFF00
+ROM:A0685314 FF C0 5C 02                 SUBEQS  R12, R12, #0xFF
+ROM:A0685318 1F 00 00 0A                 BEQ     loc_A068539C
+ROM:A0685318
+ROM:A068531C 01 30 45 E0                 SUB     R3, R5, R1
+ROM:A0685320 03 28 A0 E1                 MOV     R2, R3,LSL#16
+ROM:A0685324 42 28 A0 E1                 MOV     R2, R2,ASR#16
+ROM:A0685328 01 00 72 E3                 CMN     R2, #1
+ROM:A068532C 01 00 41 02                 SUBEQ   R0, R1, #1
+ROM:A0685330 BE 00 C4 01                 STREQH  R0, [R4,#0xE]
+ROM:A0685334 03 00 A0 03                 MOVEQ   R0, #3
+ROM:A0685338 10 00 00 0A                 BEQ     loc_A0685380
+ROM:A0685338
+ROM:A068533C 01 00 52 E3                 CMP     R2, #1
+ROM:A0685340 01 00 81 02                 ADDEQ   R0, R1, #1
+ROM:A0685344 BE 00 C4 01                 STREQH  R0, [R4,#0xE]
+ROM:A0685348 05 00 A0 03                 MOVEQ   R0, #5
+ROM:A068534C 0B 00 00 0A                 BEQ     loc_A0685380
+ROM:A068534C
+ROM:A0685350 0C 00 00 DA                 BLE     loc_A0685388
+ROM:A0685350
+ROM:A0685354 09 00 52 E3                 CMP     R2, #9
+ROM:A0685358 B6 00 D4 A1                 LDRGEH  R0, [R4,#6]
+ROM:A068535C 05 20 40 A0                 SUBGE   R2, R0, R5
+ROM:A0685360 02 00 53 A1                 CMPGE   R3, R2
+ROM:A0685364 01 00 40 C2                 SUBGT   R0, R0, #1
+ROM:A0685368 BE 00 C4 C1                 STRGTH  R0, [R4,#0xE]
+ROM:A068536C 08 00 A0 C3                 MOVGT   R0, #8
+ROM:A0685370 02 00 00 CA                 BGT     loc_A0685380
+ROM:A0685370
+ROM:A0685374 01 00 81 E2                 ADD     R0, R1, #1
+ROM:A0685378 BE 00 C4 E1                 STRH    R0, [R4,#0xE]
+ROM:A068537C 06 00 A0 E3                 MOV     R0, #6
+ROM:A068537C
+ROM:A0685380
+ROM:A0685380             loc_A0685380                            ; A0685054j
+ROM:A0685380                                                     ; A0685338j
+ROM:A0685380                                                     ; A068534Cj
+ROM:A0685380                                                     ; A0685370j
+ROM:A0685380                                                     ; A06853A4j
+ROM:A0685380                                                     ; A06853B4j ...
+ROM:A0685380 78 D0 8D E2                 ADD     SP, SP, #0x78
+ROM:A0685384 F0 8D BD E8                 LDMFD   SP!, {R4-R8,R10,R11,PC}
+ROM:A0685384
+ROM:A0685388             ; ---------------------------------------------------------------------------
+ROM:A0685388
+ROM:A0685388             loc_A0685388                            ; A0685350j
+ROM:A0685388 09 00 72 E3                 CMN     R2, #9
+ROM:A068538C 05 00 00 CA                 BGT     loc_A06853A8
+ROM:A068538C
+ROM:A0685390 05 20 41 E0                 SUB     R2, R1, R5
+ROM:A0685394 05 00 52 E1                 CMP     R2, R5
+ROM:A0685398 02 00 00 DA                 BLE     loc_A06853A8
+ROM:A0685398
+ROM:A068539C
+ROM:A068539C             loc_A068539C                            ; A0685318j
+ROM:A068539C BE 00 C4 E1                 STRH    R0, [R4,#0xE]
+ROM:A06853A0 07 00 A0 E3                 MOV     R0, #7
+ROM:A06853A4 F5 FF FF EA                 B       loc_A0685380
+ROM:A06853A4
+ROM:A06853A8             ; ---------------------------------------------------------------------------
+ROM:A06853A8
+ROM:A06853A8             loc_A06853A8                            ; A068538Cj
+ROM:A06853A8                                                     ; A0685398j
+ROM:A06853A8 01 00 41 E2                 SUB     R0, R1, #1
+ROM:A06853AC BE 00 C4 E1                 STRH    R0, [R4,#0xE]
+ROM:A06853B0 04 00 A0 E3                 MOV     R0, #4
+ROM:A06853B4 F1 FF FF EA                 B       loc_A0685380
+ROM:A06853B4
+ROM:A06853B8             ; ---------------------------------------------------------------------------
+ROM:A06853B8
+ROM:A06853B8             loc_A06853B8                            ; A0685300j
+ROM:A06853B8                                                     ; A06853D0j
+ROM:A06853B8 86 10 84 E0                 ADD     R1, R4, R6,LSL#1
+ROM:A06853BC B4 21 D1 E1                 LDRH    R2, [R1,#0x14]
+ROM:A06853C0 B2 21 C1 E1                 STRH    R2, [R1,#0x12]
+ROM:A06853C4 01 10 86 E2                 ADD     R1, R6, #1
+ROM:A06853C8 40 6B C1 E3                 BIC     R6, R1, #0x10000
+ROM:A06853CC 08 00 56 E3                 CMP     R6, #8
+ROM:A06853D0 F8 FF FF 3A                 BCC     loc_A06853B8
+ROM:A06853D0
+ROM:A06853D4 02 10 D4 E5                 LDRB    R1, [R4,#2]
+ROM:A06853D8 01 10 41 E2                 SUB     R1, R1, #1
+ROM:A06853DC 02 10 C4 E5                 STRB    R1, [R4,#2]
+ROM:A06853E0 E6 FF FF EA                 B       loc_A0685380
+ROM:A06853E0
+ROM:A06853E0             ; End of function sub_A0684E7C
+ROM:A06853E0
+ROM:A06853E0             ; ---------------------------------------------------------------------------
+ROM:A06853E4 AA 0D 00 00 dword_A06853E4  DCD 0xDAA               ; A0684914r
+ROM:A06853E8 10 EC 00 00 dword_A06853E8  DCD 0xEC10              ; A0684CBCr
+ROM:A06853E8                                                     ; A06851BCr
+ROM:A06853E8                                                     ; A06851D8r
+ROM:A06853E8                                                     ; A06855ECr
+ROM:A06853EC E6 64 95 A0 off_A06853EC    DCD unk_A09564E6        ; A0684CB8r
+ROM:A06853EC                                                     ; A0685194r
+ROM:A06853EC                                                     ; A06855F0r
+ROM:A06853F0 D8 C6 E5 A8 dword_A06853F0  DCD 0xA8E5C6D8          ; A0684E38r
+ROM:A06853F0                                                     ; A0685A64r
+ROM:A06853F4 09 42 00 00 dword_A06853F4  DCD 0x4209              ; A0684E64r
+ROM:A06853F4                                                     ; A068556Cr
+ROM:A06853F4                                                     ; A0685A80r
+ROM:A06853F4                                                     ; A0685B24r
+ROM:A06853F8 B8 A2 95 A0 off_A06853F8    DCD unk_A095A2B8        ; A0684F98r
+ROM:A06853FC 3C 33 BC A0 off_A06853FC    DCD dword_A0BC333C      ; loc_A0684FD0r
+ROM:A06853FC                                                     ; A06852ACr
+ROM:A0685400 B0 A2 95 A0 off_A0685400    DCD unk_A095A2B0        ; A0685140r
+ROM:A0685404 A8 A2 95 A0 off_A0685404    DCD unk_A095A2A8        ; A0685148r
+ROM:A0685408 4C 33 BC A0 off_A0685408    DCD dword_A0BC334C      ; A06851E4r
+ROM:A068540C 44 33 BC A0 off_A068540C    DCD dword_A0BC3344      ; A06851ECr
+ROM:A0685410
+ROM:A0685410             ; *************** S U B R O U T I N E ***************************************
+ROM:A0685410
+ROM:A0685410
+ROM:A0685410             sub_A0685410                            ; A0680BE8p
+ROM:A0685410 02 20 D0 E5                 LDRB    R2, [R0,#2]
+ROM:A0685414 01 18 A0 E1                 MOV     R1, R1,LSL#16
+ROM:A0685418 41 18 A0 E1                 MOV     R1, R1,ASR#16
+ROM:A068541C 09 00 52 E3                 CMP     R2, #9
+ROM:A0685420 08 20 A0 03                 MOVEQ   R2, #8
+ROM:A0685424 02 20 C0 05                 STREQB  R2, [R0,#2]
+ROM:A0685428 02 20 D0 E5                 LDRB    R2, [R0,#2]
+ROM:A068542C 01 20 82 E2                 ADD     R2, R2, #1
+ROM:A0685430 FF 20 02 E2                 AND     R2, R2, #0xFF
+ROM:A0685434 02 20 C0 E5                 STRB    R2, [R0,#2]
+ROM:A0685438 01 00 52 E3                 CMP     R2, #1
+ROM:A068543C B2 11 C0 91                 STRLSH  R1, [R0,#0x12]
+ROM:A0685440 8D FE FF 9A                 BLS     sub_A0684E7C
+ROM:A0685440
+ROM:A0685444 82 00 80 80                 ADDHI   R0, R0, R2,LSL#1
+ROM:A0685448 B0 11 C0 81                 STRHIH  R1, [R0,#0x10]
+ROM:A068544C 02 00 A0 83                 MOVHI   R0, #2
+ROM:A0685450 1E FF 2F E1                 BX      LR
+ROM:A0685450
+ROM:A0685450             ; End of function sub_A0685410
+ROM:A0685450
+ROM:A0685454
+ROM:A0685454             ; *************** S U B R O U T I N E ***************************************
+ROM:A0685454
+ROM:A0685454
+ROM:A0685454             sub_A0685454                            ; loc_A0680B48p
+ROM:A0685454 10 40 2D E9                 STMFD   SP!, {R4,LR}
+ROM:A0685458 00 40 A0 E1                 MOV     R4, R0
+ROM:A068545C 02 10 D4 E5                 LDRB    R1, [R4,#2]
+ROM:A0685460 00 00 A0 E3                 MOV     R0, #0
+ROM:A0685464 00 00 51 E3                 CMP     R1, #0
+ROM:A0685468 10 80 BD 08                 LDMEQFD SP!, {R4,PC}
+ROM:A0685468
+ROM:A068546C
+ROM:A068546C             loc_A068546C                            ; A0685484j
+ROM:A068546C 04 00 A0 E1                 MOV     R0, R4
+ROM:A0685470 81 FE FF EB                 BL      sub_A0684E7C
+ROM:A0685470
+ROM:A0685474 01 00 50 E3                 CMP     R0, #1
+ROM:A0685478 10 80 BD 18                 LDMNEFD SP!, {R4,PC}
+ROM:A068547C 02 10 D4 E5                 LDRB    R1, [R4,#2]
+ROM:A0685480 00 00 51 E3                 CMP     R1, #0
+ROM:A0685484 F8 FF FF 1A                 BNE     loc_A068546C
+ROM:A0685484
+ROM:A0685488 10 80 BD E8                 LDMFD   SP!, {R4,PC}
+ROM:A0685488
+ROM:A0685488             ; End of function sub_A0685454
+ROM:A0685488
+ROM:A068548C
+ROM:A068548C             ; *************** S U B R O U T I N E ***************************************
+ROM:A068548C
+ROM:A068548C
+ROM:A068548C             sub_A068548C                            ; A0680A04p
+ROM:A068548C                                                     ; A0682060p
+ROM:A068548C                                                     ; A0682C90p
+ROM:A068548C                                                     ; A0682D30p
+ROM:A068548C                                                     ; A06854D0p
+ROM:A068548C                                                     ; A0685514p
+ROM:A068548C 24 21 90 E5                 LDR     R2, [R0,#0x124]
+ROM:A0685490 F4 00 90 E5                 LDR     R0, [R0,#0xF4]
+ROM:A0685494 00 00 52 E3                 CMP     R2, #0
+ROM:A0685498 20 74 F6 0A                 BEQ     sub_A0422520    ; void SetCursorToMenuItem(void *gui,int n)
+ROM:A0685498
+ROM:A068549C A6 84 00 1A                 BNE     sub_A06A673C    ; void UpdateMenuCursorItem(void *gui, int n)
+ROM:A068549C
+ROM:A06854A0
+ROM:A06854A0             loc_A06854A0                            ; A065D0A8p
+ROM:A06854A0                                                     ; A067EA34p
+ROM:A06854A0                                                     ; A067EAD4p
+ROM:A06854A0                                                     ; A067ED48p
+ROM:A06854A0                                                     ; A067EDE8p
+ROM:A06854A0                                                     ; A067EE14p ...
+ROM:A06854A0 08 40 2D E9                 STMFD   SP!, {R3,LR}
+ROM:A06854A4 F4 00 90 E5                 LDR     R0, [R0,#0xF4]
+ROM:A06854A8 32 91 0C FB                 BLX     sub_A09A997A    ; int GetCurMenuItem(void *gui)
+ROM:A06854A8
+ROM:A06854AC 00 08 A0 E1                 MOV     R0, R0,LSL#16
+ROM:A06854B0 20 08 A0 E1                 MOV     R0, R0,LSR#16
+ROM:A06854B4 08 80 BD E8                 LDMFD   SP!, {R3,PC}
+ROM:A06854B4
+ROM:A06854B4             ; End of function sub_A068548C
+ROM:A06854B4
+ROM:A06854B8
+ROM:A06854B8             ; *************** S U B R O U T I N E ***************************************
+ROM:A06854B8
+ROM:A06854B8
+ROM:A06854B8             sub_A06854B8                            ; A065D0E8p
+ROM:A06854B8                                                     ; A067FFACp
+ROM:A06854B8                                                     ; A0682EFCp
+ROM:A06854B8                                                     ; A0683028p
+ROM:A06854B8 38 40 2D E9                 STMFD   SP!, {R3-R5,LR}
+ROM:A06854BC 00 40 A0 E1                 MOV     R4, R0
+ROM:A06854C0 F6 FF FF EB                 BL      loc_A06854A0
+ROM:A06854C0
+ROM:A06854C4 00 50 A0 E1                 MOV     R5, R0
+ROM:A06854C8 04 00 A0 E1                 MOV     R0, R4
+ROM:A06854CC B8 10 D4 E1                 LDRH    R1, [R4,#8]
+ROM:A06854D0 ED FF FF EB                 BL      sub_A068548C
+ROM:A06854D0
+ROM:A06854D4 B6 00 D4 E1                 LDRH    R0, [R4,#6]
+ROM:A06854D8 00 10 D4 E5                 LDRB    R1, [R4]
+ROM:A06854DC 01 10 90 E0                 ADDS    R1, R0, R1
+ROM:A06854E0 00 10 A0 03                 MOVEQ   R1, #0
+ROM:A06854E4 09 00 00 0A                 BEQ     loc_A0685510
+ROM:A06854E4
+ROM:A06854E8 F4 00 94 E5                 LDR     R0, [R4,#0xF4]
+ROM:A06854EC 50 92 0C FA                 BLX     sub_A09A9E34    ; void Menu_SetItemCountDyn(void *gui, int n)
+ROM:A06854EC
+ROM:A06854F0 B6 00 D4 E1                 LDRH    R0, [R4,#6]
+ROM:A06854F4 00 10 D4 E5                 LDRB    R1, [R4]
+ROM:A06854F8 01 00 80 E0                 ADD     R0, R0, R1
+ROM:A06854FC 05 00 50 E1                 CMP     R0, R5
+ROM:A0685500 04 00 00 8A                 BHI     locret_A0685518
+ROM:A0685500
+ROM:A0685504 01 00 40 E2                 SUB     R0, R0, #1
+ROM:A0685508 00 18 A0 E1                 MOV     R1, R0,LSL#16
+ROM:A068550C 21 18 A0 E1                 MOV     R1, R1,LSR#16
+ROM:A068550C
+ROM:A0685510
+ROM:A0685510             loc_A0685510                            ; A06854E4j
+ROM:A0685510 04 00 A0 E1                 MOV     R0, R4
+ROM:A0685514 DC FF FF EB                 BL      sub_A068548C
+ROM:A0685514
+ROM:A0685518
+ROM:A0685518             locret_A0685518                         ; A0685500j
+ROM:A0685518 38 80 BD E8                 LDMFD   SP!, {R3-R5,PC}
+ROM:A0685518
+ROM:A0685518             ; End of function sub_A06854B8
+ROM:A0685518
+ROM:A068551C             ; ---------------------------------------------------------------------------
+ROM:A068551C 10 40 2D E9                 STMFD   SP!, {R4,LR}
+ROM:A0685520 00 40 A0 E1                 MOV     R4, R0
+ROM:A0685524 F4 00 90 E5                 LDR     R0, [R0,#0xF4]
+ROM:A0685528 12 91 0C FB                 BLX     sub_A09A997A    ; int GetCurMenuItem(void *gui)
+ROM:A0685528
+ROM:A068552C 00 18 A0 E1                 MOV     R1, R0,LSL#16
+ROM:A0685530 21 18 A0 E1                 MOV     R1, R1,LSR#16
+ROM:A0685534 04 00 A0 E1                 MOV     R0, R4
+ROM:A0685538 B6 FA FF EB                 BL      sub_A0684018
+ROM:A0685538
+ROM:A068553C 00 08 A0 E1                 MOV     R0, R0,LSL#16
+ROM:A0685540 20 08 A0 E1                 MOV     R0, R0,LSR#16
+ROM:A0685544 10 80 BD E8                 LDMFD   SP!, {R4,PC}
+ROM:A0685544
+ROM:A0685548
+ROM:A0685548             ; *************** S U B R O U T I N E ***************************************
+ROM:A0685548
+ROM:A0685548
+ROM:A0685548             sub_A0685548                            ; A065D25Cp
+ROM:A0685548 F4 00 90 E5                 LDR     R0, [R0,#0xF4]
+ROM:A068554C 6A 7D F6 EA                 B       sub_A0424AFC
+ROM:A068554C
+ROM:A068554C             ; End of function sub_A0685548
+ROM:A068554C
+ROM:A0685550
+ROM:A0685550             ; *************** S U B R O U T I N E ***************************************
+ROM:A0685550
+ROM:A0685550
+ROM:A0685550             sub_A0685550                            ; A095A0A8o
+ROM:A0685550                                                     ; A095A0D8o
+ROM:A0685550                                                     ; A095A168o
+ROM:A0685550
+ROM:A0685550             var_28          = -0x28
+ROM:A0685550
+ROM:A0685550 FC 4D 2D E9                 STMFD   SP!, {R2-R8,R10,R11,LR}
+ROM:A0685554 01 B0 A0 E1                 MOV     R11, R1
+ROM:A0685558 13 9E 0C FB                 BLX     sub_A09ACDAE    ; void *MenuGetUserPointer(void *gui)
+ROM:A0685558
+ROM:A068555C 00 40 A0 E1                 MOV     R4, R0
+ROM:A0685560 CE FF FF EB                 BL      loc_A06854A0
+ROM:A0685560
+ROM:A0685564 00 10 D4 E5                 LDRB    R1, [R4]
+ROM:A0685568 00 50 E0 E3                 MOVL    R5, 0xFFFFFFFF
+ROM:A068556C 80 61 1F E5                 LDR     R6, =0x4209
+ROM:A0685570 01 00 40 E0                 SUB     R0, R0, R1
+ROM:A0685574 00 88 A0 E1                 MOV     R8, R0,LSL#16
+ROM:A0685578 F6 00 D4 E1                 LDRSH   R0, [R4,#6]
+ROM:A068557C 48 88 A0 E1                 MOV     R8, R8,ASR#16
+ROM:A0685580 81 70 A0 E3                 MOV     R7, #0x81
+ROM:A0685584 00 A0 A0 E3                 MOV     R10, #0
+ROM:A0685588 00 00 58 E1                 CMP     R8, R0
+ROM:A068558C 01 00 00 BA                 BLT     loc_A0685598
+ROM:A068558C
+ROM:A0685590 00 00 50 E3                 CMP     R0, #0
+ROM:A0685594 EC 00 00 1A                 BNE     loc_A068594C
+ROM:A0685594
+ROM:A0685598
+ROM:A0685598             loc_A0685598                            ; A068558Cj
+ROM:A0685598 00 00 58 E3                 CMP     R8, #0
+ROM:A068559C 09 00 00 BA                 BLT     loc_A06855C8
+ROM:A068559C
+ROM:A06855A0 08 18 A0 E1                 MOV     R1, R8,LSL#16
+ROM:A06855A4 21 18 A0 E1                 MOV     R1, R1,LSR#16
+ROM:A06855A8 B8 10 C4 E1                 STRH    R1, [R4,#8]
+ROM:A06855AC 04 00 A0 E1                 MOV     R0, R4
+ROM:A06855B0 98 FA FF EB                 BL      sub_A0684018
+ROM:A06855B0
+ROM:A06855B4 BA 00 C4 E1                 STRH    R0, [R4,#0xA]
+ROM:A06855B8 10 11 94 E5                 LDR     R1, [R4,#0x110]
+ROM:A06855BC 00 50 A0 E1                 MOV     R5, R0
+ROM:A06855C0 01 00 E0 E3                 MOVL    R0, 0xFFFFFFFE
+ROM:A06855C4 B6 05 C1 E1                 STRH    R0, [R1,#0x56]
+ROM:A06855C4
+ROM:A06855C8
+ROM:A06855C8             loc_A06855C8                            ; A068559Cj
+ROM:A06855C8 F2 00 DB E1                 LDRSH   R0, [R11,#2]
+ROM:A06855CC 36 00 50 E3                 CMP     R0, #0x36
+ROM:A06855D0 76 00 00 0A                 BEQ     loc_A06857B0
+ROM:A06855D0
+ROM:A06855D4 1C 00 00 CA                 BGT     loc_A068564C
+ROM:A06855D4
+ROM:A06855D8 25 00 50 E3                 CMP     R0, #0x25
+ROM:A06855DC 7B 00 00 0A                 BEQ     loc_A06857D0
+ROM:A06855DC
+ROM:A06855E0 0E 00 00 CA                 BGT     loc_A0685620
+ROM:A06855E0
+ROM:A06855E4 01 00 50 E3                 CMP     R0, #1
+ROM:A06855E8 BD 00 00 0A                 BEQ     loc_A06858E4
+ROM:A06855E8
+ROM:A06855EC 0C A2 1F E5                 LDR     R10, =0xEC10
+ROM:A06855F0 0C 12 1F E5                 LDR     R1, =unk_A09564E6
+ROM:A06855F4 05 00 50 E3                 CMP     R0, #5
+ROM:A06855F8 7A 00 00 0A                 BEQ     loc_A06857E8
+ROM:A06855F8
+ROM:A06855FC 08 00 50 E3                 CMP     R0, #8
+ROM:A0685600 9E 00 00 0A                 BEQ     loc_A0685880
+ROM:A0685600
+ROM:A0685604 15 00 50 E3                 CMP     R0, #0x15
+ROM:A0685608 F7 00 00 1A                 BNE     loc_A06859EC
+ROM:A0685608
+ROM:A068560C 10 01 94 E5                 LDR     R0, [R4,#0x110]
+ROM:A0685610 87 20 FA EB                 BL      sub_A050D834
+ROM:A0685610
+ROM:A0685614 01 00 50 E3                 CMP     R0, #1
+ROM:A0685618 F1 00 00 0A                 BEQ     loc_A06859E4
+ROM:A0685618
+ROM:A068561C F2 00 00 EA                 B       loc_A06859EC
+ROM:A068561C
+ROM:A0685620             ; ---------------------------------------------------------------------------
+ROM:A0685620
+ROM:A0685620             loc_A0685620                            ; A06855E0j
+ROM:A0685620 26 00 50 E3                 CMP     R0, #0x26
+ROM:A0685624 64 00 00 0A                 BEQ     loc_A06857BC
+ROM:A0685624
+ROM:A0685628 2F 00 50 E3                 CMP     R0, #0x2F
+ROM:A068562C AC 00 00 0A                 BEQ     loc_A06858E4
+ROM:A068562C
+ROM:A0685630 34 00 50 E3                 CMP     R0, #0x34
+ROM:A0685634 B9 00 00 0A                 BEQ     loc_A0685920
+ROM:A0685634
+ROM:A0685638 35 00 50 E3                 CMP     R0, #0x35
+ROM:A068563C 07 20 A0 01                 MOVEQ   R2, R7
+ROM:A0685640 8F 30 A0 03                 MOVEQ   R3, #0x8F
+ROM:A0685644 AB 00 00 0A                 BEQ     loc_A06858F8
+ROM:A0685644
+ROM:A0685648 E7 00 00 EA                 B       loc_A06859EC
+ROM:A0685648
+ROM:A068564C             ; ---------------------------------------------------------------------------
+ROM:A068564C
+ROM:A068564C             loc_A068564C                            ; A06855D4j
+ROM:A068564C 7B 00 50 E3                 CMP     R0, #0x7B
+ROM:A0685650 4B 00 00 0A                 BEQ     loc_A0685784
+ROM:A0685650
+ROM:A0685654 0A 00 00 CA                 BGT     loc_A0685684
+ROM:A0685654
+ROM:A0685658 3D 00 50 E3                 CMP     R0, #0x3D
+ROM:A068565C 24 00 00 0A                 BEQ     loc_A06856F4
+ROM:A068565C
+ROM:A0685660 40 00 50 E3                 CMP     R0, #0x40
+ROM:A0685664 AD 00 00 0A                 BEQ     loc_A0685920
+ROM:A0685664
+ROM:A0685668 47 00 50 E3                 CMP     R0, #0x47
+ROM:A068566C 0F 00 00 0A                 BEQ     loc_A06856B0
+ROM:A068566C
+ROM:A0685670 67 00 50 E3                 CMP     R0, #0x67
+ROM:A0685674 07 20 A0 01                 MOVEQ   R2, R7
+ROM:A0685678 97 30 A0 03                 MOVEQ   R3, #0x97
+ROM:A068567C AD 00 00 0A                 BEQ     loc_A0685938
+ROM:A068567C
+ROM:A0685680 D9 00 00 EA                 B       loc_A06859EC
+ROM:A0685680
+ROM:A0685684             ; ---------------------------------------------------------------------------
+ROM:A0685684
+ROM:A0685684             loc_A0685684                            ; A0685654j
+ROM:A0685684 7C 00 50 E3                 CMP     R0, #0x7C
+ROM:A0685688 95 00 00 0A                 BEQ     loc_A06858E4
+ROM:A0685688
+ROM:A068568C 88 00 50 E3                 CMP     R0, #0x88
+ROM:A0685690 07 20 A0 01                 MOVEQ   R2, R7
+ROM:A0685694 A1 30 A0 03                 MOVEQ   R3, #0xA1
+ROM:A0685698 A6 00 00 0A                 BEQ     loc_A0685938
+ROM:A0685698
+ROM:A068569C 9C 00 50 E3                 CMP     R0, #0x9C
+ROM:A06856A0 07 20 A0 01                 MOVEQ   R2, R7
+ROM:A06856A4 A4 30 A0 03                 MOVEQ   R3, #0xA4
+ROM:A06856A8 92 00 00 0A                 BEQ     loc_A06858F8
+ROM:A06856A8
+ROM:A06856AC CE 00 00 EA                 B       loc_A06859EC
+ROM:A06856AC
+ROM:A06856B0             ; ---------------------------------------------------------------------------
+ROM:A06856B0
+ROM:A06856B0             loc_A06856B0                            ; A068566Cj
+ROM:A06856B0 00 00 55 E3                 CMP     R5, #0
+ROM:A06856B4 06 00 00 BA                 BLT     loc_A06856D4
+ROM:A06856B4
+ROM:A06856B8 BA 00 D4 E1                 LDRH    R0, [R4,#0xA]
+ROM:A06856BC B3 22 FA EB                 BL      sub_A050E190
+ROM:A06856BC
+ROM:A06856C0 28 00 50 E3                 CMP     R0, #0x28
+ROM:A06856C4 06 30 A0 13                 MOVNE   R3, #6
+ROM:A06856C8 05 30 A0 03                 MOVEQ   R3, #5
+ROM:A06856CC 07 20 A0 E1                 MOV     R2, R7
+ROM:A06856D0 88 00 00 EA                 B       loc_A06858F8
+ROM:A06856D0
+ROM:A06856D4             ; ---------------------------------------------------------------------------
+ROM:A06856D4
+ROM:A06856D4             loc_A06856D4                            ; A06856B4j
+ROM:A06856D4 03 00 D4 E5                 LDRB    R0, [R4,#3]
+ROM:A06856D8 10 00 10 E3                 TST     R0, #0x10
+ROM:A06856DC C0 00 00 0A                 BEQ     loc_A06859E4
+ROM:A06856DC
+ROM:A06856E0 42 0F A0 E3                 MOV     R0, #0x108
+ROM:A06856E4 B4 00 90 E1                 LDRH    R0, [R0,R4]
+ROM:A06856E8 07 20 A0 E1                 MOV     R2, R7
+ROM:A06856EC 07 30 A0 E3                 MOV     R3, #7
+ROM:A06856F0 82 00 00 EA                 B       loc_A0685900
+ROM:A06856F0
+ROM:A06856F4             ; ---------------------------------------------------------------------------
+ROM:A06856F4
+ROM:A06856F4             loc_A06856F4                            ; A068565Cj
+ROM:A06856F4 FC 00 D4 E5                 LDRB    R0, [R4,#0xFC]
+ROM:A06856F8 06 00 50 E3                 CMP     R0, #6
+ROM:A06856FC 07 20 A0 01                 MOVEQ   R2, R7
+ROM:A0685700 96 30 A0 03                 MOVEQ   R3, #0x96
+ROM:A0685704 7B 00 00 0A                 BEQ     loc_A06858F8
+ROM:A0685704
+ROM:A0685708 04 00 50 E3                 CMP     R0, #4
+ROM:A068570C 0B 00 50 13                 CMPNE   R0, #0xB
+ROM:A0685710 0E 00 50 13                 CMPNE   R0, #0xE
+ROM:A0685714 8E 10 A0 E3                 MOV     R1, #0x8E
+ROM:A0685718 02 00 00 1A                 BNE     loc_A0685728
+ROM:A0685718
+ROM:A068571C
+ROM:A068571C             loc_A068571C                            ; A0685774j
+ROM:A068571C 07 20 A0 E1                 MOV     R2, R7
+ROM:A0685720 01 30 A0 E1                 MOV     R3, R1
+ROM:A0685724 73 00 00 EA                 B       loc_A06858F8
+ROM:A0685724
+ROM:A0685728             ; ---------------------------------------------------------------------------
+ROM:A0685728
+ROM:A0685728             loc_A0685728                            ; A0685718j
+ROM:A0685728 07 00 50 E3                 CMP     R0, #7
+ROM:A068572C 02 00 50 13                 CMPNE   R0, #2
+ROM:A0685730 07 20 A0 01                 MOVEQ   R2, R7
+ROM:A0685734 93 30 A0 03                 MOVEQ   R3, #0x93
+ROM:A0685738 6E 00 00 0A                 BEQ     loc_A06858F8
+ROM:A0685738
+ROM:A068573C 0C 00 50 E3                 CMP     R0, #0xC
+ROM:A0685740 06 00 00 1A                 BNE     loc_A0685760
+ROM:A0685740
+ROM:A0685744 10 01 94 E5                 LDR     R0, [R4,#0x110]
+ROM:A0685748 07 20 A0 E1                 MOV     R2, R7
+ROM:A068574C 60 00 D0 E5                 LDRB    R0, [R0,#0x60]
+ROM:A0685750 01 00 50 E3                 CMP     R0, #1
+ROM:A0685754 66 30 A0 13                 MOVNE   R3, #0x66
+ROM:A0685758 63 30 A0 03                 MOVEQ   R3, #0x63
+ROM:A068575C 65 00 00 EA                 B       loc_A06858F8
+ROM:A068575C
+ROM:A0685760             ; ---------------------------------------------------------------------------
+ROM:A0685760
+ROM:A0685760             loc_A0685760                            ; A0685740j
+ROM:A0685760 05 00 50 E3                 CMP     R0, #5
+ROM:A0685764 9E 00 00 1A                 BNE     loc_A06859E4
+ROM:A0685764
+ROM:A0685768 10 01 94 E5                 LDR     R0, [R4,#0x110]
+ROM:A068576C 70 00 90 E5                 LDR     R0, [R0,#0x70]
+ROM:A0685770 01 00 50 E3                 CMP     R0, #1
+ROM:A0685774 E8 FF FF 1A                 BNE     loc_A068571C
+ROM:A0685774
+ROM:A0685778 07 20 A0 E1                 MOV     R2, R7
+ROM:A068577C A3 30 A0 E3                 MOV     R3, #0xA3
+ROM:A0685780 5C 00 00 EA                 B       loc_A06858F8
+ROM:A0685780
+ROM:A0685784             ; ---------------------------------------------------------------------------
+ROM:A0685784
+ROM:A0685784             loc_A0685784                            ; A0685650j
+ROM:A0685784 FC 00 D4 E5                 LDRB    R0, [R4,#0xFC]
+ROM:A0685788 06 00 50 E3                 CMP     R0, #6
+ROM:A068578C 07 20 A0 01                 MOVEQ   R2, R7
+ROM:A0685790 98 30 A0 03                 MOVEQ   R3, #0x98
+ROM:A0685794 57 00 00 0A                 BEQ     loc_A06858F8
+ROM:A0685794
+ROM:A0685798 30 01 94 E5                 LDR     R0, [R4,#0x130]
+ROM:A068579C 07 20 A0 E1                 MOV     R2, R7
+ROM:A06857A0 01 00 50 E3                 CMP     R0, #1
+ROM:A06857A4 67 30 A0 13                 MOVNE   R3, #0x67
+ROM:A06857A8 A2 30 A0 03                 MOVEQ   R3, #0xA2
+ROM:A06857AC 61 00 00 EA                 B       loc_A0685938
+ROM:A06857AC
+ROM:A06857B0             ; ---------------------------------------------------------------------------
+ROM:A06857B0
+ROM:A06857B0             loc_A06857B0                            ; A06855D0j
+ROM:A06857B0 90 30 A0 E3                 MOV     R3, #0x90
+ROM:A06857B4 07 20 A0 E1                 MOV     R2, R7
+ROM:A06857B8 4E 00 00 EA                 B       loc_A06858F8
+ROM:A06857B8
+ROM:A06857BC             ; ---------------------------------------------------------------------------
+ROM:A06857BC
+ROM:A06857BC             loc_A06857BC                            ; A0685624j
+ROM:A06857BC 02 00 D4 E5                 LDRB    R0, [R4,#2]
+ROM:A06857C0 00 00 50 E3                 CMP     R0, #0
+ROM:A06857C4 26 00 A0 03                 MOVEQ   R0, #0x26
+ROM:A06857C8 04 00 00 0A                 BEQ     loc_A06857E0
+ROM:A06857C8
+ROM:A06857CC 84 00 00 EA                 B       loc_A06859E4
+ROM:A06857CC
+ROM:A06857D0             ; ---------------------------------------------------------------------------
+ROM:A06857D0
+ROM:A06857D0             loc_A06857D0                            ; A06855DCj
+ROM:A06857D0 02 00 D4 E5                 LDRB    R0, [R4,#2]
+ROM:A06857D4 00 00 50 E3                 CMP     R0, #0
+ROM:A06857D8 81 00 00 1A                 BNE     loc_A06859E4
+ROM:A06857D8
+ROM:A06857DC 25 00 A0 E3                 MOV     R0, #0x25
+ROM:A06857DC
+ROM:A06857E0
+ROM:A06857E0             loc_A06857E0                            ; A06857C8j
+ROM:A06857E0 04 00 C4 E5                 STRB    R0, [R4,#4]
+ROM:A06857E4 80 00 00 EA                 B       loc_A06859EC
+ROM:A06857E4
+ROM:A06857E8             ; ---------------------------------------------------------------------------
+ROM:A06857E8
+ROM:A06857E8             loc_A06857E8                            ; A06855F8j
+ROM:A06857E8 00 00 58 E3                 CMP     R8, #0
+ROM:A06857EC 05 00 00 BA                 BLT     loc_A0685808
+ROM:A06857EC
+ROM:A06857F0 FC 00 D4 E5                 LDRB    R0, [R4,#0xFC]
+ROM:A06857F4 03 00 50 E3                 CMP     R0, #3
+ROM:A06857F8 00 00 50 13                 CMPNE   R0, #0
+ROM:A06857FC 01 00 00 1A                 BNE     loc_A0685808
+ROM:A06857FC
+ROM:A0685800 00 00 55 E3                 CMP     R5, #0
+ROM:A0685804 06 00 00 AA                 BGE     loc_A0685824
+ROM:A0685804
+ROM:A0685808
+ROM:A0685808             loc_A0685808                            ; A06857ECj
+ROM:A0685808                                                     ; A06857FCj
+ROM:A0685808 42 0F A0 E3                 MOV     R0, #0x108
+ROM:A068580C B4 00 90 E1                 LDRH    R0, [R0,R4]
+ROM:A0685810 FF CC 40 E2                 SUB     R12, R0, #0xFF00
+ROM:A0685814 FF C0 5C E2                 SUBS    R12, R12, #0xFF
+ROM:A0685818 71 00 00 0A                 BEQ     loc_A06859E4
+ROM:A0685818
+ROM:A068581C 01 00 78 E3                 CMN     R8, #1
+ROM:A0685820 6F 00 00 1A                 BNE     loc_A06859E4
+ROM:A0685820
+ROM:A0685824
+ROM:A0685824             loc_A0685824                            ; A0685804j
+ROM:A0685824 01 00 75 E3                 CMN     R5, #1
+ROM:A0685828 11 00 00 1A                 BNE     loc_A0685874
+ROM:A0685828
+ROM:A068582C 01 40 A0 E1                 MOV     R4, R1
+ROM:A0685830 02 00 A0 E3                 MOV     R0, #2
+ROM:A0685834 2D 27 ED EB                 BL      sub_A01CF4F0
+ROM:A0685834
+ROM:A0685838 00 00 50 E3                 CMP     R0, #0
+ROM:A068583C 06 00 00 0A                 BEQ     loc_A068585C
+ROM:A068583C
+ROM:A0685840 02 00 00 EF                 SWI     2
+ROM:A0685844 0A 30 A0 E1                 MOV     R3, R10
+ROM:A0685848 03 20 A0 E3                 MOV     R2, #3
+ROM:A068584C 04 10 A0 E1                 MOV     R1, R4
+ROM:A0685850 02 00 A0 E3                 MOV     R0, #2
+ROM:A0685854 A3 26 ED EB                 BL      sub_A01CF2E8    ; void StoreErrInfoAndAbort(int code,const char *module_name,int type,int unk3);
+ROM:A0685854
+ROM:A0685858 05 00 00 EA                 B       loc_A0685874
+ROM:A0685858
+ROM:A068585C             ; ---------------------------------------------------------------------------
+ROM:A068585C
+ROM:A068585C             loc_A068585C                            ; A068583Cj
+ROM:A068585C 03 00 00 EF                 SWI     3
+ROM:A0685860 0A 30 A0 E1                 MOV     R3, R10
+ROM:A0685864 03 20 A0 E3                 MOV     R2, #3
+ROM:A0685868 04 10 A0 E1                 MOV     R1, R4
+ROM:A068586C 02 00 A0 E3                 MOV     R0, #2
+ROM:A0685870 CE 26 ED EB                 BL      sub_A01CF3B0
+ROM:A0685870
+ROM:A0685874
+ROM:A0685874             loc_A0685874                            ; A0685828j
+ROM:A0685874                                                     ; A0685858j
+ROM:A0685874 07 20 A0 E1                 MOV     R2, R7
+ROM:A0685878 58 30 A0 E3                 MOV     R3, #0x58
+ROM:A068587C 1D 00 00 EA                 B       loc_A06858F8
+ROM:A068587C
+ROM:A0685880             ; ---------------------------------------------------------------------------
+ROM:A0685880
+ROM:A0685880             loc_A0685880                            ; A0685600j
+ROM:A0685880 00 00 58 E3                 CMP     R8, #0
+ROM:A0685884 56 00 00 BA                 BLT     loc_A06859E4
+ROM:A0685884
+ROM:A0685888 01 00 75 E3                 CMN     R5, #1
+ROM:A068588C 11 00 00 1A                 BNE     loc_A06858D8
+ROM:A068588C
+ROM:A0685890 01 40 A0 E1                 MOV     R4, R1
+ROM:A0685894 02 00 A0 E3                 MOV     R0, #2
+ROM:A0685898 14 27 ED EB                 BL      sub_A01CF4F0
+ROM:A0685898
+ROM:A068589C 00 00 50 E3                 CMP     R0, #0
+ROM:A06858A0 06 00 00 0A                 BEQ     loc_A06858C0
+ROM:A06858A0
+ROM:A06858A4 02 00 00 EF                 SWI     2
+ROM:A06858A8 0A 30 A0 E1                 MOV     R3, R10
+ROM:A06858AC 03 20 A0 E3                 MOV     R2, #3
+ROM:A06858B0 04 10 A0 E1                 MOV     R1, R4
+ROM:A06858B4 02 00 A0 E3                 MOV     R0, #2
+ROM:A06858B8 8A 26 ED EB                 BL      sub_A01CF2E8    ; void StoreErrInfoAndAbort(int code,const char *module_name,int type,int unk3);
+ROM:A06858B8
+ROM:A06858BC 05 00 00 EA                 B       loc_A06858D8
+ROM:A06858BC
+ROM:A06858C0             ; ---------------------------------------------------------------------------
+ROM:A06858C0
+ROM:A06858C0             loc_A06858C0                            ; A06858A0j
+ROM:A06858C0 03 00 00 EF                 SWI     3
+ROM:A06858C4 0A 30 A0 E1                 MOV     R3, R10
+ROM:A06858C8 03 20 A0 E3                 MOV     R2, #3
+ROM:A06858CC 04 10 A0 E1                 MOV     R1, R4
+ROM:A06858D0 02 00 A0 E3                 MOV     R0, #2
+ROM:A06858D4 B5 26 ED EB                 BL      sub_A01CF3B0
+ROM:A06858D4
+ROM:A06858D8
+ROM:A06858D8             loc_A06858D8                            ; A068588Cj
+ROM:A06858D8                                                     ; A06858BCj
+ROM:A06858D8 07 20 A0 E1                 MOV     R2, R7
+ROM:A06858DC 95 30 A0 E3                 MOV     R3, #0x95
+ROM:A06858E0 04 00 00 EA                 B       loc_A06858F8
+ROM:A06858E0
+ROM:A06858E4             ; ---------------------------------------------------------------------------
+ROM:A06858E4
+ROM:A06858E4             loc_A06858E4                            ; A06855E8j
+ROM:A06858E4                                                     ; A068562Cj
+ROM:A06858E4                                                     ; A0685688j
+ROM:A06858E4 28 01 94 E5                 LDR     R0, [R4,#0x128]
+ROM:A06858E8 01 00 50 E3                 CMP     R0, #1
+ROM:A06858EC 05 00 00 1A                 BNE     loc_A0685908
+ROM:A06858EC
+ROM:A06858F0 07 20 A0 E1                 MOV     R2, R7
+ROM:A06858F4 92 30 A0 E3                 MOV     R3, #0x92
+ROM:A06858F4
+ROM:A06858F8
+ROM:A06858F8             loc_A06858F8                            ; A0685644j
+ROM:A06858F8                                                     ; A06856A8j
+ROM:A06858F8                                                     ; A06856D0j
+ROM:A06858F8                                                     ; A0685704j
+ROM:A06858F8                                                     ; A0685724j
+ROM:A06858F8                                                     ; A0685738j ...
+ROM:A06858F8 05 08 A0 E1                 MOV     R0, R5,LSL#16
+ROM:A06858FC 20 08 A0 E1                 MOV     R0, R0,LSR#16
+ROM:A06858FC
+ROM:A0685900
+ROM:A0685900             loc_A0685900                            ; A06856F0j
+ROM:A0685900 00 00 8D E5                 STR     R0, [SP,#0x28+var_28]
+ROM:A0685904 0C 00 00 EA                 B       loc_A068593C
+ROM:A0685904
+ROM:A0685908             ; ---------------------------------------------------------------------------
+ROM:A0685908
+ROM:A0685908             loc_A0685908                            ; A06858ECj
+ROM:A0685908 10 01 94 E5                 LDR     R0, [R4,#0x110]
+ROM:A068590C 0A 30 A0 E1                 MOV     R3, R10
+ROM:A0685910 B6 55 C0 E1                 STRH    R5, [R0,#0x56]
+ROM:A0685914 00 A0 8D E5                 STR     R10, [SP,#0x28+var_28]
+ROM:A0685918 07 20 A0 E1                 MOV     R2, R7
+ROM:A068591C 06 00 00 EA                 B       loc_A068593C
+ROM:A068591C
+ROM:A0685920             ; ---------------------------------------------------------------------------
+ROM:A0685920
+ROM:A0685920             loc_A0685920                            ; A0685634j
+ROM:A0685920                                                     ; A0685664j
+ROM:A0685920 28 01 94 E5                 LDR     R0, [R4,#0x128]
+ROM:A0685924 01 00 50 E3                 CMP     R0, #1
+ROM:A0685928 2D 00 00 1A                 BNE     loc_A06859E4
+ROM:A0685928
+ROM:A068592C 05 38 A0 E1                 MOV     R3, R5,LSL#16
+ROM:A0685930 23 38 A0 E1                 MOV     R3, R3,LSR#16
+ROM:A0685934 83 20 A0 E3                 MOV     R2, #0x83
+ROM:A0685934
+ROM:A0685938
+ROM:A0685938             loc_A0685938                            ; A068567Cj
+ROM:A0685938                                                     ; A0685698j
+ROM:A0685938                                                     ; A06857ACj
+ROM:A0685938 00 A0 8D E5                 STR     R10, [SP,#0x28+var_28]
+ROM:A0685938
+ROM:A068593C
+ROM:A068593C             loc_A068593C                            ; A0685904j
+ROM:A068593C                                                     ; A068591Cj
+ROM:A068593C 6C 1C A0 E3                 MOV     R1, #0x6C00
+ROM:A0685940 06 00 A0 E1                 MOV     R0, R6
+ROM:A0685944 52 34 E8 EB                 BL      SWI_0x100_GBS_SendMessage ; void GBS_SendMessage(int cepid_to, int msg, ...)
+ROM:A0685944
+ROM:A0685948 25 00 00 EA                 B       loc_A06859E4
+ROM:A0685948
+ROM:A068594C             ; ---------------------------------------------------------------------------
+ROM:A068594C
+ROM:A068594C             loc_A068594C                            ; A0685594j
+ROM:A068594C F2 00 DB E1                 LDRSH   R0, [R11,#2]
+ROM:A0685950 08 10 81 E0                 ADD     R1, R1, R8
+ROM:A0685954 01 38 A0 E1                 MOV     R3, R1,LSL#16
+ROM:A0685958 23 38 A0 E1                 MOV     R3, R3,LSR#16
+ROM:A068595C 00 10 A0 E3                 MOV     R1, #0
+ROM:A0685960 00 20 A0 E3                 MOV     R2, #0
+ROM:A0685964 27 00 50 E3                 CMP     R0, #0x27
+ROM:A0685968 10 00 00 1A                 BNE     loc_A06859B0
+ROM:A0685968
+ROM:A068596C
+ROM:A068596C             loc_A068596C                            ; A0685990j
+ROM:A068596C 01 01 84 E0                 ADD     R0, R4, R1,LSL#2
+ROM:A0685970 B4 C9 D0 E1                 LDRH    R12, [R0,#0x94]
+ROM:A0685974 03 00 5C E1                 CMP     R12, R3
+ROM:A0685978 B6 29 D0 01                 LDREQH  R2, [R0,#0x96]
+ROM:A068597C 01 00 81 E2                 ADD     R0, R1, #1
+ROM:A0685980 40 1B C0 E3                 BIC     R1, R0, #0x10000
+ROM:A0685984 00 00 52 E3                 CMP     R2, #0
+ROM:A0685988 01 00 00 1A                 BNE     loc_A0685994
+ROM:A0685988
+ROM:A068598C 09 00 51 E3                 CMP     R1, #9
+ROM:A0685990 F5 FF FF 3A                 BCC     loc_A068596C
+ROM:A0685990
+ROM:A0685994
+ROM:A0685994             loc_A0685994                            ; A0685988j
+ROM:A0685994 6C 13 9F E5                 LDR     R1, =unk_A0959FFC
+ROM:A0685998 82 00 82 E0                 ADD     R0, R2, R2,LSL#1
+ROM:A068599C 00 01 81 E0                 ADD     R0, R1, R0,LSL#2
+ROM:A06859A0 04 00 90 E5                 LDR     R0, [R0,#4]
+ROM:A06859A4 60 13 9F E5                 LDR     R1, =unk_A0959F8C
+ROM:A06859A8 80 01 81 E0                 ADD     R0, R1, R0,LSL#3
+ROM:A06859AC F0 00 D0 E1                 LDRSH   R0, [R0]
+ROM:A06859AC
+ROM:A06859B0
+ROM:A06859B0             loc_A06859B0                            ; A0685968j
+ROM:A06859B0 01 00 50 E3                 CMP     R0, #1
+ROM:A06859B4 2F 00 50 13                 CMPNE   R0, #0x2F
+ROM:A06859B8 0B 00 00 1A                 BNE     loc_A06859EC
+ROM:A06859B8
+ROM:A06859BC 28 01 94 E5                 LDR     R0, [R4,#0x128]
+ROM:A06859C0 01 00 50 E3                 CMP     R0, #1
+ROM:A06859C4 0A 30 A0 01                 MOVEQ   R3, R10
+ROM:A06859C8 07 20 A0 01                 MOVEQ   R2, R7
+ROM:A06859CC 6C 1C A0 03                 MOVEQ   R1, #0x6C00
+ROM:A06859D0 06 00 A0 01                 MOVEQ   R0, R6
+ROM:A06859D4 00 A0 8D 05                 STREQ   R10, [SP,#0x28+var_28]
+ROM:A06859D8 2D 34 E8 0B                 BLEQ    SWI_0x100_GBS_SendMessage ; void GBS_SendMessage(int cepid_to, int msg, ...)
+ROM:A06859D8
+ROM:A06859DC 01 00 A0 E3                 MOV     R0, #1
+ROM:A06859E0 ED 81 0C FB                 BLX     sub_A09A619E    ; void GeneralFuncF1(int cmd)
+ROM:A06859E0
+ROM:A06859E4
+ROM:A06859E4             loc_A06859E4                            ; A0685618j
+ROM:A06859E4                                                     ; A06856DCj
+ROM:A06859E4                                                     ; A0685764j
+ROM:A06859E4                                                     ; A06857CCj
+ROM:A06859E4                                                     ; A06857D8j
+ROM:A06859E4                                                     ; A0685818j ...
+ROM:A06859E4 00 00 E0 E3                 MVN     R0, #0
+ROM:A06859E4
+ROM:A06859E8
+ROM:A06859E8             locret_A06859E8                         ; A06859F0j
+ROM:A06859E8 FC 8D BD E8                 LDMFD   SP!, {R2-R8,R10,R11,PC}
+ROM:A06859E8
+ROM:A06859EC             ; ---------------------------------------------------------------------------
+ROM:A06859EC
+ROM:A06859EC             loc_A06859EC                            ; A0685608j
+ROM:A06859EC                                                     ; A068561Cj
+ROM:A06859EC                                                     ; A0685648j
+ROM:A06859EC                                                     ; A0685680j
+ROM:A06859EC                                                     ; A06856ACj
+ROM:A06859EC                                                     ; A06857E4j ...
+ROM:A06859EC 00 00 A0 E3                 MOV     R0, #0
+ROM:A06859F0 FC FF FF EA                 B       locret_A06859E8
+ROM:A06859F0
+ROM:A06859F0             ; End of function sub_A0685550
+ROM:A06859F0
+ROM:A06859F4
+ROM:A06859F4             ; *************** S U B R O U T I N E ***************************************
+ROM:A06859F4
+ROM:A06859F4
+ROM:A06859F4             sub_A06859F4                            ; A0685D04j
+ROM:A06859F4                                                     ; off_A0685D10o
+ROM:A06859F4
+ROM:A06859F4             var_18          = -0x18
+ROM:A06859F4
+ROM:A06859F4 F8 40 2D E9                 STMFD   SP!, {R3-R7,LR}
+ROM:A06859F8 01 50 A0 E1                 MOV     R5, R1
+ROM:A06859FC EA 9C 0C FB                 BLX     sub_A09ACDAE    ; void *MenuGetUserPointer(void *gui)
+ROM:A06859FC
+ROM:A0685A00 00 40 A0 E1                 MOV     R4, R0
+ROM:A0685A04 3C 01 90 E5                 LDR     R0, [R0,#0x13C]
+ROM:A0685A08 00 00 50 E3                 CMP     R0, #0
+ROM:A0685A0C 20 00 00 1A                 BNE     loc_A0685A94
+ROM:A0685A0C
+ROM:A0685A10 01 60 A0 E3                 MOV     R6, #1
+ROM:A0685A14 3C 61 84 E5                 STR     R6, [R4,#0x13C]
+ROM:A0685A18 1C 01 94 E5                 LDR     R0, [R4,#0x11C]
+ROM:A0685A1C 92 C6 ED FB                 BLX     sub_A01F746E    ; int wstrlen(WSHDR *wshdr)
+ROM:A0685A1C
+ROM:A0685A20 00 70 A0 E1                 MOV     R7, R0
+ROM:A0685A24 05 00 A0 E1                 MOV     R0, R5
+ROM:A0685A28 8F C6 ED FB                 BLX     sub_A01F746E    ; int wstrlen(WSHDR *wshdr)
+ROM:A0685A28
+ROM:A0685A2C 00 00 57 E1                 CMP     R7, R0
+ROM:A0685A30 05 00 00 8A                 BHI     loc_A0685A4C
+ROM:A0685A30
+ROM:A0685A34 1C 01 94 E5                 LDR     R0, [R4,#0x11C]
+ROM:A0685A38 B6 46 0C FB                 BLX     sub_A099751A    ; int FreeWS(WSHDR *ws) //1,suc
+ROM:A0685A38
+ROM:A0685A3C 05 00 A0 E1                 MOV     R0, R5
+ROM:A0685A40 89 C6 ED FB                 BLX     sub_A01F746E    ; int wstrlen(WSHDR *wshdr)
+ROM:A0685A40
+ROM:A0685A44 AB 46 0C FA                 BLX     sub_A09974F8    ; WSHDR *AllocWS(int len)
+ROM:A0685A44
+ROM:A0685A48 1C 01 84 E5                 STR     R0, [R4,#0x11C]
+ROM:A0685A48
+ROM:A0685A4C
+ROM:A0685A4C             loc_A0685A4C                            ; A0685A30j
+ROM:A0685A4C 10 01 94 E5                 LDR     R0, [R4,#0x110]
+ROM:A0685A50 00 70 A0 E3                 MOV     R7, #0
+ROM:A0685A54 BC 74 C0 E1                 STRH    R7, [R0,#0x4C]
+ROM:A0685A58 1C 01 94 E5                 LDR     R0, [R4,#0x11C]
+ROM:A0685A5C 05 10 A0 E1                 MOV     R1, R5
+ROM:A0685A60 5F C8 ED FB                 BLX     sub_A01F7BE6    ; WSHDR *wstrcpy(WSHDR *wshdr_d,WSHDR *wshdr_s)
+ROM:A0685A60
+ROM:A0685A64 7C 06 1F E5                 LDR     R0, =0xA8E5C6D8
+ROM:A0685A68 00 10 90 E5                 LDR     R1, [R0]
+ROM:A0685A6C 00 00 51 E3                 CMP     R1, #0
+ROM:A0685A70 04 60 80 15                 STRNE   R6, [R0,#4]
+ROM:A0685A74 06 00 00 1A                 BNE     loc_A0685A94
+ROM:A0685A74
+ROM:A0685A78 C0 00 80 E8                 STMIA   R0, {R6,R7}
+ROM:A0685A7C 00 70 8D E5                 STR     R7, [SP]
+ROM:A0685A80 94 06 1F E5                 LDR     R0, =0x4209
+ROM:A0685A84 81 20 A0 E3                 MOV     R2, #0x81
+ROM:A0685A88 91 30 A0 E3                 MOV     R3, #0x91
+ROM:A0685A8C 6C 1C A0 E3                 MOV     R1, #0x6C00
+ROM:A0685A90 FF 33 E8 EB                 BL      SWI_0x100_GBS_SendMessage ; void GBS_SendMessage(int cepid_to, int msg, ...)
+ROM:A0685A90
+ROM:A0685A94
+ROM:A0685A94             loc_A0685A94                            ; A0685A0Cj
+ROM:A0685A94                                                     ; A0685A74j
+ROM:A0685A94 00 00 E0 E3                 MOVL    R0, 0xFFFFFFFF
+ROM:A0685A98 F8 80 BD E8                 LDMFD   SP!, {R3-R7,PC}
+ROM:A0685A98
+ROM:A0685A98             ; End of function sub_A06859F4
+ROM:A0685A98
+ROM:A0685A9C
+ROM:A0685A9C             ; *************** S U B R O U T I N E ***************************************
+ROM:A0685A9C
+ROM:A0685A9C
+ROM:A0685A9C             sub_A0685A9C                            ; A095A0ACo
+ROM:A0685A9C                                                     ; A095A0DCo
+ROM:A0685A9C                                                     ; A095A16Co
+ROM:A0685A9C 70 40 2D E9                 STMFD   SP!, {R4-R6,LR}
+ROM:A0685AA0 01 60 A0 E1                 MOV     R6, R1
+ROM:A0685AA4 00 50 A0 E1                 MOV     R5, R0
+ROM:A0685AA8 BF 9C 0C FB                 BLX     sub_A09ACDAE    ; void *MenuGetUserPointer(void *gui)
+ROM:A0685AA8
+ROM:A0685AAC 00 40 A0 E1                 MOV     R4, R0
+ROM:A0685AB0 01 00 56 E3                 CMP     R6, #1
+ROM:A0685AB4 09 00 00 0A                 BEQ     loc_A0685AE0
+ROM:A0685AB4
+ROM:A0685AB8 04 00 56 E3                 CMP     R6, #4
+ROM:A0685ABC 0E 00 00 0A                 BEQ     loc_A0685AFC
+ROM:A0685ABC
+ROM:A0685AC0 05 00 56 E3                 CMP     R6, #5
+ROM:A0685AC4 18 01 94 05                 LDREQ   R0, [R4,#0x118]
+ROM:A0685AC8 00 00 50 03                 CMPEQ   R0, #0
+ROM:A0685ACC 70 80 BD 18                 LDMNEFD SP!, {R4-R6,PC}
+ROM:A0685AD0 F4 00 94 E5                 LDR     R0, [R4,#0xF4]
+ROM:A0685AD4 A3 97 0C FA                 BLX     sub_A09AB968    ; void *GetHeaderPointer(void *gui); //menu,edit
+ROM:A0685AD4
+ROM:A0685AD8 18 01 84 E5                 STR     R0, [R4,#0x118]
+ROM:A0685ADC 70 80 BD E8                 LDMFD   SP!, {R4-R6,PC}
+ROM:A0685ADC
+ROM:A0685AE0             ; ---------------------------------------------------------------------------
+ROM:A0685AE0
+ROM:A0685AE0             loc_A0685AE0                            ; A0685AB4j
+ROM:A0685AE0 20 01 D4 E5                 LDRB    R0, [R4,#0x120]
+ROM:A0685AE4 01 00 50 E3                 CMP     R0, #1
+ROM:A0685AE8 05 00 A0 11                 MOVNE   R0, R5
+ROM:A0685AEC 70 40 BD 18                 LDMNEFD SP!, {R4-R6,LR}
+ROM:A0685AF0 18 12 9F 15                 LDRNE   R1, =sub_A06859F4
+ROM:A0685AF4 A6 7F F6 1A                 BNE     sub_A0425994    ; void SetMenuSearchCallBack(void *gui, MenuSearchCallBack proc)
+ROM:A0685AF4
+ROM:A0685AF8 70 80 BD E8                 LDMFD   SP!, {R4-R6,PC}
+ROM:A0685AF8
+ROM:A0685AFC             ; ---------------------------------------------------------------------------
+ROM:A0685AFC
+ROM:A0685AFC             loc_A0685AFC                            ; A0685ABCj
+ROM:A0685AFC 14 01 D4 E5                 LDRB    R0, [R4,#0x114]
+ROM:A0685B00 01 00 50 E3                 CMP     R0, #1
+ROM:A0685B04 05 00 A0 01                 MOVEQ   R0, R5
+ROM:A0685B08 70 40 BD 08                 LDMEQFD SP!, {R4-R6,LR}
+ROM:A0685B0C 03 10 A0 03                 MOVEQ   R1, #3
+ROM:A0685B10 6F 86 00 0A                 BEQ     sub_A06A74D4
+ROM:A0685B10
+ROM:A0685B14 70 80 BD E8                 LDMFD   SP!, {R4-R6,PC}
+ROM:A0685B14
+ROM:A0685B14             ; End of function sub_A0685A9C
+ROM:A0685B14
+ROM:A0685B18
+ROM:A0685B18             ; *************** S U B R O U T I N E ***************************************
+ROM:A0685B18
+ROM:A0685B18
+ROM:A0685B18             sub_A0685B18                            ; A095A0C0o
+ROM:A0685B18                                                     ; A095A0F0o
+ROM:A0685B18                                                     ; A095A180o
+ROM:A0685B18
+ROM:A0685B18             var_20          = -0x20
+ROM:A0685B18
+ROM:A0685B18 FC 41 2D E9                 STMFD   SP!, {R2-R8,LR}
+ROM:A0685B1C 00 60 A0 E1                 MOV     R6, R0
+ROM:A0685B20 2C 01 92 E5                 LDR     R0, [R2,#0x12C]
+ROM:A0685B24 38 87 1F E5                 LDR     R8, =0x4209
+ROM:A0685B28 80 70 A0 E3                 MOV     R7, #0x80
+ROM:A0685B2C 01 50 A0 E1                 MOV     R5, R1
+ROM:A0685B30 02 40 A0 E1                 MOV     R4, R2
+ROM:A0685B34 01 00 50 E3                 CMP     R0, #1
+ROM:A0685B38 0C 00 00 1A                 BNE     loc_A0685B70
+ROM:A0685B38
+ROM:A0685B3C D0 01 9F E5                 LDR     R0, =0x55F
+ROM:A0685B40 7A 23 0C FB                 BLX     sub_A098E932
+ROM:A0685B40
+ROM:A0685B44 01 00 50 E3                 CMP     R0, #1
+ROM:A0685B48 10 01 94 E5                 LDR     R0, [R4,#0x110]
+ROM:A0685B4C 03 00 00 1A                 BNE     loc_A0685B60
+ROM:A0685B4C
+ROM:A0685B50 48 00 90 E5                 LDR     R0, [R0,#0x48]
+ROM:A0685B54 00 00 50 E3                 CMP     R0, #0
+ROM:A0685B58 11 00 00 1A                 BNE     locret_A0685BA4
+ROM:A0685B58
+ROM:A0685B5C 0A 00 00 EA                 B       loc_A0685B8C
+ROM:A0685B5C
+ROM:A0685B60             ; ---------------------------------------------------------------------------
+ROM:A0685B60
+ROM:A0685B60             loc_A0685B60                            ; A0685B4Cj
+ROM:A0685B60 44 00 90 E5                 LDR     R0, [R0,#0x44]
+ROM:A0685B64 00 00 50 E3                 CMP     R0, #0
+ROM:A0685B68 0D 00 00 1A                 BNE     locret_A0685BA4
+ROM:A0685B68
+ROM:A0685B6C 06 00 00 EA                 B       loc_A0685B8C
+ROM:A0685B6C
+ROM:A0685B70             ; ---------------------------------------------------------------------------
+ROM:A0685B70
+ROM:A0685B70             loc_A0685B70                            ; A0685B38j
+ROM:A0685B70 30 01 94 E5                 LDR     R0, [R4,#0x130]
+ROM:A0685B74 00 00 50 E3                 CMP     R0, #0
+ROM:A0685B78 03 00 00 1A                 BNE     loc_A0685B8C
+ROM:A0685B78
+ROM:A0685B7C 10 01 94 E5                 LDR     R0, [R4,#0x110]
+ROM:A0685B80 38 00 90 E5                 LDR     R0, [R0,#0x38]
+ROM:A0685B84 00 00 50 E3                 CMP     R0, #0
+ROM:A0685B88 05 00 00 1A                 BNE     locret_A0685BA4
+ROM:A0685B88
+ROM:A0685B8C
+ROM:A0685B8C             loc_A0685B8C                            ; A0685B5Cj
+ROM:A0685B8C                                                     ; A0685B6Cj
+ROM:A0685B8C                                                     ; A0685B78j
+ROM:A0685B8C 07 20 A0 E1                 MOV     R2, R7
+ROM:A0685B90 06 30 A0 E1                 MOV     R3, R6
+ROM:A0685B94 6C 1C A0 E3                 MOV     R1, #0x6C00
+ROM:A0685B98 08 00 A0 E1                 MOV     R0, R8
+ROM:A0685B9C 00 50 8D E5                 STR     R5, [SP,#0x20+var_20]
+ROM:A0685BA0 BB 33 E8 EB                 BL      SWI_0x100_GBS_SendMessage ; void GBS_SendMessage(int cepid_to, int msg, ...)
+ROM:A0685BA0
+ROM:A0685BA4
+ROM:A0685BA4             locret_A0685BA4                         ; A0685B58j
+ROM:A0685BA4                                                     ; A0685B68j
+ROM:A0685BA4                                                     ; A0685B88j
+ROM:A0685BA4 FC 81 BD E8                 LDMFD   SP!, {R2-R8,PC}
+ROM:A0685BA4
+ROM:A0685BA4             ; End of function sub_A0685B18
+ROM:A0685BA4
+ROM:A0685BA8             ; ---------------------------------------------------------------------------
+ROM:A0685BA8 10 40 2D E9                 STMFD   SP!, {R4,LR}
+ROM:A0685BAC 00 40 A0 E3                 MOV     R4, #0
+ROM:A0685BB0 00 00 50 E3                 CMP     R0, #0
+ROM:A0685BB4 02 00 00 0A                 BEQ     loc_A0685BC4
+ROM:A0685BB4
+ROM:A0685BB8 C7 81 0C FB                 BLX     sub_A09A62DE
+ROM:A0685BB8
+ROM:A0685BBC 00 00 50 E3                 CMP     R0, #0
+ROM:A0685BC0 00 40 A0 11                 MOVNE   R4, R0
+ROM:A0685BC0
+ROM:A0685BC4
+ROM:A0685BC4             loc_A0685BC4                            ; A0685BB4j
+ROM:A0685BC4 04 00 A0 E1                 MOV     R0, R4
+ROM:A0685BC8 10 80 BD E8                 LDMFD   SP!, {R4,PC}
+ROM:A0685BC8
+ROM:A0685BCC
+ROM:A0685BCC             ; *************** S U B R O U T I N E ***************************************
+ROM:A0685BCC
+ROM:A0685BCC
+ROM:A0685BCC             sub_A0685BCC                            ; A06823F8p
+ROM:A0685BCC 10 40 2D E9                 STMFD   SP!, {R4,LR}
+ROM:A0685BD0 00 40 A0 E1                 MOV     R4, R0
+ROM:A0685BD4 F8 00 90 E5                 LDR     R0, [R0,#0xF8]
+ROM:A0685BD8 B8 25 FB EB                 BL      sub_A054F2C0
+ROM:A0685BD8
+ROM:A0685BDC 40 1F 84 E2                 ADD     R1, R4, #0x100
+ROM:A0685BE0 B8 00 C1 E1                 STRH    R0, [R1,#8]
+ROM:A0685BE4 04 00 A0 E1                 MOV     R0, R4
+ROM:A0685BE8 41 2F 84 E2                 ADD     R2, R4, #0x104
+ROM:A0685BEC 10 40 BD E8                 LDMFD   SP!, {R4,LR}
+ROM:A0685BF0 B9 FA FF EA                 B       sub_A06846DC
+ROM:A0685BF0
+ROM:A0685BF0             ; End of function sub_A0685BCC
+ROM:A0685BF0
+ROM:A0685BF4
+ROM:A0685BF4             ; *************** S U B R O U T I N E ***************************************
+ROM:A0685BF4
+ROM:A0685BF4
+ROM:A0685BF4             sub_A0685BF4                            ; A0684FF8p
+ROM:A0685BF4                                                     ; loc_A06852C0p
+ROM:A0685BF4
+ROM:A0685BF4             var_4           = -4
+ROM:A0685BF4             arg_4           =  4
+ROM:A0685BF4
+ROM:A0685BF4             ; FUNCTION CHUNK AT ROM:A0959F8C SIZE 0000069C BYTES
+ROM:A0685BF4
+ROM:A0685BF4 70 40 2D E9                 STMFD   SP!, {R4-R6,LR}
+ROM:A0685BF8 01 40 A0 E1                 MOV     R4, R1
+ROM:A0685BFC 04 11 9F E5                 LDR     R1, =unk_A0959FFC
+ROM:A0685C00 00 50 A0 E1                 MOV     R5, R0
+ROM:A0685C04 80 00 80 E0                 ADD     R0, R0, R0,LSL#1
+ROM:A0685C08 00 11 81 E0                 ADD     R1, R1, R0,LSL#2
+ROM:A0685C0C F4 00 94 E5                 LDR     R0, [R4,#0xF4]
+ROM:A0685C10 02 60 A0 E1                 MOV     R6, R2
+ROM:A0685C14 4D 94 0C FA                 BLX     sub_A09AAD50
+ROM:A0685C14
+ROM:A0685C18 05 20 A0 E1                 MOV     R2, R5
+ROM:A0685C1C 06 10 A0 E1                 MOV     R1, R6
+ROM:A0685C20 04 00 A0 E1                 MOV     R0, R4
+ROM:A0685C24 70 40 BD E8                 LDMFD   SP!, {R4-R6,LR}
+ROM:A0685C28 FF FF FF EA                 B       loc_A0685C2C
+ROM:A0685C2C
+ROM:A0685C2C             loc_A0685C2C
+ROM:A0685C2C 04 E0 2D E5                 STR     LR, [SP,#var_4]!
+ROM:A0685C30 05 C0 D0 E5                 LDRB    R12, [R0,#5]
+ROM:A0685C34 00 30 A0 E3                 MOV     R3, #0
+ROM:A0685C38 2F 00 00 EA                 B       loc_A0685CFC
+ROM:A0685C38
+ROM:A0685C3C             ; ---------------------------------------------------------------------------
+ROM:A0685C3C
+ROM:A0685C3C             loc_A0685C3C                            ; A0685D00j
+ROM:A0685C3C 00 00 5C E3                 CMP     R12, #0
+ROM:A0685C40 04 00 00 0A                 BEQ     loc_A0685C58
+ROM:A0685C40
+ROM:A0685C44 03 E1 80 E0                 ADD     LR, R0, R3,LSL#2
+ROM:A0685C48 B4 E9 DE E1                 LDRH    LR, [LR,#0x94]
+ROM:A0685C4C 01 00 5E E1                 CMP     LR, R1
+ROM:A0685C50 0A 30 A0 03                 MOVEQ   R3, #0xA
+ROM:A0685C54 28 00 00 0A                 BEQ     loc_A0685CFC
+ROM:A0685C54
+ROM:A0685C58
+ROM:A0685C58             loc_A0685C58                            ; A0685C40j
+ROM:A0685C58 0C 00 53 E1                 CMP     R3, R12
+ROM:A0685C5C 24 00 00 1A                 BNE     loc_A0685CF4
+ROM:A0685C5C
+ROM:A0685C60 04 E0 D0 E5                 LDRB    LR, [R0,#4]
+ROM:A0685C64 26 00 5E E3                 CMP     LR, #0x26
+ROM:A0685C68 0E 00 00 1A                 BNE     loc_A0685CA8
+ROM:A0685C68
+ROM:A0685C6C 08 30 A0 E3                 MOV     R3, #8
+ROM:A0685C6C
+ROM:A0685C70
+ROM:A0685C70             loc_A0685C70                            ; A0685C8Cj
+ROM:A0685C70 03 C1 80 E0                 ADD     R12, R0, R3,LSL#2
+ROM:A0685C74 B0 E9 DC E1                 LDRH    LR, [R12,#0x90]
+ROM:A0685C78 01 30 43 E2                 SUB     R3, R3, #1
+ROM:A0685C7C FF 30 13 E2                 ANDS    R3, R3, #0xFF
+ROM:A0685C80 B4 E9 CC E1                 STRH    LR, [R12,#0x94]
+ROM:A0685C84 B2 E9 DC E1                 LDRH    LR, [R12,#0x92]
+ROM:A0685C88 B6 E9 CC E1                 STRH    LR, [R12,#0x96]
+ROM:A0685C8C F7 FF FF 1A                 BNE     loc_A0685C70
+ROM:A0685C8C
+ROM:A0685C90 05 C0 D0 E5                 LDRB    R12, [R0,#5]
+ROM:A0685C94 09 00 5C E3                 CMP     R12, #9
+ROM:A0685C98 01 C0 8C 32                 ADDCC   R12, R12, #1
+ROM:A0685C9C 05 C0 C0 35                 STRCCB  R12, [R0,#5]
+ROM:A0685CA0 00 C0 A0 E3                 MOV     R12, #0
+ROM:A0685CA4 0F 00 00 EA                 B       loc_A0685CE8
+ROM:A0685CA4
+ROM:A0685CA8             ; ---------------------------------------------------------------------------
+ROM:A0685CA8
+ROM:A0685CA8             loc_A0685CA8                            ; A0685C68j
+ROM:A0685CA8 05 E0 D0 E5                 LDRB    LR, [R0,#5]
+ROM:A0685CAC 09 00 5E E3                 CMP     LR, #9
+ROM:A0685CB0 01 E0 8E 32                 ADDCC   LR, LR, #1
+ROM:A0685CB4 05 E0 C0 35                 STRCCB  LR, [R0,#5]
+ROM:A0685CB8 0A 00 00 3A                 BCC     loc_A0685CE8
+ROM:A0685CB8
+ROM:A0685CBC 00 30 A0 E3                 MOV     R3, #0
+ROM:A0685CBC
+ROM:A0685CC0
+ROM:A0685CC0             loc_A0685CC0                            ; A0685CE0j
+ROM:A0685CC0 03 C1 80 E0                 ADD     R12, R0, R3,LSL#2
+ROM:A0685CC4 B8 E9 DC E1                 LDRH    LR, [R12,#0x98]
+ROM:A0685CC8 01 30 83 E2                 ADD     R3, R3, #1
+ROM:A0685CCC FF 30 03 E2                 AND     R3, R3, #0xFF
+ROM:A0685CD0 B4 E9 CC E1                 STRH    LR, [R12,#0x94]
+ROM:A0685CD4 BA E9 DC E1                 LDRH    LR, [R12,#0x9A]
+ROM:A0685CD8 08 00 53 E3                 CMP     R3, #8
+ROM:A0685CDC B6 E9 CC E1                 STRH    LR, [R12,#0x96]
+ROM:A0685CE0 F6 FF FF 3A                 BCC     loc_A0685CC0
+ROM:A0685CE0
+ROM:A0685CE4 08 C0 A0 E3                 MOV     R12, #8
+ROM:A0685CE4
+ROM:A0685CE8
+ROM:A0685CE8             loc_A0685CE8                            ; A0685CA4j
+ROM:A0685CE8                                                     ; A0685CB8j
+ROM:A0685CE8 0C E1 80 E0                 ADD     LR, R0, R12,LSL#2
+ROM:A0685CEC B4 19 CE E1                 STRH    R1, [LR,#0x94]
+ROM:A0685CF0 B6 29 CE E1                 STRH    R2, [LR,#0x96]
+ROM:A0685CF0
+ROM:A0685CF4
+ROM:A0685CF4             loc_A0685CF4                            ; A0685C5Cj
+ROM:A0685CF4 01 30 83 E2                 ADD     R3, R3, #1
+ROM:A0685CF8 FF 30 03 E2                 AND     R3, R3, #0xFF
+ROM:A0685CF8
+ROM:A0685CFC
+ROM:A0685CFC             loc_A0685CFC                            ; A0685C38j
+ROM:A0685CFC                                                     ; A0685C54j
+ROM:A0685CFC 0C 00 53 E1                 CMP     R3, R12
+ROM:A0685D00 CD FF FF 9A                 BLS     loc_A0685C3C
+ROM:A0685D00
+ROM:A0685D04 04 F0 9D E4                 LDR     PC, [SP],#arg_4
+ROM:A0685D04
+ROM:A0685D04             ; End of function sub_A0685BF4
+ROM:A0685D04
+ROM:A0685D04             ; ---------------------------------------------------------------------------
+ROM:A0685D08 FC 9F 95 A0 off_A0685D08    DCD unk_A0959FFC        ; loc_A0685994r
+ROM:A0685D08                                                     ; A0685BFCr
+ROM:A0685D0C 8C 9F 95 A0 off_A0685D0C    DCD unk_A0959F8C        ; A06859A4r
+ROM:A0685D10 F4 59 68 A0 off_A0685D10    DCD sub_A06859F4        ; A0685AF0r
+ROM:A0685D14 5F 05 00 00 dword_A0685D14  DCD 0x55F               ; A0685B3Cr
+ROM:A0685D18
+ROM:A0685D18             ; *************** S U B R O U T I N E ***************************************
+ROM:A0685D18
+ROM:A0685D18
+ROM:A0685D18             sub_A0685D18                            ; A0685E84p
+ROM:A0685D18
+ROM:A0685D18             var_DC          = -0xDC
+ROM:A0685D18             var_B0          = -0xB0
+ROM:A0685D18             var_AC          = -0xAC
+ROM:A0685D18             var_A4          = -0xA4
+ROM:A0685D18             var_A0          = -0xA0
+ROM:A0685D18             var_9C          = -0x9C
+ROM:A0685D18             var_98          = -0x98
+ROM:A0685D18             var_97          = -0x97
+ROM:A0685D18             var_96          = -0x96
+ROM:A0685D18             var_94          = -0x94
+ROM:A0685D18             var_90          = -0x90
+ROM:A0685D18             var_8C          = -0x8C
+ROM:A0685D18             var_88          = -0x88
+ROM:A0685D18             var_84          = -0x84
+ROM:A0685D18             var_80          = -0x80
+ROM:A0685D18             var_7E          = -0x7E
+ROM:A0685D18             var_7C          = -0x7C
+ROM:A0685D18             var_78          = -0x78
+ROM:A0685D18             arg_0           =  0
+ROM:A0685D18             arg_4           =  4
+ROM:A0685D18
+ROM:A0685D18 F0 4D 2D E9                 STMFD   SP!, {R4-R8,R10,R11,LR}
+ROM:A0685D1C C0 D0 4D E2                 SUB     SP, SP, #0xC0
+ROM:A0685D20 00 A0 A0 E1                 MOV     R10, R0
+ROM:A0685D24 01 70 A0 E1                 MOV     R7, R1
+ROM:A0685D28 BC 10 A0 E3                 MOV     R1, #0xBC
+ROM:A0685D2C 04 00 8D E2                 ADD     R0, SP, #0xE0+var_DC
+ROM:A0685D30 E0 50 9D E5                 LDR     R5, [SP,#0xE0+arg_0]
+ROM:A0685D34 E4 80 9D E5                 LDR     R8, [SP,#0xE0+arg_4]
+ROM:A0685D38 03 B0 A0 E1                 MOV     R11, R3
+ROM:A0685D3C 02 60 A0 E1                 MOV     R6, R2
+ROM:A0685D40 76 82 36 EB                 BL      sub_A1426720    ; void ClearMem(void *mem, int n);
+ROM:A0685D40
+ROM:A0685D44 00 40 A0 E3                 MOV     R4, #0
+ROM:A0685D48 34 40 8D E5                 STR     R4, [SP,#0xE0+var_AC]
+ROM:A0685D4C 30 40 8D E5                 STR     R4, [SP,#0xE0+var_B0]
+ROM:A0685D50 3C 40 8D E5                 STR     R4, [SP,#0xE0+var_A4]
+ROM:A0685D54 02 00 E0 E3                 MOVL    R0, 0xFFFFFFFD
+ROM:A0685D58 B0 04 CD E1                 STRH    R0, [SP,#0xE0+var_A0]
+ROM:A0685D5C CC 08 9F E5                 LDR     R0, =SWI_0x14_malloc_adr
+ROM:A0685D60 C4 18 9F E5                 LDR     R1, =sub_A0094BB8
+ROM:A0685D64 83 E9 FC EB                 BL      sub_A05C0378
+ROM:A0685D64
+ROM:A0685D68 44 00 8D E5                 STR     R0, [SP,#0xE0+var_9C]
+ROM:A0685D6C 00 10 A0 E1                 MOV     R1, R0
+ROM:A0685D70 07 00 A0 E1                 MOV     R0, R7
+ROM:A0685D74 98 E9 FC EB                 BL      sub_A05C03DC
+ROM:A0685D74
+ROM:A0685D78 48 50 CD E5                 STRB    R5, [SP,#0xE0+var_98]
+ROM:A0685D7C 49 80 CD E5                 STRB    R8, [SP,#0xE0+var_97]
+ROM:A0685D80 BA 44 CD E1                 STRH    R4, [SP,#0xE0+var_96]
+ROM:A0685D84 58 40 8D E5                 STR     R4, [SP,#0xE0+var_88]
+ROM:A0685D88 50 A0 8D E5                 STR     R10, [SP,#0xE0+var_90]
+ROM:A0685D8C 5C 40 8D E5                 STR     R4, [SP,#0xE0+var_84]
+ROM:A0685D90 60 40 CD E5                 STRB    R4, [SP,#0xE0+var_80]
+ROM:A0685D94 B2 46 CD E1                 STRH    R4, [SP,#0xE0+var_7E]
+ROM:A0685D98 B4 66 CD E1                 STRH    R6, [SP,#0xE0+var_7C]
+ROM:A0685D9C 54 B0 8D E5                 STR     R11, [SP,#0xE0+var_8C]
+ROM:A0685DA0 B8 66 CD E1                 STRH    R6, [SP,#0xE0+var_78]
+ROM:A0685DA4 01 60 A0 E3                 MOV     R6, #1
+ROM:A0685DA8 01 00 55 E3                 CMP     R5, #1
+ROM:A0685DAC 08 00 00 0A                 BEQ     loc_A0685DD4
+ROM:A0685DAC
+ROM:A0685DB0 02 00 55 E3                 CMP     R5, #2
+ROM:A0685DB4 BC 44 CD 11                 STRNEH  R4, [SP,#0xE0+var_94]
+ROM:A0685DB8 06 00 00 1A                 BNE     loc_A0685DD8
+ROM:A0685DB8
+ROM:A0685DBC 07 00 A0 E1                 MOV     R0, R7
+ROM:A0685DC0 A2 1F FA EB                 BL      sub_A050DC50
+ROM:A0685DC0
+ROM:A0685DC4 BC 04 CD E1                 STRH    R0, [SP,#0xE0+var_94]
+ROM:A0685DC8 00 00 50 E3                 CMP     R0, #0
+ROM:A0685DCC 01 00 00 1A                 BNE     loc_A0685DD8
+ROM:A0685DCC
+ROM:A0685DD0 48 60 CD E5                 STRB    R6, [SP,#0xE0+var_98]
+ROM:A0685DD0
+ROM:A0685DD4
+ROM:A0685DD4             loc_A0685DD4                            ; A0685DACj
+ROM:A0685DD4 BC 64 CD E1                 STRH    R6, [SP,#0xE0+var_94]
+ROM:A0685DD4
+ROM:A0685DD8
+ROM:A0685DD8             loc_A0685DD8                            ; A0685DB8j
+ROM:A0685DD8                                                     ; A0685DCCj
+ROM:A0685DD8 00 20 A0 E3                 MOV     R2, #0
+ROM:A0685DDC 04 10 8D E2                 ADD     R1, SP, #0xE0+var_DC
+ROM:A0685DE0 4C 08 9F E5                 LDR     R0, =off_A0956504
+ROM:A0685DE4 5C 5F 0C FB                 BLX     sub_A099DB5E    ; int CreateCSM(const CSM_DESC *,void *,int)
+ROM:A0685DE4
+ROM:A0685DE8 C0 D0 8D E2                 ADD     SP, SP, #0xC0
+ROM:A0685DEC F0 8D BD E8                 LDMFD   SP!, {R4-R8,R10,R11,PC}
+ROM:A0685DEC
+ROM:A0685DEC             ; End of function sub_A0685D18
+ROM:A0685DEC
+ROM:A0685DF0
+ROM:A0685DF0             ; *************** S U B R O U T I N E ***************************************
+ROM:A0685DF0
+ROM:A0685DF0
+ROM:A0685DF0             sub_A0685DF0                            ; A0669A88p
+ROM:A0685DF0                                                     ; A0669AF8p
+ROM:A0685DF0
+ROM:A0685DF0             var_28          = -0x28
+ROM:A0685DF0             var_24          = -0x24
+ROM:A0685DF0             arg_0           =  0
+ROM:A0685DF0             arg_4           =  4
+ROM:A0685DF0
+ROM:A0685DF0 FC 4D 2D E9                 STMFD   SP!, {R2-R8,R10,R11,LR}
+ROM:A0685DF4 2C 50 9D E5                 LDR     R5, [SP,#0x28+arg_4]
+ROM:A0685DF8 00 70 A0 E1                 MOV     R7, R0
+ROM:A0685DFC 01 00 55 E3                 CMP     R5, #1
+ROM:A0685E00 41 0F A0 03                 MOVEQ   R0, #0x104
+ROM:A0685E04 28 60 9D E5                 LDR     R6, [SP,#0x28+arg_0]
+ROM:A0685E08 03 B0 A0 E1                 MOV     R11, R3
+ROM:A0685E0C 02 A0 A0 E1                 MOV     R10, R2
+ROM:A0685E10 01 80 A0 E1                 MOV     R8, R1
+ROM:A0685E14 00 40 A0 E3                 MOV     R4, #0
+ROM:A0685E18 12 00 00 0A                 BEQ     loc_A0685E68
+ROM:A0685E18
+ROM:A0685E1C 02 00 55 E3                 CMP     R5, #2
+ROM:A0685E20 10 08 9F 05                 LDREQ   R0, =0x105
+ROM:A0685E24 04 00 00 0A                 BEQ     loc_A0685E3C
+ROM:A0685E24
+ROM:A0685E28 03 00 55 E3                 CMP     R5, #3
+ROM:A0685E2C 0C 00 00 0A                 BEQ     loc_A0685E64
+ROM:A0685E2C
+ROM:A0685E30 04 00 55 E3                 CMP     R5, #4
+ROM:A0685E34 14 00 00 1A                 BNE     loc_A0685E8C
+ROM:A0685E34
+ROM:A0685E38 FC 07 9F E5                 LDR     R0, =0x107
+ROM:A0685E38
+ROM:A0685E3C
+ROM:A0685E3C             loc_A0685E3C                            ; A0685E24j
+ROM:A0685E3C 8E D3 ED FA                 BLX     sub_A01FAC7C
+ROM:A0685E3C
+ROM:A0685E40 0B 30 A0 E1                 MOV     R3, R11
+ROM:A0685E44 0A 20 A0 E1                 MOV     R2, R10
+ROM:A0685E48 08 10 A0 E1                 MOV     R1, R8
+ROM:A0685E4C 07 00 A0 E1                 MOV     R0, R7
+ROM:A0685E50 04 50 8D E5                 STR     R5, [SP,#0x28+var_24]
+ROM:A0685E54 00 60 8D E5                 STR     R6, [SP,#0x28+var_28]
+ROM:A0685E58 D8 55 00 EB                 BL      sub_A069B5C0
+ROM:A0685E58
+ROM:A0685E5C
+ROM:A0685E5C             loc_A0685E5C                            ; A0685E88j
+ROM:A0685E5C 00 40 A0 E1                 MOV     R4, R0
+ROM:A0685E60 1D 00 00 EA                 B       loc_A0685EDC
+ROM:A0685E60
+ROM:A0685E64             ; ---------------------------------------------------------------------------
+ROM:A0685E64
+ROM:A0685E64             loc_A0685E64                            ; A0685E2Cj
+ROM:A0685E64 D4 07 9F E5                 LDR     R0, =0x106
+ROM:A0685E64
+ROM:A0685E68
+ROM:A0685E68             loc_A0685E68                            ; A0685E18j
+ROM:A0685E68 83 D3 ED FA                 BLX     sub_A01FAC7C
+ROM:A0685E68
+ROM:A0685E6C 0B 30 A0 E1                 MOV     R3, R11
+ROM:A0685E70 0A 20 A0 E1                 MOV     R2, R10
+ROM:A0685E74 08 10 A0 E1                 MOV     R1, R8
+ROM:A0685E78 07 00 A0 E1                 MOV     R0, R7
+ROM:A0685E7C 04 50 8D E5                 STR     R5, [SP,#0x28+var_24]
+ROM:A0685E80 00 60 8D E5                 STR     R6, [SP,#0x28+var_28]
+ROM:A0685E84 A3 FF FF EB                 BL      sub_A0685D18
+ROM:A0685E84
+ROM:A0685E88 F3 FF FF EA                 B       loc_A0685E5C
+ROM:A0685E88
+ROM:A0685E8C             ; ---------------------------------------------------------------------------
+ROM:A0685E8C
+ROM:A0685E8C             loc_A0685E8C                            ; A0685E34j
+ROM:A0685E8C B0 57 9F E5                 LDR     R5, =unk_A09564F8
+ROM:A0685E90 05 00 A0 E3                 MOV     R0, #5
+ROM:A0685E94 05 10 A0 E1                 MOV     R1, R5
+ROM:A0685E98 94 25 ED EB                 BL      sub_A01CF4F0
+ROM:A0685E98
+ROM:A0685E9C A4 67 9F E5                 LDR     R6, =0xEC10
+ROM:A0685EA0 00 00 50 E3                 CMP     R0, #0
+ROM:A0685EA4 06 00 00 0A                 BEQ     loc_A0685EC4
+ROM:A0685EA4
+ROM:A0685EA8 02 00 00 EF                 SWI     2
+ROM:A0685EAC 06 30 A0 E1                 MOV     R3, R6
+ROM:A0685EB0 03 20 A0 E3                 MOV     R2, #3
+ROM:A0685EB4 05 10 A0 E1                 MOV     R1, R5
+ROM:A0685EB8 05 00 A0 E3                 MOV     R0, #5
+ROM:A0685EBC 09 25 ED EB                 BL      sub_A01CF2E8    ; void StoreErrInfoAndAbort(int code,const char *module_name,int type,int unk3);
+ROM:A0685EBC
+ROM:A0685EC0 05 00 00 EA                 B       loc_A0685EDC
+ROM:A0685EC0
+ROM:A0685EC4             ; ---------------------------------------------------------------------------
+ROM:A0685EC4
+ROM:A0685EC4             loc_A0685EC4                            ; A0685EA4j
+ROM:A0685EC4 03 00 00 EF                 SWI     3
+ROM:A0685EC8 06 30 A0 E1                 MOV     R3, R6
+ROM:A0685ECC 03 20 A0 E3                 MOV     R2, #3
+ROM:A0685ED0 05 10 A0 E1                 MOV     R1, R5
+ROM:A0685ED4 05 00 A0 E3                 MOV     R0, #5
+ROM:A0685ED8 34 25 ED EB                 BL      sub_A01CF3B0
+ROM:A0685ED8
+ROM:A0685EDC
+ROM:A0685EDC             loc_A0685EDC                            ; A0685E60j
+ROM:A0685EDC                                                     ; A0685EC0j
+ROM:A0685EDC 04 00 A0 E1                 MOV     R0, R4
+ROM:A0685EE0 FC 8D BD E8                 LDMFD   SP!, {R2-R8,R10,R11,PC}
+ROM:A0685EE0
+ROM:A0685EE0             ; End of function sub_A0685DF0
+ROM:A0685EE0
+ROM:A0685EE4
+ROM:A0685EE4             ; *************** S U B R O U T I N E ***************************************
+ROM:A0685EE4
+ROM:A0685EE4
+ROM:A0685EE4             sub_A0685EE4                            ; A06867B8p
+ROM:A0685EE4 70 40 2D E9                 STMFD   SP!, {R4-R6,LR}
+ROM:A0685EE8 01 50 A0 E1                 MOV     R5, R1
+ROM:A0685EEC 23 10 A0 E3                 MOV     R1, #0x23
+ROM:A0685EF0 00 40 A0 E1                 MOV     R4, R0
+ROM:A0685EF4 00 20 A0 E3                 MOV     R2, #0
+ROM:A0685EF8 FF 24 FB EB                 BL      sub_A054F2FC
+ROM:A0685EF8
+ROM:A0685EFC 00 60 A0 E3                 MOV     R6, #0
+ROM:A0685F00 08 60 85 E5                 STR     R6, [R5,#8]
+ROM:A0685F04 DC 10 D4 E5                 LDRB    R1, [R4,#0xDC]
+ROM:A0685F08 00 00 51 E3                 CMP     R1, #0
+ROM:A0685F0C 03 00 00 1A                 BNE     loc_A0685F20
+ROM:A0685F0C
+ROM:A0685F10 00 10 A0 E1                 MOV     R1, R0
+ROM:A0685F14 04 00 A0 E1                 MOV     R0, R4
+ROM:A0685F18 77 29 FB EB                 BL      sub_A05504FC
+ROM:A0685F18
+ROM:A0685F1C 08 00 85 E5                 STR     R0, [R5,#8]
+ROM:A0685F1C
+ROM:A0685F20
+ROM:A0685F20             loc_A0685F20                            ; A0685F0Cj
+ROM:A0685F20 00 20 A0 E3                 MOV     R2, #0
+ROM:A0685F24 24 10 A0 E3                 MOV     R1, #0x24
+ROM:A0685F28 04 00 A0 E1                 MOV     R0, R4
+ROM:A0685F2C F2 24 FB EB                 BL      sub_A054F2FC
+ROM:A0685F2C
+ROM:A0685F30 04 60 85 E5                 STR     R6, [R5,#4]
+ROM:A0685F34 DC 10 D4 E5                 LDRB    R1, [R4,#0xDC]
+ROM:A0685F38 00 00 51 E3                 CMP     R1, #0
+ROM:A0685F3C 05 00 00 1A                 BNE     loc_A0685F58
+ROM:A0685F3C
+ROM:A0685F40 00 10 A0 E1                 MOV     R1, R0
+ROM:A0685F44 04 00 A0 E1                 MOV     R0, R4
+ROM:A0685F48 6B 29 FB EB                 BL      sub_A05504FC
+ROM:A0685F48
+ROM:A0685F4C 04 00 85 E5                 STR     R0, [R5,#4]
+ROM:A0685F50 00 00 50 E3                 CMP     R0, #0
+ROM:A0685F54 0D 00 00 1A                 BNE     loc_A0685F90
+ROM:A0685F54
+ROM:A0685F58
+ROM:A0685F58             loc_A0685F58                            ; A0685F3Cj
+ROM:A0685F58 08 00 95 E5                 LDR     R0, [R5,#8]
+ROM:A0685F5C 00 00 50 E3                 CMP     R0, #0
+ROM:A0685F60 0A 00 00 1A                 BNE     loc_A0685F90
+ROM:A0685F60
+ROM:A0685F64 00 20 A0 E3                 MOV     R2, #0
+ROM:A0685F68 29 10 A0 E3                 MOV     R1, #0x29
+ROM:A0685F6C 04 00 A0 E1                 MOV     R0, R4
+ROM:A0685F70 E1 24 FB EB                 BL      sub_A054F2FC
+ROM:A0685F70
+ROM:A0685F74 DC 10 D4 E5                 LDRB    R1, [R4,#0xDC]
+ROM:A0685F78 00 00 51 E3                 CMP     R1, #0
+ROM:A0685F7C 03 00 00 1A                 BNE     loc_A0685F90
+ROM:A0685F7C
+ROM:A0685F80 00 10 A0 E1                 MOV     R1, R0
+ROM:A0685F84 04 00 A0 E1                 MOV     R0, R4
+ROM:A0685F88 5B 29 FB EB                 BL      sub_A05504FC
+ROM:A0685F88
+ROM:A0685F8C 08 00 85 E5                 STR     R0, [R5,#8]
+ROM:A0685F8C
+ROM:A0685F90
+ROM:A0685F90             loc_A0685F90                            ; A0685F54j
+ROM:A0685F90                                                     ; A0685F60j
+ROM:A0685F90                                                     ; A0685F7Cj
+ROM:A0685F90 04 00 A0 E1                 MOV     R0, R4
+ROM:A0685F94 4C 25 FB EB                 BL      sub_A054F4CC
+ROM:A0685F94
+ROM:A0685F98 00 00 90 E5                 LDR     R0, [R0]
+ROM:A0685F9C 28 10 A0 E3                 MOV     R1, #0x28
+ROM:A0685FA0 20 0D 51 E1                 CMP     R1, R0,LSR#26
+ROM:A0685FA4 0C 60 C5 15                 STRNEB  R6, [R5,#0xC]
+ROM:A0685FA8 70 80 BD 18                 LDMNEFD SP!, {R4-R6,PC}
+ROM:A0685FAC 00 20 A0 E3                 MOV     R2, #0
+ROM:A0685FB0 32 10 A0 E3                 MOV     R1, #0x32
+ROM:A0685FB4 04 00 A0 E1                 MOV     R0, R4
+ROM:A0685FB8 CF 24 FB EB                 BL      sub_A054F2FC
+ROM:A0685FB8
+ROM:A0685FBC 0C 00 C5 E5                 STRB    R0, [R5,#0xC]
+ROM:A0685FC0 70 80 BD E8                 LDMFD   SP!, {R4-R6,PC}
+ROM:A0685FC0
+ROM:A0685FC0             ; End of function sub_A0685EE4
+ROM:A0685FC0
+ROM:A0685FC4
+ROM:A0685FC4             ; *************** S U B R O U T I N E ***************************************
+ROM:A0685FC4
+ROM:A0685FC4
+ROM:A0685FC4             sub_A0685FC4                            ; A0956508o
+ROM:A0685FC4 F8 40 2D E9                 STMFD   SP!, {R3-R7,LR}
+ROM:A0685FC8 00 40 A0 E1                 MOV     R4, R0
+ROM:A0685FCC 40 00 90 E5                 LDR     R0, [R0,#0x40]
+ROM:A0685FD0 6C 76 9F E5                 LDR     R7, =unk_A09564F8
+ROM:A0685FD4 6C 66 9F E5                 LDR     R6, =0xEC10
+ROM:A0685FD8 00 00 50 E3                 CMP     R0, #0
+ROM:A0685FDC 11 00 00 1A                 BNE     loc_A0686028
+ROM:A0685FDC
+ROM:A0685FE0 07 10 A0 E1                 MOV     R1, R7
+ROM:A0685FE4 08 00 A0 E3                 MOV     R0, #8
+ROM:A0685FE8 40 25 ED EB                 BL      sub_A01CF4F0
+ROM:A0685FE8
+ROM:A0685FEC 00 00 50 E3                 CMP     R0, #0
+ROM:A0685FF0 06 00 00 0A                 BEQ     loc_A0686010
+ROM:A0685FF0
+ROM:A0685FF4 02 00 00 EF                 SWI     2
+ROM:A0685FF8 06 30 A0 E1                 MOV     R3, R6
+ROM:A0685FFC 03 20 A0 E3                 MOV     R2, #3
+ROM:A0686000 07 10 A0 E1                 MOV     R1, R7
+ROM:A0686004 08 00 A0 E3                 MOV     R0, #8
+ROM:A0686008 B6 24 ED EB                 BL      sub_A01CF2E8    ; void StoreErrInfoAndAbort(int code,const char *module_name,int type,int unk3);
+ROM:A0686008
+ROM:A068600C 05 00 00 EA                 B       loc_A0686028
+ROM:A068600C
+ROM:A0686010             ; ---------------------------------------------------------------------------
+ROM:A0686010
+ROM:A0686010             loc_A0686010                            ; A0685FF0j
+ROM:A0686010 03 00 00 EF                 SWI     3
+ROM:A0686014 06 30 A0 E1                 MOV     R3, R6
+ROM:A0686018 03 20 A0 E3                 MOV     R2, #3
+ROM:A068601C 07 10 A0 E1                 MOV     R1, R7
+ROM:A0686020 08 00 A0 E3                 MOV     R0, #8
+ROM:A0686024 E1 24 ED EB                 BL      sub_A01CF3B0
+ROM:A0686024
+ROM:A0686028
+ROM:A0686028             loc_A0686028                            ; A0685FDCj
+ROM:A0686028                                                     ; A068600Cj
+ROM:A0686028 44 00 D4 E5                 LDRB    R0, [R4,#0x44]
+ROM:A068602C 00 00 50 E3                 CMP     R0, #0
+ROM:A0686030 17 00 00 0A                 BEQ     locret_A0686094
+ROM:A0686030
+ROM:A0686034 10 56 9F E5                 LDR     R5, =off_A0956544
+ROM:A0686038 01 00 50 E3                 CMP     R0, #1
+ROM:A068603C 15 00 00 0A                 BEQ     loc_A0686098
+ROM:A068603C
+ROM:A0686040 02 00 50 E3                 CMP     R0, #2
+ROM:A0686044 12 00 00 1A                 BNE     locret_A0686094
+ROM:A0686044
+ROM:A0686048 40 00 94 E5                 LDR     R0, [R4,#0x40]
+ROM:A068604C 54 00 90 E5                 LDR     R0, [R0,#0x54]
+ROM:A0686050 00 00 50 E3                 CMP     R0, #0
+ROM:A0686054 10 00 94 E5                 LDR     R0, [R4,#0x10]
+ROM:A0686058 00 18 A0 E1                 MOV     R1, R0,LSL#16
+ROM:A068605C 21 18 A0 E1                 MOV     R1, R1,LSR#16
+ROM:A0686060 BC 13 C4 E1                 STRH    R1, [R4,#0x3C]
+ROM:A0686064 45 00 00 0A                 BEQ     loc_A0686180
+ROM:A0686064
+ROM:A0686068 05 00 A0 E3                 MOV     R0, #5
+ROM:A068606C 10 00 84 E5                 STR     R0, [R4,#0x10]
+ROM:A0686070 14 00 95 E5                 LDR     R0, [R5,#0x14]
+ROM:A0686074 00 00 50 E3                 CMP     R0, #0
+ROM:A0686078 14 30 95 15                 LDRNE   R3, [R5,#0x14]
+ROM:A068607C 04 D0 8D 12                 ADDNE   SP, SP, #4
+ROM:A0686080 04 00 A0 11                 MOVNE   R0, R4
+ROM:A0686084 F0 40 BD 18                 LDMNEFD SP!, {R4-R7,LR}
+ROM:A0686088 05 20 A0 13                 MOVNE   R2, #5
+ROM:A068608C 03 C0 A0 11                 MOVNE   R12, R3
+ROM:A0686090 1C FF 2F 11                 BXNE    R12
+ROM:A0686090
+ROM:A0686094
+ROM:A0686094             locret_A0686094                         ; A0686030j
+ROM:A0686094                                                     ; A0686044j
+ROM:A0686094                                                     ; A068614Cj
+ROM:A0686094                                                     ; A068617Cj
+ROM:A0686094                                                     ; A06861ACj
+ROM:A0686094 F8 80 BD E8                 LDMFD   SP!, {R3-R7,PC}
+ROM:A0686094
+ROM:A0686098             ; ---------------------------------------------------------------------------
+ROM:A0686098
+ROM:A0686098             loc_A0686098                            ; A068603Cj
+ROM:A0686098 50 00 94 E5                 LDR     R0, [R4,#0x50]
+ROM:A068609C 00 00 50 E3                 CMP     R0, #0
+ROM:A06860A0 B0 16 D4 01                 LDREQH  R1, [R4,#0x60]
+ROM:A06860A4 40 00 94 05                 LDREQ   R0, [R4,#0x40]
+ROM:A06860A8 CC 24 FB 0B                 BLEQ    sub_A054F3E0
+ROM:A06860A8
+ROM:A06860AC 40 00 94 E5                 LDR     R0, [R4,#0x40]
+ROM:A06860B0 DC 00 D0 E5                 LDRB    R0, [R0,#0xDC]
+ROM:A06860B4 00 00 50 E3                 CMP     R0, #0
+ROM:A06860B8 11 00 00 0A                 BEQ     loc_A0686104
+ROM:A06860B8
+ROM:A06860BC 07 10 A0 E1                 MOV     R1, R7
+ROM:A06860C0 02 00 A0 E3                 MOV     R0, #2
+ROM:A06860C4 09 25 ED EB                 BL      sub_A01CF4F0
+ROM:A06860C4
+ROM:A06860C8 00 00 50 E3                 CMP     R0, #0
+ROM:A06860CC 06 00 00 0A                 BEQ     loc_A06860EC
+ROM:A06860CC
+ROM:A06860D0 02 00 00 EF                 SWI     2
+ROM:A06860D4 06 30 A0 E1                 MOV     R3, R6
+ROM:A06860D8 03 20 A0 E3                 MOV     R2, #3
+ROM:A06860DC 07 10 A0 E1                 MOV     R1, R7
+ROM:A06860E0 02 00 A0 E3                 MOV     R0, #2
+ROM:A06860E4 7F 24 ED EB                 BL      sub_A01CF2E8    ; void StoreErrInfoAndAbort(int code,const char *module_name,int type,int unk3);
+ROM:A06860E4
+ROM:A06860E8 05 00 00 EA                 B       loc_A0686104
+ROM:A06860E8
+ROM:A06860EC             ; ---------------------------------------------------------------------------
+ROM:A06860EC
+ROM:A06860EC             loc_A06860EC                            ; A06860CCj
+ROM:A06860EC 03 00 00 EF                 SWI     3
+ROM:A06860F0 06 30 A0 E1                 MOV     R3, R6
+ROM:A06860F4 03 20 A0 E3                 MOV     R2, #3
+ROM:A06860F8 07 10 A0 E1                 MOV     R1, R7
+ROM:A06860FC 02 00 A0 E3                 MOV     R0, #2
+ROM:A0686100 AA 24 ED EB                 BL      sub_A01CF3B0
+ROM:A0686100
+ROM:A0686104
+ROM:A0686104             loc_A0686104                            ; A06860B8j
+ROM:A0686104                                                     ; A06860E8j
+ROM:A0686104 50 00 94 E5                 LDR     R0, [R4,#0x50]
+ROM:A0686108 00 00 50 E3                 CMP     R0, #0
+ROM:A068610C 10 00 94 E5                 LDR     R0, [R4,#0x10]
+ROM:A0686110 00 18 A0 E1                 MOV     R1, R0,LSL#16
+ROM:A0686114 21 18 A0 E1                 MOV     R1, R1,LSR#16
+ROM:A0686118 BC 13 C4 E1                 STRH    R1, [R4,#0x3C]
+ROM:A068611C 0B 00 00 1A                 BNE     loc_A0686150
+ROM:A068611C
+ROM:A0686120 01 00 A0 E3                 MOV     R0, #1
+ROM:A0686124 10 00 84 E5                 STR     R0, [R4,#0x10]
+ROM:A0686128 04 00 95 E5                 LDR     R0, [R5,#4]
+ROM:A068612C 00 00 50 E3                 CMP     R0, #0
+ROM:A0686130 04 30 95 15                 LDRNE   R3, [R5,#4]
+ROM:A0686134 04 D0 8D 12                 ADDNE   SP, SP, #4
+ROM:A0686138 04 00 A0 11                 MOVNE   R0, R4
+ROM:A068613C F0 40 BD 18                 LDMNEFD SP!, {R4-R7,LR}
+ROM:A0686140 01 20 A0 13                 MOVNE   R2, #1
+ROM:A0686144 03 C0 A0 11                 MOVNE   R12, R3
+ROM:A0686148 1C FF 2F 11                 BXNE    R12
+ROM:A068614C D0 FF FF EA                 B       locret_A0686094
+ROM:A068614C
+ROM:A0686150             ; ---------------------------------------------------------------------------
+ROM:A0686150
+ROM:A0686150             loc_A0686150                            ; A068611Cj
+ROM:A0686150 03 00 A0 E3                 MOV     R0, #3
+ROM:A0686154 10 00 84 E5                 STR     R0, [R4,#0x10]
+ROM:A0686158 0C 00 95 E5                 LDR     R0, [R5,#0xC]
+ROM:A068615C 00 00 50 E3                 CMP     R0, #0
+ROM:A0686160 0C 30 95 15                 LDRNE   R3, [R5,#0xC]
+ROM:A0686164 04 D0 8D 12                 ADDNE   SP, SP, #4
+ROM:A0686168 04 00 A0 11                 MOVNE   R0, R4
+ROM:A068616C F0 40 BD 18                 LDMNEFD SP!, {R4-R7,LR}
+ROM:A0686170 03 20 A0 13                 MOVNE   R2, #3
+ROM:A0686174 03 C0 A0 11                 MOVNE   R12, R3
+ROM:A0686178 1C FF 2F 11                 BXNE    R12
+ROM:A068617C C4 FF FF EA                 B       locret_A0686094
+ROM:A068617C
+ROM:A0686180             ; ---------------------------------------------------------------------------
+ROM:A0686180
+ROM:A0686180             loc_A0686180                            ; A0686064j
+ROM:A0686180 00 00 A0 E3                 MOV     R0, #0
+ROM:A0686184 10 00 84 E5                 STR     R0, [R4,#0x10]
+ROM:A0686188 00 00 95 E5                 LDR     R0, [R5]
+ROM:A068618C 00 00 50 E3                 CMP     R0, #0
+ROM:A0686190 00 30 95 15                 LDRNE   R3, [R5]
+ROM:A0686194 04 D0 8D 12                 ADDNE   SP, SP, #4
+ROM:A0686198 04 00 A0 11                 MOVNE   R0, R4
+ROM:A068619C F0 40 BD 18                 LDMNEFD SP!, {R4-R7,LR}
+ROM:A06861A0 00 20 A0 13                 MOVNE   R2, #0
+ROM:A06861A4 03 C0 A0 11                 MOVNE   R12, R3
+ROM:A06861A8 1C FF 2F 11                 BXNE    R12
+ROM:A06861AC B8 FF FF EA                 B       locret_A0686094
+ROM:A06861AC
+ROM:A06861AC             ; End of function sub_A0685FC4
+ROM:A06861AC
+ROM:A06861B0
+ROM:A06861B0             ; *************** S U B R O U T I N E ***************************************
+ROM:A06861B0
+ROM:A06861B0
+ROM:A06861B0             sub_A06861B0                            ; off_A0956544o
+ROM:A06861B0 10 40 2D E9                 STMFD   SP!, {R4,LR}
+ROM:A06861B4 B6 24 D0 E1                 LDRH    R2, [R0,#0x46]
+ROM:A06861B8 00 40 A0 E1                 MOV     R4, R0
+ROM:A06861BC 60 10 80 E2                 ADD     R1, R0, #0x60
+ROM:A06861C0 40 00 90 E5                 LDR     R0, [R0,#0x40]
+ROM:A06861C4 00 00 52 E3                 CMP     R2, #0
+ROM:A06861C8 01 00 00 1A                 BNE     loc_A06861D4
+ROM:A06861C8
+ROM:A06861CC 76 33 FB EB                 BL      sub_A0552FAC
+ROM:A06861CC
+ROM:A06861D0 00 00 00 EA                 B       loc_A06861D8
+ROM:A06861D0
+ROM:A06861D4             ; ---------------------------------------------------------------------------
+ROM:A06861D4
+ROM:A06861D4             loc_A06861D4                            ; A06861C8j
+ROM:A06861D4 95 33 FB EB                 BL      sub_A0553030
+ROM:A06861D4
+ROM:A06861D8
+ROM:A06861D8             loc_A06861D8                            ; A06861D0j
+ROM:A06861D8 00 00 50 E3                 CMP     R0, #0
+ROM:A06861DC 06 00 00 0A                 BEQ     loc_A06861FC
+ROM:A06861DC
+ROM:A06861E0 B0 16 D4 E1                 LDRH    R1, [R4,#0x60]
+ROM:A06861E4 40 00 94 E5                 LDR     R0, [R4,#0x40]
+ROM:A06861E8 7C 24 FB EB                 BL      sub_A054F3E0
+ROM:A06861E8
+ROM:A06861EC 40 00 94 E5                 LDR     R0, [R4,#0x40]
+ROM:A06861F0 10 40 BD E8                 LDMFD   SP!, {R4,LR}
+ROM:A06861F4 54 14 9F E5                 LDR     R1, =0x6C8C
+ROM:A06861F8 A4 1E FB EA                 B       sub_A054DC90
+ROM:A06861F8
+ROM:A06861FC             ; ---------------------------------------------------------------------------
+ROM:A06861FC
+ROM:A06861FC             loc_A06861FC                            ; A06861DCj
+ROM:A06861FC 9C 00 A0 E3                 MOV     R0, #0x9C
+ROM:A0686200 18 00 84 E5                 STR     R0, [R4,#0x18]
+ROM:A0686204 B4 06 D4 E1                 LDRH    R0, [R4,#0x64]
+ROM:A0686208 4C 10 94 E5                 LDR     R1, [R4,#0x4C]
+ROM:A068620C BC 04 C1 E1                 STRH    R0, [R1,#0x4C]
+ROM:A0686210 3C 14 9F E5                 LDR     R1, =0x1E74
+ROM:A0686214 01 00 A0 E3                 MOV     R0, #1
+ROM:A0686218 17 7D 0C FA                 BLX     sub_A09A567C
+ROM:A0686218
+ROM:A068621C 38 00 84 E5                 STR     R0, [R4,#0x38]
+ROM:A0686220 02 00 E0 E3                 MOVL    R0, 0xFFFFFFFD
+ROM:A0686224 10 00 84 E5                 STR     R0, [R4,#0x10]
+ROM:A0686228 10 80 BD E8                 LDMFD   SP!, {R4,PC}
+ROM:A0686228
+ROM:A0686228             ; End of function sub_A06861B0
+ROM:A0686228
+ROM:A068622C
+ROM:A068622C             ; *************** S U B R O U T I N E ***************************************
+ROM:A068622C
+ROM:A068622C
+ROM:A068622C             sub_A068622C                            ; A0686304p
+ROM:A068622C                                                     ; loc_A06863C0p
+ROM:A068622C                                                     ; A06865CCp
+ROM:A068622C                                                     ; A06868E8p
+ROM:A068622C 44 10 D0 E5                 LDRB    R1, [R0,#0x44]
+ROM:A0686230 02 30 E0 E3                 MOVL    R3, 0xFFFFFFFD
+ROM:A0686234 9C C0 A0 E3                 MOV     R12, #0x9C
+ROM:A0686238 02 00 51 E3                 CMP     R1, #2
+ROM:A068623C 12 00 00 1A                 BNE     loc_A068628C
+ROM:A068623C
+ROM:A0686240 B6 14 D0 E1                 LDRH    R1, [R0,#0x46]
+ROM:A0686244 01 10 81 E2                 ADD     R1, R1, #1
+ROM:A0686248 40 1B C1 E3                 BIC     R1, R1, #0x10000
+ROM:A068624C B6 14 C0 E1                 STRH    R1, [R0,#0x46]
+ROM:A0686250 B8 24 D0 E1                 LDRH    R2, [R0,#0x48]
+ROM:A0686254 02 00 51 E1                 CMP     R1, R2
+ROM:A0686258 0B 00 00 0A                 BEQ     loc_A068628C
+ROM:A0686258
+ROM:A068625C 10 10 90 E5                 LDR     R1, [R0,#0x10]
+ROM:A0686260 00 20 A0 E3                 MOV     R2, #0
+ROM:A0686264 23 18 01 E0                 AND     R1, R1, R3,LSR#16
+ROM:A0686268 BC 13 C0 E1                 STRH    R1, [R0,#0x3C]
+ROM:A068626C D8 33 9F E5                 LDR     R3, =off_A0956544
+ROM:A0686270 10 20 80 E5                 STR     R2, [R0,#0x10]
+ROM:A0686274 00 20 93 E5                 LDR     R2, [R3]
+ROM:A0686278 00 00 52 E3                 CMP     R2, #0
+ROM:A068627C 00 30 93 15                 LDRNE   R3, [R3]
+ROM:A0686280 00 20 A0 13                 MOVNE   R2, #0
+ROM:A0686284 13 FF 2F 11                 BXNE    R3
+ROM:A0686288 1E FF 2F E1                 BX      LR
+ROM:A0686288
+ROM:A068628C             ; ---------------------------------------------------------------------------
+ROM:A068628C
+ROM:A068628C             loc_A068628C                            ; A068623Cj
+ROM:A068628C                                                     ; A0686258j
+ROM:A068628C 18 C0 80 E5                 STR     R12, [R0,#0x18]
+ROM:A0686290 B4 16 D0 E1                 LDRH    R1, [R0,#0x64]
+ROM:A0686294 4C 20 90 E5                 LDR     R2, [R0,#0x4C]
+ROM:A0686298 BC 14 C2 E1                 STRH    R1, [R2,#0x4C]
+ROM:A068629C 10 30 80 E5                 STR     R3, [R0,#0x10]
+ROM:A06862A0 1E FF 2F E1                 BX      LR
+ROM:A06862A0
+ROM:A06862A0             ; End of function sub_A068622C
+ROM:A06862A0
+ROM:A06862A4
+ROM:A06862A4             ; *************** S U B R O U T I N E ***************************************
+ROM:A06862A4
+ROM:A06862A4
+ROM:A06862A4             sub_A06862A4                            ; A06863B8p
+ROM:A06862A4                                                     ; A06865C0p
+ROM:A06862A4 70 40 2D E9                 STMFD   SP!, {R4-R6,LR}
+ROM:A06862A8 00 40 A0 E1                 MOV     R4, R0
+ROM:A06862AC 40 00 90 E5                 LDR     R0, [R0,#0x40]
+ROM:A06862B0 00 60 A0 E3                 MOV     R6, #0
+ROM:A06862B4 00 20 A0 E3                 MOV     R2, #0
+ROM:A06862B8 1D 10 A0 E3                 MOV     R1, #0x1D
+ROM:A06862BC 0E 24 FB EB                 BL      sub_A054F2FC
+ROM:A06862BC
+ROM:A06862C0 00 10 A0 E1                 MOV     R1, R0
+ROM:A06862C4 40 00 94 E5                 LDR     R0, [R4,#0x40]
+ROM:A06862C8 68 50 84 E2                 ADD     R5, R4, #0x68
+ROM:A06862CC DC 20 D0 E5                 LDRB    R2, [R0,#0xDC]
+ROM:A06862D0 00 00 52 E3                 CMP     R2, #0
+ROM:A06862D4 04 00 00 1A                 BNE     loc_A06862EC
+ROM:A06862D4
+ROM:A06862D8 6E 28 FB EB                 BL      sub_A0550498
+ROM:A06862D8
+ROM:A06862DC 05 10 A0 E1                 MOV     R1, R5
+ROM:A06862E0 D2 47 0D FA                 BLX     sub_A09D8230
+ROM:A06862E0
+ROM:A06862E4 01 60 A0 E3                 MOV     R6, #1
+ROM:A06862E8 01 00 00 EA                 B       loc_A06862F4
+ROM:A06862E8
+ROM:A06862EC             ; ---------------------------------------------------------------------------
+ROM:A06862EC
+ROM:A06862EC             loc_A06862EC                            ; A06862D4j
+ROM:A06862EC 05 00 A0 E1                 MOV     R0, R5
+ROM:A06862F0 E5 0D 0C FA                 BLX     sub_A0989A8C
+ROM:A06862F0
+ROM:A06862F4
+ROM:A06862F4             loc_A06862F4                            ; A06862E8j
+ROM:A06862F4 01 00 56 E3                 CMP     R6, #1
+ROM:A06862F8 04 00 A0 11                 MOVNE   R0, R4
+ROM:A06862FC 50 50 84 E5                 STR     R5, [R4,#0x50]
+ROM:A0686300 70 40 BD 18                 LDMNEFD SP!, {R4-R6,LR}
+ROM:A0686304 C8 FF FF 1A                 BNE     sub_A068622C
+ROM:A0686304
+ROM:A0686308 10 00 94 E5                 LDR     R0, [R4,#0x10]
+ROM:A068630C 38 23 9F E5                 LDR     R2, =off_A0956544
+ROM:A0686310 00 18 A0 E1                 MOV     R1, R0,LSL#16
+ROM:A0686314 21 18 A0 E1                 MOV     R1, R1,LSR#16
+ROM:A0686318 BC 13 C4 E1                 STRH    R1, [R4,#0x3C]
+ROM:A068631C 03 00 A0 E3                 MOV     R0, #3
+ROM:A0686320 10 00 84 E5                 STR     R0, [R4,#0x10]
+ROM:A0686324 0C 00 92 E5                 LDR     R0, [R2,#0xC]
+ROM:A0686328 00 00 50 E3                 CMP     R0, #0
+ROM:A068632C 0C 30 92 15                 LDRNE   R3, [R2,#0xC]
+ROM:A0686330 04 00 A0 11                 MOVNE   R0, R4
+ROM:A0686334 70 40 BD 18                 LDMNEFD SP!, {R4-R6,LR}
+ROM:A0686338 03 20 A0 13                 MOVNE   R2, #3
+ROM:A068633C 13 FF 2F 11                 BXNE    R3
+ROM:A0686340 70 80 BD E8                 LDMFD   SP!, {R4-R6,PC}
+ROM:A0686340
+ROM:A0686340             ; End of function sub_A06862A4

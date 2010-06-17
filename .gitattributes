@@ -273,6 +273,8 @@ CodeShowPatch/EDial.c -text
 CodeShowPatch/ELC1v41.xcl -text
 CodeShowPatch/M6Cv50.xcl -text
 CodeShowPatch/M81Cv51.xcl -text
+CodeShowPatch/NSG-ELKA部分反汇编记录/E71Cv41.txt -text
+CodeShowPatch/NSG-ELKA部分反汇编记录/S7Cv47.txt -text
 CodeShowPatch/S68Cv51.xcl -text
 CodeShowPatch/S6Cv53.xcl -text
 CodeShowPatch/S7Cv47.xcl -text
