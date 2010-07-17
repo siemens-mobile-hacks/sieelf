@@ -126,7 +126,7 @@
 
 01C0: 0xA0949B59   ;  70: int *GetGPRSTrafficPointer()
 01C4: 0xA0A3472F   ;  71: DrawRoundRect
-;1C8:              ;  72: SetCurrentSecondOfCall
+01C8: 0xA08EF03D ;   72: SetCurrentSecondOfCall
 01CC: 0xA0D0D783   ;  73: GetTypeOfCall
 01D0: 0xA064E465   ;  74: *GetShortcutRecordByName(char *szShortcutName)
 01D4: 0xA05DB399   ;  75: IsCanvasBufferSet int IsCanvasBufferSet(int CanvasID)
@@ -168,8 +168,8 @@
 025C: 0xA006F261   ;  97: CreatePath
 0260: 0xA006F211   ;  98: void PlaySoundVibra(char SndNum, char VibraPower, unsigned int VibraDuration, char VibraIfOff)
 0264: 0xA05AFDD8   ; 099: __arm short PlayMelodyInMem(char flags,void *MelAddr,int MelSize,int CepId,int msg,PLAYFILE_OPT *PlayFileStruct); 
-;268:              ;  9A: 
-;26C:              ;  9B: 
+;0268: 0x                      ; 09A: __arm int ChangeVolume(unsigned char Volume);
+;026C: 0x                     ; 09B: Audio params addr
 0270: 0xA06896E1   ;  9C: CloseScreensaver
 0274: 0xA068508B   ;  9D: GetMissedEventsPtr
 0278: 0xA006F2B1   ;  9E: int GetMissedEventCount(unsigned int Event)
@@ -761,6 +761,18 @@
 0B74: 0xA08F20C9   ; 2DD: __thumb void SetIlluminationoffTimeout(int time_sec);
 0B78: 0xA08F2255   ; 2DE: __thumb void IllumTimeRequest(int TimeMode, int Counter);
 0B7C: 0xA08F228B   ; 2DF: __thumb void IllumTimeRelease(int TimeMode, int Counter);
+0B80: 0xA0A52035 ; 2E0: __thumb IMGHDR *GetIMGHDRFromThemeCache(int index);
+0B84: 0xA0A7D1D5 ; 2E1: __thumb int GetExtUidByFileName_ws(WSHDR * fn);
+0B88: 0xA0510153    ; 2E2:  __thumb int wstrcmp(WSHDR*ws1,WSHDR*ws2);
+0B8C: 0xA05E7A5C  ; 2E3:  __arm  int fexists(WSHDR* FileName);
+0B90: 0xA05C3869   ; 2E4:  __thumb int SettingsAE_Update_ws(WSHDR *,int proc,char * entry,char *keyword);
+0B94: 0xA05C3827   ; 2E5: __thumb  int SettingsAE_Read_ws(WSHDR *,int set,char * entry,char *keyword);
+0B98: 0xA05C37C1   ; 2E6: __thumb int SettingsAE_SetFlag(int val,int set,char * entry,char *keyword);
+0B9C: 0xA05C378B ; 2E7: __thumb int SettingsAE_GetFlag(int *res,int set,char * entry,char *keyword);
+0BA0: 0xA05C3807  ; 2E8: __thumb int SettingsAE_Update(int val,int set,char * entry,char *keyword);
+0BA4: 0xA05C37D3  ; 2E9: __thumb int SettingsAE_Read(int *res,int set,char * entry,char *keyword);
+0BA8: 0xA0659EF1  ; 2EA: __thumb void* SettingsAE_GetEntryList(int set);
+0BAC: 0xA065A00D ; 2EB: __thumb void* SettingsAE_GetEntryList(int set);
 #pragma disable old_equal_ff
 +0       
 ;********************************************************************************
