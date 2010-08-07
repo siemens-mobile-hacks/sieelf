@@ -42,7 +42,7 @@ __root const CFG_CBOX_ITEM BOX01[4] = {ScrMode};
 __root const CFG_HDR BAR_3={CFG_CBOX,"关闭菜单",0,7};
 __root const uint CALL_BTN=6;
 __root const CFG_CBOX_ITEM BOX02[7] = {KeyName};
-__root const CFG_HDR BAR_1={CFG_UINT,"刷屏(秒)",0,50};
+__root const CFG_HDR BAR_1={CFG_UINT,"刷屏(秒)",0,200};
 __root const uint REFRESH=5;
 __root const CFG_HDR BAR_2={CFG_UINT,"自关(秒)",0,20};
 __root const uint AUTO_CLOSE=3;
@@ -197,6 +197,7 @@ __root const CFG_HDR A12_3={CFG_STR_UTF8,"调用",0,SLEN-1};
 __root const char AF12[SLEN]="";
 __root const CFG_HDR mA120={CFG_LEVEL,"",0,0};
 //-------------------------------------------------
+/*
 __root const CFG_HDR mA131={CFG_LEVEL,"菜单10",1,0};
 __root const CFG_HDR A13_4 ={CFG_CBOX,"类型", 0,ELEN}; 
 __root const uint AT13=0; 
@@ -209,6 +210,73 @@ __root const CFG_HDR A13_3={CFG_STR_UTF8,"调用",0,SLEN-1};
 __root const char AF13[SLEN]="";
 __root const CFG_HDR mA130={CFG_LEVEL,"",0,0};
 __root const CFG_HDR mAPP0={CFG_LEVEL,"",0,0};
+//-------------------------------------------------
+__root const CFG_HDR mA141={CFG_LEVEL,"菜单11",1,0};
+__root const CFG_HDR A14_4 ={CFG_CBOX,"类型", 0,ELEN}; 
+__root const uint AT14=0; 
+__root const CFG_CBOX_ITEM BOX14[ELEN]={ETycn};
+__root const CFG_HDR A14_1={CFG_STR_GB,"描述",0,LEN-1};
+__root const char AN14[LEN]=NoName;
+__root const CFG_HDR A14_2={CFG_STR_UTF8,"图标",0,SLEN-1};
+__root const char AI14[SLEN]="";
+__root const CFG_HDR A14_3={CFG_STR_UTF8,"调用",0,SLEN-1};
+__root const char AF14[SLEN]="";
+__root const CFG_HDR mA140={CFG_LEVEL,"",0,0};
+__root const CFG_HDR mAPP0={CFG_LEVEL,"",0,0};
+//-------------------------------------------------
+__root const CFG_HDR mA151={CFG_LEVEL,"菜单12",1,0};
+__root const CFG_HDR A15_4 ={CFG_CBOX,"类型", 0,ELEN}; 
+__root const uint AT15=0; 
+__root const CFG_CBOX_ITEM BOX15[ELEN]={ETycn};
+__root const CFG_HDR A15_1={CFG_STR_GB,"描述",0,LEN-1};
+__root const char AN15[LEN]=NoName;
+__root const CFG_HDR A15_2={CFG_STR_UTF8,"图标",0,SLEN-1};
+__root const char AI15[SLEN]="";
+__root const CFG_HDR A15_3={CFG_STR_UTF8,"调用",0,SLEN-1};
+__root const char AF15[SLEN]="";
+__root const CFG_HDR mA150={CFG_LEVEL,"",0,0};
+__root const CFG_HDR mAPP0={CFG_LEVEL,"",0,0};
+//-------------------------------------------------
+__root const CFG_HDR mA161={CFG_LEVEL,"菜单13",1,0};
+__root const CFG_HDR A16_4 ={CFG_CBOX,"类型", 0,ELEN}; 
+__root const uint AT16=0; 
+__root const CFG_CBOX_ITEM BOX16[ELEN]={ETycn};
+__root const CFG_HDR A16_1={CFG_STR_GB,"描述",0,LEN-1};
+__root const char AN16[LEN]=NoName;
+__root const CFG_HDR A16_2={CFG_STR_UTF8,"图标",0,SLEN-1};
+__root const char AI16[SLEN]="";
+__root const CFG_HDR A16_3={CFG_STR_UTF8,"调用",0,SLEN-1};
+__root const char AF16[SLEN]="";
+__root const CFG_HDR mA160={CFG_LEVEL,"",0,0};
+__root const CFG_HDR mAPP0={CFG_LEVEL,"",0,0};
+//-------------------------------------------------
+__root const CFG_HDR mA171={CFG_LEVEL,"菜单14",1,0};
+__root const CFG_HDR A17_4 ={CFG_CBOX,"类型", 0,ELEN}; 
+__root const uint AT17=0; 
+__root const CFG_CBOX_ITEM BOX17[ELEN]={ETycn};
+__root const CFG_HDR A17_1={CFG_STR_GB,"描述",0,LEN-1};
+__root const char AN17[LEN]=NoName;
+__root const CFG_HDR A17_2={CFG_STR_UTF8,"图标",0,SLEN-1};
+__root const char AI17[SLEN]="";
+__root const CFG_HDR A17_3={CFG_STR_UTF8,"调用",0,SLEN-1};
+__root const char AF17[SLEN]="";
+__root const CFG_HDR mA170={CFG_LEVEL,"",0,0};
+__root const CFG_HDR mAPP0={CFG_LEVEL,"",0,0};
+//-------------------------------------------------
+__root const CFG_HDR mA181={CFG_LEVEL,"菜单15",1,0};
+__root const CFG_HDR A18_4 ={CFG_CBOX,"类型", 0,ELEN}; 
+__root const uint AT18=0; 
+__root const CFG_CBOX_ITEM BOX18[ELEN]={ETycn};
+__root const CFG_HDR A18_1={CFG_STR_GB,"描述",0,LEN-1};
+__root const char AN18[LEN]=NoName;
+__root const CFG_HDR A18_2={CFG_STR_UTF8,"图标",0,SLEN-1};
+__root const char AI18[SLEN]="";
+__root const CFG_HDR A18_3={CFG_STR_UTF8,"调用",0,SLEN-1};
+__root const char AF18[SLEN]="";
+__root const CFG_HDR mA180={CFG_LEVEL,"",0,0};
+__root const CFG_HDR mAPP0={CFG_LEVEL,"",0,0};
+*/
+
 //TextInfo begin
 __root const CFG_HDR SCR1={CFG_LEVEL,"系统屏显",1,0};
 

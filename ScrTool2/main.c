@@ -609,11 +609,33 @@ static void BuildGUI(short MODE,char *NAME,int Type){
   UnlockSched();
 }
 //执行指定目录
-static void RunDIR(char *dir,char *name){  
-  strcpy(PATHS,dir);  
-  strcpy(TITLE,name);
-  BuildGUI(SCR_MENUS,name,0);
+static int RunDIR(char *path)
+{
+if(path && strlen(path))
+{
+	WSHDR *ws=AllocWS(128);
+	str_2ws(ws,path,128);
+	NativeExplorerData data;
+	zeromem(&data,sizeof(NativeExplorerData));
+	data.mode=0;
+	data.dir_enum=0x26;
+	data.path_to_file=ws;
+	data.is_exact_dir=1;
+	data.full_filename=ws;
+	data.unk9=1;
+	//data.this_struct_addr=&data;
+	StartNativeExplorer(&data);
+	FreeWS(ws);
+	return 1;
 }
+	return 0;
+}
+//执行指定目录
+//static void RunDIR(char *dir,char *name){  
+//  strcpy(PATHS,dir);  
+//  strcpy(TITLE,name);
+//  BuildGUI(SCR_MENUS,name,0);
+//}
 //执行菜单功能
 static void DoIt(int i){ 
   CloseCSM(TaskHandle);
@@ -621,7 +643,7 @@ static void DoIt(int i){
    case 0: RunAPP(APP[i].C); break;
    case 1: RunCUT(APP[i].C); break;
    case 2: RunADR(APP[i].C); break;
-   case 3: RunDIR(APP[i].C,APP[i].N); break;  
+   case 3: RunDIR(APP[i].N); break;  
    case 4: SwitchPhoneOff(); break;
    case 5: RebootPhone();break;
    case 6: KbdLock();break;

@@ -1,8 +1,8 @@
 #ifndef _SCRTOOL_H_
- #define _SCRTOOL_H_ 
- #include <sieapi.h> 
+#define _SCRTOOL_H_ 
+#include <sieapi.h> 
 #define DAEMON
-//#define XTASK//是否可以使用XTASK软件关闭S
+#define XTASK//是否可以使用XTASK软件关闭S
 #define SCR_LITE//是否编译字体文本说明
 #define SCR_NAME "ScrTool"
 #define UPDATE_STAT 1
@@ -31,7 +31,7 @@ static const IPC_REQ SCR_IPC={SCR_NAME, SCR_NAME, NULL};
 static const int MINUSLL=-11;
 static word MTBody[LEN];
 static char ANST[]="参数配置";//配置
-static char ANTO[]="关机-玫瑰v2.32";//关机
+static char ANTO[]="关机-loquat";//关机
 static char ANRT[]="重启手机";//重启
 static char ANLK[]="锁住键盘";//锁键
 static char TASK[]="任务菜单";//任务菜单
@@ -101,6 +101,12 @@ static char ALRM[]="酷酷闹钟";//闹钟界面
  extern const uint AT11;
  extern const uint AT12;
  extern const uint AT13;
+ /*
+ extern const uint AT14;
+ extern const uint AT15;
+ extern const uint AT16;
+ extern const uint AT17;
+ extern const uint AT18;*/
  //功能描述
  extern const char AN04[];
  extern const char AN05[];
@@ -112,6 +118,12 @@ static char ALRM[]="酷酷闹钟";//闹钟界面
  extern const char AN11[];
  extern const char AN12[];
  extern const char AN13[];
+ /*
+ extern const uint AN14[];
+ extern const uint AN15[];
+ extern const uint AN16[];
+ extern const uint AN17[];
+ extern const uint AN18[];*/
  //功能图标 
  extern const char AI04[]; 
  extern const char AI05[]; 
@@ -123,6 +135,12 @@ static char ALRM[]="酷酷闹钟";//闹钟界面
  extern const char AI11[];
  extern const char AI12[];
  extern const char AI13[];
+ /*
+ extern const uint AI14[];
+ extern const uint AI15[];
+ extern const uint AI16[];
+ extern const uint AI17[];
+ extern const uint AI18[];*/
  //功能调用
  extern const char AF04[];
  extern const char AF05[];
@@ -134,6 +152,12 @@ static char ALRM[]="酷酷闹钟";//闹钟界面
  extern const char AF11[];
  extern const char AF12[];
  extern const char AF13[];
+ /*
+ extern const uint AF14[];
+ extern const uint AF15[];
+ extern const uint AF16[];
+ extern const uint AF17[];
+ extern const uint AF18[];*/
 //定义节日参数
  extern const uint NBIR_ENA;
  extern const uint NBIR_T;

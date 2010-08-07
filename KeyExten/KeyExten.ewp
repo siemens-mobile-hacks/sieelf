@@ -616,7 +616,7 @@
         </option>
         <option>
           <name>XclFile</name>
-          <state>F:\SVN\KeyExten\test.xcl</state>
+          <state>$PROJ_DIR$\test.xcl</state>
         </option>
         <option>
           <name>XclFileSlave</name>

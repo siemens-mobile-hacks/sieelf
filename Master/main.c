@@ -313,7 +313,7 @@ void Killer(void)
 	mfree(ptc_buf);
 	fuckThemAll();
 	FreeWS(ews);
-	if(isRunScanerNeed) RunScaner();
+	//if(isRunScanerNeed) RunScaner();  //关闭了开启和关闭时的自动刷新
 	extern void *ELF_BEGIN;
 	extern void kill_data(void *p, void (*func_p)(void *));
 	kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
