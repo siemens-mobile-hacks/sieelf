@@ -480,6 +480,12 @@ ECDict/test.xcl -text
 ELFLoader_lg8/ELFLoader.dep -text
 ELFLoader_lg8/ELFLoader.ewd -text
 ELFLoader_lg8/ELFLoader.ewp -text
+ELFLoader_lg8/EP_addition/ep_frag_src/CX70sw56.xcl -text
+ELFLoader_lg8/EP_addition/ep_frag_src/S65sw58.xcl -text
+ELFLoader_lg8/EP_addition/ep_frag_src/SL65sw53.xcl -text
+ELFLoader_lg8/EP_addition/ep_frag_src/additional.c -text
+ELFLoader_lg8/EP_addition/ep_frag_src/repfunc.asm -text
+ELFLoader_lg8/EP_addition/readme.txt -text
 ELFLoader_lg8/ESI.asm -text
 ELFLoader_lg8/EXT2.asm -text
 ELFLoader_lg8/ElfLoader.eww -text
@@ -525,6 +531,7 @@ ELFLoader_lg8/additional.c -text
 ELFLoader_lg8/conf_loader.c -text
 ELFLoader_lg8/conf_loader.h -text
 ELFLoader_lg8/config_data.c -text
+ELFLoader_lg8/drawhook/Other/CX75v25/Obj/drawhook.pbd -text
 ELFLoader_lg8/drawhook/VKP/alpha_sl65v53/dh_sl65v53.vkp -text
 ELFLoader_lg8/drawhook/VKP/alpha_sl65v53/ep23_24bit_sl65v53.vkp -text
 ELFLoader_lg8/drawhook/VKP/drawhook_CX6Cv50.vkp -text
@@ -565,6 +572,9 @@ ELFLoader_lg8/drawhook/settings/drawhook.dni -text
 ELFLoader_lg8/drawhook/settings/drawhook.wsdt -text
 ELFLoader_lg8/elfloader.cpp -text
 ELFLoader_lg8/png.c -text
+ELFLoader_lg8/settings/ELFLoader.cspy.bat -text
+ELFLoader_lg8/settings/ELFLoader.dbgdt -text
+ELFLoader_lg8/settings/ELFLoader.dni -text
 ELFLoader_lg8/vkp/C6Cv53/ELFLoader_C6Cv53_ANSI_Standard.vkp -text
 ELFLoader_lg8/vkp/C6Cv53/swilib.vkp -text
 ELFLoader_lg8/vkp/C7Cv22/ELFLoader_C7Cv22_ANSI_Standard.vkp -text
