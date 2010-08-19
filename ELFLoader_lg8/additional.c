@@ -5,7 +5,7 @@ extern TREGEXPLEXT *EXT2_REALLOC(void);
 extern TREGEXPLEXT *EXT2_AREA;
 extern int EXT2_CNT;
 
-// В этот файл включены некоторые функции которых нет в прошивке для SGOLD
+// This file includes some features not found in the firmware for SGOLD
 
 // ========================================== Reg Files =============================================
 __arm void RegFile(WSHDR*ext,int unical_id,int menu_flag,unsigned int* icon1,int obex_path_id,int enabled_options,void *proc1,void *proc2,unsigned int *icon2)
@@ -266,6 +266,116 @@ unsigned int fwrite32(int fh, void *buf, int len, unsigned int *err)
 
 
 
+// ========================================= DrawImg ===========================================
+
+extern unsigned int ALPHA_CHAN_8;
+extern unsigned int ALPHA_CHAN_16;
+
+typedef struct {
+unsigned char r;
+unsigned char g;
+unsigned char b;
+unsigned char a;
+}PIXRGBA;
+
+PIXRGBA pix332_2_pixrgba(unsigned char col) //Convert 8 bit Peacely (332) in 32-bit 
+{
+   PIXRGBA c;
+   c.r = (col&0xE0);
+   c.g = (col&0x1C)<<3;
+   c.b = (col&0x02)<<6;
+   if (col == 0xC0) c.a = 0; else c.a = 0x64;
+   return c;
+}
+
+PIXRGBA pix565_2_pixrgba(unsigned short col) //Convert 16 bit Peacely (565) in 32-bit 
+{
+   PIXRGBA c;
+   c.r = (col&0xF800)>>8;
+   c.g = (col&0x7E0)>>3;
+   c.b = (col&0x1F)<<3;
+   if (col == 0xE000) c.a = 0; else c.a = 0x64;
+   return c;
+}
+
+__arm void DrawIMGHDR(IMGHDR *img, unsigned int x, unsigned int y, char *pen, char *brush)
+{
+
+ int bp = 0;
+ if (img->bpnum == 0x05 && ALPHA_CHAN_8  != 0x64) bp = 1;
+ if (img->bpnum == 0x08 && ALPHA_CHAN_16 != 0x64) bp = 2;
+ if (img->bpnum == 0x0A) bp = 4;
+ 
+ if (bp == 1 || bp == 2 || bp == 4)
+ {
+
+ for (int h=0;h<img->h;h++) 
+  {
+   for (int w=0;w<img->w*bp;w+=bp) 
+    {
+      char color[4];
+     
+      if (img->bpnum == 0x05) //8bit
+      {
+       PIXRGBA c;
+       unsigned char pix = img->bitmap[w + img->w*bp*h];
+                    
+       c = pix332_2_pixrgba(pix);
+
+       color[0]=c.r;        
+       color[1]=c.g;
+       color[2]=c.b;
+       if (c.a) color[3]=ALPHA_CHAN_8; else color[3]=0;
+      
+       SetPixel(x + w/bp, y + h, color);
+      }
+     
+     if (img->bpnum == 0x08) //16bit
+      {
+       PIXRGBA c;
+       unsigned short pix = *(unsigned short *)((char *)img->bitmap + w + img->w*bp*h);
+                    
+       c = pix565_2_pixrgba(pix);
+
+       color[0]=c.r;        
+       color[1]=c.g;
+       color[2]=c.b;
+       if (c.a) color[3]=ALPHA_CHAN_16; else color[3]=0;
+      
+       SetPixel(x + w/bp, y + h, color);
+      }
+     
+     if (img->bpnum == 0x0A) //32bit
+      { 
+       color[0]=img->bitmap[w + img->w*bp*h + 2];
+       color[1]=img->bitmap[w + img->w*bp*h + 1];
+       color[2]=img->bitmap[w + img->w*bp*h + 0];                          
+       color[3]=0x64*img->bitmap[w + img->w*bp*h + 3]/0xFF;      
+       SetPixel(x + w/bp, y + h, color);
+      }
+   }
+ }
+} else
+   {
+    RECT rc;
+    DRWOBJ drwobj;
+    StoreXYWHtoRECT(&rc,x,y,img->w,img->h);
+    SetPropTo_Obj5(&drwobj,&rc,0,img);
+    SetColor(&drwobj,pen,brush);
+    DrawObject(&drwobj);
+   }
+}
+
+
+__arm void DrawImgBW_new(unsigned int x, unsigned int y, unsigned int picture, char *pen, char *brush)
+{
+  IMGHDR *img = GetPITaddr(picture);
+  DrawIMGHDR(img, x, y, pen, brush);
+}
+
+
+
+
 #pragma diag_suppress=Pe177
 __root static const int SWILIB_FUNC00B @ "SWILIB_FUNC00B" = (int)fread32;
 __root static const int SWILIB_FUNC00C @ "SWILIB_FUNC00C" = (int)fwrite32;
@@ -273,8 +383,11 @@ __root static const int SWILIB_FUNC095 @ "SWILIB_FUNC095" = (int)UnregExplExt_im
 __root static const int SWILIB_FUNC12B @ "SWILIB_FUNC12B_12D" = (int)AddKeybMsgHook_impl;
 __root static const int SWILIB_FUNC12C @ "SWILIB_FUNC12B_12D" = (int)AddKeybMsgHook_end_impl;
 __root static const int SWILIB_FUNC12D @ "SWILIB_FUNC12B_12D" = (int)RemoveKeybMsgHook_impl;
+
+//__root static const int SWILIB_DRAWIMGHDR @ "SWILIB_DRAWIMGHDR" = (int)DrawIMGHDR;
+
 #pragma diag_default=Pe177
 
 
-
 #endif
+
