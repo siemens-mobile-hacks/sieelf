@@ -691,8 +691,8 @@
 0A6C: 0xA029C729   ; 29B:  __arm int GetTypeOfHeadset()
 0A70: 0xA0000006   ; 29C:  __arm char *RamInputLanguage()
 0A74: 0xA8D3557C   ; 29D:  __arm char *RamDisplayLanguage()
-;A78:                            ; 29E: ;__unknown char *RamIsMuted
-;A7C:                           ; 29F: ;__unknown char *RamGetImei
+;A78:              ; 29E: ;__unknown char *RamIsMuted
+;A7C:              ; 29F: ;__unknown char *RamGetImei
 
 ;0A80: 0x   ; 2A0:  
 ;0A84: 0x   ; 2A1:  
@@ -757,22 +757,24 @@
 0B64: 0xA09AEBBF   ; 2D9:  __thumb void TViewSetUserPointer(void *gui,void *user_pointer)
 0B68: 0xA09AEBC5   ; 2DA:  __thumb void *TViewGetUserPointer(void *gui)
 0B6C: 0xA03B3505   ; 2DB:  __thumb void SendMedia(WSHDR *file, WSHDR *path)
-0B70: 0xA0960A79    ; 2DC:  __thumb void SaveMaxIllumination(int level)
+0B70: 0xA0960A79   ; 2DC:  __thumb void SaveMaxIllumination(int level)
 0B74: 0xA0960A8D   ; 2DD:  __thumb void SetIlluminationoffTimeout(int time_sec)
 0B78: 0xA0960AF5   ; 2DE:  __thumb void IllumTimeRequest(int TimeMode, int Counter);
 0B7C: 0xA0960B33   ; 2DF:  __thumb void IllumTimeRelease(int TimeMode, int Counter);
 0B80: 0xA0A38D57   ; 2E0:  __thumb IMGHDR *GetIMGHDRFromThemeCache(int index);
-0B84: 0xA05202F9    ; 2E1:  __thumb int GetExtUidByFileName_ws(WSHDR * fn);
-0B88: 0xA01F749B    ; 2E2:  __thumb int wstrcmp(WSHDR*ws1,WSHDR*ws2);
+0B84: 0xA05202F9   ; 2E1:  __thumb int GetExtUidByFileName_ws(WSHDR * fn);
+0B88: 0xA01F749B   ; 2E2:  __thumb int wstrcmp(WSHDR*ws1,WSHDR*ws2);
 0B8C: 0xA02A6EF1   ; 2E3:  __thumb  int fexists(WSHDR* FileName);
 0B90: 0xA028AD9B   ; 2E4:  __thumb int SettingsAE_Update_ws(WSHDR *,int proc,char * entry,char *keyword);
 0B94: 0xA028AD59   ; 2E5: __thumb  int SettingsAE_Read_ws(WSHDR *,int set,char * entry,char *keyword);
 0B98: 0xA028ACF3   ; 2E6: __thumb int SettingsAE_SetFlag(int val,int set,char * entry,char *keyword);
-0B9C: 0xA028ACBD ; 2E7: __thumb int SettingsAE_GetFlag(int *res,int set,char * entry,char *keyword);
-0BA0: 0xA028AD39  ; 2E8: __thumb int SettingsAE_Update(int val,int set,char * entry,char *keyword);
-0BA4: 0xA028AD05  ; 2E9: __thumb int SettingsAE_Read(int *res,int set,char * entry,char *keyword);
-0BA8: 0xA02D7431  ; 2EA: __thumb void* SettingsAE_GetEntryList(int set);
-0BAC: 0xA02D7537 ; 2EB: __thumb void* SettingsAE_GetEntryList(int set);
+0B9C: 0xA028ACBD   ; 2E7: __thumb int SettingsAE_GetFlag(int *res,int set,char * entry,char *keyword);
+0BA0: 0xA028AD39   ; 2E8: __thumb int SettingsAE_Update(int val,int set,char * entry,char *keyword);
+0BA4: 0xA028AD05   ; 2E9: __thumb int SettingsAE_Read(int *res,int set,char * entry,char *keyword);
+0BA8: 0xA02D7431   ; 2EA: __thumb void* SettingsAE_GetEntryList(int set);
+0BAC: 0xA02D7537   ; 2EB: __thumb void* SettingsAE_GetEntryList(int set);
+0BB0: 0xA01F1A9C   ; 2EC: __arm int i2c_transfer(I2C_MSG *msg);
+0BB4: 0xA01F1AF0   ; 2ED: __arm int i2c_receive(I2C_MSG *msg);
 #pragma disable old_equal_ff
 +0
 
