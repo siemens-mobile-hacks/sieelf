@@ -720,6 +720,7 @@ ECDict/menu.h -text
 ECDict/rect_patcher.h -text
 ECDict/test.xcl -text
 ELFLoader_lg8/CX70sw56.xcl -text
+ELFLoader_lg8/CepID_sl65v53.log -text
 ELFLoader_lg8/ELFLoader.dep -text
 ELFLoader_lg8/ELFLoader.ewd -text
 ELFLoader_lg8/ELFLoader.ewp -text

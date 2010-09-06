@@ -177,7 +177,7 @@ __arm IMGHDR* create_imghdr(const char *fname, int type)
         pp.img_h->bpnum=8;
         break;
       }
-#if NEWSGOLD || X75
+//#if NEWSGOLD || X75
     case PNG_24:
       {
         unsigned char *iimg=(unsigned char *)(pp.img=malloc((width*height)<<2));
@@ -200,7 +200,7 @@ __arm IMGHDR* create_imghdr(const char *fname, int type)
         pp.img_h->bpnum=0xA;
         break;
       }
-#endif
+//#endif
     }
   }
   pp.img_h->w=width;
