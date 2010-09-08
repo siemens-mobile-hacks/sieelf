@@ -3,9 +3,15 @@
 
 extern const int on_off;
 extern const int keypad_lock;
+extern const int music_cut;
 extern const TTime TimeFrom;
 extern const TTime TimeTo;
-extern const unsigned int begin_minute;
+extern const TTime TimeExFrom;
+extern const TTime TimeExTo;
+extern const unsigned int ExProfile;
+extern const unsigned int begin_minute1;
+extern const unsigned int begin_minute2;
+extern const unsigned int begin_minute3;
 extern const unsigned int volume;
 extern const int show_icon;
 extern const unsigned int cfgX;

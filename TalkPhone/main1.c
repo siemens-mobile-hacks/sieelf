@@ -8,9 +8,6 @@
 //int (*old_icsm_onMessage)(CSM_RAM*,GBS_MSG*);
 //void (*old_icsm_onClose)(CSM_RAM*);
 
-#pragma swi_number=0x7F
-__swi __arm int IsPlayerOn(void);
-
 extern void kill_data(void *p, void (*func_p)(void *));
 
 const int minus11=-11;
@@ -36,7 +33,7 @@ void Check();
 
 GBSTMR UPDATE_TMR;
 
-//=============================Проигрывание звук?==============================
+//=============================Проигрывание звука===============================
 int PLAY_ID;
 unsigned int NEXT_PLAY_FUNK=0;
 /*
@@ -87,7 +84,7 @@ void Play(const char *fpath, const char *fname)
 
 //============================================================================== 
 
-//++++++++++++++++++++++++++++++Проговаривание времен?++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++Проговаривание времени+++++++++++++++++++++++++++++++++
 
 //-----------------------------------------------------------
 GBSTMR tmr_vibra;
@@ -266,7 +263,9 @@ int IsMediaActive(void)
 
 void SayTime(int param)
 {
-  //param==0 Курант?  //param==1 Вс?  start_vibra();
+  //param==0 Куранты
+  //param==1 Всё
+  start_vibra();
   vibra_count1=vibra_count;
   
   if (!IsMediaActive())   
@@ -287,119 +286,26 @@ void SayTime(int param)
         }
 }
 
-/*
-old version:
-void Check(void)
-{
-  GetDateTime(&date,&CurTime);
-  const int TimeCount=CurTime.hour*60+CurTime.min;
-  
-   if ((on_off==1)&&
-       (!(((strlen(RamMediaIsPlaying())!=0))&&(music_cut==1)))&&
-           ((GetProfile()+1)!=ExProfile)&&
-            (TimeCount<=(TimeTo.hour*60+TimeTo.min))&&
-             (TimeCount>=(TimeFrom.hour*60+TimeFrom.min))&&
-              ((TimeCount<=(TimeExFrom.hour*60+TimeExFrom.min))||(TimeCount>=(TimeExTo.hour*60+TimeExTo.min)))&&
-               ((CurTime.min==begin_minute1)||(CurTime.min==begin_minute2)||(CurTime.min==begin_minute3))&&(!IsCalling()) )
-    {
-      if (keypad_lock==1)     //&&(!IsUnlocked())) // Только пр?заблокир.
-        {
-          SUBPROC((void*)SayTime, PLAY_PARAM);
-        }
-      else
-      {
-        if (IsUnlocked()!=1)
-          {
-            SUBPROC((void*)SayTime, PLAY_PARAM);
-          }
-      }
-      
-      GBS_StartTimerProc(&UPDATE_TMR,262*60,Check);
-    }
-      else
-        {
-          tmp=CurTime.min+1;
-          if (tmp==60) tmp=0;
-          if (tmp==0)
-            {
-             GBS_StartTimerProc(&UPDATE_TMR,216*1,Check);
-            }    
-              else
-                {
-                   GBS_StartTimerProc(&UPDATE_TMR,216*30,Check);
-                }   
-        }  
-  
-
-} //end Check
-*/
-
-
-//++++++++++++++++++++++++++++++/*Проговаривание времен?/+++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++/*Проговаривание времени*/+++++++++++++++++++++++++++++++++
 
 void Check(void)
 {
   GetDateTime(&date,&CurTime);
-  const int TimeCount=CurTime.hour*60+CurTime.min;
   
-  #ifdef SGOLD
    if ((on_off==1)&&
-          //(!((IsPlayerOn())&&(music_cut==1)))&&
-           ((GetProfile()+1)!=ExProfile)&&
-            (TimeCount<=(TimeTo.hour*60+TimeTo.min))&&
-             (TimeCount>=(TimeFrom.hour*60+TimeFrom.min))&&
-              ((TimeCount<=(TimeExFrom.hour*60+TimeExFrom.min))||(TimeCount>=(TimeExTo.hour*60+TimeExTo.min)))&&
-               ((CurTime.min==begin_minute1)||(CurTime.min==begin_minute2)||(CurTime.min==begin_minute3))&&(!IsCalling()) )
+       ((CurTime.hour*60+CurTime.min)<=(TimeTo.hour*60+TimeTo.min))&&
+         ((CurTime.hour*60+CurTime.min)>=(TimeFrom.hour*60+TimeFrom.min))&&
+           (CurTime.min==begin_minute)&&(!IsCalling())) 
     {
-      if (keypad_lock==1)     //&&(!IsUnlocked())) // Только пр?заблокир.
+      if ((keypad_lock==1)&&(!IsUnlocked())) // Только при заблокир.
         {
           SUBPROC((void*)SayTime, PLAY_PARAM);
         }
-      else
-      {
-        if (IsUnlocked()!=1)
-          {
-            SUBPROC((void*)SayTime, PLAY_PARAM);
-          }
-      }
       
-      GBS_StartTimerProc(&UPDATE_TMR,262*60,Check);
-    }
-   
-      else
-        {
-          tmp=CurTime.min+1;
-          if (tmp==60) tmp=0;
-          if (tmp==0)
-            {
-             GBS_StartTimerProc(&UPDATE_TMR,216*1,Check);
-            }    
-              else
-                {
-                   GBS_StartTimerProc(&UPDATE_TMR,216*30,Check);
-                }   
-        }  
-  #else
-   #ifdef X75
-    if ((on_off==1)&&
-       (!(((strlen(RamMediaIsPlaying())!=0))&&(music_cut==1)))&&
-           ((GetProfile()+1)!=ExProfile)&&
-            (TimeCount<=(TimeTo.hour*60+TimeTo.min))&&
-             (TimeCount>=(TimeFrom.hour*60+TimeFrom.min))&&
-              ((TimeCount<=(TimeExFrom.hour*60+TimeExFrom.min))||(TimeCount>=(TimeExTo.hour*60+TimeExTo.min)))&&
-               ((CurTime.min==begin_minute1)||(CurTime.min==begin_minute2)||(CurTime.min==begin_minute3))&&(!IsCalling()) )
-    {
-      if (keypad_lock==1)     //&&(!IsUnlocked())) // Только пр?заблокир.
+      if (keypad_lock!=1) // Не имеет значения
         {
           SUBPROC((void*)SayTime, PLAY_PARAM);
         }
-      else
-      {
-        if (IsUnlocked()!=1)
-          {
-            SUBPROC((void*)SayTime, PLAY_PARAM);
-          }
-      }
       
       GBS_StartTimerProc(&UPDATE_TMR,262*60,Check);
     }
@@ -416,46 +322,7 @@ void Check(void)
                    GBS_StartTimerProc(&UPDATE_TMR,216*30,Check);
                 }   
         }  
-   
-   #else
-   if ((on_off==1)&&
-          (!((IsPlayerOn())&&(music_cut==1)))&&
-           ((GetProfile()+1)!=ExProfile)&& 
-            (TimeCount<=(TimeTo.hour*60+TimeTo.min))&&
-             (TimeCount>=(TimeFrom.hour*60+TimeFrom.min))&&
-              ((TimeCount<=(TimeExFrom.hour*60+TimeExFrom.min))||(TimeCount>=(TimeExTo.hour*60+TimeExTo.min)))&&
-               ((CurTime.min==begin_minute1)||(CurTime.min==begin_minute2)||(CurTime.min==begin_minute3))&&(!IsCalling()) )
-    {
-      if (keypad_lock==1)     //&&(!IsUnlocked())) // Только пр?заблокир.
-        {
-          SUBPROC((void*)SayTime, PLAY_PARAM);
-        }
-      else
-      {
-        if (IsUnlocked()!=1)
-          {
-            SUBPROC((void*)SayTime, PLAY_PARAM);
-          }
-      }
-      
-      GBS_StartTimerProc(&UPDATE_TMR,262*60,Check);
-    }
-   
-      else
-        {
-          tmp=CurTime.min+1;
-          if (tmp==60) tmp=0;
-          if (tmp==0)
-            {
-             GBS_StartTimerProc(&UPDATE_TMR,216*1,Check);
-            }    
-              else
-                {
-                   GBS_StartTimerProc(&UPDATE_TMR,216*30,Check);
-                }   
-        }  
-   #endif
-#endif
+  
 
 } //end Check
 
@@ -533,10 +400,10 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
   
   if ((icsm=FindCSMbyID(CSM_root()->idle_id)))
   {
-    if ((IsGuiOnTop(idlegui_id))&&(show_icon)) //Если IdleGui на само?верх?    
+    if ((IsGuiOnTop(idlegui_id))&&(show_icon)) //Если IdleGui на самом верху
     {
       GUI *igui=GetTopGUI();
-      if (igui) //?он существует
+      if (igui) //И он существует
       {
 #ifdef ELKA
 
@@ -583,34 +450,12 @@ int my_keyhook(int submsg, int msg)
       }
         else
         {
-          if (((submsg>='0')&&(submsg<='9')&&(!IsUnlocked())))
-           {  
-            
+          if ((submsg>='0')&&(submsg<='9')&&(!IsUnlocked()))
+            {  
               GetDateTime(&date,&CurTime);
               SayTime(PLAY_PARAM_BTN_CALL);
-              
-              //char s[40];
-              //sprintf(s,RamMediaIsPlaying());
-              
-              //if (strlen(RamMediaIsPlaying())==0)        
-                  //ShowMSG(1, (int)"PLAYER OFF");
-              //else
-                  //ShowMSG(1, (int)"PLAYER ON");                  
-            } 
-          
-           /*
-          else 
-          {
-           
-              if (submsg=='0')
-              if (IsPlayerOn()==0)        
-                  ShowMSG(1, (int)"PLAYER is OFF");
-              else
-                  ShowMSG(1, (int)"PLAYER is ON"); 
-             
-          }
-          */
-       }
+            }          
+        }
     }
   
   return 0;

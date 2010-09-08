@@ -3499,6 +3499,7 @@ TalkKbd/config_data.c -text
 TalkKbd/func.asm -text
 TalkKbd/main.c -text
 TalkKbd/test.xcl -text
+TalkPhone/TalkPhone.dep -text
 TalkPhone/TalkPhone.ewp -text
 TalkPhone/TalkPhone.eww -text
 TalkPhone/TalkPhone.h -text
@@ -3507,6 +3508,7 @@ TalkPhone/conf_loader.h -text
 TalkPhone/config_data.c -text
 TalkPhone/func.asm -text
 TalkPhone/main.c -text
+TalkPhone/main1.c -text
 TalkPhone/test.xcl -text
 TalkPhoneND/TalkPhone.h -text
 TalkPhoneND/TalkPhoneND.ewp -text
