@@ -509,14 +509,11 @@ CodeShowPatch/CX7Cv50.xcl -text
 CodeShowPatch/CodeShow.C -text
 CodeShowPatch/CodeShowPatch.ewp -text
 CodeShowPatch/CodeShowPatch.eww -text
-CodeShowPatch/DataBase.vkp -text
 CodeShowPatch/E71Cv41.xcl -text
 CodeShowPatch/EDial.c -text
 CodeShowPatch/ELC1v41.xcl -text
 CodeShowPatch/M6Cv50.xcl -text
 CodeShowPatch/M81Cv51.xcl -text
-CodeShowPatch/NSG-ELKA部分反汇编记录/E71Cv41.txt -text
-CodeShowPatch/NSG-ELKA部分反汇编记录/S7Cv47.txt -text
 CodeShowPatch/S68Cv51.xcl -text
 CodeShowPatch/S6Cv53.xcl -text
 CodeShowPatch/S7Cv47.xcl -text
@@ -547,7 +544,6 @@ CodeShowPatch/vkp/NSG/SL7Cv47/SL7C_codeshow2.1.1.vkp -text
 CodeShowPatch/vkp/NSG/SL7Cv47/codeshow2.1.1_MainProgram.vkp -text
 CodeShowPatch/vkp/NSG/SL7Cv47/readme.txt -text
 CodeShowPatch/vkp/NSG/SL7Cv47/符号替换.vkp -text
-CodeShowPatch/vkp/NSG和ELKA通用数据库20100224.vkp -text
 CodeShowPatch/vkp/SG/CodeShowPatch_C6Cv53_v2fix.rar -text
 CodeShowPatch/vkp/SG/CodeShowPatch_C7Cv22_v2fix.rar -text
 CodeShowPatch/vkp/SG/CodeShowPatch_CX6Cv50_v2fix.rar -text
@@ -557,7 +553,6 @@ CodeShowPatch/vkp/SG/CodeShowPatch_M6Cv50_v2fix.rar -text
 CodeShowPatch/vkp/SG/CodeShowPatch_S6Cv53_v2fix.rar -text
 CodeShowPatch/vkp/SG/CodeShowPatch_SK6Cv50_v2.rar -text
 CodeShowPatch/vkp/SG/CodeShowPatch_SL6Cv50_v2fix.rar -text
-CodeShowPatch/vkp/SG/readme.txt -text svneol=unset#application/octet-stream
 DialExt/DialExt.ewp -text
 DialExt/DialExtDial.eww -text
 DialExt/conf_loader.c -text

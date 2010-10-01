@@ -3,6 +3,7 @@
 	EXTERN	AppendInfoW
 	EXTERN	UpdateLocaleToItem
 	EXTERN	AddNewLine	
+
 	EXTERN	GetProvAndCity
 	EXTERN	GetNumFromIncomingPDU
 	EXTERN	setMenuText
