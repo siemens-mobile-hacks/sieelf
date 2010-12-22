@@ -648,6 +648,9 @@
 
 0AC0: 0xA009E137   ; 2B0:  __thumb void SetMenuSoftKey(void *gui, const SOFTKEY_DESC *,int n)
 0AE8: 0xA00B7FB7   ; 2BA:  __thumb void SetHeaderIcon(void *hdr_pointer, const int *icon, void *malloc_adr, void *mfree_adr)
+
+0bc0: 0xa00d5A69 ; 2F0__swi __arm int PushDRWOBJOnLAYER(DRWOBJ*, LCDLAYER *);
+0bc4: 0xa00da367 ; 2F1__swi __arm int LCDRedrawLAYER(LCDLAYER *);
 #pragma disable old_equal_ff
 +0
 

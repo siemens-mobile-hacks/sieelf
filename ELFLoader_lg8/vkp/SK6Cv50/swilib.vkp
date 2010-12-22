@@ -743,6 +743,9 @@
 0B64: 0xA099BBC1 ; 2D9: void TViewSetUserPointer(void *gui,void *user_pointer);
 0B68: 0xA099BBC5 ; 2DA: void *TViewGetUserPointer(void *gui);
 0B6C: 0xA03A0454 ; 2DB: void MediaSendCSM_Open(WSHDR *file, WSHDR *path);
+
+0bc0: 0xa07EF1FD ; 2F0__swi __arm int PushDRWOBJOnLAYER(DRWOBJ*, LCDLAYER *);
+0bc4: 0xa07F3AFB ; 2F1__swi __arm int LCDRedrawLAYER(LCDLAYER *);
 #pragma disable old_equal_ff
 +0
 

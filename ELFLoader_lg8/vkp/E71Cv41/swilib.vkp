@@ -773,6 +773,9 @@
 0BA4: 0xA05C37D3  ; 2E9: __thumb int SettingsAE_Read(int *res,int set,char * entry,char *keyword);
 0BA8: 0xA0659EF1  ; 2EA: __thumb void* SettingsAE_GetEntryList(int set);
 0BAC: 0xA065A00D ; 2EB: __thumb void* SettingsAE_GetEntryList(int set);
+
+0bc0: 0xa096EE7F ; 2F0__swi __arm int PushDRWOBJOnLAYER(DRWOBJ*, LCDLAYER *);
+0bc4: 0xa0970B85 ; 2F1__swi __arm int LCDRedrawLAYER(LCDLAYER *);
 #pragma disable old_equal_ff
 +0       
 ;********************************************************************************

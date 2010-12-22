@@ -716,6 +716,9 @@
 0AE0: 0xA0565450   ; 2B8:  __arm int SetNumToNativeAbData(NativeAbData *abd, int unk, WSHDR *num)
 0AE4: 0xA0601C1C   ; 2B9:  __arm unsigned int OpenNativeAddressbook(int type, int unk1, int unk2, void *data)
 0AE8: 0xA0A3D133   ; 2BA:  __thumb void SetHeaderIcon(void *hdr_pointer, const int *icon, void *malloc_adr, void *mfree_adr)
+
+0bc0: 0xa09971AF ; 2F0__swi __arm int PushDRWOBJOnLAYER(DRWOBJ*, LCDLAYER *);
+0bc4: 0xa0998EAF ; 2F1__swi __arm int LCDRedrawLAYER(LCDLAYER *);
 #pragma disable old_equal_ff
 +0
 

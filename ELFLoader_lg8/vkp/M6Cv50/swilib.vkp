@@ -657,6 +657,9 @@
 0AE8: 0xA00B7BF7   ; 2BA:  __thumb void SetHeaderIcon(void *hdr_pointer, const int *icon, void *malloc_adr, void *mfree_adr)
 
 0B48: 0xA0AA7273   ; 2D2:  __thumb void StartNativeBrowserCore()
+
+0bc0: 0xa00d56A9 ; 2F0__swi __arm int PushDRWOBJOnLAYER(DRWOBJ*, LCDLAYER *);
+0bc4: 0xa00d9FA7 ; 2F1__swi __arm int LCDRedrawLAYER(LCDLAYER *);
 #pragma disable old_equal_ff
 +0
 ;********************************************************************************

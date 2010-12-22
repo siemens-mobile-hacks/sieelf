@@ -685,6 +685,9 @@
 ;B60:              ; 2D8:  __thumb void TViewSetText(void *gui, WSHDR *text, void *malloc_adr, void *mfree_adr)
 ;B64:              ; 2D9:  __thumb void TViewSetUserPointer(void *gui,void *user_pointer)
 ;B68:              ; 2DA:  __thumb void *TViewGetUserPointer(void *gui)
+
+0bc0: 0xa00D56A5 ; 2F0__swi __arm int PushDRWOBJOnLAYER(DRWOBJ*, LCDLAYER *);
+0bc4: 0xa00d9FA3 ; 2F1__swi __arm int LCDRedrawLAYER(LCDLAYER *);
 #pragma disable old_equal_ff
 +0
 
