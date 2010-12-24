@@ -305,6 +305,35 @@ typedef struct{
   char dummy[0x24];
 } DRWOBJ;
 
+//The overall structure DRWOBJ
+typedef struct{
+  char   id;
+  char   cbyte; 
+  char   zero;
+  int    pen; 
+  int    brush; 
+  RECT   rc;    
+  //Depends on ID:
+  void  *body; 
+#ifdef NEWSGOLD
+  int    param0;
+#else
+  short  param0;
+#endif
+  short  param1;
+  short  param2;
+}DRWOBJ_S;
+
+typedef struct{
+int w; // screen width
+int h; // screen height
+RECT unk_rc; // 
+RECT rc; //Global boundary drawing
+short *buf; //Address of the screen buffer
+int col; // Something with color screen 
+//Well, then ...
+}LCDLAYER;
+
 typedef struct{
   unsigned short *wsbody;
   void *(*ws_malloc)(int);
@@ -381,7 +410,7 @@ typedef struct
   char unk2;
   char unk3;
   char unk4;
-  int color1; //§±§Ñ§â§Ñ§Þ§Ö§ä§â GeneralFunc §á§Ú§ê§Ö§ä§ã§ñ §ã§ð§Õ§Ñ?????
+  int color1; //Parameter GeneralFunc written here ?????
   int color2;
   LLQ item_ll;
   int unk5;
@@ -390,7 +419,7 @@ typedef struct
   char unk8;
   char unk9;
   int unk10;
-  int flag30; //§ª§ã§á§à§Ý§î§Ù§å§Ö§ä? §á§â?§ã§à§Ù§Õ§Ñ§ß§Ú§Ú (§Ò§í§Ó§Ñ§Ö§ä |=0x02)
+  int flag30; //Used in the creation (sometimes | = 0x02)
 }GUI;
 #else
 typedef struct
@@ -402,7 +431,7 @@ typedef struct
   char unk2;
   char unk3;
   char unk4;
-  int color1; //§±§Ñ§â§Ñ§Þ§Ö§ä§â GeneralFunc §á§Ú§ê§Ö§ä§ã§ñ §ã§ð§Õ§Ñ?????
+  int color1; //Parameter GeneralFunc written here ?????
 //  int color2;
   LLQ item_ll;
   int unk5;
@@ -411,7 +440,7 @@ typedef struct
   char unk8;
   char unk9;
   int unk10;
-  int flag30; //§ª§ã§á§à§Ý§î§Ù§å§Ö§ä? §á§â?§ã§à§Ù§Õ§Ñ§ß§Ú§Ú (§Ò§í§Ó§Ñ§Ö§ä |=0x02)
+  int flag30; //Used in the creation (sometimes | = 0x02)
 }GUI;
 #endif
 
@@ -944,6 +973,26 @@ typedef struct
   void *data;
 #endif
 }AB_UNPRES_ITEM;
+
+typedef struct { 
+  char chip_addr; // 7-bit address of the chip (sm.datasheet)
+#ifdef NEWSGOLD
+  char unk1;
+  char unk2;
+  char unk3;
+  short nRegister; // Register No.
+#else 
+  char  unk1; 
+  short nRegister;// Register No.
+  char  unk2; 
+  char  tf; // §³§å§Õ§Ñ §Õ§à§á§Ú§ã§í§Ó§Ñ§Ö§ä§î§ã§ñ §á§à§ä§à§Þ §ã§Ñ§Þ§à§Û §æ-§Ö§Û §Ò§Ñ§Û§ä§Ú§Ü §Ü§Ñ§Ü §Ò§í ID §æ-§Ú§Ú 
+            // (1 - i2c_transfer, 2 - i2c_receive, 4 - i2c_unknown) 
+#endif
+  short cb_data; 
+  int (*callback)(void *i2c_msg);
+  void *data;
+  int size;   //data size
+}I2C_MSG;
 
 typedef struct{
 #ifdef NEWSGOLD
@@ -1485,6 +1534,8 @@ __swi __arm void DrawCanvas(void *data, int x1, int y1, int x2, int y2, int flag
 //thumb
 //pattern=??,B5,??,1C,??,1C,??,AB,??,98,??,9C,??,80,??,80,??,80,??,80,??,46,??,??,??,??,??,2D,??,D0,??,2C,??,D0,??,1C,??,46,??,47,??,BD
 
+#pragma swi_number=0x8299
+__swi __arm char *RamExtendedCameraState();
 
 #pragma swi_number=38
 __swi __arm void DrawImgBW(unsigned int x, unsigned int y, unsigned int picture, char *pen, char *brush);
@@ -1493,8 +1544,32 @@ __swi __arm void DrawImgBW(unsigned int x, unsigned int y, unsigned int picture,
 //thumb
 //pattern=??,B5,??,1C,??,1C,??,B0,??,21,??,43,??,91,??,9D,??,??,??,??,??,1C,??,28,??,??,??,D1,??,A0
 
+#pragma swi_number=0x27 
+__swi __arm void AddIconToIconBar(int pic, short *num);
+
+#pragma swi_number=0x028
+__swi __arm int getEELiteMaxID();
+
+//#pragma swi_number=0x029
+//__swi __arm int FinishWriteEELiteBlock(unsigned int iBlock, int *iReturn);
+
+#pragma swi_number=0x029
+__swi __arm int getEEFullMaxID();
+
+#pragma swi_number=0x02B
+__swi __arm int getEELiteBlockSizeVersion(unsigned int iBlock, int *iSize, char *iVersion);
+
+#pragma swi_number=0x02D
+__swi __arm int StartWriteEELiteBlock(unsigned int iBlock, unsigned int *iSize, unsigned int *iVersion, int *iReturn);
+
 #pragma swi_number=0x2C
 __swi __arm  int EEFullGetBlockInfo(unsigned int block,int *size,char *version); // res : 0 -OK; 2 - block not found
+
+#pragma swi_number=0x02F
+__swi __arm int DeleteEELiteBlock(unsigned int iBlock, int *iReturn) ;
+
+#pragma swi_number=0x030
+__swi __arm int WriteEELiteBlock(unsigned int iBlock, char *cData, unsigned int iBlockStartAddress, unsigned int iLength, int *iReturn);
 
 #pragma swi_number=50
 __swi __arm void PlaySound(long param1, long param2, long param3, long tone, long param5);
@@ -1687,6 +1762,9 @@ __swi __arm int ShowCallList(int list, int zero);
 __swi __arm int GetFileStats(const char *cFileName, FSTATS * StatBuffer, unsigned int *errornumber);
 //arm
 //pattern=7C,40,2D,E9,02,60,A0,E1,01,50,A0,E1,00,40,A0,E1,??,??,??,EB,00,30,E0,E3,04,30,8D,E5,00,60,8D,E5,50,C0,90,E5,00,00,A0,E3,05,30,A0,E1,00,20,A0,E3,04,10,A0,E1,3C,FF,2F,E1,7C,80,BD,E8
+
+#pragma swi_number=0x082
+__swi __arm char *GetCurrentTrackFilename();
 
 #pragma swi_number=0x0085
 __swi __arm int strcmpi(const char *s1, const char *s2);
@@ -1927,6 +2005,9 @@ __swi __arm void GBS_SendMessage(int cepid_to, int msg, ...); //int submess, voi
 //arm
 //pattern=??,??,??,E9,??,??,??,E5,??,??,??,E1,??,??,??,E1,??,??,??,E1,??,??,??,E1,??,??,??,??,??,??,??,E1,??,??,??,E5,??,??,??,E1,??,??,??,E1,??,??,??,E2,??,??,??,E1,??,??,??,E1,??,??,??,??,??,??,??,E8,??,??,??,E5,??,??,??,E2,??,??,??,??,??,??,??,E8
 
+#pragma swi_number=0x8299
+__swi __arm char *RamExtendedCameraState();
+
 #pragma swi_number=0x0101
 __swi __arm int GBS_ReciveMessage(GBS_MSG *);
 //arm
@@ -2047,8 +2128,8 @@ __swi	__arm	char * strstr (const char *s1,const char *s2);
 //pattern=??,B5,??,B4,??,1C,??,1C,??,27,??,9C,??,??,??,??,??,78,??,34,??,29,??,D0,??,68,??,5C,??,07,??,D4,??,29,??,D0,??,29,??,D1,??,??,??,02,??,43,??,E0,??,3C,??,1C,??,1C,??,1C,??,??,??,??,??,1C,??,2D,??,D0,??,68,??,42,??,D1,??,98,??,60,??,05,??,25,??,??,??,??,??,1C,??,2C,??,DA,??,42,??,28,??,DD,??,60,??,07,??,B0,??,BC,??,BC,??,47,??,1C,??,2E,??,DA,??,60,??,??,??,E7
 
 //DELETED!!! NOT REENTABLE!!!
-//#pragma swi_number=0x011A
-//__swi	__arm	int  strtoul (const char *nptr,char **endptr,int base);
+#pragma swi_number=0x011A
+__swi __arm unsigned long strtoul(const char *nptr,char **endptr,int base);
 //thumb
 //pattern=??,B5,??,B4,??,B0,??,1C,??,27,??,9C,??,??,??,??,??,1C,??,68,??,90,??,??,??,??,??,78,??,34,??,29,??,D0,??,68,??,5C,??,07,??,D4,??,29,??,D0,??,29,??,D1,??,??,??,02,??,43,??,E0,??,3C,??,21,??,60,??,1C,??,1C,??,9A,??,??,??,??,??,1C,??,2D,??,D0,??,68,??,42,??,D1,??,98,??,60,??,68,??,28,??,D1,??,1C,??,B0,??,BC,??,BC,??,47,??,9A,??,60,??,42,??,05,??,D4,??,1C,??,E7
 
@@ -3180,6 +3261,12 @@ __swi __arm void CloseCSM(int id);
 //thumb
 //pattern_SGOLD_X75=??,B5,??,1C,??,??,??,??,??,4E,??,4D,??,42,??,D1,??,69,??,E0,??,68,??,1C,??,??,??,??,??,??,??,??,??,42,??,D1,??,69,??,E0
 
+#pragma swi_number=0x1FF
+__swi __arm void MEDIA_PLAYLAST();
+
+#pragma swi_number=0x81FF
+__swi __arm int* MEDIA_PLAYLASTadr();
+
 #pragma swi_number=0x201
 __swi __arm void SetProp2ImageOrCanvas(DRWOBJ *, RECT *, int zero, IMGHDR *Image, int bleed_x, int bleed_y);
 //thumb
@@ -3263,6 +3350,9 @@ __swi __arm int ConstructEditTime(EDITCONTROL *EditControl,TTime *time);
 __swi __arm int ConstructEditDate(EDITCONTROL *EditControl,TDate *date);
 //thumb
 //pattern=??,B5,??,1C,??,1C,??,78,??,20,0A,29,??,D1,??,1C,??,??,??,??,??,90,??,1C,??,??,??,??,??,90,??,1C
+
+#pragma swi_number=0x210 
+__swi __arm int GetCurGuiID(void);
 
 #pragma swi_number=0x212
 __swi __arm int CardExplGetCurItem(void *csm);
@@ -3353,6 +3443,9 @@ __swi __arm void UnfocusGUI(void);
 //pattern_SGOLD=??,48,??,B5,??,68,_blf(??,B5,??,1C,??,68,??,68,??,28,??,D0,??,68,??,29,??,D0,??,68,??,2A,??,D0,??,21,??,47,??,6C,??,68,??,68,??,68,??,68,??,69,??,47,??,1C,??,??,??,??,??,1C,??,??,??,??,??,68,??,20,??,60,??,BD),,??,BD
 //thumb
 //pattern_SGOLD_X75=??,B5,??,??,??,??,??,49,??,4A,??,42,??,D1,??,68,??,E0,??,68,_blf(??,B5,??,1C,??,68,??,68,??,28,??,D0,??,68,??,29,??,D0,??,68,??,2A,??,D0,??,21,??,47,??,6C,??,68,??,68,??,68,??,68,??,69,??,47,??,1C,??,??,??,??,??,1C,??,??,??,??,??,68,??,20,??,60,??,BD),??,BD
+
+#pragma swi_number=0x223 
+__swi __arm int IsMediaPlayerInBackground(void);
 
 #pragma swi_number=0x225
 __swi __arm int PlayMelody_ChangeVolume(int handle,int volume);
@@ -3660,8 +3753,45 @@ __swi __arm int Obs_Sound_SetVolumeEx (HObj hObj, char vol, char delta);
 #pragma swi_number=0x26D
 __swi __arm int Obs_Sound_GetVolume (HObj hObj, char *vol);
 
+//#pragma swi_number=0x26E
+//__swi __arm int Obs_Sound_SetPurpose (HObj hObj,int purpose);
+
 #pragma swi_number=0x26E
-__swi __arm int Obs_Sound_SetPurpose (HObj hObj,int purpose);
+__swi __arm int Obs_Sound_SetAMRFrmPrBuf(HObj hobj, int nof_frames);
+
+#pragma swi_number=0x26F
+__swi __arm int Obs_Sound_SetAMRFormat(HObj hobj, int format);
+
+#pragma swi_number=0x270
+__swi __arm int Obs_Sound_SetAMRDTX(HObj hobj, int dtx);
+
+#pragma swi_number=0x271
+__swi __arm int Obs_Sound_SetNofChannels(HObj hobj, int num_channels);
+
+#pragma swi_number=0x272
+__swi __arm int Obs_Sound_SetAMRMode(HObj hobj, int data_rate);
+
+#pragma swi_number=0x273
+__swi __arm int Obs_Sound_SetFIsRecording(HObj hobj, int fIsRecording);
+
+#pragma swi_number=0x274
+__swi __arm int Obs_Sound_SetMaxFileSize(HObj hobj, int max_file_size);
+
+#pragma swi_number=0x275
+__swi __arm int Obs_Sound_SetRecordingMode(HObj hobj, int RecordingMode);
+
+#pragma swi_number=0x276
+#ifndef NEWSGOLD
+__swi __arm int Obs_SetOutput_File (HObj hObj, char *path);
+#else
+__swi __arm int Obs_SetOutput_File (HObj hObj, WSHDR *path);
+#endif
+
+#pragma swi_number=0x277
+__swi __arm int Obs_SetOutput_Uid(HObj hObj, int OutUID);
+
+#pragma swi_number=0x278
+__swi __arm int Obs_Sound_SetBitrate(HObj hobj, int bitRate);
 
 #pragma swi_number=0x283
 __swi __arm int runMidletLinkablely(const char *midlet_name, WSHDR *filename);
@@ -4018,4 +4148,252 @@ __swi __arm void *TViewGetUserPointer(void *gui);
 //thumb
 //pattern_NSG=80,30,C1,61,70,47,80,30,C0,69,70,47,+7
 //pattern_ELKA=80,30,41,62,70,47,80,30,40,6A,70,47,+7
+
+#pragma swi_number=0x2DB 
+__swi __arm void MediaSendCSM_Open(WSHDR*path, WSHDR *file);
+
+//#pragma swi_number=0x2DC
+//__swi __arm void SaveMaxIllumination(int level);
+
+//#pragma swi_number=0x2DD
+//__swi __arm void SetIlluminationoffTimeout(int time_sec);
+
+//#pragma swi_number=0x2DE
+//__swi __arm void IllumTimeRequest(int TimeMode, int Counter);
+
+//#pragma swi_number=0x2DF
+//__swi __arm void IllumTimeRelease(int TimeMode, int Counter);
+
+//#pragma swi_number=0x2E1
+//__swi __arm void PlayLast();
+
+//#pragma swi_number=0x2E1
+//__swi __arm void * RamScreen();
+
+//#pragma swi_number=0x2E2
+//__swi __arm void PlayBack();
+
+#pragma swi_number=0x2E0
+//__swi __arm IMGHDR *GetIMGHDRFromThemeCache(int index);
+/*
+  HEADLINE_STANDART        0x0
+  HEADLINE_FULLSCREEN      0x1
+  BODY_STANDART            0x2
+  BODY_TAB                 0x3
+  BOTTOM_STANDART          0x4
+  BOTTOM_FULLSCREEN        0x5
+  POPUP_OPTIONS            0x6
+  POPUP_FEEDBACK           0x7
+  SELECTION_1_LINE         0x8
+  SELECTION_2_LINE         0x9
+  SELECTION_3_LINE         0xA
+  SELECTION_ICON_ONLY      0xB
+  POPUP_SEARCH_LINE        0xC 
+  POPUP_QUICK_ACCESS_FIELD 0xD
+  PROGRESS_STATUSBAR       0xE
+  TAB_SELECTED             0xF
+  TAB_UNSELECTED           0x10
+  STATUSBAR_STANDART       0x11
+  STATUSBAR_FULLSCREEN     0x12
+*/
+
+#pragma swi_number=0x2E1
+__swi __arm int GetExtUidByFileName_ws(WSHDR * fn);
+//arm
+//pattern_ELKA=??,??,??,E9,??,??,??,E3,??,??,??,E1,??,??,??,0A,??,??,??,E1,??,??,??,FB,??,??,??,E3,??,??,??,0A,??,??,??,E1,??,??,??,FB,??,??,??,E1,??,??,??,E1,??,??,??,E3
+//thumb
+//pattern_NSG=09,B0,F0,BD,F8,B5,04,1C,00,20,+5
+
+#pragma swi_number=0x2E2
+//__swi __arm int wstrcmp(WSHDR*ws1,WSHDR*ws2);
+
+#pragma swi_number=0x2E3
+//__swi __arm int fexists(WSHDR* FileName);
+
+#pragma swi_number=0x2E4
+//__swi __arm int SettingsAE_Update_ws(WSHDR *,int proc,char * entry,char *keyword);
+
+#pragma swi_number=0x2E5
+//__swi __arm int SettingsAE_Read_ws(WSHDR *,int set,char * entry,char *keyword);
+
+#pragma swi_number=0x2E6
+//__swi __arm int SettingsAE_SetFlag(int val,int set,char * entry,char *keyword);
+
+#pragma swi_number=0x2E7
+//__swi __arm int SettingsAE_GetFlag(int *res,int set,char * entry,char *keyword);
+
+#pragma swi_number=0x2E8
+//__swi __arm int SettingsAE_Update(int val,int set,char * entry,char *keyword);
+
+#pragma swi_number=0x2E9
+//__swi __arm int SettingsAE_Read(int *res,int set,char * entry,char *keyword);
+
+#pragma swi_number=0x2EA
+//__swi __arm void* SettingsAE_GetEntryList(int set);
+
+#pragma swi_number=0x2EB
+//__swi __arm void* SettingsAE_GetEntryList(int set);
+
+/*
+example, to install shortcuts to the key: 
+
+enum settings {FAK, MyMenu, VibraLight, UserProfiles, Setup, Developer_Menu, 
+Apidc_Setup, MediaPlayer, Sound_Recorder, FRDB, Avatar, Radio, 1OrangeHome}; 
+
+  WSHDR * ws = AllocWS (80); 
+  char * shortcut = "GPRS"; 
+  wprintf (ws, "NAT_% s", shortcut); 
+  SettingsAE_Update (ws, FAK, "FAK_KEY_LSK_SHORT", "APP_ID"); 
+  FreeWS (ws); 
+
+list of available shortcuts: 
+
+FAK_KEY_0 
+FAK_KEY_1 
+FAK_KEY_2 
+FAK_KEY_3 
+FAK_KEY_4 
+FAK_KEY_5 
+FAK_KEY_6 
+FAK_KEY_7 
+FAK_KEY_8 
+FAK_KEY_9 
+FAK_KEY_STAR 
+FAK_KEY_HASH 
+FAK_KEY_LSK_SHORT 
+FAK_KEY_LSK_LONG 
+FAK_KEY_RSK_SHORT 
+FAK_KEY_RSK_LONG 
+FAK_KEY_NAVIUP_SHORT 
+FAK_KEY_NAVIUP_LONG 
+FAK_KEY_NAVIDOWN_SHORT 
+FAK_KEY_NAVIDOWN_LONG 
+FAK_KEY_NAVILEFT_SHORT 
+FAK_KEY_NAVILEFT_LONG 
+FAK_KEY_NAVIRIGHT_SHORT 
+FAK_KEY_NAVIRIGHT_LONG 
+FAK_KEY_CENTERKEY_SHORT 
+FAK_KEY_CENTERKEY_LONG 
+FAK_KEY_SIDEKEY1_SHORT 
+FAK_KEY_SIDEKEY1_LONG 
+FAK_KEY_SIDEKEY2_SHORT 
+FAK_KEY_SIDEKEY2_LONG 
+FAK_KEY_SIDEKEY3_SHORT 
+FAK_KEY_SIDEKEY3_LONG 
+FAK_KEY_SIDEKEY4_SHORT 
+FAK_KEY_SIDEKEY4_LONG 
+FAK_KEY_RIGHTJOKER_SHORT 
+FAK_KEY_RIGHTJOKER_LONG 
+FAK_KEY_LEFTJOKER_SHORT 
+FAK_KEY_LEFTJOKER_LONG 
+FAK_KEY_CARKIT_1 
+FAK_KEY_CARKIT_2 
+FAK_KEY_CARKIT_3 
+FAK_KEY_DIRECTCALL 
+FAK_KEY_OPENDEVICE
+*/
+
+#pragma swi_number=0x2EC
+__swi __arm int i2c_transfer(I2C_MSG *msg);
+
+#pragma swi_number=0x2ED
+__swi __arm int i2c_receive(I2C_MSG *msg);
+
+#pragma swi_number=0x2EE
+__swi __arm unsigned int GetMemUsedByCepID(short cepid);
+//Return values used memory process cepid
+//SGOLD = 10,40,2D,E9,00,40,A0,E3,00,20,A0,E1,??,??,??,??,04,10,90,E5,FF,30,A0,E3,60,C8,41,E2,97,CA,4C,E2
+
+#pragma swi_number=0x2EF
+__swi __arm unsigned int GetFreePermMemory();
+//Return the value of free memory Permanent Memory
+//SGOLD = ??,??,??,E5,??,??,??,E2,??,??,??,E2,??,??,??,E2,??,??,??,E2,??,??,??,E2,??,??,??,E9,??,??,??,E2,??,??,??,E5,??,??,??,E5,??,??,??,E2,??,??,??,E2,??,??,??,E2,??,??,??,E5,??,??,??,EB,??,??,??,E3,??,??,??,0A,??,??,??,E3,??,??,??,E2,??,??,??,EB,??,??,??,EF,??,??,??,E3,??,??,??,E5,??,??,??,E5,??,??,??,EB,??,??,??,E5,??,??,??,E2,??,??,??,E4,??,??,??,50
+
+#pragma swi_number=0x2F0
+__swi __arm int PushDRWOBJOnLAYER(DRWOBJ*, LCDLAYER *);
+
+#pragma swi_number=0x2F1
+__swi __arm int LCDRedrawLAYER(LCDLAYER *);
+
+#pragma swi_number=0x8300
+__swi __arm  int isSGoldX75();
+
+#pragma swi_number=0x0301
+__swi __arm  int EDL_load(char *fname);
+
+#pragma swi_number=0x0302
+__swi __arm  int EDL_unload(char *name, short version);
+
+#pragma swi_number=0x0303
+__swi __arm  int EDL_addlib(void *edl_struct);
+
+#pragma swi_number=0x0304
+__swi __arm  int EDL_remove(void *edl_struct);
+
+#pragma swi_number=0x0305
+__swi __arm  int EDL_use(char *name, short version, void *func_struct);
+
+#pragma swi_number=0x0306
+__swi __arm  int isEDL_exist(char *name, short version);
+
+#pragma swi_number=0x0307
+__swi __arm  int isEDL_support(char platform, char *phone, short sw);
+
+#pragma swi_number=0x0308
+__swi __arm void *getEDL_baseAddr();
+
+#pragma swi_number=0x0309
+__swi __arm  int getEDL_curLibs();
+
+#pragma swi_number=0x030A
+__swi __arm  int getEDL_maxLibs();
+
+#pragma swi_number=0x030B
+__swi __arm  int SetSWIHookInRAMState();
+
+#pragma swi_number=0x030C
+__swi __arm void SetSWINumInCashe(short swinum);
+
+#pragma swi_number=0x030D
+__swi __arm  int RunSWIFromCashe(void *R0, ...);
+
+#pragma swi_number=0x030E
+__swi __arm  int SetSWIFunc(void *addrfunc, short swinum);
+
+#pragma swi_number=0x030F
+__swi __arm  int RepairSWIFunc(short swinum);
+
+#pragma swi_number=0x0310
+__swi __arm  int RepairSWILib();
+
+#pragma swi_number=0x80F5
+__swi __arm  LCDLAYER *Ram_LCD_Overlay_Layer();
+
+typedef struct{
+  char   id_1;      // ID = 1
+  char   cbyte;     // 0x00, 0x10
+  char   zero;      // 0x00
+  char   pen[4];    // Color PEN (or int pen)
+  char   brush[4];  // Color BRUSH (or int brush)
+  RECT   rc;        // Contact / Borders display text
+  WSHDR *text;      // WSHDR (The text)
+#ifdef NEWSGOLD
+  int    font;      // Text font
+#else
+  short  font;      // Text font 
+#endif
+  short  align;     // Text Alignment  
+  short  xdisp;     // Offset of text to X
+}DRWOBJ_01;
+
+typedef unsigned short	WORD;
+typedef long		LONG;
+typedef unsigned long	DWORD;
+
+#pragma swi_number=0x0319
+__swi __arm  int DHS_addProc(void (*dh_proc)(LCDLAYER *));
+
+#pragma swi_number=0x031A
+__swi __arm  int DHS_removeProc(void (*dh_proc)(LCDLAYER *));
+
 #endif
