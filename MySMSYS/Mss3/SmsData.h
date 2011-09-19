@@ -32,7 +32,7 @@ public:
   ~SmsData();
   int ReadAllDatMsg(void);
   int ReadMessageOne(int dat_index);
-  void FreeDatBuf(void);
+  //void FreeDatBuf(void);
   int SaveMss(WSHDR *ws, const char *number, SDLIST *sdl, int type, int need_reload); //need_reload,0 not, 1 all, 2 this
   int GetMssPath(char *path, char *folder, TTime *time, TDate *date);
   int DeleteMessage(SDLIST *sdl);
@@ -94,11 +94,11 @@ public:
   //µ¼³ötxt
 //  int ExportText(SDLIST *sdl);
 private:
-  char *sms_buf;
-  int sms_size;
+  //char *sms_buf;
+  //int sms_size;
   SDLIST *sdltop;
   int is_reading;
-  int ReadDat(void);
+  //int ReadDat(void);
   int DeMsgDataList(SMS_DATA_LIST *lst);
   SMS_DATA_LIST *FindMsgDataL(int dat_index);
   int IsDatExist(int dat_index);

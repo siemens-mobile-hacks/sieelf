@@ -550,5 +550,27 @@ void StrClearChr(char *str, int chr)
   }
 }
 
+void ReplaceNewLineToSpace(WSHDR * ws)
+{
+	int i;
+	int c;
+	int l;
+	if (ws == NULL
+		|| (l = ws->wsbody[0]) == 0
+		)
+	{
+		return;
+	}
 
+	for (i = 1; i <= l; i++)
+	{
+		c = ws->wsbody[i];
+		if (c == '\r'
+			|| c == '\n'
+			)
+		{
+			ws->wsbody[i] = ' ';
+		}
+	}
+}
 

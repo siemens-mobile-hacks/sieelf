@@ -648,7 +648,7 @@ int EditGUI::CreateEditGUI(DLG_CSM *dlg_csm, SDLIST *sdl, int gui_prop, int list
   void *eq;
   WSHDR *ews, ewsn;
 //  CLIST *clx;
-  unsigned short ewsb[MAX_TEXT];
+  unsigned short ewsb[MAX_TEXT+1];
   EDITCONTROL ec;
   EDITC_OPTIONS ec_options;
   if(!dlg_csm || !sdl)
@@ -932,7 +932,7 @@ int EditGUI::CreateEditGUI(DLG_CSM *dlg_csm, const char *nums) //Í¨Ñ¶Â¼ÖÐµÄÈº·¢Ð
   void *ma=malloc_adr();
   void *eq;
   WSHDR *ews, ewsn;
-  unsigned short ewsb[MAX_TEXT];
+  unsigned short ewsb[MAX_TEXT+1];
   EDITCONTROL ec;
   EDITC_OPTIONS ec_options;
   ews=CreateLocalWS(&ewsn, ewsb, MAX_TEXT);

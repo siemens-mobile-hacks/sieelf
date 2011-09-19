@@ -102,7 +102,7 @@ int SiememPDU::PduDecodeTxt(SDLIST *sd, char *data) //0: fail, 1: successful, //
   char *p;
   WSHDR *ws, wsn, *wst;
   unsigned short wsb[300];
-  ws=CreateLocalWS(&wsn, wsb, 300);
+  ws=CreateLocalWS(&wsn, wsb, 299);
   p=data;
   if(*p++!=0x11)
     return 0;
@@ -200,7 +200,7 @@ int SiememPDU::PduDecodeAll(SDLIST *sd, char *data) //0: fail, 1: successful, //
   char *p;
   WSHDR *ws, wsn;
   unsigned short wsb[300];
-  ws=CreateLocalWS(&wsn, wsb, 300);
+  ws=CreateLocalWS(&wsn, wsb, 299);
   p=data;
   if(*p++!=0x11)
     return 0;
@@ -360,6 +360,8 @@ void SiememPDU::DoSmsReport(SDLIST *sd, char *data, WSHDR *ws)
     wsprintf(ws, "%t\r%t: 20%s", LGP->lgp.LGP_MSG_REPORT, LGP->lgp.LGP_MSG_REVEICED, time);
   else
     wsprintf(ws, "%t\r%t: 20%s\r%s (%d)!", LGP->lgp.LGP_MSG_REPORT, LGP->lgp.LGP_TIME, time, LGP->lgp.LGP_UNK_RP_STATUS, status);
+  sd->text = AllocWS(ws->wsbody[0]);
+  wstrcpy(sd->text, ws);
 }
 
 

@@ -86,7 +86,7 @@ int SmsListMenu::OnKey(void *data, GUI_MSG *msg)
     unsigned short wscsb[32];
     WSHDR *wmsg, *wscs, _wscs;
     wmsg=AllocWS(150);
-    wscs=CreateLocalWS(&_wscs, wscsb, 32);
+    wscs=CreateLocalWS(&_wscs, wscsb, 31);
     CodeShow::GetProvAndCity(wscs->wsbody, sdl->number);
     wsprintf(wmsg, "%s\n%t:\n%w",
       sdl->number,
@@ -183,7 +183,7 @@ void SmsListMenu::GHook(void *data, int cmd)
   }
 }
 
-#define MENU_MAX_TXT 50
+#define MENU_MAX_TXT 32
 int SLM_ICONS[8]={ICON_BLANK, ICON_BLANK, ICON_BLANK, ICON_BLANK, ICON_BLANK, ICON_BLANK, ICON_BLANK, 0};
 void SmsListMenu::ItemProc(void *data, int curitem, void *user_pointer)
 {
@@ -194,7 +194,11 @@ void SmsListMenu::ItemProc(void *data, int curitem, void *user_pointer)
   SmsListMenu *slm=(SmsListMenu *)MenuGetUserPointer(data);
   if((sdl=SMSDATA->FindSDL(slm->type, curitem)))
   {
-    if(sdl->text) wstrncpy(ws1, sdl->text, MENU_MAX_TXT);
+    if(sdl->text)
+	{
+		wstrncpy(ws1, sdl->text, MENU_MAX_TXT);
+		ReplaceNewLineToSpace(ws1);
+	}
     else goto SL_ERR;
     if(!strlen(sdl->number))
       CutWSTR(ws2, 0);

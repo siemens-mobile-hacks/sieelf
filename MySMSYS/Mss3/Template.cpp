@@ -75,7 +75,7 @@ int TplMenu::ReadTpl(void)
 {
   char folder[128], dir[128], filepath[128], buf[MAX_TEXT*2], *pp;
   WSHDR *ws, wsn;
-  unsigned short wsb[MAX_TEXT];
+  unsigned short wsb[MAX_TEXT+1];
   int len, /*c,*/ res=0, fp, size, wlen;
   DIR_ENTRY de;
   TPLIST *tp;
@@ -161,7 +161,7 @@ int TplMenu::OnKey(void *data, GUI_MSG *msg)
       WSHDR csloc, *wcs;
       EDITCONTROL ec;
       int i;
-      unsigned short csb[MAX_TEXT];
+      unsigned short csb[MAX_TEXT+1];
       int pos=EDIT_GetCursorPos(ed_gui);
       if(EDIT_GetFocus(ed_gui)!=3 || !tpl->text)
 	return 1;

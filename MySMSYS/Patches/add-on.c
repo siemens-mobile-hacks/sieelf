@@ -1,10 +1,6 @@
 #include "..\..\inc\swilib.h"
 #include "..\MySMSYS_ipc.h"
 
-#define RAM_SMS_dat_FileHandler 0xA8DADE14
-#define RAM_WB_dat_FileHandler 0xA8DADE16
-#define RAM_EMS_Admin_dat_FileHandler 0xA8DEEA20
-
 const char my_ipc_name[]=MY_SMSYS_IPC_NAME;
 const IPC_REQ my_ipc=
 {
@@ -88,75 +84,36 @@ __thumb int getFileCount(int type, int count_old, SMS_DATA_ROOT *sdr)
 
 void CreateSmsWithNum(char *num)
 {
-   IPC_REQ my_ipc3=
-  {
-    my_ipc_name,
-    my_ipc_name,
-    NULL
-  };
-  char *data;
-  LockSched();
-  data=malloc(strlen(num)+2);
-  strcpy(data, num);
-  my_ipc3.data=data;
-  GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_NEWSMS_NUM,&my_ipc3);
-  UnlockSched();
-}
-
-void CreateSmsWithNum_2(char *num)
-{
-
   IPC_REQ *my_ipc3;
   char *data;
   my_ipc3=malloc(sizeof(IPC_REQ));
   data=malloc(strlen(num)+2);
+  strcpy(data, num);
   my_ipc3->name_to=my_ipc_name;
   my_ipc3->name_from=my_ipc_name;
-  strcpy(data, num);
   my_ipc3->data=data;
   GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_NEWSMS_NUM,my_ipc3);
-}
-
-void CreateSmsWithNum_3(char *num)
-{
-
-  IPC_REQ *my_ipc3;
-  char *data;
-  LockSched();
-  my_ipc3=malloc(sizeof(IPC_REQ));
-  data=malloc(strlen(num)+2);
-  my_ipc3->name_to=my_ipc_name;
-  my_ipc3->name_from=my_ipc_name;
-  strcpy(data, num);
-  my_ipc3->data=data;
-  GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_NEWSMS_NUM,my_ipc3);
-  UnlockSched();
 }
 
 void OrgSendText(char *text) //utf8
 {
-   IPC_REQ my_ipc4=
-  {
-    my_ipc_name,
-    my_ipc_name,
-    NULL
-  };
+  IPC_REQ *my_ipc4;
   char *data;
+  my_ipc4=malloc(sizeof(IPC_REQ));
   data=malloc(strlen(text)+2);
   strcpy(data, text);
-  my_ipc4.data=data;
-  GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SEND_UTF8,&my_ipc4);
+  my_ipc4->name_to=my_ipc_name;
+  my_ipc4->name_from=my_ipc_name;
+  my_ipc4->data=data;
+  GBS_SendMessage(MMI_CEPID,MSG_IPC,SMSYS_IPC_SEND_UTF8,my_ipc4);
 }
 
 void OpmsgIDSend(int submsg, int opmsg_id)
 {
-   IPC_REQ my_ipc5=
-  {
-    my_ipc_name,
-    my_ipc_name,
-    NULL
-  };
-  my_ipc5.data=(void *)opmsg_id;
-  GBS_SendMessage(MMI_CEPID,MSG_IPC,submsg,&my_ipc5);
+  IPC_REQ *my_ipc5=malloc(sizeof(IPC_REQ));
+  my_ipc5->name_to=my_ipc_name;
+  my_ipc5->name_from=my_ipc_name;
+  my_ipc5->data=(void *)opmsg_id;
+  GBS_SendMessage(MMI_CEPID,MSG_IPC,submsg,my_ipc5);
 }
 

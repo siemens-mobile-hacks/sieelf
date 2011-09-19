@@ -293,6 +293,19 @@ int DaemonCSM::OnMessage(CSM_RAM *data, GBS_MSG *msg)
 	    //if(!daemon->AddDlgCsmID(id))
 	    //  daemon->AddDlgCsmID_Forced0(id);
 	    SUBPROC((void *)DaemonCSM::StartDialog, msg->submess, ipc->data);
+	    if (msg->submess == SMSYS_IPC_NEWSMS_NUM
+	      || msg->submess == SMSYS_IPC_SEND_UTF8
+	      || msg->submess == SMSYS_IPC_VIEW_OPMSG
+	      || msg->submess == SMSYS_IPC_REPLY_OPMSG
+	      || msg->submess == SMSYS_IPC_QR_OPMSG
+	      || msg->submess == SMSYS_IPC_QN_OPMSG)
+	    {
+	      if (((unsigned int)ipc>>27) == 0x15)
+	      {
+		delete ipc;
+		msg->data0 = NULL;
+	      }
+	    }
 	    //if(ipc->data
 	    //  && ((unsigned int)ipc>>27)==0x15
 	    //  )

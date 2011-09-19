@@ -19,4 +19,5 @@ int w_charcmp_nocase(unsigned short *t1, unsigned short *t2, int len);
 unsigned short *wstrstr(WSHDR *wstr, WSHDR *ws);
 int NumberMatch(const char *num1, const char *num2);
 void StrClearChr(char *str, int chr);
+void ReplaceNewLineToSpace(WSHDR * ws);
 #endif

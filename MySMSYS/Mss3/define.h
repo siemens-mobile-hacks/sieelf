@@ -20,7 +20,7 @@
 #define ISUNKT 32 //00100000 //unk sms type
 #define ISFILE 64 //01000000
 
-#define MAX_TEXT 2048
+#define MAX_TEXT 2047
 
 //
 #define SEGN_MAX 70

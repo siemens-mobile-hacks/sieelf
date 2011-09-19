@@ -322,7 +322,7 @@ SDLIST *SmsData::FindSDL(int type, int n)
 }
 
 //-----------DatReader------------------
-
+/*
 int SmsData::ReadDat(void)
 {
   int fin, res=1;
@@ -337,55 +337,379 @@ int SmsData::ReadDat(void)
     FClose(fin);
   }
   else res=0;
-/*  if((fin=FOpen(ems_admin_dat, A_BIN+A_ReadOnly, P_READ))!=-1)
-  {
-    eam_size=LSeek(fin, 0, S_END);
-    if(eam_size>0x9A4)
-    {
-      eam_size-=0x9A4;
-      eam_buf=new char[eam_size];
-      LSeek(fin, 0x9A4, S_SET);
-      if(FRead(fin, eam_buf, eam_size)!=eam_size) res=0;
-    }
-    else res=0;
-    FClose(fin);
-  }
-  else res=0;*/
   return res;
+}
+*/
+/*
+void GetTime(SDLIST * sd, char *data)
+{
+	if ((sd->type == TYPE_IN_R)||(sd->type == TYPE_IN_N))
+	{
+		char *p = data;
+		char *pp;
+		int c;
+		int i;
+		p++;
+		c = *p++; //number len
+		if (c != 0)
+		{
+			c = ((c&1)?1:0) + (c>>1) +3;
+		}
+		else
+		{
+			c = 3;
+		}
+		p += c; //skip number, text encode type
+		pp = sd->time;
+		for (i = 0; i < 6; i++)
+		{
+			*pp++ = p[i]%0x10+'0';
+			*pp++ = p[i]/0x10+'0';
+			if (i < 2)
+				*pp++ = '-';
+			if (i == 2)
+				*pp++ = ' ';
+			if (i>2 && i<5)
+				*pp++ = ':';
+		}
+		*pp = 0;
+	}
+}
+
+int ReadSMS(SDLIST * sd, INDEX_ID_DATA * iid)
+{
+	void *res = NULL;
+	int c1;// = 0;
+	int i;
+	char ubf[0x20];
+	int uki;
+	int r1;
+	void *ud;
+	switch (iid->type)
+	{
+	case 0x00:
+		sd->type = TYPE_IN_R;
+		break;
+	case 0x01:
+		sd->type = TYPE_IN_N;
+		break;
+	case 0x03:
+		sd->type = TYPE_SENT;
+		break;
+	case 0x04:
+		sd->type = TYPE_DRAFT;
+		break;
+	default:
+		sd->type = TYPE_UNK;
+		sd->msg_prop = sd->msg_prop|ISUNKT;
+		sd->text = AllocWS(32);
+		wsprintf(sd->text, STR_UNK_TYPE, iid->type);
+		return 0;
+	}
+	GetCPUClock();
+	for (i = 1; i <= iid->cnt_received; i++) //start seg from 1
+	{
+		c1 = 0;
+		ud = malloc(0xB4);//((void *(*)(int, int))0xA0E62D85)(0xB4, 0x4);
+		zeromem(ud, 0xB4);
+		r1 = ((int (*)(int, int, void *, int, char *, char *))0xA0E8E6EF)(iid->index, i, ud, 0xB4, (char *)&c1, ubf);
+		if (i == 0)
+		{
+			//get time
+			GetTime(sd, (char *)ud);
+		}
+		((void (*)(void **, int, void *, int, char *, char, int *))0xA0112677)(&res, 0, ud, r1, ubf, (char)c1, &uki);
+	}
+	if (res != NULL)
+	{
+		char *p = ((char **)res)[3];
+		if (p != NULL)
+		{
+			p = *((char **)p);
+			if (p != NULL)
+			{
+				int len = *((short *)p);
+				p += 4;
+				//text, utf8
+				sd->text = AllocWS(len);
+				utf8_2ws(sd->text, p, len);
+			}
+		}
+		p = ((char **)res)[6];
+		if (p != NULL)
+		{
+			p += 6;
+			//number
+			strcpy(sd->number, p);
+		}
+	}
+	((void (*)(void *))0xA0E62949)(res);
+	return 0;
+}
+*/
+
+#define PRE_TXT_LEN 199
+int DataDecoder(SDLIST *sd, char *data, int onlytext)
+{
+	char * p;
+	int ttype;
+	int skip;
+	int i;
+	int c;
+	int wlen;
+	int isplus;
+	int isreport;
+	WSHDR *wst;
+	WSHDR *ws, _ws;
+	unsigned short ws_body[PRE_TXT_LEN+1];
+	if (sd == NULL
+		|| data == NULL)
+	{
+		return 0;
+	}
+	p = data;
+	ws = CreateLocalWS(&_ws, ws_body, PRE_TXT_LEN);
+
+	//FirstOctet
+	//	04
+	//		其二进制代码：00000100
+	//		TP-MTI：00
+	//		TP-MMS(TP-More-Message-to-Send)：1 短信中心没有更多的消息发送
+	//		TP-SRI：0
+	//		TP-UDHI：0
+	//		TP-RP：0
+	c = *p++; //FirstOctet
+	if (c == 6)
+	{
+		isreport = 1;
+	}
+	if ((c>>4)%2 != 0)
+	{
+		isplus=1;
+	}
+	else
+	{
+		isplus=0;
+	}
+	if ((sd->type == TYPE_SENT)||(sd->type == TYPE_DRAFT)) //out
+	{
+		 p++; //unknow byte;
+	}
+	c = *p++; //number len
+	if (c != 0)
+	{
+		if (onlytext == 0)
+		{
+			SiememPDU::Hex2Num(p, sd->number, c); //get number
+		}
+		c = ((c&1)?1:0) + (c>>1) +1;
+	}
+	else
+	{
+		c = 1;
+		sd->number[0] = '\0';
+	}
+	p += c; //skip number
+	p++; //协议标识, //00	TP-PID	点对点
+	ttype = *p++; //编码方式 //	08	TP-DCS	Unicode编码 //00, bit7
+	
+	if ((sd->type == TYPE_IN_R)||(sd->type == TYPE_IN_N))
+	{
+		if (onlytext == 0)
+		{
+			char *pp;
+			pp = sd->time;
+			for (i = 0; i < 6; i++)
+			{
+				*pp++ = p[i]%0x10+'0';
+				*pp++ = p[i]/0x10+'0';
+				if (i < 2)
+					*pp++ = '-';
+				if (i == 2)
+					*pp++ = ' ';
+				if (i>2 && i<5)
+					*pp++ = ':';
+			}
+			*pp = 0;
+		}
+		p += 7; //skip time
+	}
+	if (isreport != 0)
+	{
+		sd->msg_prop |= ISREPORT;
+		SiememPDU::DoSmsReport(sd, p, ws);
+		return 0;
+	}
+	if ((isplus != 0) &&((sd->type == TYPE_SENT)||(sd->type == TYPE_DRAFT)))
+	{
+		p++; //unknow
+	}
+	c = *p++; //用户数据长度
+
+	if ((sd->msg_prop&ISEMS) != 0) //is ems
+	{
+		skip = (*p)+1;
+		if (ttype != 8)
+		{
+			skip = ((skip*8)+6)/7;
+		}
+		else
+		{
+			p += skip;
+			c -= skip;
+		}
+	}
+	if (ttype == 0x8) //ucs32
+	{
+		SiememPDU::Add2WS(p, ws, c);
+	}
+	else if(ttype==0x0) //7bit
+	{
+		SiememPDU::Bit7Decode(ws, p, skip, c);
+		sd->msg_prop |= IS7BIT;
+		if (wstrlen(ws) > c)
+		{
+			CutWSTR(ws, c);
+		}
+	}
+	else
+	{
+		GSMTXT_Decode(ws, p, c, ttype, (void *(*)(int))malloc_adr(), (void (*)())mfree_adr());
+		if (ws->wsbody[0] == 0)
+		{
+			wsprintf(ws, STR_UNK_TXTT, ttype);
+			sd->msg_prop |= ISUNKE;
+		}
+		else
+		{
+			CutWSTR(ws, c);
+		}
+	}
+	//c = wstrlen(ws);
+	//if (c == 0)
+	//{
+	//	c = 1;
+	//}
+	//sd->text = AllocWS(c);
+	//wstrcpy(sd->text, ws);
+	wst = sd->text;
+	wlen = wstrlen(ws);
+	if (wlen != 0)
+	{
+		if (wst != NULL)
+		{
+			wlen += wstrlen(wst);
+			sd->text = AllocWS(wlen);
+			wstrcpy(sd->text, wst);
+			wstrcat(sd->text, ws);
+			FreeWS(wst);
+		}
+		else
+		{
+			sd->text = AllocWS(wlen);
+			wstrcpy(sd->text, ws);
+		}
+	}
+	else
+	{
+		if (wst == NULL)
+		{
+			sd->text = AllocWS(1);
+		}
+	}
+	return 0;
+}
+
+int ReadSMS(SDLIST * sd, INDEX_ID_DATA * iid)
+{
+	int i;
+	char dbuf[0xB4]; //sizeof pdu
+	int unk_c1; //unknow param
+	char unk_buf1[0x20]; //unknow param
+	if (sd == NULL
+		|| iid == NULL)
+	{
+		return 0;
+	}
+	switch (iid->type) //sms type
+	{
+	case 0x00:
+		sd->type = TYPE_IN_R;
+		break;
+	case 0x01:
+		sd->type = TYPE_IN_N;
+		break;
+	case 0x03:
+		sd->type = TYPE_SENT;
+		break;
+	case 0x04:
+		sd->type = TYPE_DRAFT;
+		break;
+	default:
+		sd->type = TYPE_UNK;
+		sd->msg_prop = sd->msg_prop|ISUNKT;
+		sd->text = AllocWS(32);
+		wsprintf(sd->text, STR_UNK_TYPE, sd->type);
+		return 0;
+	}
+	if (iid->cnt_all > 1)
+	{
+		sd->msg_prop |= ISEMS;
+	}
+	//GetCPUClock();
+	for (i = 1; i <= iid->cnt_received; i++) //segment, from 1
+	{
+		unk_c1 = 0;
+		((int (*)(int, int, void *, int, char *, char *))0xA0E8E6EF)(iid->index, i, dbuf, 0xB4, (char *)&unk_c1, unk_buf1);
+		if ((i == 1)
+			|| sd->text == NULL
+			|| (sd->text != NULL && sd->text->wsbody[0] == 0))
+		{
+			DataDecoder(sd, dbuf, 0);
+		}
+		else
+		{
+			DataDecoder(sd, dbuf, 1);
+		}
+	}
+	return 1;
 }
 
 int SmsData::DeMsgDataList(SMS_DATA_LIST *lst)
 {
-  SMS_POS_INDEX_DATA sid;
+  //SMS_POS_INDEX_DATA sid;
   SDLIST *sdx;
 //  EMS_ADM *pea;
   EAM_DATA *ead;
   INDEX_ID_DATA *idd;
-  unsigned short *pid;
-  char *pd;
-  int cnt, index, i, msg_prop=0;
-  char *sms_buf_end;
+  //unsigned short *pid;
+  //char *pd;
+  int cnt, index, /*i,*/ msg_prop=0;
+  //char *sms_buf_end;
 //  char *eam_buf_end;
-  if(!sms_buf ||/* !eam_buf || */!sms_size/* || !eam_size*/) return 0;
-  sms_buf_end=sms_buf+sms_size-sizeof(PDU);
+  //if(!sms_buf ||/* !eam_buf || */!sms_size/* || !eam_size*/) return 0;
+  //sms_buf_end=sms_buf+sms_size-sizeof(PDU);
 //  eam_buf_end=eam_buf+eam_size-sizeof(EMS_ADM);
   if(!(idd=lst->index_id_data))
     return 0;
-  if(!(pid=idd->data_id))
-    return 0;
+  //if(!(pid=idd->data_id))
+  //  return 0;
   if(!(cnt=idd->cnt_all))
     return 0;
   if(cnt!=idd->cnt_received)
     msg_prop=msg_prop|ISDES;
   index=idd->index;
-  if(!index || index>MAX_SMS)
-    return 0;
+  //if(!index || index>MAX_SMS)
+  //  return 0;
   ead=&RAM_EMS_Admin()->data[index];
 //  pea=(EMS_ADM *)(eam_buf+(index-1)*sizeof(EMS_ADM));
 //  if(pea>(EMS_ADM *)eam_buf_end)
 //    return 0;
   sdx=AllocSDL();
   sdx->msg_prop=msg_prop;
+  ReadSMS(sdx, idd);
+  //i = cnt;
+  /*
   for(i=0;i<cnt;i++)
   {
     if(pid[i]==0xFFF4) continue;
@@ -394,9 +718,10 @@ int SmsData::DeMsgDataList(SMS_DATA_LIST *lst)
     if(!sdx->text) PduDecodeAll(sdx, pd);
     else PduDecodeTxt(sdx, pd);
   }
+  */
   if(sdx->text)
   {
-    if(i>1) sdx->msg_prop=sdx->msg_prop|ISEMS;
+    //if(i>1) sdx->msg_prop=sdx->msg_prop|ISEMS;
     //sdx->opmsg_id=pea->opmsg_id;
     sdx->opmsg_id=ead->opmsg_id;
     sdx->dat_index=index;
@@ -420,7 +745,7 @@ int SmsData::ReadAllDatMsg(void)
   SMS_DATA_LLIST outll=sdroot->out_msg;
   SMS_DATA_LIST *lst;
   int res=0;
-  if(!ReadDat()) return 0;
+  //if(!ReadDat()) return 0;
   lst=inll.first;
   while(lst)
   {
@@ -488,13 +813,13 @@ int SmsData::ReadMessageOne(int dat_index)
   SDLIST *sdl;
   if(!dat_index) return 0;
   if(!(lst=FindMsgDataL(dat_index))) return 0;
-  if(!ReadDat()) return 0;
+  //if(!ReadDat()) return 0;
   if((sdl=FindSDL(dat_index))) DeleteSDL(sdl);
   if((res=DeMsgDataList(lst)))
     this->n_new=GetSMSCount(TYPE_IN_N);
   return res;
 }
-
+/*
 void SmsData::FreeDatBuf(void)
 {
   if(sms_buf) delete sms_buf;
@@ -504,6 +829,7 @@ void SmsData::FreeDatBuf(void)
   sms_size=0;
 //  eam_size=0;
 }
+*/
 //-----------FileReader----------
 #define ELFNAME "MySMSYS"
 int SmsData::ReadMss(char *fname, SDLIST *sdl)
@@ -800,9 +1126,9 @@ int SmsData::ReadAllMessageFRC(SmsData *data)
 
 SmsData::SmsData()
 {
-  sms_buf=NULL;
+  //sms_buf=NULL;
 //  eam_buf=NULL;
-  sms_size=0;
+  //sms_size=0;
 //  eam_size=0;
   sdltop=NULL;
   is_reading=0;
@@ -812,9 +1138,9 @@ SmsData::SmsData()
 
 SmsData::~SmsData()
 {
-  if(sms_buf) delete sms_buf;
+  //if(sms_buf) delete sms_buf;
 //  if(eam_buf) delete eam_buf;
-  sms_size=0;
+  //sms_size=0;
 //  eam_size=0;
   FreeAllSDL();
 }
@@ -1314,8 +1640,8 @@ SDLIST *SmsData::FilterFindSDL(int n)
     {
       WSHDR *ws, wsn;
       unsigned short wsb[64];
-      ws=CreateLocalWS(&wsn, wsb, 64);
-      utf8_2ws(ws, CFG_STRORNUM, 64);
+      ws=CreateLocalWS(&wsn, wsb, 63);
+      utf8_2ws(ws, CFG_STRORNUM, 63);
       return (FilterFindSDL(ws, n));
     }
   default:
@@ -1393,8 +1719,8 @@ int SmsData::FilterGetCount(void)
     {
       WSHDR *ws, wsn;
       unsigned short wsb[64];
-      ws=CreateLocalWS(&wsn, wsb, 64);
-      utf8_2ws(ws, CFG_STRORNUM, 64);
+      ws=CreateLocalWS(&wsn, wsb, 63);
+      utf8_2ws(ws, CFG_STRORNUM, 63);
       return (FilterGetCount(ws));
     }
   default:
@@ -1465,8 +1791,8 @@ SDLIST *SmsData::FilterFindNext(SDLIST *sdl)
     {
       WSHDR *ws, wsn;
       unsigned short wsb[64];
-      ws=CreateLocalWS(&wsn, wsb, 64);
-      utf8_2ws(ws, CFG_STRORNUM, 64);
+      ws=CreateLocalWS(&wsn, wsb, 63);
+      utf8_2ws(ws, CFG_STRORNUM, 63);
       return (FilterFindNext(sdl, CFG_STRORNUM));
     }
   default:
@@ -1529,8 +1855,8 @@ SDLIST *SmsData::FilterFindPrev(SDLIST *sdl)
     {
       WSHDR *ws, wsn;
       unsigned short wsb[64];
-      ws=CreateLocalWS(&wsn, wsb, 64);
-      utf8_2ws(ws, CFG_STRORNUM, 64);
+      ws=CreateLocalWS(&wsn, wsb, 63);
+      utf8_2ws(ws, CFG_STRORNUM, 63);
       return (FilterFindPrev(sdl, CFG_STRORNUM));
     }
   default:
@@ -1646,7 +1972,7 @@ int SmsData::GetFilePathSDL(SDLIST *sdl, char *folder, char *filepath, int ftype
   TDate date;
   int i=0;
   GetDateTime(&date, &time);
-  wname=CreateLocalWS(&nm, nmb, 64);
+  wname=CreateLocalWS(&nm, nmb, 63);
   if(strlen(sdl->number))
   {
     if(!ADRLST->FindName(wname, sdl->number))

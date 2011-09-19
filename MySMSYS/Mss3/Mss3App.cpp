@@ -103,7 +103,7 @@ int Mss3App::IsAlreadyRuning()
   CSM_RAM *icsm;
   WSHDR *ws, wsn;
   unsigned short wsb[16];
-  ws=CreateLocalWS(&wsn, wsb, 16);
+  ws=CreateLocalWS(&wsn, wsb, 15);
   wsprintf(ws, ELFFNAMED);
   icsm=(CSM_RAM *)((CSM_RAM *)(CSM_root()->csm_q->csm.first))->next;
   while(((unsigned int)(icsm->constr)>>27)==0x15)

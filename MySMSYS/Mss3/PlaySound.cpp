@@ -47,8 +47,8 @@ void PlaySouNd::PlayStart(PlaySouNd *ps, const char *filepath)
 	{
 		return;
 	}
-	sndPath=CreateLocalWS(&sndPathn, sndPathb, 128);
-	sndFName=CreateLocalWS(&sndFNamen, sndFNameb, 128);
+	sndPath=CreateLocalWS(&sndPathn, sndPathb, 127);
+	sndFName=CreateLocalWS(&sndFNamen, sndFNameb, 127);
 	p=strrchr(filepath,'\\')+1;
 	str_2ws(sndFName,p,128);
 	strncpy(s,filepath,p-filepath);

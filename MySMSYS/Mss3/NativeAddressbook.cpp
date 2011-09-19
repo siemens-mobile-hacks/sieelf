@@ -117,7 +117,7 @@ void NAbCSM::OnCreate(CSM_RAM *data)
   if(nabcsm->type==NAB_SAVE)
   {
     WSHDR *wloc, wlocn;
-    unsigned short wlocb[50];
+    unsigned short wlocb[51];
     wloc=CreateLocalWS(&wlocn, wlocb, 50);
     num_2ws(wloc, nabcsm->number, 50);
     SetNumToNativeAbData(nabcsm->nabd, 0x1D, wloc);

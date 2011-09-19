@@ -26,7 +26,7 @@ void OpenArchive(void)
   NativeExplorerData data;
   WSHDR *ws, wsn;
   unsigned short wsb[128];
-  ws=CreateLocalWS(&wsn, wsb, 128);
+  ws=CreateLocalWS(&wsn, wsb, 127);
   strcpy(folder, main_folder);
   //len=strlen(folder);
   //c=folder[len-1];

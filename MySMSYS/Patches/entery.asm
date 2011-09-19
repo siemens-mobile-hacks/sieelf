@@ -208,8 +208,6 @@ ORG_SEND_CODE
 	B	OrgSendText
 
 
-
-	EXTERN	CreateSmsWithNum_2
 REC_SENDSMS_CODE
 	ADD	LR, LR, #4
 	STR	R7, [SP, #0x14]
@@ -221,14 +219,14 @@ REC_SENDSMS_CODE
 	ADD	LR, LR, #0x16
 	STMFD	SP!, {R1-R7, LR}
 	MOV	R0, R5
-	BL	CreateSmsWithNum_2
+	BL	CreateSmsWithNum
 	LDMFD	SP!, {R1-R7, PC}
 
 DIAL_SMS_CODE
 	ADD	LR, LR, #4
 	STMFD	SP!,{R1-R7, LR}
 	LDR	R0, [R4, #0]
-	BL	CreateSmsWithNum_2
+	BL	CreateSmsWithNum
 	LDMFD	SP!,{R1-R7, PC}
 	
 INBOX_REC_CODE
@@ -239,7 +237,7 @@ INBOX_REC_CODE
 	LDR	R0, [SP, #0x54]
 	ADD	LR, LR, #0x8
 	STMFD	SP!, {R1-R7, LR}
-	BL	CreateSmsWithNum_2
+	BL	CreateSmsWithNum
 	LDMFD	SP!, {R1-R7, PC}
 	
 SHORTCUT_SAVED_CODE
