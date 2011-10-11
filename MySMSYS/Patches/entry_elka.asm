@@ -270,7 +270,8 @@ ROM:A07815AA E5 A0               ADR     R0, s_OpwvmsgCcom_9     ; "opwvmsg:CCom
 ROM:A07815AC 00 E0               B       loc_A07815B0
 
 */	
-	EXTERN	CreateSmsWithNum_2
+
+  //two version differ in here
 	EXTERN	CreateSmsWithNum_3
 	EXTERN	CreateSmsWithNum
 ADRBK_NUM_SMS_CODE
@@ -283,7 +284,7 @@ ADRBK_NUM_SMS_CODE
 	ADD	LR, LR, #0x8
 	LDR	R0, [SP, #0x10]
 	STMFD	SP!,{R1-R7, LR}
-	BL	CreateSmsWithNum_3
+	BL	CreateSmsWithNum_3     //two version differ in here
 	LDMFD	SP!,{R1-R7, PC}
 	/*-r1173
 SHORTCUT_DRAFT_CODE
@@ -310,14 +311,14 @@ REC_SENDSMS_CODE
 	ADD	LR, LR, #0x16
 	STMFD	SP!, {R1-R7, LR}
 	MOV	R0, R5
-	BL	CreateSmsWithNum_2
+	BL	CreateSmsWithNum
 	LDMFD	SP!, {R1-R7, PC}
 
 DIAL_SMS_CODE
 	ADD	LR, LR, #4
 	STMFD	SP!,{R1-R7, LR}
 	LDR	R0, [R4, #0]
-	BL	CreateSmsWithNum_2
+	BL	CreateSmsWithNum
 	LDMFD	SP!,{R1-R7, PC}
 	
 INBOX_REC_CODE
@@ -328,7 +329,7 @@ INBOX_REC_CODE
 	LDR	R0, [SP, #0x54]
 	ADD	LR, LR, #0x8
 	STMFD	SP!, {R1-R7, LR}
-	BL	CreateSmsWithNum_2
+	BL	CreateSmsWithNum
 	LDMFD	SP!, {R1-R7, PC}
         
 //r-1173        
