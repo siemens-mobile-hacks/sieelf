@@ -284,7 +284,7 @@ ADRBK_NUM_SMS_CODE
 	ADD	LR, LR, #0x8
 	LDR	R0, [SP, #0x10]
 	STMFD	SP!,{R1-R7, LR}
-	BL	CreateSmsWithNum_3     //two version differ in here
+	BL	CreateSmsWithNum     //two version differ in here
 	LDMFD	SP!,{R1-R7, PC}
 	/*-r1173
 SHORTCUT_DRAFT_CODE

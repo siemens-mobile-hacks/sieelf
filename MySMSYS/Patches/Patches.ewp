@@ -3015,7 +3015,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild>$PROJ_DIR$\elf2vkp.bat</postbuild>
+        <postbuild>$PROJ_DIR$\elf2vkp.bat $PROJ_DIR$ $EXE_DIR$ E71sw45</postbuild>
       </data>
     </settings>
     <settings>
