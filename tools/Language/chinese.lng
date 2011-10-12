@@ -1,0 +1,81 @@
+#Language file for VSOFS plugin for Total Commander
+连接
+端口
+扫描端口
+扫描可用端口
+Baudrate
+手机型号
+If at you propose an unnative cable (it is not determined by a telephone) this marked
+服务
+打开65系列的隐藏盘
+手机信息
+AT终端...
+Time synchronization on start
+界面
+语言
+确定
+取消
+选项
+Manufacturer
+型号
+Revision (SW)
+Operator 
+短信中心
+连接方式
+电量
+网络
+No registration
+键盘锁
+手机信息
+发送
+清除
+关闭
+AT终端
+内存信息
+磁盘属性
+类型:              FlexMemory Device
+文件系统: FAT32-Flex
+使用:
+空白:
+容量:
+应用
+bytes
+名称
+Value
+Open hidden disks on start
+类型:
+位置:
+大小:
+Contains:
+创建:
+属性:
+只读
+系统
+隐藏
+存档
+已修改:
+已打开:
+文件属性
+目录属性
+格式
+警告
+This operation can bring to the loss of data on your flesh card or phone flex memory . Are you sure?
+%d folder(s) and %d file(s)
+磁盘信息
+Serial Port (All Windows support)
+IrDA Port (Required Windows 2000 or later)
+Serial Connection
+IrDA Connection
+Choice device
+Save file attributes for copy operations
+连接失败, ms
+Time to wait response form server OBEX
+语言包
+工作时间
+通话时间
+软件日期
+%dy %dd %2.2d:%2.2d:%2.2d
+请稍后...
+Display count
+显示
+双击复制到剪贴板

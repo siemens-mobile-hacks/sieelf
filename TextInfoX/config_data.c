@@ -1,7 +1,7 @@
 #include "..\inc\cfg_items.h"
 #include "..\inc\swilib.h"
 #include "TextInfoX.h"
-// ÓÌÙË„Û‡ˆËˇ
+// ÓÌÙË„Û‡ˆ?
 
 __root const CFG_HDR cfghdr0={CFG_UINT,"À¢–¬ ±º‰, 1/10√Î",0,9999};
 __root const unsigned int REFRESH=20;
@@ -14,7 +14,7 @@ __root const CFG_HDR cfghdr_m11={CFG_LEVEL,"Õ¯¬Á–≈∫≈",1,0};
 
 __root const CFG_HDR cfghdr1_1 = {CFG_CHECKBOX, "œ‘ æ", 0, 2};
 __root const int NET_ENA = 0;
-//__root const CFG_CBOX_ITEM cfgcbox1[2] = {"No", "Yes"};
+//__root const CFG_CBOX_ITEM cfgcbox1[2] = {"∑Ò", " «"};
 
 __root const CFG_HDR cfghdr1_2={CFG_COORDINATES,"Œª÷√◊¯±Í",0,0};
 __root const unsigned int NET_X=5;
@@ -28,7 +28,7 @@ __root const unsigned int NET_FONT=8;
 
 __root const CFG_HDR cfghdr1_5 = {CFG_CHECKBOX, "œ‘ æ±ﬂøÚ", 0, 2};
 __root const int NET_FRINGING_ENA = 1;
-//__root const CFG_CBOX_ITEM cfgcbox13[2] = {"No", "Yes"};
+//__root const CFG_CBOX_ITEM cfgcbox13[2] = {"∑Ò", " «"};
 
 __root const CFG_HDR cfghdr1_6={CFG_COLOR,"±ﬂøÚ—’…´",0,0};
 __root const char NET_FRINGING_COLORS[4]={0,0,0,100};
@@ -44,7 +44,7 @@ __root const CFG_HDR cfghdr_m21={CFG_LEVEL,"Œ¬∂»",1,0};
 
 __root const CFG_HDR cfghdr2_1 = {CFG_CHECKBOX, "œ‘ æ", 0, 2};
 __root const int TEMP_ENA = 1;
-//__root const CFG_CBOX_ITEM cfgcbox2[2] = {"No", "Yes"};
+//__root const CFG_CBOX_ITEM cfgcbox2[2] = {"∑Ò", " «"};
 
 __root const CFG_HDR cfghdr2_2={CFG_COORDINATES,"Œª÷√◊¯±Í",0,0};
 __root const unsigned int TEMP_X=170;
@@ -58,7 +58,7 @@ __root const unsigned int TEMP_FONT=8;
 
 __root const CFG_HDR cfghdr2_5 = {CFG_CHECKBOX, "œ‘ æ±ﬂøÚ", 0, 2};
 __root const int TEMP_FRINGING_ENA = 1;
-//__root const CFG_CBOX_ITEM cfgcbox14[2] = {"No", "Yes"};
+//__root const CFG_CBOX_ITEM cfgcbox14[2] = {"∑Ò", " «"};
 
 __root const CFG_HDR cfghdr2_6={CFG_COLOR,"±ﬂøÚ—’…´",0,0};
 __root const char TEMP_FRINGING_COLORS[4]={0,0,0,100};
@@ -74,7 +74,7 @@ __root const CFG_HDR cfghdr_m31={CFG_LEVEL,"µÁ—π",1,0};
 
 __root const CFG_HDR cfghdr3_1 = {CFG_CHECKBOX, "œ‘ æ", 0, 2};
 __root const int VOLT_ENA = 1;
-//__root const CFG_CBOX_ITEM cfgcbox3[2] = {"No", "Yes"};
+//__root const CFG_CBOX_ITEM cfgcbox3[2] = {"∑Ò", " «"};
 
 __root const CFG_HDR cfghdr3_2={CFG_COORDINATES,"Œª÷√◊¯±Í",0,0};
 __root const unsigned int VOLT_X=5;
@@ -88,7 +88,7 @@ __root const unsigned int VOLT_FONT=8;
 
 __root const CFG_HDR cfghdr3_5 = {CFG_CHECKBOX, "œ‘ æ±ﬂøÚ", 0, 2};
 __root const int VOLT_FRINGING_ENA = 1;
-//__root const CFG_CBOX_ITEM cfgcbox15[2] = {"No", "Yes"};
+//__root const CFG_CBOX_ITEM cfgcbox15[2] = {"∑Ò", " «"};
 
 __root const CFG_HDR cfghdr3_6={CFG_COLOR,"±ﬂøÚ—’…´",0,0};
 __root const char VOLT_FRINGING_COLORS[4]={0,0,0,100};
@@ -104,7 +104,7 @@ __root const CFG_HDR cfghdr_m41={CFG_LEVEL,"µÁ¡ø",1,0};
 
 __root const CFG_HDR cfghdr4_1 = {CFG_CHECKBOX, "œ‘ æ", 0, 2};
 __root const int CAP_ENA = 1;
-//__root const CFG_CBOX_ITEM cfgcbox4[2] = {"No", "Yes"};
+//__root const CFG_CBOX_ITEM cfgcbox4[2] = {"∑Ò", " «"};
 
 __root const CFG_HDR cfghdr4_2={CFG_COORDINATES,"Œª÷√◊¯±Í",0,0};
 __root const unsigned int ACCU_X=90;
@@ -118,7 +118,7 @@ __root const unsigned int ACCU_FONT=8;
 
 __root const CFG_HDR cfghdr4_5 = {CFG_CHECKBOX, "œ‘ æ±ﬂøÚ", 0, 2};
 __root const int ACCU_FRINGING_ENA = 1;
-//__root const CFG_CBOX_ITEM cfgcbox16[2] = {"No", "Yes"};
+//__root const CFG_CBOX_ITEM cfgcbox16[2] = {"∑Ò", " «"};
 
 __root const CFG_HDR cfghdr34_6={CFG_COLOR,"±ﬂøÚ—’…´",0,0};
 __root const char ACCU_FRINGING_COLORS[4]={0,0,0,100};
@@ -134,7 +134,7 @@ __root const CFG_HDR cfghdr_m51={CFG_LEVEL," ˝æ›¡˜¡ø",1,0};
 
 __root const CFG_HDR cfghdr5_1 = {CFG_CHECKBOX, "œ‘ æ", 0, 2};
 __root const int GPRS_ENA = 1;
-//__root const CFG_CBOX_ITEM cfgcbox5[2] = {"No", "Yes"};
+//__root const CFG_CBOX_ITEM cfgcbox5[2] = {"∑Ò", " «"};
 
 __root const CFG_HDR cfghdr5_2={CFG_COORDINATES,"Œª÷√◊¯±Í",0,0};
 __root const unsigned int GPRS_X=150;
@@ -148,7 +148,7 @@ __root const unsigned int GPRS_FONT=8;
 
 __root const CFG_HDR cfghdr5_5 = {CFG_CHECKBOX, "œ‘ æ±ﬂøÚ", 0, 2};
 __root const int GPRS_FRINGING_ENA = 1;
-//__root const CFG_CBOX_ITEM cfgcbox17[2] = {"No", "Yes"};
+//__root const CFG_CBOX_ITEM cfgcbox17[2] = {"∑Ò", " «"};
 
 __root const CFG_HDR cfghdr5_6={CFG_COLOR,"±ﬂøÚ—’…´",0,0};
 __root const char GPRS_FRINGING_COLORS[4]={0,0,0,100};
@@ -161,7 +161,7 @@ __root const CFG_HDR cfghdr_m61={CFG_LEVEL,"ø’”‡RAM",1,0};
 
 __root const CFG_HDR cfghdr6_1 = {CFG_CHECKBOX, "œ‘ æ", 0, 2};
 __root const int RAM_ENA = 1;
-//__root const CFG_CBOX_ITEM cfgcbox6[2] = {"No", "Yes"};
+//__root const CFG_CBOX_ITEM cfgcbox6[2] = {"∑Ò", " «"};
 
 __root const CFG_HDR cfghdr6_2={CFG_COORDINATES,"Œª÷√◊¯±Í",0,0};
 __root const unsigned int RAM_X=151;
@@ -175,7 +175,7 @@ __root const unsigned int RAM_FONT=8;
 
 __root const CFG_HDR cfghdr6_5 = {CFG_CHECKBOX, "œ‘ æ±ﬂøÚ", 0, 2};
 __root const int RAM_FRINGING_ENA = 1;
-//__root const CFG_CBOX_ITEM cfgcbox18[2] = {"No", "Yes"};
+//__root const CFG_CBOX_ITEM cfgcbox18[2] = {"∑Ò", " «"};
 
 __root const CFG_HDR cfghdr6_6={CFG_COLOR,"±ﬂøÚ—’…´",0,0};
 __root const char RAM_FRINGING_COLORS[4]={0,0,0,100};
@@ -188,7 +188,7 @@ __root const CFG_HDR cfghdr_m71={CFG_LEVEL,"CPU π”√¬ ",1,0};
 
 __root const CFG_HDR cfghdr7_1 = {CFG_CHECKBOX, "œ‘ æ", 0, 2};
 __root const int CPU_ENA = 0;
-//__root const CFG_CBOX_ITEM cfgcbox7[2] = {"No", "Yes"};
+//__root const CFG_CBOX_ITEM cfgcbox7[2] = {"∑Ò", " «"};
 
 __root const CFG_HDR cfghdr7_2={CFG_COORDINATES,"Œª÷√◊¯±Í",0,0};
 __root const unsigned int CPU_X=0;
@@ -202,7 +202,7 @@ __root const unsigned int CPU_FONT=FONT_SMALL;
 
 __root const CFG_HDR cfghdr7_5 = {CFG_CHECKBOX, "œ‘ æ±ﬂøÚ", 0, 2};
 __root const int CPU_FRINGING_ENA = 0;
-//__root const CFG_CBOX_ITEM cfgcbox19[2] = {"No", "Yes"};
+//__root const CFG_CBOX_ITEM cfgcbox19[2] = {"∑Ò", " «"};
 
 __root const CFG_HDR cfghdr7_6={CFG_COLOR,"±ﬂøÚ—’…´",0,0};
 __root const char CPU_FRINGING_COLORS[4]={0,255,0,100};

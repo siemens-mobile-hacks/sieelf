@@ -17,4 +17,4 @@ del b.bat
 
 cd ..\tmp
 
-del /Q *.*
+::del /Q *.*

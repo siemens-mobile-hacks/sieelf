@@ -506,17 +506,13 @@
 #define ADDR_GetCalleeNumber	0xA097AEE6+1
 #define ADDR_UpdateWndItem	0xA0A38380+1
 #define ADDR_memcmp	0xA14173C0+1
+#define ADDR_IncommingPDU	0xA8ED6ABC //lib
 
-//#define ADDR_wstrcat 0xA0BB5114
 #define ADDR_wsAppendChar 0xA0BB5050
 #define ADDR_IsCalling 0xA0DE44C8+1
 #define ADDR_CallIN 0xA02FB630+1
-//#define ADDR_CallOUT 0xA02FB7D6+1
-//#define ADDR_ADDRBook 0xA01F7732+1
 
 #define BASEADDRESS			0xA1580000
-
-#define ADDR_IncommingPDU	0xA8ED6ABC //lib
 
 #define ADDR_GetPhoneBookNum	0xA0981FC6+1 //90B50C1C8BB069462A22
 
@@ -525,5 +521,14 @@
 #define GetMLMenuGUI_adr	0xA09A56C5 //B0B5041C11200D1C4001A047
 #define AllocMenuWS_adr		0xA09A2CB9 //1C011CFF31813180B51204
 #define SetMLMenuItemText_adr	0xA09A5AAB //B587B01099051CFFF7
-#endif
 
+
+#define ConstructEditControl_adr	0xA0A28141
+#define SetFontToEditCOptions_adr	0xA0A27DBF
+#define CopyOptionsToEditControl_adr	0xA0A27E6D
+#define AddEditControlToEditQend_adr	0xA0A28B8F
+#define ExtractEditControl_adr		0xA0A2EA15
+#define EDIT_SetTextToEditControl_adr	0xA0A2EA09
+#define wsInsertChar_adr		0xA01F7379
+#define ADDR_EDIT_UNK_VOID_INT_INT	0xA0A2EA59
+#endif

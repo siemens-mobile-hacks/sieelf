@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <fileChecksum>418394887</fileChecksum>
+  <configuration>
+    <name>C6Cv53</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>C7Cv22</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>C81Cv50</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>CX6Cv50</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>CX7Av25</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>CX7Cv50</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>E71Cv41</name>
+    <outputs>
+      <file>$PROJ_DIR$\E71Cv41\Obj\CodeShow.r79</file>
+      <file>$PROJ_DIR$\E71Cv41\Obj\func.r79</file>
+      <file>$PROJ_DIR$\E71Cv41\Exe\CodeShowPatch.a79</file>
+      <file>$PROJ_DIR$\E71Cv41\Obj\CodeShowPatch.pbd</file>
+      <file>$PROJ_DIR$\E71Cv41\Obj\sms_num.pbi</file>
+      <file>$PROJ_DIR$\E71Cv41\Obj\menuText.pbi</file>
+      <file>$PROJ_DIR$\E71Cv41\Obj\EDial.pbi</file>
+      <file>$PROJ_DIR$\E71Cv41\Obj\CodeShow.pbi</file>
+      <file>$PROJ_DIR$\E71Cv41\Obj\entry_elka.r79</file>
+      <file>$PROJ_DIR$\E71Cv41\Obj\sms_num.r79</file>
+      <file>$PROJ_DIR$\E71Cv41\Obj\EDial.r79</file>
+      <file>$PROJ_DIR$\E71Cv41\Obj\menuText.r79</file>
+      <file>$PROJ_DIR$\about.txt</file>
+      <file>$PROJ_DIR$\addr.h</file>
+      <file>$PROJ_DIR$\CodeShow.C</file>
+      <file>$PROJ_DIR$\EDial.c</file>
+      <file>$PROJ_DIR$\entry_elka.asm</file>
+      <file>$PROJ_DIR$\entry_newsgold.asm</file>
+      <file>$PROJ_DIR$\entry_sgold.asm</file>
+      <file>$PROJ_DIR$\func.asm</file>
+      <file>$PROJ_DIR$\menuText.c</file>
+      <file>$PROJ_DIR$\setHeaderText.c</file>
+      <file>$PROJ_DIR$\sms_num.c</file>
+      <file>$PROJ_DIR$\type_.h</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 2</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\E71Cv41\Obj\CodeShowPatch.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 7 6 5 4</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\CodeShow.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 0</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 7</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 13 23</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\EDial.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 10</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 6</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 13 23</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\entry_elka.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 8</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\func.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 1</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\menuText.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 11</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 13 23</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\sms_num.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 9</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 13</file>
+        </tool>
+      </inputs>
+    </file>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>ELC1v41</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>M6Cv50</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>M81Cv51</name>
+    <outputs>
+      <file>$PROJ_DIR$\M81Cv51\Obj\func.r79</file>
+      <file>$PROJ_DIR$\M81Cv51\Obj\entry_newsgold.r79</file>
+      <file>$PROJ_DIR$\M81Cv51\Obj\CodeShow.r79</file>
+      <file>$PROJ_DIR$\M81Cv51\Obj\EDial.r79</file>
+      <file>$PROJ_DIR$\M81Cv51\Obj\menuText.r79</file>
+      <file>$PROJ_DIR$\M81Cv51\List\entry_newsgold.lst</file>
+      <file>$PROJ_DIR$\M81Cv51\List\sms_num.lst</file>
+      <file>$PROJ_DIR$\M81Cv51\Obj\menuText.pbi</file>
+      <file>$PROJ_DIR$\M81Cv51\Obj\sms_num.pbi</file>
+      <file>$PROJ_DIR$\M81Cv51\List\menuText.lst</file>
+      <file>$PROJ_DIR$\M81Cv51\Obj\sms_num.r79</file>
+      <file>$PROJ_DIR$\M81Cv51\Exe\CodeShowPatch.a79</file>
+      <file>$PROJ_DIR$\M81Cv51\List\CodeShow.lst</file>
+      <file>$PROJ_DIR$\M81Cv51\List\EDial.lst</file>
+      <file>$PROJ_DIR$\M81Cv51\Obj\CodeShow.pbi</file>
+      <file>$PROJ_DIR$\M81Cv51\Obj\EDial.pbi</file>
+      <file>$PROJ_DIR$\M81Cv51\List\func.lst</file>
+      <file>$PROJ_DIR$\M81Cv51\Obj\CodeShowPatch.pbd</file>
+      <file>$PROJ_DIR$\about.txt</file>
+      <file>$PROJ_DIR$\addr.h</file>
+      <file>$PROJ_DIR$\CodeShow.C</file>
+      <file>$PROJ_DIR$\EDial.c</file>
+      <file>$PROJ_DIR$\entry_elka.asm</file>
+      <file>$PROJ_DIR$\entry_newsgold.asm</file>
+      <file>$PROJ_DIR$\entry_sgold.asm</file>
+      <file>$PROJ_DIR$\func.asm</file>
+      <file>$PROJ_DIR$\menuText.c</file>
+      <file>$PROJ_DIR$\setHeaderText.c</file>
+      <file>$PROJ_DIR$\sms_num.c</file>
+      <file>$PROJ_DIR$\type_.h</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 11</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\M81Cv51\Obj\CodeShowPatch.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 14 15 7 8</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\CodeShow.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 2 12</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 14</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 19 29</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 19 29</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\EDial.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 3 13</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 15</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 19 29</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 19 29</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\entry_newsgold.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 1 5</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>AARM</name>
+          <file> 19</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\func.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 0 16</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>AARM</name>
+          <file> 19</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\menuText.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 9</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 7</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 19 29</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 19 29</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\sms_num.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 10 6</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 8</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 19</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 19</file>
+        </tool>
+      </inputs>
+    </file>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>S68Cv51</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>S6Cv53</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>S7Cv47</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>SK6Cv50</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>SL6Cv50</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>SL7Cv47</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+</project>
+
+
