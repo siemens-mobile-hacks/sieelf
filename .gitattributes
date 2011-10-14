@@ -5033,7 +5033,6 @@ sources/Black/E71Cv41.xcl -text
 sources/Black/E71Cv41/Obj/CodeShowPatch.pbd -text
 sources/Black/S7Cv47.xcl -text
 sources/Black/check.c -text
-sources/Black/elf2vkp.exe -text
 sources/Black/main.asm -text
 sources/Black/mk.bat -text
 sources/Black/settings/CodeShowPatch.cspy.bat -text
