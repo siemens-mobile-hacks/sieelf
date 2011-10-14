@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <fileChecksum>2778356309</fileChecksum>
+  <configuration>
+    <name>C81Cv50</name>
+    <outputs>
+      <file>$PROJ_DIR$\..\..\inc\obs.h</file>
+      <file>$PROJ_DIR$\..\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\..\..\inc\png.h</file>
+      <file>$PROJ_DIR$\C81Csw50.xcl</file>
+      <file>$PROJ_DIR$\C81Cv50\List\entery.lst</file>
+      <file>$PROJ_DIR$\C81Cv50\Obj\add-on.pbi</file>
+      <file>$PROJ_DIR$\..\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\..\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\..\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\MySMSYS_ipc.h</file>
+      <file>$PROJ_DIR$\C81Cv50\Obj\entery.r79</file>
+      <file>$PROJ_DIR$\C81Cv50\Obj\add-on.r79</file>
+      <file>$PROJ_DIR$\C81Cv50\Exe\Patches.elf</file>
+      <file>$PROJ_DIR$\C81Cv50\Obj\Patches.pbd</file>
+      <file>$PROJ_DIR$\..\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\..\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\add-on.c</file>
+      <file>$PROJ_DIR$\entery.asm</file>
+      <file>$PROJ_DIR$\..\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\..\inc\zconf.h</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 14</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\C81Cv50\Exe\Patches.elf</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 5 13 12</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\C81Cv50\Obj\Patches.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 7</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\add-on.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 13</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 7</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 20 4 17 21 8 10 2 1 3 9 16 0 11</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 20 4 17 21 8 10 2 1 3 9 16 0 11</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\entery.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 12 6</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>AARM</name>
+          <file> 11</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>E71Csw41</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>E71sw45</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>ELC1sw41</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>S68Csw51</name>
+    <outputs>
+      <file>$PROJ_DIR$\..\..\inc\obs.h</file>
+      <file>$PROJ_DIR$\..\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\S68Csw51\Obj\add-on.r79</file>
+      <file>$PROJ_DIR$\..\..\inc\png.h</file>
+      <file>$PROJ_DIR$\S68Csw51\Obj\add-on.pbi</file>
+      <file>$PROJ_DIR$\S68Csw51\Obj\entery.r79</file>
+      <file>$PROJ_DIR$\..\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\..\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\S68Csw51\Exe\Patches.elf</file>
+      <file>$PROJ_DIR$\..\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\S68Csw51.xcl</file>
+      <file>$PROJ_DIR$\..\MySMSYS_ipc.h</file>
+      <file>$PROJ_DIR$\S68Csw51\Obj\Patches.pbd</file>
+      <file>$PROJ_DIR$\S68Csw51\List\entery.lst</file>
+      <file>$PROJ_DIR$\..\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\..\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\add-on.c</file>
+      <file>$PROJ_DIR$\entery.asm</file>
+      <file>$PROJ_DIR$\..\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\..\inc\zconf.h</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 10</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\S68Csw51\Exe\Patches.elf</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 12 4 7</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\S68Csw51\Obj\Patches.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 6</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\add-on.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 6</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 20 5 17 21 8 11 2 1 3 9 16 0 13</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 20 5 17 21 8 11 2 1 3 9 16 0 13</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\entery.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 7 15</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>AARM</name>
+          <file> 13</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>S7Csw47</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+</project>
+
+

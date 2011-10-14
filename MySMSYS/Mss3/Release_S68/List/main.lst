@@ -1,0 +1,59 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    13/Oct/2011  23:45:50 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  I:\Amuse\SVN\Siemens\MySMSYS\Mss3\main.cpp           #
+#    Command line    =  I:\Amuse\SVN\Siemens\MySMSYS\Mss3\main.cpp -D        #
+#                       NEWSGOLD -D S68 -D LANG_CN -lcN                      #
+#                       I:\Amuse\SVN\Siemens\MySMSYS\Mss3\Release_S68\List\  #
+#                       -o I:\Amuse\SVN\Siemens\MySMSYS\Mss3\Release_S68\Obj #
+#                       \ -s9 --no_unroll --cpu_mode arm --endian little     #
+#                       --cpu ARM926EJ-S --stack_align 4 --interwork -e      #
+#                       --fpu None --eec++ --dlib_config "D:\Program         #
+#                       Files\IAR\Embedded Workbench 4.0                     #
+#                       Evaluation\ARM\LIB\dl5tpainl8n.h" -I "D:\Program     #
+#                       Files\IAR\Embedded Workbench 4.0                     #
+#                       Evaluation\ARM\INC\" --inline_threshold=2            #
+#    List file       =  I:\Amuse\SVN\Siemens\MySMSYS\Mss3\Release_S68\List\m #
+#                       ain.lst                                              #
+#    Object file     =  I:\Amuse\SVN\Siemens\MySMSYS\Mss3\Release_S68\Obj\ma #
+#                       in.r79                                               #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+I:\Amuse\SVN\Siemens\MySMSYS\Mss3\main.cpp
+      1          #include "Mss3App.h"
+      2          
+      3          int main(char *exename, char *fname)
+      4          {
+      5            return Mss3App::Start(exename, fname);
+      6          }
+      7          
+      8          
+
+   Maximum stack usage in bytes:
+
+     Function             CSTACK
+     --------             ------
+     main(char *, char *)     4
+
+
+   Segment part sizes:
+
+     Function/Label       Bytes
+     --------------       -----
+     main(char *, char *)    4
+      Others                16
+
+ 
+ 20 bytes in segment CODE
+ 
+ 4 bytes of CODE memory (+ 16 bytes shared)
+
+Errors: none
+Warnings: none
