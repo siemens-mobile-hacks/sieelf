@@ -1532,7 +1532,6 @@ MemControl/mem_control.dep -text
 MemControl/mem_control.ewd -text
 MemControl/mem_control.ewp -text
 MemControl/mem_control.eww -text
-MemControl/postbuild/elf2vkp.exe -text
 MemControl/postbuild/header.txt -text
 MemControl/postbuild/postbuild.cmd -text
 MemControl/readme.txt -text
