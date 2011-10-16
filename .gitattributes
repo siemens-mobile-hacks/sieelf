@@ -830,10 +830,6 @@ ELFLoader_lg8/drawhook/postbuild/elf2vkp.exe -text
 ELFLoader_lg8/drawhook/postbuild/header.txt -text
 ELFLoader_lg8/drawhook/postbuild/postbuild.cmd -text
 ELFLoader_lg8/drawhook/readme.txt -text
-ELFLoader_lg8/drawhook/settings/drawhook.cspy.bat -text
-ELFLoader_lg8/drawhook/settings/drawhook.dbgdt -text
-ELFLoader_lg8/drawhook/settings/drawhook.dni -text
-ELFLoader_lg8/drawhook/settings/drawhook.wsdt -text
 ELFLoader_lg8/elfloader.cpp -text
 ELFLoader_lg8/png.c -text
 ELFLoader_lg8/readme.txt -text
