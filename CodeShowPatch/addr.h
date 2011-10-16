@@ -437,6 +437,14 @@
 #define AllocMenuWS_adr		0xA09A2181 //1C011CFF31813180B51204
 #define SetMLMenuItemText_adr	0xA09A4F73 //B587B01099051CFFF7
 
+#define ConstructEditControl_adr	0xA0A27609
+#define SetFontToEditCOptions_adr	0xA0A27287
+#define CopyOptionsToEditControl_adr	0xA0A27335
+#define AddEditControlToEditQend_adr	0xA0A28057
+#define ExtractEditControl_adr		0xA0A2DEDD
+#define EDIT_SetTextToEditControl_adr	0xA0A2DED1
+#define wsInsertChar_adr		0xA01F7255
+#define ADDR_EDIT_UNK_VOID_INT_INT	0xA0A2DF21
 #endif
 
 #ifdef SL7Cv47
@@ -461,6 +469,15 @@
 #define GetMLMenuGUI_adr	0xA09AC244+1 //B0B5041C11200D1C4001A047
 #define AllocMenuWS_adr		0xA09A9839 //1C011CFF31813180B51204
 #define SetMLMenuItemText_adr	0xA09AC62B //B587B01099051CFFF7
+
+#define ConstructEditControl_adr	0xA0A2461D
+#define SetFontToEditCOptions_adr	0xA0A2429B
+#define CopyOptionsToEditControl_adr	0xA0A24349
+#define AddEditControlToEditQend_adr	0xA0A2506B
+#define ExtractEditControl_adr		0xA0A2AEF1
+#define EDIT_SetTextToEditControl_adr	0xA0A2AEE5
+#define wsInsertChar_adr		0xA01F7CA9
+#define ADDR_EDIT_UNK_VOID_INT_INT	0xA0A2AF35
 
 #endif
 
