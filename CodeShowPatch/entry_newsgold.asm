@@ -165,7 +165,7 @@ NUM_SELECT_MENU_PSETTEXT: //R2, WS,
 
 	EXTERN	AddDialEQ
 	EXTERN	DialGHookRedraw
-#ifdef  S68Cv51
+#ifdef  X85_NSG
 	CODE16
 EDIAL_CREATE
 	//ADD	LR, LR, #4
@@ -362,7 +362,7 @@ P_CallOutWindow_
 	RSEG	EDIAL_CREATE_HOOK
 	CODE16
 	LDR	R0, =EDIAL_CREATE
-#ifdef	S68Cv51
+#ifdef	X85_NSG
 	BX	R0
 #else
 	BLX	R0

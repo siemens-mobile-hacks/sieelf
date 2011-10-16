@@ -3440,6 +3440,7 @@
         <option>
           <name>CCDefines</name>
           <state>NEWSGOLD</state>
+          <state>X85_NSG</state>
           <state>S68Cv51</state>
         </option>
         <option>
@@ -3708,6 +3709,7 @@
         <option>
           <name>ADefines</name>
           <state>NEWSGOLD</state>
+          <state>X85_NSG</state>
           <state>S68Cv51</state>
         </option>
         <option>
@@ -4265,6 +4267,7 @@
         <option>
           <name>CCDefines</name>
           <state>NEWSGOLD</state>
+          <state>X85_NSG</state>
           <state>M81Cv51</state>
         </option>
         <option>
@@ -4533,6 +4536,7 @@
         <option>
           <name>ADefines</name>
           <state>NEWSGOLD</state>
+          <state>X85_NSG</state>
           <state>M81Cv51</state>
         </option>
         <option>
