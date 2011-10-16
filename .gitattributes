@@ -1126,12 +1126,6 @@ InetTime/config_data.c -text
 InetTime/func.asm -text
 InetTime/main.c -text
 InetTime/test.xcl -text
-JKeyEmul/ELFs/jkemul_el.elf -text
-JKeyEmul/ELFs/jkemul_nsg.elf -text
-JKeyEmul/ELFs/jkemul_sg.elf -text
-JKeyEmul/ELFs/jkfind_el.elf -text
-JKeyEmul/ELFs/jkfind_nsg.elf -text
-JKeyEmul/ELFs/jkfind_sg.elf -text
 JKeyEmul/JKeyFinder/JKeyUtil.dep -text
 JKeyEmul/JKeyFinder/JKeyUtil.ewd -text
 JKeyEmul/JKeyFinder/JKeyUtil.ewp -text
@@ -1139,10 +1133,6 @@ JKeyEmul/JKeyFinder/JKeyUtil.eww -text
 JKeyEmul/JKeyFinder/func.asm -text
 JKeyEmul/JKeyFinder/main.c -text
 JKeyEmul/JKeyFinder/readme.txt -text
-JKeyEmul/JKeyFinder/settings/JKeyUtil.cspy.bat -text
-JKeyEmul/JKeyFinder/settings/JKeyUtil.dbgdt -text
-JKeyEmul/JKeyFinder/settings/JKeyUtil.dni -text
-JKeyEmul/JKeyFinder/settings/JKeyUtil.wsdt -text
 JKeyEmul/JKeyFinder/test.xcl -text
 JKeyEmul/conf_loader.c -text
 JKeyEmul/conf_loader.h -text

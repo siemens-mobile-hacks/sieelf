@@ -1,8 +1,8 @@
-//JKeyFinder - Утилита для поиска кода клавиш от другого телефона для Java - приложений.
-//Смотрите как работает в readme.txt
-//(c)Dimadze
+// JKeyFinder - Utility to find the key code from another phone for Java - applications.
+// See how it works in readme.txt
+// (c) Dimadze
 
-//Если не компилится (Нет слова "Linking"), Используйте "Clean"
+// If not compiling (No word "Linking"), Use the "Clean"
 
 #include "..\..\inc\swilib.h"
 #include "..\..\inc\xtask_ipc.h"
@@ -66,14 +66,14 @@ void *icsm=FindCSMbyID(CSM_root()->idle_id);
  
     if ((submsg=='*') && (msg==LONG_PRESS) && action2==0 && action_1==0 && action_2==0 && action_3==0 && action_4==0 && action_5==0) // 1
     {   
-        ShowMSG(1,(int)"Давай\nнажимай!");
+        ShowMSG(1,(int)"Let's\nsqueeze!");
         action_1=1;
 	return(2); 
     }
                                         
     if (msg==KEY_DOWN && action2==0 && action_1==1 && action_2==0 && action_3==0 && action_4==0 && action_5==0)
     {  
-        ShowMSG(1,(int)"Вводи!");
+        ShowMSG(1,(int)"ЅшИл!");
         key_n=submsg;
         action_1=0;
         action_2=1;
@@ -111,14 +111,14 @@ void *icsm=FindCSMbyID(CSM_root()->idle_id);
     if ((submsg=='#') && (msg==LONG_PRESS) && action2==0 && action_1==0 && action_2==0 && action_3==0 && action_4==1 && action_5==0)
     {   
       if (key_n!=key_f2){
-        sprintf(message,"%s: %02d\n%s: %02d","Реал. кн",key_n,"Эмул. кн",key_f2);
+        sprintf(message,"%s: %02d\n%s: %02d","Real Prince",key_n,"Emul Prince",key_f2);
         ShowMSG(1,(int)message);
         action_6=1;
         action_5=1;
         action_4=0;    
       } else 
       {
-        ShowMSG(1,(int)"Ошибка!\nДавай\nснова!");
+        ShowMSG(1,(int)"Error!\nlet's\nagain!");
         action_1=1;
         action_4=0; 
         key_n=0;
@@ -130,7 +130,7 @@ void *icsm=FindCSMbyID(CSM_root()->idle_id);
     
    if ((submsg=='#') && (msg==LONG_PRESS) && action2==0 && action_6==1)
     {   
-        ShowMSG(1,(int)"Вводи!");
+        ShowMSG(1,(int)"ЅшИл");
         action_6=0;
         action_5=0;
         action_2=1;
@@ -141,7 +141,7 @@ void *icsm=FindCSMbyID(CSM_root()->idle_id);
     
     if ((submsg=='*') && (msg==LONG_PRESS) && action2==0 && action_1==0 && action_2==0 && action_3==0 && action_4==0 && action_5==1)
     {   
-        ShowMSG(1,(int)"Сброс!");
+        ShowMSG(1,(int)"ЦШЦГ!");
         action_5=0;
         action_6=0;
         key_n=0;
@@ -158,19 +158,19 @@ void *icsm=FindCSMbyID(CSM_root()->idle_id);
     
     if ((submsg=='#') && (msg==LONG_PRESS) && action2==0 && action_1==0 && action_2==0 && action_3==0 && action_4==0 && action_5==0)
     {   
-        ShowMSG(1,(int)"4 - --\n5 - Жми!\n6 - ++");
+        ShowMSG(1,(int)"4 - --\n5 - PUSH!\n6 - ++");
         action2=1;
 	return(2); 
     }
     
     if (msg==KEY_DOWN && action2==1)
     {   
-      sprintf(message2,"%s: %02d","Текущ. код",key_f2);
+      sprintf(message2,"%s: %02d","Ongoing code",key_f2);
       if (submsg=='6') {if (key_f2<99) key_f2++;return(2);}
       if (submsg=='4') {if (key_f2>0) key_f2--;return(2);}
       if (submsg=='5') {GBS_SendMessage(MMI_CEPID,msg,key_f2);return(2);}
       if (submsg=='0') {ShowMSG(1,(int)message2);return(2);}  
-      if (submsg=='#') {ShowMSG(1,(int)"Сброс!");key_f2=0;action2=0;return(2);}  
+      if (submsg=='#') {ShowMSG(1,(int)"ЦШЦГ");key_f2=0;action2=0;return(2);}  
     }            
       
 return(0);
