@@ -1,9 +1,15 @@
 #include "addr.h"
 
+#ifdef  S68Cv51 
+#define ADDR_FUNC1  0xA08CA5AD
+#endif
+#ifdef  M81Cv51 
+#define ADDR_FUNC1  0xA0A2E6B1
+#endif
+
 	EXTERN	AppendInfoW
 	EXTERN	UpdateLocaleToItem
 	EXTERN	AddNewLine	
-
 	EXTERN	GetProvAndCity
 	EXTERN	GetNumFromIncomingPDU
 	EXTERN	setMenuText
@@ -13,8 +19,11 @@
 MENU_HDR_ICON
 	DCD	0x156
 	DCD	0
+	
+//NSG_X75 代表跟S7Cv47比较接近的机型
+//NSG_X85 代表跟S68Cv51较接近的机型
 
-/*	
+#ifdef NSG_X75   
 	CODE16
 RecoedWindow_:
 	PUSH	{LR}
@@ -38,10 +47,8 @@ EX_PBACK
 	POP	{R0}
 	ADD	R0, #4
 	BX	R0
-*/
-
-	CODE32
-RecoedWindow_
+#else
+RecoedWindow_:
 	ADD	LR, LR, #4
 	MOV	R2, #1
 	STMFD	SP!,{R2, LR}
@@ -60,7 +67,9 @@ RecoedWindow_
 	MOV	R0, R4
 	BLX	AddNewLine
 	LDMFD	SP!,{R2, PC}
-	CODE16
+#endif
+	
+		CODE16
 Callinwindow_:
 	PUSH	{LR}
 	LDR	R0, =ADDR_IsCalling
@@ -155,7 +164,6 @@ GoBack
 	STR	R0, [SP,#0xD8]
 	ADD	R2, R2, #4
 	BX	R2
-
 #endif
 
 NUM_SELECT_MENU_PSETTEXT: //R2, WS, 
@@ -165,31 +173,9 @@ NUM_SELECT_MENU_PSETTEXT: //R2, WS,
 
 	EXTERN	AddDialEQ
 	EXTERN	DialGHookRedraw
-#ifdef  X85_NSG
-	CODE16
-EDIAL_CREATE
-	//ADD	LR, LR, #4
-	//STMFD	SP!,{LR}
-	//LDR	R0, [SP, #0x64] //EDITQ
-	//LDR	R1, [SP, #0x34] //ec
-	//LDR	R2, [SP, #0x20] //ecop
-	//MOV	R3, R7
-	LDR	R0, [SP, #0x60] //EDITQ
-	LDR	R1, [SP, #0x30] //ec
-	LDR	R2, [SP, #0x1C] //ecop
-	BL	AddDialEQ
-	MOV	R3, R7 //gui
-	MOV	R2, #1
-	MOV	R0, R4
-	//LDR	R1, [SP, #0x64] //editq
-	//LDMFD	SP!,{PC}
-	LDR	R1, [SP, #0x60] //editq
-	LDR	R7, =0xA08CA5AC+1
-	BLX	R7
-	ADD	SP, #0x6C
-	POP	{R4-R7,PC}
-#else
-	CODE32
+	
+#ifdef NSG_X75
+		CODE32
 EDIAL_CREATE
 	ADD	LR, LR, #4
 	STMFD	SP!,{LR}
@@ -203,6 +189,22 @@ EDIAL_CREATE
 	MOV	R0, R4
 	LDR	R1, [SP, #0x64] //editq
 	LDMFD	SP!,{PC}
+#else
+
+CODE16
+EDIAL_CREATE
+	LDR	R0, [SP, #0x60] //EDITQ
+	LDR	R1, [SP, #0x30] //ec
+	LDR	R2, [SP, #0x1C] //ecop
+	BL	AddDialEQ
+	MOV	R3, R7 //gui
+	MOV	R2, #1
+	MOV	R0, R4
+	LDR	R1, [SP, #0x60] //editq
+	LDR	R7, =ADDR_FUNC1
+	BLX	R7
+	ADD	SP, #0x6C
+	POP	{R4-R7,PC}
 #endif
 
 	CODE32
@@ -332,7 +334,7 @@ P_CallOutWindow_
 	CODE32
 	BLX	SIMBOOK
 	
-#ifndef WITHOUT_SMS_IN_WIN
+	#ifndef WITHOUT_SMS_IN_WIN
 	RSEG	SMS_IN_HOOK:CODE(2)
 	CODE16
 	LDR	R0, =SMS_IN
@@ -361,18 +363,19 @@ P_CallOutWindow_
 	
 	RSEG	EDIAL_CREATE_HOOK
 	CODE16
-	LDR	R0, =EDIAL_CREATE
-#ifdef	X85_NSG
-	BX	R0
-#else
+	LDR	R0, =EDIAL_CREATE	
+#ifdef NSG_X75
 	BLX	R0
+#else
+	BX	R0
 #endif
+
 	RSEG	EDIAL_REDRAW_HOOK
 	CODE16
 	LDR	R0, =EDIAL_REDRAW
 	BLX	R0
-
-	RSEG	EDIAL_ATTR_HOOK:CODE(1)
+	
+		RSEG	EDIAL_ATTR_HOOK:CODE(1)
 	CODE16
 	STR	R1, [SP,#8]
 	STR	R2, [SP,#4]
