@@ -1,8 +1,30 @@
 #include "addr.h"
 
+#ifdef S68Cv51
+#define ADDR_FUNC1 0xA08CA5AD
+#endif
+#ifdef M81Cv51
+#define ADDR_FUNC1 0xA0A2E6B1
+#endif
+
+/*
+S7Cv47的编译条件
+NEWSGOLD
+NSG_X75
+NSG_XXX
+S7Cv47
+S68Cv51和M81Cv51的编译条件
+分别为
+NEWSGOLD
+NSG_X75
+NSG_X85
+S68Cv51/M81Cv51
+*/
+
 	EXTERN	AppendInfoW
 	EXTERN	UpdateLocaleToItem
 	EXTERN	AddNewLine	
+
 	EXTERN	GetProvAndCity
 	EXTERN	GetNumFromIncomingPDU
 	EXTERN	setMenuText
@@ -12,7 +34,31 @@
 MENU_HDR_ICON
 	DCD	0x156
 	DCD	0
-
+#ifdef NSG_X75
+	CODE16
+RecoedWindow_:
+	PUSH	{LR}
+	LDRB	R0, [R5, #9]
+	CMP	R0, #7
+	BCS	EX_PBACK
+	LDR	R1, [R5, #4] //号码 WS ,判断隐藏号码
+	LDR	R0, [R1, #0] //wsbody
+	LDRH	R0, [R0, #0] //wslen
+	CMP	R0, #0
+	BEQ	EX_PBACK
+	MOV	R0, R4
+	BL	AddNewLine
+	MOV	R0, R4
+	LDR	R1, [R5, #4]
+	BL	AppendInfoW
+EX_PBACK
+	MOV	R0, R4
+	BL	AddNewLine
+	MOV	R2, #1
+	POP	{R0}
+	ADD	R0, #4
+	BX	R0
+#else
 	CODE32
 RecoedWindow_
 	ADD	LR, LR, #4
@@ -33,6 +79,8 @@ RecoedWindow_
 	MOV	R0, R4
 	BLX	AddNewLine
 	LDMFD	SP!,{R2, PC}
+#endif	
+	
 	CODE16
 Callinwindow_:
 	PUSH	{LR}
@@ -128,7 +176,6 @@ GoBack
 	STR	R0, [SP,#0xD8]
 	ADD	R2, R2, #4
 	BX	R2
-
 #endif
 
 NUM_SELECT_MENU_PSETTEXT: //R2, WS, 
@@ -138,6 +185,7 @@ NUM_SELECT_MENU_PSETTEXT: //R2, WS,
 
 	EXTERN	AddDialEQ
 	EXTERN	DialGHookRedraw
+#ifdef  NSG_X85
 	CODE16
 EDIAL_CREATE
 	LDR	R0, [SP, #0x60] //EDITQ
@@ -148,10 +196,26 @@ EDIAL_CREATE
 	MOV	R2, #1
 	MOV	R0, R4
 	LDR	R1, [SP, #0x60] //editq
-	LDR	R7, =0xA08CA5AC+1
+	LDR	R7, =ADDR_FUNC1
 	BLX	R7
 	ADD	SP, #0x6C
 	POP	{R4-R7,PC}
+#else
+	CODE32
+EDIAL_CREATE
+	ADD	LR, LR, #4
+	STMFD	SP!,{LR}
+	LDR	R0, [SP, #0x64] //EDITQ
+	LDR	R1, [SP, #0x34] //ec
+	LDR	R2, [SP, #0x20] //ecop
+	MOV	R3, R7
+	BLX	AddDialEQ
+	MOV	R3, R7 //gui
+	MOV	R2, #1
+	MOV	R0, R4
+	LDR	R1, [SP, #0x64] //editq
+	LDMFD	SP!,{PC}
+#endif
 
 	CODE32
 EDIAL_REDRAW
@@ -310,8 +374,11 @@ P_CallOutWindow_
 	RSEG	EDIAL_CREATE_HOOK
 	CODE16
 	LDR	R0, =EDIAL_CREATE
+#ifdef	NSG_XXX
+	BlX	R0
+#else
 	BX	R0
-
+#endif
 	RSEG	EDIAL_REDRAW_HOOK
 	CODE16
 	LDR	R0, =EDIAL_REDRAW

@@ -966,6 +966,7 @@
           <name>CCDefines</name>
           <state>NEWSGOLD</state>
           <state>NSG_X75</state>
+          <state>NSG_XXX</state>
           <state>S7Cv47</state>
         </option>
         <option>
@@ -1235,6 +1236,7 @@
           <name>ADefines</name>
           <state>NEWSGOLD</state>
           <state>NSG_X75</state>
+          <state>NSG_XXX</state>
           <state>S7Cv47</state>
         </option>
         <option>
@@ -3710,6 +3712,8 @@
         <option>
           <name>ADefines</name>
           <state>NEWSGOLD</state>
+          <state>NSG_X75</state>
+          <state>NSG_X85</state>
           <state>S68Cv51</state>
         </option>
         <option>
@@ -4537,6 +4541,7 @@
           <name>ADefines</name>
           <state>NEWSGOLD</state>
           <state>NSG_X75</state>
+          <state>NSG_X85</state>
           <state>M81Cv51</state>
         </option>
         <option>
