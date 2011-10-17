@@ -3,13 +3,12 @@
 	EXTERN	AppendInfoW
 	EXTERN	UpdateLocaleToItem
 	EXTERN	AddNewLine	
+	EXTERN	GetProvAndCity
+	EXTERN	GetNumFromIncomingPDU
+	EXTERN	setMenuText
 	
-	EXTERN	GetProvAndCity         //2.1.1
-	EXTERN	GetNumFromIncomingPDU  //2.1.1
-	EXTERN	setMenuText            //2.1.1
-
 	RSEG	CODE
-	
+
 	DATA
 MENU_HDR_ICON
 	DCD	0x12E
@@ -106,16 +105,14 @@ SIMBOOK:
 	BLX	R3
 	MOV	R0,R4
 	BL	AddNewLine
-	MOV	R0,R4
-	MOV	R1,R4
+	MOV	R0, R4
+	MOV	R1, R4
 	BL	AppendInfoW
 	POP	{R3}
 	ADD	R3, #4
 	BX	R3
 
-	RSEG	CODE_X
-	EXTERN	GetProvAndCity
-	EXTERN	GetNumFromIncomingPDU
+#ifndef WITHOUT_SMS_IN_WIN
 	CODE16
 SMS_IN
 	LDR	R0, [SP, #8]
@@ -144,8 +141,8 @@ GoBack
 	STR	R0, [SP,#0xD8]
 	ADD	R2, R2, #4
 	BX	R2
+#endif
 
-	EXTERN	setMenuText
 NUM_SELECT_MENU_PSETTEXT: //R2, WS, 
 	LDR	R0, [SP, #0x208] //GUI
 	LDR	R3, [SP, #0x20C] //item_n
@@ -154,33 +151,9 @@ NUM_SELECT_MENU_PSETTEXT: //R2, WS,
 	BL	setMenuText
 	ADD	R4, #4
 	BX	R4
-/*
+	
 	EXTERN	AddDialEQ
 	EXTERN	DialGHookRedraw
-#ifdef  S68Cv51
-	CODE16
-EDIAL_CREATE
-	//ADD	LR, LR, #4
-	//STMFD	SP!,{LR}
-	//LDR	R0, [SP, #0x64] //EDITQ
-	//LDR	R1, [SP, #0x34] //ec
-	//LDR	R2, [SP, #0x20] //ecop
-	//MOV	R3, R7
-	LDR	R0, [SP, #0x60] //EDITQ
-	LDR	R1, [SP, #0x30] //ec
-	LDR	R2, [SP, #0x1C] //ecop
-	BL	AddDialEQ
-	MOV	R3, R7 //gui
-	MOV	R2, #1
-	MOV	R0, R4
-	//LDR	R1, [SP, #0x64] //editq
-	//LDMFD	SP!,{PC}
-	LDR	R1, [SP, #0x60] //editq
-	LDR	R7, =0xA08CA5AC+1
-	BLX	R7
-	ADD	SP, #0x6C
-	POP	{R4-R7,PC}
-#else
 	CODE32
 EDIAL_CREATE
 	ADD	LR, LR, #4
@@ -195,8 +168,7 @@ EDIAL_CREATE
 	MOV	R0, R4
 	LDR	R1, [SP, #0x64] //editq
 	LDMFD	SP!,{PC}
-#endif
-
+	
 	CODE32
 EDIAL_REDRAW
 	ADD	LR, LR, #4
@@ -289,8 +261,7 @@ ADRBKLST_CATWS_3
 	BLX	GetProvAndCity
 	LDR	R0, [SP,#0x220]
 	BX	R4
-*/
-
+	
 	RSEG	RecordWindow:CODE(2)
 	CODE16
 	LDR	R0, =RecoedWindow_
@@ -358,18 +329,18 @@ P_NUM_SELECT_MENU_PSETTEXT
 	CODE16
 	BLX	GetMLMenuGUI_adr //ml menu gui
 	
+		
 	RSEG	EDIAL_CREATE_HOOK
 	CODE16
 	LDR	R0, =EDIAL_CREATE
 	BLX	R0
-
+	
 	RSEG	EDIAL_REDRAW_HOOK
 	CODE16
 	LDR	R0, =EDIAL_REDRAW
 	BLX	R0
 
-/////////////////////////////////////////////////////
-	RSEG	EDIAL_ATTR_HOOK:CODE(1)
+	RSEG	EDIAL_ATTR_HOOK
 	CODE16
 	STR	R1, [SP,#8]
 	STR	R2, [SP,#4]
@@ -390,39 +361,107 @@ P_NUM_SELECT_MENU_PSETTEXT
 	DCD	2
 	
 	RSEG	ADRBKLST_ALLOCWS_HOOK
+ /*S7Cv47	
+	ROM:A068485C 00 08 A0 E1                 MOV     R0, R0,LSL#16   ; ADRBKLST_ALLOCWS_HOOK
+  ROM:A0684860 20 08 A0 E1                 MOV     R0, R0,LSR#16
 	CODE32
 	ADD	R0, R0, #0x20
 	NOP
 	
+	E71Cv41
+	ROM:A0800FD0 00 04                       LSLS    R0, R0, #0x10   ; ADRBKLST_ALLOCWS_HOOK
+  ROM:A0800FD2 00 0C                       LSRS    R0, R0, #0x10
+	*/
+  CODE16
+  ADD	R0, R0, #0x20
+	NOP
+		
 	RSEG	ADRBKLST_CATWS_HOOK
-	CODE32
-	BL	ADRBKLST_CATWS
+	CODE16
+	BL	ADRBKLST_CATWS_DUMP_
+	NOP
 	
 	RSEG	ADRBKLST_SIMALLWS_HOOK
+	/*
+	S7Cv47
 	CODE32
 	ADD	R1, R0, #0x20
+	*/
+	CODE16
+        MOV	R1, R0
+        ADD	R1, R1, #0x20
 	
 	RSEG	ADRBKLST_SIMNUMWS_HOOK
-	CODE32
-	BL	ADRBKLST_SIMNUMWS
+	CODE16
+	BL	ADRBKLST_SIMNUMWS_DUMP_
+	NOP
 	
 	RSEG	ADRBKLST_ALLOCWS_HOOK2
+	/* 
+	S7Cv47
 	CODE32
 	ADD	R0, R7, #0x20
+	*/
+	CODE16
+	MOV	R0, R7
+        ADD	R0, R0, #0x20
 	
 	RSEG	ADRBKLST_CATWS_HOOK2
-	CODE32
-	BL	ADRBKLST_CATWS_2
+	CODE16
+	BL	ADRBKLST_CATWS_2DUMP_
+	NOP
 	
 	RSEG	ADRBKLST_ALLOCWS_HOOK3
+	/*
+	S7Cv47
+  ROM:A0684BB0 00 08 A0 E1                 MOV     R0, R0,LSL#16   ; ADRBKLST_ALLOCWS_HOOK3 R0=R0*2E16
+  ROM:A0684BB4 20 08 A0 E1                 MOV     R0, R0,LSR#16
 	CODE32
 	ADD	R0, R0, #0x20
 	NOP
 	
+	E71Cv41
+	ROM:A0801236 00 04                       LSLS    R0, R0, #0x10
+  ROM:A0801238 00 0C                       LSRS    R0, R0, #0x10
+  */	
+	CODE16
+	ADD	R0, R0, #0x20
+	NOP
+   
 	RSEG	ADRBKLST_CATWS_HOOK3
-	CODE32
-	BL	ADRBKLST_CATWS_3
+	CODE16
+	BL	ADRBKLST_CATWS_3DUMP_
 
+	RSEG	HOOK_DUMP
+	CODE16
+	ADRBKLST_CATWS_DUMP_:        //8字节
+	LDR	R0, =ADRBKLST_CATWS
+	BLX	R0	
+	LDR	R1, =ADDR_wstrlen_
+	BX	R1
+	
+	ADRBKLST_SIMNUMWS_DUMP_:     //8字节
+	LDR	R0, =ADRBKLST_SIMNUMWS
+	BLX	R0
+	DATA
+        DCD	0x1323DB01
+	
+	ADRBKLST_CATWS_2DUMP_:       //8字节
+	LDR	R0, =ADRBKLST_CATWS_2
+	BLX	R0
+	LDR	R1, =ADDR_wstrlen_
+	BX	R1
+	
+	ADRBKLST_CATWS_3DUMP_:      //8字节
+	LDR	R0, =ADRBKLST_CATWS_3
+	BLX	R0
+	LDR	R1, =ADDR_wstrlen_
+	BX	R1
+        
+        CODE32
+        ADDR_wstrlen_:
+        LDR	R12, =ADDR_wstrlen
+        BX	R12
 	END
 
 

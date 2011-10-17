@@ -138,7 +138,6 @@
         <option>
           <name>CCDefines</name>
           <state>NEWSGOLD</state>
-          <state>ELKA</state>
           <state>E71Cv41</state>
         </option>
         <option>
@@ -407,7 +406,6 @@
         <option>
           <name>ADefines</name>
           <state>NEWSGOLD</state>
-          <state>ELKA</state>
           <state>E71Cv41</state>
         </option>
         <option>
@@ -13231,9 +13229,6 @@
       <configuration>C6Cv53</configuration>
       <configuration>C7Cv22</configuration>
     </excluded>
-  </file>
-  <file>
-    <name>$PROJ_DIR$\entry_M81Cv51.asm</name>
   </file>
   <file>
     <name>$PROJ_DIR$\entry_sgold.asm</name>
