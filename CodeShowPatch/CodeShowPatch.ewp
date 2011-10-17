@@ -13228,20 +13228,7 @@
     </excluded>
   </file>
   <file>
-    <name>$PROJ_DIR$\entry_newsgold.asm</name>
-    <excluded>
-      <configuration>E71Cv41</configuration>
-      <configuration>ELC1v41</configuration>
-      <configuration>SK6Cv50</configuration>
-      <configuration>CX6Cv50</configuration>
-      <configuration>S6Cv53</configuration>
-      <configuration>M6Cv50</configuration>
-      <configuration>CX7Cv50</configuration>
-      <configuration>CX7Av25</configuration>
-      <configuration>SL6Cv50</configuration>
-      <configuration>C6Cv53</configuration>
-      <configuration>C7Cv22</configuration>
-    </excluded>
+    <name>$PROJ_DIR$\entry_M81Cv51.asm</name>
   </file>
   <file>
     <name>$PROJ_DIR$\entry_sgold.asm</name>
