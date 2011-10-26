@@ -7,7 +7,7 @@
 
 typedef unsigned int size_t;
 typedef long time_t;
-//#include <time.h>
+typedef unsigned int u_int32_t;
 typedef int jmp_buf[11];
 
 #ifndef _NULL
@@ -26,6 +26,33 @@ typedef int jmp_buf[11];
 #include "md5.h"
 #include "data_n.h"
 #include "obs.h"
+#define PC_FOREGROUND         100
+#define PC_BACKGROUND         101
+#define PC_HEADERFOREGROUND   102
+#define PC_HEADERBACKGROUND   103
+
+#define PC_SELECTFOREGROUND   115
+#define PC_SELECTBACKGROUND   116
+#define PC_SELECTBORDER       117
+#define PC_SELECTSHADOW       118
+
+#define PC_LIGHTTEXTFOREGROUND 122
+#define PC_LIGHTTEXTBACKGROUND 123
+
+#define PC_SCROLLBARSLIDER    127
+#define PC_SCROLLBAR          128
+#define PC_WINDOWFOREGROUND   129
+#define PC_WINDOWBACKGROUND   130
+
+#define PC_BORDER             133
+#define PC_BORDERSHADOW       134
+
+#define PC_POPUPSELECTFOREGROUD 135
+#define PC_POPUPSELECTBACKGROUD 136
+
+#define PC_PROGRESSBACKGROUND 138
+#define PC_PROGRESSFOREGROUND 139
+#define PC_PROGRESSBORDER     140
 
 #define LMAN_CONNECT_CNF 0x80
 #define LMAN_CONNECT_REJ_IND 0x81
@@ -295,10 +322,15 @@ typedef struct{
 } CSMROOT;
 
 typedef struct{
-  short x;
-  short y;
-  short x2;
-  short y2;
+  union{
+    struct{
+      short x;
+      short y;
+      short x2;
+      short y2;
+    };
+    short p[4];
+  };
 } RECT;
 
 typedef struct{

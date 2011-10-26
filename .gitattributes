@@ -4807,6 +4807,7 @@ inc/cfg_items.h -text
 inc/crypto.h -text
 inc/data_n.h -text
 inc/gpslogger_ipc.h -text
+inc/inttypes.h -text
 inc/md5.h -text
 inc/mplayer.h -text
 inc/obs.h -text
