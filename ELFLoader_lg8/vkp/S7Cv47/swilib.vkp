@@ -47,16 +47,17 @@
 0094: 0xA029D6AB   ;  25: void DrawCanvas(void *data, int x1, int y1, int x2, int y2, int flag_one)
 0098: 0xA0A1BE85   ;  26: void DrawImgBW(unsigned int x, unsigned int y, unsigned int picture, char *pen, char *brush)
 009C: 0xA029D8D1   ;  27: AddIconToIconbar
-00A0: 0xA145B340   ;  28: double fp_sint2fp(signed int i)
-;0A4:              ;  29: 
-00A8: 0xA01E61E0   ;  2A: int *GetEELiteBlockAddress(short blocknum)
-00AC: 0xA145B1E0   ;  2B: signed int fp_fp2sint(double f)
-00B0: 0xA01E58C0   ;  2C: getEEFullBlockSizeVersion(int block, void *buf1, void *buf2)
-00B4: 0xA145A5A0   ;  2D: double fp_add(double addend1, double addend2)
-00B8: 0xA145B500   ;  2E: double fp_mul(double factor1, double factor2)
-00BC: 0xA145ABB4   ;  2F: double fp_div(double divisor, double divident
 
-;0C0:              ;  30: 
+00A0: 0xA01E6C5C   ;  28: getEELiteMaxID
+00A4: 0xA01E5DFC   ;  29: getEEFullMaxID
+00A8: 0xA01E61E0   ;  2A: int *GetEELiteBlockAddress(short blocknum)
+00AC: 0xA01E6B6C   ;  2B: getEELiteBlockSizeVersion
+00B0: 0xA01E58C0   ;  2C: getEEFullBlockSizeVersion(int block, void *buf1, void *buf2)
+00B4: 0xA01E6DE0   ;  2D: StartWriteEELiteBlock
+00B8: 0xA01E70D8   ;  2E: FinishWriteEELiteBlock
+00BC: 0xA01E6CC4   ;  2F: DeleteEELiteBlock
+00C0: 0xA01E6FC0   ;  30: WriteEELiteBlock
+
 00C4: 0xA1427205   ;  31: char *strrchr_2(const char *s,int c)
 00C8: 0xA0283464   ;  32: void PlaySound(long param1, long param2, long param3, long tone, long param5)
 00CC: 0xA0279E44   ;  33: PlaySound2
@@ -214,7 +215,7 @@
 ;308:              ;  C2: GetAllPatchesByInject
 030C: 0xA006F091   ;  C3: ProcessFiles
 0310: 0xA0060C01   ;  C4: GetBuffer
-0314: 0xA031EF0F   ; C5: char IsIdleUiOnTop(void)
+0314: 0xA03032BF   ;  C5: IsIdleUiOnTop
 0318: 0xA01A8B40   ;  C6: char GetAkkuCapacity()
 ;31C:              ;  C7: SWI_C7
 0320: 0xA8D036D6   ;  C8: unsigned short *RamCap()
@@ -267,7 +268,7 @@
 ;3D0:              ;  F4: Pic_LANI
 03D4: 0xA8D2996C   ;  F5: Ram_LCD_Overlay_Layer
 03D8: 0xA8DAE300   ;  F6: RAM_LCD_Layer_Base_Ptr
-03DC: 0xA8DAE300  ; F7:LCDLAYER *RAM_LCD_Layer_Bearer_Ptr()
+;3DC:              ;  F7: 
 ;3E0:              ;  F8: Additional_PIT_address
 ;3E4:              ;  F9: Additional_PIT_start
 ;3E8:              ;  FA: Additional_PIT_end
@@ -658,16 +659,19 @@
 09A0: 0xA0DC4964   ; 268:  __arm int Obs_Prepare (HObj hObj)
 09A4: 0xA0E84BFC   ; 269:  __arm int Obs_SetRenderOffset (HObj hObj,short x,short y)
 09A8: 0xA0DC1BA0   ; 26A:  __arm int Obs_SetPosition (HObj hObj,int ms)
+09AC: 0xA0E106E0   ; 26B:  __arm int Obs_Mam_SetPurpose (HObj hObj,int ms);
 
 09B0: 0xA0E101C8   ; 26C:  __arm int Obs_Sound_SetVolumeEx (HObj hObj, char vol, char delta)
 09B4: 0xA0E10EA4   ; 26D:  __arm int Obs_Sound_GetVolume (HObj hObj, char *vol)
-09B8: 0xA0E106E0   ; 26E:  __arm int Obs_SetPurpose (HObj hObj,char purpose)
+09B8: 0xA0E10C78   ; 26E  __arm int Obs_Sound_SetAMRFrmPrBuf(HObj hobj, int nof_frames);
+09BC: 0xA0E10BC8   ; 26F  __arm int Obs_Sound_SetAMRFormat(HObj hobj, int format);
+09C0: 0xA0E10B58   ; 270  __arm int Obs_Sound_SetAMRDTX(HObj hobj, int dtx);
 
 0A04: 0xA8DF03FC   ; 281:  __arm char *RamIsRunJava()
 0A08: 0xA8DD368C   ; 282:  __arm char *RamIsRunCamera()
 0A0C: 0xA0581DF5   ; 283:  __thumb int runMidletLinkablely(const char *midlet_name, WSHDR *filename)
 0A10: 0xA0E3A8D7   ; 284:  __thumb int IsGPRS()
-0A14: 0xA0E3A8DF   ; 285:  __thumb int IsEDGE()
+0A14: 0xA0E3A8DF   ; 285:  __thumb int IsEDGE() char *RAMIsEDGE() 0xA8DFC810
 0A18: 0xA0E31D8F   ; 286:  __thumb int GetSMSState()
 0A1C: 0xA02D7CAF   ; 287:  __thumb int BT_GetLocVisibility()
 0A20: 0xA02F2A79   ; 288:  __thumb int GetCurrAudioPath()
@@ -691,8 +695,8 @@
 0A6C: 0xA029C729   ; 29B:  __arm int GetTypeOfHeadset()
 0A70: 0xA0000006   ; 29C:  __arm char *RamInputLanguage()
 0A74: 0xA8D3557C   ; 29D:  __arm char *RamDisplayLanguage()
-;A78:              ; 29E: ;__unknown char *RamIsMuted
-;A7C:              ; 29F: ;__unknown char *RamGetImei
+;A78:                            ; 29E: ;__unknown char *RamIsMuted
+;A7C:                           ; 29F: ;__unknown char *RamGetImei
 
 ;0A80: 0x   ; 2A0:  
 ;0A84: 0x   ; 2A1:  
@@ -773,11 +777,8 @@
 0BA4: 0xA028AD05   ; 2E9: __thumb int SettingsAE_Read(int *res,int set,char * entry,char *keyword);
 0BA8: 0xA02D7431   ; 2EA: __thumb void* SettingsAE_GetEntryList(int set);
 0BAC: 0xA02D7537   ; 2EB: __thumb void* SettingsAE_GetEntryList(int set);
-0BB0: 0xA01F1A9C   ; 2EC: __arm int i2c_transfer(I2C_MSG *msg);
-0BB4: 0xA01F1AF0   ; 2ED: __arm int i2c_receive(I2C_MSG *msg);
-
-0BC0: 0xA099F753 ; 2F0__swi __arm int PushDRWOBJOnLAYER(DRWOBJ*, LCDLAYER *);
-0BC4: 0xA09A1453 ; 2F1__swi __arm int LCDRedrawLAYER(LCDLAYER *);
+0BB0: 0xA01F1A9C   ; 2EC: int i2c_transfer(I2C_MSG *msg); 
+0BB4: 0xA01F1AF0   ; 2ED: int i2c_receive(I2C_MSG *msg);
 #pragma disable old_equal_ff
 +0
 
@@ -785,17 +786,18 @@
 +0074000
 #pragma enable  old_equal_ff
 ;????: 0xA02CDFE5   ; ???:  __thumb int FRDB_GetIndex(WSHDR pws);
-;00A0: 0xA01E6C5C   ;  28: getEELiteMaxID
-;00A4: 0xA01E5DFC   ;  29: getEEFullMaxID
+;00A0: 0xA145B340   ;  28: double fp_sint2fp(signed int i)
 ;00A8: 0xA01E61E0   ;  2A: int *GetEELiteBlockAddress(short blocknum)
-;00AC: 0xA01E6B6C   ;  2B: getEELiteBlockSizeVersion
+;00AC: 0xA145B1E0   ;  2B: signed int fp_fp2sint(double f)
 ;00B0: 0xA01E58C0   ;  2C: getEEFullBlockSizeVersion(int block, void *buf1, void *buf2)
-;00B4: 0xA01E6DE0   ;  2D: StartWriteEELiteBlock
-;00B8: 0xA01E70D8   ;  2E: FinishWriteEELiteBlock
-;00BC: 0xA01E6CC4   ;  2F: DeleteEELiteBlock
-;00C0: 0xA01E6FC0   ;  30: WriteEELiteBlock
+;00B4: 0xA145A5A0   ;  2D: double fp_add(double addend1, double addend2)
+;00B8: 0xA145B500   ;  2E: double fp_mul(double factor1, double factor2)
+;00BC: 0xA145ABB4   ;  2F: double fp_div(double divisor, double divident
 ;0A80: 0xA02A0150 ; 2A0: int GetAlarmclockState(int state);  
 ;031C: 0xA01D17F4 ; 0C7: SetCpuClockTempHi(2) 
 ;07C0: 0xA031BEB4 ; 1F0: Filecopy  ;可能需要修正，移植自E71v45 lg91
 #pragma disable old_equal_ff
 +0
+
+
+;locale=Chinese_People's Republic of China.936
