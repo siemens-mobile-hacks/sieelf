@@ -1,0 +1,1 @@
+%1\..\tools\elf2vkp.exe %2\ELFLoader.elf %3_ELFLoader_v3.vkp I:\Amuse\fubu\%3.bin
