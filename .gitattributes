@@ -944,7 +944,7 @@ ElfsInHotKeys/main.c -text
 ElfsInHotKeys/test.xcl -text
 ExtD/ExtD.ewp -text
 ExtD/ExtD.eww -text
-ExtD/extension.cfg -text
+ExtD/extension.cfg -text svneol=unset#unset
 ExtD/func.asm -text
 ExtD/main.c -text
 ExtD/test.xcl -text
