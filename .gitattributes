@@ -4785,6 +4785,7 @@ gb2ws/SGOLD.xcl -text
 gb2ws/about.txt -text
 gb2ws/cnfont.dat -text
 gb2ws/code.c -text
+gb2ws/code_change.c -text
 gb2ws/gb2ws.ewp -text
 gb2ws/gb2ws.eww -text
 gb2ws/mk_NEWSGOLD.bat -text
