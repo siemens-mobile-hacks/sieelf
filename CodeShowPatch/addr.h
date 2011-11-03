@@ -59,6 +59,41 @@
 #define BASEADDRESS		0xA126BA00 //0xA0E80000 which?
 #endif
 
+#ifdef CF75v23 
+#define ADDR_strlen		0xA0DF0AE5//OK
+#define ADDR_atou		0xA020EB00+1//OK
+#define ADDR_WS_InitByZero	0xA0741593//OK
+#define ADDR_GetCalleeNumber	0xA074A83A+1//OK
+#define ADDR_UpdateWndItem	0xA00B5772+1//OK
+#define ADDR_memcmp		0xA0DEFD9C+1//OK
+
+#define ADDR_wstrcat		0xA0741761//OK
+#define ADDR_wsAppendChar	0xA0741889//OK
+#define ADDR_IsCalling		0xA00CEAAF//OK
+#define ADDR_CallIN		0xA03393E2+1//?????
+#define ADDR_CallOUT		0xA0335DB4+1//OK
+#define ADDR_ADDRBook		0xA0741D90+1//OK
+#define ADDR_SMS_SEND		0xA07E07FC+1//OK
+
+#define AllocMLMenuItem_adr     0xA045F0B0 // ; OR  0xA00E6617 219: __thumb void *AllocMLMenuItem(void *data)
+#define SetMLMenuItemText_adr   0xA00E635F //ok
+#define AllocMenuWS_adr         0xA009D495 //ok
+#define GetMLMenuGUI_adr	0xA045F2C8 // ; OR  0xA00E61D9 2A5:  __thumb void *GetMultiLinesMenuGUI(void *malloc_adr, void *mfree_adr)
+
+#define ConstructEditControl_adr	0xA00A78F7
+#define SetFontToEditCOptions_adr	0xA00A7577
+#define CopyOptionsToEditControl_adr	0xA00A7625
+#define AddEditControlToEditQend_adr	0xA00A82A5
+#define ExtractEditControl_adr	        0xA00DEE59
+#define EDIT_SetTextToEditControl_adr	0xA00DEE4F
+
+#define GetHeaderPointer_addr   0xA009D9F9//ok
+#define SetHeaderText_addr      0xA00B835D//ok
+#define ADDR_AllocWS		0xA07415FB//OK
+#define ADDR_IncommingPDU	0xA874E734
+#define BASEADDRESS		0xA0E7D9D0 
+#endif
+
 #ifdef C6Cv53
 #define ADDR_strlen		0xA164ACCD//
 #define ADDR_atou		0xA082BD88+1//
