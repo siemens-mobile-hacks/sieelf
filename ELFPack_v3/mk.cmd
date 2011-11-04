@@ -1,2 +1,1 @@
-if not exist I:\Amuse\fubu\%3.bin %1\..\tools\elf2vkp.exe %2\ELFLoader.elf %3_ELFLoader_v3.vkp
-else I:\Amuse\fubu\%3.bin %1\..\tools\elf2vkp.exe %2\ELFLoader.elf %3_ELFLoader_v3.vkp I:\Amuse\fubu\%3.bin
+%1\..\tools\elf2vkp.exe %2\ELFLoader.elf %1\vkp\[%3]_ELFLoader_v3.vkp I:\Amuse\fubu\%3.bin

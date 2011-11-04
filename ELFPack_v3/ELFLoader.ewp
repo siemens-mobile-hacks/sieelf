@@ -7527,7 +7527,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.41A</state>
+          <state>4.42A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -7559,6 +7559,7 @@
           <name>CCDefines</name>
           <state>NDEBUG</state>
           <state>SGOLD_CN</state>
+          <state>X75</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -7826,6 +7827,7 @@
         <option>
           <name>ADefines</name>
           <state>SGOLD_CN</state>
+          <state>X75</state>
         </option>
         <option>
           <name>AList</name>
