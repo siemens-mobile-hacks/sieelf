@@ -932,7 +932,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.41A</state>
+          <state>4.42A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -963,6 +963,7 @@
         <option>
           <name>CCDefines</name>
           <state>NDEBUG</state>
+          <state>X75</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -1230,6 +1231,7 @@
         <option>
           <name>ADefines</name>
           <state>SGOLD_CN</state>
+          <state>X75</state>
         </option>
         <option>
           <name>AList</name>
@@ -1755,7 +1757,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.41A</state>
+          <state>4.42A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -1786,6 +1788,7 @@
         <option>
           <name>CCDefines</name>
           <state>NDEBUG</state>
+          <state>X75</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -2053,6 +2056,7 @@
         <option>
           <name>ADefines</name>
           <state>SGOLD_CN</state>
+          <state>X75</state>
         </option>
         <option>
           <name>AList</name>
@@ -2609,6 +2613,7 @@
         <option>
           <name>CCDefines</name>
           <state>NDEBUG</state>
+          <state>X75</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -2876,6 +2881,7 @@
         <option>
           <name>ADefines</name>
           <state>SGOLD_CN</state>
+          <state>X75</state>
         </option>
         <option>
           <name>AList</name>
@@ -18932,6 +18938,7 @@
       <configuration>ELC1v41</configuration>
       <configuration>M75Cv25</configuration>
       <configuration>C81Cv50</configuration>
+      <configuration>C7Cv24</configuration>
     </excluded>
   </file>
   <file>
@@ -18942,6 +18949,29 @@
       <configuration>CX6Cv50</configuration>
       <configuration>M6Cv50</configuration>
       <configuration>S6Cv53</configuration>
+      <configuration>SL6Cv50</configuration>
+      <configuration>E71Cv41</configuration>
+      <configuration>SL7Cv47</configuration>
+      <configuration>CX7Av25</configuration>
+      <configuration>C6Cv53</configuration>
+      <configuration>CX7Cv50</configuration>
+      <configuration>S7Cv47</configuration>
+      <configuration>M81Cv51</configuration>
+      <configuration>ELC1v41</configuration>
+      <configuration>M75Cv25</configuration>
+      <configuration>C81Cv50</configuration>
+      <configuration>C7Cv24</configuration>
+    </excluded>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\Lg8\rets_C7Cv24.asm</name>
+    <excluded>
+      <configuration>S68Cv51</configuration>
+      <configuration>SK6Cv50</configuration>
+      <configuration>CX6Cv50</configuration>
+      <configuration>M6Cv50</configuration>
+      <configuration>S6Cv53</configuration>
+      <configuration>C7Cv22</configuration>
       <configuration>SL6Cv50</configuration>
       <configuration>E71Cv41</configuration>
       <configuration>SL7Cv47</configuration>
@@ -18974,6 +19004,7 @@
       <configuration>M81Cv51</configuration>
       <configuration>ELC1v41</configuration>
       <configuration>M75Cv25</configuration>
+      <configuration>C7Cv24</configuration>
     </excluded>
   </file>
   <file>
@@ -18995,6 +19026,7 @@
       <configuration>ELC1v41</configuration>
       <configuration>M75Cv25</configuration>
       <configuration>C81Cv50</configuration>
+      <configuration>C7Cv24</configuration>
     </excluded>
   </file>
   <file>
@@ -19016,6 +19048,7 @@
       <configuration>ELC1v41</configuration>
       <configuration>M75Cv25</configuration>
       <configuration>C81Cv50</configuration>
+      <configuration>C7Cv24</configuration>
     </excluded>
   </file>
   <file>
@@ -19037,6 +19070,7 @@
       <configuration>ELC1v41</configuration>
       <configuration>M75Cv25</configuration>
       <configuration>C81Cv50</configuration>
+      <configuration>C7Cv24</configuration>
     </excluded>
   </file>
   <file>
@@ -19058,6 +19092,7 @@
       <configuration>ELC1v41</configuration>
       <configuration>M75Cv25</configuration>
       <configuration>C81Cv50</configuration>
+      <configuration>C7Cv24</configuration>
     </excluded>
   </file>
   <file>
@@ -19079,6 +19114,7 @@
       <configuration>M81Cv51</configuration>
       <configuration>M75Cv25</configuration>
       <configuration>C81Cv50</configuration>
+      <configuration>C7Cv24</configuration>
     </excluded>
   </file>
   <file>
@@ -19100,6 +19136,7 @@
       <configuration>ELC1v41</configuration>
       <configuration>M75Cv25</configuration>
       <configuration>C81Cv50</configuration>
+      <configuration>C7Cv24</configuration>
     </excluded>
   </file>
   <file>
@@ -19121,6 +19158,7 @@
       <configuration>M81Cv51</configuration>
       <configuration>ELC1v41</configuration>
       <configuration>C81Cv50</configuration>
+      <configuration>C7Cv24</configuration>
     </excluded>
   </file>
   <file>
@@ -19142,6 +19180,7 @@
       <configuration>ELC1v41</configuration>
       <configuration>M75Cv25</configuration>
       <configuration>C81Cv50</configuration>
+      <configuration>C7Cv24</configuration>
     </excluded>
   </file>
   <file>
@@ -19163,6 +19202,7 @@
       <configuration>ELC1v41</configuration>
       <configuration>M75Cv25</configuration>
       <configuration>C81Cv50</configuration>
+      <configuration>C7Cv24</configuration>
     </excluded>
   </file>
   <file>
@@ -19184,6 +19224,7 @@
       <configuration>ELC1v41</configuration>
       <configuration>M75Cv25</configuration>
       <configuration>C81Cv50</configuration>
+      <configuration>C7Cv24</configuration>
     </excluded>
   </file>
   <file>
@@ -19205,6 +19246,7 @@
       <configuration>ELC1v41</configuration>
       <configuration>M75Cv25</configuration>
       <configuration>C81Cv50</configuration>
+      <configuration>C7Cv24</configuration>
     </excluded>
   </file>
   <file>
@@ -19226,6 +19268,7 @@
       <configuration>ELC1v41</configuration>
       <configuration>M75Cv25</configuration>
       <configuration>C81Cv50</configuration>
+      <configuration>C7Cv24</configuration>
     </excluded>
   </file>
   <file>
@@ -19247,6 +19290,7 @@
       <configuration>ELC1v41</configuration>
       <configuration>M75Cv25</configuration>
       <configuration>C81Cv50</configuration>
+      <configuration>C7Cv24</configuration>
     </excluded>
   </file>
   <file>
@@ -19268,6 +19312,7 @@
       <configuration>ELC1v41</configuration>
       <configuration>M75Cv25</configuration>
       <configuration>C81Cv50</configuration>
+      <configuration>C7Cv24</configuration>
     </excluded>
   </file>
 </project>

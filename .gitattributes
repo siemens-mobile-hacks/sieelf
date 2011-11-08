@@ -751,6 +751,10 @@ ELFLoader_lg8/elfloader.cpp -text
 ELFLoader_lg8/png.c -text
 ELFLoader_lg8/readme.txt -text
 ELFLoader_lg8/repfunc.asm -text
+ELFLoader_lg8/settings/ELFLoader.cspy.bat -text
+ELFLoader_lg8/settings/ELFLoader.dbgdt -text
+ELFLoader_lg8/settings/ELFLoader.dni -text
+ELFLoader_lg8/settings/ElfLoader.wsdt -text
 ELFLoader_lg8/vkp/C6Cv53/ELFLoader_C6Cv53_ANSI_Standard.vkp -text
 ELFLoader_lg8/vkp/C6Cv53/swilib.vkp -text
 ELFLoader_lg8/vkp/C7Cv22/ELFLoader_C7Cv22_ANSI_Standard.vkp -text
