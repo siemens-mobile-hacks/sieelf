@@ -536,7 +536,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild>$PROJ_DIR$\mk.bat $PROJ_DIR$ $EXE_DIR$ E71Cv41</postbuild>
+        <postbuild></postbuild>
       </data>
     </settings>
     <settings>
@@ -13228,6 +13228,12 @@
       <configuration>SL6Cv50</configuration>
       <configuration>C6Cv53</configuration>
       <configuration>C7Cv22</configuration>
+    </excluded>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\entry_newsgold.asm</name>
+    <excluded>
+      <configuration>E71Cv41</configuration>
     </excluded>
   </file>
   <file>
