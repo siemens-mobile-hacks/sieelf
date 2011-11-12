@@ -90,6 +90,7 @@
 0134: 0xA0092531   ;  4D: GBS_StartTimerProc(void *htimer, long ms, void *func)
 0138: 0xA0974FE9   ;  4E: __swi __arm int MsgBoxError(int flag, int LgpId)
 013C: 0xA0975057   ;  4F: __swi __arm int MsgBoxYesNo(int flag, int LgpID, void CallBackProc(int))
+
 0140: 0xA0975061   ;  50: __swi __arm int MsgBoxOkCancel(int flag, int LgpID, void CallBackProc(int))
 0144: 0xA0D66443   ;  51: GetNetAccessMode
 0148: 0xA8D87270   ;  52: GetIlluminationDataTable
@@ -761,6 +762,7 @@
 0B74: 0xA08F20C9   ; 2DD: __thumb void SetIlluminationoffTimeout(int time_sec);
 0B78: 0xA08F2255   ; 2DE: __thumb void IllumTimeRequest(int TimeMode, int Counter);
 0B7C: 0xA08F228B   ; 2DF: __thumb void IllumTimeRelease(int TimeMode, int Counter);
+
 0B80: 0xA0A52035   ; 2E0: __thumb IMGHDR *GetIMGHDRFromThemeCache(int index);
 0B84: 0xA0A7D1D5   ; 2E1: __thumb int GetExtUidByFileName_ws(WSHDR * fn);
 0B88: 0xA0510153   ; 2E2:  __thumb int wstrcmp(WSHDR*ws1,WSHDR*ws2);
