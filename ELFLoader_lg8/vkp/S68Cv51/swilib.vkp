@@ -1,9 +1,3 @@
-; S68C v51 lg8 - Patch made by "Smelter" ? avkiev
-; http://avkiev.kiev.ua/Siemens/Smelter/Smelter.htm
-;********************************************************************************
-
-;Library
-
 +0074000
 #pragma enable  old_equal_ff
 0000: 0xA0090594   ;   0: void loopback0()
@@ -20,7 +14,7 @@
 002C: 0xA0222C3C   ;   B: int fread(int FileHandler, void *cBuffer, int iByteCount, unsigned int *ErrorNumber)
 0030: 0xA0222D6C   ;   C: unsigned int fwrite(int FileHandler, void const *cBuffer, int iByteCount, unsigned int *ErrorNumber)
 0034: 0xA0222AD0   ;   D: void fclose(int FileHandler, unsigned int *ErrorNumber)
-0038: 0xA0222B00   ;   E: fflush
+0038: 0xA02229F4   ;   E: fflush *fix
 003C: 0xA0222B30   ;   F: unsigned int lseek(int FileHandler, unsigned int offset, unsigned int origin, unsigned int *ErrorNumber, unsigned int *ErrorNumber2)
 
 0040: 0xA0222774   ;  10: int mkdir(const char *cFileName, unsigned int *ErrorNumber)
@@ -40,7 +34,7 @@
 0078: 0xA0853F61   ;  1E: IMGHDR *GetPITaddr(int num)
 007C: 0xA02F3693   ;  1F: DrawMainScreen
 
-;080:              ;  20: DrawScreenSaver
+0080: 0xA0367E0B   ;  20: DrawScreenSaver
 0084: 0xA085408B   ;  21: int GetImgHeight(int picture)
 0088: 0xA085409B   ;  22: int GetImgWidth(int picture)
 008C: 0xA026CC7D   ;  23: void DrawImg(unsigned int x, unsigned int y, unsigned int picture)
@@ -48,16 +42,16 @@
 0094: 0xA026C1DF   ;  25: void DrawCanvas(void *data, int x1, int y1, int x2, int y2, int flag_one)
 0098: 0xA08BA7DD   ;  26: void DrawImgBW(unsigned int x, unsigned int y, unsigned int picture, char *pen, char *brush)
 009C: 0xA026C405   ;  27: AddIconToIconbar
-00A0: 0xA111BD90   ;  28: double fp_sint2fp(signed int i)
-;0A4:              ;  29: 
+00A0: 0xA01A8F88   ;  28: getEELiteMaxID
+00A4: 0xA01A8114   ;  29: getEEFullMaxID
 00A8: 0xA01A850C   ;  2A: int *GetEELiteBlockAddress(short blocknum)
-00AC: 0xA111BC30   ;  2B: signed int fp_fp2sint(double f)
+00AC: 0xA01A8E98   ;  2B: getEELiteBlockSizeVersion
 00B0: 0xA01A7BA8   ;  2C: getEEFullBlockSizeVersion(int block, void *buf1, void *buf2)
-00B4: 0xA111AFF0   ;  2D: double fp_add(double addend1, double addend2)
-00B8: 0xA111BF50   ;  2E: double fp_mul(double factor1, double factor2)
-00BC: 0xA111B604   ;  2F: double fp_div(double divisor, double divident)
+00B4: 0xA01A910C   ;  2D: StartWriteEELiteBlock
+00B8: 0xA01A9404   ;  2E: FinishWriteEELiteBlock
+00BC: 0xA01A8FF0   ;  2F: DeleteEELiteBlock
 
-;0C0:              ;  30: 
+00C0: 0xA01A92EC   ;  30: WriteEELiteBlock
 00C4: 0xA1106475   ;  31: char *strrchr_2(const char *s,int c)
 00C8: 0xA02527F8   ;  32: void PlaySound(long param1, long param2, long param3, long tone, long param5)
 00CC: 0xA0249150   ;  33: PlaySound2
@@ -81,7 +75,7 @@
 0110: 0xA0828F25   ;  44: TempLightOn
 0114: 0xA006F241   ;  45: GetWavLen
 ;118:              ;  46: int HasNewSMS()
-011C: 0xA026A539   ;  47: HasFlashSMS
+011C: 0xA026B93B   ;  47: HasFlashSMS *fix
 ;120:              ;  48: ReadNewSMS
 ;124:              ;  49: ReadFlashSMS
 0128: 0xA024AFC8   ;  4A: short PlayFile(int flags, WSHDR *foldername, WSHDR *filename, int zero, int CepId, int Msg, const PLAYFILE_OPT *sfo)
@@ -113,7 +107,7 @@
 0188: 0xA025B6D9   ;  62: SetVibraStatus
 018C: 0xA026DA01   ;  63: void MMI_CanvasBuffer_FlushV(int CanvasID)
 0190: 0xA08561DF   ;  64: TriggerUpdate
-;194:              ;  65: EndCall
+0194: 0xA086F1F5   ;  65: EndCall
 0198: 0xA086E183   ;  66: EndCallBusy
 019C: 0xA02EC05D   ;  67: IsDirectCallActive
 01A0: 0xA02F46D1   ;  68:  __thumb SS_RAM *GetScreenSaverRAM(void)
@@ -127,7 +121,7 @@
 
 01C0: 0xA01D4438   ;  70: int *GetGPRSTrafficPointer()
 01C4: 0xA08BA25F   ;  71: DrawRoundRect
-;1C8:              ;  72: SetCurrentSecondOfCall
+01C8: 0xA0826C51   ;  72: SetCurrentSecondOfCall
 01CC: 0xA0C27603   ;  73: int GetTypeOfCall(int type)
 01D0: 0xA02C0A89   ;  74: SHORTCUTREC *GetShortcutRecordByName(char *szShortcutName)
 01D4: 0xA026DF19   ;  75: IsCanvasBufferSet(char CanvasID)
@@ -168,7 +162,7 @@
 0258: 0xA029E857   ;  96: GetWavLenByContent
 025C: 0xA006F261   ;  97: CreatePath
 0260: 0xA006F211   ;  98: void PlaySoundVibra(char SndNum, char VibraPower, unsigned int VibraDuration, char VibraIfOff)
-;264:              ;  99: int PlayMelodyInMem(char Unk_0x11,void *MelAddr,int MelSize,int unk2_0xFFFF,int Unk3_0,int Unk4_0)
+264: 0xA024B238   ;  99: int PlayMelodyInMem(char Unk_0x11,void *MelAddr,int MelSize,int unk2_0xFFFF,int Unk3_0,int Unk4_0)
 ;268:              ;  9A: int ChangeVolume(unsigned char Volume)
 ;26C:              ;  9B: RamAudioParamsAddr
 0270: 0xA02F4BDD   ;  9C: CloseScreensaver
@@ -225,11 +219,11 @@
 0330: 0xA8DE367C   ;  CC: char *RamMissedCalls()
 ;334:              ;  CD: char *RamMissedSMS()
 0338: 0xA8D28254   ;  CE: RamDateTime
-;33C:              ;  CF: RamAlarm
+033C: 0xA8E5320C   ;  CF: char *RamAlarm()
 
 0340: 0xA8D64FA8   ;  D0: RamAccPoint
-;344:              ;  D1: RamScreensaver
-;348:              ;  D2: RamAutoTime
+0344: 0xA8DCD4DC   ;  D1: RamScreensaver
+0348: 0xA8D181EC   ;  D2: RamAutoTime
 034C: 0xA8D00000   ;  D3: RamStby
 0350: 0xA8DCD2C8   ;  D4: char *RamMissedMes()
 0354: 0xA8D339F4   ;  D5: RamIsLocked
@@ -530,11 +524,11 @@
 07AC: 0xA8DC6F56   ; 1EB: char *RAM_IMSI()
 07B0: 0xA0854633   ; 1EC: void FreeDynIcon(int picture)
 07B4: 0xA0854793   ; 1ED: int IsDynIconBusy(int picture)
-;7B8:    ; 1EE: ProgressCalculate(int current, int total)
+07B8: 0xA0303D61   ; 1EE: ProgressCalculate(int current, int total)
 07BC: 0xA0854695   ; 1EF: void SetDynIcon(int picture,IMGHDR *img,char *bitmap)
 
-;7C0:              ; 1F0: filecopy
-;7C4:              ; 1F1: filecopy_op_announce
+07C0: 0xA0305F11   ; 1F0: filecopy
+07C4: 0xA03076A3   ; 1F1: filecopy_op_announce
 07C8: 0xA01A19F4   ; 1F2: devmenu_config_IsCheckboxOff
 07CC: 0xA00A8474   ; 1F3: unsigned int GetSessionAge()
 07D0: 0xA8DC731C   ; 1F4: char *RamServiceProviderName()
@@ -587,8 +581,8 @@
 0880: 0xA082F657   ; 220: IsSliderClosed
 0884: 0xA02B2110   ; 221: void SetCpuClockLow
 0888: 0xA02B20F8   ; 222: void SetCpuClockTempHi
-;88C:              ; 223: IsMediaPlayerInBackground
-;890:              ; 224: CloseMediaPlayer
+088C: 0xA030BB2D   ; 223: __thumb IsMediaPlayerInBackground 
+;0890: 0xA0586D0F   ; 224: __thumb CloseMediaPlayer
 0894: 0xA024B8E4   ; 225: int PlayMelody_ChangeVolume(int handle,int volume)
 0898: 0xA024C394   ; 226: int PlayMelody_StopPlayback(int handle)
 089C: 0xA024C434   ; 227: int PlayMelody_PausePlayback(int handle)
@@ -636,8 +630,6 @@
 093C: 0xA0BF1174   ; 24F: int GetPlayObjPosition(void *playobj_3D0, int *pos_ms)
 
 0940: 0xA0BF0F0C   ; 250: int GetPlayObjDuration(void *playobj_3D0, int *pos_ms)
-;944:              ; 251: char *RamDataSendFName()
-;948:              ; 252: char *RamDataReceiveFName()
 094C: 0xA8DDEDAA   ; 253: char *RamLastCallNum()
 0950: 0xA0308ABF   ; 254:  __arm int StartNativeExplorer(NativeExplorerData* data)
 0954: 0xA085CDEB   ; 255:  __thumb void MenuSetUserPointer(void *gui,void *user_pointer)
@@ -756,9 +748,28 @@
 0B60: 0xA085EB5B   ; 2D8:  __thumb void TViewSetText(void *gui, WSHDR *text, void *malloc_adr, void *mfree_adr)
 0B64: 0xA085EBFF   ; 2D9:  __thumb void TViewSetUserPointer(void *gui,void *user_pointer)
 0B68: 0xA085EC05   ; 2DA:  __thumb void *TViewGetUserPointer(void *gui)
+0B6C: 0xA03D5A5D   ; 2DB:  __thumb void SendMedia(WSHDR *file, WSHDR *path)
+0B70: 0xA0829095   ; 2DC:  __thumb void SaveMaxIllumination(int level)
+0B74: 0xA08290A9   ; 2DD:  __thumb void SetIlluminationoffTimeout(int time_sec)
+0B78: 0xA0829111   ; 2DE:  __thumb void IllumTimeRequest(int TimeMode, int Counter);
+0B7C: 0xA082914F   ; 2DF:  __thumb void IllumTimeRelease(int TimeMode, int Counter);
 
-0bc0: 0xa084F793 ; 2F0__swi __arm int PushDRWOBJOnLAYER(DRWOBJ*, LCDLAYER *);
-0bc4: 0xa0851493 ; 2F1__swi __arm int LCDRedrawLAYER(LCDLAYER *);
+0B80: 0xA08D76D3   ; 2E0:  __thumb IMGHDR *GetIMGHDRFromThemeCache(int index);
+0B84: 0xA027424D   ; 2E1:  __thumb int GetExtUidByFileName_ws(WSHDR * fn);
+0B88: 0xA01B97C7   ; 2E2:  __thumb int wstrcmp(WSHDR*ws1,WSHDR*ws2);
+0B8C: 0xA0275EA9   ; 2E3:  __thumb  int fexists(WSHDR* FileName);
+0B90: 0xA025A13B   ; 2E4:  __thumb int SettingsAE_Update_ws(WSHDR *,int proc,char * entry,char *keyword);
+0B94: 0xA025A0F9   ; 2E5:  __thumb int SettingsAE_Read_ws(WSHDR *,int set,char * entry,char *keyword);
+0B98: 0xA025A093   ; 2E6:  __thumb int SettingsAE_SetFlag(int val,int set,char * entry,char *keyword);
+0B9C: 0xA025A05D   ; 2E7:  __thumb int SettingsAE_GetFlag(int *res,int set,char * entry,char *keyword);
+0BA0: 0xA025A0D9   ; 2E8:  __thumb int SettingsAE_Update(int val,int set,char * entry,char *keyword);
+0BA4: 0xA025A0A5   ; 2E9:  __thumb int SettingsAE_Read(int *res,int set,char * entry,char *keyword);
+0BA8: 0xA02C9BB1   ; 2EA:  __thumb void* SettingsAE_GetEntryList(int set);
+0BAC: 0xA02C9CB7   ; 2EB:  __thumb int SettingsAE_RemoveEntry(int set,char *entry,int flag);
+0BB0: 0xA01B3DC8   ; 2EC:  __arm int i2c_transfer(I2C_MSG *msg); 
+0BB4: 0xA01B3E1C   ; 2ED:  __arm int i2c_receive(I2C_MSG *msg);
+;0BB8:    ; 2EE: unsigned int GetMemUsedbyCepID(short cepid) 
+;0BBC:    ; 2EF  unsigned int GetFreePermMemory()
 #pragma disable old_equal_ff
 +0
 
