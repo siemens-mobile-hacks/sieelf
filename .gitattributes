@@ -1572,12 +1572,9 @@ MultiSimPatch/incl.h -text
 MultiSimPatch/kvSIM_var.h -text
 MultiSimPatch/msim_msg.c -text
 MultiSimPatch/msim_msg.h -text
+MultiSimPatch/multisim.ewp -text
 MultiSimPatch/multisim.eww -text
 MultiSimPatch/multisim_ipc.h -text
-MultiSimPatch/settings/multisim.cspy.bat -text
-MultiSimPatch/settings/multisim.dbgdt -text
-MultiSimPatch/settings/multisim.dni -text
-MultiSimPatch/settings/multisim.wsdt -text
 MultiSimPatch/siemens.h -text
 MultiSimPatch/sim_access.c -text
 MultiSimPatch/test.xcl -text
