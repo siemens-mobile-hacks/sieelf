@@ -177,7 +177,7 @@
 
 0280: 0xA0996A35   ;  A0: int wsprintf_2(WSHDR *,const char *format,...)
 0284: 0xA01F7BE7   ;  A1: WSHDR *wstrcpy_2(WSHDR *wshdr_d,WSHDR *wshdr_s)
-0288: 0xA01F75CD ; 0A2: Unicode_GetCharByPosition  
+0288: 0xA01F75CD   ;  A2: Unicode_GetCharByPosition  
 028C: 0xA0253F80   ;  A3: void ws2str(WSHDR *ws, char *str, unsigned int size)
 0290: 0xA09974F9   ;  A4: WSHDR *AllocWS_2(int len)
 0294: 0xA01F73A1   ;  A5: void FreeWS_2(WSHDR *wshdr)
@@ -531,7 +531,9 @@
 07B0: 0xA09A45F3   ; 1EC: void FreeDynIcon(int picture)
 07B4: 0xA09A4753   ; 1ED: int IsDynIconBusy(int picture)
 07BC: 0xA09A4655   ; 1EF: void SetDynIcon(int picture,IMGHDR *img,char *bitmap)
-07C4: 0xA031D646   ; 1F1: Filecopy_Op_Announce 
+
+07C0: 0xA031BEB5   ; 1F0: Filecopy  ;可能需要修正，移植自E71v45 lg91
+07C4: 0xA031D647   ; 1F1: Filecopy_Op_Announce 
 07C8: 0xA01DF730   ; 1F2: devmenu_config_IsCheckboxOff
 07CC: 0xA00A8954   ; 1F3: unsigned int GetSessionAge()
 07D0: 0xA8DCD5D3   ; 1F4: char *RamServiceProviderName()
@@ -566,7 +568,7 @@
 
 0840: 0xA09A5FFD   ; 210: int GetCurGuiID(void)
 0844: 0x000061E8   ; 211: GBS_Cmd_4209_RefreshScreensaver
-;848:              ; 212: __swi __arm int CardExplGetCurItem(void *csm)
+0848: 0xA0AE894C   ; 212: int CardExplGetCurItem(void *csm)
 ;84C:              ; 213: __swi __arm void CardExplGetFName(void *csm, int cur_item, WSHDR *dest)
 0850: 0xA01F7C89   ; 214: __swi __arm void wstrcpybypos(WSHDR *dest,WSHDR *src,int from,int len)
 0854: 0xa01F7D19   ; 215: __swi __arm void wsRemoveChars(WSHDR *ws,int from,int to)
