@@ -2,7 +2,7 @@
 #define _LNG_H
 
 #define psz_savestate	"保存最后路径"
-#define psz_backexit	"回到根目录时退出"
+#define psz_backexit	"回到根目录退出"
 #define psz_sconchk		"标示后下移光标"
 #define psz_loopnav		"允许光标循环"
 
@@ -23,26 +23,26 @@
 
 #define psz_confirmexit	"退出"
 #define psz_confirmdel	"删除"
-#define psz_confirmdelr	"删除只读文件"
+#define psz_confirmdelr	"删除只读"
 #define psz_confirmcopy	"复制"
 #define psz_confirmmove	"移动"
 #define psz_confirmrepl	"替换"
 
-#define psz_autoexit_after			"自动退出时间(min)"
-#define psz_autoexit_on_background	"在后台自动退出"
+#define psz_autoexit_after			"自动退出(min)"
+#define psz_autoexit_on_background	"后台自动退出"
 
 #define psz_zip_enable		"ZIP支持"
-#define psz_zip_detect_by	"连接zip用"
-#define psz_temppath		"ZIP缓存文件夹"
-#define psz_cleartemp		"退出时删除ZIP缓存文件"
+#define psz_zip_detect_by	"检测zip通过"
+#define psz_temppath		"ZIP缓存"
+#define psz_cleartemp		"退出删除缓存文件"
 
 #define psz_about		"mc v"version" \n(c) 2007 weclnt, greengo7\nThanks for efficient advices: Aru55, 1nvisible, captain_SISka"
 
 #define psz_no			"否"
 #define psz_yes			"是"
 
-#define psz_content		"直接支持"
-#define psz_extension	"系统关联"
+#define psz_content		"文件内容"
+#define psz_extension	"扩展名"
 
 #define psz_drv_0		"Data"
 #define psz_drv_1		"Cache"
@@ -160,7 +160,7 @@
 #define sz_err_badformat	"格式错误或文件已经损坏!"
 #define sz_err_nomemory		"内存已耗尽!"
 #define sz_err_makefile		"创建文件出错!"
-#define sz_err_ziperr		"ZIP出错: %d in %t!"
+#define sz_err_ziperr		"ZIP出错: %d/%t!"
 
 #define sz_msg_zreading			"正在读取..."
 #define sz_msg_showhid_files	"显示隐藏文件"

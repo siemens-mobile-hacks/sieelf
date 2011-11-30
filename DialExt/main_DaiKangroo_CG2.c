@@ -191,6 +191,7 @@ int runFile(char *file) {
   return 0;
 }
 
+/*
 int runFolder(char *path)
 {
 if(path && strlen(path))
@@ -211,6 +212,19 @@ if(path && strlen(path))
 	return 1;
 }
 	return 0;
+}
+*/
+
+int runFolder(char *folderpath)
+{
+      WSHDR _ws_elfpath;
+      WSHDR *ws_elfpath;
+      unsigned short ws_elfpath_b[128];
+      const char *str_elfpath="0:\\ZBin\\Others\\MC\\MC.elf";
+      ws_elfpath=CreateLocalWS(&_ws_elfpath, ws_elfpath_b, 127);
+      str_2ws(ws_elfpath, str_elfpath, 127);
+      ExecuteFile(ws_elfpath, 0, folderpath);
+      FreeWS(ws_elfpath);
 }
 
 int runShorcut(char *shorcut) 
@@ -327,11 +341,11 @@ void myIDLECSM_onClose(CSM_RAM *data) {
 
 int main(void) {
   if (!RereadSettings()) {
-    ShowMSG(1, (int)"Can't find DialExt.txt!");
+    ShowMSG(1, (int)"未发现DialExt.txt!");
     return 0;
   }
   if (START_FLAG) {
-    ShowMSG(1, (int)"DialExt starts successful!\nby HanikLZ 2007");
+    ShowMSG(1, (int)"DialExt成功启动!\nby HanikLZ 2007");
   }
   LockSched();
   CSM_RAM *icsm = FindCSMbyID(CSM_root()->idle_id);

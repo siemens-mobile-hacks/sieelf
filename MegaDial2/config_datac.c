@@ -82,7 +82,7 @@ __root const int CS_NUMBER_BG=6;
 
 __root const CFG_HDR cfghdr5_5 = {CFG_CBOX,"区号秀地址选择",0,10};
  __root const int cfg_cs_adrs = 1;
- __root const CFG_CBOX_ITEM cfgcbox3[10]={"自输","S65/CX65","SK65","C65/SL65","CX70","M65","C7C","CX7A","E71/EL71/M81/S68/SL75/S75","外置"};
+ __root const CFG_CBOX_ITEM cfgcbox3[12]={"自输","S65/CX65","SK65","C65/SL65","CX70","M65","C75","CX7A","S75/SL75/M81/C81","S68","E71/EL71","外置"};
 
 __root const CFG_HDR cfghdr5_6 = {CFG_UINT,"区号秀自输",0,0xFFFFFFFF};
 __root const int cfg_cs_adr=0;

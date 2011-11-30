@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <fileChecksum>2632447694</fileChecksum>
+  <configuration>
+    <name>Release</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>Release_ELKA</name>
+    <outputs>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\color.r79</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$TOOLKIT_DIR$\inc\errno.h</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\color.pbi</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\keycodes.pbi</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\CfgEdit.pbd</file>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\color.c</file>
+      <file>$PROJ_DIR$\func.asm</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\keycodes.c</file>
+      <file>$PROJ_DIR$\visual.c</file>
+      <file>$PROJ_DIR$\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\..\inc\obs.h</file>
+      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\visual.r79</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\keycodes.r79</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\func.r79</file>
+      <file>$TOOLKIT_DIR$\inc\yvals.h</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\visual.pbi</file>
+      <file>$PROJ_DIR$\Release_ELKA\Exe\CfgEdit.elf</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Defaults.h</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Product.h</file>
+      <file>$TOOLKIT_DIR$\inc\xencoding_limits.h</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Threads.h</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 27</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_ELKA\Obj\CfgEdit.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 4 5 20 26</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\color.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 0</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 17 7 18 21 28 30 1 2 31 14 15 16</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\func.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 24</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 22</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 20</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 17 7 18 21 28 30 1 2 31 14 15 16 8 3 25 29 32 33 34</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\keycodes.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 23</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 17 7 18 21 28 30 1 2 31 14 15 16</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\visual.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 19</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 26</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 17 7 18 21 28 30 1 2 31 14 15 16</file>
+        </tool>
+      </inputs>
+    </file>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>Release_SGOLD</name>
+    <outputs>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\color.r79</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\keycodes.r79</file>
+      <file>$TOOLKIT_DIR$\inc\errno.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\func.r79</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\visual.r79</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\color.pbi</file>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\color.c</file>
+      <file>$PROJ_DIR$\func.asm</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\keycodes.c</file>
+      <file>$PROJ_DIR$\visual.c</file>
+      <file>$PROJ_DIR$\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\..\inc\obs.h</file>
+      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$TOOLKIT_DIR$\inc\yvals.h</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\List\CfgEdit.map</file>
+      <file>$PROJ_DIR$\Release_SGOLD\List\main.lst</file>
+      <file>$PROJ_DIR$\Release_SGOLD\List\visual.lst</file>
+      <file>$PROJ_DIR$\test.xcl</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\visual.pbi</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Exe\CfgEdit.elf</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Defaults.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\List\color.lst</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\keycodes.pbi</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\CfgEdit.pbd</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Product.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.h</file>
+      <file>$PROJ_DIR$\rect_patcher.h</file>
+      <file>$TOOLKIT_DIR$\inc\xencoding_limits.h</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Threads.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\List\keycodes.lst</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 31 25</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\color.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 0 33</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 9</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 20 10 21 22 24 34 2 3 35 17 18 19 40</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 20 10 21 22 24 34 2 3 35 17 18 19</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\func.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 7</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 26</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 1</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 20 10 21 22 24 34 2 3 35 17 18 19 11 40 6 23 32 39 38 41 42</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 20 10 21 22 24 34 2 3 35 17 18 19 11 6 23 32 38 41 42</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\keycodes.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 5 43</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 36</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 20 10 21 22 24 34 2 3 35 17 18 19 40</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 20 10 21 22 24 34 2 3 35 17 18 19</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\visual.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 8 27</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 30</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 20 10 21 22 24 34 2 3 35 17 18 19 40</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 20 10 21 22 24 34 2 3 35 17 18 19</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_SGOLD\Exe\CfgEdit.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 25</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 28 0 7 5 4 8 29</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_SGOLD\Obj\CfgEdit.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 9 36 1 30</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+</project>
+
+

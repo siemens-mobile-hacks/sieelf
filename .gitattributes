@@ -459,6 +459,7 @@ CallsList/CallsList.eww -text
 CallsList/func.asm -text
 CallsList/main.c -text
 CallsList/test.xcl -text
+CfgEdit/CfgEdit.dep -text
 CfgEdit/CfgEdit.ewp -text
 CfgEdit/CfgEdit.eww -text
 CfgEdit/CfgEdit_IAR_old.ewp -text
@@ -467,6 +468,7 @@ CfgEdit/color.c -text
 CfgEdit/func.asm -text
 CfgEdit/keycodes.c -text
 CfgEdit/main.c -text
+CfgEdit/rect_patcher.h -text
 CfgEdit/test.xcl -text
 CfgEdit/visual.c -text
 ChanBanner/1.xcl -text
@@ -756,10 +758,6 @@ ELFLoader_lg8/elfloader.cpp -text
 ELFLoader_lg8/png.c -text
 ELFLoader_lg8/readme.txt -text
 ELFLoader_lg8/repfunc.asm -text
-ELFLoader_lg8/settings/ELFLoader.cspy.bat -text
-ELFLoader_lg8/settings/ELFLoader.dbgdt -text
-ELFLoader_lg8/settings/ELFLoader.dni -text
-ELFLoader_lg8/settings/ElfLoader.wsdt -text
 ELFLoader_lg8/vkp/C6Cv53/ELFLoader_C6Cv53_ANSI_Standard.vkp -text
 ELFLoader_lg8/vkp/C6Cv53/swilib.vkp -text
 ELFLoader_lg8/vkp/C7Cv22/ELFLoader_C7Cv22_ANSI_Standard.vkp -text
@@ -1352,6 +1350,7 @@ MC/gui.c -text
 MC/keys.c -text
 MC/krnl.c -text
 MC/main.c -text
+MC/mc.dep -text
 MC/mc.ewp -text
 MC/mc.eww -text
 MC/menus.c -text
@@ -3124,6 +3123,7 @@ SieJC/vCard.c -text
 SieJC/vCard.h -text
 SieJC/xml_parser.c -text
 SieJC/xml_parser.h -text
+SieTxtView/SieTxtView.dep -text
 SieTxtView/SieTxtView.ewp -text
 SieTxtView/SieTxtView.eww -text
 SieTxtView/SieTxtView.xcl -text
@@ -3607,6 +3607,7 @@ XTASK/rsh/main.asm -text
 XTASK/rsh/rsh.ewp -text
 XTASK/rsh/rsh.eww -text
 XTASK/test.xcl -text
+XTASK3/XTask3.dep -text
 XTASK3/XTask3.ewp -text
 XTASK3/XTask3.eww -text
 XTASK3/conf_loader.c -text
@@ -5089,7 +5090,6 @@ sources/avkiev/popup_killer3.arm.txt -text
 sources/avkiev/protect.asm -text
 sources/avkiev/screen_shooter.arm.txt -text
 sources/chaos/Master.7z -text
-sources/readme.txt -text svneol=unset#application/octet-stream
 sources/src_benj9_m65v50.7z -text
 sources/tick/ReadMissedMes_v1.4_newsgold.zip -text
 sources/tick/ReadMissedMes_v1.4_source.zip -text
@@ -5470,6 +5470,7 @@ x65_PCM_Player/myutils.h -text
 一些源码/confirmday_104.zip -text
 一些源码/e_x-o_2.4_722.zip -text
 一些源码/emenud2_399.zip -text
+一些源码/google_maps_src_144.zip -text
 一些源码/idater.zip -text
 一些源码/mnuedit_v05_fix.zip -text
 一些源码/mute_controller_159.zip -text

@@ -175,7 +175,7 @@ void RereadSettings()
 	InitConfig();
 	if(iReadFile && !cs_adr)
         mfree((void*)cs_adr);
-	if(cfg_cs_adrs != 9||(cfg_cs_adrs==0&&cfg_cs_adr > 0xA0000000))
+	if(cfg_cs_adrs != 11||(cfg_cs_adrs==0&&cfg_cs_adr > 0xA0000000))
 	{
           switch(cfg_cs_adrs)
           {
@@ -211,8 +211,16 @@ void RereadSettings()
             cs_adr=0xA0F294B0;
             break;
             
-          case 8://E71/EL71/M81/S68/SL75/S75
+          case 8://M81/SL75/S75
             cs_adr=0xA1580000;
+            break;
+                        
+          case 9://S68Cv51
+            cs_adr=0xA1280000;
+            break;
+                                    
+          case 10://E71/EL71
+            cs_adr=0xA1280000;
             break;
           }  
 	   iReadFile = 0;
