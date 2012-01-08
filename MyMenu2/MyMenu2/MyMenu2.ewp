@@ -3841,11 +3841,11 @@
         <debug>0</debug>
         <option>
           <name>XOutOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OutputFile</name>
-          <state>MyMenu2.elf</state>
+          <state>MyMenu2_0x45.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>

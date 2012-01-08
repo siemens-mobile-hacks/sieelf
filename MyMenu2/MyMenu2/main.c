@@ -1,5 +1,11 @@
 #include "..\..\inc\swilib.h"
 
+#ifndef NEWSGOLD
+#define ENUM 0x23   ;SGold为0x23,其他为0x26
+#else
+#define ENUM 0x26
+#endif
+
 #define COPYRIGHT	"MyMenu2\n(c)BingK(binghelingxi)"
 #define ELFNAME		"MyMenu2"
 //#define SK_SELECT	"Select"
@@ -483,7 +489,7 @@ typedef struct
   int is_exact_dir;
   int unk7;
   int unk8;
-  int unk9; // _1
+  int unk9; // always 1
   int unk10;
   int unk11;
   WSHDR* full_filename;
@@ -494,18 +500,28 @@ typedef struct
   int unk17_26[10]; 
 }NativeExplorerData;*/
 
+
+
 //by benj9
-// all params: if 0, not applied
-//exp_mode		equ		0	; 0=normal, 1=file selection, 3+4=folder selection
-//exp_def_folder	equ		4	; eg. 1=sound, 9=pictures. 0x26: use folder in st_exp_cust_folder_ws
-//exp_cust_folder_ws	equ		8	; if st_exp_def_folder=0x26, use base folder stored in this ws
+//all params: if 0, not applied
+//exp_mode		        equ		0	; 0=normal, 1=file selection, 3+4=folder selection
+//exp_def_folder	    equ		4	; NSG eg. 0=MyStuff 1=sound, 8=Misc 9=pictures 11=video 1F=apps 20=game 2D=theme 31=unknown1 61=MMC. 0x26: use folder in st_exp_cust_folder_ws
+//                            ;  SG eg. 0=Misc 1=sound 2=sound\Ems 3=sound\on off 4=sound\ProSlide 5=Voice memo 6=SMS 7=Misc 8=picture 9=pic\EMS A=Pic\Logos B=Pic\WallPaper C=Pic\MMS D=pic\Icons E=pic\Frame F=video 10=Animation 11=Ani\EMS 12=0:\ 13=Misc\Data inbox 14=Text module 15=Pic\Clip Gallery 16=0:\ 17=0:\ 18=0:\ 19=Skins 1A=Text 1B=JAVA 1C=JAVA/jam 1D=JAVA/jam/Apps 1E=jam/Games 1F=jam/SMS 20=System 21=0:\ 22=Tmp 23=ws 24=存储器已满 25=0:\ 26=1:\Skin 27=System/mms 28=System/japp/ 29=2:\japp 2A=theme 2B=1:\ims 2C=2:\IMS 2D=PhonePilots 2E=2D\Lists 2F=2D\Res 30=2D\Tmp 31=Sms archive 35=Sms archieve\Draft 39=0:\System\HMI 3A=0:\System\SMS 3B=0:\System\SyncML 
+//exp_cust_folder_ws	equ		8	  ; if NSG st_exp_def_folder=0x26, use base folder stored in this ws, if SGold st_exp_def_folder=0x23
 //exp_preselection_ws	equ		0xC	; start selection in explorer with file/folder stored in ws
+//                    equ		0x10
 //exp_lock_navigation	equ		0x14	; if 1, lock navigation with drives and higher folders
-//exp_1			equ		0x20	; always 1
-//exp_filter_start	equ		0x24	; func checks files/folders to be shown at start
-//exp_dest_ws		equ		0x2C	; dest file/folder (if mode >0)
-//exp_filter_scroll	equ		0x34	; func checks files to be shown by scrolling
-//exp_report_csm	equ		0x38	; *csm to report about everything
+//                    equ		0x18
+//                    equ		0x1C
+//exp_1			          equ		0x20	; always 1
+//exp_filter_start	  equ		0x24	; func checks files/folders to be shown at start
+//                    equ		0x28
+//exp_dest_ws		      equ		0x2C	; dest file/folder (if mode >0)
+//                    equ		0x30
+//exp_filter_scroll	  equ		0x34	; func checks files to be shown by scrolling
+//exp_report_csm	    equ		0x38	; *csm to report about everything
+//                    equ		0x3C
+//                    equ		0x40
 
 //#pragma swi_number=0x254
 //__swi __arm int StartNativeExplorer(NativeExplorerData* data);
@@ -528,9 +544,9 @@ void run_folder(MENU_LIST *ml)
 	NativeExplorerData data;
 	zeromem(&data,sizeof(NativeExplorerData));
 	data.mode=0;
-	data.dir_enum=0x26;
+	data.dir_enum=0x3B;
 	data.path_to_file=ws;
-	data.is_exact_dir=1;
+	data.is_exact_dir=0;
 	data.full_filename=ws;
 	data.unk9=1;
 	//data.this_struct_addr=&data;
