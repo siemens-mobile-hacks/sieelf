@@ -1,6 +1,12 @@
 #include "..\inc\swilib.h"
 #include "conf_loader.h"
 
+#ifndef NEWSGOLD
+#define ENUM 0x23
+#else
+#define ENUM 0x26
+#endif
+
 extern const char FUNC_FILE_NAME[];
 
 extern const char REFRESH[];
@@ -86,7 +92,7 @@ int RereadSettings() {
 int runSystem(char *text) {
   
   int r = 0;
-  char *p;
+  //char *p;
   /** 首先测试是否为系统功能*/
 //  if (strlen(text) == strlen(REFRESH)) {
 //    p = strstr(REFRESH, text);
@@ -191,7 +197,7 @@ int runFile(char *file) {
   return 0;
 }
 
-/*
+
 int runFolder(char *path)
 {
 if(path && strlen(path))
@@ -201,9 +207,9 @@ if(path && strlen(path))
 	NativeExplorerData data;
 	zeromem(&data,sizeof(NativeExplorerData));
 	data.mode=0;
-	data.dir_enum=0x26;
+	data.dir_enum=ENUM;
 	data.path_to_file=ws;
-	data.is_exact_dir=1;
+	data.is_exact_dir=0;
 	data.full_filename=ws;
 	data.unk9=1;
 	//data.this_struct_addr=&data;
@@ -213,8 +219,8 @@ if(path && strlen(path))
 }
 	return 0;
 }
-*/
 
+/*
 int runFolder(char *folderpath)
 {
       WSHDR _ws_elfpath;
@@ -226,6 +232,7 @@ int runFolder(char *folderpath)
       ExecuteFile(ws_elfpath, 0, folderpath);
       FreeWS(ws_elfpath);
 }
+*/
 
 int runShorcut(char *shorcut) 
 {

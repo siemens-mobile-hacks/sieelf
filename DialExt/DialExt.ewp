@@ -2109,6 +2109,13 @@
   </file>
   <file>
     <name>$PROJ_DIR$\main.c</name>
+    <excluded>
+      <configuration>Release_SGOLD</configuration>
+      <configuration>Release_NEWSGOLD</configuration>
+    </excluded>
+  </file>
+  <file>
+    <name>$PROJ_DIR$\main_DaiKangroo_CG2.c</name>
   </file>
 </project>
 
