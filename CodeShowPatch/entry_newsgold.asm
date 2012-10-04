@@ -6,6 +6,9 @@
 #ifdef M81Cv51
 #define ADDR_FUNC1 0xA0A2E6B1
 #endif
+#ifdef C81Cv50
+#define ADDR_FUNC1 0xA0A2DB79
+#endif
 
 /*
 S7Cv47的编译条件
@@ -34,7 +37,7 @@ S68Cv51/M81Cv51
 MENU_HDR_ICON
 	DCD	0x156
 	DCD	0
-#ifdef NSG_X75
+#ifdef NSG_X75  ;NSG编译条件
 	CODE16
 RecoedWindow_:
 	PUSH	{LR}
@@ -196,9 +199,9 @@ EDIAL_CREATE
 	MOV	R2, #1
 	MOV	R0, R4
 	LDR	R1, [SP, #0x60] //editq
-	LDR	R7, =ADDR_FUNC1
-	BLX	R7
-	ADD	SP, #0x6C
+	LDR	R7, =ADDR_FUNC1 ;恢复旧数据
+	BLX	R7              ;恢复旧数据
+	ADD	SP, #0x6C       ;恢复旧数据
 	POP	{R4-R7,PC}
 #else
 	CODE32

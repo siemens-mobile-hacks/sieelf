@@ -238,8 +238,16 @@
 #define GetHeaderPointer_addr   0xA009D677//
 #define SetHeaderText_addr      0xA00B7B19//
 #define ADDR_AllocWS		0xA100112A+1
-
 #define ADDR_IncommingPDU	0xA87A092C
+
+#define ConstructEditControl_adr	0xA00A73FB
+#define SetFontToEditCOptions_adr	0xA00A707B
+#define CopyOptionsToEditControl_adr	0xA00A7129
+#define AddEditControlToEditQend_adr	0xA00A7DA9
+#define ExtractEditControl_adr		0xA00DD4DF
+#define EDIT_SetTextToEditControl_adr	0xA00DD4D5
+#define wsInsertChar_adr		0xA100136D
+#define ADDR_EDIT_UNK_VOID_INT_INT	0xA00DD519
 
 #define BASEADDRESS		0xA0CC0000
 #endif

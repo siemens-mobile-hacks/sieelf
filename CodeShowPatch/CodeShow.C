@@ -274,7 +274,7 @@ int GetProvAndCity(word *pBSTR, char *pNoStr)
 	}
 #ifdef OLD_VER
 	//如果是13x，15x，18x，则判定为移动电话
-	else if(*pNoStr == '1' && (*(pNoStr+1) == '3' || *(pNoStr+1) == '5' || *(pNoStr+1) == '8'))
+	else if(*pNoStr == '1' && (*(pNoStr+1) == '3' || *(pNoStr+1) == '4' || *(pNoStr+1) == '5' || *(pNoStr+1) == '8'))
 	{
 		bLocal = 2;
                 char chTemp=*(pNoStr+1);

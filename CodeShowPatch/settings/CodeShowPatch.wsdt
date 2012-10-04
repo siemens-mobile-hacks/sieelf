@@ -3,7 +3,7 @@
 <Workspace>
   <ConfigDictionary>
     
-  <CurrentConfigs><Project>CodeShowPatch/E71Cv41</Project></CurrentConfigs></ConfigDictionary>
+  <CurrentConfigs><Project>CodeShowPatch/C81Cv50</Project></CurrentConfigs></ConfigDictionary>
   <Desktop>
     <Static>
       <Workspace>
@@ -12,7 +12,7 @@
           
           
           
-        <Column0>360</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+        <Column0>299</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
       </Workspace>
       <Build>
         
@@ -52,14 +52,14 @@
       
       
       
-    <Pane><Tab><Factory>TextEditor</Factory><Filename>D:\SVN\SieELF\SieELF\CodeShowPatch\entry_elka.asm</Filename><XPos>0</XPos><YPos>478</YPos><SelStart>6891</SelStart><SelEnd>6891</SelEnd></Tab><ActiveTab>0</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>D:\SVN\SieELF\SieELF\CodeShowPatch\entry_newsgold.asm</Filename><XPos>0</XPos><YPos>372</YPos><SelStart>6236</SelStart><SelEnd>6236</SelEnd></Tab><Tab><Factory>TextEditor</Factory><Filename>D:\SVN\SieELF\SieELF\CodeShowPatch\menuText.c</Filename><XPos>0</XPos><YPos>12</YPos><SelStart>627</SelStart><SelEnd>627</SelEnd></Tab><ActiveTab>1</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
     <Positions>
       
       
       
       
       
-    <Top><Row0><Sizes><Toolbar-003bec08><key>iaridepm.enu1</key></Toolbar-003bec08></Sizes></Row0></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>467</Bottom><Right>434</Right><x>-2</x><y>-2</y><xscreen>269</xscreen><yscreen>214</yscreen><sizeHorzCX>210156</sizeHorzCX><sizeHorzCY>295580</sizeHorzCY><sizeVertCX>340625</sizeVertCX><sizeVertCY>647790</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>212</Bottom><Right>1282</Right><x>-2</x><y>-2</y><xscreen>1284</xscreen><yscreen>214</yscreen><sizeHorzCX>1003125</sizeHorzCX><sizeHorzCY>295580</sizeHorzCY><sizeVertCX>210156</sizeVertCX><sizeVertCY>295580</sizeVertCY></Rect></Wnd1></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+    <Top><Row0><Sizes><Toolbar-003bec58><key>iaridepm.enu1</key></Toolbar-003bec58></Sizes></Row0></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>475</Bottom><Right>373</Right><x>-2</x><y>-2</y><xscreen>269</xscreen><yscreen>217</yscreen><sizeHorzCX>210156</sizeHorzCX><sizeHorzCY>295640</sizeHorzCY><sizeVertCX>292969</sizeVertCX><sizeVertCY>649864</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>215</Bottom><Right>1282</Right><x>-2</x><y>-2</y><xscreen>1284</xscreen><yscreen>217</yscreen><sizeHorzCX>1003125</sizeHorzCX><sizeHorzCY>295640</sizeHorzCY><sizeVertCX>210156</sizeVertCX><sizeVertCY>295640</sizeVertCY></Rect></Wnd1></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
   </Desktop>
 </Workspace>
 
