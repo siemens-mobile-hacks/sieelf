@@ -509,7 +509,6 @@ CodeShowPatch/CX6Cv50.xcl -text
 CodeShowPatch/CX7Av25.xcl -text
 CodeShowPatch/CX7Cv50.xcl -text
 CodeShowPatch/CodeShow.C -text
-CodeShowPatch/CodeShowPatch.dep -text
 CodeShowPatch/CodeShowPatch.ewd -text
 CodeShowPatch/CodeShowPatch.ewp -text
 CodeShowPatch/CodeShowPatch.eww -text
@@ -534,10 +533,6 @@ CodeShowPatch/func.asm -text
 CodeShowPatch/menuText.c -text
 CodeShowPatch/mk.bat -text
 CodeShowPatch/setHeaderText.c -text
-CodeShowPatch/settings/CodeShowPatch.cspy.bat -text
-CodeShowPatch/settings/CodeShowPatch.dbgdt -text
-CodeShowPatch/settings/CodeShowPatch.dni -text
-CodeShowPatch/settings/CodeShowPatch.wsdt -text
 CodeShowPatch/sms_num.c -text
 CodeShowPatch/type_.h -text
 DialExt/DialExt.ewp -text

@@ -12385,7 +12385,7 @@
         <debug>0</debug>
         <option>
           <name>GProcessorMode</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>ExePath</name>
@@ -12507,7 +12507,7 @@
           <name>CCDefines</name>
           <state>NEWSGOLD</state>
           <state>NSG_X75</state>
-          <state>NSG_X85</state>
+          <state>NSG_XXX</state>
           <state>C81Cv50</state>
         </option>
         <option>
@@ -12777,7 +12777,7 @@
           <name>ADefines</name>
           <state>NEWSGOLD</state>
           <state>NSG_X75</state>
-          <state>NSG_X85</state>
+          <state>NSG_XXX</state>
           <state>C81Cv50</state>
         </option>
         <option>
@@ -12990,7 +12990,7 @@
         </option>
         <option>
           <name>XclFile</name>
-          <state>$PROJ_DIR$\S68Cv51.xcl</state>
+          <state>$PROJ_DIR$\C81Cv50.xcl</state>
         </option>
         <option>
           <name>XclFileSlave</name>
