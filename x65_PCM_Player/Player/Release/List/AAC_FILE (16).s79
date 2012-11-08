@@ -1,0 +1,1197 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:17 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD /
+//                       EC\AAC_FILE (16).c                                  /
+//    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AAC /
+//                       DEC\AAC_FILE (16).c" -D NDEBUG -lC                  /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\AAC_FILE (16).s79                              /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME `AAC_FILE (16)`
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        MULTWEAK ??raac_ByteAlignBitstream??rA
+        MULTWEAK ??raac_CalcBitsUsed??rA
+        MULTWEAK ??raac_DecodeICSInfo??rA
+        MULTWEAK ??raac_DecodeNextElement??rT
+        MULTWEAK ??raac_DecodeProgramConfigElement??rT
+        MULTWEAK ??raac_GetBits??rA
+        MULTWEAK ??raac_SetBitstreamPointer??rA
+        FUNCTION DecodeChannelPairElement,0203H
+        LOCFRAME CSTACK, 32, STACK
+        PUBLIC raac_DecodeNextElement
+        FUNCTION raac_DecodeNextElement,0203H
+        LOCFRAME CSTACK, 56, STACK
+        PUBLIC raac_DecodeProgramConfigElement
+        FUNCTION raac_DecodeProgramConfigElement,0203H
+        LOCFRAME CSTACK, 20, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+raac_ByteAlignBitstream SYMBOL "raac_ByteAlignBitstream"
+raac_CalcBitsUsed   SYMBOL "raac_CalcBitsUsed"
+raac_DecodeICSInfo  SYMBOL "raac_DecodeICSInfo"
+raac_GetBits        SYMBOL "raac_GetBits"
+raac_SetBitstreamPointer SYMBOL "raac_SetBitstreamPointer"
+??raac_ByteAlignBitstream??rA SYMBOL "??rA", raac_ByteAlignBitstream
+??raac_CalcBitsUsed??rA SYMBOL "??rA", raac_CalcBitsUsed
+??raac_DecodeICSInfo??rA SYMBOL "??rA", raac_DecodeICSInfo
+raac_DecodeNextElement SYMBOL "raac_DecodeNextElement"
+??raac_DecodeNextElement??rT SYMBOL "??rT", raac_DecodeNextElement
+raac_DecodeProgramConfigElement SYMBOL "raac_DecodeProgramConfigElement"
+??raac_DecodeProgramConfigElement??rT SYMBOL "??rT", raac_DecodeProgramConfigElement
+??raac_GetBits??rA  SYMBOL "??rA", raac_GetBits
+??raac_SetBitstreamPointer??rA SYMBOL "??rA", raac_SetBitstreamPointer
+
+        EXTERN raac_ByteAlignBitstream
+        FUNCTION raac_ByteAlignBitstream,0202H
+        EXTERN raac_CalcBitsUsed
+        FUNCTION raac_CalcBitsUsed,0202H
+        EXTERN raac_DecodeICSInfo
+        FUNCTION raac_DecodeICSInfo,0202H
+        EXTERN raac_GetBits
+        FUNCTION raac_GetBits,0202H
+        EXTERN raac_SetBitstreamPointer
+        FUNCTION raac_SetBitstreamPointer,0202H
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??DecodeChannelPairElement??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE DecodeChannelPairElement
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (16).c
+//    1 /* ***** BEGIN LICENSE BLOCK *****  
+//    2  * Source last modified: $Id: decelmnt.c,v 1.1 2005/02/26 01:47:34 jrecker Exp $ 
+//    3  *   
+//    4  * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+//    5  *       
+//    6  * The contents of this file, and the files included with this file, 
+//    7  * are subject to the current version of the RealNetworks Public 
+//    8  * Source License (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the current version of the RealNetworks Community 
+//   11  * Source License (the "RCSL") available at 
+//   12  * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+//   13  * will apply. You may also obtain the license terms directly from 
+//   14  * RealNetworks.  You may not use this file except in compliance with 
+//   15  * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+//   16  * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+//   17  * the rights, obligations and limitations governing use of the 
+//   18  * contents of the file. 
+//   19  *   
+//   20  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   21  * developer of the Original Code and owns the copyrights in the 
+//   22  * portions it created. 
+//   23  *   
+//   24  * This file, and the files included with this file, is distributed 
+//   25  * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+//   26  * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+//   27  * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+//   28  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+//   29  * ENJOYMENT OR NON-INFRINGEMENT. 
+//   30  *  
+//   31  * Technology Compatibility Kit Test Suite(s) Location:  
+//   32  *    http://www.helixcommunity.org/content/tck  
+//   33  *  
+//   34  * Contributor(s):  
+//   35  *   
+//   36  * ***** END LICENSE BLOCK ***** */  
+//   37 
+//   38 /**************************************************************************************
+//   39  * Fixed-point HE-AAC decoder
+//   40  * Jon Recker (jrecker@real.com)
+//   41  * February 2005
+//   42  *
+//   43  * decelmnt.c - syntactic element decoding
+//   44  **************************************************************************************/
+//   45 
+//   46 #include "coder_aac.h"
+//   47 
+//   48 /**************************************************************************************
+//   49  * Function:    DecodeSingleChannelElement
+//   50  *
+//   51  * Description: decode one SCE
+//   52  *
+//   53  * Inputs:      BitStreamInfo struct pointing to start of SCE (14496-3, table 4.4.4) 
+//   54  *
+//   55  * Outputs:     updated element instance tag
+//   56  *
+//   57  * Return:      0 if successful, -1 if error
+//   58  *
+//   59  * Notes:       doesn't decode individual channel stream (part of DecodeNoiselessData)
+//   60  **************************************************************************************/
+//   61 static int DecodeSingleChannelElement(AACDecInfo *aacDecInfo, BitStreamInfo *bsi)
+//   62 {
+//   63 	/* validate pointers */
+//   64 	if (!aacDecInfo || !aacDecInfo->psInfoBase)
+//   65 		return -1;
+//   66 
+//   67 	/* read instance tag */
+//   68 	aacDecInfo->currInstTag = GetBits(bsi, NUM_INST_TAG_BITS);
+//   69 
+//   70 	return 0;
+//   71 }
+//   72 
+//   73 /**************************************************************************************
+//   74  * Function:    DecodeChannelPairElement
+//   75  *
+//   76  * Description: decode one CPE
+//   77  *
+//   78  * Inputs:      BitStreamInfo struct pointing to start of CPE (14496-3, table 4.4.5) 
+//   79  *
+//   80  * Outputs:     updated element instance tag
+//   81  *              updated commonWin
+//   82  *              updated ICS info, if commonWin == 1
+//   83  *              updated mid-side stereo info, if commonWin == 1
+//   84  *
+//   85  * Return:      0 if successful, -1 if error
+//   86  *
+//   87  * Notes:       doesn't decode individual channel stream (part of DecodeNoiselessData)
+//   88  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function DecodeChannelPairElement
+        ARM
+//   89 static int DecodeChannelPairElement(AACDecInfo *aacDecInfo, BitStreamInfo *bsi)
+//   90 {
+DecodeChannelPairElement:
+        PUSH     {R4-R10,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R10 Frame(CFA, -8)
+        CFI R9 Frame(CFA, -12)
+        CFI R8 Frame(CFA, -16)
+        CFI R7 Frame(CFA, -20)
+        CFI R6 Frame(CFA, -24)
+        CFI R5 Frame(CFA, -28)
+        CFI R4 Frame(CFA, -32)
+        CFI CFA R13+32
+        MOV      R6,R0
+//   91 	int sfb, gp, maskOffset;
+//   92 	unsigned char currBit, *maskPtr;
+//   93 	PSInfoBase *psi;
+//   94 	ICSInfo *icsInfo;
+//   95 
+//   96 	/* validate pointers */
+//   97 	if (!aacDecInfo || !aacDecInfo->psInfoBase)
+        CMP      R6,#+0
+        LDRNE    R7,[R6, #+0]
+        MOV      R4,R1
+        CMPNE    R7,#+0
+//   98 		return -1;
+        MVNEQ    R0,#+0
+        POPEQ    {R4-R10,PC}
+//   99 	psi = (PSInfoBase *)(aacDecInfo->psInfoBase);
+//  100 	icsInfo = psi->icsInfo;
+        MOV      R0,#+124
+        ORR      R0,R0,#0x800
+        ADD      R5,R0,R7
+//  101 
+//  102 	/* read instance tag */
+//  103 	aacDecInfo->currInstTag = GetBits(bsi, NUM_INST_TAG_BITS);
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STR      R0,[R6, #+44]
+//  104 
+//  105 	/* read common window flag and mid-side info (if present) 
+//  106 	 * store msMask bits in psi->msMaskBits[] as follows:
+//  107 	 *  long blocks -  pack bits for each SFB in range [0, maxSFB) starting with lsb of msMaskBits[0]
+//  108 	 *  short blocks - pack bits for each SFB in range [0, maxSFB), for each group [0, 7]
+//  109 	 * msMaskPresent = 0 means no M/S coding
+//  110 	 *               = 1 means psi->msMaskBits contains 1 bit per SFB to toggle M/S coding
+//  111 	 *               = 2 means all SFB's are M/S coded (so psi->msMaskBits is not needed)
+//  112 	 */
+//  113 	psi->commonWin = GetBits(bsi, 1);
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STR      R0,[R7, #+2288]
+//  114 	if (psi->commonWin) {
+        CMP      R0,#+0
+        POPEQ    {R4-R10,PC}
+//  115 		DecodeICSInfo(bsi, icsInfo, psi->sampRateIdx);
+        LDR      R2,[R7, #+2168]
+        MOV      R1,R5
+        MOV      R0,R4
+        _BLF     raac_DecodeICSInfo,??raac_DecodeICSInfo??rA
+//  116 		psi->msMaskPresent = GetBits(bsi, 2);
+        MOV      R1,#+2
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STR      R0,[R7, #+3012]
+//  117 		if (psi->msMaskPresent == 1) {
+        CMP      R0,#+1
+        BNE      ??DecodeChannelPairElement_0
+//  118 			maskPtr = psi->msMaskBits;
+        MOV      R0,#+200
+        ORR      R0,R0,#0xB00
+        ADD      R6,R0,R7
+//  119 			*maskPtr = 0;
+        MOV      R7,#+0
+        STRB     R7,[R6, #+0]
+//  120 			maskOffset = 0;
+//  121 			for (gp = 0; gp < icsInfo->numWinGroup; gp++) {
+        LDRB     R0,[R5, #+49]
+        MOV      R8,#+0
+        MOV      R9,R7
+        CMP      R0,#+0
+        BNE      ??DecodeChannelPairElement_1
+//  122 				for (sfb = 0; sfb < icsInfo->maxSFB; sfb++) {
+//  123 					currBit = (unsigned char)GetBits(bsi, 1);
+//  124 					*maskPtr |= currBit << maskOffset;
+//  125 					if (++maskOffset == 8) {
+//  126 						maskPtr++;
+//  127 						*maskPtr = 0;
+//  128 						maskOffset = 0;
+//  129 					}
+//  130 				}		
+//  131 			}
+//  132 		}
+//  133 	}
+//  134 
+//  135 	return 0;
+??DecodeChannelPairElement_0:
+        MOV      R0,#+0
+        POP      {R4-R10,PC}      ;; return
+??DecodeChannelPairElement_2:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LDRB     R1,[R6, #+0]
+        AND      R0,R0,#0xFF
+        LSL      R0,R0,R8
+        ORR      R0,R0,R1
+        STRB     R0,[R6, #+0]
+        ADD      R8,R8,#+1
+        CMP      R8,#+8
+        STRBEQ   R7,[R6, #+1]!
+        MOVEQ    R8,#+0
+        ADD      R10,R10,#+1
+??DecodeChannelPairElement_3:
+        LDRB     R0,[R5, #+3]
+        CMP      R10,R0
+        BLT      ??DecodeChannelPairElement_2
+??DecodeChannelPairElement_4:
+        ADD      R9,R9,#+1
+??DecodeChannelPairElement_1:
+        LDRB     R0,[R5, #+49]
+        CMP      R9,R0
+        BGE      ??DecodeChannelPairElement_0
+        LDRB     R0,[R5, #+3]
+        MOV      R10,#+0
+        CMP      R0,#+0
+        BNE      ??DecodeChannelPairElement_3
+        B        ??DecodeChannelPairElement_4
+        CFI EndBlock cfiBlock1
+//  136 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_DecodeProgramConfigElement??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE raac_DecodeProgramConfigElement
+//  137 
+//  138 /**************************************************************************************
+//  139  * Function:    DecodeLFEChannelElement
+//  140  *
+//  141  * Description: decode one LFE
+//  142  *
+//  143  * Inputs:      BitStreamInfo struct pointing to start of LFE (14496-3, table 4.4.9) 
+//  144  *
+//  145  * Outputs:     updated element instance tag
+//  146  *
+//  147  * Return:      0 if successful, -1 if error
+//  148  *
+//  149  * Notes:       doesn't decode individual channel stream (part of DecodeNoiselessData)
+//  150  **************************************************************************************/
+//  151 static int DecodeLFEChannelElement(AACDecInfo *aacDecInfo, BitStreamInfo *bsi)
+//  152 {
+//  153 	/* validate pointers */
+//  154 	if (!aacDecInfo || !aacDecInfo->psInfoBase)
+//  155 		return -1;
+//  156 
+//  157 	/* read instance tag */
+//  158 	aacDecInfo->currInstTag = GetBits(bsi, NUM_INST_TAG_BITS);
+//  159 
+//  160 	return 0;
+//  161 }
+//  162 
+//  163 /**************************************************************************************
+//  164  * Function:    DecodeDataStreamElement
+//  165  *
+//  166  * Description: decode one DSE
+//  167  *
+//  168  * Inputs:      BitStreamInfo struct pointing to start of DSE (14496-3, table 4.4.10) 
+//  169  *
+//  170  * Outputs:     updated element instance tag
+//  171  *              filled in data stream buffer
+//  172  *
+//  173  * Return:      0 if successful, -1 if error
+//  174  **************************************************************************************/
+//  175 static int DecodeDataStreamElement(AACDecInfo *aacDecInfo, BitStreamInfo *bsi)
+//  176 {
+//  177 	unsigned int byteAlign, dataCount;
+//  178 	unsigned char *dataBuf;
+//  179 	PSInfoBase *psi;
+//  180 
+//  181 	/* validate pointers */
+//  182 	if (!aacDecInfo || !aacDecInfo->psInfoBase)
+//  183 		return -1;
+//  184 	psi = (PSInfoBase *)(aacDecInfo->psInfoBase);
+//  185 
+//  186 	aacDecInfo->currInstTag = GetBits(bsi, NUM_INST_TAG_BITS);
+//  187 	byteAlign = GetBits(bsi, 1);
+//  188 	dataCount = GetBits(bsi, 8);
+//  189 	if (dataCount == 255)
+//  190 		dataCount += GetBits(bsi, 8);
+//  191 
+//  192 	if (byteAlign)
+//  193 		ByteAlignBitstream(bsi);
+//  194 
+//  195 	psi->dataCount = dataCount;
+//  196 	dataBuf = psi->dataBuf;
+//  197 	while (dataCount--)
+//  198 		*dataBuf++ = GetBits(bsi, 8);
+//  199 
+//  200 	return 0;
+//  201 }
+//  202 
+//  203 /**************************************************************************************
+//  204  * Function:    DecodeProgramConfigElement
+//  205  *
+//  206  * Description: decode one PCE
+//  207  *
+//  208  * Inputs:      BitStreamInfo struct pointing to start of PCE (14496-3, table 4.4.2) 
+//  209  *
+//  210  * Outputs:     filled-in ProgConfigElement struct
+//  211  *              updated BitStreamInfo struct
+//  212  *
+//  213  * Return:      0 if successful, error code (< 0) if error
+//  214  *
+//  215  * Notes:       #define KEEP_PCE_COMMENTS to save the comment field of the PCE
+//  216  *                (otherwise we just skip it in the bitstream, to save memory)
+//  217  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function raac_DecodeProgramConfigElement
+        ARM
+//  218 int DecodeProgramConfigElement(ProgConfigElement *pce, BitStreamInfo *bsi)
+//  219 {
+raac_DecodeProgramConfigElement:
+        PUSH     {R4-R7,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R7 Frame(CFA, -8)
+        CFI R6 Frame(CFA, -12)
+        CFI R5 Frame(CFA, -16)
+        CFI R4 Frame(CFA, -20)
+        CFI CFA R13+20
+        MOV      R5,R0
+        MOV      R4,R1
+//  220 	int i;
+//  221 
+//  222 	pce->elemInstTag =   GetBits(bsi, 4);
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, #+0]
+//  223 	pce->profile =       GetBits(bsi, 2);
+        MOV      R1,#+2
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, #+1]
+//  224 	pce->sampRateIdx =   GetBits(bsi, 4);
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, #+2]
+//  225 	pce->numFCE =        GetBits(bsi, 4);
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, #+3]
+//  226 	pce->numSCE =        GetBits(bsi, 4);
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, #+4]
+//  227 	pce->numBCE =        GetBits(bsi, 4);
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, #+5]
+//  228 	pce->numLCE =        GetBits(bsi, 2);
+        MOV      R1,#+2
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, #+6]
+//  229 	pce->numADE =        GetBits(bsi, 3);
+        MOV      R1,#+3
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, #+7]
+//  230 	pce->numCCE =        GetBits(bsi, 4);
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, #+8]
+//  231 
+//  232 	pce->monoMixdown = GetBits(bsi, 1) << 4;	/* present flag */
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LSL      R0,R0,#+4
+        STRB     R0,[R5, #+9]
+//  233 	if (pce->monoMixdown)
+        LDRB     R0,[R5, #+9]
+        CMP      R0,#+0
+        BEQ      ??raac_DecodeProgramConfigElement_0
+//  234 		pce->monoMixdown |= GetBits(bsi, 4);	/* element number */
+        MOV      R6,R0
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        ORR      R0,R0,R6
+        STRB     R0,[R5, #+9]
+//  235 
+//  236 	pce->stereoMixdown = GetBits(bsi, 1) << 4;	/* present flag */
+??raac_DecodeProgramConfigElement_0:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LSL      R0,R0,#+4
+        STRB     R0,[R5, #+10]
+//  237 	if (pce->stereoMixdown)
+        LDRB     R0,[R5, #+10]
+        CMP      R0,#+0
+        BEQ      ??raac_DecodeProgramConfigElement_1
+//  238 		pce->stereoMixdown  |= GetBits(bsi, 4);	/* element number */
+        MOV      R6,R0
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        ORR      R0,R0,R6
+        STRB     R0,[R5, #+10]
+//  239 
+//  240 	pce->matrixMixdown = GetBits(bsi, 1) << 4;	/* present flag */
+??raac_DecodeProgramConfigElement_1:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LSL      R0,R0,#+4
+        STRB     R0,[R5, #+11]
+//  241 	if (pce->matrixMixdown) {
+        LDRB     R0,[R5, #+11]
+        CMP      R0,#+0
+        BEQ      ??raac_DecodeProgramConfigElement_2
+//  242 		pce->matrixMixdown  |= GetBits(bsi, 2) << 1;	/* index */
+        MOV      R6,R0
+        MOV      R1,#+2
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        ORR      R0,R6,R0, LSL #+1
+        STRB     R0,[R5, #+11]
+//  243 		pce->matrixMixdown  |= GetBits(bsi, 1);			/* pseudo-surround enable */
+        LDRB     R6,[R5, #+11]
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        ORR      R0,R0,R6
+        STRB     R0,[R5, #+11]
+//  244 	}
+//  245 
+//  246 	for (i = 0; i < pce->numFCE; i++) {
+??raac_DecodeProgramConfigElement_2:
+        LDRB     R0,[R5, #+3]
+        MOV      R6,#+0
+        CMP      R0,#+0
+        BNE      ??raac_DecodeProgramConfigElement_3
+        B        ??raac_DecodeProgramConfigElement_4
+//  247 		pce->fce[i]  = GetBits(bsi, 1) << 4;	/* is_cpe flag */
+??raac_DecodeProgramConfigElement_5:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LSL      R0,R0,#+4
+        ADD      R1,R6,R5
+        STRB     R0,[R1, #+12]
+//  248 		pce->fce[i] |= GetBits(bsi, 4);			/* tag select */
+        ADD      R0,R6,R5
+        LDRB     R7,[R0, #+12]
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        ORR      R0,R0,R7
+        ADD      R1,R6,R5
+        STRB     R0,[R1, #+12]
+//  249 	}
+        ADD      R6,R6,#+1
+??raac_DecodeProgramConfigElement_3:
+        LDRB     R0,[R5, #+3]
+        CMP      R6,R0
+        BLT      ??raac_DecodeProgramConfigElement_5
+//  250 
+//  251 	for (i = 0; i < pce->numSCE; i++) {
+??raac_DecodeProgramConfigElement_4:
+        LDRB     R0,[R5, #+4]
+        MOV      R6,#+0
+        CMP      R0,#+0
+        BNE      ??raac_DecodeProgramConfigElement_6
+        B        ??raac_DecodeProgramConfigElement_7
+//  252 		pce->sce[i]  = GetBits(bsi, 1) << 4;	/* is_cpe flag */
+??raac_DecodeProgramConfigElement_8:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LSL      R0,R0,#+4
+        ADD      R1,R6,R5
+        STRB     R0,[R1, #+27]
+//  253 		pce->sce[i] |= GetBits(bsi, 4);			/* tag select */
+        ADD      R0,R6,R5
+        LDRB     R7,[R0, #+27]
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        ORR      R0,R0,R7
+        ADD      R1,R6,R5
+        STRB     R0,[R1, #+27]
+//  254 	}
+        ADD      R6,R6,#+1
+??raac_DecodeProgramConfigElement_6:
+        LDRB     R0,[R5, #+4]
+        CMP      R6,R0
+        BLT      ??raac_DecodeProgramConfigElement_8
+//  255 
+//  256 	for (i = 0; i < pce->numBCE; i++) {
+??raac_DecodeProgramConfigElement_7:
+        LDRB     R0,[R5, #+5]
+        MOV      R6,#+0
+        CMP      R0,#+0
+        BNE      ??raac_DecodeProgramConfigElement_9
+        B        ??raac_DecodeProgramConfigElement_10
+//  257 		pce->bce[i]  = GetBits(bsi, 1) << 4;	/* is_cpe flag */
+??raac_DecodeProgramConfigElement_11:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LSL      R0,R0,#+4
+        ADD      R1,R6,R5
+        STRB     R0,[R1, #+42]
+//  258 		pce->bce[i] |= GetBits(bsi, 4);			/* tag select */
+        ADD      R0,R6,R5
+        LDRB     R7,[R0, #+42]
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        ORR      R0,R0,R7
+        ADD      R1,R6,R5
+        STRB     R0,[R1, #+42]
+//  259 	}
+        ADD      R6,R6,#+1
+??raac_DecodeProgramConfigElement_9:
+        LDRB     R0,[R5, #+5]
+        CMP      R6,R0
+        BLT      ??raac_DecodeProgramConfigElement_11
+//  260 
+//  261 	for (i = 0; i < pce->numLCE; i++)
+??raac_DecodeProgramConfigElement_10:
+        LDRB     R0,[R5, #+6]
+        MOV      R6,#+0
+        CMP      R0,#+0
+        BNE      ??raac_DecodeProgramConfigElement_12
+        B        ??raac_DecodeProgramConfigElement_13
+//  262 		pce->lce[i] = GetBits(bsi, 4);			/* tag select */
+??raac_DecodeProgramConfigElement_14:
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        ADD      R1,R6,R5
+        STRB     R0,[R1, #+57]
+        ADD      R6,R6,#+1
+??raac_DecodeProgramConfigElement_12:
+        LDRB     R0,[R5, #+6]
+        CMP      R6,R0
+        BLT      ??raac_DecodeProgramConfigElement_14
+//  263 
+//  264 	for (i = 0; i < pce->numADE; i++)
+??raac_DecodeProgramConfigElement_13:
+        LDRB     R0,[R5, #+7]
+        MOV      R6,#+0
+        CMP      R0,#+0
+        BNE      ??raac_DecodeProgramConfigElement_15
+        B        ??raac_DecodeProgramConfigElement_16
+//  265 		pce->ade[i] = GetBits(bsi, 4);			/* tag select */
+??raac_DecodeProgramConfigElement_17:
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        ADD      R1,R6,R5
+        STRB     R0,[R1, #+60]
+        ADD      R6,R6,#+1
+??raac_DecodeProgramConfigElement_15:
+        LDRB     R0,[R5, #+7]
+        CMP      R6,R0
+        BLT      ??raac_DecodeProgramConfigElement_17
+//  266 
+//  267 	for (i = 0; i < pce->numCCE; i++) {
+??raac_DecodeProgramConfigElement_16:
+        LDRB     R0,[R5, #+8]
+        MOV      R6,#+0
+        CMP      R0,#+0
+        BNE      ??raac_DecodeProgramConfigElement_18
+        B        ??raac_DecodeProgramConfigElement_19
+//  268 		pce->cce[i]  = GetBits(bsi, 1) << 4;	/* independent/dependent flag */
+??raac_DecodeProgramConfigElement_20:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LSL      R0,R0,#+4
+        ADD      R1,R6,R5
+        STRB     R0,[R1, #+67]
+//  269 		pce->cce[i] |= GetBits(bsi, 4);			/* tag select */
+        ADD      R0,R6,R5
+        LDRB     R7,[R0, #+67]
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        ORR      R0,R0,R7
+        ADD      R1,R6,R5
+        STRB     R0,[R1, #+67]
+//  270 	}
+        ADD      R6,R6,#+1
+??raac_DecodeProgramConfigElement_18:
+        LDRB     R0,[R5, #+8]
+        CMP      R6,R0
+        BLT      ??raac_DecodeProgramConfigElement_20
+//  271 
+//  272 
+//  273 	ByteAlignBitstream(bsi);
+??raac_DecodeProgramConfigElement_19:
+        MOV      R0,R4
+        _BLF     raac_ByteAlignBitstream,??raac_ByteAlignBitstream??rA
+//  274 
+//  275 #ifdef KEEP_PCE_COMMENTS
+//  276 	pce->commentBytes = GetBits(bsi, 8);
+//  277 	for (i = 0; i < pce->commentBytes; i++)
+//  278 		pce->commentField[i] = GetBits(bsi, 8);
+//  279 #else
+//  280 	/* eat comment bytes and throw away */
+//  281 	i = GetBits(bsi, 8);
+        MOV      R1,#+8
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        MOV      R5,R0
+        B        ??raac_DecodeProgramConfigElement_21
+//  282 	while (i--)
+//  283 		GetBits(bsi, 8);
+??raac_DecodeProgramConfigElement_22:
+        MOV      R1,#+8
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+??raac_DecodeProgramConfigElement_21:
+        MOV      R0,R5
+        SUB      R5,R0,#+1
+        CMP      R0,#+0
+        BNE      ??raac_DecodeProgramConfigElement_22
+//  284 #endif
+//  285 
+//  286 	return 0;
+        POP      {R4-R7,PC}       ;; return
+        CFI EndBlock cfiBlock3
+//  287 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_DecodeNextElement??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE raac_DecodeNextElement
+//  288 
+//  289 /**************************************************************************************
+//  290  * Function:    DecodeFillElement
+//  291  *
+//  292  * Description: decode one fill element
+//  293  *
+//  294  * Inputs:      BitStreamInfo struct pointing to start of fill element
+//  295  *                (14496-3, table 4.4.11) 
+//  296  *
+//  297  * Outputs:     updated element instance tag
+//  298  *              unpacked extension payload
+//  299  *
+//  300  * Return:      0 if successful, -1 if error
+//  301  **************************************************************************************/
+//  302 static int DecodeFillElement(AACDecInfo *aacDecInfo, BitStreamInfo *bsi)
+//  303 {
+//  304 	unsigned int fillCount;
+//  305 	unsigned char *fillBuf;
+//  306 	PSInfoBase *psi;
+//  307 
+//  308 	/* validate pointers */
+//  309 	if (!aacDecInfo || !aacDecInfo->psInfoBase)
+//  310 		return -1;
+//  311 	psi = (PSInfoBase *)(aacDecInfo->psInfoBase);
+//  312 
+//  313 	fillCount = GetBits(bsi, 4);
+//  314 	if (fillCount == 15)
+//  315 		fillCount += (GetBits(bsi, 8) - 1);
+//  316 
+//  317 	psi->fillCount = fillCount;
+//  318 	fillBuf = psi->fillBuf;
+//  319 	while (fillCount--)
+//  320 		*fillBuf++ = GetBits(bsi, 8);
+//  321 
+//  322 	aacDecInfo->currInstTag = -1;	/* fill elements don't have instance tag */
+//  323 	aacDecInfo->fillExtType = 0;
+//  324 
+//  325 #ifdef AAC_ENABLE_SBR
+//  326 	/* check for SBR 
+//  327 	 * aacDecInfo->sbrEnabled is sticky (reset each raw_data_block), so for multichannel 
+//  328 	 *    need to verify that all SCE/CPE/ICCE have valid SBR fill element following, and 
+//  329 	 *    must upsample by 2 for LFE
+//  330 	 */
+//  331 	if (psi->fillCount > 0) {
+//  332 		aacDecInfo->fillExtType = (int)((psi->fillBuf[0] >> 4) & 0x0f);
+//  333 		if (aacDecInfo->fillExtType == EXT_SBR_DATA || aacDecInfo->fillExtType == EXT_SBR_DATA_CRC)
+//  334 			aacDecInfo->sbrEnabled = 1;
+//  335 	}
+//  336 #endif
+//  337 
+//  338 	aacDecInfo->fillBuf = psi->fillBuf;
+//  339 	aacDecInfo->fillCount = psi->fillCount;
+//  340 
+//  341 	return 0;
+//  342 }
+//  343 
+//  344 /**************************************************************************************
+//  345  * Function:    DecodeNextElement
+//  346  *
+//  347  * Description: decode next syntactic element in AAC frame
+//  348  *
+//  349  * Inputs:      valid AACDecInfo struct
+//  350  *              double pointer to buffer containing next element
+//  351  *              pointer to bit offset
+//  352  *              pointer to number of valid bits remaining in buf
+//  353  *
+//  354  * Outputs:     type of element decoded (aacDecInfo->currBlockID)
+//  355  *              type of element decoded last time (aacDecInfo->prevBlockID)
+//  356  *              updated aacDecInfo state, depending on which element was decoded
+//  357  *              updated buffer pointer
+//  358  *              updated bit offset
+//  359  *              updated number of available bits
+//  360  *
+//  361  * Return:      0 if successful, error code (< 0) if error
+//  362  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function raac_DecodeNextElement
+        ARM
+//  363 int DecodeNextElement(AACDecInfo *aacDecInfo, unsigned char **buf, int *bitOffset, int *bitsAvail)
+//  364 {
+raac_DecodeNextElement:
+        PUSH     {R3-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+40
+        SUB      SP,SP,#+16
+        CFI CFA R13+56
+        MOV      R6,R0
+//  365 	int err, bitsUsed;
+//  366 	PSInfoBase *psi;
+//  367 	BitStreamInfo bsi;
+//  368 
+//  369 	/* validate pointers */
+//  370 	if (!aacDecInfo || !aacDecInfo->psInfoBase)
+        CMP      R6,#+0
+        LDRNE    R8,[R6, #+0]
+        MOV      R4,R1
+        MOV      R5,R2
+        CMPNE    R8,#+0
+//  371 		return ERR_AAC_NULL_POINTER;
+        MVNEQ    R0,#+1
+        BEQ      ??raac_DecodeNextElement_1
+//  372 	psi = (PSInfoBase *)(aacDecInfo->psInfoBase);
+//  373 
+//  374 	/* init bitstream reader */
+//  375 	SetBitstreamPointer(&bsi, (*bitsAvail + 7) >> 3, *buf);
+        LDR      R0,[R3, #+0]
+        LDR      R2,[R4, #+0]
+        ADD      R0,R0,#+7
+        ASR      R1,R0,#+3
+        MOV      R0,SP
+        _BLF     raac_SetBitstreamPointer,??raac_SetBitstreamPointer??rA
+//  376 	GetBits(&bsi, *bitOffset);
+        LDR      R1,[R5, #+0]
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+//  377 
+//  378 	/* read element ID (save last ID for SBR purposes) */
+//  379 	aacDecInfo->prevBlockID = aacDecInfo->currBlockID;
+        LDR      R0,[R6, #+40]
+//  380 	aacDecInfo->currBlockID = GetBits(&bsi, NUM_SYN_ID_BITS);
+        MOV      R1,#+3
+        STR      R0,[R6, #+36]
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STR      R0,[R6, #+40]
+//  381 
+//  382 	/* set defaults (could be overwritten by DecodeXXXElement(), depending on currBlockID) */
+//  383 	psi->commonWin = 0;
+        MOV      R7,#+0
+        STR      R7,[R8, #+2288]
+//  384  
+//  385 	err = 0;
+//  386 	switch (aacDecInfo->currBlockID) {
+        LDR      R1,[R6, #+40]
+        MOV      R0,#+0
+        CMP      R1,#+6
+        BHI      ??raac_DecodeNextElement_2
+        ADR      R2,??raac_DecodeNextElement_0
+        LDRB     R2,[R2, R1]
+        ADD      PC,PC,R2, LSL #+2
+        DATA
+??raac_DecodeNextElement_0:
+        DC8      +1,+27,+30,+1
+        DC8      +35,+73,+77,+0
+        ARM
+//  387 	case AAC_ID_SCE:
+//  388 		err = DecodeSingleChannelElement(aacDecInfo, &bsi);
+??raac_DecodeNextElement_3:
+        LDR      R0,[R6, #+0]
+        CMP      R0,#+0
+        BEQ      ??raac_DecodeNextElement_4
+        MOV      R1,#+4
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STR      R0,[R6, #+44]
+//  389 		break;
+//  390 	case AAC_ID_CPE:
+//  391 		err = DecodeChannelPairElement(aacDecInfo, &bsi);
+//  392 		break;
+//  393 	case AAC_ID_CCE:
+//  394 		/* TODO - implement CCE decoding */
+//  395 		break;
+//  396 	case AAC_ID_LFE:
+//  397 		err = DecodeLFEChannelElement(aacDecInfo, &bsi);
+//  398 		break;
+//  399 	case AAC_ID_DSE:
+//  400 		err = DecodeDataStreamElement(aacDecInfo, &bsi);
+//  401 		break;
+//  402 	case AAC_ID_PCE:
+//  403 		err = DecodeProgramConfigElement(psi->pce + 0, &bsi);
+//  404 		break;
+//  405 	case AAC_ID_FIL:
+//  406 		err = DecodeFillElement(aacDecInfo, &bsi);
+//  407 		break;
+//  408 	case AAC_ID_END:
+//  409 		break;
+//  410 	}
+//  411 	if (err)
+//  412 		return ERR_AAC_SYNTAX_ELEMENT;
+//  413 
+//  414 	/* update bitstream reader */
+//  415 	bitsUsed = CalcBitsUsed(&bsi, *buf, *bitOffset);
+??raac_DecodeNextElement_5:
+        LDR      R2,[R5, #+0]
+        LDR      R1,[R4, #+0]
+        MOV      R0,SP
+        _BLF     raac_CalcBitsUsed,??raac_CalcBitsUsed??rA
+//  416 	*buf += (bitsUsed + *bitOffset) >> 3;
+        LDR      R1,[R5, #+0]
+        LDR      R2,[R4, #+0]
+        ADD      R1,R1,R0
+        ADD      R2,R2,R1, ASR #+3
+        STR      R2,[R4, #+0]
+//  417 	*bitOffset = (bitsUsed + *bitOffset) & 0x07;
+        AND      R1,R1,#0x7
+        STR      R1,[R5, #+0]
+//  418 	*bitsAvail -= bitsUsed;
+        LDR      R1,[SP, #+16]
+        LDR      R1,[R1, #+0]
+        SUBS     R0,R1,R0
+        LDR      R1,[SP, #+16]
+        STR      R0,[R1, #+0]
+//  419 
+//  420 	if (*bitsAvail < 0)
+        MOVPL    R0,#+0
+//  421 		return ERR_AAC_INDATA_UNDERFLOW;
+        MVNMI    R0,#+0
+        B        ??raac_DecodeNextElement_6
+??raac_DecodeNextElement_7:
+        MOV      R1,SP
+        MOV      R0,R6
+        BL       DecodeChannelPairElement
+??raac_DecodeNextElement_2:
+        CMP      R0,#+0
+        BEQ      ??raac_DecodeNextElement_5
+??raac_DecodeNextElement_4:
+        MVN      R0,#+7
+??raac_DecodeNextElement_6:
+        ADD      SP,SP,#+20
+        CFI CFA R13+36
+        POP      {R4-R11,PC}
+        CFI CFA R13+56
+??raac_DecodeNextElement_8:
+        LDR      R8,[R6, #+0]
+        CMP      R8,#+0
+        BEQ      ??raac_DecodeNextElement_4
+        MOV      R1,#+4
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STR      R0,[R6, #+44]
+        MOV      R1,#+1
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        MOV      R6,R0
+        MOV      R1,#+8
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        MOV      R7,R0
+        CMP      R7,#+255
+        BNE      ??raac_DecodeNextElement_9
+        MOV      R1,#+8
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        ADD      R7,R0,#+255
+??raac_DecodeNextElement_9:
+        CMP      R6,#+0
+        BEQ      ??raac_DecodeNextElement_10
+        MOV      R0,SP
+        _BLF     raac_ByteAlignBitstream,??raac_ByteAlignBitstream??rA
+??raac_DecodeNextElement_10:
+        STR      R7,[R8, #+1368]
+        MOV      R0,#+92
+        ORR      R0,R0,#0x500
+        ADD      R6,R0,R8
+??raac_DecodeNextElement_11:
+        MOV      R0,R7
+        SUB      R7,R0,#+1
+        CMP      R0,#+0
+        BEQ      ??raac_DecodeNextElement_5
+        MOV      R1,#+8
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R6], #+1
+        B        ??raac_DecodeNextElement_11
+??raac_DecodeNextElement_12:
+        MOV      R1,SP
+        ADD      R0,R8,#+56
+        BL       raac_DecodeProgramConfigElement
+        B        ??raac_DecodeNextElement_2
+??raac_DecodeNextElement_13:
+        LDR      R8,[R6, #+0]
+        CMP      R8,#+0
+        BEQ      ??raac_DecodeNextElement_4
+        MOV      R1,#+4
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        MOV      R11,R0
+        CMP      R11,#+15
+        BNE      ??raac_DecodeNextElement_14
+        MOV      R1,#+8
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        ADD      R11,R0,#+14
+??raac_DecodeNextElement_14:
+        STR      R11,[R8, #+1884]
+        MOV      R9,#+1888
+        ADD      R10,R9,R8
+        B        ??raac_DecodeNextElement_15
+??raac_DecodeNextElement_16:
+        MOV      R1,#+8
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R10], #+1
+??raac_DecodeNextElement_15:
+        MOV      R0,R11
+        SUB      R11,R0,#+1
+        CMP      R0,#+0
+        BNE      ??raac_DecodeNextElement_16
+        MVN      R0,R7
+        STR      R0,[R6, #+44]
+        STR      R7,[R6, #+32]
+        ADD      R0,R9,R8
+        STR      R0,[R6, #+24]
+        LDR      R0,[R8, #+1884]
+        STR      R0,[R6, #+28]
+        B        ??raac_DecodeNextElement_5
+??raac_DecodeNextElement_1:
+        ADD      SP,SP,#+20       ;; stack cleaning
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        CFI EndBlock cfiBlock5
+//  422 
+//  423 	return ERR_AAC_NONE;
+//  424 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_GetBits??rA:
+        LDR      R12,??Subroutine3_0  ;; raac_GetBits
+        BX       R12
+        DATA
+??Subroutine3_0:
+        DC32     raac_GetBits
+        CFI EndBlock cfiBlock6
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_DecodeICSInfo??rA:
+        LDR      R12,??Subroutine4_0  ;; raac_DecodeICSInfo
+        BX       R12
+        DATA
+??Subroutine4_0:
+        DC32     raac_DecodeICSInfo
+        CFI EndBlock cfiBlock7
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_ByteAlignBitstream??rA:
+        LDR      R12,??Subroutine5_0  ;; raac_ByteAlignBitstream
+        BX       R12
+        DATA
+??Subroutine5_0:
+        DC32     raac_ByteAlignBitstream
+        CFI EndBlock cfiBlock8
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_SetBitstreamPointer??rA:
+        LDR      R12,??Subroutine6_0  ;; raac_SetBitstreamPointer
+        BX       R12
+        DATA
+??Subroutine6_0:
+        DC32     raac_SetBitstreamPointer
+        CFI EndBlock cfiBlock9
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_CalcBitsUsed??rA:
+        LDR      R12,??Subroutine7_0  ;; raac_CalcBitsUsed
+        BX       R12
+        DATA
+??Subroutine7_0:
+        DC32     raac_CalcBitsUsed
+        CFI EndBlock cfiBlock10
+
+        END
+//  425 
+// 
+// 1 820 bytes in segment CODE
+// 
+// 1 748 bytes of CODE memory (+ 72 bytes shared)
+//
+//Errors: none
+//Warnings: none

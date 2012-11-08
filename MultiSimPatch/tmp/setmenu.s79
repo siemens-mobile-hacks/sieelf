@@ -1,0 +1,1503 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   02/Dec/2011  21:06:58 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\MultiSimPatch\MultiSimElf\setm /
+//                       enu.c                                               /
+//    Command line    =  D:\SVN\SieELF\SieELF\MultiSimPatch\MultiSimElf\setm /
+//                       enu.c -D NEWSGOLD -lC D:\SVN\SieELF\SieELF\MultiSim /
+//                       Patch\tmp\ -lA D:\SVN\SieELF\SieELF\MultiSimPatch\t /
+//                       mp\ -o D:\SVN\SieELF\SieELF\MultiSimPatch\tmp\ -s9  /
+//                       --no_unroll --cpu_mode arm --endian little --cpu    /
+//                       ARM926EJ-S --stack_align 4 --interwork -e --fpu     /
+//                       None -I "D:\Program Files\IAR\Embedded Workbench    /
+//                       4.0 Evaluation\ARM\INC\" --inline_threshold=2       /
+//    List file       =  D:\SVN\SieELF\SieELF\MultiSimPatch\tmp\setmenu.s79  /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME setmenu
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        PUBWEAK `?*?DATA_ID`
+??DataTable0 EQU 0
+??DataTable1 EQU 0
+??DataTable11 EQU 0
+??DataTable2 EQU 0
+??DataTable3 EQU 0
+??DataTable4 EQU 0
+??DataTable5 EQU 0
+??DataTable7 EQU 0
+??DataTable8 EQU 0
+??DataTable9 EQU 0
+        MULTWEAK ??ExecFile??rT
+        MULTWEAK ??ReadFile??rT
+        MULTWEAK ??SendRequest??rA
+        MULTWEAK ??ShowSetMenu??rT
+        MULTWEAK ??WriteFile??rT
+        MULTWEAK ??htoi??rT
+        MULTWEAK ??stmenu_ghook??rT
+        PUBWEAK ?init?tab?DATA_I
+        PUBWEAK ?init?tab?DATA_Z
+        FUNCTION AutoNet,0603H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC ExecFile
+        FUNCTION ExecFile,0203H
+        LOCFRAME CSTACK, 12, STACK
+        FUNCTION FixBlock,0603H
+        LOCFRAME CSTACK, 36, STACK
+        FUNCTION LoadBlock,0603H
+        LOCFRAME CSTACK, 12, STACK
+        FUNCTION LoadBlock1,0603H
+        LOCFRAME CSTACK, 12, STACK
+        FUNCTION OpenBlock,0603H
+        LOCFRAME CSTACK, 4, STACK
+        FUNCTION OpenBlock1,0603H
+        LOCFRAME CSTACK, 4, STACK
+        FUNCTION OpenCfg,0603H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC ReadFile
+        FUNCTION ReadFile,0203H
+        LOCFRAME CSTACK, 32, STACK
+        FUNCTION SaveBlock,0603H
+        LOCFRAME CSTACK, 16, STACK
+        FUNCTION SaveBlock1,0603H
+        LOCFRAME CSTACK, 16, STACK
+        PUBLIC SetMenu_ID
+        PUBLIC ShowSetMenu
+        FUNCTION ShowSetMenu,0203H
+        LOCFRAME CSTACK, 28, STACK
+        PUBLIC WriteFile
+        FUNCTION WriteFile,0203H
+        LOCFRAME CSTACK, 40, STACK
+        PUBLIC bp
+        PUBLIC htoi
+        FUNCTION htoi,0203H
+        PUBLIC sS_ICONS
+        PUBLIC smenu_skt
+        FUNCTION smenuitemhandler,0603H
+        LOCFRAME CSTACK, 28, STACK
+        PUBLIC stmenu_ghook
+        FUNCTION stmenu_ghook,0603H
+        LOCFRAME CSTACK, 8, STACK
+        FUNCTION stmenu_keyhook,0603H
+        LOCFRAME CSTACK, 4, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+SendRequest         SYMBOL "SendRequest"
+ExecFile            SYMBOL "ExecFile"
+??ExecFile??rT      SYMBOL "??rT", ExecFile
+ReadFile            SYMBOL "ReadFile"
+??ReadFile??rT      SYMBOL "??rT", ReadFile
+??SendRequest??rA   SYMBOL "??rA", SendRequest
+ShowSetMenu         SYMBOL "ShowSetMenu"
+??ShowSetMenu??rT   SYMBOL "??rT", ShowSetMenu
+WriteFile           SYMBOL "WriteFile"
+??WriteFile??rT     SYMBOL "??rT", WriteFile
+htoi                SYMBOL "htoi"
+??htoi??rT          SYMBOL "??rT", htoi
+stmenu_ghook        SYMBOL "stmenu_ghook"
+??stmenu_ghook??rT  SYMBOL "??rT", stmenu_ghook
+
+        EXTERN SendRequest
+        FUNCTION SendRequest,0202H
+        EXTERN f5401s
+        EXTERN f5402s
+        EXTERN successed_config_filename
+
+// D:\SVN\SieELF\SieELF\MultiSimPatch\MultiSimElf\setmenu.c
+//    1 #pragma once
+//    2 #include "..\..\inc\swilib.h"
+//    3 #include "..\..\inc\cfg_items.h"
+//    4 //#include "pnglist.h"
+//    5 #include "language.h"
+//    6 #include "mainmenu.h"
+//    7 
+//    8 //==============================================================================
+//    9 // ELKA Compatibility
+//   10 #pragma inline
+//   11 static void patch_header(const HEADER_DESC* head)
+//   12 {
+//   13   ((HEADER_DESC*)head)->rc.x=0;
+//   14   ((HEADER_DESC*)head)->rc.y=YDISP;
+//   15   ((HEADER_DESC*)head)->rc.x2=ScreenW()-1;
+//   16   ((HEADER_DESC*)head)->rc.y2=HeaderH()-1+YDISP;
+//   17 }
+//   18 /*
+//   19 #pragma inline
+//   20 static void patch_input(const INPUTDIA_DESC* inp)
+//   21 {
+//   22   ((INPUTDIA_DESC*)inp)->rc.x=0;
+//   23   ((INPUTDIA_DESC*)inp)->rc.y=HeaderH()+1+YDISP;
+//   24   ((INPUTDIA_DESC*)inp)->rc.x2=ScreenW()-1;
+//   25   ((INPUTDIA_DESC*)inp)->rc.y2=ScreenH()-SoftkeyH()-1;
+//   26 }
+//   27 */
+//   28 //==============================================================================
+
+        RSEG DATA_Z:DATA:SORT:NOROOT(2)
+//   29 int SetMenu_ID;
+//   30 
+//   31 extern  int curblock;
+//   32 #define __SVN_REVISION__  1007
+//   33 int sS_ICONS[3];
+sS_ICONS:
+        DS8 12
+SetMenu_ID:
+        DS8 4
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??ExecFile??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE ExecFile
+//   34 static const SOFTKEY_DESC smenu_sk[] =
+//   35 {
+//   36   {0x0018, 0x0000, (int)LG_SELECT},
+//   37   {0x0001, 0x0000, (int)LG_CLOSE},
+//   38   {0x003D, 0x0000, (int)LGP_DOIT_PIC}
+//   39 };
+//   40 const SOFTKEYSTAB smenu_skt =
+//   41 {
+//   42   smenu_sk, 0
+//   43 };
+//   44 
+//   45 
+//   46 
+//   47 
+//   48   extern const char *successed_config_filename;
+//   49 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function ExecFile
+        ARM
+//   50  void ExecFile(char *name)
+//   51 {
+ExecFile:
+        PUSH     {R4,R5,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+        MOV      R4,R0
+//   52   WSHDR *ws;
+//   53   ws=AllocWS(130);
+        MOV      R0,#+130
+        SWI      +293
+        MOV      R5,R0
+//   54   str_2ws(ws,name,128);
+        MOV      R2,#+128
+        MOV      R1,R4
+        SWI      +364
+//   55   ExecuteFile(ws,0,0);
+        MOV      R2,#+0
+        MOV      R1,#+0
+        MOV      R0,R5
+        SWI      +148
+//   56   FreeWS(ws);
+        MOV      R0,R5
+        SWI      +297
+//   57 
+//   58 }
+        POP      {R4,R5,PC}       ;; return
+        CFI EndBlock cfiBlock1
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??WriteFile??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE WriteFile
+//   59 
+//   60 extern IPC_REQ gipc;
+//   61 
+
+        RSEG DATA_Z:DATA:SORT:NOROOT(2)
+//   62 unsigned char bp[BL_SZ_5402];
+bp:
+        DS8 1600
+//   63 extern const char f5401s[];
+//   64 extern const char f5402s[];
+//   65 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function WriteFile
+        ARM
+//   66 int WriteFile(char *name, unsigned char *filebuf, int size) {
+WriteFile:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+        SUB      SP,SP,#+4
+        CFI CFA R13+40
+        MOV      R4,R0
+        MOV      R5,R1
+        MOV      R10,R2
+//   67   int f;
+//   68   char *buf=NULL,*bufs;
+//   69   const int c=((size<<1)+size)+(size>>3);//==3*size+size/16*2 == по 3 символа на 16-ричное число + 2-байтовый перевод строки после каждых 16 байт
+        ADD      R0,R10,R10, LSL #+1
+        ADD      R6,R0,R10, ASR #+3
+//   70 
+//   71   buf=malloc(c);
+        MOV      R0,R6
+        SWI      +20
+        MOVS     R7,R0
+//   72   if (!buf)
+//   73     return 0;
+        MOVEQ    R0,#+0
+        POPEQ    {R1,R4-R11,PC}
+//   74   memset(buf, 0, c);
+        MOV      R2,R6
+        MOV      R1,#+0
+        SWI      +187
+//   75   bufs=buf;
+        MOV      R8,R7
+//   76 
+//   77   unsigned int ul;
+//   78   if ((f=fopen(name, A_BIN+A_Truncate+A_Create+A_WriteOnly, 0, &ul))!=-1) {
+        MOV      R3,SP
+        MOV      R2,#+0
+        MOV      R1,#+1
+        ORR      R1,R1,#0x8300
+        MOV      R0,R4
+        SWI      +10
+        MOV      R4,R0
+        CMN      R0,#+1
+        BEQ      ??WriteFile_0
+//   79     for (int i=0; i<(size>>4); i++) {
+        MOV      R9,#+0
+        ASR      R10,R10,#+4
+        CMP      R10,#+1
+        BGE      ??WriteFile_1
+        B        ??WriteFile_2
+//   80       for (int j=0; j<16; j++) {
+??WriteFile_3:
+        MOV      R11,#+0
+//   81         buf+=sprintf(buf, "%02X ", *filebuf++);
+??WriteFile_4:
+        LDRB     R2,[R5], #+1
+        LDR      R1,??WriteFile_5  ;; `?<Constant "%02X ">`
+        MOV      R0,R7
+        SWI      +22
+        ADD      R7,R0,R7
+//   82       }
+        ADD      R11,R11,#+1
+        CMP      R11,#+16
+        BLT      ??WriteFile_4
+//   83       *buf++='\r';
+        MOV      R0,#+13
+        STRB     R0,[R7], #+1
+//   84       *buf++='\n';
+        MOV      R0,#+10
+        STRB     R0,[R7], #+1
+//   85     }
+        ADD      R9,R9,#+1
+??WriteFile_1:
+        CMP      R9,R10
+        BLT      ??WriteFile_3
+//   86     fwrite(f, bufs, c, &ul);
+??WriteFile_2:
+        MOV      R3,SP
+        MOV      R2,R6
+        MOV      R1,R8
+        MOV      R0,R4
+        SWI      +12
+//   87     fclose(f, &ul);
+        MOV      R1,SP
+        MOV      R0,R4
+        SWI      +13
+//   88   }
+//   89 
+//   90   mfree(bufs);
+??WriteFile_0:
+        MOV      R0,R8
+        SWI      +21
+//   91   return 1;
+        MOV      R0,#+1
+        POP      {R1,R4-R11,PC}   ;; return
+        DATA
+??WriteFile_5:
+        DC32     `?<Constant "%02X ">`
+        CFI EndBlock cfiBlock3
+//   92 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??htoi??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE htoi
+//   93 
+//   94 
+//   95 
+//   96 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function htoi
+        ARM
+//   97 unsigned char htoi(char c)
+//   98 {
+//   99   if ((c >= '0') && (c <='9'))
+htoi:
+        CMP      R0,#+48
+        BCC      ??htoi_0
+        CMP      R0,#+58
+//  100     return c - '0';
+        ADDCC    R0,R0,#+208
+        BCC      ??htoi_1
+//  101   if ((c >= 'A') && (c <='F'))
+??htoi_0:
+        CMP      R0,#+65
+        BCC      ??htoi_2
+        CMP      R0,#+71
+        BCS      ??htoi_2
+//  102     return c - ('A' - 0xA) ;
+        ADD      R0,R0,#+201
+??htoi_1:
+        AND      R0,R0,#0xFF
+        BX       LR
+//  103   return 0;
+??htoi_2:
+        MOV      R0,#+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock5
+//  104 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??ReadFile??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE ReadFile
+//  105 
+//  106 
+//  107 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function ReadFile
+        ARM
+//  108 int ReadFile(char *name)
+//  109 {
+ReadFile:
+        PUSH     {R4-R8,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R8 Frame(CFA, -8)
+        CFI R7 Frame(CFA, -12)
+        CFI R6 Frame(CFA, -16)
+        CFI R5 Frame(CFA, -20)
+        CFI R4 Frame(CFA, -24)
+        CFI CFA R13+24
+        SUB      SP,SP,#+4
+        CFI CFA R13+28
+//  110   int size;
+//  111   int i, cnt;
+//  112   char *filebuf=NULL;
+//  113 
+//  114 //  char Block5400[1024];
+//  115 
+//  116   int f;
+//  117   unsigned ul;
+//  118   if ((f=fopen(name,A_BIN,P_READ,&ul))!=-1){
+        MOV      R3,SP
+        MOV      R2,#+128
+        MOV      R1,#+32768
+        SWI      +10
+        MOV      R6,R0
+        CMN      R6,#+1
+        BEQ      ??ReadFile_0
+//  119     size=lseek(f,0,S_END,&ul,&ul);
+        MOV      R0,SP
+        PUSH     {R0}
+        CFI CFA R13+32
+        ADD      R3,SP,#+4
+        MOV      R2,#+2
+        MOV      R1,#+0
+        MOV      R0,R6
+        SWI      +15
+        MOV      R5,R0
+//  120     filebuf=malloc(size+1);
+        ADD      R0,R5,#+1
+        SWI      +20
+        MOVS     R4,R0
+//  121     if (filebuf){
+        ADD      SP,SP,#+4
+        CFI CFA R13+28
+        BEQ      ??ReadFile_0
+//  122       lseek(f,0,S_SET,&ul,&ul);
+        MOV      R0,SP
+        PUSH     {R0}
+        CFI CFA R13+32
+        ADD      R3,SP,#+4
+        MOV      R2,#+0
+        MOV      R1,#+0
+        MOV      R0,R6
+        SWI      +15
+//  123       fread(f,filebuf,size,&ul);
+        ADD      R3,SP,#+4
+        MOV      R2,R5
+        MOV      R1,R4
+        MOV      R0,R6
+        SWI      +11
+//  124       fclose(f,&ul);
+        ADD      R1,SP,#+4
+        MOV      R0,R6
+        SWI      +13
+//  125 
+//  126   // parse file
+//  127       cnt = 0;
+        MOV      R6,#+0
+//  128 
+//  129       for (i=0;i<size;i++)
+        MOV      R7,R6
+        CMP      R5,#+1
+        ADD      SP,SP,#+4
+        CFI CFA R13+28
+        BGE      ??ReadFile_1
+        B        ??ReadFile_2
+//  130         if (filebuf[i] > 32)
+??ReadFile_3:
+        LDRB     R0,[R7, +R4]
+        CMP      R0,#+33
+        BCC      ??ReadFile_4
+//  131           bp[cnt++] = (htoi(filebuf[i++])<<4) + htoi(filebuf[i++]) ;
+        BL       htoi
+        MOV      R8,R0
+        ADD      R7,R7,#+1
+        LDRB     R0,[R7, +R4]
+        ADD      R7,R7,#+1
+        BL       htoi
+        LDR      R1,??DataTable10  ;; bp
+        ADD      R0,R0,R8, LSL #+4
+        STRB     R0,[R6, +R1]
+        ADD      R6,R6,#+1
+??ReadFile_4:
+        ADD      R7,R7,#+1
+??ReadFile_1:
+        CMP      R7,R5
+        BLT      ??ReadFile_3
+//  132       mfree(filebuf);
+??ReadFile_2:
+        MOV      R0,R4
+        SWI      +21
+//  133       return cnt;
+        MOV      R0,R6
+        POP      {R1,R4-R8,PC}
+//  134     };
+//  135 
+//  136   }
+//  137   return 0;
+??ReadFile_0:
+        MOV      R0,#+0
+        POP      {R1,R4-R8,PC}    ;; return
+        CFI EndBlock cfiBlock7
+//  138 
+//  139 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??LoadBlock??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE LoadBlock
+//  140 
+//  141 
+//  142 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function LoadBlock
+        ARM
+//  143 static void LoadBlock(void) //from flie
+//  144 {
+//  145 
+//  146   if ((ReadFile((char*)f5401s))==BL_SZ_5401){
+LoadBlock:
+        LDR      R0,??DataTable12  ;; f5401s
+        PUSH     {LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI CFA R13+4
+        BL       ReadFile
+        CMP      R0,#+960
+        BNE      ??LoadBlock_0
+//  147     EEFullWriteBlock(5401, bp, 0, BL_SZ_5401,0,0);
+        LDR      R1,??DataTable10  ;; bp
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+8
+        PUSH     {R0}
+        CFI CFA R13+12
+        MOV      R3,#+960
+        MOV      R2,#+0
+        MOV      R0,#+25
+        ORR      R0,R0,#0x1500
+        SWI      +135
+        ADD      SP,SP,#+8
+        CFI CFA R13+4
+        MOV      R0,#+1
+        SWI      +315
+        POP      {PC}
+//  148 
+//  149   }else {
+//  150 
+//  151       MsgBoxError(1,(int)LG_MSGERRBLOCK);
+??LoadBlock_0:
+        LDR      R1,??DataTable6  ;; `?<Constant "\\277\\351 5401/5402 \\316\\264\\267\\24`
+        MOV      R0,#+1
+        SWI      +78
+//  152   }
+//  153       GeneralFuncF1(1);
+        MOV      R0,#+1
+        SWI      +315
+//  154 
+//  155 }
+        POP      {PC}             ;; return
+        CFI EndBlock cfiBlock9
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??LoadBlock1??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock10
+        REQUIRE LoadBlock1
+//  156 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock11 Using cfiCommon1
+        CFI Function LoadBlock1
+        ARM
+//  157 static void LoadBlock1(void) //from flie
+//  158 {
+//  159   if (ReadFile((char*)f5402s)==BL_SZ_5402){
+LoadBlock1:
+        LDR      R0,??DataTable13  ;; f5402s
+        PUSH     {LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI CFA R13+4
+        BL       ReadFile
+        CMP      R0,#+1600
+        BNE      ??LoadBlock1_0
+//  160     EEFullWriteBlock(5402, bp, 0, BL_SZ_5402,0,0);
+        LDR      R1,??DataTable10  ;; bp
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+8
+        PUSH     {R0}
+        CFI CFA R13+12
+        MOV      R3,#+1600
+        MOV      R2,#+0
+        MOV      R0,#+26
+        ORR      R0,R0,#0x1500
+        SWI      +135
+        ADD      SP,SP,#+8
+        CFI CFA R13+4
+        MOV      R0,#+1
+        SWI      +315
+        POP      {PC}
+//  161 
+//  162 
+//  163   }else {
+//  164       MsgBoxError(1,(int)LG_MSGERRBLOCK);
+??LoadBlock1_0:
+        LDR      R1,??DataTable6  ;; `?<Constant "\\277\\351 5401/5402 \\316\\264\\267\\24`
+        MOV      R0,#+1
+        SWI      +78
+//  165 
+//  166 
+//  167   }
+//  168       GeneralFuncF1(1);
+        MOV      R0,#+1
+        SWI      +315
+//  169 }
+        POP      {PC}             ;; return
+        CFI EndBlock cfiBlock11
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable6:
+        DC32     `?<Constant "\\277\\351 5401/5402 \\316\\264\\267\\24`
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock12 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??FixBlock??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock12
+        REQUIRE FixBlock
+//  170 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock13 Using cfiCommon1
+        CFI Function FixBlock
+        ARM
+//  171 static void FixBlock(void) //from flie
+//  172 {
+FixBlock:
+        PUSH     {R4,R5,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+//  173 
+//  174   EEFullReadBlock(5402, bp, 0, BL_SZ_5402,0,0);
+        LDR      R4,??DataTable10  ;; bp
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+16
+        PUSH     {R0}
+        CFI CFA R13+20
+        MOV      R5,#+26
+        ORR      R5,R5,#0x1500
+        MOV      R3,#+1600
+        MOV      R2,#+0
+        MOV      R1,R4
+        MOV      R0,R5
+        SWI      +134
+//  175   for(int i=0;i<MAX_SIM_CNT;i++)
+        MOV      R0,#+0
+        ADD      SP,SP,#+8
+        CFI CFA R13+12
+        MOV      R1,#+80
+//  176    bp[0x50*i+0x2f]=i;
+??FixBlock_0:
+        MLA      R2,R1,R0,R4
+        STRB     R0,[R2, #+47]
+        ADD      R0,R0,#+1
+        CMP      R0,#+20
+        BLT      ??FixBlock_0
+//  177   EEFullWriteBlock(5402, bp, 0, BL_SZ_5402,0,0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+16
+        PUSH     {R0}
+        CFI CFA R13+20
+        MOV      R3,#+1600
+        MOV      R2,#+0
+        MOV      R1,R4
+        MOV      R0,R5
+        SWI      +135
+//  178 
+//  179   EEFullReadBlock(5403, bp, 0, BL_SZ_5403,0,0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+24
+        PUSH     {R0}
+        CFI CFA R13+28
+        ORR      R5,R5,#0x1
+        MOV      R3,#+80
+        MOV      R2,R0
+        MOV      R1,R4
+        MOV      R0,R5
+        SWI      +134
+//  180    bp[0x2f]=0;
+        MOV      R0,#+0
+        STRB     R0,[R4, #+47]
+//  181   EEFullWriteBlock(5403, bp, 0, BL_SZ_5403,0,0);
+        PUSH     {R0}
+        CFI CFA R13+32
+        PUSH     {R0}
+        CFI CFA R13+36
+        MOV      R3,#+80
+        MOV      R2,R0
+        MOV      R1,R4
+        MOV      R0,R5
+        SWI      +135
+//  182       GeneralFuncF1(1);
+        MOV      R0,#+1
+        SWI      +315
+//  183 }
+        ADD      SP,SP,#+24
+        CFI CFA R13+12
+        POP      {R4,R5,PC}       ;; return
+        CFI EndBlock cfiBlock13
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock14 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??SaveBlock??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock14
+        REQUIRE SaveBlock
+//  184 
+//  185 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock15 Using cfiCommon1
+        CFI Function SaveBlock
+        ARM
+//  186 static void SaveBlock(void)
+//  187 {
+SaveBlock:
+        PUSH     {R4,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+//  188    EEFullReadBlock(5401, bp, 0, BL_SZ_5401,0,0);
+        LDR      R4,??DataTable10  ;; bp
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+12
+        PUSH     {R0}
+        CFI CFA R13+16
+        MOV      R3,#+960
+        MOV      R2,#+0
+        MOV      R1,R4
+        MOV      R0,#+25
+        ORR      R0,R0,#0x1500
+        SWI      +134
+//  189    WriteFile((char*)f5401s,bp,BL_SZ_5401);
+        LDR      R0,??DataTable12  ;; f5401s
+        MOV      R2,#+960
+        MOV      R1,R4
+        BL       WriteFile
+//  190 //   GeneralFuncF1(1);
+//  191 
+//  192   //add hash checking
+//  193 
+//  194 	  //поидее надо дождаться callback
+//  195    //    WriteFile();
+//  196 }
+        POP      {R0,R1,R4,PC}    ;; return
+        CFI EndBlock cfiBlock15
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock16 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??SaveBlock1??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock16
+        REQUIRE SaveBlock1
+//  197 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock17 Using cfiCommon1
+        CFI Function SaveBlock1
+        ARM
+//  198 static void SaveBlock1(void)
+//  199 {
+SaveBlock1:
+        PUSH     {R4,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+//  200    EEFullReadBlock(5402, bp, 0, BL_SZ_5402,0,0);
+        LDR      R4,??DataTable10  ;; bp
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+12
+        PUSH     {R0}
+        CFI CFA R13+16
+        MOV      R3,#+1600
+        MOV      R2,#+0
+        MOV      R1,R4
+        MOV      R0,#+26
+        ORR      R0,R0,#0x1500
+        SWI      +134
+//  201    WriteFile((char*)f5402s,bp,BL_SZ_5402);
+        LDR      R0,??DataTable13  ;; f5402s
+        MOV      R2,#+1600
+        MOV      R1,R4
+        BL       WriteFile
+//  202 //   GeneralFuncF1(1);
+//  203 }
+        POP      {R0,R1,R4,PC}    ;; return
+        CFI EndBlock cfiBlock17
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable10:
+        DC32     bp
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock18 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??OpenCfg??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock18
+        REQUIRE OpenCfg
+//  204 
+//  205 
+//  206 
+//  207 extern const char *successed_config_filename;
+//  208 
+//  209 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock19 Using cfiCommon1
+        CFI Function OpenCfg
+        ARM
+//  210 static void OpenCfg(void) //from flie
+//  211 {
+//  212   ExecFile((char*)successed_config_filename);
+OpenCfg:
+        LDR      R0,??OpenCfg_0   ;; successed_config_filename
+        LDR      R0,[R0, #+0]
+        B        ExecFile         ;; tailcall
+        DATA
+??OpenCfg_0:
+        DC32     successed_config_filename
+        CFI EndBlock cfiBlock19
+//  213 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock20 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??OpenBlock??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock20
+        REQUIRE OpenBlock
+//  214 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock21 Using cfiCommon1
+        CFI Function OpenBlock
+        ARM
+//  215 static void OpenBlock(void) //from flie
+//  216 {
+//  217   ExecFile((char*)f5401s);
+OpenBlock:
+        LDR      R0,??DataTable12  ;; f5401s
+        B        ExecFile         ;; tailcall
+        CFI EndBlock cfiBlock21
+//  218 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable12:
+        DC32     f5401s
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock22 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??OpenBlock1??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock22
+        REQUIRE OpenBlock1
+//  219 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock23 Using cfiCommon1
+        CFI Function OpenBlock1
+        ARM
+//  220 static void OpenBlock1(void) //from flie
+//  221 {
+//  222   ExecFile((char*)f5402s);
+OpenBlock1:
+        LDR      R0,??DataTable13  ;; f5402s
+        B        ExecFile         ;; tailcall
+        CFI EndBlock cfiBlock23
+//  223 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable13:
+        DC32     f5402s
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock24 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??AutoNet??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock24
+        REQUIRE AutoNet
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "\\321\\241\\324\\361">`:
+        DATA
+        DC8 "\321\241\324\361"
+        DC8 0, 0, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "\\271\\330\\261\\325">`:
+        DATA
+        DC8 "\271\330\261\325"
+        DC8 0, 0, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "\\262\\313\\265\\245">`:
+        DATA
+        DC8 "\262\313\265\245"
+        DC8 0, 0, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "\\327\\324\\266\\257\\315\\370\\302\\347">`:
+        DATA
+        DC8 "\327\324\266\257\315\370\302\347"
+        DC8 0, 0, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "\\264\\362\\277\\252\\305\\344\\326\\303">`:
+        DATA
+        DC8 "\264\362\277\252\305\344\326\303"
+        DC8 0, 0, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "\\261\\270\\267\\3355401\\277\\351\\265\\2`:
+        DATA
+        DC8 "\261\270\267\3355401\277\351\265\275\316\304\274\376"
+        DC8 0, 0, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "\\264\\323\\316\\304\\274\\376\\270\\374\\3`:
+        DATA
+        DC8 "\264\323\316\304\274\376\270\374\320\3025401\277\351"
+        DC8 0, 0, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "\\264\\362\\277\\2525401\\316\\304\\274\\3`:
+        DATA
+        DC8 "\264\362\277\2525401\316\304\274\376"
+        DC8 0, 0, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "\\261\\270\\267\\3355402\\277\\351\\265\\2`:
+        DATA
+        DC8 "\261\270\267\3355402\277\351\265\275\316\304\274\376"
+        DC8 0, 0, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "\\264\\323\\316\\304\\274\\376\\270\\374\\3_1`:
+        DATA
+        DC8 "\264\323\316\304\274\376\270\374\320\3025402\277\351"
+        DC8 0, 0, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "\\264\\362\\277\\2525402\\316\\304\\274\\3`:
+        DATA
+        DC8 "\264\362\277\2525402\316\304\274\376"
+        DC8 0, 0, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "\\316\\357\\300\\355\\277\\351(\\261\\330\\`:
+        DATA
+        DC8 "\316\357\300\355\277\351(\261\330\320\353\321\241\324\361\316\357\300\355\277\250)"
+        DC8 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "%02X ">`:
+        DATA
+        DC8 "%02X "
+        DC8 0, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "\\277\\351 5401/5402 \\316\\264\\267\\24`:
+        DATA
+        DC8 "\277\351 5401/5402 \316\264\267\242\317\326\273\362\325\337\270\361\312\275\264\355\316\363!"
+        DC8 0, 0, 0
+//  224 
+//  225 static const HEADER_DESC smenuhdr={0,0,0,0,NULL,(int)LG_MENU,LGP_NULL};
+//  226 
+//  227 static const int smmenusoftkeys[]={0,1,2};
+//  228 
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "%t">`:
+        DATA
+        DC8 "%t"
+        DC8 0
+        DC32 `?<Constant "\\327\\324\\266\\257\\315\\370\\302\\347">`
+        DC32 `?<Constant "\\264\\362\\277\\252\\305\\344\\326\\303">`
+        DC32 `?<Constant "\\261\\270\\267\\3355401\\277\\351\\265\\2`
+        DC32 `?<Constant "\\264\\323\\316\\304\\274\\376\\270\\374\\3`
+        DC32 `?<Constant "\\264\\362\\277\\2525401\\316\\304\\274\\3`
+        DC32 `?<Constant "\\261\\270\\267\\3355402\\277\\351\\265\\2`
+        DC32 `?<Constant "\\264\\323\\316\\304\\274\\376\\270\\374\\3_1`
+        DC32 `?<Constant "\\264\\362\\277\\2525402\\316\\304\\274\\3`
+        DC32 `?<Constant "\\316\\357\\300\\355\\277\\351(\\261\\330\\`
+//  229 static const char * const smenutexts[]=
+//  230 {
+//  231   LG_MNUASNET,
+//  232   LG_MNUCFG,
+//  233   LG_MNUSAVEB,
+//  234   LG_MNULOADB,
+//  235 
+//  236   LG_MNUOPENB,
+//  237   LG_MNUSAVEB1,
+//  238   LG_MNULOADB1,
+//  239   LG_MNUOPENB1,
+//  240   LG_MNUFIX,
+//  241 
+//  242 };
+//  243 
+//  244 extern void SendRequest(int submess, void *data);
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock25 Using cfiCommon1
+        CFI Function AutoNet
+        ARM
+//  245 static void AutoNet(void)
+//  246 {
+AutoNet:
+        PUSH     {LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI CFA R13+4
+//  247   SendRequest(IPC_MSIM_EEPROM_AUTOSEARCH,(void*)0);
+        MOV      R1,#+0
+        MOV      R0,#+7
+        _BLF     SendRequest,??SendRequest??rA
+//  248   GeneralFuncF1(1);
+        MOV      R0,#+1
+        SWI      +315
+//  249 //  GeneralFuncF1(1);
+//  250 }
+        POP      {PC}             ;; return
+        CFI EndBlock cfiBlock25
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock26 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??stmenu_ghook??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock26
+        REQUIRE stmenu_ghook
+
+        RSEG DATA_I:DATA:SORT:NOROOT(2)
+//  251 static const void *smenuprocs[]=
+smenuprocs:
+        DS8 36
+        REQUIRE `?<Initializer for smenuprocs>`
+//  252 {
+//  253   (void *)AutoNet,
+//  254   (void *)OpenCfg,
+//  255   (void *)SaveBlock,
+//  256   (void *)LoadBlock,
+//  257   (void *)OpenBlock,
+//  258   (void *)SaveBlock1,
+//  259   (void *)LoadBlock1,
+//  260    (void *)OpenBlock1,
+//  261    (void *)FixBlock
+//  262 };
+//  263 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock27 Using cfiCommon1
+        CFI Function stmenu_ghook
+        ARM
+//  264 void stmenu_ghook(void *data, int cmd)
+//  265 {
+stmenu_ghook:
+        PUSH     {R4,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+//  266   if (cmd==9)
+//  267   {}
+//  268   if (cmd==0x0A)
+        CMP      R1,#+10
+        MOV      R4,R0
+        POPNE    {R4,PC}
+//  269   {
+//  270     DisableIDLETMR();
+        SWI      +383
+//  271 
+//  272    Menu_SetItemCountDyn(data,9);
+        MOV      R1,#+9
+        MOV      R0,R4
+        SWI      +486
+//  273 
+//  274 //    if (simnum<3+simcnt)      SetCursorToMenuItem(data,2+simnum);
+//  275   }
+//  276 }
+        POP      {R4,PC}          ;; return
+        CFI EndBlock cfiBlock27
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock28 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??smenuitemhandler??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock28
+        REQUIRE smenuitemhandler
+//  277 
+//  278 //static int sicon_array[2];
+//  279 
+//  280 
+//  281 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock29 Using cfiCommon1
+        CFI Function smenuitemhandler
+        ARM
+//  282 static void smenuitemhandler(void *data, int curitem, void *unk)
+//  283 {
+smenuitemhandler:
+        PUSH     {R4-R8,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R8 Frame(CFA, -8)
+        CFI R7 Frame(CFA, -12)
+        CFI R6 Frame(CFA, -16)
+        CFI R5 Frame(CFA, -20)
+        CFI R4 Frame(CFA, -24)
+        CFI CFA R13+24
+        SUB      SP,SP,#+4
+        CFI CFA R13+28
+        MOV      R4,R0
+        MOV      R5,R1
+//  284   WSHDR *ws;
+//  285   void *item=AllocMenuItem(data);
+        SWI      +407
+        MOV      R6,R0
+//  286 
+//  287   const char percent_t[]="%t";
+        LDR      R0,??smenuitemhandler_0  ;; `?<Constant "%t">`
+        MOV      R1,SP
+        LDRB     R2,[R0, #0]
+        STRB     R2,[R1, #+0]
+        LDRB     R2,[R0, #+1]
+        STRB     R2,[R1, #+1]
+        LDRB     R2,[R0, #+2]
+        ADD      R0,R0,R5, LSL #+2
+        STRB     R2,[R1, #+2]
+        LDR      R7,[R0, #+4]
+        MOV      R0,R7
+//  288 //  extern const char percent_t[];
+//  289   ws=AllocMenuWS(data,strlen(smenutexts[curitem]));
+        SWI      +27
+        MOV      R1,R0
+        MOV      R0,R4
+        SWI      +408
+        MOV      R8,R0
+//  290   wsprintf(ws,percent_t,smenutexts[curitem]);
+        MOV      R2,R7
+        MOV      R1,SP
+        SWI      +292
+//  291 
+//  292     SetMenuItemText(data, item, ws, curitem);
+        MOV      R3,R5
+        MOV      R2,R8
+        MOV      R1,R6
+        MOV      R0,R4
+        SWI      +410
+//  293 
+//  294 }
+        POP      {R0,R4-R8,PC}    ;; return
+        DATA
+??smenuitemhandler_0:
+        DC32     `?<Constant "%t">`
+        CFI EndBlock cfiBlock29
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock30 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??stmenu_keyhook??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock30
+        REQUIRE stmenu_keyhook
+//  295 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock31 Using cfiCommon1
+        CFI Function stmenu_keyhook
+        ARM
+//  296 static int stmenu_keyhook(void *data, GUI_MSG *msg)
+//  297 {
+stmenu_keyhook:
+        PUSH     {LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI CFA R13+4
+//  298   if ((msg->keys==0x18)||(msg->keys==0x3D))
+        LDRSH    R1,[R1, #+2]
+        CMP      R1,#+24
+        CMPNE    R1,#+61
+        BNE      ??stmenu_keyhook_0
+//  299   {
+//  300       ((void (*)(void))(smenuprocs[GetCurMenuItem(data)]))();
+        SWI      +399
+        LDR      R1,??stmenu_keyhook_1  ;; smenuprocs
+        LDR      R0,[R1, +R0, LSL #+2]
+        BLX      R0
+//  301   }
+//  302   return(0);
+??stmenu_keyhook_0:
+        MOV      R0,#+0
+        POP      {PC}             ;; return
+        DATA
+??stmenu_keyhook_1:
+        DC32     smenuprocs
+        CFI EndBlock cfiBlock31
+//  303 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock32 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??ShowSetMenu??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock32
+        REQUIRE ShowSetMenu
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+smenuhdr:
+        DATA
+        DC16 0, 0, 0, 0
+        DC32 0H, `?<Constant "\\262\\313\\265\\245">`, 2147483647
+        DC8 "4:\\zbin\\naticq\\img\\online.png"
+        DC8 0, 0
+        DC8 "4:\\zbin\\naticq\\img\\offline.png"
+        DC8 0
+        DC32 8, stmenu_keyhook, stmenu_ghook, 0H, smmenusoftkeys, smenu_skt, 16
+        DC32 smenuitemhandler, 0H, 0H, 8
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+smenu_sk:
+        DATA
+        DC16 24, 0
+        DC32 `?<Constant "\\321\\241\\324\\361">`
+        DC16 1, 0
+        DC32 `?<Constant "\\271\\330\\261\\325">`
+        DC16 61, 0
+        DC32 2147467515
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+smenu_skt:
+        DATA
+        DC32 smenu_sk, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+smmenusoftkeys:
+        DATA
+        DC32 0, 1, 2
+//  304 
+//  305 
+//  306 static const MENU_DESC stmenu=
+//  307 {
+//  308   8,stmenu_keyhook,stmenu_ghook,NULL,
+//  309   smmenusoftkeys,
+//  310   &smenu_skt,
+//  311   0x10,//MENU_FLAG,
+//  312   smenuitemhandler,
+//  313   NULL,//menuitems,
+//  314   NULL,//menuprocs,
+//  315   8
+//  316 };
+//  317 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock33 Using cfiCommon1
+        CFI Function ShowSetMenu
+        ARM
+//  318 int ShowSetMenu()
+//  319 {
+ShowSetMenu:
+        PUSH     {R4,R5,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+//  320   sS_ICONS[0]=(int)DEFAULT_DISK_CFG ":\\zbin\\naticq\\img\\online.png";
+        LDR      R4,??ShowSetMenu_0  ;; sS_ICONS
+        LDR      R5,??ShowSetMenu_0+0x4  ;; smenuhdr
+        ADD      R0,R5,#+20
+        STR      R0,[R4, #+0]
+//  321   sS_ICONS[1]=(int)DEFAULT_DISK_CFG ":\\zbin\\naticq\\img\\offline.png";
+        ADD      R0,R5,#+52
+        STR      R0,[R4, #+4]
+//  322   sS_ICONS[2]=0;
+        MOV      R0,#+0
+        STR      R0,[R4, #+8]
+//  323 //  sicon_array[0]=GetPicNByUnicodeSymbol(CBOX_CHECKED);
+//  324 //  sicon_array[1]=GetPicNByUnicodeSymbol(CBOX_UNCHECKED);
+//  325   *((int **)(&smenuhdr.icon))=sS_ICONS;
+        STR      R4,[R5, #+8]
+//  326   patch_header(&smenuhdr);
+        STR      R0,[R5, #+0]
+        SWI      +33160
+        SUB      R0,R0,#+1
+        STRH     R0,[R5, #+4]
+        SWI      +33162
+        SUB      R0,R0,#+1
+        STRH     R0,[R5, #+6]
+//  327   SetMenu_ID=CreateMenu(0,0,&stmenu,&smenuhdr,0,11,0,0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+16
+        PUSH     {R0}
+        CFI CFA R13+20
+        MOV      R3,R5
+        ADD      R2,R5,#+84
+        MOV      R1,#+0
+        MOV      R0,#+11
+        PUSH     {R0}
+        CFI CFA R13+24
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+28
+        SWI      +338
+        STR      R0,[R4, #+12]
+//  328   return SetMenu_ID;
+        ADD      SP,SP,#+16
+        CFI CFA R13+12
+        POP      {R4,R5,PC}       ;; return
+        DATA
+??ShowSetMenu_0:
+        DC32     sS_ICONS
+        DC32     smenuhdr
+        CFI EndBlock cfiBlock33
+//  329 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock34 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??SendRequest??rA:
+        LDR      R12,??Subroutine17_0  ;; SendRequest
+        BX       R12
+        DATA
+??Subroutine17_0:
+        DC32     SendRequest
+        CFI EndBlock cfiBlock34
+
+        RSEG DATA_ID:CONST:SORT:NOROOT(2)
+`?<Initializer for smenuprocs>`:
+        DATA
+        DC32 AutoNet, OpenCfg, SaveBlock, LoadBlock, OpenBlock, SaveBlock1
+        DC32 LoadBlock1, OpenBlock1, FixBlock
+
+        RSEG DATA_ID:CONST:SORT:NOROOT(2)
+`?*?DATA_ID`:
+
+        RSEG INITTAB:CODE:ROOT(2)
+        DATA
+?init?tab?DATA_I:
+        DCD      sfe(DATA_I) - sfb(DATA_I), sfb(DATA_I), sfb(DATA_ID)
+
+        RSEG INITTAB:CODE:ROOT(2)
+        DATA
+?init?tab?DATA_Z:
+        DCD      sfe(DATA_Z) - sfb(DATA_Z), sfb(DATA_Z), sfb(DATA_Z)
+
+        END
+// 
+// 1 632 bytes in segment CODE
+//   440 bytes in segment DATA_C
+//    36 bytes in segment DATA_I
+//    36 bytes in segment DATA_ID
+// 1 616 bytes in segment DATA_Z
+//    24 bytes in segment INITTAB
+// 
+// 1 552 bytes of CODE  memory (+ 104 bytes shared)
+//   476 bytes of CONST memory
+// 1 652 bytes of DATA  memory
+//
+//Errors: none
+//Warnings: 1

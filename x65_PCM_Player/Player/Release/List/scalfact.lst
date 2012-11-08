@@ -1,0 +1,1052 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    14/Feb/2012  15:39:50 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3de #
+#                       c\scalfact.c                                         #
+#    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3de #
+#                       c\scalfact.c -D NDEBUG -lC                           #
+#                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\ #
+#                       Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player #
+#                       \Player\Release\Obj\ -s9 --cpu_mode arm --endian     #
+#                       little --cpu ARM926EJ-S --stack_align 4 --interwork  #
+#                       -e --fpu None --dlib_config "D:\Program              #
+#                       Files\IAR\Embedded Workbench 4.0                     #
+#                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude       #
+#                       swilib.h -I "D:\Program Files\IAR\Embedded           #
+#                       Workbench 4.0 Evaluation\ARM\INC\"                   #
+#                       --inline_threshold=16                                #
+#    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\scalfact.lst                                     #
+#    Object file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\O #
+#                       bj\scalfact.r79                                      #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3dec\scalfact.c
+      1          /* ***** BEGIN LICENSE BLOCK ***** 
+                                                   ^
+Warning[Pa050]: non-native end of line sequence detected (this diagnostic is
+          only issued once)
+      2           * Version: RCSL 1.0/RPSL 1.0 
+      3           *  
+      4           * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+      5           *      
+      6           * The contents of this file, and the files included with this file, are 
+      7           * subject to the current version of the RealNetworks Public Source License 
+      8           * Version 1.0 (the "RPSL") available at 
+      9           * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+     10           * the file under the RealNetworks Community Source License Version 1.0 
+     11           * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+     12           * in which case the RCSL will apply. You may also obtain the license terms 
+     13           * directly from RealNetworks.  You may not use this file except in 
+     14           * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+     15           * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+     16           * RCSL for the rights, obligations and limitations governing use of the 
+     17           * contents of the file.  
+     18           *  
+     19           * This file is part of the Helix DNA Technology. RealNetworks is the 
+     20           * developer of the Original Code and owns the copyrights in the portions 
+     21           * it created. 
+     22           *  
+     23           * This file, and the files included with this file, is distributed and made 
+     24           * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+     25           * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+     26           * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+     27           * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+     28           * 
+     29           * Technology Compatibility Kit Test Suite(s) Location: 
+     30           *    http://www.helixcommunity.org/content/tck 
+     31           * 
+     32           * Contributor(s): 
+     33           *  
+     34           * ***** END LICENSE BLOCK ***** */ 
+     35          
+     36          /**************************************************************************************
+     37           * Fixed-point MP3 decoder
+     38           * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+     39           * June 2003
+     40           *
+     41           * scalfact.c - scalefactor unpacking functions
+     42           **************************************************************************************/
+     43          
+     44          #include "coder.h"
+     45          
+     46          /* scale factor lengths (num bits) */
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     47          static const char SFLenTab[16][2] = {
+   \                     SFLenTab:
+   \   00000000   000000010002       DC8 0, 0, 0, 1, 0, 2, 0, 3, 3, 0, 1, 1, 1, 2, 1, 3, 2, 1, 2, 2, 2, 3, 3
+   \              000303000101
+   \              010201030201
+   \              0202020303  
+   \   00000017   010302030304       DC8 1, 3, 2, 3, 3, 4, 2, 4, 3
+   \              020403      
+     48          	{0, 0},    {0, 1},
+     49          	{0, 2},    {0, 3},
+     50          	{3, 0},    {1, 1},
+     51          	{1, 2},    {1, 3},
+     52          	{2, 1},    {2, 2},
+     53          	{2, 3},    {3, 1},
+     54          	{3, 2},    {3, 3},
+     55          	{4, 2},    {4, 3},
+     56          };
+     57          
+     58          /**************************************************************************************
+     59           * Function:    UnpackSFMPEG1
+     60           *
+     61           * Description: unpack MPEG 1 scalefactors from bitstream
+     62           *
+     63           * Inputs:      BitStreamInfo, SideInfoSub, ScaleFactorInfoSub structs for this
+     64           *                granule/channel
+     65           *              vector of scfsi flags from side info, length = 4 (MAX_SCFBD)
+     66           *              index of current granule
+     67           *              ScaleFactorInfoSub from granule 0 (for granule 1, if scfsi[i] is set, 
+     68           *                then we just replicate the scale factors from granule 0 in the
+     69           *                i'th set of scalefactor bands)
+     70           *
+     71           * Outputs:     updated BitStreamInfo struct
+     72           *              scalefactors in sfis (short and/or long arrays, as appropriate)
+     73           *
+     74           * Return:      none
+     75           *
+     76           * Notes:       set order of short blocks to s[band][window] instead of s[window][band]
+     77           *                so that we index through consectutive memory locations when unpacking 
+     78           *                (make sure dequantizer follows same convention)
+     79           *              Illegal Intensity Position = 7 (always) for MPEG1 scale factors
+     80           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+     81          static void UnpackSFMPEG1(BitStreamInfo *bsi, SideInfoSub *sis, ScaleFactorInfoSub *sfis, int *scfsi, int gr, ScaleFactorInfoSub *sfisGr0)
+     82          {
+   \                     UnpackSFMPEG1:
+   \   00000000   F04F2DE9           PUSH     {R4-R11,LR}
+   \   00000004   0250A0E1           MOV      R5,R2
+   \   00000008   0C2091E5           LDR      R2,[R1, #+12]
+   \   0000000C   28709DE5           LDR      R7,[SP, #+40]
+   \   00000010   0360A0E1           MOV      R6,R3
+   \   00000014   50329FE5           LDR      R3,??UnpackSFMPEG1_0  ;; SFLenTab
+   \   00000018   0040A0E1           MOV      R4,R0
+   \   0000001C   24009DE5           LDR      R0,[SP, #+36]
+   \   00000020   822083E0           ADD      R2,R3,R2, LSL #+1
+   \   00000024   0080D2E5           LDRB     R8,[R2, #+0]
+     83          	int sfb;
+     84          	int slen0, slen1;
+     85          	
+     86          	/* these can be 0, so make sure GetBits(bsi, 0) returns 0 (no >> 32 or anything) */
+     87          	slen0 = (int)SFLenTab[sis->sfCompress][0];
+     88          	slen1 = (int)SFLenTab[sis->sfCompress][1];
+   \   00000028   0190D2E5           LDRB     R9,[R2, #+1]
+     89          	
+     90          	if (sis->blockType == 2) {
+   \   0000002C   142091E5           LDR      R2,[R1, #+20]
+   \   00000030   00A0A0E3           MOV      R10,#+0
+   \   00000034   020052E3           CMP      R2,#+2
+   \   00000038   3400001A           BNE      ??UnpackSFMPEG1_1
+     91          		/* short block, type 2 (implies winSwitchFlag == 1) */
+     92          		if (sis->mixedBlock) {          
+   \   0000003C   180091E5           LDR      R0,[R1, #+24]
+   \   00000040   000050E3           CMP      R0,#+0
+   \   00000044   0900000A           BEQ      ??UnpackSFMPEG1_2
+     93          			/* do long block portion */
+     94          			for (sfb = 0; sfb < 8; sfb++)
+   \   00000048   0060A0E3           MOV      R6,#+0
+     95          				sfis->l[sfb] =    (char)GetBits(bsi, slen0);
+   \                     ??UnpackSFMPEG1_3:
+   \   0000004C   0810A0E1           MOV      R1,R8
+   \   00000050   0400A0E1           MOV      R0,R4
+   \   00000054   ........           _BLF     xmp3_GetBits,??xmp3_GetBits??rA
+   \   00000058   0500C6E7           STRB     R0,[R6, +R5]
+   \   0000005C   016086E2           ADD      R6,R6,#+1
+   \   00000060   080056E3           CMP      R6,#+8
+   \   00000064   F8FFFFBA           BLT      ??UnpackSFMPEG1_3
+     96          			sfb = 3;
+   \   00000068   03B0A0E3           MOV      R11,#+3
+   \   0000006C   000000EA           B        ??UnpackSFMPEG1_4
+     97          		} else {
+     98          			/* all short blocks */
+     99          			sfb = 0;
+   \                     ??UnpackSFMPEG1_2:
+   \   00000070   00B0A0E3           MOV      R11,#+0
+    100          		}
+    101          
+    102          		for (      ; sfb < 6; sfb++) {
+    103          			sfis->s[sfb][0] = (char)GetBits(bsi, slen0);
+   \                     ??UnpackSFMPEG1_4:
+   \   00000074   8B008BE0           ADD      R0,R11,R11, LSL #+1
+   \   00000078   056080E0           ADD      R6,R0,R5
+   \   0000007C   0810A0E1           MOV      R1,R8
+   \   00000080   0400A0E1           MOV      R0,R4
+   \   00000084   ........           _BLF     xmp3_GetBits,??xmp3_GetBits??rA
+   \   00000088   1700C6E5           STRB     R0,[R6, #+23]
+    104          			sfis->s[sfb][1] = (char)GetBits(bsi, slen0);
+   \   0000008C   0810A0E1           MOV      R1,R8
+   \   00000090   0400A0E1           MOV      R0,R4
+   \   00000094   ........           _BLF     xmp3_GetBits,??xmp3_GetBits??rA
+   \   00000098   1800C6E5           STRB     R0,[R6, #+24]
+    105          			sfis->s[sfb][2] = (char)GetBits(bsi, slen0);
+   \   0000009C   0810A0E1           MOV      R1,R8
+   \   000000A0   0400A0E1           MOV      R0,R4
+   \   000000A4   ........           _BLF     xmp3_GetBits,??xmp3_GetBits??rA
+   \   000000A8   1900C6E5           STRB     R0,[R6, #+25]
+    106          		}
+   \   000000AC   01B08BE2           ADD      R11,R11,#+1
+   \   000000B0   06005BE3           CMP      R11,#+6
+   \   000000B4   EEFFFFBA           BLT      ??UnpackSFMPEG1_4
+    107          
+    108          		for (      ; sfb < 12; sfb++) {
+   \                     ??UnpackSFMPEG1_5:
+   \   000000B8   0C005BE3           CMP      R11,#+12
+   \   000000BC   0F0000AA           BGE      ??UnpackSFMPEG1_6
+    109          			sfis->s[sfb][0] = (char)GetBits(bsi, slen1);
+   \   000000C0   8B008BE0           ADD      R0,R11,R11, LSL #+1
+   \   000000C4   056080E0           ADD      R6,R0,R5
+   \   000000C8   0910A0E1           MOV      R1,R9
+   \   000000CC   0400A0E1           MOV      R0,R4
+   \   000000D0   ........           _BLF     xmp3_GetBits,??xmp3_GetBits??rA
+   \   000000D4   1700C6E5           STRB     R0,[R6, #+23]
+    110          			sfis->s[sfb][1] = (char)GetBits(bsi, slen1);
+   \   000000D8   0910A0E1           MOV      R1,R9
+   \   000000DC   0400A0E1           MOV      R0,R4
+   \   000000E0   ........           _BLF     xmp3_GetBits,??xmp3_GetBits??rA
+   \   000000E4   1800C6E5           STRB     R0,[R6, #+24]
+    111          			sfis->s[sfb][2] = (char)GetBits(bsi, slen1);
+   \   000000E8   0910A0E1           MOV      R1,R9
+   \   000000EC   0400A0E1           MOV      R0,R4
+   \   000000F0   ........           _BLF     xmp3_GetBits,??xmp3_GetBits??rA
+   \   000000F4   1900C6E5           STRB     R0,[R6, #+25]
+    112          		}
+   \   000000F8   01B08BE2           ADD      R11,R11,#+1
+   \   000000FC   EDFFFFEA           B        ??UnpackSFMPEG1_5
+    113          
+    114          		/* last sf band not transmitted */
+    115          		sfis->s[12][0] = sfis->s[12][1] = sfis->s[12][2] = 0;
+   \                     ??UnpackSFMPEG1_6:
+   \   00000100   3DA0C5E5           STRB     R10,[R5, #+61]
+   \   00000104   3CA0C5E5           STRB     R10,[R5, #+60]
+   \   00000108   3BA0C5E5           STRB     R10,[R5, #+59]
+   \   0000010C   F08FBDE8           POP      {R4-R11,PC}
+    116          	} else {
+    117          		/* long blocks, type 0, 1, or 3 */
+    118          		if(gr == 0) {
+   \                     ??UnpackSFMPEG1_1:
+   \   00000110   000050E3           CMP      R0,#+0
+   \   00000114   1000001A           BNE      ??UnpackSFMPEG1_7
+    119          			/* first granule */
+    120          			for (sfb = 0;  sfb < 11; sfb++) 
+   \   00000118   0060A0E3           MOV      R6,#+0
+    121          				sfis->l[sfb] = (char)GetBits(bsi, slen0);
+   \                     ??UnpackSFMPEG1_8:
+   \   0000011C   0810A0E1           MOV      R1,R8
+   \   00000120   0400A0E1           MOV      R0,R4
+   \   00000124   ........           _BLF     xmp3_GetBits,??xmp3_GetBits??rA
+   \   00000128   0500C6E7           STRB     R0,[R6, +R5]
+   \   0000012C   016086E2           ADD      R6,R6,#+1
+   \   00000130   0B0056E3           CMP      R6,#+11
+   \   00000134   F8FFFFBA           BLT      ??UnpackSFMPEG1_8
+    122          			for (sfb = 11; sfb < 21; sfb++) 
+   \   00000138   0BB0A0E3           MOV      R11,#+11
+    123          				sfis->l[sfb] = (char)GetBits(bsi, slen1);
+   \                     ??UnpackSFMPEG1_9:
+   \   0000013C   0910A0E1           MOV      R1,R9
+   \   00000140   0400A0E1           MOV      R0,R4
+   \   00000144   ........           _BLF     xmp3_GetBits,??xmp3_GetBits??rA
+   \   00000148   0500CBE7           STRB     R0,[R11, +R5]
+   \   0000014C   01B08BE2           ADD      R11,R11,#+1
+   \   00000150   15005BE3           CMP      R11,#+21
+   \   00000154   F08FBDA8           POPGE    {R4-R11,PC}
+   \   00000158   F7FFFFEA           B        ??UnpackSFMPEG1_9
+    124          			return;
+    125          		} else {
+    126          			/* second granule
+    127          			 * scfsi: 0 = different scalefactors for each granule, 1 = copy sf's from granule 0 into granule 1 
+    128          			 * for block type == 2, scfsi is always 0
+    129          			 */
+    130          			sfb = 0;
+    131          			if(scfsi[0])  for(  ; sfb < 6 ; sfb++) sfis->l[sfb] = sfisGr0->l[sfb];
+   \                     ??UnpackSFMPEG1_7:
+   \   0000015C   000096E5           LDR      R0,[R6, #+0]
+   \   00000160   00B0A0E3           MOV      R11,#+0
+   \   00000164   000050E3           CMP      R0,#+0
+   \   00000168   0500000A           BEQ      ??UnpackSFMPEG1_10
+   \                     ??UnpackSFMPEG1_11:
+   \   0000016C   0700DBE7           LDRB     R0,[R11, +R7]
+   \   00000170   0500CBE7           STRB     R0,[R11, +R5]
+   \   00000174   01B08BE2           ADD      R11,R11,#+1
+   \   00000178   06005BE3           CMP      R11,#+6
+   \   0000017C   070000AA           BGE      ??UnpackSFMPEG1_12
+   \   00000180   F9FFFFEA           B        ??UnpackSFMPEG1_11
+    132          			else          for(  ; sfb < 6 ; sfb++) sfis->l[sfb] = (char)GetBits(bsi, slen0);
+   \                     ??UnpackSFMPEG1_10:
+   \   00000184   0810A0E1           MOV      R1,R8
+   \   00000188   0400A0E1           MOV      R0,R4
+   \   0000018C   ........           _BLF     xmp3_GetBits,??xmp3_GetBits??rA
+   \   00000190   0500CBE7           STRB     R0,[R11, +R5]
+   \   00000194   01B08BE2           ADD      R11,R11,#+1
+   \   00000198   06005BE3           CMP      R11,#+6
+   \   0000019C   F8FFFFBA           BLT      ??UnpackSFMPEG1_10
+    133          			if(scfsi[1])  for(  ; sfb <11 ; sfb++) sfis->l[sfb] = sfisGr0->l[sfb];
+   \                     ??UnpackSFMPEG1_12:
+   \   000001A0   040096E5           LDR      R0,[R6, #+4]
+   \   000001A4   000050E3           CMP      R0,#+0
+   \   000001A8   0A00000A           BEQ      ??UnpackSFMPEG1_13
+   \                     ??UnpackSFMPEG1_14:
+   \   000001AC   0B005BE3           CMP      R11,#+11
+   \   000001B0   0A0000AA           BGE      ??UnpackSFMPEG1_15
+   \   000001B4   0700DBE7           LDRB     R0,[R11, +R7]
+   \   000001B8   0500CBE7           STRB     R0,[R11, +R5]
+   \   000001BC   01B08BE2           ADD      R11,R11,#+1
+   \   000001C0   F9FFFFEA           B        ??UnpackSFMPEG1_14
+    134          			else          for(  ; sfb <11 ; sfb++) sfis->l[sfb] = (char)GetBits(bsi, slen0);
+   \                     ??UnpackSFMPEG1_16:
+   \   000001C4   0810A0E1           MOV      R1,R8
+   \   000001C8   0400A0E1           MOV      R0,R4
+   \   000001CC   ........           _BLF     xmp3_GetBits,??xmp3_GetBits??rA
+   \   000001D0   0500CBE7           STRB     R0,[R11, +R5]
+   \   000001D4   01B08BE2           ADD      R11,R11,#+1
+   \                     ??UnpackSFMPEG1_13:
+   \   000001D8   0B005BE3           CMP      R11,#+11
+   \   000001DC   F8FFFFBA           BLT      ??UnpackSFMPEG1_16
+    135          			if(scfsi[2])  for(  ; sfb <16 ; sfb++) sfis->l[sfb] = sfisGr0->l[sfb];
+   \                     ??UnpackSFMPEG1_15:
+   \   000001E0   080096E5           LDR      R0,[R6, #+8]
+   \   000001E4   000050E3           CMP      R0,#+0
+   \   000001E8   0A00000A           BEQ      ??UnpackSFMPEG1_17
+   \                     ??UnpackSFMPEG1_18:
+   \   000001EC   10005BE3           CMP      R11,#+16
+   \   000001F0   0A0000AA           BGE      ??UnpackSFMPEG1_19
+   \   000001F4   0700DBE7           LDRB     R0,[R11, +R7]
+   \   000001F8   0500CBE7           STRB     R0,[R11, +R5]
+   \   000001FC   01B08BE2           ADD      R11,R11,#+1
+   \   00000200   F9FFFFEA           B        ??UnpackSFMPEG1_18
+    136          			else          for(  ; sfb <16 ; sfb++) sfis->l[sfb] = (char)GetBits(bsi, slen1);
+   \                     ??UnpackSFMPEG1_20:
+   \   00000204   0910A0E1           MOV      R1,R9
+   \   00000208   0400A0E1           MOV      R0,R4
+   \   0000020C   ........           _BLF     xmp3_GetBits,??xmp3_GetBits??rA
+   \   00000210   0500CBE7           STRB     R0,[R11, +R5]
+   \   00000214   01B08BE2           ADD      R11,R11,#+1
+   \                     ??UnpackSFMPEG1_17:
+   \   00000218   10005BE3           CMP      R11,#+16
+   \   0000021C   F8FFFFBA           BLT      ??UnpackSFMPEG1_20
+    137          			if(scfsi[3])  for(  ; sfb <21 ; sfb++) sfis->l[sfb] = sfisGr0->l[sfb];
+   \                     ??UnpackSFMPEG1_19:
+   \   00000220   0C0096E5           LDR      R0,[R6, #+12]
+   \   00000224   000050E3           CMP      R0,#+0
+   \   00000228   0A00000A           BEQ      ??UnpackSFMPEG1_21
+   \                     ??UnpackSFMPEG1_22:
+   \   0000022C   15005BE3           CMP      R11,#+21
+   \   00000230   0A0000AA           BGE      ??UnpackSFMPEG1_23
+   \   00000234   0700DBE7           LDRB     R0,[R11, +R7]
+   \   00000238   0500CBE7           STRB     R0,[R11, +R5]
+   \   0000023C   01B08BE2           ADD      R11,R11,#+1
+   \   00000240   F9FFFFEA           B        ??UnpackSFMPEG1_22
+    138          			else          for(  ; sfb <21 ; sfb++) sfis->l[sfb] = (char)GetBits(bsi, slen1);
+   \                     ??UnpackSFMPEG1_24:
+   \   00000244   0910A0E1           MOV      R1,R9
+   \   00000248   0400A0E1           MOV      R0,R4
+   \   0000024C   ........           _BLF     xmp3_GetBits,??xmp3_GetBits??rA
+   \   00000250   0500CBE7           STRB     R0,[R11, +R5]
+   \   00000254   01B08BE2           ADD      R11,R11,#+1
+   \                     ??UnpackSFMPEG1_21:
+   \   00000258   15005BE3           CMP      R11,#+21
+   \   0000025C   F8FFFFBA           BLT      ??UnpackSFMPEG1_24
+    139          		}
+    140          		/* last sf band not transmitted */
+    141          		sfis->l[21] = 0;
+   \                     ??UnpackSFMPEG1_23:
+   \   00000260   15A0C5E5           STRB     R10,[R5, #+21]
+    142          		sfis->l[22] = 0;
+   \   00000264   16A0C5E5           STRB     R10,[R5, #+22]
+   \   00000268   F08FBDE8           POP      {R4-R11,PC}      ;; return
+   \                     ??UnpackSFMPEG1_0:
+   \   0000026C   ........           DC32     SFLenTab
+    143          	}
+    144          }
+    145          
+    146          /* NRTab[size + 3*is_right][block type][partition]
+    147           *   block type index: 0 = (bt0,bt1,bt3), 1 = bt2 non-mixed, 2 = bt2 mixed
+    148           *   partition: scale factor groups (sfb1 through sfb4)
+    149           * for block type = 2 (mixed or non-mixed) / by 3 is rolled into this table
+    150           *   (for 3 short blocks per long block)
+    151           * see 2.4.3.2 in MPEG 2 (low sample rate) spec
+    152           * stuff rolled into this table:
+    153           *   NRTab[x][1][y]   --> (NRTab[x][1][y])   / 3
+    154           *   NRTab[x][2][>=1] --> (NRTab[x][2][>=1]) / 3  (first partition is long block)
+    155           */
+
+   \                                 In segment DATA_C, align 4, align-sorted
+    156          static const char NRTab[6][3][4] = {
+   \                     NRTab:
+   \   00000000   060505050303       DC8 6, 5, 5, 5, 3, 3, 3, 3, 6, 3, 3, 3, 6, 5, 7, 3, 3, 3, 4, 2, 6, 3, 4
+   \              030306030303
+   \              060507030303
+   \              0402060304  
+   \   00000017   020B0A000006       DC8 2, 11, 10, 0, 0, 6, 6, 0, 0, 6, 3, 6, 0, 7, 7, 7, 0, 4, 4, 4, 0, 6
+   \              060000060306
+   \              000707070004
+   \              04040006    
+   \   0000002D   050400060606       DC8 5, 4, 0, 6, 6, 6, 3, 4, 3, 3, 2, 6, 4, 3, 2, 8, 8, 5, 0, 5, 4, 3, 0
+   \              030403030206
+   \              040302080805
+   \              0005040300  
+   \   00000044   06060300           DC8 6, 6, 3, 0
+    157          	/* non-intensity stereo */
+    158          	{	{6, 5, 5, 5},		
+    159          		{3, 3, 3, 3},	/* includes / 3 */	
+    160          		{6, 3, 3, 3},   /* includes / 3 except for first entry */
+    161          	},
+    162          	{	{6, 5, 7, 3}, 
+    163          		{3, 3, 4, 2},
+    164          		{6, 3, 4, 2},
+    165          	},
+    166          	{	{11, 10, 0, 0},
+    167          		{6, 6, 0, 0},
+    168          		{6, 3, 6, 0},  /* spec = [15,18,0,0], but 15 = 6L + 9S, so move 9/3=3 into col 1, 18/3=6 into col 2 and adj. slen[1,2] below */
+    169          	},
+    170          	/* intensity stereo, right chan */
+    171          	{	{7, 7, 7, 0},
+    172          		{4, 4, 4, 0},
+    173          		{6, 5, 4, 0},
+    174          	},
+    175          	{	{6, 6, 6, 3}, 
+    176          		{4, 3, 3, 2},
+    177          		{6, 4, 3, 2},
+    178          	},
+    179          	{	{8, 8, 5, 0},
+    180          		{5, 4, 3, 0},
+    181          		{6, 6, 3, 0},
+    182          	}
+    183          };
+    184          
+    185          /**************************************************************************************
+    186           * Function:    UnpackSFMPEG2
+    187           *
+    188           * Description: unpack MPEG 2 scalefactors from bitstream
+    189           *
+    190           * Inputs:      BitStreamInfo, SideInfoSub, ScaleFactorInfoSub structs for this
+    191           *                granule/channel
+    192           *              index of current granule and channel
+    193           *              ScaleFactorInfoSub from this granule 
+    194           *              modeExt field from frame header, to tell whether intensity stereo is on
+    195           *              ScaleFactorJS struct for storing IIP info used in Dequant()
+    196           *
+    197           * Outputs:     updated BitStreamInfo struct
+    198           *              scalefactors in sfis (short and/or long arrays, as appropriate)
+    199           *              updated intensityScale and preFlag flags
+    200           *
+    201           * Return:      none
+    202           *
+    203           * Notes:       Illegal Intensity Position = (2^slen) - 1 for MPEG2 scale factors
+    204           *
+    205           * TODO:        optimize the / and % stuff (only do one divide, get modulo x 
+    206           *                with (x / m) * m, etc.)
+    207           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    208          static void UnpackSFMPEG2(BitStreamInfo *bsi, SideInfoSub *sis, ScaleFactorInfoSub *sfis, int gr, int ch, int modeExt, ScaleFactorJS *sfjs)
+    209          {
+   \                     UnpackSFMPEG2:
+   \   00000000   F04F2DE9           PUSH     {R4-R11,LR}
+   \   00000004   24D04DE2           SUB      SP,SP,#+36
+    210          
+    211          	int i, sfb, sfcIdx, btIdx, nrIdx, iipTest;
+                 	                                  ^
+Warning[Pe550]: variable "iipTest" was set but never used
+    212          	int slen[4], nr[4];
+    213          	int sfCompress, preFlag, intensityScale;
+    214          	
+    215          	sfCompress = sis->sfCompress;
+   \   00000008   0CE091E5           LDR      LR,[R1, #+12]
+    216          	preFlag = 0;
+    217          	intensityScale = 0;
+    218          
+    219          	/* stereo mode bits (1 = on): bit 1 = mid-side on/off, bit 0 = intensity on/off */
+    220          	if (! ((modeExt & 0x01) && (ch == 1)) ) {
+   \   0000000C   187091E5           LDR      R7,[R1, #+24]
+   \   00000010   0040A0E1           MOV      R4,R0
+   \   00000014   4C009DE5           LDR      R0,[SP, #+76]
+   \   00000018   0250A0E1           MOV      R5,R2
+   \   0000001C   50209DE5           LDR      R2,[SP, #+80]
+   \   00000020   0030A0E3           MOV      R3,#+0
+   \   00000024   00C0A0E3           MOV      R12,#+0
+   \   00000028   0360A0E1           MOV      R6,R3
+   \   0000002C   010010E3           TST      R0,#0x1
+   \   00000030   0200000A           BEQ      ??UnpackSFMPEG2_0
+   \   00000034   48809DE5           LDR      R8,[SP, #+72]
+   \   00000038   010058E3           CMP      R8,#+1
+   \   0000003C   4500000A           BEQ      ??UnpackSFMPEG2_1
+    221          		/* in other words: if ((modeExt & 0x01) == 0 || ch == 0) */
+    222          		if (sfCompress < 400) {
+   \                     ??UnpackSFMPEG2_0:
+   \   00000040   640F5EE3           CMP      LR,#+400
+   \   00000044   140000AA           BGE      ??UnpackSFMPEG2_2
+    223          			/* max slen = floor[(399/16) / 5] = 4 */
+    224          			slen[0] = (sfCompress >> 4) / 5;
+   \   00000048   BC939FE5           LDR      R9,??UnpackSFMPEG2_3  ;; 0x66666667
+   \   0000004C   4E82A0E1           ASR      R8,LR,#+4
+   \   00000050   99A8CBE0           SMULL    R10,R11,R9,R8
+   \   00000054   CBB0A0E1           ASR      R11,R11,#+1
+   \   00000058   A89F8BE0           ADD      R9,R11,R8, LSR #+31
+   \   0000005C   00908DE5           STR      R9,[SP, #+0]
+    225          			slen[1]= (sfCompress >> 4) % 5;
+   \   00000060   A4939FE5           LDR      R9,??UnpackSFMPEG2_3  ;; 0x66666667
+   \   00000064   98A9CBE0           SMULL    R10,R11,R8,R9
+   \   00000068   05A0A0E3           MOV      R10,#+5
+   \   0000006C   CBB0A0E1           ASR      R11,R11,#+1
+   \   00000070   A8BF8BE0           ADD      R11,R11,R8, LSR #+31
+   \   00000074   9A0B0BE0           MUL      R11,R10,R11
+    226          			slen[2]= (sfCompress & 0x0f) >> 2;
+   \   00000078   0F900EE2           AND      R9,LR,#0xF
+   \   0000007C   0B8048E0           SUB      R8,R8,R11
+   \   00000080   04808DE5           STR      R8,[SP, #+4]
+   \   00000084   4991A0E1           ASR      R9,R9,#+2
+   \   00000088   08908DE5           STR      R9,[SP, #+8]
+    227          			slen[3]= (sfCompress & 0x03);
+   \   0000008C   03900EE2           AND      R9,LR,#0x3
+   \   00000090   0C908DE5           STR      R9,[SP, #+12]
+    228          			sfcIdx = 0;
+   \   00000094   0080A0E3           MOV      R8,#+0
+   \   00000098   670000EA           B        ??UnpackSFMPEG2_4
+    229          		} else if (sfCompress < 500) {
+   \                     ??UnpackSFMPEG2_2:
+   \   0000009C   7D0F5EE3           CMP      LR,#+500
+   \   000000A0   150000AA           BGE      ??UnpackSFMPEG2_5
+    230          			/* max slen = floor[(99/4) / 5] = 4 */
+    231          			sfCompress -= 400;
+    232          			slen[0] = (sfCompress >> 2) / 5;
+   \   000000A4   60939FE5           LDR      R9,??UnpackSFMPEG2_3  ;; 0x66666667
+   \   000000A8   8F80E0E3           MVN      R8,#+143
+   \   000000AC   408FC8E3           BIC      R8,R8,#0x100
+   \   000000B0   0EE088E0           ADD      LR,R8,LR
+   \   000000B4   4E81A0E1           ASR      R8,LR,#+2
+   \   000000B8   99A8CBE0           SMULL    R10,R11,R9,R8
+    233          			slen[1]= (sfCompress >> 2) % 5;
+    234          			slen[2]= (sfCompress & 0x03);
+    235          			slen[3]= 0;
+   \   000000BC   0C608DE5           STR      R6,[SP, #+12]
+   \   000000C0   CBB0A0E1           ASR      R11,R11,#+1
+   \   000000C4   A89F8BE0           ADD      R9,R11,R8, LSR #+31
+   \   000000C8   00908DE5           STR      R9,[SP, #+0]
+   \   000000CC   38939FE5           LDR      R9,??UnpackSFMPEG2_3  ;; 0x66666667
+   \   000000D0   98A9CBE0           SMULL    R10,R11,R8,R9
+   \   000000D4   05A0A0E3           MOV      R10,#+5
+   \   000000D8   CBB0A0E1           ASR      R11,R11,#+1
+   \   000000DC   A8BF8BE0           ADD      R11,R11,R8, LSR #+31
+   \   000000E0   9A0B0BE0           MUL      R11,R10,R11
+   \   000000E4   03900EE2           AND      R9,LR,#0x3
+   \   000000E8   0B8048E0           SUB      R8,R8,R11
+   \   000000EC   04808DE5           STR      R8,[SP, #+4]
+   \   000000F0   08908DE5           STR      R9,[SP, #+8]
+    236          			sfcIdx = 1;
+   \   000000F4   0180A0E3           MOV      R8,#+1
+   \   000000F8   4F0000EA           B        ??UnpackSFMPEG2_4
+    237          		} else {
+    238          			/* max slen = floor[11/3] = 3 (sfCompress = 9 bits in MPEG2) */
+    239          			sfCompress -= 500;
+    240          			slen[0] = sfCompress / 3;
+   \                     ??UnpackSFMPEG2_5:
+   \   000000FC   0C839FE5           LDR      R8,??UnpackSFMPEG2_3+0x4  ;; 0x55555556
+   \   00000100   F330E0E3           MVN      R3,#+243
+   \   00000104   403FC3E3           BIC      R3,R3,#0x100
+   \   00000108   0EE083E0           ADD      LR,R3,LR
+    241          			slen[1] = sfCompress % 3;
+   \   0000010C   FC329FE5           LDR      R3,??UnpackSFMPEG2_3+0x4  ;; 0x55555556
+   \   00000110   989ECAE0           SMULL    R9,R10,R8,LR
+    242          			slen[2] = slen[3] = 0;
+    243          			if (sis->mixedBlock) {
+   \   00000114   000057E3           CMP      R7,#+0
+   \   00000118   AE8F8AE0           ADD      R8,R10,LR, LSR #+31
+   \   0000011C   00808DE5           STR      R8,[SP, #+0]
+   \   00000120   9E83C9E0           SMULL    R8,R9,LR,R3
+   \   00000124   0380A0E3           MOV      R8,#+3
+   \   00000128   AE9F89E0           ADD      R9,R9,LR, LSR #+31
+   \   0000012C   980909E0           MUL      R9,R8,R9
+    244          				/* adjust for long/short mix logic (see comment above in NRTab[] definition) */
+    245          				slen[2] = slen[1];  
+    246          				slen[1] = slen[0];
+   \   00000130   00809D15           LDRNE    R8,[SP, #+0]
+   \   00000134   09304EE0           SUB      R3,LR,R9
+   \   00000138   04308DE5           STR      R3,[SP, #+4]
+   \   0000013C   0C608DE5           STR      R6,[SP, #+12]
+   \   00000140   08608DE5           STR      R6,[SP, #+8]
+   \   00000144   08308D15           STRNE    R3,[SP, #+8]
+   \   00000148   04808D15           STRNE    R8,[SP, #+4]
+    247          			}  
+    248          			preFlag = 1;
+   \   0000014C   0130A0E3           MOV      R3,#+1
+    249          			sfcIdx = 2;
+   \   00000150   0280A0E3           MOV      R8,#+2
+   \   00000154   380000EA           B        ??UnpackSFMPEG2_4
+    250          		}
+    251          	} else {    
+    252          		/* intensity stereo ch = 1 (right) */
+    253          		intensityScale = sfCompress & 0x01;
+   \                     ??UnpackSFMPEG2_1:
+   \   00000158   01C00EE2           AND      R12,LR,#0x1
+    254          		sfCompress >>= 1;
+   \   0000015C   CEE0A0E1           ASR      LR,LR,#+1
+    255          		if (sfCompress < 180) {
+   \   00000160   B4005EE3           CMP      LR,#+180
+   \   00000164   170000AA           BGE      ??UnpackSFMPEG2_6
+    256          			/* max slen = floor[35/6] = 5 (from mod 36) */
+    257          			slen[0] = (sfCompress / 36);
+   \   00000168   A4929FE5           LDR      R9,??UnpackSFMPEG2_3+0x8  ;; 0x38e38e39
+    258          			slen[1] = (sfCompress % 36) / 6;
+   \   0000016C   A0829FE5           LDR      R8,??UnpackSFMPEG2_3+0x8  ;; 0x38e38e39
+   \   00000170   99AECBE0           SMULL    R10,R11,R9,LR
+    259          			slen[2] = (sfCompress % 36) % 6;
+    260          			slen[3] = 0;
+   \   00000174   0C608DE5           STR      R6,[SP, #+12]
+   \   00000178   CBB1A0E1           ASR      R11,R11,#+3
+   \   0000017C   AE9F8BE0           ADD      R9,R11,LR, LSR #+31
+   \   00000180   00908DE5           STR      R9,[SP, #+0]
+   \   00000184   9E98CAE0           SMULL    R9,R10,LR,R8
+   \   00000188   2490A0E3           MOV      R9,#+36
+   \   0000018C   CAA1A0E1           ASR      R10,R10,#+3
+   \   00000190   AEAF8AE0           ADD      R10,R10,LR, LSR #+31
+   \   00000194   990A0AE0           MUL      R10,R9,R10
+   \   00000198   0A804EE0           SUB      R8,LR,R10
+   \   0000019C   74A29FE5           LDR      R10,??UnpackSFMPEG2_3+0xC  ;; 0x2aaaaaab
+   \   000001A0   9AB8CEE0           SMULL    R11,LR,R10,R8
+   \   000001A4   06B0A0E3           MOV      R11,#+6
+   \   000001A8   A8AF8EE0           ADD      R10,LR,R8, LSR #+31
+   \   000001AC   A8EF8EE0           ADD      LR,LR,R8, LSR #+31
+   \   000001B0   9B0E0EE0           MUL      LR,R11,LR
+   \   000001B4   04A08DE5           STR      R10,[SP, #+4]
+   \   000001B8   0E8048E0           SUB      R8,R8,LR
+   \   000001BC   08808DE5           STR      R8,[SP, #+8]
+    261          			sfcIdx = 3;
+   \   000001C0   0380A0E3           MOV      R8,#+3
+   \   000001C4   1C0000EA           B        ??UnpackSFMPEG2_4
+    262          		} else if (sfCompress < 244) {
+   \                     ??UnpackSFMPEG2_6:
+   \   000001C8   F4005EE3           CMP      LR,#+244
+   \   000001CC   0C0000AA           BGE      ??UnpackSFMPEG2_7
+    263          			/* max slen = floor[63/16] = 3 */
+    264          			sfCompress -= 180;
+   \   000001D0   B380E0E3           MVN      R8,#+179
+   \   000001D4   0EE088E0           ADD      LR,R8,LR
+    265          			slen[0] = (sfCompress & 0x3f) >> 4;
+   \   000001D8   3F900EE2           AND      R9,LR,#0x3F
+   \   000001DC   4992A0E1           ASR      R9,R9,#+4
+   \   000001E0   00908DE5           STR      R9,[SP, #+0]
+    266          			slen[1] = (sfCompress & 0x0f) >> 2;
+   \   000001E4   0F900EE2           AND      R9,LR,#0xF
+   \   000001E8   4991A0E1           ASR      R9,R9,#+2
+   \   000001EC   04908DE5           STR      R9,[SP, #+4]
+    267          			slen[2] = (sfCompress & 0x03);
+   \   000001F0   03900EE2           AND      R9,LR,#0x3
+   \   000001F4   08908DE5           STR      R9,[SP, #+8]
+    268          			slen[3] = 0;
+   \   000001F8   0C608DE5           STR      R6,[SP, #+12]
+    269          			sfcIdx = 4;
+   \   000001FC   0480A0E3           MOV      R8,#+4
+   \   00000200   0D0000EA           B        ??UnpackSFMPEG2_4
+    270          		} else {
+    271          			/* max slen = floor[11/3] = 3 (max sfCompress >> 1 = 511/2 = 255) */
+    272          			sfCompress -= 244;
+    273          			slen[0] = (sfCompress / 3);
+   \                     ??UnpackSFMPEG2_7:
+   \   00000204   04929FE5           LDR      R9,??UnpackSFMPEG2_3+0x4  ;; 0x55555556
+   \   00000208   F380E0E3           MVN      R8,#+243
+   \   0000020C   0EE088E0           ADD      LR,R8,LR
+   \   00000210   99AECBE0           SMULL    R10,R11,R9,LR
+    274          			slen[1] = (sfCompress % 3);
+   \   00000214   03A0A0E3           MOV      R10,#+3
+   \   00000218   AE9F8BE0           ADD      R9,R11,LR, LSR #+31
+   \   0000021C   AEBF8BE0           ADD      R11,R11,LR, LSR #+31
+   \   00000220   9A0B0BE0           MUL      R11,R10,R11
+   \   00000224   00908DE5           STR      R9,[SP, #+0]
+   \   00000228   0B904EE0           SUB      R9,LR,R11
+   \   0000022C   04908DE5           STR      R9,[SP, #+4]
+    275          			slen[2] = slen[3] = 0;
+   \   00000230   0C608DE5           STR      R6,[SP, #+12]
+   \   00000234   08608DE5           STR      R6,[SP, #+8]
+    276          			sfcIdx = 5;
+   \   00000238   0580A0E3           MOV      R8,#+5
+    277          		}
+    278          	}
+    279          	
+    280          	/* set index based on block type: (0,1,3) --> 0, (2 non-mixed) --> 1, (2 mixed) ---> 2 */
+    281          	btIdx = 0;
+    282          	if (sis->blockType == 2) 
+   \                     ??UnpackSFMPEG2_4:
+   \   0000023C   14A091E5           LDR      R10,[R1, #+20]
+   \   00000240   0090A0E3           MOV      R9,#+0
+   \   00000244   02005AE3           CMP      R10,#+2
+   \   00000248   0200001A           BNE      ??UnpackSFMPEG2_8
+    283          		btIdx = (sis->mixedBlock ? 2 : 1);
+   \   0000024C   000057E3           CMP      R7,#+0
+   \   00000250   0290A013           MOVNE    R9,#+2
+   \   00000254   0190A003           MOVEQ    R9,#+1
+    284          	for (i = 0; i < 4; i++)
+   \                     ??UnpackSFMPEG2_8:
+   \   00000258   0070A0E3           MOV      R7,#+0
+   \   0000025C   14A08DE2           ADD      R10,SP,#+20
+    285          		nr[i] = (int)NRTab[sfcIdx][btIdx][i];
+   \                     ??UnpackSFMPEG2_9:
+   \   00000260   B4E19FE5           LDR      LR,??UnpackSFMPEG2_3+0x10  ;; NRTab
+   \   00000264   0CB0A0E3           MOV      R11,#+12
+   \   00000268   9BE82EE0           MLA      LR,R11,R8,LR
+   \   0000026C   09B18EE0           ADD      R11,LR,R9, LSL #+2
+   \   00000270   0BB0D7E7           LDRB     R11,[R7, +R11]
+   \   00000274   07B18AE7           STR      R11,[R10, +R7, LSL #+2]
+   \   00000278   017087E2           ADD      R7,R7,#+1
+   \   0000027C   040057E3           CMP      R7,#+4
+   \   00000280   F6FFFFBA           BLT      ??UnpackSFMPEG2_9
+    286          
+    287          	/* save intensity stereo scale factor info */
+    288          	if( (modeExt & 0x01) && (ch == 1) ) {
+   \   00000284   010010E3           TST      R0,#0x1
+   \   00000288   0E00000A           BEQ      ??UnpackSFMPEG2_10
+   \   0000028C   48009DE5           LDR      R0,[SP, #+72]
+   \   00000290   010050E3           CMP      R0,#+1
+   \   00000294   0B00001A           BNE      ??UnpackSFMPEG2_10
+    289          		for (i = 0; i < 4; i++) {
+   \   00000298   0070A0E3           MOV      R7,#+0
+    290          			sfjs->slen[i] = slen[i];
+   \                     ??UnpackSFMPEG2_11:
+   \   0000029C   0D80A0E1           MOV      R8,SP
+   \   000002A0   078198E7           LDR      R8,[R8, +R7, LSL #+2]
+   \   000002A4   070182E0           ADD      R0,R2,R7, LSL #+2
+   \   000002A8   048080E5           STR      R8,[R0, #+4]
+    291          			sfjs->nr[i] = nr[i];
+   \   000002AC   14808DE2           ADD      R8,SP,#+20
+   \   000002B0   078198E7           LDR      R8,[R8, +R7, LSL #+2]
+    292          		}
+   \   000002B4   017087E2           ADD      R7,R7,#+1
+   \   000002B8   148080E5           STR      R8,[R0, #+20]
+   \   000002BC   040057E3           CMP      R7,#+4
+   \   000002C0   F5FFFFBA           BLT      ??UnpackSFMPEG2_11
+    293          		sfjs->intensityScale = intensityScale;
+   \   000002C4   00C082E5           STR      R12,[R2, #+0]
+    294          	}
+    295          	sis->preFlag = preFlag;
+   \                     ??UnpackSFMPEG2_10:
+   \   000002C8   3C3081E5           STR      R3,[R1, #+60]
+    296          
+    297          	/* short blocks */
+    298          	if(sis->blockType == 2) {
+   \   000002CC   140091E5           LDR      R0,[R1, #+20]
+   \   000002D0   020050E3           CMP      R0,#+2
+   \   000002D4   3300001A           BNE      ??UnpackSFMPEG2_12
+    299          		if(sis->mixedBlock) {
+   \   000002D8   180091E5           LDR      R0,[R1, #+24]
+   \   000002DC   000050E3           CMP      R0,#+0
+   \   000002E0   0A00000A           BEQ      ??UnpackSFMPEG2_13
+    300          			/* do long block portion */
+    301          			iipTest = (1 << slen[0]) - 1;
+    302          			for (sfb=0; sfb < 6; sfb++) {
+   \   000002E4   0070A0E3           MOV      R7,#+0
+    303          				sfis->l[sfb] = (char)GetBits(bsi, slen[0]);
+   \                     ??UnpackSFMPEG2_14:
+   \   000002E8   00109DE5           LDR      R1,[SP, #+0]
+   \   000002EC   0400A0E1           MOV      R0,R4
+   \   000002F0   ........           _BLF     xmp3_GetBits,??xmp3_GetBits??rA
+   \   000002F4   0500C7E7           STRB     R0,[R7, +R5]
+    304          			}
+   \   000002F8   017087E2           ADD      R7,R7,#+1
+   \   000002FC   060057E3           CMP      R7,#+6
+   \   00000300   F8FFFFBA           BLT      ??UnpackSFMPEG2_14
+    305          			sfb = 3;  /* start sfb for short */
+   \   00000304   0380A0E3           MOV      R8,#+3
+    306          			nrIdx = 1;
+   \   00000308   0190A0E3           MOV      R9,#+1
+   \   0000030C   010000EA           B        ??UnpackSFMPEG2_15
+    307          		} else {      
+    308          			/* all short blocks, so start nr, sfb at 0 */
+    309          			sfb = 0;
+   \                     ??UnpackSFMPEG2_13:
+   \   00000310   0080A0E3           MOV      R8,#+0
+    310          			nrIdx = 0;
+   \   00000314   0690A0E1           MOV      R9,R6
+    311          		}
+    312          
+    313          		/* remaining short blocks, sfb just keeps incrementing */
+    314          		for (    ; nrIdx <= 3; nrIdx++) {
+    315          			iipTest = (1 << slen[nrIdx]) - 1;
+    316          			for (i=0; i < nr[nrIdx]; i++, sfb++) {
+   \                     ??UnpackSFMPEG2_15:
+   \   00000318   14108DE2           ADD      R1,SP,#+20
+   \   0000031C   091191E7           LDR      R1,[R1, +R9, LSL #+2]
+   \   00000320   0070A0E3           MOV      R7,#+0
+   \   00000324   10108DE5           STR      R1,[SP, #+16]
+   \   00000328   010051E3           CMP      R1,#+1
+   \   0000032C   120000AA           BGE      ??UnpackSFMPEG2_16
+   \   00000330   140000EA           B        ??UnpackSFMPEG2_17
+    317          				sfis->s[sfb][0] = (char)GetBits(bsi, slen[nrIdx]);
+   \                     ??UnpackSFMPEG2_18:
+   \   00000334   0D00A0E1           MOV      R0,SP
+   \   00000338   09A190E7           LDR      R10,[R0, +R9, LSL #+2]
+   \   0000033C   880088E0           ADD      R0,R8,R8, LSL #+1
+   \   00000340   05B080E0           ADD      R11,R0,R5
+   \   00000344   0A10A0E1           MOV      R1,R10
+   \   00000348   0400A0E1           MOV      R0,R4
+   \   0000034C   ........           _BLF     xmp3_GetBits,??xmp3_GetBits??rA
+   \   00000350   1700CBE5           STRB     R0,[R11, #+23]
+    318          				sfis->s[sfb][1] = (char)GetBits(bsi, slen[nrIdx]);
+   \   00000354   0A10A0E1           MOV      R1,R10
+   \   00000358   0400A0E1           MOV      R0,R4
+   \   0000035C   ........           _BLF     xmp3_GetBits,??xmp3_GetBits??rA
+   \   00000360   1800CBE5           STRB     R0,[R11, #+24]
+    319          				sfis->s[sfb][2] = (char)GetBits(bsi, slen[nrIdx]);
+   \   00000364   0A10A0E1           MOV      R1,R10
+   \   00000368   0400A0E1           MOV      R0,R4
+   \   0000036C   ........           _BLF     xmp3_GetBits,??xmp3_GetBits??rA
+   \   00000370   1900CBE5           STRB     R0,[R11, #+25]
+    320          			}
+   \   00000374   017087E2           ADD      R7,R7,#+1
+   \   00000378   018088E2           ADD      R8,R8,#+1
+   \                     ??UnpackSFMPEG2_16:
+   \   0000037C   10009DE5           LDR      R0,[SP, #+16]
+   \   00000380   000057E1           CMP      R7,R0
+   \   00000384   EAFFFFBA           BLT      ??UnpackSFMPEG2_18
+    321          		}
+   \                     ??UnpackSFMPEG2_17:
+   \   00000388   019089E2           ADD      R9,R9,#+1
+   \   0000038C   040059E3           CMP      R9,#+4
+   \   00000390   E0FFFFBA           BLT      ??UnpackSFMPEG2_15
+    322          		/* last sf band not transmitted */
+    323          		sfis->s[12][0] = sfis->s[12][1] = sfis->s[12][2] = 0;
+   \   00000394   3D60C5E5           STRB     R6,[R5, #+61]
+   \   00000398   3C60C5E5           STRB     R6,[R5, #+60]
+   \   0000039C   3B60C5E5           STRB     R6,[R5, #+59]
+   \   000003A0   24D08DE2           ADD      SP,SP,#+36
+   \   000003A4   F08FBDE8           POP      {R4-R11,PC}
+    324          	} else {
+    325          		/* long blocks */
+    326          		sfb = 0;
+   \                     ??UnpackSFMPEG2_12:
+   \   000003A8   0080A0E3           MOV      R8,#+0
+    327          		for (nrIdx = 0; nrIdx <= 3; nrIdx++) {
+   \   000003AC   0690A0E1           MOV      R9,R6
+    328          			iipTest = (1 << slen[nrIdx]) - 1;
+    329          			for(i=0; i < nr[nrIdx]; i++, sfb++) {
+   \                     ??UnpackSFMPEG2_19:
+   \   000003B0   14008DE2           ADD      R0,SP,#+20
+   \   000003B4   09A190E7           LDR      R10,[R0, +R9, LSL #+2]
+   \   000003B8   0070A0E3           MOV      R7,#+0
+   \   000003BC   01005AE3           CMP      R10,#+1
+   \   000003C0   070000AA           BGE      ??UnpackSFMPEG2_20
+   \   000003C4   080000EA           B        ??UnpackSFMPEG2_21
+    330          				sfis->l[sfb] = (char)GetBits(bsi, slen[nrIdx]);
+   \                     ??UnpackSFMPEG2_22:
+   \   000003C8   0D00A0E1           MOV      R0,SP
+   \   000003CC   091190E7           LDR      R1,[R0, +R9, LSL #+2]
+   \   000003D0   0400A0E1           MOV      R0,R4
+   \   000003D4   ........           _BLF     xmp3_GetBits,??xmp3_GetBits??rA
+   \   000003D8   0500C8E7           STRB     R0,[R8, +R5]
+    331          			}
+   \   000003DC   017087E2           ADD      R7,R7,#+1
+   \   000003E0   018088E2           ADD      R8,R8,#+1
+   \                     ??UnpackSFMPEG2_20:
+   \   000003E4   0A0057E1           CMP      R7,R10
+   \   000003E8   F6FFFFBA           BLT      ??UnpackSFMPEG2_22
+    332          		}
+   \                     ??UnpackSFMPEG2_21:
+   \   000003EC   019089E2           ADD      R9,R9,#+1
+   \   000003F0   040059E3           CMP      R9,#+4
+   \   000003F4   EDFFFFBA           BLT      ??UnpackSFMPEG2_19
+    333          		/* last sf band not transmitted */
+    334          		sfis->l[21] = sfis->l[22] = 0;
+   \   000003F8   1660C5E5           STRB     R6,[R5, #+22]
+   \   000003FC   0000A0E3           MOV      R0,#+0
+   \   00000400   1500C5E5           STRB     R0,[R5, #+21]
+    335          
+    336          	}
+    337          }
+   \   00000404   24D08DE2           ADD      SP,SP,#+36
+   \   00000408   F08FBDE8           POP      {R4-R11,PC}      ;; return
+   \                     ??UnpackSFMPEG2_3:
+   \   0000040C   67666666           DC32     0x66666667
+   \   00000410   56555555           DC32     0x55555556
+   \   00000414   398EE338           DC32     0x38e38e39
+   \   00000418   ABAAAA2A           DC32     0x2aaaaaab
+   \   0000041C   ........           DC32     NRTab
+    338          
+    339          /**************************************************************************************
+    340           * Function:    UnpackScaleFactors
+    341           *
+    342           * Description: parse the fields of the MP3 scale factor data section
+    343           *
+    344           * Inputs:      MP3DecInfo structure filled by UnpackFrameHeader() and UnpackSideInfo()
+    345           *              buffer pointing to the MP3 scale factor data
+    346           *              pointer to bit offset (0-7) indicating starting bit in buf[0]
+    347           *              number of bits available in data buffer
+    348           *              index of current granule and channel
+    349           *
+    350           * Outputs:     updated platform-specific ScaleFactorInfo struct
+    351           *              updated bitOffset
+    352           *
+    353           * Return:      length (in bytes) of scale factor data, -1 if null input pointers
+    354           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    355          int UnpackScaleFactors(MP3DecInfo *mp3DecInfo, unsigned char *buf, int *bitOffset, int bitsAvail, int gr, int ch)
+    356          {
+   \                     xmp3_UnpackScaleFactors:
+   \   00000000   F04F2DE9           PUSH     {R4-R11,LR}
+   \   00000004   18D04DE2           SUB      SP,SP,#+24
+   \   00000008   3C709DE5           LDR      R7,[SP, #+60]
+   \   0000000C   40809DE5           LDR      R8,[SP, #+64]
+   \   00000010   0040A0E1           MOV      R4,R0
+    357          	int bitsUsed;
+    358          	unsigned char *startBuf;
+    359          	BitStreamInfo bitStreamInfo, *bsi;
+    360          	FrameHeader *fh;
+    361          	SideInfo *si;
+    362          	ScaleFactorInfo *sfi;
+    363          
+    364          	/* validate pointers */
+    365          	if (!mp3DecInfo || !mp3DecInfo->FrameHeaderPS || !mp3DecInfo->SideInfoPS || !mp3DecInfo->ScaleFactorInfoPS)
+   \   00000014   000054E3           CMP      R4,#+0
+   \   00000018   00009415           LDRNE    R0,[R4, #+0]
+   \   0000001C   0150A0E1           MOV      R5,R1
+   \   00000020   00005013           CMPNE    R0,#+0
+   \   00000024   04009415           LDRNE    R0,[R4, #+4]
+   \   00000028   0260A0E1           MOV      R6,R2
+   \   0000002C   00005013           CMPNE    R0,#+0
+   \   00000030   08009415           LDRNE    R0,[R4, #+8]
+   \   00000034   00005013           CMPNE    R0,#+0
+    366          		return -1;
+   \   00000038   0000E003           MVNEQ    R0,#+0
+   \   0000003C   4500000A           BEQ      ??xmp3_UnpackScaleFactors_0
+    367          	fh = ((FrameHeader *)(mp3DecInfo->FrameHeaderPS));
+   \   00000040   001094E5           LDR      R1,[R4, #+0]
+    368          	si = ((SideInfo *)(mp3DecInfo->SideInfoPS));
+    369          	sfi = ((ScaleFactorInfo *)(mp3DecInfo->ScaleFactorInfoPS));
+    370          
+    371          	/* init GetBits reader */
+    372          	startBuf = buf;
+    373          	bsi = &bitStreamInfo;
+    374          	SetBitstreamPointer(bsi, (bitsAvail + *bitOffset + 7) / 8, buf);
+   \   00000044   0520A0E1           MOV      R2,R5
+   \   00000048   00108DE5           STR      R1,[SP, #+0]
+   \   0000004C   049094E5           LDR      R9,[R4, #+4]
+   \   00000050   08A094E5           LDR      R10,[R4, #+8]
+   \   00000054   04508DE5           STR      R5,[SP, #+4]
+   \   00000058   000096E5           LDR      R0,[R6, #+0]
+   \   0000005C   030080E0           ADD      R0,R0,R3
+   \   00000060   070080E2           ADD      R0,R0,#+7
+   \   00000064   4011A0E1           ASR      R1,R0,#+2
+   \   00000068   A10E80E0           ADD      R0,R0,R1, LSR #+29
+   \   0000006C   C011A0E1           ASR      R1,R0,#+3
+   \   00000070   08008DE2           ADD      R0,SP,#+8
+   \   00000074   ........           _BLF     xmp3_SetBitstreamPointer,??xmp3_SetBitstreamPointer??rA
+    375          	if (*bitOffset)
+   \   00000078   001096E5           LDR      R1,[R6, #+0]
+   \   0000007C   000051E3           CMP      R1,#+0
+   \   00000080   0100000A           BEQ      ??xmp3_UnpackScaleFactors_1
+    376          		GetBits(bsi, *bitOffset);
+   \   00000084   08008DE2           ADD      R0,SP,#+8
+   \   00000088   ........           _BLF     xmp3_GetBits,??xmp3_GetBits??rA
+    377          
+    378          	if (fh->ver == MPEG1) 
+   \                     ??xmp3_UnpackScaleFactors_1:
+   \   0000008C   4800A0E3           MOV      R0,#+72
+   \   00000090   9010A0E3           MOV      R1,#+144
+   \   00000094   919722E0           MLA      R2,R1,R7,R9
+   \   00000098   3E10A0E3           MOV      R1,#+62
+   \   0000009C   90282BE0           MLA      R11,R0,R8,R2
+   \   000000A0   910800E0           MUL      R0,R1,R8
+   \   000000A4   7C10A0E3           MOV      R1,#+124
+   \   000000A8   91A722E0           MLA      R2,R1,R7,R10
+   \   000000AC   00109DE5           LDR      R1,[SP, #+0]
+   \   000000B0   022080E0           ADD      R2,R0,R2
+   \   000000B4   0010D1E5           LDRB     R1,[R1, #+0]
+   \   000000B8   000051E3           CMP      R1,#+0
+   \   000000BC   0A00001A           BNE      ??xmp3_UnpackScaleFactors_2
+    379          		UnpackSFMPEG1(bsi, &si->sis[gr][ch], &sfi->sfis[gr][ch], si->scfsi[ch], gr, &sfi->sfis[0][ch]);
+   \   000000C0   0A0080E0           ADD      R0,R0,R10
+   \   000000C4   01002DE9           PUSH     {R0}
+   \   000000C8   28108BE2           ADD      R1,R11,#+40
+   \   000000CC   0700A0E1           MOV      R0,R7
+   \   000000D0   01002DE9           PUSH     {R0}
+   \   000000D4   080289E0           ADD      R0,R9,R8, LSL #+4
+   \   000000D8   083080E2           ADD      R3,R0,#+8
+   \   000000DC   10008DE2           ADD      R0,SP,#+16
+   \   000000E0   ........           BL       UnpackSFMPEG1
+   \   000000E4   08D08DE2           ADD      SP,SP,#+8
+   \   000000E8   0B0000EA           B        ??xmp3_UnpackScaleFactors_3
+    380          	else 
+    381          		UnpackSFMPEG2(bsi, &si->sis[gr][ch], &sfi->sfis[gr][ch], gr, ch, fh->modeExt, &sfi->sfjs);
+   \                     ??xmp3_UnpackScaleFactors_2:
+   \   000000EC   F8008AE2           ADD      R0,R10,#+248
+   \   000000F0   01002DE9           PUSH     {R0}
+   \   000000F4   04009DE5           LDR      R0,[SP, #+4]
+   \   000000F8   0730A0E1           MOV      R3,R7
+   \   000000FC   200090E5           LDR      R0,[R0, #+32]
+   \   00000100   28108BE2           ADD      R1,R11,#+40
+   \   00000104   01002DE9           PUSH     {R0}
+   \   00000108   0800A0E1           MOV      R0,R8
+   \   0000010C   01002DE9           PUSH     {R0}
+   \   00000110   14008DE2           ADD      R0,SP,#+20
+   \   00000114   ........           BL       UnpackSFMPEG2
+   \   00000118   0CD08DE2           ADD      SP,SP,#+12
+    382          
+    383          	mp3DecInfo->part23Length[gr][ch] = si->sis[gr][ch].part23Length;
+   \                     ??xmp3_UnpackScaleFactors_3:
+   \   0000011C   28109BE5           LDR      R1,[R11, #+40]
+   \   00000120   870184E0           ADD      R0,R4,R7, LSL #+3
+   \   00000124   080180E0           ADD      R0,R0,R8, LSL #+2
+   \   00000128   E01780E5           STR      R1,[R0, #+2016]
+    384          
+    385          	bitsUsed = CalcBitsUsed(bsi, buf, *bitOffset);
+   \   0000012C   002096E5           LDR      R2,[R6, #+0]
+   \   00000130   0510A0E1           MOV      R1,R5
+   \   00000134   08008DE2           ADD      R0,SP,#+8
+   \   00000138   ........           _BLF     xmp3_CalcBitsUsed,??xmp3_CalcBitsUsed??rA
+    386          	buf += (bitsUsed + *bitOffset) >> 3;
+   \   0000013C   001096E5           LDR      R1,[R6, #+0]
+   \   00000140   000081E0           ADD      R0,R1,R0
+   \   00000144   C05185E0           ADD      R5,R5,R0, ASR #+3
+    387          	*bitOffset = (bitsUsed + *bitOffset) & 0x07;
+   \   00000148   070000E2           AND      R0,R0,#0x7
+   \   0000014C   000086E5           STR      R0,[R6, #+0]
+    388          
+    389          	return (buf - startBuf);
+   \   00000150   04009DE5           LDR      R0,[SP, #+4]
+   \   00000154   000045E0           SUB      R0,R5,R0
+   \                     ??xmp3_UnpackScaleFactors_0:
+   \   00000158   18D08DE2           ADD      SP,SP,#+24       ;; stack cleaning
+   \   0000015C   F08FBDE8           POP      {R4-R11,PC}      ;; return
+    390          }
+    391          
+
+   Maximum stack usage in bytes:
+
+     Function                CSTACK
+     --------                ------
+     UnpackSFMPEG1              36
+     UnpackSFMPEG2              72
+     xmp3_UnpackScaleFactors    72
+
+
+   Segment part sizes:
+
+     Function/Label          Bytes
+     --------------          -----
+     SFLenTab                  32
+     UnpackSFMPEG1            624
+     NRTab                     72
+     UnpackSFMPEG2           1056
+     xmp3_UnpackScaleFactors  352
+      Others                   48
+
+ 
+ 2 080 bytes in segment CODE
+   104 bytes in segment DATA_C
+ 
+ 2 032 bytes of CODE  memory (+ 48 bytes shared)
+   104 bytes of CONST memory
+
+Errors: none
+Warnings: 2

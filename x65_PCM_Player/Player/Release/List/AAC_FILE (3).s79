@@ -1,0 +1,1941 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:26 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD /
+//                       EC\AAC_FILE (3).c                                   /
+//    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AAC /
+//                       DEC\AAC_FILE (3).c" -D NDEBUG -lC                   /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\AAC_FILE (3).s79                               /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME `AAC_FILE (3)`
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        MULTWEAK ??raac_CVKernel1??rA
+        MULTWEAK ??raac_CVKernel2??rA
+        MULTWEAK ??raac_GenerateHighFreq??rT
+        MULTWEAK ??raac_InvRNormalized??rA
+        FUNCTION CalcCovariance1,0203H
+        LOCFRAME CSTACK, 144, STACK
+        FUNCTION CalcCovariance2,0203H
+        LOCFRAME CSTACK, 48, STACK
+        FUNCTION CalcLPCoefs,0203H
+        LOCFRAME CSTACK, 100, STACK
+        PUBLIC raac_GenerateHighFreq
+        FUNCTION raac_GenerateHighFreq,0203H
+        LOCFRAME CSTACK, 120, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+raac_CVKernel1      SYMBOL "raac_CVKernel1"
+raac_CVKernel2      SYMBOL "raac_CVKernel2"
+raac_InvRNormalized SYMBOL "raac_InvRNormalized"
+??raac_CVKernel1??rA SYMBOL "??rA", raac_CVKernel1
+??raac_CVKernel2??rA SYMBOL "??rA", raac_CVKernel2
+raac_GenerateHighFreq SYMBOL "raac_GenerateHighFreq"
+??raac_GenerateHighFreq??rT SYMBOL "??rT", raac_GenerateHighFreq
+??raac_InvRNormalized??rA SYMBOL "??rA", raac_InvRNormalized
+
+        EXTERN raac_CVKernel1
+        FUNCTION raac_CVKernel1,0202H
+        EXTERN raac_CVKernel2
+        FUNCTION raac_CVKernel2,0202H
+        EXTERN raac_InvRNormalized
+        FUNCTION raac_InvRNormalized,0202H
+
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (3).c
+//    1 /* ***** BEGIN LICENSE BLOCK *****  
+//    2  * Source last modified: $Id: sbrhfgen.c,v 1.1 2005/02/26 01:47:35 jrecker Exp $ 
+//    3  *   
+//    4  * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+//    5  *       
+//    6  * The contents of this file, and the files included with this file, 
+//    7  * are subject to the current version of the RealNetworks Public 
+//    8  * Source License (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the current version of the RealNetworks Community 
+//   11  * Source License (the "RCSL") available at 
+//   12  * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+//   13  * will apply. You may also obtain the license terms directly from 
+//   14  * RealNetworks.  You may not use this file except in compliance with 
+//   15  * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+//   16  * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+//   17  * the rights, obligations and limitations governing use of the 
+//   18  * contents of the file. 
+//   19  *   
+//   20  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   21  * developer of the Original Code and owns the copyrights in the 
+//   22  * portions it created. 
+//   23  *   
+//   24  * This file, and the files included with this file, is distributed 
+//   25  * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+//   26  * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+//   27  * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+//   28  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+//   29  * ENJOYMENT OR NON-INFRINGEMENT. 
+//   30  *  
+//   31  * Technology Compatibility Kit Test Suite(s) Location:  
+//   32  *    http://www.helixcommunity.org/content/tck  
+//   33  *  
+//   34  * Contributor(s):  
+//   35  *   
+//   36  * ***** END LICENSE BLOCK ***** */  
+//   37 
+//   38 /**************************************************************************************
+//   39  * Fixed-point HE-AAC decoder
+//   40  * Jon Recker (jrecker@real.com)
+//   41  * February 2005
+//   42  *
+//   43  * sbrhfgen.c - high frequency generation for SBR
+//   44  **************************************************************************************/
+//   45 
+//   46 #include "sbr_aac.h"
+//   47 #include "assembly_aac.h"
+//   48 
+//   49 #define FBITS_LPCOEFS	29	/* Q29 for range of (-4, 4) */
+//   50 #define MAG_16			(16 * (1 << (32 - (2*(32-FBITS_LPCOEFS)))))		/* i.e. 16 in Q26 format */
+//   51 #define RELAX_COEF		0x7ffff79c	/* 1.0 / (1.0 + 1e-6), Q31 */
+//   52 
+//   53 /* newBWTab[prev invfMode][curr invfMode], format = Q31 (table 4.158) 
+//   54  * sample file which uses all of these: al_sbr_sr_64_2_fsaac32.aac 
+//   55  */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//   56 static const int newBWTab[4][4] = {
+newBWTab:
+        DATA
+        DC32 0, 1288490189, 1932735283, 2104533975, 1288490189, 1610612736
+        DC32 1932735283, 2104533975, 0, 1610612736, 1932735283, 2104533975, 0
+        DC32 1610612736, 1932735283, 2104533975
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??CalcCovariance1??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE CalcCovariance1
+//   57 	{0x00000000, 0x4ccccccd, 0x73333333, 0x7d70a3d7},
+//   58 	{0x4ccccccd, 0x60000000, 0x73333333, 0x7d70a3d7},
+//   59 	{0x00000000, 0x60000000, 0x73333333, 0x7d70a3d7},
+//   60 	{0x00000000, 0x60000000, 0x73333333, 0x7d70a3d7},
+//   61 };
+//   62 
+//   63 /**************************************************************************************
+//   64  * Function:    CVKernel1
+//   65  *
+//   66  * Description: kernel of covariance matrix calculation for p01, p11, p12, p22
+//   67  *
+//   68  * Inputs:      buffer of low-freq samples, starting at time index = 0, 
+//   69  *                freq index = patch subband
+//   70  *
+//   71  * Outputs:     64-bit accumulators for p01re, p01im, p12re, p12im, p11re, p22re
+//   72  *                stored in accBuf
+//   73  *
+//   74  * Return:      none
+//   75  *
+//   76  * Notes:       this is carefully written to be efficient on ARM
+//   77  *              use the assembly code version in sbrcov.s when building for ARM!
+//   78  **************************************************************************************/
+//   79 #if (defined (__arm) && defined (__ARMCC_VERSION)) || (defined (_WIN32) && defined (_WIN32_WCE) && defined (ARM)) || (defined(__GNUC__) && defined(__arm__))
+//   80 void CVKernel1(int *XBuf, int *accBuf);
+//   81 #else
+//   82 void CVKernel1(int *XBuf, int *accBuf)
+//   83 { return;
+//   84 	U64 p01re, p01im, p12re, p12im, p11re, p22re;
+//   85 	int n, x0re, x0im, x1re, x1im;
+//   86 
+//   87 	x0re = XBuf[0];
+//   88 	x0im = XBuf[1];
+//   89 	XBuf += (2*64);
+//   90 	x1re = XBuf[0];
+//   91 	x1im = XBuf[1];
+//   92 	XBuf += (2*64);
+//   93 
+//   94 	p01re.w64 = p01im.w64 = 0;
+//   95 	p12re.w64 = p12im.w64 = 0;
+//   96 	p11re.w64 = 0;
+//   97 	p22re.w64 = 0;
+//   98 
+//   99 	p12re.w64 = MADD64(p12re.w64,  x1re, x0re);
+//  100 	p12re.w64 = MADD64(p12re.w64,  x1im, x0im);
+//  101 	p12im.w64 = MADD64(p12im.w64,  x0re, x1im);
+//  102 	p12im.w64 = MADD64(p12im.w64, -x0im, x1re);
+//  103 	p22re.w64 = MADD64(p22re.w64,  x0re, x0re);
+//  104 	p22re.w64 = MADD64(p22re.w64,  x0im, x0im);
+//  105 	for (n = (NUM_TIME_SLOTS*SAMPLES_PER_SLOT + 6); n != 0; n--) {
+//  106 		/* 4 input, 3*2 acc, 1 ptr, 1 loop counter = 12 registers (use same for x0im, -x0im) */
+//  107 		x0re = x1re;
+//  108 		x0im = x1im;
+//  109 		x1re = XBuf[0];
+//  110 		x1im = XBuf[1];
+//  111 
+//  112 		p01re.w64 = MADD64(p01re.w64,  x1re, x0re);
+//  113 		p01re.w64 = MADD64(p01re.w64,  x1im, x0im);
+//  114 		p01im.w64 = MADD64(p01im.w64,  x0re, x1im);
+//  115 		p01im.w64 = MADD64(p01im.w64, -x0im, x1re);
+//  116 		p11re.w64 = MADD64(p11re.w64,  x0re, x0re);
+//  117 		p11re.w64 = MADD64(p11re.w64,  x0im, x0im);
+//  118 
+//  119 		XBuf += (2*64);
+//  120 	}
+//  121 	/* these can be derived by slight changes to account for boundary conditions */
+//  122 	p12re.w64 += p01re.w64;
+//  123 	p12re.w64 = MADD64(p12re.w64, x1re, -x0re);
+//  124 	p12re.w64 = MADD64(p12re.w64, x1im, -x0im);
+//  125 	p12im.w64 += p01im.w64;
+//  126 	p12im.w64 = MADD64(p12im.w64, x0re, -x1im);
+//  127 	p12im.w64 = MADD64(p12im.w64, x0im,  x1re);
+//  128 	p22re.w64 += p11re.w64;
+//  129 	p22re.w64 = MADD64(p22re.w64, x0re, -x0re);
+//  130 	p22re.w64 = MADD64(p22re.w64, x0im, -x0im);
+//  131 
+//  132 	accBuf[0]  = p01re.r.lo32;	accBuf[1]  = p01re.r.hi32;
+//  133 	accBuf[2]  = p01im.r.lo32;	accBuf[3]  = p01im.r.hi32;
+//  134 	accBuf[4]  = p11re.r.lo32;	accBuf[5]  = p11re.r.hi32;
+//  135 	accBuf[6]  = p12re.r.lo32;	accBuf[7]  = p12re.r.hi32;
+//  136 	accBuf[8]  = p12im.r.lo32;	accBuf[9]  = p12im.r.hi32;
+//  137 	accBuf[10] = p22re.r.lo32;	accBuf[11] = p22re.r.hi32;
+//  138 }
+//  139 #endif
+//  140 
+//  141 /**************************************************************************************
+//  142  * Function:    CalcCovariance1
+//  143  *
+//  144  * Description: calculate covariance matrix for p01, p12, p11, p22 (4.6.18.6.2)
+//  145  *
+//  146  * Inputs:      buffer of low-freq samples, starting at time index 0, 
+//  147  *                freq index = patch subband
+//  148  *
+//  149  * Outputs:     complex covariance elements p01re, p01im, p12re, p12im, p11re, p22re
+//  150  *                (p11im = p22im = 0)
+//  151  *              format = integer (Q0) * 2^N, with scalefactor N >= 0
+//  152  *
+//  153  * Return:      scalefactor N
+//  154  *
+//  155  * Notes:       outputs are normalized to have 1 GB (sign in at least top 2 bits)
+//  156  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function CalcCovariance1
+        ARM
+//  157 static int CalcCovariance1(int *XBuf, int *p01reN, int *p01imN, int *p12reN, int *p12imN, int *p11reN, int *p22reN)
+//  158 {
+CalcCovariance1:
+        PUSH     {R1-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+48
+        SUB      SP,SP,#+96
+        CFI CFA R13+144
+//  159 	int accBuf[2*6];
+//  160 	int n, z, s, loShift, hiShift, gbMask;
+//  161 	U64 p01re, p01im, p12re, p12im, p11re, p22re;
+//  162 
+//  163 	CVKernel1(XBuf, accBuf);
+        ADD      R1,SP,#+48
+        _BLF     raac_CVKernel1,??raac_CVKernel1??rA
+//  164 	p01re.r.lo32 = accBuf[0];	p01re.r.hi32 = accBuf[1];
+        LDR      R1,[SP, #+48]
+        STR      R1,[SP, #+0]
+        LDR      R10,[SP, #+52]
+        STR      R10,[SP, #+4]
+//  165 	p01im.r.lo32 = accBuf[2];	p01im.r.hi32 = accBuf[3];
+        LDR      R1,[SP, #+56]
+//  166 	p11re.r.lo32 = accBuf[4];	p11re.r.hi32 = accBuf[5];
+//  167 	p12re.r.lo32 = accBuf[6];	p12re.r.hi32 = accBuf[7];
+//  168 	p12im.r.lo32 = accBuf[8];	p12im.r.hi32 = accBuf[9];
+//  169 	p22re.r.lo32 = accBuf[10];	p22re.r.hi32 = accBuf[11];
+//  170 
+//  171 	/* 64-bit accumulators now have 2*FBITS_OUT_QMFA fraction bits
+//  172 	 * want to scale them down to integers (32-bit signed, Q0)
+//  173 	 *   with scale factor of 2^n, n >= 0
+//  174 	 * leave 2 GB's for calculating determinant, so take top 30 non-zero bits
+//  175 	 */
+//  176 	gbMask  = ((p01re.r.hi32) ^ (p01re.r.hi32 >> 31)) | ((p01im.r.hi32) ^ (p01im.r.hi32 >> 31));
+//  177 	gbMask |= ((p12re.r.hi32) ^ (p12re.r.hi32 >> 31)) | ((p12im.r.hi32) ^ (p12im.r.hi32 >> 31));
+//  178 	gbMask |= ((p11re.r.hi32) ^ (p11re.r.hi32 >> 31)) | ((p22re.r.hi32) ^ (p22re.r.hi32 >> 31));
+//  179 	if (gbMask == 0) {
+        ASR      R5,R10,#+31
+        STR      R1,[SP, #+8]
+        LDR      R2,[SP, #+60]
+        EOR      R11,R5,R10
+        STR      R2,[SP, #+12]
+        LDR      R1,[SP, #+64]
+        ASR      R6,R2,#+31
+        STR      R1,[SP, #+32]
+        LDR      R3,[SP, #+68]
+        EOR      LR,R6,R2
+        STR      R3,[SP, #+36]
+        LDR      R1,[SP, #+72]
+        ASR      R9,R3,#+31
+        STR      R1,[SP, #+16]
+        LDR      R12,[SP, #+76]
+        ORR      R11,LR,R11
+        STR      R12,[SP, #+20]
+        LDR      R1,[SP, #+80]
+        ASR      R7,R12,#+31
+        STR      R1,[SP, #+24]
+        LDR      R4,[SP, #+84]
+        EOR      LR,R7,R12
+        STR      R4,[SP, #+28]
+        LDR      R1,[SP, #+88]
+        ASR      R8,R4,#+31
+        STR      R1,[SP, #+40]
+        LDR      R0,[SP, #+92]
+        ORR      R11,LR,R11
+        STR      R0,[SP, #+44]
+        ASR      R1,R0,#+31
+        EOR      LR,R8,R4
+        ORR      R11,LR,R11
+        EOR      LR,R9,R3
+        ORR      R11,LR,R11
+        EOR      LR,R1,R0
+        ORRS     R11,LR,R11
+        BNE      ??CalcCovariance1_0
+//  180 		s = p01re.r.hi32 >> 31; gbMask  = (p01re.r.lo32 ^ s) - s;
+        LDR      R11,[SP, #+0]
+        EOR      R11,R5,R11
+        SUB      R5,R11,R5
+//  181 		s = p01im.r.hi32 >> 31; gbMask |= (p01im.r.lo32 ^ s) - s;
+        LDR      R11,[SP, #+8]
+        EOR      R11,R6,R11
+        SUB      R6,R11,R6
+        ORR      R5,R6,R5
+//  182 		s = p12re.r.hi32 >> 31; gbMask |= (p12re.r.lo32 ^ s) - s;
+        LDR      R6,[SP, #+16]
+        EOR      R6,R7,R6
+        SUB      R6,R6,R7
+        ORR      R5,R6,R5
+//  183 		s = p12im.r.hi32 >> 31; gbMask |= (p12im.r.lo32 ^ s) - s;
+        LDR      R6,[SP, #+24]
+        EOR      R6,R8,R6
+        SUB      R6,R6,R8
+        ORR      R5,R6,R5
+//  184 		s = p11re.r.hi32 >> 31; gbMask |= (p11re.r.lo32 ^ s) - s;
+        LDR      R6,[SP, #+32]
+        EOR      R6,R9,R6
+        SUB      R6,R6,R9
+        ORR      R5,R6,R5
+//  185 		s = p22re.r.hi32 >> 31; gbMask |= (p22re.r.lo32 ^ s) - s;
+//  186 		z = 32 + CLZ(gbMask);
+        LDR      R6,[SP, #+40]
+        EOR      R6,R1,R6
+        SUB      R1,R6,R1
+        ORRS     R1,R1,R5
+        MOVEQ    R1,#+32
+        BEQ      ??CalcCovariance1_1
+        MOV      R5,#+1
+        LSRS     R6,R1,#+16
+        MOVEQ    R5,#+17
+        LSLEQ    R1,R1,#+16
+        LSRS     R6,R1,#+24
+        ADDEQ    R5,R5,#+8
+        LSLEQ    R1,R1,#+8
+        LSRS     R6,R1,#+28
+        ADDEQ    R5,R5,#+4
+        LSLEQ    R1,R1,#+4
+        LSRS     R6,R1,#+30
+        ADDEQ    R5,R5,#+2
+        LSLEQ    R1,R1,#+2
+        SUB      R1,R5,R1, LSR #+31
+??CalcCovariance1_1:
+        ADD      R1,R1,#+32
+        B        ??CalcCovariance1_2
+//  187 	} else {
+//  188 		gbMask  = FASTABS(p01re.r.hi32) | FASTABS(p01im.r.hi32);
+//  189 		gbMask |= FASTABS(p12re.r.hi32) | FASTABS(p12im.r.hi32);
+//  190 		gbMask |= FASTABS(p11re.r.hi32) | FASTABS(p22re.r.hi32);
+//  191 		z = CLZ(gbMask);
+??CalcCovariance1_0:
+        EOR      R11,R5,R10
+        SUB      R11,R11,R5
+        EOR      R5,R6,R2
+        SUB      R5,R5,R6
+        ORR      R6,R5,R11
+        EOR      R5,R7,R12
+        SUB      R5,R5,R7
+        ORR      R5,R5,R6
+        EOR      R6,R8,R4
+        SUB      R6,R6,R8
+        ORR      R5,R6,R5
+        EOR      R6,R9,R3
+        SUB      R6,R6,R9
+        ORR      R5,R6,R5
+        EOR      R6,R1,R0
+        SUB      R1,R6,R1
+        ORRS     R1,R1,R5
+        MOVEQ    R1,#+32
+        BEQ      ??CalcCovariance1_2
+        MOV      R5,#+1
+        LSRS     R6,R1,#+16
+        MOVEQ    R5,#+17
+        LSLEQ    R1,R1,#+16
+        LSRS     R6,R1,#+24
+        ADDEQ    R5,R5,#+8
+        LSLEQ    R1,R1,#+8
+        LSRS     R6,R1,#+28
+        ADDEQ    R5,R5,#+4
+        LSLEQ    R1,R1,#+4
+        LSRS     R6,R1,#+30
+        ADDEQ    R5,R5,#+2
+        LSLEQ    R1,R1,#+2
+        SUB      R1,R5,R1, LSR #+31
+//  192 	}
+//  193 
+//  194 	n = 64 - z;	/* number of non-zero bits in bottom of 64-bit word */
+??CalcCovariance1_2:
+        RSB      R1,R1,#+64
+//  195 	if (n <= 30) {
+        CMP      R1,#+31
+        BGE      ??CalcCovariance1_3
+//  196 		loShift = (30 - n);
+//  197 		*p01reN = p01re.r.lo32 << loShift;	*p01imN = p01im.r.lo32 << loShift;
+        LDR      R0,[SP, #+96]
+        LDR      R2,[SP, #+0]
+        RSB      R1,R1,#+30
+        LSL      R2,R2,R1
+        STR      R2,[R0, #+0]
+        LDR      R0,[SP, #+100]
+        LDR      R2,[SP, #+8]
+        LSL      R2,R2,R1
+        STR      R2,[R0, #+0]
+//  198 		*p12reN = p12re.r.lo32 << loShift;	*p12imN = p12im.r.lo32 << loShift;
+        LDR      R0,[SP, #+104]
+        LDR      R2,[SP, #+16]
+        LSL      R2,R2,R1
+        STR      R2,[R0, #+0]
+        LDR      R0,[SP, #+144]
+        LDR      R2,[SP, #+24]
+        LSL      R2,R2,R1
+        STR      R2,[R0, #+0]
+//  199 		*p11reN = p11re.r.lo32 << loShift;	*p22reN = p22re.r.lo32 << loShift;
+        LDR      R0,[SP, #+148]
+        LDR      R2,[SP, #+32]
+        LSL      R2,R2,R1
+        STR      R2,[R0, #+0]
+        LDR      R0,[SP, #+152]
+        LDR      R2,[SP, #+40]
+        LSL      R2,R2,R1
+        STR      R2,[R0, #+0]
+//  200 		return -(loShift + 2*FBITS_OUT_QMFA);
+        ADD      R0,R1,#+10
+        RSB      R0,R0,#+0
+        B        ??CalcCovariance1_4
+//  201 	} else if (n < 32 + 30) {
+??CalcCovariance1_3:
+        CMP      R1,#+62
+        BGE      ??CalcCovariance1_5
+//  202 		loShift = (n - 30);
+//  203 		hiShift = 32 - loShift;
+//  204 		*p01reN = (p01re.r.hi32 << hiShift) | (p01re.r.lo32 >> loShift);
+        LDR      R6,[SP, #+96]
+        LDR      R7,[SP, #+0]
+        SUB      R1,R1,#+30
+        RSB      R5,R1,#+32
+        LSR      R7,R7,R1
+        ORR      R7,R7,R10, LSL R5
+        STR      R7,[R6, #+0]
+//  205 		*p01imN = (p01im.r.hi32 << hiShift) | (p01im.r.lo32 >> loShift);
+        LDR      R6,[SP, #+100]
+        LDR      R7,[SP, #+8]
+        LSR      R7,R7,R1
+        ORR      R2,R7,R2, LSL R5
+        STR      R2,[R6, #+0]
+//  206 		*p12reN = (p12re.r.hi32 << hiShift) | (p12re.r.lo32 >> loShift);
+        LDR      R2,[SP, #+104]
+        LDR      R6,[SP, #+16]
+        LSR      R6,R6,R1
+        ORR      R6,R6,R12, LSL R5
+        STR      R6,[R2, #+0]
+//  207 		*p12imN = (p12im.r.hi32 << hiShift) | (p12im.r.lo32 >> loShift);
+        LDR      R2,[SP, #+144]
+        LDR      R6,[SP, #+24]
+        LSR      R6,R6,R1
+        ORR      R4,R6,R4, LSL R5
+        STR      R4,[R2, #+0]
+//  208 		*p11reN = (p11re.r.hi32 << hiShift) | (p11re.r.lo32 >> loShift);
+        LDR      R2,[SP, #+148]
+        LDR      R4,[SP, #+32]
+        LSR      R4,R4,R1
+        ORR      R3,R4,R3, LSL R5
+        STR      R3,[R2, #+0]
+//  209 		*p22reN = (p22re.r.hi32 << hiShift) | (p22re.r.lo32 >> loShift);
+        LDR      R2,[SP, #+152]
+        LDR      R3,[SP, #+40]
+        LSR      R3,R3,R1
+        ORR      R0,R3,R0, LSL R5
+        STR      R0,[R2, #+0]
+//  210 		return (loShift - 2*FBITS_OUT_QMFA);
+        SUB      R0,R1,#+10
+??CalcCovariance1_4:
+        ADD      SP,SP,#+108
+        CFI CFA R13+36
+        POP      {R4-R11,PC}
+        CFI CFA R13+144
+//  211 	} else {
+//  212 		hiShift = n - (32 + 30);
+??CalcCovariance1_5:
+        SUB      R5,R1,#+62
+//  213 		*p01reN = p01re.r.hi32 >> hiShift;	*p01imN = p01im.r.hi32 >> hiShift;
+        LDR      R1,[SP, #+96]
+        ASR      R6,R10,R5
+        STR      R6,[R1, #+0]
+        LDR      R1,[SP, #+100]
+        ASR      R2,R2,R5
+        STR      R2,[R1, #+0]
+//  214 		*p12reN = p12re.r.hi32 >> hiShift;	*p12imN = p12im.r.hi32 >> hiShift;
+        LDR      R1,[SP, #+104]
+        ASR      R2,R12,R5
+        STR      R2,[R1, #+0]
+        LDR      R1,[SP, #+144]
+        ASR      R2,R4,R5
+        STR      R2,[R1, #+0]
+//  215 		*p11reN = p11re.r.hi32 >> hiShift;	*p22reN = p22re.r.hi32 >> hiShift;
+        LDR      R1,[SP, #+148]
+        ASR      R2,R3,R5
+        STR      R2,[R1, #+0]
+        LDR      R1,[SP, #+152]
+        ASR      R0,R0,R5
+        STR      R0,[R1, #+0]
+//  216 		return (32 - 2*FBITS_OUT_QMFA - hiShift);
+        RSB      R0,R5,#+22
+        ADD      SP,SP,#+108
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        CFI EndBlock cfiBlock1
+//  217 	}
+//  218 
+//  219 	return 0;
+//  220 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??CalcCovariance2??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE CalcCovariance2
+//  221 
+//  222 /**************************************************************************************
+//  223  * Function:    CVKernel2
+//  224  *
+//  225  * Description: kernel of covariance matrix calculation for p02
+//  226  *
+//  227  * Inputs:      buffer of low-freq samples, starting at time index = 0, 
+//  228  *                freq index = patch subband
+//  229  *
+//  230  * Outputs:     64-bit accumulators for p02re, p02im stored in accBuf
+//  231  *
+//  232  * Return:      none
+//  233  *
+//  234  * Notes:       this is carefully written to be efficient on ARM
+//  235  *              use the assembly code version in sbrcov.s when building for ARM!
+//  236  **************************************************************************************/
+//  237 #if (defined (__arm) && defined (__ARMCC_VERSION)) || (defined (_WIN32) && defined (_WIN32_WCE) && defined (ARM)) || (defined(__GNUC__) && defined(__arm__))
+//  238 void CVKernel2(int *XBuf, int *accBuf);
+//  239 #else
+//  240 void CVKernel2(int *XBuf, int *accBuf)
+//  241 { return;
+//  242 	U64 p02re, p02im;
+//  243 	int n, x0re, x0im, x1re, x1im, x2re, x2im;
+//  244 
+//  245 	p02re.w64 = p02im.w64 = 0;
+//  246 
+//  247 	x0re = XBuf[0];
+//  248 	x0im = XBuf[1];
+//  249 	XBuf += (2*64);
+//  250 	x1re = XBuf[0];
+//  251 	x1im = XBuf[1];
+//  252 	XBuf += (2*64);
+//  253 
+//  254 	for (n = (NUM_TIME_SLOTS*SAMPLES_PER_SLOT + 6); n != 0; n--) {
+//  255 		/* 6 input, 2*2 acc, 1 ptr, 1 loop counter = 12 registers (use same for x0im, -x0im) */
+//  256 		x2re = XBuf[0];
+//  257 		x2im = XBuf[1];
+//  258 
+//  259 		p02re.w64 = MADD64(p02re.w64,  x2re, x0re);
+//  260 		p02re.w64 = MADD64(p02re.w64,  x2im, x0im);
+//  261 		p02im.w64 = MADD64(p02im.w64,  x0re, x2im);
+//  262 		p02im.w64 = MADD64(p02im.w64, -x0im, x2re);
+//  263 
+//  264 		x0re = x1re;
+//  265 		x0im = x1im;
+//  266 		x1re = x2re;
+//  267 		x1im = x2im;
+//  268 		XBuf += (2*64);
+//  269 	}
+//  270 
+//  271 	accBuf[0] = p02re.r.lo32;
+//  272 	accBuf[1] = p02re.r.hi32;
+//  273 	accBuf[2] = p02im.r.lo32;
+//  274 	accBuf[3] = p02im.r.hi32;
+//  275 }
+//  276 #endif
+//  277 
+//  278 /**************************************************************************************
+//  279  * Function:    CalcCovariance2
+//  280  *
+//  281  * Description: calculate covariance matrix for p02 (4.6.18.6.2)
+//  282  *
+//  283  * Inputs:      buffer of low-freq samples, starting at time index = 0, 
+//  284  *                freq index = patch subband
+//  285  *
+//  286  * Outputs:     complex covariance element p02re, p02im
+//  287  *              format = integer (Q0) * 2^N, with scalefactor N >= 0
+//  288  *
+//  289  * Return:      scalefactor N
+//  290  *
+//  291  * Notes:       outputs are normalized to have 1 GB (sign in at least top 2 bits)
+//  292  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function CalcCovariance2
+        ARM
+//  293 static int CalcCovariance2(int *XBuf, int *p02reN, int *p02imN)
+//  294 {
+CalcCovariance2:
+        PUSH     {R4-R6,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R6 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -12)
+        CFI R4 Frame(CFA, -16)
+        CFI CFA R13+16
+        SUB      SP,SP,#+32
+        CFI CFA R13+48
+        MOV      R4,R1
+        MOV      R5,R2
+//  295 	U64 p02re, p02im;
+//  296 	int n, z, s, loShift, hiShift, gbMask;
+//  297 	int accBuf[2*2];
+//  298 
+//  299 	CVKernel2(XBuf, accBuf);
+        ADD      R1,SP,#+16
+        _BLF     raac_CVKernel2,??raac_CVKernel2??rA
+//  300 	p02re.r.lo32 = accBuf[0];
+        LDR      R1,[SP, #+16]
+        STR      R1,[SP, #+0]
+//  301 	p02re.r.hi32 = accBuf[1];
+        LDR      R0,[SP, #+20]
+        STR      R0,[SP, #+4]
+//  302 	p02im.r.lo32 = accBuf[2];
+        LDR      R2,[SP, #+24]
+//  303 	p02im.r.hi32 = accBuf[3];
+//  304 
+//  305 	/* 64-bit accumulators now have 2*FBITS_OUT_QMFA fraction bits
+//  306 	 * want to scale them down to integers (32-bit signed, Q0)
+//  307 	 *   with scale factor of 2^n, n >= 0
+//  308 	 * leave 1 GB for calculating determinant, so take top 30 non-zero bits
+//  309 	 */
+//  310 	gbMask  = ((p02re.r.hi32) ^ (p02re.r.hi32 >> 31)) | ((p02im.r.hi32) ^ (p02im.r.hi32 >> 31));
+//  311 	if (gbMask == 0) {
+        ASR      R12,R0,#+31
+        STR      R2,[SP, #+8]
+        LDR      R1,[SP, #+28]
+        EOR      LR,R12,R0
+        STR      R1,[SP, #+12]
+        ASR      R2,R1,#+31
+        EOR      R3,R2,R1
+        ORRS     R6,R3,LR
+        BNE      ??CalcCovariance2_0
+//  312 		s = p02re.r.hi32 >> 31; gbMask  = (p02re.r.lo32 ^ s) - s;
+        LDR      R3,[SP, #+0]
+//  313 		s = p02im.r.hi32 >> 31; gbMask |= (p02im.r.lo32 ^ s) - s;
+//  314 		z = 32 + CLZ(gbMask);
+        LDR      R6,[SP, #+8]
+        EOR      R3,R12,R3
+        SUB      R3,R3,R12
+        EOR      R6,R2,R6
+        SUB      R2,R6,R2
+        ORRS     R2,R2,R3
+        MOVEQ    R2,#+32
+        BEQ      ??CalcCovariance2_1
+        MOV      R3,#+1
+        LSRS     R6,R2,#+16
+        MOVEQ    R3,#+17
+        LSLEQ    R2,R2,#+16
+        LSRS     R6,R2,#+24
+        ADDEQ    R3,R3,#+8
+        LSLEQ    R2,R2,#+8
+        LSRS     R6,R2,#+28
+        ADDEQ    R3,R3,#+4
+        LSLEQ    R2,R2,#+4
+        LSRS     R6,R2,#+30
+        ADDEQ    R3,R3,#+2
+        LSLEQ    R2,R2,#+2
+        SUB      R2,R3,R2, LSR #+31
+??CalcCovariance2_1:
+        ADD      R2,R2,#+32
+        B        ??CalcCovariance2_2
+//  315 	} else {
+//  316 		gbMask  = FASTABS(p02re.r.hi32) | FASTABS(p02im.r.hi32);
+//  317 		z = CLZ(gbMask);
+??CalcCovariance2_0:
+        SUB      R6,LR,R12
+        SUB      R2,R3,R2
+        ORRS     R2,R2,R6
+        MOVEQ    R2,#+32
+        BEQ      ??CalcCovariance2_2
+        MOV      R3,#+1
+        LSRS     R6,R2,#+16
+        MOVEQ    R3,#+17
+        LSLEQ    R2,R2,#+16
+        LSRS     R6,R2,#+24
+        ADDEQ    R3,R3,#+8
+        LSLEQ    R2,R2,#+8
+        LSRS     R6,R2,#+28
+        ADDEQ    R3,R3,#+4
+        LSLEQ    R2,R2,#+4
+        LSRS     R6,R2,#+30
+        ADDEQ    R3,R3,#+2
+        LSLEQ    R2,R2,#+2
+        SUB      R2,R3,R2, LSR #+31
+//  318 	}
+//  319 	n = 64 - z;	/* number of non-zero bits in bottom of 64-bit word */
+??CalcCovariance2_2:
+        RSB      R2,R2,#+64
+//  320 
+//  321 	if (n <= 30) {
+        CMP      R2,#+31
+        BGE      ??CalcCovariance2_3
+//  322 		loShift = (30 - n);
+//  323 		*p02reN = p02re.r.lo32 << loShift;	
+        LDR      R0,[SP, #+0]
+        RSB      R2,R2,#+30
+        LSL      R0,R0,R2
+        STR      R0,[R4, #+0]
+//  324 		*p02imN = p02im.r.lo32 << loShift;
+        LDR      R0,[SP, #+8]
+        LSL      R0,R0,R2
+        STR      R0,[R5, #+0]
+//  325 		return -(loShift + 2*FBITS_OUT_QMFA);
+        ADD      R0,R2,#+10
+        RSB      R0,R0,#+0
+        B        ??CalcCovariance2_4
+//  326 	} else if (n < 32 + 30) {
+??CalcCovariance2_3:
+        CMP      R2,#+62
+        BGE      ??CalcCovariance2_5
+//  327 		loShift = (n - 30);
+//  328 		hiShift = 32 - loShift;
+//  329 		*p02reN = (p02re.r.hi32 << hiShift) | (p02re.r.lo32 >> loShift);
+        LDR      R6,[SP, #+0]
+        SUB      R2,R2,#+30
+        RSB      R3,R2,#+32
+        LSR      R6,R6,R2
+        ORR      R0,R6,R0, LSL R3
+        STR      R0,[R4, #+0]
+//  330 		*p02imN = (p02im.r.hi32 << hiShift) | (p02im.r.lo32 >> loShift);
+        LDR      R0,[SP, #+8]
+        LSR      R0,R0,R2
+        ORR      R0,R0,R1, LSL R3
+        STR      R0,[R5, #+0]
+//  331 		return (loShift - 2*FBITS_OUT_QMFA);
+        SUB      R0,R2,#+10
+??CalcCovariance2_4:
+        ADD      SP,SP,#+32
+        CFI CFA R13+16
+        POP      {R4-R6,PC}
+        CFI CFA R13+48
+//  332 	} else {
+//  333 		hiShift = n - (32 + 30);
+??CalcCovariance2_5:
+        SUB      R3,R2,#+62
+//  334 		*p02reN = p02re.r.hi32 >> hiShift;	
+        ASR      R0,R0,R3
+        STR      R0,[R4, #+0]
+//  335 		*p02imN = p02im.r.hi32 >> hiShift;
+        ASR      R0,R1,R3
+        STR      R0,[R5, #+0]
+//  336 		return (32 - 2*FBITS_OUT_QMFA - hiShift);
+        RSB      R0,R3,#+22
+        ADD      SP,SP,#+32
+        CFI CFA R13+16
+        POP      {R4-R6,PC}       ;; return
+        CFI EndBlock cfiBlock3
+//  337 	}
+//  338 
+//  339 	return 0;
+//  340 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??CalcLPCoefs??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE CalcLPCoefs
+//  341 
+//  342 /**************************************************************************************
+//  343  * Function:    CalcLPCoefs
+//  344  *
+//  345  * Description: calculate linear prediction coefficients for one subband (4.6.18.6.2)
+//  346  *
+//  347  * Inputs:      buffer of low-freq samples, starting at time index = 0, 
+//  348  *                freq index = patch subband
+//  349  *              number of guard bits in input sample buffer
+//  350  *
+//  351  * Outputs:     complex LP coefficients a0re, a0im, a1re, a1im, format = Q29
+//  352  *
+//  353  * Return:      none
+//  354  *
+//  355  * Notes:       output coefficients (a0re, a0im, a1re, a1im) clipped to range (-4, 4)
+//  356  *              if the comples coefficients have magnitude >= 4.0, they are all
+//  357  *                set to 0 (see spec)
+//  358  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function CalcLPCoefs
+        ARM
+//  359 static void CalcLPCoefs(int *XBuf, int *a0re, int *a0im, int *a1re, int *a1im, int gb)
+//  360 {
+CalcLPCoefs:
+        PUSH     {R1-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+48
+        SUB      SP,SP,#+40
+        CFI CFA R13+88
+//  361 	int zFlag, n1, n2, nd, d, dInv, tre, tim;
+//  362 	int p01re, p01im, p02re, p02im, p12re, p12im, p11re, p22re;
+//  363 
+//  364 	/* pre-scale to avoid overflow - probably never happens in practice (see QMFA)
+//  365 	 *   max bit growth per accumulator = 38*2 = 76 mul-adds (X * X)
+//  366 	 *   using 64-bit MADD, so if X has n guard bits, X*X has 2n+1 guard bits
+//  367 	 *   gain 1 extra sign bit per multiply, so ensure ceil(log2(76/2) / 2) = 3 guard bits on inputs
+//  368 	 */
+//  369 	if (gb < 3) {
+        LDR      R1,[SP, #+92]
+        MOV      R4,R0
+        LDR      R0,[SP, #+92]
+        RSB      R1,R1,#+3
+        STR      R1,[SP, #+36]
+        CMP      R0,#+3
+        BGE      ??CalcLPCoefs_0
+//  370 		nd = 3 - gb;
+        MOV      R5,R1
+//  371 		for (n1 = (NUM_TIME_SLOTS*SAMPLES_PER_SLOT + 6 + 2); n1 != 0; n1--) {
+        MOV      R0,#+40
+//  372 			XBuf[0] >>= nd;	XBuf[1] >>= nd;
+??CalcLPCoefs_1:
+        LDR      R1,[R4, #+0]
+//  373 			XBuf += (2*64);
+//  374 		}
+        SUBS     R0,R0,#+1
+        ASR      R1,R1,R5
+        STR      R1,[R4, #+0]
+        LDR      R1,[R4, #+4]
+        ASR      R1,R1,R5
+        STR      R1,[R4, #+4]
+        ADD      R4,R4,#+512
+        BNE      ??CalcLPCoefs_1
+//  375 		XBuf -= (2*64*(NUM_TIME_SLOTS*SAMPLES_PER_SLOT + 6 + 2));
+        SUB      R4,R4,#+20480
+//  376 	}
+//  377 	
+//  378 	/* calculate covariance elements */
+//  379 	n1 = CalcCovariance1(XBuf, &p01re, &p01im, &p12re, &p12im, &p11re, &p22re);
+??CalcLPCoefs_0:
+        ADD      R0,SP,#+28
+        PUSH     {R0}
+        CFI CFA R13+92
+        ADD      R0,SP,#+4
+        PUSH     {R0}
+        CFI CFA R13+96
+        ADD      R0,SP,#+20
+        PUSH     {R0}
+        CFI CFA R13+100
+        ADD      R3,SP,#+16
+        ADD      R2,SP,#+20
+        ADD      R1,SP,#+28
+        MOV      R0,R4
+        BL       CalcCovariance1
+        MOV      R6,R0
+//  380 	n2 = CalcCovariance2(XBuf, &p02re, &p02im);
+        ADD      R2,SP,#+36
+        ADD      R1,SP,#+32
+        MOV      R0,R4
+        BL       CalcCovariance2
+//  381 
+//  382 	/* normalize everything to larger power of 2 scalefactor, call it n1 */
+//  383 	if (n1 < n2) {
+        CMP      R6,R0
+        ADD      SP,SP,#+12
+        CFI CFA R13+88
+        BGE      ??CalcLPCoefs_2
+//  384 		nd = MIN(n2 - n1, 31);
+//  385 		p01re >>= nd;	p01im >>= nd;
+        LDR      R1,[SP, #+16]
+        SUB      R5,R0,R6
+        CMP      R5,#+31
+        MOVGE    R5,#+31
+        ASR      R1,R1,R5
+        STR      R1,[SP, #+16]
+        LDR      R1,[SP, #+8]
+        ASR      R1,R1,R5
+        STR      R1,[SP, #+8]
+//  386 		p12re >>= nd;	p12im >>= nd;
+        LDR      R1,[SP, #+4]
+        ASR      R1,R1,R5
+        STR      R1,[SP, #+4]
+        LDR      R1,[SP, #+12]
+        ASR      R1,R1,R5
+        STR      R1,[SP, #+12]
+//  387 		p11re >>= nd;	p22re >>= nd;
+        LDR      R1,[SP, #+0]
+        ASR      R1,R1,R5
+        STR      R1,[SP, #+0]
+        LDR      R1,[SP, #+28]
+        ASR      R1,R1,R5
+        STR      R1,[SP, #+28]
+//  388 		n1 = n2;
+        B        ??CalcLPCoefs_3
+//  389 	} else if (n1 > n2) {
+??CalcLPCoefs_2:
+        CMP      R0,R6
+        BGE      ??CalcLPCoefs_3
+//  390 		nd = MIN(n1 - n2, 31);
+//  391 		p02re >>= nd;	p02im >>= nd;
+        LDR      R1,[SP, #+20]
+        SUB      R5,R6,R0
+        CMP      R5,#+31
+        MOVGE    R5,#+31
+        ASR      R1,R1,R5
+        STR      R1,[SP, #+20]
+        LDR      R1,[SP, #+24]
+        ASR      R1,R1,R5
+        STR      R1,[SP, #+24]
+//  392 	}
+//  393 
+//  394 	/* calculate determinant of covariance matrix (at least 1 GB in pXX) */
+//  395 	d = MULSHIFT32(p12re, p12re) + MULSHIFT32(p12im, p12im);
+//  396 	d = MULSHIFT32(d, RELAX_COEF) << 1;
+//  397 	d = MULSHIFT32(p11re, p22re) - d;
+??CalcLPCoefs_3:
+        LDR      R2,[SP, #+12]
+        LDR      R6,[SP, #+4]
+        LDR      R5,[SP, #+0]
+        LDR      R8,[SP, #+28]
+        ASR      R3,R2,#+31
+        ASR      R7,R6,#+31
+        SMULL    R0,R1,R5,R8
+        UMULL    R8,R9,R6,R6
+        MVN      R8,#-2147483613
+        MLA      R9,R6,R7,R9
+        BIC      R8,R8,#0x840
+        MLA      R9,R7,R6,R9
+        UMULL    R6,R7,R2,R2
+        MLA      R7,R2,R3,R7
+        MLA      R7,R3,R2,R7
+        ADD      R6,R7,R9
+        ASR      R7,R6,#+31
+        UMULL    R2,R3,R6,R8
+//  398 	ASSERT(d >= 0);	/* should never be < 0 */
+//  399 
+//  400 	zFlag = 0;
+        MOV      R2,#+0
+        MLA      R3,R7,R8,R3
+        STR      R2,[SP, #+32]
+        SUB      R0,R1,R3, LSL #+1
+        LDR      R1,[SP, #+44]
+//  401 	*a0re = *a0im = 0;
+//  402 	*a1re = *a1im = 0;
+//  403 	if (d > 0) {
+        CMP      R0,#+1
+        STR      R2,[R1, #+0]
+        LDR      R1,[SP, #+40]
+        STR      R2,[R1, #+0]
+        LDR      R1,[SP, #+88]
+        STR      R2,[R1, #+0]
+        LDR      R1,[SP, #+48]
+        STR      R2,[R1, #+0]
+        BLT      ??CalcLPCoefs_4
+//  404 		/* input =   Q31  d    = Q(-2*n1 - 32 + nd) = Q31 * 2^(31 + 2*n1 + 32 - nd)
+//  405 		 * inverse = Q29  dInv = Q29 * 2^(-31 - 2*n1 - 32 + nd) = Q(29 + 31 + 2*n1 + 32 - nd)
+//  406 		 *
+//  407 		 * numerator has same Q format as d, since it's sum of normalized squares
+//  408 		 * so num * inverse = Q(-2*n1 - 32) * Q(29 + 31 + 2*n1 + 32 - nd)
+//  409 		 *                  = Q(29 + 31 - nd), drop low 32 in MULSHIFT32
+//  410 		 *                  = Q(29 + 31 - 32 - nd) = Q(28 - nd)
+//  411 		 */
+//  412 		nd = CLZ(d) - 1;
+        MOV      R1,R0
+        MOV      R2,#+1
+        LSRS     R3,R1,#+16
+        MOVEQ    R2,#+17
+        LSLEQ    R1,R1,#+16
+        LSRS     R3,R1,#+24
+        ADDEQ    R2,R2,#+8
+        LSLEQ    R1,R1,#+8
+        LSRS     R3,R1,#+28
+        ADDEQ    R2,R2,#+4
+        LSLEQ    R1,R1,#+4
+        LSRS     R3,R1,#+30
+        ADDEQ    R2,R2,#+2
+        LSLEQ    R1,R1,#+2
+        SUB      R1,R2,R1, LSR #+31
+        SUB      R5,R1,#+1
+//  413 		d <<= nd;
+//  414 		dInv = InvRNormalized(d);
+        LSL      R0,R0,R5
+        _BLF     raac_InvRNormalized,??raac_InvRNormalized??rA
+        LDR      R6,[SP, #+16]
+        LDR      R8,[SP, #+12]
+        LDR      R10,[SP, #+0]
+        MOV      R12,R0
+        LDR      R0,[SP, #+4]
+        ASR      R7,R6,#+31
+        ASR      R1,R0,#+31
+        UMULL    R2,R3,R6,R0
+        ASR      R9,R8,#+31
+        MLA      R3,R6,R1,R3
+//  415 
+//  416 		/* 1 GB in pXX */
+//  417 		tre = MULSHIFT32(p01re, p12re) - MULSHIFT32(p01im, p12im) - MULSHIFT32(p02re, p11re);
+//  418 		tre = MULSHIFT32(tre, dInv);
+//  419 		tim = MULSHIFT32(p01re, p12im) + MULSHIFT32(p01im, p12re) - MULSHIFT32(p02im, p11re);
+//  420 		tim = MULSHIFT32(tim, dInv);
+//  421 
+//  422 		/* if d is extremely small, just set coefs to 0 (would have poor precision anyway) */
+//  423 		if (nd > 28 || (FASTABS(tre) >> (28 - nd)) >= 4 || (FASTABS(tim) >> (28 - nd)) >= 4) {
+        CMP      R5,#+29
+        MLA      R3,R7,R0,R3
+        LDR      R0,[SP, #+8]
+        MOV      LR,R3
+        ASR      R1,R0,#+31
+        UMULL    R2,R3,R0,R8
+        MLA      R3,R0,R9,R3
+        MLA      R3,R1,R8,R3
+        SUB      R2,LR,R3
+        LDR      R3,[SP, #+20]
+        SMULL    R0,R1,R3,R10
+        LDR      R3,[SP, #+8]
+        SUB      R2,R2,R1
+        SMULL    R0,R1,R2,R12
+        MOV      LR,R1
+        UMULL    R0,R1,R6,R8
+        MLA      R1,R6,R9,R1
+        LDR      R6,[SP, #+4]
+        MLA      R1,R7,R8,R1
+        MOV      R2,R1
+        SMULL    R0,R1,R3,R6
+        LDR      R3,[SP, #+24]
+        ADD      R2,R1,R2
+        SMULL    R0,R1,R3,R10
+        SUB      R2,R2,R1
+        SMULL    R0,R1,R2,R12
+        MOV      R0,R1
+        BGE      ??CalcLPCoefs_5
+        ASR      R1,LR,#+31
+        MOV      R2,R5
+        RSB      R2,R2,#+28
+        EOR      R3,R1,LR
+        SUB      R1,R3,R1
+        ASR      R1,R1,R2
+        CMP      R1,#+4
+        BGE      ??CalcLPCoefs_5
+        ASR      R1,R0,#+31
+        EOR      R3,R1,R0
+        SUB      R1,R3,R1
+        ASR      R1,R1,R2
+        CMP      R1,#+4
+        BLT      ??CalcLPCoefs_6
+//  424 			zFlag = 1;
+??CalcLPCoefs_5:
+        MOV      R1,#+1
+        STR      R1,[SP, #+32]
+        B        ??CalcLPCoefs_4
+//  425 		} else {
+//  426 			*a1re = tre << (FBITS_LPCOEFS - 28 + nd);	/* i.e. convert Q(28 - nd) to Q(29) */
+??CalcLPCoefs_6:
+        LDR      R2,[SP, #+48]
+        ADD      R1,R5,#+1
+        LSL      R3,LR,R1
+        STR      R3,[R2, #+0]
+//  427 			*a1im = tim << (FBITS_LPCOEFS - 28 + nd);
+        LDR      R2,[SP, #+88]
+        LSL      R0,R0,R1
+        STR      R0,[R2, #+0]
+//  428 		}
+//  429 	}
+//  430 
+//  431 	if (p11re) {
+??CalcLPCoefs_4:
+        LDR      R0,[SP, #+0]
+        CMP      R0,#+0
+        BEQ      ??CalcLPCoefs_7
+//  432 		/* input =   Q31  p11re = Q(-n1 + nd) = Q31 * 2^(31 + n1 - nd)
+//  433 		 * inverse = Q29  dInv  = Q29 * 2^(-31 - n1 + nd) = Q(29 + 31 + n1 - nd)
+//  434 		 *
+//  435 		 * numerator is Q(-n1 - 3)
+//  436 		 * so num * inverse = Q(-n1 - 3) * Q(29 + 31 + n1 - nd)
+//  437 		 *                  = Q(29 + 31 - 3 - nd), drop low 32 in MULSHIFT32
+//  438 		 *                  = Q(29 + 31 - 3 - 32 - nd) = Q(25 - nd)
+//  439 		 */
+//  440 		nd = CLZ(p11re) - 1;	/* assume positive */
+        MOV      R1,#+1
+        LSRS     R2,R0,#+16
+        MOVEQ    R1,#+17
+        LSLEQ    R0,R0,#+16
+        LSRS     R2,R0,#+24
+        ADDEQ    R1,R1,#+8
+        LSLEQ    R0,R0,#+8
+        LSRS     R2,R0,#+28
+        ADDEQ    R1,R1,#+4
+        LSLEQ    R0,R0,#+4
+        LSRS     R2,R0,#+30
+        ADDEQ    R1,R1,#+2
+        LSLEQ    R0,R0,#+2
+        SUB      R0,R1,R0, LSR #+31
+//  441 		p11re <<= nd;
+        LDR      R1,[SP, #+0]
+        SUB      R5,R0,#+1
+        LSL      R1,R1,R5
+        STR      R1,[SP, #+0]
+//  442 		dInv = InvRNormalized(p11re);
+        MOV      R0,R1
+        _BLF     raac_InvRNormalized,??raac_InvRNormalized??rA
+        LDR      LR,[SP, #+16]
+        LDR      R2,[SP, #+4]
+        MOV      R12,R0
+        LDR      R0,[SP, #+88]
+        ASR      R3,R2,#+31
+        LDR      R10,[R0, #+0]
+        LDR      R0,[SP, #+48]
+        ASR      R11,R10,#+31
+        LDR      R8,[R0, #+0]
+        LDR      R0,[SP, #+12]
+        ASR      R9,R8,#+31
+        ASR      R1,R0,#+31
+        UMULL    R6,R7,R2,R8
+//  443 
+//  444 		/* a1re, a1im = Q29, so scaled by (n1 + 3) */
+//  445 		tre = (p01re >> 3) + MULSHIFT32(p12re, *a1re) + MULSHIFT32(p12im, *a1im);
+//  446 		tre = -MULSHIFT32(tre, dInv);
+//  447 		tim = (p01im >> 3) - MULSHIFT32(p12im, *a1re) + MULSHIFT32(p12re, *a1im);
+//  448 		tim = -MULSHIFT32(tim, dInv);
+//  449 
+//  450 		if (nd > 25 || (FASTABS(tre) >> (25 - nd)) >= 4 || (FASTABS(tim) >> (25 - nd)) >= 4) {
+        CMP      R5,#+26
+        MLA      R7,R2,R9,R7
+        MLA      R7,R3,R8,R7
+        UMULL    R2,R3,R0,R10
+        ADD      LR,R7,LR, ASR #+3
+        MLA      R3,R0,R11,R3
+        MLA      R3,R1,R10,R3
+        ADD      R6,R3,LR
+        SMULL    R2,R3,R6,R12
+        LDR      R6,[SP, #+8]
+        RSB      LR,R3,#+0
+        UMULL    R2,R3,R0,R8
+        MLA      R3,R0,R9,R3
+        LDR      R0,[SP, #+4]
+        MLA      R3,R1,R8,R3
+        ASR      R1,R0,#+31
+        RSB      R6,R3,R6, ASR #+3
+        UMULL    R2,R3,R0,R10
+        MLA      R3,R0,R11,R3
+        MLA      R3,R1,R10,R3
+        ADD      R2,R3,R6
+        SMULL    R0,R1,R2,R12
+        MOV      R0,R1
+        RSB      R0,R0,#+0
+        BGE      ??CalcLPCoefs_8
+        ASR      R1,LR,#+31
+        MOV      R2,R5
+        RSB      R2,R2,#+25
+        EOR      R3,R1,LR
+        SUB      R1,R3,R1
+        ASR      R1,R1,R2
+        CMP      R1,#+4
+        BGE      ??CalcLPCoefs_8
+        ASR      R1,R0,#+31
+        EOR      R3,R1,R0
+        SUB      R1,R3,R1
+        ASR      R1,R1,R2
+        CMP      R1,#+4
+        BGE      ??CalcLPCoefs_8
+//  451 			zFlag = 1;
+//  452 		} else {
+//  453 			*a0re = tre << (FBITS_LPCOEFS - 25 + nd);	/* i.e. convert Q(25 - nd) to Q(29) */
+        LDR      R2,[SP, #+40]
+        ADD      R1,R5,#+4
+        LSL      R3,LR,R1
+        STR      R3,[R2, #+0]
+//  454 			*a0im = tim << (FBITS_LPCOEFS - 25 + nd);
+        LDR      R2,[SP, #+44]
+        LSL      R0,R0,R1
+        STR      R0,[R2, #+0]
+//  455 		}
+//  456 	} 
+//  457 
+//  458 	/* see 4.6.18.6.2 - if magnitude of a0 or a1 >= 4 then a0 = a1 = 0 
+//  459 	 * i.e. a0re < 4, a0im < 4, a1re < 4, a1im < 4
+//  460 	 * Q29*Q29 = Q26
+//  461 	 */
+//  462 	if (zFlag || MULSHIFT32(*a0re, *a0re) + MULSHIFT32(*a0im, *a0im) >= MAG_16 || MULSHIFT32(*a1re, *a1re) + MULSHIFT32(*a1im, *a1im) >= MAG_16) {
+??CalcLPCoefs_7:
+        LDR      R0,[SP, #+32]
+        CMP      R0,#+0
+        BNE      ??CalcLPCoefs_8
+        LDR      R0,[SP, #+44]
+        LDR      R2,[R0, #+0]
+        LDR      R0,[SP, #+40]
+        ASR      R3,R2,#+31
+        LDR      R6,[R0, #+0]
+        ASR      R7,R6,#+31
+        UMULL    R0,R1,R6,R6
+        MLA      R1,R6,R7,R1
+        MLA      R1,R7,R6,R1
+        UMULL    R6,R7,R2,R2
+        MLA      R7,R2,R3,R7
+        MLA      R7,R3,R2,R7
+        ADD      R0,R7,R1
+        CMP      R0,#+1073741824
+        BGE      ??CalcLPCoefs_8
+        LDR      R0,[SP, #+88]
+        LDR      R2,[R0, #+0]
+        LDR      R0,[SP, #+48]
+        ASR      R3,R2,#+31
+        LDR      R6,[R0, #+0]
+        ASR      R7,R6,#+31
+        UMULL    R0,R1,R6,R6
+        MLA      R1,R6,R7,R1
+        MLA      R1,R7,R6,R1
+        UMULL    R6,R7,R2,R2
+        MLA      R7,R2,R3,R7
+        MLA      R7,R3,R2,R7
+        ADD      R0,R7,R1
+        CMP      R0,#+1073741824
+        BLT      ??CalcLPCoefs_9
+//  463 		*a0re = *a0im = 0;
+??CalcLPCoefs_8:
+        LDR      R0,[SP, #+44]
+        MOV      R1,#+0
+        STR      R1,[R0, #+0]
+        LDR      R0,[SP, #+40]
+        STR      R1,[R0, #+0]
+//  464 		*a1re = *a1im = 0;
+        LDR      R0,[SP, #+88]
+        STR      R1,[R0, #+0]
+        LDR      R0,[SP, #+48]
+        STR      R1,[R0, #+0]
+//  465 	}
+//  466 
+//  467 	/* no need to clip - we never changed the XBuf data, just used it to calculate a0 and a1 */
+//  468 	if (gb < 3) {
+??CalcLPCoefs_9:
+        LDR      R0,[SP, #+92]
+        CMP      R0,#+3
+        BGE      ??CalcLPCoefs_10
+//  469 		nd = 3 - gb;
+        LDR      R5,[SP, #+36]
+//  470 		for (n1 = (NUM_TIME_SLOTS*SAMPLES_PER_SLOT + 6 + 2); n1 != 0; n1--) {
+        MOV      R6,#+40
+//  471 			XBuf[0] <<= nd;	XBuf[1] <<= nd;
+??CalcLPCoefs_11:
+        LDR      R0,[R4, #+0]
+//  472 			XBuf += (2*64);
+//  473 		}
+        SUBS     R6,R6,#+1
+        LSL      R0,R0,R5
+        STR      R0,[R4, #+0]
+        LDR      R0,[R4, #+4]
+        LSL      R0,R0,R5
+        STR      R0,[R4, #+4]
+        ADD      R4,R4,#+512
+        BNE      ??CalcLPCoefs_11
+//  474 	}
+//  475 }
+??CalcLPCoefs_10:
+        ADD      SP,SP,#+52       ;; stack cleaning
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        CFI EndBlock cfiBlock5
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_GenerateHighFreq??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE raac_GenerateHighFreq
+//  476 
+//  477 /**************************************************************************************
+//  478  * Function:    GenerateHighFreq
+//  479  *
+//  480  * Description: generate high frequencies with SBR (4.6.18.6)
+//  481  *
+//  482  * Inputs:      initialized PSInfoSBR struct
+//  483  *              initialized SBRGrid struct for this channel
+//  484  *              initialized SBRFreq struct for this SCE/CPE block
+//  485  *              initialized SBRChan struct for this channel
+//  486  *              index of current channel (0 for SCE, 0 or 1 for CPE)
+//  487  *
+//  488  * Outputs:     new high frequency samples starting at frequency kStart
+//  489  *
+//  490  * Return:      none
+//  491  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function raac_GenerateHighFreq
+        ARM
+//  492 void GenerateHighFreq(PSInfoSBR *psi, SBRGrid *sbrGrid, SBRFreq *sbrFreq, SBRChan *sbrChan, int ch)
+//  493 {
+raac_GenerateHighFreq:
+        PUSH     {R0,R2-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+48
+        SUB      SP,SP,#+64
+        CFI CFA R13+112
+        MOV      R5,R1
+//  494 	int band, newBW, c, t, gb, gbMask, gbIdx;
+//  495 	int currPatch, p, x, k, g, i, iStart, iEnd, bw, bwsq;
+//  496 	int a0re, a0im, a1re, a1im;
+//  497 	int x1re, x1im, x2re, x2im;
+//  498 	int ACCre, ACCim;
+//  499 	int *XBufLo, *XBufHi;
+//  500 
+//  501 	/* calculate array of chirp factors */
+//  502 	for (band = 0; band < sbrFreq->numNoiseFloorBands; band++) {
+        LDR      R1,[R2, #+24]
+        MOV      R0,#+0
+        CMP      R1,#+1
+        BGE      ??raac_GenerateHighFreq_0
+//  503 		c = sbrChan->chirpFact[band];	/* previous (bwArray') */
+//  504 		newBW = newBWTab[sbrChan->invfMode[0][band]][sbrChan->invfMode[1][band]];
+//  505 
+//  506 		/* weighted average of new and old (can't overflow - total gain = 1.0) */
+//  507 		if (newBW < c)
+//  508 			t = MULSHIFT32(newBW, 0x60000000) + MULSHIFT32(0x20000000, c);	/* new is smaller: 0.75*new + 0.25*old */
+//  509 		else
+//  510 			t = MULSHIFT32(newBW, 0x74000000) + MULSHIFT32(0x0c000000, c);	/* new is larger: 0.90625*new + 0.09375*old */
+//  511 		t <<= 1;
+//  512 
+//  513 		if (t < 0x02000000)	/* below 0.015625, clip to 0 */
+//  514 			t = 0;
+//  515 		if (t > 0x7f800000)	/* clip to 0.99609375 */  
+//  516 			t = 0x7f800000;
+//  517 
+//  518 		/* save curr as prev for next time */
+//  519 		sbrChan->chirpFact[band] = t;
+//  520 		sbrChan->invfMode[0][band] = sbrChan->invfMode[1][band];
+//  521 	}
+//  522 
+//  523 	iStart = sbrGrid->envTimeBorder[0] + HF_ADJ;
+??raac_GenerateHighFreq_1:
+        LDRB     R1,[R5, #+4]
+        ADD      R1,R1,#+2
+        STR      R1,[SP, #+36]
+//  524 	iEnd =   sbrGrid->envTimeBorder[sbrGrid->numEnv] + HF_ADJ;
+        LDRB     R1,[R5, #+3]
+        ADD      R1,R1,R5
+        LDRB     R1,[R1, #+4]
+        ADD      R1,R1,#+2
+        STR      R1,[SP, #+24]
+//  525 
+//  526 	/* generate new high freqs from low freqs, patches, and chirp factors */
+//  527 	k = sbrFreq->kStart;
+        LDR      R1,[SP, #+68]
+        LDR      R1,[R1, #+0]
+        STR      R1,[SP, #+28]
+//  528 	g = 0;
+        MOV      R1,#+0
+        STR      R1,[SP, #+40]
+//  529 	bw = sbrChan->chirpFact[g];
+        LDR      R1,[SP, #+72]
+        LDR      R1,[R1, #+272]
+        STR      R1,[SP, #+12]
+//  530 	bwsq = MULSHIFT32(bw, bw) << 1;
+        MOV      R2,R1
+        ASR      R3,R2,#+31
+        UMULL    R0,R1,R2,R2
+        MLA      R1,R2,R3,R1
+        MLA      R1,R3,R2,R1
+        MOV      R0,R1
+        LDR      R1,[SP, #+72]
+        LSL      R0,R0,#+1
+        STR      R0,[SP, #+48]
+        LDR      R0,[SP, #+72]
+        LDR      R1,[R1, #+396]
+        LDR      R0,[R0, #+392]
+        ORRS     R0,R1,R0
+//  531 	
+//  532 	gbMask = (sbrChan->gbMask[0] | sbrChan->gbMask[1]);	/* older 32 | newer 8 */
+//  533 	gb = CLZ(gbMask) - 1;
+        BNE      ??raac_GenerateHighFreq_2
+        MOV      R0,#+32
+        B        ??raac_GenerateHighFreq_3
+??raac_GenerateHighFreq_4:
+        MOV      R2,#+1073741825
+        ORR      R2,R2,#0x3F800000
+        CMP      R1,R2
+        BICGE    R1,R2,#0x1
+??raac_GenerateHighFreq_5:
+        STR      R1,[R4, #+272]
+        LDR      R2,[SP, #+72]
+        LDR      R1,[SP, #+72]
+        ADD      R2,R0,R2
+        LDRB     R2,[R2, #+266]
+        ADD      R1,R0,R1
+        ADD      R0,R0,#+1
+        STRB     R2,[R1, #+261]
+??raac_GenerateHighFreq_0:
+        LDR      R1,[SP, #+68]
+        LDR      R1,[R1, #+24]
+        CMP      R0,R1
+        BGE      ??raac_GenerateHighFreq_1
+        LDR      R2,[SP, #+72]
+        LDR      R3,[SP, #+72]
+        LDR      R1,[SP, #+72]
+        ADD      R2,R0,R2
+        LDRB     R2,[R2, #+266]
+        LDR      R6,??raac_GenerateHighFreq_6  ;; newBWTab
+        ADD      R3,R0,R3
+        LDRB     R3,[R3, #+261]
+        ADD      R4,R1,R0, LSL #+2
+        LDR      R1,[R4, #+272]
+        ADD      R3,R6,R3, LSL #+4
+        LDR      R6,[R3, +R2, LSL #+2]
+        CMP      R6,R1
+        ASR      R7,R6,#+31
+        BGE      ??raac_GenerateHighFreq_7
+        MOV      R2,#+1610612736
+        UMULL    R8,R9,R6,R2
+        MLA      R9,R7,R2,R9
+        ASR      R2,R1,#+31
+        LSL      R2,R2,#+29
+        ORR      R2,R2,R1, LSR #+3
+        ADD      R1,R2,R9
+        B        ??raac_GenerateHighFreq_8
+??raac_GenerateHighFreq_7:
+        MOV      R2,#+1946157056
+        UMULL    R8,R9,R6,R2
+        MOV      R6,R1
+        MLA      R9,R7,R2,R9
+        ASR      R7,R1,#+31
+        MOV      R10,R9
+        MOV      R2,#+201326592
+        UMULL    R8,R9,R6,R2
+        MLA      R9,R7,R2,R9
+        ADD      R1,R9,R10
+??raac_GenerateHighFreq_8:
+        LSL      R1,R1,#+1
+        CMP      R1,#+33554432
+        BGE      ??raac_GenerateHighFreq_4
+        MOV      R1,#+0
+        B        ??raac_GenerateHighFreq_5
+??raac_GenerateHighFreq_2:
+        MOV      R1,#+1
+        LSRS     R2,R0,#+16
+        MOVEQ    R1,#+17
+        LSLEQ    R0,R0,#+16
+        LSRS     R2,R0,#+24
+        ADDEQ    R1,R1,#+8
+        LSLEQ    R0,R0,#+8
+        LSRS     R2,R0,#+28
+        ADDEQ    R1,R1,#+4
+        LSLEQ    R0,R0,#+4
+        LSRS     R2,R0,#+30
+        ADDEQ    R1,R1,#+2
+        LSLEQ    R0,R0,#+2
+        SUB      R0,R1,R0, LSR #+31
+??raac_GenerateHighFreq_3:
+        SUB      R0,R0,#+1
+        STR      R0,[SP, #+60]
+//  534 
+//  535 	for (currPatch = 0; currPatch < sbrFreq->numPatches; currPatch++) {
+        LDR      R0,[SP, #+68]
+        MOV      R1,#+0
+        STR      R1,[SP, #+0]
+        LDRB     R0,[R0, #+194]
+        CMP      R0,#+0
+        BNE      ??raac_GenerateHighFreq_9
+//  536 		for (x = 0; x < sbrFreq->patchNumSubbands[currPatch]; x++) {
+//  537 			/* map k to corresponding noise floor band */
+//  538 			if (k >= sbrFreq->freqNoise[g+1]) {
+//  539 				g++;
+//  540 				bw = sbrChan->chirpFact[g];		/* Q31 */
+//  541 				bwsq = MULSHIFT32(bw, bw) << 1;	/* Q31 */
+//  542 			}
+//  543 		
+//  544 			p = sbrFreq->patchStartSubband[currPatch] + x;	/* low QMF band */
+//  545 			XBufHi = psi->XBuf[iStart][k];
+//  546 			if (bw) {
+//  547 				CalcLPCoefs(psi->XBuf[0][p], &a0re, &a0im, &a1re, &a1im, gb);
+//  548 
+//  549 				a0re = MULSHIFT32(bw, a0re);	/* Q31 * Q29 = Q28 */
+//  550 				a0im = MULSHIFT32(bw, a0im);
+//  551 				a1re = MULSHIFT32(bwsq, a1re);
+//  552 				a1im = MULSHIFT32(bwsq, a1im);
+//  553 
+//  554 				XBufLo = psi->XBuf[iStart-2][p];
+//  555 
+//  556 				x2re = XBufLo[0];	/* RE{XBuf[n-2]} */
+//  557 				x2im = XBufLo[1];	/* IM{XBuf[n-2]} */
+//  558 				XBufLo += (64*2);
+//  559 
+//  560 				x1re = XBufLo[0];	/* RE{XBuf[n-1]} */
+//  561 				x1im = XBufLo[1];	/* IM{XBuf[n-1]} */
+//  562 				XBufLo += (64*2);
+//  563 
+//  564 				for (i = iStart; i < iEnd; i++) {
+//  565 					/* a0re/im, a1re/im are Q28 with at least 1 GB, 
+//  566 					 *   so the summing for AACre/im is fine (1 GB in, plus 1 from MULSHIFT32) 
+//  567 					 */
+//  568 					ACCre = MULSHIFT32(x2re, a1re) - MULSHIFT32(x2im, a1im);
+//  569 					ACCim = MULSHIFT32(x2re, a1im) + MULSHIFT32(x2im, a1re);
+//  570 					x2re = x1re;
+//  571 					x2im = x1im;
+//  572 					
+//  573 					ACCre += MULSHIFT32(x1re, a0re) - MULSHIFT32(x1im, a0im);
+//  574 					ACCim += MULSHIFT32(x1re, a0im) + MULSHIFT32(x1im, a0re);
+//  575 					x1re = XBufLo[0];	/* RE{XBuf[n]} */
+//  576 					x1im = XBufLo[1];	/* IM{XBuf[n]} */
+//  577 					XBufLo += (64*2);
+//  578 
+//  579 					/* lost 4 fbits when scaling by a0re/im, a1re/im (Q28) */
+//  580 					CLIP_2N_SHIFT30(ACCre, 4);
+//  581 					ACCre += x1re;
+//  582 					CLIP_2N_SHIFT30(ACCim, 4);
+//  583 					ACCim += x1im;
+//  584 
+//  585 					XBufHi[0] = ACCre;
+//  586 					XBufHi[1] = ACCim;
+//  587 					XBufHi += (64*2);
+//  588 
+//  589 					/* update guard bit masks */
+//  590 					gbMask  = FASTABS(ACCre);
+//  591 					gbMask |= FASTABS(ACCim);
+//  592 					gbIdx = (i >> 5) & 0x01;	/* 0 if i < 32, 1 if i >= 32 */
+//  593 					sbrChan->gbMask[gbIdx] |= gbMask;
+//  594 				}
+//  595 			} else {
+//  596 				XBufLo = (int *)psi->XBuf[iStart][p];
+//  597 				for (i = iStart; i < iEnd; i++) {
+//  598 					XBufHi[0] = XBufLo[0];
+//  599 					XBufHi[1] = XBufLo[1];
+//  600 					XBufLo += (64*2); 
+//  601 					XBufHi += (64*2);
+//  602 				}
+//  603 			}
+//  604 			k++;	/* high QMF band */
+//  605 		}
+//  606 	}
+//  607 }
+??raac_GenerateHighFreq_10:
+        ADD      SP,SP,#+76       ;; stack cleaning
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        CFI CFA R13+112
+??raac_GenerateHighFreq_11:
+        LDR      R1,[SP, #+0]
+        ADD      R1,R1,#+1
+        STR      R1,[SP, #+0]
+??raac_GenerateHighFreq_9:
+        LDR      R1,[SP, #+68]
+        LDR      R0,[SP, #+0]
+        LDRB     R1,[R1, #+194]
+        CMP      R0,R1
+        BGE      ??raac_GenerateHighFreq_10
+        MOV      R1,#+0
+        STR      R1,[SP, #+32]
+        LDR      R1,[SP, #+68]
+        ADD      R0,R0,R1
+        LDRB     R0,[R0, #+201]
+        CMP      R0,#+0
+        BNE      ??raac_GenerateHighFreq_12
+        B        ??raac_GenerateHighFreq_11
+??raac_GenerateHighFreq_13:
+        LDR      LR,[SP, #+36]
+        ADD      R1,R10,R5, LSL #+3
+        ADD      R12,R0,R1
+        LDR      R0,[SP, #+24]
+        CMP      LR,R0
+        BGE      ??raac_GenerateHighFreq_14
+??raac_GenerateHighFreq_15:
+        LDR      R0,[R12, #+0]
+        ADD      LR,LR,#+1
+        STR      R0,[R4, #+0]
+        LDR      R0,[R12, #+4]
+        ADD      R12,R12,#+512
+        STR      R0,[R4, #+4]
+        LDR      R0,[SP, #+24]
+        ADD      R4,R4,#+512
+        CMP      LR,R0
+        BLT      ??raac_GenerateHighFreq_15
+??raac_GenerateHighFreq_14:
+        LDR      R1,[SP, #+28]
+        ADD      R1,R1,#+1
+        STR      R1,[SP, #+28]
+        LDR      R1,[SP, #+32]
+        ADD      R1,R1,#+1
+        STR      R1,[SP, #+32]
+??raac_GenerateHighFreq_12:
+        LDR      R1,[SP, #+0]
+        LDR      R2,[SP, #+68]
+        LDR      R0,[SP, #+32]
+        ADD      R1,R1,R2
+        LDRB     R1,[R1, #+201]
+        CMP      R0,R1
+        BGE      ??raac_GenerateHighFreq_11
+        LDR      R0,[SP, #+40]
+        LDR      R1,[SP, #+28]
+        ADD      R0,R0,#+1
+        ADD      R2,R0,R2
+        LDRB     R2,[R2, #+159]
+        CMP      R1,R2
+        BLT      ??raac_GenerateHighFreq_16
+        STR      R0,[SP, #+40]
+        LDR      R2,[SP, #+72]
+        ADD      R1,R2,R0, LSL #+2
+        LDR      R1,[R1, #+272]
+        STR      R1,[SP, #+12]
+        MOV      R2,R1
+        ASR      R3,R2,#+31
+        UMULL    R0,R1,R2,R2
+        MLA      R1,R2,R3,R1
+        MLA      R1,R3,R2,R1
+        MOV      R0,R1
+        LSL      R0,R0,#+1
+        STR      R0,[SP, #+48]
+??raac_GenerateHighFreq_16:
+        LDR      R0,[SP, #+0]
+        LDR      R1,[SP, #+68]
+        ADD      R0,R0,R1
+        LDRB     R0,[R0, #+206]
+        LDR      R1,[SP, #+32]
+        ADD      R5,R1,R0
+        LDR      R0,[SP, #+36]
+        LDR      R1,[SP, #+64]
+        ADD      R10,R1,R0, LSL #+9
+        LDR      R1,[SP, #+28]
+        MOV      R0,#+44
+        ORR      R0,R0,#0x7600
+        ADD      R1,R10,R1, LSL #+3
+        ADD      R4,R0,R1
+        LDR      R1,[SP, #+12]
+        CMP      R1,#+0
+        BEQ      ??raac_GenerateHighFreq_13
+        LDR      R1,[SP, #+60]
+        PUSH     {R1}
+        CFI CFA R13+116
+        ADD      R1,SP,#+24
+        PUSH     {R1}
+        CFI CFA R13+120
+        LDR      R6,[SP, #+72]
+        ADD      R3,SP,#+16
+        ADD      R2,SP,#+24
+        ADD      R1,SP,#+12
+        ADD      R6,R6,R5, LSL #+3
+        ADD      R0,R0,R6
+        BL       CalcLPCoefs
+        LDR      R0,[SP, #+20]
+        LDR      R2,[SP, #+12]
+        ASR      R1,R0,#+31
+        ASR      R3,R2,#+31
+        UMULL    R6,R7,R0,R2
+        MLA      R7,R0,R3,R7
+        MLA      R7,R1,R2,R7
+        MOV      R6,R7
+        STR      R6,[SP, #+12]
+        LDR      R2,[SP, #+24]
+        ASR      R3,R2,#+31
+        UMULL    R6,R7,R0,R2
+        MLA      R7,R0,R3,R7
+        MLA      R7,R1,R2,R7
+        MOV      R6,R7
+        STR      R6,[SP, #+24]
+        LDR      R0,[SP, #+56]
+        LDR      R2,[SP, #+16]
+        ASR      R1,R0,#+31
+        ASR      R3,R2,#+31
+        UMULL    R6,R7,R0,R2
+        MLA      R7,R0,R3,R7
+        MLA      R7,R1,R2,R7
+        MOV      R6,R7
+        STR      R6,[SP, #+16]
+        LDR      R2,[SP, #+28]
+        ASR      R3,R2,#+31
+        UMULL    R6,R7,R0,R2
+        MLA      R7,R0,R3,R7
+        MOV      R0,#+44
+        MLA      R7,R1,R2,R7
+        ORR      R0,R0,#0x7200
+        MOV      R6,R7
+        STR      R6,[SP, #+28]
+        ADD      R1,R10,R5, LSL #+3
+        ADD      R0,R0,R1
+        LDR      R2,[R0, #+0]
+        STR      R2,[SP, #+60]
+        LDR      R2,[R0, #+4]
+        STR      R2,[SP, #+52]
+        LDR      R5,[R0, #+512]!
+        LDR      R10,[R0, #+4]
+        LDR      LR,[SP, #+44]
+        ADD      R12,R0,#+512
+        LDR      R0,[SP, #+32]
+        ADD      SP,SP,#+8
+        CFI CFA R13+112
+        CMP      LR,R0
+        BLT      ??raac_GenerateHighFreq_17
+        B        ??raac_GenerateHighFreq_14
+??raac_GenerateHighFreq_18:
+        ADD      R1,R10,R1
+        STR      R0,[R4, #+0]
+        STR      R1,[R4, #+4]
+        LDR      R8,[SP, #+72]
+        MOV      R6,#+1
+        AND      R6,R6,LR, ASR #+5
+        ADD      R8,R8,#+392
+        ADD      R6,R8,R6, LSL #+2
+        LDR      R8,[R6, #+0]
+        ASR      R2,R0,#+31
+        ASR      R3,R1,#+31
+        EOR      R0,R2,R0
+        SUB      R0,R0,R2
+        EOR      R1,R3,R1
+        SUB      R1,R1,R3
+        ORR      R0,R1,R0
+        ORR      R0,R0,R8
+        STR      R0,[R6, #+0]
+        LDR      R0,[SP, #+24]
+        ADD      R4,R4,#+512
+        ADD      LR,LR,#+1
+        CMP      LR,R0
+        BGE      ??raac_GenerateHighFreq_14
+??raac_GenerateHighFreq_17:
+        LDR      R6,[SP, #+52]
+        LDR      R0,[SP, #+8]
+        LDR      R8,[SP, #+20]
+        ASR      R7,R6,#+31
+        ASR      R1,R0,#+31
+        UMULL    R2,R3,R6,R0
+        ASR      R9,R8,#+31
+        MLA      R3,R6,R1,R3
+        MLA      R3,R7,R0,R3
+        LDR      R0,[SP, #+44]
+        MOV      R11,R3
+        ASR      R1,R0,#+31
+        UMULL    R2,R3,R0,R8
+        MLA      R3,R0,R9,R3
+        MLA      R3,R1,R8,R3
+        UMULL    R0,R1,R6,R8
+        SUB      R11,R11,R3
+        MLA      R1,R6,R9,R1
+        LDR      R6,[SP, #+44]
+        MLA      R1,R7,R8,R1
+        LDR      R8,[SP, #+8]
+        MOV      R3,R1
+        SMULL    R0,R1,R6,R8
+        ADD      R0,R1,R3
+        STR      R0,[SP, #+56]
+        STR      R5,[SP, #+52]
+        STR      R10,[SP, #+44]
+        LDR      R2,[SP, #+4]
+        LDR      R8,[SP, #+16]
+        MOV      R0,R5
+        ASR      R1,R5,#+31
+        ASR      R3,R2,#+31
+        UMULL    R6,R7,R0,R2
+        ASR      R9,R8,#+31
+        MLA      R7,R0,R3,R7
+        MLA      R7,R1,R2,R7
+        MOV      R2,R10
+        ADD      R5,R7,R11
+        ASR      R3,R2,#+31
+        UMULL    R6,R7,R2,R8
+        MLA      R7,R2,R9,R7
+        MLA      R7,R3,R8,R7
+        UMULL    R2,R3,R0,R8
+        SUB      R6,R5,R7
+        LDR      R5,[SP, #+56]
+        MLA      R3,R0,R9,R3
+        MLA      R3,R1,R8,R3
+        MOV      R2,R3
+        LDR      R3,[SP, #+4]
+        SMULL    R0,R1,R10,R3
+        LDR      R10,[R12, #+4]
+        ADD      R0,R1,R2
+        ADD      R1,R0,R5
+        LDR      R5,[R12, #+0]
+        ADD      R12,R12,#+512
+        ASR      R0,R6,#+31
+        MVN      R2,#-1073741824
+        CMP      R0,R6, ASR #+26
+        EORNE    R0,R2,R0
+        LSLEQ    R0,R6,#+4
+        ADD      R0,R5,R0
+        ASR      R3,R1,#+31
+        CMP      R3,R1, ASR #+26
+        LSLEQ    R1,R1,#+4
+        EORNE    R1,R2,R3
+        B        ??raac_GenerateHighFreq_18
+        DATA
+??raac_GenerateHighFreq_6:
+        DC32     newBWTab
+        CFI EndBlock cfiBlock7
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_CVKernel1??rA:
+        LDR      R12,??Subroutine4_0  ;; raac_CVKernel1
+        BX       R12
+        DATA
+??Subroutine4_0:
+        DC32     raac_CVKernel1
+        CFI EndBlock cfiBlock8
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_CVKernel2??rA:
+        LDR      R12,??Subroutine5_0  ;; raac_CVKernel2
+        BX       R12
+        DATA
+??Subroutine5_0:
+        DC32     raac_CVKernel2
+        CFI EndBlock cfiBlock9
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_InvRNormalized??rA:
+        LDR      R12,??Subroutine6_0  ;; raac_InvRNormalized
+        BX       R12
+        DATA
+??Subroutine6_0:
+        DC32     raac_InvRNormalized
+        CFI EndBlock cfiBlock10
+
+        END
+//  608 
+//  609 
+// 
+// 3 988 bytes in segment CODE
+//    64 bytes in segment DATA_C
+// 
+// 3 936 bytes of CODE  memory (+ 52 bytes shared)
+//    64 bytes of CONST memory
+//
+//Errors: none
+//Warnings: 2

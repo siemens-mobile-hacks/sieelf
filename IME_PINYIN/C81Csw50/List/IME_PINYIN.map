@@ -1,0 +1,151 @@
+################################################################################
+#                                                                              #
+#      IAR Universal Linker V4.60I/386                                         #
+#                                                                              #
+#           Link time     =  04/Oct/2012  15:38:53                             #
+#           Target CPU    =  ARM                                               #
+#           List file     =  D:\SVN\SieELF\SieELF\IME_PINYIN\C81Csw50\List\IME #
+#                            _PINYIN.map                                       #
+#           Output file 1 =  D:\SVN\SieELF\SieELF\IME_PINYIN\C81Csw50\Exe\IME_ #
+#                            PINYIN.elf                                        #
+#                            Format: elf, variant: -yas                        #
+#           Command line  =  D:\SVN\SieELF\SieELF\IME_PINYIN\C81Csw50\Obj\IME_ #
+#                            PINYIN_1_4.r79                                    #
+#                            -o                                                #
+#                            D:\SVN\SieELF\SieELF\IME_PINYIN\C81Csw50\Exe\IME_ #
+#                            PINYIN.elf                                        #
+#                            -Felf -yas -l                                     #
+#                            D:\SVN\SieELF\SieELF\IME_PINYIN\C81Csw50\List\IME #
+#                            _PINYIN.map                                       #
+#                            -xmsnio                                           #
+#                            "-ID:\Program Files\IAR\Embedded Workbench 4.0 Ev #
+#                            aluation\ARM\LIB\"                                #
+#                            -f D:\SVN\SieELF\SieELF\IME_PINYIN\C81Csw50.xcl   #
+#                            (-carm -Z(CODE)IME_HOOK=A0AD61AC-FFFFFFFF         #
+#                            -Z(CODE)IME_KEY1_HOOK=A0AD67B8-FFFFFFFF           #
+#                            -Z(CODE)INPUTER_SEL_JAVA_HOOK=A00B500C-FFFFFFFF   #
+#                            -Z(CODE)CODE=A1564C00-FFFFFFFF                    #
+#                            -Z(CODE)XING_JAVA_HOOK=A05CB524-FFFFFFFF          #
+#                            -Z(CODE)KEY0_JAVA_HOOK=A05CBBE0-FFFFFFFF          #
+#                            -Z(CODE)SELFIX_JAVA_HOOK=A05CB59C-FFFFFFFF)       #
+#                                                                              #
+#                        Copyright 1987-2007 IAR Systems. All rights reserved. #
+################################################################################
+
+
+
+
+
+                ****************************************
+                *                                      *
+                *           CROSS REFERENCE            *
+                *                                      *
+                ****************************************
+
+                  There are no program entries.
+
+
+
+
+                ****************************************
+                *                                      *
+                *              MODULE MAP              *
+                *                                      *
+                ****************************************
+
+
+  DEFINED ABSOLUTE ENTRIES
+    *************************************************************************
+
+  FILE NAME : D:\SVN\SieELF\SieELF\IME_PINYIN\C81Csw50\Obj\IME_PINYIN_1_4.r79
+  PROGRAM MODULE, NAME : IME_PINYIN_1_4
+
+  SEGMENTS IN THE MODULE
+  ======================
+IME_HOOK
+  Relative segment, address: A0AD61AC - A0AD61B3 (0x8 bytes), align: 2
+  Segment part 0. ROOT.
+    -------------------------------------------------------------------------
+INPUTER_SEL_JAVA_HOOK
+  Relative segment, address: A00B500C - A00B5013 (0x8 bytes), align: 2
+  Segment part 1. ROOT.
+    -------------------------------------------------------------------------
+IME_KEY1_HOOK
+  Relative segment, address: A0AD67B8 - A0AD67BF (0x8 bytes), align: 2
+  Segment part 2. ROOT.
+    -------------------------------------------------------------------------
+XING_JAVA_HOOK
+  Relative segment, address: A05CB524 - A05CB525 (0x2 bytes), align: 2
+  Segment part 3. ROOT.
+    -------------------------------------------------------------------------
+KEY0_JAVA_HOOK
+  Relative segment, address: A05CBBE0 - A05CBBE7 (0x8 bytes), align: 2
+  Segment part 4. ROOT.
+    -------------------------------------------------------------------------
+SELFIX_JAVA_HOOK
+  Relative segment, address: A05CB59C - A05CB5A3 (0x8 bytes), align: 2
+  Segment part 5. ROOT.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: A1564C00 - A1564DB3 (0x1b4 bytes), align: 2
+  Segment part 6. ROOT.       Intra module refs:   Segment part 0
+                                                   Segment part 1
+                                                   Segment part 2
+                                                   Segment part 4
+                                                   Segment part 5
+
+
+
+
+                ****************************************
+                *                                      *
+                *            MODULE SUMMARY            *
+                *                                      *
+                ****************************************
+
+Module           CODE
+------           ----
+                (Rel)
+IME_PINYIN_1_4    478
+------            ---
+Total:            478
+
+
+                ****************************************
+                *                                      *
+                *              CALL GRAPH              *
+                *                                      *
+                ****************************************
+
+No call graph information available
+
+
+                ****************************************
+                *                                      *
+                *      SEGMENTS IN ADDRESS ORDER       *
+                *                                      *
+                ****************************************
+
+
+SEGMENT              SPACE    START ADDRESS   END ADDRESS     SIZE  TYPE  ALIGN
+=======              =====    =============   ===========     ====  ====  =====
+INPUTER_SEL_JAVA_HOOK
+                                   A00B500C - A00B5013           8   rel    2
+XING_JAVA_HOOK                     A05CB524 - A05CB525           2   rel    2
+SELFIX_JAVA_HOOK                   A05CB59C - A05CB5A3           8   rel    2
+KEY0_JAVA_HOOK                     A05CBBE0 - A05CBBE7           8   rel    2
+IME_HOOK                           A0AD61AC - A0AD61B3           8   rel    2
+IME_KEY1_HOOK                      A0AD67B8 - A0AD67BF           8   rel    2
+CODE                               A1564C00 - A1564DB3         1B4   rel    2
+
+                ****************************************
+                *                                      *
+                *        END OF CROSS REFERENCE        *
+                *                                      *
+                ****************************************
+
+ 478 bytes of CODE memory
+
+Errors: none
+Warnings: none
+

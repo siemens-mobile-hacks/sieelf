@@ -1,0 +1,1608 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   05/Dec/2011  21:21:55 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\MultiSimPatch\MultiSimElf\main /
+//                       .c                                                  /
+//    Command line    =  D:\SVN\SieELF\SieELF\MultiSimPatch\MultiSimElf\main /
+//                       .c -D NEWSGOLD -lC D:\SVN\SieELF\SieELF\MultiSimPat /
+//                       ch\tmp\ -lA D:\SVN\SieELF\SieELF\MultiSimPatch\tmp\ /
+//                        -o D:\SVN\SieELF\SieELF\MultiSimPatch\tmp\ -s9     /
+//                       --no_unroll --cpu_mode arm --endian little --cpu    /
+//                       ARM926EJ-S --stack_align 4 --interwork -e --fpu     /
+//                       None -I "D:\Program Files\IAR\Embedded Workbench    /
+//                       4.0 Evaluation\ARM\INC\" --inline_threshold=2       /
+//    List file       =  D:\SVN\SieELF\SieELF\MultiSimPatch\tmp\main.s79     /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME main
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        MULTWEAK ??ChangeSim??rT
+        MULTWEAK ??CreateBlocksFromFiles??rT
+??DataTable0 EQU 0
+??DataTable1 EQU 0
+??DataTable2 EQU 0
+??DataTable4 EQU 0
+??DataTable6 EQU 0
+        MULTWEAK ??ELF_KILLER??rT
+        MULTWEAK ??Get5401??rT
+        MULTWEAK ??InitConfig??rA
+        MULTWEAK ??ReadFile??rA
+        MULTWEAK ??SendRequest??rT
+        MULTWEAK ??ShowMainMenu??rA
+        MULTWEAK ??UpdateCSMname??rT
+        MULTWEAK ??UpdateFromOld??rT
+        MULTWEAK ??UpdateTesters??rT
+        MULTWEAK ??WriteFile??rA
+        MULTWEAK ??kill_data??rA
+        MULTWEAK ??main??rT
+        MULTWEAK ??maincsm_onclose??rT
+        MULTWEAK ??maincsm_oncreate??rT
+        MULTWEAK ??maincsm_onmessage??rT
+        PUBWEAK ?init?tab?DATA_Z
+        PUBLIC ChangeSim
+        FUNCTION ChangeSim,0203H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC CreateBlocksFromFiles
+        FUNCTION CreateBlocksFromFiles,0201H
+        LOCFRAME CSTACK, 28, STACK
+        PUBLIC ELF_KILLER
+        FUNCTION ELF_KILLER,0603H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC Get5401
+        FUNCTION Get5401,0203H
+        LOCFRAME CSTACK, 24, STACK
+        PUBLIC MAINCSM
+        PUBLIC SendRequest
+        FUNCTION SendRequest,0203H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC UpdateCSMname
+        FUNCTION UpdateCSMname,0203H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC UpdateFromOld
+        FUNCTION UpdateFromOld,0201H
+        LOCFRAME CSTACK, 56, STACK
+        PUBLIC UpdateTesters
+        FUNCTION UpdateTesters,0201H
+        LOCFRAME CSTACK, 60, STACK
+        PUBLIC block5401
+        PUBLIC curblock
+        PUBLIC gipc
+        PUBLIC gipc2
+        PUBLIC main
+        FUNCTION main,0a01H
+        LOCFRAME CSTACK, 60, STACK
+        PUBLIC maincsm
+        PUBLIC maincsm_name_body
+        PUBLIC maincsm_onclose
+        FUNCTION maincsm_onclose,0603H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC maincsm_oncreate
+        FUNCTION maincsm_oncreate,0603H
+        LOCFRAME CSTACK, 8, STACK
+        PUBLIC maincsm_onmessage
+        FUNCTION maincsm_onmessage,0603H
+        LOCFRAME CSTACK, 16, STACK
+        PUBLIC minus11
+        PUBLIC patchversion
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+InitConfig          SYMBOL "InitConfig"
+ReadFile            SYMBOL "ReadFile"
+ShowMainMenu        SYMBOL "ShowMainMenu"
+WriteFile           SYMBOL "WriteFile"
+kill_data           SYMBOL "kill_data"
+ChangeSim           SYMBOL "ChangeSim"
+??ChangeSim??rT     SYMBOL "??rT", ChangeSim
+CreateBlocksFromFiles SYMBOL "CreateBlocksFromFiles"
+??CreateBlocksFromFiles??rT SYMBOL "??rT", CreateBlocksFromFiles
+ELF_KILLER          SYMBOL "ELF_KILLER"
+??ELF_KILLER??rT    SYMBOL "??rT", ELF_KILLER
+Get5401             SYMBOL "Get5401"
+??Get5401??rT       SYMBOL "??rT", Get5401
+??InitConfig??rA    SYMBOL "??rA", InitConfig
+??ReadFile??rA      SYMBOL "??rA", ReadFile
+SendRequest         SYMBOL "SendRequest"
+??SendRequest??rT   SYMBOL "??rT", SendRequest
+??ShowMainMenu??rA  SYMBOL "??rA", ShowMainMenu
+UpdateCSMname       SYMBOL "UpdateCSMname"
+??UpdateCSMname??rT SYMBOL "??rT", UpdateCSMname
+UpdateFromOld       SYMBOL "UpdateFromOld"
+??UpdateFromOld??rT SYMBOL "??rT", UpdateFromOld
+UpdateTesters       SYMBOL "UpdateTesters"
+??UpdateTesters??rT SYMBOL "??rT", UpdateTesters
+??WriteFile??rA     SYMBOL "??rA", WriteFile
+??kill_data??rA     SYMBOL "??rA", kill_data
+main                SYMBOL "main"
+??main??rT          SYMBOL "??rT", main
+maincsm_onclose     SYMBOL "maincsm_onclose"
+??maincsm_onclose??rT SYMBOL "??rT", maincsm_onclose
+maincsm_oncreate    SYMBOL "maincsm_oncreate"
+??maincsm_oncreate??rT SYMBOL "??rT", maincsm_oncreate
+maincsm_onmessage   SYMBOL "maincsm_onmessage"
+??maincsm_onmessage??rT SYMBOL "??rT", maincsm_onmessage
+
+        EXTERN ELF_BEGIN
+        EXTERN InitConfig
+        FUNCTION InitConfig,0202H
+        EXTERN ReadFile
+        FUNCTION ReadFile,0202H
+        EXTERN ShowMainMenu
+        FUNCTION ShowMainMenu,0200H
+        EXTERN WriteFile
+        FUNCTION WriteFile,0202H
+        EXTERN bp
+        EXTERN kill_data
+        FUNCTION kill_data,0202H
+        EXTERN onc_ena
+        EXTERN onc_sim
+        EXTERN onc_sim2
+        EXTERN simcnt
+        EXTERN simnum
+        EXTERN successed_config_filename
+
+// D:\SVN\SieELF\SieELF\MultiSimPatch\MultiSimElf\main.c
+//    1 #include "..\..\inc\swilib.h"
+//    2 //#include "..\..\inc\xtask_ipc.h"
+//    3 #include "mainmenu.h"
+//    4 #include "..\multisim_ipc.h"
+//    5 //#include "..\inc\swilib.h"
+//    6 #include "conf_loader.h"
+//    7 
+//    8 extern void kill_data(void *p, void (*func_p)(void *));
+//    9 extern const unsigned int onc_ena;
+//   10 extern const unsigned int onc_sim;
+//   11 extern const unsigned int onc_sim2;\ 
+
+        RSEG DATA_Z:DATA:SORT:NOROOT(2)
+//   12   int curblock=0;;
+curblock:
+        DS8 4
+
+        RSEG DATA_Z:DATA:SORT:NOROOT(2)
+//   13 int maincsm;
+maincsm:
+        DS8 4
+//   14 int patchversion=0;
+patchversion:
+        DS8 4
+//   15 
+//   16 //unsigned char bp[1024];
+
+        RSEG DATA_Z:DATA:SORT:NOROOT(2)
+//   17      IPC_REQ gipc;
+gipc:
+        DS8 12
+//   18 
+//   19 const int minus11=-11;
+//   20 
+//   21 //__root int xxx=123;
+//   22 //volatile static int yyy;
+
+        RSEG DATA_Z:DATA:SORT:NOROOT(2)
+//   23 IPC_REQ gipc2;
+gipc2:
+        DS8 12
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??SendRequest??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE SendRequest
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function SendRequest
+        ARM
+//   24  void SendRequest(int submess, void *data){
+//   25       gipc2.name_to=IPC_MSIM_NAME;
+SendRequest:
+        LDR      R3,??SendRequest_0  ;; gipc2
+        LDR      R2,??DataTable7  ;; `?<Constant "MultiSim">`
+        PUSH     {LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI CFA R13+4
+        STR      R2,[R3, #+0]
+//   26       gipc2.name_from=ELF_MSIM_NAME;
+        ADD      R2,R2,#+12
+        STR      R2,[R3, #+4]
+//   27       gipc2.data=data;
+        STR      R1,[R3, #+8]
+//   28       GBS_SendMessage(MMI_CEPID,MSG_IPC,submess,&gipc2);
+        MOV      R2,R0
+        MOV      R1,#+176
+        ORR      R1,R1,#0xDE00
+        MOV      R0,#+9
+        ORR      R0,R0,#0x4200
+        SWI      +256
+//   29 
+//   30 
+//   31 }
+        POP      {PC}             ;; return
+        DATA
+??SendRequest_0:
+        DC32     gipc2
+        CFI EndBlock cfiBlock1
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??ChangeSim??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE ChangeSim
+//   32 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function ChangeSim
+        ARM
+//   33  void ChangeSim( int num)
+//   34 {
+//   35   SendRequest(IPC_MSIM_SWITCH,(void*)num);
+ChangeSim:
+        MOV      R1,R0
+        MOV      R0,#+1
+        B        SendRequest      ;; tailcall
+        CFI EndBlock cfiBlock3
+//   36 //  RefreshGUI();
+//   37 
+//   38 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??Get5401??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE Get5401
+//   39 
+//   40 
+//   41 typedef struct
+//   42 {
+//   43   CSM_RAM csm;
+//   44   int gui_id;
+//   45 }MAIN_CSM;
+//   46 
+//   47 
+//   48 inline void ReadConfig(){
+//   49   InitConfig();
+//   50 }
+//   51 
+//   52 extern int simnum;
+//   53 extern int simcnt;
+//   54 extern int WriteFile(char *, unsigned char *,int );
+//   55 extern const char f5401s[];
+//   56 extern const char f5402s[];
+//   57 //char buf5401[0x30*20];
+
+        RSEG DATA_Z:DATA:SORT:NOROOT(2)
+//   58 BLOCK5401 block5401[MAX_SIM_CNT];
+block5401:
+        DS8 960
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function Get5401
+        ARM
+//   59 void Get5401(void){
+//   60   simnum=0;
+Get5401:
+        LDR      R1,??DataTable3  ;; simnum
+        PUSH     {R4,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+//   61   EEFullReadBlock(5403,&simnum,0x2F,1,0,0);
+//   62 
+//   63   EEFullReadBlock(5401,&block5401,0,BL_SZ_5401,0,0);
+        LDR      R4,??Get5401_0   ;; block5401
+        MOV      R0,#+0
+        STR      R0,[R1, #+0]
+        PUSH     {R0}
+        CFI CFA R13+12
+        PUSH     {R0}
+        CFI CFA R13+16
+        MOV      R3,#+1
+        MOV      R2,#+47
+        MOV      R0,#+27
+        ORR      R0,R0,#0x1500
+        SWI      +134
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+20
+        PUSH     {R0}
+        CFI CFA R13+24
+        MOV      R3,#+960
+        MOV      R2,#+0
+        MOV      R1,R4
+        MOV      R0,#+25
+        ORR      R0,R0,#0x1500
+        SWI      +134
+//   64   int i;
+//   65   for (i=0;i<20&&(block5401[i].SPN[1]!=0);i++);
+        MOV      R0,#+0
+        ADD      SP,SP,#+16
+        CFI CFA R13+8
+??Get5401_1:
+        MOV      R1,#+48
+        MLA      R2,R1,R0,R4
+        LDRB     R1,[R2, #+33]
+        CMP      R1,#+0
+        BEQ      ??Get5401_2
+        ADD      R0,R0,#+1
+        CMP      R0,#+20
+        BLT      ??Get5401_1
+//   66   simcnt=i;
+??Get5401_2:
+        LDR      R1,??Get5401_0+0x4  ;; simcnt
+        STR      R0,[R1, #+0]
+//   67 }
+        POP      {R4,PC}          ;; return
+        DATA
+??Get5401_0:
+        DC32     block5401
+        DC32     simcnt
+        CFI EndBlock cfiBlock5
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??maincsm_oncreate??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE maincsm_oncreate
+//   68 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function maincsm_oncreate
+        ARM
+//   69 void maincsm_oncreate(CSM_RAM *data)
+//   70 {
+maincsm_oncreate:
+        PUSH     {R4,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+        MOV      R4,R0
+//   71 //  MAIN_GUI *main_gui=malloc(sizeof(MAIN_GUI));
+//   72   MAIN_CSM*csm=(MAIN_CSM*)data;
+//   73 //  zeromem(main_gui,sizeof(MAIN_GUI));
+//   74   /*
+//   75   main_gui->gui.canvas=(void *)(&Canvas);
+//   76   main_gui->gui.flag30=2;
+//   77   main_gui->gui.methods=(void *)gui_methods;
+//   78   main_gui->gui.item_ll.data_mfree=(void (*)(void *))mfree_adr();
+//   79  */
+//   80   csm->csm.state=0;
+        MOV      R0,#+0
+        STR      R0,[R4, #+16]
+//   81   csm->csm.unk1=0;
+        STR      R0,[R4, #+20]
+//   82 ///  csm->gui_id=CreateGUI(main_gui);
+//   83 //  csm->gui_id=    ShowMainMenu();
+//   84 //  maincsm=
+//   85   Get5401();
+        BL       Get5401
+//   86             if (!onc_ena){
+        LDR      R0,??DataTable5  ;; onc_ena
+        LDR      R0,[R0, #+0]
+        CMP      R0,#+0
+        BNE      ??maincsm_oncreate_0
+//   87             csm->gui_id=    ShowMainMenu();
+        _BLF     ShowMainMenu,??ShowMainMenu??rA
+        STR      R0,[R4, #+40]
+//   88             RefreshGUI();
+        SWI      +406
+        POP      {R4,PC}
+//   89           }else{
+//   90             if (simnum==onc_sim)ChangeSim(onc_sim2);else
+??maincsm_oncreate_0:
+        LDR      R0,??maincsm_oncreate_1  ;; onc_sim
+        LDR      R1,[R0, #+0]
+        LDR      R0,??DataTable3  ;; simnum
+        LDR      R0,[R0, #+0]
+        CMP      R0,R1
+        LDREQ    R0,??maincsm_oncreate_1+0x4  ;; onc_sim2
+        LDREQ    R1,[R0, #+0]
+//   91               ChangeSim(onc_sim);
+        MOV      R0,#+1
+        POP      {R4,LR}          ;; Pop
+        CFI R4 SameValue
+        CFI ?RET R14
+        CFI CFA R13+0
+        B        SendRequest      ;; tailcall
+        DATA
+??maincsm_oncreate_1:
+        DC32     onc_sim
+        DC32     onc_sim2
+        CFI EndBlock cfiBlock7
+//   92           }
+//   93 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable3:
+        DC32     simnum
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??ELF_KILLER??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE ELF_KILLER
+//   94 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function ELF_KILLER
+        ARM
+//   95 void ELF_KILLER(void)
+//   96 {
+ELF_KILLER:
+        PUSH     {LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI CFA R13+4
+//   97   extern void *ELF_BEGIN;
+//   98   kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
+        SWI      +32789
+        MOV      R1,R0
+        LDR      R0,??ELF_KILLER_0  ;; ELF_BEGIN
+        POP      {LR}             ;; Pop
+        CFI ?RET R14
+        CFI CFA R13+0
+        _BF      kill_data,??kill_data??rA  ;; tailcall
+        DATA
+??ELF_KILLER_0:
+        DC32     ELF_BEGIN
+        CFI EndBlock cfiBlock9
+//   99 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??maincsm_onclose??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock10
+        REQUIRE maincsm_onclose
+//  100 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock11 Using cfiCommon1
+        CFI Function maincsm_onclose
+        ARM
+//  101 void maincsm_onclose(CSM_RAM *csm)
+//  102 {
+//  103   SUBPROC((void *)ELF_KILLER);
+maincsm_onclose:
+        LDR      R0,??maincsm_onclose_0  ;; ELF_KILLER
+        PUSH     {LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI CFA R13+4
+        SWI      +369
+//  104 }
+        POP      {PC}             ;; return
+        DATA
+??maincsm_onclose_0:
+        DC32     ELF_KILLER
+        CFI EndBlock cfiBlock11
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock12 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??maincsm_onmessage??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock12
+        REQUIRE maincsm_onmessage
+//  105 
+//  106 
+//  107 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock13 Using cfiCommon1
+        CFI Function maincsm_onmessage
+        ARM
+//  108 int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
+//  109 {
+maincsm_onmessage:
+        PUSH     {R4-R6,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R6 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -12)
+        CFI R4 Frame(CFA, -16)
+        CFI CFA R13+16
+//  110   MAIN_CSM *csm=(MAIN_CSM*)data;
+//  111   if(msg->msg == MSG_RECONFIGURE_REQ)
+        LDR      R6,??DataTable7  ;; `?<Constant "MultiSim">`
+        MOV      R4,R0
+        MOV      R5,R1
+        LDR      R0,[R5, #+4]
+        MOV      R1,#+175
+        ORR      R1,R1,#0xDE00
+        CMP      R0,R1
+        BNE      ??maincsm_onmessage_0
+//  112   {
+//  113     extern const char *successed_config_filename;
+//  114     if (strcmp(successed_config_filename,(char *)msg->data0)==0)
+        LDR      R0,??maincsm_onmessage_1  ;; successed_config_filename
+        LDR      R1,[R5, #+12]
+        LDR      R0,[R0, #+0]
+        SWI      +25
+        CMP      R0,#+0
+        BNE      ??maincsm_onmessage_0
+//  115 //    if (strcmp_nocase(successed_config_filename,(char *)msg->data0)==0)
+//  116     {
+//  117       ShowMSG(1,(int)"一卡多号配置已更新!");
+        ADD      R1,R6,#+24
+        MOV      R0,#+1
+        SWI      +328
+//  118       ReadConfig();
+        _BLF     InitConfig,??InitConfig??rA
+//  119     }
+//  120 
+//  121   }
+//  122 
+//  123   if (msg->msg==MSG_IPC)
+??maincsm_onmessage_0:
+        LDR      R0,[R5, #+4]
+        MOV      R1,#+176
+        ORR      R1,R1,#0xDE00
+        CMP      R0,R1
+        BNE      ??maincsm_onmessage_2
+//  124   {
+//  125     IPC_REQ *ipc;
+//  126     if ((ipc=(IPC_REQ*)msg->data0))
+        LDR      R0,[R5, #+12]
+        CMP      R0,#+0
+        BEQ      ??maincsm_onmessage_3
+//  127     {
+//  128       if (strcmp(ipc->name_from,IPC_MSIM_NAME)==0)
+        LDR      R0,[R0, #+4]
+        MOV      R1,R6
+        SWI      +25
+        CMP      R0,#+0
+//  129       {
+//  130 
+//  131 	switch (msg->submess)
+        LDREQ    R0,[R5, #+8]
+        CMPEQ    R0,#+10
+        BNE      ??maincsm_onmessage_2
+//  132 	{
+//  133 	case IPC_MSIM_SWITCHED:
+//  134           if (onc_ena){
+        LDR      R0,??DataTable5  ;; onc_ena
+        LDR      R0,[R0, #+0]
+        CMP      R0,#+0
+        BEQ      ??maincsm_onmessage_4
+//  135               CloseCSM(maincsm);
+        LDR      R0,??DataTable8  ;; maincsm
+        LDR      R0,[R0, #+0]
+        SWI      +508
+        B        ??maincsm_onmessage_2
+//  136           }else
+//  137             GeneralFuncF1(1);
+??maincsm_onmessage_4:
+        MOV      R0,#+1
+        SWI      +315
+//  138 	  break;
+//  139 	}
+//  140 
+//  141       }
+//  142     }
+//  143   }
+//  144   if ((msg->msg==MSG_GUI_DESTROYED)&&((int)msg->data0==csm->gui_id))
+??maincsm_onmessage_2:
+        LDR      R0,[R5, #+4]
+        MOV      R1,#+14
+        ORR      R1,R1,#0x6400
+        CMP      R0,R1
+        BNE      ??maincsm_onmessage_3
+        LDR      R0,[R5, #+12]
+        LDR      R1,[R4, #+40]
+        CMP      R0,R1
+//  145   {
+//  146     csm->csm.state=-3;
+        MVNEQ    R0,#+2
+        STREQ    R0,[R4, #+16]
+//  147   }
+//  148   return(1);
+??maincsm_onmessage_3:
+        MOV      R0,#+1
+        POP      {R4-R6,PC}       ;; return
+        DATA
+??maincsm_onmessage_1:
+        DC32     successed_config_filename
+        CFI EndBlock cfiBlock13
+//  149 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable5:
+        DC32     onc_ena
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock14 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??UpdateCSMname??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock14
+        REQUIRE UpdateCSMname
+//  150 
+
+        RSEG DATA_Z:DATA:SORT:NOROOT(2)
+//  151 unsigned short maincsm_name_body[140];
+maincsm_name_body:
+        DS8 280
+//  152 
+//  153 const struct
+//  154 {
+//  155   CSM_DESC maincsm;
+//  156   WSHDR maincsm_name;
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "MultiSim">`:
+        DATA
+        DC8 "MultiSim"
+        DC8 0, 0, 0
+        DC8 "MultiSimElf"
+        DC8 "\322\273\277\250\266\340\272\305\305\344\326\303\322\321\270\374\320\302!"
+//  157 }MAINCSM =
+MAINCSM:
+        DC32 maincsm_onmessage, maincsm_oncreate, 0, 0, 0, 0, maincsm_onclose
+        DC32 44, 1, minus11, maincsm_name_body, 55AACCCCH, 3333AA55H, 0
+        DC16 139
+        DC8 0, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "0:\\\\misc\\\\5402.bak">`:
+        DATA
+        DC8 "0:\\misc\\5402.bak"
+        DC8 0, 0, 0
+        DC8 "0:\\misc\\5401.bak"
+        DC8 0, 0, 0
+        DC8 "0:\\misc\\5400.bak"
+        DC8 0, 0, 0
+        DC8 "\277\3515400-5402\322\321\322\306\263\375. \270\374\320\302\262\271\266\241\265\275\327\356\320\302"
+        DC8 0, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "\\316\\357\\300\\355\\277\\250">`:
+        DATA
+        DC8 "\316\357\300\355\277\250"
+        DC8 0
+        DC8 "\277\3515401-5403\322\321\264\264\275\250. \270\374\320\302\262\271\266\241\265\275\327\356\320\302"
+        DC8 0, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "\\277\\3515401\\322\\321\\264\\264\\275\\2`:
+        DATA
+        DC8 "\277\3515401\322\321\264\264\275\250."
+        DC8 0, 0
+        DC8 "0:\\misc\\5401.txt"
+        DC8 0, 0, 0
+        DC8 "\277\3515402\322\321\264\264\275\250."
+        DC8 0, 0
+        DC8 "0:\\misc\\5402.txt"
+        DC8 0, 0, 0
+        DC8 "\277\3515403\322\321\264\264\275\250."
+        DC8 0, 0
+        DC8 "0:\\misc\\5403.txt"
+        DC8 0, 0, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+minus11:
+        DATA
+        DC32 -11
+//  158 {
+//  159   {
+//  160     maincsm_onmessage,
+//  161     maincsm_oncreate,
+//  162 #ifdef NEWSGOLD
+//  163 0,
+//  164 0,
+//  165 0,
+//  166 0,
+//  167 #endif
+//  168 maincsm_onclose,
+//  169 sizeof(MAIN_CSM),
+//  170 1,
+//  171 &minus11
+//  172   },
+//  173   {
+//  174     maincsm_name_body,
+//  175     NAMECSM_MAGIC1,
+//  176     NAMECSM_MAGIC2,
+//  177     0x0,
+//  178     139
+//  179   }
+//  180 };
+//  181 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock15 Using cfiCommon1
+        CFI Function UpdateCSMname
+        ARM
+//  182 void UpdateCSMname(void)
+//  183 {
+//  184   wsprintf((WSHDR *)(&MAINCSM.maincsm_name),ELF_MSIM_NAME);
+UpdateCSMname:
+        LDR      R0,??DataTable7  ;; `?<Constant "MultiSim">`
+        PUSH     {LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI CFA R13+4
+        ADD      R1,R0,#+12
+        ADD      R0,R0,#+84
+        SWI      +292
+//  185 }
+        POP      {PC}             ;; return
+        CFI EndBlock cfiBlock15
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable7:
+        DC32     `?<Constant "MultiSim">`
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock16 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??UpdateTesters??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock16
+        REQUIRE UpdateTesters
+//  186 
+//  187 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock17 Using cfiCommon1
+        CFI Function UpdateTesters
+        ARM
+//  188 void UpdateTesters(){
+UpdateTesters:
+        PUSH     {R4-R7,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R7 Frame(CFA, -8)
+        CFI R6 Frame(CFA, -12)
+        CFI R5 Frame(CFA, -16)
+        CFI R4 Frame(CFA, -20)
+        CFI CFA R13+20
+//  189   unsigned char *block5401=(unsigned char*)malloc(0x50*20);
+//  190   EEFullCreateBlock(5403,BL_SZ_5403,1,0,0);
+//  191   EEFullReadBlock(5402,block5401,0,BL_SZ_5403,0,0);
+//  192   WriteFile("0:\\misc\\5402.bak",block5401,BL_SZ_5403);
+        LDR      R7,??UpdateTesters_0  ;; `?<Constant "0:\\\\misc\\\\5402.bak">`
+        MOV      R0,#+1600
+        MOV      R5,#+27
+        SWI      +20
+        MOV      R4,R0
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+24
+        ORR      R5,R5,#0x1500
+        MOV      R3,#+0
+        MOV      R2,#+1
+        MOV      R1,#+80
+        MOV      R0,R5
+        SWI      +570
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+28
+        PUSH     {R0}
+        CFI CFA R13+32
+        BIC      R6,R5,#0x1
+        MOV      R3,#+80
+        MOV      R2,R0
+        MOV      R1,R4
+        MOV      R0,R6
+        SWI      +134
+        MOV      R2,#+80
+        MOV      R1,R4
+        MOV      R0,R7
+        _BLF     WriteFile,??WriteFile??rA
+//  193   EEFullWriteBlock(5403,block5401,0,0x50,0,0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+36
+        PUSH     {R0}
+        CFI CFA R13+40
+        MOV      R3,#+80
+        MOV      R2,R0
+        MOV      R1,R4
+        MOV      R0,R5
+        SWI      +135
+//  194   EEFullDeleteBlock(5402,0,0);
+        MOV      R2,#+0
+        MOV      R1,R2
+        MOV      R0,R6
+        SWI      +569
+//  195 
+//  196   EEFullCreateBlock(5402,BL_SZ_5402,1,0,0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+44
+        MOV      R3,R0
+        MOV      R2,#+1
+        MOV      R1,#+1600
+        MOV      R0,R6
+        SWI      +570
+//  197   EEFullReadBlock(5401,block5401,0,BL_SZ_5402,0,0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+48
+        PUSH     {R0}
+        CFI CFA R13+52
+        BIC      R5,R5,#0x2
+        MOV      R3,#+1600
+        MOV      R2,R0
+        MOV      R1,R4
+        MOV      R0,R5
+        SWI      +134
+//  198   WriteFile("0:\\misc\\5401.bak",block5401,BL_SZ_5402);
+        MOV      R2,#+1600
+        MOV      R1,R4
+        ADD      R0,R7,#+20
+        _BLF     WriteFile,??WriteFile??rA
+//  199   EEFullWriteBlock(5402,block5401,0,BL_SZ_5402,0,0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+56
+        PUSH     {R0}
+        CFI CFA R13+60
+        MOV      R3,#+1600
+        MOV      R2,R0
+        MOV      R1,R4
+        MOV      R0,R6
+        SWI      +135
+        ADD      SP,SP,#+40
+        CFI CFA R13+20
+//  200   EEFullDeleteBlock(5401,0,0);
+        MOV      R2,#+0
+        MOV      R1,R2
+        MOV      R0,R5
+        SWI      +569
+//  201 
+//  202   EEFullCreateBlock(5401,BL_SZ_5401,1,0,0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+24
+        MOV      R3,R0
+        MOV      R2,#+1
+        MOV      R1,#+960
+        MOV      R0,R5
+        SWI      +570
+//  203   EEFullReadBlock(5400,block5401,0,BL_SZ_5401,0,0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+28
+        PUSH     {R0}
+        CFI CFA R13+32
+        BIC      R6,R5,#0x1
+        MOV      R3,#+960
+        MOV      R2,R0
+        MOV      R1,R4
+        MOV      R0,R6
+        SWI      +134
+//  204   WriteFile("0:\\misc\\5400.bak",block5401,BL_SZ_5401);
+        MOV      R2,#+960
+        MOV      R1,R4
+        ADD      R0,R7,#+40
+        _BLF     WriteFile,??WriteFile??rA
+//  205   EEFullWriteBlock(5401,block5401,0,BL_SZ_5401,0,0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+36
+        PUSH     {R0}
+        CFI CFA R13+40
+        MOV      R3,#+960
+        MOV      R2,R0
+        MOV      R1,R4
+        MOV      R0,R5
+        SWI      +135
+//  206   EEFullDeleteBlock(5400,0,0);
+        MOV      R2,#+0
+        MOV      R1,R2
+        MOV      R0,R6
+        SWI      +569
+//  207 
+//  208   ShowMSG(1,(int)"块5400-5402已移除. 更新补丁到最新") ;
+        ADD      R1,R7,#+60
+        MOV      R0,#+1
+        SWI      +328
+//  209   mfree(block5401);
+        MOV      R0,R4
+        SWI      +21
+//  210   SwitchPhoneOff();
+        SWI      +9
+//  211 };
+        ADD      SP,SP,#+20
+        CFI CFA R13+20
+        POP      {R4-R7,PC}       ;; return
+        DATA
+??UpdateTesters_0:
+        DC32     `?<Constant "0:\\\\misc\\\\5402.bak">`
+        CFI EndBlock cfiBlock17
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock18 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??UpdateFromOld??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock18
+        REQUIRE UpdateFromOld
+//  212 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock19 Using cfiCommon1
+        CFI Function UpdateFromOld
+        ARM
+//  213 void UpdateFromOld() {
+UpdateFromOld:
+        PUSH     {R4-R10,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R10 Frame(CFA, -8)
+        CFI R9 Frame(CFA, -12)
+        CFI R8 Frame(CFA, -16)
+        CFI R7 Frame(CFA, -20)
+        CFI R6 Frame(CFA, -24)
+        CFI R5 Frame(CFA, -28)
+        CFI R4 Frame(CFA, -32)
+        CFI CFA R13+32
+//  214  unsigned char *block5400=(unsigned char*)malloc(1024);
+//  215  unsigned char *block5401=(unsigned char*)malloc(0x50*20);
+//  216 
+//  217  EEFullReadBlock(5400, block5400, 0, 1024, 0, 0);
+//  218  memset(block5401, 0, 0x50*20);
+//  219  memcpy(block5401+0x21, "物理卡", 8);
+        LDR      R7,??UpdateFromOld_0  ;; `?<Constant "\\316\\357\\300\\355\\277\\250">`
+        MOV      R0,#+1024
+        MOV      R6,#+24
+        SWI      +20
+        MOV      R4,R0
+        MOV      R0,#+1600
+        SWI      +20
+        MOV      R5,R0
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+36
+        PUSH     {R0}
+        CFI CFA R13+40
+        ORR      R6,R6,#0x1500
+        MOV      R3,#+1024
+        MOV      R2,#+0
+        MOV      R1,R4
+        MOV      R0,R6
+        SWI      +134
+        MOV      R2,#+1600
+        MOV      R1,#+0
+        MOV      R0,R5
+        SWI      +187
+        MOV      R2,#+8
+        MOV      R1,R7
+        ADD      R0,R5,#+33
+        SWI      +286
+//  220 
+//  221  for (int i=0; i<10; i++) {
+        MOV      R8,#+0
+        ADD      SP,SP,#+8
+        CFI CFA R13+32
+//  222   memcpy(block5401+0x30*(i+1),      block5400+0x50*i,      0x0C);//imsi
+??UpdateFromOld_1:
+        MOV      R0,#+48
+        MLA      R9,R0,R8,R5
+        MOV      R0,#+80
+        MLA      R10,R0,R8,R4
+        MOV      R2,#+12
+        MOV      R1,R10
+        ADD      R0,R9,#+48
+        SWI      +286
+//  223   memcpy(block5401+0x30*(i+1)+0x10, block5400+0x50*i+0x10, 0x10);//ki
+        MOV      R2,#+16
+        ADD      R1,R10,#+16
+        ADD      R0,R9,#+64
+        SWI      +286
+//  224   memcpy(block5401+0x30*(i+1)+0x20, block5400+0x50*i+0x20, 0x10);//name
+        MOV      R2,#+16
+        ADD      R1,R10,#+32
+        ADD      R0,R9,#+80
+        SWI      +286
+//  225  }
+        ADD      R8,R8,#+1
+        CMP      R8,#+10
+        BLT      ??UpdateFromOld_1
+//  226  EEFullCreateBlock(5401, 0x30*20, 1, 0, 0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+36
+        ORR      R8,R6,#0x1
+        MOV      R3,#+0
+        MOV      R2,#+1
+        MOV      R1,#+960
+        MOV      R0,R8
+        SWI      +570
+//  227  EEFullWriteBlock(5401, block5401, 0, 0x30*20, 0, 0);//5401 done!
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+40
+        PUSH     {R0}
+        CFI CFA R13+44
+        MOV      R3,#+960
+        MOV      R2,R0
+        MOV      R1,R5
+        MOV      R0,R8
+        SWI      +135
+//  228 
+//  229 
+//  230  for (int i=0; i<20; i++) {//prepare 5402
+        MOV      R8,#+0
+        ADD      SP,SP,#+12
+        CFI CFA R13+32
+//  231   memset(block5401+0x50*i,      0xFF, 0x2F);
+??UpdateFromOld_2:
+        MOV      R0,#+80
+        MLA      R9,R0,R8,R5
+        MOV      R2,#+47
+        MOV      R1,#+255
+        MOV      R0,R9
+        SWI      +187
+//  232   memset(block5401+0x50*i+0x30, 0x00, 0x20);
+        MOV      R2,#+32
+        MOV      R1,#+0
+        ADD      R0,R9,#+48
+        SWI      +187
+//  233   block5401[0x50*i+0x2F]=(unsigned char)i;
+        STRB     R8,[R9, #+47]
+//  234  }
+        ADD      R8,R8,#+1
+        CMP      R8,#+20
+        BLT      ??UpdateFromOld_2
+//  235 
+//  236  //physical sim data
+//  237  memcpy(block5401,      block5400+0x340, 0x10);//loci
+        MOV      R2,#+16
+        ADD      R1,R4,#+832
+        MOV      R0,R5
+        SWI      +286
+//  238  memcpy(block5401+0x4C, block5400+0x331, 0x04);//profiles
+        MOV      R2,#+4
+        MOV      R0,#+49
+        ORR      R0,R0,#0x300
+        ADD      R1,R0,R4
+        ADD      R0,R5,#+76
+        SWI      +286
+//  239 
+//  240  for (int i=0; i<10; i++) {
+        MOV      R8,#+0
+//  241   memcpy(block5401+0x50*(i+1),      block5400+0x50*i+0x40, 0x10);//loci
+??UpdateFromOld_3:
+        MOV      R1,#+80
+        MUL      R0,R1,R8
+        MOV      R2,#+16
+        ADD      R9,R0,R5
+        ADD      R10,R0,R4
+        ADD      R1,R10,#+64
+        ADD      R0,R9,#+80
+        SWI      +286
+//  242   memcpy(block5401+0x50*(i+1)+0x30, block5400+0x50*i+0x30, 0x10);//smsc
+        MOV      R2,#+16
+        ADD      R1,R10,#+48
+        ADD      R0,R9,#+128
+        SWI      +286
+//  243   memcpy(block5401+0x50*(i+1)+0x4C, block5400+0x50*i+0x0C, 0x04);//profiles
+        MOV      R2,#+4
+        ADD      R1,R10,#+12
+        ADD      R0,R9,#+156
+        SWI      +286
+//  244  }
+        ADD      R8,R8,#+1
+        CMP      R8,#+10
+        BLT      ??UpdateFromOld_3
+//  245 
+//  246  EEFullCreateBlock(5402, 0x50*20, 1, 0, 0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+36
+        ORR      R8,R6,#0x2
+        MOV      R3,#+0
+        MOV      R2,#+1
+        MOV      R1,#+1600
+        MOV      R0,R8
+        SWI      +570
+//  247  EEFullWriteBlock(5402, block5401, 0, 0x50*20, 0, 0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+40
+        PUSH     {R0}
+        CFI CFA R13+44
+        MOV      R3,#+1600
+        MOV      R2,R0
+        MOV      R1,R5
+        MOV      R0,R8
+        SWI      +135
+//  248 
+//  249  EEFullCreateBlock(5403, 0x50, 1, 0, 0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+48
+        ORR      R8,R6,#0x3
+        MOV      R3,R0
+        MOV      R2,#+1
+        MOV      R1,#+80
+        MOV      R0,R8
+        SWI      +570
+//  250  EEFullWriteBlock(5403, block5401, 0, 0x50, 0, 0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+52
+        PUSH     {R0}
+        CFI CFA R13+56
+        MOV      R3,#+80
+        MOV      R2,R0
+        MOV      R1,R5
+        MOV      R0,R8
+        SWI      +135
+//  251 
+//  252  EEFullDeleteBlock(5400, 0, 0);
+        MOV      R2,#+0
+        MOV      R1,R2
+        MOV      R0,R6
+        SWI      +569
+//  253 
+//  254  ShowMSG(1,(int)"块5401-5403已创建. 更新补丁到最新");
+        ADD      R1,R7,#+8
+        MOV      R0,#+1
+        SWI      +328
+//  255  mfree(block5400);
+        MOV      R0,R4
+        SWI      +21
+//  256  mfree(block5401);
+        MOV      R0,R5
+        SWI      +21
+//  257  SwitchPhoneOff();
+        SWI      +9
+//  258 };
+        ADD      SP,SP,#+24
+        CFI CFA R13+32
+        POP      {R4-R10,PC}      ;; return
+        DATA
+??UpdateFromOld_0:
+        DC32     `?<Constant "\\316\\357\\300\\355\\277\\250">`
+        CFI EndBlock cfiBlock19
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock20 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??CreateBlocksFromFiles??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock20
+        REQUIRE CreateBlocksFromFiles
+//  259 
+//  260 extern int ReadFile(char *name);
+//  261 extern unsigned char bp[BL_SZ_5402];
+//  262 //todo
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock21 Using cfiCommon1
+        CFI Function CreateBlocksFromFiles
+        ARM
+//  263 void CreateBlocksFromFiles(){
+CreateBlocksFromFiles:
+        PUSH     {R4-R6,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R6 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -12)
+        CFI R4 Frame(CFA, -16)
+        CFI CFA R13+16
+//  264 
+//  265   if (ReadFile("0:\\misc\\5401.txt")==BL_SZ_5401){
+        LDR      R4,??CreateBlocksFromFiles_0  ;; bp
+        LDR      R5,??CreateBlocksFromFiles_0+0x4  ;; `?<Constant "\\277\\3515401\\322\\321\\264\\264\\275\\2`
+        ADD      R0,R5,#+16
+        _BLF     ReadFile,??ReadFile??rA
+        CMP      R0,#+960
+        BNE      ??CreateBlocksFromFiles_1
+//  266     EEFullCreateBlock(5401,BL_SZ_5401,1,0,0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+20
+        MOV      R6,#+25
+        ORR      R6,R6,#0x1500
+        MOV      R3,#+0
+        MOV      R2,#+1
+        MOV      R1,#+960
+        MOV      R0,R6
+        SWI      +570
+//  267     EEFullWriteBlock(5401, bp, 0, BL_SZ_5401,0,0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+24
+        PUSH     {R0}
+        CFI CFA R13+28
+        MOV      R3,#+960
+        MOV      R2,R0
+        MOV      R1,R4
+        MOV      R0,R6
+        SWI      +135
+//  268      ShowMSG(1,(int)"块5401已创建.") ;
+        MOV      R1,R5
+        MOV      R0,#+1
+        SWI      +328
+        ADD      SP,SP,#+12
+        CFI CFA R13+16
+//  269   }
+//  270   if (ReadFile("0:\\misc\\5402.txt")==BL_SZ_5402){
+??CreateBlocksFromFiles_1:
+        ADD      R0,R5,#+52
+        _BLF     ReadFile,??ReadFile??rA
+        CMP      R0,#+1600
+        BNE      ??CreateBlocksFromFiles_2
+//  271     EEFullCreateBlock(5402,BL_SZ_5402,1,0,0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+20
+        MOV      R6,#+26
+        ORR      R6,R6,#0x1500
+        MOV      R3,#+0
+        MOV      R2,#+1
+        MOV      R1,#+1600
+        MOV      R0,R6
+        SWI      +570
+//  272     EEFullWriteBlock(5402, bp, 0, BL_SZ_5402,0,0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+24
+        PUSH     {R0}
+        CFI CFA R13+28
+        MOV      R3,#+1600
+        MOV      R2,R0
+        MOV      R1,R4
+        MOV      R0,R6
+        SWI      +135
+//  273      ShowMSG(1,(int)"块5402已创建.") ;
+        ADD      R1,R5,#+36
+        MOV      R0,#+1
+        SWI      +328
+        ADD      SP,SP,#+12
+        CFI CFA R13+16
+//  274   }
+//  275   if (ReadFile("0:\\misc\\5403.txt")==BL_SZ_5403){
+??CreateBlocksFromFiles_2:
+        ADD      R0,R5,#+88
+        _BLF     ReadFile,??ReadFile??rA
+        CMP      R0,#+80
+        POPNE    {R4-R6,PC}
+//  276     EEFullCreateBlock(5403,BL_SZ_5403,1,0,0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+20
+        MOV      R6,#+27
+        ORR      R6,R6,#0x1500
+        MOV      R3,#+0
+        MOV      R2,#+1
+        MOV      R1,#+80
+        MOV      R0,R6
+        SWI      +570
+//  277     EEFullWriteBlock(5403, bp, 0, BL_SZ_5403,0,0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+24
+        PUSH     {R0}
+        CFI CFA R13+28
+        MOV      R3,#+80
+        MOV      R2,R0
+        MOV      R1,R4
+        MOV      R0,R6
+        SWI      +135
+//  278      ShowMSG(1,(int)"块5403已创建.") ;
+        ADD      R1,R5,#+72
+        MOV      R0,#+1
+        SWI      +328
+        ADD      SP,SP,#+12
+        CFI CFA R13+16
+//  279   }
+//  280 
+//  281 };
+        POP      {R4-R6,PC}       ;; return
+        DATA
+??CreateBlocksFromFiles_0:
+        DC32     bp
+        DC32     `?<Constant "\\277\\3515401\\322\\321\\264\\264\\275\\2`
+        CFI EndBlock cfiBlock21
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock22 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??main??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock22
+        REQUIRE main
+//  282 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock23 Using cfiCommon1
+        CFI Function main
+        ARM
+//  283 int main()
+//  284 {
+main:
+        PUSH     {R4,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+//  285     int sz;
+//  286     char ver;
+//  287   patchversion=EEFullGetBlockInfo(5402,&sz,&ver);
+        LDR      R4,??DataTable8  ;; maincsm
+        SUB      SP,SP,#+52
+        CFI CFA R13+60
+        MOV      R2,SP
+        ADD      R1,SP,#+4
+        MOV      R0,#+26
+        ORR      R0,R0,#0x1500
+        SWI      +44
+        STR      R0,[R4, #+4]
+//  288   if (!patchversion&&ver==0){patchversion=1;// old beta testers
+        CMP      R0,#+0
+        BNE      ??main_0
+        LDRB     R0,[SP, #+0]
+        CMP      R0,#+0
+        BNE      ??main_1
+        MOV      R0,#+1
+        STR      R0,[R4, #+4]
+//  289     UpdateTesters();
+        BL       UpdateTesters
+//  290   }
+//  291   if (patchversion==2){//block not exist
+??main_0:
+        LDR      R0,[R4, #+4]
+        CMP      R0,#+2
+        BNE      ??main_2
+//  292     patchversion=EEFullGetBlockInfo(5400,&sz,&ver)+2;
+        MOV      R2,SP
+        ADD      R1,SP,#+4
+        MOV      R0,#+24
+        ORR      R0,R0,#0x1500
+        SWI      +44
+        ADD      R0,R0,#+2
+        STR      R0,[R4, #+4]
+//  293     if(patchversion==2)UpdateFromOld();else
+        CMP      R0,#+2
+        BNE      ??main_3
+        BL       UpdateFromOld
+        B        ??main_2
+//  294       CreateBlocksFromFiles();
+??main_3:
+        BL       CreateBlocksFromFiles
+//  295 
+//  296   }
+//  297   if (patchversion)return 4;
+??main_2:
+        LDR      R0,[R4, #+4]
+        CMP      R0,#+0
+        MOVNE    R0,#+4
+        BNE      ??main_4
+//  298     /*
+//  299       0-- good
+//  300       1-- // old beta testers
+//  301       2- block5400  present
+//  302       4- block5400 not present
+//  303   */
+//  304 
+//  305   ReadConfig();
+??main_1:
+        _BLF     InitConfig,??InitConfig??rA
+//  306 
+//  307   char dummy[sizeof(MAIN_CSM)];
+//  308   UpdateCSMname();
+        BL       UpdateCSMname
+//  309   LockSched();
+        SWI      +326
+//  310 
+//  311 
+//  312   maincsm=CreateCSM(&MAINCSM.maincsm,dummy,0);
+        LDR      R0,??main_5      ;; `?<Constant "MultiSim">` + 44
+        MOV      R2,#+0
+        ADD      R1,SP,#+8
+        SWI      +263
+        STR      R0,[R4, #+0]
+//  313 
+//  314   UnlockSched();
+        SWI      +327
+//  315 
+//  316   return 0;
+        MOV      R0,#+0
+??main_4:
+        ADD      SP,SP,#+52       ;; stack cleaning
+        CFI CFA R13+8
+        POP      {R4,PC}          ;; return
+        DATA
+??main_5:
+        DC32     `?<Constant "MultiSim">` + 44
+        CFI EndBlock cfiBlock23
+//  317 
+//  318 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable8:
+        DC32     maincsm
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock24 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??ShowMainMenu??rA:
+        LDR      R12,??Subroutine12_0  ;; ShowMainMenu
+        BX       R12
+        DATA
+??Subroutine12_0:
+        DC32     ShowMainMenu
+        CFI EndBlock cfiBlock24
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock25 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??kill_data??rA:
+        LDR      R12,??Subroutine13_0  ;; kill_data
+        BX       R12
+        DATA
+??Subroutine13_0:
+        DC32     kill_data
+        CFI EndBlock cfiBlock25
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock26 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??InitConfig??rA:
+        LDR      R12,??Subroutine14_0  ;; InitConfig
+        BX       R12
+        DATA
+??Subroutine14_0:
+        DC32     InitConfig
+        CFI EndBlock cfiBlock26
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock27 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??WriteFile??rA:
+        LDR      R12,??Subroutine15_0  ;; WriteFile
+        BX       R12
+        DATA
+??Subroutine15_0:
+        DC32     WriteFile
+        CFI EndBlock cfiBlock27
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock28 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??ReadFile??rA:
+        LDR      R12,??Subroutine16_0  ;; ReadFile
+        BX       R12
+        DATA
+??Subroutine16_0:
+        DC32     ReadFile
+        CFI EndBlock cfiBlock28
+
+        RSEG INITTAB:CODE:ROOT(2)
+        DATA
+?init?tab?DATA_Z:
+        DCD      sfe(DATA_Z) - sfb(DATA_Z), sfb(DATA_Z), sfb(DATA_Z)
+
+        END
+//  319 
+//  320 //---------------------------------------------------------------------------
+//  321 // Test menu
+//  322 //---------------------------------------------------------------------------
+//  323 
+// 
+// 2 340 bytes in segment CODE
+//   356 bytes in segment DATA_C
+// 1 276 bytes in segment DATA_Z
+//    12 bytes in segment INITTAB
+// 
+// 2 232 bytes of CODE  memory (+ 120 bytes shared)
+//   356 bytes of CONST memory
+// 1 276 bytes of DATA  memory
+//
+//Errors: none
+//Warnings: none

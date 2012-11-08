@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <fileChecksum>1913456347</fileChecksum>
+  <configuration>
+    <name>Debug</name>
+    <outputs>
+      <file>$PROJ_DIR$\..\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\..\..\inc\obs.h</file>
+      <file>$PROJ_DIR$\..\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\..\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\..\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\..\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\func.r79</file>
+      <file>$PROJ_DIR$\..\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\entry.asm</file>
+      <file>$PROJ_DIR$\..\func.asm</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.r79</file>
+      <file>$PROJ_DIR$\..\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\entry.r79</file>
+      <file>$PROJ_DIR$\..\..\inc\png.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\MyMenu2.pbd</file>
+      <file>$PROJ_DIR$\Debug\Exe\MyMenu2.d79</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 20</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\entry.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 17</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\func.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 9</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 15</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 3 18 16 0 11 10 4 6 2 8 7 1</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Obj\MyMenu2.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 5</file>
+        </tool>
+      </inputs>
+    </file>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>E71Csw41</name>
+    <outputs>
+      <file>$PROJ_DIR$\..\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\..\..\inc\obs.h</file>
+      <file>$PROJ_DIR$\..\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\..\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\..\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\E71Csw41\List\main.lst</file>
+      <file>$PROJ_DIR$\..\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\entry.asm</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\E71Csw41\Obj\entry.r79</file>
+      <file>$PROJ_DIR$\E71Csw41\Exe\MyMenu2.elf</file>
+      <file>$PROJ_DIR$\..\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\..\..\inc\png.h</file>
+      <file>$PROJ_DIR$\E71Csw41.xcl</file>
+      <file>$PROJ_DIR$\E71Csw41\Exe\MyMenu2.a79</file>
+      <file>$PROJ_DIR$\E71Csw41\List\MyMenu2.map</file>
+      <file>$PROJ_DIR$\E71Csw41\Obj\MyMenu2.pbd</file>
+      <file>$PROJ_DIR$\E71Csw41\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\E71Csw41\Obj\main.r79</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 18 19 14</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\entry.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 13</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 22 8</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 21</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 3 16 15 0 10 9 4 5 2 7 6 1</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 3 16 15 0 10 9 4 5 2 7 6 1</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\E71Csw41\Exe\MyMenu2.a79</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 19 14</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 17 13 22</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\E71Csw41\Obj\MyMenu2.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 21</file>
+        </tool>
+      </inputs>
+    </file>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>Release</name>
+    <outputs>
+      <file>$PROJ_DIR$\..\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\..\..\inc\obs.h</file>
+      <file>$PROJ_DIR$\..\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\..\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\Output\MyMenu2_E71Cv41.elf</file>
+      <file>$PROJ_DIR$\..\test.xcl</file>
+      <file>$PROJ_DIR$\Release\Exe\MyMenu2_E71Cv41.elf</file>
+      <file>$PROJ_DIR$\Release\Obj\func.r79</file>
+      <file>$PROJ_DIR$\Release\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Release\Obj\MyMenu2.pbd</file>
+      <file>$PROJ_DIR$\..\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\..\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\Release\List\main.lst</file>
+      <file>$PROJ_DIR$\..\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\..\func.asm</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\Release\List\MyMenu2_E71Cv41.map</file>
+      <file>$PROJ_DIR$\..\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\..\..\inc\png.h</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\Output\MyMenu2_E71Cv41.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 20</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 8 10 11</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release\Exe\MyMenu2_E71Cv41.elf</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 8 10 11</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release\Obj\MyMenu2.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 12</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 7 20</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\func.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 10</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 11 16</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 12</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 3 22 21 0 17 15 4 5 2 14 6 1</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 3 22 21 0 17 15 4 5 2 14 6 1</file>
+        </tool>
+      </inputs>
+    </file>
+    <forcedrebuild>
+      <name>[REBUILD_ALL]</name>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>Release_NEWSGOLD</name>
+    <outputs>
+      <file>$PROJ_DIR$\..\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\..\..\inc\obs.h</file>
+      <file>$PROJ_DIR$\..\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\Output\MyMenu2_S7Cv47.elf</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Exe\MyMenu2_S7Cv47.elf</file>
+      <file>$PROJ_DIR$\..\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\..\test.xcl</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\List\main.lst</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\MyMenu2.pbd</file>
+      <file>$PROJ_DIR$\..\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Output\MyMenu2_S68Cv51.elf</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\Obj\func.r79</file>
+      <file>$PROJ_DIR$\..\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\..\func.asm</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\..\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\..\..\inc\png.h</file>
+      <file>$PROJ_DIR$\Release_NEWSGOLD\List\MyMenu2_S7Cv47.map</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\Output\MyMenu2_S7Cv47.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 23</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 10 16 4</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_NEWSGOLD\Exe\MyMenu2_S7Cv47.elf</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 10 16 4</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_NEWSGOLD\Obj\MyMenu2.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 14</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Output\MyMenu2_S68Cv51.elf</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 10 16 4</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 3 23</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\func.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 16</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 11</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 14</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 6 22 21 0 18 17 7 8 2 13 9 1</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 6 22 21 0 18 17 7 8 2 13 9 1</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>Release_SGOLD</name>
+    <outputs>
+      <file>$PROJ_DIR$\..\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\..\..\inc\obs.h</file>
+      <file>$PROJ_DIR$\..\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\List\main.lst</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\MyMenu2.pbd</file>
+      <file>$PROJ_DIR$\..\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\..\test.xcl</file>
+      <file>$PROJ_DIR$\Output\MyMenu2_SGold.elf</file>
+      <file>$PROJ_DIR$\..\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\List\MyMenu2_SGold.map</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Exe\MyMenu2_0x45.elf</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\..\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\func.r79</file>
+      <file>$PROJ_DIR$\..\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\..\func.asm</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\..\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\..\..\inc\png.h</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\Release_SGOLD\Obj\MyMenu2.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 14</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Output\MyMenu2_SGold.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 12</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 9 17 16</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_SGOLD\Exe\MyMenu2_0x45.elf</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 9 17 16</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 10 12</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\func.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 17</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 16 3</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 14</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 5 22 21 0 18 15 6 7 2 11 8 1</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5 22 21 0 18 15 6 7 2 11 8 1</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>S7Csw47</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+</project>
+
+

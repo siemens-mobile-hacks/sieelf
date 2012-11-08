@@ -1,0 +1,1705 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <configuration>
+    <name>NewSGold</name>
+    <outputs>
+      <file>$PROJ_DIR$\api\high_api.c</file>
+      <file>$PROJ_DIR$\api\irq_handler.asm</file>
+      <file>$PROJ_DIR$\api\low_api.c</file>
+      <file>$PROJ_DIR$\api\low_api_add.asm</file>
+      <file>$PROJ_DIR$\flash\bcclear.c</file>
+      <file>$PROJ_DIR$\flash\cfi_flash.c</file>
+      <file>$PROJ_DIR$\flash\uni_patch.c</file>
+      <file>$PROJ_DIR$\flash\v_patch.c</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\ELF\dp_nsg.elf</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\uni.pbi</file>
+      <file>$PROJ_DIR$\Other\NewSGold\List\virtual.lst</file>
+      <file>$TOOLKIT_DIR$\inc\stdio.h</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\fileman.pbi</file>
+      <file>$PROJ_DIR$\Other\NewSGold\List\vkp_parser.lst</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\irq_handler.r79</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\uni.r79</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\fprintf.pbi</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\fwork.pbi</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\high_api.r79</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Threads.h</file>
+      <file>$PROJ_DIR$\Other\NewSGold\List\fileman.lst</file>
+      <file>$TOOLKIT_DIR$\inc\stdlib.h</file>
+      <file>$PROJ_DIR$\Other\NewSGold\List\fwork.lst</file>
+      <file>$PROJ_DIR$\Other\NewSGold\List\fprintf.lst</file>
+      <file>$TOOLKIT_DIR$\inc\yvals.h</file>
+      <file>$PROJ_DIR$\gui\fileman.h</file>
+      <file>$PROJ_DIR$\Other\NewSGold\List\main.lst</file>
+      <file>$PROJ_DIR$\Other\NewSGold\List\v_patch.lst</file>
+      <file>$TOOLKIT_DIR$\inc\xencoding_limits.h</file>
+      <file>$PROJ_DIR$\flash\patch.h</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\v_patch.r79</file>
+      <file>$PROJ_DIR$\Other\NewSGold\List\menu.lst</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\uni_patch.r79</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\cfi_flash.r79</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Product.h</file>
+      <file>$PROJ_DIR$\Other\NewSGold\List\uni.lst</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Defaults.h</file>
+      <file>$PROJ_DIR$\Other\NewSGold\List\lprintf.lst</file>
+      <file>$PROJ_DIR$\Other\NewSGold\List\log.lst</file>
+      <file>$PROJ_DIR$\Other\NewSGold\List\uni_patch.lst</file>
+      <file>$PROJ_DIR$\gui\siemens_unicode.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.h</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\menu.pbi</file>
+      <file>$PROJ_DIR$\gui\uni.h</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\lprintf.pbi</file>
+      <file>$PROJ_DIR$\gui\rect_patcher.h</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\api\high_api.h</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\vkp_parser.pbi</file>
+      <file>$PROJ_DIR$\Other\NewSGold\List\low_api.lst</file>
+      <file>$PROJ_DIR$\Other\NewSGold\List\cfi_flash.lst</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\parser\vkp_parser.h</file>
+      <file>$PROJ_DIR$\gui\menu.h</file>
+      <file>$PROJ_DIR$\main.h</file>
+      <file>$PROJ_DIR$\Other\NewSGold\List\high_api.lst</file>
+      <file>$TOOLKIT_DIR$\inc\stdarg.h</file>
+      <file>$PROJ_DIR$\..\inc\obs.h</file>
+      <file>$PROJ_DIR$\Other\NewSGold\List\bcclear.lst</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\lprintf.r79</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\menu.r79</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\high_api.pbi</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\vkp_parser.r79</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\virtual.r79</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\virtual.pbi</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\main.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\string.h</file>
+      <file>$TOOLKIT_DIR$\inc\ysizet.h</file>
+      <file>$PROJ_DIR$\info.h</file>
+      <file>$PROJ_DIR$\Other\NewSGold\List\rect_patcher.lst</file>
+      <file>$PROJ_DIR$\test.xcl</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\rect_patcher.r79</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\rect_patcher.pbi</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\fprintf.r79</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\fwork.r79</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\fileman.r79</file>
+      <file>$PROJ_DIR$\gui\lprintf.h</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\bcclear.r79</file>
+      <file>$PROJ_DIR$\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\low_api.pbi</file>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\bcclear.pbi</file>
+      <file>$PROJ_DIR$\Other\NewSGold\List\dp_nsg.map</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\low_api_add.r79</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\cfi_flash.pbi</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\uni_patch.pbi</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\v_patch.pbi</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\dp.pbd</file>
+      <file>$PROJ_DIR$\fwork\fprintf.c</file>
+      <file>$PROJ_DIR$\fwork\fwork.c</file>
+      <file>$PROJ_DIR$\gui\fileman.c</file>
+      <file>$PROJ_DIR$\gui\log.c</file>
+      <file>$PROJ_DIR$\gui\lprintf.c</file>
+      <file>$PROJ_DIR$\gui\menu.c</file>
+      <file>$PROJ_DIR$\gui\rect_patcher.c</file>
+      <file>$PROJ_DIR$\gui\uni.c</file>
+      <file>$PROJ_DIR$\parser\vkp_parser.c</file>
+      <file>$PROJ_DIR$\virtual\virtual.c</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\flash\cfi_flash.h</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\log.r79</file>
+      <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\api\low_api.h</file>
+      <file>$PROJ_DIR$\fwork\fwork.h</file>
+      <file>$PROJ_DIR$\gui\log.h</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\log.pbi</file>
+      <file>$PROJ_DIR$\virtual\virtual.h</file>
+      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\low_api.r79</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\api\high_api.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 22 60</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 66</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 113 86 56 8 10 9 50 55 107 114 84 62 51 108 110 105 33 112 109 57</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 113 86 56 8 10 9 50 55 107 114 84 62 51 108 110 105 33 112 109 57</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\api\irq_handler.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 17</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\api\low_api.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 115 53</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 85</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 108 105</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 108 105</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\api\low_api_add.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 89</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\flash\bcclear.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 83 63</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 87</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 105 33</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 105 33</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\flash\cfi_flash.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 37 54</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 90</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 105</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 105</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\flash\uni_patch.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 36 43</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 91</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 105 108 33 71 28 40 45 38 32 23 72</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 105 108 33 71 28 40 38 32 23 72</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\flash\v_patch.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 34 31</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 92</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 105 108 33 71 28 40 45 38 32 23 72</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 105 108 33 71 28 40 38 32 23 72</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 11 88</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ELF\dp_nsg.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 88</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 75 83 37 81 79 80 22 17 106 115 89 64 20 65 77 18 36 34 68 67 76</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Other\NewSGold\Obj\dp.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 87 90 15 19 21 66 111 85 48 70 46 78 12 91 92 69 52</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\fwork\fprintf.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 79 27</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 19</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 14 28 40 45 38 32 23 72 25 71 61 109</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 14 28 40 38 32 23 72 25 71 61 109</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\fwork\fwork.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 80 26</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 21</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 113 86 56 8 10 9 50 55 107 114 84 62 109</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 113 86 56 8 10 9 50 55 107 114 84 62 109</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\gui\fileman.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 81 24</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 15</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 113 86 56 8 10 9 50 55 107 114 84 62 73 58 110 29 49 51</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 113 86 56 8 10 9 50 55 107 114 84 62 73 58 110 29 49 51</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\gui\log.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 106 42</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 111</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 113 86 56 8 10 9 50 55 107 114 84 62 73 58 110 29 49 44 47 61 28 40 45 38 32 23</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 113 86 56 8 10 9 50 55 107 114 84 62 73 58 110 29 49 44 47 61 28 40 38 32 23</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\gui\lprintf.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 64 41</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 48</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 14 28 40 45 38 32 23 72 25 71 61 82</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 14 28 40 38 32 23 72 25 71 61 82</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\gui\menu.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 65 35</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 46</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 113 86 56 8 10 9 50 55 107 114 84 62 73 58 110 29 49 51</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 113 86 56 8 10 9 50 55 107 114 84 62 73 58 110 29 49 51</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\gui\rect_patcher.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 77 74</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 78</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 113 86 56 8 10 9 50 55 107 114 84 62</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 113 86 56 8 10 9 50 55 107 114 84 62</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\gui\uni.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 18 39</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 12</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 47</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 47</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\parser\vkp_parser.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 67 16</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 52</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 71 28 40 45 38 32 23 72 61 14 57</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 71 28 40 38 32 23 72 61 14 57</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\virtual\virtual.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 68 13</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 69</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 71 28 40 45 38 32 23 72 61 14 108 112</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 71 28 40 38 32 23 72 61 14 108 112</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 20 30</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 70</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 113 86 56 8 10 9 50 55 107 114 84 62 59 73 58 110 29 51</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 113 86 56 8 10 9 50 55 107 114 84 62 59 73 58 110 29 51</file>
+        </tool>
+      </inputs>
+    </file>
+    <forcedrebuild>
+      <name>[REBUILD_ALL]</name>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>NewSGold E/EL71</name>
+    <outputs>
+      <file>$PROJ_DIR$\api\high_api.c</file>
+      <file>$PROJ_DIR$\api\irq_handler.asm</file>
+      <file>$PROJ_DIR$\api\low_api.c</file>
+      <file>$PROJ_DIR$\api\low_api_add.asm</file>
+      <file>$PROJ_DIR$\flash\bcclear.c</file>
+      <file>$PROJ_DIR$\flash\cfi_flash.c</file>
+      <file>$PROJ_DIR$\flash\uni_patch.c</file>
+      <file>$PROJ_DIR$\flash\v_patch.c</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\cfi_flash.r79</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\uni_patch.r79</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\v_patch.r79</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\lprintf.r79</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\List\vkp_parser.lst</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\low_api_add.r79</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\fwork.r79</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\bcclear.r79</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\high_api.r79</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\rect_patcher.r79</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\low_api.r79</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\virtual.pbi</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\List\main.lst</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\List\menu.lst</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\uni.pbi</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\dp.pbd</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\rect_patcher.pbi</file>
+      <file>$PROJ_DIR$\ELF\dp_el.elf</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\lprintf.pbi</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\menu.pbi</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\List\fwork.lst</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\List\cfi_flash.lst</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\List\bcclear.lst</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\List\high_api.lst</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\List\log.lst</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\List\low_api.lst</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\List\lprintf.lst</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\fileman.r79</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\fprintf.r79</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\vkp_parser.pbi</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\List\v_patch.lst</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\List\virtual.lst</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\List\dp_el.map</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\List\fprintf.lst</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\high_api.pbi</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\log.r79</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\low_api.pbi</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\bcclear.pbi</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\cfi_flash.pbi</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\uni_patch.pbi</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\v_patch.pbi</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\fprintf.pbi</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\fwork.pbi</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\fileman.pbi</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\log.pbi</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\List\fileman.lst</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\List\uni.lst</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\List\uni_patch.lst</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\menu.r79</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\uni.r79</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\vkp_parser.r79</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\virtual.r79</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$TOOLKIT_DIR$\inc\stdio.h</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Threads.h</file>
+      <file>$TOOLKIT_DIR$\inc\stdlib.h</file>
+      <file>$TOOLKIT_DIR$\inc\yvals.h</file>
+      <file>$PROJ_DIR$\gui\fileman.h</file>
+      <file>$TOOLKIT_DIR$\inc\xencoding_limits.h</file>
+      <file>$PROJ_DIR$\flash\patch.h</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Product.h</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Defaults.h</file>
+      <file>$PROJ_DIR$\gui\siemens_unicode.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.h</file>
+      <file>$PROJ_DIR$\gui\uni.h</file>
+      <file>$PROJ_DIR$\gui\rect_patcher.h</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\api\high_api.h</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\parser\vkp_parser.h</file>
+      <file>$PROJ_DIR$\gui\menu.h</file>
+      <file>$PROJ_DIR$\main.h</file>
+      <file>$TOOLKIT_DIR$\inc\stdarg.h</file>
+      <file>$PROJ_DIR$\..\inc\obs.h</file>
+      <file>$TOOLKIT_DIR$\inc\string.h</file>
+      <file>$TOOLKIT_DIR$\inc\ysizet.h</file>
+      <file>$PROJ_DIR$\info.h</file>
+      <file>$PROJ_DIR$\test.xcl</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
+      <file>$PROJ_DIR$\gui\lprintf.h</file>
+      <file>$PROJ_DIR$\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\List\rect_patcher.lst</file>
+      <file>$PROJ_DIR$\Other\ENewSGold\Obj\irq_handler.r79</file>
+      <file>$PROJ_DIR$\fwork\fprintf.c</file>
+      <file>$PROJ_DIR$\fwork\fwork.c</file>
+      <file>$PROJ_DIR$\gui\fileman.c</file>
+      <file>$PROJ_DIR$\gui\log.c</file>
+      <file>$PROJ_DIR$\gui\lprintf.c</file>
+      <file>$PROJ_DIR$\gui\menu.c</file>
+      <file>$PROJ_DIR$\gui\rect_patcher.c</file>
+      <file>$PROJ_DIR$\gui\uni.c</file>
+      <file>$PROJ_DIR$\parser\vkp_parser.c</file>
+      <file>$PROJ_DIR$\virtual\virtual.c</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\flash\cfi_flash.h</file>
+      <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\api\low_api.h</file>
+      <file>$PROJ_DIR$\fwork\fwork.h</file>
+      <file>$PROJ_DIR$\gui\log.h</file>
+      <file>$PROJ_DIR$\virtual\virtual.h</file>
+      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\inc\md5.h</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\api\high_api.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 17 32</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 44</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 114 94 81 62 64 63 78 80 109 115 93 86 79 110 112 108 71 113 111 82</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 114 94 81 62 64 63 78 80 109 115 93 86 79 110 112 108 71 113 111 82</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\api\irq_handler.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 96</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\api\low_api.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 19 34</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 46</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 110 108</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 110 108</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\api\low_api_add.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 14</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\flash\bcclear.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 16 31</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 47</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 108 71</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 108 71</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\flash\cfi_flash.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 8 30</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 48</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 108</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 108</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\flash\uni_patch.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 9 57</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 49</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 108 110 71 87 68 73 75 72 70 66 88</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 108 110 71 87 68 73 72 70 66 88</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\flash\v_patch.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 10 39</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 50</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 108 110 71 87 68 73 75 72 70 66 88</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 108 110 71 87 68 73 72 70 66 88</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 26 41</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Other\ENewSGold\Obj\dp.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 47 48 53 51 52 44 54 46 27 42 28 25 23 49 50 20 38</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ELF\dp_el.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 41</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 90 16 8 36 37 15 17 96 45 19 14 11 12 58 18 59 9 10 61 60 91</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\fwork\fprintf.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 37 43</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 51</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 65 68 73 75 72 70 66 88 67 87 85 111</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 65 68 73 72 70 66 88 67 87 85 111</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\fwork\fwork.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 15 29</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 52</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 114 94 81 62 64 63 78 80 109 115 93 86 111</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 114 94 81 62 64 63 78 80 109 115 93 86 111</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\gui\fileman.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 36 55</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 53</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 114 94 81 62 64 63 78 80 109 115 93 86 89 83 112 69 77 79</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 114 94 81 62 64 63 78 80 109 115 93 86 89 83 112 69 77 79</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\gui\log.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 45 33</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 54</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 114 94 81 62 64 63 78 80 109 115 93 86 89 83 112 69 77 74 76 85 68 73 75 72 70 66</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 114 94 81 62 64 63 78 80 109 115 93 86 89 83 112 69 77 74 76 85 68 73 72 70 66</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\gui\lprintf.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 11 35</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 27</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 65 68 73 75 72 70 66 88 67 87 85 92</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 65 68 73 72 70 66 88 67 87 85 92</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\gui\menu.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 58 22</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 28</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 114 94 81 62 64 63 78 80 109 115 93 86 89 83 112 69 77 79</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 114 94 81 62 64 63 78 80 109 115 93 86 89 83 112 69 77 79</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\gui\rect_patcher.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 18 95</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 25</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 114 94 81 62 64 63 78 80 109 115 93 86</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 114 94 81 62 64 63 78 80 109 115 93 86</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\gui\uni.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 59 56</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 23</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 76</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 76</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\parser\vkp_parser.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 60 13</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 38</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 87 68 73 75 72 70 66 88 85 65 82</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 87 68 73 72 70 66 88 85 65 82</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\virtual\virtual.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 61 40</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 20</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 87 68 73 75 72 70 66 88 85 65 110 113</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 87 68 73 72 70 66 88 85 65 110 113</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 12 21</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 42</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 114 94 81 62 64 63 78 80 109 115 93 86 84 89 83 112 69 79</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 114 94 81 62 64 63 78 80 109 115 93 86 84 89 83 112 69 79</file>
+        </tool>
+      </inputs>
+    </file>
+    <forcedrebuild>
+      <name>[REBUILD_ALL]</name>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>SGold</name>
+    <outputs>
+      <file>$PROJ_DIR$\api\high_api.c</file>
+      <file>$PROJ_DIR$\api\irq_handler.asm</file>
+      <file>$PROJ_DIR$\api\low_api.c</file>
+      <file>$PROJ_DIR$\api\low_api_add.asm</file>
+      <file>$PROJ_DIR$\flash\bcclear.c</file>
+      <file>$PROJ_DIR$\flash\cfi_flash.c</file>
+      <file>$PROJ_DIR$\flash\uni_patch.c</file>
+      <file>$PROJ_DIR$\flash\v_patch.c</file>
+      <file>$PROJ_DIR$\ELF\dp_sg.elf</file>
+      <file>$PROJ_DIR$\Other\SGold\List\main.lst</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\fwork.r79</file>
+      <file>$PROJ_DIR$\Other\SGold\List\dp_sg.map</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\log.pbi</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\cfi_flash.r79</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\lprintf.pbi</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\log.r79</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\lprintf.r79</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\fprintf.pbi</file>
+      <file>$PROJ_DIR$\Other\SGold\List\fileman.lst</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\uni_patch.pbi</file>
+      <file>$PROJ_DIR$\Other\SGold\List\virtual.lst</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\fwork.pbi</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$TOOLKIT_DIR$\inc\stdio.h</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Threads.h</file>
+      <file>$TOOLKIT_DIR$\inc\stdlib.h</file>
+      <file>$TOOLKIT_DIR$\inc\yvals.h</file>
+      <file>$PROJ_DIR$\gui\fileman.h</file>
+      <file>$TOOLKIT_DIR$\inc\xencoding_limits.h</file>
+      <file>$PROJ_DIR$\flash\patch.h</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Product.h</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Defaults.h</file>
+      <file>$PROJ_DIR$\gui\siemens_unicode.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.h</file>
+      <file>$PROJ_DIR$\gui\uni.h</file>
+      <file>$PROJ_DIR$\gui\rect_patcher.h</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\api\high_api.h</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\parser\vkp_parser.h</file>
+      <file>$PROJ_DIR$\gui\menu.h</file>
+      <file>$PROJ_DIR$\main.h</file>
+      <file>$TOOLKIT_DIR$\inc\stdarg.h</file>
+      <file>$PROJ_DIR$\..\inc\obs.h</file>
+      <file>$TOOLKIT_DIR$\inc\string.h</file>
+      <file>$TOOLKIT_DIR$\inc\ysizet.h</file>
+      <file>$PROJ_DIR$\info.h</file>
+      <file>$PROJ_DIR$\test.xcl</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
+      <file>$PROJ_DIR$\gui\lprintf.h</file>
+      <file>$PROJ_DIR$\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\uni.pbi</file>
+      <file>$PROJ_DIR$\Other\SGold\List\fwork.lst</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\menu.pbi</file>
+      <file>$PROJ_DIR$\Other\SGold\List\uni.lst</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\dp.pbd</file>
+      <file>$PROJ_DIR$\Other\SGold\List\menu.lst</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\uni.r79</file>
+      <file>$PROJ_DIR$\Other\SGold\List\rect_patcher.lst</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\low_api.pbi</file>
+      <file>$PROJ_DIR$\Other\SGold\List\low_api.lst</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\v_patch.pbi</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\v_patch.r79</file>
+      <file>$PROJ_DIR$\Other\SGold\List\lprintf.lst</file>
+      <file>$PROJ_DIR$\Other\SGold\List\uni_patch.lst</file>
+      <file>$PROJ_DIR$\Other\SGold\List\vkp_parser.lst</file>
+      <file>$PROJ_DIR$\Other\SGold\List\log.lst</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\virtual.r79</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\menu.r79</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\virtual.pbi</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\bcclear.pbi</file>
+      <file>$PROJ_DIR$\Other\SGold\List\bcclear.lst</file>
+      <file>$PROJ_DIR$\Other\SGold\List\fprintf.lst</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\bcclear.r79</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\uni_patch.r79</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\vkp_parser.r79</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\vkp_parser.pbi</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\fileman.r79</file>
+      <file>$PROJ_DIR$\Other\SGold\List\high_api.lst</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\low_api_add.r79</file>
+      <file>$PROJ_DIR$\Other\SGold\List\cfi_flash.lst</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\high_api.r79</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\low_api.r79</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\fileman.pbi</file>
+      <file>$PROJ_DIR$\Other\SGold\List\v_patch.lst</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\fprintf.r79</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\rect_patcher.r79</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\rect_patcher.pbi</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\irq_handler.r79</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\high_api.pbi</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\cfi_flash.pbi</file>
+      <file>$PROJ_DIR$\fwork\fprintf.c</file>
+      <file>$PROJ_DIR$\fwork\fwork.c</file>
+      <file>$PROJ_DIR$\gui\fileman.c</file>
+      <file>$PROJ_DIR$\gui\log.c</file>
+      <file>$PROJ_DIR$\gui\lprintf.c</file>
+      <file>$PROJ_DIR$\gui\menu.c</file>
+      <file>$PROJ_DIR$\gui\rect_patcher.c</file>
+      <file>$PROJ_DIR$\gui\uni.c</file>
+      <file>$PROJ_DIR$\parser\vkp_parser.c</file>
+      <file>$PROJ_DIR$\virtual\virtual.c</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\flash\cfi_flash.h</file>
+      <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\api\low_api.h</file>
+      <file>$PROJ_DIR$\fwork\fwork.h</file>
+      <file>$PROJ_DIR$\gui\log.h</file>
+      <file>$PROJ_DIR$\virtual\virtual.h</file>
+      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\inc\md5.h</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\api\high_api.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 87 84</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 95</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 114 54 41 22 24 23 38 40 109 115 53 46 39 110 112 108 31 113 111 42</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 114 54 41 22 24 23 38 40 109 115 53 46 39 110 112 108 31 113 111 42</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\api\irq_handler.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 94</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\api\low_api.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 88 66</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 65</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 110 108</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 110 108</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\api\low_api_add.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 85</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\flash\bcclear.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 79 77</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 76</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 108 31</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 108 31</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\flash\cfi_flash.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 13 86</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 96</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 108</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 108</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\flash\uni_patch.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 80 70</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 19</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 108 110 31 47 28 33 35 32 30 26 48</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 108 110 31 47 28 33 32 30 26 48</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\flash\v_patch.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 68 90</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 67</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 108 110 31 47 28 33 35 32 30 26 48</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 108 110 31 47 28 33 32 30 26 48</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 8 11</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ELF\dp_sg.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 11</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 50 79 13 83 91 10 87 94 15 88 85 16 57 74 92 63 80 68 73 81 51</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Other\SGold\Obj\dp.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 76 96 89 17 21 95 12 65 14 60 58 93 55 19 67 75 82</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\fwork\fprintf.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 91 78</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 17</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 25 28 33 35 32 30 26 48 27 47 45 111</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 25 28 33 32 30 26 48 27 47 45 111</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\fwork\fwork.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 10 56</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 21</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 114 54 41 22 24 23 38 40 109 115 53 46 111</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 114 54 41 22 24 23 38 40 109 115 53 46 111</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\gui\fileman.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 83 18</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 89</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 114 54 41 22 24 23 38 40 109 115 53 46 49 43 112 29 37 39</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 114 54 41 22 24 23 38 40 109 115 53 46 49 43 112 29 37 39</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\gui\log.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 15 72</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 12</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 114 54 41 22 24 23 38 40 109 115 53 46 49 43 112 29 37 34 36 45 28 33 35 32 30 26</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 114 54 41 22 24 23 38 40 109 115 53 46 49 43 112 29 37 34 36 45 28 33 32 30 26</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\gui\lprintf.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 16 69</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 14</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 25 28 33 35 32 30 26 48 27 47 45 52</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 25 28 33 32 30 26 48 27 47 45 52</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\gui\menu.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 74 62</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 58</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 114 54 41 22 24 23 38 40 109 115 53 46 49 43 112 29 37 39</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 114 54 41 22 24 23 38 40 109 115 53 46 49 43 112 29 37 39</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\gui\rect_patcher.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 92 64</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 93</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 114 54 41 22 24 23 38 40 109 115 53 46</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 114 54 41 22 24 23 38 40 109 115 53 46</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\gui\uni.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 63 59</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 55</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 36</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 36</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\parser\vkp_parser.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 81 71</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 82</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 47 28 33 35 32 30 26 48 45 25 42</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 47 28 33 32 30 26 48 45 25 42</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\virtual\virtual.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 73 20</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 75</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 47 28 33 35 32 30 26 48 45 25 110 113</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 47 28 33 32 30 26 48 45 25 110 113</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 57 9</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 60</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 114 54 41 22 24 23 38 40 109 115 53 46 44 49 43 112 29 39</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 114 54 41 22 24 23 38 40 109 115 53 46 44 49 43 112 29 39</file>
+        </tool>
+      </inputs>
+    </file>
+    <forcedrebuild>
+      <name>[REBUILD_ALL]</name>
+    </forcedrebuild>
+  </configuration>
+</project>
+
+

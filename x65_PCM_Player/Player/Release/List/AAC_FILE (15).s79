@@ -1,0 +1,910 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:17 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD /
+//                       EC\AAC_FILE (15).c                                  /
+//    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AAC /
+//                       DEC\AAC_FILE (15).c" -D NDEBUG -lC                  /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\AAC_FILE (15).s79                              /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME `AAC_FILE (15)`
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+??DataTable0 EQU 0
+??DataTable1 EQU 0
+??DataTable2 EQU 0
+??DataTable3 EQU 0
+??DataTable4 EQU 0
+??DataTable6 EQU 0
+        MULTWEAK ??raac_DCT4??rT
+        MULTWEAK ??raac_R4FFT??rA
+        FUNCTION PostMultiply,0203H
+        LOCFRAME CSTACK, 40, STACK
+        FUNCTION PostMultiplyRescale,0203H
+        LOCFRAME CSTACK, 44, STACK
+        FUNCTION PreMultiply,0203H
+        LOCFRAME CSTACK, 40, STACK
+        FUNCTION PreMultiplyRescale,0203H
+        LOCFRAME CSTACK, 40, STACK
+        PUBLIC raac_DCT4
+        FUNCTION raac_DCT4,0203H
+        LOCFRAME CSTACK, 16, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+raac_R4FFT          SYMBOL "raac_R4FFT"
+raac_DCT4           SYMBOL "raac_DCT4"
+??raac_DCT4??rT     SYMBOL "??rT", raac_DCT4
+??raac_R4FFT??rA    SYMBOL "??rA", raac_R4FFT
+
+        EXTERN raac_R4FFT
+        FUNCTION raac_R4FFT,0202H
+        EXTERN raac_cos1sin1tab
+        EXTERN raac_cos4sin4tab
+        EXTERN raac_cos4sin4tabOffset
+
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (15).c
+//    1 /* ***** BEGIN LICENSE BLOCK *****  
+//    2  * Source last modified: $Id: dct4.c,v 1.1 2005/02/26 01:47:34 jrecker Exp $ 
+//    3  *   
+//    4  * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+//    5  *       
+//    6  * The contents of this file, and the files included with this file, 
+//    7  * are subject to the current version of the RealNetworks Public 
+//    8  * Source License (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the current version of the RealNetworks Community 
+//   11  * Source License (the "RCSL") available at 
+//   12  * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+//   13  * will apply. You may also obtain the license terms directly from 
+//   14  * RealNetworks.  You may not use this file except in compliance with 
+//   15  * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+//   16  * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+//   17  * the rights, obligations and limitations governing use of the 
+//   18  * contents of the file. 
+//   19  *   
+//   20  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   21  * developer of the Original Code and owns the copyrights in the 
+//   22  * portions it created. 
+//   23  *   
+//   24  * This file, and the files included with this file, is distributed 
+//   25  * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+//   26  * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+//   27  * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+//   28  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+//   29  * ENJOYMENT OR NON-INFRINGEMENT. 
+//   30  *  
+//   31  * Technology Compatibility Kit Test Suite(s) Location:  
+//   32  *    http://www.helixcommunity.org/content/tck  
+//   33  *  
+//   34  * Contributor(s):  
+//   35  *   
+//   36  * ***** END LICENSE BLOCK ***** */  
+//   37 
+//   38 /**************************************************************************************
+//   39  * Fixed-point HE-AAC decoder
+//   40  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+//   41  * February 2005
+//   42  *
+//   43  * dct4.c - optimized DCT-IV
+//   44  **************************************************************************************/
+//   45 
+//   46 #include "coder_aac.h"
+//   47 #include "assembly_aac.h"
+//   48 
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//   49 static const int nmdctTab[NUM_IMDCT_SIZES] = {128, 1024};
+nmdctTab:
+        DATA
+        DC32 128, 1024
+        DC32 15, 1
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??PreMultiply??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE PreMultiply
+//   50 static const int postSkip[NUM_IMDCT_SIZES] = {15, 1};
+//   51 
+//   52 /**************************************************************************************
+//   53  * Function:    PreMultiply
+//   54  *
+//   55  * Description: pre-twiddle stage of DCT4
+//   56  *
+//   57  * Inputs:      table index (for transform size)
+//   58  *              buffer of nmdct samples
+//   59  *
+//   60  * Outputs:     processed samples in same buffer
+//   61  *
+//   62  * Return:      none
+//   63  *
+//   64  * Notes:       minimum 1 GB in, 2 GB out, gains 5 (short) or 8 (long) frac bits
+//   65  *              i.e. gains 2-7= -5 int bits (short) or 2-10 = -8 int bits (long)
+//   66  *              normalization by -1/N is rolled into tables here (see trigtabs.c)
+//   67  *              uses 3-mul, 3-add butterflies instead of 4-mul, 2-add
+//   68  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function PreMultiply
+        ARM
+//   69 static void PreMultiply(int tabidx, int *zbuf1)
+//   70 {
+PreMultiply:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+//   71 	int i, nmdct, ar1, ai1, ar2, ai2, z1, z2;
+//   72 	int t, cms2, cps2a, sin2a, cps2b, sin2b;
+//   73 	int *zbuf2;
+//   74 	const int *csptr;
+//   75 
+//   76 	nmdct = nmdctTab[tabidx];		
+//   77 	zbuf2 = zbuf1 + nmdct - 1;
+//   78 	csptr = cos4sin4tab + cos4sin4tabOffset[tabidx];
+        LDR      R4,??DataTable5  ;; raac_cos4sin4tabOffset
+        MOV      R2,R0
+        LDR      R0,??DataTable8  ;; nmdctTab
+        SUB      SP,SP,#+4
+        CFI CFA R13+40
+        LDR      R3,[R0, +R2, LSL #+2]
+        LDR      R2,[R4, +R2, LSL #+2]
+        LDR      R4,??DataTable7  ;; raac_cos4sin4tab
+        ADD      R0,R1,R3, LSL #+2
+        SUB      R0,R0,#+4
+        ADD      R2,R4,R2, LSL #+2
+//   79 
+//   80 	/* whole thing should fit in registers - verify that compiler does this */
+//   81 	for (i = nmdct >> 2; i != 0; i--) {
+        ASRS     R3,R3,#+2
+        POPEQ    {R0,R4-R11,PC}
+//   82 		/* cps2 = (cos+sin), sin2 = sin, cms2 = (cos-sin) */
+//   83 		cps2a = *csptr++;
+??PreMultiply_0:
+        LDR      R6,[R2], #+4
+//   84 		sin2a = *csptr++;
+        LDR      R10,[R2], #+4
+//   85 		cps2b = *csptr++;
+//   86 		sin2b = *csptr++;
+//   87 
+//   88 		ar1 = *(zbuf1 + 0);
+        LDR      R8,[R1], #+4
+//   89 		ai2 = *(zbuf1 + 1);
+//   90 		ai1 = *(zbuf2 + 0);
+        LDR      R12,[R0], #-4
+//   91 		ar2 = *(zbuf2 - 1);
+        LDR      R7,[R0], #+4
+        LDR      LR,[R2], #+4
+        LDR      R11,[R2], #+4
+        LDR      R9,[R1], #-4
+        STR      R7,[SP, #+0]
+//   92 
+//   93 		/* gain 2 ints bit from MULSHIFT32 by Q30, but drop 7 or 10 int bits from table scaling of 1/M
+//   94 		 * max per-sample gain (ignoring implicit scaling) = MAX(sin(angle)+cos(angle)) = 1.414
+//   95 		 * i.e. gain 1 GB since worst case is sin(angle) = cos(angle) = 0.707 (Q30), gain 2 from
+//   96 		 *   extra sign bits, and eat one in adding
+//   97 		 */
+//   98 		t  = MULSHIFT32(sin2a, ar1 + ai1);
+        ADD      R7,R12,R8
+        SMULL    R4,R5,R10,R7
+//   99 		z2 = MULSHIFT32(cps2a, ai1) - t;
+//  100 		cms2 = cps2a - 2*sin2a;
+//  101 		z1 = MULSHIFT32(cms2, ar1) + t;
+//  102 		*zbuf1++ = z1;	/* cos*ar1 + sin*ai1 */
+        SUB      R10,R6,R10, LSL #+1
+        MOV      R7,R5
+        SMULL    R4,R5,R10,R8
+//  103 		*zbuf1++ = z2;	/* cos*ai1 - sin*ar1 */
+//  104 
+//  105 		t  = MULSHIFT32(sin2b, ar2 + ai2);
+//  106 		z2 = MULSHIFT32(cps2b, ai2) - t;
+//  107 		cms2 = cps2b - 2*sin2b;
+//  108 		z1 = MULSHIFT32(cms2, ar2) + t;
+//  109 		*zbuf2-- = z2;	/* cos*ai2 - sin*ar2 */
+//  110 		*zbuf2-- = z1;	/* cos*ar2 + sin*ai2 */
+//  111 	}
+        SUBS     R3,R3,#+1
+        ADD      R4,R7,R5
+        STR      R4,[R1], #+4
+        SMULL    R4,R5,R6,R12
+        SUB      R4,R5,R7
+        STR      R4,[R1], #+4
+        LDR      R4,[SP, #+0]
+        SUB      R7,LR,R11, LSL #+1
+        ADD      R6,R9,R4
+        SMULL    R4,R5,R11,R6
+        MOV      R6,R5
+        SMULL    R4,R5,LR,R9
+        SUB      R4,R5,R6
+        STR      R4,[R0], #-4
+        LDR      R8,[SP, #+0]
+        SMULL    R4,R5,R7,R8
+        ADD      R4,R6,R5
+        STR      R4,[R0], #-4
+        BNE      ??PreMultiply_0
+//  112 }
+        POP      {R0,R4-R11,PC}   ;; return
+        CFI EndBlock cfiBlock1
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??PostMultiply??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE PostMultiply
+//  113 
+//  114 /**************************************************************************************
+//  115  * Function:    PostMultiply
+//  116  *
+//  117  * Description: post-twiddle stage of DCT4
+//  118  *
+//  119  * Inputs:      table index (for transform size)
+//  120  *              buffer of nmdct samples
+//  121  *
+//  122  * Outputs:     processed samples in same buffer
+//  123  *
+//  124  * Return:      none
+//  125  *
+//  126  * Notes:       minimum 1 GB in, 2 GB out - gains 2 int bits
+//  127  *              uses 3-mul, 3-add butterflies instead of 4-mul, 2-add
+//  128  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function PostMultiply
+        ARM
+//  129 static void PostMultiply(int tabidx, int *fft1)
+//  130 {
+//  131 	int i, nmdct, ar1, ai1, ar2, ai2, skipFactor;
+//  132 	int t, cms2, cps2, sin2;
+//  133 	int *fft2;
+//  134 	const int *csptr;
+//  135 
+//  136 	nmdct = nmdctTab[tabidx];		
+PostMultiply:
+        LDR      R3,??DataTable8  ;; nmdctTab
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+        SUB      SP,SP,#+4
+        CFI CFA R13+40
+        LDR      R2,[R3, +R0, LSL #+2]
+//  137 	csptr = cos1sin1tab;
+//  138 	skipFactor = postSkip[tabidx];
+        ADD      R0,R3,R0, LSL #+2
+        LDR      R0,[R0, #+8]
+//  139 	fft2 = fft1 + nmdct - 1;
+//  140 
+//  141 	/* load coeffs for first pass
+//  142 	 * cps2 = (cos+sin), sin2 = sin, cms2 = (cos-sin)
+//  143 	 */
+//  144 	cps2 = *csptr++;
+        LDR      R3,??DataTable9  ;; raac_cos1sin1tab
+        STR      R0,[SP, #+0]
+        LDR      R6,[R3, #+0]
+//  145 	sin2 = *csptr;
+        LDR      R7,[R3, #+4]
+//  146 	csptr += skipFactor;
+        LDR      R4,[SP, #+0]
+        ADD      R0,R1,R2, LSL #+2
+        SUB      R0,R0,#+4
+        ADD      R3,R3,R4, LSL #+2
+        ADD      R12,R3,#+4
+//  147 	cms2 = cps2 - 2*sin2;
+        SUB      R9,R6,R7, LSL #+1
+//  148 
+//  149 	for (i = nmdct >> 2; i != 0; i--) {
+        ASRS     R10,R2,#+2
+        POPEQ    {R0,R4-R11,PC}
+//  150 		ar1 = *(fft1 + 0);
+??PostMultiply_0:
+        LDR      R4,[R1], #+4
+//  151 		ai1 = *(fft1 + 1);
+        LDR      R8,[R1], #-4
+//  152 		ar2 = *(fft2 - 1);
+        LDR      R11,[R0, #-4]
+//  153 		ai2 = *(fft2 + 0);
+        LDR      R5,[R0, #+0]
+//  154 
+//  155 		/* gain 2 ints bit from MULSHIFT32 by Q30
+//  156 		 * max per-sample gain = MAX(sin(angle)+cos(angle)) = 1.414
+//  157 		 * i.e. gain 1 GB since worst case is sin(angle) = cos(angle) = 0.707 (Q30), gain 2 from
+//  158 		 *   extra sign bits, and eat one in adding
+//  159 		 */
+//  160 		t = MULSHIFT32(sin2, ar1 + ai1);
+        ADD      LR,R8,R4
+        SMULL    R2,R3,R7,LR
+//  161 		*fft2-- = t - MULSHIFT32(cps2, ai1);	/* sin*ar1 - cos*ai1 */
+//  162 		*fft1++ = t + MULSHIFT32(cms2, ar1);	/* cos*ar1 + sin*ai1 */
+//  163 		cps2 = *csptr++;
+//  164 		sin2 = *csptr;
+//  165 		csptr += skipFactor;
+//  166 
+//  167 		ai2 = -ai2;
+        RSB      R5,R5,#+0
+        MOV      R7,R3
+        SMULL    R2,R3,R6,R8
+//  168 		t = MULSHIFT32(sin2, ar2 + ai2);
+//  169 		*fft2-- = t - MULSHIFT32(cps2, ai2);	/* sin*ar1 - cos*ai1 */
+//  170 		cms2 = cps2 - 2*sin2;
+//  171 		*fft1++ = t + MULSHIFT32(cms2, ar2);	/* cos*ar1 + sin*ai1 */
+//  172 	}
+        SUBS     R10,R10,#+1
+        SUB      R2,R7,R3
+        STR      R2,[R0], #-4
+        SMULL    R2,R3,R9,R4
+        ADD      R4,R5,R11
+        ADD      R2,R3,R7
+        STR      R2,[R1], #+4
+        LDR      R6,[R12], #+4
+        LDR      R7,[R12, #+0]
+        LDR      R2,[SP, #+0]
+        SUB      R9,R6,R7, LSL #+1
+        ADD      R12,R12,R2, LSL #+2
+        SMULL    R2,R3,R7,R4
+        MOV      R4,R3
+        SMULL    R2,R3,R6,R5
+        SUB      R2,R4,R3
+        STR      R2,[R0], #-4
+        SMULL    R2,R3,R9,R11
+        ADD      R2,R3,R4
+        STR      R2,[R1], #+4
+        BNE      ??PostMultiply_0
+//  173 }
+        POP      {R0,R4-R11,PC}   ;; return
+        CFI EndBlock cfiBlock3
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??PreMultiplyRescale??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE PreMultiplyRescale
+//  174 
+//  175 /**************************************************************************************
+//  176  * Function:    PreMultiplyRescale
+//  177  *
+//  178  * Description: pre-twiddle stage of DCT4, with rescaling for extra guard bits
+//  179  *
+//  180  * Inputs:      table index (for transform size)
+//  181  *              buffer of nmdct samples
+//  182  *              number of guard bits to add to input before processing
+//  183  *
+//  184  * Outputs:     processed samples in same buffer
+//  185  *
+//  186  * Return:      none
+//  187  *
+//  188  * Notes:       see notes on PreMultiply(), above
+//  189  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function PreMultiplyRescale
+        ARM
+//  190 static void PreMultiplyRescale(int tabidx, int *zbuf1, int es)
+//  191 {
+PreMultiplyRescale:
+        PUSH     {R2,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+40
+//  192 	int i, nmdct, ar1, ai1, ar2, ai2, z1, z2;
+//  193 	int t, cms2, cps2a, sin2a, cps2b, sin2b;
+//  194 	int *zbuf2;
+//  195 	const int *csptr;
+//  196 
+//  197 	nmdct = nmdctTab[tabidx];		
+//  198 	zbuf2 = zbuf1 + nmdct - 1;
+//  199 	csptr = cos4sin4tab + cos4sin4tabOffset[tabidx];
+        LDR      R4,??DataTable5  ;; raac_cos4sin4tabOffset
+        MOV      R2,R0
+        LDR      R0,??DataTable8  ;; nmdctTab
+        LDR      R3,[R0, +R2, LSL #+2]
+        LDR      R2,[R4, +R2, LSL #+2]
+        LDR      R4,??DataTable7  ;; raac_cos4sin4tab
+        ADD      R0,R1,R3, LSL #+2
+        SUB      R0,R0,#+4
+        ADD      R2,R4,R2, LSL #+2
+//  200 
+//  201 	/* whole thing should fit in registers - verify that compiler does this */
+//  202 	for (i = nmdct >> 2; i != 0; i--) {
+        ASRS     R3,R3,#+2
+        POPEQ    {R0,R4-R11,PC}
+//  203 		/* cps2 = (cos+sin), sin2 = sin, cms2 = (cos-sin) */
+//  204 		cps2a = *csptr++;	
+//  205 		sin2a = *csptr++;
+//  206 		cps2b = *csptr++;	
+//  207 		sin2b = *csptr++;
+//  208 
+//  209 		ar1 = *(zbuf1 + 0) >> es;
+??PreMultiplyRescale_0:
+        LDR      R4,[R1], #+4
+        LDR      R7,[SP, #+0]
+        LDR      R6,[R2], #+4
+        LDR      R10,[R2], #+4
+        LDR      LR,[R2], #+4
+        LDR      R11,[R2], #+4
+        ASR      R8,R4,R7
+//  210 		ai1 = *(zbuf2 + 0) >> es;
+        LDR      R4,[R0], #-4
+//  211 		ai2 = *(zbuf1 + 1) >> es;
+//  212 
+//  213 		t  = MULSHIFT32(sin2a, ar1 + ai1);
+//  214 		z2 = MULSHIFT32(cps2a, ai1) - t;
+//  215 		cms2 = cps2a - 2*sin2a;
+//  216 		z1 = MULSHIFT32(cms2, ar1) + t;
+//  217 		*zbuf1++ = z1;
+//  218 		*zbuf1++ = z2;
+//  219 
+//  220 		ar2 = *(zbuf2 - 1) >> es;	/* do here to free up register used for es */
+//  221 
+//  222 		t  = MULSHIFT32(sin2b, ar2 + ai2);
+//  223 		z2 = MULSHIFT32(cps2b, ai2) - t;
+//  224 		cms2 = cps2b - 2*sin2b;
+//  225 		z1 = MULSHIFT32(cms2, ar2) + t;
+//  226 		*zbuf2-- = z2;
+//  227 		*zbuf2-- = z1;
+//  228 
+//  229 	}
+        SUBS     R3,R3,#+1
+        ASR      R12,R4,R7
+        LDR      R4,[R1], #-4
+        ASR      R9,R4,R7
+        ADD      R7,R12,R8
+        SMULL    R4,R5,R10,R7
+        SUB      R10,R6,R10, LSL #+1
+        MOV      R7,R5
+        SMULL    R4,R5,R10,R8
+        SUB      R8,LR,R11, LSL #+1
+        ADD      R4,R7,R5
+        STR      R4,[R1], #+4
+        SMULL    R4,R5,R6,R12
+        SUB      R4,R5,R7
+        STR      R4,[R1], #+4
+        LDR      R4,[R0], #+4
+        LDR      R6,[SP, #+0]
+        ASR      R7,R4,R6
+        ADD      R6,R9,R7
+        SMULL    R4,R5,R11,R6
+        MOV      R6,R5
+        SMULL    R4,R5,LR,R9
+        SUB      R4,R5,R6
+        STR      R4,[R0], #-4
+        SMULL    R4,R5,R8,R7
+        ADD      R4,R6,R5
+        STR      R4,[R0], #-4
+        BNE      ??PreMultiplyRescale_0
+//  230 }
+        POP      {R0,R4-R11,PC}   ;; return
+        CFI EndBlock cfiBlock5
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable5:
+        DC32     raac_cos4sin4tabOffset
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable7:
+        DC32     raac_cos4sin4tab
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??PostMultiplyRescale??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE PostMultiplyRescale
+//  231 
+//  232 /**************************************************************************************
+//  233  * Function:    PostMultiplyRescale
+//  234  *
+//  235  * Description: post-twiddle stage of DCT4, with rescaling for extra guard bits
+//  236  *
+//  237  * Inputs:      table index (for transform size)
+//  238  *              buffer of nmdct samples
+//  239  *              number of guard bits to remove from output
+//  240  *
+//  241  * Outputs:     processed samples in same buffer
+//  242  *
+//  243  * Return:      none
+//  244  *
+//  245  * Notes:       clips output to [-2^30, 2^30 - 1], guaranteeing at least 1 guard bit
+//  246  *              see notes on PostMultiply(), above
+//  247  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function PostMultiplyRescale
+        ARM
+//  248 static void PostMultiplyRescale(int tabidx, int *fft1, int es)
+//  249 {
+//  250 	int i, nmdct, ar1, ai1, ar2, ai2, skipFactor, z;
+//  251 	int t, cs2, sin2;
+//  252 	int *fft2;
+//  253 	const int *csptr;
+//  254 
+//  255 	nmdct = nmdctTab[tabidx];		
+PostMultiplyRescale:
+        LDR      R3,??DataTable8  ;; nmdctTab
+        PUSH     {R2,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+40
+        SUB      SP,SP,#+4
+        CFI CFA R13+44
+        LDR      R2,[R3, +R0, LSL #+2]
+//  256 	csptr = cos1sin1tab;
+//  257 	skipFactor = postSkip[tabidx];
+        ADD      R0,R3,R0, LSL #+2
+        LDR      R0,[R0, #+8]
+//  258 	fft2 = fft1 + nmdct - 1;
+//  259 
+//  260 	/* load coeffs for first pass
+//  261 	 * cps2 = (cos+sin), sin2 = sin, cms2 = (cos-sin)
+//  262 	 */
+//  263 	cs2 = *csptr++;
+        LDR      R3,??DataTable9  ;; raac_cos1sin1tab
+        STR      R0,[SP, #+0]
+//  264 	sin2 = *csptr;
+//  265 	csptr += skipFactor;
+        LDR      R5,[SP, #+0]
+        LDR      R12,[R3, #+0]
+        LDR      R4,[R3, #+4]
+        ADD      R0,R1,R2, LSL #+2
+        SUB      R0,R0,#+4
+        ADD      R3,R3,R5, LSL #+2
+        ADD      R5,R3,#+4
+//  266 
+//  267 	for (i = nmdct >> 2; i != 0; i--) {
+        ASRS     R11,R2,#+2
+        POPEQ    {R0,R1,R4-R11,PC}
+        LDR      R2,[SP, #+4]
+        RSB      LR,R2,#+30
+//  268 		ar1 = *(fft1 + 0);
+??PostMultiplyRescale_0:
+        LDR      R6,[R1, #+0]
+//  269 		ai1 = *(fft1 + 1);
+        LDR      R8,[R1, #+4]
+//  270 		ai2 = *(fft2 + 0);
+        LDR      R10,[R0, #+0]
+//  271 
+//  272 		t = MULSHIFT32(sin2, ar1 + ai1);
+        ADD      R7,R8,R6
+        SMULL    R2,R3,R4,R7
+        MOV      R7,R3
+//  273 		z = t - MULSHIFT32(cs2, ai1);	
+        SMULL    R2,R3,R12,R8
+//  274 		CLIP_2N_SHIFT(z, es);	 
+        MVN      R2,#-1073741824
+        SUB      R3,R7,R3
+        ASR      R8,R3,#+31
+        CMP      R8,R3, ASR LR
+        LDREQ    R8,[SP, #+4]
+        EORNE    R3,R2,R8
+        LSLEQ    R3,R3,R8
+//  275 		*fft2-- = z;
+        STR      R3,[R0], #-4
+//  276 		cs2 -= 2*sin2;
+//  277 		z = t + MULSHIFT32(cs2, ar1);	
+        SUB      R3,R12,R4, LSL #+1
+        SMULL    R8,R9,R3,R6
+//  278 		CLIP_2N_SHIFT(z, es);	 
+//  279 		*fft1++ = z;
+//  280 
+//  281 		cs2 = *csptr++;
+//  282 		sin2 = *csptr;
+//  283 		csptr += skipFactor;
+//  284 
+//  285 		ar2 = *fft2;
+//  286 		ai2 = -ai2;
+        RSB      R8,R10,#+0
+        ADD      R3,R9,R7
+        ASR      R4,R3,#+31
+        CMP      R4,R3, ASR LR
+        LDREQ    R4,[SP, #+4]
+        EORNE    R3,R2,R4
+        LSLEQ    R3,R3,R4
+        STR      R3,[R1], #+4
+        LDR      R3,[R5], #+4
+        LDR      R4,[R5, #+0]
+        LDR      R6,[SP, #+0]
+        LDR      R12,[R0, #+0]
+        ADD      R5,R5,R6, LSL #+2
+//  287 		t = MULSHIFT32(sin2, ar2 + ai2);
+        ADD      R9,R8,R12
+        SMULL    R6,R7,R4,R9
+        MOV      R9,R7
+//  288 		z = t - MULSHIFT32(cs2, ai2);	
+        SMULL    R6,R7,R3,R8
+//  289 		CLIP_2N_SHIFT(z, es);	 
+//  290 		*fft2-- = z;
+//  291 		cs2 -= 2*sin2;
+        LSL      R8,R4,#+1
+        SUB      R6,R9,R7
+        ASR      R7,R6,#+31
+        CMP      R7,R6, ASR LR
+        LDREQ    R7,[SP, #+4]
+        SUB      R3,R3,R8
+        EORNE    R6,R2,R7
+        LSLEQ    R6,R6,R7
+        STR      R6,[R0], #-4
+//  292 		z = t + MULSHIFT32(cs2, ar2);	
+        SMULL    R6,R7,R3,R12
+//  293 		CLIP_2N_SHIFT(z, es);	 
+//  294 		*fft1++ = z;
+//  295 		cs2 += 2*sin2;
+        ADD      R12,R8,R3
+        ADD      R6,R7,R9
+        ASR      R7,R6,#+31
+        CMP      R7,R6, ASR LR
+        LDREQ    R2,[SP, #+4]
+        EORNE    R2,R2,R7
+        LSLEQ    R2,R6,R2
+        STR      R2,[R1], #+4
+//  296 	}
+        SUBS     R11,R11,#+1
+        BNE      ??PostMultiplyRescale_0
+//  297 }
+        POP      {R0,R1,R4-R11,PC}  ;; return
+        CFI EndBlock cfiBlock7
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable8:
+        DC32     nmdctTab
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable9:
+        DC32     raac_cos1sin1tab
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_DCT4??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE raac_DCT4
+//  298 
+//  299 /**************************************************************************************
+//  300  * Function:    DCT4
+//  301  *
+//  302  * Description: type-IV DCT
+//  303  *
+//  304  * Inputs:      table index (for transform size)
+//  305  *              buffer of nmdct samples
+//  306  *              number of guard bits in the input buffer
+//  307  *
+//  308  * Outputs:     processed samples in same buffer
+//  309  *
+//  310  * Return:      none
+//  311  *
+//  312  * Notes:       operates in-place
+//  313  *              if number of guard bits in input is < GBITS_IN_DCT4, the input is 
+//  314  *                scaled (>>) before the DCT4 and rescaled (<<, with clipping) after
+//  315  *                the DCT4 (rare)
+//  316  *              the output has FBITS_LOST_DCT4 fewer fraction bits than the input
+//  317  *              the output will always have at least 1 guard bit (GBITS_IN_DCT4 >= 4)
+//  318  *              int bits gained per stage (PreMul + FFT + PostMul)
+//  319  *                 short blocks = (-5 + 4 + 2) = 1 total
+//  320  *                 long blocks =  (-8 + 7 + 2) = 1 total
+//  321  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function raac_DCT4
+        ARM
+//  322 void DCT4(int tabidx, int *coef, int gb)
+//  323 {
+raac_DCT4:
+        PUSH     {R4-R6,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R6 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -12)
+        CFI R4 Frame(CFA, -16)
+        CFI CFA R13+16
+        MOV      R4,R0
+        MOV      R5,R1
+//  324 	int es;
+//  325 
+//  326 	/* fast in-place DCT-IV - adds guard bits if necessary */
+//  327 	if (gb < GBITS_IN_DCT4) {
+        CMP      R2,#+4
+        BGE      ??raac_DCT4_0
+//  328 		es = GBITS_IN_DCT4 - gb;
+        RSB      R6,R2,#+4
+//  329 		PreMultiplyRescale(tabidx, coef, es);
+        MOV      R2,R6
+        BL       PreMultiplyRescale
+//  330 		R4FFT(tabidx, coef);
+        MOV      R1,R5
+        MOV      R0,R4
+        _BLF     raac_R4FFT,??raac_R4FFT??rA
+//  331 		PostMultiplyRescale(tabidx, coef, es);
+        MOV      R2,R6
+        MOV      R1,R5
+        MOV      R0,R4
+        POP      {R4-R6,LR}       ;; Pop
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI ?RET R14
+        CFI CFA R13+0
+        B        PostMultiplyRescale  ;; tailcall
+        CFI R4 Frame(CFA, -16)
+        CFI R5 Frame(CFA, -12)
+        CFI R6 Frame(CFA, -8)
+        CFI ?RET Frame(CFA, -4)
+        CFI CFA R13+16
+//  332 	} else {
+//  333 		PreMultiply(tabidx, coef);
+??raac_DCT4_0:
+        BL       PreMultiply
+//  334 		R4FFT(tabidx, coef);
+        MOV      R1,R5
+        MOV      R0,R4
+        _BLF     raac_R4FFT,??raac_R4FFT??rA
+//  335 		PostMultiply(tabidx, coef);
+        MOV      R1,R5
+        MOV      R0,R4
+        POP      {R4-R6,LR}       ;; Pop
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI ?RET R14
+        CFI CFA R13+0
+        B        PostMultiply     ;; tailcall
+        CFI EndBlock cfiBlock9
+//  336 	}
+//  337 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_R4FFT??rA:
+        LDR      R12,??Subroutine5_0  ;; raac_R4FFT
+        BX       R12
+        DATA
+??Subroutine5_0:
+        DC32     raac_R4FFT
+        CFI EndBlock cfiBlock10
+
+        END
+// 
+// 1 020 bytes in segment CODE
+//    16 bytes in segment DATA_C
+// 
+// 988 bytes of CODE  memory (+ 32 bytes shared)
+//  16 bytes of CONST memory
+//
+//Errors: none
+//Warnings: none

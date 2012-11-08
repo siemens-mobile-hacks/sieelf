@@ -42,13 +42,13 @@ __arm int elf_load(char *filename, void *param1, void *param2, void *param3){
   
   Elf32_Exec *ex = elfopen(filename);
   if(!ex){
-    ShowMSG(1, (int)"Cant open elf");
+    ShowMSG(1, (int)"无法打开ELF");
     return -1;
   }
   
   int (*entry)(char *, void *, void*, void*) = (int (*)(char *, void *, void*, void*))elf_entry(ex);
   if(!entry){
-   l_msg(1, (int)"Cant found entry");
+   l_msg(1, (int)"无法打开入口");
    elfclose(ex);
    return -2;
   }
@@ -290,7 +290,7 @@ __arm void LoadLibrary(void)
   if ((sz=get_file_size(fn))==-1) return;
   if (sz!=16384)
   {
-    ShowMSG(1,(int)"Illegal library size!");
+    ShowMSG(1,(int)"不合理的lib文件大小!");
     return;
   }
   f=fopen(fn,A_ReadOnly+A_BIN, P_READ, &ul);
@@ -299,7 +299,7 @@ __arm void LoadLibrary(void)
   if (fread(f,lt,sz,&ul)!=sz)
   {
     fclose(f,&ul);
-    ShowMSG(1,(int)"Can't read library!");
+    ShowMSG(1,(int)"无法读取lib!");
   LERR:
     mfree(lt);
     return;
@@ -313,7 +313,7 @@ __arm void LoadLibrary(void)
       if ((*lt)[f]!=Library[f])
       {
 	char s[50];
-	sprintf(s,"Function %d conflict!",f);
+	sprintf(s,"函数 %d 冲突!",f);
 	ShowMSG(1,(int)s);
 	goto LERR;
       }

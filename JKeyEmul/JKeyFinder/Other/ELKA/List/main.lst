@@ -1,0 +1,1158 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    11/Jan/2012  19:30:06 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  C:\Documents and Settings\Administrator\桌面\JKeyEmu #
+#                       l\JKeyFinder\main.c                                  #
+#    Command line    =  "C:\Documents and Settings\Administrator\桌面\JKeyEm #
+#                       ul\JKeyFinder\main.c" -D NEWSGOLD -D ELKA -lC        #
+#                       "C:\Documents and Settings\Administrator\桌面\JKeyEm #
+#                       ul\JKeyFinder\Other\ELKA\List\" -o "C:\Documents     #
+#                       and Settings\Administrator\桌面\JKeyEmul\JKeyFinder\ #
+#                       Other\ELKA\Obj\" -s9 --no_unroll --no_clustering     #
+#                       --cpu_mode arm --endian little --cpu ARM926EJ-S      #
+#                       --stack_align 4 --interwork -e --fpu None -I         #
+#                       "D:\Program Files\IAR\Embedded Workbench 4.0         #
+#                       Evaluation\ARM\INC\" --inline_threshold=2            #
+#    List file       =  C:\Documents and Settings\Administrator\桌面\JKeyEmu #
+#                       l\JKeyFinder\Other\ELKA\List\main.lst                #
+#    Object file     =  C:\Documents and Settings\Administrator\桌面\JKeyEmu #
+#                       l\JKeyFinder\Other\ELKA\Obj\main.r79                 #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+C:\Documents and Settings\Administrator\桌面\JKeyEmul\JKeyFinder\main.c
+      1          //JKeyFinder - Utility to find the key code from another phone for Java - applications.
+      2          //See how it works in readme.txt
+      3          //(c)Dimadze
+      4          
+      5          
+      6          #include "..\..\inc\swilib.h"
+      7          #include "..\..\inc\xtask_ipc.h"
+      8          
+      9          #define ELF_NAME "JKeyFinder"
+     10          #define ELF_AUTHOR "Dimadze"
+     11          
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     12          int action_1=0;
+   \                     action_1:
+   \   00000000                      DS8 4
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     13          int action_2=0;
+   \                     action_2:
+   \   00000000                      DS8 4
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     14          int action_3=0;
+   \                     action_3:
+   \   00000000                      DS8 4
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     15          int action_4=0;
+   \                     action_4:
+   \   00000000                      DS8 4
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     16          int action_5=0;
+   \                     action_5:
+   \   00000000                      DS8 4
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     17          int action_6=0;
+   \                     action_6:
+   \   00000000                      DS8 4
+     18          
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     19          int action2=0;
+   \                     action2:
+   \   00000000                      DS8 4
+     20          
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     21          int key_n;
+   \                     key_n:
+   \   00000000                      DS8 4
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     22          int key_f1=0;
+   \                     key_f1:
+   \   00000000                      DS8 4
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     23          int key_f2=0;
+   \                     key_f2:
+   \   00000000                      DS8 4
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     24          char message[128];
+   \                     message:
+   \   00000000                      DS8 128
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     25          char message2[128];
+   \                     message2:
+   \   00000000                      DS8 128
+     26          
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     27          char elfhello[64];
+   \                     elfhello:
+   \   00000000                      DS8 64
+     28          
+     29          int my_keyhook(int submsg, int msg);
+     30          
+
+   \                                 In segment CODE, align 4, keep-with-next
+     31          int IsIDLE(void)
+     32          {
+   \                     IsIDLE:
+   \   00000000   00402DE9           PUSH     {LR}
+     33            CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);
+   \   00000004   068100EF           SWI      +33030
+   \   00000008   040090E5           LDR      R0,[R0, #+4]
+   \   0000000C   080100EF           SWI      +264
+     34            if (IsGuiOnTop(((int *)icsm)[DISPLACE_OF_IDLEGUI_ID/4])) return(1);
+   \   00000010   2C0090E5           LDR      R0,[R0, #+44]
+   \   00000014   350100EF           SWI      +309
+   \   00000018   000050E3           CMP      R0,#+0
+   \   0000001C   0100A013           MOVNE    R0,#+1
+     35                                                                     else return(0);
+   \   00000020   0080BDE8           POP      {PC}             ;; return
+     36          }
+     37          
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     38          const int minus11=-11;
+   \                     minus11:
+   \   00000000   F5FFFFFF           DC32 -11
+     39          
+     40          typedef struct
+     41          {
+     42            CSM_RAM csm;
+     43          }MAIN_CSM;
+     44          
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     45          CSM_RAM *under_idle;
+   \                     under_idle:
+   \   00000000                      DS8 4
+     46          
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     47          const char ipc_my_name[32]=ELF_NAME; 
+   \                     ipc_my_name:
+   \   00000000   4A4B65794669       DC8 "JKeyFinder"
+   \              6E64657200  
+   \   0000000B   000000000000       DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              000000000000
+   \              000000000000
+   \              000000      
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     48          const char ipc_xtask_name[]=IPC_XTASK_NAME; 
+   \                     ipc_xtask_name:
+   \   00000000   585461736B00       DC8 "XTask"
+   \   00000006   0000               DC8 0, 0
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     49          IPC_REQ gipc;
+   \                     gipc:
+   \   00000000                      DS8 12
+     50          
+
+   \                                 In segment CODE, align 4, keep-with-next
+     51          void Idle(void)
+     52          {
+     53             gipc.name_to=ipc_xtask_name; 
+   \                     Idle:
+   \   00000000   34309FE5           LDR      R3,??Idle_0      ;; gipc
+   \   00000004   34009FE5           LDR      R0,??Idle_0+0x4  ;; ipc_xtask_name
+   \   00000008   00402DE9           PUSH     {LR}
+   \   0000000C   000083E5           STR      R0,[R3, #+0]
+     54             gipc.name_from=ipc_my_name; 
+   \   00000010   2C009FE5           LDR      R0,??Idle_0+0x8  ;; ipc_my_name
+     55             gipc.data=0; 
+     56             GBS_SendMessage(MMI_CEPID,MSG_IPC,IPC_XTASK_IDLE,&gipc);
+   \   00000014   0120A0E3           MOV      R2,#+1
+   \   00000018   040083E5           STR      R0,[R3, #+4]
+   \   0000001C   0000A0E3           MOV      R0,#+0
+   \   00000020   080083E5           STR      R0,[R3, #+8]
+   \   00000024   B010A0E3           MOV      R1,#+176
+   \   00000028   DE1C81E3           ORR      R1,R1,#0xDE00
+   \   0000002C   0900A0E3           MOV      R0,#+9
+   \   00000030   420C80E3           ORR      R0,R0,#0x4200
+   \   00000034   000100EF           SWI      +256
+     57          }
+   \   00000038   0080BDE8           POP      {PC}             ;; return
+   \                     ??Idle_0:
+   \   0000003C   ........           DC32     gipc
+   \   00000040   ........           DC32     ipc_xtask_name
+   \   00000044   ........           DC32     ipc_my_name
+     58          
+     59          extern void kill_data(void *p, void (*func_p)(void *));
+     60          
+     61          
+
+   \                                 In segment CODE, align 4, keep-with-next
+     62          int my_keyhook(int submsg, int msg)
+     63          {
+   \                     my_keyhook:
+   \   00000000   F04F2DE9           PUSH     {R4-R11,LR}
+   \   00000004   04D04DE2           SUB      SP,SP,#+4
+   \   00000008   0090A0E1           MOV      R9,R0
+     64          void *icsm=FindCSMbyID(CSM_root()->idle_id);
+   \   0000000C   CC459FE5           LDR      R4,??my_keyhook_0  ;; key_f2
+   \   00000010   CC559FE5           LDR      R5,??my_keyhook_0+0x4  ;; key_f1
+   \   00000014   CC659FE5           LDR      R6,??my_keyhook_0+0x8  ;; action_4
+   \   00000018   CCB59FE5           LDR      R11,??my_keyhook_0+0xC  ;; action_2
+   \   0000001C   01A0A0E1           MOV      R10,R1
+   \   00000020   068100EF           SWI      +33030
+   \   00000024   040090E5           LDR      R0,[R0, #+4]
+   \   00000028   0170A0E3           MOV      R7,#+1
+   \   0000002C   080100EF           SWI      +264
+   \   00000030   B8E59FE5           LDR      LR,??my_keyhook_0+0x10  ;; action_3
+   \   00000034   0080A0E3           MOV      R8,#+0
+   \   00000038   2A0059E3           CMP      R9,#+42
+   \   0000003C   650F8703           ORREQ    R0,R7,#0x194
+   \   00000040   00005A01           CMPEQ    R10,R0
+   \   00000044   1A00001A           BNE      ??my_keyhook_1
+   \   00000048   A4059FE5           LDR      R0,??my_keyhook_0+0x14  ;; action2
+   \   0000004C   000090E5           LDR      R0,[R0, #+0]
+   \   00000050   000050E3           CMP      R0,#+0
+   \   00000054   CC00001A           BNE      ??my_keyhook_2
+   \   00000058   98059FE5           LDR      R0,??my_keyhook_0+0x18  ;; action_1
+   \   0000005C   000090E5           LDR      R0,[R0, #+0]
+   \   00000060   000050E3           CMP      R0,#+0
+   \   00000064   CC00001A           BNE      ??my_keyhook_3
+   \   00000068   00009BE5           LDR      R0,[R11, #+0]
+   \   0000006C   000050E3           CMP      R0,#+0
+   \   00000070   CD00001A           BNE      ??my_keyhook_4
+   \   00000074   00009EE5           LDR      R0,[LR, #+0]
+   \   00000078   000050E3           CMP      R0,#+0
+   \   0000007C   CD00001A           BNE      ??my_keyhook_5
+   \   00000080   000096E5           LDR      R0,[R6, #+0]
+   \   00000084   000050E3           CMP      R0,#+0
+   \   00000088   CD00001A           BNE      ??my_keyhook_6
+   \   0000008C   68059FE5           LDR      R0,??my_keyhook_0+0x1C  ;; action_5
+   \   00000090   000090E5           LDR      R0,[R0, #+0]
+   \   00000094   000050E3           CMP      R0,#+0
+   \   00000098   CC00001A           BNE      ??my_keyhook_7
+     65           
+     66              if ((submsg=='*') && (msg==LONG_PRESS) && action2==0 && action_1==0 && action_2==0 && action_3==0 && action_4==0 && action_5==0) // 1
+     67              {   
+     68                  ShowMSG(1,(int)"现在开始吧");
+   \   0000009C   5C159FE5           LDR      R1,??my_keyhook_0+0x20  ;; `?<Constant "\\317\\326\\324\\332\\277\\252\\312\\274\\2`
+   \   000000A0   0100A0E3           MOV      R0,#+1
+   \   000000A4   480100EF           SWI      +328
+     69                  action_1=1;
+   \   000000A8   48059FE5           LDR      R0,??my_keyhook_0+0x18  ;; action_1
+   \   000000AC   007080E5           STR      R7,[R0, #+0]
+     70          	return(2); 
+   \   000000B0   600000EA           B        ??my_keyhook_8
+     71              }
+     72                                                  
+     73              if (msg==KEY_DOWN && action2==0 && action_1==1 && action_2==0 && action_3==0 && action_4==0 && action_5==0)
+   \                     ??my_keyhook_1:
+   \   000000B4   40059FE5           LDR      R0,??my_keyhook_0+0x1C  ;; action_5
+   \   000000B8   001096E5           LDR      R1,[R6, #+0]
+   \   000000BC   000090E5           LDR      R0,[R0, #+0]
+   \   000000C0   00309EE5           LDR      R3,[LR, #+0]
+   \   000000C4   00C09BE5           LDR      R12,[R11, #+0]
+   \   000000C8   9320A0E3           MOV      R2,#+147
+   \   000000CC   402F82E3           ORR      R2,R2,#0x100
+   \   000000D0   02005AE1           CMP      R10,R2
+   \   000000D4   7500001A           BNE      ??my_keyhook_9
+   \   000000D8   14259FE5           LDR      R2,??my_keyhook_0+0x14  ;; action2
+   \   000000DC   002092E5           LDR      R2,[R2, #+0]
+   \   000000E0   000052E3           CMP      R2,#+0
+   \   000000E4   7100001A           BNE      ??my_keyhook_9
+   \   000000E8   08259FE5           LDR      R2,??my_keyhook_0+0x18  ;; action_1
+   \   000000EC   002092E5           LDR      R2,[R2, #+0]
+   \   000000F0   010052E3           CMP      R2,#+1
+   \   000000F4   0D00001A           BNE      ??my_keyhook_10
+   \   000000F8   00005CE3           CMP      R12,#+0
+   \   000000FC   00005303           CMPEQ    R3,#+0
+   \   00000100   00005103           CMPEQ    R1,#+0
+   \   00000104   00005003           CMPEQ    R0,#+0
+   \   00000108   6800001A           BNE      ??my_keyhook_9
+     74              {  
+     75                  ShowMSG(1,(int)"进入!");
+   \   0000010C   F0149FE5           LDR      R1,??my_keyhook_0+0x24  ;; `?<Constant "\\275\\370\\310\\353!">`
+   \   00000110   0100A0E3           MOV      R0,#+1
+   \   00000114   480100EF           SWI      +328
+     76                  key_n=submsg;
+   \   00000118   E8049FE5           LDR      R0,??my_keyhook_0+0x28  ;; key_n
+     77                  action_1=0;
+     78                  action_2=1;
+   \   0000011C   00708BE5           STR      R7,[R11, #+0]
+   \   00000120   009080E5           STR      R9,[R0, #+0]
+   \   00000124   CC049FE5           LDR      R0,??my_keyhook_0+0x18  ;; action_1
+   \   00000128   008080E5           STR      R8,[R0, #+0]
+     79          	return(2); 
+   \   0000012C   410000EA           B        ??my_keyhook_8
+     80              }
+   \                     ??my_keyhook_10:
+   \   00000130   C0249FE5           LDR      R2,??my_keyhook_0+0x18  ;; action_1
+   \   00000134   002092E5           LDR      R2,[R2, #+0]
+   \   00000138   000052E3           CMP      R2,#+0
+   \   0000013C   5B00001A           BNE      ??my_keyhook_9
+   \   00000140   01005CE3           CMP      R12,#+1
+   \   00000144   2700001A           BNE      ??my_keyhook_11
+   \   00000148   000053E3           CMP      R3,#+0
+   \   0000014C   00005103           CMPEQ    R1,#+0
+   \   00000150   00005003           CMPEQ    R0,#+0
+   \   00000154   5500001A           BNE      ??my_keyhook_9
+     81              
+     82              if (msg==KEY_DOWN && action2==0 && action_1==0 && action_2==1 && action_3==0 && action_4==0 && action_5==0)
+     83              {   
+     84                if (submsg=='0') {key_f1=0;action_3=1;action_2=0;return(2);}
+   \   00000158   300059E3           CMP      R9,#+48
+   \   0000015C   00808505           STREQ    R8,[R5, #+0]
+   \   00000160   0600000A           BEQ      ??my_keyhook_12
+     85                if (submsg=='1') {key_f1=1*10;action_3=1;action_2=0;return(2);}
+   \   00000164   310059E3           CMP      R9,#+49
+   \   00000168   0A00A003           MOVEQ    R0,#+10
+   \   0000016C   0200000A           BEQ      ??my_keyhook_13
+     86                if (submsg=='2') {key_f1=2*10;action_3=1;action_2=0;return(2);}
+   \   00000170   320059E3           CMP      R9,#+50
+   \   00000174   0500001A           BNE      ??my_keyhook_14
+   \   00000178   1400A0E3           MOV      R0,#+20
+   \                     ??my_keyhook_13:
+   \   0000017C   000085E5           STR      R0,[R5, #+0]
+   \                     ??my_keyhook_12:
+   \   00000180   00708EE5           STR      R7,[LR, #+0]
+   \   00000184   00808BE5           STR      R8,[R11, #+0]
+   \                     ??my_keyhook_15:
+   \   00000188   0200A0E3           MOV      R0,#+2
+   \   0000018C   F28FBDE8           POP      {R1,R4-R11,PC}
+     87                if (submsg=='3') {key_f1=3*10;action_3=1;action_2=0;return(2);}
+   \                     ??my_keyhook_14:
+   \   00000190   330059E3           CMP      R9,#+51
+   \   00000194   1E00A003           MOVEQ    R0,#+30
+   \   00000198   F7FFFF0A           BEQ      ??my_keyhook_13
+     88                if (submsg=='4') {key_f1=4*10;action_3=1;action_2=0;return(2);}
+   \   0000019C   340059E3           CMP      R9,#+52
+   \   000001A0   2800A003           MOVEQ    R0,#+40
+   \   000001A4   F4FFFF0A           BEQ      ??my_keyhook_13
+     89                if (submsg=='5') {key_f1=5*10;action_3=1;action_2=0;return(2);}
+   \   000001A8   350059E3           CMP      R9,#+53
+   \   000001AC   3200A003           MOVEQ    R0,#+50
+   \   000001B0   F1FFFF0A           BEQ      ??my_keyhook_13
+     90                if (submsg=='6') {key_f1=6*10;action_3=1;action_2=0;return(2);}
+   \   000001B4   360059E3           CMP      R9,#+54
+   \   000001B8   3C00A003           MOVEQ    R0,#+60
+   \   000001BC   EEFFFF0A           BEQ      ??my_keyhook_13
+     91                if (submsg=='7') {key_f1=7*10;action_3=1;action_2=0;return(2);}
+   \   000001C0   370059E3           CMP      R9,#+55
+   \   000001C4   4600A003           MOVEQ    R0,#+70
+   \   000001C8   EBFFFF0A           BEQ      ??my_keyhook_13
+     92                if (submsg=='8') {key_f1=8*10;action_3=1;action_2=0;return(2);}
+   \   000001CC   380059E3           CMP      R9,#+56
+   \   000001D0   5000A003           MOVEQ    R0,#+80
+   \   000001D4   E8FFFF0A           BEQ      ??my_keyhook_13
+     93                if (submsg=='9') {key_f1=9*10;action_3=1;action_2=0;return(2);}
+   \   000001D8   390059E3           CMP      R9,#+57
+   \   000001DC   3300001A           BNE      ??my_keyhook_9
+   \   000001E0   5A00A0E3           MOV      R0,#+90
+   \   000001E4   E4FFFFEA           B        ??my_keyhook_13
+     94                
+     95              }
+   \                     ??my_keyhook_11:
+   \   000001E8   00005CE3           CMP      R12,#+0
+   \   000001EC   01005303           CMPEQ    R3,#+1
+   \   000001F0   00005103           CMPEQ    R1,#+0
+   \   000001F4   00005003           CMPEQ    R0,#+0
+   \   000001F8   2C00001A           BNE      ??my_keyhook_9
+     96              if (msg==KEY_DOWN && action2==0 && action_1==0 && action_2==0 && action_3==1 && action_4==0 && action_5==0)
+     97              {   
+     98                if (submsg=='0') {key_f2=key_f1;action_4=1;action_3=0;return(2);}
+   \   000001FC   002095E5           LDR      R2,[R5, #+0]
+   \   00000200   300059E3           CMP      R9,#+48
+   \   00000204   0100001A           BNE      ??my_keyhook_16
+   \   00000208   002084E5           STR      R2,[R4, #+0]
+   \   0000020C   070000EA           B        ??my_keyhook_17
+     99                if (submsg=='1') {key_f2=key_f1+1;action_4=1;action_3=0;return(2);}
+   \                     ??my_keyhook_16:
+   \   00000210   310059E3           CMP      R9,#+49
+   \   00000214   0100001A           BNE      ??my_keyhook_18
+   \   00000218   010082E2           ADD      R0,R2,#+1
+   \   0000021C   020000EA           B        ??my_keyhook_19
+    100                if (submsg=='2') {key_f2=key_f1+2;action_4=1;action_3=0;return(2);}
+   \                     ??my_keyhook_18:
+   \   00000220   320059E3           CMP      R9,#+50
+   \   00000224   0500001A           BNE      ??my_keyhook_20
+   \   00000228   020082E2           ADD      R0,R2,#+2
+   \                     ??my_keyhook_19:
+   \   0000022C   000084E5           STR      R0,[R4, #+0]
+   \                     ??my_keyhook_17:
+   \   00000230   007086E5           STR      R7,[R6, #+0]
+   \   00000234   00808EE5           STR      R8,[LR, #+0]
+   \                     ??my_keyhook_8:
+   \   00000238   0200A0E3           MOV      R0,#+2
+   \   0000023C   F28FBDE8           POP      {R1,R4-R11,PC}
+    101                if (submsg=='3') {key_f2=key_f1+3;action_4=1;action_3=0;return(2);}
+   \                     ??my_keyhook_20:
+   \   00000240   330059E3           CMP      R9,#+51
+   \   00000244   0100001A           BNE      ??my_keyhook_21
+   \   00000248   030082E2           ADD      R0,R2,#+3
+   \   0000024C   F6FFFFEA           B        ??my_keyhook_19
+    102                if (submsg=='4') {key_f2=key_f1+4;action_4=1;action_3=0;return(2);}
+   \                     ??my_keyhook_21:
+   \   00000250   340059E3           CMP      R9,#+52
+   \   00000254   0100001A           BNE      ??my_keyhook_22
+   \   00000258   040082E2           ADD      R0,R2,#+4
+   \   0000025C   F2FFFFEA           B        ??my_keyhook_19
+    103                if (submsg=='5') {key_f2=key_f1+5;action_4=1;action_3=0;return(2);}
+   \                     ??my_keyhook_22:
+   \   00000260   350059E3           CMP      R9,#+53
+   \   00000264   0100001A           BNE      ??my_keyhook_23
+   \   00000268   050082E2           ADD      R0,R2,#+5
+   \   0000026C   EEFFFFEA           B        ??my_keyhook_19
+    104                if (submsg=='6') {key_f2=key_f1+6;action_4=1;action_3=0;return(2);}
+   \                     ??my_keyhook_23:
+   \   00000270   360059E3           CMP      R9,#+54
+   \   00000274   0100001A           BNE      ??my_keyhook_24
+   \   00000278   060082E2           ADD      R0,R2,#+6
+   \   0000027C   EAFFFFEA           B        ??my_keyhook_19
+    105                if (submsg=='7') {key_f2=key_f1+7;action_4=1;action_3=0;return(2);}
+   \                     ??my_keyhook_24:
+   \   00000280   370059E3           CMP      R9,#+55
+   \   00000284   0100001A           BNE      ??my_keyhook_25
+   \   00000288   070082E2           ADD      R0,R2,#+7
+   \   0000028C   E6FFFFEA           B        ??my_keyhook_19
+    106                if (submsg=='8') {key_f2=key_f1+8;action_4=1;action_3=0;return(2);}
+   \                     ??my_keyhook_25:
+   \   00000290   380059E3           CMP      R9,#+56
+   \   00000294   0100001A           BNE      ??my_keyhook_26
+   \   00000298   080082E2           ADD      R0,R2,#+8
+   \   0000029C   E2FFFFEA           B        ??my_keyhook_19
+    107                if (submsg=='9') {key_f2=key_f1+9;action_4=1;action_3=0;return(2);}
+   \                     ??my_keyhook_26:
+   \   000002A0   390059E3           CMP      R9,#+57
+   \   000002A4   0100001A           BNE      ??my_keyhook_9
+   \   000002A8   090082E2           ADD      R0,R2,#+9
+   \   000002AC   DEFFFFEA           B        ??my_keyhook_19
+    108              }
+    109              
+    110              if ((submsg=='#') && (msg==LONG_PRESS) && action2==0 && action_1==0 && action_2==0 && action_3==0 && action_4==1 && action_5==0)
+   \                     ??my_keyhook_9:
+   \   000002B0   230059E3           CMP      R9,#+35
+   \   000002B4   3000001A           BNE      ??my_keyhook_27
+   \   000002B8   652F87E3           ORR      R2,R7,#0x194
+   \   000002BC   02005AE1           CMP      R10,R2
+   \   000002C0   5F00001A           BNE      ??my_keyhook_28
+   \   000002C4   28239FE5           LDR      R2,??my_keyhook_0+0x14  ;; action2
+   \   000002C8   002092E5           LDR      R2,[R2, #+0]
+   \   000002CC   000052E3           CMP      R2,#+0
+   \   000002D0   5B00001A           BNE      ??my_keyhook_28
+   \   000002D4   1C239FE5           LDR      R2,??my_keyhook_0+0x18  ;; action_1
+   \   000002D8   002092E5           LDR      R2,[R2, #+0]
+   \   000002DC   000052E3           CMP      R2,#+0
+   \   000002E0   00005C03           CMPEQ    R12,#+0
+   \   000002E4   00005303           CMPEQ    R3,#+0
+   \   000002E8   01005103           CMPEQ    R1,#+1
+   \   000002EC   00005003           CMPEQ    R0,#+0
+   \   000002F0   4500001A           BNE      ??my_keyhook_29
+    111              {   
+    112                if (key_n!=key_f2){
+   \   000002F4   0C039FE5           LDR      R0,??my_keyhook_0+0x28  ;; key_n
+   \   000002F8   002094E5           LDR      R2,[R4, #+0]
+   \   000002FC   003090E5           LDR      R3,[R0, #+0]
+   \   00000300   020053E1           CMP      R3,R2
+   \   00000304   1100000A           BEQ      ??my_keyhook_30
+    113                  sprintf(message,"%s: %02d\n%s: %02d","实际键值",key_n,"模拟键值",key_f2);
+   \   00000308   FC029FE5           LDR      R0,??my_keyhook_0+0x2C  ;; `?<Constant "\\304\\243\\304\\342\\274\\374\\326\\265">`
+   \   0000030C   FC429FE5           LDR      R4,??my_keyhook_0+0x30  ;; message
+   \   00000310   FC129FE5           LDR      R1,??my_keyhook_0+0x34  ;; `?<Constant "%s: %02d\\n%s: %02d">`
+   \   00000314   04002DE9           PUSH     {R2}
+   \   00000318   F8229FE5           LDR      R2,??my_keyhook_0+0x38  ;; `?<Constant "\\312\\265\\274\\312\\274\\374\\326\\265">`
+   \   0000031C   01002DE9           PUSH     {R0}
+   \   00000320   0400A0E1           MOV      R0,R4
+   \   00000324   160000EF           SWI      +22
+    114                  ShowMSG(1,(int)message);
+   \   00000328   0410A0E1           MOV      R1,R4
+   \   0000032C   0100A0E3           MOV      R0,#+1
+   \   00000330   480100EF           SWI      +328
+    115                  action_6=1;
+   \   00000334   E0029FE5           LDR      R0,??my_keyhook_0+0x3C  ;; action_6
+    116                  action_5=1;
+    117                  action_4=0;    
+   \   00000338   008086E5           STR      R8,[R6, #+0]
+   \   0000033C   007080E5           STR      R7,[R0, #+0]
+   \   00000340   B4029FE5           LDR      R0,??my_keyhook_0+0x1C  ;; action_5
+   \   00000344   007080E5           STR      R7,[R0, #+0]
+   \   00000348   08D08DE2           ADD      SP,SP,#+8
+   \   0000034C   B9FFFFEA           B        ??my_keyhook_8
+    118                } else 
+    119                {
+    120                  ShowMSG(1,(int)"错误!\n请重试");
+   \                     ??my_keyhook_30:
+   \   00000350   C8129FE5           LDR      R1,??my_keyhook_0+0x40  ;; `?<Constant "\\264\\355\\316\\363!\\n\\307\\353\\326\\33`
+   \   00000354   0100A0E3           MOV      R0,#+1
+   \   00000358   480100EF           SWI      +328
+    121                  action_1=1;
+   \   0000035C   94029FE5           LDR      R0,??my_keyhook_0+0x18  ;; action_1
+    122                  action_4=0; 
+   \   00000360   008086E5           STR      R8,[R6, #+0]
+   \   00000364   007080E5           STR      R7,[R0, #+0]
+    123                  key_n=0;
+   \   00000368   98029FE5           LDR      R0,??my_keyhook_0+0x28  ;; key_n
+    124                  key_f1=0;
+   \   0000036C   008085E5           STR      R8,[R5, #+0]
+   \   00000370   008080E5           STR      R8,[R0, #+0]
+    125                  key_f2=0;
+   \   00000374   008084E5           STR      R8,[R4, #+0]
+    126                }
+    127          	return(2); 
+   \   00000378   AEFFFFEA           B        ??my_keyhook_8
+    128              }
+    129              
+    130             if ((submsg=='#') && (msg==LONG_PRESS) && action2==0 && action_6==1)
+    131              {   
+    132                  ShowMSG(1,(int)"进入");
+    133                  action_6=0;
+    134                  action_5=0;
+    135                  action_2=1;
+    136                  key_f1=0;
+    137                  key_f2=0;
+    138          	return(2); 
+    139              }
+    140              
+    141              if ((submsg=='*') && (msg==LONG_PRESS) && action2==0 && action_1==0 && action_2==0 && action_3==0 && action_4==0 && action_5==1)
+   \                     ??my_keyhook_27:
+   \   0000037C   2A0059E3           CMP      R9,#+42
+   \   00000380   650F8703           ORREQ    R0,R7,#0x194
+   \   00000384   00005A01           CMPEQ    R10,R0
+   \   00000388   2D00001A           BNE      ??my_keyhook_28
+   \                     ??my_keyhook_2:
+   \   0000038C   60029FE5           LDR      R0,??my_keyhook_0+0x14  ;; action2
+   \   00000390   000090E5           LDR      R0,[R0, #+0]
+   \   00000394   000050E3           CMP      R0,#+0
+   \   00000398   2900001A           BNE      ??my_keyhook_28
+   \                     ??my_keyhook_3:
+   \   0000039C   54029FE5           LDR      R0,??my_keyhook_0+0x18  ;; action_1
+   \   000003A0   000090E5           LDR      R0,[R0, #+0]
+   \   000003A4   000050E3           CMP      R0,#+0
+   \   000003A8   2500001A           BNE      ??my_keyhook_28
+   \                     ??my_keyhook_4:
+   \   000003AC   00009BE5           LDR      R0,[R11, #+0]
+   \   000003B0   000050E3           CMP      R0,#+0
+   \   000003B4   2200001A           BNE      ??my_keyhook_28
+   \                     ??my_keyhook_5:
+   \   000003B8   00009EE5           LDR      R0,[LR, #+0]
+   \   000003BC   000050E3           CMP      R0,#+0
+   \   000003C0   1F00001A           BNE      ??my_keyhook_28
+   \                     ??my_keyhook_6:
+   \   000003C4   000096E5           LDR      R0,[R6, #+0]
+   \   000003C8   000050E3           CMP      R0,#+0
+   \   000003CC   1C00001A           BNE      ??my_keyhook_28
+   \                     ??my_keyhook_7:
+   \   000003D0   24029FE5           LDR      R0,??my_keyhook_0+0x1C  ;; action_5
+   \   000003D4   000090E5           LDR      R0,[R0, #+0]
+   \   000003D8   010050E3           CMP      R0,#+1
+   \   000003DC   1800001A           BNE      ??my_keyhook_28
+    142              {   
+    143                  ShowMSG(1,(int)"重设");
+   \   000003E0   3C129FE5           LDR      R1,??my_keyhook_0+0x44  ;; `?<Constant "\\326\\330\\311\\350">`
+   \   000003E4   480100EF           SWI      +328
+    144                  action_5=0;
+   \   000003E8   0C029FE5           LDR      R0,??my_keyhook_0+0x1C  ;; action_5
+    145                  action_6=0;
+    146                  key_n=0;
+    147                  key_f1=0;
+   \   000003EC   008085E5           STR      R8,[R5, #+0]
+   \   000003F0   008080E5           STR      R8,[R0, #+0]
+   \   000003F4   20029FE5           LDR      R0,??my_keyhook_0+0x3C  ;; action_6
+    148                  key_f2=0;
+   \   000003F8   008084E5           STR      R8,[R4, #+0]
+   \   000003FC   008080E5           STR      R8,[R0, #+0]
+   \   00000400   00029FE5           LDR      R0,??my_keyhook_0+0x28  ;; key_n
+   \   00000404   008080E5           STR      R8,[R0, #+0]
+    149          	return(2); 
+   \   00000408   8AFFFFEA           B        ??my_keyhook_8
+    150              }
+   \                     ??my_keyhook_29:
+   \   0000040C   08029FE5           LDR      R0,??my_keyhook_0+0x3C  ;; action_6
+   \   00000410   000090E5           LDR      R0,[R0, #+0]
+   \   00000414   010050E3           CMP      R0,#+1
+   \   00000418   0900001A           BNE      ??my_keyhook_28
+   \   0000041C   04129FE5           LDR      R1,??my_keyhook_0+0x48  ;; `?<Constant "\\275\\370\\310\\353">`
+   \   00000420   480100EF           SWI      +328
+   \   00000424   F0019FE5           LDR      R0,??my_keyhook_0+0x3C  ;; action_6
+   \   00000428   00708BE5           STR      R7,[R11, #+0]
+   \   0000042C   008080E5           STR      R8,[R0, #+0]
+   \   00000430   C4019FE5           LDR      R0,??my_keyhook_0+0x1C  ;; action_5
+   \   00000434   008085E5           STR      R8,[R5, #+0]
+   \   00000438   008080E5           STR      R8,[R0, #+0]
+   \   0000043C   008084E5           STR      R8,[R4, #+0]
+   \   00000440   7CFFFFEA           B        ??my_keyhook_8
+    151              
+    152              if ((submsg==key_n) && action2==0 && action_1==0 && action_2==0 && action_3==0 && action_4==0 && action_5==1)
+   \                     ??my_keyhook_28:
+   \   00000444   001096E5           LDR      R1,[R6, #+0]
+   \   00000448   B8619FE5           LDR      R6,??my_keyhook_0+0x28  ;; key_n
+   \   0000044C   A8019FE5           LDR      R0,??my_keyhook_0+0x1C  ;; action_5
+   \   00000450   006096E5           LDR      R6,[R6, #+0]
+   \   00000454   002094E5           LDR      R2,[R4, #+0]
+   \   00000458   000090E5           LDR      R0,[R0, #+0]
+   \   0000045C   00309EE5           LDR      R3,[LR, #+0]
+   \   00000460   00C09BE5           LDR      R12,[R11, #+0]
+   \   00000464   0950A0E3           MOV      R5,#+9
+   \   00000468   425C85E3           ORR      R5,R5,#0x4200
+   \   0000046C   060059E1           CMP      R9,R6
+   \   00000470   0F00001A           BNE      ??my_keyhook_31
+   \   00000474   78619FE5           LDR      R6,??my_keyhook_0+0x14  ;; action2
+   \   00000478   006096E5           LDR      R6,[R6, #+0]
+   \   0000047C   000056E3           CMP      R6,#+0
+   \   00000480   0B00001A           BNE      ??my_keyhook_31
+   \   00000484   6C619FE5           LDR      R6,??my_keyhook_0+0x18  ;; action_1
+   \   00000488   006096E5           LDR      R6,[R6, #+0]
+   \   0000048C   000056E3           CMP      R6,#+0
+   \   00000490   00005C03           CMPEQ    R12,#+0
+   \   00000494   00005303           CMPEQ    R3,#+0
+   \   00000498   00005103           CMPEQ    R1,#+0
+   \   0000049C   01005003           CMPEQ    R0,#+1
+   \   000004A0   0300001A           BNE      ??my_keyhook_31
+    153              {   
+    154          	GBS_SendMessage(MMI_CEPID,msg,key_f2);
+   \   000004A4   0A10A0E1           MOV      R1,R10
+   \   000004A8   0500A0E1           MOV      R0,R5
+   \   000004AC   000100EF           SWI      +256
+    155          	return(2); 
+   \   000004B0   60FFFFEA           B        ??my_keyhook_8
+    156              }
+    157              
+    158              if ((submsg=='#') && (msg==LONG_PRESS) && action2==0 && action_1==0 && action_2==0 && action_3==0 && action_4==0 && action_5==0)
+   \                     ??my_keyhook_31:
+   \   000004B4   230059E3           CMP      R9,#+35
+   \   000004B8   656F8703           ORREQ    R6,R7,#0x194
+   \   000004BC   06005A01           CMPEQ    R10,R6
+   \   000004C0   1100001A           BNE      ??my_keyhook_32
+   \   000004C4   28219FE5           LDR      R2,??my_keyhook_0+0x14  ;; action2
+   \   000004C8   002092E5           LDR      R2,[R2, #+0]
+   \   000004CC   000052E3           CMP      R2,#+0
+   \   000004D0   4000001A           BNE      ??my_keyhook_33
+   \   000004D4   1C219FE5           LDR      R2,??my_keyhook_0+0x18  ;; action_1
+   \   000004D8   002092E5           LDR      R2,[R2, #+0]
+   \   000004DC   000052E3           CMP      R2,#+0
+   \   000004E0   00005C03           CMPEQ    R12,#+0
+   \   000004E4   00005303           CMPEQ    R3,#+0
+   \   000004E8   00005103           CMPEQ    R1,#+0
+   \   000004EC   00005003           CMPEQ    R0,#+0
+   \   000004F0   3800001A           BNE      ??my_keyhook_33
+    159              {   
+    160                  ShowMSG(1,(int)"4 - --\n5 - Push\n6 - ++");
+   \   000004F4   30119FE5           LDR      R1,??my_keyhook_0+0x4C  ;; `?<Constant "4 - --\\n5 - Push\\n6 - ++">`
+   \   000004F8   0100A0E3           MOV      R0,#+1
+   \   000004FC   480100EF           SWI      +328
+    161                  action2=1;
+   \   00000500   EC009FE5           LDR      R0,??my_keyhook_0+0x14  ;; action2
+   \   00000504   007080E5           STR      R7,[R0, #+0]
+    162          	return(2); 
+   \   00000508   4AFFFFEA           B        ??my_keyhook_8
+    163              }
+    164              
+    165              if (msg==KEY_DOWN && action2==1)
+   \                     ??my_keyhook_32:
+   \   0000050C   9300A0E3           MOV      R0,#+147
+   \   00000510   400F80E3           ORR      R0,R0,#0x100
+   \   00000514   00005AE1           CMP      R10,R0
+   \   00000518   2E00001A           BNE      ??my_keyhook_33
+   \   0000051C   D0009FE5           LDR      R0,??my_keyhook_0+0x14  ;; action2
+   \   00000520   000090E5           LDR      R0,[R0, #+0]
+   \   00000524   010050E3           CMP      R0,#+1
+   \   00000528   2A00001A           BNE      ??my_keyhook_33
+    166              {   
+    167                sprintf(message2,"%s: %02d","Ongoing code",key_f2);
+   \   0000052C   FC609FE5           LDR      R6,??my_keyhook_0+0x50  ;; message2
+   \   00000530   FC109FE5           LDR      R1,??my_keyhook_0+0x54  ;; `?<Constant "%s: %02d">`
+   \   00000534   0230A0E1           MOV      R3,R2
+   \   00000538   F8209FE5           LDR      R2,??my_keyhook_0+0x58  ;; `?<Constant "Ongoing code">`
+   \   0000053C   0600A0E1           MOV      R0,R6
+   \   00000540   160000EF           SWI      +22
+    168                if (submsg=='6') {if (key_f2<99) key_f2++;return(2);}
+   \   00000544   002094E5           LDR      R2,[R4, #+0]
+   \   00000548   360059E3           CMP      R9,#+54
+   \   0000054C   0400001A           BNE      ??my_keyhook_34
+   \   00000550   630052E3           CMP      R2,#+99
+   \   00000554   0BFFFFAA           BGE      ??my_keyhook_15
+   \   00000558   010082E2           ADD      R0,R2,#+1
+   \   0000055C   000084E5           STR      R0,[R4, #+0]
+   \   00000560   34FFFFEA           B        ??my_keyhook_8
+    169                if (submsg=='4') {if (key_f2>0) key_f2--;return(2);}
+   \                     ??my_keyhook_34:
+   \   00000564   340059E3           CMP      R9,#+52
+   \   00000568   0400001A           BNE      ??my_keyhook_35
+   \   0000056C   010052E3           CMP      R2,#+1
+   \   00000570   04FFFFBA           BLT      ??my_keyhook_15
+   \   00000574   010042E2           SUB      R0,R2,#+1
+   \   00000578   000084E5           STR      R0,[R4, #+0]
+   \   0000057C   2DFFFFEA           B        ??my_keyhook_8
+    170                if (submsg=='5') {GBS_SendMessage(MMI_CEPID,msg,key_f2);return(2);}
+   \                     ??my_keyhook_35:
+   \   00000580   350059E3           CMP      R9,#+53
+   \   00000584   0400001A           BNE      ??my_keyhook_36
+   \   00000588   9310A0E3           MOV      R1,#+147
+   \   0000058C   401F81E3           ORR      R1,R1,#0x100
+   \   00000590   0500A0E1           MOV      R0,R5
+   \   00000594   000100EF           SWI      +256
+   \   00000598   26FFFFEA           B        ??my_keyhook_8
+    171                if (submsg=='0') {ShowMSG(1,(int)message2);return(2);}  
+   \                     ??my_keyhook_36:
+   \   0000059C   300059E3           CMP      R9,#+48
+   \   000005A0   0300001A           BNE      ??my_keyhook_37
+   \   000005A4   0610A0E1           MOV      R1,R6
+   \   000005A8   0100A0E3           MOV      R0,#+1
+   \   000005AC   480100EF           SWI      +328
+   \   000005B0   20FFFFEA           B        ??my_keyhook_8
+    172                if (submsg=='#') {ShowMSG(1,(int)"重设");key_f2=0;action2=0;return(2);}  
+   \                     ??my_keyhook_37:
+   \   000005B4   230059E3           CMP      R9,#+35
+   \   000005B8   0600001A           BNE      ??my_keyhook_33
+   \   000005BC   60109FE5           LDR      R1,??my_keyhook_0+0x44  ;; `?<Constant "\\326\\330\\311\\350">`
+   \   000005C0   0100A0E3           MOV      R0,#+1
+   \   000005C4   480100EF           SWI      +328
+   \   000005C8   24009FE5           LDR      R0,??my_keyhook_0+0x14  ;; action2
+   \   000005CC   008084E5           STR      R8,[R4, #+0]
+   \   000005D0   008080E5           STR      R8,[R0, #+0]
+   \   000005D4   17FFFFEA           B        ??my_keyhook_8
+    173              }            
+    174                
+    175          return(0);
+   \                     ??my_keyhook_33:
+   \   000005D8   0000A0E3           MOV      R0,#+0
+   \   000005DC   F28FBDE8           POP      {R1,R4-R11,PC}   ;; return
+   \                     ??my_keyhook_0:
+   \   000005E0   ........           DC32     key_f2
+   \   000005E4   ........           DC32     key_f1
+   \   000005E8   ........           DC32     action_4
+   \   000005EC   ........           DC32     action_2
+   \   000005F0   ........           DC32     action_3
+   \   000005F4   ........           DC32     action2
+   \   000005F8   ........           DC32     action_1
+   \   000005FC   ........           DC32     action_5
+   \   00000600   ........           DC32     `?<Constant "\\317\\326\\324\\332\\277\\252\\312\\274\\2`
+   \   00000604   ........           DC32     `?<Constant "\\275\\370\\310\\353!">`
+   \   00000608   ........           DC32     key_n
+   \   0000060C   ........           DC32     `?<Constant "\\304\\243\\304\\342\\274\\374\\326\\265">`
+   \   00000610   ........           DC32     message
+   \   00000614   ........           DC32     `?<Constant "%s: %02d\\n%s: %02d">`
+   \   00000618   ........           DC32     `?<Constant "\\312\\265\\274\\312\\274\\374\\326\\265">`
+   \   0000061C   ........           DC32     action_6
+   \   00000620   ........           DC32     `?<Constant "\\264\\355\\316\\363!\\n\\307\\353\\326\\33`
+   \   00000624   ........           DC32     `?<Constant "\\326\\330\\311\\350">`
+   \   00000628   ........           DC32     `?<Constant "\\275\\370\\310\\353">`
+   \   0000062C   ........           DC32     `?<Constant "4 - --\\n5 - Push\\n6 - ++">`
+   \   00000630   ........           DC32     message2
+   \   00000634   ........           DC32     `?<Constant "%s: %02d">`
+   \   00000638   ........           DC32     `?<Constant "Ongoing code">`
+    176          
+    177          }
+    178          
+    179          #pragma inline=forced
+    180          
+    181          int toupper(int c)
+    182          {
+    183            if ((c>='a')&&(c<='z')) c+='A'-'a';
+    184            return(c);
+    185          }
+    186          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    187          int strcmp_nocase(const char *s1,const char *s2)
+    188          {
+    189            int i;
+    190            int c;
+    191            while(!(i=(c=toupper(*s1++))-toupper(*s2++))) if (!c) break;
+   \                     strcmp_nocase:
+   \                     ??strcmp_nocase_0:
+   \   00000000   0020D0E5           LDRB     R2,[R0, #+0]
+   \   00000004   610052E3           CMP      R2,#+97
+   \   00000008   010000BA           BLT      ??strcmp_nocase_1
+   \   0000000C   7B0052E3           CMP      R2,#+123
+   \   00000010   202042B2           SUBLT    R2,R2,#+32
+   \                     ??strcmp_nocase_1:
+   \   00000014   00C0D1E5           LDRB     R12,[R1, #+0]
+   \   00000018   010080E2           ADD      R0,R0,#+1
+   \   0000001C   0230A0E1           MOV      R3,R2
+   \   00000020   61005CE3           CMP      R12,#+97
+   \   00000024   010000BA           BLT      ??strcmp_nocase_2
+   \   00000028   7B005CE3           CMP      R12,#+123
+   \   0000002C   20C04CB2           SUBLT    R12,R12,#+32
+   \                     ??strcmp_nocase_2:
+   \   00000030   011081E2           ADD      R1,R1,#+1
+   \   00000034   0C2052E0           SUBS     R2,R2,R12
+   \   00000038   0100001A           BNE      ??strcmp_nocase_3
+   \   0000003C   000053E3           CMP      R3,#+0
+   \   00000040   EEFFFF1A           BNE      ??strcmp_nocase_0
+    192            return(i);
+   \                     ??strcmp_nocase_3:
+   \   00000044   0200A0E1           MOV      R0,R2
+   \   00000048   1EFF2FE1           BX       LR               ;; return
+    193          }
+    194          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    195          int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
+    196          {
+   \                     maincsm_onmessage:
+   \   00000000   00402DE9           PUSH     {LR}
+    197            
+    198           void *icsm=FindCSMbyID(CSM_root()->idle_id);
+   \   00000004   068100EF           SWI      +33030
+   \   00000008   040090E5           LDR      R0,[R0, #+4]
+   \   0000000C   080100EF           SWI      +264
+    199          
+    200            return (1);  
+   \   00000010   0100A0E3           MOV      R0,#+1
+   \   00000014   0080BDE8           POP      {PC}             ;; return
+    201          }
+    202          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    203          static void maincsm_oncreate(CSM_RAM *data)
+    204          {
+    205          
+    206          }
+   \                     maincsm_oncreate:
+   \   00000000   1EFF2FE1           BX       LR               ;; return
+    207          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    208          static void Killer(void)
+    209          {
+    210            extern void *ELF_BEGIN;
+    211            RemoveKeybMsgHook((void *)my_keyhook);
+   \                     Killer:
+   \   00000000   ........           LDR      R0,??DataTable1  ;; my_keyhook
+   \   00000004   00402DE9           PUSH     {LR}
+   \   00000008   2D0100EF           SWI      +301
+    212            kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
+   \   0000000C   158000EF           SWI      +32789
+   \   00000010   0010A0E1           MOV      R1,R0
+   \   00000014   04009FE5           LDR      R0,??Killer_0    ;; ELF_BEGIN
+   \   00000018   0040BDE8           POP      {LR}             ;; Pop
+   \   0000001C   ........           _BF      kill_data,??kill_data??rA  ;; tailcall
+   \                     ??Killer_0:
+   \   00000020   ........           DC32     ELF_BEGIN
+    213          }
+    214          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    215          static void maincsm_onclose(CSM_RAM *csm)
+    216          {
+    217            SUBPROC((void *)Killer);
+   \                     maincsm_onclose:
+   \   00000000   08009FE5           LDR      R0,??maincsm_onclose_0  ;; Killer
+   \   00000004   00402DE9           PUSH     {LR}
+   \   00000008   710100EF           SWI      +369
+    218          }
+   \   0000000C   0080BDE8           POP      {PC}             ;; return
+   \                     ??maincsm_onclose_0:
+   \   00000010   ........           DC32     Killer
+    219          
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+    220          static unsigned short maincsm_name_body[140];
+   \                     maincsm_name_body:
+   \   00000000                      DS8 280
+    221          
+    222          static const struct
+    223          {
+    224            CSM_DESC maincsm;
+    225            WSHDR maincsm_name;
+
+   \                                 In segment DATA_C, align 4, align-sorted
+    226          }MAINCSM =
+   \                     MAINCSM:
+   \   00000000   ............       DC32 maincsm_onmessage, maincsm_oncreate, 0, 0, 0, 0, maincsm_onclose
+   \              ....00000000
+   \              000000000000
+   \              000000000000
+   \              ........    
+   \   0000001C   280000000100       DC32 40, 1, minus11, maincsm_name_body, 55AACCCCH, 3333AA55H, 0
+   \              0000........
+   \              ........CCCC
+   \              AA5555AA3333
+   \              00000000    
+   \   00000038   8B00               DC16 139
+   \   0000003A   0000               DC8 0, 0
+    227          {
+    228            {
+    229            maincsm_onmessage,
+    230            maincsm_oncreate,
+    231          #ifdef NEWSGOLD
+    232            0,
+    233            0,
+    234            0,
+    235            0,
+    236          #endif
+    237            maincsm_onclose,
+    238            sizeof(MAIN_CSM),
+    239            1,
+    240            &minus11
+    241            },
+    242            {
+    243              maincsm_name_body,
+    244              NAMECSM_MAGIC1,
+    245              NAMECSM_MAGIC2,
+    246              0x0,
+    247              139
+    248            }
+    249          };
+    250          
+    251          static void UpdateCSMname(void)
+    252          {
+    253            wsprintf((WSHDR *)(&MAINCSM.maincsm_name),ELF_NAME);
+    254          }
+    255          
+    256          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    257          int main()
+    258          {
+   \                     main:
+   \   00000000   F0402DE9           PUSH     {R4-R7,LR}
+    259            CSM_RAM *save_cmpc;
+    260            char dummy[sizeof(MAIN_CSM)];
+    261            UpdateCSMname();
+   \   00000004   94509FE5           LDR      R5,??main_0      ;; MAINCSM
+   \   00000008   94409FE5           LDR      R4,??main_0+0x4  ;; `?<Constant "JKeyFinder">`
+   \   0000000C   28D04DE2           SUB      SP,SP,#+40
+   \   00000010   0410A0E1           MOV      R1,R4
+   \   00000014   280085E2           ADD      R0,R5,#+40
+   \   00000018   240100EF           SWI      +292
+    262            
+    263            LockSched();
+   \   0000001C   460100EF           SWI      +326
+    264            save_cmpc=CSM_root()->csm_q->current_msg_processing_csm;
+   \   00000020   068100EF           SWI      +33030
+   \   00000024   080090E5           LDR      R0,[R0, #+8]
+   \   00000028   046090E5           LDR      R6,[R0, #+4]
+    265            CSM_root()->csm_q->current_msg_processing_csm=CSM_root()->csm_q->csm.first;
+   \   0000002C   068100EF           SWI      +33030
+   \   00000030   0070A0E1           MOV      R7,R0
+   \   00000034   068100EF           SWI      +33030
+   \   00000038   080090E5           LDR      R0,[R0, #+8]
+   \   0000003C   081097E5           LDR      R1,[R7, #+8]
+   \   00000040   080090E5           LDR      R0,[R0, #+8]
+    266            CreateCSM(&MAINCSM.maincsm,dummy,0);
+   \   00000044   0020A0E3           MOV      R2,#+0
+   \   00000048   040081E5           STR      R0,[R1, #+4]
+   \   0000004C   0D10A0E1           MOV      R1,SP
+   \   00000050   0500A0E1           MOV      R0,R5
+    267            CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
+    268            UnlockSched();
+    269            AddKeybMsgHook((void *)my_keyhook);
+    270            sprintf(elfhello,"%s\n(c)%s",ELF_NAME,ELF_AUTHOR);
+   \   00000054   4C509FE5           LDR      R5,??main_0+0x8  ;; elfhello
+   \   00000058   070100EF           SWI      +263
+   \   0000005C   068100EF           SWI      +33030
+   \   00000060   080090E5           LDR      R0,[R0, #+8]
+   \   00000064   046080E5           STR      R6,[R0, #+4]
+   \   00000068   470100EF           SWI      +327
+   \   0000006C   ........           LDR      R0,??DataTable1  ;; my_keyhook
+   \   00000070   2B0100EF           SWI      +299
+   \   00000074   30309FE5           LDR      R3,??main_0+0xC  ;; `?<Constant "Dimadze">`
+   \   00000078   30109FE5           LDR      R1,??main_0+0x10  ;; `?<Constant "%s\\n(c)%s">`
+   \   0000007C   0420A0E1           MOV      R2,R4
+   \   00000080   0500A0E1           MOV      R0,R5
+   \   00000084   160000EF           SWI      +22
+    271            ShowMSG(1,(int)elfhello);
+   \   00000088   0510A0E1           MOV      R1,R5
+   \   0000008C   0100A0E3           MOV      R0,#+1
+   \   00000090   480100EF           SWI      +328
+    272            
+    273            return 0;
+   \   00000094   0000A0E3           MOV      R0,#+0
+   \   00000098   28D08DE2           ADD      SP,SP,#+40
+   \   0000009C   F080BDE8           POP      {R4-R7,PC}       ;; return
+   \                     ??main_0:
+   \   000000A0   ........           DC32     MAINCSM
+   \   000000A4   ........           DC32     `?<Constant "JKeyFinder">`
+   \   000000A8   ........           DC32     elfhello
+   \   000000AC   ........           DC32     `?<Constant "Dimadze">`
+   \   000000B0   ........           DC32     `?<Constant "%s\\n(c)%s">`
+    274          }
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable1:
+   \   00000000   ........           DC32     my_keyhook
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "Dimadze">`:
+   \   00000000   44696D61647A       DC8 "Dimadze"
+   \              6500        
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "%s: %02d\\n%s: %02d">`:
+   \   00000000   25733A202530       DC8 "%s: %02d\012%s: %02d"
+   \              32640A25733A
+   \              202530326400
+   \   00000012   0000               DC8 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\275\\370\\310\\353!">`:
+   \   00000000   BDF8C8EB2100       DC8 "\275\370\310\353!"
+   \   00000006   0000               DC8 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\317\\326\\324\\332\\277\\252\\312\\274\\2`:
+   \   00000000   CFD6D4DABFAA       DC8 "\317\326\324\332\277\252\312\274\260\311"
+   \              CABCB0C900  
+   \   0000000B   00                 DC8 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "%s\\n(c)%s">`:
+   \   00000000   25730A286329       DC8 "%s\012(c)%s"
+   \              257300      
+   \   00000009   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "JKeyFinder">`:
+   \   00000000   4A4B65794669       DC8 "JKeyFinder"
+   \              6E64657200  
+   \   0000000B   00                 DC8 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "Ongoing code">`:
+   \   00000000   4F6E676F696E       DC8 "Ongoing code"
+   \              6720636F6465
+   \              00          
+   \   0000000D   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "%s: %02d">`:
+   \   00000000   25733A202530       DC8 "%s: %02d"
+   \              326400      
+   \   00000009   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "4 - --\\n5 - Push\\n6 - ++">`:
+   \   00000000   34202D202D2D       DC8 "4 - --\0125 - Push\0126 - ++"
+   \              0A35202D2050
+   \              7573680A3620
+   \              2D202B2B00  
+   \   00000017   00                 DC8 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\326\\330\\311\\350">`:
+   \   00000000   D6D8C9E800         DC8 "\326\330\311\350"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\275\\370\\310\\353">`:
+   \   00000000   BDF8C8EB00         DC8 "\275\370\310\353"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\264\\355\\316\\363!\\n\\307\\353\\326\\33`:
+   \   00000000   B4EDCEF3210A       DC8 "\264\355\316\363!\012\307\353\326\330\312\324"
+   \              C7EBD6D8CAD4
+   \              00          
+   \   0000000D   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\304\\243\\304\\342\\274\\374\\326\\265">`:
+   \   00000000   C4A3C4E2BCFC       DC8 "\304\243\304\342\274\374\326\265"
+   \              D6B500      
+   \   00000009   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\312\\265\\274\\312\\274\\374\\326\\265">`:
+   \   00000000   CAB5BCCABCFC       DC8 "\312\265\274\312\274\374\326\265"
+   \              D6B500      
+   \   00000009   000000             DC8 0, 0, 0
+
+   Maximum stack usage in bytes:
+
+     Function          CSTACK
+     --------          ------
+     Idle                  4
+     IsIDLE                4
+     Killer                4
+     main                 60
+     maincsm_onclose       4
+     maincsm_oncreate      0
+     maincsm_onmessage     4
+     my_keyhook           48
+     strcmp_nocase         0
+
+
+   Segment part sizes:
+
+     Function/Label                 Bytes
+     --------------                 -----
+     action_1                          4
+     action_2                          4
+     action_3                          4
+     action_4                          4
+     action_5                          4
+     action_6                          4
+     action2                           4
+     key_n                             4
+     key_f1                            4
+     key_f2                            4
+     message                         128
+     message2                        128
+     elfhello                         64
+     IsIDLE                           36
+     minus11                           4
+     under_idle                        4
+     ipc_my_name                      32
+     ipc_xtask_name                    8
+     gipc                             12
+     Idle                             72
+     my_keyhook                     1596
+     ??strcmp_nocase_0                76
+     maincsm_onmessage                24
+     maincsm_oncreate                  4
+     Killer                           36
+     maincsm_onclose                  20
+     maincsm_name_body               280
+     MAINCSM                          60
+     main                            180
+     ??DataTable1                      4
+     ?<Constant "Dimadze">             8
+     ?<Constant "%s: %02d\n%s: %02d">
+                                      20
+     ?<Constant "\275\370\310\353!">
+                                       8
+     ?<Constant "\317\326\324\332\277\252\312\274\2
+                                      12
+     ?<Constant "%s\n(c)%s">          12
+     ?<Constant "JKeyFinder">         12
+     ?<Constant "Ongoing code">       16
+     ?<Constant "%s: %02d">           12
+     ?<Constant "4 - --\n5 - Push\n6 - ++">
+                                      24
+     ?<Constant "\326\330\311\350">    8
+     ?<Constant "\275\370\310\353">    8
+     ?<Constant "\264\355\316\363!\n\307\353\326\33
+                                      16
+     ?<Constant "\304\243\304\342\274\374\326\265">
+                                      12
+     ?<Constant "\312\265\274\312\274\374\326\265">
+                                      12
+      Others                          60
+
+ 
+ 2 096 bytes in segment CODE
+   284 bytes in segment DATA_C
+   656 bytes in segment DATA_Z
+    12 bytes in segment INITTAB
+ 
+ 2 048 bytes of CODE  memory (+ 60 bytes shared)
+   284 bytes of CONST memory
+   656 bytes of DATA  memory
+
+Errors: none
+Warnings: none

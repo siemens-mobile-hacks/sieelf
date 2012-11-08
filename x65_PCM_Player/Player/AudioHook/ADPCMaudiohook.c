@@ -1,15 +1,15 @@
-/*    Интерфейс для аудио хука.
-Немного о принципе работы:
-Функцией PlayMelodyInMem запускается проигрывание буффера
-с заголовком wave файла. PlayMelodyInMem создает свой
-буффер, копирует туда данные без заголовка wave и уже
-оттуда посылает
-данные в DSP. Условно этот буффер разделяется на два.
-Мы находим адрес этого буффера и установив хук на
-зацикливание заполняем одну его половину, пока другая
-воспроизводится. Все просто :)
-Из за каких-то особенностей воспроизведения
-буффер меньше ~2 секунд приводит к сбоям в проигрывании.
+/*The interface for audio hook.
+A little about the principle of operation:
+The function starts playback buffer PlayMelodyInMem
+wave file with a header. PlayMelodyInMem creates its own
+buffer, copies the data there without a title wave and is
+sends out
+data in the DSP. Conventionally, this buffer is divided into two.
+We find the address of the buffer and setting the hook on the
+loop fill one half of it, while the other
+reproduced. It's simple :)
+Due to some peculiarities of reproduction
+buffer is less than ~ 2 seconds, leading to disruptions in the playing.
 ILYA_ZX.
 mailto: rusman2005@mail.ru
 */
@@ -17,31 +17,31 @@ mailto: rusman2005@mail.ru
 #include "IMA_ADPCM.C"
 
 extern signed char Volume;
-/* Частота дискретизации */
+/* Frequency */
 extern int samplerate;
-/* Адрес в ОЗУ(из библиотеки функций) */
+/* Address in the RAM (from the library functions) */
 long * WaveParameters;
-/* Буффер, создаваемый функцией PlayMelodyInMem */
+/* Buffer created function PlayMelodyInMem */
 char * buffer;
-/* Номер следующего буффера для заполнения. Один буффер условно делится на два */
+/* Number of next buffer to fill. One buffer is divided into two */
 extern unsigned char nextbuff;
-/* Буффер, используемый для запуска проигрывания */
+/* Buffer used to start playback */
 unsigned char * imabuf=0;
-/* Буффер для PCM данных */
+/* Buffer for the PCM dataых */
 signed short * pcmbuff=0;
-/* Переменные управления воспроизведением. Для остановки: Playing=0; */
+/* Variable playback controls. To stop: Playing = 0; */
 extern signed char Playing;
-/* Время проигрывания в 1/16000 секунды */
+/* Time playing in the 1/16000 seconds */
 extern signed long PlayingTime;
-/* Процедура управления проигрыванием */
+/* The procedure of playback controls */
 void AdpcmPlayingProc();
-/* Размер буффера. Должен быть кратен 256(размер блока IMA ADPCM) */
+/* Size of buffer. Must be a multiple of 256 (block size IMA ADPCM) */
 static const int AD_BUFFERSIZE = 32768;
 
 int writebufpos;
 
 
-/* Заголовок wave IMA ADPCM */
+/* Title wave IMA ADPCM */
 unsigned char Ad_WavHdr[60] =
 {
   0x52, 0x49, 0x46, 0x46, 0x34, 0x4D, 0x4B, 0x00, 0x57, 0x41, 0x56, 0x45, 0x66, 0x6D, 0x74, 0x20, 0x14, 0x00, 0x00, 0x00, 0x11,
@@ -50,31 +50,27 @@ unsigned char Ad_WavHdr[60] =
 };
 
 
-/* Функция включения и отключения зацикливания буффера, не 0 - зацикливание включено */
+/* Function on and off cycling buffer, not 0 - loop included */
 void Ad_SetHookState( unsigned char hookstate )
 {
   WaveParameters[-0x1C] = hookstate;
 }
 
-/* Возвращает адрес конца буффера, созданного функцией PlayMelodyInMem */
 long GetBuffEnd()
 {
   return ( WaveParameters[0x08] );
 }
 
-/* Возвращает адрес текущей позиции в буфере */
 long GetAd_BuffPosAddr()
 {
   return ( WaveParameters[0x07] );
 }
 
-/* Возвращает позицию в буффере */
 unsigned long Ad_BuffPos()
 {
   return ( GetAd_BuffPosAddr() - ( long )buffer );
 }
 
-/* Функция заполнения первого буффера в imabuf */
 void Ad_FillBuffer()
 {
   unsigned int i;
@@ -119,7 +115,6 @@ void Ad_FillBuffer()
 int Ad_PlayStatus(){
 return(WaveParameters[0x16]);  
 };
-/* Функция заполнения первого буффера */
 void Ad_FillBuffer1()
 {
   unsigned int i; 
@@ -148,7 +143,6 @@ void Ad_FillBuffer1()
   writebufpos=-1;
 }
 
-/* Функция заполнения второго буффера */
 void Ad_FillBuffer2()
 {
   unsigned int i, writebufpos;
@@ -181,46 +175,34 @@ void Ad_FillBuffer2()
 void Ad_AudioInit()
 {
   Volume = 1;
-  /* Адрес параметров wave из библиотеки функций,
-  другого способа его получить я не нашел */
+  /* Address of the parameters of the wave function libraries,
+   other way to get it I have not found */
   //WaveParameters = ( void * ) 0xA0FD426C;  
  // WaveParameters = ( void * ) WaveParameters[0]; 
-  WaveParameters= AudioParamsAdr();
-  /* +60 - на заголовок wave */
+  WaveParameters = AudioParamsAdr();
   imabuf = malloc( AD_BUFFERSIZE + 60 );
   pcmbuff = malloc( 1014*2 );
-  /*Копируем заголовок wave */
   memcpy( imabuf, ( void * ) ( Ad_WavHdr ), 60 );
 }
 
 void Ad_AudioStart()
 { 
-  /* Воспроизведение активно */
   Playing = 1;
-  /*0xFF - для установки громкости и получения адреса буффера*/
   nextbuff = 0xFF;
-  /*Подготавливаем буффер*/
   Ad_FillBuffer();
-  /*Устанавливаем зацикливание*/
   Ad_SetHookState( 1 );
   
-  /* Устанавливаем частоту дискретизации */
   memcpy(imabuf+24,&samplerate,4);
   *(( (char *) PcmWaveParams)+0x85) = ( 48 - ( Volume * 2 ) ) + 1;
-  /*Запускаем буффер на проигрывание*/
   PlayMelodyInMem( 0x11, imabuf, AD_BUFFERSIZE + 60, 0xFFFF, 0, 0 );
-  /*Запускаем цикл обслуживания проигрывания*/  
   GBS_StartTimerProc( & ahtimer, 64, AdpcmPlayingProc );
 }
 
-/*Остановка воспроизведения.
-Фенкция вызывается если Playing=0 */
+
 void Ad_AudioStop()
 {
-  /* Отключаем хук */
   Ad_SetHookState( 0 );
   AudioActive=0;
-  /* Проигрываем короткий звук для остановки проигрывания основного буффера */
   //PlayMelodyInMem( 0x11, imabuf, 256 + 60, 0xFFFF, 0, 0 );
 }
 
@@ -268,10 +250,8 @@ void AdpcmPlayingProc()
 
   if ( ( nextbuff == 1 ) && ( BUFPOS > ( AD_BUFFERSIZE / 2 ) ) )
   {
-    /* Сбрасываем какой-то счетчик. Если этого не делать
-    то примерно через 10 минут проигрывания телефон зависает */
+
     WaveParameters[0x0B] = 0;
-    /* Заполняем первый буффер */
     Ad_FillBuffer1();
     //SUBPROC((void*)Ad_FillBuffer1);
     nextbuff = 2;

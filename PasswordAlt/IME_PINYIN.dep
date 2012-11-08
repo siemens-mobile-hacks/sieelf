@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <fileChecksum>3829187945</fileChecksum>
+  <configuration>
+    <name>EL71sw45</name>
+    <outputs>
+      <file>$PROJ_DIR$\EL71sw45\Exe\IME_PINYIN.elf</file>
+      <file>$PROJ_DIR$\EL71v45.xcl</file>
+      <file>$PROJ_DIR$\EL71sw45\List\main.lst</file>
+      <file>$PROJ_DIR$\main.asm</file>
+      <file>$PROJ_DIR$\EL71sw45\Obj\main.r79</file>
+      <file>$PROJ_DIR$\EL71sw45\List\IME_PINYIN.map</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\EL71sw45\Exe\IME_PINYIN.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 5</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 1 4</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 5 0</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 4 2</file>
+        </tool>
+      </outputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>S7Cv47</name>
+    <outputs>
+      <file>$PROJ_DIR$\S7Cv47\List\main.lst</file>
+      <file>$PROJ_DIR$\S7Cv47\Obj\main.r79</file>
+      <file>$PROJ_DIR$\S7Cv47\Exe\IME_PINYIN.elf</file>
+      <file>$PROJ_DIR$\S7Cv47\List\IME_PINYIN.map</file>
+      <file>$PROJ_DIR$\S7Cv47.xcl</file>
+      <file>$PROJ_DIR$\main.asm</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\S7Cv47\Exe\IME_PINYIN.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 3</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 4 1</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 2 3</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 1 0</file>
+        </tool>
+      </outputs>
+    </file>
+  </configuration>
+</project>
+
+

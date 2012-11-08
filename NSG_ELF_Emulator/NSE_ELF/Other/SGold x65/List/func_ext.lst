@@ -1,0 +1,1078 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    12/Jan/2012  10:48:40 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\NSG_ELF_Emulator\NSE_ELF\func_e #
+#                       xt.c                                                 #
+#    Command line    =  D:\SVN\SieELF\SieELF\NSG_ELF_Emulator\NSE_ELF\func_e #
+#                       xt.c -lC "D:\SVN\SieELF\SieELF\NSG_ELF_Emulator\NSE_ #
+#                       ELF\Other\SGold x65\List\" -o                        #
+#                       "D:\SVN\SieELF\SieELF\NSG_ELF_Emulator\NSE_ELF\Other #
+#                       \SGold x65\Obj\" -s9 --no_unroll --no_tbaa           #
+#                       --cpu_mode arm --endian little --cpu ARM926EJ-S      #
+#                       --stack_align 4 --interwork -e --fpu None            #
+#                       --dlib_config "D:\Program Files\IAR\Embedded         #
+#                       Workbench 4.0 Evaluation\ARM\LIB\dl5tpainl8n.h" -I   #
+#                       "D:\Program Files\IAR\Embedded Workbench 4.0         #
+#                       Evaluation\ARM\INC\" --inline_threshold=2            #
+#    List file       =  D:\SVN\SieELF\SieELF\NSG_ELF_Emulator\NSE_ELF\Other\ #
+#                       SGold x65\List\func_ext.lst                          #
+#    Object file     =  D:\SVN\SieELF\SieELF\NSG_ELF_Emulator\NSE_ELF\Other\ #
+#                       SGold x65\Obj\func_ext.r79                           #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\NSG_ELF_Emulator\NSE_ELF\func_ext.c
+      1          
+      2          #include "..\inc\swilib.h"
+      3          #include "add_swilib.h"
+      4          
+      5          //BCFG Config
+      6          extern const unsigned int bcfg_csm_act;
+      7          extern const int bcfg_markcsm_ena;
+      8          
+      9          extern const int bcfg_0x136_ena;
+     10          extern const int bcfg_0x137_ena;
+     11          extern const int bcfg_0x138_ena;
+     12          extern const int bcfg_0x139_ena;
+     13          extern const int bcfg_0x13A_ena;
+     14          
+     15          extern const int bcfg_0x152_ena;
+     16          extern const int bcfg_0x167_ena;
+     17          extern const int bcfg_0x217_ena;
+     18          
+     19          extern const int bcfg_0x04A_ena;
+     20          extern const int bcfg_0x099_ena;
+     21          
+     22          extern const unsigned int bcfg_fss_fstype;
+     23          extern const unsigned int bcfg_fss_type;
+     24          extern const int bcfg_fss_key;
+     25          extern const int bcfg_fss_msg;
+     26          
+     27          extern const int bcfg_isnsg;
+     28          
+     29          
+     30          extern const unsigned int bcfg_ka_type;
+     31          extern const unsigned int bcfg_type;
+     32          extern const int bcfg_key;
+     33          extern const int bcfg_msg;
+     34          
+     35          extern const int bcfg_ls_ena;
+     36          extern const int bcfg_rs_ena;
+     37          extern const int bcfg_lb_ena;
+     38          extern const int bcfg_rb_ena;
+     39          extern const int bcfg_ub_ena;
+     40          extern const int bcfg_db_ena;
+     41          
+     42          
+
+   \                                 In segment CODE, align 4, keep-with-next
+     43          int CreateCSM_mod(CSM_DESC_NSG *csm_desc, void *a2, int a3)
+     44          {
+   \                     CreateCSM_mod:
+   \   00000000   F0412DE9           PUSH     {R4-R8,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+     45           if (csm_desc->zero1 == 0 && csm_desc->zero2 == 0 && csm_desc->zero3 == 0 && csm_desc->zero4 == 0)
+   \   00000008   080094E5           LDR      R0,[R4, #+8]
+   \   0000000C   0150A0E1           MOV      R5,R1
+   \   00000010   000050E3           CMP      R0,#+0
+   \   00000014   0C009405           LDREQ    R0,[R4, #+12]
+   \   00000018   0260A0E1           MOV      R6,R2
+   \   0000001C   00005003           CMPEQ    R0,#+0
+   \   00000020   10009405           LDREQ    R0,[R4, #+16]
+   \   00000024   00005003           CMPEQ    R0,#+0
+   \   00000028   14009405           LDREQ    R0,[R4, #+20]
+   \   0000002C   00005003           CMPEQ    R0,#+0
+   \   00000030   2900001A           BNE      ??CreateCSM_mod_0
+     46            {
+     47             char *csm_desc_sg = (char *)csm_desc;
+     48             memcpy((char *)csm_desc+8,(char *)csm_desc+24,(sizeof(CSM_DESC_NSG)-24)+sizeof(WSHDR));
+   \   00000034   2420A0E3           MOV      R2,#+36
+   \   00000038   181084E2           ADD      R1,R4,#+24
+   \   0000003C   080084E2           ADD      R0,R4,#+8
+   \   00000040   1E0100EF           SWI      +286
+     49             for (int i = 0; i < 24; i++) csm_desc_sg[sizeof(CSM_DESC_NSG) + sizeof(WSHDR) - 24 + i] = 0;
+   \   00000044   0000A0E3           MOV      R0,#+0
+   \   00000048   0020A0E3           MOV      R2,#+0
+   \                     ??CreateCSM_mod_1:
+   \   0000004C   041080E0           ADD      R1,R0,R4
+   \   00000050   2420C1E5           STRB     R2,[R1, #+36]
+   \   00000054   010080E2           ADD      R0,R0,#+1
+   \   00000058   180050E3           CMP      R0,#+24
+   \   0000005C   FAFFFFBA           BLT      ??CreateCSM_mod_1
+     50             
+     51             CSM_DESC *csm_desc_temp  = (CSM_DESC *)csm_desc_sg;
+     52             csm_desc_temp->datasize = 0x2D;
+     53             
+     54             if (bcfg_csm_act == 0) 
+   \   00000060   80709FE5           LDR      R7,??CreateCSM_mod_2  ;; `?<Constant "NSE:\\nNSG CSM Detect!">`
+   \   00000064   2D00A0E3           MOV      R0,#+45
+   \   00000068   0C0084E5           STR      R0,[R4, #+12]
+   \   0000006C   78009FE5           LDR      R0,??CreateCSM_mod_2+0x4  ;; bcfg_csm_act
+   \   00000070   000090E5           LDR      R0,[R0, #+0]
+   \   00000074   000050E3           CMP      R0,#+0
+   \   00000078   0700001A           BNE      ??CreateCSM_mod_3
+     55              {
+     56                ShowMSG(1, (int)"NSE:\nNSG CSM Detect!");
+   \   0000007C   0710A0E1           MOV      R1,R7
+   \   00000080   0100A0E3           MOV      R0,#+1
+   \   00000084   480100EF           SWI      +328
+     57                zeromem(csm_desc, sizeof(CSM_DESC_NSG));
+   \   00000088   2810A0E3           MOV      R1,#+40
+   \   0000008C   0400A0E1           MOV      R0,R4
+   \   00000090   1D0100EF           SWI      +285
+     58                return 0;
+   \   00000094   0000A0E3           MOV      R0,#+0
+   \   00000098   F081BDE8           POP      {R4-R8,PC}
+     59              }
+     60             if (bcfg_markcsm_ena == 1) 
+   \                     ??CreateCSM_mod_3:
+   \   0000009C   4C009FE5           LDR      R0,??CreateCSM_mod_2+0x8  ;; bcfg_markcsm_ena
+   \   000000A0   000090E5           LDR      R0,[R0, #+0]
+   \   000000A4   010050E3           CMP      R0,#+1
+   \   000000A8   0900001A           BNE      ??CreateCSM_mod_4
+     61              {
+     62                WSHDR *ws_addname = AllocWS(32);
+   \   000000AC   2000A0E3           MOV      R0,#+32
+   \   000000B0   250100EF           SWI      +293
+   \   000000B4   0080A0E1           MOV      R8,R0
+     63                wsprintf(ws_addname, " (NSG)");
+   \   000000B8   181087E2           ADD      R1,R7,#+24
+   \   000000BC   240100EF           SWI      +292
+     64                WSHDR *ws_csmname = (WSHDR *)((char *)csm_desc_temp + sizeof(CSM_DESC));
+     65                wstrcat (ws_csmname, ws_addname);
+   \   000000C0   0810A0E1           MOV      R1,R8
+   \   000000C4   180084E2           ADD      R0,R4,#+24
+   \   000000C8   210100EF           SWI      +289
+     66                FreeWS(ws_addname);
+   \   000000CC   0800A0E1           MOV      R0,R8
+   \   000000D0   290100EF           SWI      +297
+     67              }
+     68             
+     69             
+     70             return CreateCSM_orig((CSM_DESC *)csm_desc, a2,a3);
+   \                     ??CreateCSM_mod_4:
+   \   000000D4   0620A0E1           MOV      R2,R6
+   \   000000D8   0510A0E1           MOV      R1,R5
+     71            }
+     72           
+     73           return CreateCSM_orig((CSM_DESC *)csm_desc, a2,a3);
+   \                     ??CreateCSM_mod_0:
+   \   000000DC   0400A0E1           MOV      R0,R4
+   \   000000E0   100D00EF           SWI      +3344
+   \   000000E4   F081BDE8           POP      {R4-R8,PC}       ;; return
+   \                     ??CreateCSM_mod_2:
+   \   000000E8   ........           DC32     `?<Constant "NSE:\\nNSG CSM Detect!">`
+   \   000000EC   ........           DC32     bcfg_csm_act
+   \   000000F0   ........           DC32     bcfg_markcsm_ena
+     74          }
+     75          
+     76          
+     77          //Create GUI
+
+   \                                 In segment CODE, align 4, keep-with-next
+     78          int CreateGUI_mod(void *gui)
+     79          {
+   \                     CreateGUI_mod:
+   \   00000000   10402DE9           PUSH     {R4,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+     80           GUI_NSG *main_gui_addr = (GUI_NSG *)gui;
+     81           
+     82             main_gui_addr->canvas->x = 0;
+   \   00000008   001094E5           LDR      R1,[R4, #+0]
+   \   0000000C   0000A0E3           MOV      R0,#+0
+   \   00000010   B000C1E1           STRH     R0,[R1, #+0]
+     83             main_gui_addr->canvas->y = 0;
+   \   00000014   001094E5           LDR      R1,[R4, #+0]
+   \   00000018   B200C1E1           STRH     R0,[R1, #+2]
+     84             main_gui_addr->canvas->x2 = ScreenW()-1;
+   \   0000001C   888100EF           SWI      +33160
+   \   00000020   001094E5           LDR      R1,[R4, #+0]
+   \   00000024   010040E2           SUB      R0,R0,#+1
+   \   00000028   B400C1E1           STRH     R0,[R1, #+4]
+     85             main_gui_addr->canvas->y2 = ScreenH()-1;
+   \   0000002C   898100EF           SWI      +33161
+   \   00000030   001094E5           LDR      R1,[R4, #+0]
+   \   00000034   010040E2           SUB      R0,R0,#+1
+   \   00000038   B600C1E1           STRH     R0,[R1, #+6]
+     86             main_gui_addr->unk4       = 0xDD;
+   \   0000003C   DD00A0E3           MOV      R0,#+221
+   \   00000040   0F00C4E5           STRB     R0,[R4, #+15]
+     87           
+     88           return CreateGUI_orig(gui);
+   \   00000044   0400A0E1           MOV      R0,R4
+   \   00000048   110D00EF           SWI      +3345
+   \   0000004C   1080BDE8           POP      {R4,PC}          ;; return
+     89          }
+     90          
+     91          
+
+   \                                 In segment CODE, align 4, keep-with-next
+     92          int CreateGUI_ID_mod(void *gui, int id)
+     93          {
+   \                     CreateGUI_ID_mod:
+   \   00000000   30402DE9           PUSH     {R4,R5,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+     94           GUI_NSG *main_gui_addr = (GUI_NSG *)gui;
+     95           
+     96             main_gui_addr->canvas->x = 0;
+   \   00000008   0000A0E3           MOV      R0,#+0
+   \   0000000C   0150A0E1           MOV      R5,R1
+   \   00000010   001094E5           LDR      R1,[R4, #+0]
+   \   00000014   B000C1E1           STRH     R0,[R1, #+0]
+     97             main_gui_addr->canvas->y = 0;
+   \   00000018   001094E5           LDR      R1,[R4, #+0]
+   \   0000001C   B200C1E1           STRH     R0,[R1, #+2]
+     98             main_gui_addr->canvas->x2 = ScreenW()-1;
+   \   00000020   888100EF           SWI      +33160
+   \   00000024   001094E5           LDR      R1,[R4, #+0]
+   \   00000028   010040E2           SUB      R0,R0,#+1
+   \   0000002C   B400C1E1           STRH     R0,[R1, #+4]
+     99             main_gui_addr->canvas->y2 = ScreenH()-1;
+   \   00000030   898100EF           SWI      +33161
+   \   00000034   001094E5           LDR      R1,[R4, #+0]
+   \   00000038   010040E2           SUB      R0,R0,#+1
+   \   0000003C   B600C1E1           STRH     R0,[R1, #+6]
+    100             main_gui_addr->unk4       = 0xDD;
+   \   00000040   DD00A0E3           MOV      R0,#+221
+   \   00000044   0F00C4E5           STRB     R0,[R4, #+15]
+    101           
+    102           return CreateGUI_ID_orig(gui, id);
+   \   00000048   0510A0E1           MOV      R1,R5
+   \   0000004C   0400A0E1           MOV      R0,R4
+   \   00000050   120D00EF           SWI      +3346
+   \   00000054   3080BDE8           POP      {R4,R5,PC}       ;; return
+    103          }
+    104          
+    105          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    106          int CreateGUI_30or2_mod(void *gui)
+    107          {
+   \                     CreateGUI_30or2_mod:
+   \   00000000   10402DE9           PUSH     {R4,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+    108           GUI_NSG *main_gui_addr = (GUI_NSG *)gui;
+    109           
+    110             main_gui_addr->canvas->x = 0;
+   \   00000008   001094E5           LDR      R1,[R4, #+0]
+   \   0000000C   0000A0E3           MOV      R0,#+0
+   \   00000010   B000C1E1           STRH     R0,[R1, #+0]
+    111             main_gui_addr->canvas->y = 0;
+   \   00000014   001094E5           LDR      R1,[R4, #+0]
+   \   00000018   B200C1E1           STRH     R0,[R1, #+2]
+    112             main_gui_addr->canvas->x2 = ScreenW()-1;
+   \   0000001C   888100EF           SWI      +33160
+   \   00000020   001094E5           LDR      R1,[R4, #+0]
+   \   00000024   010040E2           SUB      R0,R0,#+1
+   \   00000028   B400C1E1           STRH     R0,[R1, #+4]
+    113             main_gui_addr->canvas->y2 = ScreenH()-1;
+   \   0000002C   898100EF           SWI      +33161
+   \   00000030   001094E5           LDR      R1,[R4, #+0]
+   \   00000034   010040E2           SUB      R0,R0,#+1
+   \   00000038   B600C1E1           STRH     R0,[R1, #+6]
+    114             main_gui_addr->unk4       = 0xDD;
+   \   0000003C   DD00A0E3           MOV      R0,#+221
+   \   00000040   0F00C4E5           STRB     R0,[R4, #+15]
+    115           
+    116           return CreateGUI_30or2_orig(gui);
+   \   00000044   0400A0E1           MOV      R0,R4
+   \   00000048   130D00EF           SWI      +3347
+   \   0000004C   1080BDE8           POP      {R4,PC}          ;; return
+    117          }
+    118          
+    119          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    120          int CreateGUIWithDummyCSM_mod(void *gui, int flag)
+    121          {
+   \                     CreateGUIWithDummyCSM_mod:
+   \   00000000   30402DE9           PUSH     {R4,R5,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+    122           GUI_NSG *main_gui_addr = (GUI_NSG *)gui;
+    123           
+    124             main_gui_addr->canvas->x = 0;
+   \   00000008   0000A0E3           MOV      R0,#+0
+   \   0000000C   0150A0E1           MOV      R5,R1
+   \   00000010   001094E5           LDR      R1,[R4, #+0]
+   \   00000014   B000C1E1           STRH     R0,[R1, #+0]
+    125             main_gui_addr->canvas->y = 0;
+   \   00000018   001094E5           LDR      R1,[R4, #+0]
+   \   0000001C   B200C1E1           STRH     R0,[R1, #+2]
+    126             main_gui_addr->canvas->x2 = ScreenW()-1;
+   \   00000020   888100EF           SWI      +33160
+   \   00000024   001094E5           LDR      R1,[R4, #+0]
+   \   00000028   010040E2           SUB      R0,R0,#+1
+   \   0000002C   B400C1E1           STRH     R0,[R1, #+4]
+    127             main_gui_addr->canvas->y2 = ScreenH()-1;
+   \   00000030   898100EF           SWI      +33161
+   \   00000034   001094E5           LDR      R1,[R4, #+0]
+   \   00000038   010040E2           SUB      R0,R0,#+1
+   \   0000003C   B600C1E1           STRH     R0,[R1, #+6]
+    128             main_gui_addr->unk4       = 0xDD;
+   \   00000040   DD00A0E3           MOV      R0,#+221
+   \   00000044   0F00C4E5           STRB     R0,[R4, #+15]
+    129           
+    130           return CreateGUIWithDummyCSM_orig(gui, flag);
+   \   00000048   0510A0E1           MOV      R1,R5
+   \   0000004C   0400A0E1           MOV      R0,R4
+   \   00000050   140D00EF           SWI      +3348
+   \   00000054   3080BDE8           POP      {R4,R5,PC}       ;; return
+    131          }
+    132          
+    133          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    134          int CreateGUIWithDummyCSM_30or2_mod(void *gui, int flag)
+    135          {
+   \                     CreateGUIWithDummyCSM_30or2_mod:
+   \   00000000   30402DE9           PUSH     {R4,R5,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+    136           GUI_NSG *main_gui_addr = (GUI_NSG *)gui;
+    137           
+    138             main_gui_addr->canvas->x = 0;
+   \   00000008   0000A0E3           MOV      R0,#+0
+   \   0000000C   0150A0E1           MOV      R5,R1
+   \   00000010   001094E5           LDR      R1,[R4, #+0]
+   \   00000014   B000C1E1           STRH     R0,[R1, #+0]
+    139             main_gui_addr->canvas->y = 0;
+   \   00000018   001094E5           LDR      R1,[R4, #+0]
+   \   0000001C   B200C1E1           STRH     R0,[R1, #+2]
+    140             main_gui_addr->canvas->x2 = ScreenW()-1;
+   \   00000020   888100EF           SWI      +33160
+   \   00000024   001094E5           LDR      R1,[R4, #+0]
+   \   00000028   010040E2           SUB      R0,R0,#+1
+   \   0000002C   B400C1E1           STRH     R0,[R1, #+4]
+    141             main_gui_addr->canvas->y2 = ScreenH()-1;
+   \   00000030   898100EF           SWI      +33161
+   \   00000034   001094E5           LDR      R1,[R4, #+0]
+   \   00000038   010040E2           SUB      R0,R0,#+1
+   \   0000003C   B600C1E1           STRH     R0,[R1, #+6]
+    142             main_gui_addr->unk4       = 0xDD;
+   \   00000040   DD00A0E3           MOV      R0,#+221
+   \   00000044   0F00C4E5           STRB     R0,[R4, #+15]
+    143           
+    144           return CreateGUIWithDummyCSM_30or2_orig(gui, flag);
+   \   00000048   0510A0E1           MOV      R1,R5
+   \   0000004C   0400A0E1           MOV      R0,R4
+   \   00000050   150D00EF           SWI      +3349
+   \   00000054   3080BDE8           POP      {R4,R5,PC}       ;; return
+    145          }
+    146          
+    147          
+    148          
+    149          
+    150          //Create UI
+
+   \                                 In segment CODE, align 4, keep-with-next
+    151          int CreateInputTextDialog_mod(INPUTDIA_DESC *input_desc, HEADER_DESC *header_desc,void *editq,int do_mfree,void *user_pointer)
+    152          {
+   \                     CreateInputTextDialog_mod:
+   \   00000000   F0472DE9           PUSH     {R4-R10,LR}
+   \   00000004   20809DE5           LDR      R8,[SP, #+32]
+   \   00000008   0040A0E1           MOV      R4,R0
+   \   0000000C   0150A0E1           MOV      R5,R1
+   \   00000010   0260A0E1           MOV      R6,R2
+   \   00000014   0370A0E1           MOV      R7,R3
+    153           input_desc->rc.x  = 0;
+   \   00000018   0090A0E3           MOV      R9,#+0
+   \   0000001C   B891C4E1           STRH     R9,[R4, #+24]
+    154           input_desc->rc.y  = HeaderH() - 1;
+   \   00000020   8A8100EF           SWI      +33162
+   \   00000024   010040E2           SUB      R0,R0,#+1
+   \   00000028   BA01C4E1           STRH     R0,[R4, #+26]
+    155           input_desc->rc.x2 = ScreenW() - 1;
+   \   0000002C   888100EF           SWI      +33160
+   \   00000030   010040E2           SUB      R0,R0,#+1
+   \   00000034   BC01C4E1           STRH     R0,[R4, #+28]
+    156           input_desc->rc.y2 = ScreenH() - SoftkeyH() - 1;
+   \   00000038   898100EF           SWI      +33161
+   \   0000003C   00A0A0E1           MOV      R10,R0
+   \   00000040   8B8100EF           SWI      +33163
+   \   00000044   00004AE0           SUB      R0,R10,R0
+   \   00000048   010040E2           SUB      R0,R0,#+1
+   \   0000004C   BE01C4E1           STRH     R0,[R4, #+30]
+    157           
+    158           header_desc->rc.x  = 0;
+   \   00000050   B090C5E1           STRH     R9,[R5, #+0]
+    159           header_desc->rc.y  = 0;
+   \   00000054   B290C5E1           STRH     R9,[R5, #+2]
+    160           header_desc->rc.x2 = ScreenW() - 1;
+   \   00000058   888100EF           SWI      +33160
+   \   0000005C   010040E2           SUB      R0,R0,#+1
+   \   00000060   B400C5E1           STRH     R0,[R5, #+4]
+    161           header_desc->rc.y2 = HeaderH() - 1;
+   \   00000064   8A8100EF           SWI      +33162
+   \   00000068   010040E2           SUB      R0,R0,#+1
+   \   0000006C   B600C5E1           STRH     R0,[R5, #+6]
+    162           
+    163           return CreateInputTextDialog_orig(input_desc, header_desc, editq, do_mfree, user_pointer);
+   \   00000070   00012DE9           PUSH     {R8}
+   \   00000074   0730A0E1           MOV      R3,R7
+   \   00000078   0620A0E1           MOV      R2,R6
+   \   0000007C   0510A0E1           MOV      R1,R5
+   \   00000080   0400A0E1           MOV      R0,R4
+   \   00000084   200D00EF           SWI      +3360
+   \   00000088   F287BDE8           POP      {R1,R4-R10,PC}   ;; return
+    164          }
+    165          
+    166          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    167          int CreateMenu_mod(int is_small,int zero1,const MENU_DESC *menu, HEADER_DESC *hdr,int start_item,int n_items,void *user_pointer,int *to_remove)
+    168          {
+   \                     CreateMenu_mod:
+   \   00000000   F04F2DE9           PUSH     {R4-R11,LR}
+   \   00000004   24809DE5           LDR      R8,[SP, #+36]
+   \   00000008   28909DE5           LDR      R9,[SP, #+40]
+   \   0000000C   2CA09DE5           LDR      R10,[SP, #+44]
+   \   00000010   30B09DE5           LDR      R11,[SP, #+48]
+   \   00000014   0040A0E1           MOV      R4,R0
+   \   00000018   0150A0E1           MOV      R5,R1
+   \   0000001C   0260A0E1           MOV      R6,R2
+   \   00000020   0370A0E1           MOV      R7,R3
+    169           hdr->rc.x  = 0;
+   \   00000024   0000A0E3           MOV      R0,#+0
+   \   00000028   B000C7E1           STRH     R0,[R7, #+0]
+    170           hdr->rc.y  = 0;
+   \   0000002C   B200C7E1           STRH     R0,[R7, #+2]
+    171           hdr->rc.x2 = ScreenW() - 1;
+   \   00000030   888100EF           SWI      +33160
+   \   00000034   010040E2           SUB      R0,R0,#+1
+   \   00000038   B400C7E1           STRH     R0,[R7, #+4]
+    172           hdr->rc.y2 = HeaderH() - 1;
+   \   0000003C   8A8100EF           SWI      +33162
+   \   00000040   010040E2           SUB      R0,R0,#+1
+   \   00000044   B600C7E1           STRH     R0,[R7, #+6]
+    173           
+    174           return CreateMenu_orig(is_small,zero1,menu,hdr,start_item,n_items,user_pointer,to_remove);
+   \   00000048   00082DE9           PUSH     {R11}
+   \   0000004C   00042DE9           PUSH     {R10}
+   \   00000050   00022DE9           PUSH     {R9}
+   \   00000054   00012DE9           PUSH     {R8}
+   \   00000058   0730A0E1           MOV      R3,R7
+   \   0000005C   0620A0E1           MOV      R2,R6
+   \   00000060   0510A0E1           MOV      R1,R5
+   \   00000064   0400A0E1           MOV      R0,R4
+   \   00000068   210D00EF           SWI      +3361
+   \   0000006C   10D08DE2           ADD      SP,SP,#+16
+   \   00000070   F08FBDE8           POP      {R4-R11,PC}      ;; return
+    175          }
+    176          
+    177          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    178          int CreateMultiLinesMenu_mod(int dummy,int dummy2,const ML_MENU_DESC *menu, HEADER_DESC *hdr,int to_item,int n)
+    179          {
+   \                     CreateMultiLinesMenu_mod:
+   \   00000000   F0432DE9           PUSH     {R4-R9,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+   \   00000008   1C809DE5           LDR      R8,[SP, #+28]
+   \   0000000C   20909DE5           LDR      R9,[SP, #+32]
+   \   00000010   0150A0E1           MOV      R5,R1
+   \   00000014   0260A0E1           MOV      R6,R2
+   \   00000018   0370A0E1           MOV      R7,R3
+    180           hdr->rc.x = 0;
+   \   0000001C   0000A0E3           MOV      R0,#+0
+   \   00000020   B000C7E1           STRH     R0,[R7, #+0]
+    181           hdr->rc.y = 0;
+   \   00000024   B200C7E1           STRH     R0,[R7, #+2]
+    182           hdr->rc.x2 = ScreenW()-1;
+   \   00000028   888100EF           SWI      +33160
+   \   0000002C   010040E2           SUB      R0,R0,#+1
+   \   00000030   B400C7E1           STRH     R0,[R7, #+4]
+    183           hdr->rc.y2 = HeaderH()-1;
+   \   00000034   8A8100EF           SWI      +33162
+   \   00000038   010040E2           SUB      R0,R0,#+1
+   \   0000003C   B600C7E1           STRH     R0,[R7, #+6]
+    184           
+    185           return CreateMultiLinesMenu_orig(dummy,dummy2,menu,hdr,to_item,n); 
+   \   00000040   00022DE9           PUSH     {R9}
+   \   00000044   00012DE9           PUSH     {R8}
+   \   00000048   0730A0E1           MOV      R3,R7
+   \   0000004C   0620A0E1           MOV      R2,R6
+   \   00000050   0510A0E1           MOV      R1,R5
+   \   00000054   0400A0E1           MOV      R0,R4
+   \   00000058   220D00EF           SWI      +3362
+   \   0000005C   F683BDE8           POP      {R1,R2,R4-R9,PC}  ;; return
+    186          }
+    187          
+    188          //PlayMusic Functions
+    189          
+    190          #ifdef X75
+    191          short PlayFile_mod(int flags, WSHDR *foldername, WSHDR *filename, int CepId, int Msg, void *sfo, void *sfo2)
+    192          {
+    193           if (CepId != 0)
+    194            {
+    195             if (flags == 0x10)
+    196              {
+    197               PLAYFILE_OPT_SGX75 sfo_sg_x75;
+    198               PLAYFILE_OPT_NSG *sfo_nsg = (PLAYFILE_OPT_NSG *)sfo;
+    199             
+    200               sfo_sg_x75.unk4=0x80000000;
+    201               sfo_sg_x75.unk5=1;
+    202             
+    203               sfo_sg_x75.repeat_num        = sfo_nsg->repeat_num;
+    204               sfo_sg_x75.unk               = sfo_nsg->unk;
+    205               sfo_sg_x75.time_between_play = sfo_nsg->time_between_play;
+    206               sfo_sg_x75.play_first        = sfo_nsg->play_first;
+    207               sfo_sg_x75.volume            = sfo_nsg->volume;
+    208             
+    209               return PlayFile_orig(flags, foldername, filename, 0, CepId, MSG_PLAYFILE_REPORT_SGX75, (PLAYFILE_OPT_SGX75 *)&sfo_sg_x75);
+    210             } else
+    211                {
+    212                 PLAYFILE_OPT_SGX75 sfo_sg_x75;
+    213                 PLAYFILE_OPT_SGOLD *sfo_sg = (PLAYFILE_OPT_SGOLD *)sfo;
+    214             
+    215                 sfo_sg_x75.unk4=0x80000000;
+    216                 sfo_sg_x75.unk5=1;
+    217             
+    218                 sfo_sg_x75.repeat_num        = sfo_sg->repeat_num;
+    219                 sfo_sg_x75.unk               = sfo_sg->unk;
+    220                 sfo_sg_x75.time_between_play = sfo_sg->time_between_play;
+    221                 sfo_sg_x75.play_first        = sfo_sg->play_first;
+    222                 sfo_sg_x75.volume            = sfo_sg->volume;
+    223             
+    224                 return PlayFile_orig(flags, foldername, filename, 0, CepId, MSG_PLAYFILE_REPORT_SGX75, (PLAYFILE_OPT_SGX75 *)&sfo_sg_x75);
+    225                }
+    226            }
+    227           return PlayFile_orig(flags, foldername, filename, CepId, Msg, (int)sfo,(PLAYFILE_OPT_SGX75 *)sfo2);
+    228          }
+    229          
+    230          int PlayMelodyInMem_mod(char Unk_0x11, void * MelAddr, int MelSize, int CepId, int Msg, int Unk_0)
+    231          {
+    232           return PlayMelodyInMem_orig(Unk_0x11, MelAddr, MelSize, CepId, MSG_PLAYFILE_REPORT_SGX75, Unk_0);
+    233          }
+    234          
+    235          #else
+
+   \                                 In segment CODE, align 4, keep-with-next
+    236          short PlayFile_mod(int flags, WSHDR *foldername, WSHDR *filename, int CepId, int Msg, void *sfo, void *sfo2)
+    237          {
+   \                     PlayFile_mod:
+   \   00000000   F0402DE9           PUSH     {R4-R7,LR}
+   \   00000004   18D04DE2           SUB      SP,SP,#+24
+   \   00000008   2CC09DE5           LDR      R12,[SP, #+44]
+   \   0000000C   30409DE5           LDR      R4,[SP, #+48]
+   \   00000010   34609DE5           LDR      R6,[SP, #+52]
+    238            if (flags == 0x10)
+   \   00000014   6750A0E3           MOV      R5,#+103
+   \   00000018   405F85E3           ORR      R5,R5,#0x100
+   \   0000001C   0170A0E3           MOV      R7,#+1
+   \   00000020   100050E3           CMP      R0,#+16
+   \   00000024   0F00001A           BNE      ??PlayFile_mod_0
+    239              {
+    240               PLAYFILE_OPT_SGOLD sfo_sg;
+    241               PLAYFILE_OPT_NSG *sfo_nsg = (PLAYFILE_OPT_NSG *)sfo;
+    242             
+    243               sfo_sg.unk5=1;
+   \   00000028   10708DE5           STR      R7,[SP, #+16]
+    244             
+    245               sfo_sg.repeat_num        = sfo_nsg->repeat_num;
+   \   0000002C   B060D4E1           LDRH     R6,[R4, #+0]
+    246               sfo_sg.unk               = sfo_nsg->unk;
+    247               sfo_sg.time_between_play = sfo_nsg->time_between_play;
+    248               sfo_sg.play_first        = sfo_nsg->play_first;
+    249               sfo_sg.volume            = sfo_nsg->volume;
+    250             
+    251               return PlayFile_orig(flags, foldername, filename, CepId, MSG_PLAYFILE_REPORT_SGOLD, (PLAYFILE_OPT_SGOLD *)&sfo_sg);
+   \   00000030   0D00A0E1           MOV      R0,SP
+   \   00000034   B060CDE1           STRH     R6,[SP, #+0]
+   \   00000038   B260D4E1           LDRH     R6,[R4, #+2]
+   \   0000003C   B260CDE1           STRH     R6,[SP, #+2]
+   \   00000040   046094E5           LDR      R6,[R4, #+4]
+   \   00000044   04608DE5           STR      R6,[SP, #+4]
+   \   00000048   086094E5           LDR      R6,[R4, #+8]
+   \   0000004C   08608DE5           STR      R6,[SP, #+8]
+   \   00000050   0C4094E5           LDR      R4,[R4, #+12]
+   \   00000054   0C408DE5           STR      R4,[SP, #+12]
+   \   00000058   01002DE9           PUSH     {R0}
+   \   0000005C   20002DE9           PUSH     {R5}
+   \   00000060   1000A0E3           MOV      R0,#+16
+   \   00000064   130000EA           B        ??PlayFile_mod_1
+    252             }
+    253            if (CepId == 0)
+   \                     ??PlayFile_mod_0:
+   \   00000068   000053E3           CMP      R3,#+0
+   \   0000006C   0F00001A           BNE      ??PlayFile_mod_2
+    254             {
+    255               PLAYFILE_OPT_SGOLD sfo_sg;
+    256               PLAYFILE_OPT_SGX75 *sfo_sg_x75 = (PLAYFILE_OPT_SGX75 *)sfo2;
+    257             
+    258               sfo_sg.unk5=1;
+   \   00000070   10708DE5           STR      R7,[SP, #+16]
+    259             
+    260               sfo_sg.repeat_num        = sfo_sg_x75->repeat_num;
+   \   00000074   B040D6E1           LDRH     R4,[R6, #+0]
+    261               sfo_sg.unk               = sfo_sg_x75->unk;
+    262               sfo_sg.time_between_play = sfo_sg_x75->time_between_play;
+    263               sfo_sg.play_first        = sfo_sg_x75->play_first;
+    264               sfo_sg.volume            = sfo_sg_x75->volume;
+    265             
+    266               return PlayFile_orig(flags, foldername, filename, Msg, MSG_PLAYFILE_REPORT_SGOLD, (PLAYFILE_OPT_SGOLD *)&sfo_sg);
+   \   00000078   0D30A0E1           MOV      R3,SP
+   \   0000007C   B040CDE1           STRH     R4,[SP, #+0]
+   \   00000080   B240D6E1           LDRH     R4,[R6, #+2]
+   \   00000084   B240CDE1           STRH     R4,[SP, #+2]
+   \   00000088   044096E5           LDR      R4,[R6, #+4]
+   \   0000008C   04408DE5           STR      R4,[SP, #+4]
+   \   00000090   084096E5           LDR      R4,[R6, #+8]
+   \   00000094   08408DE5           STR      R4,[SP, #+8]
+   \   00000098   0C4096E5           LDR      R4,[R6, #+12]
+   \   0000009C   0C408DE5           STR      R4,[SP, #+12]
+   \   000000A0   08002DE9           PUSH     {R3}
+   \   000000A4   20002DE9           PUSH     {R5}
+   \   000000A8   0C30A0E1           MOV      R3,R12
+   \   000000AC   010000EA           B        ??PlayFile_mod_1
+    267             }
+    268            
+    269            return PlayFile_orig(flags, foldername, filename, CepId, Msg, (PLAYFILE_OPT_SGOLD *)sfo);
+   \                     ??PlayFile_mod_2:
+   \   000000B0   10002DE9           PUSH     {R4}
+   \   000000B4   00102DE9           PUSH     {R12}
+   \                     ??PlayFile_mod_1:
+   \   000000B8   400D00EF           SWI      +3392
+   \   000000BC   08D08DE2           ADD      SP,SP,#+8
+   \   000000C0   18D08DE2           ADD      SP,SP,#+24
+   \   000000C4   F080BDE8           POP      {R4-R7,PC}       ;; return
+    270          }
+    271          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    272          int PlayMelodyInMem_mod(char Unk_0x11, void * MelAddr, int MelSize, int CepId, int Msg, int Unk_0)
+    273          {
+   \                     PlayMelodyInMem_mod:
+   \   00000000   00402DE9           PUSH     {LR}
+   \   00000004   08C09DE5           LDR      R12,[SP, #+8]
+    274           return PlayMelodyInMem_orig(Unk_0x11, MelAddr, MelSize, CepId, MSG_PLAYFILE_REPORT_SGOLD, Unk_0);
+   \   00000008   00102DE9           PUSH     {R12}
+   \   0000000C   67C0A0E3           MOV      R12,#+103
+   \   00000010   40CF8CE3           ORR      R12,R12,#0x100
+   \   00000014   00102DE9           PUSH     {R12}
+   \   00000018   410D00EF           SWI      +3393
+   \   0000001C   0680BDE8           POP      {R1,R2,PC}       ;; return
+    275          }
+    276          
+    277          #endif
+    278          
+    279          
+    280          //File System Functions
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+    281          DIR_ENTRY dir; //Common DIR_ENTRY Struct
+   \                     dir:
+   \   00000000                      DS8 440
+    282          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    283          int FindFirstFile_mod(DIR_ENTRY_NSG *DIRENTRY, char *mask, unsigned int *ErrorNumber)
+    284          {
+   \                     FindFirstFile_mod:
+   \   00000000   F0402DE9           PUSH     {R4-R7,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+   \   00000008   0160A0E1           MOV      R6,R1
+   \   0000000C   0270A0E1           MOV      R7,R2
+    285            if (NSE_fileSystemType() > 0)
+   \   00000010   028D00EF           SWI      +36098
+   \   00000014   010050E3           CMP      R0,#+1
+   \   00000018   3F0000BA           BLT      ??FindFirstFile_mod_0
+    286            {
+    287              CSM_RAM *csm = CSM_root()->csm_q->csm.last;
+   \   0000001C   068100EF           SWI      +33030
+   \   00000020   080090E5           LDR      R0,[R0, #+8]
+   \   00000024   0C0090E5           LDR      R0,[R0, #+12]
+    288              CSM_DESC *desc = csm->constr;
+    289              
+    290              if (desc->datasize != NSGCSM && NSE_fileSystemType() != 2) return FindFirstFile_orig((DIR_ENTRY *)DIRENTRY, mask, ErrorNumber);
+   \   00000028   080090E5           LDR      R0,[R0, #+8]
+   \   0000002C   0C0090E5           LDR      R0,[R0, #+12]
+   \   00000030   2D0050E3           CMP      R0,#+45
+   \   00000034   0200000A           BEQ      ??FindFirstFile_mod_1
+   \   00000038   028D00EF           SWI      +36098
+   \   0000003C   020050E3           CMP      R0,#+2
+   \   00000040   3500001A           BNE      ??FindFirstFile_mod_0
+    291              
+    292              dir.file_attr        = DIRENTRY->file_attr;
+   \                     ??FindFirstFile_mod_1:
+   \   00000044   2D00D4E5           LDRB     R0,[R4, #+45]
+   \   00000048   2C10D4E5           LDRB     R1,[R4, #+44]
+   \   0000004C   ........           LDR      R5,??DataTable2  ;; dir
+    293              dir.file_size        = DIRENTRY->file_size;
+    294              dir.create_date_time = DIRENTRY->create_date_time;
+    295               
+    296              int ret = FindFirstFile_orig((DIR_ENTRY *)&dir, mask, ErrorNumber);
+   \   00000050   0720A0E1           MOV      R2,R7
+   \   00000054   000481E1           ORR      R0,R1,R0, LSL #+8
+   \   00000058   BE00C5E1           STRH     R0,[R5, #+14]
+   \   0000005C   2B00D4E5           LDRB     R0,[R4, #+43]
+   \   00000060   2A10D4E5           LDRB     R1,[R4, #+42]
+   \   00000064   000481E1           ORR      R0,R1,R0, LSL #+8
+   \   00000068   2910D4E5           LDRB     R1,[R4, #+41]
+   \   0000006C   000481E1           ORR      R0,R1,R0, LSL #+8
+   \   00000070   2810D4E5           LDRB     R1,[R4, #+40]
+   \   00000074   000481E1           ORR      R0,R1,R0, LSL #+8
+   \   00000078   140085E5           STR      R0,[R5, #+20]
+   \   0000007C   3100D4E5           LDRB     R0,[R4, #+49]
+   \   00000080   3010D4E5           LDRB     R1,[R4, #+48]
+   \   00000084   000481E1           ORR      R0,R1,R0, LSL #+8
+   \   00000088   2F10D4E5           LDRB     R1,[R4, #+47]
+   \   0000008C   000481E1           ORR      R0,R1,R0, LSL #+8
+   \   00000090   2E10D4E5           LDRB     R1,[R4, #+46]
+   \   00000094   000481E1           ORR      R0,R1,R0, LSL #+8
+   \   00000098   100085E5           STR      R0,[R5, #+16]
+   \   0000009C   0610A0E1           MOV      R1,R6
+   \   000000A0   0500A0E1           MOV      R0,R5
+   \   000000A4   500D00EF           SWI      +3408
+   \   000000A8   0060A0E1           MOV      R6,R0
+    297              
+    298              
+    299              DIRENTRY->file_attr        = dir.file_attr;
+   \   000000AC   BE00D5E1           LDRH     R0,[R5, #+14]
+    300              DIRENTRY->file_size        = dir.file_size;
+    301              DIRENTRY->create_date_time = dir.create_date_time;
+    302              
+    303              strcpy(DIRENTRY->folder_name, dir.folder_name);
+   \   000000B0   281085E2           ADD      R1,R5,#+40
+   \   000000B4   2C00C4E5           STRB     R0,[R4, #+44]
+   \   000000B8   2004A0E1           LSR      R0,R0,#+8
+   \   000000BC   2D00C4E5           STRB     R0,[R4, #+45]
+   \   000000C0   140095E5           LDR      R0,[R5, #+20]
+   \   000000C4   2800C4E5           STRB     R0,[R4, #+40]
+   \   000000C8   2004A0E1           LSR      R0,R0,#+8
+   \   000000CC   2900C4E5           STRB     R0,[R4, #+41]
+   \   000000D0   2004A0E1           LSR      R0,R0,#+8
+   \   000000D4   2A00C4E5           STRB     R0,[R4, #+42]
+   \   000000D8   2004A0E1           LSR      R0,R0,#+8
+   \   000000DC   2B00C4E5           STRB     R0,[R4, #+43]
+   \   000000E0   100095E5           LDR      R0,[R5, #+16]
+   \   000000E4   2E00C4E5           STRB     R0,[R4, #+46]
+   \   000000E8   2004A0E1           LSR      R0,R0,#+8
+   \   000000EC   2F00C4E5           STRB     R0,[R4, #+47]
+   \   000000F0   2004A0E1           LSR      R0,R0,#+8
+   \   000000F4   3000C4E5           STRB     R0,[R4, #+48]
+   \   000000F8   2004A0E1           LSR      R0,R0,#+8
+   \   000000FC   3100C4E5           STRB     R0,[R4, #+49]
+   \   00000100   340084E2           ADD      R0,R4,#+52
+   \   00000104   1A0000EF           SWI      +26
+    304              strcpy(DIRENTRY->file_name, dir.file_name);
+   \   00000108   A91085E2           ADD      R1,R5,#+169
+   \   0000010C   B50084E2           ADD      R0,R4,#+181
+   \   00000110   1A0000EF           SWI      +26
+    305               
+    306              return ret;
+   \   00000114   0600A0E1           MOV      R0,R6
+   \   00000118   F080BDE8           POP      {R4-R7,PC}
+    307             }
+    308            
+    309            return FindFirstFile_orig((DIR_ENTRY *)DIRENTRY, mask, ErrorNumber);
+   \                     ??FindFirstFile_mod_0:
+   \   0000011C   0720A0E1           MOV      R2,R7
+   \   00000120   0610A0E1           MOV      R1,R6
+   \   00000124   0400A0E1           MOV      R0,R4
+   \   00000128   500D00EF           SWI      +3408
+   \   0000012C   F080BDE8           POP      {R4-R7,PC}       ;; return
+    310          }
+    311          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    312          int FindNextFile_mod(DIR_ENTRY_NSG *DIRENTRY, unsigned int *ErrorNumber)
+    313          {
+   \                     FindNextFile_mod:
+   \   00000000   70402DE9           PUSH     {R4-R6,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+   \   00000008   0160A0E1           MOV      R6,R1
+    314            if (NSE_fileSystemType() > 0)
+   \   0000000C   028D00EF           SWI      +36098
+   \   00000010   010050E3           CMP      R0,#+1
+   \   00000014   440000BA           BLT      ??FindNextFile_mod_0
+    315            {
+    316              
+    317              CSM_RAM *csm = CSM_root()->csm_q->csm.last;
+   \   00000018   068100EF           SWI      +33030
+   \   0000001C   080090E5           LDR      R0,[R0, #+8]
+   \   00000020   0C0090E5           LDR      R0,[R0, #+12]
+    318              CSM_DESC *desc = csm->constr;
+    319              
+    320              if (desc->datasize != NSGCSM && NSE_fileSystemType() != 2) return FindNextFile_orig((DIR_ENTRY *)DIRENTRY, ErrorNumber);
+   \   00000024   080090E5           LDR      R0,[R0, #+8]
+   \   00000028   0C0090E5           LDR      R0,[R0, #+12]
+   \   0000002C   2D0050E3           CMP      R0,#+45
+   \   00000030   0200000A           BEQ      ??FindNextFile_mod_1
+   \   00000034   028D00EF           SWI      +36098
+   \   00000038   020050E3           CMP      R0,#+2
+   \   0000003C   3A00001A           BNE      ??FindNextFile_mod_0
+    321              
+    322              dir.file_attr        = DIRENTRY->file_attr;
+   \                     ??FindNextFile_mod_1:
+   \   00000040   2D00D4E5           LDRB     R0,[R4, #+45]
+   \   00000044   2C10D4E5           LDRB     R1,[R4, #+44]
+   \   00000048   ........           LDR      R5,??DataTable2  ;; dir
+   \   0000004C   000481E1           ORR      R0,R1,R0, LSL #+8
+   \   00000050   BE00C5E1           STRH     R0,[R5, #+14]
+    323              dir.file_size        = DIRENTRY->file_size;
+   \   00000054   2B00D4E5           LDRB     R0,[R4, #+43]
+   \   00000058   2A10D4E5           LDRB     R1,[R4, #+42]
+   \   0000005C   000481E1           ORR      R0,R1,R0, LSL #+8
+   \   00000060   2910D4E5           LDRB     R1,[R4, #+41]
+   \   00000064   000481E1           ORR      R0,R1,R0, LSL #+8
+   \   00000068   2810D4E5           LDRB     R1,[R4, #+40]
+   \   0000006C   000481E1           ORR      R0,R1,R0, LSL #+8
+   \   00000070   140085E5           STR      R0,[R5, #+20]
+    324              dir.create_date_time = DIRENTRY->create_date_time;
+   \   00000074   3100D4E5           LDRB     R0,[R4, #+49]
+   \   00000078   3010D4E5           LDRB     R1,[R4, #+48]
+   \   0000007C   000481E1           ORR      R0,R1,R0, LSL #+8
+   \   00000080   2F10D4E5           LDRB     R1,[R4, #+47]
+   \   00000084   000481E1           ORR      R0,R1,R0, LSL #+8
+   \   00000088   2E10D4E5           LDRB     R1,[R4, #+46]
+   \   0000008C   000481E1           ORR      R0,R1,R0, LSL #+8
+   \   00000090   100085E5           STR      R0,[R5, #+16]
+    325              
+    326              strcpy(dir.folder_name, DIRENTRY->folder_name);
+   \   00000094   341084E2           ADD      R1,R4,#+52
+   \   00000098   280085E2           ADD      R0,R5,#+40
+   \   0000009C   1A0000EF           SWI      +26
+    327              strcpy(dir.file_name, DIRENTRY->file_name);
+   \   000000A0   B51084E2           ADD      R1,R4,#+181
+   \   000000A4   A90085E2           ADD      R0,R5,#+169
+   \   000000A8   1A0000EF           SWI      +26
+    328               
+    329              int ret = FindNextFile_orig((DIR_ENTRY *)&dir, ErrorNumber);
+   \   000000AC   0610A0E1           MOV      R1,R6
+   \   000000B0   0500A0E1           MOV      R0,R5
+   \   000000B4   510D00EF           SWI      +3409
+   \   000000B8   0060A0E1           MOV      R6,R0
+    330              
+    331              DIRENTRY->file_attr        = dir.file_attr;
+   \   000000BC   BE00D5E1           LDRH     R0,[R5, #+14]
+    332              DIRENTRY->file_size        = dir.file_size;
+    333              DIRENTRY->create_date_time = dir.create_date_time;
+    334              
+    335              strcpy(DIRENTRY->folder_name, dir.folder_name);
+   \   000000C0   281085E2           ADD      R1,R5,#+40
+   \   000000C4   2C00C4E5           STRB     R0,[R4, #+44]
+   \   000000C8   2004A0E1           LSR      R0,R0,#+8
+   \   000000CC   2D00C4E5           STRB     R0,[R4, #+45]
+   \   000000D0   140095E5           LDR      R0,[R5, #+20]
+   \   000000D4   2800C4E5           STRB     R0,[R4, #+40]
+   \   000000D8   2004A0E1           LSR      R0,R0,#+8
+   \   000000DC   2900C4E5           STRB     R0,[R4, #+41]
+   \   000000E0   2004A0E1           LSR      R0,R0,#+8
+   \   000000E4   2A00C4E5           STRB     R0,[R4, #+42]
+   \   000000E8   2004A0E1           LSR      R0,R0,#+8
+   \   000000EC   2B00C4E5           STRB     R0,[R4, #+43]
+   \   000000F0   100095E5           LDR      R0,[R5, #+16]
+   \   000000F4   2E00C4E5           STRB     R0,[R4, #+46]
+   \   000000F8   2004A0E1           LSR      R0,R0,#+8
+   \   000000FC   2F00C4E5           STRB     R0,[R4, #+47]
+   \   00000100   2004A0E1           LSR      R0,R0,#+8
+   \   00000104   3000C4E5           STRB     R0,[R4, #+48]
+   \   00000108   2004A0E1           LSR      R0,R0,#+8
+   \   0000010C   3100C4E5           STRB     R0,[R4, #+49]
+   \   00000110   340084E2           ADD      R0,R4,#+52
+   \   00000114   1A0000EF           SWI      +26
+    336              strcpy(DIRENTRY->file_name, dir.file_name);
+   \   00000118   A91085E2           ADD      R1,R5,#+169
+   \   0000011C   B50084E2           ADD      R0,R4,#+181
+   \   00000120   1A0000EF           SWI      +26
+    337              
+    338              return ret;
+   \   00000124   0600A0E1           MOV      R0,R6
+   \   00000128   7080BDE8           POP      {R4-R6,PC}
+    339             }
+    340            
+    341            return FindNextFile_orig((DIR_ENTRY *)DIRENTRY, ErrorNumber);
+   \                     ??FindNextFile_mod_0:
+   \   0000012C   0610A0E1           MOV      R1,R6
+   \   00000130   0400A0E1           MOV      R0,R4
+   \   00000134   510D00EF           SWI      +3409
+   \   00000138   7080BDE8           POP      {R4-R6,PC}       ;; return
+    342          }
+    343          
+    344          
+    345          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    346          int FindClose_mod(DIR_ENTRY_NSG *DIRENTRY, unsigned int *ErrorNumber)
+    347          {
+   \                     FindClose_mod:
+   \   00000000   70402DE9           PUSH     {R4-R6,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+   \   00000008   0160A0E1           MOV      R6,R1
+    348           if (NSE_fileSystemType() > 0)
+   \   0000000C   028D00EF           SWI      +36098
+   \   00000010   010050E3           CMP      R0,#+1
+   \   00000014   3E0000BA           BLT      ??FindClose_mod_0
+    349             {
+    350              CSM_RAM *csm = CSM_root()->csm_q->csm.last;
+   \   00000018   068100EF           SWI      +33030
+   \   0000001C   080090E5           LDR      R0,[R0, #+8]
+   \   00000020   0C0090E5           LDR      R0,[R0, #+12]
+    351              CSM_DESC *desc = csm->constr;
+    352              
+    353              if (desc->datasize != NSGCSM && NSE_fileSystemType() != 2) return FindClose_orig((DIR_ENTRY *)DIRENTRY, ErrorNumber);
+   \   00000024   080090E5           LDR      R0,[R0, #+8]
+   \   00000028   0C0090E5           LDR      R0,[R0, #+12]
+   \   0000002C   2D0050E3           CMP      R0,#+45
+   \   00000030   0200000A           BEQ      ??FindClose_mod_1
+   \   00000034   028D00EF           SWI      +36098
+   \   00000038   020050E3           CMP      R0,#+2
+   \   0000003C   3400001A           BNE      ??FindClose_mod_0
+    354               
+    355              dir.file_attr        = DIRENTRY->file_attr;
+   \                     ??FindClose_mod_1:
+   \   00000040   2D00D4E5           LDRB     R0,[R4, #+45]
+   \   00000044   2C10D4E5           LDRB     R1,[R4, #+44]
+   \   00000048   ........           LDR      R5,??DataTable2  ;; dir
+   \   0000004C   000481E1           ORR      R0,R1,R0, LSL #+8
+   \   00000050   BE00C5E1           STRH     R0,[R5, #+14]
+    356              dir.file_size        = DIRENTRY->file_size;
+   \   00000054   2B00D4E5           LDRB     R0,[R4, #+43]
+   \   00000058   2A10D4E5           LDRB     R1,[R4, #+42]
+   \   0000005C   000481E1           ORR      R0,R1,R0, LSL #+8
+   \   00000060   2910D4E5           LDRB     R1,[R4, #+41]
+   \   00000064   000481E1           ORR      R0,R1,R0, LSL #+8
+   \   00000068   2810D4E5           LDRB     R1,[R4, #+40]
+   \   0000006C   000481E1           ORR      R0,R1,R0, LSL #+8
+   \   00000070   140085E5           STR      R0,[R5, #+20]
+    357              dir.create_date_time = DIRENTRY->create_date_time;
+   \   00000074   3100D4E5           LDRB     R0,[R4, #+49]
+   \   00000078   3010D4E5           LDRB     R1,[R4, #+48]
+   \   0000007C   000481E1           ORR      R0,R1,R0, LSL #+8
+   \   00000080   2F10D4E5           LDRB     R1,[R4, #+47]
+   \   00000084   000481E1           ORR      R0,R1,R0, LSL #+8
+   \   00000088   2E10D4E5           LDRB     R1,[R4, #+46]
+   \   0000008C   000481E1           ORR      R0,R1,R0, LSL #+8
+   \   00000090   100085E5           STR      R0,[R5, #+16]
+    358               
+    359              int ret = FindClose_orig((DIR_ENTRY *)&dir, ErrorNumber);
+   \   00000094   0610A0E1           MOV      R1,R6
+   \   00000098   0500A0E1           MOV      R0,R5
+   \   0000009C   520D00EF           SWI      +3410
+   \   000000A0   0060A0E1           MOV      R6,R0
+    360              
+    361              DIRENTRY->file_attr        = dir.file_attr;
+   \   000000A4   BE00D5E1           LDRH     R0,[R5, #+14]
+    362              DIRENTRY->file_size        = dir.file_size;
+    363              DIRENTRY->create_date_time = dir.create_date_time;
+    364              
+    365              strcpy(DIRENTRY->folder_name, dir.folder_name);
+   \   000000A8   281085E2           ADD      R1,R5,#+40
+   \   000000AC   2C00C4E5           STRB     R0,[R4, #+44]
+   \   000000B0   2004A0E1           LSR      R0,R0,#+8
+   \   000000B4   2D00C4E5           STRB     R0,[R4, #+45]
+   \   000000B8   140095E5           LDR      R0,[R5, #+20]
+   \   000000BC   2800C4E5           STRB     R0,[R4, #+40]
+   \   000000C0   2004A0E1           LSR      R0,R0,#+8
+   \   000000C4   2900C4E5           STRB     R0,[R4, #+41]
+   \   000000C8   2004A0E1           LSR      R0,R0,#+8
+   \   000000CC   2A00C4E5           STRB     R0,[R4, #+42]
+   \   000000D0   2004A0E1           LSR      R0,R0,#+8
+   \   000000D4   2B00C4E5           STRB     R0,[R4, #+43]
+   \   000000D8   100095E5           LDR      R0,[R5, #+16]
+   \   000000DC   2E00C4E5           STRB     R0,[R4, #+46]
+   \   000000E0   2004A0E1           LSR      R0,R0,#+8
+   \   000000E4   2F00C4E5           STRB     R0,[R4, #+47]
+   \   000000E8   2004A0E1           LSR      R0,R0,#+8
+   \   000000EC   3000C4E5           STRB     R0,[R4, #+48]
+   \   000000F0   2004A0E1           LSR      R0,R0,#+8
+   \   000000F4   3100C4E5           STRB     R0,[R4, #+49]
+   \   000000F8   340084E2           ADD      R0,R4,#+52
+   \   000000FC   1A0000EF           SWI      +26
+    366              strcpy(DIRENTRY->file_name, dir.file_name);
+   \   00000100   A91085E2           ADD      R1,R5,#+169
+   \   00000104   B50084E2           ADD      R0,R4,#+181
+   \   00000108   1A0000EF           SWI      +26
+    367              
+    368              return ret;
+   \   0000010C   0600A0E1           MOV      R0,R6
+   \   00000110   7080BDE8           POP      {R4-R6,PC}
+    369             }
+    370            
+    371            return FindClose_orig((DIR_ENTRY *)DIRENTRY, ErrorNumber);
+   \                     ??FindClose_mod_0:
+   \   00000114   0610A0E1           MOV      R1,R6
+   \   00000118   0400A0E1           MOV      R0,R4
+   \   0000011C   520D00EF           SWI      +3410
+   \   00000120   7080BDE8           POP      {R4-R6,PC}       ;; return
+    372          }
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable2:
+   \   00000000   ........           DC32     dir
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "NSE:\\nNSG CSM Detect!">`:
+   \   00000000   4E53453A0A4E       DC8 "NSE:\012NSG CSM Detect!"
+   \              53472043534D
+   \              204465746563
+   \              742100      
+   \   00000015   000000             DC8 0, 0, 0
+   \   00000018   20284E534729       DC8 " (NSG)"
+   \              00          
+   \   0000001F   00                 DC8 0
+    373          
+
+   Maximum stack usage in bytes:
+
+     Function                       CSTACK
+     --------                       ------
+     CreateCSM_mod                     24
+     CreateGUIWithDummyCSM_30or2_mod
+                                       12
+     CreateGUIWithDummyCSM_mod         12
+     CreateGUI_30or2_mod                8
+     CreateGUI_ID_mod                  12
+     CreateGUI_mod                      8
+     CreateInputTextDialog_mod         36
+     CreateMenu_mod                    52
+     CreateMultiLinesMenu_mod          36
+     FindClose_mod                     16
+     FindFirstFile_mod                 20
+     FindNextFile_mod                  16
+     PlayFile_mod                      52
+     PlayMelodyInMem_mod               12
+
+
+   Segment part sizes:
+
+     Function/Label                 Bytes
+     --------------                 -----
+     CreateCSM_mod                   244
+     CreateGUI_mod                    80
+     CreateGUI_ID_mod                 88
+     CreateGUI_30or2_mod              80
+     CreateGUIWithDummyCSM_mod        88
+     CreateGUIWithDummyCSM_30or2_mod
+                                      88
+     CreateInputTextDialog_mod       140
+     CreateMenu_mod                  116
+     CreateMultiLinesMenu_mod         96
+     PlayFile_mod                    200
+     PlayMelodyInMem_mod              32
+     dir                             440
+     FindFirstFile_mod               304
+     FindNextFile_mod                316
+     FindClose_mod                   292
+     ??DataTable2                      4
+     ?<Constant "NSE:\nNSG CSM Detect!">
+                                      32
+      Others                          68
+
+ 
+ 2 224 bytes in segment CODE
+    32 bytes in segment DATA_C
+   440 bytes in segment DATA_Z
+    12 bytes in segment INITTAB
+ 
+ 2 168 bytes of CODE  memory (+ 68 bytes shared)
+    32 bytes of CONST memory
+   440 bytes of DATA  memory
+
+Errors: none
+Warnings: none

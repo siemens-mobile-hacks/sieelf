@@ -2,311 +2,228 @@
 
 <project>
   <fileVersion>2</fileVersion>
+  <fileChecksum>3748936839</fileChecksum>
   <configuration>
     <name>Debug</name>
     <outputs>
-      <file>$PROJ_DIR$\palettes\rp2c04001.h</file>
+      <file>$PROJ_DIR$\..\FUNC.ASM</file>
+      <file>$PROJ_DIR$\..\SWILIB.H</file>
       <file>$PROJ_DIR$\Debug\Obj\INES.r79</file>
-      <file>$PROJ_DIR$\Debug\Obj\MD5.r79</file>
       <file>$PROJ_DIR$\Debug\Obj\NSF.pbi</file>
-      <file>$PROJ_DIR$\LINEWORK.C</file>
-      <file>$PROJ_DIR$\Debug\Obj\convert_format.r79</file>
-      <file>$PROJ_DIR$\FILTER.C</file>
-      <file>$PROJ_DIR$\GIT.H</file>
-      <file>$PROJ_DIR$\PPU.H</file>
-      <file>$PROJ_DIR$\Debug\Obj\SOUNDEXP.r79</file>
-      <file>$PROJ_DIR$\FDS.C</file>
+      <file>$PROJ_DIR$\Debug\Obj\MD5.r79</file>
+      <file>$PROJ_DIR$\MAIN.C</file>
+      <file>$PROJ_DIR$\Debug\Obj\UNIF.r79</file>
+      <file>$TOOLKIT_DIR$\inc\inttypes.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\linework.pbi</file>
+      <file>$PROJ_DIR$\FCEUSTR.H</file>
+      <file>$PROJ_DIR$\Debug\Obj\CART.r79</file>
+      <file>$PROJ_DIR$\types.h</file>
+      <file>$PROJ_DIR$\file.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\VSUNI.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\Z80.r79</file>
+      <file>$PROJ_DIR$\cheat.h</file>
+      <file>$PROJ_DIR$\MEMORY.H</file>
+      <file>$PROJ_DIR$\X6502.H</file>
+      <file>$PROJ_DIR$\Debug\Obj\FCEUSTR.r79</file>
+      <file>$PROJ_DIR$\Debug\Obj\CRC32.pbi</file>
+      <file>$PROJ_DIR$\INPUT.H</file>
+      <file>$PROJ_DIR$\MD5.H</file>
+      <file>$PROJ_DIR$\Debug\Obj\SOUND.pbi</file>
+      <file>$PROJ_DIR$\fir\c48000pal.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\MEMORY.r79</file>
+      <file>$PROJ_DIR$\PALETTE.C</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.r79</file>
+      <file>$PROJ_DIR$\PPU.C</file>
+      <file>$PROJ_DIR$\Debug\Obj\FILTER.r79</file>
       <file>$PROJ_DIR$\Debug\Obj\VSUNI.r79</file>
       <file>$PROJ_DIR$\Debug\Obj\X6502.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\INPUT.pbi</file>
-      <file>$PROJ_DIR$\unzip.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\CHEAT.r79</file>
       <file>$PROJ_DIR$\Debug\Obj\TED.PBD</file>
-      <file>$PROJ_DIR$\Debug\Obj\PPU.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\DEBUG.pbi</file>
-      <file>$PROJ_DIR$\FILTER.H</file>
+      <file>$PROJ_DIR$\Debug\Obj\CHEAT.r79</file>
+      <file>$PROJ_DIR$\palettes\rp2c04001.h</file>
+      <file>$PROJ_DIR$\LINEWORK.C</file>
+      <file>$PROJ_DIR$\Debug\Obj\convert_format.r79</file>
       <file>$PROJ_DIR$\Debug\Obj\WAVE.pbi</file>
+      <file>$PROJ_DIR$\FILTER.H</file>
+      <file>$PROJ_DIR$\Debug\Obj\DEBUG.pbi</file>
       <file>$PROJ_DIR$\GENERAL.H</file>
-      <file>$PROJ_DIR$\Debug\Obj\SOUND.pbi</file>
-      <file>$PROJ_DIR$\MD5.H</file>
-      <file>$PROJ_DIR$\Debug\Obj\MEMORY.r79</file>
-      <file>$PROJ_DIR$\fir\c48000pal.h</file>
-      <file>$PROJ_DIR$\INPUT.H</file>
-      <file>$PROJ_DIR$\MAIN.C</file>
-      <file>$PROJ_DIR$\Debug\Obj\linework.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\inttypes.h</file>
-      <file>$PROJ_DIR$\FCEUSTR.H</file>
-      <file>$PROJ_DIR$\Debug\Obj\SOUNDEXP.pbi</file>
+      <file>$PROJ_DIR$\FILTER.C</file>
+      <file>$PROJ_DIR$\GIT.H</file>
+      <file>$PROJ_DIR$\PPU.H</file>
+      <file>$PROJ_DIR$\Debug\Obj\PPU.pbi</file>
+      <file>$PROJ_DIR$\FDS.C</file>
+      <file>$PROJ_DIR$\Debug\Obj\SOUNDEXP.r79</file>
+      <file>$PROJ_DIR$\unzip.h</file>
       <file>$PROJ_DIR$\SAVER.C</file>
-      <file>$PROJ_DIR$\Debug\Obj\UNIF.r79</file>
+      <file>$PROJ_DIR$\Debug\Obj\SOUNDEXP.pbi</file>
       <file>$PROJ_DIR$\NSF.C</file>
-      <file>$PROJ_DIR$\cheat.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\FCEUSTR.r79</file>
-      <file>$PROJ_DIR$\Debug\Obj\CRC32.pbi</file>
-      <file>$PROJ_DIR$\MEMORY.H</file>
-      <file>$PROJ_DIR$\X6502.H</file>
-      <file>$PROJ_DIR$\PALETTE.C</file>
-      <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\FILTER.r79</file>
-      <file>$PROJ_DIR$\PPU.C</file>
-      <file>$PROJ_DIR$\Debug\Obj\main.r79</file>
-      <file>$PROJ_DIR$\Debug\Obj\CART.r79</file>
-      <file>$PROJ_DIR$\Debug\Obj\VSUNI.pbi</file>
-      <file>$PROJ_DIR$\file.h</file>
-      <file>$PROJ_DIR$\types.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\Z80.r79</file>
-      <file>$PROJ_DIR$\palettes\rp2c05004.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\Z80.pbi</file>
-      <file>$PROJ_DIR$\endian.h</file>
-      <file>$PROJ_DIR$\MOVIE.C</file>
-      <file>$PROJ_DIR$\OPS.H</file>
-      <file>$PROJ_DIR$\Debug\Obj\config_data.r79</file>
-      <file>$PROJ_DIR$\Debug\Obj\ENDIAN.pbi</file>
-      <file>$PROJ_DIR$\Tamainfo.c</file>
-      <file>$PROJ_DIR$\Debug\Obj\CHEAT.pbi</file>
-      <file>$PROJ_DIR$\DEBUG.C</file>
-      <file>$PROJ_DIR$\WAVE.H</file>
-      <file>$PROJ_DIR$\Debug\Obj\PALETTE.r79</file>
-      <file>$PROJ_DIR$\Debug\Obj\FDS.pbi</file>
-      <file>$PROJ_DIR$\..\MYLIB.C</file>
+      <file>$PROJ_DIR$\Timer.c</file>
       <file>$PROJ_DIR$\Debug\Obj\INES.pbi</file>
       <file>$PROJ_DIR$\PPUTILE.H</file>
-      <file>$TOOLKIT_DIR$\INC\STDLIB.H</file>
-      <file>$PROJ_DIR$\Debug\Obj\STATE.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\stdlib.h</file>
       <file>$PROJ_DIR$\Debug\Obj\convert_simple.pbi</file>
-      <file>$PROJ_DIR$\Debug\Obj\MYLIB.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\convert_format.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\STATE.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\PPU.r79</file>
-      <file>$PROJ_DIR$\Debug\Obj\STATE.r79</file>
+      <file>$PROJ_DIR$\Debug\Obj\MYLIB.pbi</file>
       <file>$PROJ_DIR$\ENDIAN.C</file>
+      <file>$PROJ_DIR$\Debug\Obj\STATE.r79</file>
+      <file>$PROJ_DIR$\WAVE.C</file>
       <file>$PROJ_DIR$\Debug\Obj\CRC32.r79</file>
       <file>$PROJ_DIR$\Debug\Obj\UNZIP.r79</file>
-      <file>$PROJ_DIR$\Debug\Obj\convert_format.pbi</file>
-      <file>$PROJ_DIR$\WAVE.C</file>
       <file>$PROJ_DIR$\CRC32.H</file>
+      <file>$PROJ_DIR$\OPS.H</file>
+      <file>$PROJ_DIR$\Tamainfo.c</file>
+      <file>$PROJ_DIR$\WAVE.H</file>
+      <file>$PROJ_DIR$\Debug\Obj\config_data.r79</file>
+      <file>$PROJ_DIR$\Debug\Obj\ENDIAN.pbi</file>
+      <file>$PROJ_DIR$\DEBUG.C</file>
+      <file>$PROJ_DIR$\Debug\Obj\CHEAT.pbi</file>
+      <file>$PROJ_DIR$\..\MYLIB.C</file>
+      <file>$PROJ_DIR$\Debug\Obj\FDS.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\PALETTE.r79</file>
       <file>$PROJ_DIR$\FCEU.C</file>
-      <file>$PROJ_DIR$\Debug\Obj\VIDEO.r79</file>
-      <file>$PROJ_DIR$\UNIF.C</file>
       <file>$PROJ_DIR$\x6502struct.h</file>
+      <file>$PROJ_DIR$\UNIF.C</file>
+      <file>$PROJ_DIR$\Debug\Obj\VIDEO.r79</file>
       <file>$PROJ_DIR$\VIDEO.H</file>
       <file>$PROJ_DIR$\Debug\Obj\MD5.pbi</file>
       <file>$PROJ_DIR$\Z80.c</file>
       <file>$PROJ_DIR$\CART.C</file>
-      <file>$PROJ_DIR$\Debug\Obj\FILTER.pbi</file>
-      <file>$PROJ_DIR$\GENERAL.C</file>
-      <file>$PROJ_DIR$\Debug\Obj\MYLIB.r79</file>
-      <file>$PROJ_DIR$\Debug\Obj\NSF.r79</file>
-      <file>$PROJ_DIR$\Debug\Obj\PALETTE.pbi</file>
-      <file>$PROJ_DIR$\SOUNDEXP.C</file>
       <file>$TOOLKIT_DIR$\inc\stdint.h</file>
+      <file>$PROJ_DIR$\GENERAL.C</file>
+      <file>$PROJ_DIR$\Debug\Obj\FILTER.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\NSF.r79</file>
+      <file>$PROJ_DIR$\Debug\Obj\MYLIB.r79</file>
+      <file>$PROJ_DIR$\SOUNDEXP.C</file>
+      <file>$PROJ_DIR$\Debug\Obj\PALETTE.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\FDS.r79</file>
       <file>$TOOLKIT_DIR$\inc\yvals.h</file>
       <file>$PROJ_DIR$\fir\c96000ntsc.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\GENERAL.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\FCEU.r79</file>
+      <file>$PROJ_DIR$\Debug\Obj\GENERAL.pbi</file>
+      <file>$PROJ_DIR$\Debug\Exe\TED.d79</file>
       <file>$PROJ_DIR$\Debug\Obj\MOVIE.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\TIMER.r79</file>
       <file>$PROJ_DIR$\Debug\Obj\Tamainfo.pbi</file>
-      <file>$PROJ_DIR$\Debug\Exe\TED.d79</file>
-      <file>$PROJ_DIR$\Debug\Obj\FDS.r79</file>
       <file>$TOOLKIT_DIR$\inc\DLib_Threads.h</file>
-      <file>$PROJ_DIR$\MD5.C</file>
       <file>$PROJ_DIR$\convert_format.c</file>
-      <file>$PROJ_DIR$\..\FUNC.ASM</file>
-      <file>$PROJ_DIR$\Timer.c</file>
+      <file>$PROJ_DIR$\MD5.C</file>
       <file>$PROJ_DIR$\UNZIP.C</file>
       <file>$PROJ_DIR$\SOUND.H</file>
       <file>$PROJ_DIR$\MEMORY.C</file>
       <file>$PROJ_DIR$\MOVIE.H</file>
+      <file>$TOOLKIT_DIR$\inc\stdio.h</file>
+      <file>$PROJ_DIR$\STATE.C</file>
       <file>$PROJ_DIR$\Debug\Obj\saver.pbi</file>
-      <file>$PROJ_DIR$\..\Swilib.h</file>
       <file>$PROJ_DIR$\Debug\Obj\saver.r79</file>
       <file>$PROJ_DIR$\Debug\Obj\config_data.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\DEBUG.r79</file>
       <file>$PROJ_DIR$\palettes\rp2c04002.h</file>
       <file>$PROJ_DIR$\Debug\Obj\LINEWORK.R79</file>
-      <file>$TOOLKIT_DIR$\INC\STDIO.H</file>
       <file>$PROJ_DIR$\fir\c48000ntsc.h</file>
+      <file>$PROJ_DIR$\CART.H</file>
       <file>$PROJ_DIR$\Debug\Obj\MEMORY.pbi</file>
       <file>$PROJ_DIR$\palettes\rp2c04003.h</file>
       <file>$PROJ_DIR$\Debug\Obj\X6502.r79</file>
-      <file>$PROJ_DIR$\CART.H</file>
-      <file>$PROJ_DIR$\STATE.C</file>
-      <file>$PROJ_DIR$\Debug\Obj\Tamainfo.r79</file>
-      <file>$PROJ_DIR$\FCOEFFS.H</file>
-      <file>$PROJ_DIR$\Debug\Obj\UNZIP.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\ysizet.h</file>
-      <file>$TOOLKIT_DIR$\inc\DLib_Product.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\TIMER.pbi</file>
       <file>$PROJ_DIR$\fir\c96000pal.h</file>
+      <file>$PROJ_DIR$\FCOEFFS.H</file>
+      <file>$PROJ_DIR$\Debug\Obj\Tamainfo.r79</file>
+      <file>$TOOLKIT_DIR$\inc\ysizet.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\UNZIP.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\DLib_Product.h</file>
+      <file>$TOOLKIT_DIR$\inc\errno.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\TIMER.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\convert_simple.r79</file>
       <file>$PROJ_DIR$\Debug\Obj\NETPLAY.pbi</file>
       <file>$PROJ_DIR$\Debug\Obj\ENDIAN.r79</file>
-      <file>$TOOLKIT_DIR$\inc\errno.h</file>
       <file>$PROJ_DIR$\NETPLAY.H</file>
-      <file>$PROJ_DIR$\Debug\Obj\convert_simple.r79</file>
-      <file>$PROJ_DIR$\Debug\Obj\SOUND.r79</file>
-      <file>$PROJ_DIR$\NETPLAY.C</file>
       <file>$PROJ_DIR$\PALETTE.H</file>
+      <file>$PROJ_DIR$\NETPLAY.C</file>
+      <file>$PROJ_DIR$\Debug\Obj\SOUND.r79</file>
       <file>$PROJ_DIR$\CHEAT.C</file>
       <file>$PROJ_DIR$\VIDEO.C</file>
-      <file>$TOOLKIT_DIR$\INC\STRING.H</file>
+      <file>$TOOLKIT_DIR$\inc\string.h</file>
+      <file>$PROJ_DIR$\fceu.h</file>
       <file>$PROJ_DIR$\Debug\Obj\UNIF.pbi</file>
+      <file>$PROJ_DIR$\FCEUSTR.C</file>
       <file>$PROJ_DIR$\Debug\Obj\MOVIE.r79</file>
       <file>$PROJ_DIR$\palettes\PALETTES.H</file>
-      <file>$PROJ_DIR$\fceu.h</file>
-      <file>$PROJ_DIR$\FCEUSTR.C</file>
       <file>$PROJ_DIR$\state.h</file>
       <file>$PROJ_DIR$\FUNC.ASM</file>
-      <file>$PROJ_DIR$\Debug\Obj\NETPLAY.r79</file>
-      <file>$PROJ_DIR$\Debug\Obj\WAVE.r79</file>
       <file>$PROJ_DIR$\FILE.C</file>
+      <file>$PROJ_DIR$\Debug\Obj\WAVE.r79</file>
+      <file>$PROJ_DIR$\Debug\Obj\NETPLAY.r79</file>
       <file>$PROJ_DIR$\Debug\Obj\FUNC.r79</file>
       <file>$PROJ_DIR$\INES.H</file>
       <file>$PROJ_DIR$\INPUT.C</file>
       <file>$PROJ_DIR$\FDS.H</file>
       <file>$PROJ_DIR$\INES.C</file>
       <file>$PROJ_DIR$\CRC32.C</file>
+      <file>$PROJ_DIR$\fir\c44100ntsc.h</file>
+      <file>$PROJ_DIR$\DEBUG.H</file>
       <file>$PROJ_DIR$\Debug\Obj\GENERAL.r79</file>
       <file>$PROJ_DIR$\Debug\Obj\FCEUSTR.pbi</file>
-      <file>$PROJ_DIR$\fir\c44100ntsc.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\VIDEO.pbi</file>
       <file>$PROJ_DIR$\driver.h</file>
-      <file>$PROJ_DIR$\DEBUG.H</file>
+      <file>$PROJ_DIR$\Debug\Obj\VIDEO.pbi</file>
       <file>$PROJ_DIR$\config_data.c</file>
       <file>$TOOLKIT_DIR$\inc\xencoding_limits.h</file>
-      <file>$PROJ_DIR$\fir\c44100pal.h</file>
       <file>$PROJ_DIR$\UNIF.H</file>
+      <file>$PROJ_DIR$\fir\c44100pal.h</file>
       <file>$PROJ_DIR$\Debug\Obj\FCEU.pbi</file>
       <file>$TOOLKIT_DIR$\inc\DLib_Defaults.h</file>
-      <file>$PROJ_DIR$\convert_simple.c</file>
       <file>$PROJ_DIR$\Debug\Obj\CART.pbi</file>
-      <file>$TOOLKIT_DIR$\LIB\dl4tptinl8n.h</file>
-      <file>$PROJ_DIR$\Debug\Obj\FILE.pbi</file>
+      <file>$PROJ_DIR$\convert_simple.c</file>
+      <file>$TOOLKIT_DIR$\lib\dl4tptinl8n.h</file>
       <file>$PROJ_DIR$\DRAWING.H</file>
+      <file>$PROJ_DIR$\Debug\Obj\FILE.pbi</file>
       <file>$PROJ_DIR$\SOUND.C</file>
-      <file>$PROJ_DIR$\Debug\Obj\INPUT.r79</file>
-      <file>$PROJ_DIR$\VSUNI.C</file>
       <file>$PROJ_DIR$\X6502.C</file>
+      <file>$PROJ_DIR$\VSUNI.C</file>
+      <file>$PROJ_DIR$\Debug\Obj\INPUT.r79</file>
       <file>$PROJ_DIR$\NSF.H</file>
       <file>$PROJ_DIR$\Debug\Obj\FILE.r79</file>
       <file>$PROJ_DIR$\VSUNI.H</file>
+      <file>$PROJ_DIR$\endian.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\Z80.pbi</file>
+      <file>$PROJ_DIR$\palettes\rp2c05004.h</file>
+      <file>$PROJ_DIR$\MOVIE.C</file>
     </outputs>
     <file>
-      <name>$PROJ_DIR$\LINEWORK.C</name>
+      <name>$PROJ_DIR$\..\FUNC.ASM</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 117</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 28</file>
+          <name>AARM</name>
+          <file> 149</file>
         </tool>
       </outputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\FILTER.C</name>
+      <name>[ROOT_NODE]</name>
       <outputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 42</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 86</file>
+          <name>XLINK</name>
+          <file> 97</file>
         </tool>
       </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 48 108 39 81 146 7 163 164 19 126 161 119 94 167 25 131</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\FDS.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 101</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 62</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 48 39 81 146 7 163 164 156 108 21 148 47 38 123 23 135</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Debug\Obj\TED.PBD</name>
-      <inputs>
-        <tool>
-          <name>BILINK</name>
-          <file> 130</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\MAIN.C</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 44</file>
+          <file> 27</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 41</file>
+          <file> 26</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 112</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\SAVER.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 113</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 111</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 112</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\NSF.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 89</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 3</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 48 39 81 146 7 163 164 82 108 180 21 38 47 156 123 26</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 48 39 81 146 7 163 164 82 108 180 21 38 47 156 123 26</file>
+          <file> 1</file>
         </tool>
       </inputs>
     </file>
@@ -315,17 +232,17 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 61</file>
+          <file> 76</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 90</file>
+          <file> 91</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 48 146 7 163 164 81 21 139 145 0 116 121 50</file>
+          <file> 11 139 43 159 156 78 41 133 143 35 114 119 181</file>
         </tool>
       </inputs>
     </file>
@@ -334,54 +251,31 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 70</file>
+          <file> 59</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 17</file>
+          <file> 45</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 48 39 81 146 7 163 164 8 180 108 21 52 38 123 139 148 82 26 65</file>
+          <file> 11 17 78 139 43 159 156 44 176 105 41 179 16 117 133 144 81 20 54</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\MOVIE.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 144</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 97</file>
-        </tool>
-      </outputs>
+      <name>$PROJ_DIR$\Debug\Obj\TED.PBD</name>
       <inputs>
         <tool>
-          <name>ICCARM</name>
-          <file> 48 26 146 7 163 164 81 148 21 82</file>
+          <name>BILINK</name>
+          <file> 128</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\Tamainfo.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 125</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 99</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\DEBUG.C</name>
+      <name>$PROJ_DIR$\LINEWORK.C</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
@@ -389,208 +283,35 @@
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 18</file>
+          <file> 8</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\FILTER.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 29</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 87</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 48 39 81 146 7 163 164</file>
+          <file> 11 105 17 78 139 43 159 156 39 122 155 116 94 164 23 121</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\MYLIB.C</name>
+      <name>$PROJ_DIR$\FDS.C</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 88</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 69</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\ENDIAN.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 133</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 56</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 48 52</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\WAVE.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 151</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 20</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 48 146 7 163 164 81 108 60</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 48 146 7 163 164 81 108 60</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\FCEU.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 96</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 169</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 48 39 81 146 7 163 164 8 108 135 21 52 38 123 180 156 154 168 35 139 148 110 82 26 47 77 182</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\UNIF.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 33</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 143</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 48 146 7 163 164 81 123 168 21 148 52 47 38 26 23</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Z80.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 49</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 51</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\CART.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 45</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 172</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 48 146 7 163 164 81 8 123 38 39 21</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\GENERAL.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 159</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 95</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 48 146 7 163 164 81 21 148 110 23</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\SOUNDEXP.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 9</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 31</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 48 146 7 163 164 81</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 48 146 7 163 164 81</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\MD5.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 2</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 83</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 48 23</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\convert_format.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 5</file>
+          <file> 92</file>
         </tool>
         <tool>
           <name>BICOMP</name>
@@ -600,39 +321,309 @@
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 112</file>
+          <file> 11 17 78 139 43 159 156 152 105 41 144 12 16 117 21 132</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>$PROJ_DIR$\..\FUNC.ASM</name>
+      <name>$PROJ_DIR$\SAVER.C</name>
       <outputs>
         <tool>
-          <name>AARM</name>
-          <file> 153</file>
+          <name>ICCARM</name>
+          <file> 111</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 110</file>
         </tool>
       </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 1</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\NSF.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 88</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 3</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 11 17 78 139 43 159 156 81 105 176 41 16 12 152 117 20</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 11 17 78 139 43 159 156 81 105 176 41 16 12 152 117 20</file>
+        </tool>
+      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\Timer.c</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 98</file>
+          <file> 99</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 130</file>
+          <file> 128</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 112</file>
+          <file> 1</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 112</file>
+          <file> 1</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ENDIAN.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 131</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 71</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 11 179</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\WAVE.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 147</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 38</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 11 139 43 159 156 78 105 69</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 11 139 43 159 156 78 105 69</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Tamainfo.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 123</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 100</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\DEBUG.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 113</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 40</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 11 17 78 139 43 159 156</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\MYLIB.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 89</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 60</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\FCEU.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 95</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 165</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 11 17 78 139 43 159 156 44 105 132 41 179 16 117 176 152 150 163 15 133 144 107 81 20 12 66 178</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\UNIF.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 6</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 140</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 11 139 43 159 156 78 117 163 41 144 179 12 16 20 21</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Z80.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 14</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 180</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\CART.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 10</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 167</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 11 139 43 159 156 78 44 117 16 17 41</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\GENERAL.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 157</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 96</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 11 139 43 159 156 78 41 144 107 21</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\SOUNDEXP.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 47</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 50</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 11 139 43 159 156 78</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 11 139 43 159 156 78</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\convert_format.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 37</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 57</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 1</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\MD5.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 82</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 11 21</file>
         </tool>
       </inputs>
     </file>
@@ -641,21 +632,21 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 74</file>
+          <file> 65</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 127</file>
+          <file> 125</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 118 93 170 173 129 166 102 128 66 142</file>
+          <file> 108 93 166 169 126 162 101 124 55 138</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 118 93 170 129 166 102 128 66 142 14 134 163 48 29 92 7 164 81</file>
+          <file> 108 93 166 126 162 101 124 55 138 48 127 159 11 7 85 43 156 78</file>
         </tool>
       </inputs>
     </file>
@@ -668,13 +659,13 @@
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 120</file>
+          <file> 118</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 48 146 7 163 164 81 38 21</file>
+          <file> 11 139 43 159 156 78 16 41</file>
         </tool>
       </inputs>
     </file>
@@ -683,49 +674,7 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 71</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 67</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 48 39 81 146 7 163 164 108 52 156 21 148 110 38 8 135 82</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\NETPLAY.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 150</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 132</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 48 135 146 7 163 164 81 21 148 35 26 52</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 48 135 146 7 163 164 81 21 148 35 26 52</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\CHEAT.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 15</file>
+          <file> 62</file>
         </tool>
         <tool>
           <name>BICOMP</name>
@@ -735,7 +684,49 @@
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 48 39 81 35 146 7 163 164 21 123 38</file>
+          <file> 11 17 78 139 43 159 156 105 179 152 41 144 107 16 44 132 81</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\NETPLAY.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 148</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 130</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 11 132 139 43 159 156 78 41 144 15 20 179</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 11 132 139 43 159 156 78 41 144 15 20 179</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\CHEAT.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 34</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 73</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 11 17 78 15 139 43 159 156 41 117 16</file>
         </tool>
       </inputs>
     </file>
@@ -744,26 +735,7 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 79</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 162</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 48 82 146 7 163 164 81 21 38 77 148 110 139 180 26 182 175</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\FCEUSTR.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 36</file>
+          <file> 80</file>
         </tool>
         <tool>
           <name>BICOMP</name>
@@ -773,7 +745,26 @@
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 48 30</file>
+          <file> 11 81 139 43 159 156 78 41 16 66 144 107 133 176 20 178 170</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\FCEUSTR.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 18</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 158</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 11 9</file>
         </tool>
       </inputs>
     </file>
@@ -782,7 +773,7 @@
       <outputs>
         <tool>
           <name>AARM</name>
-          <file> 153</file>
+          <file> 149</file>
         </tool>
       </outputs>
     </file>
@@ -791,17 +782,17 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 181</file>
+          <file> 177</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 174</file>
+          <file> 171</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 48 47 52 38 163 7 164 81 21</file>
+          <file> 11 12 179 16 159 43 156 78 41</file>
         </tool>
       </inputs>
     </file>
@@ -810,17 +801,17 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 177</file>
+          <file> 175</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 13</file>
+          <file> 32</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 48 39 81 146 7 163 164 108 135 110 148 26 182 156</file>
+          <file> 11 17 78 139 43 159 156 105 132 107 144 20 178 152</file>
         </tool>
       </inputs>
     </file>
@@ -829,17 +820,17 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 1</file>
+          <file> 2</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 64</file>
+          <file> 53</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 48 39 81 146 7 163 164 123 8 154 21 148 47 38 77 23 35 182</file>
+          <file> 11 17 78 139 43 159 156 117 44 150 41 144 12 16 66 21 15 178</file>
         </tool>
       </inputs>
     </file>
@@ -848,17 +839,17 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 73</file>
+          <file> 64</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 37</file>
+          <file> 19</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 48 77</file>
+          <file> 11 66</file>
         </tool>
       </inputs>
     </file>
@@ -867,11 +858,11 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 55</file>
+          <file> 70</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 114</file>
+          <file> 112</file>
         </tool>
       </outputs>
     </file>
@@ -880,11 +871,11 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 136</file>
+          <file> 129</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 68</file>
+          <file> 56</file>
         </tool>
       </outputs>
     </file>
@@ -893,7 +884,7 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 137</file>
+          <file> 135</file>
         </tool>
         <tool>
           <name>BICOMP</name>
@@ -903,30 +894,11 @@
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 48 39 81 146 7 163 164 108 19 148 60</file>
+          <file> 11 17 78 139 43 159 156 105 39 144 69</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 48 39 81 146 7 163 164 108 19 148 60</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\VSUNI.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 11</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 46</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 48 39 81 146 7 163 164 26 135 182 148</file>
+          <file> 11 17 78 139 43 159 156 105 39 144 69</file>
         </tool>
       </inputs>
     </file>
@@ -935,112 +907,186 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 122</file>
+          <file> 120</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 12</file>
+          <file> 31</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 48 39 81 146 7 163 164 108 54</file>
+          <file> 11 17 78 139 43 159 156 105 67</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>[ROOT_NODE]</name>
+      <name>$PROJ_DIR$\VSUNI.C</name>
       <outputs>
         <tool>
-          <name>XLINK</name>
-          <file> 100</file>
+          <name>ICCARM</name>
+          <file> 30</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 13</file>
         </tool>
       </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 11 17 78 139 43 159 156 20 132 178 144</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\MOVIE.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 142</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 98</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 11 20 139 43 159 156 78 144 41 81</file>
+        </tool>
+      </inputs>
     </file>
     <forcedrebuild>
       <name>[MULTI_TOOL]</name>
       <tool>XLINK</tool>
     </forcedrebuild>
+    <forcedrebuild>
+      <name>[REBUILD_ALL]</name>
+    </forcedrebuild>
   </configuration>
   <configuration>
     <name>Release</name>
     <outputs>
+      <file>$PROJ_DIR$\..\FUNC.ASM</file>
+      <file>$PROJ_DIR$\..\SWILIB.H</file>
+      <file>$PROJ_DIR$\MAIN.C</file>
+      <file>$PROJ_DIR$\FCEUSTR.H</file>
+      <file>$PROJ_DIR$\types.h</file>
+      <file>$PROJ_DIR$\file.h</file>
+      <file>$PROJ_DIR$\cheat.h</file>
+      <file>$PROJ_DIR$\MEMORY.H</file>
+      <file>$PROJ_DIR$\X6502.H</file>
+      <file>$PROJ_DIR$\INPUT.H</file>
+      <file>$PROJ_DIR$\MD5.H</file>
+      <file>$PROJ_DIR$\fir\c48000pal.h</file>
+      <file>$PROJ_DIR$\PALETTE.C</file>
+      <file>$PROJ_DIR$\PPU.C</file>
       <file>$PROJ_DIR$\palettes\rp2c04001.h</file>
       <file>$PROJ_DIR$\LINEWORK.C</file>
+      <file>$PROJ_DIR$\FILTER.H</file>
+      <file>$PROJ_DIR$\GENERAL.H</file>
       <file>$PROJ_DIR$\FILTER.C</file>
       <file>$PROJ_DIR$\GIT.H</file>
       <file>$PROJ_DIR$\PPU.H</file>
       <file>$PROJ_DIR$\FDS.C</file>
-      <file>$PROJ_DIR$\Release\Obj\FILTER.pbi</file>
+      <file>$PROJ_DIR$\SAVER.C</file>
+      <file>$PROJ_DIR$\NSF.C</file>
+      <file>$PROJ_DIR$\TEST.XCL</file>
+      <file>$PROJ_DIR$\Timer.c</file>
+      <file>$PROJ_DIR$\Release\List\TimeMan.map</file>
+      <file>$PROJ_DIR$\PPUTILE.H</file>
+      <file>$PROJ_DIR$\ENDIAN.C</file>
+      <file>$PROJ_DIR$\CRC32.H</file>
+      <file>$PROJ_DIR$\OPS.H</file>
+      <file>$PROJ_DIR$\Tamainfo.c</file>
+      <file>$PROJ_DIR$\DEBUG.C</file>
+      <file>$PROJ_DIR$\..\MYLIB.C</file>
+      <file>$PROJ_DIR$\FCEU.C</file>
+      <file>$PROJ_DIR$\x6502struct.h</file>
+      <file>$PROJ_DIR$\UNIF.C</file>
+      <file>$PROJ_DIR$\VIDEO.H</file>
+      <file>$PROJ_DIR$\Z80.c</file>
+      <file>$PROJ_DIR$\CART.C</file>
+      <file>$PROJ_DIR$\GENERAL.C</file>
+      <file>$PROJ_DIR$\fir\c96000ntsc.h</file>
+      <file>$PROJ_DIR$\convert_format.c</file>
+      <file>$PROJ_DIR$\MD5.C</file>
+      <file>$PROJ_DIR$\SOUND.H</file>
+      <file>$PROJ_DIR$\MEMORY.C</file>
+      <file>$PROJ_DIR$\MOVIE.H</file>
+      <file>$PROJ_DIR$\STATE.C</file>
+      <file>$PROJ_DIR$\palettes\rp2c04002.h</file>
+      <file>$PROJ_DIR$\fir\c48000ntsc.h</file>
+      <file>$PROJ_DIR$\CART.H</file>
+      <file>$PROJ_DIR$\palettes\rp2c04003.h</file>
+      <file>$PROJ_DIR$\fir\c96000pal.h</file>
+      <file>$PROJ_DIR$\FCOEFFS.H</file>
+      <file>$PROJ_DIR$\NETPLAY.H</file>
+      <file>$PROJ_DIR$\PALETTE.H</file>
+      <file>$PROJ_DIR$\CHEAT.C</file>
+      <file>$PROJ_DIR$\VIDEO.C</file>
+      <file>$PROJ_DIR$\fceu.h</file>
+      <file>$PROJ_DIR$\FCEUSTR.C</file>
+      <file>$PROJ_DIR$\palettes\PALETTES.H</file>
+      <file>$PROJ_DIR$\state.h</file>
+      <file>$PROJ_DIR$\FUNC.ASM</file>
+      <file>$PROJ_DIR$\FILE.C</file>
+      <file>$PROJ_DIR$\INES.H</file>
+      <file>$PROJ_DIR$\INPUT.C</file>
+      <file>$PROJ_DIR$\FDS.H</file>
+      <file>$PROJ_DIR$\INES.C</file>
+      <file>$PROJ_DIR$\CRC32.C</file>
+      <file>$PROJ_DIR$\fir\c44100ntsc.h</file>
+      <file>$PROJ_DIR$\DEBUG.H</file>
+      <file>$PROJ_DIR$\driver.h</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\UNIF.H</file>
+      <file>$PROJ_DIR$\fir\c44100pal.h</file>
+      <file>$PROJ_DIR$\convert_simple.c</file>
+      <file>$PROJ_DIR$\DRAWING.H</file>
+      <file>$PROJ_DIR$\X6502.C</file>
+      <file>$PROJ_DIR$\VSUNI.C</file>
+      <file>$PROJ_DIR$\NSF.H</file>
+      <file>$PROJ_DIR$\VSUNI.H</file>
       <file>$PROJ_DIR$\Release\Obj\convert_format.pbi</file>
-      <file>$PROJ_DIR$\FILTER.H</file>
-      <file>$PROJ_DIR$\GENERAL.H</file>
-      <file>$PROJ_DIR$\MD5.H</file>
+      <file>$PROJ_DIR$\asm.asm</file>
+      <file>$PROJ_DIR$\Release\Obj\FILTER.pbi</file>
+      <file>$PROJ_DIR$\Release\List\convert_format.lst</file>
       <file>$PROJ_DIR$\Release\Obj\MEMORY.r79</file>
       <file>$PROJ_DIR$\Release\Obj\MAIN.R79</file>
       <file>$PROJ_DIR$\Release\Obj\MEMORY.pbi</file>
-      <file>$PROJ_DIR$\Release\List\convert_format.lst</file>
+      <file>$PROJ_DIR$\..\mylib.h</file>
       <file>$PROJ_DIR$\Release\Obj\VSUNI.r79</file>
       <file>$PROJ_DIR$\Release\Obj\GENERAL.pbi</file>
       <file>$PROJ_DIR$\Release\Obj\Tamainfo.r79</file>
       <file>$PROJ_DIR$\Release\Obj\TIMER.pbi</file>
       <file>$PROJ_DIR$\Release\List\CHEAT.lst</file>
       <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\asm.asm</file>
-      <file>$PROJ_DIR$\fir\c48000pal.h</file>
-      <file>$PROJ_DIR$\INPUT.H</file>
-      <file>$PROJ_DIR$\MAIN.C</file>
-      <file>$PROJ_DIR$\FCEUSTR.H</file>
-      <file>$PROJ_DIR$\SAVER.C</file>
-      <file>$PROJ_DIR$\NSF.C</file>
-      <file>$PROJ_DIR$\cheat.h</file>
-      <file>$PROJ_DIR$\MEMORY.H</file>
-      <file>$PROJ_DIR$\X6502.H</file>
-      <file>$PROJ_DIR$\PALETTE.C</file>
-      <file>$PROJ_DIR$\PPU.C</file>
-      <file>$PROJ_DIR$\file.h</file>
-      <file>$PROJ_DIR$\types.h</file>
-      <file>$PROJ_DIR$\palettes\rp2c05004.h</file>
-      <file>$PROJ_DIR$\endian.h</file>
-      <file>$PROJ_DIR$\MOVIE.C</file>
-      <file>$PROJ_DIR$\OPS.H</file>
-      <file>$PROJ_DIR$\Tamainfo.c</file>
+      <file>$PROJ_DIR$\Release\List\convert_simple.lst</file>
       <file>$PROJ_DIR$\Release\List\PALETTE.lst</file>
       <file>$PROJ_DIR$\Release\Obj\STATE.pbi</file>
       <file>$PROJ_DIR$\Release\Obj\NSF.r79</file>
       <file>$PROJ_DIR$\Release\List\FILTER.lst</file>
-      <file>$PROJ_DIR$\Release\List\convert_simple.lst</file>
+      <file>$PROJ_DIR$\..\TAMA.H</file>
       <file>$PROJ_DIR$\Release\Obj\TAMAINFO.pbi</file>
       <file>$PROJ_DIR$\Release\Obj\CRC32.r79</file>
       <file>$PROJ_DIR$\Release\Obj\Timer.r79</file>
-      <file>$PROJ_DIR$\DEBUG.C</file>
-      <file>$PROJ_DIR$\..\MYLIB.C</file>
-      <file>$PROJ_DIR$\PPUTILE.H</file>
-      <file>$PROJ_DIR$\ENDIAN.C</file>
-      <file>$PROJ_DIR$\CRC32.H</file>
-      <file>$PROJ_DIR$\FCEU.C</file>
-      <file>$PROJ_DIR$\UNIF.C</file>
-      <file>$PROJ_DIR$\x6502struct.h</file>
-      <file>$PROJ_DIR$\VIDEO.H</file>
-      <file>$PROJ_DIR$\Z80.c</file>
-      <file>$PROJ_DIR$\CART.C</file>
-      <file>$PROJ_DIR$\GENERAL.C</file>
       <file>$PROJ_DIR$\Release\Obj\saver.pbi</file>
-      <file>$PROJ_DIR$\..\mylib.h</file>
+      <file>$PROJ_DIR$\Release\List\config_data.lst</file>
       <file>$PROJ_DIR$\Release\Obj\FCEU.r79</file>
       <file>$PROJ_DIR$\Release\Obj\FCEUSTR.pbi</file>
+      <file>$PROJ_DIR$\endian.h</file>
+      <file>$PROJ_DIR$\palettes\rp2c05004.h</file>
+      <file>$PROJ_DIR$\MOVIE.C</file>
       <file>$PROJ_DIR$\Release\List\MAIN.LST</file>
       <file>$PROJ_DIR$\Release\List\Z80.lst</file>
-      <file>$PROJ_DIR$\..\TAMA.H</file>
+      <file>$PROJ_DIR$\Release\Obj\config_data.r79</file>
       <file>$PROJ_DIR$\Release\List\DEBUG.lst</file>
       <file>$PROJ_DIR$\Release\List\NSF.lst</file>
-      <file>$PROJ_DIR$\Release\List\config_data.lst</file>
-      <file>$PROJ_DIR$\fir\c96000ntsc.h</file>
-      <file>$PROJ_DIR$\MD5.C</file>
-      <file>$PROJ_DIR$\convert_format.c</file>
-      <file>$PROJ_DIR$\..\FUNC.ASM</file>
-      <file>$PROJ_DIR$\Timer.c</file>
+      <file>$PROJ_DIR$\Release\Obj\convert_simple.pbi</file>
       <file>$PROJ_DIR$\Release\List\MEMORY.lst</file>
       <file>$PROJ_DIR$\Release\Exe\TED.elf</file>
       <file>$PROJ_DIR$\Release\List\FCEUSTR.lst</file>
@@ -1061,15 +1107,10 @@
       <file>$PROJ_DIR$\Release\Obj\VIDEO.pbi</file>
       <file>$PROJ_DIR$\Release\Obj\ENDIAN.pbi</file>
       <file>$PROJ_DIR$\Release\Obj\INES.pbi</file>
-      <file>$PROJ_DIR$\Release\Obj\config_data.r79</file>
+      <file>$PROJ_DIR$\Release\Obj\convert_simple.r79</file>
       <file>$PROJ_DIR$\Release\Obj\PPU.pbi</file>
       <file>$PROJ_DIR$\Release\List\FILE.lst</file>
       <file>$PROJ_DIR$\Release\Obj\PPU.r79</file>
-      <file>$PROJ_DIR$\SOUND.H</file>
-      <file>$PROJ_DIR$\MEMORY.C</file>
-      <file>$PROJ_DIR$\MOVIE.H</file>
-      <file>$PROJ_DIR$\..\Swilib.h</file>
-      <file>$PROJ_DIR$\palettes\rp2c04002.h</file>
       <file>$PROJ_DIR$\Release\List\MOVIE.lst</file>
       <file>$PROJ_DIR$\Release\List\VSUNI.lst</file>
       <file>$PROJ_DIR$\Release\Obj\DEBUG.r79</file>
@@ -1079,31 +1120,15 @@
       <file>$PROJ_DIR$\Release\List\INPUT.lst</file>
       <file>$PROJ_DIR$\Release\Obj\DEBUG.pbi</file>
       <file>$PROJ_DIR$\Release\Obj\STATE.r79</file>
-      <file>$PROJ_DIR$\fir\c48000ntsc.h</file>
-      <file>$PROJ_DIR$\palettes\rp2c04003.h</file>
-      <file>$PROJ_DIR$\CART.H</file>
-      <file>$PROJ_DIR$\STATE.C</file>
-      <file>$PROJ_DIR$\FCOEFFS.H</file>
-      <file>$PROJ_DIR$\fir\c96000pal.h</file>
-      <file>$PROJ_DIR$\NETPLAY.H</file>
-      <file>$PROJ_DIR$\PALETTE.H</file>
-      <file>$PROJ_DIR$\CHEAT.C</file>
-      <file>$PROJ_DIR$\VIDEO.C</file>
-      <file>$PROJ_DIR$\palettes\PALETTES.H</file>
-      <file>$PROJ_DIR$\Release\Obj\convert_simple.r79</file>
+      <file>$PROJ_DIR$\Release\Obj\convert_format.r79</file>
       <file>$PROJ_DIR$\Release\List\CRC32.lst</file>
       <file>$PROJ_DIR$\Release\List\UNIF.lst</file>
       <file>$PROJ_DIR$\Release\Obj\MD5.r79</file>
-      <file>$PROJ_DIR$\Release\Obj\convert_format.r79</file>
+      <file>E:\ARM\TED\TEST.XCL</file>
       <file>$PROJ_DIR$\Release\Obj\CART.pbi</file>
       <file>$PROJ_DIR$\Release\List\MD5.lst</file>
       <file>$PROJ_DIR$\Release\Obj\MYLIB.r79</file>
-      <file>$PROJ_DIR$\fceu.h</file>
-      <file>$PROJ_DIR$\FCEUSTR.C</file>
-      <file>$PROJ_DIR$\state.h</file>
-      <file>$PROJ_DIR$\FUNC.ASM</file>
-      <file>$PROJ_DIR$\FILE.C</file>
-      <file>E:\ARM\TED\TEST.XCL</file>
+      <file>$PROJ_DIR$\Release\Obj\config_data.pbi</file>
       <file>$PROJ_DIR$\Release\Obj\UNIF.pbi</file>
       <file>$PROJ_DIR$\Release\Obj\INPUT.r79</file>
       <file>$PROJ_DIR$\Release\List\CART.lst</file>
@@ -1113,19 +1138,7 @@
       <file>$PROJ_DIR$\Release\Obj\CART.r79</file>
       <file>$PROJ_DIR$\Release\Obj\INES.r79</file>
       <file>$PROJ_DIR$\Release\List\TED.map</file>
-      <file>$PROJ_DIR$\INES.H</file>
-      <file>$PROJ_DIR$\INPUT.C</file>
-      <file>$PROJ_DIR$\FDS.H</file>
-      <file>$PROJ_DIR$\INES.C</file>
-      <file>$PROJ_DIR$\CRC32.C</file>
-      <file>$PROJ_DIR$\fir\c44100ntsc.h</file>
-      <file>$PROJ_DIR$\driver.h</file>
-      <file>$PROJ_DIR$\DEBUG.H</file>
-      <file>$PROJ_DIR$\config_data.c</file>
-      <file>$PROJ_DIR$\fir\c44100pal.h</file>
-      <file>$PROJ_DIR$\UNIF.H</file>
       <file>$PROJ_DIR$\Release\List\Timer.lst</file>
-      <file>$PROJ_DIR$\Release\Obj\convert_simple.pbi</file>
       <file>$PROJ_DIR$\Release\Obj\CHEAT.pbi</file>
       <file>$PROJ_DIR$\Release\Obj\FCEU.pbi</file>
       <file>$PROJ_DIR$\Release\List\GENERAL.lst</file>
@@ -1133,12 +1146,6 @@
       <file>$PROJ_DIR$\Release\Obj\X6502.r79</file>
       <file>$PROJ_DIR$\Release\Obj\LINEWORK.R79</file>
       <file>$PROJ_DIR$\Release\Obj\FDS.r79</file>
-      <file>$PROJ_DIR$\convert_simple.c</file>
-      <file>$PROJ_DIR$\DRAWING.H</file>
-      <file>$PROJ_DIR$\VSUNI.C</file>
-      <file>$PROJ_DIR$\X6502.C</file>
-      <file>$PROJ_DIR$\NSF.H</file>
-      <file>$PROJ_DIR$\VSUNI.H</file>
       <file>$PROJ_DIR$\Release\List\FDS.lst</file>
       <file>$PROJ_DIR$\Release\Obj\MD5.pbi</file>
       <file>$PROJ_DIR$\Release\Obj\MOVIE.pbi</file>
@@ -1156,73 +1163,23 @@
       <file>$PROJ_DIR$\Release\Obj\FILE.r79</file>
       <file>$PROJ_DIR$\Release\List\FCEU.lst</file>
       <file>$PROJ_DIR$\Release\Obj\INPUT.pbi</file>
-      <file>$PROJ_DIR$\Release\Obj\config_data.pbi</file>
+      <file>$PROJ_DIR$\Release\Exe\TimeMan.elf</file>
     </outputs>
     <file>
-      <name>$PROJ_DIR$\LINEWORK.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 165 183</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 109</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\FILTER.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 178 43</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 6</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 34 99 30 55 132 3 153 154 8 117 152 113 70 156 22 118</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 34 99 30 55 132 3 153 154 8 117 152 113 70 156 22 118</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\FDS.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 166 173</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 107</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 102 61 34 30 55 132 3 153 154 149 99 9 134 33 29 115 10 119</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 34 30 55 132 3 153 154 149 99 9 134 33 29 115 10 119</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\asm.asm</name>
+      <name>$PROJ_DIR$\..\FUNC.ASM</name>
       <outputs>
         <tool>
           <name>AARM</name>
-          <file> 78</file>
+          <file> 162</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 193 26</file>
         </tool>
       </outputs>
     </file>
@@ -1231,600 +1188,7 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 12 64</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 20</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 102</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\SAVER.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 84 142</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 60</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 102</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\NSF.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 42 68</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 186</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 34 30 55 132 3 153 154 56 99 171 9 29 33 149 115 23</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 34 30 55 132 3 153 154 56 99 171 9 29 33 149 115 23</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\PALETTE.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 88 40</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 180</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 34 132 3 153 154 55 9 120 123 0 103 114 35</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 34 132 3 153 154 55 9 120 123 0 103 114 35</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\PPU.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 98 86</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 96</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 34 30 55 132 3 153 154 4 171 99 9 36 29 115 120 134 56 23 50</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 34 30 55 132 3 153 154 4 171 99 9 36 29 115 120 134 56 23 50</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\MOVIE.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 163 104</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 175</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 34 23 132 3 153 154 55 134 9 56</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 34 23 132 3 153 154 55 134 9 56</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Tamainfo.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 17</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 45</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>BICOMP</name>
-          <file> 61 66</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\DEBUG.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 106 67</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 111</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 34 30 55 132 3 153 154 102 61</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 34 30 55 132 3 153 154</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\MYLIB.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 131 81</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 182</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 102</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\ENDIAN.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 90 179</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 93</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 34 36 102 61</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 34 36</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\FCEU.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 62 188</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 161</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 34 30 55 132 3 153 154 4 99 119 9 36 29 115 171 149 147 157 28 120 134 101 56 23 33 52 172 102 61</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 34 30 55 132 3 153 154 4 99 119 9 36 29 115 171 149 147 157 28 120 134 101 56 23 33 52 172</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\UNIF.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 181 126</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 138</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 34 132 3 153 154 55 115 157 9 134 36 33 29 23 10</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 34 132 3 153 154 55 115 157 9 134 36 33 29 23 10</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Z80.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 177 65</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 82</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 102</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\CART.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 144 140</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 129</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 102 61 34 132 3 153 154 55 4 115 29 30 9</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 34 132 3 153 154 55 4 115 29 30 9</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\GENERAL.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 184 162</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 16</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 34 132 3 153 154 55 9 134 101 10</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 34 132 3 153 154 55 9 134 101 10</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\MD5.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 127 130</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 174</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 34 10</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 34 10</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\convert_format.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 128 14</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 7</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 102</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\FUNC.ASM</name>
-      <outputs>
-        <tool>
-          <name>AARM</name>
-          <file> 141</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Timer.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 47 158</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 18</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 102</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 102</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release\Exe\TED.elf</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 146</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 137 141 47</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release\Obj\TED.PBD</name>
-      <inputs>
-        <tool>
-          <name>BILINK</name>
-          <file> 18</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\MEMORY.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 11 75</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 13</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 34 132 3 153 154 55 29 9</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 34 132 3 153 154 55 29 9</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\STATE.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 112 80</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 41</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 34 30 55 132 3 153 154 99 36 149 9 134 101 29 4 119 56</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 34 30 55 132 3 153 154 99 36 149 9 134 101 29 4 119 56</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\CHEAT.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 85 19</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 160</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 102 61 34 30 55 28 132 3 153 154 9 115 29</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 34 30 55 28 132 3 153 154 9 115 29</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\VIDEO.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 83 87</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 92</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 34 56 132 3 153 154 55 9 29 52 134 101 120 171 23 172 168</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 34 56 132 3 153 154 55 9 29 52 134 101 120 171 23 172 168</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\FCEUSTR.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 185 77</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 63</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 34 25 102</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 34 25</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\FUNC.ASM</name>
-      <outputs>
-        <tool>
-          <name>AARM</name>
-          <file> 141</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\FILE.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 187 97</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 91</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 102 61 34 33 36 29 153 3 154 55 9</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 34 33 36 29 153 3 154 55 9</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\INPUT.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 139 110</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 189</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 34 30 55 132 3 153 154 99 119 101 134 23 172 149</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 34 30 55 132 3 153 154 99 119 101 134 23 172 149</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\INES.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 145 143</file>
+          <file> 86 111</file>
         </tool>
         <tool>
           <name>BICOMP</name>
@@ -1834,11 +1198,607 @@
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 34 30 55 132 3 153 154 115 4 147 9 134 33 29 52 10 28 172</file>
+          <file> 1</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\PALETTE.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 130 96</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 34 30 55 132 3 153 154 115 4 147 9 134 33 29 52 10 28 172</file>
+          <file> 183</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 58 19 71 70 35 17 55 60 14 48 51 109</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 58 19 71 70 35 17 55 60 14 48 51 109</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\PPU.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 140 128</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 138</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 8 35 58 19 71 70 20 79 44 17 108 7 50 55 61 37 9 27</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 8 35 58 19 71 70 20 79 44 17 108 7 50 55 61 37 9 27</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\LINEWORK.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 174 186</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 146</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\FILTER.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 181 99</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 83</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 44 8 35 58 19 71 70 16 53 69 49 41 74 11 52</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 44 8 35 58 19 71 70 16 53 69 49 41 74 11 52</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\FDS.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 175 176</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 144</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 1 88 4 8 35 58 19 71 70 66 44 17 61 5 7 50 10 54</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 8 35 58 19 71 70 66 44 17 61 5 7 50 10 54</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\SAVER.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 126 163</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 104</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 1</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\NSF.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 98 115</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 189</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 8 35 58 19 71 70 37 44 79 17 7 5 66 50 9</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 8 35 58 19 71 70 37 44 79 17 7 5 66 50 9</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Timer.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 103 168</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 92</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 1</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 1</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ENDIAN.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 132 182</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 135</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 108 1 88</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 108</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Tamainfo.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 91</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 101</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 88 100</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\DEBUG.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 143 114</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 148</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 8 35 58 19 71 70 1 88</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 8 35 58 19 71 70</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\MYLIB.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 157 123</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 185</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 1</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\FCEU.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 106 191</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 170</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 8 35 58 19 71 70 20 44 54 17 108 7 50 79 66 64 73 6 55 61 46 37 9 5 29 80 1 88</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 8 35 58 19 71 70 20 44 54 17 108 7 50 79 66 64 73 6 55 61 46 37 9 5 29 80</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\UNIF.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 184 152</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 159</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 58 19 71 70 35 50 73 17 61 108 5 7 9 10</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 58 19 71 70 35 50 73 17 61 108 5 7 9 10</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Z80.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 180 112</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 124</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 1</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\CART.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 165 161</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 155</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 1 88 4 58 19 71 70 35 20 50 7 8 17</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 58 19 71 70 35 20 50 7 8 17</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\GENERAL.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 187 171</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 90</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 58 19 71 70 35 17 61 46 10</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 58 19 71 70 35 17 61 46 10</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\convert_format.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 150 84</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 81</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 1</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\MD5.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 153 156</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 177</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 10</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 10</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\MEMORY.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 85 117</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 87</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 58 19 71 70 35 7 17</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 58 19 71 70 35 7 17</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\STATE.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 149 122</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 97</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 8 35 58 19 71 70 44 108 66 17 61 46 7 20 54 37</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 8 35 58 19 71 70 44 108 66 17 61 46 7 20 54 37</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\CHEAT.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 127 93</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 169</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 1 88 4 8 35 6 58 19 71 70 17 50 7</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 8 35 6 58 19 71 70 17 50 7</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\VIDEO.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 125 129</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 134</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 37 58 19 71 70 35 17 7 29 61 46 55 79 9 80 76</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 37 58 19 71 70 35 17 7 29 61 46 55 79 9 80 76</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\FCEUSTR.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 188 119</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 107</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 3 1</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 3</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\FUNC.ASM</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 162</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\FILE.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 190 139</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 133</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 1 88 4 5 108 7 71 19 70 35 17</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 5 108 7 71 19 70 35 17</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\INPUT.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 160 147</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 192</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 8 35 58 19 71 70 44 54 46 61 9 80 66</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 8 35 58 19 71 70 44 54 46 61 9 80 66</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\INES.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 166 164</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 136</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 8 35 58 19 71 70 50 20 64 17 61 5 7 29 10 6 80</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 8 35 58 19 71 70 50 20 64 17 61 5 7 29 10 6 80</file>
         </tool>
       </inputs>
     </file>
@@ -1847,21 +1807,21 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 46 125</file>
+          <file> 102 151</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 89</file>
+          <file> 131</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 34 52</file>
+          <file> 4 29</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 34 52</file>
+          <file> 4 29</file>
         </tool>
       </inputs>
     </file>
@@ -1870,11 +1830,11 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 95 69</file>
+          <file> 113 105</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 190</file>
+          <file> 158</file>
         </tool>
       </outputs>
     </file>
@@ -1883,64 +1843,120 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 124 44</file>
+          <file> 137 95</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 159</file>
+          <file> 116</file>
         </tool>
       </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\VSUNI.C</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 15 105</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 108</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 34 30 55 132 3 153 154 23 119 172 134</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 34 30 55 132 3 153 154 23 119 172 134</file>
-        </tool>
-      </inputs>
     </file>
     <file>
       <name>$PROJ_DIR$\X6502.C</name>
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 164</file>
+          <file> 173</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 176</file>
+          <file> 179</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>BICOMP</name>
-          <file> 34 30 55 132 3 153 154 99 38</file>
+          <file> 4 8 35 58 19 71 70 44 30</file>
         </tool>
       </inputs>
     </file>
     <file>
-      <name>[ROOT_NODE]</name>
+      <name>$PROJ_DIR$\VSUNI.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 89 142</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 145</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 8 35 58 19 71 70 9 54 80 61</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 8 35 58 19 71 70 9 54 80 61</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\asm.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 120</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\MOVIE.C</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 172 141</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 178</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 9 58 19 71 70 35 61 17 37</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 9 58 19 71 70 35 61 17 37</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release\Exe\TED.elf</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 154 162 103</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release\Obj\TED.PBD</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 92</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release\Exe\TimeMan.elf</name>
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 76 146</file>
+          <file> 26</file>
         </tool>
       </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 24 162 103</file>
+        </tool>
+      </inputs>
     </file>
   </configuration>
 </project>

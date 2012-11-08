@@ -1,0 +1,2000 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:37 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_ /
+//                       acelp.c                                             /
+//    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_ /
+//                       acelp.c -D NDEBUG -lC D:\SVN\SieELF\SieELF\x65_PCM_ /
+//                       Player\Player\Release\List\ -lA                     /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player\Player /
+//                       \Release\Obj\ -s9 --cpu_mode arm --endian little    /
+//                       --cpu ARM926EJ-S --stack_align 4 --interwork -e     /
+//                       --fpu None --dlib_config "D:\Program                /
+//                       Files\IAR\Embedded Workbench 4.0                    /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\dec_acelp.s79                                  /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME dec_acelp
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        MULTWEAK ??D_ACELP_decode_2t??rT
+        MULTWEAK ??D_ACELP_decode_4t??rT
+        MULTWEAK ??D_ACELP_phase_dispersion??rT
+        PUBLIC D_ACELP_decode_2t
+        FUNCTION D_ACELP_decode_2t,0203H
+        LOCFRAME CSTACK, 12, STACK
+        FUNCTION D_ACELP_decode_3p_3N1,0203H
+        LOCFRAME CSTACK, 24, STACK
+        FUNCTION D_ACELP_decode_4p_4N,0203H
+        LOCFRAME CSTACK, 24, STACK
+        FUNCTION D_ACELP_decode_4p_4N1,0203H
+        LOCFRAME CSTACK, 28, STACK
+        PUBLIC D_ACELP_decode_4t
+        FUNCTION D_ACELP_decode_4t,0203H
+        LOCFRAME CSTACK, 40, STACK
+        FUNCTION D_ACELP_decode_5p_5N,0203H
+        LOCFRAME CSTACK, 28, STACK
+        FUNCTION D_ACELP_decode_6p_6N_2,0203H
+        LOCFRAME CSTACK, 44, STACK
+        PUBLIC D_ACELP_phase_dispersion
+        FUNCTION D_ACELP_phase_dispersion,0203H
+        LOCFRAME CSTACK, 540, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+D_ACELP_decode_2t   SYMBOL "D_ACELP_decode_2t"
+??D_ACELP_decode_2t??rT SYMBOL "??rT", D_ACELP_decode_2t
+D_ACELP_decode_4t   SYMBOL "D_ACELP_decode_4t"
+??D_ACELP_decode_4t??rT SYMBOL "??rT", D_ACELP_decode_4t
+D_ACELP_phase_dispersion SYMBOL "D_ACELP_phase_dispersion"
+??D_ACELP_phase_dispersion??rT SYMBOL "??rT", D_ACELP_phase_dispersion
+
+        EXTERN D_ROM_ph_imp_low
+        EXTERN D_ROM_ph_imp_mid
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_ACELP_decode_3p_3N1??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE D_ACELP_decode_3p_3N1
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_acelp.c
+//    1 /*
+//    2  *===================================================================
+//    3  *  3GPP AMR Wideband Floating-point Speech Codec
+//    4  *===================================================================
+//    5  */
+//    6 #include "typedef.h"
+//    7 #include "dec_util.h"
+//    8 
+//    9 #define L_SUBFR      64    /* Subframe size              */
+//   10 #define PRED_ORDER   4
+//   11 #define MEAN_ENER    30    /* average innovation energy  */
+//   12 extern const Word16 D_ROM_ph_imp_low[];
+//   13 extern const Word16 D_ROM_ph_imp_mid[];
+//   14 
+//   15 
+//   16 /*
+//   17  * D_ACELP_add_pulse
+//   18  *
+//   19  * Parameters:
+//   20  *    pos         I: position of pulse
+//   21  *    nb_pulse    I: number of pulses
+//   22  *    track       I: track
+//   23  *    code        O: fixed codebook
+//   24  *
+//   25  * Function:
+//   26  *    Add pulses to fixed codebook
+//   27  *
+//   28  * Returns:
+//   29  *    void
+//   30  */
+//   31 static void D_ACELP_add_pulse(Word32 pos[], Word32 nb_pulse,
+//   32                               Word32 track, Word16 code[])
+//   33 {
+//   34    Word32 i, k;
+//   35 
+//   36    for(k = 0; k < nb_pulse; k++)
+//   37    {
+//   38       /* i = ((pos[k] & (16-1))*NB_TRACK) + track; */
+//   39       i = ((pos[k] & (16 - 1)) << 2) + track;
+//   40 
+//   41       if((pos[k] & 16) == 0)
+//   42       {
+//   43          code[i] = (Word16)(code[i] + 512);
+//   44       }
+//   45       else
+//   46       {
+//   47          code[i] = (Word16)(code[i] - 512);
+//   48       }
+//   49    }
+//   50 
+//   51    return;
+//   52 }
+//   53 
+//   54 
+//   55 /*
+//   56  * D_ACELP_decode_1p_N1
+//   57  *
+//   58  * Parameters:
+//   59  *    index    I: pulse index
+//   60  *    N        I: number of bits for position
+//   61  *    offset   I: offset
+//   62  *    pos      O: position of the pulse
+//   63 
+//   64  *
+//   65  * Function:
+//   66  *    Decode 1 pulse with N+1 bits
+//   67  *
+//   68  * Returns:
+//   69  *    void
+//   70  */
+//   71 static void D_ACELP_decode_1p_N1(Word32 index, Word32 N,
+//   72                                  Word32 offset, Word32 pos[])
+//   73 {
+//   74    Word32 i, pos1, mask;
+//   75 
+//   76    mask = ((1 << N) - 1);
+//   77 
+//   78    /*
+//   79     * Decode 1 pulse with N+1 bits
+//   80     */
+//   81    pos1 = ((index & mask) + offset);
+//   82    i = ((index >> N) & 1);
+//   83 
+//   84    if(i == 1)
+//   85    {
+//   86       pos1 += 16;
+//   87    }
+//   88 
+//   89    pos[0] = pos1;
+//   90 
+//   91    return;
+//   92 }
+//   93 
+//   94 
+//   95 /*
+//   96  * D_ACELP_decode_2p_2N1
+//   97  *
+//   98  * Parameters:
+//   99  *    index    I: pulse index
+//  100  *    N        I: number of bits for position
+//  101  *    offset   I: offset
+//  102  *    pos      O: position of the pulse
+//  103  *
+//  104  * Function:
+//  105  *    Decode 2 pulses with 2*N+1 bits
+//  106  *
+//  107  * Returns:
+//  108  *    void
+//  109  */
+//  110 static void D_ACELP_decode_2p_2N1(Word32 index, Word32 N,
+//  111                                   Word32 offset, Word32 pos[])
+//  112 {
+//  113    Word32 i, pos1, pos2;
+//  114    Word32 mask;
+//  115 
+//  116    mask = ((1 << N) - 1);
+//  117 
+//  118    /*
+//  119     * Decode 2 pulses with 2*N+1 bits
+//  120     */
+//  121    pos1 = (((index >> N) & mask) + offset);
+//  122    i = (index >> (2 * N)) & 1;
+//  123    pos2 = ((index & mask) + offset);
+//  124 
+//  125    if((pos2 - pos1) < 0)
+//  126    {
+//  127       if(i == 1)
+//  128       {
+//  129          pos1 += 16;
+//  130       }
+//  131       else
+//  132       {
+//  133          pos2 += 16;
+//  134       }
+//  135    }
+//  136    else
+//  137    {
+//  138       if(i == 1)
+//  139       {
+//  140          pos1 += 16;
+//  141          pos2 += 16;
+//  142       }
+//  143    }
+//  144 
+//  145    pos[0] = pos1;
+//  146    pos[1] = pos2;
+//  147 
+//  148    return;
+//  149 }
+//  150 
+//  151 
+//  152 /*
+//  153  * D_ACELP_decode_3p_3N1
+//  154  *
+//  155  * Parameters:
+//  156  *    index    I: pulse index
+//  157  *    N        I: number of bits for position
+//  158  *    offset   I: offset
+//  159  *    pos      O: position of the pulse
+//  160  *
+//  161  * Function:
+//  162  *    Decode 3 pulses with 3*N+1 bits
+//  163  *
+//  164  * Returns:
+//  165  *    void
+//  166  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function D_ACELP_decode_3p_3N1
+        ARM
+//  167 static void D_ACELP_decode_3p_3N1(Word32 index, Word32 N,
+//  168                                   Word32 offset, Word32 pos[])
+//  169 {
+D_ACELP_decode_3p_3N1:
+        PUSH     {R4-R8}
+        CFI R8 Frame(CFA, -4)
+        CFI R7 Frame(CFA, -8)
+        CFI R6 Frame(CFA, -12)
+        CFI R5 Frame(CFA, -16)
+        CFI R4 Frame(CFA, -20)
+        CFI CFA R13+20
+//  170    Word32 j, mask, idx;
+//  171 
+//  172    /*
+//  173     * Decode 3 pulses with 3*N+1 bits
+//  174     */
+//  175    mask = ((1 << ((2 * N) - 1)) - 1);
+//  176    idx = index & mask;
+//  177    j = offset;
+        MOV      R4,R2
+        LSL      R5,R1,#+1
+        SUB      R6,R5,#+1
+        MOV      R12,#+1
+        ASR      R5,R0,R6
+        TST      R5,#0x1
+//  178 
+//  179    if(((index >> ((2 * N) - 1)) & 1) == 1)
+//  180    {
+//  181       j += (1 << (N - 1));
+        SUBNE    R5,R1,#+1
+        ADDNE    R4,R4,R12, LSL R5
+//  182    }
+//  183 
+//  184    D_ACELP_decode_2p_2N1(idx, N - 1, j, pos);
+        SUB      R5,R1,#+1
+        LSL      R6,R12,R6
+        SUB      R6,R6,#+1
+        AND      R6,R6,R0
+        LSL      R7,R12,R5
+        SUB      R8,R7,#+1
+        AND      R7,R8,R6, ASR R5
+        ADD      R7,R4,R7
+        LSL      R5,R5,#+1
+        AND      R5,R12,R6, ASR R5
+        AND      R6,R8,R6
+        ADD      R4,R4,R6
+        SUBS     R6,R4,R7
+        BPL      ??D_ACELP_decode_3p_3N1_0
+        CMP      R5,#+1
+        BNE      ??D_ACELP_decode_3p_3N1_1
+        ADD      R7,R7,#+16
+        B        ??D_ACELP_decode_3p_3N1_2
+??D_ACELP_decode_3p_3N1_0:
+        CMP      R5,#+1
+        BNE      ??D_ACELP_decode_3p_3N1_2
+        ADD      R7,R7,#+16
+??D_ACELP_decode_3p_3N1_1:
+        ADD      R4,R4,#+16
+??D_ACELP_decode_3p_3N1_2:
+        STR      R7,[R3, #+0]
+        STR      R4,[R3, #+4]
+//  185    mask = ((1 << (N + 1)) - 1);
+//  186    idx = (index >> (2 * N)) & mask;
+//  187    D_ACELP_decode_1p_N1(idx, N, offset, pos + 2);
+        MOV      R4,R1
+        LSL      R4,R4,#+1
+        ADD      R5,R1,#+1
+        LSL      R5,R12,R5
+        SUB      R5,R5,#+1
+        AND      R0,R5,R0, ASR R4
+        LSL      R4,R12,R1
+        SUB      R4,R4,#+1
+        AND      R4,R4,R0
+        ADD      R2,R2,R4
+        ASR      R0,R0,R1
+        TST      R0,#0x1
+        ADDNE    R2,R2,#+16
+        STR      R2,[R3, #+8]
+//  188 
+//  189    return;
+        POP      {R4-R8}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock1
+//  190 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_ACELP_decode_4p_4N1??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE D_ACELP_decode_4p_4N1
+//  191 
+//  192 
+//  193 /*
+//  194  * D_ACELP_decode_4p_4N1
+//  195  *
+//  196  * Parameters:
+//  197  *    index    I: pulse index
+//  198  *    N        I: number of bits for position
+//  199  *    offset   I: offset
+//  200  *    pos      O: position of the pulse
+//  201  *
+//  202  * Function:
+//  203  *    Decode 4 pulses with 4*N+1 bits
+//  204  *
+//  205  * Returns:
+//  206  *    void
+//  207  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function D_ACELP_decode_4p_4N1
+        ARM
+//  208 static void D_ACELP_decode_4p_4N1(Word32 index, Word32 N,
+//  209                                   Word32 offset, Word32 pos[])
+//  210 {
+D_ACELP_decode_4p_4N1:
+        PUSH     {R4-R10}
+        CFI R10 Frame(CFA, -4)
+        CFI R9 Frame(CFA, -8)
+        CFI R8 Frame(CFA, -12)
+        CFI R7 Frame(CFA, -16)
+        CFI R6 Frame(CFA, -20)
+        CFI R5 Frame(CFA, -24)
+        CFI R4 Frame(CFA, -28)
+        CFI CFA R13+28
+//  211    Word32 j, mask, idx;
+//  212 
+//  213    /*
+//  214     * Decode 4 pulses with 4*N+1 bits
+//  215     */
+//  216    mask = ((1 << ((2 * N) - 1)) - 1);
+//  217    idx = index & mask;
+//  218    j = offset;
+        MOV      R5,R2
+//  219 
+//  220    if(((index >> ((2 * N) - 1)) & 1) == 1)
+        LSL      R12,R1,#+1
+        SUB      R7,R12,#+1
+        MOV      R4,#+1
+        ASR      R6,R0,R7
+        TST      R6,#0x1
+//  221    {
+//  222       j += (1 << (N - 1));
+        SUBNE    R6,R1,#+1
+        ADDNE    R5,R5,R4, LSL R6
+//  223    }
+//  224 
+//  225    D_ACELP_decode_2p_2N1(idx, N - 1, j, pos);
+        SUB      R6,R1,#+1
+        LSL      R7,R4,R7
+        SUB      R7,R7,#+1
+        AND      R7,R7,R0
+        LSL      R8,R4,R6
+        SUB      R8,R8,#+1
+        AND      R9,R8,R7, ASR R6
+        ADD      R9,R5,R9
+        LSL      R6,R6,#+1
+        MOV      R10,#+1
+        AND      R6,R10,R7, ASR R6
+        AND      R7,R8,R7
+        ADD      R5,R5,R7
+        SUBS     R7,R5,R9
+        BPL      ??D_ACELP_decode_4p_4N1_0
+        CMP      R6,#+1
+        BNE      ??D_ACELP_decode_4p_4N1_1
+        ADD      R9,R9,#+16
+        B        ??D_ACELP_decode_4p_4N1_2
+??D_ACELP_decode_4p_4N1_0:
+        CMP      R6,#+1
+        BNE      ??D_ACELP_decode_4p_4N1_2
+        ADD      R9,R9,#+16
+??D_ACELP_decode_4p_4N1_1:
+        ADD      R5,R5,#+16
+??D_ACELP_decode_4p_4N1_2:
+        STR      R9,[R3, #+0]
+        STR      R5,[R3, #+4]
+//  226    mask = ((1 << ((2 * N) + 1)) - 1);
+//  227    idx = (index >> (2 * N)) & mask;
+//  228    D_ACELP_decode_2p_2N1(idx, N, offset, pos + 2);
+        ADD      R3,R3,#+8
+        MOV      R5,R1
+        LSL      R5,R5,#+1
+        ADD      R6,R12,#+1
+        LSL      R6,R4,R6
+        SUB      R6,R6,#+1
+        AND      R0,R6,R0, ASR R5
+        LSL      R4,R4,R1
+        SUB      R4,R4,#+1
+        AND      R1,R4,R0, ASR R1
+        ADD      R1,R2,R1
+        AND      R5,R10,R0, ASR R5
+        AND      R0,R4,R0
+        ADD      R0,R2,R0
+        SUBS     R2,R0,R1
+        BPL      ??D_ACELP_decode_4p_4N1_3
+        CMP      R5,#+1
+        BNE      ??D_ACELP_decode_4p_4N1_4
+        ADD      R1,R1,#+16
+        B        ??D_ACELP_decode_4p_4N1_5
+??D_ACELP_decode_4p_4N1_3:
+        CMP      R5,#+1
+        BNE      ??D_ACELP_decode_4p_4N1_5
+        ADD      R1,R1,#+16
+??D_ACELP_decode_4p_4N1_4:
+        ADD      R0,R0,#+16
+??D_ACELP_decode_4p_4N1_5:
+        STR      R1,[R3, #+0]
+        STR      R0,[R3, #+4]
+//  229 
+//  230    return;
+        POP      {R4-R10}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock3
+//  231 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_ACELP_decode_4p_4N??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE D_ACELP_decode_4p_4N
+//  232 
+//  233 
+//  234 /*
+//  235  * D_ACELP_decode_4p_4N
+//  236  *
+//  237  * Parameters:
+//  238  *    index    I: pulse index
+//  239  *    N        I: number of bits for position
+//  240  *    offset   I: offset
+//  241  *    pos      O: position of the pulse
+//  242  *
+//  243  * Function:
+//  244  *    Decode 4 pulses with 4*N bits
+//  245  *
+//  246  * Returns:
+//  247  *    void
+//  248  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function D_ACELP_decode_4p_4N
+        ARM
+//  249 static void D_ACELP_decode_4p_4N(Word32 index, Word32 N,
+//  250                                  Word32 offset, Word32 pos[])
+//  251 {
+D_ACELP_decode_4p_4N:
+        PUSH     {R4-R8,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R8 Frame(CFA, -8)
+        CFI R7 Frame(CFA, -12)
+        CFI R6 Frame(CFA, -16)
+        CFI R5 Frame(CFA, -20)
+        CFI R4 Frame(CFA, -24)
+        CFI CFA R13+24
+        MOV      R4,R0
+        MOV      R5,R3
+//  252    Word32 j, n_1;
+//  253 
+//  254    /*
+//  255     * Decode 4 pulses with 4*N bits
+//  256     */
+//  257    n_1 = N - 1;
+        SUB      R6,R1,#+1
+//  258    j = offset + (1 << n_1);
+        MOV      R0,#+1
+        LSL      R8,R0,R6
+        ADD      R7,R8,R2
+//  259 
+//  260    switch((index >> ((4 * N) - 2)) & 3)
+        LSL      R0,R1,#+2
+        SUB      R0,R0,#+2
+        ASR      R0,R4,R0
+        ANDS     R0,R0,#0x3
+        BEQ      ??D_ACELP_decode_4p_4N_0
+        SUBS     R0,R0,#+1
+        BEQ      ??D_ACELP_decode_4p_4N_1
+        SUBS     R0,R0,#+1
+        BEQ      ??D_ACELP_decode_4p_4N_2
+        SUBS     R0,R0,#+1
+        BEQ      ??D_ACELP_decode_4p_4N_3
+        POP      {R4-R8,PC}
+//  261    {
+//  262    case 0:
+//  263       if(((index >> ((4 * n_1) + 1)) & 1) == 0)
+??D_ACELP_decode_4p_4N_0:
+        MOV      R0,#+1
+        ADD      R0,R0,R6, LSL #+2
+        ASR      R0,R4,R0
+        TST      R0,#0x1
+//  264       {
+//  265          D_ACELP_decode_4p_4N1(index, n_1, offset, pos);
+//  266       }
+//  267       else
+//  268       {
+//  269          D_ACELP_decode_4p_4N1(index, n_1, j, pos);
+        MOVNE    R2,R7
+        MOV      R1,R6
+        MOV      R0,R4
+        BL       D_ACELP_decode_4p_4N1
+        POP      {R4-R8,PC}
+//  270       }
+//  271       break;
+//  272 
+//  273    case 1:
+//  274       D_ACELP_decode_1p_N1((index >> ((3 * n_1) + 1)), n_1, offset, pos);
+??D_ACELP_decode_4p_4N_1:
+        ADD      R0,R6,R6, LSL #+1
+        ADD      R0,R0,#+1
+        ASR      R0,R4,R0
+        SUB      R1,R8,#+1
+        AND      R1,R1,R0
+        ADD      R1,R2,R1
+        ASR      R0,R0,R6
+        TST      R0,#0x1
+        ADDNE    R1,R1,#+16
+        STR      R1,[R5, #+0]
+//  275       D_ACELP_decode_3p_3N1(index, n_1, j, pos + 1);
+        ADD      R3,R5,#+4
+        MOV      R2,R7
+        MOV      R1,R6
+        MOV      R0,R4
+        BL       D_ACELP_decode_3p_3N1
+        POP      {R4-R8,PC}
+//  276       break;
+//  277 
+//  278    case 2:
+//  279       D_ACELP_decode_2p_2N1((index >> ((2 * n_1) + 1)), n_1, offset, pos);
+??D_ACELP_decode_4p_4N_2:
+        MOV      R0,#+1
+        ADD      R0,R0,R6, LSL #+1
+        ASR      R12,R4,R0
+        SUB      R0,R8,#+1
+        AND      R1,R0,R12, ASR R6
+        ADD      R3,R2,R1
+        MOV      R1,R6
+        LSL      R1,R1,#+1
+        MOV      R8,#+1
+        AND      R8,R8,R12, ASR R1
+        AND      R12,R0,R12
+        ADD      R2,R2,R12
+        SUBS     R12,R2,R3
+        BPL      ??D_ACELP_decode_4p_4N_4
+        CMP      R8,#+1
+        BNE      ??D_ACELP_decode_4p_4N_5
+        ADD      R3,R3,#+16
+        B        ??D_ACELP_decode_4p_4N_6
+??D_ACELP_decode_4p_4N_4:
+        CMP      R8,#+1
+        BNE      ??D_ACELP_decode_4p_4N_6
+        ADD      R3,R3,#+16
+??D_ACELP_decode_4p_4N_5:
+        ADD      R2,R2,#+16
+??D_ACELP_decode_4p_4N_6:
+        STR      R3,[R5, #+0]
+        STR      R2,[R5, #+4]
+//  280       D_ACELP_decode_2p_2N1(index, n_1, j, pos + 2);
+        ADD      R2,R5,#+8
+        AND      R3,R0,R4, ASR R6
+        ADD      R3,R7,R3
+        MOV      R5,#+1
+        AND      R1,R5,R4, ASR R1
+        AND      R0,R0,R4
+        ADD      R0,R7,R0
+        SUBS     R4,R0,R3
+        BPL      ??D_ACELP_decode_4p_4N_7
+        CMP      R1,#+1
+        BNE      ??D_ACELP_decode_4p_4N_8
+        ADD      R3,R3,#+16
+        STR      R3,[R2, #+0]
+        STR      R0,[R2, #+4]
+        POP      {R4-R8,PC}
+??D_ACELP_decode_4p_4N_7:
+        CMP      R1,#+1
+        BNE      ??D_ACELP_decode_4p_4N_9
+        ADD      R3,R3,#+16
+??D_ACELP_decode_4p_4N_8:
+        ADD      R0,R0,#+16
+??D_ACELP_decode_4p_4N_9:
+        STR      R3,[R2, #+0]
+        STR      R0,[R2, #+4]
+        POP      {R4-R8,PC}
+//  281       break;
+//  282 
+//  283    case 3:
+//  284       D_ACELP_decode_3p_3N1((index >> (n_1 + 1)), n_1, offset, pos);
+??D_ACELP_decode_4p_4N_3:
+        MOV      R1,R6
+        ADD      R0,R6,#+1
+        ASR      R0,R4,R0
+        BL       D_ACELP_decode_3p_3N1
+//  285       D_ACELP_decode_1p_N1(index, n_1, j, pos + 3);
+        SUB      R0,R8,#+1
+        AND      R0,R0,R4
+        ADD      R0,R7,R0
+        ASR      R1,R4,R6
+        TST      R1,#0x1
+        ADDNE    R0,R0,#+16
+        STR      R0,[R5, #+12]
+//  286       break;
+//  287    }
+//  288 
+//  289    return;
+        POP      {R4-R8,PC}       ;; return
+        CFI EndBlock cfiBlock5
+//  290 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_ACELP_decode_5p_5N??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE D_ACELP_decode_5p_5N
+//  291 
+//  292 
+//  293 /*
+//  294  * D_ACELP_decode_5p_5N
+//  295  *
+//  296  * Parameters:
+//  297  *    index    I: pulse index
+//  298  *    N        I: number of bits for position
+//  299  *    offset   I: offset
+//  300  *    pos      O: position of the pulse
+//  301  *
+//  302  * Function:
+//  303  *    Decode 5 pulses with 5*N bits
+//  304  *
+//  305  * Returns:
+//  306  *    void
+//  307  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function D_ACELP_decode_5p_5N
+        ARM
+//  308 static void D_ACELP_decode_5p_5N(Word32 index, Word32 N,
+//  309                                  Word32 offset, Word32 pos[])
+//  310 {
+D_ACELP_decode_5p_5N:
+        PUSH     {R4-R9,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R9 Frame(CFA, -8)
+        CFI R8 Frame(CFA, -12)
+        CFI R7 Frame(CFA, -16)
+        CFI R6 Frame(CFA, -20)
+        CFI R5 Frame(CFA, -24)
+        CFI R4 Frame(CFA, -28)
+        CFI CFA R13+28
+        MOV      R4,R0
+        MOV      R5,R1
+        MOV      R6,R2
+//  311    Word32 j, n_1;
+//  312    Word32 idx;
+//  313 
+//  314    /*
+//  315     * Decode 5 pulses with 5*N bits
+//  316     */
+//  317    n_1 = N - 1;
+        SUB      R1,R5,#+1
+//  318    j = offset + (1 << n_1);
+//  319    idx = (index >> ((2 * N) + 1));
+        MOV      R0,#+1
+        ADD      R0,R0,R5, LSL #+1
+        ASR      R0,R4,R0
+//  320 
+//  321    if(((index >> ((5 * N) - 1)) & 1) == 0)
+        MOV      R2,R5
+        LSL      R2,R2,#+1
+        MOV      R7,#+1
+        AND      R7,R7,R4, ASR R2
+        MOV      R2,#+1
+        LSL      R8,R2,R5
+        SUB      R8,R8,#+1
+        ADD      R9,R3,#+12
+        ADD      R12,R5,R5, LSL #+2
+        SUB      R12,R12,#+1
+        ASR      R12,R4,R12
+        TST      R12,#0x1
+        BNE      ??D_ACELP_decode_5p_5N_0
+//  322    {
+//  323       D_ACELP_decode_3p_3N1(idx, n_1, offset, pos);
+        MOV      R2,R6
+        BL       D_ACELP_decode_3p_3N1
+//  324       D_ACELP_decode_2p_2N1(index, N, offset, pos + 3);
+        AND      R0,R8,R4, ASR R5
+        ADD      R0,R6,R0
+        AND      R1,R8,R4
+        ADD      R1,R6,R1
+        SUBS     R2,R1,R0
+        BPL      ??D_ACELP_decode_5p_5N_1
+        CMP      R7,#+1
+        BNE      ??D_ACELP_decode_5p_5N_2
+        B        ??D_ACELP_decode_5p_5N_3
+??D_ACELP_decode_5p_5N_1:
+        CMP      R7,#+1
+        BNE      ??D_ACELP_decode_5p_5N_4
+        ADD      R0,R0,#+16
+??D_ACELP_decode_5p_5N_2:
+        ADD      R1,R1,#+16
+        B        ??D_ACELP_decode_5p_5N_5
+//  325    }
+//  326    else
+//  327    {
+//  328       D_ACELP_decode_3p_3N1(idx, n_1, j, pos);
+??D_ACELP_decode_5p_5N_0:
+        ADD      R2,R6,R2, LSL R1
+        BL       D_ACELP_decode_3p_3N1
+//  329       D_ACELP_decode_2p_2N1(index, N, offset, pos + 3);
+        AND      R0,R8,R4, ASR R5
+        ADD      R0,R6,R0
+        AND      R1,R8,R4
+        ADD      R1,R6,R1
+        SUBS     R2,R1,R0
+        BPL      ??D_ACELP_decode_5p_5N_6
+        CMP      R7,#+1
+        BNE      ??D_ACELP_decode_5p_5N_7
+??D_ACELP_decode_5p_5N_3:
+        ADD      R0,R0,#+16
+??D_ACELP_decode_5p_5N_5:
+        STR      R0,[R9, #+0]
+        STR      R1,[R9, #+4]
+        POP      {R4-R9,PC}
+??D_ACELP_decode_5p_5N_6:
+        CMP      R7,#+1
+        BNE      ??D_ACELP_decode_5p_5N_4
+        ADD      R0,R0,#+16
+??D_ACELP_decode_5p_5N_7:
+        ADD      R1,R1,#+16
+??D_ACELP_decode_5p_5N_4:
+        STR      R0,[R9, #+0]
+        STR      R1,[R9, #+4]
+//  330    }
+//  331 
+//  332    return;
+        POP      {R4-R9,PC}       ;; return
+        CFI EndBlock cfiBlock7
+//  333 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_ACELP_decode_6p_6N_2??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE D_ACELP_decode_6p_6N_2
+//  334 
+//  335 
+//  336 /*
+//  337  * D_ACELP_decode_6p_6N_2
+//  338  *
+//  339  * Parameters:
+//  340  *    index    I: pulse index
+//  341  *    N        I: number of bits for position
+//  342  *    offset   I: offset
+//  343  *    pos      O: position of the pulse
+//  344  *
+//  345  * Function:
+//  346  *    Decode 6 pulses with 6*N-2 bits
+//  347  *
+//  348  * Returns:
+//  349  *    void
+//  350  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function D_ACELP_decode_6p_6N_2
+        ARM
+//  351 static void D_ACELP_decode_6p_6N_2(Word32 index, Word32 N,
+//  352                                    Word32 offset, Word32 pos[])
+//  353 {
+D_ACELP_decode_6p_6N_2:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+        SUB      SP,SP,#+8
+        CFI CFA R13+44
+        MOV      R4,R0
+        MOV      R5,R3
+//  354    Word32 j, n_1, offsetA, offsetB;
+//  355 
+//  356    n_1 = N - 1;
+        SUB      R6,R1,#+1
+//  357    j = offset + (1 << n_1);
+        MOV      R0,#+1
+        LSL      R7,R0,R6
+//  358    offsetA = offsetB = j;
+//  359 
+//  360    if(((index >> ((6 * N) - 5)) & 1) == 0)
+        MOV      R0,#+6
+        MUL      R3,R0,R1
+//  361    {
+//  362       offsetA = offset;
+//  363    }
+//  364    else
+//  365    {
+//  366       offsetB = offset;
+        SUB      R11,R7,#+1
+        AND      R11,R11,R4
+        STR      R11,[SP, #+0]
+        LDR      R11,[SP, #+0]
+        ADD      R8,R7,R2
+        MOV      R10,R8
+        MOV      R9,R10
+        SUB      R0,R3,#+5
+        ASR      R0,R4,R0
+        TST      R0,#0x1
+        MOVEQ    R9,R2
+        MOVNE    R10,R2
+        ADD      R11,R10,R11
+        STR      R11,[SP, #+4]
+        ASR      R11,R4,R6
+        ASR      R0,R4,R1
+        SUB      R1,R3,#+4
+        ASR      R1,R4,R1
+        ANDS     R1,R1,#0x3
+        BEQ      ??D_ACELP_decode_6p_6N_2_0
+        SUBS     R1,R1,#+1
+        BEQ      ??D_ACELP_decode_6p_6N_2_1
+        SUBS     R1,R1,#+1
+        BEQ      ??D_ACELP_decode_6p_6N_2_2
+        SUBS     R1,R1,#+1
+        BEQ      ??D_ACELP_decode_6p_6N_2_3
+        POP      {R0,R1,R4-R11,PC}
+//  367    }
+//  368 
+//  369    switch((index >> ((6 * N) - 4)) & 3)
+//  370    {
+//  371       case 0:
+//  372          D_ACELP_decode_5p_5N(index >> N, n_1, offsetA, pos);
+??D_ACELP_decode_6p_6N_2_0:
+        MOV      R3,R5
+        MOV      R2,R9
+        MOV      R1,R6
+        BL       D_ACELP_decode_5p_5N
+//  373          D_ACELP_decode_1p_N1(index, n_1, offsetA, pos + 5);
+        LDR      R0,[SP, #+0]
+        ADD      R0,R9,R0
+        B        ??D_ACELP_decode_6p_6N_2_4
+//  374          break;
+//  375 
+//  376       case 1:
+//  377          D_ACELP_decode_5p_5N(index >> N, n_1, offsetA, pos);
+??D_ACELP_decode_6p_6N_2_1:
+        MOV      R3,R5
+        MOV      R2,R9
+        MOV      R1,R6
+        BL       D_ACELP_decode_5p_5N
+//  378          D_ACELP_decode_1p_N1(index, n_1, offsetB, pos + 5);
+        LDR      R0,[SP, #+4]
+??D_ACELP_decode_6p_6N_2_4:
+        TST      R11,#0x1
+        ADDNE    R0,R0,#+16
+        STR      R0,[R5, #+20]
+        POP      {R0,R1,R4-R11,PC}
+//  379          break;
+//  380 
+//  381       case 2:
+//  382          D_ACELP_decode_4p_4N(index >> ((2 * n_1) + 1), n_1, offsetA, pos);
+??D_ACELP_decode_6p_6N_2_2:
+        MOV      R3,R5
+        MOV      R2,R9
+        MOV      R1,R6
+        MOV      R0,#+1
+        ADD      R0,R0,R6, LSL #+1
+        ASR      R0,R4,R0
+        BL       D_ACELP_decode_4p_4N
+//  383          D_ACELP_decode_2p_2N1(index, n_1, offsetB, pos + 4);
+        LSL      R2,R6,#+1
+        MOV      R3,#+1
+        AND      R2,R3,R4, ASR R2
+        LDR      R3,[SP, #+4]
+        ADD      R0,R5,#+16
+        SUB      R1,R7,#+1
+        AND      R1,R1,R11
+        ADD      R1,R10,R1
+        SUBS     R4,R3,R1
+        BPL      ??D_ACELP_decode_6p_6N_2_5
+        CMP      R2,#+1
+        BNE      ??D_ACELP_decode_6p_6N_2_6
+        ADD      R1,R1,#+16
+        STR      R1,[R0, #+0]
+        STR      R3,[R0, #+4]
+        POP      {R0,R1,R4-R11,PC}
+??D_ACELP_decode_6p_6N_2_5:
+        CMP      R2,#+1
+        BNE      ??D_ACELP_decode_6p_6N_2_7
+        ADD      R1,R1,#+16
+??D_ACELP_decode_6p_6N_2_6:
+        ADD      R3,R3,#+16
+??D_ACELP_decode_6p_6N_2_7:
+        STR      R1,[R0, #+0]
+        STR      R3,[R0, #+4]
+        POP      {R0,R1,R4-R11,PC}
+//  384          break;
+//  385 
+//  386       case 3:
+//  387          D_ACELP_decode_3p_3N1(index >> ((3 * n_1) + 1), n_1, offset, pos);
+??D_ACELP_decode_6p_6N_2_3:
+        MOV      R3,R5
+        MOV      R1,R6
+        ADD      R0,R6,R6, LSL #+1
+        ADD      R0,R0,#+1
+        ASR      R0,R4,R0
+        BL       D_ACELP_decode_3p_3N1
+//  388          D_ACELP_decode_3p_3N1(index, n_1, j, pos + 3);
+        ADD      R3,R5,#+12
+        MOV      R2,R8
+        MOV      R1,R6
+        MOV      R0,R4
+        BL       D_ACELP_decode_3p_3N1
+//  389          break;
+//  390    }
+//  391 
+//  392    return;
+        POP      {R0,R1,R4-R11,PC}  ;; return
+        CFI EndBlock cfiBlock9
+//  393 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_ACELP_decode_2t??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock10
+        REQUIRE D_ACELP_decode_2t
+//  394 
+//  395 
+//  396 /*
+//  397  * D_ACELP_decode_2t
+//  398  *
+//  399  * Parameters:
+//  400  *    index          I: 12 bits index
+//  401  *    code           O: (Q9) algebraic (fixed) codebook excitation
+//  402  *
+//  403  * Function:
+//  404  *    12 bits algebraic codebook decoder.
+//  405  *    2 tracks x 32 positions per track = 64 samples.
+//  406  *
+//  407  *    12 bits --> 2 pulses in a frame of 64 samples.
+//  408  *
+//  409  *    All pulses can have two (2) possible amplitudes: +1 or -1.
+//  410  *    Each pulse can have 32 possible positions.
+//  411  *
+//  412  *    codevector length    64
+//  413  *    number of track      2
+//  414  *    number of position   32
+//  415  *
+//  416  * Returns:
+//  417  *    void
+//  418  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock11 Using cfiCommon1
+        CFI Function D_ACELP_decode_2t
+        ARM
+//  419 void D_ACELP_decode_2t(Word16 index, Word16 code[])
+//  420 {
+D_ACELP_decode_2t:
+        PUSH     {R4,R5,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+//  421    Word32 i0, i1;
+//  422 
+//  423    memset(code, 0, 64 * sizeof(Word16));
+        MOV      R2,#+128
+        MOV      R4,R0
+        MOV      R5,R1
+        MOV      R1,#+0
+        MOV      R0,R5
+        SWI      +187
+//  424 
+//  425    /* decode the positions and signs of pulses and build the codeword */
+//  426    i0 = (index >> 5) & 0x0000003E;
+        MOV      R0,R4
+        MOV      R1,#+62
+        AND      R1,R1,R0, ASR #+5
+//  427    i1 = ((index & 0x0000001F) << 1) + 1;
+        AND      R2,R0,#0x1F
+        MOV      R3,#+1
+        ADD      R2,R3,R2, LSL #+1
+//  428 
+//  429    if(((index >> 6) & 32) == 0)
+        MOV      R3,#+512
+        RSB      R12,R3,#+0
+        ASR      R0,R0,#+6
+        TST      R0,#0x20
+        ADD      R0,R5,R1, LSL #+1
+//  430    {
+//  431       code[i0] = 512;
+        STRHEQ   R3,[R0, #+0]
+//  432    }
+//  433    else
+//  434    {
+//  435       code[i0] = -512;
+        STRHNE   R12,[R0, #+0]
+//  436    }
+//  437 
+//  438    if((index & 32) == 0)
+        ADD      R0,R5,R2, LSL #+1
+        TST      R4,#0x20
+//  439    {
+//  440       code[i1] = 512;
+        STRHEQ   R3,[R0, #+0]
+        POPEQ    {R4,R5,PC}
+//  441    }
+//  442    else
+//  443    {
+//  444       code[i1] = -512;
+        STRH     R12,[R0, #+0]
+//  445    }
+//  446 
+//  447    return;
+        POP      {R4,R5,PC}       ;; return
+        CFI EndBlock cfiBlock11
+//  448 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock12 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_ACELP_decode_4t??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock12
+        REQUIRE D_ACELP_decode_4t
+//  449 
+//  450 
+//  451 /*
+//  452  * D_ACELP_decode_4t
+//  453  *
+//  454  * Parameters:
+//  455  *    index          I: index
+//  456  *    mode           I: speech mode
+//  457  *    code           I: (Q9) algebraic (fixed) codebook excitation
+//  458  *
+//  459  * Function:
+//  460  *    20, 36, 44, 52, 64, 72, 88 bits algebraic codebook.
+//  461  *    4 tracks x 16 positions per track = 64 samples.
+//  462  *
+//  463  *    20 bits 5+5+5+5 --> 4 pulses in a frame of 64 samples.
+//  464  *    36 bits 9+9+9+9 --> 8 pulses in a frame of 64 samples.
+//  465  *    44 bits 13+9+13+9 --> 10 pulses in a frame of 64 samples.
+//  466  *    52 bits 13+13+13+13 --> 12 pulses in a frame of 64 samples.
+//  467  *    64 bits 2+2+2+2+14+14+14+14 --> 16 pulses in a frame of 64 samples.
+//  468  *    72 bits 10+2+10+2+10+14+10+14 --> 18 pulses in a frame of 64 samples.
+//  469  *    88 bits 11+11+11+11+11+11+11+11 --> 24 pulses in a frame of 64 samples.
+//  470  *
+//  471  *    All pulses can have two (2) possible amplitudes: +1 or -1.
+//  472  *    Each pulse can sixteen (16) possible positions.
+//  473  *
+//  474  *    codevector length    64
+//  475  *    number of track      4
+//  476  *    number of position   16
+//  477  *
+//  478  * Returns:
+//  479  *    void
+//  480  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock13 Using cfiCommon1
+        CFI Function D_ACELP_decode_4t
+        ARM
+//  481 void D_ACELP_decode_4t(Word16 index[], Word16 nbbits, Word16 code[])
+//  482 {
+D_ACELP_decode_4t:
+        PUSH     {R4-R6,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R6 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -12)
+        CFI R4 Frame(CFA, -16)
+        CFI CFA R13+16
+        SUB      SP,SP,#+24
+        CFI CFA R13+40
+        MOV      R4,R0
+        MOV      R6,R1
+        MOV      R5,R2
+//  483    Word32 k, L_index, pos[6];
+//  484 
+//  485    memset(code, 0, 64 * sizeof(Word16));
+        MOV      R2,#+128
+        MOV      R1,#+0
+        MOV      R0,R5
+        SWI      +187
+//  486 
+//  487    /* decode the positions and signs of pulses and build the codeword */
+//  488    if(nbbits == 20)
+        CMP      R6,#+20
+        BNE      ??D_ACELP_decode_4t_0
+//  489    {
+//  490       for(k = 0; k < 4; k++)
+        MOV      R6,#+0
+        MVN      R3,#+255
+        BIC      R3,R3,#0x100
+        B        ??D_ACELP_decode_4t_1
+//  491       {
+??D_ACELP_decode_4t_2:
+        STRH     R2,[R0, #+0]
+        ADD      R1,R1,#+1
+        CMP      R1,#+1
+        BLT      ??D_ACELP_decode_4t_3
+//  492          L_index = index[k];
+//  493          D_ACELP_decode_1p_N1(L_index, 4, 0, pos);
+//  494          D_ACELP_add_pulse(pos, 1, k, code);
+        ADD      R6,R6,#+1
+        CMP      R6,#+4
+        BGE      ??D_ACELP_decode_4t_4
+??D_ACELP_decode_4t_1:
+        ADD      R0,R4,R6, LSL #+1
+        LDRSH    R0,[R0, #+0]
+        AND      R1,R0,#0xF
+        TST      R0,#0x10
+        ADDNE    R1,R1,#+16
+        STR      R1,[SP, #+0]
+        MOV      R1,#+0
+??D_ACELP_decode_4t_3:
+        MOV      R0,SP
+        LDR      R2,[R0, +R1, LSL #+2]
+        AND      R0,R2,#0xF
+        ADD      R0,R6,R0, LSL #+2
+        TST      R2,#0x10
+        ADD      R0,R5,R0, LSL #+1
+        LDRSH    R2,[R0, #+0]
+        ADDNE    R2,R3,R2
+        ADDEQ    R2,R2,#+512
+        B        ??D_ACELP_decode_4t_2
+//  495       }
+//  496    }
+//  497    else if(nbbits == 36)
+??D_ACELP_decode_4t_0:
+        CMP      R6,#+36
+        BNE      ??D_ACELP_decode_4t_5
+//  498    {
+//  499       for(k = 0; k < 4; k++)
+        MOV      R6,#+0
+        B        ??D_ACELP_decode_4t_6
+//  500       {
+??D_ACELP_decode_4t_7:
+        STRH     R2,[R0, #+0]
+        ADD      R1,R1,#+1
+        CMP      R1,#+2
+        BLT      ??D_ACELP_decode_4t_8
+//  501          L_index = index[k];
+//  502          D_ACELP_decode_2p_2N1(L_index, 4, 0, pos);
+//  503          D_ACELP_add_pulse(pos, 2, k, code);
+        ADD      R6,R6,#+1
+        CMP      R6,#+4
+        BGE      ??D_ACELP_decode_4t_4
+??D_ACELP_decode_4t_6:
+        ADD      R0,R4,R6, LSL #+1
+        LDRSH    R0,[R0, #+0]
+        MOV      R1,#+15
+        MOV      R2,#+1
+        AND      R1,R1,R0, ASR #+4
+        AND      R2,R2,R0, ASR #+8
+        AND      R0,R0,#0xF
+        SUBS     R3,R0,R1
+        BPL      ??D_ACELP_decode_4t_9
+        CMP      R2,#+1
+        BNE      ??D_ACELP_decode_4t_10
+        ADD      R1,R1,#+16
+        B        ??D_ACELP_decode_4t_11
+??D_ACELP_decode_4t_9:
+        CMP      R2,#+1
+        BNE      ??D_ACELP_decode_4t_11
+        ADD      R1,R1,#+16
+??D_ACELP_decode_4t_10:
+        ADD      R0,R0,#+16
+??D_ACELP_decode_4t_11:
+        STR      R1,[SP, #+0]
+        STR      R0,[SP, #+4]
+        MOV      R1,#+0
+        MVN      R3,#+255
+        BIC      R3,R3,#0x100
+??D_ACELP_decode_4t_8:
+        MOV      R0,SP
+        LDR      R2,[R0, +R1, LSL #+2]
+        AND      R0,R2,#0xF
+        ADD      R0,R6,R0, LSL #+2
+        TST      R2,#0x10
+        ADD      R0,R5,R0, LSL #+1
+        LDRSH    R2,[R0, #+0]
+        ADDNE    R2,R3,R2
+        ADDEQ    R2,R2,#+512
+        B        ??D_ACELP_decode_4t_7
+//  504       }
+//  505    }
+//  506    else if(nbbits == 44)
+??D_ACELP_decode_4t_5:
+        CMP      R6,#+44
+        BNE      ??D_ACELP_decode_4t_12
+//  507    {
+//  508       for(k = 0; k < 4 - 2; k++)
+        MOV      R6,#+0
+//  509       {
+//  510          L_index = index[k];
+//  511          D_ACELP_decode_3p_3N1(L_index, 4, 0, pos);
+??D_ACELP_decode_4t_13:
+        ADD      R0,R4,R6, LSL #+1
+        LDRSH    R0,[R0, #+0]
+        MOV      R3,SP
+        MOV      R2,#+0
+        MOV      R1,#+4
+        BL       D_ACELP_decode_3p_3N1
+//  512          D_ACELP_add_pulse(pos, 3, k, code);
+        MOV      R0,#+0
+        MVN      R3,#+255
+        BIC      R3,R3,#0x100
+??D_ACELP_decode_4t_14:
+        MOV      R1,SP
+        LDR      R1,[R1, +R0, LSL #+2]
+        AND      R2,R1,#0xF
+        ADD      R2,R6,R2, LSL #+2
+        TST      R1,#0x10
+        ADD      R1,R5,R2, LSL #+1
+        LDRSH    R2,[R1, #+0]
+        ADD      R0,R0,#+1
+        ADDEQ    R2,R2,#+512
+        ADDNE    R2,R3,R2
+        STRH     R2,[R1, #+0]
+        CMP      R0,#+3
+        BLT      ??D_ACELP_decode_4t_14
+//  513       }
+        ADD      R6,R6,#+1
+        CMP      R6,#+2
+        BLT      ??D_ACELP_decode_4t_13
+//  514 
+//  515       for(k = 2; k < 4; k++)
+        MOV      R6,#+2
+        B        ??D_ACELP_decode_4t_15
+//  516       {
+??D_ACELP_decode_4t_16:
+        STRH     R2,[R0, #+0]
+        ADD      R1,R1,#+1
+        CMP      R1,#+2
+        BLT      ??D_ACELP_decode_4t_17
+//  517          L_index = index[k];
+//  518          D_ACELP_decode_2p_2N1(L_index, 4, 0, pos);
+//  519          D_ACELP_add_pulse(pos, 2, k, code);
+        ADD      R6,R6,#+1
+        CMP      R6,#+4
+        BGE      ??D_ACELP_decode_4t_4
+??D_ACELP_decode_4t_15:
+        ADD      R0,R4,R6, LSL #+1
+        LDRSH    R0,[R0, #+0]
+        MOV      R1,#+15
+        MOV      R2,#+1
+        AND      R1,R1,R0, ASR #+4
+        AND      R2,R2,R0, ASR #+8
+        AND      R0,R0,#0xF
+        SUBS     R3,R0,R1
+        BPL      ??D_ACELP_decode_4t_18
+        CMP      R2,#+1
+        BNE      ??D_ACELP_decode_4t_19
+        ADD      R1,R1,#+16
+        B        ??D_ACELP_decode_4t_20
+??D_ACELP_decode_4t_18:
+        CMP      R2,#+1
+        BNE      ??D_ACELP_decode_4t_20
+        ADD      R1,R1,#+16
+??D_ACELP_decode_4t_19:
+        ADD      R0,R0,#+16
+??D_ACELP_decode_4t_20:
+        STR      R1,[SP, #+0]
+        STR      R0,[SP, #+4]
+        MOV      R1,#+0
+        MVN      R3,#+255
+        BIC      R3,R3,#0x100
+??D_ACELP_decode_4t_17:
+        MOV      R0,SP
+        LDR      R2,[R0, +R1, LSL #+2]
+        AND      R0,R2,#0xF
+        ADD      R0,R6,R0, LSL #+2
+        TST      R2,#0x10
+        ADD      R0,R5,R0, LSL #+1
+        LDRSH    R2,[R0, #+0]
+        ADDNE    R2,R3,R2
+        ADDEQ    R2,R2,#+512
+        B        ??D_ACELP_decode_4t_16
+//  520       }
+//  521    }
+//  522    else if(nbbits == 52)
+??D_ACELP_decode_4t_12:
+        CMP      R6,#+52
+        BNE      ??D_ACELP_decode_4t_21
+//  523    {
+//  524       for(k = 0; k < 4; k++)
+        MOV      R6,#+0
+        B        ??D_ACELP_decode_4t_22
+//  525       {
+??D_ACELP_decode_4t_23:
+        STRH     R2,[R0, #+0]
+        ADD      R1,R1,#+1
+        CMP      R1,#+3
+        BLT      ??D_ACELP_decode_4t_24
+//  526          L_index = index[k];
+//  527          D_ACELP_decode_3p_3N1(L_index, 4, 0, pos);
+//  528          D_ACELP_add_pulse(pos, 3, k, code);
+        ADD      R6,R6,#+1
+        CMP      R6,#+4
+        BGE      ??D_ACELP_decode_4t_4
+??D_ACELP_decode_4t_22:
+        MOV      R3,SP
+        MOV      R2,#+0
+        MOV      R1,#+4
+        ADD      R0,R4,R6, LSL #+1
+        LDRSH    R0,[R0, #+0]
+        BL       D_ACELP_decode_3p_3N1
+        MOV      R1,#+0
+        MVN      R3,#+255
+        BIC      R3,R3,#0x100
+??D_ACELP_decode_4t_24:
+        MOV      R0,SP
+        LDR      R2,[R0, +R1, LSL #+2]
+        AND      R0,R2,#0xF
+        ADD      R0,R6,R0, LSL #+2
+        TST      R2,#0x10
+        ADD      R0,R5,R0, LSL #+1
+        LDRSH    R2,[R0, #+0]
+        ADDNE    R2,R3,R2
+        ADDEQ    R2,R2,#+512
+        B        ??D_ACELP_decode_4t_23
+//  529       }
+//  530    }
+//  531    else if(nbbits == 64)
+??D_ACELP_decode_4t_21:
+        CMP      R6,#+64
+        BNE      ??D_ACELP_decode_4t_25
+//  532    {
+//  533       for(k = 0; k < 4; k++)
+        MOV      R6,#+0
+        B        ??D_ACELP_decode_4t_26
+//  534       {
+??D_ACELP_decode_4t_27:
+        STRH     R2,[R0, #+0]
+        ADD      R1,R1,#+1
+        CMP      R1,#+4
+        BLT      ??D_ACELP_decode_4t_28
+//  535          L_index = ((index[k] << 14) + index[k + 4]);
+//  536          D_ACELP_decode_4p_4N(L_index, 4, 0, pos);
+//  537          D_ACELP_add_pulse(pos, 4, k, code);
+        ADD      R6,R6,#+1
+        CMP      R6,#+4
+        BGE      ??D_ACELP_decode_4t_4
+??D_ACELP_decode_4t_26:
+        ADD      R0,R4,R6, LSL #+1
+        LDRSH    R12,[R0, #+0]
+        LDRSH    R0,[R0, #+8]
+        MOV      R3,SP
+        MOV      R2,#+0
+        MOV      R1,#+4
+        ADD      R0,R0,R12, LSL #+14
+        BL       D_ACELP_decode_4p_4N
+        MOV      R1,#+0
+        MVN      R3,#+255
+        BIC      R3,R3,#0x100
+??D_ACELP_decode_4t_28:
+        MOV      R0,SP
+        LDR      R2,[R0, +R1, LSL #+2]
+        AND      R0,R2,#0xF
+        ADD      R0,R6,R0, LSL #+2
+        TST      R2,#0x10
+        ADD      R0,R5,R0, LSL #+1
+        LDRSH    R2,[R0, #+0]
+        ADDNE    R2,R3,R2
+        ADDEQ    R2,R2,#+512
+        B        ??D_ACELP_decode_4t_27
+//  538       }
+//  539    }
+//  540    else if(nbbits == 72)
+??D_ACELP_decode_4t_25:
+        CMP      R6,#+72
+        BNE      ??D_ACELP_decode_4t_29
+//  541    {
+//  542       for(k = 0; k < 4 - 2; k++)
+        MOV      R6,#+0
+//  543       {
+//  544          L_index = ((index[k] << 10) + index[k + 4]);
+//  545          D_ACELP_decode_5p_5N(L_index, 4, 0, pos);
+??D_ACELP_decode_4t_30:
+        ADD      R0,R4,R6, LSL #+1
+        LDRSH    R12,[R0, #+0]
+        LDRSH    R0,[R0, #+8]
+        MOV      R3,SP
+        MOV      R2,#+0
+        MOV      R1,#+4
+        ADD      R0,R0,R12, LSL #+10
+        BL       D_ACELP_decode_5p_5N
+//  546          D_ACELP_add_pulse(pos, 5, k, code);
+        MOV      R0,#+0
+        MVN      R3,#+255
+        BIC      R3,R3,#0x100
+??D_ACELP_decode_4t_31:
+        MOV      R1,SP
+        LDR      R1,[R1, +R0, LSL #+2]
+        AND      R2,R1,#0xF
+        ADD      R2,R6,R2, LSL #+2
+        TST      R1,#0x10
+        ADD      R1,R5,R2, LSL #+1
+        LDRSH    R2,[R1, #+0]
+        ADD      R0,R0,#+1
+        ADDEQ    R2,R2,#+512
+        ADDNE    R2,R3,R2
+        STRH     R2,[R1, #+0]
+        CMP      R0,#+5
+        BLT      ??D_ACELP_decode_4t_31
+//  547       }
+        ADD      R6,R6,#+1
+        CMP      R6,#+2
+        BLT      ??D_ACELP_decode_4t_30
+//  548 
+//  549       for(k = 2; k < 4; k++)
+        MOV      R6,#+2
+        B        ??D_ACELP_decode_4t_32
+//  550       {
+??D_ACELP_decode_4t_33:
+        STRH     R2,[R0, #+0]
+        ADD      R1,R1,#+1
+        CMP      R1,#+4
+        BLT      ??D_ACELP_decode_4t_34
+//  551          L_index = ((index[k] << 14) + index[k + 4]);
+//  552          D_ACELP_decode_4p_4N(L_index, 4, 0, pos);
+//  553          D_ACELP_add_pulse(pos, 4, k, code);
+        ADD      R6,R6,#+1
+        CMP      R6,#+4
+        BGE      ??D_ACELP_decode_4t_4
+??D_ACELP_decode_4t_32:
+        ADD      R0,R4,R6, LSL #+1
+        LDRSH    R12,[R0, #+0]
+        LDRSH    R0,[R0, #+8]
+        MOV      R3,SP
+        MOV      R2,#+0
+        MOV      R1,#+4
+        ADD      R0,R0,R12, LSL #+14
+        BL       D_ACELP_decode_4p_4N
+        MOV      R1,#+0
+        MVN      R3,#+255
+        BIC      R3,R3,#0x100
+??D_ACELP_decode_4t_34:
+        MOV      R0,SP
+        LDR      R2,[R0, +R1, LSL #+2]
+        AND      R0,R2,#0xF
+        ADD      R0,R6,R0, LSL #+2
+        TST      R2,#0x10
+        ADD      R0,R5,R0, LSL #+1
+        LDRSH    R2,[R0, #+0]
+        ADDNE    R2,R3,R2
+        ADDEQ    R2,R2,#+512
+        B        ??D_ACELP_decode_4t_33
+//  554       }
+//  555    }
+//  556    else if(nbbits == 88)
+??D_ACELP_decode_4t_29:
+        CMP      R6,#+88
+        BNE      ??D_ACELP_decode_4t_4
+//  557    {
+//  558       for(k = 0; k < 4; k++)
+        MOV      R6,#+0
+//  559       {
+//  560          L_index = ((index[k] << 11) + index[k + 4]);
+//  561          D_ACELP_decode_6p_6N_2(L_index, 4, 0, pos);
+??D_ACELP_decode_4t_35:
+        ADD      R0,R4,R6, LSL #+1
+        LDRSH    R12,[R0, #+0]
+        LDRSH    R0,[R0, #+8]
+        MOV      R3,SP
+        MOV      R2,#+0
+        MOV      R1,#+4
+        ADD      R0,R0,R12, LSL #+11
+        BL       D_ACELP_decode_6p_6N_2
+//  562          D_ACELP_add_pulse(pos, 6, k, code);
+        MOV      R0,#+0
+        MVN      R3,#+255
+        BIC      R3,R3,#0x100
+??D_ACELP_decode_4t_36:
+        MOV      R1,SP
+        LDR      R1,[R1, +R0, LSL #+2]
+        AND      R2,R1,#0xF
+        ADD      R2,R6,R2, LSL #+2
+        TST      R1,#0x10
+        ADD      R1,R5,R2, LSL #+1
+        LDRSH    R2,[R1, #+0]
+        ADD      R0,R0,#+1
+        ADDEQ    R2,R2,#+512
+        ADDNE    R2,R3,R2
+        STRH     R2,[R1, #+0]
+        CMP      R0,#+6
+        BLT      ??D_ACELP_decode_4t_36
+//  563       }
+        ADD      R6,R6,#+1
+        CMP      R6,#+4
+        BLT      ??D_ACELP_decode_4t_35
+//  564    }
+//  565    return;
+??D_ACELP_decode_4t_4:
+        ADD      SP,SP,#+24       ;; stack cleaning
+        CFI CFA R13+16
+        POP      {R4-R6,PC}       ;; return
+        CFI EndBlock cfiBlock13
+//  566 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock14 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_ACELP_phase_dispersion??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock14
+        REQUIRE D_ACELP_phase_dispersion
+//  567 
+//  568 
+//  569 /*
+//  570  * D_ACELP_phase_dispersion
+//  571  *
+//  572  * Parameters:
+//  573  *    gain_code         I: (Q0) gain of code
+//  574  *    gain_pit          I: (Q14) gain of pitch
+//  575  *    code            I/O: code vector
+//  576  *    mode              I: level, 0=hi, 1=lo, 2=off
+//  577  *    disp_mem        I/O: static memory (size = 8)
+//  578  *
+//  579  * Function:
+//  580  *    An adaptive anti-sparseness post-processing procedure is
+//  581  *    applied to the fixed codebook vector in order to
+//  582  *    reduce perceptual artifacts arising from the sparseness
+//  583  *    of the algebraic fixed codebook vectors with only
+//  584  *    a few non-zero samples per subframe.
+//  585  *
+//  586  * Returns:
+//  587  *    void
+//  588  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock15 Using cfiCommon1
+        CFI Function D_ACELP_phase_dispersion
+        ARM
+//  589 void D_ACELP_phase_dispersion(Word16 gain_code, Word16 gain_pit, Word16 code[],
+//  590                               Word16 mode, Word16 disp_mem[])
+//  591 {
+D_ACELP_phase_dispersion:
+        PUSH     {R4-R10}
+        CFI R10 Frame(CFA, -4)
+        CFI R9 Frame(CFA, -8)
+        CFI R8 Frame(CFA, -12)
+        CFI R7 Frame(CFA, -16)
+        CFI R6 Frame(CFA, -20)
+        CFI R5 Frame(CFA, -24)
+        CFI R4 Frame(CFA, -28)
+        CFI CFA R13+28
+        SUB      SP,SP,#+512
+        CFI CFA R13+540
+        LDR      R4,[SP, #+540]
+//  592    Word32 code2[2 * L_SUBFR] = {0};
+        MOV      R5,SP
+        MOV      R6,#+0
+        MOV      R7,#+512
+??D_ACELP_phase_dispersion_0:
+        SUBS     R7,R7,#+4
+        STR      R6,[R5, R7]
+        BNE      ??D_ACELP_phase_dispersion_0
+//  593    Word32 i, j, state;
+//  594    Word16 *prev_gain_pit, *prev_gain_code, *prev_state;
+//  595 
+//  596    prev_state = disp_mem;
+//  597    prev_gain_code = disp_mem + 1;
+        ADD      R5,R4,#+2
+//  598    prev_gain_pit = disp_mem + 2;
+        ADD      R6,R4,#+4
+//  599 
+//  600    if(gain_pit < 9830)   /* 0.6 in Q14 */
+        MOV      R7,#+102
+        ORR      R7,R7,#0x2600
+        CMP      R1,R7
+//  601    {
+//  602       state = 0;
+        MOVLT    R8,#+0
+        BLT      ??D_ACELP_phase_dispersion_1
+//  603    }
+//  604    else if(gain_pit < 14746)   /* 0.9 in Q14 */
+        MOV      R8,#+154
+        ORR      R8,R8,#0x3900
+        CMP      R1,R8
+//  605    {
+//  606       state = 1;
+        MOVLT    R8,#+1
+//  607    }
+//  608    else
+//  609    {
+//  610       state = 2;
+        MOVGE    R8,#+2
+//  611    }
+//  612 
+//  613    for(i = 5; i > 0; i--)
+??D_ACELP_phase_dispersion_1:
+        MOV      R12,#+5
+//  614    {
+//  615       prev_gain_pit[i] = prev_gain_pit[i - 1];
+??D_ACELP_phase_dispersion_2:
+        ADD      R9,R6,R12, LSL #+1
+        LDRSH    R10,[R9, #-2]
+//  616    }
+        SUB      R12,R12,#+1
+        CMP      R12,#+1
+        STRH     R10,[R9, #+0]
+        BGE      ??D_ACELP_phase_dispersion_2
+//  617    prev_gain_pit[0] = gain_pit;
+        STRH     R1,[R6, #+0]
+//  618 
+//  619    if((gain_code - *prev_gain_code) > (*prev_gain_code << 1))
+        LDRSH    R1,[R5, #+0]
+        SUB      R9,R0,R1
+        CMP      R9,R1, LSL #+1
+        BLE      ??D_ACELP_phase_dispersion_3
+//  620    {
+//  621       /* onset */
+//  622       if(state < 2)
+        CMP      R8,#+2
+        BGE      ??D_ACELP_phase_dispersion_4
+//  623       {
+//  624          state = state + 1;
+        ADD      R8,R8,#+1
+        B        ??D_ACELP_phase_dispersion_4
+//  625       }
+//  626    }
+//  627    else
+//  628    {
+//  629       j = 0;
+??D_ACELP_phase_dispersion_3:
+        MOV      R1,#+0
+//  630 
+//  631       for(i = 0; i < 6; i++)
+        MOV      R12,#+0
+//  632       {
+//  633          if(prev_gain_pit[i] < 9830)   /* 0.6 in Q14 */
+??D_ACELP_phase_dispersion_5:
+        ADD      R9,R6,R12, LSL #+1
+        LDRSH    R9,[R9, #+0]
+//  634             j = (j + 1);
+//  635       }
+        ADD      R12,R12,#+1
+        CMP      R9,R7
+        ADDLT    R1,R1,#+1
+        CMP      R12,#+6
+        BLT      ??D_ACELP_phase_dispersion_5
+//  636 
+//  637       if(j > 2)
+        CMP      R1,#+3
+//  638       {
+//  639          state = 0;
+//  640       }
+//  641 
+//  642       if((state - *prev_state) > 1)
+        LDRSH    R1,[R4, #+0]
+        MOVGE    R8,#+0
+        SUB      R1,R8,R1
+        CMP      R1,#+2
+//  643       {
+//  644          state = state - 1;
+        SUBGE    R8,R8,#+1
+//  645       }
+//  646    }
+//  647    *prev_gain_code = gain_code;
+??D_ACELP_phase_dispersion_4:
+        STRH     R0,[R5, #+0]
+//  648    *prev_state = (Word16)state;
+        STRH     R8,[R4, #+0]
+//  649 
+//  650    /* circular convolution */
+//  651    state = state + mode;   /* level of dispersion */
+        ADDS     R0,R3,R8
+//  652 
+//  653    if(state == 0)
+        BNE      ??D_ACELP_phase_dispersion_6
+//  654    {
+//  655       for(i = 0; i < L_SUBFR; i++)
+        MOV      R12,#+0
+//  656       {
+//  657          if(code[i] != 0)
+??D_ACELP_phase_dispersion_7:
+        ADD      R0,R2,R12, LSL #+1
+        LDRSH    R1,[R0, #+0]
+        CMP      R1,#+0
+        BEQ      ??D_ACELP_phase_dispersion_8
+//  658          {
+//  659             for(j = 0; j < L_SUBFR; j++)
+        MOV      R1,#+0
+??D_ACELP_phase_dispersion_9:
+        LDR      R6,??D_ACELP_phase_dispersion_10  ;; D_ROM_ph_imp_low
+        LDRSH    R5,[R0, #+0]
+        ADD      R6,R6,R1, LSL #+1
+        LDRSH    R6,[R6, #+0]
+        ADD      R3,R1,R12
+        MOV      R4,SP
+        ADD      R3,R4,R3, LSL #+2
+        LDR      R4,[R3, #+0]
+        MUL      R5,R6,R5
+//  660             {
+//  661                code2[i + j] = code2[i + j] +
+//  662                   (((code[i] * D_ROM_ph_imp_low[j]) + 0x4000) >> 15);
+        ADD      R1,R1,#+1
+        ADD      R5,R5,#+16384
+        ADD      R4,R4,R5, ASR #+15
+        STR      R4,[R3, #+0]
+        CMP      R1,#+64
+        BLT      ??D_ACELP_phase_dispersion_9
+//  663             }
+//  664          }
+//  665       }
+??D_ACELP_phase_dispersion_8:
+        ADD      R12,R12,#+1
+        CMP      R12,#+64
+        BGE      ??D_ACELP_phase_dispersion_11
+        B        ??D_ACELP_phase_dispersion_7
+//  666    }
+//  667    else if(state == 1)
+??D_ACELP_phase_dispersion_6:
+        CMP      R0,#+1
+        BNE      ??D_ACELP_phase_dispersion_12
+//  668    {
+//  669       for(i = 0; i < L_SUBFR; i++)
+        MOV      R12,#+0
+//  670       {
+//  671          if(code[i] != 0)
+??D_ACELP_phase_dispersion_13:
+        ADD      R0,R2,R12, LSL #+1
+        LDRSH    R1,[R0, #+0]
+        CMP      R1,#+0
+        BEQ      ??D_ACELP_phase_dispersion_14
+//  672          {
+//  673             for(j = 0; j < L_SUBFR; j++)
+        MOV      R1,#+0
+??D_ACELP_phase_dispersion_15:
+        LDR      R6,??D_ACELP_phase_dispersion_10+0x4  ;; D_ROM_ph_imp_mid
+        LDRSH    R5,[R0, #+0]
+        ADD      R6,R6,R1, LSL #+1
+        LDRSH    R6,[R6, #+0]
+        ADD      R3,R1,R12
+        MOV      R4,SP
+        ADD      R3,R4,R3, LSL #+2
+        LDR      R4,[R3, #+0]
+        MUL      R5,R6,R5
+//  674             {
+//  675                code2[i + j] = code2[i + j] +
+//  676                   (((code[i] * D_ROM_ph_imp_mid[j]) + 0x4000) >> 15);
+        ADD      R1,R1,#+1
+        ADD      R5,R5,#+16384
+        ADD      R4,R4,R5, ASR #+15
+        STR      R4,[R3, #+0]
+        CMP      R1,#+64
+        BLT      ??D_ACELP_phase_dispersion_15
+//  677             }
+//  678          }
+//  679       }
+??D_ACELP_phase_dispersion_14:
+        ADD      R12,R12,#+1
+        CMP      R12,#+64
+        BGE      ??D_ACELP_phase_dispersion_11
+        B        ??D_ACELP_phase_dispersion_13
+//  680    }
+//  681 
+//  682    if(state < 2)
+??D_ACELP_phase_dispersion_12:
+        CMP      R0,#+2
+        BGE      ??D_ACELP_phase_dispersion_16
+//  683    {
+//  684       for(i = 0; i < L_SUBFR; i++)
+??D_ACELP_phase_dispersion_11:
+        MOV      R12,#+0
+//  685       {
+//  686          code[i] = (Word16)(code2[i] + code2[i + L_SUBFR]);
+??D_ACELP_phase_dispersion_17:
+        MOV      R0,SP
+        ADD      R0,R0,R12, LSL #+2
+        LDR      R3,[R0, #+0]
+        LDR      R0,[R0, #+256]
+        ADD      R1,R2,R12, LSL #+1
+        ADD      R0,R0,R3
+        STRH     R0,[R1, #+0]
+//  687       }
+        ADD      R12,R12,#+1
+        CMP      R12,#+64
+        BLT      ??D_ACELP_phase_dispersion_17
+//  688    }
+//  689 
+//  690    return;
+??D_ACELP_phase_dispersion_16:
+        ADD      SP,SP,#+512
+        CFI CFA R13+28
+        POP      {R4-R10}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        DATA
+??D_ACELP_phase_dispersion_10:
+        DC32     D_ROM_ph_imp_low
+        DC32     D_ROM_ph_imp_mid
+        CFI EndBlock cfiBlock15
+//  691 }
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+        DATA
+        DC32 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+
+        END
+// 
+// 3 320 bytes in segment CODE
+//   512 bytes in segment DATA_C
+// 
+// 3 288 bytes of CODE  memory (+ 32 bytes shared)
+//   512 bytes of CONST memory
+//
+//Errors: none
+//Warnings: 4

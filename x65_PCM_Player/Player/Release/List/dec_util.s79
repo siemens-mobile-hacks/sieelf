@@ -1,0 +1,3759 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:44 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_ /
+//                       util.c                                              /
+//    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_ /
+//                       util.c -D NDEBUG -lC D:\SVN\SieELF\SieELF\x65_PCM_P /
+//                       layer\Player\Release\List\ -lA                      /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player\Player /
+//                       \Release\Obj\ -s9 --cpu_mode arm --endian little    /
+//                       --cpu ARM926EJ-S --stack_align 4 --interwork -e     /
+//                       --fpu None --dlib_config "D:\Program                /
+//                       Files\IAR\Embedded Workbench 4.0                    /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\dec_util.s79                                   /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME dec_util
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        EXTERN ??div32_a
+
+        MULTWEAK ??D_LPC_a_weight??rA
+        MULTWEAK ??D_LPC_isf_extrapolation??rA
+        MULTWEAK ??D_LPC_isp_a_conversion??rA
+        MULTWEAK ??D_UTIL_bp_6k_7k??rT
+        MULTWEAK ??D_UTIL_dec_synthesis??rT
+        MULTWEAK ??D_UTIL_dot_product12??rT
+        MULTWEAK ??D_UTIL_hp400_12k8??rT
+        MULTWEAK ??D_UTIL_interpol??rT
+        MULTWEAK ??D_UTIL_inverse_sqrt??rT
+        MULTWEAK ??D_UTIL_l_extract??rT
+        MULTWEAK ??D_UTIL_log2??rT
+        MULTWEAK ??D_UTIL_mpy_32??rT
+        MULTWEAK ??D_UTIL_mpy_32_16??rT
+        MULTWEAK ??D_UTIL_norm_l??rT
+        MULTWEAK ??D_UTIL_norm_s??rT
+        MULTWEAK ??D_UTIL_normalised_inverse_sqrt??rT
+        MULTWEAK ??D_UTIL_pow2??rT
+        MULTWEAK ??D_UTIL_preemph??rT
+        MULTWEAK ??D_UTIL_random??rT
+        MULTWEAK ??D_UTIL_saturate??rT
+        MULTWEAK ??D_UTIL_signal_down_scale??rT
+        MULTWEAK ??D_UTIL_signal_up_scale??rT
+??DataTable0 EQU 0
+??DataTable2 EQU 0
+??DataTable3 EQU 0
+        MULTWEAK ??rA??div32_a
+        PUBLIC D_UTIL_bp_6k_7k
+        FUNCTION D_UTIL_bp_6k_7k,0203H
+        LOCFRAME CSTACK, 452, STACK
+        PUBLIC D_UTIL_dec_synthesis
+        FUNCTION D_UTIL_dec_synthesis,0203H
+        LOCFRAME CSTACK, 764, STACK
+        FUNCTION D_UTIL_deemph_32,0203H
+        LOCFRAME CSTACK, 32, STACK
+        PUBLIC D_UTIL_dot_product12
+        FUNCTION D_UTIL_dot_product12,0203H
+        LOCFRAME CSTACK, 12, STACK
+        PUBLIC D_UTIL_hp400_12k8
+        FUNCTION D_UTIL_hp400_12k8,0203H
+        LOCFRAME CSTACK, 40, STACK
+        FUNCTION D_UTIL_hp50_12k8,0203H
+        LOCFRAME CSTACK, 40, STACK
+        FUNCTION D_UTIL_hp_7k,0203H
+        LOCFRAME CSTACK, 236, STACK
+        PUBLIC D_UTIL_interpol
+        FUNCTION D_UTIL_interpol,0203H
+        LOCFRAME CSTACK, 16, STACK
+        PUBLIC D_UTIL_inverse_sqrt
+        FUNCTION D_UTIL_inverse_sqrt,0203H
+        PUBLIC D_UTIL_l_extract
+        FUNCTION D_UTIL_l_extract,0203H
+        PUBLIC D_UTIL_log2
+        FUNCTION D_UTIL_log2,0203H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC D_UTIL_mpy_32
+        FUNCTION D_UTIL_mpy_32,0203H
+        PUBLIC D_UTIL_mpy_32_16
+        FUNCTION D_UTIL_mpy_32_16,0203H
+        PUBLIC D_UTIL_norm_l
+        FUNCTION D_UTIL_norm_l,0203H
+        PUBLIC D_UTIL_norm_s
+        FUNCTION D_UTIL_norm_s,0203H
+        PUBLIC D_UTIL_normalised_inverse_sqrt
+        FUNCTION D_UTIL_normalised_inverse_sqrt,0203H
+        FUNCTION D_UTIL_oversamp_16k,0203H
+        LOCFRAME CSTACK, 204, STACK
+        PUBLIC D_UTIL_pow2
+        FUNCTION D_UTIL_pow2,0203H
+        PUBLIC D_UTIL_preemph
+        FUNCTION D_UTIL_preemph,0203H
+        LOCFRAME CSTACK, 12, STACK
+        PUBLIC D_UTIL_random
+        FUNCTION D_UTIL_random,0203H
+        PUBLIC D_UTIL_saturate
+        FUNCTION D_UTIL_saturate,0203H
+        PUBLIC D_UTIL_signal_down_scale
+        FUNCTION D_UTIL_signal_down_scale,0203H
+        LOCFRAME CSTACK, 8, STACK
+        PUBLIC D_UTIL_signal_up_scale
+        FUNCTION D_UTIL_signal_up_scale,0203H
+        LOCFRAME CSTACK, 12, STACK
+        FUNCTION D_UTIL_synthesis,0203H
+        LOCFRAME CSTACK, 248, STACK
+        FUNCTION D_UTIL_synthesis_32,0203H
+        LOCFRAME CSTACK, 40, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+D_LPC_a_weight      SYMBOL "D_LPC_a_weight"
+D_LPC_isf_extrapolation SYMBOL "D_LPC_isf_extrapolation"
+D_LPC_isp_a_conversion SYMBOL "D_LPC_isp_a_conversion"
+??D_LPC_a_weight??rA SYMBOL "??rA", D_LPC_a_weight
+??D_LPC_isf_extrapolation??rA SYMBOL "??rA", D_LPC_isf_extrapolation
+??D_LPC_isp_a_conversion??rA SYMBOL "??rA", D_LPC_isp_a_conversion
+D_UTIL_bp_6k_7k     SYMBOL "D_UTIL_bp_6k_7k"
+??D_UTIL_bp_6k_7k??rT SYMBOL "??rT", D_UTIL_bp_6k_7k
+D_UTIL_dec_synthesis SYMBOL "D_UTIL_dec_synthesis"
+??D_UTIL_dec_synthesis??rT SYMBOL "??rT", D_UTIL_dec_synthesis
+D_UTIL_dot_product12 SYMBOL "D_UTIL_dot_product12"
+??D_UTIL_dot_product12??rT SYMBOL "??rT", D_UTIL_dot_product12
+D_UTIL_hp400_12k8   SYMBOL "D_UTIL_hp400_12k8"
+??D_UTIL_hp400_12k8??rT SYMBOL "??rT", D_UTIL_hp400_12k8
+D_UTIL_interpol     SYMBOL "D_UTIL_interpol"
+??D_UTIL_interpol??rT SYMBOL "??rT", D_UTIL_interpol
+D_UTIL_inverse_sqrt SYMBOL "D_UTIL_inverse_sqrt"
+??D_UTIL_inverse_sqrt??rT SYMBOL "??rT", D_UTIL_inverse_sqrt
+D_UTIL_l_extract    SYMBOL "D_UTIL_l_extract"
+??D_UTIL_l_extract??rT SYMBOL "??rT", D_UTIL_l_extract
+D_UTIL_log2         SYMBOL "D_UTIL_log2"
+??D_UTIL_log2??rT   SYMBOL "??rT", D_UTIL_log2
+D_UTIL_mpy_32       SYMBOL "D_UTIL_mpy_32"
+??D_UTIL_mpy_32??rT SYMBOL "??rT", D_UTIL_mpy_32
+D_UTIL_mpy_32_16    SYMBOL "D_UTIL_mpy_32_16"
+??D_UTIL_mpy_32_16??rT SYMBOL "??rT", D_UTIL_mpy_32_16
+D_UTIL_norm_l       SYMBOL "D_UTIL_norm_l"
+??D_UTIL_norm_l??rT SYMBOL "??rT", D_UTIL_norm_l
+D_UTIL_norm_s       SYMBOL "D_UTIL_norm_s"
+??D_UTIL_norm_s??rT SYMBOL "??rT", D_UTIL_norm_s
+D_UTIL_normalised_inverse_sqrt SYMBOL "D_UTIL_normalised_inverse_sqrt"
+??D_UTIL_normalised_inverse_sqrt??rT SYMBOL "??rT", D_UTIL_normalised_inverse_sqrt
+D_UTIL_pow2         SYMBOL "D_UTIL_pow2"
+??D_UTIL_pow2??rT   SYMBOL "??rT", D_UTIL_pow2
+D_UTIL_preemph      SYMBOL "D_UTIL_preemph"
+??D_UTIL_preemph??rT SYMBOL "??rT", D_UTIL_preemph
+D_UTIL_random       SYMBOL "D_UTIL_random"
+??D_UTIL_random??rT SYMBOL "??rT", D_UTIL_random
+D_UTIL_saturate     SYMBOL "D_UTIL_saturate"
+??D_UTIL_saturate??rT SYMBOL "??rT", D_UTIL_saturate
+D_UTIL_signal_down_scale SYMBOL "D_UTIL_signal_down_scale"
+??D_UTIL_signal_down_scale??rT SYMBOL "??rT", D_UTIL_signal_down_scale
+D_UTIL_signal_up_scale SYMBOL "D_UTIL_signal_up_scale"
+??D_UTIL_signal_up_scale??rT SYMBOL "??rT", D_UTIL_signal_up_scale
+
+        EXTERN D_LPC_a_weight
+        FUNCTION D_LPC_a_weight,0202H
+        EXTERN D_LPC_isf_extrapolation
+        FUNCTION D_LPC_isf_extrapolation,0202H
+        EXTERN D_LPC_isp_a_conversion
+        FUNCTION D_LPC_isp_a_conversion,0202H
+        EXTERN D_ROM_fir_6k_7k
+        EXTERN D_ROM_fir_7k
+        EXTERN D_ROM_fir_up
+        EXTERN D_ROM_hp_gain
+        EXTERN D_ROM_isqrt
+        EXTERN D_ROM_log2
+        EXTERN D_ROM_pow2
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_random??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE D_UTIL_random
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_util.c
+//    1 /*
+//    2  *===================================================================
+//    3  *  3GPP AMR Wideband Floating-point Speech Codec
+//    4  *===================================================================
+//    5  */
+//    6 #include <math.h>
+//    7 #include "typedef.h"
+//    8 #include "dec_main.h"
+//    9 #include "dec_lpc.h"
+//   10 
+//   11 #define MAX_16       (Word16)0x7FFF
+//   12 #define MIN_16       (Word16)0x8000
+//   13 #define L_SUBFR      64       /* Subframe size                    */
+//   14 #define L_SUBFR16k   80       /* Subframe size at 16kHz           */
+//   15 #define M16k         20       /* Order of LP filter               */
+//   16 #define PREEMPH_FAC  22282    /* preemphasis factor (0.68 in Q15) */
+//   17 #define FAC4         4
+//   18 #define FAC5         5
+//   19 #define UP_FAC       20480    /* 5/4 in Q14                       */
+//   20 #define INV_FAC5     6554     /* 1/5 in Q15                       */
+//   21 #define NB_COEF_UP   12
+//   22 #define L_FIR        31
+//   23 #define MODE_7k      0
+//   24 #define MODE_24k     8
+//   25 
+//   26 
+//   27 extern const Word16 D_ROM_pow2[];
+//   28 extern const Word16 D_ROM_isqrt[];
+//   29 extern const Word16 D_ROM_log2[];
+//   30 extern const Word16 D_ROM_fir_up[];
+//   31 extern const Word16 D_ROM_fir_6k_7k[];
+//   32 extern const Word16 D_ROM_fir_7k[];
+//   33 extern const Word16 D_ROM_hp_gain[];
+//   34 
+//   35 #ifdef WIN32
+//   36 #pragma warning( disable : 4310)
+//   37 #endif
+//   38 /*
+//   39  * D_UTIL_random
+//   40  *
+//   41  * Parameters:
+//   42  *    seed        I/O: seed for random number
+//   43  *
+//   44  * Function:
+//   45  *    Signed 16 bits random generator.
+//   46  *
+//   47  * Returns:
+//   48  *    random number
+//   49  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function D_UTIL_random
+        ARM
+//   50 Word16 D_UTIL_random(Word16 *seed)
+//   51 {
+//   52    /*static Word16 seed = 21845;*/
+//   53    *seed = (Word16)(*seed * 31821L + 13849L);
+D_UTIL_random:
+        LDRSH    R1,[R0, #+0]
+        MOV      R2,#+77
+        ORR      R2,R2,#0x7C00
+        MOV      R3,#+25
+        ORR      R3,R3,#0x3600
+        MLA      R1,R2,R1,R3
+        STRH     R1,[R0, #+0]
+//   54    return(*seed);
+        LDRSH    R0,[R0, #+0]
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock1
+//   55 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_pow2??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE D_UTIL_pow2
+//   56 
+//   57 
+//   58 /*
+//   59  * D_UTIL_pow2
+//   60  *
+//   61  * Parameters:
+//   62  *    exponant    I: (Q0) Integer part.      (range: 0 <= val <= 30)
+//   63  *    fraction    I: (Q15) Fractionnal part. (range: 0.0 <= val < 1.0)
+//   64  *
+//   65  * Function:
+//   66  *    L_x = pow(2.0, exponant.fraction)         (exponant = interger part)
+//   67  *        = pow(2.0, 0.fraction) << exponant
+//   68  *
+//   69  *    Algorithm:
+//   70  *
+//   71  *    The function Pow2(L_x) is approximated by a table and linear
+//   72  *    interpolation.
+//   73  *
+//   74  *    1 - i = bit10 - b15 of fraction,   0 <= i <= 31
+//   75  *    2 - a = bit0 - b9   of fraction
+//   76  *    3 - L_x = table[i] << 16 - (table[i] - table[i + 1]) * a * 2
+//   77  *    4 - L_x = L_x >> (30-exponant)     (with rounding)
+//   78  *
+//   79  * Returns:
+//   80  *    range 0 <= val <= 0x7fffffff
+//   81  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function D_UTIL_pow2
+        ARM
+//   82 Word32 D_UTIL_pow2(Word16 exponant, Word16 fraction)
+//   83 {
+//   84 	Word32 L_x, tmp, i, exp;
+//   85 	Word16 a;
+//   86 
+//   87 	L_x = fraction * 32;          /* L_x = fraction<<6             */
+//   88 	i = L_x >> 15;                /* Extract b10-b16 of fraction   */
+//   89 	a = (Word16)(L_x);            /* Extract b0-b9   of fraction   */
+//   90 	a = (Word16)(a & (Word16)0x7fff);
+//   91 	L_x = D_ROM_pow2[i] << 16;    /* table[i] << 16                */
+//   92 	tmp = D_ROM_pow2[i] - D_ROM_pow2[i + 1];  /* table[i] - table[i+1] */
+//   93 	tmp = L_x - ((tmp * a) << 1); /* L_x -= tmp*a*2                */
+D_UTIL_pow2:
+        LDR      R3,??D_UTIL_pow2_0  ;; D_ROM_pow2
+        LSL      R1,R1,#+5
+        ASR      R2,R1,#+15
+        ADD      R2,R3,R2, LSL #+1
+        LDRSH    R3,[R2, #+0]
+        LDRSH    R2,[R2, #+2]
+        LSL      R1,R1,#+17
+        LSR      R1,R1,#+17
+        SUB      R2,R3,R2
+        MUL      R2,R1,R2
+        LSL      R12,R3,#+16
+        SUB      R1,R12,R2, LSL #+1
+//   94 	exp = 30 - exponant;
+        RSB      R2,R0,#+30
+//   95 	if (exp <= 31)
+        CMP      R2,#+32
+        BGE      ??D_UTIL_pow2_1
+//   96 	{
+//   97 		L_x = tmp >> exp;
+        ASR      R0,R1,R2
+//   98 
+//   99 		if ((1 << (exp - 1)) & tmp)
+        MOV      R3,#+1
+        SUB      R2,R2,#+1
+        TST      R1,R3, LSL R2
+        BXEQ     LR
+//  100 		{
+//  101 			L_x++;
+        ADD      R0,R0,#+1
+        BX       LR
+//  102 		}
+//  103 	}
+//  104 	else
+//  105 	{
+//  106 		L_x = 0;
+??D_UTIL_pow2_1:
+        MOV      R0,#+0
+//  107 	}
+//  108 
+//  109 	return(L_x);
+        BX       LR               ;; return
+        DATA
+??D_UTIL_pow2_0:
+        DC32     D_ROM_pow2
+        CFI EndBlock cfiBlock3
+//  110 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_norm_l??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE D_UTIL_norm_l
+//  111 
+//  112 
+//  113 /*
+//  114  * D_UTIL_norm_l
+//  115  *
+//  116  * Parameters:
+//  117  *    L_var1      I: 32 bit Word32 signed integer (Word32) whose value
+//  118  *                   falls in the range 0x8000 0000 <= var1 <= 0x7fff ffff.
+//  119  *
+//  120  * Function:
+//  121  *    Produces the number of left shifts needed to normalize the 32 bit
+//  122  *    variable L_var1 for positive values on the interval with minimum of
+//  123  *    1073741824 and maximum of 2147483647, and for negative values on
+//  124  *    the interval with minimum of -2147483648 and maximum of -1073741824;
+//  125  *    in order to normalize the result, the following operation must be done :
+//  126  *    norm_L_var1 = L_shl(L_var1,norm_l(L_var1)).
+//  127  *
+//  128  * Returns:
+//  129  *    16 bit Word16 signed integer (Word16) whose value falls in the range
+//  130  *    0x0000 0000 <= var_out <= 0x0000 001f.
+//  131  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function D_UTIL_norm_l
+        ARM
+//  132 Word16 D_UTIL_norm_l(Word32 L_var1)
+//  133 {
+//  134    Word16 var_out;
+//  135 
+//  136    if(L_var1 == 0)
+D_UTIL_norm_l:
+        MOV      R1,#+0
+        CMP      R0,#+0
+        BEQ      ??D_UTIL_norm_l_0
+//  137    {
+//  138       var_out = 0;
+//  139    }
+//  140    else
+//  141    {
+//  142       if(L_var1 == (Word32)0xffffffffL)
+        CMN      R0,#+1
+//  143       {
+//  144          var_out = 31;
+        MOVEQ    R1,#+31
+        BEQ      ??D_UTIL_norm_l_0
+//  145       }
+//  146       else
+//  147       {
+//  148          if(L_var1 < 0)
+        CMP      R0,#+0
+//  149          {
+//  150             L_var1 = ~L_var1;
+        MVNMI    R0,R0
+//  151          }
+//  152 
+//  153          for(var_out = 0; L_var1 < (Word32)0x40000000L; var_out++)
+        CMP      R0,#+1073741824
+        BGE      ??D_UTIL_norm_l_0
+//  154          {
+//  155             L_var1 <<= 1;
+??D_UTIL_norm_l_1:
+        LSL      R0,R0,#+1
+//  156          }
+        ADD      R1,R1,#+1
+        CMP      R0,#+1073741824
+        BLT      ??D_UTIL_norm_l_1
+//  157       }
+//  158    }
+//  159 
+//  160    return(var_out);
+??D_UTIL_norm_l_0:
+        MOV      R0,R1, LSL #+16
+        MOV      R0,R0, ASR #+16
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock5
+//  161 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_norm_s??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE D_UTIL_norm_s
+//  162 
+//  163 
+//  164 /*
+//  165  * D_UTIL_norm_s
+//  166  *
+//  167  * Parameters:
+//  168  *    L_var1      I: 32 bit Word32 signed integer (Word32) whose value
+//  169  *                   falls in the range 0xffff 8000 <= var1 <= 0x0000 7fff.
+//  170  *
+//  171  * Function:
+//  172  *    Produces the number of left shift needed to normalize the 16 bit
+//  173  *    variable var1 for positive values on the interval with minimum
+//  174  *    of 16384 and maximum of 32767, and for negative values on
+//  175  *    the interval with minimum of -32768 and maximum of -16384.
+//  176  *
+//  177  * Returns:
+//  178  *    16 bit Word16 signed integer (Word16) whose value falls in the range
+//  179  *    0x0000 0000 <= var_out <= 0x0000 000f.
+//  180  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function D_UTIL_norm_s
+        ARM
+//  181 Word16 D_UTIL_norm_s(Word16 var1)
+//  182 {
+//  183    Word16 var_out;
+//  184 
+//  185    if(var1 == 0)
+D_UTIL_norm_s:
+        CMP      R0,#+0
+//  186    {
+//  187       var_out = 0;
+        MOVEQ    R1,#+0
+        BEQ      ??D_UTIL_norm_s_0
+//  188    }
+//  189    else
+//  190    {
+//  191       if(var1 == -1)
+        MVN      R1,#+0
+        CMP      R0,R1
+//  192       {
+//  193          var_out = 15;
+        MOVEQ    R1,#+15
+        BEQ      ??D_UTIL_norm_s_0
+//  194       }
+//  195       else
+//  196       {
+//  197          if(var1 < 0)
+        CMP      R0,#+0
+//  198          {
+//  199             var1 = (Word16)~var1;
+        MVNMI    R0,R0
+//  200          }
+//  201 
+//  202          for(var_out = 0; var1 < 0x4000; var_out++)
+        MOV      R1,#+0
+        MOV      R0,R0, LSL #+16
+        MOV      R0,R0, ASR #+16
+        CMP      R0,#+16384
+        BGE      ??D_UTIL_norm_s_0
+//  203          {
+//  204             var1 <<= 1;
+??D_UTIL_norm_s_1:
+        LSL      R0,R0,#+17
+//  205          }
+        ADD      R1,R1,#+1
+        ASR      R0,R0,#+16
+        CMP      R0,#+16384
+        BLT      ??D_UTIL_norm_s_1
+//  206       }
+//  207    }
+//  208    return(var_out);
+??D_UTIL_norm_s_0:
+        MOV      R0,R1, LSL #+16
+        MOV      R0,R0, ASR #+16
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock7
+//  209 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_dot_product12??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE D_UTIL_dot_product12
+//  210 
+//  211 
+//  212 /*
+//  213  * D_UTIL_dot_product12
+//  214  *
+//  215  * Parameters:
+//  216  *    x        I: 12bit x vector
+//  217  *    y        I: 12bit y vector
+//  218  *    lg       I: vector length
+//  219  *    exp      O: exponent of result (0..+30)
+//  220  *
+//  221  * Function:
+//  222  *    Compute scalar product of <x[],y[]> using accumulator.
+//  223  *    The result is normalized (in Q31) with exponent (0..30).
+//  224  *
+//  225  * Returns:
+//  226  *    Q31 normalised result (1 < val <= -1)
+//  227  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function D_UTIL_dot_product12
+        ARM
+//  228 Word32 D_UTIL_dot_product12(Word16 x[], Word16 y[], Word16 lg, Word16 *exp)
+//  229 {
+D_UTIL_dot_product12:
+        PUSH     {R4-R6}
+        CFI R6 Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+//  230    Word32 sum, i, sft;
+//  231 
+//  232    sum = 0L;
+        MOV      R12,#+0
+//  233 
+//  234    for(i = 0; i < lg; i++)
+        MOV      R4,#+0
+        CMP      R2,#+1
+        BLT      ??D_UTIL_dot_product12_0
+        B        ??D_UTIL_dot_product12_1
+//  235    {
+//  236       sum += x[i] * y[i];
+??D_UTIL_dot_product12_2:
+        ADD      R5,R0,R4, LSL #+1
+        LDRSH    R5,[R5, #+0]
+        ADD      R6,R1,R4, LSL #+1
+        LDRSH    R6,[R6, #+0]
+//  237    }
+        ADD      R4,R4,#+1
+        MLA      R12,R6,R5,R12
+??D_UTIL_dot_product12_1:
+        CMP      R4,R2
+        BLT      ??D_UTIL_dot_product12_2
+//  238    sum = (sum << 1) + 1;
+??D_UTIL_dot_product12_0:
+        MOV      R0,#+1
+        ADD      R0,R0,R12, LSL #+1
+//  239 
+//  240    /* Normalize acc in Q31 */
+//  241    sft = D_UTIL_norm_l(sum);
+        MOVS     R1,R0
+        MOV      R2,#+0
+        BEQ      ??D_UTIL_dot_product12_3
+        CMN      R1,#+1
+        MOVEQ    R2,#+31
+        BEQ      ??D_UTIL_dot_product12_3
+        CMP      R1,#+0
+        MVNMI    R1,R1
+        CMP      R1,#+1073741824
+        BGE      ??D_UTIL_dot_product12_3
+??D_UTIL_dot_product12_4:
+        LSL      R1,R1,#+1
+        ADD      R2,R2,#+1
+        CMP      R1,#+1073741824
+        BLT      ??D_UTIL_dot_product12_4
+??D_UTIL_dot_product12_3:
+        MOV      R2,R2, LSL #+16
+        MOV      R2,R2, ASR #+16
+//  242    sum = sum << sft;
+//  243    *exp = (Word16)(30 - sft);   /* exponent = 0..30 */
+        MOV      R1,R2
+        RSB      R1,R1,#+30
+        STRH     R1,[R3, #+0]
+//  244 
+//  245    return(sum);
+        POP      {R4-R6}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI CFA R13+0
+        LSL      R0,R0,R2
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock9
+//  246 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_normalised_inverse_sqrt??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock10
+        REQUIRE D_UTIL_normalised_inverse_sqrt
+//  247 
+//  248 
+//  249 /*
+//  250  * D_UTIL_normalised_inverse_sqrt
+//  251  *
+//  252  * Parameters:
+//  253  *    frac     I/O: (Q31) normalized value (1.0 < frac <= 0.5)
+//  254  *    exp      I/O: exponent (value = frac x 2^exponent)
+//  255  *
+//  256  * Function:
+//  257  *    Compute 1/sqrt(value).
+//  258  *    If value is negative or zero, result is 1 (frac=7fffffff, exp=0).
+//  259  *
+//  260  *    The function 1/sqrt(value) is approximated by a table and linear
+//  261  *    interpolation.
+//  262  *    1. If exponant is odd then shift fraction right once.
+//  263  *    2. exponant = -((exponant - 1) >> 1)
+//  264  *    3. i = bit25 - b30 of fraction, 16 <= i <= 63 ->because of normalization.
+//  265  *    4. a = bit10 - b24
+//  266  *    5. i -= 16
+//  267  *    6. fraction = table[i]<<16 - (table[i] - table[i+1]) * a * 2
+//  268  *
+//  269  * Returns:
+//  270  *    void
+//  271  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock11 Using cfiCommon1
+        CFI Function D_UTIL_normalised_inverse_sqrt
+        ARM
+//  272 void D_UTIL_normalised_inverse_sqrt(Word32 *frac, Word16 *exp)
+//  273 {
+//  274    Word32 i, tmp;
+//  275    Word16 a;
+//  276 
+//  277    if(*frac <= (Word32)0)
+D_UTIL_normalised_inverse_sqrt:
+        LDR      R2,[R0, #+0]
+        CMP      R2,#+1
+        BGE      ??D_UTIL_normalised_inverse_sqrt_0
+//  278    {
+//  279       *exp = 0;
+        MOV      R2,#+0
+        STRH     R2,[R1, #+0]
+//  280       *frac = 0x7fffffffL;
+        MVN      R1,#-2147483648
+        B        ??D_UTIL_normalised_inverse_sqrt_1
+//  281       return;
+//  282    }
+//  283 
+//  284    if((*exp & 0x1) == 1)   /* If exponant odd -> shift right */
+??D_UTIL_normalised_inverse_sqrt_0:
+        LDRSH    R3,[R1, #+0]
+        TST      R3,#0x1
+//  285    {
+//  286       *frac = *frac >> 1;
+        ASRNE    R2,R2,#+1
+        STRNE    R2,[R0, #+0]
+//  287    }
+//  288    *exp = (Word16)(-((*exp - 1) >> 1));
+        SUB      R2,R3,#+1
+//  289    *frac = *frac >> 9;
+//  290    i = *frac >>16;      /* Extract b25-b31   */
+//  291    *frac = *frac >> 1;
+//  292    a = (Word16)(*frac); /* Extract b10-b24   */
+//  293    a = (Word16)(a & (Word16)0x7fff);
+//  294    i = i - 16;
+//  295    *frac = D_ROM_isqrt[i] << 16; /* table[i] << 16    */
+//  296    tmp = D_ROM_isqrt[i] - D_ROM_isqrt[i + 1];   /* table[i] - table[i+1]) */
+//  297    *frac = *frac - ((tmp * a) << 1);   /* frac -=  tmp*a*2  */
+        LDR      R3,??DataTable1  ;; D_ROM_isqrt
+        ASR      R2,R2,#+1
+        RSB      R2,R2,#+0
+        STRH     R2,[R1, #+0]
+        LDR      R1,[R0, #+0]
+        ASR      R1,R1,#+9
+        STR      R1,[R0, #+0]
+        ASR      R2,R1,#+16
+        SUB      R2,R2,#+16
+        ADD      R2,R3,R2, LSL #+1
+        LDRSH    R3,[R2, #+0]
+        LDRSH    R2,[R2, #+2]
+        ASR      R1,R1,#+1
+        LSL      R1,R1,#+17
+        SUB      R2,R3,R2
+        LSR      R1,R1,#+17
+        MUL      R2,R1,R2
+        LSL      R12,R3,#+16
+        SUB      R1,R12,R2, LSL #+1
+??D_UTIL_normalised_inverse_sqrt_1:
+        STR      R1,[R0, #+0]
+//  298 
+//  299    return;
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock11
+//  300 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock12 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_inverse_sqrt??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock12
+        REQUIRE D_UTIL_inverse_sqrt
+//  301 
+//  302 
+//  303 /*
+//  304  * D_UTIL_inverse_sqrt
+//  305  *
+//  306  * Parameters:
+//  307  *    L_x     I/O: (Q0) input value (range: 0<=val<=7fffffff)
+//  308  *
+//  309  * Function:
+//  310  *    Compute 1/sqrt(L_x).
+//  311  *    If value is negative or zero, result is 1 (7fffffff).
+//  312  *
+//  313  *    The function 1/sqrt(value) is approximated by a table and linear
+//  314  *    interpolation.
+//  315  *    1. Normalization of L_x
+//  316  *    2. call Normalised_Inverse_sqrt(L_x, exponant)
+//  317  *    3. L_y = L_x << exponant
+//  318  *
+//  319  * Returns:
+//  320  *    (Q31) output value (range: 0 <= val < 1)
+//  321  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock13 Using cfiCommon1
+        CFI Function D_UTIL_inverse_sqrt
+        ARM
+//  322 Word32 D_UTIL_inverse_sqrt(Word32 L_x)
+//  323 {
+//  324    Word32 L_y;
+//  325    Word16 exp;
+//  326 
+//  327    exp = D_UTIL_norm_l(L_x);
+D_UTIL_inverse_sqrt:
+        MOVS     R2,R0
+        MOV      R1,#+0
+        MOVEQ    R3,#+0
+        BEQ      ??D_UTIL_inverse_sqrt_0
+        CMN      R2,#+1
+        MOVEQ    R3,#+31
+        BEQ      ??D_UTIL_inverse_sqrt_0
+        CMP      R2,#+0
+        MVNMI    R2,R2
+        MOV      R3,#+0
+        CMP      R2,#+1073741824
+        BGE      ??D_UTIL_inverse_sqrt_0
+??D_UTIL_inverse_sqrt_1:
+        LSL      R2,R2,#+1
+        ADD      R3,R3,#+1
+        CMP      R2,#+1073741824
+        BLT      ??D_UTIL_inverse_sqrt_1
+//  328    L_x = (L_x << exp);   /* L_x is normalized */
+??D_UTIL_inverse_sqrt_0:
+        LSL      R0,R0,R3
+//  329    exp = (Word16)(31 - exp);
+        RSB      R2,R3,#+31
+//  330    D_UTIL_normalised_inverse_sqrt(&L_x, &exp);
+        CMP      R0,#+1
+        BGE      ??D_UTIL_inverse_sqrt_2
+        MVN      R0,#-2147483648
+//  331 
+//  332    if(exp < 0)
+//  333    {
+//  334       L_y = (L_x >> -exp);   /* denormalization   */
+//  335    }
+//  336    else
+//  337    {
+//  338       L_y = (L_x << exp);   /* denormalization   */
+??D_UTIL_inverse_sqrt_3:
+        LSL      R0,R0,R1
+//  339    }
+//  340 
+//  341    return(L_y);
+        BX       LR               ;; return
+??D_UTIL_inverse_sqrt_2:
+        LDR      R3,??DataTable1  ;; D_ROM_isqrt
+        TST      R2,#0x1
+        ASRNE    R0,R0,#+1
+        MOV      R2,R2, LSL #+16
+        MOV      R2,R2, ASR #+16
+        SUB      R1,R2,#+1
+        ASR      R0,R0,#+9
+        ASR      R2,R0,#+16
+        SUB      R2,R2,#+16
+        ADD      R2,R3,R2, LSL #+1
+        LDRSH    R3,[R2, #+0]
+        LDRSH    R2,[R2, #+2]
+        ASR      R0,R0,#+1
+        LSL      R0,R0,#+17
+        SUB      R2,R3,R2
+        LSR      R0,R0,#+17
+        MUL      R2,R0,R2
+        ASR      R1,R1,#+1
+        RSB      R1,R1,#+0
+        LSL      R12,R3,#+16
+        SUB      R0,R12,R2, LSL #+1
+        MOV      R1,R1, LSL #+16
+        MOVS     R1,R1, ASR #+16
+        BPL      ??D_UTIL_inverse_sqrt_3
+        RSB      R1,R1,#+0
+        ASR      R0,R0,R1
+        BX       LR
+        CFI EndBlock cfiBlock13
+//  342 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable1:
+        DC32     D_ROM_isqrt
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock14 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_log2??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock14
+        REQUIRE D_UTIL_log2
+//  343 
+//  344 
+//  345 /*
+//  346  * D_UTIL_normalised_log2
+//  347  *
+//  348  * Parameters:
+//  349  *    L_x      I: input value (normalized)
+//  350  *    exp      I: norm_l (L_x)
+//  351  *    exponent O: Integer part of Log2.   (range: 0<=val<=30)
+//  352  *    fraction O: Fractional part of Log2. (range: 0<=val<1)
+//  353  *
+//  354  * Function:
+//  355  *    Computes log2(L_x, exp),  where   L_x is positive and
+//  356  *    normalized, and exp is the normalisation exponent
+//  357  *    If L_x is negative or zero, the result is 0.
+//  358  *
+//  359  *    The function Log2(L_x) is approximated by a table and linear
+//  360  *    interpolation. The following steps are used to compute Log2(L_x)
+//  361  *
+//  362  *    1. exponent = 30 - norm_exponent
+//  363  *    2. i = bit25 - b31 of L_x;  32 <= i <= 63  (because of normalization).
+//  364  *    3. a = bit10 - b24
+//  365  *    4. i -= 32
+//  366  *    5. fraction = table[i] << 16 - (table[i] - table[i + 1]) * a * 2
+//  367  *
+//  368  *
+//  369  * Returns:
+//  370  *    void
+//  371  */
+//  372 static void D_UTIL_normalised_log2(Word32 L_x, Word16 exp, Word16 *exponent,
+//  373                                    Word16 *fraction)
+//  374 {
+//  375    Word32 i, a, tmp;
+//  376    Word32 L_y;
+//  377 
+//  378    if (L_x <= 0)
+//  379    {
+//  380       *exponent = 0;
+//  381       *fraction = 0;
+//  382       return;
+//  383    }
+//  384 
+//  385    *exponent = (Word16)(30 - exp);
+//  386 
+//  387    L_x = L_x >> 10;
+//  388    i = L_x >> 15;         /* Extract b25-b31               */
+//  389    a = L_x;               /* Extract b10-b24 of fraction   */
+//  390    a = a & 0x00007fff;
+//  391    i = i - 32;
+//  392    L_y = D_ROM_log2[i] << 16;               /* table[i] << 16        */
+//  393    tmp = D_ROM_log2[i] - D_ROM_log2[i + 1]; /* table[i] - table[i+1] */
+//  394    L_y = L_y - ((tmp * a) << 1);            /* L_y -= tmp*a*2        */
+//  395    *fraction = (Word16)(L_y >> 16);
+//  396 
+//  397    return;
+//  398 }
+//  399 
+//  400 
+//  401 /*
+//  402  * D_UTIL_log2
+//  403  *
+//  404  * Parameters:
+//  405  *    L_x      I: input value
+//  406  *    exponent O: Integer part of Log2.   (range: 0<=val<=30)
+//  407  *    fraction O: Fractional part of Log2. (range: 0<=val<1)
+//  408  *
+//  409  * Function:
+//  410  *    Computes log2(L_x),  where   L_x is positive.
+//  411  *    If L_x is negative or zero, the result is 0.
+//  412  *
+//  413  * Returns:
+//  414  *    void
+//  415  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock15 Using cfiCommon1
+        CFI Function D_UTIL_log2
+        ARM
+//  416 void D_UTIL_log2(Word32 L_x, Word16 *exponent, Word16 *fraction)
+//  417 {
+D_UTIL_log2:
+        PUSH     {R4}
+        CFI R4 Frame(CFA, -4)
+        CFI CFA R13+4
+//  418    Word16 exp;
+//  419 
+//  420    exp = D_UTIL_norm_l(L_x);
+        MOVS     R3,R0
+        MOV      R12,#+0
+        MOVEQ    R4,#+0
+        BEQ      ??D_UTIL_log2_0
+        CMN      R3,#+1
+        MOVEQ    R4,#+31
+        BEQ      ??D_UTIL_log2_0
+        CMP      R3,#+0
+        MVNMI    R3,R3
+        MOV      R4,#+0
+        CMP      R3,#+1073741824
+        BGE      ??D_UTIL_log2_0
+??D_UTIL_log2_1:
+        LSL      R3,R3,#+1
+        ADD      R4,R4,#+1
+        CMP      R3,#+1073741824
+        BLT      ??D_UTIL_log2_1
+??D_UTIL_log2_0:
+        MOV      R4,R4, LSL #+16
+        MOV      R4,R4, ASR #+16
+//  421    D_UTIL_normalised_log2((L_x <<exp), exp, exponent, fraction);
+        LSL      R0,R0,R4
+        CMP      R0,#+1
+        STRHLT   R12,[R1, #+0]
+        BLT      ??D_UTIL_log2_2
+        RSB      R3,R4,#+30
+        STRH     R3,[R1, #+0]
+        LDR      R3,??D_UTIL_log2_3  ;; D_ROM_log2
+        ASR      R0,R0,#+10
+        ASR      R1,R0,#+15
+        SUB      R1,R1,#+32
+        ADD      R1,R3,R1, LSL #+1
+        LDRSH    R3,[R1, #+0]
+        LDRSH    R1,[R1, #+2]
+        LSL      R0,R0,#+17
+        LSR      R0,R0,#+17
+        SUB      R1,R3,R1
+        MUL      R1,R0,R1
+        LSL      R4,R3,#+16
+        SUB      R0,R4,R1, LSL #+1
+        ASR      R12,R0,#+16
+??D_UTIL_log2_2:
+        STRH     R12,[R2, #+0]
+//  422 }
+        POP      {R4}
+        CFI R4 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        DATA
+??D_UTIL_log2_3:
+        DC32     D_ROM_log2
+        CFI EndBlock cfiBlock15
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock16 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_l_extract??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock16
+        REQUIRE D_UTIL_l_extract
+//  423 
+//  424 
+//  425 /*
+//  426  * D_UTIL_l_extract
+//  427  *
+//  428  * Parameters:
+//  429  *    L_32        I: 32 bit integer.
+//  430  *    hi          O: b16 to b31 of L_32
+//  431  *    lo          O: (L_32 - hi<<16)>>1
+//  432  *
+//  433  * Function:
+//  434  *    Extract from a 32 bit integer two 16 bit DPF.
+//  435  *
+//  436  * Returns:
+//  437  *    void
+//  438  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock17 Using cfiCommon1
+        CFI Function D_UTIL_l_extract
+        ARM
+//  439 void D_UTIL_l_extract(Word32 L_32, Word16 *hi, Word16 *lo)
+//  440 {
+//  441    *hi = (Word16)(L_32 >> 16);
+D_UTIL_l_extract:
+        ASR      R3,R0,#+16
+        STRH     R3,[R1, #+0]
+//  442    *lo = (Word16)((L_32 >> 1) - (*hi * 32768));
+        LDRSH    R1,[R1, #+0]
+        ASR      R0,R0,#+1
+        SUB      R0,R0,R1, LSL #+15
+        STRH     R0,[R2, #+0]
+//  443 
+//  444    return;
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock17
+//  445 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock18 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_mpy_32_16??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock18
+        REQUIRE D_UTIL_mpy_32_16
+//  446 
+//  447 
+//  448 /*
+//  449  * D_UTIL_mpy_32_16
+//  450  *
+//  451  * Parameters:
+//  452  *    hi          I: hi part of 32 bit number
+//  453  *    lo          I: lo part of 32 bit number
+//  454  *    n           I: 16 bit number
+//  455  *
+//  456  * Function:
+//  457  *    Multiply a 16 bit integer by a 32 bit (DPF). The result is divided
+//  458  *    by 2^15.
+//  459  *
+//  460  *    L_32 = (hi1*lo2)<<1 + ((lo1*lo2)>>15)<<1
+//  461  *
+//  462  * Returns:
+//  463  *    32 bit result
+//  464  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock19 Using cfiCommon1
+        CFI Function D_UTIL_mpy_32_16
+        ARM
+//  465 Word32 D_UTIL_mpy_32_16(Word16 hi, Word16 lo, Word16 n)
+//  466 {
+//  467    Word32 L_32;
+//  468 
+//  469    L_32 = hi * n;
+//  470    L_32 += (lo * n) >> 15;
+//  471 
+//  472    return(L_32 << 1);
+D_UTIL_mpy_32_16:
+        MUL      R0,R2,R0
+        MUL      R1,R2,R1
+        ADD      R0,R0,R1, ASR #+15
+        LSL      R0,R0,#+1
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock19
+//  473 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock20 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_mpy_32??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock20
+        REQUIRE D_UTIL_mpy_32
+//  474 
+//  475 
+//  476 /*
+//  477  * D_UTIL_mpy_32
+//  478  *
+//  479  * Parameters:
+//  480  *    hi1         I: hi part of first number
+//  481  *    lo1         I: lo part of first number
+//  482  *    hi2         I: hi part of second number
+//  483  *    lo2         I: lo part of second number
+//  484  *
+//  485  * Function:
+//  486  *    Multiply two 32 bit integers (DPF). The result is divided by 2^31
+//  487  *
+//  488  *    L_32 = (hi1*lo2)<<1 + ((lo1*lo2)>>15)<<1
+//  489  *
+//  490  * Returns:
+//  491  *    32 bit result
+//  492  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock21 Using cfiCommon1
+        CFI Function D_UTIL_mpy_32
+        ARM
+//  493 Word32 D_UTIL_mpy_32(Word16 hi1, Word16 lo1, Word16 hi2, Word16 lo2)
+//  494 {
+//  495    Word32 L_32;
+//  496 
+//  497    L_32 = hi1 * hi2;
+//  498    L_32 += (hi1 * lo2) >> 15;
+//  499    L_32 += (lo1 * hi2) >> 15;
+//  500 
+//  501    return(L_32 << 1);
+D_UTIL_mpy_32:
+        MUL      R12,R2,R0
+        MUL      R0,R3,R0
+        MUL      R1,R2,R1
+        ADD      R0,R12,R0, ASR #+15
+        ADD      R0,R0,R1, ASR #+15
+        LSL      R0,R0,#+1
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock21
+//  502 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock22 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_saturate??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock22
+        REQUIRE D_UTIL_saturate
+//  503 
+//  504 /*
+//  505  * D_UTIL_saturate
+//  506  *
+//  507  * Parameters:
+//  508  *    inp        I: 32-bit number
+//  509  *
+//  510  * Function:
+//  511  *    Saturation to 16-bit number
+//  512  *
+//  513  * Returns:
+//  514  *    16-bit number
+//  515  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock23 Using cfiCommon1
+        CFI Function D_UTIL_saturate
+        ARM
+//  516 Word16 D_UTIL_saturate(Word32 inp)
+//  517 {
+//  518   Word16 out;
+//  519   if ((inp < MAX_16) & (inp > MIN_16))
+D_UTIL_saturate:
+        MOV      R1,#+255
+        ORR      R1,R1,#0x7F00
+        CMP      R0,R1
+        BGE      ??D_UTIL_saturate_0
+        RSB      R2,R1,#+0
+        CMP      R0,R2
+        BGE      ??D_UTIL_saturate_1
+//  520   {
+//  521      out = (Word16)inp;
+//  522   }
+//  523   else
+//  524   {
+//  525      if (inp > 0)
+??D_UTIL_saturate_0:
+        CMP      R0,#+1
+//  526      {
+//  527         out = MAX_16;
+        MOVGE    R0,R1
+//  528      }
+//  529      else
+//  530      {
+//  531         out = MIN_16;
+        MVNLT    R0,R1
+//  532      }
+//  533   }
+//  534 
+//  535   return(out);
+??D_UTIL_saturate_1:
+        MOV      R0,R0, LSL #+16
+        MOV      R0,R0, ASR #+16
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock23
+//  536 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock24 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_signal_up_scale??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock24
+        REQUIRE D_UTIL_signal_up_scale
+//  537 
+//  538 /*
+//  539  * D_UTIL_signal_up_scale
+//  540  *
+//  541  * Parameters:
+//  542  *    x         I/O: signal to scale
+//  543  *    lg          I: size of x[]
+//  544  *    exp         I: exponent: x = round(x << exp)
+//  545  *
+//  546  * Function:
+//  547  *    Scale signal up to get maximum of dynamic.
+//  548  *
+//  549  * Returns:
+//  550  *    32 bit result
+//  551  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock25 Using cfiCommon1
+        CFI Function D_UTIL_signal_up_scale
+        ARM
+//  552 void D_UTIL_signal_up_scale(Word16 x[], Word16 lg, Word16 exp)
+//  553 {
+D_UTIL_signal_up_scale:
+        PUSH     {R4-R6}
+        CFI R6 Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+//  554     Word32 i, tmp;
+//  555 
+//  556     for (i = 0; i < lg; i++)
+        MOV      R3,#+0
+        CMP      R1,#+1
+        BLT      ??D_UTIL_signal_up_scale_0
+        MVN      R6,#+254
+        BIC      R6,R6,#0x7F00
+        B        ??D_UTIL_signal_up_scale_1
+//  557     {
+//  558        tmp = x[i] << exp;
+//  559        x[i] = D_UTIL_saturate(tmp);
+??D_UTIL_signal_up_scale_2:
+        STRH     R12,[R4, #+0]
+        ADD      R3,R3,#+1
+??D_UTIL_signal_up_scale_1:
+        CMP      R3,R1
+        BGE      ??D_UTIL_signal_up_scale_0
+        ADD      R4,R0,R3, LSL #+1
+        LDRSH    R5,[R4, #+0]
+        RSB      R12,R6,#+0
+        LSL      R5,R5,R2
+        CMP      R5,R12
+        BGE      ??D_UTIL_signal_up_scale_3
+        CMP      R5,R6
+        MOVGE    R12,R5
+        BGE      ??D_UTIL_signal_up_scale_2
+??D_UTIL_signal_up_scale_3:
+        CMP      R5,#+1
+        BICLT    R12,R6,#0x1
+        B        ??D_UTIL_signal_up_scale_2
+//  560     }
+//  561 
+//  562     return;
+??D_UTIL_signal_up_scale_0:
+        POP      {R4-R6}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock25
+//  563 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock26 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_signal_down_scale??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock26
+        REQUIRE D_UTIL_signal_down_scale
+//  564 
+//  565 
+//  566 /*
+//  567  * D_UTIL_signal_down_scale
+//  568  *
+//  569  * Parameters:
+//  570  *    x         I/O: signal to scale
+//  571  *    lg          I: size of x[]
+//  572  *    exp         I: exponent: x = round(x << exp)
+//  573  *
+//  574  * Function:
+//  575  *    Scale signal up to get maximum of dynamic.
+//  576  *
+//  577  * Returns:
+//  578  *    32 bit result
+//  579  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock27 Using cfiCommon1
+        CFI Function D_UTIL_signal_down_scale
+        ARM
+//  580 void D_UTIL_signal_down_scale(Word16 x[], Word16 lg, Word16 exp)
+//  581 {
+D_UTIL_signal_down_scale:
+        PUSH     {R4,R5}
+        CFI R5 Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+//  582    Word32 i, tmp;
+//  583 
+//  584    for(i = 0; i < lg; i++)
+        MOV      R3,#+0
+        CMP      R1,#+1
+        BLT      ??D_UTIL_signal_down_scale_0
+        MOV      R5,#+32768
+        B        ??D_UTIL_signal_down_scale_1
+//  585    {
+//  586       tmp = x[i] << 16;
+//  587       tmp = tmp >> exp;
+//  588       x[i] = (Word16)((tmp + 0x8000) >> 16);
+??D_UTIL_signal_down_scale_2:
+        ADD      R12,R0,R3, LSL #+1
+        LDRSH    R4,[R12, #+0]
+//  589    }
+        ADD      R3,R3,#+1
+        LSL      R4,R4,#+16
+        ADD      R4,R5,R4, ASR R2
+        ASR      R4,R4,#+16
+        STRH     R4,[R12, #+0]
+??D_UTIL_signal_down_scale_1:
+        CMP      R3,R1
+        BLT      ??D_UTIL_signal_down_scale_2
+//  590 
+//  591    return;
+??D_UTIL_signal_down_scale_0:
+        POP      {R4,R5}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock27
+//  592 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock28 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_deemph_32??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock28
+        REQUIRE D_UTIL_deemph_32
+//  593 
+//  594 
+//  595 /*
+//  596  * D_UTIL_deemph_32
+//  597  *
+//  598  * Parameters:
+//  599  *    x_hi           I: input signal (bit31..16)
+//  600  *    x_lo           I: input signal (bit15..4)
+//  601  *    y              O: output signal (x16)
+//  602  *    mu             I: (Q15) deemphasis factor
+//  603  *    L              I: vector size
+//  604  *    mem          I/O: memory (y[-1])
+//  605  *
+//  606  * Function:
+//  607  *    Filtering through 1/(1-mu z^-1)
+//  608  *
+//  609  * Returns:
+//  610  *    void
+//  611  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock29 Using cfiCommon1
+        CFI Function D_UTIL_deemph_32
+        ARM
+//  612 static void D_UTIL_deemph_32(Word16 x_hi[], Word16 x_lo[], Word16 y[],
+//  613                              Word16 mu, Word16 L, Word16 *mem)
+//  614 {
+D_UTIL_deemph_32:
+        PUSH     {R4-R11}
+        CFI R11 Frame(CFA, -4)
+        CFI R10 Frame(CFA, -8)
+        CFI R9 Frame(CFA, -12)
+        CFI R8 Frame(CFA, -16)
+        CFI R7 Frame(CFA, -20)
+        CFI R6 Frame(CFA, -24)
+        CFI R5 Frame(CFA, -28)
+        CFI R4 Frame(CFA, -32)
+        CFI CFA R13+32
+//  615    Word32 i, fac;
+//  616    Word32 tmp;
+//  617 
+//  618    fac = mu >> 1;   /* Q15 --> Q14 */
+//  619 
+//  620    /* L_tmp = hi<<16 + lo<<4 */
+//  621    tmp = (x_hi[0] << 12) + x_lo[0];
+//  622    tmp = (tmp << 6) + (*mem * fac);
+//  623    tmp = (tmp + 0x2000) >> 14;
+//  624    y[0] = D_UTIL_saturate(tmp);
+        LDRSH    R5,[R0, #+0]
+        LDRSH    R6,[R1, #+0]
+        LDR      R12,[SP, #+36]
+        LDRSH    R4,[SP, #+32]
+        ADD      R5,R6,R5, LSL #+12
+        LDRSH    R6,[R12, #+0]
+        ASR      R3,R3,#+1
+        MUL      R6,R3,R6
+        ADD      R5,R6,R5, LSL #+6
+        ADD      R5,R5,#+8192
+        ASR      R7,R5,#+14
+        MVN      R5,#+254
+        BIC      R5,R5,#0x7F00
+        RSB      R6,R5,#+0
+        CMP      R7,R6
+        BGE      ??D_UTIL_deemph_32_0
+        CMP      R7,R5
+        BGE      ??D_UTIL_deemph_32_1
+??D_UTIL_deemph_32_0:
+        CMP      R7,#+1
+        MOVGE    R7,R6
+        BICLT    R7,R5,#0x1
+??D_UTIL_deemph_32_1:
+        STRH     R7,[R2, #+0]
+//  625 
+//  626    for(i = 1; i < L; i++)
+        MOV      R8,#+1
+        MOV      R7,R4
+        CMP      R4,#+2
+        BGE      ??D_UTIL_deemph_32_2
+//  627    {
+//  628       tmp = (x_hi[i] << 12) + x_lo[i];
+//  629       tmp = (tmp << 6) + (y[i - 1] * fac);
+//  630       tmp = (tmp + 0x2000) >> 14;
+//  631       y[i] = D_UTIL_saturate(tmp);
+//  632    }
+//  633 
+//  634    *mem = y[L - 1];
+??D_UTIL_deemph_32_3:
+        ADD      R0,R2,R7, LSL #+1
+        LDRSH    R0,[R0, #-2]
+        STRH     R0,[R12, #+0]
+//  635 
+//  636    return;
+        POP      {R4-R11}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        CFI R4 Frame(CFA, -32)
+        CFI R5 Frame(CFA, -28)
+        CFI R6 Frame(CFA, -24)
+        CFI R7 Frame(CFA, -20)
+        CFI R8 Frame(CFA, -16)
+        CFI R9 Frame(CFA, -12)
+        CFI R10 Frame(CFA, -8)
+        CFI R11 Frame(CFA, -4)
+        CFI CFA R13+32
+??D_UTIL_deemph_32_4:
+        STRH     R9,[R4, #+0]
+        ADD      R8,R8,#+1
+??D_UTIL_deemph_32_2:
+        CMP      R8,R7
+        BGE      ??D_UTIL_deemph_32_3
+        ADD      R4,R2,R8, LSL #+1
+        LDRSH    R9,[R4, #-2]
+        ADD      R10,R0,R8, LSL #+1
+        LDRSH    R10,[R10, #+0]
+        ADD      R11,R1,R8, LSL #+1
+        LDRSH    R11,[R11, #+0]
+        MUL      R9,R3,R9
+        ADD      R10,R11,R10, LSL #+12
+        ADD      R9,R9,R10, LSL #+6
+        ADD      R9,R9,#+8192
+        ASR      R9,R9,#+14
+        CMP      R9,R6
+        BGE      ??D_UTIL_deemph_32_5
+        CMP      R9,R5
+        BGE      ??D_UTIL_deemph_32_4
+??D_UTIL_deemph_32_5:
+        CMP      R9,#+1
+        BICLT    R9,R5,#0x1
+        MOVGE    R9,R6
+        B        ??D_UTIL_deemph_32_4
+        CFI EndBlock cfiBlock29
+//  637 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock30 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_synthesis_32??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock30
+        REQUIRE D_UTIL_synthesis_32
+//  638 
+//  639 
+//  640 /*
+//  641  * D_UTIL_synthesis_32
+//  642  *
+//  643  * Parameters:
+//  644  *    a              I: LP filter coefficients
+//  645  *    m              I: order of LP filter
+//  646  *    exc            I: excitation
+//  647  *    Qnew           I: exc scaling = 0(min) to 8(max)
+//  648  *    sig_hi         O: synthesis high
+//  649  *    sig_lo         O: synthesis low
+//  650  *    lg             I: size of filtering
+//  651  *
+//  652  * Function:
+//  653  *    Perform the synthesis filtering 1/A(z).
+//  654  *
+//  655  * Returns:
+//  656  *    void
+//  657  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock31 Using cfiCommon1
+        CFI Function D_UTIL_synthesis_32
+        ARM
+//  658 static void D_UTIL_synthesis_32(Word16 a[], Word16 m, Word16 exc[],
+//  659                                 Word16 Qnew, Word16 sig_hi[], Word16 sig_lo[],
+//  660                                 Word16 lg)
+//  661 {
+D_UTIL_synthesis_32:
+        PUSH     {R2,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+40
+//  662    Word32 i, j, a0, s;
+//  663    Word32 tmp, tmp2;
+//  664 
+//  665    /* See if a[0] is scaled */
+//  666    s = D_UTIL_norm_s((Word16)a[0]) - 2;
+        LDRSH    R5,[R0, #+0]
+        LDR      R12,[SP, #+40]
+        LDR      R4,[SP, #+44]
+        LDRSH    R2,[SP, #+48]
+        MOV      R6,#+0
+        CMP      R5,#+0
+        BEQ      ??D_UTIL_synthesis_32_0
+        MVN      R7,R6
+        CMP      R5,R7
+        MOVEQ    R6,#+15
+        BEQ      ??D_UTIL_synthesis_32_0
+        CMP      R5,#+0
+        MVNMI    R5,R5
+        MOV      R5,R5, LSL #+16
+        MOV      R5,R5, ASR #+16
+        CMP      R5,#+16384
+        BGE      ??D_UTIL_synthesis_32_0
+??D_UTIL_synthesis_32_1:
+        LSL      R5,R5,#+17
+        ADD      R6,R6,#+1
+        ASR      R5,R5,#+16
+        CMP      R5,#+16384
+        BLT      ??D_UTIL_synthesis_32_1
+??D_UTIL_synthesis_32_0:
+        MOV      R6,R6, LSL #+16
+        MOV      R6,R6, ASR #+16
+        SUB      R5,R6,#+2
+//  667 
+//  668    a0 = a[0] >> (4 + Qnew);   /* input / 16 and >>Qnew */
+        LDRSH    R6,[R0, #+0]
+        ADD      R3,R3,#+4
+//  669 
+//  670    /* Do the filtering. */
+//  671    for(i = 0; i < lg; i++)
+        CMP      R2,#+1
+        ASR      R3,R6,R3
+        MOV      R6,#+0
+        POPLT    {R0,R4-R11,PC}
+        B        ??D_UTIL_synthesis_32_2
+//  672    {
+//  673       tmp = 0;
+//  674 
+//  675       for(j = 1; j <= m; j++)
+//  676       {
+//  677          tmp -= sig_lo[i - j] * a[j];
+//  678       }
+//  679 
+//  680       tmp = tmp >> (15 - 4);   /* -4 : sig_lo[i] << 4 */
+//  681 
+//  682       tmp2 = exc[i] * a0;
+//  683 
+//  684       for(j = 1; j <= m; j++)
+//  685       {
+//  686          tmp2 -= sig_hi[i - j] * a[j];
+??D_UTIL_synthesis_32_3:
+        SUB      R11,R6,R9
+        ADD      R11,R12,R11, LSL #+1
+        LDRSH    R11,[R11, #+0]
+        ADD      LR,R0,R9, LSL #+1
+        LDRSH    LR,[LR, #+0]
+//  687       }
+        ADD      R9,R9,#+1
+        MUL      R11,LR,R11
+        SUB      R8,R8,R11
+??D_UTIL_synthesis_32_4:
+        CMP      R1,R9
+        BGE      ??D_UTIL_synthesis_32_3
+//  688 
+//  689       tmp += tmp2 << 1;
+//  690       tmp <<= s;
+??D_UTIL_synthesis_32_5:
+        ADD      R7,R10,R8, LSL #+1
+        LSL      R7,R7,R5
+//  691 
+//  692       /* sig_hi = bit16 to bit31 of synthesis */
+//  693       sig_hi[i] = (Word16)(tmp >> 13);
+        ADD      R8,R12,R6, LSL #+1
+        ASR      R9,R7,#+13
+        STRH     R9,[R8, #+0]
+//  694 
+//  695       /* sig_lo = bit4 to bit15 of synthesis */
+//  696       sig_lo[i] = (Word16)((tmp  >> 1) - (sig_hi[i] * 4096));
+        LDRSH    R8,[R8, #+0]
+        ADD      R9,R4,R6, LSL #+1
+        ASR      R7,R7,#+1
+        SUB      R7,R7,R8, LSL #+12
+        STRH     R7,[R9, #+0]
+        ADD      R6,R6,#+1
+??D_UTIL_synthesis_32_2:
+        CMP      R6,R2
+        POPGE    {R0,R4-R11,PC}
+        MOV      R8,#+0
+        MOV      R9,#+1
+        CMP      R1,#+1
+        BGE      ??D_UTIL_synthesis_32_6
+        B        ??D_UTIL_synthesis_32_7
+??D_UTIL_synthesis_32_8:
+        SUB      R10,R6,R9
+        ADD      R10,R4,R10, LSL #+1
+        LDRSH    R10,[R10, #+0]
+        ADD      R11,R0,R9, LSL #+1
+        LDRSH    R11,[R11, #+0]
+        ADD      R9,R9,#+1
+        MUL      R10,R11,R10
+        SUB      R8,R8,R10
+??D_UTIL_synthesis_32_6:
+        CMP      R1,R9
+        BGE      ??D_UTIL_synthesis_32_8
+??D_UTIL_synthesis_32_7:
+        ASR      R10,R8,#+11
+        LDR      R8,[SP, #+0]
+        MOV      R9,#+1
+        ADD      R8,R8,R6, LSL #+1
+        LDRSH    R8,[R8, #+0]
+        CMP      R1,#+1
+        MUL      R8,R3,R8
+        BGE      ??D_UTIL_synthesis_32_4
+        B        ??D_UTIL_synthesis_32_5
+        CFI EndBlock cfiBlock31
+//  697    }
+//  698 
+//  699    return;
+//  700 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock32 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_hp50_12k8??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock32
+        REQUIRE D_UTIL_hp50_12k8
+//  701 
+//  702 
+//  703 /*
+//  704  * D_UTIL_hp50_12k8
+//  705  *
+//  706  * Parameters:
+//  707  *    signal       I/O: signal
+//  708  *    lg             I: lenght of signal
+//  709  *    mem          I/O: filter memory [6]
+//  710  *
+//  711  * Function:
+//  712  *    2nd order high pass filter with cut off frequency at 50 Hz.
+//  713  *
+//  714  *    Algorithm:
+//  715  *
+//  716  *    y[i] = b[0]*x[i] + b[1]*x[i-1] + b[2]*x[i-2]
+//  717  *                     + a[1]*y[i-1] + a[2]*y[i-2];
+//  718  *
+//  719  *    b[3] = {0.989501953f, -1.979003906f, 0.989501953f};
+//  720  *    a[3] = {1.000000000F,  1.978881836f,-0.966308594f};
+//  721  *
+//  722  *
+//  723  * Returns:
+//  724  *    void
+//  725  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock33 Using cfiCommon1
+        CFI Function D_UTIL_hp50_12k8
+        ARM
+//  726 static void D_UTIL_hp50_12k8(Word16 signal[], Word16 lg, Word16 mem[])
+//  727 {
+D_UTIL_hp50_12k8:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+//  728    Word32 i, L_tmp;
+//  729    Word16 y2_hi, y2_lo, y1_hi, y1_lo, x0, x1, x2;
+//  730 
+//  731    y2_hi = mem[0];
+//  732    y2_lo = mem[1];
+        LDRSH    R12,[R2, #+2]
+//  733    y1_hi = mem[2];
+        LDRSH    R9,[R2, #+4]
+//  734    y1_lo = mem[3];
+        LDRSH    R10,[R2, #+6]
+//  735    x0 = mem[4];
+        LDRSH    R8,[R2, #+8]
+//  736    x1 = mem[5];
+        LDRSH    R6,[R2, #+10]
+        MOV      R3,R0
+        MOV      R4,R1
+        LDRSH    R1,[R2, #+0]
+//  737 
+//  738    for(i = 0; i < lg; i++)
+        MOV      R5,#+0
+        CMP      R4,#+1
+        BLT      ??D_UTIL_hp50_12k8_0
+        B        ??D_UTIL_hp50_12k8_1
+//  739    {
+//  740       x2 = x1;
+//  741       x1 = x0;
+//  742       x0 = signal[i];
+//  743 
+//  744       /* y[i] = b[0]*x[i] + b[1]*x[i-1] + b140[2]*x[i-2]  */
+//  745       /* + a[1]*y[i-1] + a[2] * y[i-2];  */
+//  746       L_tmp = 8192L;   /* rounding to maximise precision */
+//  747       L_tmp = L_tmp + (y1_lo * 16211);
+//  748       L_tmp = L_tmp + (y2_lo * (-8021));
+//  749       L_tmp = L_tmp >> 14;
+//  750       L_tmp = L_tmp + (y1_hi * 32422);
+//  751       L_tmp = L_tmp + (y2_hi * (-16042));
+//  752       L_tmp = L_tmp + (x0 * 8106);
+//  753       L_tmp = L_tmp + (x1 * (-16212));
+//  754       L_tmp = L_tmp + (x2 * 8106);
+//  755       L_tmp = L_tmp << 2;  /* coeff Q11 --> Q14 */
+//  756       y2_hi = y1_hi;
+//  757       y2_lo = y1_lo;
+//  758       D_UTIL_l_extract(L_tmp, &y1_hi, &y1_lo);
+//  759       L_tmp = (L_tmp + 0x4000) >> 15;   /* coeff Q14 --> Q15 with saturation */
+//  760       signal[i] = D_UTIL_saturate(L_tmp);
+??D_UTIL_hp50_12k8_2:
+        STRH     R0,[R7, #+0]
+        ADD      R5,R5,#+1
+??D_UTIL_hp50_12k8_1:
+        CMP      R5,R4
+        BGE      ??D_UTIL_hp50_12k8_0
+        MOV      R0,R6
+        MOV      R6,R8
+        ADD      R7,R3,R5, LSL #+1
+        LDRSH    R8,[R7, #+0]
+        MVN      R11,#+84
+        BIC      R11,R11,#0x1F00
+        PUSH     {R11}
+        CFI CFA R13+40
+        MOV      R10,R10, LSL #+16
+        MOV      R10,R10, ASR #+16
+        MOV      R11,#+83
+        ORR      R11,R11,#0x3F00
+        MUL      LR,R11,R10
+        POP      {R11}
+        CFI CFA R13+36
+        MLA      R12,R11,R12,LR
+        ADD      R11,R12,#+8192
+        MOV      R12,#+166
+        ORR      R12,R12,#0x7E00
+        MUL      LR,R12,R9
+        MVN      R12,#+169
+        ADD      R11,LR,R11, ASR #+14
+        BIC      R12,R12,#0x3E00
+        MLA      R1,R12,R1,R11
+        MOV      R11,#+170
+        ORR      R11,R11,#0x1F00
+        MLA      R1,R11,R8,R1
+        SUB      R11,R12,#+170
+        MLA      R1,R11,R6,R1
+        MOV      R11,#+170
+        ORR      R11,R11,#0x1F00
+        MLA      R0,R11,R0,R1
+        MOV      R1,R9
+        LSL      R0,R0,#+2
+        MOV      R12,R10
+        ASR      R9,R0,#+16
+        ASR      R10,R0,#+1
+        SUB      R10,R10,R9, LSL #+15
+        ADD      R0,R0,#+16384
+        ASR      R11,R0,#+15
+        MOV      R0,#+255
+        ORR      R0,R0,#0x7F00
+        CMP      R11,R0
+        BGE      ??D_UTIL_hp50_12k8_3
+        RSB      LR,R0,#+0
+        CMP      R11,LR
+        MOVGE    R0,R11
+        BGE      ??D_UTIL_hp50_12k8_2
+??D_UTIL_hp50_12k8_3:
+        CMP      R11,#+1
+        MVNLT    R0,R0
+        B        ??D_UTIL_hp50_12k8_2
+//  761 
+//  762    }
+//  763    mem[0] = y2_hi;
+??D_UTIL_hp50_12k8_0:
+        STRH     R1,[R2, #+0]
+//  764    mem[1] = y2_lo;
+        STRH     R12,[R2, #+2]
+//  765    mem[2] = y1_hi;
+        STRH     R9,[R2, #+4]
+//  766    mem[3] = y1_lo;
+        STRH     R10,[R2, #+6]
+//  767    mem[4] = x0;
+        STRH     R8,[R2, #+8]
+//  768    mem[5] = x1;
+        STRH     R6,[R2, #+10]
+//  769 
+//  770    return;
+        POP      {R4-R11,PC}      ;; return
+        CFI EndBlock cfiBlock33
+//  771 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock34 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_interpol??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock34
+        REQUIRE D_UTIL_interpol
+//  772 
+//  773 
+//  774 /*
+//  775  * D_UTIL_interpol
+//  776  *
+//  777  * Parameters:
+//  778  *    x           I: input vector
+//  779  *    fir         I: filter coefficient
+//  780  *    frac        I: fraction (0..resol)
+//  781  *    up_samp     I: resolution
+//  782  *    nb_coef     I: number of coefficients
+//  783  *
+//  784  * Function:
+//  785  *    Fractional interpolation of signal at position (frac/up_samp)
+//  786  *
+//  787  * Returns:
+//  788  *    result of interpolation
+//  789  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock35 Using cfiCommon1
+        CFI Function D_UTIL_interpol
+        ARM
+//  790 Word16 D_UTIL_interpol(Word16 *x, Word16 const *fir, Word16 frac,
+//  791                        Word16 resol, Word16 nb_coef)
+//  792 {
+D_UTIL_interpol:
+        PUSH     {R4-R7}
+        CFI R7 Frame(CFA, -4)
+        CFI R6 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -12)
+        CFI R4 Frame(CFA, -16)
+        CFI CFA R13+16
+        LDRSH    R12,[SP, #+16]
+//  793    Word32 i, k;
+//  794    Word32 sum;
+//  795 
+//  796    x = x - nb_coef + 1;
+//  797    sum = 0L;
+//  798 
+//  799    for(i = 0, k = ((resol - 1) - frac); i < 2 * nb_coef; i++,
+        MOV      R5,#+0
+        SUB      R6,R3,#+1
+        LSL      R12,R12,#+1
+        MOV      R4,R12
+        RSB      R4,R4,#+0
+        ADD      R0,R4,R0
+        ADD      R4,R0,#+2
+        MOV      R0,#+0
+        SUB      R2,R6,R2
+        CMP      R12,#+1
+        BGE      ??D_UTIL_interpol_0
+        B        ??D_UTIL_interpol_1
+//  800       k = (Word16)(k + resol))
+//  801    {
+//  802       sum = sum + (x[i] * fir[k]);
+??D_UTIL_interpol_2:
+        ADD      R6,R4,R5, LSL #+1
+        LDRSH    R6,[R6, #+0]
+        ADD      R7,R1,R2, LSL #+1
+        LDRSH    R7,[R7, #+0]
+//  803    }
+        ADD      R5,R5,#+1
+        ADD      R2,R3,R2
+        MLA      R0,R7,R6,R0
+        MOV      R2,R2, LSL #+16
+        MOV      R2,R2, ASR #+16
+??D_UTIL_interpol_0:
+        CMP      R5,R12
+        BLT      ??D_UTIL_interpol_2
+//  804 
+//  805    if((sum < 536846336) & (sum > -536879104))
+        LDR      R1,??DataTable4  ;; 0x1fffa000
+        CMP      R0,R1
+        BGE      ??D_UTIL_interpol_3
+        LDR      R1,??DataTable5  ;; 0xffffffffdfffe001
+        CMP      R0,R1
+        BLT      ??D_UTIL_interpol_4
+//  806    {
+//  807       sum = (sum + 0x2000) >> 14;
+??D_UTIL_interpol_1:
+        ADD      R0,R0,#+8192
+        ASR      R0,R0,#+14
+        B        ??D_UTIL_interpol_5
+//  808    }
+//  809    else if(sum > 536846336)
+??D_UTIL_interpol_3:
+        ORR      R1,R1,#0x1
+        CMP      R0,R1
+//  810    {
+//  811       sum = 32767;
+        MOVGE    R0,#+255
+        ORRGE    R0,R0,#0x7F00
+        BGE      ??D_UTIL_interpol_5
+//  812    }
+//  813    else
+//  814    {
+//  815       sum = -32768;
+??D_UTIL_interpol_4:
+        MVN      R0,#+255
+        BIC      R0,R0,#0x7F00
+//  816    }
+//  817 
+//  818    return((Word16)sum);   /* saturation can occur here */
+??D_UTIL_interpol_5:
+        POP      {R4-R7}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI CFA R13+0
+        MOV      R0,R0, LSL #+16
+        MOV      R0,R0, ASR #+16
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock35
+//  819 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock36 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_oversamp_16k??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock36
+        REQUIRE D_UTIL_oversamp_16k
+//  820 
+//  821 
+//  822 /*
+//  823  * D_UTIL_up_samp
+//  824  *
+//  825  * Parameters:
+//  826  *    res_d          I: signal to upsampling
+//  827  *    res_u          O: upsampled output
+//  828  *    L_frame        I: length of output
+//  829  *
+//  830  * Function:
+//  831  *    Upsampling
+//  832  *
+//  833  * Returns:
+//  834  *    void
+//  835  */
+//  836 static void D_UTIL_up_samp(Word16 *sig_d, Word16 *sig_u, Word16 L_frame)
+//  837 {
+//  838    Word32 pos, i, j;
+//  839    Word16 frac;
+//  840 
+//  841    pos = 0;   /* position with 1/5 resolution */
+//  842 
+//  843    for(j = 0; j < L_frame; j++)
+//  844    {
+//  845       i = (pos * INV_FAC5) >> 15;   /* integer part = pos * 1/5 */
+//  846       frac = (Word16)(pos - ((i << 2) + i));   /* frac = pos - (pos/5)*5   */
+//  847       sig_u[j] = D_UTIL_interpol(&sig_d[i], D_ROM_fir_up, frac, FAC5, NB_COEF_UP);
+//  848       pos = pos + FAC4;   /* position + 4/5 */
+//  849    }
+//  850 
+//  851    return;
+//  852 }
+//  853 
+//  854 
+//  855 /*
+//  856  * D_UTIL_oversamp_16k
+//  857  *
+//  858  * Parameters:
+//  859  *    sig12k8        I: signal to oversampling
+//  860  *    lg             I: length of input
+//  861  *    sig16k         O: oversampled signal
+//  862  *    mem          I/O: memory (2*12)
+//  863  *
+//  864  * Function:
+//  865  *    Oversampling from 12.8kHz to 16kHz
+//  866  *
+//  867  * Returns:
+//  868  *    void
+//  869  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock37 Using cfiCommon1
+        CFI Function D_UTIL_oversamp_16k
+        ARM
+//  870 static void D_UTIL_oversamp_16k(Word16 sig12k8[], Word16 lg, Word16 sig16k[],
+//  871                                 Word16 mem[])
+//  872 {
+D_UTIL_oversamp_16k:
+        PUSH     {R4-R9,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R9 Frame(CFA, -8)
+        CFI R8 Frame(CFA, -12)
+        CFI R7 Frame(CFA, -16)
+        CFI R6 Frame(CFA, -20)
+        CFI R5 Frame(CFA, -24)
+        CFI R4 Frame(CFA, -28)
+        CFI CFA R13+28
+        SUB      SP,SP,#+176
+        CFI CFA R13+204
+        MOV      R7,R0
+        MOV      R4,R1
+        MOV      R5,R2
+        MOV      R6,R3
+//  873    Word16 lg_up;
+//  874    Word16 signal[L_SUBFR + (2 * NB_COEF_UP)];
+//  875 
+//  876    memcpy(signal, mem, (2 * NB_COEF_UP) * sizeof(Word16));
+        MOV      R2,#+48
+        MOV      R1,R6
+        MOV      R0,SP
+        SWI      +286
+//  877    memcpy(signal + (2 * NB_COEF_UP), sig12k8, lg * sizeof(Word16));
+        LSL      R2,R4,#+1
+        MOV      R1,R7
+        ADD      R0,SP,#+48
+        SWI      +286
+//  878    lg_up = (Word16)(((lg * UP_FAC) >> 15) << 1);
+//  879    D_UTIL_up_samp(signal + NB_COEF_UP, sig16k, lg_up);
+        MOV      R0,#+20480
+        MUL      R1,R0,R4
+        MOV      R2,#+0
+        ASR      R0,R1,#+15
+        LSL      R0,R0,#+17
+        MOV      R1,#+0
+        ASR      R0,R0,#+16
+        CMP      R0,#+1
+        BGE      ??D_UTIL_oversamp_16k_0
+//  880    memcpy(mem, signal + lg, (2 * NB_COEF_UP) * sizeof(Word16));
+??D_UTIL_oversamp_16k_1:
+        MOV      R2,#+48
+        MOV      R0,SP
+        ADD      R1,R0,R4, LSL #+1
+        MOV      R0,R6
+        SWI      +286
+//  881 
+//  882    return;
+        ADD      SP,SP,#+176
+        CFI CFA R13+28
+        POP      {R4-R9,PC}       ;; return
+        CFI CFA R13+204
+??D_UTIL_oversamp_16k_2:
+        MVN      R3,#+255
+        BIC      R3,R3,#0x7F00
+??D_UTIL_oversamp_16k_3:
+        ADD      R7,R5,R2, LSL #+1
+        STRH     R3,[R7, #+0]
+        ADD      R1,R1,#+4
+        ADD      R2,R2,#+1
+??D_UTIL_oversamp_16k_0:
+        CMP      R2,R0
+        BGE      ??D_UTIL_oversamp_16k_1
+        MOV      R3,#+154
+        ORR      R3,R3,#0x1900
+        MUL      R7,R3,R1
+        MOV      R3,SP
+        ASR      R7,R7,#+15
+        ADD      R3,R3,R7, LSL #+1
+        MVN      R9,#+4
+        SMLABB   R7,R7,R9,R1
+        ADD      R3,R3,#+2
+        MOV      R12,#+0
+        MOV      LR,#+0
+        MOV      R7,R7, LSL #+16
+        MOV      R7,R7, ASR #+16
+        RSB      R7,R7,#+4
+??D_UTIL_oversamp_16k_4:
+        LDR      R9,??D_UTIL_oversamp_16k_5  ;; D_ROM_fir_up
+        ADD      R8,R3,LR, LSL #+1
+        LDRSH    R8,[R8, #+0]
+        ADD      R9,R9,R7, LSL #+1
+        LDRSH    R9,[R9, #+0]
+        ADD      LR,LR,#+1
+        ADD      R7,R7,#+5
+        MLA      R12,R9,R8,R12
+        MOV      R7,R7, LSL #+16
+        MOV      R7,R7, ASR #+16
+        CMP      LR,#+24
+        BLT      ??D_UTIL_oversamp_16k_4
+        LDR      R3,??DataTable4  ;; 0x1fffa000
+        CMP      R12,R3
+        BGE      ??D_UTIL_oversamp_16k_6
+        LDR      R3,??DataTable5  ;; 0xffffffffdfffe001
+        CMP      R12,R3
+        BLT      ??D_UTIL_oversamp_16k_2
+        ADD      R3,R12,#+8192
+        ASR      R3,R3,#+14
+        B        ??D_UTIL_oversamp_16k_3
+??D_UTIL_oversamp_16k_6:
+        ORR      R3,R3,#0x1
+        CMP      R12,R3
+        BLT      ??D_UTIL_oversamp_16k_2
+        MOV      R3,#+255
+        ORR      R3,R3,#0x7F00
+        B        ??D_UTIL_oversamp_16k_3
+        DATA
+??D_UTIL_oversamp_16k_5:
+        DC32     D_ROM_fir_up
+        CFI EndBlock cfiBlock37
+//  883 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable4:
+        DC32     0x1fffa000
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable5:
+        DC32     0xffffffffdfffe001
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock38 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_hp400_12k8??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock38
+        REQUIRE D_UTIL_hp400_12k8
+//  884 
+//  885 
+//  886 /*
+//  887  * D_UTIL_hp400_12k8
+//  888  *
+//  889  * Parameters:
+//  890  *    signal       I/O: signal
+//  891  *    lg             I: lenght of signal
+//  892  *    mem          I/O: filter memory [6]
+//  893  *
+//  894  * Function:
+//  895  *    2nd order high pass filter with cut off frequency at 400 Hz.
+//  896  *
+//  897  *    Algorithm:
+//  898  *
+//  899  *    y[i] = b[0]*x[i] + b[1]*x[i-1] + b[2]*x[i-2]
+//  900  *                     + a[1]*y[i-1] + a[2]*y[i-2];
+//  901  *
+//  902  *    b[3] = {0.893554687, -1.787109375,  0.893554687};
+//  903  *    a[3] = {1.000000000,  1.787109375, -0.864257812};
+//  904  *
+//  905  *
+//  906  * Returns:
+//  907  *    void
+//  908  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock39 Using cfiCommon1
+        CFI Function D_UTIL_hp400_12k8
+        ARM
+//  909 void D_UTIL_hp400_12k8(Word16 signal[], Word16 lg, Word16 mem[])
+//  910 {
+D_UTIL_hp400_12k8:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+//  911 
+//  912    Word32 i, L_tmp;
+//  913    Word16 y2_hi, y2_lo, y1_hi, y1_lo, x0, x1, x2;
+//  914 
+//  915    y2_hi = mem[0];
+//  916    y2_lo = mem[1];
+        LDRSH    R12,[R2, #+2]
+//  917    y1_hi = mem[2];
+        LDRSH    R9,[R2, #+4]
+//  918    y1_lo = mem[3];
+        LDRSH    R10,[R2, #+6]
+//  919    x0 = mem[4];
+        LDRSH    R8,[R2, #+8]
+//  920    x1 = mem[5];
+        LDRSH    R6,[R2, #+10]
+        MOV      R3,R0
+        MOV      R5,R1
+        LDRSH    R1,[R2, #+0]
+//  921 
+//  922    for(i = 0; i < lg; i++)
+        MOV      R4,#+0
+        CMP      R5,#+1
+        BLT      ??D_UTIL_hp400_12k8_0
+        B        ??D_UTIL_hp400_12k8_1
+//  923    {
+//  924       x2 = x1;
+??D_UTIL_hp400_12k8_2:
+        MOV      R0,R6
+//  925       x1 = x0;
+        MOV      R6,R8
+//  926       x0 = signal[i];
+        ADD      R7,R3,R4, LSL #+1
+        LDRSH    R8,[R7, #+0]
+//  927 
+//  928       /* y[i] = b[0]*x[i] + b[1]*x[i-1] + b140[2]*x[i-2]  */
+//  929       /* + a[1]*y[i-1] + a[2] * y[i-2];  */
+//  930       L_tmp = 8192L + (y1_lo * 29280);
+//  931       L_tmp = L_tmp + (y2_lo * (-14160));
+//  932       L_tmp = (L_tmp >> 14);
+//  933       L_tmp = L_tmp + (y1_hi * 58560);
+//  934       L_tmp = L_tmp + (y2_hi * (-28320));
+//  935       L_tmp = L_tmp + (x0 * 1830);
+//  936       L_tmp = L_tmp + (x1 * (-3660));
+//  937       L_tmp = L_tmp + (x2 * 1830);
+//  938       L_tmp = (L_tmp << 1);   /* coeff Q12 --> Q13 */
+        MVN      R11,#+79
+        BIC      R11,R11,#0x3700
+        PUSH     {R11}
+        CFI CFA R13+40
+        MOV      R10,R10, LSL #+16
+        MOV      R10,R10, ASR #+16
+//  939       y2_hi = y1_hi;
+//  940       y2_lo = y1_lo;
+//  941       D_UTIL_l_extract(L_tmp, &y1_hi, &y1_lo);
+//  942 
+//  943       /* signal is divided by 16 to avoid overflow in energy computation */
+//  944       signal[i] = (Word16)((L_tmp + 0x8000) >> 16);
+//  945    }
+        ADD      R4,R4,#+1
+        MOV      R11,#+96
+        ORR      R11,R11,#0x7200
+        MUL      LR,R11,R10
+        POP      {R11}
+        CFI CFA R13+36
+        MLA      R12,R11,R12,LR
+        ADD      R11,R12,#+8192
+        MOV      R12,#+192
+        ORR      R12,R12,#0xE400
+        MUL      LR,R12,R9
+        MVN      R12,#+159
+        ADD      R11,LR,R11, ASR #+14
+        BIC      R12,R12,#0x6E00
+        MLA      R1,R12,R1,R11
+        MOV      R11,#+38
+        ORR      R11,R11,#0x700
+        MLA      R1,R11,R8,R1
+        MVN      R11,#+75
+        BIC      R11,R11,#0xE00
+        MLA      R1,R11,R6,R1
+        MOV      R11,#+38
+        ORR      R11,R11,#0x700
+        MLA      R0,R11,R0,R1
+        MOV      R1,R9
+        LSL      R0,R0,#+1
+        MOV      R12,R10
+        ASR      R9,R0,#+16
+        ASR      R10,R0,#+1
+        SUB      R10,R10,R9, LSL #+15
+        ADD      R0,R0,#+32768
+        ASR      R0,R0,#+16
+        STRH     R0,[R7, #+0]
+??D_UTIL_hp400_12k8_1:
+        CMP      R4,R5
+        BLT      ??D_UTIL_hp400_12k8_2
+//  946    mem[0] = y2_hi;
+??D_UTIL_hp400_12k8_0:
+        STRH     R1,[R2, #+0]
+//  947    mem[1] = y2_lo;
+        STRH     R12,[R2, #+2]
+//  948    mem[2] = y1_hi;
+        STRH     R9,[R2, #+4]
+//  949    mem[3] = y1_lo;
+        STRH     R10,[R2, #+6]
+//  950    mem[4] = x0;
+        STRH     R8,[R2, #+8]
+//  951    mem[5] = x1;
+        STRH     R6,[R2, #+10]
+//  952 
+//  953    return;
+        POP      {R4-R11,PC}      ;; return
+        CFI EndBlock cfiBlock39
+//  954 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock40 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_synthesis??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock40
+        REQUIRE D_UTIL_synthesis
+//  955 
+//  956 
+//  957 /*
+//  958  * D_UTIL_synthesis
+//  959  *
+//  960  * Parameters:
+//  961  *    a              I: LP filter coefficients
+//  962  *    m              I: order of LP filter
+//  963  *    x              I: input signal
+//  964  *    y              O: output signal
+//  965  *    lg             I: size of filtering
+//  966  *    mem          I/O: initial filter states
+//  967  *    update_m       I: update memory flag
+//  968  *
+//  969  * Function:
+//  970  *    Perform the synthesis filtering 1/A(z).
+//  971  *
+//  972  * Returns:
+//  973  *    void
+//  974  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock41 Using cfiCommon1
+        CFI Function D_UTIL_synthesis
+        ARM
+//  975 static void D_UTIL_synthesis(Word16 a[], Word16 m, Word16 x[], Word16 y[],
+//  976                              Word16 lg, Word16 mem[], Word16 update)
+//  977 {
+D_UTIL_synthesis:
+        PUSH     {R2-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+44
+        SUB      SP,SP,#+204
+        CFI CFA R13+248
+        MOV      R4,R0
+        MOV      R5,R1
+        LDRSH    R6,[SP, #+248]
+        LDR      R7,[SP, #+252]
+//  978    Word32 i, j, tmp, s;
+//  979    Word16 y_buf[L_SUBFR16k + M16k], a0;
+//  980    Word16 *yy;
+//  981 
+//  982    yy = &y_buf[m];
+        ADD      R0,SP,#+4
+        ADD      R10,R0,R5, LSL #+1
+//  983 
+//  984    /* See if a[0] is scaled */
+//  985    s = D_UTIL_norm_s(a[0]) - 2;
+        LDRSH    R0,[R4, #+0]
+        ADD      R8,SP,#+256
+        LDRSH    R8,[R8, #+0]
+        MOV      R1,#+0
+        CMP      R0,#+0
+        BEQ      ??D_UTIL_synthesis_0
+        MVN      R2,R1
+        CMP      R0,R2
+        MOVEQ    R1,#+15
+        BEQ      ??D_UTIL_synthesis_0
+        CMP      R0,#+0
+        MVNMI    R0,R0
+        MOV      R0,R0, LSL #+16
+        MOV      R0,R0, ASR #+16
+        CMP      R0,#+16384
+        BGE      ??D_UTIL_synthesis_0
+??D_UTIL_synthesis_1:
+        LSL      R0,R0,#+17
+        ADD      R1,R1,#+1
+        ASR      R0,R0,#+16
+        CMP      R0,#+16384
+        BLT      ??D_UTIL_synthesis_1
+??D_UTIL_synthesis_0:
+        MOV      R1,R1, LSL #+16
+        MOV      R1,R1, ASR #+16
+        SUB      R1,R1,#+2
+        STR      R1,[SP, #+0]
+//  986    /* copy initial filter states into synthesis buffer */
+//  987    memcpy(y_buf, mem, m * sizeof(Word16));
+        LSL      R11,R5,#+1
+        MOV      R2,R11
+        MOV      R1,R7
+        ADD      R0,SP,#+4
+        SWI      +286
+//  988 
+//  989    a0 = (Word16)(a[0] >> 1);   /* input / 2 */
+        LDRSH    R0,[R4, #+0]
+//  990 
+//  991    /* Do the filtering. */
+//  992    for(i = 0; i < lg; i++)
+        MOV      R2,#+0
+        CMP      R6,#+1
+        ASR      R1,R0,#+1
+        MOV      R0,R6
+        BGE      ??D_UTIL_synthesis_2
+//  993    {
+//  994       tmp = x[i] * a0;
+//  995 
+//  996       for(j = 1; j <= m; j++)
+//  997       {
+//  998          tmp -= a[j] * yy[i - j];
+//  999       }
+// 1000       tmp <<= s;
+// 1001 
+// 1002       y[i] = yy[i] = (Word16)((tmp + 0x800) >> 12);
+// 1003    }
+// 1004 
+// 1005    /* Update memory if required */
+// 1006    if(update)
+??D_UTIL_synthesis_3:
+        CMP      R8,#+0
+        BEQ      ??D_UTIL_synthesis_4
+// 1007    {
+// 1008       memcpy(mem, &yy[lg - m], m * sizeof(Word16));
+        MOV      R2,R11
+        SUB      R0,R0,R5
+        ADD      R1,R10,R0, LSL #+1
+        MOV      R0,R7
+        SWI      +286
+// 1009    }
+// 1010 
+// 1011    return;
+??D_UTIL_synthesis_4:
+        ADD      SP,SP,#+212      ;; stack cleaning
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        CFI CFA R13+248
+??D_UTIL_synthesis_5:
+        ADD      R12,R4,R6, LSL #+1
+        LDRSH    R12,[R12, #+0]
+        SUB      LR,R2,R6
+        ADD      LR,R10,LR, LSL #+1
+        LDRSH    LR,[LR, #+0]
+        ADD      R6,R6,#+1
+        MUL      R12,LR,R12
+        SUB      R3,R3,R12
+??D_UTIL_synthesis_6:
+        CMP      R5,R6
+        BGE      ??D_UTIL_synthesis_5
+??D_UTIL_synthesis_7:
+        LDR      R12,[SP, #+0]
+        ADD      R6,R10,R2, LSL #+1
+        MOV      LR,#+2048
+        ADD      R3,LR,R3, LSL R12
+        ASR      R3,R3,#+12
+        STRH     R3,[R6, #+0]
+        LDRSH    R6,[R6, #+0]
+        LDR      R3,[SP, #+208]
+        ADD      R3,R3,R2, LSL #+1
+        STRH     R6,[R3, #+0]
+        ADD      R2,R2,#+1
+??D_UTIL_synthesis_2:
+        CMP      R2,R0
+        BGE      ??D_UTIL_synthesis_3
+        LDR      R3,[SP, #+204]
+        MOV      R6,#+1
+        ADD      R3,R3,R2, LSL #+1
+        LDRSH    R3,[R3, #+0]
+        CMP      R5,#+1
+        MUL      R3,R1,R3
+        BGE      ??D_UTIL_synthesis_6
+        B        ??D_UTIL_synthesis_7
+        CFI EndBlock cfiBlock41
+// 1012 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock42 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_bp_6k_7k??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock42
+        REQUIRE D_UTIL_bp_6k_7k
+// 1013 
+// 1014 
+// 1015 /*
+// 1016  * D_UTIL_bp_6k_7k
+// 1017  *
+// 1018  * Parameters:
+// 1019  *    signal       I/O: signal
+// 1020  *    lg             I: lenght of signal
+// 1021  *    mem          I/O: filter memory [4]
+// 1022  *
+// 1023  * Function:
+// 1024  *    15th order band pass 6kHz to 7kHz FIR filter.
+// 1025  *
+// 1026  * Returns:
+// 1027  *    void
+// 1028  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock43 Using cfiCommon1
+        CFI Function D_UTIL_bp_6k_7k
+        ARM
+// 1029 void D_UTIL_bp_6k_7k(Word16 signal[], Word16 lg, Word16 mem[])
+// 1030 {
+D_UTIL_bp_6k_7k:
+        PUSH     {R4-R6}
+        CFI R6 Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+        SUB      SP,SP,#+440
+        CFI CFA R13+452
+// 1031    Word32 x[L_SUBFR16k + (L_FIR - 1)];
+// 1032    Word32 i, j, tmp;
+// 1033 
+// 1034    for(i = 0; i < (L_FIR - 1); i++)
+        MOV      R3,#+0
+        MOV      R4,SP
+// 1035    {
+// 1036       x[i] = (Word16)mem[i];   /* gain of filter = 4 */
+??D_UTIL_bp_6k_7k_0:
+        ADD      R12,R2,R3, LSL #+1
+        LDRSH    R12,[R12, #+0]
+        STR      R12,[R4, +R3, LSL #+2]
+// 1037    }
+        ADD      R3,R3,#+1
+        CMP      R3,#+30
+        BLT      ??D_UTIL_bp_6k_7k_0
+// 1038 
+// 1039    for(i = 0; i < lg; i++)
+        MOV      R12,#+0
+        MOV      R3,R1
+        CMP      R1,#+1
+        BGE      ??D_UTIL_bp_6k_7k_1
+        B        ??D_UTIL_bp_6k_7k_2
+// 1040    {
+// 1041       x[i + L_FIR - 1] = signal[i] >> 2;   /* gain of filter = 4 */
+??D_UTIL_bp_6k_7k_3:
+        ADD      R5,R0,R12, LSL #+1
+        LDRSH    R5,[R5, #+0]
+        MOV      R4,SP
+        ADD      R4,R4,R12, LSL #+2
+        ASR      R5,R5,#+2
+        STR      R5,[R4, #+120]
+// 1042    }
+        ADD      R12,R12,#+1
+??D_UTIL_bp_6k_7k_1:
+        CMP      R12,R3
+        BLT      ??D_UTIL_bp_6k_7k_3
+// 1043 
+// 1044    for(i = 0; i < lg; i++)
+??D_UTIL_bp_6k_7k_2:
+        MOV      R12,#+0
+        CMP      R1,#+1
+        BGE      ??D_UTIL_bp_6k_7k_4
+        B        ??D_UTIL_bp_6k_7k_5
+// 1045    {
+// 1046       tmp = 0;
+??D_UTIL_bp_6k_7k_6:
+        MOV      R1,#+0
+// 1047 
+// 1048       for(j = 0; j < L_FIR; j++)
+        MOV      R4,#+0
+// 1049       {
+// 1050          tmp += x[i + j] * D_ROM_fir_6k_7k[j];
+??D_UTIL_bp_6k_7k_7:
+        ADD      R5,R4,R12
+        MOV      R6,SP
+        LDR      R5,[R6, +R5, LSL #+2]
+        LDR      R6,??D_UTIL_bp_6k_7k_8  ;; D_ROM_fir_6k_7k
+        ADD      R6,R6,R4, LSL #+1
+        LDRSH    R6,[R6, #+0]
+// 1051       }
+        ADD      R4,R4,#+1
+        CMP      R4,#+31
+        MLA      R1,R6,R5,R1
+        BLT      ??D_UTIL_bp_6k_7k_7
+// 1052 
+// 1053       signal[i] = (Word16)((tmp + 0x4000) >> 15);
+        ADD      R4,R0,R12, LSL #+1
+        ADD      R1,R1,#+16384
+        ASR      R1,R1,#+15
+        STRH     R1,[R4, #+0]
+// 1054    }
+        ADD      R12,R12,#+1
+??D_UTIL_bp_6k_7k_4:
+        CMP      R12,R3
+        BLT      ??D_UTIL_bp_6k_7k_6
+// 1055 
+// 1056    for(i = 0; i < (L_FIR - 1); i++)
+??D_UTIL_bp_6k_7k_5:
+        MOV      R0,#+0
+        MOV      R5,SP
+// 1057    {
+// 1058       mem[i] = (Word16)x[lg + i];   /* gain of filter = 4 */
+??D_UTIL_bp_6k_7k_9:
+        ADD      R4,R0,R3
+        LDR      R4,[R5, +R4, LSL #+2]
+        ADD      R1,R2,R0, LSL #+1
+        STRH     R4,[R1, #+0]
+// 1059    }
+        ADD      R0,R0,#+1
+        CMP      R0,#+30
+        BLT      ??D_UTIL_bp_6k_7k_9
+// 1060 
+// 1061    return;
+        ADD      SP,SP,#+440
+        CFI CFA R13+12
+        POP      {R4-R6}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        DATA
+??D_UTIL_bp_6k_7k_8:
+        DC32     D_ROM_fir_6k_7k
+        CFI EndBlock cfiBlock43
+// 1062 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock44 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_hp_7k??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock44
+        REQUIRE D_UTIL_hp_7k
+// 1063 
+// 1064 
+// 1065 /*
+// 1066  * D_UTIL_hp_7k
+// 1067  *
+// 1068  * Parameters:
+// 1069  *    signal          I/O: ISF vector
+// 1070  *    lg                I: length of signal
+// 1071  *    mem             I/O: memory (30)
+// 1072  *
+// 1073  * Function:
+// 1074  *    15th order high pass 7kHz FIR filter
+// 1075  *
+// 1076  * Returns:
+// 1077  *    void
+// 1078  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock45 Using cfiCommon1
+        CFI Function D_UTIL_hp_7k
+        ARM
+// 1079 static void D_UTIL_hp_7k(Word16 signal[], Word16 lg, Word16 mem[])
+// 1080 {
+D_UTIL_hp_7k:
+        PUSH     {R4-R6,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R6 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -12)
+        CFI R4 Frame(CFA, -16)
+        CFI CFA R13+16
+        SUB      SP,SP,#+220
+        CFI CFA R13+236
+        MOV      R5,R0
+        MOV      R6,R1
+        MOV      R4,R2
+// 1081 
+// 1082    Word32 i, j, tmp;
+// 1083    Word16 x[L_SUBFR16k + (L_FIR - 1)];
+// 1084 
+// 1085    memcpy(x, mem, (L_FIR - 1) * sizeof(Word16));
+        MOV      R2,#+60
+        MOV      R1,R4
+        MOV      R0,SP
+        SWI      +286
+// 1086    memcpy(&x[L_FIR - 1], signal, lg * sizeof(Word16));
+        LSL      R2,R6,#+1
+        MOV      R1,R5
+        ADD      R0,SP,#+60
+        SWI      +286
+// 1087 
+// 1088    for(i = 0; i < lg; i++)
+        MOV      R1,#+0
+        MOV      R0,R6
+        CMP      R6,#+1
+        BGE      ??D_UTIL_hp_7k_0
+        B        ??D_UTIL_hp_7k_1
+// 1089    {
+// 1090       tmp = 0;
+??D_UTIL_hp_7k_2:
+        MOV      R2,#+0
+// 1091 
+// 1092       for(j = 0; j < L_FIR; j++)
+        MOV      R3,#+0
+// 1093       {
+// 1094          tmp += x[i + j] * D_ROM_fir_7k[j];
+??D_UTIL_hp_7k_3:
+        ADD      R6,R3,R1
+        MOV      R12,SP
+        ADD      R6,R12,R6, LSL #+1
+        LDR      R12,??D_UTIL_hp_7k_4  ;; D_ROM_fir_7k
+        LDRSH    R6,[R6, #+0]
+        ADD      R12,R12,R3, LSL #+1
+        LDRSH    R12,[R12, #+0]
+// 1095       }
+        ADD      R3,R3,#+1
+        CMP      R3,#+31
+        MLA      R2,R12,R6,R2
+        BLT      ??D_UTIL_hp_7k_3
+// 1096 
+// 1097       signal[i] = (Word16)((tmp + 0x4000) >> 15);
+        ADD      R3,R5,R1, LSL #+1
+        ADD      R2,R2,#+16384
+        ASR      R2,R2,#+15
+        STRH     R2,[R3, #+0]
+// 1098    }
+        ADD      R1,R1,#+1
+??D_UTIL_hp_7k_0:
+        CMP      R1,R0
+        BLT      ??D_UTIL_hp_7k_2
+// 1099 
+// 1100    memcpy(mem, x + lg, (L_FIR - 1) * sizeof(Word16));
+??D_UTIL_hp_7k_1:
+        MOV      R2,#+60
+        MOV      R1,SP
+        ADD      R1,R1,R0, LSL #+1
+        MOV      R0,R4
+        SWI      +286
+// 1101 
+// 1102    return;
+        ADD      SP,SP,#+220
+        CFI CFA R13+16
+        POP      {R4-R6,PC}       ;; return
+        DATA
+??D_UTIL_hp_7k_4:
+        DC32     D_ROM_fir_7k
+        CFI EndBlock cfiBlock45
+// 1103 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock46 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_dec_synthesis??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock46
+        REQUIRE D_UTIL_dec_synthesis
+// 1104 
+// 1105 
+// 1106 /*
+// 1107  * D_UTIL_Dec_synthesis
+// 1108  *
+// 1109  * Parameters:
+// 1110  *    Aq             I: quantized Az
+// 1111  *    exc            I: excitation at 12kHz
+// 1112  *    Q_new          I: scaling performed on exc
+// 1113  *    synth16k       O: 16kHz synthesis signal
+// 1114  *    prms           I: parameters
+// 1115  *    HfIsf        I/O: High frequency ISF:s
+// 1116  *    mode           I: codec mode
+// 1117  *    newDTXState    I: dtx state
+// 1118  *    bfi            I: bad frame indicator
+// 1119  *    st           I/O: State structure
+// 1120  *
+// 1121  * Function:
+// 1122  *    Synthesis of signal at 16kHz with HF extension.
+// 1123  *
+// 1124  * Returns:
+// 1125  *    void
+// 1126  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock47 Using cfiCommon1
+        CFI Function D_UTIL_dec_synthesis
+        ARM
+// 1127 void D_UTIL_dec_synthesis(Word16 Aq[], Word16 exc[], Word16 Q_new,
+// 1128                           Word16 synth16k[], Word16 prms, Word16 HfIsf[],
+// 1129                           Word16 mode, Word16 newDTXState, Word16 bfi,
+// 1130                           Decoder_State *st)
+// 1131 {
+D_UTIL_dec_synthesis:
+        PUSH     {R0,R2-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+48
+        SUB      SP,SP,#+696
+        CFI CFA R13+744
+        LDR      R8,[SP, #+764]
+        MOV      R9,R1
+        ADD      R4,SP,#+744
+        LDRSH    R4,[R4, #+0]
+        ADD      R5,SP,#+752
+        LDRSH    R5,[R5, #+0]
+        ADD      R6,SP,#+756
+        LDRSH    R6,[R6, #+0]
+        ADD      R7,SP,#+760
+        LDRSH    R7,[R7, #+0]
+// 1132    Word32 tmp, i;
+// 1133    Word16 exp;
+// 1134    Word16 ener, exp_ener;
+// 1135    Word32 fac;
+// 1136    Word16 synth_hi[M + L_SUBFR], synth_lo[M + L_SUBFR];
+// 1137    Word16 synth[L_SUBFR];
+// 1138    Word16 HF[L_SUBFR16k];   /* High Frequency vector      */
+// 1139    Word16 Ap[M16k + 1];
+// 1140    Word16 HfA[M16k + 1];
+// 1141    Word16 HF_corr_gain;
+// 1142    Word16 HF_gain_ind;
+// 1143    Word32 gain1, gain2;
+// 1144    Word16 weight1, weight2;
+// 1145 
+// 1146    /*
+// 1147     * Speech synthesis
+// 1148     *
+// 1149     * - Find synthesis speech corresponding to exc2[].
+// 1150     * - Perform fixed deemphasis and hp 50hz filtering.
+// 1151     * - Oversampling from 12.8kHz to 16kHz.
+// 1152     */
+// 1153    memcpy(synth_hi, st->mem_syn_hi, M * sizeof(Word16));
+        MOV      R10,#+1520
+        MOV      R2,#+32
+        ADD      R1,R10,R8
+        MOV      R0,SP
+        SWI      +286
+// 1154    memcpy(synth_lo, st->mem_syn_lo, M * sizeof(Word16));
+        MOV      R11,#+1552
+        MOV      R2,#+32
+        ADD      R1,R11,R8
+        ADD      R0,SP,#+160
+        SWI      +286
+// 1155    D_UTIL_synthesis_32(Aq, M, exc, Q_new, synth_hi + M, synth_lo + M, L_SUBFR);
+        MOV      R0,#+64
+        PUSH     {R0}
+        CFI CFA R13+748
+        MOV      R2,R9
+        MOV      R1,#+16
+        ADD      R0,SP,#+196
+        PUSH     {R0}
+        CFI CFA R13+752
+        ADD      R0,SP,#+40
+        PUSH     {R0}
+        CFI CFA R13+756
+        LDR      R0,[SP, #+708]
+        ADD      R3,SP,#+712
+        LDRSH    R3,[R3, #+0]
+        BL       D_UTIL_synthesis_32
+// 1156    memcpy(st->mem_syn_hi, synth_hi + L_SUBFR, M * sizeof(Word16));
+        MOV      R2,#+32
+        ADD      R1,SP,#+140
+        ADD      R0,R10,R8
+        SWI      +286
+// 1157    memcpy(st->mem_syn_lo, synth_lo + L_SUBFR, M * sizeof(Word16));
+        MOV      R2,#+32
+        ADD      R1,SP,#+300
+        ADD      R0,R11,R8
+        SWI      +286
+// 1158    D_UTIL_deemph_32(synth_hi + M, synth_lo + M, synth, PREEMPH_FAC, L_SUBFR,
+// 1159       &(st->mem_deemph));
+        ADD      R0,R10,#+126
+        ADD      R0,R0,R8
+        PUSH     {R0}
+        CFI CFA R13+760
+        MOV      R3,#+10
+        ORR      R3,R3,#0x5700
+        MOV      R0,#+64
+        PUSH     {R0}
+        CFI CFA R13+764
+        ADD      R2,SP,#+500
+        ADD      R1,SP,#+212
+        ADD      R0,SP,#+52
+        BL       D_UTIL_deemph_32
+// 1160    D_UTIL_hp50_12k8(synth, L_SUBFR, st->mem_sig_out);
+        ADD      R2,R8,#+1600
+        MOV      R1,#+64
+        ADD      R0,SP,#+500
+        BL       D_UTIL_hp50_12k8
+// 1161    D_UTIL_oversamp_16k(synth, L_SUBFR, synth16k, st->mem_oversamp);
+        LDR      R2,[SP, #+724]
+        SUB      R0,R10,#+230
+        ADD      R3,R0,R8
+        MOV      R1,#+64
+        ADD      R0,SP,#+500
+        BL       D_UTIL_oversamp_16k
+// 1162 
+// 1163    /*
+// 1164     * HF noise synthesis
+// 1165     *
+// 1166     * - Generate HF noise between 5.5 and 7.5 kHz.
+// 1167     * - Set energy of noise according to synthesis tilt.
+// 1168     *     tilt > 0.8 ==> - 14 dB (voiced)
+// 1169     *     tilt   0.5 ==> - 6 dB  (voiced or noise)
+// 1170     *     tilt < 0.0 ==>   0 dB  (noise)
+// 1171     */
+// 1172 
+// 1173    /* generate white noise vector */
+// 1174    for(i = 0; i < L_SUBFR16k; i++)
+        MOV      R0,#+0
+        ADD      SP,SP,#+20
+        CFI CFA R13+744
+        MOV      R3,#+77
+        ORR      R3,R3,#0x7C00
+        MOV      R10,#+25
+        ORR      R10,R10,#0x3600
+// 1175    {
+// 1176       HF[i] = (Word16)(D_UTIL_random(&(st->mem_seed2)) >> 3);
+??D_UTIL_dec_synthesis_0:
+        ORR      R1,R11,#0x62
+        ADD      R1,R1,R8
+        LDRSH    R2,[R1, #+0]
+        MLA      R2,R3,R2,R10
+        STRH     R2,[R1, #+0]
+        LDRSH    R1,[R1, #+0]
+        ADD      R2,SP,#+320
+        ADD      R2,R2,R0, LSL #+1
+        ASR      R1,R1,#+3
+        STRH     R1,[R2, #+0]
+// 1177    }
+        ADD      R0,R0,#+1
+        CMP      R0,#+80
+        BLT      ??D_UTIL_dec_synthesis_0
+// 1178 
+// 1179    /* energy of excitation */
+// 1180    D_UTIL_signal_down_scale(exc, L_SUBFR, 3);
+        MOV      R0,#+0
+        MOV      R3,#+32768
+??D_UTIL_dec_synthesis_1:
+        ADD      R1,R9,R0, LSL #+1
+        LDRSH    R2,[R1, #+0]
+        ADD      R0,R0,#+1
+        CMP      R0,#+64
+        LSL      R2,R2,#+16
+        ADD      R2,R3,R2, ASR #+3
+        ASR      R2,R2,#+16
+        STRH     R2,[R1, #+0]
+        BLT      ??D_UTIL_dec_synthesis_1
+// 1181    Q_new = (Word16)(Q_new - 3);
+        ADD      R0,SP,#+700
+        LDRSH    R0,[R0, #+0]
+// 1182    ener = (Word16)(D_UTIL_dot_product12(exc, exc, L_SUBFR, &exp_ener) >> 16);
+        MOV      R1,#+0
+        MOV      R2,#+0
+        SUB      R0,R0,#+3
+??D_UTIL_dec_synthesis_2:
+        ADD      R3,R9,R2, LSL #+1
+        LDRSH    R10,[R3, #+0]
+        ADD      R2,R2,#+1
+        CMP      R2,#+64
+        MLA      R1,R10,R10,R1
+        BLT      ??D_UTIL_dec_synthesis_2
+        MOV      R2,#+1
+        ADD      R1,R2,R1, LSL #+1
+        MOVS     R2,R1
+        MVN      R9,#+0
+        MOV      R10,#+0
+        MOVEQ    R3,#+0
+        BEQ      ??D_UTIL_dec_synthesis_3
+        CMP      R2,R9
+        MOVEQ    R3,#+31
+        BEQ      ??D_UTIL_dec_synthesis_3
+        CMP      R2,#+0
+        MVNMI    R2,R2
+        MOV      R3,#+0
+        CMP      R2,#+1073741824
+        BGE      ??D_UTIL_dec_synthesis_3
+??D_UTIL_dec_synthesis_4:
+        LSL      R2,R2,#+1
+        ADD      R3,R3,#+1
+        CMP      R2,#+1073741824
+        BLT      ??D_UTIL_dec_synthesis_4
+??D_UTIL_dec_synthesis_3:
+        MOV      R3,R3, LSL #+16
+        MOV      R3,R3, ASR #+16
+        LSL      R1,R1,R3
+        ASR      R1,R1,#+16
+// 1183    exp_ener = (Word16)(exp_ener - (Q_new << 1));
+        RSB      R2,R3,#+30
+        MOV      R2,R2, LSL #+16
+        MOV      R2,R2, ASR #+16
+        MOV      R0,R0, LSL #+16
+        MOV      R0,R0, ASR #+16
+        SUB      R2,R2,R0, LSL #+1
+// 1184 
+// 1185    /* set energy of white noise to energy of excitation */
+// 1186    tmp = (Word16)(D_UTIL_dot_product12(HF, HF, L_SUBFR16k, &exp) >> 16);
+        MOV      R0,#+0
+        MOV      R3,R0
+??D_UTIL_dec_synthesis_5:
+        ADD      R11,SP,#+320
+        ADD      R11,R11,R3, LSL #+1
+        LDRSH    R11,[R11, #+0]
+        ADD      R3,R3,#+1
+        CMP      R3,#+80
+        MLA      R0,R11,R11,R0
+        BLT      ??D_UTIL_dec_synthesis_5
+        MOV      R3,#+1
+        ADD      R0,R3,R0, LSL #+1
+        MOVS     R3,R0
+        MOVEQ    R11,#+0
+        BEQ      ??D_UTIL_dec_synthesis_6
+        CMP      R3,R9
+        MOVEQ    R11,#+31
+        BEQ      ??D_UTIL_dec_synthesis_6
+        CMP      R3,#+0
+        MVNMI    R3,R3
+        MOV      R11,#+0
+        CMP      R3,#+1073741824
+        BGE      ??D_UTIL_dec_synthesis_6
+??D_UTIL_dec_synthesis_7:
+        LSL      R3,R3,#+1
+        ADD      R11,R11,#+1
+        CMP      R3,#+1073741824
+        BLT      ??D_UTIL_dec_synthesis_7
+??D_UTIL_dec_synthesis_6:
+        MOV      R11,R11, LSL #+16
+        MOV      R11,R11, ASR #+16
+        MOV      R3,R11
+        RSB      R3,R3,#+30
+        LSL      R0,R0,R11
+        ASR      R0,R0,#+16
+// 1187 
+// 1188    if(tmp > ener)
+        CMP      R1,R0
+// 1189    {
+// 1190       tmp = tmp >> 1;   /* Be sure tmp < ener */
+        ASRLT    R0,R0,#+1
+// 1191       exp = (Word16)(exp + 1);
+        ADDLT    R3,R3,#+1
+// 1192    }
+// 1193 
+// 1194    tmp = (tmp << 15) / ener;
+        LSL      R0,R0,#+15
+        _BLF     ??div32_a,??rA??div32_a
+// 1195 
+// 1196    if(tmp > 32767)
+        MOV      R11,R9, LSR #+17
+        CMP      R1,#+32768
+// 1197    {
+// 1198       tmp = 32767;
+        MOVGE    R1,R11
+// 1199    }
+// 1200 
+// 1201    tmp = tmp << 16;   /* result is normalized */
+        LSL      R1,R1,#+16
+// 1202    exp = (Word16)(exp - exp_ener);
+        SUB      R0,R3,R2
+// 1203    D_UTIL_normalised_inverse_sqrt(&tmp, &exp);
+        CMP      R1,#+1
+        MOVLT    R0,#+0
+        BICLT    R1,R9,#0x80000000
+        BLT      ??D_UTIL_dec_synthesis_8
+        LDR      R3,??DataTable6  ;; D_ROM_isqrt
+        TST      R0,#0x1
+        ASRNE    R1,R1,#+1
+        ASR      R1,R1,#+9
+        ASR      R2,R1,#+16
+        SUB      R2,R2,#+16
+        ADD      R3,R3,R2, LSL #+1
+        LDRSH    R12,[R3, #+0]
+        LDRSH    R3,[R3, #+2]
+        ASR      R1,R1,#+1
+        AND      R1,R11,R1
+        SUB      R3,R12,R3
+        MUL      R3,R1,R3
+        MOV      R0,R0, LSL #+16
+        MOV      R0,R0, ASR #+16
+        SUB      R0,R0,#+1
+        ASR      R0,R0,#+1
+        RSB      R0,R0,#+0
+        LSL      R2,R12,#+16
+        SUB      R1,R2,R3, LSL #+1
+// 1204 
+// 1205    /* L_tmp x 2, L_tmp in Q31 */
+// 1206    /* tmp = 2 x sqrt(ener_exc/ener_hf) */
+// 1207    if(exp >= 0)
+        MOV      R0,R0, LSL #+16
+        MOVS     R0,R0, ASR #+16
+        BMI      ??D_UTIL_dec_synthesis_9
+// 1208    {
+// 1209       tmp = tmp >> (15 - exp);
+??D_UTIL_dec_synthesis_8:
+        RSB      R0,R0,#+15
+        ASR      R0,R1,R0
+        B        ??D_UTIL_dec_synthesis_10
+// 1210    }
+// 1211    else
+// 1212    {
+// 1213       tmp = tmp >> (-exp);
+// 1214       tmp = tmp >> 15;
+??D_UTIL_dec_synthesis_9:
+        RSB      R0,R0,#+0
+        ASR      R0,R1,R0
+        ASR      R0,R0,#+15
+// 1215    }
+// 1216 
+// 1217    /* saturation */
+// 1218    if(tmp > 0x7FFF)
+??D_UTIL_dec_synthesis_10:
+        CMP      R0,#+32768
+// 1219    {
+// 1220       tmp = 0x7FFF;
+        MOVGE    R0,R11
+// 1221    }
+// 1222 
+// 1223    for(i = 0; i < L_SUBFR16k; i++)
+        MOV      R1,#+0
+// 1224    {
+// 1225       HF[i] = (Word16)((HF[i] * tmp) >> 15);
+??D_UTIL_dec_synthesis_11:
+        ADD      R2,SP,#+320
+        ADD      R2,R2,R1, LSL #+1
+        LDRSH    R3,[R2, #+0]
+// 1226    }
+        ADD      R1,R1,#+1
+        CMP      R1,#+80
+        MUL      R3,R0,R3
+        ASR      R3,R3,#+15
+        STRH     R3,[R2, #+0]
+        BLT      ??D_UTIL_dec_synthesis_11
+// 1227 
+// 1228    /* find tilt of synthesis speech (tilt: 1=voiced, -1=unvoiced) */
+// 1229    D_UTIL_hp400_12k8(synth, L_SUBFR, st->mem_hp400);
+        MOV      R0,#+76
+        ORR      R0,R0,#0x600
+        ADD      R2,R0,R8
+        MOV      R1,#+64
+        ADD      R0,SP,#+480
+        BL       D_UTIL_hp400_12k8
+// 1230    tmp = 0L;
+        MOV      R0,#+0
+// 1231 
+// 1232    for(i = 0; i < L_SUBFR; i++)
+        MOV      R1,R0
+// 1233    {
+// 1234       tmp = tmp + (synth[i] * synth[i]);
+??D_UTIL_dec_synthesis_12:
+        ADD      R2,SP,#+480
+        ADD      R2,R2,R1, LSL #+1
+        LDRSH    R2,[R2, #+0]
+// 1235    }
+        ADD      R1,R1,#+1
+        CMP      R1,#+64
+        MLA      R0,R2,R2,R0
+        BLT      ??D_UTIL_dec_synthesis_12
+// 1236 
+// 1237    tmp = (tmp << 1) + 1;
+        MOV      R1,#+1
+        ADD      R1,R1,R0, LSL #+1
+// 1238    exp = D_UTIL_norm_l(tmp);
+        MOVS     R2,R1
+        MOVEQ    R0,#+0
+        BEQ      ??D_UTIL_dec_synthesis_13
+        CMP      R2,R9
+        MOVEQ    R0,#+31
+        BEQ      ??D_UTIL_dec_synthesis_13
+        CMP      R2,#+0
+        MVNMI    R2,R2
+        MOV      R0,#+0
+        CMP      R2,#+1073741824
+        BGE      ??D_UTIL_dec_synthesis_13
+??D_UTIL_dec_synthesis_14:
+        LSL      R2,R2,#+1
+        ADD      R0,R0,#+1
+        CMP      R2,#+1073741824
+        BLT      ??D_UTIL_dec_synthesis_14
+// 1239    ener = (Word16)((tmp << exp) >> 16);   /* ener = r[0] */
+??D_UTIL_dec_synthesis_13:
+        LSL      R1,R1,R0
+        ASR      R1,R1,#+16
+// 1240    tmp = 0L;
+        MOV      R2,#+0
+// 1241 
+// 1242    for(i = 1; i < L_SUBFR; i++)
+        MOV      R3,#+1
+// 1243    {
+// 1244       tmp = tmp + (synth[i] * synth[i - 1]);
+??D_UTIL_dec_synthesis_15:
+        ADD      R9,SP,#+480
+        ADD      R9,R9,R3, LSL #+1
+        LDRSH    R12,[R9, #+0]
+        LDRSH    R9,[R9, #-2]
+// 1245    }
+        ADD      R3,R3,#+1
+        CMP      R3,#+64
+        MLA      R2,R9,R12,R2
+        BLT      ??D_UTIL_dec_synthesis_15
+// 1246 
+// 1247    tmp = (tmp << 1) + 1;
+// 1248    tmp = (tmp << exp) >> 16;   /* tmp = r[1] */
+        MOV      R3,#+1
+        ADD      R2,R3,R2, LSL #+1
+        LSL      R0,R2,R0
+        ASR      R0,R0,#+16
+// 1249 
+// 1250    if(tmp > 0)
+        CMP      R0,#+1
+        BLT      ??D_UTIL_dec_synthesis_16
+// 1251    {
+// 1252       fac = ((tmp << 15) / ener);
+        LSL      R0,R0,#+15
+        _BLF     ??div32_a,??rA??div32_a
+// 1253 
+// 1254       if(fac > 32767)
+        CMP      R1,#+32768
+        BLT      ??D_UTIL_dec_synthesis_17
+// 1255       {
+// 1256          fac = 32767;
+        MOV      R1,R11
+        B        ??D_UTIL_dec_synthesis_17
+// 1257       }
+// 1258    }
+// 1259    else
+// 1260    {
+// 1261       fac = 0;
+??D_UTIL_dec_synthesis_16:
+        MOV      R1,#+0
+// 1262    }
+// 1263 
+// 1264    /* modify energy of white noise according to synthesis tilt */
+// 1265    gain1 = (32767 - fac);
+// 1266    gain2 = ((32767 - fac) * 20480) >> 15;
+// 1267    gain2 = (gain2 << 1);
+??D_UTIL_dec_synthesis_17:
+        SUB      R0,R11,R1
+        MOV      R1,#+20480
+        MUL      R2,R1,R0
+        ASR      R1,R2,#+15
+// 1268 
+// 1269    if(gain2 > 32767)
+// 1270       gain2 = 32767;
+// 1271 
+// 1272    if(st->mem_vad_hist > 0)
+        MOV      R2,#+122
+        ORR      R2,R2,#0x600
+        LDRH     R2,[R2, +R8]
+        LSL      R1,R1,#+1
+        CMP      R1,#+32768
+        MOVGE    R1,R11
+        CMP      R2,#+0
+// 1273    {
+// 1274       weight1 = 0;
+        MOVNE    R2,#+0
+// 1275       weight2 = 32767;
+        MOVNE    R10,R11
+// 1276    }
+// 1277    else
+// 1278    {
+// 1279       weight1 = 32767;
+        MOVEQ    R2,R11
+// 1280       weight2 = 0;
+// 1281    }
+// 1282 
+// 1283    tmp = (weight1 * gain1) >> 15;
+// 1284    tmp = tmp + ((weight2 * gain2) >> 15);
+        MUL      R2,R0,R2
+        MUL      R0,R1,R10
+        ASR      R0,R0,#+15
+        ADDS     R1,R0,R2, ASR #+15
+// 1285 
+// 1286    if(tmp != 0)
+// 1287    {
+// 1288       tmp = tmp + 1;
+        ADDNE    R1,R1,#+1
+// 1289    }
+// 1290 
+// 1291    if(tmp < 3277)
+        MOV      R0,#+205
+        ORR      R0,R0,#0xC00
+        CMP      R1,R0
+// 1292    {
+// 1293       tmp = 3277;   /* 0.1 in Q15 */
+        MOVLT    R1,R0
+// 1294    }
+// 1295 
+// 1296    if((mode == MODE_24k) & (bfi == 0))
+        CMP      R5,#+8
+        CMPEQ    R7,#+0
+        BNE      ??D_UTIL_dec_synthesis_18
+// 1297    {
+// 1298       /* HF correction gain */
+// 1299       HF_gain_ind = prms;
+// 1300       HF_corr_gain = D_ROM_hp_gain[HF_gain_ind];
+        LDR      R0,??D_UTIL_dec_synthesis_19  ;; D_ROM_hp_gain
+        ADD      R0,R0,R4, LSL #+1
+        LDRSH    R1,[R0, #+0]
+// 1301 
+// 1302       /* HF gain */
+// 1303       for(i = 0; i < L_SUBFR16k; i++)
+        MOV      R0,#+0
+// 1304       {
+// 1305          HF[i] = (Word16)(((HF[i] * HF_corr_gain) >> 15) << 1);
+??D_UTIL_dec_synthesis_20:
+        ADD      R2,SP,#+320
+        ADD      R2,R2,R0, LSL #+1
+        LDRSH    R3,[R2, #+0]
+// 1306       }
+        ADD      R0,R0,#+1
+        CMP      R0,#+80
+        MUL      R3,R1,R3
+        ASR      R3,R3,#+15
+        LSL      R3,R3,#+1
+        STRH     R3,[R2, #+0]
+        BLT      ??D_UTIL_dec_synthesis_20
+// 1307    }
+// 1308    else
+// 1309    {
+// 1310       for(i = 0; i < L_SUBFR16k; i++)
+// 1311       {
+// 1312          HF[i] = (Word16)((HF[i] * tmp) >> 15);
+// 1313       }
+// 1314    }
+// 1315 
+// 1316    if((mode <= MODE_7k) & (newDTXState == SPEECH))
+// 1317    {
+// 1318       D_LPC_isf_extrapolation(HfIsf);
+// 1319       D_LPC_isp_a_conversion(HfIsf, HfA, 0, M16k);
+// 1320       D_LPC_a_weight(HfA, Ap, 29491, M16k);   /* fac=0.9 */
+// 1321       D_UTIL_synthesis(Ap, M16k, HF, HF, L_SUBFR16k, st->mem_syn_hf, 1);
+// 1322    }
+// 1323    else
+// 1324    {
+// 1325       /* synthesis of noise: 4.8kHz..5.6kHz --> 6kHz..7kHz */
+// 1326       D_LPC_a_weight(Aq, Ap, 19661, M);   /* fac=0.6 */
+??D_UTIL_dec_synthesis_21:
+        LDR      R0,[SP, #+696]
+        MOV      R3,#+16
+        MOV      R2,#+205
+        ORR      R2,R2,#0x4C00
+        ADD      R1,SP,#+608
+        _BLF     D_LPC_a_weight,??D_LPC_a_weight??rA
+// 1327       D_UTIL_synthesis(Ap, M, HF, HF, L_SUBFR16k, st->mem_syn_hf + (M16k - M), 1);
+        MOV      R0,#+1
+        PUSH     {R0}
+        CFI CFA R13+748
+        MOV      R1,#+16
+        ADD      R0,R8,#+1392
+??D_UTIL_dec_synthesis_22:
+        PUSH     {R0}
+        CFI CFA R13+752
+        MOV      R0,#+80
+        PUSH     {R0}
+        CFI CFA R13+756
+        ADD      R3,SP,#+332
+        ADD      R2,SP,#+332
+        ADD      R0,SP,#+620
+        BL       D_UTIL_synthesis
+        ADD      SP,SP,#+12
+        CFI CFA R13+744
+// 1328    }
+// 1329 
+// 1330    /* noise High Pass filtering (1ms of delay) */
+// 1331    D_UTIL_bp_6k_7k(HF, L_SUBFR16k, st->mem_hf);
+        MOV      R0,#+86
+        ORR      R0,R0,#0x400
+        ADD      R2,R0,R8
+        MOV      R1,#+80
+        ADD      R0,SP,#+320
+        BL       D_UTIL_bp_6k_7k
+// 1332 
+// 1333    if(mode == MODE_24k)
+        CMP      R5,#+8
+        BNE      ??D_UTIL_dec_synthesis_23
+// 1334    {
+// 1335       /* Low Pass filtering (7 kHz) */
+// 1336       D_UTIL_hp_7k(HF, L_SUBFR16k, st->mem_hf3);
+        MOV      R0,#+206
+        ORR      R0,R0,#0x400
+        ADD      R2,R0,R8
+        MOV      R1,#+80
+        ADD      R0,SP,#+320
+        BL       D_UTIL_hp_7k
+// 1337    }
+// 1338 
+// 1339    /* add filtered HF noise to speech synthesis */
+// 1340    for(i = 0; i < L_SUBFR16k; i++)
+??D_UTIL_dec_synthesis_23:
+        MOV      R0,#+0
+// 1341    {
+// 1342       tmp = (synth16k[i] + HF[i]);
+// 1343       synth16k[i] = D_UTIL_saturate(tmp);
+??D_UTIL_dec_synthesis_24:
+        LDR      R1,[SP, #+704]
+        ADD      R3,SP,#+320
+        ADD      R1,R1,R0, LSL #+1
+        LDRSH    R2,[R1, #+0]
+        ADD      R3,R3,R0, LSL #+1
+        LDRSH    R3,[R3, #+0]
+        ADD      R2,R3,R2
+        CMP      R2,R11
+        BGE      ??D_UTIL_dec_synthesis_25
+        RSB      R3,R11,#+0
+        CMP      R2,R3
+        BLT      ??D_UTIL_dec_synthesis_25
+        B        ??D_UTIL_dec_synthesis_26
+??D_UTIL_dec_synthesis_18:
+        MOV      R0,#+0
+??D_UTIL_dec_synthesis_27:
+        ADD      R2,SP,#+320
+        ADD      R2,R2,R0, LSL #+1
+        LDRSH    R3,[R2, #+0]
+        ADD      R0,R0,#+1
+        CMP      R0,#+80
+        MUL      R3,R1,R3
+        ASR      R3,R3,#+15
+        STRH     R3,[R2, #+0]
+        BLT      ??D_UTIL_dec_synthesis_27
+        CMP      R5,#+1
+        BGE      ??D_UTIL_dec_synthesis_21
+        CMP      R6,#+0
+        BNE      ??D_UTIL_dec_synthesis_21
+        LDR      R0,[SP, #+748]
+        _BLF     D_LPC_isf_extrapolation,??D_LPC_isf_extrapolation??rA
+        LDR      R0,[SP, #+748]
+        MOV      R3,#+20
+        MOV      R2,#+0
+        ADD      R1,SP,#+652
+        _BLF     D_LPC_isp_a_conversion,??D_LPC_isp_a_conversion??rA
+        MOV      R3,#+20
+        MOV      R2,#+51
+        ORR      R2,R2,#0x7300
+        ADD      R1,SP,#+608
+        ADD      R0,SP,#+652
+        _BLF     D_LPC_a_weight,??D_LPC_a_weight??rA
+        MOV      R0,#+1
+        PUSH     {R0}
+        CFI CFA R13+748
+        MOV      R1,#+20
+        MOV      R0,#+104
+        ORR      R0,R0,#0x500
+        ADD      R0,R0,R8
+        B        ??D_UTIL_dec_synthesis_22
+        CFI CFA R13+744
+??D_UTIL_dec_synthesis_25:
+        CMP      R2,#+1
+        MOVGE    R2,R11
+        MVNLT    R2,R11
+??D_UTIL_dec_synthesis_26:
+        STRH     R2,[R1, #+0]
+// 1344    }
+        ADD      R0,R0,#+1
+        CMP      R0,#+80
+        BLT      ??D_UTIL_dec_synthesis_24
+// 1345 
+// 1346    return;
+        ADD      SP,SP,#+708      ;; stack cleaning
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        DATA
+??D_UTIL_dec_synthesis_19:
+        DC32     D_ROM_hp_gain
+        CFI EndBlock cfiBlock47
+// 1347 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable6:
+        DC32     D_ROM_isqrt
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock48 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_UTIL_preemph??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock48
+        REQUIRE D_UTIL_preemph
+// 1348 
+// 1349 
+// 1350 /*
+// 1351  * D_UTIL_preemph
+// 1352  *
+// 1353  * Parameters:
+// 1354  *    x            I/O: signal
+// 1355  *    mu             I: preemphasis factor
+// 1356  *    lg             I: vector size
+// 1357  *    mem          I/O: memory (x[-1])
+// 1358  *
+// 1359  * Function:
+// 1360  *    Filtering through 1 - mu z^-1
+// 1361  *
+// 1362  *
+// 1363  * Returns:
+// 1364  *    void
+// 1365  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock49 Using cfiCommon1
+        CFI Function D_UTIL_preemph
+        ARM
+// 1366 void D_UTIL_preemph(Word16 x[], Word16 mu, Word16 lg, Word16 *mem)
+// 1367 {
+D_UTIL_preemph:
+        PUSH     {R4-R6}
+        CFI R6 Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+// 1368    Word32 i, L_tmp;
+// 1369    Word16 temp;
+// 1370 
+// 1371    temp = x[lg - 1];
+        ADD      R4,R0,R2, LSL #+1
+        LDRSH    R12,[R4, #-2]
+// 1372 
+// 1373    for(i = lg - 1; i > 0; i--)
+        SUB      R2,R2,#+1
+        CMP      R2,#+1
+        BLT      ??D_UTIL_preemph_0
+// 1374    {
+// 1375       L_tmp = x[i] << 15;
+// 1376       L_tmp = L_tmp - (x[i - 1] * mu);
+// 1377       x[i] = (Word16)((L_tmp + 0x4000) >> 15);
+??D_UTIL_preemph_1:
+        SUB      R6,R0,#+2
+        ADD      R6,R6,R2, LSL #+1
+        LDRSH    R6,[R6, #+0]
+        ADD      R4,R0,R2, LSL #+1
+        LDRSH    R5,[R4, #+0]
+        MUL      R6,R1,R6
+// 1378    }
+        SUB      R2,R2,#+1
+        RSB      R5,R6,R5, LSL #+15
+        ADD      R5,R5,#+16384
+        ASR      R5,R5,#+15
+        STRH     R5,[R4, #+0]
+        CMP      R2,#+1
+        BGE      ??D_UTIL_preemph_1
+// 1379 
+// 1380    L_tmp = x[0] << 15;
+// 1381    L_tmp = L_tmp - (*mem * mu);
+// 1382    x[0] = (Word16)((L_tmp + 0x4000) >> 15);
+??D_UTIL_preemph_0:
+        LDRSH    R4,[R3, #+0]
+        LDRSH    R2,[R0, #+0]
+        MUL      R4,R1,R4
+        RSB      R1,R4,R2, LSL #+15
+        ADD      R1,R1,#+16384
+        ASR      R1,R1,#+15
+        STRH     R1,[R0, #+0]
+// 1383    *mem = temp;
+        STRH     R12,[R3, #+0]
+// 1384 
+// 1385    return;
+        POP      {R4-R6}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock49
+// 1386 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock50 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??rA??div32_a:
+        LDR      R12,??Subroutine25_0  ;; ??div32_a
+        MOV      PC,R12
+        DATA
+??Subroutine25_0:
+        DC32     ??div32_a
+        CFI EndBlock cfiBlock50
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock51 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_LPC_a_weight??rA:
+        LDR      R12,??Subroutine26_0  ;; D_LPC_a_weight
+        BX       R12
+        DATA
+??Subroutine26_0:
+        DC32     D_LPC_a_weight
+        CFI EndBlock cfiBlock51
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock52 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_LPC_isf_extrapolation??rA:
+        LDR      R12,??Subroutine27_0  ;; D_LPC_isf_extrapolation
+        BX       R12
+        DATA
+??Subroutine27_0:
+        DC32     D_LPC_isf_extrapolation
+        CFI EndBlock cfiBlock52
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock53 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_LPC_isp_a_conversion??rA:
+        LDR      R12,??Subroutine28_0  ;; D_LPC_isp_a_conversion
+        BX       R12
+        DATA
+??Subroutine28_0:
+        DC32     D_LPC_isp_a_conversion
+        CFI EndBlock cfiBlock53
+
+        END
+// 
+// 5 496 bytes in segment CODE
+// 
+// 5 348 bytes of CODE memory (+ 148 bytes shared)
+//
+//Errors: none
+//Warnings: 4

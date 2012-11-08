@@ -36,11 +36,11 @@ void Check();
 
 GBSTMR UPDATE_TMR;
 
-//=============================Проигрывание звук?==============================
+
 int PLAY_ID;
 unsigned int NEXT_PLAY_FUNK=0;
 /*
-0 - ничего
+0 - 
 //1 - SayTime
 1 - SayHourDig
 2 - SayHourVoice
@@ -86,9 +86,6 @@ void Play(const char *fpath, const char *fname)
 }
 
 //============================================================================== 
-
-//++++++++++++++++++++++++++++++Проговаривание времен?++++++++++++++++++++++++++++++++
-
 //-----------------------------------------------------------
 GBSTMR tmr_vibra;
 
@@ -115,52 +112,22 @@ void stop_vibra(void)
 
 void SayMinVoice()
 {
-    if (CurTime.min>=10 && CurTime.min<=19) Play(folder_path, "min3.wav");
-      else
-        {
-          switch (CurTime.min%10)
-            {
-              case 1:
-                Play(folder_path, "min2.wav");
-              break;
-              case 2: case 3: case 4:
-                Play(folder_path, "min1.wav");
-              break;
-              case 0: case 5: case 6: case 7: case 8: case 9: 
-                Play(folder_path, "min3.wav");
-              break;  
-            }
-        }
+    Play(folder_path, "71.wav");
     NEXT_PLAY_FUNK=0;
 }
 
-//-------------------------------- Минуты -------------------------------------
 void SayMinDig()
 {
     if (CurTime.min!=0)
       {
-        if (CurTime.min%10==1) 
-          {
-            Play(folder_path, "1_2.wav");
-            NEXT_PLAY_FUNK=5;
-          }
-          else
-        if (CurTime.min%10==2) 
-          {
-            Play(folder_path, "2_1.wav");          
-            NEXT_PLAY_FUNK=5;
-          }
-          else
-            {
               char s[5];
               sprintf(s, "%d.wav", CurTime.min%10);            
               Play(folder_path, s);  
               NEXT_PLAY_FUNK=5;
-            }
-      }
+       }
     else
       {
-        Play(folder_path, "xxx.wav");
+        Play(folder_path, "98.wav");
         NEXT_PLAY_FUNK=0;
       }
 }
@@ -174,8 +141,7 @@ void SayMinAllDig()
             SayMinDig();
           break;
           
-          case 10: case 11: case 12: case 13: case 14: case 15: case 16: case 17: case 18: case 19:
-          case 20: case 30: case 40: case 50:   
+          case 10: case 20: case 30: case 40: case 50:   
             { 
               char s[6];
               sprintf(s, "%d.wav", CurTime.min);            
@@ -183,6 +149,11 @@ void SayMinAllDig()
               NEXT_PLAY_FUNK=5;
             }
           break;  
+
+          case 11: case 12: case 13: case 14: case 15: case 16: case 17: case 18: case 19:
+            Play(folder_path, "10.wav");
+            NEXT_PLAY_FUNK=4;
+          break;
           
           case 21: case 22: case 23: case 24: case 25: case 26: case 27: case 28: case 29:
             Play(folder_path, "20.wav");
@@ -205,42 +176,18 @@ void SayMinAllDig()
           break;
         }      
 }
-//------------------------------ /*Минуты*/ -----------------------------------
 
 void SayHourVoice()
 {
-        switch (CurTime.hour)
-          {
-            case 1: case 21:
-              Play(folder_path, "hour2.wav");
-              NEXT_PLAY_FUNK=3;
-            break;
-          
-            case 2: case 3: case 4: case 22: case 23:
-              Play(folder_path, "hour3.wav");
-              NEXT_PLAY_FUNK=3;
-            break;
-          
-            case 0: case 5: case 6: case 7: case 8: case 9: case 10: 
-            case 11: case 12: case 13: case 14: case 15: case 16: 
-            case 17: case 18: case 19: case 20:
-              Play(folder_path, "hour1.wav");
-              NEXT_PLAY_FUNK=3;
-            break;  
-          }    
+    Play(folder_path, "61.wav");
+    NEXT_PLAY_FUNK=3; 
 }
 
 void SayHourDig()
 {
-      if (CurTime.hour==1) 
-        {
-          Play(folder_path, "1_1.wav");
-          NEXT_PLAY_FUNK=2;
-        }
-        else
       if (CurTime.hour==2) 
         {
-          Play(folder_path, "2_2.wav");          
+          Play(folder_path, "2x.wav"); 
           NEXT_PLAY_FUNK=2;
         }
         else
@@ -259,20 +206,18 @@ int IsMediaActive(void)
 #ifdef NEWSGOLD
   if (s[0]==1) return 1;
 #else
-  if (s[0]==2) return 1;// для SGOLD s[0]!=2    
+  if (s[0]==2) return 1;  
 #endif 
   return 0;
 }
 
 void SayTime(int param)
 {
-  //param==0 Курант?  //param==1 Вс?  start_vibra();
   vibra_count1=vibra_count;
-  
   if (!IsMediaActive())   
     if (param) 
       {
-        Play(folder_path, "x.wav");
+        Play(folder_path, "99.wav");
         NEXT_PLAY_FUNK=1;
       }
       else
@@ -302,7 +247,7 @@ void Check(void)
               ((TimeCount<=(TimeExFrom.hour*60+TimeExFrom.min))||(TimeCount>=(TimeExTo.hour*60+TimeExTo.min)))&&
                ((CurTime.min==begin_minute1)||(CurTime.min==begin_minute2)||(CurTime.min==begin_minute3))&&(!IsCalling()) )
     {
-      if (keypad_lock==1)     //&&(!IsUnlocked())) // Только пр?заблокир.
+      if (keypad_lock==1)     //&&(!IsUnlocked())) 
         {
           SUBPROC((void*)SayTime, PLAY_PARAM);
         }
@@ -335,8 +280,6 @@ void Check(void)
 */
 
 
-//++++++++++++++++++++++++++++++/*Проговаривание времен?/+++++++++++++++++++++++++++++++++
-
 void Check(void)
 {
   GetDateTime(&date,&CurTime);
@@ -351,7 +294,7 @@ void Check(void)
               ((TimeCount<=(TimeExFrom.hour*60+TimeExFrom.min))||(TimeCount>=(TimeExTo.hour*60+TimeExTo.min)))&&
                ((CurTime.min==begin_minute1)||(CurTime.min==begin_minute2)||(CurTime.min==begin_minute3))&&(!IsCalling()) )
     {
-      if (keypad_lock==1)     //&&(!IsUnlocked())) // Только пр?заблокир.
+      if (keypad_lock==1)     //&&(!IsUnlocked())) 
         {
           SUBPROC((void*)SayTime, PLAY_PARAM);
         }
@@ -389,7 +332,7 @@ void Check(void)
               ((TimeCount<=(TimeExFrom.hour*60+TimeExFrom.min))||(TimeCount>=(TimeExTo.hour*60+TimeExTo.min)))&&
                ((CurTime.min==begin_minute1)||(CurTime.min==begin_minute2)||(CurTime.min==begin_minute3))&&(!IsCalling()) )
     {
-      if (keypad_lock==1)     //&&(!IsUnlocked())) // Только пр?заблокир.
+      if (keypad_lock==1)     //&&(!IsUnlocked()))
         {
           SUBPROC((void*)SayTime, PLAY_PARAM);
         }
@@ -426,7 +369,7 @@ void Check(void)
               ((TimeCount<=(TimeExFrom.hour*60+TimeExFrom.min))||(TimeCount>=(TimeExTo.hour*60+TimeExTo.min)))&&
                ((CurTime.min==begin_minute1)||(CurTime.min==begin_minute2)||(CurTime.min==begin_minute3))&&(!IsCalling()) )
     {
-      if (keypad_lock==1)     //&&(!IsUnlocked())) // Только пр?заблокир.
+      if (keypad_lock==1)     //&&(!IsUnlocked())) 
         {
           SUBPROC((void*)SayTime, PLAY_PARAM);
         }
@@ -487,7 +430,7 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
     if (strcmp_nocase(successed_config_filename,(char *)msg->data0)==0)
     {
       InitConfig();
-      ShowMSG(1,(int)"TalkPhone config updated!");
+      ShowMSG(1,(int)"TalkPhoneЕдЦГТСёьРВ!");
     }
   }
   
@@ -533,10 +476,10 @@ int maincsm_onmessage(CSM_RAM* data,GBS_MSG* msg)
   
   if ((icsm=FindCSMbyID(CSM_root()->idle_id)))
   {
-    if ((IsGuiOnTop(idlegui_id))&&(show_icon)) //Если IdleGui на само?верх?    
+    if ((IsGuiOnTop(idlegui_id))&&(show_icon))  
     {
       GUI *igui=GetTopGUI();
-      if (igui) //?он существует
+      if (igui)
       {
 #ifdef ELKA
 

@@ -1,0 +1,779 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:31 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\AmrP /
+//                       layer.c                                             /
+//    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\AmrP /
+//                       layer.c -D NDEBUG -lC D:\SVN\SieELF\SieELF\x65_PCM_ /
+//                       Player\Player\Release\List\ -lA                     /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player\Player /
+//                       \Release\Obj\ -s9 --cpu_mode arm --endian little    /
+//                       --cpu ARM926EJ-S --stack_align 4 --interwork -e     /
+//                       --fpu None --dlib_config "D:\Program                /
+//                       Files\IAR\Embedded Workbench 4.0                    /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\AmrPlayer.s79                                  /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME AmrPlayer
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        EXTERN ??div32_a
+
+        MULTWEAK ??AMRWBOpen??rT
+        MULTWEAK ??AMRWBPause??rT
+        MULTWEAK ??AMRWBPlay??rT
+        MULTWEAK ??AmrWBClose??rT
+        MULTWEAK ??AudioStart??rA
+        MULTWEAK ??D_IF_decode??rA
+        MULTWEAK ??D_IF_exit??rA
+        MULTWEAK ??D_IF_init??rA
+??DataTable0 EQU 0
+??DataTable2 EQU 0
+??DataTable3 EQU 0
+??DataTable4 EQU 0
+??DataTable6 EQU 0
+        MULTWEAK ??GetAMRWBSound??rT
+        MULTWEAK ??GetAMRWBTime??rT
+        MULTWEAK ??ReadAmr??rT
+        MULTWEAK ??SavePLTime??rA
+        MULTWEAK ??rA??div32_a
+        PUBWEAK ?init?tab?DATA_Z
+        PUBLIC AMROpened
+        PUBLIC AMRWBOpen
+        FUNCTION AMRWBOpen,0203H
+        LOCFRAME CSTACK, 16, STACK
+        PUBLIC AMRWBPause
+        FUNCTION AMRWBPause,0201H
+        PUBLIC AMRWBPlay
+        FUNCTION AMRWBPlay,0201H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC AmrEof
+        PUBLIC AmrHFile
+        PUBLIC AmrSamples
+        PUBLIC AmrWBClose
+        FUNCTION AmrWBClose,0201H
+        LOCFRAME CSTACK, 12, STACK
+        PUBLIC GetAMRWBSound
+        FUNCTION GetAMRWBSound,0603H
+        LOCFRAME CSTACK, 16, STACK
+        PUBLIC GetAMRWBTime
+        FUNCTION GetAMRWBTime,0601H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC ReadAmr
+        FUNCTION ReadAmr,0201H
+        LOCFRAME CSTACK, 16, STACK
+        PUBLIC SynthPos
+        PUBLIC amrframepos
+        PUBLIC analysis
+        PUBLIC dec_mode
+        PUBLIC destate
+        PUBLIC read_size
+        PUBLIC synth
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+AudioStart          SYMBOL "AudioStart"
+D_IF_decode         SYMBOL "D_IF_decode"
+D_IF_exit           SYMBOL "D_IF_exit"
+D_IF_init           SYMBOL "D_IF_init"
+SavePLTime          SYMBOL "SavePLTime"
+AMRWBOpen           SYMBOL "AMRWBOpen"
+??AMRWBOpen??rT     SYMBOL "??rT", AMRWBOpen
+AMRWBPause          SYMBOL "AMRWBPause"
+??AMRWBPause??rT    SYMBOL "??rT", AMRWBPause
+AMRWBPlay           SYMBOL "AMRWBPlay"
+??AMRWBPlay??rT     SYMBOL "??rT", AMRWBPlay
+AmrWBClose          SYMBOL "AmrWBClose"
+??AmrWBClose??rT    SYMBOL "??rT", AmrWBClose
+??AudioStart??rA    SYMBOL "??rA", AudioStart
+??D_IF_decode??rA   SYMBOL "??rA", D_IF_decode
+??D_IF_exit??rA     SYMBOL "??rA", D_IF_exit
+??D_IF_init??rA     SYMBOL "??rA", D_IF_init
+GetAMRWBSound       SYMBOL "GetAMRWBSound"
+??GetAMRWBSound??rT SYMBOL "??rT", GetAMRWBSound
+GetAMRWBTime        SYMBOL "GetAMRWBTime"
+??GetAMRWBTime??rT  SYMBOL "??rT", GetAMRWBTime
+ReadAmr             SYMBOL "ReadAmr"
+??ReadAmr??rT       SYMBOL "??rT", ReadAmr
+??SavePLTime??rA    SYMBOL "??rA", SavePLTime
+
+        EXTERN AudioActive
+        EXTERN AudioStart
+        FUNCTION AudioStart,0200H
+        EXTERN D_IF_decode
+        FUNCTION D_IF_decode,0202H
+        EXTERN D_IF_exit
+        FUNCTION D_IF_exit,0202H
+        EXTERN D_IF_init
+        FUNCTION D_IF_init,0202H
+        EXTERN GetPlayingTime
+        EXTERN GetSound
+        EXTERN Paused
+        EXTERN Playing
+        EXTERN SavePLTime
+        FUNCTION SavePLTime,0200H
+        EXTERN block_size
+        EXTERN channels
+        EXTERN samplerate
+
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\AmrPlayer.c
+//    1 
+//    2 #include "typedef.h"
+//    3 #include "dec_if.h"
+//    4 
+//    5 #include "..\Global.h"
+//    6 extern const UWord8 block_size[];
+//    7 
+
+        RSEG DATA_Z:DATA:SORT:NOROOT(2)
+//    8 int AmrSamples;
+//    9 int AmrHFile;
+//   10 char AMROpened = 0;
+//   11 void * destate;
+//   12 short synth[L_FRAME16k];
+//   13 int SynthPos;
+//   14 unsigned char * analysis;
+//   15 int amrframepos = 0;
+//   16 int AmrEof = 0;
+//   17 
+//   18 Word16 dec_mode; 
+dec_mode:
+        DS8 2
+        DS8 2
+synth:
+        DS8 640
+AmrSamples:
+        DS8 4
+AmrHFile:
+        DS8 4
+destate:
+        DS8 4
+SynthPos:
+        DS8 4
+analysis:
+        DS8 4
+amrframepos:
+        DS8 4
+AmrEof:
+        DS8 4
+//   19 int read_size;
+read_size:
+        DS8 4
+AMROpened:
+        DS8 1
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??AMRWBPlay??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE AMRWBPlay
+//   20 
+//   21 #define AMR_BUFF_SIZE 4096
+//   22   
+//   23 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function AMRWBPlay
+        ARM
+//   24 void AMRWBPlay()
+//   25 {
+//   26 
+//   27   if ( Playing == 0 )
+AMRWBPlay:
+        LDR      R0,??AMRWBPlay_0  ;; Playing
+        LDRSB    R0,[R0, #+0]
+        CMP      R0,#+0
+        BNE      ??AMRWBPlay_1
+//   28   {
+//   29     AudioStart();
+        _BF      AudioStart,??AudioStart??rA  ;; tailcall
+//   30   }
+//   31   else
+//   32     Paused = 0;
+??AMRWBPlay_1:
+        LDR      R0,??DataTable1  ;; Paused
+        MOV      R1,#+0
+        STRB     R1,[R0, #+0]
+//   33 }
+        BX       LR
+        DATA
+??AMRWBPlay_0:
+        DC32     Playing
+        CFI EndBlock cfiBlock1
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??AMRWBPause??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE AMRWBPause
+//   34 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function AMRWBPause
+        ARM
+//   35 void AMRWBPause()
+//   36 {
+//   37   Paused = !Paused;
+AMRWBPause:
+        LDR      R0,??DataTable1  ;; Paused
+        LDRB     R1,[R0, #+0]
+        CMP      R1,#+0
+        MOVEQ    R1,#+1
+        MOVNE    R1,#+0
+        STRB     R1,[R0, #+0]
+//   38 }
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock3
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable1:
+        DC32     Paused
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??GetAMRWBTime??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE GetAMRWBTime
+//   39 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function GetAMRWBTime
+        ARM
+//   40 int GetAMRWBTime()
+//   41 {
+//   42   return ( AmrSamples/samplerate );
+GetAMRWBTime:
+        LDR      R0,??GetAMRWBTime_0  ;; dec_mode + 644
+        LDR      R1,??DataTable7  ;; samplerate
+        PUSH     {LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI CFA R13+4
+        LDR      R1,[R1, #+0]
+        LDR      R0,[R0, #+0]
+        _BLF     ??div32_a,??rA??div32_a
+        MOV      R0,R1
+        POP      {PC}             ;; return
+        DATA
+??GetAMRWBTime_0:
+        DC32     dec_mode + 644
+        CFI EndBlock cfiBlock5
+//   43 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??ReadAmr??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE ReadAmr
+//   44 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function ReadAmr
+        ARM
+//   45 void ReadAmr()
+//   46 {
+ReadAmr:
+        PUSH     {R4,R5,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+//   47   int err, readsize;
+//   48   if ( AmrEof )
+        LDR      R5,??DataTable8  ;; dec_mode
+        SUB      SP,SP,#+4
+        CFI CFA R13+16
+        LDR      R0,[R5, #+668]
+        MOV      R4,#+0
+        CMP      R0,#+0
+        BEQ      ??ReadAmr_0
+//   49   {
+//   50     AudioActive = 0;
+        LDR      R0,??DataTable5  ;; AudioActive
+        STRB     R4,[R0, #+0]
+//   51     SavePLTime();
+        _BLF     SavePLTime,??SavePLTime??rA
+//   52     return;
+        POP      {R0,R4,R5,PC}
+//   53   }
+//   54   memcpy( analysis, analysis + amrframepos, AMR_BUFF_SIZE - amrframepos );
+??ReadAmr_0:
+        LDR      R0,[R5, #+660]
+        LDR      R1,[R5, #+664]
+        RSB      R2,R1,#+4096
+        ADD      R1,R1,R0
+        SWI      +286
+//   55   readsize = fread( AmrHFile, analysis +AMR_BUFF_SIZE-amrframepos, amrframepos, & err );
+        LDR      R0,[R5, #+664]
+        LDR      R1,[R5, #+660]
+        MOV      R3,SP
+        MOV      R2,R0
+        RSB      R0,R0,#+0
+        ADD      R0,R0,R1
+        ADD      R1,R0,#+4096
+        LDR      R0,[R5, #+648]
+        SWI      +11
+//   56   if ( readsize < amrframepos ) AmrEof = 1;
+        LDR      R1,[R5, #+664]
+//   57   amrframepos = 0;
+        STR      R4,[R5, #+664]
+        CMP      R0,R1
+        MOVLT    R0,#+1
+        STRLT    R0,[R5, #+668]
+//   58 }
+        POP      {R0,R4,R5,PC}    ;; return
+        CFI EndBlock cfiBlock7
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??GetAMRWBSound??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE GetAMRWBSound
+//   59 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function GetAMRWBSound
+        ARM
+//   60 void GetAMRWBSound( unsigned short * ptr, int nsamples )
+//   61 {
+GetAMRWBSound:
+        PUSH     {R4-R6,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R6 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -12)
+        CFI R4 Frame(CFA, -16)
+        CFI CFA R13+16
+        LDR      R6,??GetAMRWBSound_0  ;; dec_mode
+        MOV      R4,R0
+        MOVS     R5,R1
+        POPEQ    {R4-R6,PC}
+//   62   
+//   63 
+//   64   while ( nsamples )
+//   65   {
+//   66     * ptr++ = synth[SynthPos];
+??GetAMRWBSound_1:
+        LDR      R0,[R6, #+656]
+        ADD      R1,R6,R0, LSL #+1
+        LDRH     R2,[R1, #+4]
+//   67     * ptr++ = synth[SynthPos++];
+        ADD      R0,R0,#+1
+//   68     nsamples--;
+//   69     
+//   70     if ( SynthPos >= L_FRAME16k )
+        CMP      R0,#+320
+        STRH     R2,[R4], #+2
+        LDRH     R1,[R1, #+4]
+        STRH     R1,[R4], #+2
+        STR      R0,[R6, #+656]
+        BLT      ??GetAMRWBSound_2
+//   71     {
+//   72       SynthPos=0;
+        MOV      R0,#+0
+        STR      R0,[R6, #+656]
+//   73       
+//   74       if ( AudioActive )
+        LDR      R0,??DataTable5  ;; AudioActive
+        LDRB     R0,[R0, #+0]
+        CMP      R0,#+0
+        BEQ      ??GetAMRWBSound_3
+//   75       {    
+//   76         AmrSamples+=L_FRAME16k;
+        LDR      R0,[R6, #+644]
+//   77         dec_mode = (Word16)(analysis[amrframepos] >> 4);
+        LDR      R1,[R6, #+660]
+//   78         read_size=block_size[dec_mode];        
+        LDR      R2,??GetAMRWBSound_0+0x4  ;; block_size
+        ADD      R0,R0,#+320
+        STR      R0,[R6, #+644]
+        LDR      R0,[R6, #+664]
+//   79         D_IF_decode( destate, & analysis[amrframepos], synth, 0);        
+        MOV      R3,#+0
+        ADD      R1,R0,R1
+        LDRB     R0,[R1, #+0]
+        LSR      R0,R0,#+4
+        STRH     R0,[R6, #+0]
+        LDRB     R0,[R0, +R2]
+        ADD      R2,R6,#+4
+        STR      R0,[R6, #+672]
+        LDR      R0,[R6, #+652]
+        _BLF     D_IF_decode,??D_IF_decode??rA
+//   80         amrframepos += read_size;
+        LDR      R0,[R6, #+664]
+        LDR      R1,[R6, #+672]
+        ADD      R0,R1,R0
+        STR      R0,[R6, #+664]
+//   81         if ( amrframepos > ( AMR_BUFF_SIZE - 128 ) ) ReadAmr();
+        MOV      R1,#+129
+        ORR      R1,R1,#0xF00
+        CMP      R0,R1
+        BLT      ??GetAMRWBSound_2
+        BL       ReadAmr
+        B        ??GetAMRWBSound_2
+//   82         
+//   83       }
+//   84       else
+//   85       {
+//   86         zeromem( synth, sizeof( synth ) );
+??GetAMRWBSound_3:
+        MOV      R1,#+640
+        ADD      R0,R6,#+4
+        SWI      +285
+//   87       }
+//   88     }
+//   89     
+//   90   nsamples-=1;
+??GetAMRWBSound_2:
+        SUBS     R5,R5,#+2
+//   91   }
+        BNE      ??GetAMRWBSound_1
+//   92 }
+        POP      {R4-R6,PC}       ;; return
+        DATA
+??GetAMRWBSound_0:
+        DC32     dec_mode
+        DC32     block_size
+        CFI EndBlock cfiBlock9
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable5:
+        DC32     AudioActive
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??AMRWBOpen??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock10
+        REQUIRE AMRWBOpen
+//   93 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock11 Using cfiCommon1
+        CFI Function AMRWBOpen
+        ARM
+//   94 int AMRWBOpen( char * filename1)
+//   95 {
+AMRWBOpen:
+        PUSH     {R4,R5,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+//   96   int err;   
+//   97   AmrHFile = fopen( filename1, A_BIN, P_READ, & err );
+        LDR      R4,??DataTable8  ;; dec_mode
+        SUB      SP,SP,#+4
+        CFI CFA R13+16
+        MOV      R3,SP
+        MOV      R2,#+128
+        MOV      R1,#+32768
+        SWI      +10
+        STR      R0,[R4, #+648]
+//   98   samplerate = 16000;
+        LDR      R0,??DataTable7  ;; samplerate
+        MOV      R1,#+16000
+        STR      R1,[R0, #+0]
+//   99   //fread( AmrHFile, & samplerate, 2, & err );
+//  100   channels = 1;
+        LDR      R0,??AMRWBOpen_0  ;; channels
+//  101   GetPlayingTime = GetAMRWBTime;
+        LDR      R1,??AMRWBOpen_0+0x4  ;; GetAMRWBTime
+        MOV      R5,#+1
+        STRH     R5,[R0, #+0]
+        LDR      R0,??AMRWBOpen_0+0x8  ;; GetPlayingTime
+//  102   GetSound = GetAMRWBSound;
+//  103   AMROpened = 1;
+        STRB     R5,[R4, #+676]
+        STR      R1,[R0, #+0]
+        LDR      R0,??AMRWBOpen_0+0xC  ;; GetSound
+        LDR      R1,??AMRWBOpen_0+0x10  ;; GetAMRWBSound
+        STR      R1,[R0, #+0]
+//  104   destate = D_IF_init();
+        _BLF     D_IF_init,??D_IF_init??rA
+        STR      R0,[R4, #+652]
+//  105   //Decoder_Interface_Decode
+//  106   SynthPos = 0;
+        MOV      R0,#+0
+        STR      R0,[R4, #+656]
+//  107   amrframepos = 0;
+        STR      R0,[R4, #+664]
+//  108   AmrEof = 0;
+        STR      R0,[R4, #+668]
+//  109   AmrSamples=0;
+        STR      R0,[R4, #+644]
+//  110   analysis = malloc( AMR_BUFF_SIZE );
+        MOV      R0,#+4096
+        SWI      +20
+        STR      R0,[R4, #+660]
+//  111   fread( AmrHFile, analysis, AMR_BUFF_SIZE, & err );
+        MOV      R3,SP
+        MOV      R2,#+4096
+        MOV      R1,R0
+        LDR      R0,[R4, #+648]
+        SWI      +11
+//  112   AMROpened=1;
+        STRB     R5,[R4, #+676]
+//  113   return ( 0 );
+        MOV      R0,#+0
+        POP      {R1,R4,R5,PC}    ;; return
+        DATA
+??AMRWBOpen_0:
+        DC32     channels
+        DC32     GetAMRWBTime
+        DC32     GetPlayingTime
+        DC32     GetSound
+        DC32     GetAMRWBSound
+        CFI EndBlock cfiBlock11
+//  114 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable7:
+        DC32     samplerate
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock12 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??AmrWBClose??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock12
+        REQUIRE AmrWBClose
+//  115 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock13 Using cfiCommon1
+        CFI Function AmrWBClose
+        ARM
+//  116 int AmrWBClose()
+//  117 {
+AmrWBClose:
+        PUSH     {R4,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+//  118   int err;
+//  119 if(AMROpened)
+        LDR      R4,??DataTable8  ;; dec_mode
+        SUB      SP,SP,#+4
+        CFI CFA R13+12
+        LDRB     R0,[R4, #+676]
+        CMP      R0,#+0
+        POPEQ    {R0,R4,PC}
+//  120 {
+//  121 fclose(AmrHFile,&err);
+        LDR      R0,[R4, #+648]
+        MOV      R1,SP
+        SWI      +13
+//  122 mfree(analysis);
+        LDR      R0,[R4, #+660]
+        SWI      +21
+//  123 D_IF_exit(destate);
+        LDR      R0,[R4, #+652]
+        _BLF     D_IF_exit,??D_IF_exit??rA
+//  124 AMROpened=0;
+        MOV      R0,#+0
+        STRB     R0,[R4, #+676]
+//  125 }
+//  126 }
+        POP      {R0,R4,PC}       ;; return
+        CFI EndBlock cfiBlock13
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable8:
+        DC32     dec_mode
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock14 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??AudioStart??rA:
+        LDR      R12,??Subroutine7_0  ;; AudioStart
+        BX       R12
+        DATA
+??Subroutine7_0:
+        DC32     AudioStart
+        CFI EndBlock cfiBlock14
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock15 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??rA??div32_a:
+        LDR      R12,??Subroutine8_0  ;; ??div32_a
+        MOV      PC,R12
+        DATA
+??Subroutine8_0:
+        DC32     ??div32_a
+        CFI EndBlock cfiBlock15
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock16 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??SavePLTime??rA:
+        LDR      R12,??Subroutine9_0  ;; SavePLTime
+        BX       R12
+        DATA
+??Subroutine9_0:
+        DC32     SavePLTime
+        CFI EndBlock cfiBlock16
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock17 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_IF_decode??rA:
+        LDR      R12,??Subroutine10_0  ;; D_IF_decode
+        BX       R12
+        DATA
+??Subroutine10_0:
+        DC32     D_IF_decode
+        CFI EndBlock cfiBlock17
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock18 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_IF_init??rA:
+        LDR      R12,??Subroutine11_0  ;; D_IF_init
+        BX       R12
+        DATA
+??Subroutine11_0:
+        DC32     D_IF_init
+        CFI EndBlock cfiBlock18
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock19 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_IF_exit??rA:
+        LDR      R12,??Subroutine12_0  ;; D_IF_exit
+        BX       R12
+        DATA
+??Subroutine12_0:
+        DC32     D_IF_exit
+        CFI EndBlock cfiBlock19
+
+        RSEG INITTAB:CODE:ROOT(2)
+        DATA
+?init?tab?DATA_Z:
+        DCD      sfe(DATA_Z) - sfb(DATA_Z), sfb(DATA_Z), sfb(DATA_Z)
+
+        END
+// 
+// 804 bytes in segment CODE
+// 677 bytes in segment DATA_Z
+//  12 bytes in segment INITTAB
+// 
+// 704 bytes of CODE memory (+ 112 bytes shared)
+// 677 bytes of DATA memory
+//
+//Errors: none
+//Warnings: 9

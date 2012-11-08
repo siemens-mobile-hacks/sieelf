@@ -1,0 +1,5193 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:35:53 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\DEF /
+//                       LATE.C                                              /
+//    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\DEF /
+//                       LATE.C -D NDEBUG -lC D:\SVN\SieELF\SieELF\x65_PCM_P /
+//                       layer\Player\Release\List\ -lA                      /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player\Player /
+//                       \Release\Obj\ -s9 --cpu_mode arm --endian little    /
+//                       --cpu ARM926EJ-S --stack_align 4 --interwork -e     /
+//                       --fpu None --dlib_config "D:\Program                /
+//                       Files\IAR\Embedded Workbench 4.0                    /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\DEFLATE.s79                                    /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME DEFLATE
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+??DataTable0 EQU 0
+??DataTable3 EQU 0
+??DataTable4 EQU 0
+        MULTWEAK ??_tr_align??rA
+        MULTWEAK ??_tr_flush_block??rA
+        MULTWEAK ??_tr_init??rA
+        MULTWEAK ??_tr_stored_block??rA
+        MULTWEAK ??adler32??rA
+        MULTWEAK ??compressBound??rA
+        MULTWEAK ??crc32??rA
+        MULTWEAK ??deflate??rT
+        MULTWEAK ??deflateBound??rT
+        MULTWEAK ??deflateCopy??rT
+        MULTWEAK ??deflateEnd??rT
+        MULTWEAK ??deflateInit2_??rT
+        MULTWEAK ??deflateInit_??rT
+        MULTWEAK ??deflateParams??rT
+        MULTWEAK ??deflatePrime??rT
+        MULTWEAK ??deflateReset??rT
+        MULTWEAK ??deflateSetDictionary??rT
+        MULTWEAK ??deflateSetHeader??rT
+        MULTWEAK ??deflateTune??rT
+        MULTWEAK ??memset??rA
+??my_version EQU 0
+        PUBLIC deflate
+        FUNCTION deflate,0203H
+        LOCFRAME CSTACK, 40, STACK
+        PUBLIC deflateBound
+        FUNCTION deflateBound,0203H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC deflateCopy
+        FUNCTION deflateCopy,0203H
+        LOCFRAME CSTACK, 24, STACK
+        PUBLIC deflateEnd
+        FUNCTION deflateEnd,0203H
+        LOCFRAME CSTACK, 12, STACK
+        PUBLIC deflateInit2_
+        FUNCTION deflateInit2_,0203H
+        LOCFRAME CSTACK, 36, STACK
+        PUBLIC deflateInit_
+        FUNCTION deflateInit_,0203H
+        LOCFRAME CSTACK, 20, STACK
+        PUBLIC deflateParams
+        FUNCTION deflateParams,0203H
+        LOCFRAME CSTACK, 20, STACK
+        PUBLIC deflatePrime
+        FUNCTION deflatePrime,0203H
+        PUBLIC deflateReset
+        FUNCTION deflateReset,0203H
+        LOCFRAME CSTACK, 16, STACK
+        PUBLIC deflateSetDictionary
+        FUNCTION deflateSetDictionary,0203H
+        LOCFRAME CSTACK, 24, STACK
+        PUBLIC deflateSetHeader
+        FUNCTION deflateSetHeader,0203H
+        PUBLIC deflateTune
+        FUNCTION deflateTune,0203H
+        PUBLIC deflate_copyright
+        FUNCTION deflate_fast,0603H
+        LOCFRAME CSTACK, 24, STACK
+        FUNCTION deflate_slow,0603H
+        LOCFRAME CSTACK, 36, STACK
+        FUNCTION deflate_stored,0603H
+        LOCFRAME CSTACK, 20, STACK
+        FUNCTION fill_window,0203H
+        LOCFRAME CSTACK, 20, STACK
+        FUNCTION flush_pending,0203H
+        LOCFRAME CSTACK, 12, STACK
+        FUNCTION lm_init,0203H
+        LOCFRAME CSTACK, 12, STACK
+        FUNCTION longest_match,0203H
+        LOCFRAME CSTACK, 48, STACK
+        FUNCTION longest_match_fast,0203H
+        LOCFRAME CSTACK, 12, STACK
+        FUNCTION putShortMSB,0203H
+        FUNCTION read_buf,0203H
+        LOCFRAME CSTACK, 16, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+_tr_align           SYMBOL "_tr_align"
+_tr_flush_block     SYMBOL "_tr_flush_block"
+_tr_init            SYMBOL "_tr_init"
+_tr_stored_block    SYMBOL "_tr_stored_block"
+adler32             SYMBOL "adler32"
+compressBound       SYMBOL "compressBound"
+crc32               SYMBOL "crc32"
+memset              SYMBOL "memset"
+??_tr_align??rA     SYMBOL "??rA", _tr_align
+??_tr_flush_block??rA SYMBOL "??rA", _tr_flush_block
+??_tr_init??rA      SYMBOL "??rA", _tr_init
+??_tr_stored_block??rA SYMBOL "??rA", _tr_stored_block
+??adler32??rA       SYMBOL "??rA", adler32
+??compressBound??rA SYMBOL "??rA", compressBound
+??crc32??rA         SYMBOL "??rA", crc32
+deflate             SYMBOL "deflate"
+??deflate??rT       SYMBOL "??rT", deflate
+deflateBound        SYMBOL "deflateBound"
+??deflateBound??rT  SYMBOL "??rT", deflateBound
+deflateCopy         SYMBOL "deflateCopy"
+??deflateCopy??rT   SYMBOL "??rT", deflateCopy
+deflateEnd          SYMBOL "deflateEnd"
+??deflateEnd??rT    SYMBOL "??rT", deflateEnd
+deflateInit2_       SYMBOL "deflateInit2_"
+??deflateInit2_??rT SYMBOL "??rT", deflateInit2_
+deflateInit_        SYMBOL "deflateInit_"
+??deflateInit_??rT  SYMBOL "??rT", deflateInit_
+deflateParams       SYMBOL "deflateParams"
+??deflateParams??rT SYMBOL "??rT", deflateParams
+deflatePrime        SYMBOL "deflatePrime"
+??deflatePrime??rT  SYMBOL "??rT", deflatePrime
+deflateReset        SYMBOL "deflateReset"
+??deflateReset??rT  SYMBOL "??rT", deflateReset
+deflateSetDictionary SYMBOL "deflateSetDictionary"
+??deflateSetDictionary??rT SYMBOL "??rT", deflateSetDictionary
+deflateSetHeader    SYMBOL "deflateSetHeader"
+??deflateSetHeader??rT SYMBOL "??rT", deflateSetHeader
+deflateTune         SYMBOL "deflateTune"
+??deflateTune??rT   SYMBOL "??rT", deflateTune
+??memset??rA        SYMBOL "??rA", memset
+
+        EXTERN _dist_code
+        EXTERN _length_code
+        EXTERN _tr_align
+        FUNCTION _tr_align,0202H
+        EXTERN _tr_flush_block
+        FUNCTION _tr_flush_block,0202H
+        EXTERN _tr_init
+        FUNCTION _tr_init,0202H
+        EXTERN _tr_stored_block
+        FUNCTION _tr_stored_block,0202H
+        EXTERN adler32
+        FUNCTION adler32,0202H
+        EXTERN compressBound
+        FUNCTION compressBound,0202H
+        EXTERN crc32
+        FUNCTION crc32,0202H
+        EXTERN memset
+        FUNCTION memset,0200H
+        EXTERN z_errmsg
+        EXTERN zcalloc
+        FUNCTION zcalloc,0602H
+        EXTERN zcfree
+        FUNCTION zcfree,0602H
+
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\DEFLATE.C
+//    1 /* deflate.c -- compress data using the deflation algorithm
+//    2  * Copyright (C) 1995-2005 Jean-loup Gailly.
+//    3  * For conditions of distribution and use, see copyright notice in zlib.h
+//    4  */
+//    5 
+//    6 /*
+//    7  *  ALGORITHM
+//    8  *
+//    9  *      The "deflation" process depends on being able to identify portions
+//   10  *      of the input text which are identical to earlier input (within a
+//   11  *      sliding window trailing behind the input currently being processed).
+//   12  *
+//   13  *      The most straightforward technique turns out to be the fastest for
+//   14  *      most input files: try all possible matches and select the longest.
+//   15  *      The key feature of this algorithm is that insertions into the string
+//   16  *      dictionary are very simple and thus fast, and deletions are avoided
+//   17  *      completely. Insertions are performed at each input character, whereas
+//   18  *      string matches are performed only when the previous match ends. So it
+//   19  *      is preferable to spend more time in matches to allow very fast string
+//   20  *      insertions and avoid deletions. The matching algorithm for small
+//   21  *      strings is inspired from that of Rabin & Karp. A brute force approach
+//   22  *      is used to find longer strings when a small match has been found.
+//   23  *      A similar algorithm is used in comic (by Jan-Mark Wams) and freeze
+//   24  *      (by Leonid Broukhis).
+//   25  *         A previous version of this file used a more sophisticated algorithm
+//   26  *      (by Fiala and Greene) which is guaranteed to run in linear amortized
+//   27  *      time, but has a larger average cost, uses more memory and is patented.
+//   28  *      However the F&G algorithm may be faster for some highly redundant
+//   29  *      files if the parameter max_chain_length (described below) is too large.
+//   30  *
+//   31  *  ACKNOWLEDGEMENTS
+//   32  *
+//   33  *      The idea of lazy evaluation of matches is due to Jan-Mark Wams, and
+//   34  *      I found it in 'freeze' written by Leonid Broukhis.
+//   35  *      Thanks to many people for bug reports and testing.
+//   36  *
+//   37  *  REFERENCES
+//   38  *
+//   39  *      Deutsch, L.P.,"DEFLATE Compressed Data Format Specification".
+//   40  *      Available in http://www.ietf.org/rfc/rfc1951.txt
+//   41  *
+//   42  *      A description of the Rabin and Karp algorithm is given in the book
+//   43  *         "Algorithms" by R. Sedgewick, Addison-Wesley, p252.
+//   44  *
+//   45  *      Fiala,E.R., and Greene,D.H.
+//   46  *         Data Compression with Finite Windows, Comm.ACM, 32,4 (1989) 490-595
+//   47  *
+//   48  */
+//   49 
+//   50 /* @(#) $Id$ */
+//   51 
+//   52 #include "deflate.h"
+//   53 
+//   54 
+//   55 //void *memset(void *mem, int val, int size){
+//   56 //  while(--size>=0) ((char*)mem)[size]=(char)val;
+//   57  // return mem; 
+//   58 //}
+//   59 
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//   60 const char deflate_copyright[] =
+deflate_copyright:
+        DATA
+        DC8 20H, 64H, 65H, 66H, 6CH, 61H, 74H, 65H
+        DC8 20H, 31H, 2EH, 32H, 2EH, 33H, 20H, 43H
+        DC8 6FH, 70H, 79H, 72H, 69H, 67H, 68H, 74H
+        DC8 20H, 31H, 39H, 39H, 35H, 2DH, 32H, 30H
+        DC8 30H, 35H, 20H, 4AH, 65H, 61H, 6EH, 2DH
+        DC8 6CH, 6FH, 75H, 70H, 20H, 47H, 61H, 69H
+        DC8 6CH, 6CH, 79H, 20H, 0
+        DC8 0, 0, 0
+//   61    " deflate 1.2.3 Copyright 1995-2005 Jean-loup Gailly ";
+//   62 /*
+//   63   If you use the zlib library in a product, an acknowledgment is welcome
+//   64   in the documentation of your product. If for some reason you cannot
+//   65   include such an acknowledgment, I would appreciate that you keep this
+//   66   copyright string in the executable of your product.
+//   67  */
+//   68 
+//   69 /* ===========================================================================
+//   70  *  Function prototypes.
+//   71  */
+//   72 typedef enum {
+//   73     need_more,      /* block not completed, need more input or more output */
+//   74     block_done,     /* block flush performed */
+//   75     finish_started, /* finish started, need only more output at next deflate */
+//   76     finish_done     /* finish done, accept no more input or output */
+//   77 } block_state;
+//   78 
+//   79 typedef block_state (*compress_func) OF((deflate_state *s, int flush));
+//   80 /* Compression function. Returns the block state after the call. */
+//   81 
+//   82 local void fill_window    OF((deflate_state *s));
+//   83 local block_state deflate_stored OF((deflate_state *s, int flush));
+//   84 local block_state deflate_fast   OF((deflate_state *s, int flush));
+//   85 #ifndef FASTEST
+//   86 local block_state deflate_slow   OF((deflate_state *s, int flush));
+//   87 #endif
+//   88 local void lm_init        OF((deflate_state *s));
+//   89 local void putShortMSB    OF((deflate_state *s, uInt b));
+//   90 local void flush_pending  OF((z_streamp strm));
+//   91 local int read_buf        OF((z_streamp strm, Bytef *buf, unsigned size));
+//   92 #ifndef FASTEST
+//   93 #ifdef ASMV
+//   94       void match_init OF((void)); /* asm code initialization */
+//   95       uInt longest_match  OF((deflate_state *s, IPos cur_match));
+//   96 #else
+//   97 local uInt longest_match  OF((deflate_state *s, IPos cur_match));
+//   98 #endif
+//   99 #endif
+//  100 local uInt longest_match_fast OF((deflate_state *s, IPos cur_match));
+//  101 
+//  102 #ifdef DEBUG
+//  103 local  void check_match OF((deflate_state *s, IPos start, IPos match,
+//  104                             int length));
+//  105 #endif
+//  106 
+//  107 /* ===========================================================================
+//  108  * Local data
+//  109  */
+//  110 
+//  111 #define NIL 0
+//  112 /* Tail of hash chains */
+//  113 
+//  114 #ifndef TOO_FAR
+//  115 #  define TOO_FAR 4096
+//  116 #endif
+//  117 /* Matches of length 3 are discarded if their distance exceeds TOO_FAR */
+//  118 
+//  119 #define MIN_LOOKAHEAD (MAX_MATCH+MIN_MATCH+1)
+//  120 /* Minimum amount of lookahead, except at the end of the input file.
+//  121  * See deflate.c for comments about the MIN_MATCH+1.
+//  122  */
+//  123 
+//  124 /* Values for max_lazy_match, good_match and max_chain_length, depending on
+//  125  * the desired pack level (0..9). The values given below have been tuned to
+//  126  * exclude worst case performance for pathological files. Better values may be
+//  127  * found for specific files.
+//  128  */
+//  129 typedef struct config_s {
+//  130    ush good_length; /* reduce lazy search above this match length */
+//  131    ush max_lazy;    /* do not perform lazy search above this match length */
+//  132    ush nice_length; /* quit search above this match length */
+//  133    ush max_chain;
+//  134    compress_func func;
+//  135 } config;
+//  136 
+//  137 #ifdef FASTEST
+//  138 local const config configuration_table[2] = {
+//  139 /*      good lazy nice chain */
+//  140 /* 0 */ {0,    0,  0,    0, deflate_stored},  /* store only */
+//  141 /* 1 */ {4,    4,  8,    4, deflate_fast}}; /* max speed, no lazy matches */
+//  142 #else
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  143 local const config configuration_table[10] = {
+configuration_table:
+        DATA
+        DC16 0, 0, 0, 0
+        DC32 deflate_stored
+        DC16 4, 4, 8, 4
+        DC32 deflate_fast
+        DC16 4, 5, 16, 8
+        DC32 deflate_fast
+        DC16 4, 6, 32, 32
+        DC32 deflate_fast
+        DC16 4, 4, 16, 16
+        DC32 deflate_slow
+        DC16 8, 16, 32, 32
+        DC32 deflate_slow
+        DC16 8, 16, 128, 128
+        DC32 deflate_slow
+        DC16 8, 32, 128, 256
+        DC32 deflate_slow
+        DC16 32, 128, 258, 1024
+        DC32 deflate_slow
+        DC16 32, 258, 258, 4096
+        DC32 deflate_slow
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??deflateInit_??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE deflateInit_
+//  144 /*      good lazy nice chain */
+//  145 /* 0 */ {0,    0,  0,    0, deflate_stored},  /* store only */
+//  146 /* 1 */ {4,    4,  8,    4, deflate_fast}, /* max speed, no lazy matches */
+//  147 /* 2 */ {4,    5, 16,    8, deflate_fast},
+//  148 /* 3 */ {4,    6, 32,   32, deflate_fast},
+//  149 
+//  150 /* 4 */ {4,    4, 16,   16, deflate_slow},  /* lazy matches */
+//  151 /* 5 */ {8,   16, 32,   32, deflate_slow},
+//  152 /* 6 */ {8,   16, 128, 128, deflate_slow},
+//  153 /* 7 */ {8,   32, 128, 256, deflate_slow},
+//  154 /* 8 */ {32, 128, 258, 1024, deflate_slow},
+//  155 /* 9 */ {32, 258, 258, 4096, deflate_slow}}; /* max compression */
+//  156 #endif
+//  157 
+//  158 /* Note: the deflate() code requires max_lazy >= MIN_MATCH and max_chain >= 4
+//  159  * For deflate_fast() (levels <= 3) good is ignored and lazy has a different
+//  160  * meaning.
+//  161  */
+//  162 
+//  163 #define EQUAL 0
+//  164 /* result of memcmp for equal strings */
+//  165 
+//  166 #ifndef NO_DUMMY_DECL
+//  167 struct static_tree_desc_s {int dummy;}; /* for buggy compilers */
+//  168 #endif
+//  169 
+//  170 /* ===========================================================================
+//  171  * Update a hash value with the given input byte
+//  172  * IN  assertion: all calls to to UPDATE_HASH are made with consecutive
+//  173  *    input characters, so that a running hash key can be computed from the
+//  174  *    previous key instead of complete recalculation each time.
+//  175  */
+//  176 #define UPDATE_HASH(s,h,c) (h = (((h)<<s->hash_shift) ^ (c)) & s->hash_mask)
+//  177 
+//  178 
+//  179 /* ===========================================================================
+//  180  * Insert string str in the dictionary and set match_head to the previous head
+//  181  * of the hash chain (the most recent string with same hash key). Return
+//  182  * the previous length of the hash chain.
+//  183  * If this file is compiled with -DFASTEST, the compression level is forced
+//  184  * to 1, and no hash chains are maintained.
+//  185  * IN  assertion: all calls to to INSERT_STRING are made with consecutive
+//  186  *    input characters and the first MIN_MATCH bytes of str are valid
+//  187  *    (except for the last MIN_MATCH-1 bytes of the input file).
+//  188  */
+//  189 #ifdef FASTEST
+//  190 #define INSERT_STRING(s, str, match_head) \ 
+//  191    (UPDATE_HASH(s, s->ins_h, s->window[(str) + (MIN_MATCH-1)]), \ 
+//  192     match_head = s->head[s->ins_h], \ 
+//  193     s->head[s->ins_h] = (Pos)(str))
+//  194 #else
+//  195 #define INSERT_STRING(s, str, match_head) \ 
+//  196    (UPDATE_HASH(s, s->ins_h, s->window[(str) + (MIN_MATCH-1)]), \ 
+//  197     match_head = s->prev[(str) & s->w_mask] = s->head[s->ins_h], \ 
+//  198     s->head[s->ins_h] = (Pos)(str))
+//  199 #endif
+//  200 
+//  201 /* ===========================================================================
+//  202  * Initialize the hash table (avoiding 64K overflow for 16 bit systems).
+//  203  * prev[] will be initialized on the fly.
+//  204  */
+//  205 #define CLEAR_HASH(s) \ 
+//  206     s->head[s->hash_size-1] = NIL; \ 
+//  207     zmemzero((Bytef *)s->head, (unsigned)(s->hash_size-1)*sizeof(*s->head));
+//  208 
+//  209 /* ========================================================================= */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function deflateInit_
+        ARM
+//  210 int ZEXPORT deflateInit_(strm, level, version, stream_size)
+//  211     z_streamp strm;
+//  212     int level;
+//  213     const char *version;
+//  214     int stream_size;
+//  215 {
+deflateInit_:
+        PUSH     {LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI CFA R13+4
+//  216     return deflateInit2_(strm, level, Z_DEFLATED, MAX_WBITS, DEF_MEM_LEVEL,
+//  217                          Z_DEFAULT_STRATEGY, version, stream_size);
+        PUSH     {R3}
+        CFI CFA R13+8
+        PUSH     {R2}
+        CFI CFA R13+12
+        MOV      R2,#+0
+        PUSH     {R2}
+        CFI CFA R13+16
+        MOV      R3,#+15
+        MOV      R2,#+8
+        PUSH     {R2}
+        CFI CFA R13+20
+        BL       deflateInit2_
+        ADD      SP,SP,#+16
+        CFI CFA R13+4
+        POP      {PC}             ;; return
+        CFI EndBlock cfiBlock1
+//  218     /* To do: ignore strm->next_in if we use it as window */
+//  219 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??deflateInit2_??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE deflateInit2_
+//  220 
+//  221 /* ========================================================================= */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function deflateInit2_
+        ARM
+//  222 int ZEXPORT deflateInit2_(strm, level, method, windowBits, memLevel, strategy,
+//  223                   version, stream_size)
+//  224     z_streamp strm;
+//  225     int  level;
+//  226     int  method;
+//  227     int  windowBits;
+//  228     int  memLevel;
+//  229     int  strategy;
+//  230     const char *version;
+//  231     int stream_size;
+//  232 {
+deflateInit2_:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+        LDR      R6,[SP, #+36]
+        LDR      R7,[SP, #+40]
+        MOV      R4,R0
+        LDR      R0,[SP, #+44]
+        MOV      R5,R1
+        LDR      R1,[SP, #+48]
+        MOV      R9,R3
+//  233     deflate_state *s;
+//  234     int wrap = 1;
+        MOV      R10,#+1
+//  235     static const char my_version[] = ZLIB_VERSION;
+//  236 
+//  237     ushf *overlay;
+//  238     /* We overlay pending_buf and d_buf+l_buf. This works since the average
+//  239      * output size for (length,distance) codes is <= 24 bits.
+//  240      */
+//  241 
+//  242     if (version == Z_NULL || version[0] != my_version[0] ||
+//  243         stream_size != sizeof(z_stream)) {
+        CMP      R0,#+0
+        BEQ      ??deflateInit2__0
+        LDRB     R0,[R0, #+0]
+        CMP      R0,#+49
+        CMPEQ    R1,#+56
+        BEQ      ??deflateInit2__1
+//  244         return Z_VERSION_ERROR;
+??deflateInit2__0:
+        MVN      R0,#+5
+        POP      {R4-R11,PC}
+//  245     }
+//  246     if (strm == Z_NULL) return Z_STREAM_ERROR;
+??deflateInit2__1:
+        CMP      R4,#+0
+        BNE      ??deflateInit2__2
+??deflateInit2__3:
+        MVN      R0,#+1
+        POP      {R4-R11,PC}
+//  247 
+//  248     strm->msg = Z_NULL;
+??deflateInit2__2:
+        MOV      R11,#+0
+        STR      R11,[R4, #+24]
+//  249     if (strm->zalloc == (alloc_func)0) {
+        LDR      R0,[R4, #+32]
+        CMP      R0,#+0
+//  250         strm->zalloc = zcalloc;
+        LDREQ    R0,??deflateInit2__4  ;; zcalloc
+        STREQ    R0,[R4, #+32]
+//  251         strm->opaque = (voidpf)0;
+        STREQ    R11,[R4, #+40]
+//  252     }
+//  253     if (strm->zfree == (free_func)0) strm->zfree = zcfree;
+        LDR      R0,[R4, #+36]
+        CMP      R0,#+0
+        LDREQ    R0,??deflateInit2__4+0x4  ;; zcfree
+        STREQ    R0,[R4, #+36]
+//  254 
+//  255 #ifdef FASTEST
+//  256     if (level != 0) level = 1;
+//  257 #else
+//  258     if (level == Z_DEFAULT_COMPRESSION) level = 6;
+        CMN      R5,#+1
+        MOVEQ    R5,#+6
+//  259 #endif
+//  260 
+//  261     if (windowBits < 0) { /* suppress zlib wrapper */
+        CMP      R9,#+0
+//  262         wrap = 0;
+        MOVMI    R10,#+0
+//  263         windowBits = -windowBits;
+        RSBMI    R9,R9,#+0
+        BMI      ??deflateInit2__5
+//  264     }
+//  265 #ifdef GZIP
+//  266     else if (windowBits > 15) {
+        CMP      R9,#+16
+//  267         wrap = 2;       /* write gzip wrapper instead */
+        MOVGE    R10,#+2
+//  268         windowBits -= 16;
+        SUBGE    R9,R9,#+16
+//  269     }
+//  270 #endif
+//  271     if (memLevel < 1 || memLevel > MAX_MEM_LEVEL || method != Z_DEFLATED ||
+//  272         windowBits < 8 || windowBits > 15 || level < 0 || level > 9 ||
+//  273         strategy < 0 || strategy > Z_FIXED) {
+??deflateInit2__5:
+        CMP      R6,#+1
+        BLT      ??deflateInit2__3
+        CMP      R6,#+10
+        BGE      ??deflateInit2__3
+        CMP      R2,#+8
+        BNE      ??deflateInit2__3
+        CMP      R9,#+8
+        BLT      ??deflateInit2__3
+        CMP      R9,#+16
+        BGE      ??deflateInit2__3
+        CMP      R5,#+0
+        BMI      ??deflateInit2__3
+        CMP      R5,#+10
+        BGE      ??deflateInit2__3
+        CMP      R7,#+0
+        BMI      ??deflateInit2__3
+        CMP      R7,#+5
+        BGE      ??deflateInit2__3
+//  274         return Z_STREAM_ERROR;
+//  275     }
+//  276     if (windowBits == 8) windowBits = 9;  /* until 256-byte window bug fixed */
+//  277     s = (deflate_state *) ZALLOC(strm, 1, sizeof(deflate_state));
+        LDR      R0,[R4, #+40]
+        LDR      R3,[R4, #+32]
+        CMP      R9,#+8
+        MOVEQ    R9,#+9
+        MOV      R2,#+5824
+        MOV      R1,#+1
+        BLX      R3
+        MOVS     R8,R0
+//  278     if (s == Z_NULL) return Z_MEM_ERROR;
+        BEQ      ??deflateInit2__6
+//  279     strm->state = (struct internal_state FAR *)s;
+//  280     s->strm = strm;
+//  281 
+//  282     s->wrap = wrap;
+//  283     s->gzhead = Z_NULL;
+//  284     s->w_bits = windowBits;
+//  285     s->w_size = 1 << s->w_bits;
+//  286     s->w_mask = s->w_size - 1;
+//  287 
+//  288     s->hash_bits = memLevel + 7;
+//  289     s->hash_size = 1 << s->hash_bits;
+//  290     s->hash_mask = s->hash_size - 1;
+//  291     s->hash_shift =  ((s->hash_bits+MIN_MATCH-1)/MIN_MATCH);
+        LDR      R1,??deflateInit2__4+0x8  ;; 0xffffffffaaaaaaab
+        STR      R8,[R4, #+28]
+        STR      R4,[R8, #+0]
+        STR      R10,[R8, #+24]
+        STR      R11,[R8, #+28]
+        STR      R9,[R8, #+48]
+        MOV      R10,#+1
+        MOV      R0,R9
+        LSL      R0,R10,R0
+        STR      R0,[R8, #+44]
+        SUB      R0,R0,#+1
+        STR      R0,[R8, #+52]
+        ADD      R0,R6,#+7
+        STR      R0,[R8, #+80]
+        LSL      R0,R10,R0
+        STR      R0,[R8, #+76]
+        SUB      R0,R0,#+1
+        STR      R0,[R8, #+84]
+        LDR      R0,[R8, #+80]
+        ADD      R0,R0,#+2
+        UMULL    R2,R3,R1,R0
+//  292 
+//  293     s->window = (Bytef *) ZALLOC(strm, s->w_size, 2*sizeof(Byte));
+        MOV      R2,#+2
+        LSR      R3,R3,#+1
+        STR      R3,[R8, #+88]
+        LDR      R0,[R4, #+40]
+        LDR      R1,[R8, #+44]
+        LDR      R3,[R4, #+32]
+        BLX      R3
+        STR      R0,[R8, #+56]
+//  294     s->prev   = (Posf *)  ZALLOC(strm, s->w_size, sizeof(Pos));
+        LDR      R0,[R4, #+40]
+        LDR      R1,[R8, #+44]
+        LDR      R3,[R4, #+32]
+        MOV      R2,#+2
+        BLX      R3
+        STR      R0,[R8, #+64]
+//  295     s->head   = (Posf *)  ZALLOC(strm, s->hash_size, sizeof(Pos));
+        LDR      R0,[R4, #+40]
+        LDR      R1,[R8, #+76]
+        LDR      R3,[R4, #+32]
+        MOV      R2,#+2
+        BLX      R3
+        STR      R0,[R8, #+68]
+        MOV      R0,#+152
+        ORR      R0,R0,#0x1600
+        ADD      R9,R0,R8
+        ADD      R0,R6,#+6
+        LSL      R0,R10,R0
+        STR      R0,[R9, #+4]
+//  296 
+//  297     s->lit_bufsize = 1 << (memLevel + 6); /* 16K elements by default */
+//  298 
+//  299     overlay = (ushf *) ZALLOC(strm, s->lit_bufsize, sizeof(ush)+2);
+        LDR      R3,[R4, #+32]
+        MOV      R1,R0
+        LDR      R0,[R4, #+40]
+        MOV      R2,#+4
+        BLX      R3
+//  300     s->pending_buf = (uchf *) overlay;
+        STR      R0,[R8, #+8]
+//  301     s->pending_buf_size = (ulg)s->lit_bufsize * (sizeof(ush)+2L);
+        LDR      R1,[R9, #+4]
+        LSL      R2,R1,#+2
+        STR      R2,[R8, #+12]
+//  302 
+//  303     if (s->window == Z_NULL || s->prev == Z_NULL || s->head == Z_NULL ||
+//  304         s->pending_buf == Z_NULL) {
+        LDR      R2,[R8, #+56]
+        CMP      R2,#+0
+        LDRNE    R2,[R8, #+64]
+        CMPNE    R2,#+0
+        LDRNE    R2,[R8, #+68]
+        CMPNE    R2,#+0
+        MOVNE    R2,R0
+        CMPNE    R2,#+0
+        BNE      ??deflateInit2__7
+//  305         s->status = FINISH_STATE;
+        MOV      R0,#+154
+        ORR      R0,R0,#0x200
+        STR      R0,[R8, #+4]
+//  306         strm->msg = (char*)ERR_MSG(Z_MEM_ERROR);
+        LDR      R0,??deflateInit2__4+0xC  ;; z_errmsg + 24
+        LDR      R0,[R0, #+0]
+        STR      R0,[R4, #+24]
+//  307         deflateEnd (strm);
+        MOV      R0,R4
+        BL       deflateEnd
+//  308         return Z_MEM_ERROR;
+??deflateInit2__6:
+        MVN      R0,#+3
+        POP      {R4-R11,PC}
+//  309     }
+//  310     s->d_buf = overlay + s->lit_bufsize/sizeof(ush);
+??deflateInit2__7:
+        LSR      R3,R1,#+1
+        ADD      R0,R0,R3, LSL #+1
+        STR      R0,[R9, #+12]
+//  311     s->l_buf = s->pending_buf + (1+sizeof(ush))*s->lit_bufsize;
+        ADD      R0,R1,R1, LSL #+1
+        ADD      R0,R0,R2
+        STR      R0,[R9, #+0]
+//  312 
+//  313     s->level = level;
+        STR      R5,[R8, #+132]
+//  314     s->strategy = strategy;
+        STR      R7,[R8, #+136]
+//  315     s->method = (Byte)method;
+        MOV      R0,#+8
+        STRB     R0,[R8, #+36]
+//  316 
+//  317     return deflateReset(strm);
+        MOV      R0,R4
+        BL       deflateReset
+        POP      {R4-R11,PC}      ;; return
+        DATA
+??deflateInit2__4:
+        DC32     zcalloc
+        DC32     zcfree
+        DC32     0xffffffffaaaaaaab
+        DC32     z_errmsg + 24
+        CFI EndBlock cfiBlock3
+//  318 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??deflateSetDictionary??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE deflateSetDictionary
+//  319 
+//  320 /* ========================================================================= */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function deflateSetDictionary
+        ARM
+//  321 int ZEXPORT deflateSetDictionary (strm, dictionary, dictLength)
+//  322     z_streamp strm;
+//  323     const Bytef *dictionary;
+//  324     uInt  dictLength;
+//  325 {
+deflateSetDictionary:
+        PUSH     {R4-R8,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R8 Frame(CFA, -8)
+        CFI R7 Frame(CFA, -12)
+        CFI R6 Frame(CFA, -16)
+        CFI R5 Frame(CFA, -20)
+        CFI R4 Frame(CFA, -24)
+        CFI CFA R13+24
+        MOV      R6,R1
+        MOV      R7,R2
+        MOV      R8,R0
+//  326     deflate_state *s;
+//  327     uInt length = dictLength;
+//  328     uInt n;
+//  329     IPos hash_head = 0;
+//  330 
+//  331     if (strm == Z_NULL || strm->state == Z_NULL || dictionary == Z_NULL ||
+//  332         strm->state->wrap == 2 ||
+//  333         (strm->state->wrap == 1 && strm->state->status != INIT_STATE))
+        CMP      R8,#+0
+        LDRNE    R4,[R8, #+28]
+        MOV      R5,R7
+        CMPNE    R4,#+0
+        CMPNE    R6,#+0
+        LDRNE    R0,[R4, #+24]
+        CMPNE    R0,#+2
+        BEQ      ??deflateSetDictionary_0
+        CMP      R0,#+1
+        BNE      ??deflateSetDictionary_1
+        LDR      R0,[R4, #+4]
+        CMP      R0,#+42
+        BEQ      ??deflateSetDictionary_1
+//  334         return Z_STREAM_ERROR;
+??deflateSetDictionary_0:
+        MVN      R0,#+1
+        POP      {R4-R8,PC}       ;; return
+//  335 
+//  336     s = strm->state;
+//  337     if (s->wrap)
+??deflateSetDictionary_1:
+        LDR      R0,[R4, #+24]
+        CMP      R0,#+0
+        BEQ      ??deflateSetDictionary_2
+//  338         strm->adler = adler32(strm->adler, dictionary, dictLength);
+        LDR      R0,[R8, #+48]
+        _BLF     adler32,??adler32??rA
+        STR      R0,[R8, #+48]
+//  339 
+//  340     if (length < MIN_MATCH) return Z_OK;
+??deflateSetDictionary_2:
+        CMP      R5,#+3
+        BCS      ??deflateSetDictionary_3
+??deflateSetDictionary_4:
+        MOV      R0,#+0
+        POP      {R4-R8,PC}
+//  341     if (length > MAX_DIST(s)) {
+??deflateSetDictionary_3:
+        LDR      R0,[R4, #+44]
+        MVN      R1,#+5
+        BIC      R1,R1,#0x100
+        ADD      R0,R1,R0
+        CMP      R0,R5
+//  342         length = MAX_DIST(s);
+        MOVCC    R5,R0
+//  343         dictionary += dictLength - length; /* use the tail of the dictionary */
+        SUBCC    R0,R7,R5
+        ADDCC    R6,R0,R6
+//  344     }
+//  345     zmemcpy(s->window, dictionary, length);
+        LDR      R0,[R4, #+56]
+        MOV      R2,R5
+        MOV      R1,R6
+        SWI      +286
+//  346     s->strstart = length;
+        STR      R5,[R4, #+108]
+//  347     s->block_start = (long)length;
+        STR      R5,[R4, #+92]
+//  348 
+//  349     /* Insert all strings in the hash table (except for the last two bytes).
+//  350      * s->lookahead stays null, so s->ins_h will be recomputed at the next
+//  351      * call of fill_window.
+//  352      */
+//  353     s->ins_h = s->window[0];
+        LDR      R0,[R4, #+56]
+//  354     UPDATE_HASH(s, s->ins_h, s->window[1]);
+//  355     for (n = 0; n <= length - MIN_MATCH; n++) {
+        SUB      R5,R5,#+3
+        LDRB     R3,[R0, #+0]
+        STR      R3,[R4, #+72]
+        LDRB     R6,[R0, #+1]
+        LDR      R1,[R4, #+84]
+        LDR      R2,[R4, #+88]
+        EOR      R3,R6,R3, LSL R2
+        AND      R3,R1,R3
+        STR      R3,[R4, #+72]
+        MOV      R3,#+0
+??deflateSetDictionary_5:
+        CMP      R5,R3
+        BCC      ??deflateSetDictionary_4
+//  356         INSERT_STRING(s, n, hash_head);
+        LDR      R6,[R4, #+72]
+        ADD      R7,R3,R0
+        LDRB     R7,[R7, #+2]
+        EOR      R6,R7,R6, LSL R2
+        AND      R6,R1,R6
+        STR      R6,[R4, #+72]
+        LDR      R7,[R4, #+68]
+        LDR      R8,[R4, #+64]
+        ADD      R6,R7,R6, LSL #+1
+        LDR      R7,[R4, #+52]
+        AND      R7,R7,R3
+        ADD      R7,R8,R7, LSL #+1
+        LDRH     R8,[R6, #+0]
+        STRH     R8,[R7, #+0]
+        STRH     R3,[R6, #+0]
+//  357     }
+        ADD      R3,R3,#+1
+        B        ??deflateSetDictionary_5
+        CFI EndBlock cfiBlock5
+//  358     if (hash_head) hash_head = 0;  /* to make compiler happy */
+//  359     return Z_OK;
+//  360 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??deflateReset??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE deflateReset
+//  361 
+//  362 /* ========================================================================= */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function deflateReset
+        ARM
+//  363 int ZEXPORT deflateReset (strm)
+//  364     z_streamp strm;
+//  365 {
+deflateReset:
+        PUSH     {R4-R6,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R6 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -12)
+        CFI R4 Frame(CFA, -16)
+        CFI CFA R13+16
+        MOVS     R4,R0
+//  366     deflate_state *s;
+//  367 
+//  368     if (strm == Z_NULL || strm->state == Z_NULL ||
+//  369         strm->zalloc == (alloc_func)0 || strm->zfree == (free_func)0) {
+        LDRNE    R5,[R4, #+28]
+        CMPNE    R5,#+0
+        LDRNE    R0,[R4, #+32]
+        CMPNE    R0,#+0
+        LDRNE    R0,[R4, #+36]
+        CMPNE    R0,#+0
+//  370         return Z_STREAM_ERROR;
+        MVNEQ    R0,#+1
+        POPEQ    {R4-R6,PC}
+//  371     }
+//  372 
+//  373     strm->total_in = strm->total_out = 0;
+        MOV      R6,#+0
+        STR      R6,[R4, #+20]
+        STR      R6,[R4, #+8]
+//  374     strm->msg = Z_NULL; /* use zfree if we ever allocate msg dynamically */
+        STR      R6,[R4, #+24]
+//  375     strm->data_type = Z_UNKNOWN;
+        MOV      R0,#+2
+        STR      R0,[R4, #+44]
+//  376 
+//  377     s = (deflate_state *)strm->state;
+//  378     s->pending = 0;
+        STR      R6,[R5, #+20]
+//  379     s->pending_out = s->pending_buf;
+        LDR      R0,[R5, #+8]
+//  380 
+//  381     if (s->wrap < 0) {
+//  382         s->wrap = -s->wrap; /* was made negative by deflate(..., Z_FINISH); */
+//  383     }
+//  384     s->status = s->wrap ? INIT_STATE : BUSY_STATE;
+//  385     strm->adler =
+//  386 #ifdef GZIP
+//  387         s->wrap == 2 ? crc32(0L, Z_NULL, 0) :
+//  388 #endif
+//  389         adler32(0L, Z_NULL, 0);
+        MOV      R2,#+0
+        STR      R0,[R5, #+16]
+        LDR      R0,[R5, #+24]
+        MOV      R1,R2
+        CMP      R0,#+0
+        RSBMI    R0,R0,#+0
+        STRMI    R0,[R5, #+24]
+        LDR      R0,[R5, #+24]
+        CMP      R0,#+0
+        MOVNE    R0,#+42
+        MOVEQ    R0,#+113
+        STR      R0,[R5, #+4]
+        LDR      R0,[R5, #+24]
+        CMP      R0,#+2
+        MOV      R0,R1
+        BNE      ??deflateReset_0
+        _BLF     crc32,??crc32??rA
+        B        ??deflateReset_1
+??deflateReset_0:
+        _BLF     adler32,??adler32??rA
+??deflateReset_1:
+        STR      R0,[R4, #+48]
+//  390     s->last_flush = Z_NO_FLUSH;
+        STR      R6,[R5, #+40]
+//  391 
+//  392     _tr_init(s);
+        MOV      R0,R5
+        _BLF     _tr_init,??_tr_init??rA
+//  393     lm_init(s);
+        MOV      R0,R5
+        BL       lm_init
+//  394 
+//  395     return Z_OK;
+        MOV      R0,#+0
+        POP      {R4-R6,PC}       ;; return
+        CFI EndBlock cfiBlock7
+//  396 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??deflateSetHeader??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE deflateSetHeader
+//  397 
+//  398 /* ========================================================================= */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function deflateSetHeader
+        ARM
+//  399 int ZEXPORT deflateSetHeader (strm, head)
+//  400     z_streamp strm;
+//  401     gz_headerp head;
+//  402 {
+//  403     if (strm == Z_NULL || strm->state == Z_NULL) return Z_STREAM_ERROR;
+deflateSetHeader:
+        CMP      R0,#+0
+        LDRNE    R0,[R0, #+28]
+        CMPNE    R0,#+0
+        BEQ      ??deflateSetHeader_0
+//  404     if (strm->state->wrap != 2) return Z_STREAM_ERROR;
+        LDR      R2,[R0, #+24]
+        CMP      R2,#+2
+        BEQ      ??deflateSetHeader_1
+??deflateSetHeader_0:
+        MVN      R0,#+1
+        BX       LR
+//  405     strm->state->gzhead = head;
+??deflateSetHeader_1:
+        STR      R1,[R0, #+28]
+//  406     return Z_OK;
+        MOV      R0,#+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock9
+//  407 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??deflatePrime??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock10
+        REQUIRE deflatePrime
+//  408 
+//  409 /* ========================================================================= */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock11 Using cfiCommon1
+        CFI Function deflatePrime
+        ARM
+//  410 int ZEXPORT deflatePrime (strm, bits, value)
+//  411     z_streamp strm;
+//  412     int bits;
+//  413     int value;
+//  414 {
+//  415     if (strm == Z_NULL || strm->state == Z_NULL) return Z_STREAM_ERROR;
+deflatePrime:
+        CMP      R0,#+0
+        LDRNE    R0,[R0, #+28]
+        CMPNE    R0,#+0
+        MVNEQ    R0,#+1
+        BXEQ     LR
+//  416     strm->state->bi_valid = bits;
+        MOV      R3,#+184
+        ORR      R3,R3,#0x1600
+        ADD      R0,R3,R0
+        STR      R1,[R0, #+4]
+//  417     strm->state->bi_buf = (ush)(value & ((1 << bits) - 1));
+        MOV      R3,#+1
+        LSL      R1,R3,R1
+        MOV      R3,#+255
+        ORR      R3,R3,#0xFF00
+        ADD      R1,R3,R1
+        AND      R1,R1,R2
+        STRH     R1,[R0, #+0]
+//  418     return Z_OK;
+        MOV      R0,#+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock11
+//  419 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock12 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??deflateParams??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock12
+        REQUIRE deflateParams
+//  420 
+//  421 /* ========================================================================= */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock13 Using cfiCommon1
+        CFI Function deflateParams
+        ARM
+//  422 int ZEXPORT deflateParams(strm, level, strategy)
+//  423     z_streamp strm;
+//  424     int level;
+//  425     int strategy;
+//  426 {
+deflateParams:
+        PUSH     {R4-R7,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R7 Frame(CFA, -8)
+        CFI R6 Frame(CFA, -12)
+        CFI R5 Frame(CFA, -16)
+        CFI R4 Frame(CFA, -20)
+        CFI CFA R13+20
+//  427     deflate_state *s;
+//  428     compress_func func;
+//  429     int err = Z_OK;
+//  430 
+//  431     if (strm == Z_NULL || strm->state == Z_NULL) return Z_STREAM_ERROR;
+        CMP      R0,#+0
+        LDRNE    R7,[R0, #+28]
+        MOV      R5,R1
+        MOV      R4,R2
+        MOV      R1,#+0
+        CMPNE    R7,#+0
+        BNE      ??deflateParams_0
+??deflateParams_1:
+        MVN      R0,#+1
+        POP      {R4-R7,PC}
+//  432     s = strm->state;
+//  433 
+//  434 #ifdef FASTEST
+//  435     if (level != 0) level = 1;
+//  436 #else
+//  437     if (level == Z_DEFAULT_COMPRESSION) level = 6;
+??deflateParams_0:
+        CMN      R5,#+1
+        MOVEQ    R5,#+6
+        BEQ      ??deflateParams_2
+//  438 #endif
+//  439     if (level < 0 || level > 9 || strategy < 0 || strategy > Z_FIXED) {
+        CMP      R5,#+0
+        BMI      ??deflateParams_1
+        CMP      R5,#+10
+        BGE      ??deflateParams_1
+??deflateParams_2:
+        CMP      R4,#+0
+        BMI      ??deflateParams_1
+        CMP      R4,#+5
+        BGE      ??deflateParams_1
+//  440         return Z_STREAM_ERROR;
+//  441     }
+//  442     func = configuration_table[s->level].func;
+//  443 
+//  444     if (func != configuration_table[level].func && strm->total_in != 0) {
+        LDR      R2,??DataTable1  ;; configuration_table
+        MOV      R3,#+12
+        MLA      R6,R3,R5,R2
+        LDR      R3,[R7, #+132]
+        MOV      R12,#+12
+        MLA      R2,R12,R3,R2
+        LDR      R3,[R6, #+8]
+        LDR      R2,[R2, #+8]
+        CMP      R2,R3
+        LDRNE    R2,[R0, #+8]
+        CMPNE    R2,#+0
+        BEQ      ??deflateParams_3
+//  445         /* Flush the last buffer: */
+//  446         err = deflate(strm, Z_PARTIAL_FLUSH);
+        MOV      R1,#+1
+        BL       deflate
+        MOV      R1,R0
+//  447     }
+//  448     if (s->level != level) {
+??deflateParams_3:
+        LDR      R0,[R7, #+132]
+        CMP      R0,R5
+        BEQ      ??deflateParams_4
+//  449         s->level = level;
+        STR      R5,[R7, #+132]
+//  450         s->max_lazy_match   = configuration_table[level].max_lazy;
+        LDRH     R0,[R6, #+2]
+        STR      R0,[R7, #+128]
+//  451         s->good_match       = configuration_table[level].good_length;
+        LDRH     R0,[R6, #+0]
+        STR      R0,[R7, #+140]
+//  452         s->nice_match       = configuration_table[level].nice_length;
+        LDRH     R0,[R6, #+4]
+        STR      R0,[R7, #+144]
+//  453         s->max_chain_length = configuration_table[level].max_chain;
+        LDRH     R0,[R6, #+6]
+        STR      R0,[R7, #+124]
+//  454     }
+//  455     s->strategy = strategy;
+??deflateParams_4:
+        STR      R4,[R7, #+136]
+//  456     return err;
+        MOV      R0,R1
+        POP      {R4-R7,PC}       ;; return
+        CFI EndBlock cfiBlock13
+//  457 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock14 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??deflateTune??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock14
+        REQUIRE deflateTune
+//  458 
+//  459 /* ========================================================================= */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock15 Using cfiCommon1
+        CFI Function deflateTune
+        ARM
+//  460 int ZEXPORT deflateTune(strm, good_length, max_lazy, nice_length, max_chain)
+//  461     z_streamp strm;
+//  462     int good_length;
+//  463     int max_lazy;
+//  464     int nice_length;
+//  465     int max_chain;
+//  466 {
+deflateTune:
+        LDR      R12,[SP, #+0]
+//  467     deflate_state *s;
+//  468 
+//  469     if (strm == Z_NULL || strm->state == Z_NULL) return Z_STREAM_ERROR;
+        CMP      R0,#+0
+        LDRNE    R0,[R0, #+28]
+        CMPNE    R0,#+0
+        MVNEQ    R0,#+1
+        BXEQ     LR
+//  470     s = strm->state;
+//  471     s->good_match = good_length;
+        STR      R1,[R0, #+140]
+//  472     s->max_lazy_match = max_lazy;
+        STR      R2,[R0, #+128]
+//  473     s->nice_match = nice_length;
+        STR      R3,[R0, #+144]
+//  474     s->max_chain_length = max_chain;
+        STR      R12,[R0, #+124]
+//  475     return Z_OK;
+        MOV      R0,#+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock15
+//  476 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock16 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??deflateBound??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock16
+        REQUIRE deflateBound
+//  477 
+//  478 /* =========================================================================
+//  479  * For the default windowBits of 15 and memLevel of 8, this function returns
+//  480  * a close to exact, as well as small, upper bound on the compressed size.
+//  481  * They are coded as constants here for a reason--if the #define's are
+//  482  * changed, then this function needs to be changed as well.  The return
+//  483  * value for 15 and 8 only works for those exact settings.
+//  484  *
+//  485  * For any setting other than those defaults for windowBits and memLevel,
+//  486  * the value returned is a conservative worst case for the maximum expansion
+//  487  * resulting from using fixed blocks instead of stored blocks, which deflate
+//  488  * can emit on compressed data for some combinations of the parameters.
+//  489  *
+//  490  * This function could be more sophisticated to provide closer upper bounds
+//  491  * for every combination of windowBits and memLevel, as well as wrap.
+//  492  * But even the conservative upper bound of about 14% expansion does not
+//  493  * seem onerous for output buffer allocation.
+//  494  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock17 Using cfiCommon1
+        CFI Function deflateBound
+        ARM
+//  495 uLong ZEXPORT deflateBound(strm, sourceLen)
+//  496     z_streamp strm;
+//  497     uLong sourceLen;
+//  498 {
+//  499     deflate_state *s;
+//  500     uLong destLen;
+//  501 
+//  502     /* conservative upper bound */
+//  503     destLen = sourceLen +
+//  504               ((sourceLen + 7) >> 3) + ((sourceLen + 63) >> 6) + 11;
+//  505 
+//  506     /* if can't get parameters, return conservative bound */
+//  507     if (strm == Z_NULL || strm->state == Z_NULL)
+deflateBound:
+        CMP      R0,#+0
+        LDRNE    R0,[R0, #+28]
+        ADD      R2,R1,#+7
+        ADD      R2,R1,R2, LSR #+3
+        ADD      R3,R1,#+63
+        ADD      R2,R2,R3, LSR #+6
+        ADD      R2,R2,#+11
+        CMPNE    R0,#+0
+        BNE      ??deflateBound_0
+//  508         return destLen;
+??deflateBound_1:
+        MOV      R0,R2
+        BX       LR
+//  509 
+//  510     /* if not default parameters, return conservative bound */
+//  511     s = strm->state;
+//  512     if (s->w_bits != 15 || s->hash_bits != 8 + 7)
+??deflateBound_0:
+        LDR      R3,[R0, #+48]
+        CMP      R3,#+15
+        LDREQ    R0,[R0, #+80]
+        CMPEQ    R0,#+15
+        BNE      ??deflateBound_1
+//  513         return destLen;
+//  514 
+//  515     /* default settings: return tight bound for that case */
+//  516     return compressBound(sourceLen);
+        MOV      R0,R1
+        _BF      compressBound,??compressBound??rA  ;; tailcall
+        CFI EndBlock cfiBlock17
+//  517 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock18 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??putShortMSB??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock18
+        REQUIRE putShortMSB
+//  518 
+//  519 /* =========================================================================
+//  520  * Put a short in the pending buffer. The 16-bit value is put in MSB order.
+//  521  * IN assertion: the stream state is correct and there is enough room in
+//  522  * pending_buf.
+//  523  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock19 Using cfiCommon1
+        CFI Function putShortMSB
+        ARM
+//  524 local void putShortMSB (s, b)
+//  525     deflate_state *s;
+//  526     uInt b;
+//  527 {
+//  528     put_byte(s, (Byte)(b >> 8));
+putShortMSB:
+        LDR      R2,[R0, #+20]
+        LSR      R12,R1,#+8
+        ADD      R3,R2,#+1
+        STR      R3,[R0, #+20]
+        LDR      R3,[R0, #+8]
+        STRB     R12,[R2, +R3]
+//  529     put_byte(s, (Byte)(b & 0xff));
+        LDR      R2,[R0, #+20]
+        ADD      R3,R2,#+1
+        STR      R3,[R0, #+20]
+        LDR      R0,[R0, #+8]
+        STRB     R1,[R2, +R0]
+//  530 }
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock19
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock20 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??flush_pending??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock20
+        REQUIRE flush_pending
+//  531 
+//  532 /* =========================================================================
+//  533  * Flush as much pending output as possible. All deflate() output goes
+//  534  * through this function so some applications may wish to modify it
+//  535  * to avoid allocating a large strm->next_out buffer and copying into it.
+//  536  * (See also read_buf()).
+//  537  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock21 Using cfiCommon1
+        CFI Function flush_pending
+        ARM
+//  538 local void flush_pending(strm)
+//  539     z_streamp strm;
+//  540 {
+flush_pending:
+        PUSH     {R4,R5,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+        MOV      R4,R0
+//  541     unsigned len = strm->state->pending;
+        LDR      R0,[R4, #+28]
+//  542 
+//  543     if (len > strm->avail_out) len = strm->avail_out;
+        LDR      R1,[R4, #+16]
+        LDR      R5,[R0, #+20]
+        CMP      R1,R5
+        MOVCC    R5,R1
+//  544     if (len == 0) return;
+        CMP      R5,#+0
+        POPEQ    {R4,R5,PC}
+//  545 
+//  546     zmemcpy(strm->next_out, strm->state->pending_out, len);
+        LDR      R1,[R0, #+16]
+        LDR      R0,[R4, #+12]
+        MOV      R2,R5
+        SWI      +286
+//  547     strm->next_out  += len;
+        LDR      R0,[R4, #+12]
+        ADD      R0,R5,R0
+        STR      R0,[R4, #+12]
+//  548     strm->state->pending_out  += len;
+        LDR      R0,[R4, #+28]
+        LDR      R1,[R0, #+16]
+        ADD      R1,R5,R1
+        STR      R1,[R0, #+16]
+//  549     strm->total_out += len;
+        LDR      R1,[R4, #+20]
+        ADD      R1,R5,R1
+        STR      R1,[R4, #+20]
+//  550     strm->avail_out  -= len;
+        LDR      R1,[R4, #+16]
+        SUB      R1,R1,R5
+        STR      R1,[R4, #+16]
+//  551     strm->state->pending -= len;
+        LDR      R1,[R0, #+20]
+        SUB      R1,R1,R5
+        STR      R1,[R0, #+20]
+//  552     if (strm->state->pending == 0) {
+        CMP      R1,#+0
+//  553         strm->state->pending_out = strm->state->pending_buf;
+        LDREQ    R1,[R0, #+8]
+        STREQ    R1,[R0, #+16]
+        POP      {R4,R5,PC}       ;; return
+        CFI EndBlock cfiBlock21
+//  554     }
+//  555 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock22 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??deflate??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock22
+        REQUIRE deflate
+//  556 
+//  557 /* ========================================================================= */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock23 Using cfiCommon1
+        CFI Function deflate
+        ARM
+//  558 int ZEXPORT deflate (strm, flush)
+//  559     z_streamp strm;
+//  560     int flush;
+//  561 {
+deflate:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+        SUB      SP,SP,#+4
+        CFI CFA R13+40
+        MOV      R5,R0
+//  562     int old_flush; /* value of flush param for previous deflate call */
+//  563     deflate_state *s;
+//  564 
+//  565     if (strm == Z_NULL || strm->state == Z_NULL ||
+//  566         flush > Z_FINISH || flush < 0) {
+        CMP      R5,#+0
+        LDRNE    R7,[R5, #+28]
+        MOV      R6,R1
+        CMPNE    R7,#+0
+        BEQ      ??deflate_0
+        CMP      R6,#+5
+        BGE      ??deflate_0
+        CMP      R6,#+0
+        BMI      ??deflate_0
+//  567         return Z_STREAM_ERROR;
+//  568     }
+//  569     s = strm->state;
+        LDR      R0,[R5, #+12]
+        CMP      R0,#+0
+        BEQ      ??deflate_1
+        LDR      R0,[R5, #+0]
+        CMP      R0,#+0
+        BNE      ??deflate_2
+        LDR      R0,[R5, #+4]
+        CMP      R0,#+0
+        BNE      ??deflate_1
+??deflate_2:
+        LDR      R0,[R7, #+4]
+        MOV      R1,#+154
+        ORR      R1,R1,#0x200
+        CMP      R0,R1
+        BNE      ??deflate_3
+        CMP      R6,#+4
+        BEQ      ??deflate_3
+//  570 
+//  571     if (strm->next_out == Z_NULL ||
+//  572         (strm->next_in == Z_NULL && strm->avail_in != 0) ||
+//  573         (s->status == FINISH_STATE && flush != Z_FINISH)) {
+//  574         ERR_RETURN(strm, Z_STREAM_ERROR);
+??deflate_1:
+        LDR      R0,??deflate_4   ;; z_errmsg + 16
+        LDR      R0,[R0, #+0]
+        STR      R0,[R5, #+24]
+??deflate_0:
+        MVN      R0,#+1
+        POP      {R1,R4-R11,PC}
+//  575     }
+//  576     if (strm->avail_out == 0) ERR_RETURN(strm, Z_BUF_ERROR);
+??deflate_3:
+        LDR      R1,[R5, #+16]
+        CMP      R1,#+0
+        BNE      ??deflate_5
+??deflate_6:
+        LDR      R0,??deflate_4+0x4  ;; z_errmsg + 28
+        LDR      R0,[R0, #+0]
+        STR      R0,[R5, #+24]
+        MVN      R0,#+4
+        POP      {R1,R4-R11,PC}
+//  577 
+//  578     s->strm = strm; /* just in case */
+??deflate_5:
+        STR      R5,[R7, #+0]
+//  579     old_flush = s->last_flush;
+        LDR      R2,[R7, #+40]
+//  580     s->last_flush = flush;
+        MOV      R8,#+113
+        STR      R2,[SP, #+0]
+        STR      R6,[R7, #+40]
+        MOV      R9,#+0
+        CMP      R0,#+42
+        BNE      ??deflate_7
+        LDR      R0,[R7, #+24]
+        MOV      R4,#+2
+        CMP      R0,#+2
+        BNE      ??deflate_8
+//  581 
+//  582     /* Write the header */
+//  583     if (s->status == INIT_STATE) {
+//  584 #ifdef GZIP
+//  585         if (s->wrap == 2) {
+//  586             strm->adler = crc32(0L, Z_NULL, 0);
+        MOV      R2,#+0
+        MOV      R1,R2
+        MOV      R0,R1
+        _BLF     crc32,??crc32??rA
+        STR      R0,[R5, #+48]
+//  587             put_byte(s, 31);
+        LDR      R0,[R7, #+20]
+        MOV      R2,#+31
+        ADD      R1,R0,#+1
+        STR      R1,[R7, #+20]
+        LDR      R1,[R7, #+8]
+        STRB     R2,[R0, +R1]
+//  588             put_byte(s, 139);
+        LDR      R0,[R7, #+20]
+        MOV      R2,#+139
+        ADD      R1,R0,#+1
+        STR      R1,[R7, #+20]
+        LDR      R1,[R7, #+8]
+        STRB     R2,[R0, +R1]
+//  589             put_byte(s, 8);
+        LDR      R0,[R7, #+20]
+        MOV      R2,#+8
+        ADD      R1,R0,#+1
+        STR      R1,[R7, #+20]
+        LDR      R1,[R7, #+8]
+        STRB     R2,[R0, +R1]
+//  590             if (s->gzhead == NULL) {
+        LDR      R10,[R7, #+28]
+        LDR      R1,[R7, #+20]
+        MOV      R0,#+4
+        CMP      R10,#+0
+        ADD      R2,R1,#+1
+        STR      R2,[R7, #+20]
+        BNE      ??deflate_9
+//  591                 put_byte(s, 0);
+        LDR      R2,[R7, #+8]
+        STRB     R9,[R1, +R2]
+//  592                 put_byte(s, 0);
+        LDR      R1,[R7, #+20]
+        ADD      R2,R1,#+1
+        STR      R2,[R7, #+20]
+        LDR      R2,[R7, #+8]
+        STRB     R9,[R1, +R2]
+//  593                 put_byte(s, 0);
+        LDR      R1,[R7, #+20]
+        ADD      R2,R1,#+1
+        STR      R2,[R7, #+20]
+        LDR      R2,[R7, #+8]
+        STRB     R9,[R1, +R2]
+//  594                 put_byte(s, 0);
+        LDR      R1,[R7, #+20]
+        ADD      R2,R1,#+1
+        STR      R2,[R7, #+20]
+        LDR      R2,[R7, #+8]
+        STRB     R9,[R1, +R2]
+//  595                 put_byte(s, 0);
+        LDR      R1,[R7, #+20]
+        ADD      R2,R1,#+1
+        STR      R2,[R7, #+20]
+        LDR      R2,[R7, #+8]
+        STRB     R9,[R1, +R2]
+//  596                 put_byte(s, s->level == 9 ? 2 :
+//  597                             (s->strategy >= Z_HUFFMAN_ONLY || s->level < 2 ?
+//  598                              4 : 0));
+        LDR      R1,[R7, #+20]
+        ADD      R2,R1,#+1
+        STR      R2,[R7, #+20]
+        LDR      R2,[R7, #+132]
+        CMP      R2,#+9
+        MOVEQ    R0,#+2
+        BEQ      ??deflate_10
+        LDR      R3,[R7, #+136]
+        CMP      R3,#+2
+        BGE      ??deflate_10
+        CMP      R2,#+2
+        MOVGE    R0,#+0
+??deflate_10:
+        LDR      R2,[R7, #+8]
+        STRB     R0,[R1, +R2]
+//  599                 put_byte(s, OS_CODE);
+        LDR      R0,[R7, #+20]
+        MOV      R2,#+3
+        ADD      R1,R0,#+1
+        STR      R1,[R7, #+20]
+        LDR      R1,[R7, #+8]
+        STRB     R2,[R0, +R1]
+//  600                 s->status = BUSY_STATE;
+        B        ??deflate_11
+//  601             }
+//  602             else {
+//  603                 put_byte(s, (s->gzhead->text ? 1 : 0) +
+//  604                             (s->gzhead->hcrc ? 2 : 0) +
+//  605                             (s->gzhead->extra == Z_NULL ? 0 : 4) +
+//  606                             (s->gzhead->name == Z_NULL ? 0 : 8) +
+//  607                             (s->gzhead->comment == Z_NULL ? 0 : 16)
+//  608                         );
+??deflate_9:
+        LDR      R2,[R10, #+0]
+        LDR      R3,[R10, #+44]
+        LDR      R11,[R10, #+16]
+        CMP      R2,#+0
+        MOVNE    R2,#+1
+        CMP      R3,#+0
+        MOVNE    R3,#+2
+        CMP      R11,#+0
+        LDR      R11,[R10, #+28]
+        LDR      R10,[R10, #+36]
+        MOVEQ    R12,#+0
+        MOVNE    R12,#+4
+        CMP      R11,#+0
+        LDR      R11,[R7, #+8]
+        MOVEQ    LR,#+0
+        MOVNE    LR,#+8
+        CMP      R10,#+0
+        MOVNE    R10,#+16
+        ADD      R2,R3,R2
+        ADD      R2,R12,R2
+        ADD      R2,LR,R2
+        ADD      R2,R10,R2
+        STRB     R2,[R1, +R11]
+//  609                 put_byte(s, (Byte)(s->gzhead->time & 0xff));
+        LDR      R1,[R7, #+20]
+        ADD      R2,R1,#+1
+        STR      R2,[R7, #+20]
+        LDR      R3,[R7, #+28]
+        LDR      R2,[R7, #+8]
+        LDR      R3,[R3, #+4]
+        STRB     R3,[R1, +R2]
+//  610                 put_byte(s, (Byte)((s->gzhead->time >> 8) & 0xff));
+        LDR      R1,[R7, #+20]
+        ADD      R2,R1,#+1
+        STR      R2,[R7, #+20]
+        LDR      R3,[R7, #+28]
+        LDR      R2,[R7, #+8]
+        LDR      R3,[R3, #+4]
+        LSR      R3,R3,#+8
+        STRB     R3,[R1, +R2]
+//  611                 put_byte(s, (Byte)((s->gzhead->time >> 16) & 0xff));
+        LDR      R1,[R7, #+20]
+        ADD      R2,R1,#+1
+        STR      R2,[R7, #+20]
+        LDR      R3,[R7, #+28]
+        LDR      R2,[R7, #+8]
+        LDR      R3,[R3, #+4]
+        LSR      R3,R3,#+16
+        STRB     R3,[R1, +R2]
+//  612                 put_byte(s, (Byte)((s->gzhead->time >> 24) & 0xff));
+        LDR      R1,[R7, #+20]
+        ADD      R2,R1,#+1
+        STR      R2,[R7, #+20]
+        LDR      R3,[R7, #+28]
+        LDR      R2,[R7, #+8]
+        LDR      R3,[R3, #+4]
+        LSR      R3,R3,#+24
+        STRB     R3,[R1, +R2]
+//  613                 put_byte(s, s->level == 9 ? 2 :
+//  614                             (s->strategy >= Z_HUFFMAN_ONLY || s->level < 2 ?
+//  615                              4 : 0));
+        LDR      R1,[R7, #+20]
+        ADD      R2,R1,#+1
+        STR      R2,[R7, #+20]
+        LDR      R2,[R7, #+132]
+        CMP      R2,#+9
+        BEQ      ??deflate_12
+        LDR      R3,[R7, #+136]
+        CMP      R3,#+2
+        BGE      ??deflate_13
+        CMP      R2,#+2
+        BGE      ??deflate_14
+??deflate_13:
+        MOV      R4,#+4
+        B        ??deflate_12
+??deflate_14:
+        MOV      R4,#+0
+??deflate_12:
+        LDR      R0,[R7, #+8]
+        STRB     R4,[R1, +R0]
+//  616                 put_byte(s, s->gzhead->os & 0xff);
+        LDR      R0,[R7, #+20]
+        ADD      R1,R0,#+1
+        STR      R1,[R7, #+20]
+        LDR      R2,[R7, #+28]
+        LDR      R1,[R7, #+8]
+        LDR      R2,[R2, #+12]
+        STRB     R2,[R0, +R1]
+//  617                 if (s->gzhead->extra != NULL) {
+        LDR      R0,[R7, #+28]
+        LDR      R1,[R0, #+16]
+        CMP      R1,#+0
+        BEQ      ??deflate_15
+//  618                     put_byte(s, s->gzhead->extra_len & 0xff);
+        LDR      R1,[R7, #+20]
+        ADD      R2,R1,#+1
+        STR      R2,[R7, #+20]
+        LDR      R2,[R7, #+8]
+        LDR      R0,[R0, #+20]
+        STRB     R0,[R1, +R2]
+//  619                     put_byte(s, (s->gzhead->extra_len >> 8) & 0xff);
+        LDR      R0,[R7, #+20]
+        ADD      R1,R0,#+1
+        STR      R1,[R7, #+20]
+        LDR      R2,[R7, #+28]
+        LDR      R1,[R7, #+8]
+        LDR      R2,[R2, #+20]
+        LSR      R2,R2,#+8
+        STRB     R2,[R0, +R1]
+//  620                 }
+//  621                 if (s->gzhead->hcrc)
+??deflate_15:
+        LDR      R0,[R7, #+28]
+        LDR      R0,[R0, #+44]
+        CMP      R0,#+0
+        BEQ      ??deflate_16
+//  622                     strm->adler = crc32(strm->adler, s->pending_buf,
+//  623                                         s->pending);
+        LDR      R0,[R5, #+48]
+        LDR      R2,[R7, #+20]
+        LDR      R1,[R7, #+8]
+        _BLF     crc32,??crc32??rA
+        STR      R0,[R5, #+48]
+//  624                 s->gzindex = 0;
+??deflate_16:
+        STR      R9,[R7, #+32]
+//  625                 s->status = EXTRA_STATE;
+        MOV      R0,#+69
+        STR      R0,[R7, #+4]
+        B        ??deflate_17
+//  626             }
+//  627         }
+//  628         else
+//  629 #endif
+//  630         {
+//  631             uInt header = (Z_DEFLATED + ((s->w_bits-8)<<4)) << 8;
+//  632             uInt level_flags;
+//  633 
+//  634             if (s->strategy >= Z_HUFFMAN_ONLY || s->level < 2)
+??deflate_8:
+        LDR      R0,[R7, #+136]
+        CMP      R0,#+2
+        BGE      ??deflate_18
+        LDR      R0,[R7, #+132]
+        CMP      R0,#+2
+        BGE      ??deflate_19
+//  635                 level_flags = 0;
+??deflate_18:
+        MOV      R4,#+0
+        B        ??deflate_20
+//  636             else if (s->level < 6)
+??deflate_19:
+        CMP      R0,#+6
+//  637                 level_flags = 1;
+        MOVLT    R4,#+1
+        BLT      ??deflate_20
+//  638             else if (s->level == 6)
+//  639                 level_flags = 2;
+//  640             else
+//  641                 level_flags = 3;
+        MOVNE    R4,#+3
+//  642             header |= (level_flags << 6);
+??deflate_20:
+        LDR      R0,[R7, #+48]
+//  643             if (s->strstart != 0) header |= PRESET_DICT;
+//  644             header += 31 - (header % 31);
+//  645 
+//  646             s->status = BUSY_STATE;
+//  647             putShortMSB(s, header);
+        LDR      R2,??deflate_4+0x8  ;; 0x8421085
+        LSL      R0,R0,#+4
+        SUB      R0,R0,#+120
+        LSL      R1,R4,#+6
+        ORR      R0,R1,R0, LSL #+8
+        LDR      R1,[R7, #+108]
+        STR      R8,[R7, #+4]
+        CMP      R1,#+0
+        ORRNE    R0,R0,#0x20
+        UMULL    R3,R4,R2,R0
+        MOV      R3,#+31
+        ADDS     R4,R4,R0
+        RRX      R4,R4
+        LSR      R4,R4,#+4
+        MUL      R4,R3,R4
+        ADD      R1,R0,#+31
+        SUB      R4,R0,R4
+        SUB      R1,R1,R4
+        MOV      R0,R7
+        BL       putShortMSB
+//  648 
+//  649             /* Save the adler32 of the preset dictionary: */
+//  650             if (s->strstart != 0) {
+        LDR      R0,[R7, #+108]
+        CMP      R0,#+0
+        BEQ      ??deflate_21
+//  651                 putShortMSB(s, (uInt)(strm->adler >> 16));
+        LDR      R0,[R5, #+48]
+        LSR      R1,R0,#+16
+        MOV      R0,R7
+        BL       putShortMSB
+//  652                 putShortMSB(s, (uInt)(strm->adler & 0xffff));
+        LDR      R0,[R5, #+48]
+        LSL      R0,R0,#+16
+        LSR      R1,R0,#+16
+        MOV      R0,R7
+        BL       putShortMSB
+//  653             }
+//  654             strm->adler = adler32(0L, Z_NULL, 0);
+??deflate_21:
+        MOV      R2,#+0
+        MOV      R1,R2
+        MOV      R0,R1
+        _BLF     adler32,??adler32??rA
+        STR      R0,[R5, #+48]
+//  655         }
+//  656     }
+//  657 #ifdef GZIP
+//  658     if (s->status == EXTRA_STATE) {
+??deflate_7:
+        LDR      R0,[R7, #+4]
+        CMP      R0,#+69
+        BNE      ??deflate_22
+//  659         if (s->gzhead->extra != NULL) {
+??deflate_17:
+        LDR      R0,[R7, #+28]
+        MOV      R4,#+73
+        LDR      R0,[R0, #+16]
+        CMP      R0,#+0
+        BEQ      ??deflate_23
+//  660             uInt beg = s->pending;  /* start of bytes to update crc */
+        LDR      R0,[R7, #+20]
+        B        ??deflate_24
+//  661 
+//  662             while (s->gzindex < (s->gzhead->extra_len & 0xffff)) {
+//  663                 if (s->pending == s->pending_buf_size) {
+//  664                     if (s->gzhead->hcrc && s->pending > beg)
+//  665                         strm->adler = crc32(strm->adler, s->pending_buf + beg,
+//  666                                             s->pending - beg);
+//  667                     flush_pending(strm);
+//  668                     beg = s->pending;
+//  669                     if (s->pending == s->pending_buf_size)
+//  670                         break;
+//  671                 }
+//  672                 put_byte(s, s->gzhead->extra[s->gzindex]);
+??deflate_25:
+        LDR      R1,[R7, #+20]
+        ADD      R2,R1,#+1
+        STR      R2,[R7, #+20]
+        LDR      R10,[R7, #+28]
+        LDR      R3,[R7, #+32]
+        LDR      R10,[R10, #+16]
+        LDR      R2,[R7, #+8]
+        LDRB     R3,[R3, +R10]
+        STRB     R3,[R1, +R2]
+//  673                 s->gzindex++;
+        LDR      R1,[R7, #+32]
+        ADD      R1,R1,#+1
+        STR      R1,[R7, #+32]
+??deflate_24:
+        LDR      R1,[R7, #+28]
+        LDR      R2,[R7, #+32]
+        LDR      R3,[R1, #+20]
+        LSL      R3,R3,#+16
+        CMP      R2,R3, LSR #+16
+        BCS      ??deflate_26
+        LDR      R2,[R7, #+20]
+        LDR      R3,[R7, #+12]
+        CMP      R2,R3
+        BNE      ??deflate_25
+        LDR      R1,[R1, #+44]
+        CMP      R1,#+0
+        BEQ      ??deflate_27
+        CMP      R0,R2
+        BCS      ??deflate_27
+        LDR      R1,[R7, #+8]
+        SUB      R2,R2,R0
+        ADD      R1,R0,R1
+        LDR      R0,[R5, #+48]
+        _BLF     crc32,??crc32??rA
+        STR      R0,[R5, #+48]
+??deflate_27:
+        MOV      R0,R5
+        BL       flush_pending
+        LDR      R0,[R7, #+20]
+        LDR      R1,[R7, #+12]
+        CMP      R0,R1
+        BNE      ??deflate_25
+//  674             }
+//  675             if (s->gzhead->hcrc && s->pending > beg)
+??deflate_26:
+        LDR      R1,[R7, #+28]
+        LDR      R1,[R1, #+44]
+        CMP      R1,#+0
+        BEQ      ??deflate_28
+        LDR      R1,[R7, #+20]
+        CMP      R0,R1
+        BCS      ??deflate_28
+//  676                 strm->adler = crc32(strm->adler, s->pending_buf + beg,
+//  677                                     s->pending - beg);
+        SUB      R2,R1,R0
+        LDR      R1,[R7, #+8]
+        ADD      R1,R0,R1
+        LDR      R0,[R5, #+48]
+        _BLF     crc32,??crc32??rA
+        STR      R0,[R5, #+48]
+//  678             if (s->gzindex == s->gzhead->extra_len) {
+??deflate_28:
+        LDR      R1,[R7, #+28]
+        LDR      R0,[R7, #+32]
+        LDR      R1,[R1, #+20]
+        CMP      R0,R1
+        BNE      ??deflate_22
+//  679                 s->gzindex = 0;
+        STR      R9,[R7, #+32]
+//  680                 s->status = NAME_STATE;
+??deflate_23:
+        STR      R4,[R7, #+4]
+        B        ??deflate_29
+//  681             }
+//  682         }
+//  683         else
+//  684             s->status = NAME_STATE;
+//  685     }
+//  686     if (s->status == NAME_STATE) {
+??deflate_22:
+        LDR      R0,[R7, #+4]
+        CMP      R0,#+73
+        BNE      ??deflate_30
+//  687         if (s->gzhead->name != NULL) {
+??deflate_29:
+        LDR      R0,[R7, #+28]
+        MOV      R4,#+91
+        LDR      R0,[R0, #+28]
+        CMP      R0,#+0
+        BEQ      ??deflate_31
+//  688             uInt beg = s->pending;  /* start of bytes to update crc */
+        LDR      R0,[R7, #+20]
+//  689             int val;
+//  690 
+//  691             do {
+//  692                 if (s->pending == s->pending_buf_size) {
+??deflate_32:
+        LDR      R1,[R7, #+20]
+        LDR      R2,[R7, #+12]
+        CMP      R1,R2
+        BNE      ??deflate_33
+//  693                     if (s->gzhead->hcrc && s->pending > beg)
+        LDR      R2,[R7, #+28]
+        LDR      R2,[R2, #+44]
+        CMP      R2,#+0
+        BEQ      ??deflate_34
+        CMP      R0,R1
+        BCS      ??deflate_34
+//  694                         strm->adler = crc32(strm->adler, s->pending_buf + beg,
+//  695                                             s->pending - beg);
+        SUB      R2,R1,R0
+        LDR      R1,[R7, #+8]
+        ADD      R1,R0,R1
+        LDR      R0,[R5, #+48]
+        _BLF     crc32,??crc32??rA
+        STR      R0,[R5, #+48]
+//  696                     flush_pending(strm);
+??deflate_34:
+        MOV      R0,R5
+        BL       flush_pending
+//  697                     beg = s->pending;
+        LDR      R0,[R7, #+20]
+//  698                     if (s->pending == s->pending_buf_size) {
+        LDR      R1,[R7, #+12]
+        CMP      R0,R1
+//  699                         val = 1;
+        MOVEQ    R10,#+1
+//  700                         break;
+        BEQ      ??deflate_35
+//  701                     }
+//  702                 }
+//  703                 val = s->gzhead->name[s->gzindex++];
+??deflate_33:
+        LDR      R1,[R7, #+32]
+        ADD      R2,R1,#+1
+        STR      R2,[R7, #+32]
+        LDR      R2,[R7, #+28]
+        LDR      R2,[R2, #+28]
+        LDRB     R10,[R1, +R2]
+//  704                 put_byte(s, val);
+        LDR      R1,[R7, #+20]
+        ADD      R2,R1,#+1
+        STR      R2,[R7, #+20]
+        LDR      R2,[R7, #+8]
+//  705             } while (val != 0);
+        CMP      R10,#+0
+        STRB     R10,[R1, +R2]
+        BNE      ??deflate_32
+//  706             if (s->gzhead->hcrc && s->pending > beg)
+??deflate_35:
+        LDR      R1,[R7, #+28]
+        LDR      R1,[R1, #+44]
+        CMP      R1,#+0
+        BEQ      ??deflate_36
+        LDR      R1,[R7, #+20]
+        CMP      R0,R1
+        BCS      ??deflate_36
+//  707                 strm->adler = crc32(strm->adler, s->pending_buf + beg,
+//  708                                     s->pending - beg);
+        SUB      R2,R1,R0
+        LDR      R1,[R7, #+8]
+        ADD      R1,R0,R1
+        LDR      R0,[R5, #+48]
+        _BLF     crc32,??crc32??rA
+        STR      R0,[R5, #+48]
+//  709             if (val == 0) {
+??deflate_36:
+        CMP      R10,#+0
+        BNE      ??deflate_30
+//  710                 s->gzindex = 0;
+        STR      R9,[R7, #+32]
+//  711                 s->status = COMMENT_STATE;
+??deflate_31:
+        STR      R4,[R7, #+4]
+        B        ??deflate_37
+//  712             }
+//  713         }
+//  714         else
+//  715             s->status = COMMENT_STATE;
+//  716     }
+//  717     if (s->status == COMMENT_STATE) {
+??deflate_30:
+        LDR      R0,[R7, #+4]
+        CMP      R0,#+91
+        BNE      ??deflate_38
+//  718         if (s->gzhead->comment != NULL) {
+??deflate_37:
+        LDR      R0,[R7, #+28]
+        MOV      R4,#+103
+        LDR      R0,[R0, #+36]
+        CMP      R0,#+0
+        BEQ      ??deflate_39
+//  719             uInt beg = s->pending;  /* start of bytes to update crc */
+        LDR      R0,[R7, #+20]
+//  720             int val;
+//  721 
+//  722             do {
+//  723                 if (s->pending == s->pending_buf_size) {
+??deflate_40:
+        LDR      R1,[R7, #+20]
+        LDR      R2,[R7, #+12]
+        CMP      R1,R2
+        BNE      ??deflate_41
+//  724                     if (s->gzhead->hcrc && s->pending > beg)
+        LDR      R2,[R7, #+28]
+        LDR      R2,[R2, #+44]
+        CMP      R2,#+0
+        BEQ      ??deflate_42
+        CMP      R0,R1
+        BCS      ??deflate_42
+//  725                         strm->adler = crc32(strm->adler, s->pending_buf + beg,
+//  726                                             s->pending - beg);
+        SUB      R2,R1,R0
+        LDR      R1,[R7, #+8]
+        ADD      R1,R0,R1
+        LDR      R0,[R5, #+48]
+        _BLF     crc32,??crc32??rA
+        STR      R0,[R5, #+48]
+//  727                     flush_pending(strm);
+??deflate_42:
+        MOV      R0,R5
+        BL       flush_pending
+//  728                     beg = s->pending;
+        LDR      R0,[R7, #+20]
+//  729                     if (s->pending == s->pending_buf_size) {
+        LDR      R1,[R7, #+12]
+        CMP      R0,R1
+//  730                         val = 1;
+        MOVEQ    R10,#+1
+//  731                         break;
+        BEQ      ??deflate_43
+//  732                     }
+//  733                 }
+//  734                 val = s->gzhead->comment[s->gzindex++];
+??deflate_41:
+        LDR      R1,[R7, #+32]
+        ADD      R2,R1,#+1
+        STR      R2,[R7, #+32]
+        LDR      R2,[R7, #+28]
+        LDR      R2,[R2, #+36]
+        LDRB     R10,[R1, +R2]
+//  735                 put_byte(s, val);
+        LDR      R1,[R7, #+20]
+        ADD      R2,R1,#+1
+        STR      R2,[R7, #+20]
+        LDR      R2,[R7, #+8]
+//  736             } while (val != 0);
+        CMP      R10,#+0
+        STRB     R10,[R1, +R2]
+        BNE      ??deflate_40
+//  737             if (s->gzhead->hcrc && s->pending > beg)
+??deflate_43:
+        LDR      R1,[R7, #+28]
+        LDR      R1,[R1, #+44]
+        CMP      R1,#+0
+        BEQ      ??deflate_44
+        LDR      R1,[R7, #+20]
+        CMP      R0,R1
+        BCS      ??deflate_44
+//  738                 strm->adler = crc32(strm->adler, s->pending_buf + beg,
+//  739                                     s->pending - beg);
+        SUB      R2,R1,R0
+        LDR      R1,[R7, #+8]
+        ADD      R1,R0,R1
+        LDR      R0,[R5, #+48]
+        _BLF     crc32,??crc32??rA
+        STR      R0,[R5, #+48]
+//  740             if (val == 0)
+??deflate_44:
+        CMP      R10,#+0
+        BNE      ??deflate_38
+//  741                 s->status = HCRC_STATE;
+??deflate_39:
+        STR      R4,[R7, #+4]
+        B        ??deflate_45
+//  742         }
+//  743         else
+//  744             s->status = HCRC_STATE;
+//  745     }
+//  746     if (s->status == HCRC_STATE) {
+??deflate_38:
+        LDR      R0,[R7, #+4]
+        CMP      R0,#+103
+        BNE      ??deflate_46
+//  747         if (s->gzhead->hcrc) {
+??deflate_45:
+        LDR      R0,[R7, #+28]
+        LDR      R0,[R0, #+44]
+        CMP      R0,#+0
+        BEQ      ??deflate_11
+//  748             if (s->pending + 2 > s->pending_buf_size)
+        LDR      R0,[R7, #+12]
+        LDR      R1,[R7, #+20]
+        ADD      R1,R1,#+2
+        CMP      R0,R1
+        BCS      ??deflate_47
+//  749                 flush_pending(strm);
+        MOV      R0,R5
+        BL       flush_pending
+//  750             if (s->pending + 2 <= s->pending_buf_size) {
+??deflate_47:
+        LDR      R0,[R7, #+20]
+        LDR      R1,[R7, #+12]
+        ADD      R2,R0,#+2
+        CMP      R1,R2
+        BCC      ??deflate_46
+//  751                 put_byte(s, (Byte)(strm->adler & 0xff));
+        ADD      R1,R0,#+1
+        STR      R1,[R7, #+20]
+        LDR      R1,[R7, #+8]
+        LDR      R2,[R5, #+48]
+        STRB     R2,[R0, +R1]
+//  752                 put_byte(s, (Byte)((strm->adler >> 8) & 0xff));
+        LDR      R0,[R7, #+20]
+        ADD      R1,R0,#+1
+        STR      R1,[R7, #+20]
+        LDR      R1,[R7, #+8]
+        LDR      R2,[R5, #+48]
+        LSR      R2,R2,#+8
+        STRB     R2,[R0, +R1]
+//  753                 strm->adler = crc32(0L, Z_NULL, 0);
+        MOV      R2,#+0
+        MOV      R1,R2
+        MOV      R0,R1
+        _BLF     crc32,??crc32??rA
+        STR      R0,[R5, #+48]
+//  754                 s->status = BUSY_STATE;
+//  755             }
+//  756         }
+//  757         else
+//  758             s->status = BUSY_STATE;
+??deflate_11:
+        STR      R8,[R7, #+4]
+//  759     }
+//  760 #endif
+//  761 
+//  762     /* Flush as much pending output as possible */
+//  763     if (s->pending != 0) {
+??deflate_46:
+        LDR      R0,[R7, #+20]
+        MVN      R4,R9
+        CMP      R0,#+0
+        BEQ      ??deflate_48
+//  764         flush_pending(strm);
+        MOV      R0,R5
+        BL       flush_pending
+//  765         if (strm->avail_out == 0) {
+        LDR      R0,[R5, #+16]
+        CMP      R0,#+0
+        BNE      ??deflate_49
+//  766             /* Since avail_out is 0, deflate will be called again with
+//  767              * more output space, but possibly with both pending and
+//  768              * avail_in equal to zero. There won't be anything to do,
+//  769              * but this is not an error situation so make sure we
+//  770              * return OK instead of BUF_ERROR at next call of deflate:
+//  771              */
+//  772             s->last_flush = -1;
+??deflate_50:
+        STR      R4,[R7, #+40]
+//  773             return Z_OK;
+        MOV      R0,#+0
+        POP      {R1,R4-R11,PC}
+//  774         }
+//  775 
+//  776     /* Make sure there is something to do and avoid duplicate consecutive
+//  777      * flushes. For repeated and useless calls with Z_FINISH, we keep
+//  778      * returning Z_STREAM_END instead of Z_BUF_ERROR.
+//  779      */
+//  780     } else if (strm->avail_in == 0 && flush <= old_flush &&
+//  781                flush != Z_FINISH) {
+??deflate_48:
+        LDR      R0,[R5, #+4]
+        CMP      R0,#+0
+        BNE      ??deflate_49
+        LDR      R0,[SP, #+0]
+        CMP      R0,R6
+        BLT      ??deflate_49
+        CMP      R6,#+4
+        BNE      ??deflate_6
+//  782         ERR_RETURN(strm, Z_BUF_ERROR);
+//  783     }
+//  784 
+//  785     /* User must not provide more input after the first FINISH: */
+//  786     if (s->status == FINISH_STATE && strm->avail_in != 0) {
+??deflate_49:
+        LDR      R0,[R7, #+4]
+        LDR      R1,[R5, #+4]
+        MOV      R2,#+154
+        ORR      R2,R2,#0x200
+        CMP      R0,R2
+        BNE      ??deflate_51
+        CMP      R1,#+0
+        BNE      ??deflate_6
+//  787         ERR_RETURN(strm, Z_BUF_ERROR);
+//  788     }
+//  789 
+//  790     /* Start a new block or continue the current one.
+//  791      */
+//  792     if (strm->avail_in != 0 || s->lookahead != 0 ||
+//  793         (flush != Z_NO_FLUSH && s->status != FINISH_STATE)) {
+??deflate_51:
+        CMP      R1,#+0
+        LDREQ    R1,[R7, #+116]
+        CMPEQ    R1,#+0
+        BNE      ??deflate_52
+        CMP      R6,#+0
+        CMPNE    R0,R2
+        BEQ      ??deflate_53
+//  794         block_state bstate;
+//  795 
+//  796         bstate = (*(configuration_table[s->level].func))(s, flush);
+??deflate_52:
+        LDR      R2,[R7, #+132]
+        LDR      R8,??DataTable1  ;; configuration_table
+        MOV      R3,#+12
+        MLA      R2,R3,R2,R8
+        MOV      R1,R6
+        LDR      R2,[R2, #+8]
+        MOV      R0,R7
+        BLX      R2
+//  797 
+//  798         if (bstate == finish_started || bstate == finish_done) {
+        CMP      R0,#+2
+        CMPNE    R0,#+3
+//  799             s->status = FINISH_STATE;
+        MOVEQ    R1,#+154
+        ORREQ    R1,R1,#0x200
+        STREQ    R1,[R7, #+4]
+//  800         }
+//  801         if (bstate == need_more || bstate == finish_started) {
+        MOVS     R1,R0
+        CMPNE    R0,#+2
+        BNE      ??deflate_54
+//  802             if (strm->avail_out == 0) {
+        LDR      R0,[R5, #+16]
+        CMP      R0,#+0
+//  803                 s->last_flush = -1; /* avoid BUF_ERROR next call, see above */
+        STREQ    R4,[R7, #+40]
+//  804             }
+//  805             return Z_OK;
+??deflate_55:
+        MOV      R0,#+0
+        POP      {R1,R4-R11,PC}
+//  806             /* If flush != Z_NO_FLUSH && avail_out == 0, the next call
+//  807              * of deflate should use the same flush parameter to make sure
+//  808              * that the flush is complete. So we don't have to output an
+//  809              * empty block here, this will be done at next call. This also
+//  810              * ensures that for a very small output buffer, we emit at most
+//  811              * one empty block.
+//  812              */
+//  813         }
+//  814         if (bstate == block_done) {
+??deflate_54:
+        CMP      R0,#+1
+        BNE      ??deflate_53
+//  815             if (flush == Z_PARTIAL_FLUSH) {
+        CMP      R6,#+1
+        BNE      ??deflate_56
+//  816                 _tr_align(s);
+        MOV      R0,R7
+        _BLF     _tr_align,??_tr_align??rA
+        B        ??deflate_57
+//  817             } else { /* FULL_FLUSH or SYNC_FLUSH */
+//  818                 _tr_stored_block(s, (char*)0, 0L, 0);
+??deflate_56:
+        MOV      R3,#+0
+        MOV      R2,R3
+        MOV      R1,R2
+        MOV      R0,R7
+        _BLF     _tr_stored_block,??_tr_stored_block??rA
+//  819                 /* For a full flush, this empty block will be recognized
+//  820                  * as a special marker by inflate_sync().
+//  821                  */
+//  822                 if (flush == Z_FULL_FLUSH) {
+        CMP      R6,#+3
+        BNE      ??deflate_57
+//  823                     CLEAR_HASH(s);             /* forget history */
+        LDR      R1,[R7, #+76]
+        LDR      R0,[R7, #+68]
+        ADD      R2,R0,R1, LSL #+1
+        STRH     R9,[R2, #-2]
+        SUB      R1,R1,#+1
+        LSL      R2,R1,#+1
+        MOV      R1,#+0
+        _BLF     memset,??memset??rA
+//  824                 }
+//  825             }
+//  826             flush_pending(strm);
+??deflate_57:
+        MOV      R0,R5
+        BL       flush_pending
+//  827             if (strm->avail_out == 0) {
+        LDR      R0,[R5, #+16]
+        CMP      R0,#+0
+        BEQ      ??deflate_50
+//  828               s->last_flush = -1; /* avoid BUF_ERROR at next call, see above */
+//  829               return Z_OK;
+//  830             }
+//  831         }
+//  832     }
+//  833     Assert(strm->avail_out > 0, "bug2");
+//  834 
+//  835     if (flush != Z_FINISH) return Z_OK;
+??deflate_53:
+        CMP      R6,#+4
+        BNE      ??deflate_55
+//  836     if (s->wrap <= 0) return Z_STREAM_END;
+        LDR      R0,[R7, #+24]
+        CMP      R0,#+1
+        BLT      ??deflate_58
+//  837 
+//  838     /* Write the trailer */
+//  839 #ifdef GZIP
+//  840     if (s->wrap == 2) {
+        LDR      R1,[R5, #+48]
+        CMP      R0,#+2
+        BNE      ??deflate_59
+//  841         put_byte(s, (Byte)(strm->adler & 0xff));
+        LDR      R0,[R7, #+20]
+        ADD      R2,R0,#+1
+        STR      R2,[R7, #+20]
+        LDR      R2,[R7, #+8]
+        STRB     R1,[R0, +R2]
+//  842         put_byte(s, (Byte)((strm->adler >> 8) & 0xff));
+        LDR      R0,[R7, #+20]
+        ADD      R1,R0,#+1
+        STR      R1,[R7, #+20]
+        LDR      R1,[R7, #+8]
+        LDR      R2,[R5, #+48]
+        LSR      R2,R2,#+8
+        STRB     R2,[R0, +R1]
+//  843         put_byte(s, (Byte)((strm->adler >> 16) & 0xff));
+        LDR      R0,[R7, #+20]
+        ADD      R1,R0,#+1
+        STR      R1,[R7, #+20]
+        LDR      R1,[R7, #+8]
+        LDR      R2,[R5, #+48]
+        LSR      R2,R2,#+16
+        STRB     R2,[R0, +R1]
+//  844         put_byte(s, (Byte)((strm->adler >> 24) & 0xff));
+        LDR      R0,[R7, #+20]
+        ADD      R1,R0,#+1
+        STR      R1,[R7, #+20]
+        LDR      R1,[R7, #+8]
+        LDR      R2,[R5, #+48]
+        LSR      R2,R2,#+24
+        STRB     R2,[R0, +R1]
+//  845         put_byte(s, (Byte)(strm->total_in & 0xff));
+        LDR      R0,[R7, #+20]
+        ADD      R1,R0,#+1
+        STR      R1,[R7, #+20]
+        LDR      R1,[R7, #+8]
+        LDR      R2,[R5, #+8]
+        STRB     R2,[R0, +R1]
+//  846         put_byte(s, (Byte)((strm->total_in >> 8) & 0xff));
+        LDR      R0,[R7, #+20]
+        ADD      R1,R0,#+1
+        STR      R1,[R7, #+20]
+        LDR      R1,[R7, #+8]
+        LDR      R2,[R5, #+8]
+        LSR      R2,R2,#+8
+        STRB     R2,[R0, +R1]
+//  847         put_byte(s, (Byte)((strm->total_in >> 16) & 0xff));
+        LDR      R0,[R7, #+20]
+        ADD      R1,R0,#+1
+        STR      R1,[R7, #+20]
+        LDR      R1,[R7, #+8]
+        LDR      R2,[R5, #+8]
+        LSR      R2,R2,#+16
+        STRB     R2,[R0, +R1]
+//  848         put_byte(s, (Byte)((strm->total_in >> 24) & 0xff));
+        LDR      R0,[R7, #+20]
+        ADD      R1,R0,#+1
+        STR      R1,[R7, #+20]
+        LDR      R1,[R7, #+8]
+        LDR      R2,[R5, #+8]
+        LSR      R2,R2,#+24
+        STRB     R2,[R0, +R1]
+        B        ??deflate_60
+//  849     }
+//  850     else
+//  851 #endif
+//  852     {
+//  853         putShortMSB(s, (uInt)(strm->adler >> 16));
+??deflate_59:
+        LSR      R1,R1,#+16
+        MOV      R0,R7
+        BL       putShortMSB
+//  854         putShortMSB(s, (uInt)(strm->adler & 0xffff));
+        LDR      R0,[R5, #+48]
+        LSL      R0,R0,#+16
+        LSR      R1,R0,#+16
+        MOV      R0,R7
+        BL       putShortMSB
+//  855     }
+//  856     flush_pending(strm);
+??deflate_60:
+        MOV      R0,R5
+        BL       flush_pending
+//  857     /* If avail_out is zero, the application will call deflate again
+//  858      * to flush the rest.
+//  859      */
+//  860     if (s->wrap > 0) s->wrap = -s->wrap; /* write the trailer only once! */
+        LDR      R0,[R7, #+24]
+        CMP      R0,#+1
+        RSBGE    R0,R0,#+0
+        STRGE    R0,[R7, #+24]
+//  861     return s->pending != 0 ? Z_OK : Z_STREAM_END;
+        LDR      R0,[R7, #+20]
+        CMP      R0,#+0
+        BNE      ??deflate_55
+??deflate_58:
+        MOV      R0,#+1
+        POP      {R1,R4-R11,PC}   ;; return
+        DATA
+??deflate_4:
+        DC32     z_errmsg + 16
+        DC32     z_errmsg + 28
+        DC32     0x8421085
+        CFI EndBlock cfiBlock23
+//  862 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable1:
+        DC32     configuration_table
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock24 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??deflateEnd??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock24
+        REQUIRE deflateEnd
+//  863 
+//  864 /* ========================================================================= */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock25 Using cfiCommon1
+        CFI Function deflateEnd
+        ARM
+//  865 int ZEXPORT deflateEnd (strm)
+//  866     z_streamp strm;
+//  867 {
+deflateEnd:
+        PUSH     {R4,R5,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+        MOVS     R4,R0
+//  868     int status;
+//  869 
+//  870     if (strm == Z_NULL || strm->state == Z_NULL) return Z_STREAM_ERROR;
+        LDRNE    R0,[R4, #+28]
+        CMPNE    R0,#+0
+        BNE      ??deflateEnd_0
+??deflateEnd_1:
+        MVN      R0,#+1
+        POP      {R4,R5,PC}
+//  871 
+//  872     status = strm->state->status;
+??deflateEnd_0:
+        LDR      R5,[R0, #+4]
+//  873     if (status != INIT_STATE &&
+//  874         status != EXTRA_STATE &&
+//  875         status != NAME_STATE &&
+//  876         status != COMMENT_STATE &&
+//  877         status != HCRC_STATE &&
+//  878         status != BUSY_STATE &&
+//  879         status != FINISH_STATE) {
+        CMP      R5,#+42
+        CMPNE    R5,#+69
+        CMPNE    R5,#+73
+        CMPNE    R5,#+91
+        CMPNE    R5,#+103
+        CMPNE    R5,#+113
+        BEQ      ??deflateEnd_2
+        MOV      R1,#+154
+        ORR      R1,R1,#0x200
+        CMP      R5,R1
+        BNE      ??deflateEnd_1
+//  880       return Z_STREAM_ERROR;
+//  881     }
+//  882 
+//  883     /* Deallocate in reverse order of allocations: */
+//  884     TRY_FREE(strm, strm->state->pending_buf);
+??deflateEnd_2:
+        LDR      R1,[R0, #+8]
+        CMP      R1,#+0
+        BEQ      ??deflateEnd_3
+        LDR      R0,[R4, #+40]
+        LDR      R2,[R4, #+36]
+        BLX      R2
+//  885     TRY_FREE(strm, strm->state->head);
+??deflateEnd_3:
+        LDR      R0,[R4, #+28]
+        LDR      R1,[R0, #+68]
+        CMP      R1,#+0
+        BEQ      ??deflateEnd_4
+        LDR      R0,[R4, #+40]
+        LDR      R2,[R4, #+36]
+        BLX      R2
+//  886     TRY_FREE(strm, strm->state->prev);
+??deflateEnd_4:
+        LDR      R0,[R4, #+28]
+        LDR      R1,[R0, #+64]
+        CMP      R1,#+0
+        BEQ      ??deflateEnd_5
+        LDR      R0,[R4, #+40]
+        LDR      R2,[R4, #+36]
+        BLX      R2
+//  887     TRY_FREE(strm, strm->state->window);
+??deflateEnd_5:
+        LDR      R0,[R4, #+28]
+        LDR      R1,[R0, #+56]
+        CMP      R1,#+0
+        BEQ      ??deflateEnd_6
+        LDR      R0,[R4, #+40]
+        LDR      R2,[R4, #+36]
+        BLX      R2
+//  888 
+//  889     ZFREE(strm, strm->state);
+??deflateEnd_6:
+        LDR      R0,[R4, #+40]
+        LDR      R1,[R4, #+28]
+        LDR      R2,[R4, #+36]
+        BLX      R2
+//  890     strm->state = Z_NULL;
+        MOV      R0,#+0
+        STR      R0,[R4, #+28]
+//  891 
+//  892     return status == BUSY_STATE ? Z_DATA_ERROR : Z_OK;
+        CMP      R5,#+113
+        MVNEQ    R0,#+2
+        POP      {R4,R5,PC}       ;; return
+        CFI EndBlock cfiBlock25
+//  893 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock26 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??deflateCopy??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock26
+        REQUIRE deflateCopy
+//  894 
+//  895 /* =========================================================================
+//  896  * Copy the source state to the destination state.
+//  897  * To simplify the source, this is not supported for 16-bit MSDOS (which
+//  898  * doesn't have enough memory anyway to duplicate compression states).
+//  899  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock27 Using cfiCommon1
+        CFI Function deflateCopy
+        ARM
+//  900 int ZEXPORT deflateCopy (dest, source)
+//  901     z_streamp dest;
+//  902     z_streamp source;
+//  903 {
+deflateCopy:
+        PUSH     {R4-R8,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R8 Frame(CFA, -8)
+        CFI R7 Frame(CFA, -12)
+        CFI R6 Frame(CFA, -16)
+        CFI R5 Frame(CFA, -20)
+        CFI R4 Frame(CFA, -24)
+        CFI CFA R13+24
+        MOV      R4,R0
+//  904 #ifdef MAXSEG_64K
+//  905     return Z_STREAM_ERROR;
+//  906 #else
+//  907     deflate_state *ds;
+//  908     deflate_state *ss;
+//  909     ushf *overlay;
+//  910 
+//  911 
+//  912     if (source == Z_NULL || dest == Z_NULL || source->state == Z_NULL) {
+        CMP      R1,#+0
+        CMPNE    R4,#+0
+        LDRNE    R6,[R1, #+28]
+        CMPNE    R6,#+0
+//  913         return Z_STREAM_ERROR;
+        MVNEQ    R0,#+1
+        POPEQ    {R4-R8,PC}
+//  914     }
+//  915 
+//  916     ss = source->state;
+//  917 
+//  918     zmemcpy(dest, source, sizeof(z_stream));
+        MOV      R2,#+56
+        SWI      +286
+//  919 
+//  920     ds = (deflate_state *) ZALLOC(dest, 1, sizeof(deflate_state));
+        LDR      R0,[R4, #+40]
+        LDR      R3,[R4, #+32]
+        MOV      R2,#+5824
+        MOV      R1,#+1
+        BLX      R3
+        MOVS     R5,R0
+//  921     if (ds == Z_NULL) return Z_MEM_ERROR;
+        BEQ      ??deflateCopy_0
+//  922     dest->state = (struct internal_state FAR *) ds;
+        STR      R5,[R4, #+28]
+//  923     zmemcpy(ds, ss, sizeof(deflate_state));
+        MOV      R2,#+5824
+        MOV      R1,R6
+        SWI      +286
+//  924     ds->strm = dest;
+        STR      R4,[R5, #+0]
+//  925 
+//  926     ds->window = (Bytef *) ZALLOC(dest, ds->w_size, 2*sizeof(Byte));
+        LDR      R0,[R4, #+40]
+        LDR      R1,[R5, #+44]
+        LDR      R3,[R4, #+32]
+        MOV      R2,#+2
+        BLX      R3
+        STR      R0,[R5, #+56]
+//  927     ds->prev   = (Posf *)  ZALLOC(dest, ds->w_size, sizeof(Pos));
+        LDR      R0,[R4, #+40]
+        LDR      R1,[R5, #+44]
+        LDR      R3,[R4, #+32]
+        MOV      R2,#+2
+        BLX      R3
+        STR      R0,[R5, #+64]
+//  928     ds->head   = (Posf *)  ZALLOC(dest, ds->hash_size, sizeof(Pos));
+        LDR      R0,[R4, #+40]
+        LDR      R1,[R5, #+76]
+        LDR      R3,[R4, #+32]
+        MOV      R2,#+2
+        BLX      R3
+        STR      R0,[R5, #+68]
+        LDR      R3,[R4, #+32]
+        MOV      R0,#+152
+        ORR      R0,R0,#0x1600
+        ADD      R7,R0,R5
+        LDR      R0,[R4, #+40]
+        LDR      R1,[R7, #+4]
+        MOV      R2,#+4
+//  929     overlay = (ushf *) ZALLOC(dest, ds->lit_bufsize, sizeof(ush)+2);
+        BLX      R3
+        MOV      R8,R0
+//  930     ds->pending_buf = (uchf *) overlay;
+        STR      R8,[R5, #+8]
+//  931 
+//  932     if (ds->window == Z_NULL || ds->prev == Z_NULL || ds->head == Z_NULL ||
+//  933         ds->pending_buf == Z_NULL) {
+        LDR      R0,[R5, #+56]
+        CMP      R0,#+0
+        LDRNE    R1,[R5, #+64]
+        CMPNE    R1,#+0
+        LDRNE    R1,[R5, #+68]
+        CMPNE    R1,#+0
+        CMPNE    R8,#+0
+        BNE      ??deflateCopy_1
+//  934         deflateEnd (dest);
+        MOV      R0,R4
+        BL       deflateEnd
+//  935         return Z_MEM_ERROR;
+??deflateCopy_0:
+        MVN      R0,#+3
+        POP      {R4-R8,PC}
+//  936     }
+//  937     /* following zmemcpy do not work for 16-bit MSDOS */
+//  938     zmemcpy(ds->window, ss->window, ds->w_size * 2 * sizeof(Byte));
+??deflateCopy_1:
+        LDR      R1,[R5, #+44]
+        LSL      R2,R1,#+1
+        LDR      R1,[R6, #+56]
+        SWI      +286
+//  939     zmemcpy(ds->prev, ss->prev, ds->w_size * sizeof(Pos));
+        LDR      R0,[R5, #+44]
+        LDR      R1,[R6, #+64]
+        LSL      R2,R0,#+1
+        LDR      R0,[R5, #+64]
+        SWI      +286
+//  940     zmemcpy(ds->head, ss->head, ds->hash_size * sizeof(Pos));
+        LDR      R0,[R5, #+76]
+        LDR      R1,[R6, #+68]
+        LSL      R2,R0,#+1
+        LDR      R0,[R5, #+68]
+        SWI      +286
+//  941     zmemcpy(ds->pending_buf, ss->pending_buf, (uInt)ds->pending_buf_size);
+        LDR      R2,[R5, #+12]
+        LDR      R1,[R6, #+8]
+        LDR      R0,[R5, #+8]
+        SWI      +286
+//  942 
+//  943     ds->pending_out = ds->pending_buf + (ss->pending_out - ss->pending_buf);
+        LDR      R0,[R6, #+16]
+        LDR      R1,[R6, #+8]
+        SUB      R0,R0,R1
+        LDR      R1,[R5, #+8]
+        ADD      R0,R0,R1
+        STR      R0,[R5, #+16]
+//  944     ds->d_buf = overlay + ds->lit_bufsize/sizeof(ush);
+        LDR      R0,[R7, #+4]
+        LSR      R1,R0,#+1
+        ADD      R1,R8,R1, LSL #+1
+        STR      R1,[R7, #+12]
+//  945     ds->l_buf = ds->pending_buf + (1+sizeof(ush))*ds->lit_bufsize;
+        LDR      R1,[R5, #+8]
+        ADD      R0,R0,R0, LSL #+1
+        ADD      R0,R0,R1
+        STR      R0,[R7, #+0]
+//  946 
+//  947     ds->l_desc.dyn_tree = ds->dyn_ltree;
+        ADD      R0,R5,#+148
+        STR      R0,[R5, #+2840]
+//  948     ds->d_desc.dyn_tree = ds->dyn_dtree;
+        MOV      R0,#+136
+        ORR      R0,R0,#0x900
+        ADD      R0,R0,R5
+        STR      R0,[R5, #+2852]
+//  949     ds->bl_desc.dyn_tree = ds->bl_tree;
+        MOV      R0,#+124
+        ORR      R0,R0,#0xA00
+        ADD      R0,R0,R5
+        STR      R0,[R5, #+2864]
+//  950 
+//  951     return Z_OK;
+        MOV      R0,#+0
+        POP      {R4-R8,PC}       ;; return
+        CFI EndBlock cfiBlock27
+//  952 #endif /* MAXSEG_64K */
+//  953 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock28 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??read_buf??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock28
+        REQUIRE read_buf
+//  954 
+//  955 /* ===========================================================================
+//  956  * Read a new buffer from the current input stream, update the adler32
+//  957  * and total number of bytes read.  All deflate() input goes through
+//  958  * this function so some applications may wish to modify it to avoid
+//  959  * allocating a large strm->next_in buffer and copying from it.
+//  960  * (See also flush_pending()).
+//  961  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock29 Using cfiCommon1
+        CFI Function read_buf
+        ARM
+//  962 local int read_buf(strm, buf, size)
+//  963     z_streamp strm;
+//  964     Bytef *buf;
+//  965     unsigned size;
+//  966 {
+read_buf:
+        PUSH     {R4-R6,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R6 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -12)
+        CFI R4 Frame(CFA, -16)
+        CFI CFA R13+16
+        MOV      R4,R0
+//  967     unsigned len = strm->avail_in;
+        LDR      R0,[R4, #+4]
+        MOV      R6,R1
+        MOV      R5,R0
+//  968 
+//  969     if (len > size) len = size;
+        CMP      R2,R5
+        MOVCC    R5,R2
+//  970     if (len == 0) return 0;
+        CMP      R5,#+0
+        MOVEQ    R0,#+0
+        POPEQ    {R4-R6,PC}
+//  971 
+//  972     strm->avail_in  -= len;
+        SUB      R0,R0,R5
+        STR      R0,[R4, #+4]
+//  973 
+//  974     if (strm->state->wrap == 1) {
+        LDR      R0,[R4, #+28]
+        LDR      R1,[R0, #+24]
+        CMP      R1,#+1
+        BNE      ??read_buf_0
+//  975         strm->adler = adler32(strm->adler, strm->next_in, len);
+        LDR      R1,[R4, #+0]
+        LDR      R0,[R4, #+48]
+        MOV      R2,R5
+        _BLF     adler32,??adler32??rA
+        B        ??read_buf_1
+//  976     }
+//  977 #ifdef GZIP
+//  978     else if (strm->state->wrap == 2) {
+??read_buf_0:
+        CMP      R1,#+2
+        BNE      ??read_buf_2
+//  979         strm->adler = crc32(strm->adler, strm->next_in, len);
+        LDR      R1,[R4, #+0]
+        LDR      R0,[R4, #+48]
+        MOV      R2,R5
+        _BLF     crc32,??crc32??rA
+??read_buf_1:
+        STR      R0,[R4, #+48]
+//  980     }
+//  981 #endif
+//  982     zmemcpy(buf, strm->next_in, len);
+??read_buf_2:
+        LDR      R1,[R4, #+0]
+        MOV      R2,R5
+        MOV      R0,R6
+        SWI      +286
+//  983     strm->next_in  += len;
+        LDR      R0,[R4, #+0]
+        ADD      R0,R5,R0
+        STR      R0,[R4, #+0]
+//  984     strm->total_in += len;
+        LDR      R0,[R4, #+8]
+        ADD      R0,R5,R0
+        STR      R0,[R4, #+8]
+//  985 
+//  986     return (int)len;
+        MOV      R0,R5
+        POP      {R4-R6,PC}       ;; return
+        CFI EndBlock cfiBlock29
+//  987 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock30 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??lm_init??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock30
+        REQUIRE lm_init
+//  988 
+//  989 /* ===========================================================================
+//  990  * Initialize the "longest match" routines for a new zlib stream
+//  991  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock31 Using cfiCommon1
+        CFI Function lm_init
+        ARM
+//  992 local void lm_init (s)
+//  993     deflate_state *s;
+//  994 {
+lm_init:
+        PUSH     {R4,R5,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+        MOV      R4,R0
+//  995     s->window_size = (ulg)2L*s->w_size;
+        LDR      R0,[R4, #+44]
+//  996 
+//  997     CLEAR_HASH(s);
+        MOV      R5,#+0
+        LSL      R0,R0,#+1
+        STR      R0,[R4, #+60]
+        LDR      R1,[R4, #+76]
+        LDR      R0,[R4, #+68]
+        ADD      R2,R0,R1, LSL #+1
+        STRH     R5,[R2, #-2]
+        SUB      R1,R1,#+1
+        LSL      R2,R1,#+1
+        MOV      R1,#+0
+        _BLF     memset,??memset??rA
+//  998 
+//  999     /* Set the default configuration parameters:
+// 1000      */
+// 1001     s->max_lazy_match   = configuration_table[s->level].max_lazy;
+        LDR      R1,[R4, #+132]
+        LDR      R0,??DataTable2  ;; configuration_table
+        MOV      R2,#+12
+        MLA      R1,R2,R1,R0
+        LDRH     R1,[R1, #+2]
+        STR      R1,[R4, #+128]
+// 1002     s->good_match       = configuration_table[s->level].good_length;
+        LDR      R1,[R4, #+132]
+        MLA      R1,R2,R1,R0
+        LDRH     R1,[R1, #+0]
+        STR      R1,[R4, #+140]
+// 1003     s->nice_match       = configuration_table[s->level].nice_length;
+        LDR      R1,[R4, #+132]
+        MLA      R1,R2,R1,R0
+        LDRH     R1,[R1, #+4]
+        STR      R1,[R4, #+144]
+// 1004     s->max_chain_length = configuration_table[s->level].max_chain;
+        LDR      R1,[R4, #+132]
+        MLA      R0,R2,R1,R0
+        LDRH     R0,[R0, #+6]
+        STR      R0,[R4, #+124]
+// 1005 
+// 1006     s->strstart = 0;
+        STR      R5,[R4, #+108]
+// 1007     s->block_start = 0L;
+        STR      R5,[R4, #+92]
+// 1008     s->lookahead = 0;
+        STR      R5,[R4, #+116]
+// 1009     s->match_length = s->prev_length = MIN_MATCH-1;
+        MOV      R0,#+2
+        STR      R0,[R4, #+120]
+        STR      R0,[R4, #+96]
+// 1010     s->match_available = 0;
+        STR      R5,[R4, #+104]
+// 1011     s->ins_h = 0;
+        STR      R5,[R4, #+72]
+// 1012 #ifndef FASTEST
+// 1013 #ifdef ASMV
+// 1014     match_init(); /* initialize the asm code */
+// 1015 #endif
+// 1016 #endif
+// 1017 }
+        POP      {R4,R5,PC}       ;; return
+        CFI EndBlock cfiBlock31
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable2:
+        DC32     configuration_table
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock32 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??longest_match??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock32
+        REQUIRE longest_match
+// 1018 
+// 1019 #ifndef FASTEST
+// 1020 /* ===========================================================================
+// 1021  * Set match_start to the longest match starting at the given string and
+// 1022  * return its length. Matches shorter or equal to prev_length are discarded,
+// 1023  * in which case the result is equal to prev_length and match_start is
+// 1024  * garbage.
+// 1025  * IN assertions: cur_match is the head of the hash chain for the current
+// 1026  *   string (strstart) and its distance is <= MAX_DIST, and prev_length >= 1
+// 1027  * OUT assertion: the match length is not greater than s->lookahead.
+// 1028  */
+// 1029 #ifndef ASMV
+// 1030 /* For 80x86 and 680x0, an optimized version will be provided in match.asm or
+// 1031  * match.S. The code will be functionally equivalent.
+// 1032  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock33 Using cfiCommon1
+        CFI Function longest_match
+        ARM
+// 1033 local uInt longest_match(s, cur_match)
+// 1034     deflate_state *s;
+// 1035     IPos cur_match;                             /* current match */
+// 1036 {
+longest_match:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+        SUB      SP,SP,#+12
+        CFI CFA R13+48
+// 1037     unsigned chain_length = s->max_chain_length;/* max hash chain length */
+// 1038     register Bytef *scan = s->window + s->strstart; /* current string */
+// 1039     register Bytef *match;                       /* matched string */
+// 1040     register int len;                           /* length of current match */
+// 1041     int best_len = s->prev_length;              /* best match length so far */
+// 1042     int nice_match = s->nice_match;             /* stop if match long enough */
+        LDR      R9,[R0, #+144]
+        LDR      R4,[R0, #+124]
+        LDR      R7,[R0, #+108]
+        LDR      R2,[R0, #+56]
+        LDR      R3,[R0, #+120]
+        STR      R9,[SP, #+0]
+// 1043     IPos limit = s->strstart > (IPos)MAX_DIST(s) ?
+// 1044         s->strstart - (IPos)MAX_DIST(s) : NIL;
+        LDR      R8,[R0, #+44]
+        ADD      R6,R7,R2
+        MOV      R5,R6
+        MOV      R2,R3
+        MVN      R9,#+5
+        BIC      R9,R9,#0x100
+        ADD      R9,R9,R8
+        CMP      R9,R7
+        BCS      ??longest_match_0
+        SUB      R7,R7,R8
+        MOV      R8,#+6
+        ORR      R8,R8,#0x100
+        ADD      R12,R8,R7
+        B        ??longest_match_1
+??longest_match_0:
+        MOV      R12,#+0
+// 1045     /* Stop when cur_match becomes <= limit. To simplify the code,
+// 1046      * we prevent matches with the string of window index 0.
+// 1047      */
+// 1048     Posf *prev = s->prev;
+??longest_match_1:
+        LDR      R8,[R0, #+64]
+// 1049     uInt wmask = s->w_mask;
+// 1050 
+// 1051 #ifdef UNALIGNED_OK
+// 1052     /* Compare two bytes at a time. Note: this is not always beneficial.
+// 1053      * Try with and without -DUNALIGNED_OK to check.
+// 1054      */
+// 1055     register Bytef *strend = s->window + s->strstart + MAX_MATCH - 1;
+// 1056     register ush scan_start = *(ushf*)scan;
+// 1057     register ush scan_end   = *(ushf*)(scan+best_len-1);
+// 1058 #else
+// 1059     register Bytef *strend = s->window + s->strstart + MAX_MATCH;
+        MOV      R7,#+2
+        STR      R8,[SP, #+4]
+        LDR      R8,[R0, #+52]
+        ORR      R7,R7,#0x100
+        STR      R8,[SP, #+8]
+// 1060     register Byte scan_end1  = scan[best_len-1];
+// 1061     register Byte scan_end   = scan[best_len];
+// 1062 #endif
+// 1063 
+// 1064     /* The code is optimized for HASH_BITS >= 8 and MAX_MATCH-2 multiple of 16.
+// 1065      * It is easy to get rid of this optimization if necessary.
+// 1066      */
+// 1067     Assert(s->hash_bits >= 8 && MAX_MATCH == 258, "Code too clever");
+// 1068 
+// 1069     /* Do not waste too much time if we already have a good match: */
+// 1070     if (s->prev_length >= s->good_match) {
+        LDR      R9,[R0, #+140]
+        LDRB     R8,[R2, +R5]
+        CMP      R3,R9
+// 1071         chain_length >>= 2;
+// 1072     }
+// 1073     /* Do not look for matches beyond the end of the input. This is necessary
+// 1074      * to make deflate deterministic.
+// 1075      */
+// 1076     if ((uInt)nice_match > s->lookahead) nice_match = s->lookahead;
+        LDR      R3,[R0, #+116]
+        LDR      R9,[SP, #+0]
+        ADD      R6,R7,R6
+        ADD      R7,R2,R5
+        LDRB     R7,[R7, #-1]
+        LSRCS    R4,R4,#+2
+        CMP      R3,R9
+        STRCC    R3,[SP, #+0]
+// 1077 
+// 1078     Assert((ulg)s->strstart <= s->window_size-MIN_LOOKAHEAD, "need lookahead");
+// 1079 
+// 1080     do {
+// 1081         Assert(cur_match < s->strstart, "no future");
+// 1082         match = s->window + cur_match;
+??longest_match_2:
+        LDR      R9,[R0, #+56]
+        ADD      R9,R1,R9
+// 1083 
+// 1084         /* Skip to next match if the match length cannot increase
+// 1085          * or if the match length is less than 2.  Note that the checks below
+// 1086          * for insufficient lookahead only occur occasionally for performance
+// 1087          * reasons.  Therefore uninitialized memory will be accessed, and
+// 1088          * conditional jumps will be made that depend on those values.
+// 1089          * However the length of the match is limited to the lookahead, so
+// 1090          * the output of deflate is not affected by the uninitialized values.
+// 1091          */
+// 1092 #if (defined(UNALIGNED_OK) && MAX_MATCH == 258)
+// 1093         /* This code assumes sizeof(unsigned short) == 2. Do not use
+// 1094          * UNALIGNED_OK if your compiler uses a different size.
+// 1095          */
+// 1096         if (*(ushf*)(match+best_len-1) != scan_end ||
+// 1097             *(ushf*)match != scan_start) continue;
+// 1098 
+// 1099         /* It is not necessary to compare scan[2] and match[2] since they are
+// 1100          * always equal when the other bytes match, given that the hash keys
+// 1101          * are equal and that HASH_BITS >= 8. Compare 2 bytes at a time at
+// 1102          * strstart+3, +5, ... up to strstart+257. We check for insufficient
+// 1103          * lookahead only every 4th comparison; the 128th check will be made
+// 1104          * at strstart+257. If MAX_MATCH-2 is not a multiple of 8, it is
+// 1105          * necessary to put more guard bytes at the end of the window, or
+// 1106          * to check more often for insufficient lookahead.
+// 1107          */
+// 1108         Assert(scan[2] == match[2], "scan[2]?");
+// 1109         scan++, match++;
+// 1110         do {
+// 1111         } while (*(ushf*)(scan+=2) == *(ushf*)(match+=2) &&
+// 1112                  *(ushf*)(scan+=2) == *(ushf*)(match+=2) &&
+// 1113                  *(ushf*)(scan+=2) == *(ushf*)(match+=2) &&
+// 1114                  *(ushf*)(scan+=2) == *(ushf*)(match+=2) &&
+// 1115                  scan < strend);
+// 1116         /* The funny "do {}" generates better code on most compilers */
+// 1117 
+// 1118         /* Here, scan <= window+strstart+257 */
+// 1119         Assert(scan <= s->window+(unsigned)(s->window_size-1), "wild scan");
+// 1120         if (*scan == *match) scan++;
+// 1121 
+// 1122         len = (MAX_MATCH - 1) - (int)(strend-scan);
+// 1123         scan = strend - (MAX_MATCH-1);
+// 1124 
+// 1125 #else /* UNALIGNED_OK */
+// 1126 
+// 1127         if (match[best_len]   != scan_end  ||
+// 1128             match[best_len-1] != scan_end1 ||
+// 1129             *match            != *scan     ||
+// 1130             *++match          != scan[1])      continue;
+        LDRB     R10,[R2, +R9]
+        CMP      R10,R8
+        BNE      ??longest_match_3
+        ADD      R10,R2,R9
+        LDRB     R10,[R10, #-1]
+        CMP      R10,R7
+        BNE      ??longest_match_3
+        LDRB     R10,[R9], #+1
+        LDRB     R11,[R5, #+0]
+        CMP      R10,R11
+        BNE      ??longest_match_3
+        LDRB     R10,[R9], #+1
+        LDRB     R11,[R5, #+1]
+        CMP      R10,R11
+        BNE      ??longest_match_3
+// 1131 
+// 1132         /* The check at best_len-1 can be removed because it will be made
+// 1133          * again later. (This heuristic is not always a win.)
+// 1134          * It is not necessary to compare scan[2] and match[2] since they
+// 1135          * are always equal when the other bytes match, given that
+// 1136          * the hash keys are equal and that HASH_BITS >= 8.
+// 1137          */
+// 1138         scan += 2, match++;
+        ADD      R5,R5,#+2
+// 1139         Assert(*scan == *match, "match[2]?");
+// 1140 
+// 1141         /* We check for insufficient lookahead only every 8th comparison;
+// 1142          * the 256th check will be made at strstart+258.
+// 1143          */
+// 1144         do {
+// 1145         } while (*++scan == *++match && *++scan == *++match &&
+// 1146                  *++scan == *++match && *++scan == *++match &&
+// 1147                  *++scan == *++match && *++scan == *++match &&
+// 1148                  *++scan == *++match && *++scan == *++match &&
+// 1149                  scan < strend);
+??longest_match_4:
+        LDRB     R11,[R5, #+1]!
+        ADD      R9,R9,#+1
+        LDRB     LR,[R9], #+1
+        CMP      R11,LR
+        BNE      ??longest_match_5
+        LDRB     R11,[R5, #+1]!
+        LDRB     LR,[R9], #+1
+        CMP      R11,LR
+        BNE      ??longest_match_5
+        LDRB     R11,[R5, #+1]!
+        LDRB     LR,[R9], #+1
+        CMP      R11,LR
+        BNE      ??longest_match_5
+        LDRB     R11,[R5, #+1]!
+        LDRB     LR,[R9], #+1
+        CMP      R11,LR
+        BNE      ??longest_match_5
+        LDRB     R11,[R5, #+1]!
+        LDRB     LR,[R9], #+1
+        CMP      R11,LR
+        BNE      ??longest_match_5
+        LDRB     R11,[R5, #+1]!
+        LDRB     LR,[R9], #+1
+        CMP      R11,LR
+        BNE      ??longest_match_5
+        LDRB     R11,[R5, #+1]!
+        LDRB     LR,[R9], #+1
+        CMP      R11,LR
+        BNE      ??longest_match_5
+        LDRB     R11,[R5, #+1]!
+        LDRB     LR,[R9, #+0]
+        CMP      R11,LR
+        BNE      ??longest_match_5
+        CMP      R5,R6
+        BCC      ??longest_match_4
+// 1150 
+// 1151         Assert(scan <= s->window+(unsigned)(s->window_size-1), "wild scan");
+// 1152 
+// 1153         len = MAX_MATCH - (int)(strend - scan);
+??longest_match_5:
+        MOV      R9,#+2
+        ORR      R9,R9,#0x100
+        SUB      R5,R6,R5
+        SUB      R9,R9,R5
+// 1154         scan = strend - MAX_MATCH;
+        MVN      R5,#+1
+        BIC      R5,R5,#0x100
+        ADD      R5,R5,R6
+// 1155 
+// 1156 #endif /* UNALIGNED_OK */
+// 1157 
+// 1158         if (len > best_len) {
+        CMP      R2,R9
+        BGE      ??longest_match_3
+// 1159             s->match_start = cur_match;
+        STR      R1,[R0, #+112]
+// 1160             best_len = len;
+// 1161             if (len >= nice_match) break;
+        LDR      R7,[SP, #+0]
+        MOV      R2,R9
+        CMP      R9,R7
+        BGE      ??longest_match_6
+// 1162 #ifdef UNALIGNED_OK
+// 1163             scan_end = *(ushf*)(scan+best_len-1);
+// 1164 #else
+// 1165             scan_end1  = scan[best_len-1];
+// 1166             scan_end   = scan[best_len];
+        LDRB     R8,[R2, +R5]
+        ADD      R7,R2,R5
+        LDRB     R7,[R7, #-1]
+// 1167 #endif
+// 1168         }
+// 1169     } while ((cur_match = prev[cur_match & wmask]) > limit
+// 1170              && --chain_length != 0);
+??longest_match_3:
+        LDR      R9,[SP, #+8]
+        AND      R1,R9,R1
+        LDR      R9,[SP, #+4]
+        ADD      R1,R9,R1, LSL #+1
+        LDRH     R1,[R1, #+0]
+        CMP      R12,R1
+        BCS      ??longest_match_6
+        SUBS     R4,R4,#+1
+        BNE      ??longest_match_2
+// 1171 
+// 1172     if ((uInt)best_len <= s->lookahead) return (uInt)best_len;
+??longest_match_6:
+        CMP      R3,R2
+        MOVCS    R0,R2
+        POPCS    {R1-R11,PC}
+// 1173     return s->lookahead;
+        MOV      R0,R3
+        POP      {R1-R11,PC}      ;; return
+        CFI EndBlock cfiBlock33
+// 1174 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock34 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??longest_match_fast??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock34
+        REQUIRE longest_match_fast
+// 1175 #endif /* ASMV */
+// 1176 #endif /* FASTEST */
+// 1177 
+// 1178 /* ---------------------------------------------------------------------------
+// 1179  * Optimized version for level == 1 or strategy == Z_RLE only
+// 1180  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock35 Using cfiCommon1
+        CFI Function longest_match_fast
+        ARM
+// 1181 local uInt longest_match_fast(s, cur_match)
+// 1182     deflate_state *s;
+// 1183     IPos cur_match;                             /* current match */
+// 1184 {
+longest_match_fast:
+        PUSH     {R4-R6}
+        CFI R6 Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+        LDR      R2,[R0, #+108]
+        LDR      R4,[R0, #+56]
+// 1185     register Bytef *scan = s->window + s->strstart; /* current string */
+// 1186     register Bytef *match;                       /* matched string */
+// 1187     register int len;                           /* length of current match */
+// 1188     register Bytef *strend = s->window + s->strstart + MAX_MATCH;
+        MOV      R3,#+2
+        ADD      R2,R2,R4
+        ORR      R3,R3,#0x100
+        ADD      R3,R3,R2
+// 1189 
+// 1190     /* The code is optimized for HASH_BITS >= 8 and MAX_MATCH-2 multiple of 16.
+// 1191      * It is easy to get rid of this optimization if necessary.
+// 1192      */
+// 1193     Assert(s->hash_bits >= 8 && MAX_MATCH == 258, "Code too clever");
+// 1194 
+// 1195     Assert((ulg)s->strstart <= s->window_size-MIN_LOOKAHEAD, "need lookahead");
+// 1196 
+// 1197     Assert(cur_match < s->strstart, "no future");
+// 1198 
+// 1199     match = s->window + cur_match;
+// 1200 
+// 1201     /* Return failure if the match length is less than 2:
+// 1202      */
+// 1203     if (match[0] != scan[0] || match[1] != scan[1]) return MIN_MATCH-1;
+        LDRB     R5,[R2], #+1
+        ADD      R12,R1,R4
+        LDRB     R4,[R12], #+1
+        CMP      R4,R5
+        BNE      ??longest_match_fast_0
+        LDRB     R4,[R12], #+1
+        LDRB     R5,[R2], #+1
+        CMP      R4,R5
+        BEQ      ??longest_match_fast_1
+??longest_match_fast_0:
+        POP      {R4-R6}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI CFA R13+0
+        MOV      R0,#+2
+        BX       LR
+        CFI R4 Frame(CFA, -12)
+        CFI R5 Frame(CFA, -8)
+        CFI R6 Frame(CFA, -4)
+        CFI CFA R13+12
+// 1204 
+// 1205     /* The check at best_len-1 can be removed because it will be made
+// 1206      * again later. (This heuristic is not always a win.)
+// 1207      * It is not necessary to compare scan[2] and match[2] since they
+// 1208      * are always equal when the other bytes match, given that
+// 1209      * the hash keys are equal and that HASH_BITS >= 8.
+// 1210      */
+// 1211     scan += 2, match += 2;
+// 1212     Assert(*scan == *match, "match[2]?");
+// 1213 
+// 1214     /* We check for insufficient lookahead only every 8th comparison;
+// 1215      * the 256th check will be made at strstart+258.
+// 1216      */
+// 1217     do {
+// 1218     } while (*++scan == *++match && *++scan == *++match &&
+// 1219              *++scan == *++match && *++scan == *++match &&
+// 1220              *++scan == *++match && *++scan == *++match &&
+// 1221              *++scan == *++match && *++scan == *++match &&
+// 1222              scan < strend);
+??longest_match_fast_1:
+        LDRB     R5,[R2, #+1]!
+        ADD      R12,R12,#+1
+        LDRB     R6,[R12], #+1
+        MOV      R4,R3
+        CMP      R5,R6
+        BNE      ??longest_match_fast_2
+        LDRB     R5,[R2, #+1]!
+        LDRB     R6,[R12], #+1
+        CMP      R5,R6
+        BNE      ??longest_match_fast_2
+        LDRB     R5,[R2, #+1]!
+        LDRB     R6,[R12], #+1
+        CMP      R5,R6
+        BNE      ??longest_match_fast_2
+        LDRB     R5,[R2, #+1]!
+        LDRB     R6,[R12], #+1
+        CMP      R5,R6
+        BNE      ??longest_match_fast_2
+        LDRB     R5,[R2, #+1]!
+        LDRB     R6,[R12], #+1
+        CMP      R5,R6
+        BNE      ??longest_match_fast_2
+        LDRB     R5,[R2, #+1]!
+        LDRB     R6,[R12], #+1
+        CMP      R5,R6
+        BNE      ??longest_match_fast_2
+        LDRB     R5,[R2, #+1]!
+        LDRB     R6,[R12], #+1
+        CMP      R5,R6
+        BNE      ??longest_match_fast_2
+        LDRB     R5,[R2, #+1]!
+        LDRB     R6,[R12, #+0]
+        CMP      R5,R6
+        BNE      ??longest_match_fast_2
+        CMP      R2,R4
+        BCC      ??longest_match_fast_1
+// 1223 
+// 1224     Assert(scan <= s->window+(unsigned)(s->window_size-1), "wild scan");
+// 1225 
+// 1226     len = MAX_MATCH - (int)(strend - scan);
+??longest_match_fast_2:
+        MOV      R3,#+2
+        ORR      R3,R3,#0x100
+        SUB      R2,R4,R2
+        SUB      R2,R3,R2
+// 1227 
+// 1228     if (len < MIN_MATCH) return MIN_MATCH - 1;
+        CMP      R2,#+3
+        BLT      ??longest_match_fast_0
+// 1229 
+// 1230     s->match_start = cur_match;
+        STR      R1,[R0, #+112]
+// 1231     return (uInt)len <= s->lookahead ? (uInt)len : s->lookahead;
+        LDR      R0,[R0, #+116]
+        POP      {R4-R6}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI CFA R13+0
+        CMP      R0,R2
+        MOVCC    R2,R0
+        MOV      R0,R2
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock35
+// 1232 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock36 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??fill_window??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock36
+        REQUIRE fill_window
+// 1233 
+// 1234 #ifdef DEBUG
+// 1235 /* ===========================================================================
+// 1236  * Check that the match at match_start is indeed a match.
+// 1237  */
+// 1238 local void check_match(s, start, match, length)
+// 1239     deflate_state *s;
+// 1240     IPos start, match;
+// 1241     int length;
+// 1242 {
+// 1243     /* check that the match is indeed a match */
+// 1244     if (zmemcmp(s->window + match,
+// 1245                 s->window + start, length) != EQUAL) {
+// 1246         fprintf(stderr, " start %u, match %u, length %d\n",
+// 1247                 start, match, length);
+// 1248         do {
+// 1249             fprintf(stderr, "%c%c", s->window[match++], s->window[start++]);
+// 1250         } while (--length != 0);
+// 1251         z_error("invalid match");
+// 1252     }
+// 1253     if (z_verbose > 1) {
+// 1254         fprintf(stderr,"\\[%d,%d]", start-match, length);
+// 1255         do { putc(s->window[start++], stderr); } while (--length != 0);
+// 1256     }
+// 1257 }
+// 1258 #else
+// 1259 #  define check_match(s, start, match, length)
+// 1260 #endif /* DEBUG */
+// 1261 
+// 1262 /* ===========================================================================
+// 1263  * Fill the window when the lookahead becomes insufficient.
+// 1264  * Updates strstart and lookahead.
+// 1265  *
+// 1266  * IN assertion: lookahead < MIN_LOOKAHEAD
+// 1267  * OUT assertions: strstart <= window_size-MIN_LOOKAHEAD
+// 1268  *    At least one byte has been read, or avail_in == 0; reads are
+// 1269  *    performed for at least two bytes (required for the zip translate_eol
+// 1270  *    option -- not supported here).
+// 1271  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock37 Using cfiCommon1
+        CFI Function fill_window
+        ARM
+// 1272 local void fill_window(s)
+// 1273     deflate_state *s;
+// 1274 {
+fill_window:
+        PUSH     {R4-R7,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R7 Frame(CFA, -8)
+        CFI R6 Frame(CFA, -12)
+        CFI R5 Frame(CFA, -16)
+        CFI R4 Frame(CFA, -20)
+        CFI CFA R13+20
+        MOV      R4,R0
+// 1275     register unsigned n, m;
+// 1276     register Posf *p;
+// 1277     unsigned more;    /* Amount of free space at the end of the window. */
+// 1278     uInt wsize = s->w_size;
+        LDR      R5,[R4, #+44]
+        MVN      R6,#+5
+        BIC      R6,R6,#0x100
+// 1279 
+// 1280     do {
+// 1281         more = (unsigned)(s->window_size -(ulg)s->lookahead -(ulg)s->strstart);
+??fill_window_0:
+        LDR      R0,[R4, #+108]
+        LDR      R1,[R4, #+60]
+        LDR      R2,[R4, #+116]
+        SUB      R1,R1,R2
+        SUB      R7,R1,R0
+// 1282 
+// 1283         /* Deal with !@#$% 64K limit: */
+// 1284         if (sizeof(int) <= 2) {
+// 1285             if (more == 0 && s->strstart == 0 && s->lookahead == 0) {
+// 1286                 more = wsize;
+// 1287 
+// 1288             } else if (more == (unsigned)(-1)) {
+// 1289                 /* Very unlikely, but possible on 16 bit machine if
+// 1290                  * strstart == 0 && lookahead == 1 (input done a byte at time)
+// 1291                  */
+// 1292                 more--;
+// 1293             }
+// 1294         }
+// 1295 
+// 1296         /* If the window is almost full and there is insufficient lookahead,
+// 1297          * move the upper half to the lower one to make room in the upper half.
+// 1298          */
+// 1299         if (s->strstart >= wsize+MAX_DIST(s)) {
+        LDR      R1,[R4, #+44]
+        ADD      R1,R1,R5
+        ADD      R1,R6,R1
+        CMP      R0,R1
+        BCC      ??fill_window_1
+// 1300 
+// 1301             zmemcpy(s->window, s->window+wsize, (unsigned)wsize);
+        LDR      R0,[R4, #+56]
+        MOV      R2,R5
+        ADD      R1,R5,R0
+        SWI      +286
+// 1302             s->match_start -= wsize;
+        LDR      R0,[R4, #+112]
+        SUB      R0,R0,R5
+        STR      R0,[R4, #+112]
+// 1303             s->strstart    -= wsize; /* we now have strstart >= MAX_DIST */
+        LDR      R0,[R4, #+108]
+        SUB      R0,R0,R5
+        STR      R0,[R4, #+108]
+// 1304             s->block_start -= (long) wsize;
+        LDR      R0,[R4, #+92]
+        SUB      R0,R0,R5
+        STR      R0,[R4, #+92]
+// 1305 
+// 1306             /* Slide the hash table (could be avoided with 32 bit values
+// 1307                at the expense of memory usage). We slide even when level == 0
+// 1308                to keep the hash table consistent if we switch back to level > 0
+// 1309                later. (Using level 0 permanently is not an optimal usage of
+// 1310                zlib, so we don't care about this pathological case.)
+// 1311              */
+// 1312             /* %%% avoid this when Z_RLE */
+// 1313             n = s->hash_size;
+        LDR      R0,[R4, #+76]
+// 1314             p = &s->head[n];
+        LDR      R1,[R4, #+68]
+        ADD      R2,R1,R0, LSL #+1
+// 1315             do {
+// 1316                 m = *--p;
+??fill_window_2:
+        LDRH     R3,[R2, #-2]!
+// 1317                 *p = (Pos)(m >= wsize ? m-wsize : NIL);
+        CMP      R3,R5
+        SUBCS    R3,R3,R5
+        MOVCC    R3,#+0
+        STRH     R3,[R2, #+0]
+// 1318             } while (--n);
+        SUBS     R0,R0,#+1
+        BNE      ??fill_window_2
+// 1319 
+// 1320             n = wsize;
+// 1321 #ifndef FASTEST
+// 1322             p = &s->prev[n];
+        LDR      R2,[R4, #+64]
+        MOV      R0,R5
+        ADD      R2,R2,R0, LSL #+1
+// 1323             do {
+// 1324                 m = *--p;
+??fill_window_3:
+        LDRH     R3,[R2, #-2]!
+// 1325                 *p = (Pos)(m >= wsize ? m-wsize : NIL);
+        CMP      R3,R5
+        SUBCS    R3,R3,R5
+        MOVCC    R3,#+0
+        STRH     R3,[R2, #+0]
+// 1326                 /* If n is not on any hash chain, prev[n] is garbage but
+// 1327                  * its value will never be used.
+// 1328                  */
+// 1329             } while (--n);
+        SUBS     R0,R0,#+1
+        BNE      ??fill_window_3
+// 1330 #endif
+// 1331             more += wsize;
+        ADD      R7,R5,R7
+// 1332         }
+// 1333         if (s->strm->avail_in == 0) return;
+??fill_window_1:
+        LDR      R0,[R4, #+0]
+        LDR      R1,[R0, #+4]
+        CMP      R1,#+0
+        POPEQ    {R4-R7,PC}
+// 1334 
+// 1335         /* If there was no sliding:
+// 1336          *    strstart <= WSIZE+MAX_DIST-1 && lookahead <= MIN_LOOKAHEAD - 1 &&
+// 1337          *    more == window_size - lookahead - strstart
+// 1338          * => more >= window_size - (MIN_LOOKAHEAD-1 + WSIZE + MAX_DIST-1)
+// 1339          * => more >= window_size - 2*WSIZE + 2
+// 1340          * In the BIG_MEM or MMAP case (not yet supported),
+// 1341          *   window_size == input_size + MIN_LOOKAHEAD  &&
+// 1342          *   strstart + s->lookahead <= input_size => more >= MIN_LOOKAHEAD.
+// 1343          * Otherwise, window_size == 2*WSIZE so more >= 2.
+// 1344          * If there was sliding, more >= WSIZE. So in all cases, more >= 2.
+// 1345          */
+// 1346         Assert(more >= 2, "more < 2");
+// 1347 
+// 1348         n = read_buf(s->strm, s->window + s->strstart + s->lookahead, more);
+        LDR      R1,[R4, #+116]
+        LDR      R3,[R4, #+108]
+        MOV      R2,R7
+        LDR      R7,[R4, #+56]
+        ADD      R3,R3,R7
+        ADD      R1,R1,R3
+        BL       read_buf
+// 1349         s->lookahead += n;
+        LDR      R1,[R4, #+116]
+        ADD      R0,R0,R1
+        STR      R0,[R4, #+116]
+// 1350 
+// 1351         /* Initialize the hash value now that we have some input: */
+// 1352         if (s->lookahead >= MIN_MATCH) {
+        CMP      R0,#+3
+        BCC      ??fill_window_4
+        LDR      R1,[R4, #+108]
+        LDR      R2,[R4, #+56]
+        ADD      R1,R1,R2
+        LDRB     R2,[R1, #+0]
+        STR      R2,[R4, #+72]
+// 1353             s->ins_h = s->window[s->strstart];
+// 1354             UPDATE_HASH(s, s->ins_h, s->window[s->strstart+1]);
+        LDRB     R1,[R1, #+1]
+        LDR      R3,[R4, #+88]
+        EOR      R1,R1,R2, LSL R3
+        LDR      R2,[R4, #+84]
+        AND      R1,R2,R1
+        STR      R1,[R4, #+72]
+// 1355 #if MIN_MATCH != 3
+// 1356             Call UPDATE_HASH() MIN_MATCH-3 more times
+// 1357 #endif
+// 1358         }
+// 1359         /* If the whole input has less than MIN_MATCH bytes, ins_h is garbage,
+// 1360          * but this is not important since only literal bytes will be emitted.
+// 1361          */
+// 1362 
+// 1363     } while (s->lookahead < MIN_LOOKAHEAD && s->strm->avail_in != 0);
+??fill_window_4:
+        RSB      R1,R6,#+0
+        CMP      R0,R1
+        POPCS    {R4-R7,PC}
+        LDR      R0,[R4, #+0]
+        LDR      R0,[R0, #+4]
+        CMP      R0,#+0
+        BNE      ??fill_window_0
+        POP      {R4-R7,PC}       ;; return
+        CFI EndBlock cfiBlock37
+// 1364 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock38 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??deflate_stored??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock38
+        REQUIRE deflate_stored
+// 1365 
+// 1366 /* ===========================================================================
+// 1367  * Flush the current block, with given end-of-file flag.
+// 1368  * IN assertion: strstart is set to the end of the current match.
+// 1369  */
+// 1370 #define FLUSH_BLOCK_ONLY(s, eof) { \ 
+// 1371    _tr_flush_block(s, (s->block_start >= 0L ? \ 
+// 1372                    (charf *)&s->window[(unsigned)s->block_start] : \ 
+// 1373                    (charf *)Z_NULL), \ 
+// 1374                 (ulg)((long)s->strstart - s->block_start), \ 
+// 1375                 (eof)); \ 
+// 1376    s->block_start = s->strstart; \ 
+// 1377    flush_pending(s->strm); \ 
+// 1378    Tracev((stderr,"[FLUSH]")); \ 
+// 1379 }
+// 1380 
+// 1381 /* Same but force premature exit if necessary. */
+// 1382 #define FLUSH_BLOCK(s, eof) { \ 
+// 1383    FLUSH_BLOCK_ONLY(s, eof); \ 
+// 1384    if (s->strm->avail_out == 0) return (eof) ? finish_started : need_more; \ 
+// 1385 }
+// 1386 
+// 1387 /* ===========================================================================
+// 1388  * Copy without compression as much as possible from the input stream, return
+// 1389  * the current block state.
+// 1390  * This function does not insert new strings in the dictionary since
+// 1391  * uncompressible data is probably not useful. This function is used
+// 1392  * only for the level=0 compression option.
+// 1393  * NOTE: this function should be optimized to avoid extra copying from
+// 1394  * window to pending_buf.
+// 1395  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock39 Using cfiCommon1
+        CFI Function deflate_stored
+        ARM
+// 1396 local block_state deflate_stored(s, flush)
+// 1397     deflate_state *s;
+// 1398     int flush;
+// 1399 {
+deflate_stored:
+        PUSH     {R4-R7,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R7 Frame(CFA, -8)
+        CFI R6 Frame(CFA, -12)
+        CFI R5 Frame(CFA, -16)
+        CFI R4 Frame(CFA, -20)
+        CFI CFA R13+20
+        MOV      R4,R0
+// 1400     /* Stored blocks are limited to 0xffff bytes, pending_buf is limited
+// 1401      * to pending_buf_size, and each stored block has a 5 byte header:
+// 1402      */
+// 1403     ulg max_block_size = 0xffff;
+        LDR      R0,[R4, #+12]
+        MOV      R5,R1
+        MOV      R6,#+255
+        ORR      R6,R6,#0xFF00
+        SUB      R0,R0,#+5
+        CMP      R0,R6
+        BCS      ??deflate_stored_0
+// 1404     ulg max_start;
+// 1405 
+// 1406     if (max_block_size > s->pending_buf_size - 5) {
+// 1407         max_block_size = s->pending_buf_size - 5;
+        MOV      R6,R0
+        B        ??deflate_stored_0
+// 1408     }
+// 1409 
+// 1410     /* Copy as much as possible from input to output: */
+// 1411     for (;;) {
+// 1412         /* Fill the window as much as possible: */
+// 1413         if (s->lookahead <= 1) {
+// 1414 
+// 1415             Assert(s->strstart < s->w_size+MAX_DIST(s) ||
+// 1416                    s->block_start >= (long)s->w_size, "slide too late");
+// 1417 
+// 1418             fill_window(s);
+// 1419             if (s->lookahead == 0 && flush == Z_NO_FLUSH) return need_more;
+// 1420 
+// 1421             if (s->lookahead == 0) break; /* flush the current block */
+// 1422         }
+// 1423         Assert(s->block_start >= 0L, "block gone");
+// 1424 
+// 1425         s->strstart += s->lookahead;
+// 1426         s->lookahead = 0;
+// 1427 
+// 1428         /* Emit a stored block if pending_buf will be full: */
+// 1429         max_start = s->block_start + max_block_size;
+// 1430         if (s->strstart == 0 || (ulg)s->strstart >= max_start) {
+// 1431             /* strstart == 0 is possible when wraparound on 16-bit machine */
+// 1432             s->lookahead = (uInt)(s->strstart - max_start);
+// 1433             s->strstart = (uInt)max_start;
+// 1434             FLUSH_BLOCK(s, 0);
+// 1435         }
+// 1436         /* Flush if we may have to slide, otherwise block_start may become
+// 1437          * negative and the data will be gone:
+// 1438          */
+// 1439         if (s->strstart - (uInt)s->block_start >= MAX_DIST(s)) {
+// 1440             FLUSH_BLOCK(s, 0);
+??deflate_stored_1:
+        MOV      R3,#+0
+        MOV      R1,R7
+        MOV      R0,R4
+        _BLF     _tr_flush_block,??_tr_flush_block??rA
+        LDR      R0,[R4, #+108]
+        STR      R0,[R4, #+92]
+        LDR      R0,[R4, #+0]
+        BL       flush_pending
+        LDR      R0,[R4, #+0]
+        LDR      R0,[R0, #+16]
+        CMP      R0,#+0
+        POPEQ    {R4-R7,PC}
+??deflate_stored_0:
+        LDR      R0,[R4, #+116]
+        MOV      R7,#+0
+        CMP      R0,#+2
+        BCS      ??deflate_stored_2
+        MOV      R0,R4
+        BL       fill_window
+        LDR      R0,[R4, #+116]
+        CMP      R0,#+0
+        BNE      ??deflate_stored_2
+        CMP      R5,#+0
+        POPEQ    {R4-R7,PC}
+// 1441         }
+// 1442     }
+// 1443     FLUSH_BLOCK(s, flush == Z_FINISH);
+        CMP      R5,#+4
+        MOVNE    R3,#+0
+        MOVEQ    R3,#+1
+        B        ??deflate_stored_3
+??deflate_stored_2:
+        LDR      R0,[R4, #+108]
+        LDR      R1,[R4, #+116]
+        ADD      R0,R1,R0
+        STR      R0,[R4, #+108]
+        STR      R7,[R4, #+116]
+        LDR      R2,[R4, #+92]
+        CMP      R0,#+0
+        ADD      R12,R6,R2
+        MOV      R1,R12
+        BEQ      ??deflate_stored_4
+        CMP      R0,R1
+        BCC      ??deflate_stored_5
+??deflate_stored_4:
+        SUB      R0,R0,R1
+        STR      R0,[R4, #+116]
+        STR      R1,[R4, #+108]
+        CMP      R2,#+0
+        LDRPL    R0,[R4, #+56]
+        MOVMI    R1,#+0
+        ADDPL    R1,R2,R0
+        MOV      R3,#+0
+        SUB      R2,R12,R2
+        MOV      R0,R4
+        _BLF     _tr_flush_block,??_tr_flush_block??rA
+        LDR      R0,[R4, #+108]
+        STR      R0,[R4, #+92]
+        LDR      R0,[R4, #+0]
+        BL       flush_pending
+        LDR      R0,[R4, #+0]
+        LDR      R0,[R0, #+16]
+        CMP      R0,#+0
+        POPEQ    {R4-R7,PC}
+??deflate_stored_5:
+        LDR      R0,[R4, #+92]
+        LDR      R1,[R4, #+108]
+        MVN      R3,#+5
+        SUB      R2,R1,R0
+        LDR      R1,[R4, #+44]
+        BIC      R3,R3,#0x100
+        ADD      R1,R3,R1
+        CMP      R2,R1
+        BCC      ??deflate_stored_0
+        CMP      R0,#+0
+        BMI      ??deflate_stored_1
+        LDR      R1,[R4, #+56]
+        ADD      R7,R0,R1
+        B        ??deflate_stored_1
+??deflate_stored_3:
+        LDR      R0,[R4, #+92]
+        LDR      R2,[R4, #+108]
+        CMP      R0,#+0
+        LDRPL    R1,[R4, #+56]
+        SUB      R2,R2,R0
+        ADDPL    R1,R0,R1
+        MOVMI    R1,#+0
+        MOV      R0,R4
+        _BLF     _tr_flush_block,??_tr_flush_block??rA
+        LDR      R0,[R4, #+108]
+        STR      R0,[R4, #+92]
+        LDR      R0,[R4, #+0]
+        BL       flush_pending
+        LDR      R0,[R4, #+0]
+        LDR      R0,[R0, #+16]
+        CMP      R0,#+0
+        BNE      ??deflate_stored_6
+        CMP      R5,#+4
+        MOVEQ    R7,#+2
+        MOV      R0,R7
+        POP      {R4-R7,PC}
+// 1444     return flush == Z_FINISH ? finish_done : block_done;
+??deflate_stored_6:
+        CMP      R5,#+4
+        MOVEQ    R0,#+3
+        POPEQ    {R4-R7,PC}
+        MOV      R0,#+1
+        POP      {R4-R7,PC}       ;; return
+        CFI EndBlock cfiBlock39
+// 1445 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock40 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??deflate_fast??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock40
+        REQUIRE deflate_fast
+// 1446 
+// 1447 /* ===========================================================================
+// 1448  * Compress as much as possible from the input stream, return the current
+// 1449  * block state.
+// 1450  * This function does not perform lazy evaluation of matches and inserts
+// 1451  * new strings in the dictionary only for unmatched strings or for short
+// 1452  * matches. It is used only for the fast compression options.
+// 1453  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock41 Using cfiCommon1
+        CFI Function deflate_fast
+        ARM
+// 1454 local block_state deflate_fast(s, flush)
+// 1455     deflate_state *s;
+// 1456     int flush;
+// 1457 {
+deflate_fast:
+        PUSH     {R4-R8,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R8 Frame(CFA, -8)
+        CFI R7 Frame(CFA, -12)
+        CFI R6 Frame(CFA, -16)
+        CFI R5 Frame(CFA, -20)
+        CFI R4 Frame(CFA, -24)
+        CFI CFA R13+24
+        MOV      R5,R0
+        MOV      R6,R1
+// 1458     IPos hash_head = NIL; /* head of the hash chain */
+        MOV      R4,#+0
+        MOV      R8,#+0
+        MOV      R7,#+6
+        ORR      R7,R7,#0x100
+        B        ??deflate_fast_0
+// 1459     int bflush;           /* set if current block must be flushed */
+// 1460 
+// 1461     for (;;) {
+// 1462         /* Make sure that we always have enough lookahead, except
+// 1463          * at the end of the input file. We need MAX_MATCH bytes
+// 1464          * for the next match, plus MIN_MATCH bytes to insert the
+// 1465          * string following the next match.
+// 1466          */
+// 1467         if (s->lookahead < MIN_LOOKAHEAD) {
+// 1468             fill_window(s);
+// 1469             if (s->lookahead < MIN_LOOKAHEAD && flush == Z_NO_FLUSH) {
+// 1470                 return need_more;
+// 1471             }
+// 1472             if (s->lookahead == 0) break; /* flush the current block */
+// 1473         }
+// 1474 
+// 1475         /* Insert the string window[strstart .. strstart+2] in the
+// 1476          * dictionary, and set hash_head to the head of the hash chain:
+// 1477          */
+// 1478         if (s->lookahead >= MIN_MATCH) {
+// 1479             INSERT_STRING(s, s->strstart, hash_head);
+// 1480         }
+// 1481 
+// 1482         /* Find the longest match, discarding those <= prev_length.
+// 1483          * At this point we have always match_length < MIN_MATCH
+// 1484          */
+// 1485         if (hash_head != NIL && s->strstart - hash_head <= MAX_DIST(s)) {
+// 1486             /* To simplify the code, we prevent matches with the string
+// 1487              * of window index 0 (in particular we have to avoid a match
+// 1488              * of the string with itself at the start of the input file).
+// 1489              */
+// 1490 #ifdef FASTEST
+// 1491             if ((s->strategy != Z_HUFFMAN_ONLY && s->strategy != Z_RLE) ||
+// 1492                 (s->strategy == Z_RLE && s->strstart - hash_head == 1)) {
+// 1493                 s->match_length = longest_match_fast (s, hash_head);
+// 1494             }
+// 1495 #else
+// 1496             if (s->strategy != Z_HUFFMAN_ONLY && s->strategy != Z_RLE) {
+// 1497                 s->match_length = longest_match (s, hash_head);
+// 1498             } else if (s->strategy == Z_RLE && s->strstart - hash_head == 1) {
+// 1499                 s->match_length = longest_match_fast (s, hash_head);
+// 1500             }
+// 1501 #endif
+// 1502             /* longest_match() or longest_match_fast() sets match_start */
+// 1503         }
+// 1504         if (s->match_length >= MIN_MATCH) {
+// 1505             check_match(s, s->strstart, s->match_start, s->match_length);
+// 1506 
+// 1507             _tr_tally_dist(s, s->strstart - s->match_start,
+// 1508                            s->match_length - MIN_MATCH, bflush);
+// 1509 
+// 1510             s->lookahead -= s->match_length;
+// 1511 
+// 1512             /* Insert new strings in the hash table only if the match length
+// 1513              * is not too large. This saves time but degrades compression.
+// 1514              */
+// 1515 #ifndef FASTEST
+// 1516             if (s->match_length <= s->max_insert_length &&
+// 1517                 s->lookahead >= MIN_MATCH) {
+// 1518                 s->match_length--; /* string at strstart already in table */
+// 1519                 do {
+// 1520                     s->strstart++;
+// 1521                     INSERT_STRING(s, s->strstart, hash_head);
+// 1522                     /* strstart never exceeds WSIZE-MAX_MATCH, so there are
+// 1523                      * always MIN_MATCH bytes ahead.
+// 1524                      */
+// 1525                 } while (--s->match_length != 0);
+// 1526                 s->strstart++;
+// 1527             } else
+// 1528 #endif
+// 1529             {
+// 1530                 s->strstart += s->match_length;
+// 1531                 s->match_length = 0;
+// 1532                 s->ins_h = s->window[s->strstart];
+// 1533                 UPDATE_HASH(s, s->ins_h, s->window[s->strstart+1]);
+// 1534 #if MIN_MATCH != 3
+// 1535                 Call UPDATE_HASH() MIN_MATCH-3 more times
+// 1536 #endif
+// 1537                 /* If lookahead < MIN_MATCH, ins_h is garbage, but it does not
+// 1538                  * matter since it will be recomputed at next deflate call.
+// 1539                  */
+// 1540             }
+// 1541         } else {
+// 1542             /* No match, output a literal byte */
+// 1543             Tracevv((stderr,"%c", s->window[s->strstart]));
+// 1544             _tr_tally_lit (s, s->window[s->strstart], bflush);
+// 1545             s->lookahead--;
+// 1546             s->strstart++;
+// 1547         }
+// 1548         if (bflush) FLUSH_BLOCK(s, 0);
+??deflate_fast_1:
+        LDR      R0,[R5, #+108]
+        LDR      R2,[R5, #+92]
+        MOV      R3,#+0
+        SUB      R2,R0,R2
+        MOV      R0,R5
+        _BLF     _tr_flush_block,??_tr_flush_block??rA
+        LDR      R0,[R5, #+108]
+        STR      R0,[R5, #+92]
+        LDR      R0,[R5, #+0]
+        BL       flush_pending
+        LDR      R0,[R5, #+0]
+        LDR      R0,[R0, #+16]
+        CMP      R0,#+0
+        POPEQ    {R4-R8,PC}
+??deflate_fast_0:
+        LDR      R0,[R5, #+116]
+        CMP      R0,R7
+        BCS      ??deflate_fast_2
+        MOV      R0,R5
+        BL       fill_window
+        LDR      R0,[R5, #+116]
+        CMP      R0,R7
+        BCS      ??deflate_fast_3
+        CMP      R6,#+0
+        MOVEQ    R0,#+0
+        POPEQ    {R4-R8,PC}
+??deflate_fast_3:
+        CMP      R0,#+0
+        BNE      ??deflate_fast_2
+// 1549     }
+// 1550     FLUSH_BLOCK(s, flush == Z_FINISH);
+        MOV      R7,#+1
+        CMP      R6,#+4
+        MOVNE    R3,#+0
+        MOVEQ    R3,#+1
+        B        ??deflate_fast_4
+??deflate_fast_2:
+        LDR      R0,[R5, #+116]
+        CMP      R0,#+3
+        BCC      ??deflate_fast_5
+        LDR      R2,[R5, #+108]
+        LDR      R3,[R5, #+56]
+        LDR      R0,[R5, #+72]
+        LDR      R1,[R5, #+88]
+        ADD      R2,R2,R3
+        LDRB     R2,[R2, #+2]
+        EOR      R0,R2,R0, LSL R1
+        LDR      R1,[R5, #+84]
+        AND      R0,R1,R0
+        STR      R0,[R5, #+72]
+        LDR      R0,[R5, #+108]
+        LDR      R1,[R5, #+52]
+        LDR      R2,[R5, #+68]
+        AND      R0,R1,R0
+        LDR      R1,[R5, #+64]
+        ADD      R0,R1,R0, LSL #+1
+        LDR      R1,[R5, #+72]
+        ADD      R1,R2,R1, LSL #+1
+        LDRH     R1,[R1, #+0]
+        STRH     R1,[R0, #+0]
+        LDR      R0,[R5, #+108]
+        LDR      R1,[R5, #+52]
+        AND      R0,R1,R0
+        LDR      R1,[R5, #+64]
+        ADD      R0,R1,R0, LSL #+1
+        LDRH     R8,[R0, #+0]
+        LDR      R0,[R5, #+72]
+        LDR      R1,[R5, #+68]
+        ADD      R0,R1,R0, LSL #+1
+        LDR      R1,[R5, #+108]
+        STRH     R1,[R0, #+0]
+??deflate_fast_5:
+        CMP      R8,#+0
+        BEQ      ??deflate_fast_6
+        LDR      R0,[R5, #+44]
+        RSB      R1,R7,#+0
+        ADD      R0,R1,R0
+        LDR      R1,[R5, #+108]
+        SUB      R1,R1,R8
+        CMP      R0,R1
+        BCC      ??deflate_fast_6
+        LDR      R0,[R5, #+136]
+        CMP      R0,#+2
+        CMPNE    R0,#+3
+        BEQ      ??deflate_fast_7
+        MOV      R1,R8
+        MOV      R0,R5
+        BL       longest_match
+        B        ??deflate_fast_8
+??deflate_fast_7:
+        CMP      R0,#+3
+        BNE      ??deflate_fast_6
+        LDR      R0,[R5, #+108]
+        SUB      R0,R0,R8
+        CMP      R0,#+1
+        BNE      ??deflate_fast_6
+        MOV      R1,R8
+        MOV      R0,R5
+        BL       longest_match_fast
+??deflate_fast_8:
+        STR      R0,[R5, #+96]
+??deflate_fast_6:
+        LDR      R1,[R5, #+96]
+        MOV      R0,#+152
+        ORR      R0,R0,#0x1600
+        ADD      R0,R0,R5
+        CMP      R1,#+3
+        BCC      ??deflate_fast_9
+        LDR      R2,[R5, #+108]
+        LDR      R3,[R5, #+112]
+        LDR      R12,[R0, #+12]
+        SUB      R2,R2,R3
+        LDR      R3,[R0, #+8]
+        MOV      R2,R2, LSL #+16
+        MOV      R2,R2, LSR #+16
+        ADD      R3,R12,R3, LSL #+1
+        STRH     R2,[R3, #+0]
+        LDR      R3,[R0, #+8]
+        ADD      R1,R1,#+253
+        ADD      R12,R3,#+1
+        STR      R12,[R0, #+8]
+        LDR      R12,[R0, #+0]
+        AND      R1,R1,#0xFF
+        STRB     R1,[R3, +R12]
+        MOV      R3,#+255
+        ORR      R3,R3,#0xFF00
+        ADD      R2,R3,R2
+        LDR      R3,??DataTable5  ;; _length_code
+        MOV      R2,R2, LSL #+16
+        LDRB     R1,[R1, +R3]
+        SUB      R3,R7,#+5
+        MOV      R2,R2, LSR #+16
+        ADD      R1,R3,R1
+        ADD      R1,R5,R1, LSL #+2
+        LDRH     R3,[R1, #+148]
+        CMP      R2,#+256
+        ADD      R3,R3,#+1
+        STRH     R3,[R1, #+148]
+        LDR      R1,??DataTable6  ;; _dist_code
+        LDRBCC   R1,[R2, +R1]
+        ADDCS    R1,R1,R2, ASR #+7
+        LDRBCS   R1,[R1, #+256]
+        MOV      R2,#+136
+        ORR      R2,R2,#0x900
+        ADD      R1,R5,R1, LSL #+2
+        LDRH     R3,[R2, +R1]
+        ADD      R3,R3,#+1
+        STRH     R3,[R2, +R1]
+        LDR      R1,[R0, #+8]
+        LDR      R0,[R0, #+4]
+        LDR      R2,[R5, #+96]
+        SUB      R0,R0,#+1
+        CMP      R1,R0
+        LDR      R1,[R5, #+116]
+        MOVEQ    R0,#+1
+        SUB      R1,R1,R2
+        STR      R1,[R5, #+116]
+        LDR      R1,[R5, #+128]
+        MOVNE    R0,#+0
+        CMP      R1,R2
+        LDRCS    R1,[R5, #+116]
+        CMPCS    R1,#+3
+        BCC      ??deflate_fast_10
+        SUB      R1,R2,#+1
+        STR      R1,[R5, #+96]
+??deflate_fast_11:
+        LDR      R1,[R5, #+108]
+        ADD      R1,R1,#+1
+        STR      R1,[R5, #+108]
+        LDR      R3,[R5, #+108]
+        LDR      R8,[R5, #+56]
+        LDR      R1,[R5, #+72]
+        LDR      R2,[R5, #+88]
+        ADD      R3,R3,R8
+        LDRB     R3,[R3, #+2]
+        EOR      R1,R3,R1, LSL R2
+        LDR      R2,[R5, #+84]
+        AND      R1,R2,R1
+        STR      R1,[R5, #+72]
+        LDR      R1,[R5, #+108]
+        LDR      R2,[R5, #+52]
+        LDR      R3,[R5, #+68]
+        AND      R1,R2,R1
+        LDR      R2,[R5, #+64]
+        ADD      R1,R2,R1, LSL #+1
+        LDR      R2,[R5, #+72]
+        ADD      R2,R3,R2, LSL #+1
+        LDRH     R2,[R2, #+0]
+        STRH     R2,[R1, #+0]
+        LDR      R1,[R5, #+108]
+        LDR      R2,[R5, #+52]
+        AND      R1,R2,R1
+        LDR      R2,[R5, #+64]
+        ADD      R1,R2,R1, LSL #+1
+        LDRH     R8,[R1, #+0]
+        LDR      R1,[R5, #+72]
+        LDR      R2,[R5, #+68]
+        ADD      R1,R2,R1, LSL #+1
+        LDR      R2,[R5, #+108]
+        STRH     R2,[R1, #+0]
+        LDR      R1,[R5, #+96]
+        SUB      R1,R1,#+1
+        STR      R1,[R5, #+96]
+        CMP      R1,#+0
+        BNE      ??deflate_fast_11
+        B        ??deflate_fast_12
+??deflate_fast_10:
+        LDR      R1,[R5, #+108]
+        ADD      R1,R2,R1
+        STR      R1,[R5, #+108]
+        STR      R4,[R5, #+96]
+        LDR      R2,[R5, #+56]
+        LDRB     R1,[R1, +R2]
+        STR      R1,[R5, #+72]
+        LDR      R3,[R5, #+108]
+        LDR      R12,[R5, #+56]
+        LDR      R2,[R5, #+88]
+        ADD      R3,R3,R12
+        LDRB     R3,[R3, #+1]
+        EOR      R1,R3,R1, LSL R2
+        LDR      R2,[R5, #+84]
+        AND      R1,R2,R1
+        STR      R1,[R5, #+72]
+        B        ??deflate_fast_13
+??deflate_fast_9:
+        LDR      R1,[R5, #+108]
+        LDR      R2,[R5, #+56]
+        LDR      R3,[R0, #+12]
+        LDRB     R1,[R1, +R2]
+        LDR      R2,[R0, #+8]
+        ADD      R2,R3,R2, LSL #+1
+        STRH     R4,[R2, #+0]
+        LDR      R2,[R0, #+8]
+        ADD      R3,R2,#+1
+        STR      R3,[R0, #+8]
+        LDR      R3,[R0, #+0]
+        STRB     R1,[R2, +R3]
+        ADD      R1,R5,R1, LSL #+2
+        LDRH     R2,[R1, #+148]
+        ADD      R2,R2,#+1
+        STRH     R2,[R1, #+148]
+        LDR      R1,[R0, #+8]
+        LDR      R0,[R0, #+4]
+        SUB      R0,R0,#+1
+        CMP      R1,R0
+        LDR      R1,[R5, #+116]
+        MOVEQ    R0,#+1
+        MOVNE    R0,#+0
+        SUB      R1,R1,#+1
+        STR      R1,[R5, #+116]
+??deflate_fast_12:
+        LDR      R1,[R5, #+108]
+        ADD      R1,R1,#+1
+        STR      R1,[R5, #+108]
+??deflate_fast_13:
+        CMP      R0,#+0
+        BEQ      ??deflate_fast_0
+        LDR      R0,[R5, #+92]
+        CMP      R0,#+0
+        LDRPL    R1,[R5, #+56]
+        MOVMI    R1,#+0
+        ADDPL    R1,R0,R1
+        B        ??deflate_fast_1
+??deflate_fast_4:
+        LDR      R0,[R5, #+92]
+        LDR      R2,[R5, #+92]
+        CMP      R0,#+0
+        LDRPL    R1,[R5, #+56]
+        ADDPL    R1,R0,R1
+        LDR      R0,[R5, #+108]
+        MOVMI    R1,#+0
+        SUB      R2,R0,R2
+        MOV      R0,R5
+        _BLF     _tr_flush_block,??_tr_flush_block??rA
+        LDR      R0,[R5, #+108]
+        STR      R0,[R5, #+92]
+        LDR      R0,[R5, #+0]
+        BL       flush_pending
+        LDR      R0,[R5, #+0]
+        LDR      R0,[R0, #+16]
+        CMP      R0,#+0
+        BNE      ??deflate_fast_14
+        CMP      R6,#+4
+        MOVEQ    R0,#+2
+        POP      {R4-R8,PC}
+// 1551     return flush == Z_FINISH ? finish_done : block_done;
+??deflate_fast_14:
+        CMP      R6,#+4
+        MOVEQ    R7,#+3
+        MOV      R0,R7
+        POP      {R4-R8,PC}       ;; return
+        CFI EndBlock cfiBlock41
+// 1552 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock42 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??deflate_slow??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock42
+        REQUIRE deflate_slow
+// 1553 
+// 1554 #ifndef FASTEST
+// 1555 /* ===========================================================================
+// 1556  * Same as above, but achieves better compression. We use a lazy
+// 1557  * evaluation for matches: a match is finally adopted only if there is
+// 1558  * no better match at the next window position.
+// 1559  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock43 Using cfiCommon1
+        CFI Function deflate_slow
+        ARM
+// 1560 local block_state deflate_slow(s, flush)
+// 1561     deflate_state *s;
+// 1562     int flush;
+// 1563 {
+deflate_slow:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+        MOV      R7,R0
+        MOV      R8,R1
+// 1564     IPos hash_head = NIL;    /* head of hash chain */
+        MOV      R4,#+0
+        MOV      R9,#+0
+        MOV      R10,#+6
+        ORR      R10,R10,#0x100
+        MOV      R6,#+2
+        B        ??deflate_slow_0
+// 1565     int bflush;              /* set if current block must be flushed */
+// 1566 
+// 1567     /* Process the input block. */
+// 1568     for (;;) {
+// 1569         /* Make sure that we always have enough lookahead, except
+// 1570          * at the end of the input file. We need MAX_MATCH bytes
+// 1571          * for the next match, plus MIN_MATCH bytes to insert the
+// 1572          * string following the next match.
+// 1573          */
+// 1574         if (s->lookahead < MIN_LOOKAHEAD) {
+// 1575             fill_window(s);
+// 1576             if (s->lookahead < MIN_LOOKAHEAD && flush == Z_NO_FLUSH) {
+// 1577                 return need_more;
+// 1578             }
+// 1579             if (s->lookahead == 0) break; /* flush the current block */
+// 1580         }
+// 1581 
+// 1582         /* Insert the string window[strstart .. strstart+2] in the
+// 1583          * dictionary, and set hash_head to the head of the hash chain:
+// 1584          */
+// 1585         if (s->lookahead >= MIN_MATCH) {
+// 1586             INSERT_STRING(s, s->strstart, hash_head);
+// 1587         }
+// 1588 
+// 1589         /* Find the longest match, discarding those <= prev_length.
+// 1590          */
+// 1591         s->prev_length = s->match_length, s->prev_match = s->match_start;
+// 1592         s->match_length = MIN_MATCH-1;
+// 1593 
+// 1594         if (hash_head != NIL && s->prev_length < s->max_lazy_match &&
+// 1595             s->strstart - hash_head <= MAX_DIST(s)) {
+// 1596             /* To simplify the code, we prevent matches with the string
+// 1597              * of window index 0 (in particular we have to avoid a match
+// 1598              * of the string with itself at the start of the input file).
+// 1599              */
+// 1600             if (s->strategy != Z_HUFFMAN_ONLY && s->strategy != Z_RLE) {
+// 1601                 s->match_length = longest_match (s, hash_head);
+// 1602             } else if (s->strategy == Z_RLE && s->strstart - hash_head == 1) {
+// 1603                 s->match_length = longest_match_fast (s, hash_head);
+// 1604             }
+// 1605             /* longest_match() or longest_match_fast() sets match_start */
+// 1606 
+// 1607             if (s->match_length <= 5 && (s->strategy == Z_FILTERED
+// 1608 #if TOO_FAR <= 32767
+// 1609                 || (s->match_length == MIN_MATCH &&
+// 1610                     s->strstart - s->match_start > TOO_FAR)
+// 1611 #endif
+// 1612                 )) {
+// 1613 
+// 1614                 /* If prev_match is also MIN_MATCH, match_start is garbage
+// 1615                  * but we will ignore the current match anyway.
+// 1616                  */
+// 1617                 s->match_length = MIN_MATCH-1;
+// 1618             }
+// 1619         }
+// 1620         /* If there was a match at the previous step and the current
+// 1621          * match is not better, output the previous match:
+// 1622          */
+// 1623         if (s->prev_length >= MIN_MATCH && s->match_length <= s->prev_length) {
+// 1624             uInt max_insert = s->strstart + s->lookahead - MIN_MATCH;
+// 1625             /* Do not insert strings in hash table beyond this. */
+// 1626 
+// 1627             check_match(s, s->strstart-1, s->prev_match, s->prev_length);
+// 1628 
+// 1629             _tr_tally_dist(s, s->strstart -1 - s->prev_match,
+// 1630                            s->prev_length - MIN_MATCH, bflush);
+// 1631 
+// 1632             /* Insert in hash table all strings up to the end of the match.
+// 1633              * strstart-1 and strstart are already inserted. If there is not
+// 1634              * enough lookahead, the last two strings are not inserted in
+// 1635              * the hash table.
+// 1636              */
+// 1637             s->lookahead -= s->prev_length-1;
+// 1638             s->prev_length -= 2;
+// 1639             do {
+// 1640                 if (++s->strstart <= max_insert) {
+// 1641                     INSERT_STRING(s, s->strstart, hash_head);
+// 1642                 }
+// 1643             } while (--s->prev_length != 0);
+// 1644             s->match_available = 0;
+// 1645             s->match_length = MIN_MATCH-1;
+// 1646             s->strstart++;
+// 1647 
+// 1648             if (bflush) FLUSH_BLOCK(s, 0);
+??deflate_slow_1:
+        LDR      R0,[R7, #+108]
+        LDR      R2,[R7, #+92]
+        MOV      R3,#+0
+        SUB      R2,R0,R2
+        MOV      R0,R7
+        _BLF     _tr_flush_block,??_tr_flush_block??rA
+        LDR      R0,[R7, #+108]
+        STR      R0,[R7, #+92]
+        LDR      R0,[R7, #+0]
+        BL       flush_pending
+        LDR      R0,[R7, #+0]
+        LDR      R0,[R0, #+16]
+        CMP      R0,#+0
+        POPEQ    {R4-R11,PC}
+??deflate_slow_0:
+        MOV      R0,#+152
+        ORR      R0,R0,#0x1600
+        ADD      R11,R0,R7
+        LDR      R0,[R7, #+116]
+        MOV      R5,#+1
+        CMP      R0,R10
+        BCS      ??deflate_slow_2
+        MOV      R0,R7
+        BL       fill_window
+        LDR      R0,[R7, #+116]
+        CMP      R0,R10
+        BCS      ??deflate_slow_3
+        CMP      R8,#+0
+        BNE      ??deflate_slow_3
+        MOV      R0,#+0
+        POP      {R4-R11,PC}
+??deflate_slow_3:
+        CMP      R0,#+0
+        BNE      ??deflate_slow_2
+// 1649 
+// 1650         } else if (s->match_available) {
+// 1651             /* If there was no match at the previous position, output a
+// 1652              * single literal. If there was a match but the current match
+// 1653              * is longer, truncate the previous match to a single literal.
+// 1654              */
+// 1655             Tracevv((stderr,"%c", s->window[s->strstart-1]));
+// 1656             _tr_tally_lit(s, s->window[s->strstart-1], bflush);
+// 1657             if (bflush) {
+// 1658                 FLUSH_BLOCK_ONLY(s, 0);
+// 1659             }
+// 1660             s->strstart++;
+// 1661             s->lookahead--;
+// 1662             if (s->strm->avail_out == 0) return need_more;
+// 1663         } else {
+// 1664             /* There is no previous match to compare with, wait for
+// 1665              * the next step to decide.
+// 1666              */
+// 1667             s->match_available = 1;
+// 1668             s->strstart++;
+// 1669             s->lookahead--;
+// 1670         }
+// 1671     }
+// 1672     Assert (flush != Z_NO_FLUSH, "no flush?");
+// 1673     if (s->match_available) {
+        LDR      R0,[R7, #+104]
+        CMP      R0,#+0
+        BEQ      ??deflate_slow_4
+// 1674         Tracevv((stderr,"%c", s->window[s->strstart-1]));
+// 1675         _tr_tally_lit(s, s->window[s->strstart-1], bflush);
+        LDR      R0,[R7, #+108]
+        LDR      R1,[R7, #+56]
+        LDR      R2,[R11, #+12]
+        ADD      R0,R0,R1
+        LDR      R1,[R11, #+8]
+        LDRB     R0,[R0, #-1]
+        ADD      R1,R2,R1, LSL #+1
+        STRH     R4,[R1, #+0]
+        LDR      R1,[R11, #+8]
+        ADD      R2,R1,#+1
+        STR      R2,[R11, #+8]
+        LDR      R2,[R11, #+0]
+        STRB     R0,[R1, +R2]
+        ADD      R0,R7,R0, LSL #+2
+        LDRH     R1,[R0, #+148]
+        ADD      R1,R1,#+1
+        STRH     R1,[R0, #+148]
+// 1676         s->match_available = 0;
+        STR      R4,[R7, #+104]
+// 1677     }
+// 1678     FLUSH_BLOCK(s, flush == Z_FINISH);
+??deflate_slow_4:
+        CMP      R8,#+4
+        MOVNE    R3,#+0
+        MOVEQ    R3,#+1
+        B        ??deflate_slow_5
+??deflate_slow_2:
+        LDR      R0,[R7, #+116]
+        CMP      R0,#+3
+        BCC      ??deflate_slow_6
+        LDR      R2,[R7, #+108]
+        LDR      R3,[R7, #+56]
+        LDR      R0,[R7, #+72]
+        LDR      R1,[R7, #+88]
+        ADD      R2,R2,R3
+        LDRB     R2,[R2, #+2]
+        EOR      R0,R2,R0, LSL R1
+        LDR      R1,[R7, #+84]
+        AND      R0,R1,R0
+        STR      R0,[R7, #+72]
+        LDR      R0,[R7, #+108]
+        LDR      R1,[R7, #+52]
+        LDR      R2,[R7, #+68]
+        AND      R0,R1,R0
+        LDR      R1,[R7, #+64]
+        ADD      R0,R1,R0, LSL #+1
+        LDR      R1,[R7, #+72]
+        ADD      R1,R2,R1, LSL #+1
+        LDRH     R1,[R1, #+0]
+        STRH     R1,[R0, #+0]
+        LDR      R0,[R7, #+108]
+        LDR      R1,[R7, #+52]
+        AND      R0,R1,R0
+        LDR      R1,[R7, #+64]
+        ADD      R0,R1,R0, LSL #+1
+        LDRH     R9,[R0, #+0]
+        LDR      R0,[R7, #+72]
+        LDR      R1,[R7, #+68]
+        ADD      R0,R1,R0, LSL #+1
+        LDR      R1,[R7, #+108]
+        STRH     R1,[R0, #+0]
+??deflate_slow_6:
+        LDR      R0,[R7, #+96]
+        CMP      R9,#+0
+        STR      R0,[R7, #+120]
+        LDR      R0,[R7, #+112]
+        STR      R0,[R7, #+100]
+        STR      R6,[R7, #+96]
+        BEQ      ??deflate_slow_7
+        LDR      R0,[R7, #+120]
+        LDR      R1,[R7, #+128]
+        CMP      R0,R1
+        BCS      ??deflate_slow_7
+        LDR      R0,[R7, #+44]
+        RSB      R1,R10,#+0
+        ADD      R0,R1,R0
+        LDR      R1,[R7, #+108]
+        SUB      R1,R1,R9
+        CMP      R0,R1
+        BCC      ??deflate_slow_7
+        LDR      R0,[R7, #+136]
+        CMP      R0,#+2
+        CMPNE    R0,#+3
+        BEQ      ??deflate_slow_8
+        MOV      R1,R9
+        MOV      R0,R7
+        BL       longest_match
+        B        ??deflate_slow_9
+??deflate_slow_8:
+        CMP      R0,#+3
+        BNE      ??deflate_slow_10
+        LDR      R0,[R7, #+108]
+        SUB      R0,R0,R9
+        CMP      R0,#+1
+        BNE      ??deflate_slow_10
+        MOV      R1,R9
+        MOV      R0,R7
+        BL       longest_match_fast
+??deflate_slow_9:
+        STR      R0,[R7, #+96]
+??deflate_slow_10:
+        LDR      R0,[R7, #+96]
+        CMP      R0,#+6
+        BCS      ??deflate_slow_7
+        LDR      R0,[R7, #+136]
+        CMP      R0,#+1
+        BEQ      ??deflate_slow_11
+        LDR      R0,[R7, #+96]
+        CMP      R0,#+3
+        BNE      ??deflate_slow_7
+        LDR      R0,[R7, #+108]
+        LDR      R1,[R7, #+112]
+        SUB      R0,R0,R1
+        ORR      R1,R5,#0x1000
+        CMP      R0,R1
+        BCC      ??deflate_slow_7
+??deflate_slow_11:
+        STR      R6,[R7, #+96]
+??deflate_slow_7:
+        LDR      R0,[R7, #+120]
+        CMP      R0,#+3
+        LDRCS    R1,[R7, #+96]
+        CMPCS    R0,R1
+        BCC      ??deflate_slow_12
+        LDR      R3,[R7, #+108]
+        LDR      R5,[R7, #+100]
+        LDR      R0,[R7, #+116]
+        LDR      R1,[R7, #+108]
+        LDR      R12,[R11, #+12]
+        MOV      R2,#+255
+        ORR      R2,R2,#0xFF00
+        ADD      R3,R2,R3
+        SUB      R3,R3,R5
+        LDR      R5,[R11, #+8]
+        ADD      R0,R1,R0
+        LDR      R1,[R7, #+120]
+        MOV      R3,R3, LSL #+16
+        MOV      R3,R3, LSR #+16
+        ADD      R5,R12,R5, LSL #+1
+        STRH     R3,[R5, #+0]
+        LDR      R5,[R11, #+8]
+        ADD      R2,R2,R3
+        LDR      R3,??DataTable5  ;; _length_code
+        ADD      R12,R5,#+1
+        STR      R12,[R11, #+8]
+        LDR      R12,[R11, #+0]
+        ADD      R1,R1,#+253
+        AND      R1,R1,#0xFF
+        STRB     R1,[R5, +R12]
+        LDRB     R1,[R1, +R3]
+        ADD      R3,R6,#+255
+        MOV      R2,R2, LSL #+16
+        ADD      R1,R3,R1
+        ADD      R1,R7,R1, LSL #+2
+        LDRH     R3,[R1, #+148]
+        MOV      R2,R2, LSR #+16
+        CMP      R2,#+256
+        ADD      R3,R3,#+1
+        STRH     R3,[R1, #+148]
+        LDR      R1,??DataTable6  ;; _dist_code
+        LDRBCC   R1,[R2, +R1]
+        SUB      R0,R0,#+3
+        ADDCS    R1,R1,R2, ASR #+7
+        LDRBCS   R1,[R1, #+256]
+        MOV      R2,#+136
+        ORR      R2,R2,#0x900
+        ADD      R1,R7,R1, LSL #+2
+        LDRH     R3,[R2, +R1]
+        ADD      R3,R3,#+1
+        STRH     R3,[R2, +R1]
+        LDR      R1,[R11, #+8]
+        LDR      R2,[R11, #+4]
+        LDR      R3,[R7, #+120]
+        SUB      R2,R2,#+1
+        CMP      R1,R2
+        LDR      R2,[R7, #+116]
+        MOVEQ    R1,#+1
+        MOVNE    R1,#+0
+        SUB      R2,R2,R3
+        ADD      R2,R2,#+1
+        STR      R2,[R7, #+116]
+        SUB      R2,R3,#+2
+        STR      R2,[R7, #+120]
+??deflate_slow_13:
+        LDR      R2,[R7, #+108]
+        ADD      R2,R2,#+1
+        STR      R2,[R7, #+108]
+        CMP      R0,R2
+        BCC      ??deflate_slow_14
+        LDR      R5,[R7, #+108]
+        LDR      R9,[R7, #+56]
+        LDR      R2,[R7, #+72]
+        LDR      R3,[R7, #+88]
+        ADD      R5,R5,R9
+        LDRB     R5,[R5, #+2]
+        EOR      R2,R5,R2, LSL R3
+        LDR      R3,[R7, #+84]
+        AND      R2,R3,R2
+        STR      R2,[R7, #+72]
+        LDR      R2,[R7, #+108]
+        LDR      R3,[R7, #+52]
+        LDR      R5,[R7, #+68]
+        AND      R2,R3,R2
+        LDR      R3,[R7, #+64]
+        ADD      R2,R3,R2, LSL #+1
+        LDR      R3,[R7, #+72]
+        ADD      R3,R5,R3, LSL #+1
+        LDRH     R3,[R3, #+0]
+        STRH     R3,[R2, #+0]
+        LDR      R2,[R7, #+108]
+        LDR      R3,[R7, #+52]
+        AND      R2,R3,R2
+        LDR      R3,[R7, #+64]
+        ADD      R2,R3,R2, LSL #+1
+        LDRH     R9,[R2, #+0]
+        LDR      R2,[R7, #+72]
+        LDR      R3,[R7, #+68]
+        ADD      R2,R3,R2, LSL #+1
+        LDR      R3,[R7, #+108]
+        STRH     R3,[R2, #+0]
+??deflate_slow_14:
+        LDR      R2,[R7, #+120]
+        SUB      R2,R2,#+1
+        STR      R2,[R7, #+120]
+        CMP      R2,#+0
+        BNE      ??deflate_slow_13
+        STR      R4,[R7, #+104]
+        STR      R6,[R7, #+96]
+        LDR      R0,[R7, #+108]
+        CMP      R1,#+0
+        ADD      R0,R0,#+1
+        STR      R0,[R7, #+108]
+        BEQ      ??deflate_slow_0
+        LDR      R0,[R7, #+92]
+        CMP      R0,#+0
+        LDRPL    R1,[R7, #+56]
+        MOVMI    R1,#+0
+        ADDPL    R1,R0,R1
+        B        ??deflate_slow_1
+??deflate_slow_12:
+        LDR      R0,[R7, #+104]
+        CMP      R0,#+0
+        BEQ      ??deflate_slow_15
+        LDR      R0,[R7, #+108]
+        LDR      R1,[R7, #+56]
+        LDR      R2,[R11, #+12]
+        ADD      R0,R0,R1
+        LDR      R1,[R11, #+8]
+        LDRB     R0,[R0, #-1]
+        ADD      R1,R2,R1, LSL #+1
+        STRH     R4,[R1, #+0]
+        LDR      R1,[R11, #+8]
+        ADD      R2,R1,#+1
+        STR      R2,[R11, #+8]
+        LDR      R2,[R11, #+0]
+        STRB     R0,[R1, +R2]
+        ADD      R0,R7,R0, LSL #+2
+        LDRH     R1,[R0, #+148]
+        ADD      R1,R1,#+1
+        STRH     R1,[R0, #+148]
+        LDR      R0,[R11, #+8]
+        LDR      R1,[R11, #+4]
+        SUB      R1,R1,#+1
+        CMP      R0,R1
+        BNE      ??deflate_slow_16
+        LDR      R0,[R7, #+92]
+        LDR      R2,[R7, #+92]
+        CMP      R0,#+0
+        LDRPL    R1,[R7, #+56]
+        MOV      R3,#+0
+        ADDPL    R1,R0,R1
+        LDR      R0,[R7, #+108]
+        MOVMI    R1,#+0
+        SUB      R2,R0,R2
+        MOV      R0,R7
+        _BLF     _tr_flush_block,??_tr_flush_block??rA
+        LDR      R0,[R7, #+108]
+        STR      R0,[R7, #+92]
+        LDR      R0,[R7, #+0]
+        BL       flush_pending
+??deflate_slow_16:
+        LDR      R0,[R7, #+108]
+        ADD      R0,R0,#+1
+        STR      R0,[R7, #+108]
+        LDR      R0,[R7, #+116]
+        SUB      R0,R0,#+1
+        STR      R0,[R7, #+116]
+        LDR      R0,[R7, #+0]
+        LDR      R0,[R0, #+16]
+        CMP      R0,#+0
+        BNE      ??deflate_slow_0
+        MOV      R0,#+0
+        POP      {R4-R11,PC}
+??deflate_slow_15:
+        STR      R5,[R7, #+104]
+        LDR      R0,[R7, #+108]
+        ADD      R0,R0,#+1
+        STR      R0,[R7, #+108]
+        LDR      R0,[R7, #+116]
+        SUB      R0,R0,#+1
+        STR      R0,[R7, #+116]
+        B        ??deflate_slow_0
+??deflate_slow_5:
+        LDR      R0,[R7, #+92]
+        LDR      R2,[R7, #+92]
+        CMP      R0,#+0
+        LDRPL    R1,[R7, #+56]
+        ADDPL    R1,R0,R1
+        LDR      R0,[R7, #+108]
+        MOVMI    R1,#+0
+        SUB      R2,R0,R2
+        MOV      R0,R7
+        _BLF     _tr_flush_block,??_tr_flush_block??rA
+        LDR      R0,[R7, #+108]
+        STR      R0,[R7, #+92]
+        LDR      R0,[R7, #+0]
+        BL       flush_pending
+        LDR      R0,[R7, #+0]
+        LDR      R0,[R0, #+16]
+        CMP      R0,#+0
+        BNE      ??deflate_slow_17
+        CMP      R8,#+4
+        MOVEQ    R0,#+2
+        POP      {R4-R11,PC}
+// 1679     return flush == Z_FINISH ? finish_done : block_done;
+??deflate_slow_17:
+        CMP      R8,#+4
+        MOVEQ    R0,#+3
+        POPEQ    {R4-R11,PC}
+        MOV      R0,#+1
+        POP      {R4-R11,PC}      ;; return
+        CFI EndBlock cfiBlock43
+// 1680 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable5:
+        DC32     _length_code
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable6:
+        DC32     _dist_code
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock44 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??adler32??rA:
+        LDR      R12,??Subroutine22_0  ;; adler32
+        BX       R12
+        DATA
+??Subroutine22_0:
+        DC32     adler32
+        CFI EndBlock cfiBlock44
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock45 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??crc32??rA:
+        LDR      R12,??Subroutine23_0  ;; crc32
+        BX       R12
+        DATA
+??Subroutine23_0:
+        DC32     crc32
+        CFI EndBlock cfiBlock45
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock46 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??_tr_init??rA:
+        LDR      R12,??Subroutine24_0  ;; _tr_init
+        BX       R12
+        DATA
+??Subroutine24_0:
+        DC32     _tr_init
+        CFI EndBlock cfiBlock46
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock47 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??compressBound??rA:
+        LDR      R12,??Subroutine25_0  ;; compressBound
+        BX       R12
+        DATA
+??Subroutine25_0:
+        DC32     compressBound
+        CFI EndBlock cfiBlock47
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock48 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??_tr_align??rA:
+        LDR      R12,??Subroutine26_0  ;; _tr_align
+        BX       R12
+        DATA
+??Subroutine26_0:
+        DC32     _tr_align
+        CFI EndBlock cfiBlock48
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock49 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??_tr_stored_block??rA:
+        LDR      R12,??Subroutine27_0  ;; _tr_stored_block
+        BX       R12
+        DATA
+??Subroutine27_0:
+        DC32     _tr_stored_block
+        CFI EndBlock cfiBlock49
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock50 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??memset??rA:
+        LDR      R12,??Subroutine28_0  ;; memset
+        BX       R12
+        DATA
+??Subroutine28_0:
+        DC32     memset
+        CFI EndBlock cfiBlock50
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock51 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??_tr_flush_block??rA:
+        LDR      R12,??Subroutine29_0  ;; _tr_flush_block
+        BX       R12
+        DATA
+??Subroutine29_0:
+        DC32     _tr_flush_block
+        CFI EndBlock cfiBlock51
+
+        END
+// 1681 #endif /* FASTEST */
+// 1682 
+// 1683 #if 0
+// 1684 /* ===========================================================================
+// 1685  * For Z_RLE, simply look for runs of bytes, generate matches only of distance
+// 1686  * one.  Do not maintain a hash table.  (It will be regenerated if this run of
+// 1687  * deflate switches away from Z_RLE.)
+// 1688  */
+// 1689 local block_state deflate_rle(s, flush)
+// 1690     deflate_state *s;
+// 1691     int flush;
+// 1692 {
+// 1693     int bflush;         /* set if current block must be flushed */
+// 1694     uInt run;           /* length of run */
+// 1695     uInt max;           /* maximum length of run */
+// 1696     uInt prev;          /* byte at distance one to match */
+// 1697     Bytef *scan;        /* scan for end of run */
+// 1698 
+// 1699     for (;;) {
+// 1700         /* Make sure that we always have enough lookahead, except
+// 1701          * at the end of the input file. We need MAX_MATCH bytes
+// 1702          * for the longest encodable run.
+// 1703          */
+// 1704         if (s->lookahead < MAX_MATCH) {
+// 1705             fill_window(s);
+// 1706             if (s->lookahead < MAX_MATCH && flush == Z_NO_FLUSH) {
+// 1707                 return need_more;
+// 1708             }
+// 1709             if (s->lookahead == 0) break; /* flush the current block */
+// 1710         }
+// 1711 
+// 1712         /* See how many times the previous byte repeats */
+// 1713         run = 0;
+// 1714         if (s->strstart > 0) {      /* if there is a previous byte, that is */
+// 1715             max = s->lookahead < MAX_MATCH ? s->lookahead : MAX_MATCH;
+// 1716             scan = s->window + s->strstart - 1;
+// 1717             prev = *scan++;
+// 1718             do {
+// 1719                 if (*scan++ != prev)
+// 1720                     break;
+// 1721             } while (++run < max);
+// 1722         }
+// 1723 
+// 1724         /* Emit match if have run of MIN_MATCH or longer, else emit literal */
+// 1725         if (run >= MIN_MATCH) {
+// 1726             check_match(s, s->strstart, s->strstart - 1, run);
+// 1727             _tr_tally_dist(s, 1, run - MIN_MATCH, bflush);
+// 1728             s->lookahead -= run;
+// 1729             s->strstart += run;
+// 1730         } else {
+// 1731             /* No match, output a literal byte */
+// 1732             Tracevv((stderr,"%c", s->window[s->strstart]));
+// 1733             _tr_tally_lit (s, s->window[s->strstart], bflush);
+// 1734             s->lookahead--;
+// 1735             s->strstart++;
+// 1736         }
+// 1737         if (bflush) FLUSH_BLOCK(s, 0);
+// 1738     }
+// 1739     FLUSH_BLOCK(s, flush == Z_FINISH);
+// 1740     return flush == Z_FINISH ? finish_done : block_done;
+// 1741 }
+// 1742 #endif
+// 
+// 9 772 bytes in segment CODE
+//   176 bytes in segment DATA_C
+// 
+// 9 588 bytes of CODE  memory (+ 184 bytes shared)
+//   176 bytes of CONST memory
+//
+//Errors: none
+//Warnings: 2

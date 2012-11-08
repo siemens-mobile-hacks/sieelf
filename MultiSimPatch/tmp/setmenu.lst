@@ -1,0 +1,1106 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    02/Dec/2011  21:06:58 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\MultiSimPatch\MultiSimElf\setme #
+#                       nu.c                                                 #
+#    Command line    =  D:\SVN\SieELF\SieELF\MultiSimPatch\MultiSimElf\setme #
+#                       nu.c -D NEWSGOLD -lC D:\SVN\SieELF\SieELF\MultiSimPa #
+#                       tch\tmp\ -lA D:\SVN\SieELF\SieELF\MultiSimPatch\tmp\ #
+#                        -o D:\SVN\SieELF\SieELF\MultiSimPatch\tmp\ -s9      #
+#                       --no_unroll --cpu_mode arm --endian little --cpu     #
+#                       ARM926EJ-S --stack_align 4 --interwork -e --fpu      #
+#                       None -I "D:\Program Files\IAR\Embedded Workbench     #
+#                       4.0 Evaluation\ARM\INC\" --inline_threshold=2        #
+#    List file       =  D:\SVN\SieELF\SieELF\MultiSimPatch\tmp\setmenu.lst   #
+#    Object file     =  D:\SVN\SieELF\SieELF\MultiSimPatch\tmp\setmenu.r79   #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\MultiSimPatch\MultiSimElf\setmenu.c
+      1          #pragma once
+      2          #include "..\..\inc\swilib.h"
+      3          #include "..\..\inc\cfg_items.h"
+      4          //#include "pnglist.h"
+      5          #include "language.h"
+      6          #include "mainmenu.h"
+      7          
+      8          //==============================================================================
+      9          // ELKA Compatibility
+     10          #pragma inline
+     11          static void patch_header(const HEADER_DESC* head)
+     12          {
+     13            ((HEADER_DESC*)head)->rc.x=0;
+     14            ((HEADER_DESC*)head)->rc.y=YDISP;
+     15            ((HEADER_DESC*)head)->rc.x2=ScreenW()-1;
+     16            ((HEADER_DESC*)head)->rc.y2=HeaderH()-1+YDISP;
+     17          }
+     18          /*
+     19          #pragma inline
+     20          static void patch_input(const INPUTDIA_DESC* inp)
+     21          {
+     22            ((INPUTDIA_DESC*)inp)->rc.x=0;
+     23            ((INPUTDIA_DESC*)inp)->rc.y=HeaderH()+1+YDISP;
+     24            ((INPUTDIA_DESC*)inp)->rc.x2=ScreenW()-1;
+     25            ((INPUTDIA_DESC*)inp)->rc.y2=ScreenH()-SoftkeyH()-1;
+     26          }
+     27          */
+     28          //==============================================================================
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     29          int SetMenu_ID;
+     30          
+     31          extern  int curblock;
+     32          #define __SVN_REVISION__  1007
+     33          int sS_ICONS[3];
+   \                     sS_ICONS:
+   \   00000000                      DS8 12
+   \                     SetMenu_ID:
+   \   0000000C                      DS8 4
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     34          static const SOFTKEY_DESC smenu_sk[] =
+   \                     smenu_sk:
+   \   00000000   18000000           DC16 24, 0
+   \   00000004   ........           DC32 `?<Constant "\\321\\241\\324\\361">`
+   \   00000008   01000000           DC16 1, 0
+   \   0000000C   ........           DC32 `?<Constant "\\271\\330\\261\\325">`
+   \   00000010   3D000000           DC16 61, 0
+   \   00000014   FBC0FF7F           DC32 2147467515
+     35          {
+     36            {0x0018, 0x0000, (int)LG_SELECT},
+     37            {0x0001, 0x0000, (int)LG_CLOSE},
+     38            {0x003D, 0x0000, (int)LGP_DOIT_PIC}
+     39          };
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     40          const SOFTKEYSTAB smenu_skt =
+   \                     smenu_skt:
+   \   00000000   ........0000       DC32 smenu_sk, 0
+   \              0000        
+     41          {
+     42            smenu_sk, 0
+     43          };
+     44          
+     45          
+     46          
+     47          
+     48            extern const char *successed_config_filename;
+     49          
+
+   \                                 In segment CODE, align 4, keep-with-next
+     50           void ExecFile(char *name)
+     51          {
+   \                     ExecFile:
+   \   00000000   30402DE9           PUSH     {R4,R5,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+     52            WSHDR *ws;
+     53            ws=AllocWS(130);
+   \   00000008   8200A0E3           MOV      R0,#+130
+   \   0000000C   250100EF           SWI      +293
+   \   00000010   0050A0E1           MOV      R5,R0
+     54            str_2ws(ws,name,128);
+   \   00000014   8020A0E3           MOV      R2,#+128
+   \   00000018   0410A0E1           MOV      R1,R4
+   \   0000001C   6C0100EF           SWI      +364
+     55            ExecuteFile(ws,0,0);
+   \   00000020   0020A0E3           MOV      R2,#+0
+   \   00000024   0010A0E3           MOV      R1,#+0
+   \   00000028   0500A0E1           MOV      R0,R5
+   \   0000002C   940000EF           SWI      +148
+     56            FreeWS(ws);
+   \   00000030   0500A0E1           MOV      R0,R5
+   \   00000034   290100EF           SWI      +297
+     57          
+     58          }
+   \   00000038   3080BDE8           POP      {R4,R5,PC}       ;; return
+     59          
+     60          extern IPC_REQ gipc;
+     61          
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     62          unsigned char bp[BL_SZ_5402];
+   \                     bp:
+   \   00000000                      DS8 1600
+     63          extern const char f5401s[];
+     64          extern const char f5402s[];
+     65          
+
+   \                                 In segment CODE, align 4, keep-with-next
+     66          int WriteFile(char *name, unsigned char *filebuf, int size) {
+   \                     WriteFile:
+   \   00000000   F04F2DE9           PUSH     {R4-R11,LR}
+   \   00000004   04D04DE2           SUB      SP,SP,#+4
+   \   00000008   0040A0E1           MOV      R4,R0
+   \   0000000C   0150A0E1           MOV      R5,R1
+   \   00000010   02A0A0E1           MOV      R10,R2
+     67            int f;
+     68            char *buf=NULL,*bufs;
+     69            const int c=((size<<1)+size)+(size>>3);//==3*size+size/16*2 == по 3 символа на 16-ричное число + 2-байтовый перевод строки после каждых 16 байт
+   \   00000014   8A008AE0           ADD      R0,R10,R10, LSL #+1
+   \   00000018   CA6180E0           ADD      R6,R0,R10, ASR #+3
+     70          
+     71            buf=malloc(c);
+   \   0000001C   0600A0E1           MOV      R0,R6
+   \   00000020   140000EF           SWI      +20
+   \   00000024   0070B0E1           MOVS     R7,R0
+     72            if (!buf)
+     73              return 0;
+   \   00000028   0000A003           MOVEQ    R0,#+0
+   \   0000002C   F28FBD08           POPEQ    {R1,R4-R11,PC}
+     74            memset(buf, 0, c);
+   \   00000030   0620A0E1           MOV      R2,R6
+   \   00000034   0010A0E3           MOV      R1,#+0
+   \   00000038   BB0000EF           SWI      +187
+     75            bufs=buf;
+   \   0000003C   0780A0E1           MOV      R8,R7
+     76          
+     77            unsigned int ul;
+     78            if ((f=fopen(name, A_BIN+A_Truncate+A_Create+A_WriteOnly, 0, &ul))!=-1) {
+   \   00000040   0D30A0E1           MOV      R3,SP
+   \   00000044   0020A0E3           MOV      R2,#+0
+   \   00000048   0110A0E3           MOV      R1,#+1
+   \   0000004C   831C81E3           ORR      R1,R1,#0x8300
+   \   00000050   0400A0E1           MOV      R0,R4
+   \   00000054   0A0000EF           SWI      +10
+   \   00000058   0040A0E1           MOV      R4,R0
+   \   0000005C   010070E3           CMN      R0,#+1
+   \   00000060   1C00000A           BEQ      ??WriteFile_0
+     79              for (int i=0; i<(size>>4); i++) {
+   \   00000064   0090A0E3           MOV      R9,#+0
+   \   00000068   4AA2A0E1           ASR      R10,R10,#+4
+   \   0000006C   01005AE3           CMP      R10,#+1
+   \   00000070   0E0000AA           BGE      ??WriteFile_1
+   \   00000074   0F0000EA           B        ??WriteFile_2
+     80                for (int j=0; j<16; j++) {
+   \                     ??WriteFile_3:
+   \   00000078   00B0A0E3           MOV      R11,#+0
+     81                  buf+=sprintf(buf, "%02X ", *filebuf++);
+   \                     ??WriteFile_4:
+   \   0000007C   ........           LDRB     R2,[R5], #+1
+   \   00000080   60109FE5           LDR      R1,??WriteFile_5  ;; `?<Constant "%02X ">`
+   \   00000084   0700A0E1           MOV      R0,R7
+   \   00000088   160000EF           SWI      +22
+   \   0000008C   077080E0           ADD      R7,R0,R7
+     82                }
+   \   00000090   01B08BE2           ADD      R11,R11,#+1
+   \   00000094   10005BE3           CMP      R11,#+16
+   \   00000098   F7FFFFBA           BLT      ??WriteFile_4
+     83                *buf++='\r';
+   \   0000009C   0D00A0E3           MOV      R0,#+13
+   \   000000A0   ........           STRB     R0,[R7], #+1
+     84                *buf++='\n';
+   \   000000A4   0A00A0E3           MOV      R0,#+10
+   \   000000A8   ........           STRB     R0,[R7], #+1
+     85              }
+   \   000000AC   019089E2           ADD      R9,R9,#+1
+   \                     ??WriteFile_1:
+   \   000000B0   0A0059E1           CMP      R9,R10
+   \   000000B4   EFFFFFBA           BLT      ??WriteFile_3
+     86              fwrite(f, bufs, c, &ul);
+   \                     ??WriteFile_2:
+   \   000000B8   0D30A0E1           MOV      R3,SP
+   \   000000BC   0620A0E1           MOV      R2,R6
+   \   000000C0   0810A0E1           MOV      R1,R8
+   \   000000C4   0400A0E1           MOV      R0,R4
+   \   000000C8   0C0000EF           SWI      +12
+     87              fclose(f, &ul);
+   \   000000CC   0D10A0E1           MOV      R1,SP
+   \   000000D0   0400A0E1           MOV      R0,R4
+   \   000000D4   0D0000EF           SWI      +13
+     88            }
+     89          
+     90            mfree(bufs);
+   \                     ??WriteFile_0:
+   \   000000D8   0800A0E1           MOV      R0,R8
+   \   000000DC   150000EF           SWI      +21
+     91            return 1;
+   \   000000E0   0100A0E3           MOV      R0,#+1
+   \   000000E4   F28FBDE8           POP      {R1,R4-R11,PC}   ;; return
+   \                     ??WriteFile_5:
+   \   000000E8   ........           DC32     `?<Constant "%02X ">`
+     92          }
+     93          
+     94          
+     95          
+     96          
+
+   \                                 In segment CODE, align 4, keep-with-next
+     97          unsigned char htoi(char c)
+     98          {
+     99            if ((c >= '0') && (c <='9'))
+   \                     htoi:
+   \   00000000   300050E3           CMP      R0,#+48
+   \   00000004   0200003A           BCC      ??htoi_0
+   \   00000008   3A0050E3           CMP      R0,#+58
+    100              return c - '0';
+   \   0000000C   D0008032           ADDCC    R0,R0,#+208
+   \   00000010   0400003A           BCC      ??htoi_1
+    101            if ((c >= 'A') && (c <='F'))
+   \                     ??htoi_0:
+   \   00000014   410050E3           CMP      R0,#+65
+   \   00000018   0400003A           BCC      ??htoi_2
+   \   0000001C   470050E3           CMP      R0,#+71
+   \   00000020   0200002A           BCS      ??htoi_2
+    102              return c - ('A' - 0xA) ;
+   \   00000024   C90080E2           ADD      R0,R0,#+201
+   \                     ??htoi_1:
+   \   00000028   FF0000E2           AND      R0,R0,#0xFF
+   \   0000002C   1EFF2FE1           BX       LR
+    103            return 0;
+   \                     ??htoi_2:
+   \   00000030   0000A0E3           MOV      R0,#+0
+   \   00000034   1EFF2FE1           BX       LR               ;; return
+    104          }
+    105          
+    106          
+    107          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    108          int ReadFile(char *name)
+    109          {
+   \                     ReadFile:
+   \   00000000   F0412DE9           PUSH     {R4-R8,LR}
+   \   00000004   04D04DE2           SUB      SP,SP,#+4
+    110            int size;
+    111            int i, cnt;
+    112            char *filebuf=NULL;
+    113          
+    114          //  char Block5400[1024];
+    115          
+    116            int f;
+    117            unsigned ul;
+    118            if ((f=fopen(name,A_BIN,P_READ,&ul))!=-1){
+   \   00000008   0D30A0E1           MOV      R3,SP
+   \   0000000C   8020A0E3           MOV      R2,#+128
+   \   00000010   801CA0E3           MOV      R1,#+32768
+   \   00000014   0A0000EF           SWI      +10
+   \   00000018   0060A0E1           MOV      R6,R0
+   \   0000001C   010076E3           CMN      R6,#+1
+   \   00000020   3500000A           BEQ      ??ReadFile_0
+    119              size=lseek(f,0,S_END,&ul,&ul);
+   \   00000024   0D00A0E1           MOV      R0,SP
+   \   00000028   01002DE9           PUSH     {R0}
+   \   0000002C   04308DE2           ADD      R3,SP,#+4
+   \   00000030   0220A0E3           MOV      R2,#+2
+   \   00000034   0010A0E3           MOV      R1,#+0
+   \   00000038   0600A0E1           MOV      R0,R6
+   \   0000003C   0F0000EF           SWI      +15
+   \   00000040   0050A0E1           MOV      R5,R0
+    120              filebuf=malloc(size+1);
+   \   00000044   010085E2           ADD      R0,R5,#+1
+   \   00000048   140000EF           SWI      +20
+   \   0000004C   0040B0E1           MOVS     R4,R0
+    121              if (filebuf){
+   \   00000050   04D08DE2           ADD      SP,SP,#+4
+   \   00000054   2800000A           BEQ      ??ReadFile_0
+    122                lseek(f,0,S_SET,&ul,&ul);
+   \   00000058   0D00A0E1           MOV      R0,SP
+   \   0000005C   01002DE9           PUSH     {R0}
+   \   00000060   04308DE2           ADD      R3,SP,#+4
+   \   00000064   0020A0E3           MOV      R2,#+0
+   \   00000068   0010A0E3           MOV      R1,#+0
+   \   0000006C   0600A0E1           MOV      R0,R6
+   \   00000070   0F0000EF           SWI      +15
+    123                fread(f,filebuf,size,&ul);
+   \   00000074   04308DE2           ADD      R3,SP,#+4
+   \   00000078   0520A0E1           MOV      R2,R5
+   \   0000007C   0410A0E1           MOV      R1,R4
+   \   00000080   0600A0E1           MOV      R0,R6
+   \   00000084   0B0000EF           SWI      +11
+    124                fclose(f,&ul);
+   \   00000088   04108DE2           ADD      R1,SP,#+4
+   \   0000008C   0600A0E1           MOV      R0,R6
+   \   00000090   0D0000EF           SWI      +13
+    125          
+    126            // parse file
+    127                cnt = 0;
+   \   00000094   0060A0E3           MOV      R6,#+0
+    128          
+    129                for (i=0;i<size;i++)
+   \   00000098   0670A0E1           MOV      R7,R6
+   \   0000009C   010055E3           CMP      R5,#+1
+   \   000000A0   04D08DE2           ADD      SP,SP,#+4
+   \   000000A4   0E0000AA           BGE      ??ReadFile_1
+   \   000000A8   0F0000EA           B        ??ReadFile_2
+    130                  if (filebuf[i] > 32)
+   \                     ??ReadFile_3:
+   \   000000AC   0400D7E7           LDRB     R0,[R7, +R4]
+   \   000000B0   210050E3           CMP      R0,#+33
+   \   000000B4   0900003A           BCC      ??ReadFile_4
+    131                    bp[cnt++] = (htoi(filebuf[i++])<<4) + htoi(filebuf[i++]) ;
+                                                                                    ^
+Warning[Pa079]: undefined behavior: variable "i" (or a value reached by some
+          form of indirection through it) is modified more than once without
+          an intervening sequence point in this statement
+   \   000000B8   ........           BL       htoi
+   \   000000BC   0080A0E1           MOV      R8,R0
+   \   000000C0   017087E2           ADD      R7,R7,#+1
+   \   000000C4   0400D7E7           LDRB     R0,[R7, +R4]
+   \   000000C8   017087E2           ADD      R7,R7,#+1
+   \   000000CC   ........           BL       htoi
+   \   000000D0   ........           LDR      R1,??DataTable10  ;; bp
+   \   000000D4   080280E0           ADD      R0,R0,R8, LSL #+4
+   \   000000D8   0100C6E7           STRB     R0,[R6, +R1]
+   \   000000DC   016086E2           ADD      R6,R6,#+1
+   \                     ??ReadFile_4:
+   \   000000E0   017087E2           ADD      R7,R7,#+1
+   \                     ??ReadFile_1:
+   \   000000E4   050057E1           CMP      R7,R5
+   \   000000E8   EFFFFFBA           BLT      ??ReadFile_3
+    132                mfree(filebuf);
+   \                     ??ReadFile_2:
+   \   000000EC   0400A0E1           MOV      R0,R4
+   \   000000F0   150000EF           SWI      +21
+    133                return cnt;
+   \   000000F4   0600A0E1           MOV      R0,R6
+   \   000000F8   F281BDE8           POP      {R1,R4-R8,PC}
+    134              };
+    135          
+    136            }
+    137            return 0;
+   \                     ??ReadFile_0:
+   \   000000FC   0000A0E3           MOV      R0,#+0
+   \   00000100   F281BDE8           POP      {R1,R4-R8,PC}    ;; return
+    138          
+    139          }
+    140          
+    141          
+    142          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    143          static void LoadBlock(void) //from flie
+    144          {
+    145          
+    146            if ((ReadFile((char*)f5401s))==BL_SZ_5401){
+   \                     LoadBlock:
+   \   00000000   ........           LDR      R0,??DataTable12  ;; f5401s
+   \   00000004   00402DE9           PUSH     {LR}
+   \   00000008   ........           BL       ReadFile
+   \   0000000C   F00F50E3           CMP      R0,#+960
+   \   00000010   0C00001A           BNE      ??LoadBlock_0
+    147              EEFullWriteBlock(5401, bp, 0, BL_SZ_5401,0,0);
+   \   00000014   ........           LDR      R1,??DataTable10  ;; bp
+   \   00000018   0000A0E3           MOV      R0,#+0
+   \   0000001C   01002DE9           PUSH     {R0}
+   \   00000020   01002DE9           PUSH     {R0}
+   \   00000024   F03FA0E3           MOV      R3,#+960
+   \   00000028   0020A0E3           MOV      R2,#+0
+   \   0000002C   1900A0E3           MOV      R0,#+25
+   \   00000030   540D80E3           ORR      R0,R0,#0x1500
+   \   00000034   870000EF           SWI      +135
+   \   00000038   08D08DE2           ADD      SP,SP,#+8
+   \   0000003C   0100A0E3           MOV      R0,#+1
+   \   00000040   3B0100EF           SWI      +315
+   \   00000044   0080BDE8           POP      {PC}
+    148          
+    149            }else {
+    150          
+    151                MsgBoxError(1,(int)LG_MSGERRBLOCK);
+   \                     ??LoadBlock_0:
+   \   00000048   ........           LDR      R1,??DataTable6  ;; `?<Constant "\\277\\351 5401/5402 \\316\\264\\267\\24`
+   \   0000004C   0100A0E3           MOV      R0,#+1
+   \   00000050   4E0000EF           SWI      +78
+    152            }
+    153                GeneralFuncF1(1);
+   \   00000054   0100A0E3           MOV      R0,#+1
+   \   00000058   3B0100EF           SWI      +315
+    154          
+    155          }
+   \   0000005C   0080BDE8           POP      {PC}             ;; return
+    156          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    157          static void LoadBlock1(void) //from flie
+    158          {
+    159            if (ReadFile((char*)f5402s)==BL_SZ_5402){
+   \                     LoadBlock1:
+   \   00000000   ........           LDR      R0,??DataTable13  ;; f5402s
+   \   00000004   00402DE9           PUSH     {LR}
+   \   00000008   ........           BL       ReadFile
+   \   0000000C   640E50E3           CMP      R0,#+1600
+   \   00000010   0C00001A           BNE      ??LoadBlock1_0
+    160              EEFullWriteBlock(5402, bp, 0, BL_SZ_5402,0,0);
+   \   00000014   ........           LDR      R1,??DataTable10  ;; bp
+   \   00000018   0000A0E3           MOV      R0,#+0
+   \   0000001C   01002DE9           PUSH     {R0}
+   \   00000020   01002DE9           PUSH     {R0}
+   \   00000024   643EA0E3           MOV      R3,#+1600
+   \   00000028   0020A0E3           MOV      R2,#+0
+   \   0000002C   1A00A0E3           MOV      R0,#+26
+   \   00000030   540D80E3           ORR      R0,R0,#0x1500
+   \   00000034   870000EF           SWI      +135
+   \   00000038   08D08DE2           ADD      SP,SP,#+8
+   \   0000003C   0100A0E3           MOV      R0,#+1
+   \   00000040   3B0100EF           SWI      +315
+   \   00000044   0080BDE8           POP      {PC}
+    161          
+    162          
+    163            }else {
+    164                MsgBoxError(1,(int)LG_MSGERRBLOCK);
+   \                     ??LoadBlock1_0:
+   \   00000048   ........           LDR      R1,??DataTable6  ;; `?<Constant "\\277\\351 5401/5402 \\316\\264\\267\\24`
+   \   0000004C   0100A0E3           MOV      R0,#+1
+   \   00000050   4E0000EF           SWI      +78
+    165          
+    166          
+    167            }
+    168                GeneralFuncF1(1);
+   \   00000054   0100A0E3           MOV      R0,#+1
+   \   00000058   3B0100EF           SWI      +315
+    169          }
+   \   0000005C   0080BDE8           POP      {PC}             ;; return
+    170          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    171          static void FixBlock(void) //from flie
+    172          {
+   \                     FixBlock:
+   \   00000000   30402DE9           PUSH     {R4,R5,LR}
+    173          
+    174            EEFullReadBlock(5402, bp, 0, BL_SZ_5402,0,0);
+   \   00000004   ........           LDR      R4,??DataTable10  ;; bp
+   \   00000008   0000A0E3           MOV      R0,#+0
+   \   0000000C   01002DE9           PUSH     {R0}
+   \   00000010   01002DE9           PUSH     {R0}
+   \   00000014   1A50A0E3           MOV      R5,#+26
+   \   00000018   545D85E3           ORR      R5,R5,#0x1500
+   \   0000001C   643EA0E3           MOV      R3,#+1600
+   \   00000020   0020A0E3           MOV      R2,#+0
+   \   00000024   0410A0E1           MOV      R1,R4
+   \   00000028   0500A0E1           MOV      R0,R5
+   \   0000002C   860000EF           SWI      +134
+    175            for(int i=0;i<MAX_SIM_CNT;i++)
+   \   00000030   0000A0E3           MOV      R0,#+0
+   \   00000034   08D08DE2           ADD      SP,SP,#+8
+   \   00000038   5010A0E3           MOV      R1,#+80
+    176             bp[0x50*i+0x2f]=i;
+   \                     ??FixBlock_0:
+   \   0000003C   914022E0           MLA      R2,R1,R0,R4
+   \   00000040   2F00C2E5           STRB     R0,[R2, #+47]
+   \   00000044   010080E2           ADD      R0,R0,#+1
+   \   00000048   140050E3           CMP      R0,#+20
+   \   0000004C   FAFFFFBA           BLT      ??FixBlock_0
+    177            EEFullWriteBlock(5402, bp, 0, BL_SZ_5402,0,0);
+   \   00000050   0000A0E3           MOV      R0,#+0
+   \   00000054   01002DE9           PUSH     {R0}
+   \   00000058   01002DE9           PUSH     {R0}
+   \   0000005C   643EA0E3           MOV      R3,#+1600
+   \   00000060   0020A0E3           MOV      R2,#+0
+   \   00000064   0410A0E1           MOV      R1,R4
+   \   00000068   0500A0E1           MOV      R0,R5
+   \   0000006C   870000EF           SWI      +135
+    178          
+    179            EEFullReadBlock(5403, bp, 0, BL_SZ_5403,0,0);
+   \   00000070   0000A0E3           MOV      R0,#+0
+   \   00000074   01002DE9           PUSH     {R0}
+   \   00000078   01002DE9           PUSH     {R0}
+   \   0000007C   015085E3           ORR      R5,R5,#0x1
+   \   00000080   5030A0E3           MOV      R3,#+80
+   \   00000084   0020A0E1           MOV      R2,R0
+   \   00000088   0410A0E1           MOV      R1,R4
+   \   0000008C   0500A0E1           MOV      R0,R5
+   \   00000090   860000EF           SWI      +134
+    180             bp[0x2f]=0;
+   \   00000094   0000A0E3           MOV      R0,#+0
+   \   00000098   2F00C4E5           STRB     R0,[R4, #+47]
+    181            EEFullWriteBlock(5403, bp, 0, BL_SZ_5403,0,0);
+   \   0000009C   01002DE9           PUSH     {R0}
+   \   000000A0   01002DE9           PUSH     {R0}
+   \   000000A4   5030A0E3           MOV      R3,#+80
+   \   000000A8   0020A0E1           MOV      R2,R0
+   \   000000AC   0410A0E1           MOV      R1,R4
+   \   000000B0   0500A0E1           MOV      R0,R5
+   \   000000B4   870000EF           SWI      +135
+    182                GeneralFuncF1(1);
+   \   000000B8   0100A0E3           MOV      R0,#+1
+   \   000000BC   3B0100EF           SWI      +315
+    183          }
+   \   000000C0   18D08DE2           ADD      SP,SP,#+24
+   \   000000C4   3080BDE8           POP      {R4,R5,PC}       ;; return
+    184          
+    185          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    186          static void SaveBlock(void)
+    187          {
+   \                     SaveBlock:
+   \   00000000   10402DE9           PUSH     {R4,LR}
+    188             EEFullReadBlock(5401, bp, 0, BL_SZ_5401,0,0);
+   \   00000004   ........           LDR      R4,??DataTable10  ;; bp
+   \   00000008   0000A0E3           MOV      R0,#+0
+   \   0000000C   01002DE9           PUSH     {R0}
+   \   00000010   01002DE9           PUSH     {R0}
+   \   00000014   F03FA0E3           MOV      R3,#+960
+   \   00000018   0020A0E3           MOV      R2,#+0
+   \   0000001C   0410A0E1           MOV      R1,R4
+   \   00000020   1900A0E3           MOV      R0,#+25
+   \   00000024   540D80E3           ORR      R0,R0,#0x1500
+   \   00000028   860000EF           SWI      +134
+    189             WriteFile((char*)f5401s,bp,BL_SZ_5401);
+   \   0000002C   ........           LDR      R0,??DataTable12  ;; f5401s
+   \   00000030   F02FA0E3           MOV      R2,#+960
+   \   00000034   0410A0E1           MOV      R1,R4
+   \   00000038   ........           BL       WriteFile
+    190          //   GeneralFuncF1(1);
+    191          
+    192            //add hash checking
+    193          
+    194          	  //поидее надо дождаться callback
+    195             //    WriteFile();
+    196          }
+   \   0000003C   1380BDE8           POP      {R0,R1,R4,PC}    ;; return
+    197          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    198          static void SaveBlock1(void)
+    199          {
+   \                     SaveBlock1:
+   \   00000000   10402DE9           PUSH     {R4,LR}
+    200             EEFullReadBlock(5402, bp, 0, BL_SZ_5402,0,0);
+   \   00000004   ........           LDR      R4,??DataTable10  ;; bp
+   \   00000008   0000A0E3           MOV      R0,#+0
+   \   0000000C   01002DE9           PUSH     {R0}
+   \   00000010   01002DE9           PUSH     {R0}
+   \   00000014   643EA0E3           MOV      R3,#+1600
+   \   00000018   0020A0E3           MOV      R2,#+0
+   \   0000001C   0410A0E1           MOV      R1,R4
+   \   00000020   1A00A0E3           MOV      R0,#+26
+   \   00000024   540D80E3           ORR      R0,R0,#0x1500
+   \   00000028   860000EF           SWI      +134
+    201             WriteFile((char*)f5402s,bp,BL_SZ_5402);
+   \   0000002C   ........           LDR      R0,??DataTable13  ;; f5402s
+   \   00000030   642EA0E3           MOV      R2,#+1600
+   \   00000034   0410A0E1           MOV      R1,R4
+   \   00000038   ........           BL       WriteFile
+    202          //   GeneralFuncF1(1);
+    203          }
+   \   0000003C   1380BDE8           POP      {R0,R1,R4,PC}    ;; return
+    204          
+    205          
+    206          
+    207          extern const char *successed_config_filename;
+    208          
+    209          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    210          static void OpenCfg(void) //from flie
+    211          {
+    212            ExecFile((char*)successed_config_filename);
+   \                     OpenCfg:
+   \   00000000   04009FE5           LDR      R0,??OpenCfg_0   ;; successed_config_filename
+   \   00000004   000090E5           LDR      R0,[R0, #+0]
+   \   00000008   ........           B        ExecFile         ;; tailcall
+   \                     ??OpenCfg_0:
+   \   0000000C   ........           DC32     successed_config_filename
+    213          }
+    214          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    215          static void OpenBlock(void) //from flie
+    216          {
+    217            ExecFile((char*)f5401s);
+   \                     OpenBlock:
+   \   00000000   ........           LDR      R0,??DataTable12  ;; f5401s
+   \   00000004   ........           B        ExecFile         ;; tailcall
+    218          }
+    219          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    220          static void OpenBlock1(void) //from flie
+    221          {
+    222            ExecFile((char*)f5402s);
+   \                     OpenBlock1:
+   \   00000000   ........           LDR      R0,??DataTable13  ;; f5402s
+   \   00000004   ........           B        ExecFile         ;; tailcall
+    223          }
+    224          
+    225          static const HEADER_DESC smenuhdr={0,0,0,0,NULL,(int)LG_MENU,LGP_NULL};
+    226          
+    227          static const int smmenusoftkeys[]={0,1,2};
+    228          
+    229          static const char * const smenutexts[]=
+    230          {
+    231            LG_MNUASNET,
+    232            LG_MNUCFG,
+    233            LG_MNUSAVEB,
+    234            LG_MNULOADB,
+    235          
+    236            LG_MNUOPENB,
+    237            LG_MNUSAVEB1,
+    238            LG_MNULOADB1,
+    239            LG_MNUOPENB1,
+    240            LG_MNUFIX,
+    241          
+    242          };
+    243          
+    244          extern void SendRequest(int submess, void *data);
+
+   \                                 In segment CODE, align 4, keep-with-next
+    245          static void AutoNet(void)
+    246          {
+   \                     AutoNet:
+   \   00000000   00402DE9           PUSH     {LR}
+    247            SendRequest(IPC_MSIM_EEPROM_AUTOSEARCH,(void*)0);
+   \   00000004   0010A0E3           MOV      R1,#+0
+   \   00000008   0700A0E3           MOV      R0,#+7
+   \   0000000C   ........           _BLF     SendRequest,??SendRequest??rA
+    248            GeneralFuncF1(1);
+   \   00000010   0100A0E3           MOV      R0,#+1
+   \   00000014   3B0100EF           SWI      +315
+    249          //  GeneralFuncF1(1);
+    250          }
+   \   00000018   0080BDE8           POP      {PC}             ;; return
+
+   \                                 In segment DATA_I, align 4, align-sorted
+    251          static const void *smenuprocs[]=
+   \                     smenuprocs:
+   \   00000000                      DS8 36
+   \   00000024                      REQUIRE `?<Initializer for smenuprocs>`
+    252          {
+    253            (void *)AutoNet,
+    254            (void *)OpenCfg,
+    255            (void *)SaveBlock,
+    256            (void *)LoadBlock,
+    257            (void *)OpenBlock,
+    258            (void *)SaveBlock1,
+    259            (void *)LoadBlock1,
+    260             (void *)OpenBlock1,
+    261             (void *)FixBlock
+    262          };
+    263          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    264          void stmenu_ghook(void *data, int cmd)
+    265          {
+   \                     stmenu_ghook:
+   \   00000000   10402DE9           PUSH     {R4,LR}
+    266            if (cmd==9)
+    267            {}
+    268            if (cmd==0x0A)
+   \   00000004   0A0051E3           CMP      R1,#+10
+   \   00000008   0040A0E1           MOV      R4,R0
+   \   0000000C   1080BD18           POPNE    {R4,PC}
+    269            {
+    270              DisableIDLETMR();
+   \   00000010   7F0100EF           SWI      +383
+    271          
+    272             Menu_SetItemCountDyn(data,9);
+   \   00000014   0910A0E3           MOV      R1,#+9
+   \   00000018   0400A0E1           MOV      R0,R4
+   \   0000001C   E60100EF           SWI      +486
+    273          
+    274          //    if (simnum<3+simcnt)      SetCursorToMenuItem(data,2+simnum);
+    275            }
+    276          }
+   \   00000020   1080BDE8           POP      {R4,PC}          ;; return
+    277          
+    278          //static int sicon_array[2];
+    279          
+    280          
+    281          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    282          static void smenuitemhandler(void *data, int curitem, void *unk)
+    283          {
+   \                     smenuitemhandler:
+   \   00000000   F0412DE9           PUSH     {R4-R8,LR}
+   \   00000004   04D04DE2           SUB      SP,SP,#+4
+   \   00000008   0040A0E1           MOV      R4,R0
+   \   0000000C   0150A0E1           MOV      R5,R1
+    284            WSHDR *ws;
+    285            void *item=AllocMenuItem(data);
+   \   00000010   970100EF           SWI      +407
+   \   00000014   0060A0E1           MOV      R6,R0
+    286          
+    287            const char percent_t[]="%t";
+   \   00000018   5C009FE5           LDR      R0,??smenuitemhandler_0  ;; `?<Constant "%t">`
+   \   0000001C   0D10A0E1           MOV      R1,SP
+   \   00000020   0020D0E5           LDRB     R2,[R0, #0]
+   \   00000024   0020C1E5           STRB     R2,[R1, #+0]
+   \   00000028   0120D0E5           LDRB     R2,[R0, #+1]
+   \   0000002C   0120C1E5           STRB     R2,[R1, #+1]
+   \   00000030   0220D0E5           LDRB     R2,[R0, #+2]
+   \   00000034   050180E0           ADD      R0,R0,R5, LSL #+2
+   \   00000038   0220C1E5           STRB     R2,[R1, #+2]
+   \   0000003C   047090E5           LDR      R7,[R0, #+4]
+   \   00000040   0700A0E1           MOV      R0,R7
+    288          //  extern const char percent_t[];
+    289            ws=AllocMenuWS(data,strlen(smenutexts[curitem]));
+   \   00000044   1B0000EF           SWI      +27
+   \   00000048   0010A0E1           MOV      R1,R0
+   \   0000004C   0400A0E1           MOV      R0,R4
+   \   00000050   980100EF           SWI      +408
+   \   00000054   0080A0E1           MOV      R8,R0
+    290            wsprintf(ws,percent_t,smenutexts[curitem]);
+   \   00000058   0720A0E1           MOV      R2,R7
+   \   0000005C   0D10A0E1           MOV      R1,SP
+   \   00000060   240100EF           SWI      +292
+    291          
+    292              SetMenuItemText(data, item, ws, curitem);
+   \   00000064   0530A0E1           MOV      R3,R5
+   \   00000068   0820A0E1           MOV      R2,R8
+   \   0000006C   0610A0E1           MOV      R1,R6
+   \   00000070   0400A0E1           MOV      R0,R4
+   \   00000074   9A0100EF           SWI      +410
+    293          
+    294          }
+   \   00000078   F181BDE8           POP      {R0,R4-R8,PC}    ;; return
+   \                     ??smenuitemhandler_0:
+   \   0000007C   ........           DC32     `?<Constant "%t">`
+    295          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    296          static int stmenu_keyhook(void *data, GUI_MSG *msg)
+    297          {
+   \                     stmenu_keyhook:
+   \   00000000   00402DE9           PUSH     {LR}
+    298            if ((msg->keys==0x18)||(msg->keys==0x3D))
+   \   00000004   F210D1E1           LDRSH    R1,[R1, #+2]
+   \   00000008   180051E3           CMP      R1,#+24
+   \   0000000C   3D005113           CMPNE    R1,#+61
+   \   00000010   0300001A           BNE      ??stmenu_keyhook_0
+    299            {
+    300                ((void (*)(void))(smenuprocs[GetCurMenuItem(data)]))();
+   \   00000014   8F0100EF           SWI      +399
+   \   00000018   0C109FE5           LDR      R1,??stmenu_keyhook_1  ;; smenuprocs
+   \   0000001C   000191E7           LDR      R0,[R1, +R0, LSL #+2]
+   \   00000020   30FF2FE1           BLX      R0
+    301            }
+    302            return(0);
+   \                     ??stmenu_keyhook_0:
+   \   00000024   0000A0E3           MOV      R0,#+0
+   \   00000028   0080BDE8           POP      {PC}             ;; return
+   \                     ??stmenu_keyhook_1:
+   \   0000002C   ........           DC32     smenuprocs
+    303          }
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     smenuhdr:
+   \   00000000   000000000000       DC16 0, 0, 0, 0
+   \              0000        
+   \   00000008   00000000....       DC32 0H, `?<Constant "\\262\\313\\265\\245">`, 2147483647
+   \              ....FFFFFF7F
+   \   00000014   343A5C7A6269       DC8 "4:\\zbin\\naticq\\img\\online.png"
+   \              6E5C6E617469
+   \              63715C696D67
+   \              5C6F6E6C696E
+   \              652E706E6700
+   \   00000032   0000               DC8 0, 0
+   \   00000034   343A5C7A6269       DC8 "4:\\zbin\\naticq\\img\\offline.png"
+   \              6E5C6E617469
+   \              63715C696D67
+   \              5C6F66666C69
+   \              6E652E706E67
+   \              00          
+   \   00000053   00                 DC8 0
+   \   00000054   08000000....       DC32 8, stmenu_keyhook, stmenu_ghook, 0H, smmenusoftkeys, smenu_skt, 16
+   \              ............
+   \              00000000....
+   \              ............
+   \              10000000    
+   \   00000070   ........0000       DC32 smenuitemhandler, 0H, 0H, 8
+   \              000000000000
+   \              08000000    
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     smmenusoftkeys:
+   \   00000000   000000000100       DC32 0, 1, 2
+   \              000002000000
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "%t">`:
+   \   00000000   257400             DC8 "%t"
+   \   00000003   00                 DC8 0
+   \   00000004   ........           DC32 `?<Constant "\\327\\324\\266\\257\\315\\370\\302\\347">`
+   \   00000008   ........           DC32 `?<Constant "\\264\\362\\277\\252\\305\\344\\326\\303">`
+   \   0000000C   ........           DC32 `?<Constant "\\261\\270\\267\\3355401\\277\\351\\265\\2`
+   \   00000010   ........           DC32 `?<Constant "\\264\\323\\316\\304\\274\\376\\270\\374\\3`
+   \   00000014   ........           DC32 `?<Constant "\\264\\362\\277\\2525401\\316\\304\\274\\3`
+   \   00000018   ........           DC32 `?<Constant "\\261\\270\\267\\3355402\\277\\351\\265\\2`
+   \   0000001C   ........           DC32 `?<Constant "\\264\\323\\316\\304\\274\\376\\270\\374\\3_1`
+   \   00000020   ........           DC32 `?<Constant "\\264\\362\\277\\2525402\\316\\304\\274\\3`
+   \   00000024   ........           DC32 `?<Constant "\\316\\357\\300\\355\\277\\351(\\261\\330\\`
+    304          
+    305          
+    306          static const MENU_DESC stmenu=
+    307          {
+    308            8,stmenu_keyhook,stmenu_ghook,NULL,
+    309            smmenusoftkeys,
+    310            &smenu_skt,
+    311            0x10,//MENU_FLAG,
+    312            smenuitemhandler,
+    313            NULL,//menuitems,
+    314            NULL,//menuprocs,
+    315            8
+    316          };
+    317          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    318          int ShowSetMenu()
+    319          {
+   \                     ShowSetMenu:
+   \   00000000   30402DE9           PUSH     {R4,R5,LR}
+    320            sS_ICONS[0]=(int)DEFAULT_DISK_CFG ":\\zbin\\naticq\\img\\online.png";
+   \   00000004   70409FE5           LDR      R4,??ShowSetMenu_0  ;; sS_ICONS
+   \   00000008   70509FE5           LDR      R5,??ShowSetMenu_0+0x4  ;; smenuhdr
+   \   0000000C   140085E2           ADD      R0,R5,#+20
+   \   00000010   000084E5           STR      R0,[R4, #+0]
+    321            sS_ICONS[1]=(int)DEFAULT_DISK_CFG ":\\zbin\\naticq\\img\\offline.png";
+   \   00000014   340085E2           ADD      R0,R5,#+52
+   \   00000018   040084E5           STR      R0,[R4, #+4]
+    322            sS_ICONS[2]=0;
+   \   0000001C   0000A0E3           MOV      R0,#+0
+   \   00000020   080084E5           STR      R0,[R4, #+8]
+    323          //  sicon_array[0]=GetPicNByUnicodeSymbol(CBOX_CHECKED);
+    324          //  sicon_array[1]=GetPicNByUnicodeSymbol(CBOX_UNCHECKED);
+    325            *((int **)(&smenuhdr.icon))=sS_ICONS;
+   \   00000024   084085E5           STR      R4,[R5, #+8]
+    326            patch_header(&smenuhdr);
+   \   00000028   000085E5           STR      R0,[R5, #+0]
+   \   0000002C   888100EF           SWI      +33160
+   \   00000030   010040E2           SUB      R0,R0,#+1
+   \   00000034   B400C5E1           STRH     R0,[R5, #+4]
+   \   00000038   8A8100EF           SWI      +33162
+   \   0000003C   010040E2           SUB      R0,R0,#+1
+   \   00000040   B600C5E1           STRH     R0,[R5, #+6]
+    327            SetMenu_ID=CreateMenu(0,0,&stmenu,&smenuhdr,0,11,0,0);
+   \   00000044   0000A0E3           MOV      R0,#+0
+   \   00000048   01002DE9           PUSH     {R0}
+   \   0000004C   01002DE9           PUSH     {R0}
+   \   00000050   0530A0E1           MOV      R3,R5
+   \   00000054   542085E2           ADD      R2,R5,#+84
+   \   00000058   0010A0E3           MOV      R1,#+0
+   \   0000005C   0B00A0E3           MOV      R0,#+11
+   \   00000060   01002DE9           PUSH     {R0}
+   \   00000064   0000A0E3           MOV      R0,#+0
+   \   00000068   01002DE9           PUSH     {R0}
+   \   0000006C   520100EF           SWI      +338
+   \   00000070   0C0084E5           STR      R0,[R4, #+12]
+    328            return SetMenu_ID;
+   \   00000074   10D08DE2           ADD      SP,SP,#+16
+   \   00000078   3080BDE8           POP      {R4,R5,PC}       ;; return
+   \                     ??ShowSetMenu_0:
+   \   0000007C   ........           DC32     sS_ICONS
+   \   00000080   ........           DC32     smenuhdr
+    329          }
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable6:
+   \   00000000   ........           DC32     `?<Constant "\\277\\351 5401/5402 \\316\\264\\267\\24`
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable10:
+   \   00000000   ........           DC32     bp
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable12:
+   \   00000000   ........           DC32     f5401s
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable13:
+   \   00000000   ........           DC32     f5402s
+
+   \                                 In segment DATA_ID, align 4, align-sorted
+   \                     `?<Initializer for smenuprocs>`:
+   \   00000000   ............       DC32 AutoNet, OpenCfg, SaveBlock, LoadBlock, OpenBlock, SaveBlock1
+   \              ............
+   \              ............
+   \              ............
+   \   00000018   ............       DC32 LoadBlock1, OpenBlock1, FixBlock
+   \              ............
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\321\\241\\324\\361">`:
+   \   00000000   D1A1D4F100         DC8 "\321\241\324\361"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\271\\330\\261\\325">`:
+   \   00000000   B9D8B1D500         DC8 "\271\330\261\325"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\262\\313\\265\\245">`:
+   \   00000000   B2CBB5A500         DC8 "\262\313\265\245"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\327\\324\\266\\257\\315\\370\\302\\347">`:
+   \   00000000   D7D4B6AFCDF8       DC8 "\327\324\266\257\315\370\302\347"
+   \              C2E700      
+   \   00000009   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\264\\362\\277\\252\\305\\344\\326\\303">`:
+   \   00000000   B4F2BFAAC5E4       DC8 "\264\362\277\252\305\344\326\303"
+   \              D6C300      
+   \   00000009   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\261\\270\\267\\3355401\\277\\351\\265\\2`:
+   \   00000000   B1B8B7DD3534       DC8 "\261\270\267\3355401\277\351\265\275\316\304\274\376"
+   \              3031BFE9B5BD
+   \              CEC4BCFE00  
+   \   00000011   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\264\\323\\316\\304\\274\\376\\270\\374\\3`:
+   \   00000000   B4D3CEC4BCFE       DC8 "\264\323\316\304\274\376\270\374\320\3025401\277\351"
+   \              B8FCD0C23534
+   \              3031BFE900  
+   \   00000011   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\264\\362\\277\\2525401\\316\\304\\274\\3`:
+   \   00000000   B4F2BFAA3534       DC8 "\264\362\277\2525401\316\304\274\376"
+   \              3031CEC4BCFE
+   \              00          
+   \   0000000D   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\261\\270\\267\\3355402\\277\\351\\265\\2`:
+   \   00000000   B1B8B7DD3534       DC8 "\261\270\267\3355402\277\351\265\275\316\304\274\376"
+   \              3032BFE9B5BD
+   \              CEC4BCFE00  
+   \   00000011   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\264\\323\\316\\304\\274\\376\\270\\374\\3_1`:
+   \   00000000   B4D3CEC4BCFE       DC8 "\264\323\316\304\274\376\270\374\320\3025402\277\351"
+   \              B8FCD0C23534
+   \              3032BFE900  
+   \   00000011   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\264\\362\\277\\2525402\\316\\304\\274\\3`:
+   \   00000000   B4F2BFAA3534       DC8 "\264\362\277\2525402\316\304\274\376"
+   \              3032CEC4BCFE
+   \              00          
+   \   0000000D   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\316\\357\\300\\355\\277\\351(\\261\\330\\`:
+   \   00000000   CEEFC0EDBFE9       DC8 "\316\357\300\355\277\351(\261\330\320\353\321\241\324\361\316\357\300\355\277\250)"
+   \              28B1D8D0EBD1
+   \              A1D4F1CEEFC0
+   \              EDBFA82900  
+   \   00000017   00                 DC8 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "%02X ">`:
+   \   00000000   253032582000       DC8 "%02X "
+   \   00000006   0000               DC8 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\277\\351 5401/5402 \\316\\264\\267\\24`:
+   \   00000000   BFE920353430       DC8 "\277\351 5401/5402 \316\264\267\242\317\326\273\362\325\337\270\361\312\275\264\355\316\363!"
+   \              312F35343032
+   \              20CEB4B7A2CF
+   \              D6BBF2D5DFB8
+   \              F1CABDB4EDCE
+   \              F32100      
+   \   00000021   000000             DC8 0, 0, 0
+
+   Maximum stack usage in bytes:
+
+     Function         CSTACK
+     --------         ------
+     AutoNet              4
+     ExecFile            12
+     FixBlock            36
+     LoadBlock           12
+     LoadBlock1          12
+     OpenBlock            4
+     OpenBlock1           4
+     OpenCfg              4
+     ReadFile            32
+     SaveBlock           16
+     SaveBlock1          16
+     ShowSetMenu         28
+     WriteFile           40
+     htoi                 0
+     smenuitemhandler    28
+     stmenu_ghook         8
+     stmenu_keyhook       4
+
+
+   Segment part sizes:
+
+     Function/Label                 Bytes
+     --------------                 -----
+     sS_ICONS                         16
+     smenu_sk                         24
+     smenu_skt                         8
+     ExecFile                         60
+     bp                             1600
+     WriteFile                       236
+     htoi                             56
+     ReadFile                        260
+     LoadBlock                        96
+     LoadBlock1                       96
+     FixBlock                        200
+     SaveBlock                        64
+     SaveBlock1                       64
+     OpenCfg                          16
+     OpenBlock                         8
+     OpenBlock1                        8
+     AutoNet                          28
+     smenuprocs                       36
+     stmenu_ghook                     36
+     smenuitemhandler                128
+     stmenu_keyhook                   48
+     smenuhdr                        128
+     smmenusoftkeys                   12
+     ?<Constant "%t">                 40
+     ShowSetMenu                     132
+     ??DataTable6                      4
+     ??DataTable10                     4
+     ??DataTable12                     4
+     ??DataTable13                     4
+     ?<Initializer for smenuprocs>    36
+     ?<Constant "\321\241\324\361">    8
+     ?<Constant "\271\330\261\325">    8
+     ?<Constant "\262\313\265\245">    8
+     ?<Constant "\327\324\266\257\315\370\302\347">
+                                      12
+     ?<Constant "\264\362\277\252\305\344\326\303">
+                                      12
+     ?<Constant "\261\270\267\3355401\277\351\265\2
+                                      20
+     ?<Constant "\264\323\316\304\274\376\270\374\3
+                                      20
+     ?<Constant "\264\362\277\2525401\316\304\274\3
+                                      16
+     ?<Constant "\261\270\267\3355402\277\351\265\2
+                                      20
+     ?<Constant "\264\323\316\304\274\376\270\374\3_1
+                                      20
+     ?<Constant "\264\362\277\2525402\316\304\274\3
+                                      16
+     ?<Constant "\316\357\300\355\277\351(\261\330\
+                                      24
+     ?<Constant "%02X ">               8
+     ?<Constant "\277\351 5401/5402 \316\264\267\24
+                                      36
+      Others                         104
+
+ 
+ 1 632 bytes in segment CODE
+   440 bytes in segment DATA_C
+    36 bytes in segment DATA_I
+    36 bytes in segment DATA_ID
+ 1 616 bytes in segment DATA_Z
+    24 bytes in segment INITTAB
+ 
+ 1 552 bytes of CODE  memory (+ 104 bytes shared)
+   476 bytes of CONST memory
+ 1 652 bytes of DATA  memory
+
+Errors: none
+Warnings: 1

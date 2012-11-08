@@ -21,7 +21,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release\Exe</state>
+          <state>Output</state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -107,7 +107,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.41A</state>
+          <state>4.42A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -546,11 +546,11 @@
         <debug>0</debug>
         <option>
           <name>XOutOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OutputFile</name>
-          <state>TalkPhoneND.elf</state>
+          <state>TalkPhone_NSG.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -559,7 +559,7 @@
         </option>
         <option>
           <name>FormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -745,7 +745,7 @@
         </option>
         <option>
           <name>ExtraFormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -844,7 +844,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release_ELKA\Exe</state>
+          <state>Output</state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -930,7 +930,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.40A</state>
+          <state>4.42A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -1370,11 +1370,11 @@
         <debug>0</debug>
         <option>
           <name>XOutOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OutputFile</name>
-          <state>TalkPhoneND.elf</state>
+          <state>TalkPhone_ELKA.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -1383,7 +1383,7 @@
         </option>
         <option>
           <name>FormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -1569,7 +1569,7 @@
         </option>
         <option>
           <name>ExtraFormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -1668,7 +1668,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release_SGOLD_X75\Exe</state>
+          <state>Output</state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -1754,7 +1754,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.41A</state>
+          <state>4.42A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -2193,11 +2193,11 @@
         <debug>0</debug>
         <option>
           <name>XOutOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OutputFile</name>
-          <state>TalkPhoneND.elf</state>
+          <state>TalkPhone_X75.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -2206,7 +2206,7 @@
         </option>
         <option>
           <name>FormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -2392,7 +2392,7 @@
         </option>
         <option>
           <name>ExtraFormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -2491,7 +2491,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>Release_SGOLD\Exe</state>
+          <state>Output</state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -2577,7 +2577,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.41A</state>
+          <state>4.42A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -3016,11 +3016,11 @@
         <debug>0</debug>
         <option>
           <name>XOutOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OutputFile</name>
-          <state>TalkPhoneND.elf</state>
+          <state>TalkPhone_X65.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -3029,7 +3029,7 @@
         </option>
         <option>
           <name>FormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -3215,7 +3215,7 @@
         </option>
         <option>
           <name>ExtraFormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>

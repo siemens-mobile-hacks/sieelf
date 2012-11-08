@@ -1,0 +1,1395 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    14/Feb/2012  15:39:27 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDE #
+#                       C\AAC_FILE (4).c                                     #
+#    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD #
+#                       EC\AAC_FILE (4).c" -D NDEBUG -lC                     #
+#                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\ #
+#                       Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player #
+#                       \Player\Release\Obj\ -s9 --cpu_mode arm --endian     #
+#                       little --cpu ARM926EJ-S --stack_align 4 --interwork  #
+#                       -e --fpu None --dlib_config "D:\Program              #
+#                       Files\IAR\Embedded Workbench 4.0                     #
+#                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude       #
+#                       swilib.h -I "D:\Program Files\IAR\Embedded           #
+#                       Workbench 4.0 Evaluation\ARM\INC\"                   #
+#                       --inline_threshold=16                                #
+#    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\AAC_FILE (4).lst                                 #
+#    Object file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\O #
+#                       bj\AAC_FILE (4).r79                                  #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (4).c
+      1          /* ***** BEGIN LICENSE BLOCK *****  
+      2           * Source last modified: $Id: sbrhuff.c,v 1.1 2005/02/26 01:47:35 jrecker Exp $ 
+      3           *   
+      4           * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+      5           *       
+      6           * The contents of this file, and the files included with this file, 
+      7           * are subject to the current version of the RealNetworks Public 
+      8           * Source License (the "RPSL") available at 
+      9           * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+     10           * the file under the current version of the RealNetworks Community 
+     11           * Source License (the "RCSL") available at 
+     12           * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+     13           * will apply. You may also obtain the license terms directly from 
+     14           * RealNetworks.  You may not use this file except in compliance with 
+     15           * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+     16           * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+     17           * the rights, obligations and limitations governing use of the 
+     18           * contents of the file. 
+     19           *   
+     20           * This file is part of the Helix DNA Technology. RealNetworks is the 
+     21           * developer of the Original Code and owns the copyrights in the 
+     22           * portions it created. 
+     23           *   
+     24           * This file, and the files included with this file, is distributed 
+     25           * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+     26           * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+     27           * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+     28           * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+     29           * ENJOYMENT OR NON-INFRINGEMENT. 
+     30           *  
+     31           * Technology Compatibility Kit Test Suite(s) Location:  
+     32           *    http://www.helixcommunity.org/content/tck  
+     33           *  
+     34           * Contributor(s):  
+     35           *   
+     36           * ***** END LICENSE BLOCK ***** */  
+     37          
+     38          /**************************************************************************************
+     39           * Fixed-point HE-AAC decoder
+     40           * Jon Recker (jrecker@real.com)
+     41           * February 2005
+     42           *
+     43           * sbrhuff.c - functions for unpacking Huffman-coded envelope and noise data
+     44           **************************************************************************************/
+     45          
+     46          #include "sbr_aac.h"
+     47          #include "assembly_aac.h"
+     48          
+     49          /**************************************************************************************
+     50           * Function:    DecodeHuffmanScalar
+     51           *
+     52           * Description: decode one Huffman symbol from bitstream
+     53           *
+     54           * Inputs:      pointers to Huffman table and info struct
+     55           *              left-aligned bit buffer with >= huffTabInfo->maxBits bits
+     56           *
+     57           * Outputs:     decoded symbol in *val
+     58           *
+     59           * Return:      number of bits in symbol
+     60           *
+     61           * Notes:       assumes canonical Huffman codes:
+     62           *                first CW always 0, we have "count" CW's of length "nBits" bits
+     63           *                starting CW for codes of length nBits+1 = 
+     64           *                  (startCW[nBits] + count[nBits]) << 1
+     65           *                if there are no codes at nBits, then we just keep << 1 each time 
+     66           *                  (since count[nBits] = 0)
+     67           **************************************************************************************/
+     68          static int DecodeHuffmanScalar(const signed short *huffTab, const HuffInfo *huffTabInfo, unsigned int bitBuf, signed int *val)
+     69          {
+     70              unsigned int count, start, shift, t;
+     71          	const unsigned char *countPtr;
+     72          	const signed short *map;
+     73          
+     74          	map = huffTab + huffTabInfo->offset;
+     75          	countPtr = huffTabInfo->count;
+     76          
+     77          	start = 0;
+     78          	count = 0;
+     79          	shift = 32;
+     80          	do {
+     81          		start += count;
+     82          		start <<= 1;
+     83          		map += count;
+     84          		count = *countPtr++;
+     85          		shift--;
+     86          		t = (bitBuf >> shift) - start;
+     87          	} while (t >= count);
+     88          	
+     89          	*val = (signed int)map[t];
+     90          	return (countPtr - huffTabInfo->count);
+     91          }
+     92          
+     93          /**************************************************************************************
+     94           * Function:    DecodeOneSymbol
+     95           *
+     96           * Description: dequantize one Huffman symbol from bitstream, 
+     97           *                using table huffTabSBR[huffTabIndex]
+     98           *
+     99           * Inputs:      BitStreamInfo struct pointing to start of next Huffman codeword
+    100           *              index of Huffman table
+    101           *
+    102           * Outputs:     bitstream advanced by number of bits in codeword
+    103           *
+    104           * Return:      one decoded symbol
+    105           **************************************************************************************/
+    106          static int DecodeOneSymbol(BitStreamInfo *bsi, int huffTabIndex)
+    107          {
+    108          	int nBits, val;
+    109          	unsigned int bitBuf;
+    110          	const HuffInfo *hi;
+    111          
+    112          	hi = &(huffTabSBRInfo[huffTabIndex]);
+    113          
+    114          	bitBuf = GetBitsNoAdvance(bsi, hi->maxBits) << (32 - hi->maxBits);
+    115          	nBits = DecodeHuffmanScalar(huffTabSBR, hi, bitBuf, &val);
+    116          	AdvanceBitstream(bsi, nBits);
+    117          	
+    118          	return val;
+    119          }
+    120          
+    121          /* [1.0, sqrt(2)], format = Q29 (one guard bit for decoupling) */
+
+   \                                 In segment DATA_C, align 4, align-sorted
+    122          static const int envDQTab[2] = {0x20000000, 0x2d413ccc};
+   \                     envDQTab:
+   \   00000000   00000020CC3C       DC32 536870912, 759250124
+   \              412D        
+    123          
+    124          /**************************************************************************************
+    125           * Function:    DequantizeEnvelope
+    126           *
+    127           * Description: dequantize envelope scalefactors
+    128           *
+    129           * Inputs:      number of scalefactors to process
+    130           *              amplitude resolution flag for this frame (0 or 1)
+    131           *              quantized envelope scalefactors
+    132           * 
+    133           * Outputs:     dequantized envelope scalefactors
+    134           *
+    135           * Return:      extra int bits in output (6 + expMax)
+    136           *              in other words, output format = Q(FBITS_OUT_DQ_ENV - (6 + expMax))
+    137           *
+    138           * Notes:       dequantized scalefactors have at least 2 GB
+    139           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    140          static int DequantizeEnvelope(int nBands, int ampRes, signed char *envQuant, int *envDequant)
+    141          {
+   \                     DequantizeEnvelope:
+   \   00000000   30002DE9           PUSH     {R4,R5}
+    142          	int exp, expMax, i, scalei;
+    143          
+    144          	if (nBands <= 0)
+   \   00000004   010050E3           CMP      R0,#+1
+    145          		return 0;
+   \   00000008   3000BDB8           POPLT    {R4,R5}
+   \   0000000C   0000A0B3           MOVLT    R0,#+0
+   \   00000010   1EFF2FB1           BXLT     LR
+    146          	
+    147          	/* scan for largest dequant value (do separately from envelope decoding to keep code cleaner) */
+    148          	expMax = 0;
+   \   00000014   00C0A0E3           MOV      R12,#+0
+    149          	for (i = 0; i < nBands; i++) {
+   \   00000018   0040A0E3           MOV      R4,#+0
+   \   0000001C   030000EA           B        ??DequantizeEnvelope_0
+    150          		if (envQuant[i] > expMax)
+   \                     ??DequantizeEnvelope_1:
+   \   00000020   D25094E1           LDRSB    R5,[R4, +R2]
+    151          			expMax = envQuant[i];
+    152          	}
+   \   00000024   014084E2           ADD      R4,R4,#+1
+   \   00000028   05005CE1           CMP      R12,R5
+   \   0000002C   05C0A0B1           MOVLT    R12,R5
+   \                     ??DequantizeEnvelope_0:
+   \   00000030   000054E1           CMP      R4,R0
+   \   00000034   F9FFFFBA           BLT      ??DequantizeEnvelope_1
+    153          
+    154          	/* dequantized envelope gains
+    155          	 *   envDequant = 64*2^(envQuant / alpha) = 2^(6 + envQuant / alpha)
+    156          	 *     if ampRes == 0, alpha = 2 and range of envQuant = [0, 127]
+    157          	 *     if ampRes == 1, alpha = 1 and range of envQuant = [0, 63]
+    158          	 * also if coupling is on, envDequant is scaled by something in range [0, 2]
+    159          	 * so range of envDequant = [2^6, 2^69] (no coupling), [2^6, 2^70] (with coupling)
+    160          	 * 
+    161          	 * typical range (from observation) of envQuant/alpha = [0, 27] --> largest envQuant ~= 2^33
+    162          	 * output: Q(29 - (6 + expMax))
+    163          	 *
+    164          	 * reference: 14496-3:2001(E)/4.6.18.3.5 and 14496-4:200X/FPDAM8/5.6.5.1.2.1.5
+    165          	 */
+    166          	if (ampRes) {
+   \   00000038   000051E3           CMP      R1,#+0
+   \   0000003C   0B00000A           BEQ      ??DequantizeEnvelope_2
+    167          		do {
+    168          			exp = *envQuant++;
+   \                     ??DequantizeEnvelope_3:
+   \   00000040   ........           LDRSB    R1,[R2], #+1
+    169          			scalei = MIN(expMax - exp, 31);
+   \   00000044   01404CE0           SUB      R4,R12,R1
+   \   00000048   1F0054E3           CMP      R4,#+31
+   \   0000004C   1F40A0A3           MOVGE    R4,#+31
+    170          			*envDequant++ = envDQTab[0] >> scalei;
+   \   00000050   8015A0E3           MOV      R1,#+536870912
+   \   00000054   5114A0E1           ASR      R1,R1,R4
+   \   00000058   ........           STR      R1,[R3], #+4
+    171          		} while (--nBands);
+   \   0000005C   010050E2           SUBS     R0,R0,#+1
+   \   00000060   F6FFFF1A           BNE      ??DequantizeEnvelope_3
+    172          
+    173          		return (6 + expMax);
+   \                     ??DequantizeEnvelope_4:
+   \   00000064   3000BDE8           POP      {R4,R5}
+   \   00000068   06008CE2           ADD      R0,R12,#+6
+   \   0000006C   1EFF2FE1           BX       LR
+    174          	} else {
+    175          		expMax >>= 1;
+   \                     ??DequantizeEnvelope_2:
+   \   00000070   30509FE5           LDR      R5,??DequantizeEnvelope_5  ;; envDQTab
+   \   00000074   CCC0A0E1           ASR      R12,R12,#+1
+   \   00000078   050000EA           B        ??DequantizeEnvelope_6
+    176          		do {
+    177          			exp = *envQuant++;
+    178          			scalei = MIN(expMax - (exp >> 1), 31);
+    179          			*envDequant++ = envDQTab[exp & 0x01] >> scalei;
+   \                     ??DequantizeEnvelope_7:
+   \   0000007C   011001E2           AND      R1,R1,#0x1
+   \   00000080   011195E7           LDR      R1,[R5, +R1, LSL #+2]
+    180          		} while (--nBands);
+   \   00000084   010050E2           SUBS     R0,R0,#+1
+   \   00000088   5114A0E1           ASR      R1,R1,R4
+   \   0000008C   ........           STR      R1,[R3], #+4
+   \   00000090   F3FFFF0A           BEQ      ??DequantizeEnvelope_4
+   \                     ??DequantizeEnvelope_6:
+   \   00000094   ........           LDRSB    R1,[R2], #+1
+   \   00000098   C1404CE0           SUB      R4,R12,R1, ASR #+1
+   \   0000009C   1F0054E3           CMP      R4,#+31
+   \   000000A0   1F40A0A3           MOVGE    R4,#+31
+   \   000000A4   F4FFFFEA           B        ??DequantizeEnvelope_7
+   \                     ??DequantizeEnvelope_5:
+   \   000000A8   ........           DC32     envDQTab
+    181          
+    182          		return (6 + expMax);
+    183          	}
+    184          
+    185          }
+    186          
+    187          /**************************************************************************************
+    188           * Function:    DequantizeNoise
+    189           *
+    190           * Description: dequantize noise scalefactors
+    191           *
+    192           * Inputs:      number of scalefactors to process
+    193           *              quantized noise scalefactors
+    194           * 
+    195           * Outputs:     dequantized noise scalefactors, format = Q(FBITS_OUT_DQ_NOISE)
+    196           *
+    197           * Return:      none
+    198           *
+    199           * Notes:       dequantized scalefactors have at least 2 GB
+    200           **************************************************************************************/
+    201          static void DequantizeNoise(int nBands, signed char *noiseQuant, int *noiseDequant)
+    202          {
+    203          	int exp, scalei;
+    204          	
+    205          	if (nBands <= 0)
+    206          		return;
+    207          
+    208          	/* dequantize noise floor gains (4.6.18.3.5):
+    209          	 *   noiseDequant = 2^(NOISE_FLOOR_OFFSET - noiseQuant)
+    210          	 *
+    211          	 * range of noiseQuant = [0, 30] (see 4.6.18.3.6), NOISE_FLOOR_OFFSET = 6
+    212          	 *   so range of noiseDequant = [2^-24, 2^6]
+    213          	 */
+    214          	do {
+    215          		exp = *noiseQuant++;
+    216          		scalei = NOISE_FLOOR_OFFSET - exp + FBITS_OUT_DQ_NOISE;	/* 6 + 24 - exp, exp = [0,30] */
+    217          
+    218          		if (scalei < 0)
+    219          			*noiseDequant++ = 0;
+    220          		else if (scalei < 30)
+    221          			*noiseDequant++ = 1 << scalei;
+    222          		else
+    223          			*noiseDequant++ = 0x3fffffff;	/* leave 2 GB */
+    224          
+    225          	} while (--nBands);
+    226          }
+    227          
+    228          /**************************************************************************************
+    229           * Function:    DecodeSBREnvelope
+    230           *
+    231           * Description: decode delta Huffman coded envelope scalefactors from bitstream
+    232           *
+    233           * Inputs:      BitStreamInfo struct pointing to start of env data
+    234           *              initialized PSInfoSBR struct
+    235           *              initialized SBRGrid struct for this channel
+    236           *              initialized SBRFreq struct for this SCE/CPE block
+    237           *              initialized SBRChan struct for this channel
+    238           *              index of current channel (0 for SCE, 0 or 1 for CPE)
+    239           * 
+    240           * Outputs:     dequantized env scalefactors for left channel (before decoupling)
+    241           *              dequantized env scalefactors for right channel (if coupling off)
+    242           *                or raw decoded env scalefactors for right channel (if coupling on)
+    243           *
+    244           * Return:      none
+    245           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    246          void DecodeSBREnvelope(BitStreamInfo *bsi, PSInfoSBR *psi, SBRGrid *sbrGrid, SBRFreq *sbrFreq, SBRChan *sbrChan, int ch)
+    247          {
+   \                     raac_DecodeSBREnvelope:
+   \   00000000   F64F2DE9           PUSH     {R1,R2,R4-R11,LR}
+   \   00000004   20D04DE2           SUB      SP,SP,#+32
+   \   00000008   20209DE5           LDR      R2,[SP, #+32]
+   \   0000000C   0040A0E1           MOV      R4,R0
+   \   00000010   2010A0E3           MOV      R1,#+32
+   \   00000014   741D81E3           ORR      R1,R1,#0x1D00
+   \   00000018   021081E0           ADD      R1,R1,R2
+   \   0000001C   1C108DE5           STR      R1,[SP, #+28]
+   \   00000020   000091E5           LDR      R0,[R1, #+0]
+   \   00000024   0350A0E1           MOV      R5,R3
+   \   00000028   000050E3           CMP      R0,#+0
+   \   0000002C   50009D15           LDRNE    R0,[SP, #+80]
+   \   00000030   00005013           CMPNE    R0,#+0
+   \   00000034   1100000A           BEQ      ??raac_DecodeSBREnvelope_0
+    248          	int huffIndexTime, huffIndexFreq, env, envStartBits, band, nBands, sf, lastEnv;
+    249          	int freqRes, freqResPrev, dShift, i;
+    250          
+    251          	if (psi->couplingFlag && ch) {
+    252          		dShift = 1;
+    253          		if (sbrGrid->ampResFrame) {
+   \   00000038   24009DE5           LDR      R0,[SP, #+36]
+   \   0000003C   0110A0E3           MOV      R1,#+1
+   \   00000040   04108DE5           STR      R1,[SP, #+4]
+   \   00000044   0100D0E5           LDRB     R0,[R0, #+1]
+   \   00000048   000050E3           CMP      R0,#+0
+   \   0000004C   0500000A           BEQ      ??raac_DecodeSBREnvelope_1
+    254          			huffIndexTime = HuffTabSBR_tEnv30b;
+   \   00000050   0610A0E3           MOV      R1,#+6
+   \   00000054   08108DE5           STR      R1,[SP, #+8]
+    255          			huffIndexFreq = HuffTabSBR_fEnv30b;
+   \   00000058   0710A0E3           MOV      R1,#+7
+   \   0000005C   0C108DE5           STR      R1,[SP, #+12]
+    256          			envStartBits = 5;
+   \   00000060   0510A0E3           MOV      R1,#+5
+   \   00000064   130000EA           B        ??raac_DecodeSBREnvelope_2
+    257          		} else {
+    258          			huffIndexTime = HuffTabSBR_tEnv15b;
+   \                     ??raac_DecodeSBREnvelope_1:
+   \   00000068   0210A0E3           MOV      R1,#+2
+   \   0000006C   08108DE5           STR      R1,[SP, #+8]
+    259          			huffIndexFreq = HuffTabSBR_fEnv15b;
+   \   00000070   0310A0E3           MOV      R1,#+3
+   \                     ??raac_DecodeSBREnvelope_3:
+   \   00000074   0C108DE5           STR      R1,[SP, #+12]
+    260          			envStartBits = 6;
+   \   00000078   0610A0E3           MOV      R1,#+6
+   \   0000007C   0D0000EA           B        ??raac_DecodeSBREnvelope_2
+    261          		}
+    262          	} else {
+    263          		dShift = 0;
+    264          		if (sbrGrid->ampResFrame) {
+   \                     ??raac_DecodeSBREnvelope_0:
+   \   00000080   24009DE5           LDR      R0,[SP, #+36]
+   \   00000084   0010A0E3           MOV      R1,#+0
+   \   00000088   04108DE5           STR      R1,[SP, #+4]
+   \   0000008C   0100D0E5           LDRB     R0,[R0, #+1]
+   \   00000090   000050E3           CMP      R0,#+0
+   \   00000094   0300000A           BEQ      ??raac_DecodeSBREnvelope_4
+    265          			huffIndexTime = HuffTabSBR_tEnv30;
+   \   00000098   0410A0E3           MOV      R1,#+4
+   \   0000009C   08108DE5           STR      R1,[SP, #+8]
+    266          			huffIndexFreq = HuffTabSBR_fEnv30;
+   \   000000A0   0510A0E3           MOV      R1,#+5
+   \   000000A4   F2FFFFEA           B        ??raac_DecodeSBREnvelope_3
+    267          			envStartBits = 6;
+    268          		} else {
+    269          			huffIndexTime = HuffTabSBR_tEnv15;
+   \                     ??raac_DecodeSBREnvelope_4:
+   \   000000A8   08108DE5           STR      R1,[SP, #+8]
+    270          			huffIndexFreq = HuffTabSBR_fEnv15;
+   \   000000AC   0110A0E3           MOV      R1,#+1
+   \   000000B0   0C108DE5           STR      R1,[SP, #+12]
+    271          			envStartBits = 7;
+   \   000000B4   0710A0E3           MOV      R1,#+7
+    272          		}
+    273          	}
+    274          
+    275          	/* range of envDataQuant[] = [0, 127] (see comments in DequantizeEnvelope() for reference) */
+    276          	for (env = 0; env < sbrGrid->numEnv; env++) {
+   \                     ??raac_DecodeSBREnvelope_2:
+   \   000000B8   24009DE5           LDR      R0,[SP, #+36]
+   \   000000BC   10108DE5           STR      R1,[SP, #+16]
+   \   000000C0   0010A0E3           MOV      R1,#+0
+   \   000000C4   00108DE5           STR      R1,[SP, #+0]
+   \   000000C8   0300D0E5           LDRB     R0,[R0, #+3]
+   \   000000CC   000050E3           CMP      R0,#+0
+   \   000000D0   B300001A           BNE      ??raac_DecodeSBREnvelope_5
+    277          		nBands =      (sbrGrid->freqRes[env] ? sbrFreq->nHigh : sbrFreq->nLow);
+    278          		freqRes =     (sbrGrid->freqRes[env]);
+    279          		freqResPrev = (env == 0 ? sbrGrid->freqResPrev : sbrGrid->freqRes[env-1]);
+    280          		lastEnv =     (env == 0 ? sbrGrid->numEnvPrev-1 : env-1);
+    281          		if (lastEnv < 0)
+    282          			lastEnv = 0;	/* first frame */
+    283          
+    284          		ASSERT(nBands <= MAX_QMF_BANDS);
+    285          
+    286          		if (sbrChan->deltaFlagEnv[env] == 0) {
+    287          			/* delta coding in freq */
+    288          			sf = GetBits(bsi, envStartBits) << dShift;
+    289          			sbrChan->envDataQuant[env][0] = sf;
+    290          			for (band = 1; band < nBands; band++) {
+    291          				sf = DecodeOneSymbol(bsi, huffIndexFreq) << dShift;
+    292          				sbrChan->envDataQuant[env][band] = sf + sbrChan->envDataQuant[env][band-1];
+    293          			}
+    294          		} else if (freqRes == freqResPrev) {
+    295          			/* delta coding in time - same freq resolution for both frames */
+    296          			for (band = 0; band < nBands; band++) {
+    297          				sf = DecodeOneSymbol(bsi, huffIndexTime) << dShift;
+    298          				sbrChan->envDataQuant[env][band] = sf + sbrChan->envDataQuant[lastEnv][band];
+    299          			}
+    300          		} else if (freqRes == 0 && freqResPrev == 1) {
+    301          			/* delta coding in time - low freq resolution for new frame, high freq resolution for old frame */
+    302          			for (band = 0; band < nBands; band++) {
+    303          				sf = DecodeOneSymbol(bsi, huffIndexTime) << dShift;
+    304          				sbrChan->envDataQuant[env][band] = sf;
+    305          				for (i = 0; i < sbrFreq->nHigh; i++) {
+    306          					if (sbrFreq->freqHigh[i] == sbrFreq->freqLow[band]) {
+    307          						sbrChan->envDataQuant[env][band] += sbrChan->envDataQuant[lastEnv][i];
+    308          						break;
+    309          					}
+    310          				}
+    311          			}
+    312          		} else if (freqRes == 1 && freqResPrev == 0) {
+    313          			/* delta coding in time - high freq resolution for new frame, low freq resolution for old frame */
+    314          			for (band = 0; band < nBands; band++) {
+    315          				sf = DecodeOneSymbol(bsi, huffIndexTime) << dShift;
+    316          				sbrChan->envDataQuant[env][band] = sf;
+    317          				for (i = 0; i < sbrFreq->nLow; i++) {
+    318          					if (sbrFreq->freqLow[i] <= sbrFreq->freqHigh[band] && sbrFreq->freqHigh[band] < sbrFreq->freqLow[i+1] ) {
+    319          						sbrChan->envDataQuant[env][band] += sbrChan->envDataQuant[lastEnv][i];
+    320          						break;
+    321          					}
+    322          				}
+    323          			}
+    324          		}
+    325          
+    326          		/* skip coupling channel */
+    327          		if (ch != 1 || psi->couplingFlag != 1)
+    328          			psi->envDataDequantScale[ch][env] = DequantizeEnvelope(nBands, sbrGrid->ampResFrame, sbrChan->envDataQuant[env], psi->envDataDequant[ch][env]);
+    329          	}
+    330          	sbrGrid->numEnvPrev = sbrGrid->numEnv;
+   \                     ??raac_DecodeSBREnvelope_6:
+   \   000000D4   24009DE5           LDR      R0,[SP, #+36]
+   \   000000D8   0310D0E5           LDRB     R1,[R0, #+3]
+   \   000000DC   1310C0E5           STRB     R1,[R0, #+19]
+    331          	sbrGrid->freqResPrev = sbrGrid->freqRes[sbrGrid->numEnv-1];
+   \   000000E0   24009DE5           LDR      R0,[SP, #+36]
+   \   000000E4   0310D0E5           LDRB     R1,[R0, #+3]
+   \   000000E8   001081E0           ADD      R1,R1,R0
+   \   000000EC   0910D1E5           LDRB     R1,[R1, #+9]
+   \   000000F0   1510C0E5           STRB     R1,[R0, #+21]
+    332          }
+   \   000000F4   28D08DE2           ADD      SP,SP,#+40
+   \   000000F8   F08FBDE8           POP      {R4-R11,PC}      ;; return
+   \                     ??raac_DecodeSBREnvelope_7:
+   \   000000FC   00009DE5           LDR      R0,[SP, #+0]
+   \   00000100   010080E0           ADD      R0,R0,R1
+   \   00000104   00109DE5           LDR      R1,[SP, #+0]
+   \   00000108   0A00D0E5           LDRB     R0,[R0, #+10]
+   \   0000010C   000051E3           CMP      R1,#+0
+   \   00000110   0500001A           BNE      ??raac_DecodeSBREnvelope_8
+   \   00000114   24209DE5           LDR      R2,[SP, #+36]
+   \   00000118   24109DE5           LDR      R1,[SP, #+36]
+   \   0000011C   1320D2E5           LDRB     R2,[R2, #+19]
+   \   00000120   1510D1E5           LDRB     R1,[R1, #+21]
+   \   00000124   012042E2           SUB      R2,R2,#+1
+   \   00000128   030000EA           B        ??raac_DecodeSBREnvelope_9
+   \                     ??raac_DecodeSBREnvelope_8:
+   \   0000012C   012041E2           SUB      R2,R1,#+1
+   \   00000130   24109DE5           LDR      R1,[SP, #+36]
+   \   00000134   011082E0           ADD      R1,R2,R1
+   \   00000138   0A10D1E5           LDRB     R1,[R1, #+10]
+   \                     ??raac_DecodeSBREnvelope_9:
+   \   0000013C   00309DE5           LDR      R3,[SP, #+0]
+   \   00000140   4C909DE5           LDR      R9,[SP, #+76]
+   \   00000144   4C709DE5           LDR      R7,[SP, #+76]
+   \   00000148   3080A0E3           MOV      R8,#+48
+   \   0000014C   987327E0           MLA      R7,R8,R3,R7
+   \   00000150   093083E0           ADD      R3,R3,R9
+   \   00000154   0430D3E5           LDRB     R3,[R3, #+4]
+   \   00000158   000052E3           CMP      R2,#+0
+   \   0000015C   0020A043           MOVMI    R2,#+0
+   \   00000160   000053E3           CMP      R3,#+0
+   \   00000164   3100001A           BNE      ??raac_DecodeSBREnvelope_10
+   \   00000168   10109DE5           LDR      R1,[SP, #+16]
+   \   0000016C   0400A0E1           MOV      R0,R4
+   \   00000170   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000174   04109DE5           LDR      R1,[SP, #+4]
+   \   00000178   0190A0E3           MOV      R9,#+1
+   \   0000017C   1001A0E1           LSL      R0,R0,R1
+   \   00000180   0B00C7E5           STRB     R0,[R7, #+11]
+   \   00000184   020056E3           CMP      R6,#+2
+   \   00000188   630000BA           BLT      ??raac_DecodeSBREnvelope_11
+   \                     ??raac_DecodeSBREnvelope_12:
+   \   0000018C   060059E1           CMP      R9,R6
+   \   00000190   610000AA           BGE      ??raac_DecodeSBREnvelope_11
+   \   00000194   0C009DE5           LDR      R0,[SP, #+12]
+   \   00000198   ........           LDR      R2,??DataTable8  ;; raac_huffTabSBRInfo
+   \   0000019C   1C10A0E3           MOV      R1,#+28
+   \   000001A0   91202AE0           MLA      R10,R1,R0,R2
+   \   000001A4   0400A0E1           MOV      R0,R4
+   \   000001A8   00109AE5           LDR      R1,[R10, #+0]
+   \   000001AC   20B0A0E3           MOV      R11,#+32
+   \   000001B0   ........           _BLF     raac_GetBitsNoAdvance,??raac_GetBitsNoAdvance??rA
+   \   000001B4   00109AE5           LDR      R1,[R10, #+0]
+   \   000001B8   ........           LDR      R2,??DataTable9  ;; raac_huffTabSBR
+   \   000001BC   201061E2           RSB      R1,R1,#+32
+   \   000001C0   1011A0E1           LSL      R1,R0,R1
+   \   000001C4   18009AE5           LDR      R0,[R10, #+24]
+   \   000001C8   00C0A0E3           MOV      R12,#+0
+   \   000001CC   802082E0           ADD      R2,R2,R0, LSL #+1
+   \   000001D0   04008AE2           ADD      R0,R10,#+4
+   \   000001D4   0030A0E3           MOV      R3,#+0
+   \                     ??raac_DecodeSBREnvelope_13:
+   \   000001D8   0CC083E0           ADD      R12,R3,R12
+   \   000001DC   832082E0           ADD      R2,R2,R3, LSL #+1
+   \   000001E0   ........           LDRB     R3,[R0], #+1
+   \   000001E4   8CC0A0E1           LSL      R12,R12,#+1
+   \   000001E8   01B04BE2           SUB      R11,R11,#+1
+   \   000001EC   31EB6CE0           RSB      LR,R12,R1, LSR R11
+   \   000001F0   03005EE1           CMP      LR,R3
+   \   000001F4   F7FFFF2A           BCS      ??raac_DecodeSBREnvelope_13
+   \   000001F8   8E1082E0           ADD      R1,R2,LR, LSL #+1
+   \   000001FC   F0B0D1E1           LDRSH    R11,[R1, #+0]
+   \   00000200   04108AE2           ADD      R1,R10,#+4
+   \   00000204   011040E0           SUB      R1,R0,R1
+   \   00000208   0400A0E1           MOV      R0,R4
+   \   0000020C   ........           _BLF     raac_AdvanceBitstream,??raac_AdvanceBitstream??rA
+   \   00000210   04109DE5           LDR      R1,[SP, #+4]
+   \   00000214   072089E0           ADD      R2,R9,R7
+   \   00000218   DA20D2E1           LDRSB    R2,[R2, #+10]
+   \   0000021C   070089E0           ADD      R0,R9,R7
+   \   00000220   019089E2           ADD      R9,R9,#+1
+   \   00000224   1B1182E0           ADD      R1,R2,R11, LSL R1
+   \   00000228   0B10C0E5           STRB     R1,[R0, #+11]
+   \   0000022C   D6FFFFEA           B        ??raac_DecodeSBREnvelope_12
+   \                     ??raac_DecodeSBREnvelope_10:
+   \   00000230   4CA09DE5           LDR      R10,[SP, #+76]
+   \   00000234   1C90A0E3           MOV      R9,#+28
+   \   00000238   98A222E0           MLA      R2,R8,R2,R10
+   \   0000023C   ........           LDR      R10,??DataTable8  ;; raac_huffTabSBRInfo
+   \   00000240   14208DE5           STR      R2,[SP, #+20]
+   \   00000244   08309DE5           LDR      R3,[SP, #+8]
+   \   00000248   010050E1           CMP      R0,R1
+   \   0000024C   99A323E0           MLA      R3,R9,R3,R10
+   \   00000250   18308DE5           STR      R3,[SP, #+24]
+   \   00000254   2900001A           BNE      ??raac_DecodeSBREnvelope_14
+   \   00000258   0090A0E3           MOV      R9,#+0
+   \   0000025C   010056E3           CMP      R6,#+1
+   \   00000260   2D0000BA           BLT      ??raac_DecodeSBREnvelope_11
+   \                     ??raac_DecodeSBREnvelope_15:
+   \   00000264   060059E1           CMP      R9,R6
+   \   00000268   2B0000AA           BGE      ??raac_DecodeSBREnvelope_11
+   \   0000026C   18A09DE5           LDR      R10,[SP, #+24]
+   \   00000270   0400A0E1           MOV      R0,R4
+   \   00000274   00109AE5           LDR      R1,[R10, #+0]
+   \   00000278   20B0A0E3           MOV      R11,#+32
+   \   0000027C   ........           _BLF     raac_GetBitsNoAdvance,??raac_GetBitsNoAdvance??rA
+   \   00000280   00109AE5           LDR      R1,[R10, #+0]
+   \   00000284   ........           LDR      R2,??DataTable9  ;; raac_huffTabSBR
+   \   00000288   201061E2           RSB      R1,R1,#+32
+   \   0000028C   1011A0E1           LSL      R1,R0,R1
+   \   00000290   18009AE5           LDR      R0,[R10, #+24]
+   \   00000294   00C0A0E3           MOV      R12,#+0
+   \   00000298   802082E0           ADD      R2,R2,R0, LSL #+1
+   \   0000029C   04008AE2           ADD      R0,R10,#+4
+   \   000002A0   0030A0E3           MOV      R3,#+0
+   \                     ??raac_DecodeSBREnvelope_16:
+   \   000002A4   0CC083E0           ADD      R12,R3,R12
+   \   000002A8   832082E0           ADD      R2,R2,R3, LSL #+1
+   \   000002AC   ........           LDRB     R3,[R0], #+1
+   \   000002B0   8CC0A0E1           LSL      R12,R12,#+1
+   \   000002B4   01B04BE2           SUB      R11,R11,#+1
+   \   000002B8   31EB6CE0           RSB      LR,R12,R1, LSR R11
+   \   000002BC   03005EE1           CMP      LR,R3
+   \   000002C0   F7FFFF2A           BCS      ??raac_DecodeSBREnvelope_16
+   \   000002C4   8E1082E0           ADD      R1,R2,LR, LSL #+1
+   \   000002C8   F0B0D1E1           LDRSH    R11,[R1, #+0]
+   \   000002CC   04108AE2           ADD      R1,R10,#+4
+   \   000002D0   011040E0           SUB      R1,R0,R1
+   \   000002D4   0400A0E1           MOV      R0,R4
+   \   000002D8   ........           _BLF     raac_AdvanceBitstream,??raac_AdvanceBitstream??rA
+   \   000002DC   14209DE5           LDR      R2,[SP, #+20]
+   \   000002E0   04109DE5           LDR      R1,[SP, #+4]
+   \   000002E4   022089E0           ADD      R2,R9,R2
+   \   000002E8   DB20D2E1           LDRSB    R2,[R2, #+11]
+   \   000002EC   070089E0           ADD      R0,R9,R7
+   \   000002F0   019089E2           ADD      R9,R9,#+1
+   \   000002F4   1B1182E0           ADD      R1,R2,R11, LSL R1
+   \   000002F8   0B10C0E5           STRB     R1,[R0, #+11]
+   \   000002FC   D8FFFFEA           B        ??raac_DecodeSBREnvelope_15
+   \                     ??raac_DecodeSBREnvelope_14:
+   \   00000300   000050E3           CMP      R0,#+0
+   \   00000304   6900001A           BNE      ??raac_DecodeSBREnvelope_17
+   \   00000308   010051E3           CMP      R1,#+1
+   \   0000030C   0200001A           BNE      ??raac_DecodeSBREnvelope_11
+   \   00000310   0090A0E3           MOV      R9,#+0
+   \   00000314   010056E3           CMP      R6,#+1
+   \   00000318   400000AA           BGE      ??raac_DecodeSBREnvelope_18
+   \                     ??raac_DecodeSBREnvelope_11:
+   \   0000031C   50009DE5           LDR      R0,[SP, #+80]
+   \   00000320   010050E3           CMP      R0,#+1
+   \   00000324   0300001A           BNE      ??raac_DecodeSBREnvelope_19
+   \   00000328   1C009DE5           LDR      R0,[SP, #+28]
+   \   0000032C   000090E5           LDR      R0,[R0, #+0]
+   \   00000330   010050E3           CMP      R0,#+1
+   \   00000334   1700000A           BEQ      ??raac_DecodeSBREnvelope_20
+   \                     ??raac_DecodeSBREnvelope_19:
+   \   00000338   00109DE5           LDR      R1,[SP, #+0]
+   \   0000033C   50309DE5           LDR      R3,[SP, #+80]
+   \   00000340   20909DE5           LDR      R9,[SP, #+32]
+   \   00000344   C020A0E3           MOV      R2,#+192
+   \   00000348   F08FA0E3           MOV      R8,#+960
+   \   0000034C   989323E0           MLA      R3,R8,R3,R9
+   \   00000350   5800A0E3           MOV      R0,#+88
+   \   00000354   923121E0           MLA      R1,R2,R1,R3
+   \   00000358   500D80E3           ORR      R0,R0,#0x1400
+   \   0000035C   013080E0           ADD      R3,R0,R1
+   \   00000360   24009DE5           LDR      R0,[SP, #+36]
+   \   00000364   0B2087E2           ADD      R2,R7,#+11
+   \   00000368   0110D0E5           LDRB     R1,[R0, #+1]
+   \   0000036C   0600A0E1           MOV      R0,R6
+   \   00000370   ........           BL       DequantizeEnvelope
+   \   00000374   00209DE5           LDR      R2,[SP, #+0]
+   \   00000378   50309DE5           LDR      R3,[SP, #+80]
+   \   0000037C   20609DE5           LDR      R6,[SP, #+32]
+   \   00000380   4C10A0E3           MOV      R1,#+76
+   \   00000384   501D81E3           ORR      R1,R1,#0x1400
+   \   00000388   033183E0           ADD      R3,R3,R3, LSL #+2
+   \   0000038C   063083E0           ADD      R3,R3,R6
+   \   00000390   032082E0           ADD      R2,R2,R3
+   \   00000394   0200C1E7           STRB     R0,[R1, +R2]
+   \                     ??raac_DecodeSBREnvelope_20:
+   \   00000398   00109DE5           LDR      R1,[SP, #+0]
+   \   0000039C   011081E2           ADD      R1,R1,#+1
+   \   000003A0   00108DE5           STR      R1,[SP, #+0]
+   \                     ??raac_DecodeSBREnvelope_5:
+   \   000003A4   24109DE5           LDR      R1,[SP, #+36]
+   \   000003A8   00009DE5           LDR      R0,[SP, #+0]
+   \   000003AC   0310D1E5           LDRB     R1,[R1, #+3]
+   \   000003B0   010050E1           CMP      R0,R1
+   \   000003B4   46FFFFAA           BGE      ??raac_DecodeSBREnvelope_6
+   \   000003B8   24109DE5           LDR      R1,[SP, #+36]
+   \   000003BC   010080E0           ADD      R0,R0,R1
+   \   000003C0   0A00D0E5           LDRB     R0,[R0, #+10]
+   \   000003C4   000050E3           CMP      R0,#+0
+   \   000003C8   0C609505           LDREQ    R6,[R5, #+12]
+   \   000003CC   08609515           LDRNE    R6,[R5, #+8]
+   \   000003D0   49FFFFEA           B        ??raac_DecodeSBREnvelope_7
+   \                     ??raac_DecodeSBREnvelope_21:
+   \   000003D4   010080E2           ADD      R0,R0,#+1
+   \                     ??raac_DecodeSBREnvelope_22:
+   \   000003D8   081095E5           LDR      R1,[R5, #+8]
+   \   000003DC   010050E1           CMP      R0,R1
+   \   000003E0   0D0000AA           BGE      ??raac_DecodeSBREnvelope_23
+   \   000003E4   051080E0           ADD      R1,R0,R5
+   \   000003E8   5510D1E5           LDRB     R1,[R1, #+85]
+   \   000003EC   052089E0           ADD      R2,R9,R5
+   \   000003F0   8620D2E5           LDRB     R2,[R2, #+134]
+   \   000003F4   020051E1           CMP      R1,R2
+   \   000003F8   F5FFFF1A           BNE      ??raac_DecodeSBREnvelope_21
+   \   000003FC   14309DE5           LDR      R3,[SP, #+20]
+   \   00000400   072089E0           ADD      R2,R9,R7
+   \   00000404   DB20D2E1           LDRSB    R2,[R2, #+11]
+   \   00000408   030080E0           ADD      R0,R0,R3
+   \   0000040C   DB00D0E1           LDRSB    R0,[R0, #+11]
+   \   00000410   071089E0           ADD      R1,R9,R7
+   \   00000414   020080E0           ADD      R0,R0,R2
+   \   00000418   0B00C1E5           STRB     R0,[R1, #+11]
+   \                     ??raac_DecodeSBREnvelope_23:
+   \   0000041C   019089E2           ADD      R9,R9,#+1
+   \                     ??raac_DecodeSBREnvelope_18:
+   \   00000420   060059E1           CMP      R9,R6
+   \   00000424   BCFFFFAA           BGE      ??raac_DecodeSBREnvelope_11
+   \   00000428   18A09DE5           LDR      R10,[SP, #+24]
+   \   0000042C   0400A0E1           MOV      R0,R4
+   \   00000430   00109AE5           LDR      R1,[R10, #+0]
+   \   00000434   20B0A0E3           MOV      R11,#+32
+   \   00000438   ........           _BLF     raac_GetBitsNoAdvance,??raac_GetBitsNoAdvance??rA
+   \   0000043C   00109AE5           LDR      R1,[R10, #+0]
+   \   00000440   ........           LDR      R2,??DataTable9  ;; raac_huffTabSBR
+   \   00000444   201061E2           RSB      R1,R1,#+32
+   \   00000448   1011A0E1           LSL      R1,R0,R1
+   \   0000044C   18009AE5           LDR      R0,[R10, #+24]
+   \   00000450   00C0A0E3           MOV      R12,#+0
+   \   00000454   802082E0           ADD      R2,R2,R0, LSL #+1
+   \   00000458   04008AE2           ADD      R0,R10,#+4
+   \   0000045C   0030A0E3           MOV      R3,#+0
+   \                     ??raac_DecodeSBREnvelope_24:
+   \   00000460   0CC083E0           ADD      R12,R3,R12
+   \   00000464   832082E0           ADD      R2,R2,R3, LSL #+1
+   \   00000468   ........           LDRB     R3,[R0], #+1
+   \   0000046C   8CC0A0E1           LSL      R12,R12,#+1
+   \   00000470   01B04BE2           SUB      R11,R11,#+1
+   \   00000474   31EB6CE0           RSB      LR,R12,R1, LSR R11
+   \   00000478   03005EE1           CMP      LR,R3
+   \   0000047C   F7FFFF2A           BCS      ??raac_DecodeSBREnvelope_24
+   \   00000480   8E1082E0           ADD      R1,R2,LR, LSL #+1
+   \   00000484   F0B0D1E1           LDRSH    R11,[R1, #+0]
+   \   00000488   04108AE2           ADD      R1,R10,#+4
+   \   0000048C   011040E0           SUB      R1,R0,R1
+   \   00000490   0400A0E1           MOV      R0,R4
+   \   00000494   ........           _BLF     raac_AdvanceBitstream,??raac_AdvanceBitstream??rA
+   \   00000498   04109DE5           LDR      R1,[SP, #+4]
+   \   0000049C   070089E0           ADD      R0,R9,R7
+   \   000004A0   1B11A0E1           LSL      R1,R11,R1
+   \   000004A4   0B10C0E5           STRB     R1,[R0, #+11]
+   \   000004A8   0000A0E3           MOV      R0,#+0
+   \   000004AC   C9FFFFEA           B        ??raac_DecodeSBREnvelope_22
+   \                     ??raac_DecodeSBREnvelope_17:
+   \   000004B0   010050E3           CMP      R0,#+1
+   \   000004B4   00005103           CMPEQ    R1,#+0
+   \   000004B8   97FFFF1A           BNE      ??raac_DecodeSBREnvelope_11
+   \   000004BC   0090A0E3           MOV      R9,#+0
+   \   000004C0   010056E3           CMP      R6,#+1
+   \   000004C4   1A0000AA           BGE      ??raac_DecodeSBREnvelope_25
+   \   000004C8   93FFFFEA           B        ??raac_DecodeSBREnvelope_11
+   \                     ??raac_DecodeSBREnvelope_26:
+   \   000004CC   0100A0E1           MOV      R0,R1
+   \                     ??raac_DecodeSBREnvelope_27:
+   \   000004D0   0C1095E5           LDR      R1,[R5, #+12]
+   \   000004D4   010050E1           CMP      R0,R1
+   \   000004D8   140000AA           BGE      ??raac_DecodeSBREnvelope_28
+   \   000004DC   052089E0           ADD      R2,R9,R5
+   \   000004E0   5520D2E5           LDRB     R2,[R2, #+85]
+   \   000004E4   053080E0           ADD      R3,R0,R5
+   \   000004E8   8630D3E5           LDRB     R3,[R3, #+134]
+   \   000004EC   011080E2           ADD      R1,R0,#+1
+   \   000004F0   030052E1           CMP      R2,R3
+   \   000004F4   F4FFFF3A           BCC      ??raac_DecodeSBREnvelope_26
+   \   000004F8   052089E0           ADD      R2,R9,R5
+   \   000004FC   5520D2E5           LDRB     R2,[R2, #+85]
+   \   00000500   053081E0           ADD      R3,R1,R5
+   \   00000504   8630D3E5           LDRB     R3,[R3, #+134]
+   \   00000508   030052E1           CMP      R2,R3
+   \   0000050C   EEFFFF2A           BCS      ??raac_DecodeSBREnvelope_26
+   \   00000510   14309DE5           LDR      R3,[SP, #+20]
+   \   00000514   072089E0           ADD      R2,R9,R7
+   \   00000518   DB20D2E1           LDRSB    R2,[R2, #+11]
+   \   0000051C   030080E0           ADD      R0,R0,R3
+   \   00000520   DB00D0E1           LDRSB    R0,[R0, #+11]
+   \   00000524   071089E0           ADD      R1,R9,R7
+   \   00000528   020080E0           ADD      R0,R0,R2
+   \   0000052C   0B00C1E5           STRB     R0,[R1, #+11]
+   \                     ??raac_DecodeSBREnvelope_28:
+   \   00000530   019089E2           ADD      R9,R9,#+1
+   \                     ??raac_DecodeSBREnvelope_25:
+   \   00000534   060059E1           CMP      R9,R6
+   \   00000538   77FFFFAA           BGE      ??raac_DecodeSBREnvelope_11
+   \   0000053C   18A09DE5           LDR      R10,[SP, #+24]
+   \   00000540   0400A0E1           MOV      R0,R4
+   \   00000544   00109AE5           LDR      R1,[R10, #+0]
+   \   00000548   20B0A0E3           MOV      R11,#+32
+   \   0000054C   ........           _BLF     raac_GetBitsNoAdvance,??raac_GetBitsNoAdvance??rA
+   \   00000550   00109AE5           LDR      R1,[R10, #+0]
+   \   00000554   ........           LDR      R2,??DataTable9  ;; raac_huffTabSBR
+   \   00000558   201061E2           RSB      R1,R1,#+32
+   \   0000055C   1011A0E1           LSL      R1,R0,R1
+   \   00000560   18009AE5           LDR      R0,[R10, #+24]
+   \   00000564   00C0A0E3           MOV      R12,#+0
+   \   00000568   802082E0           ADD      R2,R2,R0, LSL #+1
+   \   0000056C   04008AE2           ADD      R0,R10,#+4
+   \   00000570   0030A0E3           MOV      R3,#+0
+   \                     ??raac_DecodeSBREnvelope_29:
+   \   00000574   0CC083E0           ADD      R12,R3,R12
+   \   00000578   832082E0           ADD      R2,R2,R3, LSL #+1
+   \   0000057C   ........           LDRB     R3,[R0], #+1
+   \   00000580   8CC0A0E1           LSL      R12,R12,#+1
+   \   00000584   01B04BE2           SUB      R11,R11,#+1
+   \   00000588   31EB6CE0           RSB      LR,R12,R1, LSR R11
+   \   0000058C   03005EE1           CMP      LR,R3
+   \   00000590   F7FFFF2A           BCS      ??raac_DecodeSBREnvelope_29
+   \   00000594   8E1082E0           ADD      R1,R2,LR, LSL #+1
+   \   00000598   F0B0D1E1           LDRSH    R11,[R1, #+0]
+   \   0000059C   04108AE2           ADD      R1,R10,#+4
+   \   000005A0   011040E0           SUB      R1,R0,R1
+   \   000005A4   0400A0E1           MOV      R0,R4
+   \   000005A8   ........           _BLF     raac_AdvanceBitstream,??raac_AdvanceBitstream??rA
+   \   000005AC   04109DE5           LDR      R1,[SP, #+4]
+   \   000005B0   070089E0           ADD      R0,R9,R7
+   \   000005B4   1B11A0E1           LSL      R1,R11,R1
+   \   000005B8   0B10C0E5           STRB     R1,[R0, #+11]
+   \   000005BC   0000A0E3           MOV      R0,#+0
+   \   000005C0   C2FFFFEA           B        ??raac_DecodeSBREnvelope_27
+    333          
+    334          /**************************************************************************************
+    335           * Function:    DecodeSBRNoise
+    336           *
+    337           * Description: decode delta Huffman coded noise scalefactors from bitstream
+    338           *
+    339           * Inputs:      BitStreamInfo struct pointing to start of noise data
+    340           *              initialized PSInfoSBR struct
+    341           *              initialized SBRGrid struct for this channel
+    342           *              initialized SBRFreq struct for this SCE/CPE block
+    343           *              initialized SBRChan struct for this channel
+    344           *              index of current channel (0 for SCE, 0 or 1 for CPE)
+    345           * 
+    346           * Outputs:     dequantized noise scalefactors for left channel (before decoupling)
+    347           *              dequantized noise scalefactors for right channel (if coupling off)
+    348           *                or raw decoded noise scalefactors for right channel (if coupling on)
+    349           *
+    350           * Return:      none
+    351           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    352          void DecodeSBRNoise(BitStreamInfo *bsi, PSInfoSBR *psi, SBRGrid *sbrGrid, SBRFreq *sbrFreq, SBRChan *sbrChan, int ch)
+    353          {
+   \                     raac_DecodeSBRNoise:
+   \   00000000   FE4F2DE9           PUSH     {R1-R11,LR}
+   \   00000004   10D04DE2           SUB      SP,SP,#+16
+   \   00000008   10209DE5           LDR      R2,[SP, #+16]
+   \   0000000C   0040A0E1           MOV      R4,R0
+   \   00000010   2010A0E3           MOV      R1,#+32
+   \   00000014   741D81E3           ORR      R1,R1,#0x1D00
+   \   00000018   021081E0           ADD      R1,R1,R2
+   \   0000001C   04108DE5           STR      R1,[SP, #+4]
+   \   00000020   000091E5           LDR      R0,[R1, #+0]
+   \   00000024   000050E3           CMP      R0,#+0
+   \   00000028   44009D15           LDRNE    R0,[SP, #+68]
+   \   0000002C   00005013           CMPNE    R0,#+0
+   \   00000030   0500000A           BEQ      ??raac_DecodeSBRNoise_0
+    354          	int huffIndexTime, huffIndexFreq, noiseFloor, band, dShift, sf, lastNoiseFloor;
+    355          
+    356          	if (psi->couplingFlag && ch) {
+    357          		dShift = 1;
+   \   00000034   0110A0E3           MOV      R1,#+1
+   \   00000038   00108DE5           STR      R1,[SP, #+0]
+    358          		huffIndexTime = HuffTabSBR_tNoise30b;
+   \   0000003C   0910A0E3           MOV      R1,#+9
+   \   00000040   08108DE5           STR      R1,[SP, #+8]
+    359          		huffIndexFreq = HuffTabSBR_fNoise30b;
+   \   00000044   0710A0E3           MOV      R1,#+7
+   \   00000048   040000EA           B        ??raac_DecodeSBRNoise_1
+    360          	} else {
+    361          		dShift = 0;
+   \                     ??raac_DecodeSBRNoise_0:
+   \   0000004C   0010A0E3           MOV      R1,#+0
+   \   00000050   00108DE5           STR      R1,[SP, #+0]
+    362          		huffIndexTime = HuffTabSBR_tNoise30;
+   \   00000054   0810A0E3           MOV      R1,#+8
+   \   00000058   08108DE5           STR      R1,[SP, #+8]
+    363          		huffIndexFreq = HuffTabSBR_fNoise30;
+   \   0000005C   0510A0E3           MOV      R1,#+5
+    364          	}
+    365          
+    366          	for (noiseFloor = 0; noiseFloor < sbrGrid->numNoiseFloors; noiseFloor++) {
+   \                     ??raac_DecodeSBRNoise_1:
+   \   00000060   14009DE5           LDR      R0,[SP, #+20]
+   \   00000064   0C108DE5           STR      R1,[SP, #+12]
+   \   00000068   0F00D0E5           LDRB     R0,[R0, #+15]
+   \   0000006C   0050A0E3           MOV      R5,#+0
+   \   00000070   0070A0E3           MOV      R7,#+0
+   \   00000074   000050E3           CMP      R0,#+0
+   \   00000078   0800001A           BNE      ??raac_DecodeSBRNoise_2
+    367          		lastNoiseFloor = (noiseFloor == 0 ? sbrGrid->numNoiseFloorsPrev-1 : noiseFloor-1);
+    368          		if (lastNoiseFloor < 0)
+    369          			lastNoiseFloor = 0;	/* first frame */
+    370          
+    371          		ASSERT(sbrFreq->numNoiseFloorBands <= MAX_QMF_BANDS);
+    372          
+    373          		if (sbrChan->deltaFlagNoise[noiseFloor] == 0) {
+    374          			/* delta coding in freq */
+    375          			sbrChan->noiseDataQuant[noiseFloor][0] = GetBits(bsi, 5) << dShift;
+    376          			for (band = 1; band < sbrFreq->numNoiseFloorBands; band++) {
+    377          				sf = DecodeOneSymbol(bsi, huffIndexFreq) << dShift;
+    378          				sbrChan->noiseDataQuant[noiseFloor][band] = sf + sbrChan->noiseDataQuant[noiseFloor][band-1];
+    379          			}
+    380          		} else {
+    381          			/* delta coding in time */
+    382          			for (band = 0; band < sbrFreq->numNoiseFloorBands; band++) {
+    383          				sf = DecodeOneSymbol(bsi, huffIndexTime) << dShift;
+    384          				sbrChan->noiseDataQuant[noiseFloor][band] = sf + sbrChan->noiseDataQuant[lastNoiseFloor][band];
+    385          			}
+    386          		}
+    387          
+    388          		/* skip coupling channel */
+    389          		if (ch != 1 || psi->couplingFlag != 1)
+    390          			DequantizeNoise(sbrFreq->numNoiseFloorBands, sbrChan->noiseDataQuant[noiseFloor], psi->noiseDataDequant[ch][noiseFloor]);
+    391          	}
+    392          	sbrGrid->numNoiseFloorsPrev = sbrGrid->numNoiseFloors;
+   \                     ??raac_DecodeSBRNoise_3:
+   \   0000007C   14009DE5           LDR      R0,[SP, #+20]
+   \   00000080   0F10D0E5           LDRB     R1,[R0, #+15]
+   \   00000084   1410C0E5           STRB     R1,[R0, #+20]
+    393          }
+   \   00000088   1CD08DE2           ADD      SP,SP,#+28
+   \   0000008C   F08FBDE8           POP      {R4-R11,PC}      ;; return
+   \                     ??raac_DecodeSBRNoise_4:
+   \   00000090   ........           STR      R3,[R0], #+4
+   \                     ??raac_DecodeSBRNoise_5:
+   \   00000094   011051E2           SUBS     R1,R1,#+1
+   \   00000098   9300001A           BNE      ??raac_DecodeSBRNoise_6
+   \                     ??raac_DecodeSBRNoise_7:
+   \   0000009C   015085E2           ADD      R5,R5,#+1
+   \                     ??raac_DecodeSBRNoise_2:
+   \   000000A0   14009DE5           LDR      R0,[SP, #+20]
+   \   000000A4   0F00D0E5           LDRB     R0,[R0, #+15]
+   \   000000A8   000055E1           CMP      R5,R0
+   \   000000AC   F2FFFFAA           BGE      ??raac_DecodeSBRNoise_3
+   \   000000B0   000055E3           CMP      R5,#+0
+   \   000000B4   0300001A           BNE      ??raac_DecodeSBRNoise_8
+   \   000000B8   14009DE5           LDR      R0,[SP, #+20]
+   \   000000BC   1400D0E5           LDRB     R0,[R0, #+20]
+   \   000000C0   019040E2           SUB      R9,R0,#+1
+   \   000000C4   000000EA           B        ??raac_DecodeSBRNoise_9
+   \                     ??raac_DecodeSBRNoise_8:
+   \   000000C8   019045E2           SUB      R9,R5,#+1
+   \                     ??raac_DecodeSBRNoise_9:
+   \   000000CC   40109DE5           LDR      R1,[SP, #+64]
+   \   000000D0   050185E0           ADD      R0,R5,R5, LSL #+2
+   \   000000D4   016080E0           ADD      R6,R0,R1
+   \   000000D8   010085E0           ADD      R0,R5,R1
+   \   000000DC   0900D0E5           LDRB     R0,[R0, #+9]
+   \   000000E0   000059E3           CMP      R9,#+0
+   \   000000E4   0090A043           MOVMI    R9,#+0
+   \   000000E8   000050E3           CMP      R0,#+0
+   \   000000EC   3500001A           BNE      ??raac_DecodeSBRNoise_10
+   \   000000F0   0510A0E3           MOV      R1,#+5
+   \   000000F4   0400A0E1           MOV      R0,R4
+   \   000000F8   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   000000FC   00109DE5           LDR      R1,[SP, #+0]
+   \   00000100   0180A0E3           MOV      R8,#+1
+   \   00000104   1001A0E1           LSL      R0,R0,R1
+   \   00000108   FB00C6E5           STRB     R0,[R6, #+251]
+   \   0000010C   18009DE5           LDR      R0,[SP, #+24]
+   \   00000110   180090E5           LDR      R0,[R0, #+24]
+   \   00000114   020050E3           CMP      R0,#+2
+   \   00000118   5D0000BA           BLT      ??raac_DecodeSBRNoise_11
+   \                     ??raac_DecodeSBRNoise_12:
+   \   0000011C   18009DE5           LDR      R0,[SP, #+24]
+   \   00000120   180090E5           LDR      R0,[R0, #+24]
+   \   00000124   000058E1           CMP      R8,R0
+   \   00000128   590000AA           BGE      ??raac_DecodeSBRNoise_11
+   \   0000012C   0C009DE5           LDR      R0,[SP, #+12]
+   \   00000130   ........           LDR      R2,??DataTable8  ;; raac_huffTabSBRInfo
+   \   00000134   1C10A0E3           MOV      R1,#+28
+   \   00000138   912029E0           MLA      R9,R1,R0,R2
+   \   0000013C   0400A0E1           MOV      R0,R4
+   \   00000140   001099E5           LDR      R1,[R9, #+0]
+   \   00000144   20B0A0E3           MOV      R11,#+32
+   \   00000148   ........           _BLF     raac_GetBitsNoAdvance,??raac_GetBitsNoAdvance??rA
+   \   0000014C   001099E5           LDR      R1,[R9, #+0]
+   \   00000150   ........           LDR      R2,??DataTable9  ;; raac_huffTabSBR
+   \   00000154   201061E2           RSB      R1,R1,#+32
+   \   00000158   1001A0E1           LSL      R0,R0,R1
+   \   0000015C   181099E5           LDR      R1,[R9, #+24]
+   \   00000160   0030A0E3           MOV      R3,#+0
+   \   00000164   812082E0           ADD      R2,R2,R1, LSL #+1
+   \   00000168   041089E2           ADD      R1,R9,#+4
+   \   0000016C   03A0A0E1           MOV      R10,R3
+   \                     ??raac_DecodeSBRNoise_13:
+   \   00000170   03308AE0           ADD      R3,R10,R3
+   \   00000174   8A2082E0           ADD      R2,R2,R10, LSL #+1
+   \   00000178   ........           LDRB     R10,[R1], #+1
+   \   0000017C   8330A0E1           LSL      R3,R3,#+1
+   \   00000180   01B04BE2           SUB      R11,R11,#+1
+   \   00000184   30CB63E0           RSB      R12,R3,R0, LSR R11
+   \   00000188   0A005CE1           CMP      R12,R10
+   \   0000018C   F7FFFF2A           BCS      ??raac_DecodeSBRNoise_13
+   \   00000190   8C0082E0           ADD      R0,R2,R12, LSL #+1
+   \   00000194   F0A0D0E1           LDRSH    R10,[R0, #+0]
+   \   00000198   040089E2           ADD      R0,R9,#+4
+   \   0000019C   001041E0           SUB      R1,R1,R0
+   \   000001A0   0400A0E1           MOV      R0,R4
+   \   000001A4   ........           _BLF     raac_AdvanceBitstream,??raac_AdvanceBitstream??rA
+   \   000001A8   00109DE5           LDR      R1,[SP, #+0]
+   \   000001AC   062088E0           ADD      R2,R8,R6
+   \   000001B0   DA2FD2E1           LDRSB    R2,[R2, #+250]
+   \   000001B4   060088E0           ADD      R0,R8,R6
+   \   000001B8   018088E2           ADD      R8,R8,#+1
+   \   000001BC   1A1182E0           ADD      R1,R2,R10, LSL R1
+   \   000001C0   FB10C0E5           STRB     R1,[R0, #+251]
+   \   000001C4   D4FFFFEA           B        ??raac_DecodeSBRNoise_12
+   \                     ??raac_DecodeSBRNoise_10:
+   \   000001C8   18009DE5           LDR      R0,[SP, #+24]
+   \   000001CC   0080A0E3           MOV      R8,#+0
+   \   000001D0   180090E5           LDR      R0,[R0, #+24]
+   \   000001D4   010050E3           CMP      R0,#+1
+   \   000001D8   290000AA           BGE      ??raac_DecodeSBRNoise_14
+   \   000001DC   2C0000EA           B        ??raac_DecodeSBRNoise_11
+   \                     ??raac_DecodeSBRNoise_15:
+   \   000001E0   08009DE5           LDR      R0,[SP, #+8]
+   \   000001E4   ........           LDR      R2,??DataTable8  ;; raac_huffTabSBRInfo
+   \   000001E8   1C10A0E3           MOV      R1,#+28
+   \   000001EC   91202AE0           MLA      R10,R1,R0,R2
+   \   000001F0   0400A0E1           MOV      R0,R4
+   \   000001F4   00109AE5           LDR      R1,[R10, #+0]
+   \   000001F8   20B0A0E3           MOV      R11,#+32
+   \   000001FC   ........           _BLF     raac_GetBitsNoAdvance,??raac_GetBitsNoAdvance??rA
+   \   00000200   00109AE5           LDR      R1,[R10, #+0]
+   \   00000204   ........           LDR      R2,??DataTable9  ;; raac_huffTabSBR
+   \   00000208   201061E2           RSB      R1,R1,#+32
+   \   0000020C   1011A0E1           LSL      R1,R0,R1
+   \   00000210   18009AE5           LDR      R0,[R10, #+24]
+   \   00000214   00C0A0E3           MOV      R12,#+0
+   \   00000218   802082E0           ADD      R2,R2,R0, LSL #+1
+   \   0000021C   04008AE2           ADD      R0,R10,#+4
+   \   00000220   0730A0E1           MOV      R3,R7
+   \                     ??raac_DecodeSBRNoise_16:
+   \   00000224   0CC083E0           ADD      R12,R3,R12
+   \   00000228   832082E0           ADD      R2,R2,R3, LSL #+1
+   \   0000022C   ........           LDRB     R3,[R0], #+1
+   \   00000230   8CC0A0E1           LSL      R12,R12,#+1
+   \   00000234   01B04BE2           SUB      R11,R11,#+1
+   \   00000238   31EB6CE0           RSB      LR,R12,R1, LSR R11
+   \   0000023C   03005EE1           CMP      LR,R3
+   \   00000240   F7FFFF2A           BCS      ??raac_DecodeSBRNoise_16
+   \   00000244   8E1082E0           ADD      R1,R2,LR, LSL #+1
+   \   00000248   F0B0D1E1           LDRSH    R11,[R1, #+0]
+   \   0000024C   04108AE2           ADD      R1,R10,#+4
+   \   00000250   011040E0           SUB      R1,R0,R1
+   \   00000254   0400A0E1           MOV      R0,R4
+   \   00000258   ........           _BLF     raac_AdvanceBitstream,??raac_AdvanceBitstream??rA
+   \   0000025C   40309DE5           LDR      R3,[SP, #+64]
+   \   00000260   00109DE5           LDR      R1,[SP, #+0]
+   \   00000264   092189E0           ADD      R2,R9,R9, LSL #+2
+   \   00000268   032082E0           ADD      R2,R2,R3
+   \   0000026C   022088E0           ADD      R2,R8,R2
+   \   00000270   DB2FD2E1           LDRSB    R2,[R2, #+251]
+   \   00000274   060088E0           ADD      R0,R8,R6
+   \   00000278   018088E2           ADD      R8,R8,#+1
+   \   0000027C   1B1182E0           ADD      R1,R2,R11, LSL R1
+   \   00000280   FB10C0E5           STRB     R1,[R0, #+251]
+   \                     ??raac_DecodeSBRNoise_14:
+   \   00000284   18009DE5           LDR      R0,[SP, #+24]
+   \   00000288   180090E5           LDR      R0,[R0, #+24]
+   \   0000028C   000058E1           CMP      R8,R0
+   \   00000290   D2FFFFBA           BLT      ??raac_DecodeSBRNoise_15
+   \                     ??raac_DecodeSBRNoise_11:
+   \   00000294   44009DE5           LDR      R0,[SP, #+68]
+   \   00000298   010050E3           CMP      R0,#+1
+   \   0000029C   0300001A           BNE      ??raac_DecodeSBRNoise_17
+   \   000002A0   04009DE5           LDR      R0,[SP, #+4]
+   \   000002A4   000090E5           LDR      R0,[R0, #+0]
+   \   000002A8   010050E3           CMP      R0,#+1
+   \   000002AC   7AFFFF0A           BEQ      ??raac_DecodeSBRNoise_7
+   \                     ??raac_DecodeSBRNoise_17:
+   \   000002B0   44209DE5           LDR      R2,[SP, #+68]
+   \   000002B4   10809DE5           LDR      R8,[SP, #+16]
+   \   000002B8   1410A0E3           MOV      R1,#+20
+   \   000002BC   2830A0E3           MOV      R3,#+40
+   \   000002C0   938222E0           MLA      R2,R3,R2,R8
+   \   000002C4   D800A0E3           MOV      R0,#+216
+   \   000002C8   912522E0           MLA      R2,R1,R5,R2
+   \   000002CC   18109DE5           LDR      R1,[SP, #+24]
+   \   000002D0   6C0D80E3           ORR      R0,R0,#0x1B00
+   \   000002D4   181091E5           LDR      R1,[R1, #+24]
+   \   000002D8   020080E0           ADD      R0,R0,R2
+   \   000002DC   FB2086E2           ADD      R2,R6,#+251
+   \   000002E0   010051E3           CMP      R1,#+1
+   \   000002E4   0160A0E3           MOV      R6,#+1
+   \   000002E8   6BFFFFBA           BLT      ??raac_DecodeSBRNoise_7
+   \                     ??raac_DecodeSBRNoise_6:
+   \   000002EC   ........           LDRSB    R3,[R2], #+1
+   \   000002F0   1E3073E2           RSBS     R3,R3,#+30
+   \   000002F4   ........           STRMI    R7,[R0], #+4
+   \   000002F8   65FFFF4A           BMI      ??raac_DecodeSBRNoise_5
+   \   000002FC   1E0053E3           CMP      R3,#+30
+   \   00000300   C034E0A3           MVNGE    R3,#-1073741824
+   \   00000304   1633A0B1           LSLLT    R3,R6,R3
+   \   00000308   60FFFFEA           B        ??raac_DecodeSBRNoise_4
+    394          
+    395          /* dqTabCouple[i] = 2 / (1 + 2^(12 - i)), format = Q30 */
+
+   \                                 In segment DATA_C, align 4, align-sorted
+    396          static const int dqTabCouple[25] = {
+   \                     dqTabCouple:
+   \   00000000   80FF070000FE       DC32 524160, 1048064, 2095106, 4186128, 8355968, 16647160, 33038210
+   \              0F0002F81F00
+   \              10E03F008080
+   \              7F00F803FE00
+   \              821FF801    
+   \   0000001C   3EF8E0038887       DC32 65075262, 126322568, 238609294, 429496730, 715827883, 1073741824
+   \              87078EE3380E
+   \              9A999919ABAA
+   \              AA2A00000040
+   \   00000034   555555556666       DC32 1431655765, 1717986918, 1908874354, 2021161080, 2082408386
+   \              6666721CC771
+   \              78787878C207
+   \              1F7C        
+   \   00000048   7EE0077E08FC       DC32 2114445438, 2130836488, 2139127680, 2143297520, 2145388542
+   \              017F807F807F
+   \              F01FC07FFE07
+   \              E07F        
+   \   0000005C   0002F07F8000       DC32 2146435584, 2146959488
+   \              F87F        
+    397          	0x0007ff80, 0x000ffe00, 0x001ff802, 0x003fe010, 0x007f8080, 0x00fe03f8, 0x01f81f82, 0x03e0f83e, 
+    398          	0x07878788, 0x0e38e38e, 0x1999999a, 0x2aaaaaab, 0x40000000, 0x55555555, 0x66666666, 0x71c71c72, 
+    399          	0x78787878, 0x7c1f07c2, 0x7e07e07e, 0x7f01fc08, 0x7f807f80, 0x7fc01ff0, 0x7fe007fe, 0x7ff00200, 
+    400          	0x7ff80080, 
+    401          };
+    402          
+    403          /**************************************************************************************
+    404           * Function:    UncoupleSBREnvelope
+    405           *
+    406           * Description: scale dequantized envelope scalefactors according to channel 
+    407           *                coupling rules
+    408           *
+    409           * Inputs:      initialized PSInfoSBR struct including
+    410           *                dequantized envelope data for left channel
+    411           *              initialized SBRGrid struct for this channel
+    412           *              initialized SBRFreq struct for this SCE/CPE block
+    413           *              initialized SBRChan struct for right channel including
+    414           *                quantized envelope scalefactors
+    415           * 
+    416           * Outputs:     dequantized envelope data for left channel (after decoupling)
+    417           *              dequantized envelope data for right channel (after decoupling)
+    418           *
+    419           * Return:      none
+    420           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    421          void UncoupleSBREnvelope(PSInfoSBR *psi, SBRGrid *sbrGrid, SBRFreq *sbrFreq, SBRChan *sbrChanR)
+    422          {
+   \                     raac_UncoupleSBREnvelope:
+   \   00000000   F44F2DE9           PUSH     {R2,R4-R11,LR}
+   \   00000004   0090A0E1           MOV      R9,R0
+    423          	int env, band, nBands, scalei, E_1;
+    424          
+    425          	scalei = (sbrGrid->ampResFrame ? 0 : 1);
+    426          	for (env = 0; env < sbrGrid->numEnv; env++) {
+   \   00000008   ........           LDR      R8,??DataTable11  ;; dqTabCouple
+   \   0000000C   0160A0E1           MOV      R6,R1
+   \   00000010   0100D6E5           LDRB     R0,[R6, #+1]
+   \   00000014   03A0A0E1           MOV      R10,R3
+   \   00000018   0020A0E3           MOV      R2,#+0
+   \   0000001C   000050E3           CMP      R0,#+0
+   \   00000020   0300D6E5           LDRB     R0,[R6, #+3]
+   \   00000024   0050A013           MOVNE    R5,#+0
+   \   00000028   0150A003           MOVEQ    R5,#+1
+   \   0000002C   000050E3           CMP      R0,#+0
+   \   00000030   0A00001A           BNE      ??raac_UncoupleSBREnvelope_0
+    427          		nBands = (sbrGrid->freqRes[env] ? sbrFreq->nHigh : sbrFreq->nLow);
+    428          		psi->envDataDequantScale[1][env] = psi->envDataDequantScale[0][env]; /* same scalefactor for L and R */
+    429          		for (band = 0; band < nBands; band++) {
+    430          			/* clip E_1 to [0, 24] (scalefactors approach 0 or 2) */
+    431          			E_1 = sbrChanR->envDataQuant[env][band] >> scalei;
+    432          			if (E_1 < 0)	E_1 = 0;
+    433          			if (E_1 > 24)	E_1 = 24;
+    434          
+    435          			/* envDataDequant[0] has 1 GB, so << by 2 is okay */
+    436          			psi->envDataDequant[1][env][band] = MULSHIFT32(psi->envDataDequant[0][env][band], dqTabCouple[24 - E_1]) << 2;
+    437          			psi->envDataDequant[0][env][band] = MULSHIFT32(psi->envDataDequant[0][env][band], dqTabCouple[E_1]) << 2;
+    438          		}
+    439          	}
+    440          }
+   \   00000034   F18FBDE8           POP      {R0,R4-R11,PC}   ;; return
+   \                     ??raac_UncoupleSBREnvelope_1:
+   \   00000038   4C00A0E3           MOV      R0,#+76
+   \   0000003C   500D80E3           ORR      R0,R0,#0x1400
+   \   00000040   091082E0           ADD      R1,R2,R9
+   \   00000044   010080E0           ADD      R0,R0,R1
+   \   00000048   D010D0E1           LDRSB    R1,[R0, #+0]
+   \   0000004C   00C0A0E3           MOV      R12,#+0
+   \   00000050   010053E3           CMP      R3,#+1
+   \   00000054   0510C0E5           STRB     R1,[R0, #+5]
+   \   00000058   210000AA           BGE      ??raac_UncoupleSBREnvelope_2
+   \                     ??raac_UncoupleSBREnvelope_3:
+   \   0000005C   012082E2           ADD      R2,R2,#+1
+   \                     ??raac_UncoupleSBREnvelope_0:
+   \   00000060   0300D6E5           LDRB     R0,[R6, #+3]
+   \   00000064   000052E1           CMP      R2,R0
+   \   00000068   F18FBDA8           POPGE    {R0,R4-R11,PC}
+   \   0000006C   060082E0           ADD      R0,R2,R6
+   \   00000070   0A00D0E5           LDRB     R0,[R0, #+10]
+   \   00000074   000050E3           CMP      R0,#+0
+   \   00000078   00009DE5           LDR      R0,[SP, #+0]
+   \   0000007C   0C309005           LDREQ    R3,[R0, #+12]
+   \   00000080   08309015           LDRNE    R3,[R0, #+8]
+   \   00000084   EBFFFFEA           B        ??raac_UncoupleSBREnvelope_1
+   \                     ??raac_UncoupleSBREnvelope_4:
+   \   00000088   190057E3           CMP      R7,#+25
+   \   0000008C   1870A0A3           MOVGE    R7,#+24
+   \                     ??raac_UncoupleSBREnvelope_5:
+   \   00000090   C010A0E3           MOV      R1,#+192
+   \   00000094   919224E0           MLA      R4,R1,R2,R9
+   \   00000098   5800A0E3           MOV      R0,#+88
+   \   0000009C   500D80E3           ORR      R0,R0,#0x1400
+   \   000000A0   0C1184E0           ADD      R1,R4,R12, LSL #+2
+   \   000000A4   014080E0           ADD      R4,R0,R1
+   \   000000A8   00B094E5           LDR      R11,[R4, #+0]
+   \   000000AC   0700A0E1           MOV      R0,R7
+   \   000000B0   000060E2           RSB      R0,R0,#+0
+   \   000000B4   000188E0           ADD      R0,R8,R0, LSL #+2
+   \   000000B8   60E090E5           LDR      LR,[R0, #+96]
+   \   000000BC   01C08CE2           ADD      R12,R12,#+1
+   \   000000C0   9B0EC1E0           SMULL    R0,R1,R11,LR
+   \   000000C4   0100A0E1           MOV      R0,R1
+   \   000000C8   0001A0E1           LSL      R0,R0,#+2
+   \   000000CC   C00384E5           STR      R0,[R4, #+960]
+   \   000000D0   077198E7           LDR      R7,[R8, +R7, LSL #+2]
+   \   000000D4   9B07C1E0           SMULL    R0,R1,R11,R7
+   \   000000D8   0100A0E1           MOV      R0,R1
+   \   000000DC   0001A0E1           LSL      R0,R0,#+2
+   \   000000E0   000084E5           STR      R0,[R4, #+0]
+   \                     ??raac_UncoupleSBREnvelope_2:
+   \   000000E4   03005CE1           CMP      R12,R3
+   \   000000E8   DBFFFFAA           BGE      ??raac_UncoupleSBREnvelope_3
+   \   000000EC   3000A0E3           MOV      R0,#+48
+   \   000000F0   90A221E0           MLA      R1,R0,R2,R10
+   \   000000F4   01008CE0           ADD      R0,R12,R1
+   \   000000F8   DB00D0E1           LDRSB    R0,[R0, #+11]
+   \   000000FC   5075B0E1           ASRS     R7,R0,R5
+   \   00000100   E0FFFF5A           BPL      ??raac_UncoupleSBREnvelope_4
+   \   00000104   0070A0E3           MOV      R7,#+0
+   \   00000108   E0FFFFEA           B        ??raac_UncoupleSBREnvelope_5
+    441          
+    442          /**************************************************************************************
+    443           * Function:    UncoupleSBRNoise
+    444           *
+    445           * Description: scale dequantized noise floor scalefactors according to channel 
+    446           *                coupling rules
+    447           *
+    448           * Inputs:      initialized PSInfoSBR struct including
+    449           *                dequantized noise data for left channel
+    450           *              initialized SBRGrid struct for this channel
+    451           *              initialized SBRFreq struct for this SCE/CPE block
+    452           *              initialized SBRChan struct for this channel including
+    453           *                quantized noise scalefactors
+    454           * 
+    455           * Outputs:     dequantized noise data for left channel (after decoupling)
+    456           *              dequantized noise data for right channel (after decoupling)
+    457           *
+    458           * Return:      none
+    459           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    460          void UncoupleSBRNoise(PSInfoSBR *psi, SBRGrid *sbrGrid, SBRFreq *sbrFreq, SBRChan *sbrChanR)
+    461          {
+   \                     raac_UncoupleSBRNoise:
+   \   00000000   F00F2DE9           PUSH     {R4-R11}
+    462          	int noiseFloor, band, Q_1;
+    463          	
+    464          	for (noiseFloor = 0; noiseFloor < sbrGrid->numNoiseFloors; noiseFloor++) {
+   \   00000004   ........           LDR      R8,??DataTable11  ;; dqTabCouple
+   \   00000008   0060A0E1           MOV      R6,R0
+   \   0000000C   0190A0E1           MOV      R9,R1
+   \   00000010   0F00D9E5           LDRB     R0,[R9, #+15]
+   \   00000014   0350A0E1           MOV      R5,R3
+   \   00000018   0030A0E3           MOV      R3,#+0
+   \   0000001C   000050E3           CMP      R0,#+0
+   \   00000020   0200001A           BNE      ??raac_UncoupleSBRNoise_0
+    465          		for (band = 0; band < sbrFreq->numNoiseFloorBands; band++) {
+    466          			/* Q_1 should be in range [0, 24] according to 4.6.18.3.6, but check to make sure */
+    467          			Q_1 = sbrChanR->noiseDataQuant[noiseFloor][band];
+    468          			if (Q_1 < 0)	Q_1 = 0;
+    469          			if (Q_1 > 24)	Q_1 = 24;
+    470          
+    471          			/* noiseDataDequant[0] has 1 GB, so << by 2 is okay */
+    472          			psi->noiseDataDequant[1][noiseFloor][band] = MULSHIFT32(psi->noiseDataDequant[0][noiseFloor][band], dqTabCouple[24 - Q_1]) << 2;
+    473          			psi->noiseDataDequant[0][noiseFloor][band] = MULSHIFT32(psi->noiseDataDequant[0][noiseFloor][band], dqTabCouple[Q_1]) << 2;
+    474          		}
+    475          	}
+    476          }
+   \                     ??raac_UncoupleSBRNoise_1:
+   \   00000024   F00FBDE8           POP      {R4-R11}
+   \   00000028   1EFF2FE1           BX       LR               ;; return
+   \                     ??raac_UncoupleSBRNoise_2:
+   \   0000002C   013083E2           ADD      R3,R3,#+1
+   \                     ??raac_UncoupleSBRNoise_0:
+   \   00000030   0F00D9E5           LDRB     R0,[R9, #+15]
+   \   00000034   000053E1           CMP      R3,R0
+   \   00000038   F9FFFFAA           BGE      ??raac_UncoupleSBRNoise_1
+   \   0000003C   180092E5           LDR      R0,[R2, #+24]
+   \   00000040   00C0A0E3           MOV      R12,#+0
+   \   00000044   010050E3           CMP      R0,#+1
+   \   00000048   170000AA           BGE      ??raac_UncoupleSBRNoise_3
+   \   0000004C   F6FFFFEA           B        ??raac_UncoupleSBRNoise_2
+   \                     ??raac_UncoupleSBRNoise_4:
+   \   00000050   190057E3           CMP      R7,#+25
+   \   00000054   1870A0A3           MOVGE    R7,#+24
+   \                     ??raac_UncoupleSBRNoise_5:
+   \   00000058   1410A0E3           MOV      R1,#+20
+   \   0000005C   916324E0           MLA      R4,R1,R3,R6
+   \   00000060   D800A0E3           MOV      R0,#+216
+   \   00000064   6C0D80E3           ORR      R0,R0,#0x1B00
+   \   00000068   0C1184E0           ADD      R1,R4,R12, LSL #+2
+   \   0000006C   014080E0           ADD      R4,R0,R1
+   \   00000070   00A094E5           LDR      R10,[R4, #+0]
+   \   00000074   0700A0E1           MOV      R0,R7
+   \   00000078   000060E2           RSB      R0,R0,#+0
+   \   0000007C   000188E0           ADD      R0,R8,R0, LSL #+2
+   \   00000080   60B090E5           LDR      R11,[R0, #+96]
+   \   00000084   01C08CE2           ADD      R12,R12,#+1
+   \   00000088   9A0BC1E0           SMULL    R0,R1,R10,R11
+   \   0000008C   0100A0E1           MOV      R0,R1
+   \   00000090   0001A0E1           LSL      R0,R0,#+2
+   \   00000094   280084E5           STR      R0,[R4, #+40]
+   \   00000098   077198E7           LDR      R7,[R8, +R7, LSL #+2]
+   \   0000009C   9A07C1E0           SMULL    R0,R1,R10,R7
+   \   000000A0   0100A0E1           MOV      R0,R1
+   \   000000A4   0001A0E1           LSL      R0,R0,#+2
+   \   000000A8   000084E5           STR      R0,[R4, #+0]
+   \                     ??raac_UncoupleSBRNoise_3:
+   \   000000AC   180092E5           LDR      R0,[R2, #+24]
+   \   000000B0   00005CE1           CMP      R12,R0
+   \   000000B4   DCFFFFAA           BGE      ??raac_UncoupleSBRNoise_2
+   \   000000B8   030183E0           ADD      R0,R3,R3, LSL #+2
+   \   000000BC   050080E0           ADD      R0,R0,R5
+   \   000000C0   00008CE0           ADD      R0,R12,R0
+   \   000000C4   DB7FD0E1           LDRSB    R7,[R0, #+251]
+   \   000000C8   000057E3           CMP      R7,#+0
+   \   000000CC   DFFFFF5A           BPL      ??raac_UncoupleSBRNoise_4
+   \   000000D0   0070A0E3           MOV      R7,#+0
+   \   000000D4   DFFFFFEA           B        ??raac_UncoupleSBRNoise_5
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable8:
+   \   00000000   ........           DC32     raac_huffTabSBRInfo
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable9:
+   \   00000000   ........           DC32     raac_huffTabSBR
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable11:
+   \   00000000   ........           DC32     dqTabCouple
+
+   Maximum stack usage in bytes:
+
+     Function                 CSTACK
+     --------                 ------
+     DequantizeEnvelope           8
+     raac_DecodeSBREnvelope      76
+     raac_DecodeSBRNoise         64
+     raac_UncoupleSBREnvelope    40
+     raac_UncoupleSBRNoise       32
+
+
+   Segment part sizes:
+
+     Function/Label           Bytes
+     --------------           -----
+     envDQTab                    8
+     DequantizeEnvelope        172
+     raac_DecodeSBREnvelope   1476
+     raac_DecodeSBRNoise       780
+     dqTabCouple               100
+     raac_UncoupleSBREnvelope  268
+     raac_UncoupleSBRNoise     216
+     ??DataTable8                4
+     ??DataTable9                4
+     ??DataTable11               4
+      Others                    56
+
+ 
+ 2 980 bytes in segment CODE
+   108 bytes in segment DATA_C
+ 
+ 2 924 bytes of CODE  memory (+ 56 bytes shared)
+   108 bytes of CONST memory
+
+Errors: none
+Warnings: none

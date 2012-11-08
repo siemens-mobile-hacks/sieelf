@@ -1,4 +1,3 @@
-http://www.ems.com.cn/?mailNo=EP616373341CS
 #include "..\inc\swilib.h"
 
 

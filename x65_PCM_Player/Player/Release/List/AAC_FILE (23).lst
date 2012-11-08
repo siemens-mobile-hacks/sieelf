@@ -1,0 +1,1313 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    14/Feb/2012  15:39:23 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDE #
+#                       C\AAC_FILE (23).c                                    #
+#    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD #
+#                       EC\AAC_FILE (23).c" -D NDEBUG -lC                    #
+#                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\ #
+#                       Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player #
+#                       \Player\Release\Obj\ -s9 --cpu_mode arm --endian     #
+#                       little --cpu ARM926EJ-S --stack_align 4 --interwork  #
+#                       -e --fpu None --dlib_config "D:\Program              #
+#                       Files\IAR\Embedded Workbench 4.0                     #
+#                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude       #
+#                       swilib.h -I "D:\Program Files\IAR\Embedded           #
+#                       Workbench 4.0 Evaluation\ARM\INC\"                   #
+#                       --inline_threshold=16                                #
+#    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\AAC_FILE (23).lst                                #
+#    Object file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\O #
+#                       bj\AAC_FILE (23).r79                                 #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (23).c
+      1          /* ***** BEGIN LICENSE BLOCK *****  
+      2           * Source last modified: $Id: noiseless.c,v 1.1 2005/02/26 01:47:35 jrecker Exp $ 
+      3           *   
+      4           * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+      5           *       
+      6           * The contents of this file, and the files included with this file, 
+      7           * are subject to the current version of the RealNetworks Public 
+      8           * Source License (the "RPSL") available at 
+      9           * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+     10           * the file under the current version of the RealNetworks Community 
+     11           * Source License (the "RCSL") available at 
+     12           * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+     13           * will apply. You may also obtain the license terms directly from 
+     14           * RealNetworks.  You may not use this file except in compliance with 
+     15           * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+     16           * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+     17           * the rights, obligations and limitations governing use of the 
+     18           * contents of the file. 
+     19           *   
+     20           * This file is part of the Helix DNA Technology. RealNetworks is the 
+     21           * developer of the Original Code and owns the copyrights in the 
+     22           * portions it created. 
+     23           *   
+     24           * This file, and the files included with this file, is distributed 
+     25           * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+     26           * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+     27           * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+     28           * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+     29           * ENJOYMENT OR NON-INFRINGEMENT. 
+     30           *  
+     31           * Technology Compatibility Kit Test Suite(s) Location:  
+     32           *    http://www.helixcommunity.org/content/tck  
+     33           *  
+     34           * Contributor(s):  
+     35           *   
+     36           * ***** END LICENSE BLOCK ***** */  
+     37          
+     38          /**************************************************************************************
+     39           * Fixed-point HE-AAC decoder
+     40           * Jon Recker (jrecker@real.com)
+     41           * February 2005
+     42           *
+     43           * noiseless.c - decode channel info, scalefactors, quantized coefficients, 
+     44           *                 scalefactor band codebook, and TNS coefficients from bitstream
+     45           **************************************************************************************/
+     46          
+     47          #include "coder_aac.h"
+     48          
+     49          /**************************************************************************************
+     50           * Function:    DecodeICSInfo
+     51           *
+     52           * Description: decode individual channel stream info
+     53           *
+     54           * Inputs:      BitStreamInfo struct pointing to start of ICS info
+     55           *                (14496-3, table 4.4.6) 
+     56           *              sample rate index
+     57           *
+     58           * Outputs:     updated icsInfo struct
+     59           *
+     60           * Return:      none
+     61           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+     62          void DecodeICSInfo(BitStreamInfo *bsi, ICSInfo *icsInfo, int sampRateIdx)
+     63          {
+   \                     raac_DecodeICSInfo:
+   \   00000000   F0412DE9           PUSH     {R4-R8,LR}
+   \   00000004   0060A0E1           MOV      R6,R0
+   \   00000008   0140A0E1           MOV      R4,R1
+   \   0000000C   0270A0E1           MOV      R7,R2
+     64          	int sfb, g, mask;
+     65          
+     66          	icsInfo->icsResBit =      GetBits(bsi, 1);
+   \   00000010   0110A0E3           MOV      R1,#+1
+   \   00000014   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000018   0000C4E5           STRB     R0,[R4, #+0]
+     67          	icsInfo->winSequence =    GetBits(bsi, 2);
+   \   0000001C   0210A0E3           MOV      R1,#+2
+   \   00000020   0600A0E1           MOV      R0,R6
+   \   00000024   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000028   0100C4E5           STRB     R0,[R4, #+1]
+     68          	icsInfo->winShape =       GetBits(bsi, 1);
+   \   0000002C   0110A0E3           MOV      R1,#+1
+   \   00000030   0600A0E1           MOV      R0,R6
+   \   00000034   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000038   0200C4E5           STRB     R0,[R4, #+2]
+     69          	if (icsInfo->winSequence == 2) {
+   \   0000003C   0100D4E5           LDRB     R0,[R4, #+1]
+   \   00000040   0150A0E3           MOV      R5,#+1
+   \   00000044   020050E3           CMP      R0,#+2
+   \   00000048   2300001A           BNE      ??raac_DecodeICSInfo_0
+     70          		/* short block */
+     71          		icsInfo->maxSFB =     GetBits(bsi, 4);
+   \   0000004C   0410A0E3           MOV      R1,#+4
+   \   00000050   0600A0E1           MOV      R0,R6
+   \   00000054   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000058   0300C4E5           STRB     R0,[R4, #+3]
+     72          		icsInfo->sfGroup =    GetBits(bsi, 7);
+   \   0000005C   0710A0E3           MOV      R1,#+7
+   \   00000060   0600A0E1           MOV      R0,R6
+   \   00000064   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000068   0400C4E5           STRB     R0,[R4, #+4]
+     73          		icsInfo->numWinGroup =    1;
+   \   0000006C   3150C4E5           STRB     R5,[R4, #+49]
+     74          		icsInfo->winGroupLen[0] = 1;
+   \   00000070   3250C4E5           STRB     R5,[R4, #+50]
+     75          		mask = 0x40;	/* start with bit 6 */
+   \   00000074   4000A0E3           MOV      R0,#+64
+     76          		for (g = 0; g < 7; g++) {
+   \   00000078   0010A0E3           MOV      R1,#+0
+   \   0000007C   090000EA           B        ??raac_DecodeICSInfo_1
+     77          			if (icsInfo->sfGroup & mask)	{ 
+     78          				icsInfo->winGroupLen[icsInfo->numWinGroup - 1]++;
+     79          			} else { 
+     80          				icsInfo->numWinGroup++; 
+   \                     ??raac_DecodeICSInfo_2:
+   \   00000080   012082E2           ADD      R2,R2,#+1
+   \   00000084   3120C4E5           STRB     R2,[R4, #+49]
+     81          				icsInfo->winGroupLen[icsInfo->numWinGroup - 1] = 1; 
+   \   00000088   3120D4E5           LDRB     R2,[R4, #+49]
+   \   0000008C   012042E2           SUB      R2,R2,#+1
+   \   00000090   042082E0           ADD      R2,R2,R4
+   \   00000094   3250C2E5           STRB     R5,[R2, #+50]
+     82          			}
+     83          			mask >>= 1;
+   \                     ??raac_DecodeICSInfo_3:
+   \   00000098   C000A0E1           ASR      R0,R0,#+1
+   \   0000009C   011081E2           ADD      R1,R1,#+1
+   \   000000A0   070051E3           CMP      R1,#+7
+   \   000000A4   F081BDA8           POPGE    {R4-R8,PC}
+   \                     ??raac_DecodeICSInfo_1:
+   \   000000A8   0420D4E5           LDRB     R2,[R4, #+4]
+   \   000000AC   020010E1           TST      R0,R2
+   \   000000B0   3120D4E5           LDRB     R2,[R4, #+49]
+   \   000000B4   F1FFFF0A           BEQ      ??raac_DecodeICSInfo_2
+   \   000000B8   3130D4E5           LDRB     R3,[R4, #+49]
+   \   000000BC   012042E2           SUB      R2,R2,#+1
+   \   000000C0   042082E0           ADD      R2,R2,R4
+   \   000000C4   013043E2           SUB      R3,R3,#+1
+   \   000000C8   043083E0           ADD      R3,R3,R4
+   \   000000CC   3230D3E5           LDRB     R3,[R3, #+50]
+   \   000000D0   013083E2           ADD      R3,R3,#+1
+   \   000000D4   3230C2E5           STRB     R3,[R2, #+50]
+   \   000000D8   EEFFFFEA           B        ??raac_DecodeICSInfo_3
+     84          		}
+     85          	} else {
+     86          		/* long block */
+     87          		icsInfo->maxSFB =               GetBits(bsi, 6);
+   \                     ??raac_DecodeICSInfo_0:
+   \   000000DC   0610A0E3           MOV      R1,#+6
+   \   000000E0   0600A0E1           MOV      R0,R6
+   \   000000E4   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   000000E8   0300C4E5           STRB     R0,[R4, #+3]
+     88          		icsInfo->predictorDataPresent = GetBits(bsi, 1);
+   \   000000EC   0110A0E3           MOV      R1,#+1
+   \   000000F0   0600A0E1           MOV      R0,R6
+   \   000000F4   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   000000F8   0500C4E5           STRB     R0,[R4, #+5]
+     89          		if (icsInfo->predictorDataPresent) {
+   \   000000FC   0500D4E5           LDRB     R0,[R4, #+5]
+   \   00000100   000050E3           CMP      R0,#+0
+   \   00000104   1900000A           BEQ      ??raac_DecodeICSInfo_4
+     90          			icsInfo->predictorReset =   GetBits(bsi, 1);
+   \   00000108   0110A0E3           MOV      R1,#+1
+   \   0000010C   0600A0E1           MOV      R0,R6
+   \   00000110   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000114   0600C4E5           STRB     R0,[R4, #+6]
+     91          			if (icsInfo->predictorReset)
+   \   00000118   0600D4E5           LDRB     R0,[R4, #+6]
+   \   0000011C   000050E3           CMP      R0,#+0
+   \   00000120   0300000A           BEQ      ??raac_DecodeICSInfo_5
+     92          				icsInfo->predictorResetGroupNum = GetBits(bsi, 5);
+   \   00000124   0510A0E3           MOV      R1,#+5
+   \   00000128   0600A0E1           MOV      R0,R6
+   \   0000012C   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000130   0700C4E5           STRB     R0,[R4, #+7]
+     93          			for (sfb = 0; sfb < MIN(icsInfo->maxSFB, predSFBMax[sampRateIdx]); sfb++)
+   \                     ??raac_DecodeICSInfo_5:
+   \   00000134   0080A0E3           MOV      R8,#+0
+   \   00000138   050000EA           B        ??raac_DecodeICSInfo_6
+     94          				icsInfo->predictionUsed[sfb] = GetBits(bsi, 1);
+   \                     ??raac_DecodeICSInfo_7:
+   \   0000013C   0110A0E3           MOV      R1,#+1
+   \   00000140   0600A0E1           MOV      R0,R6
+   \   00000144   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000148   041088E0           ADD      R1,R8,R4
+   \   0000014C   0800C1E5           STRB     R0,[R1, #+8]
+   \   00000150   018088E2           ADD      R8,R8,#+1
+   \                     ??raac_DecodeICSInfo_6:
+   \   00000154   20009FE5           LDR      R0,??raac_DecodeICSInfo_8  ;; raac_predSFBMax
+   \   00000158   0310D4E5           LDRB     R1,[R4, #+3]
+   \   0000015C   070190E7           LDR      R0,[R0, +R7, LSL #+2]
+   \   00000160   000051E1           CMP      R1,R0
+   \   00000164   0100A0B1           MOVLT    R0,R1
+   \   00000168   000058E1           CMP      R8,R0
+   \   0000016C   F2FFFFBA           BLT      ??raac_DecodeICSInfo_7
+     95          		}
+     96          		icsInfo->numWinGroup = 1;
+   \                     ??raac_DecodeICSInfo_4:
+   \   00000170   3150C4E5           STRB     R5,[R4, #+49]
+     97          		icsInfo->winGroupLen[0] = 1;
+   \   00000174   3250C4E5           STRB     R5,[R4, #+50]
+     98          	}
+     99          }
+   \   00000178   F081BDE8           POP      {R4-R8,PC}       ;; return
+   \                     ??raac_DecodeICSInfo_8:
+   \   0000017C   ........           DC32     raac_predSFBMax
+    100          
+    101          /**************************************************************************************
+    102           * Function:    DecodeSectionData
+    103           *
+    104           * Description: decode section data (scale factor band groupings and 
+    105           *                associated Huffman codebooks)
+    106           *
+    107           * Inputs:      BitStreamInfo struct pointing to start of ICS info
+    108           *                (14496-3, table 4.4.25)
+    109           *              window sequence (short or long blocks)
+    110           *              number of window groups (1 for long blocks, 1-8 for short blocks)
+    111           *              max coded scalefactor band
+    112           *
+    113           * Outputs:     index of Huffman codebook for each scalefactor band in each section
+    114           *
+    115           * Return:      none
+    116           *
+    117           * Notes:       sectCB, sectEnd, sfbCodeBook, ordered by window groups for short blocks
+    118           **************************************************************************************/
+    119          static void DecodeSectionData(BitStreamInfo *bsi, int winSequence, int numWinGrp, int maxSFB, unsigned char *sfbCodeBook)
+    120          {
+    121          	int g, cb, sfb;
+    122          	int sectLen, sectLenBits, sectLenIncr, sectEscapeVal;
+    123          
+    124          	sectLenBits = (winSequence == 2 ? 3 : 5);
+    125          	sectEscapeVal = (1 << sectLenBits) - 1;
+    126          
+    127          	for (g = 0; g < numWinGrp; g++) {
+    128          		sfb = 0;
+    129          		while (sfb < maxSFB) {
+    130          			cb = GetBits(bsi, 4);	/* next section codebook */
+    131          			sectLen = 0;
+    132          			do {
+    133          				sectLenIncr = GetBits(bsi, sectLenBits);
+    134          				sectLen += sectLenIncr;
+    135          			} while (sectLenIncr == sectEscapeVal);
+    136          
+    137          			sfb += sectLen;
+    138          			while (sectLen--)
+    139          				*sfbCodeBook++ = (unsigned char)cb;
+    140          		}
+    141          		ASSERT(sfb == maxSFB);
+    142          	}
+    143          }
+    144          
+    145          /**************************************************************************************
+    146           * Function:    DecodeOneScaleFactor
+    147           *
+    148           * Description: decode one scalefactor using scalefactor Huffman codebook
+    149           *
+    150           * Inputs:      BitStreamInfo struct pointing to start of next coded scalefactor
+    151           *
+    152           * Outputs:     updated BitstreamInfo struct
+    153           *
+    154           * Return:      one decoded scalefactor, including index_offset of -60
+    155           **************************************************************************************/
+    156          static int DecodeOneScaleFactor(BitStreamInfo *bsi)
+    157          {
+    158          	int nBits, val;
+    159          	unsigned int bitBuf;
+    160          
+    161          	/* decode next scalefactor from bitstream */
+    162          	bitBuf = GetBitsNoAdvance(bsi, huffTabScaleFactInfo.maxBits) << (32 - huffTabScaleFactInfo.maxBits);
+    163          	nBits = DecodeHuffmanScalar(huffTabScaleFact, &huffTabScaleFactInfo, bitBuf, &val);
+    164          	AdvanceBitstream(bsi, nBits);
+    165          
+    166          	return val;
+    167          }
+    168          
+    169          /**************************************************************************************
+    170           * Function:    DecodeScaleFactors
+    171           *
+    172           * Description: decode scalefactors, PNS energy, and intensity stereo weights
+    173           *
+    174           * Inputs:      BitStreamInfo struct pointing to start of ICS info
+    175           *                (14496-3, table 4.4.26)
+    176           *              number of window groups (1 for long blocks, 1-8 for short blocks)
+    177           *              max coded scalefactor band
+    178           *              global gain (starting value for differential scalefactor coding)
+    179           *              index of Huffman codebook for each scalefactor band in each section
+    180           *
+    181           * Outputs:     decoded scalefactor for each section
+    182           *
+    183           * Return:      none
+    184           *
+    185           * Notes:       sfbCodeBook, scaleFactors ordered by window groups for short blocks
+    186           *              for section with codebook 13, scaleFactors buffer has decoded PNS
+    187           *                energy instead of regular scalefactor
+    188           *              for section with codebook 14 or 15, scaleFactors buffer has intensity
+    189           *                stereo weight instead of regular scalefactor
+    190           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    191          static void DecodeScaleFactors(BitStreamInfo *bsi, int numWinGrp, int maxSFB, int globalGain,
+    192          								  unsigned char *sfbCodeBook, short *scaleFactors)
+    193          {
+   \                     DecodeScaleFactors:
+   \   00000000   F04F2DE9           PUSH     {R4-R11,LR}
+    194          	int g, sfbCB, nrg, npf, val, sf, is;
+    195          
+    196          	/* starting values for differential coding */
+    197          	sf = globalGain;
+    198          	is = 0;
+    199          	nrg = globalGain - 90 - 256;
+    200          	npf = 1;
+    201          
+    202          	for (g = 0; g < numWinGrp * maxSFB; g++) {
+   \   00000004   78919FE5           LDR      R9,??DecodeScaleFactors_0  ;; raac_huffTabScaleFactInfo
+   \   00000008   78B19FE5           LDR      R11,??DecodeScaleFactors_0+0x4  ;; raac_huffTabScaleFact
+   \   0000000C   920101E0           MUL      R1,R2,R1
+   \   00000010   10D04DE2           SUB      SP,SP,#+16
+   \   00000014   38509DE5           LDR      R5,[SP, #+56]
+   \   00000018   0040A0E1           MOV      R4,R0
+   \   0000001C   04308DE5           STR      R3,[SP, #+4]
+   \   00000020   0060A0E3           MOV      R6,#+0
+   \   00000024   5900E0E3           MVN      R0,#+89
+   \   00000028   400FC0E3           BIC      R0,R0,#0x100
+   \   0000002C   037080E0           ADD      R7,R0,R3
+   \   00000030   0130A0E3           MOV      R3,#+1
+   \   00000034   08308DE5           STR      R3,[SP, #+8]
+   \   00000038   0080A0E3           MOV      R8,#+0
+   \   0000003C   0C108DE5           STR      R1,[SP, #+12]
+   \   00000040   010051E3           CMP      R1,#+1
+   \   00000044   030000AA           BGE      ??DecodeScaleFactors_1
+    203          		sfbCB = *sfbCodeBook++;
+    204          
+    205          		if (sfbCB  == 14 || sfbCB == 15) {
+    206          			/* intensity stereo - differential coding */
+    207          			val = DecodeOneScaleFactor(bsi);
+    208          			is += val;
+    209          			*scaleFactors++ = (short)is;
+    210          		} else if (sfbCB == 13) {
+    211          			/* PNS - first energy is directly coded, rest are Huffman coded (npf = noise_pcm_flag) */ 
+    212          			if (npf) {
+    213          				val = GetBits(bsi, 9);
+    214          				npf = 0;
+    215          			} else {
+    216          				val = DecodeOneScaleFactor(bsi);
+    217          			}
+    218          			nrg += val;
+    219          			*scaleFactors++ = (short)nrg;
+    220          		} else if (sfbCB >= 1 && sfbCB <= 11) {
+    221          			/* regular (non-zero) region - differential coding */
+    222          			val = DecodeOneScaleFactor(bsi);
+    223          			sf += val;
+    224          			*scaleFactors++ = (short)sf;
+    225          		} else {
+    226          			/* inactive scalefactor band if codebook 0 */
+    227          			*scaleFactors++ = 0;
+    228          		}
+    229          	}
+    230          }
+   \   00000048   FF8FBDE8           POP      {R0-R11,PC}      ;; return
+   \                     ??DecodeScaleFactors_2:
+   \   0000004C   0000A0E3           MOV      R0,#+0
+   \                     ??DecodeScaleFactors_3:
+   \   00000050   ........           STRH     R0,[R5], #+2
+   \                     ??DecodeScaleFactors_4:
+   \   00000054   018088E2           ADD      R8,R8,#+1
+   \                     ??DecodeScaleFactors_1:
+   \   00000058   0C009DE5           LDR      R0,[SP, #+12]
+   \   0000005C   000058E1           CMP      R8,R0
+   \   00000060   FF8FBDA8           POPGE    {R0-R11,PC}
+   \   00000064   34209DE5           LDR      R2,[SP, #+52]
+   \   00000068   ........           LDRB     R0,[R2], #+1
+   \   0000006C   34208DE5           STR      R2,[SP, #+52]
+   \   00000070   00A099E5           LDR      R10,[R9, #+0]
+   \   00000074   0E0050E3           CMP      R0,#+14
+   \   00000078   0F005013           CMPNE    R0,#+15
+   \   0000007C   0F00001A           BNE      ??DecodeScaleFactors_5
+   \   00000080   0A10A0E1           MOV      R1,R10
+   \   00000084   0400A0E1           MOV      R0,R4
+   \   00000088   ........           _BLF     raac_GetBitsNoAdvance,??raac_GetBitsNoAdvance??rA
+   \   0000008C   20106AE2           RSB      R1,R10,#+32
+   \   00000090   1021A0E1           LSL      R2,R0,R1
+   \   00000094   0D30A0E1           MOV      R3,SP
+   \   00000098   0910A0E1           MOV      R1,R9
+   \   0000009C   0B00A0E1           MOV      R0,R11
+   \   000000A0   ........           _BLF     raac_DecodeHuffmanScalar,??raac_DecodeHuffmanScalar??rA
+   \   000000A4   0010A0E1           MOV      R1,R0
+   \   000000A8   0400A0E1           MOV      R0,R4
+   \   000000AC   ........           _BLF     raac_AdvanceBitstream,??raac_AdvanceBitstream??rA
+   \   000000B0   00009DE5           LDR      R0,[SP, #+0]
+   \   000000B4   066080E0           ADD      R6,R0,R6
+   \   000000B8   ........           STRH     R6,[R5], #+2
+   \   000000BC   E4FFFFEA           B        ??DecodeScaleFactors_4
+   \                     ??DecodeScaleFactors_5:
+   \   000000C0   0D0050E3           CMP      R0,#+13
+   \   000000C4   1800001A           BNE      ??DecodeScaleFactors_6
+   \   000000C8   08009DE5           LDR      R0,[SP, #+8]
+   \   000000CC   000050E3           CMP      R0,#+0
+   \   000000D0   0500000A           BEQ      ??DecodeScaleFactors_7
+   \   000000D4   0910A0E3           MOV      R1,#+9
+   \   000000D8   0400A0E1           MOV      R0,R4
+   \   000000DC   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   000000E0   0020A0E3           MOV      R2,#+0
+   \   000000E4   08208DE5           STR      R2,[SP, #+8]
+   \   000000E8   0C0000EA           B        ??DecodeScaleFactors_8
+   \                     ??DecodeScaleFactors_7:
+   \   000000EC   0A10A0E1           MOV      R1,R10
+   \   000000F0   0400A0E1           MOV      R0,R4
+   \   000000F4   ........           _BLF     raac_GetBitsNoAdvance,??raac_GetBitsNoAdvance??rA
+   \   000000F8   20106AE2           RSB      R1,R10,#+32
+   \   000000FC   1021A0E1           LSL      R2,R0,R1
+   \   00000100   0D30A0E1           MOV      R3,SP
+   \   00000104   0910A0E1           MOV      R1,R9
+   \   00000108   0B00A0E1           MOV      R0,R11
+   \   0000010C   ........           _BLF     raac_DecodeHuffmanScalar,??raac_DecodeHuffmanScalar??rA
+   \   00000110   0010A0E1           MOV      R1,R0
+   \   00000114   0400A0E1           MOV      R0,R4
+   \   00000118   ........           _BLF     raac_AdvanceBitstream,??raac_AdvanceBitstream??rA
+   \   0000011C   00009DE5           LDR      R0,[SP, #+0]
+   \                     ??DecodeScaleFactors_8:
+   \   00000120   077080E0           ADD      R7,R0,R7
+   \   00000124   ........           STRH     R7,[R5], #+2
+   \   00000128   C9FFFFEA           B        ??DecodeScaleFactors_4
+   \                     ??DecodeScaleFactors_6:
+   \   0000012C   010050E3           CMP      R0,#+1
+   \   00000130   C5FFFFBA           BLT      ??DecodeScaleFactors_2
+   \   00000134   0C0050E3           CMP      R0,#+12
+   \   00000138   C3FFFFAA           BGE      ??DecodeScaleFactors_2
+   \   0000013C   0A10A0E1           MOV      R1,R10
+   \   00000140   0400A0E1           MOV      R0,R4
+   \   00000144   ........           _BLF     raac_GetBitsNoAdvance,??raac_GetBitsNoAdvance??rA
+   \   00000148   20106AE2           RSB      R1,R10,#+32
+   \   0000014C   1021A0E1           LSL      R2,R0,R1
+   \   00000150   0D30A0E1           MOV      R3,SP
+   \   00000154   0910A0E1           MOV      R1,R9
+   \   00000158   0B00A0E1           MOV      R0,R11
+   \   0000015C   ........           _BLF     raac_DecodeHuffmanScalar,??raac_DecodeHuffmanScalar??rA
+   \   00000160   0010A0E1           MOV      R1,R0
+   \   00000164   0400A0E1           MOV      R0,R4
+   \   00000168   ........           _BLF     raac_AdvanceBitstream,??raac_AdvanceBitstream??rA
+   \   0000016C   04109DE5           LDR      R1,[SP, #+4]
+   \   00000170   00209DE5           LDR      R2,[SP, #+0]
+   \   00000174   011082E0           ADD      R1,R2,R1
+   \   00000178   04108DE5           STR      R1,[SP, #+4]
+   \   0000017C   0100A0E1           MOV      R0,R1
+   \   00000180   B2FFFFEA           B        ??DecodeScaleFactors_3
+   \                     ??DecodeScaleFactors_0:
+   \   00000184   ........           DC32     raac_huffTabScaleFactInfo
+   \   00000188   ........           DC32     raac_huffTabScaleFact
+    231          
+    232          /**************************************************************************************
+    233           * Function:    DecodePulseInfo
+    234           *
+    235           * Description: decode pulse information
+    236           *
+    237           * Inputs:      BitStreamInfo struct pointing to start of pulse info
+    238           *                (14496-3, table 4.4.7)
+    239           *
+    240           * Outputs:     updated PulseInfo struct
+    241           *
+    242           * Return:      none
+    243           **************************************************************************************/
+    244          static void DecodePulseInfo(BitStreamInfo *bsi, PulseInfo *pi)
+    245          {
+    246          	int i;
+    247          
+    248          	pi->numPulse = GetBits(bsi, 2) + 1;		/* add 1 here */
+    249          	pi->startSFB = GetBits(bsi, 6);
+    250          	for (i = 0; i < pi->numPulse; i++) {
+    251          		pi->offset[i] = GetBits(bsi, 5);
+    252          		pi->amp[i] = GetBits(bsi, 4);
+    253          	}
+    254          }
+    255          
+    256          /**************************************************************************************
+    257           * Function:    DecodeTNSInfo
+    258           *
+    259           * Description: decode TNS filter information
+    260           *
+    261           * Inputs:      BitStreamInfo struct pointing to start of TNS info
+    262           *                (14496-3, table 4.4.27)
+    263           *              window sequence (short or long blocks)
+    264           *
+    265           * Outputs:     updated TNSInfo struct
+    266           *              buffer of decoded (signed) TNS filter coefficients
+    267           *
+    268           * Return:      none
+    269           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    270          static void DecodeTNSInfo(BitStreamInfo *bsi, int winSequence, TNSInfo *ti, signed char *tnsCoef)
+    271          {
+   \                     DecodeTNSInfo:
+   \   00000000   F84F2DE9           PUSH     {R3-R11,LR}
+   \   00000004   0250A0E1           MOV      R5,R2
+    272          	int i, w, f, coefBits, compress;
+    273          	signed char c, s, n;
+    274          	signed char sgnMask[3] = { 0x02,  0x04,  0x08};
+   \   00000008   9C229FE5           LDR      R2,??DecodeTNSInfo_0  ;; `?<Constant {2, 4, 8}>`
+   \   0000000C   10D04DE2           SUB      SP,SP,#+16
+   \   00000010   0030D2E5           LDRB     R3,[R2, #0]
+   \   00000014   0040A0E1           MOV      R4,R0
+   \   00000018   04008DE2           ADD      R0,SP,#+4
+   \   0000001C   0030C0E5           STRB     R3,[R0, #+0]
+   \   00000020   0130D2E5           LDRB     R3,[R2, #+1]
+    275          	signed char negMask[3] = {~0x03, ~0x07, ~0x0f};
+    276          	unsigned char *filtLength, *filtOrder, *filtDir;
+    277          
+    278          	filtLength = ti->length;
+   \   00000024   116085E2           ADD      R6,R5,#+17
+    279          	filtOrder =  ti->order;
+   \   00000028   197085E2           ADD      R7,R5,#+25
+   \   0000002C   0130C0E5           STRB     R3,[R0, #+1]
+   \   00000030   0230D2E5           LDRB     R3,[R2, #+2]
+   \   00000034   74229FE5           LDR      R2,??DecodeTNSInfo_0+0x4  ;; `?<Constant {-4, -8, -16}>`
+    280          	filtDir =    ti->dir;
+    281          
+    282          	if (winSequence == 2) {
+   \   00000038   020051E3           CMP      R1,#+2
+   \   0000003C   0230C0E5           STRB     R3,[R0, #+2]
+   \   00000040   0030D2E5           LDRB     R3,[R2, #0]
+   \   00000044   07008DE2           ADD      R0,SP,#+7
+   \   00000048   0030C0E5           STRB     R3,[R0, #+0]
+   \   0000004C   0130D2E5           LDRB     R3,[R2, #+1]
+   \   00000050   0130C0E5           STRB     R3,[R0, #+1]
+   \   00000054   0230D2E5           LDRB     R3,[R2, #+2]
+   \   00000058   212085E2           ADD      R2,R5,#+33
+   \   0000005C   0C208DE5           STR      R2,[SP, #+12]
+   \   00000060   0230C0E5           STRB     R3,[R0, #+2]
+   \   00000064   4700001A           BNE      ??DecodeTNSInfo_1
+    283          		/* short blocks */
+    284          		for (w = 0; w < NWINDOWS_SHORT; w++) {
+   \   00000068   00B0A0E3           MOV      R11,#+0
+   \   0000006C   130000EA           B        ??DecodeTNSInfo_2
+    285          			ti->numFilt[w] = GetBits(bsi, 1);
+    286          			if (ti->numFilt[w]) {
+    287          				ti->coefRes[w] = GetBits(bsi, 1) + 3;
+    288          				*filtLength =    GetBits(bsi, 4);
+    289          				*filtOrder =     GetBits(bsi, 3);
+    290          				if (*filtOrder) {
+    291          					*filtDir++ =      GetBits(bsi, 1);
+    292          					compress =        GetBits(bsi, 1);
+    293          					coefBits = (int)ti->coefRes[w] - compress;	/* 2, 3, or 4 */
+    294          					s = sgnMask[coefBits - 2];
+    295          					n = negMask[coefBits - 2];
+    296          					for (i = 0; i < *filtOrder; i++) {
+    297          						c = GetBits(bsi, coefBits);
+   \                     ??DecodeTNSInfo_3:
+   \   00000070   0810A0E1           MOV      R1,R8
+   \   00000074   0400A0E1           MOV      R0,R4
+   \   00000078   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+    298          						if (c & s)	c |= n;
+   \   0000007C   00109DE5           LDR      R1,[SP, #+0]
+    299          						*tnsCoef++ = c;
+   \   00000080   10209DE5           LDR      R2,[SP, #+16]
+   \   00000084   000CA0E1           MOV      R0,R0, LSL #+24
+   \   00000088   400CA0E1           MOV      R0,R0, ASR #+24
+   \   0000008C   000011E1           TST      R1,R0
+   \   00000090   00008911           ORRNE    R0,R9,R0
+   \   00000094   ........           STRB     R0,[R2], #+1
+   \   00000098   10208DE5           STR      R2,[SP, #+16]
+    300          					}
+   \   0000009C   01A08AE2           ADD      R10,R10,#+1
+   \                     ??DecodeTNSInfo_4:
+   \   000000A0   0000D7E5           LDRB     R0,[R7, #+0]
+   \   000000A4   00005AE1           CMP      R10,R0
+   \   000000A8   F0FFFFBA           BLT      ??DecodeTNSInfo_3
+    301          				}
+    302          				filtLength++;
+   \                     ??DecodeTNSInfo_5:
+   \   000000AC   016086E2           ADD      R6,R6,#+1
+    303          				filtOrder++;
+   \   000000B0   017087E2           ADD      R7,R7,#+1
+   \                     ??DecodeTNSInfo_6:
+   \   000000B4   01B08BE2           ADD      R11,R11,#+1
+   \   000000B8   08005BE3           CMP      R11,#+8
+   \   000000BC   410000AA           BGE      ??DecodeTNSInfo_7
+   \                     ??DecodeTNSInfo_2:
+   \   000000C0   0110A0E3           MOV      R1,#+1
+   \   000000C4   0400A0E1           MOV      R0,R4
+   \   000000C8   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   000000CC   05108BE0           ADD      R1,R11,R5
+   \   000000D0   0100C1E5           STRB     R0,[R1, #+1]
+   \   000000D4   05008BE0           ADD      R0,R11,R5
+   \   000000D8   0100D0E5           LDRB     R0,[R0, #+1]
+   \   000000DC   000050E3           CMP      R0,#+0
+   \   000000E0   F3FFFF0A           BEQ      ??DecodeTNSInfo_6
+   \   000000E4   0110A0E3           MOV      R1,#+1
+   \   000000E8   0400A0E1           MOV      R0,R4
+   \   000000EC   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   000000F0   030080E2           ADD      R0,R0,#+3
+   \   000000F4   05108BE0           ADD      R1,R11,R5
+   \   000000F8   0900C1E5           STRB     R0,[R1, #+9]
+   \   000000FC   0410A0E3           MOV      R1,#+4
+   \   00000100   0400A0E1           MOV      R0,R4
+   \   00000104   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000108   0000C6E5           STRB     R0,[R6, #+0]
+   \   0000010C   0310A0E3           MOV      R1,#+3
+   \   00000110   0400A0E1           MOV      R0,R4
+   \   00000114   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000118   0000C7E5           STRB     R0,[R7, #+0]
+   \   0000011C   0000D7E5           LDRB     R0,[R7, #+0]
+   \   00000120   000050E3           CMP      R0,#+0
+   \   00000124   E0FFFF0A           BEQ      ??DecodeTNSInfo_5
+   \   00000128   0110A0E3           MOV      R1,#+1
+   \   0000012C   0400A0E1           MOV      R0,R4
+   \   00000130   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000134   0C209DE5           LDR      R2,[SP, #+12]
+   \   00000138   0110A0E3           MOV      R1,#+1
+   \   0000013C   ........           STRB     R0,[R2], #+1
+   \   00000140   0C208DE5           STR      R2,[SP, #+12]
+   \   00000144   0400A0E1           MOV      R0,R4
+   \   00000148   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   0000014C   05108BE0           ADD      R1,R11,R5
+   \   00000150   0910D1E5           LDRB     R1,[R1, #+9]
+   \   00000154   00A0A0E3           MOV      R10,#+0
+   \   00000158   008041E0           SUB      R8,R1,R0
+   \   0000015C   04108DE2           ADD      R1,SP,#+4
+   \   00000160   011088E0           ADD      R1,R8,R1
+   \   00000164   D21051E1           LDRSB    R1,[R1, #-2]
+   \   00000168   07008DE2           ADD      R0,SP,#+7
+   \   0000016C   000088E0           ADD      R0,R8,R0
+   \   00000170   00108DE5           STR      R1,[SP, #+0]
+   \   00000174   D29050E1           LDRSB    R9,[R0, #-2]
+   \   00000178   0000D7E5           LDRB     R0,[R7, #+0]
+   \   0000017C   000050E3           CMP      R0,#+0
+   \   00000180   C6FFFF1A           BNE      ??DecodeTNSInfo_4
+   \   00000184   C8FFFFEA           B        ??DecodeTNSInfo_5
+    304          			}
+    305          		}
+    306          	} else {
+    307          		/* long blocks */
+    308          		ti->numFilt[0] = GetBits(bsi, 2);
+   \                     ??DecodeTNSInfo_1:
+   \   00000188   0210A0E3           MOV      R1,#+2
+   \   0000018C   0400A0E1           MOV      R0,R4
+   \   00000190   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000194   0100C5E5           STRB     R0,[R5, #+1]
+    309          		if (ti->numFilt[0])
+   \   00000198   0100D5E5           LDRB     R0,[R5, #+1]
+   \   0000019C   000050E3           CMP      R0,#+0
+   \   000001A0   0400000A           BEQ      ??DecodeTNSInfo_8
+    310          			ti->coefRes[0] = GetBits(bsi, 1) + 3;
+   \   000001A4   0110A0E3           MOV      R1,#+1
+   \   000001A8   0400A0E1           MOV      R0,R4
+   \   000001AC   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   000001B0   030080E2           ADD      R0,R0,#+3
+   \   000001B4   0900C5E5           STRB     R0,[R5, #+9]
+    311          		for (f = 0; f < ti->numFilt[0]; f++) {
+   \                     ??DecodeTNSInfo_8:
+   \   000001B8   0100D5E5           LDRB     R0,[R5, #+1]
+   \   000001BC   00B0A0E3           MOV      R11,#+0
+   \   000001C0   000050E3           CMP      R0,#+0
+   \   000001C4   1300001A           BNE      ??DecodeTNSInfo_9
+    312          			*filtLength =      GetBits(bsi, 6);
+    313          			*filtOrder =       GetBits(bsi, 5);
+    314          			if (*filtOrder) {
+    315          				*filtDir++ =     GetBits(bsi, 1);
+    316          				compress =       GetBits(bsi, 1);
+    317          				coefBits = (int)ti->coefRes[0] - compress;	/* 2, 3, or 4 */
+    318          				s = sgnMask[coefBits - 2];
+    319          				n = negMask[coefBits - 2];
+    320          				for (i = 0; i < *filtOrder; i++) {
+    321          					c = GetBits(bsi, coefBits);
+    322          					if (c & s)	c |= n;
+    323          					*tnsCoef++ = c;
+    324          				}
+    325          			}
+    326          			filtLength++;
+    327          			filtOrder++;
+    328          		}
+    329          	}
+    330          }
+   \                     ??DecodeTNSInfo_7:
+   \   000001C8   14D08DE2           ADD      SP,SP,#+20       ;; stack cleaning
+   \   000001CC   F08FBDE8           POP      {R4-R11,PC}      ;; return
+   \                     ??DecodeTNSInfo_10:
+   \   000001D0   0810A0E1           MOV      R1,R8
+   \   000001D4   0400A0E1           MOV      R0,R4
+   \   000001D8   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   000001DC   00109DE5           LDR      R1,[SP, #+0]
+   \   000001E0   10209DE5           LDR      R2,[SP, #+16]
+   \   000001E4   000CA0E1           MOV      R0,R0, LSL #+24
+   \   000001E8   400CA0E1           MOV      R0,R0, ASR #+24
+   \   000001EC   000011E1           TST      R1,R0
+   \   000001F0   00008911           ORRNE    R0,R9,R0
+   \   000001F4   ........           STRB     R0,[R2], #+1
+   \   000001F8   10208DE5           STR      R2,[SP, #+16]
+   \   000001FC   01A08AE2           ADD      R10,R10,#+1
+   \                     ??DecodeTNSInfo_11:
+   \   00000200   0000D7E5           LDRB     R0,[R7, #+0]
+   \   00000204   00005AE1           CMP      R10,R0
+   \   00000208   F0FFFFBA           BLT      ??DecodeTNSInfo_10
+   \                     ??DecodeTNSInfo_12:
+   \   0000020C   016086E2           ADD      R6,R6,#+1
+   \   00000210   017087E2           ADD      R7,R7,#+1
+   \   00000214   01B08BE2           ADD      R11,R11,#+1
+   \                     ??DecodeTNSInfo_9:
+   \   00000218   0100D5E5           LDRB     R0,[R5, #+1]
+   \   0000021C   00005BE1           CMP      R11,R0
+   \   00000220   E8FFFFAA           BGE      ??DecodeTNSInfo_7
+   \   00000224   0610A0E3           MOV      R1,#+6
+   \   00000228   0400A0E1           MOV      R0,R4
+   \   0000022C   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000230   0000C6E5           STRB     R0,[R6, #+0]
+   \   00000234   0510A0E3           MOV      R1,#+5
+   \   00000238   0400A0E1           MOV      R0,R4
+   \   0000023C   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000240   0000C7E5           STRB     R0,[R7, #+0]
+   \   00000244   0000D7E5           LDRB     R0,[R7, #+0]
+   \   00000248   000050E3           CMP      R0,#+0
+   \   0000024C   EEFFFF0A           BEQ      ??DecodeTNSInfo_12
+   \   00000250   0110A0E3           MOV      R1,#+1
+   \   00000254   0400A0E1           MOV      R0,R4
+   \   00000258   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   0000025C   0C209DE5           LDR      R2,[SP, #+12]
+   \   00000260   0110A0E3           MOV      R1,#+1
+   \   00000264   ........           STRB     R0,[R2], #+1
+   \   00000268   0C208DE5           STR      R2,[SP, #+12]
+   \   0000026C   0400A0E1           MOV      R0,R4
+   \   00000270   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000274   0910D5E5           LDRB     R1,[R5, #+9]
+   \   00000278   00A0A0E3           MOV      R10,#+0
+   \   0000027C   008041E0           SUB      R8,R1,R0
+   \   00000280   04108DE2           ADD      R1,SP,#+4
+   \   00000284   011088E0           ADD      R1,R8,R1
+   \   00000288   D21051E1           LDRSB    R1,[R1, #-2]
+   \   0000028C   07008DE2           ADD      R0,SP,#+7
+   \   00000290   000088E0           ADD      R0,R8,R0
+   \   00000294   00108DE5           STR      R1,[SP, #+0]
+   \   00000298   D29050E1           LDRSB    R9,[R0, #-2]
+   \   0000029C   0000D7E5           LDRB     R0,[R7, #+0]
+   \   000002A0   000050E3           CMP      R0,#+0
+   \   000002A4   D5FFFF1A           BNE      ??DecodeTNSInfo_11
+   \   000002A8   D7FFFFEA           B        ??DecodeTNSInfo_12
+   \                     ??DecodeTNSInfo_0:
+   \   000002AC   ........           DC32     `?<Constant {2, 4, 8}>`
+   \   000002B0   ........           DC32     `?<Constant {-4, -8, -16}>`
+    331          
+    332          /* bitstream field lengths for gain control data:
+    333           *   gainBits[winSequence][0] = maxWindow (how many gain windows there are)
+    334           *   gainBits[winSequence][1] = locBitsZero (bits for alocCode if window == 0)
+    335           *   gainBits[winSequence][2] = locBits (bits for alocCode if window != 0)
+    336           */
+
+   \                                 In segment DATA_C, align 4, align-sorted
+    337          static const unsigned char gainBits[4][3] = {
+   \                     gainBits:
+   \   00000000   010505020402       DC8 1, 5, 5, 2, 4, 2, 8, 2, 2, 2, 4, 5
+   \              080202020405
+    338          	{1, 5, 5},  /* long */
+    339          	{2, 4, 2},  /* start */
+    340          	{8, 2, 2},  /* short */
+    341          	{2, 4, 5},  /* stop */
+    342          };
+    343          
+    344          /**************************************************************************************
+    345           * Function:    DecodeGainControlInfo
+    346           *
+    347           * Description: decode gain control information (SSR profile only)
+    348           *
+    349           * Inputs:      BitStreamInfo struct pointing to start of gain control info
+    350           *                (14496-3, table 4.4.12)
+    351           *              window sequence (short or long blocks)
+    352           *
+    353           * Outputs:     updated GainControlInfo struct
+    354           *
+    355           * Return:      none
+    356           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    357          static void DecodeGainControlInfo(BitStreamInfo *bsi, int winSequence, GainControlInfo *gi)
+    358          {
+   \                     DecodeGainControlInfo:
+   \   00000000   F04F2DE9           PUSH     {R4-R11,LR}
+   \   00000004   08D04DE2           SUB      SP,SP,#+8
+   \   00000008   0040A0E1           MOV      R4,R0
+   \   0000000C   0160A0E1           MOV      R6,R1
+   \   00000010   0250A0E1           MOV      R5,R2
+    359          	int bd, wd, ad;
+    360          	int locBits, locBitsZero, maxWin;
+    361          	
+    362          	gi->maxBand = GetBits(bsi, 2);
+   \   00000014   0210A0E3           MOV      R1,#+2
+   \   00000018   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+    363          	maxWin =      (int)gainBits[winSequence][0];
+   \   0000001C   DC109FE5           LDR      R1,??DecodeGainControlInfo_0  ;; gainBits
+   \   00000020   0100C5E5           STRB     R0,[R5, #+1]
+   \   00000024   860086E0           ADD      R0,R6,R6, LSL #+1
+   \   00000028   010080E0           ADD      R0,R0,R1
+   \   0000002C   0020D0E5           LDRB     R2,[R0, #+0]
+    364          	locBitsZero = (int)gainBits[winSequence][1];
+    365          	locBits =     (int)gainBits[winSequence][2];
+    366          
+    367          	for (bd = 1; bd <= gi->maxBand; bd++) {
+   \   00000030   0170A0E3           MOV      R7,#+1
+   \   00000034   00208DE5           STR      R2,[SP, #+0]
+   \   00000038   0120D0E5           LDRB     R2,[R0, #+1]
+   \   0000003C   04208DE5           STR      R2,[SP, #+4]
+   \   00000040   0260D0E5           LDRB     R6,[R0, #+2]
+   \   00000044   0100D5E5           LDRB     R0,[R5, #+1]
+   \   00000048   000050E3           CMP      R0,#+0
+   \   0000004C   0100001A           BNE      ??DecodeGainControlInfo_1
+    368          		for (wd = 0; wd < maxWin; wd++) {
+    369          			gi->adjNum[bd][wd] = GetBits(bsi, 3);
+    370          			for (ad = 0; ad < gi->adjNum[bd][wd]; ad++) {
+    371          				gi->alevCode[bd][wd][ad] = GetBits(bsi, 4);
+    372          				gi->alocCode[bd][wd][ad] = GetBits(bsi, (wd == 0 ? locBitsZero : locBits));
+    373          			}
+    374          		}
+    375          	}
+    376          }
+   \   00000050   F38FBDE8           POP      {R0,R1,R4-R11,PC}  ;; return
+   \                     ??DecodeGainControlInfo_2:
+   \   00000054   017087E2           ADD      R7,R7,#+1
+   \                     ??DecodeGainControlInfo_1:
+   \   00000058   0100D5E5           LDRB     R0,[R5, #+1]
+   \   0000005C   070050E1           CMP      R0,R7
+   \   00000060   F38FBDB8           POPLT    {R0,R1,R4-R11,PC}
+   \   00000064   00009DE5           LDR      R0,[SP, #+0]
+   \   00000068   0080A0E3           MOV      R8,#+0
+   \   0000006C   010050E3           CMP      R0,#+1
+   \   00000070   010000AA           BGE      ??DecodeGainControlInfo_3
+   \   00000074   F6FFFFEA           B        ??DecodeGainControlInfo_2
+   \                     ??DecodeGainControlInfo_4:
+   \   00000078   018088E2           ADD      R8,R8,#+1
+   \                     ??DecodeGainControlInfo_3:
+   \   0000007C   00009DE5           LDR      R0,[SP, #+0]
+   \   00000080   000058E1           CMP      R8,R0
+   \   00000084   F2FFFFAA           BGE      ??DecodeGainControlInfo_2
+   \   00000088   879185E0           ADD      R9,R5,R7, LSL #+3
+   \   0000008C   0310A0E3           MOV      R1,#+3
+   \   00000090   0400A0E1           MOV      R0,R4
+   \   00000094   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000098   091088E0           ADD      R1,R8,R9
+   \   0000009C   0200C1E5           STRB     R0,[R1, #+2]
+   \   000000A0   00A0A0E3           MOV      R10,#+0
+   \   000000A4   040000EA           B        ??DecodeGainControlInfo_5
+   \                     ??DecodeGainControlInfo_6:
+   \   000000A8   0400A0E1           MOV      R0,R4
+   \   000000AC   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   000000B0   0B108AE0           ADD      R1,R10,R11
+   \   000000B4   C200C1E5           STRB     R0,[R1, #+194]
+   \   000000B8   01A08AE2           ADD      R10,R10,#+1
+   \                     ??DecodeGainControlInfo_5:
+   \   000000BC   090088E0           ADD      R0,R8,R9
+   \   000000C0   0200D0E5           LDRB     R0,[R0, #+2]
+   \   000000C4   00005AE1           CMP      R10,R0
+   \   000000C8   EAFFFFAA           BGE      ??DecodeGainControlInfo_4
+   \   000000CC   3810A0E3           MOV      R1,#+56
+   \   000000D0   915722E0           MLA      R2,R1,R7,R5
+   \   000000D4   880168E0           RSB      R0,R8,R8, LSL #+3
+   \   000000D8   02B080E0           ADD      R11,R0,R2
+   \   000000DC   0410A0E3           MOV      R1,#+4
+   \   000000E0   0400A0E1           MOV      R0,R4
+   \   000000E4   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   000000E8   0B108AE0           ADD      R1,R10,R11
+   \   000000EC   1A00C1E5           STRB     R0,[R1, #+26]
+   \   000000F0   000058E3           CMP      R8,#+0
+   \   000000F4   04109D05           LDREQ    R1,[SP, #+4]
+   \   000000F8   0610A011           MOVNE    R1,R6
+   \   000000FC   E9FFFFEA           B        ??DecodeGainControlInfo_6
+   \                     ??DecodeGainControlInfo_0:
+   \   00000100   ........           DC32     gainBits
+    377          
+    378          /**************************************************************************************
+    379           * Function:    DecodeICS
+    380           *
+    381           * Description: decode individual channel stream
+    382           *
+    383           * Inputs:      platform specific info struct
+    384           *              BitStreamInfo struct pointing to start of individual channel stream
+    385           *                (14496-3, table 4.4.24) 
+    386           *              index of current channel
+    387           *
+    388           * Outputs:     updated section data, scale factor data, pulse data, TNS data, 
+    389           *                and gain control data
+    390           *
+    391           * Return:      none
+    392           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    393          static void DecodeICS(PSInfoBase *psi, BitStreamInfo *bsi, int ch)
+    394          {
+   \                     DecodeICS:
+   \   00000000   F44F2DE9           PUSH     {R2,R4-R11,LR}
+   \   00000004   18D04DE2           SUB      SP,SP,#+24
+   \   00000008   0040A0E1           MOV      R4,R0
+   \   0000000C   0150A0E1           MOV      R5,R1
+    395          	int globalGain;
+    396          	ICSInfo *icsInfo;
+    397          	PulseInfo *pi;
+    398          	TNSInfo *ti;
+    399          	GainControlInfo *gi;
+    400          
+    401          	icsInfo = (ch == 1 && psi->commonWin == 1) ? &(psi->icsInfo[0]) : &(psi->icsInfo[ch]);
+   \   00000010   010052E3           CMP      R2,#+1
+   \   00000014   F0189405           LDREQ    R1,[R4, #+2288]
+   \   00000018   7C00A0E3           MOV      R0,#+124
+   \   0000001C   800E80E3           ORR      R0,R0,#0x800
+   \   00000020   01005103           CMPEQ    R1,#+1
+   \   00000024   04608000           ADDEQ    R6,R0,R4
+   \   00000028   0300000A           BEQ      ??DecodeICS_0
+   \   0000002C   0210A0E1           MOV      R1,R2
+   \   00000030   3A20A0E3           MOV      R2,#+58
+   \   00000034   924121E0           MLA      R1,R2,R1,R4
+   \   00000038   016080E0           ADD      R6,R0,R1
+    402          
+    403          	globalGain = GetBits(bsi, 8);
+   \                     ??DecodeICS_0:
+   \   0000003C   0810A0E3           MOV      R1,#+8
+   \   00000040   0500A0E1           MOV      R0,R5
+   \   00000044   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000048   10008DE5           STR      R0,[SP, #+16]
+    404          	if (!psi->commonWin)
+   \   0000004C   F00894E5           LDR      R0,[R4, #+2288]
+   \   00000050   000050E3           CMP      R0,#+0
+   \   00000054   0300001A           BNE      ??DecodeICS_1
+    405          		DecodeICSInfo(bsi, icsInfo, psi->sampRateIdx);
+   \   00000058   782894E5           LDR      R2,[R4, #+2168]
+   \   0000005C   0610A0E1           MOV      R1,R6
+   \   00000060   0500A0E1           MOV      R0,R5
+   \   00000064   ........           BL       raac_DecodeICSInfo
+    406          
+    407          	DecodeSectionData(bsi, icsInfo->winSequence, icsInfo->numWinGroup, icsInfo->maxSFB, psi->sfbCodeBook[ch]);
+   \                     ??DecodeICS_1:
+   \   00000068   18109DE5           LDR      R1,[SP, #+24]
+   \   0000006C   7820A0E3           MOV      R2,#+120
+   \   00000070   924121E0           MLA      R1,R2,R1,R4
+   \   00000074   D400A0E3           MOV      R0,#+212
+   \   00000078   04108DE5           STR      R1,[SP, #+4]
+   \   0000007C   A00E80E3           ORR      R0,R0,#0xA00
+   \   00000080   017080E0           ADD      R7,R0,R1
+   \   00000084   0310D6E5           LDRB     R1,[R6, #+3]
+   \   00000088   08108DE5           STR      R1,[SP, #+8]
+   \   0000008C   3110D6E5           LDRB     R1,[R6, #+49]
+   \   00000090   0C108DE5           STR      R1,[SP, #+12]
+   \   00000094   0100D6E5           LDRB     R0,[R6, #+1]
+   \   00000098   0110A0E3           MOV      R1,#+1
+   \   0000009C   020050E3           CMP      R0,#+2
+   \   000000A0   0380A003           MOVEQ    R8,#+3
+   \   000000A4   0580A013           MOVNE    R8,#+5
+   \   000000A8   1118A0E1           LSL      R1,R1,R8
+   \   000000AC   011041E2           SUB      R1,R1,#+1
+   \   000000B0   14108DE5           STR      R1,[SP, #+20]
+   \   000000B4   0010A0E3           MOV      R1,#+0
+   \   000000B8   00108DE5           STR      R1,[SP, #+0]
+   \   000000BC   0C009DE5           LDR      R0,[SP, #+12]
+   \   000000C0   010050E3           CMP      R0,#+1
+   \   000000C4   2F0000AA           BGE      ??DecodeICS_2
+    408          
+    409          	DecodeScaleFactors(bsi, icsInfo->numWinGroup, icsInfo->maxSFB, globalGain, psi->sfbCodeBook[ch], psi->scaleFactors[ch]);
+   \                     ??DecodeICS_3:
+   \   000000C8   18109DE5           LDR      R1,[SP, #+24]
+   \   000000CC   F020A0E3           MOV      R2,#+240
+   \   000000D0   924121E0           MLA      R1,R2,R1,R4
+   \   000000D4   F400A0E3           MOV      R0,#+244
+   \   000000D8   800E80E3           ORR      R0,R0,#0x800
+   \   000000DC   010080E0           ADD      R0,R0,R1
+   \   000000E0   01002DE9           PUSH     {R0}
+   \   000000E4   08109DE5           LDR      R1,[SP, #+8]
+   \   000000E8   D400A0E3           MOV      R0,#+212
+   \   000000EC   A00E80E3           ORR      R0,R0,#0xA00
+   \   000000F0   010080E0           ADD      R0,R0,R1
+   \   000000F4   01002DE9           PUSH     {R0}
+   \   000000F8   0320D6E5           LDRB     R2,[R6, #+3]
+   \   000000FC   3110D6E5           LDRB     R1,[R6, #+49]
+   \   00000100   18309DE5           LDR      R3,[SP, #+24]
+   \   00000104   0500A0E1           MOV      R0,R5
+   \   00000108   ........           BL       DecodeScaleFactors
+    410          	
+    411          	pi = &psi->pulseInfo[ch];
+   \   0000010C   20109DE5           LDR      R1,[SP, #+32]
+   \   00000110   0B20A0E3           MOV      R2,#+11
+   \   00000114   924121E0           MLA      R1,R2,R1,R4
+   \   00000118   EC00A0E3           MOV      R0,#+236
+   \   0000011C   B00E80E3           ORR      R0,R0,#0xB00
+   \   00000120   017080E0           ADD      R7,R0,R1
+    412          	pi->pulseDataPresent = GetBits(bsi, 1);
+   \   00000124   0110A0E3           MOV      R1,#+1
+   \   00000128   0500A0E1           MOV      R0,R5
+   \   0000012C   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000130   0000C7E5           STRB     R0,[R7, #+0]
+    413          	if (pi->pulseDataPresent)
+   \   00000134   0000D7E5           LDRB     R0,[R7, #+0]
+   \   00000138   08D08DE2           ADD      SP,SP,#+8
+   \   0000013C   000050E3           CMP      R0,#+0
+   \   00000140   3C00000A           BEQ      ??DecodeICS_4
+    414          		DecodePulseInfo(bsi, pi);
+   \   00000144   0210A0E3           MOV      R1,#+2
+   \   00000148   0500A0E1           MOV      R0,R5
+   \   0000014C   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000150   010080E2           ADD      R0,R0,#+1
+   \   00000154   0100C7E5           STRB     R0,[R7, #+1]
+   \   00000158   0610A0E3           MOV      R1,#+6
+   \   0000015C   0500A0E1           MOV      R0,R5
+   \   00000160   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000164   0200C7E5           STRB     R0,[R7, #+2]
+   \   00000168   0100D7E5           LDRB     R0,[R7, #+1]
+   \   0000016C   0080A0E3           MOV      R8,#+0
+   \   00000170   000050E3           CMP      R0,#+0
+   \   00000174   2C00001A           BNE      ??DecodeICS_5
+   \   00000178   2E0000EA           B        ??DecodeICS_4
+   \                     ??DecodeICS_6:
+   \   0000017C   00109DE5           LDR      R1,[SP, #+0]
+   \   00000180   011081E2           ADD      R1,R1,#+1
+   \   00000184   00108DE5           STR      R1,[SP, #+0]
+   \                     ??DecodeICS_2:
+   \   00000188   00009DE5           LDR      R0,[SP, #+0]
+   \   0000018C   0C109DE5           LDR      R1,[SP, #+12]
+   \   00000190   010050E1           CMP      R0,R1
+   \   00000194   CBFFFFAA           BGE      ??DecodeICS_3
+   \   00000198   08009DE5           LDR      R0,[SP, #+8]
+   \   0000019C   00A0A0E3           MOV      R10,#+0
+   \   000001A0   010050E3           CMP      R0,#+1
+   \   000001A4   F4FFFFBA           BLT      ??DecodeICS_6
+   \                     ??DecodeICS_7:
+   \   000001A8   08009DE5           LDR      R0,[SP, #+8]
+   \   000001AC   00005AE1           CMP      R10,R0
+   \   000001B0   F1FFFFAA           BGE      ??DecodeICS_6
+   \   000001B4   0410A0E3           MOV      R1,#+4
+   \   000001B8   0500A0E1           MOV      R0,R5
+   \   000001BC   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   000001C0   0090A0E1           MOV      R9,R0
+   \   000001C4   00B0A0E3           MOV      R11,#+0
+   \                     ??DecodeICS_8:
+   \   000001C8   0810A0E1           MOV      R1,R8
+   \   000001CC   0500A0E1           MOV      R0,R5
+   \   000001D0   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   000001D4   14109DE5           LDR      R1,[SP, #+20]
+   \   000001D8   0BB080E0           ADD      R11,R0,R11
+   \   000001DC   010050E1           CMP      R0,R1
+   \   000001E0   F8FFFF0A           BEQ      ??DecodeICS_8
+   \   000001E4   0AA08BE0           ADD      R10,R11,R10
+   \                     ??DecodeICS_9:
+   \   000001E8   0B00A0E1           MOV      R0,R11
+   \   000001EC   01B040E2           SUB      R11,R0,#+1
+   \   000001F0   000050E3           CMP      R0,#+0
+   \   000001F4   EBFFFF0A           BEQ      ??DecodeICS_7
+   \   000001F8   ........           STRB     R9,[R7], #+1
+   \   000001FC   F9FFFFEA           B        ??DecodeICS_9
+   \                     ??DecodeICS_10:
+   \   00000200   0510A0E3           MOV      R1,#+5
+   \   00000204   0500A0E1           MOV      R0,R5
+   \   00000208   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   0000020C   071088E0           ADD      R1,R8,R7
+   \   00000210   0300C1E5           STRB     R0,[R1, #+3]
+   \   00000214   0410A0E3           MOV      R1,#+4
+   \   00000218   0500A0E1           MOV      R0,R5
+   \   0000021C   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   00000220   071088E0           ADD      R1,R8,R7
+   \   00000224   0700C1E5           STRB     R0,[R1, #+7]
+   \   00000228   018088E2           ADD      R8,R8,#+1
+   \                     ??DecodeICS_5:
+   \   0000022C   0100D7E5           LDRB     R0,[R7, #+1]
+   \   00000230   000058E1           CMP      R8,R0
+   \   00000234   F1FFFFBA           BLT      ??DecodeICS_10
+    415          
+    416          	ti = &psi->tnsInfo[ch];
+   \                     ??DecodeICS_4:
+   \   00000238   18109DE5           LDR      R1,[SP, #+24]
+   \   0000023C   6520A0E3           MOV      R2,#+101
+   \   00000240   924121E0           MLA      R1,R2,R1,R4
+   \   00000244   0200A0E3           MOV      R0,#+2
+   \   00000248   C00E80E3           ORR      R0,R0,#0xC00
+   \   0000024C   017080E0           ADD      R7,R0,R1
+    417          	ti->tnsDataPresent = GetBits(bsi, 1);
+   \   00000250   0110A0E3           MOV      R1,#+1
+   \   00000254   0500A0E1           MOV      R0,R5
+   \   00000258   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   0000025C   0000C7E5           STRB     R0,[R7, #+0]
+    418          	if (ti->tnsDataPresent)
+   \   00000260   0000D7E5           LDRB     R0,[R7, #+0]
+   \   00000264   000050E3           CMP      R0,#+0
+   \   00000268   0400000A           BEQ      ??DecodeICS_11
+    419          		DecodeTNSInfo(bsi, icsInfo->winSequence, ti, ti->coef);
+   \   0000026C   0110D6E5           LDRB     R1,[R6, #+1]
+   \   00000270   293087E2           ADD      R3,R7,#+41
+   \   00000274   0720A0E1           MOV      R2,R7
+   \   00000278   0500A0E1           MOV      R0,R5
+   \   0000027C   ........           BL       DecodeTNSInfo
+    420          
+    421          	gi = &psi->gainControlInfo[ch];
+   \                     ??DecodeICS_11:
+   \   00000280   18109DE5           LDR      R1,[SP, #+24]
+   \   00000284   6A20A0E3           MOV      R2,#+106
+   \   00000288   402F82E3           ORR      R2,R2,#0x100
+   \   0000028C   924121E0           MLA      R1,R2,R1,R4
+   \   00000290   6C00A0E3           MOV      R0,#+108
+   \   00000294   D00E80E3           ORR      R0,R0,#0xD00
+   \   00000298   014080E0           ADD      R4,R0,R1
+    422          	gi->gainControlDataPresent = GetBits(bsi, 1);
+   \   0000029C   0110A0E3           MOV      R1,#+1
+   \   000002A0   0500A0E1           MOV      R0,R5
+   \   000002A4   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+   \   000002A8   0000C4E5           STRB     R0,[R4, #+0]
+    423          	if (gi->gainControlDataPresent)
+   \   000002AC   0000D4E5           LDRB     R0,[R4, #+0]
+   \   000002B0   000050E3           CMP      R0,#+0
+   \   000002B4   0300000A           BEQ      ??DecodeICS_12
+    424          		DecodeGainControlInfo(bsi, icsInfo->winSequence, gi);
+   \   000002B8   0110D6E5           LDRB     R1,[R6, #+1]
+   \   000002BC   0420A0E1           MOV      R2,R4
+   \   000002C0   0500A0E1           MOV      R0,R5
+   \   000002C4   ........           BL       DecodeGainControlInfo
+    425          }
+   \                     ??DecodeICS_12:
+   \   000002C8   1CD08DE2           ADD      SP,SP,#+28       ;; stack cleaning
+   \   000002CC   F08FBDE8           POP      {R4-R11,PC}      ;; return
+    426          
+    427          /**************************************************************************************
+    428           * Function:    DecodeNoiselessData
+    429           *
+    430           * Description: decode noiseless data (side info and transform coefficients)
+    431           *
+    432           * Inputs:      valid AACDecInfo struct
+    433           *              double pointer to buffer pointing to start of individual channel stream
+    434           *                (14496-3, table 4.4.24)
+    435           *              pointer to bit offset
+    436           *              pointer to number of valid bits remaining in buf
+    437           *              index of current channel
+    438           *
+    439           * Outputs:     updated global gain, section data, scale factor data, pulse data,
+    440           *                TNS data, gain control data, and spectral data
+    441           *
+    442           * Return:      0 if successful, error code (< 0) if error
+    443           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    444          int DecodeNoiselessData(AACDecInfo *aacDecInfo, unsigned char **buf, int *bitOffset, int *bitsAvail, int ch)
+    445          {
+   \                     raac_DecodeNoiselessData:
+   \   00000000   F0472DE9           PUSH     {R4-R10,LR}
+   \   00000004   10D04DE2           SUB      SP,SP,#+16
+   \   00000008   30809DE5           LDR      R8,[SP, #+48]
+   \   0000000C   0040A0E1           MOV      R4,R0
+    446          	int bitsUsed;
+    447          	BitStreamInfo bsi;
+    448          	PSInfoBase *psi;
+    449          	ICSInfo *icsInfo;
+    450          
+    451          	/* validate pointers */
+    452          	if (!aacDecInfo || !aacDecInfo->psInfoBase)
+   \   00000010   000054E3           CMP      R4,#+0
+   \   00000014   00009415           LDRNE    R0,[R4, #+0]
+   \   00000018   0150A0E1           MOV      R5,R1
+   \   0000001C   0260A0E1           MOV      R6,R2
+   \   00000020   0370A0E1           MOV      R7,R3
+   \   00000024   00005013           CMPNE    R0,#+0
+    453          		return ERR_AAC_NULL_POINTER;
+   \   00000028   0100E003           MVNEQ    R0,#+1
+   \   0000002C   3700000A           BEQ      ??raac_DecodeNoiselessData_0
+    454          	psi = (PSInfoBase *)(aacDecInfo->psInfoBase);
+   \   00000030   0090A0E1           MOV      R9,R0
+    455          	icsInfo = (ch == 1 && psi->commonWin == 1) ? &(psi->icsInfo[0]) : &(psi->icsInfo[ch]);
+   \   00000034   010058E3           CMP      R8,#+1
+   \   00000038   F0189905           LDREQ    R1,[R9, #+2288]
+   \   0000003C   7C00A0E3           MOV      R0,#+124
+   \   00000040   01005103           CMPEQ    R1,#+1
+   \   00000044   3A10A013           MOVNE    R1,#+58
+   \   00000048   91982210           MLANE    R2,R1,R8,R9
+   \   0000004C   800E80E3           ORR      R0,R0,#0x800
+   \   00000050   09A08000           ADDEQ    R10,R0,R9
+   \   00000054   02A08010           ADDNE    R10,R0,R2
+    456          	
+    457          	SetBitstreamPointer(&bsi, (*bitsAvail+7) >> 3, *buf);
+   \   00000058   000097E5           LDR      R0,[R7, #+0]
+   \   0000005C   002095E5           LDR      R2,[R5, #+0]
+   \   00000060   070080E2           ADD      R0,R0,#+7
+   \   00000064   C011A0E1           ASR      R1,R0,#+3
+   \   00000068   0D00A0E1           MOV      R0,SP
+   \   0000006C   ........           _BLF     raac_SetBitstreamPointer,??raac_SetBitstreamPointer??rA
+    458          	GetBits(&bsi, *bitOffset);
+   \   00000070   001096E5           LDR      R1,[R6, #+0]
+   \   00000074   0D00A0E1           MOV      R0,SP
+   \   00000078   ........           _BLF     raac_GetBits,??raac_GetBits??rA
+    459          
+    460          	DecodeICS(psi, &bsi, ch);
+   \   0000007C   0820A0E1           MOV      R2,R8
+   \   00000080   0D10A0E1           MOV      R1,SP
+   \   00000084   0900A0E1           MOV      R0,R9
+   \   00000088   ........           BL       DecodeICS
+    461          
+    462          	if (icsInfo->winSequence == 2)
+   \   0000008C   0100DAE5           LDRB     R0,[R10, #+1]
+   \   00000090   0820A0E1           MOV      R2,R8
+   \   00000094   0D10A0E1           MOV      R1,SP
+   \   00000098   020050E3           CMP      R0,#+2
+   \   0000009C   0900A0E1           MOV      R0,R9
+   \   000000A0   0100001A           BNE      ??raac_DecodeNoiselessData_1
+    463          		DecodeSpectrumShort(psi, &bsi, ch);
+   \   000000A4   ........           _BLF     raac_DecodeSpectrumShort,??raac_DecodeSpectrumShort??rA
+   \   000000A8   000000EA           B        ??raac_DecodeNoiselessData_2
+    464          	else
+    465          		DecodeSpectrumLong(psi, &bsi, ch);
+   \                     ??raac_DecodeNoiselessData_1:
+   \   000000AC   ........           _BLF     raac_DecodeSpectrumLong,??raac_DecodeSpectrumLong??rA
+    466          
+    467          	bitsUsed = CalcBitsUsed(&bsi, *buf, *bitOffset);
+   \                     ??raac_DecodeNoiselessData_2:
+   \   000000B0   002096E5           LDR      R2,[R6, #+0]
+   \   000000B4   001095E5           LDR      R1,[R5, #+0]
+   \   000000B8   0D00A0E1           MOV      R0,SP
+   \   000000BC   ........           _BLF     raac_CalcBitsUsed,??raac_CalcBitsUsed??rA
+    468          	*buf += ((bitsUsed + *bitOffset) >> 3);
+   \   000000C0   001096E5           LDR      R1,[R6, #+0]
+   \   000000C4   002095E5           LDR      R2,[R5, #+0]
+   \   000000C8   001081E0           ADD      R1,R1,R0
+   \   000000CC   C12182E0           ADD      R2,R2,R1, ASR #+3
+   \   000000D0   002085E5           STR      R2,[R5, #+0]
+    469          	*bitOffset = ((bitsUsed + *bitOffset) & 0x07);
+   \   000000D4   071001E2           AND      R1,R1,#0x7
+   \   000000D8   001086E5           STR      R1,[R6, #+0]
+    470          	*bitsAvail -= bitsUsed;
+   \   000000DC   001097E5           LDR      R1,[R7, #+0]
+   \   000000E0   000041E0           SUB      R0,R1,R0
+   \   000000E4   000087E5           STR      R0,[R7, #+0]
+    471          
+    472          	aacDecInfo->sbDeinterleaveReqd[ch] = 0;
+   \   000000E8   080184E0           ADD      R0,R4,R8, LSL #+2
+   \   000000EC   0010A0E3           MOV      R1,#+0
+   \   000000F0   301080E5           STR      R1,[R0, #+48]
+    473          	aacDecInfo->tnsUsed |= psi->tnsInfo[ch].tnsDataPresent;	/* set flag if TNS used for any channel */
+   \   000000F4   540094E5           LDR      R0,[R4, #+84]
+   \   000000F8   6510A0E3           MOV      R1,#+101
+   \   000000FC   919822E0           MLA      R2,R1,R8,R9
+   \   00000100   021CD2E5           LDRB     R1,[R2, #+3074]
+   \   00000104   000081E1           ORR      R0,R1,R0
+   \   00000108   540084E5           STR      R0,[R4, #+84]
+    474          
+    475          	return ERR_AAC_NONE;
+   \   0000010C   0000A0E3           MOV      R0,#+0
+   \                     ??raac_DecodeNoiselessData_0:
+   \   00000110   10D08DE2           ADD      SP,SP,#+16       ;; stack cleaning
+   \   00000114   F087BDE8           POP      {R4-R10,PC}      ;; return
+    476          }
+
+   \                                 In segment DATA_C, align 1, align-sorted
+   \                     `?<Constant {2, 4, 8}>`:
+   \   00000000   020408             DC8 2, 4, 8
+
+   \                                 In segment DATA_C, align 1, align-sorted
+   \                     `?<Constant {-4, -8, -16}>`:
+   \   00000000   FCF8F0             DC8 -4, -8, -16
+
+   Maximum stack usage in bytes:
+
+     Function                 CSTACK
+     --------                 ------
+     DecodeGainControlInfo       44
+     DecodeICS                   72
+     DecodeScaleFactors          52
+     DecodeTNSInfo               56
+     raac_DecodeICSInfo          24
+     raac_DecodeNoiselessData    48
+
+
+   Segment part sizes:
+
+     Function/Label            Bytes
+     --------------            -----
+     raac_DecodeICSInfo         384
+     DecodeScaleFactors         396
+     DecodeTNSInfo              692
+     gainBits                    12
+     DecodeGainControlInfo      260
+     DecodeICS                  720
+     raac_DecodeNoiselessData   280
+     ?<Constant {2, 4, 8}>        3
+     ?<Constant {-4, -8, -16}>    3
+      Others                    120
+
+ 
+ 2 852 bytes in segment CODE
+    18 bytes in segment DATA_C
+ 
+ 2 732 bytes of CODE  memory (+ 120 bytes shared)
+    18 bytes of CONST memory
+
+Errors: none
+Warnings: none

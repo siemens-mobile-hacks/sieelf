@@ -1,0 +1,721 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:15 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD /
+//                       EC\AAC_FILE (10).c                                  /
+//    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AAC /
+//                       DEC\AAC_FILE (10).c" -D NDEBUG -lC                  /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\AAC_FILE (10).s79                              /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME `AAC_FILE (10)`
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        MULTWEAK ??raac_StereoProcess??rT
+        FUNCTION StereoProcessGroup,0203H
+        LOCFRAME CSTACK, 44, STACK
+        PUBLIC raac_StereoProcess
+        FUNCTION raac_StereoProcess,0203H
+        LOCFRAME CSTACK, 68, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+raac_StereoProcess  SYMBOL "raac_StereoProcess"
+??raac_StereoProcess??rT SYMBOL "??rT", raac_StereoProcess
+
+        EXTERN raac_sfBandTabLong
+        EXTERN raac_sfBandTabLongOffset
+        EXTERN raac_sfBandTabShort
+        EXTERN raac_sfBandTabShortOffset
+
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (10).c
+//    1 /* ***** BEGIN LICENSE BLOCK *****  
+//    2  * Source last modified: $Id: stproc.c,v 1.1 2005/02/26 01:47:35 jrecker Exp $ 
+//    3  *   
+//    4  * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+//    5  *       
+//    6  * The contents of this file, and the files included with this file, 
+//    7  * are subject to the current version of the RealNetworks Public 
+//    8  * Source License (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the current version of the RealNetworks Community 
+//   11  * Source License (the "RCSL") available at 
+//   12  * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+//   13  * will apply. You may also obtain the license terms directly from 
+//   14  * RealNetworks.  You may not use this file except in compliance with 
+//   15  * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+//   16  * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+//   17  * the rights, obligations and limitations governing use of the 
+//   18  * contents of the file. 
+//   19  *   
+//   20  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   21  * developer of the Original Code and owns the copyrights in the 
+//   22  * portions it created. 
+//   23  *   
+//   24  * This file, and the files included with this file, is distributed 
+//   25  * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+//   26  * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+//   27  * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+//   28  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+//   29  * ENJOYMENT OR NON-INFRINGEMENT. 
+//   30  *  
+//   31  * Technology Compatibility Kit Test Suite(s) Location:  
+//   32  *    http://www.helixcommunity.org/content/tck  
+//   33  *  
+//   34  * Contributor(s):  
+//   35  *   
+//   36  * ***** END LICENSE BLOCK ***** */  
+//   37 
+//   38 /**************************************************************************************
+//   39  * Fixed-point HE-AAC decoder
+//   40  * Jon Recker (jrecker@real.com)
+//   41  * February 2005
+//   42  *
+//   43  * stproc.c - mid-side and intensity stereo processing
+//   44  **************************************************************************************/
+//   45 
+//   46 #include "coder_aac.h"
+//   47 #include "assembly_aac.h"
+//   48 
+//   49 /* pow14[0][i] = -pow(2, i/4.0) 
+//   50  * pow14[1][i] = +pow(2, i/4.0) 
+//   51  * 
+//   52  * i = [0,1,2,3]
+//   53  * format = Q30
+//   54  */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//   55 static const int pow14[2][4] = { 
+pow14:
+        DATA
+        DC32 -1073741824, -1276901417, -1518500250, -1805811301, 1073741824
+        DC32 1276901417, 1518500250, 1805811301
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??StereoProcessGroup??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE StereoProcessGroup
+//   56 	0xc0000000, 0xb3e407d7, 0xa57d8666, 0x945d819b, 
+//   57 	0x40000000, 0x4c1bf829, 0x5a82799a, 0x6ba27e65
+//   58 };
+//   59 
+//   60 /**************************************************************************************
+//   61  * Function:    StereoProcessGroup
+//   62  *
+//   63  * Description: apply mid-side and intensity stereo to group of transform coefficients
+//   64  *
+//   65  * Inputs:      dequantized transform coefficients for both channels
+//   66  *              pointer to appropriate scalefactor band table
+//   67  *              mid-side mask enabled flag
+//   68  *              buffer with mid-side mask (one bit for each scalefactor band)
+//   69  *              bit offset into mid-side mask buffer
+//   70  *              max coded scalefactor band
+//   71  *              buffer of codebook indices for right channel
+//   72  *              buffer of scalefactors for right channel, range = [0, 256]
+//   73  *
+//   74  * Outputs:     updated transform coefficients in Q(FBITS_OUT_DQ_OFF)
+//   75  *              updated minimum guard bit count for both channels
+//   76  *
+//   77  * Return:      none
+//   78  *
+//   79  * Notes:       assume 1 guard bit in input
+//   80  *              gains 0 int bits
+//   81  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function StereoProcessGroup
+        ARM
+//   82 static void StereoProcessGroup(int *coefL, int *coefR, const short *sfbTab, 
+//   83 							  int msMaskPres, unsigned char *msMaskPtr, int msMaskOffset, int maxSFB, 
+//   84 							  unsigned char *cbRight, short *sfRight, int *gbCurrent)
+//   85 {
+StereoProcessGroup:
+        PUSH     {R2-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+44
+        LDR      R9,[SP, #+48]
+        LDR      R11,[SP, #+44]
+//   86 	int sfb, width, cbIdx, sf, cl, cr, scalef, scalei;
+//   87 	int gbMaskL, gbMaskR;
+//   88 	unsigned char msMask;
+//   89 
+//   90 	msMask = (*msMaskPtr++) >> msMaskOffset;
+//   91 	gbMaskL = 0;
+        MOV      R8,#+0
+        LDRB     R2,[R11], #+1
+//   92 	gbMaskR = 0;
+        MOV      R4,#+0
+//   93 
+//   94 	for (sfb = 0; sfb < maxSFB; sfb++) {
+        MOV      R7,R4
+        ASR      R12,R2,R9
+        LDR      R2,[SP, #+52]
+        AND      R12,R12,#0xFF
+        CMP      R2,#+1
+        BGE      ??StereoProcessGroup_0
+//   95 		width = sfbTab[sfb+1] - sfbTab[sfb];	/* assume >= 0 (see sfBandTabLong/sfBandTabShort) */
+//   96 		cbIdx = cbRight[sfb];
+//   97 
+//   98 		if (cbIdx == 14 || cbIdx == 15) {
+//   99 			/* intensity stereo */
+//  100 			if (msMaskPres == 1 && (msMask & 0x01))
+//  101 				cbIdx ^= 0x01;				/* invert_intensity(): 14 becomes 15, or 15 becomes 14 */
+//  102 			sf = -sfRight[sfb];				/* negative since we use identity 0.5^(x) = 2^(-x) (see spec) */
+//  103 			cbIdx &= 0x01;					/* choose - or + scale factor */
+//  104 			scalef = pow14[cbIdx][sf & 0x03];
+//  105 			scalei = (sf >> 2) + 2;			/* +2 to compensate for scalef = Q30 */
+//  106 			
+//  107 			if (scalei > 0) {
+//  108 				if (scalei > 30)
+//  109 					scalei = 30;
+//  110 				do {
+//  111 					cr = MULSHIFT32(*coefL++, scalef);
+//  112 					CLIP_2N(cr, 31-scalei);
+//  113 					cr <<= scalei;
+//  114 					gbMaskR |= FASTABS(cr);
+//  115 					*coefR++ = cr;
+//  116 				} while (--width);
+//  117 			} else {
+//  118 				scalei = -scalei;
+//  119 				if (scalei > 31)
+//  120 					scalei = 31;
+//  121 				do {
+//  122 					cr = MULSHIFT32(*coefL++, scalef) >> scalei;
+//  123 					gbMaskR |= FASTABS(cr);
+//  124 					*coefR++ = cr;
+//  125 				} while (--width);
+//  126 			}
+//  127 		} else if ( cbIdx != 13 && ((msMaskPres == 1 && (msMask & 0x01)) || msMaskPres == 2) ) {
+//  128 			/* mid-side stereo (assumes 1 GB in inputs) */
+//  129 			do {
+//  130 				cl = *coefL;	
+//  131 				cr = *coefR;
+//  132 
+//  133 				sf = cl + cr;
+//  134 				*coefL++ = sf;
+//  135 				gbMaskL |= FASTABS(sf);
+//  136 
+//  137 				cl -= cr;
+//  138 				*coefR++ = cl;
+//  139 				gbMaskR |= FASTABS(cl);
+//  140 			} while (--width);
+//  141 
+//  142 		} else {
+//  143 			/* nothing to do */
+//  144 			coefL += width;
+//  145 			coefR += width;
+//  146 		}
+//  147 
+//  148 		/* get next mask bit (should be branchless on ARM) */
+//  149 		msMask >>= 1;
+//  150 		if (++msMaskOffset == 8) {
+//  151 			msMask = *msMaskPtr++;
+//  152 			msMaskOffset = 0;
+//  153 		}
+//  154 	}
+//  155 
+//  156 	cl = CLZ(gbMaskL) - 1;
+??StereoProcessGroup_1:
+        CMP      R8,#+0
+        BNE      ??StereoProcessGroup_2
+        MOV      R0,#+32
+        B        ??StereoProcessGroup_3
+??StereoProcessGroup_4:
+        RSB      R5,R5,#+0
+        CMP      R5,#+32
+        MOVGE    R5,#+31
+??StereoProcessGroup_5:
+        LDR      LR,[R0], #+4
+        SUBS     R6,R6,#+1
+        SMULL    R2,R3,LR,R10
+        ASR      R3,R3,R5
+        ASR      R2,R3,#+31
+        EOR      LR,R2,R3
+        SUB      R2,LR,R2
+        ORR      R4,R2,R4
+        STR      R3,[R1], #+4
+        BNE      ??StereoProcessGroup_5
+        B        ??StereoProcessGroup_6
+??StereoProcessGroup_7:
+        CMP      R3,#+13
+        BEQ      ??StereoProcessGroup_8
+        LDR      R2,[SP, #+4]
+        CMP      R2,#+1
+        BNE      ??StereoProcessGroup_9
+        TST      R12,#0x1
+        BNE      ??StereoProcessGroup_10
+??StereoProcessGroup_8:
+        ADD      R0,R0,R6, LSL #+2
+        ADD      R1,R1,R6, LSL #+2
+??StereoProcessGroup_6:
+        LSL      R12,R12,#+23
+        LSR      R12,R12,#+24
+        ADD      R9,R9,#+1
+        CMP      R9,#+8
+        LDRBEQ   R12,[R11], #+1
+        MOVEQ    R9,#+0
+        ADD      R7,R7,#+1
+??StereoProcessGroup_0:
+        LDR      R2,[SP, #+52]
+        CMP      R7,R2
+        BGE      ??StereoProcessGroup_1
+        LDR      R2,[SP, #+0]
+        ADD      R2,R2,R7, LSL #+1
+        LDRSH    R3,[R2, #+2]
+        LDRSH    R2,[R2, #+0]
+        SUB      R6,R3,R2
+        LDR      R2,[SP, #+56]
+        LDRB     R3,[R7, +R2]
+        CMP      R3,#+14
+        CMPNE    R3,#+15
+        BNE      ??StereoProcessGroup_7
+        LDR      R2,[SP, #+4]
+        CMP      R2,#+1
+        BNE      ??StereoProcessGroup_11
+        TST      R12,#0x1
+        EORNE    R3,R3,#0x1
+??StereoProcessGroup_11:
+        LDR      R2,[SP, #+60]
+        LDR      R10,??StereoProcessGroup_12  ;; pow14
+        ADD      R2,R2,R7, LSL #+1
+        LDRSH    R2,[R2, #+0]
+        AND      R3,R3,#0x1
+        ADD      R3,R10,R3, LSL #+4
+        RSB      R2,R2,#+0
+        AND      R5,R2,#0x3
+        LDR      R10,[R3, +R5, LSL #+2]
+        MOV      R3,#+2
+        ADD      R5,R3,R2, ASR #+2
+        CMP      R5,#+1
+        BLT      ??StereoProcessGroup_4
+        CMP      R5,#+31
+        MOVGE    R5,#+30
+??StereoProcessGroup_13:
+        LDR      LR,[R0], #+4
+        SMULL    R2,R3,LR,R10
+        MOV      R2,R3
+        MOV      R3,R5
+        RSB      R3,R3,#+31
+        ASR      LR,R2,#+31
+        CMP      LR,R2, ASR R3
+        BEQ      ??StereoProcessGroup_14
+        MOV      R2,#+1
+        LSL      R2,R2,R3
+        SUB      R2,R2,#+1
+        EOR      R2,R2,LR
+??StereoProcessGroup_14:
+        LSL      R3,R2,R5
+        ASR      R2,R3,#+31
+        EOR      LR,R2,R3
+        SUB      R2,LR,R2
+        ORR      R4,R2,R4
+        STR      R3,[R1], #+4
+        SUBS     R6,R6,#+1
+        BNE      ??StereoProcessGroup_13
+        B        ??StereoProcessGroup_6
+??StereoProcessGroup_9:
+        CMP      R2,#+2
+        BNE      ??StereoProcessGroup_8
+??StereoProcessGroup_10:
+        LDR      R5,[R0, #+0]
+        LDR      R3,[R1, #+0]
+        SUBS     R6,R6,#+1
+        ADD      R2,R3,R5
+        STR      R2,[R0], #+4
+        ASR      R10,R2,#+31
+        EOR      R2,R10,R2
+        SUB      R2,R2,R10
+        ORR      R8,R2,R8
+        SUB      R2,R5,R3
+        STR      R2,[R1], #+4
+        ASR      R3,R2,#+31
+        EOR      R2,R3,R2
+        SUB      R2,R2,R3
+        ORR      R4,R2,R4
+        BNE      ??StereoProcessGroup_10
+        B        ??StereoProcessGroup_6
+??StereoProcessGroup_2:
+        MOV      R0,#+1
+        LSRS     R1,R8,#+16
+        MOVEQ    R0,#+17
+        LSLEQ    R8,R8,#+16
+        LSRS     R1,R8,#+24
+        ADDEQ    R0,R0,#+8
+        LSLEQ    R8,R8,#+8
+        LSRS     R1,R8,#+28
+        ADDEQ    R0,R0,#+4
+        LSLEQ    R8,R8,#+4
+        LSRS     R1,R8,#+30
+        ADDEQ    R0,R0,#+2
+        LSLEQ    R8,R8,#+2
+        SUB      R0,R0,R8, LSR #+31
+//  157 	if (gbCurrent[0] > cl)
+??StereoProcessGroup_3:
+        LDR      R1,[SP, #+64]
+        SUB      R0,R0,#+1
+        LDR      R1,[R1, #+0]
+        CMP      R0,R1
+//  158 		gbCurrent[0] = cl;
+        LDRLT    R1,[SP, #+64]
+        STRLT    R0,[R1, #+0]
+//  159 
+//  160 	cr = CLZ(gbMaskR) - 1;
+        CMP      R4,#+0
+        MOVEQ    R0,#+32
+        BEQ      ??StereoProcessGroup_15
+        MOV      R0,#+1
+        LSRS     R1,R4,#+16
+        MOVEQ    R0,#+17
+        LSLEQ    R4,R4,#+16
+        LSRS     R1,R4,#+24
+        ADDEQ    R0,R0,#+8
+        LSLEQ    R4,R4,#+8
+        LSRS     R1,R4,#+28
+        ADDEQ    R0,R0,#+4
+        LSLEQ    R4,R4,#+4
+        LSRS     R1,R4,#+30
+        ADDEQ    R0,R0,#+2
+        LSLEQ    R4,R4,#+2
+        SUB      R0,R0,R4, LSR #+31
+//  161 	if (gbCurrent[1] > cr)
+??StereoProcessGroup_15:
+        LDR      R1,[SP, #+64]
+        SUB      R0,R0,#+1
+        LDR      R1,[R1, #+4]
+        CMP      R0,R1
+//  162 		gbCurrent[1] = cr;
+        LDRLT    R1,[SP, #+64]
+        STRLT    R0,[R1, #+4]
+//  163 
+//  164 	return;
+        POP      {R0,R1,R4-R11,PC}  ;; return
+        DATA
+??StereoProcessGroup_12:
+        DC32     pow14
+        CFI EndBlock cfiBlock1
+//  165 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_StereoProcess??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE raac_StereoProcess
+//  166 
+//  167 /**************************************************************************************
+//  168  * Function:    StereoProcess
+//  169  *
+//  170  * Description: apply mid-side and intensity stereo, if enabled
+//  171  *
+//  172  * Inputs:      valid AACDecInfo struct (including dequantized transform coefficients)
+//  173  *
+//  174  * Outputs:     updated transform coefficients in Q(FBITS_OUT_DQ_OFF)
+//  175  *              updated minimum guard bit count for both channels
+//  176  *
+//  177  * Return:      0 if successful, -1 if error
+//  178  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function raac_StereoProcess
+        ARM
+//  179 int StereoProcess(AACDecInfo *aacDecInfo)
+//  180 {
+raac_StereoProcess:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+        SUB      SP,SP,#+8
+        CFI CFA R13+44
+//  181 	PSInfoBase *psi;
+//  182 	ICSInfo *icsInfo;
+//  183 	int gp, win, nSamps, msMaskOffset;
+//  184 	int *coefL, *coefR;
+//  185 	unsigned char *msMaskPtr;
+//  186 	const short *sfbTab;
+//  187 
+//  188 	/* validate pointers */
+//  189 	if (!aacDecInfo || !aacDecInfo->psInfoBase)
+        CMP      R0,#+0
+        LDRNE    R5,[R0, #+0]
+        CMPNE    R5,#+0
+//  190 		return -1;
+        MVNEQ    R0,#+0
+        POPEQ    {R1,R2,R4-R11,PC}
+//  191 	psi = (PSInfoBase *)(aacDecInfo->psInfoBase);
+//  192 
+//  193 	/* mid-side and intensity stereo require common_window == 1 (see MPEG4 spec, Correction 2, 2004) */
+//  194 	if (psi->commonWin != 1 || aacDecInfo->currBlockID != AAC_ID_CPE)
+        LDR      R1,[R5, #+2288]
+        CMP      R1,#+1
+        LDREQ    R0,[R0, #+40]
+        CMPEQ    R0,#+1
+        BEQ      ??raac_StereoProcess_0
+//  195 		return 0;
+??raac_StereoProcess_1:
+        MOV      R0,#+0
+        POP      {R1,R2,R4-R11,PC}
+//  196 
+//  197 	/* nothing to do */
+//  198 	if (!psi->msMaskPresent && !psi->intensityUsed[1])
+??raac_StereoProcess_0:
+        LDR      R0,[R5, #+3012]
+        CMP      R0,#+0
+        LDREQ    R0,[R5, #+3048]
+        CMPEQ    R0,#+0
+        POPEQ    {R1,R2,R4-R11,PC}
+//  199 		return 0;
+//  200 
+//  201 	icsInfo = &(psi->icsInfo[0]);
+        MOV      R0,#+124
+        ORR      R0,R0,#0x800
+        ADD      R4,R0,R5
+//  202 	if (icsInfo->winSequence == 2) {
+        LDRB     R1,[R4, #+1]
+        LDR      R0,[R5, #+2168]
+        CMP      R1,#+2
+        BNE      ??raac_StereoProcess_2
+//  203 		sfbTab = sfBandTabShort + sfBandTabShortOffset[psi->sampRateIdx];
+        LDR      R2,??raac_StereoProcess_3  ;; raac_sfBandTabShortOffset
+//  204 		nSamps = NSAMPS_SHORT;
+        MOV      R1,#+128
+        LDR      R0,[R2, +R0, LSL #+2]
+        LDR      R2,??raac_StereoProcess_3+0x4  ;; raac_sfBandTabShort
+        B        ??raac_StereoProcess_4
+//  205 	} else {
+//  206 		sfbTab = sfBandTabLong + sfBandTabLongOffset[psi->sampRateIdx];
+??raac_StereoProcess_2:
+        LDR      R2,??raac_StereoProcess_3+0x8  ;; raac_sfBandTabLongOffset
+//  207 		nSamps = NSAMPS_LONG;
+        MOV      R1,#+1024
+        LDR      R0,[R2, +R0, LSL #+2]
+        LDR      R2,??raac_StereoProcess_3+0xC  ;; raac_sfBandTabLong
+??raac_StereoProcess_4:
+        ADD      R0,R2,R0, LSL #+1
+        STR      R0,[SP, #+4]
+        STR      R1,[SP, #+0]
+//  208 	}
+//  209 	coefL = psi->coef[0];
+        MOV      R0,#+72
+        ORR      R0,R0,#0x1000
+        ADD      R6,R0,R5
+//  210 	coefR = psi->coef[1];
+        ADD      R0,R0,#+4096
+        ADD      R7,R0,R5
+//  211 
+//  212 	/* do fused mid-side/intensity processing for each block (one long or eight short) */
+//  213 	msMaskOffset = 0;
+//  214 	msMaskPtr = psi->msMaskBits;
+        SUB      R0,R0,#+5248
+        ADD      R9,R0,R5
+//  215 	for (gp = 0; gp < icsInfo->numWinGroup; gp++) {
+        LDRB     R0,[R4, #+49]
+        MOV      R8,#+0
+        MOV      R10,#+0
+        CMP      R0,#+0
+        BNE      ??raac_StereoProcess_5
+        MOV      R0,#+0
+        POP      {R1,R2,R4-R11,PC}
+//  216 		for (win = 0; win < icsInfo->winGroupLen[gp]; win++) {
+//  217 			StereoProcessGroup(coefL, coefR, sfbTab, psi->msMaskPresent, 
+//  218 				msMaskPtr, msMaskOffset, icsInfo->maxSFB, psi->sfbCodeBook[1] + gp*icsInfo->maxSFB, 
+//  219 				psi->scaleFactors[1] + gp*icsInfo->maxSFB, psi->gbCurrent);
+??raac_StereoProcess_6:
+        ADD      R0,R5,#+4160
+        PUSH     {R0}
+        CFI CFA R13+48
+        LDRB     R1,[R4, #+3]
+//  220 			coefL += nSamps;
+//  221 			coefR += nSamps;
+//  222 		}
+        ADD      R11,R11,#+1
+        MOV      R0,#+228
+        MUL      R2,R1,R10
+        ORR      R0,R0,#0x900
+        ADD      R1,R5,R2, LSL #+1
+        ADD      R0,R0,R1
+        PUSH     {R0}
+        CFI CFA R13+52
+        LDRB     R1,[R4, #+3]
+        MOV      R0,#+76
+        ORR      R0,R0,#0xB00
+        MLA      R2,R1,R10,R5
+        MOV      R1,R7
+        ADD      R0,R0,R2
+        PUSH     {R0}
+        CFI CFA R13+56
+        LDRB     R0,[R4, #+3]
+        PUSH     {R0}
+        CFI CFA R13+60
+        MOV      R0,R8
+        PUSH     {R0}
+        CFI CFA R13+64
+        MOV      R0,R9
+        PUSH     {R0}
+        CFI CFA R13+68
+        LDR      R3,[R5, #+3012]
+        LDR      R2,[SP, #+28]
+        MOV      R0,R6
+        BL       StereoProcessGroup
+        LDR      R0,[SP, #+24]
+        ADD      SP,SP,#+24
+        CFI CFA R13+44
+        ADD      R6,R6,R0, LSL #+2
+        ADD      R7,R7,R0, LSL #+2
+??raac_StereoProcess_7:
+        ADD      R0,R10,R4
+        LDRB     R0,[R0, #+50]
+        CMP      R11,R0
+        BLT      ??raac_StereoProcess_6
+//  223 		/* we use one bit per sfb, so there are maxSFB bits for each window group */ 
+//  224 		msMaskPtr += (msMaskOffset + icsInfo->maxSFB) >> 3;
+??raac_StereoProcess_8:
+        LDRB     R0,[R4, #+3]
+//  225 		msMaskOffset = (msMaskOffset + icsInfo->maxSFB) & 0x07;
+        ADD      R10,R10,#+1
+        ADD      R0,R0,R8
+        ADD      R9,R9,R0, ASR #+3
+        LDRB     R0,[R4, #+3]
+        ADD      R0,R0,R8
+        AND      R8,R0,#0x7
+??raac_StereoProcess_5:
+        LDRB     R0,[R4, #+49]
+        CMP      R10,R0
+        BGE      ??raac_StereoProcess_1
+        ADD      R0,R10,R4
+        LDRB     R0,[R0, #+50]
+        MOV      R11,#+0
+        CMP      R0,#+0
+        BNE      ??raac_StereoProcess_7
+        B        ??raac_StereoProcess_8
+        DATA
+??raac_StereoProcess_3:
+        DC32     raac_sfBandTabShortOffset
+        DC32     raac_sfBandTabShort
+        DC32     raac_sfBandTabLongOffset
+        DC32     raac_sfBandTabLong
+        CFI EndBlock cfiBlock3
+//  226 	}
+//  227 
+//  228 	ASSERT(coefL == psi->coef[0] + 1024);
+//  229 	ASSERT(coefR == psi->coef[1] + 1024);
+//  230 
+//  231 	return 0;
+//  232 }
+
+        END
+// 
+// 1 092 bytes in segment CODE
+//    32 bytes in segment DATA_C
+// 
+// 1 084 bytes of CODE  memory (+ 8 bytes shared)
+//    32 bytes of CONST memory
+//
+//Errors: none
+//Warnings: none

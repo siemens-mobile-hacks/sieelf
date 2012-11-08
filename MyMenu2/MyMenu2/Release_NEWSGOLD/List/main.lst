@@ -1,0 +1,1831 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    12/Apr/2012  21:06:27 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\MyMenu2\MyMenu2\main.c          #
+#    Command line    =  D:\SVN\SieELF\SieELF\MyMenu2\MyMenu2\main.c -D       #
+#                       NEWSGOLD -D S7Cv47 -lC D:\SVN\SieELF\SieELF\MyMenu2\ #
+#                       MyMenu2\Release_NEWSGOLD\List\ -o                    #
+#                       D:\SVN\SieELF\SieELF\MyMenu2\MyMenu2\Release_NEWSGOL #
+#                       D\Obj\ -s9 --no_unroll --cpu_mode arm --endian       #
+#                       little --cpu ARM926EJ-S --stack_align 4 --interwork  #
+#                       -e --fpu None -I "D:\Program Files\IAR\Embedded      #
+#                       Workbench 4.0 Evaluation\ARM\INC\"                   #
+#                       --inline_threshold=2                                 #
+#    List file       =  D:\SVN\SieELF\SieELF\MyMenu2\MyMenu2\Release_NEWSGOL #
+#                       D\List\main.lst                                      #
+#    Object file     =  D:\SVN\SieELF\SieELF\MyMenu2\MyMenu2\Release_NEWSGOL #
+#                       D\Obj\main.r79                                       #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\MyMenu2\MyMenu2\main.c
+      1          #include "..\..\inc\swilib.h"
+      2          
+      3          #ifndef NEWSGOLD
+      4          #define ENUM 0x23
+      5          #else
+      6          #define ENUM 0x26
+      7          #endif
+      8          
+      9          #define COPYRIGHT	"MyMenu2\n(c)BingK(binghelingxi)"
+     10          #define ELFNAME		"MyMenu2"
+     11          //#define SK_SELECT	"Select"
+     12          //#define SK_BACK	"Back"
+     13          #define ERR_STR		"Error!"
+     14          #define CFG_PATH	"0:\\ZBin\\etc\\MyMenu2.cfg"
+     15          #define ELF_PATH	"0:\\ZBin\\utilities\\MyMenu2_Editor.elf"
+     16          
+     17          #define LGP_SELECT	"选择"
+     18          #define LGP_EXIT	"离开"
+     19          //#define LGP_SELECT	0x39
+     20          //#define LGP_EXIT	0x28F
+     21          
+     22          #define SP_CHAR		0x1F	//0x20
+     23          #define US_CHAR		0x1F
+     24          #define _80_CHAR	0x80
+     25          
+     26          #define BUF_SIZE	(8*1024)
+     27          #define PATH_LEN	128
+     28          //#define menu_item_n	16
+     29          #define ADDR_LEN	8
+     30          
+     31          #ifdef  E71Cv41
+     32          #define FUNC_PT_START	0xA085DEA4
+     33          #define FUNC_PT_END	0xA0865BA3
+     34          #endif
+     35          #ifdef  S7Cv47
+     36          #define FUNC_PT_START	0xA0456A80
+     37          #define FUNC_PT_END	0xA045E6FF
+     38          #endif
+     39          
+     40          #ifdef  S68Cv51
+     41          #define FUNC_PT_START	0xA04269B4
+     42          #define FUNC_PT_END	0xA042E633
+     43          #endif
+     44          
+     45          #define FUNC_PT_PSIZE	0x80
+     46          #define FUNC_PT_OFFSET	0x10
+     47          #define MAX_FUNC	0xFA
+     48          
+     49          #define TYPE_FILE	0
+     50          #define TYPE_SHORTCUT	1
+     51          #define TYPE_ADDRESS	2
+     52          #define TYPE_FOLDER	3
+     53          
+     54          #define CHARSET_GB2312	0
+     55          #define CHARSET_UTF8	1
+     56          #define CHARSET_UNICODE	2
+     57          
+     58          #ifdef ELKA
+     59          #define HEADER_X1	0
+     60          #define HEADER_Y1	24
+     61          #define HEADER_X2	239
+     62          #define HEADER_Y2	56
+     63          #else
+     64          #define HEADER_X1	0
+     65          #define HEADER_Y1	0
+     66          #define HEADER_X2	131
+     67          #define HEADER_Y2	0x16
+     68          #endif
+     69          
+     70          #ifdef VKP
+     71          #ifdef ELKA
+     72          #define MENU_HEADER_ICON	0x491
+     73          #define MENU_ITEM_ICON		0x538
+     74          #else
+     75          #define MENU_HEADER_ICON	0x4BB
+     76          #define MENU_ITEM_ICON		0x564
+     77          #endif
+     78          const int MenuHeaderIcon[]={MENU_HEADER_ICON,0};
+     79          const int MenuItemIcon[]={MENU_ITEM_ICON,0};
+     80          #endif
+     81          
+     82          //UTF8
+     83          //短信计数器|0:\ZBin\utilities\SMSCountReader.elf
+     84          typedef struct
+     85          {
+     86          	void *next;
+     87          	char *name;
+     88          	int name_len;
+     89          	char *path;
+     90          	int path_len;
+     91          	int type;
+     92          }MENU_LIST;
+     93          
+     94          typedef struct
+     95          {
+     96          	CSM_RAM csm;
+     97          	int gui_id;
+     98          	char *buf;
+     99          	MENU_LIST *mltop;
+    100          }MAIN_CSM;
+    101          //char *buf;
+    102          //MENU_LIST *mltop;
+    103          //int char_set;
+    104          
+
+   \                                 In segment DATA_C, align 4, align-sorted
+    105          const int menusoftkeys[]={0, 1, 2};
+   \                     menusoftkeys:
+   \   00000000   000000000100       DC32 0, 1, 2
+   \              000002000000
+    106          
+
+   \                                 In segment DATA_C, align 4, align-sorted
+    107          const SOFTKEY_DESC menu_sk[]=
+   \                     menu_sk:
+   \   00000000   18000000           DC16 24, 0
+   \   00000004   ........           DC32 `?<Constant "\\321\\241\\324\\361">`
+   \   00000008   01000000           DC16 1, 0
+   \   0000000C   ........           DC32 `?<Constant "\\300\\353\\277\\252">`
+   \   00000010   3D000000           DC16 61, 0
+   \   00000014   FBC0FF7F           DC32 2147467515
+    108          {
+    109          	{0x0018,0x0000,(int)LGP_SELECT},
+    110          	{0x0001,0x0000,(int)LGP_EXIT},
+    111          	{0x003D,0x0000,(int)LGP_DOIT_PIC}
+    112          };
+    113          
+
+   \                                 In segment DATA_C, align 4, align-sorted
+    114          const SOFTKEYSTAB menu_skt=
+   \                     menu_skt:
+   \   00000000   ........0000       DC32 menu_sk, 0
+   \              0000        
+    115          {
+    116          	menu_sk,0
+    117          };
+    118          
+    119          #ifdef VKP
+    120          const HEADER_DESC menuheader={HEADER_X1, HEADER_Y1, HEADER_X2, HEADER_Y2, (int *)MenuHeaderIcon, (int)ELFNAME, LGP_NULL};
+    121          #define PROCESSOR_MODE __thumb
+    122          #else
+    123          const HEADER_DESC menuheader={HEADER_X1, HEADER_Y1, HEADER_X2, HEADER_Y2, NULL, (int)ELFNAME, LGP_NULL};
+    124          #define PROCESSOR_MODE __arm
+    125          #endif
+    126          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    127          PROCESSOR_MODE void utf8_2str(char *str, char *utf8)
+    128          {
+    129          	
+    130          	char *p=utf8;
+    131          	int i=0;
+   \                     utf8_2str:
+   \   00000000   0020A0E3           MOV      R2,#+0
+   \   00000004   020000EA           B        ??utf8_2str_0
+    132          	while(*p)
+    133          	{
+    134          		if(*p>=_80_CHAR)
+    135          			break;
+    136          		str[i]=*p;
+   \                     ??utf8_2str_1:
+   \   00000008   ........           LDRB     R12,[R1], #+1
+   \   0000000C   00C0C2E7           STRB     R12,[R2, +R0]
+    137          		p++;
+    138          		i++;
+   \   00000010   0320A0E1           MOV      R2,R3
+   \                     ??utf8_2str_0:
+   \   00000014   00C0D1E5           LDRB     R12,[R1, #+0]
+   \   00000018   013082E2           ADD      R3,R2,#+1
+   \   0000001C   00005CE3           CMP      R12,#+0
+   \   00000020   0100000A           BEQ      ??utf8_2str_2
+   \   00000024   80005CE3           CMP      R12,#+128
+   \   00000028   F6FFFF3A           BCC      ??utf8_2str_1
+    139          	}
+    140          	if(*p)
+   \                     ??utf8_2str_2:
+   \   0000002C   00005CE3           CMP      R12,#+0
+   \   00000030   0D00000A           BEQ      ??utf8_2str_3
+    141          	{
+    142          		if(str[i-1]!=US_CHAR)
+   \   00000034   00C082E0           ADD      R12,R2,R0
+   \   00000038   01C05CE5           LDRB     R12,[R12, #-1]
+   \   0000003C   1F005CE3           CMP      R12,#+31
+   \   00000040   0600000A           BEQ      ??utf8_2str_4
+    143          		{
+    144          			str[i]=US_CHAR;
+   \   00000044   1FC0A0E3           MOV      R12,#+31
+   \   00000048   00C0C2E7           STRB     R12,[R2, +R0]
+    145          			i++;
+   \   0000004C   0320A0E1           MOV      R2,R3
+   \   00000050   020000EA           B        ??utf8_2str_4
+    146          		}
+    147          		while(*p)
+    148          		{
+    149          			str[i]=*p;
+   \                     ??utf8_2str_5:
+   \   00000054   ........           LDRB     R3,[R1], #+1
+   \   00000058   0030C2E7           STRB     R3,[R2, +R0]
+    150          			p++;
+    151          			i++;
+   \   0000005C   012082E2           ADD      R2,R2,#+1
+    152          		}
+   \                     ??utf8_2str_4:
+   \   00000060   0030D1E5           LDRB     R3,[R1, #+0]
+   \   00000064   000053E3           CMP      R3,#+0
+   \   00000068   F9FFFF1A           BNE      ??utf8_2str_5
+    153          	}
+    154          	str[i]=0;
+   \                     ??utf8_2str_3:
+   \   0000006C   0010A0E3           MOV      R1,#+0
+   \   00000070   0010C2E7           STRB     R1,[R2, +R0]
+    155          }
+   \   00000074   1EFF2FE1           BX       LR               ;; return
+    156          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    157          PROCESSOR_MODE void AddtoMenuList(MAIN_CSM *csm, char *name, int name_len, char *path, int path_len,int type)
+    158          {
+   \                     AddtoMenuList:
+   \   00000000   F0432DE9           PUSH     {R4-R9,LR}
+   \   00000004   1C809DE5           LDR      R8,[SP, #+28]
+   \   00000008   20909DE5           LDR      R9,[SP, #+32]
+   \   0000000C   0040A0E1           MOV      R4,R0
+   \   00000010   0150A0E1           MOV      R5,R1
+   \   00000014   0260A0E1           MOV      R6,R2
+   \   00000018   0370A0E1           MOV      R7,R3
+    159          	MENU_LIST *ml=malloc(sizeof(MENU_LIST));
+   \   0000001C   1800A0E3           MOV      R0,#+24
+   \   00000020   140000EF           SWI      +20
+    160          	ml->next=0;
+   \   00000024   0010A0E3           MOV      R1,#+0
+   \   00000028   001080E5           STR      R1,[R0, #+0]
+    161          	ml->name=name;
+   \   0000002C   045080E5           STR      R5,[R0, #+4]
+    162          	ml->name_len=name_len;
+   \   00000030   086080E5           STR      R6,[R0, #+8]
+    163          	ml->path=path;
+   \   00000034   0C7080E5           STR      R7,[R0, #+12]
+    164          	ml->path_len=path_len;
+   \   00000038   108080E5           STR      R8,[R0, #+16]
+    165          	ml->type=type;
+   \   0000003C   149080E5           STR      R9,[R0, #+20]
+    166          	if(!csm->mltop)
+   \   00000040   301094E5           LDR      R1,[R4, #+48]
+   \   00000044   000051E3           CMP      R1,#+0
+    167          	{
+    168          		csm->mltop=ml;
+   \   00000048   30008405           STREQ    R0,[R4, #+48]
+   \   0000004C   F083BD08           POPEQ    {R4-R9,PC}
+    169          	}
+    170          	else
+    171          	{
+    172          		MENU_LIST *ml_t=csm->mltop;
+   \   00000050   002091E5           LDR      R2,[R1, #+0]
+   \   00000054   000052E3           CMP      R2,#+0
+   \   00000058   0300000A           BEQ      ??AddtoMenuList_0
+    173          		while(ml_t->next)
+    174          			ml_t=ml_t->next;
+   \                     ??AddtoMenuList_1:
+   \   0000005C   001091E5           LDR      R1,[R1, #+0]
+   \   00000060   002091E5           LDR      R2,[R1, #+0]
+   \   00000064   000052E3           CMP      R2,#+0
+   \   00000068   FBFFFF1A           BNE      ??AddtoMenuList_1
+    175          		ml_t->next=ml;
+   \                     ??AddtoMenuList_0:
+   \   0000006C   000081E5           STR      R0,[R1, #+0]
+    176          	}
+    177          }
+   \   00000070   F083BDE8           POP      {R4-R9,PC}       ;; return
+    178          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    179          PROCESSOR_MODE void FreeMenuList(MAIN_CSM *csm)
+    180          {
+   \                     FreeMenuList:
+   \   00000000   30402DE9           PUSH     {R4,R5,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+    181          	if(csm->mltop)
+   \   00000008   300094E5           LDR      R0,[R4, #+48]
+   \   0000000C   000050E3           CMP      R0,#+0
+   \   00000010   0400000A           BEQ      ??FreeMenuList_0
+    182          	{
+    183          		MENU_LIST *ml=csm->mltop;
+    184          		MENU_LIST *ml_t;
+    185          		while(ml)
+    186          		{
+    187          			ml_t=ml->next;
+   \                     ??FreeMenuList_1:
+   \   00000014   005090E5           LDR      R5,[R0, #+0]
+    188          			mfree(ml);
+   \   00000018   150000EF           SWI      +21
+    189          			ml=ml_t;
+   \   0000001C   0500B0E1           MOVS     R0,R5
+    190          		}
+   \   00000020   FBFFFF1A           BNE      ??FreeMenuList_1
+    191          	}
+    192          	csm->mltop=0;
+   \   00000024   0000A0E3           MOV      R0,#+0
+   \                     ??FreeMenuList_0:
+   \   00000028   300084E5           STR      R0,[R4, #+48]
+    193          }
+   \   0000002C   3080BDE8           POP      {R4,R5,PC}       ;; return
+    194          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    195          PROCESSOR_MODE MENU_LIST *get_mlitem(MENU_LIST *mltop, int curitem)
+    196          {
+    197          	MENU_LIST *ml;
+    198          	ml=mltop;
+    199          	int i=0;
+   \                     get_mlitem:
+   \   00000000   0020A0E3           MOV      R2,#+0
+   \   00000004   010000EA           B        ??get_mlitem_0
+    200          	while(ml)
+    201          	{
+    202          		if(i==curitem)
+    203          			return (ml);
+    204          			//break;
+    205          		i++;
+    206          		ml=ml->next;
+   \                     ??get_mlitem_1:
+   \   00000008   000090E5           LDR      R0,[R0, #+0]
+   \   0000000C   012082E2           ADD      R2,R2,#+1
+   \                     ??get_mlitem_0:
+   \   00000010   000050E3           CMP      R0,#+0
+   \   00000014   01005211           CMPNE    R2,R1
+   \   00000018   FAFFFF1A           BNE      ??get_mlitem_1
+    207          	}
+    208          	return 0;
+   \   0000001C   1EFF2FE1           BX       LR               ;; return
+    209          }
+    210          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    211          PROCESSOR_MODE char *strchrinline(char *s, char chr)
+    212          {
+    213          	char *p=s;
+    214          	char *t=0;
+   \                     strchrinline:
+   \   00000000   0020A0E3           MOV      R2,#+0
+   \   00000004   020000EA           B        ??strchrinline_0
+    215          	while(*p)
+    216          	{
+    217          		//if((*p==0x0D)||(*p==0x0A))
+    218          		if(*p<SP_CHAR)
+    219          			break;
+    220          		if(*p==chr)
+   \                     ??strchrinline_1:
+   \   00000008   010053E1           CMP      R3,R1
+    221          			t=p;
+   \   0000000C   0020A001           MOVEQ    R2,R0
+    222          		p++;
+   \   00000010   010080E2           ADD      R0,R0,#+1
+   \                     ??strchrinline_0:
+   \   00000014   0030D0E5           LDRB     R3,[R0, #+0]
+   \   00000018   000053E3           CMP      R3,#+0
+   \   0000001C   0100000A           BEQ      ??strchrinline_2
+   \   00000020   1F0053E3           CMP      R3,#+31
+   \   00000024   F7FFFF2A           BCS      ??strchrinline_1
+    223          	}
+    224          	return (t);
+   \                     ??strchrinline_2:
+   \   00000028   0200A0E1           MOV      R0,R2
+   \   0000002C   1EFF2FE1           BX       LR               ;; return
+    225          }
+    226          
+    227          
+    228          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    229          PROCESSOR_MODE char *gotoRealPos(char *p)
+    230          {
+    231          	char *pp=p;
+   \                     gotoRealPos:
+   \   00000000   000000EA           B        ??gotoRealPos_0
+    232          	while(*pp)
+    233          	{
+    234          		if(*pp>=SP_CHAR)
+    235          			break;
+    236          		pp++;
+   \                     ??gotoRealPos_1:
+   \   00000004   010080E2           ADD      R0,R0,#+1
+   \                     ??gotoRealPos_0:
+   \   00000008   0010D0E5           LDRB     R1,[R0, #+0]
+   \   0000000C   000051E3           CMP      R1,#+0
+   \   00000010   1EFF2F01           BXEQ     LR
+   \   00000014   1F0051E3           CMP      R1,#+31
+   \   00000018   F9FFFF3A           BCC      ??gotoRealPos_1
+    237          	}
+    238          	return pp;
+   \   0000001C   1EFF2FE1           BX       LR               ;; return
+    239          }
+    240          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    241          PROCESSOR_MODE char *gotoLineEnd(char *p)
+    242          {
+    243          	char *pp=p;
+   \                     gotoLineEnd:
+   \   00000000   000000EA           B        ??gotoLineEnd_0
+    244          	while(*pp)
+    245          	{
+    246          		if(*pp<SP_CHAR)
+    247          			break;
+    248          		pp++;
+   \                     ??gotoLineEnd_1:
+   \   00000004   010080E2           ADD      R0,R0,#+1
+   \                     ??gotoLineEnd_0:
+   \   00000008   0010D0E5           LDRB     R1,[R0, #+0]
+   \   0000000C   000051E3           CMP      R1,#+0
+   \   00000010   1EFF2F01           BXEQ     LR
+   \   00000014   1F0051E3           CMP      R1,#+31
+   \   00000018   F9FFFF2A           BCS      ??gotoLineEnd_1
+    249          	}
+    250          	return pp;
+   \   0000001C   1EFF2FE1           BX       LR               ;; return
+    251          }
+    252          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    253          PROCESSOR_MODE int CheckType(char *p)
+    254          {
+   \                     CheckType:
+   \   00000000   00402DE9           PUSH     {LR}
+    255          	char *pp=p;
+    256          	if((*(p+1)!=':')&&(*(p+2)!='\\')) //':\'
+   \   00000004   0110D0E5           LDRB     R1,[R0, #+1]
+   \   00000008   3A0051E3           CMP      R1,#+58
+   \   0000000C   0210D015           LDRBNE   R1,[R0, #+2]
+   \   00000010   5C005113           CMPNE    R1,#+92
+   \   00000014   0900000A           BEQ      ??CheckType_0
+    257          	{
+    258          		if((*p=='A')&&((*(p+1)=='0')||(*(p+1)=='1'))) //A0,A1
+   \   00000018   0010D0E5           LDRB     R1,[R0, #+0]
+   \   0000001C   410051E3           CMP      R1,#+65
+   \   00000020   0400001A           BNE      ??CheckType_1
+   \   00000024   0110D0E5           LDRB     R1,[R0, #+1]
+   \   00000028   300051E3           CMP      R1,#+48
+   \   0000002C   31005113           CMPNE    R1,#+49
+    259          			return TYPE_ADDRESS;
+   \   00000030   0200A003           MOVEQ    R0,#+2
+   \   00000034   0080BD08           POPEQ    {PC}
+    260          		else
+    261          			return TYPE_SHORTCUT;
+   \                     ??CheckType_1:
+   \   00000038   0100A0E3           MOV      R0,#+1
+   \   0000003C   0080BDE8           POP      {PC}
+    262          	}
+    263          	pp=gotoLineEnd(pp);
+    264          	if(*(pp-1)=='\\')
+   \                     ??CheckType_0:
+   \   00000040   ........           BL       gotoLineEnd
+   \   00000044   010050E5           LDRB     R0,[R0, #-1]
+   \   00000048   5C0050E3           CMP      R0,#+92
+    265          		return TYPE_FOLDER;
+   \   0000004C   0300A003           MOVEQ    R0,#+3
+   \   00000050   0080BD08           POPEQ    {PC}
+    266          	return TYPE_FILE;
+   \   00000054   0000A0E3           MOV      R0,#+0
+   \   00000058   0080BDE8           POP      {PC}             ;; return
+    267          }
+    268          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    269          PROCESSOR_MODE int read_cfg(MAIN_CSM *csm)
+    270          {
+    271          	int f;
+    272          	char path[]=CFG_PATH;
+   \                     read_cfg:
+   \   00000000   10129FE5           LDR      R1,??read_cfg_0  ;; `?<Constant "0:\\\\ZBin\\\\etc\\\\MyMenu2.cfg">`
+   \   00000004   F04F2DE9           PUSH     {R4-R11,LR}
+   \   00000008   1CD04DE2           SUB      SP,SP,#+28
+   \   0000000C   DC0191E8           LDM      R1,{R2-R4,R6-R8}
+   \   00000010   0050A0E1           MOV      R5,R0
+   \   00000014   04008DE2           ADD      R0,SP,#+4
+   \   00000018   DC0180E8           STM      R0,{R2-R4,R6-R8}
+    273          	unsigned int err;
+    274          	char *p;
+    275          	int name_len;
+    276          	int path_len;
+    277          	int item_n=0;
+    278          	int size=0;
+    279          	//MAIN_CSM *csm=(MAIN_CSM*)data;
+    280          	p=csm->buf;
+   \   0000001C   2C4095E5           LDR      R4,[R5, #+44]
+   \   00000020   0060A0E3           MOV      R6,#+0
+    281          	FreeMenuList(csm);
+   \   00000024   0500A0E1           MOV      R0,R5
+   \   00000028   ........           BL       FreeMenuList
+    282          	csm->mltop=0; //必须初始化
+   \   0000002C   0070A0E3           MOV      R7,#+0
+   \   00000030   307085E5           STR      R7,[R5, #+48]
+    283          	if((f=fopen(path, A_ReadOnly, P_READ, &err))==-1)
+   \   00000034   0D30A0E1           MOV      R3,SP
+   \   00000038   8020A0E3           MOV      R2,#+128
+   \   0000003C   0610A0E1           MOV      R1,R6
+   \   00000040   04008DE2           ADD      R0,SP,#+4
+   \   00000044   0A0000EF           SWI      +10
+   \   00000048   0090A0E1           MOV      R9,R0
+   \   0000004C   0680E0E1           MVN      R8,R6
+   \   00000050   080059E1           CMP      R9,R8
+   \   00000054   0900001A           BNE      ??read_cfg_1
+    284          	{
+    285          		path[0]='4';
+   \   00000058   3410A0E3           MOV      R1,#+52
+   \   0000005C   0410CDE5           STRB     R1,[SP, #+4]
+    286          		if((f=fopen(path, A_ReadOnly, P_READ, &err))==-1)
+   \   00000060   0D30A0E1           MOV      R3,SP
+   \   00000064   8020A0E3           MOV      R2,#+128
+   \   00000068   0010A0E3           MOV      R1,#+0
+   \   0000006C   04008DE2           ADD      R0,SP,#+4
+   \   00000070   0A0000EF           SWI      +10
+   \   00000074   0090A0E1           MOV      R9,R0
+   \   00000078   080059E1           CMP      R9,R8
+   \   0000007C   6200000A           BEQ      ??read_cfg_2
+    287          			return 0;
+    288          	}
+    289          	size=fread(f, csm->buf, BUF_SIZE, &err);
+   \                     ??read_cfg_1:
+   \   00000080   2C1095E5           LDR      R1,[R5, #+44]
+   \   00000084   0D30A0E1           MOV      R3,SP
+   \   00000088   802DA0E3           MOV      R2,#+8192
+   \   0000008C   0900A0E1           MOV      R0,R9
+   \   00000090   0B0000EF           SWI      +11
+   \   00000094   0080A0E1           MOV      R8,R0
+    290          	fclose(f, &err);
+   \   00000098   0D10A0E1           MOV      R1,SP
+   \   0000009C   0900A0E1           MOV      R0,R9
+   \   000000A0   0D0000EF           SWI      +13
+    291          	if(size<3)
+   \   000000A4   030058E3           CMP      R8,#+3
+   \   000000A8   570000BA           BLT      ??read_cfg_2
+    292          		return 0;
+    293          	csm->buf[size]=0;
+   \   000000AC   2C0095E5           LDR      R0,[R5, #+44]
+   \   000000B0   0070C8E7           STRB     R7,[R8, +R0]
+   \   000000B4   0000D4E5           LDRB     R0,[R4, #+0]
+   \   000000B8   000050E3           CMP      R0,#+0
+   \   000000BC   5200000A           BEQ      ??read_cfg_2
+    294          	//if(*p==0xEF && *(p+1)==0xBB && *(p+2)==0xBF)
+    295          	//{
+    296          	//	char_set=CHARSET_UTF8;
+    297          	//	p+=3;
+    298          	//}
+    299          	//else if(*p==0xFF && *(p+1)==0xFE && *(p+2)==0xED)
+    300          	//{
+    301          	//	char_set=CHARSET_UNICODE;
+    302          	//	p+=3;
+    303          	//}
+    304          	//else
+    305          	//	char_set=CHARSET_GB2312;
+    306          	while(*p)
+    307          	{
+    308          		p=gotoRealPos(p);
+   \                     ??read_cfg_3:
+   \   000000C0   0400A0E1           MOV      R0,R4
+   \   000000C4   ........           BL       gotoRealPos
+   \   000000C8   0070A0E1           MOV      R7,R0
+    309          		char *pp=strchrinline(p, '|');
+   \   000000CC   7C10A0E3           MOV      R1,#+124
+   \   000000D0   ........           BL       strchrinline
+    310          		if(pp)
+   \   000000D4   000050E3           CMP      R0,#+0
+   \   000000D8   1000000A           BEQ      ??read_cfg_4
+    311          		{
+    312          			name_len=pp-p;
+   \   000000DC   07B040E0           SUB      R11,R0,R7
+    313          			pp++; // '|'
+    314          			pp=gotoRealPos(pp);
+   \   000000E0   010080E2           ADD      R0,R0,#+1
+   \   000000E4   ........           BL       gotoRealPos
+   \   000000E8   0040A0E1           MOV      R4,R0
+    315          			char *p2=pp;
+    316          			p2=gotoLineEnd(p2);
+   \   000000EC   ........           BL       gotoLineEnd
+   \   000000F0   0080A0E1           MOV      R8,R0
+    317          			path_len=p2-pp;
+    318          			AddtoMenuList(csm, p, name_len, pp, path_len, CheckType(pp));
+   \   000000F4   0400A0E1           MOV      R0,R4
+   \   000000F8   ........           BL       CheckType
+   \   000000FC   01002DE9           PUSH     {R0}
+   \   00000100   0430A0E1           MOV      R3,R4
+   \   00000104   0B20A0E1           MOV      R2,R11
+   \   00000108   0710A0E1           MOV      R1,R7
+   \   0000010C   040048E0           SUB      R0,R8,R4
+   \   00000110   01002DE9           PUSH     {R0}
+   \   00000114   0500A0E1           MOV      R0,R5
+   \   00000118   ........           BL       AddtoMenuList
+    319          			p=p2;
+   \   0000011C   320000EA           B        ??read_cfg_5
+    320          		}
+    321          		else
+    322          		{
+    323          			pp=p;
+    324          			pp=gotoLineEnd(pp);
+   \                     ??read_cfg_4:
+   \   00000120   0700A0E1           MOV      R0,R7
+   \   00000124   ........           BL       gotoLineEnd
+   \   00000128   0040A0E1           MOV      R4,R0
+   \   0000012C   079044E0           SUB      R9,R4,R7
+    325          			path_len=pp-p;
+    326          			int type=CheckType(p);
+   \   00000130   0700A0E1           MOV      R0,R7
+   \   00000134   ........           BL       CheckType
+   \   00000138   00A0B0E1           MOVS     R10,R0
+    327          			char *p2;
+    328          			switch(type)
+   \   0000013C   0800000A           BEQ      ??read_cfg_6
+   \   00000140   010040E2           SUB      R0,R0,#+1
+   \   00000144   010050E3           CMP      R0,#+1
+   \   00000148   0200009A           BLS      ??read_cfg_7
+   \   0000014C   020050E2           SUBS     R0,R0,#+2
+   \   00000150   1100000A           BEQ      ??read_cfg_8
+   \   00000154   1C0000EA           B        ??read_cfg_9
+    329          			{
+    330          			case TYPE_ADDRESS:
+    331          			case TYPE_SHORTCUT:
+    332          				name_len=path_len;
+   \                     ??read_cfg_7:
+   \   00000158   09B0A0E1           MOV      R11,R9
+    333          				p2=p;
+   \   0000015C   0780A0E1           MOV      R8,R7
+   \   00000160   190000EA           B        ??read_cfg_9
+    334          				break;
+    335          			case TYPE_FILE:
+    336          			{
+    337          				p2=strchrinline(p, '\\');
+   \                     ??read_cfg_6:
+   \   00000164   5C10A0E3           MOV      R1,#+92
+   \   00000168   0700A0E1           MOV      R0,R7
+   \   0000016C   ........           BL       strchrinline
+   \   00000170   0080A0E1           MOV      R8,R0
+    338          				char *p3=strchrinline(p, '.');
+   \   00000174   2E10A0E3           MOV      R1,#+46
+   \   00000178   0700A0E1           MOV      R0,R7
+   \   0000017C   ........           BL       strchrinline
+    339          				if(p2)
+   \   00000180   000058E3           CMP      R8,#+0
+   \   00000184   F3FFFF0A           BEQ      ??read_cfg_7
+    340          				{
+    341          					p2++;
+   \   00000188   018088E2           ADD      R8,R8,#+1
+    342          					if(p3)
+   \   0000018C   000050E3           CMP      R0,#+0
+   \   00000190   0C00001A           BNE      ??read_cfg_10
+    343          						name_len=p3-p2;
+    344          					else
+    345          						name_len=pp-p2;
+   \   00000194   08B044E0           SUB      R11,R4,R8
+   \   00000198   0B0000EA           B        ??read_cfg_9
+    346          				}
+    347          				else
+    348          				{
+    349          					name_len=path_len;
+    350          					p2=p;
+    351          				}
+    352          				break;
+    353          			}
+    354          			case TYPE_FOLDER:
+    355          			{
+    356          				//p2=strchrinline(p, '\\');
+    357          				char *p3=strchrinline(p, '\\');
+   \                     ??read_cfg_8:
+   \   0000019C   5C10A0E3           MOV      R1,#+92
+   \   000001A0   0700A0E1           MOV      R0,R7
+   \   000001A4   ........           BL       strchrinline
+    358          				p2=p3-1;
+   \   000001A8   018040E2           SUB      R8,R0,#+1
+    359          				do
+    360          				{
+    361          					if(*p2=='\\')
+   \                     ??read_cfg_11:
+   \   000001AC   0010D8E5           LDRB     R1,[R8, #+0]
+   \   000001B0   5C0051E3           CMP      R1,#+92
+   \   000001B4   0200000A           BEQ      ??read_cfg_12
+    362          						break;
+    363          					p2--;
+    364          				}
+    365          				while(*p2>=SP_CHAR);
+   \   000001B8   011078E5           LDRB     R1,[R8, #-1]!
+   \   000001BC   1F0051E3           CMP      R1,#+31
+   \   000001C0   F9FFFF2A           BCS      ??read_cfg_11
+    366          				p2++;
+    367          				name_len=p3-p2;
+   \                     ??read_cfg_12:
+   \   000001C4   018088E2           ADD      R8,R8,#+1
+   \                     ??read_cfg_10:
+   \   000001C8   08B040E0           SUB      R11,R0,R8
+    368          				break;
+    369          			}
+    370          			}
+    371          			AddtoMenuList(csm, p2, name_len, p, path_len, type);
+   \                     ??read_cfg_9:
+   \   000001CC   00042DE9           PUSH     {R10}
+   \   000001D0   00022DE9           PUSH     {R9}
+   \   000001D4   0730A0E1           MOV      R3,R7
+   \   000001D8   0B20A0E1           MOV      R2,R11
+   \   000001DC   0810A0E1           MOV      R1,R8
+   \   000001E0   0500A0E1           MOV      R0,R5
+   \   000001E4   ........           BL       AddtoMenuList
+    372          			p=pp;
+   \   000001E8   0480A0E1           MOV      R8,R4
+   \                     ??read_cfg_5:
+   \   000001EC   08D08DE2           ADD      SP,SP,#+8
+    373          		}
+    374          		item_n++;
+    375          		p=gotoRealPos(p);
+   \   000001F0   0800A0E1           MOV      R0,R8
+   \   000001F4   ........           BL       gotoRealPos
+   \   000001F8   0040A0E1           MOV      R4,R0
+    376          	}
+   \   000001FC   0000D4E5           LDRB     R0,[R4, #+0]
+   \   00000200   016086E2           ADD      R6,R6,#+1
+   \   00000204   000050E3           CMP      R0,#+0
+   \   00000208   ACFFFF1A           BNE      ??read_cfg_3
+    377          	return item_n;
+   \                     ??read_cfg_2:
+   \   0000020C   0600A0E1           MOV      R0,R6
+   \   00000210   1CD08DE2           ADD      SP,SP,#+28
+   \   00000214   F08FBDE8           POP      {R4-R11,PC}      ;; return
+   \                     ??read_cfg_0:
+   \   00000218   ........           DC32     `?<Constant "0:\\\\ZBin\\\\etc\\\\MyMenu2.cfg">`
+    378          }
+    379          
+    380          #pragma inline=forced
+    381          PROCESSOR_MODE int toupper(int c)
+    382          {
+    383          	if ((c>='a')&&(c<='z')) c+='A'-'a';
+    384          	return(c);
+    385          }
+    386          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    387          PROCESSOR_MODE int strncmpNoCase(const char *s1,const char *s2,unsigned int n)
+    388          {
+   \                     strncmpNoCase:
+   \   00000000   10002DE9           PUSH     {R4}
+    389          	int i;
+    390          	int c;
+    391          	while(!(i=(c=toupper(*s1++))-toupper(*s2++))&&(--n)) if (!c) break;
+   \                     ??strncmpNoCase_0:
+   \   00000004   0030D0E5           LDRB     R3,[R0, #+0]
+   \   00000008   610053E3           CMP      R3,#+97
+   \   0000000C   010000BA           BLT      ??strncmpNoCase_1
+   \   00000010   7B0053E3           CMP      R3,#+123
+   \   00000014   203043B2           SUBLT    R3,R3,#+32
+   \                     ??strncmpNoCase_1:
+   \   00000018   0040D1E5           LDRB     R4,[R1, #+0]
+   \   0000001C   010080E2           ADD      R0,R0,#+1
+   \   00000020   03C0A0E1           MOV      R12,R3
+   \   00000024   610054E3           CMP      R4,#+97
+   \   00000028   010000BA           BLT      ??strncmpNoCase_2
+   \   0000002C   7B0054E3           CMP      R4,#+123
+   \   00000030   204044B2           SUBLT    R4,R4,#+32
+   \                     ??strncmpNoCase_2:
+   \   00000034   011081E2           ADD      R1,R1,#+1
+   \   00000038   043053E0           SUBS     R3,R3,R4
+   \   0000003C   0200001A           BNE      ??strncmpNoCase_3
+   \   00000040   012052E2           SUBS     R2,R2,#+1
+   \   00000044   00005C13           CMPNE    R12,#+0
+   \   00000048   EDFFFF1A           BNE      ??strncmpNoCase_0
+    392          	return(i);
+   \                     ??strncmpNoCase_3:
+   \   0000004C   1000BDE8           POP      {R4}
+   \   00000050   0300A0E1           MOV      R0,R3
+   \   00000054   1EFF2FE1           BX       LR               ;; return
+    393          }
+    394          
+    395          #ifdef NEWSGOLD
+
+   \                                 In segment CODE, align 4, keep-with-next
+    396          PROCESSOR_MODE unsigned int GetFunctionPointByName(char *name)
+    397          {
+   \                     GetFunctionPointByName:
+   \   00000000   70402DE9           PUSH     {R4-R6,LR}
+    398          	char *p=(char *)FUNC_PT_START;
+   \   00000004   48509FE5           LDR      R5,??GetFunctionPointByName_0  ;; 0xffffffffa0456a80
+   \   00000008   0040A0E1           MOV      R4,R0
+    399          	int len=strlen(name);
+   \   0000000C   1B0000EF           SWI      +27
+   \   00000010   0060B0E1           MOVS     R6,R0
+    400          	if(len==0)
+   \   00000014   0200001A           BNE      ??GetFunctionPointByName_1
+    401          		return 0;
+   \                     ??GetFunctionPointByName_2:
+   \   00000018   0000A0E3           MOV      R0,#+0
+   \   0000001C   7080BDE8           POP      {R4-R6,PC}
+    402          	while((char *)FUNC_PT_END-p>0)
+    403          	{
+    404          		if(!strncmpNoCase(p, name, len))
+    405          			return (*(unsigned int *)(p+FUNC_PT_OFFSET));
+    406          		p+=FUNC_PT_PSIZE;
+   \                     ??GetFunctionPointByName_3:
+   \   00000020   805085E2           ADD      R5,R5,#+128
+   \                     ??GetFunctionPointByName_1:
+   \   00000024   2C009FE5           LDR      R0,??GetFunctionPointByName_0+0x4  ;; 0xffffffffa045e6ff
+   \   00000028   050040E0           SUB      R0,R0,R5
+   \   0000002C   010050E3           CMP      R0,#+1
+   \   00000030   F8FFFFBA           BLT      ??GetFunctionPointByName_2
+   \   00000034   0620A0E1           MOV      R2,R6
+   \   00000038   0410A0E1           MOV      R1,R4
+   \   0000003C   0500A0E1           MOV      R0,R5
+   \   00000040   ........           BL       strncmpNoCase
+   \   00000044   000050E3           CMP      R0,#+0
+   \   00000048   F4FFFF1A           BNE      ??GetFunctionPointByName_3
+   \   0000004C   100095E5           LDR      R0,[R5, #+16]
+   \   00000050   7080BDE8           POP      {R4-R6,PC}       ;; return
+   \                     ??GetFunctionPointByName_0:
+   \   00000054   806A45A0           DC32     0xffffffffa0456a80
+   \   00000058   FFE645A0           DC32     0xffffffffa045e6ff
+    407          	}
+    408          	return 0;
+    409          }
+    410          #endif
+    411          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    412          PROCESSOR_MODE void run_address(unsigned int address) 
+    413          {
+   \                     run_address:
+   \   00000000   00402DE9           PUSH     {LR}
+    414          	void (*runaddr)(void);
+    415          	runaddr=(void (*)())address;
+    416          	if (runaddr) 
+   \   00000004   000050E3           CMP      R0,#+0
+   \   00000008   0080BD08           POPEQ    {PC}
+    417          	{
+    418          		runaddr();
+   \   0000000C   30FF2FE1           BLX      R0
+    419          	}
+    420          }
+   \   00000010   0080BDE8           POP      {PC}             ;; return
+    421          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    422          PROCESSOR_MODE void run_shortcut(char *shortcut) 
+    423          {
+   \                     run_shortcut:
+   \   00000000   00402DE9           PUSH     {LR}
+    424          #ifdef NEWSGOLD
+    425          	run_address(GetFunctionPointByName(shortcut));
+   \   00000004   ........           BL       GetFunctionPointByName
+   \   00000008   0040BDE8           POP      {LR}             ;; Pop
+   \   0000000C   ........           B        run_address      ;; tailcall
+    426          #else
+    427          	run_address((unsigned int)GetFunctionPointer(shortcut));
+    428          #endif
+    429          }
+    430          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    431          PROCESSOR_MODE int chr2num(char chr)
+    432          {
+    433          	if(chr>='0'&&chr<='9')
+   \                     chr2num:
+   \   00000000   300050E3           CMP      R0,#+48
+   \   00000004   0200003A           BCC      ??chr2num_0
+   \   00000008   3A0050E3           CMP      R0,#+58
+    434          		return (chr-('0'-0));
+   \   0000000C   30004032           SUBCC    R0,R0,#+48
+   \   00000010   1EFF2F31           BXCC     LR
+    435          	if(chr>='A'&&chr<='Z')
+   \                     ??chr2num_0:
+   \   00000014   410050E3           CMP      R0,#+65
+   \   00000018   0200003A           BCC      ??chr2num_1
+   \   0000001C   5B0050E3           CMP      R0,#+91
+    436          		//return (chr-0x37);
+    437          		return (chr-('A'-0xA));
+   \   00000020   37004032           SUBCC    R0,R0,#+55
+   \   00000024   1EFF2F31           BXCC     LR
+    438          	if(chr>='a'&&chr<='z')
+   \                     ??chr2num_1:
+   \   00000028   610050E3           CMP      R0,#+97
+   \   0000002C   0200003A           BCC      ??chr2num_2
+   \   00000030   7B0050E3           CMP      R0,#+123
+    439          		//return (chr-0x57);
+    440          		return (chr-('a'-0xA));
+   \   00000034   57004032           SUBCC    R0,R0,#+87
+   \   00000038   1EFF2F31           BXCC     LR
+    441          	return 0;
+   \                     ??chr2num_2:
+   \   0000003C   0000A0E3           MOV      R0,#+0
+   \   00000040   1EFF2FE1           BX       LR               ;; return
+    442          }
+    443          
+    444          void run_file(MENU_LIST *ml);
+    445          void run_folder(MENU_LIST *ml);
+    446          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    447          PROCESSOR_MODE void run_ml(MENU_LIST *ml)
+    448          {
+   \                     run_ml:
+   \   00000000   70402DE9           PUSH     {R4-R6,LR}
+   \   00000004   20D04DE2           SUB      SP,SP,#+32
+   \   00000008   0050A0E1           MOV      R5,R0
+    449          	switch(ml->type)
+   \   0000000C   140095E5           LDR      R0,[R5, #+20]
+   \   00000010   0040A0E3           MOV      R4,#+0
+   \   00000014   000050E3           CMP      R0,#+0
+   \   00000018   0600000A           BEQ      ??run_ml_0
+   \   0000001C   010050E2           SUBS     R0,R0,#+1
+   \   00000020   0800000A           BEQ      ??run_ml_1
+   \   00000024   010050E2           SUBS     R0,R0,#+1
+   \   00000028   1E00000A           BEQ      ??run_ml_2
+   \   0000002C   010050E2           SUBS     R0,R0,#+1
+   \   00000030   2D00000A           BEQ      ??run_ml_3
+   \   00000034   2A0000EA           B        ??run_ml_4
+    450          	{
+    451          	case TYPE_FILE:
+    452              DoIDLE(0);
+   \                     ??run_ml_0:
+   \   00000038   090100EF           SWI      +265
+    453          		run_file(ml);
+   \   0000003C   0500A0E1           MOV      R0,R5
+   \   00000040   ........           BL       run_file
+   \   00000044   260000EA           B        ??run_ml_4
+    454          		break;
+    455          	case TYPE_SHORTCUT:
+    456          	{
+    457              DoIDLE(0);
+   \                     ??run_ml_1:
+   \   00000048   0000A0E3           MOV      R0,#+0
+   \   0000004C   090100EF           SWI      +265
+    458          		char ShortCut[32];
+    459          		char *p=ml->path;
+    460          		int i=0;
+    461          		int j=0;
+   \   00000050   103095E5           LDR      R3,[R5, #+16]
+   \   00000054   0C0095E5           LDR      R0,[R5, #+12]
+   \   00000058   0410A0E1           MOV      R1,R4
+   \   0000005C   0120A0E1           MOV      R2,R1
+   \   00000060   010053E3           CMP      R3,#+1
+   \   00000064   080000AA           BGE      ??run_ml_5
+   \   00000068   0A0000EA           B        ??run_ml_6
+    462          		for(;j<ml->path_len;j++)
+    463          		{
+    464          			if(p[j]>='A')
+   \                     ??run_ml_7:
+   \   0000006C   0030D2E7           LDRB     R3,[R2, +R0]
+   \   00000070   410053E3           CMP      R3,#+65
+   \   00000074   0300003A           BCC      ??run_ml_8
+    465          			{
+    466          				ShortCut[i]=p[j];
+   \   00000078   0060D2E7           LDRB     R6,[R2, +R0]
+   \   0000007C   0D30A0E1           MOV      R3,SP
+   \   00000080   0360C1E7           STRB     R6,[R1, +R3]
+    467          				i++;
+   \   00000084   011081E2           ADD      R1,R1,#+1
+    468          			}
+    469          			
+    470          		}
+   \                     ??run_ml_8:
+   \   00000088   012082E2           ADD      R2,R2,#+1
+   \                     ??run_ml_5:
+   \   0000008C   103095E5           LDR      R3,[R5, #+16]
+   \   00000090   030052E1           CMP      R2,R3
+   \   00000094   F4FFFFBA           BLT      ??run_ml_7
+    471          		ShortCut[i]=0;
+   \                     ??run_ml_6:
+   \   00000098   0D00A0E1           MOV      R0,SP
+   \   0000009C   0040C1E7           STRB     R4,[R1, +R0]
+    472          		run_shortcut(ShortCut);
+   \   000000A0   ........           BL       GetFunctionPointByName
+   \   000000A4   0D0000EA           B        ??run_ml_9
+    473          		break;
+    474          	}
+    475          	case TYPE_ADDRESS:
+    476          	{
+    477              DoIDLE(0);
+   \                     ??run_ml_2:
+   \   000000A8   0000A0E3           MOV      R0,#+0
+   \   000000AC   090100EF           SWI      +265
+    478          		if(ml->path_len==ADDR_LEN)
+   \   000000B0   100095E5           LDR      R0,[R5, #+16]
+   \   000000B4   080050E3           CMP      R0,#+8
+   \   000000B8   0F00001A           BNE      ??run_ml_10
+    479          		{
+    480          			int i;
+    481          			unsigned int addr=0;
+    482          			char *p=ml->path;
+   \   000000BC   0C5095E5           LDR      R5,[R5, #+12]
+    483          			for(i=0;i<ADDR_LEN;i++)
+   \   000000C0   0060A0E3           MOV      R6,#+0
+    484          			{
+    485          				addr=chr2num(p[i])+addr*0x10;
+   \                     ??run_ml_11:
+   \   000000C4   0500D6E7           LDRB     R0,[R6, +R5]
+    486          			}
+   \   000000C8   016086E2           ADD      R6,R6,#+1
+   \   000000CC   ........           BL       chr2num
+   \   000000D0   044280E0           ADD      R4,R0,R4, LSL #+4
+   \   000000D4   080056E3           CMP      R6,#+8
+   \   000000D8   F9FFFFBA           BLT      ??run_ml_11
+    487          			run_address(addr);
+   \   000000DC   0400A0E1           MOV      R0,R4
+   \                     ??run_ml_9:
+   \   000000E0   ........           BL       run_address
+   \                     ??run_ml_4:
+   \   000000E4   20D08DE2           ADD      SP,SP,#+32
+   \   000000E8   7080BDE8           POP      {R4-R6,PC}
+    488          		}
+    489          		break;
+    490          	}
+    491          	case TYPE_FOLDER:
+    492              DoIDLE(0);
+   \                     ??run_ml_3:
+   \   000000EC   0000A0E3           MOV      R0,#+0
+   \   000000F0   090100EF           SWI      +265
+    493          		run_folder(ml);
+   \   000000F4   0500A0E1           MOV      R0,R5
+   \   000000F8   ........           BL       run_folder
+    494          		break;
+    495          	}
+    496          }
+   \                     ??run_ml_10:
+   \   000000FC   20D08DE2           ADD      SP,SP,#+32       ;; stack cleaning
+   \   00000100   7080BDE8           POP      {R4-R6,PC}       ;; return
+    497          /*
+    498          typedef struct
+    499          {
+    500            int mode; //0-normal mode, 1-select mode 
+    501            int dir_enum; //0x26 by default
+    502            WSHDR* path_to_file; //path to file
+    503            WSHDR* file_name; //put cursor to this file
+    504            int unk5;
+    505            int is_exact_dir;
+    506            int unk7;
+    507            int unk8;
+    508            int unk9; // always 1
+    509            int unk10;
+    510            int unk11;
+    511            WSHDR* full_filename;
+    512            int unk13;
+    513            int (*user_handler)(void*); //called in select mode
+    514            void* this_struct_addr;
+    515            int unk16;
+    516            int unk17_26[10]; 
+    517          }NativeExplorerData;*/
+    518          
+    519          
+    520          
+    521          //by benj9
+    522          //all params: if 0, not applied
+    523          //exp_mode		        equ		0	; 0=normal, 1=file selection, 3+4=folder selection
+    524          //exp_def_folder	    equ		4	; NSG eg. 0=MyStuff 1=sound, 8=Misc 9=pictures 11=video 1F=apps 20=game 2D=theme 31=unknown1 61=MMC. 0x26: use folder in st_exp_cust_folder_ws
+    525          //                            ;  SG eg. 0=Misc 1=sound 2=sound\Ems 3=sound\on off 4=sound\ProSlide 5=Voice memo 6=SMS 7=Misc 8=picture 9=pic\EMS A=Pic\Logos B=Pic\WallPaper C=Pic\MMS D=pic\Icons E=pic\Frame F=video 10=Animation 11=Ani\EMS 12=0:\ 13=Misc\Data inbox 14=Text module 15=Pic\Clip Gallery 16=0:\ 17=0:\ 18=0:\ 19=Skins 1A=Text 1B=JAVA 1C=JAVA/jam 1D=JAVA/jam/Apps 1E=jam/Games 1F=jam/SMS 20=System 21=0:\ 22=Tmp 23=ws 25=0:\ 26=1:\Skin 27=System/mms 28=System/japp/ 29=2:\japp 2A=theme 2B=1:\ims 2C=2:\IMS 2D=PhonePilots 2E=2D\Lists 2F=2D\Res 30=2D\Tmp 31=Sms archive 35=Sms archieve\Draft 39=0:\System\HMI 3A=0:\System\SMS 3B=0:\System\SyncML 
+    526          //exp_cust_folder_ws	equ		8	  ; if NSG st_exp_def_folder=0x26, use base folder stored in this ws, if SGold st_exp_def_folder=0x23
+    527          //exp_preselection_ws	equ		0xC	; start selection in explorer with file/folder stored in ws
+    528          //                    equ		0x10
+    529          //exp_lock_navigation	equ		0x14	; if 1, lock navigation with drives and higher folders
+    530          //                    equ		0x18
+    531          //                    equ		0x1C
+    532          //exp_1			          equ		0x20	; always 1
+    533          //exp_filter_start	  equ		0x24	; func checks files/folders to be shown at start
+    534          //                    equ		0x28
+    535          //exp_dest_ws		      equ		0x2C	; dest file/folder (if mode >0)
+    536          //                    equ		0x30
+    537          //exp_filter_scroll	  equ		0x34	; func checks files to be shown by scrolling
+    538          //exp_report_csm	    equ		0x38	; *csm to report about everything
+    539          //                    equ		0x3C
+    540          //                    equ		0x40
+    541          
+    542          //#pragma swi_number=0x254
+    543          //__swi __arm int StartNativeExplorer(NativeExplorerData* data);
+    544          
+    545          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    546          void strpath_2ws(WSHDR *ws, char *path, int len)
+    547          {
+   \                     strpath_2ws:
+   \   00000000   30402DE9           PUSH     {R4,R5,LR}
+   \   00000004   40DF4DE2           SUB      SP,SP,#+256
+   \   00000008   0040A0E1           MOV      R4,R0
+   \   0000000C   0250A0E1           MOV      R5,R2
+    548          	char utf8[PATH_LEN];
+    549          	char str[PATH_LEN];
+    550          	strncpy(utf8, path, len);
+   \   00000010   0D00A0E1           MOV      R0,SP
+   \   00000014   160100EF           SWI      +278
+    551          	utf8[len]=0;
+   \   00000018   0D00A0E1           MOV      R0,SP
+   \   0000001C   0010A0E3           MOV      R1,#+0
+   \   00000020   0010C5E7           STRB     R1,[R5, +R0]
+    552          	utf8_2str(str, utf8);
+   \   00000024   0D10A0E1           MOV      R1,SP
+   \   00000028   80008DE2           ADD      R0,SP,#+128
+   \   0000002C   ........           BL       utf8_2str
+    553          	str_2ws(ws, str, PATH_LEN);
+   \   00000030   8020A0E3           MOV      R2,#+128
+   \   00000034   80108DE2           ADD      R1,SP,#+128
+   \   00000038   0400A0E1           MOV      R0,R4
+   \   0000003C   6C0100EF           SWI      +364
+    554          }
+   \   00000040   40DF8DE2           ADD      SP,SP,#+256
+   \   00000044   3080BDE8           POP      {R4,R5,PC}       ;; return
+    555          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    556          void run_folder(MENU_LIST *ml)
+    557          {
+   \                     run_folder:
+   \   00000000   30402DE9           PUSH     {R4,R5,LR}
+   \   00000004   68D04DE2           SUB      SP,SP,#+104
+   \   00000008   0050A0E1           MOV      R5,R0
+    558          	WSHDR *ws=AllocWS(PATH_LEN);
+   \   0000000C   8000A0E3           MOV      R0,#+128
+   \   00000010   250100EF           SWI      +293
+    559          	strpath_2ws(ws, ml->path, ml->path_len);
+   \   00000014   0C1095E5           LDR      R1,[R5, #+12]
+   \   00000018   102095E5           LDR      R2,[R5, #+16]
+   \   0000001C   0040A0E1           MOV      R4,R0
+   \   00000020   ........           BL       strpath_2ws
+    560          	NativeExplorerData data;
+    561          	zeromem(&data,sizeof(NativeExplorerData));
+   \   00000024   6810A0E3           MOV      R1,#+104
+   \   00000028   0D00A0E1           MOV      R0,SP
+   \   0000002C   1D0100EF           SWI      +285
+    562          	data.mode=0;
+   \   00000030   0010A0E3           MOV      R1,#+0
+   \   00000034   00108DE5           STR      R1,[SP, #+0]
+    563          	data.dir_enum=ENUM;
+   \   00000038   2610A0E3           MOV      R1,#+38
+   \   0000003C   04108DE5           STR      R1,[SP, #+4]
+    564          	data.path_to_file=ws;
+   \   00000040   08408DE5           STR      R4,[SP, #+8]
+    565          	data.is_exact_dir=0;
+   \   00000044   0010A0E3           MOV      R1,#+0
+   \   00000048   14108DE5           STR      R1,[SP, #+20]
+    566          	data.full_filename=ws;
+   \   0000004C   2C408DE5           STR      R4,[SP, #+44]
+    567          	data.unk9=1;
+   \   00000050   0110A0E3           MOV      R1,#+1
+   \   00000054   20108DE5           STR      R1,[SP, #+32]
+    568          	//data.this_struct_addr=&data;
+    569          	StartNativeExplorer(&data);
+   \   00000058   0D00A0E1           MOV      R0,SP
+   \   0000005C   540200EF           SWI      +596
+    570          	FreeWS(ws);
+   \   00000060   0400A0E1           MOV      R0,R4
+   \   00000064   290100EF           SWI      +297
+    571          }
+   \   00000068   68D08DE2           ADD      SP,SP,#+104
+   \   0000006C   3080BDE8           POP      {R4,R5,PC}       ;; return
+    572          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    573          void run_file(MENU_LIST *ml)
+    574          {
+   \                     run_file:
+   \   00000000   30402DE9           PUSH     {R4,R5,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+    575          	//char utf8[PATH_LEN];
+    576          	//char str[PATH_LEN];
+    577          	//strncpy(utf8, ml->path, ml->path_len);
+    578          	//utf8[ml->path_len]=0;
+    579          	//utf8_2str(str, utf8);
+    580          	WSHDR *ws=AllocWS(PATH_LEN);
+   \   00000008   8000A0E3           MOV      R0,#+128
+   \   0000000C   250100EF           SWI      +293
+    581          	strpath_2ws(ws, ml->path, ml->path_len);
+   \   00000010   102094E5           LDR      R2,[R4, #+16]
+   \   00000014   0C1094E5           LDR      R1,[R4, #+12]
+   \   00000018   0050A0E1           MOV      R5,R0
+   \   0000001C   ........           BL       strpath_2ws
+    582          	//str_2ws(ws, str, PATH_LEN);
+    583          	ExecuteFile(ws, 0, 0);
+   \   00000020   0020A0E3           MOV      R2,#+0
+   \   00000024   0010A0E3           MOV      R1,#+0
+   \   00000028   0500A0E1           MOV      R0,R5
+   \   0000002C   940000EF           SWI      +148
+    584          	FreeWS(ws);
+   \   00000030   0500A0E1           MOV      R0,R5
+   \   00000034   290100EF           SWI      +297
+    585          }
+   \   00000038   3080BDE8           POP      {R4,R5,PC}       ;; return
+
+   \                                 In segment CODE, align 4, keep-with-next
+    586          void run_mymenu2_editor(void)
+    587          {
+   \                     run_mymenu2_editor:
+   \   00000000   30402DE9           PUSH     {R4,R5,LR}
+   \   00000004   28D04DE2           SUB      SP,SP,#+40
+    588          	WSHDR *ws=AllocWS(PATH_LEN);
+   \   00000008   8000A0E3           MOV      R0,#+128
+   \   0000000C   250100EF           SWI      +293
+    589          	char elf_path[]=ELF_PATH;
+   \   00000010   4C109FE5           LDR      R1,??run_mymenu2_editor_0  ;; `?<Constant "0:\\\\ZBin\\\\utilities\\\\MyM...">`
+   \   00000014   0040A0E1           MOV      R4,R0
+   \   00000018   2C50B1E8           LDM      R1!,{R2,R3,R5,R12,LR}
+   \   0000001C   0D00A0E1           MOV      R0,SP
+   \   00000020   2C50A0E8           STM      R0!,{R2,R3,R5,R12,LR}
+   \   00000024   2C5091E8           LDM      R1,{R2,R3,R5,R12,LR}
+   \   00000028   2C5080E8           STM      R0,{R2,R3,R5,R12,LR}
+    590          	strpath_2ws(ws, elf_path, strlen(elf_path));
+   \   0000002C   0D00A0E1           MOV      R0,SP
+   \   00000030   1B0000EF           SWI      +27
+   \   00000034   0020A0E1           MOV      R2,R0
+   \   00000038   0D10A0E1           MOV      R1,SP
+   \   0000003C   0400A0E1           MOV      R0,R4
+   \   00000040   ........           BL       strpath_2ws
+    591          	ExecuteFile(ws, 0, 0);
+   \   00000044   0020A0E3           MOV      R2,#+0
+   \   00000048   0010A0E3           MOV      R1,#+0
+   \   0000004C   0400A0E1           MOV      R0,R4
+   \   00000050   940000EF           SWI      +148
+    592          	FreeWS(ws);
+   \   00000054   0400A0E1           MOV      R0,R4
+   \   00000058   290100EF           SWI      +297
+    593          }
+   \   0000005C   28D08DE2           ADD      SP,SP,#+40
+   \   00000060   3080BDE8           POP      {R4,R5,PC}       ;; return
+   \                     ??run_mymenu2_editor_0:
+   \   00000064   ........           DC32     `?<Constant "0:\\\\ZBin\\\\utilities\\\\MyM...">`
+    594          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    595          int menu_onkey(void *data, GUI_MSG *msg)
+    596          {
+   \                     menu_onkey:
+   \   00000000   70402DE9           PUSH     {R4-R6,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+   \   00000008   0150A0E1           MOV      R5,R1
+    597          	MAIN_CSM *csm=MenuGetUserPointer(data);
+   \   0000000C   E00100EF           SWI      +480
+   \   00000010   0060A0E1           MOV      R6,R0
+    598          	MENU_LIST *ml=get_mlitem(csm->mltop, GetCurMenuItem(data));
+   \   00000014   0400A0E1           MOV      R0,R4
+   \   00000018   8F0100EF           SWI      +399
+   \   0000001C   304096E5           LDR      R4,[R6, #+48]
+   \   00000020   0010A0E1           MOV      R1,R0
+   \   00000024   0400A0E1           MOV      R0,R4
+   \   00000028   ........           BL       get_mlitem
+    599          	if(msg->gbsmsg->msg==KEY_DOWN)
+   \   0000002C   041095E5           LDR      R1,[R5, #+4]
+   \   00000030   9330A0E3           MOV      R3,#+147
+   \   00000034   042091E5           LDR      R2,[R1, #+4]
+   \   00000038   403F83E3           ORR      R3,R3,#0x100
+   \   0000003C   030052E1           CMP      R2,R3
+   \   00000040   1200001A           BNE      ??menu_onkey_0
+    600          	{
+    601          		int i=msg->gbsmsg->submess;
+   \   00000044   081091E5           LDR      R1,[R1, #+8]
+    602          		switch(i)
+   \   00000048   012051E2           SUBS     R2,R1,#+1
+   \   0000004C   0800000A           BEQ      ??menu_onkey_1
+   \   00000050   032052E2           SUBS     R2,R2,#+3
+   \   00000054   1000000A           BEQ      ??menu_onkey_2
+   \   00000058   162052E2           SUBS     R2,R2,#+22
+   \   0000005C   0400000A           BEQ      ??menu_onkey_1
+   \   00000060   092052E2           SUBS     R2,R2,#+9
+   \   00000064   0B00000A           BEQ      ??menu_onkey_3
+   \   00000068   072052E2           SUBS     R2,R2,#+7
+   \   0000006C   0400000A           BEQ      ??menu_onkey_4
+   \   00000070   0B0000EA           B        ??menu_onkey_5
+    603          		{
+    604          		case RIGHT_SOFT:
+    605          			return 1;
+    606          		case ENTER_BUTTON:
+    607          		case LEFT_SOFT:
+    608          			if(ml)
+   \                     ??menu_onkey_1:
+   \   00000074   000050E3           CMP      R0,#+0
+   \   00000078   7080BD08           POPEQ    {R4-R6,PC}
+    609          				run_ml(ml);
+   \   0000007C   ........           BL       run_ml
+    610          			return 0;
+   \                     ??menu_onkey_6:
+   \   00000080   020000EA           B        ??menu_onkey_0
+    611          		case '*':
+    612          			ShowMSG(1, (int)COPYRIGHT);
+   \                     ??menu_onkey_4:
+   \   00000084   40109FE5           LDR      R1,??menu_onkey_7  ;; `?<Constant "MyMenu2\\n(c)BingK(bing...">`
+   \   00000088   0100A0E3           MOV      R0,#+1
+   \   0000008C   480100EF           SWI      +328
+    613          			return 0;
+   \                     ??menu_onkey_0:
+   \   00000090   0000A0E3           MOV      R0,#+0
+   \   00000094   7080BDE8           POP      {R4-R6,PC}
+    614          		case '#':
+    615          			run_mymenu2_editor();
+   \                     ??menu_onkey_3:
+   \   00000098   ........           BL       run_mymenu2_editor
+    616          			return 1;
+   \                     ??menu_onkey_2:
+   \   0000009C   0100A0E3           MOV      R0,#+1
+   \   000000A0   7080BDE8           POP      {R4-R6,PC}
+    617          		}
+    618          		if(i>='0'&&i<='9')
+   \                     ??menu_onkey_5:
+   \   000000A4   300051E3           CMP      R1,#+48
+   \   000000A8   F8FFFFBA           BLT      ??menu_onkey_0
+   \   000000AC   3A0051E3           CMP      R1,#+58
+   \   000000B0   F6FFFFAA           BGE      ??menu_onkey_0
+    619          		{
+    620          			if(i=='0')
+   \   000000B4   300051E3           CMP      R1,#+48
+    621          				i=9;
+   \   000000B8   0910A003           MOVEQ    R1,#+9
+    622          			else
+    623          				i-='1';
+   \   000000BC   31104112           SUBNE    R1,R1,#+49
+    624          			ml=get_mlitem(csm->mltop, i);
+   \   000000C0   0400A0E1           MOV      R0,R4
+   \   000000C4   ........           BL       get_mlitem
+    625          			if(ml)
+   \   000000C8   E9FFFFEA           B        ??menu_onkey_1
+   \                     ??menu_onkey_7:
+   \   000000CC   ........           DC32     `?<Constant "MyMenu2\\n(c)BingK(bing...">`
+    626          				run_ml(ml);
+    627          			return 0;
+    628          		}
+    629          		//if(i=='*')
+    630          		//{
+    631          		//	ShowMSG(1, (int)CP_MSG);
+    632          		//	return 0;
+    633          		//}
+    634          	}
+    635          	return 0;
+    636          }
+    637          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    638          void menu_ghook(void *data, int cmd)
+    639          {
+   \                     menu_ghook:
+   \   00000000   00402DE9           PUSH     {LR}
+    640          	if (cmd==0x0A)
+   \   00000004   0A0051E3           CMP      R1,#+10
+   \   00000008   0080BD18           POPNE    {PC}
+    641          		DisableIDLETMR();
+   \   0000000C   7F0100EF           SWI      +383
+    642          }
+   \   00000010   0080BDE8           POP      {PC}             ;; return
+    643          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    644          void menu_iconhndl(void *data, int curitem, void *unk)
+    645          {
+   \                     menu_iconhndl:
+   \   00000000   F0412DE9           PUSH     {R4-R8,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+   \   00000008   0150A0E1           MOV      R5,R1
+    646          	MENU_LIST *ml;
+    647          	MAIN_CSM *csm=MenuGetUserPointer(data);
+   \   0000000C   E00100EF           SWI      +480
+   \   00000010   0060A0E1           MOV      R6,R0
+    648          	void *item=AllocMenuItem(data);
+   \   00000014   0400A0E1           MOV      R0,R4
+   \   00000018   970100EF           SWI      +407
+   \   0000001C   0070A0E1           MOV      R7,R0
+    649          	ml=get_mlitem(csm->mltop, curitem);
+   \   00000020   300096E5           LDR      R0,[R6, #+48]
+   \   00000024   0510A0E1           MOV      R1,R5
+   \   00000028   ........           BL       get_mlitem
+   \   0000002C   0060B0E1           MOVS     R6,R0
+    650          	WSHDR *ws;
+    651          	if(ml)
+   \   00000030   0800000A           BEQ      ??menu_iconhndl_0
+    652          	{
+    653          		ws=AllocMenuWS(data, ml->name_len+2);
+   \   00000034   080096E5           LDR      R0,[R6, #+8]
+   \   00000038   021080E2           ADD      R1,R0,#+2
+   \   0000003C   0400A0E1           MOV      R0,R4
+   \   00000040   980100EF           SWI      +408
+    654          		utf8_2ws(ws, ml->name, ml->name_len);
+   \   00000044   082096E5           LDR      R2,[R6, #+8]
+   \   00000048   041096E5           LDR      R1,[R6, #+4]
+   \   0000004C   0080A0E1           MOV      R8,R0
+   \   00000050   E30100EF           SWI      +483
+   \   00000054   050000EA           B        ??menu_iconhndl_1
+    655          	}
+    656          	else
+    657          	{
+    658          		ws=AllocMenuWS(data,16);
+   \                     ??menu_iconhndl_0:
+   \   00000058   1010A0E3           MOV      R1,#+16
+   \   0000005C   0400A0E1           MOV      R0,R4
+   \   00000060   980100EF           SWI      +408
+    659          		wsprintf(ws,ERR_STR);
+   \   00000064   1C109FE5           LDR      R1,??menu_iconhndl_2  ;; `?<Constant "Error!">`
+   \   00000068   0080A0E1           MOV      R8,R0
+   \   0000006C   240100EF           SWI      +292
+    660          	}
+    661          	#ifdef VKP
+    662          	SetMenuItemIconArray(data, item, MenuItemIcon);
+    663          	#endif
+    664          	SetMenuItemText(data,item,ws,curitem);
+   \                     ??menu_iconhndl_1:
+   \   00000070   0530A0E1           MOV      R3,R5
+   \   00000074   0820A0E1           MOV      R2,R8
+   \   00000078   0710A0E1           MOV      R1,R7
+   \   0000007C   0400A0E1           MOV      R0,R4
+   \   00000080   9A0100EF           SWI      +410
+    665          }
+   \   00000084   F081BDE8           POP      {R4-R8,PC}       ;; return
+   \                     ??menu_iconhndl_2:
+   \   00000088   ........           DC32     `?<Constant "Error!">`
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     menuheader:
+   \   00000000   000000008300       DC16 0, 0, 131, 22
+   \              1600        
+   \   00000008   00000000....       DC32 0H, `?<Constant "MyMenu2">`, 2147483647
+   \              ....FFFFFF7F
+    666          
+    667          const MENU_DESC main_menu=
+   \                     main_menu:
+   \   00000014   08000000....       DC32 8, menu_onkey, menu_ghook, 0H, menusoftkeys, menu_skt, 16
+   \              ............
+   \              00000000....
+   \              ............
+   \              10000000    
+   \   00000030   ........0000       DC32 menu_iconhndl, 0H, 0H, 0
+   \              000000000000
+   \              00000000    
+    668          {
+    669          	8,
+    670          	menu_onkey,
+    671          	menu_ghook,
+    672          	NULL,
+    673          	menusoftkeys,
+    674          	&menu_skt,
+    675          #ifdef	VKP
+    676          	0x11,
+    677          #else
+    678          	0x10,
+    679          #endif
+    680          	menu_iconhndl,
+    681          	NULL,   //Items
+    682          	NULL,   //Procs
+    683          	0   //n
+    684          };
+    685          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    686          void maincsm_oncreate(CSM_RAM *data)
+    687          {
+   \                     maincsm_oncreate:
+   \   00000000   10402DE9           PUSH     {R4,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+    688          	MAIN_CSM *csm=(MAIN_CSM*)data;
+    689          	csm->buf=malloc(BUF_SIZE);
+   \   00000008   800DA0E3           MOV      R0,#+8192
+   \   0000000C   140000EF           SWI      +20
+   \   00000010   2C0084E5           STR      R0,[R4, #+44]
+    690          	csm->mltop=0; //必须初始化
+   \   00000014   0000A0E3           MOV      R0,#+0
+   \   00000018   300084E5           STR      R0,[R4, #+48]
+    691          	csm->gui_id=CreateMenu(0, 0, &main_menu, &menuheader, 0, read_cfg(csm), csm, 0);
+   \   0000001C   0400A0E1           MOV      R0,R4
+   \   00000020   ........           BL       read_cfg
+   \   00000024   30109FE5           LDR      R1,??maincsm_oncreate_0  ;; menuheader
+   \   00000028   0020A0E3           MOV      R2,#+0
+   \   0000002C   04002DE9           PUSH     {R2}
+   \   00000030   0130A0E1           MOV      R3,R1
+   \   00000034   0420A0E1           MOV      R2,R4
+   \   00000038   04002DE9           PUSH     {R2}
+   \   0000003C   01002DE9           PUSH     {R0}
+   \   00000040   0000A0E3           MOV      R0,#+0
+   \   00000044   01002DE9           PUSH     {R0}
+   \   00000048   142081E2           ADD      R2,R1,#+20
+   \   0000004C   0010A0E3           MOV      R1,#+0
+   \   00000050   520100EF           SWI      +338
+   \   00000054   280084E5           STR      R0,[R4, #+40]
+    692          }
+   \   00000058   1F80BDE8           POP      {R0-R4,PC}       ;; return
+   \                     ??maincsm_oncreate_0:
+   \   0000005C   ........           DC32     menuheader
+    693          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    694          int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
+    695          {
+    696          	MAIN_CSM *csm=(MAIN_CSM*)data;
+    697          	if ((msg->msg==MSG_GUI_DESTROYED)&&((int)msg->data0==csm->gui_id))
+   \                     maincsm_onmessage:
+   \   00000000   042091E5           LDR      R2,[R1, #+4]
+   \   00000004   0E30A0E3           MOV      R3,#+14
+   \   00000008   643C83E3           ORR      R3,R3,#0x6400
+   \   0000000C   030052E1           CMP      R2,R3
+   \   00000010   0400001A           BNE      ??maincsm_onmessage_0
+   \   00000014   0C1091E5           LDR      R1,[R1, #+12]
+   \   00000018   282090E5           LDR      R2,[R0, #+40]
+   \   0000001C   020051E1           CMP      R1,R2
+    698          	{
+    699          		csm->csm.state=-3;
+   \   00000020   0210E003           MVNEQ    R1,#+2
+   \   00000024   10108005           STREQ    R1,[R0, #+16]
+    700          	}
+    701          	return(1);
+   \                     ??maincsm_onmessage_0:
+   \   00000028   0100A0E3           MOV      R0,#+1
+   \   0000002C   1EFF2FE1           BX       LR               ;; return
+    702          }
+    703          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    704          void Killer(MAIN_CSM *csm)
+    705          {
+   \                     Killer:
+   \   00000000   00402DE9           PUSH     {LR}
+    706          #ifdef VKP
+    707          /*	buf=0; //退出时将RAM地址置零
+    708          	mltop=0;*/
+    709          #else
+    710          	extern void *ELF_BEGIN;
+    711          	extern void kill_data(void *p, void (*func_p)(void *));
+    712          	kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
+   \   00000004   158000EF           SWI      +32789
+   \   00000008   0010A0E1           MOV      R1,R0
+   \   0000000C   04009FE5           LDR      R0,??Killer_0    ;; ELF_BEGIN
+   \   00000010   0040BDE8           POP      {LR}             ;; Pop
+   \   00000014   ........           _BF      kill_data,??kill_data??rA  ;; tailcall
+   \                     ??Killer_0:
+   \   00000018   ........           DC32     ELF_BEGIN
+    713          #endif
+    714          }
+    715          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    716          void maincsm_onclose(CSM_RAM *data)
+    717          {
+   \                     maincsm_onclose:
+   \   00000000   10402DE9           PUSH     {R4,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+    718          	MAIN_CSM *csm=(MAIN_CSM*)data;
+    719          	mfree(csm->buf);
+   \   00000008   2C0094E5           LDR      R0,[R4, #+44]
+   \   0000000C   150000EF           SWI      +21
+    720          	FreeMenuList(csm);
+   \   00000010   0400A0E1           MOV      R0,R4
+   \   00000014   ........           BL       FreeMenuList
+    721          #ifndef	VKP
+    722          	SUBPROC((void *)Killer,csm);
+   \   00000018   08009FE5           LDR      R0,??maincsm_onclose_0  ;; Killer
+   \   0000001C   0410A0E1           MOV      R1,R4
+   \   00000020   710100EF           SWI      +369
+    723          #endif
+    724          }
+   \   00000024   1080BDE8           POP      {R4,PC}          ;; return
+   \                     ??maincsm_onclose_0:
+   \   00000028   ........           DC32     Killer
+    725          
+
+   \                                 In segment DATA_C, align 4, align-sorted
+    726          const int minus11=-11;
+   \                     minus11:
+   \   00000000   F5FFFFFF           DC32 -11
+
+   \                                 In segment DATA_C, align 4, align-sorted
+    727          const unsigned short maincsm_name_body[16]={7,'M', 'y', 'M', 'e', 'n', 'u', '2'};
+   \                     maincsm_name_body:
+   \   00000000   07004D007900       DC16 7, 77, 121, 77, 101, 110, 117, 50
+   \              4D0065006E00
+   \              75003200    
+   \   00000010   000000000000       DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              000000000000
+   \              00000000    
+    728          
+    729          const struct
+    730          {
+    731          	CSM_DESC maincsm;
+    732          	WSHDR maincsm_name;
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "MyMenu2">`:
+   \   00000000   4D794D656E75       DC8 "MyMenu2"
+   \              3200        
+    733          }MAINCSM =
+   \                     MAINCSM:
+   \   00000008   ............       DC32 maincsm_onmessage, maincsm_oncreate, 0, 0, 0, 0, maincsm_onclose
+   \              ....00000000
+   \              000000000000
+   \              000000000000
+   \              ........    
+   \   00000024   340000000100       DC32 52, 1, minus11, maincsm_name_body, 55AACCCCH, 3333AA55H, 0
+   \              0000........
+   \              ........CCCC
+   \              AA5555AA3333
+   \              00000000    
+   \   00000040   8B00               DC16 139
+   \   00000042   0000               DC8 0, 0
+    734          {
+    735          	{
+    736          		maincsm_onmessage,
+    737          		maincsm_oncreate,
+    738          #ifdef NEWSGOLD
+    739          		0,
+    740          		0,
+    741          		0,
+    742          		0,
+    743          #endif
+    744          		maincsm_onclose,
+    745          		sizeof(MAIN_CSM),
+    746          		1,
+    747          		&minus11
+    748          	},
+    749          	{
+    750          		(unsigned short *)maincsm_name_body,
+    751          		NAMECSM_MAGIC1,
+    752          		NAMECSM_MAGIC2,
+    753          		0x0,
+    754          		139
+    755          	}
+    756          };
+    757          
+    758          #ifndef VKP
+
+   \                                 In segment CODE, align 4, keep-with-next
+    759          void UpdateCSMname(void)
+    760          {
+    761          	wsprintf((WSHDR *)(&MAINCSM.maincsm_name), ELFNAME);
+   \                     UpdateCSMname:
+   \   00000000   10009FE5           LDR      R0,??UpdateCSMname_0  ;; `?<Constant "MyMenu2">`
+   \   00000004   00402DE9           PUSH     {LR}
+   \   00000008   0010A0E1           MOV      R1,R0
+   \   0000000C   300080E2           ADD      R0,R0,#+48
+   \   00000010   240100EF           SWI      +292
+    762          }
+   \   00000014   0080BDE8           POP      {PC}             ;; return
+   \                     ??UpdateCSMname_0:
+   \   00000018   ........           DC32     `?<Constant "MyMenu2">`
+    763          #endif
+    764          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    765          int main(void)
+    766          {
+   \                     main:
+   \   00000000   00402DE9           PUSH     {LR}
+   \   00000004   34D04DE2           SUB      SP,SP,#+52
+    767          #ifdef VKP
+    768          /*	if(buf||mltop) //检测是否已经有mymenu启动
+    769          	{
+    770          		MsgBoxError(1, (int)ERR_STR);
+    771          		return 0;
+    772          	}*/
+    773          #endif
+    774          	char dummy[sizeof(MAIN_CSM)];
+    775          	zeromem(dummy, sizeof(MAIN_CSM));
+   \   00000008   3410A0E3           MOV      R1,#+52
+   \   0000000C   0D00A0E1           MOV      R0,SP
+   \   00000010   1D0100EF           SWI      +285
+    776          #ifndef VKP
+    777          	UpdateCSMname();
+   \   00000014   ........           BL       UpdateCSMname
+    778          #endif
+    779          	LockSched();
+   \   00000018   460100EF           SWI      +326
+    780          	CreateCSM(&MAINCSM.maincsm,dummy,0);
+   \   0000001C   18009FE5           LDR      R0,??main_0      ;; `?<Constant "MyMenu2">` + 8
+   \   00000020   0020A0E3           MOV      R2,#+0
+   \   00000024   0D10A0E1           MOV      R1,SP
+   \   00000028   070100EF           SWI      +263
+    781          	UnlockSched();
+   \   0000002C   470100EF           SWI      +327
+    782          	return 0;
+   \   00000030   0000A0E3           MOV      R0,#+0
+   \   00000034   34D08DE2           ADD      SP,SP,#+52
+   \   00000038   0080BDE8           POP      {PC}             ;; return
+   \                     ??main_0:
+   \   0000003C   ........           DC32     `?<Constant "MyMenu2">` + 8
+    783          }
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\321\\241\\324\\361">`:
+   \   00000000   D1A1D4F100         DC8 "\321\241\324\361"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\300\\353\\277\\252">`:
+   \   00000000   C0EBBFAA00         DC8 "\300\353\277\252"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "0:\\\\ZBin\\\\etc\\\\MyMenu2.cfg">`:
+   \   00000000   303A5C5A4269       DC8 "0:\\ZBin\\etc\\MyMenu2.cfg"
+   \              6E5C6574635C
+   \              4D794D656E75
+   \              322E63666700
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "0:\\\\ZBin\\\\utilities\\\\MyM...">`:
+   \   00000000   303A5C5A4269       DC8 "0:\\ZBin\\utilities\\MyMenu2_Editor.elf"
+   \              6E5C7574696C
+   \              69746965735C
+   \              4D794D656E75
+   \              325F45646974
+   \              6F722E656C66
+   \              00          
+   \   00000025   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "MyMenu2\\n(c)BingK(bing...">`:
+   \   00000000   4D794D656E75       DC8 "MyMenu2\012(c)BingK(binghelingxi)"
+   \              320A28632942
+   \              696E674B2862
+   \              696E6768656C
+   \              696E67786929
+   \              00          
+   \   0000001F   00                 DC8 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "Error!">`:
+   \   00000000   4572726F7221       DC8 "Error!"
+   \              00          
+   \   00000007   00                 DC8 0
+    784          
+
+   Maximum stack usage in bytes:
+
+     Function               CSTACK
+     --------               ------
+     AddtoMenuList             28
+     CheckType                  4
+     FreeMenuList              12
+     GetFunctionPointByName    16
+     Killer                     4
+     UpdateCSMname              4
+     chr2num                    0
+     get_mlitem                 0
+     gotoLineEnd                0
+     gotoRealPos                0
+     main                      56
+     maincsm_onclose            8
+     maincsm_oncreate          24
+     maincsm_onmessage          0
+     menu_ghook                 4
+     menu_iconhndl             24
+     menu_onkey                16
+     read_cfg                  72
+     run_address                4
+     run_file                  12
+     run_folder               116
+     run_ml                    48
+     run_mymenu2_editor        52
+     run_shortcut               4
+     strchrinline               0
+     strncmpNoCase              4
+     strpath_2ws              268
+     utf8_2str                  0
+
+
+   Segment part sizes:
+
+     Function/Label                 Bytes
+     --------------                 -----
+     menusoftkeys                     12
+     menu_sk                          24
+     menu_skt                          8
+     utf8_2str                       120
+     AddtoMenuList                   116
+     FreeMenuList                     48
+     get_mlitem                       32
+     strchrinline                     48
+     gotoRealPos                      32
+     gotoLineEnd                      32
+     CheckType                        92
+     read_cfg                        540
+     strncmpNoCase                    88
+     GetFunctionPointByName           92
+     run_address                      20
+     run_shortcut                     16
+     chr2num                          68
+     run_ml                          260
+     strpath_2ws                      72
+     run_folder                      112
+     run_file                         60
+     run_mymenu2_editor              104
+     menu_onkey                      208
+     menu_ghook                       20
+     menu_iconhndl                   140
+     menuheader                       64
+     maincsm_oncreate                 96
+     maincsm_onmessage                48
+     Killer                           28
+     maincsm_onclose                  44
+     minus11                           4
+     maincsm_name_body                32
+     ?<Constant "MyMenu2">            68
+     UpdateCSMname                    28
+     main                             64
+     ?<Constant "\321\241\324\361">    8
+     ?<Constant "\300\353\277\252">    8
+     ?<Constant "0:\\ZBin\\etc\\MyMenu2.cfg">
+                                      24
+     ?<Constant "0:\\ZBin\\utilities\\MyM...">
+                                      40
+     ?<Constant "MyMenu2\n(c)BingK(bing...">
+                                      32
+     ?<Constant "Error!">              8
+      Others                         124
+
+ 
+ 2 752 bytes in segment CODE
+   332 bytes in segment DATA_C
+ 
+ 2 628 bytes of CODE  memory (+ 124 bytes shared)
+   332 bytes of CONST memory
+
+Errors: none
+Warnings: none

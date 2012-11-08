@@ -52,7 +52,7 @@ void writetolog(){
   RAMNET Res;
   Res = GetNetParams(); 
   char *logfile = malloc(128);;
-  sprintf(logfile,"%s\\logfile.txt",gps_dir);
+  sprintf(logfile,"%s\\Gps.txt",gps_dir);
   hFile = fopen(logfile,A_WriteOnly+A_Append+A_Create,P_WRITE,&errcode);
 WSHDR *ws5 = AllocWS(256);
 TDate date; TTime time;
@@ -60,11 +60,12 @@ GetDateTime(&date,&time);
 char data[128];
 if (!(Res.ci==0 || Res.lac==0))
 {
-  sprintf(data,"[%02d-%02d-%04d - %d:%02d:%02d] Network change: [Cell ID:%u, LAC:%u]\r\n",date.day, date.month,date.year,time.hour,time.min,Res.ci,Res.lac);
+//  sprintf(data,"[%02d-%02d-%04d - %d:%02d:%02d] Network change: [Cell ID:%u, LAC:%u]\r\n",date.day, date.month,date.year,time.hour,time.min,Res.ci,Res.lac);
+      sprintf(data,"%04d/%02d/%02d %02d:%02d:%02d LAC:%u,Cell:%u\r\n",date.year,date.month,date.day,time.hour,time.min,time.sec,Res.lac,Res.ci);
 }
-else {
-  sprintf(data,"[%02d-%02d-%04d - %d:%02d:%02d] Net Search \r\n",date.day, date.month,date.year,time.hour,time.min);
-     }
+//else { Winming
+//  sprintf(data,"[%02d-%02d-%04d - %d:%02d:%02d] Net Search \r\n",date.day, date.month,date.year,time.hour,time.min);
+//     }
   str_2ws(ws5,data,1000);
     unsigned int len = wstrlen(ws5);//length learn? zapisannog? 
     fwrite(hFile,data,len,&errcode);
@@ -113,7 +114,7 @@ if(hFile==-1)
 {
       char dir[128];
       sprintf(dir,"%s\\%u",gps_dir,Res.lac);
-      mkdir(dir, &errcode);
+      mkdir(dir, &errcode); 
       Savenew();
 }
 else{
@@ -154,7 +155,7 @@ void load_name()
     //ShowMSG(1,(int)"naiden? new network!");
     if(wrnew)
     {//write new id
-        Savenew();//create file 
+       // Savenew();//create file winming
         load_name();//run? anew
     }
     else
@@ -202,35 +203,56 @@ void check()
   Res0 = GetNetParams(); 
   if (Res0.ci!=oldci || Res0.lac!=oldlac)
   { 
-  oldlac=Res0.lac; oldci=Res0.ci;
-  writetolog();
+    if (!(Res0.ci==0 || Res0.lac==0))
+      {
+         unsigned int errcode;
+         volatile int hFile = -1;
+         char *logfile = malloc(128);
+         sprintf(logfile,"%s\\Gps.txt",gps_dir);
+         hFile = fopen(logfile,A_WriteOnly+A_Append+A_Create,P_WRITE,&errcode);
+         WSHDR *ws5 = AllocWS(256);
+         TDate date; TTime time;
+         GetDateTime(&date,&time);
+         char data[128];
+         sprintf(data,"%04d/%02d/%02d %02d:%02d:%02d LAC:%u Cell:%u\r\n",date.year,date.month,date.day,time.hour,time.min,time.sec,Res0.lac,Res0.ci);
+         str_2ws(ws5,data,1000);
+         unsigned int len = wstrlen(ws5);//length learn? zapisannog? 
+         fwrite(hFile,data,len,&errcode);
+         FreeWS(ws5);
+         fclose(hFile,&errcode);
+         oldlac=Res0.lac; oldci=Res0.ci;
+       } 
+//  writetolog();
+  
+  
   }
   GBS_StartTimerProc(&update_tmr,262*cfgupdate_time,check);
 }
 
 int main()
 {
-  unsigned int err;
+//  unsigned int err;
   InitConfig();
   
-  if(clrlog)
-  {
-    char *logfile0 = malloc(128);;
-    sprintf(logfile0,"%s\\logfile.txt",gps_dir);
-    unlink(logfile0,&err);
-  }
+ //winming if(clrlog)
+//winming  {
+//    char *logfile0 = malloc(128);;
+//    sprintf(logfile0,"%s\\Gps.txt",gps_dir);
+//    unlink(logfile0,&err);
+//winming  }
   
-  if(!isdir(gps_dir,&err)){//if no folder?   
-    mkdir(gps_dir,&err);//create it 
-  }
+//  if(!isdir(gps_dir,&err)){//if no folder?   
+//    mkdir(gps_dir,&err);//create it winming
+//  }
 //  if(err){ ShowDialog_Error(1,(int)"happened? error !");}
   
-  CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);//Mouth at home? Screen savers?
-  memcpy(&icsmd,icsm->constr,sizeof(icsmd));//
-  old_icsm_onMessage=icsmd.onMessage;//
-  icsmd.onMessage=MyIDLECSM_onMessage;// 
-  icsm->constr=&icsmd;//
+//  CSM_RAM *icsm=FindCSMbyID(CSM_root()->idle_id);//Mouth at home? Screen savers?
+//  memcpy(&icsmd,icsm->constr,sizeof(icsmd));//
+//old_icsm_onMessage=icsmd.onMessage;//
+//  icsmd.onMessage=MyIDLECSM_onMessage;// 
+//  icsm->constr=&icsmd;//
   
-  if (wrlog) GBS_StartTimerProc(&update_tmr,262*cfgupdate_time,check);//write? Law?  //  GBS_StartTimerProc(&update_tmr,262*60,InitConfig);
+//  if (wrlog)
+    GBS_StartTimerProc(&update_tmr,262*cfgupdate_time,check);//write? Law?  //  GBS_StartTimerProc(&update_tmr,262*60,InitConfig);
   return 0;
 }

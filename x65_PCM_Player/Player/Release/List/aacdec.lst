@@ -1,0 +1,902 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    14/Feb/2012  15:39:33 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDE #
+#                       C\aacdec.c                                           #
+#    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDE #
+#                       C\aacdec.c -D NDEBUG -lC D:\SVN\SieELF\SieELF\x65_PC #
+#                       M_Player\Player\Release\List\ -lA                    #
+#                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\R #
+#                       elease\Obj\ -s9 --cpu_mode arm --endian little       #
+#                       --cpu ARM926EJ-S --stack_align 4 --interwork -e      #
+#                       --fpu None --dlib_config "D:\Program                 #
+#                       Files\IAR\Embedded Workbench 4.0                     #
+#                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude       #
+#                       swilib.h -I "D:\Program Files\IAR\Embedded           #
+#                       Workbench 4.0 Evaluation\ARM\INC\"                   #
+#                       --inline_threshold=16                                #
+#    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\aacdec.lst                                       #
+#    Object file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\O #
+#                       bj\aacdec.r79                                        #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\aacdec.c
+      1          /* ***** BEGIN LICENSE BLOCK *****  
+      2           * Source last modified: $Id: aacdec.c,v 1.1 2005/02/26 01:47:31 jrecker Exp $ 
+      3           *   
+      4           * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+      5           *       
+      6           * The contents of this file, and the files included with this file, 
+      7           * are subject to the current version of the RealNetworks Public 
+      8           * Source License (the "RPSL") available at 
+      9           * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+     10           * the file under the current version of the RealNetworks Community 
+     11           * Source License (the "RCSL") available at 
+     12           * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+     13           * will apply. You may also obtain the license terms directly from 
+     14           * RealNetworks.  You may not use this file except in compliance with 
+     15           * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+     16           * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+     17           * the rights, obligations and limitations governing use of the 
+     18           * contents of the file. 
+     19           *   
+     20           * This file is part of the Helix DNA Technology. RealNetworks is the 
+     21           * developer of the Original Code and owns the copyrights in the 
+     22           * portions it created. 
+     23           *   
+     24           * This file, and the files included with this file, is distributed 
+     25           * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+     26           * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+     27           * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+     28           * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+     29           * ENJOYMENT OR NON-INFRINGEMENT. 
+     30           *  
+     31           * Technology Compatibility Kit Test Suite(s) Location:  
+     32           *    http://www.helixcommunity.org/content/tck  
+     33           *  
+     34           * Contributor(s):  
+     35           *   
+     36           * ***** END LICENSE BLOCK ***** */  
+     37          
+     38          /**************************************************************************************
+     39           * Fixed-point HE-AAC decoder
+     40           * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+     41           * February 2005
+     42           *
+     43           * aacdec.c - platform-independent top level decoder API
+     44           **************************************************************************************/
+     45          
+     46          #include "aaccommon.h"
+     47          
+     48          /**************************************************************************************
+     49           * Function:    AACInitDecoder
+     50           *
+     51           * Description: allocate memory for platform-specific data
+     52           *              clear all the user-accessible fields
+     53           *              initialize SBR decoder if enabled
+     54           *
+     55           * Inputs:      none
+     56           *
+     57           * Outputs:     none
+     58           *
+     59           * Return:      handle to AAC decoder instance, 0 if malloc fails
+     60           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+     61          HAACDecoder AACInitDecoder(void)
+     62          {
+   \                     AACInitDecoder:
+   \   00000000   00402DE9           PUSH     {LR}
+     63          	AACDecInfo *aacDecInfo;
+     64          
+     65          	aacDecInfo = aacAllocateBuffers();
+   \   00000004   ........           _BLF     aacAllocateBuffers,??aacAllocateBuffers??rA
+     66          	if (!aacDecInfo)
+     67          		return 0;
+     68          
+     69          #ifdef AAC_ENABLE_SBR
+     70          	if (InitSBR(aacDecInfo)) {
+     71          		AACFreeDecoder(aacDecInfo);
+     72          		return 0;
+     73          	}
+     74          #endif
+     75          
+     76          	return (HAACDecoder)aacDecInfo;
+   \   00000008   0080BDE8           POP      {PC}             ;; return
+     77          }
+     78          
+     79          /**************************************************************************************
+     80           * Function:    AACFreeDecoder
+     81           *
+     82           * Description: free platform-specific data allocated by AACInitDecoder
+     83           *              free SBR decoder if enabled
+     84           *
+     85           * Inputs:      valid AAC decoder instance pointer (HAACDecoder)
+     86           *
+     87           * Outputs:     none
+     88           *
+     89           * Return:      none
+     90           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+     91          void AACFreeDecoder(HAACDecoder hAACDecoder)
+     92          {
+   \                     AACFreeDecoder:
+   \   00000000   00402DE9           PUSH     {LR}
+     93          	AACDecInfo *aacDecInfo = (AACDecInfo *)hAACDecoder;
+     94          
+     95          	if (!aacDecInfo)
+   \   00000004   000050E3           CMP      R0,#+0
+   \   00000008   0080BD08           POPEQ    {PC}
+     96          		return;
+     97          
+     98          #ifdef AAC_ENABLE_SBR
+     99          	FreeSBR(aacDecInfo);
+    100          #endif
+    101          	aacFreeBuffers(aacDecInfo);
+   \   0000000C   ........           _BLF     aacFreeBuffers,??aacFreeBuffers??rA
+    102          }
+   \   00000010   0080BDE8           POP      {PC}             ;; return
+    103          
+    104          /**************************************************************************************
+    105           * Function:    AACFindSyncWord
+    106           *
+    107           * Description: locate the next byte-alinged sync word in the raw AAC stream
+    108           *
+    109           * Inputs:      buffer to search for sync word
+    110           *              max number of bytes to search in buffer
+    111           *
+    112           * Outputs:     none
+    113           *
+    114           * Return:      offset to first sync word (bytes from start of buf)
+    115           *              -1 if sync not found after searching nBytes
+    116           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    117          int AACFindSyncWord(unsigned char *buf, int nBytes)
+    118          {
+    119          	int i;
+    120          
+    121          	/* find byte-aligned syncword (12 bits = 0xFFF) */
+    122          	for (i = 0; i < nBytes - 1; i++) {
+   \                     AACFindSyncWord:
+   \   00000000   0020A0E3           MOV      R2,#+0
+   \   00000004   011041E2           SUB      R1,R1,#+1
+   \   00000008   000000EA           B        ??AACFindSyncWord_0
+   \                     ??AACFindSyncWord_1:
+   \   0000000C   012082E2           ADD      R2,R2,#+1
+   \                     ??AACFindSyncWord_0:
+   \   00000010   010052E1           CMP      R2,R1
+   \   00000014   090000AA           BGE      ??AACFindSyncWord_2
+    123          		if ( (buf[i+0] & SYNCWORDH) == SYNCWORDH && (buf[i+1] & SYNCWORDL) == SYNCWORDL )
+   \   00000018   0030D2E7           LDRB     R3,[R2, +R0]
+   \   0000001C   FF0053E3           CMP      R3,#+255
+   \   00000020   F9FFFF1A           BNE      ??AACFindSyncWord_1
+   \   00000024   003082E0           ADD      R3,R2,R0
+   \   00000028   0130D3E5           LDRB     R3,[R3, #+1]
+   \   0000002C   F03003E2           AND      R3,R3,#0xF0
+   \   00000030   F00053E3           CMP      R3,#+240
+   \   00000034   F4FFFF1A           BNE      ??AACFindSyncWord_1
+    124          			return i;
+   \   00000038   0200A0E1           MOV      R0,R2
+   \   0000003C   1EFF2FE1           BX       LR
+    125          	}
+    126          	
+    127          	return -1;
+   \                     ??AACFindSyncWord_2:
+   \   00000040   0000E0E3           MVN      R0,#+0
+   \   00000044   1EFF2FE1           BX       LR               ;; return
+    128          }
+    129          
+    130          /**************************************************************************************
+    131           * Function:    AACGetLastFrameInfo
+    132           *
+    133           * Description: get info about last AAC frame decoded (number of samples decoded, 
+    134           *                sample rate, bit rate, etc.)
+    135           *
+    136           * Inputs:      valid AAC decoder instance pointer (HAACDecoder)
+    137           *              pointer to AACFrameInfo struct
+    138           *
+    139           * Outputs:     filled-in AACFrameInfo struct
+    140           *
+    141           * Return:      none
+    142           *
+    143           * Notes:       call this right after calling AACDecode()
+    144           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    145          void AACGetLastFrameInfo(HAACDecoder hAACDecoder, AACFrameInfo *aacFrameInfo)
+    146          {
+    147          	AACDecInfo *aacDecInfo = (AACDecInfo *)hAACDecoder;
+    148          
+    149          	if (!aacDecInfo) {
+   \                     AACGetLastFrameInfo:
+   \   00000000   000050E3           CMP      R0,#+0
+   \   00000004   0800001A           BNE      ??AACGetLastFrameInfo_0
+    150          		aacFrameInfo->bitRate =       0;
+   \   00000008   000081E5           STR      R0,[R1, #+0]
+    151          		aacFrameInfo->nChans =        0;
+   \   0000000C   040081E5           STR      R0,[R1, #+4]
+    152          		aacFrameInfo->sampRateCore =  0;
+   \   00000010   080081E5           STR      R0,[R1, #+8]
+    153          		aacFrameInfo->sampRateOut =   0;
+   \   00000014   0C0081E5           STR      R0,[R1, #+12]
+    154          		aacFrameInfo->bitsPerSample = 0;
+   \   00000018   100081E5           STR      R0,[R1, #+16]
+    155          		aacFrameInfo->outputSamps =   0;
+   \   0000001C   140081E5           STR      R0,[R1, #+20]
+    156          		aacFrameInfo->profile =       0;
+   \   00000020   180081E5           STR      R0,[R1, #+24]
+    157          		aacFrameInfo->tnsUsed =       0;
+   \   00000024   1C0081E5           STR      R0,[R1, #+28]
+    158          		aacFrameInfo->pnsUsed =       0;
+   \   00000028   1B0000EA           B        ??AACGetLastFrameInfo_1
+    159          	} else {
+    160          		aacFrameInfo->bitRate =       aacDecInfo->bitRate;
+   \                     ??AACGetLastFrameInfo_0:
+   \   0000002C   3C2090E5           LDR      R2,[R0, #+60]
+   \   00000030   002081E5           STR      R2,[R1, #+0]
+    161          		aacFrameInfo->nChans =        aacDecInfo->nChans;
+   \   00000034   402090E5           LDR      R2,[R0, #+64]
+   \   00000038   042081E5           STR      R2,[R1, #+4]
+    162          		aacFrameInfo->sampRateCore =  aacDecInfo->sampRate;
+   \   0000003C   442090E5           LDR      R2,[R0, #+68]
+   \   00000040   082081E5           STR      R2,[R1, #+8]
+    163          		aacFrameInfo->sampRateOut =   aacDecInfo->sampRate * (aacDecInfo->sbrEnabled ? 2 : 1);
+   \   00000044   502090E5           LDR      R2,[R0, #+80]
+   \   00000048   443090E5           LDR      R3,[R0, #+68]
+   \   0000004C   000052E3           CMP      R2,#+0
+   \   00000050   0220A013           MOVNE    R2,#+2
+   \   00000054   0120A003           MOVEQ    R2,#+1
+   \   00000058   920303E0           MUL      R3,R2,R3
+    164          		aacFrameInfo->bitsPerSample = 16;
+   \   0000005C   1020A0E3           MOV      R2,#+16
+   \   00000060   0C3081E5           STR      R3,[R1, #+12]
+   \   00000064   102081E5           STR      R2,[R1, #+16]
+    165          		aacFrameInfo->outputSamps =   aacDecInfo->nChans * AAC_MAX_NSAMPS * (aacDecInfo->sbrEnabled ? 2 : 1);
+   \   00000068   502090E5           LDR      R2,[R0, #+80]
+   \   0000006C   403090E5           LDR      R3,[R0, #+64]
+   \   00000070   000052E3           CMP      R2,#+0
+   \   00000074   0220A013           MOVNE    R2,#+2
+   \   00000078   0120A003           MOVEQ    R2,#+1
+   \   0000007C   920303E0           MUL      R3,R2,R3
+   \   00000080   0325A0E1           LSL      R2,R3,#+10
+   \   00000084   142081E5           STR      R2,[R1, #+20]
+    166          		aacFrameInfo->profile =       aacDecInfo->profile;
+   \   00000088   482090E5           LDR      R2,[R0, #+72]
+   \   0000008C   182081E5           STR      R2,[R1, #+24]
+    167          		aacFrameInfo->tnsUsed =       aacDecInfo->tnsUsed;
+   \   00000090   542090E5           LDR      R2,[R0, #+84]
+   \   00000094   1C2081E5           STR      R2,[R1, #+28]
+    168          		aacFrameInfo->pnsUsed =       aacDecInfo->pnsUsed;
+   \   00000098   580090E5           LDR      R0,[R0, #+88]
+   \                     ??AACGetLastFrameInfo_1:
+   \   0000009C   200081E5           STR      R0,[R1, #+32]
+    169          	}
+    170          }
+   \   000000A0   1EFF2FE1           BX       LR               ;; return
+    171          
+    172          /**************************************************************************************
+    173           * Function:    AACSetRawBlockParams
+    174           *
+    175           * Description: set internal state variables for decoding a stream of raw data blocks
+    176           *
+    177           * Inputs:      valid AAC decoder instance pointer (HAACDecoder)
+    178           *              flag indicating source of parameters
+    179           *              AACFrameInfo struct, with the members nChans, sampRate, and profile
+    180           *                optionally filled-in
+    181           *
+    182           * Outputs:     updated codec state 
+    183           *
+    184           * Return:      0 if successful, error code (< 0) if error
+    185           *
+    186           * Notes:       if copyLast == 1, then the codec sets up its internal state (for 
+    187           *                decoding raw blocks) based on previously-decoded ADTS header info
+    188           *              if copyLast == 0, then the codec uses the values passed in
+    189           *                aacFrameInfo to configure its internal state (useful when the
+    190           *                source is MP4 format, for example)
+    191           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    192          int AACSetRawBlockParams(HAACDecoder hAACDecoder, int copyLast, AACFrameInfo *aacFrameInfo)
+    193          {
+   \                     AACSetRawBlockParams:
+   \   00000000   00402DE9           PUSH     {LR}
+    194          	AACDecInfo *aacDecInfo = (AACDecInfo *)hAACDecoder;
+    195          
+    196          	if (!aacDecInfo)
+   \   00000004   000050E3           CMP      R0,#+0
+    197          		return ERR_AAC_NULL_POINTER;
+   \   00000008   0100E003           MVNEQ    R0,#+1
+   \   0000000C   0080BD08           POPEQ    {PC}
+    198          
+    199          	aacDecInfo->format = AAC_FF_RAW;
+   \   00000010   0330A0E3           MOV      R3,#+3
+   \   00000014   4C3080E5           STR      R3,[R0, #+76]
+    200          	if (copyLast)
+   \   00000018   000051E3           CMP      R1,#+0
+   \   0000001C   0700000A           BEQ      ??AACSetRawBlockParams_0
+    201          		return SetRawBlockParams(aacDecInfo, 1, 0, 0, 0);
+   \   00000020   0010A0E3           MOV      R1,#+0
+   \   00000024   02002DE9           PUSH     {R1}
+   \   00000028   0030A0E3           MOV      R3,#+0
+   \   0000002C   0120A0E1           MOV      R2,R1
+   \   00000030   0110A0E3           MOV      R1,#+1
+   \   00000034   ........           _BLF     raac_SetRawBlockParams,??raac_SetRawBlockParams??rA
+   \   00000038   04D08DE2           ADD      SP,SP,#+4
+   \   0000003C   0080BDE8           POP      {PC}
+    202          	else
+    203          		return SetRawBlockParams(aacDecInfo, 0, aacFrameInfo->nChans, aacFrameInfo->sampRateCore, aacFrameInfo->profile);
+   \                     ??AACSetRawBlockParams_0:
+   \   00000040   181092E5           LDR      R1,[R2, #+24]
+   \   00000044   02002DE9           PUSH     {R1}
+   \   00000048   083092E5           LDR      R3,[R2, #+8]
+   \   0000004C   042092E5           LDR      R2,[R2, #+4]
+   \   00000050   0010A0E3           MOV      R1,#+0
+   \   00000054   ........           _BLF     raac_SetRawBlockParams,??raac_SetRawBlockParams??rA
+   \   00000058   04D08DE2           ADD      SP,SP,#+4
+   \   0000005C   0080BDE8           POP      {PC}             ;; return
+    204          }
+    205          
+    206          /**************************************************************************************
+    207           * Function:    AACFlushCodec
+    208           *
+    209           * Description: flush internal codec state (after seeking, for example)
+    210           *
+    211           * Inputs:      valid AAC decoder instance pointer (HAACDecoder)
+    212           *
+    213           * Outputs:     updated state variables in aacDecInfo
+    214           *
+    215           * Return:      0 if successful, error code (< 0) if error
+    216           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    217          int AACFlushCodec(HAACDecoder hAACDecoder)
+    218          {
+   \                     AACFlushCodec:
+   \   00000000   00402DE9           PUSH     {LR}
+    219          	int ch;
+    220          	AACDecInfo *aacDecInfo = (AACDecInfo *)hAACDecoder;
+    221          
+    222          	if (!aacDecInfo)
+   \   00000004   000050E3           CMP      R0,#+0
+    223          		return ERR_AAC_NULL_POINTER;
+   \   00000008   0100E003           MVNEQ    R0,#+1
+   \   0000000C   0080BD08           POPEQ    {PC}
+    224          
+    225          	/* reset common state variables which change per-frame
+    226          	 * don't touch state variables which are (usually) constant for entire clip 
+    227          	 *   (nChans, sampRate, profile, format, sbrEnabled)
+    228          	 */
+    229          	aacDecInfo->prevBlockID = AAC_ID_INVALID;
+   \   00000010   0010E0E3           MVN      R1,#+0
+   \   00000014   241080E5           STR      R1,[R0, #+36]
+    230          	aacDecInfo->currBlockID = AAC_ID_INVALID;
+   \   00000018   281080E5           STR      R1,[R0, #+40]
+    231          	aacDecInfo->currInstTag = -1;
+   \   0000001C   2C1080E5           STR      R1,[R0, #+44]
+    232          	for (ch = 0; ch < MAX_NCHANS_ELEM; ch++)
+   \   00000020   0010A0E3           MOV      R1,#+0
+   \   00000024   0020A0E3           MOV      R2,#+0
+    233          		aacDecInfo->sbDeinterleaveReqd[ch] = 0;
+   \                     ??AACFlushCodec_0:
+   \   00000028   013180E0           ADD      R3,R0,R1, LSL #+2
+   \   0000002C   302083E5           STR      R2,[R3, #+48]
+   \   00000030   011081E2           ADD      R1,R1,#+1
+   \   00000034   020051E3           CMP      R1,#+2
+   \   00000038   FAFFFFBA           BLT      ??AACFlushCodec_0
+    234          	aacDecInfo->adtsBlocksLeft = 0;
+   \   0000003C   382080E5           STR      R2,[R0, #+56]
+    235          	aacDecInfo->tnsUsed = 0;
+   \   00000040   542080E5           STR      R2,[R0, #+84]
+    236          	aacDecInfo->pnsUsed = 0;
+   \   00000044   582080E5           STR      R2,[R0, #+88]
+    237          
+    238          	/* reset internal codec state (flush overlap buffers, etc.) */
+    239          	FlushCodec(aacDecInfo);
+   \   00000048   ........           _BLF     raac_FlushCodec,??raac_FlushCodec??rA
+    240          #ifdef AAC_ENABLE_SBR
+    241          	FlushCodecSBR(aacDecInfo);
+    242          #endif
+    243          
+    244          	return ERR_AAC_NONE;
+   \   0000004C   0000A0E3           MOV      R0,#+0
+   \   00000050   0080BDE8           POP      {PC}             ;; return
+    245          }
+    246          
+    247          /**************************************************************************************
+    248           * Function:    AACDecode
+    249           *
+    250           * Description: decode AAC frame
+    251           *
+    252           * Inputs:      valid AAC decoder instance pointer (HAACDecoder)
+    253           *              double pointer to buffer of AAC data
+    254           *              pointer to number of valid bytes remaining in inbuf
+    255           *              pointer to outbuf, big enough to hold one frame of decoded PCM samples
+    256           *                (outbuf must be double-sized if SBR enabled)
+    257           *
+    258           * Outputs:     PCM data in outbuf, interleaved LRLRLR... if stereo
+    259           *                number of output samples = 1024 per channel (2048 if SBR enabled)
+    260           *              updated inbuf pointer
+    261           *              updated bytesLeft
+    262           *
+    263           * Return:      0 if successful, error code (< 0) if error
+    264           *
+    265           * Notes:       inbuf pointer and bytesLeft are not updated until whole frame is
+    266           *                successfully decoded, so if ERR_AAC_INDATA_UNDERFLOW is returned
+    267           *                just call AACDecode again with more data in inbuf
+    268           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    269          int AACDecode(HAACDecoder hAACDecoder, unsigned char **inbuf, int *bytesLeft, short *outbuf)
+    270          {
+   \                     AACDecode:
+   \   00000000   F64F2DE9           PUSH     {R1,R2,R4-R11,LR}
+   \   00000004   0CD04DE2           SUB      SP,SP,#+12
+   \   00000008   0040A0E1           MOV      R4,R0
+   \   0000000C   0350A0E1           MOV      R5,R3
+    271          	int err, offset, bitOffset, bitsAvail;
+    272          	int ch, baseChan, baseChanSBR, elementChans;
+                 	                  ^
+Warning[Pe550]: variable "baseChanSBR" was set but never used
+    273          	unsigned char *inptr;
+    274          	AACDecInfo *aacDecInfo = (AACDecInfo *)hAACDecoder;
+    275          #ifdef AAC_ENABLE_SBR
+    276          	int elementChansSBR;
+    277          #endif
+    278          
+    279          	if (!aacDecInfo)
+   \   00000010   000054E3           CMP      R4,#+0
+    280          		return ERR_AAC_NULL_POINTER;
+   \   00000014   0100E003           MVNEQ    R0,#+1
+   \   00000018   E400000A           BEQ      ??AACDecode_0
+    281          
+    282          	/* make local copies (see "Notes" above) */
+    283          	inptr = *inbuf;
+   \   0000001C   001091E5           LDR      R1,[R1, #+0]
+   \   00000020   00108DE5           STR      R1,[SP, #+0]
+    284          	bitOffset = 0;
+   \   00000024   0010A0E3           MOV      R1,#+0
+   \   00000028   08108DE5           STR      R1,[SP, #+8]
+    285          	bitsAvail = (*bytesLeft) << 3;
+   \   0000002C   001092E5           LDR      R1,[R2, #+0]
+   \   00000030   8111A0E1           LSL      R1,R1,#+3
+   \   00000034   04108DE5           STR      R1,[SP, #+4]
+    286          
+    287          	/* first time through figure out what the file format is */
+    288          	if (aacDecInfo->format == AAC_FF_Unknown) {
+   \   00000038   4C0094E5           LDR      R0,[R4, #+76]
+   \   0000003C   000050E3           CMP      R0,#+0
+   \   00000040   2000001A           BNE      ??AACDecode_1
+    289          		if (bitsAvail < 32)
+   \   00000044   200051E3           CMP      R1,#+32
+   \   00000048   010000AA           BGE      ??AACDecode_2
+    290          			return ERR_AAC_INDATA_UNDERFLOW;
+   \                     ??AACDecode_3:
+   \   0000004C   0000E0E3           MVN      R0,#+0
+   \   00000050   180000EA           B        ??AACDecode_4
+    291          		
+    292          		if (IS_ADIF(inptr)) {
+   \                     ??AACDecode_2:
+   \   00000054   00009DE5           LDR      R0,[SP, #+0]
+   \   00000058   0000D0E5           LDRB     R0,[R0, #+0]
+   \   0000005C   410050E3           CMP      R0,#+65
+   \   00000060   1600001A           BNE      ??AACDecode_5
+   \   00000064   00009DE5           LDR      R0,[SP, #+0]
+   \   00000068   0100D0E5           LDRB     R0,[R0, #+1]
+   \   0000006C   440050E3           CMP      R0,#+68
+   \   00000070   1200001A           BNE      ??AACDecode_5
+   \   00000074   00009DE5           LDR      R0,[SP, #+0]
+   \   00000078   0200D0E5           LDRB     R0,[R0, #+2]
+   \   0000007C   490050E3           CMP      R0,#+73
+   \   00000080   0E00001A           BNE      ??AACDecode_5
+   \   00000084   00009DE5           LDR      R0,[SP, #+0]
+   \   00000088   0300D0E5           LDRB     R0,[R0, #+3]
+   \   0000008C   460050E3           CMP      R0,#+70
+   \   00000090   0A00001A           BNE      ??AACDecode_5
+    293          			/* unpack ADIF header */
+    294          			aacDecInfo->format = AAC_FF_ADIF;
+   \   00000094   0200A0E3           MOV      R0,#+2
+   \   00000098   4C0084E5           STR      R0,[R4, #+76]
+    295          			err = UnpackADIFHeader(aacDecInfo, &inptr, &bitOffset, &bitsAvail);
+   \   0000009C   04308DE2           ADD      R3,SP,#+4
+   \   000000A0   08208DE2           ADD      R2,SP,#+8
+   \   000000A4   0D10A0E1           MOV      R1,SP
+   \   000000A8   0400A0E1           MOV      R0,R4
+   \   000000AC   ........           _BLF     raac_UnpackADIFHeader,??raac_UnpackADIFHeader??rA
+    296          			if (err)
+   \   000000B0   000050E3           CMP      R0,#+0
+   \   000000B4   0300000A           BEQ      ??AACDecode_1
+    297          				return err;
+   \                     ??AACDecode_4:
+   \   000000B8   14D08DE2           ADD      SP,SP,#+20
+   \   000000BC   F08FBDE8           POP      {R4-R11,PC}
+    298          		} else {
+    299          			/* assume ADTS by default */
+    300          			aacDecInfo->format = AAC_FF_ADTS;
+   \                     ??AACDecode_5:
+   \   000000C0   0100A0E3           MOV      R0,#+1
+   \   000000C4   4C0084E5           STR      R0,[R4, #+76]
+    301          		}
+    302          	} 
+    303          	
+    304          	/* if ADTS, search for start of next frame */
+    305          	if (aacDecInfo->format == AAC_FF_ADTS) {
+   \                     ??AACDecode_1:
+   \   000000C8   4C0094E5           LDR      R0,[R4, #+76]
+   \   000000CC   010050E3           CMP      R0,#+1
+   \   000000D0   3100001A           BNE      ??AACDecode_6
+    306          		/* can have 1-4 raw data blocks per ADTS frame (header only present for first one) */
+    307          		if (aacDecInfo->adtsBlocksLeft == 0) {
+   \   000000D4   380094E5           LDR      R0,[R4, #+56]
+   \   000000D8   000050E3           CMP      R0,#+0
+   \   000000DC   2A00001A           BNE      ??AACDecode_7
+    308          			offset = AACFindSyncWord(inptr, bitsAvail >> 3);
+   \   000000E0   04009DE5           LDR      R0,[SP, #+4]
+   \   000000E4   C011A0E1           ASR      R1,R0,#+3
+   \   000000E8   0000A0E3           MOV      R0,#+0
+   \   000000EC   000000EA           B        ??AACDecode_8
+   \                     ??AACDecode_9:
+   \   000000F0   010080E2           ADD      R0,R0,#+1
+   \                     ??AACDecode_8:
+   \   000000F4   012041E2           SUB      R2,R1,#+1
+   \   000000F8   020050E1           CMP      R0,R2
+   \   000000FC   D2FFFFAA           BGE      ??AACDecode_3
+   \   00000100   00209DE5           LDR      R2,[SP, #+0]
+   \   00000104   0220D0E7           LDRB     R2,[R0, +R2]
+   \   00000108   FF0052E3           CMP      R2,#+255
+   \   0000010C   F7FFFF1A           BNE      ??AACDecode_9
+   \   00000110   00209DE5           LDR      R2,[SP, #+0]
+   \   00000114   022080E0           ADD      R2,R0,R2
+   \   00000118   0120D2E5           LDRB     R2,[R2, #+1]
+   \   0000011C   F02002E2           AND      R2,R2,#0xF0
+   \   00000120   F00052E3           CMP      R2,#+240
+   \   00000124   F1FFFF1A           BNE      ??AACDecode_9
+    309          			if (offset < 0)
+   \   00000128   000050E3           CMP      R0,#+0
+   \   0000012C   C6FFFF4A           BMI      ??AACDecode_3
+    310          				return ERR_AAC_INDATA_UNDERFLOW;
+    311          			inptr += offset;
+   \   00000130   00209DE5           LDR      R2,[SP, #+0]
+    312          			bitsAvail -= (offset << 3);
+    313          
+    314          			err = UnpackADTSHeader(aacDecInfo, &inptr, &bitOffset, &bitsAvail);
+   \   00000134   04308DE2           ADD      R3,SP,#+4
+   \   00000138   022080E0           ADD      R2,R0,R2
+   \   0000013C   00208DE5           STR      R2,[SP, #+0]
+   \   00000140   04209DE5           LDR      R2,[SP, #+4]
+   \   00000144   0D10A0E1           MOV      R1,SP
+   \   00000148   800142E0           SUB      R0,R2,R0, LSL #+3
+   \   0000014C   04008DE5           STR      R0,[SP, #+4]
+   \   00000150   08208DE2           ADD      R2,SP,#+8
+   \   00000154   0400A0E1           MOV      R0,R4
+   \   00000158   ........           _BLF     raac_UnpackADTSHeader,??raac_UnpackADTSHeader??rA
+    315          			if (err)
+   \   0000015C   000050E3           CMP      R0,#+0
+   \   00000160   9200001A           BNE      ??AACDecode_0
+    316          				return err;
+    317          
+    318          			if (aacDecInfo->nChans == -1) {
+   \   00000164   400094E5           LDR      R0,[R4, #+64]
+   \   00000168   010070E3           CMN      R0,#+1
+   \   0000016C   0600001A           BNE      ??AACDecode_7
+    319          				/* figure out implicit channel mapping if necessary */
+    320          				err = GetADTSChannelMapping(aacDecInfo, inptr, bitOffset, bitsAvail);
+   \   00000170   04309DE5           LDR      R3,[SP, #+4]
+   \   00000174   08209DE5           LDR      R2,[SP, #+8]
+   \   00000178   00109DE5           LDR      R1,[SP, #+0]
+   \   0000017C   0400A0E1           MOV      R0,R4
+   \   00000180   ........           _BLF     raac_GetADTSChannelMapping,??raac_GetADTSChannelMapping??rA
+    321          				if (err)
+   \   00000184   000050E3           CMP      R0,#+0
+   \   00000188   8800001A           BNE      ??AACDecode_0
+    322          					return err;
+    323          			}
+    324          		}
+    325          		aacDecInfo->adtsBlocksLeft--;
+   \                     ??AACDecode_7:
+   \   0000018C   380094E5           LDR      R0,[R4, #+56]
+   \   00000190   010040E2           SUB      R0,R0,#+1
+   \   00000194   380084E5           STR      R0,[R4, #+56]
+   \   00000198   050000EA           B        ??AACDecode_10
+    326          	} else if (aacDecInfo->format == AAC_FF_RAW) {
+   \                     ??AACDecode_6:
+   \   0000019C   030050E3           CMP      R0,#+3
+   \   000001A0   0300001A           BNE      ??AACDecode_10
+    327          		err = PrepareRawBlock(aacDecInfo);
+   \   000001A4   0400A0E1           MOV      R0,R4
+   \   000001A8   ........           _BLF     raac_PrepareRawBlock,??raac_PrepareRawBlock??rA
+    328          		if (err)
+   \   000001AC   000050E3           CMP      R0,#+0
+   \   000001B0   7E00001A           BNE      ??AACDecode_0
+    329          			return err;
+    330          	}
+    331          
+    332          	/* check for valid number of channels */
+    333          	if (aacDecInfo->nChans > AAC_MAX_NCHANS || aacDecInfo->nChans <= 0)
+   \                     ??AACDecode_10:
+   \   000001B4   400094E5           LDR      R0,[R4, #+64]
+   \   000001B8   030050E3           CMP      R0,#+3
+   \   000001BC   010000AA           BGE      ??AACDecode_11
+   \   000001C0   010050E3           CMP      R0,#+1
+   \   000001C4   010000AA           BGE      ??AACDecode_12
+    334          		return ERR_AAC_NCHANS_TOO_HIGH;
+   \                     ??AACDecode_11:
+   \   000001C8   0E00E0E3           MVN      R0,#+14
+   \   000001CC   B9FFFFEA           B        ??AACDecode_4
+    335          
+    336          	/* will be set later if active in this frame */
+    337          	aacDecInfo->tnsUsed = 0;
+   \                     ??AACDecode_12:
+   \   000001D0   0060A0E3           MOV      R6,#+0
+   \   000001D4   546084E5           STR      R6,[R4, #+84]
+    338          	aacDecInfo->pnsUsed = 0;
+   \   000001D8   586084E5           STR      R6,[R4, #+88]
+    339          
+    340          	bitOffset = 0;
+   \   000001DC   0010A0E3           MOV      R1,#+0
+   \   000001E0   08108DE5           STR      R1,[SP, #+8]
+    341          	baseChan = 0;
+   \   000001E4   0170A0E1           MOV      R7,R1
+    342          	baseChanSBR = 0;
+    343          	do {
+    344          		/* parse next syntactic element */
+    345          		err = DecodeNextElement(aacDecInfo, &inptr, &bitOffset, &bitsAvail);
+   \                     ??AACDecode_13:
+   \   000001E8   04308DE2           ADD      R3,SP,#+4
+   \   000001EC   08208DE2           ADD      R2,SP,#+8
+   \   000001F0   0D10A0E1           MOV      R1,SP
+   \   000001F4   0400A0E1           MOV      R0,R4
+   \   000001F8   ........           _BLF     raac_DecodeNextElement,??raac_DecodeNextElement??rA
+    346          		if (err)
+   \   000001FC   000050E3           CMP      R0,#+0
+   \   00000200   6A00001A           BNE      ??AACDecode_0
+    347          			return err;
+    348          		
+    349          		elementChans = elementNumChans[aacDecInfo->currBlockID];
+   \   00000204   280094E5           LDR      R0,[R4, #+40]
+   \   00000208   A8119FE5           LDR      R1,??AACDecode_14  ;; raac_elementNumChans
+   \   0000020C   008191E7           LDR      R8,[R1, +R0, LSL #+2]
+    350          		if (baseChan + elementChans > AAC_MAX_NCHANS)
+   \   00000210   079088E0           ADD      R9,R8,R7
+   \   00000214   030059E3           CMP      R9,#+3
+   \   00000218   EAFFFFAA           BGE      ??AACDecode_11
+    351          			return ERR_AAC_NCHANS_TOO_HIGH;
+    352          
+    353          		/* noiseless decoder and dequantizer */
+    354          		for (ch = 0; ch < elementChans; ch++) {
+   \   0000021C   00A0A0E3           MOV      R10,#+0
+   \   00000220   000000EA           B        ??AACDecode_15
+   \                     ??AACDecode_16:
+   \   00000224   01A08AE2           ADD      R10,R10,#+1
+   \                     ??AACDecode_15:
+   \   00000228   08005AE1           CMP      R10,R8
+   \   0000022C   100000AA           BGE      ??AACDecode_17
+    355          			err = DecodeNoiselessData(aacDecInfo, &inptr, &bitOffset, &bitsAvail, ch);
+   \   00000230   0A00A0E1           MOV      R0,R10
+   \   00000234   01002DE9           PUSH     {R0}
+   \   00000238   08308DE2           ADD      R3,SP,#+8
+   \   0000023C   0C208DE2           ADD      R2,SP,#+12
+   \   00000240   04108DE2           ADD      R1,SP,#+4
+   \   00000244   0400A0E1           MOV      R0,R4
+   \   00000248   ........           _BLF     raac_DecodeNoiselessData,??raac_DecodeNoiselessData??rA
+    356          			if (err)
+   \   0000024C   000050E3           CMP      R0,#+0
+   \   00000250   04D08DE2           ADD      SP,SP,#+4
+   \   00000254   5500001A           BNE      ??AACDecode_0
+    357          				return err;
+    358          
+    359          			if (aacDequantize(aacDecInfo, ch))
+   \   00000258   0A10A0E1           MOV      R1,R10
+   \   0000025C   0400A0E1           MOV      R0,R4
+   \   00000260   ........           _BLF     aacDequantize,??aacDequantize??rA
+   \   00000264   000050E3           CMP      R0,#+0
+   \   00000268   EDFFFF0A           BEQ      ??AACDecode_16
+    360          				return ERR_AAC_DEQUANT;
+   \   0000026C   0800E0E3           MVN      R0,#+8
+   \   00000270   90FFFFEA           B        ??AACDecode_4
+    361          		}
+    362          
+    363          		/* mid-side and intensity stereo */
+    364          		if (aacDecInfo->currBlockID == AAC_ID_CPE) {
+   \                     ??AACDecode_17:
+   \   00000274   280094E5           LDR      R0,[R4, #+40]
+   \   00000278   010050E3           CMP      R0,#+1
+   \   0000027C   0400001A           BNE      ??AACDecode_18
+    365          			if (StereoProcess(aacDecInfo))
+   \   00000280   0400A0E1           MOV      R0,R4
+   \   00000284   ........           _BLF     raac_StereoProcess,??raac_StereoProcess??rA
+   \   00000288   000050E3           CMP      R0,#+0
+    366          				return ERR_AAC_STEREO_PROCESS;
+   \   0000028C   0900E013           MVNNE    R0,#+9
+   \   00000290   4600001A           BNE      ??AACDecode_0
+    367          		}
+    368          
+    369          		/* PNS, TNS, inverse transform */
+    370          		for (ch = 0; ch < elementChans; ch++) {
+   \                     ??AACDecode_18:
+   \   00000294   00A0A0E3           MOV      R10,#+0
+   \   00000298   000000EA           B        ??AACDecode_19
+   \                     ??AACDecode_20:
+   \   0000029C   01A08AE2           ADD      R10,R10,#+1
+   \                     ??AACDecode_19:
+   \   000002A0   08005AE1           CMP      R10,R8
+   \   000002A4   1F0000AA           BGE      ??AACDecode_21
+    371          			if (PNS(aacDecInfo, ch))
+   \   000002A8   0A10A0E1           MOV      R1,R10
+   \   000002AC   0400A0E1           MOV      R0,R4
+   \   000002B0   ........           _BLF     raac_PNS,??raac_PNS??rA
+   \   000002B4   000050E3           CMP      R0,#+0
+    372          				return ERR_AAC_PNS;
+   \   000002B8   0A00E013           MVNNE    R0,#+10
+   \   000002BC   3B00001A           BNE      ??AACDecode_0
+    373          
+    374          			if (aacDecInfo->sbDeinterleaveReqd[ch]) {
+   \   000002C0   0AB184E0           ADD      R11,R4,R10, LSL #+2
+   \   000002C4   30009BE5           LDR      R0,[R11, #+48]
+   \   000002C8   000050E3           CMP      R0,#+0
+   \   000002CC   0600000A           BEQ      ??AACDecode_22
+    375          				/* deinterleave short blocks, if required */
+    376          				if (DeinterleaveShortBlocks(aacDecInfo, ch))
+   \   000002D0   0A10A0E1           MOV      R1,R10
+   \   000002D4   0400A0E1           MOV      R0,R4
+   \   000002D8   ........           _BLF     raac_DeinterleaveShortBlocks,??raac_DeinterleaveShortBlocks??rA
+   \   000002DC   000050E3           CMP      R0,#+0
+    377          					return ERR_AAC_SHORT_BLOCK_DEINT;
+   \   000002E0   0B00E013           MVNNE    R0,#+11
+   \   000002E4   3100001A           BNE      ??AACDecode_0
+    378          				aacDecInfo->sbDeinterleaveReqd[ch] = 0;
+   \   000002E8   30608BE5           STR      R6,[R11, #+48]
+    379          			}
+    380          	
+    381          			if (TNSFilter(aacDecInfo, ch))
+   \                     ??AACDecode_22:
+   \   000002EC   0A10A0E1           MOV      R1,R10
+   \   000002F0   0400A0E1           MOV      R0,R4
+   \   000002F4   ........           _BLF     raac_TNSFilter,??raac_TNSFilter??rA
+   \   000002F8   000050E3           CMP      R0,#+0
+    382          				return ERR_AAC_TNS;
+   \   000002FC   0C00E013           MVNNE    R0,#+12
+   \   00000300   2A00001A           BNE      ??AACDecode_0
+    383          
+    384          			if (aacIMDCT(aacDecInfo, ch, baseChan + ch, outbuf))
+   \   00000304   0530A0E1           MOV      R3,R5
+   \   00000308   07208AE0           ADD      R2,R10,R7
+   \   0000030C   0A10A0E1           MOV      R1,R10
+   \   00000310   0400A0E1           MOV      R0,R4
+   \   00000314   ........           _BLF     aacIMDCT,??aacIMDCT??rA
+   \   00000318   000050E3           CMP      R0,#+0
+   \   0000031C   DEFFFF0A           BEQ      ??AACDecode_20
+    385          				return ERR_AAC_IMDCT;
+   \   00000320   0D00E0E3           MVN      R0,#+13
+   \   00000324   63FFFFEA           B        ??AACDecode_4
+    386          		}
+    387          
+    388          #ifdef AAC_ENABLE_SBR
+    389          		if (aacDecInfo->sbrEnabled && (aacDecInfo->currBlockID == AAC_ID_FIL || aacDecInfo->currBlockID == AAC_ID_LFE)) {
+    390          			if (aacDecInfo->currBlockID == AAC_ID_LFE)
+    391          				elementChansSBR = elementNumChans[AAC_ID_LFE];
+    392          			else if (aacDecInfo->currBlockID == AAC_ID_FIL && (aacDecInfo->prevBlockID == AAC_ID_SCE || aacDecInfo->prevBlockID == AAC_ID_CPE))
+    393          				elementChansSBR = elementNumChans[aacDecInfo->prevBlockID];
+    394          			else 
+    395          				elementChansSBR = 0;
+    396          			
+    397          			if (baseChanSBR + elementChansSBR > AAC_MAX_NCHANS)
+    398          				return ERR_AAC_SBR_NCHANS_TOO_HIGH;
+    399          
+    400          			/* parse SBR extension data if present (contained in a fill element) */
+    401          			if (DecodeSBRBitstream(aacDecInfo, baseChanSBR))
+    402          				return ERR_AAC_SBR_BITSTREAM;
+    403          
+    404          			/* apply SBR */
+    405          			if (DecodeSBRData(aacDecInfo, baseChanSBR, outbuf))
+    406          				return ERR_AAC_SBR_DATA;
+    407          
+    408          			baseChanSBR += elementChansSBR;
+    409          		}
+    410          #endif
+    411          		
+    412          		baseChan += elementChans;
+    413          	} while (aacDecInfo->currBlockID != AAC_ID_END);
+   \                     ??AACDecode_21:
+   \   00000328   280094E5           LDR      R0,[R4, #+40]
+   \   0000032C   0970A0E1           MOV      R7,R9
+   \   00000330   070050E3           CMP      R0,#+7
+   \   00000334   ABFFFF1A           BNE      ??AACDecode_13
+    414          
+    415          	/* byte align after each raw_data_block */
+    416          	if (bitOffset) {
+   \   00000338   08009DE5           LDR      R0,[SP, #+8]
+   \   0000033C   000050E3           CMP      R0,#+0
+   \   00000340   0B00000A           BEQ      ??AACDecode_23
+    417          		inptr++;
+   \   00000344   00109DE5           LDR      R1,[SP, #+0]
+    418          		bitsAvail -= (8-bitOffset);
+   \   00000348   082040E2           SUB      R2,R0,#+8
+   \   0000034C   011081E2           ADD      R1,R1,#+1
+   \   00000350   00108DE5           STR      R1,[SP, #+0]
+   \   00000354   04109DE5           LDR      R1,[SP, #+4]
+   \   00000358   011082E0           ADD      R1,R2,R1
+   \   0000035C   04108DE5           STR      R1,[SP, #+4]
+    419          		bitOffset = 0;
+   \   00000360   0010A0E3           MOV      R1,#+0
+   \   00000364   08108DE5           STR      R1,[SP, #+8]
+    420          		if (bitsAvail < 0)
+   \   00000368   04009DE5           LDR      R0,[SP, #+4]
+   \   0000036C   000050E3           CMP      R0,#+0
+   \   00000370   35FFFF4A           BMI      ??AACDecode_3
+    421          			return ERR_AAC_INDATA_UNDERFLOW;
+    422          	}
+    423          
+    424          	/* update pointers */
+    425          	aacDecInfo->frameCount++;
+   \                     ??AACDecode_23:
+   \   00000374   5C0094E5           LDR      R0,[R4, #+92]
+   \   00000378   010080E2           ADD      R0,R0,#+1
+   \   0000037C   5C0084E5           STR      R0,[R4, #+92]
+    426          	*bytesLeft -= (inptr - *inbuf);
+   \   00000380   10009DE5           LDR      R0,[SP, #+16]
+   \   00000384   0C309DE5           LDR      R3,[SP, #+12]
+   \   00000388   001090E5           LDR      R1,[R0, #+0]
+   \   0000038C   00209DE5           LDR      R2,[SP, #+0]
+   \   00000390   003093E5           LDR      R3,[R3, #+0]
+   \   00000394   032042E0           SUB      R2,R2,R3
+   \   00000398   021041E0           SUB      R1,R1,R2
+   \   0000039C   001080E5           STR      R1,[R0, #+0]
+    427          	*inbuf = inptr;
+   \   000003A0   0C009DE5           LDR      R0,[SP, #+12]
+   \   000003A4   00109DE5           LDR      R1,[SP, #+0]
+   \   000003A8   001080E5           STR      R1,[R0, #+0]
+    428          
+    429          	return ERR_AAC_NONE;
+   \   000003AC   0000A0E3           MOV      R0,#+0
+   \                     ??AACDecode_0:
+   \   000003B0   14D08DE2           ADD      SP,SP,#+20       ;; stack cleaning
+   \   000003B4   F08FBDE8           POP      {R4-R11,PC}      ;; return
+   \                     ??AACDecode_14:
+   \   000003B8   ........           DC32     raac_elementNumChans
+    430          }
+    431          
+
+   Maximum stack usage in bytes:
+
+     Function             CSTACK
+     --------             ------
+     AACDecode               60
+     AACFindSyncWord          0
+     AACFlushCodec            4
+     AACFreeDecoder           4
+     AACGetLastFrameInfo      0
+     AACInitDecoder           4
+     AACSetRawBlockParams     8
+
+
+   Segment part sizes:
+
+     Function/Label       Bytes
+     --------------       -----
+     AACInitDecoder         12
+     AACFreeDecoder         20
+     AACFindSyncWord        72
+     AACGetLastFrameInfo   164
+     AACSetRawBlockParams   96
+     AACFlushCodec          84
+     AACDecode             956
+      Others               220
+
+ 
+ 1 624 bytes in segment CODE
+ 
+ 1 404 bytes of CODE memory (+ 220 bytes shared)
+
+Errors: none
+Warnings: 1

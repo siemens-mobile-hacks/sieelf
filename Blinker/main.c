@@ -19,7 +19,7 @@ typedef struct
 int IDLECSM_ID=-1;
 
 
-// Импорт переменных
+// Import variables
 extern const int cfgEvents;
 extern const unsigned int cfgMaxEv;
 extern const unsigned int cfgInterval;
@@ -52,19 +52,21 @@ void LightOff(void);
 void Check(void);
 
 //SetIllumination(unsigned char dev,unsigned long param1,unsigned short bright,unsigned long delay);
-//0 - диспле? 1 - клавиатура, 2 - динамический свет (x65)
+//0 - the display  1 - keyboard, 2 - Dynamic Light (x65)
+//dev  0-ЖБД»  1-јьЕМ  2-¶ЇёРЙБ№в  4-ЦёКѕµЖЙБ№в
+//param1  1 & 0xFFFF  
 void LightOn()
 {
 	if (cfgDispl)
-		SetIllumination(0, 1, cfgBright, 0);
+		SetIllumination(0, 1, cfgBright, 0);  //ЖБД»ЙБ
 	if (cfgKbd)
-		SetIllumination(1, 1, cfgBright, 0);   
+		SetIllumination(1, 1, cfgBright, 0);  //јьЕМЙБ
 #ifndef NEWSGOLD
 	if (cfgDyn)
-		SetIllumination(2, 1, cfgBright, 0);
+		SetIllumination(2, 1, cfgBright, 0);  //¶ЇёРЙБ№в
 #else
 	if (cfgLighter)
-		SetIllumination(4, 1, cfgBright, 0);
+		SetIllumination(4, 1, cfgBright, 0);  //ёЯББµЖ
 #endif
   if (use_vib)
     SetVibration(vibra_pow);    

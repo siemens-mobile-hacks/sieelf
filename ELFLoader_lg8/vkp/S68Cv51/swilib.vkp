@@ -77,7 +77,7 @@
 ;118:              ;  46: int HasNewSMS()
 011C: 0xA026B93B   ;  47: HasFlashSMS *fix
 ;120:              ;  48: ReadNewSMS
-;124:              ;  49: ReadFlashSMS
+0124: 0xA02EF1ED   ;  49: ReadFlashSMS
 0128: 0xA024AFC8   ;  4A: short PlayFile(int flags, WSHDR *foldername, WSHDR *filename, int zero, int CepId, int Msg, const PLAYFILE_OPT *sfo)
 012C: 0xA0925E30   ;  4B: StartMidlet
 0130: 0xA086CB8D   ;  4C: int GetMissedCallsCount()

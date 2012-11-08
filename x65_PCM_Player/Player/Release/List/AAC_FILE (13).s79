@@ -1,0 +1,700 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:16 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD /
+//                       EC\AAC_FILE (13).c                                  /
+//    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AAC /
+//                       DEC\AAC_FILE (13).c" -D NDEBUG -lC                  /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\AAC_FILE (13).s79                              /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME `AAC_FILE (13)`
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        MULTWEAK ??raac_AdvanceBitstream??rT
+        MULTWEAK ??raac_ByteAlignBitstream??rT
+        MULTWEAK ??raac_CalcBitsUsed??rT
+        MULTWEAK ??raac_GetBits??rT
+        MULTWEAK ??raac_GetBitsNoAdvance??rT
+        MULTWEAK ??raac_SetBitstreamPointer??rT
+        FUNCTION RefillBitstreamCache,0203H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC raac_AdvanceBitstream
+        FUNCTION raac_AdvanceBitstream,0203H
+        LOCFRAME CSTACK, 12, STACK
+        PUBLIC raac_ByteAlignBitstream
+        FUNCTION raac_ByteAlignBitstream,0203H
+        LOCFRAME CSTACK, 12, STACK
+        PUBLIC raac_CalcBitsUsed
+        FUNCTION raac_CalcBitsUsed,0203H
+        PUBLIC raac_GetBits
+        FUNCTION raac_GetBits,0203H
+        LOCFRAME CSTACK, 16, STACK
+        PUBLIC raac_GetBitsNoAdvance
+        FUNCTION raac_GetBitsNoAdvance,0203H
+        PUBLIC raac_SetBitstreamPointer
+        FUNCTION raac_SetBitstreamPointer,0203H
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+raac_AdvanceBitstream SYMBOL "raac_AdvanceBitstream"
+??raac_AdvanceBitstream??rT SYMBOL "??rT", raac_AdvanceBitstream
+raac_ByteAlignBitstream SYMBOL "raac_ByteAlignBitstream"
+??raac_ByteAlignBitstream??rT SYMBOL "??rT", raac_ByteAlignBitstream
+raac_CalcBitsUsed   SYMBOL "raac_CalcBitsUsed"
+??raac_CalcBitsUsed??rT SYMBOL "??rT", raac_CalcBitsUsed
+raac_GetBits        SYMBOL "raac_GetBits"
+??raac_GetBits??rT  SYMBOL "??rT", raac_GetBits
+raac_GetBitsNoAdvance SYMBOL "raac_GetBitsNoAdvance"
+??raac_GetBitsNoAdvance??rT SYMBOL "??rT", raac_GetBitsNoAdvance
+raac_SetBitstreamPointer SYMBOL "raac_SetBitstreamPointer"
+??raac_SetBitstreamPointer??rT SYMBOL "??rT", raac_SetBitstreamPointer
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_SetBitstreamPointer??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE raac_SetBitstreamPointer
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (13).c
+//    1 /* ***** BEGIN LICENSE BLOCK *****  
+//    2  * Source last modified: $Id: bitstream.c,v 1.1 2005/02/26 01:47:34 jrecker Exp $ 
+//    3  *   
+//    4  * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+//    5  *       
+//    6  * The contents of this file, and the files included with this file, 
+//    7  * are subject to the current version of the RealNetworks Public 
+//    8  * Source License (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the current version of the RealNetworks Community 
+//   11  * Source License (the "RCSL") available at 
+//   12  * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+//   13  * will apply. You may also obtain the license terms directly from 
+//   14  * RealNetworks.  You may not use this file except in compliance with 
+//   15  * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+//   16  * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+//   17  * the rights, obligations and limitations governing use of the 
+//   18  * contents of the file. 
+//   19  *   
+//   20  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   21  * developer of the Original Code and owns the copyrights in the 
+//   22  * portions it created. 
+//   23  *   
+//   24  * This file, and the files included with this file, is distributed 
+//   25  * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+//   26  * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+//   27  * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+//   28  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+//   29  * ENJOYMENT OR NON-INFRINGEMENT. 
+//   30  *  
+//   31  * Technology Compatibility Kit Test Suite(s) Location:  
+//   32  *    http://www.helixcommunity.org/content/tck  
+//   33  *  
+//   34  * Contributor(s):  
+//   35  *   
+//   36  * ***** END LICENSE BLOCK ***** */  
+//   37 
+//   38 /**************************************************************************************
+//   39  * Fixed-point HE-AAC decoder
+//   40  * Jon Recker (jrecker@real.com)
+//   41  * February 2005
+//   42  *
+//   43  * bitstream.c - bitstream parsing functions
+//   44  **************************************************************************************/
+//   45 
+//   46 #include "bitstream_aac.h"
+//   47 
+//   48 /**************************************************************************************
+//   49  * Function:    SetBitstreamPointer
+//   50  *
+//   51  * Description: initialize bitstream reader
+//   52  *
+//   53  * Inputs:      pointer to BitStreamInfo struct
+//   54  *              number of bytes in bitstream
+//   55  *              pointer to byte-aligned buffer of data to read from
+//   56  *
+//   57  * Outputs:     initialized bitstream info struct
+//   58  *
+//   59  * Return:      none
+//   60  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function raac_SetBitstreamPointer
+        ARM
+//   61 void SetBitstreamPointer(BitStreamInfo *bsi, int nBytes, unsigned char *buf)
+//   62 {
+//   63 	/* init bitstream */
+//   64 	bsi->bytePtr = buf;
+raac_SetBitstreamPointer:
+        STR      R2,[R0, #+0]
+//   65 	bsi->iCache = 0;		/* 4-byte unsigned int */
+        MOV      R2,#+0
+        STR      R2,[R0, #+4]
+//   66 	bsi->cachedBits = 0;	/* i.e. zero bits in cache */
+        STR      R2,[R0, #+8]
+//   67 	bsi->nBytes = nBytes;
+        STR      R1,[R0, #+12]
+//   68 }
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock1
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??RefillBitstreamCache??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE RefillBitstreamCache
+//   69 
+//   70 /**************************************************************************************
+//   71  * Function:    RefillBitstreamCache
+//   72  *
+//   73  * Description: read new data from bitstream buffer into 32-bit cache
+//   74  *
+//   75  * Inputs:      pointer to initialized BitStreamInfo struct
+//   76  *
+//   77  * Outputs:     updated bitstream info struct
+//   78  *
+//   79  * Return:      none
+//   80  *
+//   81  * Notes:       only call when iCache is completely drained (resets bitOffset to 0)
+//   82  *              always loads 4 new bytes except when bsi->nBytes < 4 (end of buffer)
+//   83  *              stores data as big-endian in cache, regardless of machine endian-ness
+//   84  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function RefillBitstreamCache
+        ARM
+//   85 static inline void RefillBitstreamCache(BitStreamInfo *bsi)
+//   86 {
+RefillBitstreamCache:
+        PUSH     {R4}
+        CFI R4 Frame(CFA, -4)
+        CFI CFA R13+4
+//   87 	int nBytes = bsi->nBytes;
+        LDR      R1,[R0, #+12]
+        MOV      R3,R1
+//   88 
+//   89 	/* optimize for common case, independent of machine endian-ness */
+//   90 	if (nBytes >= 4) {
+        CMP      R3,#+4
+        BLT      ??RefillBitstreamCache_0
+//   91 		bsi->iCache  = (*bsi->bytePtr++) << 24;
+        LDR      R2,[R0, #+0]
+//   92 		bsi->iCache |= (*bsi->bytePtr++) << 16;
+//   93 		bsi->iCache |= (*bsi->bytePtr++) <<  8;
+//   94 		bsi->iCache |= (*bsi->bytePtr++);
+//   95 		bsi->cachedBits = 32;
+//   96 		bsi->nBytes -= 4;
+        SUB      R1,R1,#+4
+        ADD      R3,R2,#+1
+        STR      R3,[R0, #+0]
+        LDRB     R2,[R2, #+0]
+        LSL      R2,R2,#+24
+        STR      R2,[R0, #+4]
+        MOV      R2,R3
+        ADD      R3,R2,#+1
+        STR      R3,[R0, #+0]
+        LDRB     R2,[R2, #+0]
+        LDR      R3,[R0, #+4]
+        ORR      R2,R3,R2, LSL #+16
+        STR      R2,[R0, #+4]
+        LDR      R3,[R0, #+0]
+        ADD      R12,R3,#+1
+        STR      R12,[R0, #+0]
+        LDRB     R3,[R3, #+0]
+        ORR      R2,R2,R3, LSL #+8
+        STR      R2,[R0, #+4]
+        MOV      R3,R12
+        ADD      R12,R3,#+1
+        STR      R12,[R0, #+0]
+        LDRB     R3,[R3, #+0]
+        ORR      R2,R3,R2
+        STR      R2,[R0, #+4]
+        MOV      R3,#+32
+        STR      R1,[R0, #+12]
+        B        ??RefillBitstreamCache_1
+//   97 	} else {
+//   98 		bsi->iCache = 0;
+??RefillBitstreamCache_0:
+        MOV      R2,#+0
+        STR      R2,[R0, #+4]
+        B        ??RefillBitstreamCache_2
+//   99 		while (nBytes--) {
+//  100 			bsi->iCache |= (*bsi->bytePtr++);
+??RefillBitstreamCache_3:
+        LDR      R12,[R0, #+0]
+        ADD      R4,R12,#+1
+        STR      R4,[R0, #+0]
+//  101 			bsi->iCache <<= 8;
+        LDRB     R12,[R12, #+0]
+        LDR      R4,[R0, #+4]
+        ORR      R4,R12,R4
+        LSL      R4,R4,#+8
+        STR      R4,[R0, #+4]
+//  102 		}
+??RefillBitstreamCache_2:
+        MOV      R12,R3
+        SUB      R3,R12,#+1
+        CMP      R12,#+0
+        BNE      ??RefillBitstreamCache_3
+//  103 		bsi->iCache <<= ((3 - bsi->nBytes)*8);
+        LDR      R3,[R0, #+4]
+        MOV      R4,R1
+        RSB      R4,R4,#+3
+        LSL      R4,R4,#+3
+        LSL      R3,R3,R4
+        STR      R3,[R0, #+4]
+//  104 		bsi->cachedBits = 8*bsi->nBytes;
+        LSL      R3,R1,#+3
+//  105 		bsi->nBytes = 0;
+        STR      R2,[R0, #+12]
+??RefillBitstreamCache_1:
+        STR      R3,[R0, #+8]
+//  106 	}
+//  107 }
+        POP      {R4}
+        CFI R4 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock3
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_GetBits??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE raac_GetBits
+//  108 
+//  109 /**************************************************************************************
+//  110  * Function:    GetBits
+//  111  *
+//  112  * Description: get bits from bitstream, advance bitstream pointer
+//  113  *
+//  114  * Inputs:      pointer to initialized BitStreamInfo struct
+//  115  *              number of bits to get from bitstream
+//  116  *
+//  117  * Outputs:     updated bitstream info struct
+//  118  *
+//  119  * Return:      the next nBits bits of data from bitstream buffer
+//  120  *
+//  121  * Notes:       nBits must be in range [0, 31], nBits outside this range masked by 0x1f
+//  122  *              for speed, does not indicate error if you overrun bit buffer 
+//  123  *              if nBits == 0, returns 0
+//  124  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function raac_GetBits
+        ARM
+//  125 unsigned int GetBits(BitStreamInfo *bsi, int nBits)
+//  126 {
+raac_GetBits:
+        PUSH     {R4-R6,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R6 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -12)
+        CFI R4 Frame(CFA, -16)
+        CFI CFA R13+16
+        MOV      R4,R0
+//  127 	unsigned int data, lowBits;
+//  128 
+//  129 	nBits &= 0x1f;							/* nBits mod 32 to avoid unpredictable results like >> by negative amount */
+        AND      R0,R1,#0x1F
+//  130 	data = bsi->iCache >> (31 - nBits);		/* unsigned >> so zero-extend */
+//  131 	data >>= 1;								/* do as >> 31, >> 1 so that nBits = 0 works okay (returns 0) */
+        LDR      R1,[R4, #+4]
+        MOV      R2,R0
+        RSB      R2,R2,#+31
+        LSR      R2,R1,R2
+//  132 	bsi->iCache <<= nBits;					/* left-justify cache */
+        LSL      R1,R1,R0
+        STR      R1,[R4, #+4]
+//  133 	bsi->cachedBits -= nBits;				/* how many bits have we drawn from the cache so far */
+        LDR      R1,[R4, #+8]
+        LSR      R5,R2,#+1
+        SUBS     R0,R1,R0
+        STR      R0,[R4, #+8]
+//  134 
+//  135 	/* if we cross an int boundary, refill the cache */
+//  136 	if (bsi->cachedBits < 0) {
+        BPL      ??raac_GetBits_0
+//  137 		lowBits = -bsi->cachedBits;
+        RSB      R6,R0,#+0
+//  138 		RefillBitstreamCache(bsi);
+        MOV      R0,R4
+        BL       RefillBitstreamCache
+//  139 		data |= bsi->iCache >> (32 - lowBits);		/* get the low-order bits */
+        LDR      R0,[R4, #+4]
+        MOV      R1,R6
+        RSB      R1,R1,#+32
+        ORR      R5,R5,R0, LSR R1
+//  140 	
+//  141 		bsi->cachedBits -= lowBits;			/* how many bits have we drawn from the cache so far */
+        LDR      R1,[R4, #+8]
+//  142 		bsi->iCache <<= lowBits;			/* left-justify cache */
+        LSL      R0,R0,R6
+        SUB      R1,R1,R6
+        STR      R1,[R4, #+8]
+        STR      R0,[R4, #+4]
+//  143 	}
+//  144 
+//  145 	return data;
+??raac_GetBits_0:
+        MOV      R0,R5
+        POP      {R4-R6,PC}       ;; return
+        CFI EndBlock cfiBlock5
+//  146 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_GetBitsNoAdvance??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE raac_GetBitsNoAdvance
+//  147 
+//  148 /**************************************************************************************
+//  149  * Function:    GetBitsNoAdvance
+//  150  *
+//  151  * Description: get bits from bitstream, do not advance bitstream pointer
+//  152  *
+//  153  * Inputs:      pointer to initialized BitStreamInfo struct
+//  154  *              number of bits to get from bitstream
+//  155  *
+//  156  * Outputs:     none (state of BitStreamInfo struct left unchanged) 
+//  157  *
+//  158  * Return:      the next nBits bits of data from bitstream buffer
+//  159  *
+//  160  * Notes:       nBits must be in range [0, 31], nBits outside this range masked by 0x1f
+//  161  *              for speed, does not indicate error if you overrun bit buffer 
+//  162  *              if nBits == 0, returns 0
+//  163  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function raac_GetBitsNoAdvance
+        ARM
+//  164 unsigned int GetBitsNoAdvance(BitStreamInfo *bsi, int nBits)
+//  165 {
+//  166 	unsigned char *buf;
+//  167 	unsigned int data, iCache;
+//  168 	signed int lowBits;
+//  169 
+//  170 	nBits &= 0x1f;							/* nBits mod 32 to avoid unpredictable results like >> by negative amount */
+raac_GetBitsNoAdvance:
+        AND      R2,R1,#0x1F
+//  171 	data = bsi->iCache >> (31 - nBits);		/* unsigned >> so zero-extend */
+//  172 	data >>= 1;								/* do as >> 31, >> 1 so that nBits = 0 works okay (returns 0) */
+        LDR      R1,[R0, #+4]
+        MOV      R3,R2
+        RSB      R3,R3,#+31
+        LSR      R1,R1,R3
+//  173 	lowBits = nBits - bsi->cachedBits;		/* how many bits do we have left to read */
+        LDR      R3,[R0, #+8]
+        LSR      R1,R1,#+1
+        SUB      R2,R2,R3
+//  174 
+//  175 	/* if we cross an int boundary, read next bytes in buffer */
+//  176 	if (lowBits > 0) {
+        CMP      R2,#+1
+        BLT      ??raac_GetBitsNoAdvance_0
+//  177 		iCache = 0;
+//  178 		buf = bsi->bytePtr;
+        LDR      R0,[R0, #+0]
+        MOV      R3,#+0
+//  179 		while (lowBits > 0) {
+//  180 			iCache <<= 8;
+//  181 			iCache |= (unsigned int)*buf++;
+//  182 			lowBits -= 8;
+??raac_GetBitsNoAdvance_1:
+        SUB      R2,R2,#+8
+        LDRB     R12,[R0], #+1
+//  183 		}
+        CMP      R2,#+1
+        ORR      R3,R12,R3, LSL #+8
+        BGE      ??raac_GetBitsNoAdvance_1
+//  184 		lowBits = -lowBits;
+//  185 		data |= iCache >> lowBits;
+        RSB      R0,R2,#+0
+        ORR      R1,R1,R3, LSR R0
+//  186 	}
+//  187 
+//  188 	return data;
+??raac_GetBitsNoAdvance_0:
+        MOV      R0,R1
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock7
+//  189 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_AdvanceBitstream??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE raac_AdvanceBitstream
+//  190 
+//  191 /**************************************************************************************
+//  192  * Function:    AdvanceBitstream
+//  193  *
+//  194  * Description: move bitstream pointer ahead
+//  195  *
+//  196  * Inputs:      pointer to initialized BitStreamInfo struct
+//  197  *              number of bits to advance bitstream
+//  198  *
+//  199  * Outputs:     updated bitstream info struct
+//  200  *
+//  201  * Return:      none
+//  202  *
+//  203  * Notes:       generally used following GetBitsNoAdvance(bsi, maxBits)
+//  204  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function raac_AdvanceBitstream
+        ARM
+//  205 void AdvanceBitstream(BitStreamInfo *bsi, int nBits)
+//  206 {
+raac_AdvanceBitstream:
+        PUSH     {R4,R5,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+        MOV      R4,R0
+//  207 	nBits &= 0x1f;
+//  208 	if (nBits > bsi->cachedBits) {
+        LDR      R0,[R4, #+8]
+        AND      R5,R1,#0x1F
+        CMP      R0,R5
+        BGE      ??raac_AdvanceBitstream_0
+//  209 		nBits -= bsi->cachedBits;
+        SUB      R5,R5,R0
+//  210 		RefillBitstreamCache(bsi);
+        MOV      R0,R4
+        BL       RefillBitstreamCache
+//  211 	}
+//  212 	bsi->iCache <<= nBits;
+??raac_AdvanceBitstream_0:
+        LDR      R0,[R4, #+4]
+        LSL      R0,R0,R5
+        STR      R0,[R4, #+4]
+//  213 	bsi->cachedBits -= nBits;
+        LDR      R0,[R4, #+8]
+        SUB      R0,R0,R5
+        STR      R0,[R4, #+8]
+//  214 }
+        POP      {R4,R5,PC}       ;; return
+        CFI EndBlock cfiBlock9
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_CalcBitsUsed??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock10
+        REQUIRE raac_CalcBitsUsed
+//  215 
+//  216 /**************************************************************************************
+//  217  * Function:    CalcBitsUsed
+//  218  *
+//  219  * Description: calculate how many bits have been read from bitstream
+//  220  *
+//  221  * Inputs:      pointer to initialized BitStreamInfo struct
+//  222  *              pointer to start of bitstream buffer
+//  223  *              bit offset into first byte of startBuf (0-7) 
+//  224  *
+//  225  * Outputs:     none
+//  226  *
+//  227  * Return:      number of bits read from bitstream, as offset from startBuf:startOffset
+//  228  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock11 Using cfiCommon1
+        CFI Function raac_CalcBitsUsed
+        ARM
+//  229 int CalcBitsUsed(BitStreamInfo *bsi, unsigned char *startBuf, int startOffset)
+//  230 {
+//  231 	int bitsUsed;
+//  232 
+//  233 	bitsUsed  = (bsi->bytePtr - startBuf) * 8;
+//  234 	bitsUsed -= bsi->cachedBits;
+//  235 	bitsUsed -= startOffset;
+//  236 
+//  237 	return bitsUsed;
+raac_CalcBitsUsed:
+        LDR      R3,[R0, #+0]
+        LDR      R0,[R0, #+8]
+        SUB      R1,R3,R1
+        RSB      R0,R0,R1, LSL #+3
+        SUB      R0,R0,R2
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock11
+//  238 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock12 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_ByteAlignBitstream??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock12
+        REQUIRE raac_ByteAlignBitstream
+//  239 
+//  240 /**************************************************************************************
+//  241  * Function:    ByteAlignBitstream
+//  242  *
+//  243  * Description: bump bitstream pointer to start of next byte
+//  244  *
+//  245  * Inputs:      pointer to initialized BitStreamInfo struct
+//  246  *
+//  247  * Outputs:     byte-aligned bitstream BitStreamInfo struct
+//  248  *
+//  249  * Return:      none
+//  250  *
+//  251  * Notes:       if bitstream is already byte-aligned, do nothing
+//  252  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock13 Using cfiCommon1
+        CFI Function raac_ByteAlignBitstream
+        ARM
+//  253 void ByteAlignBitstream(BitStreamInfo *bsi)
+//  254 {
+raac_ByteAlignBitstream:
+        PUSH     {R4,R5,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+        MOV      R4,R0
+//  255 	int offset;
+//  256 
+//  257 	offset = bsi->cachedBits & 0x07;
+//  258 	AdvanceBitstream(bsi, offset);
+        LDR      R0,[R4, #+8]
+        AND      R5,R0,#0x7
+        CMP      R0,R5
+        BGE      ??raac_ByteAlignBitstream_0
+        SUB      R5,R5,R0
+        MOV      R0,R4
+        BL       RefillBitstreamCache
+??raac_ByteAlignBitstream_0:
+        LDR      R0,[R4, #+4]
+        LSL      R0,R0,R5
+        STR      R0,[R4, #+4]
+        LDR      R0,[R4, #+8]
+        SUB      R0,R0,R5
+        STR      R0,[R4, #+8]
+//  259 }
+        POP      {R4,R5,PC}       ;; return
+        CFI EndBlock cfiBlock13
+
+        END
+// 
+// 640 bytes in segment CODE
+// 
+// 612 bytes of CODE memory (+ 28 bytes shared)
+//
+//Errors: none
+//Warnings: none

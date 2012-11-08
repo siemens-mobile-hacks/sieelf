@@ -1,0 +1,969 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:45 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3d /
+//                       ec\dqchan.c                                         /
+//    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3d /
+//                       ec\dqchan.c -D NDEBUG -lC                           /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\dqchan.s79                                     /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME dqchan
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        MULTWEAK ??MULSHIFT32??rA
+        MULTWEAK ??xmp3_DequantChannel??rT
+        FUNCTION DequantBlock,0203H
+        LOCFRAME CSTACK, 68, STACK
+        PUBLIC xmp3_DequantChannel
+        FUNCTION xmp3_DequantChannel,0203H
+        LOCFRAME CSTACK, 72, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+MULSHIFT32          SYMBOL "MULSHIFT32"
+??MULSHIFT32??rA    SYMBOL "??rA", MULSHIFT32
+xmp3_DequantChannel SYMBOL "xmp3_DequantChannel"
+??xmp3_DequantChannel??rT SYMBOL "??rT", xmp3_DequantChannel
+
+        EXTERN MULSHIFT32
+        FUNCTION MULSHIFT32,0202H
+
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3dec\dqchan.c
+//    1 /* ***** BEGIN LICENSE BLOCK ***** 
+//    2  * Version: RCSL 1.0/RPSL 1.0 
+//    3  *  
+//    4  * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+//    5  *      
+//    6  * The contents of this file, and the files included with this file, are 
+//    7  * subject to the current version of the RealNetworks Public Source License 
+//    8  * Version 1.0 (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the RealNetworks Community Source License Version 1.0 
+//   11  * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+//   12  * in which case the RCSL will apply. You may also obtain the license terms 
+//   13  * directly from RealNetworks.  You may not use this file except in 
+//   14  * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+//   15  * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+//   16  * RCSL for the rights, obligations and limitations governing use of the 
+//   17  * contents of the file.  
+//   18  *  
+//   19  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   20  * developer of the Original Code and owns the copyrights in the portions 
+//   21  * it created. 
+//   22  *  
+//   23  * This file, and the files included with this file, is distributed and made 
+//   24  * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+//   25  * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+//   26  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+//   27  * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+//   28  * 
+//   29  * Technology Compatibility Kit Test Suite(s) Location: 
+//   30  *    http://www.helixcommunity.org/content/tck 
+//   31  * 
+//   32  * Contributor(s): 
+//   33  *  
+//   34  * ***** END LICENSE BLOCK ***** */ 
+//   35 
+//   36 /**************************************************************************************
+//   37  * Fixed-point MP3 decoder
+//   38  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+//   39  * August 2003
+//   40  *
+//   41  * dqchan.c - dequantization of transform coefficients
+//   42  **************************************************************************************/
+//   43 
+//   44 #include "coder.h"
+//   45 #include "assembly.h"
+//   46 
+//   47 typedef int ARRAY3[3];	/* for short-block reordering */
+//   48 
+//   49 /* optional pre-emphasis for high-frequency scale factor bands */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//   50 static const char preTab[22] = { 0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,2,2,3,3,3,2,0 };
+preTab:
+        DATA
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 3, 3, 3, 2, 0
+        DC8 0, 0
+//   51 
+//   52 /* pow(2,-i/4) for i=0..3, Q31 format */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//   53 static const int pow14[4] = { 
+pow14:
+        DATA
+        DC32 2147483647, 1805811301, 1518500250, 1276901417
+        DC32 14, 13, 11, 10, 9, 7, 6, 5
+        DC32 1704458900, 1352829926, 2147483647, 1704458900, 1352829926
+        DC32 2147483647, 1704458900, 1352829926
+        DC32 338207482, 366681046, 395718700, 425299333, 455403707, 486014202
+        DC32 517114610, 548689962, 580726382, 613210965, 646131674, 679477248
+        DC32 713237127, 747401384, 781960664, 816906137, 852229450, 887922689
+        DC32 923978338, 960389256, 997148640, 1034250007, 1071687164
+        DC32 1109454194, 1147545432, 1185955452, 1224679047, 1263711219
+        DC32 1303047165, 1342682263, 1382612066, 1422832284, 1463338785
+        DC32 1504127577, 1545194805, 1586536745, 1628149793, 1670030463
+        DC32 1712175375, 1754581259, 1797244940, 1840163341, 1883333472
+        DC32 1926752432, 1970417401, 2014325637, 2058474476, 2102861321
+        DC32 0, 268435456, 676414963, 1161452763, 213057363, 286886358
+        DC32 365834696, 449311235, 536870912, 628164281, 722908323, 820868276
+        DC32 921845669, 1025670099, 1132193366, 1241285180, 0, 225726413
+        DC32 568794918, 976661465, 179159172, 241241710, 307629085, 377824207
+        DC32 451452825, 528221092, 607891017, 690265191, 775176719, 862482309
+        DC32 952057343, 1043792258, 0, 189812531, 478297607, 821271125
+        DC32 150654306, 202859289, 258684194, 317711021, 379625062, 444179223
+        DC32 511173377, 580441524, 651843324, 725258282, 800581607, 877721168
+        DC32 0, 159612677, 402198743, 690603945, 126684666, 170583649
+        DC32 217526612, 267162059, 319225354, 373508716, 429843861, 488091197
+        DC32 548132714, 609867089, 673206203, 738072584
+        DC32 698400169, -1339144152, 1498917403, 594299277, -11003815
+        DC32 277160291, -751569244, 1189691531, 667078384, -17467468
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??DequantBlock??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE DequantBlock
+//   54 	0x7fffffff, 0x6ba27e65, 0x5a82799a, 0x4c1bf829
+//   55 };
+//   56 
+//   57 /* pow(2,-i/4) * pow(j,4/3) for i=0..3 j=0..15, Q25 format */
+//   58 static const int pow43_14[4][16] = {
+//   59 {	0x00000000, 0x10000000, 0x285145f3, 0x453a5cdb, /* Q28 */
+//   60 	0x0cb2ff53, 0x111989d6, 0x15ce31c8, 0x1ac7f203, 
+//   61 	0x20000000, 0x257106b9, 0x2b16b4a3, 0x30ed74b4, 
+//   62 	0x36f23fa5, 0x3d227bd3, 0x437be656, 0x49fc823c, },
+//   63 
+//   64 {	0x00000000, 0x0d744fcd, 0x21e71f26, 0x3a36abd9, 
+//   65 	0x0aadc084, 0x0e610e6e, 0x12560c1d, 0x168523cf, 
+//   66 	0x1ae89f99, 0x1f7c03a4, 0x243bae49, 0x29249c67, 
+//   67 	0x2e34420f, 0x33686f85, 0x38bf3dff, 0x3e370182, },
+//   68 
+//   69 {	0x00000000, 0x0b504f33, 0x1c823e07, 0x30f39a55, 
+//   70 	0x08facd62, 0x0c176319, 0x0f6b3522, 0x12efe2ad, 
+//   71 	0x16a09e66, 0x1a79a317, 0x1e77e301, 0x2298d5b4, 
+//   72 	0x26da56fc, 0x2b3a902a, 0x2fb7e7e7, 0x3450f650, },
+//   73 
+//   74 {	0x00000000, 0x09837f05, 0x17f910d7, 0x2929c7a9, 
+//   75 	0x078d0dfa, 0x0a2ae661, 0x0cf73154, 0x0fec91cb, 
+//   76 	0x1306fe0a, 0x16434a6c, 0x199ee595, 0x1d17ae3d, 
+//   77 	0x20abd76a, 0x2459d551, 0x28204fbb, 0x2bfe1808, },
+//   78 };
+//   79 
+//   80 /* pow(j,4/3) for j=16..63, Q23 format */
+//   81 static const int pow43[] = {
+//   82 	0x1428a2fa, 0x15db1bd6, 0x1796302c, 0x19598d85, 
+//   83 	0x1b24e8bb, 0x1cf7fcfa, 0x1ed28af2, 0x20b4582a, 
+//   84 	0x229d2e6e, 0x248cdb55, 0x26832fda, 0x28800000, 
+//   85 	0x2a832287, 0x2c8c70a8, 0x2e9bc5d8, 0x30b0ff99, 
+//   86 	0x32cbfd4a, 0x34eca001, 0x3712ca62, 0x393e6088, 
+//   87 	0x3b6f47e0, 0x3da56717, 0x3fe0a5fc, 0x4220ed72, 
+//   88 	0x44662758, 0x46b03e7c, 0x48ff1e87, 0x4b52b3f3, 
+//   89 	0x4daaebfd, 0x5007b497, 0x5268fc62, 0x54ceb29c, 
+//   90 	0x5738c721, 0x59a72a59, 0x5c19cd35, 0x5e90a129, 
+//   91 	0x610b9821, 0x638aa47f, 0x660db90f, 0x6894c90b, 
+//   92 	0x6b1fc80c, 0x6daeaa0d, 0x70416360, 0x72d7e8b0, 
+//   93 	0x75722ef9, 0x78102b85, 0x7ab1d3ec, 0x7d571e09, 
+//   94 };
+//   95 
+//   96 /* sqrt(0.5) in Q31 format */
+//   97 #define SQRTHALF 0x5a82799a
+//   98 
+//   99 /*
+//  100  * Minimax polynomial approximation to pow(x, 4/3), over the range
+//  101  *  poly43lo: x = [0.5, 0.7071]
+//  102  *  poly43hi: x = [0.7071, 1.0]
+//  103  *
+//  104  * Relative error < 1E-7
+//  105  * Coefs are scaled by 4, 2, 1, 0.5, 0.25
+//  106  */
+//  107 static const int poly43lo[5] = { 0x29a0bda9, 0xb02e4828, 0x5957aa1b, 0x236c498d, 0xff581859 };
+//  108 static const int poly43hi[5] = { 0x10852163, 0xd333f6a4, 0x46e9408b, 0x27c2cef0, 0xfef577b4 };
+//  109 
+//  110 /* pow(2, i*4/3) as exp and frac */
+//  111 static const int pow2exp[8]  = { 14, 13, 11, 10, 9, 7, 6, 5 };
+//  112 
+//  113 static const int pow2frac[8] = {
+//  114 	0x6597fa94, 0x50a28be6, 0x7fffffff, 0x6597fa94, 
+//  115 	0x50a28be6, 0x7fffffff, 0x6597fa94, 0x50a28be6
+//  116 };
+//  117 
+//  118 /**************************************************************************************
+//  119  * Function:    DequantBlock
+//  120  *
+//  121  * Description: Ken's highly-optimized, low memory dequantizer performing the operation
+//  122  *              y = pow(x, 4.0/3.0) * pow(2, 25 - scale/4.0)
+//  123  *
+//  124  * Inputs:      input buffer of decode Huffman codewords (signed-magnitude)
+//  125  *              output buffer of same length (in-place (outbuf = inbuf) is allowed)
+//  126  *              number of samples
+//  127  *              
+//  128  * Outputs:     dequantized samples in Q25 format
+//  129  *
+//  130  * Return:      bitwise-OR of the unsigned outputs (for guard bit calculations)
+//  131  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function DequantBlock
+        ARM
+//  132 static int DequantBlock(int *inbuf, int *outbuf, int num, int scale)
+//  133 {
+DequantBlock:
+        PUSH     {R0,R1,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+44
+//  134 	int tab4[4];
+//  135 	int scalef, scalei, shift;
+//  136 	int sx, x, y;
+//  137 	int mask = 0;
+//  138 	const int *tab16, *coef;
+//  139 
+//  140 	tab16 = pow43_14[scale & 0x3];
+        LDR      R6,??DequantBlock_0  ;; pow14
+        SUB      SP,SP,#+24
+        CFI CFA R13+68
+        AND      R1,R3,#0x3
+        ADD      R1,R6,R1, LSL #+6
+        ADD      R1,R1,#+272
+        STR      R1,[SP, #+0]
+//  141 	scalef = pow14[scale & 0x3];
+        AND      R1,R3,#0x3
+        LDR      R1,[R6, +R1, LSL #+2]
+        MOV      R4,R2
+        MOV      R5,#+0
+        STR      R1,[SP, #+4]
+//  142 	scalei = MIN(scale >> 2, 31);	/* smallest input scale = -47, so smallest scalei = -12 */
+        ASR      R7,R3,#+2
+        CMP      R7,#+31
+        MOVGE    R7,#+31
+//  143 
+//  144 	/* cache first 4 values */
+//  145 	shift = MIN(scalei + 3, 31);
+        ADD      R1,R7,#+3
+        CMP      R1,#+31
+        BGE      ??DequantBlock_1
+//  146 	shift = MAX(shift, 0);
+        CMP      R1,#+1
+        MOVLT    R1,#+0
+//  147 	tab4[0] = 0;
+??DequantBlock_2:
+        MOV      R2,#+0
+        STR      R2,[SP, #+8]
+//  148 	tab4[1] = tab16[1] >> shift;
+        LDR      R2,[SP, #+0]
+        LDR      R2,[R2, #+4]
+        ASR      R2,R2,R1
+        STR      R2,[SP, #+12]
+//  149 	tab4[2] = tab16[2] >> shift;
+        LDR      R2,[SP, #+0]
+        LDR      R2,[R2, #+8]
+        ASR      R2,R2,R1
+        STR      R2,[SP, #+16]
+//  150 	tab4[3] = tab16[3] >> shift;
+        LDR      R2,[SP, #+0]
+        LDR      R2,[R2, #+12]
+        ASR      R1,R2,R1
+        STR      R1,[SP, #+20]
+//  151 
+//  152 	do {
+//  153 
+//  154 		sx = *inbuf++;
+??DequantBlock_3:
+        LDR      R1,[SP, #+24]
+        LDR      R8,[R1], #+4
+        STR      R1,[SP, #+24]
+//  155 		x = sx & 0x7fffffff;	/* sx = sign|mag */
+        LSL      R0,R8,#+1
+        LSR      R9,R0,#+1
+//  156 
+//  157 		if (x < 4) {
+        CMP      R9,#+4
+        BGE      ??DequantBlock_4
+//  158 
+//  159 			y = tab4[x];
+        ADD      R0,SP,#+8
+        LDR      R0,[R0, +R9, LSL #+2]
+        B        ??DequantBlock_5
+//  160 
+//  161 		} else if (x < 16) {
+??DequantBlock_1:
+        MOV      R1,#+31
+        B        ??DequantBlock_2
+??DequantBlock_4:
+        CMP      R9,#+16
+        BGE      ??DequantBlock_6
+//  162 
+//  163 			y = tab16[x];
+        LDR      R0,[SP, #+0]
+//  164 			y = (scalei < 0) ? y << -scalei : y >> scalei;
+        CMP      R7,#+0
+        LDR      R0,[R0, +R9, LSL #+2]
+        BPL      ??DequantBlock_7
+        MOV      R1,R7
+        RSB      R1,R1,#+0
+??DequantBlock_8:
+        LSL      R0,R0,R1
+        B        ??DequantBlock_5
+??DequantBlock_7:
+        ASR      R0,R0,R7
+        B        ??DequantBlock_5
+//  165 
+//  166 		} else {
+//  167 
+//  168 			if (x < 64) {
+??DequantBlock_6:
+        CMP      R9,#+64
+        BGE      ??DequantBlock_9
+//  169 
+//  170 				y = pow43[x-16];
+//  171 
+//  172 				/* fractional scale */
+//  173 				y = MULSHIFT32(y, scalef);
+        LDR      R1,[SP, #+4]
+        ADD      R0,R6,R9, LSL #+2
+        LDR      R0,[R0, #+16]
+        _BLF     MULSHIFT32,??MULSHIFT32??rA
+//  174 				shift = scalei - 3;
+        SUB      R1,R7,#+3
+        B        ??DequantBlock_10
+//  175 
+//  176 			} else {
+//  177 
+//  178 				/* normalize to [0x40000000, 0x7fffffff] */
+//  179 				x <<= 17;
+//  180 				shift = 0;
+//  181 				if (x < 0x08000000)
+//  182 					x <<= 4, shift += 4;
+//  183 				if (x < 0x20000000)
+//  184 					x <<= 2, shift += 2;
+//  185 				if (x < 0x40000000)
+//  186 					x <<= 1, shift += 1;
+//  187 
+//  188 				coef = (x < SQRTHALF) ? poly43lo : poly43hi;
+??DequantBlock_9:
+        LDR      R0,??DequantBlock_0+0x4  ;; 0x5a82799a
+        LSL      R9,R9,#+17
+        MOV      R10,#+0
+        CMP      R9,#+134217728
+        LSLLT    R9,R9,#+4
+        MOVLT    R10,#+4
+        CMP      R9,#+536870912
+        LSLLT    R9,R9,#+2
+        ADDLT    R10,R10,#+2
+        CMP      R9,#+1073741824
+        LSLLT    R9,R9,#+1
+        ADDLT    R10,R10,#+1
+        CMP      R9,R0
+        ADDLT    R11,R6,#+528
+        ADDGE    R11,R6,#+548
+//  189 
+//  190 				/* polynomial */
+//  191 				y = coef[0];
+//  192 				y = MULSHIFT32(y, x) + coef[1];
+        LDR      R0,[R11, #+0]
+        MOV      R1,R9
+        _BLF     MULSHIFT32,??MULSHIFT32??rA
+        LDR      R1,[R11, #+4]
+        ADD      R0,R1,R0
+//  193 				y = MULSHIFT32(y, x) + coef[2];
+        MOV      R1,R9
+        _BLF     MULSHIFT32,??MULSHIFT32??rA
+        LDR      R1,[R11, #+8]
+        ADD      R0,R1,R0
+//  194 				y = MULSHIFT32(y, x) + coef[3];
+        MOV      R1,R9
+        _BLF     MULSHIFT32,??MULSHIFT32??rA
+        LDR      R1,[R11, #+12]
+        ADD      R0,R1,R0
+//  195 				y = MULSHIFT32(y, x) + coef[4];
+        MOV      R1,R9
+        _BLF     MULSHIFT32,??MULSHIFT32??rA
+        LDR      R1,[R11, #+16]
+//  196 				y = MULSHIFT32(y, pow2frac[shift]) << 3;
+        ADD      R9,R6,R10, LSL #+2
+        ADD      R0,R1,R0
+        LDR      R1,[R9, #+48]
+        _BLF     MULSHIFT32,??MULSHIFT32??rA
+//  197 
+//  198 				/* fractional scale */
+//  199 				y = MULSHIFT32(y, scalef);
+        LDR      R1,[SP, #+4]
+        LSL      R0,R0,#+3
+        _BLF     MULSHIFT32,??MULSHIFT32??rA
+//  200 				shift = scalei - pow2exp[shift];
+        LDR      R1,[R9, #+16]
+        SUB      R1,R7,R1
+//  201 			}
+//  202 
+//  203 			/* integer scale */
+//  204 			if (shift < 0) {
+??DequantBlock_10:
+        CMP      R1,#+0
+        BPL      ??DequantBlock_11
+//  205 				shift = -shift;
+        RSB      R1,R1,#+0
+//  206 				if (y > (0x7fffffff >> shift))
+        MVN      R2,#-2147483648
+        CMP      R0,R2, ASR R1
+        BLE      ??DequantBlock_8
+//  207 					y = 0x7fffffff;		/* clip */
+        MOV      R0,R2
+        B        ??DequantBlock_5
+//  208 				else
+//  209 					y <<= shift;
+//  210 			} else {
+//  211 				y >>= shift;
+??DequantBlock_11:
+        ASR      R0,R0,R1
+//  212 			}
+//  213 		}
+//  214 
+//  215 		/* sign and store */
+//  216 		mask |= y;
+//  217 		*outbuf++ = (sx < 0) ? -y : y;
+??DequantBlock_5:
+        LDR      R1,[SP, #+28]
+        ORR      R5,R0,R5
+        ADD      R3,R1,#+4
+        STR      R3,[SP, #+28]
+        CMP      R8,#+0
+        RSBMI    R0,R0,#+0
+        STR      R0,[R1, #+0]
+//  218 
+//  219 	} while (--num);
+        SUBS     R4,R4,#+1
+        BNE      ??DequantBlock_3
+//  220 
+//  221 	return mask;
+        MOV      R0,R5
+        ADD      SP,SP,#+32
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        DATA
+??DequantBlock_0:
+        DC32     pow14
+        DC32     0x5a82799a
+        CFI EndBlock cfiBlock1
+//  222 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??xmp3_DequantChannel??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE xmp3_DequantChannel
+//  223 
+//  224 /**************************************************************************************
+//  225  * Function:    DequantChannel
+//  226  *
+//  227  * Description: dequantize one granule, one channel worth of decoded Huffman codewords
+//  228  *
+//  229  * Inputs:      sample buffer (decoded Huffman codewords), length = MAX_NSAMP samples
+//  230  *              work buffer for reordering short-block, length = MAX_REORDER_SAMPS
+//  231  *                samples (3 * width of largest short-block critical band)
+//  232  *              non-zero bound for this channel/granule
+//  233  *              valid FrameHeader, SideInfoSub, ScaleFactorInfoSub, and CriticalBandInfo
+//  234  *                structures for this channel/granule
+//  235  *
+//  236  * Outputs:     MAX_NSAMP dequantized samples in sampleBuf
+//  237  *              updated non-zero bound (indicating which samples are != 0 after DQ)
+//  238  *              filled-in cbi structure indicating start and end critical bands
+//  239  *
+//  240  * Return:      minimum number of guard bits in dequantized sampleBuf
+//  241  *
+//  242  * Notes:       dequantized samples in Q(DQ_FRACBITS_OUT) format 
+//  243  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function xmp3_DequantChannel
+        ARM
+//  244 int DequantChannel(int *sampleBuf, int *workBuf, int *nonZeroBound, FrameHeader *fh, SideInfoSub *sis, 
+//  245 					ScaleFactorInfoSub *sfis, CriticalBandInfo *cbi)
+//  246 {
+xmp3_DequantChannel:
+        PUSH     {R0,R2-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+48
+        SUB      SP,SP,#+24
+        CFI CFA R13+72
+//  247 	int i, j, w, cb;
+//  248 	int cbStartL, cbEndL, cbStartS, cbEndS;
+//  249 	int nSamps, nonZero, sfactMultiplier, gbMask;
+//  250 	int globalGain, gainI;
+//  251 	int cbMax[3];
+//  252 	ARRAY3 *buf;    /* short block reorder */
+//  253 	
+//  254 	/* set default start/end points for short/long blocks - will update with non-zero cb info */
+//  255 	if (sis->blockType == 2) {
+        LDR      R0,[SP, #+72]
+        LDR      R5,[SP, #+80]
+        LDR      R0,[R0, #+20]
+        MOV      R4,R1
+        CMP      R0,#+2
+        BNE      ??xmp3_DequantChannel_0
+//  256 		cbStartL = 0;
+//  257 		if (sis->mixedBlock) { 
+        LDR      R0,[SP, #+72]
+        LDR      R0,[R0, #+24]
+        CMP      R0,#+0
+        BEQ      ??xmp3_DequantChannel_1
+//  258 			cbEndL = (fh->ver == MPEG1 ? 8 : 6); 
+        LDRB     R0,[R3, #+0]
+//  259 			cbStartS = 3; 
+        MOV      R7,#+3
+        CMP      R0,#+0
+        MOVEQ    R6,#+8
+        MOVNE    R6,#+6
+        B        ??xmp3_DequantChannel_2
+//  260 		} else {
+//  261 			cbEndL = 0; 
+??xmp3_DequantChannel_1:
+        MOV      R6,#+0
+//  262 			cbStartS = 0;
+        MOV      R7,#+0
+        B        ??xmp3_DequantChannel_2
+//  263 		}
+//  264 		cbEndS = 13;
+//  265 	} else {
+//  266 		/* long block */
+//  267 		cbStartL = 0;
+//  268 		cbEndL =   22;
+??xmp3_DequantChannel_0:
+        MOV      R6,#+22
+//  269 		cbStartS = 13;
+        MOV      R7,#+13
+//  270 		cbEndS =   13;
+//  271 	}
+//  272 	cbMax[2] = cbMax[1] = cbMax[0] = 0;
+//  273 	gbMask = 0;
+//  274 	i = 0;
+//  275 
+//  276 	/* sfactScale = 0 --> quantizer step size = 2
+//  277 	 * sfactScale = 1 --> quantizer step size = sqrt(2)
+//  278 	 *   so sfactMultiplier = 2 or 4 (jump through globalGain by powers of 2 or sqrt(2))
+//  279 	 */
+//  280 	sfactMultiplier = 2 * (sis->sfactScale + 1);
+//  281 
+//  282 	/* offset globalGain by -2 if midSide enabled, for 1/sqrt(2) used in MidSideProc()
+//  283 	 *  (DequantBlock() does 0.25 * gainI so knocking it down by two is the same as 
+//  284 	 *   dividing every sample by sqrt(2) = multiplying by 2^-.5)
+//  285 	 */
+//  286 	globalGain = sis->globalGain;
+??xmp3_DequantChannel_2:
+        LDR      R0,[SP, #+72]
+        MOV      R1,#+0
+        STR      R1,[SP, #+0]
+        STR      R1,[SP, #+4]
+        STR      R1,[SP, #+8]
+        MOV      R9,R1
+        LDR      R1,[SP, #+72]
+        MOV      R8,#+0
+        LDR      R1,[R1, #+64]
+//  287 	if (fh->modeExt >> 1)
+//  288 		 globalGain -= 2;
+//  289 	globalGain += IMDCT_SCALE;		/* scale everything by sqrt(2), for fast IMDCT36 */
+//  290 
+//  291 	/* long blocks */
+//  292 	for (cb = 0; cb < cbEndL; cb++) {
+        MOV      R10,#+0
+        ADD      R1,R1,#+1
+        LSL      R1,R1,#+1
+        STR      R1,[SP, #+12]
+        LDR      R0,[R0, #+8]
+        LDR      R1,[R3, #+32]
+        ASRS     R1,R1,#+1
+        SUBNE    R0,R0,#+2
+        ADD      R0,R0,#+2
+        STR      R0,[SP, #+20]
+        B        ??xmp3_DequantChannel_3
+??xmp3_DequantChannel_4:
+        ADD      R10,R10,#+1
+??xmp3_DequantChannel_3:
+        LDR      R1,[SP, #+20]
+        CMP      R10,R6
+        RSB      R1,R1,#+210
+        STR      R1,[SP, #+16]
+        BGE      ??xmp3_DequantChannel_5
+//  293 
+//  294 		nonZero = 0;
+//  295 		nSamps = fh->sfBand->l[cb + 1] - fh->sfBand->l[cb];
+        LDR      R0,[SP, #+32]
+//  296 		gainI = 210 - globalGain + sfactMultiplier * (sfis->l[cb] + (sis->preFlag ? (int)preTab[cb] : 0));
+        LDR      R3,[SP, #+76]
+        LDR      R0,[R0, #+52]
+        LDRB     R3,[R10, +R3]
+        LDR      R2,[SP, #+12]
+        ADD      R1,R0,R10, LSL #+1
+        LDRSH    R1,[R1, #+2]
+        ADD      R0,R0,R10, LSL #+1
+        LDRSH    R0,[R0, #+0]
+        SUB      R11,R1,R0
+        LDR      R0,[SP, #+72]
+        LDR      R1,[SP, #+16]
+        LDR      R0,[R0, #+60]
+        CMP      R0,#+0
+        LDRNE    R0,??xmp3_DequantChannel_6  ;; preTab
+        LDRBNE   R0,[R10, +R0]
+        ADD      R0,R0,R3
+        MLA      R3,R0,R2,R1
+//  297 
+//  298 		nonZero |= DequantBlock(sampleBuf + i, sampleBuf + i, nSamps, gainI);
+        LDR      R0,[SP, #+24]
+        MOV      R2,R11
+        ADD      R0,R0,R9, LSL #+2
+        MOV      R1,R0
+        BL       DequantBlock
+//  299 		i += nSamps;
+//  300 
+//  301 		/* update highest non-zero critical band */
+//  302 		if (nonZero) 
+        CMP      R0,#+0
+//  303 			cbMax[0] = cb;
+        STRNE    R10,[SP, #+0]
+//  304 		gbMask |= nonZero;
+        ORR      R8,R0,R8
+//  305 
+//  306 		if (i >= *nonZeroBound) 
+        LDR      R0,[SP, #+28]
+        ADD      R9,R11,R9
+        LDR      R0,[R0, #+0]
+        CMP      R9,R0
+        BLT      ??xmp3_DequantChannel_4
+//  307 			break;
+//  308 	}
+//  309 
+//  310 	/* set cbi (Type, EndS[], EndSMax will be overwritten if we proceed to do short blocks) */
+//  311 	cbi->cbType = 0;			/* long only */
+??xmp3_DequantChannel_5:
+        MOV      R0,#+0
+        STR      R0,[R5, #+0]
+//  312 	cbi->cbEndL  = cbMax[0];
+        LDR      R0,[SP, #+0]
+//  313 	cbi->cbEndS[0] = cbi->cbEndS[1] = cbi->cbEndS[2] = 0;
+//  314 	cbi->cbEndSMax = 0;
+//  315 
+//  316 	/* early exit if no short blocks */
+//  317 	if (cbStartS >= 12) 
+        CMP      R7,#+12
+        STR      R0,[R5, #+20]
+        MOV      R0,#+0
+        STR      R0,[R5, #+12]
+        STR      R0,[R5, #+8]
+        STR      R0,[R5, #+4]
+        STR      R0,[R5, #+16]
+        BLT      ??xmp3_DequantChannel_7
+//  318 		return CLZ(gbMask) - 1;
+        CMP      R8,#+0
+        MOVEQ    R0,#+32
+        BEQ      ??xmp3_DequantChannel_8
+        TST      R8,#0x80000000
+        BNE      ??xmp3_DequantChannel_8
+??xmp3_DequantChannel_9:
+        ADD      R0,R0,#+1
+        LSL      R8,R8,#+1
+        TST      R8,#0x80000000
+        BEQ      ??xmp3_DequantChannel_9
+        SUB      R0,R0,#+1
+        ADD      SP,SP,#+36
+        CFI CFA R13+36
+        POP      {R4-R11,PC}
+        CFI CFA R13+72
+//  319 	
+//  320 	/* short blocks */
+//  321 	cbMax[2] = cbMax[1] = cbMax[0] = cbStartS;
+??xmp3_DequantChannel_7:
+        STR      R7,[SP, #+0]
+        STR      R7,[SP, #+4]
+        STR      R7,[SP, #+8]
+//  322 	for (cb = cbStartS; cb < cbEndS; cb++) {
+        MOV      R10,R7
+//  323 
+//  324 		nSamps = fh->sfBand->s[cb + 1] - fh->sfBand->s[cb];
+??xmp3_DequantChannel_10:
+        LDR      R0,[SP, #+32]
+        ADD      R1,R10,#+1
+        LDR      R0,[R0, #+52]
+//  325 		for (w = 0; w < 3; w++) {
+        MOV      R7,#+0
+        ADD      R1,R0,R1, LSL #+1
+        LDRSH    R1,[R1, #+46]
+        ADD      R0,R0,R10, LSL #+1
+        LDRSH    R0,[R0, #+46]
+        SUB      R11,R1,R0
+//  326 			nonZero =  0;
+//  327 			gainI = 210 - globalGain + 8*sis->subBlockGain[w] + sfactMultiplier*(sfis->s[cb][w]);
+//  328 
+//  329 			nonZero |= DequantBlock(sampleBuf + i + nSamps*w, workBuf + nSamps*w, nSamps, gainI);
+??xmp3_DequantChannel_11:
+        LDR      R2,[SP, #+72]
+        LDR      R12,[SP, #+76]
+        LDR      R0,[SP, #+24]
+        LDR      R1,[SP, #+16]
+        ADD      R2,R2,R7, LSL #+2
+        LDR      R2,[R2, #+40]
+        ADD      R3,R10,R10, LSL #+1
+        ADD      R3,R3,R12
+        ADD      R3,R7,R3
+        LDRB     R12,[R3, #+23]
+        ADD      R6,R0,R9, LSL #+2
+        MUL      R0,R7,R11
+        ADD      R1,R1,R2, LSL #+3
+        LDR      R2,[SP, #+12]
+        MLA      R3,R12,R2,R1
+        MOV      R2,R11
+        ADD      R1,R4,R0, LSL #+2
+        ADD      R0,R6,R0, LSL #+2
+        BL       DequantBlock
+//  330 
+//  331 			/* update highest non-zero critical band */
+//  332 			if (nonZero)
+        CMP      R0,#+0
+//  333 				cbMax[w] = cb;
+        MOVNE    R1,SP
+        STRNE    R10,[R1, +R7, LSL #+2]
+//  334 			gbMask |= nonZero;
+        ORR      R8,R0,R8
+//  335 		}
+        ADD      R7,R7,#+1
+        CMP      R7,#+3
+        BLT      ??xmp3_DequantChannel_11
+//  336 
+//  337 		/* reorder blocks */
+//  338 		buf = (ARRAY3 *)(sampleBuf + i);
+//  339 		i += 3*nSamps;
+        ADD      R0,R11,R11, LSL #+1
+        ADD      R9,R0,R9
+//  340 		for (j = 0; j < nSamps; j++) {
+        MOV      R0,#+0
+        CMP      R11,#+1
+        BGE      ??xmp3_DequantChannel_12
+        B        ??xmp3_DequantChannel_13
+//  341 			buf[j][0] = workBuf[0*nSamps + j];
+??xmp3_DequantChannel_14:
+        MOV      R2,#+12
+        MLA      R1,R2,R0,R6
+        LDR      R2,[R4, +R0, LSL #+2]
+        STR      R2,[R1, #+0]
+//  342 			buf[j][1] = workBuf[1*nSamps + j];
+        ADD      R2,R0,R11
+        LDR      R2,[R4, +R2, LSL #+2]
+        STR      R2,[R1, #+4]
+//  343 			buf[j][2] = workBuf[2*nSamps + j];
+        ADD      R2,R0,R11, LSL #+1
+        LDR      R2,[R4, +R2, LSL #+2]
+//  344 		}
+        ADD      R0,R0,#+1
+        STR      R2,[R1, #+8]
+??xmp3_DequantChannel_12:
+        CMP      R0,R11
+        BLT      ??xmp3_DequantChannel_14
+//  345 
+//  346 		ASSERT(3*nSamps <= MAX_REORDER_SAMPS);
+//  347 
+//  348 		if (i >= *nonZeroBound) 
+??xmp3_DequantChannel_13:
+        LDR      R0,[SP, #+28]
+        LDR      R0,[R0, #+0]
+        CMP      R9,R0
+//  349 			break;
+//  350 	}
+        ADDLT    R10,R10,#+1
+        CMPLT    R10,#+13
+        BLT      ??xmp3_DequantChannel_10
+//  351 
+//  352 	/* i = last non-zero INPUT sample processed, which corresponds to highest possible non-zero 
+//  353 	 *     OUTPUT sample (after reorder)
+//  354 	 * however, the original nzb is no longer necessarily true
+//  355 	 *   for each cb, buf[][] is updated with 3*nSamps samples (i increases 3*nSamps each time)
+//  356 	 *   (buf[j + 1][0] = 3 (input) samples ahead of buf[j][0])
+//  357      * so update nonZeroBound to i
+//  358 	 */
+//  359 	*nonZeroBound = i;
+        LDR      R0,[SP, #+28]
+        STR      R9,[R0, #+0]
+//  360 
+//  361 	ASSERT(*nonZeroBound <= MAX_NSAMP);
+//  362 
+//  363 	cbi->cbType = (sis->mixedBlock ? 2 : 1);	/* 2 = mixed short/long, 1 = short only */
+        LDR      R0,[SP, #+72]
+        LDR      R0,[R0, #+24]
+        CMP      R0,#+0
+        MOVNE    R0,#+2
+        MOVEQ    R0,#+1
+        STR      R0,[R5, #+0]
+//  364 
+//  365 	cbi->cbEndS[0] = cbMax[0];
+        LDR      R0,[SP, #+0]
+        STR      R0,[R5, #+4]
+//  366 	cbi->cbEndS[1] = cbMax[1];
+        LDR      R0,[SP, #+4]
+        STR      R0,[R5, #+8]
+//  367 	cbi->cbEndS[2] = cbMax[2];
+        LDR      R1,[SP, #+8]
+        STR      R1,[R5, #+12]
+//  368 
+//  369 	cbi->cbEndSMax = cbMax[0];
+        LDR      R2,[SP, #+0]
+        STR      R2,[R5, #+16]
+//  370 	cbi->cbEndSMax = MAX(cbi->cbEndSMax, cbMax[1]);
+        CMP      R0,R2
+        MOVLT    R0,R2
+        STR      R0,[R5, #+16]
+//  371 	cbi->cbEndSMax = MAX(cbi->cbEndSMax, cbMax[2]);
+        CMP      R1,R0
+        MOVLT    R1,R0
+        STR      R1,[R5, #+16]
+//  372 
+//  373 	return CLZ(gbMask) - 1;
+        CMP      R8,#+0
+        MOVEQ    R0,#+32
+        BEQ      ??xmp3_DequantChannel_8
+        MOV      R0,#+0
+        TST      R8,#0x80000000
+        BNE      ??xmp3_DequantChannel_8
+??xmp3_DequantChannel_15:
+        ADD      R0,R0,#+1
+        LSL      R8,R8,#+1
+        TST      R8,#0x80000000
+        BEQ      ??xmp3_DequantChannel_15
+??xmp3_DequantChannel_8:
+        SUB      R0,R0,#+1
+        ADD      SP,SP,#+36
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        DATA
+??xmp3_DequantChannel_6:
+        DC32     preTab
+        CFI EndBlock cfiBlock3
+//  374 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??MULSHIFT32??rA:
+        LDR      R12,??Subroutine2_0  ;; MULSHIFT32
+        BX       R12
+        DATA
+??Subroutine2_0:
+        DC32     MULSHIFT32
+        CFI EndBlock cfiBlock4
+
+        END
+//  375 
+// 
+// 1 348 bytes in segment CODE
+//   592 bytes in segment DATA_C
+// 
+// 1 328 bytes of CODE  memory (+ 20 bytes shared)
+//   592 bytes of CONST memory
+//
+//Errors: none
+//Warnings: 2

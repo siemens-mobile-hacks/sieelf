@@ -1,0 +1,976 @@
+################################################################################
+#                                                                              #
+#      IAR Universal Linker V4.60I/386                                         #
+#                                                                              #
+#           Link time     =  13/Feb/2012  22:49:41                             #
+#           Target CPU    =  ARM                                               #
+#           List file     =  D:\SVN\SieELF\SieELF\TalkPhoneND\Release_SGOLD\Li #
+#                            st\TalkPhone_X65.map                              #
+#           Output file 1 =  D:\SVN\SieELF\SieELF\TalkPhoneND\Output\TalkPhone #
+#                            _X65.elf                                          #
+#                            Format: elf, variant: -ynpra                      #
+#           Command line  =  D:\SVN\SieELF\SieELF\TalkPhoneND\Release_SGOLD\Ob #
+#                            j\conf_loader.r79                                 #
+#                            D:\SVN\SieELF\SieELF\TalkPhoneND\Release_SGOLD\Ob #
+#                            j\config_data.r79                                 #
+#                            D:\SVN\SieELF\SieELF\TalkPhoneND\Release_SGOLD\Ob #
+#                            j\func.r79                                        #
+#                            D:\SVN\SieELF\SieELF\TalkPhoneND\Release_SGOLD\Ob #
+#                            j\main.r79                                        #
+#                            -o                                                #
+#                            D:\SVN\SieELF\SieELF\TalkPhoneND\Output\TalkPhone #
+#                            _X65.elf                                          #
+#                            -Felf -l                                          #
+#                            D:\SVN\SieELF\SieELF\TalkPhoneND\Release_SGOLD\Li #
+#                            st\TalkPhone_X65.map                              #
+#                            -xmsnio -f test.xcl (-carm -V(CODE)CODE_AREA,12   #
+#                            -V(DATA)DATA_AREA,12                              #
+#                            -Z(CODE_AREA)ELFBEGIN,DATA_ID,START,CODE,DATA_C,I #
+#                            NITTAB,DATA_Z,DATA_N,CONFIG_C=0-FFFFFFFF          #
+#                            -Z(DATA_AREA)DATA_I=0-FFFFFFFF) -ynpra            #
+#                            "D:\Program Files\IAR\Embedded Workbench 4.0 Eval #
+#                            uation\ARM\LIB\dl5tpainl8n.r79"                   #
+#                            -s main                                           #
+#                                                                              #
+#                        Copyright 1987-2007 IAR Systems. All rights reserved. #
+################################################################################
+
+
+
+
+
+                ****************************************
+                *                                      *
+                *           CROSS REFERENCE            *
+                *                                      *
+                ****************************************
+
+       Program entry at : CODE_AREA 0000073C  Relocatable, from module : main
+
+
+
+
+                ****************************************
+                *                                      *
+                *            RUNTIME MODEL             *
+                *                                      *
+                ****************************************
+
+  StackAlign4  = USED
+  __cpu_mode   = __pcs__interwork
+  __data_model = absolute
+  __endian     = little
+  __rt_version = 6
+
+
+
+                ****************************************
+                *                                      *
+                *              MODULE MAP              *
+                *                                      *
+                ****************************************
+
+
+  DEFINED ABSOLUTE ENTRIES
+    *************************************************************************
+
+  DEFINED ABSOLUTE ENTRIES
+    *************************************************************************
+
+  FILE NAME : D:\SVN\SieELF\SieELF\TalkPhoneND\Release_SGOLD\Obj\conf_loader.r79
+  PROGRAM MODULE, NAME : conf_loader
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA_I
+  Relative segment, address: DATA_AREA 00000000 - 00000003 (0x4 bytes), align: 2
+  Segment part 5.             Intra module refs:   LoadConfigData
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           successed_config_filename
+                                   00000000 
+    -------------------------------------------------------------------------
+CODE
+  Segment part 7. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000004 - 00000107 (0x104 bytes), align: 2
+  Segment part 8.             Intra module refs:   InitConfig
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           LoadConfigData          00000004 
+               stack 1 = 00000000 ( 00000024 )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 9. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000108 - 0000012F (0x28 bytes), align: 2
+  Segment part 10.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           InitConfig              00000108        main (main)
+               stack 1 = 00000000 ( 00000004 )
+    -------------------------------------------------------------------------
+CSTACK
+  Segment part 1. NOT NEEDED.
+    -------------------------------------------------------------------------
+DATA_ID
+  Relative segment, address: CODE_AREA 00000000 - 00000003 (0x4 bytes), align: 2
+  Segment part 6.             Intra module refs:   successed_config_filename
+    -------------------------------------------------------------------------
+DATA_ID
+  Segment part 11. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?*?DATA_ID              
+    -------------------------------------------------------------------------
+INITTAB
+  Relative segment, address: CODE_AREA 000008E4 - 000008EF (0xc bytes), align: 2
+  Segment part 12. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?init?tab?DATA_I        000008E4 
+    -------------------------------------------------------------------------
+CONFIG_C
+  Segment part 13. NOT NEEDED.
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 000008E0 - 000008E0 (0x1 bytes), align: 0
+  Segment part 2.             Intra module refs:   Segment part 6
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 000007C4 - 000007E3 (0x20 bytes), align: 2
+  Segment part 3.             Intra module refs:   InitConfig
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 000007E4 - 00000803 (0x20 bytes), align: 2
+  Segment part 4.             Intra module refs:   InitConfig
+
+    *************************************************************************
+
+  FILE NAME : D:\SVN\SieELF\SieELF\TalkPhoneND\Release_SGOLD\Obj\config_data.r79
+  PROGRAM MODULE, NAME : config_data
+
+  SEGMENTS IN THE MODULE
+  ======================
+CONFIG_C
+  Relative segment, address: CODE_AREA 00000A44 - 00000A6F (0x2c bytes), align: 2
+  Segment part 2. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cfghdr0                 00000A44        LoadConfigData (conf_loader)
+    -------------------------------------------------------------------------
+CONFIG_C
+  Relative segment, address: CODE_AREA 00000A70 - 00000A9B (0x2c bytes), align: 2
+  Segment part 3. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cfghdr2_1               00000A70 
+    -------------------------------------------------------------------------
+CONFIG_C
+  Relative segment, address: CODE_AREA 00000A9C - 00000A9F (0x4 bytes), align: 2
+  Segment part 4. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           volume                  00000A9C        Play (main)
+    -------------------------------------------------------------------------
+CONFIG_C
+  Relative segment, address: CODE_AREA 00000AA0 - 00000ACB (0x2c bytes), align: 2
+  Segment part 5. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cfghdr2_2               00000AA0 
+    -------------------------------------------------------------------------
+CONFIG_C
+  Relative segment, address: CODE_AREA 00000ACC - 00000B4B (0x80 bytes), align: 2
+  Segment part 6. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           folder_path             00000ACC        Segment part 54 (main)
+    -------------------------------------------------------------------------
+CONFIG_C
+  Relative segment, address: CODE_AREA 00000B4C - 00000B77 (0x2c bytes), align: 2
+  Segment part 7. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cfghdr2_4               00000B4C 
+    -------------------------------------------------------------------------
+CONFIG_C
+  Relative segment, address: CODE_AREA 00000B78 - 00000B7B (0x4 bytes), align: 2
+  Segment part 8. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           PLAY_PARAM              00000B78        maincsm_oncreate (main)
+    -------------------------------------------------------------------------
+CONFIG_C
+  Relative segment, address: CODE_AREA 00000B7C - 00000BBB (0x40 bytes), align: 2
+  Segment part 9. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cfgcbox4                00000B7C 
+    -------------------------------------------------------------------------
+CONFIG_C
+  Relative segment, address: CODE_AREA 00000BBC - 00000BE7 (0x2c bytes), align: 2
+  Segment part 10. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cfghdr2_5               00000BBC 
+    -------------------------------------------------------------------------
+CONFIG_C
+  Relative segment, address: CODE_AREA 00000BE8 - 00000C67 (0x80 bytes), align: 2
+  Segment part 11. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           kurant_path             00000BE8        SayTime (main)
+    -------------------------------------------------------------------------
+CONFIG_C
+  Relative segment, address: CODE_AREA 00000C68 - 00000C93 (0x2c bytes), align: 2
+  Segment part 12. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cfghdr1                 00000C68 
+    -------------------------------------------------------------------------
+CONFIG_C
+  Relative segment, address: CODE_AREA 00000C94 - 00000CBF (0x2c bytes), align: 2
+  Segment part 13. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cfghdr_m41              00000C94 
+    -------------------------------------------------------------------------
+CONFIG_C
+  Relative segment, address: CODE_AREA 00000CC0 - 00000CEB (0x2c bytes), align: 2
+  Segment part 14. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cfghdr4_1               00000CC0 
+    -------------------------------------------------------------------------
+CONFIG_C
+  Relative segment, address: CODE_AREA 00000CEC - 00000CEF (0x4 bytes), align: 2
+  Segment part 15. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           Is_Vibra_Enabled        00000CEC        start_vibra (main)
+    -------------------------------------------------------------------------
+CONFIG_C
+  Relative segment, address: CODE_AREA 00000CF0 - 00000D2F (0x40 bytes), align: 2
+  Segment part 16. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cfgcbox6                00000CF0 
+    -------------------------------------------------------------------------
+CONFIG_C
+  Relative segment, address: CODE_AREA 00000D30 - 00000D5B (0x2c bytes), align: 2
+  Segment part 17. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cfghdr4_2               00000D30 
+    -------------------------------------------------------------------------
+CONFIG_C
+  Relative segment, address: CODE_AREA 00000D5C - 00000D5F (0x4 bytes), align: 2
+  Segment part 18. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           vibra_count             00000D5C        SayTime (main)
+    -------------------------------------------------------------------------
+CONFIG_C
+  Relative segment, address: CODE_AREA 00000D60 - 00000D8B (0x2c bytes), align: 2
+  Segment part 19. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cfghdr4_3               00000D60 
+    -------------------------------------------------------------------------
+CONFIG_C
+  Relative segment, address: CODE_AREA 00000D8C - 00000D8F (0x4 bytes), align: 2
+  Segment part 20. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           vibra_power             00000D8C        start_vibra (main)
+    -------------------------------------------------------------------------
+CONFIG_C
+  Relative segment, address: CODE_AREA 00000D90 - 00000DBB (0x2c bytes), align: 2
+  Segment part 21. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cfghdr_m40              00000D90 
+    -------------------------------------------------------------------------
+CSTACK
+  Segment part 1. NOT NEEDED.
+
+    *************************************************************************
+
+  FILE NAME : D:\SVN\SieELF\SieELF\TalkPhoneND\Release_SGOLD\Obj\func.r79
+  PROGRAM MODULE, NAME : func
+
+  SEGMENTS IN THE MODULE
+  ======================
+ELFBEGIN
+  Relative segment, address: CODE_AREA 00000000, align: 0
+  Segment part 0. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ELF_BEGIN               00000000        Killer (main)
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000130 - 00000137 (0x8 bytes), align: 2
+  Segment part 1. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           kill_data               00000130        Killer (main)
+           seqkill                 00000134 
+
+    *************************************************************************
+
+  FILE NAME : D:\SVN\SieELF\SieELF\TalkPhoneND\Release_SGOLD\Obj\main.r79
+  PROGRAM MODULE, NAME : main
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA_C
+  Relative segment, address: CODE_AREA 00000804 - 0000080F (0xc bytes), align: 2
+  Segment part 2.             Intra module refs:   SayMinVoice
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00000810 - 0000081B (0xc bytes), align: 2
+  Segment part 3.             Intra module refs:   SayMinVoice
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 0000081C - 00000827 (0xc bytes), align: 2
+  Segment part 4.             Intra module refs:   SayMinVoice
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00000828 - 0000082F (0x8 bytes), align: 2
+  Segment part 5.             Intra module refs:   SayMinDig
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00000830 - 00000837 (0x8 bytes), align: 2
+  Segment part 6.             Intra module refs:   SayMinDig
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00000838 - 0000083F (0x8 bytes), align: 2
+  Segment part 7.             Intra module refs:   Segment part 50
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00000840 - 00000847 (0x8 bytes), align: 2
+  Segment part 8.             Intra module refs:   SayMinDig
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00000848 - 0000084F (0x8 bytes), align: 2
+  Segment part 9.             Intra module refs:   SayMinAllDig
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00000850 - 00000857 (0x8 bytes), align: 2
+  Segment part 10.            Intra module refs:   SayMinAllDig
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00000858 - 0000085F (0x8 bytes), align: 2
+  Segment part 11.            Intra module refs:   SayMinAllDig
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00000860 - 00000867 (0x8 bytes), align: 2
+  Segment part 12.            Intra module refs:   SayMinAllDig
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00000868 - 00000873 (0xc bytes), align: 2
+  Segment part 13.            Intra module refs:   SayHourVoice
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00000874 - 0000087F (0xc bytes), align: 2
+  Segment part 14.            Intra module refs:   SayHourVoice
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00000880 - 0000088B (0xc bytes), align: 2
+  Segment part 15.            Intra module refs:   SayHourVoice
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 0000088C - 00000893 (0x8 bytes), align: 2
+  Segment part 16.            Intra module refs:   SayHourDig
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00000894 - 0000089B (0x8 bytes), align: 2
+  Segment part 17.            Intra module refs:   SayHourDig
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 0000089C - 000008A3 (0x8 bytes), align: 2
+  Segment part 18.            Intra module refs:   SayTime
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 000008A4 - 000008AF (0xc bytes), align: 2
+  Segment part 19.            Intra module refs:   main
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 000008B0 - 000008B3 (0x4 bytes), align: 2
+  Segment part 20.            Intra module refs:   Segment part 31
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           minus11                 000008B0 
+    -------------------------------------------------------------------------
+DATA_I
+  Segment part 21. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           IDLECSM_ID              
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 000008FC - 000008FF (0x4 bytes), align: 2
+  Segment part 23.            Intra module refs:   Segment part 53
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           vibra_count1            000008FC 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00000900 - 00000903 (0x4 bytes), align: 2
+  Segment part 24.            Intra module refs:   Segment part 69
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           MAINCSM_ID              00000900 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00000904 - 0000090B (0x8 bytes), align: 2
+  Segment part 25.            Intra module refs:   SayHourDig
+                                                   SayMinAllDig
+                                                   Segment part 42
+                                                   Segment part 61
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           CurTime                 00000904 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 0000090C - 00000913 (0x8 bytes), align: 2
+  Segment part 26.            Intra module refs:   maincsm_oncreate
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           date                    0000090C 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00000914 - 00000917 (0x4 bytes), align: 2
+  Segment part 27.            Intra module refs:   Segment part 57
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           PLAY_ID                 00000914 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00000918 - 0000091B (0x4 bytes), align: 2
+  Segment part 28.            Intra module refs:   Segment part 58
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           NEXT_PLAY_FUNK          00000918 
+    -------------------------------------------------------------------------
+CODE
+  Segment part 32. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000138 - 000001F7 (0xc0 bytes), align: 2
+  Segment part 33.            Intra module refs:   SayHourDig
+                                                   SayHourVoice
+                                                   SayMinAllDig
+                                                   SayMinDig
+                                                   SayMinVoice
+                                                   SayTime
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           Play                    00000138 
+               stack 1 = 00000000 ( 00000034 )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 34. NOT NEEDED.
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 0000091C - 0000092B (0x10 bytes), align: 2
+  Segment part 29.            Intra module refs:   Segment part 64
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           tmr_vibra               0000091C 
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000001F8 - 00000243 (0x4c bytes), align: 2
+  Segment part 35.            Intra module refs:   SayTime
+                                                   stop_vibra
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           start_vibra             000001F8 
+               stack 1 = 00000000 ( 00000004 )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 36. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000244 - 0000027B (0x38 bytes), align: 2
+  Segment part 37.            Intra module refs:   start_vibra
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           stop_vibra              00000244 
+               stack 1 = 00000000 ( 00000004 )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 38. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 0000027C - 00000307 (0x8c bytes), align: 2
+  Segment part 39.            Intra module refs:   maincsm_onmessage
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           SayMinVoice             0000027C 
+               stack 1 = 00000000 ( 00000004 )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 40. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000308 - 000003A7 (0xa0 bytes), align: 2
+  Segment part 41.            Intra module refs:   SayMinAllDig
+                                                   maincsm_onmessage
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           SayMinDig               00000308 
+               stack 1 = 00000000 ( 00000010 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000003A8 - 000003AB (0x4 bytes), align: 2
+  Segment part 42.            Intra module refs:   SayMinDig
+                                                   SayMinVoice
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000003AC - 000003AF (0x4 bytes), align: 2
+  Segment part 43.            Intra module refs:   SayMinDig
+                                                   SayMinVoice
+    -------------------------------------------------------------------------
+CODE
+  Segment part 44. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000003B0 - 00000497 (0xe8 bytes), align: 2
+  Segment part 45.            Intra module refs:   maincsm_onmessage
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           SayMinAllDig            000003B0 
+               stack 1 = 00000000 ( 00000018 )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 46. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000498 - 00000517 (0x80 bytes), align: 2
+  Segment part 47.            Intra module refs:   maincsm_onmessage
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           SayHourVoice            00000498 
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 48. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000518 - 00000577 (0x60 bytes), align: 2
+  Segment part 49.            Intra module refs:   maincsm_onmessage
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           SayHourDig              00000518 
+               stack 1 = 00000000 ( 00000010 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000578 - 0000057B (0x4 bytes), align: 2
+  Segment part 50.            Intra module refs:   SayHourDig
+                                                   SayMinAllDig
+                                                   SayMinDig
+    -------------------------------------------------------------------------
+CODE
+  Segment part 51. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 0000057C - 0000060B (0x90 bytes), align: 2
+  Segment part 52.            Intra module refs:   maincsm_oncreate
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           SayTime                 0000057C 
+               stack 1 = 00000000 ( 00000090 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 0000060C - 0000060F (0x4 bytes), align: 2
+  Segment part 53.            Intra module refs:   SayTime
+                                                   stop_vibra
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000610 - 00000613 (0x4 bytes), align: 2
+  Segment part 54.            Intra module refs:   SayHourDig
+                                                   SayHourVoice
+                                                   SayMinAllDig
+                                                   SayMinDig
+                                                   SayMinVoice
+                                                   SayTime
+    -------------------------------------------------------------------------
+CODE
+  Segment part 55. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000614 - 000006C3 (0xb0 bytes), align: 2
+  Segment part 56.            Intra module refs:   Segment part 31
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           maincsm_onmessage       00000614 
+               stack 1 = 00000000 ( 00000004 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000006C4 - 000006C7 (0x4 bytes), align: 2
+  Segment part 57.            Intra module refs:   Play
+                                                   maincsm_onmessage
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000006C8 - 000006CB (0x4 bytes), align: 2
+  Segment part 58.            Intra module refs:   SayHourDig
+                                                   SayHourVoice
+                                                   SayMinAllDig
+                                                   SayMinDig
+                                                   SayMinVoice
+                                                   SayTime
+                                                   maincsm_onmessage
+    -------------------------------------------------------------------------
+CODE
+  Segment part 59. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000006CC - 000006FB (0x30 bytes), align: 2
+  Segment part 60.            Intra module refs:   Segment part 31
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           maincsm_oncreate        000006CC 
+               stack 1 = 00000000 ( 00000004 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000006FC - 000006FF (0x4 bytes), align: 2
+  Segment part 61.            Intra module refs:   SayHourVoice
+                                                   maincsm_oncreate
+    -------------------------------------------------------------------------
+CODE
+  Segment part 62. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000700 - 00000723 (0x24 bytes), align: 2
+  Segment part 63.            Intra module refs:   maincsm_onclose
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           Killer                  00000700 
+               stack 1 = 00000000 ( 00000004 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000724 - 00000727 (0x4 bytes), align: 2
+  Segment part 64.            Intra module refs:   Killer
+                                                   start_vibra
+                                                   stop_vibra
+    -------------------------------------------------------------------------
+CODE
+  Segment part 65. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000728 - 0000073B (0x14 bytes), align: 2
+  Segment part 66.            Intra module refs:   Segment part 31
+           LOCAL                   ADDRESS         
+           =====                   =======         
+           maincsm_onclose         00000728 
+               stack 1 = 00000000 ( 00000004 )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 67. NOT NEEDED.
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 0000092C - 00000A43 (0x118 bytes), align: 2
+  Segment part 30.            Intra module refs:   Segment part 31
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 000008B4 - 000008DF (0x2c bytes), align: 2
+  Segment part 31.            Intra module refs:   main
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 0000073C - 000007BF (0x84 bytes), align: 2
+  Segment part 68.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           main                    0000073C        Absolute parts (?ABS_ENTRY_MOD)
+               stack 1 = 00000000 ( 00000038 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000007C0 - 000007C3 (0x4 bytes), align: 2
+  Segment part 69.            Intra module refs:   main
+                                                   maincsm_onmessage
+    -------------------------------------------------------------------------
+CODE
+  Segment part 70. NOT NEEDED.Intra module refs:   Killer
+    -------------------------------------------------------------------------
+CODE
+  Segment part 71. NOT NEEDED.Intra module refs:   main
+    -------------------------------------------------------------------------
+CSTACK
+  Segment part 1. NOT NEEDED.
+    -------------------------------------------------------------------------
+DATA_ID
+  Segment part 22. NOT NEEDED.
+    -------------------------------------------------------------------------
+INITTAB
+  Relative segment, address: CODE_AREA 000008F0 - 000008FB (0xc bytes), align: 2
+  Segment part 72. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?init?tab?DATA_Z        000008F0 
+    -------------------------------------------------------------------------
+DATA_ID
+  Segment part 73. TENTATIVE. Used definition from conf_loader
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?*?DATA_ID              
+    -------------------------------------------------------------------------
+INITTAB
+  Segment part 74. TENTATIVE. Used definition from conf_loader
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?init?tab?DATA_I        
+
+
+
+
+                ****************************************
+                *                                      *
+                *            MODULE SUMMARY            *
+                *                                      *
+                ****************************************
+
+Module            CODE   DATA
+------            ----   ----
+                 (Rel)  (Rel)
+conf_loader        369      4
+  + shared          12
+config_data        888
+func                 8
+main             2 236
+N/A (alignment)
+------           -----      -
+Total:           3 513      4
+
+
+                ****************************************
+                *                                      *
+                *              CALL GRAPH              *
+                *                                      *
+                ****************************************
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  start_vibra
+      | Stack used (prev) :  00000000
+      | + function block  :  00000004
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  00000004
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  stop_vibra
+      | Stack used (prev) :  00000000
+      | + function block  :  00000004
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  00000004
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  SayTime
+      | Stack used (prev) :  00000000
+      | + function block  :  00000090
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  00000090
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  maincsm_onmessage
+      | Stack used (prev) :  00000000
+      | + function block  :  00000004
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  00000004
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  maincsm_oncreate
+      | Stack used (prev) :  00000000
+      | + function block  :  00000004
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  00000004
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  Killer
+      | Stack used (prev) :  00000000
+      | + function block  :  00000004
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  00000004
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  maincsm_onclose
+      | Stack used (prev) :  00000000
+      | + function block  :  00000004
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  00000004
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  00000090
+  01  LoadConfigData
+      | Stack used (prev) :  00000090
+      | + function block  :  00000024
+  <-Sub-tree of type: Function tree
+    | Stack used          :  000000B4
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  000000B4
+  01  InitConfig
+      | Stack used (prev) :  000000B4
+      | + function block  :  00000004
+  <-Sub-tree of type: Function tree
+    | Stack used          :  000000B8
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  000000B8
+  01  Play
+      | Stack used (prev) :  000000B8
+      | + function block  :  00000034
+  <-Sub-tree of type: Function tree
+    | Stack used          :  000000EC
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  000000EC
+  01  SayMinVoice
+      | Stack used (prev) :  000000EC
+      | + function block  :  00000004
+  <-Sub-tree of type: Function tree
+    | Stack used          :  000000F0
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  000000F0
+  01  SayMinDig
+      | Stack used (prev) :  000000F0
+      | + function block  :  00000010
+  <-Sub-tree of type: Function tree
+    | Stack used          :  00000100
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  00000100
+  01  SayMinAllDig
+      | Stack used (prev) :  00000100
+      | + function block  :  00000018
+  <-Sub-tree of type: Function tree
+    | Stack used          :  00000118
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  00000118
+  01  SayHourVoice
+      | Stack used (prev) :  00000118
+      | + function block  :  0000000C
+  <-Sub-tree of type: Function tree
+    | Stack used          :  00000124
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  00000124
+  01  SayHourDig
+      | Stack used (prev) :  00000124
+      | + function block  :  00000010
+  <-Sub-tree of type: Function tree
+    | Stack used          :  00000134
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  00000134
+  01  main
+      | Stack used (prev) :  00000134
+      | + function block  :  00000038
+  <-Sub-tree of type: Function tree
+    | Stack used          :  0000016C
+
+
+
+
+                ****************************************
+                *                                      *
+                *      SEGMENTS IN ADDRESS ORDER       *
+                *                                      *
+                ****************************************
+
+
+SEGMENT              SPACE    START ADDRESS   END ADDRESS     SIZE  TYPE  ALIGN
+=======              =====    =============   ===========     ====  ====  =====
+ELFBEGIN             CODE_AREA           00000000                     rel    0
+DATA_ID              CODE_AREA      00000000 - 00000003           4   rel    2
+START                CODE_AREA           00000004                     dse    0
+CODE                 CODE_AREA      00000004 - 000007C3         7C0   rel    2
+DATA_C               CODE_AREA      000007C4 - 000008E0         11D   rel    2
+INITTAB              CODE_AREA      000008E4 - 000008FB          18   rel    2
+DATA_Z               CODE_AREA      000008FC - 00000A43         148   rel    2
+DATA_N               CODE_AREA           00000A44                     dse    0
+CONFIG_C             CODE_AREA      00000A44 - 00000DBB         378   rel    2
+DATA_I               DATA_AREA      00000000 - 00000003           4   rel    2
+
+                ****************************************
+                *                                      *
+                *        END OF CROSS REFERENCE        *
+                *                                      *
+                ****************************************
+
+ 3 513 bytes of CODE memory
+     4 bytes of DATA memory
+
+Errors: none
+Warnings: none
+

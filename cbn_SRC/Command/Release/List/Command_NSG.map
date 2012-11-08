@@ -1,0 +1,2211 @@
+################################################################################
+#                                                                              #
+#      IAR Universal Linker V4.60I/386                                         #
+#                                                                              #
+#           Link time     =  14/Feb/2012  14:26:44                             #
+#           Target CPU    =  ARM                                               #
+#           List file     =  D:\SVN\SieELF\SieELF\cbn_SRC\Command\Release\List #
+#                            \Command_NSG.map                                  #
+#           Output file 1 =  D:\SVN\SieELF\SieELF\cbn_SRC\Command\Output\Comma #
+#                            nd_NSG.elf                                        #
+#                            Format: elf, variant: -ynpraw                     #
+#           Command line  =  D:\SVN\SieELF\SieELF\cbn_SRC\Command\Release\Obj\ #
+#                            COMMAND.r79                                       #
+#                            D:\SVN\SieELF\SieELF\cbn_SRC\Command\Release\Obj\ #
+#                            SWILIB.r79                                        #
+#                            D:\SVN\SieELF\SieELF\cbn_SRC\Command\Release\Obj\ #
+#                            Swi.r79                                           #
+#                            -o                                                #
+#                            D:\SVN\SieELF\SieELF\cbn_SRC\Command\Output\Comma #
+#                            nd_NSG.elf                                        #
+#                            -Felf -l                                          #
+#                            D:\SVN\SieELF\SieELF\cbn_SRC\Command\Release\List #
+#                            \Command_NSG.map                                  #
+#                            -xmsnio -f                                        #
+#                            D:\SVN\SieELF\SieELF\cbn_SRC\Command\..\TED\test. #
+#                            xcl                                               #
+#                            (-carm -V(CODE)CODE_AREA,12                       #
+#                            -V(DATA)DATA_AREA,12                              #
+#                            -Z(CODE_AREA)ELFBEGIN,DATA_ID,START,CODE,DATA_C,I #
+#                            NITTAB,DATA_Z,DATA_N,CONFIG_C,DIFUNCT,HEAP,ICODE= #
+#                            0-FFFFFFFF                                        #
+#                            -Z(DATA_AREA)DATA_I=0-FFFFFFFF) -ynpraw -s main   #
+#                                                                              #
+#                        Copyright 1987-2007 IAR Systems. All rights reserved. #
+################################################################################
+
+
+
+
+
+                ****************************************
+                *                                      *
+                *           CROSS REFERENCE            *
+                *                                      *
+                ****************************************
+
+       Program entry at : CODE_AREA 00001750  Relocatable, from module : COMMAND
+
+
+
+
+                ****************************************
+                *                                      *
+                *            RUNTIME MODEL             *
+                *                                      *
+                ****************************************
+
+  StackAlign4  = USED
+  __cpu_mode   = __pcs__interwork
+  __data_model = absolute
+  __endian     = little
+  __rt_version = 6
+
+
+
+                ****************************************
+                *                                      *
+                *              MODULE MAP              *
+                *                                      *
+                ****************************************
+
+
+  DEFINED ABSOLUTE ENTRIES
+    *************************************************************************
+
+  DEFINED ABSOLUTE ENTRIES
+    *************************************************************************
+
+  FILE NAME : D:\SVN\SieELF\SieELF\cbn_SRC\Command\Release\Obj\COMMAND.r79
+  PROGRAM MODULE, NAME : COMMAND
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA_C
+  Relative segment, address: CODE_AREA 00001D20 - 00001D27 (0x8 bytes), align: 2
+  Segment part 2.             Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001D28 - 00001D2B (0x4 bytes), align: 2
+  Segment part 3.             Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001D2C - 00001D2F (0x4 bytes), align: 2
+  Segment part 4.             Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001D30 - 00001D37 (0x8 bytes), align: 2
+  Segment part 5.             Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001D38 - 00001D3F (0x8 bytes), align: 2
+  Segment part 6.             Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001F5C - 00001F5E (0x3 bytes), align: 0
+  Segment part 7.             Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001D40 - 00001D47 (0x8 bytes), align: 2
+  Segment part 8.             Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001F5F - 00001F61 (0x3 bytes), align: 0
+  Segment part 9.             Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001D48 - 00001D4F (0x8 bytes), align: 2
+  Segment part 10.            Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001D50 - 00001D57 (0x8 bytes), align: 2
+  Segment part 11.            Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001D58 - 00001D5B (0x4 bytes), align: 2
+  Segment part 12.            Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001D5C - 00001D5F (0x4 bytes), align: 2
+  Segment part 13.            Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001D60 - 00001D63 (0x4 bytes), align: 2
+  Segment part 14.            Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001D64 - 00001D67 (0x4 bytes), align: 2
+  Segment part 15.            Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001D68 - 00001D6F (0x8 bytes), align: 2
+  Segment part 16.            Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001D70 - 00001D77 (0x8 bytes), align: 2
+  Segment part 17.            Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001D78 - 00001D7B (0x4 bytes), align: 2
+  Segment part 18.            Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001D7C - 00001D83 (0x8 bytes), align: 2
+  Segment part 19.            Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001D84 - 00001D8B (0x8 bytes), align: 2
+  Segment part 20.            Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001D8C - 00001D93 (0x8 bytes), align: 2
+  Segment part 21.            Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001D94 - 00001D9B (0x8 bytes), align: 2
+  Segment part 22.            Intra module refs:   find
+    -------------------------------------------------------------------------
+DATA_C
+  Segment part 23. NOT NEEDED.
+    -------------------------------------------------------------------------
+DATA_C
+  Segment part 24. NOT NEEDED.
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001D9C - 00001DA7 (0xc bytes), align: 2
+  Segment part 25.            Intra module refs:   date
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001DA8 - 00001DAF (0x8 bytes), align: 2
+  Segment part 26.            Intra module refs:   time
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001DB0 - 00001DB7 (0x8 bytes), align: 2
+  Segment part 27.            Intra module refs:   Segment part 150
+    -------------------------------------------------------------------------
+DATA_C
+  Segment part 28. NOT NEEDED.
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001DB8 - 00001DC3 (0xc bytes), align: 2
+  Segment part 29.            Intra module refs:   dir
+    -------------------------------------------------------------------------
+DATA_C
+  Segment part 30. NOT NEEDED.
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001DC4 - 00001DD7 (0x14 bytes), align: 2
+  Segment part 31.            Intra module refs:   main
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001DD8 - 00001DE3 (0xc bytes), align: 2
+  Segment part 32.            Intra module refs:   main
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001DE4 - 00001E03 (0x20 bytes), align: 2
+  Segment part 33.            Intra module refs:   main
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001E04 - 00001E13 (0x10 bytes), align: 2
+  Segment part 34.            Intra module refs:   main
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001E14 - 00001E27 (0x14 bytes), align: 2
+  Segment part 35.            Intra module refs:   Segment part 81
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001E28 - 00001E2F (0x8 bytes), align: 2
+  Segment part 36.            Intra module refs:   Segment part 78
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001E30 - 00001E37 (0x8 bytes), align: 2
+  Segment part 37.            Intra module refs:   Segment part 78
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001E38 - 00001E3F (0x8 bytes), align: 2
+  Segment part 38.            Intra module refs:   Segment part 78
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001E40 - 00001E47 (0x8 bytes), align: 2
+  Segment part 39.            Intra module refs:   Segment part 78
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001F62 - 00001F64 (0x3 bytes), align: 0
+  Segment part 40.            Intra module refs:   Segment part 81
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001E48 - 00001E4F (0x8 bytes), align: 2
+  Segment part 41.            Intra module refs:   Segment part 81
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001E50 - 00001E6B (0x1c bytes), align: 2
+  Segment part 42.            Intra module refs:   Segment part 81
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001E6C - 00001E77 (0xc bytes), align: 2
+  Segment part 43.            Intra module refs:   Segment part 81
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001E78 - 00001E8F (0x18 bytes), align: 2
+  Segment part 44.            Intra module refs:   Segment part 81
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001E90 - 00001ECF (0x40 bytes), align: 2
+  Segment part 45.            Intra module refs:   mem
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001ED0 - 00001EE3 (0x14 bytes), align: 2
+  Segment part 46.            Intra module refs:   Segment part 81
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001EE4 - 00001EFB (0x18 bytes), align: 2
+  Segment part 47.            Intra module refs:   Segment part 81
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001EFC - 00001F0B (0x10 bytes), align: 2
+  Segment part 48.            Intra module refs:   Segment part 81
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001F65 - 00001F67 (0x3 bytes), align: 0
+  Segment part 49.            Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001F0C - 00001F13 (0x8 bytes), align: 2
+  Segment part 50.            Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001F14 - 00001F1B (0x8 bytes), align: 2
+  Segment part 51.            Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001F1C - 00001F23 (0x8 bytes), align: 2
+  Segment part 52.            Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001F24 - 00001F27 (0x4 bytes), align: 2
+  Segment part 53.            Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001F28 - 00001F2F (0x8 bytes), align: 2
+  Segment part 54.            Intra module refs:   Segment part 93
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001F30 - 00001F47 (0x18 bytes), align: 2
+  Segment part 55.            Intra module refs:   Segment part 141
+                                                   Segment part 201
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           Title                   00001F30 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00001F84 - 00002783 (0x800 bytes), align: 2
+  Segment part 56.            Intra module refs:   Segment part 158
+                                                   Segment part 200
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           conbuf                  00001F84 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00002784 - 00002787 (0x4 bytes), align: 2
+  Segment part 57.            Intra module refs:   Segment part 159
+                                                   Segment part 199
+                                                   cr
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           conend                  00002784 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00002788 - 00002887 (0x100 bytes), align: 2
+  Segment part 58.            Intra module refs:   Segment part 202
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           con                     00002788 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00002888 - 00002987 (0x100 bytes), align: 2
+  Segment part 59.            Intra module refs:   Segment part 182
+                                                   Segment part 194
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           path                    00002888 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00002988 - 00002A87 (0x100 bytes), align: 2
+  Segment part 60.            Intra module refs:   Segment part 181
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           spath                   00002988 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00002A88 - 00002B87 (0x100 bytes), align: 2
+  Segment part 61.            Intra module refs:   Segment part 171
+                                                   Segment part 195
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           curdir                  00002A88 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00002B88 - 00002C87 (0x100 bytes), align: 2
+  Segment part 62.            Intra module refs:   Segment part 156
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ar1                     00002B88 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00002C88 - 00002D87 (0x100 bytes), align: 2
+  Segment part 63.            Intra module refs:   Segment part 153
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ar2                     00002C88 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00002D88 - 00002E87 (0x100 bytes), align: 2
+  Segment part 64.            Intra module refs:   Segment part 66
+                                                   sset
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           set                     00002D88 
+    -------------------------------------------------------------------------
+DATA_I
+  Relative segment, address: DATA_AREA 00000000 - 00000003 (0x4 bytes), align: 2
+  Segment part 65.            Intra module refs:   sset
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           setend                  00000000 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00002E88 - 00002EC7 (0x40 bytes), align: 2
+  Segment part 67.            Intra module refs:   Segment part 101
+                                                   Segment part 180
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           argvv                   00002E88 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00002EC8 - 00002ECB (0x4 bytes), align: 2
+  Segment part 68.            Intra module refs:   Segment part 163
+                                                   Segment part 184
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           argv                    00002EC8 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00002ECC - 00002ECF (0x4 bytes), align: 2
+  Segment part 69.            Intra module refs:   Segment part 162
+                                                   Segment part 185
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           argc                    00002ECC 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00002ED0 - 00002ED3 (0x4 bytes), align: 2
+  Segment part 70.            Intra module refs:   Segment part 197
+                                                   Segment part 98
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           fcon                    00002ED0 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00002ED4 - 00002ED7 (0x4 bytes), align: 2
+  Segment part 71.            Intra module refs:   Segment part 117
+                                                   Segment part 193
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           SG                      00002ED4 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 0000CCBC - 0000CCBC (0x1 bytes), align: 0
+  Segment part 72.            Intra module refs:   Segment part 128
+                                                   Segment part 188
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           echooff                 0000CCBC 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 0000CCBD - 0000CCBD (0x1 bytes), align: 0
+  Segment part 73.            Intra module refs:   quit
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           exit                    0000CCBD 
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001F48 - 00001F5B (0x14 bytes), align: 2
+  Segment part 74.            Intra module refs:   command
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           link                    00001F48 
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001F68 - 00001F69 (0x2 bytes), align: 0
+  Segment part 75.            Intra module refs:   Segment part 172
+                                                   Segment part 183
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           eline                   00001F68 
+    -------------------------------------------------------------------------
+DATA_C
+  Relative segment, address: CODE_AREA 00001F6A - 00001F6B (0x2 bytes), align: 0
+  Segment part 76.            Intra module refs:   setpath
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ezap                    00001F6A 
+    -------------------------------------------------------------------------
+DATA_I
+  Relative segment, address: DATA_AREA 00000004 - 00000017 (0x14 bytes), align: 2
+  Segment part 77.            Intra module refs:   Segment part 177
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cext                    00000004 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00002ED8 - 00002EDB (0x4 bytes), align: 2
+  Segment part 79.            Intra module refs:   command
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cmd                     00002ED8 
+    -------------------------------------------------------------------------
+DATA_I
+  Relative segment, address: DATA_AREA 00000018 - 0000003B (0x24 bytes), align: 2
+  Segment part 80.            Intra module refs:   execbat
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           msg                     00000018 
+    -------------------------------------------------------------------------
+CODE
+  Segment part 94. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000118 - 00000147 (0x30 bytes), align: 2
+  Segment part 95.            Intra module refs:   command
+                                                   gettype
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           striicmp                00000118 
+    -------------------------------------------------------------------------
+CODE
+  Segment part 96. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000148 - 000001DB (0x94 bytes), align: 2
+  Segment part 97.            Intra module refs:   copyxx
+                                                   date
+                                                   dir
+                                                   echo
+                                                   exec
+                                                   execbat
+                                                   main
+                                                   mem
+                                                   ren
+                                                   setpath
+                                                   sset
+                                                   time
+                                                   ver
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           print                   00000148 
+               stack 1 = 00000000 ( 00000014 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000001DC - 000001DF (0x4 bytes), align: 2
+  Segment part 98.            Intra module refs:   print
+    -------------------------------------------------------------------------
+CODE
+  Segment part 99. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000001E0 - 0000024B (0x6c bytes), align: 2
+  Segment part 100.           Intra module refs:   exec
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           arg                     000001E0 
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 0000024C - 0000024F (0x4 bytes), align: 2
+  Segment part 101.           Intra module refs:   arg
+    -------------------------------------------------------------------------
+CODE
+  Segment part 102. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000250 - 0000026B (0x1c bytes), align: 2
+  Segment part 103.           Intra module refs:   main
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           Killer                  00000250 
+               stack 1 = 00000000 ( 00000004 )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 104. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 0000026C - 000003E3 (0x178 bytes), align: 2
+  Segment part 105.           Intra module refs:   command
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           rundll                  0000026C 
+               stack 1 = 00000000 ( 00000034 )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 106. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000003E4 - 00000413 (0x30 bytes), align: 2
+  Segment part 107.           Intra module refs:   command
+                                                   findall
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           isfile                  000003E4 
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 108. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000414 - 0000045F (0x4c bytes), align: 2
+  Segment part 109.           Intra module refs:   command
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           execelf                 00000414 
+               stack 1 = 00000000 ( 00000010 )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 110. NOT NEEDED.
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00002EDC - 00004273 (0x1398 bytes), align: 2
+  Segment part 82.            Intra module refs:   find
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           de                      00002EDC 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00004274 - 000045B7 (0x344 bytes), align: 2
+  Segment part 83.            Intra module refs:   Segment part 114
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           dee                     00004274 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 000045B8 - 00004BB7 (0x600 bytes), align: 2
+  Segment part 84.            Intra module refs:   find
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           tmp                     000045B8 
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00004BB8 - 00004CB7 (0x100 bytes), align: 2
+  Segment part 85.            Intra module refs:   Segment part 168
+                                                   Segment part 196
+                                                   un
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           temp                    00004BB8 
+    -------------------------------------------------------------------------
+DATA_Z
+  Segment part 86. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           name                    
+    -------------------------------------------------------------------------
+DATA_Z
+  Segment part 87. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           etemp                   
+    -------------------------------------------------------------------------
+DATA_Z
+  Segment part 88. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ename                   
+    -------------------------------------------------------------------------
+DATA_Z
+  Relative segment, address: CODE_AREA 00004CB8 - 0000CCB7 (0x8000 bytes), align: 2
+  Segment part 89.            Intra module refs:   Segment part 167
+                                                   Segment part 91
+                                                   un
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           list                    00004CB8 
+    -------------------------------------------------------------------------
+DATA_I
+  Relative segment, address: DATA_AREA 0000003C - 0000003F (0x4 bytes), align: 2
+  Segment part 90.            Intra module refs:   Segment part 166
+                                                   un
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           lend                    0000003C 
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000460 - 000004F7 (0x98 bytes), align: 2
+  Segment part 111.           Intra module refs:   copy
+                                                   del
+                                                   dir
+                                                   ren
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           extnn                   00000460 
+               stack 1 = 00000000 ( 00000014 )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 112. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000004F8 - 0000059B (0xa4 bytes), align: 2
+  Segment part 113.           Intra module refs:   find
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           extn                    000004F8 
+               stack 1 = 00000000 ( 00000014 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 0000059C - 0000059F (0x4 bytes), align: 2
+  Segment part 114.           Intra module refs:   extn
+                                                   extnn
+    -------------------------------------------------------------------------
+CODE
+  Segment part 115. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000005A0 - 0000068B (0xec bytes), align: 2
+  Segment part 116.           Intra module refs:   dir
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           find                    000005A0 
+               stack 1 = 00000000 ( 00000020 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 0000068C - 0000068F (0x4 bytes), align: 2
+  Segment part 117.           Intra module refs:   extn
+                                                   extnn
+                                                   find
+    -------------------------------------------------------------------------
+CODE
+  Segment part 118. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000690 - 000006D3 (0x44 bytes), align: 2
+  Segment part 119.           Intra module refs:   copy
+                                                   del
+                                                   md
+                                                   rd
+                                                   ren
+                                                   type
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           par                     00000690 
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 120. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000006D4 - 000006EB (0x18 bytes), align: 2
+  Segment part 121.           Intra module refs:   Segment part 93
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           quit                    000006D4 
+    -------------------------------------------------------------------------
+CODE
+  Segment part 122. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000006EC - 000006F3 (0x8 bytes), align: 2
+  Segment part 123.           Intra module refs:   Segment part 93
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           empty                   000006EC 
+    -------------------------------------------------------------------------
+CODE
+  Segment part 124. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000006F4 - 00000703 (0x10 bytes), align: 2
+  Segment part 125.           Intra module refs:   Segment part 93
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cls                     000006F4 
+               stack 1 = 00000000 ( 00000004 )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 126. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000704 - 0000079F (0x9c bytes), align: 2
+  Segment part 127.           Intra module refs:   Segment part 93
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           echo                    00000704 
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000007A0 - 000007A3 (0x4 bytes), align: 2
+  Segment part 128.           Intra module refs:   echo
+    -------------------------------------------------------------------------
+CODE
+  Segment part 129. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000007A4 - 00000803 (0x60 bytes), align: 2
+  Segment part 130.           Intra module refs:   Segment part 93
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           mem                     000007A4 
+               stack 1 = 00000000 ( 00000014 )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 131. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000804 - 0000084F (0x4c bytes), align: 2
+  Segment part 132.           Intra module refs:   Segment part 93
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           date                    00000804 
+               stack 1 = 00000000 ( 0000001C )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 133. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000850 - 00000893 (0x44 bytes), align: 2
+  Segment part 134.           Intra module refs:   Segment part 93
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           time                    00000850 
+               stack 1 = 00000000 ( 00000018 )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 135. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000894 - 000008CF (0x3c bytes), align: 2
+  Segment part 136.           Intra module refs:   Segment part 93
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           md                      00000894 
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 137. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000008D0 - 0000090B (0x3c bytes), align: 2
+  Segment part 138.           Intra module refs:   Segment part 93
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           rd                      000008D0 
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 139. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 0000090C - 0000091F (0x14 bytes), align: 2
+  Segment part 140.           Intra module refs:   Segment part 93
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ver                     0000090C 
+               stack 1 = 00000000 ( 00000004 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000920 - 00000923 (0x4 bytes), align: 2
+  Segment part 141.           Intra module refs:   ver
+    -------------------------------------------------------------------------
+CODE
+  Segment part 142. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000924 - 00000993 (0x70 bytes), align: 2
+  Segment part 143.           Intra module refs:   Segment part 93
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           setpath                 00000924 
+               stack 1 = 00000000 ( 00000008 )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 144. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000994 - 00000AC7 (0x134 bytes), align: 2
+  Segment part 145.           Intra module refs:   Segment part 93
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ren                     00000994 
+               stack 1 = 00000000 ( 00000020 )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 146. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000AC8 - 00000B83 (0xbc bytes), align: 2
+  Segment part 147.           Intra module refs:   Segment part 93
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           del                     00000AC8 
+               stack 1 = 00000000 ( 00000014 )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 148. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000B84 - 00000D0F (0x18c bytes), align: 2
+  Segment part 149.           Intra module refs:   copy
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           copyxx                  00000B84 
+               stack 1 = 00000000 ( 0000002C )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000D10 - 00000D13 (0x4 bytes), align: 2
+  Segment part 150.           Intra module refs:   copyxx
+                                                   ren
+    -------------------------------------------------------------------------
+CODE
+  Segment part 151. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000D14 - 00000DEF (0xdc bytes), align: 2
+  Segment part 152.           Intra module refs:   Segment part 93
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           copy                    00000D14 
+               stack 1 = 00000000 ( 00000014 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000DF0 - 00000DF3 (0x4 bytes), align: 2
+  Segment part 153.           Intra module refs:   copy
+                                                   copyxx
+                                                   ren
+    -------------------------------------------------------------------------
+CODE
+  Segment part 154. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000DF4 - 00000E83 (0x90 bytes), align: 2
+  Segment part 155.           Intra module refs:   Segment part 93
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           type                    00000DF4 
+               stack 1 = 00000000 ( 00000014 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000E84 - 00000E87 (0x4 bytes), align: 2
+  Segment part 156.           Intra module refs:   copy
+                                                   del
+                                                   md
+                                                   rd
+                                                   ren
+                                                   type
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000E88 - 00000E8B (0x4 bytes), align: 2
+  Segment part 157.           Intra module refs:   copy
+                                                   copyxx
+                                                   del
+                                                   extn
+                                                   extnn
+                                                   find
+                                                   isfile
+                                                   md
+                                                   mem
+                                                   print
+                                                   rd
+                                                   ren
+                                                   type
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000E8C - 00000E8F (0x4 bytes), align: 2
+  Segment part 158.           Intra module refs:   print
+                                                   type
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000E90 - 00000E93 (0x4 bytes), align: 2
+  Segment part 159.           Intra module refs:   print
+                                                   type
+    -------------------------------------------------------------------------
+CODE
+  Segment part 160. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000E94 - 00000F53 (0xc0 bytes), align: 2
+  Segment part 161.           Intra module refs:   Segment part 93
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           sset                    00000E94 
+               stack 1 = 00000000 ( 00000010 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000F54 - 00000F57 (0x4 bytes), align: 2
+  Segment part 162.           Intra module refs:   arg
+                                                   copy
+                                                   ren
+                                                   setpath
+                                                   sset
+                                                   type
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000F58 - 00000F5B (0x4 bytes), align: 2
+  Segment part 163.           Intra module refs:   arg
+                                                   copy
+                                                   del
+                                                   echo
+                                                   md
+                                                   rd
+                                                   ren
+                                                   setpath
+                                                   sset
+                                                   type
+    -------------------------------------------------------------------------
+CODE
+  Segment part 164. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00000F5C - 00001193 (0x238 bytes), align: 2
+  Segment part 165.           Intra module refs:   Segment part 93
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           dir                     00000F5C 
+               stack 1 = 00000000 ( 0000002C )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00001194 - 00001197 (0x4 bytes), align: 2
+  Segment part 166.           Intra module refs:   copy
+                                                   del
+                                                   dir
+                                                   ren
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00001198 - 0000119B (0x4 bytes), align: 2
+  Segment part 167.           Intra module refs:   copy
+                                                   del
+                                                   dir
+                                                   ren
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 0000119C - 0000119F (0x4 bytes), align: 2
+  Segment part 168.           Intra module refs:   copyxx
+                                                   date
+                                                   dir
+                                                   extn
+                                                   extnn
+                                                   mem
+                                                   time
+    -------------------------------------------------------------------------
+CODE
+  Segment part 169. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000011A0 - 00001273 (0xd4 bytes), align: 2
+  Segment part 170.           Intra module refs:   Segment part 93
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cd                      000011A0 
+               stack 1 = 00000000 ( 0000000C )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00001274 - 00001277 (0x4 bytes), align: 2
+  Segment part 171.           Intra module refs:   cd
+                                                   copy
+                                                   del
+                                                   dir
+                                                   par
+                                                   ren
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00001278 - 0000127B (0x4 bytes), align: 2
+  Segment part 172.           Intra module refs:   cd
+                                                   copyxx
+                                                   extn
+    -------------------------------------------------------------------------
+CODE
+  Segment part 173. NOT NEEDED.
+    -------------------------------------------------------------------------
+DATA_I
+  Relative segment, address: DATA_AREA 00000040 - 00000117 (0xd8 bytes), align: 2
+  Segment part 92.            Intra module refs:   command
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           commands                00000040 
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 0000127C - 000012EF (0x74 bytes), align: 2
+  Segment part 174.           Intra module refs:   command
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           findall                 0000127C 
+               stack 1 = 00000000 ( 00000010 )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 175. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000012F0 - 0000133B (0x4c bytes), align: 2
+  Segment part 176.           Intra module refs:   command
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           gettype                 000012F0 
+               stack 1 = 00000000 ( 00000010 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 0000133C - 0000133F (0x4 bytes), align: 2
+  Segment part 177.           Intra module refs:   findall
+                                                   gettype
+    -------------------------------------------------------------------------
+CODE
+  Segment part 178. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00001340 - 000015A7 (0x268 bytes), align: 2
+  Segment part 179.           Intra module refs:   exec
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           command                 00001340 
+               stack 1 = 00000000 ( 00000024 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000015A8 - 000015AB (0x4 bytes), align: 2
+  Segment part 180.           Intra module refs:   command
+                                                   dir
+                                                   findall
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000015AC - 000015AF (0x4 bytes), align: 2
+  Segment part 181.           Intra module refs:   command
+                                                   dir
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000015B0 - 000015B3 (0x4 bytes), align: 2
+  Segment part 182.           Intra module refs:   command
+                                                   setpath
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000015B4 - 000015B7 (0x4 bytes), align: 2
+  Segment part 183.           Intra module refs:   command
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000015B8 - 000015BB (0x4 bytes), align: 2
+  Segment part 184.           Intra module refs:   cd
+                                                   command
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000015BC - 000015BF (0x4 bytes), align: 2
+  Segment part 185.           Intra module refs:   cd
+                                                   command
+                                                   dir
+    -------------------------------------------------------------------------
+CODE
+  Segment part 186. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000015C0 - 00001617 (0x58 bytes), align: 2
+  Segment part 187.           Intra module refs:   execbat
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           exec                    000015C0 
+               stack 1 = 00000000 ( 00000008 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00001618 - 0000161B (0x4 bytes), align: 2
+  Segment part 188.           Intra module refs:   exec
+    -------------------------------------------------------------------------
+CODE
+  Segment part 189. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 0000161C - 0000174F (0x134 bytes), align: 2
+  Segment part 190.           Intra module refs:   command
+                                                   main
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           execbat                 0000161C 
+               stack 1 = 00000000 ( 00000020 )
+    -------------------------------------------------------------------------
+CODE
+  Segment part 191. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00001750 - 0000194B (0x1fc bytes), align: 2
+  Segment part 192.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           main                    00001750        Absolute parts (?ABS_ENTRY_MOD)
+               stack 1 = 00000000 ( 00000040 )
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 0000194C - 0000194F (0x4 bytes), align: 2
+  Segment part 193.           Intra module refs:   main
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00001950 - 00001953 (0x4 bytes), align: 2
+  Segment part 194.           Intra module refs:   main
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00001954 - 00001957 (0x4 bytes), align: 2
+  Segment part 195.           Intra module refs:   command
+                                                   main
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00001958 - 0000195B (0x4 bytes), align: 2
+  Segment part 196.           Intra module refs:   command
+                                                   findall
+                                                   main
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 0000195C - 0000195F (0x4 bytes), align: 2
+  Segment part 197.           Intra module refs:   command
+                                                   main
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00001960 - 00001963 (0x4 bytes), align: 2
+  Segment part 198.           Intra module refs:   command
+                                                   dir
+                                                   execbat
+                                                   main
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00001964 - 00001967 (0x4 bytes), align: 2
+  Segment part 199.           Intra module refs:   command
+                                                   main
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00001968 - 0000196B (0x4 bytes), align: 2
+  Segment part 200.           Intra module refs:   command
+                                                   main
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 0000196C - 0000196F (0x4 bytes), align: 2
+  Segment part 201.           Intra module refs:   main
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00001970 - 00001973 (0x4 bytes), align: 2
+  Segment part 202.           Intra module refs:   dir
+                                                   main
+    -------------------------------------------------------------------------
+CODE
+  Segment part 203. NOT NEEDED.Intra module refs   cd
+                                                   copy
+                                                   copyxx
+                                                   del
+                                                   dir
+                                                   execelf
+                                                   findall
+                                                   print
+                                                   ren
+                                                   setpath
+                                                   sset
+                                                   un
+    -------------------------------------------------------------------------
+CODE
+  Segment part 204. NOT NEEDED.Intra module refs   cd
+                                                   command
+                                                   copyxx
+                                                   dir
+                                                   extn
+                                                   extnn
+                                                   find
+                                                   findall
+                                                   main
+                                                   par
+                                                   print
+                                                   sset
+    -------------------------------------------------------------------------
+CODE
+  Segment part 205. NOT NEEDED.Intra module refs   Killer
+    -------------------------------------------------------------------------
+CODE
+  Segment part 206. NOT NEEDED.Intra module refs   rundll
+    -------------------------------------------------------------------------
+CODE
+  Segment part 207. NOT NEEDED.Intra module refs   command
+                                                   un
+    -------------------------------------------------------------------------
+CODE
+  Segment part 208. NOT NEEDED.Intra module refs   cd
+                                                   command
+                                                   copyxx
+                                                   dir
+                                                   extn
+                                                   extnn
+                                                   find
+                                                   findall
+                                                   main
+                                                   par
+                                                   setpath
+    -------------------------------------------------------------------------
+CODE
+  Segment part 209. NOT NEEDED.Intra module refs   cd
+                                                   command
+                                                   copy
+                                                   copyxx
+                                                   del
+                                                   extn
+                                                   extnn
+                                                   find
+                                                   findall
+                                                   gettype
+                                                   main
+                                                   ren
+    -------------------------------------------------------------------------
+CODE
+  Segment part 210. NOT NEEDED.Intra module refs   extn
+                                                   extnn
+    -------------------------------------------------------------------------
+CODE
+  Segment part 211. NOT NEEDED.Intra module refs   cls
+                                                   command
+                                                   copyxx
+                                                   dir
+                                                   exec
+                                                   execbat
+                                                   main
+                                                   ren
+                                                   setpath
+                                                   sset
+    -------------------------------------------------------------------------
+CODE
+  Segment part 212. NOT NEEDED.Intra module refs   echo
+    -------------------------------------------------------------------------
+CODE
+  Segment part 213. NOT NEEDED.Intra module refs   copy
+                                                   del
+                                                   ren
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 00001974 - 000019AB (0x38 bytes), align: 2
+  Segment part 214.           Intra module refs:   cls
+                                                   command
+                                                   copyxx
+                                                   dir
+                                                   exec
+                                                   execbat
+                                                   main
+                                                   ren
+                                                   setpath
+                                                   sset
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           cr                      00001974 
+    -------------------------------------------------------------------------
+CODE
+  Relative segment, address: CODE_AREA 000019AC - 000019FF (0x54 bytes), align: 2
+  Segment part 215.           Intra module refs:   extn
+                                                   extnn
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           un                      000019AC 
+               stack 1 = 00000000 ( 00000010 )
+    -------------------------------------------------------------------------
+CSTACK
+  Segment part 1. NOT NEEDED.
+    -------------------------------------------------------------------------
+DATA_ID
+  Relative segment, address: CODE_AREA 00000000 - 00000003 (0x4 bytes), align: 2
+  Segment part 66.            Intra module refs:   setend
+    -------------------------------------------------------------------------
+DATA_ID
+  Relative segment, address: CODE_AREA 00000004 - 00000017 (0x14 bytes), align: 2
+  Segment part 78.            Intra module refs:   cext
+    -------------------------------------------------------------------------
+DATA_ID
+  Relative segment, address: CODE_AREA 00000018 - 0000003B (0x24 bytes), align: 2
+  Segment part 81.            Intra module refs:   msg
+    -------------------------------------------------------------------------
+DATA_ID
+  Relative segment, address: CODE_AREA 0000003C - 0000003F (0x4 bytes), align: 2
+  Segment part 91.            Intra module refs:   lend
+    -------------------------------------------------------------------------
+DATA_ID
+  Relative segment, address: CODE_AREA 00000040 - 00000117 (0xd8 bytes), align: 2
+  Segment part 93.            Intra module refs:   commands
+    -------------------------------------------------------------------------
+DATA_ID
+  Segment part 216. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?*?DATA_ID              
+    -------------------------------------------------------------------------
+INITTAB
+  Relative segment, address: CODE_AREA 00001F6C - 00001F77 (0xc bytes), align: 2
+  Segment part 217. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?init?tab?DATA_I        00001F6C 
+    -------------------------------------------------------------------------
+INITTAB
+  Relative segment, address: CODE_AREA 00001F78 - 00001F83 (0xc bytes), align: 2
+  Segment part 218. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?init?tab?DATA_Z        00001F78 
+
+    *************************************************************************
+
+  FILE NAME : D:\SVN\SieELF\SieELF\cbn_SRC\Command\Release\Obj\SWILIB.r79
+  PROGRAM MODULE, NAME : SWILIB
+
+  SEGMENTS IN THE MODULE
+  ======================
+DATA_Z
+  Relative segment, address: CODE_AREA 0000CCB8 - 0000CCBB (0x4 bytes), align: 2
+  Segment part 2.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           err                     0000CCB8        Segment part 157 (COMMAND)
+                                                   Segment part 198 (COMMAND)
+    -------------------------------------------------------------------------
+DATA_Z
+  Segment part 3. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           loadfilesize            
+    -------------------------------------------------------------------------
+CODE
+  Segment part 4. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 5. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           min                     
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 6. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 7. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           max                     
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 8. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 9. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           abs                     
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 10. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 11. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           fgets                   
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 12. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 13. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           printf                  
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 14. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 15. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           strdup                  
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 16. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 17. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           savefile                
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 18. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 19. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           loadfile                
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 20. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 21. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           toup                    
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 22. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 23. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           todown                  
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 24. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 25. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           isalth                  
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 26. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 27. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           isval                   
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 28. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 29. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           strchrpos               
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 30. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 31. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           emptystr                
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 32. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 33. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           alltrim                 
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 34. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 35. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           strcmpsize              
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 36. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 37. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           getint                  
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 38. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 39. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           get3int                 
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 40. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 41. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           getshort                
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 42. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 43. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           putint                  
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 44. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 45. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           putshort                
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 46. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 47. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           bitblt                  
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 48. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 49. NOT NEEDED.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           memmove                 
+               not allocated function
+    -------------------------------------------------------------------------
+CODE
+  Segment part 50. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 51. NOT NEEDED.
+    -------------------------------------------------------------------------
+CODE
+  Segment part 52. NOT NEEDED.
+    -------------------------------------------------------------------------
+CSTACK
+  Segment part 1. NOT NEEDED.
+    -------------------------------------------------------------------------
+INITTAB
+  Segment part 53. TENTATIVE. Used definition from COMMAND
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ?init?tab?DATA_Z        
+
+    *************************************************************************
+
+  FILE NAME : D:\SVN\SieELF\SieELF\cbn_SRC\Command\Release\Obj\Swi.r79
+  PROGRAM MODULE, NAME : Swi
+
+  SEGMENTS IN THE MODULE
+  ======================
+CODE
+  Relative segment, address: CODE_AREA 00001A00 - 00001D1F (0x320 bytes), align: 2
+  Segment part 0. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           kill_data               00001A00        Killer (COMMAND)
+           ?call_ctors             00001A04 
+           strlen                  00001A08        cd (COMMAND)
+                                                   copy (COMMAND)
+                                                   copyxx (COMMAND)
+                                                   del (COMMAND)
+                                                   dir (COMMAND)
+                                                   execelf (COMMAND)
+                                                   findall (COMMAND)
+                                                   print (COMMAND)
+                                                   ren (COMMAND)
+                                                   setpath (COMMAND)
+                                                   sset (COMMAND)
+                                                   un (COMMAND)
+           strchr                  00001A28        copy (COMMAND)
+                                                   del (COMMAND)
+                                                   ren (COMMAND)
+           strrchr                 00001A54        cd (COMMAND)
+                                                   command (COMMAND)
+                                                   copy (COMMAND)
+                                                   copyxx (COMMAND)
+                                                   del (COMMAND)
+                                                   extn (COMMAND)
+                                                   extnn (COMMAND)
+                                                   find (COMMAND)
+                                                   findall (COMMAND)
+                                                   gettype (COMMAND)
+                                                   main (COMMAND)
+                                                   ren (COMMAND)
+           strcpy                  00001A8C        cd (COMMAND)
+                                                   command (COMMAND)
+                                                   copyxx (COMMAND)
+                                                   dir (COMMAND)
+                                                   extn (COMMAND)
+                                                   extnn (COMMAND)
+                                                   find (COMMAND)
+                                                   findall (COMMAND)
+                                                   main (COMMAND)
+                                                   par (COMMAND)
+                                                   print (COMMAND)
+                                                   sset (COMMAND)
+           strcat                  00001AA8        cd (COMMAND)
+                                                   command (COMMAND)
+                                                   copyxx (COMMAND)
+                                                   dir (COMMAND)
+                                                   extn (COMMAND)
+                                                   extnn (COMMAND)
+                                                   find (COMMAND)
+                                                   findall (COMMAND)
+                                                   main (COMMAND)
+                                                   par (COMMAND)
+                                                   setpath (COMMAND)
+           memcmp                  00001AD4 
+           strcmp                  00001B04 
+           stricmp                 00001B28        echo (COMMAND)
+           strncmp                 00001B54 
+           strnicmp                00001B84 
+           memcpy                  00001BBC        command (COMMAND)
+                                                   un (COMMAND)
+           movsw                   00001C08 
+           movsd                   00001C24 
+           memset                  00001C40        rundll (COMMAND)
+           memsetw                 00001C98 
+           memsetd                 00001CB8 
+           memmov                  00001CD8 
+           iszero                  00001D00 
+    -------------------------------------------------------------------------
+ELFBEGIN
+  Relative segment, address: CODE_AREA 00000000, align: 0
+  Segment part 1. ROOT.
+           ENTRY                   ADDRESS         REF BY
+           =====                   =======         ======
+           ELF_BEGIN               00000000        Killer (COMMAND)
+
+
+
+
+                ****************************************
+                *                                      *
+                *            MODULE SUMMARY            *
+                *                                      *
+                ****************************************
+
+Module             CODE   DATA
+------             ----   ----
+                  (Rel)  (Rel)
+COMMAND          51 598    280
+  + shared           12
+SWILIB                4
+Swi                 800
+N/A (alignment)
+------           ------    ---
+Total:           52 414    280
+
+
+                ****************************************
+                *                                      *
+                *              CALL GRAPH              *
+                *                                      *
+                ****************************************
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  Killer
+      | Stack used (prev) :  00000000
+      | + function block  :  00000004
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  00000004
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  quit
+      | Stack used (prev) :  00000000
+      | + function block  :  00000000
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  00000000
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  empty
+      | Stack used (prev) :  00000000
+      | + function block  :  00000000
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  00000000
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  cls
+      | Stack used (prev) :  00000000
+      | + function block  :  00000004
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  00000004
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  echo
+      | Stack used (prev) :  00000000
+      | + function block  :  0000000C
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  0000000C
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  mem
+      | Stack used (prev) :  00000000
+      | + function block  :  00000014
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  00000014
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  date
+      | Stack used (prev) :  00000000
+      | + function block  :  0000001C
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  0000001C
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  time
+      | Stack used (prev) :  00000000
+      | + function block  :  00000018
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  00000018
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  md
+      | Stack used (prev) :  00000000
+      | + function block  :  0000000C
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  0000000C
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  rd
+      | Stack used (prev) :  00000000
+      | + function block  :  0000000C
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  0000000C
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  ver
+      | Stack used (prev) :  00000000
+      | + function block  :  00000004
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  00000004
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  setpath
+      | Stack used (prev) :  00000000
+      | + function block  :  00000008
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  00000008
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  ren
+      | Stack used (prev) :  00000000
+      | + function block  :  00000020
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  00000020
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  del
+      | Stack used (prev) :  00000000
+      | + function block  :  00000014
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  00000014
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  copy
+      | Stack used (prev) :  00000000
+      | + function block  :  00000014
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  00000014
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  type
+      | Stack used (prev) :  00000000
+      | + function block  :  00000014
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  00000014
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  sset
+      | Stack used (prev) :  00000000
+      | + function block  :  00000010
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  00000010
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  dir
+      | Stack used (prev) :  00000000
+      | + function block  :  0000002C
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  0000002C
+
+
+  ->Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+                             CSTACK
+    | Stack used (prev) :  00000000
+  01  cd
+      | Stack used (prev) :  00000000
+      | + function block  :  0000000C
+  <-Sub-tree of type: Indirectly called function tree that does not make
+                    : indirect calls (Is not an interrupt and is not flagged
+                    : as not overlayable)
+    | Stack used          :  0000000C
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  0000002C
+  01  striicmp
+      | Stack used (prev) :  0000002C
+      | + function block  :  00000000
+  <-Sub-tree of type: Function tree
+    | Stack used          :  0000002C
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  0000002C
+  01  print
+      | Stack used (prev) :  0000002C
+      | + function block  :  00000014
+  <-Sub-tree of type: Function tree
+    | Stack used          :  00000040
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  00000040
+  01  arg
+      | Stack used (prev) :  00000040
+      | + function block  :  00000000
+  <-Sub-tree of type: Function tree
+    | Stack used          :  00000040
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  00000040
+  01  rundll
+      | Stack used (prev) :  00000040
+      | + function block  :  00000034
+  <-Sub-tree of type: Function tree
+    | Stack used          :  00000074
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  00000074
+  01  isfile
+      | Stack used (prev) :  00000074
+      | + function block  :  0000000C
+  <-Sub-tree of type: Function tree
+    | Stack used          :  00000080
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  00000080
+  01  execelf
+      | Stack used (prev) :  00000080
+      | + function block  :  00000010
+  <-Sub-tree of type: Function tree
+    | Stack used          :  00000090
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  00000090
+  01  extnn
+      | Stack used (prev) :  00000090
+      | + function block  :  00000014
+  <-Sub-tree of type: Function tree
+    | Stack used          :  000000A4
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  000000A4
+  01  extn
+      | Stack used (prev) :  000000A4
+      | + function block  :  00000014
+  <-Sub-tree of type: Function tree
+    | Stack used          :  000000B8
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  000000B8
+  01  find
+      | Stack used (prev) :  000000B8
+      | + function block  :  00000020
+  <-Sub-tree of type: Function tree
+    | Stack used          :  000000D8
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  000000D8
+  01  par
+      | Stack used (prev) :  000000D8
+      | + function block  :  0000000C
+  <-Sub-tree of type: Function tree
+    | Stack used          :  000000E4
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  000000E4
+  01  copyxx
+      | Stack used (prev) :  000000E4
+      | + function block  :  0000002C
+  <-Sub-tree of type: Function tree
+    | Stack used          :  00000110
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  00000110
+  01  findall
+      | Stack used (prev) :  00000110
+      | + function block  :  00000010
+  <-Sub-tree of type: Function tree
+    | Stack used          :  00000120
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  00000120
+  01  gettype
+      | Stack used (prev) :  00000120
+      | + function block  :  00000010
+  <-Sub-tree of type: Function tree
+    | Stack used          :  00000130
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  00000130
+  01  command
+      | Stack used (prev) :  00000130
+      | + function block  :  00000024
+  <-Sub-tree of type: Function tree
+    | Stack used          :  00000154
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  00000154
+  01  exec
+      | Stack used (prev) :  00000154
+      | + function block  :  00000008
+  <-Sub-tree of type: Function tree
+    | Stack used          :  0000015C
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  0000015C
+  01  execbat
+      | Stack used (prev) :  0000015C
+      | + function block  :  00000020
+  <-Sub-tree of type: Function tree
+    | Stack used          :  0000017C
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  0000017C
+  01  main
+      | Stack used (prev) :  0000017C
+      | + function block  :  00000040
+  <-Sub-tree of type: Function tree
+    | Stack used          :  000001BC
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  000001BC
+  01  cr
+      | Stack used (prev) :  000001BC
+      | + function block  :  00000000
+  <-Sub-tree of type: Function tree
+    | Stack used          :  000001BC
+
+
+  ->Sub-tree of type: Function tree
+                             CSTACK
+    | Stack used (prev) :  000001BC
+  01  un
+      | Stack used (prev) :  000001BC
+      | + function block  :  00000010
+  <-Sub-tree of type: Function tree
+    | Stack used          :  000001CC
+
+
+
+
+                ****************************************
+                *                                      *
+                *      SEGMENTS IN ADDRESS ORDER       *
+                *                                      *
+                ****************************************
+
+
+SEGMENT              SPACE    START ADDRESS   END ADDRESS     SIZE  TYPE  ALIGN
+=======              =====    =============   ===========     ====  ====  =====
+ELFBEGIN             CODE_AREA           00000000                     rel    0
+DATA_ID              CODE_AREA      00000000 - 00000117         118   rel    2
+START                CODE_AREA           00000118                     dse    0
+CODE                 CODE_AREA      00000118 - 00001D1F        1C08   rel    2
+DATA_C               CODE_AREA      00001D20 - 00001F6B         24C   rel    2
+INITTAB              CODE_AREA      00001F6C - 00001F83          18   rel    2
+DATA_Z               CODE_AREA      00001F84 - 0000CCBD        AD3A   rel    2
+DATA_I               DATA_AREA      00000000 - 00000117         118   rel    2
+
+                ****************************************
+                *                                      *
+                *        END OF CROSS REFERENCE        *
+                *                                      *
+                ****************************************
+
+ 52 414 bytes of CODE memory
+    280 bytes of DATA memory
+
+Errors: none
+Warnings: none
+

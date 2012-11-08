@@ -29,9 +29,9 @@ a EQU b
   //CX70v56
   defadr  StoreErrInfoAndAbort_cx70v56,0xA113BE98
   defadr  StoreErrString_cx70v56,0xA113BCBC
-  //S65v58
-  defadr  StoreErrInfoAndAbort_s65v58,0xA113BE98
-  defadr  StoreErrString_s65v58,0xA113BCBC
+  //S6Cv53
+  defadr  StoreErrInfoAndAbort_s65v58,0xA1244054
+  defadr  StoreErrString_s65v58,0xA1243E78
   //SK65v50
   defadr  StoreErrInfoAndAbort_sk65v50,0xA0946598
   defadr  StoreErrString_sk65v50,0xA09463BC

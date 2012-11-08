@@ -1,0 +1,2381 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    14/Feb/2012  15:39:42 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_m #
+#                       ain.c                                                #
+#    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_m #
+#                       ain.c -D NDEBUG -lC D:\SVN\SieELF\SieELF\x65_PCM_Pla #
+#                       yer\Player\Release\List\ -lA                         #
+#                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\R #
+#                       elease\Obj\ -s9 --cpu_mode arm --endian little       #
+#                       --cpu ARM926EJ-S --stack_align 4 --interwork -e      #
+#                       --fpu None --dlib_config "D:\Program                 #
+#                       Files\IAR\Embedded Workbench 4.0                     #
+#                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude       #
+#                       swilib.h -I "D:\Program Files\IAR\Embedded           #
+#                       Workbench 4.0 Evaluation\ARM\INC\"                   #
+#                       --inline_threshold=16                                #
+#    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\dec_main.lst                                     #
+#    Object file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\O #
+#                       bj\dec_main.r79                                      #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_main.c
+      1          /*
+      2           *===================================================================
+      3           *  3GPP AMR Wideband Floating-point Speech Codec
+      4           *===================================================================
+      5           */
+      6          
+      7          
+      8          
+      9          #include "typedef.h"
+
+  #endif
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\typedef.h",19  Warning[Pe001]: 
+          last line of file ends without a newline
+     10          #include "dec_main.h"
+
+  #endif
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\typedef.h",19  Warning[Pe001]: 
+          last line of file ends without a newline
+
+  #endif
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\typedef.h",19  Warning[Pe001]: 
+          last line of file ends without a newline
+     11          #include "dec_dtx.h"
+     12          #include "dec_acelp.h"
+
+  #endif
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\typedef.h",19  Warning[Pe001]: 
+          last line of file ends without a newline
+     13          #include "dec_gain.h"
+
+  #endif
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\typedef.h",19  Warning[Pe001]: 
+          last line of file ends without a newline
+     14          #include "dec_lpc.h"
+
+  #endif
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\typedef.h",19  Warning[Pe001]: 
+          last line of file ends without a newline
+     15          #include "dec_util.h"
+
+  #endif
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\typedef.h",19  Warning[Pe001]: 
+          last line of file ends without a newline
+     16          
+     17          #define MAX_16 (Word16)0x7fff
+     18          #define MIN_16 (Word16)0x8000
+     19          
+     20          #define L_FRAME            256   /* Frame size                             */
+     21          #define NB_SUBFR           4     /* Number of subframe per frame           */
+     22          #define L_SUBFR            64    /* Subframe size                          */
+     23          #define MODE_7k            0     /* modes                                  */
+     24          #define MODE_9k            1
+     25          #define MODE_12k           2
+     26          #define MODE_14k           3
+     27          #define MODE_16k           4
+     28          #define MODE_18k           5
+     29          #define MODE_20k           6
+     30          #define MODE_23k           7
+     31          #define MODE_24k           8
+     32          #define RX_SPEECH_PROBABLY_DEGRADED 1  /* rx types                         */
+     33          #define RX_SPEECH_LOST     2
+     34          #define RX_SPEECH_BAD      3
+     35          #define RX_NO_DATA         7
+     36          #define Q_MAX              8     /* scaling max for signal                 */
+     37          #define PIT_SHARP          27853 /* pitch sharpening factor = 0.85 Q15     */
+     38          #define PIT_MIN            34    /* Minimum pitch lag with resolution 1/4  */
+     39          #define PIT_FR2            128   /* Minimum pitch lag with resolution 1/2  */
+     40          #define PIT_FR1_9b         160   /* Minimum pitch lag with resolution 1    */
+     41          #define PIT_FR1_8b         92    /* Minimum pitch lag with resolution 1    */
+     42          
+     43          extern const Word16 D_ROM_isp[];
+     44          extern const Word16 D_ROM_isf[];
+     45          extern const Word16 D_ROM_interpol_frac[];
+     46          
+     47          #ifdef WIN32
+     48          #pragma warning( disable : 4310)
+     49          #endif
+     50          
+     51          /*
+     52           * Decoder_reset
+     53           *
+     54           * Parameters:
+     55           *    st        I/O: pointer to state structure
+     56           *    reset_all   I: perform full reset
+     57           *
+     58           * Function:
+     59           *    Initialisation of variables for the decoder section.
+     60           *
+     61           *
+     62           * Returns:
+     63           *    void
+     64           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+     65          void D_MAIN_reset(void *st, Word16 reset_all)
+     66          {
+   \                     D_MAIN_reset:
+   \   00000000   F0432DE9           PUSH     {R4-R9,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+   \   00000008   0180A0E1           MOV      R8,R1
+     67             Word32 i;
+     68          
+     69             Decoder_State *dec_state;
+     70          
+     71             dec_state = (Decoder_State*)st;
+     72             memset(dec_state->mem_exc, 0, (PIT_MAX + L_INTERPOL) * sizeof(Word16));
+   \   0000000C   7C2FA0E3           MOV      R2,#+496
+   \   00000010   0010A0E3           MOV      R1,#+0
+   \   00000014   040084E2           ADD      R0,R4,#+4
+   \   00000018   BB0000EF           SWI      +187
+     73             memset(dec_state->mem_isf_q, 0, M * sizeof(Word16));
+   \   0000001C   2020A0E3           MOV      R2,#+32
+   \   00000020   0010A0E3           MOV      R1,#+0
+   \   00000024   5D0E84E2           ADD      R0,R4,#+1488
+   \   00000028   BB0000EF           SWI      +187
+   \   0000002C   6200A0E3           MOV      R0,#+98
+   \   00000030   600E80E3           ORR      R0,R0,#0x600
+   \   00000034   045080E0           ADD      R5,R0,R4
+   \   00000038   0060A0E3           MOV      R6,#+0
+   \   0000003C   B661C5E1           STRH     R6,[R5, #+22]
+     74             dec_state->mem_T0_frac = 0;   /* old pitch value = 64.0 */
+     75             dec_state->mem_T0 = 64;
+   \   00000040   4000A0E3           MOV      R0,#+64
+   \   00000044   B401C5E1           STRH     R0,[R5, #+20]
+     76             dec_state->mem_first_frame = 1;
+   \   00000048   7C00A0E3           MOV      R0,#+124
+   \   0000004C   600E80E3           ORR      R0,R0,#0x600
+   \   00000050   047080E0           ADD      R7,R0,R4
+   \   00000054   0100A0E3           MOV      R0,#+1
+   \   00000058   0600C7E5           STRB     R0,[R7, #+6]
+     77             dec_state->mem_gc_thres = 0;
+   \   0000005C   006084E5           STR      R6,[R4, #+0]
+     78             dec_state->mem_tilt_code = 0;
+   \   00000060   B860C5E1           STRH     R6,[R5, #+8]
+     79             memset(dec_state->mem_ph_disp, 0, 8 * sizeof(Word16));
+   \   00000064   1020A0E3           MOV      R2,#+16
+   \   00000068   0010A0E3           MOV      R1,#+0
+   \   0000006C   630E84E2           ADD      R0,R4,#+1584
+   \   00000070   BB0000EF           SWI      +187
+     80          
+     81             /* scaling memories for excitation */
+     82             dec_state->mem_q = Q_MAX;
+   \   00000074   0800A0E3           MOV      R0,#+8
+   \   00000078   BA00C5E1           STRH     R0,[R5, #+10]
+     83             dec_state->mem_subfr_q[3] = Q_MAX;
+   \   0000007C   B600C5E1           STRH     R0,[R5, #+6]
+     84             dec_state->mem_subfr_q[2] = Q_MAX;
+   \   00000080   B400C5E1           STRH     R0,[R5, #+4]
+     85             dec_state->mem_subfr_q[1] = Q_MAX;
+   \   00000084   B200C5E1           STRH     R0,[R5, #+2]
+     86             dec_state->mem_subfr_q[0] = Q_MAX;
+   \   00000088   B000C5E1           STRH     R0,[R5, #+0]
+     87          
+     88             if(reset_all != 0)
+   \   0000008C   000058E3           CMP      R8,#+0
+   \   00000090   F083BD08           POPEQ    {R4-R9,PC}
+     89             {
+     90                /* routines initialization */
+     91                D_GAIN_init(dec_state->mem_gain);
+     92                memset(dec_state->mem_oversamp, 0, (2 * 12) * sizeof(Word16));
+     93                memset(dec_state->mem_sig_out, 0, 6 * sizeof(Word16));
+     94                memset(dec_state->mem_hf, 0, (31 - 1) * sizeof(Word16));
+     95                memset(dec_state->mem_hf3, 0, (31 - 1) * sizeof(Word16));
+     96                memset(dec_state->mem_hp400, 0, 6 * sizeof(Word16));
+     97                D_GAIN_lag_concealment_init(dec_state->mem_lag);
+     98          
+     99                /* isp initialization */
+    100                memcpy(dec_state->mem_isp, D_ROM_isp, M * sizeof(Word16));
+    101                memcpy(dec_state->mem_isf, D_ROM_isf, M * sizeof(Word16));
+   \   00000094   ........           LDR      R8,??DataTable1  ;; D_ROM_isf
+   \   00000098   3A00A0E3           MOV      R0,#+58
+   \   0000009C   500E80E3           ORR      R0,R0,#0x500
+   \   000000A0   040080E0           ADD      R0,R0,R4
+   \   000000A4   ........           _BLF     D_GAIN_init,??D_GAIN_init??rA
+   \   000000A8   3020A0E3           MOV      R2,#+48
+   \   000000AC   0010A0E3           MOV      R1,#+0
+   \   000000B0   0A00A0E3           MOV      R0,#+10
+   \   000000B4   500E80E3           ORR      R0,R0,#0x500
+   \   000000B8   040080E0           ADD      R0,R0,R4
+   \   000000BC   BB0000EF           SWI      +187
+   \   000000C0   0C20A0E3           MOV      R2,#+12
+   \   000000C4   0610A0E1           MOV      R1,R6
+   \   000000C8   640E84E2           ADD      R0,R4,#+1600
+   \   000000CC   BB0000EF           SWI      +187
+   \   000000D0   3C20A0E3           MOV      R2,#+60
+   \   000000D4   0610A0E1           MOV      R1,R6
+   \   000000D8   5600A0E3           MOV      R0,#+86
+   \   000000DC   400E80E3           ORR      R0,R0,#0x400
+   \   000000E0   040080E0           ADD      R0,R0,R4
+   \   000000E4   BB0000EF           SWI      +187
+   \   000000E8   3C20A0E3           MOV      R2,#+60
+   \   000000EC   0610A0E1           MOV      R1,R6
+   \   000000F0   CE00A0E3           MOV      R0,#+206
+   \   000000F4   400E80E3           ORR      R0,R0,#0x400
+   \   000000F8   040080E0           ADD      R0,R0,R4
+   \   000000FC   BB0000EF           SWI      +187
+   \   00000100   0C20A0E3           MOV      R2,#+12
+   \   00000104   0610A0E1           MOV      R1,R6
+   \   00000108   640E82E3           ORR      R0,R2,#0x640
+   \   0000010C   040080E0           ADD      R0,R0,R4
+   \   00000110   BB0000EF           SWI      +187
+   \   00000114   5800A0E3           MOV      R0,#+88
+   \   00000118   600E80E3           ORR      R0,R0,#0x600
+   \   0000011C   040080E0           ADD      R0,R0,R4
+   \   00000120   ........           _BLF     D_GAIN_lag_concealment_init,??D_GAIN_lag_concealment_init??rA
+   \   00000124   AC109FE5           LDR      R1,??D_MAIN_reset_0  ;; D_ROM_isp
+   \   00000128   2020A0E3           MOV      R2,#+32
+   \   0000012C   590E84E2           ADD      R0,R4,#+1424
+   \   00000130   1E0100EF           SWI      +286
+   \   00000134   2020A0E3           MOV      R2,#+32
+   \   00000138   0810A0E1           MOV      R1,R8
+   \   0000013C   5B0E84E2           ADD      R0,R4,#+1456
+   \   00000140   1E0100EF           SWI      +286
+    102          
+    103                for(i = 0; i < L_MEANBUF; i++)
+   \   00000144   0690A0E1           MOV      R9,R6
+    104                {
+    105                   memcpy(&dec_state->mem_isf_buf[i * M], D_ROM_isf, M * sizeof(Word16));
+   \                     ??D_MAIN_reset_1:
+   \   00000148   2020A0E3           MOV      R2,#+32
+   \   0000014C   0810A0E1           MOV      R1,R8
+   \   00000150   F600A0E3           MOV      R0,#+246
+   \   00000154   C00F80E3           ORR      R0,R0,#0x300
+   \   00000158   893284E0           ADD      R3,R4,R9, LSL #+5
+   \   0000015C   030080E0           ADD      R0,R0,R3
+   \   00000160   1E0100EF           SWI      +286
+    106                }
+   \   00000164   019089E2           ADD      R9,R9,#+1
+   \   00000168   030059E3           CMP      R9,#+3
+   \   0000016C   F5FFFFBA           BLT      ??D_MAIN_reset_1
+    107          
+    108                /* variable initialization */
+    109                dec_state->mem_deemph = 0;
+   \   00000170   BC60C5E1           STRH     R6,[R5, #+12]
+    110                dec_state->mem_seed = 21845;   /* init random with 21845 */
+   \   00000174   5500A0E3           MOV      R0,#+85
+   \   00000178   550C80E3           ORR      R0,R0,#0x5500
+   \   0000017C   BE00C5E1           STRH     R0,[R5, #+14]
+    111                dec_state->mem_seed2 = 21845;
+   \   00000180   B001C5E1           STRH     R0,[R5, #+16]
+    112                dec_state->mem_seed3 = 21845;
+   \   00000184   B201C5E1           STRH     R0,[R5, #+18]
+    113                dec_state->mem_state = 0;
+   \   00000188   0560C7E5           STRB     R6,[R7, #+5]
+    114                dec_state->mem_bfi = 0;
+   \   0000018C   0460C7E5           STRB     R6,[R7, #+4]
+    115          
+    116                /* Static vectors to zero */
+    117                memset(dec_state->mem_syn_hf, 0, M16k * sizeof(Word16));
+   \   00000190   2820A0E3           MOV      R2,#+40
+   \   00000194   0010A0E3           MOV      R1,#+0
+   \   00000198   540E82E3           ORR      R0,R2,#0x540
+   \   0000019C   040080E0           ADD      R0,R0,R4
+   \   000001A0   BB0000EF           SWI      +187
+    118                memset(dec_state->mem_syn_hi, 0, M * sizeof(Word16));
+   \   000001A4   2020A0E3           MOV      R2,#+32
+   \   000001A8   0610A0E1           MOV      R1,R6
+   \   000001AC   5F0E84E2           ADD      R0,R4,#+1520
+   \   000001B0   BB0000EF           SWI      +187
+    119                memset(dec_state->mem_syn_lo, 0, M * sizeof(Word16));
+   \   000001B4   2020A0E3           MOV      R2,#+32
+   \   000001B8   0610A0E1           MOV      R1,R6
+   \   000001BC   610E84E2           ADD      R0,R4,#+1552
+   \   000001C0   BB0000EF           SWI      +187
+    120                D_DTX_reset(dec_state->dtx_decSt, D_ROM_isf);
+   \   000001C4   000097E5           LDR      R0,[R7, #+0]
+   \   000001C8   0810A0E1           MOV      R1,R8
+   \   000001CC   ........           _BLF     D_DTX_reset,??D_DTX_reset??rA
+    121                dec_state->mem_vad_hist = 0;
+   \   000001D0   B861C5E1           STRH     R6,[R5, #+24]
+    122             }
+    123          
+    124             return;
+   \   000001D4   F083BDE8           POP      {R4-R9,PC}       ;; return
+   \                     ??D_MAIN_reset_0:
+   \   000001D8   ........           DC32     D_ROM_isp
+    125          }
+    126          
+    127          
+    128          /*
+    129           * Decoder_init
+    130           *
+    131           * Parameters:
+    132           *    spd_state         O: pointer to state structure
+    133           *
+    134           * Function:
+    135           *    Initialization of variables for the decoder section.
+    136           *    Memory allocation.
+    137           *
+    138           * Returns:
+    139           *    return zero if succesful
+    140           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    141          Word32 D_MAIN_init(void **spd_state)
+    142          {
+   \                     D_MAIN_init:
+   \   00000000   70402DE9           PUSH     {R4-R6,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+    143             /* Decoder states */
+    144             Decoder_State *st;
+    145          
+    146             *spd_state = NULL;
+   \   00000008   0050A0E3           MOV      R5,#+0
+   \   0000000C   005084E5           STR      R5,[R4, #+0]
+    147          
+    148             /*
+    149              * Memory allocation for coder state.
+    150              */
+    151             if((st = (Decoder_State*)malloc(sizeof(Decoder_State))) == NULL)
+   \   00000010   8400A0E3           MOV      R0,#+132
+   \   00000014   600E80E3           ORR      R0,R0,#0x600
+   \   00000018   140000EF           SWI      +20
+   \   0000001C   0060B0E1           MOVS     R6,R0
+    152             {
+    153                return(-1);
+   \   00000020   0500E001           MVNEQ    R0,R5
+   \   00000024   7080BD08           POPEQ    {R4-R6,PC}
+    154             }
+    155          
+    156             st->dtx_decSt = NULL;
+    157             D_DTX_init(&st->dtx_decSt, D_ROM_isf);
+   \   00000028   ........           LDR      R1,??DataTable1  ;; D_ROM_isf
+   \   0000002C   7C5686E5           STR      R5,[R6, #+1660]
+   \   00000030   7C00A0E3           MOV      R0,#+124
+   \   00000034   600E80E3           ORR      R0,R0,#0x600
+   \   00000038   060080E0           ADD      R0,R0,R6
+   \   0000003C   ........           _BLF     D_DTX_init,??D_DTX_init??rA
+    158             D_MAIN_reset((void *)st, 1);
+   \   00000040   0110A0E3           MOV      R1,#+1
+   \   00000044   0600A0E1           MOV      R0,R6
+   \   00000048   ........           BL       D_MAIN_reset
+    159             *spd_state = (void *)st;
+   \   0000004C   006084E5           STR      R6,[R4, #+0]
+    160          
+    161             return(0);
+   \   00000050   0000A0E3           MOV      R0,#+0
+   \   00000054   7080BDE8           POP      {R4-R6,PC}       ;; return
+    162          }
+    163          
+    164          
+    165          /*
+    166           * Decoder_close
+    167           *
+    168           * Parameters:
+    169           *    spd_state   I: pointer to state structure
+    170           *
+    171           * Function:
+    172           *    Free coder memory.
+    173           *
+    174           * Returns:
+    175           *    void
+    176           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    177          void D_MAIN_close(void **spd_state)
+    178          {
+   \                     D_MAIN_close:
+   \   00000000   10402DE9           PUSH     {R4,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+    179             D_DTX_exit(&(((Decoder_State *)(*spd_state))->dtx_decSt));
+   \   00000008   001094E5           LDR      R1,[R4, #+0]
+   \   0000000C   7C00A0E3           MOV      R0,#+124
+   \   00000010   600E80E3           ORR      R0,R0,#0x600
+   \   00000014   010080E0           ADD      R0,R0,R1
+   \   00000018   ........           _BLF     D_DTX_exit,??D_DTX_exit??rA
+    180             free(*spd_state);
+                    ^
+Warning[Pe223]: function "free" declared implicitly
+   \   0000001C   000094E5           LDR      R0,[R4, #+0]
+   \   00000020   1040BDE8           POP      {R4,LR}          ;; Pop
+   \   00000024   ........           _BF      free,??free??rA  ;; tailcall
+    181          
+    182             return;
+    183          }
+    184          
+    185          
+    186          /*
+    187           * Decoder_exe
+    188           *
+    189           * Parameters:
+    190           *    mode           I: used mode
+    191           *    prms           I: parameter vector
+    192           *    synth_out      O: synthesis speech
+    193           *    spe_state      B: state structure
+    194           *    frame_type     I: received frame type
+    195           *
+    196           * Function:
+    197           *    Main decoder routine.
+    198           *
+    199           * Returns:
+    200           *    0 if successful
+    201           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    202          Word32 D_MAIN_decode(Word16 mode, Word16 prms[], Word16 synth16k[],
+    203                               void *spd_state, UWord8 frame_type)
+    204          {
+   \                     D_MAIN_decode:
+   \   00000000   F64F2DE9           PUSH     {R1,R2,R4-R11,LR}
+   \   00000004   57DF4DE2           SUB      SP,SP,#+348
+   \   00000008   40DE4DE2           SUB      SP,SP,#+1024
+   \   0000000C   8875DDE5           LDRB     R7,[SP, #+1416]
+   \   00000010   0040A0E1           MOV      R4,R0
+   \   00000014   0350A0E1           MOV      R5,R3
+    205          
+    206             Word32 code2[L_SUBFR];           /* algebraic codevector                */
+    207             Word32 L_tmp, L_tmp2, L_gain_code, L_stab_fac;
+    208             Word32 i, j, i_subfr, pit_flag;
+    209             Word32 T0, T0_frac, T0_max, select, T0_min = 0;
+    210          
+    211             Word16 exc2[L_FRAME];            /* excitation vector                   */
+    212             Word16 Aq[NB_SUBFR * (M + 1)];   /* A(z) quantized for the 4 subframes  */
+    213             Word16 code[L_SUBFR];            /* algebraic codevector                */
+    214             Word16 excp[L_SUBFR];            /* excitation vector                   */
+    215             Word16 HfIsf[M16k];
+    216             Word16 ispnew[M];                /* immittance spectral pairs at 4nd sfr*/
+    217             Word16 isf[M];                   /* ISF (frequency domain) at 4nd sfr   */
+    218             Word16 isf_tmp[M];               /* ISF tmp                             */
+    219             Word16 ind[8];                   /* quantization indices                */
+    220          
+    221             Word16 index, fac, voice_fac, max, Q_new = 0;
+    222             Word16 gain_pit, gain_code, gain_code_lo, tmp;
+    223             Word16 corr_gain = 0;
+    224             UWord16 pit_sharp = 0;
+   \   00000018   0010A0E3           MOV      R1,#+0
+   \   0000001C   2C108DE5           STR      R1,[SP, #+44]
+   \   00000020   5800A0E3           MOV      R0,#+88
+   \   00000024   600E80E3           ORR      R0,R0,#0x600
+   \   00000028   056080E0           ADD      R6,R0,R5
+   \   0000002C   240096E5           LDR      R0,[R6, #+36]
+   \   00000030   0710A0E1           MOV      R1,R7
+    225          
+    226             Word16 *exc;                     /* Excitation vector                   */
+    227             Word16 *p_Aq;                    /* ptr to A(z) for the 4 subframes     */
+    228             Word16 *p_isf;                   /* prt to isf                          */
+    229          
+    230             Decoder_State *st;   /* Decoder states */
+    231             UWord8 newDTXState, bfi, unusable_frame;
+    232             UWord8 vad_flag;
+    233          
+    234             st = (Decoder_State*)spd_state;
+    235          
+    236             /* find the new  DTX state  SPEECH OR DTX */
+    237             newDTXState = D_DTX_rx_handler(st->dtx_decSt, frame_type);
+   \   00000034   ........           _BLF     D_DTX_rx_handler,??D_DTX_rx_handler??rA
+   \   00000038   30008DE5           STR      R0,[SP, #+48]
+    238          
+    239             if(newDTXState != SPEECH)
+   \   0000003C   000050E3           CMP      R0,#+0
+   \   00000040   0900000A           BEQ      ??D_MAIN_decode_0
+    240             {
+    241                D_DTX_exe(st->dtx_decSt, exc2, newDTXState, isf, &prms);
+   \   00000044   570F8DE2           ADD      R0,SP,#+348
+   \   00000048   400E80E2           ADD      R0,R0,#+1024
+   \   0000004C   01002DE9           PUSH     {R0}
+   \   00000050   34209DE5           LDR      R2,[SP, #+52]
+   \   00000054   50308DE2           ADD      R3,SP,#+80
+   \   00000058   FF2002E2           AND      R2,R2,#0xFF
+   \   0000005C   240096E5           LDR      R0,[R6, #+36]
+   \   00000060   561F8DE2           ADD      R1,SP,#+344
+   \   00000064   ........           _BLF     D_DTX_exe,??D_DTX_exe??rA
+   \   00000068   04D08DE2           ADD      SP,SP,#+4
+    242             }
+    243          
+    244             /* SPEECH action state machine  */
+    245             if((frame_type == RX_SPEECH_BAD) |
+    246                (frame_type == RX_SPEECH_PROBABLY_DEGRADED))
+   \                     ??D_MAIN_decode_0:
+   \   0000006C   030057E3           CMP      R7,#+3
+   \   00000070   01005713           CMPNE    R7,#+1
+   \   00000074   1500000A           BEQ      ??D_MAIN_decode_1
+    247             {
+    248                /* bfi for all index, bits are not usable */
+    249                bfi = 1;
+    250                unusable_frame = 0;
+    251             }
+    252             else if((frame_type == RX_NO_DATA) | (frame_type == RX_SPEECH_LOST))
+   \   00000078   070057E3           CMP      R7,#+7
+   \   0000007C   1700001A           BNE      ??D_MAIN_decode_2
+    253             {
+    254                /* bfi only for lsf, gains and pitch period */
+    255                bfi = 1;
+   \                     ??D_MAIN_decode_3:
+   \   00000080   0110A0E3           MOV      R1,#+1
+   \   00000084   14108DE5           STR      R1,[SP, #+20]
+    256                unusable_frame = 1;
+   \                     ??D_MAIN_decode_4:
+   \   00000088   34108DE5           STR      R1,[SP, #+52]
+    257             }
+    258             else
+    259             {
+    260                bfi = 0;
+    261                unusable_frame = 0;
+    262             }
+    263          
+    264             if(bfi != 0)
+    265             {
+    266                st->mem_state = (UWord8)(st->mem_state + 1);
+   \   0000008C   2900D6E5           LDRB     R0,[R6, #+41]
+   \   00000090   010080E2           ADD      R0,R0,#+1
+   \   00000094   2900C6E5           STRB     R0,[R6, #+41]
+    267          
+    268                if(st->mem_state > 6)
+   \   00000098   2900D6E5           LDRB     R0,[R6, #+41]
+   \   0000009C   070050E3           CMP      R0,#+7
+   \   000000A0   0100003A           BCC      ??D_MAIN_decode_5
+    269                {
+    270                   st->mem_state = 6;
+   \   000000A4   0600A0E3           MOV      R0,#+6
+   \                     ??D_MAIN_decode_6:
+   \   000000A8   2900C6E5           STRB     R0,[R6, #+41]
+    271                }
+    272             }
+    273             else
+    274             {
+    275                st->mem_state = (UWord8)(st->mem_state >> 1);
+    276             }
+    277          
+    278             /*
+    279              * If this frame is the first speech frame after CNI period,
+    280              * set the BFH state machine to an appropriate state depending
+    281              * on whether there was DTX muting before start of speech or not
+    282              * If there was DTX muting, the first speech frame is muted.
+    283              * If there was no DTX muting, the first speech frame is not
+    284              * muted. The BFH state machine starts from state 5, however, to
+    285              * keep the audible noise resulting from a SID frame which is
+    286              * erroneously interpreted as a good speech frame as small as
+    287              * possible (the decoder output in this case is quickly muted)
+    288              */
+    289          
+    290             if(st->dtx_decSt->mem_dtx_global_state == DTX)
+   \                     ??D_MAIN_decode_5:
+   \   000000AC   241096E5           LDR      R1,[R6, #+36]
+   \   000000B0   0500A0E3           MOV      R0,#+5
+   \   000000B4   6111D1E5           LDRB     R1,[R1, #+353]
+   \   000000B8   0070A0E3           MOV      R7,#+0
+   \   000000BC   010051E3           CMP      R1,#+1
+   \   000000C0   0E00001A           BNE      ??D_MAIN_decode_7
+    291             {
+    292                st->mem_state = 5;
+   \   000000C4   2900C6E5           STRB     R0,[R6, #+41]
+    293                st->mem_bfi = 0;
+   \   000000C8   2870C6E5           STRB     R7,[R6, #+40]
+   \   000000CC   110000EA           B        ??D_MAIN_decode_8
+    294             }
+   \                     ??D_MAIN_decode_1:
+   \   000000D0   0110A0E3           MOV      R1,#+1
+   \   000000D4   14108DE5           STR      R1,[SP, #+20]
+   \   000000D8   0010A0E3           MOV      R1,#+0
+   \   000000DC   E9FFFFEA           B        ??D_MAIN_decode_4
+   \                     ??D_MAIN_decode_2:
+   \   000000E0   020057E3           CMP      R7,#+2
+   \   000000E4   E5FFFF0A           BEQ      ??D_MAIN_decode_3
+   \   000000E8   0010A0E3           MOV      R1,#+0
+   \   000000EC   14108DE5           STR      R1,[SP, #+20]
+   \   000000F0   34108DE5           STR      R1,[SP, #+52]
+   \   000000F4   2900D6E5           LDRB     R0,[R6, #+41]
+   \   000000F8   A000A0E1           LSR      R0,R0,#+1
+   \   000000FC   E9FFFFEA           B        ??D_MAIN_decode_6
+    295             else if(st->dtx_decSt->mem_dtx_global_state == D_DTX_MUTE)
+   \                     ??D_MAIN_decode_7:
+   \   00000100   241096E5           LDR      R1,[R6, #+36]
+   \   00000104   6111D1E5           LDRB     R1,[R1, #+353]
+   \   00000108   020051E3           CMP      R1,#+2
+    296             {
+    297                st->mem_state = 5;
+   \   0000010C   2900C605           STRBEQ   R0,[R6, #+41]
+    298                st->mem_bfi = 1;
+   \   00000110   0100A003           MOVEQ    R0,#+1
+   \   00000114   2800C605           STRBEQ   R0,[R6, #+40]
+    299             }
+    300          
+    301             if(newDTXState == SPEECH)
+   \                     ??D_MAIN_decode_8:
+   \   00000118   14109DE5           LDR      R1,[SP, #+20]
+   \   0000011C   5B9EA0E3           MOV      R9,#+1456
+   \   00000120   FF1001E2           AND      R1,R1,#0xFF
+   \   00000124   BA10CDE1           STRH     R1,[SP, #+10]
+   \   00000128   30109DE5           LDR      R1,[SP, #+48]
+   \   0000012C   FF1001E2           AND      R1,R1,#0xFF
+   \   00000130   B414CDE1           STRH     R1,[SP, #+68]
+   \   00000134   30009DE5           LDR      R0,[SP, #+48]
+   \   00000138   000CB0E1           LSLS     R0,R0,#+24
+   \   0000013C   4300001A           BNE      ??D_MAIN_decode_9
+    302             {
+    303          	   vad_flag = (UWord8)(*prms++);
+   \   00000140   5C259DE5           LDR      R2,[SP, #+1372]
+    304          
+    305          	   if(bfi == 0)
+   \   00000144   5A0FA0E3           MOV      R0,#+360
+   \   00000148   ........           LDRSH    R1,[R2], #+2
+   \   0000014C   5C258DE5           STR      R2,[SP, #+1372]
+   \   00000150   14209DE5           LDR      R2,[SP, #+20]
+   \   00000154   FF1001E2           AND      R1,R1,#0xFF
+   \   00000158   022CB0E1           LSLS     R2,R2,#+24
+   \   0000015C   3200001A           BNE      ??D_MAIN_decode_10
+    306          	   {
+    307          		   if(vad_flag == 0)
+   \   00000160   000051E3           CMP      R1,#+0
+   \   00000164   2C00001A           BNE      ??D_MAIN_decode_11
+    308          		   {
+    309          			   st->mem_vad_hist = (Word16)(st->mem_vad_hist + 1);
+   \   00000168   B212D6E1           LDRH     R1,[R6, #+34]
+   \   0000016C   011081E2           ADD      R1,R1,#+1
+   \   00000170   B212C6E1           STRH     R1,[R6, #+34]
+    310          			   st->dtx_decSt->mem_dtx_vad_hist = (Word16)(st->dtx_decSt->mem_dtx_vad_hist + 1);
+   \   00000174   241096E5           LDR      R1,[R6, #+36]
+   \   00000178   F12090E1           LDRSH    R2,[R0, +R1]
+   \   0000017C   012082E2           ADD      R2,R2,#+1
+   \   00000180   B12080E1           STRH     R2,[R0, +R1]
+    311          
+    312          			   if(st->mem_vad_hist > 32767)
+   \   00000184   B202D6E1           LDRH     R0,[R6, #+34]
+   \   00000188   800C50E3           CMP      R0,#+32768
+    313          			   {
+    314          				   st->mem_vad_hist = 32767;
+   \   0000018C   FF00A023           MOVCS    R0,#+255
+   \   00000190   7F0C8023           ORRCS    R0,R0,#0x7F00
+   \   00000194   B202C621           STRHCS   R0,[R6, #+34]
+    315          			   }
+    316          		   }
+    317          		   else
+    318          		   {
+    319          			   st->mem_vad_hist = 0;
+    320          			   st->dtx_decSt->mem_dtx_vad_hist = 0;
+    321          		   }
+    322          	   }
+    323          	   else if (st->dtx_decSt->mem_dtx_vad_hist > 0)
+    324          	   {
+    325          		   st->dtx_decSt->mem_dtx_vad_hist = (Word16)(st->dtx_decSt->mem_dtx_vad_hist + 1);
+    326          	   }
+    327          
+    328          	   if (st->dtx_decSt->mem_dtx_vad_hist > 32767)
+                 	                                       ^
+Warning[Pa084]: pointless integer comparison with an out of range value
+    329          	   {
+    330          		   st->dtx_decSt->mem_dtx_vad_hist = 32767;
+    331          	   }
+    332             }
+    333          
+    334             /*
+    335              * DTX-CNG
+    336              */
+    337             if(newDTXState != SPEECH) /* CNG mode */
+    338             {
+    339                /*
+    340                 * increase slightly energy of noise below 200 Hz
+    341                 * Convert ISFs to the cosine domain
+    342                 */
+    343                D_LPC_isf_isp_conversion(isf, ispnew, M);
+    344                D_LPC_isp_a_conversion(ispnew, Aq, 1, M);
+    345                memcpy(isf_tmp, st->mem_isf, M * sizeof(Word16));
+    346          
+    347                for(i_subfr = 0; i_subfr < L_FRAME; i_subfr += L_SUBFR)
+    348                {
+    349                   j = (i_subfr >> 6);
+    350          
+    351                   for(i = 0; i < M; i++)
+    352                   {
+    353                      L_tmp = (isf_tmp[i] * (32767 - D_ROM_interpol_frac[j])) << 1;
+    354                      L_tmp = L_tmp + ((isf[i] * D_ROM_interpol_frac[j]) << 1);
+    355                      HfIsf[i] = (Word16)((L_tmp + 0x8000) >> 16);
+    356                   }
+    357          
+    358                   D_UTIL_dec_synthesis(Aq, &exc2[i_subfr], 0, &synth16k[i_subfr * 5 /4],
+    359                      (Word16) 1, HfIsf, mode, newDTXState, bfi, st);
+    360                }
+    361          
+    362                /* reset speech coder memories */
+    363                D_MAIN_reset(st, 0);
+    364                memcpy(st->mem_isf, isf, M * sizeof(Word16));
+    365                st->mem_bfi = bfi;
+    366                st->dtx_decSt->mem_dtx_global_state = (UWord8)newDTXState;
+    367          
+    368                return(0);
+    369             }
+    370          
+    371             /*
+    372              * ACELP
+    373              */
+    374          
+    375             exc = st->mem_exc + PIT_MAX + L_INTERPOL;
+   \                     ??D_MAIN_decode_12:
+   \   00000198   7D1F85E2           ADD      R1,R5,#+500
+   \   0000019C   38108DE5           STR      R1,[SP, #+56]
+    376          
+    377             /* Decode the ISFs */
+    378             if(mode <= MODE_7k)
+   \   000001A0   5C859DE5           LDR      R8,[SP, #+1372]
+   \   000001A4   5D0EA0E3           MOV      R0,#+1488
+   \   000001A8   ........           LDRSH    R10,[R8], #+2
+   \   000001AC   5C858DE5           STR      R8,[SP, #+1372]
+   \   000001B0   F610A0E3           MOV      R1,#+246
+   \   000001B4   BCA1CDE1           STRH     R10,[SP, #+28]
+   \   000001B8   ........           LDRSH    R10,[R8], #+2
+   \   000001BC   5C858DE5           STR      R8,[SP, #+1372]
+   \   000001C0   C01F81E3           ORR      R1,R1,#0x300
+   \   000001C4   BEA1CDE1           STRH     R10,[SP, #+30]
+   \   000001C8   ........           LDRSH    R10,[R8], #+2
+   \   000001CC   5C858DE5           STR      R8,[SP, #+1372]
+   \   000001D0   010054E3           CMP      R4,#+1
+   \   000001D4   B0A2CDE1           STRH     R10,[SP, #+32]
+   \   000001D8   ........           LDRSH    R10,[R8], #+2
+   \   000001DC   5C858DE5           STR      R8,[SP, #+1372]
+   \   000001E0   B2A2CDE1           STRH     R10,[SP, #+34]
+   \   000001E4   ........           LDRSH    R10,[R8], #+2
+   \   000001E8   5C858DE5           STR      R8,[SP, #+1372]
+   \   000001EC   B4A2CDE1           STRH     R10,[SP, #+36]
+   \   000001F0   670000AA           BGE      ??D_MAIN_decode_13
+    379             {
+    380                ind[0] = *prms++;
+    381                ind[1] = *prms++;
+    382                ind[2] = *prms++;
+    383                ind[3] = *prms++;
+    384                ind[4] = *prms++;
+    385                D_LPC_isf_2s3s_decode(ind, isf, st->mem_isf_q, st->mem_isf,
+    386                   st->mem_isf_buf, bfi);
+   \   000001F4   FA20DDE1           LDRSH    R2,[SP, #+10]
+   \   000001F8   051081E0           ADD      R1,R1,R5
+   \   000001FC   053089E0           ADD      R3,R9,R5
+   \   00000200   04002DE9           PUSH     {R2}
+   \   00000204   02002DE9           PUSH     {R1}
+   \   00000208   052080E0           ADD      R2,R0,R5
+   \   0000020C   24008DE2           ADD      R0,SP,#+36
+   \   00000210   54108DE2           ADD      R1,SP,#+84
+   \   00000214   ........           _BLF     D_LPC_isf_2s3s_decode,??D_LPC_isf_2s3s_decode??rA
+   \   00000218   6C0000EA           B        ??D_MAIN_decode_14
+    387             }
+   \                     ??D_MAIN_decode_11:
+   \   0000021C   B272C6E1           STRH     R7,[R6, #+34]
+   \   00000220   241096E5           LDR      R1,[R6, #+36]
+   \   00000224   B17080E1           STRH     R7,[R0, +R1]
+   \   00000228   DAFFFFEA           B        ??D_MAIN_decode_12
+   \                     ??D_MAIN_decode_10:
+   \   0000022C   241096E5           LDR      R1,[R6, #+36]
+   \   00000230   F11090E1           LDRSH    R1,[R0, +R1]
+   \   00000234   010051E3           CMP      R1,#+1
+   \   00000238   D6FFFFBA           BLT      ??D_MAIN_decode_12
+   \   0000023C   241096E5           LDR      R1,[R6, #+36]
+   \   00000240   F12090E1           LDRSH    R2,[R0, +R1]
+   \   00000244   012082E2           ADD      R2,R2,#+1
+   \   00000248   B12080E1           STRH     R2,[R0, +R1]
+   \   0000024C   D1FFFFEA           B        ??D_MAIN_decode_12
+   \                     ??D_MAIN_decode_9:
+   \   00000250   1020A0E3           MOV      R2,#+16
+   \   00000254   451F8DE2           ADD      R1,SP,#+276
+   \   00000258   4C008DE2           ADD      R0,SP,#+76
+   \   0000025C   ........           _BLF     D_LPC_isf_isp_conversion,??D_LPC_isf_isp_conversion??rA
+   \   00000260   1030A0E3           MOV      R3,#+16
+   \   00000264   0120A0E3           MOV      R2,#+1
+   \   00000268   54108DE2           ADD      R1,SP,#+84
+   \   0000026C   401E81E2           ADD      R1,R1,#+1024
+   \   00000270   450F8DE2           ADD      R0,SP,#+276
+   \   00000274   ........           _BLF     D_LPC_isp_a_conversion,??D_LPC_isp_a_conversion??rA
+   \   00000278   2020A0E3           MOV      R2,#+32
+   \   0000027C   051089E0           ADD      R1,R9,R5
+   \   00000280   4D0F8DE2           ADD      R0,SP,#+308
+   \   00000284   1E0100EF           SWI      +286
+   \   00000288   0080A0E3           MOV      R8,#+0
+   \                     ??D_MAIN_decode_15:
+   \   0000028C   4833A0E1           ASR      R3,R8,#+6
+   \   00000290   00B0A0E3           MOV      R11,#+0
+   \                     ??D_MAIN_decode_16:
+   \   00000294   D00D9FE5           LDR      R0,??D_MAIN_decode_17  ;; D_ROM_interpol_frac
+   \   00000298   4D2F8DE2           ADD      R2,SP,#+308
+   \   0000029C   830080E0           ADD      R0,R0,R3, LSL #+1
+   \   000002A0   F000D0E1           LDRSH    R0,[R0, #+0]
+   \   000002A4   8B2082E0           ADD      R2,R2,R11, LSL #+1
+   \   000002A8   F020D2E1           LDRSH    R2,[R2, #+0]
+   \   000002AC   4CC08DE2           ADD      R12,SP,#+76
+   \   000002B0   8BC08CE0           ADD      R12,R12,R11, LSL #+1
+   \   000002B4   F0C0DCE1           LDRSH    R12,[R12, #+0]
+   \   000002B8   FFA0A0E3           MOV      R10,#+255
+   \   000002BC   7FAC8AE3           ORR      R10,R10,#0x7F00
+   \   000002C0   00A04AE0           SUB      R10,R10,R0
+   \   000002C4   900C0CE0           MUL      R12,R0,R12
+   \   000002C8   EC108DE2           ADD      R1,SP,#+236
+   \   000002CC   9AC220E0           MLA      R0,R10,R2,R12
+   \   000002D0   8B1081E0           ADD      R1,R1,R11, LSL #+1
+   \   000002D4   802CA0E3           MOV      R2,#+32768
+   \   000002D8   800082E0           ADD      R0,R2,R0, LSL #+1
+   \   000002DC   4008A0E1           ASR      R0,R0,#+16
+   \   000002E0   B000C1E1           STRH     R0,[R1, #+0]
+   \   000002E4   01B08BE2           ADD      R11,R11,#+1
+   \   000002E8   10005BE3           CMP      R11,#+16
+   \   000002EC   E8FFFFBA           BLT      ??D_MAIN_decode_16
+   \   000002F0   0510A0E1           MOV      R1,R5
+   \   000002F4   02002DE9           PUSH     {R1}
+   \   000002F8   FE10DDE1           LDRSH    R1,[SP, #+14]
+   \   000002FC   080188E0           ADD      R0,R8,R8, LSL #+2
+   \   00000300   0020A0E3           MOV      R2,#+0
+   \   00000304   02002DE9           PUSH     {R1}
+   \   00000308   FC14DDE1           LDRSH    R1,[SP, #+76]
+   \   0000030C   02002DE9           PUSH     {R1}
+   \   00000310   0410A0E1           MOV      R1,R4
+   \   00000314   02002DE9           PUSH     {R1}
+   \   00000318   FC108DE2           ADD      R1,SP,#+252
+   \   0000031C   02002DE9           PUSH     {R1}
+   \   00000320   0110A0E3           MOV      R1,#+1
+   \   00000324   02002DE9           PUSH     {R1}
+   \   00000328   C010A0E1           ASR      R1,R0,#+1
+   \   0000032C   210F80E0           ADD      R0,R0,R1, LSR #+30
+   \   00000330   78159DE5           LDR      R1,[SP, #+1400]
+   \   00000334   4001A0E1           ASR      R0,R0,#+2
+   \   00000338   803081E0           ADD      R3,R1,R0, LSL #+1
+   \   0000033C   5B0F8DE2           ADD      R0,SP,#+364
+   \   00000340   881080E0           ADD      R1,R0,R8, LSL #+1
+   \   00000344   6C008DE2           ADD      R0,SP,#+108
+   \   00000348   400E80E2           ADD      R0,R0,#+1024
+   \   0000034C   ........           _BLF     D_UTIL_dec_synthesis,??D_UTIL_dec_synthesis??rA
+   \   00000350   408088E2           ADD      R8,R8,#+64
+   \   00000354   400F58E3           CMP      R8,#+256
+   \   00000358   18D08DE2           ADD      SP,SP,#+24
+   \   0000035C   CAFFFFBA           BLT      ??D_MAIN_decode_15
+   \   00000360   0010A0E3           MOV      R1,#+0
+   \   00000364   0500A0E1           MOV      R0,R5
+   \   00000368   ........           BL       D_MAIN_reset
+   \   0000036C   2020A0E3           MOV      R2,#+32
+   \   00000370   4C108DE2           ADD      R1,SP,#+76
+   \   00000374   050089E0           ADD      R0,R9,R5
+   \   00000378   1E0100EF           SWI      +286
+   \   0000037C   14009DE5           LDR      R0,[SP, #+20]
+   \   00000380   2800C6E5           STRB     R0,[R6, #+40]
+   \   00000384   240096E5           LDR      R0,[R6, #+36]
+   \   00000388   30109DE5           LDR      R1,[SP, #+48]
+   \   0000038C   6111C0E5           STRB     R1,[R0, #+353]
+   \   00000390   1C0300EA           B        ??D_MAIN_decode_18
+    388             else
+    389             {
+    390                ind[0] = *prms++;
+    391                ind[1] = *prms++;
+    392                ind[2] = *prms++;
+    393                ind[3] = *prms++;
+    394                ind[4] = *prms++;
+    395                ind[5] = *prms++;
+   \                     ??D_MAIN_decode_13:
+   \   00000394   ........           LDRSH    R10,[R8], #+2
+   \   00000398   5C858DE5           STR      R8,[SP, #+1372]
+    396                ind[6] = *prms++;
+    397                D_LPC_isf_2s5s_decode(ind, isf, st->mem_isf_q, st->mem_isf,
+    398                   st->mem_isf_buf, bfi);
+   \   0000039C   051081E0           ADD      R1,R1,R5
+   \   000003A0   B6A2CDE1           STRH     R10,[SP, #+38]
+   \   000003A4   ........           LDRSH    R10,[R8], #+2
+   \   000003A8   5C858DE5           STR      R8,[SP, #+1372]
+   \   000003AC   053089E0           ADD      R3,R9,R5
+   \   000003B0   B8A2CDE1           STRH     R10,[SP, #+40]
+   \   000003B4   FA20DDE1           LDRSH    R2,[SP, #+10]
+   \   000003B8   04002DE9           PUSH     {R2}
+   \   000003BC   02002DE9           PUSH     {R1}
+   \   000003C0   052080E0           ADD      R2,R0,R5
+   \   000003C4   24008DE2           ADD      R0,SP,#+36
+   \   000003C8   54108DE2           ADD      R1,SP,#+84
+   \   000003CC   ........           _BLF     D_LPC_isf_2s5s_decode,??D_LPC_isf_2s5s_decode??rA
+   \                     ??D_MAIN_decode_14:
+   \   000003D0   08D08DE2           ADD      SP,SP,#+8
+    399             }
+    400          
+    401             /* Convert ISFs to the cosine domain */
+    402             D_LPC_isf_isp_conversion(isf, ispnew, M);
+   \   000003D4   1020A0E3           MOV      R2,#+16
+   \   000003D8   451F8DE2           ADD      R1,SP,#+276
+   \   000003DC   4C008DE2           ADD      R0,SP,#+76
+   \   000003E0   ........           _BLF     D_LPC_isf_isp_conversion,??D_LPC_isf_isp_conversion??rA
+    403          
+    404             if(st->mem_first_frame != 0)
+   \   000003E4   2A00D6E5           LDRB     R0,[R6, #+42]
+   \   000003E8   598EA0E3           MOV      R8,#+1424
+   \   000003EC   000050E3           CMP      R0,#+0
+   \   000003F0   0400000A           BEQ      ??D_MAIN_decode_19
+    405             {
+    406                st->mem_first_frame = 0;
+   \   000003F4   2A70C6E5           STRB     R7,[R6, #+42]
+    407                memcpy(st->mem_isp, ispnew, M * sizeof(Word16));
+   \   000003F8   2020A0E3           MOV      R2,#+32
+   \   000003FC   451F8DE2           ADD      R1,SP,#+276
+   \   00000400   050088E0           ADD      R0,R8,R5
+   \   00000404   1E0100EF           SWI      +286
+    408             }
+    409          
+    410             /* Find the interpolated ISPs and convert to a[] for all subframes */
+    411             D_LPC_int_isp_find(st->mem_isp, ispnew, D_ROM_interpol_frac, Aq);
+   \                     ??D_MAIN_decode_19:
+   \   00000408   5C2C9FE5           LDR      R2,??D_MAIN_decode_17  ;; D_ROM_interpol_frac
+   \   0000040C   54308DE2           ADD      R3,SP,#+84
+   \   00000410   403E83E2           ADD      R3,R3,#+1024
+   \   00000414   451F8DE2           ADD      R1,SP,#+276
+   \   00000418   050088E0           ADD      R0,R8,R5
+   \   0000041C   ........           _BLF     D_LPC_int_isp_find,??D_LPC_int_isp_find??rA
+    412          
+    413             /* update isp memory for the next frame */
+    414             memcpy(st->mem_isp, ispnew, M * sizeof(Word16));
+   \   00000420   2020A0E3           MOV      R2,#+32
+   \   00000424   451F8DE2           ADD      R1,SP,#+276
+   \   00000428   050088E0           ADD      R0,R8,R5
+   \   0000042C   1E0100EF           SWI      +286
+    415          
+    416             /* Check stability on isf : distance between old isf and current isf */
+    417             L_tmp = 0;
+   \   00000430   00A0A0E3           MOV      R10,#+0
+    418             p_isf = st->mem_isf;
+   \   00000434   050089E0           ADD      R0,R9,R5
+    419          
+    420             for(i = 0; i < M - 1; i++)
+   \   00000438   07B0A0E1           MOV      R11,R7
+    421             {
+    422                tmp = (Word16)((isf[i] - p_isf[i]));
+   \                     ??D_MAIN_decode_20:
+   \   0000043C   4C208DE2           ADD      R2,SP,#+76
+   \   00000440   8B2082E0           ADD      R2,R2,R11, LSL #+1
+   \   00000444   F020D2E1           LDRSH    R2,[R2, #+0]
+   \   00000448   8B3080E0           ADD      R3,R0,R11, LSL #+1
+   \   0000044C   F030D3E1           LDRSH    R3,[R3, #+0]
+    423                L_tmp = L_tmp + (tmp * tmp);
+    424             }
+   \   00000450   01B08BE2           ADD      R11,R11,#+1
+   \   00000454   0F005BE3           CMP      R11,#+15
+   \   00000458   032042E0           SUB      R2,R2,R3
+   \   0000045C   B020CDE1           STRH     R2,[SP, #+0]
+   \   00000460   F010DDE1           LDRSH    R1,[SP, #+0]
+   \   00000464   91A12AE0           MLA      R10,R1,R1,R10
+   \   00000468   F3FFFFBA           BLT      ??D_MAIN_decode_20
+    425          
+    426             if(L_tmp < 3276928)
+   \   0000046C   8000A0E3           MOV      R0,#+128
+   \   00000470   C80980E3           ORR      R0,R0,#0x320000
+   \   00000474   00005AE1           CMP      R10,R0
+   \   00000478   0D0000AA           BGE      ??D_MAIN_decode_21
+    427             {
+    428                L_tmp = L_tmp >> 7;
+    429                L_tmp = (L_tmp * 26214) >> 15;   /* tmp = L_tmp*0.8/256        */
+    430                L_tmp = 20480 - L_tmp;           /* 1.25 - tmp                 */
+    431                L_stab_fac = L_tmp << 1;         /* Q14 -> Q15 with saturation */
+   \   0000047C   CA23A0E1           ASR      R2,R10,#+7
+   \   00000480   6630A0E3           MOV      R3,#+102
+   \   00000484   663C83E3           ORR      R3,R3,#0x6600
+   \   00000488   930202E0           MUL      R2,R3,R2
+   \   0000048C   501CA0E3           MOV      R1,#+20480
+   \   00000490   C21741E0           SUB      R1,R1,R2, ASR #+15
+   \   00000494   8110A0E1           LSL      R1,R1,#+1
+   \   00000498   3C108DE5           STR      R1,[SP, #+60]
+    432          
+    433                if(L_stab_fac > 0x7FFF)
+   \   0000049C   800C51E3           CMP      R1,#+32768
+   \   000004A0   040000BA           BLT      ??D_MAIN_decode_22
+    434                {
+    435                   L_stab_fac = 0x7FFF;
+   \   000004A4   FF10A0E3           MOV      R1,#+255
+   \   000004A8   7F1C81E3           ORR      R1,R1,#0x7F00
+   \   000004AC   3C108DE5           STR      R1,[SP, #+60]
+   \   000004B0   000000EA           B        ??D_MAIN_decode_22
+    436                }
+    437             }
+    438             else
+    439             {
+    440                L_stab_fac = 0x0;
+   \                     ??D_MAIN_decode_21:
+   \   000004B4   3C708DE5           STR      R7,[SP, #+60]
+    441             }
+    442          
+    443             memcpy(isf_tmp, st->mem_isf, M * sizeof(Word16));
+   \                     ??D_MAIN_decode_22:
+   \   000004B8   2020A0E3           MOV      R2,#+32
+   \   000004BC   051089E0           ADD      R1,R9,R5
+   \   000004C0   4D0F8DE2           ADD      R0,SP,#+308
+   \   000004C4   1E0100EF           SWI      +286
+    444             memcpy(st->mem_isf, isf, M * sizeof(Word16));
+   \   000004C8   2020A0E3           MOV      R2,#+32
+   \   000004CC   4C108DE2           ADD      R1,SP,#+76
+   \   000004D0   050089E0           ADD      R0,R9,R5
+   \   000004D4   1E0100EF           SWI      +286
+    445          
+    446             /*
+    447              * Loop for every subframe in the analysis frame
+    448              *
+    449              * The subframe size is L_SUBFR and the loop is repeated L_FRAME/L_SUBFR
+    450              * times
+    451              *   - decode the pitch delay and filter mode
+    452              *   - decode algebraic code
+    453              *   - decode pitch and codebook gains
+    454              *   - find voicing factor and tilt of code for next subframe
+    455              *   - find the excitation and compute synthesis speech
+    456              */
+    457          
+    458             p_Aq = Aq;   /* pointer to interpolated LPC parameters */
+   \   000004D8   54108DE2           ADD      R1,SP,#+84
+   \   000004DC   401E81E2           ADD      R1,R1,#+1024
+   \   000004E0   40108DE5           STR      R1,[SP, #+64]
+    459          
+    460             for(i_subfr = 0; i_subfr < L_FRAME; i_subfr += L_SUBFR)
+   \   000004E4   0080A0E3           MOV      R8,#+0
+   \   000004E8   130000EA           B        ??D_MAIN_decode_23
+    461             {
+    462                pit_flag = i_subfr;
+    463          
+    464                if((i_subfr == (2 * L_SUBFR)) & (mode > MODE_7k))
+   \                     ??D_MAIN_decode_24:
+   \   000004EC   800058E3           CMP      R8,#+128
+   \   000004F0   0F00001A           BNE      ??D_MAIN_decode_25
+   \   000004F4   010054E3           CMP      R4,#+1
+   \   000004F8   0F0000AA           BGE      ??D_MAIN_decode_23
+    465                {
+    466                   pit_flag = 0;
+    467                }
+    468          
+    469                /*
+    470                 * - Decode pitch lag
+    471                 * Lag indeces received also in case of BFI,
+    472                 * so that the parameter pointer stays in sync.
+    473                 */
+    474          
+    475                if(pit_flag == 0)
+    476                {
+    477                   if(mode <= MODE_9k)
+    478                   {
+    479                      index = *prms++;
+    480          
+    481                      if(index < ((PIT_FR1_8b - PIT_MIN) * 2))
+    482                      {
+    483                         T0 = (PIT_MIN + (index >> 1));
+    484                         T0_frac = (index - ((T0 - PIT_MIN) << 1));
+    485                         T0_frac = (T0_frac << 1);
+    486                      }
+    487                      else
+    488                      {
+    489                         T0 = index + (PIT_FR1_8b - ((PIT_FR1_8b - PIT_MIN) * 2));
+    490                         T0_frac = 0;
+    491                      }
+    492                   }
+    493                   else
+    494                   {
+    495                      index = *prms++;
+    496          
+    497                      if(index < ((PIT_FR2 - PIT_MIN) * 4))
+    498                      {
+    499                         T0 = PIT_MIN + (index >> 2);
+    500                         T0_frac = index - ((T0 - PIT_MIN) << 2);
+    501                      }
+    502                      else if(index <
+    503                         ((((PIT_FR2 - PIT_MIN) * 4) + ((PIT_FR1_9b - PIT_FR2) * 2))))
+    504                      {
+    505                         index = (Word16)((index - ((PIT_FR2 - PIT_MIN) * 4)));
+    506                         T0 = PIT_FR2 + (index >> 1);
+    507                         T0_frac = index - ((T0 - PIT_FR2) << 1);
+    508                         T0_frac = T0_frac << 1;
+    509                      }
+    510                      else
+    511                      {
+    512                         T0 = index + (PIT_FR1_9b - ((PIT_FR2 - PIT_MIN) * 4) -
+    513                            ((PIT_FR1_9b - PIT_FR2) * 2));
+    514                         T0_frac = 0;
+    515                      }
+    516                   }
+    517          
+    518                   /* find T0_min and T0_max for subframe 2 and 4 */
+    519                   T0_min = T0 - 8;
+    520          
+    521                   if(T0_min < PIT_MIN)
+    522                   {
+    523                      T0_min = PIT_MIN;
+    524                   }
+    525          
+    526                   T0_max = T0_min + 15;
+    527          
+    528                   if(T0_max > PIT_MAX)
+    529                   {
+    530                      T0_max = PIT_MAX;
+    531                      T0_min = T0_max - 15;
+    532                   }
+    533                }
+    534                else
+    535                {   /* if subframe 2 or 4 */
+    536          
+    537                   if(mode <= MODE_9k)
+   \                     ??D_MAIN_decode_26:
+   \   000004FC   5C259DE5           LDR      R2,[SP, #+1372]
+   \   00000500   020054E3           CMP      R4,#+2
+   \   00000504   ........           LDRSH    R0,[R2], #+2
+   \   00000508   5C258DE5           STR      R2,[SP, #+1372]
+   \   0000050C   18209DE5           LDR      R2,[SP, #+24]
+   \   00000510   410000AA           BGE      ??D_MAIN_decode_27
+    538                   {
+    539                      index = *prms++;
+    540                      T0 = T0_min + (index >> 1);
+   \   00000514   C02082E0           ADD      R2,R2,R0, ASR #+1
+   \   00000518   04208DE5           STR      R2,[SP, #+4]
+    541                      T0_frac = index - ((T0 - T0_min) << 1);
+    542                      T0_frac = T0_frac << 1;
+   \   0000051C   0210A0E1           MOV      R1,R2
+   \   00000520   18209DE5           LDR      R2,[SP, #+24]
+   \   00000524   021041E0           SUB      R1,R1,R2
+   \   00000528   810040E0           SUB      R0,R0,R1, LSL #+1
+   \   0000052C   8090A0E1           LSL      R9,R0,#+1
+   \   00000530   3F0000EA           B        ??D_MAIN_decode_28
+    543                   }
+   \                     ??D_MAIN_decode_25:
+   \   00000534   000058E3           CMP      R8,#+0
+   \   00000538   EFFFFF1A           BNE      ??D_MAIN_decode_26
+   \                     ??D_MAIN_decode_23:
+   \   0000053C   5C259DE5           LDR      R2,[SP, #+1372]
+   \   00000540   020054E3           CMP      R4,#+2
+   \   00000544   ........           LDRSH    R0,[R2], #+2
+   \   00000548   5C258DE5           STR      R2,[SP, #+1372]
+   \   0000054C   0A0000AA           BGE      ??D_MAIN_decode_29
+   \   00000550   740050E3           CMP      R0,#+116
+   \   00000554   060000AA           BGE      ??D_MAIN_decode_30
+   \   00000558   2220A0E3           MOV      R2,#+34
+   \   0000055C   C02082E0           ADD      R2,R2,R0, ASR #+1
+   \   00000560   04208DE5           STR      R2,[SP, #+4]
+   \   00000564   221042E2           SUB      R1,R2,#+34
+   \                     ??D_MAIN_decode_31:
+   \   00000568   810040E0           SUB      R0,R0,R1, LSL #+1
+   \   0000056C   8090A0E1           LSL      R9,R0,#+1
+   \   00000570   1C0000EA           B        ??D_MAIN_decode_32
+   \                     ??D_MAIN_decode_30:
+   \   00000574   180040E2           SUB      R0,R0,#+24
+   \   00000578   180000EA           B        ??D_MAIN_decode_33
+   \                     ??D_MAIN_decode_29:
+   \   0000057C   5E0F50E3           CMP      R0,#+376
+   \   00000580   050000AA           BGE      ??D_MAIN_decode_34
+   \   00000584   2220A0E3           MOV      R2,#+34
+   \   00000588   402182E0           ADD      R2,R2,R0, ASR #+2
+   \   0000058C   04208DE5           STR      R2,[SP, #+4]
+   \   00000590   221042E2           SUB      R1,R2,#+34
+   \   00000594   019140E0           SUB      R9,R0,R1, LSL #+2
+   \   00000598   120000EA           B        ??D_MAIN_decode_32
+   \                     ??D_MAIN_decode_34:
+   \   0000059C   6E0F50E3           CMP      R0,#+440
+   \   000005A0   0B0000AA           BGE      ??D_MAIN_decode_35
+   \   000005A4   7710E0E3           MVN      R1,#+119
+   \   000005A8   401FC1E3           BIC      R1,R1,#0x100
+   \   000005AC   000081E0           ADD      R0,R1,R0
+   \   000005B0   0008A0E1           MOV      R0,R0, LSL #+16
+   \   000005B4   4008A0E1           MOV      R0,R0, ASR #+16
+   \   000005B8   8020A0E3           MOV      R2,#+128
+   \   000005BC   C02082E0           ADD      R2,R2,R0, ASR #+1
+   \   000005C0   04208DE5           STR      R2,[SP, #+4]
+   \   000005C4   0210A0E1           MOV      R1,R2
+   \   000005C8   7F20E0E3           MVN      R2,#+127
+   \   000005CC   011082E0           ADD      R1,R2,R1
+   \   000005D0   E4FFFFEA           B        ??D_MAIN_decode_31
+   \                     ??D_MAIN_decode_35:
+   \   000005D4   1720E0E3           MVN      R2,#+23
+   \   000005D8   402FC2E3           BIC      R2,R2,#0x100
+   \   000005DC   000082E0           ADD      R0,R2,R0
+   \                     ??D_MAIN_decode_33:
+   \   000005E0   04008DE5           STR      R0,[SP, #+4]
+   \   000005E4   0090A0E3           MOV      R9,#+0
+   \                     ??D_MAIN_decode_32:
+   \   000005E8   04109DE5           LDR      R1,[SP, #+4]
+   \   000005EC   081041E2           SUB      R1,R1,#+8
+   \   000005F0   18108DE5           STR      R1,[SP, #+24]
+   \   000005F4   220051E3           CMP      R1,#+34
+   \   000005F8   2210A0B3           MOVLT    R1,#+34
+   \   000005FC   18108DB5           STRLT    R1,[SP, #+24]
+   \   00000600   18009DE5           LDR      R0,[SP, #+24]
+   \   00000604   0F0080E2           ADD      R0,R0,#+15
+   \   00000608   E80050E3           CMP      R0,#+232
+   \   0000060C   080000BA           BLT      ??D_MAIN_decode_28
+   \   00000610   D810A0E3           MOV      R1,#+216
+   \   00000614   18108DE5           STR      R1,[SP, #+24]
+   \   00000618   050000EA           B        ??D_MAIN_decode_28
+    544                   else
+    545                   {
+    546                      index = *prms++;
+    547                      T0 = T0_min + (index >> 2);
+   \                     ??D_MAIN_decode_27:
+   \   0000061C   402182E0           ADD      R2,R2,R0, ASR #+2
+   \   00000620   04208DE5           STR      R2,[SP, #+4]
+    548                      T0_frac = index - ((T0 - T0_min) << 2);
+   \   00000624   0210A0E1           MOV      R1,R2
+   \   00000628   18209DE5           LDR      R2,[SP, #+24]
+   \   0000062C   021041E0           SUB      R1,R1,R2
+   \   00000630   019140E0           SUB      R9,R0,R1, LSL #+2
+    549                   }
+    550                }
+    551          
+    552                /* check BFI after pitch lag decoding */
+    553                if(bfi != 0) /* if frame erasure */
+   \                     ??D_MAIN_decode_28:
+   \   00000634   34109DE5           LDR      R1,[SP, #+52]
+   \   00000638   FF1001E2           AND      R1,R1,#0xFF
+   \   0000063C   BE10CDE1           STRH     R1,[SP, #+14]
+   \   00000640   14009DE5           LDR      R0,[SP, #+20]
+   \   00000644   000CB0E1           LSLS     R0,R0,#+24
+   \   00000648   1000000A           BEQ      ??D_MAIN_decode_36
+    554                {
+    555                   D_GAIN_lag_concealment(&(st->mem_gain[17]), st->mem_lag, &T0,
+    556                      &(st->mem_T0), &(st->mem_seed3), unusable_frame);
+   \   0000064C   FE00DDE1           LDRSH    R0,[SP, #+14]
+   \   00000650   0610A0E1           MOV      R1,R6
+    557                   T0_frac = 0;
+   \   00000654   0090A0E3           MOV      R9,#+0
+   \   00000658   01002DE9           PUSH     {R0}
+   \   0000065C   7400A0E3           MOV      R0,#+116
+   \   00000660   600E80E3           ORR      R0,R0,#0x600
+   \   00000664   050080E0           ADD      R0,R0,R5
+   \   00000668   01002DE9           PUSH     {R0}
+   \   0000066C   0C208DE2           ADD      R2,SP,#+12
+   \   00000670   7600A0E3           MOV      R0,#+118
+   \   00000674   600E80E3           ORR      R0,R0,#0x600
+   \   00000678   053080E0           ADD      R3,R0,R5
+   \   0000067C   5C00A0E3           MOV      R0,#+92
+   \   00000680   500E80E3           ORR      R0,R0,#0x500
+   \   00000684   050080E0           ADD      R0,R0,R5
+   \   00000688   ........           _BLF     D_GAIN_lag_concealment,??D_GAIN_lag_concealment??rA
+   \   0000068C   08D08DE2           ADD      SP,SP,#+8
+    558                }
+    559          
+    560                /*
+    561                 * Find the pitch gain, the interpolation filter
+    562                 * and the adaptive codebook vector.
+    563                 */
+    564          
+    565                D_GAIN_adaptive_codebook_excitation(&exc[i_subfr], T0, T0_frac);
+   \                     ??D_MAIN_decode_36:
+   \   00000690   38009DE5           LDR      R0,[SP, #+56]
+   \   00000694   04109DE5           LDR      R1,[SP, #+4]
+   \   00000698   88A080E0           ADD      R10,R0,R8, LSL #+1
+   \   0000069C   0920A0E1           MOV      R2,R9
+   \   000006A0   0A00A0E1           MOV      R0,R10
+   \   000006A4   ........           _BLF     D_GAIN_adaptive_codebook_excitation,??D_GAIN_adaptive_codebook_excitation??rA
+    566          
+    567                if(unusable_frame)
+   \   000006A8   34009DE5           LDR      R0,[SP, #+52]
+   \   000006AC   000CB0E1           LSLS     R0,R0,#+24
+   \   000006B0   2000001A           BNE      ??D_MAIN_decode_37
+    568                {
+    569                   select = 1;
+    570                }
+    571                else
+    572                {
+    573                   if(mode <= MODE_9k)
+   \   000006B4   020054E3           CMP      R4,#+2
+   \   000006B8   040000BA           BLT      ??D_MAIN_decode_38
+    574                   {
+    575                      select = 0;
+    576                   }
+    577                   else
+    578                   {
+    579                      select = *prms++;
+   \   000006BC   5C259DE5           LDR      R2,[SP, #+1372]
+   \   000006C0   ........           LDRSH    R0,[R2], #+2
+   \   000006C4   5C258DE5           STR      R2,[SP, #+1372]
+    580                   }
+    581                }
+    582          
+    583                if(select == 0)
+   \   000006C8   000050E3           CMP      R0,#+0
+   \   000006CC   1900001A           BNE      ??D_MAIN_decode_37
+    584                {
+    585                   /* find pitch excitation with lp filter */
+    586                   for(i = 0; i < L_SUBFR; i++)
+   \                     ??D_MAIN_decode_38:
+   \   000006D0   00B0A0E3           MOV      R11,#+0
+   \   000006D4   F6C0A0E3           MOV      R12,#+246
+   \   000006D8   A0CD8CE3           ORR      R12,R12,#0x2800
+   \                     ??D_MAIN_decode_39:
+   \   000006DC   38109DE5           LDR      R1,[SP, #+56]
+   \   000006E0   0B0088E0           ADD      R0,R8,R11
+   \   000006E4   800081E0           ADD      R0,R1,R0, LSL #+1
+   \   000006E8   F220D0E1           LDRSH    R2,[R0, #+2]
+   \   000006EC   F23050E1           LDRSH    R3,[R0, #-2]
+   \   000006F0   F000D0E1           LDRSH    R0,[R0, #+0]
+   \   000006F4   022083E0           ADD      R2,R3,R2
+   \   000006F8   8530A0E3           MOV      R3,#+133
+   \   000006FC   B03E83E3           ORR      R3,R3,#0xB00
+   \   00000700   9C0000E0           MUL      R0,R12,R0
+   \   00000704   6C108DE2           ADD      R1,SP,#+108
+   \   00000708   930220E0           MLA      R0,R3,R2,R0
+   \   0000070C   8B1081E0           ADD      R1,R1,R11, LSL #+1
+   \   00000710   800D80E2           ADD      R0,R0,#+8192
+   \   00000714   4007A0E1           ASR      R0,R0,#+14
+   \   00000718   B000C1E1           STRH     R0,[R1, #+0]
+    587                   {
+    588                      L_tmp = 2949 * exc[i - 1 + i_subfr];
+    589                      L_tmp = L_tmp + (10486 * exc[i + i_subfr]);
+    590                      L_tmp = L_tmp + (2949 * exc[i + 1 + i_subfr]);
+    591                      code[i] = (Word16)((L_tmp + 0x2000) >> 14);
+   \   0000071C   01B08BE2           ADD      R11,R11,#+1
+   \   00000720   40005BE3           CMP      R11,#+64
+   \   00000724   ECFFFFBA           BLT      ??D_MAIN_decode_39
+    592                   }
+    593          
+    594                   memcpy(&exc[i_subfr], code, L_SUBFR * sizeof(Word16));
+   \   00000728   8020A0E3           MOV      R2,#+128
+   \   0000072C   6C108DE2           ADD      R1,SP,#+108
+   \   00000730   0A00A0E1           MOV      R0,R10
+   \   00000734   1E0100EF           SWI      +286
+    595                }
+    596          
+    597                /*
+    598                 * Decode innovative codebook.
+    599                 * Add the fixed-gain pitch contribution to code[].
+    600                 */
+    601          
+    602                if(unusable_frame != 0)
+   \                     ??D_MAIN_decode_37:
+   \   00000738   34009DE5           LDR      R0,[SP, #+52]
+   \   0000073C   000CB0E1           LSLS     R0,R0,#+24
+   \   00000740   0A00000A           BEQ      ??D_MAIN_decode_40
+    603                {
+    604                   /* the innovative code doesn't need to be scaled (see Q_gain2) */
+    605                   for(i = 0; i < L_SUBFR; i++)
+   \   00000744   00B0A0E3           MOV      R11,#+0
+    606                   {
+    607                      code[i] = (Word16)(D_UTIL_random(&(st->mem_seed)) >> 3);
+   \                     ??D_MAIN_decode_41:
+   \   00000748   670E85E2           ADD      R0,R5,#+1648
+   \   0000074C   ........           _BLF     D_UTIL_random,??D_UTIL_random??rA
+   \   00000750   C001A0E1           ASR      R0,R0,#+3
+   \   00000754   6C108DE2           ADD      R1,SP,#+108
+   \   00000758   8B1081E0           ADD      R1,R1,R11, LSL #+1
+   \   0000075C   B000C1E1           STRH     R0,[R1, #+0]
+    608                   }
+   \   00000760   01B08BE2           ADD      R11,R11,#+1
+   \   00000764   40005BE3           CMP      R11,#+64
+   \   00000768   5A0000AA           BGE      ??D_MAIN_decode_42
+   \   0000076C   F5FFFFEA           B        ??D_MAIN_decode_41
+    609                }
+    610                else if(mode <= MODE_7k)
+   \                     ??D_MAIN_decode_40:
+   \   00000770   010054E3           CMP      R4,#+1
+   \   00000774   070000AA           BGE      ??D_MAIN_decode_43
+    611                {
+    612                   ind[0] = *prms++;
+   \   00000778   5C259DE5           LDR      R2,[SP, #+1372]
+    613                   D_ACELP_decode_2t(ind[0], code);
+   \   0000077C   6C108DE2           ADD      R1,SP,#+108
+   \   00000780   ........           LDRSH    R3,[R2], #+2
+   \   00000784   5C258DE5           STR      R2,[SP, #+1372]
+   \   00000788   BC31CDE1           STRH     R3,[SP, #+28]
+   \   0000078C   0300A0E1           MOV      R0,R3
+   \   00000790   ........           _BLF     D_ACELP_decode_2t,??D_ACELP_decode_2t??rA
+   \   00000794   4F0000EA           B        ??D_MAIN_decode_42
+    614                }
+    615                else if(mode <= MODE_9k)
+   \                     ??D_MAIN_decode_43:
+   \   00000798   020054E3           CMP      R4,#+2
+   \   0000079C   090000AA           BGE      ??D_MAIN_decode_44
+    616                {
+    617                   memcpy(ind, prms, 4 * sizeof(Word16));
+   \   000007A0   5C159DE5           LDR      R1,[SP, #+1372]
+   \   000007A4   0820A0E3           MOV      R2,#+8
+   \   000007A8   1C008DE2           ADD      R0,SP,#+28
+   \   000007AC   1E0100EF           SWI      +286
+    618                   prms += 4;
+   \   000007B0   5C159DE5           LDR      R1,[SP, #+1372]
+    619                   D_ACELP_decode_4t(ind, 20, code);
+   \   000007B4   6C208DE2           ADD      R2,SP,#+108
+   \   000007B8   081081E2           ADD      R1,R1,#+8
+   \   000007BC   5C158DE5           STR      R1,[SP, #+1372]
+   \   000007C0   1410A0E3           MOV      R1,#+20
+   \   000007C4   410000EA           B        ??D_MAIN_decode_45
+    620                }
+    621                else if(mode <= MODE_12k)
+   \                     ??D_MAIN_decode_44:
+   \   000007C8   030054E3           CMP      R4,#+3
+   \   000007CC   090000AA           BGE      ??D_MAIN_decode_46
+    622                {
+    623                   memcpy(ind, prms, 4 * sizeof(Word16));
+   \   000007D0   5C159DE5           LDR      R1,[SP, #+1372]
+   \   000007D4   0820A0E3           MOV      R2,#+8
+   \   000007D8   1C008DE2           ADD      R0,SP,#+28
+   \   000007DC   1E0100EF           SWI      +286
+    624                   prms += 4;
+   \   000007E0   5C159DE5           LDR      R1,[SP, #+1372]
+    625                   D_ACELP_decode_4t(ind, 36, code);
+   \   000007E4   6C208DE2           ADD      R2,SP,#+108
+   \   000007E8   081081E2           ADD      R1,R1,#+8
+   \   000007EC   5C158DE5           STR      R1,[SP, #+1372]
+   \   000007F0   2410A0E3           MOV      R1,#+36
+   \   000007F4   350000EA           B        ??D_MAIN_decode_45
+    626                }
+    627                else if(mode <= MODE_14k)
+   \                     ??D_MAIN_decode_46:
+   \   000007F8   040054E3           CMP      R4,#+4
+   \   000007FC   090000AA           BGE      ??D_MAIN_decode_47
+    628                {
+    629                   memcpy(ind, prms, 4 * sizeof(Word16));
+   \   00000800   5C159DE5           LDR      R1,[SP, #+1372]
+   \   00000804   0820A0E3           MOV      R2,#+8
+   \   00000808   1C008DE2           ADD      R0,SP,#+28
+   \   0000080C   1E0100EF           SWI      +286
+    630                   prms += 4;
+   \   00000810   5C159DE5           LDR      R1,[SP, #+1372]
+    631                   D_ACELP_decode_4t(ind, 44, code);
+   \   00000814   6C208DE2           ADD      R2,SP,#+108
+   \   00000818   081081E2           ADD      R1,R1,#+8
+   \   0000081C   5C158DE5           STR      R1,[SP, #+1372]
+   \   00000820   2C10A0E3           MOV      R1,#+44
+   \   00000824   290000EA           B        ??D_MAIN_decode_45
+    632                }
+    633                else if(mode <= MODE_16k)
+   \                     ??D_MAIN_decode_47:
+   \   00000828   050054E3           CMP      R4,#+5
+   \   0000082C   090000AA           BGE      ??D_MAIN_decode_48
+    634                {
+    635                   memcpy(ind, prms, 4 * sizeof(Word16));
+   \   00000830   5C159DE5           LDR      R1,[SP, #+1372]
+   \   00000834   0820A0E3           MOV      R2,#+8
+   \   00000838   1C008DE2           ADD      R0,SP,#+28
+   \   0000083C   1E0100EF           SWI      +286
+    636                   prms += 4;
+   \   00000840   5C159DE5           LDR      R1,[SP, #+1372]
+    637                   D_ACELP_decode_4t(ind, 52, code);
+   \   00000844   6C208DE2           ADD      R2,SP,#+108
+   \   00000848   081081E2           ADD      R1,R1,#+8
+   \   0000084C   5C158DE5           STR      R1,[SP, #+1372]
+   \   00000850   3410A0E3           MOV      R1,#+52
+   \   00000854   1D0000EA           B        ??D_MAIN_decode_45
+    638                }
+    639                else if(mode <= MODE_18k)
+   \                     ??D_MAIN_decode_48:
+   \   00000858   060054E3           CMP      R4,#+6
+   \   0000085C   090000AA           BGE      ??D_MAIN_decode_49
+    640                {
+    641                   memcpy(ind, prms, 8 * sizeof(Word16));
+   \   00000860   5C159DE5           LDR      R1,[SP, #+1372]
+   \   00000864   1020A0E3           MOV      R2,#+16
+   \   00000868   1C008DE2           ADD      R0,SP,#+28
+   \   0000086C   1E0100EF           SWI      +286
+    642                   prms += 8;
+   \   00000870   5C159DE5           LDR      R1,[SP, #+1372]
+    643                   D_ACELP_decode_4t(ind, 64, code);
+   \   00000874   6C208DE2           ADD      R2,SP,#+108
+   \   00000878   101081E2           ADD      R1,R1,#+16
+   \   0000087C   5C158DE5           STR      R1,[SP, #+1372]
+   \   00000880   4010A0E3           MOV      R1,#+64
+   \   00000884   110000EA           B        ??D_MAIN_decode_45
+    644                }
+    645                else if(mode <= MODE_20k)
+   \                     ??D_MAIN_decode_49:
+   \   00000888   5C159DE5           LDR      R1,[SP, #+1372]
+   \   0000088C   070054E3           CMP      R4,#+7
+   \   00000890   1020A0E3           MOV      R2,#+16
+   \   00000894   1C008DE2           ADD      R0,SP,#+28
+   \   00000898   060000AA           BGE      ??D_MAIN_decode_50
+    646                {
+    647                   memcpy(ind, prms, 8 * sizeof(Word16));
+   \   0000089C   1E0100EF           SWI      +286
+    648                   prms += 8;
+   \   000008A0   5C159DE5           LDR      R1,[SP, #+1372]
+    649                   D_ACELP_decode_4t(ind, 72, code);
+   \   000008A4   6C208DE2           ADD      R2,SP,#+108
+   \   000008A8   101081E2           ADD      R1,R1,#+16
+   \   000008AC   5C158DE5           STR      R1,[SP, #+1372]
+   \   000008B0   4810A0E3           MOV      R1,#+72
+   \   000008B4   050000EA           B        ??D_MAIN_decode_45
+    650                }
+    651                else
+    652                {
+    653                   memcpy(ind, prms, 8 * sizeof(Word16));
+   \                     ??D_MAIN_decode_50:
+   \   000008B8   1E0100EF           SWI      +286
+    654                   prms += 8;
+   \   000008BC   5C159DE5           LDR      R1,[SP, #+1372]
+    655                   D_ACELP_decode_4t(ind, 88, code);
+   \   000008C0   6C208DE2           ADD      R2,SP,#+108
+   \   000008C4   101081E2           ADD      R1,R1,#+16
+   \   000008C8   5C158DE5           STR      R1,[SP, #+1372]
+   \   000008CC   5810A0E3           MOV      R1,#+88
+   \                     ??D_MAIN_decode_45:
+   \   000008D0   1C008DE2           ADD      R0,SP,#+28
+   \   000008D4   ........           _BLF     D_ACELP_decode_4t,??D_ACELP_decode_4t??rA
+    656                }
+    657          
+    658                tmp = 0;
+   \                     ??D_MAIN_decode_42:
+   \   000008D8   B070CDE1           STRH     R7,[SP, #+0]
+    659                D_UTIL_preemph(code, st->mem_tilt_code, L_SUBFR, &tmp);
+   \   000008DC   F211D6E1           LDRSH    R1,[R6, #+18]
+   \   000008E0   0D30A0E1           MOV      R3,SP
+   \   000008E4   4020A0E3           MOV      R2,#+64
+   \   000008E8   6C008DE2           ADD      R0,SP,#+108
+   \   000008EC   ........           _BLF     D_UTIL_preemph,??D_UTIL_preemph??rA
+    660          
+    661                L_tmp = T0;
+   \   000008F0   04109DE5           LDR      R1,[SP, #+4]
+    662          
+    663                if(T0_frac > 2)
+   \   000008F4   030059E3           CMP      R9,#+3
+    664                {
+    665                   L_tmp = L_tmp + 1;
+   \   000008F8   011081A2           ADDGE    R1,R1,#+1
+    666                }
+    667          
+    668                D_GAIN_pitch_sharpening(code, L_tmp, PIT_SHARP);
+   \   000008FC   CD20A0E3           MOV      R2,#+205
+   \   00000900   6C2C82E3           ORR      R2,R2,#0x6C00
+   \   00000904   6C008DE2           ADD      R0,SP,#+108
+   \   00000908   ........           _BLF     D_GAIN_pitch_sharpening,??D_GAIN_pitch_sharpening??rA
+    669          
+    670                /*
+    671                 * Decode codebooks gains.
+    672                 */
+    673                index = *prms++;   /* codebook gain index */
+   \   0000090C   5C259DE5           LDR      R2,[SP, #+1372]
+    674          
+    675                if(mode <= MODE_9k)
+   \   00000910   3A10A0E3           MOV      R1,#+58
+   \   00000914   ........           LDRSH    R0,[R2], #+2
+   \   00000918   5C258DE5           STR      R2,[SP, #+1372]
+   \   0000091C   501E81E3           ORR      R1,R1,#0x500
+   \   00000920   051081E0           ADD      R1,R1,R5
+   \   00000924   02002DE9           PUSH     {R1}
+   \   00000928   F212D6E1           LDRSH    R1,[R6, #+34]
+   \   0000092C   020054E3           CMP      R4,#+2
+   \   00000930   02002DE9           PUSH     {R1}
+   \   00000934   F611DDE1           LDRSH    R1,[SP, #+22]
+   \   00000938   02002DE9           PUSH     {R1}
+   \   0000093C   2910D6E5           LDRB     R1,[R6, #+41]
+   \   00000940   02002DE9           PUSH     {R1}
+   \   00000944   2810D6E5           LDRB     R1,[R6, #+40]
+   \   00000948   02002DE9           PUSH     {R1}
+   \   0000094C   FE11DDE1           LDRSH    R1,[SP, #+30]
+   \   00000950   02002DE9           PUSH     {R1}
+   \   00000954   28108DE2           ADD      R1,SP,#+40
+   \   00000958   02002DE9           PUSH     {R1}
+   \   0000095C   24308DE2           ADD      R3,SP,#+36
+   \   00000960   88208DE2           ADD      R2,SP,#+136
+    676                {
+    677                   D_GAIN_decode(index, 6, code, &gain_pit, &L_gain_code, bfi,
+    678                      st->mem_bfi, st->mem_state, unusable_frame, st->mem_vad_hist,
+    679                      st->mem_gain);
+   \   00000964   0610A0B3           MOVLT    R1,#+6
+    680                }
+    681                else
+    682                {
+    683                   D_GAIN_decode(index, 7, code, &gain_pit, &L_gain_code, bfi,
+    684                      st->mem_bfi, st->mem_state, unusable_frame, st->mem_vad_hist,
+    685                      st->mem_gain);
+   \   00000968   0710A0A3           MOVGE    R1,#+7
+   \   0000096C   ........           _BLF     D_GAIN_decode,??D_GAIN_decode??rA
+   \   00000970   1CD08DE2           ADD      SP,SP,#+28
+    686                }
+    687          
+    688                /* find best scaling to perform on excitation (Q_new) */
+    689                tmp = st->mem_subfr_q[0];
+   \   00000974   FA10D6E1           LDRSH    R1,[R6, #+10]
+    690          
+    691                for(i = 1; i < 4; i++)
+   \   00000978   0100A0E3           MOV      R0,#+1
+   \   0000097C   6220A0E3           MOV      R2,#+98
+   \   00000980   B010CDE1           STRH     R1,[SP, #+0]
+   \   00000984   602E82E3           ORR      R2,R2,#0x600
+    692                {
+    693                   if(st->mem_subfr_q[i] < tmp)
+   \                     ??D_MAIN_decode_51:
+   \   00000988   F090DDE1           LDRSH    R9,[SP, #+0]
+   \   0000098C   801085E0           ADD      R1,R5,R0, LSL #+1
+   \   00000990   F13092E1           LDRSH    R3,[R2, +R1]
+    694                   {
+    695                      tmp = st->mem_subfr_q[i];
+    696                   }
+    697                }
+   \   00000994   010080E2           ADD      R0,R0,#+1
+   \   00000998   090053E1           CMP      R3,R9
+   \   0000099C   0310A0B1           MOVLT    R1,R3
+   \   000009A0   B010CDB1           STRHLT   R1,[SP, #+0]
+   \   000009A4   040050E3           CMP      R0,#+4
+   \   000009A8   F6FFFFBA           BLT      ??D_MAIN_decode_51
+    698          
+    699                /* limit scaling (Q_new) to Q_MAX */
+    700                if(tmp > Q_MAX)
+   \   000009AC   F000DDE1           LDRSH    R0,[SP, #+0]
+    701                {
+    702                   tmp = Q_MAX;
+    703                }
+    704          
+    705                Q_new = 0;
+   \   000009B0   0090A0E3           MOV      R9,#+0
+   \   000009B4   090050E3           CMP      R0,#+9
+   \   000009B8   0810A0A3           MOVGE    R1,#+8
+   \   000009BC   B010CDA1           STRHGE   R1,[SP, #+0]
+    706                L_tmp = L_gain_code;   /* L_gain_code in Q16 */
+   \   000009C0   10009DE5           LDR      R0,[SP, #+16]
+   \   000009C4   060000EA           B        ??D_MAIN_decode_52
+    707          
+    708                while((L_tmp < 0x08000000L) && (Q_new < tmp))
+   \                     ??D_MAIN_decode_53:
+   \   000009C8   F010DDE1           LDRSH    R1,[SP, #+0]
+   \   000009CC   010059E1           CMP      R9,R1
+   \   000009D0   090000AA           BGE      ??D_MAIN_decode_54
+    709                {
+    710                   L_tmp = (L_tmp << 1);
+   \   000009D4   8000A0E1           LSL      R0,R0,#+1
+    711                   Q_new = (Word16)((Q_new + 1));
+   \   000009D8   019089E2           ADD      R9,R9,#+1
+   \   000009DC   0998A0E1           MOV      R9,R9, LSL #+16
+   \   000009E0   4998A0E1           MOV      R9,R9, ASR #+16
+    712                }
+   \                     ??D_MAIN_decode_52:
+   \   000009E4   800650E3           CMP      R0,#+134217728
+   \   000009E8   F6FFFFBA           BLT      ??D_MAIN_decode_53
+    713          
+    714                if(L_tmp < 0x7FFF7FFF)
+   \   000009EC   8014E0E3           MVN      R1,#-2147483648
+   \   000009F0   801CC1E3           BIC      R1,R1,#0x8000
+   \   000009F4   010050E1           CMP      R0,R1
+   \   000009F8   030000AA           BGE      ??D_MAIN_decode_55
+    715                {
+    716                   gain_code = (Word16)((L_tmp + 0x8000) >> 16);
+   \                     ??D_MAIN_decode_54:
+   \   000009FC   800C80E2           ADD      R0,R0,#+32768
+   \   00000A00   4008A0E1           ASR      R0,R0,#+16
+   \   00000A04   B200CDE1           STRH     R0,[SP, #+2]
+   \   00000A08   010000EA           B        ??D_MAIN_decode_56
+    717                   /* scaled gain_code with Qnew */
+    718                }
+    719                else
+    720                {
+    721                   gain_code = 32767;
+   \                     ??D_MAIN_decode_55:
+   \   00000A0C   2118A0E1           MOV      R1,R1, LSR #+16
+   \   00000A10   B210CDE1           STRH     R1,[SP, #+2]
+    722                }
+    723          
+    724                if(Q_new > st->mem_q)
+   \                     ??D_MAIN_decode_56:
+   \   00000A14   F411D6E1           LDRSH    R1,[R6, #+20]
+   \   00000A18   EF00E0E3           MVN      R0,#+239
+   \   00000A1C   400FC0E3           BIC      R0,R0,#0x100
+   \   00000A20   090051E1           CMP      R1,R9
+   \   00000A24   060000AA           BGE      ??D_MAIN_decode_57
+    725                {
+    726                   D_UTIL_signal_up_scale(exc + i_subfr - (PIT_MAX + L_INTERPOL),
+    727                      PIT_MAX + L_INTERPOL + L_SUBFR, (Word16)(Q_new - st->mem_q));
+   \   00000A28   012049E0           SUB      R2,R9,R1
+   \   00000A2C   0228A0E1           MOV      R2,R2, LSL #+16
+   \   00000A30   4228A0E1           MOV      R2,R2, ASR #+16
+   \   00000A34   4E1FA0E3           MOV      R1,#+312
+   \   00000A38   0A0080E0           ADD      R0,R0,R10
+   \   00000A3C   ........           _BLF     D_UTIL_signal_up_scale,??D_UTIL_signal_up_scale??rA
+   \   00000A40   050000EA           B        ??D_MAIN_decode_58
+    728                }
+    729                else
+    730                {
+    731                   D_UTIL_signal_down_scale(exc + i_subfr - (PIT_MAX + L_INTERPOL),
+    732                      PIT_MAX + L_INTERPOL + L_SUBFR, (Word16)(st->mem_q - Q_new));
+   \                     ??D_MAIN_decode_57:
+   \   00000A44   092041E0           SUB      R2,R1,R9
+   \   00000A48   0228A0E1           MOV      R2,R2, LSL #+16
+   \   00000A4C   4228A0E1           MOV      R2,R2, ASR #+16
+   \   00000A50   4E1FA0E3           MOV      R1,#+312
+   \   00000A54   0A0080E0           ADD      R0,R0,R10
+   \   00000A58   ........           _BLF     D_UTIL_signal_down_scale,??D_UTIL_signal_down_scale??rA
+    733                }
+    734          
+    735                st->mem_q = Q_new;
+   \                     ??D_MAIN_decode_58:
+   \   00000A5C   B491C6E1           STRH     R9,[R6, #+20]
+    736          
+    737                /*
+    738                 * Update parameters for the next subframe.
+    739                 * - tilt of code: 0.0 (unvoiced) to 0.5 (voiced)
+    740                 */
+    741                if(bfi == 0)
+   \   00000A60   14009DE5           LDR      R0,[SP, #+20]
+   \   00000A64   000CB0E1           LSLS     R0,R0,#+24
+   \   00000A68   0F00001A           BNE      ??D_MAIN_decode_59
+    742                {
+    743                   /* LTP-Lag history update */
+    744                   for(i = 4; i > 0; i--)
+   \   00000A6C   0400A0E3           MOV      R0,#+4
+   \   00000A70   5820A0E3           MOV      R2,#+88
+   \   00000A74   602E82E3           ORR      R2,R2,#0x600
+    745                   {
+    746                      st->mem_lag[i] = st->mem_lag[i - 1];
+   \                     ??D_MAIN_decode_60:
+   \   00000A78   011040E2           SUB      R1,R0,#+1
+   \   00000A7C   81B085E0           ADD      R11,R5,R1, LSL #+1
+   \   00000A80   FB3092E1           LDRSH    R3,[R2, +R11]
+   \   00000A84   800085E0           ADD      R0,R5,R0, LSL #+1
+   \   00000A88   B03082E1           STRH     R3,[R2, +R0]
+    747                   }
+   \   00000A8C   0100A0E1           MOV      R0,R1
+   \   00000A90   010050E3           CMP      R0,#+1
+   \   00000A94   F7FFFFAA           BGE      ??D_MAIN_decode_60
+    748                   st->mem_lag[0] = (Word16)T0;
+   \   00000A98   04009DE5           LDR      R0,[SP, #+4]
+   \   00000A9C   B000C6E1           STRH     R0,[R6, #+0]
+    749                   st->mem_T0 = (Word16)T0;
+   \   00000AA0   04009DE5           LDR      R0,[SP, #+4]
+   \   00000AA4   BE01C6E1           STRH     R0,[R6, #+30]
+    750                   st->mem_T0_frac = 0;   /* Remove fraction in case of BFI */
+   \   00000AA8   B072C6E1           STRH     R7,[R6, #+32]
+    751                }
+    752          
+    753                /* find voice factor in Q15 (1=voiced, -1=unvoiced) */
+    754                memcpy(exc2, &exc[i_subfr], L_SUBFR * sizeof(Word16));
+   \                     ??D_MAIN_decode_59:
+   \   00000AAC   8020A0E3           MOV      R2,#+128
+   \   00000AB0   0A10A0E1           MOV      R1,R10
+   \   00000AB4   550F8DE2           ADD      R0,SP,#+340
+   \   00000AB8   1E0100EF           SWI      +286
+    755                D_UTIL_signal_down_scale(exc2, L_SUBFR, 3);
+   \   00000ABC   0320A0E3           MOV      R2,#+3
+   \   00000AC0   4010A0E3           MOV      R1,#+64
+   \   00000AC4   550F8DE2           ADD      R0,SP,#+340
+   \   00000AC8   ........           _BLF     D_UTIL_signal_down_scale,??D_UTIL_signal_down_scale??rA
+   \   00000ACC   020054E3           CMP      R4,#+2
+   \   00000AD0   200000AA           BGE      ??D_MAIN_decode_61
+    756          
+    757                /* post processing of excitation elements */
+    758                if(mode <= MODE_9k)
+    759                {
+    760                   pit_sharp = (Word16)(gain_pit << 1);
+   \   00000AD4   B810DDE1           LDRH     R1,[SP, #+8]
+   \   00000AD8   8118A0E1           LSL      R1,R1,#+17
+   \   00000ADC   2118A0E1           LSR      R1,R1,#+16
+   \   00000AE0   2C108DE5           STR      R1,[SP, #+44]
+    761          
+    762                   if(pit_sharp > 16384)
+   \   00000AE4   0100A0E1           MOV      R0,R1
+   \   00000AE8   0110A0E3           MOV      R1,#+1
+   \   00000AEC   401C81E3           ORR      R1,R1,#0x4000
+   \   00000AF0   010050E1           CMP      R0,R1
+   \   00000AF4   1700003A           BCC      ??D_MAIN_decode_61
+    763                   {
+    764                      if(pit_sharp > 32767)
+   \   00000AF8   800C50E3           CMP      R0,#+32768
+    765                      {
+    766                         pit_sharp = 32767;
+   \   00000AFC   FF10A023           MOVCS    R1,#+255
+   \   00000B00   7F1C8123           ORRCS    R1,R1,#0x7F00
+   \   00000B04   2C108D25           STRCS    R1,[SP, #+44]
+    767                      }
+    768          
+    769                      for(i = 0; i < L_SUBFR; i++)
+   \   00000B08   0000A0E3           MOV      R0,#+0
+    770                      {
+    771                         L_tmp = (exc2[i] * pit_sharp) >> 15;
+    772                         L_tmp = L_tmp * gain_pit;
+    773                         excp[i] = (Word16)((L_tmp + 0x8000) >> 16);
+   \                     ??D_MAIN_decode_62:
+   \   00000B0C   2C309DE5           LDR      R3,[SP, #+44]
+   \   00000B10   552F8DE2           ADD      R2,SP,#+340
+   \   00000B14   802082E0           ADD      R2,R2,R0, LSL #+1
+   \   00000B18   F020D2E1           LDRSH    R2,[R2, #+0]
+   \   00000B1C   0338A0E1           MOV      R3,R3, LSL #+16
+   \   00000B20   2338A0E1           MOV      R3,R3, LSR #+16
+   \   00000B24   930202E0           MUL      R2,R3,R2
+   \   00000B28   F830DDE1           LDRSH    R3,[SP, #+8]
+   \   00000B2C   C227A0E1           ASR      R2,R2,#+15
+   \   00000B30   DC108DE2           ADD      R1,SP,#+220
+   \   00000B34   930202E0           MUL      R2,R3,R2
+   \   00000B38   401E81E2           ADD      R1,R1,#+1024
+   \   00000B3C   801081E0           ADD      R1,R1,R0, LSL #+1
+   \   00000B40   802C82E2           ADD      R2,R2,#+32768
+   \   00000B44   4228A0E1           ASR      R2,R2,#+16
+   \   00000B48   B020C1E1           STRH     R2,[R1, #+0]
+    774                      }
+   \   00000B4C   010080E2           ADD      R0,R0,#+1
+   \   00000B50   400050E3           CMP      R0,#+64
+   \   00000B54   ECFFFFBA           BLT      ??D_MAIN_decode_62
+    775                   }
+    776                }
+    777          
+    778                voice_fac = D_GAIN_find_voice_factor(exc2, -3, gain_pit, code, gain_code,
+    779                   L_SUBFR);
+   \                     ??D_MAIN_decode_61:
+   \   00000B58   4000A0E3           MOV      R0,#+64
+   \   00000B5C   01002DE9           PUSH     {R0}
+   \   00000B60   F600DDE1           LDRSH    R0,[SP, #+6]
+   \   00000B64   0210E0E3           MVN      R1,#+2
+    780          
+    781                /* tilt of code for next subframe: 0.5=voiced, 0=unvoiced */
+    782                st->mem_tilt_code = (Word16)((voice_fac >> 2) + 8192);
+    783          
+    784                /*
+    785                 * Find the total excitation.
+    786                 * Find synthesis speech corresponding to exc[].
+    787                 * Find maximum value of excitation for next scaling
+    788                 */
+    789                memcpy(exc2, &exc[i_subfr], L_SUBFR * sizeof(Word16));
+    790                max = 1;
+    791          
+    792                for(i = 0; i < L_SUBFR; i++)
+   \   00000B68   00B0A0E3           MOV      R11,#+0
+   \   00000B6C   01002DE9           PUSH     {R0}
+   \   00000B70   F021DDE1           LDRSH    R2,[SP, #+16]
+   \   00000B74   74308DE2           ADD      R3,SP,#+116
+   \   00000B78   570F8DE2           ADD      R0,SP,#+348
+   \   00000B7C   ........           _BLF     D_GAIN_find_voice_factor,??D_GAIN_find_voice_factor??rA
+   \   00000B80   50008DE5           STR      R0,[SP, #+80]
+   \   00000B84   50009DE5           LDR      R0,[SP, #+80]
+   \   00000B88   801DA0E3           MOV      R1,#+8192
+   \   00000B8C   400181E0           ADD      R0,R1,R0, ASR #+2
+   \   00000B90   B201C6E1           STRH     R0,[R6, #+18]
+   \   00000B94   8020A0E3           MOV      R2,#+128
+   \   00000B98   0A10A0E1           MOV      R1,R10
+   \   00000B9C   570F8DE2           ADD      R0,SP,#+348
+   \   00000BA0   1E0100EF           SWI      +286
+   \   00000BA4   01A0A0E3           MOV      R10,#+1
+   \   00000BA8   08D08DE2           ADD      SP,SP,#+8
+   \                     ??D_MAIN_decode_63:
+   \   00000BAC   38109DE5           LDR      R1,[SP, #+56]
+   \   00000BB0   F820DDE1           LDRSH    R2,[SP, #+8]
+   \   00000BB4   F230DDE1           LDRSH    R3,[SP, #+2]
+   \   00000BB8   0B0088E0           ADD      R0,R8,R11
+   \   00000BBC   801081E0           ADD      R1,R1,R0, LSL #+1
+   \   00000BC0   F000D1E1           LDRSH    R0,[R1, #+0]
+   \   00000BC4   920000E0           MUL      R0,R2,R0
+   \   00000BC8   6C208DE2           ADD      R2,SP,#+108
+   \   00000BCC   8B2082E0           ADD      R2,R2,R11, LSL #+1
+   \   00000BD0   F020D2E1           LDRSH    R2,[R2, #+0]
+   \   00000BD4   930202E0           MUL      R2,R3,R2
+   \   00000BD8   820280E0           ADD      R0,R0,R2, LSL #+5
+   \   00000BDC   800D80E2           ADD      R0,R0,#+8192
+   \   00000BE0   4007A0E1           ASR      R0,R0,#+14
+    793                {
+    794                   L_tmp = (code[i] * gain_code) << 5;
+    795                   L_tmp = L_tmp + (exc[i + i_subfr] * gain_pit);
+    796                   L_tmp = (L_tmp + 0x2000) >> 14;
+    797          
+    798                   if((L_tmp > MIN_16) & (L_tmp < 32768))
+   \   00000BE4   FE20E0E3           MVN      R2,#+254
+   \   00000BE8   7F2CC2E3           BIC      R2,R2,#0x7F00
+   \   00000BEC   020050E1           CMP      R0,R2
+   \   00000BF0   090000BA           BLT      ??D_MAIN_decode_64
+   \   00000BF4   800C50E3           CMP      R0,#+32768
+   \   00000BF8   070000AA           BGE      ??D_MAIN_decode_64
+    799                   {
+    800                      exc[i + i_subfr] = (Word16)L_tmp;
+   \   00000BFC   B000C1E1           STRH     R0,[R1, #+0]
+    801                      tmp = (Word16)(abs(L_tmp));
+                                            ^
+Warning[Pe223]: function "abs" declared implicitly
+   \   00000C00   ........           _BLF     abs,??abs??rA
+   \   00000C04   B000CDE1           STRH     R0,[SP, #+0]
+    802          
+    803                      if(tmp > max)
+   \   00000C08   F000DDE1           LDRSH    R0,[SP, #+0]
+   \   00000C0C   00005AE1           CMP      R10,R0
+   \   00000C10   080000AA           BGE      ??D_MAIN_decode_65
+    804                      {
+    805                         max = tmp;
+   \                     ??D_MAIN_decode_66:
+   \   00000C14   00A0A0E1           MOV      R10,R0
+   \   00000C18   060000EA           B        ??D_MAIN_decode_65
+    806                      }
+    807                   }
+    808                   else if(L_tmp > MAX_16)
+   \                     ??D_MAIN_decode_64:
+   \   00000C1C   800C50E3           CMP      R0,#+32768
+    809                   {
+    810                      exc[i + i_subfr] = MAX_16;
+   \   00000C20   000062A2           RSBGE    R0,R2,#+0
+   \   00000C24   B000C1A1           STRHGE   R0,[R1, #+0]
+    811                      max = MAX_16;
+   \   00000C28   F9FFFFAA           BGE      ??D_MAIN_decode_66
+    812                   }
+    813                   else
+    814                   {
+    815                      exc[i + i_subfr] = MIN_16;
+   \   00000C2C   0100C2E3           BIC      R0,R2,#0x1
+   \   00000C30   B000C1E1           STRH     R0,[R1, #+0]
+    816                      max = MAX_16;
+   \   00000C34   00A0E0E1           MVN      R10,R0
+    817                   }
+    818                }
+   \                     ??D_MAIN_decode_65:
+   \   00000C38   01B08BE2           ADD      R11,R11,#+1
+   \   00000C3C   40005BE3           CMP      R11,#+64
+   \   00000C40   D9FFFFBA           BLT      ??D_MAIN_decode_63
+    819          
+    820                /* tmp = scaling possible according to max value of excitation */
+    821                tmp = (Word16)((D_UTIL_norm_s(max) + Q_new) - 1);
+   \   00000C44   0A00A0E1           MOV      R0,R10
+   \   00000C48   ........           _BLF     D_UTIL_norm_s,??D_UTIL_norm_s??rA
+   \   00000C4C   090080E0           ADD      R0,R0,R9
+   \   00000C50   010040E2           SUB      R0,R0,#+1
+   \   00000C54   B000CDE1           STRH     R0,[SP, #+0]
+    822                st->mem_subfr_q[3] = st->mem_subfr_q[2];
+   \   00000C58   FE00D6E1           LDRSH    R0,[R6, #+14]
+    823                st->mem_subfr_q[2] = st->mem_subfr_q[1];
+    824                st->mem_subfr_q[1] = st->mem_subfr_q[0];
+    825                st->mem_subfr_q[0] = tmp;
+    826          
+    827                /*
+    828                 * phase dispersion to enhance noise in low bit rate
+    829                 */
+    830          
+    831                /* L_gain_code in Q16 */
+    832                D_UTIL_l_extract(L_gain_code, &gain_code, &gain_code_lo);
+   \   00000C5C   0C208DE2           ADD      R2,SP,#+12
+   \   00000C60   02108DE2           ADD      R1,SP,#+2
+   \   00000C64   B001C6E1           STRH     R0,[R6, #+16]
+   \   00000C68   FC00D6E1           LDRSH    R0,[R6, #+12]
+   \   00000C6C   BE00C6E1           STRH     R0,[R6, #+14]
+   \   00000C70   FA00D6E1           LDRSH    R0,[R6, #+10]
+   \   00000C74   BC00C6E1           STRH     R0,[R6, #+12]
+   \   00000C78   F000DDE1           LDRSH    R0,[SP, #+0]
+   \   00000C7C   BA00C6E1           STRH     R0,[R6, #+10]
+   \   00000C80   10009DE5           LDR      R0,[SP, #+16]
+   \   00000C84   ........           _BLF     D_UTIL_l_extract,??D_UTIL_l_extract??rA
+    833          
+    834                if(mode <= MODE_7k)
+   \   00000C88   010054E3           CMP      R4,#+1
+    835                {
+    836                   j = 0;   /* high dispersion for rate <= 7.5 kbit/s */
+   \   00000C8C   0030A0B3           MOVLT    R3,#+0
+   \   00000C90   020000BA           BLT      ??D_MAIN_decode_67
+    837                }
+    838                else if(mode <= MODE_9k)
+   \   00000C94   020054E3           CMP      R4,#+2
+    839                {
+    840                   j = 1;   /* low dispersion for rate <= 9.6 kbit/s */
+   \   00000C98   0130A0B3           MOVLT    R3,#+1
+    841                }
+    842                else
+    843                {
+    844                   j = 2;   /* no dispersion for rate > 9.6 kbit/s */
+   \   00000C9C   0230A0A3           MOVGE    R3,#+2
+    845                }
+    846          
+    847                D_ACELP_phase_dispersion(gain_code, gain_pit, code, (Word16)j,
+    848                   st->mem_ph_disp);
+   \                     ??D_MAIN_decode_67:
+   \   00000CA0   630E85E2           ADD      R0,R5,#+1584
+   \   00000CA4   01002DE9           PUSH     {R0}
+   \   00000CA8   FC10DDE1           LDRSH    R1,[SP, #+12]
+   \   00000CAC   F600DDE1           LDRSH    R0,[SP, #+6]
+   \   00000CB0   70208DE2           ADD      R2,SP,#+112
+   \   00000CB4   ........           _BLF     D_ACELP_phase_dispersion,??D_ACELP_phase_dispersion??rA
+    849          
+    850                /*
+    851                 * noise enhancer
+    852                 * - Enhance excitation on noise. (modify gain of code)
+    853                 *   If signal is noisy and LPC filter is stable, move gain
+    854                 *   of code 1.5 dB toward gain of code threshold.
+    855                 *   This decrease by 3 dB noise energy variation.
+    856                 */
+    857                L_tmp = 16384 - (voice_fac >> 1);   /* 1=unvoiced, 0=voiced */
+    858                fac = (Word16)((L_stab_fac * L_tmp) >> 15);
+   \   00000CB8   40009DE5           LDR      R0,[SP, #+64]
+   \   00000CBC   4C209DE5           LDR      R2,[SP, #+76]
+    859                L_tmp = L_gain_code;
+   \   00000CC0   14A09DE5           LDR      R10,[SP, #+20]
+   \   00000CC4   401CA0E3           MOV      R1,#+16384
+   \   00000CC8   C21041E0           SUB      R1,R1,R2, ASR #+1
+   \   00000CCC   910000E0           MUL      R0,R1,R0
+   \   00000CD0   C0B7A0E1           ASR      R11,R0,#+15
+    860          
+    861                if(L_tmp < st->mem_gc_thres)
+   \   00000CD4   000095E5           LDR      R0,[R5, #+0]
+   \   00000CD8   0BB8A0E1           MOV      R11,R11, LSL #+16
+   \   00000CDC   4BB8A0E1           MOV      R11,R11, ASR #+16
+   \   00000CE0   00005AE1           CMP      R10,R0
+   \   00000CE4   04D08DE2           ADD      SP,SP,#+4
+   \   00000CE8   080000AA           BGE      ??D_MAIN_decode_68
+    862                {
+    863                   L_tmp = (L_tmp + D_UTIL_mpy_32_16(gain_code, gain_code_lo, 6226));
+   \   00000CEC   F200DDE1           LDRSH    R0,[SP, #+2]
+   \   00000CF0   FC10DDE1           LDRSH    R1,[SP, #+12]
+   \   00000CF4   5220A0E3           MOV      R2,#+82
+   \   00000CF8   602D82E3           ORR      R2,R2,#0x1800
+   \   00000CFC   ........           _BLF     D_UTIL_mpy_32_16,??D_UTIL_mpy_32_16??rA
+   \   00000D00   0AA080E0           ADD      R10,R0,R10
+    864          
+    865                   if(L_tmp > st->mem_gc_thres)
+   \   00000D04   000095E5           LDR      R0,[R5, #+0]
+   \   00000D08   0A0050E1           CMP      R0,R10
+   \   00000D0C   070000EA           B        ??D_MAIN_decode_69
+    866                   {
+    867                      L_tmp = st->mem_gc_thres;
+    868                   }
+    869                }
+    870                else
+    871                {
+    872                   L_tmp = D_UTIL_mpy_32_16(gain_code, gain_code_lo, 27536);
+   \                     ??D_MAIN_decode_68:
+   \   00000D10   F200DDE1           LDRSH    R0,[SP, #+2]
+   \   00000D14   FC10DDE1           LDRSH    R1,[SP, #+12]
+   \   00000D18   9020A0E3           MOV      R2,#+144
+   \   00000D1C   6B2C82E3           ORR      R2,R2,#0x6B00
+   \   00000D20   ........           _BLF     D_UTIL_mpy_32_16,??D_UTIL_mpy_32_16??rA
+   \   00000D24   00A0A0E1           MOV      R10,R0
+    873          
+    874                   if(L_tmp < st->mem_gc_thres)
+   \   00000D28   000095E5           LDR      R0,[R5, #+0]
+   \   00000D2C   00005AE1           CMP      R10,R0
+    875                   {
+    876                      L_tmp = st->mem_gc_thres;
+   \                     ??D_MAIN_decode_69:
+   \   00000D30   00A0A0B1           MOVLT    R10,R0
+    877                   }
+    878                }
+    879                st->mem_gc_thres = L_tmp;
+   \   00000D34   00A085E5           STR      R10,[R5, #+0]
+    880                L_gain_code =
+    881                   D_UTIL_mpy_32_16(gain_code, gain_code_lo, (Word16)(32767 - fac));
+   \   00000D38   FC10DDE1           LDRSH    R1,[SP, #+12]
+   \   00000D3C   FF00A0E3           MOV      R0,#+255
+   \   00000D40   7F0C80E3           ORR      R0,R0,#0x7F00
+   \   00000D44   0B2040E0           SUB      R2,R0,R11
+   \   00000D48   F200DDE1           LDRSH    R0,[SP, #+2]
+   \   00000D4C   0228A0E1           MOV      R2,R2, LSL #+16
+   \   00000D50   4228A0E1           MOV      R2,R2, ASR #+16
+   \   00000D54   ........           _BLF     D_UTIL_mpy_32_16,??D_UTIL_mpy_32_16??rA
+   \   00000D58   10008DE5           STR      R0,[SP, #+16]
+    882                D_UTIL_l_extract(L_tmp, &gain_code, &gain_code_lo);
+   \   00000D5C   0C208DE2           ADD      R2,SP,#+12
+   \   00000D60   02108DE2           ADD      R1,SP,#+2
+   \   00000D64   0A00A0E1           MOV      R0,R10
+   \   00000D68   ........           _BLF     D_UTIL_l_extract,??D_UTIL_l_extract??rA
+    883                L_gain_code =
+    884                   L_gain_code + D_UTIL_mpy_32_16(gain_code, gain_code_lo, fac);
+   \   00000D6C   F200DDE1           LDRSH    R0,[SP, #+2]
+   \   00000D70   FC10DDE1           LDRSH    R1,[SP, #+12]
+   \   00000D74   0B20A0E1           MOV      R2,R11
+   \   00000D78   ........           _BLF     D_UTIL_mpy_32_16,??D_UTIL_mpy_32_16??rA
+   \   00000D7C   10209DE5           LDR      R2,[SP, #+16]
+    885          
+    886                /*
+    887                 * pitch enhancer
+    888                 * - Enhance excitation on voice. (HP filtering of code)
+    889                 *   On voiced signal, filtering of code by a smooth fir HP
+    890                 *   filter to decrease energy of code in low frequency.
+    891                 */
+    892          
+    893                L_tmp2 = (voice_fac >> 3) + 4096;   /* 0.25=voiced, 0=unvoiced */
+   \   00000D80   401DA0E3           MOV      R1,#+4096
+   \   00000D84   020080E0           ADD      R0,R0,R2
+   \   00000D88   10008DE5           STR      R0,[SP, #+16]
+    894                L_tmp = (code[0] << 15) - (code[1] * L_tmp2);
+    895                code2[0] = (L_tmp + 0x4000) >> 15;
+   \   00000D8C   FE36DDE1           LDRSH    R3,[SP, #+110]
+   \   00000D90   48009DE5           LDR      R0,[SP, #+72]
+   \   00000D94   FC26DDE1           LDRSH    R2,[SP, #+108]
+   \   00000D98   C00181E0           ADD      R0,R1,R0, ASR #+3
+   \   00000D9C   900303E0           MUL      R3,R0,R3
+    896          
+    897                for(i = 1; i < L_SUBFR - 1; i++)
+   \   00000DA0   0110A0E3           MOV      R1,#+1
+   \   00000DA4   822763E0           RSB      R2,R3,R2, LSL #+15
+   \   00000DA8   402C82E2           ADD      R2,R2,#+16384
+   \   00000DAC   C227A0E1           ASR      R2,R2,#+15
+   \   00000DB0   54238DE5           STR      R2,[SP, #+852]
+    898                {
+    899                   L_tmp = code[i] << 15;
+    900                   L_tmp = L_tmp - (code[i + 1] * L_tmp2);
+    901                   L_tmp = L_tmp - (code[i - 1] * L_tmp2);
+    902                   code2[i] = (L_tmp + 0x4000) >> 15;
+   \                     ??D_MAIN_decode_70:
+   \   00000DB4   6C208DE2           ADD      R2,SP,#+108
+   \   00000DB8   81A082E0           ADD      R10,R2,R1, LSL #+1
+   \   00000DBC   F030DAE1           LDRSH    R3,[R10, #+0]
+   \   00000DC0   F2B0DAE1           LDRSH    R11,[R10, #+2]
+   \   00000DC4   F2A05AE1           LDRSH    R10,[R10, #-2]
+   \   00000DC8   D52F8DE2           ADD      R2,SP,#+852
+   \   00000DCC   0BA08AE0           ADD      R10,R10,R11
+   \   00000DD0   9A000BE0           MUL      R11,R10,R0
+   \   00000DD4   83376BE0           RSB      R3,R11,R3, LSL #+15
+   \   00000DD8   403C83E2           ADD      R3,R3,#+16384
+   \   00000DDC   C337A0E1           ASR      R3,R3,#+15
+   \   00000DE0   013182E7           STR      R3,[R2, +R1, LSL #+2]
+    903                }
+   \   00000DE4   011081E2           ADD      R1,R1,#+1
+   \   00000DE8   3F0051E3           CMP      R1,#+63
+   \   00000DEC   F0FFFFBA           BLT      ??D_MAIN_decode_70
+    904          
+    905                L_tmp = code[L_SUBFR - 1] << 15;
+    906                L_tmp = L_tmp - (code[L_SUBFR - 2] * L_tmp2);
+    907                code2[L_SUBFR - 1] = (L_tmp + 0x4000) >> 15;
+   \   00000DF0   F83EDDE1           LDRSH    R3,[SP, #+232]
+   \   00000DF4   FA2EDDE1           LDRSH    R2,[SP, #+234]
+    908          
+    909                /* build excitation */
+    910                gain_code = (Word16)(((L_gain_code << Q_new) + 0x8000) >> 16);
+    911          
+    912                for(i = 0; i < L_SUBFR; i++)
+   \   00000DF8   00B0A0E3           MOV      R11,#+0
+   \   00000DFC   900303E0           MUL      R3,R0,R3
+   \   00000E00   820763E0           RSB      R0,R3,R2, LSL #+15
+   \   00000E04   400C80E2           ADD      R0,R0,#+16384
+   \   00000E08   C007A0E1           ASR      R0,R0,#+15
+   \   00000E0C   50048DE5           STR      R0,[SP, #+1104]
+   \   00000E10   10109DE5           LDR      R1,[SP, #+16]
+   \   00000E14   802CA0E3           MOV      R2,#+32768
+   \   00000E18   111982E0           ADD      R1,R2,R1, LSL R9
+   \   00000E1C   4118A0E1           ASR      R1,R1,#+16
+   \   00000E20   B210CDE1           STRH     R1,[SP, #+2]
+    913                {
+    914                   L_tmp = (code2[i] * gain_code) << 5;
+    915                   L_tmp = L_tmp + (exc2[i] * gain_pit);
+    916                   L_tmp = (L_tmp + 0x2000) >> 14;
+    917          
+    918                   exc2[i] = D_UTIL_saturate(L_tmp);
+   \                     ??D_MAIN_decode_71:
+   \   00000E24   F810DDE1           LDRSH    R1,[SP, #+8]
+   \   00000E28   F220DDE1           LDRSH    R2,[SP, #+2]
+   \   00000E2C   550F8DE2           ADD      R0,SP,#+340
+   \   00000E30   8BA080E0           ADD      R10,R0,R11, LSL #+1
+   \   00000E34   F000DAE1           LDRSH    R0,[R10, #+0]
+   \   00000E38   910000E0           MUL      R0,R1,R0
+   \   00000E3C   D51F8DE2           ADD      R1,SP,#+852
+   \   00000E40   0B1191E7           LDR      R1,[R1, +R11, LSL #+2]
+    919                }
+   \   00000E44   01B08BE2           ADD      R11,R11,#+1
+   \   00000E48   920101E0           MUL      R1,R2,R1
+   \   00000E4C   810280E0           ADD      R0,R0,R1, LSL #+5
+   \   00000E50   800D80E2           ADD      R0,R0,#+8192
+   \   00000E54   4007A0E1           ASR      R0,R0,#+14
+   \   00000E58   ........           _BLF     D_UTIL_saturate,??D_UTIL_saturate??rA
+   \   00000E5C   B000CAE1           STRH     R0,[R10, #+0]
+   \   00000E60   40005BE3           CMP      R11,#+64
+   \   00000E64   EEFFFFBA           BLT      ??D_MAIN_decode_71
+    920          
+    921                if(mode <= MODE_9k)
+   \   00000E68   020054E3           CMP      R4,#+2
+   \   00000E6C   1D0000AA           BGE      ??D_MAIN_decode_72
+    922                {
+    923                   if(pit_sharp > 16384)
+   \   00000E70   2C009DE5           LDR      R0,[SP, #+44]
+   \   00000E74   0110A0E3           MOV      R1,#+1
+   \   00000E78   401C81E3           ORR      R1,R1,#0x4000
+   \   00000E7C   0008A0E1           MOV      R0,R0, LSL #+16
+   \   00000E80   200851E1           CMP      R1,R0, LSR #+16
+   \   00000E84   1700008A           BHI      ??D_MAIN_decode_72
+    924                   {
+    925                      for(i = 0; i < L_SUBFR; i++)
+   \   00000E88   00B0A0E3           MOV      R11,#+0
+    926                      {
+    927                         L_tmp = (excp[i] + exc2[i]);
+    928                         excp[i] = D_UTIL_saturate(L_tmp);
+   \                     ??D_MAIN_decode_73:
+   \   00000E8C   DC008DE2           ADD      R0,SP,#+220
+   \   00000E90   400E80E2           ADD      R0,R0,#+1024
+   \   00000E94   8BA080E0           ADD      R10,R0,R11, LSL #+1
+   \   00000E98   F000DAE1           LDRSH    R0,[R10, #+0]
+   \   00000E9C   551F8DE2           ADD      R1,SP,#+340
+   \   00000EA0   8B1081E0           ADD      R1,R1,R11, LSL #+1
+   \   00000EA4   F010D1E1           LDRSH    R1,[R1, #+0]
+    929                      }
+   \   00000EA8   01B08BE2           ADD      R11,R11,#+1
+   \   00000EAC   000081E0           ADD      R0,R1,R0
+   \   00000EB0   ........           _BLF     D_UTIL_saturate,??D_UTIL_saturate??rA
+   \   00000EB4   B000CAE1           STRH     R0,[R10, #+0]
+   \   00000EB8   40005BE3           CMP      R11,#+64
+   \   00000EBC   F2FFFFBA           BLT      ??D_MAIN_decode_73
+    930          
+    931                      D_GAIN_adaptive_control(exc2, excp, L_SUBFR);
+   \   00000EC0   4020A0E3           MOV      R2,#+64
+   \   00000EC4   DC108DE2           ADD      R1,SP,#+220
+   \   00000EC8   401E81E2           ADD      R1,R1,#+1024
+   \   00000ECC   550F8DE2           ADD      R0,SP,#+340
+   \   00000ED0   ........           _BLF     D_GAIN_adaptive_control,??D_GAIN_adaptive_control??rA
+    932                      memcpy(exc2, excp, L_SUBFR * sizeof(Word16));
+   \   00000ED4   8020A0E3           MOV      R2,#+128
+   \   00000ED8   DC108DE2           ADD      R1,SP,#+220
+   \   00000EDC   401E81E2           ADD      R1,R1,#+1024
+   \   00000EE0   550F8DE2           ADD      R0,SP,#+340
+   \   00000EE4   1E0100EF           SWI      +286
+    933                   }
+    934                }
+    935          
+    936                if(mode <= MODE_7k)
+   \                     ??D_MAIN_decode_72:
+   \   00000EE8   08A188E0           ADD      R10,R8,R8, LSL #+2
+   \   00000EEC   010054E3           CMP      R4,#+1
+   \   00000EF0   480000AA           BGE      ??D_MAIN_decode_74
+    937                {
+    938                   j = (i_subfr >> 6);
+   \   00000EF4   4833A0E1           ASR      R3,R8,#+6
+    939          
+    940                   for(i = 0; i < M; i++)
+   \   00000EF8   00B0A0E3           MOV      R11,#+0
+   \                     ??D_MAIN_decode_75:
+   \   00000EFC   68019FE5           LDR      R0,??D_MAIN_decode_17  ;; D_ROM_interpol_frac
+   \   00000F00   4DCF8DE2           ADD      R12,SP,#+308
+   \   00000F04   830080E0           ADD      R0,R0,R3, LSL #+1
+   \   00000F08   F010D0E1           LDRSH    R1,[R0, #+0]
+   \   00000F0C   EC008DE2           ADD      R0,SP,#+236
+   \   00000F10   8B2080E0           ADD      R2,R0,R11, LSL #+1
+   \   00000F14   4C008DE2           ADD      R0,SP,#+76
+   \   00000F18   8B0080E0           ADD      R0,R0,R11, LSL #+1
+   \   00000F1C   F000D0E1           LDRSH    R0,[R0, #+0]
+   \   00000F20   8BC08CE0           ADD      R12,R12,R11, LSL #+1
+   \   00000F24   F0C0DCE1           LDRSH    R12,[R12, #+0]
+   \   00000F28   FFE0A0E3           MOV      LR,#+255
+   \   00000F2C   7FEC8EE3           ORR      LR,LR,#0x7F00
+   \   00000F30   01E04EE0           SUB      LR,LR,R1
+   \   00000F34   9E0C0CE0           MUL      R12,LR,R12
+    941                   {
+    942                      L_tmp = isf_tmp[i] * (32767 - D_ROM_interpol_frac[j]);
+    943                      L_tmp = L_tmp + (isf[i] * D_ROM_interpol_frac[j]);
+    944                      HfIsf[i] = (Word16)((L_tmp + 0x4000) >> 15);
+   \   00000F38   01B08BE2           ADD      R11,R11,#+1
+   \   00000F3C   91C020E0           MLA      R0,R1,R0,R12
+   \   00000F40   10005BE3           CMP      R11,#+16
+   \   00000F44   400C80E2           ADD      R0,R0,#+16384
+   \   00000F48   C007A0E1           ASR      R0,R0,#+15
+   \   00000F4C   B000C2E1           STRH     R0,[R2, #+0]
+   \   00000F50   E9FFFFBA           BLT      ??D_MAIN_decode_75
+    945                   }
+    946                }
+    947                else
+    948                {
+    949                   memset(st->mem_syn_hf, 0, (M16k - M) * sizeof(Word16));
+    950                }
+    951          
+    952                if(mode >= MODE_24k)
+    953                {
+    954                   corr_gain = *prms++;
+    955                   D_UTIL_dec_synthesis(p_Aq, exc2, Q_new, &synth16k[i_subfr * 5 / 4],
+    956                      corr_gain, HfIsf, mode, newDTXState, bfi, st);
+    957                }
+    958                else
+    959                {
+    960                   D_UTIL_dec_synthesis(p_Aq, exc2, Q_new, &synth16k[i_subfr * 5 / 4], 0,
+    961                      HfIsf, mode, newDTXState, bfi, st);
+   \                     ??D_MAIN_decode_76:
+   \   00000F54   0500A0E1           MOV      R0,R5
+   \   00000F58   01002DE9           PUSH     {R0}
+   \   00000F5C   FE00DDE1           LDRSH    R0,[SP, #+14]
+   \   00000F60   01002DE9           PUSH     {R0}
+   \   00000F64   FC04DDE1           LDRSH    R0,[SP, #+76]
+   \   00000F68   01002DE9           PUSH     {R0}
+   \   00000F6C   0400A0E1           MOV      R0,R4
+   \   00000F70   01002DE9           PUSH     {R0}
+   \   00000F74   FC008DE2           ADD      R0,SP,#+252
+   \   00000F78   01002DE9           PUSH     {R0}
+   \   00000F7C   0000A0E3           MOV      R0,#+0
+   \                     ??D_MAIN_decode_77:
+   \   00000F80   01002DE9           PUSH     {R0}
+   \   00000F84   78159DE5           LDR      R1,[SP, #+1400]
+   \   00000F88   0920A0E1           MOV      R2,R9
+    962                }
+    963          
+    964                p_Aq += (M + 1);   /* interpolated LPC parameters for next subframe */
+   \   00000F8C   408088E2           ADD      R8,R8,#+64
+   \   00000F90   CA00A0E1           ASR      R0,R10,#+1
+   \   00000F94   200F8AE0           ADD      R0,R10,R0, LSR #+30
+   \   00000F98   4001A0E1           ASR      R0,R0,#+2
+   \   00000F9C   803081E0           ADD      R3,R1,R0, LSL #+1
+   \   00000FA0   58009DE5           LDR      R0,[SP, #+88]
+   \   00000FA4   5B1F8DE2           ADD      R1,SP,#+364
+   \   00000FA8   ........           _BLF     D_UTIL_dec_synthesis,??D_UTIL_dec_synthesis??rA
+   \   00000FAC   18D08DE2           ADD      SP,SP,#+24
+   \   00000FB0   40109DE5           LDR      R1,[SP, #+64]
+   \   00000FB4   400F58E3           CMP      R8,#+256
+   \   00000FB8   221081E2           ADD      R1,R1,#+34
+   \   00000FBC   40108DE5           STR      R1,[SP, #+64]
+   \   00000FC0   49FDFFBA           BLT      ??D_MAIN_decode_24
+    965             }
+    966          
+    967             /*
+    968              * Update signal for next frame
+    969              * -> save past of exc[]
+    970              * -> save pitch parameters.
+    971              */
+    972          
+    973             memmove(st->mem_exc, &st->mem_exc[L_FRAME], (PIT_MAX + L_INTERPOL) * sizeof(Word16));
+   \   00000FC4   7C2FA0E3           MOV      R2,#+496
+   \   00000FC8   811F85E2           ADD      R1,R5,#+516
+   \   00000FCC   040085E2           ADD      R0,R5,#+4
+   \   00000FD0   320100EF           SWI      +306
+    974             D_UTIL_signal_down_scale(exc, L_FRAME, Q_new);
+   \   00000FD4   38009DE5           LDR      R0,[SP, #+56]
+   \   00000FD8   0920A0E1           MOV      R2,R9
+   \   00000FDC   401FA0E3           MOV      R1,#+256
+   \   00000FE0   ........           _BLF     D_UTIL_signal_down_scale,??D_UTIL_signal_down_scale??rA
+    975             D_DTX_activity_update(st->dtx_decSt, isf, exc);
+   \   00000FE4   38209DE5           LDR      R2,[SP, #+56]
+   \   00000FE8   240096E5           LDR      R0,[R6, #+36]
+   \   00000FEC   4C108DE2           ADD      R1,SP,#+76
+   \   00000FF0   ........           _BLF     D_DTX_activity_update,??D_DTX_activity_update??rA
+    976             st->dtx_decSt->mem_dtx_global_state = (UWord8)newDTXState;
+   \   00000FF4   240096E5           LDR      R0,[R6, #+36]
+   \   00000FF8   30109DE5           LDR      R1,[SP, #+48]
+   \   00000FFC   6111C0E5           STRB     R1,[R0, #+353]
+    977             st->mem_bfi = bfi;
+   \   00001000   14009DE5           LDR      R0,[SP, #+20]
+   \   00001004   2800C6E5           STRB     R0,[R6, #+40]
+    978          
+    979             return(0);
+   \                     ??D_MAIN_decode_18:
+   \   00001008   0000A0E3           MOV      R0,#+0
+   \   0000100C   59DF8DE2           ADD      SP,SP,#+356
+   \   00001010   40DE8DE2           ADD      SP,SP,#+1024
+   \   00001014   F08FBDE8           POP      {R4-R11,PC}      ;; return
+   \                     ??D_MAIN_decode_74:
+   \   00001018   0820A0E3           MOV      R2,#+8
+   \   0000101C   0010A0E3           MOV      R1,#+0
+   \   00001020   560E82E3           ORR      R0,R2,#0x560
+   \   00001024   050080E0           ADD      R0,R0,R5
+   \   00001028   BB0000EF           SWI      +187
+   \   0000102C   080054E3           CMP      R4,#+8
+   \   00001030   C7FFFFBA           BLT      ??D_MAIN_decode_76
+   \   00001034   5C259DE5           LDR      R2,[SP, #+1372]
+   \   00001038   0510A0E1           MOV      R1,R5
+   \   0000103C   ........           LDRSH    R0,[R2], #+2
+   \   00001040   5C258DE5           STR      R2,[SP, #+1372]
+   \   00001044   02002DE9           PUSH     {R1}
+   \   00001048   FE10DDE1           LDRSH    R1,[SP, #+14]
+   \   0000104C   02002DE9           PUSH     {R1}
+   \   00001050   FC14DDE1           LDRSH    R1,[SP, #+76]
+   \   00001054   02002DE9           PUSH     {R1}
+   \   00001058   0410A0E1           MOV      R1,R4
+   \   0000105C   02002DE9           PUSH     {R1}
+   \   00001060   FC108DE2           ADD      R1,SP,#+252
+   \   00001064   02002DE9           PUSH     {R1}
+   \   00001068   C4FFFFEA           B        ??D_MAIN_decode_77
+   \                     ??D_MAIN_decode_17:
+   \   0000106C   ........           DC32     D_ROM_interpol_frac
+    980          }
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable1:
+   \   00000000   ........           DC32     D_ROM_isf
+
+   Maximum stack usage in bytes:
+
+     Function      CSTACK
+     --------      ------
+     D_MAIN_close      8
+     D_MAIN_decode  1444
+     D_MAIN_init      16
+     D_MAIN_reset     28
+
+
+   Segment part sizes:
+
+     Function/Label Bytes
+     -------------- -----
+     D_MAIN_reset    476
+     D_MAIN_init      88
+     D_MAIN_close     40
+     D_MAIN_decode  4208
+     ??DataTable1      4
+      Others         412
+
+ 
+ 5 228 bytes in segment CODE
+ 
+ 4 816 bytes of CODE memory (+ 412 bytes shared)
+
+Errors: none
+Warnings: 10

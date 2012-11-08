@@ -56,12 +56,16 @@ __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
 //---------------------------------------------------------------------------------------
 
 __root const CFG_HDR cfghdr_m21={CFG_LEVEL,"音效设定",1,0};
-
+#ifdef NEWSGOLD
 __root const CFG_HDR cfghdr2_1={CFG_UINT,"音量",0,6};
 __root const unsigned int volume=6;
+#else
+__root const CFG_HDR cfghdr2_1={CFG_UINT,"音量",0,5};
+__root const unsigned int volume=5;
+#endif
 
 __root const CFG_HDR cfghdr2_2={CFG_STR_UTF8,"报时*.WAV文件路径",0,127};
-__root const char folder_path[128]=DEFAULT_DISK ":\\ZBin\\TalkPhone\\";
+__root const char folder_path[128]=DEFAULT_DISK ":\\Sounds\\Time\\";
 
 __root const CFG_HDR cfghdr2_3={CFG_CBOX,"每个小时播放",0,2};
 __root const int PLAY_PARAM=1;
@@ -72,7 +76,7 @@ __root const int PLAY_PARAM_BTN_CALL=1;
 __root const CFG_CBOX_ITEM cfgcbox4[2]={"否","是"};
 
 __root const CFG_HDR cfghdr2_5={CFG_STR_UTF8,"报时前缀文件",0,127};
-__root const char kurant_path[128]=DEFAULT_DISK ":\\ZBin\\TalkPhone\\x.wav";
+__root const char kurant_path[128]=DEFAULT_DISK ":\\Sounds\\Time\\99.wav";
 
 __root const CFG_HDR cfghdr_m20={CFG_LEVEL,"",0,0};
 

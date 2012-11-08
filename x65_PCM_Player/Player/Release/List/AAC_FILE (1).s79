@@ -1,0 +1,1770 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:14 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD /
+//                       EC\AAC_FILE (1).c                                   /
+//    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AAC /
+//                       DEC\AAC_FILE (1).c" -D NDEBUG -lC                   /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\AAC_FILE (1).s79                               /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME `AAC_FILE (1)`
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        EXTERN ??div32_a
+
+??DataTable0 EQU 0
+??DataTable1 EQU 0
+        MULTWEAK ??rA??div32_a
+        MULTWEAK ??raac_CalcFreqTables??rT
+        MULTWEAK ??raac_RatioPowInv??rA
+        FUNCTION BuildPatches,0203H
+        LOCFRAME CSTACK, 44, STACK
+        FUNCTION CalcFreqLimiter,0203H
+        LOCFRAME CSTACK, 48, STACK
+        FUNCTION CalcFreqMaster,0203H
+        LOCFRAME CSTACK, 44, STACK
+        FUNCTION CalcFreqMasterScaleZero,0203H
+        LOCFRAME CSTACK, 264, STACK
+        PUBLIC raac_CalcFreqTables
+        FUNCTION raac_CalcFreqTables,0203H
+        LOCFRAME CSTACK, 64, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+raac_RatioPowInv    SYMBOL "raac_RatioPowInv"
+raac_CalcFreqTables SYMBOL "raac_CalcFreqTables"
+??raac_CalcFreqTables??rT SYMBOL "??rT", raac_CalcFreqTables
+??raac_RatioPowInv??rA SYMBOL "??rA", raac_RatioPowInv
+
+        EXTERN raac_RatioPowInv
+        FUNCTION raac_RatioPowInv,0202H
+        EXTERN raac_goalSBTab
+        EXTERN raac_k0Tab
+        EXTERN raac_k2Tab
+        EXTERN raac_log2Tab
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??CalcFreqMasterScaleZero??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE CalcFreqMasterScaleZero
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (1).c
+//    1 
+//    2 /* ***** BEGIN LICENSE BLOCK *****  
+//    3  * Source last modified: $Id: sbrfreq.c,v 1.1 2005/02/26 01:47:35 jrecker Exp $ 
+//    4  *   
+//    5  * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+//    6  *       
+//    7  * The contents of this file, and the files included with this file, 
+//    8  * are subject to the current version of the RealNetworks Public 
+//    9  * Source License (the "RPSL") available at 
+//   10  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   11  * the file under the current version of the RealNetworks Community 
+//   12  * Source License (the "RCSL") available at 
+//   13  * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+//   14  * will apply. You may also obtain the license terms directly from 
+//   15  * RealNetworks.  You may not use this file except in compliance with 
+//   16  * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+//   17  * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+//   18  * the rights, obligations and limitations governing use of the 
+//   19  * contents of the file. 
+//   20  *   
+//   21  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   22  * developer of the Original Code and owns the copyrights in the 
+//   23  * portions it created. 
+//   24  *   
+//   25  * This file, and the files included with this file, is distributed 
+//   26  * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+//   27  * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+//   28  * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+//   29  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+//   30  * ENJOYMENT OR NON-INFRINGEMENT. 
+//   31  *  
+//   32  * Technology Compatibility Kit Test Suite(s) Location:  
+//   33  *    http://www.helixcommunity.org/content/tck  
+//   34  *  
+//   35  * Contributor(s):  
+//   36  *   
+//   37  * ***** END LICENSE BLOCK ***** */  
+//   38 
+//   39 /**************************************************************************************
+//   40  * Fixed-point HE-AAC decoder
+//   41  * Jon Recker (jrecker@real.com)
+//   42  * February 2005
+//   43  *
+//   44  * sbrfreq.c - frequency band table calculation for SBR
+//   45  **************************************************************************************/
+//   46 
+//   47 #include "sbr_aac.h"
+//   48 #include "assembly_aac.h"
+//   49 
+//   50 /**************************************************************************************
+//   51  * Function:    BubbleSort
+//   52  *
+//   53  * Description: in-place sort of unsigned chars
+//   54  *
+//   55  * Inputs:      buffer of elements to sort
+//   56  *              number of elements to sort
+//   57  *
+//   58  * Outputs:     sorted buffer
+//   59  *
+//   60  * Return:      none
+//   61  **************************************************************************************/
+//   62 static void BubbleSort(unsigned char *v, int nItems)
+//   63 {
+//   64 	int i;
+//   65 	unsigned char t;
+//   66 
+//   67 	while (nItems >= 2) {
+//   68 		for (i = 0; i < nItems-1; i++) {
+//   69 			if (v[i+1] < v[i]) {
+//   70 				t = v[i+1];	
+//   71 				v[i+1] = v[i];	
+//   72 				v[i] = t;
+//   73 			}
+//   74 		}
+//   75 		nItems--;
+//   76 	}
+//   77 }
+//   78 
+//   79 /**************************************************************************************
+//   80  * Function:    VMin
+//   81  *
+//   82  * Description: find smallest element in a buffer of unsigned chars
+//   83  *
+//   84  * Inputs:      buffer of elements to search
+//   85  *              number of elements to search
+//   86  *
+//   87  * Outputs:     none
+//   88  *
+//   89  * Return:      smallest element in buffer
+//   90  **************************************************************************************/
+//   91 static unsigned char VMin(unsigned char *v, int nItems)
+//   92 {
+//   93 	int i;
+//   94 	unsigned char vMin;
+//   95 
+//   96 	vMin = v[0];
+//   97 	for (i = 1; i < nItems; i++) {
+//   98 		if (v[i] < vMin)
+//   99 			vMin = v[i];
+//  100 	}
+//  101 	return vMin;
+//  102 }
+//  103 
+//  104 /**************************************************************************************
+//  105  * Function:    VMax
+//  106  *
+//  107  * Description: find largest element in a buffer of unsigned chars
+//  108  *
+//  109  * Inputs:      buffer of elements to search
+//  110  *              number of elements to search
+//  111  *
+//  112  * Outputs:     none
+//  113  *
+//  114  * Return:      largest element in buffer
+//  115  **************************************************************************************/
+//  116 static unsigned char VMax(unsigned char *v, int nItems)
+//  117 {
+//  118 	int i;
+//  119 	unsigned char vMax;
+//  120 
+//  121 	vMax = v[0];
+//  122 	for (i = 1; i < nItems; i++) {
+//  123 		if (v[i] > vMax)
+//  124 			vMax = v[i];
+//  125 	}
+//  126 	return vMax;
+//  127 }
+//  128 
+//  129 /**************************************************************************************
+//  130  * Function:    CalcFreqMasterScaleZero
+//  131  *
+//  132  * Description: calculate master frequency table when freqScale == 0 
+//  133  *                (4.6.18.3.2.1, figure 4.39)
+//  134  *
+//  135  * Inputs:      alterScale flag
+//  136  *              index of first QMF subband in master freq table (k0)
+//  137  *              index of last QMF subband (k2)
+//  138  *
+//  139  * Outputs:     master frequency table
+//  140  *
+//  141  * Return:      number of bands in master frequency table
+//  142  *
+//  143  * Notes:       assumes k2 - k0 <= 48 and k2 >= k0 (4.6.18.3.6)
+//  144  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function CalcFreqMasterScaleZero
+        ARM
+//  145 static int CalcFreqMasterScaleZero(unsigned char *freqMaster, int alterScale, int k0, int k2)
+//  146 {
+CalcFreqMasterScaleZero:
+        PUSH     {R4,R5}
+        CFI R5 Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+        SUB      SP,SP,#+256
+        CFI CFA R13+264
+//  147 	int nMaster, k, nBands, k2Achieved, dk, vDk[64], k2Diff;
+//  148 
+//  149 	if (alterScale) {
+        SUB      R3,R3,R2
+        CMP      R1,#+0
+        BEQ      ??CalcFreqMasterScaleZero_0
+//  150 		dk = 2;
+        MOV      R4,#+2
+//  151 		nBands = 2 * ((k2 - k0 + 2) >> 2);
+        ADD      R1,R3,#+2
+        ASR      R1,R1,#+2
+        B        ??CalcFreqMasterScaleZero_1
+//  152 	} else {
+//  153 		dk = 1;
+??CalcFreqMasterScaleZero_0:
+        MOV      R4,#+1
+//  154 		nBands = 2 * ((k2 - k0) >> 1);
+        ASR      R1,R3,#+1
+??CalcFreqMasterScaleZero_1:
+        LSL      R1,R1,#+1
+//  155 	}
+//  156 
+//  157 	if (nBands <= 0)
+        CMP      R1,#+1
+//  158 		return 0;
+        MOVLT    R0,#+0
+        BLT      ??CalcFreqMasterScaleZero_2
+//  159 
+//  160 	k2Achieved = k0 + nBands * dk;
+//  161 	k2Diff = k2 - k2Achieved;
+        MUL      R12,R4,R1
+//  162 	for (k = 0; k < nBands; k++)
+        MOV      R5,SP
+        SUB      R3,R3,R12
+        MOV      R12,#+0
+        B        ??CalcFreqMasterScaleZero_3
+//  163 		vDk[k] = dk;
+??CalcFreqMasterScaleZero_4:
+        STR      R4,[R5, +R12, LSL #+2]
+        ADD      R12,R12,#+1
+??CalcFreqMasterScaleZero_3:
+        CMP      R12,R1
+        BLT      ??CalcFreqMasterScaleZero_4
+//  164 
+//  165 	if (k2Diff > 0) {
+        CMP      R3,#+1
+        BLT      ??CalcFreqMasterScaleZero_5
+//  166 		k = nBands - 1;
+        SUB      R12,R1,#+1
+//  167 		while (k2Diff) {
+//  168 			vDk[k]++;
+??CalcFreqMasterScaleZero_6:
+        MOV      R4,SP
+        ADD      R4,R4,R12, LSL #+2
+        LDR      R5,[R4, #+0]
+//  169 			k--;
+        SUB      R12,R12,#+1
+        ADD      R5,R5,#+1
+        STR      R5,[R4, #+0]
+//  170 			k2Diff--;
+        SUBS     R3,R3,#+1
+//  171 		}
+        BNE      ??CalcFreqMasterScaleZero_6
+        B        ??CalcFreqMasterScaleZero_7
+//  172 	} else if (k2Diff < 0) {
+??CalcFreqMasterScaleZero_5:
+        CMP      R3,#+0
+        BPL      ??CalcFreqMasterScaleZero_7
+//  173 		k = 0;
+        MOV      R12,#+0
+//  174 		while (k2Diff) {
+//  175 			vDk[k]--;
+??CalcFreqMasterScaleZero_8:
+        MOV      R4,SP
+        ADD      R4,R4,R12, LSL #+2
+        LDR      R5,[R4, #+0]
+//  176 			k++;
+        ADD      R12,R12,#+1
+        SUB      R5,R5,#+1
+        STR      R5,[R4, #+0]
+//  177 			k2Diff++;
+        ADDS     R3,R3,#+1
+//  178 		}
+        BNE      ??CalcFreqMasterScaleZero_8
+//  179 	}
+//  180 
+//  181 	nMaster = nBands;
+//  182 	freqMaster[0] = k0;
+??CalcFreqMasterScaleZero_7:
+        STRB     R2,[R0, #+0]
+//  183 	for (k = 1; k <= nBands; k++)
+        MOV      R2,#+1
+//  184 		freqMaster[k] = freqMaster[k-1] + vDk[k-1];
+??CalcFreqMasterScaleZero_9:
+        ADD      R3,R2,R0
+        LDRB     R3,[R3, #-1]
+        MOV      R4,SP
+        ADD      R4,R4,R2, LSL #+2
+        LDR      R4,[R4, #-4]
+        ADD      R3,R4,R3
+        STRB     R3,[R2, +R0]
+        ADD      R2,R2,#+1
+        CMP      R1,R2
+        BGE      ??CalcFreqMasterScaleZero_9
+//  185 
+//  186 	return nMaster;
+        MOV      R0,R1
+??CalcFreqMasterScaleZero_2:
+        ADD      SP,SP,#+256
+        CFI CFA R13+8
+        POP      {R4,R5}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock1
+//  187 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??CalcFreqMaster??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE CalcFreqMaster
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant {120, 200, 300}>`:
+        DATA
+        DC32 120, 200, 300
+//  188 
+//  189 /* mBandTab[i] = temp1[i] / 2 */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  190 static const int mBandTab[3] = {6, 5, 4};
+//  191 
+//  192 /* invWarpTab[i] = 1.0 / temp2[i], Q30 (see 4.6.18.3.2.1) */
+//  193 static const int invWarpTab[2] = {0x40000000, 0x313b13b1};
+invWarpTab:
+        DATA
+        DC32 1073741824, 825955249
+        DC32 6, 5, 4
+//  194 
+//  195 /**************************************************************************************
+//  196  * Function:    CalcFreqMasterScale
+//  197  *
+//  198  * Description: calculate master frequency table when freqScale > 0 
+//  199  *                (4.6.18.3.2.1, figure 4.39)
+//  200  *
+//  201  * Inputs:      alterScale flag
+//  202  *              freqScale flag
+//  203  *              index of first QMF subband in master freq table (k0)
+//  204  *              index of last QMF subband (k2)
+//  205  *
+//  206  * Outputs:     master frequency table
+//  207  *
+//  208  * Return:      number of bands in master frequency table
+//  209  *
+//  210  * Notes:       assumes k2 - k0 <= 48 and k2 >= k0 (4.6.18.3.6)
+//  211  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function CalcFreqMaster
+        ARM
+//  212 static int CalcFreqMaster(unsigned char *freqMaster, int freqScale, int alterScale, int k0, int k2)
+//  213 {
+CalcFreqMaster:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+        SUB      SP,SP,#+8
+        CFI CFA R13+44
+        LDR      R8,[SP, #+44]
+        MOV      R4,R0
+        MOV      R6,R3
+//  214 	int bands, twoRegions, k, k1, t, vLast, vCurr, pCurr;
+//  215 	int invWarp, nBands0, nBands1, change;
+//  216 	unsigned char vDk1Min, vDk0Max;
+//  217 	unsigned char *vDelta;
+//  218 
+//  219 	if (freqScale < 1 || freqScale > 3)
+        CMP      R1,#+1
+        BLT      ??CalcFreqMaster_0
+        CMP      R1,#+4
+        BLT      ??CalcFreqMaster_1
+//  220 		return -1;
+??CalcFreqMaster_0:
+        MVN      R0,#+0
+        POP      {R1,R2,R4-R11,PC}
+//  221 
+//  222 	bands = mBandTab[freqScale - 1];
+??CalcFreqMaster_1:
+        LDR      R0,??CalcFreqMaster_2  ;; invWarpTab
+//  223 	invWarp = invWarpTab[alterScale];
+//  224 
+//  225 	/* tested for all k0 = [5, 64], k2 = [k0, 64] */
+//  226 	if (k2*10000 > 22449*k0) {
+//  227 		twoRegions = 1;
+//  228 		k1 = 2*k0;
+//  229 	} else {
+//  230 		twoRegions = 0;
+//  231 		k1 = k2;
+//  232 	}
+//  233 	
+//  234 	/* tested for all k0 = [5, 64], k1 = [k0, 64], freqScale = [1,3] */
+//  235 	t = (log2Tab[k1] - log2Tab[k0]) >> 3;				/* log2(k1/k0), Q28 to Q25 */
+//  236 	nBands0 = 2 * (((bands * t) + (1 << 24)) >> 25);	/* multiply by bands/2, round to nearest int (mBandTab has factor of 1/2 rolled in) */
+        LDR      R10,??DataTable2  ;; raac_log2Tab
+        ADD      R1,R0,R1, LSL #+2
+        LDR      R1,[R1, #+4]
+//  237 
+//  238 	/* tested for all valid combinations of k0, k1, nBands (from sampRate, freqScale, alterScale) 
+//  239 	 * roundoff error can be a problem with fixpt (e.g. pCurr = 12.499999 instead of 12.50003)
+//  240 	 *   because successive multiplication always undershoots a little bit, but this
+//  241 	 *   doesn't occur in any of the ratios we encounter from the valid k0/k1 bands in the spec
+//  242 	 */
+//  243 	t = RatioPowInv(k1, k0, nBands0);
+//  244 	pCurr = k0 << 24;
+//  245 	vLast = k0;
+//  246 	vDelta = freqMaster + 1;	/* operate in-place */
+//  247 	for (k = 0; k < nBands0; k++) {
+        MOV      R9,#+0
+        STR      R1,[SP, #+0]
+        LDR      R0,[R0, +R2, LSL #+2]
+        STR      R0,[SP, #+4]
+        MOV      R0,#+177
+        ORR      R0,R0,#0x5700
+        MUL      R1,R0,R6
+        MOV      R0,#+16
+        ORR      R0,R0,#0x2700
+        MUL      R2,R0,R8
+        LDR      R0,[SP, #+0]
+        CMP      R1,R2
+        LDR      R2,[R10, +R6, LSL #+2]
+        LSLLT    R7,R6,#+1
+        MOVGE    R7,R8
+        LDR      R1,[R10, +R7, LSL #+2]
+        MOVLT    R11,#+1
+        SUB      R1,R1,R2
+        ASR      R1,R1,#+3
+        MUL      R0,R1,R0
+        MOVGE    R11,#+0
+        ADD      R0,R0,#+16777216
+        ASR      R0,R0,#+25
+        LSL      R5,R0,#+1
+        MOV      R2,R5
+        MOV      R1,R6
+        MOV      R0,R7
+        _BLF     raac_RatioPowInv,??raac_RatioPowInv??rA
+        LSL      LR,R6,#+24
+        MOV      R1,R6
+        ADD      R12,R4,#+1
+        CMP      R5,#+1
+        BGE      ??CalcFreqMaster_3
+        B        ??CalcFreqMaster_4
+//  248 		pCurr = MULSHIFT32(pCurr, t) << 8;	/* keep in Q24 */
+??CalcFreqMaster_5:
+        SMULL    R2,R3,LR,R0
+        LSL      LR,R3,#+8
+//  249 		vCurr = (pCurr + (1 << 23)) >> 24;
+        ADD      R2,LR,#+8388608
+        ASR      R2,R2,#+24
+//  250 		vDelta[k] = (vCurr - vLast);
+        SUB      R1,R2,R1
+        STRB     R1,[R9, +R12]
+//  251 		vLast = vCurr;
+        MOV      R1,R2
+//  252 	}
+        ADD      R9,R9,#+1
+??CalcFreqMaster_3:
+        CMP      R9,R5
+        BLT      ??CalcFreqMaster_5
+//  253 
+//  254 	/* sort the deltas and find max delta for first region */
+//  255 	BubbleSort(vDelta, nBands0);
+??CalcFreqMaster_4:
+        MOV      R1,R5
+        CMP      R1,#+2
+        BLT      ??CalcFreqMaster_6
+??CalcFreqMaster_7:
+        MOV      R0,#+0
+        SUB      R1,R1,#+1
+        CMP      R1,#+1
+        BGE      ??CalcFreqMaster_8
+        B        ??CalcFreqMaster_9
+??CalcFreqMaster_10:
+        LDRB     R3,[R0, +R12]
+        ADD      R2,R0,R12
+        LDRB     R2,[R2, #+1]
+        CMP      R2,R3
+        BCS      ??CalcFreqMaster_11
+        LDRB     R9,[R0, +R12]
+        ADD      R2,R0,R12
+        LDRB     R2,[R2, #+1]
+        ADD      R3,R0,R12
+        STRB     R9,[R3, #+1]
+        STRB     R2,[R0, +R12]
+??CalcFreqMaster_11:
+        ADD      R0,R0,#+1
+??CalcFreqMaster_8:
+        CMP      R0,R1
+        BLT      ??CalcFreqMaster_10
+??CalcFreqMaster_9:
+        CMP      R1,#+2
+        BGE      ??CalcFreqMaster_7
+//  256 	vDk0Max = VMax(vDelta, nBands0);
+??CalcFreqMaster_6:
+        LDRB     R9,[R12, #+0]
+        MOV      R0,#+1
+        CMP      R5,#+2
+        BGE      ??CalcFreqMaster_12
+        B        ??CalcFreqMaster_13
+??CalcFreqMaster_14:
+        LDRB     R2,[R0, +R12]
+        ADD      R0,R0,#+1
+        CMP      R9,R2
+        MOVCC    R9,R2
+??CalcFreqMaster_12:
+        CMP      R0,R5
+        BLT      ??CalcFreqMaster_14
+//  257 
+//  258 	/* fill master frequency table with bands from first region */
+//  259 	freqMaster[0] = k0;
+??CalcFreqMaster_13:
+        STRB     R6,[R4, #+0]
+//  260 	for (k = 1; k <= nBands0; k++)
+        MOV      R0,#+1
+        CMP      R5,#+1
+        BLT      ??CalcFreqMaster_15
+//  261 		freqMaster[k] += freqMaster[k-1];
+??CalcFreqMaster_16:
+        LDRB     R1,[R0, +R4]
+        ADD      R2,R0,R4
+        LDRB     R2,[R2, #-1]
+        ADD      R1,R2,R1
+        STRB     R1,[R0, +R4]
+        ADD      R0,R0,#+1
+        CMP      R5,R0
+        BGE      ??CalcFreqMaster_16
+//  262 
+//  263 	/* if only one region, then the table is complete */
+//  264 	if (!twoRegions)
+??CalcFreqMaster_15:
+        CMP      R11,#+0
+//  265 		return nBands0;
+        MOVEQ    R0,R5
+        POPEQ    {R1,R2,R4-R11,PC}
+//  266 
+//  267 	/* tested for all k1 = [10, 64], k2 = [k0, 64], freqScale = [1,3] */
+//  268 	t = (log2Tab[k2] - log2Tab[k1]) >> 3;		/* log2(k1/k0), Q28 to Q25 */
+//  269 	t = MULSHIFT32(bands * t, invWarp) << 2;	/* multiply by bands/2, divide by warp factor, keep Q25 */
+//  270 	nBands1 = 2 * ((t + (1 << 24)) >> 25);		/* round to nearest int */
+        LDR      R0,[SP, #+0]
+        LDR      R1,[R10, +R8, LSL #+2]
+        LDR      R2,[R10, +R7, LSL #+2]
+        SUB      R1,R1,R2
+        ASR      R1,R1,#+3
+        MUL      R0,R1,R0
+        LDR      R1,[SP, #+4]
+        SMULL    R2,R3,R0,R1
+        MOV      R0,#+16777216
+        ADD      R0,R0,R3, LSL #+2
+        ASR      R0,R0,#+25
+        LSL      R6,R0,#+1
+//  271 				
+//  272 	/* see comments above for calculations in first region */
+//  273 	t = RatioPowInv(k2, k1, nBands1);
+        MOV      R2,R6
+        MOV      R1,R7
+        MOV      R0,R8
+        _BLF     raac_RatioPowInv,??raac_RatioPowInv??rA
+//  274 	pCurr = k1 << 24;
+        LSL      LR,R7,#+24
+//  275 	vLast = k1;
+        MOV      R1,R7
+//  276 	vDelta = freqMaster + nBands0 + 1;	/* operate in-place */
+        ADD      R2,R5,R4
+        ADD      R12,R2,#+1
+//  277 	for (k = 0; k < nBands1; k++) {
+        MOV      R7,#+0
+        CMP      R6,#+1
+        BGE      ??CalcFreqMaster_17
+        B        ??CalcFreqMaster_18
+//  278 		pCurr = MULSHIFT32(pCurr, t) << 8;	/* keep in Q24 */
+??CalcFreqMaster_19:
+        SMULL    R2,R3,LR,R0
+        LSL      LR,R3,#+8
+//  279 		vCurr = (pCurr + (1 << 23)) >> 24;
+        ADD      R2,LR,#+8388608
+        ASR      R2,R2,#+24
+//  280 		vDelta[k] = (vCurr - vLast);
+        SUB      R1,R2,R1
+        STRB     R1,[R7, +R12]
+//  281 		vLast = vCurr;
+        MOV      R1,R2
+//  282 	}
+        ADD      R7,R7,#+1
+??CalcFreqMaster_17:
+        CMP      R7,R6
+        BLT      ??CalcFreqMaster_19
+//  283 
+//  284 	/* sort the deltas, adjusting first and last if the second region has smaller deltas than the first */
+//  285 	vDk1Min = VMin(vDelta, nBands1);
+??CalcFreqMaster_18:
+        LDRB     R0,[R12, #+0]
+        MOV      R1,#+1
+        CMP      R6,#+2
+        BGE      ??CalcFreqMaster_20
+        B        ??CalcFreqMaster_21
+??CalcFreqMaster_22:
+        LDRB     R2,[R1, +R12]
+        ADD      R1,R1,#+1
+        CMP      R2,R0
+        MOVCC    R0,R2
+??CalcFreqMaster_20:
+        CMP      R1,R6
+        BLT      ??CalcFreqMaster_22
+//  286 	if (vDk1Min < vDk0Max) {
+??CalcFreqMaster_21:
+        CMP      R0,R9
+        BCS      ??CalcFreqMaster_23
+//  287 		BubbleSort(vDelta, nBands1);
+        MOV      R0,R6
+        CMP      R0,#+2
+        BLT      ??CalcFreqMaster_24
+??CalcFreqMaster_25:
+        MOV      R1,#+0
+        SUB      R0,R0,#+1
+        CMP      R0,#+1
+        BGE      ??CalcFreqMaster_26
+        B        ??CalcFreqMaster_27
+??CalcFreqMaster_28:
+        LDRB     R3,[R1, +R12]
+        ADD      R2,R1,R12
+        LDRB     R2,[R2, #+1]
+        CMP      R2,R3
+        BCS      ??CalcFreqMaster_29
+        LDRB     R7,[R1, +R12]
+        ADD      R2,R1,R12
+        LDRB     R2,[R2, #+1]
+        ADD      R3,R1,R12
+        STRB     R7,[R3, #+1]
+        STRB     R2,[R1, +R12]
+??CalcFreqMaster_29:
+        ADD      R1,R1,#+1
+??CalcFreqMaster_26:
+        CMP      R1,R0
+        BLT      ??CalcFreqMaster_28
+??CalcFreqMaster_27:
+        CMP      R0,#+2
+        BGE      ??CalcFreqMaster_25
+//  288 		change = vDk0Max - vDelta[0];
+??CalcFreqMaster_24:
+        LDRB     R0,[R12, #+0]
+//  289 		if (change > ((vDelta[nBands1 - 1] - vDelta[0]) >> 1))
+        LDRB     R2,[R12, #+0]
+        ADD      R1,R6,R12
+        LDRB     R1,[R1, #-1]
+        SUB      R0,R9,R0
+        SUB      R1,R1,R2
+        CMP      R0,R1, ASR #+1
+        BLE      ??CalcFreqMaster_30
+//  290 			 change = ((vDelta[nBands1 - 1] - vDelta[0]) >> 1);
+        ADD      R0,R6,R12
+        LDRB     R0,[R0, #-1]
+        SUB      R0,R0,R2
+        ASR      R0,R0,#+1
+//  291 		vDelta[0] += change;
+??CalcFreqMaster_30:
+        ADD      R1,R0,R2
+        STRB     R1,[R12, #+0]
+//  292 		vDelta[nBands1-1] -= change;
+        ADD      R2,R6,R12
+        LDRB     R2,[R2, #-1]
+        ADD      R1,R6,R12
+        SUB      R0,R2,R0
+        STRB     R0,[R1, #-1]
+//  293 	}
+//  294 	BubbleSort(vDelta, nBands1);
+??CalcFreqMaster_23:
+        MOV      R0,R6
+        CMP      R0,#+2
+        BLT      ??CalcFreqMaster_31
+??CalcFreqMaster_32:
+        MOV      R1,#+0
+        SUB      R0,R0,#+1
+        CMP      R0,#+1
+        BGE      ??CalcFreqMaster_33
+        B        ??CalcFreqMaster_34
+??CalcFreqMaster_35:
+        LDRB     R3,[R1, +R12]
+        ADD      R2,R1,R12
+        LDRB     R2,[R2, #+1]
+        CMP      R2,R3
+        BCS      ??CalcFreqMaster_36
+        LDRB     R7,[R1, +R12]
+        ADD      R2,R1,R12
+        LDRB     R2,[R2, #+1]
+        ADD      R3,R1,R12
+        STRB     R7,[R3, #+1]
+        STRB     R2,[R1, +R12]
+??CalcFreqMaster_36:
+        ADD      R1,R1,#+1
+??CalcFreqMaster_33:
+        CMP      R1,R0
+        BLT      ??CalcFreqMaster_35
+??CalcFreqMaster_34:
+        CMP      R0,#+2
+        BGE      ??CalcFreqMaster_32
+//  295 
+//  296 	/* fill master frequency table with bands from second region 
+//  297 	 * Note: freqMaster[nBands0] = k1
+//  298 	 */
+//  299 	for (k = 1; k <= nBands1; k++)
+??CalcFreqMaster_31:
+        MOV      R0,#+1
+        CMP      R6,#+1
+        BLT      ??CalcFreqMaster_37
+//  300 		freqMaster[k + nBands0] += freqMaster[k + nBands0 - 1];
+??CalcFreqMaster_38:
+        ADD      R1,R5,R0
+        ADD      R1,R1,R4
+        LDRB     R2,[R1, #+0]
+        LDRB     R3,[R1, #-1]
+        ADD      R0,R0,#+1
+        CMP      R6,R0
+        ADD      R2,R3,R2
+        STRB     R2,[R1, #+0]
+        BGE      ??CalcFreqMaster_38
+//  301 
+//  302 	return (nBands0 + nBands1);
+??CalcFreqMaster_37:
+        ADD      R0,R6,R5
+        POP      {R1,R2,R4-R11,PC}  ;; return
+        DATA
+??CalcFreqMaster_2:
+        DC32     invWarpTab
+        CFI EndBlock cfiBlock3
+//  303 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??BuildPatches??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE BuildPatches
+//  304 
+//  305 /**************************************************************************************
+//  306  * Function:    CalcFreqHigh
+//  307  *
+//  308  * Description: calculate high resolution frequency table (4.6.18.3.2.2)
+//  309  *
+//  310  * Inputs:      master frequency table
+//  311  *              number of bands in master frequency table 
+//  312  *              crossover band from header
+//  313  *
+//  314  * Outputs:     high resolution frequency table
+//  315  *
+//  316  * Return:      number of bands in high resolution frequency table
+//  317  **************************************************************************************/
+//  318 static int CalcFreqHigh(unsigned char *freqHigh, unsigned char *freqMaster, int nMaster, int crossOverBand)
+//  319 {
+//  320 	int k, nHigh;
+//  321 
+//  322 	nHigh = nMaster - crossOverBand;
+//  323 
+//  324 	for (k = 0; k <= nHigh; k++)
+//  325 		freqHigh[k] = freqMaster[k + crossOverBand];
+//  326 	
+//  327 	return nHigh;
+//  328 }
+//  329 
+//  330 /**************************************************************************************
+//  331  * Function:    CalcFreqLow
+//  332  *
+//  333  * Description: calculate low resolution frequency table (4.6.18.3.2.2)
+//  334  *
+//  335  * Inputs:      high resolution frequency table
+//  336  *              number of bands in high resolution frequency table 
+//  337  *
+//  338  * Outputs:     low resolution frequency table
+//  339  *
+//  340  * Return:      number of bands in low resolution frequency table
+//  341  **************************************************************************************/
+//  342 static int CalcFreqLow(unsigned char *freqLow, unsigned char *freqHigh, int nHigh)
+//  343 {
+//  344 	int k, nLow, oddFlag;
+//  345 
+//  346 	nLow = nHigh - (nHigh >> 1);
+//  347 	freqLow[0] = freqHigh[0];
+//  348 	oddFlag = nHigh & 0x01;
+//  349 
+//  350 	for (k = 1; k <= nLow; k++)
+//  351 		freqLow[k] = freqHigh[2*k - oddFlag];
+//  352 
+//  353 	return nLow;
+//  354 }
+//  355 
+//  356 /**************************************************************************************
+//  357  * Function:    CalcFreqNoise
+//  358  *
+//  359  * Description: calculate noise floor frequency table (4.6.18.3.2.2)
+//  360  *
+//  361  * Inputs:      low resolution frequency table
+//  362  *              number of bands in low resolution frequency table
+//  363  *              index of starting QMF subband for SBR (kStart)
+//  364  *              index of last QMF subband (k2)
+//  365  *              number of noise bands
+//  366  *
+//  367  * Outputs:     noise floor frequency table
+//  368  *
+//  369  * Return:      number of bands in noise floor frequency table
+//  370  **************************************************************************************/
+//  371 static int CalcFreqNoise(unsigned char *freqNoise, unsigned char *freqLow, int nLow, int kStart, int k2, int noiseBands)
+//  372 {
+//  373 	int i, iLast, k, nQ, lTop, lBottom;
+//  374 
+//  375 	lTop = log2Tab[k2];
+//  376 	lBottom = log2Tab[kStart];
+//  377 	nQ = noiseBands*((lTop - lBottom) >> 2);	/* Q28 to Q26, noiseBands = [0,3] */
+//  378 	nQ = (nQ + (1 << 25)) >> 26;
+//  379 	if (nQ < 1)
+//  380 		nQ = 1;
+//  381 
+//  382 	ASSERT(nQ <= MAX_NUM_NOISE_FLOOR_BANDS);	/* required from 4.6.18.3.6 */
+//  383 
+//  384 	iLast = 0;
+//  385 	freqNoise[0] = freqLow[0];
+//  386 	for (k = 1; k <= nQ; k++) {
+//  387 		i = iLast + (nLow - iLast) / (nQ + 1 - k);	/* truncating division */
+//  388 		freqNoise[k] = freqLow[i];
+//  389 		iLast = i;
+//  390 	}
+//  391 
+//  392 	return nQ;
+//  393 }
+//  394 
+//  395 /**************************************************************************************
+//  396  * Function:    BuildPatches
+//  397  *
+//  398  * Description: build high frequency patches (4.6.18.6.3)
+//  399  *
+//  400  * Inputs:      master frequency table
+//  401  *              number of bands in low resolution frequency table
+//  402  *              index of first QMF subband in master freq table (k0)
+//  403  *              index of starting QMF subband for SBR (kStart)
+//  404  *              number of QMF bands in high resolution frequency table
+//  405  *              sample rate index
+//  406  *
+//  407  * Outputs:     starting subband for each patch
+//  408  *              number of subbands in each patch
+//  409  *
+//  410  * Return:      number of patches
+//  411  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function BuildPatches
+        ARM
+//  412 static int BuildPatches(unsigned char *patchNumSubbands, unsigned char *patchStartSubband, unsigned char *freqMaster, 
+//  413 						int nMaster, int k0, int kStart, int numQMFBands, int sampRateIdx)
+//  414 {
+BuildPatches:
+        PUSH     {R1,R3-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+44
+        LDR      R6,[SP, #+56]
+//  415 	int i, j, k;
+//  416 	int msb, sb, usb, numPatches, goalSB, oddFlag;
+//  417 
+//  418 	msb = k0;
+//  419 	usb = kStart;
+//  420 	numPatches = 0;
+//  421 	goalSB = goalSBTab[sampRateIdx];
+        LDR      R7,??BuildPatches_0  ;; raac_goalSBTab
+        LDR      R12,[SP, #+44]
+        LDR      R4,[SP, #+48]
+        LDRB     R8,[R6, +R7]
+//  422 
+//  423 	if (nMaster == 0) {
+        LDR      R7,[SP, #+4]
+        MOV      R1,R0
+        LDR      R0,[SP, #+52]
+        MOV      R9,R12
+        MOV      R5,R4
+        MOV      R3,#+0
+        MOV      R6,#+0
+        CMP      R7,#+0
+        BNE      ??BuildPatches_1
+//  424 		patchNumSubbands[0] = 0;
+        STRB     R6,[R1, #+0]
+//  425 		patchStartSubband[0] = 0;
+        LDR      R0,[SP, #+0]
+        STRB     R6,[R0, #+0]
+//  426 		return 0;
+        MOV      R0,R3
+        POP      {R1,R2,R4-R11,PC}
+//  427 	}
+//  428 
+//  429 	if (goalSB < kStart + numQMFBands) {
+??BuildPatches_1:
+        ADD      R7,R0,R4
+        CMP      R8,R7
+        BGE      ??BuildPatches_2
+//  430 		k = 0;
+//  431 		for (i = 0; freqMaster[i] < goalSB; i++)
+        LDRB     R11,[R2, #+0]
+        MOV      R0,#+0
+        MOV      R10,R0
+        CMP      R11,R8
+        BGE      ??BuildPatches_3
+??BuildPatches_4:
+        LDRB     R11,[R10, +R2]
+        CMP      R11,R8
+        BGE      ??BuildPatches_3
+//  432 			k = i+1;
+        ADD      R10,R10,#+1
+        MOV      R0,R10
+        B        ??BuildPatches_4
+//  433 	} else {
+//  434 		k = nMaster;
+??BuildPatches_2:
+        LDR      R0,[SP, #+4]
+//  435 	}
+//  436 
+//  437 	do {
+//  438 		j = k+1;
+??BuildPatches_3:
+        ADD      R8,R9,R12
+        ADD      R10,R0,#+1
+        SUB      R11,R8,#+1
+//  439 		do {
+//  440 			j--;
+??BuildPatches_5:
+        SUB      R10,R10,#+1
+//  441 			sb = freqMaster[j];
+        LDRB     R8,[R10, +R2]
+//  442 			oddFlag = (sb - 2 + k0) & 0x01;
+        ADD      R9,R12,R8
+        AND      R9,R9,#0x1
+//  443 		} while (sb > k0 - 1 + msb - oddFlag);
+        SUB      LR,R11,R9
+        CMP      LR,R8
+        BLT      ??BuildPatches_5
+//  444 
+//  445 		patchNumSubbands[numPatches] = MAX(sb - usb, 0);
+        SUB      R10,R8,R5
+        CMP      R10,#+1
+        MOVLT    R10,#+0
+        STRB     R10,[R3, +R1]
+//  446 		patchStartSubband[numPatches] = k0 - oddFlag - patchNumSubbands[numPatches];
+        LDRB     R11,[R3, +R1]
+        LDR      R10,[SP, #+0]
+        SUB      R9,R12,R9
+        SUB      R9,R9,R11
+        STRB     R9,[R3, +R10]
+//  447 
+//  448 		if (patchNumSubbands[numPatches] > 0) {
+        LDRB     R9,[R3, +R1]
+        CMP      R9,#+0
+        BEQ      ??BuildPatches_6
+//  449 			usb = sb;
+        MOV      R5,R8
+//  450 			msb = sb;
+        MOV      R9,R8
+//  451 			numPatches++;
+        ADD      R3,R3,#+1
+        B        ??BuildPatches_7
+//  452 		} else {
+//  453 			msb = kStart;
+??BuildPatches_6:
+        MOV      R9,R4
+//  454 		}
+//  455 
+//  456 		if (sb == freqMaster[k])
+??BuildPatches_7:
+        LDRB     R10,[R0, +R2]
+        CMP      R8,R10
+//  457 			k = nMaster;
+        LDREQ    R0,[SP, #+4]
+//  458 
+//  459 		ASSERT(numPatches <= 5);
+//  460 	} while (sb != kStart + numQMFBands);
+        CMP      R8,R7
+        BNE      ??BuildPatches_3
+//  461 
+//  462 	if (patchNumSubbands[numPatches-1] < 3 && numPatches > 1)
+        ADD      R0,R3,R1
+        LDRB     R0,[R0, #-1]
+        CMP      R0,#+3
+        BCS      ??BuildPatches_8
+        CMP      R3,#+2
+//  463 		numPatches--;
+        SUBGE    R3,R3,#+1
+//  464 
+//  465 	return numPatches;
+??BuildPatches_8:
+        MOV      R0,R3
+        POP      {R1,R2,R4-R11,PC}  ;; return
+        DATA
+??BuildPatches_0:
+        DC32     raac_goalSBTab
+        CFI EndBlock cfiBlock5
+//  466 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??CalcFreqLimiter??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE CalcFreqLimiter
+//  467 
+//  468 /**************************************************************************************
+//  469  * Function:    FindFreq
+//  470  *
+//  471  * Description: search buffer of unsigned chars for a specific value
+//  472  *
+//  473  * Inputs:      buffer of elements to search
+//  474  *              number of elements to search
+//  475  *              value to search for
+//  476  *
+//  477  * Outputs:     none
+//  478  *
+//  479  * Return:      non-zero if the value is found anywhere in the buffer, zero otherwise
+//  480  **************************************************************************************/
+//  481 static int FindFreq(unsigned char *freq, int nFreq, unsigned char val)
+//  482 {
+//  483 	int k;
+//  484 
+//  485 	for (k = 0; k < nFreq; k++) {
+//  486 		if (freq[k] == val)
+//  487 			return 1;
+//  488 	}
+//  489 
+//  490 	return 0;
+//  491 }
+//  492 
+//  493 /**************************************************************************************
+//  494  * Function:    RemoveFreq
+//  495  *
+//  496  * Description: remove one element from a buffer of unsigned chars
+//  497  *
+//  498  * Inputs:      buffer of elements
+//  499  *              number of elements
+//  500  *              index of element to remove
+//  501  *
+//  502  * Outputs:     new buffer of length nFreq-1
+//  503  *
+//  504  * Return:      none
+//  505  **************************************************************************************/
+//  506 static void RemoveFreq(unsigned char *freq, int nFreq, int removeIdx)
+//  507 {
+//  508 	int k;
+//  509 
+//  510 	if (removeIdx >= nFreq)
+//  511 		return;
+//  512 
+//  513 	for (k = removeIdx; k < nFreq - 1; k++)
+//  514 		freq[k] = freq[k+1];
+//  515 }
+//  516 
+//  517 /**************************************************************************************
+//  518  * Function:    CalcFreqLimiter
+//  519  *
+//  520  * Description: calculate limiter frequency table (4.6.18.3.2.3)
+//  521  *
+//  522  * Inputs:      number of subbands in each patch
+//  523  *              low resolution frequency table
+//  524  *              number of bands in low resolution frequency table
+//  525  *              index of starting QMF subband for SBR (kStart)
+//  526  *              number of limiter bands
+//  527  *              number of patches
+//  528  *
+//  529  * Outputs:     limiter frequency table
+//  530  *
+//  531  * Return:      number of bands in limiter frequency table
+//  532  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function CalcFreqLimiter
+        ARM
+//  533 static int CalcFreqLimiter(unsigned char *freqLimiter, unsigned char *patchNumSubbands, unsigned char *freqLow, 
+//  534 						   int nLow, int kStart, int limiterBands, int numPatches)
+//  535 {
+CalcFreqLimiter:
+        PUSH     {R4-R10}
+        CFI R10 Frame(CFA, -4)
+        CFI R9 Frame(CFA, -8)
+        CFI R8 Frame(CFA, -12)
+        CFI R7 Frame(CFA, -16)
+        CFI R6 Frame(CFA, -20)
+        CFI R5 Frame(CFA, -24)
+        CFI R4 Frame(CFA, -28)
+        CFI CFA R13+28
+//  536 	int k, bands, nLimiter, nOctaves;
+//  537 	int limBandsPerOctave[3] = {120, 200, 300};		/* [1.2, 2.0, 3.0] * 100 */
+        LDR      R7,??CalcFreqLimiter_0  ;; `?<Constant {120, 200, 300}>`
+        SUB      SP,SP,#+20
+        CFI CFA R13+48
+        LDR      R12,[SP, #+48]
+        LDR      R5,[SP, #+52]
+        LDR      R4,[SP, #+56]
+        LDM      R7,{R8-R10}
+        ADD      R6,SP,#+8
+        STM      R6,{R8-R10}
+//  538 	unsigned char patchBorders[MAX_NUM_PATCHES + 1];
+//  539 
+//  540 	/* simple case */
+//  541 	if (limiterBands == 0) {
+        CMP      R5,#+0
+        BNE      ??CalcFreqLimiter_1
+//  542 		freqLimiter[0] = freqLow[0] - kStart;
+        LDRB     R1,[R2, #+0]
+        SUB      R1,R1,R12
+        STRB     R1,[R0, #+0]
+//  543 		freqLimiter[1] = freqLow[nLow] - kStart;
+        LDRB     R1,[R3, +R2]
+        SUB      R1,R1,R12
+        STRB     R1,[R0, #+1]
+//  544 		return 1;
+        ADD      SP,SP,#+20
+        CFI CFA R13+28
+        POP      {R4-R10}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI CFA R13+0
+        MOV      R0,#+1
+        BX       LR
+        CFI R4 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -4)
+        CFI CFA R13+48
+//  545 	}
+//  546 
+//  547 	bands = limBandsPerOctave[limiterBands - 1];
+??CalcFreqLimiter_1:
+        ADD      R5,R6,R5, LSL #+2
+        LDR      R5,[R5, #-4]
+//  548 	patchBorders[0] = kStart;
+        STRB     R12,[SP, #+0]
+//  549 
+//  550 	for (k = 1; k <= numPatches; k++)
+        MOV      R6,#+1
+        CMP      R4,#+1
+        BLT      ??CalcFreqLimiter_2
+//  551 		patchBorders[k] = patchBorders[k-1] + patchNumSubbands[k-1];
+??CalcFreqLimiter_3:
+        MOV      R7,SP
+        ADD      R7,R6,R7
+        LDRB     R8,[R7, #-1]
+        ADD      R9,R6,R1
+        LDRB     R9,[R9, #-1]
+        ADD      R6,R6,#+1
+        CMP      R4,R6
+        ADD      R8,R9,R8
+        STRB     R8,[R7, #+0]
+        BGE      ??CalcFreqLimiter_3
+//  552 
+//  553 	for (k = 0; k <= nLow; k++)
+??CalcFreqLimiter_2:
+        MOV      R1,#+0
+        CMP      R3,#+0
+        BMI      ??CalcFreqLimiter_4
+//  554 		freqLimiter[k] = freqLow[k];
+??CalcFreqLimiter_5:
+        LDRB     R6,[R1, +R2]
+        STRB     R6,[R1, +R0]
+        ADD      R1,R1,#+1
+        CMP      R3,R1
+        BGE      ??CalcFreqLimiter_5
+//  555 
+//  556 	for (k = 1; k < numPatches; k++)
+??CalcFreqLimiter_4:
+        MOV      R1,#+1
+        CMP      R4,#+2
+        BGE      ??CalcFreqLimiter_6
+        B        ??CalcFreqLimiter_7
+//  557 		freqLimiter[k+nLow] = patchBorders[k];
+??CalcFreqLimiter_8:
+        MOV      R6,SP
+        LDRB     R6,[R1, +R6]
+        ADD      R2,R3,R1
+        ADD      R1,R1,#+1
+        STRB     R6,[R2, +R0]
+??CalcFreqLimiter_6:
+        CMP      R1,R4
+        BLT      ??CalcFreqLimiter_8
+//  558 
+//  559 	k = 1;
+??CalcFreqLimiter_7:
+        MOV      R2,#+1
+//  560 	nLimiter = nLow + numPatches - 1;
+        ADD      R1,R4,R3
+        SUB      R1,R1,#+1
+//  561 	BubbleSort(freqLimiter, nLimiter + 1);
+        ADD      R6,R1,#+1
+        CMP      R6,#+2
+        BLT      ??CalcFreqLimiter_9
+??CalcFreqLimiter_10:
+        MOV      R3,#+0
+        SUB      R6,R6,#+1
+        CMP      R6,#+1
+        BGE      ??CalcFreqLimiter_11
+        B        ??CalcFreqLimiter_12
+??CalcFreqLimiter_13:
+        LDRB     R8,[R3, +R0]
+        ADD      R7,R3,R0
+        LDRB     R7,[R7, #+1]
+        CMP      R7,R8
+        BCS      ??CalcFreqLimiter_14
+        LDRB     R9,[R3, +R0]
+        ADD      R7,R3,R0
+        LDRB     R7,[R7, #+1]
+        ADD      R8,R3,R0
+        STRB     R9,[R8, #+1]
+        STRB     R7,[R3, +R0]
+??CalcFreqLimiter_14:
+        ADD      R3,R3,#+1
+??CalcFreqLimiter_11:
+        CMP      R3,R6
+        BLT      ??CalcFreqLimiter_13
+??CalcFreqLimiter_12:
+        CMP      R6,#+2
+        BGE      ??CalcFreqLimiter_10
+//  562 
+//  563 	while (k <= nLimiter) {
+??CalcFreqLimiter_9:
+        CMP      R1,R2
+        BLT      ??CalcFreqLimiter_15
+//  564 		nOctaves = log2Tab[freqLimiter[k]] - log2Tab[freqLimiter[k-1]];	/* Q28 */
+//  565 		nOctaves = (nOctaves >> 9) * bands;	/* Q19, max bands = 300 < 2^9 */
+//  566 		if (nOctaves < (49 << 19)) {		/* compare with 0.49*100, in Q19 */
+        LDRB     R6,[R2, +R0]
+        LDR      R3,??DataTable2  ;; raac_log2Tab
+        ADD      R7,R2,R0
+        LDRB     R7,[R7, #-1]
+        LDR      R6,[R3, +R6, LSL #+2]
+        LDR      R3,[R3, +R7, LSL #+2]
+        SUB      R3,R6,R3
+        ASR      R3,R3,#+9
+        MUL      R3,R5,R3
+        CMP      R3,#+25690112
+        BGE      ??CalcFreqLimiter_16
+//  567 			if (freqLimiter[k] == freqLimiter[k-1] || FindFreq(patchBorders, numPatches + 1, freqLimiter[k]) == 0) {
+        LDRB     R6,[R2, +R0]
+        ADD      R7,R2,R0
+        LDRB     R7,[R7, #-1]
+        ADD      R3,R1,#+1
+        CMP      R6,R7
+        BEQ      ??CalcFreqLimiter_17
+        MOV      R7,R6
+        ADD      R6,R4,#+1
+        MOV      R9,#+0
+        B        ??CalcFreqLimiter_18
+??CalcFreqLimiter_19:
+        MOV      R10,SP
+        LDRB     R10,[R9, +R10]
+        CMP      R10,R7
+        BEQ      ??CalcFreqLimiter_20
+        ADD      R9,R9,#+1
+??CalcFreqLimiter_18:
+        CMP      R9,R6
+        BLT      ??CalcFreqLimiter_19
+//  568 				RemoveFreq(freqLimiter, nLimiter + 1, k);
+??CalcFreqLimiter_17:
+        CMP      R2,R3
+        BGE      ??CalcFreqLimiter_21
+        MOV      R6,R2
+        SUB      R3,R3,#+1
+        CMP      R6,R3
+        BGE      ??CalcFreqLimiter_21
+??CalcFreqLimiter_22:
+        ADD      R7,R0,#+1
+        LDRB     R7,[R6, +R7]
+        STRB     R7,[R6, +R0]
+        ADD      R6,R6,#+1
+        CMP      R6,R3
+        BGE      ??CalcFreqLimiter_21
+        B        ??CalcFreqLimiter_22
+//  569 				nLimiter--;
+//  570 			} else if (FindFreq(patchBorders, numPatches + 1, freqLimiter[k-1]) == 0) {
+??CalcFreqLimiter_20:
+        ADD      R7,R2,R0
+        LDRB     R7,[R7, #-1]
+        MOV      R8,#+0
+        B        ??CalcFreqLimiter_23
+??CalcFreqLimiter_24:
+        MOV      R9,SP
+        LDRB     R9,[R8, +R9]
+        CMP      R9,R7
+        BEQ      ??CalcFreqLimiter_16
+        ADD      R8,R8,#+1
+??CalcFreqLimiter_23:
+        CMP      R8,R6
+        BLT      ??CalcFreqLimiter_24
+//  571 				RemoveFreq(freqLimiter, nLimiter + 1, k-1);
+        SUB      R6,R2,#+1
+        CMP      R6,R3
+        SUBLT    R3,R3,#+1
+        CMPLT    R6,R3
+        BGE      ??CalcFreqLimiter_21
+??CalcFreqLimiter_25:
+        ADD      R7,R0,#+1
+        LDRB     R7,[R6, +R7]
+        STRB     R7,[R6, +R0]
+        ADD      R6,R6,#+1
+        CMP      R6,R3
+        BLT      ??CalcFreqLimiter_25
+//  572 				nLimiter--;
+??CalcFreqLimiter_21:
+        SUB      R1,R1,#+1
+        B        ??CalcFreqLimiter_9
+//  573 			} else {
+//  574 				k++;
+??CalcFreqLimiter_16:
+        ADD      R2,R2,#+1
+        B        ??CalcFreqLimiter_9
+//  575 			}
+//  576 		} else {
+//  577 			k++;
+//  578 		}
+//  579 	}
+//  580 
+//  581 	/* store limiter boundaries as offsets from kStart */
+//  582 	for (k = 0; k <= nLimiter; k++)
+??CalcFreqLimiter_15:
+        MOV      R2,#+0
+        CMP      R1,#+0
+        BMI      ??CalcFreqLimiter_26
+//  583 		freqLimiter[k] -= kStart;
+??CalcFreqLimiter_27:
+        LDRB     R3,[R2, +R0]
+        SUB      R3,R3,R12
+        STRB     R3,[R2, +R0]
+        ADD      R2,R2,#+1
+        CMP      R1,R2
+        BGE      ??CalcFreqLimiter_27
+//  584 
+//  585 	return nLimiter;
+??CalcFreqLimiter_26:
+        ADD      SP,SP,#+20
+        CFI CFA R13+28
+        POP      {R4-R10}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI CFA R13+0
+        MOV      R0,R1
+        BX       LR               ;; return
+        DATA
+??CalcFreqLimiter_0:
+        DC32     `?<Constant {120, 200, 300}>`
+        CFI EndBlock cfiBlock7
+//  586 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_CalcFreqTables??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE raac_CalcFreqTables
+//  587 
+//  588 /**************************************************************************************
+//  589  * Function:    CalcFreqTables
+//  590  *
+//  591  * Description: calulate master and derived frequency tables, and patches
+//  592  *
+//  593  * Inputs:      initialized SBRHeader struct for this SCE/CPE block
+//  594  *              initialized SBRFreq struct for this SCE/CPE block
+//  595  *              sample rate index of output sample rate (after SBR)
+//  596  *
+//  597  * Outputs:     master and derived frequency tables, and patches
+//  598  *
+//  599  * Return:      non-zero if error, zero otherwise
+//  600  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function raac_CalcFreqTables
+        ARM
+//  601 int CalcFreqTables(SBRHeader *sbrHdr, SBRFreq *sbrFreq, int sampRateIdx)
+//  602 {
+raac_CalcFreqTables:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+        MOV      R4,R0
+//  603 	int k0, k2;
+//  604 
+//  605 	k0 = k0Tab[sampRateIdx][sbrHdr->startFreq];
+        LDRB     R0,[R4, #+5]
+        MOV      R5,R1
+        LDR      R1,??raac_CalcFreqTables_0  ;; raac_k0Tab
+        MOV      R6,R2
+        ADD      R1,R1,R6, LSL #+4
+        LDRB     R7,[R0, +R1]
+//  606 
+//  607 	if (sbrHdr->stopFreq == 14)
+        LDRB     R0,[R4, #+6]
+        CMP      R0,#+14
+//  608 		k2 = 2*k0;
+        LSLEQ    R8,R7,#+1
+        BEQ      ??raac_CalcFreqTables_1
+//  609 	else if (sbrHdr->stopFreq == 15)
+        CMP      R0,#+15
+//  610 		k2 = 3*k0;
+        ADDEQ    R8,R7,R7, LSL #+1
+        BEQ      ??raac_CalcFreqTables_1
+//  611 	else
+//  612 		k2 = k2Tab[sampRateIdx][sbrHdr->stopFreq];
+        LDR      R2,??raac_CalcFreqTables_0+0x4  ;; raac_k2Tab
+        MOV      R1,#+14
+        MLA      R2,R1,R6,R2
+        LDRB     R8,[R0, +R2]
+//  613 	if (k2 > 64)
+//  614 		k2 = 64;
+??raac_CalcFreqTables_1:
+        LDRB     R0,[R4, #+11]
+        LDRB     R1,[R4, #+12]
+        CMP      R8,#+65
+        MOVGE    R8,#+64
+        CMP      R0,#+0
+        BNE      ??raac_CalcFreqTables_2
+//  615 
+//  616 	/* calculate master frequency table */
+//  617 	if (sbrHdr->freqScale == 0)
+//  618 		sbrFreq->nMaster = CalcFreqMasterScaleZero(sbrFreq->freqMaster, sbrHdr->alterScale, k0, k2);
+        MOV      R3,R8
+        MOV      R2,R7
+        ADD      R0,R5,#+36
+        BL       CalcFreqMasterScaleZero
+        STR      R0,[R5, #+4]
+        B        ??raac_CalcFreqTables_3
+//  619 	else
+//  620 		sbrFreq->nMaster = CalcFreqMaster(sbrFreq->freqMaster, sbrHdr->freqScale, sbrHdr->alterScale, k0, k2);
+??raac_CalcFreqTables_2:
+        MOV      R2,R8
+        PUSH     {R2}
+        CFI CFA R13+40
+        MOV      R3,R7
+        MOV      R2,R1
+        MOV      R1,R0
+        ADD      R0,R5,#+36
+        BL       CalcFreqMaster
+        STR      R0,[R5, #+4]
+        ADD      SP,SP,#+4
+        CFI CFA R13+36
+//  621 
+//  622 	/* calculate high frequency table and related parameters */
+//  623 	sbrFreq->nHigh = CalcFreqHigh(sbrFreq->freqHigh, sbrFreq->freqMaster, sbrFreq->nMaster, sbrHdr->crossOverBand);
+??raac_CalcFreqTables_3:
+        LDRB     R0,[R4, #+7]
+        LDR      R3,[R5, #+4]
+        ADD      R1,R5,#+36
+        ADD      R2,R5,#+85
+        SUBS     R3,R3,R0
+        MOV      R9,#+0
+        BMI      ??raac_CalcFreqTables_4
+??raac_CalcFreqTables_5:
+        ADD      R10,R0,R9
+        LDRB     R10,[R10, +R1]
+        STRB     R10,[R9, +R2]
+        ADD      R9,R9,#+1
+        CMP      R3,R9
+        BGE      ??raac_CalcFreqTables_5
+??raac_CalcFreqTables_4:
+        STR      R3,[R5, #+8]
+//  624 	sbrFreq->numQMFBands = sbrFreq->freqHigh[sbrFreq->nHigh] - sbrFreq->freqHigh[0];
+        LDRB     R1,[R5, #+85]
+        ADD      R0,R3,R5
+        LDRB     R0,[R0, #+85]
+//  625 	sbrFreq->kStart = sbrFreq->freqHigh[0];
+//  626 
+//  627 	/* calculate low frequency table */
+//  628 	sbrFreq->nLow = CalcFreqLow(sbrFreq->freqLow, sbrFreq->freqHigh, sbrFreq->nHigh);
+        ADD      R2,R5,#+134
+        SUB      R0,R0,R1
+        STR      R0,[R5, #+20]
+        MOV      R0,R1
+        STR      R0,[R5, #+0]
+        ADD      R1,R5,#+85
+        LDRB     R9,[R1, #+0]
+        MOV      R0,R3
+        SUB      R3,R0,R0, ASR #+1
+        STRB     R9,[R2, #+0]
+        AND      R0,R0,#0x1
+        MOV      R9,#+1
+        CMP      R3,#+1
+        BLT      ??raac_CalcFreqTables_6
+??raac_CalcFreqTables_7:
+        RSB      R10,R0,R9, LSL #+1
+        LDRB     R10,[R10, +R1]
+        STRB     R10,[R9, +R2]
+        ADD      R9,R9,#+1
+        CMP      R3,R9
+        BGE      ??raac_CalcFreqTables_7
+//  629 
+//  630 	/* calculate noise floor frequency table */
+//  631 	sbrFreq->numNoiseFloorBands = CalcFreqNoise(sbrFreq->freqNoise, sbrFreq->freqLow, sbrFreq->nLow, sbrFreq->kStart, k2, sbrHdr->noiseBands);
+??raac_CalcFreqTables_6:
+        LDR      R1,??DataTable2  ;; raac_log2Tab
+        STR      R3,[R5, #+12]
+        LDRB     R0,[R4, #+13]
+        LDR      R10,[R5, #+0]
+        LDR      R8,[R1, +R8, LSL #+2]
+        LDR      R1,[R1, +R10, LSL #+2]
+        MOV      R2,R3
+        SUB      R1,R8,R1
+        ASR      R1,R1,#+2
+        MUL      R0,R1,R0
+        ADD      R3,R5,#+134
+        ADD      R0,R0,#+33554432
+        ASR      R8,R0,#+26
+        LDRB     R0,[R3, #+0]
+        ADD      R9,R5,#+159
+        CMP      R8,#+1
+        MOVLT    R8,#+1
+        MOV      R10,#+0
+        STRB     R0,[R9, #+0]
+        MOV      R11,#+1
+        CMP      R8,#+1
+        BLT      ??raac_CalcFreqTables_8
+??raac_CalcFreqTables_9:
+        SUB      R0,R2,R10
+        ADD      R1,R8,#+1
+        SUB      R1,R1,R11
+        _BLF     ??div32_a,??rA??div32_a
+        ADD      R10,R1,R10
+        LDRB     R0,[R10, +R3]
+        STRB     R0,[R11, +R9]
+        ADD      R11,R11,#+1
+        CMP      R8,R11
+        BGE      ??raac_CalcFreqTables_9
+??raac_CalcFreqTables_8:
+        STR      R8,[R5, #+24]
+//  632 
+//  633 	/* calculate limiter table */
+//  634 	sbrFreq->numPatches = BuildPatches(sbrFreq->patchNumSubbands, sbrFreq->patchStartSubband, sbrFreq->freqMaster, 
+//  635 		sbrFreq->nMaster, k0, sbrFreq->kStart, sbrFreq->numQMFBands, sampRateIdx);
+        PUSH     {R6}
+        CFI CFA R13+40
+        LDR      R0,[R5, #+20]
+        ADD      R2,R5,#+36
+        PUSH     {R0}
+        CFI CFA R13+44
+        LDR      R0,[R5, #+0]
+        ADD      R1,R5,#+206
+        PUSH     {R0}
+        CFI CFA R13+48
+        PUSH     {R7}
+        CFI CFA R13+52
+        LDR      R3,[R5, #+4]
+        ADD      R0,R5,#+201
+        BL       BuildPatches
+        STRB     R0,[R5, #+194]
+//  636 	sbrFreq->nLimiter = CalcFreqLimiter(sbrFreq->freqLimiter, sbrFreq->patchNumSubbands, sbrFreq->freqLow, sbrFreq->nLow, sbrFreq->kStart,
+//  637 		sbrHdr->limiterBands, sbrFreq->numPatches);
+        LDRB     R0,[R5, #+194]
+        ADD      R2,R5,#+134
+        ADD      R1,R5,#+201
+        PUSH     {R0}
+        CFI CFA R13+56
+        LDRB     R0,[R4, #+14]
+        PUSH     {R0}
+        CFI CFA R13+60
+        LDR      R0,[R5, #+0]
+        PUSH     {R0}
+        CFI CFA R13+64
+        LDR      R3,[R5, #+12]
+        ADD      R0,R5,#+165
+        BL       CalcFreqLimiter
+        STR      R0,[R5, #+16]
+//  638 
+//  639 	return 0;
+        MOV      R0,#+0
+        ADD      SP,SP,#+28
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        DATA
+??raac_CalcFreqTables_0:
+        DC32     raac_k0Tab
+        DC32     raac_k2Tab
+        CFI EndBlock cfiBlock9
+//  640 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable2:
+        DC32     raac_log2Tab
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_RatioPowInv??rA:
+        LDR      R12,??Subroutine5_0  ;; raac_RatioPowInv
+        BX       R12
+        DATA
+??Subroutine5_0:
+        DC32     raac_RatioPowInv
+        CFI EndBlock cfiBlock10
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock11 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??rA??div32_a:
+        LDR      R12,??Subroutine6_0  ;; ??div32_a
+        MOV      PC,R12
+        DATA
+??Subroutine6_0:
+        DC32     ??div32_a
+        CFI EndBlock cfiBlock11
+
+        END
+// 
+// 2 776 bytes in segment CODE
+//    32 bytes in segment DATA_C
+// 
+// 2 732 bytes of CODE  memory (+ 44 bytes shared)
+//    32 bytes of CONST memory
+//
+//Errors: none
+//Warnings: none

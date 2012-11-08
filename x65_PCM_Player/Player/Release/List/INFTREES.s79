@@ -1,0 +1,907 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:35:58 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\INF /
+//                       TREES.C                                             /
+//    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\INF /
+//                       TREES.C -D NDEBUG -lC D:\SVN\SieELF\SieELF\x65_PCM_ /
+//                       Player\Player\Release\List\ -lA                     /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player\Player /
+//                       \Release\Obj\ -s9 --cpu_mode arm --endian little    /
+//                       --cpu ARM926EJ-S --stack_align 4 --interwork -e     /
+//                       --fpu None --dlib_config "D:\Program                /
+//                       Files\IAR\Embedded Workbench 4.0                    /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\INFTREES.s79                                   /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME INFTREES
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        MULTWEAK ??inflate_table??rT
+        PUBLIC inflate_copyright
+        PUBLIC inflate_table
+        FUNCTION inflate_table,0203H
+        LOCFRAME CSTACK, 148, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+inflate_table       SYMBOL "inflate_table"
+??inflate_table??rT SYMBOL "??rT", inflate_table
+
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\INFTREES.C
+//    1 /* inftrees.c -- generate Huffman trees for efficient decoding
+//    2  * Copyright (C) 1995-2005 Mark Adler
+//    3  * For conditions of distribution and use, see copyright notice in zlib.h
+//    4  */
+//    5 
+//    6 #include "zutil.h"
+//    7 #include "inftrees.h"
+//    8 
+//    9 #define MAXBITS 15
+//   10 
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//   11 const char inflate_copyright[] =
+inflate_copyright:
+        DATA
+        DC8 " inflate 1.2.3 Copyright 1995-2005 Mark Adler "
+        DC8 0
+//   12    " inflate 1.2.3 Copyright 1995-2005 Mark Adler ";
+//   13 /*
+//   14   If you use the zlib library in a product, an acknowledgment is welcome
+//   15   in the documentation of your product. If for some reason you cannot
+//   16   include such an acknowledgment, I would appreciate that you keep this
+//   17   copyright string in the executable of your product.
+//   18  */
+//   19 
+//   20 /*
+//   21    Build a set of tables to decode the provided canonical Huffman code.
+//   22    The code lengths are lens[0..codes-1].  The result starts at *table,
+//   23    whose indices are 0..2^bits-1.  work is a writable array of at least
+//   24    lens shorts, which is used as a work area.  type is the type of code
+//   25    to be generated, CODES, LENS, or DISTS.  On return, zero is success,
+//   26    -1 is an invalid code, and +1 means that ENOUGH isn't enough.  table
+//   27    on return points to the next available entry's address.  bits is the
+//   28    requested root table index bits, and on return it is the actual root
+//   29    table index bits.  It will differ if the request is greater than the
+//   30    longest code or if it is less than the shortest code.
+//   31  */
+//   32 int inflate_table (codetype type, unsigned short  *lens,
+//   33                              unsigned codes, code  * *table,
+//   34                              unsigned *bits, unsigned short *work)
+//   35 
+//   36 //int inflate_table(type, lens, codes, table, bits, work)
+//   37 //codetype type;
+//   38 //unsigned short *lens;
+//   39 //unsigned codes;
+//   40 //code  **table;
+//   41 //unsigned  *bits;
+//   42 //unsigned short  *work;
+//   43 {
+//   44     unsigned len;               /* a code's length in bits */
+//   45     unsigned sym;               /* index of code symbols */
+//   46     unsigned min, max;          /* minimum and maximum code lengths */
+//   47     unsigned root;              /* number of index bits for root table */
+//   48     unsigned curr;              /* number of index bits for current table */
+//   49     unsigned drop;              /* code bits to drop for sub-table */
+//   50     int left;                   /* number of prefix codes available */
+//   51     unsigned used;              /* code entries in table used */
+//   52     unsigned huff;              /* Huffman code */
+//   53     unsigned incr;              /* for incrementing code, index */
+//   54     unsigned fill;              /* index for replicating entries */
+//   55     unsigned low;               /* low bits for current root entry */
+//   56     unsigned mask;              /* mask for low root bits */
+//   57     code this;                  /* table entry for duplication */
+//   58     code FAR *next;             /* next available space in table */
+//   59     const unsigned short FAR *base;     /* base value table to use */
+//   60     const unsigned short FAR *extra;    /* extra bits table to use */
+//   61     int end;                    /* use base and extra for symbol > end */
+//   62     unsigned short count[MAXBITS+1];    /* number of codes of each length */
+//   63     unsigned short offs[MAXBITS+1];     /* offsets in table for each length */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//   64     static const unsigned short lbase[31] = { /* Length codes 257..285 base */
+??lbase:
+        DATA
+        DC16 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31, 35, 43
+        DC16 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258, 0, 0
+        DC8 0, 0
+        DC16 16, 16, 16, 16, 16, 16, 16, 16, 17, 17, 17, 17, 18, 18, 18, 18, 19
+        DC16 19, 19, 19, 20, 20, 20, 20, 21, 21, 21, 21, 16, 201, 196
+        DC8 0, 0
+        DC16 1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193, 257
+        DC16 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145, 8193, 12289
+        DC16 16385, 24577, 0, 0
+        DC16 16, 16, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22, 23
+        DC16 23, 24, 24, 25, 25, 26, 26, 27, 27, 28, 28, 29, 29, 64, 64
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??inflate_table??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE inflate_table
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function inflate_table
+        ARM
+inflate_table:
+        PUSH     {R0,R1,R3-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+48
+        SUB      SP,SP,#+100
+        CFI CFA R13+148
+//   65         3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31,
+//   66         35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258, 0, 0};
+//   67     static const unsigned short lext[31] = { /* Length codes 257..285 extra */
+//   68         16, 16, 16, 16, 16, 16, 16, 16, 17, 17, 17, 17, 18, 18, 18, 18,
+//   69         19, 19, 19, 19, 20, 20, 20, 20, 21, 21, 21, 21, 16, 201, 196};
+//   70     static const unsigned short dbase[32] = { /* Distance codes 0..29 base */
+//   71         1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193,
+//   72         257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145,
+//   73         8193, 12289, 16385, 24577, 0, 0};
+//   74     static const unsigned short dext[32] = { /* Distance codes 0..29 extra */
+//   75         16, 16, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22,
+//   76         23, 23, 24, 24, 25, 25, 26, 26, 27, 27,
+//   77         28, 28, 29, 29, 64, 64};
+//   78 
+//   79     /*
+//   80        Process a set of code lengths to create a canonical Huffman code.  The
+//   81        code lengths are lens[0..codes-1].  Each length corresponds to the
+//   82        symbols 0..codes-1.  The Huffman code is generated by first sorting the
+//   83        symbols by length from short to long, and retaining the symbol order
+//   84        for codes with equal lengths.  Then the code starts with all zero bits
+//   85        for the first code of the shortest length, and the codes are integer
+//   86        increments for the same length, and zeros are appended as the length
+//   87        increases.  For the deflate format, these bits are stored backwards
+//   88        from their more natural integer increment ordering, and so when the
+//   89        decoding tables are built in the large loop below, the integer codes
+//   90        are incremented backwards.
+//   91 
+//   92        This routine assumes, but does not check, that all of the entries in
+//   93        lens[] are in the range 0..MAXBITS.  The caller must assure this.
+//   94        1..MAXBITS is interpreted as that code length.  zero means that that
+//   95        symbol does not occur in this code.
+//   96 
+//   97        The codes are sorted by computing a count of codes for each length,
+//   98        creating from that a table of starting indices for each length in the
+//   99        sorted table, and then entering the symbols in order in the sorted
+//  100        table.  The sorted table is work[], with that space being provided by
+//  101        the caller.
+//  102 
+//  103        The length counts are used for other purposes as well, i.e. finding
+//  104        the minimum and maximum length codes, determining if there are any
+//  105        codes at all, checking for a valid set of lengths, and looking ahead
+//  106        at length counts to determine sub-table sizes when building the
+//  107        decoding tables.
+//  108      */
+//  109 
+//  110     /* accumulate lengths for codes (assumes lens[] all in 0..MAXBITS) */
+//  111     for (len = 0; len <= MAXBITS; len++)
+        MOV      R1,#+0
+        MOV      R5,#+0
+//  112         count[len] = 0;
+??inflate_table_0:
+        ADD      R0,SP,#+36
+        ADD      R0,R0,R5, LSL #+1
+        STRH     R1,[R0, #+0]
+        ADD      R5,R5,#+1
+        CMP      R5,#+16
+        BCC      ??inflate_table_0
+//  113     for (sym = 0; sym < codes; sym++)
+        MOV      R6,#+0
+        CMP      R2,#+0
+        ADD      R4,SP,#+36
+        BNE      ??inflate_table_1
+        B        ??inflate_table_2
+//  114         count[lens[sym]]++;
+??inflate_table_3:
+        LDR      R0,[SP, #+104]
+        ADD      R0,R0,R6, LSL #+1
+        LDRH     R3,[R0, #+0]
+        LDRH     R0,[R0, #+0]
+        ADD      R6,R6,#+1
+        ADD      R3,R4,R3, LSL #+1
+        ADD      R0,R4,R0, LSL #+1
+        LDRH     R0,[R0, #+0]
+        ADD      R0,R0,#+1
+        STRH     R0,[R3, #+0]
+??inflate_table_1:
+        CMP      R6,R2
+        BCC      ??inflate_table_3
+//  115 
+//  116     /* bound code lengths, force root to be within code lengths */
+//  117     root = *bits;
+??inflate_table_2:
+        LDR      R3,[SP, #+148]
+        LDR      R3,[R3, #+0]
+        STR      R3,[SP, #+4]
+//  118     for (max = MAXBITS; max >= 1; max--)
+        MOV      R3,#+15
+//  119         if (count[max] != 0) break;
+??inflate_table_4:
+        ADD      R0,SP,#+36
+        ADD      R0,R0,R3, LSL #+1
+        LDRH     R0,[R0, #+0]
+        CMP      R0,#+0
+        BNE      ??inflate_table_5
+        SUBS     R3,R3,#+1
+        BNE      ??inflate_table_4
+//  120     if (root > max) root = max;
+??inflate_table_5:
+        LDR      R0,[SP, #+4]
+//  121     if (max == 0) {                     /* no symbols to code at all */
+        MOV      R12,#+1
+        CMP      R3,R0
+        LDR      R0,[SP, #+108]
+        STRCC    R3,[SP, #+4]
+        LDR      R0,[R0, #+0]
+        CMP      R3,#+0
+        BNE      ??inflate_table_6
+//  122         this.op = (unsigned char)64;    /* invalid code marker */
+//  123         this.bits = (unsigned char)1;
+//  124         this.val = (unsigned short)0;
+//  125         *(*table)++ = this;             /* make a table to force an error */
+        LDR      R2,[SP, #+108]
+        ADD      R3,R0,#+4
+        STR      R3,[R2, #+0]
+        MOV      R2,#+64
+        STRB     R2,[R0, #+0]
+        STRB     R12,[R0, #+1]
+        STRH     R1,[R0, #+2]
+//  126         *(*table)++ = this;
+        LDR      R0,[SP, #+108]
+        LDR      R2,[SP, #+108]
+        LDR      R0,[R0, #+0]
+        ADD      R3,R0,#+4
+        STR      R3,[R2, #+0]
+        MOV      R2,#+64
+        STRB     R2,[R0, #+0]
+        STRB     R12,[R0, #+1]
+        STRH     R1,[R0, #+2]
+//  127         *bits = 1;
+        LDR      R0,[SP, #+148]
+        STR      R12,[R0, #+0]
+//  128         return 0;     /* no symbols, but wait for decoding to report error */
+        MOV      R0,#+0
+        B        ??inflate_table_7
+//  129     }
+//  130     for (min = 1; min <= MAXBITS; min++)
+??inflate_table_6:
+        MOV      R4,#+1
+//  131         if (count[min] != 0) break;
+??inflate_table_8:
+        ADD      R5,SP,#+36
+        ADD      R5,R5,R4, LSL #+1
+        LDRH     R5,[R5, #+0]
+        CMP      R5,#+0
+        BNE      ??inflate_table_9
+        ADD      R4,R4,#+1
+        CMP      R4,#+16
+        BCC      ??inflate_table_8
+//  132     if (root < min) root = min;
+??inflate_table_9:
+        LDR      R5,[SP, #+4]
+//  133 
+//  134     /* check for an over-subscribed or incomplete set of lengths */
+//  135     left = 1;
+        MOV      R9,#+1
+        CMP      R5,R4
+        STRCC    R4,[SP, #+4]
+//  136     for (len = 1; len <= MAXBITS; len++) {
+        MOV      R5,R9
+//  137         left <<= 1;
+//  138         left -= count[len];
+??inflate_table_10:
+        ADD      R6,SP,#+36
+        ADD      R6,R6,R5, LSL #+1
+        LDRH     R6,[R6, #+0]
+        RSBS     R9,R6,R9, LSL #+1
+//  139         if (left < 0) return -1;        /* over-subscribed */
+        BPL      ??inflate_table_11
+??inflate_table_12:
+        MVN      R0,R1
+??inflate_table_7:
+        ADD      SP,SP,#+112
+        CFI CFA R13+36
+        POP      {R4-R11,PC}
+        CFI CFA R13+148
+//  140     }
+??inflate_table_11:
+        ADD      R5,R5,#+1
+        CMP      R5,#+16
+        BCC      ??inflate_table_10
+//  141     if (left > 0 && (type == CODES || max != 1))
+        CMP      R9,#+1
+        BLT      ??inflate_table_13
+        LDRB     R5,[SP, #+100]
+        CMP      R5,#+0
+        BEQ      ??inflate_table_12
+        CMP      R3,#+1
+        BNE      ??inflate_table_12
+//  142         return -1;                      /* incomplete set */
+//  143 
+//  144     /* generate offsets into symbol table for each length for sorting */
+//  145     offs[1] = 0;
+??inflate_table_13:
+        STRH     R1,[SP, #+70]
+//  146     for (len = 1; len < MAXBITS; len++)
+        MOV      R5,#+1
+//  147         offs[len + 1] = offs[len] + count[len];
+??inflate_table_14:
+        ADD      R6,SP,#+68
+        ADD      R6,R6,R5, LSL #+1
+        LDRH     R7,[R6, #+0]
+        ADD      R8,SP,#+36
+        ADD      R8,R8,R5, LSL #+1
+        LDRH     R8,[R8, #+0]
+        ADD      R5,R5,#+1
+        CMP      R5,#+15
+        ADD      R7,R8,R7
+        STRH     R7,[R6, #+2]
+        BCC      ??inflate_table_14
+//  148 
+//  149     /* sort symbols by length, by symbol order within each length */
+//  150     for (sym = 0; sym < codes; sym++)
+        MOV      R5,#+0
+        CMP      R2,#+0
+        BNE      ??inflate_table_15
+        B        ??inflate_table_16
+//  151         if (lens[sym] != 0) work[offs[lens[sym]]++] = (unsigned short)sym;
+??inflate_table_17:
+        LDR      R6,[SP, #+104]
+        ADD      R6,R6,R5, LSL #+1
+        LDRH     R7,[R6, #+0]
+        CMP      R7,#+0
+        BEQ      ??inflate_table_18
+        ADD      R8,SP,#+68
+        ADD      R7,R8,R7, LSL #+1
+        LDRH     R7,[R7, #+0]
+        LDR      R8,[SP, #+152]
+        ADD      R7,R8,R7, LSL #+1
+        STRH     R5,[R7, #+0]
+        LDRH     R7,[R6, #+0]
+        LDRH     R6,[R6, #+0]
+        ADD      R8,SP,#+68
+        ADD      R7,R8,R7, LSL #+1
+        ADD      R6,R8,R6, LSL #+1
+        LDRH     R6,[R6, #+0]
+        ADD      R6,R6,#+1
+        STRH     R6,[R7, #+0]
+??inflate_table_18:
+        ADD      R5,R5,#+1
+??inflate_table_15:
+        CMP      R5,R2
+        BCC      ??inflate_table_17
+//  152 
+//  153     /*
+//  154        Create and fill in decoding tables.  In this loop, the table being
+//  155        filled is at next and has curr index bits.  The code being used is huff
+//  156        with length len.  That code is converted to an index by dropping drop
+//  157        bits off of the bottom.  For codes where len is less than drop + curr,
+//  158        those top drop + curr - len bits are incremented through all values to
+//  159        fill the table with replicated entries.
+//  160 
+//  161        root is the number of index bits for the root table.  When len exceeds
+//  162        root, sub-tables are created pointed to by the root entry with an index
+//  163        of the low root bits of huff.  This is saved in low to check for when a
+//  164        new sub-table should be started.  drop is zero when the root table is
+//  165        being filled, and drop is root when sub-tables are being filled.
+//  166 
+//  167        When a new sub-table is needed, it is necessary to look ahead in the
+//  168        code lengths to determine what size sub-table is needed.  The length
+//  169        counts are used for this, and so count[] is decremented as codes are
+//  170        entered in the tables.
+//  171 
+//  172        used keeps track of how many table entries have been allocated from the
+//  173        provided *table space.  It is checked when a LENS table is being made
+//  174        against the space in *table, ENOUGH, minus the maximum space needed by
+//  175        the worst case distance code, MAXD.  This should never happen, but the
+//  176        sufficiency of ENOUGH has not been proven exhaustively, hence the check.
+//  177        This assumes that when type == LENS, bits == 9.
+//  178 
+//  179        sym increments through all symbols, and the loop terminates when
+//  180        all codes of length max, i.e. all codes, have been processed.  This
+//  181        routine permits incomplete codes, so another loop after this one fills
+//  182        in the rest of the decoding tables with invalid code markers.
+//  183      */
+//  184 
+//  185     /* set up for code type */
+//  186     switch (type) {
+??inflate_table_16:
+        LDRB     R5,[SP, #+100]
+        LDR      R2,??inflate_table_19  ;; ??lbase
+        CMP      R5,#+0
+        BEQ      ??inflate_table_20
+        SUBS     R5,R5,#+1
+        BEQ      ??inflate_table_21
+        B        ??inflate_table_22
+//  187     case CODES:
+//  188         base = extra = work;    /* dummy value--not used */
+??inflate_table_20:
+        LDR      R5,[SP, #+152]
+        STR      R5,[SP, #+16]
+        STR      R5,[SP, #+24]
+//  189         end = 19;
+        MOV      R5,#+19
+        B        ??inflate_table_23
+//  190         break;
+//  191     case LENS:
+//  192         base = lbase;
+//  193         base -= 257;
+??inflate_table_21:
+        MVN      R6,#+1
+        BIC      R6,R6,#0x200
+        ADD      R6,R6,R2
+        STR      R6,[SP, #+24]
+//  194         extra = lext;
+//  195         extra -= 257;
+        MVN      R6,#+193
+        BIC      R6,R6,#0x100
+        ADD      R2,R6,R2
+        STR      R2,[SP, #+16]
+//  196         end = 256;
+        MOV      R5,#+256
+        B        ??inflate_table_23
+//  197         break;
+//  198     default:            /* DISTS */
+//  199         base = dbase;
+??inflate_table_22:
+        ADD      R6,R2,#+128
+        STR      R6,[SP, #+24]
+//  200         extra = dext;
+        ADD      R2,R2,#+192
+        STR      R2,[SP, #+16]
+//  201         end = -1;
+        MVN      R5,R1
+//  202     }
+//  203 
+//  204     /* initialize state for loop */
+//  205     huff = 0;                   /* starting code */
+//  206     sym = 0;                    /* starting code symbol */
+//  207     len = min;                  /* starting code length */
+//  208     next = *table;              /* current table to fill in */
+//  209     curr = root;                /* current table index bits */
+??inflate_table_23:
+        LDR      R8,[SP, #+4]
+        STR      R5,[SP, #+20]
+        MOV      R5,R4
+//  210     drop = 0;                   /* current bits to drop from code for index */
+//  211     low = (unsigned)(-1);       /* trigger new sub-table when len > root */
+//  212     used = 1U << root;          /* use root table entries */
+//  213     mask = used - 1;            /* mask for comparing low */
+//  214 
+//  215     /* check available table space */
+//  216     if (type == LENS && used >= ENOUGH - MAXD)
+        LDRB     R4,[SP, #+100]
+        MOV      R2,#+0
+        MOV      R6,R1
+        MOV      R7,R1
+        MVN      R9,R1
+        STR      R9,[SP, #+8]
+        MOV      R9,R8
+        LSL      R9,R12,R9
+        STR      R9,[SP, #+12]
+        SUB      R9,R9,#+1
+        STR      R9,[SP, #+28]
+        CMP      R4,#+1
+        BNE      ??inflate_table_24
+        LDR      R4,[SP, #+12]
+        CMP      R4,#+1456
+        BCC      ??inflate_table_24
+//  217         return 1;
+??inflate_table_25:
+        MOV      R0,#+1
+        B        ??inflate_table_7
+//  218 
+//  219     /* process all codes and make table entries */
+//  220     for (;;) {
+//  221         /* create table entry */
+//  222         this.bits = (unsigned char)(len - drop);
+//  223         if ((int)(work[sym]) < end) {
+//  224             this.op = (unsigned char)0;
+//  225             this.val = work[sym];
+//  226         }
+//  227         else if ((int)(work[sym]) > end) {
+//  228             this.op = (unsigned char)(extra[work[sym]]);
+//  229             this.val = base[work[sym]];
+//  230         }
+//  231         else {
+//  232             this.op = (unsigned char)(32 + 64);         /* end of block */
+//  233             this.val = 0;
+//  234         }
+//  235 
+//  236         /* replicate for those indices with low len bits equal to huff */
+//  237         incr = 1U << (len - drop);
+//  238         fill = 1U << curr;
+//  239         min = fill;                 /* save offset to next table */
+//  240         do {
+//  241             fill -= incr;
+//  242             next[(huff >> drop) + fill] = this;
+//  243         } while (fill != 0);
+//  244 
+//  245         /* backwards increment the len-bit code huff */
+//  246         incr = 1U << (len - 1);
+//  247         while (huff & incr)
+//  248             incr >>= 1;
+//  249         if (incr != 0) {
+//  250             huff &= incr - 1;
+//  251             huff += incr;
+//  252         }
+//  253         else
+//  254             huff = 0;
+//  255 
+//  256         /* go to next symbol, update count, len */
+//  257         sym++;
+//  258         if (--(count[len]) == 0) {
+//  259             if (len == max) break;
+//  260             len = lens[work[sym]];
+//  261         }
+//  262 
+//  263         /* create new sub-table if needed */
+//  264         if (len > root && (huff & mask) != low) {
+//  265             /* if first time, transition to sub-tables */
+//  266             if (drop == 0)
+//  267                 drop = root;
+//  268 
+//  269             /* increment past last table */
+//  270             next += min;            /* here min is 1 << curr */
+//  271 
+//  272             /* determine length of next table */
+//  273             curr = len - drop;
+//  274             left = (int)(1 << curr);
+//  275             while (curr + drop < max) {
+//  276                 left -= count[curr + drop];
+//  277                 if (left <= 0) break;
+//  278                 curr++;
+??inflate_table_26:
+        ADD      R8,R8,#+1
+//  279                 left <<= 1;
+        LSL      R9,R9,#+1
+??inflate_table_27:
+        ADD      R4,R7,R8
+        CMP      R4,R3
+        BCS      ??inflate_table_28
+        ADD      R11,SP,#+36
+        ADD      R4,R11,R4, LSL #+1
+        LDRH     R4,[R4, #+0]
+        SUB      R9,R9,R4
+        CMP      R9,#+1
+        BGE      ??inflate_table_26
+//  280             }
+//  281 
+//  282             /* check for enough space */
+//  283             used += 1U << curr;
+//  284             if (type == LENS && used >= ENOUGH - MAXD)
+??inflate_table_28:
+        LDRB     R4,[SP, #+100]
+        LDR      R9,[SP, #+12]
+        ADD      R9,R9,R12, LSL R8
+        STR      R9,[SP, #+12]
+        CMP      R4,#+1
+        BNE      ??inflate_table_29
+        CMP      R9,#+1456
+        BCS      ??inflate_table_25
+//  285                 return 1;
+//  286 
+//  287             /* point entry in root table to sub-table */
+//  288             low = huff & mask;
+//  289             (*table)[low].op = (unsigned char)curr;
+??inflate_table_29:
+        LDR      R9,[SP, #+108]
+        STR      R10,[SP, #+8]
+        LDR      R4,[SP, #+8]
+        LDR      R9,[R9, #+0]
+//  290             (*table)[low].bits = (unsigned char)root;
+//  291             (*table)[low].val = (unsigned short)(next - *table);
+        LSR      R10,R0,#+2
+        STRB     R8,[R9, +R4, LSL #+2]
+        LDR      R9,[SP, #+108]
+        LDR      R4,[SP, #+8]
+        LDR      R9,[R9, #+0]
+        ADD      R4,R9,R4, LSL #+2
+        LDR      R9,[SP, #+4]
+        STRB     R9,[R4, #+1]
+        LDR      R4,[SP, #+108]
+        LDR      R9,[SP, #+8]
+        LDR      R4,[R4, #+0]
+        ADD      R9,R4,R9, LSL #+2
+        SUB      R4,R10,R4, LSR #+2
+        STRH     R4,[R9, #+2]
+??inflate_table_24:
+        LDR      R9,[SP, #+152]
+        LDR      R11,[SP, #+20]
+        SUB      R4,R5,R7
+        STRB     R4,[SP, #+1]
+        ADD      R9,R9,R6, LSL #+1
+        LDRH     R10,[R9, #+0]
+        CMP      R10,R11
+        BGE      ??inflate_table_30
+        STRB     R1,[SP, #+0]
+??inflate_table_31:
+        LDRH     R9,[R9, #+0]
+        STRH     R9,[SP, #+2]
+        B        ??inflate_table_32
+??inflate_table_30:
+        MOV      R10,R11
+        LDRH     R11,[R9, #+0]
+        CMP      R10,R11
+        BGE      ??inflate_table_33
+        LDR      LR,[SP, #+16]
+        ADD      R11,LR,R11, LSL #+1
+        LDRH     R11,[R11, #+0]
+        STRB     R11,[SP, #+0]
+        LDRH     R9,[R9, #+0]
+        LDR      R11,[SP, #+24]
+        ADD      R9,R11,R9, LSL #+1
+        B        ??inflate_table_31
+??inflate_table_33:
+        MOV      R10,#+96
+        STRB     R10,[SP, #+0]
+        STRH     R1,[SP, #+2]
+??inflate_table_32:
+        LSL      R4,R12,R4
+        STR      R4,[SP, #+32]
+        LSL      R9,R12,R8
+        MOV      R4,R9
+??inflate_table_34:
+        LDRB     R11,[SP, #+0]
+        LDR      R10,[SP, #+32]
+        SUB      R9,R9,R10
+        ADD      R10,R9,R2, LSR R7
+        STRB     R11,[R0, +R10, LSL #+2]
+        LDRB     LR,[SP, #+1]
+        ADD      R11,R0,#+1
+        CMP      R9,#+0
+        STRB     LR,[R11, +R10, LSL #+2]
+        ADD      R11,R0,#+2
+        ADD      R10,R11,R10, LSL #+2
+        LDRH     R11,[SP, #+2]
+        STRH     R11,[R10, #+0]
+        BNE      ??inflate_table_34
+        SUB      R9,R5,#+1
+        LSL      R9,R12,R9
+        TST      R9,R2
+        BEQ      ??inflate_table_35
+??inflate_table_36:
+        LSR      R9,R9,#+1
+        TST      R9,R2
+        BNE      ??inflate_table_36
+??inflate_table_35:
+        CMP      R9,#+0
+        BEQ      ??inflate_table_37
+        SUB      R10,R9,#+1
+        AND      R2,R10,R2
+        ADD      R2,R9,R2
+        B        ??inflate_table_38
+??inflate_table_37:
+        MOV      R2,#+0
+??inflate_table_38:
+        ADD      R9,SP,#+36
+        ADD      R9,R9,R5, LSL #+1
+        LDRH     R10,[R9, #+0]
+        ADD      R6,R6,#+1
+        MOV      R11,#+255
+        ORR      R11,R11,#0xFF00
+        ADD      R10,R11,R10
+        STRH     R10,[R9, #+0]
+        LSLS     R10,R10,#+16
+        BNE      ??inflate_table_39
+        CMP      R5,R3
+        BEQ      ??inflate_table_40
+        LDR      R5,[SP, #+152]
+        LDR      R9,[SP, #+104]
+        ADD      R5,R5,R6, LSL #+1
+        LDRH     R5,[R5, #+0]
+        ADD      R5,R9,R5, LSL #+1
+        LDRH     R5,[R5, #+0]
+??inflate_table_39:
+        LDR      R9,[SP, #+4]
+        CMP      R9,R5
+        BCS      ??inflate_table_24
+        LDR      R9,[SP, #+28]
+        AND      R10,R9,R2
+        LDR      R9,[SP, #+8]
+        CMP      R10,R9
+        BEQ      ??inflate_table_24
+        CMP      R7,#+0
+        LDREQ    R7,[SP, #+4]
+        ADD      R0,R0,R4, LSL #+2
+        SUB      R8,R5,R7
+        LSL      R9,R12,R8
+        B        ??inflate_table_27
+//  292         }
+//  293     }
+//  294 
+//  295     /*
+//  296        Fill in rest of table for incomplete codes.  This loop is similar to the
+//  297        loop above in incrementing huff for table indices.  It is assumed that
+//  298        len is equal to curr + drop, so there is no loop needed to increment
+//  299        through high index bits.  When the current sub-table is filled, the loop
+//  300        drops back to the root table to fill in any remaining entries there.
+//  301      */
+//  302     this.op = (unsigned char)64;                /* invalid code marker */
+//  303     this.bits = (unsigned char)(len - drop);
+//  304     this.val = (unsigned short)0;
+//  305     while (huff != 0) {
+//  306         /* when done with sub-table, drop back to root table */
+//  307         if (drop != 0 && (huff & mask) != low) {
+//  308             drop = 0;
+//  309             len = root;
+//  310             next = *table;
+//  311             this.bits = (unsigned char)len;
+//  312         }
+//  313 
+//  314         /* put invalid code marker in table */
+//  315         next[huff >> drop] = this;
+//  316 
+//  317         /* backwards increment the len-bit code huff */
+//  318         incr = 1U << (len - 1);
+//  319         while (huff & incr)
+//  320             incr >>= 1;
+//  321         if (incr != 0) {
+//  322             huff &= incr - 1;
+//  323             huff += incr;
+??inflate_table_41:
+        SUB      R3,R9,#+1
+        AND      R2,R3,R2
+        ADD      R2,R9,R2
+//  324         }
+??inflate_table_40:
+        CMP      R2,#+0
+        BEQ      ??inflate_table_42
+        CMP      R7,#+0
+        BEQ      ??inflate_table_43
+        LDR      R3,[SP, #+28]
+        LDR      R4,[SP, #+8]
+        AND      R3,R3,R2
+        CMP      R3,R4
+        BEQ      ??inflate_table_43
+        LDR      R5,[SP, #+4]
+        LDR      R0,[SP, #+108]
+        MOV      R7,#+0
+        LDR      R0,[R0, #+0]
+        STRB     R5,[SP, #+1]
+??inflate_table_43:
+        LSR      R3,R2,R7
+        ADD      R3,R0,R3, LSL #+2
+        MOV      R4,#+64
+        STRB     R4,[R3, #+0]
+        LDRB     R4,[SP, #+1]
+        STRB     R4,[R3, #+1]
+        STRH     R1,[R3, #+2]
+        SUB      R3,R5,#+1
+        LSL      R9,R12,R3
+        TST      R9,R2
+        BEQ      ??inflate_table_44
+??inflate_table_45:
+        LSR      R9,R9,#+1
+        TST      R9,R2
+        BNE      ??inflate_table_45
+??inflate_table_44:
+        CMP      R9,#+0
+        BNE      ??inflate_table_41
+//  325         else
+//  326             huff = 0;
+//  327     }
+//  328 
+//  329     /* set return parameters */
+//  330     *table += used;
+??inflate_table_42:
+        LDR      R0,[SP, #+108]
+        LDR      R1,[SP, #+12]
+        LDR      R2,[R0, #+0]
+        ADD      R1,R2,R1, LSL #+2
+        STR      R1,[R0, #+0]
+//  331     *bits = root;
+        LDR      R0,[SP, #+148]
+        LDR      R1,[SP, #+4]
+        STR      R1,[R0, #+0]
+//  332     return 0;
+        MOV      R0,#+0
+        ADD      SP,SP,#+112
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        DATA
+??inflate_table_19:
+        DC32     ??lbase
+        CFI EndBlock cfiBlock1
+//  333 }
+
+        END
+// 
+// 1 436 bytes in segment CODE
+//   304 bytes in segment DATA_C
+// 
+// 1 432 bytes of CODE  memory (+ 4 bytes shared)
+//   304 bytes of CONST memory
+//
+//Errors: none
+//Warnings: none

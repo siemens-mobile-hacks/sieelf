@@ -1,0 +1,1458 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:49 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3d /
+//                       ec\mp3dec.c                                         /
+//    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3d /
+//                       ec\mp3dec.c -D NDEBUG -lC                           /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\mp3dec.s79                                     /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME mp3dec
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        EXTERN ??div32_a
+
+??DataTable0 EQU 0
+        MULTWEAK ??MP3Decode??rT
+        MULTWEAK ??MP3FindSyncWord??rT
+        MULTWEAK ??MP3FreeDecoder??rT
+        MULTWEAK ??MP3GetLastFrameInfo??rT
+        MULTWEAK ??MP3GetNextFrameInfo??rT
+        MULTWEAK ??MP3InitDecoder??rT
+        MULTWEAK ??rA??div32_a
+        MULTWEAK ??xmp3_AllocateBuffers??rA
+        MULTWEAK ??xmp3_CheckPadBit??rA
+        MULTWEAK ??xmp3_DecodeHuffman??rA
+        MULTWEAK ??xmp3_Dequantize??rA
+        MULTWEAK ??xmp3_FreeBuffers??rA
+        MULTWEAK ??xmp3_IMDCT??rA
+        MULTWEAK ??xmp3_Subband??rA
+        MULTWEAK ??xmp3_UnpackFrameHeader??rA
+        MULTWEAK ??xmp3_UnpackScaleFactors??rA
+        MULTWEAK ??xmp3_UnpackSideInfo??rA
+        PUBLIC MP3Decode
+        FUNCTION MP3Decode,0203H
+        LOCFRAME CSTACK, 48, STACK
+        PUBLIC MP3FindSyncWord
+        FUNCTION MP3FindSyncWord,0203H
+        PUBLIC MP3FreeDecoder
+        FUNCTION MP3FreeDecoder,0203H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC MP3GetLastFrameInfo
+        FUNCTION MP3GetLastFrameInfo,0203H
+        LOCFRAME CSTACK, 8, STACK
+        PUBLIC MP3GetNextFrameInfo
+        FUNCTION MP3GetNextFrameInfo,0203H
+        LOCFRAME CSTACK, 12, STACK
+        PUBLIC MP3InitDecoder
+        FUNCTION MP3InitDecoder,0203H
+        LOCFRAME CSTACK, 4, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+xmp3_AllocateBuffers SYMBOL "xmp3_AllocateBuffers"
+xmp3_CheckPadBit    SYMBOL "xmp3_CheckPadBit"
+xmp3_DecodeHuffman  SYMBOL "xmp3_DecodeHuffman"
+xmp3_Dequantize     SYMBOL "xmp3_Dequantize"
+xmp3_FreeBuffers    SYMBOL "xmp3_FreeBuffers"
+xmp3_IMDCT          SYMBOL "xmp3_IMDCT"
+xmp3_Subband        SYMBOL "xmp3_Subband"
+xmp3_UnpackFrameHeader SYMBOL "xmp3_UnpackFrameHeader"
+xmp3_UnpackScaleFactors SYMBOL "xmp3_UnpackScaleFactors"
+xmp3_UnpackSideInfo SYMBOL "xmp3_UnpackSideInfo"
+MP3Decode           SYMBOL "MP3Decode"
+??MP3Decode??rT     SYMBOL "??rT", MP3Decode
+MP3FindSyncWord     SYMBOL "MP3FindSyncWord"
+??MP3FindSyncWord??rT SYMBOL "??rT", MP3FindSyncWord
+MP3FreeDecoder      SYMBOL "MP3FreeDecoder"
+??MP3FreeDecoder??rT SYMBOL "??rT", MP3FreeDecoder
+MP3GetLastFrameInfo SYMBOL "MP3GetLastFrameInfo"
+??MP3GetLastFrameInfo??rT SYMBOL "??rT", MP3GetLastFrameInfo
+MP3GetNextFrameInfo SYMBOL "MP3GetNextFrameInfo"
+??MP3GetNextFrameInfo??rT SYMBOL "??rT", MP3GetNextFrameInfo
+MP3InitDecoder      SYMBOL "MP3InitDecoder"
+??MP3InitDecoder??rT SYMBOL "??rT", MP3InitDecoder
+??xmp3_AllocateBuffers??rA SYMBOL "??rA", xmp3_AllocateBuffers
+??xmp3_CheckPadBit??rA SYMBOL "??rA", xmp3_CheckPadBit
+??xmp3_DecodeHuffman??rA SYMBOL "??rA", xmp3_DecodeHuffman
+??xmp3_Dequantize??rA SYMBOL "??rA", xmp3_Dequantize
+??xmp3_FreeBuffers??rA SYMBOL "??rA", xmp3_FreeBuffers
+??xmp3_IMDCT??rA    SYMBOL "??rA", xmp3_IMDCT
+??xmp3_Subband??rA  SYMBOL "??rA", xmp3_Subband
+??xmp3_UnpackFrameHeader??rA SYMBOL "??rA", xmp3_UnpackFrameHeader
+??xmp3_UnpackScaleFactors??rA SYMBOL "??rA", xmp3_UnpackScaleFactors
+??xmp3_UnpackSideInfo??rA SYMBOL "??rA", xmp3_UnpackSideInfo
+
+        EXTERN xmp3_AllocateBuffers
+        FUNCTION xmp3_AllocateBuffers,0202H
+        EXTERN xmp3_CheckPadBit
+        FUNCTION xmp3_CheckPadBit,0202H
+        EXTERN xmp3_DecodeHuffman
+        FUNCTION xmp3_DecodeHuffman,0202H
+        EXTERN xmp3_Dequantize
+        FUNCTION xmp3_Dequantize,0202H
+        EXTERN xmp3_FreeBuffers
+        FUNCTION xmp3_FreeBuffers,0202H
+        EXTERN xmp3_IMDCT
+        FUNCTION xmp3_IMDCT,0202H
+        EXTERN xmp3_Subband
+        FUNCTION xmp3_Subband,0202H
+        EXTERN xmp3_UnpackFrameHeader
+        FUNCTION xmp3_UnpackFrameHeader,0202H
+        EXTERN xmp3_UnpackScaleFactors
+        FUNCTION xmp3_UnpackScaleFactors,0202H
+        EXTERN xmp3_UnpackSideInfo
+        FUNCTION xmp3_UnpackSideInfo,0202H
+        EXTERN xmp3_samplesPerFrameTab
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??MP3InitDecoder??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE MP3InitDecoder
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3dec\mp3dec.c
+//    1 /* ***** BEGIN LICENSE BLOCK ***** 
+//    2  * Version: RCSL 1.0/RPSL 1.0 
+//    3  *  
+//    4  * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+//    5  *      
+//    6  * The contents of this file, and the files included with this file, are 
+//    7  * subject to the current version of the RealNetworks Public Source License 
+//    8  * Version 1.0 (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the RealNetworks Community Source License Version 1.0 
+//   11  * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+//   12  * in which case the RCSL will apply. You may also obtain the license terms 
+//   13  * directly from RealNetworks.  You may not use this file except in 
+//   14  * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+//   15  * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+//   16  * RCSL for the rights, obligations and limitations governing use of the 
+//   17  * contents of the file.  
+//   18  *  
+//   19  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   20  * developer of the Original Code and owns the copyrights in the portions 
+//   21  * it created. 
+//   22  *  
+//   23  * This file, and the files included with this file, is distributed and made 
+//   24  * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+//   25  * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+//   26  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+//   27  * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+//   28  * 
+//   29  * Technology Compatibility Kit Test Suite(s) Location: 
+//   30  *    http://www.helixcommunity.org/content/tck 
+//   31  * 
+//   32  * Contributor(s): 
+//   33  *  
+//   34  * ***** END LICENSE BLOCK ***** */ 
+//   35 
+//   36 /**************************************************************************************
+//   37  * Fixed-point MP3 decoder
+//   38  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+//   39  * June 2003
+//   40  *
+//   41  * mp3dec.c - platform-independent top level MP3 decoder API
+//   42  **************************************************************************************/
+//   43 
+//   44 //#include "..\..\..\swilib.h"		/* for memmove, memcpy (can replace with different implementations if desired) */
+//   45 
+//   46 #include "mp3common.h"	/* includes mp3dec.h (public API) and internal, platform-independent API */
+//   47 
+//   48 /**************************************************************************************
+//   49  * Function:    MP3InitDecoder
+//   50  *
+//   51  * Description: allocate memory for platform-specific data
+//   52  *              clear all the user-accessible fields
+//   53  *
+//   54  * Inputs:      none
+//   55  *
+//   56  * Outputs:     none
+//   57  *
+//   58  * Return:      handle to mp3 decoder instance, 0 if malloc fails
+//   59  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function MP3InitDecoder
+        ARM
+//   60 HMP3Decoder MP3InitDecoder(void)
+//   61 {
+//   62 	MP3DecInfo *mp3DecInfo;
+//   63 
+//   64 	mp3DecInfo = AllocateBuffers();
+//   65 
+//   66 	return (HMP3Decoder)mp3DecInfo;
+MP3InitDecoder:
+        _BF      xmp3_AllocateBuffers,??xmp3_AllocateBuffers??rA  ;; tailcall
+        CFI EndBlock cfiBlock1
+//   67 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??MP3FreeDecoder??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE MP3FreeDecoder
+//   68 
+//   69 /**************************************************************************************
+//   70  * Function:    MP3FreeDecoder
+//   71  *
+//   72  * Description: free platform-specific data allocated by InitMP3Decoder
+//   73  *              zero out the contents of MP3DecInfo struct
+//   74  *
+//   75  * Inputs:      valid MP3 decoder instance pointer (HMP3Decoder)
+//   76  *
+//   77  * Outputs:     none
+//   78  *
+//   79  * Return:      none
+//   80  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function MP3FreeDecoder
+        ARM
+//   81 void MP3FreeDecoder(HMP3Decoder hMP3Decoder)
+//   82 {
+MP3FreeDecoder:
+        PUSH     {LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI CFA R13+4
+//   83 	MP3DecInfo *mp3DecInfo = (MP3DecInfo *)hMP3Decoder;
+//   84 
+//   85 	if (!mp3DecInfo)
+        CMP      R0,#+0
+        POPEQ    {PC}
+//   86 		return;
+//   87 
+//   88 	FreeBuffers(mp3DecInfo);
+        _BLF     xmp3_FreeBuffers,??xmp3_FreeBuffers??rA
+//   89 }
+        POP      {PC}             ;; return
+        CFI EndBlock cfiBlock3
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??MP3FindSyncWord??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE MP3FindSyncWord
+//   90 
+//   91 /**************************************************************************************
+//   92  * Function:    MP3FindSyncWord
+//   93  *
+//   94  * Description: locate the next byte-alinged sync word in the raw mp3 stream
+//   95  *
+//   96  * Inputs:      buffer to search for sync word
+//   97  *              max number of bytes to search in buffer
+//   98  *
+//   99  * Outputs:     none
+//  100  *
+//  101  * Return:      offset to first sync word (bytes from start of buf)
+//  102  *              -1 if sync not found after searching nBytes
+//  103  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function MP3FindSyncWord
+        ARM
+//  104 int MP3FindSyncWord(unsigned char *buf, int nBytes)
+//  105 {
+//  106 	int i;
+//  107 
+//  108 	/* find byte-aligned syncword - need 12 (MPEG 1,2) or 11 (MPEG 2.5) matching bits */
+//  109 	for (i = 0; i < nBytes - 1; i++) {
+MP3FindSyncWord:
+        MOV      R2,#+0
+        SUB      R1,R1,#+1
+        B        ??MP3FindSyncWord_0
+??MP3FindSyncWord_1:
+        ADD      R2,R2,#+1
+??MP3FindSyncWord_0:
+        CMP      R2,R1
+        BGE      ??MP3FindSyncWord_2
+//  110 		if ( (buf[i+0] & SYNCWORDH) == SYNCWORDH && (buf[i+1] & SYNCWORDL) == SYNCWORDL )
+        LDRB     R3,[R2, +R0]
+        CMP      R3,#+255
+        BNE      ??MP3FindSyncWord_1
+        ADD      R3,R2,R0
+        LDRB     R3,[R3, #+1]
+        AND      R3,R3,#0xE0
+        CMP      R3,#+224
+        BNE      ??MP3FindSyncWord_1
+//  111 			return i;
+        MOV      R0,R2
+        BX       LR
+//  112 	}
+//  113 	
+//  114 	return -1;
+??MP3FindSyncWord_2:
+        MVN      R0,#+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock5
+//  115 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??MP3GetLastFrameInfo??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE MP3GetLastFrameInfo
+//  116 
+//  117 /**************************************************************************************
+//  118  * Function:    MP3FindFreeSync
+//  119  *
+//  120  * Description: figure out number of bytes between adjacent sync words in "free" mode
+//  121  *
+//  122  * Inputs:      buffer to search for next sync word
+//  123  *              the 4-byte frame header starting at the current sync word
+//  124  *              max number of bytes to search in buffer
+//  125  *
+//  126  * Outputs:     none
+//  127  *
+//  128  * Return:      offset to next sync word, minus any pad byte (i.e. nSlots)
+//  129  *              -1 if sync not found after searching nBytes
+//  130  *
+//  131  * Notes:       this checks that the first 22 bits of the next frame header are the
+//  132  *                same as the current frame header, but it's still not foolproof
+//  133  *                (could accidentally find a sequence in the bitstream which 
+//  134  *                 appears to match but is not actually the next frame header)
+//  135  *              this could be made more error-resilient by checking several frames
+//  136  *                in a row and verifying that nSlots is the same in each case
+//  137  *              since free mode requires CBR (see spec) we generally only call
+//  138  *                this function once (first frame) then store the result (nSlots)
+//  139  *                and just use it from then on
+//  140  **************************************************************************************/
+//  141 static int MP3FindFreeSync(unsigned char *buf, unsigned char firstFH[4], int nBytes)
+//  142 {
+//  143 	int offset = 0;
+//  144 	unsigned char *bufPtr = buf;
+//  145 
+//  146 	/* loop until we either: 
+//  147 	 *  - run out of nBytes (FindMP3SyncWord() returns -1)
+//  148 	 *  - find the next valid frame header (sync word, version, layer, CRC flag, bitrate, and sample rate
+//  149 	 *      in next header must match current header)
+//  150 	 */
+//  151 	while (1) {
+//  152 		offset = MP3FindSyncWord(bufPtr, nBytes);
+//  153 		bufPtr += offset;
+//  154 		if (offset < 0) {
+//  155 			return -1;
+//  156 		} else if ( (bufPtr[0] == firstFH[0]) && (bufPtr[1] == firstFH[1]) && ((bufPtr[2] & 0xfc) == (firstFH[2] & 0xfc)) ) {
+//  157 			/* want to return number of bytes per frame, NOT counting the padding byte, so subtract one if padFlag == 1 */
+//  158 			if ((firstFH[2] >> 1) & 0x01)
+//  159 				bufPtr--;
+//  160 			return bufPtr - buf;
+//  161 		}
+//  162 		bufPtr += 3;
+//  163 		nBytes -= (offset + 3);
+//  164 	};
+//  165 
+//  166 	return -1;
+//  167 }
+//  168 
+//  169 /**************************************************************************************
+//  170  * Function:    MP3GetLastFrameInfo
+//  171  *
+//  172  * Description: get info about last MP3 frame decoded (number of sampled decoded, 
+//  173  *                sample rate, bitrate, etc.)
+//  174  *
+//  175  * Inputs:      valid MP3 decoder instance pointer (HMP3Decoder)
+//  176  *              pointer to MP3FrameInfo struct
+//  177  *
+//  178  * Outputs:     filled-in MP3FrameInfo struct
+//  179  *
+//  180  * Return:      none
+//  181  *
+//  182  * Notes:       call this right after calling MP3Decode
+//  183  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function MP3GetLastFrameInfo
+        ARM
+//  184 void MP3GetLastFrameInfo(HMP3Decoder hMP3Decoder, MP3FrameInfo *mp3FrameInfo)
+//  185 {
+MP3GetLastFrameInfo:
+        PUSH     {R4,R5}
+        CFI R5 Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+//  186 	MP3DecInfo *mp3DecInfo = (MP3DecInfo *)hMP3Decoder;
+//  187 
+//  188 	if (!mp3DecInfo || mp3DecInfo->layer != 3) {
+        CMP      R0,#+0
+        BEQ      ??MP3GetLastFrameInfo_0
+        LDR      R2,[R0, #+2000]
+        CMP      R2,#+3
+        BEQ      ??MP3GetLastFrameInfo_1
+//  189 		mp3FrameInfo->bitrate = 0;
+        MOV      R0,#+0
+??MP3GetLastFrameInfo_0:
+        STR      R0,[R1, #+0]
+//  190 		mp3FrameInfo->nChans = 0;
+        STR      R0,[R1, #+4]
+//  191 		mp3FrameInfo->samprate = 0;
+        STR      R0,[R1, #+8]
+//  192 		mp3FrameInfo->bitsPerSample = 0;
+        STR      R0,[R1, #+12]
+//  193 		mp3FrameInfo->outputSamps = 0;
+        STR      R0,[R1, #+16]
+//  194 		mp3FrameInfo->layer = 0;
+        STR      R0,[R1, #+20]
+//  195 		mp3FrameInfo->version = 0;
+        MOV      R0,#+0
+        B        ??MP3GetLastFrameInfo_2
+//  196 	} else {
+//  197 		mp3FrameInfo->bitrate = mp3DecInfo->bitrate;
+??MP3GetLastFrameInfo_1:
+        LDR      R2,[R0, #+1976]
+//  198 		mp3FrameInfo->nChans = mp3DecInfo->nChans;
+//  199 		mp3FrameInfo->samprate = mp3DecInfo->samprate;
+//  200 		mp3FrameInfo->bitsPerSample = 16;
+//  201 		mp3FrameInfo->outputSamps = mp3DecInfo->nChans * (int)samplesPerFrameTab[mp3DecInfo->version][mp3DecInfo->layer - 1];
+        LDR      R5,??DataTable1  ;; xmp3_samplesPerFrameTab
+        STR      R2,[R1, #+0]
+        LDR      R2,[R0, #+1980]
+        MOV      R4,#+6
+        STR      R2,[R1, #+4]
+        LDR      R2,[R0, #+1984]
+        STR      R2,[R1, #+8]
+        MOV      R2,#+16
+        STR      R2,[R1, #+12]
+        LDRB     R12,[R0, #+2004]
+        LDR      R3,[R0, #+2000]
+        LDR      R2,[R0, #+1980]
+        MLA      R5,R4,R12,R5
+        ADD      R3,R5,R3, LSL #+1
+        LDRSH    R3,[R3, #-2]
+        MUL      R2,R3,R2
+        STR      R2,[R1, #+16]
+//  202 		mp3FrameInfo->layer = mp3DecInfo->layer;
+        LDR      R2,[R0, #+2000]
+        STR      R2,[R1, #+20]
+//  203 		mp3FrameInfo->version = mp3DecInfo->version;
+        LDRB     R0,[R0, #+2004]
+??MP3GetLastFrameInfo_2:
+        STR      R0,[R1, #+24]
+//  204 	}
+//  205 }
+        POP      {R4,R5}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock7
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??MP3GetNextFrameInfo??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE MP3GetNextFrameInfo
+//  206 
+//  207 /**************************************************************************************
+//  208  * Function:    MP3GetNextFrameInfo
+//  209  *
+//  210  * Description: parse MP3 frame header
+//  211  *
+//  212  * Inputs:      valid MP3 decoder instance pointer (HMP3Decoder)
+//  213  *              pointer to MP3FrameInfo struct
+//  214  *              pointer to buffer containing valid MP3 frame header (located using 
+//  215  *                MP3FindSyncWord(), above)
+//  216  *
+//  217  * Outputs:     filled-in MP3FrameInfo struct
+//  218  *
+//  219  * Return:      error code, defined in mp3dec.h (0 means no error, < 0 means error)
+//  220  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function MP3GetNextFrameInfo
+        ARM
+//  221 int MP3GetNextFrameInfo(HMP3Decoder hMP3Decoder, MP3FrameInfo *mp3FrameInfo, unsigned char *buf)
+//  222 {
+MP3GetNextFrameInfo:
+        PUSH     {R4,R5,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+        MOV      R5,R0
+        MOV      R4,R1
+        MOV      R1,R2
+//  223 	MP3DecInfo *mp3DecInfo = (MP3DecInfo *)hMP3Decoder;
+//  224 
+//  225 	if (!mp3DecInfo)
+        CMP      R5,#+0
+//  226 		return ERR_MP3_NULL_POINTER;
+        MVNEQ    R0,#+4
+        POPEQ    {R4,R5,PC}
+//  227 
+//  228 	if (UnpackFrameHeader(mp3DecInfo, buf) == -1 || mp3DecInfo->layer != 3)
+        _BLF     xmp3_UnpackFrameHeader,??xmp3_UnpackFrameHeader??rA
+        CMN      R0,#+1
+        BEQ      ??MP3GetNextFrameInfo_0
+        LDR      R0,[R5, #+2000]
+        CMP      R0,#+3
+        BEQ      ??MP3GetNextFrameInfo_1
+//  229 		return ERR_MP3_INVALID_FRAMEHEADER;
+??MP3GetNextFrameInfo_0:
+        MVN      R0,#+5
+        POP      {R4,R5,PC}
+//  230 
+//  231 	MP3GetLastFrameInfo(mp3DecInfo, mp3FrameInfo);
+??MP3GetNextFrameInfo_1:
+        CMP      R5,#+0
+        BEQ      ??MP3GetNextFrameInfo_2
+        CMP      R0,#+3
+        BEQ      ??MP3GetNextFrameInfo_3
+??MP3GetNextFrameInfo_2:
+        MOV      R0,#+0
+        STR      R0,[R4, #+0]
+        STR      R0,[R4, #+4]
+        STR      R0,[R4, #+8]
+        STR      R0,[R4, #+12]
+        STR      R0,[R4, #+16]
+        STR      R0,[R4, #+20]
+        STR      R0,[R4, #+24]
+        MOV      R0,#+0
+        POP      {R4,R5,PC}
+??MP3GetNextFrameInfo_3:
+        LDR      R0,[R5, #+1976]
+        LDR      R12,??DataTable1  ;; xmp3_samplesPerFrameTab
+        STR      R0,[R4, #+0]
+        LDR      R0,[R5, #+1980]
+        MOV      R3,#+6
+        STR      R0,[R4, #+4]
+        LDR      R0,[R5, #+1984]
+        STR      R0,[R4, #+8]
+        MOV      R0,#+16
+        STR      R0,[R4, #+12]
+        LDRB     R2,[R5, #+2004]
+        LDR      R1,[R5, #+2000]
+        LDR      R0,[R5, #+1980]
+        MLA      R2,R3,R2,R12
+        ADD      R1,R2,R1, LSL #+1
+        LDRSH    R1,[R1, #-2]
+        MUL      R0,R1,R0
+        STR      R0,[R4, #+16]
+        LDR      R0,[R5, #+2000]
+        STR      R0,[R4, #+20]
+        LDRB     R0,[R5, #+2004]
+        STR      R0,[R4, #+24]
+//  232 
+//  233 	return ERR_MP3_NONE;
+        MOV      R0,#+0
+        POP      {R4,R5,PC}       ;; return
+        CFI EndBlock cfiBlock9
+//  234 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable1:
+        DC32     xmp3_samplesPerFrameTab
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??MP3Decode??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock10
+        REQUIRE MP3Decode
+//  235 
+//  236 /**************************************************************************************
+//  237  * Function:    MP3ClearBadFrame
+//  238  *
+//  239  * Description: zero out pcm buffer if error decoding MP3 frame
+//  240  *
+//  241  * Inputs:      mp3DecInfo struct with correct frame size parameters filled in
+//  242  *              pointer pcm output buffer
+//  243  *
+//  244  * Outputs:     zeroed out pcm buffer
+//  245  *
+//  246  * Return:      none
+//  247  **************************************************************************************/
+//  248 static void MP3ClearBadFrame(MP3DecInfo *mp3DecInfo, short *outbuf)
+//  249 {
+//  250 	int i;
+//  251 
+//  252 	if (!mp3DecInfo)
+//  253 		return;
+//  254 
+//  255 	for (i = 0; i < mp3DecInfo->nGrans * mp3DecInfo->nGranSamps * mp3DecInfo->nChans; i++)
+//  256 		outbuf[i] = 0;
+//  257 }
+//  258 
+//  259 /**************************************************************************************
+//  260  * Function:    MP3Decode
+//  261  *
+//  262  * Description: decode one frame of MP3 data
+//  263  *
+//  264  * Inputs:      valid MP3 decoder instance pointer (HMP3Decoder)
+//  265  *              double pointer to buffer of MP3 data (containing headers + mainData)
+//  266  *              number of valid bytes remaining in inbuf
+//  267  *              pointer to outbuf, big enough to hold one frame of decoded PCM samples
+//  268  *              flag indicating whether MP3 data is normal MPEG format (useSize = 0)
+//  269  *                or reformatted as "self-contained" frames (useSize = 1)
+//  270  *
+//  271  * Outputs:     PCM data in outbuf, interleaved LRLRLR... if stereo
+//  272  *                number of output samples = nGrans * nGranSamps * nChans
+//  273  *              updated inbuf pointer, updated bytesLeft
+//  274  *
+//  275  * Return:      error code, defined in mp3dec.h (0 means no error, < 0 means error)
+//  276  *
+//  277  * Notes:       switching useSize on and off between frames in the same stream 
+//  278  *                is not supported (bit reservoir is not maintained if useSize on)
+//  279  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock11 Using cfiCommon1
+        CFI Function MP3Decode
+        ARM
+//  280 int MP3Decode(HMP3Decoder hMP3Decoder, unsigned char **inbuf, int *bytesLeft, short *outbuf, int useSize)
+//  281 {
+MP3Decode:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+        SUB      SP,SP,#+4
+        CFI CFA R13+40
+        MOV      R4,R0
+        MOV      R7,R1
+        MOV      R8,R2
+        MOV      R5,R3
+//  282 	int offset, bitOffset, mainBits, gr, ch, fhBytes, siBytes, freeFrameBytes;
+//  283 	int prevBitOffset, sfBlockBits, huffBlockBits;
+//  284 	unsigned char *mainPtr;
+//  285 	MP3DecInfo *mp3DecInfo = (MP3DecInfo *)hMP3Decoder;
+//  286 
+//  287 	if (!mp3DecInfo)
+        CMP      R4,#+0
+//  288 		return ERR_MP3_NULL_POINTER;
+        MVNEQ    R0,#+4
+        POPEQ    {R1,R4-R11,PC}
+//  289 
+//  290 	/* unpack frame header */
+//  291 	fhBytes = UnpackFrameHeader(mp3DecInfo, *inbuf);
+        LDR      R1,[R7, #+0]
+        _BLF     xmp3_UnpackFrameHeader,??xmp3_UnpackFrameHeader??rA
+        MOVS     R9,R0
+//  292 	if (fhBytes < 0)	
+        BPL      ??MP3Decode_0
+//  293 		return ERR_MP3_INVALID_FRAMEHEADER;		/* don't clear outbuf since we don't know size (failed to parse header) */
+??MP3Decode_1:
+        MVN      R0,#+5
+        POP      {R1,R4-R11,PC}
+//  294 	*inbuf += fhBytes;
+??MP3Decode_0:
+        LDR      R0,[R7, #+0]
+//  295 	
+//  296 	/* unpack side info */
+//  297 	siBytes = UnpackSideInfo(mp3DecInfo, *inbuf);
+//  298 	if (siBytes < 0) {
+        MOV      R6,#+0
+        ADD      R1,R9,R0
+        STR      R1,[R7, #+0]
+        MOV      R0,R4
+        _BLF     xmp3_UnpackSideInfo,??xmp3_UnpackSideInfo??rA
+        MOVS     R1,R0
+        BPL      ??MP3Decode_2
+        MOV      R0,#+0
+        B        ??MP3Decode_3
+??MP3Decode_4:
+        ADD      R1,R5,R0, LSL #+1
+        STRH     R6,[R1, #+0]
+        ADD      R0,R0,#+1
+??MP3Decode_3:
+        LDR      R1,[R4, #+1988]
+        LDR      R2,[R4, #+1992]
+        MUL      R1,R2,R1
+        LDR      R2,[R4, #+1980]
+        MUL      R1,R2,R1
+        CMP      R0,R1
+        BLT      ??MP3Decode_4
+//  299 		MP3ClearBadFrame(mp3DecInfo, outbuf);
+//  300 		return ERR_MP3_INVALID_SIDEINFO;
+        MVN      R0,#+6
+        POP      {R1,R4-R11,PC}
+//  301 	}
+//  302 	*inbuf += siBytes;
+??MP3Decode_2:
+        LDR      R0,[R7, #+0]
+        ADD      R2,R1,R0
+        STR      R2,[R7, #+0]
+//  303 	*bytesLeft -= (fhBytes + siBytes);
+        LDR      R0,[R8, #+0]
+        SUB      R0,R0,R9
+        SUB      R0,R0,R1
+        STR      R0,[R8, #+0]
+//  304 	
+//  305 	/* if free mode, need to calculate bitrate and nSlots manually, based on frame size */
+//  306 	if (mp3DecInfo->bitrate == 0 || mp3DecInfo->freeBitrateFlag) {
+        LDR      R0,[R4, #+1976]
+        CMP      R0,#+0
+        BEQ      ??MP3Decode_5
+        LDR      R0,[R4, #+1968]
+        CMP      R0,#+0
+        BEQ      ??MP3Decode_6
+//  307 		if (!mp3DecInfo->freeBitrateFlag) {
+??MP3Decode_5:
+        LDR      R0,[R4, #+1968]
+        CMP      R0,#+0
+        BNE      ??MP3Decode_7
+//  308 			/* first time through, need to scan for next sync word and figure out frame size */
+//  309 			mp3DecInfo->freeBitrateFlag = 1;
+        MOV      R0,#+1
+        STR      R0,[R4, #+1968]
+//  310 			mp3DecInfo->freeBitrateSlots = MP3FindFreeSync(*inbuf, *inbuf - fhBytes - siBytes, *bytesLeft);
+        LDR      R12,[R8, #+0]
+        MOV      R0,R1
+        RSB      R0,R0,#+0
+        MOV      R3,R9
+        RSB      R3,R3,#+0
+        ADD      R3,R3,R2
+        ADD      R3,R0,R3
+        MOV      R10,R2
+        B        ??MP3Decode_8
+??MP3Decode_9:
+        ADD      R10,R10,#+3
+        SUB      R0,R12,R0
+        SUB      R12,R0,#+3
+??MP3Decode_8:
+        MOV      R0,#+0
+        SUB      LR,R12,#+1
+        B        ??MP3Decode_10
+??MP3Decode_11:
+        ADD      R0,R0,#+1
+??MP3Decode_10:
+        CMP      R0,LR
+        BGE      ??MP3Decode_12
+        LDRB     R11,[R0, +R10]
+        CMP      R11,#+255
+        BNE      ??MP3Decode_11
+        ADD      R11,R0,R10
+        LDRB     R11,[R11, #+1]
+        AND      R11,R11,#0xE0
+        CMP      R11,#+224
+        BNE      ??MP3Decode_11
+        B        ??MP3Decode_13
+??MP3Decode_12:
+        MVN      R0,R6
+??MP3Decode_13:
+        ADD      R10,R0,R10
+        CMP      R0,#+0
+        MVNMI    R0,R6
+        BMI      ??MP3Decode_14
+        LDRB     R11,[R10, #+0]
+        LDRB     LR,[R3, #+0]
+        CMP      R11,LR
+        BNE      ??MP3Decode_9
+        LDRB     R11,[R10, #+1]
+        LDRB     LR,[R3, #+1]
+        CMP      R11,LR
+        BNE      ??MP3Decode_9
+        LDRB     R11,[R10, #+2]
+        AND      LR,R11,#0xFC
+        LDRB     R11,[R3, #+2]
+        AND      R11,R11,#0xFC
+        CMP      LR,R11
+        BNE      ??MP3Decode_9
+        LDRB     R0,[R3, #+2]
+        TST      R0,#0x2
+        SUBNE    R10,R10,#+1
+        SUB      R0,R10,R2
+??MP3Decode_14:
+        STR      R0,[R4, #+1972]
+//  311 			if (mp3DecInfo->freeBitrateSlots < 0) {
+        CMP      R0,#+0
+        BPL      ??MP3Decode_15
+        MOV      R0,#+0
+        B        ??MP3Decode_16
+??MP3Decode_17:
+        ADD      R1,R5,R0, LSL #+1
+        STRH     R6,[R1, #+0]
+        ADD      R0,R0,#+1
+??MP3Decode_16:
+        LDR      R1,[R4, #+1988]
+        LDR      R2,[R4, #+1992]
+        MUL      R1,R2,R1
+        LDR      R2,[R4, #+1980]
+        MUL      R1,R2,R1
+        CMP      R0,R1
+        BLT      ??MP3Decode_17
+//  312 				MP3ClearBadFrame(mp3DecInfo, outbuf);
+//  313 				return ERR_MP3_FREE_BITRATE_SYNC;
+        MVN      R0,#+2
+        POP      {R1,R4-R11,PC}
+//  314 			}
+//  315 			freeFrameBytes = mp3DecInfo->freeBitrateSlots + fhBytes + siBytes;
+//  316 			mp3DecInfo->bitrate = (freeFrameBytes * mp3DecInfo->samprate * 8) / (mp3DecInfo->nGrans * mp3DecInfo->nGranSamps);
+??MP3Decode_15:
+        LDR      R2,[R4, #+1992]
+        ADD      R0,R9,R0
+        ADD      R0,R1,R0
+        LDR      R1,[R4, #+1984]
+        MUL      R0,R1,R0
+        LDR      R1,[R4, #+1988]
+        LSL      R0,R0,#+3
+        MUL      R1,R2,R1
+        _BLF     ??div32_a,??rA??div32_a
+        STR      R1,[R4, #+1976]
+//  317 		}
+//  318 		mp3DecInfo->nSlots = mp3DecInfo->freeBitrateSlots + CheckPadBit(mp3DecInfo);	/* add pad byte, if required */
+??MP3Decode_7:
+        LDR      R9,[R4, #+1972]
+        MOV      R0,R4
+        _BLF     xmp3_CheckPadBit,??xmp3_CheckPadBit??rA
+        ADD      R0,R0,R9
+        STR      R0,[R4, #+1996]
+//  319 	}
+//  320 
+//  321 	/* useSize != 0 means we're getting reformatted (RTP) packets (see RFC 3119)
+//  322 	 *  - calling function assembles "self-contained" MP3 frames by shifting any main_data 
+//  323 	 *      from the bit reservoir (in previous frames) to AFTER the sync word and side info
+//  324 	 *  - calling function should set mainDataBegin to 0, and tell us exactly how large this
+//  325 	 *      frame is (in bytesLeft)
+//  326 	 */
+//  327 	if (useSize) {
+??MP3Decode_6:
+        LDR      R2,[SP, #+40]
+        LDR      R1,[R7, #+0]
+        LDR      R0,[R8, #+0]
+        CMP      R2,#+0
+        BEQ      ??MP3Decode_18
+//  328 		mp3DecInfo->nSlots = *bytesLeft;
+        STR      R0,[R4, #+1996]
+//  329 		if (mp3DecInfo->mainDataBegin != 0 || mp3DecInfo->nSlots <= 0) {
+        LDR      R0,[R4, #+2008]
+        CMP      R0,#+0
+        BNE      ??MP3Decode_19
+        LDR      R0,[R4, #+1996]
+        CMP      R0,#+1
+        BGE      ??MP3Decode_20
+??MP3Decode_19:
+        MOV      R0,#+0
+??MP3Decode_21:
+        LDR      R1,[R4, #+1988]
+        LDR      R2,[R4, #+1992]
+        MUL      R1,R2,R1
+        LDR      R2,[R4, #+1980]
+        MUL      R1,R2,R1
+        CMP      R0,R1
+        BGE      ??MP3Decode_1
+        ADD      R1,R5,R0, LSL #+1
+        STRH     R6,[R1, #+0]
+        ADD      R0,R0,#+1
+        B        ??MP3Decode_21
+//  330 			/* error - non self-contained frame, or missing frame (size <= 0), could do loss concealment here */
+//  331 			MP3ClearBadFrame(mp3DecInfo, outbuf);
+//  332 			return ERR_MP3_INVALID_FRAMEHEADER;
+//  333 		}
+//  334 
+//  335 		/* can operate in-place on reformatted frames */
+//  336 		mp3DecInfo->mainDataBytes = mp3DecInfo->nSlots;
+??MP3Decode_20:
+        STR      R0,[R4, #+2012]
+//  337 		mainPtr = *inbuf;
+        MOV      R9,R1
+//  338 		*inbuf += mp3DecInfo->nSlots;
+??MP3Decode_22:
+        ADD      R0,R0,R1
+        STR      R0,[R7, #+0]
+//  339 		*bytesLeft -= (mp3DecInfo->nSlots);
+        LDR      R0,[R8, #+0]
+        LDR      R1,[R4, #+1996]
+        SUB      R0,R0,R1
+        STR      R0,[R8, #+0]
+//  340 	} else {
+//  341 		/* out of data - assume last or truncated frame */
+//  342 		if (mp3DecInfo->nSlots > *bytesLeft) {
+//  343 			MP3ClearBadFrame(mp3DecInfo, outbuf);
+//  344 			return ERR_MP3_INDATA_UNDERFLOW;	
+//  345 		}
+//  346 		/* fill main data buffer with enough new data for this frame */
+//  347 		if (mp3DecInfo->mainDataBytes >= mp3DecInfo->mainDataBegin) {
+//  348 			/* adequate "old" main data available (i.e. bit reservoir) */
+//  349 			memcpy(mp3DecInfo->mainBuf, mp3DecInfo->mainBuf + mp3DecInfo->mainDataBytes - mp3DecInfo->mainDataBegin, mp3DecInfo->mainDataBegin);
+//  350 			memcpy(mp3DecInfo->mainBuf + mp3DecInfo->mainDataBegin, *inbuf, mp3DecInfo->nSlots);
+//  351 
+//  352 			mp3DecInfo->mainDataBytes = mp3DecInfo->mainDataBegin + mp3DecInfo->nSlots;
+//  353 			*inbuf += mp3DecInfo->nSlots;
+//  354 			*bytesLeft -= (mp3DecInfo->nSlots);
+//  355 			mainPtr = mp3DecInfo->mainBuf;
+//  356 		} else {
+//  357 			/* not enough data in bit reservoir from previous frames (perhaps starting in middle of file) */
+//  358 			memcpy(mp3DecInfo->mainBuf + mp3DecInfo->mainDataBytes, *inbuf, mp3DecInfo->nSlots);
+//  359 			mp3DecInfo->mainDataBytes += mp3DecInfo->nSlots;
+//  360 			*inbuf += mp3DecInfo->nSlots;
+//  361 			*bytesLeft -= (mp3DecInfo->nSlots);
+//  362 			MP3ClearBadFrame(mp3DecInfo, outbuf);
+//  363 			return ERR_MP3_MAINDATA_UNDERFLOW;
+//  364 		}
+//  365 	}
+//  366 	bitOffset = 0;
+        MOV      R1,#+0
+        STR      R1,[SP, #+0]
+//  367 	mainBits = mp3DecInfo->mainDataBytes * 8;
+        LDR      R0,[R4, #+2012]
+//  368 
+//  369 	/* decode one complete frame */
+//  370 	for (gr = 0; gr < mp3DecInfo->nGrans; gr++) {
+        MOV      R7,R1
+        LSL      R8,R0,#+3
+        B        ??MP3Decode_23
+??MP3Decode_18:
+        LDR      R2,[R4, #+1996]
+        CMP      R0,R2
+        BGE      ??MP3Decode_24
+        MOV      R0,#+0
+        B        ??MP3Decode_25
+??MP3Decode_26:
+        ADD      R1,R5,R0, LSL #+1
+        STRH     R6,[R1, #+0]
+        ADD      R0,R0,#+1
+??MP3Decode_25:
+        LDR      R1,[R4, #+1988]
+        LDR      R2,[R4, #+1992]
+        MUL      R1,R2,R1
+        LDR      R2,[R4, #+1980]
+        MUL      R1,R2,R1
+        CMP      R0,R1
+        BLT      ??MP3Decode_26
+        MVN      R0,R6
+        POP      {R1,R4-R11,PC}
+??MP3Decode_24:
+        LDR      R0,[R4, #+2012]
+        LDR      R2,[R4, #+2008]
+        CMP      R0,R2
+        BLT      ??MP3Decode_27
+        LDR      R1,[R4, #+2012]
+        MOV      R0,R2
+        RSB      R0,R0,#+0
+        ADD      R1,R1,R4
+        ADD      R0,R0,R1
+        ADD      R1,R0,#+28
+        ADD      R0,R4,#+28
+        SWI      +286
+        LDR      R0,[R4, #+2008]
+        LDR      R2,[R4, #+1996]
+        LDR      R1,[R7, #+0]
+        ADD      R0,R0,R4
+        ADD      R0,R0,#+28
+        SWI      +286
+        LDR      R0,[R4, #+2008]
+        LDR      R1,[R4, #+1996]
+        ADD      R9,R4,#+28
+        ADD      R0,R1,R0
+        STR      R0,[R4, #+2012]
+        MOV      R0,R1
+        LDR      R1,[R7, #+0]
+        B        ??MP3Decode_22
+??MP3Decode_27:
+        LDR      R2,[R4, #+1996]
+        ADD      R0,R0,R4
+        ADD      R0,R0,#+28
+        SWI      +286
+        LDR      R0,[R4, #+2012]
+        LDR      R1,[R4, #+1996]
+        ADD      R0,R1,R0
+        STR      R0,[R4, #+2012]
+        MOV      R0,R1
+        LDR      R1,[R7, #+0]
+        ADD      R0,R0,R1
+        STR      R0,[R7, #+0]
+        LDR      R0,[R8, #+0]
+        LDR      R1,[R4, #+1996]
+        SUB      R0,R0,R1
+        STR      R0,[R8, #+0]
+        MOV      R0,#+0
+        B        ??MP3Decode_28
+??MP3Decode_29:
+        ADD      R1,R5,R0, LSL #+1
+        STRH     R6,[R1, #+0]
+        ADD      R0,R0,#+1
+??MP3Decode_28:
+        LDR      R1,[R4, #+1988]
+        LDR      R2,[R4, #+1992]
+        MUL      R1,R2,R1
+        LDR      R2,[R4, #+1980]
+        MUL      R1,R2,R1
+        CMP      R0,R1
+        BLT      ??MP3Decode_29
+        MVN      R0,#+1
+        POP      {R1,R4-R11,PC}
+??MP3Decode_30:
+        ADD      R7,R7,#+1
+??MP3Decode_23:
+        LDR      R0,[R4, #+1988]
+        CMP      R7,R0
+        BGE      ??MP3Decode_31
+//  371 		for (ch = 0; ch < mp3DecInfo->nChans; ch++) {
+        MOV      R10,#+0
+        B        ??MP3Decode_32
+//  372 			/* unpack scale factors and compute size of scale factor block */
+//  373 			prevBitOffset = bitOffset;
+//  374 			offset = UnpackScaleFactors(mp3DecInfo, mainPtr, &bitOffset, mainBits, gr, ch);
+//  375 
+//  376 			sfBlockBits = 8*offset - prevBitOffset + bitOffset;
+//  377 			huffBlockBits = mp3DecInfo->part23Length[gr][ch] - sfBlockBits;
+//  378 			mainPtr += offset;
+//  379 			mainBits -= sfBlockBits;
+//  380 
+//  381 			if (offset < 0 || mainBits < huffBlockBits) {
+//  382 				MP3ClearBadFrame(mp3DecInfo, outbuf);
+//  383 				return ERR_MP3_INVALID_SCALEFACT;
+//  384 			}
+//  385 
+//  386 			/* decode Huffman code words */
+//  387 			prevBitOffset = bitOffset;
+//  388 			offset = DecodeHuffman(mp3DecInfo, mainPtr, &bitOffset, huffBlockBits, gr, ch);
+//  389 			if (offset < 0) {
+//  390 				MP3ClearBadFrame(mp3DecInfo, outbuf);
+//  391 				return ERR_MP3_INVALID_HUFFCODES;
+//  392 			}
+//  393 
+//  394 			mainPtr += offset;
+//  395 			mainBits -= (8*offset - prevBitOffset + bitOffset);
+??MP3Decode_33:
+        LDR      R1,[SP, #+0]
+        ADD      R9,R0,R9
+        SUB      R0,R8,R0, LSL #+3
+        ADD      R0,R11,R0
+        SUB      R8,R0,R1
+        ADD      R10,R10,#+1
+??MP3Decode_32:
+        LDR      R0,[R4, #+1980]
+        CMP      R10,R0
+        BGE      ??MP3Decode_34
+        LDR      R11,[SP, #+0]
+        MOV      R0,R10
+        PUSH     {R0}
+        CFI CFA R13+44
+        MOV      R3,R8
+        MOV      R1,R9
+        MOV      R0,R7
+        PUSH     {R0}
+        CFI CFA R13+48
+        ADD      R2,SP,#+8
+        MOV      R0,R4
+        _BLF     xmp3_UnpackScaleFactors,??xmp3_UnpackScaleFactors??rA
+        LDR      R2,[SP, #+8]
+        RSB      R1,R11,R0, LSL #+3
+        ADD      R1,R2,R1
+        ADD      R2,R4,R7, LSL #+3
+        ADD      R2,R2,R10, LSL #+2
+        LDR      R2,[R2, #+2016]
+        ADD      R9,R0,R9
+        SUB      R3,R2,R1
+        SUB      R8,R8,R1
+        CMP      R0,#+0
+        ADD      SP,SP,#+8
+        CFI CFA R13+40
+        BMI      ??MP3Decode_35
+        CMP      R8,R3
+        BGE      ??MP3Decode_36
+??MP3Decode_35:
+        MOV      R0,#+0
+        B        ??MP3Decode_37
+??MP3Decode_38:
+        ADD      R1,R5,R0, LSL #+1
+        STRH     R6,[R1, #+0]
+        ADD      R0,R0,#+1
+??MP3Decode_37:
+        LDR      R1,[R4, #+1988]
+        LDR      R2,[R4, #+1992]
+        MUL      R1,R2,R1
+        LDR      R2,[R4, #+1980]
+        MUL      R1,R2,R1
+        CMP      R0,R1
+        BLT      ??MP3Decode_38
+        MVN      R0,#+7
+        POP      {R1,R4-R11,PC}
+??MP3Decode_36:
+        LDR      R11,[SP, #+0]
+        MOV      R0,R10
+        PUSH     {R0}
+        CFI CFA R13+44
+        MOV      R1,R9
+        MOV      R0,R7
+        PUSH     {R0}
+        CFI CFA R13+48
+        ADD      R2,SP,#+8
+        MOV      R0,R4
+        _BLF     xmp3_DecodeHuffman,??xmp3_DecodeHuffman??rA
+        CMP      R0,#+0
+        ADD      SP,SP,#+8
+        CFI CFA R13+40
+        BPL      ??MP3Decode_33
+        MOV      R0,#+0
+        B        ??MP3Decode_39
+??MP3Decode_40:
+        ADD      R1,R5,R0, LSL #+1
+        STRH     R6,[R1, #+0]
+        ADD      R0,R0,#+1
+??MP3Decode_39:
+        LDR      R1,[R4, #+1988]
+        LDR      R2,[R4, #+1992]
+        MUL      R1,R2,R1
+        LDR      R2,[R4, #+1980]
+        MUL      R1,R2,R1
+        CMP      R0,R1
+        BLT      ??MP3Decode_40
+        MVN      R0,#+8
+        POP      {R1,R4-R11,PC}
+//  396 		}
+//  397 		/* dequantize coefficients, decode stereo, reorder short blocks */
+//  398 		if (Dequantize(mp3DecInfo, gr) < 0) {
+??MP3Decode_34:
+        MOV      R1,R7
+        MOV      R0,R4
+        _BLF     xmp3_Dequantize,??xmp3_Dequantize??rA
+        CMP      R0,#+0
+        BPL      ??MP3Decode_41
+        MOV      R0,#+0
+        B        ??MP3Decode_42
+??MP3Decode_43:
+        ADD      R1,R5,R0, LSL #+1
+        STRH     R6,[R1, #+0]
+        ADD      R0,R0,#+1
+??MP3Decode_42:
+        LDR      R1,[R4, #+1988]
+        LDR      R2,[R4, #+1992]
+        MUL      R1,R2,R1
+        LDR      R2,[R4, #+1980]
+        MUL      R1,R2,R1
+        CMP      R0,R1
+        BLT      ??MP3Decode_43
+//  399 			MP3ClearBadFrame(mp3DecInfo, outbuf);
+//  400 			return ERR_MP3_INVALID_DEQUANTIZE;			
+        MVN      R0,#+9
+        POP      {R1,R4-R11,PC}
+//  401 		}
+//  402 
+//  403 		/* alias reduction, inverse MDCT, overlap-add, frequency inversion */
+//  404 		for (ch = 0; ch < mp3DecInfo->nChans; ch++)
+??MP3Decode_41:
+        MOV      R10,#+0
+        B        ??MP3Decode_44
+??MP3Decode_45:
+        ADD      R10,R10,#+1
+??MP3Decode_44:
+        LDR      R0,[R4, #+1980]
+        CMP      R10,R0
+        BGE      ??MP3Decode_46
+//  405 			if (IMDCT(mp3DecInfo, gr, ch) < 0) {
+        MOV      R2,R10
+        MOV      R1,R7
+        MOV      R0,R4
+        _BLF     xmp3_IMDCT,??xmp3_IMDCT??rA
+        CMP      R0,#+0
+        BPL      ??MP3Decode_45
+        MOV      R0,#+0
+        B        ??MP3Decode_47
+??MP3Decode_48:
+        ADD      R1,R5,R0, LSL #+1
+        STRH     R6,[R1, #+0]
+        ADD      R0,R0,#+1
+??MP3Decode_47:
+        LDR      R1,[R4, #+1988]
+        LDR      R2,[R4, #+1992]
+        MUL      R1,R2,R1
+        LDR      R2,[R4, #+1980]
+        MUL      R1,R2,R1
+        CMP      R0,R1
+        BLT      ??MP3Decode_48
+//  406 				MP3ClearBadFrame(mp3DecInfo, outbuf);
+//  407 				return ERR_MP3_INVALID_IMDCT;			
+        MVN      R0,#+10
+        POP      {R1,R4-R11,PC}
+//  408 			}
+//  409 
+//  410 		/* subband transform - if stereo, interleaves pcm LRLRLR */
+//  411 		if (Subband(mp3DecInfo, outbuf + gr*mp3DecInfo->nGranSamps*mp3DecInfo->nChans) < 0) {
+??MP3Decode_46:
+        LDR      R0,[R4, #+1992]
+        MUL      R1,R0,R7
+        LDR      R0,[R4, #+1980]
+        MUL      R1,R0,R1
+        MOV      R0,R4
+        ADD      R1,R5,R1, LSL #+1
+        _BLF     xmp3_Subband,??xmp3_Subband??rA
+        CMP      R0,#+0
+        BPL      ??MP3Decode_30
+        MOV      R0,#+0
+        B        ??MP3Decode_49
+??MP3Decode_50:
+        ADD      R1,R5,R0, LSL #+1
+        STRH     R6,[R1, #+0]
+        ADD      R0,R0,#+1
+??MP3Decode_49:
+        LDR      R1,[R4, #+1988]
+        LDR      R2,[R4, #+1992]
+        MUL      R1,R2,R1
+        LDR      R2,[R4, #+1980]
+        MUL      R1,R2,R1
+        CMP      R0,R1
+        BLT      ??MP3Decode_50
+//  412 			MP3ClearBadFrame(mp3DecInfo, outbuf);
+//  413 			return ERR_MP3_INVALID_SUBBAND;			
+        MVN      R0,#+11
+        POP      {R1,R4-R11,PC}
+//  414 		}
+//  415 	}
+//  416 	return ERR_MP3_NONE;
+??MP3Decode_31:
+        MOV      R0,#+0
+        POP      {R1,R4-R11,PC}   ;; return
+        CFI EndBlock cfiBlock11
+//  417 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock12 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??xmp3_AllocateBuffers??rA:
+        LDR      R12,??Subroutine6_0  ;; xmp3_AllocateBuffers
+        BX       R12
+        DATA
+??Subroutine6_0:
+        DC32     xmp3_AllocateBuffers
+        CFI EndBlock cfiBlock12
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock13 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??xmp3_FreeBuffers??rA:
+        LDR      R12,??Subroutine7_0  ;; xmp3_FreeBuffers
+        BX       R12
+        DATA
+??Subroutine7_0:
+        DC32     xmp3_FreeBuffers
+        CFI EndBlock cfiBlock13
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock14 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??xmp3_UnpackFrameHeader??rA:
+        LDR      R12,??Subroutine8_0  ;; xmp3_UnpackFrameHeader
+        BX       R12
+        DATA
+??Subroutine8_0:
+        DC32     xmp3_UnpackFrameHeader
+        CFI EndBlock cfiBlock14
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock15 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??xmp3_UnpackSideInfo??rA:
+        LDR      R12,??Subroutine9_0  ;; xmp3_UnpackSideInfo
+        BX       R12
+        DATA
+??Subroutine9_0:
+        DC32     xmp3_UnpackSideInfo
+        CFI EndBlock cfiBlock15
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock16 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??rA??div32_a:
+        LDR      R12,??Subroutine10_0  ;; ??div32_a
+        MOV      PC,R12
+        DATA
+??Subroutine10_0:
+        DC32     ??div32_a
+        CFI EndBlock cfiBlock16
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock17 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??xmp3_CheckPadBit??rA:
+        LDR      R12,??Subroutine11_0  ;; xmp3_CheckPadBit
+        BX       R12
+        DATA
+??Subroutine11_0:
+        DC32     xmp3_CheckPadBit
+        CFI EndBlock cfiBlock17
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock18 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??xmp3_UnpackScaleFactors??rA:
+        LDR      R12,??Subroutine12_0  ;; xmp3_UnpackScaleFactors
+        BX       R12
+        DATA
+??Subroutine12_0:
+        DC32     xmp3_UnpackScaleFactors
+        CFI EndBlock cfiBlock18
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock19 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??xmp3_DecodeHuffman??rA:
+        LDR      R12,??Subroutine13_0  ;; xmp3_DecodeHuffman
+        BX       R12
+        DATA
+??Subroutine13_0:
+        DC32     xmp3_DecodeHuffman
+        CFI EndBlock cfiBlock19
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock20 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??xmp3_Dequantize??rA:
+        LDR      R12,??Subroutine14_0  ;; xmp3_Dequantize
+        BX       R12
+        DATA
+??Subroutine14_0:
+        DC32     xmp3_Dequantize
+        CFI EndBlock cfiBlock20
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock21 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??xmp3_IMDCT??rA:
+        LDR      R12,??Subroutine15_0  ;; xmp3_IMDCT
+        BX       R12
+        DATA
+??Subroutine15_0:
+        DC32     xmp3_IMDCT
+        CFI EndBlock cfiBlock21
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock22 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??xmp3_Subband??rA:
+        LDR      R12,??Subroutine16_0  ;; xmp3_Subband
+        BX       R12
+        DATA
+??Subroutine16_0:
+        DC32     xmp3_Subband
+        CFI EndBlock cfiBlock22
+
+        END
+// 
+// 2 212 bytes in segment CODE
+// 
+// 2 056 bytes of CODE memory (+ 156 bytes shared)
+//
+//Errors: none
+//Warnings: 1

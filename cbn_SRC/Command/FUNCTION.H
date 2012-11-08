@@ -1,7 +1,6 @@
 
-// Function.h Встроенные функции MS-DOS
 
-char *par(char *to, char *s){ //получить полный путь для параметра
+char *par(char *to, char *s){ 
   if(s[1]!=':') strcpy(to,curdir); else *to=0;
   strcat(to,s);
   return to;
@@ -21,9 +20,9 @@ int echo(){
 }
 
 int mem(){
-  sprintf(temp,"На диске Data всего: %d Кб"\
-          "\r\nСвободно: %d Кб"\
-          "\r\nПамяти свободно: %d Кб\r\n",
+  sprintf(temp,"Data on the disk of %d §¬b"\
+          "\r\nFree: %d Kb"\
+          "\r\nFree memory: %d Kb\r\n",
           GetTotalFlexSpace(0,&err)>>10,
           GetFreeFlexSpace(0,&err)>>10,
           GetFreeRamAvail()>>10);
@@ -208,7 +207,7 @@ int dir(){
     }
   }
   s=list;
-  if(to){ //в файл
+  if(to){
     if(*++to=='>'){ app=1; ++to;}
     if(to[1]==':') *temp=0;
     else strcpy(temp,curdir);
@@ -224,7 +223,7 @@ int dir(){
     s+=strlen(s)+1;
     ++i;
   }
-  sprintf(con,"\r\n%d файлов",i);
+  sprintf(con,"\r\n%d files",i);
   print(con);
   }
   return 0;

@@ -1,0 +1,1099 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:18 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD /
+//                       EC\AAC_FILE (18).c                                  /
+//    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AAC /
+//                       DEC\AAC_FILE (18).c" -D NDEBUG -lC                  /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\AAC_FILE (18).s79                              /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME `AAC_FILE (18)`
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        MULTWEAK ??raac_R4FFT??rT
+        FUNCTION BitReverse,0203H
+        LOCFRAME CSTACK, 20, STACK
+        FUNCTION R4Core,0203H
+        LOCFRAME CSTACK, 76, STACK
+        FUNCTION R4FirstPass,0203H
+        LOCFRAME CSTACK, 24, STACK
+        FUNCTION R8FirstPass,0203H
+        LOCFRAME CSTACK, 56, STACK
+        PUBLIC raac_R4FFT
+        FUNCTION raac_R4FFT,0203H
+        LOCFRAME CSTACK, 20, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+raac_R4FFT          SYMBOL "raac_R4FFT"
+??raac_R4FFT??rT    SYMBOL "??rT", raac_R4FFT
+
+        EXTERN raac_bitrevtab
+        EXTERN raac_bitrevtabOffset
+        EXTERN raac_twidTabEven
+        EXTERN raac_twidTabOdd
+
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (18).c
+//    1 /* ***** BEGIN LICENSE BLOCK *****  
+//    2  * Source last modified: $Id: fft.c,v 1.1 2005/02/26 01:47:34 jrecker Exp $ 
+//    3  *   
+//    4  * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+//    5  *       
+//    6  * The contents of this file, and the files included with this file, 
+//    7  * are subject to the current version of the RealNetworks Public 
+//    8  * Source License (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the current version of the RealNetworks Community 
+//   11  * Source License (the "RCSL") available at 
+//   12  * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+//   13  * will apply. You may also obtain the license terms directly from 
+//   14  * RealNetworks.  You may not use this file except in compliance with 
+//   15  * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+//   16  * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+//   17  * the rights, obligations and limitations governing use of the 
+//   18  * contents of the file. 
+//   19  *   
+//   20  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   21  * developer of the Original Code and owns the copyrights in the 
+//   22  * portions it created. 
+//   23  *   
+//   24  * This file, and the files included with this file, is distributed 
+//   25  * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+//   26  * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+//   27  * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+//   28  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+//   29  * ENJOYMENT OR NON-INFRINGEMENT. 
+//   30  *  
+//   31  * Technology Compatibility Kit Test Suite(s) Location:  
+//   32  *    http://www.helixcommunity.org/content/tck  
+//   33  *  
+//   34  * Contributor(s):  
+//   35  *   
+//   36  * ***** END LICENSE BLOCK ***** */  
+//   37 
+//   38 /**************************************************************************************
+//   39  * Fixed-point HE-AAC decoder
+//   40  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+//   41  * February 2005
+//   42  *
+//   43  * fft.c - Ken's optimized radix-4 DIT FFT, optional radix-8 first pass for odd log2(N)
+//   44  **************************************************************************************/
+//   45 
+//   46 #include "coder_aac.h"
+//   47 #include "assembly_aac.h"
+//   48 
+//   49 #define NUM_FFT_SIZES	2
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//   50 static const int nfftTab[NUM_FFT_SIZES] =		{64, 512};
+nfftTab:
+        DATA
+        DC32 64, 512
+        DC32 6, 9
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??BitReverse??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE BitReverse
+//   51 static const int nfftlog2Tab[NUM_FFT_SIZES] =	{6, 9};
+//   52 
+//   53 #define SQRT1_2 0x5a82799a	/* sqrt(1/2) in Q31 */
+//   54 
+//   55 #define swapcplx(p0,p1) \ 
+//   56 	t = p0; t1 = *(&(p0)+1); p0 = p1; *(&(p0)+1) = *(&(p1)+1); p1 = t; *(&(p1)+1) = t1
+//   57 
+//   58 /**************************************************************************************
+//   59  * Function:    BitReverse
+//   60  *
+//   61  * Description: Ken's fast in-place bit reverse, using super-small table
+//   62  *
+//   63  * Inputs:      buffer of samples
+//   64  *              table index (for transform size)
+//   65  *
+//   66  * Outputs:     bit-reversed samples in same buffer
+//   67  *
+//   68  * Return:      none
+//   69  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function BitReverse
+        ARM
+//   70 static void BitReverse(int *inout, int tabidx)
+//   71 {
+//   72     int *part0, *part1;
+//   73 	int a,b, t,t1;
+//   74 	const unsigned char* tab = bitrevtab + bitrevtabOffset[tabidx];
+BitReverse:
+        LDR      R2,??BitReverse_0  ;; raac_bitrevtabOffset
+        LDR      R3,??BitReverse_0+0x4  ;; raac_bitrevtab
+        PUSH     {R4-R8}
+        CFI R8 Frame(CFA, -4)
+        CFI R7 Frame(CFA, -8)
+        CFI R6 Frame(CFA, -12)
+        CFI R5 Frame(CFA, -16)
+        CFI R4 Frame(CFA, -20)
+        CFI CFA R13+20
+//   75 	int nbits = nfftlog2Tab[tabidx];
+//   76 
+//   77 	part0 = inout;
+//   78     part1 = inout + (1 << nbits);
+        LDR      R4,??BitReverse_0+0x8  ;; nfftTab
+        LDR      R2,[R2, +R1, LSL #+2]
+        ADD      R1,R4,R1, LSL #+2
+        LDR      R1,[R1, #+8]
+        ADD      R2,R2,R3
+        MOV      R3,#+1
+        LSL      R1,R3,R1
+        ADD      R1,R0,R1, LSL #+2
+        B        ??BitReverse_1
+//   79 	
+//   80 	while ((a = *tab++) != 0) {
+//   81         b = *tab++;
+??BitReverse_2:
+        LDRB     R5,[R2], #+1
+//   82 
+//   83         swapcplx(part0[4*a+0], part0[4*b+0]);	/* 0xxx0 <-> 0yyy0 */
+        ADD      R4,R0,R12, LSL #+4
+        LDR      R6,[R4, #+0]
+        LDR      R7,[R4, #+4]
+        ADD      R3,R0,R5, LSL #+4
+        LDR      R8,[R3, #+0]
+//   84         swapcplx(part0[4*a+2], part1[4*b+0]);	/* 0xxx1 <-> 1yyy0 */
+        ADD      R5,R1,R5, LSL #+4
+        STR      R8,[R4, #+0]
+        LDR      R8,[R3, #+4]
+        STR      R8,[R4, #+4]
+        STR      R6,[R3, #+0]
+        STR      R7,[R3, #+4]
+        LDR      R8,[R5, #+0]
+        LDR      R6,[R4, #+8]
+        LDR      R7,[R4, #+12]
+        STR      R8,[R4, #+8]
+        LDR      R8,[R5, #+4]
+        STR      R8,[R4, #+12]
+        STR      R6,[R5, #+0]
+        STR      R7,[R5, #+4]
+//   85         swapcplx(part1[4*a+0], part0[4*b+2]);	/* 1xxx0 <-> 0yyy1 */
+        LDR      R8,[R3, #+8]
+        ADD      R4,R1,R12, LSL #+4
+        LDR      R6,[R4, #+0]
+        LDR      R7,[R4, #+4]
+        STR      R8,[R4, #+0]
+        LDR      R8,[R3, #+12]
+        STR      R8,[R4, #+4]
+        STR      R6,[R3, #+8]
+        STR      R7,[R3, #+12]
+//   86         swapcplx(part1[4*a+2], part1[4*b+2]);	/* 1xxx1 <-> 1yyy1 */
+        LDR      R7,[R5, #+8]
+        LDR      R3,[R4, #+8]
+        LDR      R6,[R4, #+12]
+        STR      R7,[R4, #+8]
+        LDR      R7,[R5, #+12]
+        STR      R7,[R4, #+12]
+        STR      R3,[R5, #+8]
+        STR      R6,[R5, #+12]
+//   87     }
+??BitReverse_1:
+        LDRB     R12,[R2], #+1
+        CMP      R12,#+0
+        BNE      ??BitReverse_2
+//   88 
+//   89     do {
+//   90         swapcplx(part0[4*a+2], part1[4*a+0]);	/* 0xxx1 <-> 1xxx0 */
+??BitReverse_3:
+        ADD      R5,R1,R12, LSL #+4
+        LDR      R7,[R5, #+0]
+        ADD      R4,R0,R12, LSL #+4
+        LDR      R3,[R4, #+8]
+        LDR      R6,[R4, #+12]
+        STR      R7,[R4, #+8]
+        LDR      R7,[R5, #+4]
+        STR      R7,[R4, #+12]
+        STR      R3,[R5, #+0]
+        STR      R6,[R5, #+4]
+//   91     } while ((a = *tab++) != 0);
+        LDRB     R12,[R2], #+1
+        CMP      R12,#+0
+        BNE      ??BitReverse_3
+//   92 }
+        POP      {R4-R8}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        DATA
+??BitReverse_0:
+        DC32     raac_bitrevtabOffset
+        DC32     raac_bitrevtab
+        DC32     nfftTab
+        CFI EndBlock cfiBlock1
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??R4FirstPass??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE R4FirstPass
+//   93 
+//   94 /**************************************************************************************
+//   95  * Function:    R4FirstPass
+//   96  *
+//   97  * Description: radix-4 trivial pass for decimation-in-time FFT
+//   98  *
+//   99  * Inputs:      buffer of (bit-reversed) samples
+//  100  *              number of R4 butterflies per group (i.e. nfft / 4)
+//  101  *
+//  102  * Outputs:     processed samples in same buffer
+//  103  *
+//  104  * Return:      none
+//  105  *
+//  106  * Notes:       assumes 2 guard bits, gains no integer bits, 
+//  107  *                guard bits out = guard bits in - 2
+//  108  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function R4FirstPass
+        ARM
+//  109 static void R4FirstPass(int *x, int bg)
+//  110 {
+R4FirstPass:
+        PUSH     {R4-R9}
+        CFI R9 Frame(CFA, -4)
+        CFI R8 Frame(CFA, -8)
+        CFI R7 Frame(CFA, -12)
+        CFI R6 Frame(CFA, -16)
+        CFI R5 Frame(CFA, -20)
+        CFI R4 Frame(CFA, -24)
+        CFI CFA R13+24
+        CMP      R1,#+0
+        BEQ      ??R4FirstPass_0
+//  111     int ar, ai, br, bi, cr, ci, dr, di;
+//  112 	
+//  113 	for (; bg != 0; bg--) {
+//  114 
+//  115 		ar = x[0] + x[2];
+??R4FirstPass_1:
+        LDR      R2,[R0, #+0]
+        LDR      R3,[R0, #+8]
+//  116 		br = x[0] - x[2];
+        LDR      R4,[R0, #+8]
+//  117 		ai = x[1] + x[3];
+        LDR      R5,[R0, #+12]
+//  118 		bi = x[1] - x[3];
+//  119 		cr = x[4] + x[6];
+        LDR      R6,[R0, #+24]
+//  120 		dr = x[4] - x[6];
+        LDR      R7,[R0, #+24]
+//  121 		ci = x[5] + x[7];
+        LDR      R8,[R0, #+28]
+//  122 		di = x[5] - x[7];
+        LDR      R9,[R0, #+28]
+        ADD      R2,R3,R2
+        LDR      R3,[R0, #+0]
+//  123 
+//  124 		/* max per-sample gain = 4.0 (adding 4 inputs together) */
+//  125 		x[0] = ar + cr;
+//  126 		x[4] = ar - cr;
+//  127 		x[1] = ai + ci;
+//  128 		x[5] = ai - ci;
+//  129 		x[2] = br + di;
+//  130 		x[6] = br - di;
+//  131 		x[3] = bi - dr;
+//  132 		x[7] = bi + dr;
+//  133 
+//  134 		x += 8;
+//  135 	}
+        SUBS     R1,R1,#+1
+        SUB      R3,R3,R4
+        LDR      R4,[R0, #+4]
+        ADD      R12,R5,R4
+        SUB      R4,R4,R5
+        LDR      R5,[R0, #+16]
+        ADD      R5,R6,R5
+        LDR      R6,[R0, #+16]
+        SUB      R6,R6,R7
+        LDR      R7,[R0, #+20]
+        ADD      R7,R8,R7
+        LDR      R8,[R0, #+20]
+        SUB      R8,R8,R9
+        ADD      R9,R5,R2
+        STR      R9,[R0], #+16
+        SUB      R2,R2,R5
+        STR      R2,[R0], #-12
+        ADD      R2,R7,R12
+        STR      R2,[R0], #+16
+        SUB      R2,R12,R7
+        STR      R2,[R0], #-12
+        ADD      R2,R8,R3
+        STR      R2,[R0], #+16
+        SUB      R2,R3,R8
+        STR      R2,[R0], #-12
+        SUB      R2,R4,R6
+        STR      R2,[R0], #+16
+        ADD      R2,R6,R4
+        STR      R2,[R0], #+4
+        BNE      ??R4FirstPass_1
+//  136 }
+??R4FirstPass_0:
+        POP      {R4-R9}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock3
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??R8FirstPass??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE R8FirstPass
+//  137 
+//  138 /**************************************************************************************
+//  139  * Function:    R8FirstPass
+//  140  *
+//  141  * Description: radix-8 trivial pass for decimation-in-time FFT
+//  142  *
+//  143  * Inputs:      buffer of (bit-reversed) samples
+//  144  *              number of R8 butterflies per group (i.e. nfft / 8)
+//  145  *
+//  146  * Outputs:     processed samples in same buffer
+//  147  *
+//  148  * Return:      none
+//  149  *
+//  150  * Notes:       assumes 3 guard bits, gains 1 integer bit
+//  151  *              guard bits out = guard bits in - 3 (if inputs are full scale)
+//  152  *                or guard bits in - 2 (if inputs bounded to +/- sqrt(2)/2)
+//  153  *              see scaling comments in code
+//  154  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function R8FirstPass
+        ARM
+//  155 static void R8FirstPass(int *x, int bg)
+//  156 {
+R8FirstPass:
+        PUSH     {R1,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+40
+        SUB      SP,SP,#+16
+        CFI CFA R13+56
+        CMP      R1,#+0
+        BEQ      ??R8FirstPass_0
+//  157     int ar, ai, br, bi, cr, ci, dr, di;
+//  158 	int sr, si, tr, ti, ur, ui, vr, vi;
+//  159 	int wr, wi, xr, xi, yr, yi, zr, zi;
+//  160 
+//  161 	for (; bg != 0; bg--) {
+//  162 
+//  163 		ar = x[0] + x[2];
+??R8FirstPass_1:
+        LDR      R1,[R0, #+0]
+        LDR      R2,[R0, #+8]
+//  164 		br = x[0] - x[2];
+        LDR      R3,[R0, #+8]
+//  165 		ai = x[1] + x[3];
+        LDR      R4,[R0, #+12]
+//  166 		bi = x[1] - x[3];
+        LDR      R5,[R0, #+12]
+//  167 		cr = x[4] + x[6];
+        LDR      R6,[R0, #+24]
+//  168 		dr = x[4] - x[6];
+//  169 		ci = x[5] + x[7];
+        LDR      R8,[R0, #+28]
+        ADD      R2,R2,R1
+        SUB      R1,R1,R3
+        LDR      R3,[R0, #+4]
+        ADD      R3,R4,R3
+        LDR      R4,[R0, #+4]
+        SUB      R4,R4,R5
+        LDR      R5,[R0, #+16]
+        ADD      R7,R6,R5
+        SUB      R5,R5,R6
+        LDR      R6,[R0, #+20]
+        ADD      R10,R8,R6
+//  170 		di = x[5] - x[7];
+        SUB      R11,R6,R8
+//  171 
+//  172 		sr = ar + cr;
+        ADD      R6,R7,R2
+//  173 		ur = ar - cr;
+        SUB      R8,R2,R7
+//  174 		si = ai + ci;
+        ADD      R9,R10,R3
+//  175 		ui = ai - ci;
+        SUB      R10,R3,R10
+//  176 		tr = br - di;
+        SUB      R3,R1,R11
+        STR      R3,[SP, #+0]
+//  177 		vr = br + di;
+        ADD      R1,R11,R1
+        STR      R1,[SP, #+8]
+//  178 		ti = bi + dr;
+        ADD      R2,R5,R4
+        STR      R2,[SP, #+4]
+//  179 		vi = bi - dr;
+        SUB      R2,R4,R5
+        STR      R2,[SP, #+12]
+//  180 
+//  181 		ar = x[ 8] + x[10];
+        LDR      R1,[R0, #+32]
+        LDR      R2,[R0, #+40]
+        ADD      R5,R2,R1
+//  182 		br = x[ 8] - x[10];
+//  183 		ai = x[ 9] + x[11];
+//  184 		bi = x[ 9] - x[11];
+//  185 		cr = x[12] + x[14];
+        LDR      R4,[R0, #+56]
+//  186 		dr = x[12] - x[14];
+//  187 		ci = x[13] + x[15];
+        LDR      R12,[R0, #+60]
+        SUB      R3,R1,R2
+        LDR      R1,[R0, #+36]
+        LDR      R2,[R0, #+44]
+//  188 		di = x[13] - x[15];
+//  189 
+//  190 		/* max gain of wr/wi/yr/yi vs input = 2
+//  191 		 *  (sum of 4 samples >> 1) 
+//  192 		 */
+//  193 		wr = (ar + cr) >> 1;
+//  194 		yr = (ar - cr) >> 1;
+//  195 		wi = (ai + ci) >> 1;
+//  196 		yi = (ai - ci) >> 1;
+//  197 
+//  198 		/* max gain of output vs input = 4
+//  199 		 *  (sum of 4 samples >> 1 + sum of 4 samples >> 1) 
+//  200 		 */
+//  201 		x[ 0] = (sr >> 1) + wr;
+        ASR      R6,R6,#+1
+        ADD      R11,R2,R1
+        SUB      R1,R1,R2
+        LDR      R2,[R0, #+48]
+        ADD      R7,R4,R2
+        SUB      R2,R2,R4
+        LDR      R4,[R0, #+52]
+        ADD      LR,R12,R4
+        SUB      R4,R4,R12
+        ADD      R12,R7,R5
+        ASR      R12,R12,#+1
+        SUB      R5,R5,R7
+        ADD      R7,LR,R11
+        ASR      R7,R7,#+1
+        SUB      R11,R11,LR
+        ADD      LR,R12,R6
+        STR      LR,[R0], #+32
+//  202 		x[ 8] = (sr >> 1) - wr;
+        SUB      R6,R6,R12
+        STR      R6,[R0], #-28
+//  203 		x[ 1] = (si >> 1) + wi;
+        ASR      R6,R9,#+1
+        ADD      R9,R7,R6
+        STR      R9,[R0], #+32
+//  204 		x[ 9] = (si >> 1) - wi;
+        SUB      R6,R6,R7
+        STR      R6,[R0], #-20
+//  205 		x[ 4] = (ur >> 1) + yi;
+        ASR      R6,R8,#+1
+//  206 		x[12] = (ur >> 1) - yi;
+//  207 		x[ 5] = (ui >> 1) - yr;
+//  208 		x[13] = (ui >> 1) + yr;
+//  209 
+//  210 		ar = br - di;
+        SUB      R8,R3,R4
+//  211 		cr = br + di;
+        ADD      R12,R4,R3
+//  212 		ai = bi + dr;
+        ADD      R9,R2,R1
+//  213 		ci = bi - dr;
+        SUB      R1,R1,R2
+//  214 
+//  215 		/* max gain of xr/xi/zr/zi vs input = 4*sqrt(2)/2 = 2*sqrt(2)
+//  216 		 *  (sum of 8 samples, multiply by sqrt(2)/2, implicit >> 1 from Q31) 
+//  217 		 */
+//  218 		xr = MULSHIFT32(SQRT1_2, ar - ai);
+        SUB      R2,R8,R9
+        ASR      R3,R2,#+31
+        MOV      R4,R2
+        LDR      R2,??R8FirstPass_2  ;; 0x5a82799a
+        ASR      R5,R5,#+1
+        ASR      R11,R11,#+1
+        ADD      R7,R11,R6
+        STR      R7,[R0], #+32
+        SUB      R6,R6,R11
+        STR      R6,[R0], #-28
+        ASR      R6,R10,#+1
+        SUB      R7,R6,R5
+        STR      R7,[R0], #+32
+        ADD      R5,R5,R6
+        UMULL    R6,R7,R4,R2
+        STR      R5,[R0], #-28
+        MLA      R7,R3,R2,R7
+//  219 		xi = MULSHIFT32(SQRT1_2, ar + ai);
+        ADD      R4,R9,R8
+        MOV      R10,R7
+        ASR      R5,R4,#+31
+        UMULL    R6,R7,R4,R2
+//  220 		zr = MULSHIFT32(SQRT1_2, cr - ci);
+        SUB      R4,R12,R1
+        MLA      R7,R5,R2,R7
+        ASR      R5,R4,#+31
+        MOV      R8,R7
+        UMULL    R6,R7,R4,R2
+//  221 		zi = MULSHIFT32(SQRT1_2, cr + ci);
+        ADD      R4,R1,R12
+//  222 
+//  223 		/* max gain of output vs input = (2 + 2*sqrt(2) ~= 4.83)
+//  224 		 *  (sum of 4 samples >> 1, plus xr/xi/zr/zi with gain of 2*sqrt(2))
+//  225 		 * in absolute terms, we have max gain of appx 9.656 (4 + 0.707*8)
+//  226 		 *  but we also gain 1 int bit (from MULSHIFT32 or from explicit >> 1)
+//  227 		 */
+//  228 		x[ 6] = (tr >> 1) - xr;
+        LDR      R1,[SP, #+0]
+        MLA      R7,R5,R2,R7
+        ASR      R5,R4,#+31
+        MOV      R9,R7
+        UMULL    R6,R7,R4,R2
+        ASR      R1,R1,#+1
+        MLA      R7,R5,R2,R7
+        SUB      R2,R1,R10
+        STR      R2,[R0], #+32
+//  229 		x[14] = (tr >> 1) + xr;
+        ADD      R1,R10,R1
+        STR      R1,[R0], #-28
+//  230 		x[ 7] = (ti >> 1) - xi;
+        LDR      R1,[SP, #+4]
+        ASR      R1,R1,#+1
+        SUB      R2,R1,R8
+        STR      R2,[R0], #+32
+//  231 		x[15] = (ti >> 1) + xi;
+        ADD      R1,R8,R1
+        STR      R1,[R0], #-52
+//  232 		x[ 2] = (vr >> 1) + zi;
+        LDR      R1,[SP, #+8]
+        ASR      R1,R1,#+1
+        ADD      R2,R7,R1
+        STR      R2,[R0], #+32
+//  233 		x[10] = (vr >> 1) - zi;
+        SUB      R1,R1,R7
+        STR      R1,[R0], #-28
+//  234 		x[ 3] = (vi >> 1) - zr;
+        LDR      R1,[SP, #+12]
+        ASR      R1,R1,#+1
+        SUB      R2,R1,R9
+        STR      R2,[R0], #+32
+//  235 		x[11] = (vi >> 1) + zr;
+        ADD      R1,R9,R1
+        STR      R1,[R0], #+20
+//  236 
+//  237 		x += 16;
+//  238 	}
+        LDR      R2,[SP, #+16]
+        SUB      R2,R2,#+1
+        STR      R2,[SP, #+16]
+        CMP      R2,#+0
+        BNE      ??R8FirstPass_1
+//  239 }
+??R8FirstPass_0:
+        ADD      SP,SP,#+20       ;; stack cleaning
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        DATA
+??R8FirstPass_2:
+        DC32     0x5a82799a
+        CFI EndBlock cfiBlock5
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??R4Core??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE R4Core
+//  240 
+//  241 /**************************************************************************************
+//  242  * Function:    R4Core
+//  243  *
+//  244  * Description: radix-4 pass for decimation-in-time FFT
+//  245  *
+//  246  * Inputs:      buffer of samples
+//  247  *              number of R4 butterflies per group
+//  248  *              number of R4 groups per pass
+//  249  *              pointer to twiddle factors tables
+//  250  *
+//  251  * Outputs:     processed samples in same buffer
+//  252  *
+//  253  * Return:      none
+//  254  *
+//  255  * Notes:       gain 2 integer bits per pass (see scaling comments in code)
+//  256  *              min 1 GB in
+//  257  *              gbOut = gbIn - 1 (short block) or gbIn - 2 (long block)
+//  258  *              uses 3-mul, 3-add butterflies instead of 4-mul, 2-add
+//  259  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function R4Core
+        ARM
+//  260 static void R4Core(int *x, int bg, int gp, int *wtab)
+//  261 {
+R4Core:
+        PUSH     {R0-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+52
+        SUB      SP,SP,#+24
+        CFI CFA R13+76
+        CMP      R1,#+0
+        BEQ      ??R4Core_0
+//  262 	int ar, ai, br, bi, cr, ci, dr, di, tr, ti;
+//  263 	int wd, ws, wi;
+//  264 	int i, j, step;
+//  265 	int *xptr, *wptr;
+//  266 
+//  267 	for (; bg != 0; gp <<= 2, bg >>= 2) {
+//  268 
+//  269 		step = 2*gp;
+??R4Core_1:
+        LDR      R1,[SP, #+32]
+//  270 		xptr = x;
+//  271 
+//  272 		/* max per-sample gain, per group < 1 + 3*sqrt(2) ~= 5.25 if inputs x are full-scale
+//  273 		 * do 3 groups for long block, 2 groups for short block (gain 2 int bits per group)
+//  274 		 *
+//  275 		 * very conservative scaling:
+//  276 		 *   group 1: max gain = 5.25,           int bits gained = 2, gb used = 1 (2^3 = 8)
+//  277 		 *   group 2: max gain = 5.25^2 = 27.6,  int bits gained = 4, gb used = 1 (2^5 = 32)
+//  278 		 *   group 3: max gain = 5.25^3 = 144.7, int bits gained = 6, gb used = 2 (2^8 = 256)
+//  279 		 */
+//  280 		for (i = bg; i != 0; i--) {
+        LDR      R2,[SP, #+28]
+        LSL      R1,R1,#+1
+        STR      R1,[SP, #+0]
+        LDR      R1,[SP, #+24]
+        STR      R2,[SP, #+4]
+        CMP      R2,#+0
+        BEQ      ??R4Core_2
+        LDR      R2,[SP, #+0]
+        MOV      R3,#+12
+        MUL      R2,R3,R2
+        STR      R2,[SP, #+20]
+//  281 
+//  282 			wptr = wtab;
+//  283 
+//  284 			for (j = gp; j != 0; j--) {
+??R4Core_3:
+        LDR      R10,[SP, #+32]
+        LDR      R0,[SP, #+36]
+        CMP      R10,#+0
+        BEQ      ??R4Core_4
+        LDR      R2,[SP, #+0]
+        LSL      R2,R2,#+2
+        RSB      R2,R2,#+0
+        STR      R2,[SP, #+8]
+//  285 
+//  286 				ar = xptr[0];
+??R4Core_5:
+        LDR      R3,[R1, #+0]
+//  287 				ai = xptr[1];
+//  288 				xptr += step;
+        LDR      R2,[SP, #+0]
+        STR      R3,[SP, #+12]
+        LDR      R3,[R1, #+4]
+        ADD      R1,R1,R2, LSL #+2
+        STR      R3,[SP, #+16]
+//  289 				
+//  290 				/* gain 2 int bits for br/bi, cr/ci, dr/di (MULSHIFT32 by Q30)
+//  291 				 * gain 1 net GB
+//  292 				 */
+//  293 				ws = wptr[0];
+        LDR      R2,[R0], #+4
+//  294 				wi = wptr[1];
+        LDR      R8,[R0], #+4
+//  295 				br = xptr[0];
+        LDR      R6,[R1, #+0]
+//  296 				bi = xptr[1];
+        LDR      R3,[R1, #+4]
+//  297 				wd = ws + 2*wi;
+//  298 				tr = MULSHIFT32(wi, br + bi);
+//  299 				br = MULSHIFT32(wd, br) - tr;	/* cos*br + sin*bi */
+//  300 				bi = MULSHIFT32(ws, bi) + tr;	/* cos*bi - sin*br */
+//  301 				xptr += step;
+//  302 				
+//  303 				ws = wptr[2];
+//  304 				wi = wptr[3];
+//  305 				cr = xptr[0];
+//  306 				ci = xptr[1];
+//  307 				wd = ws + 2*wi;
+//  308 				tr = MULSHIFT32(wi, cr + ci);
+//  309 				cr = MULSHIFT32(wd, cr) - tr;
+//  310 				ci = MULSHIFT32(ws, ci) + tr;
+//  311 				xptr += step;
+//  312 				
+//  313 				ws = wptr[4];
+//  314 				wi = wptr[5];
+//  315 				dr = xptr[0];
+//  316 				di = xptr[1];
+//  317 				wd = ws + 2*wi;
+//  318 				tr = MULSHIFT32(wi, dr + di);
+//  319 				dr = MULSHIFT32(wd, dr) - tr;
+//  320 				di = MULSHIFT32(ws, di) + tr;
+//  321 				wptr += 6;
+//  322 
+//  323 				tr = ar;
+//  324 				ti = ai;
+//  325 				ar = (tr >> 2) - br;
+//  326 				ai = (ti >> 2) - bi;
+//  327 				br = (tr >> 2) + br;
+//  328 				bi = (ti >> 2) + bi;
+//  329 
+//  330 				tr = cr;
+//  331 				ti = ci;
+//  332 				cr = tr + dr;
+//  333 				ci = di - ti;
+//  334 				dr = tr - dr;
+//  335 				di = di + ti;
+//  336 
+//  337 				xptr[0] = ar + ci;
+//  338 				xptr[1] = ai + dr;
+//  339 				xptr -= step;
+//  340 				xptr[0] = br - cr;
+//  341 				xptr[1] = bi - di;
+//  342 				xptr -= step;
+//  343 				xptr[0] = ar - ci;
+//  344 				xptr[1] = ai - dr;
+//  345 				xptr -= step;
+//  346 				xptr[0] = br + cr;
+//  347 				xptr[1] = bi + di;
+//  348 				xptr += 2;
+//  349 			}
+        SUBS     R10,R10,#+1
+        ADD      R7,R3,R6
+        SMULL    R4,R5,R8,R7
+        ADD      R8,R2,R8, LSL #+1
+        MOV      R7,R5
+        SMULL    R4,R5,R8,R6
+        SUB      LR,R5,R7
+        SMULL    R4,R5,R2,R3
+        LDR      R2,[SP, #+0]
+        LDR      R3,[R0], #+4
+        LDR      R8,[R0], #+4
+        ADD      R11,R7,R5
+        ADD      R2,R1,R2, LSL #+2
+        LDR      R6,[R2, #+0]
+        LDR      R7,[R2, #+4]
+        ADD      R1,R7,R6
+        SMULL    R4,R5,R8,R1
+        ADD      R8,R3,R8, LSL #+1
+        MOV      R1,R5
+        SMULL    R4,R5,R8,R6
+        SUB      R6,R5,R1
+        SMULL    R4,R5,R3,R7
+        LDR      R3,[SP, #+0]
+        ADD      R1,R1,R5
+        ADD      R2,R2,R3, LSL #+2
+        LDR      R3,[R0], #+4
+        LDR      R9,[R0], #+4
+        LDR      R8,[R2, #+0]
+        LDR      R12,[R2, #+4]
+        ADD      R7,R12,R8
+        SMULL    R4,R5,R9,R7
+        ADD      R9,R3,R9, LSL #+1
+        MOV      R7,R5
+        SMULL    R4,R5,R9,R8
+        SUB      R8,R5,R7
+        SMULL    R4,R5,R3,R12
+        LDR      R4,[SP, #+12]
+        ADD      R3,R7,R5
+        LDR      R7,[SP, #+16]
+        ASR      R9,R4,#+2
+        SUB      R4,R9,LR
+        ASR      R12,R7,#+2
+        SUB      R7,R12,R11
+        ADD      R9,R9,LR
+        ADD      R11,R12,R11
+        ADD      R12,R8,R6
+        SUB      LR,R3,R1
+        SUB      R6,R6,R8
+        ADD      R3,R1,R3
+        ADD      R1,LR,R4
+        STR      R1,[R2, #+0]
+        ADD      R1,R6,R7
+        STR      R1,[R2, #+4]
+        LDR      R1,[SP, #+8]
+        ADD      R1,R1,R2
+        SUB      R2,R9,R12
+        STR      R2,[R1, #+0]
+        SUB      R2,R11,R3
+        STR      R2,[R1, #+4]
+        LDR      R2,[SP, #+8]
+        ADD      R1,R2,R1
+        SUB      R2,R4,LR
+        STR      R2,[R1, #+0]
+        SUB      R2,R7,R6
+        STR      R2,[R1, #+4]
+        LDR      R2,[SP, #+8]
+        ADD      R1,R2,R1
+        ADD      R2,R12,R9
+        STR      R2,[R1], #+4
+        ADD      R2,R3,R11
+        STR      R2,[R1], #+4
+        BNE      ??R4Core_5
+//  350 			xptr += 3*step;
+??R4Core_4:
+        LDR      R0,[SP, #+20]
+//  351 		}
+        LDR      R2,[SP, #+4]
+        ADD      R1,R0,R1
+        SUB      R2,R2,#+1
+        STR      R2,[SP, #+4]
+        CMP      R2,#+0
+        BNE      ??R4Core_3
+//  352 		wtab += 3*step;
+??R4Core_2:
+        LDR      R1,[SP, #+0]
+        LDR      R3,[SP, #+36]
+        MOV      R2,#+12
+        MLA      R1,R2,R1,R3
+        STR      R1,[SP, #+36]
+//  353 	}
+        LDR      R1,[SP, #+32]
+        LSL      R1,R1,#+2
+        STR      R1,[SP, #+32]
+        LDR      R1,[SP, #+28]
+        ASR      R1,R1,#+2
+        STR      R1,[SP, #+28]
+        CMP      R1,#+0
+        BNE      ??R4Core_1
+//  354 }
+??R4Core_0:
+        ADD      SP,SP,#+40       ;; stack cleaning
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        CFI EndBlock cfiBlock7
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_R4FFT??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE raac_R4FFT
+//  355 
+//  356 
+//  357 /**************************************************************************************
+//  358  * Function:    R4FFT
+//  359  *
+//  360  * Description: Ken's very fast in-place radix-4 decimation-in-time FFT
+//  361  *
+//  362  * Inputs:      table index (for transform size)
+//  363  *              buffer of samples (non bit-reversed)
+//  364  *
+//  365  * Outputs:     processed samples in same buffer
+//  366  *
+//  367  * Return:      none
+//  368  *
+//  369  * Notes:       assumes 5 guard bits in for nfft <= 512
+//  370  *              gbOut = gbIn - 4 (assuming input is from PreMultiply)
+//  371  *              gains log2(nfft) - 2 int bits total
+//  372  *                so gain 7 int bits (LONG), 4 int bits (SHORT)
+//  373  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function raac_R4FFT
+        ARM
+//  374 void R4FFT(int tabidx, int *x)
+//  375 {
+raac_R4FFT:
+        PUSH     {R4-R7,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R7 Frame(CFA, -8)
+        CFI R6 Frame(CFA, -12)
+        CFI R5 Frame(CFA, -16)
+        CFI R4 Frame(CFA, -20)
+        CFI CFA R13+20
+//  376 	int order = nfftlog2Tab[tabidx];
+//  377 	int nfft = nfftTab[tabidx];
+        LDR      R6,??raac_R4FFT_0  ;; nfftTab
+        MOV      R4,R0
+        LDR      R7,[R6, +R4, LSL #+2]
+        MOV      R5,R1
+//  378 
+//  379 	/* decimation in time */
+//  380 	BitReverse(x, tabidx);
+        MOV      R1,R4
+        MOV      R0,R5
+        BL       BitReverse
+//  381 
+//  382 	if (order & 0x1) {
+        ADD      R0,R6,R4, LSL #+2
+        LDR      R0,[R0, #+8]
+        TST      R0,#0x1
+        BEQ      ??raac_R4FFT_1
+//  383 		/* long block: order = 9, nfft = 512 */
+//  384 		R8FirstPass(x, nfft >> 3);						/* gain 1 int bit,  lose 2 GB */
+        ASR      R1,R7,#+3
+        MOV      R0,R5
+        BL       R8FirstPass
+//  385 		R4Core(x, nfft >> 5, 8, (int *)twidTabOdd);		/* gain 6 int bits, lose 2 GB */
+        LDR      R3,??raac_R4FFT_0+0x4  ;; raac_twidTabOdd
+        MOV      R2,#+8
+        ASR      R1,R7,#+5
+        MOV      R0,R5
+        BL       R4Core
+        POP      {R4-R7,PC}
+//  386 	} else {
+//  387 		/* short block: order = 6, nfft = 64 */
+//  388 		R4FirstPass(x, nfft >> 2);						/* gain 0 int bits, lose 2 GB */
+??raac_R4FFT_1:
+        ASR      R1,R7,#+2
+        MOV      R0,R5
+        BL       R4FirstPass
+//  389 		R4Core(x, nfft >> 4, 4, (int *)twidTabEven);	/* gain 4 int bits, lose 1 GB */
+        LDR      R3,??raac_R4FFT_0+0x8  ;; raac_twidTabEven
+        MOV      R2,#+4
+        ASR      R1,R7,#+4
+        MOV      R0,R5
+        BL       R4Core
+//  390 	}
+//  391 }
+        POP      {R4-R7,PC}       ;; return
+        DATA
+??raac_R4FFT_0:
+        DC32     nfftTab
+        DC32     raac_twidTabOdd
+        DC32     raac_twidTabEven
+        CFI EndBlock cfiBlock9
+
+        END
+// 
+// 1 668 bytes in segment CODE
+//    16 bytes in segment DATA_C
+// 
+// 1 648 bytes of CODE  memory (+ 20 bytes shared)
+//    16 bytes of CONST memory
+//
+//Errors: none
+//Warnings: none

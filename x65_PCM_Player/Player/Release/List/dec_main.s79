@@ -1,0 +1,3113 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:42 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_ /
+//                       main.c                                              /
+//    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_ /
+//                       main.c -D NDEBUG -lC D:\SVN\SieELF\SieELF\x65_PCM_P /
+//                       layer\Player\Release\List\ -lA                      /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player\Player /
+//                       \Release\Obj\ -s9 --cpu_mode arm --endian little    /
+//                       --cpu ARM926EJ-S --stack_align 4 --interwork -e     /
+//                       --fpu None --dlib_config "D:\Program                /
+//                       Files\IAR\Embedded Workbench 4.0                    /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\dec_main.s79                                   /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME dec_main
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        MULTWEAK ??D_ACELP_decode_2t??rA
+        MULTWEAK ??D_ACELP_decode_4t??rA
+        MULTWEAK ??D_ACELP_phase_dispersion??rA
+        MULTWEAK ??D_DTX_activity_update??rA
+        MULTWEAK ??D_DTX_exe??rA
+        MULTWEAK ??D_DTX_exit??rA
+        MULTWEAK ??D_DTX_init??rA
+        MULTWEAK ??D_DTX_reset??rA
+        MULTWEAK ??D_DTX_rx_handler??rA
+        MULTWEAK ??D_GAIN_adaptive_codebook_excitation??rA
+        MULTWEAK ??D_GAIN_adaptive_control??rA
+        MULTWEAK ??D_GAIN_decode??rA
+        MULTWEAK ??D_GAIN_find_voice_factor??rA
+        MULTWEAK ??D_GAIN_init??rA
+        MULTWEAK ??D_GAIN_lag_concealment??rA
+        MULTWEAK ??D_GAIN_lag_concealment_init??rA
+        MULTWEAK ??D_GAIN_pitch_sharpening??rA
+        MULTWEAK ??D_LPC_int_isp_find??rA
+        MULTWEAK ??D_LPC_isf_2s3s_decode??rA
+        MULTWEAK ??D_LPC_isf_2s5s_decode??rA
+        MULTWEAK ??D_LPC_isf_isp_conversion??rA
+        MULTWEAK ??D_LPC_isp_a_conversion??rA
+        MULTWEAK ??D_MAIN_close??rT
+        MULTWEAK ??D_MAIN_decode??rT
+        MULTWEAK ??D_MAIN_init??rT
+        MULTWEAK ??D_MAIN_reset??rT
+        MULTWEAK ??D_UTIL_dec_synthesis??rA
+        MULTWEAK ??D_UTIL_l_extract??rA
+        MULTWEAK ??D_UTIL_mpy_32_16??rA
+        MULTWEAK ??D_UTIL_norm_s??rA
+        MULTWEAK ??D_UTIL_preemph??rA
+        MULTWEAK ??D_UTIL_random??rA
+        MULTWEAK ??D_UTIL_saturate??rA
+        MULTWEAK ??D_UTIL_signal_down_scale??rA
+        MULTWEAK ??D_UTIL_signal_up_scale??rA
+??DataTable0 EQU 0
+        MULTWEAK ??abs??rA
+        MULTWEAK ??free??rA
+        PUBLIC D_MAIN_close
+        FUNCTION D_MAIN_close,0203H
+        LOCFRAME CSTACK, 8, STACK
+        PUBLIC D_MAIN_decode
+        FUNCTION D_MAIN_decode,0203H
+        LOCFRAME CSTACK, 1444, STACK
+        PUBLIC D_MAIN_init
+        FUNCTION D_MAIN_init,0203H
+        LOCFRAME CSTACK, 16, STACK
+        PUBLIC D_MAIN_reset
+        FUNCTION D_MAIN_reset,0203H
+        LOCFRAME CSTACK, 28, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+D_ACELP_decode_2t   SYMBOL "D_ACELP_decode_2t"
+D_ACELP_decode_4t   SYMBOL "D_ACELP_decode_4t"
+D_ACELP_phase_dispersion SYMBOL "D_ACELP_phase_dispersion"
+D_DTX_activity_update SYMBOL "D_DTX_activity_update"
+D_DTX_exe           SYMBOL "D_DTX_exe"
+D_DTX_exit          SYMBOL "D_DTX_exit"
+D_DTX_init          SYMBOL "D_DTX_init"
+D_DTX_reset         SYMBOL "D_DTX_reset"
+D_DTX_rx_handler    SYMBOL "D_DTX_rx_handler"
+D_GAIN_adaptive_codebook_excitation SYMBOL "D_GAIN_adaptive_codebook_excitation"
+D_GAIN_adaptive_control SYMBOL "D_GAIN_adaptive_control"
+D_GAIN_decode       SYMBOL "D_GAIN_decode"
+D_GAIN_find_voice_factor SYMBOL "D_GAIN_find_voice_factor"
+D_GAIN_init         SYMBOL "D_GAIN_init"
+D_GAIN_lag_concealment SYMBOL "D_GAIN_lag_concealment"
+D_GAIN_lag_concealment_init SYMBOL "D_GAIN_lag_concealment_init"
+D_GAIN_pitch_sharpening SYMBOL "D_GAIN_pitch_sharpening"
+D_LPC_int_isp_find  SYMBOL "D_LPC_int_isp_find"
+D_LPC_isf_2s3s_decode SYMBOL "D_LPC_isf_2s3s_decode"
+D_LPC_isf_2s5s_decode SYMBOL "D_LPC_isf_2s5s_decode"
+D_LPC_isf_isp_conversion SYMBOL "D_LPC_isf_isp_conversion"
+D_LPC_isp_a_conversion SYMBOL "D_LPC_isp_a_conversion"
+D_UTIL_dec_synthesis SYMBOL "D_UTIL_dec_synthesis"
+D_UTIL_l_extract    SYMBOL "D_UTIL_l_extract"
+D_UTIL_mpy_32_16    SYMBOL "D_UTIL_mpy_32_16"
+D_UTIL_norm_s       SYMBOL "D_UTIL_norm_s"
+D_UTIL_preemph      SYMBOL "D_UTIL_preemph"
+D_UTIL_random       SYMBOL "D_UTIL_random"
+D_UTIL_saturate     SYMBOL "D_UTIL_saturate"
+D_UTIL_signal_down_scale SYMBOL "D_UTIL_signal_down_scale"
+D_UTIL_signal_up_scale SYMBOL "D_UTIL_signal_up_scale"
+abs                 SYMBOL "abs"
+free                SYMBOL "free"
+??D_ACELP_decode_2t??rA SYMBOL "??rA", D_ACELP_decode_2t
+??D_ACELP_decode_4t??rA SYMBOL "??rA", D_ACELP_decode_4t
+??D_ACELP_phase_dispersion??rA SYMBOL "??rA", D_ACELP_phase_dispersion
+??D_DTX_activity_update??rA SYMBOL "??rA", D_DTX_activity_update
+??D_DTX_exe??rA     SYMBOL "??rA", D_DTX_exe
+??D_DTX_exit??rA    SYMBOL "??rA", D_DTX_exit
+??D_DTX_init??rA    SYMBOL "??rA", D_DTX_init
+??D_DTX_reset??rA   SYMBOL "??rA", D_DTX_reset
+??D_DTX_rx_handler??rA SYMBOL "??rA", D_DTX_rx_handler
+??D_GAIN_adaptive_codebook_excitation??rA SYMBOL "??rA", D_GAIN_adaptive_codebook_excitation
+??D_GAIN_adaptive_control??rA SYMBOL "??rA", D_GAIN_adaptive_control
+??D_GAIN_decode??rA SYMBOL "??rA", D_GAIN_decode
+??D_GAIN_find_voice_factor??rA SYMBOL "??rA", D_GAIN_find_voice_factor
+??D_GAIN_init??rA   SYMBOL "??rA", D_GAIN_init
+??D_GAIN_lag_concealment??rA SYMBOL "??rA", D_GAIN_lag_concealment
+??D_GAIN_lag_concealment_init??rA SYMBOL "??rA", D_GAIN_lag_concealment_init
+??D_GAIN_pitch_sharpening??rA SYMBOL "??rA", D_GAIN_pitch_sharpening
+??D_LPC_int_isp_find??rA SYMBOL "??rA", D_LPC_int_isp_find
+??D_LPC_isf_2s3s_decode??rA SYMBOL "??rA", D_LPC_isf_2s3s_decode
+??D_LPC_isf_2s5s_decode??rA SYMBOL "??rA", D_LPC_isf_2s5s_decode
+??D_LPC_isf_isp_conversion??rA SYMBOL "??rA", D_LPC_isf_isp_conversion
+??D_LPC_isp_a_conversion??rA SYMBOL "??rA", D_LPC_isp_a_conversion
+D_MAIN_close        SYMBOL "D_MAIN_close"
+??D_MAIN_close??rT  SYMBOL "??rT", D_MAIN_close
+D_MAIN_decode       SYMBOL "D_MAIN_decode"
+??D_MAIN_decode??rT SYMBOL "??rT", D_MAIN_decode
+D_MAIN_init         SYMBOL "D_MAIN_init"
+??D_MAIN_init??rT   SYMBOL "??rT", D_MAIN_init
+D_MAIN_reset        SYMBOL "D_MAIN_reset"
+??D_MAIN_reset??rT  SYMBOL "??rT", D_MAIN_reset
+??D_UTIL_dec_synthesis??rA SYMBOL "??rA", D_UTIL_dec_synthesis
+??D_UTIL_l_extract??rA SYMBOL "??rA", D_UTIL_l_extract
+??D_UTIL_mpy_32_16??rA SYMBOL "??rA", D_UTIL_mpy_32_16
+??D_UTIL_norm_s??rA SYMBOL "??rA", D_UTIL_norm_s
+??D_UTIL_preemph??rA SYMBOL "??rA", D_UTIL_preemph
+??D_UTIL_random??rA SYMBOL "??rA", D_UTIL_random
+??D_UTIL_saturate??rA SYMBOL "??rA", D_UTIL_saturate
+??D_UTIL_signal_down_scale??rA SYMBOL "??rA", D_UTIL_signal_down_scale
+??D_UTIL_signal_up_scale??rA SYMBOL "??rA", D_UTIL_signal_up_scale
+??abs??rA           SYMBOL "??rA", abs
+??free??rA          SYMBOL "??rA", free
+
+        EXTERN D_ACELP_decode_2t
+        FUNCTION D_ACELP_decode_2t,0202H
+        EXTERN D_ACELP_decode_4t
+        FUNCTION D_ACELP_decode_4t,0202H
+        EXTERN D_ACELP_phase_dispersion
+        FUNCTION D_ACELP_phase_dispersion,0202H
+        EXTERN D_DTX_activity_update
+        FUNCTION D_DTX_activity_update,0202H
+        EXTERN D_DTX_exe
+        FUNCTION D_DTX_exe,0202H
+        EXTERN D_DTX_exit
+        FUNCTION D_DTX_exit,0202H
+        EXTERN D_DTX_init
+        FUNCTION D_DTX_init,0202H
+        EXTERN D_DTX_reset
+        FUNCTION D_DTX_reset,0202H
+        EXTERN D_DTX_rx_handler
+        FUNCTION D_DTX_rx_handler,0202H
+        EXTERN D_GAIN_adaptive_codebook_excitation
+        FUNCTION D_GAIN_adaptive_codebook_excitation,0202H
+        EXTERN D_GAIN_adaptive_control
+        FUNCTION D_GAIN_adaptive_control,0202H
+        EXTERN D_GAIN_decode
+        FUNCTION D_GAIN_decode,0202H
+        EXTERN D_GAIN_find_voice_factor
+        FUNCTION D_GAIN_find_voice_factor,0202H
+        EXTERN D_GAIN_init
+        FUNCTION D_GAIN_init,0202H
+        EXTERN D_GAIN_lag_concealment
+        FUNCTION D_GAIN_lag_concealment,0202H
+        EXTERN D_GAIN_lag_concealment_init
+        FUNCTION D_GAIN_lag_concealment_init,0202H
+        EXTERN D_GAIN_pitch_sharpening
+        FUNCTION D_GAIN_pitch_sharpening,0202H
+        EXTERN D_LPC_int_isp_find
+        FUNCTION D_LPC_int_isp_find,0202H
+        EXTERN D_LPC_isf_2s3s_decode
+        FUNCTION D_LPC_isf_2s3s_decode,0202H
+        EXTERN D_LPC_isf_2s5s_decode
+        FUNCTION D_LPC_isf_2s5s_decode,0202H
+        EXTERN D_LPC_isf_isp_conversion
+        FUNCTION D_LPC_isf_isp_conversion,0202H
+        EXTERN D_LPC_isp_a_conversion
+        FUNCTION D_LPC_isp_a_conversion,0202H
+        EXTERN D_ROM_interpol_frac
+        EXTERN D_ROM_isf
+        EXTERN D_ROM_isp
+        EXTERN D_UTIL_dec_synthesis
+        FUNCTION D_UTIL_dec_synthesis,0202H
+        EXTERN D_UTIL_l_extract
+        FUNCTION D_UTIL_l_extract,0202H
+        EXTERN D_UTIL_mpy_32_16
+        FUNCTION D_UTIL_mpy_32_16,0202H
+        EXTERN D_UTIL_norm_s
+        FUNCTION D_UTIL_norm_s,0202H
+        EXTERN D_UTIL_preemph
+        FUNCTION D_UTIL_preemph,0202H
+        EXTERN D_UTIL_random
+        FUNCTION D_UTIL_random,0202H
+        EXTERN D_UTIL_saturate
+        FUNCTION D_UTIL_saturate,0202H
+        EXTERN D_UTIL_signal_down_scale
+        FUNCTION D_UTIL_signal_down_scale,0202H
+        EXTERN D_UTIL_signal_up_scale
+        FUNCTION D_UTIL_signal_up_scale,0202H
+        EXTERN abs
+        FUNCTION abs,0200H
+        EXTERN free
+        FUNCTION free,0200H
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_MAIN_reset??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE D_MAIN_reset
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_main.c
+//    1 /*
+//    2  *===================================================================
+//    3  *  3GPP AMR Wideband Floating-point Speech Codec
+//    4  *===================================================================
+//    5  */
+//    6 
+//    7 
+//    8 
+//    9 #include "typedef.h"
+//   10 #include "dec_main.h"
+//   11 #include "dec_dtx.h"
+//   12 #include "dec_acelp.h"
+//   13 #include "dec_gain.h"
+//   14 #include "dec_lpc.h"
+//   15 #include "dec_util.h"
+//   16 
+//   17 #define MAX_16 (Word16)0x7fff
+//   18 #define MIN_16 (Word16)0x8000
+//   19 
+//   20 #define L_FRAME            256   /* Frame size                             */
+//   21 #define NB_SUBFR           4     /* Number of subframe per frame           */
+//   22 #define L_SUBFR            64    /* Subframe size                          */
+//   23 #define MODE_7k            0     /* modes                                  */
+//   24 #define MODE_9k            1
+//   25 #define MODE_12k           2
+//   26 #define MODE_14k           3
+//   27 #define MODE_16k           4
+//   28 #define MODE_18k           5
+//   29 #define MODE_20k           6
+//   30 #define MODE_23k           7
+//   31 #define MODE_24k           8
+//   32 #define RX_SPEECH_PROBABLY_DEGRADED 1  /* rx types                         */
+//   33 #define RX_SPEECH_LOST     2
+//   34 #define RX_SPEECH_BAD      3
+//   35 #define RX_NO_DATA         7
+//   36 #define Q_MAX              8     /* scaling max for signal                 */
+//   37 #define PIT_SHARP          27853 /* pitch sharpening factor = 0.85 Q15     */
+//   38 #define PIT_MIN            34    /* Minimum pitch lag with resolution 1/4  */
+//   39 #define PIT_FR2            128   /* Minimum pitch lag with resolution 1/2  */
+//   40 #define PIT_FR1_9b         160   /* Minimum pitch lag with resolution 1    */
+//   41 #define PIT_FR1_8b         92    /* Minimum pitch lag with resolution 1    */
+//   42 
+//   43 extern const Word16 D_ROM_isp[];
+//   44 extern const Word16 D_ROM_isf[];
+//   45 extern const Word16 D_ROM_interpol_frac[];
+//   46 
+//   47 #ifdef WIN32
+//   48 #pragma warning( disable : 4310)
+//   49 #endif
+//   50 
+//   51 /*
+//   52  * Decoder_reset
+//   53  *
+//   54  * Parameters:
+//   55  *    st        I/O: pointer to state structure
+//   56  *    reset_all   I: perform full reset
+//   57  *
+//   58  * Function:
+//   59  *    Initialisation of variables for the decoder section.
+//   60  *
+//   61  *
+//   62  * Returns:
+//   63  *    void
+//   64  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function D_MAIN_reset
+        ARM
+//   65 void D_MAIN_reset(void *st, Word16 reset_all)
+//   66 {
+D_MAIN_reset:
+        PUSH     {R4-R9,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R9 Frame(CFA, -8)
+        CFI R8 Frame(CFA, -12)
+        CFI R7 Frame(CFA, -16)
+        CFI R6 Frame(CFA, -20)
+        CFI R5 Frame(CFA, -24)
+        CFI R4 Frame(CFA, -28)
+        CFI CFA R13+28
+        MOV      R4,R0
+        MOV      R8,R1
+//   67    Word32 i;
+//   68 
+//   69    Decoder_State *dec_state;
+//   70 
+//   71    dec_state = (Decoder_State*)st;
+//   72    memset(dec_state->mem_exc, 0, (PIT_MAX + L_INTERPOL) * sizeof(Word16));
+        MOV      R2,#+496
+        MOV      R1,#+0
+        ADD      R0,R4,#+4
+        SWI      +187
+//   73    memset(dec_state->mem_isf_q, 0, M * sizeof(Word16));
+        MOV      R2,#+32
+        MOV      R1,#+0
+        ADD      R0,R4,#+1488
+        SWI      +187
+        MOV      R0,#+98
+        ORR      R0,R0,#0x600
+        ADD      R5,R0,R4
+        MOV      R6,#+0
+        STRH     R6,[R5, #+22]
+//   74    dec_state->mem_T0_frac = 0;   /* old pitch value = 64.0 */
+//   75    dec_state->mem_T0 = 64;
+        MOV      R0,#+64
+        STRH     R0,[R5, #+20]
+//   76    dec_state->mem_first_frame = 1;
+        MOV      R0,#+124
+        ORR      R0,R0,#0x600
+        ADD      R7,R0,R4
+        MOV      R0,#+1
+        STRB     R0,[R7, #+6]
+//   77    dec_state->mem_gc_thres = 0;
+        STR      R6,[R4, #+0]
+//   78    dec_state->mem_tilt_code = 0;
+        STRH     R6,[R5, #+8]
+//   79    memset(dec_state->mem_ph_disp, 0, 8 * sizeof(Word16));
+        MOV      R2,#+16
+        MOV      R1,#+0
+        ADD      R0,R4,#+1584
+        SWI      +187
+//   80 
+//   81    /* scaling memories for excitation */
+//   82    dec_state->mem_q = Q_MAX;
+        MOV      R0,#+8
+        STRH     R0,[R5, #+10]
+//   83    dec_state->mem_subfr_q[3] = Q_MAX;
+        STRH     R0,[R5, #+6]
+//   84    dec_state->mem_subfr_q[2] = Q_MAX;
+        STRH     R0,[R5, #+4]
+//   85    dec_state->mem_subfr_q[1] = Q_MAX;
+        STRH     R0,[R5, #+2]
+//   86    dec_state->mem_subfr_q[0] = Q_MAX;
+        STRH     R0,[R5, #+0]
+//   87 
+//   88    if(reset_all != 0)
+        CMP      R8,#+0
+        POPEQ    {R4-R9,PC}
+//   89    {
+//   90       /* routines initialization */
+//   91       D_GAIN_init(dec_state->mem_gain);
+//   92       memset(dec_state->mem_oversamp, 0, (2 * 12) * sizeof(Word16));
+//   93       memset(dec_state->mem_sig_out, 0, 6 * sizeof(Word16));
+//   94       memset(dec_state->mem_hf, 0, (31 - 1) * sizeof(Word16));
+//   95       memset(dec_state->mem_hf3, 0, (31 - 1) * sizeof(Word16));
+//   96       memset(dec_state->mem_hp400, 0, 6 * sizeof(Word16));
+//   97       D_GAIN_lag_concealment_init(dec_state->mem_lag);
+//   98 
+//   99       /* isp initialization */
+//  100       memcpy(dec_state->mem_isp, D_ROM_isp, M * sizeof(Word16));
+//  101       memcpy(dec_state->mem_isf, D_ROM_isf, M * sizeof(Word16));
+        LDR      R8,??DataTable1  ;; D_ROM_isf
+        MOV      R0,#+58
+        ORR      R0,R0,#0x500
+        ADD      R0,R0,R4
+        _BLF     D_GAIN_init,??D_GAIN_init??rA
+        MOV      R2,#+48
+        MOV      R1,#+0
+        MOV      R0,#+10
+        ORR      R0,R0,#0x500
+        ADD      R0,R0,R4
+        SWI      +187
+        MOV      R2,#+12
+        MOV      R1,R6
+        ADD      R0,R4,#+1600
+        SWI      +187
+        MOV      R2,#+60
+        MOV      R1,R6
+        MOV      R0,#+86
+        ORR      R0,R0,#0x400
+        ADD      R0,R0,R4
+        SWI      +187
+        MOV      R2,#+60
+        MOV      R1,R6
+        MOV      R0,#+206
+        ORR      R0,R0,#0x400
+        ADD      R0,R0,R4
+        SWI      +187
+        MOV      R2,#+12
+        MOV      R1,R6
+        ORR      R0,R2,#0x640
+        ADD      R0,R0,R4
+        SWI      +187
+        MOV      R0,#+88
+        ORR      R0,R0,#0x600
+        ADD      R0,R0,R4
+        _BLF     D_GAIN_lag_concealment_init,??D_GAIN_lag_concealment_init??rA
+        LDR      R1,??D_MAIN_reset_0  ;; D_ROM_isp
+        MOV      R2,#+32
+        ADD      R0,R4,#+1424
+        SWI      +286
+        MOV      R2,#+32
+        MOV      R1,R8
+        ADD      R0,R4,#+1456
+        SWI      +286
+//  102 
+//  103       for(i = 0; i < L_MEANBUF; i++)
+        MOV      R9,R6
+//  104       {
+//  105          memcpy(&dec_state->mem_isf_buf[i * M], D_ROM_isf, M * sizeof(Word16));
+??D_MAIN_reset_1:
+        MOV      R2,#+32
+        MOV      R1,R8
+        MOV      R0,#+246
+        ORR      R0,R0,#0x300
+        ADD      R3,R4,R9, LSL #+5
+        ADD      R0,R0,R3
+        SWI      +286
+//  106       }
+        ADD      R9,R9,#+1
+        CMP      R9,#+3
+        BLT      ??D_MAIN_reset_1
+//  107 
+//  108       /* variable initialization */
+//  109       dec_state->mem_deemph = 0;
+        STRH     R6,[R5, #+12]
+//  110       dec_state->mem_seed = 21845;   /* init random with 21845 */
+        MOV      R0,#+85
+        ORR      R0,R0,#0x5500
+        STRH     R0,[R5, #+14]
+//  111       dec_state->mem_seed2 = 21845;
+        STRH     R0,[R5, #+16]
+//  112       dec_state->mem_seed3 = 21845;
+        STRH     R0,[R5, #+18]
+//  113       dec_state->mem_state = 0;
+        STRB     R6,[R7, #+5]
+//  114       dec_state->mem_bfi = 0;
+        STRB     R6,[R7, #+4]
+//  115 
+//  116       /* Static vectors to zero */
+//  117       memset(dec_state->mem_syn_hf, 0, M16k * sizeof(Word16));
+        MOV      R2,#+40
+        MOV      R1,#+0
+        ORR      R0,R2,#0x540
+        ADD      R0,R0,R4
+        SWI      +187
+//  118       memset(dec_state->mem_syn_hi, 0, M * sizeof(Word16));
+        MOV      R2,#+32
+        MOV      R1,R6
+        ADD      R0,R4,#+1520
+        SWI      +187
+//  119       memset(dec_state->mem_syn_lo, 0, M * sizeof(Word16));
+        MOV      R2,#+32
+        MOV      R1,R6
+        ADD      R0,R4,#+1552
+        SWI      +187
+//  120       D_DTX_reset(dec_state->dtx_decSt, D_ROM_isf);
+        LDR      R0,[R7, #+0]
+        MOV      R1,R8
+        _BLF     D_DTX_reset,??D_DTX_reset??rA
+//  121       dec_state->mem_vad_hist = 0;
+        STRH     R6,[R5, #+24]
+//  122    }
+//  123 
+//  124    return;
+        POP      {R4-R9,PC}       ;; return
+        DATA
+??D_MAIN_reset_0:
+        DC32     D_ROM_isp
+        CFI EndBlock cfiBlock1
+//  125 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_MAIN_init??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE D_MAIN_init
+//  126 
+//  127 
+//  128 /*
+//  129  * Decoder_init
+//  130  *
+//  131  * Parameters:
+//  132  *    spd_state         O: pointer to state structure
+//  133  *
+//  134  * Function:
+//  135  *    Initialization of variables for the decoder section.
+//  136  *    Memory allocation.
+//  137  *
+//  138  * Returns:
+//  139  *    return zero if succesful
+//  140  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function D_MAIN_init
+        ARM
+//  141 Word32 D_MAIN_init(void **spd_state)
+//  142 {
+D_MAIN_init:
+        PUSH     {R4-R6,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R6 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -12)
+        CFI R4 Frame(CFA, -16)
+        CFI CFA R13+16
+        MOV      R4,R0
+//  143    /* Decoder states */
+//  144    Decoder_State *st;
+//  145 
+//  146    *spd_state = NULL;
+        MOV      R5,#+0
+        STR      R5,[R4, #+0]
+//  147 
+//  148    /*
+//  149     * Memory allocation for coder state.
+//  150     */
+//  151    if((st = (Decoder_State*)malloc(sizeof(Decoder_State))) == NULL)
+        MOV      R0,#+132
+        ORR      R0,R0,#0x600
+        SWI      +20
+        MOVS     R6,R0
+//  152    {
+//  153       return(-1);
+        MVNEQ    R0,R5
+        POPEQ    {R4-R6,PC}
+//  154    }
+//  155 
+//  156    st->dtx_decSt = NULL;
+//  157    D_DTX_init(&st->dtx_decSt, D_ROM_isf);
+        LDR      R1,??DataTable1  ;; D_ROM_isf
+        STR      R5,[R6, #+1660]
+        MOV      R0,#+124
+        ORR      R0,R0,#0x600
+        ADD      R0,R0,R6
+        _BLF     D_DTX_init,??D_DTX_init??rA
+//  158    D_MAIN_reset((void *)st, 1);
+        MOV      R1,#+1
+        MOV      R0,R6
+        BL       D_MAIN_reset
+//  159    *spd_state = (void *)st;
+        STR      R6,[R4, #+0]
+//  160 
+//  161    return(0);
+        MOV      R0,#+0
+        POP      {R4-R6,PC}       ;; return
+        CFI EndBlock cfiBlock3
+//  162 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable1:
+        DC32     D_ROM_isf
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_MAIN_close??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE D_MAIN_close
+//  163 
+//  164 
+//  165 /*
+//  166  * Decoder_close
+//  167  *
+//  168  * Parameters:
+//  169  *    spd_state   I: pointer to state structure
+//  170  *
+//  171  * Function:
+//  172  *    Free coder memory.
+//  173  *
+//  174  * Returns:
+//  175  *    void
+//  176  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function D_MAIN_close
+        ARM
+//  177 void D_MAIN_close(void **spd_state)
+//  178 {
+D_MAIN_close:
+        PUSH     {R4,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+        MOV      R4,R0
+//  179    D_DTX_exit(&(((Decoder_State *)(*spd_state))->dtx_decSt));
+        LDR      R1,[R4, #+0]
+        MOV      R0,#+124
+        ORR      R0,R0,#0x600
+        ADD      R0,R0,R1
+        _BLF     D_DTX_exit,??D_DTX_exit??rA
+//  180    free(*spd_state);
+        LDR      R0,[R4, #+0]
+        POP      {R4,LR}          ;; Pop
+        CFI R4 SameValue
+        CFI ?RET R14
+        CFI CFA R13+0
+        _BF      free,??free??rA  ;; tailcall
+        CFI EndBlock cfiBlock5
+//  181 
+//  182    return;
+//  183 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_MAIN_decode??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE D_MAIN_decode
+//  184 
+//  185 
+//  186 /*
+//  187  * Decoder_exe
+//  188  *
+//  189  * Parameters:
+//  190  *    mode           I: used mode
+//  191  *    prms           I: parameter vector
+//  192  *    synth_out      O: synthesis speech
+//  193  *    spe_state      B: state structure
+//  194  *    frame_type     I: received frame type
+//  195  *
+//  196  * Function:
+//  197  *    Main decoder routine.
+//  198  *
+//  199  * Returns:
+//  200  *    0 if successful
+//  201  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function D_MAIN_decode
+        ARM
+//  202 Word32 D_MAIN_decode(Word16 mode, Word16 prms[], Word16 synth16k[],
+//  203                      void *spd_state, UWord8 frame_type)
+//  204 {
+D_MAIN_decode:
+        PUSH     {R1,R2,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+44
+        SUB      SP,SP,#+348
+        CFI CFA R13+392
+        SUB      SP,SP,#+1024
+        CFI CFA R13+1416
+        LDRB     R7,[SP, #+1416]
+        MOV      R4,R0
+        MOV      R5,R3
+//  205 
+//  206    Word32 code2[L_SUBFR];           /* algebraic codevector                */
+//  207    Word32 L_tmp, L_tmp2, L_gain_code, L_stab_fac;
+//  208    Word32 i, j, i_subfr, pit_flag;
+//  209    Word32 T0, T0_frac, T0_max, select, T0_min = 0;
+//  210 
+//  211    Word16 exc2[L_FRAME];            /* excitation vector                   */
+//  212    Word16 Aq[NB_SUBFR * (M + 1)];   /* A(z) quantized for the 4 subframes  */
+//  213    Word16 code[L_SUBFR];            /* algebraic codevector                */
+//  214    Word16 excp[L_SUBFR];            /* excitation vector                   */
+//  215    Word16 HfIsf[M16k];
+//  216    Word16 ispnew[M];                /* immittance spectral pairs at 4nd sfr*/
+//  217    Word16 isf[M];                   /* ISF (frequency domain) at 4nd sfr   */
+//  218    Word16 isf_tmp[M];               /* ISF tmp                             */
+//  219    Word16 ind[8];                   /* quantization indices                */
+//  220 
+//  221    Word16 index, fac, voice_fac, max, Q_new = 0;
+//  222    Word16 gain_pit, gain_code, gain_code_lo, tmp;
+//  223    Word16 corr_gain = 0;
+//  224    UWord16 pit_sharp = 0;
+        MOV      R1,#+0
+        STR      R1,[SP, #+44]
+        MOV      R0,#+88
+        ORR      R0,R0,#0x600
+        ADD      R6,R0,R5
+        LDR      R0,[R6, #+36]
+        MOV      R1,R7
+//  225 
+//  226    Word16 *exc;                     /* Excitation vector                   */
+//  227    Word16 *p_Aq;                    /* ptr to A(z) for the 4 subframes     */
+//  228    Word16 *p_isf;                   /* prt to isf                          */
+//  229 
+//  230    Decoder_State *st;   /* Decoder states */
+//  231    UWord8 newDTXState, bfi, unusable_frame;
+//  232    UWord8 vad_flag;
+//  233 
+//  234    st = (Decoder_State*)spd_state;
+//  235 
+//  236    /* find the new  DTX state  SPEECH OR DTX */
+//  237    newDTXState = D_DTX_rx_handler(st->dtx_decSt, frame_type);
+        _BLF     D_DTX_rx_handler,??D_DTX_rx_handler??rA
+        STR      R0,[SP, #+48]
+//  238 
+//  239    if(newDTXState != SPEECH)
+        CMP      R0,#+0
+        BEQ      ??D_MAIN_decode_0
+//  240    {
+//  241       D_DTX_exe(st->dtx_decSt, exc2, newDTXState, isf, &prms);
+        ADD      R0,SP,#+348
+        ADD      R0,R0,#+1024
+        PUSH     {R0}
+        CFI CFA R13+1420
+        LDR      R2,[SP, #+52]
+        ADD      R3,SP,#+80
+        AND      R2,R2,#0xFF
+        LDR      R0,[R6, #+36]
+        ADD      R1,SP,#+344
+        _BLF     D_DTX_exe,??D_DTX_exe??rA
+        ADD      SP,SP,#+4
+        CFI CFA R13+1416
+//  242    }
+//  243 
+//  244    /* SPEECH action state machine  */
+//  245    if((frame_type == RX_SPEECH_BAD) |
+//  246       (frame_type == RX_SPEECH_PROBABLY_DEGRADED))
+??D_MAIN_decode_0:
+        CMP      R7,#+3
+        CMPNE    R7,#+1
+        BEQ      ??D_MAIN_decode_1
+//  247    {
+//  248       /* bfi for all index, bits are not usable */
+//  249       bfi = 1;
+//  250       unusable_frame = 0;
+//  251    }
+//  252    else if((frame_type == RX_NO_DATA) | (frame_type == RX_SPEECH_LOST))
+        CMP      R7,#+7
+        BNE      ??D_MAIN_decode_2
+//  253    {
+//  254       /* bfi only for lsf, gains and pitch period */
+//  255       bfi = 1;
+??D_MAIN_decode_3:
+        MOV      R1,#+1
+        STR      R1,[SP, #+20]
+//  256       unusable_frame = 1;
+??D_MAIN_decode_4:
+        STR      R1,[SP, #+52]
+//  257    }
+//  258    else
+//  259    {
+//  260       bfi = 0;
+//  261       unusable_frame = 0;
+//  262    }
+//  263 
+//  264    if(bfi != 0)
+//  265    {
+//  266       st->mem_state = (UWord8)(st->mem_state + 1);
+        LDRB     R0,[R6, #+41]
+        ADD      R0,R0,#+1
+        STRB     R0,[R6, #+41]
+//  267 
+//  268       if(st->mem_state > 6)
+        LDRB     R0,[R6, #+41]
+        CMP      R0,#+7
+        BCC      ??D_MAIN_decode_5
+//  269       {
+//  270          st->mem_state = 6;
+        MOV      R0,#+6
+??D_MAIN_decode_6:
+        STRB     R0,[R6, #+41]
+//  271       }
+//  272    }
+//  273    else
+//  274    {
+//  275       st->mem_state = (UWord8)(st->mem_state >> 1);
+//  276    }
+//  277 
+//  278    /*
+//  279     * If this frame is the first speech frame after CNI period,
+//  280     * set the BFH state machine to an appropriate state depending
+//  281     * on whether there was DTX muting before start of speech or not
+//  282     * If there was DTX muting, the first speech frame is muted.
+//  283     * If there was no DTX muting, the first speech frame is not
+//  284     * muted. The BFH state machine starts from state 5, however, to
+//  285     * keep the audible noise resulting from a SID frame which is
+//  286     * erroneously interpreted as a good speech frame as small as
+//  287     * possible (the decoder output in this case is quickly muted)
+//  288     */
+//  289 
+//  290    if(st->dtx_decSt->mem_dtx_global_state == DTX)
+??D_MAIN_decode_5:
+        LDR      R1,[R6, #+36]
+        MOV      R0,#+5
+        LDRB     R1,[R1, #+353]
+        MOV      R7,#+0
+        CMP      R1,#+1
+        BNE      ??D_MAIN_decode_7
+//  291    {
+//  292       st->mem_state = 5;
+        STRB     R0,[R6, #+41]
+//  293       st->mem_bfi = 0;
+        STRB     R7,[R6, #+40]
+        B        ??D_MAIN_decode_8
+//  294    }
+??D_MAIN_decode_1:
+        MOV      R1,#+1
+        STR      R1,[SP, #+20]
+        MOV      R1,#+0
+        B        ??D_MAIN_decode_4
+??D_MAIN_decode_2:
+        CMP      R7,#+2
+        BEQ      ??D_MAIN_decode_3
+        MOV      R1,#+0
+        STR      R1,[SP, #+20]
+        STR      R1,[SP, #+52]
+        LDRB     R0,[R6, #+41]
+        LSR      R0,R0,#+1
+        B        ??D_MAIN_decode_6
+//  295    else if(st->dtx_decSt->mem_dtx_global_state == D_DTX_MUTE)
+??D_MAIN_decode_7:
+        LDR      R1,[R6, #+36]
+        LDRB     R1,[R1, #+353]
+        CMP      R1,#+2
+//  296    {
+//  297       st->mem_state = 5;
+        STRBEQ   R0,[R6, #+41]
+//  298       st->mem_bfi = 1;
+        MOVEQ    R0,#+1
+        STRBEQ   R0,[R6, #+40]
+//  299    }
+//  300 
+//  301    if(newDTXState == SPEECH)
+??D_MAIN_decode_8:
+        LDR      R1,[SP, #+20]
+        MOV      R9,#+1456
+        AND      R1,R1,#0xFF
+        STRH     R1,[SP, #+10]
+        LDR      R1,[SP, #+48]
+        AND      R1,R1,#0xFF
+        STRH     R1,[SP, #+68]
+        LDR      R0,[SP, #+48]
+        LSLS     R0,R0,#+24
+        BNE      ??D_MAIN_decode_9
+//  302    {
+//  303 	   vad_flag = (UWord8)(*prms++);
+        LDR      R2,[SP, #+1372]
+//  304 
+//  305 	   if(bfi == 0)
+        MOV      R0,#+360
+        LDRSH    R1,[R2], #+2
+        STR      R2,[SP, #+1372]
+        LDR      R2,[SP, #+20]
+        AND      R1,R1,#0xFF
+        LSLS     R2,R2,#+24
+        BNE      ??D_MAIN_decode_10
+//  306 	   {
+//  307 		   if(vad_flag == 0)
+        CMP      R1,#+0
+        BNE      ??D_MAIN_decode_11
+//  308 		   {
+//  309 			   st->mem_vad_hist = (Word16)(st->mem_vad_hist + 1);
+        LDRH     R1,[R6, #+34]
+        ADD      R1,R1,#+1
+        STRH     R1,[R6, #+34]
+//  310 			   st->dtx_decSt->mem_dtx_vad_hist = (Word16)(st->dtx_decSt->mem_dtx_vad_hist + 1);
+        LDR      R1,[R6, #+36]
+        LDRSH    R2,[R0, +R1]
+        ADD      R2,R2,#+1
+        STRH     R2,[R0, +R1]
+//  311 
+//  312 			   if(st->mem_vad_hist > 32767)
+        LDRH     R0,[R6, #+34]
+        CMP      R0,#+32768
+//  313 			   {
+//  314 				   st->mem_vad_hist = 32767;
+        MOVCS    R0,#+255
+        ORRCS    R0,R0,#0x7F00
+        STRHCS   R0,[R6, #+34]
+//  315 			   }
+//  316 		   }
+//  317 		   else
+//  318 		   {
+//  319 			   st->mem_vad_hist = 0;
+//  320 			   st->dtx_decSt->mem_dtx_vad_hist = 0;
+//  321 		   }
+//  322 	   }
+//  323 	   else if (st->dtx_decSt->mem_dtx_vad_hist > 0)
+//  324 	   {
+//  325 		   st->dtx_decSt->mem_dtx_vad_hist = (Word16)(st->dtx_decSt->mem_dtx_vad_hist + 1);
+//  326 	   }
+//  327 
+//  328 	   if (st->dtx_decSt->mem_dtx_vad_hist > 32767)
+//  329 	   {
+//  330 		   st->dtx_decSt->mem_dtx_vad_hist = 32767;
+//  331 	   }
+//  332    }
+//  333 
+//  334    /*
+//  335     * DTX-CNG
+//  336     */
+//  337    if(newDTXState != SPEECH) /* CNG mode */
+//  338    {
+//  339       /*
+//  340        * increase slightly energy of noise below 200 Hz
+//  341        * Convert ISFs to the cosine domain
+//  342        */
+//  343       D_LPC_isf_isp_conversion(isf, ispnew, M);
+//  344       D_LPC_isp_a_conversion(ispnew, Aq, 1, M);
+//  345       memcpy(isf_tmp, st->mem_isf, M * sizeof(Word16));
+//  346 
+//  347       for(i_subfr = 0; i_subfr < L_FRAME; i_subfr += L_SUBFR)
+//  348       {
+//  349          j = (i_subfr >> 6);
+//  350 
+//  351          for(i = 0; i < M; i++)
+//  352          {
+//  353             L_tmp = (isf_tmp[i] * (32767 - D_ROM_interpol_frac[j])) << 1;
+//  354             L_tmp = L_tmp + ((isf[i] * D_ROM_interpol_frac[j]) << 1);
+//  355             HfIsf[i] = (Word16)((L_tmp + 0x8000) >> 16);
+//  356          }
+//  357 
+//  358          D_UTIL_dec_synthesis(Aq, &exc2[i_subfr], 0, &synth16k[i_subfr * 5 /4],
+//  359             (Word16) 1, HfIsf, mode, newDTXState, bfi, st);
+//  360       }
+//  361 
+//  362       /* reset speech coder memories */
+//  363       D_MAIN_reset(st, 0);
+//  364       memcpy(st->mem_isf, isf, M * sizeof(Word16));
+//  365       st->mem_bfi = bfi;
+//  366       st->dtx_decSt->mem_dtx_global_state = (UWord8)newDTXState;
+//  367 
+//  368       return(0);
+//  369    }
+//  370 
+//  371    /*
+//  372     * ACELP
+//  373     */
+//  374 
+//  375    exc = st->mem_exc + PIT_MAX + L_INTERPOL;
+??D_MAIN_decode_12:
+        ADD      R1,R5,#+500
+        STR      R1,[SP, #+56]
+//  376 
+//  377    /* Decode the ISFs */
+//  378    if(mode <= MODE_7k)
+        LDR      R8,[SP, #+1372]
+        MOV      R0,#+1488
+        LDRSH    R10,[R8], #+2
+        STR      R8,[SP, #+1372]
+        MOV      R1,#+246
+        STRH     R10,[SP, #+28]
+        LDRSH    R10,[R8], #+2
+        STR      R8,[SP, #+1372]
+        ORR      R1,R1,#0x300
+        STRH     R10,[SP, #+30]
+        LDRSH    R10,[R8], #+2
+        STR      R8,[SP, #+1372]
+        CMP      R4,#+1
+        STRH     R10,[SP, #+32]
+        LDRSH    R10,[R8], #+2
+        STR      R8,[SP, #+1372]
+        STRH     R10,[SP, #+34]
+        LDRSH    R10,[R8], #+2
+        STR      R8,[SP, #+1372]
+        STRH     R10,[SP, #+36]
+        BGE      ??D_MAIN_decode_13
+//  379    {
+//  380       ind[0] = *prms++;
+//  381       ind[1] = *prms++;
+//  382       ind[2] = *prms++;
+//  383       ind[3] = *prms++;
+//  384       ind[4] = *prms++;
+//  385       D_LPC_isf_2s3s_decode(ind, isf, st->mem_isf_q, st->mem_isf,
+//  386          st->mem_isf_buf, bfi);
+        LDRSH    R2,[SP, #+10]
+        ADD      R1,R1,R5
+        ADD      R3,R9,R5
+        PUSH     {R2}
+        CFI CFA R13+1420
+        PUSH     {R1}
+        CFI CFA R13+1424
+        ADD      R2,R0,R5
+        ADD      R0,SP,#+36
+        ADD      R1,SP,#+84
+        _BLF     D_LPC_isf_2s3s_decode,??D_LPC_isf_2s3s_decode??rA
+        B        ??D_MAIN_decode_14
+        CFI CFA R13+1416
+//  387    }
+??D_MAIN_decode_11:
+        STRH     R7,[R6, #+34]
+        LDR      R1,[R6, #+36]
+        STRH     R7,[R0, +R1]
+        B        ??D_MAIN_decode_12
+??D_MAIN_decode_10:
+        LDR      R1,[R6, #+36]
+        LDRSH    R1,[R0, +R1]
+        CMP      R1,#+1
+        BLT      ??D_MAIN_decode_12
+        LDR      R1,[R6, #+36]
+        LDRSH    R2,[R0, +R1]
+        ADD      R2,R2,#+1
+        STRH     R2,[R0, +R1]
+        B        ??D_MAIN_decode_12
+??D_MAIN_decode_9:
+        MOV      R2,#+16
+        ADD      R1,SP,#+276
+        ADD      R0,SP,#+76
+        _BLF     D_LPC_isf_isp_conversion,??D_LPC_isf_isp_conversion??rA
+        MOV      R3,#+16
+        MOV      R2,#+1
+        ADD      R1,SP,#+84
+        ADD      R1,R1,#+1024
+        ADD      R0,SP,#+276
+        _BLF     D_LPC_isp_a_conversion,??D_LPC_isp_a_conversion??rA
+        MOV      R2,#+32
+        ADD      R1,R9,R5
+        ADD      R0,SP,#+308
+        SWI      +286
+        MOV      R8,#+0
+??D_MAIN_decode_15:
+        ASR      R3,R8,#+6
+        MOV      R11,#+0
+??D_MAIN_decode_16:
+        LDR      R0,??D_MAIN_decode_17  ;; D_ROM_interpol_frac
+        ADD      R2,SP,#+308
+        ADD      R0,R0,R3, LSL #+1
+        LDRSH    R0,[R0, #+0]
+        ADD      R2,R2,R11, LSL #+1
+        LDRSH    R2,[R2, #+0]
+        ADD      R12,SP,#+76
+        ADD      R12,R12,R11, LSL #+1
+        LDRSH    R12,[R12, #+0]
+        MOV      R10,#+255
+        ORR      R10,R10,#0x7F00
+        SUB      R10,R10,R0
+        MUL      R12,R0,R12
+        ADD      R1,SP,#+236
+        MLA      R0,R10,R2,R12
+        ADD      R1,R1,R11, LSL #+1
+        MOV      R2,#+32768
+        ADD      R0,R2,R0, LSL #+1
+        ASR      R0,R0,#+16
+        STRH     R0,[R1, #+0]
+        ADD      R11,R11,#+1
+        CMP      R11,#+16
+        BLT      ??D_MAIN_decode_16
+        MOV      R1,R5
+        PUSH     {R1}
+        CFI CFA R13+1420
+        LDRSH    R1,[SP, #+14]
+        ADD      R0,R8,R8, LSL #+2
+        MOV      R2,#+0
+        PUSH     {R1}
+        CFI CFA R13+1424
+        LDRSH    R1,[SP, #+76]
+        PUSH     {R1}
+        CFI CFA R13+1428
+        MOV      R1,R4
+        PUSH     {R1}
+        CFI CFA R13+1432
+        ADD      R1,SP,#+252
+        PUSH     {R1}
+        CFI CFA R13+1436
+        MOV      R1,#+1
+        PUSH     {R1}
+        CFI CFA R13+1440
+        ASR      R1,R0,#+1
+        ADD      R0,R0,R1, LSR #+30
+        LDR      R1,[SP, #+1400]
+        ASR      R0,R0,#+2
+        ADD      R3,R1,R0, LSL #+1
+        ADD      R0,SP,#+364
+        ADD      R1,R0,R8, LSL #+1
+        ADD      R0,SP,#+108
+        ADD      R0,R0,#+1024
+        _BLF     D_UTIL_dec_synthesis,??D_UTIL_dec_synthesis??rA
+        ADD      R8,R8,#+64
+        CMP      R8,#+256
+        ADD      SP,SP,#+24
+        CFI CFA R13+1416
+        BLT      ??D_MAIN_decode_15
+        MOV      R1,#+0
+        MOV      R0,R5
+        BL       D_MAIN_reset
+        MOV      R2,#+32
+        ADD      R1,SP,#+76
+        ADD      R0,R9,R5
+        SWI      +286
+        LDR      R0,[SP, #+20]
+        STRB     R0,[R6, #+40]
+        LDR      R0,[R6, #+36]
+        LDR      R1,[SP, #+48]
+        STRB     R1,[R0, #+353]
+        B        ??D_MAIN_decode_18
+//  388    else
+//  389    {
+//  390       ind[0] = *prms++;
+//  391       ind[1] = *prms++;
+//  392       ind[2] = *prms++;
+//  393       ind[3] = *prms++;
+//  394       ind[4] = *prms++;
+//  395       ind[5] = *prms++;
+??D_MAIN_decode_13:
+        LDRSH    R10,[R8], #+2
+        STR      R8,[SP, #+1372]
+//  396       ind[6] = *prms++;
+//  397       D_LPC_isf_2s5s_decode(ind, isf, st->mem_isf_q, st->mem_isf,
+//  398          st->mem_isf_buf, bfi);
+        ADD      R1,R1,R5
+        STRH     R10,[SP, #+38]
+        LDRSH    R10,[R8], #+2
+        STR      R8,[SP, #+1372]
+        ADD      R3,R9,R5
+        STRH     R10,[SP, #+40]
+        LDRSH    R2,[SP, #+10]
+        PUSH     {R2}
+        CFI CFA R13+1420
+        PUSH     {R1}
+        CFI CFA R13+1424
+        ADD      R2,R0,R5
+        ADD      R0,SP,#+36
+        ADD      R1,SP,#+84
+        _BLF     D_LPC_isf_2s5s_decode,??D_LPC_isf_2s5s_decode??rA
+??D_MAIN_decode_14:
+        ADD      SP,SP,#+8
+        CFI CFA R13+1416
+//  399    }
+//  400 
+//  401    /* Convert ISFs to the cosine domain */
+//  402    D_LPC_isf_isp_conversion(isf, ispnew, M);
+        MOV      R2,#+16
+        ADD      R1,SP,#+276
+        ADD      R0,SP,#+76
+        _BLF     D_LPC_isf_isp_conversion,??D_LPC_isf_isp_conversion??rA
+//  403 
+//  404    if(st->mem_first_frame != 0)
+        LDRB     R0,[R6, #+42]
+        MOV      R8,#+1424
+        CMP      R0,#+0
+        BEQ      ??D_MAIN_decode_19
+//  405    {
+//  406       st->mem_first_frame = 0;
+        STRB     R7,[R6, #+42]
+//  407       memcpy(st->mem_isp, ispnew, M * sizeof(Word16));
+        MOV      R2,#+32
+        ADD      R1,SP,#+276
+        ADD      R0,R8,R5
+        SWI      +286
+//  408    }
+//  409 
+//  410    /* Find the interpolated ISPs and convert to a[] for all subframes */
+//  411    D_LPC_int_isp_find(st->mem_isp, ispnew, D_ROM_interpol_frac, Aq);
+??D_MAIN_decode_19:
+        LDR      R2,??D_MAIN_decode_17  ;; D_ROM_interpol_frac
+        ADD      R3,SP,#+84
+        ADD      R3,R3,#+1024
+        ADD      R1,SP,#+276
+        ADD      R0,R8,R5
+        _BLF     D_LPC_int_isp_find,??D_LPC_int_isp_find??rA
+//  412 
+//  413    /* update isp memory for the next frame */
+//  414    memcpy(st->mem_isp, ispnew, M * sizeof(Word16));
+        MOV      R2,#+32
+        ADD      R1,SP,#+276
+        ADD      R0,R8,R5
+        SWI      +286
+//  415 
+//  416    /* Check stability on isf : distance between old isf and current isf */
+//  417    L_tmp = 0;
+        MOV      R10,#+0
+//  418    p_isf = st->mem_isf;
+        ADD      R0,R9,R5
+//  419 
+//  420    for(i = 0; i < M - 1; i++)
+        MOV      R11,R7
+//  421    {
+//  422       tmp = (Word16)((isf[i] - p_isf[i]));
+??D_MAIN_decode_20:
+        ADD      R2,SP,#+76
+        ADD      R2,R2,R11, LSL #+1
+        LDRSH    R2,[R2, #+0]
+        ADD      R3,R0,R11, LSL #+1
+        LDRSH    R3,[R3, #+0]
+//  423       L_tmp = L_tmp + (tmp * tmp);
+//  424    }
+        ADD      R11,R11,#+1
+        CMP      R11,#+15
+        SUB      R2,R2,R3
+        STRH     R2,[SP, #+0]
+        LDRSH    R1,[SP, #+0]
+        MLA      R10,R1,R1,R10
+        BLT      ??D_MAIN_decode_20
+//  425 
+//  426    if(L_tmp < 3276928)
+        MOV      R0,#+128
+        ORR      R0,R0,#0x320000
+        CMP      R10,R0
+        BGE      ??D_MAIN_decode_21
+//  427    {
+//  428       L_tmp = L_tmp >> 7;
+//  429       L_tmp = (L_tmp * 26214) >> 15;   /* tmp = L_tmp*0.8/256        */
+//  430       L_tmp = 20480 - L_tmp;           /* 1.25 - tmp                 */
+//  431       L_stab_fac = L_tmp << 1;         /* Q14 -> Q15 with saturation */
+        ASR      R2,R10,#+7
+        MOV      R3,#+102
+        ORR      R3,R3,#0x6600
+        MUL      R2,R3,R2
+        MOV      R1,#+20480
+        SUB      R1,R1,R2, ASR #+15
+        LSL      R1,R1,#+1
+        STR      R1,[SP, #+60]
+//  432 
+//  433       if(L_stab_fac > 0x7FFF)
+        CMP      R1,#+32768
+        BLT      ??D_MAIN_decode_22
+//  434       {
+//  435          L_stab_fac = 0x7FFF;
+        MOV      R1,#+255
+        ORR      R1,R1,#0x7F00
+        STR      R1,[SP, #+60]
+        B        ??D_MAIN_decode_22
+//  436       }
+//  437    }
+//  438    else
+//  439    {
+//  440       L_stab_fac = 0x0;
+??D_MAIN_decode_21:
+        STR      R7,[SP, #+60]
+//  441    }
+//  442 
+//  443    memcpy(isf_tmp, st->mem_isf, M * sizeof(Word16));
+??D_MAIN_decode_22:
+        MOV      R2,#+32
+        ADD      R1,R9,R5
+        ADD      R0,SP,#+308
+        SWI      +286
+//  444    memcpy(st->mem_isf, isf, M * sizeof(Word16));
+        MOV      R2,#+32
+        ADD      R1,SP,#+76
+        ADD      R0,R9,R5
+        SWI      +286
+//  445 
+//  446    /*
+//  447     * Loop for every subframe in the analysis frame
+//  448     *
+//  449     * The subframe size is L_SUBFR and the loop is repeated L_FRAME/L_SUBFR
+//  450     * times
+//  451     *   - decode the pitch delay and filter mode
+//  452     *   - decode algebraic code
+//  453     *   - decode pitch and codebook gains
+//  454     *   - find voicing factor and tilt of code for next subframe
+//  455     *   - find the excitation and compute synthesis speech
+//  456     */
+//  457 
+//  458    p_Aq = Aq;   /* pointer to interpolated LPC parameters */
+        ADD      R1,SP,#+84
+        ADD      R1,R1,#+1024
+        STR      R1,[SP, #+64]
+//  459 
+//  460    for(i_subfr = 0; i_subfr < L_FRAME; i_subfr += L_SUBFR)
+        MOV      R8,#+0
+        B        ??D_MAIN_decode_23
+//  461    {
+//  462       pit_flag = i_subfr;
+//  463 
+//  464       if((i_subfr == (2 * L_SUBFR)) & (mode > MODE_7k))
+??D_MAIN_decode_24:
+        CMP      R8,#+128
+        BNE      ??D_MAIN_decode_25
+        CMP      R4,#+1
+        BGE      ??D_MAIN_decode_23
+//  465       {
+//  466          pit_flag = 0;
+//  467       }
+//  468 
+//  469       /*
+//  470        * - Decode pitch lag
+//  471        * Lag indeces received also in case of BFI,
+//  472        * so that the parameter pointer stays in sync.
+//  473        */
+//  474 
+//  475       if(pit_flag == 0)
+//  476       {
+//  477          if(mode <= MODE_9k)
+//  478          {
+//  479             index = *prms++;
+//  480 
+//  481             if(index < ((PIT_FR1_8b - PIT_MIN) * 2))
+//  482             {
+//  483                T0 = (PIT_MIN + (index >> 1));
+//  484                T0_frac = (index - ((T0 - PIT_MIN) << 1));
+//  485                T0_frac = (T0_frac << 1);
+//  486             }
+//  487             else
+//  488             {
+//  489                T0 = index + (PIT_FR1_8b - ((PIT_FR1_8b - PIT_MIN) * 2));
+//  490                T0_frac = 0;
+//  491             }
+//  492          }
+//  493          else
+//  494          {
+//  495             index = *prms++;
+//  496 
+//  497             if(index < ((PIT_FR2 - PIT_MIN) * 4))
+//  498             {
+//  499                T0 = PIT_MIN + (index >> 2);
+//  500                T0_frac = index - ((T0 - PIT_MIN) << 2);
+//  501             }
+//  502             else if(index <
+//  503                ((((PIT_FR2 - PIT_MIN) * 4) + ((PIT_FR1_9b - PIT_FR2) * 2))))
+//  504             {
+//  505                index = (Word16)((index - ((PIT_FR2 - PIT_MIN) * 4)));
+//  506                T0 = PIT_FR2 + (index >> 1);
+//  507                T0_frac = index - ((T0 - PIT_FR2) << 1);
+//  508                T0_frac = T0_frac << 1;
+//  509             }
+//  510             else
+//  511             {
+//  512                T0 = index + (PIT_FR1_9b - ((PIT_FR2 - PIT_MIN) * 4) -
+//  513                   ((PIT_FR1_9b - PIT_FR2) * 2));
+//  514                T0_frac = 0;
+//  515             }
+//  516          }
+//  517 
+//  518          /* find T0_min and T0_max for subframe 2 and 4 */
+//  519          T0_min = T0 - 8;
+//  520 
+//  521          if(T0_min < PIT_MIN)
+//  522          {
+//  523             T0_min = PIT_MIN;
+//  524          }
+//  525 
+//  526          T0_max = T0_min + 15;
+//  527 
+//  528          if(T0_max > PIT_MAX)
+//  529          {
+//  530             T0_max = PIT_MAX;
+//  531             T0_min = T0_max - 15;
+//  532          }
+//  533       }
+//  534       else
+//  535       {   /* if subframe 2 or 4 */
+//  536 
+//  537          if(mode <= MODE_9k)
+??D_MAIN_decode_26:
+        LDR      R2,[SP, #+1372]
+        CMP      R4,#+2
+        LDRSH    R0,[R2], #+2
+        STR      R2,[SP, #+1372]
+        LDR      R2,[SP, #+24]
+        BGE      ??D_MAIN_decode_27
+//  538          {
+//  539             index = *prms++;
+//  540             T0 = T0_min + (index >> 1);
+        ADD      R2,R2,R0, ASR #+1
+        STR      R2,[SP, #+4]
+//  541             T0_frac = index - ((T0 - T0_min) << 1);
+//  542             T0_frac = T0_frac << 1;
+        MOV      R1,R2
+        LDR      R2,[SP, #+24]
+        SUB      R1,R1,R2
+        SUB      R0,R0,R1, LSL #+1
+        LSL      R9,R0,#+1
+        B        ??D_MAIN_decode_28
+//  543          }
+??D_MAIN_decode_25:
+        CMP      R8,#+0
+        BNE      ??D_MAIN_decode_26
+??D_MAIN_decode_23:
+        LDR      R2,[SP, #+1372]
+        CMP      R4,#+2
+        LDRSH    R0,[R2], #+2
+        STR      R2,[SP, #+1372]
+        BGE      ??D_MAIN_decode_29
+        CMP      R0,#+116
+        BGE      ??D_MAIN_decode_30
+        MOV      R2,#+34
+        ADD      R2,R2,R0, ASR #+1
+        STR      R2,[SP, #+4]
+        SUB      R1,R2,#+34
+??D_MAIN_decode_31:
+        SUB      R0,R0,R1, LSL #+1
+        LSL      R9,R0,#+1
+        B        ??D_MAIN_decode_32
+??D_MAIN_decode_30:
+        SUB      R0,R0,#+24
+        B        ??D_MAIN_decode_33
+??D_MAIN_decode_29:
+        CMP      R0,#+376
+        BGE      ??D_MAIN_decode_34
+        MOV      R2,#+34
+        ADD      R2,R2,R0, ASR #+2
+        STR      R2,[SP, #+4]
+        SUB      R1,R2,#+34
+        SUB      R9,R0,R1, LSL #+2
+        B        ??D_MAIN_decode_32
+??D_MAIN_decode_34:
+        CMP      R0,#+440
+        BGE      ??D_MAIN_decode_35
+        MVN      R1,#+119
+        BIC      R1,R1,#0x100
+        ADD      R0,R1,R0
+        MOV      R0,R0, LSL #+16
+        MOV      R0,R0, ASR #+16
+        MOV      R2,#+128
+        ADD      R2,R2,R0, ASR #+1
+        STR      R2,[SP, #+4]
+        MOV      R1,R2
+        MVN      R2,#+127
+        ADD      R1,R2,R1
+        B        ??D_MAIN_decode_31
+??D_MAIN_decode_35:
+        MVN      R2,#+23
+        BIC      R2,R2,#0x100
+        ADD      R0,R2,R0
+??D_MAIN_decode_33:
+        STR      R0,[SP, #+4]
+        MOV      R9,#+0
+??D_MAIN_decode_32:
+        LDR      R1,[SP, #+4]
+        SUB      R1,R1,#+8
+        STR      R1,[SP, #+24]
+        CMP      R1,#+34
+        MOVLT    R1,#+34
+        STRLT    R1,[SP, #+24]
+        LDR      R0,[SP, #+24]
+        ADD      R0,R0,#+15
+        CMP      R0,#+232
+        BLT      ??D_MAIN_decode_28
+        MOV      R1,#+216
+        STR      R1,[SP, #+24]
+        B        ??D_MAIN_decode_28
+//  544          else
+//  545          {
+//  546             index = *prms++;
+//  547             T0 = T0_min + (index >> 2);
+??D_MAIN_decode_27:
+        ADD      R2,R2,R0, ASR #+2
+        STR      R2,[SP, #+4]
+//  548             T0_frac = index - ((T0 - T0_min) << 2);
+        MOV      R1,R2
+        LDR      R2,[SP, #+24]
+        SUB      R1,R1,R2
+        SUB      R9,R0,R1, LSL #+2
+//  549          }
+//  550       }
+//  551 
+//  552       /* check BFI after pitch lag decoding */
+//  553       if(bfi != 0) /* if frame erasure */
+??D_MAIN_decode_28:
+        LDR      R1,[SP, #+52]
+        AND      R1,R1,#0xFF
+        STRH     R1,[SP, #+14]
+        LDR      R0,[SP, #+20]
+        LSLS     R0,R0,#+24
+        BEQ      ??D_MAIN_decode_36
+//  554       {
+//  555          D_GAIN_lag_concealment(&(st->mem_gain[17]), st->mem_lag, &T0,
+//  556             &(st->mem_T0), &(st->mem_seed3), unusable_frame);
+        LDRSH    R0,[SP, #+14]
+        MOV      R1,R6
+//  557          T0_frac = 0;
+        MOV      R9,#+0
+        PUSH     {R0}
+        CFI CFA R13+1420
+        MOV      R0,#+116
+        ORR      R0,R0,#0x600
+        ADD      R0,R0,R5
+        PUSH     {R0}
+        CFI CFA R13+1424
+        ADD      R2,SP,#+12
+        MOV      R0,#+118
+        ORR      R0,R0,#0x600
+        ADD      R3,R0,R5
+        MOV      R0,#+92
+        ORR      R0,R0,#0x500
+        ADD      R0,R0,R5
+        _BLF     D_GAIN_lag_concealment,??D_GAIN_lag_concealment??rA
+        ADD      SP,SP,#+8
+        CFI CFA R13+1416
+//  558       }
+//  559 
+//  560       /*
+//  561        * Find the pitch gain, the interpolation filter
+//  562        * and the adaptive codebook vector.
+//  563        */
+//  564 
+//  565       D_GAIN_adaptive_codebook_excitation(&exc[i_subfr], T0, T0_frac);
+??D_MAIN_decode_36:
+        LDR      R0,[SP, #+56]
+        LDR      R1,[SP, #+4]
+        ADD      R10,R0,R8, LSL #+1
+        MOV      R2,R9
+        MOV      R0,R10
+        _BLF     D_GAIN_adaptive_codebook_excitation,??D_GAIN_adaptive_codebook_excitation??rA
+//  566 
+//  567       if(unusable_frame)
+        LDR      R0,[SP, #+52]
+        LSLS     R0,R0,#+24
+        BNE      ??D_MAIN_decode_37
+//  568       {
+//  569          select = 1;
+//  570       }
+//  571       else
+//  572       {
+//  573          if(mode <= MODE_9k)
+        CMP      R4,#+2
+        BLT      ??D_MAIN_decode_38
+//  574          {
+//  575             select = 0;
+//  576          }
+//  577          else
+//  578          {
+//  579             select = *prms++;
+        LDR      R2,[SP, #+1372]
+        LDRSH    R0,[R2], #+2
+        STR      R2,[SP, #+1372]
+//  580          }
+//  581       }
+//  582 
+//  583       if(select == 0)
+        CMP      R0,#+0
+        BNE      ??D_MAIN_decode_37
+//  584       {
+//  585          /* find pitch excitation with lp filter */
+//  586          for(i = 0; i < L_SUBFR; i++)
+??D_MAIN_decode_38:
+        MOV      R11,#+0
+        MOV      R12,#+246
+        ORR      R12,R12,#0x2800
+??D_MAIN_decode_39:
+        LDR      R1,[SP, #+56]
+        ADD      R0,R8,R11
+        ADD      R0,R1,R0, LSL #+1
+        LDRSH    R2,[R0, #+2]
+        LDRSH    R3,[R0, #-2]
+        LDRSH    R0,[R0, #+0]
+        ADD      R2,R3,R2
+        MOV      R3,#+133
+        ORR      R3,R3,#0xB00
+        MUL      R0,R12,R0
+        ADD      R1,SP,#+108
+        MLA      R0,R3,R2,R0
+        ADD      R1,R1,R11, LSL #+1
+        ADD      R0,R0,#+8192
+        ASR      R0,R0,#+14
+        STRH     R0,[R1, #+0]
+//  587          {
+//  588             L_tmp = 2949 * exc[i - 1 + i_subfr];
+//  589             L_tmp = L_tmp + (10486 * exc[i + i_subfr]);
+//  590             L_tmp = L_tmp + (2949 * exc[i + 1 + i_subfr]);
+//  591             code[i] = (Word16)((L_tmp + 0x2000) >> 14);
+        ADD      R11,R11,#+1
+        CMP      R11,#+64
+        BLT      ??D_MAIN_decode_39
+//  592          }
+//  593 
+//  594          memcpy(&exc[i_subfr], code, L_SUBFR * sizeof(Word16));
+        MOV      R2,#+128
+        ADD      R1,SP,#+108
+        MOV      R0,R10
+        SWI      +286
+//  595       }
+//  596 
+//  597       /*
+//  598        * Decode innovative codebook.
+//  599        * Add the fixed-gain pitch contribution to code[].
+//  600        */
+//  601 
+//  602       if(unusable_frame != 0)
+??D_MAIN_decode_37:
+        LDR      R0,[SP, #+52]
+        LSLS     R0,R0,#+24
+        BEQ      ??D_MAIN_decode_40
+//  603       {
+//  604          /* the innovative code doesn't need to be scaled (see Q_gain2) */
+//  605          for(i = 0; i < L_SUBFR; i++)
+        MOV      R11,#+0
+//  606          {
+//  607             code[i] = (Word16)(D_UTIL_random(&(st->mem_seed)) >> 3);
+??D_MAIN_decode_41:
+        ADD      R0,R5,#+1648
+        _BLF     D_UTIL_random,??D_UTIL_random??rA
+        ASR      R0,R0,#+3
+        ADD      R1,SP,#+108
+        ADD      R1,R1,R11, LSL #+1
+        STRH     R0,[R1, #+0]
+//  608          }
+        ADD      R11,R11,#+1
+        CMP      R11,#+64
+        BGE      ??D_MAIN_decode_42
+        B        ??D_MAIN_decode_41
+//  609       }
+//  610       else if(mode <= MODE_7k)
+??D_MAIN_decode_40:
+        CMP      R4,#+1
+        BGE      ??D_MAIN_decode_43
+//  611       {
+//  612          ind[0] = *prms++;
+        LDR      R2,[SP, #+1372]
+//  613          D_ACELP_decode_2t(ind[0], code);
+        ADD      R1,SP,#+108
+        LDRSH    R3,[R2], #+2
+        STR      R2,[SP, #+1372]
+        STRH     R3,[SP, #+28]
+        MOV      R0,R3
+        _BLF     D_ACELP_decode_2t,??D_ACELP_decode_2t??rA
+        B        ??D_MAIN_decode_42
+//  614       }
+//  615       else if(mode <= MODE_9k)
+??D_MAIN_decode_43:
+        CMP      R4,#+2
+        BGE      ??D_MAIN_decode_44
+//  616       {
+//  617          memcpy(ind, prms, 4 * sizeof(Word16));
+        LDR      R1,[SP, #+1372]
+        MOV      R2,#+8
+        ADD      R0,SP,#+28
+        SWI      +286
+//  618          prms += 4;
+        LDR      R1,[SP, #+1372]
+//  619          D_ACELP_decode_4t(ind, 20, code);
+        ADD      R2,SP,#+108
+        ADD      R1,R1,#+8
+        STR      R1,[SP, #+1372]
+        MOV      R1,#+20
+        B        ??D_MAIN_decode_45
+//  620       }
+//  621       else if(mode <= MODE_12k)
+??D_MAIN_decode_44:
+        CMP      R4,#+3
+        BGE      ??D_MAIN_decode_46
+//  622       {
+//  623          memcpy(ind, prms, 4 * sizeof(Word16));
+        LDR      R1,[SP, #+1372]
+        MOV      R2,#+8
+        ADD      R0,SP,#+28
+        SWI      +286
+//  624          prms += 4;
+        LDR      R1,[SP, #+1372]
+//  625          D_ACELP_decode_4t(ind, 36, code);
+        ADD      R2,SP,#+108
+        ADD      R1,R1,#+8
+        STR      R1,[SP, #+1372]
+        MOV      R1,#+36
+        B        ??D_MAIN_decode_45
+//  626       }
+//  627       else if(mode <= MODE_14k)
+??D_MAIN_decode_46:
+        CMP      R4,#+4
+        BGE      ??D_MAIN_decode_47
+//  628       {
+//  629          memcpy(ind, prms, 4 * sizeof(Word16));
+        LDR      R1,[SP, #+1372]
+        MOV      R2,#+8
+        ADD      R0,SP,#+28
+        SWI      +286
+//  630          prms += 4;
+        LDR      R1,[SP, #+1372]
+//  631          D_ACELP_decode_4t(ind, 44, code);
+        ADD      R2,SP,#+108
+        ADD      R1,R1,#+8
+        STR      R1,[SP, #+1372]
+        MOV      R1,#+44
+        B        ??D_MAIN_decode_45
+//  632       }
+//  633       else if(mode <= MODE_16k)
+??D_MAIN_decode_47:
+        CMP      R4,#+5
+        BGE      ??D_MAIN_decode_48
+//  634       {
+//  635          memcpy(ind, prms, 4 * sizeof(Word16));
+        LDR      R1,[SP, #+1372]
+        MOV      R2,#+8
+        ADD      R0,SP,#+28
+        SWI      +286
+//  636          prms += 4;
+        LDR      R1,[SP, #+1372]
+//  637          D_ACELP_decode_4t(ind, 52, code);
+        ADD      R2,SP,#+108
+        ADD      R1,R1,#+8
+        STR      R1,[SP, #+1372]
+        MOV      R1,#+52
+        B        ??D_MAIN_decode_45
+//  638       }
+//  639       else if(mode <= MODE_18k)
+??D_MAIN_decode_48:
+        CMP      R4,#+6
+        BGE      ??D_MAIN_decode_49
+//  640       {
+//  641          memcpy(ind, prms, 8 * sizeof(Word16));
+        LDR      R1,[SP, #+1372]
+        MOV      R2,#+16
+        ADD      R0,SP,#+28
+        SWI      +286
+//  642          prms += 8;
+        LDR      R1,[SP, #+1372]
+//  643          D_ACELP_decode_4t(ind, 64, code);
+        ADD      R2,SP,#+108
+        ADD      R1,R1,#+16
+        STR      R1,[SP, #+1372]
+        MOV      R1,#+64
+        B        ??D_MAIN_decode_45
+//  644       }
+//  645       else if(mode <= MODE_20k)
+??D_MAIN_decode_49:
+        LDR      R1,[SP, #+1372]
+        CMP      R4,#+7
+        MOV      R2,#+16
+        ADD      R0,SP,#+28
+        BGE      ??D_MAIN_decode_50
+//  646       {
+//  647          memcpy(ind, prms, 8 * sizeof(Word16));
+        SWI      +286
+//  648          prms += 8;
+        LDR      R1,[SP, #+1372]
+//  649          D_ACELP_decode_4t(ind, 72, code);
+        ADD      R2,SP,#+108
+        ADD      R1,R1,#+16
+        STR      R1,[SP, #+1372]
+        MOV      R1,#+72
+        B        ??D_MAIN_decode_45
+//  650       }
+//  651       else
+//  652       {
+//  653          memcpy(ind, prms, 8 * sizeof(Word16));
+??D_MAIN_decode_50:
+        SWI      +286
+//  654          prms += 8;
+        LDR      R1,[SP, #+1372]
+//  655          D_ACELP_decode_4t(ind, 88, code);
+        ADD      R2,SP,#+108
+        ADD      R1,R1,#+16
+        STR      R1,[SP, #+1372]
+        MOV      R1,#+88
+??D_MAIN_decode_45:
+        ADD      R0,SP,#+28
+        _BLF     D_ACELP_decode_4t,??D_ACELP_decode_4t??rA
+//  656       }
+//  657 
+//  658       tmp = 0;
+??D_MAIN_decode_42:
+        STRH     R7,[SP, #+0]
+//  659       D_UTIL_preemph(code, st->mem_tilt_code, L_SUBFR, &tmp);
+        LDRSH    R1,[R6, #+18]
+        MOV      R3,SP
+        MOV      R2,#+64
+        ADD      R0,SP,#+108
+        _BLF     D_UTIL_preemph,??D_UTIL_preemph??rA
+//  660 
+//  661       L_tmp = T0;
+        LDR      R1,[SP, #+4]
+//  662 
+//  663       if(T0_frac > 2)
+        CMP      R9,#+3
+//  664       {
+//  665          L_tmp = L_tmp + 1;
+        ADDGE    R1,R1,#+1
+//  666       }
+//  667 
+//  668       D_GAIN_pitch_sharpening(code, L_tmp, PIT_SHARP);
+        MOV      R2,#+205
+        ORR      R2,R2,#0x6C00
+        ADD      R0,SP,#+108
+        _BLF     D_GAIN_pitch_sharpening,??D_GAIN_pitch_sharpening??rA
+//  669 
+//  670       /*
+//  671        * Decode codebooks gains.
+//  672        */
+//  673       index = *prms++;   /* codebook gain index */
+        LDR      R2,[SP, #+1372]
+//  674 
+//  675       if(mode <= MODE_9k)
+        MOV      R1,#+58
+        LDRSH    R0,[R2], #+2
+        STR      R2,[SP, #+1372]
+        ORR      R1,R1,#0x500
+        ADD      R1,R1,R5
+        PUSH     {R1}
+        CFI CFA R13+1420
+        LDRSH    R1,[R6, #+34]
+        CMP      R4,#+2
+        PUSH     {R1}
+        CFI CFA R13+1424
+        LDRSH    R1,[SP, #+22]
+        PUSH     {R1}
+        CFI CFA R13+1428
+        LDRB     R1,[R6, #+41]
+        PUSH     {R1}
+        CFI CFA R13+1432
+        LDRB     R1,[R6, #+40]
+        PUSH     {R1}
+        CFI CFA R13+1436
+        LDRSH    R1,[SP, #+30]
+        PUSH     {R1}
+        CFI CFA R13+1440
+        ADD      R1,SP,#+40
+        PUSH     {R1}
+        CFI CFA R13+1444
+        ADD      R3,SP,#+36
+        ADD      R2,SP,#+136
+//  676       {
+//  677          D_GAIN_decode(index, 6, code, &gain_pit, &L_gain_code, bfi,
+//  678             st->mem_bfi, st->mem_state, unusable_frame, st->mem_vad_hist,
+//  679             st->mem_gain);
+        MOVLT    R1,#+6
+//  680       }
+//  681       else
+//  682       {
+//  683          D_GAIN_decode(index, 7, code, &gain_pit, &L_gain_code, bfi,
+//  684             st->mem_bfi, st->mem_state, unusable_frame, st->mem_vad_hist,
+//  685             st->mem_gain);
+        MOVGE    R1,#+7
+        _BLF     D_GAIN_decode,??D_GAIN_decode??rA
+        ADD      SP,SP,#+28
+        CFI CFA R13+1416
+//  686       }
+//  687 
+//  688       /* find best scaling to perform on excitation (Q_new) */
+//  689       tmp = st->mem_subfr_q[0];
+        LDRSH    R1,[R6, #+10]
+//  690 
+//  691       for(i = 1; i < 4; i++)
+        MOV      R0,#+1
+        MOV      R2,#+98
+        STRH     R1,[SP, #+0]
+        ORR      R2,R2,#0x600
+//  692       {
+//  693          if(st->mem_subfr_q[i] < tmp)
+??D_MAIN_decode_51:
+        LDRSH    R9,[SP, #+0]
+        ADD      R1,R5,R0, LSL #+1
+        LDRSH    R3,[R2, +R1]
+//  694          {
+//  695             tmp = st->mem_subfr_q[i];
+//  696          }
+//  697       }
+        ADD      R0,R0,#+1
+        CMP      R3,R9
+        MOVLT    R1,R3
+        STRHLT   R1,[SP, #+0]
+        CMP      R0,#+4
+        BLT      ??D_MAIN_decode_51
+//  698 
+//  699       /* limit scaling (Q_new) to Q_MAX */
+//  700       if(tmp > Q_MAX)
+        LDRSH    R0,[SP, #+0]
+//  701       {
+//  702          tmp = Q_MAX;
+//  703       }
+//  704 
+//  705       Q_new = 0;
+        MOV      R9,#+0
+        CMP      R0,#+9
+        MOVGE    R1,#+8
+        STRHGE   R1,[SP, #+0]
+//  706       L_tmp = L_gain_code;   /* L_gain_code in Q16 */
+        LDR      R0,[SP, #+16]
+        B        ??D_MAIN_decode_52
+//  707 
+//  708       while((L_tmp < 0x08000000L) && (Q_new < tmp))
+??D_MAIN_decode_53:
+        LDRSH    R1,[SP, #+0]
+        CMP      R9,R1
+        BGE      ??D_MAIN_decode_54
+//  709       {
+//  710          L_tmp = (L_tmp << 1);
+        LSL      R0,R0,#+1
+//  711          Q_new = (Word16)((Q_new + 1));
+        ADD      R9,R9,#+1
+        MOV      R9,R9, LSL #+16
+        MOV      R9,R9, ASR #+16
+//  712       }
+??D_MAIN_decode_52:
+        CMP      R0,#+134217728
+        BLT      ??D_MAIN_decode_53
+//  713 
+//  714       if(L_tmp < 0x7FFF7FFF)
+        MVN      R1,#-2147483648
+        BIC      R1,R1,#0x8000
+        CMP      R0,R1
+        BGE      ??D_MAIN_decode_55
+//  715       {
+//  716          gain_code = (Word16)((L_tmp + 0x8000) >> 16);
+??D_MAIN_decode_54:
+        ADD      R0,R0,#+32768
+        ASR      R0,R0,#+16
+        STRH     R0,[SP, #+2]
+        B        ??D_MAIN_decode_56
+//  717          /* scaled gain_code with Qnew */
+//  718       }
+//  719       else
+//  720       {
+//  721          gain_code = 32767;
+??D_MAIN_decode_55:
+        MOV      R1,R1, LSR #+16
+        STRH     R1,[SP, #+2]
+//  722       }
+//  723 
+//  724       if(Q_new > st->mem_q)
+??D_MAIN_decode_56:
+        LDRSH    R1,[R6, #+20]
+        MVN      R0,#+239
+        BIC      R0,R0,#0x100
+        CMP      R1,R9
+        BGE      ??D_MAIN_decode_57
+//  725       {
+//  726          D_UTIL_signal_up_scale(exc + i_subfr - (PIT_MAX + L_INTERPOL),
+//  727             PIT_MAX + L_INTERPOL + L_SUBFR, (Word16)(Q_new - st->mem_q));
+        SUB      R2,R9,R1
+        MOV      R2,R2, LSL #+16
+        MOV      R2,R2, ASR #+16
+        MOV      R1,#+312
+        ADD      R0,R0,R10
+        _BLF     D_UTIL_signal_up_scale,??D_UTIL_signal_up_scale??rA
+        B        ??D_MAIN_decode_58
+//  728       }
+//  729       else
+//  730       {
+//  731          D_UTIL_signal_down_scale(exc + i_subfr - (PIT_MAX + L_INTERPOL),
+//  732             PIT_MAX + L_INTERPOL + L_SUBFR, (Word16)(st->mem_q - Q_new));
+??D_MAIN_decode_57:
+        SUB      R2,R1,R9
+        MOV      R2,R2, LSL #+16
+        MOV      R2,R2, ASR #+16
+        MOV      R1,#+312
+        ADD      R0,R0,R10
+        _BLF     D_UTIL_signal_down_scale,??D_UTIL_signal_down_scale??rA
+//  733       }
+//  734 
+//  735       st->mem_q = Q_new;
+??D_MAIN_decode_58:
+        STRH     R9,[R6, #+20]
+//  736 
+//  737       /*
+//  738        * Update parameters for the next subframe.
+//  739        * - tilt of code: 0.0 (unvoiced) to 0.5 (voiced)
+//  740        */
+//  741       if(bfi == 0)
+        LDR      R0,[SP, #+20]
+        LSLS     R0,R0,#+24
+        BNE      ??D_MAIN_decode_59
+//  742       {
+//  743          /* LTP-Lag history update */
+//  744          for(i = 4; i > 0; i--)
+        MOV      R0,#+4
+        MOV      R2,#+88
+        ORR      R2,R2,#0x600
+//  745          {
+//  746             st->mem_lag[i] = st->mem_lag[i - 1];
+??D_MAIN_decode_60:
+        SUB      R1,R0,#+1
+        ADD      R11,R5,R1, LSL #+1
+        LDRSH    R3,[R2, +R11]
+        ADD      R0,R5,R0, LSL #+1
+        STRH     R3,[R2, +R0]
+//  747          }
+        MOV      R0,R1
+        CMP      R0,#+1
+        BGE      ??D_MAIN_decode_60
+//  748          st->mem_lag[0] = (Word16)T0;
+        LDR      R0,[SP, #+4]
+        STRH     R0,[R6, #+0]
+//  749          st->mem_T0 = (Word16)T0;
+        LDR      R0,[SP, #+4]
+        STRH     R0,[R6, #+30]
+//  750          st->mem_T0_frac = 0;   /* Remove fraction in case of BFI */
+        STRH     R7,[R6, #+32]
+//  751       }
+//  752 
+//  753       /* find voice factor in Q15 (1=voiced, -1=unvoiced) */
+//  754       memcpy(exc2, &exc[i_subfr], L_SUBFR * sizeof(Word16));
+??D_MAIN_decode_59:
+        MOV      R2,#+128
+        MOV      R1,R10
+        ADD      R0,SP,#+340
+        SWI      +286
+//  755       D_UTIL_signal_down_scale(exc2, L_SUBFR, 3);
+        MOV      R2,#+3
+        MOV      R1,#+64
+        ADD      R0,SP,#+340
+        _BLF     D_UTIL_signal_down_scale,??D_UTIL_signal_down_scale??rA
+        CMP      R4,#+2
+        BGE      ??D_MAIN_decode_61
+//  756 
+//  757       /* post processing of excitation elements */
+//  758       if(mode <= MODE_9k)
+//  759       {
+//  760          pit_sharp = (Word16)(gain_pit << 1);
+        LDRH     R1,[SP, #+8]
+        LSL      R1,R1,#+17
+        LSR      R1,R1,#+16
+        STR      R1,[SP, #+44]
+//  761 
+//  762          if(pit_sharp > 16384)
+        MOV      R0,R1
+        MOV      R1,#+1
+        ORR      R1,R1,#0x4000
+        CMP      R0,R1
+        BCC      ??D_MAIN_decode_61
+//  763          {
+//  764             if(pit_sharp > 32767)
+        CMP      R0,#+32768
+//  765             {
+//  766                pit_sharp = 32767;
+        MOVCS    R1,#+255
+        ORRCS    R1,R1,#0x7F00
+        STRCS    R1,[SP, #+44]
+//  767             }
+//  768 
+//  769             for(i = 0; i < L_SUBFR; i++)
+        MOV      R0,#+0
+//  770             {
+//  771                L_tmp = (exc2[i] * pit_sharp) >> 15;
+//  772                L_tmp = L_tmp * gain_pit;
+//  773                excp[i] = (Word16)((L_tmp + 0x8000) >> 16);
+??D_MAIN_decode_62:
+        LDR      R3,[SP, #+44]
+        ADD      R2,SP,#+340
+        ADD      R2,R2,R0, LSL #+1
+        LDRSH    R2,[R2, #+0]
+        MOV      R3,R3, LSL #+16
+        MOV      R3,R3, LSR #+16
+        MUL      R2,R3,R2
+        LDRSH    R3,[SP, #+8]
+        ASR      R2,R2,#+15
+        ADD      R1,SP,#+220
+        MUL      R2,R3,R2
+        ADD      R1,R1,#+1024
+        ADD      R1,R1,R0, LSL #+1
+        ADD      R2,R2,#+32768
+        ASR      R2,R2,#+16
+        STRH     R2,[R1, #+0]
+//  774             }
+        ADD      R0,R0,#+1
+        CMP      R0,#+64
+        BLT      ??D_MAIN_decode_62
+//  775          }
+//  776       }
+//  777 
+//  778       voice_fac = D_GAIN_find_voice_factor(exc2, -3, gain_pit, code, gain_code,
+//  779          L_SUBFR);
+??D_MAIN_decode_61:
+        MOV      R0,#+64
+        PUSH     {R0}
+        CFI CFA R13+1420
+        LDRSH    R0,[SP, #+6]
+        MVN      R1,#+2
+//  780 
+//  781       /* tilt of code for next subframe: 0.5=voiced, 0=unvoiced */
+//  782       st->mem_tilt_code = (Word16)((voice_fac >> 2) + 8192);
+//  783 
+//  784       /*
+//  785        * Find the total excitation.
+//  786        * Find synthesis speech corresponding to exc[].
+//  787        * Find maximum value of excitation for next scaling
+//  788        */
+//  789       memcpy(exc2, &exc[i_subfr], L_SUBFR * sizeof(Word16));
+//  790       max = 1;
+//  791 
+//  792       for(i = 0; i < L_SUBFR; i++)
+        MOV      R11,#+0
+        PUSH     {R0}
+        CFI CFA R13+1424
+        LDRSH    R2,[SP, #+16]
+        ADD      R3,SP,#+116
+        ADD      R0,SP,#+348
+        _BLF     D_GAIN_find_voice_factor,??D_GAIN_find_voice_factor??rA
+        STR      R0,[SP, #+80]
+        LDR      R0,[SP, #+80]
+        MOV      R1,#+8192
+        ADD      R0,R1,R0, ASR #+2
+        STRH     R0,[R6, #+18]
+        MOV      R2,#+128
+        MOV      R1,R10
+        ADD      R0,SP,#+348
+        SWI      +286
+        MOV      R10,#+1
+        ADD      SP,SP,#+8
+        CFI CFA R13+1416
+??D_MAIN_decode_63:
+        LDR      R1,[SP, #+56]
+        LDRSH    R2,[SP, #+8]
+        LDRSH    R3,[SP, #+2]
+        ADD      R0,R8,R11
+        ADD      R1,R1,R0, LSL #+1
+        LDRSH    R0,[R1, #+0]
+        MUL      R0,R2,R0
+        ADD      R2,SP,#+108
+        ADD      R2,R2,R11, LSL #+1
+        LDRSH    R2,[R2, #+0]
+        MUL      R2,R3,R2
+        ADD      R0,R0,R2, LSL #+5
+        ADD      R0,R0,#+8192
+        ASR      R0,R0,#+14
+//  793       {
+//  794          L_tmp = (code[i] * gain_code) << 5;
+//  795          L_tmp = L_tmp + (exc[i + i_subfr] * gain_pit);
+//  796          L_tmp = (L_tmp + 0x2000) >> 14;
+//  797 
+//  798          if((L_tmp > MIN_16) & (L_tmp < 32768))
+        MVN      R2,#+254
+        BIC      R2,R2,#0x7F00
+        CMP      R0,R2
+        BLT      ??D_MAIN_decode_64
+        CMP      R0,#+32768
+        BGE      ??D_MAIN_decode_64
+//  799          {
+//  800             exc[i + i_subfr] = (Word16)L_tmp;
+        STRH     R0,[R1, #+0]
+//  801             tmp = (Word16)(abs(L_tmp));
+        _BLF     abs,??abs??rA
+        STRH     R0,[SP, #+0]
+//  802 
+//  803             if(tmp > max)
+        LDRSH    R0,[SP, #+0]
+        CMP      R10,R0
+        BGE      ??D_MAIN_decode_65
+//  804             {
+//  805                max = tmp;
+??D_MAIN_decode_66:
+        MOV      R10,R0
+        B        ??D_MAIN_decode_65
+//  806             }
+//  807          }
+//  808          else if(L_tmp > MAX_16)
+??D_MAIN_decode_64:
+        CMP      R0,#+32768
+//  809          {
+//  810             exc[i + i_subfr] = MAX_16;
+        RSBGE    R0,R2,#+0
+        STRHGE   R0,[R1, #+0]
+//  811             max = MAX_16;
+        BGE      ??D_MAIN_decode_66
+//  812          }
+//  813          else
+//  814          {
+//  815             exc[i + i_subfr] = MIN_16;
+        BIC      R0,R2,#0x1
+        STRH     R0,[R1, #+0]
+//  816             max = MAX_16;
+        MVN      R10,R0
+//  817          }
+//  818       }
+??D_MAIN_decode_65:
+        ADD      R11,R11,#+1
+        CMP      R11,#+64
+        BLT      ??D_MAIN_decode_63
+//  819 
+//  820       /* tmp = scaling possible according to max value of excitation */
+//  821       tmp = (Word16)((D_UTIL_norm_s(max) + Q_new) - 1);
+        MOV      R0,R10
+        _BLF     D_UTIL_norm_s,??D_UTIL_norm_s??rA
+        ADD      R0,R0,R9
+        SUB      R0,R0,#+1
+        STRH     R0,[SP, #+0]
+//  822       st->mem_subfr_q[3] = st->mem_subfr_q[2];
+        LDRSH    R0,[R6, #+14]
+//  823       st->mem_subfr_q[2] = st->mem_subfr_q[1];
+//  824       st->mem_subfr_q[1] = st->mem_subfr_q[0];
+//  825       st->mem_subfr_q[0] = tmp;
+//  826 
+//  827       /*
+//  828        * phase dispersion to enhance noise in low bit rate
+//  829        */
+//  830 
+//  831       /* L_gain_code in Q16 */
+//  832       D_UTIL_l_extract(L_gain_code, &gain_code, &gain_code_lo);
+        ADD      R2,SP,#+12
+        ADD      R1,SP,#+2
+        STRH     R0,[R6, #+16]
+        LDRSH    R0,[R6, #+12]
+        STRH     R0,[R6, #+14]
+        LDRSH    R0,[R6, #+10]
+        STRH     R0,[R6, #+12]
+        LDRSH    R0,[SP, #+0]
+        STRH     R0,[R6, #+10]
+        LDR      R0,[SP, #+16]
+        _BLF     D_UTIL_l_extract,??D_UTIL_l_extract??rA
+//  833 
+//  834       if(mode <= MODE_7k)
+        CMP      R4,#+1
+//  835       {
+//  836          j = 0;   /* high dispersion for rate <= 7.5 kbit/s */
+        MOVLT    R3,#+0
+        BLT      ??D_MAIN_decode_67
+//  837       }
+//  838       else if(mode <= MODE_9k)
+        CMP      R4,#+2
+//  839       {
+//  840          j = 1;   /* low dispersion for rate <= 9.6 kbit/s */
+        MOVLT    R3,#+1
+//  841       }
+//  842       else
+//  843       {
+//  844          j = 2;   /* no dispersion for rate > 9.6 kbit/s */
+        MOVGE    R3,#+2
+//  845       }
+//  846 
+//  847       D_ACELP_phase_dispersion(gain_code, gain_pit, code, (Word16)j,
+//  848          st->mem_ph_disp);
+??D_MAIN_decode_67:
+        ADD      R0,R5,#+1584
+        PUSH     {R0}
+        CFI CFA R13+1420
+        LDRSH    R1,[SP, #+12]
+        LDRSH    R0,[SP, #+6]
+        ADD      R2,SP,#+112
+        _BLF     D_ACELP_phase_dispersion,??D_ACELP_phase_dispersion??rA
+//  849 
+//  850       /*
+//  851        * noise enhancer
+//  852        * - Enhance excitation on noise. (modify gain of code)
+//  853        *   If signal is noisy and LPC filter is stable, move gain
+//  854        *   of code 1.5 dB toward gain of code threshold.
+//  855        *   This decrease by 3 dB noise energy variation.
+//  856        */
+//  857       L_tmp = 16384 - (voice_fac >> 1);   /* 1=unvoiced, 0=voiced */
+//  858       fac = (Word16)((L_stab_fac * L_tmp) >> 15);
+        LDR      R0,[SP, #+64]
+        LDR      R2,[SP, #+76]
+//  859       L_tmp = L_gain_code;
+        LDR      R10,[SP, #+20]
+        MOV      R1,#+16384
+        SUB      R1,R1,R2, ASR #+1
+        MUL      R0,R1,R0
+        ASR      R11,R0,#+15
+//  860 
+//  861       if(L_tmp < st->mem_gc_thres)
+        LDR      R0,[R5, #+0]
+        MOV      R11,R11, LSL #+16
+        MOV      R11,R11, ASR #+16
+        CMP      R10,R0
+        ADD      SP,SP,#+4
+        CFI CFA R13+1416
+        BGE      ??D_MAIN_decode_68
+//  862       {
+//  863          L_tmp = (L_tmp + D_UTIL_mpy_32_16(gain_code, gain_code_lo, 6226));
+        LDRSH    R0,[SP, #+2]
+        LDRSH    R1,[SP, #+12]
+        MOV      R2,#+82
+        ORR      R2,R2,#0x1800
+        _BLF     D_UTIL_mpy_32_16,??D_UTIL_mpy_32_16??rA
+        ADD      R10,R0,R10
+//  864 
+//  865          if(L_tmp > st->mem_gc_thres)
+        LDR      R0,[R5, #+0]
+        CMP      R0,R10
+        B        ??D_MAIN_decode_69
+//  866          {
+//  867             L_tmp = st->mem_gc_thres;
+//  868          }
+//  869       }
+//  870       else
+//  871       {
+//  872          L_tmp = D_UTIL_mpy_32_16(gain_code, gain_code_lo, 27536);
+??D_MAIN_decode_68:
+        LDRSH    R0,[SP, #+2]
+        LDRSH    R1,[SP, #+12]
+        MOV      R2,#+144
+        ORR      R2,R2,#0x6B00
+        _BLF     D_UTIL_mpy_32_16,??D_UTIL_mpy_32_16??rA
+        MOV      R10,R0
+//  873 
+//  874          if(L_tmp < st->mem_gc_thres)
+        LDR      R0,[R5, #+0]
+        CMP      R10,R0
+//  875          {
+//  876             L_tmp = st->mem_gc_thres;
+??D_MAIN_decode_69:
+        MOVLT    R10,R0
+//  877          }
+//  878       }
+//  879       st->mem_gc_thres = L_tmp;
+        STR      R10,[R5, #+0]
+//  880       L_gain_code =
+//  881          D_UTIL_mpy_32_16(gain_code, gain_code_lo, (Word16)(32767 - fac));
+        LDRSH    R1,[SP, #+12]
+        MOV      R0,#+255
+        ORR      R0,R0,#0x7F00
+        SUB      R2,R0,R11
+        LDRSH    R0,[SP, #+2]
+        MOV      R2,R2, LSL #+16
+        MOV      R2,R2, ASR #+16
+        _BLF     D_UTIL_mpy_32_16,??D_UTIL_mpy_32_16??rA
+        STR      R0,[SP, #+16]
+//  882       D_UTIL_l_extract(L_tmp, &gain_code, &gain_code_lo);
+        ADD      R2,SP,#+12
+        ADD      R1,SP,#+2
+        MOV      R0,R10
+        _BLF     D_UTIL_l_extract,??D_UTIL_l_extract??rA
+//  883       L_gain_code =
+//  884          L_gain_code + D_UTIL_mpy_32_16(gain_code, gain_code_lo, fac);
+        LDRSH    R0,[SP, #+2]
+        LDRSH    R1,[SP, #+12]
+        MOV      R2,R11
+        _BLF     D_UTIL_mpy_32_16,??D_UTIL_mpy_32_16??rA
+        LDR      R2,[SP, #+16]
+//  885 
+//  886       /*
+//  887        * pitch enhancer
+//  888        * - Enhance excitation on voice. (HP filtering of code)
+//  889        *   On voiced signal, filtering of code by a smooth fir HP
+//  890        *   filter to decrease energy of code in low frequency.
+//  891        */
+//  892 
+//  893       L_tmp2 = (voice_fac >> 3) + 4096;   /* 0.25=voiced, 0=unvoiced */
+        MOV      R1,#+4096
+        ADD      R0,R0,R2
+        STR      R0,[SP, #+16]
+//  894       L_tmp = (code[0] << 15) - (code[1] * L_tmp2);
+//  895       code2[0] = (L_tmp + 0x4000) >> 15;
+        LDRSH    R3,[SP, #+110]
+        LDR      R0,[SP, #+72]
+        LDRSH    R2,[SP, #+108]
+        ADD      R0,R1,R0, ASR #+3
+        MUL      R3,R0,R3
+//  896 
+//  897       for(i = 1; i < L_SUBFR - 1; i++)
+        MOV      R1,#+1
+        RSB      R2,R3,R2, LSL #+15
+        ADD      R2,R2,#+16384
+        ASR      R2,R2,#+15
+        STR      R2,[SP, #+852]
+//  898       {
+//  899          L_tmp = code[i] << 15;
+//  900          L_tmp = L_tmp - (code[i + 1] * L_tmp2);
+//  901          L_tmp = L_tmp - (code[i - 1] * L_tmp2);
+//  902          code2[i] = (L_tmp + 0x4000) >> 15;
+??D_MAIN_decode_70:
+        ADD      R2,SP,#+108
+        ADD      R10,R2,R1, LSL #+1
+        LDRSH    R3,[R10, #+0]
+        LDRSH    R11,[R10, #+2]
+        LDRSH    R10,[R10, #-2]
+        ADD      R2,SP,#+852
+        ADD      R10,R10,R11
+        MUL      R11,R10,R0
+        RSB      R3,R11,R3, LSL #+15
+        ADD      R3,R3,#+16384
+        ASR      R3,R3,#+15
+        STR      R3,[R2, +R1, LSL #+2]
+//  903       }
+        ADD      R1,R1,#+1
+        CMP      R1,#+63
+        BLT      ??D_MAIN_decode_70
+//  904 
+//  905       L_tmp = code[L_SUBFR - 1] << 15;
+//  906       L_tmp = L_tmp - (code[L_SUBFR - 2] * L_tmp2);
+//  907       code2[L_SUBFR - 1] = (L_tmp + 0x4000) >> 15;
+        LDRSH    R3,[SP, #+232]
+        LDRSH    R2,[SP, #+234]
+//  908 
+//  909       /* build excitation */
+//  910       gain_code = (Word16)(((L_gain_code << Q_new) + 0x8000) >> 16);
+//  911 
+//  912       for(i = 0; i < L_SUBFR; i++)
+        MOV      R11,#+0
+        MUL      R3,R0,R3
+        RSB      R0,R3,R2, LSL #+15
+        ADD      R0,R0,#+16384
+        ASR      R0,R0,#+15
+        STR      R0,[SP, #+1104]
+        LDR      R1,[SP, #+16]
+        MOV      R2,#+32768
+        ADD      R1,R2,R1, LSL R9
+        ASR      R1,R1,#+16
+        STRH     R1,[SP, #+2]
+//  913       {
+//  914          L_tmp = (code2[i] * gain_code) << 5;
+//  915          L_tmp = L_tmp + (exc2[i] * gain_pit);
+//  916          L_tmp = (L_tmp + 0x2000) >> 14;
+//  917 
+//  918          exc2[i] = D_UTIL_saturate(L_tmp);
+??D_MAIN_decode_71:
+        LDRSH    R1,[SP, #+8]
+        LDRSH    R2,[SP, #+2]
+        ADD      R0,SP,#+340
+        ADD      R10,R0,R11, LSL #+1
+        LDRSH    R0,[R10, #+0]
+        MUL      R0,R1,R0
+        ADD      R1,SP,#+852
+        LDR      R1,[R1, +R11, LSL #+2]
+//  919       }
+        ADD      R11,R11,#+1
+        MUL      R1,R2,R1
+        ADD      R0,R0,R1, LSL #+5
+        ADD      R0,R0,#+8192
+        ASR      R0,R0,#+14
+        _BLF     D_UTIL_saturate,??D_UTIL_saturate??rA
+        STRH     R0,[R10, #+0]
+        CMP      R11,#+64
+        BLT      ??D_MAIN_decode_71
+//  920 
+//  921       if(mode <= MODE_9k)
+        CMP      R4,#+2
+        BGE      ??D_MAIN_decode_72
+//  922       {
+//  923          if(pit_sharp > 16384)
+        LDR      R0,[SP, #+44]
+        MOV      R1,#+1
+        ORR      R1,R1,#0x4000
+        MOV      R0,R0, LSL #+16
+        CMP      R1,R0, LSR #+16
+        BHI      ??D_MAIN_decode_72
+//  924          {
+//  925             for(i = 0; i < L_SUBFR; i++)
+        MOV      R11,#+0
+//  926             {
+//  927                L_tmp = (excp[i] + exc2[i]);
+//  928                excp[i] = D_UTIL_saturate(L_tmp);
+??D_MAIN_decode_73:
+        ADD      R0,SP,#+220
+        ADD      R0,R0,#+1024
+        ADD      R10,R0,R11, LSL #+1
+        LDRSH    R0,[R10, #+0]
+        ADD      R1,SP,#+340
+        ADD      R1,R1,R11, LSL #+1
+        LDRSH    R1,[R1, #+0]
+//  929             }
+        ADD      R11,R11,#+1
+        ADD      R0,R1,R0
+        _BLF     D_UTIL_saturate,??D_UTIL_saturate??rA
+        STRH     R0,[R10, #+0]
+        CMP      R11,#+64
+        BLT      ??D_MAIN_decode_73
+//  930 
+//  931             D_GAIN_adaptive_control(exc2, excp, L_SUBFR);
+        MOV      R2,#+64
+        ADD      R1,SP,#+220
+        ADD      R1,R1,#+1024
+        ADD      R0,SP,#+340
+        _BLF     D_GAIN_adaptive_control,??D_GAIN_adaptive_control??rA
+//  932             memcpy(exc2, excp, L_SUBFR * sizeof(Word16));
+        MOV      R2,#+128
+        ADD      R1,SP,#+220
+        ADD      R1,R1,#+1024
+        ADD      R0,SP,#+340
+        SWI      +286
+//  933          }
+//  934       }
+//  935 
+//  936       if(mode <= MODE_7k)
+??D_MAIN_decode_72:
+        ADD      R10,R8,R8, LSL #+2
+        CMP      R4,#+1
+        BGE      ??D_MAIN_decode_74
+//  937       {
+//  938          j = (i_subfr >> 6);
+        ASR      R3,R8,#+6
+//  939 
+//  940          for(i = 0; i < M; i++)
+        MOV      R11,#+0
+??D_MAIN_decode_75:
+        LDR      R0,??D_MAIN_decode_17  ;; D_ROM_interpol_frac
+        ADD      R12,SP,#+308
+        ADD      R0,R0,R3, LSL #+1
+        LDRSH    R1,[R0, #+0]
+        ADD      R0,SP,#+236
+        ADD      R2,R0,R11, LSL #+1
+        ADD      R0,SP,#+76
+        ADD      R0,R0,R11, LSL #+1
+        LDRSH    R0,[R0, #+0]
+        ADD      R12,R12,R11, LSL #+1
+        LDRSH    R12,[R12, #+0]
+        MOV      LR,#+255
+        ORR      LR,LR,#0x7F00
+        SUB      LR,LR,R1
+        MUL      R12,LR,R12
+//  941          {
+//  942             L_tmp = isf_tmp[i] * (32767 - D_ROM_interpol_frac[j]);
+//  943             L_tmp = L_tmp + (isf[i] * D_ROM_interpol_frac[j]);
+//  944             HfIsf[i] = (Word16)((L_tmp + 0x4000) >> 15);
+        ADD      R11,R11,#+1
+        MLA      R0,R1,R0,R12
+        CMP      R11,#+16
+        ADD      R0,R0,#+16384
+        ASR      R0,R0,#+15
+        STRH     R0,[R2, #+0]
+        BLT      ??D_MAIN_decode_75
+//  945          }
+//  946       }
+//  947       else
+//  948       {
+//  949          memset(st->mem_syn_hf, 0, (M16k - M) * sizeof(Word16));
+//  950       }
+//  951 
+//  952       if(mode >= MODE_24k)
+//  953       {
+//  954          corr_gain = *prms++;
+//  955          D_UTIL_dec_synthesis(p_Aq, exc2, Q_new, &synth16k[i_subfr * 5 / 4],
+//  956             corr_gain, HfIsf, mode, newDTXState, bfi, st);
+//  957       }
+//  958       else
+//  959       {
+//  960          D_UTIL_dec_synthesis(p_Aq, exc2, Q_new, &synth16k[i_subfr * 5 / 4], 0,
+//  961             HfIsf, mode, newDTXState, bfi, st);
+??D_MAIN_decode_76:
+        MOV      R0,R5
+        PUSH     {R0}
+        CFI CFA R13+1420
+        LDRSH    R0,[SP, #+14]
+        PUSH     {R0}
+        CFI CFA R13+1424
+        LDRSH    R0,[SP, #+76]
+        PUSH     {R0}
+        CFI CFA R13+1428
+        MOV      R0,R4
+        PUSH     {R0}
+        CFI CFA R13+1432
+        ADD      R0,SP,#+252
+        PUSH     {R0}
+        CFI CFA R13+1436
+        MOV      R0,#+0
+??D_MAIN_decode_77:
+        PUSH     {R0}
+        CFI CFA R13+1440
+        LDR      R1,[SP, #+1400]
+        MOV      R2,R9
+//  962       }
+//  963 
+//  964       p_Aq += (M + 1);   /* interpolated LPC parameters for next subframe */
+        ADD      R8,R8,#+64
+        ASR      R0,R10,#+1
+        ADD      R0,R10,R0, LSR #+30
+        ASR      R0,R0,#+2
+        ADD      R3,R1,R0, LSL #+1
+        LDR      R0,[SP, #+88]
+        ADD      R1,SP,#+364
+        _BLF     D_UTIL_dec_synthesis,??D_UTIL_dec_synthesis??rA
+        ADD      SP,SP,#+24
+        CFI CFA R13+1416
+        LDR      R1,[SP, #+64]
+        CMP      R8,#+256
+        ADD      R1,R1,#+34
+        STR      R1,[SP, #+64]
+        BLT      ??D_MAIN_decode_24
+//  965    }
+//  966 
+//  967    /*
+//  968     * Update signal for next frame
+//  969     * -> save past of exc[]
+//  970     * -> save pitch parameters.
+//  971     */
+//  972 
+//  973    memmove(st->mem_exc, &st->mem_exc[L_FRAME], (PIT_MAX + L_INTERPOL) * sizeof(Word16));
+        MOV      R2,#+496
+        ADD      R1,R5,#+516
+        ADD      R0,R5,#+4
+        SWI      +306
+//  974    D_UTIL_signal_down_scale(exc, L_FRAME, Q_new);
+        LDR      R0,[SP, #+56]
+        MOV      R2,R9
+        MOV      R1,#+256
+        _BLF     D_UTIL_signal_down_scale,??D_UTIL_signal_down_scale??rA
+//  975    D_DTX_activity_update(st->dtx_decSt, isf, exc);
+        LDR      R2,[SP, #+56]
+        LDR      R0,[R6, #+36]
+        ADD      R1,SP,#+76
+        _BLF     D_DTX_activity_update,??D_DTX_activity_update??rA
+//  976    st->dtx_decSt->mem_dtx_global_state = (UWord8)newDTXState;
+        LDR      R0,[R6, #+36]
+        LDR      R1,[SP, #+48]
+        STRB     R1,[R0, #+353]
+//  977    st->mem_bfi = bfi;
+        LDR      R0,[SP, #+20]
+        STRB     R0,[R6, #+40]
+//  978 
+//  979    return(0);
+??D_MAIN_decode_18:
+        MOV      R0,#+0
+        ADD      SP,SP,#+356
+        CFI CFA R13+1060
+        ADD      SP,SP,#+1024
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        CFI CFA R13+1416
+??D_MAIN_decode_74:
+        MOV      R2,#+8
+        MOV      R1,#+0
+        ORR      R0,R2,#0x560
+        ADD      R0,R0,R5
+        SWI      +187
+        CMP      R4,#+8
+        BLT      ??D_MAIN_decode_76
+        LDR      R2,[SP, #+1372]
+        MOV      R1,R5
+        LDRSH    R0,[R2], #+2
+        STR      R2,[SP, #+1372]
+        PUSH     {R1}
+        CFI CFA R13+1420
+        LDRSH    R1,[SP, #+14]
+        PUSH     {R1}
+        CFI CFA R13+1424
+        LDRSH    R1,[SP, #+76]
+        PUSH     {R1}
+        CFI CFA R13+1428
+        MOV      R1,R4
+        PUSH     {R1}
+        CFI CFA R13+1432
+        ADD      R1,SP,#+252
+        PUSH     {R1}
+        CFI CFA R13+1436
+        B        ??D_MAIN_decode_77
+        DATA
+??D_MAIN_decode_17:
+        DC32     D_ROM_interpol_frac
+        CFI EndBlock cfiBlock7
+//  980 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_GAIN_init??rA:
+        LDR      R12,??Subroutine4_0  ;; D_GAIN_init
+        BX       R12
+        DATA
+??Subroutine4_0:
+        DC32     D_GAIN_init
+        CFI EndBlock cfiBlock8
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_GAIN_lag_concealment_init??rA:
+        LDR      R12,??Subroutine5_0  ;; D_GAIN_lag_concealment_init
+        BX       R12
+        DATA
+??Subroutine5_0:
+        DC32     D_GAIN_lag_concealment_init
+        CFI EndBlock cfiBlock9
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_DTX_reset??rA:
+        LDR      R12,??Subroutine6_0  ;; D_DTX_reset
+        BX       R12
+        DATA
+??Subroutine6_0:
+        DC32     D_DTX_reset
+        CFI EndBlock cfiBlock10
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock11 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_DTX_init??rA:
+        LDR      R12,??Subroutine7_0  ;; D_DTX_init
+        BX       R12
+        DATA
+??Subroutine7_0:
+        DC32     D_DTX_init
+        CFI EndBlock cfiBlock11
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock12 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_DTX_exit??rA:
+        LDR      R12,??Subroutine8_0  ;; D_DTX_exit
+        BX       R12
+        DATA
+??Subroutine8_0:
+        DC32     D_DTX_exit
+        CFI EndBlock cfiBlock12
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock13 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??free??rA:
+        LDR      R12,??Subroutine9_0  ;; free
+        BX       R12
+        DATA
+??Subroutine9_0:
+        DC32     free
+        CFI EndBlock cfiBlock13
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock14 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_DTX_rx_handler??rA:
+        LDR      R12,??Subroutine10_0  ;; D_DTX_rx_handler
+        BX       R12
+        DATA
+??Subroutine10_0:
+        DC32     D_DTX_rx_handler
+        CFI EndBlock cfiBlock14
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock15 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_DTX_exe??rA:
+        LDR      R12,??Subroutine11_0  ;; D_DTX_exe
+        BX       R12
+        DATA
+??Subroutine11_0:
+        DC32     D_DTX_exe
+        CFI EndBlock cfiBlock15
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock16 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_LPC_isf_2s3s_decode??rA:
+        LDR      R12,??Subroutine12_0  ;; D_LPC_isf_2s3s_decode
+        BX       R12
+        DATA
+??Subroutine12_0:
+        DC32     D_LPC_isf_2s3s_decode
+        CFI EndBlock cfiBlock16
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock17 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_LPC_isf_isp_conversion??rA:
+        LDR      R12,??Subroutine13_0  ;; D_LPC_isf_isp_conversion
+        BX       R12
+        DATA
+??Subroutine13_0:
+        DC32     D_LPC_isf_isp_conversion
+        CFI EndBlock cfiBlock17
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock18 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_LPC_isp_a_conversion??rA:
+        LDR      R12,??Subroutine14_0  ;; D_LPC_isp_a_conversion
+        BX       R12
+        DATA
+??Subroutine14_0:
+        DC32     D_LPC_isp_a_conversion
+        CFI EndBlock cfiBlock18
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock19 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_dec_synthesis??rA:
+        LDR      R12,??Subroutine15_0  ;; D_UTIL_dec_synthesis
+        BX       R12
+        DATA
+??Subroutine15_0:
+        DC32     D_UTIL_dec_synthesis
+        CFI EndBlock cfiBlock19
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock20 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_LPC_isf_2s5s_decode??rA:
+        LDR      R12,??Subroutine16_0  ;; D_LPC_isf_2s5s_decode
+        BX       R12
+        DATA
+??Subroutine16_0:
+        DC32     D_LPC_isf_2s5s_decode
+        CFI EndBlock cfiBlock20
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock21 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_LPC_int_isp_find??rA:
+        LDR      R12,??Subroutine17_0  ;; D_LPC_int_isp_find
+        BX       R12
+        DATA
+??Subroutine17_0:
+        DC32     D_LPC_int_isp_find
+        CFI EndBlock cfiBlock21
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock22 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_GAIN_lag_concealment??rA:
+        LDR      R12,??Subroutine18_0  ;; D_GAIN_lag_concealment
+        BX       R12
+        DATA
+??Subroutine18_0:
+        DC32     D_GAIN_lag_concealment
+        CFI EndBlock cfiBlock22
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock23 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_GAIN_adaptive_codebook_excitation??rA:
+        LDR      R12,??Subroutine19_0  ;; D_GAIN_adaptive_codebook_excitation
+        BX       R12
+        DATA
+??Subroutine19_0:
+        DC32     D_GAIN_adaptive_codebook_excitation
+        CFI EndBlock cfiBlock23
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock24 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_random??rA:
+        LDR      R12,??Subroutine20_0  ;; D_UTIL_random
+        BX       R12
+        DATA
+??Subroutine20_0:
+        DC32     D_UTIL_random
+        CFI EndBlock cfiBlock24
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock25 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_ACELP_decode_2t??rA:
+        LDR      R12,??Subroutine21_0  ;; D_ACELP_decode_2t
+        BX       R12
+        DATA
+??Subroutine21_0:
+        DC32     D_ACELP_decode_2t
+        CFI EndBlock cfiBlock25
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock26 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_ACELP_decode_4t??rA:
+        LDR      R12,??Subroutine22_0  ;; D_ACELP_decode_4t
+        BX       R12
+        DATA
+??Subroutine22_0:
+        DC32     D_ACELP_decode_4t
+        CFI EndBlock cfiBlock26
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock27 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_preemph??rA:
+        LDR      R12,??Subroutine23_0  ;; D_UTIL_preemph
+        BX       R12
+        DATA
+??Subroutine23_0:
+        DC32     D_UTIL_preemph
+        CFI EndBlock cfiBlock27
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock28 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_GAIN_pitch_sharpening??rA:
+        LDR      R12,??Subroutine24_0  ;; D_GAIN_pitch_sharpening
+        BX       R12
+        DATA
+??Subroutine24_0:
+        DC32     D_GAIN_pitch_sharpening
+        CFI EndBlock cfiBlock28
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock29 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_GAIN_decode??rA:
+        LDR      R12,??Subroutine25_0  ;; D_GAIN_decode
+        BX       R12
+        DATA
+??Subroutine25_0:
+        DC32     D_GAIN_decode
+        CFI EndBlock cfiBlock29
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock30 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_signal_up_scale??rA:
+        LDR      R12,??Subroutine26_0  ;; D_UTIL_signal_up_scale
+        BX       R12
+        DATA
+??Subroutine26_0:
+        DC32     D_UTIL_signal_up_scale
+        CFI EndBlock cfiBlock30
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock31 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_signal_down_scale??rA:
+        LDR      R12,??Subroutine27_0  ;; D_UTIL_signal_down_scale
+        BX       R12
+        DATA
+??Subroutine27_0:
+        DC32     D_UTIL_signal_down_scale
+        CFI EndBlock cfiBlock31
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock32 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_GAIN_find_voice_factor??rA:
+        LDR      R12,??Subroutine28_0  ;; D_GAIN_find_voice_factor
+        BX       R12
+        DATA
+??Subroutine28_0:
+        DC32     D_GAIN_find_voice_factor
+        CFI EndBlock cfiBlock32
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock33 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??abs??rA:
+        LDR      R12,??Subroutine29_0  ;; abs
+        BX       R12
+        DATA
+??Subroutine29_0:
+        DC32     abs
+        CFI EndBlock cfiBlock33
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock34 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_norm_s??rA:
+        LDR      R12,??Subroutine30_0  ;; D_UTIL_norm_s
+        BX       R12
+        DATA
+??Subroutine30_0:
+        DC32     D_UTIL_norm_s
+        CFI EndBlock cfiBlock34
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock35 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_l_extract??rA:
+        LDR      R12,??Subroutine31_0  ;; D_UTIL_l_extract
+        BX       R12
+        DATA
+??Subroutine31_0:
+        DC32     D_UTIL_l_extract
+        CFI EndBlock cfiBlock35
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock36 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_ACELP_phase_dispersion??rA:
+        LDR      R12,??Subroutine32_0  ;; D_ACELP_phase_dispersion
+        BX       R12
+        DATA
+??Subroutine32_0:
+        DC32     D_ACELP_phase_dispersion
+        CFI EndBlock cfiBlock36
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock37 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_mpy_32_16??rA:
+        LDR      R12,??Subroutine33_0  ;; D_UTIL_mpy_32_16
+        BX       R12
+        DATA
+??Subroutine33_0:
+        DC32     D_UTIL_mpy_32_16
+        CFI EndBlock cfiBlock37
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock38 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_saturate??rA:
+        LDR      R12,??Subroutine34_0  ;; D_UTIL_saturate
+        BX       R12
+        DATA
+??Subroutine34_0:
+        DC32     D_UTIL_saturate
+        CFI EndBlock cfiBlock38
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock39 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_GAIN_adaptive_control??rA:
+        LDR      R12,??Subroutine35_0  ;; D_GAIN_adaptive_control
+        BX       R12
+        DATA
+??Subroutine35_0:
+        DC32     D_GAIN_adaptive_control
+        CFI EndBlock cfiBlock39
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock40 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_DTX_activity_update??rA:
+        LDR      R12,??Subroutine36_0  ;; D_DTX_activity_update
+        BX       R12
+        DATA
+??Subroutine36_0:
+        DC32     D_DTX_activity_update
+        CFI EndBlock cfiBlock40
+
+        END
+// 
+// 5 228 bytes in segment CODE
+// 
+// 4 816 bytes of CODE memory (+ 412 bytes shared)
+//
+//Errors: none
+//Warnings: 10

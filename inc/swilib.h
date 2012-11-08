@@ -46,7 +46,26 @@ typedef int jmp_buf[11];
 #define ENIP_SOCK_ACCEPTED 0x90
 #define ENIP_SOCK_ICMP_ERROR 0x91
 #define ENIP_DNR_HOST_BY_NAME 0x94
-
+//themecache
+#define  HEADLINE_STANDART        0x0
+#define  HEADLINE_FULLSCREEN      0x1
+#define  BODY_STANDART            0x2
+#define  BODY_TAB                 0x3
+#define  BOTTOM_STANDART          0x4
+#define BOTTOM_FULLSCREEN        0x5
+#define POPUP_OPTIONS            0x6
+#define POPUP_FEEDBACK           0x7
+#define  SELECTION_1_LINE         0x8
+#define  SELECTION_2_LINE         0x9
+#define  SELECTION_3_LINE         0xA
+#define  SELECTION_ICON_ONLY      0xB
+#define  POPUP_SEARCH_LINE        0xC 
+#define  POPUP_QUICK_ACCESS_FIELD 0xD
+#define  PROGRESS_STATUSBAR       0xE
+#define  TAB_SELECTED             0xF
+#define  TAB_UNSELECTED           0x10
+#define  STATUSBAR_STANDART       0x11
+#define  STATUSBAR_FULLSCREEN     0x12
 
 #ifdef NEWSGOLD
 
@@ -809,6 +828,15 @@ typedef struct
   char unk;
   unsigned short unk2;
 }RAMNET;
+
+//Obs_Sound_SetAMRMode
+#define LOW_MODE 0
+#define NORMAL_MODE 0x4
+#define HIGHT_MODE 0x7
+//Obs_Sound_SetBitrate
+#define LOW_BITRATE 0x128e
+#define NORMAL_BITRATE 0x1CE8
+#define HIGHT_BITRATE 0x2FA8
 
 //-----------------------------------------
 
@@ -3753,9 +3781,6 @@ __swi __arm int Obs_Sound_SetVolumeEx (HObj hObj, char vol, char delta);
 #pragma swi_number=0x26D
 __swi __arm int Obs_Sound_GetVolume (HObj hObj, char *vol);
 
-//#pragma swi_number=0x26E
-//__swi __arm int Obs_Sound_SetPurpose (HObj hObj,int purpose);
-
 #pragma swi_number=0x26E
 __swi __arm int Obs_Sound_SetAMRFrmPrBuf(HObj hobj, int nof_frames);
 
@@ -3792,6 +3817,9 @@ __swi __arm int Obs_SetOutput_Uid(HObj hObj, int OutUID);
 
 #pragma swi_number=0x278
 __swi __arm int Obs_Sound_SetBitrate(HObj hobj, int bitRate);
+
+#pragma swi_number=0x279
+__swi __arm int Obs_Sound_SetPurpose (HObj hObj,int purpose);
 
 #pragma swi_number=0x283
 __swi __arm int runMidletLinkablely(const char *midlet_name, WSHDR *filename);
@@ -4315,85 +4343,10 @@ __swi __arm int PushDRWOBJOnLAYER(DRWOBJ*, LCDLAYER *);
 #pragma swi_number=0x2F1
 __swi __arm int LCDRedrawLAYER(LCDLAYER *);
 
-#pragma swi_number=0x8300
-__swi __arm  int isSGoldX75();
+#pragma swi_number=0x300
+__swi __arm WSHDR *GetClipBoard(void);
 
-#pragma swi_number=0x0301
-__swi __arm  int EDL_load(char *fname);
-
-#pragma swi_number=0x0302
-__swi __arm  int EDL_unload(char *name, short version);
-
-#pragma swi_number=0x0303
-__swi __arm  int EDL_addlib(void *edl_struct);
-
-#pragma swi_number=0x0304
-__swi __arm  int EDL_remove(void *edl_struct);
-
-#pragma swi_number=0x0305
-__swi __arm  int EDL_use(char *name, short version, void *func_struct);
-
-#pragma swi_number=0x0306
-__swi __arm  int isEDL_exist(char *name, short version);
-
-#pragma swi_number=0x0307
-__swi __arm  int isEDL_support(char platform, char *phone, short sw);
-
-#pragma swi_number=0x0308
-__swi __arm void *getEDL_baseAddr();
-
-#pragma swi_number=0x0309
-__swi __arm  int getEDL_curLibs();
-
-#pragma swi_number=0x030A
-__swi __arm  int getEDL_maxLibs();
-
-#pragma swi_number=0x030B
-__swi __arm  int SetSWIHookInRAMState();
-
-#pragma swi_number=0x030C
-__swi __arm void SetSWINumInCashe(short swinum);
-
-#pragma swi_number=0x030D
-__swi __arm  int RunSWIFromCashe(void *R0, ...);
-
-#pragma swi_number=0x030E
-__swi __arm  int SetSWIFunc(void *addrfunc, short swinum);
-
-#pragma swi_number=0x030F
-__swi __arm  int RepairSWIFunc(short swinum);
-
-#pragma swi_number=0x0310
-__swi __arm  int RepairSWILib();
-
-#pragma swi_number=0x80F5
-__swi __arm  LCDLAYER *Ram_LCD_Overlay_Layer();
-
-typedef struct{
-  char   id_1;      // ID = 1
-  char   cbyte;     // 0x00, 0x10
-  char   zero;      // 0x00
-  char   pen[4];    // Color PEN (or int pen)
-  char   brush[4];  // Color BRUSH (or int brush)
-  RECT   rc;        // Contact / Borders display text
-  WSHDR *text;      // WSHDR (The text)
-#ifdef NEWSGOLD
-  int    font;      // Text font
-#else
-  short  font;      // Text font 
-#endif
-  short  align;     // Text Alignment  
-  short  xdisp;     // Offset of text to X
-}DRWOBJ_01;
-
-typedef unsigned short	WORD;
-typedef long		LONG;
-typedef unsigned long	DWORD;
-
-#pragma swi_number=0x0319
-__swi __arm  int DHS_addProc(void (*dh_proc)(LCDLAYER *));
-
-#pragma swi_number=0x031A
-__swi __arm  int DHS_removeProc(void (*dh_proc)(LCDLAYER *));
+#pragma swi_number=0x301
+__swi __arm int CopyTextToClipboard(WSHDR * src, int pos, int len);
 
 #endif

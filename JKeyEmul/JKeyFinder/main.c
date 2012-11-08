@@ -1,8 +1,7 @@
-// JKeyFinder - Utility to find the key code from another phone for Java - applications.
-// See how it works in readme.txt
-// (c) Dimadze
+//JKeyFinder - Utility to find the key code from another phone for Java - applications.
+//See how it works in readme.txt
+//(c)Dimadze
 
-// If not compiling (No word "Linking"), Use the "Clean"
 
 #include "..\..\inc\swilib.h"
 #include "..\..\inc\xtask_ipc.h"
@@ -66,7 +65,7 @@ void *icsm=FindCSMbyID(CSM_root()->idle_id);
  
     if ((submsg=='*') && (msg==LONG_PRESS) && action2==0 && action_1==0 && action_2==0 && action_3==0 && action_4==0 && action_5==0) // 1
     {   
-        ShowMSG(1,(int)"Let's\nsqueeze!");
+        ShowMSG(1,(int)"现在开始吧");
         action_1=1;
 	return(2); 
     }
@@ -111,14 +110,14 @@ void *icsm=FindCSMbyID(CSM_root()->idle_id);
     if ((submsg=='#') && (msg==LONG_PRESS) && action2==0 && action_1==0 && action_2==0 && action_3==0 && action_4==1 && action_5==0)
     {   
       if (key_n!=key_f2){
-        sprintf(message,"%s: %02d\n%s: %02d","Real Prince",key_n,"Emul Prince",key_f2);
+        sprintf(message,"%s: %02d\n%s: %02d","实际键值",key_n,"模拟键值",key_f2);
         ShowMSG(1,(int)message);
         action_6=1;
         action_5=1;
         action_4=0;    
       } else 
       {
-        ShowMSG(1,(int)"Error!\nlet's\nagain!");
+        ShowMSG(1,(int)"错误!\n请重试");
         action_1=1;
         action_4=0; 
         key_n=0;
@@ -141,7 +140,7 @@ void *icsm=FindCSMbyID(CSM_root()->idle_id);
     
     if ((submsg=='*') && (msg==LONG_PRESS) && action2==0 && action_1==0 && action_2==0 && action_3==0 && action_4==0 && action_5==1)
     {   
-        ShowMSG(1,(int)"重置!");
+        ShowMSG(1,(int)"重设");
         action_5=0;
         action_6=0;
         key_n=0;
@@ -158,7 +157,7 @@ void *icsm=FindCSMbyID(CSM_root()->idle_id);
     
     if ((submsg=='#') && (msg==LONG_PRESS) && action2==0 && action_1==0 && action_2==0 && action_3==0 && action_4==0 && action_5==0)
     {   
-        ShowMSG(1,(int)"4 - --\n5 - PUSH!\n6 - ++");
+        ShowMSG(1,(int)"4 - --\n5 - Push\n6 - ++");
         action2=1;
 	return(2); 
     }
@@ -170,7 +169,7 @@ void *icsm=FindCSMbyID(CSM_root()->idle_id);
       if (submsg=='4') {if (key_f2>0) key_f2--;return(2);}
       if (submsg=='5') {GBS_SendMessage(MMI_CEPID,msg,key_f2);return(2);}
       if (submsg=='0') {ShowMSG(1,(int)message2);return(2);}  
-      if (submsg=='#') {ShowMSG(1,(int)"重置");key_f2=0;action2=0;return(2);}  
+      if (submsg=='#') {ShowMSG(1,(int)"重设");key_f2=0;action2=0;return(2);}  
     }            
       
 return(0);

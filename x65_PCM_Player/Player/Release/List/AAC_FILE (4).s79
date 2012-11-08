@@ -1,0 +1,1658 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:27 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD /
+//                       EC\AAC_FILE (4).c                                   /
+//    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AAC /
+//                       DEC\AAC_FILE (4).c" -D NDEBUG -lC                   /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\AAC_FILE (4).s79                               /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME `AAC_FILE (4)`
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+??DataTable0 EQU 0
+??DataTable1 EQU 0
+??DataTable10 EQU 0
+??DataTable2 EQU 0
+??DataTable3 EQU 0
+??DataTable4 EQU 0
+??DataTable5 EQU 0
+??DataTable6 EQU 0
+??DataTable7 EQU 0
+        MULTWEAK ??raac_AdvanceBitstream??rA
+        MULTWEAK ??raac_DecodeSBREnvelope??rT
+        MULTWEAK ??raac_DecodeSBRNoise??rT
+        MULTWEAK ??raac_GetBits??rA
+        MULTWEAK ??raac_GetBitsNoAdvance??rA
+        MULTWEAK ??raac_UncoupleSBREnvelope??rT
+        MULTWEAK ??raac_UncoupleSBRNoise??rT
+        FUNCTION DequantizeEnvelope,0203H
+        LOCFRAME CSTACK, 8, STACK
+        PUBLIC raac_DecodeSBREnvelope
+        FUNCTION raac_DecodeSBREnvelope,0203H
+        LOCFRAME CSTACK, 76, STACK
+        PUBLIC raac_DecodeSBRNoise
+        FUNCTION raac_DecodeSBRNoise,0203H
+        LOCFRAME CSTACK, 64, STACK
+        PUBLIC raac_UncoupleSBREnvelope
+        FUNCTION raac_UncoupleSBREnvelope,0203H
+        LOCFRAME CSTACK, 40, STACK
+        PUBLIC raac_UncoupleSBRNoise
+        FUNCTION raac_UncoupleSBRNoise,0203H
+        LOCFRAME CSTACK, 32, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+raac_AdvanceBitstream SYMBOL "raac_AdvanceBitstream"
+raac_GetBits        SYMBOL "raac_GetBits"
+raac_GetBitsNoAdvance SYMBOL "raac_GetBitsNoAdvance"
+??raac_AdvanceBitstream??rA SYMBOL "??rA", raac_AdvanceBitstream
+raac_DecodeSBREnvelope SYMBOL "raac_DecodeSBREnvelope"
+??raac_DecodeSBREnvelope??rT SYMBOL "??rT", raac_DecodeSBREnvelope
+raac_DecodeSBRNoise SYMBOL "raac_DecodeSBRNoise"
+??raac_DecodeSBRNoise??rT SYMBOL "??rT", raac_DecodeSBRNoise
+??raac_GetBits??rA  SYMBOL "??rA", raac_GetBits
+??raac_GetBitsNoAdvance??rA SYMBOL "??rA", raac_GetBitsNoAdvance
+raac_UncoupleSBREnvelope SYMBOL "raac_UncoupleSBREnvelope"
+??raac_UncoupleSBREnvelope??rT SYMBOL "??rT", raac_UncoupleSBREnvelope
+raac_UncoupleSBRNoise SYMBOL "raac_UncoupleSBRNoise"
+??raac_UncoupleSBRNoise??rT SYMBOL "??rT", raac_UncoupleSBRNoise
+
+        EXTERN raac_AdvanceBitstream
+        FUNCTION raac_AdvanceBitstream,0202H
+        EXTERN raac_GetBits
+        FUNCTION raac_GetBits,0202H
+        EXTERN raac_GetBitsNoAdvance
+        FUNCTION raac_GetBitsNoAdvance,0202H
+        EXTERN raac_huffTabSBR
+        EXTERN raac_huffTabSBRInfo
+
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (4).c
+//    1 /* ***** BEGIN LICENSE BLOCK *****  
+//    2  * Source last modified: $Id: sbrhuff.c,v 1.1 2005/02/26 01:47:35 jrecker Exp $ 
+//    3  *   
+//    4  * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+//    5  *       
+//    6  * The contents of this file, and the files included with this file, 
+//    7  * are subject to the current version of the RealNetworks Public 
+//    8  * Source License (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the current version of the RealNetworks Community 
+//   11  * Source License (the "RCSL") available at 
+//   12  * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+//   13  * will apply. You may also obtain the license terms directly from 
+//   14  * RealNetworks.  You may not use this file except in compliance with 
+//   15  * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+//   16  * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+//   17  * the rights, obligations and limitations governing use of the 
+//   18  * contents of the file. 
+//   19  *   
+//   20  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   21  * developer of the Original Code and owns the copyrights in the 
+//   22  * portions it created. 
+//   23  *   
+//   24  * This file, and the files included with this file, is distributed 
+//   25  * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+//   26  * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+//   27  * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+//   28  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+//   29  * ENJOYMENT OR NON-INFRINGEMENT. 
+//   30  *  
+//   31  * Technology Compatibility Kit Test Suite(s) Location:  
+//   32  *    http://www.helixcommunity.org/content/tck  
+//   33  *  
+//   34  * Contributor(s):  
+//   35  *   
+//   36  * ***** END LICENSE BLOCK ***** */  
+//   37 
+//   38 /**************************************************************************************
+//   39  * Fixed-point HE-AAC decoder
+//   40  * Jon Recker (jrecker@real.com)
+//   41  * February 2005
+//   42  *
+//   43  * sbrhuff.c - functions for unpacking Huffman-coded envelope and noise data
+//   44  **************************************************************************************/
+//   45 
+//   46 #include "sbr_aac.h"
+//   47 #include "assembly_aac.h"
+//   48 
+//   49 /**************************************************************************************
+//   50  * Function:    DecodeHuffmanScalar
+//   51  *
+//   52  * Description: decode one Huffman symbol from bitstream
+//   53  *
+//   54  * Inputs:      pointers to Huffman table and info struct
+//   55  *              left-aligned bit buffer with >= huffTabInfo->maxBits bits
+//   56  *
+//   57  * Outputs:     decoded symbol in *val
+//   58  *
+//   59  * Return:      number of bits in symbol
+//   60  *
+//   61  * Notes:       assumes canonical Huffman codes:
+//   62  *                first CW always 0, we have "count" CW's of length "nBits" bits
+//   63  *                starting CW for codes of length nBits+1 = 
+//   64  *                  (startCW[nBits] + count[nBits]) << 1
+//   65  *                if there are no codes at nBits, then we just keep << 1 each time 
+//   66  *                  (since count[nBits] = 0)
+//   67  **************************************************************************************/
+//   68 static int DecodeHuffmanScalar(const signed short *huffTab, const HuffInfo *huffTabInfo, unsigned int bitBuf, signed int *val)
+//   69 {
+//   70     unsigned int count, start, shift, t;
+//   71 	const unsigned char *countPtr;
+//   72 	const signed short *map;
+//   73 
+//   74 	map = huffTab + huffTabInfo->offset;
+//   75 	countPtr = huffTabInfo->count;
+//   76 
+//   77 	start = 0;
+//   78 	count = 0;
+//   79 	shift = 32;
+//   80 	do {
+//   81 		start += count;
+//   82 		start <<= 1;
+//   83 		map += count;
+//   84 		count = *countPtr++;
+//   85 		shift--;
+//   86 		t = (bitBuf >> shift) - start;
+//   87 	} while (t >= count);
+//   88 	
+//   89 	*val = (signed int)map[t];
+//   90 	return (countPtr - huffTabInfo->count);
+//   91 }
+//   92 
+//   93 /**************************************************************************************
+//   94  * Function:    DecodeOneSymbol
+//   95  *
+//   96  * Description: dequantize one Huffman symbol from bitstream, 
+//   97  *                using table huffTabSBR[huffTabIndex]
+//   98  *
+//   99  * Inputs:      BitStreamInfo struct pointing to start of next Huffman codeword
+//  100  *              index of Huffman table
+//  101  *
+//  102  * Outputs:     bitstream advanced by number of bits in codeword
+//  103  *
+//  104  * Return:      one decoded symbol
+//  105  **************************************************************************************/
+//  106 static int DecodeOneSymbol(BitStreamInfo *bsi, int huffTabIndex)
+//  107 {
+//  108 	int nBits, val;
+//  109 	unsigned int bitBuf;
+//  110 	const HuffInfo *hi;
+//  111 
+//  112 	hi = &(huffTabSBRInfo[huffTabIndex]);
+//  113 
+//  114 	bitBuf = GetBitsNoAdvance(bsi, hi->maxBits) << (32 - hi->maxBits);
+//  115 	nBits = DecodeHuffmanScalar(huffTabSBR, hi, bitBuf, &val);
+//  116 	AdvanceBitstream(bsi, nBits);
+//  117 	
+//  118 	return val;
+//  119 }
+//  120 
+//  121 /* [1.0, sqrt(2)], format = Q29 (one guard bit for decoupling) */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  122 static const int envDQTab[2] = {0x20000000, 0x2d413ccc};
+envDQTab:
+        DATA
+        DC32 536870912, 759250124
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??DequantizeEnvelope??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE DequantizeEnvelope
+//  123 
+//  124 /**************************************************************************************
+//  125  * Function:    DequantizeEnvelope
+//  126  *
+//  127  * Description: dequantize envelope scalefactors
+//  128  *
+//  129  * Inputs:      number of scalefactors to process
+//  130  *              amplitude resolution flag for this frame (0 or 1)
+//  131  *              quantized envelope scalefactors
+//  132  * 
+//  133  * Outputs:     dequantized envelope scalefactors
+//  134  *
+//  135  * Return:      extra int bits in output (6 + expMax)
+//  136  *              in other words, output format = Q(FBITS_OUT_DQ_ENV - (6 + expMax))
+//  137  *
+//  138  * Notes:       dequantized scalefactors have at least 2 GB
+//  139  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function DequantizeEnvelope
+        ARM
+//  140 static int DequantizeEnvelope(int nBands, int ampRes, signed char *envQuant, int *envDequant)
+//  141 {
+DequantizeEnvelope:
+        PUSH     {R4,R5}
+        CFI R5 Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+//  142 	int exp, expMax, i, scalei;
+//  143 
+//  144 	if (nBands <= 0)
+        CMP      R0,#+1
+//  145 		return 0;
+        POPLT    {R4,R5}
+        MOVLT    R0,#+0
+        BXLT     LR
+//  146 	
+//  147 	/* scan for largest dequant value (do separately from envelope decoding to keep code cleaner) */
+//  148 	expMax = 0;
+        MOV      R12,#+0
+//  149 	for (i = 0; i < nBands; i++) {
+        MOV      R4,#+0
+        B        ??DequantizeEnvelope_0
+//  150 		if (envQuant[i] > expMax)
+??DequantizeEnvelope_1:
+        LDRSB    R5,[R4, +R2]
+//  151 			expMax = envQuant[i];
+//  152 	}
+        ADD      R4,R4,#+1
+        CMP      R12,R5
+        MOVLT    R12,R5
+??DequantizeEnvelope_0:
+        CMP      R4,R0
+        BLT      ??DequantizeEnvelope_1
+//  153 
+//  154 	/* dequantized envelope gains
+//  155 	 *   envDequant = 64*2^(envQuant / alpha) = 2^(6 + envQuant / alpha)
+//  156 	 *     if ampRes == 0, alpha = 2 and range of envQuant = [0, 127]
+//  157 	 *     if ampRes == 1, alpha = 1 and range of envQuant = [0, 63]
+//  158 	 * also if coupling is on, envDequant is scaled by something in range [0, 2]
+//  159 	 * so range of envDequant = [2^6, 2^69] (no coupling), [2^6, 2^70] (with coupling)
+//  160 	 * 
+//  161 	 * typical range (from observation) of envQuant/alpha = [0, 27] --> largest envQuant ~= 2^33
+//  162 	 * output: Q(29 - (6 + expMax))
+//  163 	 *
+//  164 	 * reference: 14496-3:2001(E)/4.6.18.3.5 and 14496-4:200X/FPDAM8/5.6.5.1.2.1.5
+//  165 	 */
+//  166 	if (ampRes) {
+        CMP      R1,#+0
+        BEQ      ??DequantizeEnvelope_2
+//  167 		do {
+//  168 			exp = *envQuant++;
+??DequantizeEnvelope_3:
+        LDRSB    R1,[R2], #+1
+//  169 			scalei = MIN(expMax - exp, 31);
+        SUB      R4,R12,R1
+        CMP      R4,#+31
+        MOVGE    R4,#+31
+//  170 			*envDequant++ = envDQTab[0] >> scalei;
+        MOV      R1,#+536870912
+        ASR      R1,R1,R4
+        STR      R1,[R3], #+4
+//  171 		} while (--nBands);
+        SUBS     R0,R0,#+1
+        BNE      ??DequantizeEnvelope_3
+//  172 
+//  173 		return (6 + expMax);
+??DequantizeEnvelope_4:
+        POP      {R4,R5}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI CFA R13+0
+        ADD      R0,R12,#+6
+        BX       LR
+        CFI R4 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -4)
+        CFI CFA R13+8
+//  174 	} else {
+//  175 		expMax >>= 1;
+??DequantizeEnvelope_2:
+        LDR      R5,??DequantizeEnvelope_5  ;; envDQTab
+        ASR      R12,R12,#+1
+        B        ??DequantizeEnvelope_6
+//  176 		do {
+//  177 			exp = *envQuant++;
+//  178 			scalei = MIN(expMax - (exp >> 1), 31);
+//  179 			*envDequant++ = envDQTab[exp & 0x01] >> scalei;
+??DequantizeEnvelope_7:
+        AND      R1,R1,#0x1
+        LDR      R1,[R5, +R1, LSL #+2]
+//  180 		} while (--nBands);
+        SUBS     R0,R0,#+1
+        ASR      R1,R1,R4
+        STR      R1,[R3], #+4
+        BEQ      ??DequantizeEnvelope_4
+??DequantizeEnvelope_6:
+        LDRSB    R1,[R2], #+1
+        SUB      R4,R12,R1, ASR #+1
+        CMP      R4,#+31
+        MOVGE    R4,#+31
+        B        ??DequantizeEnvelope_7
+        DATA
+??DequantizeEnvelope_5:
+        DC32     envDQTab
+        CFI EndBlock cfiBlock1
+//  181 
+//  182 		return (6 + expMax);
+//  183 	}
+//  184 
+//  185 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_DecodeSBREnvelope??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE raac_DecodeSBREnvelope
+//  186 
+//  187 /**************************************************************************************
+//  188  * Function:    DequantizeNoise
+//  189  *
+//  190  * Description: dequantize noise scalefactors
+//  191  *
+//  192  * Inputs:      number of scalefactors to process
+//  193  *              quantized noise scalefactors
+//  194  * 
+//  195  * Outputs:     dequantized noise scalefactors, format = Q(FBITS_OUT_DQ_NOISE)
+//  196  *
+//  197  * Return:      none
+//  198  *
+//  199  * Notes:       dequantized scalefactors have at least 2 GB
+//  200  **************************************************************************************/
+//  201 static void DequantizeNoise(int nBands, signed char *noiseQuant, int *noiseDequant)
+//  202 {
+//  203 	int exp, scalei;
+//  204 	
+//  205 	if (nBands <= 0)
+//  206 		return;
+//  207 
+//  208 	/* dequantize noise floor gains (4.6.18.3.5):
+//  209 	 *   noiseDequant = 2^(NOISE_FLOOR_OFFSET - noiseQuant)
+//  210 	 *
+//  211 	 * range of noiseQuant = [0, 30] (see 4.6.18.3.6), NOISE_FLOOR_OFFSET = 6
+//  212 	 *   so range of noiseDequant = [2^-24, 2^6]
+//  213 	 */
+//  214 	do {
+//  215 		exp = *noiseQuant++;
+//  216 		scalei = NOISE_FLOOR_OFFSET - exp + FBITS_OUT_DQ_NOISE;	/* 6 + 24 - exp, exp = [0,30] */
+//  217 
+//  218 		if (scalei < 0)
+//  219 			*noiseDequant++ = 0;
+//  220 		else if (scalei < 30)
+//  221 			*noiseDequant++ = 1 << scalei;
+//  222 		else
+//  223 			*noiseDequant++ = 0x3fffffff;	/* leave 2 GB */
+//  224 
+//  225 	} while (--nBands);
+//  226 }
+//  227 
+//  228 /**************************************************************************************
+//  229  * Function:    DecodeSBREnvelope
+//  230  *
+//  231  * Description: decode delta Huffman coded envelope scalefactors from bitstream
+//  232  *
+//  233  * Inputs:      BitStreamInfo struct pointing to start of env data
+//  234  *              initialized PSInfoSBR struct
+//  235  *              initialized SBRGrid struct for this channel
+//  236  *              initialized SBRFreq struct for this SCE/CPE block
+//  237  *              initialized SBRChan struct for this channel
+//  238  *              index of current channel (0 for SCE, 0 or 1 for CPE)
+//  239  * 
+//  240  * Outputs:     dequantized env scalefactors for left channel (before decoupling)
+//  241  *              dequantized env scalefactors for right channel (if coupling off)
+//  242  *                or raw decoded env scalefactors for right channel (if coupling on)
+//  243  *
+//  244  * Return:      none
+//  245  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function raac_DecodeSBREnvelope
+        ARM
+//  246 void DecodeSBREnvelope(BitStreamInfo *bsi, PSInfoSBR *psi, SBRGrid *sbrGrid, SBRFreq *sbrFreq, SBRChan *sbrChan, int ch)
+//  247 {
+raac_DecodeSBREnvelope:
+        PUSH     {R1,R2,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+44
+        SUB      SP,SP,#+32
+        CFI CFA R13+76
+        LDR      R2,[SP, #+32]
+        MOV      R4,R0
+        MOV      R1,#+32
+        ORR      R1,R1,#0x1D00
+        ADD      R1,R1,R2
+        STR      R1,[SP, #+28]
+        LDR      R0,[R1, #+0]
+        MOV      R5,R3
+        CMP      R0,#+0
+        LDRNE    R0,[SP, #+80]
+        CMPNE    R0,#+0
+        BEQ      ??raac_DecodeSBREnvelope_0
+//  248 	int huffIndexTime, huffIndexFreq, env, envStartBits, band, nBands, sf, lastEnv;
+//  249 	int freqRes, freqResPrev, dShift, i;
+//  250 
+//  251 	if (psi->couplingFlag && ch) {
+//  252 		dShift = 1;
+//  253 		if (sbrGrid->ampResFrame) {
+        LDR      R0,[SP, #+36]
+        MOV      R1,#+1
+        STR      R1,[SP, #+4]
+        LDRB     R0,[R0, #+1]
+        CMP      R0,#+0
+        BEQ      ??raac_DecodeSBREnvelope_1
+//  254 			huffIndexTime = HuffTabSBR_tEnv30b;
+        MOV      R1,#+6
+        STR      R1,[SP, #+8]
+//  255 			huffIndexFreq = HuffTabSBR_fEnv30b;
+        MOV      R1,#+7
+        STR      R1,[SP, #+12]
+//  256 			envStartBits = 5;
+        MOV      R1,#+5
+        B        ??raac_DecodeSBREnvelope_2
+//  257 		} else {
+//  258 			huffIndexTime = HuffTabSBR_tEnv15b;
+??raac_DecodeSBREnvelope_1:
+        MOV      R1,#+2
+        STR      R1,[SP, #+8]
+//  259 			huffIndexFreq = HuffTabSBR_fEnv15b;
+        MOV      R1,#+3
+??raac_DecodeSBREnvelope_3:
+        STR      R1,[SP, #+12]
+//  260 			envStartBits = 6;
+        MOV      R1,#+6
+        B        ??raac_DecodeSBREnvelope_2
+//  261 		}
+//  262 	} else {
+//  263 		dShift = 0;
+//  264 		if (sbrGrid->ampResFrame) {
+??raac_DecodeSBREnvelope_0:
+        LDR      R0,[SP, #+36]
+        MOV      R1,#+0
+        STR      R1,[SP, #+4]
+        LDRB     R0,[R0, #+1]
+        CMP      R0,#+0
+        BEQ      ??raac_DecodeSBREnvelope_4
+//  265 			huffIndexTime = HuffTabSBR_tEnv30;
+        MOV      R1,#+4
+        STR      R1,[SP, #+8]
+//  266 			huffIndexFreq = HuffTabSBR_fEnv30;
+        MOV      R1,#+5
+        B        ??raac_DecodeSBREnvelope_3
+//  267 			envStartBits = 6;
+//  268 		} else {
+//  269 			huffIndexTime = HuffTabSBR_tEnv15;
+??raac_DecodeSBREnvelope_4:
+        STR      R1,[SP, #+8]
+//  270 			huffIndexFreq = HuffTabSBR_fEnv15;
+        MOV      R1,#+1
+        STR      R1,[SP, #+12]
+//  271 			envStartBits = 7;
+        MOV      R1,#+7
+//  272 		}
+//  273 	}
+//  274 
+//  275 	/* range of envDataQuant[] = [0, 127] (see comments in DequantizeEnvelope() for reference) */
+//  276 	for (env = 0; env < sbrGrid->numEnv; env++) {
+??raac_DecodeSBREnvelope_2:
+        LDR      R0,[SP, #+36]
+        STR      R1,[SP, #+16]
+        MOV      R1,#+0
+        STR      R1,[SP, #+0]
+        LDRB     R0,[R0, #+3]
+        CMP      R0,#+0
+        BNE      ??raac_DecodeSBREnvelope_5
+//  277 		nBands =      (sbrGrid->freqRes[env] ? sbrFreq->nHigh : sbrFreq->nLow);
+//  278 		freqRes =     (sbrGrid->freqRes[env]);
+//  279 		freqResPrev = (env == 0 ? sbrGrid->freqResPrev : sbrGrid->freqRes[env-1]);
+//  280 		lastEnv =     (env == 0 ? sbrGrid->numEnvPrev-1 : env-1);
+//  281 		if (lastEnv < 0)
+//  282 			lastEnv = 0;	/* first frame */
+//  283 
+//  284 		ASSERT(nBands <= MAX_QMF_BANDS);
+//  285 
+//  286 		if (sbrChan->deltaFlagEnv[env] == 0) {
+//  287 			/* delta coding in freq */
+//  288 			sf = GetBits(bsi, envStartBits) << dShift;
+//  289 			sbrChan->envDataQuant[env][0] = sf;
+//  290 			for (band = 1; band < nBands; band++) {
+//  291 				sf = DecodeOneSymbol(bsi, huffIndexFreq) << dShift;
+//  292 				sbrChan->envDataQuant[env][band] = sf + sbrChan->envDataQuant[env][band-1];
+//  293 			}
+//  294 		} else if (freqRes == freqResPrev) {
+//  295 			/* delta coding in time - same freq resolution for both frames */
+//  296 			for (band = 0; band < nBands; band++) {
+//  297 				sf = DecodeOneSymbol(bsi, huffIndexTime) << dShift;
+//  298 				sbrChan->envDataQuant[env][band] = sf + sbrChan->envDataQuant[lastEnv][band];
+//  299 			}
+//  300 		} else if (freqRes == 0 && freqResPrev == 1) {
+//  301 			/* delta coding in time - low freq resolution for new frame, high freq resolution for old frame */
+//  302 			for (band = 0; band < nBands; band++) {
+//  303 				sf = DecodeOneSymbol(bsi, huffIndexTime) << dShift;
+//  304 				sbrChan->envDataQuant[env][band] = sf;
+//  305 				for (i = 0; i < sbrFreq->nHigh; i++) {
+//  306 					if (sbrFreq->freqHigh[i] == sbrFreq->freqLow[band]) {
+//  307 						sbrChan->envDataQuant[env][band] += sbrChan->envDataQuant[lastEnv][i];
+//  308 						break;
+//  309 					}
+//  310 				}
+//  311 			}
+//  312 		} else if (freqRes == 1 && freqResPrev == 0) {
+//  313 			/* delta coding in time - high freq resolution for new frame, low freq resolution for old frame */
+//  314 			for (band = 0; band < nBands; band++) {
+//  315 				sf = DecodeOneSymbol(bsi, huffIndexTime) << dShift;
+//  316 				sbrChan->envDataQuant[env][band] = sf;
+//  317 				for (i = 0; i < sbrFreq->nLow; i++) {
+//  318 					if (sbrFreq->freqLow[i] <= sbrFreq->freqHigh[band] && sbrFreq->freqHigh[band] < sbrFreq->freqLow[i+1] ) {
+//  319 						sbrChan->envDataQuant[env][band] += sbrChan->envDataQuant[lastEnv][i];
+//  320 						break;
+//  321 					}
+//  322 				}
+//  323 			}
+//  324 		}
+//  325 
+//  326 		/* skip coupling channel */
+//  327 		if (ch != 1 || psi->couplingFlag != 1)
+//  328 			psi->envDataDequantScale[ch][env] = DequantizeEnvelope(nBands, sbrGrid->ampResFrame, sbrChan->envDataQuant[env], psi->envDataDequant[ch][env]);
+//  329 	}
+//  330 	sbrGrid->numEnvPrev = sbrGrid->numEnv;
+??raac_DecodeSBREnvelope_6:
+        LDR      R0,[SP, #+36]
+        LDRB     R1,[R0, #+3]
+        STRB     R1,[R0, #+19]
+//  331 	sbrGrid->freqResPrev = sbrGrid->freqRes[sbrGrid->numEnv-1];
+        LDR      R0,[SP, #+36]
+        LDRB     R1,[R0, #+3]
+        ADD      R1,R1,R0
+        LDRB     R1,[R1, #+9]
+        STRB     R1,[R0, #+21]
+//  332 }
+        ADD      SP,SP,#+40
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        CFI CFA R13+76
+??raac_DecodeSBREnvelope_7:
+        LDR      R0,[SP, #+0]
+        ADD      R0,R0,R1
+        LDR      R1,[SP, #+0]
+        LDRB     R0,[R0, #+10]
+        CMP      R1,#+0
+        BNE      ??raac_DecodeSBREnvelope_8
+        LDR      R2,[SP, #+36]
+        LDR      R1,[SP, #+36]
+        LDRB     R2,[R2, #+19]
+        LDRB     R1,[R1, #+21]
+        SUB      R2,R2,#+1
+        B        ??raac_DecodeSBREnvelope_9
+??raac_DecodeSBREnvelope_8:
+        SUB      R2,R1,#+1
+        LDR      R1,[SP, #+36]
+        ADD      R1,R2,R1
+        LDRB     R1,[R1, #+10]
+??raac_DecodeSBREnvelope_9:
+        LDR      R3,[SP, #+0]
+        LDR      R9,[SP, #+76]
+        LDR      R7,[SP, #+76]
+        MOV      R8,#+48
+        MLA      R7,R8,R3,R7
+        ADD      R3,R3,R9
+        LDRB     R3,[R3, #+4]
+        CMP      R2,#+0
+        MOVMI    R2,#+0
+        CMP      R3,#+0
+        BNE      ??raac_DecodeSBREnvelope_10
+        LDR      R1,[SP, #+16]
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LDR      R1,[SP, #+4]
+        MOV      R9,#+1
+        LSL      R0,R0,R1
+        STRB     R0,[R7, #+11]
+        CMP      R6,#+2
+        BLT      ??raac_DecodeSBREnvelope_11
+??raac_DecodeSBREnvelope_12:
+        CMP      R9,R6
+        BGE      ??raac_DecodeSBREnvelope_11
+        LDR      R0,[SP, #+12]
+        LDR      R2,??DataTable8  ;; raac_huffTabSBRInfo
+        MOV      R1,#+28
+        MLA      R10,R1,R0,R2
+        MOV      R0,R4
+        LDR      R1,[R10, #+0]
+        MOV      R11,#+32
+        _BLF     raac_GetBitsNoAdvance,??raac_GetBitsNoAdvance??rA
+        LDR      R1,[R10, #+0]
+        LDR      R2,??DataTable9  ;; raac_huffTabSBR
+        RSB      R1,R1,#+32
+        LSL      R1,R0,R1
+        LDR      R0,[R10, #+24]
+        MOV      R12,#+0
+        ADD      R2,R2,R0, LSL #+1
+        ADD      R0,R10,#+4
+        MOV      R3,#+0
+??raac_DecodeSBREnvelope_13:
+        ADD      R12,R3,R12
+        ADD      R2,R2,R3, LSL #+1
+        LDRB     R3,[R0], #+1
+        LSL      R12,R12,#+1
+        SUB      R11,R11,#+1
+        RSB      LR,R12,R1, LSR R11
+        CMP      LR,R3
+        BCS      ??raac_DecodeSBREnvelope_13
+        ADD      R1,R2,LR, LSL #+1
+        LDRSH    R11,[R1, #+0]
+        ADD      R1,R10,#+4
+        SUB      R1,R0,R1
+        MOV      R0,R4
+        _BLF     raac_AdvanceBitstream,??raac_AdvanceBitstream??rA
+        LDR      R1,[SP, #+4]
+        ADD      R2,R9,R7
+        LDRSB    R2,[R2, #+10]
+        ADD      R0,R9,R7
+        ADD      R9,R9,#+1
+        ADD      R1,R2,R11, LSL R1
+        STRB     R1,[R0, #+11]
+        B        ??raac_DecodeSBREnvelope_12
+??raac_DecodeSBREnvelope_10:
+        LDR      R10,[SP, #+76]
+        MOV      R9,#+28
+        MLA      R2,R8,R2,R10
+        LDR      R10,??DataTable8  ;; raac_huffTabSBRInfo
+        STR      R2,[SP, #+20]
+        LDR      R3,[SP, #+8]
+        CMP      R0,R1
+        MLA      R3,R9,R3,R10
+        STR      R3,[SP, #+24]
+        BNE      ??raac_DecodeSBREnvelope_14
+        MOV      R9,#+0
+        CMP      R6,#+1
+        BLT      ??raac_DecodeSBREnvelope_11
+??raac_DecodeSBREnvelope_15:
+        CMP      R9,R6
+        BGE      ??raac_DecodeSBREnvelope_11
+        LDR      R10,[SP, #+24]
+        MOV      R0,R4
+        LDR      R1,[R10, #+0]
+        MOV      R11,#+32
+        _BLF     raac_GetBitsNoAdvance,??raac_GetBitsNoAdvance??rA
+        LDR      R1,[R10, #+0]
+        LDR      R2,??DataTable9  ;; raac_huffTabSBR
+        RSB      R1,R1,#+32
+        LSL      R1,R0,R1
+        LDR      R0,[R10, #+24]
+        MOV      R12,#+0
+        ADD      R2,R2,R0, LSL #+1
+        ADD      R0,R10,#+4
+        MOV      R3,#+0
+??raac_DecodeSBREnvelope_16:
+        ADD      R12,R3,R12
+        ADD      R2,R2,R3, LSL #+1
+        LDRB     R3,[R0], #+1
+        LSL      R12,R12,#+1
+        SUB      R11,R11,#+1
+        RSB      LR,R12,R1, LSR R11
+        CMP      LR,R3
+        BCS      ??raac_DecodeSBREnvelope_16
+        ADD      R1,R2,LR, LSL #+1
+        LDRSH    R11,[R1, #+0]
+        ADD      R1,R10,#+4
+        SUB      R1,R0,R1
+        MOV      R0,R4
+        _BLF     raac_AdvanceBitstream,??raac_AdvanceBitstream??rA
+        LDR      R2,[SP, #+20]
+        LDR      R1,[SP, #+4]
+        ADD      R2,R9,R2
+        LDRSB    R2,[R2, #+11]
+        ADD      R0,R9,R7
+        ADD      R9,R9,#+1
+        ADD      R1,R2,R11, LSL R1
+        STRB     R1,[R0, #+11]
+        B        ??raac_DecodeSBREnvelope_15
+??raac_DecodeSBREnvelope_14:
+        CMP      R0,#+0
+        BNE      ??raac_DecodeSBREnvelope_17
+        CMP      R1,#+1
+        BNE      ??raac_DecodeSBREnvelope_11
+        MOV      R9,#+0
+        CMP      R6,#+1
+        BGE      ??raac_DecodeSBREnvelope_18
+??raac_DecodeSBREnvelope_11:
+        LDR      R0,[SP, #+80]
+        CMP      R0,#+1
+        BNE      ??raac_DecodeSBREnvelope_19
+        LDR      R0,[SP, #+28]
+        LDR      R0,[R0, #+0]
+        CMP      R0,#+1
+        BEQ      ??raac_DecodeSBREnvelope_20
+??raac_DecodeSBREnvelope_19:
+        LDR      R1,[SP, #+0]
+        LDR      R3,[SP, #+80]
+        LDR      R9,[SP, #+32]
+        MOV      R2,#+192
+        MOV      R8,#+960
+        MLA      R3,R8,R3,R9
+        MOV      R0,#+88
+        MLA      R1,R2,R1,R3
+        ORR      R0,R0,#0x1400
+        ADD      R3,R0,R1
+        LDR      R0,[SP, #+36]
+        ADD      R2,R7,#+11
+        LDRB     R1,[R0, #+1]
+        MOV      R0,R6
+        BL       DequantizeEnvelope
+        LDR      R2,[SP, #+0]
+        LDR      R3,[SP, #+80]
+        LDR      R6,[SP, #+32]
+        MOV      R1,#+76
+        ORR      R1,R1,#0x1400
+        ADD      R3,R3,R3, LSL #+2
+        ADD      R3,R3,R6
+        ADD      R2,R2,R3
+        STRB     R0,[R1, +R2]
+??raac_DecodeSBREnvelope_20:
+        LDR      R1,[SP, #+0]
+        ADD      R1,R1,#+1
+        STR      R1,[SP, #+0]
+??raac_DecodeSBREnvelope_5:
+        LDR      R1,[SP, #+36]
+        LDR      R0,[SP, #+0]
+        LDRB     R1,[R1, #+3]
+        CMP      R0,R1
+        BGE      ??raac_DecodeSBREnvelope_6
+        LDR      R1,[SP, #+36]
+        ADD      R0,R0,R1
+        LDRB     R0,[R0, #+10]
+        CMP      R0,#+0
+        LDREQ    R6,[R5, #+12]
+        LDRNE    R6,[R5, #+8]
+        B        ??raac_DecodeSBREnvelope_7
+??raac_DecodeSBREnvelope_21:
+        ADD      R0,R0,#+1
+??raac_DecodeSBREnvelope_22:
+        LDR      R1,[R5, #+8]
+        CMP      R0,R1
+        BGE      ??raac_DecodeSBREnvelope_23
+        ADD      R1,R0,R5
+        LDRB     R1,[R1, #+85]
+        ADD      R2,R9,R5
+        LDRB     R2,[R2, #+134]
+        CMP      R1,R2
+        BNE      ??raac_DecodeSBREnvelope_21
+        LDR      R3,[SP, #+20]
+        ADD      R2,R9,R7
+        LDRSB    R2,[R2, #+11]
+        ADD      R0,R0,R3
+        LDRSB    R0,[R0, #+11]
+        ADD      R1,R9,R7
+        ADD      R0,R0,R2
+        STRB     R0,[R1, #+11]
+??raac_DecodeSBREnvelope_23:
+        ADD      R9,R9,#+1
+??raac_DecodeSBREnvelope_18:
+        CMP      R9,R6
+        BGE      ??raac_DecodeSBREnvelope_11
+        LDR      R10,[SP, #+24]
+        MOV      R0,R4
+        LDR      R1,[R10, #+0]
+        MOV      R11,#+32
+        _BLF     raac_GetBitsNoAdvance,??raac_GetBitsNoAdvance??rA
+        LDR      R1,[R10, #+0]
+        LDR      R2,??DataTable9  ;; raac_huffTabSBR
+        RSB      R1,R1,#+32
+        LSL      R1,R0,R1
+        LDR      R0,[R10, #+24]
+        MOV      R12,#+0
+        ADD      R2,R2,R0, LSL #+1
+        ADD      R0,R10,#+4
+        MOV      R3,#+0
+??raac_DecodeSBREnvelope_24:
+        ADD      R12,R3,R12
+        ADD      R2,R2,R3, LSL #+1
+        LDRB     R3,[R0], #+1
+        LSL      R12,R12,#+1
+        SUB      R11,R11,#+1
+        RSB      LR,R12,R1, LSR R11
+        CMP      LR,R3
+        BCS      ??raac_DecodeSBREnvelope_24
+        ADD      R1,R2,LR, LSL #+1
+        LDRSH    R11,[R1, #+0]
+        ADD      R1,R10,#+4
+        SUB      R1,R0,R1
+        MOV      R0,R4
+        _BLF     raac_AdvanceBitstream,??raac_AdvanceBitstream??rA
+        LDR      R1,[SP, #+4]
+        ADD      R0,R9,R7
+        LSL      R1,R11,R1
+        STRB     R1,[R0, #+11]
+        MOV      R0,#+0
+        B        ??raac_DecodeSBREnvelope_22
+??raac_DecodeSBREnvelope_17:
+        CMP      R0,#+1
+        CMPEQ    R1,#+0
+        BNE      ??raac_DecodeSBREnvelope_11
+        MOV      R9,#+0
+        CMP      R6,#+1
+        BGE      ??raac_DecodeSBREnvelope_25
+        B        ??raac_DecodeSBREnvelope_11
+??raac_DecodeSBREnvelope_26:
+        MOV      R0,R1
+??raac_DecodeSBREnvelope_27:
+        LDR      R1,[R5, #+12]
+        CMP      R0,R1
+        BGE      ??raac_DecodeSBREnvelope_28
+        ADD      R2,R9,R5
+        LDRB     R2,[R2, #+85]
+        ADD      R3,R0,R5
+        LDRB     R3,[R3, #+134]
+        ADD      R1,R0,#+1
+        CMP      R2,R3
+        BCC      ??raac_DecodeSBREnvelope_26
+        ADD      R2,R9,R5
+        LDRB     R2,[R2, #+85]
+        ADD      R3,R1,R5
+        LDRB     R3,[R3, #+134]
+        CMP      R2,R3
+        BCS      ??raac_DecodeSBREnvelope_26
+        LDR      R3,[SP, #+20]
+        ADD      R2,R9,R7
+        LDRSB    R2,[R2, #+11]
+        ADD      R0,R0,R3
+        LDRSB    R0,[R0, #+11]
+        ADD      R1,R9,R7
+        ADD      R0,R0,R2
+        STRB     R0,[R1, #+11]
+??raac_DecodeSBREnvelope_28:
+        ADD      R9,R9,#+1
+??raac_DecodeSBREnvelope_25:
+        CMP      R9,R6
+        BGE      ??raac_DecodeSBREnvelope_11
+        LDR      R10,[SP, #+24]
+        MOV      R0,R4
+        LDR      R1,[R10, #+0]
+        MOV      R11,#+32
+        _BLF     raac_GetBitsNoAdvance,??raac_GetBitsNoAdvance??rA
+        LDR      R1,[R10, #+0]
+        LDR      R2,??DataTable9  ;; raac_huffTabSBR
+        RSB      R1,R1,#+32
+        LSL      R1,R0,R1
+        LDR      R0,[R10, #+24]
+        MOV      R12,#+0
+        ADD      R2,R2,R0, LSL #+1
+        ADD      R0,R10,#+4
+        MOV      R3,#+0
+??raac_DecodeSBREnvelope_29:
+        ADD      R12,R3,R12
+        ADD      R2,R2,R3, LSL #+1
+        LDRB     R3,[R0], #+1
+        LSL      R12,R12,#+1
+        SUB      R11,R11,#+1
+        RSB      LR,R12,R1, LSR R11
+        CMP      LR,R3
+        BCS      ??raac_DecodeSBREnvelope_29
+        ADD      R1,R2,LR, LSL #+1
+        LDRSH    R11,[R1, #+0]
+        ADD      R1,R10,#+4
+        SUB      R1,R0,R1
+        MOV      R0,R4
+        _BLF     raac_AdvanceBitstream,??raac_AdvanceBitstream??rA
+        LDR      R1,[SP, #+4]
+        ADD      R0,R9,R7
+        LSL      R1,R11,R1
+        STRB     R1,[R0, #+11]
+        MOV      R0,#+0
+        B        ??raac_DecodeSBREnvelope_27
+        CFI EndBlock cfiBlock3
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_DecodeSBRNoise??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE raac_DecodeSBRNoise
+//  333 
+//  334 /**************************************************************************************
+//  335  * Function:    DecodeSBRNoise
+//  336  *
+//  337  * Description: decode delta Huffman coded noise scalefactors from bitstream
+//  338  *
+//  339  * Inputs:      BitStreamInfo struct pointing to start of noise data
+//  340  *              initialized PSInfoSBR struct
+//  341  *              initialized SBRGrid struct for this channel
+//  342  *              initialized SBRFreq struct for this SCE/CPE block
+//  343  *              initialized SBRChan struct for this channel
+//  344  *              index of current channel (0 for SCE, 0 or 1 for CPE)
+//  345  * 
+//  346  * Outputs:     dequantized noise scalefactors for left channel (before decoupling)
+//  347  *              dequantized noise scalefactors for right channel (if coupling off)
+//  348  *                or raw decoded noise scalefactors for right channel (if coupling on)
+//  349  *
+//  350  * Return:      none
+//  351  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function raac_DecodeSBRNoise
+        ARM
+//  352 void DecodeSBRNoise(BitStreamInfo *bsi, PSInfoSBR *psi, SBRGrid *sbrGrid, SBRFreq *sbrFreq, SBRChan *sbrChan, int ch)
+//  353 {
+raac_DecodeSBRNoise:
+        PUSH     {R1-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+48
+        SUB      SP,SP,#+16
+        CFI CFA R13+64
+        LDR      R2,[SP, #+16]
+        MOV      R4,R0
+        MOV      R1,#+32
+        ORR      R1,R1,#0x1D00
+        ADD      R1,R1,R2
+        STR      R1,[SP, #+4]
+        LDR      R0,[R1, #+0]
+        CMP      R0,#+0
+        LDRNE    R0,[SP, #+68]
+        CMPNE    R0,#+0
+        BEQ      ??raac_DecodeSBRNoise_0
+//  354 	int huffIndexTime, huffIndexFreq, noiseFloor, band, dShift, sf, lastNoiseFloor;
+//  355 
+//  356 	if (psi->couplingFlag && ch) {
+//  357 		dShift = 1;
+        MOV      R1,#+1
+        STR      R1,[SP, #+0]
+//  358 		huffIndexTime = HuffTabSBR_tNoise30b;
+        MOV      R1,#+9
+        STR      R1,[SP, #+8]
+//  359 		huffIndexFreq = HuffTabSBR_fNoise30b;
+        MOV      R1,#+7
+        B        ??raac_DecodeSBRNoise_1
+//  360 	} else {
+//  361 		dShift = 0;
+??raac_DecodeSBRNoise_0:
+        MOV      R1,#+0
+        STR      R1,[SP, #+0]
+//  362 		huffIndexTime = HuffTabSBR_tNoise30;
+        MOV      R1,#+8
+        STR      R1,[SP, #+8]
+//  363 		huffIndexFreq = HuffTabSBR_fNoise30;
+        MOV      R1,#+5
+//  364 	}
+//  365 
+//  366 	for (noiseFloor = 0; noiseFloor < sbrGrid->numNoiseFloors; noiseFloor++) {
+??raac_DecodeSBRNoise_1:
+        LDR      R0,[SP, #+20]
+        STR      R1,[SP, #+12]
+        LDRB     R0,[R0, #+15]
+        MOV      R5,#+0
+        MOV      R7,#+0
+        CMP      R0,#+0
+        BNE      ??raac_DecodeSBRNoise_2
+//  367 		lastNoiseFloor = (noiseFloor == 0 ? sbrGrid->numNoiseFloorsPrev-1 : noiseFloor-1);
+//  368 		if (lastNoiseFloor < 0)
+//  369 			lastNoiseFloor = 0;	/* first frame */
+//  370 
+//  371 		ASSERT(sbrFreq->numNoiseFloorBands <= MAX_QMF_BANDS);
+//  372 
+//  373 		if (sbrChan->deltaFlagNoise[noiseFloor] == 0) {
+//  374 			/* delta coding in freq */
+//  375 			sbrChan->noiseDataQuant[noiseFloor][0] = GetBits(bsi, 5) << dShift;
+//  376 			for (band = 1; band < sbrFreq->numNoiseFloorBands; band++) {
+//  377 				sf = DecodeOneSymbol(bsi, huffIndexFreq) << dShift;
+//  378 				sbrChan->noiseDataQuant[noiseFloor][band] = sf + sbrChan->noiseDataQuant[noiseFloor][band-1];
+//  379 			}
+//  380 		} else {
+//  381 			/* delta coding in time */
+//  382 			for (band = 0; band < sbrFreq->numNoiseFloorBands; band++) {
+//  383 				sf = DecodeOneSymbol(bsi, huffIndexTime) << dShift;
+//  384 				sbrChan->noiseDataQuant[noiseFloor][band] = sf + sbrChan->noiseDataQuant[lastNoiseFloor][band];
+//  385 			}
+//  386 		}
+//  387 
+//  388 		/* skip coupling channel */
+//  389 		if (ch != 1 || psi->couplingFlag != 1)
+//  390 			DequantizeNoise(sbrFreq->numNoiseFloorBands, sbrChan->noiseDataQuant[noiseFloor], psi->noiseDataDequant[ch][noiseFloor]);
+//  391 	}
+//  392 	sbrGrid->numNoiseFloorsPrev = sbrGrid->numNoiseFloors;
+??raac_DecodeSBRNoise_3:
+        LDR      R0,[SP, #+20]
+        LDRB     R1,[R0, #+15]
+        STRB     R1,[R0, #+20]
+//  393 }
+        ADD      SP,SP,#+28
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        CFI CFA R13+64
+??raac_DecodeSBRNoise_4:
+        STR      R3,[R0], #+4
+??raac_DecodeSBRNoise_5:
+        SUBS     R1,R1,#+1
+        BNE      ??raac_DecodeSBRNoise_6
+??raac_DecodeSBRNoise_7:
+        ADD      R5,R5,#+1
+??raac_DecodeSBRNoise_2:
+        LDR      R0,[SP, #+20]
+        LDRB     R0,[R0, #+15]
+        CMP      R5,R0
+        BGE      ??raac_DecodeSBRNoise_3
+        CMP      R5,#+0
+        BNE      ??raac_DecodeSBRNoise_8
+        LDR      R0,[SP, #+20]
+        LDRB     R0,[R0, #+20]
+        SUB      R9,R0,#+1
+        B        ??raac_DecodeSBRNoise_9
+??raac_DecodeSBRNoise_8:
+        SUB      R9,R5,#+1
+??raac_DecodeSBRNoise_9:
+        LDR      R1,[SP, #+64]
+        ADD      R0,R5,R5, LSL #+2
+        ADD      R6,R0,R1
+        ADD      R0,R5,R1
+        LDRB     R0,[R0, #+9]
+        CMP      R9,#+0
+        MOVMI    R9,#+0
+        CMP      R0,#+0
+        BNE      ??raac_DecodeSBRNoise_10
+        MOV      R1,#+5
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LDR      R1,[SP, #+0]
+        MOV      R8,#+1
+        LSL      R0,R0,R1
+        STRB     R0,[R6, #+251]
+        LDR      R0,[SP, #+24]
+        LDR      R0,[R0, #+24]
+        CMP      R0,#+2
+        BLT      ??raac_DecodeSBRNoise_11
+??raac_DecodeSBRNoise_12:
+        LDR      R0,[SP, #+24]
+        LDR      R0,[R0, #+24]
+        CMP      R8,R0
+        BGE      ??raac_DecodeSBRNoise_11
+        LDR      R0,[SP, #+12]
+        LDR      R2,??DataTable8  ;; raac_huffTabSBRInfo
+        MOV      R1,#+28
+        MLA      R9,R1,R0,R2
+        MOV      R0,R4
+        LDR      R1,[R9, #+0]
+        MOV      R11,#+32
+        _BLF     raac_GetBitsNoAdvance,??raac_GetBitsNoAdvance??rA
+        LDR      R1,[R9, #+0]
+        LDR      R2,??DataTable9  ;; raac_huffTabSBR
+        RSB      R1,R1,#+32
+        LSL      R0,R0,R1
+        LDR      R1,[R9, #+24]
+        MOV      R3,#+0
+        ADD      R2,R2,R1, LSL #+1
+        ADD      R1,R9,#+4
+        MOV      R10,R3
+??raac_DecodeSBRNoise_13:
+        ADD      R3,R10,R3
+        ADD      R2,R2,R10, LSL #+1
+        LDRB     R10,[R1], #+1
+        LSL      R3,R3,#+1
+        SUB      R11,R11,#+1
+        RSB      R12,R3,R0, LSR R11
+        CMP      R12,R10
+        BCS      ??raac_DecodeSBRNoise_13
+        ADD      R0,R2,R12, LSL #+1
+        LDRSH    R10,[R0, #+0]
+        ADD      R0,R9,#+4
+        SUB      R1,R1,R0
+        MOV      R0,R4
+        _BLF     raac_AdvanceBitstream,??raac_AdvanceBitstream??rA
+        LDR      R1,[SP, #+0]
+        ADD      R2,R8,R6
+        LDRSB    R2,[R2, #+250]
+        ADD      R0,R8,R6
+        ADD      R8,R8,#+1
+        ADD      R1,R2,R10, LSL R1
+        STRB     R1,[R0, #+251]
+        B        ??raac_DecodeSBRNoise_12
+??raac_DecodeSBRNoise_10:
+        LDR      R0,[SP, #+24]
+        MOV      R8,#+0
+        LDR      R0,[R0, #+24]
+        CMP      R0,#+1
+        BGE      ??raac_DecodeSBRNoise_14
+        B        ??raac_DecodeSBRNoise_11
+??raac_DecodeSBRNoise_15:
+        LDR      R0,[SP, #+8]
+        LDR      R2,??DataTable8  ;; raac_huffTabSBRInfo
+        MOV      R1,#+28
+        MLA      R10,R1,R0,R2
+        MOV      R0,R4
+        LDR      R1,[R10, #+0]
+        MOV      R11,#+32
+        _BLF     raac_GetBitsNoAdvance,??raac_GetBitsNoAdvance??rA
+        LDR      R1,[R10, #+0]
+        LDR      R2,??DataTable9  ;; raac_huffTabSBR
+        RSB      R1,R1,#+32
+        LSL      R1,R0,R1
+        LDR      R0,[R10, #+24]
+        MOV      R12,#+0
+        ADD      R2,R2,R0, LSL #+1
+        ADD      R0,R10,#+4
+        MOV      R3,R7
+??raac_DecodeSBRNoise_16:
+        ADD      R12,R3,R12
+        ADD      R2,R2,R3, LSL #+1
+        LDRB     R3,[R0], #+1
+        LSL      R12,R12,#+1
+        SUB      R11,R11,#+1
+        RSB      LR,R12,R1, LSR R11
+        CMP      LR,R3
+        BCS      ??raac_DecodeSBRNoise_16
+        ADD      R1,R2,LR, LSL #+1
+        LDRSH    R11,[R1, #+0]
+        ADD      R1,R10,#+4
+        SUB      R1,R0,R1
+        MOV      R0,R4
+        _BLF     raac_AdvanceBitstream,??raac_AdvanceBitstream??rA
+        LDR      R3,[SP, #+64]
+        LDR      R1,[SP, #+0]
+        ADD      R2,R9,R9, LSL #+2
+        ADD      R2,R2,R3
+        ADD      R2,R8,R2
+        LDRSB    R2,[R2, #+251]
+        ADD      R0,R8,R6
+        ADD      R8,R8,#+1
+        ADD      R1,R2,R11, LSL R1
+        STRB     R1,[R0, #+251]
+??raac_DecodeSBRNoise_14:
+        LDR      R0,[SP, #+24]
+        LDR      R0,[R0, #+24]
+        CMP      R8,R0
+        BLT      ??raac_DecodeSBRNoise_15
+??raac_DecodeSBRNoise_11:
+        LDR      R0,[SP, #+68]
+        CMP      R0,#+1
+        BNE      ??raac_DecodeSBRNoise_17
+        LDR      R0,[SP, #+4]
+        LDR      R0,[R0, #+0]
+        CMP      R0,#+1
+        BEQ      ??raac_DecodeSBRNoise_7
+??raac_DecodeSBRNoise_17:
+        LDR      R2,[SP, #+68]
+        LDR      R8,[SP, #+16]
+        MOV      R1,#+20
+        MOV      R3,#+40
+        MLA      R2,R3,R2,R8
+        MOV      R0,#+216
+        MLA      R2,R1,R5,R2
+        LDR      R1,[SP, #+24]
+        ORR      R0,R0,#0x1B00
+        LDR      R1,[R1, #+24]
+        ADD      R0,R0,R2
+        ADD      R2,R6,#+251
+        CMP      R1,#+1
+        MOV      R6,#+1
+        BLT      ??raac_DecodeSBRNoise_7
+??raac_DecodeSBRNoise_6:
+        LDRSB    R3,[R2], #+1
+        RSBS     R3,R3,#+30
+        STRMI    R7,[R0], #+4
+        BMI      ??raac_DecodeSBRNoise_5
+        CMP      R3,#+30
+        MVNGE    R3,#-1073741824
+        LSLLT    R3,R6,R3
+        B        ??raac_DecodeSBRNoise_4
+        CFI EndBlock cfiBlock5
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable8:
+        DC32     raac_huffTabSBRInfo
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable9:
+        DC32     raac_huffTabSBR
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_UncoupleSBREnvelope??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE raac_UncoupleSBREnvelope
+//  394 
+//  395 /* dqTabCouple[i] = 2 / (1 + 2^(12 - i)), format = Q30 */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  396 static const int dqTabCouple[25] = {
+dqTabCouple:
+        DATA
+        DC32 524160, 1048064, 2095106, 4186128, 8355968, 16647160, 33038210
+        DC32 65075262, 126322568, 238609294, 429496730, 715827883, 1073741824
+        DC32 1431655765, 1717986918, 1908874354, 2021161080, 2082408386
+        DC32 2114445438, 2130836488, 2139127680, 2143297520, 2145388542
+        DC32 2146435584, 2146959488
+//  397 	0x0007ff80, 0x000ffe00, 0x001ff802, 0x003fe010, 0x007f8080, 0x00fe03f8, 0x01f81f82, 0x03e0f83e, 
+//  398 	0x07878788, 0x0e38e38e, 0x1999999a, 0x2aaaaaab, 0x40000000, 0x55555555, 0x66666666, 0x71c71c72, 
+//  399 	0x78787878, 0x7c1f07c2, 0x7e07e07e, 0x7f01fc08, 0x7f807f80, 0x7fc01ff0, 0x7fe007fe, 0x7ff00200, 
+//  400 	0x7ff80080, 
+//  401 };
+//  402 
+//  403 /**************************************************************************************
+//  404  * Function:    UncoupleSBREnvelope
+//  405  *
+//  406  * Description: scale dequantized envelope scalefactors according to channel 
+//  407  *                coupling rules
+//  408  *
+//  409  * Inputs:      initialized PSInfoSBR struct including
+//  410  *                dequantized envelope data for left channel
+//  411  *              initialized SBRGrid struct for this channel
+//  412  *              initialized SBRFreq struct for this SCE/CPE block
+//  413  *              initialized SBRChan struct for right channel including
+//  414  *                quantized envelope scalefactors
+//  415  * 
+//  416  * Outputs:     dequantized envelope data for left channel (after decoupling)
+//  417  *              dequantized envelope data for right channel (after decoupling)
+//  418  *
+//  419  * Return:      none
+//  420  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function raac_UncoupleSBREnvelope
+        ARM
+//  421 void UncoupleSBREnvelope(PSInfoSBR *psi, SBRGrid *sbrGrid, SBRFreq *sbrFreq, SBRChan *sbrChanR)
+//  422 {
+raac_UncoupleSBREnvelope:
+        PUSH     {R2,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+40
+        MOV      R9,R0
+//  423 	int env, band, nBands, scalei, E_1;
+//  424 
+//  425 	scalei = (sbrGrid->ampResFrame ? 0 : 1);
+//  426 	for (env = 0; env < sbrGrid->numEnv; env++) {
+        LDR      R8,??DataTable11  ;; dqTabCouple
+        MOV      R6,R1
+        LDRB     R0,[R6, #+1]
+        MOV      R10,R3
+        MOV      R2,#+0
+        CMP      R0,#+0
+        LDRB     R0,[R6, #+3]
+        MOVNE    R5,#+0
+        MOVEQ    R5,#+1
+        CMP      R0,#+0
+        BNE      ??raac_UncoupleSBREnvelope_0
+//  427 		nBands = (sbrGrid->freqRes[env] ? sbrFreq->nHigh : sbrFreq->nLow);
+//  428 		psi->envDataDequantScale[1][env] = psi->envDataDequantScale[0][env]; /* same scalefactor for L and R */
+//  429 		for (band = 0; band < nBands; band++) {
+//  430 			/* clip E_1 to [0, 24] (scalefactors approach 0 or 2) */
+//  431 			E_1 = sbrChanR->envDataQuant[env][band] >> scalei;
+//  432 			if (E_1 < 0)	E_1 = 0;
+//  433 			if (E_1 > 24)	E_1 = 24;
+//  434 
+//  435 			/* envDataDequant[0] has 1 GB, so << by 2 is okay */
+//  436 			psi->envDataDequant[1][env][band] = MULSHIFT32(psi->envDataDequant[0][env][band], dqTabCouple[24 - E_1]) << 2;
+//  437 			psi->envDataDequant[0][env][band] = MULSHIFT32(psi->envDataDequant[0][env][band], dqTabCouple[E_1]) << 2;
+//  438 		}
+//  439 	}
+//  440 }
+        POP      {R0,R4-R11,PC}   ;; return
+??raac_UncoupleSBREnvelope_1:
+        MOV      R0,#+76
+        ORR      R0,R0,#0x1400
+        ADD      R1,R2,R9
+        ADD      R0,R0,R1
+        LDRSB    R1,[R0, #+0]
+        MOV      R12,#+0
+        CMP      R3,#+1
+        STRB     R1,[R0, #+5]
+        BGE      ??raac_UncoupleSBREnvelope_2
+??raac_UncoupleSBREnvelope_3:
+        ADD      R2,R2,#+1
+??raac_UncoupleSBREnvelope_0:
+        LDRB     R0,[R6, #+3]
+        CMP      R2,R0
+        POPGE    {R0,R4-R11,PC}
+        ADD      R0,R2,R6
+        LDRB     R0,[R0, #+10]
+        CMP      R0,#+0
+        LDR      R0,[SP, #+0]
+        LDREQ    R3,[R0, #+12]
+        LDRNE    R3,[R0, #+8]
+        B        ??raac_UncoupleSBREnvelope_1
+??raac_UncoupleSBREnvelope_4:
+        CMP      R7,#+25
+        MOVGE    R7,#+24
+??raac_UncoupleSBREnvelope_5:
+        MOV      R1,#+192
+        MLA      R4,R1,R2,R9
+        MOV      R0,#+88
+        ORR      R0,R0,#0x1400
+        ADD      R1,R4,R12, LSL #+2
+        ADD      R4,R0,R1
+        LDR      R11,[R4, #+0]
+        MOV      R0,R7
+        RSB      R0,R0,#+0
+        ADD      R0,R8,R0, LSL #+2
+        LDR      LR,[R0, #+96]
+        ADD      R12,R12,#+1
+        SMULL    R0,R1,R11,LR
+        MOV      R0,R1
+        LSL      R0,R0,#+2
+        STR      R0,[R4, #+960]
+        LDR      R7,[R8, +R7, LSL #+2]
+        SMULL    R0,R1,R11,R7
+        MOV      R0,R1
+        LSL      R0,R0,#+2
+        STR      R0,[R4, #+0]
+??raac_UncoupleSBREnvelope_2:
+        CMP      R12,R3
+        BGE      ??raac_UncoupleSBREnvelope_3
+        MOV      R0,#+48
+        MLA      R1,R0,R2,R10
+        ADD      R0,R12,R1
+        LDRSB    R0,[R0, #+11]
+        ASRS     R7,R0,R5
+        BPL      ??raac_UncoupleSBREnvelope_4
+        MOV      R7,#+0
+        B        ??raac_UncoupleSBREnvelope_5
+        CFI EndBlock cfiBlock7
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_UncoupleSBRNoise??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE raac_UncoupleSBRNoise
+//  441 
+//  442 /**************************************************************************************
+//  443  * Function:    UncoupleSBRNoise
+//  444  *
+//  445  * Description: scale dequantized noise floor scalefactors according to channel 
+//  446  *                coupling rules
+//  447  *
+//  448  * Inputs:      initialized PSInfoSBR struct including
+//  449  *                dequantized noise data for left channel
+//  450  *              initialized SBRGrid struct for this channel
+//  451  *              initialized SBRFreq struct for this SCE/CPE block
+//  452  *              initialized SBRChan struct for this channel including
+//  453  *                quantized noise scalefactors
+//  454  * 
+//  455  * Outputs:     dequantized noise data for left channel (after decoupling)
+//  456  *              dequantized noise data for right channel (after decoupling)
+//  457  *
+//  458  * Return:      none
+//  459  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function raac_UncoupleSBRNoise
+        ARM
+//  460 void UncoupleSBRNoise(PSInfoSBR *psi, SBRGrid *sbrGrid, SBRFreq *sbrFreq, SBRChan *sbrChanR)
+//  461 {
+raac_UncoupleSBRNoise:
+        PUSH     {R4-R11}
+        CFI R11 Frame(CFA, -4)
+        CFI R10 Frame(CFA, -8)
+        CFI R9 Frame(CFA, -12)
+        CFI R8 Frame(CFA, -16)
+        CFI R7 Frame(CFA, -20)
+        CFI R6 Frame(CFA, -24)
+        CFI R5 Frame(CFA, -28)
+        CFI R4 Frame(CFA, -32)
+        CFI CFA R13+32
+//  462 	int noiseFloor, band, Q_1;
+//  463 	
+//  464 	for (noiseFloor = 0; noiseFloor < sbrGrid->numNoiseFloors; noiseFloor++) {
+        LDR      R8,??DataTable11  ;; dqTabCouple
+        MOV      R6,R0
+        MOV      R9,R1
+        LDRB     R0,[R9, #+15]
+        MOV      R5,R3
+        MOV      R3,#+0
+        CMP      R0,#+0
+        BNE      ??raac_UncoupleSBRNoise_0
+//  465 		for (band = 0; band < sbrFreq->numNoiseFloorBands; band++) {
+//  466 			/* Q_1 should be in range [0, 24] according to 4.6.18.3.6, but check to make sure */
+//  467 			Q_1 = sbrChanR->noiseDataQuant[noiseFloor][band];
+//  468 			if (Q_1 < 0)	Q_1 = 0;
+//  469 			if (Q_1 > 24)	Q_1 = 24;
+//  470 
+//  471 			/* noiseDataDequant[0] has 1 GB, so << by 2 is okay */
+//  472 			psi->noiseDataDequant[1][noiseFloor][band] = MULSHIFT32(psi->noiseDataDequant[0][noiseFloor][band], dqTabCouple[24 - Q_1]) << 2;
+//  473 			psi->noiseDataDequant[0][noiseFloor][band] = MULSHIFT32(psi->noiseDataDequant[0][noiseFloor][band], dqTabCouple[Q_1]) << 2;
+//  474 		}
+//  475 	}
+//  476 }
+??raac_UncoupleSBRNoise_1:
+        POP      {R4-R11}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        CFI R4 Frame(CFA, -32)
+        CFI R5 Frame(CFA, -28)
+        CFI R6 Frame(CFA, -24)
+        CFI R7 Frame(CFA, -20)
+        CFI R8 Frame(CFA, -16)
+        CFI R9 Frame(CFA, -12)
+        CFI R10 Frame(CFA, -8)
+        CFI R11 Frame(CFA, -4)
+        CFI CFA R13+32
+??raac_UncoupleSBRNoise_2:
+        ADD      R3,R3,#+1
+??raac_UncoupleSBRNoise_0:
+        LDRB     R0,[R9, #+15]
+        CMP      R3,R0
+        BGE      ??raac_UncoupleSBRNoise_1
+        LDR      R0,[R2, #+24]
+        MOV      R12,#+0
+        CMP      R0,#+1
+        BGE      ??raac_UncoupleSBRNoise_3
+        B        ??raac_UncoupleSBRNoise_2
+??raac_UncoupleSBRNoise_4:
+        CMP      R7,#+25
+        MOVGE    R7,#+24
+??raac_UncoupleSBRNoise_5:
+        MOV      R1,#+20
+        MLA      R4,R1,R3,R6
+        MOV      R0,#+216
+        ORR      R0,R0,#0x1B00
+        ADD      R1,R4,R12, LSL #+2
+        ADD      R4,R0,R1
+        LDR      R10,[R4, #+0]
+        MOV      R0,R7
+        RSB      R0,R0,#+0
+        ADD      R0,R8,R0, LSL #+2
+        LDR      R11,[R0, #+96]
+        ADD      R12,R12,#+1
+        SMULL    R0,R1,R10,R11
+        MOV      R0,R1
+        LSL      R0,R0,#+2
+        STR      R0,[R4, #+40]
+        LDR      R7,[R8, +R7, LSL #+2]
+        SMULL    R0,R1,R10,R7
+        MOV      R0,R1
+        LSL      R0,R0,#+2
+        STR      R0,[R4, #+0]
+??raac_UncoupleSBRNoise_3:
+        LDR      R0,[R2, #+24]
+        CMP      R12,R0
+        BGE      ??raac_UncoupleSBRNoise_2
+        ADD      R0,R3,R3, LSL #+2
+        ADD      R0,R0,R5
+        ADD      R0,R12,R0
+        LDRSB    R7,[R0, #+251]
+        CMP      R7,#+0
+        BPL      ??raac_UncoupleSBRNoise_4
+        MOV      R7,#+0
+        B        ??raac_UncoupleSBRNoise_5
+        CFI EndBlock cfiBlock9
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable11:
+        DC32     dqTabCouple
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_GetBits??rA:
+        LDR      R12,??Subroutine5_0  ;; raac_GetBits
+        BX       R12
+        DATA
+??Subroutine5_0:
+        DC32     raac_GetBits
+        CFI EndBlock cfiBlock10
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock11 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_GetBitsNoAdvance??rA:
+        LDR      R12,??Subroutine6_0  ;; raac_GetBitsNoAdvance
+        BX       R12
+        DATA
+??Subroutine6_0:
+        DC32     raac_GetBitsNoAdvance
+        CFI EndBlock cfiBlock11
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock12 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_AdvanceBitstream??rA:
+        LDR      R12,??Subroutine7_0  ;; raac_AdvanceBitstream
+        BX       R12
+        DATA
+??Subroutine7_0:
+        DC32     raac_AdvanceBitstream
+        CFI EndBlock cfiBlock12
+
+        END
+// 
+// 2 980 bytes in segment CODE
+//   108 bytes in segment DATA_C
+// 
+// 2 924 bytes of CODE  memory (+ 56 bytes shared)
+//   108 bytes of CONST memory
+//
+//Errors: none
+//Warnings: none

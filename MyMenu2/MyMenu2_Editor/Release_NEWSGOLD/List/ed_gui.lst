@@ -1,0 +1,540 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    07/Feb/2012  23:07:44 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\MyMenu2\MyMenu2_Editor\ed_gui.c #
+#    Command line    =  D:\SVN\SieELF\SieELF\MyMenu2\MyMenu2_Editor\ed_gui.c #
+#                        -D NEWSGOLD -lC D:\SVN\SieELF\SieELF\MyMenu2\MyMenu #
+#                       2_Editor\Release_NEWSGOLD\List\ -o                   #
+#                       D:\SVN\SieELF\SieELF\MyMenu2\MyMenu2_Editor\Release_ #
+#                       NEWSGOLD\Obj\ -s9 --no_unroll --cpu_mode arm         #
+#                       --endian little --cpu ARM926EJ-S --stack_align 4     #
+#                       --interwork -e --fpu None --dlib_config "D:\Program  #
+#                       Files\IAR\Embedded Workbench 4.0                     #
+#                       Evaluation\ARM\LIB\dl5tpainl8n.h" -I "D:\Program     #
+#                       Files\IAR\Embedded Workbench 4.0                     #
+#                       Evaluation\ARM\INC\" --inline_threshold=2            #
+#    List file       =  D:\SVN\SieELF\SieELF\MyMenu2\MyMenu2_Editor\Release_ #
+#                       NEWSGOLD\List\ed_gui.lst                             #
+#    Object file     =  D:\SVN\SieELF\SieELF\MyMenu2\MyMenu2_Editor\Release_ #
+#                       NEWSGOLD\Obj\ed_gui.r79                              #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\MyMenu2\MyMenu2_Editor\ed_gui.c
+      1          #include "..\..\inc\swilib.h"
+      2          #include "type.h"
+      3          #include "rect_patcher.h"
+      4          #include "lang.h"
+      5          
+      6          extern WSHDR *ws_edit_functmp;
+      7          extern WSHDR *ws_edit_nametmp;
+      8          extern MENU_LIST *ml_edit_tmp;
+      9          extern unsigned int EDGUI_ID;
+     10          extern void open_select_file_gui(void *ed_gui, int type);
+     11          
+     12          
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     13          const HEADER_DESC edheader={0, 0, 0, 0, NULL, (int)LGP_EDIT, LGP_NULL};
+   \                     edheader:
+   \   00000000   000000000000       DC16 0, 0, 0, 0
+   \              0000        
+   \   00000008   00000000....       DC32 0H, `?<Constant "\\261\\340\\274\\255">`, 2147483647
+   \              ....FFFFFF7F
+   \   00000014   C3FBB3C63A00       DC8 "\303\373\263\306:"
+   \   0000001A   0000               DC8 0, 0
+   \   0000001C   B9A6C4DC3A00       DC8 "\271\246\304\334:"
+   \   00000022   0000               DC8 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     14          const SOFTKEY_DESC ed_sk[]=
+   \                     ed_sk:
+   \   00000000   18000000           DC16 24, 0
+   \   00000004   FFFFFF7F           DC32 2147483647
+   \   00000008   01000000           DC16 1, 0
+   \   0000000C   FFFFFF7F           DC32 2147483647
+   \   00000010   3D000000           DC16 61, 0
+   \   00000014   FBC0FF7F           DC32 2147467515
+     15          {
+     16          	{0x0018,0x0000,(int)LGP_NULL},
+     17          	{0x0001,0x0000,(int)LGP_NULL},
+     18          	{0x003D,0x0000,(int)LGP_DOIT_PIC}
+     19          };
+     20          
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     21          const SOFTKEYSTAB ed_skt=
+   \                     ed_skt:
+   \   00000000   ........0000       DC32 ed_sk, 0
+   \              0000        
+     22          {
+     23          	ed_sk,0
+     24          };
+     25          
+     26          //void openfunc_list(void *ed_gui)
+     27          //{
+     28          //	
+     29          //}
+     30          
+     31          
+
+   \                                 In segment CODE, align 4, keep-with-next
+     32          void on_exmenu(USR_MENU_ITEM *item)
+     33          {
+   \                     on_exmenu:
+   \   00000000   10402DE9           PUSH     {R4,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+     34          	if (item->type==0)
+   \   00000008   0000D4E5           LDRB     R0,[R4, #+0]
+   \   0000000C   000050E3           CMP      R0,#+0
+   \   00000010   0C00001A           BNE      ??on_exmenu_0
+     35          	{
+     36          		switch(item->cur_item)
+   \   00000014   B820D4E1           LDRH     R2,[R4, #+8]
+   \   00000018   0C0094E5           LDR      R0,[R4, #+12]
+   \   0000001C   58109FE5           LDR      R1,??on_exmenu_1  ;; `?<Constant "\\321\\241\\324\\361\\316\\304\\274\\376\\2`
+   \   00000020   000052E3           CMP      R2,#+0
+   \   00000024   0200000A           BEQ      ??on_exmenu_2
+   \   00000028   012052E2           SUBS     R2,R2,#+1
+   \   0000002C   0200000A           BEQ      ??on_exmenu_3
+   \   00000030   040000EA           B        ??on_exmenu_0
+     37          		{
+     38          		case 0:
+     39          			gb2ws(item->ws, LGP_SLECET_FOLDER, 16);
+   \                     ??on_exmenu_2:
+   \   00000034   1020A0E3           MOV      R2,#+16
+   \   00000038   010000EA           B        ??on_exmenu_4
+     40          			break;
+     41          		case 1:
+     42          			gb2ws(item->ws, LGP_SLECET_FILE, 16);
+   \                     ??on_exmenu_3:
+   \   0000003C   1020A0E3           MOV      R2,#+16
+   \   00000040   0C1081E2           ADD      R1,R1,#+12
+   \                     ??on_exmenu_4:
+   \   00000044   420200EF           SWI      +578
+     43          			break;
+     44          		//case 2:
+     45          		//	gb2ws(item->ws, "使用菜单索引", 16);
+     46          		//	break;
+     47          		}
+     48          	}
+     49          	if (item->type==1)
+   \                     ??on_exmenu_0:
+   \   00000048   0000D4E5           LDRB     R0,[R4, #+0]
+   \   0000004C   010050E3           CMP      R0,#+1
+   \   00000050   1080BD18           POPNE    {R4,PC}
+     50          	{
+     51          		switch(item->cur_item)
+   \   00000054   B810D4E1           LDRH     R1,[R4, #+8]
+   \   00000058   040094E5           LDR      R0,[R4, #+4]
+   \   0000005C   000051E3           CMP      R1,#+0
+   \   00000060   0300000A           BEQ      ??on_exmenu_5
+   \   00000064   011051E2           SUBS     R1,R1,#+1
+   \   00000068   0000000A           BEQ      ??on_exmenu_6
+   \   0000006C   1080BDE8           POP      {R4,PC}
+     52          		{
+     53          		case 0:
+     54          			open_select_file_gui(item->user_pointer, 0);
+     55          			break;
+     56          		case 1:
+     57          			open_select_file_gui(item->user_pointer, 1);
+   \                     ??on_exmenu_6:
+   \   00000070   0110A0E3           MOV      R1,#+1
+   \                     ??on_exmenu_5:
+   \   00000074   ........           _BLF     open_select_file_gui,??open_select_file_gui??rA
+     58          			break;
+     59          		}
+     60          	}
+     61          }
+   \   00000078   1080BDE8           POP      {R4,PC}          ;; return
+   \                     ??on_exmenu_1:
+   \   0000007C   ........           DC32     `?<Constant "\\321\\241\\324\\361\\316\\304\\274\\376\\2`
+     62          
+
+   \                                 In segment CODE, align 4, keep-with-next
+     63          int ed_onkey(GUI *data, GUI_MSG *msg)
+     64          {
+   \                     ed_onkey:
+   \   00000000   30402DE9           PUSH     {R4,R5,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+   \   00000008   0150A0E1           MOV      R5,R1
+     65          	int i=EDIT_GetFocus(data);
+     66          	if(i==4)
+   \   0000000C   820100EF           SWI      +386
+   \   00000010   040050E3           CMP      R0,#+4
+   \   00000014   0E00001A           BNE      ??ed_onkey_0
+     67          	{
+     68          		if (msg->gbsmsg->msg==KEY_DOWN)
+   \   00000018   040095E5           LDR      R0,[R5, #+4]
+   \   0000001C   9320A0E3           MOV      R2,#+147
+   \   00000020   041090E5           LDR      R1,[R0, #+4]
+   \   00000024   402F82E3           ORR      R2,R2,#0x100
+   \   00000028   020051E1           CMP      R1,R2
+     69          		{
+     70          			if (msg->gbsmsg->submess==ENTER_BUTTON)
+   \   0000002C   08009005           LDREQ    R0,[R0, #+8]
+   \   00000030   1A005003           CMPEQ    R0,#+26
+   \   00000034   0600001A           BNE      ??ed_onkey_0
+     71          			{
+     72          				EDIT_OpenOptionMenuWithUserItems(data, on_exmenu, data, 2);
+   \   00000038   1C109FE5           LDR      R1,??ed_onkey_1  ;; on_exmenu
+   \   0000003C   0230A0E3           MOV      R3,#+2
+   \   00000040   0420A0E1           MOV      R2,R4
+   \   00000044   0400A0E1           MOV      R0,R4
+   \   00000048   E50100EF           SWI      +485
+     73          				return -1;
+   \   0000004C   0000E0E3           MVN      R0,#+0
+   \   00000050   3080BDE8           POP      {R4,R5,PC}
+     74          			}
+     75          		}
+     76          	}
+     77          	return 0;
+   \                     ??ed_onkey_0:
+   \   00000054   0000A0E3           MOV      R0,#+0
+   \   00000058   3080BDE8           POP      {R4,R5,PC}       ;; return
+   \                     ??ed_onkey_1:
+   \   0000005C   ........           DC32     on_exmenu
+     78          }
+     79          
+
+   \                                 In segment CODE, align 4, keep-with-next
+     80          void ed_ghook(GUI *data, int cmd)
+     81          {
+   \                     ed_ghook:
+   \   00000000   10402DE9           PUSH     {R4,LR}
+   \   00000004   2CD04DE2           SUB      SP,SP,#+44
+     82          	if (cmd==0x0A)
+   \   00000008   0A0051E3           CMP      R1,#+10
+   \   0000000C   0040A0E1           MOV      R4,R0
+   \   00000010   0200001A           BNE      ??ed_ghook_0
+     83          	{
+     84          		DisableIDLETMR();
+   \   00000014   7F0100EF           SWI      +383
+   \   00000018   2CD08DE2           ADD      SP,SP,#+44
+   \   0000001C   1080BDE8           POP      {R4,PC}
+     85          	}
+     86          	if (cmd==0x07)
+   \                     ??ed_ghook_0:
+   \   00000020   070051E3           CMP      R1,#+7
+   \   00000024   0E00001A           BNE      ??ed_ghook_1
+     87          	{
+     88          		EDITCONTROL ec;
+     89          		ExtractEditControl(data,2,&ec);
+   \   00000028   0D20A0E1           MOV      R2,SP
+   \   0000002C   0210A0E3           MOV      R1,#+2
+   \   00000030   690100EF           SWI      +361
+     90          		wstrcpy(ws_edit_nametmp, ec.pWS);
+   \   00000034   30009FE5           LDR      R0,??ed_ghook_2  ;; ws_edit_nametmp
+   \   00000038   28109DE5           LDR      R1,[SP, #+40]
+   \   0000003C   000090E5           LDR      R0,[R0, #+0]
+   \   00000040   1F0100EF           SWI      +287
+     91          		
+     92          		ExtractEditControl(data,4,&ec);
+   \   00000044   0D20A0E1           MOV      R2,SP
+   \   00000048   0410A0E3           MOV      R1,#+4
+   \   0000004C   0400A0E1           MOV      R0,R4
+   \   00000050   690100EF           SWI      +361
+     93          		wstrcpy(ws_edit_functmp, ec.pWS);
+   \   00000054   14009FE5           LDR      R0,??ed_ghook_2+0x4  ;; ws_edit_functmp
+   \   00000058   28109DE5           LDR      R1,[SP, #+40]
+   \   0000005C   000090E5           LDR      R0,[R0, #+0]
+   \   00000060   1F0100EF           SWI      +287
+     94          	}
+     95          }
+   \                     ??ed_ghook_1:
+   \   00000064   2CD08DE2           ADD      SP,SP,#+44       ;; stack cleaning
+   \   00000068   1080BDE8           POP      {R4,PC}          ;; return
+   \                     ??ed_ghook_2:
+   \   0000006C   ........           DC32     ws_edit_nametmp
+   \   00000070   ........           DC32     ws_edit_functmp
+     96          
+
+   \                                 In segment CODE, align 4, keep-with-next
+     97          void ed_locret(void){;}
+   \                     ed_locret:
+   \   00000000   1EFF2FE1           BX       LR               ;; return
+
+   \                                 In segment DATA_I, align 4, align-sorted
+     98          INPUTDIA_DESC ed_desc=
+   \                     ed_desc:
+   \   00000000                      DS8 56
+   \   00000038                      REQUIRE `?<Initializer for ed_desc>`
+     99          {
+    100          	1,
+    101          	ed_onkey,
+    102          	ed_ghook,
+    103          	(void *)ed_locret,
+    104          	0,
+    105          	&ed_skt,
+    106          	{0,0,0,0},
+    107          	4,
+    108          	100,
+    109          	101,
+    110          	0,
+    111          	0,
+    112          	0x40000000
+    113          };
+    114          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    115          void edit_ml(MENU_LIST *ml)
+    116          {
+   \                     edit_ml:
+   \   00000000   F0472DE9           PUSH     {R4-R10,LR}
+   \   00000004   0080A0E1           MOV      R8,R0
+    117          	ml_edit_tmp=ml;
+   \   00000008   FC019FE5           LDR      R0,??edit_ml_0+0x4  ;; ml_edit_tmp
+   \   0000000C   2CD04DE2           SUB      SP,SP,#+44
+   \   00000010   008080E5           STR      R8,[R0, #+0]
+    118          	if(!ml_edit_tmp)
+   \   00000014   000058E3           CMP      R8,#+0
+   \   00000018   7800000A           BEQ      ??edit_ml_1
+    119          		return;
+    120          	void *ma=malloc_adr();
+    121          	void *eq;
+    122          	EDITCONTROL ec;
+    123          	WSHDR *ws;
+    124          	WSHDR *ws2;
+    125          	eq=AllocEQueue(ma,mfree_adr());
+    126          	ws=AllocWS(256);
+    127          	ws2=AllocWS(256);
+    128          	
+    129          	PrepareEditControl(&ec);
+    130          	wsprintf(ws,_percent_t, LGP_NAME);
+   \   0000001C   EC719FE5           LDR      R7,??edit_ml_0+0x8  ;; edheader
+   \   00000020   148000EF           SWI      +32788
+   \   00000024   0090A0E1           MOV      R9,R0
+   \   00000028   158000EF           SWI      +32789
+   \   0000002C   0010A0E1           MOV      R1,R0
+   \   00000030   0900A0E1           MOV      R0,R9
+   \   00000034   630100EF           SWI      +355
+   \   00000038   0040A0E1           MOV      R4,R0
+   \   0000003C   400FA0E3           MOV      R0,#+256
+   \   00000040   250100EF           SWI      +293
+   \   00000044   0050A0E1           MOV      R5,R0
+   \   00000048   400FA0E3           MOV      R0,#+256
+   \   0000004C   250100EF           SWI      +293
+   \   00000050   0060A0E1           MOV      R6,R0
+   \   00000054   0D00A0E1           MOV      R0,SP
+   \   00000058   640100EF           SWI      +356
+   \   0000005C   69AF8FE2           ADR      R10,??edit_ml_0  ;; "%t"
+   \   00000060   142087E2           ADD      R2,R7,#+20
+   \   00000064   0A10A0E1           MOV      R1,R10
+   \   00000068   0500A0E1           MOV      R0,R5
+   \   0000006C   240100EF           SWI      +292
+    131          	ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ws,ws->wsbody[0]);
+   \   00000070   000095E5           LDR      R0,[R5, #+0]
+   \   00000074   0530A0E1           MOV      R3,R5
+   \   00000078   B000D0E1           LDRH     R0,[R0, #+0]
+   \   0000007C   4020A0E3           MOV      R2,#+64
+   \   00000080   0110A0E3           MOV      R1,#+1
+   \   00000084   01002DE9           PUSH     {R0}
+   \   00000088   04008DE2           ADD      R0,SP,#+4
+   \   0000008C   650100EF           SWI      +357
+    132          	AddEditControlToEditQend(eq,&ec,ma);
+   \   00000090   0920A0E1           MOV      R2,R9
+   \   00000094   04108DE2           ADD      R1,SP,#+4
+   \   00000098   0400A0E1           MOV      R0,R4
+   \   0000009C   660100EF           SWI      +358
+    133          	
+    134          	PrepareEditControl(&ec);
+   \   000000A0   04008DE2           ADD      R0,SP,#+4
+   \   000000A4   640100EF           SWI      +356
+    135          	utf8_2ws(ws2, ml->name, ml->name_len);
+   \   000000A8   0C2098E5           LDR      R2,[R8, #+12]
+   \   000000AC   081098E5           LDR      R1,[R8, #+8]
+   \   000000B0   0600A0E1           MOV      R0,R6
+   \   000000B4   E30100EF           SWI      +483
+    136          	ConstructEditControl(&ec,ECT_CURSOR_STAY,ECF_SET_CURSOR_END,ws2,128);
+   \   000000B8   8000A0E3           MOV      R0,#+128
+   \   000000BC   01002DE9           PUSH     {R0}
+   \   000000C0   0630A0E1           MOV      R3,R6
+   \   000000C4   8020A0E3           MOV      R2,#+128
+   \   000000C8   0410A0E3           MOV      R1,#+4
+   \   000000CC   08008DE2           ADD      R0,SP,#+8
+   \   000000D0   650100EF           SWI      +357
+    137          	AddEditControlToEditQend(eq,&ec,ma);
+   \   000000D4   0920A0E1           MOV      R2,R9
+   \   000000D8   08108DE2           ADD      R1,SP,#+8
+   \   000000DC   0400A0E1           MOV      R0,R4
+   \   000000E0   660100EF           SWI      +358
+    138          	
+    139          	PrepareEditControl(&ec);
+   \   000000E4   08008DE2           ADD      R0,SP,#+8
+   \   000000E8   640100EF           SWI      +356
+    140          	wsprintf(ws,_percent_t, LGP_FUNC);
+   \   000000EC   1C2087E2           ADD      R2,R7,#+28
+   \   000000F0   0A10A0E1           MOV      R1,R10
+   \   000000F4   0500A0E1           MOV      R0,R5
+   \   000000F8   240100EF           SWI      +292
+    141          	ConstructEditControl(&ec,ECT_HEADER,ECF_APPEND_EOL,ws,ws->wsbody[0]);
+   \   000000FC   000095E5           LDR      R0,[R5, #+0]
+   \   00000100   0530A0E1           MOV      R3,R5
+   \   00000104   B000D0E1           LDRH     R0,[R0, #+0]
+   \   00000108   4020A0E3           MOV      R2,#+64
+   \   0000010C   0110A0E3           MOV      R1,#+1
+   \   00000110   01002DE9           PUSH     {R0}
+   \   00000114   0C008DE2           ADD      R0,SP,#+12
+   \   00000118   650100EF           SWI      +357
+    142          	AddEditControlToEditQend(eq,&ec,ma);
+   \   0000011C   0920A0E1           MOV      R2,R9
+   \   00000120   0C108DE2           ADD      R1,SP,#+12
+   \   00000124   0400A0E1           MOV      R0,R4
+   \   00000128   660100EF           SWI      +358
+    143          	
+    144          	PrepareEditControl(&ec);
+   \   0000012C   0C008DE2           ADD      R0,SP,#+12
+   \   00000130   640100EF           SWI      +356
+    145          	utf8_2ws(ws2, ml->func, ml->func_len);
+   \   00000134   142098E5           LDR      R2,[R8, #+20]
+   \   00000138   101098E5           LDR      R1,[R8, #+16]
+    146          	ConstructEditControl(&ec,ECT_CURSOR_STAY,ECF_SET_CURSOR_END,ws2,128);
+    147          	AddEditControlToEditQend(eq,&ec,ma);
+    148          	
+    149          	patch_header(&edheader);
+    150          	patch_input(&ed_desc);
+   \   0000013C   D0809FE5           LDR      R8,??edit_ml_0+0xC  ;; ed_desc
+   \   00000140   0600A0E1           MOV      R0,R6
+   \   00000144   E30100EF           SWI      +483
+   \   00000148   8000A0E3           MOV      R0,#+128
+   \   0000014C   01002DE9           PUSH     {R0}
+   \   00000150   0630A0E1           MOV      R3,R6
+   \   00000154   0020A0E1           MOV      R2,R0
+   \   00000158   0410A0E3           MOV      R1,#+4
+   \   0000015C   10008DE2           ADD      R0,SP,#+16
+   \   00000160   650100EF           SWI      +357
+   \   00000164   0920A0E1           MOV      R2,R9
+   \   00000168   10108DE2           ADD      R1,SP,#+16
+   \   0000016C   0400A0E1           MOV      R0,R4
+   \   00000170   660100EF           SWI      +358
+   \   00000174   0090A0E3           MOV      R9,#+0
+   \   00000178   009087E5           STR      R9,[R7, #+0]
+   \   0000017C   888100EF           SWI      +33160
+   \   00000180   010040E2           SUB      R0,R0,#+1
+   \   00000184   B400C7E1           STRH     R0,[R7, #+4]
+   \   00000188   8A8100EF           SWI      +33162
+   \   0000018C   010040E2           SUB      R0,R0,#+1
+   \   00000190   B600C7E1           STRH     R0,[R7, #+6]
+   \   00000194   B891C8E1           STRH     R9,[R8, #+24]
+   \   00000198   8A8100EF           SWI      +33162
+   \   0000019C   010080E2           ADD      R0,R0,#+1
+   \   000001A0   BA01C8E1           STRH     R0,[R8, #+26]
+   \   000001A4   888100EF           SWI      +33160
+   \   000001A8   010040E2           SUB      R0,R0,#+1
+   \   000001AC   BC01C8E1           STRH     R0,[R8, #+28]
+   \   000001B0   898100EF           SWI      +33161
+   \   000001B4   0090A0E1           MOV      R9,R0
+   \   000001B8   8B8100EF           SWI      +33163
+   \   000001BC   000049E0           SUB      R0,R9,R0
+   \   000001C0   010040E2           SUB      R0,R0,#+1
+   \   000001C4   BE01C8E1           STRH     R0,[R8, #+30]
+    151          	EDGUI_ID=CreateInputTextDialog(&ed_desc,&edheader,eq,1,0);
+   \   000001C8   0000A0E3           MOV      R0,#+0
+   \   000001CC   01002DE9           PUSH     {R0}
+   \   000001D0   0130A0E3           MOV      R3,#+1
+   \   000001D4   0420A0E1           MOV      R2,R4
+   \   000001D8   0710A0E1           MOV      R1,R7
+   \   000001DC   0800A0E1           MOV      R0,R8
+   \   000001E0   670100EF           SWI      +359
+   \   000001E4   2C109FE5           LDR      R1,??edit_ml_0+0x10  ;; EDGUI_ID
+   \   000001E8   000081E5           STR      R0,[R1, #+0]
+    152          	
+    153          	FreeWS(ws);
+   \   000001EC   0500A0E1           MOV      R0,R5
+   \   000001F0   290100EF           SWI      +297
+    154          	FreeWS(ws2);
+   \   000001F4   0600A0E1           MOV      R0,R6
+   \   000001F8   290100EF           SWI      +297
+    155          }
+   \   000001FC   14D08DE2           ADD      SP,SP,#+20
+   \                     ??edit_ml_1:
+   \   00000200   2CD08DE2           ADD      SP,SP,#+44       ;; stack cleaning
+   \   00000204   F087BDE8           POP      {R4-R10,PC}      ;; return
+   \                     ??edit_ml_0:
+   \   00000208   25740000           DC8      "%t",+0
+   \   0000020C   ........           DC32     ml_edit_tmp
+   \   00000210   ........           DC32     edheader
+   \   00000214   ........           DC32     ed_desc
+   \   00000218   ........           DC32     EDGUI_ID
+
+   \                                 In segment DATA_ID, align 4, align-sorted
+   \                     `?<Initializer for ed_desc>`:
+   \   00000000   01000000....       DC32 1, ed_onkey, ed_ghook, ed_locret, 0, ed_skt
+   \              ............
+   \              ........0000
+   \              0000........
+   \   00000018   000000000000       DC16 0, 0, 0, 0
+   \              0000        
+   \   00000020   040000006400       DC32 4, 100, 101, 0, 0, 1073741824
+   \              000065000000
+   \              000000000000
+   \              000000000040
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\261\\340\\274\\255">`:
+   \   00000000   B1E0BCAD00         DC8 "\261\340\274\255"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\321\\241\\324\\361\\316\\304\\274\\376\\2`:
+   \   00000000   D1A1D4F1CEC4       DC8 "\321\241\324\361\316\304\274\376\274\320"
+   \              BCFEBCD000  
+   \   0000000B   00                 DC8 0
+   \   0000000C   D1A1D4F1CEC4       DC8 "\321\241\324\361\316\304\274\376"
+   \              BCFE00      
+   \   00000015   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 1, align-sorted
+   \   00000000   257400             DC8 "%t"
+    156          
+
+   Maximum stack usage in bytes:
+
+     Function  CSTACK
+     --------  ------
+     ed_ghook     52
+     ed_locret     0
+     ed_onkey     12
+     edit_ml      96
+     on_exmenu     8
+
+
+   Segment part sizes:
+
+     Function/Label                 Bytes
+     --------------                 -----
+     edheader                         36
+     ed_sk                            24
+     ed_skt                            8
+     on_exmenu                       128
+     ed_onkey                         96
+     ed_ghook                        116
+     ed_locret                         4
+     ed_desc                          56
+     edit_ml                         540
+     ?<Initializer for ed_desc>       56
+     ?<Constant "\261\340\274\255">    8
+     ?<Constant "\321\241\324\361\316\304\274\376\2
+                                      24
+     ?<Constant "%t">                  3
+      Others                          44
+
+ 
+ 916 bytes in segment CODE
+ 103 bytes in segment DATA_C
+  56 bytes in segment DATA_I
+  56 bytes in segment DATA_ID
+  12 bytes in segment INITTAB
+ 
+ 884 bytes of CODE  memory (+ 44 bytes shared)
+ 159 bytes of CONST memory
+  56 bytes of DATA  memory
+
+Errors: none
+Warnings: none

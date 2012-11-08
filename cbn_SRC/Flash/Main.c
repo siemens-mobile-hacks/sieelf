@@ -1,4 +1,4 @@
-#include "E:\ARM\swilib.h"
+#include "C:\Documents and Settings\Administrator\„ј√ж\inc\swilib.h"
 
 void Exit(void){
 extern void *ELF_BEGIN;
@@ -38,7 +38,7 @@ int main(char *exename, char *fname){
     while(*++s && *s!='-');
     if(*s && (size=getval(s+1))){
       fwrite32(f,(char*)0xA0000000+from,size,&err);
-      sprintf(tmp,"%X-%X\nсохранен в файл",from,size);
+      sprintf(tmp,"%X-%X\nSave to a file",from,size);
       ShowMSG(1,(int)tmp);
     }fclose(f,&err);
   }

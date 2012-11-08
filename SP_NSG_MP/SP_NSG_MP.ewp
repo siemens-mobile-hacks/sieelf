@@ -2180,7 +2180,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild>$PROJ_DIR$\2vkp.bat $EXE_DIR$</postbuild>
+        <postbuild></postbuild>
       </data>
     </settings>
     <settings>

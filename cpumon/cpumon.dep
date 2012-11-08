@@ -1,0 +1,1053 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <fileChecksum>2048238008</fileChecksum>
+  <configuration>
+    <name>Debug</name>
+    <outputs>
+      <file>$PROJ_DIR$\render.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\net.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\render.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\ram.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\config.r79</file>
+      <file>$PROJ_DIR$\Debug\Exe\cpumon.elf</file>
+      <file>$PROJ_DIR$\Debug\Obj\disk.r79</file>
+      <file>$PROJ_DIR$\Debug\Obj\cpu.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\disk.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\config.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\func.r79</file>
+      <file>$PROJ_DIR$\cpumon.h</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$PROJ_DIR$\config.c</file>
+      <file>$PROJ_DIR$\cpu.c</file>
+      <file>$PROJ_DIR$\disk.c</file>
+      <file>$PROJ_DIR$\func.asm</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\net.c</file>
+      <file>$PROJ_DIR$\ram.c</file>
+      <file>$PROJ_DIR$\render.c</file>
+      <file>$PROJ_DIR$\Debug\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\..\inc\obs.h</file>
+      <file>$PROJ_DIR$\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\render.r79</file>
+      <file>$PROJ_DIR$\Debug\Obj\ram.r79</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.r79</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\net.r79</file>
+      <file>$PROJ_DIR$\Debug\Obj\cpumon.pbd</file>
+      <file>$PROJ_DIR$\Debug\Obj\cpu.r79</file>
+      <file>$PROJ_DIR$\..\inc\md5.h</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 5</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 28</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 10</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 36 37 39 38 17 15 14 16 18 43 30 29 35 34</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 11</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 35 36 37 39 38 17 15 14 16 18 43 30 29</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\cpu.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 42</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 7</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 36 37 39 38 17 15 14 16 18 43 30 29 13 34</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\disk.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 6</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 8</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 36 37 39 38 17 15 14 16 18 43 30 29 13 34</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\func.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 12</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 33</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 9</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 36 37 39 38 17 15 14 16 18 43 30 29 34 13 0</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\net.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 40</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 1</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 36 37 39 38 17 15 14 16 18 43 30 29 13 34</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ram.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 32</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 3</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\render.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 31</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 2</file>
+        </tool>
+      </outputs>
+    </file>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>Release</name>
+    <outputs>
+      <file>$PROJ_DIR$\render.h</file>
+      <file>$PROJ_DIR$\Release\Exe\cpumon.elf</file>
+      <file>$PROJ_DIR$\Release\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\Release\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\Release\Obj\disk.pbi</file>
+      <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Release\Obj\config.pbi</file>
+      <file>$PROJ_DIR$\Release\Obj\cpu.pbi</file>
+      <file>$PROJ_DIR$\Release\Obj\cpu.r79</file>
+      <file>$PROJ_DIR$\Release\Obj\config.r79</file>
+      <file>$PROJ_DIR$\cpumon.h</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\Release\Obj\cpumon.pbd</file>
+      <file>$PROJ_DIR$\Release\Obj\render.pbi</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$PROJ_DIR$\config.c</file>
+      <file>$PROJ_DIR$\cpu.c</file>
+      <file>$PROJ_DIR$\disk.c</file>
+      <file>$PROJ_DIR$\func.asm</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\net.c</file>
+      <file>$PROJ_DIR$\ram.c</file>
+      <file>$PROJ_DIR$\render.c</file>
+      <file>$PROJ_DIR$\..\inc\obs.h</file>
+      <file>$PROJ_DIR$\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\Release\Obj\func.r79</file>
+      <file>$PROJ_DIR$\Release\Obj\ram.pbi</file>
+      <file>$PROJ_DIR$\Release\Obj\main.r79</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\Release\Obj\net.r79</file>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\Release\List\conf_loader.lst</file>
+      <file>$PROJ_DIR$\Release\Obj\ram.r79</file>
+      <file>$PROJ_DIR$\Release\List\main.lst</file>
+      <file>$PROJ_DIR$\Release\Obj\net.pbi</file>
+      <file>$PROJ_DIR$\Release\List\cpu.lst</file>
+      <file>$PROJ_DIR$\test.xcl</file>
+      <file>$PROJ_DIR$\Release\Obj\render.r79</file>
+      <file>$PROJ_DIR$\Release\Obj\disk.r79</file>
+      <file>$PROJ_DIR$\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\Release\List\render.lst</file>
+      <file>$PROJ_DIR$\Release\List\net.lst</file>
+      <file>$PROJ_DIR$\Release\List\ram.lst</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
+      <file>$PROJ_DIR$\Release\List\disk.lst</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\Release\Exe\cpumon.elf</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 44 2 9 8 46 29 31 35 40 45 51</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 1</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release\Obj\cpumon.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 3 6 7 4 5 42 30 17</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 2 39</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 3</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 34 36 38 37 14 12 11 13 15 47 28 27 33 32</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 34 36 38 37 14 12 11 13 15 47 28 27 33 32</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 9</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 6</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 33 34 36 38 37 14 12 11 13 15 47 28 27</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 33 34 36 38 37 14 12 11 13 15 47 28 27</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\cpu.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 8 43</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 7</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 34 36 38 37 14 12 11 13 15 47 28 27 10 32</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 34 36 38 37 14 12 11 13 15 47 28 27 10 32</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\disk.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 46 52</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 34 36 38 37 14 12 11 13 15 47 28 27 10 32</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 34 36 38 37 14 12 11 13 15 47 28 27 10 32</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\func.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 29</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 31 41</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 34 36 38 37 14 12 11 13 15 47 28 27 32 10 0</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 34 36 38 37 14 12 11 13 15 47 28 27 32 10 0</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\net.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 35 49</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 42</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 34 36 38 37 14 12 11 13 15 47 28 27 10 32</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 34 36 38 37 14 12 11 13 15 47 28 27 10 32</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ram.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 40 50</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 30</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 34 36 38 37 14 12 11 13 15 47 28 27 10 32</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 34 36 38 37 14 12 11 13 15 47 28 27 10 32</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\render.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 45 48</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 17</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 32 10</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 32 10</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>Release_ELKA</name>
+    <outputs>
+      <file>$PROJ_DIR$\render.h</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\disk.r79</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\cpu.r79</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\func.r79</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\config.r79</file>
+      <file>$PROJ_DIR$\cpumon.h</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\cpu.pbi</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$PROJ_DIR$\config.c</file>
+      <file>$PROJ_DIR$\cpu.c</file>
+      <file>$PROJ_DIR$\disk.c</file>
+      <file>$PROJ_DIR$\func.asm</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\net.c</file>
+      <file>$PROJ_DIR$\ram.c</file>
+      <file>$PROJ_DIR$\render.c</file>
+      <file>$PROJ_DIR$\..\inc\obs.h</file>
+      <file>$PROJ_DIR$\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\Release_ELKA\List\net.lst</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\render.r79</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\config.pbi</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\net.r79</file>
+      <file>$PROJ_DIR$\Release_ELKA\List\conf_loader.lst</file>
+      <file>$PROJ_DIR$\test.xcl</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\ram.pbi</file>
+      <file>$PROJ_DIR$\Release_ELKA\List\ram.lst</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\ram.r79</file>
+      <file>$PROJ_DIR$\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\render.pbi</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\net.pbi</file>
+      <file>$PROJ_DIR$\Release_ELKA\Exe\cpumon.elf</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\disk.pbi</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
+      <file>$PROJ_DIR$\Release_ELKA\Obj\cpumon.pbd</file>
+      <file>$PROJ_DIR$\Release_ELKA\List\cpu.lst</file>
+      <file>$PROJ_DIR$\Release_ELKA\List\main.lst</file>
+      <file>$PROJ_DIR$\Release_ELKA\List\disk.lst</file>
+      <file>$PROJ_DIR$\Release_ELKA\List\render.lst</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 45</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 37</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 3</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 29 30 32 31 13 11 10 12 14 42 25 24 28 27</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 29 30 32 31 13 11 10 12 14 42 25 24 28 27</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 7</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 35</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 28 29 30 32 31 13 11 10 12 14 42 25 24</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 28 29 30 32 31 13 11 10 12 14 42 25 24</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\cpu.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 2 49</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 9</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 29 30 32 31 13 11 10 12 14 42 25 24 8 27</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 29 30 32 31 13 11 10 12 14 42 25 24 8 27</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\disk.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 1 51</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 46</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 29 30 32 31 13 11 10 12 14 42 25 24 8 27</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 29 30 32 31 13 11 10 12 14 42 25 24 8 27</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\func.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 6</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 34 50</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 29 30 32 31 13 11 10 12 14 42 25 24 27 8 0</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 29 30 32 31 13 11 10 12 14 42 25 24 27 8 0</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\net.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 36 26</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 44</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 29 30 32 31 13 11 10 12 14 42 25 24 8 27</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 29 30 32 31 13 11 10 12 14 42 25 24 8 27</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ram.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 41 40</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 39</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 29 30 32 31 13 11 10 12 14 42 25 24 8 27</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 29 30 32 31 13 11 10 12 14 42 25 24 8 27</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\render.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 33 52</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 43</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 27 8</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 27 8</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_ELKA\Exe\cpumon.elf</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 38 4 7 2 1 6 34 36 41 33 47</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_ELKA\Obj\cpumon.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 3 35 9 46 5 44 39 43</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>Release_SGOLD</name>
+    <outputs>
+      <file>$PROJ_DIR$\render.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\render.r79</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\net.pbi</file>
+      <file>$PROJ_DIR$\cpumon.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\ram.pbi</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\cpu.r79</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$PROJ_DIR$\config.c</file>
+      <file>$PROJ_DIR$\cpu.c</file>
+      <file>$PROJ_DIR$\disk.c</file>
+      <file>$PROJ_DIR$\func.asm</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\net.c</file>
+      <file>$PROJ_DIR$\ram.c</file>
+      <file>$PROJ_DIR$\render.c</file>
+      <file>$PROJ_DIR$\..\inc\obs.h</file>
+      <file>$PROJ_DIR$\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\disk.pbi</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\config.r79</file>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\net.r79</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\config.pbi</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\ram.r79</file>
+      <file>$PROJ_DIR$\Release_SGOLD\List\render.lst</file>
+      <file>$PROJ_DIR$\test.xcl</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\func.r79</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\disk.r79</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\cpu.pbi</file>
+      <file>$PROJ_DIR$\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\cpumon.pbd</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\render.pbi</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Exe\cpumon.elf</file>
+      <file>$PROJ_DIR$\Release_SGOLD\List\net.lst</file>
+      <file>$PROJ_DIR$\Release_SGOLD\List\main.lst</file>
+      <file>$PROJ_DIR$\Release_SGOLD\List\disk.lst</file>
+      <file>$PROJ_DIR$\Release_SGOLD\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Release_SGOLD\List\conf_loader.lst</file>
+      <file>$PROJ_DIR$\Release_SGOLD\List\ram.lst</file>
+      <file>$PROJ_DIR$\Release_SGOLD\List\cpu.lst</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 45</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 40 50</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 41</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 25 28 30 29 8 6 5 7 9 39 21 20 24 23</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 25 28 30 29 8 6 5 7 9 39 21 20 24 23</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 27</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 32</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 24 25 28 30 29 8 6 5 7 9 39 21 20</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 24 25 28 30 29 8 6 5 7 9 39 21 20</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\cpu.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 10 52</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 38</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 25 28 30 29 8 6 5 7 9 39 21 20 3 23</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 25 28 30 29 8 6 5 7 9 39 21 20 3 23</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\disk.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 37 48</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 26</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 25 28 30 29 8 6 5 7 9 39 21 20 3 23</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 25 28 30 29 8 6 5 7 9 39 21 20 3 23</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\func.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 36</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 49 47</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 22</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 25 28 30 29 8 6 5 7 9 39 21 20 23 3 0</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 25 28 30 29 8 6 5 7 9 39 21 20 23 3 0</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\net.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 31 46</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 2</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 25 28 30 29 8 6 5 7 9 39 21 20 3 23</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 25 28 30 29 8 6 5 7 9 39 21 20 3 23</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\ram.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 33 51</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 25 28 30 29 8 6 5 7 9 39 21 20 3 23</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 25 28 30 29 8 6 5 7 9 39 21 20 3 23</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\render.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 1 34</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 44</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 23 3</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 23 3</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_SGOLD\Obj\cpumon.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 41 32 38 26 22 2 4 44</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release_SGOLD\Exe\cpumon.elf</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 35 40 27 10 37 36 49 31 33 1 43</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+</project>
+
+

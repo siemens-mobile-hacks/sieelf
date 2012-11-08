@@ -1,0 +1,795 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    14/Feb/2012  15:39:30 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDE #
+#                       C\AAC_FILE.c                                         #
+#    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDE #
+#                       C\AAC_FILE.c -D NDEBUG -lC                           #
+#                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\ #
+#                       Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player #
+#                       \Player\Release\Obj\ -s9 --cpu_mode arm --endian     #
+#                       little --cpu ARM926EJ-S --stack_align 4 --interwork  #
+#                       -e --fpu None --dlib_config "D:\Program              #
+#                       Files\IAR\Embedded Workbench 4.0                     #
+#                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude       #
+#                       swilib.h -I "D:\Program Files\IAR\Embedded           #
+#                       Workbench 4.0 Evaluation\ARM\INC\"                   #
+#                       --inline_threshold=16                                #
+#    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\AAC_FILE.lst                                     #
+#    Object file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\O #
+#                       bj\AAC_FILE.r79                                      #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE.c
+      1          /* ***** BEGIN LICENSE BLOCK *****  
+      2           * Source last modified: $Id: sbrfft.c,v 1.1 2005/02/26 01:47:35 jrecker Exp $ 
+      3           *   
+      4           * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+      5           *       
+      6           * The contents of this file, and the files included with this file, 
+      7           * are subject to the current version of the RealNetworks Public 
+      8           * Source License (the "RPSL") available at 
+      9           * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+     10           * the file under the current version of the RealNetworks Community 
+     11           * Source License (the "RCSL") available at 
+     12           * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+     13           * will apply. You may also obtain the license terms directly from 
+     14           * RealNetworks.  You may not use this file except in compliance with 
+     15           * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+     16           * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+     17           * the rights, obligations and limitations governing use of the 
+     18           * contents of the file. 
+     19           *   
+     20           * This file is part of the Helix DNA Technology. RealNetworks is the 
+     21           * developer of the Original Code and owns the copyrights in the 
+     22           * portions it created. 
+     23           *   
+     24           * This file, and the files included with this file, is distributed 
+     25           * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+     26           * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+     27           * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+     28           * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+     29           * ENJOYMENT OR NON-INFRINGEMENT. 
+     30           *  
+     31           * Technology Compatibility Kit Test Suite(s) Location:  
+     32           *    http://www.helixcommunity.org/content/tck  
+     33           *  
+     34           * Contributor(s):  
+     35           *   
+     36           * ***** END LICENSE BLOCK ***** */  
+     37          
+     38          /**************************************************************************************
+     39           * Fixed-point HE-AAC decoder
+     40           * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+     41           * February 2005
+     42           *
+     43           * sbrfft.c - optimized FFT for SBR QMF filters
+     44           **************************************************************************************/
+     45          
+     46          #include "sbr_aac.h"
+     47          #include "assembly_aac.h"
+     48          
+     49          #define SQRT1_2	0x5a82799a
+     50          
+     51          /* swap RE{p0} with RE{p1} and IM{P0} with IM{P1} */
+     52          #define swapcplx(p0,p1) \
+     53          	t = p0; t1 = *(&(p0)+1); p0 = p1; *(&(p0)+1) = *(&(p1)+1); p1 = t; *(&(p1)+1) = t1
+     54          
+     55          /* nfft = 32, hard coded since small, fixed size FFT
+     56          static const unsigned char bitrevtab32[9] = {
+     57          	0x01, 0x04, 0x03, 0x06, 0x00, 0x02, 0x05, 0x07, 0x00,
+     58          };
+     59          */
+     60          
+     61          /* twiddle table for radix 4 pass, format = Q31 */
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     62          static const int twidTabOdd32[8*6] = {
+   \                     twidTabOdd32:
+   \   00000000   000000400000       DC32 1073741824, 0, 1073741824, 0, 1073741824, 0, 1402911301
+   \              000000000040
+   \              000000000000
+   \              004000000000
+   \              45BA9E53    
+   \   0000001C   591D82E7BE8B       DC32 -410903207, 1262586814, -209476638, 1489322693, -596538995
+   \              414BE2A383F3
+   \              C542C5588D89
+   \              71DC        
+   \   00000030   9A79825A33C3       DC32 1518500250, -759250125, 1402911301, -410903207, 1402911301
+   \              BED245BA9E53
+   \              591D82E745BA
+   \              9E53        
+   \   00000044   6228DFC445BA       DC32 -992008094, 1402911301, -992008094, 1489322693, -596538995
+   \              9E536228DFC4
+   \              C542C5588D89
+   \              71DC        
+   \   00000058   82D3483260D0       DC32 843633538, -1053110176, 1073741824, -1073741824, 1518500250
+   \              3AC100000040
+   \              000000C09A79
+   \              825A        
+   \   0000006C   33C3BED20000       DC32 -759250125, 0, -759250125, 581104888, -992008094, 1489322693
+   \              000033C3BED2
+   \              F8F4A2226228
+   \              DFC4C542C558
+   \   00000084   AE33C9CA7E2C       DC32 -892783698, -843633538, -209476638, 0, -759250125, 1402911301
+   \              B7CDE2A383F3
+   \              0000000033C3
+   \              BED245BA9E53
+   \   0000009C   6228DFC4BB45       DC32 -992008094, -1402911301, 410903207, -581104888, -410903207
+   \              61ACA7E27D18
+   \              080B5DDD591D
+   \              82E7        
+   \   000000B0   BE8B414B60D0       DC32 1262586814, -1053110176, -1489322693, 892783698
+   \              3AC13BBD3AA7
+   \              52CC3635    
+     63          	0x40000000, 0x00000000, 0x40000000, 0x00000000, 0x40000000, 0x00000000, 0x539eba45, 0xe7821d59, 
+     64          	0x4b418bbe, 0xf383a3e2, 0x58c542c5, 0xdc71898d, 0x5a82799a, 0xd2bec333, 0x539eba45, 0xe7821d59, 
+     65          	0x539eba45, 0xc4df2862, 0x539eba45, 0xc4df2862, 0x58c542c5, 0xdc71898d, 0x3248d382, 0xc13ad060, 
+     66          	0x40000000, 0xc0000000, 0x5a82799a, 0xd2bec333, 0x00000000, 0xd2bec333, 0x22a2f4f8, 0xc4df2862, 
+     67          	0x58c542c5, 0xcac933ae, 0xcdb72c7e, 0xf383a3e2, 0x00000000, 0xd2bec333, 0x539eba45, 0xc4df2862, 
+     68          	0xac6145bb, 0x187de2a7, 0xdd5d0b08, 0xe7821d59, 0x4b418bbe, 0xc13ad060, 0xa73abd3b, 0x3536cc52, 
+     69          };
+     70          
+     71          /**************************************************************************************
+     72           * Function:    BitReverse32
+     73           *
+     74           * Description: Ken's fast in-place bit reverse
+     75           *
+     76           * Inputs:      buffer of 32 complex samples
+     77           *
+     78           * Outputs:     bit-reversed samples in same buffer
+     79           *
+     80           * Return:      none
+     81          **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+     82          static void BitReverse32(int *inout)
+     83          {
+     84          	int t, t1;
+     85          
+     86          	swapcplx(inout[2],  inout[32]);
+   \                     BitReverse32:
+   \   00000000   803090E5           LDR      R3,[R0, #+128]
+   \   00000004   081090E5           LDR      R1,[R0, #+8]
+   \   00000008   0C2090E5           LDR      R2,[R0, #+12]
+   \   0000000C   083080E5           STR      R3,[R0, #+8]
+   \   00000010   843090E5           LDR      R3,[R0, #+132]
+   \   00000014   0C3080E5           STR      R3,[R0, #+12]
+   \   00000018   801080E5           STR      R1,[R0, #+128]
+   \   0000001C   842080E5           STR      R2,[R0, #+132]
+     87          	swapcplx(inout[4],  inout[16]);
+   \   00000020   403090E5           LDR      R3,[R0, #+64]
+   \   00000024   101090E5           LDR      R1,[R0, #+16]
+   \   00000028   142090E5           LDR      R2,[R0, #+20]
+   \   0000002C   103080E5           STR      R3,[R0, #+16]
+   \   00000030   443090E5           LDR      R3,[R0, #+68]
+   \   00000034   143080E5           STR      R3,[R0, #+20]
+   \   00000038   401080E5           STR      R1,[R0, #+64]
+   \   0000003C   442080E5           STR      R2,[R0, #+68]
+     88          	swapcplx(inout[6],  inout[48]);
+   \   00000040   C03090E5           LDR      R3,[R0, #+192]
+   \   00000044   181090E5           LDR      R1,[R0, #+24]
+   \   00000048   1C2090E5           LDR      R2,[R0, #+28]
+   \   0000004C   183080E5           STR      R3,[R0, #+24]
+   \   00000050   C43090E5           LDR      R3,[R0, #+196]
+   \   00000054   1C3080E5           STR      R3,[R0, #+28]
+   \   00000058   C01080E5           STR      R1,[R0, #+192]
+   \   0000005C   C42080E5           STR      R2,[R0, #+196]
+     89          	swapcplx(inout[10], inout[40]);
+   \   00000060   A03090E5           LDR      R3,[R0, #+160]
+   \   00000064   281090E5           LDR      R1,[R0, #+40]
+   \   00000068   2C2090E5           LDR      R2,[R0, #+44]
+   \   0000006C   283080E5           STR      R3,[R0, #+40]
+   \   00000070   A43090E5           LDR      R3,[R0, #+164]
+   \   00000074   2C3080E5           STR      R3,[R0, #+44]
+   \   00000078   A01080E5           STR      R1,[R0, #+160]
+   \   0000007C   A42080E5           STR      R2,[R0, #+164]
+     90          	swapcplx(inout[12], inout[24]);
+   \   00000080   603090E5           LDR      R3,[R0, #+96]
+   \   00000084   301090E5           LDR      R1,[R0, #+48]
+   \   00000088   342090E5           LDR      R2,[R0, #+52]
+   \   0000008C   303080E5           STR      R3,[R0, #+48]
+   \   00000090   643090E5           LDR      R3,[R0, #+100]
+   \   00000094   343080E5           STR      R3,[R0, #+52]
+   \   00000098   601080E5           STR      R1,[R0, #+96]
+   \   0000009C   642080E5           STR      R2,[R0, #+100]
+     91          	swapcplx(inout[14], inout[56]);
+   \   000000A0   E03090E5           LDR      R3,[R0, #+224]
+   \   000000A4   381090E5           LDR      R1,[R0, #+56]
+   \   000000A8   3C2090E5           LDR      R2,[R0, #+60]
+   \   000000AC   383080E5           STR      R3,[R0, #+56]
+   \   000000B0   E43090E5           LDR      R3,[R0, #+228]
+   \   000000B4   3C3080E5           STR      R3,[R0, #+60]
+   \   000000B8   E01080E5           STR      R1,[R0, #+224]
+   \   000000BC   E42080E5           STR      R2,[R0, #+228]
+     92          	swapcplx(inout[18], inout[36]);
+   \   000000C0   903090E5           LDR      R3,[R0, #+144]
+   \   000000C4   481090E5           LDR      R1,[R0, #+72]
+   \   000000C8   4C2090E5           LDR      R2,[R0, #+76]
+   \   000000CC   483080E5           STR      R3,[R0, #+72]
+   \   000000D0   943090E5           LDR      R3,[R0, #+148]
+   \   000000D4   4C3080E5           STR      R3,[R0, #+76]
+   \   000000D8   901080E5           STR      R1,[R0, #+144]
+   \   000000DC   942080E5           STR      R2,[R0, #+148]
+     93          	swapcplx(inout[22], inout[52]);
+   \   000000E0   D03090E5           LDR      R3,[R0, #+208]
+   \   000000E4   581090E5           LDR      R1,[R0, #+88]
+   \   000000E8   5C2090E5           LDR      R2,[R0, #+92]
+   \   000000EC   583080E5           STR      R3,[R0, #+88]
+   \   000000F0   D43090E5           LDR      R3,[R0, #+212]
+   \   000000F4   5C3080E5           STR      R3,[R0, #+92]
+   \   000000F8   D01080E5           STR      R1,[R0, #+208]
+   \   000000FC   D42080E5           STR      R2,[R0, #+212]
+     94          	swapcplx(inout[26], inout[44]);
+   \   00000100   B03090E5           LDR      R3,[R0, #+176]
+   \   00000104   681090E5           LDR      R1,[R0, #+104]
+   \   00000108   6C2090E5           LDR      R2,[R0, #+108]
+   \   0000010C   683080E5           STR      R3,[R0, #+104]
+   \   00000110   B43090E5           LDR      R3,[R0, #+180]
+   \   00000114   6C3080E5           STR      R3,[R0, #+108]
+   \   00000118   B01080E5           STR      R1,[R0, #+176]
+   \   0000011C   B42080E5           STR      R2,[R0, #+180]
+     95          	swapcplx(inout[30], inout[60]);
+   \   00000120   F03090E5           LDR      R3,[R0, #+240]
+   \   00000124   781090E5           LDR      R1,[R0, #+120]
+   \   00000128   7C2090E5           LDR      R2,[R0, #+124]
+   \   0000012C   783080E5           STR      R3,[R0, #+120]
+   \   00000130   F43090E5           LDR      R3,[R0, #+244]
+   \   00000134   7C3080E5           STR      R3,[R0, #+124]
+   \   00000138   F01080E5           STR      R1,[R0, #+240]
+   \   0000013C   F42080E5           STR      R2,[R0, #+244]
+     96          	swapcplx(inout[38], inout[50]);
+   \   00000140   C83090E5           LDR      R3,[R0, #+200]
+   \   00000144   981090E5           LDR      R1,[R0, #+152]
+   \   00000148   9C2090E5           LDR      R2,[R0, #+156]
+   \   0000014C   983080E5           STR      R3,[R0, #+152]
+   \   00000150   CC3090E5           LDR      R3,[R0, #+204]
+   \   00000154   9C3080E5           STR      R3,[R0, #+156]
+   \   00000158   C81080E5           STR      R1,[R0, #+200]
+   \   0000015C   CC2080E5           STR      R2,[R0, #+204]
+     97          	swapcplx(inout[46], inout[58]);
+   \   00000160   E83090E5           LDR      R3,[R0, #+232]
+   \   00000164   B81090E5           LDR      R1,[R0, #+184]
+   \   00000168   BC2090E5           LDR      R2,[R0, #+188]
+   \   0000016C   B83080E5           STR      R3,[R0, #+184]
+   \   00000170   EC3090E5           LDR      R3,[R0, #+236]
+   \   00000174   BC3080E5           STR      R3,[R0, #+188]
+   \   00000178   E81080E5           STR      R1,[R0, #+232]
+   \   0000017C   EC2080E5           STR      R2,[R0, #+236]
+     98          }
+   \   00000180   1EFF2FE1           BX       LR               ;; return
+     99          
+    100          /**************************************************************************************
+    101           * Function:    R8FirstPass32
+    102           *
+    103           * Description: radix-8 trivial pass for decimation-in-time FFT (log2(N) = 5)
+    104           *
+    105           * Inputs:      buffer of (bit-reversed) samples
+    106           *
+    107           * Outputs:     processed samples in same buffer
+    108           *
+    109           * Return:      none
+    110           *
+    111           * Notes:       assumes 3 guard bits, gains 1 integer bit
+    112           *              guard bits out = guard bits in - 3 (if inputs are full scale)
+    113           *                or guard bits in - 2 (if inputs bounded to +/- sqrt(2)/2)
+    114           *              see scaling comments in fft.c for base AAC
+    115           *              should compile with no stack spills on ARM (verify compiled output)
+    116           *              current instruction count (per pass): 16 LDR, 16 STR, 4 SMULL, 61 ALU
+    117           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    118          static void R8FirstPass32(int *r0)
+    119          {
+   \                     R8FirstPass32:
+   \   00000000   F04F2DE9           PUSH     {R4-R11,LR}
+   \   00000004   0CD04DE2           SUB      SP,SP,#+12
+    120          	int r1, r2, r3, r4, r5, r6, r7;
+    121          	int r8, r9, r10, r11, r12, r14;
+    122          
+    123          	/* number of passes = fft size / 8 = 32 / 8 = 4 */
+    124          	r1 = (32 >> 3);
+   \   00000008   0410A0E3           MOV      R1,#+4
+    125          	do {
+    126          
+    127          		r2 = r0[8];
+   \                     ??R8FirstPass32_0:
+   \   0000000C   204090E5           LDR      R4,[R0, #+32]
+    128          		r3 = r0[9];
+   \   00000010   245090E5           LDR      R5,[R0, #+36]
+    129          		r4 = r0[10];
+   \   00000014   289090E5           LDR      R9,[R0, #+40]
+    130          		r5 = r0[11];
+   \   00000018   2C8090E5           LDR      R8,[R0, #+44]
+    131          		r6 = r0[12];
+    132          		r7 = r0[13];
+   \   0000001C   342090E5           LDR      R2,[R0, #+52]
+    133          		r8 = r0[14];
+    134          		r9 = r0[15];
+   \   00000020   3C3090E5           LDR      R3,[R0, #+60]
+   \   00000024   306090E5           LDR      R6,[R0, #+48]
+   \   00000028   387090E5           LDR      R7,[R0, #+56]
+    135          
+    136          		r10 = r2 + r4;
+   \   0000002C   04B089E0           ADD      R11,R9,R4
+   \   00000030   00B08DE5           STR      R11,[SP, #+0]
+    137          		r11 = r3 + r5;
+   \   00000034   05B088E0           ADD      R11,R8,R5
+   \   00000038   04B08DE5           STR      R11,[SP, #+4]
+    138          		r12 = r6 + r8;
+    139          		r14 = r7 + r9;
+   \   0000003C   02B083E0           ADD      R11,R3,R2
+    140          
+    141          		r2 -= r4;
+   \   00000040   094044E0           SUB      R4,R4,R9
+    142          		r3 -= r5;
+    143          		r6 -= r8;
+    144          		r7 -= r9;
+   \   00000044   032042E0           SUB      R2,R2,R3
+    145          
+    146          		r4 = r2 - r7;
+   \   00000048   02C044E0           SUB      R12,R4,R2
+    147          		r5 = r2 + r7;
+   \   0000004C   04A082E0           ADD      R10,R2,R4
+    148          		r8 = r3 - r6;
+    149          		r9 = r3 + r6;
+    150          
+    151          		r2 = r4 - r9;
+    152          		r3 = r4 + r9;
+    153          		r6 = r5 - r8;
+    154          		r7 = r5 + r8;
+    155          
+    156          		r2 = MULSHIFT32(SQRT1_2, r2);	/* can use r4, r5, r8, or r9 for constant and lo32 scratch reg */
+   \   00000050   B4419FE5           LDR      R4,??R8FirstPass32_1  ;; 0x5a82799a
+   \   00000054   06E087E0           ADD      LR,R7,R6
+   \   00000058   085045E0           SUB      R5,R5,R8
+   \   0000005C   076046E0           SUB      R6,R6,R7
+   \   00000060   069045E0           SUB      R9,R5,R6
+   \   00000064   058086E0           ADD      R8,R6,R5
+   \   00000068   08204CE0           SUB      R2,R12,R8
+   \   0000006C   C23FA0E1           ASR      R3,R2,#+31
+   \   00000070   0260A0E1           MOV      R6,R2
+   \   00000074   0370A0E1           MOV      R7,R3
+   \   00000078   962483E0           UMULL    R2,R3,R6,R4
+    157          		r3 = MULSHIFT32(SQRT1_2, r3);
+    158          		r6 = MULSHIFT32(SQRT1_2, r6);
+    159          		r7 = MULSHIFT32(SQRT1_2, r7);
+    160          
+    161          		r4 = r10 + r12;
+    162          		r5 = r10 - r12;
+    163          		r8 = r11 + r14;
+    164          		r9 = r11 - r14;
+    165          	
+    166          		r10 = r0[0];
+    167          		r11 = r0[2];
+    168          		r12 = r0[4];
+    169          		r14 = r0[6];
+    170          
+    171          		r10 += r11;
+    172          		r12 += r14;
+    173          
+    174          		r4 >>= 1;
+    175          		r10 += r12;
+    176          		r4 += (r10 >> 1);
+    177          		r0[ 0] = r4;
+    178          		r4 -= (r10 >> 1);
+    179          		r4 = (r10 >> 1) - r4;
+    180          		r0[ 8] = r4;
+    181          
+    182          		r9 >>= 1;
+    183          		r10 -= 2*r12;
+    184          		r4 = (r10 >> 1) + r9;
+    185          		r0[ 4] = r4;
+    186          		r4 = (r10 >> 1) - r9;
+    187          		r0[12] = r4;
+    188          		r10 += r12;
+    189          
+    190          		r10 -= 2*r11;
+    191          		r12 -= 2*r14;
+    192          
+    193          		r4 =  r0[1];
+    194          		r9 =  r0[3];
+    195          		r11 = r0[5];
+    196          		r14 = r0[7];
+    197          
+    198          		r4 += r9;
+    199          		r11 += r14;
+    200          
+    201          		r8 >>= 1;
+    202          		r4 += r11;
+    203          		r8 += (r4 >> 1);
+    204          		r0[ 1] = r8;
+    205          		r8 -= (r4 >> 1);
+    206          		r8 = (r4 >> 1) - r8;
+    207          		r0[ 9] = r8;
+    208          
+    209          		r5 >>= 1;
+    210          		r4 -= 2*r11;
+    211          		r8 = (r4 >> 1) - r5;
+    212          		r0[ 5] = r8;
+    213          		r8 = (r4 >> 1) + r5;
+    214          		r0[13] = r8;
+    215          		r4 += r11;
+    216          
+    217          		r4 -= 2*r9;
+    218          		r11 -= 2*r14;
+    219          
+    220          		r9 = r10 - r11;
+    221          		r10 += r11;
+    222          		r14 = r4 + r12;
+    223          		r4 -= r12;
+    224          
+    225          		r5 = (r10 >> 1) + r7;
+    226          		r8 = (r4 >> 1) - r6;
+    227          		r0[ 2] = r5;
+    228          		r0[ 3] = r8;
+    229          
+    230          		r5 = (r9 >> 1) - r2;
+    231          		r8 = (r14 >> 1) - r3;
+    232          		r0[ 6] = r5;
+    233          		r0[ 7] = r8;
+    234          
+    235          		r5 = (r10 >> 1) - r7;
+    236          		r8 = (r4 >> 1) + r6;
+    237          		r0[10] = r5;
+    238          		r0[11] = r8;
+    239          		
+    240          		r5 = (r9 >> 1) + r2;
+    241          		r8 = (r14 >> 1) + r3;
+    242          		r0[14] = r5;
+    243          		r0[15] = r8;
+    244          
+    245          		r0 += 16;
+    246          		r1--;
+   \   0000007C   011051E2           SUBS     R1,R1,#+1
+   \   00000080   973423E0           MLA      R3,R7,R4,R3
+   \   00000084   0C4088E0           ADD      R4,R8,R12
+   \   00000088   0320A0E1           MOV      R2,R3
+   \   0000008C   04309DE5           LDR      R3,[SP, #+4]
+   \   00000090   08208DE5           STR      R2,[SP, #+8]
+   \   00000094   70219FE5           LDR      R2,??R8FirstPass32_1  ;; 0x5a82799a
+   \   00000098   C45FA0E1           ASR      R5,R4,#+31
+   \   0000009C   946287E0           UMULL    R6,R7,R4,R2
+   \   000000A0   09404AE0           SUB      R4,R10,R9
+   \   000000A4   957227E0           MLA      R7,R5,R2,R7
+   \   000000A8   C45FA0E1           ASR      R5,R4,#+31
+   \   000000AC   07C0A0E1           MOV      R12,R7
+   \   000000B0   946287E0           UMULL    R6,R7,R4,R2
+   \   000000B4   0A4089E0           ADD      R4,R9,R10
+   \   000000B8   189090E5           LDR      R9,[R0, #+24]
+   \   000000BC   957227E0           MLA      R7,R5,R2,R7
+   \   000000C0   C45FA0E1           ASR      R5,R4,#+31
+   \   000000C4   0780A0E1           MOV      R8,R7
+   \   000000C8   946287E0           UMULL    R6,R7,R4,R2
+   \   000000CC   03308BE0           ADD      R3,R11,R3
+   \   000000D0   957227E0           MLA      R7,R5,R2,R7
+   \   000000D4   04509DE5           LDR      R5,[SP, #+4]
+   \   000000D8   00209DE5           LDR      R2,[SP, #+0]
+   \   000000DC   0760A0E1           MOV      R6,R7
+   \   000000E0   107090E5           LDR      R7,[R0, #+16]
+   \   000000E4   0B5045E0           SUB      R5,R5,R11
+   \   000000E8   08B090E5           LDR      R11,[R0, #+8]
+   \   000000EC   07A089E0           ADD      R10,R9,R7
+   \   000000F0   007090E5           LDR      R7,[R0, #+0]
+   \   000000F4   02408EE0           ADD      R4,LR,R2
+   \   000000F8   0E2042E0           SUB      R2,R2,LR
+   \   000000FC   07708BE0           ADD      R7,R11,R7
+   \   00000100   07E08AE0           ADD      LR,R10,R7
+   \   00000104   CE70A0E1           ASR      R7,LR,#+1
+   \   00000108   C44087E0           ADD      R4,R7,R4, ASR #+1
+   \   0000010C   004080E5           STR      R4,[R0, #+0]
+   \   00000110   874064E0           RSB      R4,R4,R7, LSL #+1
+   \   00000114   204080E5           STR      R4,[R0, #+32]
+   \   00000118   C540A0E1           ASR      R4,R5,#+1
+   \   0000011C   8A504EE0           SUB      R5,LR,R10, LSL #+1
+   \   00000120   C570A0E1           ASR      R7,R5,#+1
+   \   00000124   07E084E0           ADD      LR,R4,R7
+   \   00000128   10E080E5           STR      LR,[R0, #+16]
+   \   0000012C   044047E0           SUB      R4,R7,R4
+   \   00000130   304080E5           STR      R4,[R0, #+48]
+   \   00000134   05408AE0           ADD      R4,R10,R5
+   \   00000138   145090E5           LDR      R5,[R0, #+20]
+   \   0000013C   8B4044E0           SUB      R4,R4,R11, LSL #+1
+   \   00000140   1CB090E5           LDR      R11,[R0, #+28]
+   \   00000144   89904AE0           SUB      R9,R10,R9, LSL #+1
+   \   00000148   0CA090E5           LDR      R10,[R0, #+12]
+   \   0000014C   05E08BE0           ADD      LR,R11,R5
+   \   00000150   045090E5           LDR      R5,[R0, #+4]
+   \   00000154   C220A0E1           ASR      R2,R2,#+1
+   \   00000158   05508AE0           ADD      R5,R10,R5
+   \   0000015C   05508EE0           ADD      R5,LR,R5
+   \   00000160   C570A0E1           ASR      R7,R5,#+1
+   \   00000164   C33087E0           ADD      R3,R7,R3, ASR #+1
+   \   00000168   043080E5           STR      R3,[R0, #+4]
+   \   0000016C   873063E0           RSB      R3,R3,R7, LSL #+1
+   \   00000170   243080E5           STR      R3,[R0, #+36]
+   \   00000174   8E3045E0           SUB      R3,R5,LR, LSL #+1
+   \   00000178   C350A0E1           ASR      R5,R3,#+1
+   \   0000017C   027045E0           SUB      R7,R5,R2
+   \   00000180   147080E5           STR      R7,[R0, #+20]
+   \   00000184   052082E0           ADD      R2,R2,R5
+   \   00000188   342080E5           STR      R2,[R0, #+52]
+   \   0000018C   03208EE0           ADD      R2,LR,R3
+   \   00000190   8A5042E0           SUB      R5,R2,R10, LSL #+1
+   \   00000194   8B304EE0           SUB      R3,LR,R11, LSL #+1
+   \   00000198   032044E0           SUB      R2,R4,R3
+   \   0000019C   044083E0           ADD      R4,R3,R4
+   \   000001A0   053089E0           ADD      R3,R9,R5
+   \   000001A4   095045E0           SUB      R5,R5,R9
+   \   000001A8   C440A0E1           ASR      R4,R4,#+1
+   \   000001AC   047086E0           ADD      R7,R6,R4
+   \   000001B0   087080E5           STR      R7,[R0, #+8]
+   \   000001B4   C550A0E1           ASR      R5,R5,#+1
+   \   000001B8   087045E0           SUB      R7,R5,R8
+   \   000001BC   0C7080E5           STR      R7,[R0, #+12]
+   \   000001C0   08709DE5           LDR      R7,[SP, #+8]
+   \   000001C4   C220A0E1           ASR      R2,R2,#+1
+   \   000001C8   077042E0           SUB      R7,R2,R7
+   \   000001CC   187080E5           STR      R7,[R0, #+24]
+   \   000001D0   C330A0E1           ASR      R3,R3,#+1
+   \   000001D4   0C7043E0           SUB      R7,R3,R12
+   \   000001D8   1C7080E5           STR      R7,[R0, #+28]
+   \   000001DC   064044E0           SUB      R4,R4,R6
+   \   000001E0   284080E5           STR      R4,[R0, #+40]
+   \   000001E4   054088E0           ADD      R4,R8,R5
+   \   000001E8   2C4080E5           STR      R4,[R0, #+44]
+   \   000001EC   08409DE5           LDR      R4,[SP, #+8]
+   \   000001F0   022084E0           ADD      R2,R4,R2
+   \   000001F4   382080E5           STR      R2,[R0, #+56]
+   \   000001F8   03208CE0           ADD      R2,R12,R3
+   \   000001FC   3C2080E5           STR      R2,[R0, #+60]
+   \   00000200   400080E2           ADD      R0,R0,#+64
+    247          	} while (r1 != 0);
+   \   00000204   80FFFF1A           BNE      ??R8FirstPass32_0
+    248          }
+   \   00000208   F78FBDE8           POP      {R0-R2,R4-R11,PC}  ;; return
+   \                     ??R8FirstPass32_1:
+   \   0000020C   9A79825A           DC32     0x5a82799a
+    249          
+    250          /**************************************************************************************
+    251           * Function:    R4Core32
+    252           *
+    253           * Description: radix-4 pass for 32-point decimation-in-time FFT
+    254           *
+    255           * Inputs:      buffer of samples
+    256           *
+    257           * Outputs:     processed samples in same buffer
+    258           *
+    259           * Return:      none
+    260           *
+    261           * Notes:       gain 2 integer bits
+    262           *              guard bits out = guard bits in - 1 (if inputs are full scale)
+    263           *              see scaling comments in fft.c for base AAC
+    264           *              uses 3-mul, 3-add butterflies instead of 4-mul, 2-add
+    265           *              should compile with no stack spills on ARM (verify compiled output)
+    266           *              current instruction count (per pass): 16 LDR, 16 STR, 4 SMULL, 61 ALU
+    267           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    268          static void R4Core32(int *r0)
+    269          {
+    270          	int r2, r3, r4, r5, r6, r7;
+    271          	int r8, r9, r10, r12, r14;
+    272          	int *r1;
+    273          
+    274          	r1 = (int *)twidTabOdd32;
+   \                     R4Core32:
+   \   00000000   14119FE5           LDR      R1,??R4Core32_0  ;; twidTabOdd32
+   \   00000004   F04F2DE9           PUSH     {R4-R11,LR}
+    275          	r10 = 8;
+   \   00000008   08B0A0E3           MOV      R11,#+8
+    276          	do {
+    277          		/* can use r14 for lo32 scratch register in all MULSHIFT32 */
+    278          		r2 = r1[0];
+   \                     ??R4Core32_1:
+   \   0000000C   ........           LDR      R4,[R1], #+4
+    279          		r3 = r1[1];
+   \   00000010   ........           LDR      R5,[R1], #+4
+    280          		r4 = r0[16];
+   \   00000014   406090E5           LDR      R6,[R0, #+64]
+    281          		r5 = r0[17];
+   \   00000018   447090E5           LDR      R7,[R0, #+68]
+    282          		r12 = r4 + r5;
+    283          		r12 = MULSHIFT32(r3, r12);
+    284          		r5  = MULSHIFT32(r2, r5) + r12;
+    285          		r2 += 2*r3;
+    286          		r4  = MULSHIFT32(r2, r4) - r12;	
+    287          
+    288          		r2 = r1[2];
+    289          		r3 = r1[3];
+    290          		r6 = r0[32];
+    291          		r7 = r0[33];
+    292          		r12 = r6 + r7;
+    293          		r12 = MULSHIFT32(r3, r12);
+    294          		r7  = MULSHIFT32(r2, r7) + r12;
+    295          		r2 += 2*r3;
+    296          		r6  = MULSHIFT32(r2, r6) - r12;
+    297          		
+    298          		r2 = r1[4];
+    299          		r3 = r1[5];
+    300          		r8 = r0[48];
+    301          		r9 = r0[49];
+    302          		r12 = r8 + r9;
+    303          		r12 = MULSHIFT32(r3, r12);
+    304          		r9  = MULSHIFT32(r2, r9) + r12;
+    305          		r2 += 2*r3;
+    306          		r8  = MULSHIFT32(r2, r8) - r12;
+    307          
+    308          		r2 = r0[0];
+    309          		r3 = r0[1];
+    310          
+    311          		r12 = r6 + r8;
+    312          		r8  = r6 - r8;
+    313          		r14 = r9 - r7;
+    314          		r9  = r9 + r7;
+    315          
+    316          		r6 = (r2 >> 2) - r4;
+    317          		r7 = (r3 >> 2) - r5;
+    318          		r4 += (r2 >> 2);
+    319          		r5 += (r3 >> 2);
+    320          
+    321          		r2 = r4 + r12;
+    322          		r3 = r5 + r9;
+    323          		r0[0] = r2;
+    324          		r0[1] = r3;
+    325          		r2 = r6 - r14;
+    326          		r3 = r7 - r8;
+    327          		r0[16] = r2;
+    328          		r0[17] = r3;
+    329          		r2 = r4 - r12;
+    330          		r3 = r5 - r9;
+    331          		r0[32] = r2;
+    332          		r0[33] = r3;
+    333          		r2 = r6 + r14;
+    334          		r3 = r7 + r8;
+    335          		r0[48] = r2;
+    336          		r0[49] = r3;
+    337          
+    338          		r0 += 2;
+    339          		r1 += 6;
+    340          		r10--;
+   \   0000001C   01B05BE2           SUBS     R11,R11,#+1
+   \   00000020   068087E0           ADD      R8,R7,R6
+   \   00000024   9528C3E0           SMULL    R2,R3,R5,R8
+   \   00000028   0380A0E1           MOV      R8,R3
+   \   0000002C   9427C3E0           SMULL    R2,R3,R4,R7
+   \   00000030   847090E5           LDR      R7,[R0, #+132]
+   \   00000034   03E088E0           ADD      LR,R8,R3
+   \   00000038   854084E0           ADD      R4,R4,R5, LSL #+1
+   \   0000003C   9426C3E0           SMULL    R2,R3,R4,R6
+   \   00000040   ........           LDR      R4,[R1], #+4
+   \   00000044   ........           LDR      R5,[R1], #+4
+   \   00000048   806090E5           LDR      R6,[R0, #+128]
+   \   0000004C   08A043E0           SUB      R10,R3,R8
+   \   00000050   068087E0           ADD      R8,R7,R6
+   \   00000054   9528C3E0           SMULL    R2,R3,R5,R8
+   \   00000058   0380A0E1           MOV      R8,R3
+   \   0000005C   9427C3E0           SMULL    R2,R3,R4,R7
+   \   00000060   854084E0           ADD      R4,R4,R5, LSL #+1
+   \   00000064   037088E0           ADD      R7,R8,R3
+   \   00000068   9426C3E0           SMULL    R2,R3,R4,R6
+   \   0000006C   ........           LDR      R4,[R1], #+4
+   \   00000070   ........           LDR      R5,[R1], #+4
+   \   00000074   C06090E5           LDR      R6,[R0, #+192]
+   \   00000078   08C043E0           SUB      R12,R3,R8
+   \   0000007C   C48090E5           LDR      R8,[R0, #+196]
+   \   00000080   069088E0           ADD      R9,R8,R6
+   \   00000084   9529C3E0           SMULL    R2,R3,R5,R9
+   \   00000088   0390A0E1           MOV      R9,R3
+   \   0000008C   9428C3E0           SMULL    R2,R3,R4,R8
+   \   00000090   854084E0           ADD      R4,R4,R5, LSL #+1
+   \   00000094   038089E0           ADD      R8,R9,R3
+   \   00000098   9426C3E0           SMULL    R2,R3,R4,R6
+   \   0000009C   042090E5           LDR      R2,[R0, #+4]
+   \   000000A0   094043E0           SUB      R4,R3,R9
+   \   000000A4   009090E5           LDR      R9,[R0, #+0]
+   \   000000A8   0C3084E0           ADD      R3,R4,R12
+   \   000000AC   04404CE0           SUB      R4,R12,R4
+   \   000000B0   075048E0           SUB      R5,R8,R7
+   \   000000B4   086087E0           ADD      R6,R7,R8
+   \   000000B8   4981A0E1           ASR      R8,R9,#+2
+   \   000000BC   0A7048E0           SUB      R7,R8,R10
+   \   000000C0   4291A0E1           ASR      R9,R2,#+2
+   \   000000C4   0E2049E0           SUB      R2,R9,LR
+   \   000000C8   0A8088E0           ADD      R8,R8,R10
+   \   000000CC   0E9089E0           ADD      R9,R9,LR
+   \   000000D0   08A083E0           ADD      R10,R3,R8
+   \   000000D4   00A080E5           STR      R10,[R0, #+0]
+   \   000000D8   09A086E0           ADD      R10,R6,R9
+   \   000000DC   04A080E5           STR      R10,[R0, #+4]
+   \   000000E0   05A047E0           SUB      R10,R7,R5
+   \   000000E4   40A080E5           STR      R10,[R0, #+64]
+   \   000000E8   04A042E0           SUB      R10,R2,R4
+   \   000000EC   44A080E5           STR      R10,[R0, #+68]
+   \   000000F0   033048E0           SUB      R3,R8,R3
+   \   000000F4   803080E5           STR      R3,[R0, #+128]
+   \   000000F8   063049E0           SUB      R3,R9,R6
+   \   000000FC   843080E5           STR      R3,[R0, #+132]
+   \   00000100   073085E0           ADD      R3,R5,R7
+   \   00000104   C03080E5           STR      R3,[R0, #+192]
+   \   00000108   022084E0           ADD      R2,R4,R2
+   \   0000010C   C42080E5           STR      R2,[R0, #+196]
+   \   00000110   080080E2           ADD      R0,R0,#+8
+    341          	} while (r10 != 0);
+   \   00000114   BCFFFF1A           BNE      ??R4Core32_1
+    342          }
+   \   00000118   F08FBDE8           POP      {R4-R11,PC}      ;; return
+   \                     ??R4Core32_0:
+   \   0000011C   ........           DC32     twidTabOdd32
+    343          
+    344          /**************************************************************************************
+    345           * Function:    FFT32C
+    346           *
+    347           * Description: Ken's very fast in-place radix-4 decimation-in-time FFT
+    348           *
+    349           * Inputs:      buffer of 32 complex samples (before bit-reversal)
+    350           *
+    351           * Outputs:     processed samples in same buffer
+    352           *
+    353           * Return:      none
+    354           *
+    355           * Notes:       assumes 3 guard bits in, gains 3 integer bits
+    356           *              guard bits out = guard bits in - 2
+    357           *              (guard bit analysis includes assumptions about steps immediately
+    358           *               before and after, i.e. PreMul and PostMul for DCT)
+    359           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    360          void FFT32C(int *x)
+    361          {
+   \                     raac_FFT32C:
+   \   00000000   10402DE9           PUSH     {R4,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+    362          	/* decimation in time */
+    363          	BitReverse32(x);
+   \   00000008   ........           BL       BitReverse32
+    364          
+    365          	/* 32-point complex FFT */
+    366          	R8FirstPass32(x);	/* gain 1 int bit,  lose 2 GB (making assumptions about input) */
+   \   0000000C   0400A0E1           MOV      R0,R4
+   \   00000010   ........           BL       R8FirstPass32
+    367          	R4Core32(x);		/* gain 2 int bits, lose 0 GB (making assumptions about input) */
+   \   00000014   0400A0E1           MOV      R0,R4
+   \   00000018   1040BDE8           POP      {R4,LR}          ;; Pop
+   \   0000001C   ........           B        R4Core32         ;; tailcall
+    368          }
+
+   Maximum stack usage in bytes:
+
+     Function      CSTACK
+     --------      ------
+     BitReverse32      0
+     R4Core32         36
+     R8FirstPass32    48
+     raac_FFT32C       8
+
+
+   Segment part sizes:
+
+     Function/Label Bytes
+     -------------- -----
+     twidTabOdd32    192
+     BitReverse32    388
+     R8FirstPass32   528
+     R4Core32        288
+     raac_FFT32C      32
+      Others          16
+
+ 
+ 1 252 bytes in segment CODE
+   192 bytes in segment DATA_C
+ 
+ 1 236 bytes of CODE  memory (+ 16 bytes shared)
+   192 bytes of CONST memory
+
+Errors: none
+Warnings: none

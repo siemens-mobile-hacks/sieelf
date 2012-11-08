@@ -626,10 +626,10 @@
 0918: 0xA0368F53   ; 246:  __thumb int GetFileProp(FILE_PROP *wl,WSHDR *file,WSHDR *folder)
 091C: 0xA0DD9C61   ; 247:  __thumb void NetOff()
 0920: 0xA8D06BCE   ; 248: char *RamFormatTrack()
-0924: 0xA8D06E36   ; 249: char *RamFreq()
-0928: 0xA8D06FEE   ; 24A: char *RamChannel()
+0924: 0xA8D06E36   ; 249: char *RamFreq()  Sampling rate (4-22, 7-44, 8-48)
+0928: 0xA8D06FEE   ; 24A: char *RamChannel()  Stereo or Mono (0-mono, 1 stereo)
 092C: 0xA09AB647   ; 24B:  __thumb void SetMenuSearchCallBack(void *gui, MenuSearchCallBack proc)
-0930: 0xA02EF96D   ; 24C:  __thumb int  GetPeripheryState (int device, int check_state)
+0930: 0xA02EF96D   ; 24C:  __thumb int  GetPeripheryState (int device, int check_state) device: 4-gprs  0 -BT  1 -irda   2 -COM ?; ChechState:    4 -IsActive  (1|2) - IsOn 
 0934: 0xA027D100   ; 24D:  __arm int PlayMelody_SetPosition(int handle, int pos_ms)
 0938: 0xA02CC544   ; 24E:  __arm void* GetPlayObjById(int handle)
 093C: 0xA0DC1C64   ; 24F:  __arm int GetPlayObjPosition(void *playobj_3D0, int *pos_ms)
@@ -667,7 +667,19 @@
 09B4: 0xA0E10EA4   ; 26D:  __arm int Obs_Sound_GetVolume (HObj hObj, char *vol)
 09B8: 0xA0E10C78   ; 26E  __arm int Obs_Sound_SetAMRFrmPrBuf(HObj hobj, int nof_frames);
 09BC: 0xA0E10BC8   ; 26F  __arm int Obs_Sound_SetAMRFormat(HObj hobj, int format);
-09C0: 0xA0E10B58   ; 270  __arm int Obs_Sound_SetAMRDTX(HObj hobj, int dtx);
+
+sub_A0CD026C
+sub_A0DE1B88
+
+09C0: 0xA0E10B58 ; 270  __arm int Obs_Sound_SetAMRDTX(HObj hobj, int dtx);
+09C4: 0xA0E10AE4 ; 271  __arm int Obs_Sound_SetNofChannels(HObj hobj, int num_channels);
+09C8: 0xA0E10A74 ; 272  __arm int Obs_Sound_SetAMRMode(HObj hobj, int data_rate);
+9CC: 0xA0E10924  ; 273  __arm int Obs_Sound_SetFIsRecording(HObj hobj, int fIsRecording);
+09D0: 0xA0E1087C ; 274  __arm int Obs_Sound_SetMaxFileSize(HObj hobj, int max_file_size);
+09D4: 0xA0E103F8 ; 275  __arm int Obs_Sound_SetRecordingMode(HObj hobj, int RecordingMode);
+09D8: 0xA0DDFE7C ; 276  __arm int Obs_SetOutput_File (HObj hObj, WSHDR *path);
+09DC: 0xA0DE1650 ; 277  __arm int Obs_SetOutput_Uid(HObj hObj, int OutUID);
+09E0: 0xA0E10DAC ; 278  __arm int Obs_Sound_SetBitrate(HObj hobj, int bitRate);
 
 0A04: 0xA8DF03FC   ; 281:  __arm char *RamIsRunJava()
 0A08: 0xA8DD368C   ; 282:  __arm char *RamIsRunCamera()
@@ -678,7 +690,7 @@
 0A1C: 0xA02D7CAF   ; 287:  __thumb int BT_GetLocVisibility()
 0A20: 0xA02F2A79   ; 288:  __thumb int GetCurrAudioPath()
 0A24: 0xA0EB7B71   ; 289:  __thumb int isDecryption()
-;A28:              ; 28A: ;__unknown char *RamIsFileCache()
+0A28: 0xA8D79398   ; 28A: ;__unknown char *RamIsFileCache()
 0A2C: 0xA8E1307C   ; 28B:  __arm char *RamTotalHeapSize()
 0A30: 0xA8E130EC   ; 28C:  __arm char *RamTemporaryHeapSize()
 0A34: 0xA8D23DF8   ; 28D:  __arm char *RamBTNameDevice()
@@ -801,6 +813,7 @@
 ;0A80: 0xA02A0150 ; 2A0: int GetAlarmclockState(int state);  
 ;031C: 0xA01D17F4 ; 0C7: SetCpuClockTempHi(2) 
 ;07C0: 0xA031BEB4 ; 1F0: Filecopy  ;可能需要修正，移植自E71v45 lg91
+09BC: 0xA01ABFC8   ; 26F: int NM_Get_IRE();
 #pragma disable old_equal_ff
 +0
 

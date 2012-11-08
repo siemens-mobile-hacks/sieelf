@@ -1,0 +1,109 @@
+################################################################################
+#                                                                              #
+#      IAR Universal Linker V4.60I/386                                         #
+#                                                                              #
+#           Link time     =  04/Dec/2011  13:34:10                             #
+#           Target CPU    =  ARM                                               #
+#           List file     =  D:\SVN\SieELF\SieELF\PWD\EL71sw45\List\IME_PINYIN #
+#                            .map                                              #
+#           Output file 1 =  D:\SVN\SieELF\SieELF\PWD\EL71sw45\Exe\IME_PINYIN. #
+#                            elf                                               #
+#                            Format: elf, variant: -yas                        #
+#           Command line  =  D:\SVN\SieELF\SieELF\PWD\EL71sw45\Obj\main.r79    #
+#                            -o                                                #
+#                            D:\SVN\SieELF\SieELF\PWD\EL71sw45\Exe\IME_PINYIN. #
+#                            elf                                               #
+#                            -Felf -yas -l                                     #
+#                            D:\SVN\SieELF\SieELF\PWD\EL71sw45\List\IME_PINYIN #
+#                            .map                                              #
+#                            -xmsnio                                           #
+#                            "-ID:\Program Files\IAR\Embedded Workbench 4.0 Ev #
+#                            aluation\ARM\LIB\"                                #
+#                            -f D:\SVN\SieELF\SieELF\PWD\EL71v45.xcl (-carm    #
+#                            -Z(CODE)CODE=A1304000-FFFFFFFF)                   #
+#                                                                              #
+#                        Copyright 1987-2007 IAR Systems. All rights reserved. #
+################################################################################
+
+
+
+
+
+                ****************************************
+                *                                      *
+                *           CROSS REFERENCE            *
+                *                                      *
+                ****************************************
+
+                  There are no program entries.
+
+
+
+
+                ****************************************
+                *                                      *
+                *              MODULE MAP              *
+                *                                      *
+                ****************************************
+
+
+  DEFINED ABSOLUTE ENTRIES
+    *************************************************************************
+
+  FILE NAME : D:\SVN\SieELF\SieELF\PWD\EL71sw45\Obj\main.r79
+  PROGRAM MODULE, NAME : main
+
+  SEGMENTS IN THE MODULE
+  ======================
+CODE
+  Relative segment, address: A1304000 - A1304497 (0x498 bytes), align: 2
+  Segment part 0. ROOT.
+
+
+
+
+                ****************************************
+                *                                      *
+                *            MODULE SUMMARY            *
+                *                                      *
+                ****************************************
+
+Module   CODE
+------   ----
+        (Rel)
+main    1 176
+------  -----
+Total:  1 176
+
+
+                ****************************************
+                *                                      *
+                *              CALL GRAPH              *
+                *                                      *
+                ****************************************
+
+No call graph information available
+
+
+                ****************************************
+                *                                      *
+                *      SEGMENTS IN ADDRESS ORDER       *
+                *                                      *
+                ****************************************
+
+
+SEGMENT              SPACE    START ADDRESS   END ADDRESS     SIZE  TYPE  ALIGN
+=======              =====    =============   ===========     ====  ====  =====
+CODE                               A1304000 - A1304497         498   rel    2
+
+                ****************************************
+                *                                      *
+                *        END OF CROSS REFERENCE        *
+                *                                      *
+                ****************************************
+
+ 1 176 bytes of CODE memory
+
+Errors: none
+Warnings: none
+

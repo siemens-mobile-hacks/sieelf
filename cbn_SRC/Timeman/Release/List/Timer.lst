@@ -1,0 +1,817 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    14/Feb/2012  14:12:17 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\cbn_SRC\Timeman\Timer.c         #
+#    Command line    =  D:\SVN\SieELF\SieELF\cbn_SRC\Timeman\Timer.c -D DOS  #
+#                       -lC D:\SVN\SieELF\SieELF\cbn_SRC\Timeman\Release\Lis #
+#                       t\ -o D:\SVN\SieELF\SieELF\cbn_SRC\Timeman\Release\O #
+#                       bj\ -s9 --no_unroll --no_clustering --cpu_mode arm   #
+#                       --endian little --cpu ARM926EJ-S --stack_align 4     #
+#                       --interwork -e --char_is_signed --fpu None -I        #
+#                       "D:\Program Files\IAR\Embedded Workbench 4.0         #
+#                       Evaluation\ARM\INC\" --inline_threshold=2            #
+#    List file       =  D:\SVN\SieELF\SieELF\cbn_SRC\Timeman\Release\List\Ti #
+#                       mer.lst                                              #
+#    Object file     =  D:\SVN\SieELF\SieELF\cbn_SRC\Timeman\Release\Obj\Tim #
+#                       er.r79                                               #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\cbn_SRC\Timeman\Timer.c
+      1          
+      2          // Timer резидент
+      3          // Запускает др. процессы в нужное время
+      4          
+      5          #include "..\swilib.h"
+      6          
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+      7          GBSTMR mytmr;
+   \                     mytmr:
+   \   00000000                      DS8 16
+
+   \                                 In segment DATA_Z, align 1, align-sorted
+      8          char first=0;
+   \                     first:
+   \   00000000                      DS8 1
+      9          
+     10          inline void *memset(void *mem, int val, int size){
+     11            char *s=(char*)mem;
+     12            while(--size>=0) *s++=(char)val;
+     13            return mem;
+     14          }
+     15          
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     16          char *lnk=0; //free
+   \                     lnk:
+   \   00000000                      DS8 4
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     17          int maxtask;
+   \                     maxtask:
+   \   00000000                      DS8 4
+     18          
+     19          struct taskst{    //задачи:
+     20            char *exe;      //имя файла для запуска
+     21            unsigned short used,     //сколько раз запускалось
+     22                  maxused,  //ск. всего нужно запускать
+     23                  interval, //интервал между запусками
+     24                  week;     //день недели 1-7 когда запускать
+     25            short time;     //время последнего запуска
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     26          }*task=0; //free
+   \                     task:
+   \   00000000                      DS8 4
+     27          
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     28          char *mask;
+   \                     mask:
+   \   00000000                      DS8 4
+     29          // в данную минуту стартовать? (бит)     //все обнуляется если зап.нужн.к-во раз??
+     30          //180*maxtask    буфер путей
+     31          
+
+   \                                 In segment CODE, align 4, keep-with-next
+     32          inline void everymin(int hm, int week){ // запустить все задачи во время hm
+   \                     everymin:
+   \   00000000   F0472DE9           PUSH     {R4-R10,LR}
+     33            int i;
+     34            char *mm=mask;
+     35            struct taskst *tt=task;
+     36            for(i=0;i<maxtask;i++,mm+=180,tt++){
+   \   00000004   E4909FE5           LDR      R9,??everymin_0  ;; maxtask
+   \   00000008   0040A0E1           MOV      R4,R0
+   \   0000000C   E0009FE5           LDR      R0,??everymin_0+0x4  ;; mask
+   \   00000010   0150A0E1           MOV      R5,R1
+   \   00000014   006090E5           LDR      R6,[R0, #+0]
+   \   00000018   D8009FE5           LDR      R0,??everymin_0+0x8  ;; task
+   \   0000001C   0080A0E3           MOV      R8,#+0
+   \   00000020   007090E5           LDR      R7,[R0, #+0]
+   \   00000024   000099E5           LDR      R0,[R9, #+0]
+   \   00000028   010050E3           CMP      R0,#+1
+   \   0000002C   2B0000AA           BGE      ??everymin_1
+   \   00000030   F087BDE8           POP      {R4-R10,PC}
+     37              if(mm[hm>>3] & (1<<(hm&7))){ //активирован
+   \                     ??everymin_2:
+   \   00000034   C41186E0           ADD      R1,R6,R4, ASR #+3
+   \   00000038   D010D1E1           LDRSB    R1,[R1, #+0]
+   \   0000003C   0100A0E3           MOV      R0,#+1
+   \   00000040   072004E2           AND      R2,R4,#0x7
+   \   00000044   100211E1           TST      R1,R0, LSL R2
+   \   00000048   2100000A           BEQ      ??everymin_3
+     38                if(hm-tt->time > tt->interval && tt->used < tt->maxused  && (!tt->week || (tt->week & (1<<week)))){
+   \   0000004C   B810D7E1           LDRH     R1,[R7, #+8]
+   \   00000050   FC20D7E1           LDRSH    R2,[R7, #+12]
+   \   00000054   022044E0           SUB      R2,R4,R2
+   \   00000058   020051E1           CMP      R1,R2
+   \   0000005C   1C0000AA           BGE      ??everymin_3
+   \   00000060   B410D7E1           LDRH     R1,[R7, #+4]
+   \   00000064   B620D7E1           LDRH     R2,[R7, #+6]
+   \   00000068   020051E1           CMP      R1,R2
+   \   0000006C   1800002A           BCS      ??everymin_3
+   \   00000070   BA20D7E1           LDRH     R2,[R7, #+10]
+   \   00000074   000052E3           CMP      R2,#+0
+   \   00000078   0200000A           BEQ      ??everymin_4
+   \   0000007C   1005A0E1           LSL      R0,R0,R5
+   \   00000080   020010E1           TST      R0,R2
+   \   00000084   1200000A           BEQ      ??everymin_3
+     39                  tt->time=hm;
+   \                     ??everymin_4:
+   \   00000088   BC40C7E1           STRH     R4,[R7, #+12]
+     40                  ++tt->used;
+   \   0000008C   010081E2           ADD      R0,R1,#+1
+   \   00000090   B400C7E1           STRH     R0,[R7, #+4]
+     41                  //execute tt->exe
+     42                  WSHDR *ws=AllocWS(256);
+   \   00000094   400FA0E3           MOV      R0,#+256
+   \   00000098   250100EF           SWI      +293
+   \   0000009C   00A0A0E1           MOV      R10,R0
+     43                  //ShowMSG(1,(int)tt->exe);/////////
+     44                  str_2ws(ws,tt->exe,strlen(tt->exe)+1);
+   \   000000A0   000097E5           LDR      R0,[R7, #+0]
+   \   000000A4   1B0000EF           SWI      +27
+   \   000000A8   001097E5           LDR      R1,[R7, #+0]
+   \   000000AC   012080E2           ADD      R2,R0,#+1
+   \   000000B0   0A00A0E1           MOV      R0,R10
+   \   000000B4   6C0100EF           SWI      +364
+     45                  ExecuteFile(ws,0,0);
+   \   000000B8   0020A0E3           MOV      R2,#+0
+   \   000000BC   0010A0E3           MOV      R1,#+0
+   \   000000C0   0A00A0E1           MOV      R0,R10
+   \   000000C4   940000EF           SWI      +148
+     46                  FreeWS(ws);
+   \   000000C8   0A00A0E1           MOV      R0,R10
+   \   000000CC   290100EF           SWI      +297
+     47          //        SetIllumination(0,1,10,0);
+     48                  //;R0 id устройства 0-дисплей,1-кл,2-дин.свет
+     49                  ///;R1 1
+     50                  //;R2 яркость подсветки
+     51                  //;R3 задержка гашения
+     52                  REDRAW();
+   \   000000D0   720100EF           SWI      +370
+     53                }
+     54              }
+     55            }
+   \                     ??everymin_3:
+   \   000000D4   018088E2           ADD      R8,R8,#+1
+   \   000000D8   B46086E2           ADD      R6,R6,#+180
+   \   000000DC   107087E2           ADD      R7,R7,#+16
+   \                     ??everymin_1:
+   \   000000E0   000099E5           LDR      R0,[R9, #+0]
+   \   000000E4   000058E1           CMP      R8,R0
+   \   000000E8   D1FFFFBA           BLT      ??everymin_2
+     56          }
+   \   000000EC   F087BDE8           POP      {R4-R10,PC}      ;; return
+   \                     ??everymin_0:
+   \   000000F0   ........           DC32     maxtask
+   \   000000F4   ........           DC32     mask
+   \   000000F8   ........           DC32     task
+     57          
+
+   \                                 In segment CODE, align 4, keep-with-next
+     58          void Check(void){
+   \                     Check:
+   \   00000000   10402DE9           PUSH     {R4,LR}
+   \   00000004   10D04DE2           SUB      SP,SP,#+16
+     59            int i,t;
+     60            TDate date;
+     61            TTime time;
+     62            GetDateTime(&date,&time);
+   \   00000008   0D10A0E1           MOV      R1,SP
+   \   0000000C   08008DE2           ADD      R0,SP,#+8
+   \   00000010   B40000EF           SWI      +180
+     63            if(!(t=time.hour*60+time.min)){ //00:00 reset
+   \   00000014   0000DDE5           LDRB     R0,[SP, #+0]
+   \   00000018   0120DDE5           LDRB     R2,[SP, #+1]
+   \   0000001C   3C10A0E3           MOV      R1,#+60
+   \   00000020   912024E0           MLA      R4,R1,R0,R2
+   \   00000024   000054E3           CMP      R4,#+0
+   \   00000028   1400001A           BNE      ??Check_0
+     64              for(i=0;i<maxtask;i++){
+   \   0000002C   94109FE5           LDR      R1,??Check_1     ;; maxtask
+   \   00000030   0000A0E3           MOV      R0,#+0
+   \   00000034   001091E5           LDR      R1,[R1, #+0]
+   \   00000038   9FC0E0E3           MVN      R12,#+159
+   \   0000003C   010051E3           CMP      R1,#+1
+   \   00000040   50CECCE3           BIC      R12,R12,#0x500
+   \   00000044   0B0000AA           BGE      ??Check_2
+   \   00000048   0C0000EA           B        ??Check_0
+     65                task[i].time-=24*60;
+   \                     ??Check_3:
+   \   0000004C   ........           LDR      R2,??DataTable1  ;; task
+   \   00000050   002092E5           LDR      R2,[R2, #+0]
+   \   00000054   002282E0           ADD      R2,R2,R0, LSL #+4
+   \   00000058   FC30D2E1           LDRSH    R3,[R2, #+12]
+     66                if(task[i].maxused!=1)
+     67                  task[i].used=0;//task[i].maxused;
+     68              }
+   \   0000005C   010080E2           ADD      R0,R0,#+1
+   \   00000060   03308CE0           ADD      R3,R12,R3
+   \   00000064   BC30C2E1           STRH     R3,[R2, #+12]
+   \   00000068   B630D2E1           LDRH     R3,[R2, #+6]
+   \   0000006C   010053E3           CMP      R3,#+1
+   \   00000070   0030A013           MOVNE    R3,#+0
+   \   00000074   B430C211           STRHNE   R3,[R2, #+4]
+   \                     ??Check_2:
+   \   00000078   010050E1           CMP      R0,R1
+   \   0000007C   F2FFFFBA           BLT      ??Check_3
+     69            }
+     70            if(first) everymin(t,GetWeek(&date)+1);
+   \                     ??Check_0:
+   \   00000080   44009FE5           LDR      R0,??Check_1+0x4  ;; first
+   \   00000084   D010D0E1           LDRSB    R1,[R0, #+0]
+   \   00000088   000051E3           CMP      R1,#+0
+   \   0000008C   0500000A           BEQ      ??Check_4
+   \   00000090   08008DE2           ADD      R0,SP,#+8
+   \   00000094   B50000EF           SWI      +181
+   \   00000098   011080E2           ADD      R1,R0,#+1
+   \   0000009C   0400A0E1           MOV      R0,R4
+   \   000000A0   ........           _BLF     everymin,??everymin??rA
+   \   000000A4   010000EA           B        ??Check_5
+     71            else first=1;
+   \                     ??Check_4:
+   \   000000A8   0110A0E3           MOV      R1,#+1
+   \   000000AC   0010C0E5           STRB     R1,[R0, #+0]
+     72            GBS_StartTimerProc(&mytmr,262*60,Check);//-time.param)
+   \                     ??Check_5:
+   \   000000B0   18209FE5           LDR      R2,??Check_1+0x8  ;; Check
+   \   000000B4   18009FE5           LDR      R0,??Check_1+0xC  ;; mytmr
+   \   000000B8   6810A0E3           MOV      R1,#+104
+   \   000000BC   F41D81E3           ORR      R1,R1,#0x3D00
+   \   000000C0   4D0000EF           SWI      +77
+     73          }
+   \   000000C4   1F80BDE8           POP      {R0-R4,PC}       ;; return
+   \                     ??Check_1:
+   \   000000C8   ........           DC32     maxtask
+   \   000000CC   ........           DC32     first
+   \   000000D0   ........           DC32     Check
+   \   000000D4   ........           DC32     mytmr
+     74          
+     75          // ДОЛЖЕН кончаться 0!
+     76          inline char *delrem(char *lnk){ //удаляет комментарий и считает сколько строк
+     77            char *s,*ss;
+     78            s=ss=lnk-1;
+     79            maxtask=0;
+     80            do{
+     81              while(*++s && *s==' ');
+     82              if(!*s) break;
+     83              if(*s==0xd) ++s;
+     84              else if(*s==';'){
+     85                while(*++s && *s!=0xd);
+     86                if(!*s++) break;
+     87              }else{
+     88                ++maxtask;
+     89                do{
+     90                  *++ss=*s++;
+     91                }while(*ss && *ss!=0xd);
+     92                if(!*ss) break;
+     93                *ss=0;
+     94              }
+     95            }while(*s);
+     96            *++ss=0;
+     97            return ss;
+     98          }
+     99          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    100          inline int loadini(){ 
+   \                     loadini:
+   \   00000000   F0472DE9           PUSH     {R4-R10,LR}
+    101            char *maxlnk,*s;
+    102            int i,tsk,h,m,hm,h2,m2,hm2;
+    103            maxlnk=delrem(lnk);
+   \   00000004   8C839FE5           LDR      R8,??loadini_0   ;; lnk
+   \   00000008   8C539FE5           LDR      R5,??loadini_0+0x4  ;; maxtask
+   \   0000000C   000098E5           LDR      R0,[R8, #+0]
+   \   00000010   0090A0E3           MOV      R9,#+0
+   \   00000014   01A040E2           SUB      R10,R0,#+1
+   \   00000018   0A00A0E1           MOV      R0,R10
+   \   0000001C   009085E5           STR      R9,[R5, #+0]
+   \                     ??loadini_1:
+   \   00000020   D110F0E1           LDRSB    R1,[R0, #+1]!
+   \   00000024   000051E3           CMP      R1,#+0
+   \   00000028   1B00000A           BEQ      ??loadini_2
+   \   0000002C   200051E3           CMP      R1,#+32
+   \   00000030   FAFFFF0A           BEQ      ??loadini_1
+   \   00000034   0D0051E3           CMP      R1,#+13
+   \   00000038   01008002           ADDEQ    R0,R0,#+1
+   \   0000003C   1300000A           BEQ      ??loadini_3
+   \   00000040   3B0051E3           CMP      R1,#+59
+   \   00000044   0700001A           BNE      ??loadini_4
+   \                     ??loadini_5:
+   \   00000048   D110F0E1           LDRSB    R1,[R0, #+1]!
+   \   0000004C   000051E3           CMP      R1,#+0
+   \   00000050   0D005113           CMPNE    R1,#+13
+   \   00000054   FBFFFF1A           BNE      ??loadini_5
+   \   00000058   ........           LDRSB    R1,[R0], #+1
+   \   0000005C   000051E3           CMP      R1,#+0
+   \   00000060   0A00001A           BNE      ??loadini_3
+   \   00000064   0C0000EA           B        ??loadini_2
+   \                     ??loadini_4:
+   \   00000068   001095E5           LDR      R1,[R5, #+0]
+   \   0000006C   011081E2           ADD      R1,R1,#+1
+   \   00000070   001085E5           STR      R1,[R5, #+0]
+   \                     ??loadini_6:
+   \   00000074   ........           LDRSB    R1,[R0], #+1
+   \   00000078   0110EAE5           STRB     R1,[R10, #+1]!
+   \   0000007C   000051E3           CMP      R1,#+0
+   \   00000080   0500000A           BEQ      ??loadini_2
+   \   00000084   0D0051E3           CMP      R1,#+13
+   \   00000088   F9FFFF1A           BNE      ??loadini_6
+   \   0000008C   0090CAE5           STRB     R9,[R10, #+0]
+   \                     ??loadini_3:
+   \   00000090   D010D0E1           LDRSB    R1,[R0, #+0]
+   \   00000094   000051E3           CMP      R1,#+0
+   \   00000098   E0FFFF1A           BNE      ??loadini_1
+   \                     ??loadini_2:
+   \   0000009C   0190EAE5           STRB     R9,[R10, #+1]!
+    104            if(!maxtask) return 1;
+   \   000000A0   000095E5           LDR      R0,[R5, #+0]
+   \   000000A4   000050E3           CMP      R0,#+0
+   \   000000A8   0100001A           BNE      ??loadini_7
+   \                     ??loadini_8:
+   \   000000AC   0100A0E3           MOV      R0,#+1
+   \   000000B0   F087BDE8           POP      {R4-R10,PC}
+    105            if(task){ mfree(task); task=0;}
+   \                     ??loadini_7:
+   \   000000B4   E4629FE5           LDR      R6,??loadini_0+0x8  ;; task
+   \   000000B8   000096E5           LDR      R0,[R6, #+0]
+   \   000000BC   000050E3           CMP      R0,#+0
+   \   000000C0   0100000A           BEQ      ??loadini_9
+   \   000000C4   150000EF           SWI      +21
+   \   000000C8   009086E5           STR      R9,[R6, #+0]
+    106            if(!(task=(struct taskst *)malloc(i=(sizeof(struct taskst)+180)*maxtask+maxlnk-lnk))) return 1;
+   \                     ??loadini_9:
+   \   000000CC   000095E5           LDR      R0,[R5, #+0]
+   \   000000D0   C410A0E3           MOV      R1,#+196
+   \   000000D4   91A020E0           MLA      R0,R1,R0,R10
+   \   000000D8   001098E5           LDR      R1,[R8, #+0]
+   \   000000DC   014040E0           SUB      R4,R0,R1
+   \   000000E0   0400A0E1           MOV      R0,R4
+   \   000000E4   140000EF           SWI      +20
+   \   000000E8   000086E5           STR      R0,[R6, #+0]
+   \   000000EC   000050E3           CMP      R0,#+0
+   \   000000F0   EDFFFF0A           BEQ      ??loadini_8
+    107            memset(task,0,i);
+   \   000000F4   000000EA           B        ??loadini_10
+   \                     ??loadini_11:
+   \   000000F8   ........           STRB     R9,[R0], #+1
+   \                     ??loadini_10:
+   \   000000FC   014054E2           SUBS     R4,R4,#+1
+   \   00000100   FCFFFF5A           BPL      ??loadini_11
+    108            mask=(char*)task+sizeof(struct taskst)*maxtask;
+   \   00000104   000095E5           LDR      R0,[R5, #+0]
+   \   00000108   001096E5           LDR      R1,[R6, #+0]
+   \   0000010C   90729FE5           LDR      R7,??loadini_0+0xC  ;; mask
+   \   00000110   001281E0           ADD      R1,R1,R0, LSL #+4
+   \   00000114   001087E5           STR      R1,[R7, #+0]
+    109            s=mask+180*maxtask;
+   \   00000118   B420A0E3           MOV      R2,#+180
+   \   0000011C   921024E0           MLA      R4,R2,R0,R1
+    110            memcpy(s,lnk,maxlnk-lnk);
+   \   00000120   001098E5           LDR      R1,[R8, #+0]
+   \   00000124   0400A0E1           MOV      R0,R4
+   \   00000128   01204AE0           SUB      R2,R10,R1
+   \   0000012C   1E0100EF           SWI      +286
+    111            mfree(lnk); lnk=0; //???
+   \   00000130   000098E5           LDR      R0,[R8, #+0]
+   \   00000134   150000EF           SWI      +21
+   \   00000138   009088E5           STR      R9,[R8, #+0]
+    112            --s;
+   \   0000013C   011044E2           SUB      R1,R4,#+1
+    113            tsk=0;
+   \   00000140   0000A0E3           MOV      R0,#+0
+   \   00000144   050000EA           B        ??loadini_12
+    114            do{
+    115             do{
+    116          lll:     
+    117              h=*++s-'0';
+    118              if(*++s=='.'){
+    119                task[tsk].week |= (1<<h);
+   \                     ??loadini_13:
+   \   00000148   004096E5           LDR      R4,[R6, #+0]
+   \   0000014C   1223A0E1           LSL      R2,R2,R3
+   \   00000150   004284E0           ADD      R4,R4,R0, LSL #+4
+   \   00000154   BA80D4E1           LDRH     R8,[R4, #+10]
+   \   00000158   082082E1           ORR      R2,R2,R8
+   \   0000015C   BA20C4E1           STRH     R2,[R4, #+10]
+    120                goto lll;
+    121              }
+   \                     ??loadini_12:
+   \   00000160   011081E2           ADD      R1,R1,#+1
+   \   00000164   ........           LDRSB    R2,[R1], #+1
+   \   00000168   D040D1E1           LDRSB    R4,[R1, #+0]
+   \   0000016C   303042E2           SUB      R3,R2,#+48
+   \   00000170   0120A0E3           MOV      R2,#+1
+   \   00000174   2E0054E3           CMP      R4,#+46
+   \   00000178   F2FFFF0A           BEQ      ??loadini_13
+    122              if(*s!=':') h=h*10+*s++-'0';
+   \   0000017C   3A0054E3           CMP      R4,#+58
+   \   00000180   0300000A           BEQ      ??loadini_14
+   \   00000184   ........           LDRSB    R4,[R1], #+1
+   \   00000188   0A80A0E3           MOV      R8,#+10
+   \   0000018C   984323E0           MLA      R3,R8,R3,R4
+   \   00000190   303043E2           SUB      R3,R3,#+48
+    123              if(*s!=':') return 1; //00:
+   \                     ??loadini_14:
+   \   00000194   ........           LDRSB    R4,[R1], #+1
+   \   00000198   3A0054E3           CMP      R4,#+58
+   \   0000019C   C2FFFF1A           BNE      ??loadini_8
+    124              m=(*++s-'0')*10;
+   \   000001A0   ........           LDRSB    R4,[R1], #+1
+   \   000001A4   0A80A0E3           MOV      R8,#+10
+    125              m+=*++s-'0';
+    126              if(*++s=='-'){ //-00:00
+   \   000001A8   B490A0E3           MOV      R9,#+180
+   \   000001AC   304044E2           SUB      R4,R4,#+48
+   \   000001B0   980404E0           MUL      R4,R8,R4
+   \   000001B4   ........           LDRSB    R8,[R1], #+1
+   \   000001B8   308048E2           SUB      R8,R8,#+48
+   \   000001BC   048088E0           ADD      R8,R8,R4
+   \   000001C0   990004E0           MUL      R4,R9,R0
+   \   000001C4   D090D1E1           LDRSB    R9,[R1, #+0]
+   \   000001C8   2D0059E3           CMP      R9,#+45
+   \   000001CC   2300001A           BNE      ??loadini_15
+    127                h2=*++s-'0';
+   \   000001D0   011081E2           ADD      R1,R1,#+1
+   \   000001D4   ........           LDRSB    R9,[R1], #+1
+    128                if(*++s!=':') h2=h2*10+*s++-'0';
+   \   000001D8   D0A0D1E1           LDRSB    R10,[R1, #+0]
+   \   000001DC   309049E2           SUB      R9,R9,#+48
+   \   000001E0   3A005AE3           CMP      R10,#+58
+   \   000001E4   0300000A           BEQ      ??loadini_16
+   \   000001E8   ........           LDRSB    R10,[R1], #+1
+   \   000001EC   0AC0A0E3           MOV      R12,#+10
+   \   000001F0   9CA929E0           MLA      R9,R12,R9,R10
+   \   000001F4   309049E2           SUB      R9,R9,#+48
+    129                if(*s!=':') return 1; //00:
+   \                     ??loadini_16:
+   \   000001F8   ........           LDRSB    R10,[R1], #+1
+   \   000001FC   3A005AE3           CMP      R10,#+58
+   \   00000200   A9FFFF1A           BNE      ??loadini_8
+    130                m2=(*++s-'0')*10;
+   \   00000204   ........           LDRSB    R10,[R1], #+1
+   \   00000208   0AC0A0E3           MOV      R12,#+10
+   \   0000020C   30A04AE2           SUB      R10,R10,#+48
+   \   00000210   9C0A0AE0           MUL      R10,R12,R10
+    131                m2+=*++s-'0';
+    132                //
+    133                hm=h*60+m;
+   \   00000214   3CC0A0E3           MOV      R12,#+60
+   \   00000218   9C8323E0           MLA      R3,R12,R3,R8
+    134                hm2=h2*60+m2;
+   \   0000021C   D080D1E1           LDRSB    R8,[R1, #+0]
+   \   00000220   9C8928E0           MLA      R8,R12,R9,R8
+   \   00000224   08808AE0           ADD      R8,R10,R8
+   \   00000228   308048E2           SUB      R8,R8,#+48
+   \   0000022C   080053E1           CMP      R3,R8
+   \   00000230   130000AA           BGE      ??loadini_17
+    135                while(hm<hm2){
+    136                  mask[tsk*180+(hm>>3)] |= 1<<(hm&7);
+   \                     ??loadini_18:
+   \   00000234   00A097E5           LDR      R10,[R7, #+0]
+   \   00000238   C39184E0           ADD      R9,R4,R3, ASR #+3
+   \   0000023C   0A9089E0           ADD      R9,R9,R10
+   \   00000240   D0A0D9E1           LDRSB    R10,[R9, #+0]
+   \   00000244   07E003E2           AND      LR,R3,#0x7
+    137                  ++hm;
+   \   00000248   013083E2           ADD      R3,R3,#+1
+   \   0000024C   12AE8AE1           ORR      R10,R10,R2, LSL LR
+   \   00000250   00A0C9E5           STRB     R10,[R9, #+0]
+    138                }
+   \   00000254   080053E1           CMP      R3,R8
+   \   00000258   090000AA           BGE      ??loadini_17
+   \   0000025C   F4FFFFEA           B        ??loadini_18
+    139              }else{ //1 раз в 6:00
+    140                 hm=h*60+m;
+   \                     ??loadini_15:
+   \   00000260   3C90A0E3           MOV      R9,#+60
+   \   00000264   998323E0           MLA      R3,R9,R3,R8
+    141                 mask[tsk*180+(hm>>3)] |= 1<<(hm&7);
+   \   00000268   008097E5           LDR      R8,[R7, #+0]
+   \   0000026C   C34184E0           ADD      R4,R4,R3, ASR #+3
+   \   00000270   084084E0           ADD      R4,R4,R8
+   \   00000274   D080D4E1           LDRSB    R8,[R4, #+0]
+   \   00000278   073003E2           AND      R3,R3,#0x7
+   \   0000027C   122388E1           ORR      R2,R8,R2, LSL R3
+   \   00000280   0020C4E5           STRB     R2,[R4, #+0]
+    142              }
+    143             }while(*++s==',');
+   \                     ??loadini_17:
+   \   00000284   D120F1E1           LDRSB    R2,[R1, #+1]!
+   \   00000288   2C0052E3           CMP      R2,#+44
+   \   0000028C   0100001A           BNE      ??loadini_19
+   \   00000290   B2FFFFEA           B        ??loadini_12
+    144             while(*s==' ') ++s;
+   \                     ??loadini_20:
+   \   00000294   011081E2           ADD      R1,R1,#+1
+   \                     ??loadini_19:
+   \   00000298   D020D1E1           LDRSB    R2,[R1, #+0]
+   \   0000029C   200052E3           CMP      R2,#+32
+   \   000002A0   FBFFFF0A           BEQ      ??loadini_20
+    145             if(s[1]!=':'){ //интервал
+   \   000002A4   D120D1E1           LDRSB    R2,[R1, #+1]
+   \   000002A8   3A0052E3           CMP      R2,#+58
+   \   000002AC   1C00000A           BEQ      ??loadini_21
+    146               i=*s-'0';
+   \   000002B0   D020D1E1           LDRSB    R2,[R1, #+0]
+   \   000002B4   010000EA           B        ??loadini_22
+    147               while(*++s!=' ') i=i*10+*s-'0';
+   \                     ??loadini_23:
+   \   000002B8   0A30A0E3           MOV      R3,#+10
+   \   000002BC   932422E0           MLA      R2,R3,R4,R2
+   \                     ??loadini_22:
+   \   000002C0   304042E2           SUB      R4,R2,#+48
+   \   000002C4   D120F1E1           LDRSB    R2,[R1, #+1]!
+   \   000002C8   200052E3           CMP      R2,#+32
+   \   000002CC   F9FFFF1A           BNE      ??loadini_23
+    148               task[tsk].interval=i;
+   \   000002D0   002096E5           LDR      R2,[R6, #+0]
+   \   000002D4   002282E0           ADD      R2,R2,R0, LSL #+4
+   \   000002D8   B840C2E1           STRH     R4,[R2, #+8]
+    149               while(*++s==' ');
+   \                     ??loadini_24:
+   \   000002DC   D130F1E1           LDRSB    R3,[R1, #+1]!
+   \   000002E0   200053E3           CMP      R3,#+32
+   \   000002E4   FCFFFF0A           BEQ      ??loadini_24
+    150               if(s[1]!=':'){ //всего запусков
+   \   000002E8   D130D1E1           LDRSB    R3,[R1, #+1]
+   \   000002EC   3A0053E3           CMP      R3,#+58
+   \   000002F0   0B00000A           BEQ      ??loadini_21
+    151                 i=*s-'0';
+   \   000002F4   D030D1E1           LDRSB    R3,[R1, #+0]
+   \   000002F8   010000EA           B        ??loadini_25
+    152                 while(*++s!=' ') i=i*10+*s-'0';
+   \                     ??loadini_26:
+   \   000002FC   0A80A0E3           MOV      R8,#+10
+   \   00000300   983423E0           MLA      R3,R8,R4,R3
+   \                     ??loadini_25:
+   \   00000304   304043E2           SUB      R4,R3,#+48
+   \   00000308   D130F1E1           LDRSB    R3,[R1, #+1]!
+   \   0000030C   200053E3           CMP      R3,#+32
+   \   00000310   F9FFFF1A           BNE      ??loadini_26
+    153                 task[tsk].maxused=i;
+   \   00000314   B640C2E1           STRH     R4,[R2, #+6]
+    154                 while(*++s==' ');
+   \                     ??loadini_27:
+   \   00000318   D120F1E1           LDRSB    R2,[R1, #+1]!
+   \   0000031C   200052E3           CMP      R2,#+32
+   \   00000320   FCFFFF0A           BEQ      ??loadini_27
+    155               }
+    156             }
+    157             //путь
+    158             task[tsk].exe=s;
+   \                     ??loadini_21:
+   \   00000324   002096E5           LDR      R2,[R6, #+0]
+   \   00000328   001282E7           STR      R1,[R2, +R0, LSL #+4]
+    159             while(*++s);
+   \                     ??loadini_28:
+   \   0000032C   D130F1E1           LDRSB    R3,[R1, #+1]!
+   \   00000330   000053E3           CMP      R3,#+0
+   \   00000334   FCFFFF1A           BNE      ??loadini_28
+    160            }while(++tsk<maxtask && s[1]);
+   \   00000338   003095E5           LDR      R3,[R5, #+0]
+   \   0000033C   010080E2           ADD      R0,R0,#+1
+   \   00000340   030050E1           CMP      R0,R3
+   \   00000344   020000AA           BGE      ??loadini_29
+   \   00000348   D140D1E1           LDRSB    R4,[R1, #+1]
+   \   0000034C   000054E3           CMP      R4,#+0
+   \   00000350   82FFFF1A           BNE      ??loadini_12
+    161            for(tsk=0;tsk<maxtask;tsk++)
+   \                     ??loadini_29:
+   \   00000354   0000A0E3           MOV      R0,#+0
+   \   00000358   010053E3           CMP      R3,#+1
+   \   0000035C   FF50A0E3           MOV      R5,#+255
+   \   00000360   FF5C85E3           ORR      R5,R5,#0xFF00
+   \   00000364   070000AA           BGE      ??loadini_30
+   \   00000368   0000A0E3           MOV      R0,#+0
+   \   0000036C   F087BDE8           POP      {R4-R10,PC}
+    162              if(!task[tsk].maxused) --task[tsk].maxused;
+   \                     ??loadini_31:
+   \   00000370   001282E0           ADD      R1,R2,R0, LSL #+4
+   \   00000374   B640D1E1           LDRH     R4,[R1, #+6]
+   \   00000378   010080E2           ADD      R0,R0,#+1
+   \   0000037C   000054E3           CMP      R4,#+0
+   \   00000380   04408500           ADDEQ    R4,R5,R4
+   \   00000384   B640C101           STRHEQ   R4,[R1, #+6]
+   \                     ??loadini_30:
+   \   00000388   030050E1           CMP      R0,R3
+   \   0000038C   F7FFFFBA           BLT      ??loadini_31
+    163            return 0;
+   \   00000390   0000A0E3           MOV      R0,#+0
+   \   00000394   F087BDE8           POP      {R4-R10,PC}      ;; return
+   \                     ??loadini_0:
+   \   00000398   ........           DC32     lnk
+   \   0000039C   ........           DC32     maxtask
+   \   000003A0   ........           DC32     task
+   \   000003A4   ........           DC32     mask
+    164          }
+    165          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    166          void Killer(void){
+    167            extern void *ELF_BEGIN;
+    168            if(task) mfree(task);
+   \                     Killer:
+   \   00000000   ........           LDR      R0,??DataTable1  ;; task
+   \   00000004   00402DE9           PUSH     {LR}
+   \   00000008   000090E5           LDR      R0,[R0, #+0]
+   \   0000000C   000050E3           CMP      R0,#+0
+   \   00000010   0000000A           BEQ      ??Killer_0
+   \   00000014   150000EF           SWI      +21
+    169            if(lnk) mfree(lnk);
+   \                     ??Killer_0:
+   \   00000018   ........           LDR      R0,??DataTable3  ;; lnk
+   \   0000001C   000090E5           LDR      R0,[R0, #+0]
+   \   00000020   000050E3           CMP      R0,#+0
+   \   00000024   0000000A           BEQ      ??Killer_1
+   \   00000028   150000EF           SWI      +21
+    170            ((void (*)(void *))(mfree_adr()))(&ELF_BEGIN);
+   \                     ??Killer_1:
+   \   0000002C   158000EF           SWI      +32789
+   \   00000030   0010A0E1           MOV      R1,R0
+   \   00000034   04009FE5           LDR      R0,??Killer_2    ;; ELF_BEGIN
+   \   00000038   0040BDE8           POP      {LR}             ;; Pop
+   \   0000003C   01F0A0E1           MOV      PC,R1            ;; tailcall
+   \                     ??Killer_2:
+   \   00000040   ........           DC32     ELF_BEGIN
+    171          }
+    172          
+    173          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    174          int main(char *exename, char *fname){
+   \                     main:
+   \   00000000   70402DE9           PUSH     {R4-R6,LR}
+   \   00000004   04D04DE2           SUB      SP,SP,#+4
+   \   00000008   0040A0E1           MOV      R4,R0
+    175            int f=0,size;
+    176            unsigned int err;
+    177            do{
+    178              memcpy(exename+strlen(exename)-3,"ini",4);
+   \   0000000C   1B0000EF           SWI      +27
+   \   00000010   0420A0E3           MOV      R2,#+4
+   \   00000014   401F8FE2           ADR      R1,??main_0      ;; "ini"
+   \   00000018   040080E0           ADD      R0,R0,R4
+   \   0000001C   030040E2           SUB      R0,R0,#+3
+   \   00000020   1E0100EF           SWI      +286
+    179              if((f=fopen(exename,A_ReadOnly+A_BIN,P_READ,&err))<0) break;
+   \   00000024   0D30A0E1           MOV      R3,SP
+   \   00000028   8020A0E3           MOV      R2,#+128
+   \   0000002C   801CA0E3           MOV      R1,#+32768
+   \   00000030   0400A0E1           MOV      R0,R4
+   \   00000034   0A0000EF           SWI      +10
+   \   00000038   0040B0E1           MOVS     R4,R0
+   \   0000003C   2A00004A           BMI      ??main_1
+    180              if(!(size=lseek(f,0,2,&err,&err))) break;
+   \   00000040   0D00A0E1           MOV      R0,SP
+   \   00000044   01002DE9           PUSH     {R0}
+   \   00000048   04308DE2           ADD      R3,SP,#+4
+   \   0000004C   0220A0E3           MOV      R2,#+2
+   \   00000050   0010A0E3           MOV      R1,#+0
+   \   00000054   0400A0E1           MOV      R0,R4
+   \   00000058   0F0000EF           SWI      +15
+   \   0000005C   0050B0E1           MOVS     R5,R0
+   \   00000060   04D08DE2           ADD      SP,SP,#+4
+   \   00000064   2000000A           BEQ      ??main_1
+    181              lseek(f,0,0,&err,&err);
+    182              if(!(lnk=(char*)malloc(size+1))) break;
+   \   00000068   ........           LDR      R6,??DataTable3  ;; lnk
+   \   0000006C   0D00A0E1           MOV      R0,SP
+   \   00000070   01002DE9           PUSH     {R0}
+   \   00000074   04308DE2           ADD      R3,SP,#+4
+   \   00000078   0020A0E3           MOV      R2,#+0
+   \   0000007C   0010A0E3           MOV      R1,#+0
+   \   00000080   0400A0E1           MOV      R0,R4
+   \   00000084   0F0000EF           SWI      +15
+   \   00000088   010085E2           ADD      R0,R5,#+1
+   \   0000008C   140000EF           SWI      +20
+   \   00000090   000086E5           STR      R0,[R6, #+0]
+   \   00000094   0010A0E1           MOV      R1,R0
+   \   00000098   000051E3           CMP      R1,#+0
+   \   0000009C   04D08DE2           ADD      SP,SP,#+4
+   \   000000A0   1100000A           BEQ      ??main_1
+    183              if(fread(f,lnk,size,&err)!=size) break;
+   \   000000A4   0D30A0E1           MOV      R3,SP
+   \   000000A8   0520A0E1           MOV      R2,R5
+   \   000000AC   0400A0E1           MOV      R0,R4
+   \   000000B0   0B0000EF           SWI      +11
+   \   000000B4   050050E1           CMP      R0,R5
+   \   000000B8   0B00001A           BNE      ??main_1
+    184              lnk[size]=0;
+   \   000000BC   000096E5           LDR      R0,[R6, #+0]
+   \   000000C0   0010A0E3           MOV      R1,#+0
+   \   000000C4   0010C5E7           STRB     R1,[R5, +R0]
+    185              fclose(f,&err);
+   \   000000C8   0D10A0E1           MOV      R1,SP
+   \   000000CC   0400A0E1           MOV      R0,R4
+   \   000000D0   0D0000EF           SWI      +13
+    186              f=0;
+    187              if(loadini()) break;
+   \   000000D4   ........           _BLF     loadini,??loadini??rA
+   \   000000D8   000050E3           CMP      R0,#+0
+   \   000000DC   0700001A           BNE      ??main_2
+    188          //    ShowMSG(1,(int)"TimeMan активирован!");//////////
+    189              Check();
+   \   000000E0   ........           BL       Check
+    190              return 0;
+   \   000000E4   0000A0E3           MOV      R0,#+0
+   \   000000E8   7280BDE8           POP      {R1,R4-R6,PC}
+    191            }while(0);
+    192            if(f>0) fclose(f,&err);
+   \                     ??main_1:
+   \   000000EC   010054E3           CMP      R4,#+1
+   \   000000F0   020000BA           BLT      ??main_2
+   \   000000F4   0D10A0E1           MOV      R1,SP
+   \   000000F8   0400A0E1           MOV      R0,R4
+   \   000000FC   0D0000EF           SWI      +13
+    193            ShowMSG(1,(int)"Ошибка в TimeMan.ini файле!");
+   \                     ??main_2:
+   \   00000100   18109FE5           LDR      R1,??main_0+0x4  ;; `?<Constant "\\316\\370\\350\\341\\352\\340 \\342 Time`
+   \   00000104   0100A0E3           MOV      R0,#+1
+   \   00000108   480100EF           SWI      +328
+    194            SUBPROC((void *)Killer);
+   \   0000010C   10009FE5           LDR      R0,??main_0+0x8  ;; Killer
+   \   00000110   710100EF           SWI      +369
+    195            return 0;
+   \   00000114   0000A0E3           MOV      R0,#+0
+   \   00000118   7280BDE8           POP      {R1,R4-R6,PC}    ;; return
+   \                     ??main_0:
+   \   0000011C   696E6900           DC8      "ini"
+   \   00000120   ........           DC32     `?<Constant "\\316\\370\\350\\341\\352\\340 \\342 Time`
+   \   00000124   ........           DC32     Killer
+    196          }
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable1:
+   \   00000000   ........           DC32     task
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable3:
+   \   00000000   ........           DC32     lnk
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \   00000000   696E6900           DC8 "ini"
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\316\\370\\350\\341\\352\\340 \\342 Time`:
+   \   00000000   CEF8E8E1EAE0       DC8 "\316\370\350\341\352\340 \342 TimeMan.ini \364\340\351\353\345!"
+   \              20E22054696D
+   \              654D616E2E69
+   \              6E6920F4E0E9
+   \              EBE52100    
+
+   Maximum stack usage in bytes:
+
+     Function CSTACK
+     -------- ------
+     Check       24
+     Killer       4
+     everymin    32
+     loadini     32
+     main        24
+
+
+   Segment part sizes:
+
+     Function/Label                 Bytes
+     --------------                 -----
+     mytmr                            16
+     first                             1
+     lnk                               4
+     maxtask                           4
+     task                              4
+     mask                              4
+     everymin                        252
+     Check                           216
+     loadini                         936
+     Killer                           68
+     main                            296
+     ??DataTable1                      4
+     ??DataTable3                      4
+     ?<Constant "ini">                 4
+     ?<Constant "\316\370\350\341\352\340 \342 Time
+                                      28
+      Others                          48
+
+ 
+ 1 812 bytes in segment CODE
+    32 bytes in segment DATA_C
+    33 bytes in segment DATA_Z
+    12 bytes in segment INITTAB
+ 
+ 588 bytes of CODE  memory (+ 1 236 bytes shared)
+  32 bytes of CONST memory
+  33 bytes of DATA  memory
+
+Errors: none
+Warnings: none

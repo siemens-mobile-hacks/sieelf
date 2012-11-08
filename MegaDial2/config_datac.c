@@ -185,7 +185,7 @@ __root const CFG_HDR cfghdr_m10={CFG_LEVEL,"",0,0};
 __root const CFG_HDR cfghdr_m13={CFG_LEVEL,"其他相关设定",1,0};
 
 __root const CFG_HDR cfghdr6_1={CFG_STR_UTF8,"通信录地址",3,127};
-__root const char root_dir[128]="0:\\\x1F\xE7\xB3\xBB\xE7\xBB\x9F\\apo\\addr";
+__root const char root_dir[128]="0:\\\system\\apo\\addr";
 
 __root const CFG_HDR cfghdr6_2={CFG_UINT,"音效音量",0,10};
 __root const unsigned int volume=6;

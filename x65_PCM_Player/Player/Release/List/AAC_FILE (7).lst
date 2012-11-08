@@ -1,0 +1,982 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    14/Feb/2012  15:39:28 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDE #
+#                       C\AAC_FILE (7).c                                     #
+#    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD #
+#                       EC\AAC_FILE (7).c" -D NDEBUG -lC                     #
+#                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\ #
+#                       Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player #
+#                       \Player\Release\Obj\ -s9 --cpu_mode arm --endian     #
+#                       little --cpu ARM926EJ-S --stack_align 4 --interwork  #
+#                       -e --fpu None --dlib_config "D:\Program              #
+#                       Files\IAR\Embedded Workbench 4.0                     #
+#                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude       #
+#                       swilib.h -I "D:\Program Files\IAR\Embedded           #
+#                       Workbench 4.0 Evaluation\ARM\INC\"                   #
+#                       --inline_threshold=16                                #
+#    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\AAC_FILE (7).lst                                 #
+#    Object file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\O #
+#                       bj\AAC_FILE (7).r79                                  #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (7).c
+      1          /* ***** BEGIN LICENSE BLOCK *****  
+      2           * Source last modified: $Id: sbrqmf.c,v 1.1 2005/02/26 01:47:35 jrecker Exp $ 
+      3           *   
+      4           * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+      5           *       
+      6           * The contents of this file, and the files included with this file, 
+      7           * are subject to the current version of the RealNetworks Public 
+      8           * Source License (the "RPSL") available at 
+      9           * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+     10           * the file under the current version of the RealNetworks Community 
+     11           * Source License (the "RCSL") available at 
+     12           * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+     13           * will apply. You may also obtain the license terms directly from 
+     14           * RealNetworks.  You may not use this file except in compliance with 
+     15           * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+     16           * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+     17           * the rights, obligations and limitations governing use of the 
+     18           * contents of the file. 
+     19           *   
+     20           * This file is part of the Helix DNA Technology. RealNetworks is the 
+     21           * developer of the Original Code and owns the copyrights in the 
+     22           * portions it created. 
+     23           *   
+     24           * This file, and the files included with this file, is distributed 
+     25           * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+     26           * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+     27           * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+     28           * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+     29           * ENJOYMENT OR NON-INFRINGEMENT. 
+     30           *  
+     31           * Technology Compatibility Kit Test Suite(s) Location:  
+     32           *    http://www.helixcommunity.org/content/tck  
+     33           *  
+     34           * Contributor(s):  
+     35           *   
+     36           * ***** END LICENSE BLOCK ***** */  
+     37          
+     38          /**************************************************************************************
+     39           * Fixed-point HE-AAC decoder
+     40           * Jon Recker (jrecker@real.com)
+     41           * February 2005
+     42           *
+     43           * sbrqmf.c - analysis and synthesis QMF filters for SBR
+     44           **************************************************************************************/
+     45          
+     46          #include "sbr_aac.h"
+     47          #include "assembly_aac.h"
+     48          
+     49          /* PreMultiply64() table
+     50           * format = Q30
+     51           * reordered for sequential access
+     52           *
+     53           * for (i = 0; i < 64/4; i++) {
+     54           *   angle = (i + 0.25) * M_PI / nmdct;
+     55           *   x = (cos(angle) + sin(angle));
+     56           *   x =  sin(angle);
+     57           * 
+     58           *   angle = (nmdct/2 - 1 - i + 0.25) * M_PI / nmdct;
+     59           *   x = (cos(angle) + sin(angle));
+     60           *   x =  sin(angle);
+     61           * }
+     62           */
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     63          static const int cos4sin4tab64[64] = {
+   \                     cos4sin4tab64:
+   \   00000000   BDD2C740900E       DC32 1086837437, 13176464, 1112535695, 1073014240, 1137563802, 65842639
+   \              C9008FF24F42
+   \              E0E5F43F9AD8
+   \              CD43CFADEC03
+   \   00000018   FC494145F995       DC32 1161906684, 1069782521, 1185549677, 118350194, 1208478539
+   \              C33F6D0DAA46
+   \              72E10D074BEB
+   \              0748        
+   \   0000002C   E3F26A3FA2AD       DC32 1063973603, 1230679458, 170572633, 1252139062, 1055601479
+   \              5A4959BB2A0A
+   \              3620A24A4733
+   \              EB3E        
+   \   00000040   8910DE4B1350       DC32 1272844425, 222384147, 1292783074, 1044686319, 1311942998
+   \              410DE24D0E4D
+   \              EFA5443E56A9
+   \              324E        
+   \   00000054   0EB84F10D1F5       DC32 273659918, 1330312657, 1031254418, 1347880985, 324276419
+   \              4A4F92B1773D
+   \              19085750C310
+   \              5413        
+   \   00000068   D9B6565196D4       DC32 1364637401, 1015338134, 1380571810, 374111709, 1395674614
+   \              843CA2DA4952
+   \              DD7D4C16F64D
+   \              3053        
+   \   0000007C   C4A46C3B4BED       DC32 996975812, 1409936715, 423045732, 1423349524, 976211688
+   \              0954642A3719
+   \              1497D654E8CE
+   \              2F3A        
+   \   00000090   C02B9655D849       DC32 1435904960, 470960600, 1447595461, 953095785, 1458413984
+   \              121CC58D4856
+   \              6916CF38A0A1
+   \              ED56        
+   \   000000A4   5319DC1EDD4D       DC32 517740883, 1468354013, 927683790, 1477409561, 563273883
+   \              8557CE544B37
+   \              197B0F589BE0
+   \              9221        
+   \   000000B8   04148C583C79       DC32 1485575172, 900036924, 1492845928, 607449906, 1499217450
+   \              A5356805FB58
+   \              32F334242A3E
+   \              5C59        
+   \   000000CC   DE87DE334CAF       DC32 870221790, 1504685900, 650162530, 1509247982, 838310216
+   \              AF5962B1C026
+   \              EE4BF5594899
+   \              F731        
+   \   000000E0   57092D5A3789       DC32 1512900951, 691308855, 1515642604, 804379079, 1517471291
+   \              3429ECDE565A
+   \              C7D9F12F3BC6
+   \              725A        
+   \   000000F4   7DF78E2BF6BA       DC32 730789757, 1518385910, 768510122
+   \              805AAA88CE2D
+     64          	0x40c7d2bd, 0x00c90e90, 0x424ff28f, 0x3ff4e5e0, 0x43cdd89a, 0x03ecadcf, 0x454149fc, 0x3fc395f9,
+     65          	0x46aa0d6d, 0x070de172, 0x4807eb4b, 0x3f6af2e3, 0x495aada2, 0x0a2abb59, 0x4aa22036, 0x3eeb3347,
+     66          	0x4bde1089, 0x0d415013, 0x4d0e4de2, 0x3e44a5ef, 0x4e32a956, 0x104fb80e, 0x4f4af5d1, 0x3d77b192,
+     67          	0x50570819, 0x135410c3, 0x5156b6d9, 0x3c84d496, 0x5249daa2, 0x164c7ddd, 0x53304df6, 0x3b6ca4c4,
+     68          	0x5409ed4b, 0x19372a64, 0x54d69714, 0x3a2fcee8, 0x55962bc0, 0x1c1249d8, 0x56488dc5, 0x38cf1669,
+     69          	0x56eda1a0, 0x1edc1953, 0x57854ddd, 0x374b54ce, 0x580f7b19, 0x2192e09b, 0x588c1404, 0x35a5793c,
+     70          	0x58fb0568, 0x2434f332, 0x595c3e2a, 0x33de87de, 0x59afaf4c, 0x26c0b162, 0x59f54bee, 0x31f79948,
+     71          	0x5a2d0957, 0x29348937, 0x5a56deec, 0x2ff1d9c7, 0x5a72c63b, 0x2b8ef77d, 0x5a80baf6, 0x2dce88aa,
+     72          };
+     73          
+     74          /* PostMultiply64() table
+     75           * format = Q30
+     76           * reordered for sequential access
+     77           *
+     78           * for (i = 0; i <= (32/2); i++) {
+     79           *   angle = i * M_PI / 64;
+     80           *   x = (cos(angle) + sin(angle));
+     81           *   x = sin(angle);
+     82           * }
+     83           */
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     84          static const int cos1sin1tab64[34] = {
+   \                     cos1sin1tab64:
+   \   00000000   000000400000       DC32 1073741824, 0, 1125134469, 52686014, 1173816567, 105245103
+   \              000085301043
+   \              BEEC2303F704
+   \              F745AFE94506
+   \   00000018   35B3B2483708       DC32 1219670837, 157550647, 1262586814, 209476638, 1302461109
+   \              6409BE8B414B
+   \              1E5C7C0CB5FA
+   \              A14D        
+   \   0000002C   BEFC8C0FDC88       DC32 260897982, 1339197660, 311690799, 1372707968, 361732726
+   \              D24F2F069412
+   \              80DCD151769A
+   \              8F15        
+   \   00000040   45BA9E53A7E2       DC32 1402911301, 410903207, 1429734898, 459083786, 1453114139
+   \              7D18F2053855
+   \              0A105D1B1BC3
+   \              9C56        
+   \   00000054   385D2B1EBC15       DC32 506158392, 1472992700, 552013618, 1489322693, 596538995
+   \              CC57320FE720
+   \              C542C5587376
+   \              8E23        
+   \   00000068   8AB08759FAEF       DC32 1502064778, 639627258, 1511188256, 681174602, 1516671150
+   \              1F2620E7125A
+   \              4AE69928AE90
+   \              665A        
+   \   0000007C   69D2FA2A9A79       DC32 721080937, 1518500250, 759250125
+   \              825ACD3C412D
+     85          	0x40000000, 0x00000000, 0x43103085, 0x0323ecbe, 0x45f704f7, 0x0645e9af, 0x48b2b335, 0x09640837, 
+     86          	0x4b418bbe, 0x0c7c5c1e, 0x4da1fab5, 0x0f8cfcbe, 0x4fd288dc, 0x1294062f, 0x51d1dc80, 0x158f9a76, 
+     87          	0x539eba45, 0x187de2a7, 0x553805f2, 0x1b5d100a, 0x569cc31b, 0x1e2b5d38, 0x57cc15bc, 0x20e70f32, 
+     88          	0x58c542c5, 0x238e7673, 0x5987b08a, 0x261feffa, 0x5a12e720, 0x2899e64a, 0x5a6690ae, 0x2afad269, 
+     89          	0x5a82799a, 0x2d413ccd,
+     90          };
+     91          
+     92          /**************************************************************************************
+     93           * Function:    PreMultiply64
+     94           *
+     95           * Description: pre-twiddle stage of 64-point DCT-IV
+     96           *
+     97           * Inputs:      buffer of 64 samples
+     98           *
+     99           * Outputs:     processed samples in same buffer
+    100           *
+    101           * Return:      none
+    102           *
+    103           * Notes:       minimum 1 GB in, 2 GB out, gains 2 int bits
+    104           *              gbOut = gbIn + 1
+    105           *              output is limited to sqrt(2)/2 plus GB in full GB
+    106           *              uses 3-mul, 3-add butterflies instead of 4-mul, 2-add
+    107           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    108          static void PreMultiply64(int *zbuf1)
+    109          {
+    110          	int i, ar1, ai1, ar2, ai2, z1, z2;
+    111          	int t, cms2, cps2a, sin2a, cps2b, sin2b;
+    112          	int *zbuf2;
+    113          	const int *csptr;
+    114          
+    115          	zbuf2 = zbuf1 + 64 - 1;
+    116          	csptr = cos4sin4tab64;
+   \                     PreMultiply64:
+   \   00000000   94209FE5           LDR      R2,??PreMultiply64_0  ;; cos4sin4tab64
+   \   00000004   F04F2DE9           PUSH     {R4-R11,LR}
+   \   00000008   04D04DE2           SUB      SP,SP,#+4
+   \   0000000C   FC1080E2           ADD      R1,R0,#+252
+    117          
+    118          	/* whole thing should fit in registers - verify that compiler does this */
+    119          	for (i = 64 >> 2; i != 0; i--) {
+   \   00000010   1090A0E3           MOV      R9,#+16
+    120          		/* cps2 = (cos+sin), sin2 = sin, cms2 = (cos-sin) */
+    121          		cps2a = *csptr++;	
+   \                     ??PreMultiply64_1:
+   \   00000014   ........           LDR      R6,[R2], #+4
+    122          		sin2a = *csptr++;
+   \   00000018   ........           LDR      R10,[R2], #+4
+    123          		cps2b = *csptr++;	
+    124          		sin2b = *csptr++;
+    125          
+    126          		ar1 = *(zbuf1 + 0);
+   \   0000001C   ........           LDR      R8,[R0], #+4
+    127          		ai2 = *(zbuf1 + 1);
+    128          		ai1 = *(zbuf2 + 0);
+   \   00000020   ........           LDR      R12,[R1], #-4
+    129          		ar2 = *(zbuf2 - 1);
+   \   00000024   ........           LDR      R7,[R1], #+4
+   \   00000028   ........           LDR      LR,[R2], #+4
+   \   0000002C   ........           LDR      R11,[R2], #+4
+   \   00000030   ........           LDR      R3,[R0], #-4
+   \   00000034   00708DE5           STR      R7,[SP, #+0]
+    130          
+    131          		/* gain 2 ints bit from MULSHIFT32 by Q30
+    132          		 * max per-sample gain (ignoring implicit scaling) = MAX(sin(angle)+cos(angle)) = 1.414
+    133          		 * i.e. gain 1 GB since worst case is sin(angle) = cos(angle) = 0.707 (Q30), gain 2 from
+    134          		 *   extra sign bits, and eat one in adding
+    135          		 */
+    136          		t  = MULSHIFT32(sin2a, ar1 + ai1);
+   \   00000038   08708CE0           ADD      R7,R12,R8
+   \   0000003C   9A47C5E0           SMULL    R4,R5,R10,R7
+    137          		z2 = MULSHIFT32(cps2a, ai1) - t;
+    138          		cms2 = cps2a - 2*sin2a;
+    139          		z1 = MULSHIFT32(cms2, ar1) + t;
+    140          		*zbuf1++ = z1;	/* cos*ar1 + sin*ai1 */
+   \   00000040   8AA046E0           SUB      R10,R6,R10, LSL #+1
+   \   00000044   0570A0E1           MOV      R7,R5
+   \   00000048   9A48C5E0           SMULL    R4,R5,R10,R8
+    141          		*zbuf1++ = z2;	/* cos*ai1 - sin*ar1 */
+    142          
+    143          		t  = MULSHIFT32(sin2b, ar2 + ai2);
+    144          		z2 = MULSHIFT32(cps2b, ai2) - t;
+    145          		cms2 = cps2b - 2*sin2b;
+    146          		z1 = MULSHIFT32(cms2, ar2) + t;
+    147          		*zbuf2-- = z2;	/* cos*ai2 - sin*ar2 */
+    148          		*zbuf2-- = z1;	/* cos*ar2 + sin*ai2 */
+    149          	}
+   \   0000004C   019059E2           SUBS     R9,R9,#+1
+   \   00000050   054087E0           ADD      R4,R7,R5
+   \   00000054   ........           STR      R4,[R0], #+4
+   \   00000058   964CC5E0           SMULL    R4,R5,R6,R12
+   \   0000005C   074045E0           SUB      R4,R5,R7
+   \   00000060   ........           STR      R4,[R0], #+4
+   \   00000064   00409DE5           LDR      R4,[SP, #+0]
+   \   00000068   046083E0           ADD      R6,R3,R4
+   \   0000006C   9B46C5E0           SMULL    R4,R5,R11,R6
+   \   00000070   0560A0E1           MOV      R6,R5
+   \   00000074   9E43C5E0           SMULL    R4,R5,LR,R3
+   \   00000078   063045E0           SUB      R3,R5,R6
+   \   0000007C   ........           STR      R3,[R1], #-4
+   \   00000080   00709DE5           LDR      R7,[SP, #+0]
+   \   00000084   8B304EE0           SUB      R3,LR,R11, LSL #+1
+   \   00000088   9347C5E0           SMULL    R4,R5,R3,R7
+   \   0000008C   053086E0           ADD      R3,R6,R5
+   \   00000090   ........           STR      R3,[R1], #-4
+   \   00000094   DEFFFF1A           BNE      ??PreMultiply64_1
+    150          }
+   \   00000098   F18FBDE8           POP      {R0,R4-R11,PC}   ;; return
+   \                     ??PreMultiply64_0:
+   \   0000009C   ........           DC32     cos4sin4tab64
+    151          
+    152          /**************************************************************************************
+    153           * Function:    PostMultiply64
+    154           *
+    155           * Description: post-twiddle stage of 64-point type-IV DCT
+    156           *
+    157           * Inputs:      buffer of 64 samples
+    158           *              number of output samples to calculate
+    159           *
+    160           * Outputs:     processed samples in same buffer
+    161           *
+    162           * Return:      none
+    163           *
+    164           * Notes:       minimum 1 GB in, 2 GB out, gains 2 int bits
+    165           *              gbOut = gbIn + 1
+    166           *              output is limited to sqrt(2)/2 plus GB in full GB
+    167           *              nSampsOut is rounded up to next multiple of 4, since we calculate
+    168           *                4 samples per loop
+    169           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    170          static void PostMultiply64(int *fft1, int nSampsOut)
+    171          {
+   \                     PostMultiply64:
+   \   00000000   F04F2DE9           PUSH     {R4-R11,LR}
+   \   00000004   0120A0E1           MOV      R2,R1
+    172          	int i, ar1, ai1, ar2, ai2;
+    173          	int t, cms2, cps2, sin2;
+    174          	int *fft2;
+    175          	const int *csptr;
+    176          
+    177          	csptr = cos1sin1tab64;
+    178          	fft2 = fft1 + 64 - 1;
+    179          
+    180          	/* load coeffs for first pass
+    181          	 * cps2 = (cos+sin)/2, sin2 = sin/2, cms2 = (cos-sin)/2
+    182          	 */
+    183          	cps2 = *csptr++;
+    184          	sin2 = *csptr++;
+   \   00000008   8CA09FE5           LDR      R10,??PostMultiply64_0  ;; cos1sin1tab64 + 8
+   \   0000000C   FC1080E2           ADD      R1,R0,#+252
+   \   00000010   4064A0E3           MOV      R6,#+1073741824
+   \   00000014   0080A0E3           MOV      R8,#+0
+    185          	cms2 = cps2 - 2*sin2;
+   \   00000018   40C4A0E3           MOV      R12,#+1073741824
+    186          
+    187          	for (i = (nSampsOut + 3) >> 2; i != 0; i--) {
+   \   0000001C   032082E2           ADD      R2,R2,#+3
+   \   00000020   4291B0E1           ASRS     R9,R2,#+2
+   \   00000024   F08FBD08           POPEQ    {R4-R11,PC}
+    188          		ar1 = *(fft1 + 0);
+   \                     ??PostMultiply64_1:
+   \   00000028   ........           LDR      R4,[R0], #+4
+    189          		ai1 = *(fft1 + 1);
+   \   0000002C   ........           LDR      R7,[R0], #-4
+    190          		ar2 = *(fft2 - 1);
+   \   00000030   04B011E5           LDR      R11,[R1, #-4]
+    191          		ai2 = *(fft2 + 0);
+   \   00000034   005091E5           LDR      R5,[R1, #+0]
+    192          
+    193          		/* gain 2 int bits (multiplying by Q30), max gain = sqrt(2) */
+    194          		t = MULSHIFT32(sin2, ar1 + ai1);
+   \   00000038   04E087E0           ADD      LR,R7,R4
+   \   0000003C   982EC3E0           SMULL    R2,R3,R8,LR
+    195          		*fft2-- = t - MULSHIFT32(cps2, ai1);
+    196          		*fft1++ = t + MULSHIFT32(cms2, ar1);
+    197          
+    198          		cps2 = *csptr++;
+    199          		sin2 = *csptr++;
+    200          
+    201          		ai2 = -ai2;
+   \   00000040   005065E2           RSB      R5,R5,#+0
+   \   00000044   0380A0E1           MOV      R8,R3
+   \   00000048   9627C3E0           SMULL    R2,R3,R6,R7
+    202          		t = MULSHIFT32(sin2, ar2 + ai2);
+    203          		*fft2-- = t - MULSHIFT32(cps2, ai2);
+    204          		cms2 = cps2 - 2*sin2;
+    205          		*fft1++ = t + MULSHIFT32(cms2, ar2);
+    206          	}
+   \   0000004C   019059E2           SUBS     R9,R9,#+1
+   \   00000050   032048E0           SUB      R2,R8,R3
+   \   00000054   ........           STR      R2,[R1], #-4
+   \   00000058   9C24C3E0           SMULL    R2,R3,R12,R4
+   \   0000005C   0B4085E0           ADD      R4,R5,R11
+   \   00000060   082083E0           ADD      R2,R3,R8
+   \   00000064   ........           STR      R2,[R0], #+4
+   \   00000068   ........           LDR      R6,[R10], #+4
+   \   0000006C   ........           LDR      R8,[R10], #+4
+   \   00000070   9824C3E0           SMULL    R2,R3,R8,R4
+   \   00000074   88C046E0           SUB      R12,R6,R8, LSL #+1
+   \   00000078   0340A0E1           MOV      R4,R3
+   \   0000007C   9625C3E0           SMULL    R2,R3,R6,R5
+   \   00000080   032044E0           SUB      R2,R4,R3
+   \   00000084   ........           STR      R2,[R1], #-4
+   \   00000088   9C2BC3E0           SMULL    R2,R3,R12,R11
+   \   0000008C   042083E0           ADD      R2,R3,R4
+   \   00000090   ........           STR      R2,[R0], #+4
+   \   00000094   E3FFFF1A           BNE      ??PostMultiply64_1
+    207          }
+   \   00000098   F08FBDE8           POP      {R4-R11,PC}      ;; return
+   \                     ??PostMultiply64_0:
+   \   0000009C   ........           DC32     cos1sin1tab64 + 8
+    208          
+    209          /**************************************************************************************
+    210           * Function:    QMFAnalysisConv
+    211           *
+    212           * Description: convolution kernel for analysis QMF 
+    213           *
+    214           * Inputs:      pointer to coefficient table, reordered for sequential access
+    215           *              delay buffer of size 32*10 = 320 real-valued PCM samples
+    216           *              index for delay ring buffer (range = [0, 9])
+    217           *
+    218           * Outputs:     64 consecutive 32-bit samples
+    219           *
+    220           * Return:      none
+    221           *
+    222           * Notes:       this is carefully written to be efficient on ARM
+    223           *              use the assembly code version in sbrqmfak.s when building for ARM!
+    224           **************************************************************************************/
+    225          
+    226          #if (defined (__arm) && defined (__ARMCC_VERSION)) || (defined (_WIN32) && defined (_WIN32_WCE) && defined (ARM)) || (defined(__GNUC__) && defined(__arm__))
+    227          void QMFAnalysisConv(int *cTab, int *delay, int dIdx, int *uBuf);
+    228          #else
+    229          void QMFAnalysisConv(int *cTab, int *delay, int dIdx, int *uBuf)
+    230          { return;
+    231          	int k, dOff;
+    232          	int *cPtr0, *cPtr1;
+    233          	U64 u64lo, u64hi;
+    234          
+    235          	dOff = dIdx*32 + 31;
+    236          	cPtr0 = cTab;
+    237          	cPtr1 = cTab + 33*5 - 1;
+    238          
+    239          	/* special first pass since we need to flip sign to create cTab[384], cTab[512] */
+    240          	u64lo.w64 = 0;
+    241          	u64hi.w64 = 0;
+    242          	u64lo.w64 = MADD64(u64lo.w64,  *cPtr0++,   delay[dOff]);	dOff -= 32; if (dOff < 0) {dOff += 320;}
+    243          	u64hi.w64 = MADD64(u64hi.w64,  *cPtr0++,   delay[dOff]);	dOff -= 32; if (dOff < 0) {dOff += 320;}
+    244          	u64lo.w64 = MADD64(u64lo.w64,  *cPtr0++,   delay[dOff]);	dOff -= 32; if (dOff < 0) {dOff += 320;}
+    245          	u64hi.w64 = MADD64(u64hi.w64,  *cPtr0++,   delay[dOff]);	dOff -= 32; if (dOff < 0) {dOff += 320;}
+    246          	u64lo.w64 = MADD64(u64lo.w64,  *cPtr0++,   delay[dOff]);	dOff -= 32; if (dOff < 0) {dOff += 320;}
+    247          	u64hi.w64 = MADD64(u64hi.w64,  *cPtr1--,   delay[dOff]);	dOff -= 32; if (dOff < 0) {dOff += 320;}
+    248          	u64lo.w64 = MADD64(u64lo.w64, -(*cPtr1--), delay[dOff]);	dOff -= 32; if (dOff < 0) {dOff += 320;}
+    249          	u64hi.w64 = MADD64(u64hi.w64,  *cPtr1--,   delay[dOff]);	dOff -= 32; if (dOff < 0) {dOff += 320;}
+    250          	u64lo.w64 = MADD64(u64lo.w64, -(*cPtr1--), delay[dOff]);	dOff -= 32; if (dOff < 0) {dOff += 320;}
+    251          	u64hi.w64 = MADD64(u64hi.w64,  *cPtr1--,   delay[dOff]);	dOff -= 32; if (dOff < 0) {dOff += 320;}
+    252          
+    253          	uBuf[0]  = u64lo.r.hi32;
+    254          	uBuf[32] = u64hi.r.hi32;
+    255          	uBuf++;
+    256          	dOff--;
+    257          
+    258          	/* max gain for any sample in uBuf, after scaling by cTab, ~= 0.99 
+    259          	 * so we can just sum the uBuf values with no overflow problems
+    260          	 */
+    261          	for (k = 1; k <= 31; k++) {
+    262          		u64lo.w64 = 0;
+    263          		u64hi.w64 = 0;
+    264          		u64lo.w64 = MADD64(u64lo.w64, *cPtr0++, delay[dOff]);	dOff -= 32; if (dOff < 0) {dOff += 320;}
+    265          		u64hi.w64 = MADD64(u64hi.w64, *cPtr0++, delay[dOff]);	dOff -= 32; if (dOff < 0) {dOff += 320;}
+    266          		u64lo.w64 = MADD64(u64lo.w64, *cPtr0++, delay[dOff]);	dOff -= 32; if (dOff < 0) {dOff += 320;}
+    267          		u64hi.w64 = MADD64(u64hi.w64, *cPtr0++, delay[dOff]);	dOff -= 32; if (dOff < 0) {dOff += 320;}
+    268          		u64lo.w64 = MADD64(u64lo.w64, *cPtr0++, delay[dOff]);	dOff -= 32; if (dOff < 0) {dOff += 320;}
+    269          		u64hi.w64 = MADD64(u64hi.w64, *cPtr1--, delay[dOff]);	dOff -= 32; if (dOff < 0) {dOff += 320;}
+    270          		u64lo.w64 = MADD64(u64lo.w64, *cPtr1--, delay[dOff]);	dOff -= 32; if (dOff < 0) {dOff += 320;}
+    271          		u64hi.w64 = MADD64(u64hi.w64, *cPtr1--, delay[dOff]);	dOff -= 32; if (dOff < 0) {dOff += 320;}
+    272          		u64lo.w64 = MADD64(u64lo.w64, *cPtr1--, delay[dOff]);	dOff -= 32; if (dOff < 0) {dOff += 320;}
+    273          		u64hi.w64 = MADD64(u64hi.w64, *cPtr1--, delay[dOff]);	dOff -= 32; if (dOff < 0) {dOff += 320;}
+    274          
+    275          		uBuf[0]  = u64lo.r.hi32;
+    276          		uBuf[32] = u64hi.r.hi32;
+    277          		uBuf++;
+    278          		dOff--;
+    279          	}
+    280          }
+    281          #endif
+    282          
+    283          /**************************************************************************************
+    284           * Function:    QMFAnalysis
+    285           *
+    286           * Description: 32-subband analysis QMF (4.6.18.4.1)
+    287           *
+    288           * Inputs:      32 consecutive samples of decoded 32-bit PCM, format = Q(fBitsIn)
+    289           *              delay buffer of size 32*10 = 320 PCM samples
+    290           *              number of fraction bits in input PCM
+    291           *              index for delay ring buffer (range = [0, 9])
+    292           *              number of subbands to calculate (range = [0, 32])
+    293           *
+    294           * Outputs:     qmfaBands complex subband samples, format = Q(FBITS_OUT_QMFA)
+    295           *              updated delay buffer
+    296           *              updated delay index
+    297           *
+    298           * Return:      guard bit mask
+    299           *
+    300           * Notes:       output stored as RE{X0}, IM{X0}, RE{X1}, IM{X1}, ... RE{X31}, IM{X31}
+    301           *              output stored in int buffer of size 64*2 = 128 
+    302           *                (zero-filled from XBuf[2*qmfaBands] to XBuf[127])
+    303           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    304          int QMFAnalysis(int *inbuf, int *delay, int *XBuf, int fBitsIn, int *delayIdx, int qmfaBands)
+    305          {
+   \                     raac_QMFAnalysis:
+   \   00000000   F0432DE9           PUSH     {R4-R9,LR}
+   \   00000004   1C509DE5           LDR      R5,[SP, #+28]
+   \   00000008   20609DE5           LDR      R6,[SP, #+32]
+   \   0000000C   0240A0E1           MOV      R4,R2
+    306          	int n, y, shift, gbMask;
+    307          	int *delayPtr, *uBuf, *tBuf;
+    308          
+    309          	/* use XBuf[128] as temp buffer for reordering */
+    310          	uBuf = XBuf;		/* first 64 samples */
+    311          	tBuf = XBuf + 64;	/* second 64 samples */
+    312          
+    313          	/* overwrite oldest PCM with new PCM
+    314          	 * delay[n] has 1 GB after shifting (either << or >>)
+    315          	 */
+    316          	delayPtr = delay + (*delayIdx * 32);
+   \   00000010   002095E5           LDR      R2,[R5, #+0]
+   \   00000014   407F84E2           ADD      R7,R4,#+256
+   \   00000018   822381E0           ADD      R2,R1,R2, LSL #+7
+    317          	if (fBitsIn > FBITS_IN_QMFA) {
+   \   0000001C   0F0053E3           CMP      R3,#+15
+   \   00000020   090000BA           BLT      ??raac_QMFAnalysis_0
+    318          		shift = MIN(fBitsIn - FBITS_IN_QMFA, 31);
+   \   00000024   0EC043E2           SUB      R12,R3,#+14
+   \   00000028   1F005CE3           CMP      R12,#+31
+   \   0000002C   1FC0A0A3           MOVGE    R12,#+31
+    319          		for (n = 32; n != 0; n--) {
+   \   00000030   2030A0E3           MOV      R3,#+32
+    320          			y = (*inbuf) >> shift;
+   \                     ??raac_QMFAnalysis_1:
+   \   00000034   ........           LDR      R8,[R0], #+4
+    321          			inbuf++;
+    322          			*delayPtr++ = y;
+    323          		}
+   \   00000038   013053E2           SUBS     R3,R3,#+1
+   \   0000003C   58ECA0E1           ASR      LR,R8,R12
+   \   00000040   ........           STR      LR,[R2], #+4
+   \   00000044   FAFFFF1A           BNE      ??raac_QMFAnalysis_1
+   \   00000048   0E0000EA           B        ??raac_QMFAnalysis_2
+    324          	} else {
+    325          		shift = MIN(FBITS_IN_QMFA - fBitsIn, 30);
+   \                     ??raac_QMFAnalysis_0:
+   \   0000004C   0EC063E2           RSB      R12,R3,#+14
+   \   00000050   1E005CE3           CMP      R12,#+30
+   \   00000054   1EC0A0A3           MOVGE    R12,#+30
+    326          		for (n = 32; n != 0; n--) {
+   \   00000058   2030A0E3           MOV      R3,#+32
+    327          			y = *inbuf++;
+   \                     ??raac_QMFAnalysis_3:
+   \   0000005C   ........           LDR      LR,[R0], #+4
+    328          			CLIP_2N_SHIFT30(y, shift);
+   \   00000060   0C90A0E1           MOV      R9,R12
+   \   00000064   CE8FA0E1           ASR      R8,LR,#+31
+   \   00000068   1E9069E2           RSB      R9,R9,#+30
+   \   0000006C   5E0958E1           CMP      R8,LR, ASR R9
+   \   00000070   C094E013           MVNNE    R9,#-1073741824
+   \   00000074   08E02910           EORNE    LR,R9,R8
+   \   00000078   1EECA001           LSLEQ    LR,LR,R12
+    329          			*delayPtr++ = y;
+   \   0000007C   ........           STR      LR,[R2], #+4
+    330          		}
+   \   00000080   013053E2           SUBS     R3,R3,#+1
+   \   00000084   F4FFFF1A           BNE      ??raac_QMFAnalysis_3
+    331          	}
+    332          	
+    333          	QMFAnalysisConv((int *)cTabA, delay, *delayIdx, uBuf);
+   \                     ??raac_QMFAnalysis_2:
+   \   00000088   002095E5           LDR      R2,[R5, #+0]
+   \   0000008C   18019FE5           LDR      R0,??raac_QMFAnalysis_4  ;; raac_cTabA
+   \   00000090   0430A0E1           MOV      R3,R4
+   \   00000094   ........           _BLF     raac_QMFAnalysisConv,??raac_QMFAnalysisConv??rA
+    334          	
+    335          	/* uBuf has at least 2 GB right now (1 from clipping to Q(FBITS_IN_QMFA), one from
+    336          	 *   the scaling by cTab (MULSHIFT32(*delayPtr--, *cPtr++), with net gain of < 1.0)
+    337          	 * TODO - fuse with QMFAnalysisConv to avoid separate reordering
+    338          	 */
+    339              tBuf[2*0 + 0] = uBuf[0];
+   \   00000098   000094E5           LDR      R0,[R4, #+0]
+   \   0000009C   000087E5           STR      R0,[R7, #+0]
+    340              tBuf[2*0 + 1] = uBuf[1];
+   \   000000A0   040094E5           LDR      R0,[R4, #+4]
+   \   000000A4   040087E5           STR      R0,[R7, #+4]
+    341              for (n = 1; n < 31; n++) {
+   \   000000A8   0100A0E3           MOV      R0,#+1
+    342                  tBuf[2*n + 0] = -uBuf[64-n];
+   \                     ??raac_QMFAnalysis_5:
+   \   000000AC   0010A0E1           MOV      R1,R0
+   \   000000B0   001061E2           RSB      R1,R1,#+0
+   \   000000B4   011184E0           ADD      R1,R4,R1, LSL #+2
+   \   000000B8   001191E5           LDR      R1,[R1, #+256]
+    343                  tBuf[2*n + 1] =  uBuf[n+1];
+   \   000000BC   002184E0           ADD      R2,R4,R0, LSL #+2
+   \   000000C0   001061E2           RSB      R1,R1,#+0
+   \   000000C4   801187E7           STR      R1,[R7, +R0, LSL #+3]
+   \   000000C8   042092E5           LDR      R2,[R2, #+4]
+   \   000000CC   801187E0           ADD      R1,R7,R0, LSL #+3
+   \   000000D0   042081E5           STR      R2,[R1, #+4]
+    344              }
+   \   000000D4   010080E2           ADD      R0,R0,#+1
+   \   000000D8   1F0050E3           CMP      R0,#+31
+   \   000000DC   F2FFFFBA           BLT      ??raac_QMFAnalysis_5
+    345              tBuf[2*31 + 1] =  uBuf[32];
+   \   000000E0   800094E5           LDR      R0,[R4, #+128]
+   \   000000E4   FC0087E5           STR      R0,[R7, #+252]
+    346              tBuf[2*31 + 0] = -uBuf[33];
+   \   000000E8   840094E5           LDR      R0,[R4, #+132]
+   \   000000EC   000060E2           RSB      R0,R0,#+0
+   \   000000F0   F80087E5           STR      R0,[R7, #+248]
+    347          	
+    348          	/* fast in-place DCT-IV - only need 2*qmfaBands output samples */
+    349          	PreMultiply64(tBuf);	/* 2 GB in, 3 GB out */
+   \   000000F4   0700A0E1           MOV      R0,R7
+   \   000000F8   ........           BL       PreMultiply64
+    350          	FFT32C(tBuf);			/* 3 GB in, 1 GB out */
+   \   000000FC   0700A0E1           MOV      R0,R7
+   \   00000100   ........           _BLF     raac_FFT32C,??raac_FFT32C??rA
+    351          	PostMultiply64(tBuf, qmfaBands*2);	/* 1 GB in, 2 GB out */
+   \   00000104   8610A0E1           LSL      R1,R6,#+1
+   \   00000108   0700A0E1           MOV      R0,R7
+   \   0000010C   ........           BL       PostMultiply64
+    352          
+    353          	/* TODO - roll into PostMultiply (if enough registers) */
+    354          	gbMask = 0;
+   \   00000110   0000A0E3           MOV      R0,#+0
+    355          	for (n = 0; n < qmfaBands; n++) {
+   \   00000114   0010A0E3           MOV      R1,#+0
+   \   00000118   010056E3           CMP      R6,#+1
+   \   0000011C   120000AA           BGE      ??raac_QMFAnalysis_6
+   \   00000120   150000EA           B        ??raac_QMFAnalysis_7
+    356          		XBuf[2*n+0] =  tBuf[ n + 0];	/* implicit scaling of 2 in our output Q format */
+   \                     ??raac_QMFAnalysis_8:
+   \   00000124   012197E7           LDR      R2,[R7, +R1, LSL #+2]
+    357          		gbMask |= FASTABS(XBuf[2*n+0]);
+    358          		XBuf[2*n+1] = -tBuf[63 - n];
+   \   00000128   0190A0E1           MOV      R9,R1
+   \   0000012C   812184E7           STR      R2,[R4, +R1, LSL #+3]
+   \   00000130   009069E2           RSB      R9,R9,#+0
+   \   00000134   099187E0           ADD      R9,R7,R9, LSL #+2
+   \   00000138   FC9099E5           LDR      R9,[R9, #+252]
+   \   0000013C   C23FA0E1           ASR      R3,R2,#+31
+   \   00000140   818184E0           ADD      R8,R4,R1, LSL #+3
+   \   00000144   009069E2           RSB      R9,R9,#+0
+   \   00000148   049088E5           STR      R9,[R8, #+4]
+    359          		gbMask |= FASTABS(XBuf[2*n+1]);
+   \   0000014C   C9CFA0E1           ASR      R12,R9,#+31
+   \   00000150   022023E0           EOR      R2,R3,R2
+   \   00000154   032042E0           SUB      R2,R2,R3
+   \   00000158   09302CE0           EOR      R3,R12,R9
+   \   0000015C   0C3043E0           SUB      R3,R3,R12
+   \   00000160   022083E1           ORR      R2,R3,R2
+   \   00000164   000082E1           ORR      R0,R2,R0
+    360          	}
+   \   00000168   011081E2           ADD      R1,R1,#+1
+   \                     ??raac_QMFAnalysis_6:
+   \   0000016C   060051E1           CMP      R1,R6
+   \   00000170   EBFFFFBA           BLT      ??raac_QMFAnalysis_8
+    361          
+    362          	/* fill top section with zeros for HF generation */
+    363          	for (    ; n < 64; n++) {
+   \                     ??raac_QMFAnalysis_9:
+   \   00000174   400051E3           CMP      R1,#+64
+   \   00000178   050000AA           BGE      ??raac_QMFAnalysis_10
+    364          		XBuf[2*n+0] = 0;
+   \                     ??raac_QMFAnalysis_7:
+   \   0000017C   0020A0E3           MOV      R2,#+0
+   \   00000180   812184E7           STR      R2,[R4, +R1, LSL #+3]
+    365          		XBuf[2*n+1] = 0;
+   \   00000184   813184E0           ADD      R3,R4,R1, LSL #+3
+   \   00000188   042083E5           STR      R2,[R3, #+4]
+    366          	}
+   \   0000018C   011081E2           ADD      R1,R1,#+1
+   \   00000190   F7FFFFEA           B        ??raac_QMFAnalysis_9
+    367          
+    368          	*delayIdx = (*delayIdx == NUM_QMF_DELAY_BUFS - 1 ? 0 : *delayIdx + 1);
+   \                     ??raac_QMFAnalysis_10:
+   \   00000194   001095E5           LDR      R1,[R5, #+0]
+   \   00000198   090051E3           CMP      R1,#+9
+   \   0000019C   0010A003           MOVEQ    R1,#+0
+   \   000001A0   01108112           ADDNE    R1,R1,#+1
+   \   000001A4   001085E5           STR      R1,[R5, #+0]
+    369          
+    370          	/* minimum of 2 GB in output */
+    371          	return gbMask;
+   \   000001A8   F083BDE8           POP      {R4-R9,PC}       ;; return
+   \                     ??raac_QMFAnalysis_4:
+   \   000001AC   ........           DC32     raac_cTabA
+    372          }
+    373          
+    374          /* lose FBITS_LOST_DCT4_64 in DCT4, gain 6 for implicit scaling by 1/64, lose 1 for cTab multiply (Q31) */
+    375          #define FBITS_OUT_QMFS	(FBITS_IN_QMFS - FBITS_LOST_DCT4_64 + 6 - 1)
+    376          #define RND_VAL			(1 << (FBITS_OUT_QMFS-1))
+    377          
+    378          /**************************************************************************************
+    379           * Function:    QMFSynthesisConv
+    380           *
+    381           * Description: final convolution kernel for synthesis QMF 
+    382           *
+    383           * Inputs:      pointer to coefficient table, reordered for sequential access
+    384           *              delay buffer of size 64*10 = 640 complex samples (1280 ints)
+    385           *              index for delay ring buffer (range = [0, 9])
+    386           *              number of QMF subbands to process (range = [0, 64])
+    387           *              number of channels
+    388           *
+    389           * Outputs:     64 consecutive 16-bit PCM samples, interleaved by factor of nChans
+    390           *
+    391           * Return:      none
+    392           *
+    393           * Notes:       this is carefully written to be efficient on ARM
+    394           *              use the assembly code version in sbrqmfsk.s when building for ARM!
+    395           **************************************************************************************/
+    396          #if (defined (__arm) && defined (__ARMCC_VERSION)) || (defined (_WIN32) && defined (_WIN32_WCE) && defined (ARM)) || (defined(__GNUC__) && defined(__arm__))
+    397          void QMFSynthesisConv(int *cPtr, int *delay, int dIdx, short *outbuf, int nChans);
+    398          #else
+    399          void QMFSynthesisConv(int *cPtr, int *delay, int dIdx, short *outbuf, int nChans)
+    400          { return;
+    401          	int k, dOff0, dOff1;
+    402          	U64 sum64;
+    403          
+    404          	dOff0 = (dIdx)*128;
+    405          	dOff1 = dOff0 - 1;
+    406          	if (dOff1 < 0)
+    407          		dOff1 += 1280;
+    408          
+    409          	/* scaling note: total gain of coefs (cPtr[0]-cPtr[9] for any k) is < 2.0, so 1 GB in delay values is adequate */
+    410          	for (k = 0; k <= 63; k++) {
+    411          		sum64.w64 = 0;
+    412          		sum64.w64 = MADD64(sum64.w64, *cPtr++, delay[dOff0]);	dOff0 -= 256; if (dOff0 < 0) {dOff0 += 1280;}
+    413          		sum64.w64 = MADD64(sum64.w64, *cPtr++, delay[dOff1]);	dOff1 -= 256; if (dOff1 < 0) {dOff1 += 1280;}
+    414          		sum64.w64 = MADD64(sum64.w64, *cPtr++, delay[dOff0]);	dOff0 -= 256; if (dOff0 < 0) {dOff0 += 1280;}
+    415          		sum64.w64 = MADD64(sum64.w64, *cPtr++, delay[dOff1]);	dOff1 -= 256; if (dOff1 < 0) {dOff1 += 1280;}
+    416          		sum64.w64 = MADD64(sum64.w64, *cPtr++, delay[dOff0]);	dOff0 -= 256; if (dOff0 < 0) {dOff0 += 1280;}
+    417          		sum64.w64 = MADD64(sum64.w64, *cPtr++, delay[dOff1]);	dOff1 -= 256; if (dOff1 < 0) {dOff1 += 1280;}
+    418          		sum64.w64 = MADD64(sum64.w64, *cPtr++, delay[dOff0]);	dOff0 -= 256; if (dOff0 < 0) {dOff0 += 1280;}
+    419          		sum64.w64 = MADD64(sum64.w64, *cPtr++, delay[dOff1]);	dOff1 -= 256; if (dOff1 < 0) {dOff1 += 1280;}
+    420          		sum64.w64 = MADD64(sum64.w64, *cPtr++, delay[dOff0]);	dOff0 -= 256; if (dOff0 < 0) {dOff0 += 1280;}
+    421          		sum64.w64 = MADD64(sum64.w64, *cPtr++, delay[dOff1]);	dOff1 -= 256; if (dOff1 < 0) {dOff1 += 1280;}
+    422          
+    423          		dOff0++;
+    424          		dOff1--;
+    425          		*outbuf = CLIPTOSHORT((sum64.r.hi32 + RND_VAL) >> FBITS_OUT_QMFS);
+    426          		outbuf += nChans;
+    427          	}
+    428          }
+    429          #endif
+    430          
+    431          /**************************************************************************************
+    432           * Function:    QMFSynthesis
+    433           *
+    434           * Description: 64-subband synthesis QMF (4.6.18.4.2)
+    435           *
+    436           * Inputs:      64 consecutive complex subband QMF samples, format = Q(FBITS_IN_QMFS)
+    437           *              delay buffer of size 64*10 = 640 complex samples (1280 ints)
+    438           *              index for delay ring buffer (range = [0, 9])
+    439           *              number of QMF subbands to process (range = [0, 64])
+    440           *              number of channels
+    441           *
+    442           * Outputs:     64 consecutive 16-bit PCM samples, interleaved by factor of nChans
+    443           *              updated delay buffer
+    444           *              updated delay index
+    445           *
+    446           * Return:      none
+    447           *
+    448           * Notes:       assumes MIN_GBITS_IN_QMFS guard bits in input, either from
+    449           *                QMFAnalysis (if upsampling only) or from MapHF (if SBR on)
+    450           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    451          void QMFSynthesis(int *inbuf, int *delay, int *delayIdx, int qmfsBands, short *outbuf, int nChans)
+    452          {
+   \                     raac_QMFSynthesis:
+   \   00000000   F44F2DE9           PUSH     {R2,R4-R11,LR}
+    453          	int n, a0, a1, b0, b1, dOff0, dOff1, dIdx;
+    454          	int *tBufLo, *tBufHi;
+    455          
+    456          	dIdx = *delayIdx;
+   \   00000004   007092E5           LDR      R7,[R2, #+0]
+   \   00000008   2C609DE5           LDR      R6,[SP, #+44]
+   \   0000000C   0150A0E1           MOV      R5,R1
+    457          	tBufLo = delay + dIdx*128 + 0;
+   \   00000010   874485E0           ADD      R4,R5,R7, LSL #+9
+   \   00000014   0480A0E1           MOV      R8,R4
+    458          	tBufHi = delay + dIdx*128 + 127;
+   \   00000018   7F9F84E2           ADD      R9,R4,#+508
+    459          
+    460          	/* reorder inputs to DCT-IV, only use first qmfsBands (complex) samples 
+    461          	 * TODO - fuse with PreMultiply64 to avoid separate reordering steps
+    462          	 */
+    463              for (n = 0; n < qmfsBands >> 1; n++) {
+   \   0000001C   00A0A0E3           MOV      R10,#+0
+   \   00000020   C3B0A0E1           ASR      R11,R3,#+1
+   \   00000024   01005BE3           CMP      R11,#+1
+   \   00000028   090000AA           BGE      ??raac_QMFSynthesis_0
+   \   0000002C   0A0000EA           B        ??raac_QMFSynthesis_1
+    464          		a0 = *inbuf++;
+   \                     ??raac_QMFSynthesis_2:
+   \   00000030   ........           LDR      R1,[R0], #+4
+    465          		b0 = *inbuf++;
+   \   00000034   ........           LDR      R2,[R0], #+4
+    466          		a1 = *inbuf++;
+   \   00000038   ........           LDR      R12,[R0], #+4
+    467          		b1 = *inbuf++;
+   \   0000003C   ........           LDR      LR,[R0], #+4
+    468          		*tBufLo++ = a0;
+   \   00000040   ........           STR      R1,[R8], #+4
+    469                  *tBufLo++ = a1;
+   \   00000044   ........           STR      R12,[R8], #+4
+    470                  *tBufHi-- = b0;
+   \   00000048   ........           STR      R2,[R9], #-4
+    471                  *tBufHi-- = b1;
+   \   0000004C   ........           STR      LR,[R9], #-4
+    472              }
+   \   00000050   01A08AE2           ADD      R10,R10,#+1
+   \                     ??raac_QMFSynthesis_0:
+   \   00000054   0B005AE1           CMP      R10,R11
+   \   00000058   F4FFFFBA           BLT      ??raac_QMFSynthesis_2
+    473          	if (qmfsBands & 0x01) {
+   \                     ??raac_QMFSynthesis_1:
+   \   0000005C   00B0A0E3           MOV      R11,#+0
+   \   00000060   010013E3           TST      R3,#0x1
+   \   00000064   0900000A           BEQ      ??raac_QMFSynthesis_3
+    474          		a0 = *inbuf++;
+   \   00000068   ........           LDR      R1,[R0], #+4
+    475          		b0 = *inbuf++;
+   \   0000006C   002090E5           LDR      R2,[R0, #+0]
+    476          		*tBufLo++ = a0;
+   \   00000070   ........           STR      R1,[R8], #+4
+    477                  *tBufHi-- = b0;
+   \   00000074   ........           STR      R2,[R9], #-4
+    478                  *tBufLo++ = 0;
+   \   00000078   010000EA           B        ??raac_QMFSynthesis_4
+    479          		*tBufHi-- = 0;
+    480          		n++;
+    481          	}
+    482              for (     ; n < 32; n++) {
+    483          		*tBufLo++ = 0;
+   \                     ??raac_QMFSynthesis_5:
+   \   0000007C   ........           STR      R11,[R8], #+4
+    484                  *tBufHi-- = 0;
+   \   00000080   ........           STR      R11,[R9], #-4
+    485                  *tBufLo++ = 0;
+   \                     ??raac_QMFSynthesis_4:
+   \   00000084   ........           STR      R11,[R8], #+4
+    486                  *tBufHi-- = 0;
+   \   00000088   ........           STR      R11,[R9], #-4
+    487          	}
+   \   0000008C   01A08AE2           ADD      R10,R10,#+1
+   \                     ??raac_QMFSynthesis_3:
+   \   00000090   20005AE3           CMP      R10,#+32
+   \   00000094   F8FFFFBA           BLT      ??raac_QMFSynthesis_5
+    488          
+    489          	tBufLo = delay + dIdx*128 + 0;
+    490          	tBufHi = delay + dIdx*128 + 64;
+   \   00000098   408F84E2           ADD      R8,R4,#+256
+    491          
+    492          	/* 2 GB in, 3 GB out */
+    493          	PreMultiply64(tBufLo);
+   \   0000009C   0400A0E1           MOV      R0,R4
+   \   000000A0   ........           BL       PreMultiply64
+    494          	PreMultiply64(tBufHi);
+   \   000000A4   0800A0E1           MOV      R0,R8
+   \   000000A8   ........           BL       PreMultiply64
+    495          
+    496          	/* 3 GB in, 1 GB out */
+    497          	FFT32C(tBufLo);
+   \   000000AC   0400A0E1           MOV      R0,R4
+   \   000000B0   ........           _BLF     raac_FFT32C,??raac_FFT32C??rA
+    498          	FFT32C(tBufHi);
+   \   000000B4   0800A0E1           MOV      R0,R8
+   \   000000B8   ........           _BLF     raac_FFT32C,??raac_FFT32C??rA
+    499          
+    500          	/* 1 GB in, 2 GB out */
+    501          	PostMultiply64(tBufLo, 64);
+   \   000000BC   4010A0E3           MOV      R1,#+64
+   \   000000C0   0400A0E1           MOV      R0,R4
+   \   000000C4   ........           BL       PostMultiply64
+    502          	PostMultiply64(tBufHi, 64);
+   \   000000C8   4010A0E3           MOV      R1,#+64
+   \   000000CC   0800A0E1           MOV      R0,R8
+   \   000000D0   ........           BL       PostMultiply64
+    503          
+    504          	/* could fuse with PostMultiply64 to avoid separate pass */
+    505          	dOff0 = dIdx*128;
+   \   000000D4   8793A0E1           LSL      R9,R7,#+7
+    506          	dOff1 = dIdx*128 + 64;
+   \   000000D8   403089E2           ADD      R3,R9,#+64
+    507          	for (n = 32; n != 0; n--) {
+   \   000000DC   2000A0E3           MOV      R0,#+32
+    508          		a0 =  (*tBufLo++);
+   \                     ??raac_QMFSynthesis_6:
+   \   000000E0   ........           LDR      R1,[R4], #+4
+    509          		a1 =  (*tBufLo++);
+   \   000000E4   ........           LDR      R12,[R4], #+4
+    510          		b0 =  (*tBufHi++);
+   \   000000E8   ........           LDR      R2,[R8], #+4
+    511          		b1 = -(*tBufHi++);
+   \   000000EC   ........           LDR      R10,[R8], #+4
+    512          
+    513          		delay[dOff0++] = (b0 - a0);
+    514          		delay[dOff0++] = (b1 - a1);
+    515          		delay[dOff1++] = (b0 + a0);
+    516          		delay[dOff1++] = (b1 + a1);
+    517          	}
+   \   000000F0   010050E2           SUBS     R0,R0,#+1
+   \   000000F4   00E06AE2           RSB      LR,R10,#+0
+   \   000000F8   01A042E0           SUB      R10,R2,R1
+   \   000000FC   09A185E7           STR      R10,[R5, +R9, LSL #+2]
+   \   00000100   019089E2           ADD      R9,R9,#+1
+   \   00000104   0CA04EE0           SUB      R10,LR,R12
+   \   00000108   09A185E7           STR      R10,[R5, +R9, LSL #+2]
+   \   0000010C   019089E2           ADD      R9,R9,#+1
+   \   00000110   021081E0           ADD      R1,R1,R2
+   \   00000114   031185E7           STR      R1,[R5, +R3, LSL #+2]
+   \   00000118   011083E2           ADD      R1,R3,#+1
+   \   0000011C   0E208CE0           ADD      R2,R12,LR
+   \   00000120   012185E7           STR      R2,[R5, +R1, LSL #+2]
+   \   00000124   013081E2           ADD      R3,R1,#+1
+   \   00000128   ECFFFF1A           BNE      ??raac_QMFSynthesis_6
+    518          
+    519          	QMFSynthesisConv((int *)cTabS, delay, dIdx, outbuf, nChans);
+   \   0000012C   34009FE5           LDR      R0,??raac_QMFSynthesis_7  ;; raac_cTabS
+   \   00000130   40002DE9           PUSH     {R6}
+   \   00000134   2C309DE5           LDR      R3,[SP, #+44]
+   \   00000138   0720A0E1           MOV      R2,R7
+   \   0000013C   0510A0E1           MOV      R1,R5
+   \   00000140   ........           _BLF     raac_QMFSynthesisConv,??raac_QMFSynthesisConv??rA
+    520          
+    521          	*delayIdx = (*delayIdx == NUM_QMF_DELAY_BUFS - 1 ? 0 : *delayIdx + 1);
+   \   00000144   04009DE5           LDR      R0,[SP, #+4]
+   \   00000148   000090E5           LDR      R0,[R0, #+0]
+   \   0000014C   04D08DE2           ADD      SP,SP,#+4
+   \   00000150   00109DE5           LDR      R1,[SP, #+0]
+   \   00000154   090050E3           CMP      R0,#+9
+   \   00000158   0000A003           MOVEQ    R0,#+0
+   \   0000015C   01008012           ADDNE    R0,R0,#+1
+   \   00000160   000081E5           STR      R0,[R1, #+0]
+    522          }
+   \   00000164   F18FBDE8           POP      {R0,R4-R11,PC}   ;; return
+   \                     ??raac_QMFSynthesis_7:
+   \   00000168   ........           DC32     raac_cTabS
+
+   Maximum stack usage in bytes:
+
+     Function          CSTACK
+     --------          ------
+     PostMultiply64       36
+     PreMultiply64        40
+     raac_QMFAnalysis     28
+     raac_QMFSynthesis    44
+
+
+   Segment part sizes:
+
+     Function/Label    Bytes
+     --------------    -----
+     cos4sin4tab64      256
+     cos1sin1tab64      136
+     PreMultiply64      160
+     PostMultiply64     160
+     raac_QMFAnalysis   432
+     raac_QMFSynthesis  364
+      Others             52
+
+ 
+ 1 168 bytes in segment CODE
+   392 bytes in segment DATA_C
+ 
+ 1 116 bytes of CODE  memory (+ 52 bytes shared)
+   392 bytes of CONST memory
+
+Errors: none
+Warnings: none

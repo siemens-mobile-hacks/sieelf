@@ -1,0 +1,319 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    02/Dec/2011  21:56:49 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\Macro\config_data.c             #
+#    Command line    =  D:\SVN\SieELF\SieELF\Macro\config_data.c -D          #
+#                       NEWSGOLD -D ELKA -lC D:\SVN\SieELF\SieELF\Macro\Elka #
+#                       \List\ -la D:\SVN\SieELF\SieELF\Macro\Elka\List\ -o  #
+#                       D:\SVN\SieELF\SieELF\Macro\Elka\Obj\ -s9             #
+#                       --no_unroll --cpu_mode arm --endian little --cpu     #
+#                       ARM7TDMI --stack_align 4 --interwork -e --fpu None   #
+#                       -I "D:\Program Files\IAR\Embedded Workbench 4.0      #
+#                       Evaluation\ARM\INC\" --inline_threshold=2            #
+#    List file       =  D:\SVN\SieELF\SieELF\Macro\Elka\List\config_data.lst #
+#    Object file     =  D:\SVN\SieELF\SieELF\Macro\Elka\Obj\config_data.r79  #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\Macro\config_data.c
+      1          #include "..\inc\cfg_items.h"
+      2          
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+      3          __root const CFG_HDR cfghdr0={CFG_CBOX,"show title",0,2};
+   \                     cfghdr0:
+   \   00000000   05000000           DC32 5
+   \   00000004   73686F772074       DC8 "show title"
+   \              69746C6500  
+   \   0000000F   000000000000       DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              000000000000
+   \              000000000000
+   \              000000      
+   \   00000024   000000000200       DC32 0, 2
+   \              0000        
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+      4          __root const int show = 1;
+   \                     show:
+   \   00000000   01000000           DC32 1
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+      5          __root const CFG_CBOX_ITEM cfgcbox1[2]={"No","Yes"};
+   \                     cfgcbox1:
+   \   00000000   4E6F00             DC8 "No"
+   \   00000003   000000000000       DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              000000000000
+   \              00000000    
+   \   00000013   000000000000       DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              000000000000
+   \              00          
+   \   00000020   59657300           DC8 "Yes"
+   \   00000024   000000000000       DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              000000000000
+   \              00000000    
+   \   00000034   000000000000       DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              000000000000
+      6          
+      7          
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+      8          __root const CFG_HDR cfghdr000={CFG_UINT,"watch_delay",5,65530};
+   \                     cfghdr000:
+   \   00000000   01000000           DC32 1
+   \   00000004   77617463685F       DC8 "watch_delay"
+   \              64656C617900
+   \   00000010   000000000000       DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              000000000000
+   \              000000000000
+   \              0000        
+   \   00000024   05000000FAFF       DC32 5, 65530
+   \              0000        
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+      9          __root const int watch_delay=50;
+   \                     watch_delay:
+   \   00000000   32000000           DC32 50
+     10          
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+     11          __root const CFG_HDR cfghdr1={CFG_UINT,"paint_delay",5,65530};
+   \                     cfghdr1:
+   \   00000000   01000000           DC32 1
+   \   00000004   7061696E745F       DC8 "paint_delay"
+   \              64656C617900
+   \   00000010   000000000000       DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              000000000000
+   \              000000000000
+   \              0000        
+   \   00000024   05000000FAFF       DC32 5, 65530
+   \              0000        
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+     12          __root const int paint_delay=100;
+   \                     paint_delay:
+   \   00000000   64000000           DC32 100
+     13          
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+     14          __root const CFG_HDR cfghdr2={CFG_UINT,"pre_delay",5,65530};
+   \                     cfghdr2:
+   \   00000000   01000000           DC32 1
+   \   00000004   7072655F6465       DC8 "pre_delay"
+   \              6C617900    
+   \   0000000E   000000000000       DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              000000000000
+   \              000000000000
+   \              00000000    
+   \   00000024   05000000FAFF       DC32 5, 65530
+   \              0000        
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+     15          __root const int pre_delay=400;
+   \                     pre_delay:
+   \   00000000   90010000           DC32 400
+     16          
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+     17          __root const CFG_HDR cfghdr3={CFG_UINT,"delay_longpause(P)",5,65530};
+   \                     cfghdr3:
+   \   00000000   01000000           DC32 1
+   \   00000004   64656C61795F       DC8 "delay_longpause(P)"
+   \              6C6F6E677061
+   \              757365285029
+   \              00          
+   \   00000017   000000000000       DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              000000000000
+   \              00          
+   \   00000024   05000000FAFF       DC32 5, 65530
+   \              0000        
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+     18          __root const int delay_longpause=1000;
+   \                     delay_longpause:
+   \   00000000   E8030000           DC32 1000
+     19          
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+     20          __root const CFG_HDR cfghdr4={CFG_UINT,"delay_smallpause( )",5,65530};
+   \                     cfghdr4:
+   \   00000000   01000000           DC32 1
+   \   00000004   64656C61795F       DC8 "delay_smallpause( )"
+   \              736D616C6C70
+   \              617573652820
+   \              2900        
+   \   00000018   000000000000       DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              000000000000
+   \   00000024   05000000FAFF       DC32 5, 65530
+   \              0000        
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+     21          __root const int delay_smallpause=241;
+   \                     delay_smallpause:
+   \   00000000   F1000000           DC32 241
+     22          
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+     23          __root const CFG_HDR cfghdr5={CFG_UINT,"delay_keybreak",0,65530};
+   \                     cfghdr5:
+   \   00000000   01000000           DC32 1
+   \   00000004   64656C61795F       DC8 "delay_keybreak"
+   \              6B6579627265
+   \              616B00      
+   \   00000013   000000000000       DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              000000000000
+   \              0000000000  
+   \   00000024   00000000FAFF       DC32 0, 65530
+   \              0000        
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+     24          __root const int delay_keybreak=85;
+   \                     delay_keybreak:
+   \   00000000   55000000           DC32 85
+     25          
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+     26          __root const CFG_HDR cfghdr6={CFG_UINT,"delay_wait_1",5,65530};
+   \                     cfghdr6:
+   \   00000000   01000000           DC32 1
+   \   00000004   64656C61795F       DC8 "delay_wait_1"
+   \              776169745F31
+   \              00          
+   \   00000011   000000000000       DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              000000000000
+   \              000000000000
+   \              00          
+   \   00000024   05000000FAFF       DC32 5, 65530
+   \              0000        
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+     27          __root const int delay_wait_1=60;
+   \                     delay_wait_1:
+   \   00000000   3C000000           DC32 60
+     28          
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+     29          __root const CFG_HDR cfghdr7={CFG_UINT,"delay_wait_2",5,65530};
+   \                     cfghdr7:
+   \   00000000   01000000           DC32 1
+   \   00000004   64656C61795F       DC8 "delay_wait_2"
+   \              776169745F32
+   \              00          
+   \   00000011   000000000000       DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              000000000000
+   \              000000000000
+   \              00          
+   \   00000024   05000000FAFF       DC32 5, 65530
+   \              0000        
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+     30          __root const int delay_wait_2=121;
+   \                     delay_wait_2:
+   \   00000000   79000000           DC32 121
+     31          
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+     32          __root const CFG_HDR cfghdr8={CFG_UINT,"delay_wait_3",5,65530};
+   \                     cfghdr8:
+   \   00000000   01000000           DC32 1
+   \   00000004   64656C61795F       DC8 "delay_wait_3"
+   \              776169745F33
+   \              00          
+   \   00000011   000000000000       DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              000000000000
+   \              000000000000
+   \              00          
+   \   00000024   05000000FAFF       DC32 5, 65530
+   \              0000        
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+     33          __root const int delay_wait_3=60;
+   \                     delay_wait_3:
+   \   00000000   3C000000           DC32 60
+     34          
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+     35          __root const CFG_HDR cfghdr9={CFG_UINT,"CPU wait threshold,%",5,100};
+   \                     cfghdr9:
+   \   00000000   01000000           DC32 1
+   \   00000004   435055207761       DC8 "CPU wait threshold,%"
+   \              697420746872
+   \              6573686F6C64
+   \              2C2500      
+   \   00000019   000000000000       DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              0000000000  
+   \   00000024   050000006400       DC32 5, 100
+   \              0000        
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+     36          __root const int wait_threshold=85;
+   \                     wait_threshold:
+   \   00000000   55000000           DC32 85
+     37          
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+     38          __root const CFG_HDR cfghdrA={CFG_STR_WIN1251,"ShowNativeMenu() address",1,8};
+   \                     cfghdrA:
+   \   00000000   04000000           DC32 4
+   \   00000004   53686F774E61       DC8 "ShowNativeMenu() address"
+   \              746976654D65
+   \              6E7528292061
+   \              646472657373
+   \              00          
+   \   0000001D   000000000000       DC8 0, 0, 0, 0, 0, 0, 0
+   \              00          
+   \   00000024   010000000800       DC32 1, 8
+   \              0000        
+     39          //__root const char ShowNativeMenu_[9]="A08DF43B";
+
+   \                                 In segment DATA_C, align 4, align-sorted, root
+     40          __root const char ShowNativeMenu_[9]="0";
+   \                     ShowNativeMenu_:
+   \   00000000   3000               DC8 "0"
+   \   00000002   000000000000       DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+   \              00000000    
+     41          
+
+
+   Segment part sizes:
+
+     Function/Label   Bytes
+     --------------   -----
+     cfghdr0            44
+     show                4
+     cfgcbox1           64
+     cfghdr000          44
+     watch_delay         4
+     cfghdr1            44
+     paint_delay         4
+     cfghdr2            44
+     pre_delay           4
+     cfghdr3            44
+     delay_longpause     4
+     cfghdr4            44
+     delay_smallpause    4
+     cfghdr5            44
+     delay_keybreak      4
+     cfghdr6            44
+     delay_wait_1        4
+     cfghdr7            44
+     delay_wait_2        4
+     cfghdr8            44
+     delay_wait_3        4
+     cfghdr9            44
+     wait_threshold      4
+     cfghdrA            44
+     ShowNativeMenu_    12
+
+ 
+ 648 bytes in segment DATA_C
+ 
+ 648 bytes of CONST memory
+
+Errors: none
+Warnings: none

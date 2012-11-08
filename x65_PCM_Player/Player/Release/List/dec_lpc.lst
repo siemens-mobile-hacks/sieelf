@@ -1,0 +1,2239 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    14/Feb/2012  15:39:41 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_l #
+#                       pc.c                                                 #
+#    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_l #
+#                       pc.c -D NDEBUG -lC D:\SVN\SieELF\SieELF\x65_PCM_Play #
+#                       er\Player\Release\List\ -lA                          #
+#                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\R #
+#                       elease\Obj\ -s9 --cpu_mode arm --endian little       #
+#                       --cpu ARM926EJ-S --stack_align 4 --interwork -e      #
+#                       --fpu None --dlib_config "D:\Program                 #
+#                       Files\IAR\Embedded Workbench 4.0                     #
+#                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude       #
+#                       swilib.h -I "D:\Program Files\IAR\Embedded           #
+#                       Workbench 4.0 Evaluation\ARM\INC\"                   #
+#                       --inline_threshold=16                                #
+#    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\dec_lpc.lst                                      #
+#    Object file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\O #
+#                       bj\dec_lpc.r79                                       #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_lpc.c
+      1          /*
+      2           *===================================================================
+      3           *  3GPP AMR Wideband Floating-point Speech Codec
+      4           *===================================================================
+      5           */
+      6          #include <math.h>
+      7          #include "typedef.h"
+
+  #endif
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\typedef.h",19  Warning[Pe001]: 
+          last line of file ends without a newline
+      8          #include "dec_util.h"
+
+  #endif
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\typedef.h",19  Warning[Pe001]: 
+          last line of file ends without a newline
+
+  #endif
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\typedef.h",19  Warning[Pe001]: 
+          last line of file ends without a newline
+
+  #endif
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\typedef.h",19  Warning[Pe001]: 
+          last line of file ends without a newline
+      9          
+     10          #define M            16             /* Order of LP filter                  */
+     11          #define MP1          (M + 1)
+     12          #define M16k         20
+     13          #define NC16k        (M16k / 2)
+     14          #define MU           10923          /* Prediction factor (1.0/3.0) in Q15  */
+     15          #define L_MEANBUF    3
+     16          #define ALPHA        29491          /* 0. 9 in Q15                         */
+     17          #define ONE_ALPHA    (32768-ALPHA)  /* (1.0 - ALPHA) in Q15                */
+     18          #define ORDER        16             /* order of linear prediction filter   */
+     19          #define ISF_GAP      128            /* 50 Hz */
+     20          #define INV_LENGTH   2731           /* 1/12                                */
+     21          
+     22          extern const Word16 D_ROM_dico1_isf[];
+     23          extern const Word16 D_ROM_dico2_isf[];
+     24          extern const Word16 D_ROM_dico21_isf_36b[];
+     25          extern const Word16 D_ROM_dico22_isf_36b[];
+     26          extern const Word16 D_ROM_dico23_isf_36b[];
+     27          extern const Word16 D_ROM_dico21_isf[];
+     28          extern const Word16 D_ROM_dico22_isf[];
+     29          extern const Word16 D_ROM_dico23_isf[];
+     30          extern const Word16 D_ROM_dico24_isf[];
+     31          extern const Word16 D_ROM_dico25_isf[];
+     32          extern const Word16 D_ROM_dico1_isf_noise[];
+     33          extern const Word16 D_ROM_dico2_isf_noise[];
+     34          extern const Word16 D_ROM_dico3_isf_noise[];
+     35          extern const Word16 D_ROM_dico4_isf_noise[];
+     36          extern const Word16 D_ROM_dico5_isf_noise[];
+     37          extern const Word16 D_ROM_mean_isf[];
+     38          extern const Word16 D_ROM_mean_isf_noise[];
+     39          extern const Word16 D_ROM_cos[];
+     40          
+     41          
+     42          /*
+     43           * D_LPC_isf_reorder
+     44           *
+     45           * Parameters:
+     46           *    isf          I/O: vector of isfs
+     47           *    min_dist       I: quantized ISFs (in frequency domain)
+     48           *    n              I: LPC order
+     49           *
+     50           * Function:
+     51           *    To make sure that the  isfs are properly order and to keep a certain
+     52           *    minimum distance between consecutive isfs.
+     53           *
+     54           * Returns:
+     55           *    void
+     56           */
+     57          static void D_LPC_isf_reorder(Word16 *isf, Word16 min_dist, Word16 n)
+     58          {
+     59             Word32 i, isf_min;
+     60          
+     61             isf_min = min_dist;
+     62          
+     63             for(i = 0; i < n - 1; i++)
+     64             {
+     65                if(isf[i] < isf_min)
+     66                {
+     67                   isf[i] = (Word16)isf_min;
+     68                }
+     69                isf_min = isf[i] + min_dist;
+     70             }
+     71          
+     72             return;
+     73          }
+     74          
+     75          
+     76          /*
+     77           * D_LPC_isf_noise_d
+     78           *
+     79           * Parameters:
+     80           *    indice         I: indices of the selected codebook entries
+     81           *    isf_q          O: quantized ISFs (in frequency domain)
+     82           *
+     83           * Function:
+     84           *    Decoding of ISF parameters
+     85           *
+     86           * Returns:
+     87           *    void
+     88           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+     89          void D_LPC_isf_noise_d(Word16 *indice, Word16 *isf_q)
+     90          {
+   \                     D_LPC_isf_noise_d:
+   \   00000000   10002DE9           PUSH     {R4}
+     91             Word32 i;
+     92          
+     93             for(i = 0; i < 2; i++)
+   \   00000004   0020A0E3           MOV      R2,#+0
+     94             {
+     95                isf_q[i] = D_ROM_dico1_isf_noise[indice[0] * 2 + i];
+   \                     ??D_LPC_isf_noise_d_0:
+   \   00000008   F0C0D0E1           LDRSH    R12,[R0, #+0]
+   \   0000000C   34419FE5           LDR      R4,??D_LPC_isf_noise_d_1  ;; D_ROM_dico1_isf_noise
+   \   00000010   823081E0           ADD      R3,R1,R2, LSL #+1
+   \   00000014   8CC082E0           ADD      R12,R2,R12, LSL #+1
+   \   00000018   8C4084E0           ADD      R4,R4,R12, LSL #+1
+   \   0000001C   F040D4E1           LDRSH    R4,[R4, #+0]
+     96             }
+   \   00000020   012082E2           ADD      R2,R2,#+1
+   \   00000024   020052E3           CMP      R2,#+2
+   \   00000028   B040C3E1           STRH     R4,[R3, #+0]
+   \   0000002C   F5FFFFBA           BLT      ??D_LPC_isf_noise_d_0
+     97          
+     98             for(i = 0; i < 3; i++)
+   \   00000030   14C19FE5           LDR      R12,??D_LPC_isf_noise_d_1+0x4  ;; D_ROM_dico2_isf_noise
+   \   00000034   0020A0E3           MOV      R2,#+0
+     99             {
+    100                isf_q[i + 2] = D_ROM_dico2_isf_noise[indice[1] * 3 + i];
+   \                     ??D_LPC_isf_noise_d_2:
+   \   00000038   F240D0E1           LDRSH    R4,[R0, #+2]
+   \   0000003C   823081E0           ADD      R3,R1,R2, LSL #+1
+   \   00000040   844084E0           ADD      R4,R4,R4, LSL #+1
+   \   00000044   044082E0           ADD      R4,R2,R4
+   \   00000048   84408CE0           ADD      R4,R12,R4, LSL #+1
+   \   0000004C   F040D4E1           LDRSH    R4,[R4, #+0]
+    101             }
+   \   00000050   012082E2           ADD      R2,R2,#+1
+   \   00000054   030052E3           CMP      R2,#+3
+   \   00000058   B440C3E1           STRH     R4,[R3, #+4]
+   \   0000005C   F5FFFFBA           BLT      ??D_LPC_isf_noise_d_2
+    102          
+    103             for(i = 0; i < 3; i++)
+   \   00000060   E8C09FE5           LDR      R12,??D_LPC_isf_noise_d_1+0x8  ;; D_ROM_dico3_isf_noise
+   \   00000064   0020A0E3           MOV      R2,#+0
+    104             {
+    105                isf_q[i + 5] = D_ROM_dico3_isf_noise[indice[2] * 3 + i];
+   \                     ??D_LPC_isf_noise_d_3:
+   \   00000068   F440D0E1           LDRSH    R4,[R0, #+4]
+   \   0000006C   823081E0           ADD      R3,R1,R2, LSL #+1
+   \   00000070   844084E0           ADD      R4,R4,R4, LSL #+1
+   \   00000074   044082E0           ADD      R4,R2,R4
+   \   00000078   84408CE0           ADD      R4,R12,R4, LSL #+1
+   \   0000007C   F040D4E1           LDRSH    R4,[R4, #+0]
+    106             }
+   \   00000080   012082E2           ADD      R2,R2,#+1
+   \   00000084   030052E3           CMP      R2,#+3
+   \   00000088   BA40C3E1           STRH     R4,[R3, #+10]
+   \   0000008C   F5FFFFBA           BLT      ??D_LPC_isf_noise_d_3
+    107          
+    108             for(i = 0; i < 4; i++)
+   \   00000090   BCC09FE5           LDR      R12,??D_LPC_isf_noise_d_1+0xC  ;; D_ROM_dico4_isf_noise
+   \   00000094   0020A0E3           MOV      R2,#+0
+    109             {
+    110                isf_q[i + 8] = D_ROM_dico4_isf_noise[indice[3] * 4 + i];
+   \                     ??D_LPC_isf_noise_d_4:
+   \   00000098   F640D0E1           LDRSH    R4,[R0, #+6]
+   \   0000009C   823081E0           ADD      R3,R1,R2, LSL #+1
+   \   000000A0   044182E0           ADD      R4,R2,R4, LSL #+2
+   \   000000A4   84408CE0           ADD      R4,R12,R4, LSL #+1
+   \   000000A8   F040D4E1           LDRSH    R4,[R4, #+0]
+    111             }
+   \   000000AC   012082E2           ADD      R2,R2,#+1
+   \   000000B0   040052E3           CMP      R2,#+4
+   \   000000B4   B041C3E1           STRH     R4,[R3, #+16]
+   \   000000B8   F6FFFFBA           BLT      ??D_LPC_isf_noise_d_4
+    112          
+    113             for(i = 0; i < 4; i++)
+   \   000000BC   94C09FE5           LDR      R12,??D_LPC_isf_noise_d_1+0x10  ;; D_ROM_dico5_isf_noise
+   \   000000C0   0020A0E3           MOV      R2,#+0
+    114             {
+    115                isf_q[i + 12] = D_ROM_dico5_isf_noise[indice[4] * 4 + i];
+   \                     ??D_LPC_isf_noise_d_5:
+   \   000000C4   F840D0E1           LDRSH    R4,[R0, #+8]
+   \   000000C8   823081E0           ADD      R3,R1,R2, LSL #+1
+   \   000000CC   044182E0           ADD      R4,R2,R4, LSL #+2
+   \   000000D0   84408CE0           ADD      R4,R12,R4, LSL #+1
+   \   000000D4   F040D4E1           LDRSH    R4,[R4, #+0]
+    116             }
+   \   000000D8   012082E2           ADD      R2,R2,#+1
+   \   000000DC   040052E3           CMP      R2,#+4
+   \   000000E0   B841C3E1           STRH     R4,[R3, #+24]
+   \   000000E4   F6FFFFBA           BLT      ??D_LPC_isf_noise_d_5
+    117          
+    118             for(i = 0; i < ORDER; i++)
+   \   000000E8   0000A0E3           MOV      R0,#+0
+    119             {
+    120                isf_q[i] = (Word16)(isf_q[i]+ D_ROM_mean_isf_noise[i]);
+   \                     ??D_LPC_isf_noise_d_6:
+   \   000000EC   68409FE5           LDR      R4,??D_LPC_isf_noise_d_1+0x14  ;; D_ROM_mean_isf_noise
+   \   000000F0   802081E0           ADD      R2,R1,R0, LSL #+1
+   \   000000F4   F030D2E1           LDRSH    R3,[R2, #+0]
+   \   000000F8   804084E0           ADD      R4,R4,R0, LSL #+1
+   \   000000FC   F040D4E1           LDRSH    R4,[R4, #+0]
+    121             }
+   \   00000100   010080E2           ADD      R0,R0,#+1
+   \   00000104   100050E3           CMP      R0,#+16
+   \   00000108   033084E0           ADD      R3,R4,R3
+   \   0000010C   B030C2E1           STRH     R3,[R2, #+0]
+   \   00000110   F5FFFFBA           BLT      ??D_LPC_isf_noise_d_6
+    122          
+    123             D_LPC_isf_reorder(isf_q, ISF_GAP, ORDER);
+   \   00000114   8000A0E3           MOV      R0,#+128
+   \   00000118   0020A0E3           MOV      R2,#+0
+   \                     ??D_LPC_isf_noise_d_7:
+   \   0000011C   823081E0           ADD      R3,R1,R2, LSL #+1
+   \   00000120   F040D3E1           LDRSH    R4,[R3, #+0]
+   \   00000124   012082E2           ADD      R2,R2,#+1
+   \   00000128   000054E1           CMP      R4,R0
+   \   0000012C   B000C3B1           STRHLT   R0,[R3, #+0]
+   \   00000130   F000D3E1           LDRSH    R0,[R3, #+0]
+   \   00000134   0F0052E3           CMP      R2,#+15
+   \   00000138   800080E2           ADD      R0,R0,#+128
+   \   0000013C   F6FFFFBA           BLT      ??D_LPC_isf_noise_d_7
+    124          
+    125             return;
+   \   00000140   1000BDE8           POP      {R4}
+   \   00000144   1EFF2FE1           BX       LR               ;; return
+   \                     ??D_LPC_isf_noise_d_1:
+   \   00000148   ........           DC32     D_ROM_dico1_isf_noise
+   \   0000014C   ........           DC32     D_ROM_dico2_isf_noise
+   \   00000150   ........           DC32     D_ROM_dico3_isf_noise
+   \   00000154   ........           DC32     D_ROM_dico4_isf_noise
+   \   00000158   ........           DC32     D_ROM_dico5_isf_noise
+   \   0000015C   ........           DC32     D_ROM_mean_isf_noise
+    126          }
+    127          
+    128          
+    129          /*
+    130           * D_LPC_isf_isp_conversion
+    131           *
+    132           * Parameters:
+    133           *    isp            O: (Q15) isp[m] (range: -1<=val<1)
+    134           *    isf            I: (Q15) isf[m] normalized (range: 0.0 <= val <= 0.5)
+    135           *    m              I: LPC order
+    136           *
+    137           * Function:
+    138           *    Transformation isf to isp
+    139           *
+    140           *    ISP are immitance spectral pair in cosine domain (-1 to 1).
+    141           *    ISF are immitance spectral pair in frequency domain (0 to 6400).
+    142           * Returns:
+    143           *    void
+    144           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    145          void D_LPC_isf_isp_conversion(Word16 isf[], Word16 isp[], Word16 m)
+    146          {
+   \                     D_LPC_isf_isp_conversion:
+   \   00000000   70002DE9           PUSH     {R4-R6}
+    147             Word32 i, ind, offset, tmp;
+    148          
+    149             for(i = 0; i < m - 1; i++)
+   \   00000004   00C0A0E3           MOV      R12,#+0
+   \   00000008   0230A0E1           MOV      R3,R2
+   \   0000000C   014043E2           SUB      R4,R3,#+1
+   \   00000010   010054E3           CMP      R4,#+1
+   \   00000014   050000AA           BGE      ??D_LPC_isf_isp_conversion_0
+   \   00000018   060000EA           B        ??D_LPC_isf_isp_conversion_1
+    150             {
+    151                isp[i] = isf[i];
+   \                     ??D_LPC_isf_isp_conversion_2:
+   \   0000001C   8C6080E0           ADD      R6,R0,R12, LSL #+1
+   \   00000020   F060D6E1           LDRSH    R6,[R6, #+0]
+   \   00000024   8C5081E0           ADD      R5,R1,R12, LSL #+1
+    152             }
+   \   00000028   01C08CE2           ADD      R12,R12,#+1
+   \   0000002C   B060C5E1           STRH     R6,[R5, #+0]
+   \                     ??D_LPC_isf_isp_conversion_0:
+   \   00000030   04005CE1           CMP      R12,R4
+   \   00000034   F8FFFFBA           BLT      ??D_LPC_isf_isp_conversion_2
+    153             isp[m - 1] = (Word16)(isf[m - 1] << 1);
+   \                     ??D_LPC_isf_isp_conversion_1:
+   \   00000038   830080E0           ADD      R0,R0,R3, LSL #+1
+   \   0000003C   F20050E1           LDRSH    R0,[R0, #-2]
+   \   00000040   834081E0           ADD      R4,R1,R3, LSL #+1
+    154          
+    155             for(i = 0; i < m; i++)
+   \   00000044   010052E3           CMP      R2,#+1
+   \   00000048   8000A0E1           LSL      R0,R0,#+1
+   \   0000004C   B20044E1           STRH     R0,[R4, #-2]
+   \   00000050   0000A0E3           MOV      R0,#+0
+   \   00000054   0E0000AA           BGE      ??D_LPC_isf_isp_conversion_3
+   \   00000058   0F0000EA           B        ??D_LPC_isf_isp_conversion_4
+    156             {
+    157                ind = isp[i] >> 7;         /* ind = b7-b15 of isf[i]     */
+    158                offset = isp[i] & 0x007f;  /* offset = b0-b6 of isf[i]   */
+    159          
+    160                /* isp[i] = table[ind]+ ((table[ind+1]-table[ind])*offset) / 128 */
+    161                tmp = (D_ROM_cos[ind + 1] - D_ROM_cos[ind]) * offset;
+    162                isp[i] = (Word16)(D_ROM_cos[ind] + (tmp >> 7));
+   \                     ??D_LPC_isf_isp_conversion_5:
+   \   0000005C   ........           LDR      R5,??DataTable0  ;; D_ROM_cos
+   \   00000060   802081E0           ADD      R2,R1,R0, LSL #+1
+   \   00000064   F040D2E1           LDRSH    R4,[R2, #+0]
+    163             }
+   \   00000068   010080E2           ADD      R0,R0,#+1
+   \   0000006C   C443A0E1           ASR      R4,R4,#+7
+   \   00000070   844085E0           ADD      R4,R5,R4, LSL #+1
+   \   00000074   F050D4E1           LDRSH    R5,[R4, #+0]
+   \   00000078   F260D4E1           LDRSH    R6,[R4, #+2]
+   \   0000007C   054046E0           SUB      R4,R6,R5
+   \   00000080   F060D2E1           LDRSH    R6,[R2, #+0]
+   \   00000084   7F6006E2           AND      R6,R6,#0x7F
+   \   00000088   960404E0           MUL      R4,R6,R4
+   \   0000008C   C44385E0           ADD      R4,R5,R4, ASR #+7
+   \   00000090   B040C2E1           STRH     R4,[R2, #+0]
+   \                     ??D_LPC_isf_isp_conversion_3:
+   \   00000094   030050E1           CMP      R0,R3
+   \   00000098   EFFFFFBA           BLT      ??D_LPC_isf_isp_conversion_5
+    164             return;
+   \                     ??D_LPC_isf_isp_conversion_4:
+   \   0000009C   7000BDE8           POP      {R4-R6}
+   \   000000A0   1EFF2FE1           BX       LR               ;; return
+    165          }
+    166          
+    167          
+    168          /*
+    169           * D_LPC_isp_pol_get
+    170           *
+    171           * Parameters:
+    172           *    isp            I: Immitance spectral pairs (cosine domaine)
+    173           *    f              O: the coefficients of F1 or F2
+    174           *    n              I: no of coefficients (m/2)
+    175           *    k16            I: 16k flag
+    176           *
+    177           * Function:
+    178           *    Find the polynomial F1(z) or F2(z) from the ISPs.
+    179           *    This is performed by expanding the product polynomials:
+    180           *
+    181           *    F1(z) =   product   ( 1 - 2 isp_i z^-1 + z^-2 )
+    182           *            i=0,2,4,6,8
+    183           *    F2(z) =   product   ( 1 - 2 isp_i z^-1 + z^-2 )
+    184           *             i=1,3,5,7
+    185           *
+    186           *    where isp_i are the ISPs in the cosine domain.
+    187           *
+    188           * Returns:
+    189           *    void
+    190           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    191          static void D_LPC_isp_pol_get(Word16 *isp, Word32 *f, Word32 n, Word16 k16)
+    192          {
+   \                     D_LPC_isp_pol_get:
+   \   00000000   F04F2DE9           PUSH     {R4-R11,LR}
+   \   00000004   04D04DE2           SUB      SP,SP,#+4
+   \   00000008   0040A0E1           MOV      R4,R0
+   \   0000000C   0150A0E1           MOV      R5,R1
+    193             Word32 i, j, t0, s1, s2;
+    194             Word16 hi, lo;
+    195          
+    196             s1 = 8388608;
+   \   00000010   8008A0E3           MOV      R0,#+8388608
+    197             s2 = 512;
+    198          
+    199             if(k16)
+   \   00000014   000053E3           CMP      R3,#+0
+    200             {
+    201                s1 >>= 2;
+   \   00000018   8009A013           MOVNE    R0,#+2097152
+    202                s2 >>= 2;
+    203             }
+    204          
+    205             /* All computation in Q23 */
+    206             f[0] = s1;              /* f[0] = 1.0; in Q23         */
+   \   0000001C   ........           STR      R0,[R5], #+4
+    207             f[1] = isp[0] * (-s2);  /* f[1] = -2.0*isp[0] in Q23  */
+   \   00000020   ........           LDRSH    R0,[R4], #+4
+   \   00000024   807FA0E3           MOV      R7,#+512
+   \   00000028   8070A013           MOVNE    R7,#+128
+   \   0000002C   970000E0           MUL      R0,R7,R0
+   \   00000030   0260A0E1           MOV      R6,R2
+   \   00000034   000060E2           RSB      R0,R0,#+0
+   \   00000038   ........           STR      R0,[R5], #+4
+    208             f += 2;                 /* Advance f pointer          */
+    209             isp += 2;               /* Advance isp pointer        */
+    210          
+    211             for(i = 2; i <= n; i++)
+   \   0000003C   0280A0E3           MOV      R8,#+2
+   \   00000040   020056E3           CMP      R6,#+2
+   \   00000044   F18FBDB8           POPLT    {R0,R4-R11,PC}
+    212             {
+    213                *f = f[ - 2];
+   \                     ??D_LPC_isp_pol_get_0:
+   \   00000048   080015E5           LDR      R0,[R5, #-8]
+    214          
+    215                for(j = 1; j < i; j++, f--)
+   \   0000004C   0190A0E3           MOV      R9,#+1
+   \   00000050   000085E5           STR      R0,[R5, #+0]
+   \   00000054   020058E3           CMP      R8,#+2
+   \   00000058   100000AA           BGE      ??D_LPC_isp_pol_get_1
+   \   0000005C   110000EA           B        ??D_LPC_isp_pol_get_2
+    216                {
+    217                   D_UTIL_l_extract(f[- 1], &hi, &lo);
+   \                     ??D_LPC_isp_pol_get_3:
+   \   00000060   08A045E2           SUB      R10,R5,#+8
+   \   00000064   04009AE5           LDR      R0,[R10, #+4]
+   \   00000068   02208DE2           ADD      R2,SP,#+2
+   \   0000006C   0D10A0E1           MOV      R1,SP
+   \   00000070   ........           _BLF     D_UTIL_l_extract,??D_UTIL_l_extract??rA
+    218                   t0 = D_UTIL_mpy_32_16(hi, lo, *isp);   /* t0 = f[-1] * isp */
+    219                   t0 = (t0 << 1);
+    220                   *f = (*f - t0);         /* *f -= t0    */
+   \   00000074   F000DDE1           LDRSH    R0,[SP, #+0]
+   \   00000078   00B095E5           LDR      R11,[R5, #+0]
+   \   0000007C   F210DDE1           LDRSH    R1,[SP, #+2]
+   \   00000080   F020D4E1           LDRSH    R2,[R4, #+0]
+    221                   *f = (*f + f[ - 2]);    /* *f += f[-2] */
+    222                }
+   \   00000084   019089E2           ADD      R9,R9,#+1
+   \   00000088   ........           _BLF     D_UTIL_mpy_32_16,??D_UTIL_mpy_32_16??rA
+   \   0000008C   80004BE0           SUB      R0,R11,R0, LSL #+1
+   \   00000090   000085E5           STR      R0,[R5, #+0]
+   \   00000094   00109AE5           LDR      R1,[R10, #+0]
+   \   00000098   000081E0           ADD      R0,R1,R0
+   \   0000009C   ........           STR      R0,[R5], #-4
+   \                     ??D_LPC_isp_pol_get_1:
+   \   000000A0   080059E1           CMP      R9,R8
+   \   000000A4   EDFFFFBA           BLT      ??D_LPC_isp_pol_get_3
+    223          
+    224                *f = *f - (*isp * s2);     /* *f -= isp << 8 */
+   \                     ??D_LPC_isp_pol_get_2:
+   \   000000A8   ........           LDRSH    R1,[R4], #+4
+   \   000000AC   000095E5           LDR      R0,[R5, #+0]
+   \   000000B0   970101E0           MUL      R1,R7,R1
+   \   000000B4   010040E0           SUB      R0,R0,R1
+   \   000000B8   000085E5           STR      R0,[R5, #+0]
+    225                f += i;     /* Advance f pointer   */
+   \   000000BC   085185E0           ADD      R5,R5,R8, LSL #+2
+    226                isp += 2;   /* Advance isp pointer */
+    227             }
+   \   000000C0   018088E2           ADD      R8,R8,#+1
+   \   000000C4   080056E1           CMP      R6,R8
+   \   000000C8   DEFFFFAA           BGE      ??D_LPC_isp_pol_get_0
+    228          
+    229             return;
+   \   000000CC   F18FBDE8           POP      {R0,R4-R11,PC}   ;; return
+    230          }
+    231          
+    232          
+    233          /*
+    234           * D_LPC_isp_a_conversion
+    235           *
+    236           * Parameters:
+    237           *    isp            I: (Q15) Immittance spectral pairs
+    238           *    a              O: (Q12) Predictor coefficients (order = M)
+    239           *    m              I: order of LP filter
+    240           *
+    241           * Function:
+    242           *    Convert ISPs to predictor coefficients a[]
+    243           *
+    244           * Returns:
+    245           *    void
+    246           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    247          void D_LPC_isp_a_conversion(Word16 isp[], Word16 a[], Word32 adaptive_scaling, 
+    248                                      Word16 m)
+    249          {
+   \                     D_LPC_isp_a_conversion:
+   \   00000000   F44F2DE9           PUSH     {R2,R4-R11,LR}
+   \   00000004   5CD04DE2           SUB      SP,SP,#+92
+   \   00000008   0070A0E1           MOV      R7,R0
+   \   0000000C   0140A0E1           MOV      R4,R1
+   \   00000010   0350A0E1           MOV      R5,R3
+   \   00000014   C560A0E1           ASR      R6,R5,#+1
+    250             Word32 j, i, nc, tmax, q, q_sug, r;
+    251             Word32 f1[NC16k + 1], f2[NC16k];
+    252             Word32 t0;
+    253             Word16 hi, lo;
+    254          
+    255             nc = m >> 1;
+    256          
+    257             if(nc > 8)
+   \   00000018   090056E3           CMP      R6,#+9
+   \   0000001C   310000BA           BLT      ??D_LPC_isp_a_conversion_0
+    258             {
+    259                D_LPC_isp_pol_get(&isp[0], f1, nc, 1);
+   \   00000020   0130A0E3           MOV      R3,#+1
+   \   00000024   0620A0E1           MOV      R2,R6
+   \   00000028   30108DE2           ADD      R1,SP,#+48
+   \   0000002C   ........           BL       D_LPC_isp_pol_get
+    260          
+    261                for(i = 0; i <= nc; i++)
+   \   00000030   0000A0E3           MOV      R0,#+0
+    262                {
+    263                   f1[i] = (f1[i] << 2);
+   \                     ??D_LPC_isp_a_conversion_1:
+   \   00000034   30108DE2           ADD      R1,SP,#+48
+   \   00000038   001181E0           ADD      R1,R1,R0, LSL #+2
+   \   0000003C   002091E5           LDR      R2,[R1, #+0]
+    264                }
+   \   00000040   010080E2           ADD      R0,R0,#+1
+   \   00000044   0221A0E1           LSL      R2,R2,#+2
+   \   00000048   002081E5           STR      R2,[R1, #+0]
+   \   0000004C   000056E1           CMP      R6,R0
+   \   00000050   F7FFFFAA           BGE      ??D_LPC_isp_a_conversion_1
+    265             }
+    266             else
+    267             {
+    268                D_LPC_isp_pol_get(&isp[0], f1, nc, 0);
+    269             }
+    270          
+    271             if(nc > 8)
+    272             {
+    273                D_LPC_isp_pol_get(&isp[1], f2, nc - 1, 1);
+   \   00000054   018046E2           SUB      R8,R6,#+1
+   \   00000058   0130A0E3           MOV      R3,#+1
+   \   0000005C   0820A0E1           MOV      R2,R8
+   \   00000060   08108DE2           ADD      R1,SP,#+8
+   \   00000064   020087E2           ADD      R0,R7,#+2
+   \   00000068   ........           BL       D_LPC_isp_pol_get
+    274          
+    275                for(i = 0; i <= nc - 1; i++)
+   \   0000006C   0000A0E3           MOV      R0,#+0
+   \   00000070   000058E3           CMP      R8,#+0
+   \   00000074   0700004A           BMI      ??D_LPC_isp_a_conversion_2
+    276                {
+    277                   f2[i] = (f2[i] << 2);
+   \                     ??D_LPC_isp_a_conversion_3:
+   \   00000078   08108DE2           ADD      R1,SP,#+8
+   \   0000007C   001181E0           ADD      R1,R1,R0, LSL #+2
+   \   00000080   002091E5           LDR      R2,[R1, #+0]
+    278                }
+   \   00000084   010080E2           ADD      R0,R0,#+1
+   \   00000088   0221A0E1           LSL      R2,R2,#+2
+   \   0000008C   002081E5           STR      R2,[R1, #+0]
+   \   00000090   000058E1           CMP      R8,R0
+   \   00000094   F7FFFFAA           BGE      ??D_LPC_isp_a_conversion_3
+    279             }
+    280             else
+    281             {
+    282                D_LPC_isp_pol_get(&isp[1], f2, nc - 1, 0);
+    283             }
+    284          
+    285             /*
+    286              *  Multiply F2(z) by (1 - z^-2)
+    287              */
+    288             for(i = nc - 1; i > 1; i--)
+   \                     ??D_LPC_isp_a_conversion_2:
+   \   00000098   010046E2           SUB      R0,R6,#+1
+   \   0000009C   020050E3           CMP      R0,#+2
+   \   000000A0   0A0000BA           BLT      ??D_LPC_isp_a_conversion_4
+    289             {
+    290                f2[i] = f2[i] - f2[i - 2];   /* f2[i] -= f2[i-2]; */
+   \                     ??D_LPC_isp_a_conversion_5:
+   \   000000A4   08108DE2           ADD      R1,SP,#+8
+   \   000000A8   001181E0           ADD      R1,R1,R0, LSL #+2
+   \   000000AC   002091E5           LDR      R2,[R1, #+0]
+   \   000000B0   08308DE2           ADD      R3,SP,#+8
+   \   000000B4   083043E2           SUB      R3,R3,#+8
+   \   000000B8   003193E7           LDR      R3,[R3, +R0, LSL #+2]
+    291             }
+   \   000000BC   010040E2           SUB      R0,R0,#+1
+   \   000000C0   032042E0           SUB      R2,R2,R3
+   \   000000C4   002081E5           STR      R2,[R1, #+0]
+   \   000000C8   020050E3           CMP      R0,#+2
+   \   000000CC   F4FFFFAA           BGE      ??D_LPC_isp_a_conversion_5
+    292          
+    293             /*
+    294              *  Scale F1(z) by (1+isp[m-1]) and F2(z) by (1-isp[m-1])
+    295              */
+    296             for(i = 0; i < nc; i++)
+   \                     ??D_LPC_isp_a_conversion_4:
+   \   000000D0   0080A0E3           MOV      R8,#+0
+   \   000000D4   851087E0           ADD      R1,R7,R5, LSL #+1
+   \   000000D8   04108DE5           STR      R1,[SP, #+4]
+   \   000000DC   010056E3           CMP      R6,#+1
+   \   000000E0   280000AA           BGE      ??D_LPC_isp_a_conversion_6
+   \   000000E4   290000EA           B        ??D_LPC_isp_a_conversion_7
+   \                     ??D_LPC_isp_a_conversion_0:
+   \   000000E8   0030A0E3           MOV      R3,#+0
+   \   000000EC   0620A0E1           MOV      R2,R6
+   \   000000F0   30108DE2           ADD      R1,SP,#+48
+   \   000000F4   ........           BL       D_LPC_isp_pol_get
+   \   000000F8   0030A0E3           MOV      R3,#+0
+   \   000000FC   012046E2           SUB      R2,R6,#+1
+   \   00000100   08108DE2           ADD      R1,SP,#+8
+   \   00000104   020087E2           ADD      R0,R7,#+2
+   \   00000108   ........           BL       D_LPC_isp_pol_get
+   \   0000010C   E1FFFFEA           B        ??D_LPC_isp_a_conversion_2
+    297             {
+    298                /* f1[i] *= (1.0 + isp[M-1]); */
+    299                D_UTIL_l_extract(f1[i], &hi, &lo);
+   \                     ??D_LPC_isp_a_conversion_8:
+   \   00000110   30008DE2           ADD      R0,SP,#+48
+   \   00000114   087180E0           ADD      R7,R0,R8, LSL #+2
+   \   00000118   000097E5           LDR      R0,[R7, #+0]
+   \   0000011C   02208DE2           ADD      R2,SP,#+2
+   \   00000120   0D10A0E1           MOV      R1,SP
+   \   00000124   ........           _BLF     D_UTIL_l_extract,??D_UTIL_l_extract??rA
+    300                t0 = D_UTIL_mpy_32_16(hi, lo, isp[m - 1]);
+   \   00000128   04009DE5           LDR      R0,[SP, #+4]
+   \   0000012C   F210DDE1           LDRSH    R1,[SP, #+2]
+   \   00000130   F22050E1           LDRSH    R2,[R0, #-2]
+   \   00000134   F000DDE1           LDRSH    R0,[SP, #+0]
+   \   00000138   ........           _BLF     D_UTIL_mpy_32_16,??D_UTIL_mpy_32_16??rA
+    301                f1[i] = f1[i] + t0;
+   \   0000013C   001097E5           LDR      R1,[R7, #+0]
+    302          
+    303                /* f2[i] *= (1.0 - isp[M-1]); */
+    304                D_UTIL_l_extract(f2[i], &hi, &lo);
+   \   00000140   02208DE2           ADD      R2,SP,#+2
+   \   00000144   010080E0           ADD      R0,R0,R1
+   \   00000148   000087E5           STR      R0,[R7, #+0]
+   \   0000014C   08008DE2           ADD      R0,SP,#+8
+   \   00000150   089180E0           ADD      R9,R0,R8, LSL #+2
+   \   00000154   000099E5           LDR      R0,[R9, #+0]
+   \   00000158   0D10A0E1           MOV      R1,SP
+   \   0000015C   ........           _BLF     D_UTIL_l_extract,??D_UTIL_l_extract??rA
+    305                t0 = D_UTIL_mpy_32_16(hi, lo, isp[m - 1]);
+   \   00000160   04009DE5           LDR      R0,[SP, #+4]
+   \   00000164   F210DDE1           LDRSH    R1,[SP, #+2]
+   \   00000168   F22050E1           LDRSH    R2,[R0, #-2]
+   \   0000016C   F000DDE1           LDRSH    R0,[SP, #+0]
+    306                f2[i] = f2[i] - t0;
+    307             }
+   \   00000170   018088E2           ADD      R8,R8,#+1
+   \   00000174   ........           _BLF     D_UTIL_mpy_32_16,??D_UTIL_mpy_32_16??rA
+   \   00000178   0070A0E1           MOV      R7,R0
+   \   0000017C   000099E5           LDR      R0,[R9, #+0]
+   \   00000180   070040E0           SUB      R0,R0,R7
+   \   00000184   000089E5           STR      R0,[R9, #+0]
+   \                     ??D_LPC_isp_a_conversion_6:
+   \   00000188   060058E1           CMP      R8,R6
+   \   0000018C   DFFFFFBA           BLT      ??D_LPC_isp_a_conversion_8
+    308          
+    309             /*
+    310              *  A(z) = (F1(z)+F2(z))/2
+    311              *  F1(z) is symmetric and F2(z) is antisymmetric
+    312              */
+    313          
+    314             /* a[0] = 1.0; */
+    315             a[0] = 4096;
+   \                     ??D_LPC_isp_a_conversion_7:
+   \   00000190   400DA0E3           MOV      R0,#+4096
+   \   00000194   B000C4E1           STRH     R0,[R4, #+0]
+    316             tmax = 1;
+   \   00000198   0190A0E3           MOV      R9,#+1
+    317          
+    318             for(i = 1, j = m - 1; i < nc; i++, j--)
+   \   0000019C   01A0A0E3           MOV      R10,#+1
+   \   000001A0   01B045E2           SUB      R11,R5,#+1
+   \   000001A4   020056E3           CMP      R6,#+2
+   \   000001A8   1A0000AA           BGE      ??D_LPC_isp_a_conversion_9
+   \   000001AC   1B0000EA           B        ??D_LPC_isp_a_conversion_10
+   \                     ??D_LPC_isp_a_conversion_11:
+   \   000001B0   30008DE2           ADD      R0,SP,#+48
+   \   000001B4   0A7180E0           ADD      R7,R0,R10, LSL #+2
+   \   000001B8   000097E5           LDR      R0,[R7, #+0]
+   \   000001BC   08108DE2           ADD      R1,SP,#+8
+   \   000001C0   0A1191E7           LDR      R1,[R1, +R10, LSL #+2]
+   \   000001C4   008081E0           ADD      R8,R1,R0
+    319             {
+    320                /* a[i] = 0.5*(f1[i] + f2[i]); */
+    321                t0 = f1[i] + f2[i];   /* f1[i] + f2[i] */
+    322                tmax |= labs(t0);
+                               ^
+Warning[Pe223]: function "labs" declared implicitly
+   \   000001C8   0800A0E1           MOV      R0,R8
+   \   000001CC   ........           _BLF     labs,??labs??rA
+   \   000001D0   099080E1           ORR      R9,R0,R9
+    323                a[i] = (Word16)((t0 + 0x800) >> 12);   /* from Q23 to Q12 and * 0.5 */
+   \   000001D4   8A0084E0           ADD      R0,R4,R10, LSL #+1
+   \   000001D8   801E88E2           ADD      R1,R8,#+2048
+   \   000001DC   4116A0E1           ASR      R1,R1,#+12
+   \   000001E0   B010C0E1           STRH     R1,[R0, #+0]
+    324                
+    325                /* a[j] = 0.5*(f1[i] - f2[i]); */
+    326                t0 = (f1[i] - f2[i]);   /* f1[i] - f2[i] */
+   \   000001E4   000097E5           LDR      R0,[R7, #+0]
+   \   000001E8   08108DE2           ADD      R1,SP,#+8
+   \   000001EC   0A1191E7           LDR      R1,[R1, +R10, LSL #+2]
+    327                tmax |= labs(t0);
+    328                a[j] = (Word16)((t0 + 0x800) >> 12);   /* from Q23 to Q12 and * 0.5 */
+    329             }
+   \   000001F0   01A08AE2           ADD      R10,R10,#+1
+   \   000001F4   017040E0           SUB      R7,R0,R1
+   \   000001F8   0700A0E1           MOV      R0,R7
+   \   000001FC   ........           _BLF     labs,??labs??rA
+   \   00000200   099080E1           ORR      R9,R0,R9
+   \   00000204   8B0084E0           ADD      R0,R4,R11, LSL #+1
+   \   00000208   801E87E2           ADD      R1,R7,#+2048
+   \   0000020C   4116A0E1           ASR      R1,R1,#+12
+   \   00000210   B010C0E1           STRH     R1,[R0, #+0]
+   \   00000214   01B04BE2           SUB      R11,R11,#+1
+   \                     ??D_LPC_isp_a_conversion_9:
+   \   00000218   06005AE1           CMP      R10,R6
+   \   0000021C   E3FFFFBA           BLT      ??D_LPC_isp_a_conversion_11
+    330          
+    331             /* rescale data if overflow has occured and reprocess the loop */
+    332          
+    333              if (adaptive_scaling)
+   \                     ??D_LPC_isp_a_conversion_10:
+   \   00000220   5C009DE5           LDR      R0,[SP, #+92]
+   \   00000224   000050E3           CMP      R0,#+0
+   \   00000228   2300000A           BEQ      ??D_LPC_isp_a_conversion_12
+    334              {
+    335                 q = 4 - D_UTIL_norm_l(tmax);        /* adaptive scaling enabled */
+   \   0000022C   0900A0E1           MOV      R0,R9
+   \   00000230   ........           _BLF     D_UTIL_norm_l,??D_UTIL_norm_l??rA
+   \   00000234   047060E2           RSB      R7,R0,#+4
+    336              }
+    337              else
+    338              {
+    339                 q = 0;                           /* adaptive scaling disabled */
+    340              }
+    341          
+    342              if (q > 0) 
+   \   00000238   010057E3           CMP      R7,#+1
+   \   0000023C   1E0000BA           BLT      ??D_LPC_isp_a_conversion_12
+    343              {
+    344                q_sug = 12 + q;
+   \   00000240   0C8087E2           ADD      R8,R7,#+12
+    345                r = 1 << (q_sug - 1);
+   \   00000244   0100A0E3           MOV      R0,#+1
+   \   00000248   011048E2           SUB      R1,R8,#+1
+   \   0000024C   1091A0E1           LSL      R9,R0,R1
+    346          
+    347                for (i = 1, j = m - 1; i < nc; i++, j--)
+   \   00000250   01A0A0E3           MOV      R10,#+1
+   \   00000254   01B045E2           SUB      R11,R5,#+1
+   \   00000258   020056E3           CMP      R6,#+2
+   \   0000025C   100000AA           BGE      ??D_LPC_isp_a_conversion_13
+   \   00000260   110000EA           B        ??D_LPC_isp_a_conversion_14
+    348                  {
+    349                    /* a[i] = 0.5*(f1[i] + f2[i]); */
+    350                    t0 = f1[i] + f2[i];          /* f1[i] + f2[i]             */
+    351                    a[i] = (Word16)((t0 + r) >> q_sug); /* from Q23 to Q12 and * 0.5 */
+   \                     ??D_LPC_isp_a_conversion_15:
+   \   00000264   30008DE2           ADD      R0,SP,#+48
+   \   00000268   0A0190E7           LDR      R0,[R0, +R10, LSL #+2]
+   \   0000026C   08108DE2           ADD      R1,SP,#+8
+   \   00000270   0A1191E7           LDR      R1,[R1, +R10, LSL #+2]
+   \   00000274   8A2084E0           ADD      R2,R4,R10, LSL #+1
+   \   00000278   093081E0           ADD      R3,R1,R9
+   \   0000027C   033080E0           ADD      R3,R0,R3
+   \   00000280   5338A0E1           ASR      R3,R3,R8
+   \   00000284   B030C2E1           STRH     R3,[R2, #+0]
+    352                    
+    353                    /* a[j] = 0.5*(f1[i] - f2[i]); */
+    354                    t0 = f1[i] - f2[i];          /* f1[i] - f2[i]             */
+    355                    a[j] = (Word16)((t0 + r) >> q_sug); /* from Q23 to Q12 and * 0.5 */
+   \   00000288   8B2084E0           ADD      R2,R4,R11, LSL #+1
+   \   0000028C   010040E0           SUB      R0,R0,R1
+   \   00000290   000089E0           ADD      R0,R9,R0
+   \   00000294   5008A0E1           ASR      R0,R0,R8
+   \   00000298   B000C2E1           STRH     R0,[R2, #+0]
+    356                  }
+   \   0000029C   01A08AE2           ADD      R10,R10,#+1
+   \   000002A0   01B04BE2           SUB      R11,R11,#+1
+   \                     ??D_LPC_isp_a_conversion_13:
+   \   000002A4   06005AE1           CMP      R10,R6
+   \   000002A8   EDFFFFBA           BLT      ??D_LPC_isp_a_conversion_15
+    357                a[0] = (Word16)(a[0] >> q);             
+   \                     ??D_LPC_isp_a_conversion_14:
+   \   000002AC   F000D4E1           LDRSH    R0,[R4, #+0]
+   \   000002B0   5007A0E1           ASR      R0,R0,R7
+   \   000002B4   B000C4E1           STRH     R0,[R4, #+0]
+   \   000002B8   020000EA           B        ??D_LPC_isp_a_conversion_16
+    358              } 
+    359              else 
+    360              {
+    361                q_sug = 12;
+   \                     ??D_LPC_isp_a_conversion_12:
+   \   000002BC   0C80A0E3           MOV      R8,#+12
+    362                r = 1 << (q_sug - 1);
+   \   000002C0   809EA0E3           MOV      R9,#+2048
+    363                q     = 0;                          
+   \   000002C4   0070A0E3           MOV      R7,#+0
+    364              }
+    365             
+    366             /* a[NC] = 0.5*f1[NC]*(1.0 + isp[M-1]); */
+    367             D_UTIL_l_extract(f1[nc], &hi, &lo);
+   \                     ??D_LPC_isp_a_conversion_16:
+   \   000002C8   30008DE2           ADD      R0,SP,#+48
+   \   000002CC   06A180E0           ADD      R10,R0,R6, LSL #+2
+   \   000002D0   00009AE5           LDR      R0,[R10, #+0]
+   \   000002D4   02208DE2           ADD      R2,SP,#+2
+   \   000002D8   0D10A0E1           MOV      R1,SP
+   \   000002DC   ........           _BLF     D_UTIL_l_extract,??D_UTIL_l_extract??rA
+    368             t0 = D_UTIL_mpy_32_16(hi, lo, isp[m - 1]);
+   \   000002E0   04009DE5           LDR      R0,[SP, #+4]
+   \   000002E4   F210DDE1           LDRSH    R1,[SP, #+2]
+   \   000002E8   F22050E1           LDRSH    R2,[R0, #-2]
+   \   000002EC   F000DDE1           LDRSH    R0,[SP, #+0]
+   \   000002F0   ........           _BLF     D_UTIL_mpy_32_16,??D_UTIL_mpy_32_16??rA
+    369             t0 = f1[nc] + t0;
+    370             a[nc] = (Word16)((t0 + r) >> q_sug);  /* from Q23 to Q12 and * 0.5 */
+   \   000002F4   00209AE5           LDR      R2,[R10, #+0]
+   \   000002F8   861084E0           ADD      R1,R4,R6, LSL #+1
+   \   000002FC   020080E0           ADD      R0,R0,R2
+   \   00000300   000089E0           ADD      R0,R9,R0
+   \   00000304   5008A0E1           ASR      R0,R0,R8
+   \   00000308   B000C1E1           STRH     R0,[R1, #+0]
+    371          
+    372             /* a[m] = isp[m-1]; */
+    373             a[m] = (Word16)((isp[m - 1] >> (2 + q)) + 1); /* from Q15 to Q12 */
+   \   0000030C   04109DE5           LDR      R1,[SP, #+4]
+   \   00000310   850084E0           ADD      R0,R4,R5, LSL #+1
+   \   00000314   F21051E1           LDRSH    R1,[R1, #-2]
+   \   00000318   022087E2           ADD      R2,R7,#+2
+   \   0000031C   0130A0E3           MOV      R3,#+1
+   \   00000320   511283E0           ADD      R1,R3,R1, ASR R2
+   \   00000324   B010C0E1           STRH     R1,[R0, #+0]
+    374             a[m] = (Word16)(a[m] >> 1);
+   \   00000328   F010D0E1           LDRSH    R1,[R0, #+0]
+   \   0000032C   C110A0E1           ASR      R1,R1,#+1
+   \   00000330   B010C0E1           STRH     R1,[R0, #+0]
+    375          
+    376             return;
+   \   00000334   60D08DE2           ADD      SP,SP,#+96
+   \   00000338   F08FBDE8           POP      {R4-R11,PC}      ;; return
+    377          }
+    378          
+    379          
+    380          /*
+    381           * D_LPC_a_weight
+    382           *
+    383           * Parameters:
+    384           *    a              I: LP filter coefficients
+    385           *    ap             O: weighted LP filter coefficients
+    386           *    gamma          I: weighting factor
+    387           *    m              I: order of LP filter
+    388           *
+    389           * Function:
+    390           *    Weighting of LP filter coefficients, ap[i] = a[i] * (gamma^i).
+    391           *
+    392           * Returns:
+    393           *    void
+    394           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    395          void D_LPC_a_weight(Word16 a[], Word16 ap[], Word16 gamma, Word16 m)
+    396          {
+   \                     D_LPC_a_weight:
+   \   00000000   70002DE9           PUSH     {R4-R6}
+    397             Word32 i, fac;
+    398          
+    399             ap[0] = a[0];
+   \   00000004   F040D0E1           LDRSH    R4,[R0, #+0]
+    400             fac = gamma;
+    401          
+    402             for(i = 1; i < m; i++)
+   \   00000008   03C0A0E1           MOV      R12,R3
+   \   0000000C   0250A0E1           MOV      R5,R2
+   \   00000010   B040C1E1           STRH     R4,[R1, #+0]
+   \   00000014   0140A0E3           MOV      R4,#+1
+   \   00000018   020053E3           CMP      R3,#+2
+   \   0000001C   0B0000AA           BGE      ??D_LPC_a_weight_0
+   \   00000020   0C0000EA           B        ??D_LPC_a_weight_1
+    403             {
+    404                ap[i] = (Word16)(((a[i] * fac) + 0x4000) >> 15);
+   \                     ??D_LPC_a_weight_2:
+   \   00000024   846080E0           ADD      R6,R0,R4, LSL #+1
+   \   00000028   F060D6E1           LDRSH    R6,[R6, #+0]
+   \   0000002C   843081E0           ADD      R3,R1,R4, LSL #+1
+    405                fac = ((fac * gamma)  + 0x4000) >> 15;
+    406             }
+   \   00000030   014084E2           ADD      R4,R4,#+1
+   \   00000034   950606E0           MUL      R6,R5,R6
+   \   00000038   406C86E2           ADD      R6,R6,#+16384
+   \   0000003C   C667A0E1           ASR      R6,R6,#+15
+   \   00000040   B060C3E1           STRH     R6,[R3, #+0]
+   \   00000044   920503E0           MUL      R3,R2,R5
+   \   00000048   403C83E2           ADD      R3,R3,#+16384
+   \   0000004C   C357A0E1           ASR      R5,R3,#+15
+   \                     ??D_LPC_a_weight_0:
+   \   00000050   0C0054E1           CMP      R4,R12
+   \   00000054   F2FFFFBA           BLT      ??D_LPC_a_weight_2
+    407          
+    408             ap[m] = (Word16)(((a[m] * fac) + 0x4000) >> 15);
+   \                     ??D_LPC_a_weight_1:
+   \   00000058   8C0080E0           ADD      R0,R0,R12, LSL #+1
+   \   0000005C   F000D0E1           LDRSH    R0,[R0, #+0]
+   \   00000060   8C1081E0           ADD      R1,R1,R12, LSL #+1
+   \   00000064   950000E0           MUL      R0,R5,R0
+   \   00000068   400C80E2           ADD      R0,R0,#+16384
+   \   0000006C   C007A0E1           ASR      R0,R0,#+15
+   \   00000070   B000C1E1           STRH     R0,[R1, #+0]
+    409          
+    410             return;
+   \   00000074   7000BDE8           POP      {R4-R6}
+   \   00000078   1EFF2FE1           BX       LR               ;; return
+    411          }
+    412          
+    413          
+    414          /*
+    415           * D_LPC_isf_2s3s_decode
+    416           *
+    417           * Parameters:
+    418           *    indice            I: quantisation indices
+    419           *    isf_q             O: quantised ISFs in the cosine domain
+    420           *    past_isfq       I/O: past ISF quantizer
+    421           *    isfold            I: past quantised ISF
+    422           *    isf_buf           O: isf buffer
+    423           *    bfi               I: Bad frame indicator
+    424           *
+    425           * Function:
+    426           *    Decoding of ISF parameters.
+    427           *
+    428           * Returns:
+    429           *    void
+    430           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    431          void D_LPC_isf_2s3s_decode(Word16 *indice, Word16 *isf_q, Word16 *past_isfq,
+    432                                     Word16 *isfold, Word16 *isf_buf, Word16 bfi)
+    433          {
+   \                     D_LPC_isf_2s3s_decode:
+   \   00000000   F0032DE9           PUSH     {R4-R9}
+    434          
+    435             Word32 ref_isf[M];
+    436             Word32 L_tmp, i, j;
+    437             Word16 tmp;
+    438          
+    439             if(bfi == 0) /* Good frame */
+   \   00000004   ........           LDR      R4,??DataTable4  ;; D_ROM_mean_isf
+   \   00000008   40D04DE2           SUB      SP,SP,#+64
+   \   0000000C   FC55DDE1           LDRSH    R5,[SP, #+92]
+   \   00000010   58C09DE5           LDR      R12,[SP, #+88]
+   \   00000014   000055E3           CMP      R5,#+0
+   \   00000018   6200001A           BNE      ??D_LPC_isf_2s3s_decode_0
+    440             {
+    441                for(i = 0; i < 9; i++)
+   \   0000001C   ........           LDR      R7,??DataTable5  ;; D_ROM_dico1_isf
+   \   00000020   0030A0E3           MOV      R3,#+0
+    442                {
+    443                   isf_q[i] = D_ROM_dico1_isf[indice[0] * 9 + i];
+   \                     ??D_LPC_isf_2s3s_decode_1:
+   \   00000024   F060D0E1           LDRSH    R6,[R0, #+0]
+   \   00000028   835081E0           ADD      R5,R1,R3, LSL #+1
+   \   0000002C   866186E0           ADD      R6,R6,R6, LSL #+3
+   \   00000030   066083E0           ADD      R6,R3,R6
+   \   00000034   866087E0           ADD      R6,R7,R6, LSL #+1
+   \   00000038   F060D6E1           LDRSH    R6,[R6, #+0]
+    444                }
+   \   0000003C   013083E2           ADD      R3,R3,#+1
+   \   00000040   090053E3           CMP      R3,#+9
+   \   00000044   B060C5E1           STRH     R6,[R5, #+0]
+   \   00000048   F5FFFFBA           BLT      ??D_LPC_isf_2s3s_decode_1
+    445          
+    446                for(i = 0; i < 7; i++)
+   \   0000004C   ........           LDR      R7,??DataTable6  ;; D_ROM_dico2_isf
+   \   00000050   0030A0E3           MOV      R3,#+0
+    447                {
+    448                   isf_q[i + 9] = D_ROM_dico2_isf[indice[1] * 7 + i];
+   \                     ??D_LPC_isf_2s3s_decode_2:
+   \   00000054   F260D0E1           LDRSH    R6,[R0, #+2]
+   \   00000058   835081E0           ADD      R5,R1,R3, LSL #+1
+   \   0000005C   866166E0           RSB      R6,R6,R6, LSL #+3
+   \   00000060   066083E0           ADD      R6,R3,R6
+   \   00000064   866087E0           ADD      R6,R7,R6, LSL #+1
+   \   00000068   F060D6E1           LDRSH    R6,[R6, #+0]
+    449                }
+   \   0000006C   013083E2           ADD      R3,R3,#+1
+   \   00000070   070053E3           CMP      R3,#+7
+   \   00000074   B261C5E1           STRH     R6,[R5, #+18]
+   \   00000078   F5FFFFBA           BLT      ??D_LPC_isf_2s3s_decode_2
+    450          
+    451                for(i = 0; i < 5; i++)
+   \   0000007C   30829FE5           LDR      R8,??D_LPC_isf_2s3s_decode_3  ;; D_ROM_dico21_isf_36b
+   \   00000080   0030A0E3           MOV      R3,#+0
+    452                {
+    453                   isf_q[i] =
+    454                      (Word16)(isf_q[i] + D_ROM_dico21_isf_36b[indice[2] * 5 + i]);
+   \                     ??D_LPC_isf_2s3s_decode_4:
+   \   00000084   F470D0E1           LDRSH    R7,[R0, #+4]
+   \   00000088   835081E0           ADD      R5,R1,R3, LSL #+1
+   \   0000008C   F060D5E1           LDRSH    R6,[R5, #+0]
+   \   00000090   077187E0           ADD      R7,R7,R7, LSL #+2
+   \   00000094   077083E0           ADD      R7,R3,R7
+   \   00000098   877088E0           ADD      R7,R8,R7, LSL #+1
+   \   0000009C   F070D7E1           LDRSH    R7,[R7, #+0]
+    455                }
+   \   000000A0   013083E2           ADD      R3,R3,#+1
+   \   000000A4   050053E3           CMP      R3,#+5
+   \   000000A8   066087E0           ADD      R6,R7,R6
+   \   000000AC   B060C5E1           STRH     R6,[R5, #+0]
+   \   000000B0   F3FFFFBA           BLT      ??D_LPC_isf_2s3s_decode_4
+    456          
+    457                for(i = 0; i < 4; i++)
+   \   000000B4   FC819FE5           LDR      R8,??D_LPC_isf_2s3s_decode_3+0x4  ;; D_ROM_dico22_isf_36b
+   \   000000B8   0030A0E3           MOV      R3,#+0
+    458                {
+    459                   isf_q[i + 5] =
+    460                      (Word16)(isf_q[i + 5] + D_ROM_dico22_isf_36b[indice[3] * 4 + i]);
+   \                     ??D_LPC_isf_2s3s_decode_5:
+   \   000000BC   F670D0E1           LDRSH    R7,[R0, #+6]
+   \   000000C0   835081E0           ADD      R5,R1,R3, LSL #+1
+   \   000000C4   FA60D5E1           LDRSH    R6,[R5, #+10]
+   \   000000C8   077183E0           ADD      R7,R3,R7, LSL #+2
+   \   000000CC   877088E0           ADD      R7,R8,R7, LSL #+1
+   \   000000D0   F070D7E1           LDRSH    R7,[R7, #+0]
+    461                }
+   \   000000D4   013083E2           ADD      R3,R3,#+1
+   \   000000D8   040053E3           CMP      R3,#+4
+   \   000000DC   066087E0           ADD      R6,R7,R6
+   \   000000E0   BA60C5E1           STRH     R6,[R5, #+10]
+   \   000000E4   F4FFFFBA           BLT      ??D_LPC_isf_2s3s_decode_5
+    462          
+    463                for(i = 0; i < 7; i++)
+   \   000000E8   CC819FE5           LDR      R8,??D_LPC_isf_2s3s_decode_3+0x8  ;; D_ROM_dico23_isf_36b
+   \   000000EC   0030A0E3           MOV      R3,#+0
+    464                {
+    465                   isf_q[i + 9] =
+    466                      (Word16)(isf_q[i + 9] + D_ROM_dico23_isf_36b[indice[4] * 7 + i]);
+   \                     ??D_LPC_isf_2s3s_decode_6:
+   \   000000F0   F870D0E1           LDRSH    R7,[R0, #+8]
+   \   000000F4   835081E0           ADD      R5,R1,R3, LSL #+1
+   \   000000F8   F261D5E1           LDRSH    R6,[R5, #+18]
+   \   000000FC   877167E0           RSB      R7,R7,R7, LSL #+3
+   \   00000100   077083E0           ADD      R7,R3,R7
+   \   00000104   877088E0           ADD      R7,R8,R7, LSL #+1
+   \   00000108   F070D7E1           LDRSH    R7,[R7, #+0]
+    467                }
+   \   0000010C   013083E2           ADD      R3,R3,#+1
+   \   00000110   070053E3           CMP      R3,#+7
+   \   00000114   066087E0           ADD      R6,R7,R6
+   \   00000118   B261C5E1           STRH     R6,[R5, #+18]
+   \   0000011C   F3FFFFBA           BLT      ??D_LPC_isf_2s3s_decode_6
+    468          
+    469                for(i = 0; i < ORDER; i++)
+   \   00000120   0000A0E3           MOV      R0,#+0
+   \   00000124   AB90A0E3           MOV      R9,#+171
+   \   00000128   A89D89E3           ORR      R9,R9,#0x2A00
+    470                {
+    471                   tmp = isf_q[i];
+    472                   isf_q[i] =
+    473                      (Word16)((tmp + D_ROM_mean_isf[i]) + ((MU * past_isfq[i]) >> 15));
+   \                     ??D_LPC_isf_2s3s_decode_7:
+   \   0000012C   806082E0           ADD      R6,R2,R0, LSL #+1
+   \   00000130   F080D6E1           LDRSH    R8,[R6, #+0]
+   \   00000134   803081E0           ADD      R3,R1,R0, LSL #+1
+   \   00000138   F050D3E1           LDRSH    R5,[R3, #+0]
+   \   0000013C   807084E0           ADD      R7,R4,R0, LSL #+1
+   \   00000140   F070D7E1           LDRSH    R7,[R7, #+0]
+   \   00000144   990808E0           MUL      R8,R9,R8
+   \   00000148   057087E0           ADD      R7,R7,R5
+   \   0000014C   C87787E0           ADD      R7,R7,R8, ASR #+15
+   \   00000150   B070C3E1           STRH     R7,[R3, #+0]
+    474                   past_isfq[i] = tmp;
+   \   00000154   B050C6E1           STRH     R5,[R6, #+0]
+    475                }
+   \   00000158   010080E2           ADD      R0,R0,#+1
+   \   0000015C   100050E3           CMP      R0,#+16
+   \   00000160   F1FFFFBA           BLT      ??D_LPC_isf_2s3s_decode_7
+    476          
+    477                for(i = 0; i < M; i++)
+   \   00000164   0030A0E3           MOV      R3,#+0
+    478                {
+    479                   for(j = (L_MEANBUF - 1); j > 0; j--)
+   \                     ??D_LPC_isf_2s3s_decode_8:
+   \   00000168   0200A0E3           MOV      R0,#+2
+   \                     ??D_LPC_isf_2s3s_decode_9:
+   \   0000016C   002283E0           ADD      R2,R3,R0, LSL #+4
+   \   00000170   82208CE0           ADD      R2,R12,R2, LSL #+1
+   \   00000174   F04252E1           LDRSH    R4,[R2, #-32]
+    480                   {
+    481                      isf_buf[j * M + i] = isf_buf[(j - 1) * M + i];
+   \   00000178   010040E2           SUB      R0,R0,#+1
+   \   0000017C   010050E3           CMP      R0,#+1
+   \   00000180   B040C2E1           STRH     R4,[R2, #+0]
+   \   00000184   F8FFFFAA           BGE      ??D_LPC_isf_2s3s_decode_9
+    482                   }
+    483                   isf_buf[i] = isf_q[i];
+   \   00000188   832081E0           ADD      R2,R1,R3, LSL #+1
+   \   0000018C   F020D2E1           LDRSH    R2,[R2, #+0]
+   \   00000190   83008CE0           ADD      R0,R12,R3, LSL #+1
+    484                }
+   \   00000194   013083E2           ADD      R3,R3,#+1
+   \   00000198   B020C0E1           STRH     R2,[R0, #+0]
+   \   0000019C   100053E3           CMP      R3,#+16
+   \   000001A0   350000AA           BGE      ??D_LPC_isf_2s3s_decode_10
+   \   000001A4   EFFFFFEA           B        ??D_LPC_isf_2s3s_decode_8
+    485          
+    486             }
+    487             else
+    488             {   /* bad frame */
+    489          
+    490                for(i = 0; i < M; i++)
+   \                     ??D_LPC_isf_2s3s_decode_0:
+   \   000001A8   0050A0E3           MOV      R5,#+0
+    491                {
+    492                   L_tmp = D_ROM_mean_isf[i];
+   \                     ??D_LPC_isf_2s3s_decode_11:
+   \   000001AC   850084E0           ADD      R0,R4,R5, LSL #+1
+   \   000001B0   F060D0E1           LDRSH    R6,[R0, #+0]
+    493          
+    494                   for(j = 0; j < L_MEANBUF; j++)
+   \   000001B4   0000A0E3           MOV      R0,#+0
+    495                   {
+    496                      L_tmp = L_tmp + isf_buf[j * M + i];
+   \                     ??D_LPC_isf_2s3s_decode_12:
+   \   000001B8   007285E0           ADD      R7,R5,R0, LSL #+4
+   \   000001BC   87708CE0           ADD      R7,R12,R7, LSL #+1
+   \   000001C0   F070D7E1           LDRSH    R7,[R7, #+0]
+    497                   }
+   \   000001C4   010080E2           ADD      R0,R0,#+1
+   \   000001C8   030050E3           CMP      R0,#+3
+   \   000001CC   066087E0           ADD      R6,R7,R6
+   \   000001D0   F8FFFFBA           BLT      ??D_LPC_isf_2s3s_decode_12
+    498                   ref_isf[i] = (L_tmp + 0x1) >> 2;
+   \   000001D4   0D00A0E1           MOV      R0,SP
+   \   000001D8   016086E2           ADD      R6,R6,#+1
+   \   000001DC   4661A0E1           ASR      R6,R6,#+2
+   \   000001E0   056180E7           STR      R6,[R0, +R5, LSL #+2]
+    499                }
+   \   000001E4   015085E2           ADD      R5,R5,#+1
+   \   000001E8   100055E3           CMP      R5,#+16
+   \   000001EC   EEFFFFBA           BLT      ??D_LPC_isf_2s3s_decode_11
+    500          
+    501                /* use the past ISFs slightly shifted towards their mean */
+    502                for(i = 0; i < ORDER; i++)
+   \   000001F0   0000A0E3           MOV      R0,#+0
+   \   000001F4   CD70A0E3           MOV      R7,#+205
+   \   000001F8   C07E87E3           ORR      R7,R7,#0xC00
+    503                {
+    504                   isf_q[i] = (Word16)((((ALPHA * isfold[i]) >> 15) +
+    505                      ((ONE_ALPHA * ref_isf[i]) >> 15)));
+   \                     ??D_LPC_isf_2s3s_decode_13:
+   \   000001FC   805083E0           ADD      R5,R3,R0, LSL #+1
+   \   00000200   F050D5E1           LDRSH    R5,[R5, #+0]
+   \   00000204   3360A0E3           MOV      R6,#+51
+   \   00000208   736C86E3           ORR      R6,R6,#0x7300
+   \   0000020C   960505E0           MUL      R5,R6,R5
+   \   00000210   0D60A0E1           MOV      R6,SP
+   \   00000214   006196E7           LDR      R6,[R6, +R0, LSL #+2]
+   \   00000218   804081E0           ADD      R4,R1,R0, LSL #+1
+   \   0000021C   970606E0           MUL      R6,R7,R6
+    506                }
+   \   00000220   010080E2           ADD      R0,R0,#+1
+   \   00000224   C667A0E1           ASR      R6,R6,#+15
+   \   00000228   C55786E0           ADD      R5,R6,R5, ASR #+15
+   \   0000022C   B050C4E1           STRH     R5,[R4, #+0]
+   \   00000230   100050E3           CMP      R0,#+16
+   \   00000234   F0FFFFBA           BLT      ??D_LPC_isf_2s3s_decode_13
+    507          
+    508                /* estimate past quantized residual to be used in next frame */
+    509                for(i = 0; i < ORDER; i++)
+   \   00000238   0030A0E3           MOV      R3,#+0
+   \   0000023C   AB60A0E3           MOV      R6,#+171
+   \   00000240   A86D86E3           ORR      R6,R6,#0x2A00
+    510                {
+    511                   /* predicted ISF */
+    512                   L_tmp = ref_isf[i] + ((past_isfq[i] * MU) >> 15);
+    513                   /* past_isfq[i] *= 0.5 */
+    514                   past_isfq[i] = (Word16)((isf_q[i] - L_tmp) >> 1);
+   \                     ??D_LPC_isf_2s3s_decode_14:
+   \   00000244   834081E0           ADD      R4,R1,R3, LSL #+1
+   \   00000248   F040D4E1           LDRSH    R4,[R4, #+0]
+   \   0000024C   0D50A0E1           MOV      R5,SP
+   \   00000250   035195E7           LDR      R5,[R5, +R3, LSL #+2]
+   \   00000254   830082E0           ADD      R0,R2,R3, LSL #+1
+   \   00000258   054044E0           SUB      R4,R4,R5
+   \   0000025C   F050D0E1           LDRSH    R5,[R0, #+0]
+    515                }
+   \   00000260   013083E2           ADD      R3,R3,#+1
+   \   00000264   100053E3           CMP      R3,#+16
+   \   00000268   960505E0           MUL      R5,R6,R5
+   \   0000026C   C54744E0           SUB      R4,R4,R5, ASR #+15
+   \   00000270   C440A0E1           ASR      R4,R4,#+1
+   \   00000274   B040C0E1           STRH     R4,[R0, #+0]
+   \   00000278   F1FFFFBA           BLT      ??D_LPC_isf_2s3s_decode_14
+    516             }
+    517          
+    518             D_LPC_isf_reorder(isf_q, ISF_GAP, ORDER);
+   \                     ??D_LPC_isf_2s3s_decode_10:
+   \   0000027C   8000A0E3           MOV      R0,#+128
+   \   00000280   0020A0E3           MOV      R2,#+0
+   \                     ??D_LPC_isf_2s3s_decode_15:
+   \   00000284   823081E0           ADD      R3,R1,R2, LSL #+1
+   \   00000288   F040D3E1           LDRSH    R4,[R3, #+0]
+   \   0000028C   012082E2           ADD      R2,R2,#+1
+   \   00000290   000054E1           CMP      R4,R0
+   \   00000294   B000C3B1           STRHLT   R0,[R3, #+0]
+   \   00000298   F000D3E1           LDRSH    R0,[R3, #+0]
+   \   0000029C   0F0052E3           CMP      R2,#+15
+   \   000002A0   800080E2           ADD      R0,R0,#+128
+   \   000002A4   F6FFFFBA           BLT      ??D_LPC_isf_2s3s_decode_15
+    519          
+    520             return;
+   \   000002A8   40D08DE2           ADD      SP,SP,#+64
+   \   000002AC   F003BDE8           POP      {R4-R9}
+   \   000002B0   1EFF2FE1           BX       LR               ;; return
+   \                     ??D_LPC_isf_2s3s_decode_3:
+   \   000002B4   ........           DC32     D_ROM_dico21_isf_36b
+   \   000002B8   ........           DC32     D_ROM_dico22_isf_36b
+   \   000002BC   ........           DC32     D_ROM_dico23_isf_36b
+    521          }
+    522          
+    523          
+    524          /*
+    525           * D_LPC_isf_2s5s_decode
+    526           *
+    527           * Parameters:
+    528           *    indice            I: quantization indices
+    529           *    isf_q             O: quantized ISFs in the cosine domain
+    530           *    past_isfq       I/O: past ISF quantizer
+    531           *    isfold            I: past quantized ISF
+    532           *    isf_buf           O: isf buffer
+    533           *    bfi               I: Bad frame indicator
+    534           *
+    535           * Function:
+    536           *    Decoding of ISF parameters.
+    537           *
+    538           * Returns:
+    539           *    void
+    540           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    541          void D_LPC_isf_2s5s_decode(Word16 *indice, Word16 *isf_q, Word16 *past_isfq,
+    542                                     Word16 *isfold, Word16 *isf_buf, Word16 bfi)
+    543          {
+   \                     D_LPC_isf_2s5s_decode:
+   \   00000000   F0032DE9           PUSH     {R4-R9}
+    544             Word32 ref_isf[M];
+    545             Word32 i, j, L_tmp;
+    546             Word16 tmp;
+    547          
+    548             if(bfi == 0) /* Good frame */
+   \   00000004   ........           LDR      R4,??DataTable4  ;; D_ROM_mean_isf
+   \   00000008   40D04DE2           SUB      SP,SP,#+64
+   \   0000000C   FC55DDE1           LDRSH    R5,[SP, #+92]
+   \   00000010   58C09DE5           LDR      R12,[SP, #+88]
+   \   00000014   000055E3           CMP      R5,#+0
+   \   00000018   7E00001A           BNE      ??D_LPC_isf_2s5s_decode_0
+    549             {
+    550                for(i = 0; i < 9; i++)
+   \   0000001C   ........           LDR      R7,??DataTable5  ;; D_ROM_dico1_isf
+   \   00000020   0030A0E3           MOV      R3,#+0
+    551                {
+    552                   isf_q[i] = D_ROM_dico1_isf[indice[0] * 9 + i];
+   \                     ??D_LPC_isf_2s5s_decode_1:
+   \   00000024   F060D0E1           LDRSH    R6,[R0, #+0]
+   \   00000028   835081E0           ADD      R5,R1,R3, LSL #+1
+   \   0000002C   866186E0           ADD      R6,R6,R6, LSL #+3
+   \   00000030   066083E0           ADD      R6,R3,R6
+   \   00000034   866087E0           ADD      R6,R7,R6, LSL #+1
+   \   00000038   F060D6E1           LDRSH    R6,[R6, #+0]
+    553                }
+   \   0000003C   013083E2           ADD      R3,R3,#+1
+   \   00000040   090053E3           CMP      R3,#+9
+   \   00000044   B060C5E1           STRH     R6,[R5, #+0]
+   \   00000048   F5FFFFBA           BLT      ??D_LPC_isf_2s5s_decode_1
+    554          
+    555                for(i = 0; i < 7; i++)
+   \   0000004C   ........           LDR      R7,??DataTable6  ;; D_ROM_dico2_isf
+   \   00000050   0030A0E3           MOV      R3,#+0
+    556                {
+    557                   isf_q[i + 9] = D_ROM_dico2_isf[indice[1] * 7 + i];
+   \                     ??D_LPC_isf_2s5s_decode_2:
+   \   00000054   F260D0E1           LDRSH    R6,[R0, #+2]
+   \   00000058   835081E0           ADD      R5,R1,R3, LSL #+1
+   \   0000005C   866166E0           RSB      R6,R6,R6, LSL #+3
+   \   00000060   066083E0           ADD      R6,R3,R6
+   \   00000064   866087E0           ADD      R6,R7,R6, LSL #+1
+   \   00000068   F060D6E1           LDRSH    R6,[R6, #+0]
+    558                }
+   \   0000006C   013083E2           ADD      R3,R3,#+1
+   \   00000070   070053E3           CMP      R3,#+7
+   \   00000074   B261C5E1           STRH     R6,[R5, #+18]
+   \   00000078   F5FFFFBA           BLT      ??D_LPC_isf_2s5s_decode_2
+    559          
+    560                for(i = 0; i < 3; i++)
+   \   0000007C   A0829FE5           LDR      R8,??D_LPC_isf_2s5s_decode_3  ;; D_ROM_dico21_isf
+   \   00000080   0030A0E3           MOV      R3,#+0
+    561                {
+    562                   isf_q[i] = (Word16)(isf_q[i] + D_ROM_dico21_isf[indice[2] * 3 + i]);
+   \                     ??D_LPC_isf_2s5s_decode_4:
+   \   00000084   F470D0E1           LDRSH    R7,[R0, #+4]
+   \   00000088   835081E0           ADD      R5,R1,R3, LSL #+1
+   \   0000008C   F060D5E1           LDRSH    R6,[R5, #+0]
+   \   00000090   877087E0           ADD      R7,R7,R7, LSL #+1
+   \   00000094   077083E0           ADD      R7,R3,R7
+   \   00000098   877088E0           ADD      R7,R8,R7, LSL #+1
+   \   0000009C   F070D7E1           LDRSH    R7,[R7, #+0]
+    563                }
+   \   000000A0   013083E2           ADD      R3,R3,#+1
+   \   000000A4   030053E3           CMP      R3,#+3
+   \   000000A8   066087E0           ADD      R6,R7,R6
+   \   000000AC   B060C5E1           STRH     R6,[R5, #+0]
+   \   000000B0   F3FFFFBA           BLT      ??D_LPC_isf_2s5s_decode_4
+    564          
+    565                for(i = 0; i < 3; i++)
+   \   000000B4   6C829FE5           LDR      R8,??D_LPC_isf_2s5s_decode_3+0x4  ;; D_ROM_dico22_isf
+   \   000000B8   0030A0E3           MOV      R3,#+0
+    566                {
+    567                   isf_q[i + 3] =
+    568                      (Word16)(isf_q[i + 3] + D_ROM_dico22_isf[indice[3] * 3 + i]);
+   \                     ??D_LPC_isf_2s5s_decode_5:
+   \   000000BC   F670D0E1           LDRSH    R7,[R0, #+6]
+   \   000000C0   835081E0           ADD      R5,R1,R3, LSL #+1
+   \   000000C4   F660D5E1           LDRSH    R6,[R5, #+6]
+   \   000000C8   877087E0           ADD      R7,R7,R7, LSL #+1
+   \   000000CC   077083E0           ADD      R7,R3,R7
+   \   000000D0   877088E0           ADD      R7,R8,R7, LSL #+1
+   \   000000D4   F070D7E1           LDRSH    R7,[R7, #+0]
+    569                }
+   \   000000D8   013083E2           ADD      R3,R3,#+1
+   \   000000DC   030053E3           CMP      R3,#+3
+   \   000000E0   066087E0           ADD      R6,R7,R6
+   \   000000E4   B660C5E1           STRH     R6,[R5, #+6]
+   \   000000E8   F3FFFFBA           BLT      ??D_LPC_isf_2s5s_decode_5
+    570          
+    571                for(i = 0; i < 3; i++)
+   \   000000EC   38829FE5           LDR      R8,??D_LPC_isf_2s5s_decode_3+0x8  ;; D_ROM_dico23_isf
+   \   000000F0   0030A0E3           MOV      R3,#+0
+    572                {
+    573                   isf_q[i + 6] =
+    574                      (Word16)(isf_q[i + 6] + D_ROM_dico23_isf[indice[4] * 3 + i]);
+   \                     ??D_LPC_isf_2s5s_decode_6:
+   \   000000F4   F870D0E1           LDRSH    R7,[R0, #+8]
+   \   000000F8   835081E0           ADD      R5,R1,R3, LSL #+1
+   \   000000FC   FC60D5E1           LDRSH    R6,[R5, #+12]
+   \   00000100   877087E0           ADD      R7,R7,R7, LSL #+1
+   \   00000104   077083E0           ADD      R7,R3,R7
+   \   00000108   877088E0           ADD      R7,R8,R7, LSL #+1
+   \   0000010C   F070D7E1           LDRSH    R7,[R7, #+0]
+    575                }
+   \   00000110   013083E2           ADD      R3,R3,#+1
+   \   00000114   030053E3           CMP      R3,#+3
+   \   00000118   066087E0           ADD      R6,R7,R6
+   \   0000011C   BC60C5E1           STRH     R6,[R5, #+12]
+   \   00000120   F3FFFFBA           BLT      ??D_LPC_isf_2s5s_decode_6
+    576          
+    577                for(i = 0; i < 3; i++)
+   \   00000124   04829FE5           LDR      R8,??D_LPC_isf_2s5s_decode_3+0xC  ;; D_ROM_dico24_isf
+   \   00000128   0030A0E3           MOV      R3,#+0
+    578                {
+    579                   isf_q[i + 9] =
+    580                      (Word16)(isf_q[i + 9] + D_ROM_dico24_isf[indice[5] * 3 + i]);
+   \                     ??D_LPC_isf_2s5s_decode_7:
+   \   0000012C   FA70D0E1           LDRSH    R7,[R0, #+10]
+   \   00000130   835081E0           ADD      R5,R1,R3, LSL #+1
+   \   00000134   F261D5E1           LDRSH    R6,[R5, #+18]
+   \   00000138   877087E0           ADD      R7,R7,R7, LSL #+1
+   \   0000013C   077083E0           ADD      R7,R3,R7
+   \   00000140   877088E0           ADD      R7,R8,R7, LSL #+1
+   \   00000144   F070D7E1           LDRSH    R7,[R7, #+0]
+    581                }
+   \   00000148   013083E2           ADD      R3,R3,#+1
+   \   0000014C   030053E3           CMP      R3,#+3
+   \   00000150   066087E0           ADD      R6,R7,R6
+   \   00000154   B261C5E1           STRH     R6,[R5, #+18]
+   \   00000158   F3FFFFBA           BLT      ??D_LPC_isf_2s5s_decode_7
+    582          
+    583                for(i = 0; i < 4; i++)
+   \   0000015C   D0819FE5           LDR      R8,??D_LPC_isf_2s5s_decode_3+0x10  ;; D_ROM_dico25_isf
+   \   00000160   0030A0E3           MOV      R3,#+0
+    584                {
+    585                   isf_q[i + 12] =
+    586                      (Word16)(isf_q[i + 12] + D_ROM_dico25_isf[indice[6] * 4 + i]);
+   \                     ??D_LPC_isf_2s5s_decode_8:
+   \   00000164   FC70D0E1           LDRSH    R7,[R0, #+12]
+   \   00000168   835081E0           ADD      R5,R1,R3, LSL #+1
+   \   0000016C   F861D5E1           LDRSH    R6,[R5, #+24]
+   \   00000170   077183E0           ADD      R7,R3,R7, LSL #+2
+   \   00000174   877088E0           ADD      R7,R8,R7, LSL #+1
+   \   00000178   F070D7E1           LDRSH    R7,[R7, #+0]
+    587                }
+   \   0000017C   013083E2           ADD      R3,R3,#+1
+   \   00000180   040053E3           CMP      R3,#+4
+   \   00000184   066087E0           ADD      R6,R7,R6
+   \   00000188   B861C5E1           STRH     R6,[R5, #+24]
+   \   0000018C   F4FFFFBA           BLT      ??D_LPC_isf_2s5s_decode_8
+    588          
+    589                for(i = 0; i < ORDER; i++)
+   \   00000190   0000A0E3           MOV      R0,#+0
+   \   00000194   AB90A0E3           MOV      R9,#+171
+   \   00000198   A89D89E3           ORR      R9,R9,#0x2A00
+    590                {
+    591                   tmp = isf_q[i];
+    592                   isf_q[i] =
+    593                      (Word16)((tmp + D_ROM_mean_isf[i]) + ((MU * past_isfq[i]) >> 15));
+   \                     ??D_LPC_isf_2s5s_decode_9:
+   \   0000019C   806082E0           ADD      R6,R2,R0, LSL #+1
+   \   000001A0   F080D6E1           LDRSH    R8,[R6, #+0]
+   \   000001A4   803081E0           ADD      R3,R1,R0, LSL #+1
+   \   000001A8   F050D3E1           LDRSH    R5,[R3, #+0]
+   \   000001AC   807084E0           ADD      R7,R4,R0, LSL #+1
+   \   000001B0   F070D7E1           LDRSH    R7,[R7, #+0]
+   \   000001B4   990808E0           MUL      R8,R9,R8
+   \   000001B8   057087E0           ADD      R7,R7,R5
+   \   000001BC   C87787E0           ADD      R7,R7,R8, ASR #+15
+   \   000001C0   B070C3E1           STRH     R7,[R3, #+0]
+    594                   past_isfq[i] = tmp;
+   \   000001C4   B050C6E1           STRH     R5,[R6, #+0]
+    595                }
+   \   000001C8   010080E2           ADD      R0,R0,#+1
+   \   000001CC   100050E3           CMP      R0,#+16
+   \   000001D0   F1FFFFBA           BLT      ??D_LPC_isf_2s5s_decode_9
+    596          
+    597          
+    598                for(i = 0; i < M; i++)
+   \   000001D4   0030A0E3           MOV      R3,#+0
+    599                {
+    600                   for(j = (L_MEANBUF - 1); j > 0; j--)
+   \                     ??D_LPC_isf_2s5s_decode_10:
+   \   000001D8   0200A0E3           MOV      R0,#+2
+   \                     ??D_LPC_isf_2s5s_decode_11:
+   \   000001DC   002283E0           ADD      R2,R3,R0, LSL #+4
+   \   000001E0   82208CE0           ADD      R2,R12,R2, LSL #+1
+   \   000001E4   F04252E1           LDRSH    R4,[R2, #-32]
+    601                   {
+    602                      isf_buf[j * M + i] = isf_buf[(j - 1) * M + i];
+   \   000001E8   010040E2           SUB      R0,R0,#+1
+   \   000001EC   010050E3           CMP      R0,#+1
+   \   000001F0   B040C2E1           STRH     R4,[R2, #+0]
+   \   000001F4   F8FFFFAA           BGE      ??D_LPC_isf_2s5s_decode_11
+    603                   }
+    604                   isf_buf[i] = isf_q[i];
+   \   000001F8   832081E0           ADD      R2,R1,R3, LSL #+1
+   \   000001FC   F020D2E1           LDRSH    R2,[R2, #+0]
+   \   00000200   83008CE0           ADD      R0,R12,R3, LSL #+1
+    605                }
+   \   00000204   013083E2           ADD      R3,R3,#+1
+   \   00000208   B020C0E1           STRH     R2,[R0, #+0]
+   \   0000020C   100053E3           CMP      R3,#+16
+   \   00000210   350000AA           BGE      ??D_LPC_isf_2s5s_decode_12
+   \   00000214   EFFFFFEA           B        ??D_LPC_isf_2s5s_decode_10
+    606          
+    607             }
+    608             else
+    609             {   /* bad frame */
+    610          
+    611                for(i = 0; i < M; i++)
+   \                     ??D_LPC_isf_2s5s_decode_0:
+   \   00000218   0050A0E3           MOV      R5,#+0
+    612                {
+    613                   L_tmp = D_ROM_mean_isf[i];
+   \                     ??D_LPC_isf_2s5s_decode_13:
+   \   0000021C   850084E0           ADD      R0,R4,R5, LSL #+1
+   \   00000220   F060D0E1           LDRSH    R6,[R0, #+0]
+    614          
+    615                   for(j = 0; j < L_MEANBUF; j++)
+   \   00000224   0000A0E3           MOV      R0,#+0
+    616                   {
+    617                      L_tmp = L_tmp + isf_buf[j * M + i];
+   \                     ??D_LPC_isf_2s5s_decode_14:
+   \   00000228   007285E0           ADD      R7,R5,R0, LSL #+4
+   \   0000022C   87708CE0           ADD      R7,R12,R7, LSL #+1
+   \   00000230   F070D7E1           LDRSH    R7,[R7, #+0]
+    618                   }
+   \   00000234   010080E2           ADD      R0,R0,#+1
+   \   00000238   030050E3           CMP      R0,#+3
+   \   0000023C   066087E0           ADD      R6,R7,R6
+   \   00000240   F8FFFFBA           BLT      ??D_LPC_isf_2s5s_decode_14
+    619          
+    620                   ref_isf[i] = (L_tmp + 0x1) >> 2;
+   \   00000244   0D00A0E1           MOV      R0,SP
+   \   00000248   016086E2           ADD      R6,R6,#+1
+   \   0000024C   4661A0E1           ASR      R6,R6,#+2
+   \   00000250   056180E7           STR      R6,[R0, +R5, LSL #+2]
+    621                }
+   \   00000254   015085E2           ADD      R5,R5,#+1
+   \   00000258   100055E3           CMP      R5,#+16
+   \   0000025C   EEFFFFBA           BLT      ??D_LPC_isf_2s5s_decode_13
+    622          
+    623                /* use the past ISFs slightly shifted towards their mean */
+    624                for(i = 0; i < ORDER; i++)
+   \   00000260   0000A0E3           MOV      R0,#+0
+   \   00000264   CD70A0E3           MOV      R7,#+205
+   \   00000268   C07E87E3           ORR      R7,R7,#0xC00
+    625                {
+    626                   isf_q[i] = (Word16)(((ALPHA * isfold[i]) >> 15) +
+    627                      ((ONE_ALPHA * ref_isf[i]) >> 15));
+   \                     ??D_LPC_isf_2s5s_decode_15:
+   \   0000026C   805083E0           ADD      R5,R3,R0, LSL #+1
+   \   00000270   F050D5E1           LDRSH    R5,[R5, #+0]
+   \   00000274   3360A0E3           MOV      R6,#+51
+   \   00000278   736C86E3           ORR      R6,R6,#0x7300
+   \   0000027C   960505E0           MUL      R5,R6,R5
+   \   00000280   0D60A0E1           MOV      R6,SP
+   \   00000284   006196E7           LDR      R6,[R6, +R0, LSL #+2]
+   \   00000288   804081E0           ADD      R4,R1,R0, LSL #+1
+   \   0000028C   970606E0           MUL      R6,R7,R6
+    628                }
+   \   00000290   010080E2           ADD      R0,R0,#+1
+   \   00000294   C667A0E1           ASR      R6,R6,#+15
+   \   00000298   C55786E0           ADD      R5,R6,R5, ASR #+15
+   \   0000029C   B050C4E1           STRH     R5,[R4, #+0]
+   \   000002A0   100050E3           CMP      R0,#+16
+   \   000002A4   F0FFFFBA           BLT      ??D_LPC_isf_2s5s_decode_15
+    629          
+    630                /* estimate past quantized residual to be used in next frame */
+    631                for(i = 0; i < ORDER; i++)
+   \   000002A8   0030A0E3           MOV      R3,#+0
+   \   000002AC   AB60A0E3           MOV      R6,#+171
+   \   000002B0   A86D86E3           ORR      R6,R6,#0x2A00
+    632                {
+    633                   /* predicted ISF */
+    634                   L_tmp = ref_isf[i] + ((past_isfq[i] * MU) >> 15);
+    635                   /* past_isfq[i] *= 0.5 */
+    636                   past_isfq[i] = (Word16)((isf_q[i] - L_tmp) >> 1);
+   \                     ??D_LPC_isf_2s5s_decode_16:
+   \   000002B4   834081E0           ADD      R4,R1,R3, LSL #+1
+   \   000002B8   F040D4E1           LDRSH    R4,[R4, #+0]
+   \   000002BC   0D50A0E1           MOV      R5,SP
+   \   000002C0   035195E7           LDR      R5,[R5, +R3, LSL #+2]
+   \   000002C4   830082E0           ADD      R0,R2,R3, LSL #+1
+   \   000002C8   054044E0           SUB      R4,R4,R5
+   \   000002CC   F050D0E1           LDRSH    R5,[R0, #+0]
+    637                }
+   \   000002D0   013083E2           ADD      R3,R3,#+1
+   \   000002D4   100053E3           CMP      R3,#+16
+   \   000002D8   960505E0           MUL      R5,R6,R5
+   \   000002DC   C54744E0           SUB      R4,R4,R5, ASR #+15
+   \   000002E0   C440A0E1           ASR      R4,R4,#+1
+   \   000002E4   B040C0E1           STRH     R4,[R0, #+0]
+   \   000002E8   F1FFFFBA           BLT      ??D_LPC_isf_2s5s_decode_16
+    638             }
+    639          
+    640             D_LPC_isf_reorder(isf_q, ISF_GAP, ORDER);
+   \                     ??D_LPC_isf_2s5s_decode_12:
+   \   000002EC   8000A0E3           MOV      R0,#+128
+   \   000002F0   0020A0E3           MOV      R2,#+0
+   \                     ??D_LPC_isf_2s5s_decode_17:
+   \   000002F4   823081E0           ADD      R3,R1,R2, LSL #+1
+   \   000002F8   F040D3E1           LDRSH    R4,[R3, #+0]
+   \   000002FC   012082E2           ADD      R2,R2,#+1
+   \   00000300   000054E1           CMP      R4,R0
+   \   00000304   B000C3B1           STRHLT   R0,[R3, #+0]
+   \   00000308   F000D3E1           LDRSH    R0,[R3, #+0]
+   \   0000030C   0F0052E3           CMP      R2,#+15
+   \   00000310   800080E2           ADD      R0,R0,#+128
+   \   00000314   F6FFFFBA           BLT      ??D_LPC_isf_2s5s_decode_17
+    641          
+    642             return;
+   \   00000318   40D08DE2           ADD      SP,SP,#+64
+   \   0000031C   F003BDE8           POP      {R4-R9}
+   \   00000320   1EFF2FE1           BX       LR               ;; return
+   \                     ??D_LPC_isf_2s5s_decode_3:
+   \   00000324   ........           DC32     D_ROM_dico21_isf
+   \   00000328   ........           DC32     D_ROM_dico22_isf
+   \   0000032C   ........           DC32     D_ROM_dico23_isf
+   \   00000330   ........           DC32     D_ROM_dico24_isf
+   \   00000334   ........           DC32     D_ROM_dico25_isf
+    643          }
+    644          
+    645          
+    646          /*
+    647           * D_LPC_int_isp_find
+    648           *
+    649           * Parameters:
+    650           *    isp_old           I: isps from past frame
+    651           *    isp_new           I: isps from present frame
+    652           *    frac              I: (Q15) fraction for 3 first subfr
+    653           *    Az                O: LP coefficients in 4 subframes
+    654           *
+    655           * Function:
+    656           *    Find the interpolated ISP parameters for all subframes.
+    657           *
+    658           * Returns:
+    659           *    void
+    660           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    661          void D_LPC_int_isp_find(Word16 isp_old[], Word16 isp_new[],
+    662                                  const Word16 frac[], Word16 Az[])
+    663          {
+   \                     D_LPC_int_isp_find:
+   \   00000000   F0412DE9           PUSH     {R4-R8,LR}
+   \   00000004   20D04DE2           SUB      SP,SP,#+32
+   \   00000008   0040A0E1           MOV      R4,R0
+   \   0000000C   0150A0E1           MOV      R5,R1
+   \   00000010   0260A0E1           MOV      R6,R2
+   \   00000014   0370A0E1           MOV      R7,R3
+    664             Word32 tmp, i, k, fac_old, fac_new;
+    665             Word16 isp[M];
+    666          
+    667             for(k = 0; k < 3; k++)
+   \   00000018   0080A0E3           MOV      R8,#+0
+    668             {
+    669                fac_new = frac[k];
+   \                     ??D_LPC_int_isp_find_0:
+   \   0000001C   880086E0           ADD      R0,R6,R8, LSL #+1
+   \   00000020   F010D0E1           LDRSH    R1,[R0, #+0]
+    670                fac_old = (32767 - fac_new) + 1;   /* 1.0 - fac_new */
+    671          
+    672                for(i = 0; i < M; i++)
+   \   00000024   0020A0E3           MOV      R2,#+0
+   \   00000028   800C61E2           RSB      R0,R1,#+32768
+    673                {
+    674                   tmp = isp_old[i] * fac_old;
+    675                   tmp += isp_new[i] * fac_new;
+    676                   isp[i] = (Word16)((tmp + 0x4000) >> 15);
+   \                     ??D_LPC_int_isp_find_1:
+   \   0000002C   82C085E0           ADD      R12,R5,R2, LSL #+1
+   \   00000030   F0C0DCE1           LDRSH    R12,[R12, #+0]
+   \   00000034   82E084E0           ADD      LR,R4,R2, LSL #+1
+   \   00000038   F0E0DEE1           LDRSH    LR,[LR, #+0]
+   \   0000003C   0D30A0E1           MOV      R3,SP
+   \   00000040   823083E0           ADD      R3,R3,R2, LSL #+1
+   \   00000044   900E0EE0           MUL      LR,R0,LR
+    677                }
+   \   00000048   012082E2           ADD      R2,R2,#+1
+   \   0000004C   91EC2CE0           MLA      R12,R1,R12,LR
+   \   00000050   100052E3           CMP      R2,#+16
+   \   00000054   40CC8CE2           ADD      R12,R12,#+16384
+   \   00000058   CCC7A0E1           ASR      R12,R12,#+15
+   \   0000005C   B0C0C3E1           STRH     R12,[R3, #+0]
+   \   00000060   F1FFFFBA           BLT      ??D_LPC_int_isp_find_1
+    678          
+    679                D_LPC_isp_a_conversion(isp, Az, 0, M);
+   \   00000064   1030A0E3           MOV      R3,#+16
+   \   00000068   0020A0E3           MOV      R2,#+0
+   \   0000006C   0710A0E1           MOV      R1,R7
+   \   00000070   0D00A0E1           MOV      R0,SP
+   \   00000074   ........           BL       D_LPC_isp_a_conversion
+    680                Az += MP1;
+   \   00000078   227087E2           ADD      R7,R7,#+34
+    681             }
+   \   0000007C   018088E2           ADD      R8,R8,#+1
+   \   00000080   030058E3           CMP      R8,#+3
+   \   00000084   E4FFFFBA           BLT      ??D_LPC_int_isp_find_0
+    682          
+    683             /* 4th subframe: isp_new (frac=1.0) */
+    684             D_LPC_isp_a_conversion(isp_new, Az, 0, M);
+   \   00000088   1030A0E3           MOV      R3,#+16
+   \   0000008C   0020A0E3           MOV      R2,#+0
+   \   00000090   0710A0E1           MOV      R1,R7
+   \   00000094   0500A0E1           MOV      R0,R5
+   \   00000098   ........           BL       D_LPC_isp_a_conversion
+    685          
+    686             return;
+   \   0000009C   20D08DE2           ADD      SP,SP,#+32
+   \   000000A0   F081BDE8           POP      {R4-R8,PC}       ;; return
+    687          }
+    688          
+    689          
+    690          /*
+    691           * D_LPC_isf_extrapolation
+    692           *
+    693           * Parameters:
+    694           *    HfIsf          I/O: ISF vector
+    695           *
+    696           * Function:
+    697           *    Conversion of 16th-order 12.8kHz ISF vector
+    698           *    into 20th-order 16kHz ISF vector
+    699           *
+    700           * Returns:
+    701           *    void
+    702           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    703          void D_LPC_isf_extrapolation(Word16 HfIsf[])
+    704          {
+   \                     D_LPC_isf_extrapolation:
+   \   00000000   F0402DE9           PUSH     {R4-R7,LR}
+   \   00000004   48D04DE2           SUB      SP,SP,#+72
+   \   00000008   0040A0E1           MOV      R4,R0
+    705             Word32 IsfDiff[M - 2];
+    706             Word32 IsfCorr[3];
+    707             Word32 tmp, tmp2, tmp3, mean, i;
+    708             Word32 MaxCorr, exp, exp2, coeff;
+    709             Word16 hi, lo;
+    710          
+    711             HfIsf[M16k - 1] = HfIsf[M - 1];
+   \   0000000C   FE01D4E1           LDRSH    R0,[R4, #+30]
+   \   00000010   B602C4E1           STRH     R0,[R4, #+38]
+    712          
+    713             /* Difference vector */
+    714             for(i = 1; i < M - 1; i++)
+   \   00000014   0100A0E3           MOV      R0,#+1
+    715             {
+    716                IsfDiff[i - 1] = HfIsf[i] - HfIsf[i - 1];
+   \                     ??D_LPC_isf_extrapolation_0:
+   \   00000018   801084E0           ADD      R1,R4,R0, LSL #+1
+   \   0000001C   F030D1E1           LDRSH    R3,[R1, #+0]
+   \   00000020   F21051E1           LDRSH    R1,[R1, #-2]
+   \   00000024   10208DE2           ADD      R2,SP,#+16
+   \   00000028   002182E0           ADD      R2,R2,R0, LSL #+2
+   \   0000002C   011043E0           SUB      R1,R3,R1
+   \   00000030   041002E5           STR      R1,[R2, #-4]
+    717             }
+   \   00000034   010080E2           ADD      R0,R0,#+1
+   \   00000038   0F0050E3           CMP      R0,#+15
+   \   0000003C   F5FFFFBA           BLT      ??D_LPC_isf_extrapolation_0
+    718          
+    719             tmp = 0;
+   \   00000040   0000A0E3           MOV      R0,#+0
+    720          
+    721             /* Mean of difference vector */
+    722             for(i = 3; i < (M - 1); i++)
+   \   00000044   0310A0E3           MOV      R1,#+3
+   \   00000048   AB30A0E3           MOV      R3,#+171
+   \   0000004C   A03E83E3           ORR      R3,R3,#0xA00
+    723             {
+    724                tmp = tmp + (IsfDiff[i - 1] * INV_LENGTH);
+   \                     ??D_LPC_isf_extrapolation_1:
+   \   00000050   10208DE2           ADD      R2,SP,#+16
+   \   00000054   012182E0           ADD      R2,R2,R1, LSL #+2
+   \   00000058   042012E5           LDR      R2,[R2, #-4]
+    725             }
+   \   0000005C   011081E2           ADD      R1,R1,#+1
+   \   00000060   930220E0           MLA      R0,R3,R2,R0
+   \   00000064   0F0051E3           CMP      R1,#+15
+   \   00000068   F8FFFFBA           BLT      ??D_LPC_isf_extrapolation_1
+    726          
+    727             mean = (tmp + 0x4000) >> 15;
+   \   0000006C   400C80E2           ADD      R0,R0,#+16384
+   \   00000070   C057A0E1           ASR      R5,R0,#+15
+    728             IsfCorr[0] = 0;
+   \   00000074   0010A0E3           MOV      R1,#+0
+   \   00000078   04108DE5           STR      R1,[SP, #+4]
+    729             IsfCorr[1] = 0;
+   \   0000007C   0000A0E3           MOV      R0,#+0
+   \   00000080   08008DE5           STR      R0,[SP, #+8]
+    730             IsfCorr[2] = 0;
+   \   00000084   0C008DE5           STR      R0,[SP, #+12]
+    731             tmp = 0;
+    732          
+    733             for(i = 0; i < M - 2; i++)
+    734             {
+    735                if(IsfDiff[i] > tmp)
+   \                     ??D_LPC_isf_extrapolation_2:
+   \   00000088   10208DE2           ADD      R2,SP,#+16
+   \   0000008C   012192E7           LDR      R2,[R2, +R1, LSL #+2]
+    736                {
+    737                   tmp = IsfDiff[i];
+    738                }
+    739             }
+   \   00000090   011081E2           ADD      R1,R1,#+1
+   \   00000094   020050E1           CMP      R0,R2
+   \   00000098   0200A0B1           MOVLT    R0,R2
+   \   0000009C   0E0051E3           CMP      R1,#+14
+   \   000000A0   F8FFFFBA           BLT      ??D_LPC_isf_extrapolation_2
+    740          
+    741             exp = D_UTIL_norm_s((Word16)tmp);
+   \   000000A4   0008A0E1           MOV      R0,R0, LSL #+16
+   \   000000A8   4008A0E1           MOV      R0,R0, ASR #+16
+   \   000000AC   ........           _BLF     D_UTIL_norm_s,??D_UTIL_norm_s??rA
+    742          
+    743             for(i = 0; i < M - 2; i++)
+   \   000000B0   0010A0E3           MOV      R1,#+0
+    744             {
+    745                IsfDiff[i] = IsfDiff[i] << exp;
+   \                     ??D_LPC_isf_extrapolation_3:
+   \   000000B4   10208DE2           ADD      R2,SP,#+16
+   \   000000B8   012182E0           ADD      R2,R2,R1, LSL #+2
+   \   000000BC   003092E5           LDR      R3,[R2, #+0]
+    746             }
+   \   000000C0   011081E2           ADD      R1,R1,#+1
+   \   000000C4   1330A0E1           LSL      R3,R3,R0
+   \   000000C8   003082E5           STR      R3,[R2, #+0]
+   \   000000CC   0E0051E3           CMP      R1,#+14
+   \   000000D0   F7FFFFBA           BLT      ??D_LPC_isf_extrapolation_3
+    747          
+    748             mean = mean << exp;
+   \   000000D4   1550A0E1           LSL      R5,R5,R0
+    749          
+    750             for(i = 7; i < M - 2; i++)
+   \   000000D8   0760A0E3           MOV      R6,#+7
+    751             {
+    752                tmp2 = IsfDiff[i] - mean;
+    753                tmp3 = IsfDiff[i - 2] - mean;
+    754                tmp = (tmp2 * tmp3) << 1;
+    755                D_UTIL_l_extract(tmp, &hi, &lo);
+   \                     ??D_LPC_isf_extrapolation_4:
+   \   000000DC   10008DE2           ADD      R0,SP,#+16
+   \   000000E0   060180E0           ADD      R0,R0,R6, LSL #+2
+   \   000000E4   003090E5           LDR      R3,[R0, #+0]
+   \   000000E8   080010E5           LDR      R0,[R0, #-8]
+   \   000000EC   053043E0           SUB      R3,R3,R5
+   \   000000F0   050040E0           SUB      R0,R0,R5
+   \   000000F4   900303E0           MUL      R3,R0,R3
+   \   000000F8   02208DE2           ADD      R2,SP,#+2
+   \   000000FC   0D10A0E1           MOV      R1,SP
+   \   00000100   8300A0E1           LSL      R0,R3,#+1
+   \   00000104   ........           _BLF     D_UTIL_l_extract,??D_UTIL_l_extract??rA
+    756                tmp = D_UTIL_mpy_32(hi, lo, hi, lo);
+    757                IsfCorr[0] = (IsfCorr[0] + tmp);
+   \   00000108   F230DDE1           LDRSH    R3,[SP, #+2]
+   \   0000010C   F020DDE1           LDRSH    R2,[SP, #+0]
+   \   00000110   04709DE5           LDR      R7,[SP, #+4]
+   \   00000114   0310A0E1           MOV      R1,R3
+   \   00000118   0200A0E1           MOV      R0,R2
+   \   0000011C   ........           _BLF     D_UTIL_mpy_32,??D_UTIL_mpy_32??rA
+   \   00000120   070080E0           ADD      R0,R0,R7
+   \   00000124   04008DE5           STR      R0,[SP, #+4]
+    758             }
+   \   00000128   016086E2           ADD      R6,R6,#+1
+   \   0000012C   0E0056E3           CMP      R6,#+14
+   \   00000130   E9FFFFBA           BLT      ??D_LPC_isf_extrapolation_4
+    759          
+    760             for(i = 7; i < M - 2; i++)
+   \   00000134   0760A0E3           MOV      R6,#+7
+    761             {
+    762                tmp2 = IsfDiff[i] - mean;
+    763                tmp3 = IsfDiff[i - 3] - mean;
+    764                tmp = (tmp2 * tmp3) << 1;
+    765                D_UTIL_l_extract(tmp, &hi, &lo);
+   \                     ??D_LPC_isf_extrapolation_5:
+   \   00000138   10008DE2           ADD      R0,SP,#+16
+   \   0000013C   060180E0           ADD      R0,R0,R6, LSL #+2
+   \   00000140   003090E5           LDR      R3,[R0, #+0]
+   \   00000144   0C0010E5           LDR      R0,[R0, #-12]
+   \   00000148   053043E0           SUB      R3,R3,R5
+   \   0000014C   050040E0           SUB      R0,R0,R5
+   \   00000150   900303E0           MUL      R3,R0,R3
+   \   00000154   02208DE2           ADD      R2,SP,#+2
+   \   00000158   0D10A0E1           MOV      R1,SP
+   \   0000015C   8300A0E1           LSL      R0,R3,#+1
+   \   00000160   ........           _BLF     D_UTIL_l_extract,??D_UTIL_l_extract??rA
+    766                tmp = D_UTIL_mpy_32(hi, lo, hi, lo);
+    767                IsfCorr[1] = (IsfCorr[1] + tmp);
+   \   00000164   F230DDE1           LDRSH    R3,[SP, #+2]
+   \   00000168   F020DDE1           LDRSH    R2,[SP, #+0]
+   \   0000016C   08709DE5           LDR      R7,[SP, #+8]
+   \   00000170   0310A0E1           MOV      R1,R3
+   \   00000174   0200A0E1           MOV      R0,R2
+   \   00000178   ........           _BLF     D_UTIL_mpy_32,??D_UTIL_mpy_32??rA
+   \   0000017C   070080E0           ADD      R0,R0,R7
+   \   00000180   08008DE5           STR      R0,[SP, #+8]
+    768             }
+   \   00000184   016086E2           ADD      R6,R6,#+1
+   \   00000188   0E0056E3           CMP      R6,#+14
+   \   0000018C   E9FFFFBA           BLT      ??D_LPC_isf_extrapolation_5
+    769          
+    770             for(i = 7; i < M - 2; i++)
+   \   00000190   0760A0E3           MOV      R6,#+7
+    771             {
+    772                tmp2 = IsfDiff[i] - mean;
+    773                tmp3 = IsfDiff[i - 4] - mean;
+    774                tmp = (tmp2 * tmp3) << 1;
+    775                D_UTIL_l_extract(tmp, &hi, &lo);
+   \                     ??D_LPC_isf_extrapolation_6:
+   \   00000194   10008DE2           ADD      R0,SP,#+16
+   \   00000198   060180E0           ADD      R0,R0,R6, LSL #+2
+   \   0000019C   003090E5           LDR      R3,[R0, #+0]
+   \   000001A0   100010E5           LDR      R0,[R0, #-16]
+   \   000001A4   053043E0           SUB      R3,R3,R5
+   \   000001A8   050040E0           SUB      R0,R0,R5
+   \   000001AC   900303E0           MUL      R3,R0,R3
+   \   000001B0   02208DE2           ADD      R2,SP,#+2
+   \   000001B4   0D10A0E1           MOV      R1,SP
+   \   000001B8   8300A0E1           LSL      R0,R3,#+1
+   \   000001BC   ........           _BLF     D_UTIL_l_extract,??D_UTIL_l_extract??rA
+    776                tmp = D_UTIL_mpy_32(hi, lo, hi, lo);
+    777                IsfCorr[2] = (IsfCorr[2] + tmp);
+   \   000001C0   F230DDE1           LDRSH    R3,[SP, #+2]
+   \   000001C4   F020DDE1           LDRSH    R2,[SP, #+0]
+   \   000001C8   0C709DE5           LDR      R7,[SP, #+12]
+   \   000001CC   0310A0E1           MOV      R1,R3
+   \   000001D0   0200A0E1           MOV      R0,R2
+   \   000001D4   ........           _BLF     D_UTIL_mpy_32,??D_UTIL_mpy_32??rA
+   \   000001D8   070080E0           ADD      R0,R0,R7
+   \   000001DC   0C008DE5           STR      R0,[SP, #+12]
+    778             }
+   \   000001E0   016086E2           ADD      R6,R6,#+1
+   \   000001E4   0E0056E3           CMP      R6,#+14
+   \   000001E8   E9FFFFBA           BLT      ??D_LPC_isf_extrapolation_6
+    779          
+    780             if(IsfCorr[0] > IsfCorr[1])
+   \   000001EC   08009DE5           LDR      R0,[SP, #+8]
+   \   000001F0   04109DE5           LDR      R1,[SP, #+4]
+    781             {
+    782                MaxCorr = 0;
+    783             }
+    784             else
+    785             {
+    786                MaxCorr = 1;
+    787             }
+    788          
+    789             if(IsfCorr[2] > IsfCorr[MaxCorr])
+   \   000001F4   0C209DE5           LDR      R2,[SP, #+12]
+   \   000001F8   010050E1           CMP      R0,R1
+   \   000001FC   0000A0B3           MOVLT    R0,#+0
+   \   00000200   0100A0A3           MOVGE    R0,#+1
+   \   00000204   04108DE2           ADD      R1,SP,#+4
+   \   00000208   001191E7           LDR      R1,[R1, +R0, LSL #+2]
+   \   0000020C   020051E1           CMP      R1,R2
+    790             {
+    791                MaxCorr = 2;
+   \   00000210   0200A0B3           MOVLT    R0,#+2
+    792             }
+    793          
+    794             MaxCorr = MaxCorr + 1;   /* Maximum correlation of difference vector */
+   \   00000214   010080E2           ADD      R0,R0,#+1
+    795          
+    796             for(i = M - 1; i < (M16k - 1); i++)
+   \   00000218   0F10A0E3           MOV      R1,#+15
+    797             {
+    798                tmp = (HfIsf[i - 1 - MaxCorr] - HfIsf[i - 2 - MaxCorr]);
+    799                HfIsf[i] = (Word16)(HfIsf[i - 1] + tmp);
+   \                     ??D_LPC_isf_extrapolation_7:
+   \   0000021C   812084E0           ADD      R2,R4,R1, LSL #+1
+   \   00000220   F23052E1           LDRSH    R3,[R2, #-2]
+   \   00000224   015041E2           SUB      R5,R1,#+1
+   \   00000228   005045E0           SUB      R5,R5,R0
+   \   0000022C   855084E0           ADD      R5,R4,R5, LSL #+1
+   \   00000230   F050D5E1           LDRSH    R5,[R5, #+0]
+   \   00000234   033085E0           ADD      R3,R5,R3
+   \   00000238   025041E2           SUB      R5,R1,#+2
+   \   0000023C   005045E0           SUB      R5,R5,R0
+   \   00000240   855084E0           ADD      R5,R4,R5, LSL #+1
+   \   00000244   F050D5E1           LDRSH    R5,[R5, #+0]
+    800             }
+   \   00000248   011081E2           ADD      R1,R1,#+1
+   \   0000024C   130051E3           CMP      R1,#+19
+   \   00000250   053043E0           SUB      R3,R3,R5
+   \   00000254   B030C2E1           STRH     R3,[R2, #+0]
+   \   00000258   EFFFFFBA           BLT      ??D_LPC_isf_extrapolation_7
+    801          
+    802             /* tmp=7965+(HfIsf[2]-HfIsf[3]-HfIsf[4])/6; */
+    803             tmp = HfIsf[4] + HfIsf[3];
+    804             tmp = HfIsf[2] - tmp;
+    805             tmp = (tmp * 5461) >> 15;
+    806             tmp = tmp + 20390;
+   \   0000025C   F400D4E1           LDRSH    R0,[R4, #+4]
+   \   00000260   F810D4E1           LDRSH    R1,[R4, #+8]
+   \   00000264   010040E0           SUB      R0,R0,R1
+   \   00000268   F610D4E1           LDRSH    R1,[R4, #+6]
+   \   0000026C   010040E0           SUB      R0,R0,R1
+   \   00000270   5510A0E3           MOV      R1,#+85
+   \   00000274   541D81E3           ORR      R1,R1,#0x1500
+   \   00000278   910000E0           MUL      R0,R1,R0
+   \   0000027C   A610A0E3           MOV      R1,#+166
+   \   00000280   4F1C81E3           ORR      R1,R1,#0x4F00
+   \   00000284   C00781E0           ADD      R0,R1,R0, ASR #+15
+    807          
+    808             if(tmp > 19456)
+   \   00000288   0110A0E3           MOV      R1,#+1
+   \   0000028C   4C1C81E3           ORR      R1,R1,#0x4C00
+   \   00000290   010050E1           CMP      R0,R1
+    809             {   /* Maximum value of ISF should be at most 7600 Hz */
+    810                tmp = 19456;
+    811             }
+    812          
+    813             tmp = tmp - HfIsf[M - 2];
+   \   00000294   FC11D4E1           LDRSH    R1,[R4, #+28]
+   \   00000298   4C0CA0A3           MOVGE    R0,#+19456
+   \   0000029C   015040E0           SUB      R5,R0,R1
+    814             tmp2 = HfIsf[M16k - 2] - HfIsf[M - 2];
+   \   000002A0   F402D4E1           LDRSH    R0,[R4, #+36]
+   \   000002A4   016040E0           SUB      R6,R0,R1
+    815             exp2 = D_UTIL_norm_s((Word16)tmp2);
+   \   000002A8   0608A0E1           MOV      R0,R6, LSL #+16
+   \   000002AC   4008A0E1           MOV      R0,R0, ASR #+16
+   \   000002B0   ........           _BLF     D_UTIL_norm_s,??D_UTIL_norm_s??rA
+   \   000002B4   0070A0E1           MOV      R7,R0
+    816             exp = D_UTIL_norm_s((Word16)tmp);
+   \   000002B8   0508A0E1           MOV      R0,R5, LSL #+16
+   \   000002BC   4008A0E1           MOV      R0,R0, ASR #+16
+   \   000002C0   ........           _BLF     D_UTIL_norm_s,??D_UTIL_norm_s??rA
+    817             exp = exp - 1;
+   \   000002C4   012040E2           SUB      R2,R0,#+1
+    818             tmp = tmp << exp;
+    819             tmp2 = tmp2 << exp2;
+    820             coeff = (tmp << 15) / tmp2;   /* Coefficient for stretching the ISF vector */
+   \   000002C8   1502A0E1           LSL      R0,R5,R2
+   \   000002CC   8007A0E1           LSL      R0,R0,#+15
+   \   000002D0   1617A0E1           LSL      R1,R6,R7
+   \   000002D4   ........           _BLF     ??div32_a,??rA??div32_a
+    821             exp = exp2 - exp;
+   \   000002D8   020057E0           SUBS     R0,R7,R2
+    822          
+    823             if(exp >= 0)
+   \   000002DC   0E00004A           BMI      ??D_LPC_isf_extrapolation_8
+    824             {
+    825                for(i = M - 1; i < M16k - 1; i++)
+   \   000002E0   0F20A0E3           MOV      R2,#+15
+    826                {
+    827                   tmp = ((HfIsf[i] - HfIsf[i - 1]) * coeff) >> 15;
+    828                   IsfDiff[i - (M - 1)] = tmp << exp;
+   \                     ??D_LPC_isf_extrapolation_9:
+   \   000002E4   823084E0           ADD      R3,R4,R2, LSL #+1
+   \   000002E8   F060D3E1           LDRSH    R6,[R3, #+0]
+   \   000002EC   F23053E1           LDRSH    R3,[R3, #-2]
+   \   000002F0   10508DE2           ADD      R5,SP,#+16
+   \   000002F4   025185E0           ADD      R5,R5,R2, LSL #+2
+   \   000002F8   033046E0           SUB      R3,R6,R3
+   \   000002FC   910303E0           MUL      R3,R1,R3
+    829                }
+   \   00000300   012082E2           ADD      R2,R2,#+1
+   \   00000304   C337A0E1           ASR      R3,R3,#+15
+   \   00000308   1330A0E1           LSL      R3,R3,R0
+   \   0000030C   3C3005E5           STR      R3,[R5, #-60]
+   \   00000310   130052E3           CMP      R2,#+19
+   \   00000314   0E0000AA           BGE      ??D_LPC_isf_extrapolation_10
+   \   00000318   F1FFFFEA           B        ??D_LPC_isf_extrapolation_9
+    830             }
+    831             else
+    832             {
+    833                exp = 15 - exp;
+   \                     ??D_LPC_isf_extrapolation_8:
+   \   0000031C   0F0060E2           RSB      R0,R0,#+15
+    834          
+    835                for(i = M - 1; i < M16k - 1; i++)
+   \   00000320   0F20A0E3           MOV      R2,#+15
+    836                {
+    837                   IsfDiff[i - (M - 1)] = ((HfIsf[i] - HfIsf[i - 1]) * coeff) >> exp;
+   \                     ??D_LPC_isf_extrapolation_11:
+   \   00000324   823084E0           ADD      R3,R4,R2, LSL #+1
+   \   00000328   F060D3E1           LDRSH    R6,[R3, #+0]
+   \   0000032C   F23053E1           LDRSH    R3,[R3, #-2]
+   \   00000330   10508DE2           ADD      R5,SP,#+16
+   \   00000334   025185E0           ADD      R5,R5,R2, LSL #+2
+   \   00000338   033046E0           SUB      R3,R6,R3
+   \   0000033C   910303E0           MUL      R3,R1,R3
+    838                }
+   \   00000340   012082E2           ADD      R2,R2,#+1
+   \   00000344   5330A0E1           ASR      R3,R3,R0
+   \   00000348   3C3005E5           STR      R3,[R5, #-60]
+   \   0000034C   130052E3           CMP      R2,#+19
+   \   00000350   F3FFFFBA           BLT      ??D_LPC_isf_extrapolation_11
+    839             }
+    840          
+    841             for(i = M; i < (M16k - 1); i++)
+   \                     ??D_LPC_isf_extrapolation_10:
+   \   00000354   1000A0E3           MOV      R0,#+16
+    842             {
+    843                /* The difference between ISF(n) and ISF(n-2) should be at least 500 Hz */
+    844                tmp = ((IsfDiff[i - (M - 1)] + IsfDiff[i - M]) - 1280);
+    845          
+    846                if(tmp < 0)
+   \                     ??D_LPC_isf_extrapolation_12:
+   \   00000358   10108DE2           ADD      R1,SP,#+16
+   \   0000035C   001181E0           ADD      R1,R1,R0, LSL #+2
+   \   00000360   402031E5           LDR      R2,[R1, #-64]!
+   \   00000364   043091E5           LDR      R3,[R1, #+4]
+   \   00000368   022083E0           ADD      R2,R3,R2
+   \   0000036C   FF30E0E3           MVN      R3,#+255
+   \   00000370   403EC3E3           BIC      R3,R3,#0x400
+   \   00000374   022093E0           ADDS     R2,R3,R2
+   \   00000378   0900005A           BPL      ??D_LPC_isf_extrapolation_13
+    847                {
+    848                   if(IsfDiff[i - (M - 1)] > IsfDiff[i - M])
+   \   0000037C   002091E5           LDR      R2,[R1, #+0]
+   \   00000380   043091E5           LDR      R3,[R1, #+4]
+   \   00000384   030052E1           CMP      R2,R3
+   \   00000388   030000AA           BGE      ??D_LPC_isf_extrapolation_14
+    849                   {
+    850                      IsfDiff[i - M] = (1280 - IsfDiff[i - (M - 1)]);
+   \   0000038C   0320A0E1           MOV      R2,R3
+   \   00000390   502E62E2           RSB      R2,R2,#+1280
+   \   00000394   002081E5           STR      R2,[R1, #+0]
+   \   00000398   010000EA           B        ??D_LPC_isf_extrapolation_13
+    851                   }
+    852                   else
+    853                   {
+    854                      IsfDiff[i - (M - 1)] = (1280 - IsfDiff[i - M]);
+   \                     ??D_LPC_isf_extrapolation_14:
+   \   0000039C   502E62E2           RSB      R2,R2,#+1280
+   \   000003A0   042081E5           STR      R2,[R1, #+4]
+    855                   }
+    856                }
+    857             }
+   \                     ??D_LPC_isf_extrapolation_13:
+   \   000003A4   010080E2           ADD      R0,R0,#+1
+   \   000003A8   130050E3           CMP      R0,#+19
+   \   000003AC   E9FFFFBA           BLT      ??D_LPC_isf_extrapolation_12
+    858          
+    859             for(i = M - 1; i < M16k - 1; i++)
+   \   000003B0   0F00A0E3           MOV      R0,#+15
+    860             {
+    861                HfIsf[i] = (Word16)(HfIsf[i - 1] + IsfDiff[i - (M - 1)]);
+   \                     ??D_LPC_isf_extrapolation_15:
+   \   000003B4   801084E0           ADD      R1,R4,R0, LSL #+1
+   \   000003B8   F22051E1           LDRSH    R2,[R1, #-2]
+   \   000003BC   10308DE2           ADD      R3,SP,#+16
+   \   000003C0   003183E0           ADD      R3,R3,R0, LSL #+2
+   \   000003C4   3C3013E5           LDR      R3,[R3, #-60]
+    862             }
+   \   000003C8   010080E2           ADD      R0,R0,#+1
+   \   000003CC   022083E0           ADD      R2,R3,R2
+   \   000003D0   B020C1E1           STRH     R2,[R1, #+0]
+   \   000003D4   130050E3           CMP      R0,#+19
+   \   000003D8   F5FFFFBA           BLT      ??D_LPC_isf_extrapolation_15
+    863          
+    864             for(i = 0; i < M16k - 1; i++)
+   \   000003DC   0000A0E3           MOV      R0,#+0
+   \   000003E0   3330A0E3           MOV      R3,#+51
+   \   000003E4   CC3D83E3           ORR      R3,R3,#0x3300
+    865             {
+    866                HfIsf[i] = (Word16)((HfIsf[i] * 13107) >> 14);
+   \                     ??D_LPC_isf_extrapolation_16:
+   \   000003E8   801084E0           ADD      R1,R4,R0, LSL #+1
+   \   000003EC   F020D1E1           LDRSH    R2,[R1, #+0]
+    867                /* Scale the ISF vector correctly for 16000 kHz */
+    868             }
+   \   000003F0   010080E2           ADD      R0,R0,#+1
+   \   000003F4   130050E3           CMP      R0,#+19
+   \   000003F8   930202E0           MUL      R2,R3,R2
+   \   000003FC   4227A0E1           ASR      R2,R2,#+14
+   \   00000400   B020C1E1           STRH     R2,[R1, #+0]
+   \   00000404   F7FFFFBA           BLT      ??D_LPC_isf_extrapolation_16
+    869          
+    870             D_LPC_isf_isp_conversion(HfIsf, HfIsf, M16k);
+   \   00000408   0000A0E3           MOV      R0,#+0
+   \                     ??D_LPC_isf_extrapolation_17:
+   \   0000040C   801084E0           ADD      R1,R4,R0, LSL #+1
+   \   00000410   F020D1E1           LDRSH    R2,[R1, #+0]
+   \   00000414   010080E2           ADD      R0,R0,#+1
+   \   00000418   130050E3           CMP      R0,#+19
+   \   0000041C   B020C1E1           STRH     R2,[R1, #+0]
+   \   00000420   F9FFFFBA           BLT      ??D_LPC_isf_extrapolation_17
+   \   00000424   F602D4E1           LDRSH    R0,[R4, #+38]
+   \   00000428   8000A0E1           LSL      R0,R0,#+1
+   \   0000042C   B602C4E1           STRH     R0,[R4, #+38]
+   \   00000430   0000A0E3           MOV      R0,#+0
+   \                     ??D_LPC_isf_extrapolation_18:
+   \   00000434   ........           LDR      R3,??DataTable7  ;; D_ROM_cos
+   \   00000438   801084E0           ADD      R1,R4,R0, LSL #+1
+   \   0000043C   F020D1E1           LDRSH    R2,[R1, #+0]
+   \   00000440   010080E2           ADD      R0,R0,#+1
+   \   00000444   140050E3           CMP      R0,#+20
+   \   00000448   C223A0E1           ASR      R2,R2,#+7
+   \   0000044C   822083E0           ADD      R2,R3,R2, LSL #+1
+   \   00000450   F030D2E1           LDRSH    R3,[R2, #+0]
+   \   00000454   F250D2E1           LDRSH    R5,[R2, #+2]
+   \   00000458   032045E0           SUB      R2,R5,R3
+   \   0000045C   F050D1E1           LDRSH    R5,[R1, #+0]
+   \   00000460   7F5005E2           AND      R5,R5,#0x7F
+   \   00000464   950202E0           MUL      R2,R5,R2
+   \   00000468   C22383E0           ADD      R2,R3,R2, ASR #+7
+   \   0000046C   B020C1E1           STRH     R2,[R1, #+0]
+   \   00000470   EFFFFFBA           BLT      ??D_LPC_isf_extrapolation_18
+    871          
+    872             return;
+   \   00000474   48D08DE2           ADD      SP,SP,#+72       ;; stack cleaning
+   \   00000478   F080BDE8           POP      {R4-R7,PC}       ;; return
+    873          }
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable0:
+   \   00000000   ........           DC32     D_ROM_cos
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable4:
+   \   00000000   ........           DC32     D_ROM_mean_isf
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable5:
+   \   00000000   ........           DC32     D_ROM_dico1_isf
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable6:
+   \   00000000   ........           DC32     D_ROM_dico2_isf
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable7:
+   \   00000000   ........           DC32     D_ROM_cos
+
+   Maximum stack usage in bytes:
+
+     Function                 CSTACK
+     --------                 ------
+     D_LPC_a_weight              12
+     D_LPC_int_isp_find          56
+     D_LPC_isf_2s3s_decode       88
+     D_LPC_isf_2s5s_decode       88
+     D_LPC_isf_extrapolation     92
+     D_LPC_isf_isp_conversion    12
+     D_LPC_isf_noise_d            4
+     D_LPC_isp_a_conversion     132
+     D_LPC_isp_pol_get           40
+
+
+   Segment part sizes:
+
+     Function/Label           Bytes
+     --------------           -----
+     D_LPC_isf_noise_d         352
+     D_LPC_isf_isp_conversion  164
+     D_LPC_isp_pol_get         208
+     D_LPC_isp_a_conversion    828
+     D_LPC_a_weight            124
+     D_LPC_isf_2s3s_decode     704
+     D_LPC_isf_2s5s_decode     824
+     D_LPC_int_isp_find        164
+     D_LPC_isf_extrapolation  1148
+     ??DataTable0                4
+     ??DataTable4                4
+     ??DataTable5                4
+     ??DataTable6                4
+     ??DataTable7                4
+      Others                   120
+
+ 
+ 4 656 bytes in segment CODE
+ 
+ 4 536 bytes of CODE memory (+ 120 bytes shared)
+
+Errors: none
+Warnings: 5

@@ -1,0 +1,605 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:45 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3d /
+//                       ec\dequant.c                                        /
+//    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3d /
+//                       ec\dequant.c -D NDEBUG -lC                          /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\dequant.s79                                    /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME dequant
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        MULTWEAK ??xmp3_DequantChannel??rA
+        MULTWEAK ??xmp3_Dequantize??rT
+        MULTWEAK ??xmp3_IntensityProcMPEG1??rA
+        MULTWEAK ??xmp3_IntensityProcMPEG2??rA
+        MULTWEAK ??xmp3_MidSideProc??rA
+        PUBLIC xmp3_Dequantize
+        FUNCTION xmp3_Dequantize,0203H
+        LOCFRAME CSTACK, 72, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+xmp3_DequantChannel SYMBOL "xmp3_DequantChannel"
+xmp3_IntensityProcMPEG1 SYMBOL "xmp3_IntensityProcMPEG1"
+xmp3_IntensityProcMPEG2 SYMBOL "xmp3_IntensityProcMPEG2"
+xmp3_MidSideProc    SYMBOL "xmp3_MidSideProc"
+??xmp3_DequantChannel??rA SYMBOL "??rA", xmp3_DequantChannel
+xmp3_Dequantize     SYMBOL "xmp3_Dequantize"
+??xmp3_Dequantize??rT SYMBOL "??rT", xmp3_Dequantize
+??xmp3_IntensityProcMPEG1??rA SYMBOL "??rA", xmp3_IntensityProcMPEG1
+??xmp3_IntensityProcMPEG2??rA SYMBOL "??rA", xmp3_IntensityProcMPEG2
+??xmp3_MidSideProc??rA SYMBOL "??rA", xmp3_MidSideProc
+
+        EXTERN xmp3_DequantChannel
+        FUNCTION xmp3_DequantChannel,0202H
+        EXTERN xmp3_IntensityProcMPEG1
+        FUNCTION xmp3_IntensityProcMPEG1,0202H
+        EXTERN xmp3_IntensityProcMPEG2
+        FUNCTION xmp3_IntensityProcMPEG2,0202H
+        EXTERN xmp3_MidSideProc
+        FUNCTION xmp3_MidSideProc,0202H
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??xmp3_Dequantize??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE xmp3_Dequantize
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3dec\dequant.c
+//    1 /* ***** BEGIN LICENSE BLOCK ***** 
+//    2  * Version: RCSL 1.0/RPSL 1.0 
+//    3  *  
+//    4  * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+//    5  *      
+//    6  * The contents of this file, and the files included with this file, are 
+//    7  * subject to the current version of the RealNetworks Public Source License 
+//    8  * Version 1.0 (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the RealNetworks Community Source License Version 1.0 
+//   11  * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+//   12  * in which case the RCSL will apply. You may also obtain the license terms 
+//   13  * directly from RealNetworks.  You may not use this file except in 
+//   14  * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+//   15  * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+//   16  * RCSL for the rights, obligations and limitations governing use of the 
+//   17  * contents of the file.  
+//   18  *  
+//   19  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   20  * developer of the Original Code and owns the copyrights in the portions 
+//   21  * it created. 
+//   22  *  
+//   23  * This file, and the files included with this file, is distributed and made 
+//   24  * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+//   25  * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+//   26  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+//   27  * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+//   28  * 
+//   29  * Technology Compatibility Kit Test Suite(s) Location: 
+//   30  *    http://www.helixcommunity.org/content/tck 
+//   31  * 
+//   32  * Contributor(s): 
+//   33  *  
+//   34  * ***** END LICENSE BLOCK ***** */ 
+//   35 
+//   36 /**************************************************************************************
+//   37  * Fixed-point MP3 decoder
+//   38  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+//   39  * June 2003
+//   40  *
+//   41  * dequant.c - dequantization, stereo processing (intensity, mid-side), short-block
+//   42  *               coefficient reordering
+//   43  **************************************************************************************/
+//   44 
+//   45 #include "coder.h"
+//   46 #include "assembly.h"
+//   47 
+//   48 /**************************************************************************************
+//   49  * Function:    Dequantize
+//   50  *
+//   51  * Description: dequantize coefficients, decode stereo, reorder short blocks
+//   52  *                (one granule-worth)
+//   53  *
+//   54  * Inputs:      MP3DecInfo structure filled by UnpackFrameHeader(), UnpackSideInfo(),
+//   55  *                UnpackScaleFactors(), and DecodeHuffman() (for this granule)
+//   56  *              index of current granule
+//   57  *
+//   58  * Outputs:     dequantized and reordered coefficients in hi->huffDecBuf 
+//   59  *                (one granule-worth, all channels), format = Q26
+//   60  *              operates in-place on huffDecBuf but also needs di->workBuf
+//   61  *              updated hi->nonZeroBound index for both channels
+//   62  *
+//   63  * Return:      0 on success, -1 if null input pointers
+//   64  *
+//   65  * Notes:       In calling output Q(DQ_FRACBITS_OUT), we assume an implicit bias 
+//   66  *                of 2^15. Some (floating-point) reference implementations factor this 
+//   67  *                into the 2^(0.25 * gain) scaling explicitly. But to avoid precision 
+//   68  *                loss, we don't do that. Instead take it into account in the final 
+//   69  *                round to PCM (>> by 15 less than we otherwise would have).
+//   70  *              Equivalently, we can think of the dequantized coefficients as 
+//   71  *                Q(DQ_FRACBITS_OUT - 15) with no implicit bias. 
+//   72  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function xmp3_Dequantize
+        ARM
+//   73 int Dequantize(MP3DecInfo *mp3DecInfo, int gr)
+//   74 {
+xmp3_Dequantize:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+        SUB      SP,SP,#+16
+        CFI CFA R13+52
+        MOV      R8,R0
+//   75 	int i, ch, nSamps, mOut[2];
+//   76 	FrameHeader *fh;
+//   77 	SideInfo *si;
+//   78 	ScaleFactorInfo *sfi;
+//   79 	HuffmanInfo *hi;
+//   80 	DequantInfo *di;
+//   81 	CriticalBandInfo *cbi;
+//   82 
+//   83 	/* validate pointers */
+//   84 	if (!mp3DecInfo || !mp3DecInfo->FrameHeaderPS || !mp3DecInfo->SideInfoPS || !mp3DecInfo->ScaleFactorInfoPS || 
+//   85 		!mp3DecInfo->HuffmanInfoPS || !mp3DecInfo->DequantInfoPS)
+        CMP      R8,#+0
+        LDRNE    R6,[R8, #+0]
+        MOV      R7,R1
+        CMPNE    R6,#+0
+        LDRNE    R0,[R8, #+4]
+        CMPNE    R0,#+0
+        LDRNE    R1,[R8, #+8]
+        CMPNE    R1,#+0
+        LDRNE    R5,[R8, #+12]
+        CMPNE    R5,#+0
+        LDRNE    R4,[R8, #+16]
+        CMPNE    R4,#+0
+//   86 		return -1;
+        MVNEQ    R0,#+0
+        BEQ      ??xmp3_Dequantize_0
+//   87 
+//   88 	fh = (FrameHeader *)(mp3DecInfo->FrameHeaderPS);
+//   89 
+//   90 	/* si is an array of up to 4 structs, stored as gr0ch0, gr0ch1, gr1ch0, gr1ch1 */
+//   91 	si = (SideInfo *)(mp3DecInfo->SideInfoPS);
+        STR      R0,[SP, #+12]
+//   92 	sfi = (ScaleFactorInfo *)(mp3DecInfo->ScaleFactorInfoPS);
+        STR      R1,[SP, #+8]
+//   93 	hi = (HuffmanInfo *)mp3DecInfo->HuffmanInfoPS;
+//   94 	di = (DequantInfo *)mp3DecInfo->DequantInfoPS;
+//   95 	cbi = di->cbi;
+//   96 	mOut[0] = mOut[1] = 0;
+        MOV      R1,#+0
+        STR      R1,[SP, #+4]
+        STR      R1,[SP, #+0]
+//   97 
+//   98 	/* dequantize all the samples in each channel */
+//   99 	for (ch = 0; ch < mp3DecInfo->nChans; ch++) {
+        LDR      R0,[R8, #+1980]
+        ADD      R9,R4,#+792
+        MOV      R10,#+0
+        CMP      R0,#+1
+        BGE      ??xmp3_Dequantize_1
+        B        ??xmp3_Dequantize_2
+//  100 		hi->gb[ch] = DequantChannel(hi->huffDecBuf[ch], di->workBuf, &hi->nonZeroBound[ch], fh, 
+//  101 			&si->sis[gr][ch], &sfi->sfis[gr][ch], &cbi[ch]);
+??xmp3_Dequantize_3:
+        MOV      R0,#+24
+        MLA      R1,R0,R10,R9
+        ADD      R11,R5,R10, LSL #+2
+        PUSH     {R1}
+        CFI CFA R13+56
+        LDR      R2,[SP, #+12]
+        MOV      R0,#+62
+        MOV      R12,#+2304
+        MOV      R1,#+124
+        MLA      R2,R1,R7,R2
+        MOV      R3,R6
+        MLA      R1,R0,R10,R2
+        MOV      R0,#+72
+        PUSH     {R1}
+        CFI CFA R13+60
+        LDR      R2,[SP, #+20]
+        MOV      R1,#+144
+        MLA      R2,R1,R7,R2
+        MLA      R1,R0,R10,R2
+        ADD      R2,R11,#+4608
+        ADD      R0,R1,#+40
+        PUSH     {R0}
+        CFI CFA R13+64
+        MOV      R1,R4
+        MLA      R0,R12,R10,R5
+//  102 	}
+        ADD      R10,R10,#+1
+        _BLF     xmp3_DequantChannel,??xmp3_DequantChannel??rA
+        MOV      R1,#+8
+        ORR      R1,R1,#0x1200
+        STR      R0,[R1, +R11]
+        ADD      SP,SP,#+12
+        CFI CFA R13+52
+??xmp3_Dequantize_1:
+        LDR      R0,[R8, #+1980]
+        CMP      R10,R0
+        BLT      ??xmp3_Dequantize_3
+//  103 
+//  104 	/* joint stereo processing assumes one guard bit in input samples
+//  105 	 * it's extremely rare not to have at least one gb, so if this is the case
+//  106 	 *   just make a pass over the data and clip to [-2^30+1, 2^30-1]
+//  107 	 * in practice this may never happen
+//  108 	 */
+//  109 	if (fh->modeExt && (hi->gb[0] < 1 || hi->gb[1] < 1)) {
+??xmp3_Dequantize_2:
+        LDR      R0,[R6, #+32]
+        ADD      R8,R5,#+4608
+        CMP      R0,#+0
+        BEQ      ??xmp3_Dequantize_4
+        LDR      R0,[R8, #+8]
+        CMP      R0,#+1
+        LDRGE    R0,[R8, #+12]
+        CMPGE    R0,#+1
+        BGE      ??xmp3_Dequantize_4
+//  110 		for (i = 0; i < hi->nonZeroBound[0]; i++) {
+        LDR      R3,[R8, #+0]
+        MOV      R2,#+0
+        MVN      R0,#-1073741824
+        MOV      R1,#-1073741823
+        CMP      R3,#+1
+        BGE      ??xmp3_Dequantize_5
+        B        ??xmp3_Dequantize_6
+//  111 			if (hi->huffDecBuf[0][i] < -0x3fffffff)	 hi->huffDecBuf[0][i] = -0x3fffffff;
+??xmp3_Dequantize_7:
+        ADD      R3,R5,R2, LSL #+2
+        LDR      R10,[R3, #+0]
+//  112 			if (hi->huffDecBuf[0][i] >  0x3fffffff)	 hi->huffDecBuf[0][i] =  0x3fffffff;
+//  113 		}
+        ADD      R2,R2,#+1
+        CMP      R10,#-1073741823
+        STRLT    R1,[R3, #+0]
+        LDR      R10,[R3, #+0]
+        CMP      R10,#+1073741824
+        STRGE    R0,[R3, #+0]
+??xmp3_Dequantize_5:
+        LDR      R3,[R8, #+0]
+        CMP      R2,R3
+        BLT      ??xmp3_Dequantize_7
+//  114 		for (i = 0; i < hi->nonZeroBound[1]; i++) {
+??xmp3_Dequantize_6:
+        LDR      R3,[R8, #+4]
+        MOV      R2,#+0
+        CMP      R3,#+1
+        BGE      ??xmp3_Dequantize_8
+        B        ??xmp3_Dequantize_4
+//  115 			if (hi->huffDecBuf[1][i] < -0x3fffffff)	 hi->huffDecBuf[1][i] = -0x3fffffff;
+??xmp3_Dequantize_9:
+        ADD      R3,R5,R2, LSL #+2
+        LDR      R10,[R3, #+2304]
+//  116 			if (hi->huffDecBuf[1][i] >  0x3fffffff)	 hi->huffDecBuf[1][i] =  0x3fffffff;
+//  117 		}
+        ADD      R2,R2,#+1
+        CMP      R10,#-1073741823
+        STRLT    R1,[R3, #+2304]
+        LDR      R10,[R3, #+2304]
+        CMP      R10,#+1073741824
+        STRGE    R0,[R3, #+2304]
+??xmp3_Dequantize_8:
+        LDR      R3,[R8, #+4]
+        CMP      R2,R3
+        BLT      ??xmp3_Dequantize_9
+//  118 	}
+//  119 
+//  120 	/* do mid-side stereo processing, if enabled */
+//  121 	if (fh->modeExt >> 1) {
+??xmp3_Dequantize_4:
+        LDR      R0,[R6, #+32]
+        ASRS     R1,R0,#+1
+        BEQ      ??xmp3_Dequantize_10
+//  122 		if (fh->modeExt & 0x01) {
+        TST      R0,#0x1
+        BEQ      ??xmp3_Dequantize_11
+//  123 			/* intensity stereo enabled - run mid-side up to start of right zero region */
+//  124 			if (cbi[1].cbType == 0)
+        LDR      R1,[R9, #+24]
+        LDR      R0,[R6, #+52]
+        CMP      R1,#+0
+        BNE      ??xmp3_Dequantize_12
+//  125 				nSamps = fh->sfBand->l[cbi[1].cbEndL + 1];
+        LDR      R1,[R9, #+44]
+        ADD      R0,R0,R1, LSL #+1
+        LDRSH    R1,[R0, #+2]
+        B        ??xmp3_Dequantize_13
+//  126 			else 
+//  127 				nSamps = 3 * fh->sfBand->s[cbi[1].cbEndSMax + 1];
+??xmp3_Dequantize_12:
+        LDR      R1,[R9, #+40]
+        ADD      R0,R0,R1, LSL #+1
+        LDRSH    R0,[R0, #+48]
+        ADD      R1,R0,R0, LSL #+1
+        B        ??xmp3_Dequantize_13
+//  128 		} else {
+//  129 			/* intensity stereo disabled - run mid-side on whole spectrum */
+//  130 			nSamps = MAX(hi->nonZeroBound[0], hi->nonZeroBound[1]);
+??xmp3_Dequantize_11:
+        LDR      R0,[R8, #+4]
+        LDR      R1,[R8, #+0]
+        CMP      R0,R1
+        MOVGE    R1,R0
+//  131 		}
+//  132 		MidSideProc(hi->huffDecBuf, nSamps, mOut);
+??xmp3_Dequantize_13:
+        MOV      R2,SP
+        MOV      R0,R5
+        _BLF     xmp3_MidSideProc,??xmp3_MidSideProc??rA
+//  133 	}
+//  134 
+//  135 	/* do intensity stereo processing, if enabled */
+//  136 	if (fh->modeExt & 0x01) {
+??xmp3_Dequantize_10:
+        LDR      R0,[R6, #+32]
+        TST      R0,#0x1
+        BEQ      ??xmp3_Dequantize_14
+//  137 		nSamps = hi->nonZeroBound[0];
+//  138 		if (fh->ver == MPEG1) {
+        LDR      R2,[SP, #+12]
+        MOV      R3,#+144
+        MLA      R2,R3,R7,R2
+        LDR      R3,[SP, #+8]
+        LDR      R1,[R8, #+0]
+        MOV      R9,#+124
+        MLA      R3,R9,R7,R3
+        LDRB     R7,[R6, #+0]
+        ASR      R0,R0,#+1
+        CMP      R7,#+0
+        MOV      R7,SP
+        PUSH     {R7}
+        CFI CFA R13+56
+        LDR      R2,[R2, #+136]
+        PUSH     {R2}
+        CFI CFA R13+60
+        PUSH     {R0}
+        CFI CFA R13+64
+        BNE      ??xmp3_Dequantize_15
+//  139 			IntensityProcMPEG1(hi->huffDecBuf, nSamps, fh, &sfi->sfis[gr][1], di->cbi, 
+//  140 				fh->modeExt >> 1, si->sis[gr][1].mixedBlock, mOut);
+        ADD      R0,R4,#+792
+        PUSH     {R0}
+        CFI CFA R13+68
+        ADD      R3,R3,#+62
+        MOV      R2,R6
+        MOV      R0,R5
+        _BLF     xmp3_IntensityProcMPEG1,??xmp3_IntensityProcMPEG1??rA
+        ADD      SP,SP,#+16
+        CFI CFA R13+52
+        B        ??xmp3_Dequantize_14
+        CFI CFA R13+64
+//  141 		} else {
+//  142 			IntensityProcMPEG2(hi->huffDecBuf, nSamps, fh, &sfi->sfis[gr][1], di->cbi, &sfi->sfjs,
+//  143 				fh->modeExt >> 1, si->sis[gr][1].mixedBlock, mOut);
+??xmp3_Dequantize_15:
+        LDR      R0,[SP, #+20]
+        ADD      R3,R3,#+62
+        ADD      R0,R0,#+248
+        PUSH     {R0}
+        CFI CFA R13+68
+        MOV      R2,R6
+        ADD      R0,R4,#+792
+        PUSH     {R0}
+        CFI CFA R13+72
+        MOV      R0,R5
+        _BLF     xmp3_IntensityProcMPEG2,??xmp3_IntensityProcMPEG2??rA
+        ADD      SP,SP,#+20
+        CFI CFA R13+52
+//  144 		}
+//  145 	}
+//  146 
+//  147 	/* adjust guard bit count and nonZeroBound if we did any stereo processing */
+//  148 	if (fh->modeExt) {
+??xmp3_Dequantize_14:
+        LDR      R0,[R6, #+32]
+        CMP      R0,#+0
+        BEQ      ??xmp3_Dequantize_0
+//  149 		hi->gb[0] = CLZ(mOut[0]) - 1;
+        LDR      R0,[SP, #+0]
+        CMP      R0,#+0
+        MOVEQ    R1,#+32
+        BEQ      ??xmp3_Dequantize_16
+        MOV      R1,#+0
+        TST      R0,#0x80000000
+        BNE      ??xmp3_Dequantize_16
+??xmp3_Dequantize_17:
+        ADD      R1,R1,#+1
+        LSL      R0,R0,#+1
+        TST      R0,#0x80000000
+        BEQ      ??xmp3_Dequantize_17
+??xmp3_Dequantize_16:
+        SUB      R0,R1,#+1
+        STR      R0,[R8, #+8]
+//  150 		hi->gb[1] = CLZ(mOut[1]) - 1;
+        LDR      R0,[SP, #+4]
+        CMP      R0,#+0
+        MOVEQ    R1,#+32
+        BEQ      ??xmp3_Dequantize_18
+        MOV      R1,#+0
+        TST      R0,#0x80000000
+        BNE      ??xmp3_Dequantize_18
+??xmp3_Dequantize_19:
+        ADD      R1,R1,#+1
+        LSL      R0,R0,#+1
+        TST      R0,#0x80000000
+        BEQ      ??xmp3_Dequantize_19
+??xmp3_Dequantize_18:
+        SUB      R0,R1,#+1
+        STR      R0,[R8, #+12]
+//  151 		nSamps = MAX(hi->nonZeroBound[0], hi->nonZeroBound[1]);
+        LDR      R0,[R8, #+4]
+        LDR      R1,[R8, #+0]
+        CMP      R0,R1
+        MOVGE    R1,R0
+//  152 		hi->nonZeroBound[0] = nSamps;
+        STR      R1,[R8, #+0]
+//  153 		hi->nonZeroBound[1] = nSamps;
+        STR      R1,[R8, #+4]
+//  154 	}
+//  155 
+//  156 	/* output format Q(DQ_FRACBITS_OUT) */
+//  157 	return 0;
+        MOV      R0,#+0
+??xmp3_Dequantize_0:
+        ADD      SP,SP,#+16       ;; stack cleaning
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        CFI EndBlock cfiBlock1
+//  158 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??xmp3_DequantChannel??rA:
+        LDR      R12,??Subroutine1_0  ;; xmp3_DequantChannel
+        BX       R12
+        DATA
+??Subroutine1_0:
+        DC32     xmp3_DequantChannel
+        CFI EndBlock cfiBlock2
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??xmp3_MidSideProc??rA:
+        LDR      R12,??Subroutine2_0  ;; xmp3_MidSideProc
+        BX       R12
+        DATA
+??Subroutine2_0:
+        DC32     xmp3_MidSideProc
+        CFI EndBlock cfiBlock3
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??xmp3_IntensityProcMPEG1??rA:
+        LDR      R12,??Subroutine3_0  ;; xmp3_IntensityProcMPEG1
+        BX       R12
+        DATA
+??Subroutine3_0:
+        DC32     xmp3_IntensityProcMPEG1
+        CFI EndBlock cfiBlock4
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??xmp3_IntensityProcMPEG2??rA:
+        LDR      R12,??Subroutine4_0  ;; xmp3_IntensityProcMPEG2
+        BX       R12
+        DATA
+??Subroutine4_0:
+        DC32     xmp3_IntensityProcMPEG2
+        CFI EndBlock cfiBlock5
+
+        END
+// 
+// 860 bytes in segment CODE
+// 
+// 808 bytes of CODE memory (+ 52 bytes shared)
+//
+//Errors: none
+//Warnings: 1

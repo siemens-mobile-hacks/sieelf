@@ -1,0 +1,1378 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    12/Jan/2012  10:48:39 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\NSG_ELF_Emulator\NSE_ELF\main.c #
+#    Command line    =  D:\SVN\SieELF\SieELF\NSG_ELF_Emulator\NSE_ELF\main.c #
+#                        -lC "D:\SVN\SieELF\SieELF\NSG_ELF_Emulator\NSE_ELF\ #
+#                       Other\SGold x65\List\" -o                            #
+#                       "D:\SVN\SieELF\SieELF\NSG_ELF_Emulator\NSE_ELF\Other #
+#                       \SGold x65\Obj\" -s9 --no_unroll --no_tbaa           #
+#                       --cpu_mode arm --endian little --cpu ARM926EJ-S      #
+#                       --stack_align 4 --interwork -e --fpu None            #
+#                       --dlib_config "D:\Program Files\IAR\Embedded         #
+#                       Workbench 4.0 Evaluation\ARM\LIB\dl5tpainl8n.h" -I   #
+#                       "D:\Program Files\IAR\Embedded Workbench 4.0         #
+#                       Evaluation\ARM\INC\" --inline_threshold=2            #
+#    List file       =  D:\SVN\SieELF\SieELF\NSG_ELF_Emulator\NSE_ELF\Other\ #
+#                       SGold x65\List\main.lst                              #
+#    Object file     =  D:\SVN\SieELF\SieELF\NSG_ELF_Emulator\NSE_ELF\Other\ #
+#                       SGold x65\Obj\main.r79                               #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\NSG_ELF_Emulator\NSE_ELF\main.c
+      1          #include "..\inc\swilib.h"
+      2          #include "add_swilib.h"
+      3          
+      4          //BCFG Config
+      5          extern const unsigned int bcfg_csm_act;
+      6          extern const int bcfg_markcsm_ena;
+      7          
+      8          extern const int bcfg_0x136_ena;
+      9          extern const int bcfg_0x137_ena;
+     10          extern const int bcfg_0x138_ena;
+     11          extern const int bcfg_0x139_ena;
+     12          extern const int bcfg_0x13A_ena;
+     13          
+     14          extern const int bcfg_0x152_ena;
+     15          extern const int bcfg_0x167_ena;
+     16          extern const int bcfg_0x217_ena;
+     17          
+     18          extern const int bcfg_0x04A_ena;
+     19          extern const int bcfg_0x099_ena;
+     20          
+     21          extern const unsigned int bcfg_fss_fstype;
+     22          extern const unsigned int bcfg_fss_type;
+     23          extern const int bcfg_fss_key;
+     24          extern const int bcfg_fss_msg;
+     25          
+     26          extern const int bcfg_isnsg;
+     27          
+     28          
+     29          extern const unsigned int bcfg_ka_type;
+     30          extern const unsigned int bcfg_type;
+     31          extern const int bcfg_key;
+     32          extern const int bcfg_msg;
+     33          
+     34          extern const int bcfg_ls_ena;
+     35          extern const int bcfg_rs_ena;
+     36          extern const int bcfg_lb_ena;
+     37          extern const int bcfg_rb_ena;
+     38          extern const int bcfg_ub_ena;
+     39          extern const int bcfg_db_ena;
+     40          
+     41          
+     42          
+     43          //Replaced Functions
+     44          //Create CSM
+     45          extern int   CreateCSM_mod(CSM_DESC_NSG* csm_desc,void *a2,int a3);
+     46          
+     47          //Craete GUI
+     48          extern int   CreateGUI_mod(void *gui);
+     49          extern int   CreateGUI_ID_mod(void *gui, int id);
+     50          extern int   CreateGUI_30or2_mod(void *gui);
+     51          extern int   CreateGUIWithDummyCSM_mod(void *gui, int flag);
+     52          extern int   CreateGUIWithDummyCSM_30or2_mod(void *gui, int flag);
+     53          
+     54          //Craete UI
+     55          extern int   CreateInputTextDialog_mod(INPUTDIA_DESC *input_desc, HEADER_DESC *header_desc,void *editq,int do_mfree,void *user_pointer);
+     56          extern int   CreateMenu_mod(int is_small,int zero1,const MENU_DESC *menu, HEADER_DESC *hdr,int start_item,int n_items,void *user_pointer,int *to_remove);
+     57          extern int   CreateMultiLinesMenu_mod(int dummy,int dummy2,const ML_MENU_DESC *menu, HEADER_DESC *hdr,int to_item,int n);
+     58          
+     59          //PlayMusic Functions
+     60          extern short PlayFile_mod(int flags, WSHDR *foldername, WSHDR *filename, int CepId, int Msg, void *sfo, void *sfo2);
+     61          extern int   PlayMelodyInMem_mod(char Unk_0x11, void * MelAddr, int MelSize, int CepId, int Msg, int Unk_0);
+     62          
+     63          //File System Functions
+     64          extern int   FindFirstFile_mod(DIR_ENTRY_NSG *DIRENTRY, char *mask, unsigned int *ErrorNumber);
+     65          extern int   FindNextFile_mod(DIR_ENTRY_NSG *DIRENTRY, unsigned int *ErrorNumber);
+     66          extern int   FindClose_mod(DIR_ENTRY_NSG *DIRENTRY, unsigned int *ErrorNumber);
+     67          
+     68          
+     69          #define ELF_NAME    "NSED"   // Имя эльфа
+     70          #define ELF_AUTHOR  "Dimadze"// Автор эльфа, то есть я
+     71          #define ELF_VERSION "0.5"    // Версия эльфа
+     72          
+     73          //------------------- NSD SIEMENS ELF ------------
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     74          const int minus11=-11;
+   \                     minus11:
+   \   00000000   F5FFFFFF           DC32 -11
+
+   \                                 In segment DATA_I, align 4, align-sorted
+     75          int keyup = 1, key_hook = 0;
+   \                     keyup:
+   \   00000000                      DS8 4
+   \   00000004                      REQUIRE `?<Initializer for keyup>`
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+   \                     key_hook:
+   \   00000000                      DS8 4
+     76          unsigned short maincsm_name_body[140];
+     77          
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     78          GBS_MSG_NSG gbs_msg_nsg_msg, gbs_msg_nsg_key;
+   \                     gbs_msg_nsg_msg:
+   \   00000000                      DS8 20
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+   \                     gbs_msg_nsg_key:
+   \   00000000                      DS8 20
+     79          
+     80          typedef struct
+     81          {
+     82            CSM_RAM csm;
+     83            int gui_id;
+     84          }MAIN_CSM;
+     85          
+     86          typedef struct
+     87          {
+     88            GUI gui;
+     89            WSHDR *ws1;
+     90            WSHDR *ws2;
+     91            int i1;
+     92          }MAIN_GUI;
+     93          
+     94          int nse_keyhook(int submsg, int msg);
+     95          extern void InitConfig();
+     96          extern int  onKey_bx(GUI *gui, GUI_MSG *msg, void *addr);
+     97          extern int  onMessage_bx(CSM_RAM *data_asm, GBS_MSG *msg_asm, void *addr_asm);
+     98          
+     99          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    100          int nse_keyhook(int submsg, int msg)
+    101          {
+   \                     nse_keyhook:
+   \   00000000   F14F2DE9           PUSH     {R0,R4-R11,LR}
+    102             if (((bcfg_type==1 && msg==KEY_DOWN) || (bcfg_type==2 && msg==LONG_PRESS)) && submsg==bcfg_key && keyup == 1)
+   \   00000004   ........           LDR      R0,??DataTable27  ;; bcfg_type
+   \   00000008   5C529FE5           LDR      R5,??nse_keyhook_0  ;; `?<Constant "NSE KA: SMART!">`
+   \   0000000C   000090E5           LDR      R0,[R0, #+0]
+   \   00000010   58829FE5           LDR      R8,??nse_keyhook_0+0x4  ;; keyup
+   \   00000014   0140A0E1           MOV      R4,R1
+   \   00000018   0060A0E3           MOV      R6,#+0
+   \   0000001C   0170A0E3           MOV      R7,#+1
+   \   00000020   010050E3           CMP      R0,#+1
+   \   00000024   0F00001A           BNE      ??nse_keyhook_1
+   \   00000028   9300A0E3           MOV      R0,#+147
+   \   0000002C   400F80E3           ORR      R0,R0,#0x100
+   \   00000030   000054E1           CMP      R4,R0
+   \   00000034   0F00000A           BEQ      ??nse_keyhook_2
+    103              {
+    104               int *lib = (int *)(*((int *)(int*)LIB_TOP()));
+    105               if  (NSE_keyAnswerType() == 0)
+    106                {
+    107                 if (bcfg_msg == 1) ShowMSG(1,(int)"NSE KA: SMART!");  else PLAYTONE(1);
+    108                 lib[0xD01] = 1;
+    109                 keyup = 0;
+    110                 return (2);
+    111                }
+    112              if  (NSE_keyAnswerType() == 1)
+    113                {
+    114                 if (bcfg_msg == 1) ShowMSG(1,(int)"NSE KA: NSG!");  else PLAYTONE(1);
+    115                 lib[0xD01] = 2;
+    116                 keyup = 0;
+    117                 return (2);
+    118                } 
+    119              if  (NSE_keyAnswerType() == 2)
+    120                {
+    121                 if (bcfg_msg == 1) ShowMSG(1,(int)"NSE KA: SGOLD!");  else PLAYTONE(1);
+    122                 lib[0xD01] = 0;
+    123                 keyup = 0;
+    124                 return (2);
+    125                } 
+    126              }
+    127             
+    128              if (((bcfg_fss_type==1 && msg==KEY_DOWN) || (bcfg_fss_type==2 && msg==LONG_PRESS)) && submsg==bcfg_fss_key && keyup == 1)
+   \                     ??nse_keyhook_3:
+   \   00000038   34029FE5           LDR      R0,??nse_keyhook_0+0x8  ;; bcfg_fss_type
+   \   0000003C   000090E5           LDR      R0,[R0, #+0]
+   \   00000040   010050E3           CMP      R0,#+1
+   \   00000044   3C00001A           BNE      ??nse_keyhook_4
+   \   00000048   9300A0E3           MOV      R0,#+147
+   \   0000004C   400F80E3           ORR      R0,R0,#0x100
+   \   00000050   000054E1           CMP      R4,R0
+   \   00000054   3C00000A           BEQ      ??nse_keyhook_5
+    129              {
+    130               int *lib = (int *)(*((int *)(int*)LIB_TOP()));
+    131               if (NSE_fileSystemType() == 0)
+    132                {
+    133                 if (bcfg_fss_msg == 1) ShowMSG(1,(int)"NSE FS:\nSMART!"); else PLAYTONE(1);
+    134                 lib[0xD02] = 1;
+    135                 keyup = 0;
+    136                 return (2);
+    137                }
+    138               if (NSE_fileSystemType() == 1)
+    139                {
+    140                 if (bcfg_fss_msg == 1) ShowMSG(1,(int)"NSE FS:\nNSG!"); else PLAYTONE(1);
+    141                 lib[0xD02] = 2;
+    142                 keyup = 0;
+    143                 return (2);
+    144                }
+    145               if (NSE_fileSystemType() == 2)
+    146                {
+    147                 if (bcfg_fss_msg == 1) ShowMSG(1,(int)"NSE FS:\nSGOLD!"); else PLAYTONE(1);
+    148                 lib[0xD02] = 0;
+    149                 keyup = 0;
+    150                 return (2);
+    151                } 
+    152              }
+    153             
+    154             if (msg == KEY_UP) keyup = 1;
+   \                     ??nse_keyhook_6:
+   \   00000058   650F54E3           CMP      R4,#+404
+   \   0000005C   00708805           STREQ    R7,[R8, #+0]
+    155          
+    156           return(0);
+   \   00000060   0000A0E3           MOV      R0,#+0
+   \   00000064   F28FBDE8           POP      {R1,R4-R11,PC}   ;; return
+   \                     ??nse_keyhook_1:
+   \   00000068   020050E3           CMP      R0,#+2
+   \   0000006C   650F8703           ORREQ    R0,R7,#0x194
+   \   00000070   00005401           CMPEQ    R4,R0
+   \   00000074   EFFFFF1A           BNE      ??nse_keyhook_3
+   \                     ??nse_keyhook_2:
+   \   00000078   F8119FE5           LDR      R1,??nse_keyhook_0+0xC  ;; bcfg_key
+   \   0000007C   00009DE5           LDR      R0,[SP, #+0]
+   \   00000080   001091E5           LDR      R1,[R1, #+0]
+   \   00000084   010050E1           CMP      R0,R1
+   \   00000088   00009805           LDREQ    R0,[R8, #+0]
+   \   0000008C   01005003           CMPEQ    R0,#+1
+   \   00000090   E8FFFF1A           BNE      ??nse_keyhook_3
+   \   00000094   BA8100EF           SWI      +33210
+   \   00000098   00A090E5           LDR      R10,[R0, #+0]
+   \   0000009C   D8019FE5           LDR      R0,??nse_keyhook_0+0x10  ;; bcfg_msg
+   \   000000A0   04B0A0E3           MOV      R11,#+4
+   \   000000A4   009090E5           LDR      R9,[R0, #+0]
+   \   000000A8   D0BD8BE3           ORR      R11,R11,#0x3400
+   \   000000AC   018D00EF           SWI      +36097
+   \   000000B0   000050E3           CMP      R0,#+0
+   \   000000B4   0500001A           BNE      ??nse_keyhook_7
+   \   000000B8   010059E3           CMP      R9,#+1
+   \   000000BC   3600001A           BNE      ??nse_keyhook_8
+   \   000000C0   0510A0E1           MOV      R1,R5
+   \                     ??nse_keyhook_9:
+   \   000000C4   0100A0E3           MOV      R0,#+1
+   \   000000C8   480100EF           SWI      +328
+   \   000000CC   390000EA           B        ??nse_keyhook_10
+   \                     ??nse_keyhook_7:
+   \   000000D0   0AA08BE0           ADD      R10,R11,R10
+   \   000000D4   018D00EF           SWI      +36097
+   \   000000D8   010050E3           CMP      R0,#+1
+   \   000000DC   0400001A           BNE      ??nse_keyhook_11
+   \   000000E0   010059E3           CMP      R9,#+1
+   \   000000E4   3F00001A           BNE      ??nse_keyhook_12
+   \   000000E8   101085E2           ADD      R1,R5,#+16
+   \                     ??nse_keyhook_13:
+   \   000000EC   480100EF           SWI      +328
+   \   000000F0   440000EA           B        ??nse_keyhook_14
+   \                     ??nse_keyhook_11:
+   \   000000F4   018D00EF           SWI      +36097
+   \   000000F8   020050E3           CMP      R0,#+2
+   \   000000FC   CDFFFF1A           BNE      ??nse_keyhook_3
+   \   00000100   010059E3           CMP      R9,#+1
+   \   00000104   0300001A           BNE      ??nse_keyhook_15
+   \   00000108   201085E2           ADD      R1,R5,#+32
+   \   0000010C   0100A0E3           MOV      R0,#+1
+   \   00000110   480100EF           SWI      +328
+   \   00000114   500000EA           B        ??nse_keyhook_16
+   \                     ??nse_keyhook_15:
+   \   00000118   0000A0E3           MOV      R0,#+0
+   \   0000011C   01002DE9           PUSH     {R0}
+   \   00000120   0730A0E1           MOV      R3,R7
+   \   00000124   0020A0E1           MOV      R2,R0
+   \   00000128   0010A0E1           MOV      R1,R0
+   \   0000012C   0300A0E1           MOV      R0,R3
+   \   00000130   320000EF           SWI      +50
+   \   00000134   04D08DE2           ADD      SP,SP,#+4
+   \                     ??nse_keyhook_17:
+   \   00000138   470000EA           B        ??nse_keyhook_16
+   \                     ??nse_keyhook_4:
+   \   0000013C   020050E3           CMP      R0,#+2
+   \   00000140   650F8703           ORREQ    R0,R7,#0x194
+   \   00000144   00005401           CMPEQ    R4,R0
+   \   00000148   C2FFFF1A           BNE      ??nse_keyhook_6
+   \                     ??nse_keyhook_5:
+   \   0000014C   2C119FE5           LDR      R1,??nse_keyhook_0+0x14  ;; bcfg_fss_key
+   \   00000150   00009DE5           LDR      R0,[SP, #+0]
+   \   00000154   001091E5           LDR      R1,[R1, #+0]
+   \   00000158   010050E1           CMP      R0,R1
+   \   0000015C   00009805           LDREQ    R0,[R8, #+0]
+   \   00000160   01005003           CMPEQ    R0,#+1
+   \   00000164   BBFFFF1A           BNE      ??nse_keyhook_6
+   \   00000168   BA8100EF           SWI      +33210
+   \   0000016C   00A090E5           LDR      R10,[R0, #+0]
+   \   00000170   0C019FE5           LDR      R0,??nse_keyhook_0+0x18  ;; bcfg_fss_msg
+   \   00000174   08B0A0E3           MOV      R11,#+8
+   \   00000178   009090E5           LDR      R9,[R0, #+0]
+   \   0000017C   D0BD8BE3           ORR      R11,R11,#0x3400
+   \   00000180   028D00EF           SWI      +36098
+   \   00000184   000050E3           CMP      R0,#+0
+   \   00000188   0E00001A           BNE      ??nse_keyhook_18
+   \   0000018C   010059E3           CMP      R9,#+1
+   \   00000190   0100001A           BNE      ??nse_keyhook_8
+   \   00000194   301085E2           ADD      R1,R5,#+48
+   \   00000198   C9FFFFEA           B        ??nse_keyhook_9
+   \                     ??nse_keyhook_8:
+   \   0000019C   01002DE9           PUSH     {R0}
+   \   000001A0   0130A0E3           MOV      R3,#+1
+   \   000001A4   0620A0E1           MOV      R2,R6
+   \   000001A8   0210A0E1           MOV      R1,R2
+   \   000001AC   0300A0E1           MOV      R0,R3
+   \   000001B0   320000EF           SWI      +50
+   \   000001B4   04D08DE2           ADD      SP,SP,#+4
+   \                     ??nse_keyhook_10:
+   \   000001B8   0A708BE7           STR      R7,[R11, +R10]
+   \   000001BC   006088E5           STR      R6,[R8, #+0]
+   \   000001C0   0200A0E3           MOV      R0,#+2
+   \   000001C4   F28FBDE8           POP      {R1,R4-R11,PC}
+   \                     ??nse_keyhook_18:
+   \   000001C8   0AA08BE0           ADD      R10,R11,R10
+   \   000001CC   028D00EF           SWI      +36098
+   \   000001D0   010050E3           CMP      R0,#+1
+   \   000001D4   0F00001A           BNE      ??nse_keyhook_19
+   \   000001D8   010059E3           CMP      R9,#+1
+   \   000001DC   0100001A           BNE      ??nse_keyhook_12
+   \   000001E0   401085E2           ADD      R1,R5,#+64
+   \   000001E4   C0FFFFEA           B        ??nse_keyhook_13
+   \                     ??nse_keyhook_12:
+   \   000001E8   0000A0E3           MOV      R0,#+0
+   \   000001EC   01002DE9           PUSH     {R0}
+   \   000001F0   0730A0E1           MOV      R3,R7
+   \   000001F4   0020A0E1           MOV      R2,R0
+   \   000001F8   0010A0E1           MOV      R1,R0
+   \   000001FC   0300A0E1           MOV      R0,R3
+   \   00000200   320000EF           SWI      +50
+   \   00000204   04D08DE2           ADD      SP,SP,#+4
+   \                     ??nse_keyhook_14:
+   \   00000208   0200A0E3           MOV      R0,#+2
+   \   0000020C   00008AE5           STR      R0,[R10, #+0]
+   \   00000210   006088E5           STR      R6,[R8, #+0]
+   \   00000214   F28FBDE8           POP      {R1,R4-R11,PC}
+   \                     ??nse_keyhook_19:
+   \   00000218   028D00EF           SWI      +36098
+   \   0000021C   020050E3           CMP      R0,#+2
+   \   00000220   8CFFFF1A           BNE      ??nse_keyhook_6
+   \   00000224   010059E3           CMP      R9,#+1
+   \   00000228   0300001A           BNE      ??nse_keyhook_20
+   \   0000022C   501085E2           ADD      R1,R5,#+80
+   \   00000230   0100A0E3           MOV      R0,#+1
+   \   00000234   480100EF           SWI      +328
+   \   00000238   070000EA           B        ??nse_keyhook_16
+   \                     ??nse_keyhook_20:
+   \   0000023C   0000A0E3           MOV      R0,#+0
+   \   00000240   01002DE9           PUSH     {R0}
+   \   00000244   0730A0E1           MOV      R3,R7
+   \   00000248   0020A0E1           MOV      R2,R0
+   \   0000024C   0010A0E1           MOV      R1,R0
+   \   00000250   0300A0E1           MOV      R0,R3
+   \   00000254   320000EF           SWI      +50
+   \   00000258   04D08DE2           ADD      SP,SP,#+4
+   \                     ??nse_keyhook_16:
+   \   0000025C   00608AE5           STR      R6,[R10, #+0]
+   \   00000260   006088E5           STR      R6,[R8, #+0]
+   \   00000264   0200A0E3           MOV      R0,#+2
+   \   00000268   F28FBDE8           POP      {R1,R4-R11,PC}
+   \                     ??nse_keyhook_0:
+   \   0000026C   ........           DC32     `?<Constant "NSE KA: SMART!">`
+   \   00000270   ........           DC32     keyup
+   \   00000274   ........           DC32     bcfg_fss_type
+   \   00000278   ........           DC32     bcfg_key
+   \   0000027C   ........           DC32     bcfg_msg
+   \   00000280   ........           DC32     bcfg_fss_key
+   \   00000284   ........           DC32     bcfg_fss_msg
+    157          }
+    158          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    159          int nse_onkey(GUI *gui, GUI_MSG *guimsg, void *addr)
+    160          {
+   \                     nse_onkey:
+   \   00000000   F0402DE9           PUSH     {R4-R7,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+   \   00000008   0150A0E1           MOV      R5,R1
+    161           if (NSE_keyAnswerType() == KA_SMART)
+   \   0000000C   44719FE5           LDR      R7,??nse_onkey_0  ;; gbs_msg_nsg_key
+   \   00000010   0260A0E1           MOV      R6,R2
+   \   00000014   018D00EF           SWI      +36097
+   \   00000018   010050E3           CMP      R0,#+1
+   \   0000001C   4800001A           BNE      ??nse_onkey_1
+    162            {
+    163             CSM_RAM *csm = CSM_root()->csm_q->csm.last;
+   \   00000020   068100EF           SWI      +33030
+   \   00000024   080090E5           LDR      R0,[R0, #+8]
+   \   00000028   0C0090E5           LDR      R0,[R0, #+12]
+    164             CSM_DESC *desc = csm->constr;
+    165             
+    166             if (desc->datasize == NSGCSM)
+   \   0000002C   080090E5           LDR      R0,[R0, #+8]
+   \   00000030   0C0090E5           LDR      R0,[R0, #+12]
+   \   00000034   2D0050E3           CMP      R0,#+45
+   \   00000038   4100001A           BNE      ??nse_onkey_1
+    167              {
+    168               if (gui->unk4 != ELFGUILABEL && ((guimsg->gbsmsg->submess == UP_BUTTON && bcfg_ub_ena == 1)     ||
+    169                                                (guimsg->gbsmsg->submess == DOWN_BUTTON && bcfg_db_ena == 1)   ||
+    170                                                (guimsg->gbsmsg->submess == LEFT_BUTTON && bcfg_lb_ena == 1)   ||
+    171                                                (guimsg->gbsmsg->submess == RIGHT_BUTTON  && bcfg_rb_ena == 1) ||
+    172                                                (guimsg->gbsmsg->submess == LEFT_SOFT  && bcfg_ls_ena == 1)    ||
+    173                                                (guimsg->gbsmsg->submess == RIGHT_SOFT  && bcfg_rs_ena == 1))
+    174                                                ) return onKey_bx(gui, guimsg, addr);
+   \   0000003C   0F10D4E5           LDRB     R1,[R4, #+15]
+   \   00000040   040095E5           LDR      R0,[R5, #+4]
+   \   00000044   DD0051E3           CMP      R1,#+221
+   \   00000048   2900000A           BEQ      ??nse_onkey_2
+   \   0000004C   041090E5           LDR      R1,[R0, #+4]
+   \   00000050   3B0051E3           CMP      R1,#+59
+   \   00000054   0300001A           BNE      ??nse_onkey_3
+   \   00000058   FC109FE5           LDR      R1,??nse_onkey_0+0x4  ;; bcfg_ub_ena
+   \   0000005C   001091E5           LDR      R1,[R1, #+0]
+   \   00000060   010051E3           CMP      R1,#+1
+   \   00000064   3100000A           BEQ      ??nse_onkey_4
+   \                     ??nse_onkey_3:
+   \   00000068   041090E5           LDR      R1,[R0, #+4]
+   \   0000006C   3C0051E3           CMP      R1,#+60
+   \   00000070   0300001A           BNE      ??nse_onkey_5
+   \   00000074   E4109FE5           LDR      R1,??nse_onkey_0+0x8  ;; bcfg_db_ena
+   \   00000078   001091E5           LDR      R1,[R1, #+0]
+   \   0000007C   010051E3           CMP      R1,#+1
+   \   00000080   2A00000A           BEQ      ??nse_onkey_4
+   \                     ??nse_onkey_5:
+   \   00000084   041090E5           LDR      R1,[R0, #+4]
+   \   00000088   3D0051E3           CMP      R1,#+61
+   \   0000008C   0300001A           BNE      ??nse_onkey_6
+   \   00000090   CC109FE5           LDR      R1,??nse_onkey_0+0xC  ;; bcfg_lb_ena
+   \   00000094   001091E5           LDR      R1,[R1, #+0]
+   \   00000098   010051E3           CMP      R1,#+1
+   \   0000009C   2300000A           BEQ      ??nse_onkey_4
+   \                     ??nse_onkey_6:
+   \   000000A0   041090E5           LDR      R1,[R0, #+4]
+   \   000000A4   3E0051E3           CMP      R1,#+62
+   \   000000A8   0300001A           BNE      ??nse_onkey_7
+   \   000000AC   B4109FE5           LDR      R1,??nse_onkey_0+0x10  ;; bcfg_rb_ena
+   \   000000B0   001091E5           LDR      R1,[R1, #+0]
+   \   000000B4   010051E3           CMP      R1,#+1
+   \   000000B8   1C00000A           BEQ      ??nse_onkey_4
+   \                     ??nse_onkey_7:
+   \   000000BC   041090E5           LDR      R1,[R0, #+4]
+   \   000000C0   010051E3           CMP      R1,#+1
+   \   000000C4   0300001A           BNE      ??nse_onkey_8
+   \   000000C8   9C109FE5           LDR      R1,??nse_onkey_0+0x14  ;; bcfg_ls_ena
+   \   000000CC   001091E5           LDR      R1,[R1, #+0]
+   \   000000D0   010051E3           CMP      R1,#+1
+   \   000000D4   1500000A           BEQ      ??nse_onkey_4
+   \                     ??nse_onkey_8:
+   \   000000D8   041090E5           LDR      R1,[R0, #+4]
+   \   000000DC   040051E3           CMP      R1,#+4
+   \   000000E0   0300001A           BNE      ??nse_onkey_2
+   \   000000E4   84109FE5           LDR      R1,??nse_onkey_0+0x18  ;; bcfg_rs_ena
+   \   000000E8   001091E5           LDR      R1,[R1, #+0]
+   \   000000EC   010051E3           CMP      R1,#+1
+   \   000000F0   0E00000A           BEQ      ??nse_onkey_4
+    175                  
+    176               gbs_msg_nsg_key.pid_from = guimsg->gbsmsg->pid_from;
+   \                     ??nse_onkey_2:
+   \   000000F4   F000D0E1           LDRSH    R0,[R0, #+0]
+   \   000000F8   000087E5           STR      R0,[R7, #+0]
+    177               gbs_msg_nsg_key.msg      = guimsg->gbsmsg->msg;
+   \   000000FC   040095E5           LDR      R0,[R5, #+4]
+   \   00000100   F200D0E1           LDRSH    R0,[R0, #+2]
+   \   00000104   040087E5           STR      R0,[R7, #+4]
+    178               gbs_msg_nsg_key.submess  = guimsg->gbsmsg->submess;
+   \   00000108   040095E5           LDR      R0,[R5, #+4]
+   \   0000010C   040090E5           LDR      R0,[R0, #+4]
+   \   00000110   080087E5           STR      R0,[R7, #+8]
+    179               gbs_msg_nsg_key.data0    = guimsg->gbsmsg->data0;
+   \   00000114   040095E5           LDR      R0,[R5, #+4]
+   \   00000118   080090E5           LDR      R0,[R0, #+8]
+   \   0000011C   0C0087E5           STR      R0,[R7, #+12]
+    180               gbs_msg_nsg_key.data1    = guimsg->gbsmsg->data1;
+   \   00000120   040095E5           LDR      R0,[R5, #+4]
+   \   00000124   0C0090E5           LDR      R0,[R0, #+12]
+   \   00000128   100087E5           STR      R0,[R7, #+16]
+    181             
+    182               guimsg->gbsmsg = (GBS_MSG *)&gbs_msg_nsg_key;
+   \   0000012C   047085E5           STR      R7,[R5, #+4]
+    183               
+    184               return onKey_bx(gui, guimsg, addr);
+   \                     ??nse_onkey_4:
+   \   00000130   0620A0E1           MOV      R2,R6
+   \   00000134   0510A0E1           MOV      R1,R5
+   \   00000138   0400A0E1           MOV      R0,R4
+   \   0000013C   ........           _BLF     onKey_bx,??onKey_bx??rA
+   \   00000140   F080BDE8           POP      {R4-R7,PC}
+    185              }
+    186                 
+    187            }
+    188            
+    189           if (NSE_keyAnswerType() == KA_NSG)
+   \                     ??nse_onkey_1:
+   \   00000144   018D00EF           SWI      +36097
+   \   00000148   020050E3           CMP      R0,#+2
+   \   0000014C   F7FFFF1A           BNE      ??nse_onkey_4
+    190            {
+    191             gbs_msg_nsg_key.pid_from = guimsg->gbsmsg->pid_from;
+   \   00000150   040095E5           LDR      R0,[R5, #+4]
+   \   00000154   E6FFFFEA           B        ??nse_onkey_2
+   \                     ??nse_onkey_0:
+   \   00000158   ........           DC32     gbs_msg_nsg_key
+   \   0000015C   ........           DC32     bcfg_ub_ena
+   \   00000160   ........           DC32     bcfg_db_ena
+   \   00000164   ........           DC32     bcfg_lb_ena
+   \   00000168   ........           DC32     bcfg_rb_ena
+   \   0000016C   ........           DC32     bcfg_ls_ena
+   \   00000170   ........           DC32     bcfg_rs_ena
+    192             gbs_msg_nsg_key.msg      = guimsg->gbsmsg->msg;
+    193             gbs_msg_nsg_key.submess  = guimsg->gbsmsg->submess;
+    194             gbs_msg_nsg_key.data0    = guimsg->gbsmsg->data0;
+    195             gbs_msg_nsg_key.data1    = guimsg->gbsmsg->data1;
+    196             
+    197             guimsg->gbsmsg = (GBS_MSG *)&gbs_msg_nsg_key;
+    198            }
+    199           
+    200            return onKey_bx(gui, guimsg, addr);
+    201          }
+    202          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    203          int nse_onmessage(CSM_RAM *data, GBS_MSG *msg, void *addr, int type_csm)
+    204          {
+   \                     nse_onmessage:
+   \   00000000   10402DE9           PUSH     {R4,LR}
+    205           if (type_csm == NSGCSM)
+   \   00000004   2D0053E3           CMP      R3,#+45
+   \   00000008   1E00001A           BNE      ??nse_onmessage_0
+    206            {
+    207             gbs_msg_nsg_msg.pid_from = msg->pid_from;
+   \   0000000C   F0C0D1E1           LDRSH    R12,[R1, #+0]
+   \   00000010   78309FE5           LDR      R3,??nse_onmessage_1  ;; gbs_msg_nsg_msg
+    208             gbs_msg_nsg_msg.msg      = msg->msg;
+    209             
+    210             if (msg->msg == MSG_GUI_DESTROYED)      gbs_msg_nsg_msg.msg = MSG_GUI_DESTROYED_NSG;
+    211             if (msg->msg == MSG_RECONFIGURE_REQ)    gbs_msg_nsg_msg.msg = MSG_RECONFIGURE_REQ_NSG;
+   \   00000014   F140A0E3           MOV      R4,#+241
+   \   00000018   00C083E5           STR      R12,[R3, #+0]
+   \   0000001C   F2C0D1E1           LDRSH    R12,[R1, #+2]
+   \   00000020   C04F84E3           ORR      R4,R4,#0x300
+   \   00000024   04C083E5           STR      R12,[R3, #+4]
+   \   00000028   F2C0D1E1           LDRSH    R12,[R1, #+2]
+   \   0000002C   98005CE3           CMP      R12,#+152
+   \   00000030   0EC0A003           MOVEQ    R12,#+14
+   \   00000034   64CC8C03           ORREQ    R12,R12,#0x6400
+   \   00000038   04C08305           STREQ    R12,[R3, #+4]
+   \   0000003C   F2C0D1E1           LDRSH    R12,[R1, #+2]
+   \   00000040   04005CE1           CMP      R12,R4
+   \   00000044   AF40A003           MOVEQ    R4,#+175
+   \   00000048   DE4C8403           ORREQ    R4,R4,#0xDE00
+   \   0000004C   04408305           STREQ    R4,[R3, #+4]
+    212             if (msg->msg == MSG_IPC)                gbs_msg_nsg_msg.msg = MSG_IPC_NSG;
+   \   00000050   0C40A0E1           MOV      R4,R12
+   \   00000054   F2C0A0E3           MOV      R12,#+242
+   \   00000058   C0CF8CE3           ORR      R12,R12,#0x300
+   \   0000005C   0C0054E1           CMP      R4,R12
+   \   00000060   B040A003           MOVEQ    R4,#+176
+   \   00000064   DE4C8403           ORREQ    R4,R4,#0xDE00
+   \   00000068   04408305           STREQ    R4,[R3, #+4]
+    213             
+    214             gbs_msg_nsg_msg.submess  = msg->submess;
+   \   0000006C   044091E5           LDR      R4,[R1, #+4]
+   \   00000070   084083E5           STR      R4,[R3, #+8]
+    215             gbs_msg_nsg_msg.data0    = msg->data0;
+   \   00000074   084091E5           LDR      R4,[R1, #+8]
+   \   00000078   0C4083E5           STR      R4,[R3, #+12]
+    216             gbs_msg_nsg_msg.data1    = msg->data1;
+   \   0000007C   0C1091E5           LDR      R1,[R1, #+12]
+   \   00000080   101083E5           STR      R1,[R3, #+16]
+    217             
+    218             msg = (GBS_MSG *)&gbs_msg_nsg_msg;
+   \   00000084   0310A0E1           MOV      R1,R3
+    219            }
+    220           
+    221           return onMessage_bx(data, msg, addr);
+   \                     ??nse_onmessage_0:
+   \   00000088   ........           _BLF     onMessage_bx,??onMessage_bx??rA
+   \   0000008C   1080BDE8           POP      {R4,PC}          ;; return
+   \                     ??nse_onmessage_1:
+   \   00000090   ........           DC32     gbs_msg_nsg_msg
+    222          }
+    223          
+    224          
+    225          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    226          void CreateSecondaryRamLib()
+    227          {
+   \                     CreateSecondaryRamLib:
+   \   00000000   00402DE9           PUSH     {LR}
+    228                 //Secondary RamSwiLib Init
+    229                 int *lib = (int *)(*((int *)(int*)LIB_TOP()));
+   \   00000004   BA8100EF           SWI      +33210
+   \   00000008   001090E5           LDR      R1,[R0, #+0]
+   \   0000000C   0120A0E3           MOV      R2,#+1
+   \   00000010   D00D81E2           ADD      R0,R1,#+13312
+   \   00000014   002080E5           STR      R2,[R0, #+0]
+    230                 
+    231                 //Service Lib
+    232                 lib[0xD00] = 1;                   // NSE launh mode (0 - don't work, 1 - work)
+    233                 lib[0xD01] = bcfg_ka_type;        // NSE KeyAnswer Type (0 - SGold, 1 - Smart, 2 - NewSGold)
+   \   00000018   8C219FE5           LDR      R2,??CreateSecondaryRamLib_0  ;; bcfg_ka_type
+    234                 lib[0xD02] = bcfg_fss_fstype;     // NSE File System Flag  (0 - SGold, 1 - Smart, 2 - NewSGold)
+    235                 
+    236                 lib[0xD03] = (int)&nse_onkey;     // NSE Universal OnKey Func Address
+    237                 lib[0xD04] = (int)&nse_onmessage; // NSE Universal OnMessage Func Address
+    238                 
+    239                 //User Lib
+    240                 lib[0xD10] = lib[0x107]; // int CreateCSM(const CSM_DESC*,void *, int)
+   \   0000001C   4A1F81E2           ADD      R1,R1,#+296
+   \   00000020   002092E5           LDR      R2,[R2, #+0]
+   \   00000024   042080E5           STR      R2,[R0, #+4]
+   \   00000028   80219FE5           LDR      R2,??CreateSecondaryRamLib_0+0x4  ;; bcfg_fss_fstype
+   \   0000002C   002092E5           LDR      R2,[R2, #+0]
+   \   00000030   082080E5           STR      R2,[R0, #+8]
+   \   00000034   78219FE5           LDR      R2,??CreateSecondaryRamLib_0+0x8  ;; nse_onkey
+   \   00000038   0C2080E5           STR      R2,[R0, #+12]
+   \   0000003C   74219FE5           LDR      R2,??CreateSecondaryRamLib_0+0xC  ;; nse_onmessage
+   \   00000040   102080E5           STR      R2,[R0, #+16]
+   \   00000044   F42291E5           LDR      R2,[R1, #+756]
+   \   00000048   402080E5           STR      R2,[R0, #+64]
+    241                 
+    242                 lib[0xD11] = lib[0x137]; // int CreateGUI(void *gui)
+   \   0000004C   B42391E5           LDR      R2,[R1, #+948]
+   \   00000050   442080E5           STR      R2,[R0, #+68]
+    243                 lib[0xD12] = lib[0x136]; // int CreateGUI_ID(void *gui, int id)
+   \   00000054   B02391E5           LDR      R2,[R1, #+944]
+   \   00000058   482080E5           STR      R2,[R0, #+72]
+    244                 lib[0xD13] = lib[0x138]; // int CreateGUI_30or2(void *gui)
+   \   0000005C   B82391E5           LDR      R2,[R1, #+952]
+   \   00000060   4C2080E5           STR      R2,[R0, #+76]
+    245                 lib[0xD14] = lib[0x139]; // int CreateGUIWithDummyCSM(void *gui,int flag)
+   \   00000064   BC2391E5           LDR      R2,[R1, #+956]
+   \   00000068   502080E5           STR      R2,[R0, #+80]
+    246          
+    247                 lib[0xD15] = lib[0x13A]; // int CreateGUIWithDummyCSM_30or2(void *gui,int flag)
+   \   0000006C   C02391E5           LDR      R2,[R1, #+960]
+   \   00000070   542080E5           STR      R2,[R0, #+84]
+    248                 
+    249                 lib[0xD20] = lib[0x167]; // int CreateInputTextDialog(const INPUTDIA_DESC *input_desc, const HEADER_DESC *header_desc,void *editq,int do_mfree,void *user_pointer)
+   \   00000074   742491E5           LDR      R2,[R1, #+1140]
+   \   00000078   802080E5           STR      R2,[R0, #+128]
+    250                 lib[0xD21] = lib[0x152]; // int CreateMenu(int is_small,int zero1,const MENU_DESC *menu, const HEADER_DESC *hdr,int start_item,int n_items,void *user_pointer,int *to_remove)
+   \   0000007C   202491E5           LDR      R2,[R1, #+1056]
+   \   00000080   842080E5           STR      R2,[R0, #+132]
+    251                 lib[0xD22] = lib[0x217]; // int CreateMultiLinesMenu(int dummy,int dummy2,const ML_MENU_DESC *,const HEADER_DESC *,int to_item,int n)
+   \   00000084   342791E5           LDR      R2,[R1, #+1844]
+   \   00000088   882080E5           STR      R2,[R0, #+136]
+    252          
+    253                 lib[0xD40] = lib[0x04A]; // short PlayFile(int flags, WSHDR *foldername, WSHDR *filename, int zero, int CepId, int Msg, const PLAYFILE_OPT *sfo)
+   \   0000008C   002091E5           LDR      R2,[R1, #+0]
+   \   00000090   002180E5           STR      R2,[R0, #+256]
+    254                 lib[0xD41] = lib[0x099]; // int   PlayMelodyInMem(char Unk_0x11, void * MelAddr, int MelSize, int CepId, int Msg, int Unk_0)
+   \   00000094   3C2191E5           LDR      R2,[R1, #+316]
+   \   00000098   042180E5           STR      R2,[R0, #+260]
+    255             
+    256                 lib[0xD50] = lib[0x06B]; // int FindFirstFile(DIR_ENTRY *DIRENTRY, char *mask, unsigned int *ErrorNumber)
+   \   0000009C   842091E5           LDR      R2,[R1, #+132]
+   \   000000A0   402180E5           STR      R2,[R0, #+320]
+    257                 lib[0xD51] = lib[0x06C]; // int FindNextFile(DIR_ENTRY *DIRENTRY, unsigned int *ErrorNumber)
+   \   000000A4   882091E5           LDR      R2,[R1, #+136]
+   \   000000A8   442180E5           STR      R2,[R0, #+324]
+    258                 lib[0xD52] = lib[0x06D]; // int FindClose(DIR_ENTRY *DIRENTRY, unsigned int *ErrorNumber)
+   \   000000AC   8C2091E5           LDR      R2,[R1, #+140]
+   \   000000B0   482180E5           STR      R2,[R0, #+328]
+    259                 
+    260                 
+    261                 //New RamSwiLib
+    262                 lib[0x107] = (int)&CreateCSM_mod;
+   \   000000B4   00019FE5           LDR      R0,??CreateSecondaryRamLib_0+0x10  ;; CreateCSM_mod
+   \   000000B8   F40281E5           STR      R0,[R1, #+756]
+    263                 
+    264                 if (bcfg_0x137_ena == 1)
+   \   000000BC   ........           LDR      R0,??DataTable11  ;; bcfg_0x137_ena
+   \   000000C0   000090E5           LDR      R0,[R0, #+0]
+   \   000000C4   010050E3           CMP      R0,#+1
+    265                 lib[0x137] = (int)&CreateGUI_mod;
+   \   000000C8   F0009F05           LDREQ    R0,??CreateSecondaryRamLib_0+0x14  ;; CreateGUI_mod
+   \   000000CC   B4038105           STREQ    R0,[R1, #+948]
+    266                 if (bcfg_0x136_ena == 1)
+   \   000000D0   ........           LDR      R0,??DataTable12  ;; bcfg_0x136_ena
+   \   000000D4   000090E5           LDR      R0,[R0, #+0]
+   \   000000D8   010050E3           CMP      R0,#+1
+    267                 lib[0x136] = (int)&CreateGUI_ID_mod;
+   \   000000DC   E0009F05           LDREQ    R0,??CreateSecondaryRamLib_0+0x18  ;; CreateGUI_ID_mod
+   \   000000E0   B0038105           STREQ    R0,[R1, #+944]
+    268                 if (bcfg_0x138_ena == 1)
+   \   000000E4   ........           LDR      R0,??DataTable13  ;; bcfg_0x138_ena
+   \   000000E8   000090E5           LDR      R0,[R0, #+0]
+   \   000000EC   010050E3           CMP      R0,#+1
+    269                 lib[0x138] = (int)&CreateGUI_30or2_mod;
+   \   000000F0   D0009F05           LDREQ    R0,??CreateSecondaryRamLib_0+0x1C  ;; CreateGUI_30or2_mod
+   \   000000F4   B8038105           STREQ    R0,[R1, #+952]
+    270                 if (bcfg_0x139_ena == 1)
+   \   000000F8   ........           LDR      R0,??DataTable14  ;; bcfg_0x139_ena
+   \   000000FC   000090E5           LDR      R0,[R0, #+0]
+   \   00000100   010050E3           CMP      R0,#+1
+    271                 lib[0x139] = (int)&CreateGUIWithDummyCSM_mod;
+   \   00000104   C0009F05           LDREQ    R0,??CreateSecondaryRamLib_0+0x20  ;; CreateGUIWithDummyCSM_mod
+   \   00000108   BC038105           STREQ    R0,[R1, #+956]
+    272                 if (bcfg_0x13A_ena == 1)
+   \   0000010C   ........           LDR      R0,??DataTable15  ;; bcfg_0x13A_ena
+   \   00000110   000090E5           LDR      R0,[R0, #+0]
+   \   00000114   010050E3           CMP      R0,#+1
+    273                 lib[0x13A] = (int)&CreateGUIWithDummyCSM_30or2_mod;
+   \   00000118   B0009F05           LDREQ    R0,??CreateSecondaryRamLib_0+0x24  ;; CreateGUIWithDummyCSM_30or2_mod
+   \   0000011C   C0038105           STREQ    R0,[R1, #+960]
+    274                 
+    275                 if (bcfg_0x167_ena == 1)
+   \   00000120   ........           LDR      R0,??DataTable16  ;; bcfg_0x167_ena
+   \   00000124   000090E5           LDR      R0,[R0, #+0]
+   \   00000128   010050E3           CMP      R0,#+1
+    276                 lib[0x167] = (int)&CreateInputTextDialog_mod;
+   \   0000012C   A0009F05           LDREQ    R0,??CreateSecondaryRamLib_0+0x28  ;; CreateInputTextDialog_mod
+   \   00000130   74048105           STREQ    R0,[R1, #+1140]
+    277                 if (bcfg_0x152_ena == 1)
+   \   00000134   ........           LDR      R0,??DataTable17  ;; bcfg_0x152_ena
+   \   00000138   000090E5           LDR      R0,[R0, #+0]
+   \   0000013C   010050E3           CMP      R0,#+1
+    278                 lib[0x152] = (int)&CreateMenu_mod;
+   \   00000140   90009F05           LDREQ    R0,??CreateSecondaryRamLib_0+0x2C  ;; CreateMenu_mod
+   \   00000144   20048105           STREQ    R0,[R1, #+1056]
+    279                 if (bcfg_0x217_ena == 1)
+   \   00000148   ........           LDR      R0,??DataTable18  ;; bcfg_0x217_ena
+   \   0000014C   000090E5           LDR      R0,[R0, #+0]
+   \   00000150   010050E3           CMP      R0,#+1
+    280                 lib[0x217] = (int)&CreateMultiLinesMenu_mod;
+   \   00000154   80009F05           LDREQ    R0,??CreateSecondaryRamLib_0+0x30  ;; CreateMultiLinesMenu_mod
+   \   00000158   34078105           STREQ    R0,[R1, #+1844]
+    281                 
+    282                 if (bcfg_0x04A_ena == 1)
+   \   0000015C   ........           LDR      R0,??DataTable19  ;; bcfg_0x04A_ena
+   \   00000160   000090E5           LDR      R0,[R0, #+0]
+   \   00000164   010050E3           CMP      R0,#+1
+    283                 lib[0x04A] = (int)&PlayFile_mod;
+   \   00000168   70009F05           LDREQ    R0,??CreateSecondaryRamLib_0+0x34  ;; PlayFile_mod
+   \   0000016C   00008105           STREQ    R0,[R1, #+0]
+    284                 if (bcfg_0x099_ena == 1)
+   \   00000170   ........           LDR      R0,??DataTable20  ;; bcfg_0x099_ena
+   \   00000174   000090E5           LDR      R0,[R0, #+0]
+   \   00000178   010050E3           CMP      R0,#+1
+    285                 lib[0x099] = (int)&PlayMelodyInMem_mod;
+   \   0000017C   60009F05           LDREQ    R0,??CreateSecondaryRamLib_0+0x38  ;; PlayMelodyInMem_mod
+   \   00000180   3C018105           STREQ    R0,[R1, #+316]
+    286                 
+    287                 lib[0x06B] = (int)&FindFirstFile_mod;
+   \   00000184   5C009FE5           LDR      R0,??CreateSecondaryRamLib_0+0x3C  ;; FindFirstFile_mod
+   \   00000188   840081E5           STR      R0,[R1, #+132]
+    288                 lib[0x06C] = (int)&FindNextFile_mod;
+   \   0000018C   58009FE5           LDR      R0,??CreateSecondaryRamLib_0+0x40  ;; FindNextFile_mod
+   \   00000190   880081E5           STR      R0,[R1, #+136]
+    289                 lib[0x06D] = (int)&FindClose_mod;
+   \   00000194   54009FE5           LDR      R0,??CreateSecondaryRamLib_0+0x44  ;; FindClose_mod
+   \   00000198   8C0081E5           STR      R0,[R1, #+140]
+    290                 
+    291                 lib[0x1B5] =  bcfg_isnsg;
+   \   0000019C   50009FE5           LDR      R0,??CreateSecondaryRamLib_0+0x48  ;; bcfg_isnsg
+   \   000001A0   000090E5           LDR      R0,[R0, #+0]
+   \   000001A4   AC0581E5           STR      R0,[R1, #+1452]
+    292          }
+   \   000001A8   0080BDE8           POP      {PC}             ;; return
+   \                     ??CreateSecondaryRamLib_0:
+   \   000001AC   ........           DC32     bcfg_ka_type
+   \   000001B0   ........           DC32     bcfg_fss_fstype
+   \   000001B4   ........           DC32     nse_onkey
+   \   000001B8   ........           DC32     nse_onmessage
+   \   000001BC   ........           DC32     CreateCSM_mod
+   \   000001C0   ........           DC32     CreateGUI_mod
+   \   000001C4   ........           DC32     CreateGUI_ID_mod
+   \   000001C8   ........           DC32     CreateGUI_30or2_mod
+   \   000001CC   ........           DC32     CreateGUIWithDummyCSM_mod
+   \   000001D0   ........           DC32     CreateGUIWithDummyCSM_30or2_mod
+   \   000001D4   ........           DC32     CreateInputTextDialog_mod
+   \   000001D8   ........           DC32     CreateMenu_mod
+   \   000001DC   ........           DC32     CreateMultiLinesMenu_mod
+   \   000001E0   ........           DC32     PlayFile_mod
+   \   000001E4   ........           DC32     PlayMelodyInMem_mod
+   \   000001E8   ........           DC32     FindFirstFile_mod
+   \   000001EC   ........           DC32     FindNextFile_mod
+   \   000001F0   ........           DC32     FindClose_mod
+   \   000001F4   ........           DC32     bcfg_isnsg
+    293          
+    294          
+    295          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    296          void RepairRAMSWILib()
+    297          {
+   \                     RepairRAMSWILib:
+   \   00000000   00402DE9           PUSH     {LR}
+    298           LockSched();
+   \   00000004   460100EF           SWI      +326
+    299           int *lib = (int *)(*((int *)(int*)LIB_TOP()));
+   \   00000008   BA8100EF           SWI      +33210
+   \   0000000C   000090E5           LDR      R0,[R0, #+0]
+    300          
+    301           lib[0x107] = lib[0xD10];
+   \   00000010   4A1F80E2           ADD      R1,R0,#+296
+   \   00000014   D12D80E2           ADD      R2,R0,#+13376
+   \   00000018   003092E5           LDR      R3,[R2, #+0]
+   \   0000001C   F43281E5           STR      R3,[R1, #+756]
+    302                 
+    303           if (bcfg_0x137_ena == 1) lib[0x137] = lib[0xD11];
+   \   00000020   ........           LDR      R3,??DataTable11  ;; bcfg_0x137_ena
+   \   00000024   003093E5           LDR      R3,[R3, #+0]
+   \   00000028   010053E3           CMP      R3,#+1
+   \   0000002C   04309205           LDREQ    R3,[R2, #+4]
+   \   00000030   B4338105           STREQ    R3,[R1, #+948]
+    304           if (bcfg_0x136_ena == 1) lib[0x136] = lib[0xD12];
+   \   00000034   ........           LDR      R3,??DataTable12  ;; bcfg_0x136_ena
+   \   00000038   003093E5           LDR      R3,[R3, #+0]
+   \   0000003C   010053E3           CMP      R3,#+1
+   \   00000040   08309205           LDREQ    R3,[R2, #+8]
+   \   00000044   B0338105           STREQ    R3,[R1, #+944]
+    305           if (bcfg_0x138_ena == 1) lib[0x138] = lib[0xD13];
+   \   00000048   ........           LDR      R3,??DataTable13  ;; bcfg_0x138_ena
+   \   0000004C   003093E5           LDR      R3,[R3, #+0]
+   \   00000050   010053E3           CMP      R3,#+1
+   \   00000054   0C309205           LDREQ    R3,[R2, #+12]
+   \   00000058   B8338105           STREQ    R3,[R1, #+952]
+    306           if (bcfg_0x139_ena == 1) lib[0x139] = lib[0xD14];
+   \   0000005C   ........           LDR      R3,??DataTable14  ;; bcfg_0x139_ena
+   \   00000060   003093E5           LDR      R3,[R3, #+0]
+   \   00000064   010053E3           CMP      R3,#+1
+   \   00000068   10309205           LDREQ    R3,[R2, #+16]
+   \   0000006C   BC338105           STREQ    R3,[R1, #+956]
+    307           if (bcfg_0x13A_ena == 1) lib[0x13A] = lib[0xD15];
+   \   00000070   ........           LDR      R3,??DataTable15  ;; bcfg_0x13A_ena
+   \   00000074   003093E5           LDR      R3,[R3, #+0]
+   \   00000078   010053E3           CMP      R3,#+1
+   \   0000007C   14309205           LDREQ    R3,[R2, #+20]
+   \   00000080   C0338105           STREQ    R3,[R1, #+960]
+    308                 
+    309           if (bcfg_0x167_ena == 1) lib[0x167] = lib[0xD20];
+   \   00000084   ........           LDR      R3,??DataTable16  ;; bcfg_0x167_ena
+   \   00000088   003093E5           LDR      R3,[R3, #+0]
+   \   0000008C   010053E3           CMP      R3,#+1
+   \   00000090   40309205           LDREQ    R3,[R2, #+64]
+   \   00000094   74348105           STREQ    R3,[R1, #+1140]
+    310           if (bcfg_0x152_ena == 1) lib[0x152] = lib[0xD21];
+   \   00000098   ........           LDR      R3,??DataTable17  ;; bcfg_0x152_ena
+   \   0000009C   003093E5           LDR      R3,[R3, #+0]
+   \   000000A0   010053E3           CMP      R3,#+1
+   \   000000A4   44309205           LDREQ    R3,[R2, #+68]
+   \   000000A8   20348105           STREQ    R3,[R1, #+1056]
+    311           if (bcfg_0x217_ena == 1) lib[0x217] = lib[0xD22];
+   \   000000AC   ........           LDR      R3,??DataTable18  ;; bcfg_0x217_ena
+   \   000000B0   003093E5           LDR      R3,[R3, #+0]
+   \   000000B4   010053E3           CMP      R3,#+1
+   \   000000B8   48309205           LDREQ    R3,[R2, #+72]
+   \   000000BC   34378105           STREQ    R3,[R1, #+1844]
+    312                 
+    313           if (bcfg_0x04A_ena == 1) lib[0x04A] = lib[0xD40];
+   \   000000C0   ........           LDR      R3,??DataTable19  ;; bcfg_0x04A_ena
+   \   000000C4   003093E5           LDR      R3,[R3, #+0]
+   \   000000C8   010053E3           CMP      R3,#+1
+   \   000000CC   C0309205           LDREQ    R3,[R2, #+192]
+   \   000000D0   00308105           STREQ    R3,[R1, #+0]
+    314           if (bcfg_0x099_ena == 1) lib[0x099] = lib[0xD41];
+   \   000000D4   ........           LDR      R3,??DataTable20  ;; bcfg_0x099_ena
+   \   000000D8   003093E5           LDR      R3,[R3, #+0]
+   \   000000DC   010053E3           CMP      R3,#+1
+   \   000000E0   C4309205           LDREQ    R3,[R2, #+196]
+   \   000000E4   3C318105           STREQ    R3,[R1, #+316]
+    315           
+    316          
+    317           lib[0x06B] = lib[0xD50];
+   \   000000E8   003192E5           LDR      R3,[R2, #+256]
+   \   000000EC   843081E5           STR      R3,[R1, #+132]
+    318           lib[0x06C] = lib[0xD51];
+   \   000000F0   043192E5           LDR      R3,[R2, #+260]
+   \   000000F4   883081E5           STR      R3,[R1, #+136]
+    319           lib[0x06D] = lib[0xD52];
+   \   000000F8   082192E5           LDR      R2,[R2, #+264]
+   \   000000FC   8C2081E5           STR      R2,[R1, #+140]
+    320                 
+    321           lib[0x1B5] = 0;
+   \   00000100   0020A0E3           MOV      R2,#+0
+   \   00000104   AC2581E5           STR      R2,[R1, #+1452]
+    322           
+    323           for (int i = 0xD00; i<0xE00; i++) lib[i] = 0xFFFFFFFF;
+   \   00000108   D01EA0E3           MOV      R1,#+3328
+   \   0000010C   0220E0E1           MVN      R2,R2
+   \                     ??RepairRAMSWILib_0:
+   \   00000110   012180E7           STR      R2,[R0, +R1, LSL #+2]
+   \   00000114   011081E2           ADD      R1,R1,#+1
+   \   00000118   E00E51E3           CMP      R1,#+3584
+   \   0000011C   FBFFFFBA           BLT      ??RepairRAMSWILib_0
+    324           UnlockSched();
+   \   00000120   470100EF           SWI      +327
+    325          }
+   \   00000124   0080BDE8           POP      {PC}             ;; return
+    326          
+    327          
+    328          
+    329          
+    330          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    331          static int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
+    332          {
+   \                     maincsm_onmessage:
+   \   00000000   10402DE9           PUSH     {R4,LR}
+   \   00000004   04D04DE2           SUB      SP,SP,#+4
+    333            MAIN_CSM *csm=(MAIN_CSM*)data;
+    334            if ((msg->msg == MSG_GUI_DESTROYED) && ((int)msg->data0 == csm->gui_id)) csm->csm.state=-3;
+   \   00000008   F220D1E1           LDRSH    R2,[R1, #+2]
+   \   0000000C   980052E3           CMP      R2,#+152
+   \   00000010   0500001A           BNE      ??maincsm_onmessage_0
+   \   00000014   082091E5           LDR      R2,[R1, #+8]
+   \   00000018   283090E5           LDR      R3,[R0, #+40]
+   \   0000001C   030052E1           CMP      R2,R3
+   \   00000020   1A00001A           BNE      ??maincsm_onmessage_1
+   \   00000024   0220E0E3           MVN      R2,#+2
+   \   00000028   102080E5           STR      R2,[R0, #+16]
+    335            if ( msg->msg == MSG_RECONFIGURE_REQ )
+   \                     ??maincsm_onmessage_0:
+   \   0000002C   F200D1E1           LDRSH    R0,[R1, #+2]
+   \   00000030   F110A0E3           MOV      R1,#+241
+   \   00000034   C01F81E3           ORR      R1,R1,#0x300
+   \   00000038   010050E1           CMP      R0,R1
+   \   0000003C   1300001A           BNE      ??maincsm_onmessage_1
+    336             {
+    337              RepairRAMSWILib(); 
+    338              InitConfig();
+    339              CreateSecondaryRamLib();
+    340              
+    341              if (bcfg_type >  0 && key_hook == 0) {AddKeybMsgHook((void *)nse_keyhook);    key_hook = 1;}
+   \   00000040   ........           LDR      R4,??DataTable29  ;; key_hook
+   \   00000044   ........           BL       RepairRAMSWILib
+   \   00000048   ........           _BLF     InitConfig,??InitConfig??rA
+   \   0000004C   ........           BL       CreateSecondaryRamLib
+   \   00000050   ........           LDR      R1,??DataTable27  ;; bcfg_type
+   \   00000054   ........           LDR      R0,??DataTable28  ;; nse_keyhook
+   \   00000058   001091E5           LDR      R1,[R1, #+0]
+   \   0000005C   000051E3           CMP      R1,#+0
+   \   00000060   001094E5           LDR      R1,[R4, #+0]
+   \   00000064   0400000A           BEQ      ??maincsm_onmessage_2
+   \   00000068   000051E3           CMP      R1,#+0
+   \   0000006C   0700001A           BNE      ??maincsm_onmessage_1
+   \   00000070   2B0100EF           SWI      +299
+   \   00000074   0100A0E3           MOV      R0,#+1
+   \   00000078   030000EA           B        ??maincsm_onmessage_3
+    342              if (bcfg_type == 0 && key_hook == 1) {RemoveKeybMsgHook((void *)nse_keyhook); key_hook = 0;}
+   \                     ??maincsm_onmessage_2:
+   \   0000007C   010051E3           CMP      R1,#+1
+   \   00000080   0200001A           BNE      ??maincsm_onmessage_1
+   \   00000084   2D0100EF           SWI      +301
+   \   00000088   0000A0E3           MOV      R0,#+0
+   \                     ??maincsm_onmessage_3:
+   \   0000008C   000084E5           STR      R0,[R4, #+0]
+    343             }
+    344            return(1);
+   \                     ??maincsm_onmessage_1:
+   \   00000090   0100A0E3           MOV      R0,#+1
+   \   00000094   1280BDE8           POP      {R1,R4,PC}       ;; return
+    345          }
+    346          
+    347          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    348          static void maincsm_oncreate(CSM_RAM *data){}
+   \                     maincsm_oncreate:
+   \   00000000   1EFF2FE1           BX       LR               ;; return
+    349          
+    350          
+    351          //Function for unload this elf from RAM
+
+   \                                 In segment CODE, align 4, keep-with-next
+    352          static void ELFUnload(void)
+    353          {
+   \                     ELFUnload:
+   \   00000000   00402DE9           PUSH     {LR}
+    354            extern void *ELF_BEGIN;
+    355            extern void kill_data(void *p, void (*func_p)(void *));
+    356            kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
+   \   00000004   158000EF           SWI      +32789
+   \   00000008   0010A0E1           MOV      R1,R0
+   \   0000000C   04009FE5           LDR      R0,??ELFUnload_0  ;; ELF_BEGIN
+   \   00000010   0040BDE8           POP      {LR}             ;; Pop
+   \   00000014   ........           _BF      kill_data,??kill_data??rA  ;; tailcall
+   \                     ??ELFUnload_0:
+   \   00000018   ........           DC32     ELF_BEGIN
+    357          }
+    358          
+    359          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    360          static void maincsm_onclose(CSM_RAM *csm)
+    361          {
+    362            RemoveKeybMsgHook((void *)nse_keyhook);
+   \                     maincsm_onclose:
+   \   00000000   ........           LDR      R0,??DataTable28  ;; nse_keyhook
+   \   00000004   00402DE9           PUSH     {LR}
+   \   00000008   2D0100EF           SWI      +301
+    363            RepairRAMSWILib();
+   \   0000000C   ........           BL       RepairRAMSWILib
+    364            SUBPROC((void *)ELFUnload);
+   \   00000010   ........           LDR      R0,??DataTable26  ;; ELFUnload
+   \   00000014   710100EF           SWI      +369
+    365          }
+   \   00000018   0080BDE8           POP      {PC}             ;; return
+    366          
+    367          
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+    368          static unsigned short maincsm_name_body[140];
+   \                     maincsm_name_body:
+   \   00000000                      DS8 280
+    369          
+    370          static const struct
+    371          {
+    372            CSM_DESC maincsm;
+    373            WSHDR maincsm_name;
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "NSED v0.5">`:
+   \   00000000   4E5345442076       DC8 "NSED v0.5"
+   \              302E3500    
+   \   0000000A   0000               DC8 0, 0
+   \   0000000C   4E5345204C61       DC8 "NSE Launch Error!"
+   \              756E63682045
+   \              72726F722100
+   \   0000001E   0000               DC8 0, 0
+   \   00000020   52414D205357       DC8 "RAM SWI\012not load!"
+   \              490A6E6F7420
+   \              6C6F61642100
+   \   00000032   0000               DC8 0, 0
+   \   00000034   546869732045       DC8 "This ELF\012for SGold!"
+   \              4C460A666F72
+   \              2053476F6C64
+   \              2100        
+   \   00000048   ............       DC32 maincsm_onmessage, maincsm_oncreate, maincsm_onclose, 44, 1
+   \              ............
+   \              2C0000000100
+   \              0000        
+   \   0000005C   ............       DC32 minus11, maincsm_name_body, 55AACCCCH, 3333AA55H, 0
+   \              ....CCCCAA55
+   \              55AA33330000
+   \              0000        
+   \   00000070   8B00               DC16 139
+   \   00000072   0000               DC8 0, 0
+    374          }MAINCSM =
+    375          {
+    376            {
+    377            maincsm_onmessage,
+    378            maincsm_oncreate,
+    379            maincsm_onclose,
+    380            sizeof(MAIN_CSM),
+    381            1,
+    382            &minus11
+    383            },
+    384            {
+    385              maincsm_name_body,
+    386              NAMECSM_MAGIC1,
+    387              NAMECSM_MAGIC2,
+    388              0x0,
+    389              139
+    390            }
+    391          };
+    392          
+    393          //Function for update CSM name
+    394          static void UpdateCSMname(void)
+    395          {
+    396            wsprintf((WSHDR *)(&MAINCSM.maincsm_name),ELF_NAME" v"ELF_VERSION);
+    397          }
+    398          //----------------------------------------------------
+    399          
+    400          
+    401          //Main Function
+
+   \                                 In segment CODE, align 4, keep-with-next
+    402          int main(char *exename, char *fname)
+    403          {
+   \                     main:
+   \   00000000   70402DE9           PUSH     {R4-R6,LR}
+    404           if (isnewSGold() == 0)
+   \   00000004   F8409FE5           LDR      R4,??main_0      ;; `?<Constant "NSED v0.5">`
+   \   00000008   ........           LDR      R5,??DataTable26  ;; ELFUnload
+   \   0000000C   30D04DE2           SUB      SP,SP,#+48
+   \   00000010   B58100EF           SWI      +33205
+   \   00000014   000050E3           CMP      R0,#+0
+   \   00000018   3100001A           BNE      ??main_1
+    405            {
+    406             if ((int *)(*((int *)(int*)LIB_TOP())))
+   \   0000001C   BA8100EF           SWI      +33210
+   \   00000020   000090E5           LDR      R0,[R0, #+0]
+   \   00000024   000050E3           CMP      R0,#+0
+   \   00000028   2B00000A           BEQ      ??main_2
+    407              {
+    408               int *lib = (int *)(*((int *)(int*)LIB_TOP()));
+   \   0000002C   BA8100EF           SWI      +33210
+   \   00000030   000090E5           LDR      R0,[R0, #+0]
+    409               
+    410               if (lib[0xD00] == 0xFFFFFFFF)
+   \   00000034   D00D80E2           ADD      R0,R0,#+13312
+   \   00000038   000090E5           LDR      R0,[R0, #+0]
+   \   0000003C   010070E3           CMN      R0,#+1
+   \   00000040   2300001A           BNE      ??main_3
+    411                {
+    412                 //Getting BCFG Settings
+    413                 InitConfig();
+   \   00000044   ........           _BLF     InitConfig,??InitConfig??rA
+    414                
+    415                 //NSD Init
+    416                 CSM_RAM *save_cmpc;
+    417                 char dummy[sizeof(MAIN_CSM)];
+    418                 UpdateCSMname();
+   \   00000048   0410A0E1           MOV      R1,R4
+   \   0000004C   600084E2           ADD      R0,R4,#+96
+   \   00000050   240100EF           SWI      +292
+    419            
+    420                 LockSched();
+   \   00000054   460100EF           SWI      +326
+    421                 
+    422                 save_cmpc=CSM_root()->csm_q->current_msg_processing_csm;
+   \   00000058   068100EF           SWI      +33030
+   \   0000005C   080090E5           LDR      R0,[R0, #+8]
+   \   00000060   045090E5           LDR      R5,[R0, #+4]
+    423                 CSM_root()->csm_q->current_msg_processing_csm=CSM_root()->csm_q->csm.first;
+   \   00000064   068100EF           SWI      +33030
+   \   00000068   0060A0E1           MOV      R6,R0
+   \   0000006C   068100EF           SWI      +33030
+   \   00000070   080090E5           LDR      R0,[R0, #+8]
+   \   00000074   081096E5           LDR      R1,[R6, #+8]
+   \   00000078   080090E5           LDR      R0,[R0, #+8]
+    424                 CreateCSM(&MAINCSM.maincsm,dummy,0);
+   \   0000007C   0020A0E3           MOV      R2,#+0
+   \   00000080   040081E5           STR      R0,[R1, #+4]
+   \   00000084   04108DE2           ADD      R1,SP,#+4
+   \   00000088   480084E2           ADD      R0,R4,#+72
+   \   0000008C   070100EF           SWI      +263
+    425                 CSM_root()->csm_q->current_msg_processing_csm=save_cmpc;
+   \   00000090   068100EF           SWI      +33030
+   \   00000094   080090E5           LDR      R0,[R0, #+8]
+   \   00000098   045080E5           STR      R5,[R0, #+4]
+    426          
+    427                 //Secondary RamSwiLib Init
+    428                 CreateSecondaryRamLib();
+   \   0000009C   ........           BL       CreateSecondaryRamLib
+    429                 
+    430                 if (bcfg_type>0) {AddKeybMsgHook((void *)nse_keyhook); key_hook = 1;}
+   \   000000A0   ........           LDR      R0,??DataTable27  ;; bcfg_type
+   \   000000A4   000090E5           LDR      R0,[R0, #+0]
+   \   000000A8   000050E3           CMP      R0,#+0
+   \   000000AC   0400000A           BEQ      ??main_4
+   \   000000B0   ........           LDR      R0,??DataTable28  ;; nse_keyhook
+   \   000000B4   2B0100EF           SWI      +299
+   \   000000B8   ........           LDR      R0,??DataTable29  ;; key_hook
+   \   000000BC   0110A0E3           MOV      R1,#+1
+   \   000000C0   001080E5           STR      R1,[R0, #+0]
+    431             
+    432                 UnlockSched();
+   \                     ??main_4:
+   \   000000C4   470100EF           SWI      +327
+   \   000000C8   0000A0E3           MOV      R0,#+0
+   \   000000CC   30D08DE2           ADD      SP,SP,#+48
+   \   000000D0   7080BDE8           POP      {R4-R6,PC}
+    433                } 
+    434                 else
+    435                   {
+    436                    ShowMSG(1,(int)"NSE Launch Error!");
+   \                     ??main_3:
+   \   000000D4   0C1084E2           ADD      R1,R4,#+12
+   \   000000D8   020000EA           B        ??main_5
+    437                    SUBPROC((void *)ELFUnload);
+    438                   }
+    439              }
+    440               else 
+    441                 {
+    442                  ShowMSG(1,(int)"RAM SWI\nnot load!");
+   \                     ??main_2:
+   \   000000DC   201084E2           ADD      R1,R4,#+32
+   \   000000E0   000000EA           B        ??main_5
+    443                  SUBPROC((void *)ELFUnload);
+    444                 }
+    445            }
+    446             else 
+    447               {
+    448                ShowMSG(1,(int)"This ELF\nfor SGold!");
+   \                     ??main_1:
+   \   000000E4   341084E2           ADD      R1,R4,#+52
+   \                     ??main_5:
+   \   000000E8   0100A0E3           MOV      R0,#+1
+   \   000000EC   480100EF           SWI      +328
+    449                SUBPROC((void *)ELFUnload);
+   \   000000F0   0500A0E1           MOV      R0,R5
+   \   000000F4   710100EF           SWI      +369
+    450               }
+    451            
+    452            return 0;
+   \   000000F8   0000A0E3           MOV      R0,#+0
+   \   000000FC   30D08DE2           ADD      SP,SP,#+48
+   \   00000100   7080BDE8           POP      {R4-R6,PC}       ;; return
+   \                     ??main_0:
+   \   00000104   ........           DC32     `?<Constant "NSED v0.5">`
+    453          }
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable11:
+   \   00000000   ........           DC32     bcfg_0x137_ena
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable12:
+   \   00000000   ........           DC32     bcfg_0x136_ena
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable13:
+   \   00000000   ........           DC32     bcfg_0x138_ena
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable14:
+   \   00000000   ........           DC32     bcfg_0x139_ena
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable15:
+   \   00000000   ........           DC32     bcfg_0x13A_ena
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable16:
+   \   00000000   ........           DC32     bcfg_0x167_ena
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable17:
+   \   00000000   ........           DC32     bcfg_0x152_ena
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable18:
+   \   00000000   ........           DC32     bcfg_0x217_ena
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable19:
+   \   00000000   ........           DC32     bcfg_0x04A_ena
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable20:
+   \   00000000   ........           DC32     bcfg_0x099_ena
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable26:
+   \   00000000   ........           DC32     ELFUnload
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable27:
+   \   00000000   ........           DC32     bcfg_type
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable28:
+   \   00000000   ........           DC32     nse_keyhook
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable29:
+   \   00000000   ........           DC32     key_hook
+
+   \                                 In segment DATA_ID, align 4, align-sorted
+   \                     `?<Initializer for keyup>`:
+   \   00000000   01000000           DC32 1
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "NSE KA: SMART!">`:
+   \   00000000   4E5345204B41       DC8 "NSE KA: SMART!"
+   \              3A20534D4152
+   \              542100      
+   \   0000000F   00                 DC8 0
+   \   00000010   4E5345204B41       DC8 "NSE KA: NSG!"
+   \              3A204E534721
+   \              00          
+   \   0000001D   000000             DC8 0, 0, 0
+   \   00000020   4E5345204B41       DC8 "NSE KA: SGOLD!"
+   \              3A2053474F4C
+   \              442100      
+   \   0000002F   00                 DC8 0
+   \   00000030   4E5345204653       DC8 "NSE FS:\012SMART!"
+   \              3A0A534D4152
+   \              542100      
+   \   0000003F   00                 DC8 0
+   \   00000040   4E5345204653       DC8 "NSE FS:\012NSG!"
+   \              3A0A4E534721
+   \              00          
+   \   0000004D   000000             DC8 0, 0, 0
+   \   00000050   4E5345204653       DC8 "NSE FS:\012SGOLD!"
+   \              3A0A53474F4C
+   \              442100      
+   \   0000005F   00                 DC8 0
+
+   Maximum stack usage in bytes:
+
+     Function              CSTACK
+     --------              ------
+     CreateSecondaryRamLib     4
+     ELFUnload                 4
+     RepairRAMSWILib           4
+     main                     64
+     maincsm_onclose           4
+     maincsm_oncreate          0
+     maincsm_onmessage        12
+     nse_keyhook              44
+     nse_onkey                20
+     nse_onmessage             8
+
+
+   Segment part sizes:
+
+     Function/Label               Bytes
+     --------------               -----
+     minus11                         4
+     keyup                           4
+     key_hook                        4
+     gbs_msg_nsg_msg                20
+     gbs_msg_nsg_key                20
+     nse_keyhook                   648
+     nse_onkey                     372
+     nse_onmessage                 148
+     CreateSecondaryRamLib         504
+     RepairRAMSWILib               296
+     maincsm_onmessage             152
+     maincsm_oncreate                4
+     ELFUnload                      28
+     maincsm_onclose                28
+     maincsm_name_body             280
+     ?<Constant "NSED v0.5">       116
+     main                          264
+     ??DataTable11                   4
+     ??DataTable12                   4
+     ??DataTable13                   4
+     ??DataTable14                   4
+     ??DataTable15                   4
+     ??DataTable16                   4
+     ??DataTable17                   4
+     ??DataTable18                   4
+     ??DataTable19                   4
+     ??DataTable20                   4
+     ??DataTable26                   4
+     ??DataTable27                   4
+     ??DataTable28                   4
+     ??DataTable29                   4
+     ?<Initializer for keyup>        4
+     ?<Constant "NSE KA: SMART!">   96
+      Others                       112
+
+ 
+ 2 588 bytes in segment CODE
+   216 bytes in segment DATA_C
+     4 bytes in segment DATA_I
+     4 bytes in segment DATA_ID
+   324 bytes in segment DATA_Z
+    24 bytes in segment INITTAB
+ 
+ 2 500 bytes of CODE  memory (+ 112 bytes shared)
+   220 bytes of CONST memory
+   328 bytes of DATA  memory
+
+Errors: none
+Warnings: none

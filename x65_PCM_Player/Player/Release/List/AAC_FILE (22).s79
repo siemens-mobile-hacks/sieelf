@@ -1,0 +1,1886 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:23 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD /
+//                       EC\AAC_FILE (22).c                                  /
+//    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AAC /
+//                       DEC\AAC_FILE (22).c" -D NDEBUG -lC                  /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\AAC_FILE (22).s79                              /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME `AAC_FILE (22)`
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+??DataTable0 EQU 0
+??DataTable1 EQU 0
+??DataTable10 EQU 0
+??DataTable11 EQU 0
+??DataTable12 EQU 0
+??DataTable13 EQU 0
+??DataTable2 EQU 0
+??DataTable3 EQU 0
+??DataTable4 EQU 0
+??DataTable5 EQU 0
+??DataTable6 EQU 0
+??DataTable7 EQU 0
+??DataTable8 EQU 0
+??DataTable9 EQU 0
+        MULTWEAK ??aacIMDCT??rT
+        MULTWEAK ??raac_DCT4??rA
+        FUNCTION DecWindowOverlap,0203H
+        LOCFRAME CSTACK, 56, STACK
+        FUNCTION DecWindowOverlapLongStart,0203H
+        LOCFRAME CSTACK, 60, STACK
+        FUNCTION DecWindowOverlapLongStop,0203H
+        LOCFRAME CSTACK, 60, STACK
+        FUNCTION DecWindowOverlapShort,0203H
+        LOCFRAME CSTACK, 64, STACK
+        PUBLIC aacIMDCT
+        FUNCTION aacIMDCT,0203H
+        LOCFRAME CSTACK, 52, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+raac_DCT4           SYMBOL "raac_DCT4"
+aacIMDCT            SYMBOL "aacIMDCT"
+??aacIMDCT??rT      SYMBOL "??rT", aacIMDCT
+??raac_DCT4??rA     SYMBOL "??rA", raac_DCT4
+
+        EXTERN raac_DCT4
+        FUNCTION raac_DCT4,0202H
+        EXTERN raac_kbdWindow
+        EXTERN raac_kbdWindowOffset
+        EXTERN raac_sinWindow
+        EXTERN raac_sinWindowOffset
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??DecWindowOverlap??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE DecWindowOverlap
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (22).c
+//    1 /* ***** BEGIN LICENSE BLOCK *****  
+//    2  * Source last modified: $Id: imdct.c,v 1.1 2005/02/26 01:47:35 jrecker Exp $ 
+//    3  *   
+//    4  * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+//    5  *       
+//    6  * The contents of this file, and the files included with this file, 
+//    7  * are subject to the current version of the RealNetworks Public 
+//    8  * Source License (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the current version of the RealNetworks Community 
+//   11  * Source License (the "RCSL") available at 
+//   12  * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+//   13  * will apply. You may also obtain the license terms directly from 
+//   14  * RealNetworks.  You may not use this file except in compliance with 
+//   15  * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+//   16  * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+//   17  * the rights, obligations and limitations governing use of the 
+//   18  * contents of the file. 
+//   19  *   
+//   20  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   21  * developer of the Original Code and owns the copyrights in the 
+//   22  * portions it created. 
+//   23  *   
+//   24  * This file, and the files included with this file, is distributed 
+//   25  * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+//   26  * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+//   27  * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+//   28  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+//   29  * ENJOYMENT OR NON-INFRINGEMENT. 
+//   30  *  
+//   31  * Technology Compatibility Kit Test Suite(s) Location:  
+//   32  *    http://www.helixcommunity.org/content/tck  
+//   33  *  
+//   34  * Contributor(s):  
+//   35  *   
+//   36  * ***** END LICENSE BLOCK ***** */  
+//   37 
+//   38 /**************************************************************************************
+//   39  * Fixed-point HE-AAC decoder
+//   40  * Jon Recker (jrecker@real.com)
+//   41  * February 2005
+//   42  *
+//   43  * imdct.c - inverse MDCT
+//   44  **************************************************************************************/
+//   45 
+//   46 #include "coder_aac.h"
+//   47 #include "assembly_aac.h"
+//   48 
+//   49 #define RND_VAL		(1 << (FBITS_OUT_IMDCT-1))
+//   50 
+//   51 #ifndef AAC_ENABLE_SBR
+//   52 
+//   53 /**************************************************************************************
+//   54  * Function:    DecWindowOverlap
+//   55  *
+//   56  * Description: apply synthesis window, do overlap-add, clip to 16-bit PCM,
+//   57  *                for winSequence LONG-LONG
+//   58  *
+//   59  * Inputs:      input buffer (output of type-IV DCT)
+//   60  *              overlap buffer (saved from last time)
+//   61  *              number of channels
+//   62  *              window type (sin or KBD) for input buffer
+//   63  *              window type (sin or KBD) for overlap buffer
+//   64  *
+//   65  * Outputs:     one channel, one frame of 16-bit PCM, interleaved by nChans
+//   66  *
+//   67  * Return:      none
+//   68  *
+//   69  * Notes:       this processes one channel at a time, but skips every other sample in
+//   70  *                the output buffer (pcm) for stereo interleaving
+//   71  *              this should fit in registers on ARM
+//   72  *
+//   73  * TODO:        ARM5E version with saturating overlap/add (QADD)
+//   74  *              asm code with free pointer updates, better load scheduling
+//   75  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function DecWindowOverlap
+        ARM
+//   76 static void DecWindowOverlap(int *buf0, int *over0, short *pcm0, int nChans, int winTypeCurr, int winTypePrev)
+//   77 {
+DecWindowOverlap:
+        PUSH     {R0,R1,R3-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+48
+//   78 	int in, w0, w1, f0, f1;
+//   79 	int *buf1, *over1;
+//   80 	short *pcm1;
+//   81 	const int *wndPrev, *wndCurr;
+//   82 
+//   83 	buf0 += (1024 >> 1);
+//   84 	buf1  = buf0  - 1;
+//   85 	pcm1  = pcm0 + (1024 - 1) * nChans;
+//   86 	over1 = over0 + 1024 - 1;
+//   87 
+//   88 	wndPrev = (winTypePrev == 1 ? kbdWindow + kbdWindowOffset[1] : sinWindow + sinWindowOffset[1]);
+        LDR      R7,??DataTable17  ;; raac_sinWindow
+        SUB      SP,SP,#+8
+        CFI CFA R13+56
+        LDR      R4,[SP, #+8]
+        LDR      R0,[SP, #+56]
+        LDR      R1,[SP, #+60]
+//   89 	if (winTypeCurr == winTypePrev) {
+        LDR      R9,[SP, #+16]
+        MOV      R11,R2
+        LDR      R2,[SP, #+16]
+        ADD      R4,R4,#+2048
+        SUB      R3,R4,#+4
+        STR      R3,[SP, #+0]
+        MOV      R3,#+254
+        ORR      R3,R3,#0x700
+        MLA      R10,R3,R2,R11
+        MOV      R2,R3, LSL #+1
+        LDR      R3,[SP, #+12]
+        STR      R4,[SP, #+8]
+        LDR      R4,??DataTable15  ;; raac_sinWindowOffset
+        ADD      R12,R2,R3
+        LDR      R2,??DataTable14  ;; raac_kbdWindowOffset
+        LDR      R3,??DataTable16  ;; raac_kbdWindow
+        CMP      R1,#+1
+        LDREQ    R6,[R2, #+4]
+        LSL      R9,R9,#+1
+        LDRNE    R6,[R4, #+4]
+        RSB      R9,R9,#+0
+        ADDEQ    R6,R3,R6, LSL #+2
+        ADDNE    R6,R7,R6, LSL #+2
+        STR      R9,[SP, #+4]
+        CMP      R0,R1
+        BNE      ??DecWindowOverlap_0
+//   90 		/* cut window loads in half since current and overlap sections use same symmetric window */
+//   91 		do {
+//   92 			w0 = *wndPrev++;
+??DecWindowOverlap_1:
+        LDR      R2,[R6], #+4
+//   93 			w1 = *wndPrev++;
+//   94 			in = *buf0++;
+        LDR      R3,[SP, #+8]
+//   95 
+//   96 			f0 = MULSHIFT32(w0, in);
+//   97 			f1 = MULSHIFT32(w1, in);
+//   98 
+//   99 			in = *over0;	
+//  100 			*pcm0 = CLIPTOSHORT( (in - f0 + RND_VAL) >> FBITS_OUT_IMDCT );
+        MOV      R8,R2
+        LDR      R0,[R3], #+4
+        LDR      R7,[R6], #+4
+        ASR      R9,R2,#+31
+        LDR      R2,[SP, #+12]
+        STR      R3,[SP, #+8]
+        LDR      R4,[R2, #+0]
+        ASR      R1,R0,#+31
+        UMULL    R2,R3,R8,R0
+        MLA      R3,R8,R1,R3
+        MLA      R3,R9,R0,R3
+        SUB      R2,R4,R3
+        ADD      R2,R2,#+4
+        ASR      R2,R2,#+3
+        ASR      R3,R2,#+31
+        CMP      R3,R2, ASR #+15
+        MOVNE    R2,#+255
+        ORRNE    R2,R2,#0x7F00
+        EORNE    R2,R2,R3
+        STRH     R2,[R11, #+0]
+//  101 			pcm0 += nChans;
+        LDR      R2,[SP, #+16]
+//  102 
+//  103 			in = *over1;	
+//  104 			*pcm1 = CLIPTOSHORT( (in + f1 + RND_VAL) >> FBITS_OUT_IMDCT );
+        ASR      R3,R7,#+31
+        ADD      R11,R11,R2, LSL #+1
+        MOV      R2,R7
+        UMULL    R4,R5,R2,R0
+        MLA      R5,R2,R1,R5
+        LDR      R1,[R12, #+0]
+        MLA      R5,R3,R0,R5
+        ADD      R0,R1,R5
+        ADD      R0,R0,#+4
+        ASR      R0,R0,#+3
+        ASR      R1,R0,#+31
+        CMP      R1,R0, ASR #+15
+        MOVNE    R0,#+255
+        ORRNE    R0,R0,#0x7F00
+        EORNE    R0,R0,R1
+        STRH     R0,[R10, #+0]
+//  105 			pcm1 -= nChans;
+        LDR      R0,[SP, #+4]
+//  106 
+//  107 			in = *buf1--;
+        LDR      R4,[SP, #+0]
+        ADD      R10,R0,R10
+        LDR      R0,[R4], #-4
+        STR      R4,[SP, #+0]
+//  108 			*over1-- = MULSHIFT32(w0, in);
+        ASR      R1,R0,#+31
+        UMULL    R4,R5,R8,R0
+        MLA      R5,R8,R1,R5
+        MLA      R5,R9,R0,R5
+        MOV      R4,R5
+        STR      R4,[R12], #-4
+//  109 			*over0++ = MULSHIFT32(w1, in);
+        UMULL    R4,R5,R2,R0
+        MLA      R5,R2,R1,R5
+        MLA      R5,R3,R0,R5
+        LDR      R0,[SP, #+12]
+        MOV      R4,R5
+        STR      R4,[R0], #+4
+        STR      R0,[SP, #+12]
+//  110 		} while (over0 < over1);
+        CMP      R0,R12
+        BCC      ??DecWindowOverlap_1
+        ADD      SP,SP,#+20
+        CFI CFA R13+36
+        POP      {R4-R11,PC}
+        CFI CFA R13+56
+//  111 	} else {
+//  112 		/* different windows for current and overlap parts - should still fit in registers on ARM w/o stack spill */
+//  113 		wndCurr = (winTypeCurr == 1 ? kbdWindow + kbdWindowOffset[1] : sinWindow + sinWindowOffset[1]);
+??DecWindowOverlap_0:
+        CMP      R0,#+1
+        LDREQ    R0,[R2, #+4]
+        ADDEQ    R9,R3,R0, LSL #+2
+        LDRNE    R0,[R4, #+4]
+        ADDNE    R9,R7,R0, LSL #+2
+//  114 		do {
+//  115 			w0 = *wndPrev++;
+//  116 			w1 = *wndPrev++;
+//  117 			in = *buf0++;
+??DecWindowOverlap_2:
+        LDR      R3,[SP, #+8]
+        LDR      R7,[R6], #+4
+        LDR      R2,[R6], #+4
+        LDR      R0,[R3], #+4
+        STR      R3,[SP, #+8]
+//  118 
+//  119 			f0 = MULSHIFT32(w0, in);
+//  120 			f1 = MULSHIFT32(w1, in);
+        ASR      R1,R0,#+31
+        ASR      R3,R2,#+31
+        UMULL    R4,R5,R2,R0
+        MLA      R5,R2,R1,R5
+//  121 
+//  122 			in = *over0;	
+//  123 			*pcm0 = CLIPTOSHORT( (in - f0 + RND_VAL) >> FBITS_OUT_IMDCT );
+        LDR      R2,[SP, #+12]
+        MLA      R5,R3,R0,R5
+        LDR      LR,[R2, #+0]
+        MOV      R8,R5
+        MOV      R2,R7
+        ASR      R3,R7,#+31
+        UMULL    R4,R5,R2,R0
+        MLA      R5,R2,R1,R5
+        MLA      R5,R3,R0,R5
+        SUB      R0,LR,R5
+        ADD      R0,R0,#+4
+        ASR      R0,R0,#+3
+        ASR      R1,R0,#+31
+        CMP      R1,R0, ASR #+15
+        MOVNE    R0,#+255
+        ORRNE    R0,R0,#0x7F00
+        EORNE    R0,R0,R1
+        STRH     R0,[R11, #+0]
+//  124 			pcm0 += nChans;
+        LDR      R0,[SP, #+16]
+        ADD      R11,R11,R0, LSL #+1
+//  125 
+//  126 			in = *over1;	
+//  127 			*pcm1 = CLIPTOSHORT( (in + f1 + RND_VAL) >> FBITS_OUT_IMDCT );
+        LDR      R0,[R12, #+0]
+        ADD      R0,R0,R8
+        ADD      R0,R0,#+4
+        ASR      R0,R0,#+3
+        ASR      R1,R0,#+31
+        CMP      R1,R0, ASR #+15
+        MOVNE    R0,#+255
+        ORRNE    R0,R0,#0x7F00
+        EORNE    R0,R0,R1
+        STRH     R0,[R10, #+0]
+//  128 			pcm1 -= nChans;
+        LDR      R0,[SP, #+4]
+//  129 
+//  130 			w0 = *wndCurr++;
+//  131 			w1 = *wndCurr++;
+//  132 			in = *buf1--;
+        LDR      R3,[SP, #+0]
+        LDR      R2,[R9], #+4
+        LDR      R7,[R9], #+4
+        ADD      R10,R0,R10
+        LDR      R0,[R3], #-4
+        STR      R3,[SP, #+0]
+//  133 
+//  134 			*over1-- = MULSHIFT32(w0, in);
+        ASR      R1,R0,#+31
+        ASR      R3,R2,#+31
+        UMULL    R4,R5,R2,R0
+        MLA      R5,R2,R1,R5
+        MLA      R5,R3,R0,R5
+//  135 			*over0++ = MULSHIFT32(w1, in);
+        ASR      R3,R7,#+31
+        MOV      R2,R5
+        STR      R2,[R12], #-4
+        MOV      R2,R7
+        UMULL    R4,R5,R2,R0
+        MLA      R5,R2,R1,R5
+        MLA      R5,R3,R0,R5
+        LDR      R0,[SP, #+12]
+        MOV      R4,R5
+        STR      R4,[R0], #+4
+        STR      R0,[SP, #+12]
+//  136 		} while (over0 < over1);
+        CMP      R0,R12
+        BCC      ??DecWindowOverlap_2
+//  137 	}
+//  138 }
+        ADD      SP,SP,#+20       ;; stack cleaning
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        CFI EndBlock cfiBlock1
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??DecWindowOverlapLongStart??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE DecWindowOverlapLongStart
+//  139 
+//  140 /**************************************************************************************
+//  141  * Function:    DecWindowOverlapLongStart
+//  142  *
+//  143  * Description: apply synthesis window, do overlap-add, clip to 16-bit PCM,
+//  144  *                for winSequence LONG-START
+//  145  *
+//  146  * Inputs:      input buffer (output of type-IV DCT)
+//  147  *              overlap buffer (saved from last time)
+//  148  *              number of channels
+//  149  *              window type (sin or KBD) for input buffer
+//  150  *              window type (sin or KBD) for overlap buffer
+//  151  *
+//  152  * Outputs:     one channel, one frame of 16-bit PCM, interleaved by nChans
+//  153  *
+//  154  * Return:      none
+//  155  *
+//  156  * Notes:       this processes one channel at a time, but skips every other sample in
+//  157  *                the output buffer (pcm) for stereo interleaving
+//  158  *              this should fit in registers on ARM
+//  159  *
+//  160  * TODO:        ARM5E version with saturating overlap/add (QADD)
+//  161  *              asm code with free pointer updates, better load scheduling
+//  162  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function DecWindowOverlapLongStart
+        ARM
+//  163 static void DecWindowOverlapLongStart(int *buf0, int *over0, short *pcm0, int nChans, int winTypeCurr, int winTypePrev)
+//  164 {
+DecWindowOverlapLongStart:
+        PUSH     {R0,R1,R3-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+48
+        SUB      SP,SP,#+12
+        CFI CFA R13+60
+        LDR      R1,[SP, #+64]
+//  165 	int i,  in, w0, w1, f0, f1;
+//  166 	int *buf1, *over1;
+//  167 	short *pcm1;
+//  168 	const int *wndPrev, *wndCurr;
+//  169 
+//  170 	buf0 += (1024 >> 1);
+//  171 	buf1  = buf0  - 1;
+//  172 	pcm1  = pcm0 + (1024 - 1) * nChans;
+//  173 	over1 = over0 + 1024 - 1;
+        LDR      R4,[SP, #+16]
+        ADD      R3,R0,#+2048
+        LDR      R0,[SP, #+20]
+        MOV      R10,R2
+        SUB      R2,R3,#+4
+        STR      R2,[SP, #+4]
+        MOV      R2,#+254
+        ORR      R2,R2,#0x700
+        MLA      R0,R2,R0,R10
+        STR      R3,[SP, #+12]
+        MOV      R3,R2, LSL #+1
+        ADD      R3,R3,R4
+        STR      R3,[SP, #+0]
+        CMP      R1,#+1
+        BNE      ??DecWindowOverlapLongStart_0
+        LDR      R1,??DecWindowOverlapLongStart_1  ;; raac_kbdWindowOffset + 4
+        LDR      R2,??DataTable16  ;; raac_kbdWindow
+        B        ??DecWindowOverlapLongStart_2
+??DecWindowOverlapLongStart_0:
+        LDR      R1,??DecWindowOverlapLongStart_1+0x4  ;; raac_sinWindowOffset + 4
+        LDR      R2,??DataTable17  ;; raac_sinWindow
+??DecWindowOverlapLongStart_2:
+        LDR      R1,[R1, #+0]
+//  174 
+//  175 	wndPrev = (winTypePrev == 1 ? kbdWindow + kbdWindowOffset[1] : sinWindow + sinWindowOffset[1]);
+//  176 	i = 448;	/* 2 outputs, 2 overlaps per loop */
+        LDR      R3,[SP, #+20]
+        ADD      R1,R2,R1, LSL #+2
+        MOV      R8,#+448
+        LSL      R3,R3,#+1
+        RSB      R3,R3,#+0
+        STR      R3,[SP, #+8]
+//  177 	do {
+//  178 		w0 = *wndPrev++;
+//  179 		w1 = *wndPrev++;
+//  180 		in = *buf0++;
+??DecWindowOverlapLongStart_3:
+        LDR      R4,[SP, #+12]
+        LDR      R9,[R1], #+4
+        LDR      R12,[R1], #+4
+        LDR      R2,[R4], #+4
+        STR      R4,[SP, #+12]
+//  181 
+//  182 		f0 = MULSHIFT32(w0, in);
+//  183 		f1 = MULSHIFT32(w1, in);
+        ASR      R3,R2,#+31
+        MOV      R4,R12
+        ASR      R5,R12,#+31
+        UMULL    R6,R7,R4,R2
+//  184 
+//  185 		in = *over0;	
+//  186 		*pcm0 = CLIPTOSHORT( (in - f0 + RND_VAL) >> FBITS_OUT_IMDCT );
+        MOV      LR,#+255
+        MLA      R7,R4,R3,R7
+        LDR      R4,[SP, #+16]
+        MLA      R7,R5,R2,R7
+        LDR      R11,[R4, #+0]
+        MOV      R12,R7
+        MOV      R4,R9
+        ASR      R5,R9,#+31
+        UMULL    R6,R7,R4,R2
+        ORR      LR,LR,#0x7F00
+        MLA      R7,R4,R3,R7
+        MLA      R7,R5,R2,R7
+        SUB      R2,R11,R7
+        ADD      R2,R2,#+4
+        ASR      R2,R2,#+3
+        ASR      R3,R2,#+31
+        CMP      R3,R2, ASR #+15
+        EORNE    R2,LR,R3
+        STRH     R2,[R10, #+0]
+//  187 		pcm0 += nChans;
+        LDR      R2,[SP, #+20]
+        ADD      R10,R10,R2, LSL #+1
+//  188 
+//  189 		in = *over1;	
+//  190 		*pcm1 = CLIPTOSHORT( (in + f1 + RND_VAL) >> FBITS_OUT_IMDCT );
+        LDR      R2,[SP, #+0]
+        LDR      R2,[R2, #+0]
+        ADD      R2,R2,R12
+        ADD      R2,R2,#+4
+        ASR      R2,R2,#+3
+        ASR      R3,R2,#+31
+        CMP      R3,R2, ASR #+15
+        EORNE    R2,LR,R3
+        STRH     R2,[R0, #+0]
+//  191 		pcm1 -= nChans;
+        LDR      R2,[SP, #+8]
+//  192 
+//  193 		in = *buf1--;
+        LDR      R4,[SP, #+4]
+//  194 
+//  195 		*over1-- = 0;		/* Wn = 0 for n = (2047, 2046, ... 1600) */
+        LDR      R6,[SP, #+0]
+        ADD      R0,R2,R0
+        LDR      R2,[R4], #-4
+        STR      R4,[SP, #+4]
+        MOV      R4,#+0
+        STR      R4,[R6], #-4
+//  196 		*over0++ = in >> 1;	/* Wn = 1 for n = (1024, 1025, ... 1471) */
+        LDR      R4,[SP, #+16]
+        STR      R6,[SP, #+0]
+        ASR      R2,R2,#+1
+        STR      R2,[R4], #+4
+        STR      R4,[SP, #+16]
+//  197 	} while (--i);
+        SUBS     R8,R8,#+1
+        BNE      ??DecWindowOverlapLongStart_3
+//  198 
+//  199 	wndCurr = (winTypeCurr == 1 ? kbdWindow + kbdWindowOffset[0] : sinWindow + sinWindowOffset[0]);
+        LDR      R2,[SP, #+60]
+        CMP      R2,#+1
+        BNE      ??DecWindowOverlapLongStart_4
+        LDR      R2,??DataTable14  ;; raac_kbdWindowOffset
+        LDR      R3,??DataTable16  ;; raac_kbdWindow
+        B        ??DecWindowOverlapLongStart_5
+??DecWindowOverlapLongStart_4:
+        LDR      R2,??DataTable15  ;; raac_sinWindowOffset
+        LDR      R3,??DataTable17  ;; raac_sinWindow
+??DecWindowOverlapLongStart_5:
+        LDR      R2,[R2, #+0]
+        ADD      R11,R3,R2, LSL #+2
+//  200 
+//  201 	/* do 64 more loops - 2 outputs, 2 overlaps per loop */
+//  202 	do {
+//  203 		w0 = *wndPrev++;
+//  204 		w1 = *wndPrev++;
+//  205 		in = *buf0++;
+??DecWindowOverlapLongStart_6:
+        LDR      R6,[SP, #+12]
+        LDR      R8,[R1], #+4
+        LDR      R4,[R1], #+4
+        LDR      R2,[R6], #+4
+        STR      R6,[SP, #+12]
+//  206 
+//  207 		f0 = MULSHIFT32(w0, in);
+//  208 		f1 = MULSHIFT32(w1, in);
+        ASR      R3,R2,#+31
+        ASR      R5,R4,#+31
+        UMULL    R6,R7,R4,R2
+        MLA      R7,R4,R3,R7
+//  209 
+//  210 		in = *over0;	
+//  211 		*pcm0 = CLIPTOSHORT( (in - f0 + RND_VAL) >> FBITS_OUT_IMDCT );
+        LDR      R4,[SP, #+16]
+        MLA      R7,R5,R2,R7
+        LDR      R9,[R4, #+0]
+        MOV      R12,R7
+        MOV      R4,R8
+        ASR      R5,R8,#+31
+        UMULL    R6,R7,R4,R2
+        MLA      R7,R4,R3,R7
+        MLA      R7,R5,R2,R7
+        SUB      R2,R9,R7
+        ADD      R2,R2,#+4
+        ASR      R2,R2,#+3
+        ASR      R3,R2,#+31
+        CMP      R3,R2, ASR #+15
+        EORNE    R2,LR,R3
+        STRH     R2,[R10, #+0]
+//  212 		pcm0 += nChans;
+        LDR      R2,[SP, #+20]
+        ADD      R10,R10,R2, LSL #+1
+//  213 
+//  214 		in = *over1;	
+//  215 		*pcm1 = CLIPTOSHORT( (in + f1 + RND_VAL) >> FBITS_OUT_IMDCT );
+        LDR      R2,[SP, #+0]
+        LDR      R2,[R2, #+0]
+        ADD      R2,R2,R12
+        ADD      R2,R2,#+4
+        ASR      R2,R2,#+3
+        ASR      R3,R2,#+31
+        CMP      R3,R2, ASR #+15
+        EORNE    R2,LR,R3
+        STRH     R2,[R0, #+0]
+//  216 		pcm1 -= nChans;
+        LDR      R2,[SP, #+8]
+//  217 
+//  218 		w0 = *wndCurr++;	/* W[0], W[1], ... --> W[255], W[254], ... */
+//  219 		w1 = *wndCurr++;	/* W[127], W[126], ... --> W[128], W[129], ... */
+//  220 		in = *buf1--;
+        LDR      R4,[SP, #+4]
+        LDR      R9,[R11], #+4
+        LDR      R12,[R11], #+4
+        ADD      R0,R2,R0
+        LDR      R2,[R4], #-4
+        STR      R4,[SP, #+4]
+//  221 
+//  222 		*over1-- = MULSHIFT32(w0, in);	/* Wn = short window for n = (1599, 1598, ... , 1536) */
+        ASR      R3,R2,#+31
+        MOV      R4,R9
+        ASR      R5,R9,#+31
+        UMULL    R6,R7,R4,R2
+        MLA      R7,R4,R3,R7
+        LDR      R4,[SP, #+0]
+        MLA      R7,R5,R2,R7
+//  223 		*over0++ = MULSHIFT32(w1, in);	/* Wn = short window for n = (1472, 1473, ... , 1535) */
+        ASR      R5,R12,#+31
+        MOV      R6,R7
+        STR      R6,[R4], #-4
+        STR      R4,[SP, #+0]
+        MOV      R4,R12
+        UMULL    R6,R7,R4,R2
+        MLA      R7,R4,R3,R7
+        MLA      R7,R5,R2,R7
+        LDR      R2,[SP, #+16]
+        MOV      R6,R7
+        STR      R6,[R2], #+4
+//  224 	} while (over0 < over1);
+        LDR      R3,[SP, #+0]
+        STR      R2,[SP, #+16]
+        CMP      R2,R3
+        BCC      ??DecWindowOverlapLongStart_6
+//  225 }
+        ADD      SP,SP,#+24       ;; stack cleaning
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        DATA
+??DecWindowOverlapLongStart_1:
+        DC32     raac_kbdWindowOffset + 4
+        DC32     raac_sinWindowOffset + 4
+        CFI EndBlock cfiBlock3
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??DecWindowOverlapLongStop??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE DecWindowOverlapLongStop
+//  226 
+//  227 /**************************************************************************************
+//  228  * Function:    DecWindowOverlapLongStop
+//  229  *
+//  230  * Description: apply synthesis window, do overlap-add, clip to 16-bit PCM,
+//  231  *                for winSequence LONG-STOP
+//  232  *
+//  233  * Inputs:      input buffer (output of type-IV DCT)
+//  234  *              overlap buffer (saved from last time)
+//  235  *              number of channels
+//  236  *              window type (sin or KBD) for input buffer
+//  237  *              window type (sin or KBD) for overlap buffer
+//  238  *
+//  239  * Outputs:     one channel, one frame of 16-bit PCM, interleaved by nChans
+//  240  *
+//  241  * Return:      none
+//  242  *
+//  243  * Notes:       this processes one channel at a time, but skips every other sample in
+//  244  *                the output buffer (pcm) for stereo interleaving
+//  245  *              this should fit in registers on ARM
+//  246  *
+//  247  * TODO:        ARM5E version with saturating overlap/add (QADD)
+//  248  *              asm code with free pointer updates, better load scheduling
+//  249  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function DecWindowOverlapLongStop
+        ARM
+//  250 static void DecWindowOverlapLongStop(int *buf0, int *over0, short *pcm0, int nChans, int winTypeCurr, int winTypePrev)
+//  251 {
+DecWindowOverlapLongStop:
+        PUSH     {R0,R1,R3-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+48
+//  252 	int i, in, w0, w1, f0, f1;
+//  253 	int *buf1, *over1;
+//  254 	short *pcm1;
+//  255 	const int *wndPrev, *wndCurr;
+//  256 
+//  257 	buf0 += (1024 >> 1);
+//  258 	buf1  = buf0  - 1;
+//  259 	pcm1  = pcm0 + (1024 - 1) * nChans;
+//  260 	over1 = over0 + 1024 - 1;
+//  261 
+//  262 	wndPrev = (winTypePrev == 1 ? kbdWindow + kbdWindowOffset[0] : sinWindow + sinWindowOffset[0]);
+        LDR      R8,??DataTable17  ;; raac_sinWindow
+        SUB      SP,SP,#+12
+        CFI CFA R13+60
+        LDR      R6,[SP, #+12]
+        LDR      R1,[SP, #+64]
+        LDR      R0,[SP, #+60]
+        ADD      R6,R6,#+2048
+        SUB      R4,R6,#+4
+        STR      R4,[SP, #+4]
+        MOV      R4,#+254
+        ORR      R4,R4,#0x700
+        MLA      R12,R4,R3,R2
+        MOV      R3,R4, LSL #+1
+        LDR      R4,[SP, #+16]
+        STR      R6,[SP, #+12]
+        LDR      R6,??DataTable15  ;; raac_sinWindowOffset
+        ADD      LR,R3,R4
+        LDR      R3,??DataTable14  ;; raac_kbdWindowOffset
+        LDR      R4,??DataTable16  ;; raac_kbdWindow
+        CMP      R1,#+1
+        LDREQ    R9,[R3, #+0]
+//  263 	wndCurr = (winTypeCurr == 1 ? kbdWindow + kbdWindowOffset[1] : sinWindow + sinWindowOffset[1]);
+//  264 
+//  265 	i = 448;	/* 2 outputs, 2 overlaps per loop */
+        LDR      R1,[SP, #+20]
+        LDRNE    R9,[R6, #+0]
+        LSL      R1,R1,#+1
+        ADDEQ    R9,R4,R9, LSL #+2
+        ADDNE    R9,R8,R9, LSL #+2
+        CMP      R0,#+1
+        LDREQ    R0,[R3, #+4]
+        STR      R9,[SP, #+0]
+        LDRNE    R0,[R6, #+4]
+        MOV      R6,#+448
+        ADDEQ    R3,R4,R0, LSL #+2
+        ADDNE    R3,R8,R0, LSL #+2
+        RSB      R1,R1,#+0
+        STR      R1,[SP, #+8]
+//  266 	do {
+//  267 		/* Wn = 0 for n = (0, 1, ... 447) */
+//  268 		/* Wn = 1 for n = (576, 577, ... 1023) */
+//  269 		in = *buf0++;
+??DecWindowOverlapLongStop_0:
+        LDR      R4,[SP, #+12]
+//  270 		f1 = in >> 1;	/* scale since skipping multiply by Q31 */
+//  271 
+//  272 		in = *over0;	
+//  273 		*pcm0 = CLIPTOSHORT( (in + RND_VAL) >> FBITS_OUT_IMDCT );
+        LDR      R1,[SP, #+16]
+        LDR      R0,[R4], #+4
+        STR      R4,[SP, #+12]
+        LDR      R1,[R1, #+0]
+        ADD      R1,R1,#+4
+        ASR      R1,R1,#+3
+        ASR      R4,R1,#+31
+        CMP      R4,R1, ASR #+15
+        MOVNE    R1,#+255
+        ORRNE    R1,R1,#0x7F00
+        EORNE    R1,R1,R4
+        STRH     R1,[R2, #+0]
+//  274 		pcm0 += nChans;
+        LDR      R1,[SP, #+20]
+        ADD      R2,R2,R1, LSL #+1
+//  275 
+//  276 		in = *over1;	
+//  277 		*pcm1 = CLIPTOSHORT( (in + f1 + RND_VAL) >> FBITS_OUT_IMDCT );
+        LDR      R1,[LR, #+0]
+        ADD      R0,R1,R0, ASR #+1
+        ADD      R0,R0,#+4
+        ASR      R0,R0,#+3
+        ASR      R1,R0,#+31
+        CMP      R1,R0, ASR #+15
+        MOVNE    R0,#+255
+        ORRNE    R0,R0,#0x7F00
+        EORNE    R0,R0,R1
+        STRH     R0,[R12, #+0]
+//  278 		pcm1 -= nChans;
+        LDR      R0,[SP, #+8]
+//  279 
+//  280 		w0 = *wndCurr++;
+//  281 		w1 = *wndCurr++;
+//  282 		in = *buf1--;
+        LDR      R4,[SP, #+4]
+        LDR      R9,[R3], #+4
+        LDR      R8,[R3], #+4
+        ADD      R12,R0,R12
+        LDR      R0,[R4], #-4
+        STR      R4,[SP, #+4]
+//  283 
+//  284 		*over1-- = MULSHIFT32(w0, in);
+        ASR      R1,R0,#+31
+        MOV      R10,R0
+        MOV      R11,R1
+        MOV      R0,R9
+        ASR      R1,R9,#+31
+        UMULL    R4,R5,R0,R10
+//  285 		*over0++ = MULSHIFT32(w1, in);
+//  286 	} while (--i);
+        SUBS     R6,R6,#+1
+        MLA      R5,R0,R11,R5
+        MLA      R5,R1,R10,R5
+        ASR      R1,R8,#+31
+        MOV      R0,R5
+        STR      R0,[LR], #-4
+        MOV      R0,R8
+        UMULL    R4,R5,R0,R10
+        MLA      R5,R0,R11,R5
+        LDR      R0,[SP, #+16]
+        MLA      R5,R1,R10,R5
+        MOV      R4,R5
+        STR      R4,[R0], #+4
+        STR      R0,[SP, #+16]
+        BNE      ??DecWindowOverlapLongStop_0
+//  287 
+//  288 	/* do 64 more loops - 2 outputs, 2 overlaps per loop */
+//  289 	do {
+//  290 		w0 = *wndPrev++;	/* W[0], W[1], ...W[63] */
+??DecWindowOverlapLongStop_1:
+        LDR      R1,[SP, #+0]
+//  291 		w1 = *wndPrev++;	/* W[127], W[126], ... W[64] */
+//  292 		in = *buf0++;
+        LDR      R6,[SP, #+12]
+        LDR      R9,[R1], #+4
+        STR      R1,[SP, #+0]
+        LDR      R4,[R1], #+4
+        STR      R1,[SP, #+0]
+        LDR      R0,[R6], #+4
+        STR      R6,[SP, #+12]
+//  293 
+//  294 		f0 = MULSHIFT32(w0, in);
+//  295 		f1 = MULSHIFT32(w1, in);
+        ASR      R1,R0,#+31
+        ASR      R5,R4,#+31
+        UMULL    R6,R7,R4,R0
+        MLA      R7,R4,R1,R7
+//  296 
+//  297 		in = *over0;	
+//  298 		*pcm0 = CLIPTOSHORT( (in - f0 + RND_VAL) >> FBITS_OUT_IMDCT );
+        LDR      R4,[SP, #+16]
+        MLA      R7,R5,R0,R7
+        LDR      R10,[R4, #+0]
+        MOV      R8,R7
+        MOV      R4,R9
+        ASR      R5,R9,#+31
+        UMULL    R6,R7,R4,R0
+        MLA      R7,R4,R1,R7
+        MLA      R7,R5,R0,R7
+        SUB      R0,R10,R7
+        ADD      R0,R0,#+4
+        ASR      R0,R0,#+3
+        ASR      R1,R0,#+31
+        CMP      R1,R0, ASR #+15
+        MOVNE    R0,#+255
+        ORRNE    R0,R0,#0x7F00
+        EORNE    R0,R0,R1
+        STRH     R0,[R2, #+0]
+//  299 		pcm0 += nChans;
+        LDR      R0,[SP, #+20]
+        ADD      R2,R2,R0, LSL #+1
+//  300 
+//  301 		in = *over1;	
+//  302 		*pcm1 = CLIPTOSHORT( (in + f1 + RND_VAL) >> FBITS_OUT_IMDCT );
+        LDR      R0,[LR, #+0]
+        ADD      R0,R0,R8
+        ADD      R0,R0,#+4
+        ASR      R0,R0,#+3
+        ASR      R1,R0,#+31
+        CMP      R1,R0, ASR #+15
+        MOVNE    R0,#+255
+        ORRNE    R0,R0,#0x7F00
+        EORNE    R0,R0,R1
+        STRH     R0,[R12, #+0]
+//  303 		pcm1 -= nChans;
+        LDR      R0,[SP, #+8]
+//  304 
+//  305 		w0 = *wndCurr++;
+//  306 		w1 = *wndCurr++;	
+//  307 		in = *buf1--;
+        LDR      R4,[SP, #+4]
+        LDR      R9,[R3], #+4
+        LDR      R8,[R3], #+4
+        ADD      R12,R0,R12
+        LDR      R0,[R4], #-4
+        STR      R4,[SP, #+4]
+//  308 
+//  309 		*over1-- = MULSHIFT32(w0, in);
+        MOV      R6,R0
+        ASR      R7,R0,#+31
+        MOV      R0,R9
+        ASR      R1,R9,#+31
+        UMULL    R4,R5,R0,R6
+        MLA      R5,R0,R7,R5
+        MLA      R5,R1,R6,R5
+//  310 		*over0++ = MULSHIFT32(w1, in);
+        ASR      R1,R8,#+31
+        MOV      R0,R5
+        STR      R0,[LR], #-4
+        MOV      R0,R8
+        UMULL    R4,R5,R0,R6
+        MLA      R5,R0,R7,R5
+        LDR      R0,[SP, #+16]
+        MLA      R5,R1,R6,R5
+        MOV      R4,R5
+        STR      R4,[R0], #+4
+        STR      R0,[SP, #+16]
+//  311 	} while (over0 < over1);
+        CMP      R0,LR
+        BCC      ??DecWindowOverlapLongStop_1
+//  312 }
+        ADD      SP,SP,#+24       ;; stack cleaning
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        CFI EndBlock cfiBlock5
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??DecWindowOverlapShort??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE DecWindowOverlapShort
+//  313 
+//  314 /**************************************************************************************
+//  315  * Function:    DecWindowOverlapShort
+//  316  *
+//  317  * Description: apply synthesis window, do overlap-add, clip to 16-bit PCM,
+//  318  *                for winSequence EIGHT-SHORT (does all 8 short blocks)
+//  319  *
+//  320  * Inputs:      input buffer (output of type-IV DCT)
+//  321  *              overlap buffer (saved from last time)
+//  322  *              number of channels
+//  323  *              window type (sin or KBD) for input buffer
+//  324  *              window type (sin or KBD) for overlap buffer
+//  325  *
+//  326  * Outputs:     one channel, one frame of 16-bit PCM, interleaved by nChans
+//  327  *
+//  328  * Return:      none
+//  329  *
+//  330  * Notes:       this processes one channel at a time, but skips every other sample in
+//  331  *                the output buffer (pcm) for stereo interleaving
+//  332  *              this should fit in registers on ARM
+//  333  *
+//  334  * TODO:        ARM5E version with saturating overlap/add (QADD)
+//  335  *              asm code with free pointer updates, better load scheduling
+//  336  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function DecWindowOverlapShort
+        ARM
+//  337 static void DecWindowOverlapShort(int *buf0, int *over0, short *pcm0, int nChans, int winTypeCurr, int winTypePrev)
+//  338 {
+DecWindowOverlapShort:
+        PUSH     {R0,R3-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+44
+//  339 	int i, in, w0, w1, f0, f1;
+//  340 	int *buf1, *over1;
+//  341 	short *pcm1;
+//  342 	const int *wndPrev, *wndCurr;
+//  343 
+//  344 	wndPrev = (winTypePrev == 1 ? kbdWindow + kbdWindowOffset[0] : sinWindow + sinWindowOffset[0]);
+        LDR      R4,??DataTable14  ;; raac_kbdWindowOffset
+        LDR      R6,??DataTable15  ;; raac_sinWindowOffset
+        LDR      R8,??DataTable16  ;; raac_kbdWindow
+        LDR      R10,??DataTable17  ;; raac_sinWindow
+        SUB      SP,SP,#+16
+        CFI CFA R13+60
+        LDR      R0,[SP, #+60]
+        LDR      R3,[SP, #+64]
+        LDR      R4,[R4, #+0]
+        LDR      R6,[R6, #+0]
+        CMP      R3,#+1
+        ADDEQ    R11,R8,R4, LSL #+2
+        ADDNE    R11,R10,R6, LSL #+2
+//  345 	wndCurr = (winTypeCurr == 1 ? kbdWindow + kbdWindowOffset[0] : sinWindow + sinWindowOffset[0]);
+        CMP      R0,#+1
+        ADDEQ    R0,R8,R4, LSL #+2
+        ADDNE    R0,R10,R6, LSL #+2
+//  346 
+//  347 	/* pcm[0-447] = 0 + overlap[0-447] */
+//  348 	i = 448;
+        MOV      R4,#+448
+        STR      R4,[SP, #+0]
+//  349 	do {
+//  350 		f0 = *over0++;
+??DecWindowOverlapShort_0:
+        LDR      R3,[R1], #+4
+//  351 		f1 = *over0++;
+        LDR      R12,[R1], #+4
+//  352 		*pcm0 = CLIPTOSHORT( (f0 + RND_VAL) >> FBITS_OUT_IMDCT );	pcm0 += nChans;
+        ADD      R3,R3,#+4
+        ASR      R3,R3,#+3
+        ASR      R4,R3,#+31
+        CMP      R4,R3, ASR #+15
+        MOVNE    R3,#+255
+        ORRNE    R3,R3,#0x7F00
+        EORNE    R3,R3,R4
+        STRH     R3,[R2, #+0]
+        LDR      R3,[SP, #+20]
+        ADD      R2,R2,R3, LSL #+1
+//  353 		*pcm0 = CLIPTOSHORT( (f1 + RND_VAL) >> FBITS_OUT_IMDCT );	pcm0 += nChans;
+        ADD      R3,R12,#+4
+        ASR      R3,R3,#+3
+        ASR      R4,R3,#+31
+        CMP      R4,R3, ASR #+15
+        MOVNE    R3,#+255
+        ORRNE    R3,R3,#0x7F00
+        EORNE    R3,R3,R4
+        STRH     R3,[R2, #+0]
+        LDR      R3,[SP, #+20]
+//  354 		i -= 2;
+        LDR      R4,[SP, #+0]
+        ADD      R2,R2,R3, LSL #+1
+        SUB      R4,R4,#+2
+        STR      R4,[SP, #+0]
+//  355 	} while (i);
+        CMP      R4,#+0
+        BNE      ??DecWindowOverlapShort_0
+//  356 
+//  357 	/* pcm[448-575] = Wp[0-127] * block0[0-127] + overlap[448-575] */
+//  358 	pcm1  = pcm0 + (128 - 1) * nChans;
+        LDR      R4,[SP, #+20]
+//  359 	over1 = over0 + 128 - 1;
+//  360 	buf0 += 64;
+//  361 	buf1  = buf0  - 1;
+        LDR      R3,[SP, #+20]
+        MOV      R6,#+254
+        MUL      R4,R6,R4
+        LDR      R6,[SP, #+16]
+        STR      R4,[SP, #+8]
+        ADD      LR,R4,R2
+        ADD      R10,R1,#+508
+        ADD      R6,R6,#+256
+        STR      R6,[SP, #+16]
+        SUB      R4,R6,#+4
+        STR      R4,[SP, #+4]
+        LSL      R3,R3,#+1
+        RSB      R3,R3,#+0
+        STR      R3,[SP, #+12]
+//  362 	do {
+//  363 		w0 = *wndPrev++;	/* W[0], W[1], ...W[63] */
+//  364 		w1 = *wndPrev++;	/* W[127], W[126], ... W[64] */
+//  365 		in = *buf0++;
+??DecWindowOverlapShort_1:
+        LDR      R12,[SP, #+16]
+        LDR      R3,[R11], #+4
+        LDR      R4,[R11], #+4
+        LDR      R8,[R12], #+4
+        STR      R12,[SP, #+16]
+//  366 
+//  367 		f0 = MULSHIFT32(w0, in);
+//  368 		f1 = MULSHIFT32(w1, in);
+        ASR      R9,R8,#+31
+        ASR      R5,R4,#+31
+        UMULL    R6,R7,R4,R8
+        MLA      R7,R4,R9,R7
+//  369 
+//  370 		in = *over0;	
+//  371 		*pcm0 = CLIPTOSHORT( (in - f0 + RND_VAL) >> FBITS_OUT_IMDCT );
+        LDR      R4,[R1, #+0]
+        MLA      R7,R5,R8,R7
+        PUSH     {R4}
+        CFI CFA R13+64
+        MOV      R12,R7
+        ASR      R5,R3,#+31
+        MOV      R4,R3
+        POP      {R3}
+        CFI CFA R13+60
+        UMULL    R6,R7,R4,R8
+        MLA      R7,R4,R9,R7
+        MLA      R7,R5,R8,R7
+        SUB      R3,R3,R7
+        ADD      R3,R3,#+4
+        ASR      R3,R3,#+3
+        ASR      R4,R3,#+31
+        CMP      R4,R3, ASR #+15
+        MOVNE    R3,#+255
+        ORRNE    R3,R3,#0x7F00
+        EORNE    R3,R3,R4
+        STRH     R3,[R2, #+0]
+//  372 		pcm0 += nChans;
+        LDR      R3,[SP, #+20]
+        ADD      R2,R2,R3, LSL #+1
+//  373 
+//  374 		in = *over1;	
+//  375 		*pcm1 = CLIPTOSHORT( (in + f1 + RND_VAL) >> FBITS_OUT_IMDCT );
+        LDR      R3,[R10, #+0]
+        ADD      R3,R3,R12
+        ADD      R3,R3,#+4
+        ASR      R3,R3,#+3
+        ASR      R4,R3,#+31
+        CMP      R4,R3, ASR #+15
+        MOVNE    R3,#+255
+        ORRNE    R3,R3,#0x7F00
+        EORNE    R3,R3,R4
+        STRH     R3,[LR, #+0]
+//  376 		pcm1 -= nChans;
+//  377 
+//  378 		w0 = *wndCurr++;
+//  379 		w1 = *wndCurr++;
+//  380 		in = *buf1--;
+        LDR      R8,[SP, #+4]
+        LDR      R3,[SP, #+12]
+        LDR      R12,[R0], #+4
+        LDR      R4,[R8], #-4
+        ADD      LR,R3,LR
+        LDR      R3,[R0], #+4
+        STR      R8,[SP, #+4]
+//  381 
+//  382 		/* save over0/over1 for next short block, in the slots just vacated */
+//  383 		*over1-- = MULSHIFT32(w0, in);
+        MOV      R8,R4
+        ASR      R9,R4,#+31
+        MOV      R4,R12
+        ASR      R5,R12,#+31
+        UMULL    R6,R7,R4,R8
+        MLA      R7,R4,R9,R7
+        MLA      R7,R5,R8,R7
+//  384 		*over0++ = MULSHIFT32(w1, in);
+        ASR      R5,R3,#+31
+        MOV      R4,R7
+        STR      R4,[R10], #-4
+        MOV      R4,R3
+        UMULL    R6,R7,R4,R8
+        MLA      R7,R4,R9,R7
+        MLA      R7,R5,R8,R7
+        MOV      R4,R7
+        STR      R4,[R1], #+4
+//  385 	} while (over0 < over1);
+        CMP      R1,R10
+        BCC      ??DecWindowOverlapShort_1
+//  386 
+//  387 	/* pcm[576-703] = Wc[128-255] * block0[128-255] + Wc[0-127] * block1[0-127] + overlap[576-703] 
+//  388 	 * pcm[704-831] = Wc[128-255] * block1[128-255] + Wc[0-127] * block2[0-127] + overlap[704-831] 
+//  389 	 * pcm[832-959] = Wc[128-255] * block2[128-255] + Wc[0-127] * block3[0-127] + overlap[832-959] 
+//  390 	 */
+//  391 	for (i = 0; i < 3; i++) {
+//  392 		pcm0 += 64 * nChans;
+??DecWindowOverlapShort_2:
+        LDR      R3,[SP, #+20]
+//  393 		pcm1 = pcm0 + (128 - 1) * nChans;
+//  394 		over0 += 64;
+//  395 		over1 = over0 + 128 - 1;
+//  396 		buf0 += 64;
+//  397 		buf1 = buf0 - 1;
+        LDR      R6,[SP, #+16]
+        ADD      R2,R2,R3, LSL #+7
+        LDR      R3,[SP, #+8]
+        ADD      R1,R1,#+256
+        ADD      LR,R3,R2
+        ADD      R10,R1,#+508
+        ADD      R6,R6,#+256
+        STR      R6,[SP, #+16]
+        SUB      R4,R6,#+4
+        STR      R4,[SP, #+4]
+//  398 		wndCurr -= 128;
+        MVN      R3,#+255
+        BIC      R3,R3,#0x100
+        ADD      R0,R3,R0
+//  399 
+//  400 		do {
+//  401 			w0 = *wndCurr++;	/* W[0], W[1], ...W[63] */
+//  402 			w1 = *wndCurr++;	/* W[127], W[126], ... W[64] */
+//  403 			in = *buf0++;
+??DecWindowOverlapShort_3:
+        LDR      R6,[SP, #+16]
+        LDR      R12,[R0], #+4
+        LDR      R3,[R0], #+4
+        LDR      R8,[R6], #+4
+        STR      R6,[SP, #+16]
+//  404 
+//  405 			f0 = MULSHIFT32(w0, in);
+//  406 			f1 = MULSHIFT32(w1, in);
+//  407 
+//  408 			in  = *(over0 - 128);	/* from last short block */
+//  409 			in += *(over0 + 0);		/* from last full frame */
+//  410 			*pcm0 = CLIPTOSHORT( (in - f0 + RND_VAL) >> FBITS_OUT_IMDCT );
+        LDR      R4,[R1, #-512]
+        LDR      R6,[R1, #+0]
+        ASR      R9,R8,#+31
+        ADD      R11,R6,R4
+        MOV      R4,R12
+        ASR      R5,R4,#+31
+        UMULL    R6,R7,R4,R8
+        MLA      R7,R4,R9,R7
+        MLA      R7,R5,R8,R7
+        SUB      R4,R11,R7
+        ADD      R4,R4,#+4
+        ASR      R4,R4,#+3
+        ASR      R6,R4,#+31
+        CMP      R6,R4, ASR #+15
+        MOVNE    R4,#+255
+        ORRNE    R4,R4,#0x7F00
+        EORNE    R4,R4,R6
+        STRH     R4,[R2, #+0]
+//  411 			pcm0 += nChans;
+        LDR      R4,[SP, #+20]
+        ADD      R2,R2,R4, LSL #+1
+        MOV      R4,R3
+        ASR      R5,R4,#+31
+        UMULL    R6,R7,R4,R8
+        LDR      R6,[R10, #-512]
+        MLA      R7,R4,R9,R7
+        MLA      R7,R5,R8,R7
+//  412 
+//  413 			in  = *(over1 - 128);	/* from last short block */
+//  414 			in += *(over1 + 0);		/* from last full frame */
+//  415 			*pcm1 = CLIPTOSHORT( (in + f1 + RND_VAL) >> FBITS_OUT_IMDCT );
+//  416 			pcm1 -= nChans;
+//  417 
+//  418 			/* save over0/over1 for next short block, in the slots just vacated */
+//  419 			in = *buf1--;
+//  420 			*over1-- = MULSHIFT32(w0, in);
+        ASR      R5,R12,#+31
+        ADD      R4,R6,R7
+        LDR      R6,[R10, #+0]
+        ADD      R4,R6,R4
+        ADD      R4,R4,#+4
+        ASR      R4,R4,#+3
+        ASR      R6,R4,#+31
+        CMP      R6,R4, ASR #+15
+        MOVNE    R4,#+255
+        ORRNE    R4,R4,#0x7F00
+        EORNE    R4,R4,R6
+        STRH     R4,[LR, #+0]
+        LDR      R4,[SP, #+12]
+        LDR      R8,[SP, #+4]
+        ADD      LR,R4,LR
+        LDR      R4,[R8], #-4
+        STR      R8,[SP, #+4]
+        MOV      R8,R4
+        ASR      R9,R4,#+31
+        MOV      R4,R12
+        UMULL    R6,R7,R4,R8
+        MLA      R7,R4,R9,R7
+        MLA      R7,R5,R8,R7
+//  421 			*over0++ = MULSHIFT32(w1, in);
+        ASR      R5,R3,#+31
+        MOV      R4,R7
+        STR      R4,[R10], #-4
+        MOV      R4,R3
+        UMULL    R6,R7,R4,R8
+        MLA      R7,R4,R9,R7
+        MLA      R7,R5,R8,R7
+        MOV      R6,R7
+        STR      R6,[R1], #+4
+//  422 		} while (over0 < over1);
+        CMP      R1,R10
+        BCC      ??DecWindowOverlapShort_3
+//  423 	}
+        LDR      R4,[SP, #+0]
+        ADD      R4,R4,#+1
+        STR      R4,[SP, #+0]
+        CMP      R4,#+3
+        BLT      ??DecWindowOverlapShort_2
+//  424 
+//  425 	/* pcm[960-1023] = Wc[128-191] * block3[128-191] + Wc[0-63]   * block4[0-63] + overlap[960-1023]  
+//  426 	 * over[0-63]    = Wc[192-255] * block3[192-255] + Wc[64-127] * block4[64-127]
+//  427 	 */
+//  428 	pcm0 += 64 * nChans;
+        LDR      R3,[SP, #+20]
+//  429 	over0 -= 832;				/* points at overlap[64] */
+//  430 	over1 = over0 + 128 - 1;	/* points at overlap[191] */
+//  431 	buf0 += 64;
+//  432 	buf1 = buf0 - 1;
+        LDR      R6,[SP, #+16]
+        ADD      LR,R2,R3, LSL #+7
+        MVN      R2,#+255
+        BIC      R2,R2,#0xC00
+        ADD      R1,R1,R2
+        ADD      R2,R1,#+508
+        ADD      R6,R6,#+256
+        STR      R6,[SP, #+16]
+        SUB      R4,R6,#+4
+        STR      R4,[SP, #+0]
+//  433 	wndCurr -= 128;
+        MVN      R3,#+255
+        BIC      R3,R3,#0x100
+        ADD      R0,R3,R0
+//  434 	do {
+//  435 		w0 = *wndCurr++;	/* W[0], W[1], ...W[63] */
+//  436 		w1 = *wndCurr++;	/* W[127], W[126], ... W[64] */
+//  437 		in = *buf0++;
+??DecWindowOverlapShort_4:
+        LDR      R8,[SP, #+16]
+        LDR      R12,[R0], #+4
+        LDR      R3,[R0], #+4
+        LDR      R4,[R8], #+4
+        STR      R8,[SP, #+16]
+//  438 
+//  439 		f0 = MULSHIFT32(w0, in);
+//  440 		f1 = MULSHIFT32(w1, in);
+//  441 
+//  442 		in  = *(over0 + 768);	/* from last short block */
+//  443 		in += *(over0 + 896);	/* from last full frame */
+//  444 		*pcm0 = CLIPTOSHORT( (in - f0 + RND_VAL) >> FBITS_OUT_IMDCT );
+        LDR      R6,[R1, #+3072]
+        LDR      R8,[R1, #+3584]
+        ASR      R5,R4,#+31
+        MOV      R10,R12
+        ASR      R11,R12,#+31
+        ADD      R12,R8,R6
+        UMULL    R6,R7,R10,R4
+//  445 		pcm0 += nChans;
+//  446 
+//  447 		in  = *(over1 + 768);	/* from last short block */
+//  448 		*(over1 - 128) = in + f1;
+        ASR      R9,R3,#+31
+        MLA      R7,R10,R5,R7
+        MLA      R7,R11,R4,R7
+        SUB      R6,R12,R7
+        ADD      R6,R6,#+4
+        ASR      R6,R6,#+3
+        ASR      R8,R6,#+31
+        CMP      R8,R6, ASR #+15
+        MOVNE    R6,#+255
+        ORRNE    R6,R6,#0x7F00
+        EORNE    R6,R6,R8
+        STRH     R6,[LR, #+0]
+        LDR      R6,[SP, #+20]
+        MOV      R8,R3
+        LDR      R3,[R2, #+3072]
+        ADD      LR,LR,R6, LSL #+1
+        UMULL    R6,R7,R8,R4
+        MLA      R7,R8,R5,R7
+        MLA      R7,R9,R4,R7
+        ADD      R3,R7,R3
+        STR      R3,[R2, #-512]
+//  449 
+//  450 		in = *buf1--;
+        LDR      R6,[SP, #+0]
+        LDR      R4,[R6], #-4
+        STR      R6,[SP, #+0]
+//  451 		*over1-- = MULSHIFT32(w0, in);	/* save in overlap[128-191] */
+        ASR      R5,R4,#+31
+        UMULL    R6,R7,R10,R4
+        MLA      R7,R10,R5,R7
+        MLA      R7,R11,R4,R7
+        MOV      R6,R7
+        STR      R6,[R2], #-4
+//  452 		*over0++ = MULSHIFT32(w1, in);	/* save in overlap[64-127] */
+        UMULL    R6,R7,R8,R4
+        MLA      R7,R8,R5,R7
+        MLA      R7,R9,R4,R7
+        MOV      R6,R7
+        STR      R6,[R1], #+4
+//  453 	} while (over0 < over1);
+        CMP      R1,R2
+        BCC      ??DecWindowOverlapShort_4
+//  454 	
+//  455 	/* over0 now points at overlap[128] */
+//  456 	
+//  457 	/* over[64-191]   = Wc[128-255] * block4[128-255] + Wc[0-127] * block5[0-127] 
+//  458 	 * over[192-319]  = Wc[128-255] * block5[128-255] + Wc[0-127] * block6[0-127]
+//  459 	 * over[320-447]  = Wc[128-255] * block6[128-255] + Wc[0-127] * block7[0-127]  
+//  460 	 * over[448-576]  = Wc[128-255] * block7[128-255]
+//  461 	 */
+//  462 	for (i = 0; i < 3; i++) {
+        MOV      LR,#+0
+//  463 		over0 += 64;
+//  464 		over1 = over0 + 128 - 1;
+//  465 		buf0 += 64;
+//  466 		buf1 = buf0 - 1;
+??DecWindowOverlapShort_5:
+        LDR      R6,[SP, #+16]
+        ADD      R1,R1,#+256
+        ADD      R2,R1,#+508
+        ADD      R6,R6,#+256
+        STR      R6,[SP, #+16]
+        SUB      R4,R6,#+4
+        STR      R4,[SP, #+0]
+//  467 		wndCurr -= 128;
+        MVN      R3,#+255
+        BIC      R3,R3,#0x100
+        ADD      R0,R3,R0
+//  468 		do {
+//  469 			w0 = *wndCurr++;	/* W[0], W[1], ...W[63] */
+//  470 			w1 = *wndCurr++;	/* W[127], W[126], ... W[64] */
+//  471 			in = *buf0++;
+??DecWindowOverlapShort_6:
+        LDR      R8,[SP, #+16]
+        LDR      R12,[R0], #+4
+        LDR      R4,[R8], #+4
+        LDR      R3,[R0], #+4
+        STR      R8,[SP, #+16]
+//  472 
+//  473 			f0 = MULSHIFT32(w0, in);
+//  474 			f1 = MULSHIFT32(w1, in);
+//  475 
+//  476 			/* from last short block */
+//  477 			*(over0 - 128) -= f0;
+        ASR      R5,R4,#+31
+        MOV      R10,R12
+        ASR      R11,R12,#+31
+        LDR      R12,[R1, #-512]
+        UMULL    R6,R7,R10,R4
+//  478 			*(over1 - 128)+= f1;
+        MOV      R8,R3
+        MLA      R7,R10,R5,R7
+        ASR      R9,R3,#+31
+        MLA      R7,R11,R4,R7
+        SUB      R6,R12,R7
+        STR      R6,[R1, #-512]
+        LDR      R3,[R2, #-512]
+        UMULL    R6,R7,R8,R4
+        MLA      R7,R8,R5,R7
+        MLA      R7,R9,R4,R7
+        ADD      R3,R7,R3
+        STR      R3,[R2, #-512]
+//  479 
+//  480 			in = *buf1--;
+        LDR      R6,[SP, #+0]
+        LDR      R4,[R6], #-4
+        STR      R6,[SP, #+0]
+//  481 			*over1-- = MULSHIFT32(w0, in);
+        ASR      R5,R4,#+31
+        UMULL    R6,R7,R10,R4
+        MLA      R7,R10,R5,R7
+        MLA      R7,R11,R4,R7
+        MOV      R6,R7
+        STR      R6,[R2], #-4
+//  482 			*over0++ = MULSHIFT32(w1, in);
+        UMULL    R6,R7,R8,R4
+        MLA      R7,R8,R5,R7
+        MLA      R7,R9,R4,R7
+        MOV      R6,R7
+        STR      R6,[R1], #+4
+//  483 		} while (over0 < over1);
+        CMP      R1,R2
+        BCC      ??DecWindowOverlapShort_6
+//  484 	}
+        ADD      LR,LR,#+1
+        CMP      LR,#+3
+        BLT      ??DecWindowOverlapShort_5
+//  485 
+//  486 	/* over[576-1024] = 0 */ 
+//  487 	i = 448;
+        MOV      R0,#+448
+//  488 	over0 += 64;
+        ADD      R1,R1,#+256
+        MOV      R2,#+0
+//  489 	do {
+//  490 		*over0++ = 0;
+??DecWindowOverlapShort_7:
+        STR      R2,[R1], #+4
+//  491 		*over0++ = 0;
+        STR      R2,[R1], #+4
+//  492 		*over0++ = 0;
+        STR      R2,[R1], #+4
+//  493 		*over0++ = 0;
+        STR      R2,[R1], #+4
+//  494 		i -= 4;
+        SUBS     R0,R0,#+4
+//  495 	} while (i);
+        BNE      ??DecWindowOverlapShort_7
+//  496 }
+        ADD      SP,SP,#+24       ;; stack cleaning
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        CFI EndBlock cfiBlock7
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable14:
+        DC32     raac_kbdWindowOffset
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable15:
+        DC32     raac_sinWindowOffset
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable16:
+        DC32     raac_kbdWindow
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable17:
+        DC32     raac_sinWindow
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??aacIMDCT??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE aacIMDCT
+//  497 
+//  498 #endif	/* !AAC_ENABLE_SBR */
+//  499 
+//  500 /**************************************************************************************
+//  501  * Function:    IMDCT
+//  502  *
+//  503  * Description: inverse transform and convert to 16-bit PCM
+//  504  *
+//  505  * Inputs:      valid AACDecInfo struct
+//  506  *              index of current channel (0 for SCE/LFE, 0 or 1 for CPE)
+//  507  *              output channel (range = [0, nChans-1])
+//  508  *
+//  509  * Outputs:     complete frame of decoded PCM, after inverse transform
+//  510  *
+//  511  * Return:      0 if successful, -1 if error
+//  512  *
+//  513  * Notes:       If AAC_ENABLE_SBR is defined at compile time then window + overlap 
+//  514  *                does NOT clip to 16-bit PCM and does NOT interleave channels
+//  515  *              If AAC_ENABLE_SBR is NOT defined at compile time, then window + overlap 
+//  516  *                does clip to 16-bit PCM and interleaves channels
+//  517  *              If SBR is enabled at compile time, but we don't know whether it is
+//  518  *                actually used for this frame (e.g. the first frame of a stream),
+//  519  *                we need to produce both clipped 16-bit PCM in outbuf AND
+//  520  *                unclipped 32-bit PCM in the SBR input buffer. In this case we make
+//  521  *                a separate pass over the 32-bit PCM to produce 16-bit PCM output.
+//  522  *                This inflicts a slight performance hit when decoding non-SBR files.
+//  523  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function aacIMDCT
+        ARM
+//  524 int aacIMDCT(AACDecInfo *aacDecInfo, int ch, int chOut, short *outbuf)
+//  525 {
+aacIMDCT:
+        PUSH     {R2,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+40
+        SUB      SP,SP,#+4
+        CFI CFA R13+44
+        MOV      R4,R0
+//  526 	int i;
+//  527 	PSInfoBase *psi;
+//  528 	ICSInfo *icsInfo;
+//  529 
+//  530 	/* validate pointers */
+//  531 	if (!aacDecInfo || !aacDecInfo->psInfoBase)
+        CMP      R4,#+0
+        LDRNE    R0,[R4, #+0]
+        MOV      R5,R1
+        CMPNE    R0,#+0
+//  532 		return -1;
+        MVNEQ    R0,#+0
+        POPEQ    {R1,R2,R4-R11,PC}
+//  533 	psi = (PSInfoBase *)(aacDecInfo->psInfoBase);
+        MOV      R9,R0
+//  534 	icsInfo = (ch == 1 && psi->commonWin == 1) ? &(psi->icsInfo[0]) : &(psi->icsInfo[ch]);
+        CMP      R5,#+1
+        LDREQ    R1,[R9, #+2288]
+        MOV      R0,#+124
+        CMPEQ    R1,#+1
+        MOVNE    R1,#+58
+        MLANE    R2,R1,R5,R9
+        ORR      R0,R0,#0x800
+        ADDEQ    R6,R0,R9
+        ADDNE    R6,R0,R2
+//  535 	outbuf += chOut;
+        LDR      R0,[SP, #+4]
+//  536 
+//  537 	/* optimized type-IV DCT (operates inplace) */
+//  538 	if (icsInfo->winSequence == 2) {
+        ADD      R1,R9,R5, LSL #+12
+        ADD      R7,R3,R0, LSL #+1
+        STR      R1,[SP, #+0]
+        MOV      R0,#+72
+        ORR      R0,R0,#0x1000
+        ADD      R8,R0,R1
+        ADD      R0,R9,R5, LSL #+2
+        ADD      R10,R0,#+4160
+        LDRB     R0,[R6, #+1]
+        CMP      R0,#+2
+        BNE      ??aacIMDCT_0
+//  539 		/* 8 short blocks */
+//  540 		for (i = 0; i < 8; i++)
+        MOV      R11,#+0
+//  541 			DCT4(0, psi->coef[ch] + i*128, psi->gbCurrent[ch]);
+??aacIMDCT_1:
+        LDR      R1,[SP, #+0]
+        LDR      R2,[R10, #+0]
+        MOV      R0,#+72
+        ORR      R0,R0,#0x1000
+        ADD      R1,R1,R11, LSL #+9
+        ADD      R1,R0,R1
+        MOV      R0,#+0
+        _BLF     raac_DCT4,??raac_DCT4??rA
+        ADD      R11,R11,#+1
+        CMP      R11,#+8
+        BGE      ??aacIMDCT_2
+        B        ??aacIMDCT_1
+//  542 	} else {
+//  543 		/* 1 long block */
+//  544 		DCT4(1, psi->coef[ch], psi->gbCurrent[ch]);
+??aacIMDCT_0:
+        LDR      R2,[R10, #+0]
+        MOV      R1,R8
+        MOV      R0,#+1
+        _BLF     raac_DCT4,??raac_DCT4??rA
+//  545 	}
+//  546 
+//  547 #ifdef AAC_ENABLE_SBR
+//  548 	/* window, overlap-add, don't clip to short (send to SBR decoder) 
+//  549 	 * store the decoded 32-bit samples in top half (second AAC_MAX_NSAMPS samples) of coef buffer
+//  550 	 */
+//  551 	if (icsInfo->winSequence == 0)
+//  552 		DecWindowOverlapNoClip(psi->coef[ch], psi->overlap[chOut], psi->sbrWorkBuf[ch], icsInfo->winShape, psi->prevWinShape[chOut]);
+//  553 	else if (icsInfo->winSequence == 1)
+//  554 		DecWindowOverlapLongStartNoClip(psi->coef[ch], psi->overlap[chOut], psi->sbrWorkBuf[ch], icsInfo->winShape, psi->prevWinShape[chOut]);
+//  555 	else if (icsInfo->winSequence == 2)
+//  556 		DecWindowOverlapShortNoClip(psi->coef[ch], psi->overlap[chOut], psi->sbrWorkBuf[ch], icsInfo->winShape, psi->prevWinShape[chOut]);
+//  557 	else if (icsInfo->winSequence == 3)
+//  558 		DecWindowOverlapLongStopNoClip(psi->coef[ch], psi->overlap[chOut], psi->sbrWorkBuf[ch], icsInfo->winShape, psi->prevWinShape[chOut]);
+//  559 
+//  560 	if (!aacDecInfo->sbrEnabled) {
+//  561 		for (i = 0; i < AAC_MAX_NSAMPS; i++) {
+//  562 			*outbuf = CLIPTOSHORT((psi->sbrWorkBuf[ch][i] + RND_VAL) >> FBITS_OUT_IMDCT);
+//  563 			outbuf += aacDecInfo->nChans;
+//  564 		}
+//  565 	}
+//  566 
+//  567 	aacDecInfo->rawSampleBuf[ch] = psi->sbrWorkBuf[ch];
+//  568 	aacDecInfo->rawSampleBytes = sizeof(int);
+//  569 	aacDecInfo->rawSampleFBits = FBITS_OUT_IMDCT;
+//  570 #else
+//  571 	/* window, overlap-add, round to PCM - optimized for each window sequence */
+//  572 	if (icsInfo->winSequence == 0)
+??aacIMDCT_2:
+        LDR      R1,[SP, #+4]
+        LDR      R3,[SP, #+4]
+        ADD      R1,R9,R1, LSL #+12
+        MOV      R2,#+72
+        ORR      R2,R2,#0x5000
+        ADD      R3,R9,R3, LSL #+2
+        ADD      R9,R2,R3
+        LDRB     R2,[R6, #+1]
+        MOV      R0,#+72
+        ORR      R0,R0,#0x3000
+        ADD      R1,R0,R1
+        LDRB     R0,[R6, #+2]
+        CMP      R2,#+0
+        BNE      ??aacIMDCT_3
+//  573 		DecWindowOverlap(psi->coef[ch], psi->overlap[chOut], outbuf, aacDecInfo->nChans, icsInfo->winShape, psi->prevWinShape[chOut]);
+        LDR      R2,[R9, #+0]
+        PUSH     {R2}
+        CFI CFA R13+48
+        PUSH     {R0}
+        CFI CFA R13+52
+        LDR      R3,[R4, #+64]
+        MOV      R2,R7
+        MOV      R0,R8
+        BL       DecWindowOverlap
+        B        ??aacIMDCT_4
+        CFI CFA R13+44
+//  574 	else if (icsInfo->winSequence == 1)
+??aacIMDCT_3:
+        CMP      R2,#+1
+        BNE      ??aacIMDCT_5
+//  575 		DecWindowOverlapLongStart(psi->coef[ch], psi->overlap[chOut], outbuf, aacDecInfo->nChans, icsInfo->winShape, psi->prevWinShape[chOut]);
+        LDR      R2,[R9, #+0]
+        PUSH     {R2}
+        CFI CFA R13+48
+        PUSH     {R0}
+        CFI CFA R13+52
+        LDR      R3,[R4, #+64]
+        MOV      R2,R7
+        MOV      R0,R8
+        BL       DecWindowOverlapLongStart
+        B        ??aacIMDCT_4
+        CFI CFA R13+44
+//  576 	else if (icsInfo->winSequence == 2)
+??aacIMDCT_5:
+        CMP      R2,#+2
+        BNE      ??aacIMDCT_6
+//  577 		DecWindowOverlapShort(psi->coef[ch], psi->overlap[chOut], outbuf, aacDecInfo->nChans, icsInfo->winShape, psi->prevWinShape[chOut]);
+        LDR      R2,[R9, #+0]
+        PUSH     {R2}
+        CFI CFA R13+48
+        PUSH     {R0}
+        CFI CFA R13+52
+        LDR      R3,[R4, #+64]
+        MOV      R2,R7
+        MOV      R0,R8
+        BL       DecWindowOverlapShort
+        B        ??aacIMDCT_4
+        CFI CFA R13+44
+//  578 	else if (icsInfo->winSequence == 3)
+??aacIMDCT_6:
+        CMP      R2,#+3
+        BNE      ??aacIMDCT_7
+//  579 		DecWindowOverlapLongStop(psi->coef[ch], psi->overlap[chOut], outbuf, aacDecInfo->nChans, icsInfo->winShape, psi->prevWinShape[chOut]);
+        LDR      R2,[R9, #+0]
+        PUSH     {R2}
+        CFI CFA R13+48
+        PUSH     {R0}
+        CFI CFA R13+52
+        LDR      R3,[R4, #+64]
+        MOV      R2,R7
+        MOV      R0,R8
+        BL       DecWindowOverlapLongStop
+??aacIMDCT_4:
+        ADD      SP,SP,#+8        ;; stack cleaning
+        CFI CFA R13+44
+//  580 
+//  581 	aacDecInfo->rawSampleBuf[ch] = 0;
+??aacIMDCT_7:
+        MOV      R0,#+0
+        ADD      R1,R4,R5, LSL #+2
+        STR      R0,[R1, #+8]
+//  582 	aacDecInfo->rawSampleBytes = 0;
+        STR      R0,[R4, #+16]
+//  583 	aacDecInfo->rawSampleFBits = 0;
+        STR      R0,[R4, #+20]
+//  584 #endif
+//  585 
+//  586 	psi->prevWinShape[chOut] = icsInfo->winShape;
+        LDRB     R0,[R6, #+2]
+        STR      R0,[R9, #+0]
+//  587 
+//  588 	return 0;
+        MOV      R0,#+0
+        POP      {R1,R2,R4-R11,PC}  ;; return
+        CFI EndBlock cfiBlock9
+//  589 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_DCT4??rA:
+        LDR      R12,??Subroutine5_0  ;; raac_DCT4
+        BX       R12
+        DATA
+??Subroutine5_0:
+        DC32     raac_DCT4
+        CFI EndBlock cfiBlock10
+
+        END
+// 
+// 3 768 bytes in segment CODE
+// 
+// 3 736 bytes of CODE memory (+ 32 bytes shared)
+//
+//Errors: none
+//Warnings: none

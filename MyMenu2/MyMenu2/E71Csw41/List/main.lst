@@ -1,0 +1,905 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    12/Apr/2012  21:08:04 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\MyMenu2\MyMenu2\main.c          #
+#    Command line    =  D:\SVN\SieELF\SieELF\MyMenu2\MyMenu2\main.c -D       #
+#                       NEWSGOLD -D ELKA -D E71Cv41 -lcN                     #
+#                       D:\SVN\SieELF\SieELF\MyMenu2\MyMenu2\E71Csw41\List\  #
+#                       -o D:\SVN\SieELF\SieELF\MyMenu2\MyMenu2\E71Csw41\Obj #
+#                       \ -s9 --no_unroll --cpu_mode arm --endian little     #
+#                       --cpu ARM926EJ-S --stack_align 4 --interwork -e      #
+#                       --fpu None -I "D:\Program Files\IAR\Embedded         #
+#                       Workbench 4.0 Evaluation\ARM\INC\"                   #
+#                       --inline_threshold=2                                 #
+#    List file       =  D:\SVN\SieELF\SieELF\MyMenu2\MyMenu2\E71Csw41\List\m #
+#                       ain.lst                                              #
+#    Object file     =  D:\SVN\SieELF\SieELF\MyMenu2\MyMenu2\E71Csw41\Obj\ma #
+#                       in.r79                                               #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\MyMenu2\MyMenu2\main.c
+      1          #include "..\..\inc\swilib.h"
+      2          
+      3          #ifndef NEWSGOLD
+      4          #define ENUM 0x23
+      5          #else
+      6          #define ENUM 0x26
+      7          #endif
+      8          
+      9          #define COPYRIGHT	"MyMenu2\n(c)BingK(binghelingxi)"
+     10          #define ELFNAME		"MyMenu2"
+     11          //#define SK_SELECT	"Select"
+     12          //#define SK_BACK	"Back"
+     13          #define ERR_STR		"Error!"
+     14          #define CFG_PATH	"0:\\ZBin\\etc\\MyMenu2.cfg"
+     15          #define ELF_PATH	"0:\\ZBin\\utilities\\MyMenu2_Editor.elf"
+     16          
+     17          #define LGP_SELECT	"选择"
+     18          #define LGP_EXIT	"离开"
+     19          //#define LGP_SELECT	0x39
+     20          //#define LGP_EXIT	0x28F
+     21          
+     22          #define SP_CHAR		0x1F	//0x20
+     23          #define US_CHAR		0x1F
+     24          #define _80_CHAR	0x80
+     25          
+     26          #define BUF_SIZE	(8*1024)
+     27          #define PATH_LEN	128
+     28          //#define menu_item_n	16
+     29          #define ADDR_LEN	8
+     30          
+     31          #ifdef  E71Cv41
+     32          #define FUNC_PT_START	0xA085DEA4
+     33          #define FUNC_PT_END	0xA0865BA3
+     34          #endif
+     35          #ifdef  S7Cv47
+     36          #define FUNC_PT_START	0xA0456A80
+     37          #define FUNC_PT_END	0xA045E6FF
+     38          #endif
+     39          
+     40          #ifdef  S68Cv51
+     41          #define FUNC_PT_START	0xA04269B4
+     42          #define FUNC_PT_END	0xA042E633
+     43          #endif
+     44          
+     45          #define FUNC_PT_PSIZE	0x80
+     46          #define FUNC_PT_OFFSET	0x10
+     47          #define MAX_FUNC	0xFA
+     48          
+     49          #define TYPE_FILE	0
+     50          #define TYPE_SHORTCUT	1
+     51          #define TYPE_ADDRESS	2
+     52          #define TYPE_FOLDER	3
+     53          
+     54          #define CHARSET_GB2312	0
+     55          #define CHARSET_UTF8	1
+     56          #define CHARSET_UNICODE	2
+     57          
+     58          #ifdef ELKA
+     59          #define HEADER_X1	0
+     60          #define HEADER_Y1	24
+     61          #define HEADER_X2	239
+     62          #define HEADER_Y2	56
+     63          #else
+     64          #define HEADER_X1	0
+     65          #define HEADER_Y1	0
+     66          #define HEADER_X2	131
+     67          #define HEADER_Y2	0x16
+     68          #endif
+     69          
+     70          #ifdef VKP
+     71          #ifdef ELKA
+     72          #define MENU_HEADER_ICON	0x491
+     73          #define MENU_ITEM_ICON		0x538
+     74          #else
+     75          #define MENU_HEADER_ICON	0x4BB
+     76          #define MENU_ITEM_ICON		0x564
+     77          #endif
+     78          const int MenuHeaderIcon[]={MENU_HEADER_ICON,0};
+     79          const int MenuItemIcon[]={MENU_ITEM_ICON,0};
+     80          #endif
+     81          
+     82          //UTF8
+     83          //短信计数器|0:\ZBin\utilities\SMSCountReader.elf
+     84          typedef struct
+     85          {
+     86          	void *next;
+     87          	char *name;
+     88          	int name_len;
+     89          	char *path;
+     90          	int path_len;
+     91          	int type;
+     92          }MENU_LIST;
+     93          
+     94          typedef struct
+     95          {
+     96          	CSM_RAM csm;
+     97          	int gui_id;
+     98          	char *buf;
+     99          	MENU_LIST *mltop;
+    100          }MAIN_CSM;
+    101          //char *buf;
+    102          //MENU_LIST *mltop;
+    103          //int char_set;
+    104          
+    105          const int menusoftkeys[]={0, 1, 2};
+    106          
+    107          const SOFTKEY_DESC menu_sk[]=
+    108          {
+    109          	{0x0018,0x0000,(int)LGP_SELECT},
+    110          	{0x0001,0x0000,(int)LGP_EXIT},
+    111          	{0x003D,0x0000,(int)LGP_DOIT_PIC}
+    112          };
+    113          
+    114          const SOFTKEYSTAB menu_skt=
+    115          {
+    116          	menu_sk,0
+    117          };
+    118          
+    119          #ifdef VKP
+    120          const HEADER_DESC menuheader={HEADER_X1, HEADER_Y1, HEADER_X2, HEADER_Y2, (int *)MenuHeaderIcon, (int)ELFNAME, LGP_NULL};
+    121          #define PROCESSOR_MODE __thumb
+    122          #else
+    123          const HEADER_DESC menuheader={HEADER_X1, HEADER_Y1, HEADER_X2, HEADER_Y2, NULL, (int)ELFNAME, LGP_NULL};
+    124          #define PROCESSOR_MODE __arm
+    125          #endif
+    126          
+    127          PROCESSOR_MODE void utf8_2str(char *str, char *utf8)
+    128          {
+    129          	
+    130          	char *p=utf8;
+    131          	int i=0;
+    132          	while(*p)
+    133          	{
+    134          		if(*p>=_80_CHAR)
+    135          			break;
+    136          		str[i]=*p;
+    137          		p++;
+    138          		i++;
+    139          	}
+    140          	if(*p)
+    141          	{
+    142          		if(str[i-1]!=US_CHAR)
+    143          		{
+    144          			str[i]=US_CHAR;
+    145          			i++;
+    146          		}
+    147          		while(*p)
+    148          		{
+    149          			str[i]=*p;
+    150          			p++;
+    151          			i++;
+    152          		}
+    153          	}
+    154          	str[i]=0;
+    155          }
+    156          
+    157          PROCESSOR_MODE void AddtoMenuList(MAIN_CSM *csm, char *name, int name_len, char *path, int path_len,int type)
+    158          {
+    159          	MENU_LIST *ml=malloc(sizeof(MENU_LIST));
+    160          	ml->next=0;
+    161          	ml->name=name;
+    162          	ml->name_len=name_len;
+    163          	ml->path=path;
+    164          	ml->path_len=path_len;
+    165          	ml->type=type;
+    166          	if(!csm->mltop)
+    167          	{
+    168          		csm->mltop=ml;
+    169          	}
+    170          	else
+    171          	{
+    172          		MENU_LIST *ml_t=csm->mltop;
+    173          		while(ml_t->next)
+    174          			ml_t=ml_t->next;
+    175          		ml_t->next=ml;
+    176          	}
+    177          }
+    178          
+    179          PROCESSOR_MODE void FreeMenuList(MAIN_CSM *csm)
+    180          {
+    181          	if(csm->mltop)
+    182          	{
+    183          		MENU_LIST *ml=csm->mltop;
+    184          		MENU_LIST *ml_t;
+    185          		while(ml)
+    186          		{
+    187          			ml_t=ml->next;
+    188          			mfree(ml);
+    189          			ml=ml_t;
+    190          		}
+    191          	}
+    192          	csm->mltop=0;
+    193          }
+    194          
+    195          PROCESSOR_MODE MENU_LIST *get_mlitem(MENU_LIST *mltop, int curitem)
+    196          {
+    197          	MENU_LIST *ml;
+    198          	ml=mltop;
+    199          	int i=0;
+    200          	while(ml)
+    201          	{
+    202          		if(i==curitem)
+    203          			return (ml);
+    204          			//break;
+    205          		i++;
+    206          		ml=ml->next;
+    207          	}
+    208          	return 0;
+    209          }
+    210          
+    211          PROCESSOR_MODE char *strchrinline(char *s, char chr)
+    212          {
+    213          	char *p=s;
+    214          	char *t=0;
+    215          	while(*p)
+    216          	{
+    217          		//if((*p==0x0D)||(*p==0x0A))
+    218          		if(*p<SP_CHAR)
+    219          			break;
+    220          		if(*p==chr)
+    221          			t=p;
+    222          		p++;
+    223          	}
+    224          	return (t);
+    225          }
+    226          
+    227          
+    228          
+    229          PROCESSOR_MODE char *gotoRealPos(char *p)
+    230          {
+    231          	char *pp=p;
+    232          	while(*pp)
+    233          	{
+    234          		if(*pp>=SP_CHAR)
+    235          			break;
+    236          		pp++;
+    237          	}
+    238          	return pp;
+    239          }
+    240          
+    241          PROCESSOR_MODE char *gotoLineEnd(char *p)
+    242          {
+    243          	char *pp=p;
+    244          	while(*pp)
+    245          	{
+    246          		if(*pp<SP_CHAR)
+    247          			break;
+    248          		pp++;
+    249          	}
+    250          	return pp;
+    251          }
+    252          
+    253          PROCESSOR_MODE int CheckType(char *p)
+    254          {
+    255          	char *pp=p;
+    256          	if((*(p+1)!=':')&&(*(p+2)!='\\')) //':\'
+    257          	{
+    258          		if((*p=='A')&&((*(p+1)=='0')||(*(p+1)=='1'))) //A0,A1
+    259          			return TYPE_ADDRESS;
+    260          		else
+    261          			return TYPE_SHORTCUT;
+    262          	}
+    263          	pp=gotoLineEnd(pp);
+    264          	if(*(pp-1)=='\\')
+    265          		return TYPE_FOLDER;
+    266          	return TYPE_FILE;
+    267          }
+    268          
+    269          PROCESSOR_MODE int read_cfg(MAIN_CSM *csm)
+    270          {
+    271          	int f;
+    272          	char path[]=CFG_PATH;
+    273          	unsigned int err;
+    274          	char *p;
+    275          	int name_len;
+    276          	int path_len;
+    277          	int item_n=0;
+    278          	int size=0;
+    279          	//MAIN_CSM *csm=(MAIN_CSM*)data;
+    280          	p=csm->buf;
+    281          	FreeMenuList(csm);
+    282          	csm->mltop=0; //必须初始化
+    283          	if((f=fopen(path, A_ReadOnly, P_READ, &err))==-1)
+    284          	{
+    285          		path[0]='4';
+    286          		if((f=fopen(path, A_ReadOnly, P_READ, &err))==-1)
+    287          			return 0;
+    288          	}
+    289          	size=fread(f, csm->buf, BUF_SIZE, &err);
+    290          	fclose(f, &err);
+    291          	if(size<3)
+    292          		return 0;
+    293          	csm->buf[size]=0;
+    294          	//if(*p==0xEF && *(p+1)==0xBB && *(p+2)==0xBF)
+    295          	//{
+    296          	//	char_set=CHARSET_UTF8;
+    297          	//	p+=3;
+    298          	//}
+    299          	//else if(*p==0xFF && *(p+1)==0xFE && *(p+2)==0xED)
+    300          	//{
+    301          	//	char_set=CHARSET_UNICODE;
+    302          	//	p+=3;
+    303          	//}
+    304          	//else
+    305          	//	char_set=CHARSET_GB2312;
+    306          	while(*p)
+    307          	{
+    308          		p=gotoRealPos(p);
+    309          		char *pp=strchrinline(p, '|');
+    310          		if(pp)
+    311          		{
+    312          			name_len=pp-p;
+    313          			pp++; // '|'
+    314          			pp=gotoRealPos(pp);
+    315          			char *p2=pp;
+    316          			p2=gotoLineEnd(p2);
+    317          			path_len=p2-pp;
+    318          			AddtoMenuList(csm, p, name_len, pp, path_len, CheckType(pp));
+    319          			p=p2;
+    320          		}
+    321          		else
+    322          		{
+    323          			pp=p;
+    324          			pp=gotoLineEnd(pp);
+    325          			path_len=pp-p;
+    326          			int type=CheckType(p);
+    327          			char *p2;
+    328          			switch(type)
+    329          			{
+    330          			case TYPE_ADDRESS:
+    331          			case TYPE_SHORTCUT:
+    332          				name_len=path_len;
+    333          				p2=p;
+    334          				break;
+    335          			case TYPE_FILE:
+    336          			{
+    337          				p2=strchrinline(p, '\\');
+    338          				char *p3=strchrinline(p, '.');
+    339          				if(p2)
+    340          				{
+    341          					p2++;
+    342          					if(p3)
+    343          						name_len=p3-p2;
+    344          					else
+    345          						name_len=pp-p2;
+    346          				}
+    347          				else
+    348          				{
+    349          					name_len=path_len;
+    350          					p2=p;
+    351          				}
+    352          				break;
+    353          			}
+    354          			case TYPE_FOLDER:
+    355          			{
+    356          				//p2=strchrinline(p, '\\');
+    357          				char *p3=strchrinline(p, '\\');
+    358          				p2=p3-1;
+    359          				do
+    360          				{
+    361          					if(*p2=='\\')
+    362          						break;
+    363          					p2--;
+    364          				}
+    365          				while(*p2>=SP_CHAR);
+    366          				p2++;
+    367          				name_len=p3-p2;
+    368          				break;
+    369          			}
+    370          			}
+    371          			AddtoMenuList(csm, p2, name_len, p, path_len, type);
+    372          			p=pp;
+    373          		}
+    374          		item_n++;
+    375          		p=gotoRealPos(p);
+    376          	}
+    377          	return item_n;
+    378          }
+    379          
+    380          #pragma inline=forced
+    381          PROCESSOR_MODE int toupper(int c)
+    382          {
+    383          	if ((c>='a')&&(c<='z')) c+='A'-'a';
+    384          	return(c);
+    385          }
+    386          
+    387          PROCESSOR_MODE int strncmpNoCase(const char *s1,const char *s2,unsigned int n)
+    388          {
+    389          	int i;
+    390          	int c;
+    391          	while(!(i=(c=toupper(*s1++))-toupper(*s2++))&&(--n)) if (!c) break;
+    392          	return(i);
+    393          }
+    394          
+    395          #ifdef NEWSGOLD
+    396          PROCESSOR_MODE unsigned int GetFunctionPointByName(char *name)
+    397          {
+    398          	char *p=(char *)FUNC_PT_START;
+    399          	int len=strlen(name);
+    400          	if(len==0)
+    401          		return 0;
+    402          	while((char *)FUNC_PT_END-p>0)
+    403          	{
+    404          		if(!strncmpNoCase(p, name, len))
+    405          			return (*(unsigned int *)(p+FUNC_PT_OFFSET));
+    406          		p+=FUNC_PT_PSIZE;
+    407          	}
+    408          	return 0;
+    409          }
+    410          #endif
+    411          
+    412          PROCESSOR_MODE void run_address(unsigned int address) 
+    413          {
+    414          	void (*runaddr)(void);
+    415          	runaddr=(void (*)())address;
+    416          	if (runaddr) 
+    417          	{
+    418          		runaddr();
+    419          	}
+    420          }
+    421          
+    422          PROCESSOR_MODE void run_shortcut(char *shortcut) 
+    423          {
+    424          #ifdef NEWSGOLD
+    425          	run_address(GetFunctionPointByName(shortcut));
+    426          #else
+    427          	run_address((unsigned int)GetFunctionPointer(shortcut));
+    428          #endif
+    429          }
+    430          
+    431          PROCESSOR_MODE int chr2num(char chr)
+    432          {
+    433          	if(chr>='0'&&chr<='9')
+    434          		return (chr-('0'-0));
+    435          	if(chr>='A'&&chr<='Z')
+    436          		//return (chr-0x37);
+    437          		return (chr-('A'-0xA));
+    438          	if(chr>='a'&&chr<='z')
+    439          		//return (chr-0x57);
+    440          		return (chr-('a'-0xA));
+    441          	return 0;
+    442          }
+    443          
+    444          void run_file(MENU_LIST *ml);
+    445          void run_folder(MENU_LIST *ml);
+    446          
+    447          PROCESSOR_MODE void run_ml(MENU_LIST *ml)
+    448          {
+    449          	switch(ml->type)
+    450          	{
+    451          	case TYPE_FILE:
+    452              DoIDLE(0);
+    453          		run_file(ml);
+    454          		break;
+    455          	case TYPE_SHORTCUT:
+    456          	{
+    457              DoIDLE(0);
+    458          		char ShortCut[32];
+    459          		char *p=ml->path;
+    460          		int i=0;
+    461          		int j=0;
+    462          		for(;j<ml->path_len;j++)
+    463          		{
+    464          			if(p[j]>='A')
+    465          			{
+    466          				ShortCut[i]=p[j];
+    467          				i++;
+    468          			}
+    469          			
+    470          		}
+    471          		ShortCut[i]=0;
+    472          		run_shortcut(ShortCut);
+    473          		break;
+    474          	}
+    475          	case TYPE_ADDRESS:
+    476          	{
+    477              DoIDLE(0);
+    478          		if(ml->path_len==ADDR_LEN)
+    479          		{
+    480          			int i;
+    481          			unsigned int addr=0;
+    482          			char *p=ml->path;
+    483          			for(i=0;i<ADDR_LEN;i++)
+    484          			{
+    485          				addr=chr2num(p[i])+addr*0x10;
+    486          			}
+    487          			run_address(addr);
+    488          		}
+    489          		break;
+    490          	}
+    491          	case TYPE_FOLDER:
+    492              DoIDLE(0);
+    493          		run_folder(ml);
+    494          		break;
+    495          	}
+    496          }
+    497          /*
+    498          typedef struct
+    499          {
+    500            int mode; //0-normal mode, 1-select mode 
+    501            int dir_enum; //0x26 by default
+    502            WSHDR* path_to_file; //path to file
+    503            WSHDR* file_name; //put cursor to this file
+    504            int unk5;
+    505            int is_exact_dir;
+    506            int unk7;
+    507            int unk8;
+    508            int unk9; // always 1
+    509            int unk10;
+    510            int unk11;
+    511            WSHDR* full_filename;
+    512            int unk13;
+    513            int (*user_handler)(void*); //called in select mode
+    514            void* this_struct_addr;
+    515            int unk16;
+    516            int unk17_26[10]; 
+    517          }NativeExplorerData;*/
+    518          
+    519          
+    520          
+    521          //by benj9
+    522          //all params: if 0, not applied
+    523          //exp_mode		        equ		0	; 0=normal, 1=file selection, 3+4=folder selection
+    524          //exp_def_folder	    equ		4	; NSG eg. 0=MyStuff 1=sound, 8=Misc 9=pictures 11=video 1F=apps 20=game 2D=theme 31=unknown1 61=MMC. 0x26: use folder in st_exp_cust_folder_ws
+    525          //                            ;  SG eg. 0=Misc 1=sound 2=sound\Ems 3=sound\on off 4=sound\ProSlide 5=Voice memo 6=SMS 7=Misc 8=picture 9=pic\EMS A=Pic\Logos B=Pic\WallPaper C=Pic\MMS D=pic\Icons E=pic\Frame F=video 10=Animation 11=Ani\EMS 12=0:\ 13=Misc\Data inbox 14=Text module 15=Pic\Clip Gallery 16=0:\ 17=0:\ 18=0:\ 19=Skins 1A=Text 1B=JAVA 1C=JAVA/jam 1D=JAVA/jam/Apps 1E=jam/Games 1F=jam/SMS 20=System 21=0:\ 22=Tmp 23=ws 25=0:\ 26=1:\Skin 27=System/mms 28=System/japp/ 29=2:\japp 2A=theme 2B=1:\ims 2C=2:\IMS 2D=PhonePilots 2E=2D\Lists 2F=2D\Res 30=2D\Tmp 31=Sms archive 35=Sms archieve\Draft 39=0:\System\HMI 3A=0:\System\SMS 3B=0:\System\SyncML 
+    526          //exp_cust_folder_ws	equ		8	  ; if NSG st_exp_def_folder=0x26, use base folder stored in this ws, if SGold st_exp_def_folder=0x23
+    527          //exp_preselection_ws	equ		0xC	; start selection in explorer with file/folder stored in ws
+    528          //                    equ		0x10
+    529          //exp_lock_navigation	equ		0x14	; if 1, lock navigation with drives and higher folders
+    530          //                    equ		0x18
+    531          //                    equ		0x1C
+    532          //exp_1			          equ		0x20	; always 1
+    533          //exp_filter_start	  equ		0x24	; func checks files/folders to be shown at start
+    534          //                    equ		0x28
+    535          //exp_dest_ws		      equ		0x2C	; dest file/folder (if mode >0)
+    536          //                    equ		0x30
+    537          //exp_filter_scroll	  equ		0x34	; func checks files to be shown by scrolling
+    538          //exp_report_csm	    equ		0x38	; *csm to report about everything
+    539          //                    equ		0x3C
+    540          //                    equ		0x40
+    541          
+    542          //#pragma swi_number=0x254
+    543          //__swi __arm int StartNativeExplorer(NativeExplorerData* data);
+    544          
+    545          
+    546          void strpath_2ws(WSHDR *ws, char *path, int len)
+    547          {
+    548          	char utf8[PATH_LEN];
+    549          	char str[PATH_LEN];
+    550          	strncpy(utf8, path, len);
+    551          	utf8[len]=0;
+    552          	utf8_2str(str, utf8);
+    553          	str_2ws(ws, str, PATH_LEN);
+    554          }
+    555          
+    556          void run_folder(MENU_LIST *ml)
+    557          {
+    558          	WSHDR *ws=AllocWS(PATH_LEN);
+    559          	strpath_2ws(ws, ml->path, ml->path_len);
+    560          	NativeExplorerData data;
+    561          	zeromem(&data,sizeof(NativeExplorerData));
+    562          	data.mode=0;
+    563          	data.dir_enum=ENUM;
+    564          	data.path_to_file=ws;
+    565          	data.is_exact_dir=0;
+    566          	data.full_filename=ws;
+    567          	data.unk9=1;
+    568          	//data.this_struct_addr=&data;
+    569          	StartNativeExplorer(&data);
+    570          	FreeWS(ws);
+    571          }
+    572          
+    573          void run_file(MENU_LIST *ml)
+    574          {
+    575          	//char utf8[PATH_LEN];
+    576          	//char str[PATH_LEN];
+    577          	//strncpy(utf8, ml->path, ml->path_len);
+    578          	//utf8[ml->path_len]=0;
+    579          	//utf8_2str(str, utf8);
+    580          	WSHDR *ws=AllocWS(PATH_LEN);
+    581          	strpath_2ws(ws, ml->path, ml->path_len);
+    582          	//str_2ws(ws, str, PATH_LEN);
+    583          	ExecuteFile(ws, 0, 0);
+    584          	FreeWS(ws);
+    585          }
+    586          void run_mymenu2_editor(void)
+    587          {
+    588          	WSHDR *ws=AllocWS(PATH_LEN);
+    589          	char elf_path[]=ELF_PATH;
+    590          	strpath_2ws(ws, elf_path, strlen(elf_path));
+    591          	ExecuteFile(ws, 0, 0);
+    592          	FreeWS(ws);
+    593          }
+    594          
+    595          int menu_onkey(void *data, GUI_MSG *msg)
+    596          {
+    597          	MAIN_CSM *csm=MenuGetUserPointer(data);
+    598          	MENU_LIST *ml=get_mlitem(csm->mltop, GetCurMenuItem(data));
+    599          	if(msg->gbsmsg->msg==KEY_DOWN)
+    600          	{
+    601          		int i=msg->gbsmsg->submess;
+    602          		switch(i)
+    603          		{
+    604          		case RIGHT_SOFT:
+    605          			return 1;
+    606          		case ENTER_BUTTON:
+    607          		case LEFT_SOFT:
+    608          			if(ml)
+    609          				run_ml(ml);
+    610          			return 0;
+    611          		case '*':
+    612          			ShowMSG(1, (int)COPYRIGHT);
+    613          			return 0;
+    614          		case '#':
+    615          			run_mymenu2_editor();
+    616          			return 1;
+    617          		}
+    618          		if(i>='0'&&i<='9')
+    619          		{
+    620          			if(i=='0')
+    621          				i=9;
+    622          			else
+    623          				i-='1';
+    624          			ml=get_mlitem(csm->mltop, i);
+    625          			if(ml)
+    626          				run_ml(ml);
+    627          			return 0;
+    628          		}
+    629          		//if(i=='*')
+    630          		//{
+    631          		//	ShowMSG(1, (int)CP_MSG);
+    632          		//	return 0;
+    633          		//}
+    634          	}
+    635          	return 0;
+    636          }
+    637          
+    638          void menu_ghook(void *data, int cmd)
+    639          {
+    640          	if (cmd==0x0A)
+    641          		DisableIDLETMR();
+    642          }
+    643          
+    644          void menu_iconhndl(void *data, int curitem, void *unk)
+    645          {
+    646          	MENU_LIST *ml;
+    647          	MAIN_CSM *csm=MenuGetUserPointer(data);
+    648          	void *item=AllocMenuItem(data);
+    649          	ml=get_mlitem(csm->mltop, curitem);
+    650          	WSHDR *ws;
+    651          	if(ml)
+    652          	{
+    653          		ws=AllocMenuWS(data, ml->name_len+2);
+    654          		utf8_2ws(ws, ml->name, ml->name_len);
+    655          	}
+    656          	else
+    657          	{
+    658          		ws=AllocMenuWS(data,16);
+    659          		wsprintf(ws,ERR_STR);
+    660          	}
+    661          	#ifdef VKP
+    662          	SetMenuItemIconArray(data, item, MenuItemIcon);
+    663          	#endif
+    664          	SetMenuItemText(data,item,ws,curitem);
+    665          }
+    666          
+    667          const MENU_DESC main_menu=
+    668          {
+    669          	8,
+    670          	menu_onkey,
+    671          	menu_ghook,
+    672          	NULL,
+    673          	menusoftkeys,
+    674          	&menu_skt,
+    675          #ifdef	VKP
+    676          	0x11,
+    677          #else
+    678          	0x10,
+    679          #endif
+    680          	menu_iconhndl,
+    681          	NULL,   //Items
+    682          	NULL,   //Procs
+    683          	0   //n
+    684          };
+    685          
+    686          void maincsm_oncreate(CSM_RAM *data)
+    687          {
+    688          	MAIN_CSM *csm=(MAIN_CSM*)data;
+    689          	csm->buf=malloc(BUF_SIZE);
+    690          	csm->mltop=0; //必须初始化
+    691          	csm->gui_id=CreateMenu(0, 0, &main_menu, &menuheader, 0, read_cfg(csm), csm, 0);
+    692          }
+    693          
+    694          int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
+    695          {
+    696          	MAIN_CSM *csm=(MAIN_CSM*)data;
+    697          	if ((msg->msg==MSG_GUI_DESTROYED)&&((int)msg->data0==csm->gui_id))
+    698          	{
+    699          		csm->csm.state=-3;
+    700          	}
+    701          	return(1);
+    702          }
+    703          
+    704          void Killer(MAIN_CSM *csm)
+    705          {
+    706          #ifdef VKP
+    707          /*	buf=0; //退出时将RAM地址置零
+    708          	mltop=0;*/
+    709          #else
+    710          	extern void *ELF_BEGIN;
+    711          	extern void kill_data(void *p, void (*func_p)(void *));
+    712          	kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
+    713          #endif
+    714          }
+    715          
+    716          void maincsm_onclose(CSM_RAM *data)
+    717          {
+    718          	MAIN_CSM *csm=(MAIN_CSM*)data;
+    719          	mfree(csm->buf);
+    720          	FreeMenuList(csm);
+    721          #ifndef	VKP
+    722          	SUBPROC((void *)Killer,csm);
+    723          #endif
+    724          }
+    725          
+    726          const int minus11=-11;
+    727          const unsigned short maincsm_name_body[16]={7,'M', 'y', 'M', 'e', 'n', 'u', '2'};
+    728          
+    729          const struct
+    730          {
+    731          	CSM_DESC maincsm;
+    732          	WSHDR maincsm_name;
+    733          }MAINCSM =
+    734          {
+    735          	{
+    736          		maincsm_onmessage,
+    737          		maincsm_oncreate,
+    738          #ifdef NEWSGOLD
+    739          		0,
+    740          		0,
+    741          		0,
+    742          		0,
+    743          #endif
+    744          		maincsm_onclose,
+    745          		sizeof(MAIN_CSM),
+    746          		1,
+    747          		&minus11
+    748          	},
+    749          	{
+    750          		(unsigned short *)maincsm_name_body,
+    751          		NAMECSM_MAGIC1,
+    752          		NAMECSM_MAGIC2,
+    753          		0x0,
+    754          		139
+    755          	}
+    756          };
+    757          
+    758          #ifndef VKP
+    759          void UpdateCSMname(void)
+    760          {
+    761          	wsprintf((WSHDR *)(&MAINCSM.maincsm_name), ELFNAME);
+    762          }
+    763          #endif
+    764          
+    765          int main(void)
+    766          {
+    767          #ifdef VKP
+    768          /*	if(buf||mltop) //检测是否已经有mymenu启动
+    769          	{
+    770          		MsgBoxError(1, (int)ERR_STR);
+    771          		return 0;
+    772          	}*/
+    773          #endif
+    774          	char dummy[sizeof(MAIN_CSM)];
+    775          	zeromem(dummy, sizeof(MAIN_CSM));
+    776          #ifndef VKP
+    777          	UpdateCSMname();
+    778          #endif
+    779          	LockSched();
+    780          	CreateCSM(&MAINCSM.maincsm,dummy,0);
+    781          	UnlockSched();
+    782          	return 0;
+    783          }
+    784          
+
+   Maximum stack usage in bytes:
+
+     Function               CSTACK
+     --------               ------
+     AddtoMenuList             28
+     CheckType                  4
+     FreeMenuList              12
+     GetFunctionPointByName    16
+     Killer                     4
+     UpdateCSMname              4
+     chr2num                    0
+     get_mlitem                 0
+     gotoLineEnd                0
+     gotoRealPos                0
+     main                      56
+     maincsm_onclose            8
+     maincsm_oncreate          24
+     maincsm_onmessage          0
+     menu_ghook                 4
+     menu_iconhndl             24
+     menu_onkey                16
+     read_cfg                  72
+     run_address                4
+     run_file                  12
+     run_folder               116
+     run_ml                    48
+     run_mymenu2_editor        52
+     run_shortcut               4
+     strchrinline               0
+     strncmpNoCase              4
+     strpath_2ws              268
+     utf8_2str                  0
+
+
+   Segment part sizes:
+
+     Function/Label                 Bytes
+     --------------                 -----
+     menusoftkeys                     12
+     menu_sk                          24
+     menu_skt                          8
+     utf8_2str                       120
+     AddtoMenuList                   116
+     FreeMenuList                     48
+     get_mlitem                       32
+     strchrinline                     48
+     gotoRealPos                      32
+     gotoLineEnd                      32
+     CheckType                        92
+     read_cfg                        540
+     strncmpNoCase                    88
+     GetFunctionPointByName           92
+     run_address                      20
+     run_shortcut                     16
+     chr2num                          68
+     run_ml                          260
+     strpath_2ws                      72
+     run_folder                      112
+     run_file                         60
+     run_mymenu2_editor              104
+     menu_onkey                      208
+     menu_ghook                       20
+     menu_iconhndl                   140
+     menuheader                       64
+     maincsm_oncreate                 96
+     maincsm_onmessage                48
+     Killer                           28
+     maincsm_onclose                  44
+     minus11                           4
+     maincsm_name_body                32
+     ?<Constant "MyMenu2">            68
+     UpdateCSMname                    28
+     main                             64
+     ?<Constant "\321\241\324\361">    8
+     ?<Constant "\300\353\277\252">    8
+     ?<Constant "0:\\ZBin\\etc\\MyMenu2.cfg">
+                                      24
+     ?<Constant "0:\\ZBin\\utilities\\MyM...">
+                                      40
+     ?<Constant "MyMenu2\n(c)BingK(bing...">
+                                      32
+     ?<Constant "Error!">              8
+      Others                         124
+
+ 
+ 2 752 bytes in segment CODE
+   332 bytes in segment DATA_C
+ 
+ 2 628 bytes of CODE  memory (+ 124 bytes shared)
+   332 bytes of CONST memory
+
+Errors: none
+Warnings: none

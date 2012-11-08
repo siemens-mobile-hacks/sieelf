@@ -1,0 +1,234 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   02/Dec/2011  21:56:49 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\Macro\config_data.c            /
+//    Command line    =  D:\SVN\SieELF\SieELF\Macro\config_data.c -D         /
+//                       NEWSGOLD -D ELKA -lC D:\SVN\SieELF\SieELF\Macro\Elk /
+//                       a\List\ -la D:\SVN\SieELF\SieELF\Macro\Elka\List\   /
+//                       -o D:\SVN\SieELF\SieELF\Macro\Elka\Obj\ -s9         /
+//                       --no_unroll --cpu_mode arm --endian little --cpu    /
+//                       ARM7TDMI --stack_align 4 --interwork -e --fpu None  /
+//                       -I "D:\Program Files\IAR\Embedded Workbench 4.0     /
+//                       Evaluation\ARM\INC\" --inline_threshold=2           /
+//    List file       =  D:\SVN\SieELF\SieELF\Macro\Elka\List\config_data.s7 /
+//                       9                                                   /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME config_data
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        PUBLIC ShowNativeMenu_
+        PUBLIC cfgcbox1
+        PUBLIC cfghdr0
+        PUBLIC cfghdr000
+        PUBLIC cfghdr1
+        PUBLIC cfghdr2
+        PUBLIC cfghdr3
+        PUBLIC cfghdr4
+        PUBLIC cfghdr5
+        PUBLIC cfghdr6
+        PUBLIC cfghdr7
+        PUBLIC cfghdr8
+        PUBLIC cfghdr9
+        PUBLIC cfghdrA
+        PUBLIC delay_keybreak
+        PUBLIC delay_longpause
+        PUBLIC delay_smallpause
+        PUBLIC delay_wait_1
+        PUBLIC delay_wait_2
+        PUBLIC delay_wait_3
+        PUBLIC paint_delay
+        PUBLIC pre_delay
+        PUBLIC show
+        PUBLIC wait_threshold
+        PUBLIC watch_delay
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+cfghdr0:
+        DATA
+        DC32 5
+        DC8 "show title"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC32 0, 2
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+show:
+        DATA
+        DC32 1
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+cfgcbox1:
+        DATA
+        DC8 "No"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 "Yes"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+cfghdr000:
+        DATA
+        DC32 1
+        DC8 "watch_delay"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC32 5, 65530
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+watch_delay:
+        DATA
+        DC32 50
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+cfghdr1:
+        DATA
+        DC32 1
+        DC8 "paint_delay"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC32 5, 65530
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+paint_delay:
+        DATA
+        DC32 100
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+cfghdr2:
+        DATA
+        DC32 1
+        DC8 "pre_delay"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC32 5, 65530
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+pre_delay:
+        DATA
+        DC32 400
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+cfghdr3:
+        DATA
+        DC32 1
+        DC8 "delay_longpause(P)"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC32 5, 65530
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+delay_longpause:
+        DATA
+        DC32 1000
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+cfghdr4:
+        DATA
+        DC32 1
+        DC8 "delay_smallpause( )"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC32 5, 65530
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+delay_smallpause:
+        DATA
+        DC32 241
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+cfghdr5:
+        DATA
+        DC32 1
+        DC8 "delay_keybreak"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC32 0, 65530
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+delay_keybreak:
+        DATA
+        DC32 85
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+cfghdr6:
+        DATA
+        DC32 1
+        DC8 "delay_wait_1"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC32 5, 65530
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+delay_wait_1:
+        DATA
+        DC32 60
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+cfghdr7:
+        DATA
+        DC32 1
+        DC8 "delay_wait_2"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC32 5, 65530
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+delay_wait_2:
+        DATA
+        DC32 121
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+cfghdr8:
+        DATA
+        DC32 1
+        DC8 "delay_wait_3"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC32 5, 65530
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+delay_wait_3:
+        DATA
+        DC32 60
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+cfghdr9:
+        DATA
+        DC32 1
+        DC8 "CPU wait threshold,%"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC32 5, 100
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+wait_threshold:
+        DATA
+        DC32 85
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+cfghdrA:
+        DATA
+        DC32 4
+        DC8 "ShowNativeMenu() address"
+        DC8 0, 0, 0, 0, 0, 0, 0
+        DC32 1, 8
+
+        RSEG DATA_C:CONST:SORT:ROOT(2)
+ShowNativeMenu_:
+        DATA
+        DC8 "0"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+
+        END
+// 
+// 648 bytes in segment DATA_C
+// 
+// 648 bytes of CONST memory
+//
+//Errors: none
+//Warnings: none

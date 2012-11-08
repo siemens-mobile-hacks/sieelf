@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <fileChecksum>1039478359</fileChecksum>
+  <configuration>
+    <name>C81Csw50</name>
+    <outputs>
+      <file>$PROJ_DIR$\C81Csw50\List\IME_PINYIN.map</file>
+      <file>$PROJ_DIR$\C81Csw50\Exe\IME_PINYIN.elf</file>
+      <file>$PROJ_DIR$\C81Csw50\Obj\IME_PINYIN.r79</file>
+      <file>$PROJ_DIR$\addr.h</file>
+      <file>$PROJ_DIR$\IME_PINYIN.asm</file>
+      <file>$PROJ_DIR$\IME_PINYIN_1_4.asm</file>
+      <file>$PROJ_DIR$\C81Csw50\Obj\IME_PINYIN_1_4.r79</file>
+      <file>$PROJ_DIR$\C81Csw50\List\IME_PINYIN_1_4.lst</file>
+      <file>$PROJ_DIR$\C81Csw50.xcl</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\C81Csw50\Exe\IME_PINYIN.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 0</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 8 6</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 1 0</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\IME_PINYIN.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 2</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\IME_PINYIN_1_4.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 6 7</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>AARM</name>
+          <file> 3</file>
+        </tool>
+      </inputs>
+    </file>
+    <forcedrebuild>
+      <name>$PROJ_DIR$\IME_PINYIN.asm</name>
+      <tool>AARM</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>E71Csw41</name>
+    <outputs>
+      <file>$PROJ_DIR$\addr.h</file>
+      <file>$PROJ_DIR$\IME_PINYIN.asm</file>
+      <file>$PROJ_DIR$\IME_PINYIN_1_4.asm</file>
+      <file>$PROJ_DIR$\E71Csw41\Obj\IME_PINYIN.r79</file>
+      <file>$PROJ_DIR$\E71Csw41\Exe\IME_PINYIN.elf</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 4</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\IME_PINYIN.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 3</file>
+        </tool>
+      </outputs>
+    </file>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>ELC1sw41</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>M81Csw51</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>S68Csw51</name>
+    <outputs/>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>S7Csw47</name>
+    <outputs>
+      <file>$PROJ_DIR$\S7Csw47\Obj\IME_PINYIN_1_4.r79</file>
+      <file>$PROJ_DIR$\addr.h</file>
+      <file>$PROJ_DIR$\IME_PINYIN.asm</file>
+      <file>$PROJ_DIR$\IME_PINYIN_1_4.asm</file>
+      <file>$PROJ_DIR$\S7Csw47\Exe\IME_PINYIN.elf</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 4</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\IME_PINYIN_1_4.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 0</file>
+        </tool>
+      </outputs>
+    </file>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+</project>
+
+

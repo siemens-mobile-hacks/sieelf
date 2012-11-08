@@ -10,13 +10,13 @@
 *********************************************************************/
 #include "..\inc\swilib.h"
 
-#define UC_XING 0x661F //xing
-#define UC_QI 0x671F //qi
-#define UC_CHU 0x521D //chu
+#define UC_XING 0x661F //星
+#define UC_QI 0x671F //期
+#define UC_CHU 0x521D //初
 #define UC_SHI 0x5341 //十
 #define UC_ERSHI 0x5EFF //廿
 #define UC_SANSHI 0x5345 //卅
-#define UC_ZHENG 0x6B63
+#define UC_ZHENG 0x6B63  //正
 //日一二三四五六七八九十廿卅
 const unsigned short UC_CHARS[12]=
 {
@@ -72,11 +72,26 @@ __swi __arm void GetProvider(WSHDR *ws, int _0);
 #ifdef ELKA
 #define RamTrack1 0xAD2B3D60
 #else
-#define RamTrack3 0xA892C6B0
+#define RamTrack3 0xA899C7A8
 #define RamTrack2 0xA89A32F4
-#define RamTrack1 0xA899F2BC
+#define RamTrack1 0xA8A232F4
 #endif
 #define MAX_LEN 64 //UNICODE
+
+__arm int wsprintf_bytes(WSHDR *ws, unsigned int bytes)
+{
+  	//char *str;
+	if (bytes<=1024)
+		return (wsprintf(ws,"%u%s",bytes,"b"));
+	 //str=BYTES_SG;
+	else 
+	{
+		bytes>>=10;
+		return (wsprintf(ws,"%u%s",bytes,"Kb"));
+		//str=KBYTES_SG;
+	}  
+}
+
 __arm void GetRepString(WSHDR *pws, const unsigned short *pformat) 
 {
   WSHDR *wst, wstn;
@@ -85,7 +100,7 @@ __arm void GetRepString(WSHDR *pws, const unsigned short *pformat)
   TDate date, Ldate;
   TTime time;
   RAMNET *net;
-  int z, week, LunarRet, c;
+  int z, week, LunarRet, c, r;
   char *qp;
   wst=CreateLocalWS(&wstn, wstb, 32);
   GetDateTime(&date, &time);
@@ -209,13 +224,23 @@ __arm void GetRepString(WSHDR *pws, const unsigned short *pformat)
 	break;
       case 'R': //信号等级
 	net=RamNet();
-	wsprintf(wst, "%c%d", (net->ch_number>=255)?'=':'-', net->power);
+	wsprintf(wst, "%c%ddB", (net->ch_number>=255)?'=':'-', net->power);
 	wstrcat(pws, wst);
 	break;
       case 'A': //akku 电压v
 	z=GetAkku(0,9);
 	wsprintf(wst, "%d.%02d", z/1000, (z%1000)/10);
 	wstrcat(pws, wst);
+	break;
+		  case '0': //剩余RAM
+  r=GetFreeRamAvail();
+  wsprintf_bytes(wst,r);
+  wstrcat(pws, wst);
+	break;
+		  case '1': //CPU使用率
+  r=GetCPULoad();
+  wsprintf(wst,"%02d%",r);
+  wstrcat(pws, wst);
 	break;
       case 'a': //akku 电量 in %
 	wsprintf(wst, "%d", *RamCap());

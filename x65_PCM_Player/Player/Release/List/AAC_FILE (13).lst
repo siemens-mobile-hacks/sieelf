@@ -1,0 +1,508 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    14/Feb/2012  15:39:16 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDE #
+#                       C\AAC_FILE (13).c                                    #
+#    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD #
+#                       EC\AAC_FILE (13).c" -D NDEBUG -lC                    #
+#                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\ #
+#                       Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player #
+#                       \Player\Release\Obj\ -s9 --cpu_mode arm --endian     #
+#                       little --cpu ARM926EJ-S --stack_align 4 --interwork  #
+#                       -e --fpu None --dlib_config "D:\Program              #
+#                       Files\IAR\Embedded Workbench 4.0                     #
+#                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude       #
+#                       swilib.h -I "D:\Program Files\IAR\Embedded           #
+#                       Workbench 4.0 Evaluation\ARM\INC\"                   #
+#                       --inline_threshold=16                                #
+#    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\AAC_FILE (13).lst                                #
+#    Object file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\O #
+#                       bj\AAC_FILE (13).r79                                 #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (13).c
+      1          /* ***** BEGIN LICENSE BLOCK *****  
+      2           * Source last modified: $Id: bitstream.c,v 1.1 2005/02/26 01:47:34 jrecker Exp $ 
+      3           *   
+      4           * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+      5           *       
+      6           * The contents of this file, and the files included with this file, 
+      7           * are subject to the current version of the RealNetworks Public 
+      8           * Source License (the "RPSL") available at 
+      9           * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+     10           * the file under the current version of the RealNetworks Community 
+     11           * Source License (the "RCSL") available at 
+     12           * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+     13           * will apply. You may also obtain the license terms directly from 
+     14           * RealNetworks.  You may not use this file except in compliance with 
+     15           * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+     16           * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+     17           * the rights, obligations and limitations governing use of the 
+     18           * contents of the file. 
+     19           *   
+     20           * This file is part of the Helix DNA Technology. RealNetworks is the 
+     21           * developer of the Original Code and owns the copyrights in the 
+     22           * portions it created. 
+     23           *   
+     24           * This file, and the files included with this file, is distributed 
+     25           * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+     26           * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+     27           * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+     28           * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+     29           * ENJOYMENT OR NON-INFRINGEMENT. 
+     30           *  
+     31           * Technology Compatibility Kit Test Suite(s) Location:  
+     32           *    http://www.helixcommunity.org/content/tck  
+     33           *  
+     34           * Contributor(s):  
+     35           *   
+     36           * ***** END LICENSE BLOCK ***** */  
+     37          
+     38          /**************************************************************************************
+     39           * Fixed-point HE-AAC decoder
+     40           * Jon Recker (jrecker@real.com)
+     41           * February 2005
+     42           *
+     43           * bitstream.c - bitstream parsing functions
+     44           **************************************************************************************/
+     45          
+     46          #include "bitstream_aac.h"
+     47          
+     48          /**************************************************************************************
+     49           * Function:    SetBitstreamPointer
+     50           *
+     51           * Description: initialize bitstream reader
+     52           *
+     53           * Inputs:      pointer to BitStreamInfo struct
+     54           *              number of bytes in bitstream
+     55           *              pointer to byte-aligned buffer of data to read from
+     56           *
+     57           * Outputs:     initialized bitstream info struct
+     58           *
+     59           * Return:      none
+     60           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+     61          void SetBitstreamPointer(BitStreamInfo *bsi, int nBytes, unsigned char *buf)
+     62          {
+     63          	/* init bitstream */
+     64          	bsi->bytePtr = buf;
+   \                     raac_SetBitstreamPointer:
+   \   00000000   002080E5           STR      R2,[R0, #+0]
+     65          	bsi->iCache = 0;		/* 4-byte unsigned int */
+   \   00000004   0020A0E3           MOV      R2,#+0
+   \   00000008   042080E5           STR      R2,[R0, #+4]
+     66          	bsi->cachedBits = 0;	/* i.e. zero bits in cache */
+   \   0000000C   082080E5           STR      R2,[R0, #+8]
+     67          	bsi->nBytes = nBytes;
+   \   00000010   0C1080E5           STR      R1,[R0, #+12]
+     68          }
+   \   00000014   1EFF2FE1           BX       LR               ;; return
+     69          
+     70          /**************************************************************************************
+     71           * Function:    RefillBitstreamCache
+     72           *
+     73           * Description: read new data from bitstream buffer into 32-bit cache
+     74           *
+     75           * Inputs:      pointer to initialized BitStreamInfo struct
+     76           *
+     77           * Outputs:     updated bitstream info struct
+     78           *
+     79           * Return:      none
+     80           *
+     81           * Notes:       only call when iCache is completely drained (resets bitOffset to 0)
+     82           *              always loads 4 new bytes except when bsi->nBytes < 4 (end of buffer)
+     83           *              stores data as big-endian in cache, regardless of machine endian-ness
+     84           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+     85          static inline void RefillBitstreamCache(BitStreamInfo *bsi)
+     86          {
+   \                     RefillBitstreamCache:
+   \   00000000   10002DE9           PUSH     {R4}
+     87          	int nBytes = bsi->nBytes;
+   \   00000004   0C1090E5           LDR      R1,[R0, #+12]
+   \   00000008   0130A0E1           MOV      R3,R1
+     88          
+     89          	/* optimize for common case, independent of machine endian-ness */
+     90          	if (nBytes >= 4) {
+   \   0000000C   040053E3           CMP      R3,#+4
+   \   00000010   1C0000BA           BLT      ??RefillBitstreamCache_0
+     91          		bsi->iCache  = (*bsi->bytePtr++) << 24;
+   \   00000014   002090E5           LDR      R2,[R0, #+0]
+     92          		bsi->iCache |= (*bsi->bytePtr++) << 16;
+     93          		bsi->iCache |= (*bsi->bytePtr++) <<  8;
+     94          		bsi->iCache |= (*bsi->bytePtr++);
+     95          		bsi->cachedBits = 32;
+     96          		bsi->nBytes -= 4;
+   \   00000018   041041E2           SUB      R1,R1,#+4
+   \   0000001C   013082E2           ADD      R3,R2,#+1
+   \   00000020   003080E5           STR      R3,[R0, #+0]
+   \   00000024   0020D2E5           LDRB     R2,[R2, #+0]
+   \   00000028   022CA0E1           LSL      R2,R2,#+24
+   \   0000002C   042080E5           STR      R2,[R0, #+4]
+   \   00000030   0320A0E1           MOV      R2,R3
+   \   00000034   013082E2           ADD      R3,R2,#+1
+   \   00000038   003080E5           STR      R3,[R0, #+0]
+   \   0000003C   0020D2E5           LDRB     R2,[R2, #+0]
+   \   00000040   043090E5           LDR      R3,[R0, #+4]
+   \   00000044   022883E1           ORR      R2,R3,R2, LSL #+16
+   \   00000048   042080E5           STR      R2,[R0, #+4]
+   \   0000004C   003090E5           LDR      R3,[R0, #+0]
+   \   00000050   01C083E2           ADD      R12,R3,#+1
+   \   00000054   00C080E5           STR      R12,[R0, #+0]
+   \   00000058   0030D3E5           LDRB     R3,[R3, #+0]
+   \   0000005C   032482E1           ORR      R2,R2,R3, LSL #+8
+   \   00000060   042080E5           STR      R2,[R0, #+4]
+   \   00000064   0C30A0E1           MOV      R3,R12
+   \   00000068   01C083E2           ADD      R12,R3,#+1
+   \   0000006C   00C080E5           STR      R12,[R0, #+0]
+   \   00000070   0030D3E5           LDRB     R3,[R3, #+0]
+   \   00000074   022083E1           ORR      R2,R3,R2
+   \   00000078   042080E5           STR      R2,[R0, #+4]
+   \   0000007C   2030A0E3           MOV      R3,#+32
+   \   00000080   0C1080E5           STR      R1,[R0, #+12]
+   \   00000084   160000EA           B        ??RefillBitstreamCache_1
+     97          	} else {
+     98          		bsi->iCache = 0;
+   \                     ??RefillBitstreamCache_0:
+   \   00000088   0020A0E3           MOV      R2,#+0
+   \   0000008C   042080E5           STR      R2,[R0, #+4]
+   \   00000090   070000EA           B        ??RefillBitstreamCache_2
+     99          		while (nBytes--) {
+    100          			bsi->iCache |= (*bsi->bytePtr++);
+   \                     ??RefillBitstreamCache_3:
+   \   00000094   00C090E5           LDR      R12,[R0, #+0]
+   \   00000098   01408CE2           ADD      R4,R12,#+1
+   \   0000009C   004080E5           STR      R4,[R0, #+0]
+    101          			bsi->iCache <<= 8;
+   \   000000A0   00C0DCE5           LDRB     R12,[R12, #+0]
+   \   000000A4   044090E5           LDR      R4,[R0, #+4]
+   \   000000A8   04408CE1           ORR      R4,R12,R4
+   \   000000AC   0444A0E1           LSL      R4,R4,#+8
+   \   000000B0   044080E5           STR      R4,[R0, #+4]
+    102          		}
+   \                     ??RefillBitstreamCache_2:
+   \   000000B4   03C0A0E1           MOV      R12,R3
+   \   000000B8   01304CE2           SUB      R3,R12,#+1
+   \   000000BC   00005CE3           CMP      R12,#+0
+   \   000000C0   F3FFFF1A           BNE      ??RefillBitstreamCache_3
+    103          		bsi->iCache <<= ((3 - bsi->nBytes)*8);
+   \   000000C4   043090E5           LDR      R3,[R0, #+4]
+   \   000000C8   0140A0E1           MOV      R4,R1
+   \   000000CC   034064E2           RSB      R4,R4,#+3
+   \   000000D0   8441A0E1           LSL      R4,R4,#+3
+   \   000000D4   1334A0E1           LSL      R3,R3,R4
+   \   000000D8   043080E5           STR      R3,[R0, #+4]
+    104          		bsi->cachedBits = 8*bsi->nBytes;
+   \   000000DC   8131A0E1           LSL      R3,R1,#+3
+    105          		bsi->nBytes = 0;
+   \   000000E0   0C2080E5           STR      R2,[R0, #+12]
+   \                     ??RefillBitstreamCache_1:
+   \   000000E4   083080E5           STR      R3,[R0, #+8]
+    106          	}
+    107          }
+   \   000000E8   1000BDE8           POP      {R4}
+   \   000000EC   1EFF2FE1           BX       LR               ;; return
+    108          
+    109          /**************************************************************************************
+    110           * Function:    GetBits
+    111           *
+    112           * Description: get bits from bitstream, advance bitstream pointer
+    113           *
+    114           * Inputs:      pointer to initialized BitStreamInfo struct
+    115           *              number of bits to get from bitstream
+    116           *
+    117           * Outputs:     updated bitstream info struct
+    118           *
+    119           * Return:      the next nBits bits of data from bitstream buffer
+    120           *
+    121           * Notes:       nBits must be in range [0, 31], nBits outside this range masked by 0x1f
+    122           *              for speed, does not indicate error if you overrun bit buffer 
+    123           *              if nBits == 0, returns 0
+    124           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    125          unsigned int GetBits(BitStreamInfo *bsi, int nBits)
+    126          {
+   \                     raac_GetBits:
+   \   00000000   70402DE9           PUSH     {R4-R6,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+    127          	unsigned int data, lowBits;
+    128          
+    129          	nBits &= 0x1f;							/* nBits mod 32 to avoid unpredictable results like >> by negative amount */
+   \   00000008   1F0001E2           AND      R0,R1,#0x1F
+    130          	data = bsi->iCache >> (31 - nBits);		/* unsigned >> so zero-extend */
+    131          	data >>= 1;								/* do as >> 31, >> 1 so that nBits = 0 works okay (returns 0) */
+   \   0000000C   041094E5           LDR      R1,[R4, #+4]
+   \   00000010   0020A0E1           MOV      R2,R0
+   \   00000014   1F2062E2           RSB      R2,R2,#+31
+   \   00000018   3122A0E1           LSR      R2,R1,R2
+    132          	bsi->iCache <<= nBits;					/* left-justify cache */
+   \   0000001C   1110A0E1           LSL      R1,R1,R0
+   \   00000020   041084E5           STR      R1,[R4, #+4]
+    133          	bsi->cachedBits -= nBits;				/* how many bits have we drawn from the cache so far */
+   \   00000024   081094E5           LDR      R1,[R4, #+8]
+   \   00000028   A250A0E1           LSR      R5,R2,#+1
+   \   0000002C   000051E0           SUBS     R0,R1,R0
+   \   00000030   080084E5           STR      R0,[R4, #+8]
+    134          
+    135          	/* if we cross an int boundary, refill the cache */
+    136          	if (bsi->cachedBits < 0) {
+   \   00000034   0B00005A           BPL      ??raac_GetBits_0
+    137          		lowBits = -bsi->cachedBits;
+   \   00000038   006060E2           RSB      R6,R0,#+0
+    138          		RefillBitstreamCache(bsi);
+   \   0000003C   0400A0E1           MOV      R0,R4
+   \   00000040   ........           BL       RefillBitstreamCache
+    139          		data |= bsi->iCache >> (32 - lowBits);		/* get the low-order bits */
+   \   00000044   040094E5           LDR      R0,[R4, #+4]
+   \   00000048   0610A0E1           MOV      R1,R6
+   \   0000004C   201061E2           RSB      R1,R1,#+32
+   \   00000050   305185E1           ORR      R5,R5,R0, LSR R1
+    140          	
+    141          		bsi->cachedBits -= lowBits;			/* how many bits have we drawn from the cache so far */
+   \   00000054   081094E5           LDR      R1,[R4, #+8]
+    142          		bsi->iCache <<= lowBits;			/* left-justify cache */
+   \   00000058   1006A0E1           LSL      R0,R0,R6
+   \   0000005C   061041E0           SUB      R1,R1,R6
+   \   00000060   081084E5           STR      R1,[R4, #+8]
+   \   00000064   040084E5           STR      R0,[R4, #+4]
+    143          	}
+    144          
+    145          	return data;
+   \                     ??raac_GetBits_0:
+   \   00000068   0500A0E1           MOV      R0,R5
+   \   0000006C   7080BDE8           POP      {R4-R6,PC}       ;; return
+    146          }
+    147          
+    148          /**************************************************************************************
+    149           * Function:    GetBitsNoAdvance
+    150           *
+    151           * Description: get bits from bitstream, do not advance bitstream pointer
+    152           *
+    153           * Inputs:      pointer to initialized BitStreamInfo struct
+    154           *              number of bits to get from bitstream
+    155           *
+    156           * Outputs:     none (state of BitStreamInfo struct left unchanged) 
+    157           *
+    158           * Return:      the next nBits bits of data from bitstream buffer
+    159           *
+    160           * Notes:       nBits must be in range [0, 31], nBits outside this range masked by 0x1f
+    161           *              for speed, does not indicate error if you overrun bit buffer 
+    162           *              if nBits == 0, returns 0
+    163           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    164          unsigned int GetBitsNoAdvance(BitStreamInfo *bsi, int nBits)
+    165          {
+    166          	unsigned char *buf;
+    167          	unsigned int data, iCache;
+    168          	signed int lowBits;
+    169          
+    170          	nBits &= 0x1f;							/* nBits mod 32 to avoid unpredictable results like >> by negative amount */
+   \                     raac_GetBitsNoAdvance:
+   \   00000000   1F2001E2           AND      R2,R1,#0x1F
+    171          	data = bsi->iCache >> (31 - nBits);		/* unsigned >> so zero-extend */
+    172          	data >>= 1;								/* do as >> 31, >> 1 so that nBits = 0 works okay (returns 0) */
+   \   00000004   041090E5           LDR      R1,[R0, #+4]
+   \   00000008   0230A0E1           MOV      R3,R2
+   \   0000000C   1F3063E2           RSB      R3,R3,#+31
+   \   00000010   3113A0E1           LSR      R1,R1,R3
+    173          	lowBits = nBits - bsi->cachedBits;		/* how many bits do we have left to read */
+   \   00000014   083090E5           LDR      R3,[R0, #+8]
+   \   00000018   A110A0E1           LSR      R1,R1,#+1
+   \   0000001C   032042E0           SUB      R2,R2,R3
+    174          
+    175          	/* if we cross an int boundary, read next bytes in buffer */
+    176          	if (lowBits > 0) {
+   \   00000020   010052E3           CMP      R2,#+1
+   \   00000024   080000BA           BLT      ??raac_GetBitsNoAdvance_0
+    177          		iCache = 0;
+    178          		buf = bsi->bytePtr;
+   \   00000028   000090E5           LDR      R0,[R0, #+0]
+   \   0000002C   0030A0E3           MOV      R3,#+0
+    179          		while (lowBits > 0) {
+    180          			iCache <<= 8;
+    181          			iCache |= (unsigned int)*buf++;
+    182          			lowBits -= 8;
+   \                     ??raac_GetBitsNoAdvance_1:
+   \   00000030   082042E2           SUB      R2,R2,#+8
+   \   00000034   ........           LDRB     R12,[R0], #+1
+    183          		}
+   \   00000038   010052E3           CMP      R2,#+1
+   \   0000003C   03348CE1           ORR      R3,R12,R3, LSL #+8
+   \   00000040   FAFFFFAA           BGE      ??raac_GetBitsNoAdvance_1
+    184          		lowBits = -lowBits;
+    185          		data |= iCache >> lowBits;
+   \   00000044   000062E2           RSB      R0,R2,#+0
+   \   00000048   331081E1           ORR      R1,R1,R3, LSR R0
+    186          	}
+    187          
+    188          	return data;
+   \                     ??raac_GetBitsNoAdvance_0:
+   \   0000004C   0100A0E1           MOV      R0,R1
+   \   00000050   1EFF2FE1           BX       LR               ;; return
+    189          }
+    190          
+    191          /**************************************************************************************
+    192           * Function:    AdvanceBitstream
+    193           *
+    194           * Description: move bitstream pointer ahead
+    195           *
+    196           * Inputs:      pointer to initialized BitStreamInfo struct
+    197           *              number of bits to advance bitstream
+    198           *
+    199           * Outputs:     updated bitstream info struct
+    200           *
+    201           * Return:      none
+    202           *
+    203           * Notes:       generally used following GetBitsNoAdvance(bsi, maxBits)
+    204           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    205          void AdvanceBitstream(BitStreamInfo *bsi, int nBits)
+    206          {
+   \                     raac_AdvanceBitstream:
+   \   00000000   30402DE9           PUSH     {R4,R5,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+    207          	nBits &= 0x1f;
+    208          	if (nBits > bsi->cachedBits) {
+   \   00000008   080094E5           LDR      R0,[R4, #+8]
+   \   0000000C   1F5001E2           AND      R5,R1,#0x1F
+   \   00000010   050050E1           CMP      R0,R5
+   \   00000014   020000AA           BGE      ??raac_AdvanceBitstream_0
+    209          		nBits -= bsi->cachedBits;
+   \   00000018   005045E0           SUB      R5,R5,R0
+    210          		RefillBitstreamCache(bsi);
+   \   0000001C   0400A0E1           MOV      R0,R4
+   \   00000020   ........           BL       RefillBitstreamCache
+    211          	}
+    212          	bsi->iCache <<= nBits;
+   \                     ??raac_AdvanceBitstream_0:
+   \   00000024   040094E5           LDR      R0,[R4, #+4]
+   \   00000028   1005A0E1           LSL      R0,R0,R5
+   \   0000002C   040084E5           STR      R0,[R4, #+4]
+    213          	bsi->cachedBits -= nBits;
+   \   00000030   080094E5           LDR      R0,[R4, #+8]
+   \   00000034   050040E0           SUB      R0,R0,R5
+   \   00000038   080084E5           STR      R0,[R4, #+8]
+    214          }
+   \   0000003C   3080BDE8           POP      {R4,R5,PC}       ;; return
+    215          
+    216          /**************************************************************************************
+    217           * Function:    CalcBitsUsed
+    218           *
+    219           * Description: calculate how many bits have been read from bitstream
+    220           *
+    221           * Inputs:      pointer to initialized BitStreamInfo struct
+    222           *              pointer to start of bitstream buffer
+    223           *              bit offset into first byte of startBuf (0-7) 
+    224           *
+    225           * Outputs:     none
+    226           *
+    227           * Return:      number of bits read from bitstream, as offset from startBuf:startOffset
+    228           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    229          int CalcBitsUsed(BitStreamInfo *bsi, unsigned char *startBuf, int startOffset)
+    230          {
+    231          	int bitsUsed;
+    232          
+    233          	bitsUsed  = (bsi->bytePtr - startBuf) * 8;
+    234          	bitsUsed -= bsi->cachedBits;
+    235          	bitsUsed -= startOffset;
+    236          
+    237          	return bitsUsed;
+   \                     raac_CalcBitsUsed:
+   \   00000000   003090E5           LDR      R3,[R0, #+0]
+   \   00000004   080090E5           LDR      R0,[R0, #+8]
+   \   00000008   011043E0           SUB      R1,R3,R1
+   \   0000000C   810160E0           RSB      R0,R0,R1, LSL #+3
+   \   00000010   020040E0           SUB      R0,R0,R2
+   \   00000014   1EFF2FE1           BX       LR               ;; return
+    238          }
+    239          
+    240          /**************************************************************************************
+    241           * Function:    ByteAlignBitstream
+    242           *
+    243           * Description: bump bitstream pointer to start of next byte
+    244           *
+    245           * Inputs:      pointer to initialized BitStreamInfo struct
+    246           *
+    247           * Outputs:     byte-aligned bitstream BitStreamInfo struct
+    248           *
+    249           * Return:      none
+    250           *
+    251           * Notes:       if bitstream is already byte-aligned, do nothing
+    252           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    253          void ByteAlignBitstream(BitStreamInfo *bsi)
+    254          {
+   \                     raac_ByteAlignBitstream:
+   \   00000000   30402DE9           PUSH     {R4,R5,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+    255          	int offset;
+    256          
+    257          	offset = bsi->cachedBits & 0x07;
+    258          	AdvanceBitstream(bsi, offset);
+   \   00000008   080094E5           LDR      R0,[R4, #+8]
+   \   0000000C   075000E2           AND      R5,R0,#0x7
+   \   00000010   050050E1           CMP      R0,R5
+   \   00000014   020000AA           BGE      ??raac_ByteAlignBitstream_0
+   \   00000018   005045E0           SUB      R5,R5,R0
+   \   0000001C   0400A0E1           MOV      R0,R4
+   \   00000020   ........           BL       RefillBitstreamCache
+   \                     ??raac_ByteAlignBitstream_0:
+   \   00000024   040094E5           LDR      R0,[R4, #+4]
+   \   00000028   1005A0E1           LSL      R0,R0,R5
+   \   0000002C   040084E5           STR      R0,[R4, #+4]
+   \   00000030   080094E5           LDR      R0,[R4, #+8]
+   \   00000034   050040E0           SUB      R0,R0,R5
+   \   00000038   080084E5           STR      R0,[R4, #+8]
+    259          }
+   \   0000003C   3080BDE8           POP      {R4,R5,PC}       ;; return
+
+   Maximum stack usage in bytes:
+
+     Function                 CSTACK
+     --------                 ------
+     RefillBitstreamCache         4
+     raac_AdvanceBitstream       12
+     raac_ByteAlignBitstream     12
+     raac_CalcBitsUsed            0
+     raac_GetBits                16
+     raac_GetBitsNoAdvance        0
+     raac_SetBitstreamPointer     0
+
+
+   Segment part sizes:
+
+     Function/Label           Bytes
+     --------------           -----
+     raac_SetBitstreamPointer   24
+     RefillBitstreamCache      240
+     raac_GetBits              112
+     raac_GetBitsNoAdvance      84
+     raac_AdvanceBitstream      64
+     raac_CalcBitsUsed          24
+     raac_ByteAlignBitstream    64
+      Others                    28
+
+ 
+ 640 bytes in segment CODE
+ 
+ 612 bytes of CODE memory (+ 28 bytes shared)
+
+Errors: none
+Warnings: none

@@ -1,0 +1,1766 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    14/Feb/2012  15:39:40 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_i #
+#                       f.c                                                  #
+#    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_i #
+#                       f.c -D NDEBUG -lC D:\SVN\SieELF\SieELF\x65_PCM_Playe #
+#                       r\Player\Release\List\ -lA                           #
+#                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\R #
+#                       elease\Obj\ -s9 --cpu_mode arm --endian little       #
+#                       --cpu ARM926EJ-S --stack_align 4 --interwork -e      #
+#                       --fpu None --dlib_config "D:\Program                 #
+#                       Files\IAR\Embedded Workbench 4.0                     #
+#                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude       #
+#                       swilib.h -I "D:\Program Files\IAR\Embedded           #
+#                       Workbench 4.0 Evaluation\ARM\INC\"                   #
+#                       --inline_threshold=16                                #
+#    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\dec_if.lst                                       #
+#    Object file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\O #
+#                       bj\dec_if.r79                                        #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_if.c
+      1          /*
+      2           *===================================================================
+      3           *  3GPP AMR Wideband Floating-point Speech Codec
+      4           *===================================================================
+      5           */
+      6          
+      7          #include "typedef.h"
+
+  #endif
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\typedef.h",19  Warning[Pe001]: 
+          last line of file ends without a newline
+      8          #include "dec_if.h"
+
+  #endif
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\typedef.h",19  Warning[Pe001]: 
+          last line of file ends without a newline
+      9          #include "if_rom.h"
+
+  #endif
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\typedef.h",19  Warning[Pe001]: 
+          last line of file ends without a newline
+     10          #include "dec.h"
+
+  #endif
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\typedef.h",19  Warning[Pe001]: 
+          last line of file ends without a newline
+     11          
+     12          #define L_FRAME16k   320            /* Frame size at 16kHz  */
+     13          #define MODE_7k       0             /* modes                */
+     14          #define MODE_9k       1
+     15          #define MODE_12k      2
+     16          #define MODE_14k      3
+     17          #define MODE_16k      4
+     18          #define MODE_18k      5
+     19          #define MODE_20k      6
+     20          #define MODE_23k      7
+     21          #define MODE_24k      8
+     22          #define MRDTX        9
+     23          #define NUM_OF_MODES 10
+     24          #define LOST_FRAME   14
+     25          #define MRNO_DATA    15
+     26          #define EHF_MASK     (Word16)0x0008 /* homing frame pattern */
+     27          
+     28          typedef struct
+     29          {
+     30             Word16 reset_flag_old;     /* previous was homing frame  */
+     31             Word16 prev_ft;            /* previous frame type        */
+     32             Word16 prev_mode;          /* previous mode              */
+     33             void *decoder_state;       /* Points decoder state       */
+     34          } WB_dec_if_state;
+     35          
+
+   \                                 In segment DATA_I, align 4, align-sorted
+     36          Word16 nb_of_param_first[NUM_OF_SPMODES]=
+   \                     nb_of_param_first:
+   \   00000000                      DS8 20
+   \   00000014                      REQUIRE `?<Initializer for nb_of_param_first>`
+     37          {
+     38          	9,  14, 15,
+     39          	15, 15, 19,
+     40          	19, 19, 19
+     41          };
+     42          
+     43          extern const Word16 mode_7k[];
+     44          extern const Word16 mode_9k[];
+     45          extern const Word16 mode_12k[];
+     46          extern const Word16 mode_14k[];
+     47          extern const Word16 mode_16k[];
+     48          extern const Word16 mode_18k[];
+     49          extern const Word16 mode_20k[];
+     50          extern const Word16 mode_23k[];
+     51          extern const Word16 mode_24k[];
+     52          extern const Word16 mode_DTX[];
+     53          
+     54          extern const Word16 nb_of_param[];
+     55          
+     56          extern const Word16 dfh_M7k[];
+     57          extern const Word16 dfh_M9k[];
+     58          extern const Word16 dfh_M12k[];
+     59          extern const Word16 dfh_M14k[];
+     60          extern const Word16 dfh_M16k[];
+     61          extern const Word16 dfh_M18k[];
+     62          extern const Word16 dfh_M20k[];
+     63          extern const Word16 dfh_M23k[];
+     64          extern const Word16 dfh_M24k[];
+     65          
+     66          /* overall table with the parameters of the
+     67             decoder homing frames for all modes */
+     68          
+     69          extern Word16 *dhf[10];
+     70          
+     71          /*
+     72           * Decoder_Interface_Homing_Frame_test
+     73           *
+     74           * Parameters:
+     75           *    input_frame    I: input parameters
+     76           *    mode           I: speech mode
+     77           *
+     78           * Function:
+     79           *    Check parameters for matching homing frame
+     80           *
+     81           * Returns:
+     82           *    If homing frame
+     83           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+     84          Word16 D_IF_homing_frame_test(Word16 input_frame[], Word16 mode)
+     85          {
+   \                     D_IF_homing_frame_test:
+   \   00000000   D0432DE9           PUSH     {R4,R6-R9,LR}
+     86          
+     87             if (mode != MODE_24k)
+   \   00000004   ........           LDR      R6,??DataTable4  ;; dhf
+   \   00000008   0040A0E1           MOV      R4,R0
+   \   0000000C   0170A0E3           MOV      R7,#+1
+   \   00000010   080051E3           CMP      R1,#+8
+   \   00000014   0A00000A           BEQ      ??D_IF_homing_frame_test_0
+     88             {
+     89                /* perform test for COMPLETE parameter frame */
+     90                return (Word16)!memcmp(input_frame, dhf[mode], nb_of_param[mode] * sizeof(Word16));
+   \   00000018   ........           LDR      R0,??DataTable6  ;; nb_of_param
+   \   0000001C   810080E0           ADD      R0,R0,R1, LSL #+1
+   \   00000020   F000D0E1           LDRSH    R0,[R0, #+0]
+   \   00000024   011196E7           LDR      R1,[R6, +R1, LSL #+2]
+   \   00000028   8020A0E1           LSL      R2,R0,#+1
+   \   0000002C   0400A0E1           MOV      R0,R4
+   \   00000030   1C0100EF           SWI      +284
+   \   00000034   000050E3           CMP      R0,#+0
+   \   00000038   0070A013           MOVNE    R7,#+0
+   \   0000003C   0700A0E1           MOV      R0,R7
+   \   00000040   D083BDE8           POP      {R4,R6-R9,PC}
+     91             }
+     92             else
+     93             {
+     94                /* discard high-band energy */
+     95                return (Word16)!(
+     96                   (memcmp(input_frame, dhf[MODE_24k], 19 * sizeof(Word16))) |
+     97                   (memcmp(input_frame + 20, dhf[MODE_24k] + 20, 11 * sizeof(Word16))) |
+     98                   (memcmp(input_frame + 32, dhf[MODE_24k] + 32, 11 * sizeof(Word16))) |
+     99                   (memcmp(input_frame + 44, dhf[MODE_24k] + 44, 11 * sizeof(Word16))) );
+   \                     ??D_IF_homing_frame_test_0:
+   \   00000044   201096E5           LDR      R1,[R6, #+32]
+   \   00000048   2620A0E3           MOV      R2,#+38
+   \   0000004C   1C0100EF           SWI      +284
+   \   00000050   0080A0E1           MOV      R8,R0
+   \   00000054   200096E5           LDR      R0,[R6, #+32]
+   \   00000058   1620A0E3           MOV      R2,#+22
+   \   0000005C   281080E2           ADD      R1,R0,#+40
+   \   00000060   280084E2           ADD      R0,R4,#+40
+   \   00000064   1C0100EF           SWI      +284
+   \   00000068   0090A0E1           MOV      R9,R0
+   \   0000006C   200096E5           LDR      R0,[R6, #+32]
+   \   00000070   1620A0E3           MOV      R2,#+22
+   \   00000074   401080E2           ADD      R1,R0,#+64
+   \   00000078   400084E2           ADD      R0,R4,#+64
+   \   0000007C   1C0100EF           SWI      +284
+   \   00000080   081089E1           ORR      R1,R9,R8
+   \   00000084   018080E1           ORR      R8,R0,R1
+   \   00000088   200096E5           LDR      R0,[R6, #+32]
+   \   0000008C   1620A0E3           MOV      R2,#+22
+   \   00000090   581080E2           ADD      R1,R0,#+88
+   \   00000094   580084E2           ADD      R0,R4,#+88
+   \   00000098   1C0100EF           SWI      +284
+   \   0000009C   080090E1           ORRS     R0,R0,R8
+   \   000000A0   0070A013           MOVNE    R7,#+0
+   \   000000A4   0700A0E1           MOV      R0,R7
+   \   000000A8   D083BDE8           POP      {R4,R6-R9,PC}
+    100          
+    101             }
+    102          }
+    103          
+    104          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    105          Word16 D_IF_homing_frame_test_first(Word16 input_frame[], Word16 mode)
+    106          {
+    107             /* perform test for FIRST SUBFRAME of parameter frame ONLY */
+    108             return (Word16)!memcmp(input_frame, dhf[mode], nb_of_param_first[mode] * sizeof(Word16));
+   \                     D_IF_homing_frame_test_first:
+   \   00000000   ........           LDR      R2,??DataTable5  ;; nb_of_param_first
+   \   00000004   ........           LDR      R3,??DataTable4  ;; dhf
+   \   00000008   00402DE9           PUSH     {LR}
+   \   0000000C   812082E0           ADD      R2,R2,R1, LSL #+1
+   \   00000010   F020D2E1           LDRSH    R2,[R2, #+0]
+   \   00000014   011193E7           LDR      R1,[R3, +R1, LSL #+2]
+   \   00000018   8220A0E1           LSL      R2,R2,#+1
+   \   0000001C   1C0100EF           SWI      +284
+   \   00000020   000050E3           CMP      R0,#+0
+   \   00000024   0100A003           MOVEQ    R0,#+1
+   \   00000028   0080BD08           POPEQ    {PC}
+   \   0000002C   0000A0E3           MOV      R0,#+0
+   \   00000030   0080BDE8           POP      {PC}             ;; return
+    109          }
+    110          
+    111          #ifdef IF2
+    112          /*
+    113           * D_IF_conversion
+    114           *
+    115           *
+    116           * Parameters:
+    117           *    param             O: AMR parameters
+    118           *    stream            I: input bitstream
+    119           *    frame_type        O: frame type
+    120           *    speech_mode       O: speech mode in DTX
+    121           *    fqi               O: frame quality indicator
+    122           *
+    123           * Function:
+    124           *    Unpacks IF2 octet stream
+    125           *
+    126           * Returns:
+    127           *    mode              used mode
+    128           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    129          Word16 D_IF_conversion(Word16 *param, UWord8 *stream, UWord8 *frame_type,
+    130                                 Word16 *speech_mode, Word16 *fqi)
+    131          {
+   \                     D_IF_conversion:
+   \   00000000   F0432DE9           PUSH     {R4-R9,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+   \   00000008   1C809DE5           LDR      R8,[SP, #+28]
+   \   0000000C   0150A0E1           MOV      R5,R1
+   \   00000010   0260A0E1           MOV      R6,R2
+   \   00000014   0370A0E1           MOV      R7,R3
+    132             Word32 mode;
+    133             Word32 j;
+    134             Word16 const *mask;
+    135          
+    136             memset(param, 0, PRMNO_24k << 1);
+   \   00000018   7020A0E3           MOV      R2,#+112
+   \   0000001C   0010A0E3           MOV      R1,#+0
+   \   00000020   BB0000EF           SWI      +187
+    137             mode = *stream >> 4;
+   \   00000024   0010D5E5           LDRB     R1,[R5, #+0]
+    138             *fqi = (Word16)((*stream >> 3) & 0x1);
+   \   00000028   0120A0E3           MOV      R2,#+1
+   \   0000002C   2102A0E1           LSR      R0,R1,#+4
+   \   00000030   C11102E0           AND      R1,R2,R1, ASR #+3
+   \   00000034   B010C8E1           STRH     R1,[R8, #+0]
+    139             *stream <<= (HEADER_SIZE - 1);
+   \   00000038   0010D5E5           LDRB     R1,[R5, #+0]
+    140          
+    141             switch (mode)
+   \   0000003C   0220A0E3           MOV      R2,#+2
+   \   00000040   0030A0E1           MOV      R3,R0
+   \   00000044   8112A0E1           LSL      R1,R1,#+5
+   \   00000048   0010C5E5           STRB     R1,[R5, #+0]
+   \   0000004C   0010A0E3           MOV      R1,#+0
+   \   00000050   0F0053E3           CMP      R3,#+15
+   \   00000054   4301008A           BHI      ??D_IF_conversion_1
+   \   00000058   02CF8FE2           ADR      R12,??D_IF_conversion_0
+   \   0000005C   8330A0E1           MOV      R3,R3, LSL #+1
+   \   00000060   B3C09CE1           LDRH     R12,[R12, R3]
+   \   00000064   0CF18FE0           ADD      PC,PC,R12, LSL #+2
+   \                     ??D_IF_conversion_0:
+   \   00000068   3C0058007400       DC16     +60,+88,+116,+145
+   \              9100        
+   \   00000070   AE00CB00E800       DC16     +174,+203,+232,+261
+   \              0501        
+   \   00000078   220107003F01       DC16     +290,+7,+319,+319
+   \              3F01        
+   \   00000080   3F013F013A00       DC16     +319,+319,+58,+55
+   \              3700        
+    142             {
+    143             case MRDTX:
+    144                mask = mode_DTX;
+   \                     ??D_IF_conversion_2:
+   \   00000088   F8249FE5           LDR      R2,??D_IF_conversion_3  ;; mode_DTX
+    145          
+    146                for (j = HEADER_SIZE; j < T_NBBITS_SID; j++)
+   \   0000008C   0630A0E3           MOV      R3,#+6
+    147                {
+    148                   if (*stream & 0x80)
+   \                     ??D_IF_conversion_4:
+   \   00000090   0010D5E5           LDRB     R1,[R5, #+0]
+   \   00000094   800011E3           TST      R1,#0x80
+   \   00000098   0700000A           BEQ      ??D_IF_conversion_5
+    149                   {
+    150                      param[*mask] = (Word16)(param[*mask] + *(mask + 1));
+   \   0000009C   F0C0D2E1           LDRSH    R12,[R2, #+0]
+   \   000000A0   F010D2E1           LDRSH    R1,[R2, #+0]
+   \   000000A4   F2E0D2E1           LDRSH    LR,[R2, #+2]
+   \   000000A8   8CC084E0           ADD      R12,R4,R12, LSL #+1
+   \   000000AC   F0C0DCE1           LDRSH    R12,[R12, #+0]
+   \   000000B0   811084E0           ADD      R1,R4,R1, LSL #+1
+   \   000000B4   0CC08EE0           ADD      R12,LR,R12
+   \   000000B8   B0C0C1E1           STRH     R12,[R1, #+0]
+    151                   }
+    152          
+    153                   mask += 2;
+   \                     ??D_IF_conversion_5:
+   \   000000BC   042082E2           ADD      R2,R2,#+4
+    154          
+    155                   if ( j % 8 )
+   \   000000C0   4311A0E1           ASR      R1,R3,#+2
+   \   000000C4   A11E83E0           ADD      R1,R3,R1, LSR #+29
+   \   000000C8   C111A0E1           ASR      R1,R1,#+3
+   \   000000CC   811153E0           SUBS     R1,R3,R1, LSL #+3
+   \   000000D0   0300000A           BEQ      ??D_IF_conversion_6
+    156                   {
+    157                      *stream <<= 1;
+   \   000000D4   0010D5E5           LDRB     R1,[R5, #+0]
+   \   000000D8   8110A0E1           LSL      R1,R1,#+1
+   \   000000DC   0010C5E5           STRB     R1,[R5, #+0]
+   \   000000E0   000000EA           B        ??D_IF_conversion_7
+    158                   }
+    159                   else
+    160                   {
+    161                      stream++;
+   \                     ??D_IF_conversion_6:
+   \   000000E4   015085E2           ADD      R5,R5,#+1
+    162                   }
+    163                }
+   \                     ??D_IF_conversion_7:
+   \   000000E8   013083E2           ADD      R3,R3,#+1
+   \   000000EC   290053E3           CMP      R3,#+41
+   \   000000F0   E6FFFFBA           BLT      ??D_IF_conversion_4
+    164          
+    165                /* get SID type bit */
+    166          
+    167                *frame_type = RX_SID_FIRST;
+   \   000000F4   0410A0E3           MOV      R1,#+4
+   \   000000F8   0010C6E5           STRB     R1,[R6, #+0]
+    168          
+    169                if (*stream & 0x80)
+   \   000000FC   0010D5E5           LDRB     R1,[R5, #+0]
+   \   00000100   800011E3           TST      R1,#0x80
+    170                {
+    171                   *frame_type = RX_SID_UPDATE;
+   \   00000104   0510A013           MOVNE    R1,#+5
+   \   00000108   0010C615           STRBNE   R1,[R6, #+0]
+    172                }
+    173          
+    174                *stream <<= 1;
+   \   0000010C   0010D5E5           LDRB     R1,[R5, #+0]
+   \   00000110   8110A0E1           LSL      R1,R1,#+1
+   \   00000114   0010C5E5           STRB     R1,[R5, #+0]
+    175          
+    176                /* speech mode indicator */
+    177                *speech_mode = (Word16)(*stream >> 4);
+   \   00000118   011CA0E1           LSL      R1,R1,#+24
+   \   0000011C   211EA0E1           LSR      R1,R1,#+28
+   \   00000120   B010C7E1           STRH     R1,[R7, #+0]
+    178                break;
+    179          
+    180             case MRNO_DATA:
+    181                *frame_type = RX_NO_DATA;
+    182                break;
+    183          
+    184             case LOST_FRAME:
+    185                *frame_type = RX_SPEECH_LOST;
+    186                break;
+    187          
+    188             case MODE_7k:
+    189                mask = mode_7k;
+    190          
+    191                for (j = HEADER_SIZE; j < T_NBBITS_7k; j++)
+    192                {
+    193                   if ( *stream & 0x80 )
+    194                   {
+    195                      param[*mask] = (Word16)(param[*mask] + *(mask + 1));
+    196                   }
+    197                   mask += 2;
+    198          
+    199                   if (j % 8)
+    200                   {
+    201                      *stream <<= 1;
+    202                   }
+    203                   else
+    204                   {
+    205                      stream++;
+    206                   }
+    207                }
+    208          
+    209                *frame_type = RX_SPEECH_GOOD;
+    210                break;
+    211          
+    212             case MODE_9k:
+    213                mask = mode_9k;
+    214          
+    215                for (j = HEADER_SIZE; j < T_NBBITS_9k; j++)
+    216                {
+    217                   if (*stream & 0x80)
+    218                   {
+    219                      param[*mask] = (Word16)(param[*mask] + *(mask + 1));
+    220                   }
+    221                   mask += 2;
+    222          
+    223                   if (j % 8)
+    224                   {
+    225                      *stream <<= 1;
+    226                   }
+    227                   else
+    228                   {
+    229                      stream++;
+    230                   }
+    231                }
+    232          
+    233                *frame_type = RX_SPEECH_GOOD;
+    234                break;
+    235          
+    236             case MODE_12k:
+    237                mask = mode_12k;
+    238          
+    239                for (j = HEADER_SIZE; j < T_NBBITS_12k; j++)
+    240                {
+    241                   if (*stream & 0x80)
+    242                   {
+    243                      param[*mask] = (Word16)(param[*mask] + *(mask + 1));
+    244                   }
+    245                   mask += 2;
+    246          
+    247                   if ( j % 8 )
+    248                   {
+    249                      *stream <<= 1;
+    250                   }
+    251                   else
+    252                   {
+    253                      stream++;
+    254                   }
+    255                }
+    256          
+    257                *frame_type = RX_SPEECH_GOOD;
+    258                break;
+    259          
+    260             case MODE_14k:
+    261                mask = mode_14k;
+    262          
+    263                for (j = HEADER_SIZE; j < T_NBBITS_14k; j++)
+    264                {
+    265                   if (*stream & 0x80)
+    266                   {
+    267                      param[*mask] = (Word16)(param[*mask] + *(mask + 1));
+    268                   }
+    269          
+    270                   mask += 2;
+    271          
+    272                   if ( j % 8 )
+    273                   {
+    274                      *stream <<= 1;
+    275                   }
+    276                   else
+    277                   {
+    278                      stream++;
+    279                   }
+    280                }
+    281          
+    282                *frame_type = RX_SPEECH_GOOD;
+    283                break;
+    284          
+    285             case MODE_16k:
+    286                mask = mode_16k;
+    287          
+    288                for (j = HEADER_SIZE; j < T_NBBITS_16k; j++)
+    289                {
+    290                   if (*stream & 0x80)
+    291                   {
+    292                      param[*mask] = (Word16)(param[*mask] + *(mask + 1));
+    293                   }
+    294          
+    295                   mask += 2;
+    296          
+    297                   if (j % 8)
+    298                   {
+    299                      *stream <<= 1;
+    300                   }
+    301                   else
+    302                   {
+    303                      stream++;
+    304                   }
+    305                }
+    306          
+    307                *frame_type = RX_SPEECH_GOOD;
+    308                break;
+    309          
+    310             case MODE_18k:
+    311                mask = mode_18k;
+    312          
+    313                for (j = HEADER_SIZE; j < T_NBBITS_18k; j++)
+    314                {
+    315                   if (*stream & 0x80)
+    316                   {
+    317                      param[*mask] = (Word16)(param[*mask] + *(mask + 1));
+    318                   }
+    319          
+    320                   mask += 2;
+    321          
+    322                   if (j % 8)
+    323                   {
+    324                      *stream <<= 1;
+    325                   }
+    326                   else
+    327                   {
+    328                      stream++;
+    329                   }
+    330                }
+    331          
+    332                *frame_type = RX_SPEECH_GOOD;
+    333                break;
+    334          
+    335             case MODE_20k:
+    336                mask = mode_20k;
+    337          
+    338                for (j = HEADER_SIZE; j < T_NBBITS_20k; j++)
+    339                {
+    340                   if (*stream & 0x80)
+    341                   {
+    342                      param[*mask] = (Word16)(param[*mask] + *(mask + 1));
+    343                   }
+    344          
+    345                   mask += 2;
+    346          
+    347                   if (j % 8)
+    348                   {
+    349                      *stream <<= 1;
+    350                   }
+    351                   else
+    352                   {
+    353                      stream++;
+    354                   }
+    355                }
+    356          
+    357                *frame_type = RX_SPEECH_GOOD;
+    358                break;
+    359          
+    360             case MODE_23k:
+    361                mask = mode_23k;
+    362          
+    363                for (j = HEADER_SIZE; j < T_NBBITS_23k; j++)
+    364                {
+    365                   if (*stream & 0x80)
+    366                   {
+    367                      param[*mask] = (Word16)(param[*mask] + *(mask + 1));
+    368                   }
+    369          
+    370                   mask += 2;
+    371          
+    372                   if (j % 8)
+    373                   {
+    374                      *stream <<= 1;
+    375                   }
+    376                   else
+    377                   {
+    378                      stream++;
+    379                   }
+    380          
+    381                }
+    382          
+    383                *frame_type = RX_SPEECH_GOOD;
+    384                break;
+    385          
+    386             case MODE_24k:
+    387                mask = mode_24k;
+    388          
+    389                for (j = HEADER_SIZE; j < T_NBBITS_24k; j++)
+    390                {
+    391                   if (*stream & 0x80)
+    392                   {
+    393                      param[*mask] = (Word16)(param[*mask] + *(mask + 1));
+    394                   }
+    395          
+    396                   mask += 2;
+    397          
+    398                   if (j % 8)
+    399                   {
+    400                      *stream <<= 1;
+    401                   }
+    402                   else
+    403                   {
+    404                      stream++;
+    405                   }
+    406          
+    407                }
+    408          
+    409                *frame_type = RX_SPEECH_GOOD;
+    410                break;
+    411          
+    412             default:
+    413                *frame_type = RX_SPEECH_LOST;
+    414                *fqi = 0;
+    415                break;
+    416          
+    417             }
+    418          
+    419             if (*fqi == 0)
+   \                     ??D_IF_conversion_8:
+   \   00000124   F010D8E1           LDRSH    R1,[R8, #+0]
+   \   00000128   000051E3           CMP      R1,#+0
+   \   0000012C   F083BD18           POPNE    {R4-R9,PC}
+    420             {
+    421                if (*frame_type == RX_SPEECH_GOOD)
+   \                     ??D_IF_conversion_9:
+   \   00000130   0010D6E5           LDRB     R1,[R6, #+0]
+   \   00000134   000051E3           CMP      R1,#+0
+   \   00000138   0D01001A           BNE      ??D_IF_conversion_10
+    422                {
+    423                   *frame_type = RX_SPEECH_BAD;
+   \   0000013C   0310A0E3           MOV      R1,#+3
+   \   00000140   0010C6E5           STRB     R1,[R6, #+0]
+   \   00000144   F083BDE8           POP      {R4-R9,PC}
+    424                }
+   \                     ??D_IF_conversion_11:
+   \   00000148   0710A0E3           MOV      R1,#+7
+   \                     ??D_IF_conversion_12:
+   \   0000014C   0010C6E5           STRB     R1,[R6, #+0]
+   \   00000150   F3FFFFEA           B        ??D_IF_conversion_8
+   \                     ??D_IF_conversion_13:
+   \   00000154   0020C6E5           STRB     R2,[R6, #+0]
+   \   00000158   F1FFFFEA           B        ??D_IF_conversion_8
+   \                     ??D_IF_conversion_14:
+   \   0000015C   28249FE5           LDR      R2,??D_IF_conversion_3+0x4  ;; mode_7k
+   \   00000160   0630A0E3           MOV      R3,#+6
+   \                     ??D_IF_conversion_15:
+   \   00000164   0070D5E5           LDRB     R7,[R5, #+0]
+   \   00000168   800017E3           TST      R7,#0x80
+   \   0000016C   0700000A           BEQ      ??D_IF_conversion_16
+   \   00000170   F0C0D2E1           LDRSH    R12,[R2, #+0]
+   \   00000174   F070D2E1           LDRSH    R7,[R2, #+0]
+   \   00000178   F2E0D2E1           LDRSH    LR,[R2, #+2]
+   \   0000017C   8CC084E0           ADD      R12,R4,R12, LSL #+1
+   \   00000180   F0C0DCE1           LDRSH    R12,[R12, #+0]
+   \   00000184   877084E0           ADD      R7,R4,R7, LSL #+1
+   \   00000188   0CC08EE0           ADD      R12,LR,R12
+   \   0000018C   B0C0C7E1           STRH     R12,[R7, #+0]
+   \                     ??D_IF_conversion_16:
+   \   00000190   042082E2           ADD      R2,R2,#+4
+   \   00000194   4371A0E1           ASR      R7,R3,#+2
+   \   00000198   A77E83E0           ADD      R7,R3,R7, LSR #+29
+   \   0000019C   C771A0E1           ASR      R7,R7,#+3
+   \   000001A0   877153E0           SUBS     R7,R3,R7, LSL #+3
+   \   000001A4   0300000A           BEQ      ??D_IF_conversion_17
+   \   000001A8   0070D5E5           LDRB     R7,[R5, #+0]
+   \   000001AC   8770A0E1           LSL      R7,R7,#+1
+   \   000001B0   0070C5E5           STRB     R7,[R5, #+0]
+   \   000001B4   000000EA           B        ??D_IF_conversion_18
+   \                     ??D_IF_conversion_17:
+   \   000001B8   015085E2           ADD      R5,R5,#+1
+   \                     ??D_IF_conversion_18:
+   \   000001BC   013083E2           ADD      R3,R3,#+1
+   \   000001C0   8A0053E3           CMP      R3,#+138
+   \   000001C4   E6FFFFBA           BLT      ??D_IF_conversion_15
+   \   000001C8   DFFFFFEA           B        ??D_IF_conversion_12
+   \                     ??D_IF_conversion_19:
+   \   000001CC   BC239FE5           LDR      R2,??D_IF_conversion_3+0x8  ;; mode_9k
+   \   000001D0   0630A0E3           MOV      R3,#+6
+   \   000001D4   030000EA           B        ??D_IF_conversion_20
+   \                     ??D_IF_conversion_21:
+   \   000001D8   015085E2           ADD      R5,R5,#+1
+   \                     ??D_IF_conversion_22:
+   \   000001DC   013083E2           ADD      R3,R3,#+1
+   \   000001E0   B70053E3           CMP      R3,#+183
+   \   000001E4   D8FFFFAA           BGE      ??D_IF_conversion_12
+   \                     ??D_IF_conversion_20:
+   \   000001E8   0070D5E5           LDRB     R7,[R5, #+0]
+   \   000001EC   800017E3           TST      R7,#0x80
+   \   000001F0   0700000A           BEQ      ??D_IF_conversion_23
+   \   000001F4   F0C0D2E1           LDRSH    R12,[R2, #+0]
+   \   000001F8   F070D2E1           LDRSH    R7,[R2, #+0]
+   \   000001FC   F2E0D2E1           LDRSH    LR,[R2, #+2]
+   \   00000200   8CC084E0           ADD      R12,R4,R12, LSL #+1
+   \   00000204   F0C0DCE1           LDRSH    R12,[R12, #+0]
+   \   00000208   877084E0           ADD      R7,R4,R7, LSL #+1
+   \   0000020C   0CC08EE0           ADD      R12,LR,R12
+   \   00000210   B0C0C7E1           STRH     R12,[R7, #+0]
+   \                     ??D_IF_conversion_23:
+   \   00000214   042082E2           ADD      R2,R2,#+4
+   \   00000218   4371A0E1           ASR      R7,R3,#+2
+   \   0000021C   A77E83E0           ADD      R7,R3,R7, LSR #+29
+   \   00000220   C771A0E1           ASR      R7,R7,#+3
+   \   00000224   877153E0           SUBS     R7,R3,R7, LSL #+3
+   \   00000228   EAFFFF0A           BEQ      ??D_IF_conversion_21
+   \   0000022C   0070D5E5           LDRB     R7,[R5, #+0]
+   \   00000230   8770A0E1           LSL      R7,R7,#+1
+   \   00000234   0070C5E5           STRB     R7,[R5, #+0]
+   \   00000238   E7FFFFEA           B        ??D_IF_conversion_22
+   \                     ??D_IF_conversion_24:
+   \   0000023C   50239FE5           LDR      R2,??D_IF_conversion_3+0xC  ;; mode_12k
+   \   00000240   0630A0E3           MOV      R3,#+6
+   \   00000244   FD7083E2           ADD      R7,R3,#+253
+   \   00000248   030000EA           B        ??D_IF_conversion_25
+   \                     ??D_IF_conversion_26:
+   \   0000024C   015085E2           ADD      R5,R5,#+1
+   \                     ??D_IF_conversion_27:
+   \   00000250   013083E2           ADD      R3,R3,#+1
+   \   00000254   070053E1           CMP      R3,R7
+   \   00000258   BBFFFFAA           BGE      ??D_IF_conversion_12
+   \                     ??D_IF_conversion_25:
+   \   0000025C   00C0D5E5           LDRB     R12,[R5, #+0]
+   \   00000260   80001CE3           TST      R12,#0x80
+   \   00000264   0700000A           BEQ      ??D_IF_conversion_28
+   \   00000268   F0E0D2E1           LDRSH    LR,[R2, #+0]
+   \   0000026C   F0C0D2E1           LDRSH    R12,[R2, #+0]
+   \   00000270   F290D2E1           LDRSH    R9,[R2, #+2]
+   \   00000274   8EE084E0           ADD      LR,R4,LR, LSL #+1
+   \   00000278   F0E0DEE1           LDRSH    LR,[LR, #+0]
+   \   0000027C   8CC084E0           ADD      R12,R4,R12, LSL #+1
+   \   00000280   0E9089E0           ADD      R9,R9,LR
+   \   00000284   B090CCE1           STRH     R9,[R12, #+0]
+   \                     ??D_IF_conversion_28:
+   \   00000288   042082E2           ADD      R2,R2,#+4
+   \   0000028C   4391A0E1           ASR      R9,R3,#+2
+   \   00000290   A99E83E0           ADD      R9,R3,R9, LSR #+29
+   \   00000294   C991A0E1           ASR      R9,R9,#+3
+   \   00000298   899153E0           SUBS     R9,R3,R9, LSL #+3
+   \   0000029C   EAFFFF0A           BEQ      ??D_IF_conversion_26
+   \   000002A0   0090D5E5           LDRB     R9,[R5, #+0]
+   \   000002A4   8990A0E1           LSL      R9,R9,#+1
+   \   000002A8   0090C5E5           STRB     R9,[R5, #+0]
+   \   000002AC   E7FFFFEA           B        ??D_IF_conversion_27
+   \                     ??D_IF_conversion_29:
+   \   000002B0   E0229FE5           LDR      R2,??D_IF_conversion_3+0x10  ;; mode_14k
+   \   000002B4   0630A0E3           MOV      R3,#+6
+   \   000002B8   2370A0E3           MOV      R7,#+35
+   \   000002BC   407F87E3           ORR      R7,R7,#0x100
+   \   000002C0   030000EA           B        ??D_IF_conversion_30
+   \                     ??D_IF_conversion_31:
+   \   000002C4   015085E2           ADD      R5,R5,#+1
+   \                     ??D_IF_conversion_32:
+   \   000002C8   013083E2           ADD      R3,R3,#+1
+   \   000002CC   070053E1           CMP      R3,R7
+   \   000002D0   9DFFFFAA           BGE      ??D_IF_conversion_12
+   \                     ??D_IF_conversion_30:
+   \   000002D4   0090D5E5           LDRB     R9,[R5, #+0]
+   \   000002D8   800019E3           TST      R9,#0x80
+   \   000002DC   0600000A           BEQ      ??D_IF_conversion_33
+   \   000002E0   F090D2E1           LDRSH    R9,[R2, #+0]
+   \   000002E4   F2E0D2E1           LDRSH    LR,[R2, #+2]
+   \   000002E8   89C084E0           ADD      R12,R4,R9, LSL #+1
+   \   000002EC   899084E0           ADD      R9,R4,R9, LSL #+1
+   \   000002F0   F090D9E1           LDRSH    R9,[R9, #+0]
+   \   000002F4   09908EE0           ADD      R9,LR,R9
+   \   000002F8   B090CCE1           STRH     R9,[R12, #+0]
+   \                     ??D_IF_conversion_33:
+   \   000002FC   042082E2           ADD      R2,R2,#+4
+   \   00000300   4391A0E1           ASR      R9,R3,#+2
+   \   00000304   A99E83E0           ADD      R9,R3,R9, LSR #+29
+   \   00000308   C991A0E1           ASR      R9,R9,#+3
+   \   0000030C   899153E0           SUBS     R9,R3,R9, LSL #+3
+   \   00000310   EBFFFF0A           BEQ      ??D_IF_conversion_31
+   \   00000314   0090D5E5           LDRB     R9,[R5, #+0]
+   \   00000318   8990A0E1           LSL      R9,R9,#+1
+   \   0000031C   0090C5E5           STRB     R9,[R5, #+0]
+   \   00000320   E8FFFFEA           B        ??D_IF_conversion_32
+   \                     ??D_IF_conversion_34:
+   \   00000324   70229FE5           LDR      R2,??D_IF_conversion_3+0x14  ;; mode_16k
+   \   00000328   0630A0E3           MOV      R3,#+6
+   \   0000032C   4370A0E3           MOV      R7,#+67
+   \   00000330   407F87E3           ORR      R7,R7,#0x100
+   \   00000334   030000EA           B        ??D_IF_conversion_35
+   \                     ??D_IF_conversion_36:
+   \   00000338   015085E2           ADD      R5,R5,#+1
+   \                     ??D_IF_conversion_37:
+   \   0000033C   013083E2           ADD      R3,R3,#+1
+   \   00000340   070053E1           CMP      R3,R7
+   \   00000344   80FFFFAA           BGE      ??D_IF_conversion_12
+   \                     ??D_IF_conversion_35:
+   \   00000348   0090D5E5           LDRB     R9,[R5, #+0]
+   \   0000034C   800019E3           TST      R9,#0x80
+   \   00000350   0600000A           BEQ      ??D_IF_conversion_38
+   \   00000354   F090D2E1           LDRSH    R9,[R2, #+0]
+   \   00000358   F2E0D2E1           LDRSH    LR,[R2, #+2]
+   \   0000035C   89C084E0           ADD      R12,R4,R9, LSL #+1
+   \   00000360   899084E0           ADD      R9,R4,R9, LSL #+1
+   \   00000364   F090D9E1           LDRSH    R9,[R9, #+0]
+   \   00000368   09908EE0           ADD      R9,LR,R9
+   \   0000036C   B090CCE1           STRH     R9,[R12, #+0]
+   \                     ??D_IF_conversion_38:
+   \   00000370   042082E2           ADD      R2,R2,#+4
+   \   00000374   4391A0E1           ASR      R9,R3,#+2
+   \   00000378   A99E83E0           ADD      R9,R3,R9, LSR #+29
+   \   0000037C   C991A0E1           ASR      R9,R9,#+3
+   \   00000380   899153E0           SUBS     R9,R3,R9, LSL #+3
+   \   00000384   EBFFFF0A           BEQ      ??D_IF_conversion_36
+   \   00000388   0090D5E5           LDRB     R9,[R5, #+0]
+   \   0000038C   8990A0E1           LSL      R9,R9,#+1
+   \   00000390   0090C5E5           STRB     R9,[R5, #+0]
+   \   00000394   E8FFFFEA           B        ??D_IF_conversion_37
+   \                     ??D_IF_conversion_39:
+   \   00000398   00229FE5           LDR      R2,??D_IF_conversion_3+0x18  ;; mode_18k
+   \   0000039C   0630A0E3           MOV      R3,#+6
+   \   000003A0   7370A0E3           MOV      R7,#+115
+   \   000003A4   407F87E3           ORR      R7,R7,#0x100
+   \   000003A8   030000EA           B        ??D_IF_conversion_40
+   \                     ??D_IF_conversion_41:
+   \   000003AC   015085E2           ADD      R5,R5,#+1
+   \                     ??D_IF_conversion_42:
+   \   000003B0   013083E2           ADD      R3,R3,#+1
+   \   000003B4   070053E1           CMP      R3,R7
+   \   000003B8   63FFFFAA           BGE      ??D_IF_conversion_12
+   \                     ??D_IF_conversion_40:
+   \   000003BC   0090D5E5           LDRB     R9,[R5, #+0]
+   \   000003C0   800019E3           TST      R9,#0x80
+   \   000003C4   0600000A           BEQ      ??D_IF_conversion_43
+   \   000003C8   F090D2E1           LDRSH    R9,[R2, #+0]
+   \   000003CC   F2E0D2E1           LDRSH    LR,[R2, #+2]
+   \   000003D0   89C084E0           ADD      R12,R4,R9, LSL #+1
+   \   000003D4   899084E0           ADD      R9,R4,R9, LSL #+1
+   \   000003D8   F090D9E1           LDRSH    R9,[R9, #+0]
+   \   000003DC   09908EE0           ADD      R9,LR,R9
+   \   000003E0   B090CCE1           STRH     R9,[R12, #+0]
+   \                     ??D_IF_conversion_43:
+   \   000003E4   042082E2           ADD      R2,R2,#+4
+   \   000003E8   4391A0E1           ASR      R9,R3,#+2
+   \   000003EC   A99E83E0           ADD      R9,R3,R9, LSR #+29
+   \   000003F0   C991A0E1           ASR      R9,R9,#+3
+   \   000003F4   899153E0           SUBS     R9,R3,R9, LSL #+3
+   \   000003F8   EBFFFF0A           BEQ      ??D_IF_conversion_41
+   \   000003FC   0090D5E5           LDRB     R9,[R5, #+0]
+   \   00000400   8990A0E1           LSL      R9,R9,#+1
+   \   00000404   0090C5E5           STRB     R9,[R5, #+0]
+   \   00000408   E8FFFFEA           B        ??D_IF_conversion_42
+   \                     ??D_IF_conversion_44:
+   \   0000040C   90219FE5           LDR      R2,??D_IF_conversion_3+0x1C  ;; mode_20k
+   \   00000410   0630A0E3           MOV      R3,#+6
+   \   00000414   9370A0E3           MOV      R7,#+147
+   \   00000418   407F87E3           ORR      R7,R7,#0x100
+   \   0000041C   030000EA           B        ??D_IF_conversion_45
+   \                     ??D_IF_conversion_46:
+   \   00000420   015085E2           ADD      R5,R5,#+1
+   \                     ??D_IF_conversion_47:
+   \   00000424   013083E2           ADD      R3,R3,#+1
+   \   00000428   070053E1           CMP      R3,R7
+   \   0000042C   46FFFFAA           BGE      ??D_IF_conversion_12
+   \                     ??D_IF_conversion_45:
+   \   00000430   0090D5E5           LDRB     R9,[R5, #+0]
+   \   00000434   800019E3           TST      R9,#0x80
+   \   00000438   0600000A           BEQ      ??D_IF_conversion_48
+   \   0000043C   F090D2E1           LDRSH    R9,[R2, #+0]
+   \   00000440   F2E0D2E1           LDRSH    LR,[R2, #+2]
+   \   00000444   89C084E0           ADD      R12,R4,R9, LSL #+1
+   \   00000448   899084E0           ADD      R9,R4,R9, LSL #+1
+   \   0000044C   F090D9E1           LDRSH    R9,[R9, #+0]
+   \   00000450   09908EE0           ADD      R9,LR,R9
+   \   00000454   B090CCE1           STRH     R9,[R12, #+0]
+   \                     ??D_IF_conversion_48:
+   \   00000458   042082E2           ADD      R2,R2,#+4
+   \   0000045C   4391A0E1           ASR      R9,R3,#+2
+   \   00000460   A99E83E0           ADD      R9,R3,R9, LSR #+29
+   \   00000464   C991A0E1           ASR      R9,R9,#+3
+   \   00000468   899153E0           SUBS     R9,R3,R9, LSL #+3
+   \   0000046C   EBFFFF0A           BEQ      ??D_IF_conversion_46
+   \   00000470   0090D5E5           LDRB     R9,[R5, #+0]
+   \   00000474   8990A0E1           LSL      R9,R9,#+1
+   \   00000478   0090C5E5           STRB     R9,[R5, #+0]
+   \   0000047C   E8FFFFEA           B        ??D_IF_conversion_47
+   \                     ??D_IF_conversion_49:
+   \   00000480   20219FE5           LDR      R2,??D_IF_conversion_3+0x20  ;; mode_23k
+   \   00000484   0630A0E3           MOV      R3,#+6
+   \   00000488   D370A0E3           MOV      R7,#+211
+   \   0000048C   407F87E3           ORR      R7,R7,#0x100
+   \   00000490   030000EA           B        ??D_IF_conversion_50
+   \                     ??D_IF_conversion_51:
+   \   00000494   015085E2           ADD      R5,R5,#+1
+   \                     ??D_IF_conversion_52:
+   \   00000498   013083E2           ADD      R3,R3,#+1
+   \   0000049C   070053E1           CMP      R3,R7
+   \   000004A0   29FFFFAA           BGE      ??D_IF_conversion_12
+   \                     ??D_IF_conversion_50:
+   \   000004A4   0090D5E5           LDRB     R9,[R5, #+0]
+   \   000004A8   800019E3           TST      R9,#0x80
+   \   000004AC   0600000A           BEQ      ??D_IF_conversion_53
+   \   000004B0   F090D2E1           LDRSH    R9,[R2, #+0]
+   \   000004B4   F2E0D2E1           LDRSH    LR,[R2, #+2]
+   \   000004B8   89C084E0           ADD      R12,R4,R9, LSL #+1
+   \   000004BC   899084E0           ADD      R9,R4,R9, LSL #+1
+   \   000004C0   F090D9E1           LDRSH    R9,[R9, #+0]
+   \   000004C4   09908EE0           ADD      R9,LR,R9
+   \   000004C8   B090CCE1           STRH     R9,[R12, #+0]
+   \                     ??D_IF_conversion_53:
+   \   000004CC   042082E2           ADD      R2,R2,#+4
+   \   000004D0   4391A0E1           ASR      R9,R3,#+2
+   \   000004D4   A99E83E0           ADD      R9,R3,R9, LSR #+29
+   \   000004D8   C991A0E1           ASR      R9,R9,#+3
+   \   000004DC   899153E0           SUBS     R9,R3,R9, LSL #+3
+   \   000004E0   EBFFFF0A           BEQ      ??D_IF_conversion_51
+   \   000004E4   0090D5E5           LDRB     R9,[R5, #+0]
+   \   000004E8   8990A0E1           LSL      R9,R9,#+1
+   \   000004EC   0090C5E5           STRB     R9,[R5, #+0]
+   \   000004F0   E8FFFFEA           B        ??D_IF_conversion_52
+   \                     ??D_IF_conversion_54:
+   \   000004F4   B0209FE5           LDR      R2,??D_IF_conversion_3+0x24  ;; mode_24k
+   \   000004F8   0630A0E3           MOV      R3,#+6
+   \   000004FC   E370A0E3           MOV      R7,#+227
+   \   00000500   407F87E3           ORR      R7,R7,#0x100
+   \   00000504   030000EA           B        ??D_IF_conversion_55
+   \                     ??D_IF_conversion_56:
+   \   00000508   015085E2           ADD      R5,R5,#+1
+   \                     ??D_IF_conversion_57:
+   \   0000050C   013083E2           ADD      R3,R3,#+1
+   \   00000510   070053E1           CMP      R3,R7
+   \   00000514   0CFFFFAA           BGE      ??D_IF_conversion_12
+   \                     ??D_IF_conversion_55:
+   \   00000518   0090D5E5           LDRB     R9,[R5, #+0]
+   \   0000051C   800019E3           TST      R9,#0x80
+   \   00000520   0600000A           BEQ      ??D_IF_conversion_58
+   \   00000524   F090D2E1           LDRSH    R9,[R2, #+0]
+   \   00000528   F2E0D2E1           LDRSH    LR,[R2, #+2]
+   \   0000052C   89C084E0           ADD      R12,R4,R9, LSL #+1
+   \   00000530   899084E0           ADD      R9,R4,R9, LSL #+1
+   \   00000534   F090D9E1           LDRSH    R9,[R9, #+0]
+   \   00000538   09908EE0           ADD      R9,LR,R9
+   \   0000053C   B090CCE1           STRH     R9,[R12, #+0]
+   \                     ??D_IF_conversion_58:
+   \   00000540   042082E2           ADD      R2,R2,#+4
+   \   00000544   4391A0E1           ASR      R9,R3,#+2
+   \   00000548   A99E83E0           ADD      R9,R3,R9, LSR #+29
+   \   0000054C   C991A0E1           ASR      R9,R9,#+3
+   \   00000550   899153E0           SUBS     R9,R3,R9, LSL #+3
+   \   00000554   EBFFFF0A           BEQ      ??D_IF_conversion_56
+   \   00000558   0090D5E5           LDRB     R9,[R5, #+0]
+   \   0000055C   8990A0E1           LSL      R9,R9,#+1
+   \   00000560   0090C5E5           STRB     R9,[R5, #+0]
+   \   00000564   E8FFFFEA           B        ??D_IF_conversion_57
+   \                     ??D_IF_conversion_1:
+   \   00000568   0020C6E5           STRB     R2,[R6, #+0]
+   \   0000056C   B010C8E1           STRH     R1,[R8, #+0]
+   \   00000570   EEFEFFEA           B        ??D_IF_conversion_9
+    425                if ((*frame_type == RX_SID_FIRST) | (*frame_type == RX_SID_UPDATE))
+   \                     ??D_IF_conversion_10:
+   \   00000574   040051E3           CMP      R1,#+4
+   \   00000578   05005113           CMPNE    R1,#+5
+    426                {
+    427                   *frame_type = RX_SID_BAD;
+   \   0000057C   0610A003           MOVEQ    R1,#+6
+   \   00000580   0010C605           STRBEQ   R1,[R6, #+0]
+    428                }
+    429             }
+    430          
+    431             return (Word16)mode;
+   \   00000584   F083BDE8           POP      {R4-R9,PC}       ;; return
+   \                     ??D_IF_conversion_3:
+   \   00000588   ........           DC32     mode_DTX
+   \   0000058C   ........           DC32     mode_7k
+   \   00000590   ........           DC32     mode_9k
+   \   00000594   ........           DC32     mode_12k
+   \   00000598   ........           DC32     mode_14k
+   \   0000059C   ........           DC32     mode_16k
+   \   000005A0   ........           DC32     mode_18k
+   \   000005A4   ........           DC32     mode_20k
+   \   000005A8   ........           DC32     mode_23k
+   \   000005AC   ........           DC32     mode_24k
+    432          }
+    433          
+    434          #else
+    435          
+    436          /*
+    437           * D_IF_mms_conversion
+    438           *
+    439           *
+    440           * Parameters:
+    441           *    param             O: AMR parameters
+    442           *    stream            I: input bitstream
+    443           *    frame_type        O: frame type
+    444           *    speech_mode       O: speech mode in DTX
+    445           *    fqi               O: frame quality indicator
+    446           *
+    447           * Function:
+    448           *    Unpacks MMS formatted octet stream (see RFC 3267, section 5.3)
+    449           *
+    450           * Returns:
+    451           *    mode              used mode
+    452           */
+    453          Word16 D_IF_mms_conversion(Word16 *param, UWord8 *stream, UWord8 *frame_type,
+    454                                     Word16 *speech_mode, Word16 *fqi)
+    455          {
+    456             Word32 mode;
+    457             Word32 j;
+    458             Word16 const *mask;
+    459          
+    460             memset(param, 0, PRMNO_24k << 1);
+    461          
+    462             *fqi = (Word16)((*stream >> 2) & 0x01);
+    463             mode = (Word32)((*stream >> 3) & 0x0F);
+    464          
+    465             stream++;
+    466          
+    467             switch (mode)
+    468             {
+    469             case MRDTX:
+    470                mask = mode_DTX;
+    471          
+    472                for (j = 1; j <= NBBITS_SID; j++)
+    473                {
+    474                   if (*stream & 0x80)
+    475                   {
+    476                      param[*mask] = (Word16)(param[*mask] + *(mask + 1));
+    477                   }
+    478          
+    479                   mask += 2;
+    480          
+    481                   if ( j % 8 )
+    482                   {
+    483                      *stream <<= 1;
+    484                   }
+    485                   else
+    486                   {
+    487                      stream++;
+    488                   }
+    489                }
+    490          
+    491                /* get SID type bit */
+    492          
+    493                *frame_type = RX_SID_FIRST;
+    494          
+    495                if (*stream & 0x80)
+    496                {
+    497                   *frame_type = RX_SID_UPDATE;
+    498                }
+    499          
+    500                *stream <<= 1;
+    501          
+    502                /* speech mode indicator */
+    503                *speech_mode = (Word16)(*stream >> 4);
+    504                break;
+    505          
+    506             case MRNO_DATA:
+    507                *frame_type = RX_NO_DATA;
+    508                break;
+    509          
+    510             case LOST_FRAME:
+    511                *frame_type = RX_SPEECH_LOST;
+    512                break;
+    513          
+    514             case MODE_7k:
+    515                mask = mode_7k;
+    516          
+    517                for (j = 1; j <= NBBITS_7k; j++)
+    518                {
+    519                   if ( *stream & 0x80 )
+    520                   {
+    521                      param[*mask] = (Word16)(param[*mask] + *(mask + 1));
+    522                   }
+    523                   mask += 2;
+    524          
+    525                   if (j % 8)
+    526                   {
+    527                      *stream <<= 1;
+    528                   }
+    529                   else
+    530                   {
+    531                      stream++;
+    532                   }
+    533                }
+    534          
+    535                *frame_type = RX_SPEECH_GOOD;
+    536                break;
+    537          
+    538             case MODE_9k:
+    539                mask = mode_9k;
+    540          
+    541                for (j = 1; j <= NBBITS_9k; j++)
+    542                {
+    543                   if (*stream & 0x80)
+    544                   {
+    545                      param[*mask] = (Word16)(param[*mask] + *(mask + 1));
+    546                   }
+    547                   mask += 2;
+    548          
+    549                   if (j % 8)
+    550                   {
+    551                      *stream <<= 1;
+    552                   }
+    553                   else
+    554                   {
+    555                      stream++;
+    556                   }
+    557                }
+    558          
+    559                *frame_type = RX_SPEECH_GOOD;
+    560                break;
+    561          
+    562             case MODE_12k:
+    563                mask = mode_12k;
+    564          
+    565                for (j = 1; j <= NBBITS_12k; j++)
+    566                {
+    567                   if (*stream & 0x80)
+    568                   {
+    569                      param[*mask] = (Word16)(param[*mask] + *(mask + 1));
+    570                   }
+    571                   mask += 2;
+    572          
+    573                   if ( j % 8 )
+    574                   {
+    575                      *stream <<= 1;
+    576                   }
+    577                   else
+    578                   {
+    579                      stream++;
+    580                   }
+    581                }
+    582          
+    583                *frame_type = RX_SPEECH_GOOD;
+    584                break;
+    585          
+    586             case MODE_14k:
+    587                mask = mode_14k;
+    588          
+    589                for (j = 1; j <= NBBITS_14k; j++)
+    590                {
+    591                   if (*stream & 0x80)
+    592                   {
+    593                      param[*mask] = (Word16)(param[*mask] + *(mask + 1));
+    594                   }
+    595          
+    596                   mask += 2;
+    597          
+    598                   if ( j % 8 )
+    599                   {
+    600                      *stream <<= 1;
+    601                   }
+    602                   else
+    603                   {
+    604                      stream++;
+    605                   }
+    606                }
+    607          
+    608                *frame_type = RX_SPEECH_GOOD;
+    609                break;
+    610          
+    611             case MODE_16k:
+    612                mask = mode_16k;
+    613          
+    614                for (j = 1; j <= NBBITS_16k; j++)
+    615                {
+    616                   if (*stream & 0x80)
+    617                   {
+    618                      param[*mask] = (Word16)(param[*mask] + *(mask + 1));
+    619                   }
+    620          
+    621                   mask += 2;
+    622          
+    623                   if (j % 8)
+    624                   {
+    625                      *stream <<= 1;
+    626                   }
+    627                   else
+    628                   {
+    629                      stream++;
+    630                   }
+    631                }
+    632          
+    633                *frame_type = RX_SPEECH_GOOD;
+    634                break;
+    635          
+    636             case MODE_18k:
+    637                mask = mode_18k;
+    638          
+    639                for (j = 1; j <= NBBITS_18k; j++)
+    640                {
+    641                   if (*stream & 0x80)
+    642                   {
+    643                      param[*mask] = (Word16)(param[*mask] + *(mask + 1));
+    644                   }
+    645          
+    646                   mask += 2;
+    647          
+    648                   if (j % 8)
+    649                   {
+    650                      *stream <<= 1;
+    651                   }
+    652                   else
+    653                   {
+    654                      stream++;
+    655                   }
+    656                }
+    657          
+    658                *frame_type = RX_SPEECH_GOOD;
+    659                break;
+    660          
+    661             case MODE_20k:
+    662                mask = mode_20k;
+    663          
+    664                for (j = 1; j <= NBBITS_20k; j++)
+    665                {
+    666                   if (*stream & 0x80)
+    667                   {
+    668                      param[*mask] = (Word16)(param[*mask] + *(mask + 1));
+    669                   }
+    670          
+    671                   mask += 2;
+    672          
+    673                   if (j % 8)
+    674                   {
+    675                      *stream <<= 1;
+    676                   }
+    677                   else
+    678                   {
+    679                      stream++;
+    680                   }
+    681                }
+    682          
+    683                *frame_type = RX_SPEECH_GOOD;
+    684                break;
+    685          
+    686             case MODE_23k:
+    687                mask = mode_23k;
+    688          
+    689                for (j = 1; j <= NBBITS_23k; j++)
+    690                {
+    691                   if (*stream & 0x80)
+    692                   {
+    693                      param[*mask] = (Word16)(param[*mask] + *(mask + 1));
+    694                   }
+    695          
+    696                   mask += 2;
+    697          
+    698                   if (j % 8)
+    699                   {
+    700                      *stream <<= 1;
+    701                   }
+    702                   else
+    703                   {
+    704                      stream++;
+    705                   }
+    706          
+    707                }
+    708          
+    709                *frame_type = RX_SPEECH_GOOD;
+    710                break;
+    711          
+    712             case MODE_24k:
+    713                mask = mode_24k;
+    714          
+    715                for (j = 1; j <= NBBITS_24k; j++)
+    716                {
+    717                   if (*stream & 0x80)
+    718                   {
+    719                      param[*mask] = (Word16)(param[*mask] + *(mask + 1));
+    720                   }
+    721          
+    722                   mask += 2;
+    723          
+    724                   if (j % 8)
+    725                   {
+    726                      *stream <<= 1;
+    727                   }
+    728                   else
+    729                   {
+    730                      stream++;
+    731                   }
+    732          
+    733                }
+    734          
+    735                *frame_type = RX_SPEECH_GOOD;
+    736                break;
+    737          
+    738             default:
+    739                *frame_type = RX_SPEECH_LOST;
+    740                *fqi = 0;
+    741                break;
+    742          
+    743             }
+    744          
+    745             if (*fqi == 0)
+    746             {
+    747                if (*frame_type == RX_SPEECH_GOOD)
+    748                {
+    749                   *frame_type = RX_SPEECH_BAD;
+    750                }
+    751                if ((*frame_type == RX_SID_FIRST) | (*frame_type == RX_SID_UPDATE))
+    752                {
+    753                   *frame_type = RX_SID_BAD;
+    754                }
+    755             }
+    756          
+    757             return (Word16)mode;
+    758          }
+    759          
+    760          #endif
+    761          
+    762          /*
+    763           * D_IF_decode
+    764           *
+    765           *
+    766           * Parameters:
+    767           *    st       B: pointer to state structure
+    768           *    bits     I: bitstream form the encoder
+    769           *    synth    O: decoder output
+    770           *    lfi      I: lost frame indicator
+    771           *                _good_frame, _bad_frame, _lost_frame, _no_frame
+    772           *
+    773           * Function:
+    774           *    Decoding one frame of speech. Lost frame indicator can be used
+    775           *    to inform encoder about the problems in the received frame.
+    776           *    _good_frame:good speech or sid frame is received.
+    777           *    _bad_frame: frame with possible bit errors
+    778           *    _lost_frame:speech of sid frame is lost in transmission
+    779           *    _no_frame:  indicates non-received frames in dtx-operation
+    780           * Returns:
+    781           *
+    782           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    783          void D_IF_decode( void *st, UWord8 *bits, Word16 *synth, Word32 lfi)
+    784          {
+   \                     D_IF_decode:
+   \   00000000   F0462DE9           PUSH     {R4-R7,R9,R10,LR}
+   \   00000004   78D04DE2           SUB      SP,SP,#+120
+   \   00000008   0040A0E1           MOV      R4,R0
+   \   0000000C   0290A0E1           MOV      R9,R2
+    785             Word32 i;
+    786             Word16 mode = 0;                 /* AMR mode                */
+    787             Word16 speech_mode = MODE_7k;    /* speech mode             */
+   \   00000010   0050A0E3           MOV      R5,#+0
+   \   00000014   B250CDE1           STRH     R5,[SP, #+2]
+    788             Word16 fqi;                      /* frame quality indicator */
+    789          
+    790             Word16 prm[PRMNO_24k];           /* AMR parameters          */
+    791          
+    792             UWord8 frame_type;               /* frame type              */
+    793             Word16 reset_flag = 0;           /* reset flag              */
+   \   00000018   00A0A0E3           MOV      R10,#+0
+    794             WB_dec_if_state * s;             /* pointer to structure    */
+    795          
+    796             s = (WB_dec_if_state*)st;
+    797          
+    798             /* bits -> param, if needed */
+    799             if ((lfi == _good_frame) | (lfi == _bad_frame))
+   \   0000001C   000053E3           CMP      R3,#+0
+   \   00000020   01005313           CMPNE    R3,#+1
+   \   00000024   0400000A           BEQ      ??D_IF_decode_0
+    800             {
+    801                /* add fqi data */
+    802          #ifdef IF2
+    803                *bits = (UWord8)((Word32)*bits & ~(lfi << 3));
+    804          #else
+    805                *bits = (UWord8)((Word32)*bits & ~(lfi << 2));
+    806          #endif
+    807                /*
+    808                 * extract mode information and frame_type,
+    809                 * octets to parameters
+    810                 */
+    811          #ifdef IF2
+    812                mode = D_IF_conversion( prm, bits, &frame_type, &speech_mode, &fqi);
+    813          #else
+    814                mode = D_IF_mms_conversion( prm, bits, &frame_type, &speech_mode, &fqi);
+    815          #endif
+    816          
+    817             }
+    818             else if (lfi == _no_frame)
+   \   00000028   030053E3           CMP      R3,#+3
+   \   0000002C   0210A013           MOVNE    R1,#+2
+    819             {
+    820                frame_type = RX_NO_DATA;
+   \   00000030   0710A003           MOVEQ    R1,#+7
+   \   00000034   0010CDE5           STRB     R1,[SP, #+0]
+   \   00000038   0F0000EA           B        ??D_IF_decode_1
+    821             }
+   \                     ??D_IF_decode_0:
+   \   0000003C   0000D1E5           LDRB     R0,[R1, #+0]
+   \   00000040   8321E0E1           MVN      R2,R3, LSL #+3
+   \   00000044   000002E0           AND      R0,R2,R0
+   \   00000048   0000C1E5           STRB     R0,[R1, #+0]
+   \   0000004C   04008DE2           ADD      R0,SP,#+4
+   \   00000050   01002DE9           PUSH     {R0}
+   \   00000054   06308DE2           ADD      R3,SP,#+6
+   \   00000058   04208DE2           ADD      R2,SP,#+4
+   \   0000005C   0C008DE2           ADD      R0,SP,#+12
+   \   00000060   ........           BL       D_IF_conversion
+   \   00000064   0060A0E1           MOV      R6,R0
+    822             else
+    823             {
+    824                frame_type = RX_SPEECH_LOST;
+    825             }
+    826          
+    827             /*
+    828              * if no mode information
+    829              * guess one from the previous frame
+    830              */
+    831             if ((frame_type == RX_SPEECH_LOST) | (frame_type == RX_NO_DATA))
+   \   00000068   0400DDE5           LDRB     R0,[SP, #+4]
+   \   0000006C   04D08DE2           ADD      SP,SP,#+4
+   \   00000070   020050E3           CMP      R0,#+2
+   \   00000074   07005013           CMPNE    R0,#+7
+   \   00000078   0000001A           BNE      ??D_IF_decode_2
+    832             {
+    833                mode = s->prev_mode;
+   \                     ??D_IF_decode_1:
+   \   0000007C   F460D4E1           LDRSH    R6,[R4, #+4]
+    834             }
+    835          
+    836             if (mode == MRDTX)
+    837             {
+    838                mode = speech_mode;
+    839             }
+    840          
+    841             /* if homed: check if this frame is another homing frame */
+    842             if (s->reset_flag_old == 1)
+   \                     ??D_IF_decode_2:
+   \   00000080   F000D4E1           LDRSH    R0,[R4, #+0]
+   \   00000084   ........           LDR      R7,??DataTable4  ;; dhf
+   \   00000088   090056E3           CMP      R6,#+9
+   \   0000008C   F260DD01           LDRSHEQ  R6,[SP, #+2]
+   \   00000090   010050E3           CMP      R0,#+1
+   \   00000094   1400001A           BNE      ??D_IF_decode_3
+    843             {
+    844                /* only check until end of first subframe */
+    845                reset_flag = D_IF_homing_frame_test_first(prm, mode);
+   \   00000098   ........           LDR      R0,??DataTable5  ;; nb_of_param_first
+   \   0000009C   061197E7           LDR      R1,[R7, +R6, LSL #+2]
+   \   000000A0   860080E0           ADD      R0,R0,R6, LSL #+1
+   \   000000A4   F000D0E1           LDRSH    R0,[R0, #+0]
+   \   000000A8   8020A0E1           LSL      R2,R0,#+1
+   \   000000AC   08008DE2           ADD      R0,SP,#+8
+   \   000000B0   1C0100EF           SWI      +284
+   \   000000B4   000050E3           CMP      R0,#+0
+   \   000000B8   0B00001A           BNE      ??D_IF_decode_3
+   \   000000BC   F000D4E1           LDRSH    R0,[R4, #+0]
+   \   000000C0   01A0A0E3           MOV      R10,#+1
+   \   000000C4   000050E3           CMP      R0,#+0
+   \   000000C8   0700000A           BEQ      ??D_IF_decode_3
+    846             }
+    847          
+    848             /* produce encoder homing frame if homed & input=decoder homing frame */
+    849             if ((reset_flag != 0) && (s->reset_flag_old != 0))
+    850             {
+    851                for (i = 0; i < L_FRAME16k; i++)
+   \   000000CC   0000A0E3           MOV      R0,#+0
+   \   000000D0   0820A0E3           MOV      R2,#+8
+    852                {
+    853                   synth[i] = EHF_MASK;
+   \                     ??D_IF_decode_4:
+   \   000000D4   801089E0           ADD      R1,R9,R0, LSL #+1
+   \   000000D8   B020C1E1           STRH     R2,[R1, #+0]
+    854                }
+   \   000000DC   010080E2           ADD      R0,R0,#+1
+   \   000000E0   500F50E3           CMP      R0,#+320
+   \   000000E4   080000AA           BGE      ??D_IF_decode_5
+   \   000000E8   F9FFFFEA           B        ??D_IF_decode_4
+    855             }
+    856             else
+    857             {
+    858                D_MAIN_decode(mode, prm, synth, s->decoder_state, frame_type);
+   \                     ??D_IF_decode_3:
+   \   000000EC   0000DDE5           LDRB     R0,[SP, #+0]
+   \   000000F0   0920A0E1           MOV      R2,R9
+   \   000000F4   01002DE9           PUSH     {R0}
+   \   000000F8   083094E5           LDR      R3,[R4, #+8]
+   \   000000FC   0C108DE2           ADD      R1,SP,#+12
+   \   00000100   0600A0E1           MOV      R0,R6
+   \   00000104   ........           _BLF     D_MAIN_decode,??D_MAIN_decode??rA
+   \   00000108   04D08DE2           ADD      SP,SP,#+4
+    859             }
+    860          
+    861             for (i = 0; i < L_FRAME16k; i++)   /* Delete the 2 LSBs (14-bit input) */
+   \                     ??D_IF_decode_5:
+   \   0000010C   0000A0E3           MOV      R0,#+0
+   \   00000110   0330E0E3           MVN      R3,#+3
+    862             {
+    863                synth[i] = (Word16) (synth[i] & 0xfffC);
+   \                     ??D_IF_decode_6:
+   \   00000114   801089E0           ADD      R1,R9,R0, LSL #+1
+   \   00000118   F020D1E1           LDRSH    R2,[R1, #+0]
+    864             }
+   \   0000011C   010080E2           ADD      R0,R0,#+1
+   \   00000120   500F50E3           CMP      R0,#+320
+   \   00000124   022003E0           AND      R2,R3,R2
+   \   00000128   B020C1E1           STRH     R2,[R1, #+0]
+   \   0000012C   F8FFFFBA           BLT      ??D_IF_decode_6
+    865          
+    866             /* if not homed: check whether current frame is a homing frame */
+    867             if ((s->reset_flag_old == 0) & (mode < 9))
+   \   00000130   F000D4E1           LDRSH    R0,[R4, #+0]
+   \   00000134   000050E3           CMP      R0,#+0
+   \   00000138   2B00001A           BNE      ??D_IF_decode_7
+   \   0000013C   090056E3           CMP      R6,#+9
+   \   00000140   290000AA           BGE      ??D_IF_decode_7
+    868             {
+    869                /* check whole frame */
+    870                reset_flag = D_IF_homing_frame_test(prm, mode);
+   \   00000144   0600A0E1           MOV      R0,R6
+   \   00000148   080050E3           CMP      R0,#+8
+   \   0000014C   0C00000A           BEQ      ??D_IF_decode_8
+   \   00000150   ........           LDR      R1,??DataTable6  ;; nb_of_param
+   \   00000154   801081E0           ADD      R1,R1,R0, LSL #+1
+   \   00000158   F010D1E1           LDRSH    R1,[R1, #+0]
+   \   0000015C   8120A0E1           LSL      R2,R1,#+1
+   \   00000160   001197E7           LDR      R1,[R7, +R0, LSL #+2]
+   \   00000164   08008DE2           ADD      R0,SP,#+8
+   \   00000168   1C0100EF           SWI      +284
+   \   0000016C   000050E3           CMP      R0,#+0
+   \   00000170   0100001A           BNE      ??D_IF_decode_9
+   \                     ??D_IF_decode_10:
+   \   00000174   01A0A0E3           MOV      R10,#+1
+   \   00000178   1D0000EA           B        ??D_IF_decode_11
+   \                     ??D_IF_decode_9:
+   \   0000017C   00A0A0E3           MOV      R10,#+0
+   \   00000180   1E0000EA           B        ??D_IF_decode_12
+   \                     ??D_IF_decode_8:
+   \   00000184   201097E5           LDR      R1,[R7, #+32]
+   \   00000188   2620A0E3           MOV      R2,#+38
+   \   0000018C   08008DE2           ADD      R0,SP,#+8
+   \   00000190   1C0100EF           SWI      +284
+   \   00000194   0090A0E1           MOV      R9,R0
+   \   00000198   200097E5           LDR      R0,[R7, #+32]
+   \   0000019C   1620A0E3           MOV      R2,#+22
+   \   000001A0   281080E2           ADD      R1,R0,#+40
+   \   000001A4   30008DE2           ADD      R0,SP,#+48
+   \   000001A8   1C0100EF           SWI      +284
+   \   000001AC   00A0A0E1           MOV      R10,R0
+   \   000001B0   200097E5           LDR      R0,[R7, #+32]
+   \   000001B4   1620A0E3           MOV      R2,#+22
+   \   000001B8   401080E2           ADD      R1,R0,#+64
+   \   000001BC   48008DE2           ADD      R0,SP,#+72
+   \   000001C0   1C0100EF           SWI      +284
+   \   000001C4   09108AE1           ORR      R1,R10,R9
+   \   000001C8   019080E1           ORR      R9,R0,R1
+   \   000001CC   200097E5           LDR      R0,[R7, #+32]
+   \   000001D0   1620A0E3           MOV      R2,#+22
+   \   000001D4   581080E2           ADD      R1,R0,#+88
+   \   000001D8   60008DE2           ADD      R0,SP,#+96
+   \   000001DC   1C0100EF           SWI      +284
+   \   000001E0   090090E1           ORRS     R0,R0,R9
+   \   000001E4   E4FFFF1A           BNE      ??D_IF_decode_9
+   \   000001E8   E1FFFFEA           B        ??D_IF_decode_10
+    871             }
+    872             /* reset decoder if current frame is a homing frame */
+    873             if (reset_flag != 0)
+   \                     ??D_IF_decode_7:
+   \   000001EC   00005AE3           CMP      R10,#+0
+   \   000001F0   0200000A           BEQ      ??D_IF_decode_12
+    874             {
+    875                D_MAIN_reset(s->decoder_state, 1);
+   \                     ??D_IF_decode_11:
+   \   000001F4   080094E5           LDR      R0,[R4, #+8]
+   \   000001F8   0110A0E3           MOV      R1,#+1
+   \   000001FC   ........           _BLF     D_MAIN_reset,??D_MAIN_reset??rA
+    876             }
+    877             s->reset_flag_old = reset_flag;
+   \                     ??D_IF_decode_12:
+   \   00000200   B0A0C4E1           STRH     R10,[R4, #+0]
+    878          
+    879             s->prev_ft = frame_type;
+   \   00000204   0000DDE5           LDRB     R0,[SP, #+0]
+   \   00000208   B200C4E1           STRH     R0,[R4, #+2]
+    880             s->prev_mode = mode;
+   \   0000020C   B460C4E1           STRH     R6,[R4, #+4]
+    881          }
+   \   00000210   78D08DE2           ADD      SP,SP,#+120
+   \   00000214   F086BDE8           POP      {R4-R7,R9,R10,PC}
+    882          
+    883          /*
+    884           * D_IF_reset
+    885           *
+    886           * Parameters:
+    887           *    st                O: state struct
+    888           *
+    889           * Function:
+    890           *    Reset homing frame counter
+    891           *
+    892           * Returns:
+    893           *    void
+    894           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    895          void D_IF_reset(WB_dec_if_state *st)
+    896          {
+    897             st->reset_flag_old = 1;
+   \                     D_IF_reset:
+   \   00000000   0110A0E3           MOV      R1,#+1
+   \   00000004   B010C0E1           STRH     R1,[R0, #+0]
+    898             st->prev_ft = RX_SPEECH_GOOD;
+   \   00000008   0010A0E3           MOV      R1,#+0
+   \   0000000C   B210C0E1           STRH     R1,[R0, #+2]
+    899             st->prev_mode = MODE_7k;   /* minimum bitrate */
+   \   00000010   B410C0E1           STRH     R1,[R0, #+4]
+    900          }
+   \   00000014   1EFF2FE1           BX       LR               ;; return
+    901          
+    902          /*
+    903           * D_IF_init
+    904           *
+    905           * Parameters:
+    906           *
+    907           * Function:
+    908           *    Allocates state memory and initializes state memory
+    909           *
+    910           * Returns:
+    911           *    pointer to encoder interface structure
+    912           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    913          void *D_IF_init( void)
+    914          {
+   \                     D_IF_init:
+   \   00000000   10402DE9           PUSH     {R4,LR}
+    915             WB_dec_if_state *s = NULL;
+    916          
+    917             /* allocate memory */
+    918             if ((s = (WB_dec_if_state*) malloc(sizeof(WB_dec_if_state))) == NULL)
+   \   00000004   0C00A0E3           MOV      R0,#+12
+   \   00000008   140000EF           SWI      +20
+   \   0000000C   0040B0E1           MOVS     R4,R0
+   \   00000010   0600000A           BEQ      ??D_IF_init_0
+    919             {
+    920                return NULL;
+    921             }
+    922          
+    923             D_MAIN_init(&(s->decoder_state));
+   \   00000014   080084E2           ADD      R0,R4,#+8
+   \   00000018   ........           _BLF     D_MAIN_init,??D_MAIN_init??rA
+    924             if (s->decoder_state == NULL)
+   \   0000001C   080094E5           LDR      R0,[R4, #+8]
+   \   00000020   000050E3           CMP      R0,#+0
+   \   00000024   0300001A           BNE      ??D_IF_init_1
+    925             {
+    926                free(s);
+                       ^
+Warning[Pe223]: function "free" declared implicitly
+   \   00000028   0400A0E1           MOV      R0,R4
+   \   0000002C   ........           _BLF     free,??free??rA
+    927                return NULL;
+   \                     ??D_IF_init_0:
+   \   00000030   0000A0E3           MOV      R0,#+0
+   \   00000034   1080BDE8           POP      {R4,PC}
+    928             }
+    929          
+    930             D_IF_reset(s);
+   \                     ??D_IF_init_1:
+   \   00000038   0100A0E3           MOV      R0,#+1
+   \   0000003C   B000C4E1           STRH     R0,[R4, #+0]
+   \   00000040   0000A0E3           MOV      R0,#+0
+   \   00000044   B200C4E1           STRH     R0,[R4, #+2]
+   \   00000048   B400C4E1           STRH     R0,[R4, #+4]
+    931          
+    932             return s;
+   \   0000004C   0400A0E1           MOV      R0,R4
+   \   00000050   1080BDE8           POP      {R4,PC}          ;; return
+    933          }
+    934          
+    935          /*
+    936           * D_IF_exit
+    937           *
+    938           * Parameters:
+    939           *    state             I: state structure
+    940           *
+    941           * Function:
+    942           *    The memory used for state memory is freed
+    943           *
+    944           * Returns:
+    945           *    Void
+    946           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    947          void D_IF_exit(void *state)
+    948          {
+   \                     D_IF_exit:
+   \   00000000   10402DE9           PUSH     {R4,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+    949             WB_dec_if_state *s;
+    950          
+    951             s = (WB_dec_if_state *)state;
+    952          
+    953             /* free memory */
+    954             D_MAIN_close(&s->decoder_state);
+   \   00000008   080084E2           ADD      R0,R4,#+8
+   \   0000000C   ........           _BLF     D_MAIN_close,??D_MAIN_close??rA
+    955             free(s);
+                    ^
+Warning[Pe223]: function "free" declared implicitly
+   \   00000010   0400A0E1           MOV      R0,R4
+   \   00000014   1040BDE8           POP      {R4,LR}          ;; Pop
+   \   00000018   ........           _BF      free,??free??rA  ;; tailcall
+    956             state = NULL;
+    957          }
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable4:
+   \   00000000   ........           DC32     dhf
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable5:
+   \   00000000   ........           DC32     nb_of_param_first
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable6:
+   \   00000000   ........           DC32     nb_of_param
+
+   \                                 In segment DATA_ID, align 4, align-sorted
+   \                     `?<Initializer for nb_of_param_first>`:
+   \   00000000   09000E000F00       DC16 9, 14, 15, 15, 15, 19, 19, 19, 19
+   \              0F000F001300
+   \              130013001300
+   \   00000012   0000               DC8 0, 0
+
+   Maximum stack usage in bytes:
+
+     Function                     CSTACK
+     --------                     ------
+     D_IF_conversion                 28
+     D_IF_decode                    156
+     D_IF_exit                        8
+     D_IF_homing_frame_test          28
+     D_IF_homing_frame_test_first     4
+     D_IF_init                        8
+     D_IF_reset                       0
+
+
+   Segment part sizes:
+
+     Function/Label                 Bytes
+     --------------                 -----
+     nb_of_param_first                20
+     D_IF_homing_frame_test          172
+     D_IF_homing_frame_test_first     52
+     D_IF_conversion                1456
+     D_IF_decode                     536
+     D_IF_reset                       24
+     D_IF_init                        84
+     D_IF_exit                        28
+     ??DataTable4                      4
+     ??DataTable5                      4
+     ??DataTable6                      4
+     ?<Initializer for nb_of_param_first>
+                                      20
+      Others                         100
+
+ 
+ 2 452 bytes in segment CODE
+    20 bytes in segment DATA_I
+    20 bytes in segment DATA_ID
+    12 bytes in segment INITTAB
+ 
+ 2 364 bytes of CODE  memory (+ 100 bytes shared)
+    20 bytes of CONST memory
+    20 bytes of DATA  memory
+
+Errors: none
+Warnings: 6

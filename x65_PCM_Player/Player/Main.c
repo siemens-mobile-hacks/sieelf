@@ -28,7 +28,7 @@ char CsmActive=0;
 
 
 int onstart( char * exename, char * fname )
-{ // Старт приложения. Возвращает 0 или 1 для выхода.
+{ 
   //DisableIDLETMR();
   char *mininame=malloc(256);
   

@@ -2,64 +2,129 @@
 
 <Workspace>
   <ConfigDictionary>
-    
-  <CurrentConfigs><Project>ScrTool/Release_NEWSGOLD</Project></CurrentConfigs></ConfigDictionary>
+    <CurrentConfigs>
+      <Project>ScrTool/Release_NEWSGOLD</Project>
+    </CurrentConfigs>
+  </ConfigDictionary>
   <Desktop>
     <Static>
       <Workspace>
         <ColumnWidths>
-          
-          
-          
-          
-        <Column0>124</Column0><Column1>27</Column1><Column2>27</Column2><Column3>27</Column3></ColumnWidths>
+          <Column0>124</Column0>
+          <Column1>27</Column1>
+          <Column2>27</Column2>
+          <Column3>27</Column3>
+        </ColumnWidths>
       </Workspace>
       <Build>
-        
-        
-        
-        
-      <ColumnWidth0>20</ColumnWidth0><ColumnWidth1>670</ColumnWidth1><ColumnWidth2>178</ColumnWidth2><ColumnWidth3>44</ColumnWidth3></Build>
+        <ColumnWidth0>20</ColumnWidth0>
+        <ColumnWidth1>915</ColumnWidth1>
+        <ColumnWidth2>244</ColumnWidth2>
+        <ColumnWidth3>61</ColumnWidth3>
+      </Build>
     </Static>
     <Windows>
-      
-      
-    <Wnd0>
+      <Wnd2>
         <Tabs>
           <Tab>
-            <Identity>TabID-1006-17572</Identity>
+            <Identity>TabID-18311-19914</Identity>
             <TabName>Workspace</TabName>
             <Factory>Workspace</Factory>
             <Session>
-              
-            <NodeDict><ExpandedNode>ScrTool</ExpandedNode></NodeDict></Session>
+              <NodeDict>
+                <ExpandedNode>ScrTool</ExpandedNode>
+              </NodeDict>
+            </Session>
           </Tab>
         </Tabs>
-        
-      <SelectedTab>0</SelectedTab></Wnd0><Wnd1>
+        <SelectedTab>0</SelectedTab>
+      </Wnd2>
+      <Wnd3>
         <Tabs>
           <Tab>
-            <Identity>TabID-21980-17589</Identity>
+            <Identity>TabID-17788-19923</Identity>
             <TabName>Build</TabName>
             <Factory>Build</Factory>
             <Session/>
           </Tab>
         </Tabs>
-        
-      <SelectedTab>0</SelectedTab></Wnd1></Windows>
+        <SelectedTab>0</SelectedTab>
+      </Wnd3>
+    </Windows>
     <Editor>
-      
-      
-      
-      
-    <Pane><Tab><Factory>TextEditor</Factory><Filename>F:\SVN\cn\ScrTool2\main.c</Filename><XPos>0</XPos><YPos>637</YPos><SelStart>18658</SelStart><SelEnd>18658</SelEnd></Tab><ActiveTab>0</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+      <Pane/>
+      <ActivePane>0</ActivePane>
+      <Sizes>
+        <Pane>
+          <X>1000000</X>
+          <Y>1000000</Y>
+        </Pane>
+      </Sizes>
+      <SplitMode>1</SplitMode>
+    </Editor>
     <Positions>
-      
-      
-      
-      
-      
-    <Top><Row0><Sizes><Toolbar-003be710><key>iaridepm.enu1</key></Toolbar-003be710></Sizes></Row0></Top><Left><Row0><Sizes><Wnd0><Rect><Top>-2</Top><Left>-2</Left><Bottom>265</Bottom><Right>198</Right><x>-2</x><y>-2</y><xscreen>200</xscreen><yscreen>200</yscreen><sizeHorzCX>210084</sizeHorzCX><sizeHorzCY>393701</sizeHorzCY><sizeVertCX>210084</sizeVertCX><sizeVertCY>525591</sizeVertCY></Rect></Wnd0></Sizes></Row0></Left><Right><Row0><Sizes/></Row0></Right><Bottom><Row0><Sizes><Wnd1><Rect><Top>-2</Top><Left>-2</Left><Bottom>198</Bottom><Right>954</Right><x>-2</x><y>-2</y><xscreen>956</xscreen><yscreen>200</yscreen><sizeHorzCX>1004202</sizeHorzCX><sizeHorzCY>393701</sizeHorzCY><sizeVertCX>210084</sizeVertCX><sizeVertCY>393701</sizeVertCY></Rect></Wnd1></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+      <Top>
+        <Row0>
+          <Sizes>
+            <Toolbar-003beb78>
+              <key>iaridepm.enu1</key>
+            </Toolbar-003beb78>
+          </Sizes>
+        </Row0>
+      </Top>
+      <Left>
+        <Row0>
+          <Sizes>
+            <Wnd2>
+              <Rect>
+                <Top>-2</Top>
+                <Left>-2</Left>
+                <Bottom>481</Bottom>
+                <Right>198</Right>
+                <x>-2</x>
+                <y>-2</y>
+                <xscreen>200</xscreen>
+                <yscreen>200</yscreen>
+                <sizeHorzCX>156250</sizeHorzCX>
+                <sizeHorzCY>276243</sizeHorzCY>
+                <sizeVertCX>156250</sizeVertCX>
+                <sizeVertCY>667127</sizeVertCY>
+              </Rect>
+            </Wnd2>
+          </Sizes>
+        </Row0>
+      </Left>
+      <Right>
+        <Row0>
+          <Sizes/>
+        </Row0>
+      </Right>
+      <Bottom>
+        <Row0>
+          <Sizes>
+            <Wnd3>
+              <Rect>
+                <Top>-2</Top>
+                <Left>-2</Left>
+                <Bottom>198</Bottom>
+                <Right>1282</Right>
+                <x>-2</x>
+                <y>-2</y>
+                <xscreen>1284</xscreen>
+                <yscreen>200</yscreen>
+                <sizeHorzCX>1003125</sizeHorzCX>
+                <sizeHorzCY>276243</sizeHorzCY>
+                <sizeVertCX>156250</sizeVertCX>
+                <sizeVertCY>276243</sizeVertCY>
+              </Rect>
+            </Wnd3>
+          </Sizes>
+        </Row0>
+      </Bottom>
+      <Float>
+        <Sizes/>
+      </Float>
+    </Positions>
   </Desktop>
 </Workspace>
 

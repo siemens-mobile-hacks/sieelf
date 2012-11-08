@@ -1,0 +1,899 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   02/Dec/2011  21:06:58 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\MultiSimPatch\MultiSimElf\main /
+//                       menu.c                                              /
+//    Command line    =  D:\SVN\SieELF\SieELF\MultiSimPatch\MultiSimElf\main /
+//                       menu.c -D NEWSGOLD -lC D:\SVN\SieELF\SieELF\MultiSi /
+//                       mPatch\tmp\ -lA D:\SVN\SieELF\SieELF\MultiSimPatch\ /
+//                       tmp\ -o D:\SVN\SieELF\SieELF\MultiSimPatch\tmp\     /
+//                       -s9 --no_unroll --cpu_mode arm --endian little      /
+//                       --cpu ARM926EJ-S --stack_align 4 --interwork -e     /
+//                       --fpu None -I "D:\Program Files\IAR\Embedded        /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=2                                /
+//    List file       =  D:\SVN\SieELF\SieELF\MultiSimPatch\tmp\mainmenu.s79 /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME mainmenu
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        PUBWEAK `?*?DATA_ID`
+        MULTWEAK ??ChangeSim??rA
+??DataTable0 EQU 0
+??DataTable1 EQU 0
+        MULTWEAK ??ShowMainMenu??rT
+        MULTWEAK ??ShowSetMenu??rA
+        MULTWEAK ??tmenu_ghook??rT
+        PUBWEAK ?init?tab?DATA_I
+        FUNCTION AboutDlg,0601H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC MainMenu_ID
+        PUBLIC S_ICONS
+        FUNCTION Settings,0603H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC ShowMainMenu
+        FUNCTION ShowMainMenu,0201H
+        LOCFRAME CSTACK, 28, STACK
+        PUBLIC menu_skt
+        FUNCTION menuitemhandler,0603H
+        LOCFRAME CSTACK, 32, STACK
+        PUBLIC simcnt
+        PUBLIC simnum
+        PUBLIC str1
+        PUBLIC str2
+        PUBLIC str3
+        PUBLIC tmenu_ghook
+        FUNCTION tmenu_ghook,0603H
+        LOCFRAME CSTACK, 12, STACK
+        FUNCTION tmenu_keyhook,0603H
+        LOCFRAME CSTACK, 12, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+ChangeSim           SYMBOL "ChangeSim"
+ShowSetMenu         SYMBOL "ShowSetMenu"
+??ChangeSim??rA     SYMBOL "??rA", ChangeSim
+ShowMainMenu        SYMBOL "ShowMainMenu"
+??ShowMainMenu??rT  SYMBOL "??rT", ShowMainMenu
+??ShowSetMenu??rA   SYMBOL "??rA", ShowSetMenu
+tmenu_ghook         SYMBOL "tmenu_ghook"
+??tmenu_ghook??rT   SYMBOL "??rT", tmenu_ghook
+
+        EXTERN ChangeSim
+        FUNCTION ChangeSim,0202H
+        EXTERN ShowSetMenu
+        FUNCTION ShowSetMenu,0202H
+        EXTERN block5401
+        EXTERN successed_config_filename
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??Settings??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE Settings
+// D:\SVN\SieELF\SieELF\MultiSimPatch\MultiSimElf\mainmenu.c
+//    1 #include "..\..\inc\swilib.h"
+//    2 #include "..\..\inc\cfg_items.h"
+//    3 //#include "pnglist.h"
+//    4 #include "language.h"
+//    5 #include "mainmenu.h"
+//    6 
+//    7 
+//    8 //==============================================================================
+//    9 // ELKA Compatibility
+//   10 
+//   11 #pragma inline
+//   12 static void patch_header(const HEADER_DESC* head)
+//   13 {
+//   14   ((HEADER_DESC*)head)->rc.x=0;
+//   15   ((HEADER_DESC*)head)->rc.y=YDISP;
+//   16   ((HEADER_DESC*)head)->rc.x2=ScreenW()-1;
+//   17   ((HEADER_DESC*)head)->rc.y2=HeaderH()-1+YDISP;
+//   18 }
+//   19 /*
+//   20 #pragma inline
+//   21 static void patch_input(const INPUTDIA_DESC* inp)
+//   22 {
+//   23   ((INPUTDIA_DESC*)inp)->rc.x=0;
+//   24   ((INPUTDIA_DESC*)inp)->rc.y=HeaderH()+1+YDISP;
+//   25   ((INPUTDIA_DESC*)inp)->rc.x2=ScreenW()-1;
+//   26   ((INPUTDIA_DESC*)inp)->rc.y2=ScreenH()-SoftkeyH()-1;
+//   27 }
+//   28 */
+//   29 //==============================================================================
+//   30 int MainMenu_ID;
+//   31 //extern char buf5401[0x30*20];
+//   32 extern BLOCK5401 block5401[MAX_SIM_CNT];
+//   33 #define __SVN_REVISION__  1007
+//   34 int S_ICONS[3];
+//   35   int simnum=0;
+//   36     int simcnt=0;
+//   37 static const SOFTKEY_DESC menu_sk[] =
+//   38 {
+//   39   {0x0018, 0x0000, (int)LG_SELECT},
+//   40   {0x0001, 0x0000, (int)LG_CLOSE},
+//   41   {0x003D, 0x0000, (int)LGP_DOIT_PIC}
+//   42 };
+//   43 const SOFTKEYSTAB menu_skt =
+//   44 {
+//   45   menu_sk, 0
+//   46 };
+//   47 
+//   48 extern IPC_REQ gipc2;
+//   49 extern void ChangeSim( int num);
+//   50 
+//   51 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function Settings
+        ARM
+//   52 static void Settings(void)
+//   53 {
+//   54   ShowSetMenu();
+Settings:
+        _BF      ShowSetMenu,??ShowSetMenu??rA  ;; tailcall
+        CFI EndBlock cfiBlock1
+//   55 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??AboutDlg??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE AboutDlg
+//   56 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function AboutDlg
+        ARM
+//   57 static void AboutDlg(){
+//   58     ShowMSG(2, (int)LG_COPYRIGHT);
+AboutDlg:
+        LDR      R1,??AboutDlg_0  ;; `?<Constant "MultisimElf v0.9b\\n(C)...">`
+        PUSH     {LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI CFA R13+4
+        MOV      R0,#+2
+        SWI      +328
+//   59 }
+        POP      {PC}             ;; return
+        DATA
+??AboutDlg_0:
+        DC32     `?<Constant "MultisimElf v0.9b\\n(C)...">`
+        CFI EndBlock cfiBlock3
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??tmenu_ghook??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE tmenu_ghook
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "\\321\\241\\324\\361">`:
+        DATA
+        DC8 "\321\241\324\361"
+        DC8 0, 0, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "\\271\\330\\261\\325">`:
+        DATA
+        DC8 "\271\330\261\325"
+        DC8 0, 0, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "\\262\\313\\265\\245">`:
+        DATA
+        DC8 "\262\313\265\245"
+        DC8 0, 0, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "\\271\\330\\323\\332">`:
+        DATA
+        DC8 "\271\330\323\332"
+        DC8 0, 0, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "\\312\\364\\320\\324">`:
+        DATA
+        DC8 "\312\364\320\324"
+        DC8 0, 0, 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "\\320\\351\\304\\342SIM">`:
+        DATA
+        DC8 "\320\351\304\342SIM"
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "MultisimElf v0.9b\\n(C)...">`:
+        DATA
+        DC8 4DH, 75H, 6CH, 74H, 69H, 73H, 69H, 6DH
+        DC8 45H, 6CH, 66H, 20H, 76H, 30H, 2EH, 39H
+        DC8 62H, 0AH, 28H, 43H, 29H, 20H, 62H, 79H
+        DC8 20H, 53H, 68H, 61H, 64H, 6FH, 77H, 73H
+        DC8 0AH, 53H, 69H, 6EH, 63H, 6CH, 61H, 69H
+        DC8 72H, 0AH, 28H, 52H, 29H, 52H, 73H, 74H
+        DC8 37H, 0AH, 4BH, 72H, 65H, 4EH, 0AH, 0
+//   60 
+//   61 static const HEADER_DESC menuhdr={0,0,0,0,NULL,(int)LG_MENU,LGP_NULL};
+//   62 
+//   63 static const int mmenusoftkeys[]={0,1,2};
+//   64 
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "%t">`:
+        DATA
+        DC8 "%t"
+        DC8 0
+        DC32 `?<Constant "\\271\\330\\323\\332">`
+        DC32 `?<Constant "\\312\\364\\320\\324">`
+        DC32 `?<Constant "\\320\\351\\304\\342SIM">`
+        DC32 `?<Constant "\\320\\351\\304\\342SIM">`
+        DC32 `?<Constant "\\320\\351\\304\\342SIM">`
+        DC32 `?<Constant "\\320\\351\\304\\342SIM">`
+        DC32 `?<Constant "\\320\\351\\304\\342SIM">`
+        DC32 `?<Constant "\\320\\351\\304\\342SIM">`
+        DC32 `?<Constant "\\320\\351\\304\\342SIM">`
+        DC32 `?<Constant "\\320\\351\\304\\342SIM">`
+        DC32 `?<Constant "\\320\\351\\304\\342SIM">`
+        DC32 `?<Constant "\\320\\351\\304\\342SIM">`
+        DC32 `?<Constant "\\320\\351\\304\\342SIM">`
+        DC32 `?<Constant "\\320\\351\\304\\342SIM">`
+        DC32 `?<Constant "\\320\\351\\304\\342SIM">`
+        DC32 `?<Constant "\\320\\351\\304\\342SIM">`
+        DC32 `?<Constant "\\320\\351\\304\\342SIM">`
+        DC32 `?<Constant "\\320\\351\\304\\342SIM">`
+        DC32 `?<Constant "\\320\\351\\304\\342SIM">`
+        DC32 `?<Constant "\\320\\351\\304\\342SIM">`
+        DC32 `?<Constant "\\320\\351\\304\\342SIM">`
+        DC32 `?<Constant "\\320\\351\\304\\342SIM">`
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+menu_sk:
+        DATA
+        DC16 24, 0
+        DC32 `?<Constant "\\321\\241\\324\\361">`
+        DC16 1, 0
+        DC32 `?<Constant "\\271\\330\\261\\325">`
+        DC16 61, 0
+        DC32 2147467515
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+menu_skt:
+        DATA
+        DC32 menu_sk, 0
+//   65 static const char * const menutexts[]=
+//   66 {
+//   67   LG_MNUABOUT,
+//   68   LG_MNUEDCFG,
+//   69 
+//   70   LG_MNUVIRTSIM,
+//   71   LG_MNUVIRTSIM,
+//   72   LG_MNUVIRTSIM,
+//   73   LG_MNUVIRTSIM,
+//   74   LG_MNUVIRTSIM,
+//   75   LG_MNUVIRTSIM,
+//   76   LG_MNUVIRTSIM,
+//   77   LG_MNUVIRTSIM,
+//   78   LG_MNUVIRTSIM,
+//   79   LG_MNUVIRTSIM,
+//   80   LG_MNUVIRTSIM,
+//   81   LG_MNUVIRTSIM,
+//   82   LG_MNUVIRTSIM,
+//   83   LG_MNUVIRTSIM,
+//   84   LG_MNUVIRTSIM,
+//   85   LG_MNUVIRTSIM,
+//   86   LG_MNUVIRTSIM,
+//   87   LG_MNUVIRTSIM,
+//   88   LG_MNUVIRTSIM,
+//   89   LG_MNUVIRTSIM,
+//   90 
+//   91 
+//   92 };
+//   93 
+//   94 static const void *menuprocs[]=
+//   95 {
+//   96   (void *)AboutDlg,
+//   97   (void *)Settings,
+//   98 
+//   99 };
+//  100 /*
+//  101 ghook_cmd:
+//  102 1 - OncreateFirst
+//  103 2 - OnCreateAfterLLQ
+//  104 3 - OnClose
+//  105 4 - OnFocusFirst
+//  106 5 - OnFocusAfterLLQ
+//  107 6 - UnFocus
+//  108 7 - OnRedraw
+//  109 //8
+//  110 9 - OnRefreshFirst(OnUnfocus)
+//  111 10 - OnRefreshSec(OnFocus)
+//  112 //11
+//  113 12 - Edit_change_field
+//  114 13 - Edit_comdo_box_change
+//  115 14 - MenuDown
+//  116 15 - MenuUp
+//  117 //16
+//  118 //17
+//  119 //18
+//  120 */
+//  121 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function tmenu_ghook
+        ARM
+//  122 void tmenu_ghook(void *data, int cmd)
+//  123 {
+tmenu_ghook:
+        PUSH     {R4,R5,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+//  124 //  simcnt=9;
+//  125   if (cmd==9)
+//  126   {
+//  127  //   Menu_SetItemCountDyn(data,3+simcnt);
+//  128 //    if (simnum<3+simcnt)      SetCursorToMenuItem(data,2+simnum);
+//  129   }
+//  130   if (cmd==0x0A)
+        CMP      R1,#+10
+        MOV      R4,R0
+        POPNE    {R4,R5,PC}
+//  131   {
+//  132     DisableIDLETMR();
+//  133     Menu_SetItemCountDyn(data,2+simcnt);
+        LDR      R5,??DataTable2  ;; S_ICONS
+        SWI      +383
+        LDR      R0,[R5, #+28]
+        ADD      R1,R0,#+2
+        MOV      R0,R4
+        SWI      +486
+//  134     if (simnum<3+simcnt)      SetCursorToMenuItem(data,2+simnum);
+        LDR      R0,[R5, #+24]
+        LDR      R1,[R5, #+28]
+        ADD      R1,R1,#+3
+        CMP      R0,R1
+        POPGE    {R4,R5,PC}
+        ADD      R1,R0,#+2
+        MOV      R0,R4
+        SWI      +452
+//  135   }
+//  136 }
+        POP      {R4,R5,PC}       ;; return
+        CFI EndBlock cfiBlock5
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??menuitemhandler??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE menuitemhandler
+//  137 
+//  138 static int icon_array[2];
+//  139 
+//  140 extern unsigned char bp[1024];
+//  141 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function menuitemhandler
+        ARM
+//  142 static void menuitemhandler(void *data, int curitem, void *unk)
+//  143 {
+menuitemhandler:
+        PUSH     {R4-R9,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R9 Frame(CFA, -8)
+        CFI R8 Frame(CFA, -12)
+        CFI R7 Frame(CFA, -16)
+        CFI R6 Frame(CFA, -20)
+        CFI R5 Frame(CFA, -24)
+        CFI R4 Frame(CFA, -28)
+        CFI CFA R13+28
+        SUB      SP,SP,#+4
+        CFI CFA R13+32
+        MOV      R4,R0
+        MOV      R5,R1
+//  144   WSHDR *ws;
+//  145   void *item=AllocMenuItem(data);
+        SWI      +407
+        MOV      R6,R0
+//  146 
+//  147   const char percent_t[]="%t";
+        LDR      R0,??menuitemhandler_0  ;; `?<Constant "%t">`
+        MOV      R1,SP
+        LDRB     R2,[R0, #0]
+        STRB     R2,[R1, #+0]
+        LDRB     R2,[R0, #+1]
+        STRB     R2,[R1, #+1]
+        LDRB     R2,[R0, #+2]
+        ADD      R0,R0,R5, LSL #+2
+        STRB     R2,[R1, #+2]
+        LDR      R7,[R0, #+4]
+        MOV      R0,R7
+//  148 //  extern const char percent_t[];
+//  149   ws=AllocMenuWS(data,strlen(menutexts[curitem]));
+        SWI      +27
+        MOV      R1,R0
+        MOV      R0,R4
+        SWI      +408
+        MOV      R8,R0
+//  150   wsprintf(ws,percent_t,menutexts[curitem]);
+        MOV      R2,R7
+        MOV      R1,SP
+        SWI      +292
+//  151 
+//  152   if(curitem<2){
+        LDR      R0,??DataTable3  ;; S_ICONS
+        CMP      R5,#+2
+        BGE      ??menuitemhandler_1
+//  153     SetMenuItemIconArray(data,item,S_ICONS+curitem);
+        ADD      R2,R0,R5, LSL #+2
+        MOV      R1,R6
+        MOV      R0,R4
+        SWI      +409
+        B        ??menuitemhandler_2
+//  154   }else{
+//  155   if (curitem==simnum+2){
+??menuitemhandler_1:
+        LDR      R1,[R0, #+24]
+//  156   SetMenuItemIconArray(data,item,icon_array+0);
+//  157 //  SetCursorToMenuItem(data,curitem);
+//  158   }
+//  159   else
+//  160       SetMenuItemIconArray(data,item,icon_array+1);
+//  161   }
+//  162   if (curitem<2);
+//  163 
+//  164   else{
+//  165 
+//  166    ws=AllocMenuWS(data,strlen((const char*)block5401[curitem-2].SPNname));
+        MVN      R9,#+62
+        ADD      R1,R1,#+2
+        CMP      R5,R1
+        ADDEQ    R2,R0,#+12
+        ADDNE    R2,R0,#+16
+        MOV      R1,R6
+        MOV      R0,R4
+        SWI      +409
+        LDR      R1,??menuitemhandler_0+0x4  ;; block5401
+        MOV      R0,#+48
+        MLA      R7,R0,R5,R1
+        ADD      R0,R9,R7
+        SWI      +27
+        MOV      R1,R0
+        MOV      R0,R4
+        SWI      +408
+        MOV      R8,R0
+//  167    wsprintf(ws,percent_t,block5401[curitem-2].SPNname);
+        ADD      R2,R9,R7
+        MOV      R1,SP
+        SWI      +292
+//  168 //   wsprintf(ws,"%d",curitem-2);
+//  169 //   ws=AllocMenuWS(data,strlen("sim 924234"));
+//  170 //   wsprintf(ws,"sim %x %d",strlen((const char*)block5401[curitem-2].SPNname),curitem);
+//  171   }
+//  172     SetMenuItemText(data, item, ws, curitem);
+??menuitemhandler_2:
+        MOV      R3,R5
+        MOV      R2,R8
+        MOV      R1,R6
+        MOV      R0,R4
+        SWI      +410
+//  173 
+//  174 }
+        POP      {R0,R4-R9,PC}    ;; return
+        DATA
+??menuitemhandler_0:
+        DC32     `?<Constant "%t">`
+        DC32     block5401
+        CFI EndBlock cfiBlock7
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??tmenu_keyhook??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE tmenu_keyhook
+//  175 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function tmenu_keyhook
+        ARM
+//  176 static int tmenu_keyhook(void *data, GUI_MSG *msg)
+//  177 {
+tmenu_keyhook:
+        PUSH     {R4,R5,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+//  178   if ((msg->keys==0x18)||(msg->keys==0x3D))
+        LDR      R5,??DataTable2  ;; S_ICONS
+        MOV      R4,R0
+        LDRSH    R0,[R1, #+2]
+        CMP      R0,#+24
+        CMPNE    R0,#+61
+        BNE      ??tmenu_keyhook_0
+//  179   {
+//  180     if (GetCurMenuItem(data)<2)
+        MOV      R0,R4
+        SWI      +399
+        CMP      R0,#+2
+        MOV      R0,R4
+        BGE      ??tmenu_keyhook_1
+//  181       ((void (*)(void))(menuprocs[GetCurMenuItem(data)]))();
+        SWI      +399
+        ADD      R0,R5,R0, LSL #+2
+        LDR      R0,[R0, #+32]
+        BLX      R0
+        MOV      R0,#+0
+        POP      {R4,R5,PC}
+//  182     else
+//  183       ChangeSim(GetCurMenuItem(data)-2);
+??tmenu_keyhook_1:
+        SWI      +399
+        SUB      R0,R0,#+2
+        B        ??tmenu_keyhook_2
+//  184   }else{
+//  185 /*      char ss[256];
+//  186       sprintf (ss,"%X %X\n%X %X",msg->keys,msg->gbsmsg->submess,msg->gbsmsg->msg);
+//  187       ShowMSG(1,(int)ss);
+//  188     */
+//  189   if ((msg->gbsmsg->submess>='0')&&(msg->gbsmsg->submess<=('0'+simcnt))){
+??tmenu_keyhook_0:
+        LDR      R0,[R1, #+4]
+        LDR      R1,[R0, #+8]
+        CMP      R1,#+48
+        BLT      ??tmenu_keyhook_3
+        LDR      R1,[R5, #+28]
+        LDR      R2,[R0, #+8]
+        ADD      R1,R1,#+48
+        CMP      R1,R2
+        BLT      ??tmenu_keyhook_3
+//  190 
+//  191       ChangeSim(msg->gbsmsg->submess-'0');
+        SUB      R0,R2,#+48
+??tmenu_keyhook_2:
+        _BLF     ChangeSim,??ChangeSim??rA
+//  192   }
+//  193   }
+//  194   return(0);
+??tmenu_keyhook_3:
+        MOV      R0,#+0
+        POP      {R4,R5,PC}       ;; return
+        CFI EndBlock cfiBlock9
+//  195 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable2:
+        DC32     S_ICONS
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??ShowMainMenu??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock10
+        REQUIRE ShowMainMenu
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+menuhdr:
+        DATA
+        DC16 0, 0, 0, 0
+        DC32 0H, `?<Constant "\\262\\313\\265\\245">`, 2147483647
+        DC32 8, tmenu_keyhook, tmenu_ghook, 0H, mmenusoftkeys, menu_skt, 17
+        DC32 menuitemhandler, 0H, 0H, 11
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+mmenusoftkeys:
+        DATA
+        DC32 0, 1, 2
+
+        RSEG DATA_I:DATA:SORT:NOROOT(2)
+S_ICONS:
+        DS8 12
+        REQUIRE `?<Initializer for S_ICONS>`
+        DS8 8
+        REQUIRE `?<Initializer for icon_array>`
+MainMenu_ID:
+        DS8 4
+        REQUIRE `?<Initializer for MainMenu_ID>`
+simnum:
+        DS8 4
+        REQUIRE `?<Initializer for simnum>`
+simcnt:
+        DS8 4
+        REQUIRE `?<Initializer for simcnt>`
+        DS8 8
+        REQUIRE `?<Initializer for menuprocs>`
+//  196 
+//  197 
+//  198 static const MENU_DESC tmenu=
+//  199 {
+//  200   8,tmenu_keyhook,tmenu_ghook,NULL,
+//  201   mmenusoftkeys,
+//  202   &menu_skt,
+//  203   0x11,//MENU_FLAG,
+//  204   menuitemhandler,
+//  205   NULL,//menuitems,
+//  206   NULL,//menuprocs,
+//  207   11
+//  208 };
+//  209 
+//  210 
+//  211   char str1[]="4:\\zbin\\img\\ext\\TXT_SMALL.png";
+str1:
+        DS8 32
+        REQUIRE `?<Initializer for str1>`
+//  212   char str2[]="4:\\zbin\\img\\ext\\BCFG_SMALL.PNG";;
+str2:
+        DS8 32
+        REQUIRE `?<Initializer for str2>`
+//  213   char str3[]="4:\\zbin\\img\\ext\\BCFG_SMALL.PNG";;
+str3:
+        DS8 32
+        REQUIRE `?<Initializer for str3>`
+//  214 //Õ”∆ÕŒ Õ¿–»—Œ¬¿“‹  ¿–“»Õ » À»¡Œ —Ã≈Õ»“‹ œ”“»
+//  215   //char str1[]="4:\\zbin\\img\\multisim\\1.png";;
+//  216   //char str2[]="4:\\zbin\\img\\multisim\\2.png";
+//  217   //char str3[]="4:\\zbin\\img\\multisim\\3.png";
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock11 Using cfiCommon1
+        CFI Function ShowMainMenu
+        ARM
+//  218 int ShowMainMenu()
+//  219 {
+//  220     extern const char *successed_config_filename;
+//  221   str1[0]=  successed_config_filename[0];
+ShowMainMenu:
+        LDR      R0,??ShowMainMenu_0  ;; successed_config_filename
+        PUSH     {R4,R5,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+        LDR      R0,[R0, #+0]
+        LDR      R4,??DataTable3  ;; S_ICONS
+        LDRB     R1,[R0, #+0]
+//  222   str2[0]=  successed_config_filename[0];
+//  223   str3[0]=  successed_config_filename[0];
+//  224   S_ICONS[0]=(int)str1;
+//  225   S_ICONS[1]=(int)str2;
+//  226 
+//  227 
+//  228   S_ICONS[2]=(int)str3;
+//  229   icon_array[0]=GetPicNByUnicodeSymbol(CBOX_CHECKED);
+//  230   icon_array[1]=GetPicNByUnicodeSymbol(CBOX_UNCHECKED);
+//  231   *((int **)(&menuhdr.icon))=&S_ICONS[2];
+        LDR      R5,??ShowMainMenu_0+0x4  ;; menuhdr
+        STRB     R1,[R4, #+40]
+        LDRB     R1,[R0, #+0]
+        STRB     R1,[R4, #+72]
+        LDRB     R0,[R0, #+0]
+        STRB     R0,[R4, #+104]
+        ADD      R0,R4,#+40
+        STR      R0,[R4, #+0]
+        ADD      R0,R4,#+72
+        STR      R0,[R4, #+4]
+        ADD      R0,R4,#+104
+        STR      R0,[R4, #+8]
+        MOV      R0,#+22
+        ORR      R0,R0,#0xE100
+        SWI      +484
+        STR      R0,[R4, #+12]
+        MOV      R0,#+23
+        ORR      R0,R0,#0xE100
+        SWI      +484
+        STR      R0,[R4, #+16]
+        ADD      R0,R4,#+8
+        STR      R0,[R5, #+8]
+//  232   patch_header(&menuhdr);
+        MOV      R0,#+0
+        STR      R0,[R5, #+0]
+        SWI      +33160
+        SUB      R0,R0,#+1
+        STRH     R0,[R5, #+4]
+        SWI      +33162
+        SUB      R0,R0,#+1
+        STRH     R0,[R5, #+6]
+//  233   MainMenu_ID=CreateMenu(0,0,&tmenu,&menuhdr,0,11,0,0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+16
+        PUSH     {R0}
+        CFI CFA R13+20
+        MOV      R3,R5
+        ADD      R2,R5,#+20
+        MOV      R1,#+0
+        MOV      R0,#+11
+        PUSH     {R0}
+        CFI CFA R13+24
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+28
+        SWI      +338
+        STR      R0,[R4, #+20]
+//  234   return MainMenu_ID;
+        ADD      SP,SP,#+16
+        CFI CFA R13+12
+        POP      {R4,R5,PC}       ;; return
+        DATA
+??ShowMainMenu_0:
+        DC32     successed_config_filename
+        DC32     menuhdr
+        CFI EndBlock cfiBlock11
+//  235 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable3:
+        DC32     S_ICONS
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock12 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??ShowSetMenu??rA:
+        LDR      R12,??Subroutine6_0  ;; ShowSetMenu
+        BX       R12
+        DATA
+??Subroutine6_0:
+        DC32     ShowSetMenu
+        CFI EndBlock cfiBlock12
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock13 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??ChangeSim??rA:
+        LDR      R12,??Subroutine7_0  ;; ChangeSim
+        BX       R12
+        DATA
+??Subroutine7_0:
+        DC32     ChangeSim
+        CFI EndBlock cfiBlock13
+
+        RSEG DATA_ID:CONST:SORT:NOROOT(2)
+`?<Initializer for S_ICONS>`:
+        DATA
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+`?<Initializer for icon_array>`:
+        DC8 0, 0, 0, 0, 0, 0, 0, 0
+`?<Initializer for MainMenu_ID>`:
+        DC8 0, 0, 0, 0
+`?<Initializer for simnum>`:
+        DC32 0
+`?<Initializer for simcnt>`:
+        DC32 0
+`?<Initializer for menuprocs>`:
+        DC32 AboutDlg, Settings
+`?<Initializer for str1>`:
+        DC8 "4:\\zbin\\img\\ext\\TXT_SMALL.png"
+        DC8 0, 0
+`?<Initializer for str2>`:
+        DC8 "4:\\zbin\\img\\ext\\BCFG_SMALL.PNG"
+        DC8 0
+`?<Initializer for str3>`:
+        DC8 "4:\\zbin\\img\\ext\\BCFG_SMALL.PNG"
+        DC8 0
+
+        RSEG DATA_ID:CONST:SORT:NOROOT(2)
+`?*?DATA_ID`:
+
+        RSEG INITTAB:CODE:ROOT(2)
+        DATA
+?init?tab?DATA_I:
+        DCD      sfe(DATA_I) - sfb(DATA_I), sfb(DATA_I), sfb(DATA_ID)
+
+        END
+// 
+// 748 bytes in segment CODE
+// 304 bytes in segment DATA_C
+// 136 bytes in segment DATA_I
+// 136 bytes in segment DATA_ID
+//  12 bytes in segment INITTAB
+// 
+// 700 bytes of CODE  memory (+ 60 bytes shared)
+// 440 bytes of CONST memory
+// 136 bytes of DATA  memory
+//
+//Errors: none
+//Warnings: none

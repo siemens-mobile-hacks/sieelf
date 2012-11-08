@@ -537,7 +537,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild>$PROJ_DIR$\mk.bat $PROJ_DIR$ $EXE_DIR$ E71Cv41</postbuild>
+        <postbuild></postbuild>
       </data>
     </settings>
     <settings>
@@ -1362,7 +1362,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild>$PROJ_DIR$\mk.bat $PROJ_DIR$ $EXE_DIR$ S7Cv47</postbuild>
+        <postbuild></postbuild>
       </data>
     </settings>
     <settings>
@@ -2187,7 +2187,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild>smsc.bat ELC1v41</postbuild>
+        <postbuild></postbuild>
       </data>
     </settings>
     <settings>
@@ -3438,6 +3438,7 @@
         <option>
           <name>CCDefines</name>
           <state>NEWSGOLD</state>
+          <state>S68Cv51</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -4659,7 +4660,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild>smsc.bat M81Cv51</postbuild>
+        <postbuild></postbuild>
       </data>
     </settings>
     <settings>
@@ -5484,7 +5485,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild>$PROJ_DIR$\mk.bat $PROJ_DIR$ $EXE_DIR$ C81Cv50</postbuild>
+        <postbuild></postbuild>
       </data>
     </settings>
     <settings>

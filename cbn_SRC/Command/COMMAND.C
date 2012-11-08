@@ -1,18 +1,18 @@
 
-//Command.c Командный интерпретатор BAT файлов
+//Command.c shell BAT files
 
 #include "..\swilib.h"
 const char Title[]="\r\n\r\nMS-DOS 0.4 (c)bn";
 #define conbufsize 2048
-char conbuf[conbufsize], *conend; // врем. буфер
+char conbuf[conbufsize], *conend; //lying. buffer
 
 #define MAXPATH 256
-char con[MAXPATH]; // Строка для вывода в sprintf()
+char con[MAXPATH]; //The string to display in the sprintf ()
 char path[MAXPATH], spath[MAXPATH], curdir[MAXPATH], temp[MAXPATH], ar1[MAXPATH], ar2[MAXPATH];
 #define maxset 256
-char set[maxset], *setend=set; //окружение
+char set[maxset], *setend=set; //environment
 
-// аргументы ком. строки
+// arguments are complex. line
 #define maxargv 16
 char *argvv[maxargv], **argv;
 int argc, fcon; //console
@@ -23,18 +23,17 @@ char echooff=0, exit=0;
 
 const char link[]="4:\\ZBin\\Link.elf";
 const char eline[]="\\", ezap[]=";";
-// ОТКРЫТЬ при старте в onstart()
-// ЗАВЕРШАТЬ выгрузкой буфера по команде
-// Переход на след. строку
+// Open at the start of onstart ()
+// End buffer discharge team?// Go to the next. line
 //#define crlf {*conend++=0xd;*conend++=0xa;}
-// Принудительно сбросить буфер
+// Force a reset buffer
 #define flush {fwrite(fcon,conbuf,conend-conbuf,&err);*(conend=conbuf)=0;}
 
 const char *cext[]={".bat",".lnk",".elf",".dll",0};
 
-struct cmdst{ //команды
-  const char *name; //название
-  int (*func)(void); //ф-я
+struct cmdst{ //command
+  const char *name; //name of the
+  int (*func)(void); //F-I
 } *cmd;
 
 
@@ -43,17 +42,17 @@ enum {ok, error, errcommand, errpath, errarg, errmemory, erropen, errcreate, err
 
 const char *msg[]={
   "OK",
-  "Ошибка",  
-  "Неправильная команда или имя файла",
-  "Неправильный путь",
-  "Недостаточно аргументов",
-  "Недостаточно памяти",
-  "Ошибка открытия файла",
-  "Ошибка создания файла",
-  "Неверная опция",
+  "Error",  
+  "Bad command or file name",
+  "Wrong Way",
+  "Not enough arguments",
+  "Not enough memory",
+  "Failed to open file",
+  "Failed to create file",
+  "Invalid Option",
 };
 
-int striicmp(const char *s, char *ss){ //т.к. stricmp глючит!!!
+int striicmp(const char *s, char *ss){
   do{
     if((*s|0x20)-(*ss|0x20)) return 1;
     ++s; ++ss;
@@ -63,9 +62,9 @@ int striicmp(const char *s, char *ss){ //т.к. stricmp глючит!!!
 
 
 
-int execbat(char *fname); // Выполнить bat файд
+int execbat(char *fname);
   
-void print(const char *con){ // Напечатать строку con
+void print(const char *con){
   if(fcon>0 && *con){
     //crlf
     if(conend+strlen(con)>=conbuf+conbufsize-4) flush
@@ -79,7 +78,7 @@ inline void cr(){
   *conend++=0xd; *conend++=0xa;
 }
 
-void arg(char *s){ // Получить аргументы argc, argv[]
+void arg(char *s){ 
   argc=0;
   do{
     argvv[argc++]=s;
@@ -131,13 +130,13 @@ int rundll(char *exename, void *fc, void *curdir, void *arrgc, void *arrgv){
 }
 
 
-int isfile(char *fname){ //есть ли файл?  
+int isfile(char *fname){
   unsigned char at; 
-  GetFileAttrib(fname,&at,&err); //можно и по др. определять наличие ф-а
+  GetFileAttrib(fname,&at,&err); 
   return !err;
 }
 
-void execelf(char *exename, char *fname){ //запустить эльф
+void execelf(char *exename, char *fname){
  WSHDR *ws=AllocWS(256);
  str_2ws(ws,exename,strlen(exename)+1);
  ExecuteFile(ws,0,fname); 
@@ -149,7 +148,7 @@ void execelf(char *exename, char *fname){ //запустить эльф
 #include "function.h"
 ///////
 
-int findall(){//char ext){ //ищет файл argv[0] по temp
+int findall(){//char ext){
   char *ptr, **ext=(char**)cext;
   strcat(temp,*argvv);
   if(strrchr(temp,'.'))
@@ -171,15 +170,15 @@ int gettype(char *s){
   return 0;
 }
 
-int command(){ //выполнить команду argv[]
+int command(){ 
   char *s=*argvv, *ss, *sss;
-  //ищем внутренние команды
+
   for(cmd=commands;cmd->name;cmd++){
     if(!striicmp(cmd->name,s)){
       cr(); return cmd->func();
     }
   }
-  if(s[1]==':'){ //задан полный путь
+  if(s[1]==':'){ 
     if(isfile(s)){ 
       strcpy(temp,s); goto lexec; //temp!!!
     }
@@ -187,12 +186,12 @@ int command(){ //выполнить команду argv[]
     *(ss=strrchr(s,'\\'))=0;
     strcpy(spath,s);
     strcpy(s,ss+1);
-  }else{ //подготовить путь
+  }else{ 
     strcpy(spath,curdir);
     strcat(spath,";");
     strcat(spath,path);
   }
-  //ищем внешнюю команду в SPATH (bat,lnk,elf,dll)
+
   ss=spath;
   while(*ss){
     while(*ss==' ') ++ss;
@@ -226,15 +225,15 @@ lexec:
 }
 
 
-int exec(char *s){  // Выполнить команду
-  while(*s==' ') ++s;
+int exec(char *s){ 
+while(*s==' ') ++s;
   if(!*s) return 0; //empty
   if(!echooff){ cr(); print(s);}
-  arg(s); //получ. argc, argv[]
-  return command(); //выполнить команду argv[]
+  arg(s); 
+  return command(); 
 }
 
-int execbat(char *fname){ // Выполнить bat файд
+int execbat(char *fname){ 
   int i,f;
   char *buf, *s, *ss, c;
   if((f=fopen(fname,A_ReadOnly+A_BIN,P_READ,&err))==-1) return erropen;
@@ -277,7 +276,7 @@ int main(char *exename, char *fname){
     lseek(fcon,0,2,&err,&err); 
   conend=conbuf; 
   print(Title);
-  sprintf(con,"\r\nДата: %d.%02d.%d  %d:%02d\n",
+  sprintf(con,"\r\nDate: %d.%02d.%d  %d:%02d\n",
           date.day,date.month,date.year, time.hour,time.min);
   print(con);
   strcpy(temp,exename);

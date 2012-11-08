@@ -10,7 +10,7 @@ __root const CFG_HDR cfghdr_m1={CFG_LEVEL,"按星期显示",1,0};
 
 __root const CFG_HDR cfghdr1_1={CFG_CBOX,"按星期显示",0,2};
 __root const unsigned int cfgweek=1;
-__root const CFG_CBOX_ITEM cfgcbox1_1[2]={"no","yes"};
+__root const CFG_CBOX_ITEM cfgcbox1_1[2]={"否","是"};
 
 /*__root const CFG_HDR cfghdr1_2={CFG_CBOX,"显示文件",0,3};
 __root const unsigned int cfgcheck=2;
@@ -41,7 +41,7 @@ __root const CFG_HDR cfghdr_m2={CFG_LEVEL,"按日期显示",1,0};
 
 __root const CFG_HDR cfghdr2_1={CFG_CBOX,"按日期显示",0,2};
 __root const int unsigned cfgdat=1;
-__root const CFG_CBOX_ITEM cfgcbox2_1[2]={"no","yes"};
+__root const CFG_CBOX_ITEM cfgcbox2_1[2]={"否","是"};
 
 __root const CFG_HDR cfghdr2_2={CFG_COORDINATES,"左上角坐标",0,0};
 __root const unsigned int cfgxd=10;

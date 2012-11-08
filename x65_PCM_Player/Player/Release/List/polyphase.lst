@@ -1,0 +1,353 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    14/Feb/2012  15:39:49 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3de #
+#                       c\polyphase.c                                        #
+#    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3de #
+#                       c\polyphase.c -D NDEBUG -lC                          #
+#                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\ #
+#                       Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player #
+#                       \Player\Release\Obj\ -s9 --cpu_mode arm --endian     #
+#                       little --cpu ARM926EJ-S --stack_align 4 --interwork  #
+#                       -e --fpu None --dlib_config "D:\Program              #
+#                       Files\IAR\Embedded Workbench 4.0                     #
+#                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude       #
+#                       swilib.h -I "D:\Program Files\IAR\Embedded           #
+#                       Workbench 4.0 Evaluation\ARM\INC\"                   #
+#                       --inline_threshold=16                                #
+#    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\polyphase.lst                                    #
+#    Object file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\O #
+#                       bj\polyphase.r79                                     #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3dec\polyphase.c
+      1          /* ***** BEGIN LICENSE BLOCK *****
+      2           * Version: RCSL 1.0/RPSL 1.0
+      3           *
+      4           * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved.
+      5           *
+      6           * The contents of this file, and the files included with this file, are
+      7           * subject to the current version of the RealNetworks Public Source License
+      8           * Version 1.0 (the "RPSL") available at
+      9           * http://www.helixcommunity.org/content/rpsl unless you have licensed
+     10           * the file under the RealNetworks Community Source License Version 1.0
+     11           * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl,
+     12           * in which case the RCSL will apply. You may also obtain the license terms
+     13           * directly from RealNetworks.  You may not use this file except in
+     14           * compliance with the RPSL or, if you have a valid RCSL with RealNetworks
+     15           * applicable to this file, the RCSL.  Please see the applicable RPSL or
+     16           * RCSL for the rights, obligations and limitations governing use of the
+     17           * contents of the file.
+     18           *
+     19           * This file is part of the Helix DNA Technology. RealNetworks is the
+     20           * developer of the Original Code and owns the copyrights in the portions
+     21           * it created.
+     22           *
+     23           * This file, and the files included with this file, is distributed and made
+     24           * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
+     25           * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES,
+     26           * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS
+     27           * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
+     28           *
+     29           * Technology Compatibility Kit Test Suite(s) Location:
+     30           *    http://www.helixcommunity.org/content/tck
+     31           *
+     32           * Contributor(s):
+     33           *
+     34           * ***** END LICENSE BLOCK ***** */
+     35          
+     36          /**************************************************************************************
+     37           * Fixed-point MP3 decoder
+     38           * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+     39           * June 2003
+     40           *
+     41           * polyphase.c - final stage of subband transform (polyphase synthesis filter)
+     42           *
+     43           * This is the C reference version using __int64
+     44           * Look in the appropriate subdirectories for optimized asm implementations
+     45           *   (e.g. arm/asmpoly.s)
+     46           **************************************************************************************/
+     47          
+     48          #include "coder.h"
+
+  /* ***** BEGIN LICENSE BLOCK ***** 
+                                    ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3dec\coder.h",1  Warning[Pa050]: 
+          non-native end of line sequence detected (this diagnostic is only
+          issued once)
+     49          #include "assembly.h"
+     50          
+     51          /* input to Polyphase = Q(DQ_FRACBITS_OUT-2), gain 2 bits in convolution
+     52           *  we also have the implicit bias of 2^15 to add back, so net fraction bits =
+     53           *    DQ_FRACBITS_OUT - 2 - 2 - 15
+     54           *  (see comment on Dequantize() for more info)
+     55           */
+     56          #define DEF_NFRACBITS	(DQ_FRACBITS_OUT - 2 - 2 - 15)
+     57          #define CSHIFT	12	/* coefficients have 12 leading sign bits for early-terminating mulitplies */
+     58          
+     59          
+     60          static  short ClipToShort(int x, int fracBits)
+                               ^
+Warning[Pe177]: function "ClipToShort" was declared but never referenced
+     61          {
+     62          	int sign;
+     63          
+     64          	/* assumes you've already rounded (x += (1 << (fracBits-1))) */
+     65          	x >>= fracBits;
+     66          
+     67          	/* Ken's trick: clips to [-32768, 32767] */
+     68          	sign = x >> 31;
+     69          	if (sign != (x >> 15))
+     70          		x = sign ^ ((1 << 15) - 1);
+     71          
+     72          	return (short)x;
+     73          }
+     74          
+     75          #define MC0M(x)	{ \
+     76          	c1 = *coef;		coef++;		c2 = *coef;		coef++; \
+     77          	vLo = *(vb1+(x));			vHi = *(vb1+(23-(x))); \
+     78          	sum1L = MADD64(sum1L, vLo,  c1);	sum1L = MADD64(sum1L, vHi, -c2); \
+     79          }
+     80          
+     81          #define MC1M(x)	{ \
+     82          	c1 = *coef;		coef++; \
+     83          	vLo = *(vb1+(x)); \
+     84          	sum1L = MADD64(sum1L, vLo,  c1); \
+     85          }
+     86          
+     87          #define MC2M(x)	{ \
+     88          		c1 = *coef;		coef++;		c2 = *coef;		coef++; \
+     89          		vLo = *(vb1+(x));	vHi = *(vb1+(23-(x))); \
+     90          		sum1L = MADD64(sum1L, vLo,  c1);	sum2L = MADD64(sum2L, vLo,  c2); \
+     91          		sum1L = MADD64(sum1L, vHi, -c2);	sum2L = MADD64(sum2L, vHi,  c1); \
+     92          }
+     93          
+     94          /**************************************************************************************
+     95           * Function:    PolyphaseMono
+     96           *
+     97           * Description: filter one subband and produce 32 output PCM samples for one channel
+     98           *
+     99           * Inputs:      pointer to PCM output buffer
+    100           *              number of "extra shifts" (vbuf format = Q(DQ_FRACBITS_OUT-2))
+    101           *              pointer to start of vbuf (preserved from last call)
+    102           *              start of filter coefficient table (in proper, shuffled order)
+    103           *              no minimum number of guard bits is required for input vbuf
+    104           *                (see additional scaling comments below)
+    105           *
+    106           * Outputs:     32 samples of one channel of decoded PCM data, (i.e. Q16.0)
+    107           *
+    108           * Return:      none
+    109           *
+    110           * TODO:        add 32-bit version for platforms where 64-bit mul-acc is not supported
+    111           *                (note max filter gain - see polyCoef[] comments)
+    112           **************************************************************************************/
+    113          
+    114          //extern void PolyphaseMono(short *pcm, int *vbuf, const int *coefBase);
+    115          /*
+    116          {
+    117          	int i;
+    118          	const int *coef;
+    119          	int *vb1;
+    120          	int vLo, vHi, c1, c2;
+    121          	Word64 sum1L, sum2L, rndVal;
+    122          
+    123          	rndVal = (Word64)( 1 << (DEF_NFRACBITS - 1 + (32 - CSHIFT)) );
+    124          
+    125          	* special case, output sample 0 
+    126          	coef = coefBase;
+    127          	vb1 = vbuf;
+    128          	sum1L = rndVal;
+    129          
+    130          	MC0M(0)
+    131          	MC0M(1)
+    132          	MC0M(2)
+    133          	MC0M(3)
+    134          	MC0M(4)
+    135          	MC0M(5)
+    136          	MC0M(6)
+    137          	MC0M(7)
+    138          
+    139          	*(pcm + 0) = ClipToShort((int)SAR64(sum1L, (32-CSHIFT)), DEF_NFRACBITS);
+    140          
+    141          	* special case, output sample 16 
+    142          	coef = coefBase + 256;
+    143          	vb1 = vbuf + 64*16;
+    144          	sum1L = rndVal;
+    145          
+    146          	MC1M(0)
+    147          	MC1M(1)
+    148          	MC1M(2)
+    149          	MC1M(3)
+    150          	MC1M(4)
+    151          	MC1M(5)
+    152          	MC1M(6)
+    153          	MC1M(7)
+    154          
+    155          	*(pcm + 16) = ClipToShort((int)SAR64(sum1L, (32-CSHIFT)), DEF_NFRACBITS);
+    156          
+    157          	* main convolution loop: sum1L = samples 1, 2, 3, ... 15   sum2L = samples 31, 30, ... 17 
+    158          	coef = coefBase + 16;
+    159          	vb1 = vbuf + 64;
+    160          	pcm++;
+    161          
+    162          	* right now, the compiler creates bad asm from this... 
+    163          	for (i = 15; i > 0; i--) {
+    164          		sum1L = sum2L = rndVal;
+    165          
+    166          		MC2M(0)
+    167          		MC2M(1)
+    168          		MC2M(2)
+    169          		MC2M(3)
+    170          		MC2M(4)
+    171          		MC2M(5)
+    172          		MC2M(6)
+    173          		MC2M(7)
+    174          
+    175          		vb1 += 64;
+    176          		*(pcm)       = ClipToShort((int)SAR64(sum1L, (32-CSHIFT)), DEF_NFRACBITS);
+    177          		*(pcm + 2*i) = ClipToShort((int)SAR64(sum2L, (32-CSHIFT)), DEF_NFRACBITS);
+    178          		pcm++;
+    179          	}
+    180          }
+    181          
+    182          #define MC0S(x)	{ \
+    183          	c1 = *coef;		coef++;		c2 = *coef;		coef++; \
+    184          	vLo = *(vb1+(x));		vHi = *(vb1+(23-(x))); \
+    185          	sum1L = MADD64(sum1L, vLo,  c1);	sum1L = MADD64(sum1L, vHi, -c2); \
+    186          	vLo = *(vb1+32+(x));	vHi = *(vb1+32+(23-(x))); \
+    187          	sum1R = MADD64(sum1R, vLo,  c1);	sum1R = MADD64(sum1R, vHi, -c2); \
+    188          }
+    189          
+    190          #define MC1S(x)	{ \
+    191          	c1 = *coef;		coef++; \
+    192          	vLo = *(vb1+(x)); \
+    193          	sum1L = MADD64(sum1L, vLo,  c1); \
+    194          	vLo = *(vb1+32+(x)); \
+    195          	sum1R = MADD64(sum1R, vLo,  c1); \
+    196          }
+    197          
+    198          #define MC2S(x)	{ \
+    199          		c1 = *coef;		coef++;		c2 = *coef;		coef++; \
+    200          		vLo = *(vb1+(x));	vHi = *(vb1+(23-(x))); \
+    201          		sum1L = MADD64(sum1L, vLo,  c1);	sum2L = MADD64(sum2L, vLo,  c2); \
+    202          		sum1L = MADD64(sum1L, vHi, -c2);	sum2L = MADD64(sum2L, vHi,  c1); \
+    203          		vLo = *(vb1+32+(x));	vHi = *(vb1+32+(23-(x))); \
+    204          		sum1R = MADD64(sum1R, vLo,  c1);	sum2R = MADD64(sum2R, vLo,  c2); \
+    205          		sum1R = MADD64(sum1R, vHi, -c2);	sum2R = MADD64(sum2R, vHi,  c1); \
+    206          }
+    207          
+    208          **************************************************************************************
+    209           * Function:    PolyphaseStereo
+    210           *
+    211           * Description: filter one subband and produce 32 output PCM samples for each channel
+    212           *
+    213           * Inputs:      pointer to PCM output buffer
+    214           *              number of "extra shifts" (vbuf format = Q(DQ_FRACBITS_OUT-2))
+    215           *              pointer to start of vbuf (preserved from last call)
+    216           *              start of filter coefficient table (in proper, shuffled order)
+    217           *              no minimum number of guard bits is required for input vbuf
+    218           *                (see additional scaling comments below)
+    219           *
+    220           * Outputs:     32 samples of two channels of decoded PCM data, (i.e. Q16.0)
+    221           *
+    222           * Return:      none
+    223           *
+    224           * Notes:       interleaves PCM samples LRLRLR...
+    225           *
+    226           * TODO:        add 32-bit version for platforms where 64-bit mul-acc is not supported
+    227           **************************************************************************************/
+    228          //extern void PolyphaseStereo(short *pcm, int *vbuf, const int *coefBase);
+    229          /*
+    230          {
+    231          	int i;
+    232          	const int *coef;
+    233          	int *vb1;
+    234          	int vLo, vHi, c1, c2;
+    235          	Word64 sum1L, sum2L, sum1R, sum2R, rndVal;
+    236          
+    237          	rndVal = (Word64)( 1 << (DEF_NFRACBITS - 1 + (32 - CSHIFT)) );
+    238          
+    239          	 special case, output sample 0 
+    240          	coef = coefBase;
+    241          	vb1 = vbuf;
+    242          	sum1L = sum1R = rndVal;
+    243          
+    244          	MC0S(0)
+    245          	MC0S(1)
+    246          	MC0S(2)
+    247          	MC0S(3)
+    248          	MC0S(4)
+    249          	MC0S(5)
+    250          	MC0S(6)
+    251          	MC0S(7)
+    252          
+    253          	*(pcm + 0) = ClipToShort((int)SAR64(sum1L, (32-CSHIFT)), DEF_NFRACBITS);
+    254          	*(pcm + 1) = ClipToShort((int)SAR64(sum1R, (32-CSHIFT)), DEF_NFRACBITS);
+    255          
+    256          	* special case, output sample 16 
+    257          	coef = coefBase + 256;
+    258          	vb1 = vbuf + 64*16;
+    259          	sum1L = sum1R = rndVal;
+    260          
+    261          	MC1S(0)
+    262          	MC1S(1)
+    263          	MC1S(2)
+    264          	MC1S(3)
+    265          	MC1S(4)
+    266          	MC1S(5)
+    267          	MC1S(6)
+    268          	MC1S(7)
+    269          
+    270          	*(pcm + 2*16 + 0) = ClipToShort((int)SAR64(sum1L, (32-CSHIFT)), DEF_NFRACBITS);
+    271          	*(pcm + 2*16 + 1) = ClipToShort((int)SAR64(sum1R, (32-CSHIFT)), DEF_NFRACBITS);
+    272          
+    273          	* main convolution loop: sum1L = samples 1, 2, 3, ... 15   sum2L = samples 31, 30, ... 17 
+    274          	coef = coefBase + 16;
+    275          	vb1 = vbuf + 64;
+    276          	pcm += 2;
+    277          
+    278          	* right now, the compiler creates bad asm from this... 
+    279          	for (i = 15; i > 0; i--) {
+    280          		sum1L = sum2L = rndVal;
+    281          		sum1R = sum2R = rndVal;
+    282          
+    283          		MC2S(0)
+    284          		MC2S(1)
+    285          		MC2S(2)
+    286          		MC2S(3)
+    287          		MC2S(4)
+    288          		MC2S(5)
+    289          		MC2S(6)
+    290          		MC2S(7)
+    291          
+    292          		vb1 += 64;
+    293          		*(pcm + 0)         = ClipToShort((int)SAR64(sum1L, (32-CSHIFT)), DEF_NFRACBITS);
+    294          		*(pcm + 1)         = ClipToShort((int)SAR64(sum1R, (32-CSHIFT)), DEF_NFRACBITS);
+    295          		*(pcm + 2*2*i + 0) = ClipToShort((int)SAR64(sum2L, (32-CSHIFT)), DEF_NFRACBITS);
+    296          		*(pcm + 2*2*i + 1) = ClipToShort((int)SAR64(sum2R, (32-CSHIFT)), DEF_NFRACBITS);
+    297          		pcm += 2;
+    298          	}
+    299          }
+    300          */
+
+
+   Segment part sizes:
+
+     Function/Label Bytes
+     -------------- -----
+
+ 
+ 
+ 0 bytes of memory
+
+Errors: none
+Warnings: 2

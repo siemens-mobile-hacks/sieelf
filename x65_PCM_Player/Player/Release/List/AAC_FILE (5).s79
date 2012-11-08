@@ -1,0 +1,1329 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:27 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD /
+//                       EC\AAC_FILE (5).c                                   /
+//    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AAC /
+//                       DEC\AAC_FILE (5).c" -D NDEBUG -lC                   /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\AAC_FILE (5).s79                               /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME `AAC_FILE (5)`
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+??DataTable0 EQU 0
+??DataTable1 EQU 0
+??DataTable10 EQU 0
+??DataTable11 EQU 0
+??DataTable12 EQU 0
+??DataTable13 EQU 0
+??DataTable2 EQU 0
+??DataTable3 EQU 0
+??DataTable4 EQU 0
+??DataTable5 EQU 0
+??DataTable6 EQU 0
+??DataTable7 EQU 0
+??DataTable8 EQU 0
+??DataTable9 EQU 0
+        MULTWEAK ??raac_DecWindowOverlapLongStartNoClip??rT
+        MULTWEAK ??raac_DecWindowOverlapLongStopNoClip??rT
+        MULTWEAK ??raac_DecWindowOverlapNoClip??rT
+        MULTWEAK ??raac_DecWindowOverlapShortNoClip??rT
+        PUBLIC raac_DecWindowOverlapLongStartNoClip
+        FUNCTION raac_DecWindowOverlapLongStartNoClip,0203H
+        LOCFRAME CSTACK, 48, STACK
+        PUBLIC raac_DecWindowOverlapLongStopNoClip
+        FUNCTION raac_DecWindowOverlapLongStopNoClip,0203H
+        LOCFRAME CSTACK, 44, STACK
+        PUBLIC raac_DecWindowOverlapNoClip
+        FUNCTION raac_DecWindowOverlapNoClip,0203H
+        LOCFRAME CSTACK, 48, STACK
+        PUBLIC raac_DecWindowOverlapShortNoClip
+        FUNCTION raac_DecWindowOverlapShortNoClip,0203H
+        LOCFRAME CSTACK, 52, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+raac_DecWindowOverlapLongStartNoClip SYMBOL "raac_DecWindowOverlapLongStartNoClip"
+??raac_DecWindowOverlapLongStartNoClip??rT SYMBOL "??rT", raac_DecWindowOverlapLongStartNoClip
+raac_DecWindowOverlapLongStopNoClip SYMBOL "raac_DecWindowOverlapLongStopNoClip"
+??raac_DecWindowOverlapLongStopNoClip??rT SYMBOL "??rT", raac_DecWindowOverlapLongStopNoClip
+raac_DecWindowOverlapNoClip SYMBOL "raac_DecWindowOverlapNoClip"
+??raac_DecWindowOverlapNoClip??rT SYMBOL "??rT", raac_DecWindowOverlapNoClip
+raac_DecWindowOverlapShortNoClip SYMBOL "raac_DecWindowOverlapShortNoClip"
+??raac_DecWindowOverlapShortNoClip??rT SYMBOL "??rT", raac_DecWindowOverlapShortNoClip
+
+        EXTERN raac_kbdWindow
+        EXTERN raac_kbdWindowOffset
+        EXTERN raac_sinWindow
+        EXTERN raac_sinWindowOffset
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_DecWindowOverlapNoClip??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE raac_DecWindowOverlapNoClip
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (5).c
+//    1 /* ***** BEGIN LICENSE BLOCK *****  
+//    2  * Source last modified: $Id: sbrimdct.c,v 1.1 2005/02/26 01:47:35 jrecker Exp $ 
+//    3  *   
+//    4  * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+//    5  *       
+//    6  * The contents of this file, and the files included with this file, 
+//    7  * are subject to the current version of the RealNetworks Public 
+//    8  * Source License (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the current version of the RealNetworks Community 
+//   11  * Source License (the "RCSL") available at 
+//   12  * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+//   13  * will apply. You may also obtain the license terms directly from 
+//   14  * RealNetworks.  You may not use this file except in compliance with 
+//   15  * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+//   16  * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+//   17  * the rights, obligations and limitations governing use of the 
+//   18  * contents of the file. 
+//   19  *   
+//   20  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   21  * developer of the Original Code and owns the copyrights in the 
+//   22  * portions it created. 
+//   23  *   
+//   24  * This file, and the files included with this file, is distributed 
+//   25  * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+//   26  * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+//   27  * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+//   28  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+//   29  * ENJOYMENT OR NON-INFRINGEMENT. 
+//   30  *  
+//   31  * Technology Compatibility Kit Test Suite(s) Location:  
+//   32  *    http://www.helixcommunity.org/content/tck  
+//   33  *  
+//   34  * Contributor(s):  
+//   35  *   
+//   36  * ***** END LICENSE BLOCK ***** */  
+//   37 
+//   38 /**************************************************************************************
+//   39  * Fixed-point HE-AAC decoder
+//   40  * Jon Recker (jrecker@real.com)
+//   41  * February 2005
+//   42  *
+//   43  * sbrimdct.c - inverse MDCT without clipping or interleaving, for input to SBR
+//   44  **************************************************************************************/
+//   45 
+//   46 #include "coder_aac.h"
+//   47 #include "assembly_aac.h"
+//   48 
+//   49 /**************************************************************************************
+//   50  * Function:    DecWindowOverlapNoClip
+//   51  *
+//   52  * Description: apply synthesis window, do overlap-add without clipping,
+//   53  *                for winSequence LONG-LONG
+//   54  *
+//   55  * Inputs:      input buffer (output of type-IV DCT)
+//   56  *              overlap buffer (saved from last time)
+//   57  *              window type (sin or KBD) for input buffer
+//   58  *              window type (sin or KBD) for overlap buffer
+//   59  *
+//   60  * Outputs:     one channel, one frame of 32-bit PCM, non-interleaved
+//   61  *
+//   62  * Return:      none
+//   63  *
+//   64  * Notes:       use this function when the decoded PCM is going to the SBR decoder
+//   65  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function raac_DecWindowOverlapNoClip
+        ARM
+//   66 void DecWindowOverlapNoClip(int *buf0, int *over0, int *out0, int winTypeCurr, int winTypePrev)
+//   67 {
+raac_DecWindowOverlapNoClip:
+        PUSH     {R2,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+40
+//   68 	int in, w0, w1, f0, f1;
+//   69 	int *buf1, *over1, *out1;
+//   70 	const int *wndPrev, *wndCurr;
+//   71 
+//   72 	buf0 += (1024 >> 1);
+//   73 	buf1  = buf0  - 1;
+//   74 	out1  = out0 + 1024 - 1;
+//   75 	over1 = over0 + 1024 - 1;
+//   76 
+//   77 	wndPrev = (winTypePrev == 1 ? kbdWindow + kbdWindowOffset[1] : sinWindow + sinWindowOffset[1]);
+        LDR      R6,??DataTable14  ;; raac_sinWindowOffset
+        LDR      R8,??DataTable16  ;; raac_sinWindow
+        SUB      SP,SP,#+8
+        CFI CFA R13+48
+        LDR      R4,[SP, #+8]
+        MOV      R11,R1
+        LDR      R1,[SP, #+48]
+        ADD      LR,R0,#+2048
+        SUB      R2,LR,#+4
+        STR      R2,[SP, #+0]
+        MOV      R2,#+252
+        ORR      R2,R2,#0xF00
+        ADD      R2,R2,R4
+        LDR      R4,??DataTable15  ;; raac_kbdWindow
+        STR      R2,[SP, #+4]
+        LDR      R2,??DataTable17  ;; raac_kbdWindowOffset
+        MOV      R0,#+252
+        ORR      R0,R0,#0xF00
+        ADD      R10,R0,R11
+        CMP      R1,#+1
+        LDREQ    R0,[R2, #+4]
+        ADDEQ    R0,R4,R0, LSL #+2
+        LDRNE    R0,[R6, #+4]
+        ADDNE    R0,R8,R0, LSL #+2
+//   78 	if (winTypeCurr == winTypePrev) {
+        CMP      R3,R1
+        BNE      ??raac_DecWindowOverlapNoClip_0
+//   79 		/* cut window loads in half since current and overlap sections use same symmetric window */
+//   80 		do {
+//   81 			w0 = *wndPrev++;
+??raac_DecWindowOverlapNoClip_1:
+        LDR      R4,[R0], #+4
+//   82 			w1 = *wndPrev++;
+//   83 			in = *buf0++;
+        LDR      R2,[LR], #+4
+        LDR      R1,[R0], #+4
+//   84 
+//   85 			f0 = MULSHIFT32(w0, in);
+//   86 			f1 = MULSHIFT32(w1, in);
+//   87 
+//   88 			in = *over0;	
+//   89 			*out0++ = in - f0;
+        LDR      R12,[R11, #+0]
+        LDR      R9,[SP, #+8]
+        ASR      R3,R2,#+31
+        ASR      R5,R4,#+31
+        UMULL    R6,R7,R4,R2
+        MLA      R7,R4,R3,R7
+        MLA      R7,R5,R2,R7
+        SUB      R6,R12,R7
+        STR      R6,[R9], #+4
+        STR      R9,[SP, #+8]
+//   90 
+//   91 			in = *over1;	
+//   92 			*out1-- = in + f1;
+        MOV      R6,R1
+        ASR      R7,R1,#+31
+        LDR      R1,[R10, #+0]
+        UMULL    R8,R9,R6,R2
+        MLA      R9,R6,R3,R9
+        MLA      R9,R7,R2,R9
+        LDR      R2,[SP, #+4]
+        ADD      R1,R9,R1
+        STR      R1,[R2], #-4
+//   93 
+//   94 			in = *buf1--;
+        LDR      R3,[SP, #+0]
+        STR      R2,[SP, #+4]
+        LDR      R2,[R3], #-4
+        STR      R3,[SP, #+0]
+//   95 			*over1-- = MULSHIFT32(w0, in);
+        ASR      R3,R2,#+31
+        UMULL    R8,R9,R4,R2
+        MLA      R9,R4,R3,R9
+        MLA      R9,R5,R2,R9
+        MOV      R4,R9
+        STR      R4,[R10], #-4
+//   96 			*over0++ = MULSHIFT32(w1, in);
+        UMULL    R4,R5,R6,R2
+        MLA      R5,R6,R3,R5
+        MLA      R5,R7,R2,R5
+        MOV      R4,R5
+        STR      R4,[R11], #+4
+//   97 		} while (over0 < over1);
+        CMP      R11,R10
+        BCC      ??raac_DecWindowOverlapNoClip_1
+        POP      {R0-R2,R4-R11,PC}
+//   98 	} else {
+//   99 		/* different windows for current and overlap parts - should still fit in registers on ARM w/o stack spill */
+//  100 		wndCurr = (winTypeCurr == 1 ? kbdWindow + kbdWindowOffset[1] : sinWindow + sinWindowOffset[1]);
+??raac_DecWindowOverlapNoClip_0:
+        CMP      R3,#+1
+        LDREQ    R1,[R2, #+4]
+        ADDEQ    R12,R4,R1, LSL #+2
+        LDRNE    R1,[R6, #+4]
+        ADDNE    R12,R8,R1, LSL #+2
+//  101 		do {
+//  102 			w0 = *wndPrev++;
+??raac_DecWindowOverlapNoClip_2:
+        LDR      R4,[R0], #+4
+//  103 			w1 = *wndPrev++;
+//  104 			in = *buf0++;
+        LDR      R2,[LR], #+4
+        LDR      R1,[R0], #+4
+//  105 
+//  106 			f0 = MULSHIFT32(w0, in);
+//  107 			f1 = MULSHIFT32(w1, in);
+//  108 
+//  109 			in = *over0;	
+//  110 			*out0++ = in - f0;
+        LDR      R8,[R11, #+0]
+        ASR      R3,R2,#+31
+        ASR      R5,R4,#+31
+        UMULL    R6,R7,R4,R2
+        LDR      R6,[SP, #+8]
+        MLA      R7,R4,R3,R7
+        MLA      R7,R5,R2,R7
+//  111 
+//  112 			in = *over1;	
+//  113 			*out1-- = in + f1;
+        ASR      R5,R1,#+31
+        SUB      R4,R8,R7
+        STR      R4,[R6], #+4
+        STR      R6,[SP, #+8]
+        LDR      R8,[R10, #+0]
+        MOV      R4,R1
+        UMULL    R6,R7,R4,R2
+        MLA      R7,R4,R3,R7
+        MLA      R7,R5,R2,R7
+        LDR      R2,[SP, #+4]
+        ADD      R1,R7,R8
+        STR      R1,[R2], #-4
+//  114 
+//  115 			w0 = *wndCurr++;
+//  116 			w1 = *wndCurr++;
+//  117 			in = *buf1--;
+        LDR      R6,[SP, #+0]
+        STR      R2,[SP, #+4]
+        LDR      R4,[R12], #+4
+        LDR      R2,[R6], #-4
+        LDR      R1,[R12], #+4
+        STR      R6,[SP, #+0]
+//  118 
+//  119 			*over1-- = MULSHIFT32(w0, in);
+        ASR      R3,R2,#+31
+        ASR      R5,R4,#+31
+        UMULL    R6,R7,R4,R2
+        MLA      R7,R4,R3,R7
+        MLA      R7,R5,R2,R7
+//  120 			*over0++ = MULSHIFT32(w1, in);
+        ASR      R5,R1,#+31
+        MOV      R4,R7
+        STR      R4,[R10], #-4
+        MOV      R4,R1
+        UMULL    R6,R7,R4,R2
+        MLA      R7,R4,R3,R7
+        MLA      R7,R5,R2,R7
+        MOV      R6,R7
+        STR      R6,[R11], #+4
+//  121 		} while (over0 < over1);
+        CMP      R11,R10
+        BCC      ??raac_DecWindowOverlapNoClip_2
+//  122 	}
+//  123 }
+        POP      {R0-R2,R4-R11,PC}  ;; return
+        CFI EndBlock cfiBlock1
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_DecWindowOverlapLongStartNoClip??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE raac_DecWindowOverlapLongStartNoClip
+//  124 
+//  125 /**************************************************************************************
+//  126  * Function:    DecWindowOverlapLongStart
+//  127  *
+//  128  * Description: apply synthesis window, do overlap-add, without clipping
+//  129  *                for winSequence LONG-START
+//  130  *
+//  131  * Inputs:      input buffer (output of type-IV DCT)
+//  132  *              overlap buffer (saved from last time)
+//  133  *              window type (sin or KBD) for input buffer
+//  134  *              window type (sin or KBD) for overlap buffer
+//  135  *
+//  136  * Outputs:     one channel, one frame of 32-bit PCM, non-interleaved
+//  137  *
+//  138  * Return:      none
+//  139  *
+//  140  * Notes:       use this function when the decoded PCM is going to the SBR decoder
+//  141  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function raac_DecWindowOverlapLongStartNoClip
+        ARM
+//  142 void DecWindowOverlapLongStartNoClip(int *buf0, int *over0, int *out0, int winTypeCurr, int winTypePrev)
+//  143 {
+raac_DecWindowOverlapLongStartNoClip:
+        PUSH     {R2-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+44
+        MOV      R9,R1
+        LDR      R1,[SP, #+44]
+//  144 	int i,  in, w0, w1, f0, f1;
+//  145 	int *buf1, *over1, *out1;
+//  146 	const int *wndPrev, *wndCurr;
+//  147 
+//  148 	buf0 += (1024 >> 1);
+//  149 	buf1  = buf0  - 1;
+        ADD      R10,R0,#+2048
+        SUB      LR,R10,#+4
+//  150 	out1  = out0 + 1024 - 1;
+        MOV      R0,#+252
+        ORR      R0,R0,#0xF00
+        ADD      R11,R0,R2
+//  151 	over1 = over0 + 1024 - 1;
+        ADD      R0,R0,R9
+        CMP      R1,#+1
+        BNE      ??raac_DecWindowOverlapLongStartNoClip_0
+        LDR      R1,??raac_DecWindowOverlapLongStartNoClip_1  ;; raac_kbdWindowOffset + 4
+        LDR      R2,??DataTable15  ;; raac_kbdWindow
+        B        ??raac_DecWindowOverlapLongStartNoClip_2
+??raac_DecWindowOverlapLongStartNoClip_0:
+        LDR      R1,??raac_DecWindowOverlapLongStartNoClip_1+0x4  ;; raac_sinWindowOffset + 4
+        LDR      R2,??DataTable16  ;; raac_sinWindow
+??raac_DecWindowOverlapLongStartNoClip_2:
+        LDR      R1,[R1, #+0]
+//  152 
+//  153 	wndPrev = (winTypePrev == 1 ? kbdWindow + kbdWindowOffset[1] : sinWindow + sinWindowOffset[1]);
+//  154 	i = 448;	/* 2 outputs, 2 overlaps per loop */
+        MOV      R8,#+448
+        ADD      R1,R2,R1, LSL #+2
+//  155 	do {
+//  156 		w0 = *wndPrev++;
+??raac_DecWindowOverlapLongStartNoClip_3:
+        LDR      R4,[R1], #+4
+//  157 		w1 = *wndPrev++;
+        LDR      R12,[R1], #+4
+//  158 		in = *buf0++;
+        LDR      R2,[R10], #+4
+//  159 
+//  160 		f0 = MULSHIFT32(w0, in);
+//  161 		f1 = MULSHIFT32(w1, in);
+//  162 
+//  163 		in = *over0;	
+//  164 		*out0++ = in - f0;
+        LDR      R6,[R9, #+0]
+        ASR      R3,R2,#+31
+        PUSH     {R6}
+        CFI CFA R13+48
+        ASR      R5,R4,#+31
+//  165 
+//  166 		in = *over1;	
+//  167 		*out1-- = in + f1;
+//  168 
+//  169 		in = *buf1--;
+//  170 
+//  171 		*over1-- = 0;		/* Wn = 0 for n = (2047, 2046, ... 1600) */
+//  172 		*over0++ = in >> 1;	/* Wn = 1 for n = (1024, 1025, ... 1471) */
+//  173 	} while (--i);
+        SUBS     R8,R8,#+1
+        UMULL    R6,R7,R4,R2
+        POP      {R6}
+        CFI CFA R13+44
+        MLA      R7,R4,R3,R7
+        MLA      R7,R5,R2,R7
+        ASR      R5,R12,#+31
+        SUB      R4,R6,R7
+        LDR      R6,[SP, #+0]
+        STR      R4,[R6], #+4
+        STR      R6,[SP, #+0]
+        LDR      R4,[R0, #+0]
+        PUSH     {R4}
+        CFI CFA R13+48
+        MOV      R4,R12
+        UMULL    R6,R7,R4,R2
+        MLA      R7,R4,R3,R7
+        MOV      R3,#+0
+        MLA      R7,R5,R2,R7
+        POP      {R2}
+        CFI CFA R13+44
+        ADD      R2,R7,R2
+        STR      R2,[R11], #-4
+        LDR      R2,[LR], #-4
+        STR      R3,[R0], #-4
+        ASR      R2,R2,#+1
+        STR      R2,[R9], #+4
+        BNE      ??raac_DecWindowOverlapLongStartNoClip_3
+//  174 
+//  175 	wndCurr = (winTypeCurr == 1 ? kbdWindow + kbdWindowOffset[0] : sinWindow + sinWindowOffset[0]);
+        LDR      R2,[SP, #+4]
+        CMP      R2,#+1
+        BNE      ??raac_DecWindowOverlapLongStartNoClip_4
+        LDR      R2,??DataTable17  ;; raac_kbdWindowOffset
+        LDR      R3,??DataTable15  ;; raac_kbdWindow
+        B        ??raac_DecWindowOverlapLongStartNoClip_5
+??raac_DecWindowOverlapLongStartNoClip_4:
+        LDR      R2,??DataTable14  ;; raac_sinWindowOffset
+        LDR      R3,??DataTable16  ;; raac_sinWindow
+??raac_DecWindowOverlapLongStartNoClip_5:
+        LDR      R2,[R2, #+0]
+        ADD      R8,R3,R2, LSL #+2
+//  176 
+//  177 	/* do 64 more loops - 2 outputs, 2 overlaps per loop */
+//  178 	do {
+//  179 		w0 = *wndPrev++;
+??raac_DecWindowOverlapLongStartNoClip_6:
+        LDR      R4,[R1], #+4
+//  180 		w1 = *wndPrev++;
+        LDR      R12,[R1], #+4
+//  181 		in = *buf0++;
+        LDR      R2,[R10], #+4
+//  182 
+//  183 		f0 = MULSHIFT32(w0, in);
+//  184 		f1 = MULSHIFT32(w1, in);
+//  185 
+//  186 		in = *over0;	
+//  187 		*out0++ = in - f0;
+        LDR      R6,[R9, #+0]
+        ASR      R3,R2,#+31
+        PUSH     {R6}
+        CFI CFA R13+48
+        ASR      R5,R4,#+31
+        UMULL    R6,R7,R4,R2
+        MLA      R7,R4,R3,R7
+        POP      {R4}
+        CFI CFA R13+44
+        LDR      R6,[SP, #+0]
+        MLA      R7,R5,R2,R7
+//  188 
+//  189 		in = *over1;	
+//  190 		*out1-- = in + f1;
+        ASR      R5,R12,#+31
+        SUB      R4,R4,R7
+        STR      R4,[R6], #+4
+        STR      R6,[SP, #+0]
+        LDR      R4,[R0, #+0]
+        PUSH     {R4}
+        CFI CFA R13+48
+        MOV      R4,R12
+        UMULL    R6,R7,R4,R2
+        MLA      R7,R4,R3,R7
+        MLA      R7,R5,R2,R7
+        POP      {R2}
+        CFI CFA R13+44
+        ADD      R2,R7,R2
+        STR      R2,[R11], #-4
+//  191 
+//  192 		w0 = *wndCurr++;	/* W[0], W[1], ... --> W[255], W[254], ... */
+        LDR      R4,[R8], #+4
+//  193 		w1 = *wndCurr++;	/* W[127], W[126], ... --> W[128], W[129], ... */
+//  194 		in = *buf1--;
+        LDR      R2,[LR], #-4
+        LDR      R12,[R8], #+4
+//  195 
+//  196 		*over1-- = MULSHIFT32(w0, in);	/* Wn = short window for n = (1599, 1598, ... , 1536) */
+        ASR      R3,R2,#+31
+        ASR      R5,R4,#+31
+        UMULL    R6,R7,R4,R2
+        MLA      R7,R4,R3,R7
+        MLA      R7,R5,R2,R7
+//  197 		*over0++ = MULSHIFT32(w1, in);	/* Wn = short window for n = (1472, 1473, ... , 1535) */
+        ASR      R5,R12,#+31
+        MOV      R4,R7
+        STR      R4,[R0], #-4
+        MOV      R4,R12
+        UMULL    R6,R7,R4,R2
+        MLA      R7,R4,R3,R7
+        MLA      R7,R5,R2,R7
+        MOV      R6,R7
+        STR      R6,[R9], #+4
+//  198 	} while (over0 < over1);
+        CMP      R9,R0
+        BCC      ??raac_DecWindowOverlapLongStartNoClip_6
+//  199 }
+        POP      {R0,R1,R4-R11,PC}  ;; return
+        DATA
+??raac_DecWindowOverlapLongStartNoClip_1:
+        DC32     raac_kbdWindowOffset + 4
+        DC32     raac_sinWindowOffset + 4
+        CFI EndBlock cfiBlock3
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_DecWindowOverlapLongStopNoClip??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE raac_DecWindowOverlapLongStopNoClip
+//  200 
+//  201 /**************************************************************************************
+//  202  * Function:    DecWindowOverlapLongStop
+//  203  *
+//  204  * Description: apply synthesis window, do overlap-add, without clipping
+//  205  *                for winSequence LONG-STOP
+//  206  *
+//  207  * Inputs:      input buffer (output of type-IV DCT)
+//  208  *              overlap buffer (saved from last time)
+//  209  *              window type (sin or KBD) for input buffer
+//  210  *              window type (sin or KBD) for overlap buffer
+//  211  *
+//  212  * Outputs:     one channel, one frame of 32-bit PCM, non-interleaved
+//  213  *
+//  214  * Return:      none
+//  215  *
+//  216  * Notes:       use this function when the decoded PCM is going to the SBR decoder
+//  217  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function raac_DecWindowOverlapLongStopNoClip
+        ARM
+//  218 void DecWindowOverlapLongStopNoClip(int *buf0, int *over0, int *out0, int winTypeCurr, int winTypePrev)
+//  219 {
+raac_DecWindowOverlapLongStopNoClip:
+        PUSH     {R2,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+40
+//  220 	int i, in, w0, w1, f0, f1;
+//  221 	int *buf1, *over1, *out1;
+//  222 	const int *wndPrev, *wndCurr;
+//  223 
+//  224 	buf0 += (1024 >> 1);
+//  225 	buf1  = buf0  - 1;
+//  226 	out1  = out0 + 1024 - 1;
+//  227 	over1 = over0 + 1024 - 1;
+//  228 
+//  229 	wndPrev = (winTypePrev == 1 ? kbdWindow + kbdWindowOffset[0] : sinWindow + sinWindowOffset[0]);
+        LDR      R4,??DataTable14  ;; raac_sinWindowOffset
+        LDR      R6,??DataTable16  ;; raac_sinWindow
+        SUB      SP,SP,#+4
+        CFI CFA R13+44
+        MOV      R11,R0
+        LDR      R0,[SP, #+44]
+        ADD      R11,R11,#+2048
+        SUB      R2,R11,#+4
+        STR      R2,[SP, #+0]
+        LDR      R2,[SP, #+4]
+        MOV      R9,R1
+        MOV      R1,#+252
+        ORR      R1,R1,#0xF00
+        ADD      LR,R1,R2
+        LDR      R2,??DataTable15  ;; raac_kbdWindow
+        ADD      R12,R1,R9
+        LDR      R1,??DataTable17  ;; raac_kbdWindowOffset
+        CMP      R0,#+1
+        LDREQ    R0,[R1, #+0]
+//  230 	wndCurr = (winTypeCurr == 1 ? kbdWindow + kbdWindowOffset[1] : sinWindow + sinWindowOffset[1]);
+//  231 
+//  232 	i = 448;	/* 2 outputs, 2 overlaps per loop */
+        MOV      R8,#+448
+        LDRNE    R0,[R4, #+0]
+        ADDEQ    R10,R2,R0, LSL #+2
+        ADDNE    R10,R6,R0, LSL #+2
+        CMP      R3,#+1
+        LDREQ    R0,[R1, #+4]
+        ADDEQ    R6,R2,R0, LSL #+2
+        LDRNE    R0,[R4, #+4]
+        ADDNE    R6,R6,R0, LSL #+2
+//  233 	do {
+//  234 		/* Wn = 0 for n = (0, 1, ... 447) */
+//  235 		/* Wn = 1 for n = (576, 577, ... 1023) */
+//  236 		in = *buf0++;
+//  237 		f1 = in >> 1;	/* scale since skipping multiply by Q31 */
+//  238 
+//  239 		in = *over0;	
+//  240 		*out0++ = in;
+??raac_DecWindowOverlapLongStopNoClip_0:
+        LDR      R2,[R9, #+0]
+        LDR      R3,[SP, #+4]
+        LDR      R0,[R11], #+4
+        STR      R2,[R3], #+4
+        STR      R3,[SP, #+4]
+//  241 
+//  242 		in = *over1;	
+//  243 		*out1-- = in + f1;
+        LDR      R1,[R12, #+0]
+//  244 
+//  245 		w0 = *wndCurr++;
+//  246 		w1 = *wndCurr++;
+//  247 		in = *buf1--;
+//  248 
+//  249 		*over1-- = MULSHIFT32(w0, in);
+//  250 		*over0++ = MULSHIFT32(w1, in);
+//  251 	} while (--i);
+        SUBS     R8,R8,#+1
+        ADD      R0,R1,R0, ASR #+1
+        STR      R0,[LR], #-4
+        LDR      R3,[SP, #+0]
+        LDR      R2,[R6], #+4
+        LDR      R0,[R3], #-4
+        LDR      R7,[R6], #+4
+        STR      R3,[SP, #+0]
+        MOV      R4,R0
+        ASR      R5,R0,#+31
+        MOV      R0,R2
+        ASR      R1,R2,#+31
+        UMULL    R2,R3,R0,R4
+        MLA      R3,R0,R5,R3
+        MLA      R3,R1,R4,R3
+        ASR      R1,R7,#+31
+        MOV      R0,R3
+        STR      R0,[R12], #-4
+        MOV      R0,R7
+        UMULL    R2,R3,R0,R4
+        MLA      R3,R0,R5,R3
+        MLA      R3,R1,R4,R3
+        MOV      R2,R3
+        STR      R2,[R9], #+4
+        BNE      ??raac_DecWindowOverlapLongStopNoClip_0
+//  252 
+//  253 	/* do 64 more loops - 2 outputs, 2 overlaps per loop */
+//  254 	do {
+//  255 		w0 = *wndPrev++;	/* W[0], W[1], ...W[63] */
+??raac_DecWindowOverlapLongStopNoClip_1:
+        LDR      R0,[R10], #+4
+//  256 		w1 = *wndPrev++;	/* W[127], W[126], ... W[64] */
+//  257 		in = *buf0++;
+        LDR      R2,[R11], #+4
+        LDR      R7,[R10], #+4
+//  258 
+//  259 		f0 = MULSHIFT32(w0, in);
+//  260 		f1 = MULSHIFT32(w1, in);
+//  261 
+//  262 		in = *over0;	
+//  263 		*out0++ = in - f0;
+        LDR      R8,[R9, #+0]
+        ASR      R3,R2,#+31
+        ASR      R1,R0,#+31
+        UMULL    R4,R5,R0,R2
+        MLA      R5,R0,R3,R5
+        MLA      R5,R1,R2,R5
+        LDR      R1,[SP, #+4]
+        SUB      R0,R8,R5
+        STR      R0,[R1], #+4
+        STR      R1,[SP, #+4]
+//  264 
+//  265 		in = *over1;	
+//  266 		*out1-- = in + f1;
+        LDR      R8,[R12, #+0]
+        MOV      R0,R7
+        ASR      R1,R7,#+31
+        UMULL    R4,R5,R0,R2
+        MLA      R5,R0,R3,R5
+        MLA      R5,R1,R2,R5
+        ADD      R0,R5,R8
+        STR      R0,[LR], #-4
+//  267 
+//  268 		w0 = *wndCurr++;
+//  269 		w1 = *wndCurr++;	
+//  270 		in = *buf1--;
+        LDR      R3,[SP, #+0]
+        LDR      R2,[R6], #+4
+        LDR      R0,[R3], #-4
+        LDR      R7,[R6], #+4
+        STR      R3,[SP, #+0]
+//  271 
+//  272 		*over1-- = MULSHIFT32(w0, in);
+        ASR      R1,R0,#+31
+        ASR      R3,R2,#+31
+        UMULL    R4,R5,R2,R0
+        MLA      R5,R2,R1,R5
+//  273 		*over0++ = MULSHIFT32(w1, in);
+        MOV      R2,R7
+        MLA      R5,R3,R0,R5
+        ASR      R3,R7,#+31
+        MOV      R4,R5
+        STR      R4,[R12], #-4
+        UMULL    R4,R5,R2,R0
+        MLA      R5,R2,R1,R5
+        MLA      R5,R3,R0,R5
+        MOV      R4,R5
+        STR      R4,[R9], #+4
+//  274 	} while (over0 < over1);
+        CMP      R9,R12
+        BCC      ??raac_DecWindowOverlapLongStopNoClip_1
+//  275 }
+        POP      {R0,R1,R4-R11,PC}  ;; return
+        CFI EndBlock cfiBlock5
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_DecWindowOverlapShortNoClip??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE raac_DecWindowOverlapShortNoClip
+//  276 
+//  277 /**************************************************************************************
+//  278  * Function:    DecWindowOverlapShort
+//  279  *
+//  280  * Description: apply synthesis window, do overlap-add, without clipping
+//  281  *                for winSequence EIGHT-SHORT (does all 8 short blocks)
+//  282  *
+//  283  * Inputs:      input buffer (output of type-IV DCT)
+//  284  *              overlap buffer (saved from last time)
+//  285  *              window type (sin or KBD) for input buffer
+//  286  *              window type (sin or KBD) for overlap buffer
+//  287  *
+//  288  * Outputs:     one channel, one frame of 32-bit PCM, non-interleaved
+//  289  *
+//  290  * Return:      none
+//  291  *
+//  292  * Notes:       use this function when the decoded PCM is going to the SBR decoder
+//  293  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function raac_DecWindowOverlapShortNoClip
+        ARM
+//  294 void DecWindowOverlapShortNoClip(int *buf0, int *over0, int *out0, int winTypeCurr, int winTypePrev)
+//  295 {
+raac_DecWindowOverlapShortNoClip:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+//  296 	int i, in, w0, w1, f0, f1;
+//  297 	int *buf1, *over1, *out1;
+//  298 	const int *wndPrev, *wndCurr;
+//  299 
+//  300 	wndPrev = (winTypePrev == 1 ? kbdWindow + kbdWindowOffset[0] : sinWindow + sinWindowOffset[0]);
+        LDR      R4,??DataTable14  ;; raac_sinWindowOffset
+        LDR      R5,??DataTable15  ;; raac_kbdWindow
+        LDR      R6,??DataTable16  ;; raac_sinWindow
+        MOV      R10,R2
+        LDR      R2,??DataTable17  ;; raac_kbdWindowOffset
+        SUB      SP,SP,#+12
+        CFI CFA R13+48
+        LDR      R2,[R2, #+0]
+        LDR      R4,[R4, #+0]
+        MOV      R11,R0
+        LDR      R0,[SP, #+48]
+        CMP      R0,#+1
+        ADDEQ    LR,R5,R2, LSL #+2
+        ADDNE    LR,R6,R4, LSL #+2
+//  301 	wndCurr = (winTypeCurr == 1 ? kbdWindow + kbdWindowOffset[0] : sinWindow + sinWindowOffset[0]);
+        CMP      R3,#+1
+        ADDEQ    R12,R5,R2, LSL #+2
+        ADDNE    R12,R6,R4, LSL #+2
+//  302 
+//  303 	/* pcm[0-447] = 0 + overlap[0-447] */
+//  304 	i = 448;
+        MOV      R2,#+448
+        STR      R2,[SP, #+0]
+//  305 	do {
+//  306 		f0 = *over0++;
+??raac_DecWindowOverlapShortNoClip_0:
+        LDR      R0,[R1], #+4
+//  307 		f1 = *over0++;
+        LDR      R2,[R1], #+4
+//  308 		*out0++ = f0;
+        STR      R0,[R10], #+4
+//  309 		*out0++ = f1;
+        STR      R2,[R10], #+4
+//  310 		i -= 2;
+        LDR      R2,[SP, #+0]
+        SUB      R2,R2,#+2
+        STR      R2,[SP, #+0]
+//  311 	} while (i);
+        CMP      R2,#+0
+        BNE      ??raac_DecWindowOverlapShortNoClip_0
+//  312 
+//  313 	/* pcm[448-575] = Wp[0-127] * block0[0-127] + overlap[448-575] */
+//  314 	out1  = out0 + (128 - 1);
+        ADD      R2,R10,#+508
+        STR      R2,[SP, #+4]
+//  315 	over1 = over0 + 128 - 1;
+        ADD      R0,R1,#+508
+//  316 	buf0 += 64;
+//  317 	buf1  = buf0  - 1;
+        ADD      R11,R11,#+256
+        SUB      R3,R11,#+4
+        STR      R3,[SP, #+8]
+//  318 	do {
+//  319 		w0 = *wndPrev++;	/* W[0], W[1], ...W[63] */
+??raac_DecWindowOverlapShortNoClip_1:
+        LDR      R2,[LR], #+4
+//  320 		w1 = *wndPrev++;	/* W[127], W[126], ... W[64] */
+//  321 		in = *buf0++;
+        LDR      R6,[R11], #+4
+        LDR      R8,[LR], #+4
+//  322 
+//  323 		f0 = MULSHIFT32(w0, in);
+//  324 		f1 = MULSHIFT32(w1, in);
+//  325 
+//  326 		in = *over0;	
+//  327 		*out0++ = in - f0;
+        LDR      R9,[R1, #+0]
+        ASR      R7,R6,#+31
+        ASR      R3,R2,#+31
+        UMULL    R4,R5,R2,R6
+        MLA      R5,R2,R7,R5
+        MLA      R5,R3,R6,R5
+//  328 
+//  329 		in = *over1;	
+//  330 		*out1-- = in + f1;
+        ASR      R3,R8,#+31
+        SUB      R2,R9,R5
+        STR      R2,[R10], #+4
+        LDR      R9,[R0, #+0]
+        MOV      R2,R8
+        UMULL    R4,R5,R2,R6
+        MLA      R5,R2,R7,R5
+        MLA      R5,R3,R6,R5
+        LDR      R3,[SP, #+4]
+        ADD      R2,R5,R9
+        STR      R2,[R3], #-4
+//  331 
+//  332 		w0 = *wndCurr++;
+//  333 		w1 = *wndCurr++;
+//  334 		in = *buf1--;
+        LDR      R6,[SP, #+8]
+        STR      R3,[SP, #+4]
+        LDR      R5,[R12], #+4
+        LDR      R2,[R6], #-4
+        LDR      R4,[R12], #+4
+        STR      R6,[SP, #+8]
+//  335 
+//  336 		/* save over0/over1 for next short block, in the slots just vacated */
+//  337 		*over1-- = MULSHIFT32(w0, in);
+        MOV      R8,R2
+        ASR      R9,R2,#+31
+        MOV      R2,R5
+        ASR      R3,R5,#+31
+        UMULL    R6,R7,R2,R8
+        MLA      R7,R2,R9,R7
+        MLA      R7,R3,R8,R7
+//  338 		*over0++ = MULSHIFT32(w1, in);
+        ASR      R3,R4,#+31
+        MOV      R2,R7
+        STR      R2,[R0], #-4
+        MOV      R2,R4
+        UMULL    R4,R5,R2,R8
+        MLA      R5,R2,R9,R5
+        MLA      R5,R3,R8,R5
+        MOV      R4,R5
+        STR      R4,[R1], #+4
+//  339 	} while (over0 < over1);
+        CMP      R1,R0
+        BCC      ??raac_DecWindowOverlapShortNoClip_1
+//  340 
+//  341 	/* pcm[576-703] = Wc[128-255] * block0[128-255] + Wc[0-127] * block1[0-127] + overlap[576-703] 
+//  342 	 * pcm[704-831] = Wc[128-255] * block1[128-255] + Wc[0-127] * block2[0-127] + overlap[704-831] 
+//  343 	 * pcm[832-959] = Wc[128-255] * block2[128-255] + Wc[0-127] * block3[0-127] + overlap[832-959] 
+//  344 	 */
+//  345 	for (i = 0; i < 3; i++) {
+//  346 		out0 += 64;
+//  347 		out1 = out0 + 128 - 1;
+??raac_DecWindowOverlapShortNoClip_2:
+        ADD      R10,R10,#+256
+        ADD      R2,R10,#+508
+        STR      R2,[SP, #+4]
+//  348 		over0 += 64;
+//  349 		over1 = over0 + 128 - 1;
+        ADD      R1,R1,#+256
+        ADD      R0,R1,#+508
+//  350 		buf0 += 64;
+//  351 		buf1 = buf0 - 1;
+        ADD      R11,R11,#+256
+        SUB      R3,R11,#+4
+        STR      R3,[SP, #+8]
+//  352 		wndCurr -= 128;
+        MVN      R2,#+255
+        BIC      R2,R2,#0x100
+        ADD      R12,R2,R12
+//  353 
+//  354 		do {
+//  355 			w0 = *wndCurr++;	/* W[0], W[1], ...W[63] */
+??raac_DecWindowOverlapShortNoClip_3:
+        LDR      R5,[R12], #+4
+//  356 			w1 = *wndCurr++;	/* W[127], W[126], ... W[64] */
+//  357 			in = *buf0++;
+        LDR      R2,[R11], #+4
+//  358 
+//  359 			f0 = MULSHIFT32(w0, in);
+//  360 			f1 = MULSHIFT32(w1, in);
+//  361 
+//  362 			in  = *(over0 - 128);	/* from last short block */
+//  363 			in += *(over0 + 0);		/* from last full frame */
+//  364 			*out0++ = in - f0;
+        LDR      R6,[R1, #+0]
+        MOV      R8,R5
+        LDR      R4,[R12], #+4
+        ASR      R9,R5,#+31
+        LDR      R5,[R1, #-512]
+        ASR      R3,R2,#+31
+        ADD      R5,R6,R5
+        UMULL    R6,R7,R8,R2
+//  365 
+//  366 			in  = *(over1 - 128);	/* from last short block */
+//  367 			in += *(over1 + 0);		/* from last full frame */
+//  368 			*out1-- = in + f1;
+        MOV      R6,R4
+        MLA      R7,R8,R3,R7
+        MLA      R7,R9,R2,R7
+        SUB      R5,R5,R7
+        STR      R5,[R10], #+4
+        LDR      R5,[R0, #+0]
+        ASR      R7,R4,#+31
+        LDR      R4,[R0, #-512]
+        ADD      LR,R5,R4
+        UMULL    R4,R5,R6,R2
+        MLA      R5,R6,R3,R5
+        LDR      R3,[SP, #+4]
+        MLA      R5,R7,R2,R5
+        ADD      R2,R5,LR
+        STR      R2,[R3], #-4
+//  369 
+//  370 			/* save over0/over1 for next short block, in the slots just vacated */
+//  371 			in = *buf1--;
+        LDR      R4,[SP, #+8]
+        STR      R3,[SP, #+4]
+        LDR      R2,[R4], #-4
+        STR      R4,[SP, #+8]
+//  372 			*over1-- = MULSHIFT32(w0, in);
+        ASR      R3,R2,#+31
+        UMULL    R4,R5,R8,R2
+        MLA      R5,R8,R3,R5
+        MLA      R5,R9,R2,R5
+        MOV      R4,R5
+        STR      R4,[R0], #-4
+//  373 			*over0++ = MULSHIFT32(w1, in);
+        UMULL    R4,R5,R6,R2
+        MLA      R5,R6,R3,R5
+        MLA      R5,R7,R2,R5
+        MOV      R4,R5
+        STR      R4,[R1], #+4
+//  374 		} while (over0 < over1);
+        CMP      R1,R0
+        BCC      ??raac_DecWindowOverlapShortNoClip_3
+//  375 	}
+        LDR      R2,[SP, #+0]
+        ADD      R2,R2,#+1
+        STR      R2,[SP, #+0]
+        CMP      R2,#+3
+        BLT      ??raac_DecWindowOverlapShortNoClip_2
+//  376 
+//  377 	/* pcm[960-1023] = Wc[128-191] * block3[128-191] + Wc[0-63]   * block4[0-63] + overlap[960-1023]  
+//  378 	 * over[0-63]    = Wc[192-255] * block3[192-255] + Wc[64-127] * block4[64-127]
+//  379 	 */
+//  380 	out0 += 64;
+        ADD      LR,R10,#+256
+//  381 	over0 -= 832;				/* points at overlap[64] */
+//  382 	over1 = over0 + 128 - 1;	/* points at overlap[191] */
+        MVN      R0,#+255
+        BIC      R0,R0,#0xC00
+        ADD      R1,R1,R0
+        ADD      R0,R1,#+508
+//  383 	buf0 += 64;
+//  384 	buf1 = buf0 - 1;
+        ADD      R11,R11,#+256
+        SUB      R10,R11,#+4
+//  385 	wndCurr -= 128;
+        MVN      R2,#+255
+        BIC      R2,R2,#0x100
+        ADD      R12,R2,R12
+//  386 	do {
+//  387 		w0 = *wndCurr++;	/* W[0], W[1], ...W[63] */
+??raac_DecWindowOverlapShortNoClip_4:
+        LDR      R5,[R12], #+4
+//  388 		w1 = *wndCurr++;	/* W[127], W[126], ... W[64] */
+//  389 		in = *buf0++;
+        LDR      R2,[R11], #+4
+//  390 
+//  391 		f0 = MULSHIFT32(w0, in);
+//  392 		f1 = MULSHIFT32(w1, in);
+//  393 
+//  394 		in  = *(over0 + 768);	/* from last short block */
+//  395 		in += *(over0 + 896);	/* from last full frame */
+//  396 		*out0++ = in - f0;
+        LDR      R6,[R1, #+3584]
+        MOV      R8,R5
+        LDR      R4,[R12], #+4
+        ASR      R9,R5,#+31
+        LDR      R5,[R1, #+3072]
+        ASR      R3,R2,#+31
+        ADD      R5,R6,R5
+        UMULL    R6,R7,R8,R2
+//  397 
+//  398 		in  = *(over1 + 768);	/* from last short block */
+//  399 		*(over1 - 128) = in + f1;
+        MOV      R6,R4
+        MLA      R7,R8,R3,R7
+        MLA      R7,R9,R2,R7
+        SUB      R5,R5,R7
+        STR      R5,[LR], #+4
+        ASR      R7,R4,#+31
+        LDR      R4,[R0, #+3072]
+        PUSH     {R4}
+        CFI CFA R13+52
+        UMULL    R4,R5,R6,R2
+        MLA      R5,R6,R3,R5
+        POP      {R3}
+        CFI CFA R13+48
+        MLA      R5,R7,R2,R5
+        ADD      R2,R5,R3
+        STR      R2,[R0, #-512]
+//  400 
+//  401 		in = *buf1--;
+        LDR      R2,[R10], #-4
+//  402 		*over1-- = MULSHIFT32(w0, in);	/* save in overlap[128-191] */
+        ASR      R3,R2,#+31
+        UMULL    R4,R5,R8,R2
+        MLA      R5,R8,R3,R5
+        MLA      R5,R9,R2,R5
+        MOV      R4,R5
+        STR      R4,[R0], #-4
+//  403 		*over0++ = MULSHIFT32(w1, in);	/* save in overlap[64-127] */
+        UMULL    R4,R5,R6,R2
+        MLA      R5,R6,R3,R5
+        MLA      R5,R7,R2,R5
+        MOV      R4,R5
+        STR      R4,[R1], #+4
+//  404 	} while (over0 < over1);
+        CMP      R1,R0
+        BCC      ??raac_DecWindowOverlapShortNoClip_4
+//  405 	
+//  406 	/* over0 now points at overlap[128] */
+//  407 	
+//  408 	/* over[64-191]   = Wc[128-255] * block4[128-255] + Wc[0-127] * block5[0-127] 
+//  409 	 * over[192-319]  = Wc[128-255] * block5[128-255] + Wc[0-127] * block6[0-127]
+//  410 	 * over[320-447]  = Wc[128-255] * block6[128-255] + Wc[0-127] * block7[0-127]  
+//  411 	 * over[448-576]  = Wc[128-255] * block7[128-255]
+//  412 	 */
+//  413 	for (i = 0; i < 3; i++) {
+        MOV      LR,#+0
+//  414 		over0 += 64;
+//  415 		over1 = over0 + 128 - 1;
+??raac_DecWindowOverlapShortNoClip_5:
+        ADD      R1,R1,#+256
+        ADD      R0,R1,#+508
+//  416 		buf0 += 64;
+//  417 		buf1 = buf0 - 1;
+        ADD      R11,R11,#+256
+        SUB      R10,R11,#+4
+//  418 		wndCurr -= 128;
+        MVN      R2,#+255
+        BIC      R2,R2,#0x100
+        ADD      R12,R2,R12
+//  419 		do {
+//  420 			w0 = *wndCurr++;	/* W[0], W[1], ...W[63] */
+??raac_DecWindowOverlapShortNoClip_6:
+        LDR      R5,[R12], #+4
+//  421 			w1 = *wndCurr++;	/* W[127], W[126], ... W[64] */
+//  422 			in = *buf0++;
+        LDR      R2,[R11], #+4
+        LDR      R4,[R12], #+4
+//  423 
+//  424 			f0 = MULSHIFT32(w0, in);
+//  425 			f1 = MULSHIFT32(w1, in);
+//  426 
+//  427 			/* from last short block */
+//  428 			*(over0 - 128) -= f0;
+        ASR      R3,R2,#+31
+        MOV      R8,R5
+        ASR      R9,R5,#+31
+        LDR      R5,[R1, #-512]
+        UMULL    R6,R7,R8,R2
+//  429 			*(over1 - 128)+= f1;
+        MOV      R6,R4
+        MLA      R7,R8,R3,R7
+        MLA      R7,R9,R2,R7
+        SUB      R5,R5,R7
+        STR      R5,[R1, #-512]
+        ASR      R7,R4,#+31
+        LDR      R4,[R0, #-512]
+        PUSH     {R4}
+        CFI CFA R13+52
+        UMULL    R4,R5,R6,R2
+        MLA      R5,R6,R3,R5
+        POP      {R3}
+        CFI CFA R13+48
+        MLA      R5,R7,R2,R5
+        ADD      R2,R5,R3
+        STR      R2,[R0, #-512]
+//  430 
+//  431 			in = *buf1--;
+        LDR      R2,[R10], #-4
+//  432 			*over1-- = MULSHIFT32(w0, in);
+        ASR      R3,R2,#+31
+        UMULL    R4,R5,R8,R2
+        MLA      R5,R8,R3,R5
+        MLA      R5,R9,R2,R5
+        MOV      R4,R5
+        STR      R4,[R0], #-4
+//  433 			*over0++ = MULSHIFT32(w1, in);
+        UMULL    R4,R5,R6,R2
+        MLA      R5,R6,R3,R5
+        MLA      R5,R7,R2,R5
+        MOV      R4,R5
+        STR      R4,[R1], #+4
+//  434 		} while (over0 < over1);
+        CMP      R1,R0
+        BCC      ??raac_DecWindowOverlapShortNoClip_6
+//  435 	}
+        ADD      LR,LR,#+1
+        CMP      LR,#+3
+        BLT      ??raac_DecWindowOverlapShortNoClip_5
+//  436 
+//  437 	/* over[576-1024] = 0 */ 
+//  438 	i = 448;
+        MOV      R0,#+448
+//  439 	over0 += 64;
+        ADD      R1,R1,#+256
+        MOV      R2,#+0
+//  440 	do {
+//  441 		*over0++ = 0;
+??raac_DecWindowOverlapShortNoClip_7:
+        STR      R2,[R1], #+4
+//  442 		*over0++ = 0;
+        STR      R2,[R1], #+4
+//  443 		*over0++ = 0;
+        STR      R2,[R1], #+4
+//  444 		*over0++ = 0;
+        STR      R2,[R1], #+4
+//  445 		i -= 4;
+        SUBS     R0,R0,#+4
+//  446 	} while (i);
+        BNE      ??raac_DecWindowOverlapShortNoClip_7
+//  447 }
+        POP      {R0-R2,R4-R11,PC}  ;; return
+        CFI EndBlock cfiBlock7
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable14:
+        DC32     raac_sinWindowOffset
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable15:
+        DC32     raac_kbdWindow
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable16:
+        DC32     raac_sinWindow
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable17:
+        DC32     raac_kbdWindowOffset
+
+        END
+// 
+// 2 300 bytes in segment CODE
+// 
+// 2 284 bytes of CODE memory (+ 16 bytes shared)
+//
+//Errors: none
+//Warnings: none

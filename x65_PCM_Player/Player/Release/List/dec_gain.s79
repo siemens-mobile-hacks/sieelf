@@ -1,0 +1,2361 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:39 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_ /
+//                       gain.c                                              /
+//    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_ /
+//                       gain.c -D NDEBUG -lC D:\SVN\SieELF\SieELF\x65_PCM_P /
+//                       layer\Player\Release\List\ -lA                      /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player\Player /
+//                       \Release\Obj\ -s9 --cpu_mode arm --endian little    /
+//                       --cpu ARM926EJ-S --stack_align 4 --interwork -e     /
+//                       --fpu None --dlib_config "D:\Program                /
+//                       Files\IAR\Embedded Workbench 4.0                    /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\dec_gain.s79                                   /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME dec_gain
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        EXTERN ??div32_a
+
+        MULTWEAK ??D_GAIN_adaptive_codebook_excitation??rT
+        MULTWEAK ??D_GAIN_adaptive_control??rT
+        MULTWEAK ??D_GAIN_decode??rT
+        MULTWEAK ??D_GAIN_find_voice_factor??rT
+        MULTWEAK ??D_GAIN_init??rT
+        MULTWEAK ??D_GAIN_lag_concealment??rT
+        MULTWEAK ??D_GAIN_lag_concealment_init??rT
+        MULTWEAK ??D_GAIN_pitch_sharpening??rT
+        MULTWEAK ??D_UTIL_dot_product12??rA
+        MULTWEAK ??D_UTIL_inverse_sqrt??rA
+        MULTWEAK ??D_UTIL_l_extract??rA
+        MULTWEAK ??D_UTIL_log2??rA
+        MULTWEAK ??D_UTIL_mpy_32_16??rA
+        MULTWEAK ??D_UTIL_norm_l??rA
+        MULTWEAK ??D_UTIL_norm_s??rA
+        MULTWEAK ??D_UTIL_normalised_inverse_sqrt??rA
+        MULTWEAK ??D_UTIL_pow2??rA
+        MULTWEAK ??D_UTIL_random??rA
+        MULTWEAK ??D_UTIL_saturate??rA
+        MULTWEAK ??rA??div32_a
+        PUBLIC D_GAIN_adaptive_codebook_excitation
+        FUNCTION D_GAIN_adaptive_codebook_excitation,0203H
+        LOCFRAME CSTACK, 20, STACK
+        PUBLIC D_GAIN_adaptive_control
+        FUNCTION D_GAIN_adaptive_control,0203H
+        LOCFRAME CSTACK, 32, STACK
+        PUBLIC D_GAIN_decode
+        FUNCTION D_GAIN_decode,0203H
+        LOCFRAME CSTACK, 72, STACK
+        PUBLIC D_GAIN_find_voice_factor
+        FUNCTION D_GAIN_find_voice_factor,0203H
+        LOCFRAME CSTACK, 32, STACK
+        PUBLIC D_GAIN_init
+        FUNCTION D_GAIN_init,0203H
+        LOCFRAME CSTACK, 8, STACK
+        PUBLIC D_GAIN_lag_concealment
+        FUNCTION D_GAIN_lag_concealment,0203H
+        LOCFRAME CSTACK, 52, STACK
+        PUBLIC D_GAIN_lag_concealment_init
+        FUNCTION D_GAIN_lag_concealment_init,0203H
+        FUNCTION D_GAIN_median,0203H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC D_GAIN_pitch_sharpening
+        FUNCTION D_GAIN_pitch_sharpening,0203H
+        LOCFRAME CSTACK, 8, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+D_UTIL_dot_product12 SYMBOL "D_UTIL_dot_product12"
+D_UTIL_inverse_sqrt SYMBOL "D_UTIL_inverse_sqrt"
+D_UTIL_l_extract    SYMBOL "D_UTIL_l_extract"
+D_UTIL_log2         SYMBOL "D_UTIL_log2"
+D_UTIL_mpy_32_16    SYMBOL "D_UTIL_mpy_32_16"
+D_UTIL_norm_l       SYMBOL "D_UTIL_norm_l"
+D_UTIL_norm_s       SYMBOL "D_UTIL_norm_s"
+D_UTIL_normalised_inverse_sqrt SYMBOL "D_UTIL_normalised_inverse_sqrt"
+D_UTIL_pow2         SYMBOL "D_UTIL_pow2"
+D_UTIL_random       SYMBOL "D_UTIL_random"
+D_UTIL_saturate     SYMBOL "D_UTIL_saturate"
+D_GAIN_adaptive_codebook_excitation SYMBOL "D_GAIN_adaptive_codebook_excitation"
+??D_GAIN_adaptive_codebook_excitation??rT SYMBOL "??rT", D_GAIN_adaptive_codebook_excitation
+D_GAIN_adaptive_control SYMBOL "D_GAIN_adaptive_control"
+??D_GAIN_adaptive_control??rT SYMBOL "??rT", D_GAIN_adaptive_control
+D_GAIN_decode       SYMBOL "D_GAIN_decode"
+??D_GAIN_decode??rT SYMBOL "??rT", D_GAIN_decode
+D_GAIN_find_voice_factor SYMBOL "D_GAIN_find_voice_factor"
+??D_GAIN_find_voice_factor??rT SYMBOL "??rT", D_GAIN_find_voice_factor
+D_GAIN_init         SYMBOL "D_GAIN_init"
+??D_GAIN_init??rT   SYMBOL "??rT", D_GAIN_init
+D_GAIN_lag_concealment SYMBOL "D_GAIN_lag_concealment"
+??D_GAIN_lag_concealment??rT SYMBOL "??rT", D_GAIN_lag_concealment
+D_GAIN_lag_concealment_init SYMBOL "D_GAIN_lag_concealment_init"
+??D_GAIN_lag_concealment_init??rT SYMBOL "??rT", D_GAIN_lag_concealment_init
+D_GAIN_pitch_sharpening SYMBOL "D_GAIN_pitch_sharpening"
+??D_GAIN_pitch_sharpening??rT SYMBOL "??rT", D_GAIN_pitch_sharpening
+??D_UTIL_dot_product12??rA SYMBOL "??rA", D_UTIL_dot_product12
+??D_UTIL_inverse_sqrt??rA SYMBOL "??rA", D_UTIL_inverse_sqrt
+??D_UTIL_l_extract??rA SYMBOL "??rA", D_UTIL_l_extract
+??D_UTIL_log2??rA   SYMBOL "??rA", D_UTIL_log2
+??D_UTIL_mpy_32_16??rA SYMBOL "??rA", D_UTIL_mpy_32_16
+??D_UTIL_norm_l??rA SYMBOL "??rA", D_UTIL_norm_l
+??D_UTIL_norm_s??rA SYMBOL "??rA", D_UTIL_norm_s
+??D_UTIL_normalised_inverse_sqrt??rA SYMBOL "??rA", D_UTIL_normalised_inverse_sqrt
+??D_UTIL_pow2??rA   SYMBOL "??rA", D_UTIL_pow2
+??D_UTIL_random??rA SYMBOL "??rA", D_UTIL_random
+??D_UTIL_saturate??rA SYMBOL "??rA", D_UTIL_saturate
+
+        EXTERN D_ROM_cdown_unusable
+        EXTERN D_ROM_cdown_usable
+        EXTERN D_ROM_inter4_2
+        EXTERN D_ROM_pdown_unusable
+        EXTERN D_ROM_pdown_usable
+        EXTERN D_ROM_qua_gain6b
+        EXTERN D_ROM_qua_gain7b
+        EXTERN D_UTIL_dot_product12
+        FUNCTION D_UTIL_dot_product12,0202H
+        EXTERN D_UTIL_inverse_sqrt
+        FUNCTION D_UTIL_inverse_sqrt,0202H
+        EXTERN D_UTIL_l_extract
+        FUNCTION D_UTIL_l_extract,0202H
+        EXTERN D_UTIL_log2
+        FUNCTION D_UTIL_log2,0202H
+        EXTERN D_UTIL_mpy_32_16
+        FUNCTION D_UTIL_mpy_32_16,0202H
+        EXTERN D_UTIL_norm_l
+        FUNCTION D_UTIL_norm_l,0202H
+        EXTERN D_UTIL_norm_s
+        FUNCTION D_UTIL_norm_s,0202H
+        EXTERN D_UTIL_normalised_inverse_sqrt
+        FUNCTION D_UTIL_normalised_inverse_sqrt,0202H
+        EXTERN D_UTIL_pow2
+        FUNCTION D_UTIL_pow2,0202H
+        EXTERN D_UTIL_random
+        FUNCTION D_UTIL_random,0202H
+        EXTERN D_UTIL_saturate
+        FUNCTION D_UTIL_saturate,0202H
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_GAIN_init??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE D_GAIN_init
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_gain.c
+//    1 /*
+//    2  *===================================================================
+//    3  *  3GPP AMR Wideband Floating-point Speech Codec
+//    4  *===================================================================
+//    5  */
+//    6 #include "typedef.h"
+//    7 #include "dec_util.h"
+//    8 
+//    9 #define L_SUBFR         64       /* Subframe size */
+//   10 #define L_LTPHIST       5
+//   11 #define ONE_PER_3       10923
+//   12 #define ONE_PER_LTPHIST 6554
+//   13 #define UP_SAMP         4
+//   14 #define L_INTERPOL2     16
+//   15 
+//   16 extern const Word16 D_ROM_inter4_2[];
+//   17 extern const Word16 D_ROM_pdown_unusable[];
+//   18 extern const Word16 D_ROM_pdown_usable[];
+//   19 extern const Word16 D_ROM_cdown_unusable[];
+//   20 extern const Word16 D_ROM_cdown_usable[];
+//   21 extern const Word16 D_ROM_qua_gain6b[];
+//   22 extern const Word16 D_ROM_qua_gain7b[];
+//   23 
+//   24 /*
+//   25  * D_GAIN_init
+//   26  *
+//   27  * Parameters:
+//   28  *    mem         O: static memory
+//   29  *
+//   30  * Function:
+//   31  *    Initialisation of 2nd order quantiser energy predictor.
+//   32  *
+//   33  * Returns:
+//   34  *    void
+//   35  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function D_GAIN_init
+        ARM
+//   36 void D_GAIN_init(Word16 *mem)
+//   37 {
+D_GAIN_init:
+        PUSH     {R4,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+//   38 
+//   39    /* 4nd order quantizer energy predictor (init to -14.0 in Q10) */
+//   40    mem[0] = -14336;   /* past_qua_en[0] */
+//   41    mem[1] = -14336;   /* past_qua_en[1] */
+//   42    mem[2] = -14336;   /* past_qua_en[2] */
+//   43    mem[3] = -14336;   /* past_qua_en[3] */
+//   44    /*
+//   45     * mem[4] = 0;       past_gain_pit
+//   46     * mem[5] = 0;       past_gain_code
+//   47     * mem[6] = 0;       prev_gc
+//   48     * mem[7 - 11] = 0;  pbuf[i]
+//   49     * mem[12 - 16] = 0; gbuf[i]
+//   50     * mem[17 - 21] = 0; pbuf2[i]
+//   51     */
+//   52    memset(&mem[4], 0, 18 * sizeof(Word16));
+        MOV      R2,#+36
+        MOV      R1,#+0
+        MOV      R4,R0
+        MVN      R0,#+255
+        BIC      R0,R0,#0x3700
+        STRH     R0,[R4, #+0]
+        STRH     R0,[R4, #+2]
+        STRH     R0,[R4, #+4]
+        STRH     R0,[R4, #+6]
+        ADD      R0,R4,#+8
+        SWI      +187
+//   53 
+//   54    mem[22] = 21845;   /* seed */
+        MOV      R0,#+85
+        ORR      R0,R0,#0x5500
+        STRH     R0,[R4, #+44]
+//   55    return;
+        POP      {R4,PC}          ;; return
+        CFI EndBlock cfiBlock1
+//   56 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_GAIN_median??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE D_GAIN_median
+//   57 
+//   58 
+//   59 /*
+//   60  * D_GAIN_median
+//   61  *
+//   62  * Parameters:
+//   63  *    buf            I: previous gains
+//   64  *
+//   65  * Function:
+//   66  *    Median of gains
+//   67  *
+//   68  * Returns:
+//   69  *    median of 5 previous gains
+//   70  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function D_GAIN_median
+        ARM
+//   71 static Word16 D_GAIN_median(Word16 x[])
+//   72 {
+D_GAIN_median:
+        PUSH     {R4}
+        CFI R4 Frame(CFA, -4)
+        CFI CFA R13+4
+//   73    Word16 x1, x2, x3, x4, x5;
+//   74    Word16 tmp;
+//   75    x1 = x[ - 2];
+//   76    x2 = x[ - 1];
+//   77    x3 = x[0];
+//   78    x4 = x[1];
+        LDRSH    R12,[R0, #+2]
+//   79    x5 = x[2];
+        LDRSH    R4,[R0, #+4]
+        SUB      R1,R0,#+4
+        LDRSH    R2,[R1, #+0]
+        LDRSH    R3,[R1, #+2]
+        LDRSH    R1,[R0, #+0]
+//   80 
+//   81    if(x2 < x1)
+        CMP      R3,R2
+//   82    {
+//   83       tmp = x1;
+        MOVLT    R0,R2
+//   84       x1 = x2;
+        MOVLT    R2,R3
+//   85       x2 = tmp;
+        MOVLT    R3,R0
+//   86    }
+//   87 
+//   88    if(x3 < x1)
+        CMP      R1,R2
+//   89    {
+//   90       tmp = x1;
+        MOVLT    R0,R2
+//   91       x1 = x3;
+        MOVLT    R2,R1
+//   92       x3 = tmp;
+        MOVLT    R1,R0
+//   93    }
+//   94 
+//   95    if(x4 < x1)
+        CMP      R12,R2
+//   96    {
+//   97       tmp = x1;
+        MOVLT    R0,R2
+//   98       x1 = x4;
+        MOVLT    R2,R12
+//   99       x4 = tmp;
+        MOVLT    R12,R0
+//  100    }
+//  101 
+//  102    if(x5 < x1)
+        CMP      R4,R2
+//  103    {
+//  104       x5 = x1;
+        MOVLT    R4,R2
+//  105    }
+//  106 
+//  107    if(x3 < x2)
+        CMP      R1,R3
+//  108    {
+//  109       tmp = x2;
+        MOVLT    R0,R3
+//  110       x2 = x3;
+        MOVLT    R3,R1
+//  111       x3 = tmp;
+        MOVLT    R1,R0
+//  112    }
+//  113 
+//  114    if(x4 < x2)
+        CMP      R12,R3
+        BGE      ??D_GAIN_median_0
+//  115    {
+//  116       tmp = x2;
+        MOV      R0,R3, LSL #+16
+        MOV      R0,R0, ASR #+16
+//  117       x2 = x4;
+        MOV      R3,R12
+//  118       x4 = tmp;
+        MOV      R12,R0
+//  119    }
+//  120 
+//  121    if(x5 < x2)
+??D_GAIN_median_0:
+        CMP      R4,R3
+//  122    {
+//  123       x5 = x2;
+        MOVLT    R4,R3, LSL #+16
+        MOVLT    R4,R4, ASR #+16
+//  124    }
+//  125 
+//  126    if(x4 < x3)
+        CMP      R12,R1
+//  127    {
+//  128       x3 = x4;
+        MOVLT    R1,R12
+//  129    }
+//  130 
+//  131    if(x5 < x3)
+        CMP      R4,R1
+//  132    {
+//  133       x3 = x5;
+        MOVLT    R1,R4
+//  134    }
+//  135 
+//  136    return(x3);
+        POP      {R4}
+        CFI R4 SameValue
+        CFI CFA R13+0
+        MOV      R0,R1, LSL #+16
+        MOV      R0,R0, ASR #+16
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock3
+//  137 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_GAIN_decode??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE D_GAIN_decode
+//  138 
+//  139 
+//  140 /*
+//  141  * D_GAIN_decode
+//  142  *
+//  143  * Parameters:
+//  144  *    index             I: Quantization index
+//  145  *    nbits             I: number of bits (6 or 7)
+//  146  *    code              I: Innovative code vector
+//  147  *    L_subfr           I: Subframe size
+//  148  *    gain_pit          O: (Q14) Quantized pitch gain
+//  149  *    gain_code         O: (Q16) Quantized codebook gain
+//  150  *    bfi               I: Bad frame indicator
+//  151  *    prev_bfi          I: Previous BF indicator
+//  152  *    state             I: State of BFH
+//  153  *    unusable_frame    I: UF indicator
+//  154  *    vad_hist          I: number of non-speech frames
+//  155  *    mem             I/O: static memory (4 words)
+//  156  *
+//  157  *
+//  158  * Function:
+//  159  *    Decoding of pitch and codebook gains
+//  160  *
+//  161  * Returns:
+//  162  *    void
+//  163  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function D_GAIN_decode
+        ARM
+//  164 void D_GAIN_decode(Word16 index, Word16 nbits, Word16 code[], Word16 *gain_pit,
+//  165                    Word32 *gain_cod, Word16 bfi, Word16 prev_bfi,
+//  166                    Word16 state, Word16 unusable_frame, Word16 vad_hist,
+//  167                    Word16 *mem)
+//  168 {
+D_GAIN_decode:
+        PUSH     {R0,R1,R3-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+48
+        SUB      SP,SP,#+24
+        CFI CFA R13+72
+        LDR      R7,[SP, #+96]
+        LDR      R4,[SP, #+72]
+        LDRSH    R5,[SP, #+88]
+        LDRSH    R6,[SP, #+92]
+        MOV      R0,R2
+//  169 
+//  170    Word32 gcode0, qua_ener, L_tmp;
+//  171    const Word16 * p;
+//  172    Word16 *past_gain_pit, *past_gain_code, *past_qua_en, *prev_gc;
+//  173    Word16 *gbuf, *pbuf, *pbuf2;
+//  174    Word16 i, tmp, exp, frac, exp_gcode0, gcode_inov;
+//  175    Word16 g_code;
+//  176 
+//  177    past_qua_en = mem;
+//  178    past_gain_pit = mem + 4;
+//  179    past_gain_code = mem + 5;
+//  180    prev_gc = mem + 6;
+        ADD      R2,R7,#+12
+        STR      R2,[SP, #+12]
+//  181    pbuf = mem + 7;
+//  182    gbuf = mem + 12;
+//  183    pbuf2 = mem + 17;
+        ADD      R2,R7,#+34
+        STR      R2,[SP, #+16]
+//  184 
+//  185    /*
+//  186     * Find energy of code and compute:
+//  187     *
+//  188     *    L_tmp = 1.0 / sqrt(energy of code/ L_subfr)
+//  189     */
+//  190    L_tmp = D_UTIL_dot_product12(code, code, L_SUBFR, &exp);
+        ADD      R3,SP,#+4
+        MOV      R2,#+64
+        MOV      R1,R0
+        _BLF     D_UTIL_dot_product12,??D_UTIL_dot_product12??rA
+        STR      R0,[SP, #+0]
+//  191    exp = (Word16)(exp - (18 + 6));   /* exp: -18 (code in Q9), -6 (/L_subfr) */
+        LDRSH    R1,[SP, #+4]
+//  192    D_UTIL_normalised_inverse_sqrt(&L_tmp, &exp);
+        MOV      R0,SP
+        ADD      R8,R7,#+8
+        SUB      R1,R1,#+24
+        STRH     R1,[SP, #+4]
+        ADD      R1,SP,#+4
+        _BLF     D_UTIL_normalised_inverse_sqrt,??D_UTIL_normalised_inverse_sqrt??rA
+//  193 
+//  194    if(exp > 3)
+        LDRSH    R0,[SP, #+4]
+        LDR      R1,[SP, #+0]
+        CMP      R0,#+4
+        MOV      R2,R0
+//  195    {
+//  196       L_tmp <<= (exp - 3);
+        ADDGE    R2,R2,#+253
+        LSLGE    R1,R1,R2
+//  197    }
+//  198    else
+//  199    {
+//  200       L_tmp >>= (3 - exp);
+        RSBLT    R2,R2,#+3
+        ASRLT    R1,R1,R2
+        STR      R1,[SP, #+0]
+//  201    }
+//  202 
+//  203    gcode_inov = (Word16)(L_tmp >>16);   /* g_code_inov in Q12 */
+        LDR      R1,[SP, #+0]
+        ADD      R9,R7,#+10
+        ASR      R1,R1,#+16
+        STR      R1,[SP, #+20]
+//  204 
+//  205    /*
+//  206     * Case of erasure.
+//  207     */
+//  208    if(bfi != 0)
+        LDRSH    R0,[SP, #+76]
+        ADD      R10,R7,#+14
+        ADD      R11,R7,#+24
+        CMP      R0,#+0
+        BEQ      ??D_GAIN_decode_0
+//  209    {
+//  210       tmp = D_GAIN_median(&pbuf[2]);
+        ADD      R0,R10,#+4
+        BL       D_GAIN_median
+//  211       *past_gain_pit = tmp;
+//  212 
+//  213       if(*past_gain_pit > 15565)
+        MOV      R1,#+206
+        ORR      R1,R1,#0x3C00
+        CMP      R0,R1
+//  214       {
+//  215          *past_gain_pit = 15565;   /* 0.95 in Q14 */
+        SUBGE    R0,R1,#+1
+        STRH     R0,[R8, #+0]
+        LDRSH    R0,[SP, #+84]
+        CMP      R5,#+0
+//  216       }
+//  217 
+//  218       if(unusable_frame != 0)
+//  219       {
+//  220          *gain_pit =
+//  221             (Word16)((D_ROM_pdown_unusable[state] * *past_gain_pit) >> 15);
+        LDRNE    R1,??D_GAIN_decode_1  ;; D_ROM_pdown_unusable
+//  222       }
+//  223       else
+//  224       {
+//  225          *gain_pit =
+//  226             (Word16)((D_ROM_pdown_usable[state] * *past_gain_pit) >> 15);
+        LDREQ    R1,??D_GAIN_decode_1+0x4  ;; D_ROM_pdown_usable
+        ADD      R0,R1,R0, LSL #+1
+        LDRSH    R0,[R0, #+0]
+        LDRSH    R1,[R8, #+0]
+        MUL      R0,R1,R0
+        LDR      R1,[SP, #+32]
+        ASR      R0,R0,#+15
+        STRH     R0,[R1, #+0]
+//  227       }
+//  228 
+//  229       tmp = D_GAIN_median(&gbuf[2]);
+        ADD      R0,R11,#+4
+        BL       D_GAIN_median
+//  230 
+//  231       if(vad_hist > 2)
+        CMP      R6,#+3
+        BGE      ??D_GAIN_decode_2
+//  232       {
+//  233          *past_gain_code = tmp;
+//  234       }
+//  235       else
+//  236       {
+//  237          if(unusable_frame != 0)
+        LDRSH    R1,[SP, #+84]
+        CMP      R5,#+0
+//  238          {
+//  239             *past_gain_code =
+//  240                (Word16)((D_ROM_cdown_unusable[state] * tmp) >> 15);
+        LDRNE    R2,??D_GAIN_decode_1+0x8  ;; D_ROM_cdown_unusable
+//  241          }
+//  242          else
+//  243          {
+//  244             *past_gain_code =
+//  245                (Word16)((D_ROM_cdown_usable[state] * tmp) >> 15);
+        LDREQ    R2,??D_GAIN_decode_1+0xC  ;; D_ROM_cdown_usable
+        ADD      R1,R2,R1, LSL #+1
+        LDRSH    R1,[R1, #+0]
+        MUL      R1,R0,R1
+        ASR      R0,R1,#+15
+??D_GAIN_decode_2:
+        STRH     R0,[R9, #+0]
+//  246          }
+//  247       }
+//  248 
+//  249       /* update table of past quantized energies */
+//  250       L_tmp = past_qua_en[0] + past_qua_en[1]+ past_qua_en[2] + past_qua_en[3];
+//  251       qua_ener = L_tmp >> 2;
+//  252       qua_ener = qua_ener - 3072;   /* -3 in Q10 */
+        LDRSH    R0,[R7, #+0]
+        LDRSH    R1,[R7, #+2]
+        ADD      R0,R1,R0
+        LDRSH    R1,[R7, #+4]
+        ADD      R0,R1,R0
+        LDRSH    R1,[R7, #+6]
+        ADD      R0,R1,R0
+        MVN      R1,#+255
+        BIC      R1,R1,#0xB00
+        ADD      R0,R1,R0, ASR #+2
+//  253 
+//  254       if(qua_ener < - 14336)
+        CMN      R0,#+14336
+//  255       {
+//  256          qua_ener = -14336;   /* -14 in Q10 */
+        SUBLT    R0,R1,#+11264
+//  257       }
+//  258 
+//  259       past_qua_en[3] = past_qua_en[2];
+        LDRSH    R1,[R7, #+4]
+        STRH     R1,[R7, #+6]
+//  260       past_qua_en[2] = past_qua_en[1];
+        LDRSH    R1,[R7, #+2]
+        STRH     R1,[R7, #+4]
+//  261       past_qua_en[1] = past_qua_en[0];
+        LDRSH    R1,[R7, #+0]
+        STRH     R1,[R7, #+2]
+//  262       past_qua_en[0] = (Word16)qua_ener;
+        STRH     R0,[R7, #+0]
+//  263 
+//  264       for(i = 1; i < 5; i++)
+        MOV      R0,#+1
+//  265       {
+//  266          gbuf[i - 1] = gbuf[i];
+??D_GAIN_decode_3:
+        ADD      R1,R11,R0, LSL #+1
+        LDRSH    R2,[R1, #+0]
+//  267       }
+        ADD      R0,R0,#+1
+        CMP      R0,#+5
+        STRH     R2,[R1, #-2]
+        BLT      ??D_GAIN_decode_3
+//  268       gbuf[4] = *past_gain_code;
+        LDRSH    R0,[R9, #+0]
+        STRH     R0,[R11, #+8]
+//  269 
+//  270       for(i = 1; i < 5; i++)
+        MOV      R0,#+1
+//  271       {
+//  272          pbuf[i - 1] = pbuf[i];
+??D_GAIN_decode_4:
+        ADD      R1,R10,R0, LSL #+1
+        LDRSH    R2,[R1, #+0]
+//  273       }
+        ADD      R0,R0,#+1
+        CMP      R0,#+5
+        STRH     R2,[R1, #-2]
+        BLT      ??D_GAIN_decode_4
+//  274       pbuf[4] = *past_gain_pit;
+        LDRSH    R0,[R8, #+0]
+        STRH     R0,[R10, #+8]
+//  275 
+//  276       /* adjust gain according to energy of code */
+//  277       /* past_gain_code(Q3) * gcode_inov(Q12) => Q16 */
+//  278       *gain_cod = (*past_gain_code * gcode_inov) << 1;
+        LDRSH    R0,[R9, #+0]
+        LDR      R1,[SP, #+20]
+        MUL      R0,R1,R0
+        LSL      R0,R0,#+1
+        STR      R0,[R4, #+0]
+//  279 
+//  280       return;
+        ADD      SP,SP,#+36
+        CFI CFA R13+36
+        POP      {R4-R11,PC}
+        CFI CFA R13+72
+//  281    }
+//  282 
+//  283    /*
+//  284     * Compute gcode0.
+//  285     *  = Sum(i=0,1) pred[i]*past_qua_en[i] + mean_ener - ener_code
+//  286     */
+//  287 
+//  288    /* MEAN_ENER in Q24 = 0x1e000000 */
+//  289    /* MA prediction coeff = {0.5, 0.4, 0.3, 0.2} in Q13 */
+//  290    L_tmp = 0xF000000 + (4096 * past_qua_en[0]); /* Q13*Q10 -> Q24 */
+//  291    L_tmp = L_tmp + (3277 * past_qua_en[1]);     /* Q13*Q10 -> Q24 */
+//  292    L_tmp = L_tmp + (2458 * past_qua_en[2]);     /* Q13*Q10 -> Q24 */
+//  293    L_tmp = L_tmp + (1638 * past_qua_en[3]);     /* Q13*Q10 -> Q24 */
+//  294    gcode0 = L_tmp >> 15;               /* From Q24 to Q8 */
+//  295 
+//  296    /*
+//  297     * gcode0 = pow(10.0, gcode0/20)
+//  298     *        = pow(2, 3.321928*gcode0/20)
+//  299     *        = pow(2, 0.166096*gcode0)
+//  300     */
+//  301    L_tmp = (gcode0 * 5443) >> 7;
+??D_GAIN_decode_0:
+        LDRSH    R2,[R7, #+2]
+        LDRSH    R1,[R7, #+0]
+        MOV      R3,#+205
+        ORR      R3,R3,#0xC00
+        MUL      R2,R3,R2
+        MOV      R3,#+154
+        ADD      R1,R2,R1, LSL #+12
+        LDRSH    R2,[R7, #+4]
+        ORR      R3,R3,#0x900
+        MLA      R1,R3,R2,R1
+        LDRSH    R2,[R7, #+6]
+        SUB      R3,R3,#+820
+        MLA      R1,R3,R2,R1
+        MOV      R2,#+67
+        ADD      R1,R1,#+251658240
+        ASR      R1,R1,#+15
+        ORR      R2,R2,#0x1500
+        MUL      R1,R2,R1
+//  302    /* *0.166096 in Q15 -> Q24, From Q24 to Q16 */
+//  303    D_UTIL_l_extract(L_tmp, &exp_gcode0, &frac);
+        ADD      R2,SP,#+8
+        ASR      R1,R1,#+7
+        STR      R1,[SP, #+0]
+        LDR      R0,[SP, #+0]
+        ADD      R1,SP,#+6
+        _BLF     D_UTIL_l_extract,??D_UTIL_l_extract??rA
+//  304    /* Extract exponant of gcode0  */
+//  305    gcode0 = D_UTIL_pow2(14, frac); /* Put 14 as exponant so that */
+        LDRSH    R1,[SP, #+8]
+        MOV      R0,#+14
+        _BLF     D_UTIL_pow2,??D_UTIL_pow2??rA
+//  306 
+//  307    /*
+//  308     * output of Pow2() will be:
+//  309     * 16384 < Pow2() <= 32767
+//  310     */
+//  311    exp_gcode0 = (Word16)(exp_gcode0 - 14);
+        LDRSH    R2,[SP, #+6]
+        SUB      R2,R2,#+14
+        STRH     R2,[SP, #+6]
+//  312 
+//  313    /* Read the quantized gains */
+//  314    if(nbits == 6)
+        LDRSH    R2,[SP, #+28]
+        LDRSH    R1,[SP, #+24]
+        CMP      R2,#+6
+//  315    {
+//  316       p = &D_ROM_qua_gain6b[(index << 1)];
+        LDREQ    R2,??D_GAIN_decode_1+0x10  ;; D_ROM_qua_gain6b
+//  317    }
+//  318    else
+//  319    {
+//  320       p = &D_ROM_qua_gain7b[(index << 1)];
+        LDRNE    R2,??D_GAIN_decode_1+0x14  ;; D_ROM_qua_gain7b
+        ADD      R1,R2,R1, LSL #+2
+//  321    }
+//  322 
+//  323    *gain_pit = *p++; /* selected pitch gain in Q14 */
+        LDRSH    R3,[R1], #+2
+        LDR      R2,[SP, #+32]
+        STRH     R3,[R2, #+0]
+//  324    g_code = *p++;    /* selected code gain in Q11  */
+        LDRSH    R5,[R1, #+0]
+//  325    L_tmp = g_code * gcode0;
+        MUL      R2,R0,R5
+        STR      R2,[SP, #+0]
+//  326    exp_gcode0 += 5;
+        LDRSH    R1,[SP, #+6]
+        ADD      R1,R1,#+5
+        STRH     R1,[SP, #+6]
+//  327 
+//  328    if(exp_gcode0 >= 0)
+        LDRSH    R0,[SP, #+6]
+        LDRSH    R1,[SP, #+6]
+        CMP      R0,#+0
+        MOV      R0,R2
+//  329    {
+//  330       *gain_cod = L_tmp << exp_gcode0;    /* gain of code in Q16 */
+        LSLPL    R0,R0,R1
+//  331    }
+//  332    else
+//  333    {
+//  334       *gain_cod = L_tmp >> -exp_gcode0;   /* gain of code in Q16 */
+        RSBMI    R1,R1,#+0
+        ASRMI    R0,R0,R1
+        STR      R0,[R4, #+0]
+//  335    }
+//  336 
+//  337    if(prev_bfi == 1)
+        LDRSH    R0,[SP, #+80]
+        CMP      R0,#+1
+        BNE      ??D_GAIN_decode_5
+//  338    {
+//  339       L_tmp = (*prev_gc * 5120) << 1;  /* prev_gc(Q3) * 1.25(Q12) = Q16 */
+        LDR      R1,[SP, #+12]
+        MOV      R2,#+5120
+        LDRSH    R1,[R1, #+0]
+        MUL      R1,R2,R1
+        LSL      R1,R1,#+1
+        STR      R1,[SP, #+0]
+//  340 
+//  341       /* if((*gain_cod > ((*prev_gc) * 1.25)) && (*gain_cod > 100.0)) */
+//  342       if((*gain_cod > L_tmp) & (*gain_cod > 6553600))
+        LDR      R0,[R4, #+0]
+        CMP      R1,R0
+        BGE      ??D_GAIN_decode_5
+        MOV      R1,#+1
+        ORR      R1,R1,#0x640000
+        CMP      R0,R1
+//  343       {
+//  344          *gain_cod = L_tmp;
+        LDRGE    R0,[SP, #+0]
+        STRGE    R0,[R4, #+0]
+//  345       }
+//  346    }
+//  347 
+//  348    /* keep past gain code in Q3 for frame erasure (can saturate) */
+//  349    L_tmp = (*gain_cod + 0x1000) >> 13;
+??D_GAIN_decode_5:
+        LDR      R1,[R4, #+0]
+        ADD      R1,R1,#+4096
+        ASR      R1,R1,#+13
+        STR      R1,[SP, #+0]
+//  350 
+//  351    if(L_tmp < 32768)
+        MOV      R0,R1
+        CMP      R0,#+32768
+//  352    {
+//  353       *past_gain_code = (Word16)L_tmp;
+//  354    }
+//  355    else
+//  356    {
+//  357       *past_gain_code = 32767;
+        MOVGE    R0,#+255
+        ORRGE    R0,R0,#0x7F00
+        STRH     R0,[R9, #+0]
+//  358    }
+//  359 
+//  360    *past_gain_pit = *gain_pit;
+        LDR      R0,[SP, #+32]
+        LDRSH    R0,[R0, #+0]
+        STRH     R0,[R8, #+0]
+//  361    *prev_gc = *past_gain_code;
+        LDRSH    R1,[R9, #+0]
+        LDR      R0,[SP, #+12]
+        STRH     R1,[R0, #+0]
+//  362 
+//  363    for(i = 1; i < 5; i++)
+        MOV      R0,#+1
+//  364    {
+//  365       gbuf[i - 1] = gbuf[i];
+??D_GAIN_decode_6:
+        ADD      R1,R11,R0, LSL #+1
+        LDRSH    R2,[R1, #+0]
+//  366    }
+        ADD      R0,R0,#+1
+        CMP      R0,#+5
+        STRH     R2,[R1, #-2]
+        BLT      ??D_GAIN_decode_6
+//  367    gbuf[4] = *past_gain_code;
+        LDRSH    R0,[R9, #+0]
+        STRH     R0,[R11, #+8]
+//  368 
+//  369    for(i = 1; i < 5; i++)
+        MOV      R0,#+1
+//  370    {
+//  371       pbuf[i - 1] = pbuf[i];
+??D_GAIN_decode_7:
+        ADD      R1,R10,R0, LSL #+1
+        LDRSH    R2,[R1, #+0]
+//  372    }
+        ADD      R0,R0,#+1
+        CMP      R0,#+5
+        STRH     R2,[R1, #-2]
+        BLT      ??D_GAIN_decode_7
+//  373    pbuf[4] = *past_gain_pit;
+        LDRSH    R0,[R8, #+0]
+        STRH     R0,[R10, #+8]
+//  374 
+//  375    for(i = 1; i < 5; i++)
+        MOV      R0,#+1
+//  376    {
+//  377       pbuf2[i - 1] = pbuf2[i];
+??D_GAIN_decode_8:
+        LDR      R1,[SP, #+16]
+        ADD      R1,R1,R0, LSL #+1
+        LDRSH    R2,[R1, #+0]
+//  378    }
+        ADD      R0,R0,#+1
+        CMP      R0,#+5
+        STRH     R2,[R1, #-2]
+        BLT      ??D_GAIN_decode_8
+//  379    pbuf2[4] = *past_gain_pit;
+        LDRSH    R1,[R8, #+0]
+        LDR      R0,[SP, #+16]
+//  380 
+//  381    /* adjust gain according to energy of code */
+//  382    D_UTIL_l_extract(*gain_cod, &exp, &frac);
+        ADD      R2,SP,#+8
+        STRH     R1,[R0, #+8]
+        LDR      R0,[R4, #+0]
+        ADD      R1,SP,#+4
+        _BLF     D_UTIL_l_extract,??D_UTIL_l_extract??rA
+//  383    L_tmp = D_UTIL_mpy_32_16(exp, frac, gcode_inov);
+        LDRSH    R1,[SP, #+8]
+        LDRSH    R0,[SP, #+4]
+        LDR      R2,[SP, #+20]
+        MOV      R2,R2, LSL #+16
+        MOV      R2,R2, ASR #+16
+        _BLF     D_UTIL_mpy_32_16,??D_UTIL_mpy_32_16??rA
+        STR      R0,[SP, #+0]
+//  384 
+//  385    if(L_tmp < 0xFFFFFFF)
+        MVN      R1,#-268435456
+        CMP      R0,R1
+//  386    {
+//  387       *gain_cod = (L_tmp << 3);   /* gcode_inov in Q12 */
+        LSLLT    R0,R0,#+3
+//  388    }
+//  389    else
+//  390    {
+//  391       *gain_cod = 0x7FFFFFFF;
+        ORRGE    R0,R1,#0x70000000
+        STR      R0,[R4, #+0]
+//  392    }
+//  393 
+//  394    /*
+//  395     * qua_ener = 20*log10(g_code)
+//  396     *          = 6.0206*log2(g_code)
+//  397     *          = 6.0206*(log2(g_codeQ11) - 11)
+//  398     */
+//  399    L_tmp = (Word32)(g_code);
+        STR      R5,[SP, #+0]
+//  400    D_UTIL_log2(L_tmp, &exp, &frac);
+        LDR      R0,[SP, #+0]
+        ADD      R2,SP,#+8
+        ADD      R1,SP,#+4
+        _BLF     D_UTIL_log2,??D_UTIL_log2??rA
+//  401    exp = (Word16)(exp - 11);
+        LDRSH    R1,[SP, #+4]
+//  402    L_tmp = D_UTIL_mpy_32_16(exp, frac, 24660);   /* x 6.0206 in Q12 */
+        MOV      R2,#+84
+        ORR      R2,R2,#0x6000
+        SUB      R1,R1,#+11
+        STRH     R1,[SP, #+4]
+        LDRSH    R0,[SP, #+4]
+        LDRSH    R1,[SP, #+8]
+        _BLF     D_UTIL_mpy_32_16,??D_UTIL_mpy_32_16??rA
+        STR      R0,[SP, #+0]
+//  403    qua_ener = L_tmp >>3;   /* result in Q10 */
+//  404 
+//  405    /* update table of past quantized energies */
+//  406    past_qua_en[3] = past_qua_en[2];
+        LDRSH    R0,[R7, #+4]
+        STRH     R0,[R7, #+6]
+//  407    past_qua_en[2] = past_qua_en[1];
+        LDRSH    R0,[R7, #+2]
+        STRH     R0,[R7, #+4]
+//  408    past_qua_en[1] = past_qua_en[0];
+        LDRSH    R0,[R7, #+0]
+        STRH     R0,[R7, #+2]
+//  409    past_qua_en[0] = (Word16)qua_ener;
+        LDR      R0,[SP, #+0]
+        ASR      R0,R0,#+3
+        STRH     R0,[R7, #+0]
+//  410 
+//  411    return;
+        ADD      SP,SP,#+36
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        DATA
+??D_GAIN_decode_1:
+        DC32     D_ROM_pdown_unusable
+        DC32     D_ROM_pdown_usable
+        DC32     D_ROM_cdown_unusable
+        DC32     D_ROM_cdown_usable
+        DC32     D_ROM_qua_gain6b
+        DC32     D_ROM_qua_gain7b
+        CFI EndBlock cfiBlock5
+//  412 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_GAIN_adaptive_control??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE D_GAIN_adaptive_control
+//  413 
+//  414 
+//  415 /*
+//  416  * D_GAIN_adaptive_control
+//  417  *
+//  418  * Parameters:
+//  419  *    sig_in            I: postfilter input signal
+//  420  *    sig_out         I/O: postfilter output signal
+//  421  *    l_trm             I: subframe size
+//  422  *
+//  423  * Function:
+//  424  *    Adaptive gain control is used to compensate for
+//  425  *    the gain difference between the non-emphasized excitation and
+//  426  *    emphasized excitation.
+//  427  *
+//  428  * Returns:
+//  429  *    void
+//  430  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function D_GAIN_adaptive_control
+        ARM
+//  431 void D_GAIN_adaptive_control(Word16 *sig_in, Word16 *sig_out, Word16 l_trm)
+//  432 {
+D_GAIN_adaptive_control:
+        PUSH     {R4-R10,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R10 Frame(CFA, -8)
+        CFI R9 Frame(CFA, -12)
+        CFI R8 Frame(CFA, -16)
+        CFI R7 Frame(CFA, -20)
+        CFI R6 Frame(CFA, -24)
+        CFI R5 Frame(CFA, -28)
+        CFI R4 Frame(CFA, -32)
+        CFI CFA R13+32
+        MOV      R4,R0
+        MOV      R5,R1
+//  433    Word32 s, temp, i, exp;
+//  434    Word32 gain_in, gain_out, g0;
+//  435 
+//  436    /* calculate gain_out with exponent */
+//  437    temp = sig_out[0] >> 2;
+        LDRSH    R0,[R5, #+0]
+        MOV      R6,R2
+//  438    s = temp * temp;
+//  439 
+//  440    for(i = 1; i < l_trm; i++)
+        MOV      R8,#+1
+        ASR      R0,R0,#+2
+        MUL      R1,R0,R0
+        MOV      R7,R6
+        CMP      R6,#+2
+        BGE      ??D_GAIN_adaptive_control_0
+        B        ??D_GAIN_adaptive_control_1
+//  441    {
+//  442       temp = sig_out[i] >> 2;
+??D_GAIN_adaptive_control_2:
+        ADD      R0,R5,R8, LSL #+1
+        LDRSH    R0,[R0, #+0]
+//  443       s += temp * temp;
+//  444    }
+        ADD      R8,R8,#+1
+        ASR      R0,R0,#+2
+        MLA      R1,R0,R0,R1
+??D_GAIN_adaptive_control_0:
+        CMP      R8,R7
+        BLT      ??D_GAIN_adaptive_control_2
+//  445 
+//  446    s <<= 1;
+??D_GAIN_adaptive_control_1:
+        LSLS     R10,R1,#+1
+//  447 
+//  448    if(s == 0)
+        POPEQ    {R4-R10,PC}
+//  449    {
+//  450       return;
+//  451    }
+//  452    exp = (D_UTIL_norm_l(s) - 1);
+        MOV      R0,R10
+        _BLF     D_UTIL_norm_l,??D_UTIL_norm_l??rA
+        SUBS     R8,R0,#+1
+//  453 
+//  454    if(exp >= 0)
+//  455    {
+//  456       gain_out = ((s << exp) + 0x8000) >> 16;
+        MOVPL    R0,#+32768
+        ADDPL    R0,R0,R10, LSL R8
+        BPL      ??D_GAIN_adaptive_control_3
+//  457    }
+//  458    else
+//  459    {
+//  460       gain_out = ((s >> -exp) + 0x8000) >> 16;
+        MOV      R0,R8
+        RSB      R0,R0,#+0
+        MOV      R1,#+32768
+        ADD      R0,R1,R10, ASR R0
+??D_GAIN_adaptive_control_3:
+        ASR      R9,R0,#+16
+//  461    }
+//  462 
+//  463    /* calculate gain_in with exponent */
+//  464    temp = sig_in[0] >> 2;
+        LDRSH    R0,[R4, #+0]
+//  465    s = temp * temp;
+//  466 
+//  467    for(i = 1; i < l_trm; i++)
+        MOV      R2,#+1
+        CMP      R6,#+2
+        ASR      R0,R0,#+2
+        MUL      R1,R0,R0
+        BGE      ??D_GAIN_adaptive_control_4
+        B        ??D_GAIN_adaptive_control_5
+//  468    {
+//  469       temp = sig_in[i] >> 2;
+??D_GAIN_adaptive_control_6:
+        ADD      R0,R4,R2, LSL #+1
+        LDRSH    R0,[R0, #+0]
+//  470       s += temp * temp;
+//  471    }
+        ADD      R2,R2,#+1
+        ASR      R0,R0,#+2
+        MLA      R1,R0,R0,R1
+??D_GAIN_adaptive_control_4:
+        CMP      R2,R7
+        BLT      ??D_GAIN_adaptive_control_6
+//  472 
+//  473    s <<= 1;
+??D_GAIN_adaptive_control_5:
+        LSLS     R10,R1,#+1
+//  474 
+//  475    if(s == 0)
+//  476    {
+//  477       g0 = 0;
+        MOVEQ    R4,#+0
+        BEQ      ??D_GAIN_adaptive_control_7
+//  478    }
+//  479    else
+//  480    {
+//  481       i = D_UTIL_norm_l(s);
+        MOV      R0,R10
+        _BLF     D_UTIL_norm_l,??D_UTIL_norm_l??rA
+        MOV      R2,R0
+//  482       s = ((s << i) + 0x8000) >> 16;
+        MOV      R0,#+32768
+        ADD      R0,R0,R10, LSL R2
+        ASR      R10,R0,#+16
+//  483 
+//  484       if((s < 32768) & (s > 0))
+        CMP      R10,#+32768
+        BGE      ??D_GAIN_adaptive_control_8
+        CMP      R10,#+1
+        BGE      ??D_GAIN_adaptive_control_9
+//  485       {
+//  486          gain_in = s;
+//  487       }
+//  488       else
+//  489       {
+//  490          gain_in = 32767;
+??D_GAIN_adaptive_control_8:
+        MOV      R10,#+255
+        ORR      R10,R10,#0x7F00
+//  491       }
+//  492       exp = exp - i;
+//  493 
+//  494       /*
+//  495        * g0 = sqrt(gain_in/gain_out)
+//  496        */
+//  497       s = (gain_out << 15) / gain_in;
+//  498       s = s << (7 - exp);   /* s = gain_out / gain_in */
+//  499       s = D_UTIL_inverse_sqrt(s);
+//  500       g0 = ((s << 9) + 0x8000) >> 16;
+??D_GAIN_adaptive_control_9:
+        LSL      R0,R9,#+15
+        MOV      R1,R10
+        _BLF     ??div32_a,??rA??div32_a
+        RSB      R0,R8,#+7
+        ADD      R0,R2,R0
+        LSL      R0,R1,R0
+        _BLF     D_UTIL_inverse_sqrt,??D_UTIL_inverse_sqrt??rA
+        MOV      R1,#+32768
+        ADD      R0,R1,R0, LSL #+9
+        ASR      R4,R0,#+16
+//  501    }
+//  502 
+//  503    /* sig_out(n) = gain(n) sig_out(n) */
+//  504    for(i = 0; i < l_trm; i++)
+??D_GAIN_adaptive_control_7:
+        MOV      R8,#+0
+        CMP      R6,#+1
+        BGE      ??D_GAIN_adaptive_control_10
+        POP      {R4-R10,PC}
+//  505    {
+//  506       s = (sig_out[i] * g0) >> 13;
+//  507       sig_out[i] = D_UTIL_saturate(s);
+??D_GAIN_adaptive_control_11:
+        ADD      R6,R5,R8, LSL #+1
+        LDRSH    R0,[R6, #+0]
+//  508    }
+        ADD      R8,R8,#+1
+        MUL      R0,R4,R0
+        ASR      R0,R0,#+13
+        _BLF     D_UTIL_saturate,??D_UTIL_saturate??rA
+        STRH     R0,[R6, #+0]
+??D_GAIN_adaptive_control_10:
+        CMP      R8,R7
+        BLT      ??D_GAIN_adaptive_control_11
+        POP      {R4-R10,PC}      ;; return
+        CFI EndBlock cfiBlock7
+//  509 
+//  510    return;
+//  511 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_GAIN_lag_concealment_init??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE D_GAIN_lag_concealment_init
+//  512 
+//  513 
+//  514 /*
+//  515  * D_GAIN_insert_lag
+//  516  *
+//  517  * Parameters:
+//  518  *    array        I/O: pitch lag history
+//  519  *    n              I: history size
+//  520  *    x              I: lag value
+//  521  *
+//  522  * Function:
+//  523  *    Insert lag into correct location
+//  524  *
+//  525  * Returns:
+//  526  *    void
+//  527  */
+//  528 static void D_GAIN_insert_lag(Word16 array[], Word32 n, Word16 x)
+//  529 {
+//  530    Word32 i;
+//  531 
+//  532    for(i = n - 1; i >= 0; i--)
+//  533    {
+//  534       if(x < array[i])
+//  535       {
+//  536          array[i + 1] = array[i];
+//  537       }
+//  538       else
+//  539       {
+//  540          break;
+//  541       }
+//  542    }
+//  543 
+//  544    array[i + 1] = x;
+//  545 }
+//  546 
+//  547 
+//  548 /*
+//  549  * D_GAIN_sort_lag
+//  550  *
+//  551  * Parameters:
+//  552  *    array        I/O: pitch lag history
+//  553  *    n              I: history size
+//  554  *
+//  555  * Function:
+//  556  *    Sorting of the lag history
+//  557  *
+//  558  * Returns:
+//  559  *    void
+//  560  */
+//  561 static void D_GAIN_sort_lag(Word16 array[], Word16 n)
+//  562 {
+//  563    Word32 i;
+//  564 
+//  565    for(i = 0; i < n; i++)
+//  566    {
+//  567       D_GAIN_insert_lag(array, i, array[i]);
+//  568    }
+//  569 }
+//  570 
+//  571 
+//  572 /*
+//  573  * D_GAIN_lag_concealment_init
+//  574  *
+//  575  * Parameters:
+//  576  *    lag_hist       O: pitch lag history
+//  577  *
+//  578  * Function:
+//  579  *    Initialise lag history to 64
+//  580  *
+//  581  * Returns:
+//  582  *    void
+//  583  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function D_GAIN_lag_concealment_init
+        ARM
+//  584 void D_GAIN_lag_concealment_init(Word16 lag_hist[])
+//  585 {
+//  586    Word32 i;
+//  587 
+//  588    for(i = 0; i < L_LTPHIST; i++)
+D_GAIN_lag_concealment_init:
+        MOV      R1,#+0
+        MOV      R3,#+64
+//  589    {
+//  590       lag_hist[i] = 64;
+??D_GAIN_lag_concealment_init_0:
+        ADD      R2,R0,R1, LSL #+1
+        STRH     R3,[R2, #+0]
+//  591    }
+        ADD      R1,R1,#+1
+        CMP      R1,#+5
+        BLT      ??D_GAIN_lag_concealment_init_0
+//  592 }
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock9
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_GAIN_lag_concealment??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock10
+        REQUIRE D_GAIN_lag_concealment
+//  593 
+//  594 
+//  595 /*
+//  596  * D_GAIN_lag_concealment
+//  597  *
+//  598  * Parameters:
+//  599  *    gain_hist         I: gain history
+//  600  *    lag_hist          I: pitch lag history
+//  601  *    T0                O: current lag
+//  602  *    old_T0            I: previous lag
+//  603  *    seed            I/O: seed for random
+//  604  *    unusable_frame    I: lost frame
+//  605  *
+//  606  * Function:
+//  607  *    Concealment of LTP lags during bad frames
+//  608  *
+//  609  * Returns:
+//  610  *    void
+//  611  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock11 Using cfiCommon1
+        CFI Function D_GAIN_lag_concealment
+        ARM
+//  612 void D_GAIN_lag_concealment(Word16 gain_hist[], Word16 lag_hist[],
+//  613                             Word32 *T0, Word16 *old_T0, Word16 *seed,
+//  614                             Word16 unusable_frame)
+//  615 {
+D_GAIN_lag_concealment:
+        PUSH     {R2,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+40
+        SUB      SP,SP,#+12
+        CFI CFA R13+52
+        LDRSH    R12,[SP, #+56]
+        MOV      R2,R0
+        LDR      R0,[SP, #+52]
+//  616    Word32 i, lagDif, tmp, tmp2, D2, meanLag = 0;
+//  617    Word16 lag_hist2[L_LTPHIST] = {0};
+        MOV      R4,SP
+        MOV      R5,#+0
+        MOV      R6,#+0
+        MOV      R7,R5
+        STM      R4,{R5-R7}
+//  618    Word16 maxLag, minLag, lastLag;
+//  619    Word16 minGain, lastGain, secLastGain;
+//  620    Word16 D;
+//  621 
+//  622    /*
+//  623     * Is lag index such that it can be aplied directly
+//  624     * or does it has to be subtituted
+//  625     */
+//  626    lastGain = gain_hist[4];
+//  627    secLastGain = gain_hist[3];
+//  628    lastLag = lag_hist[0];
+        LDRSH    R8,[R1, #+0]
+        LDRSH    LR,[R2, #+8]
+        LDRSH    R7,[R2, #+6]
+//  629 
+//  630    /* SMALLEST history lag */
+//  631    minLag = lag_hist[0];
+        MOV      R9,R8
+//  632 
+//  633    for(i = 1; i < L_LTPHIST; i++)
+        MOV      R4,#+1
+//  634    {
+//  635       if(lag_hist[i] < minLag)
+??D_GAIN_lag_concealment_0:
+        ADD      R5,R1,R4, LSL #+1
+        LDRSH    R6,[R5, #+0]
+//  636       {
+//  637          minLag = lag_hist[i];
+//  638       }
+//  639    }
+        ADD      R4,R4,#+1
+        CMP      R6,R9
+        MOVLT    R9,R6
+        CMP      R4,#+5
+        BLT      ??D_GAIN_lag_concealment_0
+//  640 
+//  641    /* BIGGEST history lag */
+//  642    maxLag = lag_hist[0];
+        MOV      R6,R8
+//  643 
+//  644    for(i = 1; i < L_LTPHIST; i++)
+        MOV      R4,#+1
+//  645    {
+//  646       if(lag_hist[i] > maxLag)
+??D_GAIN_lag_concealment_1:
+        ADD      R5,R1,R4, LSL #+1
+        LDRSH    R10,[R5, #+0]
+//  647       {
+//  648          maxLag = lag_hist[i];
+//  649       }
+//  650    }
+        ADD      R4,R4,#+1
+        CMP      R6,R10
+        MOVLT    R6,R10
+        CMP      R4,#+5
+        BLT      ??D_GAIN_lag_concealment_1
+//  651 
+//  652    /* SMALLEST history gain */
+//  653    minGain = gain_hist[0];
+        LDRSH    R10,[R2, #+0]
+//  654 
+//  655    for(i = 1; i < L_LTPHIST; i++)
+        MOV      R11,#+1
+//  656    {
+//  657       if(gain_hist[i] < minGain)
+??D_GAIN_lag_concealment_2:
+        ADD      R4,R2,R11, LSL #+1
+        LDRSH    R5,[R4, #+0]
+//  658       {
+//  659          minGain = gain_hist[i];
+//  660       }
+//  661    }
+        ADD      R11,R11,#+1
+        CMP      R5,R10
+        MOVLT    R10,R5
+        CMP      R11,#+5
+        BLT      ??D_GAIN_lag_concealment_2
+//  662 
+//  663    /* Difference between MAX and MIN lag */
+//  664    lagDif = maxLag - minLag;
+        SUB      R4,R6,R9
+//  665 
+//  666    if(unusable_frame != 0)
+        MOV      R5,R9
+        MOV      R2,#+1
+        ORR      R2,R2,#0x2000
+        CMP      R12,#+0
+        BEQ      ??D_GAIN_lag_concealment_3
+//  667    {
+//  668       /*
+//  669        * LTP-lag for RX_SPEECH_LOST
+//  670        * Recognition of the LTP-history
+//  671        */
+//  672       if((minGain > 8192) & (lagDif < 10))
+        CMP      R10,R2
+        BLT      ??D_GAIN_lag_concealment_4
+        CMP      R4,#+10
+//  673       {
+//  674          *T0 = *old_T0;
+        LDRSHLT  R0,[R3, #+0]
+        BLT      ??D_GAIN_lag_concealment_5
+//  675       }
+//  676       else if((lastGain > 8192) && (secLastGain > 8192))
+??D_GAIN_lag_concealment_4:
+        CMP      LR,R2
+        CMPGE    R7,R2
+//  677       {
+//  678          *T0 = lag_hist[0];
+        MOVGE    R0,R8
+        BGE      ??D_GAIN_lag_concealment_5
+//  679       }
+//  680       else
+//  681       {
+//  682          /*
+//  683           * SORT
+//  684           * The sorting of the lag history
+//  685           */
+//  686          for(i = 0; i < L_LTPHIST; i++)
+        MOV      R11,#+0
+//  687          {
+//  688             lag_hist2[i] = lag_hist[i];
+??D_GAIN_lag_concealment_6:
+        ADD      R3,R1,R11, LSL #+1
+        LDRSH    R3,[R3, #+0]
+        MOV      R2,SP
+        ADD      R2,R2,R11, LSL #+1
+        STRH     R3,[R2, #+0]
+//  689          }
+        ADD      R11,R11,#+1
+        CMP      R11,#+5
+        BLT      ??D_GAIN_lag_concealment_6
+//  690          D_GAIN_sort_lag(lag_hist2, 5);
+        MOV      R1,#+0
+??D_GAIN_lag_concealment_7:
+        MOV      R2,SP
+        ADD      R2,R2,R1, LSL #+1
+        LDRSH    R2,[R2, #+0]
+        SUB      R3,R1,#+1
+        B        ??D_GAIN_lag_concealment_8
+??D_GAIN_lag_concealment_9:
+        STRH     R7,[R4, #+2]
+        SUB      R3,R3,#+1
+??D_GAIN_lag_concealment_8:
+        MOV      R4,SP
+        ADD      R4,R4,R3, LSL #+1
+        CMP      R3,#+0
+        BMI      ??D_GAIN_lag_concealment_10
+        LDRSH    R7,[R4, #+0]
+        CMP      R2,R7
+        BLT      ??D_GAIN_lag_concealment_9
+??D_GAIN_lag_concealment_10:
+        STRH     R2,[R4, #+2]
+        ADD      R1,R1,#+1
+        CMP      R1,#+5
+        BLT      ??D_GAIN_lag_concealment_7
+//  691 
+//  692          /*
+//  693           * Lag is weighted towards bigger lags
+//  694           * and random variation is added
+//  695           */
+//  696          lagDif = (lag_hist2[4] - lag_hist2[2]);
+        LDRSH    R7,[SP, #+4]
+        LDRSH    R8,[SP, #+8]
+        SUB      R4,R8,R7
+//  697 
+//  698          if(lagDif > 40)
+        CMP      R4,#+41
+//  699          {
+//  700             lagDif = 40;
+        MOVGE    R4,#+40
+//  701          }
+//  702 
+//  703          D = D_UTIL_random(seed);   /* D={-1, ...,1} */
+        _BLF     D_UTIL_random,??D_UTIL_random??rA
+//  704 
+//  705          /* D2={-lagDif/2..lagDif/2} */
+//  706          tmp = lagDif >> 1;
+//  707          D2 = (tmp * D) >> 15;
+//  708          tmp = (lag_hist2[2] + lag_hist2[3]) + lag_hist2[4];
+//  709          *T0 = ((tmp * ONE_PER_3) >> 15) + D2;
+        LDRSH    R1,[SP, #+6]
+        MOV      R2,#+171
+        ORR      R2,R2,#0x2A00
+        ADD      R1,R1,R7
+        ADD      R1,R8,R1
+        MUL      R1,R2,R1
+        ASR      R2,R4,#+1
+        MUL      R2,R0,R2
+        ASR      R0,R2,#+15
+        ADD      R0,R0,R1, ASR #+15
+//  710       }
+//  711 
+//  712       /* New lag is not allowed to be bigger or smaller than last lag values */
+//  713       if(*T0 > maxLag)
+//  714       {
+//  715          *T0 = maxLag;
+??D_GAIN_lag_concealment_5:
+        LDR      R1,[SP, #+12]
+        CMP      R6,R0
+        MOVLT    R0,R6
+        STR      R0,[R1, #+0]
+//  716       }
+//  717 
+//  718       if(*T0 < minLag)
+        CMP      R0,R5
+        POPGE    {R0-R11,PC}
+//  719       {
+//  720          *T0 = minLag;
+        LDR      R0,[SP, #+12]
+        STR      R5,[R0, #+0]
+        POP      {R0-R11,PC}
+//  721       }
+//  722    }
+//  723    else
+//  724    {
+//  725       /*
+//  726        * LTP-lag for RX_BAD_FRAME
+//  727        * MEAN lag
+//  728        */
+//  729       meanLag = 0;
+??D_GAIN_lag_concealment_3:
+        MOV      R3,#+0
+//  730 
+//  731       for(i = 0; i < L_LTPHIST; i++)
+        MOV      R11,#+0
+//  732       {
+//  733          meanLag = meanLag + lag_hist[i];
+??D_GAIN_lag_concealment_11:
+        ADD      R12,R1,R11, LSL #+1
+        LDRSH    R12,[R12, #+0]
+//  734       }
+        ADD      R11,R11,#+1
+        CMP      R11,#+5
+        ADD      R3,R12,R3
+        BLT      ??D_GAIN_lag_concealment_11
+//  735 
+//  736       meanLag = (meanLag * ONE_PER_LTPHIST) >> 15;
+        MOV      R11,#+154
+        ORR      R11,R11,#0x1900
+        MUL      R3,R11,R3
+//  737       tmp = *T0 - maxLag;
+//  738       tmp2 = *T0 - lastLag;
+        LDR      R11,[SP, #+12]
+        ASR      R3,R3,#+15
+        LDR      R11,[R11, #+0]
+//  739 
+//  740       if((lagDif < 10) & (*T0 > (minLag - 5)) & (tmp < 5))
+        CMP      R4,#+10
+        SUB      R8,R11,R8
+        SUBLT    R9,R9,#+5
+        CMPLT    R9,R11
+        SUBLT    R9,R11,R6
+        CMPLT    R9,#+5
+        POPLT    {R0-R11,PC}
+//  741       {
+//  742          *T0 = *T0;
+//  743       }
+//  744       else if((lastGain > 8192) & (secLastGain > 8192) & ((tmp2 > - 10)
+//  745          & (tmp2 < 10)))
+        CMP      LR,R2
+        CMPGE    R7,R2
+        CMNGE    R8,#+9
+        BLT      ??D_GAIN_lag_concealment_12
+        CMP      R8,#+10
+        POPLT    {R0-R11,PC}
+//  746       {
+//  747          *T0 = *T0;
+//  748       }
+//  749       else if((minGain < 6554) & (lastGain == minGain) & ((*T0 > minLag)
+//  750          & (*T0 < maxLag)))
+??D_GAIN_lag_concealment_12:
+        MOV      R8,#+154
+        ORR      R8,R8,#0x1900
+        CMP      R10,R8
+        BGE      ??D_GAIN_lag_concealment_13
+        CMP      LR,R10
+        BNE      ??D_GAIN_lag_concealment_13
+        CMP      R5,R11
+        CMPLT    R11,R6
+        POPLT    {R0-R11,PC}
+//  751       {
+//  752          *T0 = *T0;
+//  753       }
+//  754       else if((lagDif < 70) & (*T0 > minLag) & (*T0 < maxLag))
+??D_GAIN_lag_concealment_13:
+        CMP      R4,#+70
+        CMPLT    R5,R11
+        CMPLT    R11,R6
+        POPLT    {R0-R11,PC}
+//  755       {
+//  756          *T0 = *T0;
+//  757       }
+//  758       else if((*T0 > meanLag) & (*T0 < maxLag))
+        CMP      R3,R11
+        CMPLT    R11,R6
+        POPLT    {R0-R11,PC}
+//  759       {
+//  760          *T0 = *T0;
+//  761       }
+//  762       else
+//  763       {
+//  764          if((minGain > 8192) & (lagDif < 10))
+        CMP      R10,R2
+        BLT      ??D_GAIN_lag_concealment_14
+        CMP      R4,#+10
+        BGE      ??D_GAIN_lag_concealment_14
+//  765          {
+//  766             *T0 = lag_hist[0];
+??D_GAIN_lag_concealment_15:
+        LDRSH    R0,[R1, #+0]
+        B        ??D_GAIN_lag_concealment_16
+//  767          }
+//  768          else if((lastGain > 8192) & (secLastGain > 8192))
+??D_GAIN_lag_concealment_14:
+        CMP      LR,R2
+        CMPGE    R7,R2
+        BGE      ??D_GAIN_lag_concealment_15
+//  769          {
+//  770             *T0 = lag_hist[0];
+//  771          }
+//  772          else
+//  773          {
+//  774             /*
+//  775              * SORT
+//  776              * The sorting of the lag history
+//  777              */
+//  778             for(i = 0; i < L_LTPHIST; i++)
+        MOV      R11,#+0
+//  779             {
+//  780                lag_hist2[i] = lag_hist[i];
+??D_GAIN_lag_concealment_17:
+        ADD      R3,R1,R11, LSL #+1
+        LDRSH    R3,[R3, #+0]
+        MOV      R2,SP
+        ADD      R2,R2,R11, LSL #+1
+        STRH     R3,[R2, #+0]
+//  781             }
+        ADD      R11,R11,#+1
+        CMP      R11,#+5
+        BLT      ??D_GAIN_lag_concealment_17
+//  782 
+//  783             D_GAIN_sort_lag(lag_hist2, 5);
+        MOV      R1,#+0
+??D_GAIN_lag_concealment_18:
+        MOV      R2,SP
+        ADD      R2,R2,R1, LSL #+1
+        LDRSH    R2,[R2, #+0]
+        SUB      R3,R1,#+1
+        B        ??D_GAIN_lag_concealment_19
+??D_GAIN_lag_concealment_20:
+        STRH     R7,[R4, #+2]
+        SUB      R3,R3,#+1
+??D_GAIN_lag_concealment_19:
+        MOV      R4,SP
+        ADD      R4,R4,R3, LSL #+1
+        CMP      R3,#+0
+        BMI      ??D_GAIN_lag_concealment_21
+        LDRSH    R7,[R4, #+0]
+        CMP      R2,R7
+        BLT      ??D_GAIN_lag_concealment_20
+??D_GAIN_lag_concealment_21:
+        STRH     R2,[R4, #+2]
+        ADD      R1,R1,#+1
+        CMP      R1,#+5
+        BLT      ??D_GAIN_lag_concealment_18
+//  784 
+//  785             /*
+//  786              * Lag is weighted towards bigger lags
+//  787              * and random variation is added
+//  788              */
+//  789             lagDif = lag_hist2[4] - lag_hist2[2];
+        LDRSH    R7,[SP, #+4]
+        LDRSH    R8,[SP, #+8]
+        SUB      R4,R8,R7
+//  790 
+//  791             if(lagDif > 40)
+        CMP      R4,#+41
+//  792             {
+//  793                lagDif = 40;
+        MOVGE    R4,#+40
+//  794             }
+//  795 
+//  796             D = D_UTIL_random(seed);   /* D={-1,.., 1} */
+        _BLF     D_UTIL_random,??D_UTIL_random??rA
+//  797 
+//  798             /* D2={-lagDif/2..lagDif/2} */
+//  799             tmp = lagDif >> 1;
+//  800             D2 = (tmp * D) >> 15;
+//  801             tmp = (lag_hist2[2] + lag_hist2[3]) + lag_hist2[4];
+//  802             *T0 = ((tmp * ONE_PER_3) >> 15) + D2;
+        LDRSH    R1,[SP, #+6]
+        MOV      R2,#+171
+        ORR      R2,R2,#0x2A00
+        ADD      R1,R1,R7
+        ADD      R1,R8,R1
+        MUL      R1,R2,R1
+        ASR      R2,R4,#+1
+        MUL      R2,R0,R2
+        ASR      R0,R2,#+15
+        ADD      R0,R0,R1, ASR #+15
+//  803          }
+//  804 
+//  805          /*
+//  806           * New lag is not allowed to be bigger or
+//  807           * smaller than last lag values
+//  808           */
+//  809          if(*T0 > maxLag)
+//  810          {
+//  811             *T0 = maxLag;
+??D_GAIN_lag_concealment_16:
+        LDR      R1,[SP, #+12]
+        CMP      R6,R0
+        MOVLT    R0,R6
+        STR      R0,[R1, #+0]
+//  812          }
+//  813 
+//  814          if(*T0 < minLag)
+        CMP      R0,R5
+//  815          {
+//  816             *T0 = minLag;
+        LDRLT    R0,[SP, #+12]
+        STRLT    R5,[R0, #+0]
+//  817          }
+//  818       }
+//  819    }
+//  820 }
+        POP      {R0-R11,PC}      ;; return
+        CFI EndBlock cfiBlock11
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock12 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_GAIN_adaptive_codebook_excitation??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock12
+        REQUIRE D_GAIN_adaptive_codebook_excitation
+//  821 
+//  822 
+//  823 /*
+//  824  * D_GAIN_adaptive_codebook_excitation
+//  825  *
+//  826  * Parameters:
+//  827  *    exc          I/O: excitation buffer
+//  828  *    T0             I: integer pitch lag
+//  829  *    frac           I: fraction of lag
+//  830  *
+//  831  * Function:
+//  832  *    Compute the result of Word32 term prediction with fractional
+//  833  *    interpolation of resolution 1/4.
+//  834  *
+//  835  * Returns:
+//  836  *    interpolated signal (adaptive codebook excitation)
+//  837  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock13 Using cfiCommon1
+        CFI Function D_GAIN_adaptive_codebook_excitation
+        ARM
+//  838 void D_GAIN_adaptive_codebook_excitation(Word16 exc[], Word32 T0, Word32 frac)
+//  839 {
+D_GAIN_adaptive_codebook_excitation:
+        PUSH     {R4-R7,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R7 Frame(CFA, -8)
+        CFI R6 Frame(CFA, -12)
+        CFI R5 Frame(CFA, -16)
+        CFI R4 Frame(CFA, -20)
+        CFI CFA R13+20
+        MOV      R4,R0
+//  840    Word32 i, j, k, sum;
+//  841    Word16 *x;
+//  842 
+//  843    x = &exc[ - T0];
+        RSB      R0,R1,#+0
+        ADD      R0,R4,R0, LSL #+1
+//  844    frac = -(frac);
+        RSBS     R5,R2,#+0
+//  845 
+//  846    if(frac < 0)
+//  847    {
+//  848       frac = (frac + UP_SAMP);
+        ADDMI    R5,R5,#+4
+//  849       x--;
+        SUBMI    R0,R0,#+2
+//  850    }
+//  851    x = x - L_INTERPOL2 + 1;
+        SUB      R6,R0,#+30
+//  852 
+//  853    for(j = 0; j < L_SUBFR + 1; j++)
+        MOV      R7,#+0
+//  854    {
+//  855       sum = 0L;
+??D_GAIN_adaptive_codebook_excitation_0:
+        MOV      R0,#+0
+//  856 
+//  857       for(i = 0, k = ((UP_SAMP - 1) - frac); i < 2 * L_INTERPOL2; i++,
+        MOV      R1,#+0
+        RSB      R2,R5,#+3
+//  858          k += UP_SAMP)
+//  859       {
+//  860          sum += x[i] * D_ROM_inter4_2[k];
+??D_GAIN_adaptive_codebook_excitation_1:
+        LDR      R12,??D_GAIN_adaptive_codebook_excitation_2  ;; D_ROM_inter4_2
+        ADD      R3,R6,R1, LSL #+1
+        LDRSH    R3,[R3, #+0]
+        ADD      R12,R12,R2, LSL #+1
+        LDRSH    R12,[R12, #+0]
+//  861       }
+        ADD      R1,R1,#+1
+        ADD      R2,R2,#+4
+        MLA      R0,R12,R3,R0
+        CMP      R1,#+32
+        BLT      ??D_GAIN_adaptive_codebook_excitation_1
+//  862       sum = (sum + 0x2000) >> 14;
+//  863 
+//  864       exc[j] = D_UTIL_saturate(sum);
+        ADD      R0,R0,#+8192
+        ASR      R0,R0,#+14
+        _BLF     D_UTIL_saturate,??D_UTIL_saturate??rA
+        ADD      R1,R4,R7, LSL #+1
+        STRH     R0,[R1, #+0]
+//  865 
+//  866       x++;
+        ADD      R6,R6,#+2
+//  867    }
+        ADD      R7,R7,#+1
+        CMP      R7,#+65
+        BLT      ??D_GAIN_adaptive_codebook_excitation_0
+//  868    return;
+        POP      {R4-R7,PC}       ;; return
+        DATA
+??D_GAIN_adaptive_codebook_excitation_2:
+        DC32     D_ROM_inter4_2
+        CFI EndBlock cfiBlock13
+//  869 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock14 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_GAIN_pitch_sharpening??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock14
+        REQUIRE D_GAIN_pitch_sharpening
+//  870 
+//  871 
+//  872 /*
+//  873  * D_GAIN_pitch_sharpening
+//  874  *
+//  875  * Parameters:
+//  876  *    x            I/O: impulse response (or algebraic code)
+//  877  *    pit_lag        I: pitch lag
+//  878  *    sharp          I: (Q15) pitch sharpening factor
+//  879  *
+//  880  * Function:
+//  881  *    Performs Pitch sharpening routine for one subframe.
+//  882  *
+//  883  * Returns:
+//  884  *    void
+//  885  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock15 Using cfiCommon1
+        CFI Function D_GAIN_pitch_sharpening
+        ARM
+//  886 void D_GAIN_pitch_sharpening(Word16 *x, Word32 pit_lag, Word16 sharp)
+//  887 {
+D_GAIN_pitch_sharpening:
+        PUSH     {R4,R5}
+        CFI R5 Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+//  888    Word32 i;
+//  889    Word32 tmp;
+//  890 
+//  891    for(i = pit_lag; i < L_SUBFR; i++)
+        MOV      R3,R1
+        CMP      R3,#+64
+        BGE      ??D_GAIN_pitch_sharpening_0
+//  892    {
+//  893       tmp = x[i] << 15;
+//  894       tmp += x[i - pit_lag] * sharp;
+//  895       x[i] = (Word16)((tmp + 0x4000) >> 15);
+??D_GAIN_pitch_sharpening_1:
+        SUB      R4,R3,R1
+        ADD      R4,R0,R4, LSL #+1
+        LDRSH    R4,[R4, #+0]
+        ADD      R12,R0,R3, LSL #+1
+        LDRSH    R5,[R12, #+0]
+        MUL      R4,R2,R4
+//  896    }
+        ADD      R3,R3,#+1
+        ADD      R4,R4,R5, LSL #+15
+        ADD      R4,R4,#+16384
+        ASR      R4,R4,#+15
+        STRH     R4,[R12, #+0]
+        CMP      R3,#+64
+        BLT      ??D_GAIN_pitch_sharpening_1
+//  897    return;
+??D_GAIN_pitch_sharpening_0:
+        POP      {R4,R5}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock15
+//  898 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock16 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_GAIN_find_voice_factor??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock16
+        REQUIRE D_GAIN_find_voice_factor
+//  899 
+//  900 
+//  901 /*
+//  902  * D_GAIN_find_voice_factor
+//  903  *
+//  904  * Parameters:
+//  905  *    exc            I: pitch excitation
+//  906  *    Q_exc          I: exc format
+//  907  *    gain_pit       I: (Q14) gain of pitch
+//  908  *    code           I: (Q9) fixed codebook excitation
+//  909  *    gain_code      I: (Q0) gain of code
+//  910  *    L_subfr        I: subframe length
+//  911  *
+//  912  * Function:
+//  913  *    Find the voicing factor.
+//  914  *
+//  915  * Returns:
+//  916  *    (Q15) 1=voice to -1=unvoiced
+//  917  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock17 Using cfiCommon1
+        CFI Function D_GAIN_find_voice_factor
+        ARM
+//  918 Word16 D_GAIN_find_voice_factor(Word16 exc[], Word16 Q_exc,
+//  919                                 Word16 gain_pit, Word16 code[],
+//  920                                 Word16 gain_code, Word16 L_subfr)
+//  921 {
+D_GAIN_find_voice_factor:
+        PUSH     {R4-R9,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R9 Frame(CFA, -8)
+        CFI R8 Frame(CFA, -12)
+        CFI R7 Frame(CFA, -16)
+        CFI R6 Frame(CFA, -20)
+        CFI R5 Frame(CFA, -24)
+        CFI R4 Frame(CFA, -28)
+        CFI CFA R13+28
+        SUB      SP,SP,#+4
+        CFI CFA R13+32
+        LDRSH    R6,[SP, #+36]
+        LDRSH    R4,[SP, #+32]
+        MOV      R7,R1
+        MOV      R8,R2
+        MOV      R5,R3
+//  922 
+//  923    Word32 tmp, ener1, ener2, i;
+//  924    Word16 exp, exp1, exp2;
+//  925 
+//  926    ener1 = (D_UTIL_dot_product12(exc, exc, L_subfr, &exp1)) >> 16;
+        MOV      R3,SP
+        MOV      R2,R6
+        MOV      R1,R0
+        _BLF     D_UTIL_dot_product12,??D_UTIL_dot_product12??rA
+//  927    exp1 = (Word16)(exp1 - (Q_exc + Q_exc));
+        LDRSH    R1,[SP, #+0]
+        ASR      R9,R0,#+16
+//  928    tmp = (gain_pit * gain_pit) << 1;
+        MUL      R0,R8,R8
+        SUB      R1,R1,R7, LSL #+1
+        STRH     R1,[SP, #+0]
+        LSL      R7,R0,#+1
+//  929    exp = D_UTIL_norm_l(tmp);
+        MOV      R0,R7
+        _BLF     D_UTIL_norm_l,??D_UTIL_norm_l??rA
+//  930    tmp = (tmp << exp) >> 16;
+//  931    ener1 = (ener1 * tmp) >> 15;
+        LSL      R1,R7,R0
+        ASR      R1,R1,#+16
+        MUL      R2,R1,R9
+//  932    exp1 = (Word16)((exp1 - exp) - 10);   /* 10 -> gain_pit Q14 to Q9 */
+//  933    ener2 = D_UTIL_dot_product12(code, code, L_subfr, &exp2) >> 16;
+        ADD      R3,SP,#+2
+        ASR      R7,R2,#+15
+        LDRSH    R2,[SP, #+0]
+        MOV      R1,R5
+        SUB      R0,R2,R0
+        SUB      R0,R0,#+10
+        STRH     R0,[SP, #+0]
+        MOV      R2,R6
+        MOV      R0,R5
+        _BLF     D_UTIL_dot_product12,??D_UTIL_dot_product12??rA
+        ASR      R5,R0,#+16
+//  934    exp = D_UTIL_norm_s(gain_code);
+        MOV      R0,R4
+        _BLF     D_UTIL_norm_s,??D_UTIL_norm_s??rA
+//  935    tmp = gain_code << exp;
+//  936    tmp = (tmp * tmp) >> 15;
+//  937    ener2 = (ener2 * tmp) >> 15;
+//  938    exp2 = (Word16)(exp2 - (exp << 1));
+//  939    i = exp1 - exp2;
+        LDRSH    R3,[SP, #+2]
+        LSL      R1,R4,R0
+        MUL      R2,R1,R1
+        SUB      R0,R3,R0, LSL #+1
+        ASR      R1,R2,#+15
+        MUL      R2,R1,R5
+        MOV      R0,R0, LSL #+16
+        ASR      R1,R2,#+15
+        LDRSH    R2,[SP, #+0]
+        MOV      R0,R0, ASR #+16
+        SUBS     R0,R2,R0
+//  940 
+//  941    if(i >= 0)
+        BMI      ??D_GAIN_find_voice_factor_0
+//  942    {
+//  943       ener1 = ener1 >> 1;
+        ASR      R2,R7,#+1
+//  944       ener2 = ener2 >> (i + 1);
+        ADD      R0,R0,#+1
+        ASR      R1,R1,R0
+        B        ??D_GAIN_find_voice_factor_1
+//  945    }
+//  946    else if(i > (-16))
+??D_GAIN_find_voice_factor_0:
+        ASR      R1,R1,#+1
+        CMN      R0,#+15
+//  947    {
+//  948       ener1 = ener1 >> (1 - i);
+        RSBGE    R0,R0,#+1
+        ASRGE    R2,R7,R0
+//  949       ener2 = ener2 >> 1;
+//  950    }
+//  951    else
+//  952    {
+//  953       ener1 = 0;
+        MOVLT    R2,#+0
+//  954       ener2 = ener2 >> 1;
+//  955    }
+//  956 
+//  957    tmp = ener1 - ener2;
+//  958    ener1 = (ener1 + ener2) + 1;
+//  959    tmp = (tmp << 15) / ener1;
+//  960 
+//  961    return((Word16)tmp);
+??D_GAIN_find_voice_factor_1:
+        SUB      R0,R2,R1
+        LSL      R0,R0,#+15
+        ADD      R1,R1,R2
+        ADD      R1,R1,#+1
+        _BLF     ??div32_a,??rA??div32_a
+        MOV      R0,R1, LSL #+16
+        MOV      R0,R0, ASR #+16
+        POP      {R1,R4-R9,PC}    ;; return
+        CFI EndBlock cfiBlock17
+//  962 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock18 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_dot_product12??rA:
+        LDR      R12,??Subroutine9_0  ;; D_UTIL_dot_product12
+        BX       R12
+        DATA
+??Subroutine9_0:
+        DC32     D_UTIL_dot_product12
+        CFI EndBlock cfiBlock18
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock19 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_normalised_inverse_sqrt??rA:
+        LDR      R12,??Subroutine10_0  ;; D_UTIL_normalised_inverse_sqrt
+        BX       R12
+        DATA
+??Subroutine10_0:
+        DC32     D_UTIL_normalised_inverse_sqrt
+        CFI EndBlock cfiBlock19
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock20 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_l_extract??rA:
+        LDR      R12,??Subroutine11_0  ;; D_UTIL_l_extract
+        BX       R12
+        DATA
+??Subroutine11_0:
+        DC32     D_UTIL_l_extract
+        CFI EndBlock cfiBlock20
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock21 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_pow2??rA:
+        LDR      R12,??Subroutine12_0  ;; D_UTIL_pow2
+        BX       R12
+        DATA
+??Subroutine12_0:
+        DC32     D_UTIL_pow2
+        CFI EndBlock cfiBlock21
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock22 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_mpy_32_16??rA:
+        LDR      R12,??Subroutine13_0  ;; D_UTIL_mpy_32_16
+        BX       R12
+        DATA
+??Subroutine13_0:
+        DC32     D_UTIL_mpy_32_16
+        CFI EndBlock cfiBlock22
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock23 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_log2??rA:
+        LDR      R12,??Subroutine14_0  ;; D_UTIL_log2
+        BX       R12
+        DATA
+??Subroutine14_0:
+        DC32     D_UTIL_log2
+        CFI EndBlock cfiBlock23
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock24 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_norm_l??rA:
+        LDR      R12,??Subroutine15_0  ;; D_UTIL_norm_l
+        BX       R12
+        DATA
+??Subroutine15_0:
+        DC32     D_UTIL_norm_l
+        CFI EndBlock cfiBlock24
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock25 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??rA??div32_a:
+        LDR      R12,??Subroutine16_0  ;; ??div32_a
+        MOV      PC,R12
+        DATA
+??Subroutine16_0:
+        DC32     ??div32_a
+        CFI EndBlock cfiBlock25
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock26 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_inverse_sqrt??rA:
+        LDR      R12,??Subroutine17_0  ;; D_UTIL_inverse_sqrt
+        BX       R12
+        DATA
+??Subroutine17_0:
+        DC32     D_UTIL_inverse_sqrt
+        CFI EndBlock cfiBlock26
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock27 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_saturate??rA:
+        LDR      R12,??Subroutine18_0  ;; D_UTIL_saturate
+        BX       R12
+        DATA
+??Subroutine18_0:
+        DC32     D_UTIL_saturate
+        CFI EndBlock cfiBlock27
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock28 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_random??rA:
+        LDR      R12,??Subroutine19_0  ;; D_UTIL_random
+        BX       R12
+        DATA
+??Subroutine19_0:
+        DC32     D_UTIL_random
+        CFI EndBlock cfiBlock28
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock29 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_norm_s??rA:
+        LDR      R12,??Subroutine20_0  ;; D_UTIL_norm_s
+        BX       R12
+        DATA
+??Subroutine20_0:
+        DC32     D_UTIL_norm_s
+        CFI EndBlock cfiBlock29
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+        DATA
+        DC16 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+
+        END
+// 
+// 3 204 bytes in segment CODE
+//    12 bytes in segment DATA_C
+// 
+// 3 024 bytes of CODE  memory (+ 180 bytes shared)
+//    12 bytes of CONST memory
+//
+//Errors: none
+//Warnings: 4

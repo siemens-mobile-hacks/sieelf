@@ -1,0 +1,1527 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:19 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD /
+//                       EC\AAC_FILE (19).c                                  /
+//    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AAC /
+//                       DEC\AAC_FILE (19).c" -D NDEBUG -lC                  /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\AAC_FILE (19).s79                              /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME `AAC_FILE (19)`
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+??DataTable0 EQU 0
+??DataTable1 EQU 0
+        MULTWEAK ??raac_ByteAlignBitstream??rA
+        MULTWEAK ??raac_CalcBitsUsed??rA
+        MULTWEAK ??raac_ClearBuffer??rA
+        MULTWEAK ??raac_DecodeNextElement??rA
+        MULTWEAK ??raac_DecodeNoiselessData??rA
+        MULTWEAK ??raac_DecodeProgramConfigElement??rA
+        MULTWEAK ??raac_FlushCodec??rT
+        MULTWEAK ??raac_GetADTSChannelMapping??rT
+        MULTWEAK ??raac_GetBits??rA
+        MULTWEAK ??raac_PrepareRawBlock??rT
+        MULTWEAK ??raac_SetBitstreamPointer??rA
+        MULTWEAK ??raac_SetRawBlockParams??rT
+        MULTWEAK ??raac_UnpackADIFHeader??rT
+        MULTWEAK ??raac_UnpackADTSHeader??rT
+        FUNCTION GetNumChannelsADIF,0203H
+        LOCFRAME CSTACK, 8, STACK
+        PUBLIC raac_FlushCodec
+        FUNCTION raac_FlushCodec,0203H
+        LOCFRAME CSTACK, 8, STACK
+        PUBLIC raac_GetADTSChannelMapping
+        FUNCTION raac_GetADTSChannelMapping,0203H
+        LOCFRAME CSTACK, 44, STACK
+        PUBLIC raac_PrepareRawBlock
+        FUNCTION raac_PrepareRawBlock,0203H
+        PUBLIC raac_SetRawBlockParams
+        FUNCTION raac_SetRawBlockParams,0203H
+        LOCFRAME CSTACK, 8, STACK
+        PUBLIC raac_UnpackADIFHeader
+        FUNCTION raac_UnpackADIFHeader,0203H
+        LOCFRAME CSTACK, 52, STACK
+        PUBLIC raac_UnpackADTSHeader
+        FUNCTION raac_UnpackADTSHeader,0203H
+        LOCFRAME CSTACK, 40, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+raac_ByteAlignBitstream SYMBOL "raac_ByteAlignBitstream"
+raac_CalcBitsUsed   SYMBOL "raac_CalcBitsUsed"
+raac_ClearBuffer    SYMBOL "raac_ClearBuffer"
+raac_DecodeNextElement SYMBOL "raac_DecodeNextElement"
+raac_DecodeNoiselessData SYMBOL "raac_DecodeNoiselessData"
+raac_DecodeProgramConfigElement SYMBOL "raac_DecodeProgramConfigElement"
+raac_GetBits        SYMBOL "raac_GetBits"
+raac_SetBitstreamPointer SYMBOL "raac_SetBitstreamPointer"
+??raac_ByteAlignBitstream??rA SYMBOL "??rA", raac_ByteAlignBitstream
+??raac_CalcBitsUsed??rA SYMBOL "??rA", raac_CalcBitsUsed
+??raac_ClearBuffer??rA SYMBOL "??rA", raac_ClearBuffer
+??raac_DecodeNextElement??rA SYMBOL "??rA", raac_DecodeNextElement
+??raac_DecodeNoiselessData??rA SYMBOL "??rA", raac_DecodeNoiselessData
+??raac_DecodeProgramConfigElement??rA SYMBOL "??rA", raac_DecodeProgramConfigElement
+raac_FlushCodec     SYMBOL "raac_FlushCodec"
+??raac_FlushCodec??rT SYMBOL "??rT", raac_FlushCodec
+raac_GetADTSChannelMapping SYMBOL "raac_GetADTSChannelMapping"
+??raac_GetADTSChannelMapping??rT SYMBOL "??rT", raac_GetADTSChannelMapping
+??raac_GetBits??rA  SYMBOL "??rA", raac_GetBits
+raac_PrepareRawBlock SYMBOL "raac_PrepareRawBlock"
+??raac_PrepareRawBlock??rT SYMBOL "??rT", raac_PrepareRawBlock
+??raac_SetBitstreamPointer??rA SYMBOL "??rA", raac_SetBitstreamPointer
+raac_SetRawBlockParams SYMBOL "raac_SetRawBlockParams"
+??raac_SetRawBlockParams??rT SYMBOL "??rT", raac_SetRawBlockParams
+raac_UnpackADIFHeader SYMBOL "raac_UnpackADIFHeader"
+??raac_UnpackADIFHeader??rT SYMBOL "??rT", raac_UnpackADIFHeader
+raac_UnpackADTSHeader SYMBOL "raac_UnpackADTSHeader"
+??raac_UnpackADTSHeader??rT SYMBOL "??rT", raac_UnpackADTSHeader
+
+        EXTERN raac_ByteAlignBitstream
+        FUNCTION raac_ByteAlignBitstream,0202H
+        EXTERN raac_CalcBitsUsed
+        FUNCTION raac_CalcBitsUsed,0202H
+        EXTERN raac_ClearBuffer
+        FUNCTION raac_ClearBuffer,0202H
+        EXTERN raac_DecodeNextElement
+        FUNCTION raac_DecodeNextElement,0202H
+        EXTERN raac_DecodeNoiselessData
+        FUNCTION raac_DecodeNoiselessData,0202H
+        EXTERN raac_DecodeProgramConfigElement
+        FUNCTION raac_DecodeProgramConfigElement,0202H
+        EXTERN raac_GetBits
+        FUNCTION raac_GetBits,0202H
+        EXTERN raac_SetBitstreamPointer
+        FUNCTION raac_SetBitstreamPointer,0202H
+        EXTERN raac_channelMapTab
+        EXTERN raac_elementNumChans
+        EXTERN raac_sampRateTab
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_UnpackADTSHeader??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE raac_UnpackADTSHeader
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (19).c
+//    1 /* ***** BEGIN LICENSE BLOCK *****  
+//    2  * Source last modified: $Id: filefmt.c,v 1.1 2005/02/26 01:47:34 jrecker Exp $ 
+//    3  *   
+//    4  * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+//    5  *       
+//    6  * The contents of this file, and the files included with this file, 
+//    7  * are subject to the current version of the RealNetworks Public 
+//    8  * Source License (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the current version of the RealNetworks Community 
+//   11  * Source License (the "RCSL") available at 
+//   12  * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+//   13  * will apply. You may also obtain the license terms directly from 
+//   14  * RealNetworks.  You may not use this file except in compliance with 
+//   15  * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+//   16  * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+//   17  * the rights, obligations and limitations governing use of the 
+//   18  * contents of the file. 
+//   19  *   
+//   20  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   21  * developer of the Original Code and owns the copyrights in the 
+//   22  * portions it created. 
+//   23  *   
+//   24  * This file, and the files included with this file, is distributed 
+//   25  * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+//   26  * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+//   27  * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+//   28  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+//   29  * ENJOYMENT OR NON-INFRINGEMENT. 
+//   30  *  
+//   31  * Technology Compatibility Kit Test Suite(s) Location:  
+//   32  *    http://www.helixcommunity.org/content/tck  
+//   33  *  
+//   34  * Contributor(s):  
+//   35  *   
+//   36  * ***** END LICENSE BLOCK ***** */  
+//   37 
+//   38 /**************************************************************************************
+//   39  * Fixed-point HE-AAC decoder
+//   40  * Jon Recker (jrecker@real.com)
+//   41  * February 2005
+//   42  *
+//   43  * filefmt.c - ADIF and ADTS header decoding, raw block handling
+//   44  **************************************************************************************/
+//   45 
+//   46 #include "coder_aac.h"
+//   47 
+//   48  /**************************************************************************************
+//   49  * Function:    UnpackADTSHeader
+//   50  *
+//   51  * Description: parse the ADTS frame header and initialize decoder state
+//   52  *
+//   53  * Inputs:      valid AACDecInfo struct
+//   54  *              double pointer to buffer with complete ADTS frame header (byte aligned)
+//   55  *                header size = 7 bytes, plus 2 if CRC
+//   56  *
+//   57  * Outputs:     filled in ADTS struct
+//   58  *              updated buffer pointer
+//   59  *              updated bit offset
+//   60  *              updated number of available bits
+//   61  *
+//   62  * Return:      0 if successful, error code (< 0) if error
+//   63  *
+//   64  * TODO:        test CRC
+//   65  *              verify that fixed fields don't change between frames
+//   66  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function raac_UnpackADTSHeader
+        ARM
+//   67 int UnpackADTSHeader(AACDecInfo *aacDecInfo, unsigned char **buf, int *bitOffset, int *bitsAvail)
+//   68 {
+raac_UnpackADTSHeader:
+        PUSH     {R4-R8,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R8 Frame(CFA, -8)
+        CFI R7 Frame(CFA, -12)
+        CFI R6 Frame(CFA, -16)
+        CFI R5 Frame(CFA, -20)
+        CFI R4 Frame(CFA, -24)
+        CFI CFA R13+24
+        SUB      SP,SP,#+16
+        CFI CFA R13+40
+        MOV      R4,R0
+//   69 	int bitsUsed;
+//   70 	PSInfoBase *psi;
+//   71 	BitStreamInfo bsi;
+//   72 	ADTSHeader *fhADTS;
+//   73 
+//   74 	/* validate pointers */
+//   75 	if (!aacDecInfo || !aacDecInfo->psInfoBase)
+        CMP      R4,#+0
+        LDRNE    R8,[R4, #+0]
+        MOV      R5,R1
+        MOV      R6,R2
+        MOV      R7,R3
+        CMPNE    R8,#+0
+//   76 		return ERR_AAC_NULL_POINTER;
+        MVNEQ    R0,#+1
+        BEQ      ??raac_UnpackADTSHeader_0
+//   77 	psi = (PSInfoBase *)(aacDecInfo->psInfoBase);
+//   78 	fhADTS = &(psi->fhADTS);
+//   79 
+//   80 	/* init bitstream reader */
+//   81 	SetBitstreamPointer(&bsi, (*bitsAvail + 7) >> 3, *buf);
+        LDR      R0,[R7, #+0]
+        LDR      R2,[R5, #+0]
+        ADD      R0,R0,#+7
+        ASR      R1,R0,#+3
+        MOV      R0,SP
+        _BLF     raac_SetBitstreamPointer,??raac_SetBitstreamPointer??rA
+//   82 	GetBits(&bsi, *bitOffset);
+        LDR      R1,[R6, #+0]
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+//   83 
+//   84 	/* verify that first 12 bits of header are syncword */
+//   85 	if (GetBits(&bsi, 12) != 0x0fff)
+        MOV      R1,#+12
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        MOV      R1,#+255
+        ORR      R1,R1,#0xF00
+        CMP      R0,R1
+        BEQ      ??raac_UnpackADTSHeader_1
+//   86 		return ERR_AAC_INVALID_ADTS_HEADER;
+??raac_UnpackADTSHeader_2:
+        MVN      R0,#+2
+        ADD      SP,SP,#+16
+        CFI CFA R13+24
+        POP      {R4-R8,PC}
+        CFI CFA R13+40
+//   87 
+//   88 	/* fixed fields - should not change from frame to frame */ 
+//   89 	fhADTS->id =               GetBits(&bsi, 1);
+??raac_UnpackADTSHeader_1:
+        MOV      R1,#+1
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R8, #+0]
+//   90 	fhADTS->layer =            GetBits(&bsi, 2);
+        MOV      R1,#+2
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R8, #+1]
+//   91 	fhADTS->protectBit =       GetBits(&bsi, 1);
+        MOV      R1,#+1
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R8, #+2]
+//   92 	fhADTS->profile =          GetBits(&bsi, 2);
+        MOV      R1,#+2
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R8, #+3]
+//   93 	fhADTS->sampRateIdx =      GetBits(&bsi, 4);
+        MOV      R1,#+4
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R8, #+4]
+//   94 	fhADTS->privateBit =       GetBits(&bsi, 1);
+        MOV      R1,#+1
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R8, #+5]
+//   95 	fhADTS->channelConfig =    GetBits(&bsi, 3);
+        MOV      R1,#+3
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R8, #+6]
+//   96 	fhADTS->origCopy =         GetBits(&bsi, 1);
+        MOV      R1,#+1
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R8, #+7]
+//   97 	fhADTS->home =             GetBits(&bsi, 1);
+        MOV      R1,#+1
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R8, #+8]
+//   98 
+//   99 	/* variable fields - can change from frame to frame */ 
+//  100 	fhADTS->copyBit =          GetBits(&bsi, 1);
+        MOV      R1,#+1
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R8, #+9]
+//  101 	fhADTS->copyStart =        GetBits(&bsi, 1);
+        MOV      R1,#+1
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R8, #+10]
+//  102 	fhADTS->frameLength =      GetBits(&bsi, 13);
+        MOV      R1,#+13
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STR      R0,[R8, #+12]
+//  103 	fhADTS->bufferFull =       GetBits(&bsi, 11);
+        MOV      R1,#+11
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STR      R0,[R8, #+16]
+//  104 	fhADTS->numRawDataBlocks = GetBits(&bsi, 2) + 1;
+        MOV      R1,#+2
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        ADD      R0,R0,#+1
+        STRB     R0,[R8, #+20]
+//  105 
+//  106 	/* note - MPEG4 spec, correction 1 changes how CRC is handled when protectBit == 0 and numRawDataBlocks > 1 */
+//  107 	if (fhADTS->protectBit == 0)
+        LDRB     R0,[R8, #+2]
+        CMP      R0,#+0
+        BNE      ??raac_UnpackADTSHeader_3
+//  108 		fhADTS->crcCheckWord = GetBits(&bsi, 16);
+        MOV      R1,#+16
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STR      R0,[R8, #+24]
+//  109 
+//  110 	/* byte align */
+//  111 	ByteAlignBitstream(&bsi);	/* should always be aligned anyway */
+??raac_UnpackADTSHeader_3:
+        MOV      R0,SP
+        _BLF     raac_ByteAlignBitstream,??raac_ByteAlignBitstream??rA
+//  112 
+//  113 	/* check validity of header */
+//  114 	if (fhADTS->layer != 0 || fhADTS->profile != AAC_PROFILE_LC ||
+//  115 		fhADTS->sampRateIdx >= NUM_SAMPLE_RATES || fhADTS->channelConfig >= NUM_DEF_CHAN_MAPS)
+        LDRB     R0,[R8, #+1]
+        CMP      R0,#+0
+        LDRBEQ   R0,[R8, #+3]
+        CMPEQ    R0,#+1
+        BNE      ??raac_UnpackADTSHeader_2
+        LDRB     R0,[R8, #+4]
+        CMP      R0,#+12
+        LDRBCC   R1,[R8, #+6]
+        CMPCC    R1,#+8
+        BCS      ??raac_UnpackADTSHeader_2
+//  116 		return ERR_AAC_INVALID_ADTS_HEADER;
+//  117 
+//  118 #ifndef AAC_ENABLE_MPEG4
+//  119 	if (fhADTS->id != 1)
+//  120 		return ERR_AAC_MPEG4_UNSUPPORTED;
+//  121 #endif
+//  122 
+//  123 	/* update codec info */
+//  124 	psi->sampRateIdx = fhADTS->sampRateIdx;
+//  125 	if (!psi->useImpChanMap)
+//  126 		psi->nChans = channelMapTab[fhADTS->channelConfig];
+//  127 
+//  128 	/* syntactic element fields will be read from bitstream for each element */
+//  129 	aacDecInfo->prevBlockID = AAC_ID_INVALID;
+//  130 	aacDecInfo->currBlockID = AAC_ID_INVALID;
+//  131 	aacDecInfo->currInstTag = -1;
+//  132 
+//  133 	/* fill in user-accessible data (TODO - calc bitrate, handle tricky channel config cases) */
+//  134 	aacDecInfo->bitRate = 0;
+//  135 	aacDecInfo->nChans = psi->nChans;
+//  136 	aacDecInfo->sampRate = sampRateTab[psi->sampRateIdx];
+        LDR      R2,??DataTable2  ;; raac_sampRateTab
+        STR      R0,[R8, #+2168]
+        LDR      R0,[R8, #+2164]
+        CMP      R0,#+0
+        LDREQ    R0,??raac_UnpackADTSHeader_4  ;; raac_channelMapTab
+        LDREQ    R0,[R0, +R1, LSL #+2]
+        STREQ    R0,[R8, #+2160]
+        MVN      R0,#+0
+        STR      R0,[R4, #+36]
+        STR      R0,[R4, #+40]
+        STR      R0,[R4, #+44]
+        MOV      R0,#+0
+        STR      R0,[R4, #+60]
+        LDR      R1,[R8, #+2160]
+        STR      R1,[R4, #+64]
+        LDR      R1,[R8, #+2168]
+        LDR      R1,[R2, +R1, LSL #+2]
+        STR      R1,[R4, #+68]
+//  137 	aacDecInfo->profile = fhADTS->profile;
+        LDRB     R1,[R8, #+3]
+        STR      R1,[R4, #+72]
+//  138 	aacDecInfo->sbrEnabled = 0;
+        STR      R0,[R4, #+80]
+//  139 	aacDecInfo->adtsBlocksLeft = fhADTS->numRawDataBlocks;
+        LDRB     R0,[R8, #+20]
+        STR      R0,[R4, #+56]
+//  140 
+//  141 	/* update bitstream reader */
+//  142 	bitsUsed = CalcBitsUsed(&bsi, *buf, *bitOffset);
+        LDR      R2,[R6, #+0]
+        LDR      R1,[R5, #+0]
+        MOV      R0,SP
+        _BLF     raac_CalcBitsUsed,??raac_CalcBitsUsed??rA
+//  143 	*buf += (bitsUsed + *bitOffset) >> 3;
+        LDR      R1,[R6, #+0]
+        LDR      R2,[R5, #+0]
+        ADD      R1,R1,R0
+        ADD      R2,R2,R1, ASR #+3
+        STR      R2,[R5, #+0]
+//  144 	*bitOffset = (bitsUsed + *bitOffset) & 0x07;
+        AND      R1,R1,#0x7
+        STR      R1,[R6, #+0]
+//  145 	*bitsAvail -= bitsUsed ;
+        LDR      R1,[R7, #+0]
+        SUBS     R0,R1,R0
+        STR      R0,[R7, #+0]
+//  146 	if (*bitsAvail < 0)
+//  147 		return ERR_AAC_INDATA_UNDERFLOW;
+        MVNMI    R0,#+0
+//  148 
+//  149 	return ERR_AAC_NONE;
+        MOVPL    R0,#+0
+??raac_UnpackADTSHeader_0:
+        ADD      SP,SP,#+16       ;; stack cleaning
+        CFI CFA R13+24
+        POP      {R4-R8,PC}       ;; return
+        DATA
+??raac_UnpackADTSHeader_4:
+        DC32     raac_channelMapTab
+        CFI EndBlock cfiBlock1
+//  150 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_GetADTSChannelMapping??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE raac_GetADTSChannelMapping
+//  151 
+//  152 /**************************************************************************************
+//  153  * Function:    GetADTSChannelMapping
+//  154  *
+//  155  * Description: determine the number of channels from implicit mapping rules
+//  156  *
+//  157  * Inputs:      valid AACDecInfo struct
+//  158  *              pointer to start of raw_data_block
+//  159  *              bit offset
+//  160  *              bits available 
+//  161  *
+//  162  * Outputs:     updated number of channels
+//  163  *
+//  164  * Return:      0 if successful, error code (< 0) if error
+//  165  *
+//  166  * Notes:       calculates total number of channels using rules in 14496-3, 4.5.1.2.1
+//  167  *              does not attempt to deduce speaker geometry
+//  168  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function raac_GetADTSChannelMapping
+        ARM
+//  169 int GetADTSChannelMapping(AACDecInfo *aacDecInfo, unsigned char *buf, int bitOffset, int bitsAvail)
+//  170 {
+raac_GetADTSChannelMapping:
+        PUSH     {R1-R9,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R9 Frame(CFA, -8)
+        CFI R8 Frame(CFA, -12)
+        CFI R7 Frame(CFA, -16)
+        CFI R6 Frame(CFA, -20)
+        CFI R5 Frame(CFA, -24)
+        CFI R4 Frame(CFA, -28)
+        CFI CFA R13+40
+        MOVS     R4,R0
+//  171 	int ch, nChans, elementChans, err;
+//  172 	PSInfoBase *psi;
+//  173 
+//  174 	/* validate pointers */
+//  175 	if (!aacDecInfo || !aacDecInfo->psInfoBase)
+        LDRNE    R6,[R4, #+0]
+        CMPNE    R6,#+0
+//  176 		return ERR_AAC_NULL_POINTER;
+        MVNEQ    R0,#+1
+        POPEQ    {R1-R9,PC}
+//  177 	psi = (PSInfoBase *)(aacDecInfo->psInfoBase);
+//  178 
+//  179 	nChans = 0;
+        MOV      R5,#+0
+//  180 	do {
+//  181 		/* parse next syntactic element */
+//  182 		err = DecodeNextElement(aacDecInfo, &buf, &bitOffset, &bitsAvail);
+??raac_GetADTSChannelMapping_0:
+        ADD      R3,SP,#+8
+        ADD      R2,SP,#+4
+        MOV      R1,SP
+        MOV      R0,R4
+        _BLF     raac_DecodeNextElement,??raac_DecodeNextElement??rA
+//  183 		if (err)
+        CMP      R0,#+0
+//  184 			return err;
+        POPNE    {R1-R9,PC}
+//  185 
+//  186 		elementChans = elementNumChans[aacDecInfo->currBlockID];
+        LDR      R0,[R4, #+40]
+        LDR      R1,??raac_GetADTSChannelMapping_1  ;; raac_elementNumChans
+//  187 		nChans += elementChans;
+//  188 
+//  189 		for (ch = 0; ch < elementChans; ch++) {
+        MOV      R9,#+0
+        LDR      R7,[R1, +R0, LSL #+2]
+        ADD      R8,R7,R5
+        MOV      R5,R8
+        B        ??raac_GetADTSChannelMapping_2
+//  190 			err = DecodeNoiselessData(aacDecInfo, &buf, &bitOffset, &bitsAvail, ch);
+??raac_GetADTSChannelMapping_3:
+        MOV      R0,R9
+        PUSH     {R0}
+        CFI CFA R13+44
+        ADD      R3,SP,#+12
+        ADD      R2,SP,#+8
+        ADD      R1,SP,#+4
+        MOV      R0,R4
+        _BLF     raac_DecodeNoiselessData,??raac_DecodeNoiselessData??rA
+//  191 			if (err)
+        CMP      R0,#+0
+        ADD      SP,SP,#+4
+        CFI CFA R13+40
+        POPNE    {R1-R9,PC}
+//  192 				return err;
+//  193 		}
+        ADD      R9,R9,#+1
+??raac_GetADTSChannelMapping_2:
+        CMP      R9,R7
+        BLT      ??raac_GetADTSChannelMapping_3
+//  194 	} while (aacDecInfo->currBlockID != AAC_ID_END);
+        LDR      R0,[R4, #+40]
+        CMP      R0,#+7
+        BNE      ??raac_GetADTSChannelMapping_0
+//  195 
+//  196 	if (nChans <= 0)
+        CMP      R5,#+1
+//  197 		return ERR_AAC_CHANNEL_MAP;
+        MVNLT    R0,#+6
+        POPLT    {R1-R9,PC}
+//  198 
+//  199 	/* update number of channels in codec state and user-accessible info structs */ 
+//  200 	psi->nChans = nChans;
+        STR      R5,[R6, #+2160]
+//  201 	aacDecInfo->nChans = psi->nChans;
+        STR      R8,[R4, #+64]
+//  202 	psi->useImpChanMap = 1;
+        MOV      R0,#+1
+        STR      R0,[R6, #+2164]
+//  203 
+//  204 	return ERR_AAC_NONE;
+        MOV      R0,#+0
+        POP      {R1-R9,PC}       ;; return
+        DATA
+??raac_GetADTSChannelMapping_1:
+        DC32     raac_elementNumChans
+        CFI EndBlock cfiBlock3
+//  205 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??GetNumChannelsADIF??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE GetNumChannelsADIF
+//  206 
+//  207 /**************************************************************************************
+//  208  * Function:    GetNumChannelsADIF
+//  209  *
+//  210  * Description: get number of channels from program config elements in an ADIF file
+//  211  *
+//  212  * Inputs:      array of filled-in program config element structures
+//  213  *              number of PCE's
+//  214  *
+//  215  * Outputs:     none
+//  216  *
+//  217  * Return:      total number of channels in file
+//  218  *              -1 if error (invalid number of PCE's or unsupported mode)
+//  219  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function GetNumChannelsADIF
+        ARM
+//  220 static int GetNumChannelsADIF(ProgConfigElement *fhPCE, int nPCE)
+//  221 {
+GetNumChannelsADIF:
+        PUSH     {R4,R5}
+        CFI R5 Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+//  222 	int i, j, nChans;
+//  223 
+//  224 	if (nPCE < 1 || nPCE > MAX_NUM_PCE_ADIF)
+        CMP      R1,#+1
+        BLT      ??GetNumChannelsADIF_0
+        CMP      R1,#+17
+        BLT      ??GetNumChannelsADIF_1
+//  225 		return -1;
+??GetNumChannelsADIF_0:
+        POP      {R4,R5}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI CFA R13+0
+        MVN      R0,#+0
+        BX       LR
+        CFI R4 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -4)
+        CFI CFA R13+8
+//  226 
+//  227 	nChans = 0;
+??GetNumChannelsADIF_1:
+        MOV      R2,#+0
+//  228 	for (i = 0; i < nPCE; i++) {
+        MOV      R3,#+0
+        B        ??GetNumChannelsADIF_2
+//  229 		/* for now: only support LC, no channel coupling */
+//  230 		if (fhPCE[i].profile != AAC_PROFILE_LC || fhPCE[i].numCCE > 0)
+//  231 			return -1;
+//  232 
+//  233 		/* add up number of channels in all channel elements (assume all single-channel) */
+//  234         nChans += fhPCE[i].numFCE;
+//  235         nChans += fhPCE[i].numSCE;
+//  236         nChans += fhPCE[i].numBCE;
+//  237         nChans += fhPCE[i].numLCE;
+//  238 
+//  239 		/* add one more for every element which is a channel pair */
+//  240         for (j = 0; j < fhPCE[i].numFCE; j++) {
+//  241             if (CHAN_ELEM_IS_CPE(fhPCE[i].fce[j]))
+//  242                 nChans++;
+//  243         }
+//  244         for (j = 0; j < fhPCE[i].numSCE; j++) {
+//  245             if (CHAN_ELEM_IS_CPE(fhPCE[i].sce[j]))
+//  246                 nChans++;
+//  247         }
+//  248         for (j = 0; j < fhPCE[i].numBCE; j++) {
+//  249             if (CHAN_ELEM_IS_CPE(fhPCE[i].bce[j]))
+??GetNumChannelsADIF_3:
+        ADD      R5,R4,R12
+        LDRB     R5,[R5, #+42]
+//  250                 nChans++;
+//  251         }
+        ADD      R4,R4,#+1
+        AND      R5,R5,#0x10
+        ASRS     R5,R5,#+4
+        ADDNE    R2,R2,#+1
+??GetNumChannelsADIF_4:
+        LDRB     R5,[R12, #+5]
+        CMP      R4,R5
+        BLT      ??GetNumChannelsADIF_3
+??GetNumChannelsADIF_5:
+        ADD      R3,R3,#+1
+??GetNumChannelsADIF_2:
+        CMP      R3,R1
+        BGE      ??GetNumChannelsADIF_6
+        MOV      R4,#+82
+        MLA      R12,R4,R3,R0
+        LDRB     R4,[R12, #+1]
+        CMP      R4,#+1
+        LDRBEQ   R4,[R12, #+8]
+        CMPEQ    R4,#+0
+        BNE      ??GetNumChannelsADIF_0
+        LDRB     R4,[R12, #+3]
+        LDRB     R5,[R12, #+4]
+        ADD      R4,R5,R4
+        LDRB     R5,[R12, #+5]
+        ADD      R4,R5,R4
+        LDRB     R5,[R12, #+6]
+        ADD      R4,R5,R4
+        LDRB     R5,[R12, #+3]
+        ADD      R2,R4,R2
+        MOV      R4,#+0
+        CMP      R5,#+0
+        BNE      ??GetNumChannelsADIF_7
+        B        ??GetNumChannelsADIF_8
+??GetNumChannelsADIF_9:
+        ADD      R5,R4,R12
+        LDRB     R5,[R5, #+12]
+        ADD      R4,R4,#+1
+        AND      R5,R5,#0x10
+        ASRS     R5,R5,#+4
+        ADDNE    R2,R2,#+1
+??GetNumChannelsADIF_7:
+        LDRB     R5,[R12, #+3]
+        CMP      R4,R5
+        BLT      ??GetNumChannelsADIF_9
+??GetNumChannelsADIF_8:
+        LDRB     R5,[R12, #+4]
+        MOV      R4,#+0
+        CMP      R5,#+0
+        BNE      ??GetNumChannelsADIF_10
+        B        ??GetNumChannelsADIF_11
+??GetNumChannelsADIF_12:
+        ADD      R5,R4,R12
+        LDRB     R5,[R5, #+27]
+        ADD      R4,R4,#+1
+        AND      R5,R5,#0x10
+        ASRS     R5,R5,#+4
+        ADDNE    R2,R2,#+1
+??GetNumChannelsADIF_10:
+        LDRB     R5,[R12, #+4]
+        CMP      R4,R5
+        BLT      ??GetNumChannelsADIF_12
+??GetNumChannelsADIF_11:
+        LDRB     R5,[R12, #+5]
+        MOV      R4,#+0
+        CMP      R5,#+0
+        BNE      ??GetNumChannelsADIF_4
+        B        ??GetNumChannelsADIF_5
+//  252 
+//  253 	}
+//  254 
+//  255 	return nChans;
+??GetNumChannelsADIF_6:
+        POP      {R4,R5}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI CFA R13+0
+        MOV      R0,R2
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock5
+//  256 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_UnpackADIFHeader??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE raac_UnpackADIFHeader
+//  257 
+//  258 /**************************************************************************************
+//  259  * Function:    GetSampleRateIdxADIF
+//  260  *
+//  261  * Description: get sampling rate index from program config elements in an ADIF file
+//  262  *
+//  263  * Inputs:      array of filled-in program config element structures
+//  264  *              number of PCE's
+//  265  *
+//  266  * Outputs:     none
+//  267  *
+//  268  * Return:      sample rate of file
+//  269  *              -1 if error (invalid number of PCE's or sample rate mismatch)
+//  270  **************************************************************************************/
+//  271 static int GetSampleRateIdxADIF(ProgConfigElement *fhPCE, int nPCE)
+//  272 {
+//  273 	int i, idx;
+//  274 
+//  275 	if (nPCE < 1 || nPCE > MAX_NUM_PCE_ADIF)
+//  276 		return -1;
+//  277 
+//  278 	/* make sure all PCE's have the same sample rate */
+//  279 	idx = fhPCE[0].sampRateIdx;
+//  280 	for (i = 1; i < nPCE; i++) {
+//  281 		if (fhPCE[i].sampRateIdx != idx)
+//  282 			return -1;
+//  283 	}
+//  284 
+//  285 	return idx;
+//  286 }
+//  287 
+//  288 /**************************************************************************************
+//  289  * Function:    UnpackADIFHeader
+//  290  *
+//  291  * Description: parse the ADIF file header and initialize decoder state
+//  292  *
+//  293  * Inputs:      valid AACDecInfo struct
+//  294  *              double pointer to buffer with complete ADIF header 
+//  295  *                (starting at 'A' in 'ADIF' tag)
+//  296  *              pointer to bit offset
+//  297  *              pointer to number of valid bits remaining in inbuf
+//  298  *
+//  299  * Outputs:     filled-in ADIF struct
+//  300  *              updated buffer pointer
+//  301  *              updated bit offset
+//  302  *              updated number of available bits
+//  303  *
+//  304  * Return:      0 if successful, error code (< 0) if error
+//  305  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function raac_UnpackADIFHeader
+        ARM
+//  306 int UnpackADIFHeader(AACDecInfo *aacDecInfo, unsigned char **buf, int *bitOffset, int *bitsAvail)
+//  307 {
+raac_UnpackADIFHeader:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+        SUB      SP,SP,#+16
+        CFI CFA R13+52
+        MOV      R5,R0
+//  308 	int i, bitsUsed;
+//  309 	PSInfoBase *psi;
+//  310 	BitStreamInfo bsi;
+//  311 	ADIFHeader *fhADIF;
+//  312 	ProgConfigElement *pce;
+//  313 
+//  314 	/* validate pointers */
+//  315 	if (!aacDecInfo || !aacDecInfo->psInfoBase)
+        CMP      R5,#+0
+        LDRNE    R4,[R5, #+0]
+        MOV      R6,R1
+        MOV      R7,R2
+        MOV      R8,R3
+        CMPNE    R4,#+0
+//  316 		return ERR_AAC_NULL_POINTER;
+        MVNEQ    R0,#+1
+        BEQ      ??raac_UnpackADIFHeader_0
+//  317 	psi = (PSInfoBase *)(aacDecInfo->psInfoBase);
+//  318 
+//  319 	/* init bitstream reader */
+//  320 	SetBitstreamPointer(&bsi, (*bitsAvail + 7) >> 3, *buf);
+        LDR      R0,[R8, #+0]
+        LDR      R2,[R6, #+0]
+        ADD      R0,R0,#+7
+        ASR      R1,R0,#+3
+        MOV      R0,SP
+        _BLF     raac_SetBitstreamPointer,??raac_SetBitstreamPointer??rA
+//  321 	GetBits(&bsi, *bitOffset);
+        LDR      R1,[R7, #+0]
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+//  322 
+//  323 	/* unpack ADIF file header */
+//  324 	fhADIF = &(psi->fhADIF);
+        ADD      R9,R4,#+28
+//  325 	pce = psi->pce;
+        ADD      R10,R4,#+56
+//  326 
+//  327 	/* verify that first 32 bits of header are "ADIF" */
+//  328 	if (GetBits(&bsi, 8) != 'A' || GetBits(&bsi, 8) != 'D' || GetBits(&bsi, 8) != 'I' || GetBits(&bsi, 8) != 'F')
+        MOV      R1,#+8
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        CMP      R0,#+65
+        BNE      ??raac_UnpackADIFHeader_1
+        MOV      R1,#+8
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        CMP      R0,#+68
+        BNE      ??raac_UnpackADIFHeader_1
+        MOV      R1,#+8
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        CMP      R0,#+73
+        BNE      ??raac_UnpackADIFHeader_1
+        MOV      R1,#+8
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        CMP      R0,#+70
+        BEQ      ??raac_UnpackADIFHeader_2
+//  329 		return ERR_AAC_INVALID_ADIF_HEADER;
+??raac_UnpackADIFHeader_1:
+        MVN      R0,#+3
+        ADD      SP,SP,#+16
+        CFI CFA R13+36
+        POP      {R4-R11,PC}
+        CFI CFA R13+52
+//  330 
+//  331 	/* read ADIF header fields */
+//  332 	fhADIF->copyBit = GetBits(&bsi, 1);
+??raac_UnpackADIFHeader_2:
+        MOV      R1,#+1
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R9, #+0]
+//  333 	if (fhADIF->copyBit) {
+        LDRB     R0,[R9, #+0]
+        CMP      R0,#+0
+        BEQ      ??raac_UnpackADIFHeader_3
+//  334 		for (i = 0; i < ADIF_COPYID_SIZE; i++)
+        MOV      R11,#+0
+//  335 			fhADIF->copyID[i] = GetBits(&bsi, 8);
+??raac_UnpackADIFHeader_4:
+        MOV      R1,#+8
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        ADD      R1,R11,R9
+        STRB     R0,[R1, #+16]
+        ADD      R11,R11,#+1
+        CMP      R11,#+9
+        BLT      ??raac_UnpackADIFHeader_4
+//  336 	}
+//  337 	fhADIF->origCopy = GetBits(&bsi, 1);
+??raac_UnpackADIFHeader_3:
+        MOV      R1,#+1
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R9, #+1]
+//  338 	fhADIF->home =     GetBits(&bsi, 1);
+        MOV      R1,#+1
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R9, #+2]
+//  339 	fhADIF->bsType =   GetBits(&bsi, 1);
+        MOV      R1,#+1
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R9, #+3]
+//  340 	fhADIF->bitRate =  GetBits(&bsi, 23);
+        MOV      R1,#+23
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STR      R0,[R9, #+4]
+//  341 	fhADIF->numPCE =   GetBits(&bsi, 4) + 1;	/* add 1 (so range = [1, 16]) */
+        MOV      R1,#+4
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        ADD      R0,R0,#+1
+        STRB     R0,[R9, #+8]
+//  342 	if (fhADIF->bsType == 0)
+        LDRB     R0,[R9, #+3]
+        CMP      R0,#+0
+        BNE      ??raac_UnpackADIFHeader_5
+//  343 		fhADIF->bufferFull = GetBits(&bsi, 20);
+        MOV      R1,#+20
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STR      R0,[R9, #+12]
+//  344 
+//  345 	/* parse all program config elements */
+//  346 	for (i = 0; i < fhADIF->numPCE; i++)
+??raac_UnpackADIFHeader_5:
+        LDRB     R0,[R9, #+8]
+        MOV      R11,#+0
+        CMP      R0,#+0
+        BNE      ??raac_UnpackADIFHeader_6
+        B        ??raac_UnpackADIFHeader_7
+//  347 		DecodeProgramConfigElement(pce + i, &bsi);
+??raac_UnpackADIFHeader_8:
+        MOV      R1,SP
+        MOV      R2,#+82
+        MLA      R0,R2,R11,R10
+        ADD      R11,R11,#+1
+        _BLF     raac_DecodeProgramConfigElement,??raac_DecodeProgramConfigElement??rA
+??raac_UnpackADIFHeader_6:
+        LDRB     R0,[R9, #+8]
+        CMP      R11,R0
+        BLT      ??raac_UnpackADIFHeader_8
+//  348 
+//  349 	/* byte align */
+//  350 	ByteAlignBitstream(&bsi);
+??raac_UnpackADIFHeader_7:
+        MOV      R0,SP
+        _BLF     raac_ByteAlignBitstream,??raac_ByteAlignBitstream??rA
+//  351 
+//  352 	/* update codec info */
+//  353 	psi->nChans = GetNumChannelsADIF(pce, fhADIF->numPCE);
+        LDRB     R1,[R9, #+8]
+        MOV      R0,R10
+        BL       GetNumChannelsADIF
+        STR      R0,[R4, #+2160]
+//  354 	psi->sampRateIdx = GetSampleRateIdxADIF(pce, fhADIF->numPCE);
+        LDRB     R0,[R9, #+8]
+        CMP      R0,#+1
+        BLT      ??raac_UnpackADIFHeader_9
+        CMP      R0,#+17
+        BLT      ??raac_UnpackADIFHeader_10
+??raac_UnpackADIFHeader_9:
+        MVN      R1,#+0
+        B        ??raac_UnpackADIFHeader_11
+??raac_UnpackADIFHeader_10:
+        LDRB     R1,[R10, #+2]
+        MOV      R2,#+1
+        B        ??raac_UnpackADIFHeader_12
+??raac_UnpackADIFHeader_13:
+        MOV      R3,#+82
+        MLA      R9,R3,R2,R10
+        LDRB     R3,[R9, #+2]
+        CMP      R3,R1
+        BNE      ??raac_UnpackADIFHeader_9
+        ADD      R2,R2,#+1
+??raac_UnpackADIFHeader_12:
+        CMP      R2,R0
+        BLT      ??raac_UnpackADIFHeader_13
+??raac_UnpackADIFHeader_11:
+        STR      R1,[R4, #+2168]
+//  355 
+//  356 	/* check validity of header */
+//  357 	if (psi->nChans < 0 || psi->sampRateIdx < 0 || psi->sampRateIdx >= NUM_SAMPLE_RATES)
+        LDR      R0,[R4, #+2160]
+        CMP      R0,#+0
+        CMPPL    R1,#+0
+        BMI      ??raac_UnpackADIFHeader_1
+        CMP      R1,#+12
+        BGE      ??raac_UnpackADIFHeader_1
+//  358 		return ERR_AAC_INVALID_ADIF_HEADER;
+//  359 								
+//  360 	/* syntactic element fields will be read from bitstream for each element */
+//  361 	aacDecInfo->prevBlockID = AAC_ID_INVALID;
+//  362 	aacDecInfo->currBlockID = AAC_ID_INVALID;
+//  363 	aacDecInfo->currInstTag = -1;
+//  364 
+//  365 	/* fill in user-accessible data */
+//  366 	aacDecInfo->bitRate = 0;
+//  367 	aacDecInfo->nChans = psi->nChans;
+//  368 	aacDecInfo->sampRate = sampRateTab[psi->sampRateIdx];
+        LDR      R2,??DataTable2  ;; raac_sampRateTab
+        MVN      R0,#+0
+        STR      R0,[R5, #+36]
+        STR      R0,[R5, #+40]
+        STR      R0,[R5, #+44]
+        MOV      R0,#+0
+        STR      R0,[R5, #+60]
+        LDR      R1,[R4, #+2160]
+        STR      R1,[R5, #+64]
+        LDR      R1,[R4, #+2168]
+        LDR      R1,[R2, +R1, LSL #+2]
+        STR      R1,[R5, #+68]
+//  369 	aacDecInfo->profile = pce[0].profile;
+        LDRB     R1,[R10, #+1]
+        STR      R1,[R5, #+72]
+//  370 	aacDecInfo->sbrEnabled = 0;
+        STR      R0,[R5, #+80]
+//  371 
+//  372 	/* update bitstream reader */
+//  373 	bitsUsed = CalcBitsUsed(&bsi, *buf, *bitOffset);
+        LDR      R2,[R7, #+0]
+        LDR      R1,[R6, #+0]
+        MOV      R0,SP
+        _BLF     raac_CalcBitsUsed,??raac_CalcBitsUsed??rA
+//  374 	*buf += (bitsUsed + *bitOffset) >> 3;
+        LDR      R1,[R7, #+0]
+        LDR      R2,[R6, #+0]
+        ADD      R1,R1,R0
+        ADD      R2,R2,R1, ASR #+3
+        STR      R2,[R6, #+0]
+//  375 	*bitOffset = (bitsUsed + *bitOffset) & 0x07;
+        AND      R1,R1,#0x7
+        STR      R1,[R7, #+0]
+//  376 	*bitsAvail -= bitsUsed ;
+        LDR      R1,[R8, #+0]
+        SUBS     R0,R1,R0
+        STR      R0,[R8, #+0]
+//  377 	if (*bitsAvail < 0)
+//  378 		return ERR_AAC_INDATA_UNDERFLOW;
+        MVNMI    R0,#+0
+//  379 
+//  380 	return ERR_AAC_NONE;
+        MOVPL    R0,#+0
+??raac_UnpackADIFHeader_0:
+        ADD      SP,SP,#+16       ;; stack cleaning
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        CFI EndBlock cfiBlock7
+//  381 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_SetRawBlockParams??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE raac_SetRawBlockParams
+//  382 
+//  383 /**************************************************************************************
+//  384  * Function:    SetRawBlockParams
+//  385  *
+//  386  * Description: set internal state variables for decoding a stream of raw data blocks
+//  387  *
+//  388  * Inputs:      valid AACDecInfo struct
+//  389  *              flag indicating source of parameters (from previous headers or passed 
+//  390  *                explicitly by caller)
+//  391  *              number of channels
+//  392  *              sample rate
+//  393  *              profile ID
+//  394  *
+//  395  * Outputs:     updated state variables in aacDecInfo
+//  396  *
+//  397  * Return:      0 if successful, error code (< 0) if error
+//  398  *
+//  399  * Notes:       if copyLast == 1, then psi->nChans, psi->sampRateIdx, and 
+//  400  *                aacDecInfo->profile are not changed (it's assumed that we already 
+//  401  *                set them, such as by a previous call to UnpackADTSHeader())
+//  402  *              if copyLast == 0, then the parameters we passed in are used instead
+//  403  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function raac_SetRawBlockParams
+        ARM
+//  404 int SetRawBlockParams(AACDecInfo *aacDecInfo, int copyLast, int nChans, int sampRate, int profile)
+//  405 {
+raac_SetRawBlockParams:
+        PUSH     {R4,R5}
+        CFI R5 Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+        LDR      R12,[SP, #+8]
+//  406 	int idx;
+//  407 	PSInfoBase *psi;
+//  408 
+//  409 	/* validate pointers */
+//  410 	if (!aacDecInfo || !aacDecInfo->psInfoBase)
+        CMP      R0,#+0
+        LDRNE    R4,[R0, #+0]
+        CMPNE    R4,#+0
+//  411 		return ERR_AAC_NULL_POINTER;
+        MVNEQ    R0,#+1
+        BEQ      ??raac_SetRawBlockParams_0
+//  412 	psi = (PSInfoBase *)(aacDecInfo->psInfoBase);
+//  413 
+//  414 	if (!copyLast) {
+        LDR      R5,??DataTable2  ;; raac_sampRateTab
+        CMP      R1,#+0
+        BNE      ??raac_SetRawBlockParams_1
+//  415 		aacDecInfo->profile = profile;
+        STR      R12,[R0, #+72]
+//  416 		psi->nChans = nChans;
+        STR      R2,[R4, #+2160]
+//  417 		for (idx = 0; idx < NUM_SAMPLE_RATES; idx++) {
+//  418 			if (sampRate == sampRateTab[idx]) {
+??raac_SetRawBlockParams_2:
+        LDR      R2,[R5, +R1, LSL #+2]
+        CMP      R3,R2
+        BNE      ??raac_SetRawBlockParams_3
+//  419 				psi->sampRateIdx = idx;
+        STR      R1,[R4, #+2168]
+//  420 				break;
+//  421 			}
+//  422 		}
+//  423 		if (idx == NUM_SAMPLE_RATES)
+//  424 			return ERR_AAC_INVALID_FRAME;
+//  425 	}
+//  426 	aacDecInfo->nChans = psi->nChans;
+??raac_SetRawBlockParams_1:
+        LDR      R1,[R4, #+2160]
+        STR      R1,[R0, #+64]
+//  427 	aacDecInfo->sampRate = sampRateTab[psi->sampRateIdx];
+        LDR      R1,[R4, #+2168]
+        LDR      R1,[R5, +R1, LSL #+2]
+        STR      R1,[R0, #+68]
+//  428 
+//  429 	/* check validity of header */
+//  430 	if (psi->sampRateIdx >= NUM_SAMPLE_RATES || psi->sampRateIdx < 0 || aacDecInfo->profile != AAC_PROFILE_LC)
+        LDR      R1,[R4, #+2168]
+        CMP      R1,#+12
+        BGE      ??raac_SetRawBlockParams_4
+        CMP      R1,#+0
+        BMI      ??raac_SetRawBlockParams_4
+        LDR      R0,[R0, #+72]
+        CMP      R0,#+1
+        BEQ      ??raac_SetRawBlockParams_5
+//  431 		return ERR_AAC_RAWBLOCK_PARAMS;
+??raac_SetRawBlockParams_4:
+        POP      {R4,R5}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI CFA R13+0
+        MVN      R0,#+21
+        BX       LR
+        CFI R4 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -4)
+        CFI CFA R13+8
+??raac_SetRawBlockParams_3:
+        ADD      R1,R1,#+1
+        CMP      R1,#+12
+        BLT      ??raac_SetRawBlockParams_2
+        BNE      ??raac_SetRawBlockParams_1
+        POP      {R4,R5}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI CFA R13+0
+        MVN      R0,#+4
+        BX       LR
+        CFI R4 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -4)
+        CFI CFA R13+8
+//  432 
+//  433 	return ERR_AAC_NONE;
+??raac_SetRawBlockParams_5:
+        MOV      R0,#+0
+??raac_SetRawBlockParams_0:
+        POP      {R4,R5}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock9
+//  434 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable2:
+        DC32     raac_sampRateTab
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_PrepareRawBlock??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock10
+        REQUIRE raac_PrepareRawBlock
+//  435 
+//  436 /**************************************************************************************
+//  437  * Function:    PrepareRawBlock
+//  438  *
+//  439  * Description: reset per-block state variables for raw blocks (no ADTS/ADIF headers)
+//  440  *
+//  441  * Inputs:      valid AACDecInfo struct
+//  442  *
+//  443  * Outputs:     updated state variables in aacDecInfo
+//  444  *
+//  445  * Return:      0 if successful, error code (< 0) if error
+//  446  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock11 Using cfiCommon1
+        CFI Function raac_PrepareRawBlock
+        ARM
+//  447 int PrepareRawBlock(AACDecInfo *aacDecInfo)
+//  448 {
+//  449 	PSInfoBase *psi;
+//  450 
+//  451 	/* validate pointers */
+//  452 	if (!aacDecInfo || !aacDecInfo->psInfoBase)
+raac_PrepareRawBlock:
+        CMP      R0,#+0
+        LDRNE    R1,[R0, #+0]
+        CMPNE    R1,#+0
+//  453 		return ERR_AAC_NULL_POINTER;
+        MVNEQ    R0,#+1
+        BXEQ     LR
+//  454 	psi = (PSInfoBase *)(aacDecInfo->psInfoBase);
+//  455 
+//  456 	/* syntactic element fields will be read from bitstream for each element */
+//  457 	aacDecInfo->prevBlockID = AAC_ID_INVALID;
+        MVN      R1,#+0
+        STR      R1,[R0, #+36]
+//  458 	aacDecInfo->currBlockID = AAC_ID_INVALID;
+        STR      R1,[R0, #+40]
+//  459 	aacDecInfo->currInstTag = -1;
+        STR      R1,[R0, #+44]
+//  460 
+//  461 	/* fill in user-accessible data */
+//  462 	aacDecInfo->bitRate = 0;
+        MOV      R1,#+0
+        STR      R1,[R0, #+60]
+//  463 	aacDecInfo->sbrEnabled = 0;
+        STR      R1,[R0, #+80]
+//  464 
+//  465 	return ERR_AAC_NONE;
+        MOV      R0,#+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock11
+//  466 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock12 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_FlushCodec??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock12
+        REQUIRE raac_FlushCodec
+//  467 
+//  468 /**************************************************************************************
+//  469  * Function:    FlushCodec
+//  470  *
+//  471  * Description: flush internal codec state (after seeking, for example)
+//  472  *
+//  473  * Inputs:      valid AACDecInfo struct
+//  474  *
+//  475  * Outputs:     updated state variables in aacDecInfo
+//  476  *
+//  477  * Return:      0 if successful, error code (< 0) if error
+//  478  *
+//  479  * Notes:       only need to clear data which is persistent between frames 
+//  480  *                (such as overlap buffer)
+//  481  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock13 Using cfiCommon1
+        CFI Function raac_FlushCodec
+        ARM
+//  482 int FlushCodec(AACDecInfo *aacDecInfo)
+//  483 {
+raac_FlushCodec:
+        PUSH     {R4,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+//  484 	PSInfoBase *psi;
+//  485 
+//  486 	/* validate pointers */
+//  487 	if (!aacDecInfo || !aacDecInfo->psInfoBase)
+        CMP      R0,#+0
+        LDRNE    R4,[R0, #+0]
+        CMPNE    R4,#+0
+//  488 		return ERR_AAC_NULL_POINTER;
+        MVNEQ    R0,#+1
+        POPEQ    {R4,PC}
+//  489 	psi = (PSInfoBase *)(aacDecInfo->psInfoBase);
+//  490 	
+//  491 	ClearBuffer(psi->overlap, AAC_MAX_NCHANS * AAC_MAX_NSAMPS * sizeof(int));
+        MOV      R1,#+8192
+        MOV      R0,#+72
+        ORR      R0,R0,#0x3000
+        ADD      R0,R0,R4
+        _BLF     raac_ClearBuffer,??raac_ClearBuffer??rA
+//  492 	ClearBuffer(psi->prevWinShape, AAC_MAX_NCHANS * sizeof(int));
+        MOV      R1,#+8
+        MOV      R0,#+72
+        ORR      R0,R0,#0x5000
+        ADD      R0,R0,R4
+        _BLF     raac_ClearBuffer,??raac_ClearBuffer??rA
+//  493 
+//  494 	return ERR_AAC_NONE;
+        MOV      R0,#+0
+        POP      {R4,PC}          ;; return
+        CFI EndBlock cfiBlock13
+//  495 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock14 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_SetBitstreamPointer??rA:
+        LDR      R12,??Subroutine7_0  ;; raac_SetBitstreamPointer
+        BX       R12
+        DATA
+??Subroutine7_0:
+        DC32     raac_SetBitstreamPointer
+        CFI EndBlock cfiBlock14
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock15 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_GetBits??rA:
+        LDR      R12,??Subroutine8_0  ;; raac_GetBits
+        BX       R12
+        DATA
+??Subroutine8_0:
+        DC32     raac_GetBits
+        CFI EndBlock cfiBlock15
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock16 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_ByteAlignBitstream??rA:
+        LDR      R12,??Subroutine9_0  ;; raac_ByteAlignBitstream
+        BX       R12
+        DATA
+??Subroutine9_0:
+        DC32     raac_ByteAlignBitstream
+        CFI EndBlock cfiBlock16
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock17 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_CalcBitsUsed??rA:
+        LDR      R12,??Subroutine10_0  ;; raac_CalcBitsUsed
+        BX       R12
+        DATA
+??Subroutine10_0:
+        DC32     raac_CalcBitsUsed
+        CFI EndBlock cfiBlock17
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock18 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_DecodeNextElement??rA:
+        LDR      R12,??Subroutine11_0  ;; raac_DecodeNextElement
+        BX       R12
+        DATA
+??Subroutine11_0:
+        DC32     raac_DecodeNextElement
+        CFI EndBlock cfiBlock18
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock19 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_DecodeNoiselessData??rA:
+        LDR      R12,??Subroutine12_0  ;; raac_DecodeNoiselessData
+        BX       R12
+        DATA
+??Subroutine12_0:
+        DC32     raac_DecodeNoiselessData
+        CFI EndBlock cfiBlock19
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock20 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_DecodeProgramConfigElement??rA:
+        LDR      R12,??Subroutine13_0  ;; raac_DecodeProgramConfigElement
+        BX       R12
+        DATA
+??Subroutine13_0:
+        DC32     raac_DecodeProgramConfigElement
+        CFI EndBlock cfiBlock20
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock21 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_ClearBuffer??rA:
+        LDR      R12,??Subroutine14_0  ;; raac_ClearBuffer
+        BX       R12
+        DATA
+??Subroutine14_0:
+        DC32     raac_ClearBuffer
+        CFI EndBlock cfiBlock21
+
+        END
+// 
+// 2 164 bytes in segment CODE
+// 
+// 2 040 bytes of CODE memory (+ 124 bytes shared)
+//
+//Errors: none
+//Warnings: 1

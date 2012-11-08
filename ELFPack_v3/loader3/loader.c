@@ -164,7 +164,7 @@ __arch int DoRelocation(Elf32_Exec* ex, Elf32_Dyn* dyn_sect, Elf32_Phdr* phdr)
         }
         else
         {
-            sprintf(dbg, "Не могу загрузить %s!", lib_name);
+            sprintf(dbg, "Can't load %s!", lib_name);
             l_msg(1, (int)dbg);
             return E_SHARED;
         }

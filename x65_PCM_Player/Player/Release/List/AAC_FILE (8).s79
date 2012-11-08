@@ -1,0 +1,2230 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:29 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD /
+//                       EC\AAC_FILE (8).c                                   /
+//    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AAC /
+//                       DEC\AAC_FILE (8).c" -D NDEBUG -lC                   /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\AAC_FILE (8).s79                               /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME `AAC_FILE (8)`
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        MULTWEAK ??raac_DecodeSBREnvelope??rA
+        MULTWEAK ??raac_DecodeSBRNoise??rA
+        MULTWEAK ??raac_GetBits??rA
+        MULTWEAK ??raac_GetSampRateIdx??rT
+        MULTWEAK ??raac_UncoupleSBREnvelope??rA
+        MULTWEAK ??raac_UncoupleSBRNoise??rA
+        MULTWEAK ??raac_UnpackSBRChannelPair??rT
+        MULTWEAK ??raac_UnpackSBRHeader??rT
+        MULTWEAK ??raac_UnpackSBRSingleChannel??rT
+        FUNCTION UnpackSBRGrid,0203H
+        LOCFRAME CSTACK, 64, STACK
+        PUBLIC raac_GetSampRateIdx
+        FUNCTION raac_GetSampRateIdx,0203H
+        PUBLIC raac_UnpackSBRChannelPair
+        FUNCTION raac_UnpackSBRChannelPair,0203H
+        LOCFRAME CSTACK, 84, STACK
+        PUBLIC raac_UnpackSBRHeader
+        FUNCTION raac_UnpackSBRHeader,0203H
+        LOCFRAME CSTACK, 40, STACK
+        PUBLIC raac_UnpackSBRSingleChannel
+        FUNCTION raac_UnpackSBRSingleChannel,0203H
+        LOCFRAME CSTACK, 64, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+raac_DecodeSBREnvelope SYMBOL "raac_DecodeSBREnvelope"
+raac_DecodeSBRNoise SYMBOL "raac_DecodeSBRNoise"
+raac_GetBits        SYMBOL "raac_GetBits"
+raac_UncoupleSBREnvelope SYMBOL "raac_UncoupleSBREnvelope"
+raac_UncoupleSBRNoise SYMBOL "raac_UncoupleSBRNoise"
+??raac_DecodeSBREnvelope??rA SYMBOL "??rA", raac_DecodeSBREnvelope
+??raac_DecodeSBRNoise??rA SYMBOL "??rA", raac_DecodeSBRNoise
+??raac_GetBits??rA  SYMBOL "??rA", raac_GetBits
+raac_GetSampRateIdx SYMBOL "raac_GetSampRateIdx"
+??raac_GetSampRateIdx??rT SYMBOL "??rT", raac_GetSampRateIdx
+??raac_UncoupleSBREnvelope??rA SYMBOL "??rA", raac_UncoupleSBREnvelope
+??raac_UncoupleSBRNoise??rA SYMBOL "??rA", raac_UncoupleSBRNoise
+raac_UnpackSBRChannelPair SYMBOL "raac_UnpackSBRChannelPair"
+??raac_UnpackSBRChannelPair??rT SYMBOL "??rT", raac_UnpackSBRChannelPair
+raac_UnpackSBRHeader SYMBOL "raac_UnpackSBRHeader"
+??raac_UnpackSBRHeader??rT SYMBOL "??rT", raac_UnpackSBRHeader
+raac_UnpackSBRSingleChannel SYMBOL "raac_UnpackSBRSingleChannel"
+??raac_UnpackSBRSingleChannel??rT SYMBOL "??rT", raac_UnpackSBRSingleChannel
+
+        EXTERN raac_DecodeSBREnvelope
+        FUNCTION raac_DecodeSBREnvelope,0202H
+        EXTERN raac_DecodeSBRNoise
+        FUNCTION raac_DecodeSBRNoise,0202H
+        EXTERN raac_GetBits
+        FUNCTION raac_GetBits,0202H
+        EXTERN raac_UncoupleSBREnvelope
+        FUNCTION raac_UncoupleSBREnvelope,0202H
+        EXTERN raac_UncoupleSBRNoise
+        FUNCTION raac_UncoupleSBRNoise,0202H
+        EXTERN raac_sampRateTab
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_GetSampRateIdx??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE raac_GetSampRateIdx
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (8).c
+//    1 /* ***** BEGIN LICENSE BLOCK *****  
+//    2  * Source last modified: $Id: sbrside.c,v 1.1 2005/02/26 01:47:35 jrecker Exp $ 
+//    3  *   
+//    4  * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+//    5  *       
+//    6  * The contents of this file, and the files included with this file, 
+//    7  * are subject to the current version of the RealNetworks Public 
+//    8  * Source License (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the current version of the RealNetworks Community 
+//   11  * Source License (the "RCSL") available at 
+//   12  * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+//   13  * will apply. You may also obtain the license terms directly from 
+//   14  * RealNetworks.  You may not use this file except in compliance with 
+//   15  * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+//   16  * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+//   17  * the rights, obligations and limitations governing use of the 
+//   18  * contents of the file. 
+//   19  *   
+//   20  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   21  * developer of the Original Code and owns the copyrights in the 
+//   22  * portions it created. 
+//   23  *   
+//   24  * This file, and the files included with this file, is distributed 
+//   25  * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+//   26  * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+//   27  * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+//   28  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+//   29  * ENJOYMENT OR NON-INFRINGEMENT. 
+//   30  *  
+//   31  * Technology Compatibility Kit Test Suite(s) Location:  
+//   32  *    http://www.helixcommunity.org/content/tck  
+//   33  *  
+//   34  * Contributor(s):  
+//   35  *   
+//   36  * ***** END LICENSE BLOCK ***** */  
+//   37 
+//   38 /**************************************************************************************
+//   39  * Fixed-point HE-AAC decoder
+//   40  * Jon Recker (jrecker@real.com)
+//   41  * February 2005
+//   42  *
+//   43  * sbrside.c - functions for unpacking side info from SBR bitstream
+//   44  **************************************************************************************/
+//   45 
+//   46 #include "sbr_aac.h"
+//   47 
+//   48 /**************************************************************************************
+//   49  * Function:    GetSampRateIdx
+//   50  *
+//   51  * Description: get index of given sample rate
+//   52  *
+//   53  * Inputs:      sample rate (in Hz)
+//   54  *
+//   55  * Outputs:     none
+//   56  *
+//   57  * Return:      index of sample rate (table 1.15 in 14496-3:2001(E))
+//   58  *              -1 if sample rate not found in table
+//   59  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function raac_GetSampRateIdx
+        ARM
+//   60 int GetSampRateIdx(int sampRate)
+//   61 {
+//   62 	int idx;
+//   63 
+//   64 	for (idx = 0; idx < NUM_SAMPLE_RATES; idx++) {
+raac_GetSampRateIdx:
+        MOV      R1,#+0
+//   65 		if (sampRate == sampRateTab[idx])
+??raac_GetSampRateIdx_0:
+        LDR      R2,??raac_GetSampRateIdx_1  ;; raac_sampRateTab
+        LDR      R2,[R2, +R1, LSL #+2]
+        CMP      R0,R2
+//   66 			return idx;
+        MOVEQ    R0,R1
+        BXEQ     LR
+//   67 	}
+        ADD      R1,R1,#+1
+        CMP      R1,#+12
+        BLT      ??raac_GetSampRateIdx_0
+//   68 
+//   69 	return -1;
+        MVN      R0,#+0
+        BX       LR               ;; return
+        DATA
+??raac_GetSampRateIdx_1:
+        DC32     raac_sampRateTab
+        CFI EndBlock cfiBlock1
+//   70 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_UnpackSBRHeader??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE raac_UnpackSBRHeader
+//   71 
+//   72 /**************************************************************************************
+//   73  * Function:    UnpackSBRHeader
+//   74  *
+//   75  * Description: unpack SBR header (table 4.56)
+//   76  *
+//   77  * Inputs:      BitStreamInfo struct pointing to start of SBR header
+//   78  *
+//   79  * Outputs:     initialized SBRHeader struct for this SCE/CPE block
+//   80  *
+//   81  * Return:      non-zero if frame reset is triggered, zero otherwise
+//   82  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function raac_UnpackSBRHeader
+        ARM
+//   83 int UnpackSBRHeader(BitStreamInfo *bsi, SBRHeader *sbrHdr)
+//   84 {
+raac_UnpackSBRHeader:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+        SUB      SP,SP,#+4
+        CFI CFA R13+40
+        MOV      R5,R1
+//   85 	SBRHeader sbrHdrPrev;
+//   86 
+//   87 	/* save previous values so we know whether to reset decoder */
+//   88 	sbrHdrPrev.startFreq =     sbrHdr->startFreq;
+        LDRB     R1,[R5, #+5]
+        MOV      R4,R0
+//   89 	sbrHdrPrev.stopFreq =      sbrHdr->stopFreq;
+//   90 	sbrHdrPrev.freqScale =     sbrHdr->freqScale;
+//   91 	sbrHdrPrev.alterScale =    sbrHdr->alterScale;
+//   92 	sbrHdrPrev.crossOverBand = sbrHdr->crossOverBand;
+//   93 	sbrHdrPrev.noiseBands =    sbrHdr->noiseBands;
+//   94 
+//   95 	sbrHdr->ampRes =        GetBits(bsi, 1);
+//   96 	sbrHdr->startFreq =     GetBits(bsi, 4);
+//   97 	sbrHdr->stopFreq =      GetBits(bsi, 4);
+//   98 	sbrHdr->crossOverBand = GetBits(bsi, 3);
+//   99 	sbrHdr->resBitsHdr =    GetBits(bsi, 2);
+//  100 	sbrHdr->hdrExtra1 =     GetBits(bsi, 1);
+//  101 	sbrHdr->hdrExtra2 =     GetBits(bsi, 1);
+//  102 
+//  103 	if (sbrHdr->hdrExtra1) {
+        MOV      R10,#+2
+        STRB     R1,[SP, #+0]
+        LDRB     R1,[R5, #+6]
+        MOV      R11,#+1
+        STRB     R1,[SP, #+1]
+        LDRB     R6,[R5, #+11]
+        LDRB     R7,[R5, #+12]
+        LDRB     R8,[R5, #+7]
+        LDRB     R9,[R5, #+13]
+        MOV      R1,#+1
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, #+4]
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, #+5]
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, #+6]
+        MOV      R1,#+3
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, #+7]
+        MOV      R1,#+2
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, #+8]
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, #+9]
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, #+10]
+        LDRB     R0,[R5, #+9]
+        CMP      R0,#+0
+        BEQ      ??raac_UnpackSBRHeader_0
+//  104 		sbrHdr->freqScale =    GetBits(bsi, 2);
+        MOV      R1,#+2
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, #+11]
+//  105 		sbrHdr->alterScale =   GetBits(bsi, 1);
+        MOV      R1,R11
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, #+12]
+//  106 		sbrHdr->noiseBands =   GetBits(bsi, 2);
+        MOV      R1,R10
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        B        ??raac_UnpackSBRHeader_1
+//  107 	} else {
+//  108 		/* defaults */
+//  109 		sbrHdr->freqScale =    2;
+??raac_UnpackSBRHeader_0:
+        STRB     R10,[R5, #+11]
+//  110 		sbrHdr->alterScale =   1;
+        STRB     R11,[R5, #+12]
+//  111 		sbrHdr->noiseBands =   2;
+        MOV      R0,#+2
+??raac_UnpackSBRHeader_1:
+        STRB     R0,[R5, #+13]
+//  112 	}
+//  113 
+//  114 	if (sbrHdr->hdrExtra2) {
+        LDRB     R0,[R5, #+10]
+        CMP      R0,#+0
+        BEQ      ??raac_UnpackSBRHeader_2
+//  115 		sbrHdr->limiterBands = GetBits(bsi, 2);
+        MOV      R1,#+2
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, #+14]
+//  116 		sbrHdr->limiterGains = GetBits(bsi, 2);
+        MOV      R1,R10
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, #+15]
+//  117 		sbrHdr->interpFreq =   GetBits(bsi, 1);
+        MOV      R1,R11
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, #+16]
+//  118 		sbrHdr->smoothMode =   GetBits(bsi, 1);
+        MOV      R1,R11
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        MOV      R11,R0
+        B        ??raac_UnpackSBRHeader_3
+//  119 	} else {
+//  120 		/* defaults */
+//  121 		sbrHdr->limiterBands = 2;
+??raac_UnpackSBRHeader_2:
+        STRB     R10,[R5, #+14]
+//  122 		sbrHdr->limiterGains = 2;
+        STRB     R10,[R5, #+15]
+//  123 		sbrHdr->interpFreq =   1;
+        STRB     R11,[R5, #+16]
+//  124 		sbrHdr->smoothMode =   1;
+??raac_UnpackSBRHeader_3:
+        STRB     R11,[R5, #+17]
+//  125 	}
+//  126 	sbrHdr->count++;
+        LDR      R0,[R5, #+0]
+        ADD      R0,R0,#+1
+        STR      R0,[R5, #+0]
+//  127 
+//  128 	/* if any of these have changed from previous frame, reset the SBR module */
+//  129 	if (sbrHdr->startFreq != sbrHdrPrev.startFreq || sbrHdr->stopFreq != sbrHdrPrev.stopFreq ||
+//  130 		sbrHdr->freqScale != sbrHdrPrev.freqScale || sbrHdr->alterScale != sbrHdrPrev.alterScale ||
+//  131 		sbrHdr->crossOverBand != sbrHdrPrev.crossOverBand || sbrHdr->noiseBands != sbrHdrPrev.noiseBands
+//  132 		)
+        LDRB     R0,[R5, #+5]
+        LDRB     R1,[SP, #+0]
+        CMP      R0,R1
+        BNE      ??raac_UnpackSBRHeader_4
+        LDRB     R0,[R5, #+6]
+        LDRB     R1,[SP, #+1]
+        CMP      R0,R1
+        LDRBEQ   R0,[R5, #+11]
+        CMPEQ    R0,R6
+        LDRBEQ   R0,[R5, #+12]
+        CMPEQ    R0,R7
+        LDRBEQ   R0,[R5, #+7]
+        CMPEQ    R0,R8
+        LDRBEQ   R0,[R5, #+13]
+        CMPEQ    R0,R9
+        BEQ      ??raac_UnpackSBRHeader_5
+//  133 		return -1;
+??raac_UnpackSBRHeader_4:
+        MVN      R0,#+0
+        POP      {R1,R4-R11,PC}
+//  134 	else
+//  135 		return 0;
+??raac_UnpackSBRHeader_5:
+        MOV      R0,#+0
+        POP      {R1,R4-R11,PC}   ;; return
+        CFI EndBlock cfiBlock3
+//  136 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??UnpackSBRGrid??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE UnpackSBRGrid
+//  137 
+//  138 /* cLog2[i] = ceil(log2(i)) (disregard i == 0) */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  139 static const unsigned char cLog2[9] = {0, 0, 1, 2, 2, 3, 3, 3, 3};
+cLog2:
+        DATA
+        DC8 0, 0, 1, 2, 2, 3, 3, 3, 3, 0, 0, 0
+//  140 
+//  141 /**************************************************************************************
+//  142  * Function:    UnpackSBRGrid
+//  143  *
+//  144  * Description: unpack SBR grid (table 4.62)
+//  145  *
+//  146  * Inputs:      BitStreamInfo struct pointing to start of SBR grid
+//  147  *              initialized SBRHeader struct for this SCE/CPE block
+//  148  * 
+//  149  * Outputs:     initialized SBRGrid struct for this channel
+//  150  *
+//  151  * Return:      none
+//  152  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function UnpackSBRGrid
+        ARM
+//  153 static void UnpackSBRGrid(BitStreamInfo *bsi, SBRHeader *sbrHdr, SBRGrid *sbrGrid)
+//  154 {
+UnpackSBRGrid:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+        SUB      SP,SP,#+28
+        CFI CFA R13+64
+        MOV      R10,R0
+//  155 	int numEnvRaw, env, rel, pBits, border, middleBorder;
+//  156 	unsigned char relBordLead[MAX_NUM_ENV], relBordTrail[MAX_NUM_ENV];
+//  157 	unsigned char relBorder0[3], relBorder1[3], relBorder[3];
+//  158 	unsigned char numRelBorder0, numRelBorder1, numRelBorder, numRelLead, numRelTrail;
+//  159 	unsigned char absBordLead, absBordTrail, absBorder;
+//  160 	
+//  161 	sbrGrid->ampResFrame = sbrHdr->ampRes;
+        LDRB     R0,[R1, #+4]
+        MOV      R6,R2
+//  162 	sbrGrid->frameClass = GetBits(bsi, 2);
+        MOV      R1,#+2
+        STRB     R0,[R6, #+1]
+        MOV      R0,R10
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R6, #+0]
+        LDRB     R0,[R6, #+0]
+        MOV      R11,#+0
+        CMP      R0,#+0
+        BEQ      ??UnpackSBRGrid_0
+        SUBS     R0,R0,#+1
+        BEQ      ??UnpackSBRGrid_1
+        SUBS     R0,R0,#+1
+        BEQ      ??UnpackSBRGrid_2
+        SUBS     R0,R0,#+1
+        BEQ      ??UnpackSBRGrid_3
+        B        ??UnpackSBRGrid_4
+//  163 	switch (sbrGrid->frameClass) {
+//  164 
+//  165 	case SBR_GRID_FIXFIX:
+//  166 		numEnvRaw = GetBits(bsi, 2);
+??UnpackSBRGrid_0:
+        MOV      R1,#+2
+        MOV      R0,R10
+        _BLF     raac_GetBits,??raac_GetBits??rA
+//  167 		sbrGrid->numEnv = (1 << numEnvRaw);
+        MOV      R1,#+1
+        LSL      R0,R1,R0
+        STRB     R0,[R6, #+3]
+//  168 		if (sbrGrid->numEnv == 1)
+        LDRB     R0,[R6, #+3]
+//  169 			sbrGrid->ampResFrame = 0;
+//  170 
+//  171 		ASSERT(sbrGrid->numEnv == 1 || sbrGrid->numEnv == 2 || sbrGrid->numEnv == 4);
+//  172 
+//  173 		sbrGrid->freqRes[0] = GetBits(bsi, 1);
+//  174 		for (env = 1; env < sbrGrid->numEnv; env++)
+        MOV      R7,#+1
+        CMP      R0,#+1
+        STRBEQ   R11,[R6, #+1]
+        MOV      R0,R10
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R6, #+10]
+        LDRB     R0,[R6, #+3]
+        CMP      R0,#+2
+        BCS      ??UnpackSBRGrid_5
+        B        ??UnpackSBRGrid_6
+//  175 			 sbrGrid->freqRes[env] = sbrGrid->freqRes[0];
+??UnpackSBRGrid_7:
+        LDRB     R1,[R6, #+10]
+        ADD      R0,R7,R6
+        ADD      R7,R7,#+1
+        STRB     R1,[R0, #+10]
+??UnpackSBRGrid_5:
+        LDRB     R0,[R6, #+3]
+        CMP      R7,R0
+        BLT      ??UnpackSBRGrid_7
+//  176 
+//  177 		absBordLead =  0;
+//  178 		absBordTrail = NUM_TIME_SLOTS;
+//  179 		numRelLead =   sbrGrid->numEnv - 1;
+??UnpackSBRGrid_6:
+        LDRB     R0,[R6, #+3]
+        MOV      R8,#+0
+        MOV      R9,#+16
+        SUB      R7,R0,#+1
+        AND      R7,R7,#0xFF
+//  180 		numRelTrail =  0;
+//  181 
+//  182 		/* numEnv = 1, 2, or 4 */
+//  183 		if (sbrGrid->numEnv == 1)		border = NUM_TIME_SLOTS / 1;
+        CMP      R0,#+1
+        MOVEQ    R1,#+16
+        BEQ      ??UnpackSBRGrid_8
+//  184 		else if (sbrGrid->numEnv == 2)	border = NUM_TIME_SLOTS / 2;
+        CMP      R0,#+2
+        MOVEQ    R1,#+8
+//  185 		else							border = NUM_TIME_SLOTS / 4;
+        MOVNE    R1,#+4
+//  186 
+//  187 		for (rel = 0; rel < numRelLead; rel++)
+??UnpackSBRGrid_8:
+        MOV      R0,#+0
+        MOVS     R2,R7
+        BEQ      ??UnpackSBRGrid_9
+        ADD      R3,SP,#+12
+        B        ??UnpackSBRGrid_10
+//  188 			relBordLead[rel] = border;
+??UnpackSBRGrid_11:
+        STRB     R1,[R0, +R3]
+        ADD      R0,R0,#+1
+??UnpackSBRGrid_10:
+        CMP      R0,R7
+        BLT      ??UnpackSBRGrid_11
+//  189 
+//  190 		middleBorder = (sbrGrid->numEnv >> 1);
+??UnpackSBRGrid_9:
+        LDRB     R0,[R6, #+3]
+        LSR      R4,R0,#+1
+        B        ??UnpackSBRGrid_4
+//  191 
+//  192 		break;
+//  193 
+//  194 	case SBR_GRID_FIXVAR:
+//  195 		absBorder = GetBits(bsi, 2) + NUM_TIME_SLOTS;
+??UnpackSBRGrid_1:
+        MOV      R1,#+2
+        MOV      R0,R10
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        ADD      R9,R0,#+16
+        AND      R9,R9,#0xFF
+//  196 		numRelBorder = GetBits(bsi, 2);
+        MOV      R1,#+2
+        MOV      R0,R10
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        AND      R4,R0,#0xFF
+//  197 		sbrGrid->numEnv = numRelBorder + 1;
+        ADD      R0,R4,#+1
+        STRB     R0,[R6, #+3]
+//  198 		for (rel = 0; rel < numRelBorder; rel++)
+        MOV      R7,#+0
+        MOVS     R0,R4
+        BEQ      ??UnpackSBRGrid_12
+        B        ??UnpackSBRGrid_13
+//  199 			relBorder[rel] = 2*GetBits(bsi, 2) + 2;
+??UnpackSBRGrid_14:
+        MOV      R1,#+2
+        MOV      R0,R10
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        MOV      R1,#+2
+        ADD      R0,R1,R0, LSL #+1
+        MOV      R1,SP
+        STRB     R0,[R7, +R1]
+        ADD      R7,R7,#+1
+??UnpackSBRGrid_13:
+        CMP      R7,R4
+        BLT      ??UnpackSBRGrid_14
+//  200 
+//  201 		pBits = cLog2[sbrGrid->numEnv + 1];
+//  202 		sbrGrid->pointer = GetBits(bsi, pBits);
+??UnpackSBRGrid_12:
+        LDRB     R0,[R6, #+3]
+        LDR      R1,??UnpackSBRGrid_15  ;; cLog2
+        ADD      R0,R0,R1
+        LDRB     R1,[R0, #+1]
+        MOV      R0,R10
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R6, #+2]
+//  203 
+//  204 		for (env = sbrGrid->numEnv - 1; env >= 0; env--)
+        LDRB     R0,[R6, #+3]
+        SUBS     R7,R0,#+1
+        BMI      ??UnpackSBRGrid_16
+//  205 			sbrGrid->freqRes[env] = GetBits(bsi, 1);
+??UnpackSBRGrid_17:
+        MOV      R1,#+1
+        MOV      R0,R10
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        ADD      R1,R6,#+10
+        STRB     R0,[R7, +R1]
+        SUBS     R7,R7,#+1
+        BPL      ??UnpackSBRGrid_17
+//  206 
+//  207 		absBordLead =  0;
+??UnpackSBRGrid_16:
+        MOV      R8,#+0
+//  208 		absBordTrail = absBorder;
+//  209 		numRelLead =   0;
+        MOV      R7,R8
+//  210 		numRelTrail =  numRelBorder;
+//  211 
+//  212 		for (rel = 0; rel < numRelTrail; rel++)
+        MOV      R0,R7
+        CMP      R4,#+0
+        BEQ      ??UnpackSBRGrid_18
+        ADD      R1,SP,#+20
+        B        ??UnpackSBRGrid_19
+//  213 			relBordTrail[rel] = relBorder[rel];
+??UnpackSBRGrid_20:
+        MOV      R2,SP
+        LDRB     R2,[R0, +R2]
+        STRB     R2,[R0, +R1]
+        ADD      R0,R0,#+1
+??UnpackSBRGrid_19:
+        CMP      R0,R4
+        BLT      ??UnpackSBRGrid_20
+//  214 
+//  215 		if (sbrGrid->pointer > 1)			middleBorder = sbrGrid->numEnv + 1 - sbrGrid->pointer;
+        B        ??UnpackSBRGrid_18
+//  216 		else								middleBorder = sbrGrid->numEnv - 1;
+//  217 
+//  218 		break;
+//  219 
+//  220 	case SBR_GRID_VARFIX:
+//  221 		absBorder = GetBits(bsi, 2);
+??UnpackSBRGrid_2:
+        MOV      R1,#+2
+        MOV      R0,R10
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        AND      R8,R0,#0xFF
+//  222 		numRelBorder = GetBits(bsi, 2);
+        MOV      R1,#+2
+        MOV      R0,R10
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        AND      R4,R0,#0xFF
+//  223 		sbrGrid->numEnv = numRelBorder + 1;
+        ADD      R0,R4,#+1
+        STRB     R0,[R6, #+3]
+//  224 		for (rel = 0; rel < numRelBorder; rel++)
+        MOV      R5,#+0
+        MOVS     R0,R4
+        BEQ      ??UnpackSBRGrid_21
+        B        ??UnpackSBRGrid_22
+//  225 			relBorder[rel] = 2*GetBits(bsi, 2) + 2;
+??UnpackSBRGrid_23:
+        MOV      R1,#+2
+        MOV      R0,R10
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        MOV      R1,#+2
+        ADD      R0,R1,R0, LSL #+1
+        MOV      R1,SP
+        STRB     R0,[R5, +R1]
+        ADD      R5,R5,#+1
+??UnpackSBRGrid_22:
+        CMP      R5,R4
+        BLT      ??UnpackSBRGrid_23
+//  226 
+//  227 		pBits = cLog2[sbrGrid->numEnv + 1];
+//  228 		sbrGrid->pointer = GetBits(bsi, pBits);
+??UnpackSBRGrid_21:
+        LDRB     R0,[R6, #+3]
+        LDR      R1,??UnpackSBRGrid_15  ;; cLog2
+//  229 
+//  230 		for (env = 0; env < sbrGrid->numEnv; env++)
+        MOV      R7,#+0
+        ADD      R0,R0,R1
+        LDRB     R1,[R0, #+1]
+        MOV      R0,R10
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R6, #+2]
+        LDRB     R0,[R6, #+3]
+        CMP      R0,#+0
+        BNE      ??UnpackSBRGrid_24
+        B        ??UnpackSBRGrid_25
+//  231 			sbrGrid->freqRes[env] = GetBits(bsi, 1);
+??UnpackSBRGrid_26:
+        MOV      R1,#+1
+        MOV      R0,R10
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        ADD      R1,R7,R6
+        STRB     R0,[R1, #+10]
+        ADD      R7,R7,#+1
+??UnpackSBRGrid_24:
+        LDRB     R0,[R6, #+3]
+        CMP      R7,R0
+        BLT      ??UnpackSBRGrid_26
+//  232 
+//  233 		absBordLead =  absBorder;
+//  234 		absBordTrail = NUM_TIME_SLOTS;
+??UnpackSBRGrid_25:
+        MOV      R9,#+16
+//  235 		numRelLead =   numRelBorder;
+        MOVS     R7,R4
+//  236 		numRelTrail =  0;
+//  237 
+//  238 		for (rel = 0; rel < numRelLead; rel++)
+        MOV      R0,#+0
+        BEQ      ??UnpackSBRGrid_27
+        ADD      R2,SP,#+12
+        B        ??UnpackSBRGrid_28
+//  239 			relBordLead[rel] = relBorder[rel];
+??UnpackSBRGrid_29:
+        MOV      R3,SP
+        LDRB     R3,[R0, +R3]
+        STRB     R3,[R0, +R2]
+        ADD      R0,R0,#+1
+??UnpackSBRGrid_28:
+        CMP      R0,R7
+        BLT      ??UnpackSBRGrid_29
+//  240 
+//  241 		if (sbrGrid->pointer == 0)			middleBorder = 1;
+??UnpackSBRGrid_27:
+        LDRB     R0,[R6, #+2]
+        CMP      R0,#+0
+        MOVEQ    R4,#+1
+        BEQ      ??UnpackSBRGrid_4
+//  242 		else if (sbrGrid->pointer == 1)		middleBorder = sbrGrid->numEnv - 1;
+        CMP      R0,#+1
+        BNE      ??UnpackSBRGrid_30
+        LDRB     R0,[R6, #+3]
+        B        ??UnpackSBRGrid_30
+//  243 		else								middleBorder = sbrGrid->pointer - 1;
+//  244 
+//  245 		break;
+//  246 
+//  247 	case SBR_GRID_VARVAR:
+//  248 		absBordLead =   GetBits(bsi, 2);	/* absBorder0 */
+??UnpackSBRGrid_3:
+        MOV      R1,#+2
+        MOV      R0,R10
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        MOV      R8,R0
+//  249 		absBordTrail =  GetBits(bsi, 2) + NUM_TIME_SLOTS;	/* absBorder1 */
+        MOV      R1,#+2
+        MOV      R0,R10
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        ADD      R9,R0,#+16
+//  250 		numRelBorder0 = GetBits(bsi, 2);
+        MOV      R1,#+2
+        MOV      R0,R10
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        AND      R11,R0,#0xFF
+//  251 		numRelBorder1 = GetBits(bsi, 2);
+        MOV      R1,#+2
+        MOV      R0,R10
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        AND      R4,R0,#0xFF
+//  252 
+//  253 		sbrGrid->numEnv = numRelBorder0 + numRelBorder1 + 1;
+        ADD      R0,R4,R11
+        ADD      R0,R0,#+1
+        STRB     R0,[R6, #+3]
+//  254 		ASSERT(sbrGrid->numEnv <= 5);
+//  255 
+//  256 		for (rel = 0; rel < numRelBorder0; rel++)
+        MOV      R5,#+0
+        MOVS     R0,R11
+        BEQ      ??UnpackSBRGrid_31
+        B        ??UnpackSBRGrid_32
+//  257 			relBorder0[rel] = 2*GetBits(bsi, 2) + 2;
+??UnpackSBRGrid_33:
+        MOV      R1,#+2
+        MOV      R0,R10
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        MOV      R1,#+2
+        ADD      R0,R1,R0, LSL #+1
+        ADD      R1,SP,#+3
+        STRB     R0,[R5, +R1]
+        ADD      R5,R5,#+1
+??UnpackSBRGrid_32:
+        CMP      R5,R11
+        BLT      ??UnpackSBRGrid_33
+//  258 
+//  259 		for (rel = 0; rel < numRelBorder1; rel++)
+??UnpackSBRGrid_31:
+        MOV      R7,#+0
+        MOVS     R5,R4
+        BNE      ??UnpackSBRGrid_34
+        B        ??UnpackSBRGrid_35
+//  260 			relBorder1[rel] = 2*GetBits(bsi, 2) + 2;
+??UnpackSBRGrid_36:
+        MOV      R1,#+2
+        MOV      R0,R10
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        MOV      R1,#+2
+        ADD      R0,R1,R0, LSL #+1
+        ADD      R1,SP,#+8
+        STRB     R0,[R7, +R1]
+        ADD      R7,R7,#+1
+??UnpackSBRGrid_34:
+        CMP      R7,R4
+        BLT      ??UnpackSBRGrid_36
+//  261 
+//  262 		pBits = cLog2[numRelBorder0 + numRelBorder1 + 2];
+//  263 		sbrGrid->pointer = GetBits(bsi, pBits);
+??UnpackSBRGrid_35:
+        LDR      R1,??UnpackSBRGrid_15  ;; cLog2
+        ADD      R0,R4,R11
+        ADD      R0,R0,R1
+        LDRB     R1,[R0, #+2]
+        MOV      R0,R10
+//  264 
+//  265 		for (env = 0; env < sbrGrid->numEnv; env++)
+        MOV      R7,#+0
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R6, #+2]
+        LDRB     R0,[R6, #+3]
+        CMP      R0,#+0
+        BNE      ??UnpackSBRGrid_37
+        B        ??UnpackSBRGrid_38
+//  266 			sbrGrid->freqRes[env] = GetBits(bsi, 1);
+??UnpackSBRGrid_39:
+        MOV      R1,#+1
+        MOV      R0,R10
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        ADD      R1,R7,R6
+        STRB     R0,[R1, #+10]
+        ADD      R7,R7,#+1
+??UnpackSBRGrid_37:
+        LDRB     R0,[R6, #+3]
+        CMP      R7,R0
+        BLT      ??UnpackSBRGrid_39
+//  267 
+//  268 		numRelLead =  numRelBorder0;
+??UnpackSBRGrid_38:
+        MOVS     R7,R11
+//  269 		numRelTrail = numRelBorder1;
+//  270 
+//  271 		for (rel = 0; rel < numRelLead; rel++)
+        MOV      R0,#+0
+        BEQ      ??UnpackSBRGrid_40
+        ADD      R2,SP,#+12
+        B        ??UnpackSBRGrid_41
+//  272 			relBordLead[rel] = relBorder0[rel];
+??UnpackSBRGrid_42:
+        ADD      R3,SP,#+3
+        LDRB     R3,[R0, +R3]
+        STRB     R3,[R0, +R2]
+        ADD      R0,R0,#+1
+??UnpackSBRGrid_41:
+        CMP      R0,R7
+        BLT      ??UnpackSBRGrid_42
+//  273 
+//  274 		for (rel = 0; rel < numRelTrail; rel++)
+??UnpackSBRGrid_40:
+        MOV      R0,#+0
+        CMP      R4,#+0
+        ADD      R1,SP,#+20
+        BNE      ??UnpackSBRGrid_43
+        B        ??UnpackSBRGrid_18
+//  275 			relBordTrail[rel] = relBorder1[rel];
+??UnpackSBRGrid_44:
+        ADD      R2,SP,#+8
+        LDRB     R2,[R0, +R2]
+        STRB     R2,[R0, +R1]
+        ADD      R0,R0,#+1
+??UnpackSBRGrid_43:
+        CMP      R0,R4
+        BLT      ??UnpackSBRGrid_44
+//  276 
+//  277 		if (sbrGrid->pointer > 1)			middleBorder = sbrGrid->numEnv + 1 - sbrGrid->pointer;
+??UnpackSBRGrid_18:
+        LDRB     R0,[R6, #+2]
+        CMP      R0,#+2
+        LDRB     R0,[R6, #+3]
+        BCC      ??UnpackSBRGrid_30
+        LDRB     R1,[R6, #+2]
+        ADD      R0,R0,#+1
+        SUB      R4,R0,R1
+        B        ??UnpackSBRGrid_4
+//  278 		else								middleBorder = sbrGrid->numEnv - 1;
+??UnpackSBRGrid_30:
+        SUB      R4,R0,#+1
+//  279 
+//  280 		break;
+//  281 	}
+//  282 
+//  283 	/* build time border vector */
+//  284 	sbrGrid->envTimeBorder[0] = absBordLead * SAMPLES_PER_SLOT;
+??UnpackSBRGrid_4:
+        LSL      R0,R8,#+1
+        STRB     R0,[R6, #+4]
+//  285 
+//  286 	rel = 0;
+        MOV      R1,#+0
+//  287 	border = absBordLead;
+        AND      R8,R8,#0xFF
+//  288 	for (env = 1; env <= numRelLead; env++) {
+        MOV      R2,#+1
+        ANDS     R0,R7,#0xFF
+        BNE      ??UnpackSBRGrid_45
+        B        ??UnpackSBRGrid_46
+//  289 		border += relBordLead[rel++];
+??UnpackSBRGrid_47:
+        ADD      R3,SP,#+12
+        LDRB     R3,[R1, +R3]
+        ADD      R1,R1,#+1
+        ADD      R8,R3,R8
+//  290 		sbrGrid->envTimeBorder[env] = border * SAMPLES_PER_SLOT;
+        ADD      R3,R2,R6
+        MOV      R5,R8
+        LSL      R5,R5,#+1
+        STRB     R5,[R3, #+4]
+//  291 	}
+        ADD      R2,R2,#+1
+??UnpackSBRGrid_45:
+        CMP      R0,R2
+        BGE      ??UnpackSBRGrid_47
+//  292 
+//  293 	rel = 0;
+//  294 	border = absBordTrail;
+//  295 	for (env = sbrGrid->numEnv - 1; env > numRelLead; env--) {
+??UnpackSBRGrid_46:
+        LDRB     R3,[R6, #+3]
+        MOV      R1,#+0
+        AND      R2,R9,#0xFF
+        SUB      R3,R3,#+1
+        CMP      R0,R3
+        BGE      ??UnpackSBRGrid_48
+//  296 		border -= relBordTrail[rel++];
+??UnpackSBRGrid_49:
+        ADD      R5,SP,#+20
+        LDRB     R5,[R1, +R5]
+        ADD      R1,R1,#+1
+        SUB      R2,R2,R5
+//  297 		sbrGrid->envTimeBorder[env] = border * SAMPLES_PER_SLOT;
+        ADD      R5,R6,#+4
+        MOV      R7,R2
+        LSL      R7,R7,#+1
+        STRB     R7,[R3, +R5]
+//  298 	}
+        SUB      R3,R3,#+1
+        CMP      R0,R3
+        BLT      ??UnpackSBRGrid_49
+//  299 
+//  300 	sbrGrid->envTimeBorder[sbrGrid->numEnv] = absBordTrail * SAMPLES_PER_SLOT;
+??UnpackSBRGrid_48:
+        LDRB     R0,[R6, #+3]
+        LSL      R1,R9,#+1
+        ADD      R0,R0,R6
+        STRB     R1,[R0, #+4]
+//  301 
+//  302 	if (sbrGrid->numEnv > 1) {
+        LDRB     R0,[R6, #+3]
+        CMP      R0,#+2
+        BCC      ??UnpackSBRGrid_50
+//  303 		sbrGrid->numNoiseFloors = 2;
+        MOV      R0,#+2
+        STRB     R0,[R6, #+15]
+//  304 		sbrGrid->noiseTimeBorder[0] = sbrGrid->envTimeBorder[0];
+        LDRB     R0,[R6, #+4]
+        STRB     R0,[R6, #+16]
+//  305 		sbrGrid->noiseTimeBorder[1] = sbrGrid->envTimeBorder[middleBorder];
+        ADD      R0,R4,R6
+        LDRB     R0,[R0, #+4]
+        STRB     R0,[R6, #+17]
+//  306 		sbrGrid->noiseTimeBorder[2] = sbrGrid->envTimeBorder[sbrGrid->numEnv];
+        LDRB     R0,[R6, #+3]
+        ADD      R0,R0,R6
+        LDRB     R0,[R0, #+4]
+        STRB     R0,[R6, #+18]
+        ADD      SP,SP,#+28
+        CFI CFA R13+36
+        POP      {R4-R11,PC}
+        CFI CFA R13+64
+//  307 	} else {
+//  308 		sbrGrid->numNoiseFloors = 1;
+??UnpackSBRGrid_50:
+        MOV      R0,#+1
+        STRB     R0,[R6, #+15]
+//  309 		sbrGrid->noiseTimeBorder[0] = sbrGrid->envTimeBorder[0];
+        LDRB     R0,[R6, #+4]
+        STRB     R0,[R6, #+16]
+//  310 		sbrGrid->noiseTimeBorder[1] = sbrGrid->envTimeBorder[1];
+        LDRB     R0,[R6, #+5]
+        STRB     R0,[R6, #+17]
+//  311 	}
+//  312 }
+        ADD      SP,SP,#+28
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        DATA
+??UnpackSBRGrid_15:
+        DC32     cLog2
+        CFI EndBlock cfiBlock5
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_UnpackSBRSingleChannel??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE raac_UnpackSBRSingleChannel
+//  313 
+//  314 /**************************************************************************************
+//  315  * Function:    UnpackDeltaTimeFreq
+//  316  *
+//  317  * Description: unpack time/freq flags for delta coding of SBR envelopes (table 4.63)
+//  318  *
+//  319  * Inputs:      BitStreamInfo struct pointing to start of dt/df flags
+//  320  *              number of envelopes
+//  321  *              number of noise floors
+//  322  * 
+//  323  * Outputs:     delta flags for envelope and noise floors
+//  324  *
+//  325  * Return:      none
+//  326  **************************************************************************************/
+//  327 static void UnpackDeltaTimeFreq(BitStreamInfo *bsi, int numEnv, unsigned char *deltaFlagEnv, 
+//  328 								int numNoiseFloors, unsigned char *deltaFlagNoise)
+//  329 {
+//  330 	int env, noiseFloor;
+//  331 
+//  332 	for (env = 0; env < numEnv; env++)
+//  333 		deltaFlagEnv[env] = GetBits(bsi, 1);
+//  334 
+//  335 	for (noiseFloor = 0; noiseFloor < numNoiseFloors; noiseFloor++)
+//  336 		deltaFlagNoise[noiseFloor] = GetBits(bsi, 1);
+//  337 }
+//  338 
+//  339 /**************************************************************************************
+//  340  * Function:    UnpackInverseFilterMode
+//  341  *
+//  342  * Description: unpack invf flags for chirp factor calculation (table 4.64)
+//  343  *
+//  344  * Inputs:      BitStreamInfo struct pointing to start of invf flags
+//  345  *              number of noise floor bands
+//  346  * 
+//  347  * Outputs:     invf flags for noise floor bands
+//  348  *
+//  349  * Return:      none
+//  350  **************************************************************************************/
+//  351 static void UnpackInverseFilterMode(BitStreamInfo *bsi, int numNoiseFloorBands, unsigned char *mode)
+//  352 {
+//  353 	int n;	
+//  354 
+//  355 	for (n = 0; n < numNoiseFloorBands; n++)
+//  356 		mode[n] = GetBits(bsi, 2);
+//  357 }
+//  358 
+//  359 /**************************************************************************************
+//  360  * Function:    UnpackSinusoids
+//  361  *
+//  362  * Description: unpack sinusoid (harmonic) flags for each SBR subband (table 4.67)
+//  363  *
+//  364  * Inputs:      BitStreamInfo struct pointing to start of sinusoid flags
+//  365  *              number of high resolution SBR subbands (nHigh)
+//  366  * 
+//  367  * Outputs:     sinusoid flags for each SBR subband, zero-filled above nHigh
+//  368  *
+//  369  * Return:      none
+//  370  **************************************************************************************/
+//  371 static void UnpackSinusoids(BitStreamInfo *bsi, int nHigh, int addHarmonicFlag, unsigned char *addHarmonic)
+//  372 {
+//  373 	int n;
+//  374 
+//  375 	n = 0;
+//  376 	if (addHarmonicFlag) {
+//  377 		for (  ; n < nHigh; n++)
+//  378 			addHarmonic[n] = GetBits(bsi, 1);
+//  379 	}
+//  380 
+//  381 	/* zero out unused bands */
+//  382 	for (     ; n < MAX_QMF_BANDS; n++)
+//  383 		addHarmonic[n] = 0;
+//  384 }
+//  385 
+//  386 /**************************************************************************************
+//  387  * Function:    CopyCouplingGrid
+//  388  *
+//  389  * Description: copy grid parameters from left to right for channel coupling
+//  390  *
+//  391  * Inputs:      initialized SBRGrid struct for left channel
+//  392  * 
+//  393  * Outputs:     initialized SBRGrid struct for right channel
+//  394  *
+//  395  * Return:      none
+//  396  **************************************************************************************/
+//  397 static void CopyCouplingGrid(SBRGrid *sbrGridLeft, SBRGrid *sbrGridRight)
+//  398 {
+//  399 	int env, noiseFloor;
+//  400 
+//  401 	sbrGridRight->frameClass =     sbrGridLeft->frameClass;
+//  402 	sbrGridRight->ampResFrame =    sbrGridLeft->ampResFrame;
+//  403 	sbrGridRight->pointer =        sbrGridLeft->pointer;
+//  404 
+//  405 	sbrGridRight->numEnv =         sbrGridLeft->numEnv;
+//  406 	for (env = 0; env < sbrGridLeft->numEnv; env++) {
+//  407 		sbrGridRight->envTimeBorder[env] = sbrGridLeft->envTimeBorder[env];
+//  408 		sbrGridRight->freqRes[env] =       sbrGridLeft->freqRes[env];
+//  409 	}
+//  410 	sbrGridRight->envTimeBorder[env] = sbrGridLeft->envTimeBorder[env];	/* borders are [0, numEnv] inclusive */
+//  411 
+//  412 	sbrGridRight->numNoiseFloors = sbrGridLeft->numNoiseFloors;
+//  413 	for (noiseFloor = 0; noiseFloor <= sbrGridLeft->numNoiseFloors; noiseFloor++)
+//  414 		sbrGridRight->noiseTimeBorder[noiseFloor] = sbrGridLeft->noiseTimeBorder[noiseFloor];
+//  415 
+//  416 	/* numEnvPrev, numNoiseFloorsPrev, freqResPrev are updated in DecodeSBREnvelope() and DecodeSBRNoise() */
+//  417 }
+//  418 
+//  419 /**************************************************************************************
+//  420  * Function:    CopyCouplingInverseFilterMode
+//  421  *
+//  422  * Description: copy invf flags from left to right for channel coupling
+//  423  *
+//  424  * Inputs:      invf flags for left channel
+//  425  *              number of noise floor bands
+//  426  * 
+//  427  * Outputs:     invf flags for right channel
+//  428  *
+//  429  * Return:      none
+//  430  **************************************************************************************/
+//  431 static void CopyCouplingInverseFilterMode(int numNoiseFloorBands, unsigned char *modeLeft, unsigned char *modeRight)
+//  432 {
+//  433 	int band;
+//  434 
+//  435 	for (band = 0; band < numNoiseFloorBands; band++)
+//  436 		modeRight[band] = modeLeft[band];
+//  437 }
+//  438 
+//  439 /**************************************************************************************
+//  440  * Function:    UnpackSBRSingleChannel
+//  441  *
+//  442  * Description: unpack sideband info (grid, delta flags, invf flags, envelope and 
+//  443  *                noise floor configuration, sinusoids) for a single channel
+//  444  *
+//  445  * Inputs:      BitStreamInfo struct pointing to start of sideband info
+//  446  *              initialized PSInfoSBR struct (after parsing SBR header and building
+//  447  *                frequency tables)
+//  448  *              base output channel (range = [0, nChans-1])
+//  449  * 
+//  450  * Outputs:     updated PSInfoSBR struct (SBRGrid and SBRChan)
+//  451  *
+//  452  * Return:      none
+//  453  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function raac_UnpackSBRSingleChannel
+        ARM
+//  454 void UnpackSBRSingleChannel(BitStreamInfo *bsi, PSInfoSBR *psi, int chBase)
+//  455 {
+raac_UnpackSBRSingleChannel:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+        MOV      R4,R0
+        MOV      R5,R1
+        MOV      R10,R2
+//  456 	int bitsLeft;
+//  457 	SBRHeader *sbrHdr = &(psi->sbrHdr[chBase]);
+//  458 	SBRGrid *sbrGridL = &(psi->sbrGrid[chBase+0]);
+        MOV      R0,#+22
+        MLA      R1,R0,R10,R5
+//  459 	SBRFreq *sbrFreq =  &(psi->sbrFreq[chBase]);
+        MOV      R0,#+212
+        ADD      R6,R1,#+48
+        MLA      R1,R0,R10,R5
+//  460 	SBRChan *sbrChanL = &(psi->sbrChan[chBase+0]);
+        MOV      R0,#+2336
+        ADD      R7,R1,#+92
+        MLA      R1,R0,R10,R5
+        SUB      SP,SP,#+12
+        CFI CFA R13+48
+        ADD      R8,R1,#+516
+        MOV      R0,#+68
+        ORR      R0,R0,#0x1400
+        ADD      R9,R0,R5
+        MOV      R1,#+1
+        MOV      R0,R4
+//  461 
+//  462 	psi->dataExtra = GetBits(bsi, 1);
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R9, #+0]
+//  463 	if (psi->dataExtra)
+        LDRB     R0,[R9, #+0]
+        CMP      R0,#+0
+        BEQ      ??raac_UnpackSBRSingleChannel_0
+//  464 		psi->resBitsData = GetBits(bsi, 4);
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R9, #+1]
+//  465 
+//  466 	UnpackSBRGrid(bsi, sbrHdr, sbrGridL);
+??raac_UnpackSBRSingleChannel_0:
+        MOV      R0,#+20
+        MLA      R1,R0,R10,R5
+        MOV      R2,R6
+        ADD      R1,R1,#+8
+        MOV      R0,R4
+        BL       UnpackSBRGrid
+//  467 	UnpackDeltaTimeFreq(bsi, sbrGridL->numEnv, sbrChanL->deltaFlagEnv, sbrGridL->numNoiseFloors, sbrChanL->deltaFlagNoise);
+        ADD      R1,R8,#+9
+        STR      R1,[SP, #+8]
+        LDRB     R1,[R6, #+15]
+        MOV      R11,#+0
+        STR      R1,[SP, #+0]
+        ADD      R1,R8,#+4
+        STR      R1,[SP, #+4]
+        LDRB     R10,[R6, #+3]
+        CMP      R10,#+1
+        BGE      ??raac_UnpackSBRSingleChannel_1
+        B        ??raac_UnpackSBRSingleChannel_2
+??raac_UnpackSBRSingleChannel_3:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LDR      R1,[SP, #+4]
+        STRB     R0,[R11, +R1]
+        ADD      R11,R11,#+1
+??raac_UnpackSBRSingleChannel_1:
+        CMP      R11,R10
+        BLT      ??raac_UnpackSBRSingleChannel_3
+??raac_UnpackSBRSingleChannel_2:
+        LDR      R0,[SP, #+0]
+        MOV      R10,#+0
+        CMP      R0,#+1
+        BGE      ??raac_UnpackSBRSingleChannel_4
+        B        ??raac_UnpackSBRSingleChannel_5
+??raac_UnpackSBRSingleChannel_6:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LDR      R1,[SP, #+8]
+        STRB     R0,[R10, +R1]
+        ADD      R10,R10,#+1
+??raac_UnpackSBRSingleChannel_4:
+        LDR      R0,[SP, #+0]
+        CMP      R10,R0
+        BLT      ??raac_UnpackSBRSingleChannel_6
+//  468 	UnpackInverseFilterMode(bsi, sbrFreq->numNoiseFloorBands, sbrChanL->invfMode[1]);
+??raac_UnpackSBRSingleChannel_5:
+        MOV      R1,#+10
+        ORR      R1,R1,#0x100
+        ADD      R1,R1,R8
+        STR      R1,[SP, #+0]
+        LDR      R10,[R7, #+24]
+        MOV      R11,#+0
+        CMP      R10,#+1
+        BGE      ??raac_UnpackSBRSingleChannel_7
+        B        ??raac_UnpackSBRSingleChannel_8
+??raac_UnpackSBRSingleChannel_9:
+        MOV      R1,#+2
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LDR      R1,[SP, #+0]
+        STRB     R0,[R11, +R1]
+        ADD      R11,R11,#+1
+??raac_UnpackSBRSingleChannel_7:
+        CMP      R11,R10
+        BLT      ??raac_UnpackSBRSingleChannel_9
+//  469 
+//  470 	DecodeSBREnvelope(bsi, psi, sbrGridL, sbrFreq, sbrChanL, 0);
+??raac_UnpackSBRSingleChannel_8:
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+52
+        MOV      R3,R7
+        MOV      R2,R6
+        MOV      R1,R5
+        MOV      R0,R8
+        PUSH     {R0}
+        CFI CFA R13+56
+        MOV      R0,R4
+        _BLF     raac_DecodeSBREnvelope,??raac_DecodeSBREnvelope??rA
+//  471 	DecodeSBRNoise(bsi, psi, sbrGridL, sbrFreq, sbrChanL, 0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+60
+        MOV      R3,R7
+        MOV      R2,R6
+        MOV      R1,R5
+        MOV      R0,R8
+        PUSH     {R0}
+        CFI CFA R13+64
+//  472 
+//  473 	sbrChanL->addHarmonicFlag[1] = GetBits(bsi, 1);
+        MOV      R5,#+37
+        ORR      R5,R5,#0x100
+        MOV      R0,R4
+        _BLF     raac_DecodeSBRNoise,??raac_DecodeSBRNoise??rA
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R5, +R8]
+//  474 	UnpackSinusoids(bsi, sbrFreq->nHigh, sbrChanL->addHarmonicFlag[1], sbrChanL->addHarmonic[1]);
+        LDR      R10,[R7, #+8]
+        ADD      R0,R5,#+49
+        ADD      R6,R0,R8
+        LDRB     R0,[R5, +R8]
+        MOV      R7,#+0
+        ADD      SP,SP,#+16
+        CFI CFA R13+48
+        CMP      R0,#+0
+        BNE      ??raac_UnpackSBRSingleChannel_10
+        B        ??raac_UnpackSBRSingleChannel_11
+??raac_UnpackSBRSingleChannel_12:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R7, +R6]
+        ADD      R7,R7,#+1
+??raac_UnpackSBRSingleChannel_10:
+        CMP      R7,R10
+        BLT      ??raac_UnpackSBRSingleChannel_12
+??raac_UnpackSBRSingleChannel_13:
+        CMP      R7,#+48
+        BGE      ??raac_UnpackSBRSingleChannel_14
+??raac_UnpackSBRSingleChannel_11:
+        MOV      R0,#+0
+        STRB     R0,[R7, +R6]
+        ADD      R7,R7,#+1
+        B        ??raac_UnpackSBRSingleChannel_13
+//  475 	
+//  476 	psi->extendedDataPresent = GetBits(bsi, 1);
+??raac_UnpackSBRSingleChannel_14:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R9, #+2]
+//  477 	if (psi->extendedDataPresent) {
+        LDRB     R0,[R9, #+2]
+        CMP      R0,#+0
+        POPEQ    {R0-R2,R4-R11,PC}
+//  478 		psi->extendedDataSize = GetBits(bsi, 4);
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STR      R0,[R9, #+4]
+//  479 		if (psi->extendedDataSize == 15)
+        CMP      R0,#+15
+        BNE      ??raac_UnpackSBRSingleChannel_15
+//  480 			psi->extendedDataSize += GetBits(bsi, 8);
+        MOV      R1,#+8
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LDR      R1,[R9, #+4]
+        ADD      R0,R0,R1
+        STR      R0,[R9, #+4]
+//  481 
+//  482 		bitsLeft = 8 * psi->extendedDataSize;
+??raac_UnpackSBRSingleChannel_15:
+        LDR      R0,[R9, #+4]
+        LSL      R5,R0,#+3
+        CMP      R5,#+1
+        POPLT    {R0-R2,R4-R11,PC}
+//  483 
+//  484 		/* get ID, unpack extension info, do whatever is necessary with it... */
+//  485 		while (bitsLeft > 0) {
+//  486 			GetBits(bsi, 8);
+??raac_UnpackSBRSingleChannel_16:
+        MOV      R1,#+8
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+//  487 			bitsLeft -= 8;
+        SUB      R5,R5,#+8
+//  488 		}
+        CMP      R5,#+1
+        BGE      ??raac_UnpackSBRSingleChannel_16
+//  489 	}
+//  490 }
+        POP      {R0-R2,R4-R11,PC}  ;; return
+        CFI EndBlock cfiBlock7
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_UnpackSBRChannelPair??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE raac_UnpackSBRChannelPair
+//  491 
+//  492 /**************************************************************************************
+//  493  * Function:    UnpackSBRChannelPair
+//  494  *
+//  495  * Description: unpack sideband info (grid, delta flags, invf flags, envelope and 
+//  496  *                noise floor configuration, sinusoids) for a channel pair
+//  497  *
+//  498  * Inputs:      BitStreamInfo struct pointing to start of sideband info
+//  499  *              initialized PSInfoSBR struct (after parsing SBR header and building
+//  500  *                frequency tables)
+//  501  *              base output channel (range = [0, nChans-1])
+//  502  * 
+//  503  * Outputs:     updated PSInfoSBR struct (SBRGrid and SBRChan for both channels)
+//  504  *
+//  505  * Return:      none
+//  506  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function raac_UnpackSBRChannelPair
+        ARM
+//  507 void UnpackSBRChannelPair(BitStreamInfo *bsi, PSInfoSBR *psi, int chBase)
+//  508 {
+raac_UnpackSBRChannelPair:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+        MOV      R4,R0
+        MOV      R5,R1
+//  509 	int bitsLeft;
+//  510 	SBRHeader *sbrHdr = &(psi->sbrHdr[chBase]);
+        MOV      R0,#+20
+        MLA      R1,R0,R2,R5
+        SUB      SP,SP,#+16
+        CFI CFA R13+52
+        ADD      R11,R1,#+8
+//  511 	SBRGrid *sbrGridL = &(psi->sbrGrid[chBase+0]), *sbrGridR = &(psi->sbrGrid[chBase+1]);
+        MOV      R1,#+22
+        MLA      R0,R1,R2,R5
+        ADD      R9,R0,#+48
+        ADD      R10,R0,#+70
+//  512 	SBRFreq *sbrFreq =  &(psi->sbrFreq[chBase]);
+        MOV      R0,#+212
+        MLA      R1,R0,R2,R5
+        ADD      R6,R1,#+92
+//  513 	SBRChan *sbrChanL = &(psi->sbrChan[chBase+0]), *sbrChanR = &(psi->sbrChan[chBase+1]);
+        MOV      R1,#+2336
+        MLA      R0,R1,R2,R5
+        ORR      R1,R1,#0x204
+        ADD      R7,R0,#+516
+        ADD      R8,R1,R0
+        MOV      R1,#+1
+        MOV      R0,R4
+//  514 
+//  515 	psi->dataExtra = GetBits(bsi, 1);
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        MOV      R1,#+68
+        ORR      R1,R1,#0x1400
+        STRB     R0,[R1, +R5]
+//  516 	if (psi->dataExtra) {
+        LDRB     R0,[R1, +R5]
+        CMP      R0,#+0
+        BEQ      ??raac_UnpackSBRChannelPair_0
+//  517 		psi->resBitsData = GetBits(bsi, 4);
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        MOV      R1,#+68
+        ORR      R1,R1,#0x1400
+        ADD      R1,R1,R5
+        STRB     R0,[R1, #+1]
+//  518 		psi->resBitsData = GetBits(bsi, 4);
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        MOV      R1,#+68
+        ORR      R1,R1,#0x1400
+        ADD      R1,R1,R5
+        STRB     R0,[R1, #+1]
+//  519 	}
+//  520 
+//  521 	psi->couplingFlag = GetBits(bsi, 1);
+??raac_UnpackSBRChannelPair_0:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        MOV      R1,#+68
+        ORR      R1,R1,#0x1400
+        ADD      R1,R1,R5
+        STR      R0,[R1, #+2268]
+        MOV      R0,#+68
+        ORR      R0,R0,#0x1400
+        ADD      R0,R0,R5
+        LDR      R0,[R0, #+2268]
+        MOV      R2,R9
+        CMP      R0,#+0
+        MOV      R1,R11
+        MOV      R0,R4
+        BEQ      ??raac_UnpackSBRChannelPair_1
+//  522 	if (psi->couplingFlag) {
+//  523 		UnpackSBRGrid(bsi, sbrHdr, sbrGridL);
+        BL       UnpackSBRGrid
+//  524 		CopyCouplingGrid(sbrGridL, sbrGridR);
+        LDRB     R0,[R9, #+0]
+        STRB     R0,[R10, #+0]
+        LDRB     R0,[R9, #+1]
+        STRB     R0,[R10, #+1]
+        LDRB     R0,[R9, #+2]
+        STRB     R0,[R10, #+2]
+        LDRB     R0,[R9, #+3]
+        STRB     R0,[R10, #+3]
+        LDRB     R1,[R9, #+3]
+        MOV      R0,#+0
+        CMP      R1,#+0
+        BNE      ??raac_UnpackSBRChannelPair_2
+        B        ??raac_UnpackSBRChannelPair_3
+??raac_UnpackSBRChannelPair_4:
+        ADD      R2,R0,R9
+        LDRB     R2,[R2, #+4]
+        ADD      R1,R0,R10
+        STRB     R2,[R1, #+4]
+        ADD      R2,R0,R9
+        LDRB     R2,[R2, #+10]
+        ADD      R0,R0,#+1
+        STRB     R2,[R1, #+10]
+??raac_UnpackSBRChannelPair_2:
+        LDRB     R1,[R9, #+3]
+        CMP      R0,R1
+        BLT      ??raac_UnpackSBRChannelPair_4
+??raac_UnpackSBRChannelPair_3:
+        ADD      R1,R0,R10
+        ADD      R0,R0,R9
+        LDRB     R0,[R0, #+4]
+        STRB     R0,[R1, #+4]
+        LDRB     R0,[R9, #+15]
+        STRB     R0,[R10, #+15]
+        MOV      R0,#+0
+        B        ??raac_UnpackSBRChannelPair_5
+??raac_UnpackSBRChannelPair_6:
+        ADD      R2,R0,R9
+        LDRB     R2,[R2, #+16]
+        ADD      R1,R0,R10
+        ADD      R0,R0,#+1
+        STRB     R2,[R1, #+16]
+??raac_UnpackSBRChannelPair_5:
+        LDRB     R1,[R9, #+15]
+        CMP      R1,R0
+        BGE      ??raac_UnpackSBRChannelPair_6
+//  525 
+//  526 		UnpackDeltaTimeFreq(bsi, sbrGridL->numEnv, sbrChanL->deltaFlagEnv, sbrGridL->numNoiseFloors, sbrChanL->deltaFlagNoise);
+        ADD      R1,R7,#+9
+        STR      R1,[SP, #+12]
+        LDRB     R1,[R9, #+15]
+        MOV      R11,#+0
+        STR      R1,[SP, #+8]
+        ADD      R1,R7,#+4
+        STR      R1,[SP, #+0]
+        LDRB     R1,[R9, #+3]
+        STR      R1,[SP, #+4]
+        CMP      R1,#+1
+        BGE      ??raac_UnpackSBRChannelPair_7
+        B        ??raac_UnpackSBRChannelPair_8
+??raac_UnpackSBRChannelPair_9:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LDR      R1,[SP, #+0]
+        STRB     R0,[R11, +R1]
+        ADD      R11,R11,#+1
+??raac_UnpackSBRChannelPair_7:
+        LDR      R0,[SP, #+4]
+        CMP      R11,R0
+        BLT      ??raac_UnpackSBRChannelPair_9
+??raac_UnpackSBRChannelPair_8:
+        LDR      R0,[SP, #+8]
+        MOV      R11,#+0
+        CMP      R0,#+1
+        BGE      ??raac_UnpackSBRChannelPair_10
+        B        ??raac_UnpackSBRChannelPair_11
+??raac_UnpackSBRChannelPair_12:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LDR      R1,[SP, #+12]
+        STRB     R0,[R11, +R1]
+        ADD      R11,R11,#+1
+??raac_UnpackSBRChannelPair_10:
+        LDR      R0,[SP, #+8]
+        CMP      R11,R0
+        BLT      ??raac_UnpackSBRChannelPair_12
+//  527 		UnpackDeltaTimeFreq(bsi, sbrGridR->numEnv, sbrChanR->deltaFlagEnv, sbrGridR->numNoiseFloors, sbrChanR->deltaFlagNoise);
+??raac_UnpackSBRChannelPair_11:
+        ADD      R1,R8,#+9
+        STR      R1,[SP, #+12]
+        LDRB     R1,[R10, #+15]
+        MOV      R11,#+0
+        STR      R1,[SP, #+0]
+        ADD      R1,R8,#+4
+        STR      R1,[SP, #+8]
+        LDRB     R1,[R10, #+3]
+        STR      R1,[SP, #+4]
+        CMP      R1,#+1
+        BGE      ??raac_UnpackSBRChannelPair_13
+        B        ??raac_UnpackSBRChannelPair_14
+??raac_UnpackSBRChannelPair_15:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LDR      R1,[SP, #+8]
+        STRB     R0,[R11, +R1]
+        ADD      R11,R11,#+1
+??raac_UnpackSBRChannelPair_13:
+        LDR      R0,[SP, #+4]
+        CMP      R11,R0
+        BLT      ??raac_UnpackSBRChannelPair_15
+??raac_UnpackSBRChannelPair_14:
+        LDR      R0,[SP, #+0]
+        MOV      R11,#+0
+        CMP      R0,#+1
+        BGE      ??raac_UnpackSBRChannelPair_16
+        B        ??raac_UnpackSBRChannelPair_17
+??raac_UnpackSBRChannelPair_18:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LDR      R1,[SP, #+12]
+        STRB     R0,[R11, +R1]
+        ADD      R11,R11,#+1
+??raac_UnpackSBRChannelPair_16:
+        LDR      R0,[SP, #+0]
+        CMP      R11,R0
+        BLT      ??raac_UnpackSBRChannelPair_18
+//  528 
+//  529 		UnpackInverseFilterMode(bsi, sbrFreq->numNoiseFloorBands, sbrChanL->invfMode[1]);
+??raac_UnpackSBRChannelPair_17:
+        MOV      R1,#+10
+        ORR      R1,R1,#0x100
+        ADD      R1,R1,R7
+        STR      R1,[SP, #+4]
+        LDR      R1,[R6, #+24]
+        MOV      R11,#+0
+        STR      R1,[SP, #+0]
+        CMP      R1,#+1
+        BGE      ??raac_UnpackSBRChannelPair_19
+        B        ??raac_UnpackSBRChannelPair_20
+??raac_UnpackSBRChannelPair_21:
+        MOV      R1,#+2
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LDR      R1,[SP, #+4]
+        STRB     R0,[R11, +R1]
+        ADD      R11,R11,#+1
+??raac_UnpackSBRChannelPair_19:
+        LDR      R0,[SP, #+0]
+        CMP      R11,R0
+        BLT      ??raac_UnpackSBRChannelPair_21
+//  530 		CopyCouplingInverseFilterMode(sbrFreq->numNoiseFloorBands, sbrChanL->invfMode[1], sbrChanR->invfMode[1]);
+??raac_UnpackSBRChannelPair_20:
+        LDR      R2,[R6, #+24]
+        MOV      R0,#+10
+        ORR      R0,R0,#0x100
+        ADD      R0,R0,R8
+        MOV      R1,#+10
+        ORR      R1,R1,#0x100
+        ADD      R1,R1,R7
+        MOV      R3,#+0
+        CMP      R2,#+1
+        BGE      ??raac_UnpackSBRChannelPair_22
+        B        ??raac_UnpackSBRChannelPair_23
+??raac_UnpackSBRChannelPair_24:
+        LDRB     R11,[R3, +R1]
+        STRB     R11,[R3, +R0]
+        ADD      R3,R3,#+1
+??raac_UnpackSBRChannelPair_22:
+        CMP      R3,R2
+        BLT      ??raac_UnpackSBRChannelPair_24
+//  531 		
+//  532 		DecodeSBREnvelope(bsi, psi, sbrGridL, sbrFreq, sbrChanL, 0);
+??raac_UnpackSBRChannelPair_23:
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+56
+        MOV      R3,R6
+        MOV      R2,R9
+        MOV      R1,R5
+        MOV      R0,R7
+        PUSH     {R0}
+        CFI CFA R13+60
+        MOV      R0,R4
+        _BLF     raac_DecodeSBREnvelope,??raac_DecodeSBREnvelope??rA
+//  533 		DecodeSBRNoise(bsi, psi, sbrGridL, sbrFreq, sbrChanL, 0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+64
+        MOV      R3,R6
+        MOV      R2,R9
+        MOV      R1,R5
+        MOV      R0,R7
+        PUSH     {R0}
+        CFI CFA R13+68
+        MOV      R0,R4
+        _BLF     raac_DecodeSBRNoise,??raac_DecodeSBRNoise??rA
+//  534 		DecodeSBREnvelope(bsi, psi, sbrGridR, sbrFreq, sbrChanR, 1);
+        MOV      R0,#+1
+        PUSH     {R0}
+        CFI CFA R13+72
+        MOV      R3,R6
+        MOV      R2,R10
+        MOV      R1,R5
+        MOV      R0,R8
+        PUSH     {R0}
+        CFI CFA R13+76
+        MOV      R0,R4
+        _BLF     raac_DecodeSBREnvelope,??raac_DecodeSBREnvelope??rA
+//  535 		DecodeSBRNoise(bsi, psi, sbrGridR, sbrFreq, sbrChanR, 1);
+        MOV      R0,#+1
+        PUSH     {R0}
+        CFI CFA R13+80
+        MOV      R3,R6
+        MOV      R2,R10
+        MOV      R1,R5
+        MOV      R0,R8
+        PUSH     {R0}
+        CFI CFA R13+84
+        MOV      R0,R4
+        _BLF     raac_DecodeSBRNoise,??raac_DecodeSBRNoise??rA
+//  536 
+//  537 		/* pass RIGHT sbrChan struct */
+//  538 		UncoupleSBREnvelope(psi, sbrGridL, sbrFreq, sbrChanR);
+        MOV      R3,R8
+        MOV      R2,R6
+        MOV      R1,R9
+        MOV      R0,R5
+        _BLF     raac_UncoupleSBREnvelope,??raac_UncoupleSBREnvelope??rA
+//  539 		UncoupleSBRNoise(psi, sbrGridL, sbrFreq, sbrChanR);
+        MOV      R3,R8
+        MOV      R2,R6
+        MOV      R1,R9
+        MOV      R0,R5
+        _BLF     raac_UncoupleSBRNoise,??raac_UncoupleSBRNoise??rA
+        B        ??raac_UnpackSBRChannelPair_25
+        CFI CFA R13+52
+//  540 
+//  541 	} else {
+//  542 		UnpackSBRGrid(bsi, sbrHdr, sbrGridL);
+??raac_UnpackSBRChannelPair_1:
+        BL       UnpackSBRGrid
+//  543 		UnpackSBRGrid(bsi, sbrHdr, sbrGridR);
+        MOV      R2,R10
+        MOV      R1,R11
+        MOV      R0,R4
+        BL       UnpackSBRGrid
+//  544 		UnpackDeltaTimeFreq(bsi, sbrGridL->numEnv, sbrChanL->deltaFlagEnv, sbrGridL->numNoiseFloors, sbrChanL->deltaFlagNoise);
+        ADD      R1,R7,#+9
+        STR      R1,[SP, #+8]
+        LDRB     R1,[R9, #+15]
+        MOV      R11,#+0
+        STR      R1,[SP, #+12]
+        ADD      R1,R7,#+4
+        STR      R1,[SP, #+0]
+        LDRB     R1,[R9, #+3]
+        STR      R1,[SP, #+4]
+        CMP      R1,#+1
+        BGE      ??raac_UnpackSBRChannelPair_26
+        B        ??raac_UnpackSBRChannelPair_27
+??raac_UnpackSBRChannelPair_28:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LDR      R1,[SP, #+0]
+        STRB     R0,[R11, +R1]
+        ADD      R11,R11,#+1
+??raac_UnpackSBRChannelPair_26:
+        LDR      R0,[SP, #+4]
+        CMP      R11,R0
+        BLT      ??raac_UnpackSBRChannelPair_28
+??raac_UnpackSBRChannelPair_27:
+        LDR      R0,[SP, #+12]
+        MOV      R11,#+0
+        CMP      R0,#+1
+        BGE      ??raac_UnpackSBRChannelPair_29
+        B        ??raac_UnpackSBRChannelPair_30
+??raac_UnpackSBRChannelPair_31:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LDR      R1,[SP, #+8]
+        STRB     R0,[R11, +R1]
+        ADD      R11,R11,#+1
+??raac_UnpackSBRChannelPair_29:
+        LDR      R0,[SP, #+12]
+        CMP      R11,R0
+        BLT      ??raac_UnpackSBRChannelPair_31
+//  545 		UnpackDeltaTimeFreq(bsi, sbrGridR->numEnv, sbrChanR->deltaFlagEnv, sbrGridR->numNoiseFloors, sbrChanR->deltaFlagNoise);
+??raac_UnpackSBRChannelPair_30:
+        ADD      R1,R8,#+9
+        STR      R1,[SP, #+12]
+        LDRB     R1,[R10, #+15]
+        MOV      R11,#+0
+        STR      R1,[SP, #+8]
+        ADD      R1,R8,#+4
+        STR      R1,[SP, #+4]
+        LDRB     R1,[R10, #+3]
+        STR      R1,[SP, #+0]
+        CMP      R1,#+1
+        BGE      ??raac_UnpackSBRChannelPair_32
+        B        ??raac_UnpackSBRChannelPair_33
+??raac_UnpackSBRChannelPair_34:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LDR      R1,[SP, #+4]
+        STRB     R0,[R11, +R1]
+        ADD      R11,R11,#+1
+??raac_UnpackSBRChannelPair_32:
+        LDR      R0,[SP, #+0]
+        CMP      R11,R0
+        BLT      ??raac_UnpackSBRChannelPair_34
+??raac_UnpackSBRChannelPair_33:
+        LDR      R0,[SP, #+8]
+        MOV      R11,#+0
+        CMP      R0,#+1
+        BGE      ??raac_UnpackSBRChannelPair_35
+        B        ??raac_UnpackSBRChannelPair_36
+??raac_UnpackSBRChannelPair_37:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LDR      R1,[SP, #+12]
+        STRB     R0,[R11, +R1]
+        ADD      R11,R11,#+1
+??raac_UnpackSBRChannelPair_35:
+        LDR      R0,[SP, #+8]
+        CMP      R11,R0
+        BLT      ??raac_UnpackSBRChannelPair_37
+//  546 		UnpackInverseFilterMode(bsi, sbrFreq->numNoiseFloorBands, sbrChanL->invfMode[1]);
+??raac_UnpackSBRChannelPair_36:
+        MOV      R1,#+10
+        ORR      R1,R1,#0x100
+        ADD      R1,R1,R7
+        STR      R1,[SP, #+0]
+        LDR      R1,[R6, #+24]
+        MOV      R11,#+0
+        STR      R1,[SP, #+4]
+        CMP      R1,#+1
+        BGE      ??raac_UnpackSBRChannelPair_38
+        B        ??raac_UnpackSBRChannelPair_39
+??raac_UnpackSBRChannelPair_40:
+        MOV      R1,#+2
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LDR      R1,[SP, #+0]
+        STRB     R0,[R11, +R1]
+        ADD      R11,R11,#+1
+??raac_UnpackSBRChannelPair_38:
+        LDR      R0,[SP, #+4]
+        CMP      R11,R0
+        BLT      ??raac_UnpackSBRChannelPair_40
+//  547 		UnpackInverseFilterMode(bsi, sbrFreq->numNoiseFloorBands, sbrChanR->invfMode[1]);
+??raac_UnpackSBRChannelPair_39:
+        MOV      R1,#+10
+        ORR      R1,R1,#0x100
+        ADD      R1,R1,R8
+        STR      R1,[SP, #+4]
+        LDR      R1,[R6, #+24]
+        MOV      R11,#+0
+        STR      R1,[SP, #+0]
+        CMP      R1,#+1
+        BGE      ??raac_UnpackSBRChannelPair_41
+        B        ??raac_UnpackSBRChannelPair_42
+??raac_UnpackSBRChannelPair_43:
+        MOV      R1,#+2
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LDR      R1,[SP, #+4]
+        STRB     R0,[R11, +R1]
+        ADD      R11,R11,#+1
+??raac_UnpackSBRChannelPair_41:
+        LDR      R0,[SP, #+0]
+        CMP      R11,R0
+        BLT      ??raac_UnpackSBRChannelPair_43
+//  548 
+//  549 		DecodeSBREnvelope(bsi, psi, sbrGridL, sbrFreq, sbrChanL, 0);
+??raac_UnpackSBRChannelPair_42:
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+56
+        MOV      R3,R6
+        MOV      R2,R9
+        MOV      R1,R5
+        MOV      R0,R7
+        PUSH     {R0}
+        CFI CFA R13+60
+        MOV      R0,R4
+        _BLF     raac_DecodeSBREnvelope,??raac_DecodeSBREnvelope??rA
+//  550 		DecodeSBREnvelope(bsi, psi, sbrGridR, sbrFreq, sbrChanR, 1);
+        MOV      R0,#+1
+        PUSH     {R0}
+        CFI CFA R13+64
+        MOV      R3,R6
+        MOV      R2,R10
+        MOV      R1,R5
+        MOV      R0,R8
+        PUSH     {R0}
+        CFI CFA R13+68
+        MOV      R0,R4
+        _BLF     raac_DecodeSBREnvelope,??raac_DecodeSBREnvelope??rA
+//  551 		DecodeSBRNoise(bsi, psi, sbrGridL, sbrFreq, sbrChanL, 0);
+        MOV      R0,#+0
+        PUSH     {R0}
+        CFI CFA R13+72
+        MOV      R3,R6
+        MOV      R2,R9
+        MOV      R1,R5
+        MOV      R0,R7
+        PUSH     {R0}
+        CFI CFA R13+76
+        MOV      R0,R4
+        _BLF     raac_DecodeSBRNoise,??raac_DecodeSBRNoise??rA
+//  552 		DecodeSBRNoise(bsi, psi, sbrGridR, sbrFreq, sbrChanR, 1);
+        MOV      R0,#+1
+        PUSH     {R0}
+        CFI CFA R13+80
+        MOV      R3,R6
+        MOV      R2,R10
+        MOV      R1,R5
+        MOV      R0,R8
+        PUSH     {R0}
+        CFI CFA R13+84
+        MOV      R0,R4
+        _BLF     raac_DecodeSBRNoise,??raac_DecodeSBRNoise??rA
+??raac_UnpackSBRChannelPair_25:
+        ADD      SP,SP,#+32
+        CFI CFA R13+52
+//  553 	}
+//  554 
+//  555 	sbrChanL->addHarmonicFlag[1] = GetBits(bsi, 1);
+        MOV      R9,#+37
+        ORR      R9,R9,#0x100
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R9, +R7]
+        LDR      R1,[R6, #+8]
+        ADD      R0,R9,#+49
+        ADD      R10,R0,R7
+        STR      R1,[SP, #+0]
+//  556 	UnpackSinusoids(bsi, sbrFreq->nHigh, sbrChanL->addHarmonicFlag[1], sbrChanL->addHarmonic[1]);
+        LDRB     R0,[R9, +R7]
+        MOV      R11,#+0
+        CMP      R0,#+0
+        BNE      ??raac_UnpackSBRChannelPair_44
+        B        ??raac_UnpackSBRChannelPair_45
+??raac_UnpackSBRChannelPair_46:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R11, +R10]
+        ADD      R11,R11,#+1
+??raac_UnpackSBRChannelPair_44:
+        LDR      R0,[SP, #+0]
+        CMP      R11,R0
+        BLT      ??raac_UnpackSBRChannelPair_46
+??raac_UnpackSBRChannelPair_47:
+        CMP      R11,#+48
+        BGE      ??raac_UnpackSBRChannelPair_48
+??raac_UnpackSBRChannelPair_45:
+        MOV      R0,#+0
+        STRB     R0,[R11, +R10]
+        ADD      R11,R11,#+1
+        B        ??raac_UnpackSBRChannelPair_47
+//  557 
+//  558 	sbrChanR->addHarmonicFlag[1] = GetBits(bsi, 1);
+??raac_UnpackSBRChannelPair_48:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R9, +R8]
+//  559 	UnpackSinusoids(bsi, sbrFreq->nHigh, sbrChanR->addHarmonicFlag[1], sbrChanR->addHarmonic[1]);
+        LDR      R10,[R6, #+8]
+        ADD      R0,R9,#+49
+        ADD      R7,R0,R8
+        LDRB     R0,[R9, +R8]
+        MOV      R6,#+0
+        CMP      R0,#+0
+        BNE      ??raac_UnpackSBRChannelPair_49
+        B        ??raac_UnpackSBRChannelPair_50
+??raac_UnpackSBRChannelPair_51:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        STRB     R0,[R6, +R7]
+        ADD      R6,R6,#+1
+??raac_UnpackSBRChannelPair_49:
+        CMP      R6,R10
+        BLT      ??raac_UnpackSBRChannelPair_51
+??raac_UnpackSBRChannelPair_52:
+        CMP      R6,#+48
+        BGE      ??raac_UnpackSBRChannelPair_53
+??raac_UnpackSBRChannelPair_50:
+        MOV      R0,#+0
+        STRB     R0,[R6, +R7]
+        ADD      R6,R6,#+1
+        B        ??raac_UnpackSBRChannelPair_52
+//  560 
+//  561 	psi->extendedDataPresent = GetBits(bsi, 1);
+??raac_UnpackSBRChannelPair_53:
+        MOV      R1,#+1
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        MOV      R1,#+68
+        ORR      R1,R1,#0x1400
+        ADD      R1,R1,R5
+        STRB     R0,[R1, #+2]
+//  562 	if (psi->extendedDataPresent) {
+        MOV      R0,#+68
+        ORR      R0,R0,#0x1400
+        ADD      R0,R0,R5
+        LDRB     R0,[R0, #+2]
+        CMP      R0,#+0
+        POPEQ    {R0-R11,PC}
+//  563 		psi->extendedDataSize = GetBits(bsi, 4);
+        MOV      R1,#+4
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        MOV      R1,#+68
+        ORR      R1,R1,#0x1400
+        ADD      R1,R1,R5
+        STR      R0,[R1, #+4]
+//  564 		if (psi->extendedDataSize == 15)
+        MOV      R0,#+68
+        ORR      R0,R0,#0x1400
+        ADD      R0,R0,R5
+        LDR      R0,[R0, #+4]
+        CMP      R0,#+15
+        BNE      ??raac_UnpackSBRChannelPair_54
+//  565 			psi->extendedDataSize += GetBits(bsi, 8);
+        MOV      R1,#+8
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        MOV      R2,#+68
+        ORR      R2,R2,#0x1400
+        ADD      R2,R2,R5
+        LDR      R2,[R2, #+4]
+        MOV      R1,#+68
+        ORR      R1,R1,#0x1400
+        ADD      R1,R1,R5
+        ADD      R0,R0,R2
+        STR      R0,[R1, #+4]
+//  566 
+//  567 		bitsLeft = 8 * psi->extendedDataSize;
+??raac_UnpackSBRChannelPair_54:
+        MOV      R0,#+68
+        ORR      R0,R0,#0x1400
+        ADD      R0,R0,R5
+        LDR      R0,[R0, #+4]
+        LSL      R5,R0,#+3
+        CMP      R5,#+1
+        POPLT    {R0-R11,PC}
+//  568 
+//  569 		/* get ID, unpack extension info, do whatever is necessary with it... */
+//  570 		while (bitsLeft > 0) {
+//  571 			GetBits(bsi, 8);
+??raac_UnpackSBRChannelPair_55:
+        MOV      R1,#+8
+        MOV      R0,R4
+        _BLF     raac_GetBits,??raac_GetBits??rA
+//  572 			bitsLeft -= 8;
+        SUB      R5,R5,#+8
+//  573 		}
+        CMP      R5,#+1
+        BGE      ??raac_UnpackSBRChannelPair_55
+//  574 	}
+//  575 }
+        POP      {R0-R11,PC}      ;; return
+        CFI EndBlock cfiBlock9
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_GetBits??rA:
+        LDR      R12,??Subroutine5_0  ;; raac_GetBits
+        BX       R12
+        DATA
+??Subroutine5_0:
+        DC32     raac_GetBits
+        CFI EndBlock cfiBlock10
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock11 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_DecodeSBREnvelope??rA:
+        LDR      R12,??Subroutine6_0  ;; raac_DecodeSBREnvelope
+        BX       R12
+        DATA
+??Subroutine6_0:
+        DC32     raac_DecodeSBREnvelope
+        CFI EndBlock cfiBlock11
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock12 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_DecodeSBRNoise??rA:
+        LDR      R12,??Subroutine7_0  ;; raac_DecodeSBRNoise
+        BX       R12
+        DATA
+??Subroutine7_0:
+        DC32     raac_DecodeSBRNoise
+        CFI EndBlock cfiBlock12
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock13 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_UncoupleSBREnvelope??rA:
+        LDR      R12,??Subroutine8_0  ;; raac_UncoupleSBREnvelope
+        BX       R12
+        DATA
+??Subroutine8_0:
+        DC32     raac_UncoupleSBREnvelope
+        CFI EndBlock cfiBlock13
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock14 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_UncoupleSBRNoise??rA:
+        LDR      R12,??Subroutine9_0  ;; raac_UncoupleSBRNoise
+        BX       R12
+        DATA
+??Subroutine9_0:
+        DC32     raac_UncoupleSBRNoise
+        CFI EndBlock cfiBlock14
+
+        END
+// 
+// 4 636 bytes in segment CODE
+//    12 bytes in segment DATA_C
+// 
+// 4 556 bytes of CODE  memory (+ 80 bytes shared)
+//    12 bytes of CONST memory
+//
+//Errors: none
+//Warnings: none

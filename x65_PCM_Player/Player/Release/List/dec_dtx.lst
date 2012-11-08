@@ -1,0 +1,1562 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    14/Feb/2012  15:39:38 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_d #
+#                       tx.c                                                 #
+#    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_d #
+#                       tx.c -D NDEBUG -lC D:\SVN\SieELF\SieELF\x65_PCM_Play #
+#                       er\Player\Release\List\ -lA                          #
+#                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\R #
+#                       elease\Obj\ -s9 --cpu_mode arm --endian little       #
+#                       --cpu ARM926EJ-S --stack_align 4 --interwork -e      #
+#                       --fpu None --dlib_config "D:\Program                 #
+#                       Files\IAR\Embedded Workbench 4.0                     #
+#                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude       #
+#                       swilib.h -I "D:\Program Files\IAR\Embedded           #
+#                       Workbench 4.0 Evaluation\ARM\INC\"                   #
+#                       --inline_threshold=16                                #
+#    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\dec_dtx.lst                                      #
+#    Object file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\O #
+#                       bj\dec_dtx.r79                                       #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_dtx.c
+      1          /*
+      2           *===================================================================
+      3           *  3GPP AMR Wideband Floating-point Speech Codec
+      4           *===================================================================
+      5           */
+      6          #include <math.h>
+      7          #include "typedef.h"
+
+  #endif
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\typedef.h",19  Warning[Pe001]: 
+          last line of file ends without a newline
+      8          #include "dec_dtx.h"
+
+  #endif
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\typedef.h",19  Warning[Pe001]: 
+          last line of file ends without a newline
+      9          #include "dec_lpc.h"
+
+  #endif
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\typedef.h",19  Warning[Pe001]: 
+          last line of file ends without a newline
+     10          #include "dec_util.h"
+
+  #endif
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\typedef.h",19  Warning[Pe001]: 
+          last line of file ends without a newline
+
+  #endif
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\typedef.h",19  Warning[Pe001]: 
+          last line of file ends without a newline
+     11          
+     12          #define MAX_31                      (Word32)0x3FFFFFFF
+     13          #define L_FRAME                     256   /* Frame size                          */
+     14          #define RX_SPEECH_LOST              2
+     15          #define RX_SPEECH_BAD               3
+     16          #define RX_SID_FIRST                4
+     17          #define RX_SID_UPDATE               5
+     18          #define RX_SID_BAD                  6
+     19          #define RX_NO_DATA                  7
+     20          #define ISF_GAP                     128   /* 50                                  */
+     21          #define D_DTX_MAX_EMPTY_THRESH      50
+     22          #define GAIN_FACTOR                 75
+     23          #define ISF_FACTOR_LOW              256
+     24          #define ISF_FACTOR_STEP             2
+     25          #define ISF_DITH_GAP                448
+     26          #define D_DTX_HANG_CONST            7     /* yields eight frames of SP HANGOVER  */
+     27          #define D_DTX_ELAPSED_FRAMES_THRESH (24 + 7 - 1)
+     28          #define RANDOM_INITSEED             21845 /* own random init value               */
+     29          
+     30          
+     31          /*
+     32           * D_DTX_reset
+     33           *
+     34           * Parameters:
+     35           *    st             O: state struct
+     36           *
+     37           * Function:
+     38           *    Initializes state memory
+     39           *
+     40           * Returns:
+     41           *    non-zero with error, zero for ok
+     42           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+     43          int D_DTX_reset(D_DTX_State *st, const Word16 *isf_init)
+     44          {
+   \                     D_DTX_reset:
+   \   00000000   F0472DE9           PUSH     {R4-R10,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+   \   00000008   0150A0E1           MOV      R5,R1
+     45             Word32 i;
+     46          
+     47             if(st == (D_DTX_State*)NULL)
+   \   0000000C   000054E3           CMP      R4,#+0
+     48             {
+     49                return(-1);
+   \   00000010   0000E003           MVNEQ    R0,#+0
+   \   00000014   F087BD08           POPEQ    {R4-R10,PC}
+   \   00000018   546F84E2           ADD      R6,R4,#+336
+   \   0000001C   0070A0E3           MOV      R7,#+0
+   \   00000020   BE70C6E1           STRH     R7,[R6, #+14]
+     50             }
+     51             st->mem_since_last_sid = 0;
+     52             st->mem_true_sid_period_inv = (1 << 13);   /* 0.25 in Q15 */
+   \   00000024   800DA0E3           MOV      R0,#+8192
+   \   00000028   B000C6E1           STRH     R0,[R6, #+0]
+     53             st->mem_log_en = 3500;
+   \   0000002C   AC80A0E3           MOV      R8,#+172
+   \   00000030   D08E88E3           ORR      R8,R8,#0xD00
+   \   00000034   B280C6E1           STRH     R8,[R6, #+2]
+     54             st->mem_log_en_prev = 3500;
+   \   00000038   B480C6E1           STRH     R8,[R6, #+4]
+     55          
+     56             /* low level noise for better performance in  DTX handover cases */
+     57             st->mem_cng_seed = RANDOM_INITSEED;
+   \   0000003C   5590A0E3           MOV      R9,#+85
+   \   00000040   559C89E3           ORR      R9,R9,#0x5500
+   \   00000044   B690C6E1           STRH     R9,[R6, #+6]
+     58             st->mem_hist_ptr = 0;
+   \   00000048   B870C6E1           STRH     R7,[R6, #+8]
+     59          
+     60             /* Init isf_hist[] and decoder log frame energy */
+     61             memcpy(st->mem_isf, isf_init, M * sizeof(Word16));
+   \   0000004C   2020A0E3           MOV      R2,#+32
+   \   00000050   400F84E2           ADD      R0,R4,#+256
+   \   00000054   1E0100EF           SWI      +286
+     62             memcpy(st->mem_isf_prev, isf_init, M * sizeof(Word16));
+   \   00000058   2020A0E3           MOV      R2,#+32
+   \   0000005C   0510A0E1           MOV      R1,R5
+   \   00000060   480F84E2           ADD      R0,R4,#+288
+   \   00000064   1E0100EF           SWI      +286
+     63          
+     64             for(i = 0; i < D_DTX_HIST_SIZE; i++)
+   \   00000068   00A0A0E3           MOV      R10,#+0
+     65             {
+     66                memcpy(&st->mem_isf_buf[i * M], isf_init, M * sizeof(Word16));
+   \                     ??D_DTX_reset_0:
+   \   0000006C   2020A0E3           MOV      R2,#+32
+   \   00000070   0510A0E1           MOV      R1,R5
+   \   00000074   8A0284E0           ADD      R0,R4,R10, LSL #+5
+   \   00000078   1E0100EF           SWI      +286
+     67                st->mem_log_en_buf[i] = 3500;
+   \   0000007C   8A0084E0           ADD      R0,R4,R10, LSL #+1
+   \   00000080   500F80E2           ADD      R0,R0,#+320
+   \   00000084   B080C0E1           STRH     R8,[R0, #+0]
+     68             }
+   \   00000088   01A08AE2           ADD      R10,R10,#+1
+   \   0000008C   08005AE3           CMP      R10,#+8
+   \   00000090   F5FFFFBA           BLT      ??D_DTX_reset_0
+     69             st->mem_dtx_hangover_count = D_DTX_HANG_CONST;
+   \   00000094   0700A0E3           MOV      R0,#+7
+   \   00000098   1300C6E5           STRB     R0,[R6, #+19]
+     70             st->mem_dec_ana_elapsed_count = 127;
+   \   0000009C   7F00A0E3           MOV      R0,#+127
+   \   000000A0   1000C6E5           STRB     R0,[R6, #+16]
+     71             st->mem_sid_frame = 0;
+   \   000000A4   1470C6E5           STRB     R7,[R6, #+20]
+     72             st->mem_valid_data = 0;
+   \   000000A8   1570C6E5           STRB     R7,[R6, #+21]
+     73             st->mem_dtx_hangover_added = 0;
+   \   000000AC   1670C6E5           STRB     R7,[R6, #+22]
+     74             st->mem_dtx_global_state = SPEECH;
+   \   000000B0   1170C6E5           STRB     R7,[R6, #+17]
+     75             st->mem_data_updated = 0;
+   \   000000B4   1270C6E5           STRB     R7,[R6, #+18]
+     76             st->mem_dither_seed = RANDOM_INITSEED;
+   \   000000B8   BA90C6E1           STRH     R9,[R6, #+10]
+     77             st->mem_cn_dith = 0;
+   \   000000BC   BC70C6E1           STRH     R7,[R6, #+12]
+     78             st->mem_dtx_vad_hist = 0;
+   \   000000C0   B871C6E1           STRH     R7,[R6, #+24]
+     79          
+     80             return(0);
+   \   000000C4   0000A0E3           MOV      R0,#+0
+   \   000000C8   F087BDE8           POP      {R4-R10,PC}      ;; return
+     81          }
+     82          
+     83          
+     84          /*
+     85           * D_DTX_init
+     86           *
+     87           * Parameters:
+     88           *    st           I/O: state struct
+     89           *
+     90           * Function:
+     91           *    Allocates state memory and initializes state memory
+     92           *
+     93           * Returns:
+     94           *    non-zero with error, zero for ok
+     95           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+     96          int D_DTX_init(D_DTX_State **st, const Word16 *isf_init)
+     97          {
+   \                     D_DTX_init:
+   \   00000000   70402DE9           PUSH     {R4-R6,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+   \   00000008   0150A0E1           MOV      R5,R1
+     98             D_DTX_State *s;
+     99          
+    100             if(st == (D_DTX_State**)NULL)
+   \   0000000C   000054E3           CMP      R4,#+0
+   \   00000010   0600000A           BEQ      ??D_DTX_init_0
+    101             {
+    102                return(-1);
+    103             }
+    104          
+    105             *st = NULL;
+   \   00000014   0000A0E3           MOV      R0,#+0
+   \   00000018   000084E5           STR      R0,[R4, #+0]
+    106          
+    107             /* allocate memory */
+    108             if((s = (D_DTX_State*)malloc(sizeof(D_DTX_State))) == NULL)
+   \   0000001C   6A00A0E3           MOV      R0,#+106
+   \   00000020   400F80E3           ORR      R0,R0,#0x100
+   \   00000024   140000EF           SWI      +20
+   \   00000028   0060B0E1           MOVS     R6,R0
+   \   0000002C   0100001A           BNE      ??D_DTX_init_1
+    109             {
+    110                return(-1);
+   \                     ??D_DTX_init_0:
+   \   00000030   0000E0E3           MVN      R0,#+0
+   \   00000034   7080BDE8           POP      {R4-R6,PC}
+    111             }
+    112          
+    113             D_DTX_reset(s, isf_init);
+   \                     ??D_DTX_init_1:
+   \   00000038   0510A0E1           MOV      R1,R5
+   \   0000003C   ........           BL       D_DTX_reset
+    114             *st = s;
+   \   00000040   006084E5           STR      R6,[R4, #+0]
+    115          
+    116             return(0);
+   \   00000044   0000A0E3           MOV      R0,#+0
+   \   00000048   7080BDE8           POP      {R4-R6,PC}       ;; return
+    117          }
+    118          
+    119          
+    120          /*
+    121           * D_DTX_exit
+    122           *
+    123           * Parameters:
+    124           *    state        I/0: State struct
+    125           *
+    126           * Function:
+    127           *    The memory used for state memory is freed
+    128           *
+    129           * Returns:
+    130           *    void
+    131           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    132          void D_DTX_exit(D_DTX_State **st)
+    133          {
+   \                     D_DTX_exit:
+   \   00000000   10402DE9           PUSH     {R4,LR}
+   \   00000004   0040B0E1           MOVS     R4,R0
+    134             if(st == NULL || *st == NULL)
+   \   00000008   00009415           LDRNE    R0,[R4, #+0]
+   \   0000000C   00005013           CMPNE    R0,#+0
+   \   00000010   1080BD08           POPEQ    {R4,PC}
+    135             {
+    136                return;
+    137             }
+    138          
+    139             /* deallocate memory */
+    140             free(*st);
+                    ^
+Warning[Pe223]: function "free" declared implicitly
+   \   00000014   ........           _BLF     free,??free??rA
+    141             *st = NULL;
+   \   00000018   0000A0E3           MOV      R0,#+0
+   \   0000001C   000084E5           STR      R0,[R4, #+0]
+    142          
+    143             return;
+   \   00000020   1080BDE8           POP      {R4,PC}          ;; return
+    144          }
+    145          
+    146          
+    147          /*
+    148           * D_DTX_rx_handler
+    149           *
+    150           * Parameters:
+    151           *    st              I/O: State struct
+    152           *    frame_type        I: Frame type
+    153           *
+    154           * Function:
+    155           *    Analyze received frame
+    156           *
+    157           *    Table of new SPD synthesis states
+    158           *
+    159           *                          |       previous SPD_synthesis_state
+    160           *    Incoming              |
+    161           *    frame_type            | SPEECH       | DTX           | D_DTX_MUTE
+    162           *    ---------------------------------------------------------------
+    163           *    RX_SPEECH_GOOD ,      |              |               |
+    164           *    RX_SPEECH_PR_DEGRADED | SPEECH       | SPEECH        | SPEECH
+    165           *    ----------------------------------------------------------------
+    166           *    RX_SPEECH_BAD,        | SPEECH       | DTX           | D_DTX_MUTE
+    167           *    ----------------------------------------------------------------
+    168           *    RX_SID_FIRST,         | DTX          | DTX/(D_DTX_MUTE)| D_DTX_MUTE
+    169           *    ----------------------------------------------------------------
+    170           *    RX_SID_UPDATE,        | DTX          | DTX           | DTX
+    171           *    ----------------------------------------------------------------
+    172           *    RX_SID_BAD,           | DTX          | DTX/(D_DTX_MUTE)| D_DTX_MUTE
+    173           *    ----------------------------------------------------------------
+    174           *    RX_NO_DATA,           | SPEECH       | DTX/(D_DTX_MUTE)| D_DTX_MUTE
+    175           *    RX_SPARE              |(class2 garb.)|               |
+    176           *    ----------------------------------------------------------------
+    177           *
+    178           * Returns:
+    179           *    new state
+    180           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    181          UWord8 D_DTX_rx_handler(D_DTX_State *st, UWord8 frame_type)
+    182          {
+   \                     D_DTX_rx_handler:
+   \   00000000   F0472DE9           PUSH     {R4-R10,LR}
+   \   00000004   0140A0E1           MOV      R4,R1
+    183             UWord8 newState;
+    184             UWord8 encState;
+    185          
+    186             /* DTX if SID frame or previously in DTX{_MUTE}
+    187              * and (NO_RX OR BAD_SPEECH)
+    188              */
+    189             if((frame_type == RX_SID_FIRST) | (frame_type == RX_SID_UPDATE) |
+    190                (frame_type == RX_SID_BAD) | (((st->mem_dtx_global_state == DTX) |
+    191                (st->mem_dtx_global_state == D_DTX_MUTE)) & ((frame_type == RX_NO_DATA) |
+    192                (frame_type == RX_SPEECH_BAD) | (frame_type == RX_SPEECH_LOST))))
+   \   00000008   0050A0E3           MOV      R5,#+0
+   \   0000000C   0160A0E3           MOV      R6,#+1
+   \   00000010   040054E3           CMP      R4,#+4
+   \   00000014   0500001A           BNE      ??D_DTX_rx_handler_0
+   \   00000018   0110A0E3           MOV      R1,#+1
+   \                     ??D_DTX_rx_handler_1:
+   \   0000001C   0020A0E3           MOV      R2,#+0
+   \   00000020   060054E3           CMP      R4,#+6
+   \   00000024   0500001A           BNE      ??D_DTX_rx_handler_2
+   \   00000028   0130A0E3           MOV      R3,#+1
+   \   0000002C   040000EA           B        ??D_DTX_rx_handler_3
+   \                     ??D_DTX_rx_handler_0:
+   \   00000030   0010A0E3           MOV      R1,#+0
+   \   00000034   050054E3           CMP      R4,#+5
+   \   00000038   F7FFFF1A           BNE      ??D_DTX_rx_handler_1
+   \   0000003C   0120A0E3           MOV      R2,#+1
+   \                     ??D_DTX_rx_handler_2:
+   \   00000040   0030A0E3           MOV      R3,#+0
+   \                     ??D_DTX_rx_handler_3:
+   \   00000044   5E70A0E3           MOV      R7,#+94
+   \   00000048   407F87E3           ORR      R7,R7,#0x100
+   \   0000004C   007087E0           ADD      R7,R7,R0
+   \   00000050   0300D7E5           LDRB     R0,[R7, #+3]
+   \   00000054   010050E3           CMP      R0,#+1
+   \   00000058   0900001A           BNE      ??D_DTX_rx_handler_4
+   \   0000005C   0180A0E3           MOV      R8,#+1
+   \                     ??D_DTX_rx_handler_5:
+   \   00000060   00C0A0E3           MOV      R12,#+0
+   \                     ??D_DTX_rx_handler_6:
+   \   00000064   070054E3           CMP      R4,#+7
+   \   00000068   0A00001A           BNE      ??D_DTX_rx_handler_7
+   \   0000006C   01E0A0E3           MOV      LR,#+1
+   \                     ??D_DTX_rx_handler_8:
+   \   00000070   0090A0E3           MOV      R9,#+0
+   \   00000074   020054E3           CMP      R4,#+2
+   \   00000078   0A00001A           BNE      ??D_DTX_rx_handler_9
+   \   0000007C   01A0A0E3           MOV      R10,#+1
+   \   00000080   090000EA           B        ??D_DTX_rx_handler_10
+   \                     ??D_DTX_rx_handler_4:
+   \   00000084   0080A0E3           MOV      R8,#+0
+   \   00000088   020050E3           CMP      R0,#+2
+   \   0000008C   F3FFFF1A           BNE      ??D_DTX_rx_handler_5
+   \   00000090   01C0A0E3           MOV      R12,#+1
+   \   00000094   F2FFFFEA           B        ??D_DTX_rx_handler_6
+   \                     ??D_DTX_rx_handler_7:
+   \   00000098   00E0A0E3           MOV      LR,#+0
+   \   0000009C   030054E3           CMP      R4,#+3
+   \   000000A0   F2FFFF1A           BNE      ??D_DTX_rx_handler_8
+   \   000000A4   0190A0E3           MOV      R9,#+1
+   \                     ??D_DTX_rx_handler_9:
+   \   000000A8   00A0A0E3           MOV      R10,#+0
+   \                     ??D_DTX_rx_handler_10:
+   \   000000AC   011082E1           ORR      R1,R2,R1
+   \   000000B0   011083E1           ORR      R1,R3,R1
+   \   000000B4   08208CE1           ORR      R2,R12,R8
+   \   000000B8   0E3089E1           ORR      R3,R9,LR
+   \   000000BC   03308AE1           ORR      R3,R10,R3
+   \   000000C0   022003E0           AND      R2,R3,R2
+   \   000000C4   011082E1           ORR      R1,R2,R1
+   \   000000C8   011CB0E1           LSLS     R1,R1,#+24
+   \   000000CC   2200000A           BEQ      ??D_DTX_rx_handler_11
+    193             {
+    194                newState = DTX;
+   \   000000D0   0180A0E3           MOV      R8,#+1
+    195          
+    196                /* stay in mute for these input types */
+    197                if((st->mem_dtx_global_state == D_DTX_MUTE) &
+    198                   ((frame_type == RX_SID_BAD) | (frame_type == RX_SID_FIRST) |
+    199                   (frame_type == RX_SPEECH_LOST) | (frame_type == RX_NO_DATA)))
+   \   000000D4   020050E3           CMP      R0,#+2
+   \   000000D8   0100A003           MOVEQ    R0,#+1
+   \   000000DC   0000A013           MOVNE    R0,#+0
+   \   000000E0   060054E3           CMP      R4,#+6
+   \   000000E4   1300001A           BNE      ??D_DTX_rx_handler_12
+   \   000000E8   0110A0E3           MOV      R1,#+1
+   \                     ??D_DTX_rx_handler_13:
+   \   000000EC   0020A0E3           MOV      R2,#+0
+   \   000000F0   020054E3           CMP      R4,#+2
+   \   000000F4   1300001A           BNE      ??D_DTX_rx_handler_14
+   \   000000F8   0130A0E3           MOV      R3,#+1
+   \                     ??D_DTX_rx_handler_15:
+   \   000000FC   0090A0E3           MOV      R9,#+0
+   \                     ??D_DTX_rx_handler_16:
+   \   00000100   011082E1           ORR      R1,R2,R1
+   \   00000104   011083E1           ORR      R1,R3,R1
+   \   00000108   011089E1           ORR      R1,R9,R1
+   \   0000010C   000011E1           TST      R1,R0
+    200                {
+    201                   newState = D_DTX_MUTE;
+    202                }
+    203          
+    204                /* evaluate if noise parameters are too old                     */
+    205                /* since_last_sid is reset when CN parameters have been updated */
+    206                st->mem_since_last_sid = D_UTIL_saturate(st->mem_since_last_sid + 1);
+   \   00000110   F000D7E1           LDRSH    R0,[R7, #+0]
+   \   00000114   0280A013           MOVNE    R8,#+2
+   \   00000118   010080E2           ADD      R0,R0,#+1
+   \   0000011C   ........           _BLF     D_UTIL_saturate,??D_UTIL_saturate??rA
+    207          
+    208                /* no update of sid parameters in DTX for a Word32 while */
+    209                if ((frame_type !=  RX_SID_UPDATE)  &&
+    210                    (st->mem_since_last_sid > D_DTX_MAX_EMPTY_THRESH))
+   \   00000120   050054E3           CMP      R4,#+5
+   \   00000124   0E00000A           BEQ      ??D_DTX_rx_handler_17
+   \   00000128   330050E3           CMP      R0,#+51
+   \   0000012C   0C0000BA           BLT      ??D_DTX_rx_handler_17
+    211                {
+    212                   newState = D_DTX_MUTE;
+   \   00000130   0280A0E3           MOV      R8,#+2
+   \   00000134   0A0000EA           B        ??D_DTX_rx_handler_17
+    213                }
+   \                     ??D_DTX_rx_handler_12:
+   \   00000138   0010A0E3           MOV      R1,#+0
+   \   0000013C   040054E3           CMP      R4,#+4
+   \   00000140   E9FFFF1A           BNE      ??D_DTX_rx_handler_13
+   \   00000144   0120A0E3           MOV      R2,#+1
+   \                     ??D_DTX_rx_handler_14:
+   \   00000148   0030A0E3           MOV      R3,#+0
+   \   0000014C   070054E3           CMP      R4,#+7
+   \   00000150   E9FFFF1A           BNE      ??D_DTX_rx_handler_15
+   \   00000154   0190A0E3           MOV      R9,#+1
+   \   00000158   E8FFFFEA           B        ??D_DTX_rx_handler_16
+    214             }
+    215             else
+    216             {
+    217                newState = SPEECH;
+   \                     ??D_DTX_rx_handler_11:
+   \   0000015C   0080A0E3           MOV      R8,#+0
+    218                st->mem_since_last_sid = 0;
+   \   00000160   0500A0E1           MOV      R0,R5
+   \                     ??D_DTX_rx_handler_17:
+   \   00000164   B000C7E1           STRH     R0,[R7, #+0]
+    219             }
+    220          
+    221             /*
+    222              * reset the decAnaElapsed Counter when receiving CNI data the first
+    223              * time, to robustify counter missmatch after handover
+    224              * this might delay the bwd CNI analysis in the new decoder slightly.
+    225              */
+    226             if((st->mem_data_updated == 0) & (frame_type == RX_SID_UPDATE))
+   \   00000168   0400D7E5           LDRB     R0,[R7, #+4]
+   \   0000016C   000050E3           CMP      R0,#+0
+   \   00000170   05005403           CMPEQ    R4,#+5
+    227             {
+    228                st->mem_dec_ana_elapsed_count = 0;
+   \   00000174   0250C705           STRBEQ   R5,[R7, #+2]
+    229             }
+    230          
+    231             /*
+    232              * update the SPE-SPD DTX hangover synchronization
+    233              * to know when SPE has added dtx hangover
+    234              */
+    235             st->mem_dec_ana_elapsed_count++;
+   \   00000178   0200D7E5           LDRB     R0,[R7, #+2]
+   \   0000017C   010080E2           ADD      R0,R0,#+1
+   \   00000180   0200C7E5           STRB     R0,[R7, #+2]
+    236          
+    237             /* saturate */
+    238             if(st->mem_dec_ana_elapsed_count > 127)
+   \   00000184   FF0000E2           AND      R0,R0,#0xFF
+   \   00000188   800050E3           CMP      R0,#+128
+    239             {
+    240                st->mem_dec_ana_elapsed_count = 127;
+   \   0000018C   7F00A023           MOVCS    R0,#+127
+   \   00000190   0200C725           STRBCS   R0,[R7, #+2]
+    241             }
+    242          
+    243             st->mem_dtx_hangover_added = 0;
+   \   00000194   0850C7E5           STRB     R5,[R7, #+8]
+    244          
+    245             if((frame_type == RX_SID_FIRST) | (frame_type == RX_SID_UPDATE) |
+    246          	   (frame_type == RX_SID_BAD) | 
+    247          	   ((frame_type == RX_NO_DATA) && ((st->mem_dtx_global_state != SPEECH) ||
+    248          	   (st->mem_dtx_vad_hist >= D_DTX_HANG_CONST))))
+   \   00000198   040054E3           CMP      R4,#+4
+   \   0000019C   0C00001A           BNE      ??D_DTX_rx_handler_18
+   \   000001A0   0100A0E3           MOV      R0,#+1
+   \                     ??D_DTX_rx_handler_19:
+   \   000001A4   0010A0E3           MOV      R1,#+0
+   \   000001A8   060054E3           CMP      R4,#+6
+   \   000001AC   0C00001A           BNE      ??D_DTX_rx_handler_20
+   \   000001B0   0120A0E3           MOV      R2,#+1
+   \                     ??D_DTX_rx_handler_21:
+   \   000001B4   0030A0E3           MOV      R3,#+0
+    249          
+    250             {
+    251          	   encState = DTX;
+    252             }
+    253             else
+    254             {
+    255          	   encState = SPEECH;
+   \                     ??D_DTX_rx_handler_22:
+   \   000001B8   000081E1           ORR      R0,R1,R0
+   \   000001BC   000082E1           ORR      R0,R2,R0
+   \   000001C0   000083E1           ORR      R0,R3,R0
+    256             }
+    257          
+    258             if(encState == SPEECH)
+   \   000001C4   000CB0E1           LSLS     R0,R0,#+24
+   \   000001C8   1000001A           BNE      ??D_DTX_rx_handler_23
+    259             {
+    260                st->mem_dtx_hangover_count = D_DTX_HANG_CONST;
+   \   000001CC   0700A0E3           MOV      R0,#+7
+   \   000001D0   1A0000EA           B        ??D_DTX_rx_handler_24
+    261             }
+   \                     ??D_DTX_rx_handler_18:
+   \   000001D4   0000A0E3           MOV      R0,#+0
+   \   000001D8   050054E3           CMP      R4,#+5
+   \   000001DC   F0FFFF1A           BNE      ??D_DTX_rx_handler_19
+   \   000001E0   0110A0E3           MOV      R1,#+1
+   \                     ??D_DTX_rx_handler_20:
+   \   000001E4   0020A0E3           MOV      R2,#+0
+   \   000001E8   070054E3           CMP      R4,#+7
+   \   000001EC   F0FFFF1A           BNE      ??D_DTX_rx_handler_21
+   \   000001F0   0330D7E5           LDRB     R3,[R7, #+3]
+   \   000001F4   000053E3           CMP      R3,#+0
+   \   000001F8   0200001A           BNE      ??D_DTX_rx_handler_25
+   \   000001FC   FA30D7E1           LDRSH    R3,[R7, #+10]
+   \   00000200   070053E3           CMP      R3,#+7
+   \   00000204   EAFFFFBA           BLT      ??D_DTX_rx_handler_21
+   \                     ??D_DTX_rx_handler_25:
+   \   00000208   0130A0E3           MOV      R3,#+1
+   \   0000020C   E9FFFFEA           B        ??D_DTX_rx_handler_22
+    262             else
+    263             {
+    264                if(st->mem_dec_ana_elapsed_count > D_DTX_ELAPSED_FRAMES_THRESH)
+   \                     ??D_DTX_rx_handler_23:
+   \   00000210   0200D7E5           LDRB     R0,[R7, #+2]
+   \   00000214   1F0050E3           CMP      R0,#+31
+   \   00000218   0300003A           BCC      ??D_DTX_rx_handler_26
+    265                {
+    266                   st->mem_dtx_hangover_added = 1;
+   \   0000021C   0860C7E5           STRB     R6,[R7, #+8]
+    267                   st->mem_dec_ana_elapsed_count = 0;
+   \   00000220   0250C7E5           STRB     R5,[R7, #+2]
+    268                   st->mem_dtx_hangover_count = 0;
+   \   00000224   0550C7E5           STRB     R5,[R7, #+5]
+   \   00000228   050000EA           B        ??D_DTX_rx_handler_27
+    269                }
+    270                else if(st->mem_dtx_hangover_count == 0)
+   \                     ??D_DTX_rx_handler_26:
+   \   0000022C   0500D7E5           LDRB     R0,[R7, #+5]
+   \   00000230   000050E3           CMP      R0,#+0
+    271                {
+    272                   st->mem_dec_ana_elapsed_count = 0;
+   \   00000234   0250C705           STRBEQ   R5,[R7, #+2]
+   \   00000238   0100000A           BEQ      ??D_DTX_rx_handler_27
+    273                }
+    274                else
+    275                {
+    276                   st->mem_dtx_hangover_count--;
+   \   0000023C   010040E2           SUB      R0,R0,#+1
+   \                     ??D_DTX_rx_handler_24:
+   \   00000240   0500C7E5           STRB     R0,[R7, #+5]
+    277                }
+    278             }
+    279          
+    280             if(newState != SPEECH)
+   \                     ??D_DTX_rx_handler_27:
+   \   00000244   000058E3           CMP      R8,#+0
+   \   00000248   0B00000A           BEQ      ??D_DTX_rx_handler_28
+    281             {
+    282                /*
+    283                 * DTX or D_DTX_MUTE
+    284                 * CN data is not in a first SID, first SIDs are marked as SID_BAD
+    285                 *  but will do backwards analysis if a hangover period has been added
+    286                 *  according to the state machine above
+    287                 */
+    288                st->mem_sid_frame = 0;
+   \   0000024C   0650C7E5           STRB     R5,[R7, #+6]
+    289                st->mem_valid_data = 0;
+   \   00000250   0750C7E5           STRB     R5,[R7, #+7]
+    290          
+    291                if(frame_type == RX_SID_FIRST)
+   \   00000254   040054E3           CMP      R4,#+4
+    292                {
+    293                   st->mem_sid_frame = 1;
+   \   00000258   0660C705           STRBEQ   R6,[R7, #+6]
+   \   0000025C   0600000A           BEQ      ??D_DTX_rx_handler_28
+    294                }
+    295                else if(frame_type == RX_SID_UPDATE)
+   \   00000260   050054E3           CMP      R4,#+5
+    296                {
+    297                   st->mem_sid_frame = 1;
+   \   00000264   0660C705           STRBEQ   R6,[R7, #+6]
+    298                   st->mem_valid_data = 1;
+   \   00000268   0760C705           STRBEQ   R6,[R7, #+7]
+   \   0000026C   0200000A           BEQ      ??D_DTX_rx_handler_28
+    299                }
+    300                else if(frame_type == RX_SID_BAD)
+   \   00000270   060054E3           CMP      R4,#+6
+    301                {
+    302                   st->mem_sid_frame = 1;
+   \   00000274   0660C705           STRBEQ   R6,[R7, #+6]
+    303                   st->mem_dtx_hangover_added = 0;   /* use old data */
+   \   00000278   0850C705           STRBEQ   R5,[R7, #+8]
+    304                }
+    305             }
+    306          
+    307             return newState;
+   \                     ??D_DTX_rx_handler_28:
+   \   0000027C   0800A0E1           MOV      R0,R8
+   \   00000280   F087BDE8           POP      {R4-R10,PC}      ;; return
+    308          
+    309             /* newState is used by both SPEECH AND DTX synthesis routines */
+    310          }
+    311          
+    312          
+    313          /*
+    314           * D_DTX_cn_dithering
+    315           *
+    316           * Parameters:
+    317           *    isf             I/O: CN ISF vector
+    318           *    L_log_en_int    I/O: energy parameter
+    319           *    dither_seed     I/O: random seed
+    320           *
+    321           * Function:
+    322           *    Confort noise dithering
+    323           *
+    324           * Returns:
+    325           *    void
+    326           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    327          static void D_DTX_cn_dithering(Word16 isf[M], Word32 *L_log_en_int,
+    328                                         Word16 *dither_seed)
+    329          {
+   \                     D_DTX_cn_dithering:
+   \   00000000   F0412DE9           PUSH     {R4-R8,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+   \   00000008   0160A0E1           MOV      R6,R1
+   \   0000000C   0250A0E1           MOV      R5,R2
+    330             Word32 temp, temp1, i, dither_fac, rand_dith,rand_dith2;
+    331          
+    332             /* Insert comfort noise dithering for energy parameter */
+    333             rand_dith = D_UTIL_random(dither_seed) >> 1;
+   \   00000010   0500A0E1           MOV      R0,R5
+   \   00000014   ........           _BLF     D_UTIL_random,??D_UTIL_random??rA
+   \   00000018   C070A0E1           ASR      R7,R0,#+1
+    334             rand_dith2 = D_UTIL_random(dither_seed) >>1;
+   \   0000001C   0500A0E1           MOV      R0,R5
+   \   00000020   ........           _BLF     D_UTIL_random,??D_UTIL_random??rA
+    335             rand_dith = rand_dith + rand_dith2;
+    336             *L_log_en_int = *L_log_en_int + ((rand_dith * GAIN_FACTOR) << 1);
+   \   00000024   001096E5           LDR      R1,[R6, #+0]
+   \   00000028   C000A0E1           ASR      R0,R0,#+1
+   \   0000002C   070080E0           ADD      R0,R0,R7
+   \   00000030   4B20A0E3           MOV      R2,#+75
+   \   00000034   920000E0           MUL      R0,R2,R0
+    337          
+    338             if(*L_log_en_int < 0)
+    339             {
+    340                *L_log_en_int = 0;
+    341             }
+    342          
+    343             /* Insert comfort noise dithering for spectral parameters (ISF-vector) */
+    344             dither_fac = ISF_FACTOR_LOW;
+    345             rand_dith = D_UTIL_random(dither_seed) >> 1;
+    346             rand_dith2 = D_UTIL_random(dither_seed) >> 1;
+    347             rand_dith = rand_dith + rand_dith2;
+    348             temp = isf[0] + (((rand_dith * dither_fac) + 0x4000) >> 15);
+    349          
+    350             /* Make sure that isf[0] will not get negative values */
+    351             if(temp < ISF_GAP)
+    352             {
+    353                isf[0] = ISF_GAP;
+    354             }
+    355             else
+    356             {
+    357                isf[0] = (Word16)temp;
+    358             }
+    359          
+    360             for(i = 1; i < M - 1; i++)
+   \   00000038   0170A0E3           MOV      R7,#+1
+   \   0000003C   800091E0           ADDS     R0,R1,R0, LSL #+1
+   \   00000040   0000A043           MOVMI    R0,#+0
+   \   00000044   000086E5           STR      R0,[R6, #+0]
+   \   00000048   0500A0E1           MOV      R0,R5
+   \   0000004C   ........           _BLF     D_UTIL_random,??D_UTIL_random??rA
+   \   00000050   C080A0E1           ASR      R8,R0,#+1
+   \   00000054   0500A0E1           MOV      R0,R5
+   \   00000058   ........           _BLF     D_UTIL_random,??D_UTIL_random??rA
+   \   0000005C   C010A0E1           ASR      R1,R0,#+1
+   \   00000060   F000D4E1           LDRSH    R0,[R4, #+0]
+   \   00000064   406FA0E3           MOV      R6,#+256
+   \   00000068   081081E0           ADD      R1,R1,R8
+   \   0000006C   402CA0E3           MOV      R2,#+16384
+   \   00000070   011482E0           ADD      R1,R2,R1, LSL #+8
+   \   00000074   C11780E0           ADD      R1,R0,R1, ASR #+15
+   \   00000078   800051E3           CMP      R1,#+128
+   \   0000007C   8000A0B3           MOVLT    R0,#+128
+   \   00000080   B000C4B1           STRHLT   R0,[R4, #+0]
+   \   00000084   B010C4A1           STRHGE   R1,[R4, #+0]
+    361             {
+    362                dither_fac = dither_fac + ISF_FACTOR_STEP;
+    363                rand_dith = D_UTIL_random(dither_seed) >> 1;
+   \                     ??D_DTX_cn_dithering_0:
+   \   00000088   0500A0E1           MOV      R0,R5
+   \   0000008C   ........           _BLF     D_UTIL_random,??D_UTIL_random??rA
+   \   00000090   C080A0E1           ASR      R8,R0,#+1
+    364                rand_dith2 = D_UTIL_random(dither_seed) >> 1;
+   \   00000094   0500A0E1           MOV      R0,R5
+   \   00000098   ........           _BLF     D_UTIL_random,??D_UTIL_random??rA
+   \   0000009C   C010A0E1           ASR      R1,R0,#+1
+    365                rand_dith = rand_dith + rand_dith2;
+    366                temp = isf[i] + (((rand_dith * dither_fac) + 0x4000) >> 15);
+   \   000000A0   870084E0           ADD      R0,R4,R7, LSL #+1
+   \   000000A4   F020D0E1           LDRSH    R2,[R0, #+0]
+   \   000000A8   026086E2           ADD      R6,R6,#+2
+   \   000000AC   081081E0           ADD      R1,R1,R8
+   \   000000B0   960101E0           MUL      R1,R6,R1
+    367                temp1 = temp - isf[i - 1];
+    368          
+    369                /* Make sure that isf spacing remains at least ISF_DITH_GAP Hz */
+    370                if(temp1 < ISF_DITH_GAP)
+    371                {
+    372                   isf[i] = (Word16)(isf[i - 1] + ISF_DITH_GAP);
+    373                }
+    374                else
+    375                {
+    376                   isf[i] = (Word16)temp;
+    377                }
+    378             }
+   \   000000B4   017087E2           ADD      R7,R7,#+1
+   \   000000B8   401C81E2           ADD      R1,R1,#+16384
+   \   000000BC   C11782E0           ADD      R1,R2,R1, ASR #+15
+   \   000000C0   F22050E1           LDRSH    R2,[R0, #-2]
+   \   000000C4   022041E0           SUB      R2,R1,R2
+   \   000000C8   700F52E3           CMP      R2,#+448
+   \   000000CC   F21050B1           LDRSHLT  R1,[R0, #-2]
+   \   000000D0   701F81B2           ADDLT    R1,R1,#+448
+   \   000000D4   B010C0E1           STRH     R1,[R0, #+0]
+   \   000000D8   0F0057E3           CMP      R7,#+15
+   \   000000DC   E9FFFFBA           BLT      ??D_DTX_cn_dithering_0
+    379          
+    380             /* Make sure that isf[M-2] will not get values above 16384 */
+    381             if(isf[M - 2] > 16384)
+   \   000000E0   FC01D4E1           LDRSH    R0,[R4, #+28]
+   \   000000E4   0110A0E3           MOV      R1,#+1
+   \   000000E8   401C81E3           ORR      R1,R1,#0x4000
+   \   000000EC   010050E1           CMP      R0,R1
+    382             {
+    383                isf[M - 2] = 16384;
+   \   000000F0   400CA0A3           MOVGE    R0,#+16384
+   \   000000F4   BC01C4A1           STRHGE   R0,[R4, #+28]
+    384             }
+    385          
+    386             return;
+   \   000000F8   F081BDE8           POP      {R4-R8,PC}       ;; return
+    387          }
+    388          
+    389          
+    390          /*
+    391           * D_DTX_exe
+    392           *
+    393           * Parameters:
+    394           *    st           I/O: state struct
+    395           *    exc2           O: CN excitation
+    396           *    new_state      I: New DTX state
+    397           *    prms           I: Vector of synthesis parameters
+    398           *    isf            O: CN ISF vector
+    399           *
+    400           * Function:
+    401           *    Confort noise generation
+    402           *
+    403           * Returns:
+    404           *    void
+    405           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    406          void D_DTX_exe(D_DTX_State *st, Word16 *exc2, Word16 new_state, Word16 isf[],
+    407                         Word16 **prms)
+    408          {
+   \                     D_DTX_exe:
+   \   00000000   F44F2DE9           PUSH     {R2,R4-R11,LR}
+   \   00000004   4CD04DE2           SUB      SP,SP,#+76
+   \   00000008   74909DE5           LDR      R9,[SP, #+116]
+   \   0000000C   0040A0E1           MOV      R4,R0
+   \   00000010   546F84E2           ADD      R6,R4,#+336
+   \   00000014   1600D6E5           LDRB     R0,[R6, #+22]
+   \   00000018   0150A0E1           MOV      R5,R1
+   \   0000001C   0380A0E1           MOV      R8,R3
+   \   00000020   000050E3           CMP      R0,#+0
+   \   00000024   1400D615           LDRBNE   R0,[R6, #+20]
+   \   00000028   40AFA0E3           MOV      R10,#+256
+   \   0000002C   0070A0E3           MOV      R7,#+0
+   \   00000030   00005013           CMPNE    R0,#+0
+   \   00000034   3B00000A           BEQ      ??D_DTX_exe_0
+    409          
+    410             Word32 i, j, L_tmp, ptr;
+    411             Word32 exp0, int_fac;
+    412             Word32 gain;
+    413             Word32 L_isf[M], L_log_en_int, level32, ener32;
+    414             Word16 log_en_index;
+    415             Word16 tmp_int_length;
+    416             Word16 exp, log_en_int_e, log_en_int_m, level;
+    417          
+    418          
+    419             /*
+    420              * This function is called if synthesis state is not SPEECH.
+    421              * The globally passed inputs to this function are
+    422              *    st->sid_frame
+    423              *    st->valid_data
+    424              *    st->dtxHangoverAdded
+    425              *    new_state (SPEECH, DTX, D_DTX_MUTE)
+    426              */
+    427             if((st->mem_dtx_hangover_added != 0) & (st->mem_sid_frame != 0))
+    428             {
+    429                /* sid_first after dtx hangover period
+    430                 * or sid_upd after dtxhangover
+    431                 * consider twice the last frame
+    432                 */
+    433                ptr = st->mem_hist_ptr + 1;
+   \   00000038   F800D6E1           LDRSH    R0,[R6, #+8]
+    434          
+    435                if(ptr == D_DTX_HIST_SIZE)
+    436                {
+    437                   ptr = 0;
+    438                }
+    439          
+    440                memcpy(&st->mem_isf_buf[ptr * M], &st->mem_isf_buf[st->mem_hist_ptr * M],
+    441                   M * sizeof(Word16));
+   \   0000003C   2020A0E3           MOV      R2,#+32
+   \   00000040   01B080E2           ADD      R11,R0,#+1
+   \   00000044   08005BE3           CMP      R11,#+8
+   \   00000048   00B0A003           MOVEQ    R11,#+0
+   \   0000004C   801284E0           ADD      R1,R4,R0, LSL #+5
+   \   00000050   8B0284E0           ADD      R0,R4,R11, LSL #+5
+   \   00000054   1E0100EF           SWI      +286
+   \   00000058   F810D6E1           LDRSH    R1,[R6, #+8]
+   \   0000005C   8B0084E0           ADD      R0,R4,R11, LSL #+1
+   \   00000060   500F80E2           ADD      R0,R0,#+320
+   \   00000064   811084E0           ADD      R1,R4,R1, LSL #+1
+   \   00000068   501F81E2           ADD      R1,R1,#+320
+   \   0000006C   F010D1E1           LDRSH    R1,[R1, #+0]
+    442          
+    443                st->mem_log_en_buf[ptr] = st->mem_log_en_buf[st->mem_hist_ptr];
+    444          
+    445                /* compute mean log energy and isf from decoded signal (SID_FIRST) */
+    446                st->mem_log_en = 0;
+    447                memset(L_isf, 0, M * sizeof(Word32));
+   \   00000070   4020A0E3           MOV      R2,#+64
+   \   00000074   B010C0E1           STRH     R1,[R0, #+0]
+   \   00000078   B270C6E1           STRH     R7,[R6, #+2]
+   \   0000007C   0010A0E3           MOV      R1,#+0
+   \   00000080   0C008DE2           ADD      R0,SP,#+12
+   \   00000084   BB0000EF           SWI      +187
+    448          
+    449                /* average energy and isf */
+    450                for(i = 0; i < D_DTX_HIST_SIZE; i++)
+   \   00000088   0700A0E1           MOV      R0,R7
+    451                {
+    452                   /*
+    453                    * Division by D_DTX_HIST_SIZE = 8 has been done in dtx_buffer log_en
+    454                    * is in Q10
+    455                    */
+    456                   st->mem_log_en = (Word16)(st->mem_log_en + st->mem_log_en_buf[i]);
+   \                     ??D_DTX_exe_1:
+   \   0000008C   F210D6E1           LDRSH    R1,[R6, #+2]
+   \   00000090   802084E0           ADD      R2,R4,R0, LSL #+1
+   \   00000094   502F82E2           ADD      R2,R2,#+320
+   \   00000098   F020D2E1           LDRSH    R2,[R2, #+0]
+   \   0000009C   011082E0           ADD      R1,R2,R1
+   \   000000A0   B210C6E1           STRH     R1,[R6, #+2]
+    457          
+    458                   for(j = 0; j < M; j++)
+   \   000000A4   0010A0E3           MOV      R1,#+0
+    459                   {
+    460                      L_isf[j] = L_isf[j] + st->mem_isf_buf[i * M + j];
+   \                     ??D_DTX_exe_2:
+   \   000000A8   00B281E0           ADD      R11,R1,R0, LSL #+4
+   \   000000AC   8BB084E0           ADD      R11,R4,R11, LSL #+1
+   \   000000B0   F0B0DBE1           LDRSH    R11,[R11, #+0]
+   \   000000B4   0C208DE2           ADD      R2,SP,#+12
+   \   000000B8   012182E0           ADD      R2,R2,R1, LSL #+2
+   \   000000BC   003092E5           LDR      R3,[R2, #+0]
+    461                   }
+   \   000000C0   011081E2           ADD      R1,R1,#+1
+   \   000000C4   03308BE0           ADD      R3,R11,R3
+   \   000000C8   003082E5           STR      R3,[R2, #+0]
+   \   000000CC   100051E3           CMP      R1,#+16
+   \   000000D0   F4FFFFBA           BLT      ??D_DTX_exe_2
+    462                }
+   \   000000D4   010080E2           ADD      R0,R0,#+1
+   \   000000D8   080050E3           CMP      R0,#+8
+   \   000000DC   EAFFFFBA           BLT      ??D_DTX_exe_1
+    463          
+    464                /* st->log_en in Q9 */
+    465                st->mem_log_en = (Word16)(st->mem_log_en >> 1);
+   \   000000E0   F200D6E1           LDRSH    R0,[R6, #+2]
+   \   000000E4   C000A0E1           ASR      R0,R0,#+1
+   \   000000E8   B200C6E1           STRH     R0,[R6, #+2]
+    466          
+    467                /*
+    468                 * Add 2 in Q9, in order to have only positive values for Pow2
+    469                 * this value is subtracted back after Pow2 function
+    470                 */
+    471                st->mem_log_en = (Word16)(st->mem_log_en + 1024);
+   \   000000EC   F200D6E1           LDRSH    R0,[R6, #+2]
+   \   000000F0   400E80E2           ADD      R0,R0,#+1024
+   \   000000F4   B200C6E1           STRH     R0,[R6, #+2]
+    472          
+    473                if(st->mem_log_en < 0)
+   \   000000F8   F200D6E1           LDRSH    R0,[R6, #+2]
+   \   000000FC   000050E3           CMP      R0,#+0
+    474                {
+    475                   st->mem_log_en = 0;
+   \   00000100   B270C641           STRHMI   R7,[R6, #+2]
+    476                }
+    477          
+    478                for(j = 0; j < M; j++)
+   \   00000104   0000A0E3           MOV      R0,#+0
+    479                {
+    480                   st->mem_isf[j] = (Word16)(L_isf[j]>>3);   /* divide by 8 */
+   \                     ??D_DTX_exe_3:
+   \   00000108   0C208DE2           ADD      R2,SP,#+12
+   \   0000010C   002192E7           LDR      R2,[R2, +R0, LSL #+2]
+   \   00000110   801084E0           ADD      R1,R4,R0, LSL #+1
+   \   00000114   C221A0E1           ASR      R2,R2,#+3
+   \   00000118   B1208AE1           STRH     R2,[R10, +R1]
+    481                }
+   \   0000011C   010080E2           ADD      R0,R0,#+1
+   \   00000120   100050E3           CMP      R0,#+16
+   \   00000124   F7FFFFBA           BLT      ??D_DTX_exe_3
+    482             }
+    483          
+    484             if(st->mem_sid_frame != 0)
+   \                     ??D_DTX_exe_0:
+   \   00000128   1400D6E5           LDRB     R0,[R6, #+20]
+   \   0000012C   48BFA0E3           MOV      R11,#+288
+   \   00000130   000050E3           CMP      R0,#+0
+   \   00000134   3300000A           BEQ      ??D_DTX_exe_4
+    485             {
+    486                /*
+    487                 * Set old SID parameters, always shift
+    488                 * even if there is no new valid_data
+    489                 */
+    490                memcpy(st->mem_isf_prev, st->mem_isf, M * sizeof(Word16));
+   \   00000138   2020A0E3           MOV      R2,#+32
+   \   0000013C   04108AE0           ADD      R1,R10,R4
+   \   00000140   04008BE0           ADD      R0,R11,R4
+   \   00000144   1E0100EF           SWI      +286
+    491                st->mem_log_en_prev = st->mem_log_en;
+   \   00000148   F200D6E1           LDRSH    R0,[R6, #+2]
+   \   0000014C   B400C6E1           STRH     R0,[R6, #+4]
+    492          
+    493                if(st->mem_valid_data != 0) /* new data available (no CRC) */
+   \   00000150   1500D6E5           LDRB     R0,[R6, #+21]
+   \   00000154   000050E3           CMP      R0,#+0
+   \   00000158   2A00000A           BEQ      ??D_DTX_exe_4
+    494                {
+    495                   /* st->true_sid_period_inv = 1.0f/st->since_last_sid; */
+    496          
+    497                   /*
+    498                    * Compute interpolation factor, since the division only works
+    499                    * for values of since_last_sid < 32 we have to limit
+    500                    * the interpolation to 32 frames
+    501                    */
+    502                   tmp_int_length = st->mem_since_last_sid;
+   \   0000015C   FE10D6E1           LDRSH    R1,[R6, #+14]
+    503          
+    504                   if(tmp_int_length > 32)
+   \   00000160   210051E3           CMP      R1,#+33
+    505                   {
+    506                      tmp_int_length = 32;
+   \   00000164   2010A0A3           MOVGE    R1,#+32
+    507                   }
+    508          
+    509                   if(tmp_int_length >= 2)
+   \   00000168   020051B3           CMPLT    R1,#+2
+   \   0000016C   040000BA           BLT      ??D_DTX_exe_5
+    510                   {
+    511                      st->mem_true_sid_period_inv =
+    512                         (Word16)(0x2000000 / (tmp_int_length << 10));
+   \   00000170   8007A0E3           MOV      R0,#+33554432
+   \   00000174   0115A0E1           LSL      R1,R1,#+10
+   \   00000178   ........           _BLF     ??div32_a,??rA??div32_a
+   \   0000017C   B010C6E1           STRH     R1,[R6, #+0]
+   \   00000180   010000EA           B        ??D_DTX_exe_6
+    513                   }
+    514                   else
+    515                   {
+    516                      st->mem_true_sid_period_inv = 1 << 14;   /* 0.5 it Q15 */
+   \                     ??D_DTX_exe_5:
+   \   00000184   400CA0E3           MOV      R0,#+16384
+   \   00000188   B000C6E1           STRH     R0,[R6, #+0]
+    517                   }
+    518          
+    519                   D_LPC_isf_noise_d(*prms, st->mem_isf);
+   \                     ??D_DTX_exe_6:
+   \   0000018C   000099E5           LDR      R0,[R9, #+0]
+   \   00000190   04108AE0           ADD      R1,R10,R4
+   \   00000194   ........           _BLF     D_LPC_isf_noise_d,??D_LPC_isf_noise_d??rA
+    520                   (*prms) += 5;
+    521                   log_en_index = *(*prms)++;
+   \   00000198   000099E5           LDR      R0,[R9, #+0]
+   \   0000019C   0A0080E2           ADD      R0,R0,#+10
+   \   000001A0   021080E2           ADD      R1,R0,#+2
+   \   000001A4   001089E5           STR      R1,[R9, #+0]
+   \   000001A8   F000D0E1           LDRSH    R0,[R0, #+0]
+    522          
+    523                   /* read background noise stationarity information */
+    524                   st->mem_cn_dith = *(*prms)++;
+   \   000001AC   022081E2           ADD      R2,R1,#+2
+   \   000001B0   002089E5           STR      R2,[R9, #+0]
+   \   000001B4   F010D1E1           LDRSH    R1,[R1, #+0]
+    525          
+    526                   /*
+    527                    * st->log_en = (Float32)log_en_index / 2.625 - 2.0;
+    528                    * log2(E) in Q9 (log2(E) lies in between -2:22)
+    529                    */
+    530                   st->mem_log_en = (Word16)(log_en_index << (15 - 6));
+   \   000001B8   8004A0E1           LSL      R0,R0,#+9
+   \   000001BC   BC10C6E1           STRH     R1,[R6, #+12]
+   \   000001C0   B200C6E1           STRH     R0,[R6, #+2]
+    531          
+    532                   /* Divide by 2.625  */
+    533                   st->mem_log_en = (Word16)((st->mem_log_en * 12483) >> 15);
+   \   000001C4   F200D6E1           LDRSH    R0,[R6, #+2]
+   \   000001C8   C310A0E3           MOV      R1,#+195
+   \   000001CC   C01D81E3           ORR      R1,R1,#0x3000
+   \   000001D0   910000E0           MUL      R0,R1,R0
+   \   000001D4   C007A0E1           ASR      R0,R0,#+15
+   \   000001D8   B200C6E1           STRH     R0,[R6, #+2]
+    534          
+    535                   /*
+    536                    * Subtract 2 in Q9 is done later, after Pow2 function
+    537                    * no interpolation at startup after coder reset
+    538                    * or when SID_UPD has been received right after SPEECH
+    539                    */
+    540                   if((st->mem_data_updated == 0) ||
+    541                      (st->mem_dtx_global_state == SPEECH))
+   \   000001DC   1200D6E5           LDRB     R0,[R6, #+18]
+   \   000001E0   000050E3           CMP      R0,#+0
+   \   000001E4   1100D615           LDRBNE   R0,[R6, #+17]
+   \   000001E8   00005013           CMPNE    R0,#+0
+   \   000001EC   0500001A           BNE      ??D_DTX_exe_4
+    542                   {
+    543                      memcpy(st->mem_isf_prev, st->mem_isf, M * sizeof(Word16));
+   \   000001F0   2020A0E3           MOV      R2,#+32
+   \   000001F4   04108AE0           ADD      R1,R10,R4
+   \   000001F8   04008BE0           ADD      R0,R11,R4
+   \   000001FC   1E0100EF           SWI      +286
+    544                      st->mem_log_en_prev = st->mem_log_en;
+   \   00000200   F200D6E1           LDRSH    R0,[R6, #+2]
+   \   00000204   B400C6E1           STRH     R0,[R6, #+4]
+    545                   }
+    546                }   /* endif valid_data */
+    547             }   /* endif sid_frame */
+    548          
+    549             if((st->mem_sid_frame != 0) && (st->mem_valid_data != 0))
+   \                     ??D_DTX_exe_4:
+   \   00000208   1400D6E5           LDRB     R0,[R6, #+20]
+   \   0000020C   000050E3           CMP      R0,#+0
+   \   00000210   1500D615           LDRBNE   R0,[R6, #+21]
+   \   00000214   00005013           CMPNE    R0,#+0
+    550             {
+    551                st->mem_since_last_sid = 0;
+   \   00000218   BE70C611           STRHNE   R7,[R6, #+14]
+    552             }
+    553          
+    554             /* Interpolate SID info */
+    555             if(st->mem_since_last_sid < 32)
+   \   0000021C   FE00D6E1           LDRSH    R0,[R6, #+14]
+    556             {
+    557                int_fac = st->mem_since_last_sid << 10;   /* Q10 */
+    558             }
+    559             else
+    560             {
+    561                int_fac = 32767;
+    562             }
+    563             /* Q10 * Q15 -> Q10 */
+    564             int_fac = (int_fac * st->mem_true_sid_period_inv) >> 15;
+   \   00000220   F010D6E1           LDRSH    R1,[R6, #+0]
+    565          
+    566             /* Maximize to 1.0 in Q10 */
+    567             if(int_fac > 1024)
+    568             {
+    569                int_fac = 1024;
+    570             }
+    571             int_fac = int_fac << 4;   /* Q10 -> Q14 */
+    572             L_log_en_int = (int_fac * st->mem_log_en) << 1;   /* Q14 * Q9 -> Q24 */
+   \   00000224   F220D6E1           LDRSH    R2,[R6, #+2]
+   \   00000228   200050E3           CMP      R0,#+32
+   \   0000022C   0005A0B1           LSLLT    R0,R0,#+10
+   \   00000230   FF00A0A3           MOVGE    R0,#+255
+   \   00000234   7F0C80A3           ORRGE    R0,R0,#0x7F00
+   \   00000238   910000E0           MUL      R0,R1,R0
+   \   0000023C   0110A0E3           MOV      R1,#+1
+   \   00000240   C007A0E1           ASR      R0,R0,#+15
+   \   00000244   401E81E3           ORR      R1,R1,#0x400
+   \   00000248   010050E1           CMP      R0,R1
+   \   0000024C   400EA0A3           MOVGE    R0,#+1024
+   \   00000250   0002A0E1           LSL      R0,R0,#+4
+   \   00000254   920003E0           MUL      R3,R2,R0
+    573          
+    574             for(i = 0; i < M; i++)
+   \   00000258   0010A0E3           MOV      R1,#+0
+   \   0000025C   8320A0E1           LSL      R2,R3,#+1
+   \   00000260   04208DE5           STR      R2,[SP, #+4]
+    575             {
+    576                /* Q14 * Q15 -> Q14 */
+    577                isf[i] = (Word16)((int_fac * st->mem_isf[i]) >> 15);
+   \                     ??D_DTX_exe_7:
+   \   00000264   813084E0           ADD      R3,R4,R1, LSL #+1
+   \   00000268   F3309AE1           LDRSH    R3,[R10, +R3]
+   \   0000026C   812088E0           ADD      R2,R8,R1, LSL #+1
+    578             }
+   \   00000270   011081E2           ADD      R1,R1,#+1
+   \   00000274   930009E0           MUL      R9,R3,R0
+   \   00000278   100051E3           CMP      R1,#+16
+   \   0000027C   C937A0E1           ASR      R3,R9,#+15
+   \   00000280   B030C2E1           STRH     R3,[R2, #+0]
+   \   00000284   F6FFFFBA           BLT      ??D_DTX_exe_7
+    579             int_fac = 16384 - int_fac;   /* 1-k in Q14 */
+    580          
+    581             /* ( Q14 * Q9 -> Q24 ) + Q24 -> Q24 */
+    582             L_log_en_int = L_log_en_int + ((int_fac * st->mem_log_en_prev) << 1);
+   \   00000288   F430D6E1           LDRSH    R3,[R6, #+4]
+   \   0000028C   04209DE5           LDR      R2,[SP, #+4]
+   \   00000290   400C60E2           RSB      R0,R0,#+16384
+   \   00000294   930009E0           MUL      R9,R3,R0
+    583          
+    584             for(i = 0; i < M; i++)
+   \   00000298   0010A0E3           MOV      R1,#+0
+   \   0000029C   892082E0           ADD      R2,R2,R9, LSL #+1
+   \   000002A0   04208DE5           STR      R2,[SP, #+4]
+    585             {
+    586                /* Q14 + (Q14 * Q15 -> Q14) -> Q14 */
+    587                L_tmp = isf[i] + ((int_fac * st->mem_isf_prev[i]) >> 15);
+    588                isf[i] = (Word16)(L_tmp << 1);   /* Q14 -> Q15 */
+   \                     ??D_DTX_exe_8:
+   \   000002A4   819084E0           ADD      R9,R4,R1, LSL #+1
+   \   000002A8   F9909BE1           LDRSH    R9,[R11, +R9]
+   \   000002AC   812088E0           ADD      R2,R8,R1, LSL #+1
+   \   000002B0   F030D2E1           LDRSH    R3,[R2, #+0]
+   \   000002B4   99000AE0           MUL      R10,R9,R0
+    589             }
+   \   000002B8   011081E2           ADD      R1,R1,#+1
+   \   000002BC   CA97A0E1           ASR      R9,R10,#+15
+   \   000002C0   033089E0           ADD      R3,R9,R3
+   \   000002C4   8330A0E1           LSL      R3,R3,#+1
+   \   000002C8   B030C2E1           STRH     R3,[R2, #+0]
+   \   000002CC   100051E3           CMP      R1,#+16
+   \   000002D0   F3FFFFBA           BLT      ??D_DTX_exe_8
+    590          
+    591             /* If background noise is non-stationary, insert comfort noise dithering */
+    592             if(st->mem_cn_dith != 0)
+   \   000002D4   FC00D6E1           LDRSH    R0,[R6, #+12]
+   \   000002D8   000050E3           CMP      R0,#+0
+   \   000002DC   0400000A           BEQ      ??D_DTX_exe_9
+    593             {
+    594                D_DTX_cn_dithering(isf, &L_log_en_int, &st->mem_dither_seed);
+   \   000002E0   3A008BE2           ADD      R0,R11,#+58
+   \   000002E4   042080E0           ADD      R2,R0,R4
+   \   000002E8   04108DE2           ADD      R1,SP,#+4
+   \   000002EC   0800A0E1           MOV      R0,R8
+   \   000002F0   ........           BL       D_DTX_cn_dithering
+    595             }
+    596          
+    597             /* L_log_en_int corresponds to log2(E)+2 in Q24, i.e log2(gain)+1 in Q25 */
+    598             L_log_en_int = (L_log_en_int >> 9); /* Q25 -> Q16 */
+   \                     ??D_DTX_exe_9:
+   \   000002F4   04109DE5           LDR      R1,[SP, #+4]
+    599          
+    600             /* Find integer part  */
+    601             log_en_int_e = (Word16)((L_log_en_int)>>16);
+    602          
+    603             /* Find fractional part */
+    604             log_en_int_m = (Word16)((L_log_en_int - (log_en_int_e << 16)) >> 1);
+    605          
+    606             /*
+    607              * Subtract 2 from L_log_en_int in Q9,
+    608              * i.e divide the gain by 2 (energy by 4)
+    609              * Add 16 in order to have the result of pow2 in Q16
+    610              */
+    611             log_en_int_e = (Word16)(log_en_int_e + (16 - 1));
+    612          
+    613             /* level = (Float32)( pow( 2.0f, log_en ) );  */
+    614             level32 = D_UTIL_pow2(log_en_int_e, log_en_int_m);   /* Q16 */
+    615             exp0 = D_UTIL_norm_l(level32);
+    616             level32 = (level32 << exp0);   /* level in Q31 */
+    617             exp0 = (15 - exp0);
+    618             level = (Word16)(level32 >> 16);   /* level in Q15 */
+    619          
+    620             /* generate white noise vector */
+    621             for(i = 0; i < L_FRAME; i++)
+   \   000002F8   00A0A0E3           MOV      R10,#+0
+   \   000002FC   C114A0E1           ASR      R1,R1,#+9
+   \   00000300   04108DE5           STR      R1,[SP, #+4]
+   \   00000304   0100A0E1           MOV      R0,R1
+   \   00000308   4008A0E1           ASR      R0,R0,#+16
+   \   0000030C   001841E0           SUB      R1,R1,R0, LSL #+16
+   \   00000310   8117A0E1           LSL      R1,R1,#+15
+   \   00000314   4118A0E1           ASR      R1,R1,#+16
+   \   00000318   0F0080E2           ADD      R0,R0,#+15
+   \   0000031C   ........           _BLF     D_UTIL_pow2,??D_UTIL_pow2??rA
+   \   00000320   0080A0E1           MOV      R8,R0
+   \   00000324   ........           _BLF     D_UTIL_norm_l,??D_UTIL_norm_l??rA
+   \   00000328   1810A0E1           LSL      R1,R8,R0
+   \   0000032C   0F8060E2           RSB      R8,R0,#+15
+   \   00000330   4198A0E1           ASR      R9,R1,#+16
+    622             {
+    623                exc2[i] = (Word16)((D_UTIL_random(&(st->mem_cng_seed)) >> 4));
+   \                     ??D_DTX_exe_10:
+   \   00000334   36008BE2           ADD      R0,R11,#+54
+   \   00000338   040080E0           ADD      R0,R0,R4
+   \   0000033C   ........           _BLF     D_UTIL_random,??D_UTIL_random??rA
+   \   00000340   4002A0E1           ASR      R0,R0,#+4
+   \   00000344   8A1085E0           ADD      R1,R5,R10, LSL #+1
+   \   00000348   B000C1E1           STRH     R0,[R1, #+0]
+    624             }
+   \   0000034C   01A08AE2           ADD      R10,R10,#+1
+   \   00000350   400F5AE3           CMP      R10,#+256
+   \   00000354   F6FFFFBA           BLT      ??D_DTX_exe_10
+    625          
+    626             /* gain = level / sqrt(ener) * sqrt(L_FRAME) */
+    627             /* energy of generated excitation */
+    628             ener32 = D_UTIL_dot_product12(exc2, exc2, L_FRAME, &exp);
+   \   00000358   0D30A0E1           MOV      R3,SP
+   \   0000035C   402FA0E3           MOV      R2,#+256
+   \   00000360   0510A0E1           MOV      R1,R5
+   \   00000364   0500A0E1           MOV      R0,R5
+   \   00000368   ........           _BLF     D_UTIL_dot_product12,??D_UTIL_dot_product12??rA
+   \   0000036C   08008DE5           STR      R0,[SP, #+8]
+    629             D_UTIL_normalised_inverse_sqrt(&ener32, &exp);
+   \   00000370   0D10A0E1           MOV      R1,SP
+   \   00000374   08008DE2           ADD      R0,SP,#+8
+   \   00000378   ........           _BLF     D_UTIL_normalised_inverse_sqrt,??D_UTIL_normalised_inverse_sqrt??rA
+    630             gain = ener32 >>16;
+    631             gain = (level * gain) >> 15;   /* gain in Q15 */
+   \   0000037C   08009DE5           LDR      R0,[SP, #+8]
+    632          
+    633             /* Multiply by sqrt(L_FRAME)=16, i.e. shift left by 4 */
+    634             exp = (Word16)(exp0 + exp  + 4);
+   \   00000380   F020DDE1           LDRSH    R2,[SP, #+0]
+   \   00000384   4008A0E1           ASR      R0,R0,#+16
+   \   00000388   900901E0           MUL      R1,R0,R9
+   \   0000038C   043088E2           ADD      R3,R8,#+4
+   \   00000390   C107A0E1           ASR      R0,R1,#+15
+   \   00000394   022083E0           ADD      R2,R3,R2
+   \   00000398   B020CDE1           STRH     R2,[SP, #+0]
+    635          
+    636             if(exp >= 0)
+   \   0000039C   F010DDE1           LDRSH    R1,[SP, #+0]
+   \   000003A0   000051E3           CMP      R1,#+0
+   \   000003A4   0B00004A           BMI      ??D_DTX_exe_11
+    637             {
+    638                for(i = 0; i < L_FRAME; i++)
+   \   000003A8   0010A0E3           MOV      R1,#+0
+    639                {
+    640                   L_tmp = (exc2[i] * gain) >> 15;   /* Q0 * Q15 */
+    641                   exc2[i] = (Word16)(L_tmp << exp);
+   \                     ??D_DTX_exe_12:
+   \   000003AC   F040DDE1           LDRSH    R4,[SP, #+0]
+   \   000003B0   812085E0           ADD      R2,R5,R1, LSL #+1
+   \   000003B4   F030D2E1           LDRSH    R3,[R2, #+0]
+    642                }
+   \   000003B8   011081E2           ADD      R1,R1,#+1
+   \   000003BC   400F51E3           CMP      R1,#+256
+   \   000003C0   900303E0           MUL      R3,R0,R3
+   \   000003C4   C337A0E1           ASR      R3,R3,#+15
+   \   000003C8   1334A0E1           LSL      R3,R3,R4
+   \   000003CC   B030C2E1           STRH     R3,[R2, #+0]
+   \   000003D0   0E0000AA           BGE      ??D_DTX_exe_13
+   \   000003D4   F4FFFFEA           B        ??D_DTX_exe_12
+    643             }
+    644             else
+    645             {
+    646                exp = (Word16)-exp;
+   \                     ??D_DTX_exe_11:
+   \   000003D8   0120A0E1           MOV      R2,R1
+   \   000003DC   002062E2           RSB      R2,R2,#+0
+   \   000003E0   B020CDE1           STRH     R2,[SP, #+0]
+    647          
+    648                for(i = 0; i < L_FRAME; i++)
+   \   000003E4   0010A0E3           MOV      R1,#+0
+    649                {
+    650                   L_tmp = (exc2[i] * gain) >> 15;   /* Q0 * Q15 */
+    651                   exc2[i] = (Word16)(L_tmp >> exp);
+   \                     ??D_DTX_exe_14:
+   \   000003E8   F040DDE1           LDRSH    R4,[SP, #+0]
+   \   000003EC   812085E0           ADD      R2,R5,R1, LSL #+1
+   \   000003F0   F030D2E1           LDRSH    R3,[R2, #+0]
+    652                }
+   \   000003F4   011081E2           ADD      R1,R1,#+1
+   \   000003F8   400F51E3           CMP      R1,#+256
+   \   000003FC   900303E0           MUL      R3,R0,R3
+   \   00000400   C337A0E1           ASR      R3,R3,#+15
+   \   00000404   5334A0E1           ASR      R3,R3,R4
+   \   00000408   B030C2E1           STRH     R3,[R2, #+0]
+   \   0000040C   F5FFFFBA           BLT      ??D_DTX_exe_14
+    653             }
+    654          
+    655             if(new_state == D_DTX_MUTE)
+   \                     ??D_DTX_exe_13:
+   \   00000410   FC04DDE1           LDRSH    R0,[SP, #+76]
+   \   00000414   020050E3           CMP      R0,#+2
+   \   00000418   1100001A           BNE      ??D_DTX_exe_15
+    656             {
+    657                /*
+    658                 * mute comfort noise as it has been quite a long time since
+    659                 * last SID update was performed
+    660                 */
+    661                tmp_int_length = st->mem_since_last_sid;
+   \   0000041C   FE10D6E1           LDRSH    R1,[R6, #+14]
+    662          
+    663                if(tmp_int_length > 32)
+   \   00000420   210051E3           CMP      R1,#+33
+    664                {
+    665                   tmp_int_length = 32;
+   \   00000424   2010A0A3           MOVGE    R1,#+32
+   \   00000428   010000AA           BGE      ??D_DTX_exe_16
+    666                }
+    667          
+    668                /* safety guard against division by zero */
+    669          	  if(tmp_int_length <= 0) {
+   \   0000042C   010051E3           CMP      R1,#+1
+    670                   tmp_int_length = 8; 
+   \   00000430   0810A0B3           MOVLT    R1,#+8
+    671                }
+    672                st->mem_true_sid_period_inv = D_UTIL_saturate((0x02000000 / (tmp_int_length << 10)));
+   \                     ??D_DTX_exe_16:
+   \   00000434   8007A0E3           MOV      R0,#+33554432
+   \   00000438   0115A0E1           LSL      R1,R1,#+10
+   \   0000043C   ........           _BLF     ??div32_a,??rA??div32_a
+   \   00000440   0100A0E1           MOV      R0,R1
+   \   00000444   ........           _BLF     D_UTIL_saturate,??D_UTIL_saturate??rA
+   \   00000448   B000C6E1           STRH     R0,[R6, #+0]
+    673                st->mem_since_last_sid = 0;
+   \   0000044C   BE70C6E1           STRH     R7,[R6, #+14]
+    674                st->mem_log_en_prev = st->mem_log_en;
+   \   00000450   F200D6E1           LDRSH    R0,[R6, #+2]
+   \   00000454   B400C6E1           STRH     R0,[R6, #+4]
+    675          
+    676                /* subtract 1/8 in Q9 (energy), i.e -3/8 dB */
+    677                st->mem_log_en = D_UTIL_saturate(st->mem_log_en - 64);
+   \   00000458   400040E2           SUB      R0,R0,#+64
+   \   0000045C   ........           _BLF     D_UTIL_saturate,??D_UTIL_saturate??rA
+   \   00000460   B200C6E1           STRH     R0,[R6, #+2]
+    678             }
+    679          
+    680             /* reset interpolation length timer if data has been updated.        */
+    681             if((st->mem_sid_frame != 0) && ((st->mem_valid_data != 0) ||
+    682                ((st->mem_valid_data == 0) && (st->mem_dtx_hangover_added) != 0)))
+   \                     ??D_DTX_exe_15:
+   \   00000464   1400D6E5           LDRB     R0,[R6, #+20]
+   \   00000468   000050E3           CMP      R0,#+0
+   \   0000046C   0900000A           BEQ      ??D_DTX_exe_17
+   \   00000470   1500D6E5           LDRB     R0,[R6, #+21]
+   \   00000474   000050E3           CMP      R0,#+0
+   \   00000478   0300001A           BNE      ??D_DTX_exe_18
+   \   0000047C   0500001A           BNE      ??D_DTX_exe_17
+   \   00000480   1600D6E5           LDRB     R0,[R6, #+22]
+   \   00000484   000050E3           CMP      R0,#+0
+   \   00000488   0200000A           BEQ      ??D_DTX_exe_17
+    683             {
+    684                st->mem_since_last_sid = 0;
+   \                     ??D_DTX_exe_18:
+   \   0000048C   BE70C6E1           STRH     R7,[R6, #+14]
+    685                st->mem_data_updated = 1;
+   \   00000490   0100A0E3           MOV      R0,#+1
+   \   00000494   1200C6E5           STRB     R0,[R6, #+18]
+    686             }
+    687          
+    688             return;
+   \                     ??D_DTX_exe_17:
+   \   00000498   50D08DE2           ADD      SP,SP,#+80       ;; stack cleaning
+   \   0000049C   F08FBDE8           POP      {R4-R11,PC}      ;; return
+    689          }
+    690          
+    691          
+    692          /*
+    693           * D_DTX_activity_update
+    694           *
+    695           * Parameters:
+    696           *    st           I/O: state struct
+    697           *    isf            O: ISF vector
+    698           *    exc            O: excitation
+    699           *
+    700           * Function:
+    701           *    Confort noise generation
+    702           *
+    703           * Returns:
+    704           *    void
+    705           */
+
+   \                                 In segment CODE, align 4, keep-with-next
+    706          void D_DTX_activity_update(D_DTX_State *st, Word16 isf[], Word16 exc[])
+    707          {
+   \                     D_DTX_activity_update:
+   \   00000000   70402DE9           PUSH     {R4-R6,LR}
+   \   00000004   04D04DE2           SUB      SP,SP,#+4
+   \   00000008   0040A0E1           MOV      R4,R0
+    708          
+    709             Word32 L_frame_en, log_en;
+    710             Word32 i;
+    711             Word16 log_en_e, log_en_m;
+    712          
+    713             st->mem_hist_ptr = (Word16)(st->mem_hist_ptr + 1);
+   \   0000000C   566FA0E3           MOV      R6,#+344
+   \   00000010   F40096E1           LDRSH    R0,[R6, +R4]
+   \   00000014   0250A0E1           MOV      R5,R2
+    714          
+    715             if(st->mem_hist_ptr == D_DTX_HIST_SIZE)
+    716             {
+    717                st->mem_hist_ptr = 0;
+    718             }
+    719          
+    720             memcpy(&st->mem_isf_buf[st->mem_hist_ptr * M], isf, M * sizeof(Word16));
+   \   00000018   2020A0E3           MOV      R2,#+32
+   \   0000001C   010080E2           ADD      R0,R0,#+1
+   \   00000020   B40086E1           STRH     R0,[R6, +R4]
+   \   00000024   F40096E1           LDRSH    R0,[R6, +R4]
+   \   00000028   080050E3           CMP      R0,#+8
+   \   0000002C   0000A003           MOVEQ    R0,#+0
+   \   00000030   B4008601           STRHEQ   R0,[R6, +R4]
+   \   00000034   F40096E1           LDRSH    R0,[R6, +R4]
+   \   00000038   800284E0           ADD      R0,R4,R0, LSL #+5
+   \   0000003C   1E0100EF           SWI      +286
+    721          
+    722             /* compute log energy based on excitation frame energy in Q0 */
+    723             L_frame_en = 0;
+   \   00000040   0000A0E3           MOV      R0,#+0
+    724          
+    725             for(i = 0; i < L_FRAME; i++)
+   \   00000044   0010A0E3           MOV      R1,#+0
+    726             {
+    727                L_frame_en = L_frame_en + (exc[i] * exc[i]);
+   \                     ??D_DTX_activity_update_0:
+   \   00000048   812085E0           ADD      R2,R5,R1, LSL #+1
+   \   0000004C   F030D2E1           LDRSH    R3,[R2, #+0]
+   \   00000050   930320E0           MLA      R0,R3,R3,R0
+    728                if (L_frame_en > MAX_31)
+   \   00000054   400450E3           CMP      R0,#+1073741824
+    729                {
+    730                   L_frame_en = MAX_31;
+   \   00000058   C004E0A3           MVNGE    R0,#-1073741824
+    731                   break;
+    732                }
+    733             }
+   \   0000005C   011081B2           ADDLT    R1,R1,#+1
+   \   00000060   400F51B3           CMPLT    R1,#+256
+   \   00000064   F7FFFFBA           BLT      ??D_DTX_activity_update_0
+    734          
+    735             /*
+    736              * log_en =
+    737              * (Float32)log10(L_frame_en/(Float32)L_FRAME)/(Float32)log10(2.0f);
+    738              */
+    739             D_UTIL_log2(L_frame_en, &log_en_e, &log_en_m);
+   \   00000068   02208DE2           ADD      R2,SP,#+2
+   \   0000006C   0D10A0E1           MOV      R1,SP
+   \   00000070   ........           _BLF     D_UTIL_log2,??D_UTIL_log2??rA
+    740          
+    741             /*
+    742              * convert exponent and mantissa to Word16 Q7.
+    743              * Q7 is used to simplify averaging in dtx_enc
+    744              */
+    745             log_en = log_en_e << 7;   /* Q7 */
+    746             log_en = log_en + (log_en_m >> (15 - 7));
+    747          
+    748             /* Divide by L_FRAME = 256, i.e subtract 8 in Q7 = 1024 */
+    749             log_en = log_en - 1024;
+    750          
+    751             /* insert into log energy buffer */
+    752             st->mem_log_en_buf[st->mem_hist_ptr] = (Word16)log_en;
+   \   00000074   F40096E1           LDRSH    R0,[R6, +R4]
+   \   00000078   F010DDE1           LDRSH    R1,[SP, #+0]
+   \   0000007C   F220DDE1           LDRSH    R2,[SP, #+2]
+   \   00000080   800084E0           ADD      R0,R4,R0, LSL #+1
+   \   00000084   500F80E2           ADD      R0,R0,#+320
+   \   00000088   4224A0E1           ASR      R2,R2,#+8
+   \   0000008C   811382E0           ADD      R1,R2,R1, LSL #+7
+   \   00000090   FF20E0E3           MVN      R2,#+255
+   \   00000094   C02FC2E3           BIC      R2,R2,#0x300
+   \   00000098   011082E0           ADD      R1,R2,R1
+   \   0000009C   B010C0E1           STRH     R1,[R0, #+0]
+    753          
+    754             return;
+   \   000000A0   7180BDE8           POP      {R0,R4-R6,PC}    ;; return
+    755          }
+
+   Maximum stack usage in bytes:
+
+     Function              CSTACK
+     --------              ------
+     D_DTX_activity_update    20
+     D_DTX_cn_dithering       24
+     D_DTX_exe               116
+     D_DTX_exit                8
+     D_DTX_init               16
+     D_DTX_reset              32
+     D_DTX_rx_handler         32
+
+
+   Segment part sizes:
+
+     Function/Label        Bytes
+     --------------        -----
+     D_DTX_reset            204
+     D_DTX_init              76
+     D_DTX_exit              36
+     D_DTX_rx_handler       644
+     D_DTX_cn_dithering     252
+     D_DTX_exe             1184
+     D_DTX_activity_update  164
+      Others                148
+
+ 
+ 2 708 bytes in segment CODE
+ 
+ 2 560 bytes of CODE memory (+ 148 bytes shared)
+
+Errors: none
+Warnings: 6

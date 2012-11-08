@@ -105,3 +105,26 @@
 //v1.4
 #define	GET_PINYIN_CUR		0xA0A3382D	//0xA0A30DCC+1 //获得光标所在拼音
 #endif
+
+#ifdef	C81Csw50
+#define GBS_SendMessage_adr	0xA0092A94
+#define DO_IME_BACK		0xA0AD61B7
+#define DO_RIGHT		0xA0AD63C3 //输入状态已检测
+#define	DO_LEFT			0xA0AD6359
+#define	DO_DOWN			0xA0AD64A1 //输入状态已检测
+#define	DO_UP			0xA0AD647F
+#define	DO_SELECT		0xA0AD628D //
+#define DO_DIRECT_SELECT	0xA0AD6715 //只能在非JAVA中使用
+#define DO_NOTHING		0xA0AD659F //不做任何改变
+#define	DO_KEY1_BACK		0xA0AD67C1 //1键返回g
+#define	JAVA_EDIT_KOP		0xA8E636A4   //在JAVA中,这个地址不变
+#define	USE_RAM			0xA8ED0730   //4字节,用于存储JAVA中输入法选择菜单状态
+#define DO_XING_FIX		0xA05CB4F5 //解决*键在JAVA中选字状态向右无用问题
+#define	GET_INPUT_STATE		0xA05CBA33 //获取输入状态,1为等待输入,0为拼音选择或选字状态
+#define	KEY0_FUNC1		0xA05CA7D3 //0键跳转位置的一个函数,返回时要先执行这个函数
+#define	KEY0_BACK		0xA05CBBE9 //0键跳转返回地址
+#define	KEY0_GOTO_IME		0xA05CBBF9 //0键跳转向常规输入
+
+//v1.4
+#define	GET_PINYIN_CUR		0xA0A32CF5 //获得光标所在拼音
+#endif

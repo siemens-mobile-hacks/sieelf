@@ -1,7 +1,6 @@
-
-// DLL подзагрузка
-// Формируются на компе elf2dll
-// Содержат код + \0 + настр. таблица + exec смещение + выделить памяти всего
+// DLL podzagruzka
+// Are formed on a computer elf2dll
+// Contains code + \ 0 + Settings. table offset + + exec to allocate memory of
 
 #include "..\swilib.h"
 
@@ -46,7 +45,7 @@ int rundll(char *exename, void *p1, void *p2, void *p3){
 
 int main(char *exename, char *fname){
   strcpy(exename+strlen(exename)-3,"dll");
-  if(rundll(exename,fname,0,0)) ShowMSG(1,(int)"Ошибка запуска DLL");
+  if(rundll(exename,fname,0,0)) ShowMSG(1,(int)"Failed to launch DLL");
   SUBPROC((void *)Killer);
  return 0;
 }

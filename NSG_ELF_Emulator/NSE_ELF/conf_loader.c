@@ -40,7 +40,6 @@ int LoadConfigData(const char *fname)
     {
       if (fwrite(f,cfg,len,&ul)!=len) result=-1;
       fclose(f,&ul);
-      ShowMSG(1,(int)"(c)"ELF_AUTHOR"\n"ELF_NAME" v"ELF_VERSION);
     }
     else
       result=-1;

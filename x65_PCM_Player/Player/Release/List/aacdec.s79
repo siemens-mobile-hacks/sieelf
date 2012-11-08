@@ -1,0 +1,1383 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:33 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD /
+//                       EC\aacdec.c                                         /
+//    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD /
+//                       EC\aacdec.c -D NDEBUG -lC                           /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\aacdec.s79                                     /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME aacdec
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        MULTWEAK ??AACDecode??rT
+        MULTWEAK ??AACFindSyncWord??rT
+        MULTWEAK ??AACFlushCodec??rT
+        MULTWEAK ??AACFreeDecoder??rT
+        MULTWEAK ??AACGetLastFrameInfo??rT
+        MULTWEAK ??AACInitDecoder??rT
+        MULTWEAK ??AACSetRawBlockParams??rT
+        MULTWEAK ??aacAllocateBuffers??rA
+        MULTWEAK ??aacDequantize??rA
+        MULTWEAK ??aacFreeBuffers??rA
+        MULTWEAK ??aacIMDCT??rA
+        MULTWEAK ??raac_DecodeNextElement??rA
+        MULTWEAK ??raac_DecodeNoiselessData??rA
+        MULTWEAK ??raac_DeinterleaveShortBlocks??rA
+        MULTWEAK ??raac_FlushCodec??rA
+        MULTWEAK ??raac_GetADTSChannelMapping??rA
+        MULTWEAK ??raac_PNS??rA
+        MULTWEAK ??raac_PrepareRawBlock??rA
+        MULTWEAK ??raac_SetRawBlockParams??rA
+        MULTWEAK ??raac_StereoProcess??rA
+        MULTWEAK ??raac_TNSFilter??rA
+        MULTWEAK ??raac_UnpackADIFHeader??rA
+        MULTWEAK ??raac_UnpackADTSHeader??rA
+        PUBLIC AACDecode
+        FUNCTION AACDecode,0203H
+        LOCFRAME CSTACK, 60, STACK
+        PUBLIC AACFindSyncWord
+        FUNCTION AACFindSyncWord,0203H
+        PUBLIC AACFlushCodec
+        FUNCTION AACFlushCodec,0203H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC AACFreeDecoder
+        FUNCTION AACFreeDecoder,0203H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC AACGetLastFrameInfo
+        FUNCTION AACGetLastFrameInfo,0203H
+        PUBLIC AACInitDecoder
+        FUNCTION AACInitDecoder,0203H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC AACSetRawBlockParams
+        FUNCTION AACSetRawBlockParams,0203H
+        LOCFRAME CSTACK, 8, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+aacAllocateBuffers  SYMBOL "aacAllocateBuffers"
+aacDequantize       SYMBOL "aacDequantize"
+aacFreeBuffers      SYMBOL "aacFreeBuffers"
+aacIMDCT            SYMBOL "aacIMDCT"
+raac_DecodeNextElement SYMBOL "raac_DecodeNextElement"
+raac_DecodeNoiselessData SYMBOL "raac_DecodeNoiselessData"
+raac_DeinterleaveShortBlocks SYMBOL "raac_DeinterleaveShortBlocks"
+raac_FlushCodec     SYMBOL "raac_FlushCodec"
+raac_GetADTSChannelMapping SYMBOL "raac_GetADTSChannelMapping"
+raac_PNS            SYMBOL "raac_PNS"
+raac_PrepareRawBlock SYMBOL "raac_PrepareRawBlock"
+raac_SetRawBlockParams SYMBOL "raac_SetRawBlockParams"
+raac_StereoProcess  SYMBOL "raac_StereoProcess"
+raac_TNSFilter      SYMBOL "raac_TNSFilter"
+raac_UnpackADIFHeader SYMBOL "raac_UnpackADIFHeader"
+raac_UnpackADTSHeader SYMBOL "raac_UnpackADTSHeader"
+AACDecode           SYMBOL "AACDecode"
+??AACDecode??rT     SYMBOL "??rT", AACDecode
+AACFindSyncWord     SYMBOL "AACFindSyncWord"
+??AACFindSyncWord??rT SYMBOL "??rT", AACFindSyncWord
+AACFlushCodec       SYMBOL "AACFlushCodec"
+??AACFlushCodec??rT SYMBOL "??rT", AACFlushCodec
+AACFreeDecoder      SYMBOL "AACFreeDecoder"
+??AACFreeDecoder??rT SYMBOL "??rT", AACFreeDecoder
+AACGetLastFrameInfo SYMBOL "AACGetLastFrameInfo"
+??AACGetLastFrameInfo??rT SYMBOL "??rT", AACGetLastFrameInfo
+AACInitDecoder      SYMBOL "AACInitDecoder"
+??AACInitDecoder??rT SYMBOL "??rT", AACInitDecoder
+AACSetRawBlockParams SYMBOL "AACSetRawBlockParams"
+??AACSetRawBlockParams??rT SYMBOL "??rT", AACSetRawBlockParams
+??aacAllocateBuffers??rA SYMBOL "??rA", aacAllocateBuffers
+??aacDequantize??rA SYMBOL "??rA", aacDequantize
+??aacFreeBuffers??rA SYMBOL "??rA", aacFreeBuffers
+??aacIMDCT??rA      SYMBOL "??rA", aacIMDCT
+??raac_DecodeNextElement??rA SYMBOL "??rA", raac_DecodeNextElement
+??raac_DecodeNoiselessData??rA SYMBOL "??rA", raac_DecodeNoiselessData
+??raac_DeinterleaveShortBlocks??rA SYMBOL "??rA", raac_DeinterleaveShortBlocks
+??raac_FlushCodec??rA SYMBOL "??rA", raac_FlushCodec
+??raac_GetADTSChannelMapping??rA SYMBOL "??rA", raac_GetADTSChannelMapping
+??raac_PNS??rA      SYMBOL "??rA", raac_PNS
+??raac_PrepareRawBlock??rA SYMBOL "??rA", raac_PrepareRawBlock
+??raac_SetRawBlockParams??rA SYMBOL "??rA", raac_SetRawBlockParams
+??raac_StereoProcess??rA SYMBOL "??rA", raac_StereoProcess
+??raac_TNSFilter??rA SYMBOL "??rA", raac_TNSFilter
+??raac_UnpackADIFHeader??rA SYMBOL "??rA", raac_UnpackADIFHeader
+??raac_UnpackADTSHeader??rA SYMBOL "??rA", raac_UnpackADTSHeader
+
+        EXTERN aacAllocateBuffers
+        FUNCTION aacAllocateBuffers,0202H
+        EXTERN aacDequantize
+        FUNCTION aacDequantize,0202H
+        EXTERN aacFreeBuffers
+        FUNCTION aacFreeBuffers,0202H
+        EXTERN aacIMDCT
+        FUNCTION aacIMDCT,0202H
+        EXTERN raac_DecodeNextElement
+        FUNCTION raac_DecodeNextElement,0202H
+        EXTERN raac_DecodeNoiselessData
+        FUNCTION raac_DecodeNoiselessData,0202H
+        EXTERN raac_DeinterleaveShortBlocks
+        FUNCTION raac_DeinterleaveShortBlocks,0202H
+        EXTERN raac_FlushCodec
+        FUNCTION raac_FlushCodec,0202H
+        EXTERN raac_GetADTSChannelMapping
+        FUNCTION raac_GetADTSChannelMapping,0202H
+        EXTERN raac_PNS
+        FUNCTION raac_PNS,0202H
+        EXTERN raac_PrepareRawBlock
+        FUNCTION raac_PrepareRawBlock,0202H
+        EXTERN raac_SetRawBlockParams
+        FUNCTION raac_SetRawBlockParams,0202H
+        EXTERN raac_StereoProcess
+        FUNCTION raac_StereoProcess,0202H
+        EXTERN raac_TNSFilter
+        FUNCTION raac_TNSFilter,0202H
+        EXTERN raac_UnpackADIFHeader
+        FUNCTION raac_UnpackADIFHeader,0202H
+        EXTERN raac_UnpackADTSHeader
+        FUNCTION raac_UnpackADTSHeader,0202H
+        EXTERN raac_elementNumChans
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??AACInitDecoder??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE AACInitDecoder
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\aacdec.c
+//    1 /* ***** BEGIN LICENSE BLOCK *****  
+//    2  * Source last modified: $Id: aacdec.c,v 1.1 2005/02/26 01:47:31 jrecker Exp $ 
+//    3  *   
+//    4  * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+//    5  *       
+//    6  * The contents of this file, and the files included with this file, 
+//    7  * are subject to the current version of the RealNetworks Public 
+//    8  * Source License (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the current version of the RealNetworks Community 
+//   11  * Source License (the "RCSL") available at 
+//   12  * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+//   13  * will apply. You may also obtain the license terms directly from 
+//   14  * RealNetworks.  You may not use this file except in compliance with 
+//   15  * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+//   16  * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+//   17  * the rights, obligations and limitations governing use of the 
+//   18  * contents of the file. 
+//   19  *   
+//   20  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   21  * developer of the Original Code and owns the copyrights in the 
+//   22  * portions it created. 
+//   23  *   
+//   24  * This file, and the files included with this file, is distributed 
+//   25  * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+//   26  * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+//   27  * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+//   28  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+//   29  * ENJOYMENT OR NON-INFRINGEMENT. 
+//   30  *  
+//   31  * Technology Compatibility Kit Test Suite(s) Location:  
+//   32  *    http://www.helixcommunity.org/content/tck  
+//   33  *  
+//   34  * Contributor(s):  
+//   35  *   
+//   36  * ***** END LICENSE BLOCK ***** */  
+//   37 
+//   38 /**************************************************************************************
+//   39  * Fixed-point HE-AAC decoder
+//   40  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+//   41  * February 2005
+//   42  *
+//   43  * aacdec.c - platform-independent top level decoder API
+//   44  **************************************************************************************/
+//   45 
+//   46 #include "aaccommon.h"
+//   47 
+//   48 /**************************************************************************************
+//   49  * Function:    AACInitDecoder
+//   50  *
+//   51  * Description: allocate memory for platform-specific data
+//   52  *              clear all the user-accessible fields
+//   53  *              initialize SBR decoder if enabled
+//   54  *
+//   55  * Inputs:      none
+//   56  *
+//   57  * Outputs:     none
+//   58  *
+//   59  * Return:      handle to AAC decoder instance, 0 if malloc fails
+//   60  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function AACInitDecoder
+        ARM
+//   61 HAACDecoder AACInitDecoder(void)
+//   62 {
+AACInitDecoder:
+        PUSH     {LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI CFA R13+4
+//   63 	AACDecInfo *aacDecInfo;
+//   64 
+//   65 	aacDecInfo = aacAllocateBuffers();
+        _BLF     aacAllocateBuffers,??aacAllocateBuffers??rA
+//   66 	if (!aacDecInfo)
+//   67 		return 0;
+//   68 
+//   69 #ifdef AAC_ENABLE_SBR
+//   70 	if (InitSBR(aacDecInfo)) {
+//   71 		AACFreeDecoder(aacDecInfo);
+//   72 		return 0;
+//   73 	}
+//   74 #endif
+//   75 
+//   76 	return (HAACDecoder)aacDecInfo;
+        POP      {PC}             ;; return
+        CFI EndBlock cfiBlock1
+//   77 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??AACFreeDecoder??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE AACFreeDecoder
+//   78 
+//   79 /**************************************************************************************
+//   80  * Function:    AACFreeDecoder
+//   81  *
+//   82  * Description: free platform-specific data allocated by AACInitDecoder
+//   83  *              free SBR decoder if enabled
+//   84  *
+//   85  * Inputs:      valid AAC decoder instance pointer (HAACDecoder)
+//   86  *
+//   87  * Outputs:     none
+//   88  *
+//   89  * Return:      none
+//   90  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function AACFreeDecoder
+        ARM
+//   91 void AACFreeDecoder(HAACDecoder hAACDecoder)
+//   92 {
+AACFreeDecoder:
+        PUSH     {LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI CFA R13+4
+//   93 	AACDecInfo *aacDecInfo = (AACDecInfo *)hAACDecoder;
+//   94 
+//   95 	if (!aacDecInfo)
+        CMP      R0,#+0
+        POPEQ    {PC}
+//   96 		return;
+//   97 
+//   98 #ifdef AAC_ENABLE_SBR
+//   99 	FreeSBR(aacDecInfo);
+//  100 #endif
+//  101 	aacFreeBuffers(aacDecInfo);
+        _BLF     aacFreeBuffers,??aacFreeBuffers??rA
+//  102 }
+        POP      {PC}             ;; return
+        CFI EndBlock cfiBlock3
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??AACFindSyncWord??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE AACFindSyncWord
+//  103 
+//  104 /**************************************************************************************
+//  105  * Function:    AACFindSyncWord
+//  106  *
+//  107  * Description: locate the next byte-alinged sync word in the raw AAC stream
+//  108  *
+//  109  * Inputs:      buffer to search for sync word
+//  110  *              max number of bytes to search in buffer
+//  111  *
+//  112  * Outputs:     none
+//  113  *
+//  114  * Return:      offset to first sync word (bytes from start of buf)
+//  115  *              -1 if sync not found after searching nBytes
+//  116  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function AACFindSyncWord
+        ARM
+//  117 int AACFindSyncWord(unsigned char *buf, int nBytes)
+//  118 {
+//  119 	int i;
+//  120 
+//  121 	/* find byte-aligned syncword (12 bits = 0xFFF) */
+//  122 	for (i = 0; i < nBytes - 1; i++) {
+AACFindSyncWord:
+        MOV      R2,#+0
+        SUB      R1,R1,#+1
+        B        ??AACFindSyncWord_0
+??AACFindSyncWord_1:
+        ADD      R2,R2,#+1
+??AACFindSyncWord_0:
+        CMP      R2,R1
+        BGE      ??AACFindSyncWord_2
+//  123 		if ( (buf[i+0] & SYNCWORDH) == SYNCWORDH && (buf[i+1] & SYNCWORDL) == SYNCWORDL )
+        LDRB     R3,[R2, +R0]
+        CMP      R3,#+255
+        BNE      ??AACFindSyncWord_1
+        ADD      R3,R2,R0
+        LDRB     R3,[R3, #+1]
+        AND      R3,R3,#0xF0
+        CMP      R3,#+240
+        BNE      ??AACFindSyncWord_1
+//  124 			return i;
+        MOV      R0,R2
+        BX       LR
+//  125 	}
+//  126 	
+//  127 	return -1;
+??AACFindSyncWord_2:
+        MVN      R0,#+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock5
+//  128 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??AACGetLastFrameInfo??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE AACGetLastFrameInfo
+//  129 
+//  130 /**************************************************************************************
+//  131  * Function:    AACGetLastFrameInfo
+//  132  *
+//  133  * Description: get info about last AAC frame decoded (number of samples decoded, 
+//  134  *                sample rate, bit rate, etc.)
+//  135  *
+//  136  * Inputs:      valid AAC decoder instance pointer (HAACDecoder)
+//  137  *              pointer to AACFrameInfo struct
+//  138  *
+//  139  * Outputs:     filled-in AACFrameInfo struct
+//  140  *
+//  141  * Return:      none
+//  142  *
+//  143  * Notes:       call this right after calling AACDecode()
+//  144  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function AACGetLastFrameInfo
+        ARM
+//  145 void AACGetLastFrameInfo(HAACDecoder hAACDecoder, AACFrameInfo *aacFrameInfo)
+//  146 {
+//  147 	AACDecInfo *aacDecInfo = (AACDecInfo *)hAACDecoder;
+//  148 
+//  149 	if (!aacDecInfo) {
+AACGetLastFrameInfo:
+        CMP      R0,#+0
+        BNE      ??AACGetLastFrameInfo_0
+//  150 		aacFrameInfo->bitRate =       0;
+        STR      R0,[R1, #+0]
+//  151 		aacFrameInfo->nChans =        0;
+        STR      R0,[R1, #+4]
+//  152 		aacFrameInfo->sampRateCore =  0;
+        STR      R0,[R1, #+8]
+//  153 		aacFrameInfo->sampRateOut =   0;
+        STR      R0,[R1, #+12]
+//  154 		aacFrameInfo->bitsPerSample = 0;
+        STR      R0,[R1, #+16]
+//  155 		aacFrameInfo->outputSamps =   0;
+        STR      R0,[R1, #+20]
+//  156 		aacFrameInfo->profile =       0;
+        STR      R0,[R1, #+24]
+//  157 		aacFrameInfo->tnsUsed =       0;
+        STR      R0,[R1, #+28]
+//  158 		aacFrameInfo->pnsUsed =       0;
+        B        ??AACGetLastFrameInfo_1
+//  159 	} else {
+//  160 		aacFrameInfo->bitRate =       aacDecInfo->bitRate;
+??AACGetLastFrameInfo_0:
+        LDR      R2,[R0, #+60]
+        STR      R2,[R1, #+0]
+//  161 		aacFrameInfo->nChans =        aacDecInfo->nChans;
+        LDR      R2,[R0, #+64]
+        STR      R2,[R1, #+4]
+//  162 		aacFrameInfo->sampRateCore =  aacDecInfo->sampRate;
+        LDR      R2,[R0, #+68]
+        STR      R2,[R1, #+8]
+//  163 		aacFrameInfo->sampRateOut =   aacDecInfo->sampRate * (aacDecInfo->sbrEnabled ? 2 : 1);
+        LDR      R2,[R0, #+80]
+        LDR      R3,[R0, #+68]
+        CMP      R2,#+0
+        MOVNE    R2,#+2
+        MOVEQ    R2,#+1
+        MUL      R3,R2,R3
+//  164 		aacFrameInfo->bitsPerSample = 16;
+        MOV      R2,#+16
+        STR      R3,[R1, #+12]
+        STR      R2,[R1, #+16]
+//  165 		aacFrameInfo->outputSamps =   aacDecInfo->nChans * AAC_MAX_NSAMPS * (aacDecInfo->sbrEnabled ? 2 : 1);
+        LDR      R2,[R0, #+80]
+        LDR      R3,[R0, #+64]
+        CMP      R2,#+0
+        MOVNE    R2,#+2
+        MOVEQ    R2,#+1
+        MUL      R3,R2,R3
+        LSL      R2,R3,#+10
+        STR      R2,[R1, #+20]
+//  166 		aacFrameInfo->profile =       aacDecInfo->profile;
+        LDR      R2,[R0, #+72]
+        STR      R2,[R1, #+24]
+//  167 		aacFrameInfo->tnsUsed =       aacDecInfo->tnsUsed;
+        LDR      R2,[R0, #+84]
+        STR      R2,[R1, #+28]
+//  168 		aacFrameInfo->pnsUsed =       aacDecInfo->pnsUsed;
+        LDR      R0,[R0, #+88]
+??AACGetLastFrameInfo_1:
+        STR      R0,[R1, #+32]
+//  169 	}
+//  170 }
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock7
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??AACSetRawBlockParams??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE AACSetRawBlockParams
+//  171 
+//  172 /**************************************************************************************
+//  173  * Function:    AACSetRawBlockParams
+//  174  *
+//  175  * Description: set internal state variables for decoding a stream of raw data blocks
+//  176  *
+//  177  * Inputs:      valid AAC decoder instance pointer (HAACDecoder)
+//  178  *              flag indicating source of parameters
+//  179  *              AACFrameInfo struct, with the members nChans, sampRate, and profile
+//  180  *                optionally filled-in
+//  181  *
+//  182  * Outputs:     updated codec state 
+//  183  *
+//  184  * Return:      0 if successful, error code (< 0) if error
+//  185  *
+//  186  * Notes:       if copyLast == 1, then the codec sets up its internal state (for 
+//  187  *                decoding raw blocks) based on previously-decoded ADTS header info
+//  188  *              if copyLast == 0, then the codec uses the values passed in
+//  189  *                aacFrameInfo to configure its internal state (useful when the
+//  190  *                source is MP4 format, for example)
+//  191  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function AACSetRawBlockParams
+        ARM
+//  192 int AACSetRawBlockParams(HAACDecoder hAACDecoder, int copyLast, AACFrameInfo *aacFrameInfo)
+//  193 {
+AACSetRawBlockParams:
+        PUSH     {LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI CFA R13+4
+//  194 	AACDecInfo *aacDecInfo = (AACDecInfo *)hAACDecoder;
+//  195 
+//  196 	if (!aacDecInfo)
+        CMP      R0,#+0
+//  197 		return ERR_AAC_NULL_POINTER;
+        MVNEQ    R0,#+1
+        POPEQ    {PC}
+//  198 
+//  199 	aacDecInfo->format = AAC_FF_RAW;
+        MOV      R3,#+3
+        STR      R3,[R0, #+76]
+//  200 	if (copyLast)
+        CMP      R1,#+0
+        BEQ      ??AACSetRawBlockParams_0
+//  201 		return SetRawBlockParams(aacDecInfo, 1, 0, 0, 0);
+        MOV      R1,#+0
+        PUSH     {R1}
+        CFI CFA R13+8
+        MOV      R3,#+0
+        MOV      R2,R1
+        MOV      R1,#+1
+        _BLF     raac_SetRawBlockParams,??raac_SetRawBlockParams??rA
+        ADD      SP,SP,#+4
+        CFI CFA R13+4
+        POP      {PC}
+//  202 	else
+//  203 		return SetRawBlockParams(aacDecInfo, 0, aacFrameInfo->nChans, aacFrameInfo->sampRateCore, aacFrameInfo->profile);
+??AACSetRawBlockParams_0:
+        LDR      R1,[R2, #+24]
+        PUSH     {R1}
+        CFI CFA R13+8
+        LDR      R3,[R2, #+8]
+        LDR      R2,[R2, #+4]
+        MOV      R1,#+0
+        _BLF     raac_SetRawBlockParams,??raac_SetRawBlockParams??rA
+        ADD      SP,SP,#+4
+        CFI CFA R13+4
+        POP      {PC}             ;; return
+        CFI EndBlock cfiBlock9
+//  204 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??AACFlushCodec??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock10
+        REQUIRE AACFlushCodec
+//  205 
+//  206 /**************************************************************************************
+//  207  * Function:    AACFlushCodec
+//  208  *
+//  209  * Description: flush internal codec state (after seeking, for example)
+//  210  *
+//  211  * Inputs:      valid AAC decoder instance pointer (HAACDecoder)
+//  212  *
+//  213  * Outputs:     updated state variables in aacDecInfo
+//  214  *
+//  215  * Return:      0 if successful, error code (< 0) if error
+//  216  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock11 Using cfiCommon1
+        CFI Function AACFlushCodec
+        ARM
+//  217 int AACFlushCodec(HAACDecoder hAACDecoder)
+//  218 {
+AACFlushCodec:
+        PUSH     {LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI CFA R13+4
+//  219 	int ch;
+//  220 	AACDecInfo *aacDecInfo = (AACDecInfo *)hAACDecoder;
+//  221 
+//  222 	if (!aacDecInfo)
+        CMP      R0,#+0
+//  223 		return ERR_AAC_NULL_POINTER;
+        MVNEQ    R0,#+1
+        POPEQ    {PC}
+//  224 
+//  225 	/* reset common state variables which change per-frame
+//  226 	 * don't touch state variables which are (usually) constant for entire clip 
+//  227 	 *   (nChans, sampRate, profile, format, sbrEnabled)
+//  228 	 */
+//  229 	aacDecInfo->prevBlockID = AAC_ID_INVALID;
+        MVN      R1,#+0
+        STR      R1,[R0, #+36]
+//  230 	aacDecInfo->currBlockID = AAC_ID_INVALID;
+        STR      R1,[R0, #+40]
+//  231 	aacDecInfo->currInstTag = -1;
+        STR      R1,[R0, #+44]
+//  232 	for (ch = 0; ch < MAX_NCHANS_ELEM; ch++)
+        MOV      R1,#+0
+        MOV      R2,#+0
+//  233 		aacDecInfo->sbDeinterleaveReqd[ch] = 0;
+??AACFlushCodec_0:
+        ADD      R3,R0,R1, LSL #+2
+        STR      R2,[R3, #+48]
+        ADD      R1,R1,#+1
+        CMP      R1,#+2
+        BLT      ??AACFlushCodec_0
+//  234 	aacDecInfo->adtsBlocksLeft = 0;
+        STR      R2,[R0, #+56]
+//  235 	aacDecInfo->tnsUsed = 0;
+        STR      R2,[R0, #+84]
+//  236 	aacDecInfo->pnsUsed = 0;
+        STR      R2,[R0, #+88]
+//  237 
+//  238 	/* reset internal codec state (flush overlap buffers, etc.) */
+//  239 	FlushCodec(aacDecInfo);
+        _BLF     raac_FlushCodec,??raac_FlushCodec??rA
+//  240 #ifdef AAC_ENABLE_SBR
+//  241 	FlushCodecSBR(aacDecInfo);
+//  242 #endif
+//  243 
+//  244 	return ERR_AAC_NONE;
+        MOV      R0,#+0
+        POP      {PC}             ;; return
+        CFI EndBlock cfiBlock11
+//  245 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock12 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??AACDecode??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock12
+        REQUIRE AACDecode
+//  246 
+//  247 /**************************************************************************************
+//  248  * Function:    AACDecode
+//  249  *
+//  250  * Description: decode AAC frame
+//  251  *
+//  252  * Inputs:      valid AAC decoder instance pointer (HAACDecoder)
+//  253  *              double pointer to buffer of AAC data
+//  254  *              pointer to number of valid bytes remaining in inbuf
+//  255  *              pointer to outbuf, big enough to hold one frame of decoded PCM samples
+//  256  *                (outbuf must be double-sized if SBR enabled)
+//  257  *
+//  258  * Outputs:     PCM data in outbuf, interleaved LRLRLR... if stereo
+//  259  *                number of output samples = 1024 per channel (2048 if SBR enabled)
+//  260  *              updated inbuf pointer
+//  261  *              updated bytesLeft
+//  262  *
+//  263  * Return:      0 if successful, error code (< 0) if error
+//  264  *
+//  265  * Notes:       inbuf pointer and bytesLeft are not updated until whole frame is
+//  266  *                successfully decoded, so if ERR_AAC_INDATA_UNDERFLOW is returned
+//  267  *                just call AACDecode again with more data in inbuf
+//  268  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock13 Using cfiCommon1
+        CFI Function AACDecode
+        ARM
+//  269 int AACDecode(HAACDecoder hAACDecoder, unsigned char **inbuf, int *bytesLeft, short *outbuf)
+//  270 {
+AACDecode:
+        PUSH     {R1,R2,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+44
+        SUB      SP,SP,#+12
+        CFI CFA R13+56
+        MOV      R4,R0
+        MOV      R5,R3
+//  271 	int err, offset, bitOffset, bitsAvail;
+//  272 	int ch, baseChan, baseChanSBR, elementChans;
+//  273 	unsigned char *inptr;
+//  274 	AACDecInfo *aacDecInfo = (AACDecInfo *)hAACDecoder;
+//  275 #ifdef AAC_ENABLE_SBR
+//  276 	int elementChansSBR;
+//  277 #endif
+//  278 
+//  279 	if (!aacDecInfo)
+        CMP      R4,#+0
+//  280 		return ERR_AAC_NULL_POINTER;
+        MVNEQ    R0,#+1
+        BEQ      ??AACDecode_0
+//  281 
+//  282 	/* make local copies (see "Notes" above) */
+//  283 	inptr = *inbuf;
+        LDR      R1,[R1, #+0]
+        STR      R1,[SP, #+0]
+//  284 	bitOffset = 0;
+        MOV      R1,#+0
+        STR      R1,[SP, #+8]
+//  285 	bitsAvail = (*bytesLeft) << 3;
+        LDR      R1,[R2, #+0]
+        LSL      R1,R1,#+3
+        STR      R1,[SP, #+4]
+//  286 
+//  287 	/* first time through figure out what the file format is */
+//  288 	if (aacDecInfo->format == AAC_FF_Unknown) {
+        LDR      R0,[R4, #+76]
+        CMP      R0,#+0
+        BNE      ??AACDecode_1
+//  289 		if (bitsAvail < 32)
+        CMP      R1,#+32
+        BGE      ??AACDecode_2
+//  290 			return ERR_AAC_INDATA_UNDERFLOW;
+??AACDecode_3:
+        MVN      R0,#+0
+        B        ??AACDecode_4
+//  291 		
+//  292 		if (IS_ADIF(inptr)) {
+??AACDecode_2:
+        LDR      R0,[SP, #+0]
+        LDRB     R0,[R0, #+0]
+        CMP      R0,#+65
+        BNE      ??AACDecode_5
+        LDR      R0,[SP, #+0]
+        LDRB     R0,[R0, #+1]
+        CMP      R0,#+68
+        BNE      ??AACDecode_5
+        LDR      R0,[SP, #+0]
+        LDRB     R0,[R0, #+2]
+        CMP      R0,#+73
+        BNE      ??AACDecode_5
+        LDR      R0,[SP, #+0]
+        LDRB     R0,[R0, #+3]
+        CMP      R0,#+70
+        BNE      ??AACDecode_5
+//  293 			/* unpack ADIF header */
+//  294 			aacDecInfo->format = AAC_FF_ADIF;
+        MOV      R0,#+2
+        STR      R0,[R4, #+76]
+//  295 			err = UnpackADIFHeader(aacDecInfo, &inptr, &bitOffset, &bitsAvail);
+        ADD      R3,SP,#+4
+        ADD      R2,SP,#+8
+        MOV      R1,SP
+        MOV      R0,R4
+        _BLF     raac_UnpackADIFHeader,??raac_UnpackADIFHeader??rA
+//  296 			if (err)
+        CMP      R0,#+0
+        BEQ      ??AACDecode_1
+//  297 				return err;
+??AACDecode_4:
+        ADD      SP,SP,#+20
+        CFI CFA R13+36
+        POP      {R4-R11,PC}
+        CFI CFA R13+56
+//  298 		} else {
+//  299 			/* assume ADTS by default */
+//  300 			aacDecInfo->format = AAC_FF_ADTS;
+??AACDecode_5:
+        MOV      R0,#+1
+        STR      R0,[R4, #+76]
+//  301 		}
+//  302 	} 
+//  303 	
+//  304 	/* if ADTS, search for start of next frame */
+//  305 	if (aacDecInfo->format == AAC_FF_ADTS) {
+??AACDecode_1:
+        LDR      R0,[R4, #+76]
+        CMP      R0,#+1
+        BNE      ??AACDecode_6
+//  306 		/* can have 1-4 raw data blocks per ADTS frame (header only present for first one) */
+//  307 		if (aacDecInfo->adtsBlocksLeft == 0) {
+        LDR      R0,[R4, #+56]
+        CMP      R0,#+0
+        BNE      ??AACDecode_7
+//  308 			offset = AACFindSyncWord(inptr, bitsAvail >> 3);
+        LDR      R0,[SP, #+4]
+        ASR      R1,R0,#+3
+        MOV      R0,#+0
+        B        ??AACDecode_8
+??AACDecode_9:
+        ADD      R0,R0,#+1
+??AACDecode_8:
+        SUB      R2,R1,#+1
+        CMP      R0,R2
+        BGE      ??AACDecode_3
+        LDR      R2,[SP, #+0]
+        LDRB     R2,[R0, +R2]
+        CMP      R2,#+255
+        BNE      ??AACDecode_9
+        LDR      R2,[SP, #+0]
+        ADD      R2,R0,R2
+        LDRB     R2,[R2, #+1]
+        AND      R2,R2,#0xF0
+        CMP      R2,#+240
+        BNE      ??AACDecode_9
+//  309 			if (offset < 0)
+        CMP      R0,#+0
+        BMI      ??AACDecode_3
+//  310 				return ERR_AAC_INDATA_UNDERFLOW;
+//  311 			inptr += offset;
+        LDR      R2,[SP, #+0]
+//  312 			bitsAvail -= (offset << 3);
+//  313 
+//  314 			err = UnpackADTSHeader(aacDecInfo, &inptr, &bitOffset, &bitsAvail);
+        ADD      R3,SP,#+4
+        ADD      R2,R0,R2
+        STR      R2,[SP, #+0]
+        LDR      R2,[SP, #+4]
+        MOV      R1,SP
+        SUB      R0,R2,R0, LSL #+3
+        STR      R0,[SP, #+4]
+        ADD      R2,SP,#+8
+        MOV      R0,R4
+        _BLF     raac_UnpackADTSHeader,??raac_UnpackADTSHeader??rA
+//  315 			if (err)
+        CMP      R0,#+0
+        BNE      ??AACDecode_0
+//  316 				return err;
+//  317 
+//  318 			if (aacDecInfo->nChans == -1) {
+        LDR      R0,[R4, #+64]
+        CMN      R0,#+1
+        BNE      ??AACDecode_7
+//  319 				/* figure out implicit channel mapping if necessary */
+//  320 				err = GetADTSChannelMapping(aacDecInfo, inptr, bitOffset, bitsAvail);
+        LDR      R3,[SP, #+4]
+        LDR      R2,[SP, #+8]
+        LDR      R1,[SP, #+0]
+        MOV      R0,R4
+        _BLF     raac_GetADTSChannelMapping,??raac_GetADTSChannelMapping??rA
+//  321 				if (err)
+        CMP      R0,#+0
+        BNE      ??AACDecode_0
+//  322 					return err;
+//  323 			}
+//  324 		}
+//  325 		aacDecInfo->adtsBlocksLeft--;
+??AACDecode_7:
+        LDR      R0,[R4, #+56]
+        SUB      R0,R0,#+1
+        STR      R0,[R4, #+56]
+        B        ??AACDecode_10
+//  326 	} else if (aacDecInfo->format == AAC_FF_RAW) {
+??AACDecode_6:
+        CMP      R0,#+3
+        BNE      ??AACDecode_10
+//  327 		err = PrepareRawBlock(aacDecInfo);
+        MOV      R0,R4
+        _BLF     raac_PrepareRawBlock,??raac_PrepareRawBlock??rA
+//  328 		if (err)
+        CMP      R0,#+0
+        BNE      ??AACDecode_0
+//  329 			return err;
+//  330 	}
+//  331 
+//  332 	/* check for valid number of channels */
+//  333 	if (aacDecInfo->nChans > AAC_MAX_NCHANS || aacDecInfo->nChans <= 0)
+??AACDecode_10:
+        LDR      R0,[R4, #+64]
+        CMP      R0,#+3
+        BGE      ??AACDecode_11
+        CMP      R0,#+1
+        BGE      ??AACDecode_12
+//  334 		return ERR_AAC_NCHANS_TOO_HIGH;
+??AACDecode_11:
+        MVN      R0,#+14
+        B        ??AACDecode_4
+//  335 
+//  336 	/* will be set later if active in this frame */
+//  337 	aacDecInfo->tnsUsed = 0;
+??AACDecode_12:
+        MOV      R6,#+0
+        STR      R6,[R4, #+84]
+//  338 	aacDecInfo->pnsUsed = 0;
+        STR      R6,[R4, #+88]
+//  339 
+//  340 	bitOffset = 0;
+        MOV      R1,#+0
+        STR      R1,[SP, #+8]
+//  341 	baseChan = 0;
+        MOV      R7,R1
+//  342 	baseChanSBR = 0;
+//  343 	do {
+//  344 		/* parse next syntactic element */
+//  345 		err = DecodeNextElement(aacDecInfo, &inptr, &bitOffset, &bitsAvail);
+??AACDecode_13:
+        ADD      R3,SP,#+4
+        ADD      R2,SP,#+8
+        MOV      R1,SP
+        MOV      R0,R4
+        _BLF     raac_DecodeNextElement,??raac_DecodeNextElement??rA
+//  346 		if (err)
+        CMP      R0,#+0
+        BNE      ??AACDecode_0
+//  347 			return err;
+//  348 		
+//  349 		elementChans = elementNumChans[aacDecInfo->currBlockID];
+        LDR      R0,[R4, #+40]
+        LDR      R1,??AACDecode_14  ;; raac_elementNumChans
+        LDR      R8,[R1, +R0, LSL #+2]
+//  350 		if (baseChan + elementChans > AAC_MAX_NCHANS)
+        ADD      R9,R8,R7
+        CMP      R9,#+3
+        BGE      ??AACDecode_11
+//  351 			return ERR_AAC_NCHANS_TOO_HIGH;
+//  352 
+//  353 		/* noiseless decoder and dequantizer */
+//  354 		for (ch = 0; ch < elementChans; ch++) {
+        MOV      R10,#+0
+        B        ??AACDecode_15
+??AACDecode_16:
+        ADD      R10,R10,#+1
+??AACDecode_15:
+        CMP      R10,R8
+        BGE      ??AACDecode_17
+//  355 			err = DecodeNoiselessData(aacDecInfo, &inptr, &bitOffset, &bitsAvail, ch);
+        MOV      R0,R10
+        PUSH     {R0}
+        CFI CFA R13+60
+        ADD      R3,SP,#+8
+        ADD      R2,SP,#+12
+        ADD      R1,SP,#+4
+        MOV      R0,R4
+        _BLF     raac_DecodeNoiselessData,??raac_DecodeNoiselessData??rA
+//  356 			if (err)
+        CMP      R0,#+0
+        ADD      SP,SP,#+4
+        CFI CFA R13+56
+        BNE      ??AACDecode_0
+//  357 				return err;
+//  358 
+//  359 			if (aacDequantize(aacDecInfo, ch))
+        MOV      R1,R10
+        MOV      R0,R4
+        _BLF     aacDequantize,??aacDequantize??rA
+        CMP      R0,#+0
+        BEQ      ??AACDecode_16
+//  360 				return ERR_AAC_DEQUANT;
+        MVN      R0,#+8
+        B        ??AACDecode_4
+//  361 		}
+//  362 
+//  363 		/* mid-side and intensity stereo */
+//  364 		if (aacDecInfo->currBlockID == AAC_ID_CPE) {
+??AACDecode_17:
+        LDR      R0,[R4, #+40]
+        CMP      R0,#+1
+        BNE      ??AACDecode_18
+//  365 			if (StereoProcess(aacDecInfo))
+        MOV      R0,R4
+        _BLF     raac_StereoProcess,??raac_StereoProcess??rA
+        CMP      R0,#+0
+//  366 				return ERR_AAC_STEREO_PROCESS;
+        MVNNE    R0,#+9
+        BNE      ??AACDecode_0
+//  367 		}
+//  368 
+//  369 		/* PNS, TNS, inverse transform */
+//  370 		for (ch = 0; ch < elementChans; ch++) {
+??AACDecode_18:
+        MOV      R10,#+0
+        B        ??AACDecode_19
+??AACDecode_20:
+        ADD      R10,R10,#+1
+??AACDecode_19:
+        CMP      R10,R8
+        BGE      ??AACDecode_21
+//  371 			if (PNS(aacDecInfo, ch))
+        MOV      R1,R10
+        MOV      R0,R4
+        _BLF     raac_PNS,??raac_PNS??rA
+        CMP      R0,#+0
+//  372 				return ERR_AAC_PNS;
+        MVNNE    R0,#+10
+        BNE      ??AACDecode_0
+//  373 
+//  374 			if (aacDecInfo->sbDeinterleaveReqd[ch]) {
+        ADD      R11,R4,R10, LSL #+2
+        LDR      R0,[R11, #+48]
+        CMP      R0,#+0
+        BEQ      ??AACDecode_22
+//  375 				/* deinterleave short blocks, if required */
+//  376 				if (DeinterleaveShortBlocks(aacDecInfo, ch))
+        MOV      R1,R10
+        MOV      R0,R4
+        _BLF     raac_DeinterleaveShortBlocks,??raac_DeinterleaveShortBlocks??rA
+        CMP      R0,#+0
+//  377 					return ERR_AAC_SHORT_BLOCK_DEINT;
+        MVNNE    R0,#+11
+        BNE      ??AACDecode_0
+//  378 				aacDecInfo->sbDeinterleaveReqd[ch] = 0;
+        STR      R6,[R11, #+48]
+//  379 			}
+//  380 	
+//  381 			if (TNSFilter(aacDecInfo, ch))
+??AACDecode_22:
+        MOV      R1,R10
+        MOV      R0,R4
+        _BLF     raac_TNSFilter,??raac_TNSFilter??rA
+        CMP      R0,#+0
+//  382 				return ERR_AAC_TNS;
+        MVNNE    R0,#+12
+        BNE      ??AACDecode_0
+//  383 
+//  384 			if (aacIMDCT(aacDecInfo, ch, baseChan + ch, outbuf))
+        MOV      R3,R5
+        ADD      R2,R10,R7
+        MOV      R1,R10
+        MOV      R0,R4
+        _BLF     aacIMDCT,??aacIMDCT??rA
+        CMP      R0,#+0
+        BEQ      ??AACDecode_20
+//  385 				return ERR_AAC_IMDCT;
+        MVN      R0,#+13
+        B        ??AACDecode_4
+//  386 		}
+//  387 
+//  388 #ifdef AAC_ENABLE_SBR
+//  389 		if (aacDecInfo->sbrEnabled && (aacDecInfo->currBlockID == AAC_ID_FIL || aacDecInfo->currBlockID == AAC_ID_LFE)) {
+//  390 			if (aacDecInfo->currBlockID == AAC_ID_LFE)
+//  391 				elementChansSBR = elementNumChans[AAC_ID_LFE];
+//  392 			else if (aacDecInfo->currBlockID == AAC_ID_FIL && (aacDecInfo->prevBlockID == AAC_ID_SCE || aacDecInfo->prevBlockID == AAC_ID_CPE))
+//  393 				elementChansSBR = elementNumChans[aacDecInfo->prevBlockID];
+//  394 			else 
+//  395 				elementChansSBR = 0;
+//  396 			
+//  397 			if (baseChanSBR + elementChansSBR > AAC_MAX_NCHANS)
+//  398 				return ERR_AAC_SBR_NCHANS_TOO_HIGH;
+//  399 
+//  400 			/* parse SBR extension data if present (contained in a fill element) */
+//  401 			if (DecodeSBRBitstream(aacDecInfo, baseChanSBR))
+//  402 				return ERR_AAC_SBR_BITSTREAM;
+//  403 
+//  404 			/* apply SBR */
+//  405 			if (DecodeSBRData(aacDecInfo, baseChanSBR, outbuf))
+//  406 				return ERR_AAC_SBR_DATA;
+//  407 
+//  408 			baseChanSBR += elementChansSBR;
+//  409 		}
+//  410 #endif
+//  411 		
+//  412 		baseChan += elementChans;
+//  413 	} while (aacDecInfo->currBlockID != AAC_ID_END);
+??AACDecode_21:
+        LDR      R0,[R4, #+40]
+        MOV      R7,R9
+        CMP      R0,#+7
+        BNE      ??AACDecode_13
+//  414 
+//  415 	/* byte align after each raw_data_block */
+//  416 	if (bitOffset) {
+        LDR      R0,[SP, #+8]
+        CMP      R0,#+0
+        BEQ      ??AACDecode_23
+//  417 		inptr++;
+        LDR      R1,[SP, #+0]
+//  418 		bitsAvail -= (8-bitOffset);
+        SUB      R2,R0,#+8
+        ADD      R1,R1,#+1
+        STR      R1,[SP, #+0]
+        LDR      R1,[SP, #+4]
+        ADD      R1,R2,R1
+        STR      R1,[SP, #+4]
+//  419 		bitOffset = 0;
+        MOV      R1,#+0
+        STR      R1,[SP, #+8]
+//  420 		if (bitsAvail < 0)
+        LDR      R0,[SP, #+4]
+        CMP      R0,#+0
+        BMI      ??AACDecode_3
+//  421 			return ERR_AAC_INDATA_UNDERFLOW;
+//  422 	}
+//  423 
+//  424 	/* update pointers */
+//  425 	aacDecInfo->frameCount++;
+??AACDecode_23:
+        LDR      R0,[R4, #+92]
+        ADD      R0,R0,#+1
+        STR      R0,[R4, #+92]
+//  426 	*bytesLeft -= (inptr - *inbuf);
+        LDR      R0,[SP, #+16]
+        LDR      R3,[SP, #+12]
+        LDR      R1,[R0, #+0]
+        LDR      R2,[SP, #+0]
+        LDR      R3,[R3, #+0]
+        SUB      R2,R2,R3
+        SUB      R1,R1,R2
+        STR      R1,[R0, #+0]
+//  427 	*inbuf = inptr;
+        LDR      R0,[SP, #+12]
+        LDR      R1,[SP, #+0]
+        STR      R1,[R0, #+0]
+//  428 
+//  429 	return ERR_AAC_NONE;
+        MOV      R0,#+0
+??AACDecode_0:
+        ADD      SP,SP,#+20       ;; stack cleaning
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        DATA
+??AACDecode_14:
+        DC32     raac_elementNumChans
+        CFI EndBlock cfiBlock13
+//  430 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock14 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??aacAllocateBuffers??rA:
+        LDR      R12,??Subroutine7_0  ;; aacAllocateBuffers
+        BX       R12
+        DATA
+??Subroutine7_0:
+        DC32     aacAllocateBuffers
+        CFI EndBlock cfiBlock14
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock15 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??aacFreeBuffers??rA:
+        LDR      R12,??Subroutine8_0  ;; aacFreeBuffers
+        BX       R12
+        DATA
+??Subroutine8_0:
+        DC32     aacFreeBuffers
+        CFI EndBlock cfiBlock15
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock16 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_SetRawBlockParams??rA:
+        LDR      R12,??Subroutine9_0  ;; raac_SetRawBlockParams
+        BX       R12
+        DATA
+??Subroutine9_0:
+        DC32     raac_SetRawBlockParams
+        CFI EndBlock cfiBlock16
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock17 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_FlushCodec??rA:
+        LDR      R12,??Subroutine10_0  ;; raac_FlushCodec
+        BX       R12
+        DATA
+??Subroutine10_0:
+        DC32     raac_FlushCodec
+        CFI EndBlock cfiBlock17
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock18 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_UnpackADIFHeader??rA:
+        LDR      R12,??Subroutine11_0  ;; raac_UnpackADIFHeader
+        BX       R12
+        DATA
+??Subroutine11_0:
+        DC32     raac_UnpackADIFHeader
+        CFI EndBlock cfiBlock18
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock19 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_UnpackADTSHeader??rA:
+        LDR      R12,??Subroutine12_0  ;; raac_UnpackADTSHeader
+        BX       R12
+        DATA
+??Subroutine12_0:
+        DC32     raac_UnpackADTSHeader
+        CFI EndBlock cfiBlock19
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock20 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_GetADTSChannelMapping??rA:
+        LDR      R12,??Subroutine13_0  ;; raac_GetADTSChannelMapping
+        BX       R12
+        DATA
+??Subroutine13_0:
+        DC32     raac_GetADTSChannelMapping
+        CFI EndBlock cfiBlock20
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock21 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_PrepareRawBlock??rA:
+        LDR      R12,??Subroutine14_0  ;; raac_PrepareRawBlock
+        BX       R12
+        DATA
+??Subroutine14_0:
+        DC32     raac_PrepareRawBlock
+        CFI EndBlock cfiBlock21
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock22 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_DecodeNextElement??rA:
+        LDR      R12,??Subroutine15_0  ;; raac_DecodeNextElement
+        BX       R12
+        DATA
+??Subroutine15_0:
+        DC32     raac_DecodeNextElement
+        CFI EndBlock cfiBlock22
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock23 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_DecodeNoiselessData??rA:
+        LDR      R12,??Subroutine16_0  ;; raac_DecodeNoiselessData
+        BX       R12
+        DATA
+??Subroutine16_0:
+        DC32     raac_DecodeNoiselessData
+        CFI EndBlock cfiBlock23
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock24 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??aacDequantize??rA:
+        LDR      R12,??Subroutine17_0  ;; aacDequantize
+        BX       R12
+        DATA
+??Subroutine17_0:
+        DC32     aacDequantize
+        CFI EndBlock cfiBlock24
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock25 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_StereoProcess??rA:
+        LDR      R12,??Subroutine18_0  ;; raac_StereoProcess
+        BX       R12
+        DATA
+??Subroutine18_0:
+        DC32     raac_StereoProcess
+        CFI EndBlock cfiBlock25
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock26 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_PNS??rA:
+        LDR      R12,??Subroutine19_0  ;; raac_PNS
+        BX       R12
+        DATA
+??Subroutine19_0:
+        DC32     raac_PNS
+        CFI EndBlock cfiBlock26
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock27 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_DeinterleaveShortBlocks??rA:
+        LDR      R12,??Subroutine20_0  ;; raac_DeinterleaveShortBlocks
+        BX       R12
+        DATA
+??Subroutine20_0:
+        DC32     raac_DeinterleaveShortBlocks
+        CFI EndBlock cfiBlock27
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock28 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_TNSFilter??rA:
+        LDR      R12,??Subroutine21_0  ;; raac_TNSFilter
+        BX       R12
+        DATA
+??Subroutine21_0:
+        DC32     raac_TNSFilter
+        CFI EndBlock cfiBlock28
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock29 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??aacIMDCT??rA:
+        LDR      R12,??Subroutine22_0  ;; aacIMDCT
+        BX       R12
+        DATA
+??Subroutine22_0:
+        DC32     aacIMDCT
+        CFI EndBlock cfiBlock29
+
+        END
+//  431 
+// 
+// 1 624 bytes in segment CODE
+// 
+// 1 404 bytes of CODE memory (+ 220 bytes shared)
+//
+//Errors: none
+//Warnings: 1

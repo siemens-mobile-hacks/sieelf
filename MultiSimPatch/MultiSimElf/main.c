@@ -114,7 +114,7 @@ int maincsm_onmessage(CSM_RAM *data, GBS_MSG *msg)
     if (strcmp(successed_config_filename,(char *)msg->data0)==0)
 //    if (strcmp_nocase(successed_config_filename,(char *)msg->data0)==0)
     {
-      ShowMSG(1,(int)"MultisimElf config updated!");
+      ShowMSG(1,(int)"一卡多号配置已更新!");
       ReadConfig();
     }
 
@@ -205,7 +205,7 @@ void UpdateTesters(){
   EEFullWriteBlock(5401,block5401,0,BL_SZ_5401,0,0);
   EEFullDeleteBlock(5400,0,0);
 
-  ShowMSG(1,(int)"Block 5400-5402 moved. Update patch to new version") ;
+  ShowMSG(1,(int)"块5400-5402已移除. 更新补丁到最新") ;
   mfree(block5401);
   SwitchPhoneOff();
 };
@@ -216,7 +216,7 @@ void UpdateFromOld() {
 
  EEFullReadBlock(5400, block5400, 0, 1024, 0, 0);
  memset(block5401, 0, 0x50*20);
- memcpy(block5401+0x21, "Physical", 8);
+ memcpy(block5401+0x21, "物理卡", 8);
 
  for (int i=0; i<10; i++) {
   memcpy(block5401+0x30*(i+1),      block5400+0x50*i,      0x0C);//imsi
@@ -251,7 +251,7 @@ void UpdateFromOld() {
 
  EEFullDeleteBlock(5400, 0, 0);
 
- ShowMSG(1,(int)"Block 5401-5403 created. Update patch to new version");
+ ShowMSG(1,(int)"块5401-5403已创建. 更新补丁到最新");
  mfree(block5400);
  mfree(block5401);
  SwitchPhoneOff();
@@ -265,17 +265,17 @@ void CreateBlocksFromFiles(){
   if (ReadFile("0:\\misc\\5401.txt")==BL_SZ_5401){
     EEFullCreateBlock(5401,BL_SZ_5401,1,0,0);
     EEFullWriteBlock(5401, bp, 0, BL_SZ_5401,0,0);
-     ShowMSG(1,(int)"Block 5401 created.") ;
+     ShowMSG(1,(int)"块5401已创建.") ;
   }
   if (ReadFile("0:\\misc\\5402.txt")==BL_SZ_5402){
     EEFullCreateBlock(5402,BL_SZ_5402,1,0,0);
     EEFullWriteBlock(5402, bp, 0, BL_SZ_5402,0,0);
-     ShowMSG(1,(int)"Block 5402 created.") ;
+     ShowMSG(1,(int)"块5402已创建.") ;
   }
   if (ReadFile("0:\\misc\\5403.txt")==BL_SZ_5403){
     EEFullCreateBlock(5403,BL_SZ_5403,1,0,0);
     EEFullWriteBlock(5403, bp, 0, BL_SZ_5403,0,0);
-     ShowMSG(1,(int)"Block 5403 created.") ;
+     ShowMSG(1,(int)"块5403已创建.") ;
   }
 
 };

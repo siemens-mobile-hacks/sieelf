@@ -1,0 +1,1227 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    14/Feb/2012  15:47:41 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Main.c    #
+#    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Main.c    #
+#                       -D NDEBUG -lC D:\SVN\SieELF\SieELF\x65_PCM_Player\Pl #
+#                       ayer\Release\List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_ #
+#                       Player\Player\Release\List\ -o                       #
+#                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\O #
+#                       bj\ -s9 --cpu_mode arm --endian little --cpu         #
+#                       ARM926EJ-S --stack_align 4 --interwork -e --fpu      #
+#                       None --dlib_config "D:\Program Files\IAR\Embedded    #
+#                       Workbench 4.0 Evaluation\ARM\LIB\dl5tpainl8n.h"      #
+#                       --preinclude swilib.h -I "D:\Program                 #
+#                       Files\IAR\Embedded Workbench 4.0                     #
+#                       Evaluation\ARM\INC\" --inline_threshold=16           #
+#    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\Main.lst                                         #
+#    Object file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\O #
+#                       bj\Main.r79                                          #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Main.c
+      1          int tst;
+      2          int SoundStereo=1;
+      3          char * TEST;
+      4          char TERMINATED=0;
+      5          //#define INPLCOLOR
+      6          
+      7          //Externals
+      8          extern signed char Playing;
+      9          char CsmActive=0;
+     10          
+     11          //#include "profile\profile.c"
+     12          
+     13          #include "screen.h"
+     14          #include "..\myutils.c"
+     15          #include "zlib\unzip.c"
+
+    zip = fopen( zipfilename, A_ReadOnly + A_BIN, P_READ, & err );
+                                                          ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\unzip.c",55  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    while ( fread( zip, & ziphdr, 14, & err ) == 14 )
+                                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\unzip.c",58  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      fread( zip, & ziphdr.crc32, 16, & err );    
+                                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\unzip.c",61  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      fread( zip, filename, ziphdr.fnamelen, & err );
+                                             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\unzip.c",62  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      fread32( zip, compbuff, ziphdr.compsize, & err );  
+                                               ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\unzip.c",68  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      unzip( compbuff, ziphdr.compsize, *buffer, uncomprLen);
+             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\unzip.c",70  Warning[Pe167]: 
+          argument of type "char *" is incompatible with parameter of type
+          "Byte *"
+
+      unzip( compbuff, ziphdr.compsize, *buffer, uncomprLen);
+                                        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\unzip.c",70  Warning[Pe167]: 
+          argument of type "char *" is incompatible with parameter of type
+          "Byte *"
+
+      fclose( zip, & err );    
+                   ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\unzip.c",74  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      lseek(zip,ziphdr.extralen+ziphdr.compsize,S_CUR,&err,&err); 
+                                                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\unzip.c",77  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      lseek(zip,ziphdr.extralen+ziphdr.compsize,S_CUR,&err,&err); 
+                                                           ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\unzip.c",77  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    fclose( zip, & err );
+                 ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\unzip.c",83  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+     16          #include "images.c"
+
+    char * ptr = Images;
+                 ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\images.c",298  Warning[Pe144]: a
+          value of type "unsigned char *" cannot be used to initialize an
+          entity of type "char *__data"
+
+    unzip( ptr, ziphdr.compsize, ( void * ) MainFrame, 46464 );
+           ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\images.c",308  Warning[Pe167]: 
+          argument of type "char *" is incompatible with parameter of type
+          "Byte *"
+
+    unzip( ptr, ziphdr.compsize, ( void * ) MenuBackground, 46464 );
+           ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\images.c",316  Warning[Pe167]: 
+          argument of type "char *" is incompatible with parameter of type
+          "Byte *"
+
+    unzip( ptr, ziphdr.compsize, ( void * ) PlayListBackground, 46464 );
+           ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\images.c",324  Warning[Pe167]: 
+          argument of type "char *" is incompatible with parameter of type
+          "Byte *"
+     17          #include "MenuModule.c"
+     18          #include "PlayList.c"
+
+    int i;
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",86  Warning[Pe177]: 
+          variable "i" was declared but never referenced
+
+    handle = fopen( filename, A_ReadOnly + A_BIN, P_READ, & err );
+                                                          ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",178  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    fread( handle, & plcurrent, sizeof( plcurrent ), & err );
+                                                     ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",180  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    fread( handle, & NumPLItems, sizeof( NumPLItems ), & err );
+                                                       ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",181  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      fclose( handle, & err );
+                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",184  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      fread( handle, & ii, 1, & err );
+                              ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",191  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      fread( handle, playlist[i].filename1, ii, & err );
+                                                ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",192  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      fread( handle, & ii, 1, & err );
+                              ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",194  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      fread( handle, playlist[i].filename2, ii, & err );
+                                                ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",195  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      fread( handle, & playlist[i].param1, 6, & err );
+                                              ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",197  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    fclose( handle, & err );
+                    ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",200  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    sprintf( mask, "%s%s", folder, "\\*.*" );
+             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",316  Warning[Pe167]: 
+          argument of type "unsigned char *" is incompatible with parameter of
+          type "char *"
+
+    if ( FindFirstFile( dir, mask, & err ) == 1 )
+                             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",318  Warning[Pe167]: 
+          argument of type "unsigned char *" is incompatible with parameter of
+          type "char *"
+
+    if ( FindFirstFile( dir, mask, & err ) == 1 )
+                                   ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",318  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      sprintf( temp, ( char * ) "%s\\%s", folder, dir->file_name );
+               ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",320  Warning[Pe167]: 
+          argument of type "unsigned char *" is incompatible with parameter of
+          type "char *"
+
+      if ( ( !isdir( temp, & err ) )
+                     ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",321  Warning[Pe167]: 
+          argument of type "unsigned char *" is incompatible with parameter of
+          type "char const *"
+
+      if ( ( !isdir( temp, & err ) )
+                           ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",321  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+             PLAddFile( temp, dir->file_name, 0, 0, 0 );
+                        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",326  Warning[Pe167]: 
+          argument of type "unsigned char *" is incompatible with parameter of
+          type "char *"
+
+      while ( FindNextFile( dir, & err ) == 1 )
+                                 ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",328  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+        sprintf( temp, ( char * ) "%s\\%s", folder, dir->file_name );
+                 ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",330  Warning[Pe167]: 
+          argument of type "unsigned char *" is incompatible with parameter of
+          type "char *"
+
+        if ( ( !isdir( temp, & err ) )
+                       ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",331  Warning[Pe167]: 
+          argument of type "unsigned char *" is incompatible with parameter of
+          type "char const *"
+
+        if ( ( !isdir( temp, & err ) )
+                             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",331  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+               PLAddFile( temp, dir->file_name, 0, 0, 0 );
+                          ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",336  Warning[Pe167]: 
+          argument of type "unsigned char *" is incompatible with parameter of
+          type "char *"
+
+    FindClose( dir, & err );
+                    ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",339  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+            CurrNsfSongs = GetNsfNumOfTracks( playlist[plselected].filename1, playlist[plselected].filename2 );
+                           ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\PlayList.c",395  Warning[Pe223]: 
+          function "GetNsfNumOfTracks" declared implicitly
+     19          #include "Player.c"
+
+   unsigned long * rambuf = PcmWaveParams+0x23;
+                            ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\audiohook\PCMaudiohook.c",64  Warning[Pe144]: 
+          a value of type "long *" cannot be used to initialize an entity of
+          type "unsigned long *__data"
+
+      return;
+            ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\audiohook\PCMaudiohook.c",92  Warning[Pe117]: 
+          non-void function "WaveFill" should return a value
+
+  }
+  ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\audiohook\PCMaudiohook.c",96  Warning[Pe940]: 
+          missing return statement at end of non-void function "WaveFill"
+
+    GetSound(AudioBuf,BUFFERSIZE / 4);
+             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\audiohook\PCMaudiohook.c",146  Warning[Pe167]: 
+          argument of type "signed short *" is incompatible with parameter of
+          type "unsigned short *"
+
+    GetSound(AudioBuf+(BUFFERSIZE / 4),BUFFERSIZE / 4);
+             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\audiohook\PCMaudiohook.c",157  Warning[Pe167]: 
+          argument of type "signed short *" is incompatible with parameter of
+          type "unsigned short *"
+
+    WAV_PLAYER->buffer=AudioBuf;
+                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\audiohook\PCMaudiohook.c",187  Warning[Pe513]: 
+          a value of type "signed short *" cannot be assigned to an entity of
+          type "unsigned short *"
+
+    WAV_PLAYER->curpos=AudioBuf;
+                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\audiohook\PCMaudiohook.c",188  Warning[Pe513]: 
+          a value of type "signed short *" cannot be assigned to an entity of
+          type "unsigned short *"
+
+    WAV_PLAYER->buffend=AudioBuf+BUFFERSIZE/2;
+                       ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\audiohook\PCMaudiohook.c",189  Warning[Pe513]: 
+          a value of type "signed short *" cannot be assigned to an entity of
+          type "unsigned short *"
+
+    WAV_PLAYER->curpos=AudioBuf;
+                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\audiohook\PCMaudiohook.c",200  Warning[Pe513]: 
+          a value of type "signed short *" cannot be assigned to an entity of
+          type "unsigned short *"
+
+    GetSound(AudioBuf,BUFFERSIZE / 2);
+             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\audiohook\PCMaudiohook.c",208  Warning[Pe167]: 
+          argument of type "signed short *" is incompatible with parameter of
+          type "unsigned short *"
+
+      GetSound(pcmbuff,1012);
+               ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\audiohook\adpcmaudiohook.c",102  Warning[Pe167]: 
+          argument of type "signed short *" is incompatible with parameter of
+          type "unsigned short *"
+
+        GetSound(pcmbuff,1012);
+                 ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\audiohook\adpcmaudiohook.c",132  Warning[Pe167]: 
+          argument of type "signed short *" is incompatible with parameter of
+          type "unsigned short *"
+
+      ImaCodeBlock( pcmbuff, & buffer[writebufpos] );
+                             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\audiohook\adpcmaudiohook.c",140  Warning[Pe167]: 
+          argument of type "char *" is incompatible with parameter of type
+          "unsigned char *"
+
+    unsigned int i; 
+                 ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\audiohook\adpcmaudiohook.c",120  Warning[Pe550]: 
+          variable "i" was set but never used
+
+    int add=0;
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\audiohook\adpcmaudiohook.c",121  Warning[Pe177]: 
+          variable "add" was declared but never referenced
+
+        GetSound(pcmbuff,1012);
+                 ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\audiohook\adpcmaudiohook.c",158  Warning[Pe167]: 
+          argument of type "signed short *" is incompatible with parameter of
+          type "unsigned short *"
+
+        writebufpos=-1;
+                    ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\audiohook\adpcmaudiohook.c",163  Warning[Pe068]: 
+          integer conversion resulted in a change of sign
+
+      ImaCodeBlock( pcmbuff, & buffer[writebufpos] );
+                             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\audiohook\adpcmaudiohook.c",166  Warning[Pe167]: 
+          argument of type "char *" is incompatible with parameter of type
+          "unsigned char *"
+
+    unsigned int i, writebufpos;
+                 ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\audiohook\adpcmaudiohook.c",148  Warning[Pe177]: 
+          variable "i" was declared but never referenced
+
+    WaveParameters= AudioParamsAdr();
+                    ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\audiohook\adpcmaudiohook.c",182  Warning[Pe223]: 
+          function "AudioParamsAdr" declared implicitly
+
+    WaveParameters= AudioParamsAdr();
+                  ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\audiohook\adpcmaudiohook.c",182  Error[Pe513]: 
+          a value of type "int" cannot be assigned to an entity of type
+          "long *"
+
+      fclose( mp3filehandle, & err );
+                             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\Siemens_mp3.c",28  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    bytes = fread( mp3filehandle, ( MP3FileBuff + bytesLeft ), MP3_BUFFER_SIZE - bytesLeft, & err );
+                                                                                            ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\Siemens_mp3.c",48  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+      fclose( mp3filehandle, & err );
+                             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\Siemens_mp3.c",53  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    mp3filehandle = fopen( mp3filename, A_BIN, P_READ, & err );
+                                                       ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\Siemens_mp3.c",163  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+  #define STAT_PREFIX		raac
+          ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\aac\aacDec\statname_aac.h",53  Warning[Pe047]: 
+          incompatible redefinition of macro "STAT_PREFIX" (declared at line
+          51 of
+          "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3Dec\statname.h")
+
+  #define	SYNCWORDL			0xf0
+         	^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\aac\aacDec\aaccommon.h",54  Warning[Pe047]: 
+          incompatible redefinition of macro "SYNCWORDL" (declared at line 56
+          of
+          "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3Dec\mp3common.h")
+
+      fclose( aacfilehandle, & err );
+                             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\aac\Siemens_aac.c",30  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    bytes = fread( aacfilehandle, ( AACFileBuff + bytesLeft ), AAC_BUFFER_SIZE - bytesLeft, & err );
+                                                                                            ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\aac\Siemens_aac.c",58  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+      fclose( aacfilehandle, & err );
+                             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\aac\Siemens_aac.c",65  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    aacfilehandle = fopen( aacfilename, A_BIN, P_READ, & err );
+                                                       ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\aac\Siemens_aac.c",181  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+  #define NULL 0
+          ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\judas\JUDASXM.c",4  Warning[Pe047]: 
+          incompatible redefinition of macro "NULL" (declared at line 18 of
+          "D:\Program Files\IAR\Embedded Workbench 4.0
+          Evaluation\ARM\INC\swilib.h")
+
+    if(FromFile) return(fopen( name, A_BIN,P_READ, & err ));
+                                                   ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\judas\JUDASXM.c",239  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    if(FromFile)return ( lseek( handle, bytes, whence ,&err,&err) );
+                                                       ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\judas\JUDASXM.c",245  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    if(FromFile)return ( lseek( handle, bytes, whence ,&err,&err) );
+                                                            ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\judas\JUDASXM.c",245  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    if(FromFile)return ( fread( handle,buffer,  size, &err ) );
+                                                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\judas\JUDASXM.c",252  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    if(FromFile)fclose( handle,&err );
+                               ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\judas\JUDASXM.c",260  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+              unsigned char * cptr = sp->start;
+                                     ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\judas\JUDASXM.c",671  Warning[Pe144]: 
+          a value of type "signed char *" cannot be used to initialize an
+          entity of type "unsigned char *__data"
+
+                char * source = sp->start + xsp->loopstart + xsp->looplength - 1;
+                                ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\judas\JUDASXM.c",694  Warning[Pe144]: 
+          a value of type "signed char *" cannot be used to initialize an
+          entity of type "char *__data"
+
+                char * dest = sp->start + xsp->loopstart + xsp->looplength;
+                              ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\judas\JUDASXM.c",695  Warning[Pe144]: 
+          a value of type "signed char *" cannot be used to initialize an
+          entity of type "char *__data"
+
+                    int newoffset = abs( tptr->period - getamigaperiod( sc, tptr->finetune ) );
+                                    ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\judas\JUDASXM.c",1324  Warning[Pe223]: 
+          function "abs" declared implicitly
+
+                    int newoffset = abs( tptr->period - getamigaperiod( sc, tptr->finetune ) );
+                                    ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\judas\JUDASXM.c",1425  Warning[Pe223]: 
+          function "abs" declared implicitly
+
+                    int newoffset = abs( tptr->period - getamigaperiod( sc, tptr->finetune ) );
+                                    ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\judas\JUDASXM.c",1488  Warning[Pe223]: 
+          function "abs" declared implicitly
+
+          finalpan = tptr->notepanning + ( ip->c_panenv[tptr->panenvpos] - 32 ) * ( 128 - abs( tptr->notepanning - 128 ) ) / 32;
+                                                                                          ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\judas\JUDASXM.c",1635  Warning[Pe223]: 
+          function "abs" declared implicitly
+
+          if ( tptr->sp->voicemode & VM_16BIT ) newpos = tptr->sp->start + ( tptr->sampleoffset << 9 );
+                                                       ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\judas\JUDASXM.c",1781  Warning[Pe513]: 
+          a value of type "signed char *" cannot be assigned to an entity of
+          type "char *"
+
+            newpos = tptr->sp->start + ( tptr->sampleoffset << 8 );
+                   ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\judas\JUDASXM.c",1783  Warning[Pe513]: 
+          a value of type "signed char *" cannot be assigned to an entity of
+          type "char *"
+
+          if ( newpos >= tptr->sp->end )
+                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\judas\JUDASXM.c",1784  Warning[Pe042]: 
+          operand types are incompatible ("char *" and "signed char *")
+
+            chptr->pos = newpos;
+                       ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\judas\JUDASXM.c",1789  Warning[Pe513]: 
+          a value of type "char *" cannot be assigned to an entity of type
+          "signed char *"
+
+                  unsigned char *src = &smp->repeat[0], *dest = &smp->end[0];
+                                       ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\judas\JUDASSMP.C",89  Warning[Pe144]: 
+          a value of type "signed char *" cannot be used to initialize an
+          entity of type "unsigned char *__data"
+
+                  unsigned char *src = &smp->repeat[0], *dest = &smp->end[0];
+                                                                ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\judas\JUDASSMP.C",89  Warning[Pe144]: 
+          a value of type "signed char *" cannot be used to initialize an
+          entity of type "unsigned char *__data"
+
+                                  src = &smp->repeat[0];
+                                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\judas\JUDASSMP.C",101  Warning[Pe513]: 
+          a value of type "signed char *" cannot be assigned to an entity of
+          type "unsigned char *"
+
+    fwrite( handle, & modsamplerate, sizeof( modsamplerate ), & err );
+                                                              ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\Modplayer.c",28  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    fwrite( handle, & ModFilter, sizeof( ModFilter ), & err );
+                                                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\Modplayer.c",29  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    fread( handle, & modsamplerate, sizeof( modsamplerate ), & err );
+                                                             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\Modplayer.c",39  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    fread( handle, & ModFilter, sizeof( ModFilter ), & err );
+                                                     ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MOD\Modplayer.c",40  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+  typedef unsigned short WORD;
+                         ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\6502.h",4  Warning[Pe301]: 
+          typedef name has already been declared (with same type)
+
+  typedef unsigned char BYTE;
+                        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\6502.h",5  Warning[Pe301]: 
+          typedef name has already been declared (with same type)
+
+      handle = fopen( filename1, A_ReadOnly + A_BIN, P_READ, & err );
+                                                             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\NSF_FILE_SETUP.C",13  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+      fread( handle, & NSF_HEADER, 128, & err );
+                                        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\NSF_FILE_SETUP.C",15  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+      fclose( handle, & err );
+                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\NSF_FILE_SETUP.C",16  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+      handle = fopen( filename1, A_ReadOnly + A_BIN, P_READ, & err );
+                                                             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\NSF_FILE_SETUP.C",41  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+      fread( handle, & NSF_HEADER, 128, & err );
+                                        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\NSF_FILE_SETUP.C",43  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+      fclose( handle, & err );
+                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\NSF_FILE_SETUP.C",44  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    fwrite( handle, & NsfSampleRate, sizeof( NsfSampleRate ), & err );
+                                                              ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\Nsfplayer.c",20  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    fwrite( handle, & NsfDefTime, sizeof( NsfDefTime ), & err );
+                                                        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\Nsfplayer.c",21  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    fwrite( handle, & NsfDefClock, sizeof( NsfDefClock ), & err );
+                                                          ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\Nsfplayer.c",22  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    fwrite( handle, & NsfFilter, sizeof( NsfDefTime ), & err );
+                                                       ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\Nsfplayer.c",23  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    fread( handle, & NsfSampleRate, sizeof( NsfSampleRate ), & err );
+                                                             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\Nsfplayer.c",28  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    fread( handle, & NsfDefTime, sizeof( NsfDefTime ), & err );
+                                                       ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\Nsfplayer.c",29  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    fread( handle, & NsfDefClock, sizeof( NsfDefClock ), & err );
+                                                         ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\Nsfplayer.c",30  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    fread( handle, & NsfFilter, sizeof( NsfDefTime ), & err );
+                                                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\Nsfplayer.c",31  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+      handle = fopen( filename1, A_ReadOnly + A_BIN, P_READ, & err );
+                                                             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\Nsfplayer.c",48  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+      fread( handle, & NSF_HDR, 128, & err );
+                                     ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\Nsfplayer.c",51  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+      fread32( handle, ( void * ) ( gameImage + NSF_HDR.load ), 65536, & err );
+                                                                       ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\Nsfplayer.c",53  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+      fclose( handle, & err );
+                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\Nsfplayer.c",54  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    handle = fopen( filename, A_ReadOnly + A_BIN, P_READ, & err );
+                                                          ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\Nsfplayer.c",105  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    fread( handle, & NSF_HDR, 128, & err );
+                                   ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\Nsfplayer.c",107  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+    fclose( handle, & err );
+                    ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\Nsfplayer.c",108  Warning[Pe167]: 
+          argument of type "signed int *" is incompatible with parameter of
+          type "unsigned int *"
+
+  }
+  ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\NSF\Nsfplayer.c",119  Warning[Pe940]: 
+          missing return statement at end of non-void function
+          "NSFLoatToPlayList"
+
+    MidiData = mptr;
+             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\midplay.c",110  Warning[Pe513]: 
+          a value of type "char *" cannot be assigned to an entity of type
+          "unsigned char *"
+
+        break;
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\midplay.c",510  Warning[Pe111]: 
+          statement is unreachable
+
+    int i;
+        ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\midplay.c",442  Warning[Pe177]: 
+          variable "i" was declared but never referenced
+
+      prg->samples[i]->data = zippos;
+                            ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\MidiPlayer.c",35  Warning[Pe513]: 
+          a value of type "char *" cannot be assigned to an entity of type
+          "signed char *"
+
+    char *zippos,*progpos;
+                  ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\MidiPlayer.c",19  Warning[Pe177]: 
+          variable "progpos" was declared but never referenced
+
+    char *zippos,*progpos;
+                  ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\MidiPlayer.c",45  Warning[Pe177]: 
+          variable "progpos" was declared but never referenced
+
+    handle = fopen( filename,A_BIN,P_READ, & err );
+                                           ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\MidiPlayer.c",74  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    fread32( handle,(char*)prg, 325 + 96 + 4 +4+ 1, &err );
+                                                    ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\MidiPlayer.c",75  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      fread32( handle,(char*)prg->samples[i], 15,  &err );
+                                                   ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\MidiPlayer.c",80  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      fread32( handle,prg->samples[i]->data, prg->samples[i]->length, &err );
+                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\MidiPlayer.c",82  Warning[Pe167]: 
+          argument of type "signed char *" is incompatible with parameter of
+          type "char *"
+
+      fread32( handle,prg->samples[i]->data, prg->samples[i]->length, &err );
+                                                                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\MidiPlayer.c",82  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    fclose( handle,&err );
+                   ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\MidiPlayer.c",86  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    MidiFile=zipbuff;
+            ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\MidiPlayer.c",125  Warning[Pe513]: 
+          a value of type "char *" cannot be assigned to an entity of type
+          "unsigned char *"
+
+  handle=fopen(filename1,A_BIN,P_READ, & err );  
+                                       ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\MidiPlayer.c",130  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+  MidiFile=malloc(lseek(handle,0,S_END,&err,&err));  
+                                       ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\MidiPlayer.c",131  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+  MidiFile=malloc(lseek(handle,0,S_END,&err,&err));  
+                                            ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\MidiPlayer.c",131  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+  fclose(handle,&err);
+                ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\MidiPlayer.c",132  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+  handle=fopen(filename1,A_BIN,P_READ, & err );
+                                       ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\MidiPlayer.c",133  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+  fread32(handle ,MidiFile, 512000, &err );
+                  ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\MidiPlayer.c",134  Warning[Pe167]: 
+          argument of type "unsigned char *" is incompatible with parameter of
+          type "char *"
+
+  fread32(handle ,MidiFile, 512000, &err );
+                                    ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\MidiPlayer.c",134  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+  fclose(handle,&err);
+                ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\MidiPlayer.c",135  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+  MidiInit(MidiFile);
+           ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\MidiPlayer.c",142  Warning[Pe167]: 
+          argument of type "unsigned char *" is incompatible with parameter of
+          type "char *"
+
+  }
+   ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MIDI\MidiPlayer.c",170  Warning[Pe001]: 
+          last line of file ends without a newline
+
+  inline char IsPlayerOn(){
+              ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Standart\Standart.c",11  Error[Pe147]: 
+          declaration is incompatible with "int IsPlayerOn()" (declared at
+          line 1838 of "D:\Program Files\IAR\Embedded Workbench 4.0
+          Evaluation\ARM\INC\swilib.h")
+
+  GetFileStats(filename1,&FS,&err);
+                             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Standart\Standart.c",19  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+  int handle;
+      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Standart\Standart.c",18  Warning[Pe177]: 
+          variable "handle" was declared but never referenced
+
+    unlink( "0:\\Zbin\\MediaPlayer\\Config.bin", & err );
+                                                 ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Player.c",90  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    handle = fopen( "0:\\Zbin\\MediaPlayer\\Config.bin", A_ReadWrite + A_BIN + A_Append + A_Create, P_READ + P_WRITE, & err );
+                                                                                                                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Player.c",91  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    fwrite( handle, & Volume, sizeof( Volume ), & err );
+                                                ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Player.c",96  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    fwrite( handle, & AkkuLimit, sizeof( AkkuLimit ), & err );
+                                                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Player.c",97  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    fwrite( handle, & OutHook, sizeof( OutHook ), & err );
+                                                  ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Player.c",98  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    fclose( handle, & err );
+                    ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Player.c",99  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    handle = fopen( "0:\\Zbin\\MediaPlayer\\Config.bin", A_ReadWrite + A_BIN, P_READ, & err );
+                                                                                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Player.c",106  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    fread( handle, & Volume, sizeof( Volume ), & err );
+                                               ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Player.c",110  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    fread( handle, & AkkuLimit, sizeof( AkkuLimit ), & err );
+                                                     ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Player.c",111  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    fread( handle, & OutHook, sizeof( OutHook ), & err );
+                                                 ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Player.c",112  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    fclose( handle, & err );
+                    ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Player.c",113  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      ret= ( AMRWBOpen( filename1 ) );
+             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Player.c",252  Warning[Pe223]: 
+          function "AMRWBOpen" declared implicitly
+
+      AMRWBPlay();
+      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Player.c",305  Warning[Pe223]: 
+          function "AMRWBPlay" declared implicitly
+
+      AmrWBClose();
+      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Player.c",346  Warning[Pe223]: 
+          function "AmrWBClose" declared implicitly
+     20          #include "ZipExplorer.c"
+
+    zip = fopen( FileName, A_ReadOnly + A_BIN, P_READ, & err );
+                                                       ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\ZipExplorer.c",122  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    while ( fread( zip, & ziphdr, 14, & err ) == 14 )
+                                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\ZipExplorer.c",123  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      fread( zip, & ziphdr.crc32, 16, & err );
+                                      ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\ZipExplorer.c",126  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      fread( zip, NameBuf, ziphdr.fnamelen, & err );
+                                            ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\ZipExplorer.c",130  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      lseek( zip, ziphdr.extralen + ziphdr.compsize, S_CUR, & err, & err );
+                                                            ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\ZipExplorer.c",131  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      lseek( zip, ziphdr.extralen + ziphdr.compsize, S_CUR, & err, & err );
+                                                                   ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\ZipExplorer.c",131  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    fclose( zip, & err );
+                 ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\ZipExplorer.c",142  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+     21          #include "Explorer.c"
+
+    _rgb pen =
+         ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Explorer.c",59  Warning[Pe177]: 
+          variable "pen" was declared but never referenced
+
+    sprintf( mask, p_sss, curpath, folder, "\\*.*" );
+             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Explorer.c",112  Warning[Pe167]: 
+          argument of type "unsigned char *" is incompatible with parameter of
+          type "char *"
+
+    sprintf( temp, p_sss, curpath, folder, "\\" );
+             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Explorer.c",113  Warning[Pe167]: 
+          argument of type "unsigned char *" is incompatible with parameter of
+          type "char *"
+
+    strcpy( curpath, temp );
+                     ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Explorer.c",114  Warning[Pe167]: 
+          argument of type "unsigned char *" is incompatible with parameter of
+          type "char const *"
+
+    if ( FindFirstFile( dir, mask, & err ) == 1 )
+                             ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Explorer.c",116  Warning[Pe167]: 
+          argument of type "unsigned char *" is incompatible with parameter of
+          type "char *"
+
+    if ( FindFirstFile( dir, mask, & err ) == 1 )
+                                   ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Explorer.c",116  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      sprintf( temp, ( char * ) p_ss, curpath, dir->file_name );
+               ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Explorer.c",118  Warning[Pe167]: 
+          argument of type "unsigned char *" is incompatible with parameter of
+          type "char *"
+
+        AddMenuItem( dir->file_name, isdir( temp, & err ), & pen );
+                                            ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Explorer.c",123  Warning[Pe167]: 
+          argument of type "unsigned char *" is incompatible with parameter of
+          type "char const *"
+
+        AddMenuItem( dir->file_name, isdir( temp, & err ), & pen );
+                                                  ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Explorer.c",123  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+      while ( FindNextFile( dir, & err ) == 1 )
+                                 ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Explorer.c",125  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+        sprintf( temp, ( char * ) p_ss, curpath, dir->file_name );
+                 ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Explorer.c",127  Warning[Pe167]: 
+          argument of type "unsigned char *" is incompatible with parameter of
+          type "char *"
+
+          AddMenuItem( dir->file_name, isdir( temp, & err ), & pen );
+                                              ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Explorer.c",133  Warning[Pe167]: 
+          argument of type "unsigned char *" is incompatible with parameter of
+          type "char const *"
+
+          AddMenuItem( dir->file_name, isdir( temp, & err ), & pen );
+                                                    ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Explorer.c",133  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    FindClose( dir, & err );
+                    ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Explorer.c",136  Warning[Pe167]: 
+          argument of type "int *" is incompatible with parameter of type
+          "unsigned int *"
+
+    _rgb inlistpen =
+         ^
+"D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Explorer.c",81  Warning[Pe177]: 
+          variable "inlistpen" was declared but never referenced
+     22          #include "DiscSelect.c"
+     23          #include "MainMenu.c"
+     24          #include "MainScreen.c"
+     25          #include "siemens.c"
+     26          
+     27          
+     28          
+     29          
+     30          int onstart( char * exename, char * fname )
+     31          { 
+     32            //DisableIDLETMR();
+     33            char *mininame=malloc(256);
+     34            
+     35          
+     36          
+     37          
+     38          
+     39            UnPackImages();
+     40            GetPlayingTime = NullTime;
+     41            ScreenInit();
+     42            PlayListInit();
+     43            MenuInit();
+     44            TEST = malloc( 256 );
+     45            //ExtractFileDir( "0:\\Sounds\\1.wav", TEST );
+     46            uppercase( TEST );
+     47            AudioInit();
+     48            Ad_AudioInit();
+     49            plcurrent = 0;
+     50            //PlayerCmd = CMD_OPEN | CMD_PLAY;
+     51            //NSFLoatToPlayList( "0:\\misc\\Treasure.nsf" );
+     52            //PLAddFile( "0:\\Misc\\nsf\\nsf.zip", "Alien3.nsf", 0, 50, 3000 );
+     53            //PLAddFile( "4:\\Sounds\\Music\\calypso.mp3", "Calypso.mp3", 0, 0, 0 );
+     54            //PLAddFile( "0:\\misc\\LG\\LG1.mp3", "LG1.mp3", 0, 0, 0 );
+     55            //PLAddFile( "0:\\misc\\mod\\mod.zip", "Scrambled mind.mod", 0, 0, 0 );
+     56            //PLAddFile( "0:\\misc\\mod\\mod.zip", "BootMusic9.mod", 0, 0, 0 );
+     57            //OpenFile( playlist[plcurrent].filename1, playlist[plcurrent].filename2, playlist[plcurrent].param1,
+     58            //playlist[plcurrent].param2, playlist[plcurrent].songtime ) ;
+     59            //Play();
+     60            strcpy(PlayListName,"0:\\ZBin\\MediaPlayer\\Default.pls");
+     61            
+     62          switch (GetFileType(fname)){
+     63            
+     64          case FT_PLS:
+     65              strcpy(PlayListName,fname);
+     66              PlayerCmd = CMD_OPEN | CMD_PLAY;
+     67              LoadPlayList( PlayListName );
+     68            break;
+     69          
+     70            case AT_MP3:
+     71            case AT_AAC:
+     72            case AT_MOD:    
+     73            case AT_WB: 
+     74              //ExtractFileName(fname,mininame);
+     75              //PLAddFile( fname, mininame, 0, 0, 0 );
+     76              ExtractFileDir(fname,mininame);
+     77              PLAddFolder(mininame);
+     78              ExtractFileName(fname,mininame);
+     79              while(strcmp((char*)&playlist[plcurrent].filename2,mininame))plcurrent++;
+     80                            
+     81              PlayerCmd = CMD_OPEN | CMD_PLAY;
+     82            break;
+     83            
+     84          case AT_NSF:
+     85              NSFLoatToPlayList(fname);
+     86              PlayerCmd = CMD_OPEN | CMD_PLAY;
+     87            break;
+     88          default:
+     89            LoadPlayList( PlayListName );
+     90            
+     91          }
+     92            //PLAddFile( "0:\\Sounds\\Blue Horizon.wav", "Blue Horizon.wav", 0, 0, 0 );
+     93            //PLAddFile( "0:\\Misc\\1.mid", "1.mid", 0, 0, 0 );
+     94            
+     95            //SUBPROC((void*)PlayerProc);
+     96            LoadParams(); 
+     97            GBS_StartTimerProc( & playtimer, 16, PlayerProc );
+     98            mfree(mininame);
+     99            return 0;
+    100          }
+    101          
+    102          void onclose()
+    103          {
+    104            
+    105          
+    106          
+    107            SavePlayList( PlayListName );
+    108            Playing = 0;
+    109            GBS_StopTimer( & playtimer );
+    110          
+    111           // if(IsPlayerOn)PlayMelody_StopPlayback(0xA87095C0);
+    112            MP3Close();
+    113            AACClose();
+    114            NSFClose();
+    115            MODClose();
+    116            MidiClose();
+    117            AmrWBClose();
+                   ^
+Warning[Pe223]: function "AmrWBClose" declared implicitly
+    118            MenuFree();
+    119          
+    120            FreePlayList();
+    121          
+    122            AudioTerminate();
+    123            Ad_AudioTerminate();
+    124            mfree( TEST );
+    125            ScreenFree();
+    126            FreeImages();
+    127            SaveParams();
+    128          
+    129          }
+
+Errors: 2
+Warnings: 180

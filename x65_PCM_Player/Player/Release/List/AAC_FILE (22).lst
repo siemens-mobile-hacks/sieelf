@@ -1,0 +1,1644 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    14/Feb/2012  15:39:23 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDE #
+#                       C\AAC_FILE (22).c                                    #
+#    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD #
+#                       EC\AAC_FILE (22).c" -D NDEBUG -lC                    #
+#                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\ #
+#                       Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player #
+#                       \Player\Release\Obj\ -s9 --cpu_mode arm --endian     #
+#                       little --cpu ARM926EJ-S --stack_align 4 --interwork  #
+#                       -e --fpu None --dlib_config "D:\Program              #
+#                       Files\IAR\Embedded Workbench 4.0                     #
+#                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude       #
+#                       swilib.h -I "D:\Program Files\IAR\Embedded           #
+#                       Workbench 4.0 Evaluation\ARM\INC\"                   #
+#                       --inline_threshold=16                                #
+#    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\AAC_FILE (22).lst                                #
+#    Object file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\O #
+#                       bj\AAC_FILE (22).r79                                 #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (22).c
+      1          /* ***** BEGIN LICENSE BLOCK *****  
+      2           * Source last modified: $Id: imdct.c,v 1.1 2005/02/26 01:47:35 jrecker Exp $ 
+      3           *   
+      4           * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+      5           *       
+      6           * The contents of this file, and the files included with this file, 
+      7           * are subject to the current version of the RealNetworks Public 
+      8           * Source License (the "RPSL") available at 
+      9           * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+     10           * the file under the current version of the RealNetworks Community 
+     11           * Source License (the "RCSL") available at 
+     12           * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+     13           * will apply. You may also obtain the license terms directly from 
+     14           * RealNetworks.  You may not use this file except in compliance with 
+     15           * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+     16           * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+     17           * the rights, obligations and limitations governing use of the 
+     18           * contents of the file. 
+     19           *   
+     20           * This file is part of the Helix DNA Technology. RealNetworks is the 
+     21           * developer of the Original Code and owns the copyrights in the 
+     22           * portions it created. 
+     23           *   
+     24           * This file, and the files included with this file, is distributed 
+     25           * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+     26           * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+     27           * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+     28           * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+     29           * ENJOYMENT OR NON-INFRINGEMENT. 
+     30           *  
+     31           * Technology Compatibility Kit Test Suite(s) Location:  
+     32           *    http://www.helixcommunity.org/content/tck  
+     33           *  
+     34           * Contributor(s):  
+     35           *   
+     36           * ***** END LICENSE BLOCK ***** */  
+     37          
+     38          /**************************************************************************************
+     39           * Fixed-point HE-AAC decoder
+     40           * Jon Recker (jrecker@real.com)
+     41           * February 2005
+     42           *
+     43           * imdct.c - inverse MDCT
+     44           **************************************************************************************/
+     45          
+     46          #include "coder_aac.h"
+     47          #include "assembly_aac.h"
+     48          
+     49          #define RND_VAL		(1 << (FBITS_OUT_IMDCT-1))
+     50          
+     51          #ifndef AAC_ENABLE_SBR
+     52          
+     53          /**************************************************************************************
+     54           * Function:    DecWindowOverlap
+     55           *
+     56           * Description: apply synthesis window, do overlap-add, clip to 16-bit PCM,
+     57           *                for winSequence LONG-LONG
+     58           *
+     59           * Inputs:      input buffer (output of type-IV DCT)
+     60           *              overlap buffer (saved from last time)
+     61           *              number of channels
+     62           *              window type (sin or KBD) for input buffer
+     63           *              window type (sin or KBD) for overlap buffer
+     64           *
+     65           * Outputs:     one channel, one frame of 16-bit PCM, interleaved by nChans
+     66           *
+     67           * Return:      none
+     68           *
+     69           * Notes:       this processes one channel at a time, but skips every other sample in
+     70           *                the output buffer (pcm) for stereo interleaving
+     71           *              this should fit in registers on ARM
+     72           *
+     73           * TODO:        ARM5E version with saturating overlap/add (QADD)
+     74           *              asm code with free pointer updates, better load scheduling
+     75           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+     76          static void DecWindowOverlap(int *buf0, int *over0, short *pcm0, int nChans, int winTypeCurr, int winTypePrev)
+     77          {
+   \                     DecWindowOverlap:
+   \   00000000   FB4F2DE9           PUSH     {R0,R1,R3-R11,LR}
+     78          	int in, w0, w1, f0, f1;
+     79          	int *buf1, *over1;
+     80          	short *pcm1;
+     81          	const int *wndPrev, *wndCurr;
+     82          
+     83          	buf0 += (1024 >> 1);
+     84          	buf1  = buf0  - 1;
+     85          	pcm1  = pcm0 + (1024 - 1) * nChans;
+     86          	over1 = over0 + 1024 - 1;
+     87          
+     88          	wndPrev = (winTypePrev == 1 ? kbdWindow + kbdWindowOffset[1] : sinWindow + sinWindowOffset[1]);
+   \   00000004   ........           LDR      R7,??DataTable17  ;; raac_sinWindow
+   \   00000008   08D04DE2           SUB      SP,SP,#+8
+   \   0000000C   08409DE5           LDR      R4,[SP, #+8]
+   \   00000010   38009DE5           LDR      R0,[SP, #+56]
+   \   00000014   3C109DE5           LDR      R1,[SP, #+60]
+     89          	if (winTypeCurr == winTypePrev) {
+   \   00000018   10909DE5           LDR      R9,[SP, #+16]
+   \   0000001C   02B0A0E1           MOV      R11,R2
+   \   00000020   10209DE5           LDR      R2,[SP, #+16]
+   \   00000024   804E84E2           ADD      R4,R4,#+2048
+   \   00000028   043044E2           SUB      R3,R4,#+4
+   \   0000002C   00308DE5           STR      R3,[SP, #+0]
+   \   00000030   FE30A0E3           MOV      R3,#+254
+   \   00000034   703E83E3           ORR      R3,R3,#0x700
+   \   00000038   93B22AE0           MLA      R10,R3,R2,R11
+   \   0000003C   8320A0E1           MOV      R2,R3, LSL #+1
+   \   00000040   0C309DE5           LDR      R3,[SP, #+12]
+   \   00000044   08408DE5           STR      R4,[SP, #+8]
+   \   00000048   ........           LDR      R4,??DataTable15  ;; raac_sinWindowOffset
+   \   0000004C   03C082E0           ADD      R12,R2,R3
+   \   00000050   ........           LDR      R2,??DataTable14  ;; raac_kbdWindowOffset
+   \   00000054   ........           LDR      R3,??DataTable16  ;; raac_kbdWindow
+   \   00000058   010051E3           CMP      R1,#+1
+   \   0000005C   04609205           LDREQ    R6,[R2, #+4]
+   \   00000060   8990A0E1           LSL      R9,R9,#+1
+   \   00000064   04609415           LDRNE    R6,[R4, #+4]
+   \   00000068   009069E2           RSB      R9,R9,#+0
+   \   0000006C   06618300           ADDEQ    R6,R3,R6, LSL #+2
+   \   00000070   06618710           ADDNE    R6,R7,R6, LSL #+2
+   \   00000074   04908DE5           STR      R9,[SP, #+4]
+   \   00000078   010050E1           CMP      R0,R1
+   \   0000007C   3C00001A           BNE      ??DecWindowOverlap_0
+     90          		/* cut window loads in half since current and overlap sections use same symmetric window */
+     91          		do {
+     92          			w0 = *wndPrev++;
+   \                     ??DecWindowOverlap_1:
+   \   00000080   ........           LDR      R2,[R6], #+4
+     93          			w1 = *wndPrev++;
+     94          			in = *buf0++;
+   \   00000084   08309DE5           LDR      R3,[SP, #+8]
+     95          
+     96          			f0 = MULSHIFT32(w0, in);
+     97          			f1 = MULSHIFT32(w1, in);
+     98          
+     99          			in = *over0;	
+    100          			*pcm0 = CLIPTOSHORT( (in - f0 + RND_VAL) >> FBITS_OUT_IMDCT );
+   \   00000088   0280A0E1           MOV      R8,R2
+   \   0000008C   ........           LDR      R0,[R3], #+4
+   \   00000090   ........           LDR      R7,[R6], #+4
+   \   00000094   C29FA0E1           ASR      R9,R2,#+31
+   \   00000098   0C209DE5           LDR      R2,[SP, #+12]
+   \   0000009C   08308DE5           STR      R3,[SP, #+8]
+   \   000000A0   004092E5           LDR      R4,[R2, #+0]
+   \   000000A4   C01FA0E1           ASR      R1,R0,#+31
+   \   000000A8   982083E0           UMULL    R2,R3,R8,R0
+   \   000000AC   983123E0           MLA      R3,R8,R1,R3
+   \   000000B0   993023E0           MLA      R3,R9,R0,R3
+   \   000000B4   032044E0           SUB      R2,R4,R3
+   \   000000B8   042082E2           ADD      R2,R2,#+4
+   \   000000BC   C221A0E1           ASR      R2,R2,#+3
+   \   000000C0   C23FA0E1           ASR      R3,R2,#+31
+   \   000000C4   C20753E1           CMP      R3,R2, ASR #+15
+   \   000000C8   FF20A013           MOVNE    R2,#+255
+   \   000000CC   7F2C8213           ORRNE    R2,R2,#0x7F00
+   \   000000D0   03202210           EORNE    R2,R2,R3
+   \   000000D4   B020CBE1           STRH     R2,[R11, #+0]
+    101          			pcm0 += nChans;
+   \   000000D8   10209DE5           LDR      R2,[SP, #+16]
+    102          
+    103          			in = *over1;	
+    104          			*pcm1 = CLIPTOSHORT( (in + f1 + RND_VAL) >> FBITS_OUT_IMDCT );
+   \   000000DC   C73FA0E1           ASR      R3,R7,#+31
+   \   000000E0   82B08BE0           ADD      R11,R11,R2, LSL #+1
+   \   000000E4   0720A0E1           MOV      R2,R7
+   \   000000E8   924085E0           UMULL    R4,R5,R2,R0
+   \   000000EC   925125E0           MLA      R5,R2,R1,R5
+   \   000000F0   00109CE5           LDR      R1,[R12, #+0]
+   \   000000F4   935025E0           MLA      R5,R3,R0,R5
+   \   000000F8   050081E0           ADD      R0,R1,R5
+   \   000000FC   040080E2           ADD      R0,R0,#+4
+   \   00000100   C001A0E1           ASR      R0,R0,#+3
+   \   00000104   C01FA0E1           ASR      R1,R0,#+31
+   \   00000108   C00751E1           CMP      R1,R0, ASR #+15
+   \   0000010C   FF00A013           MOVNE    R0,#+255
+   \   00000110   7F0C8013           ORRNE    R0,R0,#0x7F00
+   \   00000114   01002010           EORNE    R0,R0,R1
+   \   00000118   B000CAE1           STRH     R0,[R10, #+0]
+    105          			pcm1 -= nChans;
+   \   0000011C   04009DE5           LDR      R0,[SP, #+4]
+    106          
+    107          			in = *buf1--;
+   \   00000120   00409DE5           LDR      R4,[SP, #+0]
+   \   00000124   0AA080E0           ADD      R10,R0,R10
+   \   00000128   ........           LDR      R0,[R4], #-4
+   \   0000012C   00408DE5           STR      R4,[SP, #+0]
+    108          			*over1-- = MULSHIFT32(w0, in);
+   \   00000130   C01FA0E1           ASR      R1,R0,#+31
+   \   00000134   984085E0           UMULL    R4,R5,R8,R0
+   \   00000138   985125E0           MLA      R5,R8,R1,R5
+   \   0000013C   995025E0           MLA      R5,R9,R0,R5
+   \   00000140   0540A0E1           MOV      R4,R5
+   \   00000144   ........           STR      R4,[R12], #-4
+    109          			*over0++ = MULSHIFT32(w1, in);
+   \   00000148   924085E0           UMULL    R4,R5,R2,R0
+   \   0000014C   925125E0           MLA      R5,R2,R1,R5
+   \   00000150   935025E0           MLA      R5,R3,R0,R5
+   \   00000154   0C009DE5           LDR      R0,[SP, #+12]
+   \   00000158   0540A0E1           MOV      R4,R5
+   \   0000015C   ........           STR      R4,[R0], #+4
+   \   00000160   0C008DE5           STR      R0,[SP, #+12]
+    110          		} while (over0 < over1);
+   \   00000164   0C0050E1           CMP      R0,R12
+   \   00000168   C4FFFF3A           BCC      ??DecWindowOverlap_1
+   \   0000016C   14D08DE2           ADD      SP,SP,#+20
+   \   00000170   F08FBDE8           POP      {R4-R11,PC}
+    111          	} else {
+    112          		/* different windows for current and overlap parts - should still fit in registers on ARM w/o stack spill */
+    113          		wndCurr = (winTypeCurr == 1 ? kbdWindow + kbdWindowOffset[1] : sinWindow + sinWindowOffset[1]);
+   \                     ??DecWindowOverlap_0:
+   \   00000174   010050E3           CMP      R0,#+1
+   \   00000178   04009205           LDREQ    R0,[R2, #+4]
+   \   0000017C   00918300           ADDEQ    R9,R3,R0, LSL #+2
+   \   00000180   04009415           LDRNE    R0,[R4, #+4]
+   \   00000184   00918710           ADDNE    R9,R7,R0, LSL #+2
+    114          		do {
+    115          			w0 = *wndPrev++;
+    116          			w1 = *wndPrev++;
+    117          			in = *buf0++;
+   \                     ??DecWindowOverlap_2:
+   \   00000188   08309DE5           LDR      R3,[SP, #+8]
+   \   0000018C   ........           LDR      R7,[R6], #+4
+   \   00000190   ........           LDR      R2,[R6], #+4
+   \   00000194   ........           LDR      R0,[R3], #+4
+   \   00000198   08308DE5           STR      R3,[SP, #+8]
+    118          
+    119          			f0 = MULSHIFT32(w0, in);
+    120          			f1 = MULSHIFT32(w1, in);
+   \   0000019C   C01FA0E1           ASR      R1,R0,#+31
+   \   000001A0   C23FA0E1           ASR      R3,R2,#+31
+   \   000001A4   924085E0           UMULL    R4,R5,R2,R0
+   \   000001A8   925125E0           MLA      R5,R2,R1,R5
+    121          
+    122          			in = *over0;	
+    123          			*pcm0 = CLIPTOSHORT( (in - f0 + RND_VAL) >> FBITS_OUT_IMDCT );
+   \   000001AC   0C209DE5           LDR      R2,[SP, #+12]
+   \   000001B0   935025E0           MLA      R5,R3,R0,R5
+   \   000001B4   00E092E5           LDR      LR,[R2, #+0]
+   \   000001B8   0580A0E1           MOV      R8,R5
+   \   000001BC   0720A0E1           MOV      R2,R7
+   \   000001C0   C73FA0E1           ASR      R3,R7,#+31
+   \   000001C4   924085E0           UMULL    R4,R5,R2,R0
+   \   000001C8   925125E0           MLA      R5,R2,R1,R5
+   \   000001CC   935025E0           MLA      R5,R3,R0,R5
+   \   000001D0   05004EE0           SUB      R0,LR,R5
+   \   000001D4   040080E2           ADD      R0,R0,#+4
+   \   000001D8   C001A0E1           ASR      R0,R0,#+3
+   \   000001DC   C01FA0E1           ASR      R1,R0,#+31
+   \   000001E0   C00751E1           CMP      R1,R0, ASR #+15
+   \   000001E4   FF00A013           MOVNE    R0,#+255
+   \   000001E8   7F0C8013           ORRNE    R0,R0,#0x7F00
+   \   000001EC   01002010           EORNE    R0,R0,R1
+   \   000001F0   B000CBE1           STRH     R0,[R11, #+0]
+    124          			pcm0 += nChans;
+   \   000001F4   10009DE5           LDR      R0,[SP, #+16]
+   \   000001F8   80B08BE0           ADD      R11,R11,R0, LSL #+1
+    125          
+    126          			in = *over1;	
+    127          			*pcm1 = CLIPTOSHORT( (in + f1 + RND_VAL) >> FBITS_OUT_IMDCT );
+   \   000001FC   00009CE5           LDR      R0,[R12, #+0]
+   \   00000200   080080E0           ADD      R0,R0,R8
+   \   00000204   040080E2           ADD      R0,R0,#+4
+   \   00000208   C001A0E1           ASR      R0,R0,#+3
+   \   0000020C   C01FA0E1           ASR      R1,R0,#+31
+   \   00000210   C00751E1           CMP      R1,R0, ASR #+15
+   \   00000214   FF00A013           MOVNE    R0,#+255
+   \   00000218   7F0C8013           ORRNE    R0,R0,#0x7F00
+   \   0000021C   01002010           EORNE    R0,R0,R1
+   \   00000220   B000CAE1           STRH     R0,[R10, #+0]
+    128          			pcm1 -= nChans;
+   \   00000224   04009DE5           LDR      R0,[SP, #+4]
+    129          
+    130          			w0 = *wndCurr++;
+    131          			w1 = *wndCurr++;
+    132          			in = *buf1--;
+   \   00000228   00309DE5           LDR      R3,[SP, #+0]
+   \   0000022C   ........           LDR      R2,[R9], #+4
+   \   00000230   ........           LDR      R7,[R9], #+4
+   \   00000234   0AA080E0           ADD      R10,R0,R10
+   \   00000238   ........           LDR      R0,[R3], #-4
+   \   0000023C   00308DE5           STR      R3,[SP, #+0]
+    133          
+    134          			*over1-- = MULSHIFT32(w0, in);
+   \   00000240   C01FA0E1           ASR      R1,R0,#+31
+   \   00000244   C23FA0E1           ASR      R3,R2,#+31
+   \   00000248   924085E0           UMULL    R4,R5,R2,R0
+   \   0000024C   925125E0           MLA      R5,R2,R1,R5
+   \   00000250   935025E0           MLA      R5,R3,R0,R5
+    135          			*over0++ = MULSHIFT32(w1, in);
+   \   00000254   C73FA0E1           ASR      R3,R7,#+31
+   \   00000258   0520A0E1           MOV      R2,R5
+   \   0000025C   ........           STR      R2,[R12], #-4
+   \   00000260   0720A0E1           MOV      R2,R7
+   \   00000264   924085E0           UMULL    R4,R5,R2,R0
+   \   00000268   925125E0           MLA      R5,R2,R1,R5
+   \   0000026C   935025E0           MLA      R5,R3,R0,R5
+   \   00000270   0C009DE5           LDR      R0,[SP, #+12]
+   \   00000274   0540A0E1           MOV      R4,R5
+   \   00000278   ........           STR      R4,[R0], #+4
+   \   0000027C   0C008DE5           STR      R0,[SP, #+12]
+    136          		} while (over0 < over1);
+   \   00000280   0C0050E1           CMP      R0,R12
+   \   00000284   BFFFFF3A           BCC      ??DecWindowOverlap_2
+    137          	}
+    138          }
+   \   00000288   14D08DE2           ADD      SP,SP,#+20       ;; stack cleaning
+   \   0000028C   F08FBDE8           POP      {R4-R11,PC}      ;; return
+    139          
+    140          /**************************************************************************************
+    141           * Function:    DecWindowOverlapLongStart
+    142           *
+    143           * Description: apply synthesis window, do overlap-add, clip to 16-bit PCM,
+    144           *                for winSequence LONG-START
+    145           *
+    146           * Inputs:      input buffer (output of type-IV DCT)
+    147           *              overlap buffer (saved from last time)
+    148           *              number of channels
+    149           *              window type (sin or KBD) for input buffer
+    150           *              window type (sin or KBD) for overlap buffer
+    151           *
+    152           * Outputs:     one channel, one frame of 16-bit PCM, interleaved by nChans
+    153           *
+    154           * Return:      none
+    155           *
+    156           * Notes:       this processes one channel at a time, but skips every other sample in
+    157           *                the output buffer (pcm) for stereo interleaving
+    158           *              this should fit in registers on ARM
+    159           *
+    160           * TODO:        ARM5E version with saturating overlap/add (QADD)
+    161           *              asm code with free pointer updates, better load scheduling
+    162           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    163          static void DecWindowOverlapLongStart(int *buf0, int *over0, short *pcm0, int nChans, int winTypeCurr, int winTypePrev)
+    164          {
+   \                     DecWindowOverlapLongStart:
+   \   00000000   FB4F2DE9           PUSH     {R0,R1,R3-R11,LR}
+   \   00000004   0CD04DE2           SUB      SP,SP,#+12
+   \   00000008   40109DE5           LDR      R1,[SP, #+64]
+    165          	int i,  in, w0, w1, f0, f1;
+    166          	int *buf1, *over1;
+    167          	short *pcm1;
+    168          	const int *wndPrev, *wndCurr;
+    169          
+    170          	buf0 += (1024 >> 1);
+    171          	buf1  = buf0  - 1;
+    172          	pcm1  = pcm0 + (1024 - 1) * nChans;
+    173          	over1 = over0 + 1024 - 1;
+   \   0000000C   10409DE5           LDR      R4,[SP, #+16]
+   \   00000010   803E80E2           ADD      R3,R0,#+2048
+   \   00000014   14009DE5           LDR      R0,[SP, #+20]
+   \   00000018   02A0A0E1           MOV      R10,R2
+   \   0000001C   042043E2           SUB      R2,R3,#+4
+   \   00000020   04208DE5           STR      R2,[SP, #+4]
+   \   00000024   FE20A0E3           MOV      R2,#+254
+   \   00000028   702E82E3           ORR      R2,R2,#0x700
+   \   0000002C   92A020E0           MLA      R0,R2,R0,R10
+   \   00000030   0C308DE5           STR      R3,[SP, #+12]
+   \   00000034   8230A0E1           MOV      R3,R2, LSL #+1
+   \   00000038   043083E0           ADD      R3,R3,R4
+   \   0000003C   00308DE5           STR      R3,[SP, #+0]
+   \   00000040   010051E3           CMP      R1,#+1
+   \   00000044   0200001A           BNE      ??DecWindowOverlapLongStart_0
+   \   00000048   34129FE5           LDR      R1,??DecWindowOverlapLongStart_1  ;; raac_kbdWindowOffset + 4
+   \   0000004C   ........           LDR      R2,??DataTable16  ;; raac_kbdWindow
+   \   00000050   010000EA           B        ??DecWindowOverlapLongStart_2
+   \                     ??DecWindowOverlapLongStart_0:
+   \   00000054   2C129FE5           LDR      R1,??DecWindowOverlapLongStart_1+0x4  ;; raac_sinWindowOffset + 4
+   \   00000058   ........           LDR      R2,??DataTable17  ;; raac_sinWindow
+   \                     ??DecWindowOverlapLongStart_2:
+   \   0000005C   001091E5           LDR      R1,[R1, #+0]
+    174          
+    175          	wndPrev = (winTypePrev == 1 ? kbdWindow + kbdWindowOffset[1] : sinWindow + sinWindowOffset[1]);
+    176          	i = 448;	/* 2 outputs, 2 overlaps per loop */
+   \   00000060   14309DE5           LDR      R3,[SP, #+20]
+   \   00000064   011182E0           ADD      R1,R2,R1, LSL #+2
+   \   00000068   708FA0E3           MOV      R8,#+448
+   \   0000006C   8330A0E1           LSL      R3,R3,#+1
+   \   00000070   003063E2           RSB      R3,R3,#+0
+   \   00000074   08308DE5           STR      R3,[SP, #+8]
+    177          	do {
+    178          		w0 = *wndPrev++;
+    179          		w1 = *wndPrev++;
+    180          		in = *buf0++;
+   \                     ??DecWindowOverlapLongStart_3:
+   \   00000078   0C409DE5           LDR      R4,[SP, #+12]
+   \   0000007C   ........           LDR      R9,[R1], #+4
+   \   00000080   ........           LDR      R12,[R1], #+4
+   \   00000084   ........           LDR      R2,[R4], #+4
+   \   00000088   0C408DE5           STR      R4,[SP, #+12]
+    181          
+    182          		f0 = MULSHIFT32(w0, in);
+    183          		f1 = MULSHIFT32(w1, in);
+   \   0000008C   C23FA0E1           ASR      R3,R2,#+31
+   \   00000090   0C40A0E1           MOV      R4,R12
+   \   00000094   CC5FA0E1           ASR      R5,R12,#+31
+   \   00000098   946287E0           UMULL    R6,R7,R4,R2
+    184          
+    185          		in = *over0;	
+    186          		*pcm0 = CLIPTOSHORT( (in - f0 + RND_VAL) >> FBITS_OUT_IMDCT );
+   \   0000009C   FFE0A0E3           MOV      LR,#+255
+   \   000000A0   947327E0           MLA      R7,R4,R3,R7
+   \   000000A4   10409DE5           LDR      R4,[SP, #+16]
+   \   000000A8   957227E0           MLA      R7,R5,R2,R7
+   \   000000AC   00B094E5           LDR      R11,[R4, #+0]
+   \   000000B0   07C0A0E1           MOV      R12,R7
+   \   000000B4   0940A0E1           MOV      R4,R9
+   \   000000B8   C95FA0E1           ASR      R5,R9,#+31
+   \   000000BC   946287E0           UMULL    R6,R7,R4,R2
+   \   000000C0   7FEC8EE3           ORR      LR,LR,#0x7F00
+   \   000000C4   947327E0           MLA      R7,R4,R3,R7
+   \   000000C8   957227E0           MLA      R7,R5,R2,R7
+   \   000000CC   07204BE0           SUB      R2,R11,R7
+   \   000000D0   042082E2           ADD      R2,R2,#+4
+   \   000000D4   C221A0E1           ASR      R2,R2,#+3
+   \   000000D8   C23FA0E1           ASR      R3,R2,#+31
+   \   000000DC   C20753E1           CMP      R3,R2, ASR #+15
+   \   000000E0   03202E10           EORNE    R2,LR,R3
+   \   000000E4   B020CAE1           STRH     R2,[R10, #+0]
+    187          		pcm0 += nChans;
+   \   000000E8   14209DE5           LDR      R2,[SP, #+20]
+   \   000000EC   82A08AE0           ADD      R10,R10,R2, LSL #+1
+    188          
+    189          		in = *over1;	
+    190          		*pcm1 = CLIPTOSHORT( (in + f1 + RND_VAL) >> FBITS_OUT_IMDCT );
+   \   000000F0   00209DE5           LDR      R2,[SP, #+0]
+   \   000000F4   002092E5           LDR      R2,[R2, #+0]
+   \   000000F8   0C2082E0           ADD      R2,R2,R12
+   \   000000FC   042082E2           ADD      R2,R2,#+4
+   \   00000100   C221A0E1           ASR      R2,R2,#+3
+   \   00000104   C23FA0E1           ASR      R3,R2,#+31
+   \   00000108   C20753E1           CMP      R3,R2, ASR #+15
+   \   0000010C   03202E10           EORNE    R2,LR,R3
+   \   00000110   B020C0E1           STRH     R2,[R0, #+0]
+    191          		pcm1 -= nChans;
+   \   00000114   08209DE5           LDR      R2,[SP, #+8]
+    192          
+    193          		in = *buf1--;
+   \   00000118   04409DE5           LDR      R4,[SP, #+4]
+    194          
+    195          		*over1-- = 0;		/* Wn = 0 for n = (2047, 2046, ... 1600) */
+   \   0000011C   00609DE5           LDR      R6,[SP, #+0]
+   \   00000120   000082E0           ADD      R0,R2,R0
+   \   00000124   ........           LDR      R2,[R4], #-4
+   \   00000128   04408DE5           STR      R4,[SP, #+4]
+   \   0000012C   0040A0E3           MOV      R4,#+0
+   \   00000130   ........           STR      R4,[R6], #-4
+    196          		*over0++ = in >> 1;	/* Wn = 1 for n = (1024, 1025, ... 1471) */
+   \   00000134   10409DE5           LDR      R4,[SP, #+16]
+   \   00000138   00608DE5           STR      R6,[SP, #+0]
+   \   0000013C   C220A0E1           ASR      R2,R2,#+1
+   \   00000140   ........           STR      R2,[R4], #+4
+   \   00000144   10408DE5           STR      R4,[SP, #+16]
+    197          	} while (--i);
+   \   00000148   018058E2           SUBS     R8,R8,#+1
+   \   0000014C   C9FFFF1A           BNE      ??DecWindowOverlapLongStart_3
+    198          
+    199          	wndCurr = (winTypeCurr == 1 ? kbdWindow + kbdWindowOffset[0] : sinWindow + sinWindowOffset[0]);
+   \   00000150   3C209DE5           LDR      R2,[SP, #+60]
+   \   00000154   010052E3           CMP      R2,#+1
+   \   00000158   0200001A           BNE      ??DecWindowOverlapLongStart_4
+   \   0000015C   ........           LDR      R2,??DataTable14  ;; raac_kbdWindowOffset
+   \   00000160   ........           LDR      R3,??DataTable16  ;; raac_kbdWindow
+   \   00000164   010000EA           B        ??DecWindowOverlapLongStart_5
+   \                     ??DecWindowOverlapLongStart_4:
+   \   00000168   ........           LDR      R2,??DataTable15  ;; raac_sinWindowOffset
+   \   0000016C   ........           LDR      R3,??DataTable17  ;; raac_sinWindow
+   \                     ??DecWindowOverlapLongStart_5:
+   \   00000170   002092E5           LDR      R2,[R2, #+0]
+   \   00000174   02B183E0           ADD      R11,R3,R2, LSL #+2
+    200          
+    201          	/* do 64 more loops - 2 outputs, 2 overlaps per loop */
+    202          	do {
+    203          		w0 = *wndPrev++;
+    204          		w1 = *wndPrev++;
+    205          		in = *buf0++;
+   \                     ??DecWindowOverlapLongStart_6:
+   \   00000178   0C609DE5           LDR      R6,[SP, #+12]
+   \   0000017C   ........           LDR      R8,[R1], #+4
+   \   00000180   ........           LDR      R4,[R1], #+4
+   \   00000184   ........           LDR      R2,[R6], #+4
+   \   00000188   0C608DE5           STR      R6,[SP, #+12]
+    206          
+    207          		f0 = MULSHIFT32(w0, in);
+    208          		f1 = MULSHIFT32(w1, in);
+   \   0000018C   C23FA0E1           ASR      R3,R2,#+31
+   \   00000190   C45FA0E1           ASR      R5,R4,#+31
+   \   00000194   946287E0           UMULL    R6,R7,R4,R2
+   \   00000198   947327E0           MLA      R7,R4,R3,R7
+    209          
+    210          		in = *over0;	
+    211          		*pcm0 = CLIPTOSHORT( (in - f0 + RND_VAL) >> FBITS_OUT_IMDCT );
+   \   0000019C   10409DE5           LDR      R4,[SP, #+16]
+   \   000001A0   957227E0           MLA      R7,R5,R2,R7
+   \   000001A4   009094E5           LDR      R9,[R4, #+0]
+   \   000001A8   07C0A0E1           MOV      R12,R7
+   \   000001AC   0840A0E1           MOV      R4,R8
+   \   000001B0   C85FA0E1           ASR      R5,R8,#+31
+   \   000001B4   946287E0           UMULL    R6,R7,R4,R2
+   \   000001B8   947327E0           MLA      R7,R4,R3,R7
+   \   000001BC   957227E0           MLA      R7,R5,R2,R7
+   \   000001C0   072049E0           SUB      R2,R9,R7
+   \   000001C4   042082E2           ADD      R2,R2,#+4
+   \   000001C8   C221A0E1           ASR      R2,R2,#+3
+   \   000001CC   C23FA0E1           ASR      R3,R2,#+31
+   \   000001D0   C20753E1           CMP      R3,R2, ASR #+15
+   \   000001D4   03202E10           EORNE    R2,LR,R3
+   \   000001D8   B020CAE1           STRH     R2,[R10, #+0]
+    212          		pcm0 += nChans;
+   \   000001DC   14209DE5           LDR      R2,[SP, #+20]
+   \   000001E0   82A08AE0           ADD      R10,R10,R2, LSL #+1
+    213          
+    214          		in = *over1;	
+    215          		*pcm1 = CLIPTOSHORT( (in + f1 + RND_VAL) >> FBITS_OUT_IMDCT );
+   \   000001E4   00209DE5           LDR      R2,[SP, #+0]
+   \   000001E8   002092E5           LDR      R2,[R2, #+0]
+   \   000001EC   0C2082E0           ADD      R2,R2,R12
+   \   000001F0   042082E2           ADD      R2,R2,#+4
+   \   000001F4   C221A0E1           ASR      R2,R2,#+3
+   \   000001F8   C23FA0E1           ASR      R3,R2,#+31
+   \   000001FC   C20753E1           CMP      R3,R2, ASR #+15
+   \   00000200   03202E10           EORNE    R2,LR,R3
+   \   00000204   B020C0E1           STRH     R2,[R0, #+0]
+    216          		pcm1 -= nChans;
+   \   00000208   08209DE5           LDR      R2,[SP, #+8]
+    217          
+    218          		w0 = *wndCurr++;	/* W[0], W[1], ... --> W[255], W[254], ... */
+    219          		w1 = *wndCurr++;	/* W[127], W[126], ... --> W[128], W[129], ... */
+    220          		in = *buf1--;
+   \   0000020C   04409DE5           LDR      R4,[SP, #+4]
+   \   00000210   ........           LDR      R9,[R11], #+4
+   \   00000214   ........           LDR      R12,[R11], #+4
+   \   00000218   000082E0           ADD      R0,R2,R0
+   \   0000021C   ........           LDR      R2,[R4], #-4
+   \   00000220   04408DE5           STR      R4,[SP, #+4]
+    221          
+    222          		*over1-- = MULSHIFT32(w0, in);	/* Wn = short window for n = (1599, 1598, ... , 1536) */
+   \   00000224   C23FA0E1           ASR      R3,R2,#+31
+   \   00000228   0940A0E1           MOV      R4,R9
+   \   0000022C   C95FA0E1           ASR      R5,R9,#+31
+   \   00000230   946287E0           UMULL    R6,R7,R4,R2
+   \   00000234   947327E0           MLA      R7,R4,R3,R7
+   \   00000238   00409DE5           LDR      R4,[SP, #+0]
+   \   0000023C   957227E0           MLA      R7,R5,R2,R7
+    223          		*over0++ = MULSHIFT32(w1, in);	/* Wn = short window for n = (1472, 1473, ... , 1535) */
+   \   00000240   CC5FA0E1           ASR      R5,R12,#+31
+   \   00000244   0760A0E1           MOV      R6,R7
+   \   00000248   ........           STR      R6,[R4], #-4
+   \   0000024C   00408DE5           STR      R4,[SP, #+0]
+   \   00000250   0C40A0E1           MOV      R4,R12
+   \   00000254   946287E0           UMULL    R6,R7,R4,R2
+   \   00000258   947327E0           MLA      R7,R4,R3,R7
+   \   0000025C   957227E0           MLA      R7,R5,R2,R7
+   \   00000260   10209DE5           LDR      R2,[SP, #+16]
+   \   00000264   0760A0E1           MOV      R6,R7
+   \   00000268   ........           STR      R6,[R2], #+4
+    224          	} while (over0 < over1);
+   \   0000026C   00309DE5           LDR      R3,[SP, #+0]
+   \   00000270   10208DE5           STR      R2,[SP, #+16]
+   \   00000274   030052E1           CMP      R2,R3
+   \   00000278   BEFFFF3A           BCC      ??DecWindowOverlapLongStart_6
+    225          }
+   \   0000027C   18D08DE2           ADD      SP,SP,#+24       ;; stack cleaning
+   \   00000280   F08FBDE8           POP      {R4-R11,PC}      ;; return
+   \                     ??DecWindowOverlapLongStart_1:
+   \   00000284   ........           DC32     raac_kbdWindowOffset + 4
+   \   00000288   ........           DC32     raac_sinWindowOffset + 4
+    226          
+    227          /**************************************************************************************
+    228           * Function:    DecWindowOverlapLongStop
+    229           *
+    230           * Description: apply synthesis window, do overlap-add, clip to 16-bit PCM,
+    231           *                for winSequence LONG-STOP
+    232           *
+    233           * Inputs:      input buffer (output of type-IV DCT)
+    234           *              overlap buffer (saved from last time)
+    235           *              number of channels
+    236           *              window type (sin or KBD) for input buffer
+    237           *              window type (sin or KBD) for overlap buffer
+    238           *
+    239           * Outputs:     one channel, one frame of 16-bit PCM, interleaved by nChans
+    240           *
+    241           * Return:      none
+    242           *
+    243           * Notes:       this processes one channel at a time, but skips every other sample in
+    244           *                the output buffer (pcm) for stereo interleaving
+    245           *              this should fit in registers on ARM
+    246           *
+    247           * TODO:        ARM5E version with saturating overlap/add (QADD)
+    248           *              asm code with free pointer updates, better load scheduling
+    249           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    250          static void DecWindowOverlapLongStop(int *buf0, int *over0, short *pcm0, int nChans, int winTypeCurr, int winTypePrev)
+    251          {
+   \                     DecWindowOverlapLongStop:
+   \   00000000   FB4F2DE9           PUSH     {R0,R1,R3-R11,LR}
+    252          	int i, in, w0, w1, f0, f1;
+    253          	int *buf1, *over1;
+    254          	short *pcm1;
+    255          	const int *wndPrev, *wndCurr;
+    256          
+    257          	buf0 += (1024 >> 1);
+    258          	buf1  = buf0  - 1;
+    259          	pcm1  = pcm0 + (1024 - 1) * nChans;
+    260          	over1 = over0 + 1024 - 1;
+    261          
+    262          	wndPrev = (winTypePrev == 1 ? kbdWindow + kbdWindowOffset[0] : sinWindow + sinWindowOffset[0]);
+   \   00000004   ........           LDR      R8,??DataTable17  ;; raac_sinWindow
+   \   00000008   0CD04DE2           SUB      SP,SP,#+12
+   \   0000000C   0C609DE5           LDR      R6,[SP, #+12]
+   \   00000010   40109DE5           LDR      R1,[SP, #+64]
+   \   00000014   3C009DE5           LDR      R0,[SP, #+60]
+   \   00000018   806E86E2           ADD      R6,R6,#+2048
+   \   0000001C   044046E2           SUB      R4,R6,#+4
+   \   00000020   04408DE5           STR      R4,[SP, #+4]
+   \   00000024   FE40A0E3           MOV      R4,#+254
+   \   00000028   704E84E3           ORR      R4,R4,#0x700
+   \   0000002C   94232CE0           MLA      R12,R4,R3,R2
+   \   00000030   8430A0E1           MOV      R3,R4, LSL #+1
+   \   00000034   10409DE5           LDR      R4,[SP, #+16]
+   \   00000038   0C608DE5           STR      R6,[SP, #+12]
+   \   0000003C   ........           LDR      R6,??DataTable15  ;; raac_sinWindowOffset
+   \   00000040   04E083E0           ADD      LR,R3,R4
+   \   00000044   ........           LDR      R3,??DataTable14  ;; raac_kbdWindowOffset
+   \   00000048   ........           LDR      R4,??DataTable16  ;; raac_kbdWindow
+   \   0000004C   010051E3           CMP      R1,#+1
+   \   00000050   00909305           LDREQ    R9,[R3, #+0]
+    263          	wndCurr = (winTypeCurr == 1 ? kbdWindow + kbdWindowOffset[1] : sinWindow + sinWindowOffset[1]);
+    264          
+    265          	i = 448;	/* 2 outputs, 2 overlaps per loop */
+   \   00000054   14109DE5           LDR      R1,[SP, #+20]
+   \   00000058   00909615           LDRNE    R9,[R6, #+0]
+   \   0000005C   8110A0E1           LSL      R1,R1,#+1
+   \   00000060   09918400           ADDEQ    R9,R4,R9, LSL #+2
+   \   00000064   09918810           ADDNE    R9,R8,R9, LSL #+2
+   \   00000068   010050E3           CMP      R0,#+1
+   \   0000006C   04009305           LDREQ    R0,[R3, #+4]
+   \   00000070   00908DE5           STR      R9,[SP, #+0]
+   \   00000074   04009615           LDRNE    R0,[R6, #+4]
+   \   00000078   706FA0E3           MOV      R6,#+448
+   \   0000007C   00318400           ADDEQ    R3,R4,R0, LSL #+2
+   \   00000080   00318810           ADDNE    R3,R8,R0, LSL #+2
+   \   00000084   001061E2           RSB      R1,R1,#+0
+   \   00000088   08108DE5           STR      R1,[SP, #+8]
+    266          	do {
+    267          		/* Wn = 0 for n = (0, 1, ... 447) */
+    268          		/* Wn = 1 for n = (576, 577, ... 1023) */
+    269          		in = *buf0++;
+   \                     ??DecWindowOverlapLongStop_0:
+   \   0000008C   0C409DE5           LDR      R4,[SP, #+12]
+    270          		f1 = in >> 1;	/* scale since skipping multiply by Q31 */
+    271          
+    272          		in = *over0;	
+    273          		*pcm0 = CLIPTOSHORT( (in + RND_VAL) >> FBITS_OUT_IMDCT );
+   \   00000090   10109DE5           LDR      R1,[SP, #+16]
+   \   00000094   ........           LDR      R0,[R4], #+4
+   \   00000098   0C408DE5           STR      R4,[SP, #+12]
+   \   0000009C   001091E5           LDR      R1,[R1, #+0]
+   \   000000A0   041081E2           ADD      R1,R1,#+4
+   \   000000A4   C111A0E1           ASR      R1,R1,#+3
+   \   000000A8   C14FA0E1           ASR      R4,R1,#+31
+   \   000000AC   C10754E1           CMP      R4,R1, ASR #+15
+   \   000000B0   FF10A013           MOVNE    R1,#+255
+   \   000000B4   7F1C8113           ORRNE    R1,R1,#0x7F00
+   \   000000B8   04102110           EORNE    R1,R1,R4
+   \   000000BC   B010C2E1           STRH     R1,[R2, #+0]
+    274          		pcm0 += nChans;
+   \   000000C0   14109DE5           LDR      R1,[SP, #+20]
+   \   000000C4   812082E0           ADD      R2,R2,R1, LSL #+1
+    275          
+    276          		in = *over1;	
+    277          		*pcm1 = CLIPTOSHORT( (in + f1 + RND_VAL) >> FBITS_OUT_IMDCT );
+   \   000000C8   00109EE5           LDR      R1,[LR, #+0]
+   \   000000CC   C00081E0           ADD      R0,R1,R0, ASR #+1
+   \   000000D0   040080E2           ADD      R0,R0,#+4
+   \   000000D4   C001A0E1           ASR      R0,R0,#+3
+   \   000000D8   C01FA0E1           ASR      R1,R0,#+31
+   \   000000DC   C00751E1           CMP      R1,R0, ASR #+15
+   \   000000E0   FF00A013           MOVNE    R0,#+255
+   \   000000E4   7F0C8013           ORRNE    R0,R0,#0x7F00
+   \   000000E8   01002010           EORNE    R0,R0,R1
+   \   000000EC   B000CCE1           STRH     R0,[R12, #+0]
+    278          		pcm1 -= nChans;
+   \   000000F0   08009DE5           LDR      R0,[SP, #+8]
+    279          
+    280          		w0 = *wndCurr++;
+    281          		w1 = *wndCurr++;
+    282          		in = *buf1--;
+   \   000000F4   04409DE5           LDR      R4,[SP, #+4]
+   \   000000F8   ........           LDR      R9,[R3], #+4
+   \   000000FC   ........           LDR      R8,[R3], #+4
+   \   00000100   0CC080E0           ADD      R12,R0,R12
+   \   00000104   ........           LDR      R0,[R4], #-4
+   \   00000108   04408DE5           STR      R4,[SP, #+4]
+    283          
+    284          		*over1-- = MULSHIFT32(w0, in);
+   \   0000010C   C01FA0E1           ASR      R1,R0,#+31
+   \   00000110   00A0A0E1           MOV      R10,R0
+   \   00000114   01B0A0E1           MOV      R11,R1
+   \   00000118   0900A0E1           MOV      R0,R9
+   \   0000011C   C91FA0E1           ASR      R1,R9,#+31
+   \   00000120   904A85E0           UMULL    R4,R5,R0,R10
+    285          		*over0++ = MULSHIFT32(w1, in);
+    286          	} while (--i);
+   \   00000124   016056E2           SUBS     R6,R6,#+1
+   \   00000128   905B25E0           MLA      R5,R0,R11,R5
+   \   0000012C   915A25E0           MLA      R5,R1,R10,R5
+   \   00000130   C81FA0E1           ASR      R1,R8,#+31
+   \   00000134   0500A0E1           MOV      R0,R5
+   \   00000138   ........           STR      R0,[LR], #-4
+   \   0000013C   0800A0E1           MOV      R0,R8
+   \   00000140   904A85E0           UMULL    R4,R5,R0,R10
+   \   00000144   905B25E0           MLA      R5,R0,R11,R5
+   \   00000148   10009DE5           LDR      R0,[SP, #+16]
+   \   0000014C   915A25E0           MLA      R5,R1,R10,R5
+   \   00000150   0540A0E1           MOV      R4,R5
+   \   00000154   ........           STR      R4,[R0], #+4
+   \   00000158   10008DE5           STR      R0,[SP, #+16]
+   \   0000015C   CAFFFF1A           BNE      ??DecWindowOverlapLongStop_0
+    287          
+    288          	/* do 64 more loops - 2 outputs, 2 overlaps per loop */
+    289          	do {
+    290          		w0 = *wndPrev++;	/* W[0], W[1], ...W[63] */
+   \                     ??DecWindowOverlapLongStop_1:
+   \   00000160   00109DE5           LDR      R1,[SP, #+0]
+    291          		w1 = *wndPrev++;	/* W[127], W[126], ... W[64] */
+    292          		in = *buf0++;
+   \   00000164   0C609DE5           LDR      R6,[SP, #+12]
+   \   00000168   ........           LDR      R9,[R1], #+4
+   \   0000016C   00108DE5           STR      R1,[SP, #+0]
+   \   00000170   ........           LDR      R4,[R1], #+4
+   \   00000174   00108DE5           STR      R1,[SP, #+0]
+   \   00000178   ........           LDR      R0,[R6], #+4
+   \   0000017C   0C608DE5           STR      R6,[SP, #+12]
+    293          
+    294          		f0 = MULSHIFT32(w0, in);
+    295          		f1 = MULSHIFT32(w1, in);
+   \   00000180   C01FA0E1           ASR      R1,R0,#+31
+   \   00000184   C45FA0E1           ASR      R5,R4,#+31
+   \   00000188   946087E0           UMULL    R6,R7,R4,R0
+   \   0000018C   947127E0           MLA      R7,R4,R1,R7
+    296          
+    297          		in = *over0;	
+    298          		*pcm0 = CLIPTOSHORT( (in - f0 + RND_VAL) >> FBITS_OUT_IMDCT );
+   \   00000190   10409DE5           LDR      R4,[SP, #+16]
+   \   00000194   957027E0           MLA      R7,R5,R0,R7
+   \   00000198   00A094E5           LDR      R10,[R4, #+0]
+   \   0000019C   0780A0E1           MOV      R8,R7
+   \   000001A0   0940A0E1           MOV      R4,R9
+   \   000001A4   C95FA0E1           ASR      R5,R9,#+31
+   \   000001A8   946087E0           UMULL    R6,R7,R4,R0
+   \   000001AC   947127E0           MLA      R7,R4,R1,R7
+   \   000001B0   957027E0           MLA      R7,R5,R0,R7
+   \   000001B4   07004AE0           SUB      R0,R10,R7
+   \   000001B8   040080E2           ADD      R0,R0,#+4
+   \   000001BC   C001A0E1           ASR      R0,R0,#+3
+   \   000001C0   C01FA0E1           ASR      R1,R0,#+31
+   \   000001C4   C00751E1           CMP      R1,R0, ASR #+15
+   \   000001C8   FF00A013           MOVNE    R0,#+255
+   \   000001CC   7F0C8013           ORRNE    R0,R0,#0x7F00
+   \   000001D0   01002010           EORNE    R0,R0,R1
+   \   000001D4   B000C2E1           STRH     R0,[R2, #+0]
+    299          		pcm0 += nChans;
+   \   000001D8   14009DE5           LDR      R0,[SP, #+20]
+   \   000001DC   802082E0           ADD      R2,R2,R0, LSL #+1
+    300          
+    301          		in = *over1;	
+    302          		*pcm1 = CLIPTOSHORT( (in + f1 + RND_VAL) >> FBITS_OUT_IMDCT );
+   \   000001E0   00009EE5           LDR      R0,[LR, #+0]
+   \   000001E4   080080E0           ADD      R0,R0,R8
+   \   000001E8   040080E2           ADD      R0,R0,#+4
+   \   000001EC   C001A0E1           ASR      R0,R0,#+3
+   \   000001F0   C01FA0E1           ASR      R1,R0,#+31
+   \   000001F4   C00751E1           CMP      R1,R0, ASR #+15
+   \   000001F8   FF00A013           MOVNE    R0,#+255
+   \   000001FC   7F0C8013           ORRNE    R0,R0,#0x7F00
+   \   00000200   01002010           EORNE    R0,R0,R1
+   \   00000204   B000CCE1           STRH     R0,[R12, #+0]
+    303          		pcm1 -= nChans;
+   \   00000208   08009DE5           LDR      R0,[SP, #+8]
+    304          
+    305          		w0 = *wndCurr++;
+    306          		w1 = *wndCurr++;	
+    307          		in = *buf1--;
+   \   0000020C   04409DE5           LDR      R4,[SP, #+4]
+   \   00000210   ........           LDR      R9,[R3], #+4
+   \   00000214   ........           LDR      R8,[R3], #+4
+   \   00000218   0CC080E0           ADD      R12,R0,R12
+   \   0000021C   ........           LDR      R0,[R4], #-4
+   \   00000220   04408DE5           STR      R4,[SP, #+4]
+    308          
+    309          		*over1-- = MULSHIFT32(w0, in);
+   \   00000224   0060A0E1           MOV      R6,R0
+   \   00000228   C07FA0E1           ASR      R7,R0,#+31
+   \   0000022C   0900A0E1           MOV      R0,R9
+   \   00000230   C91FA0E1           ASR      R1,R9,#+31
+   \   00000234   904685E0           UMULL    R4,R5,R0,R6
+   \   00000238   905725E0           MLA      R5,R0,R7,R5
+   \   0000023C   915625E0           MLA      R5,R1,R6,R5
+    310          		*over0++ = MULSHIFT32(w1, in);
+   \   00000240   C81FA0E1           ASR      R1,R8,#+31
+   \   00000244   0500A0E1           MOV      R0,R5
+   \   00000248   ........           STR      R0,[LR], #-4
+   \   0000024C   0800A0E1           MOV      R0,R8
+   \   00000250   904685E0           UMULL    R4,R5,R0,R6
+   \   00000254   905725E0           MLA      R5,R0,R7,R5
+   \   00000258   10009DE5           LDR      R0,[SP, #+16]
+   \   0000025C   915625E0           MLA      R5,R1,R6,R5
+   \   00000260   0540A0E1           MOV      R4,R5
+   \   00000264   ........           STR      R4,[R0], #+4
+   \   00000268   10008DE5           STR      R0,[SP, #+16]
+    311          	} while (over0 < over1);
+   \   0000026C   0E0050E1           CMP      R0,LR
+   \   00000270   BAFFFF3A           BCC      ??DecWindowOverlapLongStop_1
+    312          }
+   \   00000274   18D08DE2           ADD      SP,SP,#+24       ;; stack cleaning
+   \   00000278   F08FBDE8           POP      {R4-R11,PC}      ;; return
+    313          
+    314          /**************************************************************************************
+    315           * Function:    DecWindowOverlapShort
+    316           *
+    317           * Description: apply synthesis window, do overlap-add, clip to 16-bit PCM,
+    318           *                for winSequence EIGHT-SHORT (does all 8 short blocks)
+    319           *
+    320           * Inputs:      input buffer (output of type-IV DCT)
+    321           *              overlap buffer (saved from last time)
+    322           *              number of channels
+    323           *              window type (sin or KBD) for input buffer
+    324           *              window type (sin or KBD) for overlap buffer
+    325           *
+    326           * Outputs:     one channel, one frame of 16-bit PCM, interleaved by nChans
+    327           *
+    328           * Return:      none
+    329           *
+    330           * Notes:       this processes one channel at a time, but skips every other sample in
+    331           *                the output buffer (pcm) for stereo interleaving
+    332           *              this should fit in registers on ARM
+    333           *
+    334           * TODO:        ARM5E version with saturating overlap/add (QADD)
+    335           *              asm code with free pointer updates, better load scheduling
+    336           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    337          static void DecWindowOverlapShort(int *buf0, int *over0, short *pcm0, int nChans, int winTypeCurr, int winTypePrev)
+    338          {
+   \                     DecWindowOverlapShort:
+   \   00000000   F94F2DE9           PUSH     {R0,R3-R11,LR}
+    339          	int i, in, w0, w1, f0, f1;
+    340          	int *buf1, *over1;
+    341          	short *pcm1;
+    342          	const int *wndPrev, *wndCurr;
+    343          
+    344          	wndPrev = (winTypePrev == 1 ? kbdWindow + kbdWindowOffset[0] : sinWindow + sinWindowOffset[0]);
+   \   00000004   ........           LDR      R4,??DataTable14  ;; raac_kbdWindowOffset
+   \   00000008   ........           LDR      R6,??DataTable15  ;; raac_sinWindowOffset
+   \   0000000C   ........           LDR      R8,??DataTable16  ;; raac_kbdWindow
+   \   00000010   ........           LDR      R10,??DataTable17  ;; raac_sinWindow
+   \   00000014   10D04DE2           SUB      SP,SP,#+16
+   \   00000018   3C009DE5           LDR      R0,[SP, #+60]
+   \   0000001C   40309DE5           LDR      R3,[SP, #+64]
+   \   00000020   004094E5           LDR      R4,[R4, #+0]
+   \   00000024   006096E5           LDR      R6,[R6, #+0]
+   \   00000028   010053E3           CMP      R3,#+1
+   \   0000002C   04B18800           ADDEQ    R11,R8,R4, LSL #+2
+   \   00000030   06B18A10           ADDNE    R11,R10,R6, LSL #+2
+    345          	wndCurr = (winTypeCurr == 1 ? kbdWindow + kbdWindowOffset[0] : sinWindow + sinWindowOffset[0]);
+   \   00000034   010050E3           CMP      R0,#+1
+   \   00000038   04018800           ADDEQ    R0,R8,R4, LSL #+2
+   \   0000003C   06018A10           ADDNE    R0,R10,R6, LSL #+2
+    346          
+    347          	/* pcm[0-447] = 0 + overlap[0-447] */
+    348          	i = 448;
+   \   00000040   704FA0E3           MOV      R4,#+448
+   \   00000044   00408DE5           STR      R4,[SP, #+0]
+    349          	do {
+    350          		f0 = *over0++;
+   \                     ??DecWindowOverlapShort_0:
+   \   00000048   ........           LDR      R3,[R1], #+4
+    351          		f1 = *over0++;
+   \   0000004C   ........           LDR      R12,[R1], #+4
+    352          		*pcm0 = CLIPTOSHORT( (f0 + RND_VAL) >> FBITS_OUT_IMDCT );	pcm0 += nChans;
+   \   00000050   043083E2           ADD      R3,R3,#+4
+   \   00000054   C331A0E1           ASR      R3,R3,#+3
+   \   00000058   C34FA0E1           ASR      R4,R3,#+31
+   \   0000005C   C30754E1           CMP      R4,R3, ASR #+15
+   \   00000060   FF30A013           MOVNE    R3,#+255
+   \   00000064   7F3C8313           ORRNE    R3,R3,#0x7F00
+   \   00000068   04302310           EORNE    R3,R3,R4
+   \   0000006C   B030C2E1           STRH     R3,[R2, #+0]
+   \   00000070   14309DE5           LDR      R3,[SP, #+20]
+   \   00000074   832082E0           ADD      R2,R2,R3, LSL #+1
+    353          		*pcm0 = CLIPTOSHORT( (f1 + RND_VAL) >> FBITS_OUT_IMDCT );	pcm0 += nChans;
+   \   00000078   04308CE2           ADD      R3,R12,#+4
+   \   0000007C   C331A0E1           ASR      R3,R3,#+3
+   \   00000080   C34FA0E1           ASR      R4,R3,#+31
+   \   00000084   C30754E1           CMP      R4,R3, ASR #+15
+   \   00000088   FF30A013           MOVNE    R3,#+255
+   \   0000008C   7F3C8313           ORRNE    R3,R3,#0x7F00
+   \   00000090   04302310           EORNE    R3,R3,R4
+   \   00000094   B030C2E1           STRH     R3,[R2, #+0]
+   \   00000098   14309DE5           LDR      R3,[SP, #+20]
+    354          		i -= 2;
+   \   0000009C   00409DE5           LDR      R4,[SP, #+0]
+   \   000000A0   832082E0           ADD      R2,R2,R3, LSL #+1
+   \   000000A4   024044E2           SUB      R4,R4,#+2
+   \   000000A8   00408DE5           STR      R4,[SP, #+0]
+    355          	} while (i);
+   \   000000AC   000054E3           CMP      R4,#+0
+   \   000000B0   E4FFFF1A           BNE      ??DecWindowOverlapShort_0
+    356          
+    357          	/* pcm[448-575] = Wp[0-127] * block0[0-127] + overlap[448-575] */
+    358          	pcm1  = pcm0 + (128 - 1) * nChans;
+   \   000000B4   14409DE5           LDR      R4,[SP, #+20]
+    359          	over1 = over0 + 128 - 1;
+    360          	buf0 += 64;
+    361          	buf1  = buf0  - 1;
+   \   000000B8   14309DE5           LDR      R3,[SP, #+20]
+   \   000000BC   FE60A0E3           MOV      R6,#+254
+   \   000000C0   960404E0           MUL      R4,R6,R4
+   \   000000C4   10609DE5           LDR      R6,[SP, #+16]
+   \   000000C8   08408DE5           STR      R4,[SP, #+8]
+   \   000000CC   02E084E0           ADD      LR,R4,R2
+   \   000000D0   7FAF81E2           ADD      R10,R1,#+508
+   \   000000D4   406F86E2           ADD      R6,R6,#+256
+   \   000000D8   10608DE5           STR      R6,[SP, #+16]
+   \   000000DC   044046E2           SUB      R4,R6,#+4
+   \   000000E0   04408DE5           STR      R4,[SP, #+4]
+   \   000000E4   8330A0E1           LSL      R3,R3,#+1
+   \   000000E8   003063E2           RSB      R3,R3,#+0
+   \   000000EC   0C308DE5           STR      R3,[SP, #+12]
+    362          	do {
+    363          		w0 = *wndPrev++;	/* W[0], W[1], ...W[63] */
+    364          		w1 = *wndPrev++;	/* W[127], W[126], ... W[64] */
+    365          		in = *buf0++;
+   \                     ??DecWindowOverlapShort_1:
+   \   000000F0   10C09DE5           LDR      R12,[SP, #+16]
+   \   000000F4   ........           LDR      R3,[R11], #+4
+   \   000000F8   ........           LDR      R4,[R11], #+4
+   \   000000FC   ........           LDR      R8,[R12], #+4
+   \   00000100   10C08DE5           STR      R12,[SP, #+16]
+    366          
+    367          		f0 = MULSHIFT32(w0, in);
+    368          		f1 = MULSHIFT32(w1, in);
+   \   00000104   C89FA0E1           ASR      R9,R8,#+31
+   \   00000108   C45FA0E1           ASR      R5,R4,#+31
+   \   0000010C   946887E0           UMULL    R6,R7,R4,R8
+   \   00000110   947927E0           MLA      R7,R4,R9,R7
+    369          
+    370          		in = *over0;	
+    371          		*pcm0 = CLIPTOSHORT( (in - f0 + RND_VAL) >> FBITS_OUT_IMDCT );
+   \   00000114   004091E5           LDR      R4,[R1, #+0]
+   \   00000118   957827E0           MLA      R7,R5,R8,R7
+   \   0000011C   10002DE9           PUSH     {R4}
+   \   00000120   07C0A0E1           MOV      R12,R7
+   \   00000124   C35FA0E1           ASR      R5,R3,#+31
+   \   00000128   0340A0E1           MOV      R4,R3
+   \   0000012C   0800BDE8           POP      {R3}
+   \   00000130   946887E0           UMULL    R6,R7,R4,R8
+   \   00000134   947927E0           MLA      R7,R4,R9,R7
+   \   00000138   957827E0           MLA      R7,R5,R8,R7
+   \   0000013C   073043E0           SUB      R3,R3,R7
+   \   00000140   043083E2           ADD      R3,R3,#+4
+   \   00000144   C331A0E1           ASR      R3,R3,#+3
+   \   00000148   C34FA0E1           ASR      R4,R3,#+31
+   \   0000014C   C30754E1           CMP      R4,R3, ASR #+15
+   \   00000150   FF30A013           MOVNE    R3,#+255
+   \   00000154   7F3C8313           ORRNE    R3,R3,#0x7F00
+   \   00000158   04302310           EORNE    R3,R3,R4
+   \   0000015C   B030C2E1           STRH     R3,[R2, #+0]
+    372          		pcm0 += nChans;
+   \   00000160   14309DE5           LDR      R3,[SP, #+20]
+   \   00000164   832082E0           ADD      R2,R2,R3, LSL #+1
+    373          
+    374          		in = *over1;	
+    375          		*pcm1 = CLIPTOSHORT( (in + f1 + RND_VAL) >> FBITS_OUT_IMDCT );
+   \   00000168   00309AE5           LDR      R3,[R10, #+0]
+   \   0000016C   0C3083E0           ADD      R3,R3,R12
+   \   00000170   043083E2           ADD      R3,R3,#+4
+   \   00000174   C331A0E1           ASR      R3,R3,#+3
+   \   00000178   C34FA0E1           ASR      R4,R3,#+31
+   \   0000017C   C30754E1           CMP      R4,R3, ASR #+15
+   \   00000180   FF30A013           MOVNE    R3,#+255
+   \   00000184   7F3C8313           ORRNE    R3,R3,#0x7F00
+   \   00000188   04302310           EORNE    R3,R3,R4
+   \   0000018C   B030CEE1           STRH     R3,[LR, #+0]
+    376          		pcm1 -= nChans;
+    377          
+    378          		w0 = *wndCurr++;
+    379          		w1 = *wndCurr++;
+    380          		in = *buf1--;
+   \   00000190   04809DE5           LDR      R8,[SP, #+4]
+   \   00000194   0C309DE5           LDR      R3,[SP, #+12]
+   \   00000198   ........           LDR      R12,[R0], #+4
+   \   0000019C   ........           LDR      R4,[R8], #-4
+   \   000001A0   0EE083E0           ADD      LR,R3,LR
+   \   000001A4   ........           LDR      R3,[R0], #+4
+   \   000001A8   04808DE5           STR      R8,[SP, #+4]
+    381          
+    382          		/* save over0/over1 for next short block, in the slots just vacated */
+    383          		*over1-- = MULSHIFT32(w0, in);
+   \   000001AC   0480A0E1           MOV      R8,R4
+   \   000001B0   C49FA0E1           ASR      R9,R4,#+31
+   \   000001B4   0C40A0E1           MOV      R4,R12
+   \   000001B8   CC5FA0E1           ASR      R5,R12,#+31
+   \   000001BC   946887E0           UMULL    R6,R7,R4,R8
+   \   000001C0   947927E0           MLA      R7,R4,R9,R7
+   \   000001C4   957827E0           MLA      R7,R5,R8,R7
+    384          		*over0++ = MULSHIFT32(w1, in);
+   \   000001C8   C35FA0E1           ASR      R5,R3,#+31
+   \   000001CC   0740A0E1           MOV      R4,R7
+   \   000001D0   ........           STR      R4,[R10], #-4
+   \   000001D4   0340A0E1           MOV      R4,R3
+   \   000001D8   946887E0           UMULL    R6,R7,R4,R8
+   \   000001DC   947927E0           MLA      R7,R4,R9,R7
+   \   000001E0   957827E0           MLA      R7,R5,R8,R7
+   \   000001E4   0740A0E1           MOV      R4,R7
+   \   000001E8   ........           STR      R4,[R1], #+4
+    385          	} while (over0 < over1);
+   \   000001EC   0A0051E1           CMP      R1,R10
+   \   000001F0   BEFFFF3A           BCC      ??DecWindowOverlapShort_1
+    386          
+    387          	/* pcm[576-703] = Wc[128-255] * block0[128-255] + Wc[0-127] * block1[0-127] + overlap[576-703] 
+    388          	 * pcm[704-831] = Wc[128-255] * block1[128-255] + Wc[0-127] * block2[0-127] + overlap[704-831] 
+    389          	 * pcm[832-959] = Wc[128-255] * block2[128-255] + Wc[0-127] * block3[0-127] + overlap[832-959] 
+    390          	 */
+    391          	for (i = 0; i < 3; i++) {
+    392          		pcm0 += 64 * nChans;
+   \                     ??DecWindowOverlapShort_2:
+   \   000001F4   14309DE5           LDR      R3,[SP, #+20]
+    393          		pcm1 = pcm0 + (128 - 1) * nChans;
+    394          		over0 += 64;
+    395          		over1 = over0 + 128 - 1;
+    396          		buf0 += 64;
+    397          		buf1 = buf0 - 1;
+   \   000001F8   10609DE5           LDR      R6,[SP, #+16]
+   \   000001FC   832382E0           ADD      R2,R2,R3, LSL #+7
+   \   00000200   08309DE5           LDR      R3,[SP, #+8]
+   \   00000204   401F81E2           ADD      R1,R1,#+256
+   \   00000208   02E083E0           ADD      LR,R3,R2
+   \   0000020C   7FAF81E2           ADD      R10,R1,#+508
+   \   00000210   406F86E2           ADD      R6,R6,#+256
+   \   00000214   10608DE5           STR      R6,[SP, #+16]
+   \   00000218   044046E2           SUB      R4,R6,#+4
+   \   0000021C   04408DE5           STR      R4,[SP, #+4]
+    398          		wndCurr -= 128;
+   \   00000220   FF30E0E3           MVN      R3,#+255
+   \   00000224   403FC3E3           BIC      R3,R3,#0x100
+   \   00000228   000083E0           ADD      R0,R3,R0
+    399          
+    400          		do {
+    401          			w0 = *wndCurr++;	/* W[0], W[1], ...W[63] */
+    402          			w1 = *wndCurr++;	/* W[127], W[126], ... W[64] */
+    403          			in = *buf0++;
+   \                     ??DecWindowOverlapShort_3:
+   \   0000022C   10609DE5           LDR      R6,[SP, #+16]
+   \   00000230   ........           LDR      R12,[R0], #+4
+   \   00000234   ........           LDR      R3,[R0], #+4
+   \   00000238   ........           LDR      R8,[R6], #+4
+   \   0000023C   10608DE5           STR      R6,[SP, #+16]
+    404          
+    405          			f0 = MULSHIFT32(w0, in);
+    406          			f1 = MULSHIFT32(w1, in);
+    407          
+    408          			in  = *(over0 - 128);	/* from last short block */
+    409          			in += *(over0 + 0);		/* from last full frame */
+    410          			*pcm0 = CLIPTOSHORT( (in - f0 + RND_VAL) >> FBITS_OUT_IMDCT );
+   \   00000240   004211E5           LDR      R4,[R1, #-512]
+   \   00000244   006091E5           LDR      R6,[R1, #+0]
+   \   00000248   C89FA0E1           ASR      R9,R8,#+31
+   \   0000024C   04B086E0           ADD      R11,R6,R4
+   \   00000250   0C40A0E1           MOV      R4,R12
+   \   00000254   C45FA0E1           ASR      R5,R4,#+31
+   \   00000258   946887E0           UMULL    R6,R7,R4,R8
+   \   0000025C   947927E0           MLA      R7,R4,R9,R7
+   \   00000260   957827E0           MLA      R7,R5,R8,R7
+   \   00000264   07404BE0           SUB      R4,R11,R7
+   \   00000268   044084E2           ADD      R4,R4,#+4
+   \   0000026C   C441A0E1           ASR      R4,R4,#+3
+   \   00000270   C46FA0E1           ASR      R6,R4,#+31
+   \   00000274   C40756E1           CMP      R6,R4, ASR #+15
+   \   00000278   FF40A013           MOVNE    R4,#+255
+   \   0000027C   7F4C8413           ORRNE    R4,R4,#0x7F00
+   \   00000280   06402410           EORNE    R4,R4,R6
+   \   00000284   B040C2E1           STRH     R4,[R2, #+0]
+    411          			pcm0 += nChans;
+   \   00000288   14409DE5           LDR      R4,[SP, #+20]
+   \   0000028C   842082E0           ADD      R2,R2,R4, LSL #+1
+   \   00000290   0340A0E1           MOV      R4,R3
+   \   00000294   C45FA0E1           ASR      R5,R4,#+31
+   \   00000298   946887E0           UMULL    R6,R7,R4,R8
+   \   0000029C   00621AE5           LDR      R6,[R10, #-512]
+   \   000002A0   947927E0           MLA      R7,R4,R9,R7
+   \   000002A4   957827E0           MLA      R7,R5,R8,R7
+    412          
+    413          			in  = *(over1 - 128);	/* from last short block */
+    414          			in += *(over1 + 0);		/* from last full frame */
+    415          			*pcm1 = CLIPTOSHORT( (in + f1 + RND_VAL) >> FBITS_OUT_IMDCT );
+    416          			pcm1 -= nChans;
+    417          
+    418          			/* save over0/over1 for next short block, in the slots just vacated */
+    419          			in = *buf1--;
+    420          			*over1-- = MULSHIFT32(w0, in);
+   \   000002A8   CC5FA0E1           ASR      R5,R12,#+31
+   \   000002AC   074086E0           ADD      R4,R6,R7
+   \   000002B0   00609AE5           LDR      R6,[R10, #+0]
+   \   000002B4   044086E0           ADD      R4,R6,R4
+   \   000002B8   044084E2           ADD      R4,R4,#+4
+   \   000002BC   C441A0E1           ASR      R4,R4,#+3
+   \   000002C0   C46FA0E1           ASR      R6,R4,#+31
+   \   000002C4   C40756E1           CMP      R6,R4, ASR #+15
+   \   000002C8   FF40A013           MOVNE    R4,#+255
+   \   000002CC   7F4C8413           ORRNE    R4,R4,#0x7F00
+   \   000002D0   06402410           EORNE    R4,R4,R6
+   \   000002D4   B040CEE1           STRH     R4,[LR, #+0]
+   \   000002D8   0C409DE5           LDR      R4,[SP, #+12]
+   \   000002DC   04809DE5           LDR      R8,[SP, #+4]
+   \   000002E0   0EE084E0           ADD      LR,R4,LR
+   \   000002E4   ........           LDR      R4,[R8], #-4
+   \   000002E8   04808DE5           STR      R8,[SP, #+4]
+   \   000002EC   0480A0E1           MOV      R8,R4
+   \   000002F0   C49FA0E1           ASR      R9,R4,#+31
+   \   000002F4   0C40A0E1           MOV      R4,R12
+   \   000002F8   946887E0           UMULL    R6,R7,R4,R8
+   \   000002FC   947927E0           MLA      R7,R4,R9,R7
+   \   00000300   957827E0           MLA      R7,R5,R8,R7
+    421          			*over0++ = MULSHIFT32(w1, in);
+   \   00000304   C35FA0E1           ASR      R5,R3,#+31
+   \   00000308   0740A0E1           MOV      R4,R7
+   \   0000030C   ........           STR      R4,[R10], #-4
+   \   00000310   0340A0E1           MOV      R4,R3
+   \   00000314   946887E0           UMULL    R6,R7,R4,R8
+   \   00000318   947927E0           MLA      R7,R4,R9,R7
+   \   0000031C   957827E0           MLA      R7,R5,R8,R7
+   \   00000320   0760A0E1           MOV      R6,R7
+   \   00000324   ........           STR      R6,[R1], #+4
+    422          		} while (over0 < over1);
+   \   00000328   0A0051E1           CMP      R1,R10
+   \   0000032C   BEFFFF3A           BCC      ??DecWindowOverlapShort_3
+    423          	}
+   \   00000330   00409DE5           LDR      R4,[SP, #+0]
+   \   00000334   014084E2           ADD      R4,R4,#+1
+   \   00000338   00408DE5           STR      R4,[SP, #+0]
+   \   0000033C   030054E3           CMP      R4,#+3
+   \   00000340   ABFFFFBA           BLT      ??DecWindowOverlapShort_2
+    424          
+    425          	/* pcm[960-1023] = Wc[128-191] * block3[128-191] + Wc[0-63]   * block4[0-63] + overlap[960-1023]  
+    426          	 * over[0-63]    = Wc[192-255] * block3[192-255] + Wc[64-127] * block4[64-127]
+    427          	 */
+    428          	pcm0 += 64 * nChans;
+   \   00000344   14309DE5           LDR      R3,[SP, #+20]
+    429          	over0 -= 832;				/* points at overlap[64] */
+    430          	over1 = over0 + 128 - 1;	/* points at overlap[191] */
+    431          	buf0 += 64;
+    432          	buf1 = buf0 - 1;
+   \   00000348   10609DE5           LDR      R6,[SP, #+16]
+   \   0000034C   83E382E0           ADD      LR,R2,R3, LSL #+7
+   \   00000350   FF20E0E3           MVN      R2,#+255
+   \   00000354   C02EC2E3           BIC      R2,R2,#0xC00
+   \   00000358   021081E0           ADD      R1,R1,R2
+   \   0000035C   7F2F81E2           ADD      R2,R1,#+508
+   \   00000360   406F86E2           ADD      R6,R6,#+256
+   \   00000364   10608DE5           STR      R6,[SP, #+16]
+   \   00000368   044046E2           SUB      R4,R6,#+4
+   \   0000036C   00408DE5           STR      R4,[SP, #+0]
+    433          	wndCurr -= 128;
+   \   00000370   FF30E0E3           MVN      R3,#+255
+   \   00000374   403FC3E3           BIC      R3,R3,#0x100
+   \   00000378   000083E0           ADD      R0,R3,R0
+    434          	do {
+    435          		w0 = *wndCurr++;	/* W[0], W[1], ...W[63] */
+    436          		w1 = *wndCurr++;	/* W[127], W[126], ... W[64] */
+    437          		in = *buf0++;
+   \                     ??DecWindowOverlapShort_4:
+   \   0000037C   10809DE5           LDR      R8,[SP, #+16]
+   \   00000380   ........           LDR      R12,[R0], #+4
+   \   00000384   ........           LDR      R3,[R0], #+4
+   \   00000388   ........           LDR      R4,[R8], #+4
+   \   0000038C   10808DE5           STR      R8,[SP, #+16]
+    438          
+    439          		f0 = MULSHIFT32(w0, in);
+    440          		f1 = MULSHIFT32(w1, in);
+    441          
+    442          		in  = *(over0 + 768);	/* from last short block */
+    443          		in += *(over0 + 896);	/* from last full frame */
+    444          		*pcm0 = CLIPTOSHORT( (in - f0 + RND_VAL) >> FBITS_OUT_IMDCT );
+   \   00000390   006C91E5           LDR      R6,[R1, #+3072]
+   \   00000394   008E91E5           LDR      R8,[R1, #+3584]
+   \   00000398   C45FA0E1           ASR      R5,R4,#+31
+   \   0000039C   0CA0A0E1           MOV      R10,R12
+   \   000003A0   CCBFA0E1           ASR      R11,R12,#+31
+   \   000003A4   06C088E0           ADD      R12,R8,R6
+   \   000003A8   9A6487E0           UMULL    R6,R7,R10,R4
+    445          		pcm0 += nChans;
+    446          
+    447          		in  = *(over1 + 768);	/* from last short block */
+    448          		*(over1 - 128) = in + f1;
+   \   000003AC   C39FA0E1           ASR      R9,R3,#+31
+   \   000003B0   9A7527E0           MLA      R7,R10,R5,R7
+   \   000003B4   9B7427E0           MLA      R7,R11,R4,R7
+   \   000003B8   07604CE0           SUB      R6,R12,R7
+   \   000003BC   046086E2           ADD      R6,R6,#+4
+   \   000003C0   C661A0E1           ASR      R6,R6,#+3
+   \   000003C4   C68FA0E1           ASR      R8,R6,#+31
+   \   000003C8   C60758E1           CMP      R8,R6, ASR #+15
+   \   000003CC   FF60A013           MOVNE    R6,#+255
+   \   000003D0   7F6C8613           ORRNE    R6,R6,#0x7F00
+   \   000003D4   08602610           EORNE    R6,R6,R8
+   \   000003D8   B060CEE1           STRH     R6,[LR, #+0]
+   \   000003DC   14609DE5           LDR      R6,[SP, #+20]
+   \   000003E0   0380A0E1           MOV      R8,R3
+   \   000003E4   003C92E5           LDR      R3,[R2, #+3072]
+   \   000003E8   86E08EE0           ADD      LR,LR,R6, LSL #+1
+   \   000003EC   986487E0           UMULL    R6,R7,R8,R4
+   \   000003F0   987527E0           MLA      R7,R8,R5,R7
+   \   000003F4   997427E0           MLA      R7,R9,R4,R7
+   \   000003F8   033087E0           ADD      R3,R7,R3
+   \   000003FC   003202E5           STR      R3,[R2, #-512]
+    449          
+    450          		in = *buf1--;
+   \   00000400   00609DE5           LDR      R6,[SP, #+0]
+   \   00000404   ........           LDR      R4,[R6], #-4
+   \   00000408   00608DE5           STR      R6,[SP, #+0]
+    451          		*over1-- = MULSHIFT32(w0, in);	/* save in overlap[128-191] */
+   \   0000040C   C45FA0E1           ASR      R5,R4,#+31
+   \   00000410   9A6487E0           UMULL    R6,R7,R10,R4
+   \   00000414   9A7527E0           MLA      R7,R10,R5,R7
+   \   00000418   9B7427E0           MLA      R7,R11,R4,R7
+   \   0000041C   0760A0E1           MOV      R6,R7
+   \   00000420   ........           STR      R6,[R2], #-4
+    452          		*over0++ = MULSHIFT32(w1, in);	/* save in overlap[64-127] */
+   \   00000424   986487E0           UMULL    R6,R7,R8,R4
+   \   00000428   987527E0           MLA      R7,R8,R5,R7
+   \   0000042C   997427E0           MLA      R7,R9,R4,R7
+   \   00000430   0760A0E1           MOV      R6,R7
+   \   00000434   ........           STR      R6,[R1], #+4
+    453          	} while (over0 < over1);
+   \   00000438   020051E1           CMP      R1,R2
+   \   0000043C   CEFFFF3A           BCC      ??DecWindowOverlapShort_4
+    454          	
+    455          	/* over0 now points at overlap[128] */
+    456          	
+    457          	/* over[64-191]   = Wc[128-255] * block4[128-255] + Wc[0-127] * block5[0-127] 
+    458          	 * over[192-319]  = Wc[128-255] * block5[128-255] + Wc[0-127] * block6[0-127]
+    459          	 * over[320-447]  = Wc[128-255] * block6[128-255] + Wc[0-127] * block7[0-127]  
+    460          	 * over[448-576]  = Wc[128-255] * block7[128-255]
+    461          	 */
+    462          	for (i = 0; i < 3; i++) {
+   \   00000440   00E0A0E3           MOV      LR,#+0
+    463          		over0 += 64;
+    464          		over1 = over0 + 128 - 1;
+    465          		buf0 += 64;
+    466          		buf1 = buf0 - 1;
+   \                     ??DecWindowOverlapShort_5:
+   \   00000444   10609DE5           LDR      R6,[SP, #+16]
+   \   00000448   401F81E2           ADD      R1,R1,#+256
+   \   0000044C   7F2F81E2           ADD      R2,R1,#+508
+   \   00000450   406F86E2           ADD      R6,R6,#+256
+   \   00000454   10608DE5           STR      R6,[SP, #+16]
+   \   00000458   044046E2           SUB      R4,R6,#+4
+   \   0000045C   00408DE5           STR      R4,[SP, #+0]
+    467          		wndCurr -= 128;
+   \   00000460   FF30E0E3           MVN      R3,#+255
+   \   00000464   403FC3E3           BIC      R3,R3,#0x100
+   \   00000468   000083E0           ADD      R0,R3,R0
+    468          		do {
+    469          			w0 = *wndCurr++;	/* W[0], W[1], ...W[63] */
+    470          			w1 = *wndCurr++;	/* W[127], W[126], ... W[64] */
+    471          			in = *buf0++;
+   \                     ??DecWindowOverlapShort_6:
+   \   0000046C   10809DE5           LDR      R8,[SP, #+16]
+   \   00000470   ........           LDR      R12,[R0], #+4
+   \   00000474   ........           LDR      R4,[R8], #+4
+   \   00000478   ........           LDR      R3,[R0], #+4
+   \   0000047C   10808DE5           STR      R8,[SP, #+16]
+    472          
+    473          			f0 = MULSHIFT32(w0, in);
+    474          			f1 = MULSHIFT32(w1, in);
+    475          
+    476          			/* from last short block */
+    477          			*(over0 - 128) -= f0;
+   \   00000480   C45FA0E1           ASR      R5,R4,#+31
+   \   00000484   0CA0A0E1           MOV      R10,R12
+   \   00000488   CCBFA0E1           ASR      R11,R12,#+31
+   \   0000048C   00C211E5           LDR      R12,[R1, #-512]
+   \   00000490   9A6487E0           UMULL    R6,R7,R10,R4
+    478          			*(over1 - 128)+= f1;
+   \   00000494   0380A0E1           MOV      R8,R3
+   \   00000498   9A7527E0           MLA      R7,R10,R5,R7
+   \   0000049C   C39FA0E1           ASR      R9,R3,#+31
+   \   000004A0   9B7427E0           MLA      R7,R11,R4,R7
+   \   000004A4   07604CE0           SUB      R6,R12,R7
+   \   000004A8   006201E5           STR      R6,[R1, #-512]
+   \   000004AC   003212E5           LDR      R3,[R2, #-512]
+   \   000004B0   986487E0           UMULL    R6,R7,R8,R4
+   \   000004B4   987527E0           MLA      R7,R8,R5,R7
+   \   000004B8   997427E0           MLA      R7,R9,R4,R7
+   \   000004BC   033087E0           ADD      R3,R7,R3
+   \   000004C0   003202E5           STR      R3,[R2, #-512]
+    479          
+    480          			in = *buf1--;
+   \   000004C4   00609DE5           LDR      R6,[SP, #+0]
+   \   000004C8   ........           LDR      R4,[R6], #-4
+   \   000004CC   00608DE5           STR      R6,[SP, #+0]
+    481          			*over1-- = MULSHIFT32(w0, in);
+   \   000004D0   C45FA0E1           ASR      R5,R4,#+31
+   \   000004D4   9A6487E0           UMULL    R6,R7,R10,R4
+   \   000004D8   9A7527E0           MLA      R7,R10,R5,R7
+   \   000004DC   9B7427E0           MLA      R7,R11,R4,R7
+   \   000004E0   0760A0E1           MOV      R6,R7
+   \   000004E4   ........           STR      R6,[R2], #-4
+    482          			*over0++ = MULSHIFT32(w1, in);
+   \   000004E8   986487E0           UMULL    R6,R7,R8,R4
+   \   000004EC   987527E0           MLA      R7,R8,R5,R7
+   \   000004F0   997427E0           MLA      R7,R9,R4,R7
+   \   000004F4   0760A0E1           MOV      R6,R7
+   \   000004F8   ........           STR      R6,[R1], #+4
+    483          		} while (over0 < over1);
+   \   000004FC   020051E1           CMP      R1,R2
+   \   00000500   D9FFFF3A           BCC      ??DecWindowOverlapShort_6
+    484          	}
+   \   00000504   01E08EE2           ADD      LR,LR,#+1
+   \   00000508   03005EE3           CMP      LR,#+3
+   \   0000050C   CCFFFFBA           BLT      ??DecWindowOverlapShort_5
+    485          
+    486          	/* over[576-1024] = 0 */ 
+    487          	i = 448;
+   \   00000510   700FA0E3           MOV      R0,#+448
+    488          	over0 += 64;
+   \   00000514   401F81E2           ADD      R1,R1,#+256
+   \   00000518   0020A0E3           MOV      R2,#+0
+    489          	do {
+    490          		*over0++ = 0;
+   \                     ??DecWindowOverlapShort_7:
+   \   0000051C   ........           STR      R2,[R1], #+4
+    491          		*over0++ = 0;
+   \   00000520   ........           STR      R2,[R1], #+4
+    492          		*over0++ = 0;
+   \   00000524   ........           STR      R2,[R1], #+4
+    493          		*over0++ = 0;
+   \   00000528   ........           STR      R2,[R1], #+4
+    494          		i -= 4;
+   \   0000052C   040050E2           SUBS     R0,R0,#+4
+    495          	} while (i);
+   \   00000530   F9FFFF1A           BNE      ??DecWindowOverlapShort_7
+    496          }
+   \   00000534   18D08DE2           ADD      SP,SP,#+24       ;; stack cleaning
+   \   00000538   F08FBDE8           POP      {R4-R11,PC}      ;; return
+    497          
+    498          #endif	/* !AAC_ENABLE_SBR */
+    499          
+    500          /**************************************************************************************
+    501           * Function:    IMDCT
+    502           *
+    503           * Description: inverse transform and convert to 16-bit PCM
+    504           *
+    505           * Inputs:      valid AACDecInfo struct
+    506           *              index of current channel (0 for SCE/LFE, 0 or 1 for CPE)
+    507           *              output channel (range = [0, nChans-1])
+    508           *
+    509           * Outputs:     complete frame of decoded PCM, after inverse transform
+    510           *
+    511           * Return:      0 if successful, -1 if error
+    512           *
+    513           * Notes:       If AAC_ENABLE_SBR is defined at compile time then window + overlap 
+    514           *                does NOT clip to 16-bit PCM and does NOT interleave channels
+    515           *              If AAC_ENABLE_SBR is NOT defined at compile time, then window + overlap 
+    516           *                does clip to 16-bit PCM and interleaves channels
+    517           *              If SBR is enabled at compile time, but we don't know whether it is
+    518           *                actually used for this frame (e.g. the first frame of a stream),
+    519           *                we need to produce both clipped 16-bit PCM in outbuf AND
+    520           *                unclipped 32-bit PCM in the SBR input buffer. In this case we make
+    521           *                a separate pass over the 32-bit PCM to produce 16-bit PCM output.
+    522           *                This inflicts a slight performance hit when decoding non-SBR files.
+    523           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    524          int aacIMDCT(AACDecInfo *aacDecInfo, int ch, int chOut, short *outbuf)
+    525          {
+   \                     aacIMDCT:
+   \   00000000   F44F2DE9           PUSH     {R2,R4-R11,LR}
+   \   00000004   04D04DE2           SUB      SP,SP,#+4
+   \   00000008   0040A0E1           MOV      R4,R0
+    526          	int i;
+    527          	PSInfoBase *psi;
+    528          	ICSInfo *icsInfo;
+    529          
+    530          	/* validate pointers */
+    531          	if (!aacDecInfo || !aacDecInfo->psInfoBase)
+   \   0000000C   000054E3           CMP      R4,#+0
+   \   00000010   00009415           LDRNE    R0,[R4, #+0]
+   \   00000014   0150A0E1           MOV      R5,R1
+   \   00000018   00005013           CMPNE    R0,#+0
+    532          		return -1;
+   \   0000001C   0000E003           MVNEQ    R0,#+0
+   \   00000020   F68FBD08           POPEQ    {R1,R2,R4-R11,PC}
+    533          	psi = (PSInfoBase *)(aacDecInfo->psInfoBase);
+   \   00000024   0090A0E1           MOV      R9,R0
+    534          	icsInfo = (ch == 1 && psi->commonWin == 1) ? &(psi->icsInfo[0]) : &(psi->icsInfo[ch]);
+   \   00000028   010055E3           CMP      R5,#+1
+   \   0000002C   F0189905           LDREQ    R1,[R9, #+2288]
+   \   00000030   7C00A0E3           MOV      R0,#+124
+   \   00000034   01005103           CMPEQ    R1,#+1
+   \   00000038   3A10A013           MOVNE    R1,#+58
+   \   0000003C   91952210           MLANE    R2,R1,R5,R9
+   \   00000040   800E80E3           ORR      R0,R0,#0x800
+   \   00000044   09608000           ADDEQ    R6,R0,R9
+   \   00000048   02608010           ADDNE    R6,R0,R2
+    535          	outbuf += chOut;
+   \   0000004C   04009DE5           LDR      R0,[SP, #+4]
+    536          
+    537          	/* optimized type-IV DCT (operates inplace) */
+    538          	if (icsInfo->winSequence == 2) {
+   \   00000050   051689E0           ADD      R1,R9,R5, LSL #+12
+   \   00000054   807083E0           ADD      R7,R3,R0, LSL #+1
+   \   00000058   00108DE5           STR      R1,[SP, #+0]
+   \   0000005C   4800A0E3           MOV      R0,#+72
+   \   00000060   400D80E3           ORR      R0,R0,#0x1000
+   \   00000064   018080E0           ADD      R8,R0,R1
+   \   00000068   050189E0           ADD      R0,R9,R5, LSL #+2
+   \   0000006C   41AD80E2           ADD      R10,R0,#+4160
+   \   00000070   0100D6E5           LDRB     R0,[R6, #+1]
+   \   00000074   020050E3           CMP      R0,#+2
+   \   00000078   0C00001A           BNE      ??aacIMDCT_0
+    539          		/* 8 short blocks */
+    540          		for (i = 0; i < 8; i++)
+   \   0000007C   00B0A0E3           MOV      R11,#+0
+    541          			DCT4(0, psi->coef[ch] + i*128, psi->gbCurrent[ch]);
+   \                     ??aacIMDCT_1:
+   \   00000080   00109DE5           LDR      R1,[SP, #+0]
+   \   00000084   00209AE5           LDR      R2,[R10, #+0]
+   \   00000088   4800A0E3           MOV      R0,#+72
+   \   0000008C   400D80E3           ORR      R0,R0,#0x1000
+   \   00000090   8B1481E0           ADD      R1,R1,R11, LSL #+9
+   \   00000094   011080E0           ADD      R1,R0,R1
+   \   00000098   0000A0E3           MOV      R0,#+0
+   \   0000009C   ........           _BLF     raac_DCT4,??raac_DCT4??rA
+   \   000000A0   01B08BE2           ADD      R11,R11,#+1
+   \   000000A4   08005BE3           CMP      R11,#+8
+   \   000000A8   040000AA           BGE      ??aacIMDCT_2
+   \   000000AC   F3FFFFEA           B        ??aacIMDCT_1
+    542          	} else {
+    543          		/* 1 long block */
+    544          		DCT4(1, psi->coef[ch], psi->gbCurrent[ch]);
+   \                     ??aacIMDCT_0:
+   \   000000B0   00209AE5           LDR      R2,[R10, #+0]
+   \   000000B4   0810A0E1           MOV      R1,R8
+   \   000000B8   0100A0E3           MOV      R0,#+1
+   \   000000BC   ........           _BLF     raac_DCT4,??raac_DCT4??rA
+    545          	}
+    546          
+    547          #ifdef AAC_ENABLE_SBR
+    548          	/* window, overlap-add, don't clip to short (send to SBR decoder) 
+    549          	 * store the decoded 32-bit samples in top half (second AAC_MAX_NSAMPS samples) of coef buffer
+    550          	 */
+    551          	if (icsInfo->winSequence == 0)
+    552          		DecWindowOverlapNoClip(psi->coef[ch], psi->overlap[chOut], psi->sbrWorkBuf[ch], icsInfo->winShape, psi->prevWinShape[chOut]);
+    553          	else if (icsInfo->winSequence == 1)
+    554          		DecWindowOverlapLongStartNoClip(psi->coef[ch], psi->overlap[chOut], psi->sbrWorkBuf[ch], icsInfo->winShape, psi->prevWinShape[chOut]);
+    555          	else if (icsInfo->winSequence == 2)
+    556          		DecWindowOverlapShortNoClip(psi->coef[ch], psi->overlap[chOut], psi->sbrWorkBuf[ch], icsInfo->winShape, psi->prevWinShape[chOut]);
+    557          	else if (icsInfo->winSequence == 3)
+    558          		DecWindowOverlapLongStopNoClip(psi->coef[ch], psi->overlap[chOut], psi->sbrWorkBuf[ch], icsInfo->winShape, psi->prevWinShape[chOut]);
+    559          
+    560          	if (!aacDecInfo->sbrEnabled) {
+    561          		for (i = 0; i < AAC_MAX_NSAMPS; i++) {
+    562          			*outbuf = CLIPTOSHORT((psi->sbrWorkBuf[ch][i] + RND_VAL) >> FBITS_OUT_IMDCT);
+    563          			outbuf += aacDecInfo->nChans;
+    564          		}
+    565          	}
+    566          
+    567          	aacDecInfo->rawSampleBuf[ch] = psi->sbrWorkBuf[ch];
+    568          	aacDecInfo->rawSampleBytes = sizeof(int);
+    569          	aacDecInfo->rawSampleFBits = FBITS_OUT_IMDCT;
+    570          #else
+    571          	/* window, overlap-add, round to PCM - optimized for each window sequence */
+    572          	if (icsInfo->winSequence == 0)
+   \                     ??aacIMDCT_2:
+   \   000000C0   04109DE5           LDR      R1,[SP, #+4]
+   \   000000C4   04309DE5           LDR      R3,[SP, #+4]
+   \   000000C8   011689E0           ADD      R1,R9,R1, LSL #+12
+   \   000000CC   4820A0E3           MOV      R2,#+72
+   \   000000D0   502C82E3           ORR      R2,R2,#0x5000
+   \   000000D4   033189E0           ADD      R3,R9,R3, LSL #+2
+   \   000000D8   039082E0           ADD      R9,R2,R3
+   \   000000DC   0120D6E5           LDRB     R2,[R6, #+1]
+   \   000000E0   4800A0E3           MOV      R0,#+72
+   \   000000E4   C00D80E3           ORR      R0,R0,#0x3000
+   \   000000E8   011080E0           ADD      R1,R0,R1
+   \   000000EC   0200D6E5           LDRB     R0,[R6, #+2]
+   \   000000F0   000052E3           CMP      R2,#+0
+   \   000000F4   0700001A           BNE      ??aacIMDCT_3
+    573          		DecWindowOverlap(psi->coef[ch], psi->overlap[chOut], outbuf, aacDecInfo->nChans, icsInfo->winShape, psi->prevWinShape[chOut]);
+   \   000000F8   002099E5           LDR      R2,[R9, #+0]
+   \   000000FC   04002DE9           PUSH     {R2}
+   \   00000100   01002DE9           PUSH     {R0}
+   \   00000104   403094E5           LDR      R3,[R4, #+64]
+   \   00000108   0720A0E1           MOV      R2,R7
+   \   0000010C   0800A0E1           MOV      R0,R8
+   \   00000110   ........           BL       DecWindowOverlap
+   \   00000114   1C0000EA           B        ??aacIMDCT_4
+    574          	else if (icsInfo->winSequence == 1)
+   \                     ??aacIMDCT_3:
+   \   00000118   010052E3           CMP      R2,#+1
+   \   0000011C   0700001A           BNE      ??aacIMDCT_5
+    575          		DecWindowOverlapLongStart(psi->coef[ch], psi->overlap[chOut], outbuf, aacDecInfo->nChans, icsInfo->winShape, psi->prevWinShape[chOut]);
+   \   00000120   002099E5           LDR      R2,[R9, #+0]
+   \   00000124   04002DE9           PUSH     {R2}
+   \   00000128   01002DE9           PUSH     {R0}
+   \   0000012C   403094E5           LDR      R3,[R4, #+64]
+   \   00000130   0720A0E1           MOV      R2,R7
+   \   00000134   0800A0E1           MOV      R0,R8
+   \   00000138   ........           BL       DecWindowOverlapLongStart
+   \   0000013C   120000EA           B        ??aacIMDCT_4
+    576          	else if (icsInfo->winSequence == 2)
+   \                     ??aacIMDCT_5:
+   \   00000140   020052E3           CMP      R2,#+2
+   \   00000144   0700001A           BNE      ??aacIMDCT_6
+    577          		DecWindowOverlapShort(psi->coef[ch], psi->overlap[chOut], outbuf, aacDecInfo->nChans, icsInfo->winShape, psi->prevWinShape[chOut]);
+   \   00000148   002099E5           LDR      R2,[R9, #+0]
+   \   0000014C   04002DE9           PUSH     {R2}
+   \   00000150   01002DE9           PUSH     {R0}
+   \   00000154   403094E5           LDR      R3,[R4, #+64]
+   \   00000158   0720A0E1           MOV      R2,R7
+   \   0000015C   0800A0E1           MOV      R0,R8
+   \   00000160   ........           BL       DecWindowOverlapShort
+   \   00000164   080000EA           B        ??aacIMDCT_4
+    578          	else if (icsInfo->winSequence == 3)
+   \                     ??aacIMDCT_6:
+   \   00000168   030052E3           CMP      R2,#+3
+   \   0000016C   0700001A           BNE      ??aacIMDCT_7
+    579          		DecWindowOverlapLongStop(psi->coef[ch], psi->overlap[chOut], outbuf, aacDecInfo->nChans, icsInfo->winShape, psi->prevWinShape[chOut]);
+   \   00000170   002099E5           LDR      R2,[R9, #+0]
+   \   00000174   04002DE9           PUSH     {R2}
+   \   00000178   01002DE9           PUSH     {R0}
+   \   0000017C   403094E5           LDR      R3,[R4, #+64]
+   \   00000180   0720A0E1           MOV      R2,R7
+   \   00000184   0800A0E1           MOV      R0,R8
+   \   00000188   ........           BL       DecWindowOverlapLongStop
+   \                     ??aacIMDCT_4:
+   \   0000018C   08D08DE2           ADD      SP,SP,#+8        ;; stack cleaning
+    580          
+    581          	aacDecInfo->rawSampleBuf[ch] = 0;
+   \                     ??aacIMDCT_7:
+   \   00000190   0000A0E3           MOV      R0,#+0
+   \   00000194   051184E0           ADD      R1,R4,R5, LSL #+2
+   \   00000198   080081E5           STR      R0,[R1, #+8]
+    582          	aacDecInfo->rawSampleBytes = 0;
+   \   0000019C   100084E5           STR      R0,[R4, #+16]
+    583          	aacDecInfo->rawSampleFBits = 0;
+   \   000001A0   140084E5           STR      R0,[R4, #+20]
+    584          #endif
+    585          
+    586          	psi->prevWinShape[chOut] = icsInfo->winShape;
+   \   000001A4   0200D6E5           LDRB     R0,[R6, #+2]
+   \   000001A8   000089E5           STR      R0,[R9, #+0]
+    587          
+    588          	return 0;
+   \   000001AC   0000A0E3           MOV      R0,#+0
+   \   000001B0   F68FBDE8           POP      {R1,R2,R4-R11,PC}  ;; return
+    589          }
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable14:
+   \   00000000   ........           DC32     raac_kbdWindowOffset
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable15:
+   \   00000000   ........           DC32     raac_sinWindowOffset
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable16:
+   \   00000000   ........           DC32     raac_kbdWindow
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable17:
+   \   00000000   ........           DC32     raac_sinWindow
+
+   Maximum stack usage in bytes:
+
+     Function                  CSTACK
+     --------                  ------
+     DecWindowOverlap             56
+     DecWindowOverlapLongStart    60
+     DecWindowOverlapLongStop     60
+     DecWindowOverlapShort        64
+     aacIMDCT                     52
+
+
+   Segment part sizes:
+
+     Function/Label            Bytes
+     --------------            -----
+     DecWindowOverlap           656
+     DecWindowOverlapLongStart  652
+     DecWindowOverlapLongStop   636
+     DecWindowOverlapShort     1340
+     aacIMDCT                   436
+     ??DataTable14                4
+     ??DataTable15                4
+     ??DataTable16                4
+     ??DataTable17                4
+      Others                     32
+
+ 
+ 3 768 bytes in segment CODE
+ 
+ 3 736 bytes of CODE memory (+ 32 bytes shared)
+
+Errors: none
+Warnings: none

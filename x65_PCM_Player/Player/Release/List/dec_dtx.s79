@@ -1,0 +1,1933 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:38 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_ /
+//                       dtx.c                                               /
+//    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_ /
+//                       dtx.c -D NDEBUG -lC D:\SVN\SieELF\SieELF\x65_PCM_Pl /
+//                       ayer\Player\Release\List\ -lA                       /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player\Player /
+//                       \Release\Obj\ -s9 --cpu_mode arm --endian little    /
+//                       --cpu ARM926EJ-S --stack_align 4 --interwork -e     /
+//                       --fpu None --dlib_config "D:\Program                /
+//                       Files\IAR\Embedded Workbench 4.0                    /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\dec_dtx.s79                                    /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME dec_dtx
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        EXTERN ??div32_a
+
+        MULTWEAK ??D_DTX_activity_update??rT
+        MULTWEAK ??D_DTX_exe??rT
+        MULTWEAK ??D_DTX_exit??rT
+        MULTWEAK ??D_DTX_init??rT
+        MULTWEAK ??D_DTX_reset??rT
+        MULTWEAK ??D_DTX_rx_handler??rT
+        MULTWEAK ??D_LPC_isf_noise_d??rA
+        MULTWEAK ??D_UTIL_dot_product12??rA
+        MULTWEAK ??D_UTIL_log2??rA
+        MULTWEAK ??D_UTIL_norm_l??rA
+        MULTWEAK ??D_UTIL_normalised_inverse_sqrt??rA
+        MULTWEAK ??D_UTIL_pow2??rA
+        MULTWEAK ??D_UTIL_random??rA
+        MULTWEAK ??D_UTIL_saturate??rA
+        MULTWEAK ??free??rA
+        MULTWEAK ??rA??div32_a
+        PUBLIC D_DTX_activity_update
+        FUNCTION D_DTX_activity_update,0203H
+        LOCFRAME CSTACK, 20, STACK
+        FUNCTION D_DTX_cn_dithering,0203H
+        LOCFRAME CSTACK, 24, STACK
+        PUBLIC D_DTX_exe
+        FUNCTION D_DTX_exe,0203H
+        LOCFRAME CSTACK, 116, STACK
+        PUBLIC D_DTX_exit
+        FUNCTION D_DTX_exit,0203H
+        LOCFRAME CSTACK, 8, STACK
+        PUBLIC D_DTX_init
+        FUNCTION D_DTX_init,0203H
+        LOCFRAME CSTACK, 16, STACK
+        PUBLIC D_DTX_reset
+        FUNCTION D_DTX_reset,0203H
+        LOCFRAME CSTACK, 32, STACK
+        PUBLIC D_DTX_rx_handler
+        FUNCTION D_DTX_rx_handler,0203H
+        LOCFRAME CSTACK, 32, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+D_LPC_isf_noise_d   SYMBOL "D_LPC_isf_noise_d"
+D_UTIL_dot_product12 SYMBOL "D_UTIL_dot_product12"
+D_UTIL_log2         SYMBOL "D_UTIL_log2"
+D_UTIL_norm_l       SYMBOL "D_UTIL_norm_l"
+D_UTIL_normalised_inverse_sqrt SYMBOL "D_UTIL_normalised_inverse_sqrt"
+D_UTIL_pow2         SYMBOL "D_UTIL_pow2"
+D_UTIL_random       SYMBOL "D_UTIL_random"
+D_UTIL_saturate     SYMBOL "D_UTIL_saturate"
+free                SYMBOL "free"
+D_DTX_activity_update SYMBOL "D_DTX_activity_update"
+??D_DTX_activity_update??rT SYMBOL "??rT", D_DTX_activity_update
+D_DTX_exe           SYMBOL "D_DTX_exe"
+??D_DTX_exe??rT     SYMBOL "??rT", D_DTX_exe
+D_DTX_exit          SYMBOL "D_DTX_exit"
+??D_DTX_exit??rT    SYMBOL "??rT", D_DTX_exit
+D_DTX_init          SYMBOL "D_DTX_init"
+??D_DTX_init??rT    SYMBOL "??rT", D_DTX_init
+D_DTX_reset         SYMBOL "D_DTX_reset"
+??D_DTX_reset??rT   SYMBOL "??rT", D_DTX_reset
+D_DTX_rx_handler    SYMBOL "D_DTX_rx_handler"
+??D_DTX_rx_handler??rT SYMBOL "??rT", D_DTX_rx_handler
+??D_LPC_isf_noise_d??rA SYMBOL "??rA", D_LPC_isf_noise_d
+??D_UTIL_dot_product12??rA SYMBOL "??rA", D_UTIL_dot_product12
+??D_UTIL_log2??rA   SYMBOL "??rA", D_UTIL_log2
+??D_UTIL_norm_l??rA SYMBOL "??rA", D_UTIL_norm_l
+??D_UTIL_normalised_inverse_sqrt??rA SYMBOL "??rA", D_UTIL_normalised_inverse_sqrt
+??D_UTIL_pow2??rA   SYMBOL "??rA", D_UTIL_pow2
+??D_UTIL_random??rA SYMBOL "??rA", D_UTIL_random
+??D_UTIL_saturate??rA SYMBOL "??rA", D_UTIL_saturate
+??free??rA          SYMBOL "??rA", free
+
+        EXTERN D_LPC_isf_noise_d
+        FUNCTION D_LPC_isf_noise_d,0202H
+        EXTERN D_UTIL_dot_product12
+        FUNCTION D_UTIL_dot_product12,0202H
+        EXTERN D_UTIL_log2
+        FUNCTION D_UTIL_log2,0202H
+        EXTERN D_UTIL_norm_l
+        FUNCTION D_UTIL_norm_l,0202H
+        EXTERN D_UTIL_normalised_inverse_sqrt
+        FUNCTION D_UTIL_normalised_inverse_sqrt,0202H
+        EXTERN D_UTIL_pow2
+        FUNCTION D_UTIL_pow2,0202H
+        EXTERN D_UTIL_random
+        FUNCTION D_UTIL_random,0202H
+        EXTERN D_UTIL_saturate
+        FUNCTION D_UTIL_saturate,0202H
+        EXTERN free
+        FUNCTION free,0200H
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_DTX_reset??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE D_DTX_reset
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_dtx.c
+//    1 /*
+//    2  *===================================================================
+//    3  *  3GPP AMR Wideband Floating-point Speech Codec
+//    4  *===================================================================
+//    5  */
+//    6 #include <math.h>
+//    7 #include "typedef.h"
+//    8 #include "dec_dtx.h"
+//    9 #include "dec_lpc.h"
+//   10 #include "dec_util.h"
+//   11 
+//   12 #define MAX_31                      (Word32)0x3FFFFFFF
+//   13 #define L_FRAME                     256   /* Frame size                          */
+//   14 #define RX_SPEECH_LOST              2
+//   15 #define RX_SPEECH_BAD               3
+//   16 #define RX_SID_FIRST                4
+//   17 #define RX_SID_UPDATE               5
+//   18 #define RX_SID_BAD                  6
+//   19 #define RX_NO_DATA                  7
+//   20 #define ISF_GAP                     128   /* 50                                  */
+//   21 #define D_DTX_MAX_EMPTY_THRESH      50
+//   22 #define GAIN_FACTOR                 75
+//   23 #define ISF_FACTOR_LOW              256
+//   24 #define ISF_FACTOR_STEP             2
+//   25 #define ISF_DITH_GAP                448
+//   26 #define D_DTX_HANG_CONST            7     /* yields eight frames of SP HANGOVER  */
+//   27 #define D_DTX_ELAPSED_FRAMES_THRESH (24 + 7 - 1)
+//   28 #define RANDOM_INITSEED             21845 /* own random init value               */
+//   29 
+//   30 
+//   31 /*
+//   32  * D_DTX_reset
+//   33  *
+//   34  * Parameters:
+//   35  *    st             O: state struct
+//   36  *
+//   37  * Function:
+//   38  *    Initializes state memory
+//   39  *
+//   40  * Returns:
+//   41  *    non-zero with error, zero for ok
+//   42  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function D_DTX_reset
+        ARM
+//   43 int D_DTX_reset(D_DTX_State *st, const Word16 *isf_init)
+//   44 {
+D_DTX_reset:
+        PUSH     {R4-R10,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R10 Frame(CFA, -8)
+        CFI R9 Frame(CFA, -12)
+        CFI R8 Frame(CFA, -16)
+        CFI R7 Frame(CFA, -20)
+        CFI R6 Frame(CFA, -24)
+        CFI R5 Frame(CFA, -28)
+        CFI R4 Frame(CFA, -32)
+        CFI CFA R13+32
+        MOV      R4,R0
+        MOV      R5,R1
+//   45    Word32 i;
+//   46 
+//   47    if(st == (D_DTX_State*)NULL)
+        CMP      R4,#+0
+//   48    {
+//   49       return(-1);
+        MVNEQ    R0,#+0
+        POPEQ    {R4-R10,PC}
+        ADD      R6,R4,#+336
+        MOV      R7,#+0
+        STRH     R7,[R6, #+14]
+//   50    }
+//   51    st->mem_since_last_sid = 0;
+//   52    st->mem_true_sid_period_inv = (1 << 13);   /* 0.25 in Q15 */
+        MOV      R0,#+8192
+        STRH     R0,[R6, #+0]
+//   53    st->mem_log_en = 3500;
+        MOV      R8,#+172
+        ORR      R8,R8,#0xD00
+        STRH     R8,[R6, #+2]
+//   54    st->mem_log_en_prev = 3500;
+        STRH     R8,[R6, #+4]
+//   55 
+//   56    /* low level noise for better performance in  DTX handover cases */
+//   57    st->mem_cng_seed = RANDOM_INITSEED;
+        MOV      R9,#+85
+        ORR      R9,R9,#0x5500
+        STRH     R9,[R6, #+6]
+//   58    st->mem_hist_ptr = 0;
+        STRH     R7,[R6, #+8]
+//   59 
+//   60    /* Init isf_hist[] and decoder log frame energy */
+//   61    memcpy(st->mem_isf, isf_init, M * sizeof(Word16));
+        MOV      R2,#+32
+        ADD      R0,R4,#+256
+        SWI      +286
+//   62    memcpy(st->mem_isf_prev, isf_init, M * sizeof(Word16));
+        MOV      R2,#+32
+        MOV      R1,R5
+        ADD      R0,R4,#+288
+        SWI      +286
+//   63 
+//   64    for(i = 0; i < D_DTX_HIST_SIZE; i++)
+        MOV      R10,#+0
+//   65    {
+//   66       memcpy(&st->mem_isf_buf[i * M], isf_init, M * sizeof(Word16));
+??D_DTX_reset_0:
+        MOV      R2,#+32
+        MOV      R1,R5
+        ADD      R0,R4,R10, LSL #+5
+        SWI      +286
+//   67       st->mem_log_en_buf[i] = 3500;
+        ADD      R0,R4,R10, LSL #+1
+        ADD      R0,R0,#+320
+        STRH     R8,[R0, #+0]
+//   68    }
+        ADD      R10,R10,#+1
+        CMP      R10,#+8
+        BLT      ??D_DTX_reset_0
+//   69    st->mem_dtx_hangover_count = D_DTX_HANG_CONST;
+        MOV      R0,#+7
+        STRB     R0,[R6, #+19]
+//   70    st->mem_dec_ana_elapsed_count = 127;
+        MOV      R0,#+127
+        STRB     R0,[R6, #+16]
+//   71    st->mem_sid_frame = 0;
+        STRB     R7,[R6, #+20]
+//   72    st->mem_valid_data = 0;
+        STRB     R7,[R6, #+21]
+//   73    st->mem_dtx_hangover_added = 0;
+        STRB     R7,[R6, #+22]
+//   74    st->mem_dtx_global_state = SPEECH;
+        STRB     R7,[R6, #+17]
+//   75    st->mem_data_updated = 0;
+        STRB     R7,[R6, #+18]
+//   76    st->mem_dither_seed = RANDOM_INITSEED;
+        STRH     R9,[R6, #+10]
+//   77    st->mem_cn_dith = 0;
+        STRH     R7,[R6, #+12]
+//   78    st->mem_dtx_vad_hist = 0;
+        STRH     R7,[R6, #+24]
+//   79 
+//   80    return(0);
+        MOV      R0,#+0
+        POP      {R4-R10,PC}      ;; return
+        CFI EndBlock cfiBlock1
+//   81 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_DTX_init??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE D_DTX_init
+//   82 
+//   83 
+//   84 /*
+//   85  * D_DTX_init
+//   86  *
+//   87  * Parameters:
+//   88  *    st           I/O: state struct
+//   89  *
+//   90  * Function:
+//   91  *    Allocates state memory and initializes state memory
+//   92  *
+//   93  * Returns:
+//   94  *    non-zero with error, zero for ok
+//   95  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function D_DTX_init
+        ARM
+//   96 int D_DTX_init(D_DTX_State **st, const Word16 *isf_init)
+//   97 {
+D_DTX_init:
+        PUSH     {R4-R6,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R6 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -12)
+        CFI R4 Frame(CFA, -16)
+        CFI CFA R13+16
+        MOV      R4,R0
+        MOV      R5,R1
+//   98    D_DTX_State *s;
+//   99 
+//  100    if(st == (D_DTX_State**)NULL)
+        CMP      R4,#+0
+        BEQ      ??D_DTX_init_0
+//  101    {
+//  102       return(-1);
+//  103    }
+//  104 
+//  105    *st = NULL;
+        MOV      R0,#+0
+        STR      R0,[R4, #+0]
+//  106 
+//  107    /* allocate memory */
+//  108    if((s = (D_DTX_State*)malloc(sizeof(D_DTX_State))) == NULL)
+        MOV      R0,#+106
+        ORR      R0,R0,#0x100
+        SWI      +20
+        MOVS     R6,R0
+        BNE      ??D_DTX_init_1
+//  109    {
+//  110       return(-1);
+??D_DTX_init_0:
+        MVN      R0,#+0
+        POP      {R4-R6,PC}
+//  111    }
+//  112 
+//  113    D_DTX_reset(s, isf_init);
+??D_DTX_init_1:
+        MOV      R1,R5
+        BL       D_DTX_reset
+//  114    *st = s;
+        STR      R6,[R4, #+0]
+//  115 
+//  116    return(0);
+        MOV      R0,#+0
+        POP      {R4-R6,PC}       ;; return
+        CFI EndBlock cfiBlock3
+//  117 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_DTX_exit??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE D_DTX_exit
+//  118 
+//  119 
+//  120 /*
+//  121  * D_DTX_exit
+//  122  *
+//  123  * Parameters:
+//  124  *    state        I/0: State struct
+//  125  *
+//  126  * Function:
+//  127  *    The memory used for state memory is freed
+//  128  *
+//  129  * Returns:
+//  130  *    void
+//  131  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function D_DTX_exit
+        ARM
+//  132 void D_DTX_exit(D_DTX_State **st)
+//  133 {
+D_DTX_exit:
+        PUSH     {R4,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+        MOVS     R4,R0
+//  134    if(st == NULL || *st == NULL)
+        LDRNE    R0,[R4, #+0]
+        CMPNE    R0,#+0
+        POPEQ    {R4,PC}
+//  135    {
+//  136       return;
+//  137    }
+//  138 
+//  139    /* deallocate memory */
+//  140    free(*st);
+        _BLF     free,??free??rA
+//  141    *st = NULL;
+        MOV      R0,#+0
+        STR      R0,[R4, #+0]
+//  142 
+//  143    return;
+        POP      {R4,PC}          ;; return
+        CFI EndBlock cfiBlock5
+//  144 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_DTX_rx_handler??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE D_DTX_rx_handler
+//  145 
+//  146 
+//  147 /*
+//  148  * D_DTX_rx_handler
+//  149  *
+//  150  * Parameters:
+//  151  *    st              I/O: State struct
+//  152  *    frame_type        I: Frame type
+//  153  *
+//  154  * Function:
+//  155  *    Analyze received frame
+//  156  *
+//  157  *    Table of new SPD synthesis states
+//  158  *
+//  159  *                          |       previous SPD_synthesis_state
+//  160  *    Incoming              |
+//  161  *    frame_type            | SPEECH       | DTX           | D_DTX_MUTE
+//  162  *    ---------------------------------------------------------------
+//  163  *    RX_SPEECH_GOOD ,      |              |               |
+//  164  *    RX_SPEECH_PR_DEGRADED | SPEECH       | SPEECH        | SPEECH
+//  165  *    ----------------------------------------------------------------
+//  166  *    RX_SPEECH_BAD,        | SPEECH       | DTX           | D_DTX_MUTE
+//  167  *    ----------------------------------------------------------------
+//  168  *    RX_SID_FIRST,         | DTX          | DTX/(D_DTX_MUTE)| D_DTX_MUTE
+//  169  *    ----------------------------------------------------------------
+//  170  *    RX_SID_UPDATE,        | DTX          | DTX           | DTX
+//  171  *    ----------------------------------------------------------------
+//  172  *    RX_SID_BAD,           | DTX          | DTX/(D_DTX_MUTE)| D_DTX_MUTE
+//  173  *    ----------------------------------------------------------------
+//  174  *    RX_NO_DATA,           | SPEECH       | DTX/(D_DTX_MUTE)| D_DTX_MUTE
+//  175  *    RX_SPARE              |(class2 garb.)|               |
+//  176  *    ----------------------------------------------------------------
+//  177  *
+//  178  * Returns:
+//  179  *    new state
+//  180  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function D_DTX_rx_handler
+        ARM
+//  181 UWord8 D_DTX_rx_handler(D_DTX_State *st, UWord8 frame_type)
+//  182 {
+D_DTX_rx_handler:
+        PUSH     {R4-R10,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R10 Frame(CFA, -8)
+        CFI R9 Frame(CFA, -12)
+        CFI R8 Frame(CFA, -16)
+        CFI R7 Frame(CFA, -20)
+        CFI R6 Frame(CFA, -24)
+        CFI R5 Frame(CFA, -28)
+        CFI R4 Frame(CFA, -32)
+        CFI CFA R13+32
+        MOV      R4,R1
+//  183    UWord8 newState;
+//  184    UWord8 encState;
+//  185 
+//  186    /* DTX if SID frame or previously in DTX{_MUTE}
+//  187     * and (NO_RX OR BAD_SPEECH)
+//  188     */
+//  189    if((frame_type == RX_SID_FIRST) | (frame_type == RX_SID_UPDATE) |
+//  190       (frame_type == RX_SID_BAD) | (((st->mem_dtx_global_state == DTX) |
+//  191       (st->mem_dtx_global_state == D_DTX_MUTE)) & ((frame_type == RX_NO_DATA) |
+//  192       (frame_type == RX_SPEECH_BAD) | (frame_type == RX_SPEECH_LOST))))
+        MOV      R5,#+0
+        MOV      R6,#+1
+        CMP      R4,#+4
+        BNE      ??D_DTX_rx_handler_0
+        MOV      R1,#+1
+??D_DTX_rx_handler_1:
+        MOV      R2,#+0
+        CMP      R4,#+6
+        BNE      ??D_DTX_rx_handler_2
+        MOV      R3,#+1
+        B        ??D_DTX_rx_handler_3
+??D_DTX_rx_handler_0:
+        MOV      R1,#+0
+        CMP      R4,#+5
+        BNE      ??D_DTX_rx_handler_1
+        MOV      R2,#+1
+??D_DTX_rx_handler_2:
+        MOV      R3,#+0
+??D_DTX_rx_handler_3:
+        MOV      R7,#+94
+        ORR      R7,R7,#0x100
+        ADD      R7,R7,R0
+        LDRB     R0,[R7, #+3]
+        CMP      R0,#+1
+        BNE      ??D_DTX_rx_handler_4
+        MOV      R8,#+1
+??D_DTX_rx_handler_5:
+        MOV      R12,#+0
+??D_DTX_rx_handler_6:
+        CMP      R4,#+7
+        BNE      ??D_DTX_rx_handler_7
+        MOV      LR,#+1
+??D_DTX_rx_handler_8:
+        MOV      R9,#+0
+        CMP      R4,#+2
+        BNE      ??D_DTX_rx_handler_9
+        MOV      R10,#+1
+        B        ??D_DTX_rx_handler_10
+??D_DTX_rx_handler_4:
+        MOV      R8,#+0
+        CMP      R0,#+2
+        BNE      ??D_DTX_rx_handler_5
+        MOV      R12,#+1
+        B        ??D_DTX_rx_handler_6
+??D_DTX_rx_handler_7:
+        MOV      LR,#+0
+        CMP      R4,#+3
+        BNE      ??D_DTX_rx_handler_8
+        MOV      R9,#+1
+??D_DTX_rx_handler_9:
+        MOV      R10,#+0
+??D_DTX_rx_handler_10:
+        ORR      R1,R2,R1
+        ORR      R1,R3,R1
+        ORR      R2,R12,R8
+        ORR      R3,R9,LR
+        ORR      R3,R10,R3
+        AND      R2,R3,R2
+        ORR      R1,R2,R1
+        LSLS     R1,R1,#+24
+        BEQ      ??D_DTX_rx_handler_11
+//  193    {
+//  194       newState = DTX;
+        MOV      R8,#+1
+//  195 
+//  196       /* stay in mute for these input types */
+//  197       if((st->mem_dtx_global_state == D_DTX_MUTE) &
+//  198          ((frame_type == RX_SID_BAD) | (frame_type == RX_SID_FIRST) |
+//  199          (frame_type == RX_SPEECH_LOST) | (frame_type == RX_NO_DATA)))
+        CMP      R0,#+2
+        MOVEQ    R0,#+1
+        MOVNE    R0,#+0
+        CMP      R4,#+6
+        BNE      ??D_DTX_rx_handler_12
+        MOV      R1,#+1
+??D_DTX_rx_handler_13:
+        MOV      R2,#+0
+        CMP      R4,#+2
+        BNE      ??D_DTX_rx_handler_14
+        MOV      R3,#+1
+??D_DTX_rx_handler_15:
+        MOV      R9,#+0
+??D_DTX_rx_handler_16:
+        ORR      R1,R2,R1
+        ORR      R1,R3,R1
+        ORR      R1,R9,R1
+        TST      R1,R0
+//  200       {
+//  201          newState = D_DTX_MUTE;
+//  202       }
+//  203 
+//  204       /* evaluate if noise parameters are too old                     */
+//  205       /* since_last_sid is reset when CN parameters have been updated */
+//  206       st->mem_since_last_sid = D_UTIL_saturate(st->mem_since_last_sid + 1);
+        LDRSH    R0,[R7, #+0]
+        MOVNE    R8,#+2
+        ADD      R0,R0,#+1
+        _BLF     D_UTIL_saturate,??D_UTIL_saturate??rA
+//  207 
+//  208       /* no update of sid parameters in DTX for a Word32 while */
+//  209       if ((frame_type !=  RX_SID_UPDATE)  &&
+//  210           (st->mem_since_last_sid > D_DTX_MAX_EMPTY_THRESH))
+        CMP      R4,#+5
+        BEQ      ??D_DTX_rx_handler_17
+        CMP      R0,#+51
+        BLT      ??D_DTX_rx_handler_17
+//  211       {
+//  212          newState = D_DTX_MUTE;
+        MOV      R8,#+2
+        B        ??D_DTX_rx_handler_17
+//  213       }
+??D_DTX_rx_handler_12:
+        MOV      R1,#+0
+        CMP      R4,#+4
+        BNE      ??D_DTX_rx_handler_13
+        MOV      R2,#+1
+??D_DTX_rx_handler_14:
+        MOV      R3,#+0
+        CMP      R4,#+7
+        BNE      ??D_DTX_rx_handler_15
+        MOV      R9,#+1
+        B        ??D_DTX_rx_handler_16
+//  214    }
+//  215    else
+//  216    {
+//  217       newState = SPEECH;
+??D_DTX_rx_handler_11:
+        MOV      R8,#+0
+//  218       st->mem_since_last_sid = 0;
+        MOV      R0,R5
+??D_DTX_rx_handler_17:
+        STRH     R0,[R7, #+0]
+//  219    }
+//  220 
+//  221    /*
+//  222     * reset the decAnaElapsed Counter when receiving CNI data the first
+//  223     * time, to robustify counter missmatch after handover
+//  224     * this might delay the bwd CNI analysis in the new decoder slightly.
+//  225     */
+//  226    if((st->mem_data_updated == 0) & (frame_type == RX_SID_UPDATE))
+        LDRB     R0,[R7, #+4]
+        CMP      R0,#+0
+        CMPEQ    R4,#+5
+//  227    {
+//  228       st->mem_dec_ana_elapsed_count = 0;
+        STRBEQ   R5,[R7, #+2]
+//  229    }
+//  230 
+//  231    /*
+//  232     * update the SPE-SPD DTX hangover synchronization
+//  233     * to know when SPE has added dtx hangover
+//  234     */
+//  235    st->mem_dec_ana_elapsed_count++;
+        LDRB     R0,[R7, #+2]
+        ADD      R0,R0,#+1
+        STRB     R0,[R7, #+2]
+//  236 
+//  237    /* saturate */
+//  238    if(st->mem_dec_ana_elapsed_count > 127)
+        AND      R0,R0,#0xFF
+        CMP      R0,#+128
+//  239    {
+//  240       st->mem_dec_ana_elapsed_count = 127;
+        MOVCS    R0,#+127
+        STRBCS   R0,[R7, #+2]
+//  241    }
+//  242 
+//  243    st->mem_dtx_hangover_added = 0;
+        STRB     R5,[R7, #+8]
+//  244 
+//  245    if((frame_type == RX_SID_FIRST) | (frame_type == RX_SID_UPDATE) |
+//  246 	   (frame_type == RX_SID_BAD) | 
+//  247 	   ((frame_type == RX_NO_DATA) && ((st->mem_dtx_global_state != SPEECH) ||
+//  248 	   (st->mem_dtx_vad_hist >= D_DTX_HANG_CONST))))
+        CMP      R4,#+4
+        BNE      ??D_DTX_rx_handler_18
+        MOV      R0,#+1
+??D_DTX_rx_handler_19:
+        MOV      R1,#+0
+        CMP      R4,#+6
+        BNE      ??D_DTX_rx_handler_20
+        MOV      R2,#+1
+??D_DTX_rx_handler_21:
+        MOV      R3,#+0
+//  249 
+//  250    {
+//  251 	   encState = DTX;
+//  252    }
+//  253    else
+//  254    {
+//  255 	   encState = SPEECH;
+??D_DTX_rx_handler_22:
+        ORR      R0,R1,R0
+        ORR      R0,R2,R0
+        ORR      R0,R3,R0
+//  256    }
+//  257 
+//  258    if(encState == SPEECH)
+        LSLS     R0,R0,#+24
+        BNE      ??D_DTX_rx_handler_23
+//  259    {
+//  260       st->mem_dtx_hangover_count = D_DTX_HANG_CONST;
+        MOV      R0,#+7
+        B        ??D_DTX_rx_handler_24
+//  261    }
+??D_DTX_rx_handler_18:
+        MOV      R0,#+0
+        CMP      R4,#+5
+        BNE      ??D_DTX_rx_handler_19
+        MOV      R1,#+1
+??D_DTX_rx_handler_20:
+        MOV      R2,#+0
+        CMP      R4,#+7
+        BNE      ??D_DTX_rx_handler_21
+        LDRB     R3,[R7, #+3]
+        CMP      R3,#+0
+        BNE      ??D_DTX_rx_handler_25
+        LDRSH    R3,[R7, #+10]
+        CMP      R3,#+7
+        BLT      ??D_DTX_rx_handler_21
+??D_DTX_rx_handler_25:
+        MOV      R3,#+1
+        B        ??D_DTX_rx_handler_22
+//  262    else
+//  263    {
+//  264       if(st->mem_dec_ana_elapsed_count > D_DTX_ELAPSED_FRAMES_THRESH)
+??D_DTX_rx_handler_23:
+        LDRB     R0,[R7, #+2]
+        CMP      R0,#+31
+        BCC      ??D_DTX_rx_handler_26
+//  265       {
+//  266          st->mem_dtx_hangover_added = 1;
+        STRB     R6,[R7, #+8]
+//  267          st->mem_dec_ana_elapsed_count = 0;
+        STRB     R5,[R7, #+2]
+//  268          st->mem_dtx_hangover_count = 0;
+        STRB     R5,[R7, #+5]
+        B        ??D_DTX_rx_handler_27
+//  269       }
+//  270       else if(st->mem_dtx_hangover_count == 0)
+??D_DTX_rx_handler_26:
+        LDRB     R0,[R7, #+5]
+        CMP      R0,#+0
+//  271       {
+//  272          st->mem_dec_ana_elapsed_count = 0;
+        STRBEQ   R5,[R7, #+2]
+        BEQ      ??D_DTX_rx_handler_27
+//  273       }
+//  274       else
+//  275       {
+//  276          st->mem_dtx_hangover_count--;
+        SUB      R0,R0,#+1
+??D_DTX_rx_handler_24:
+        STRB     R0,[R7, #+5]
+//  277       }
+//  278    }
+//  279 
+//  280    if(newState != SPEECH)
+??D_DTX_rx_handler_27:
+        CMP      R8,#+0
+        BEQ      ??D_DTX_rx_handler_28
+//  281    {
+//  282       /*
+//  283        * DTX or D_DTX_MUTE
+//  284        * CN data is not in a first SID, first SIDs are marked as SID_BAD
+//  285        *  but will do backwards analysis if a hangover period has been added
+//  286        *  according to the state machine above
+//  287        */
+//  288       st->mem_sid_frame = 0;
+        STRB     R5,[R7, #+6]
+//  289       st->mem_valid_data = 0;
+        STRB     R5,[R7, #+7]
+//  290 
+//  291       if(frame_type == RX_SID_FIRST)
+        CMP      R4,#+4
+//  292       {
+//  293          st->mem_sid_frame = 1;
+        STRBEQ   R6,[R7, #+6]
+        BEQ      ??D_DTX_rx_handler_28
+//  294       }
+//  295       else if(frame_type == RX_SID_UPDATE)
+        CMP      R4,#+5
+//  296       {
+//  297          st->mem_sid_frame = 1;
+        STRBEQ   R6,[R7, #+6]
+//  298          st->mem_valid_data = 1;
+        STRBEQ   R6,[R7, #+7]
+        BEQ      ??D_DTX_rx_handler_28
+//  299       }
+//  300       else if(frame_type == RX_SID_BAD)
+        CMP      R4,#+6
+//  301       {
+//  302          st->mem_sid_frame = 1;
+        STRBEQ   R6,[R7, #+6]
+//  303          st->mem_dtx_hangover_added = 0;   /* use old data */
+        STRBEQ   R5,[R7, #+8]
+//  304       }
+//  305    }
+//  306 
+//  307    return newState;
+??D_DTX_rx_handler_28:
+        MOV      R0,R8
+        POP      {R4-R10,PC}      ;; return
+        CFI EndBlock cfiBlock7
+//  308 
+//  309    /* newState is used by both SPEECH AND DTX synthesis routines */
+//  310 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_DTX_cn_dithering??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE D_DTX_cn_dithering
+//  311 
+//  312 
+//  313 /*
+//  314  * D_DTX_cn_dithering
+//  315  *
+//  316  * Parameters:
+//  317  *    isf             I/O: CN ISF vector
+//  318  *    L_log_en_int    I/O: energy parameter
+//  319  *    dither_seed     I/O: random seed
+//  320  *
+//  321  * Function:
+//  322  *    Confort noise dithering
+//  323  *
+//  324  * Returns:
+//  325  *    void
+//  326  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function D_DTX_cn_dithering
+        ARM
+//  327 static void D_DTX_cn_dithering(Word16 isf[M], Word32 *L_log_en_int,
+//  328                                Word16 *dither_seed)
+//  329 {
+D_DTX_cn_dithering:
+        PUSH     {R4-R8,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R8 Frame(CFA, -8)
+        CFI R7 Frame(CFA, -12)
+        CFI R6 Frame(CFA, -16)
+        CFI R5 Frame(CFA, -20)
+        CFI R4 Frame(CFA, -24)
+        CFI CFA R13+24
+        MOV      R4,R0
+        MOV      R6,R1
+        MOV      R5,R2
+//  330    Word32 temp, temp1, i, dither_fac, rand_dith,rand_dith2;
+//  331 
+//  332    /* Insert comfort noise dithering for energy parameter */
+//  333    rand_dith = D_UTIL_random(dither_seed) >> 1;
+        MOV      R0,R5
+        _BLF     D_UTIL_random,??D_UTIL_random??rA
+        ASR      R7,R0,#+1
+//  334    rand_dith2 = D_UTIL_random(dither_seed) >>1;
+        MOV      R0,R5
+        _BLF     D_UTIL_random,??D_UTIL_random??rA
+//  335    rand_dith = rand_dith + rand_dith2;
+//  336    *L_log_en_int = *L_log_en_int + ((rand_dith * GAIN_FACTOR) << 1);
+        LDR      R1,[R6, #+0]
+        ASR      R0,R0,#+1
+        ADD      R0,R0,R7
+        MOV      R2,#+75
+        MUL      R0,R2,R0
+//  337 
+//  338    if(*L_log_en_int < 0)
+//  339    {
+//  340       *L_log_en_int = 0;
+//  341    }
+//  342 
+//  343    /* Insert comfort noise dithering for spectral parameters (ISF-vector) */
+//  344    dither_fac = ISF_FACTOR_LOW;
+//  345    rand_dith = D_UTIL_random(dither_seed) >> 1;
+//  346    rand_dith2 = D_UTIL_random(dither_seed) >> 1;
+//  347    rand_dith = rand_dith + rand_dith2;
+//  348    temp = isf[0] + (((rand_dith * dither_fac) + 0x4000) >> 15);
+//  349 
+//  350    /* Make sure that isf[0] will not get negative values */
+//  351    if(temp < ISF_GAP)
+//  352    {
+//  353       isf[0] = ISF_GAP;
+//  354    }
+//  355    else
+//  356    {
+//  357       isf[0] = (Word16)temp;
+//  358    }
+//  359 
+//  360    for(i = 1; i < M - 1; i++)
+        MOV      R7,#+1
+        ADDS     R0,R1,R0, LSL #+1
+        MOVMI    R0,#+0
+        STR      R0,[R6, #+0]
+        MOV      R0,R5
+        _BLF     D_UTIL_random,??D_UTIL_random??rA
+        ASR      R8,R0,#+1
+        MOV      R0,R5
+        _BLF     D_UTIL_random,??D_UTIL_random??rA
+        ASR      R1,R0,#+1
+        LDRSH    R0,[R4, #+0]
+        MOV      R6,#+256
+        ADD      R1,R1,R8
+        MOV      R2,#+16384
+        ADD      R1,R2,R1, LSL #+8
+        ADD      R1,R0,R1, ASR #+15
+        CMP      R1,#+128
+        MOVLT    R0,#+128
+        STRHLT   R0,[R4, #+0]
+        STRHGE   R1,[R4, #+0]
+//  361    {
+//  362       dither_fac = dither_fac + ISF_FACTOR_STEP;
+//  363       rand_dith = D_UTIL_random(dither_seed) >> 1;
+??D_DTX_cn_dithering_0:
+        MOV      R0,R5
+        _BLF     D_UTIL_random,??D_UTIL_random??rA
+        ASR      R8,R0,#+1
+//  364       rand_dith2 = D_UTIL_random(dither_seed) >> 1;
+        MOV      R0,R5
+        _BLF     D_UTIL_random,??D_UTIL_random??rA
+        ASR      R1,R0,#+1
+//  365       rand_dith = rand_dith + rand_dith2;
+//  366       temp = isf[i] + (((rand_dith * dither_fac) + 0x4000) >> 15);
+        ADD      R0,R4,R7, LSL #+1
+        LDRSH    R2,[R0, #+0]
+        ADD      R6,R6,#+2
+        ADD      R1,R1,R8
+        MUL      R1,R6,R1
+//  367       temp1 = temp - isf[i - 1];
+//  368 
+//  369       /* Make sure that isf spacing remains at least ISF_DITH_GAP Hz */
+//  370       if(temp1 < ISF_DITH_GAP)
+//  371       {
+//  372          isf[i] = (Word16)(isf[i - 1] + ISF_DITH_GAP);
+//  373       }
+//  374       else
+//  375       {
+//  376          isf[i] = (Word16)temp;
+//  377       }
+//  378    }
+        ADD      R7,R7,#+1
+        ADD      R1,R1,#+16384
+        ADD      R1,R2,R1, ASR #+15
+        LDRSH    R2,[R0, #-2]
+        SUB      R2,R1,R2
+        CMP      R2,#+448
+        LDRSHLT  R1,[R0, #-2]
+        ADDLT    R1,R1,#+448
+        STRH     R1,[R0, #+0]
+        CMP      R7,#+15
+        BLT      ??D_DTX_cn_dithering_0
+//  379 
+//  380    /* Make sure that isf[M-2] will not get values above 16384 */
+//  381    if(isf[M - 2] > 16384)
+        LDRSH    R0,[R4, #+28]
+        MOV      R1,#+1
+        ORR      R1,R1,#0x4000
+        CMP      R0,R1
+//  382    {
+//  383       isf[M - 2] = 16384;
+        MOVGE    R0,#+16384
+        STRHGE   R0,[R4, #+28]
+//  384    }
+//  385 
+//  386    return;
+        POP      {R4-R8,PC}       ;; return
+        CFI EndBlock cfiBlock9
+//  387 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_DTX_exe??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock10
+        REQUIRE D_DTX_exe
+//  388 
+//  389 
+//  390 /*
+//  391  * D_DTX_exe
+//  392  *
+//  393  * Parameters:
+//  394  *    st           I/O: state struct
+//  395  *    exc2           O: CN excitation
+//  396  *    new_state      I: New DTX state
+//  397  *    prms           I: Vector of synthesis parameters
+//  398  *    isf            O: CN ISF vector
+//  399  *
+//  400  * Function:
+//  401  *    Confort noise generation
+//  402  *
+//  403  * Returns:
+//  404  *    void
+//  405  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock11 Using cfiCommon1
+        CFI Function D_DTX_exe
+        ARM
+//  406 void D_DTX_exe(D_DTX_State *st, Word16 *exc2, Word16 new_state, Word16 isf[],
+//  407                Word16 **prms)
+//  408 {
+D_DTX_exe:
+        PUSH     {R2,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+40
+        SUB      SP,SP,#+76
+        CFI CFA R13+116
+        LDR      R9,[SP, #+116]
+        MOV      R4,R0
+        ADD      R6,R4,#+336
+        LDRB     R0,[R6, #+22]
+        MOV      R5,R1
+        MOV      R8,R3
+        CMP      R0,#+0
+        LDRBNE   R0,[R6, #+20]
+        MOV      R10,#+256
+        MOV      R7,#+0
+        CMPNE    R0,#+0
+        BEQ      ??D_DTX_exe_0
+//  409 
+//  410    Word32 i, j, L_tmp, ptr;
+//  411    Word32 exp0, int_fac;
+//  412    Word32 gain;
+//  413    Word32 L_isf[M], L_log_en_int, level32, ener32;
+//  414    Word16 log_en_index;
+//  415    Word16 tmp_int_length;
+//  416    Word16 exp, log_en_int_e, log_en_int_m, level;
+//  417 
+//  418 
+//  419    /*
+//  420     * This function is called if synthesis state is not SPEECH.
+//  421     * The globally passed inputs to this function are
+//  422     *    st->sid_frame
+//  423     *    st->valid_data
+//  424     *    st->dtxHangoverAdded
+//  425     *    new_state (SPEECH, DTX, D_DTX_MUTE)
+//  426     */
+//  427    if((st->mem_dtx_hangover_added != 0) & (st->mem_sid_frame != 0))
+//  428    {
+//  429       /* sid_first after dtx hangover period
+//  430        * or sid_upd after dtxhangover
+//  431        * consider twice the last frame
+//  432        */
+//  433       ptr = st->mem_hist_ptr + 1;
+        LDRSH    R0,[R6, #+8]
+//  434 
+//  435       if(ptr == D_DTX_HIST_SIZE)
+//  436       {
+//  437          ptr = 0;
+//  438       }
+//  439 
+//  440       memcpy(&st->mem_isf_buf[ptr * M], &st->mem_isf_buf[st->mem_hist_ptr * M],
+//  441          M * sizeof(Word16));
+        MOV      R2,#+32
+        ADD      R11,R0,#+1
+        CMP      R11,#+8
+        MOVEQ    R11,#+0
+        ADD      R1,R4,R0, LSL #+5
+        ADD      R0,R4,R11, LSL #+5
+        SWI      +286
+        LDRSH    R1,[R6, #+8]
+        ADD      R0,R4,R11, LSL #+1
+        ADD      R0,R0,#+320
+        ADD      R1,R4,R1, LSL #+1
+        ADD      R1,R1,#+320
+        LDRSH    R1,[R1, #+0]
+//  442 
+//  443       st->mem_log_en_buf[ptr] = st->mem_log_en_buf[st->mem_hist_ptr];
+//  444 
+//  445       /* compute mean log energy and isf from decoded signal (SID_FIRST) */
+//  446       st->mem_log_en = 0;
+//  447       memset(L_isf, 0, M * sizeof(Word32));
+        MOV      R2,#+64
+        STRH     R1,[R0, #+0]
+        STRH     R7,[R6, #+2]
+        MOV      R1,#+0
+        ADD      R0,SP,#+12
+        SWI      +187
+//  448 
+//  449       /* average energy and isf */
+//  450       for(i = 0; i < D_DTX_HIST_SIZE; i++)
+        MOV      R0,R7
+//  451       {
+//  452          /*
+//  453           * Division by D_DTX_HIST_SIZE = 8 has been done in dtx_buffer log_en
+//  454           * is in Q10
+//  455           */
+//  456          st->mem_log_en = (Word16)(st->mem_log_en + st->mem_log_en_buf[i]);
+??D_DTX_exe_1:
+        LDRSH    R1,[R6, #+2]
+        ADD      R2,R4,R0, LSL #+1
+        ADD      R2,R2,#+320
+        LDRSH    R2,[R2, #+0]
+        ADD      R1,R2,R1
+        STRH     R1,[R6, #+2]
+//  457 
+//  458          for(j = 0; j < M; j++)
+        MOV      R1,#+0
+//  459          {
+//  460             L_isf[j] = L_isf[j] + st->mem_isf_buf[i * M + j];
+??D_DTX_exe_2:
+        ADD      R11,R1,R0, LSL #+4
+        ADD      R11,R4,R11, LSL #+1
+        LDRSH    R11,[R11, #+0]
+        ADD      R2,SP,#+12
+        ADD      R2,R2,R1, LSL #+2
+        LDR      R3,[R2, #+0]
+//  461          }
+        ADD      R1,R1,#+1
+        ADD      R3,R11,R3
+        STR      R3,[R2, #+0]
+        CMP      R1,#+16
+        BLT      ??D_DTX_exe_2
+//  462       }
+        ADD      R0,R0,#+1
+        CMP      R0,#+8
+        BLT      ??D_DTX_exe_1
+//  463 
+//  464       /* st->log_en in Q9 */
+//  465       st->mem_log_en = (Word16)(st->mem_log_en >> 1);
+        LDRSH    R0,[R6, #+2]
+        ASR      R0,R0,#+1
+        STRH     R0,[R6, #+2]
+//  466 
+//  467       /*
+//  468        * Add 2 in Q9, in order to have only positive values for Pow2
+//  469        * this value is subtracted back after Pow2 function
+//  470        */
+//  471       st->mem_log_en = (Word16)(st->mem_log_en + 1024);
+        LDRSH    R0,[R6, #+2]
+        ADD      R0,R0,#+1024
+        STRH     R0,[R6, #+2]
+//  472 
+//  473       if(st->mem_log_en < 0)
+        LDRSH    R0,[R6, #+2]
+        CMP      R0,#+0
+//  474       {
+//  475          st->mem_log_en = 0;
+        STRHMI   R7,[R6, #+2]
+//  476       }
+//  477 
+//  478       for(j = 0; j < M; j++)
+        MOV      R0,#+0
+//  479       {
+//  480          st->mem_isf[j] = (Word16)(L_isf[j]>>3);   /* divide by 8 */
+??D_DTX_exe_3:
+        ADD      R2,SP,#+12
+        LDR      R2,[R2, +R0, LSL #+2]
+        ADD      R1,R4,R0, LSL #+1
+        ASR      R2,R2,#+3
+        STRH     R2,[R10, +R1]
+//  481       }
+        ADD      R0,R0,#+1
+        CMP      R0,#+16
+        BLT      ??D_DTX_exe_3
+//  482    }
+//  483 
+//  484    if(st->mem_sid_frame != 0)
+??D_DTX_exe_0:
+        LDRB     R0,[R6, #+20]
+        MOV      R11,#+288
+        CMP      R0,#+0
+        BEQ      ??D_DTX_exe_4
+//  485    {
+//  486       /*
+//  487        * Set old SID parameters, always shift
+//  488        * even if there is no new valid_data
+//  489        */
+//  490       memcpy(st->mem_isf_prev, st->mem_isf, M * sizeof(Word16));
+        MOV      R2,#+32
+        ADD      R1,R10,R4
+        ADD      R0,R11,R4
+        SWI      +286
+//  491       st->mem_log_en_prev = st->mem_log_en;
+        LDRSH    R0,[R6, #+2]
+        STRH     R0,[R6, #+4]
+//  492 
+//  493       if(st->mem_valid_data != 0) /* new data available (no CRC) */
+        LDRB     R0,[R6, #+21]
+        CMP      R0,#+0
+        BEQ      ??D_DTX_exe_4
+//  494       {
+//  495          /* st->true_sid_period_inv = 1.0f/st->since_last_sid; */
+//  496 
+//  497          /*
+//  498           * Compute interpolation factor, since the division only works
+//  499           * for values of since_last_sid < 32 we have to limit
+//  500           * the interpolation to 32 frames
+//  501           */
+//  502          tmp_int_length = st->mem_since_last_sid;
+        LDRSH    R1,[R6, #+14]
+//  503 
+//  504          if(tmp_int_length > 32)
+        CMP      R1,#+33
+//  505          {
+//  506             tmp_int_length = 32;
+        MOVGE    R1,#+32
+//  507          }
+//  508 
+//  509          if(tmp_int_length >= 2)
+        CMPLT    R1,#+2
+        BLT      ??D_DTX_exe_5
+//  510          {
+//  511             st->mem_true_sid_period_inv =
+//  512                (Word16)(0x2000000 / (tmp_int_length << 10));
+        MOV      R0,#+33554432
+        LSL      R1,R1,#+10
+        _BLF     ??div32_a,??rA??div32_a
+        STRH     R1,[R6, #+0]
+        B        ??D_DTX_exe_6
+//  513          }
+//  514          else
+//  515          {
+//  516             st->mem_true_sid_period_inv = 1 << 14;   /* 0.5 it Q15 */
+??D_DTX_exe_5:
+        MOV      R0,#+16384
+        STRH     R0,[R6, #+0]
+//  517          }
+//  518 
+//  519          D_LPC_isf_noise_d(*prms, st->mem_isf);
+??D_DTX_exe_6:
+        LDR      R0,[R9, #+0]
+        ADD      R1,R10,R4
+        _BLF     D_LPC_isf_noise_d,??D_LPC_isf_noise_d??rA
+//  520          (*prms) += 5;
+//  521          log_en_index = *(*prms)++;
+        LDR      R0,[R9, #+0]
+        ADD      R0,R0,#+10
+        ADD      R1,R0,#+2
+        STR      R1,[R9, #+0]
+        LDRSH    R0,[R0, #+0]
+//  522 
+//  523          /* read background noise stationarity information */
+//  524          st->mem_cn_dith = *(*prms)++;
+        ADD      R2,R1,#+2
+        STR      R2,[R9, #+0]
+        LDRSH    R1,[R1, #+0]
+//  525 
+//  526          /*
+//  527           * st->log_en = (Float32)log_en_index / 2.625 - 2.0;
+//  528           * log2(E) in Q9 (log2(E) lies in between -2:22)
+//  529           */
+//  530          st->mem_log_en = (Word16)(log_en_index << (15 - 6));
+        LSL      R0,R0,#+9
+        STRH     R1,[R6, #+12]
+        STRH     R0,[R6, #+2]
+//  531 
+//  532          /* Divide by 2.625  */
+//  533          st->mem_log_en = (Word16)((st->mem_log_en * 12483) >> 15);
+        LDRSH    R0,[R6, #+2]
+        MOV      R1,#+195
+        ORR      R1,R1,#0x3000
+        MUL      R0,R1,R0
+        ASR      R0,R0,#+15
+        STRH     R0,[R6, #+2]
+//  534 
+//  535          /*
+//  536           * Subtract 2 in Q9 is done later, after Pow2 function
+//  537           * no interpolation at startup after coder reset
+//  538           * or when SID_UPD has been received right after SPEECH
+//  539           */
+//  540          if((st->mem_data_updated == 0) ||
+//  541             (st->mem_dtx_global_state == SPEECH))
+        LDRB     R0,[R6, #+18]
+        CMP      R0,#+0
+        LDRBNE   R0,[R6, #+17]
+        CMPNE    R0,#+0
+        BNE      ??D_DTX_exe_4
+//  542          {
+//  543             memcpy(st->mem_isf_prev, st->mem_isf, M * sizeof(Word16));
+        MOV      R2,#+32
+        ADD      R1,R10,R4
+        ADD      R0,R11,R4
+        SWI      +286
+//  544             st->mem_log_en_prev = st->mem_log_en;
+        LDRSH    R0,[R6, #+2]
+        STRH     R0,[R6, #+4]
+//  545          }
+//  546       }   /* endif valid_data */
+//  547    }   /* endif sid_frame */
+//  548 
+//  549    if((st->mem_sid_frame != 0) && (st->mem_valid_data != 0))
+??D_DTX_exe_4:
+        LDRB     R0,[R6, #+20]
+        CMP      R0,#+0
+        LDRBNE   R0,[R6, #+21]
+        CMPNE    R0,#+0
+//  550    {
+//  551       st->mem_since_last_sid = 0;
+        STRHNE   R7,[R6, #+14]
+//  552    }
+//  553 
+//  554    /* Interpolate SID info */
+//  555    if(st->mem_since_last_sid < 32)
+        LDRSH    R0,[R6, #+14]
+//  556    {
+//  557       int_fac = st->mem_since_last_sid << 10;   /* Q10 */
+//  558    }
+//  559    else
+//  560    {
+//  561       int_fac = 32767;
+//  562    }
+//  563    /* Q10 * Q15 -> Q10 */
+//  564    int_fac = (int_fac * st->mem_true_sid_period_inv) >> 15;
+        LDRSH    R1,[R6, #+0]
+//  565 
+//  566    /* Maximize to 1.0 in Q10 */
+//  567    if(int_fac > 1024)
+//  568    {
+//  569       int_fac = 1024;
+//  570    }
+//  571    int_fac = int_fac << 4;   /* Q10 -> Q14 */
+//  572    L_log_en_int = (int_fac * st->mem_log_en) << 1;   /* Q14 * Q9 -> Q24 */
+        LDRSH    R2,[R6, #+2]
+        CMP      R0,#+32
+        LSLLT    R0,R0,#+10
+        MOVGE    R0,#+255
+        ORRGE    R0,R0,#0x7F00
+        MUL      R0,R1,R0
+        MOV      R1,#+1
+        ASR      R0,R0,#+15
+        ORR      R1,R1,#0x400
+        CMP      R0,R1
+        MOVGE    R0,#+1024
+        LSL      R0,R0,#+4
+        MUL      R3,R2,R0
+//  573 
+//  574    for(i = 0; i < M; i++)
+        MOV      R1,#+0
+        LSL      R2,R3,#+1
+        STR      R2,[SP, #+4]
+//  575    {
+//  576       /* Q14 * Q15 -> Q14 */
+//  577       isf[i] = (Word16)((int_fac * st->mem_isf[i]) >> 15);
+??D_DTX_exe_7:
+        ADD      R3,R4,R1, LSL #+1
+        LDRSH    R3,[R10, +R3]
+        ADD      R2,R8,R1, LSL #+1
+//  578    }
+        ADD      R1,R1,#+1
+        MUL      R9,R3,R0
+        CMP      R1,#+16
+        ASR      R3,R9,#+15
+        STRH     R3,[R2, #+0]
+        BLT      ??D_DTX_exe_7
+//  579    int_fac = 16384 - int_fac;   /* 1-k in Q14 */
+//  580 
+//  581    /* ( Q14 * Q9 -> Q24 ) + Q24 -> Q24 */
+//  582    L_log_en_int = L_log_en_int + ((int_fac * st->mem_log_en_prev) << 1);
+        LDRSH    R3,[R6, #+4]
+        LDR      R2,[SP, #+4]
+        RSB      R0,R0,#+16384
+        MUL      R9,R3,R0
+//  583 
+//  584    for(i = 0; i < M; i++)
+        MOV      R1,#+0
+        ADD      R2,R2,R9, LSL #+1
+        STR      R2,[SP, #+4]
+//  585    {
+//  586       /* Q14 + (Q14 * Q15 -> Q14) -> Q14 */
+//  587       L_tmp = isf[i] + ((int_fac * st->mem_isf_prev[i]) >> 15);
+//  588       isf[i] = (Word16)(L_tmp << 1);   /* Q14 -> Q15 */
+??D_DTX_exe_8:
+        ADD      R9,R4,R1, LSL #+1
+        LDRSH    R9,[R11, +R9]
+        ADD      R2,R8,R1, LSL #+1
+        LDRSH    R3,[R2, #+0]
+        MUL      R10,R9,R0
+//  589    }
+        ADD      R1,R1,#+1
+        ASR      R9,R10,#+15
+        ADD      R3,R9,R3
+        LSL      R3,R3,#+1
+        STRH     R3,[R2, #+0]
+        CMP      R1,#+16
+        BLT      ??D_DTX_exe_8
+//  590 
+//  591    /* If background noise is non-stationary, insert comfort noise dithering */
+//  592    if(st->mem_cn_dith != 0)
+        LDRSH    R0,[R6, #+12]
+        CMP      R0,#+0
+        BEQ      ??D_DTX_exe_9
+//  593    {
+//  594       D_DTX_cn_dithering(isf, &L_log_en_int, &st->mem_dither_seed);
+        ADD      R0,R11,#+58
+        ADD      R2,R0,R4
+        ADD      R1,SP,#+4
+        MOV      R0,R8
+        BL       D_DTX_cn_dithering
+//  595    }
+//  596 
+//  597    /* L_log_en_int corresponds to log2(E)+2 in Q24, i.e log2(gain)+1 in Q25 */
+//  598    L_log_en_int = (L_log_en_int >> 9); /* Q25 -> Q16 */
+??D_DTX_exe_9:
+        LDR      R1,[SP, #+4]
+//  599 
+//  600    /* Find integer part  */
+//  601    log_en_int_e = (Word16)((L_log_en_int)>>16);
+//  602 
+//  603    /* Find fractional part */
+//  604    log_en_int_m = (Word16)((L_log_en_int - (log_en_int_e << 16)) >> 1);
+//  605 
+//  606    /*
+//  607     * Subtract 2 from L_log_en_int in Q9,
+//  608     * i.e divide the gain by 2 (energy by 4)
+//  609     * Add 16 in order to have the result of pow2 in Q16
+//  610     */
+//  611    log_en_int_e = (Word16)(log_en_int_e + (16 - 1));
+//  612 
+//  613    /* level = (Float32)( pow( 2.0f, log_en ) );  */
+//  614    level32 = D_UTIL_pow2(log_en_int_e, log_en_int_m);   /* Q16 */
+//  615    exp0 = D_UTIL_norm_l(level32);
+//  616    level32 = (level32 << exp0);   /* level in Q31 */
+//  617    exp0 = (15 - exp0);
+//  618    level = (Word16)(level32 >> 16);   /* level in Q15 */
+//  619 
+//  620    /* generate white noise vector */
+//  621    for(i = 0; i < L_FRAME; i++)
+        MOV      R10,#+0
+        ASR      R1,R1,#+9
+        STR      R1,[SP, #+4]
+        MOV      R0,R1
+        ASR      R0,R0,#+16
+        SUB      R1,R1,R0, LSL #+16
+        LSL      R1,R1,#+15
+        ASR      R1,R1,#+16
+        ADD      R0,R0,#+15
+        _BLF     D_UTIL_pow2,??D_UTIL_pow2??rA
+        MOV      R8,R0
+        _BLF     D_UTIL_norm_l,??D_UTIL_norm_l??rA
+        LSL      R1,R8,R0
+        RSB      R8,R0,#+15
+        ASR      R9,R1,#+16
+//  622    {
+//  623       exc2[i] = (Word16)((D_UTIL_random(&(st->mem_cng_seed)) >> 4));
+??D_DTX_exe_10:
+        ADD      R0,R11,#+54
+        ADD      R0,R0,R4
+        _BLF     D_UTIL_random,??D_UTIL_random??rA
+        ASR      R0,R0,#+4
+        ADD      R1,R5,R10, LSL #+1
+        STRH     R0,[R1, #+0]
+//  624    }
+        ADD      R10,R10,#+1
+        CMP      R10,#+256
+        BLT      ??D_DTX_exe_10
+//  625 
+//  626    /* gain = level / sqrt(ener) * sqrt(L_FRAME) */
+//  627    /* energy of generated excitation */
+//  628    ener32 = D_UTIL_dot_product12(exc2, exc2, L_FRAME, &exp);
+        MOV      R3,SP
+        MOV      R2,#+256
+        MOV      R1,R5
+        MOV      R0,R5
+        _BLF     D_UTIL_dot_product12,??D_UTIL_dot_product12??rA
+        STR      R0,[SP, #+8]
+//  629    D_UTIL_normalised_inverse_sqrt(&ener32, &exp);
+        MOV      R1,SP
+        ADD      R0,SP,#+8
+        _BLF     D_UTIL_normalised_inverse_sqrt,??D_UTIL_normalised_inverse_sqrt??rA
+//  630    gain = ener32 >>16;
+//  631    gain = (level * gain) >> 15;   /* gain in Q15 */
+        LDR      R0,[SP, #+8]
+//  632 
+//  633    /* Multiply by sqrt(L_FRAME)=16, i.e. shift left by 4 */
+//  634    exp = (Word16)(exp0 + exp  + 4);
+        LDRSH    R2,[SP, #+0]
+        ASR      R0,R0,#+16
+        MUL      R1,R0,R9
+        ADD      R3,R8,#+4
+        ASR      R0,R1,#+15
+        ADD      R2,R3,R2
+        STRH     R2,[SP, #+0]
+//  635 
+//  636    if(exp >= 0)
+        LDRSH    R1,[SP, #+0]
+        CMP      R1,#+0
+        BMI      ??D_DTX_exe_11
+//  637    {
+//  638       for(i = 0; i < L_FRAME; i++)
+        MOV      R1,#+0
+//  639       {
+//  640          L_tmp = (exc2[i] * gain) >> 15;   /* Q0 * Q15 */
+//  641          exc2[i] = (Word16)(L_tmp << exp);
+??D_DTX_exe_12:
+        LDRSH    R4,[SP, #+0]
+        ADD      R2,R5,R1, LSL #+1
+        LDRSH    R3,[R2, #+0]
+//  642       }
+        ADD      R1,R1,#+1
+        CMP      R1,#+256
+        MUL      R3,R0,R3
+        ASR      R3,R3,#+15
+        LSL      R3,R3,R4
+        STRH     R3,[R2, #+0]
+        BGE      ??D_DTX_exe_13
+        B        ??D_DTX_exe_12
+//  643    }
+//  644    else
+//  645    {
+//  646       exp = (Word16)-exp;
+??D_DTX_exe_11:
+        MOV      R2,R1
+        RSB      R2,R2,#+0
+        STRH     R2,[SP, #+0]
+//  647 
+//  648       for(i = 0; i < L_FRAME; i++)
+        MOV      R1,#+0
+//  649       {
+//  650          L_tmp = (exc2[i] * gain) >> 15;   /* Q0 * Q15 */
+//  651          exc2[i] = (Word16)(L_tmp >> exp);
+??D_DTX_exe_14:
+        LDRSH    R4,[SP, #+0]
+        ADD      R2,R5,R1, LSL #+1
+        LDRSH    R3,[R2, #+0]
+//  652       }
+        ADD      R1,R1,#+1
+        CMP      R1,#+256
+        MUL      R3,R0,R3
+        ASR      R3,R3,#+15
+        ASR      R3,R3,R4
+        STRH     R3,[R2, #+0]
+        BLT      ??D_DTX_exe_14
+//  653    }
+//  654 
+//  655    if(new_state == D_DTX_MUTE)
+??D_DTX_exe_13:
+        LDRSH    R0,[SP, #+76]
+        CMP      R0,#+2
+        BNE      ??D_DTX_exe_15
+//  656    {
+//  657       /*
+//  658        * mute comfort noise as it has been quite a long time since
+//  659        * last SID update was performed
+//  660        */
+//  661       tmp_int_length = st->mem_since_last_sid;
+        LDRSH    R1,[R6, #+14]
+//  662 
+//  663       if(tmp_int_length > 32)
+        CMP      R1,#+33
+//  664       {
+//  665          tmp_int_length = 32;
+        MOVGE    R1,#+32
+        BGE      ??D_DTX_exe_16
+//  666       }
+//  667 
+//  668       /* safety guard against division by zero */
+//  669 	  if(tmp_int_length <= 0) {
+        CMP      R1,#+1
+//  670          tmp_int_length = 8; 
+        MOVLT    R1,#+8
+//  671       }
+//  672       st->mem_true_sid_period_inv = D_UTIL_saturate((0x02000000 / (tmp_int_length << 10)));
+??D_DTX_exe_16:
+        MOV      R0,#+33554432
+        LSL      R1,R1,#+10
+        _BLF     ??div32_a,??rA??div32_a
+        MOV      R0,R1
+        _BLF     D_UTIL_saturate,??D_UTIL_saturate??rA
+        STRH     R0,[R6, #+0]
+//  673       st->mem_since_last_sid = 0;
+        STRH     R7,[R6, #+14]
+//  674       st->mem_log_en_prev = st->mem_log_en;
+        LDRSH    R0,[R6, #+2]
+        STRH     R0,[R6, #+4]
+//  675 
+//  676       /* subtract 1/8 in Q9 (energy), i.e -3/8 dB */
+//  677       st->mem_log_en = D_UTIL_saturate(st->mem_log_en - 64);
+        SUB      R0,R0,#+64
+        _BLF     D_UTIL_saturate,??D_UTIL_saturate??rA
+        STRH     R0,[R6, #+2]
+//  678    }
+//  679 
+//  680    /* reset interpolation length timer if data has been updated.        */
+//  681    if((st->mem_sid_frame != 0) && ((st->mem_valid_data != 0) ||
+//  682       ((st->mem_valid_data == 0) && (st->mem_dtx_hangover_added) != 0)))
+??D_DTX_exe_15:
+        LDRB     R0,[R6, #+20]
+        CMP      R0,#+0
+        BEQ      ??D_DTX_exe_17
+        LDRB     R0,[R6, #+21]
+        CMP      R0,#+0
+        BNE      ??D_DTX_exe_18
+        BNE      ??D_DTX_exe_17
+        LDRB     R0,[R6, #+22]
+        CMP      R0,#+0
+        BEQ      ??D_DTX_exe_17
+//  683    {
+//  684       st->mem_since_last_sid = 0;
+??D_DTX_exe_18:
+        STRH     R7,[R6, #+14]
+//  685       st->mem_data_updated = 1;
+        MOV      R0,#+1
+        STRB     R0,[R6, #+18]
+//  686    }
+//  687 
+//  688    return;
+??D_DTX_exe_17:
+        ADD      SP,SP,#+80       ;; stack cleaning
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        CFI EndBlock cfiBlock11
+//  689 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock12 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_DTX_activity_update??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock12
+        REQUIRE D_DTX_activity_update
+//  690 
+//  691 
+//  692 /*
+//  693  * D_DTX_activity_update
+//  694  *
+//  695  * Parameters:
+//  696  *    st           I/O: state struct
+//  697  *    isf            O: ISF vector
+//  698  *    exc            O: excitation
+//  699  *
+//  700  * Function:
+//  701  *    Confort noise generation
+//  702  *
+//  703  * Returns:
+//  704  *    void
+//  705  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock13 Using cfiCommon1
+        CFI Function D_DTX_activity_update
+        ARM
+//  706 void D_DTX_activity_update(D_DTX_State *st, Word16 isf[], Word16 exc[])
+//  707 {
+D_DTX_activity_update:
+        PUSH     {R4-R6,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R6 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -12)
+        CFI R4 Frame(CFA, -16)
+        CFI CFA R13+16
+        SUB      SP,SP,#+4
+        CFI CFA R13+20
+        MOV      R4,R0
+//  708 
+//  709    Word32 L_frame_en, log_en;
+//  710    Word32 i;
+//  711    Word16 log_en_e, log_en_m;
+//  712 
+//  713    st->mem_hist_ptr = (Word16)(st->mem_hist_ptr + 1);
+        MOV      R6,#+344
+        LDRSH    R0,[R6, +R4]
+        MOV      R5,R2
+//  714 
+//  715    if(st->mem_hist_ptr == D_DTX_HIST_SIZE)
+//  716    {
+//  717       st->mem_hist_ptr = 0;
+//  718    }
+//  719 
+//  720    memcpy(&st->mem_isf_buf[st->mem_hist_ptr * M], isf, M * sizeof(Word16));
+        MOV      R2,#+32
+        ADD      R0,R0,#+1
+        STRH     R0,[R6, +R4]
+        LDRSH    R0,[R6, +R4]
+        CMP      R0,#+8
+        MOVEQ    R0,#+0
+        STRHEQ   R0,[R6, +R4]
+        LDRSH    R0,[R6, +R4]
+        ADD      R0,R4,R0, LSL #+5
+        SWI      +286
+//  721 
+//  722    /* compute log energy based on excitation frame energy in Q0 */
+//  723    L_frame_en = 0;
+        MOV      R0,#+0
+//  724 
+//  725    for(i = 0; i < L_FRAME; i++)
+        MOV      R1,#+0
+//  726    {
+//  727       L_frame_en = L_frame_en + (exc[i] * exc[i]);
+??D_DTX_activity_update_0:
+        ADD      R2,R5,R1, LSL #+1
+        LDRSH    R3,[R2, #+0]
+        MLA      R0,R3,R3,R0
+//  728       if (L_frame_en > MAX_31)
+        CMP      R0,#+1073741824
+//  729       {
+//  730          L_frame_en = MAX_31;
+        MVNGE    R0,#-1073741824
+//  731          break;
+//  732       }
+//  733    }
+        ADDLT    R1,R1,#+1
+        CMPLT    R1,#+256
+        BLT      ??D_DTX_activity_update_0
+//  734 
+//  735    /*
+//  736     * log_en =
+//  737     * (Float32)log10(L_frame_en/(Float32)L_FRAME)/(Float32)log10(2.0f);
+//  738     */
+//  739    D_UTIL_log2(L_frame_en, &log_en_e, &log_en_m);
+        ADD      R2,SP,#+2
+        MOV      R1,SP
+        _BLF     D_UTIL_log2,??D_UTIL_log2??rA
+//  740 
+//  741    /*
+//  742     * convert exponent and mantissa to Word16 Q7.
+//  743     * Q7 is used to simplify averaging in dtx_enc
+//  744     */
+//  745    log_en = log_en_e << 7;   /* Q7 */
+//  746    log_en = log_en + (log_en_m >> (15 - 7));
+//  747 
+//  748    /* Divide by L_FRAME = 256, i.e subtract 8 in Q7 = 1024 */
+//  749    log_en = log_en - 1024;
+//  750 
+//  751    /* insert into log energy buffer */
+//  752    st->mem_log_en_buf[st->mem_hist_ptr] = (Word16)log_en;
+        LDRSH    R0,[R6, +R4]
+        LDRSH    R1,[SP, #+0]
+        LDRSH    R2,[SP, #+2]
+        ADD      R0,R4,R0, LSL #+1
+        ADD      R0,R0,#+320
+        ASR      R2,R2,#+8
+        ADD      R1,R2,R1, LSL #+7
+        MVN      R2,#+255
+        BIC      R2,R2,#0x300
+        ADD      R1,R2,R1
+        STRH     R1,[R0, #+0]
+//  753 
+//  754    return;
+        POP      {R0,R4-R6,PC}    ;; return
+        CFI EndBlock cfiBlock13
+//  755 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock14 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??free??rA:
+        LDR      R12,??Subroutine7_0  ;; free
+        BX       R12
+        DATA
+??Subroutine7_0:
+        DC32     free
+        CFI EndBlock cfiBlock14
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock15 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_saturate??rA:
+        LDR      R12,??Subroutine8_0  ;; D_UTIL_saturate
+        BX       R12
+        DATA
+??Subroutine8_0:
+        DC32     D_UTIL_saturate
+        CFI EndBlock cfiBlock15
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock16 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_random??rA:
+        LDR      R12,??Subroutine9_0  ;; D_UTIL_random
+        BX       R12
+        DATA
+??Subroutine9_0:
+        DC32     D_UTIL_random
+        CFI EndBlock cfiBlock16
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock17 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??rA??div32_a:
+        LDR      R12,??Subroutine10_0  ;; ??div32_a
+        MOV      PC,R12
+        DATA
+??Subroutine10_0:
+        DC32     ??div32_a
+        CFI EndBlock cfiBlock17
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock18 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_LPC_isf_noise_d??rA:
+        LDR      R12,??Subroutine11_0  ;; D_LPC_isf_noise_d
+        BX       R12
+        DATA
+??Subroutine11_0:
+        DC32     D_LPC_isf_noise_d
+        CFI EndBlock cfiBlock18
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock19 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_pow2??rA:
+        LDR      R12,??Subroutine12_0  ;; D_UTIL_pow2
+        BX       R12
+        DATA
+??Subroutine12_0:
+        DC32     D_UTIL_pow2
+        CFI EndBlock cfiBlock19
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock20 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_norm_l??rA:
+        LDR      R12,??Subroutine13_0  ;; D_UTIL_norm_l
+        BX       R12
+        DATA
+??Subroutine13_0:
+        DC32     D_UTIL_norm_l
+        CFI EndBlock cfiBlock20
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock21 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_dot_product12??rA:
+        LDR      R12,??Subroutine14_0  ;; D_UTIL_dot_product12
+        BX       R12
+        DATA
+??Subroutine14_0:
+        DC32     D_UTIL_dot_product12
+        CFI EndBlock cfiBlock21
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock22 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_normalised_inverse_sqrt??rA:
+        LDR      R12,??Subroutine15_0  ;; D_UTIL_normalised_inverse_sqrt
+        BX       R12
+        DATA
+??Subroutine15_0:
+        DC32     D_UTIL_normalised_inverse_sqrt
+        CFI EndBlock cfiBlock22
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock23 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_log2??rA:
+        LDR      R12,??Subroutine16_0  ;; D_UTIL_log2
+        BX       R12
+        DATA
+??Subroutine16_0:
+        DC32     D_UTIL_log2
+        CFI EndBlock cfiBlock23
+
+        END
+// 
+// 2 708 bytes in segment CODE
+// 
+// 2 560 bytes of CODE memory (+ 148 bytes shared)
+//
+//Errors: none
+//Warnings: 6

@@ -1,0 +1,383 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:51 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3d /
+//                       ec\subband.c                                        /
+//    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3d /
+//                       ec\subband.c -D NDEBUG -lC                          /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\subband.s79                                    /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME subband
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        MULTWEAK ??xmp3_FDCT32??rA
+        MULTWEAK ??xmp3_PolyphaseMono??rA
+        MULTWEAK ??xmp3_PolyphaseStereo??rA
+        MULTWEAK ??xmp3_Subband??rT
+        PUBLIC xmp3_Subband
+        FUNCTION xmp3_Subband,0203H
+        LOCFRAME CSTACK, 44, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+xmp3_FDCT32         SYMBOL "xmp3_FDCT32"
+xmp3_PolyphaseMono  SYMBOL "xmp3_PolyphaseMono"
+xmp3_PolyphaseStereo SYMBOL "xmp3_PolyphaseStereo"
+??xmp3_FDCT32??rA   SYMBOL "??rA", xmp3_FDCT32
+??xmp3_PolyphaseMono??rA SYMBOL "??rA", xmp3_PolyphaseMono
+??xmp3_PolyphaseStereo??rA SYMBOL "??rA", xmp3_PolyphaseStereo
+xmp3_Subband        SYMBOL "xmp3_Subband"
+??xmp3_Subband??rT  SYMBOL "??rT", xmp3_Subband
+
+        EXTERN xmp3_FDCT32
+        FUNCTION xmp3_FDCT32,0202H
+        EXTERN xmp3_PolyphaseMono
+        FUNCTION xmp3_PolyphaseMono,0202H
+        EXTERN xmp3_PolyphaseStereo
+        FUNCTION xmp3_PolyphaseStereo,0202H
+        EXTERN xmp3_polyCoef
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??xmp3_Subband??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE xmp3_Subband
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3dec\subband.c
+//    1 /* ***** BEGIN LICENSE BLOCK ***** 
+//    2  * Version: RCSL 1.0/RPSL 1.0 
+//    3  *  
+//    4  * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+//    5  *      
+//    6  * The contents of this file, and the files included with this file, are 
+//    7  * subject to the current version of the RealNetworks Public Source License 
+//    8  * Version 1.0 (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the RealNetworks Community Source License Version 1.0 
+//   11  * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+//   12  * in which case the RCSL will apply. You may also obtain the license terms 
+//   13  * directly from RealNetworks.  You may not use this file except in 
+//   14  * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+//   15  * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+//   16  * RCSL for the rights, obligations and limitations governing use of the 
+//   17  * contents of the file.  
+//   18  *  
+//   19  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   20  * developer of the Original Code and owns the copyrights in the portions 
+//   21  * it created. 
+//   22  *  
+//   23  * This file, and the files included with this file, is distributed and made 
+//   24  * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+//   25  * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+//   26  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+//   27  * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+//   28  * 
+//   29  * Technology Compatibility Kit Test Suite(s) Location: 
+//   30  *    http://www.helixcommunity.org/content/tck 
+//   31  * 
+//   32  * Contributor(s): 
+//   33  *  
+//   34  * ***** END LICENSE BLOCK ***** */ 
+//   35 
+//   36 /**************************************************************************************
+//   37  * Fixed-point MP3 decoder
+//   38  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+//   39  * June 2003
+//   40  *
+//   41  * subband.c - subband transform (synthesis filterbank implemented via 32-point DCT
+//   42  *               followed by polyphase filter)
+//   43  **************************************************************************************/
+//   44 
+//   45 #include "coder.h"
+//   46 #include "assembly.h"
+//   47 
+//   48 /**************************************************************************************
+//   49  * Function:    Subband
+//   50  *
+//   51  * Description: do subband transform on all the blocks in one granule, all channels
+//   52  *
+//   53  * Inputs:      filled MP3DecInfo structure, after calling IMDCT for all channels
+//   54  *              vbuf[ch] and vindex[ch] must be preserved between calls
+//   55  *
+//   56  * Outputs:     decoded PCM data, interleaved LRLRLR... if stereo
+//   57  *
+//   58  * Return:      0 on success,  -1 if null input pointers
+//   59  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function xmp3_Subband
+        ARM
+//   60 int Subband(MP3DecInfo *mp3DecInfo, short *pcmBuf)
+//   61 {
+xmp3_Subband:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+        MOV      R4,R1
+//   62 	int b;
+//   63 	HuffmanInfo *hi;
+//   64 	IMDCTInfo *mi;
+//   65 	SubbandInfo *sbi;
+//   66 
+//   67 	/* validate pointers */
+//   68 	if (!mp3DecInfo || !mp3DecInfo->HuffmanInfoPS || !mp3DecInfo->IMDCTInfoPS || !mp3DecInfo->SubbandInfoPS)
+        CMP      R0,#+0
+        LDRNE    R1,[R0, #+12]
+        CMPNE    R1,#+0
+        LDRNE    R7,[R0, #+20]
+        CMPNE    R7,#+0
+        LDRNE    R8,[R0, #+24]
+        CMPNE    R8,#+0
+//   69 		return -1;
+        MVNEQ    R0,#+0
+        POPEQ    {R4-R11,PC}
+//   70 
+//   71 	hi = (HuffmanInfo *)mp3DecInfo->HuffmanInfoPS;
+//   72 	mi = (IMDCTInfo *)(mp3DecInfo->IMDCTInfoPS);
+//   73 	sbi = (SubbandInfo*)(mp3DecInfo->SubbandInfoPS);
+        LDR      R0,[R0, #+1980]
+        MOV      R5,#+8704
+        MOV      R6,#+24
+        ORR      R6,R6,#0x1B00
+        CMP      R0,#+2
+        MOV      R9,#+0
+        BNE      ??xmp3_Subband_0
+//   74 
+//   75 	if (mp3DecInfo->nChans == 2) {
+//   76 		/* stereo */
+//   77 		for (b = 0; b < BLOCK_SIZE; b++) {
+//   78 			FDCT32(mi->outBuf[0][b], sbi->vbuf + 0*32, sbi->vindex, (b & 0x01), mi->gb[0]);
+??xmp3_Subband_1:
+        ADD      R11,R6,R7
+        LDR      R0,[R11, #+0]
+        ADD      R10,R5,R8
+        PUSH     {R0}
+        CFI CFA R13+40
+        LDR      R2,[R10, #+0]
+        AND      R3,R9,#0x1
+        MOV      R1,R8
+        ADD      R0,R7,R9, LSL #+7
+        _BLF     xmp3_FDCT32,??xmp3_FDCT32??rA
+//   79 			FDCT32(mi->outBuf[1][b], sbi->vbuf + 1*32, sbi->vindex, (b & 0x01), mi->gb[1]);
+        LDR      R0,[R11, #+4]
+        AND      R3,R9,#0x1
+        PUSH     {R0}
+        CFI CFA R13+44
+        LDR      R2,[R10, #+0]
+        ADD      R1,R8,#+128
+        ADD      R0,R7,R9, LSL #+7
+        ADD      R0,R0,#+2304
+        _BLF     xmp3_FDCT32,??xmp3_FDCT32??rA
+//   80 			PolyphaseStereo(pcmBuf, sbi->vbuf + sbi->vindex + VBUF_LENGTH * (b & 0x01), polyCoef);
+        LDR      R1,[R10, #+0]
+        LDR      R2,??xmp3_Subband_2  ;; xmp3_polyCoef
+        AND      R0,R9,#0x1
+        MOV      R3,#+4352
+        ADD      R1,R8,R1, LSL #+2
+        MLA      R1,R3,R0,R1
+        MOV      R0,R4
+        _BLF     xmp3_PolyphaseStereo,??xmp3_PolyphaseStereo??rA
+//   81 			sbi->vindex = (sbi->vindex - (b & 0x01)) & 7;
+        LDR      R0,[R10, #+0]
+        AND      R1,R9,#0x1
+        SUB      R0,R0,R1
+        AND      R0,R0,#0x7
+        STR      R0,[R10, #+0]
+//   82 			pcmBuf += (2 * NBANDS);
+        ADD      R4,R4,#+128
+//   83 		}
+        ADD      R9,R9,#+1
+        CMP      R9,#+18
+        ADD      SP,SP,#+8
+        CFI CFA R13+36
+        BGE      ??xmp3_Subband_3
+        B        ??xmp3_Subband_1
+//   84 	} else {
+//   85 		/* mono */
+//   86 		for (b = 0; b < BLOCK_SIZE; b++) {
+//   87 			FDCT32(mi->outBuf[0][b], sbi->vbuf + 0*32, sbi->vindex, (b & 0x01), mi->gb[0]);
+??xmp3_Subband_0:
+        LDR      R0,[R6, +R7]
+        ADD      R10,R5,R8
+        PUSH     {R0}
+        CFI CFA R13+40
+        LDR      R2,[R10, #+0]
+        AND      R3,R9,#0x1
+        MOV      R1,R8
+        ADD      R0,R7,R9, LSL #+7
+        _BLF     xmp3_FDCT32,??xmp3_FDCT32??rA
+//   88 			PolyphaseMono(pcmBuf, sbi->vbuf + sbi->vindex + VBUF_LENGTH * (b & 0x01), polyCoef);
+        LDR      R1,[R10, #+0]
+        LDR      R2,??xmp3_Subband_2  ;; xmp3_polyCoef
+        AND      R0,R9,#0x1
+        MOV      R3,#+4352
+        ADD      R1,R8,R1, LSL #+2
+        MLA      R1,R3,R0,R1
+        MOV      R0,R4
+        _BLF     xmp3_PolyphaseMono,??xmp3_PolyphaseMono??rA
+//   89 			sbi->vindex = (sbi->vindex - (b & 0x01)) & 7;
+        LDR      R0,[R10, #+0]
+        AND      R1,R9,#0x1
+        SUB      R0,R0,R1
+        AND      R0,R0,#0x7
+        STR      R0,[R10, #+0]
+//   90 			pcmBuf += NBANDS;
+        ADD      R4,R4,#+64
+//   91 		}
+        ADD      R9,R9,#+1
+        CMP      R9,#+18
+        ADD      SP,SP,#+4
+        CFI CFA R13+36
+        BLT      ??xmp3_Subband_0
+//   92 	}
+//   93 
+//   94 	return 0;
+??xmp3_Subband_3:
+        MOV      R0,#+0
+        POP      {R4-R11,PC}      ;; return
+        DATA
+??xmp3_Subband_2:
+        DC32     xmp3_polyCoef
+        CFI EndBlock cfiBlock1
+//   95 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??xmp3_FDCT32??rA:
+        LDR      R12,??Subroutine1_0  ;; xmp3_FDCT32
+        BX       R12
+        DATA
+??Subroutine1_0:
+        DC32     xmp3_FDCT32
+        CFI EndBlock cfiBlock2
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??xmp3_PolyphaseStereo??rA:
+        LDR      R12,??Subroutine2_0  ;; xmp3_PolyphaseStereo
+        BX       R12
+        DATA
+??Subroutine2_0:
+        DC32     xmp3_PolyphaseStereo
+        CFI EndBlock cfiBlock3
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??xmp3_PolyphaseMono??rA:
+        LDR      R12,??Subroutine3_0  ;; xmp3_PolyphaseMono
+        BX       R12
+        DATA
+??Subroutine3_0:
+        DC32     xmp3_PolyphaseMono
+        CFI EndBlock cfiBlock4
+
+        END
+//   96 
+// 
+// 372 bytes in segment CODE
+// 
+// 332 bytes of CODE memory (+ 40 bytes shared)
+//
+//Errors: none
+//Warnings: 2

@@ -1,0 +1,965 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:18 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD /
+//                       EC\AAC_FILE (17).c                                  /
+//    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AAC /
+//                       DEC\AAC_FILE (17).c" -D NDEBUG -lC                  /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\AAC_FILE (17).s79                              /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME `AAC_FILE (17)`
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        MULTWEAK ??aacDequantize??rT
+        MULTWEAK ??raac_DeinterleaveShortBlocks??rT
+        FUNCTION DequantBlock,0203H
+        LOCFRAME CSTACK, 68, STACK
+        PUBLIC aacDequantize
+        FUNCTION aacDequantize,0203H
+        LOCFRAME CSTACK, 56, STACK
+        PUBLIC raac_DeinterleaveShortBlocks
+        FUNCTION raac_DeinterleaveShortBlocks,0203H
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+aacDequantize       SYMBOL "aacDequantize"
+??aacDequantize??rT SYMBOL "??rT", aacDequantize
+raac_DeinterleaveShortBlocks SYMBOL "raac_DeinterleaveShortBlocks"
+??raac_DeinterleaveShortBlocks??rT SYMBOL "??rT", raac_DeinterleaveShortBlocks
+
+        EXTERN raac_sfBandTabLong
+        EXTERN raac_sfBandTabLongOffset
+        EXTERN raac_sfBandTabShort
+        EXTERN raac_sfBandTabShortOffset
+
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (17).c
+//    1 /* ***** BEGIN LICENSE BLOCK *****  
+//    2  * Source last modified: $Id: dequant.c,v 1.1 2005/02/26 01:47:34 jrecker Exp $ 
+//    3  *   
+//    4  * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+//    5  *       
+//    6  * The contents of this file, and the files included with this file, 
+//    7  * are subject to the current version of the RealNetworks Public 
+//    8  * Source License (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the current version of the RealNetworks Community 
+//   11  * Source License (the "RCSL") available at 
+//   12  * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+//   13  * will apply. You may also obtain the license terms directly from 
+//   14  * RealNetworks.  You may not use this file except in compliance with 
+//   15  * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+//   16  * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+//   17  * the rights, obligations and limitations governing use of the 
+//   18  * contents of the file. 
+//   19  *   
+//   20  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   21  * developer of the Original Code and owns the copyrights in the 
+//   22  * portions it created. 
+//   23  *   
+//   24  * This file, and the files included with this file, is distributed 
+//   25  * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+//   26  * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+//   27  * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+//   28  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+//   29  * ENJOYMENT OR NON-INFRINGEMENT. 
+//   30  *  
+//   31  * Technology Compatibility Kit Test Suite(s) Location:  
+//   32  *    http://www.helixcommunity.org/content/tck  
+//   33  *  
+//   34  * Contributor(s):  
+//   35  *   
+//   36  * ***** END LICENSE BLOCK ***** */  
+//   37 
+//   38 /**************************************************************************************
+//   39  * Fixed-point HE-AAC decoder
+//   40  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+//   41  * February 2005
+//   42  *
+//   43  * dequant.c - transform coefficient dequantization and short-block deinterleaving
+//   44  **************************************************************************************/
+//   45 
+//   46 #include "coder_aac.h"
+//   47 #include "assembly_aac.h"
+//   48 
+//   49 #define	SF_OFFSET			100
+//   50 
+//   51 /* pow(2, i/4.0) for i = [0,1,2,3], format = Q30 */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//   52 static const int pow14[4] = { 
+pow14:
+        DATA
+        DC32 1073741824, 1276901417, 1518500250, 1805811301
+        DC32 14, 13, 11, 10, 9, 7, 6, 5
+        DC32 1704458900, 1352829926, 2147483647, 1704458900, 1352829926
+        DC32 2147483647, 1704458900, 1352829926
+        DC32 338207482, 366681046, 395718700, 425299333, 455403707, 486014202
+        DC32 517114610, 548689962, 580726382, 613210965, 646131674, 679477248
+        DC32 713237127, 747401384, 781960664, 816906137, 852229450, 887922689
+        DC32 923978338, 960389256, 997148640, 1034250007, 1071687164
+        DC32 1109454194, 1147545432, 1185955452, 1224679047, 1263711219
+        DC32 1303047165, 1342682263, 1382612066, 1422832284, 1463338785
+        DC32 1504127577, 1545194805, 1586536745, 1628149793, 1670030463
+        DC32 1712175375, 1754581259, 1797244940, 1840163341, 1883333472
+        DC32 1926752432, 1970417401, 2014325637, 2058474476, 2102861321
+        DC32 0, 268435456, 676414963, 1161452763, 213057363, 286886358
+        DC32 365834696, 449311235, 536870912, 628164281, 722908323, 820868276
+        DC32 921845669, 1025670099, 1132193366, 1241285180, 0, 319225354
+        DC32 804397487, 1381207890, 253369332, 341167298, 435053224, 534324118
+        DC32 638450708, 747017432, 859687721, 976182394, 1096265429, 1219734179
+        DC32 1346412406, 1476145168, 0, 379625062, 956595215, 1642542250
+        DC32 301308612, 405718579, 517368389, 635422042, 759250125, 888358445
+        DC32 1022346755, 1160883049, 1303686648, 1450516564, 1601163213
+        DC32 1755442337, 0, 451452825, 1137589835, 1953322930, 358318345
+        DC32 482483420, 615258169, 755648414, 902905651, 1056442184, 1215782035
+        DC32 1380530381, 1550353437, 1724964618, 1904114686, 2087584517
+        DC32 698400169, -1339144152, 1498917403, 594299277, -11003815
+        DC32 277160291, -751569244, 1189691531, 667078384, -17467468
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??DequantBlock??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE DequantBlock
+//   53 	0x40000000, 0x4c1bf829, 0x5a82799a, 0x6ba27e65
+//   54 };
+//   55 
+//   56 /* pow(2, i/4.0) * pow(j, 4.0/3.0) for i = [0,1,2,3],  j = [0,1,2,...,15]
+//   57  * format = Q28 for j = [0-3], Q25 for j = [4-15]
+//   58  */
+//   59 static const int pow43_14[4][16] = {
+//   60 	{
+//   61 	0x00000000, 0x10000000, 0x285145f3, 0x453a5cdb, /* Q28 */
+//   62 	0x0cb2ff53, 0x111989d6, 0x15ce31c8, 0x1ac7f203, /* Q25 */
+//   63 	0x20000000, 0x257106b9, 0x2b16b4a3, 0x30ed74b4, /* Q25 */
+//   64 	0x36f23fa5, 0x3d227bd3, 0x437be656, 0x49fc823c, /* Q25 */
+//   65 	},
+//   66 	{
+//   67 	0x00000000, 0x1306fe0a, 0x2ff221af, 0x52538f52, 
+//   68 	0x0f1a1bf4, 0x1455ccc2, 0x19ee62a8, 0x1fd92396, 
+//   69 	0x260dfc14, 0x2c8694d8, 0x333dcb29, 0x3a2f5c7a, 
+//   70 	0x4157aed5, 0x48b3aaa3, 0x50409f76, 0x57fc3010, 
+//   71 	},
+//   72 	{
+//   73 	0x00000000, 0x16a09e66, 0x39047c0f, 0x61e734aa, 
+//   74 	0x11f59ac4, 0x182ec633, 0x1ed66a45, 0x25dfc55a, 
+//   75 	0x2d413ccd, 0x34f3462d, 0x3cefc603, 0x4531ab69, 
+//   76 	0x4db4adf8, 0x56752054, 0x5f6fcfcd, 0x68a1eca1, 
+//   77 	},
+//   78 	{
+//   79 	0x00000000, 0x1ae89f99, 0x43ce3e4b, 0x746d57b2, 
+//   80 	0x155b8109, 0x1cc21cdc, 0x24ac1839, 0x2d0a479e, 
+//   81 	0x35d13f33, 0x3ef80748, 0x48775c93, 0x524938cd, 
+//   82 	0x5c68841d, 0x66d0df0a, 0x717e7bfe, 0x7c6e0305, 
+//   83 	},
+//   84 };
+//   85 
+//   86 /* pow(j, 4.0 / 3.0) for j = [16,17,18,...,63], format = Q23 */
+//   87 static const int pow43[48] = {
+//   88 	0x1428a2fa, 0x15db1bd6, 0x1796302c, 0x19598d85, 
+//   89 	0x1b24e8bb, 0x1cf7fcfa, 0x1ed28af2, 0x20b4582a, 
+//   90 	0x229d2e6e, 0x248cdb55, 0x26832fda, 0x28800000, 
+//   91 	0x2a832287, 0x2c8c70a8, 0x2e9bc5d8, 0x30b0ff99, 
+//   92 	0x32cbfd4a, 0x34eca001, 0x3712ca62, 0x393e6088, 
+//   93 	0x3b6f47e0, 0x3da56717, 0x3fe0a5fc, 0x4220ed72, 
+//   94 	0x44662758, 0x46b03e7c, 0x48ff1e87, 0x4b52b3f3, 
+//   95 	0x4daaebfd, 0x5007b497, 0x5268fc62, 0x54ceb29c, 
+//   96 	0x5738c721, 0x59a72a59, 0x5c19cd35, 0x5e90a129, 
+//   97 	0x610b9821, 0x638aa47f, 0x660db90f, 0x6894c90b, 
+//   98 	0x6b1fc80c, 0x6daeaa0d, 0x70416360, 0x72d7e8b0, 
+//   99 	0x75722ef9, 0x78102b85, 0x7ab1d3ec, 0x7d571e09, 
+//  100 };
+//  101 
+//  102 /* sqrt(0.5), format = Q31 */
+//  103 #define SQRTHALF 0x5a82799a
+//  104 
+//  105 /* Minimax polynomial approximation to pow(x, 4/3), over the range
+//  106  *  poly43lo: x = [0.5, 0.7071]
+//  107  *  poly43hi: x = [0.7071, 1.0]
+//  108  *
+//  109  * Relative error < 1E-7
+//  110  * Coefs are scaled by 4, 2, 1, 0.5, 0.25
+//  111  */
+//  112 static const int poly43lo[5] = { 0x29a0bda9, 0xb02e4828, 0x5957aa1b, 0x236c498d, 0xff581859 };
+//  113 static const int poly43hi[5] = { 0x10852163, 0xd333f6a4, 0x46e9408b, 0x27c2cef0, 0xfef577b4 };
+//  114 
+//  115 /* pow2exp[i] = pow(2, i*4/3) exponent */
+//  116 static const int pow2exp[8]  = { 14, 13, 11, 10, 9, 7, 6, 5 };
+//  117 
+//  118 /* pow2exp[i] = pow(2, i*4/3) fraction */
+//  119 static const int pow2frac[8] = {
+//  120 	0x6597fa94, 0x50a28be6, 0x7fffffff, 0x6597fa94, 
+//  121 	0x50a28be6, 0x7fffffff, 0x6597fa94, 0x50a28be6
+//  122 };
+//  123 
+//  124 /**************************************************************************************
+//  125  * Function:    DequantBlock
+//  126  *
+//  127  * Description: dequantize one block of transform coefficients (in-place)
+//  128  *
+//  129  * Inputs:      quantized transform coefficients, range = [0, 8191]
+//  130  *              number of samples to dequantize
+//  131  *              scalefactor for this block of data, range = [0, 256]
+//  132  *
+//  133  * Outputs:     dequantized transform coefficients in Q(FBITS_OUT_DQ_OFF)
+//  134  *
+//  135  * Return:      guard bit mask (OR of abs value of all dequantized coefs)
+//  136  *
+//  137  * Notes:       applies dequant formula y = pow(x, 4.0/3.0) * pow(2, (scale - 100)/4.0)
+//  138  *                * pow(2, FBITS_OUT_DQ_OFF)
+//  139  *              clips outputs to Q(FBITS_OUT_DQ_OFF)
+//  140  *              output has >= 1 guard bit
+//  141  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function DequantBlock
+        ARM
+//  142 static int DequantBlock(int *inbuf, int nSamps, int scale)
+//  143 {
+DequantBlock:
+        PUSH     {R0,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+40
+        SUB      SP,SP,#+28
+        CFI CFA R13+68
+        MOV      R8,R1
+//  144 	int iSamp, scalef, scalei, x, y, gbMask, shift, tab4[4];
+//  145 	const int *tab16, *coef;
+//  146 
+//  147 	if (nSamps <= 0)
+        CMP      R8,#+1
+//  148 		return 0;
+        MOVLT    R0,#+0
+        BLT      ??DequantBlock_0
+//  149 
+//  150 	scale -= SF_OFFSET;	/* new range = [-100, 156] */
+        SUB      R0,R2,#+100
+//  151 
+//  152 	/* with two's complement numbers, scalei/scalef factorization works for pos and neg values of scale:
+//  153 	 *  [+4...+7] >> 2 = +1, [ 0...+3] >> 2 = 0, [-4...-1] >> 2 = -1, [-8...-5] >> 2 = -2 ...
+//  154 	 *  (-1 & 0x3) = 3, (-2 & 0x3) = 2, (-3 & 0x3) = 1, (0 & 0x3) = 0
+//  155 	 *
+//  156 	 * Example: 2^(-5/4) = 2^(-1) * 2^(-1/4) = 2^-2 * 2^(3/4)
+//  157 	 */
+//  158 	tab16 = pow43_14[scale & 0x3];
+        LDR      R2,??DequantBlock_1  ;; pow14
+        AND      R3,R0,#0x3
+        ADD      R3,R2,R3, LSL #+6
+        ADD      R3,R3,#+272
+        STR      R3,[SP, #+0]
+//  159 	scalef = pow14[scale & 0x3];
+        AND      R3,R0,#0x3
+        LDR      R3,[R2, +R3, LSL #+2]
+        STR      R3,[SP, #+24]
+//  160 	scalei = (scale >> 2) + FBITS_OUT_DQ_OFF;
+        MOV      R3,#+5
+        ADD      R0,R3,R0, ASR #+2
+        STR      R0,[SP, #+4]
+//  161 
+//  162 	/* cache first 4 values:
+//  163 	 * tab16[j] = Q28 for j = [0,3]
+//  164 	 * tab4[x] = x^(4.0/3.0) * 2^(0.25*scale), Q(FBITS_OUT_DQ_OFF)
+//  165 	 */
+//  166 	shift = 28 - scalei;	
+        RSB      R3,R0,#+28
+        CMP      R3,#+32
+        BLT      ??DequantBlock_2
+//  167 	if (shift > 31) {
+//  168 		tab4[0] = tab4[1] = tab4[2] = tab4[3] = 0;
+        MOV      R0,#+0
+        STR      R0,[SP, #+20]
+        STR      R0,[SP, #+16]
+        STR      R0,[SP, #+12]
+        MOV      R1,#+0
+        STR      R1,[SP, #+8]
+        B        ??DequantBlock_3
+//  169 	} else if (shift <= 0) {
+??DequantBlock_2:
+        CMP      R3,#+1
+        BGE      ??DequantBlock_4
+//  170 		shift = -shift;
+        RSB      R3,R3,#+0
+//  171 		if (shift > 31)
+        CMP      R3,#+32
+//  172 			shift = 31;
+        MOVGE    R3,#+31
+//  173 		for (x = 0; x < 4; x++) {
+        MOV      R0,#+0
+        B        ??DequantBlock_5
+//  174 			y = tab16[x];
+//  175 			if (y > (0x3fffffff >> shift))
+//  176 				y = 0x3fffffff;		/* clip (rare), guarantees at least 1 gb */
+//  177 			else
+//  178 				y <<= shift;
+//  179 			tab4[x] = y;
+??DequantBlock_6:
+        ADD      R4,SP,#+8
+        STR      R1,[R4, +R0, LSL #+2]
+        ADD      R0,R0,#+1
+        CMP      R0,#+4
+        BGE      ??DequantBlock_3
+??DequantBlock_5:
+        LDR      R1,[SP, #+0]
+        MVN      R4,#-1073741824
+        LDR      R1,[R1, +R0, LSL #+2]
+        CMP      R1,R4, ASR R3
+        LSLLE    R1,R1,R3
+        MOVGT    R1,R4
+        B        ??DequantBlock_6
+//  180 		}
+//  181 	} else {
+//  182 		tab4[0] = 0;
+??DequantBlock_4:
+        MOV      R1,#+0
+        STR      R1,[SP, #+8]
+//  183 		tab4[1] = tab16[1] >> shift;
+        LDR      R1,[SP, #+0]
+        LDR      R1,[R1, #+4]
+        ASR      R1,R1,R3
+        STR      R1,[SP, #+12]
+//  184 		tab4[2] = tab16[2] >> shift;
+        LDR      R1,[SP, #+0]
+        LDR      R1,[R1, #+8]
+        ASR      R1,R1,R3
+        STR      R1,[SP, #+16]
+//  185 		tab4[3] = tab16[3] >> shift;
+        LDR      R1,[SP, #+0]
+        LDR      R1,[R1, #+12]
+        ASR      R1,R1,R3
+        STR      R1,[SP, #+20]
+//  186 	}
+//  187 
+//  188 	gbMask = 0;
+??DequantBlock_3:
+        MOV      LR,#+0
+//  189 	do {
+//  190 		iSamp = *inbuf;
+??DequantBlock_7:
+        LDR      R0,[SP, #+28]
+        LDR      R12,[R0, #+0]
+        ASR      R0,R12,#+31
+//  191 		x = FASTABS(iSamp);
+        EOR      R1,R0,R12
+        SUB      R0,R1,R0
+//  192 
+//  193 		if (x < 4) {
+        CMP      R0,#+4
+//  194 			y = tab4[x];
+        ADDLT    R1,SP,#+8
+        LDRLT    R1,[R1, +R0, LSL #+2]
+        BLT      ??DequantBlock_8
+//  195 		} else  {
+//  196 
+//  197 			if (x < 16) {
+        CMP      R0,#+16
+        BGE      ??DequantBlock_9
+//  198 				/* result: y = Q25 (tab16 = Q25) */
+//  199 				y = tab16[x];
+        LDR      R1,[SP, #+0]
+        LDR      R4,[R1, +R0, LSL #+2]
+//  200 				shift = 25 - scalei;
+        LDR      R0,[SP, #+4]
+        RSB      R3,R0,#+25
+        B        ??DequantBlock_10
+//  201 			} else if (x < 64) {
+??DequantBlock_9:
+        LDR      R10,[SP, #+24]
+        CMP      R0,#+64
+        ASR      R11,R10,#+31
+        BGE      ??DequantBlock_11
+//  202 				/* result: y = Q21 (pow43tab[j] = Q23, scalef = Q30) */
+//  203 				y = pow43[x-16];	
+//  204 				shift = 21 - scalei;
+        LDR      R1,[SP, #+4]
+//  205 				y = MULSHIFT32(y, scalef);
+        ADD      R0,R2,R0, LSL #+2
+        LDR      R0,[R0, #+16]
+        RSB      R3,R1,#+21
+        ASR      R1,R0,#+31
+        UMULL    R4,R5,R0,R10
+        MLA      R5,R0,R11,R5
+        MLA      R5,R1,R10,R5
+        MOV      R4,R5
+        B        ??DequantBlock_10
+//  206 			} else {
+//  207 				/* normalize to [0x40000000, 0x7fffffff]
+//  208 				 * input x = [64, 8191] = [64, 2^13-1]
+//  209 				 * ranges:
+//  210 				 *  shift = 7:   64 -  127
+//  211 				 *  shift = 6:  128 -  255
+//  212 				 *  shift = 5:  256 -  511
+//  213 				 *  shift = 4:  512 - 1023
+//  214 				 *  shift = 3: 1024 - 2047
+//  215 				 *  shift = 2: 2048 - 4095
+//  216 				 *  shift = 1: 4096 - 8191
+//  217 				 */
+//  218 				x <<= 17;
+//  219 				shift = 0;
+//  220 				if (x < 0x08000000)
+//  221 					x <<= 4, shift += 4;
+//  222 				if (x < 0x20000000)
+//  223 					x <<= 2, shift += 2;
+//  224 				if (x < 0x40000000)
+//  225 					x <<= 1, shift += 1;
+//  226 
+//  227 				coef = (x < SQRTHALF) ? poly43lo : poly43hi;
+??DequantBlock_11:
+        LDR      R3,??DequantBlock_1+0x4  ;; 0x5a82799a
+        LSL      R0,R0,#+17
+        MOV      R1,#+0
+        CMP      R0,#+134217728
+        LSLLT    R0,R0,#+4
+        MOVLT    R1,#+4
+        CMP      R0,#+536870912
+        LSLLT    R0,R0,#+2
+        ADDLT    R1,R1,#+2
+        CMP      R0,#+1073741824
+        LSLLT    R0,R0,#+1
+        ADDLT    R1,R1,#+1
+        CMP      R0,R3
+        ADDLT    R3,R2,#+528
+        ADDGE    R3,R2,#+548
+//  228 
+//  229 				/* polynomial */
+//  230 				y = coef[0];
+//  231 				y = MULSHIFT32(y, x) + coef[1];
+//  232 				y = MULSHIFT32(y, x) + coef[2];
+//  233 				y = MULSHIFT32(y, x) + coef[3];
+//  234 				y = MULSHIFT32(y, x) + coef[4];
+//  235 				y = MULSHIFT32(y, pow2frac[shift]) << 3;
+//  236 
+//  237 				/* fractional scale 
+//  238 				 * result: y = Q21 (pow43tab[j] = Q23, scalef = Q30)
+//  239 				 */
+//  240 				y = MULSHIFT32(y, scalef);	/* now y is Q24 */
+        LDR      R4,[R3, #+0]
+        ADD      R9,R2,R1, LSL #+2
+        ASR      R1,R0,#+31
+        ASR      R5,R4,#+31
+        UMULL    R6,R7,R4,R0
+        MLA      R7,R4,R1,R7
+        LDR      R4,[R3, #+4]
+        MLA      R7,R5,R0,R7
+        ADD      R4,R4,R7
+        ASR      R5,R4,#+31
+        UMULL    R6,R7,R4,R0
+        MLA      R7,R4,R1,R7
+        LDR      R4,[R3, #+8]
+        MLA      R7,R5,R0,R7
+        ADD      R4,R4,R7
+        ASR      R5,R4,#+31
+        UMULL    R6,R7,R4,R0
+        MLA      R7,R4,R1,R7
+        LDR      R4,[R3, #+12]
+        MLA      R7,R5,R0,R7
+        ADD      R4,R4,R7
+        ASR      R5,R4,#+31
+        UMULL    R6,R7,R4,R0
+        MLA      R7,R4,R1,R7
+        LDR      R4,[R9, #+48]
+        MLA      R7,R5,R0,R7
+        LDR      R0,[R3, #+16]
+        ADD      R3,R0,R7
+        SMULL    R0,R1,R3,R4
+        MOV      R0,R1
+        LSL      R0,R0,#+3
+        ASR      R1,R0,#+31
+        UMULL    R4,R5,R0,R10
+        MLA      R5,R0,R11,R5
+//  241 				shift = 24 - scalei - pow2exp[shift];
+        LDR      R0,[SP, #+4]
+        MLA      R5,R1,R10,R5
+        LDR      R1,[R9, #+16]
+        MOV      R4,R5
+        RSB      R0,R0,#+24
+        SUB      R3,R0,R1
+//  242 			}
+//  243 
+//  244 			/* integer scale */
+//  245 			if (shift <= 0) {
+??DequantBlock_10:
+        CMP      R3,#+1
+        BGE      ??DequantBlock_12
+//  246 				shift = -shift;
+        RSB      R3,R3,#+0
+//  247 				if (shift > 31)
+        CMP      R3,#+32
+//  248 					shift = 31;
+        MOVGE    R3,#+31
+//  249 
+//  250 				if (y > (0x3fffffff >> shift))
+        MVN      R0,#-1073741824
+        CMP      R4,R0, ASR R3
+        LSLLE    R1,R4,R3
+//  251 					y = 0x3fffffff;		/* clip (rare), guarantees at least 1 gb */
+        MOVGT    R1,R0
+        B        ??DequantBlock_8
+//  252 				else
+//  253 					y <<= shift;
+//  254 			} else {
+//  255 				if (shift > 31)
+??DequantBlock_12:
+        CMP      R3,#+32
+//  256 					shift = 31;
+        MOVGE    R3,#+31
+//  257 				y >>= shift;
+        ASR      R1,R4,R3
+//  258 			}
+//  259 		}
+//  260 
+//  261 		/* sign and store (gbMask used to count GB's) */
+//  262 		gbMask |= y;
+??DequantBlock_8:
+        ORR      LR,R1,LR
+//  263 
+//  264 		/* apply sign */
+//  265 		iSamp >>= 31;
+        ASR      R0,R12,#+31
+//  266 		y ^= iSamp;
+//  267 		y -= iSamp;
+//  268 
+//  269 		*inbuf++ = y;
+        EOR      R1,R0,R1
+        SUB      R0,R1,R0
+        LDR      R1,[SP, #+28]
+//  270 	} while (--nSamps);
+        SUBS     R8,R8,#+1
+        STR      R0,[R1], #+4
+        STR      R1,[SP, #+28]
+        BNE      ??DequantBlock_7
+//  271 
+//  272 	return gbMask;
+        MOV      R0,LR
+??DequantBlock_0:
+        ADD      SP,SP,#+32       ;; stack cleaning
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        DATA
+??DequantBlock_1:
+        DC32     pow14
+        DC32     0x5a82799a
+        CFI EndBlock cfiBlock1
+//  273 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??aacDequantize??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE aacDequantize
+//  274 
+//  275 /**************************************************************************************
+//  276  * Function:    Dequantize
+//  277  *
+//  278  * Description: dequantize all transform coefficients for one channel
+//  279  *
+//  280  * Inputs:      valid AACDecInfo struct (including unpacked, quantized coefficients)
+//  281  *              index of current channel
+//  282  *
+//  283  * Outputs:     dequantized coefficients, including short-block deinterleaving
+//  284  *              flags indicating if intensity and/or PNS is active
+//  285  *              minimum guard bit count for dequantized coefficients
+//  286  *
+//  287  * Return:      0 if successful, error code (< 0) if error
+//  288  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function aacDequantize
+        ARM
+//  289 int aacDequantize(AACDecInfo *aacDecInfo, int ch)
+//  290 {
+aacDequantize:
+        PUSH     {R0,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+40
+        SUB      SP,SP,#+16
+        CFI CFA R13+56
+//  291 	int gp, cb, sfb, win, width, nSamps, gbMask;
+//  292 	int *coef;
+//  293 	const short *sfbTab;
+//  294 	unsigned char *sfbCodeBook;
+//  295 	short *scaleFactors;
+//  296 	PSInfoBase *psi;
+//  297 	ICSInfo *icsInfo;
+//  298 
+//  299 	/* validate pointers */
+//  300 	if (!aacDecInfo || !aacDecInfo->psInfoBase)
+        CMP      R0,#+0
+        LDRNE    R0,[R0, #+0]
+        CMPNE    R0,#+0
+//  301 		return ERR_AAC_NULL_POINTER;
+        MVNEQ    R0,#+1
+        BEQ      ??aacDequantize_0
+//  302 	psi = (PSInfoBase *)(aacDecInfo->psInfoBase);
+//  303 	icsInfo = (ch == 1 && psi->commonWin == 1) ? &(psi->icsInfo[0]) : &(psi->icsInfo[ch]);
+        CMP      R1,#+1
+        LDREQ    R3,[R0, #+2288]
+        MOV      R2,#+124
+        CMPEQ    R3,#+1
+        MOVNE    R3,#+58
+        MLANE    R4,R3,R1,R0
+//  304 		
+//  305 	if (icsInfo->winSequence == 2) {
+        LDR      R3,[R0, #+2168]
+        ORR      R2,R2,#0x800
+        ADDEQ    R6,R2,R0
+        ADDNE    R6,R2,R4
+        LDRB     R2,[R6, #+1]
+        CMP      R2,#+2
+        BNE      ??aacDequantize_1
+//  306 		sfbTab = sfBandTabShort + sfBandTabShortOffset[psi->sampRateIdx];
+        LDR      R4,??aacDequantize_2  ;; raac_sfBandTabShortOffset
+        LDR      R3,[R4, +R3, LSL #+2]
+        LDR      R4,??aacDequantize_2+0x4  ;; raac_sfBandTabShort
+        ADD      R3,R4,R3, LSL #+1
+        STR      R3,[SP, #+0]
+//  307 		nSamps = NSAMPS_SHORT;
+        MOV      R3,#+128
+        B        ??aacDequantize_3
+//  308 	} else {
+//  309 		sfbTab = sfBandTabLong + sfBandTabLongOffset[psi->sampRateIdx];
+??aacDequantize_1:
+        LDR      R4,??aacDequantize_2+0x8  ;; raac_sfBandTabLongOffset
+        LDR      R3,[R4, +R3, LSL #+2]
+        LDR      R4,??aacDequantize_2+0xC  ;; raac_sfBandTabLong
+        ADD      R3,R4,R3, LSL #+1
+        STR      R3,[SP, #+0]
+//  310 		nSamps = NSAMPS_LONG;
+        MOV      R3,#+1024
+//  311 	}
+//  312 	coef = psi->coef[ch];
+//  313 	sfbCodeBook = psi->sfbCodeBook[ch];
+??aacDequantize_3:
+        MOV      R4,#+120
+        MLA      R5,R4,R1,R0
+        STR      R3,[SP, #+12]
+        MOV      R2,#+72
+        ORR      R2,R2,#0x1000
+        ADD      R3,R0,R1, LSL #+12
+        ADD      R7,R2,R3
+        MOV      R3,#+212
+        ORR      R3,R3,#0xA00
+        ADD      R3,R3,R5
+//  314 	scaleFactors = psi->scaleFactors[ch];
+        MOV      R4,#+240
+        MLA      R5,R4,R1,R0
+        STR      R3,[SP, #+4]
+        MOV      R3,#+244
+        ORR      R3,R3,#0x800
+        ADD      R3,R3,R5
+        STR      R3,[SP, #+8]
+//  315 
+//  316 	psi->intensityUsed[ch] = 0;
+        SUB      R2,R2,#+1136
+        ADD      R0,R0,R1, LSL #+2
+        ADD      R5,R2,R0
+        MOV      R0,#+0
+        STR      R0,[R5, #+12]
+//  317 	psi->pnsUsed[ch] = 0;
+        STR      R0,[R5, #+0]
+//  318 	gbMask = 0;
+//  319 	for (gp = 0; gp < icsInfo->numWinGroup; gp++) {
+        MOV      R8,R0
+        LDRB     R0,[R6, #+49]
+        MOV      R4,#+0
+        CMP      R0,#+0
+        BNE      ??aacDequantize_4
+//  320 		for (win = 0; win < icsInfo->winGroupLen[gp]; win++) {
+//  321 			for (sfb = 0; sfb < icsInfo->maxSFB; sfb++) {
+//  322 				/* dequantize one scalefactor band (not necessary if codebook is intensity or PNS) 
+//  323 				 * for zero codebook, still run dequantizer in case non-zero pulse data was added
+//  324 				 */
+//  325 				cb = (int)(sfbCodeBook[sfb]);
+//  326 				width = sfbTab[sfb+1] - sfbTab[sfb];
+//  327 				if (cb >= 0 && cb <= 11)
+//  328 					gbMask |= DequantBlock(coef, width, scaleFactors[sfb]);
+//  329 				else if (cb == 13)
+//  330 					psi->pnsUsed[ch] = 1;
+//  331 				else if (cb == 14 || cb == 15)
+//  332 					psi->intensityUsed[ch] = 1;	/* should only happen if ch == 1 */
+//  333 				coef += width;
+//  334 			}
+//  335 			coef += (nSamps - sfbTab[icsInfo->maxSFB]);
+//  336 		}
+//  337 		sfbCodeBook += icsInfo->maxSFB;
+//  338 		scaleFactors += icsInfo->maxSFB;
+//  339 	}
+//  340 	aacDecInfo->pnsUsed |= psi->pnsUsed[ch];	/* set flag if PNS used for any channel */
+??aacDequantize_5:
+        LDR      R0,[SP, #+16]
+        LDR      R2,[R5, #+0]
+        LDR      R1,[R0, #+88]
+//  341 
+//  342 	/* calculate number of guard bits in dequantized data */
+//  343 	psi->gbCurrent[ch] = CLZ(gbMask) - 1;
+        CMP      R4,#+0
+        ORR      R1,R2,R1
+        STR      R1,[R0, #+88]
+        BNE      ??aacDequantize_6
+        MOV      R0,#+32
+        B        ??aacDequantize_7
+??aacDequantize_8:
+        LDRB     R1,[R6, #+3]
+        LDR      R2,[SP, #+4]
+        ADD      R8,R8,#+1
+        ADD      R1,R1,R2
+        STR      R1,[SP, #+4]
+        LDRB     R1,[R6, #+3]
+        LDR      R2,[SP, #+8]
+        ADD      R1,R2,R1, LSL #+1
+        STR      R1,[SP, #+8]
+??aacDequantize_4:
+        LDRB     R0,[R6, #+49]
+        CMP      R8,R0
+        BGE      ??aacDequantize_5
+        ADD      R0,R8,R6
+        LDRB     R0,[R0, #+50]
+        MOV      R9,#+0
+        CMP      R0,#+0
+        BNE      ??aacDequantize_9
+        B        ??aacDequantize_8
+??aacDequantize_10:
+        LDRB     R1,[R6, #+3]
+        LDR      R2,[SP, #+0]
+        LDR      R0,[SP, #+12]
+        ADD      R1,R2,R1, LSL #+1
+        LDRSH    R1,[R1, #+0]
+        ADD      R9,R9,#+1
+        SUB      R0,R0,R1
+        ADD      R7,R7,R0, LSL #+2
+??aacDequantize_9:
+        ADD      R0,R8,R6
+        LDRB     R0,[R0, #+50]
+        CMP      R9,R0
+        BGE      ??aacDequantize_8
+        LDRB     R0,[R6, #+3]
+        MOV      R10,#+0
+        CMP      R0,#+0
+        BNE      ??aacDequantize_11
+        B        ??aacDequantize_10
+??aacDequantize_12:
+        CMP      R0,#+14
+        CMPNE    R0,#+15
+        STREQ    R1,[R5, #+12]
+??aacDequantize_13:
+        ADD      R7,R7,R11, LSL #+2
+        ADD      R10,R10,#+1
+??aacDequantize_11:
+        LDRB     R0,[R6, #+3]
+        CMP      R10,R0
+        BGE      ??aacDequantize_10
+        LDR      R0,[SP, #+4]
+        LDR      R1,[SP, #+0]
+        LDRB     R0,[R10, +R0]
+        ADD      R1,R1,R10, LSL #+1
+        LDRSH    R2,[R1, #+2]
+        LDRSH    R1,[R1, #+0]
+        CMP      R0,#+0
+        SUB      R11,R2,R1
+        BMI      ??aacDequantize_14
+        CMP      R0,#+12
+        BGE      ??aacDequantize_14
+        LDR      R0,[SP, #+8]
+        MOV      R1,R11
+        ADD      R0,R0,R10, LSL #+1
+        LDRSH    R2,[R0, #+0]
+        MOV      R0,R7
+        BL       DequantBlock
+        ORR      R4,R0,R4
+        B        ??aacDequantize_13
+??aacDequantize_14:
+        MOV      R1,#+1
+        CMP      R0,#+13
+        BNE      ??aacDequantize_12
+        STR      R1,[R5, #+0]
+        B        ??aacDequantize_13
+??aacDequantize_6:
+        MOV      R0,#+1
+        LSRS     R1,R4,#+16
+        MOVEQ    R0,#+17
+        LSLEQ    R4,R4,#+16
+        LSRS     R1,R4,#+24
+        ADDEQ    R0,R0,#+8
+        LSLEQ    R4,R4,#+8
+        LSRS     R1,R4,#+28
+        ADDEQ    R0,R0,#+4
+        LSLEQ    R4,R4,#+4
+        LSRS     R1,R4,#+30
+        ADDEQ    R0,R0,#+2
+        LSLEQ    R4,R4,#+2
+        SUB      R0,R0,R4, LSR #+31
+??aacDequantize_7:
+        SUB      R0,R0,#+1
+        STR      R0,[R5, #+1128]
+//  344 
+//  345 	return ERR_AAC_NONE;
+        MOV      R0,#+0
+??aacDequantize_0:
+        ADD      SP,SP,#+20       ;; stack cleaning
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        DATA
+??aacDequantize_2:
+        DC32     raac_sfBandTabShortOffset
+        DC32     raac_sfBandTabShort
+        DC32     raac_sfBandTabLongOffset
+        DC32     raac_sfBandTabLong
+        CFI EndBlock cfiBlock3
+//  346 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_DeinterleaveShortBlocks??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE raac_DeinterleaveShortBlocks
+//  347 
+//  348 /**************************************************************************************
+//  349  * Function:    DeinterleaveShortBlocks
+//  350  *
+//  351  * Description: deinterleave transform coefficients in short blocks for one channel
+//  352  *
+//  353  * Inputs:      valid AACDecInfo struct (including unpacked, quantized coefficients)
+//  354  *              index of current channel
+//  355  *
+//  356  * Outputs:     deinterleaved coefficients (window groups into 8 separate windows)
+//  357  *
+//  358  * Return:      0 if successful, error code (< 0) if error
+//  359  *
+//  360  * Notes:       only necessary if deinterleaving not part of Huffman decoding
+//  361  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function raac_DeinterleaveShortBlocks
+        ARM
+//  362 int DeinterleaveShortBlocks(AACDecInfo *aacDecInfo, int ch)
+//  363 {
+//  364 	/* not used for this implementation - short block deinterleaving performed during Huffman decoding */
+//  365 	return ERR_AAC_NONE;
+raac_DeinterleaveShortBlocks:
+        MOV      R0,#+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock5
+//  366 }
+
+        END
+// 
+// 1 356 bytes in segment CODE
+//   568 bytes in segment DATA_C
+// 
+// 1 344 bytes of CODE  memory (+ 12 bytes shared)
+//   568 bytes of CONST memory
+//
+//Errors: none
+//Warnings: none

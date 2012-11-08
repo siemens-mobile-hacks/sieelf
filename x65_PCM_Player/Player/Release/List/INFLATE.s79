@@ -1,0 +1,5123 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:35:57 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\INF /
+//                       LATE.C                                              /
+//    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\INF /
+//                       LATE.C -D NDEBUG -lC D:\SVN\SieELF\SieELF\x65_PCM_P /
+//                       layer\Player\Release\List\ -lA                      /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player\Player /
+//                       \Release\Obj\ -s9 --cpu_mode arm --endian little    /
+//                       --cpu ARM926EJ-S --stack_align 4 --interwork -e     /
+//                       --fpu None --dlib_config "D:\Program                /
+//                       Files\IAR\Embedded Workbench 4.0                    /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\INFLATE.s79                                    /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME INFLATE
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+`?<Constant "1.2.3">` EQU 0
+        MULTWEAK ??adler32??rA
+        MULTWEAK ??crc32??rA
+        MULTWEAK ??inflate??rT
+        MULTWEAK ??inflateCopy??rT
+        MULTWEAK ??inflateEnd??rT
+        MULTWEAK ??inflateGetHeader??rT
+        MULTWEAK ??inflateInit2_??rT
+        MULTWEAK ??inflateInit_??rT
+        MULTWEAK ??inflatePrime??rT
+        MULTWEAK ??inflateReset??rT
+        MULTWEAK ??inflateSetDictionary??rT
+        MULTWEAK ??inflateSync??rT
+        MULTWEAK ??inflateSyncPoint??rT
+        MULTWEAK ??inflate_fast??rA
+        MULTWEAK ??inflate_table??rA
+        FUNCTION fixedtables,0203H
+        PUBLIC inflate
+        FUNCTION inflate,0203H
+        LOCFRAME CSTACK, 80, STACK
+        PUBLIC inflateCopy
+        FUNCTION inflateCopy,0203H
+        LOCFRAME CSTACK, 36, STACK
+        PUBLIC inflateEnd
+        FUNCTION inflateEnd,0203H
+        LOCFRAME CSTACK, 8, STACK
+        PUBLIC inflateGetHeader
+        FUNCTION inflateGetHeader,0203H
+        PUBLIC inflateInit2_
+        FUNCTION inflateInit2_,0203H
+        LOCFRAME CSTACK, 16, STACK
+        PUBLIC inflateInit_
+        FUNCTION inflateInit_,0203H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC inflatePrime
+        FUNCTION inflatePrime,0203H
+        LOCFRAME CSTACK, 8, STACK
+        PUBLIC inflateReset
+        FUNCTION inflateReset,0203H
+        PUBLIC inflateSetDictionary
+        FUNCTION inflateSetDictionary,0203H
+        LOCFRAME CSTACK, 20, STACK
+        PUBLIC inflateSync
+        FUNCTION inflateSync,0203H
+        LOCFRAME CSTACK, 24, STACK
+        PUBLIC inflateSyncPoint
+        FUNCTION inflateSyncPoint,0203H
+        FUNCTION syncsearch,0203H
+        LOCFRAME CSTACK, 16, STACK
+        FUNCTION updatewindow,0203H
+        LOCFRAME CSTACK, 24, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+adler32             SYMBOL "adler32"
+crc32               SYMBOL "crc32"
+inflate_fast        SYMBOL "inflate_fast"
+inflate_table       SYMBOL "inflate_table"
+??adler32??rA       SYMBOL "??rA", adler32
+??crc32??rA         SYMBOL "??rA", crc32
+inflate             SYMBOL "inflate"
+??inflate??rT       SYMBOL "??rT", inflate
+inflateCopy         SYMBOL "inflateCopy"
+??inflateCopy??rT   SYMBOL "??rT", inflateCopy
+inflateEnd          SYMBOL "inflateEnd"
+??inflateEnd??rT    SYMBOL "??rT", inflateEnd
+inflateGetHeader    SYMBOL "inflateGetHeader"
+??inflateGetHeader??rT SYMBOL "??rT", inflateGetHeader
+inflateInit2_       SYMBOL "inflateInit2_"
+??inflateInit2_??rT SYMBOL "??rT", inflateInit2_
+inflateInit_        SYMBOL "inflateInit_"
+??inflateInit_??rT  SYMBOL "??rT", inflateInit_
+inflatePrime        SYMBOL "inflatePrime"
+??inflatePrime??rT  SYMBOL "??rT", inflatePrime
+inflateReset        SYMBOL "inflateReset"
+??inflateReset??rT  SYMBOL "??rT", inflateReset
+inflateSetDictionary SYMBOL "inflateSetDictionary"
+??inflateSetDictionary??rT SYMBOL "??rT", inflateSetDictionary
+inflateSync         SYMBOL "inflateSync"
+??inflateSync??rT   SYMBOL "??rT", inflateSync
+inflateSyncPoint    SYMBOL "inflateSyncPoint"
+??inflateSyncPoint??rT SYMBOL "??rT", inflateSyncPoint
+??inflate_fast??rA  SYMBOL "??rA", inflate_fast
+??inflate_table??rA SYMBOL "??rA", inflate_table
+
+        EXTERN adler32
+        FUNCTION adler32,0202H
+        EXTERN crc32
+        FUNCTION crc32,0202H
+        EXTERN inflate_fast
+        FUNCTION inflate_fast,0202H
+        EXTERN inflate_table
+        FUNCTION inflate_table,0202H
+        EXTERN zcalloc
+        FUNCTION zcalloc,0602H
+        EXTERN zcfree
+        FUNCTION zcfree,0602H
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??inflateReset??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE inflateReset
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\INFLATE.C
+//    1 /* inflate.c -- zlib decompression
+//    2  * Copyright (C) 1995-2005 Mark Adler
+//    3  * For conditions of distribution and use, see copyright notice in zlib.h
+//    4  */
+//    5 
+//    6 /*
+//    7  * Change history:
+//    8  *
+//    9  * 1.2.beta0    24 Nov 2002
+//   10  * - First version -- complete rewrite of inflate to simplify code, avoid
+//   11  *   creation of window when not needed, minimize use of window when it is
+//   12  *   needed, make inffast.c even faster, implement gzip decoding, and to
+//   13  *   improve code readability and style over the previous zlib inflate code
+//   14  *
+//   15  * 1.2.beta1    25 Nov 2002
+//   16  * - Use pointers for available input and output checking in inffast.c
+//   17  * - Remove input and output counters in inffast.c
+//   18  * - Change inffast.c entry and loop from avail_in >= 7 to >= 6
+//   19  * - Remove unnecessary second byte pull from length extra in inffast.c
+//   20  * - Unroll direct copy to three copies per loop in inffast.c
+//   21  *
+//   22  * 1.2.beta2    4 Dec 2002
+//   23  * - Change external routine names to reduce potential conflicts
+//   24  * - Correct filename to inffixed.h for fixed tables in inflate.c
+//   25  * - Make hbuf[] unsigned char to match parameter type in inflate.c
+//   26  * - Change strm->next_out[-state->offset] to *(strm->next_out - state->offset)
+//   27  *   to avoid negation problem on Alphas (64 bit) in inflate.c
+//   28  *
+//   29  * 1.2.beta3    22 Dec 2002
+//   30  * - Add comments on state->bits assertion in inffast.c
+//   31  * - Add comments on op field in inftrees.h
+//   32  * - Fix bug in reuse of allocated window after inflateReset()
+//   33  * - Remove bit fields--back to byte structure for speed
+//   34  * - Remove distance extra == 0 check in inflate_fast()--only helps for lengths
+//   35  * - Change post-increments to pre-increments in inflate_fast(), PPC biased?
+//   36  * - Add compile time option, POSTINC, to use post-increments instead (Intel?)
+//   37  * - Make MATCH copy in inflate() much faster for when inflate_fast() not used
+//   38  * - Use local copies of stream next and avail values, as well as local bit
+//   39  *   buffer and bit count in inflate()--for speed when inflate_fast() not used
+//   40  *
+//   41  * 1.2.beta4    1 Jan 2003
+//   42  * - Split ptr - 257 statements in inflate_table() to avoid compiler warnings
+//   43  * - Move a comment on output buffer sizes from inffast.c to inflate.c
+//   44  * - Add comments in inffast.c to introduce the inflate_fast() routine
+//   45  * - Rearrange window copies in inflate_fast() for speed and simplification
+//   46  * - Unroll last copy for window match in inflate_fast()
+//   47  * - Use local copies of window variables in inflate_fast() for speed
+//   48  * - Pull out common write == 0 case for speed in inflate_fast()
+//   49  * - Make op and len in inflate_fast() unsigned for consistency
+//   50  * - Add FAR to lcode and dcode declarations in inflate_fast()
+//   51  * - Simplified bad distance check in inflate_fast()
+//   52  * - Added inflateBackInit(), inflateBack(), and inflateBackEnd() in new
+//   53  *   source file infback.c to provide a call-back interface to inflate for
+//   54  *   programs like gzip and unzip -- uses window as output buffer to avoid
+//   55  *   window copying
+//   56  *
+//   57  * 1.2.beta5    1 Jan 2003
+//   58  * - Improved inflateBack() interface to allow the caller to provide initial
+//   59  *   input in strm.
+//   60  * - Fixed stored blocks bug in inflateBack()
+//   61  *
+//   62  * 1.2.beta6    4 Jan 2003
+//   63  * - Added comments in inffast.c on effectiveness of POSTINC
+//   64  * - Typecasting all around to reduce compiler warnings
+//   65  * - Changed loops from while (1) or do {} while (1) to for (;;), again to
+//   66  *   make compilers happy
+//   67  * - Changed type of window in inflateBackInit() to unsigned char *
+//   68  *
+//   69  * 1.2.beta7    27 Jan 2003
+//   70  * - Changed many types to unsigned or unsigned short to avoid warnings
+//   71  * - Added inflateCopy() function
+//   72  *
+//   73  * 1.2.0        9 Mar 2003
+//   74  * - Changed inflateBack() interface to provide separate opaque descriptors
+//   75  *   for the in() and out() functions
+//   76  * - Changed inflateBack() argument and in_func typedef to swap the length
+//   77  *   and buffer address return values for the input function
+//   78  * - Check next_in and next_out for Z_NULL on entry to inflate()
+//   79  *
+//   80  * The history for versions after 1.2.0 are in ChangeLog in zlib distribution.
+//   81  */
+//   82 #pragma swi_number=0x011E
+//   83 __swi	__arm	void * memcpy (void *dest,const void *source,int cnt);
+//   84 
+//   85 //#include "E:\ARM\swilib.h"
+//   86 #include "zutil.h"
+//   87 #include "inftrees.h"
+//   88 #include "inflate.h"
+//   89 #include "inffast.h"
+//   90 
+//   91 #ifdef MAKEFIXED
+//   92 #  ifndef BUILDFIXED
+//   93 #    define BUILDFIXED
+//   94 #  endif
+//   95 #endif
+//   96 
+//   97 /* function prototypes */
+//   98 local void fixedtables OF((struct inflate_state FAR *state));
+//   99 local int updatewindow OF((z_streamp strm, unsigned out));
+//  100 #ifdef BUILDFIXED
+//  101    void makefixed OF((void));
+//  102 #endif
+//  103 local unsigned syncsearch OF((unsigned FAR *have, unsigned char FAR *buf,
+//  104                               unsigned len));
+//  105 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function inflateReset
+        ARM
+//  106 int ZEXPORT inflateReset(strm)
+//  107 z_streamp strm;
+//  108 {
+//  109     struct inflate_state FAR *state;
+//  110 
+//  111     if (strm == Z_NULL || strm->state == Z_NULL) return Z_STREAM_ERROR;
+inflateReset:
+        CMP      R0,#+0
+        LDRNE    R1,[R0, #+28]
+        CMPNE    R1,#+0
+        MVNEQ    R0,#+1
+        BXEQ     LR
+//  112     state = (struct inflate_state FAR *)strm->state;
+//  113     strm->total_in = strm->total_out = state->total = 0;
+        MOV      R2,#+0
+        STR      R2,[R1, #+28]
+        STR      R2,[R0, #+20]
+        STR      R2,[R0, #+8]
+//  114     strm->msg = Z_NULL;
+        STR      R2,[R0, #+24]
+//  115     strm->adler = 1;        /* to support ill-conceived Java test suite */
+        MOV      R3,#+1
+        STR      R3,[R0, #+48]
+//  116     state->mode = HEAD;
+        STRB     R2,[R1, #+0]
+//  117     state->last = 0;
+        STR      R2,[R1, #+4]
+//  118     state->havedict = 0;
+        STR      R2,[R1, #+12]
+//  119     state->dmax = 32768U;
+        MOV      R0,#+32768
+        STR      R0,[R1, #+20]
+//  120     state->head = Z_NULL;
+        STR      R2,[R1, #+32]
+//  121     state->wsize = 0;
+        STR      R2,[R1, #+40]
+//  122     state->whave = 0;
+        STR      R2,[R1, #+44]
+//  123     state->write = 0;
+        STR      R2,[R1, #+48]
+//  124     state->hold = 0;
+        STR      R2,[R1, #+56]
+//  125     state->bits = 0;
+        STR      R2,[R1, #+60]
+//  126     state->lencode = state->distcode = state->next = state->codes;
+        ADD      R0,R1,#+1328
+        STR      R0,[R1, #+108]
+        STR      R0,[R1, #+80]
+        STR      R0,[R1, #+76]
+//  127     Tracev((stderr, "inflate: reset\n"));
+//  128     return Z_OK;
+        MOV      R0,#+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock1
+//  129 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??inflatePrime??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE inflatePrime
+//  130 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function inflatePrime
+        ARM
+//  131 int ZEXPORT inflatePrime(strm, bits, value)
+//  132 z_streamp strm;
+//  133 int bits;
+//  134 int value;
+//  135 {
+inflatePrime:
+        PUSH     {R4,R5}
+        CFI R5 Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+//  136     struct inflate_state FAR *state;
+//  137 
+//  138     if (strm == Z_NULL || strm->state == Z_NULL) return Z_STREAM_ERROR;
+        CMP      R0,#+0
+        LDRNE    R0,[R0, #+28]
+        CMPNE    R0,#+0
+        BNE      ??inflatePrime_0
+??inflatePrime_1:
+        POP      {R4,R5}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI CFA R13+0
+        MVN      R0,#+1
+        BX       LR
+        CFI R4 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -4)
+        CFI CFA R13+8
+//  139     state = (struct inflate_state FAR *)strm->state;
+//  140     if (bits > 16 || state->bits + bits > 32) return Z_STREAM_ERROR;
+??inflatePrime_0:
+        CMP      R1,#+17
+        BGE      ??inflatePrime_1
+        LDR      R3,[R0, #+60]
+        ADD      R12,R1,R3
+        CMP      R12,#+33
+        BCS      ??inflatePrime_1
+//  141     value &= (1L << bits) - 1;
+//  142     state->hold += value << state->bits;
+        LDR      R4,[R0, #+56]
+        MOV      R5,#+1
+        LSL      R1,R5,R1
+        SUB      R1,R1,#+1
+        AND      R1,R1,R2
+        ADD      R1,R4,R1, LSL R3
+        STR      R1,[R0, #+56]
+//  143     state->bits += bits;
+        STR      R12,[R0, #+60]
+//  144     return Z_OK;
+        POP      {R4,R5}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI CFA R13+0
+        MOV      R0,#+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock3
+//  145 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??inflateInit2_??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE inflateInit2_
+//  146 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function inflateInit2_
+        ARM
+//  147 int ZEXPORT inflateInit2_(strm, windowBits, version, stream_size)
+//  148 z_streamp strm;
+//  149 int windowBits;
+//  150 const char *version;
+//  151 int stream_size;
+//  152 {
+inflateInit2_:
+        PUSH     {R4-R6,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R6 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -12)
+        CFI R4 Frame(CFA, -16)
+        CFI CFA R13+16
+        MOV      R4,R0
+        MOV      R5,R1
+//  153     struct inflate_state FAR *state;
+//  154 
+//  155     if (version == Z_NULL || version[0] != ZLIB_VERSION[0] ||
+//  156         stream_size != (int)(sizeof(z_stream)))
+        CMP      R2,#+0
+        BEQ      ??inflateInit2__0
+        LDRB     R0,[R2, #+0]
+        CMP      R0,#+49
+        CMPEQ    R3,#+56
+        BEQ      ??inflateInit2__1
+//  157         return Z_VERSION_ERROR;
+??inflateInit2__0:
+        MVN      R0,#+5
+        POP      {R4-R6,PC}
+//  158     if (strm == Z_NULL) return Z_STREAM_ERROR;
+??inflateInit2__1:
+        CMP      R4,#+0
+        BEQ      ??inflateInit2__2
+//  159     strm->msg = Z_NULL;                 /* in case we return an error */
+        MOV      R6,#+0
+        STR      R6,[R4, #+24]
+//  160     if (strm->zalloc == (alloc_func)0) {
+        LDR      R0,[R4, #+32]
+//  161         strm->zalloc = zcalloc;
+//  162         strm->opaque = (voidpf)0;
+//  163     }
+//  164     if (strm->zfree == (free_func)0) strm->zfree = zcfree;
+//  165     state = (struct inflate_state FAR *)
+//  166             ZALLOC(strm, 1, sizeof(struct inflate_state));
+        MOV      R2,#+48
+        CMP      R0,#+0
+        LDREQ    R0,??inflateInit2__3  ;; zcalloc
+        ORR      R2,R2,#0x2500
+        STREQ    R0,[R4, #+32]
+        STREQ    R6,[R4, #+40]
+        LDR      R0,[R4, #+36]
+        MOV      R1,#+1
+        CMP      R0,#+0
+        LDREQ    R0,??inflateInit2__3+0x4  ;; zcfree
+        STREQ    R0,[R4, #+36]
+        LDR      R0,[R4, #+40]
+        LDR      R3,[R4, #+32]
+        BLX      R3
+//  167     if (state == Z_NULL) return Z_MEM_ERROR;
+        CMP      R0,#+0
+        MVNEQ    R0,#+3
+        POPEQ    {R4-R6,PC}
+//  168     Tracev((stderr, "inflate: allocated\n"));
+//  169     strm->state = (struct internal_state FAR *)state;
+        STR      R0,[R4, #+28]
+//  170     if (windowBits < 0) {
+        CMP      R5,#+0
+//  171         state->wrap = 0;
+        MOVMI    R1,#+0
+//  172         windowBits = -windowBits;
+        RSBMI    R5,R5,#+0
+        BMI      ??inflateInit2__4
+//  173     }
+//  174     else {
+//  175         state->wrap = (windowBits >> 4) + 1;
+        MOV      R1,#+1
+        ADD      R1,R1,R5, ASR #+4
+//  176 #ifdef GUNZIP
+//  177         if (windowBits < 48) windowBits &= 15;
+        CMP      R5,#+48
+        ANDLT    R5,R5,#0xF
+??inflateInit2__4:
+        STR      R1,[R0, #+8]
+//  178 #endif
+//  179     }
+//  180     if (windowBits < 8 || windowBits > 15) {
+        CMP      R5,#+8
+        BLT      ??inflateInit2__5
+        CMP      R5,#+16
+        BLT      ??inflateInit2__6
+//  181         ZFREE(strm, state);
+??inflateInit2__5:
+        LDR      R2,[R4, #+36]
+        MOV      R1,R0
+        LDR      R0,[R4, #+40]
+        BLX      R2
+//  182         strm->state = Z_NULL;
+        STR      R6,[R4, #+28]
+//  183         return Z_STREAM_ERROR;
+??inflateInit2__2:
+        MVN      R0,#+1
+        POP      {R4-R6,PC}
+//  184     }
+//  185     state->wbits = (unsigned)windowBits;
+??inflateInit2__6:
+        STR      R5,[R0, #+36]
+//  186     state->window = Z_NULL;
+        STR      R6,[R0, #+52]
+//  187     return inflateReset(strm);
+        MOV      R0,R4
+        BL       inflateReset
+        POP      {R4-R6,PC}       ;; return
+        DATA
+??inflateInit2__3:
+        DC32     zcalloc
+        DC32     zcfree
+        CFI EndBlock cfiBlock5
+//  188 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??inflateInit_??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE inflateInit_
+//  189 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function inflateInit_
+        ARM
+//  190 int ZEXPORT inflateInit_(strm, version, stream_size)
+//  191 z_streamp strm;
+//  192 const char *version;
+//  193 int stream_size;
+//  194 {
+//  195     return inflateInit2_(strm, DEF_WBITS, version, stream_size);
+inflateInit_:
+        MOV      R3,R2
+        MOV      R2,R1
+        MOV      R1,#+15
+        B        inflateInit2_    ;; tailcall
+        CFI EndBlock cfiBlock7
+//  196 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??fixedtables??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE fixedtables
+//  197 
+//  198 /*
+//  199    Return state with length and distance decoding tables and index sizes set to
+//  200    fixed code decoding.  Normally this returns fixed tables from inffixed.h.
+//  201    If BUILDFIXED is defined, then instead this routine builds the tables the
+//  202    first time it's called, and returns those tables the first time and
+//  203    thereafter.  This reduces the size of the code by about 2K bytes, in
+//  204    exchange for a little execution time.  However, BUILDFIXED should not be
+//  205    used for threaded applications, since the rewriting of the tables and virgin
+//  206    may not be thread-safe.
+//  207  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function fixedtables
+        ARM
+//  208 local void fixedtables(state)
+//  209 struct inflate_state FAR *state;
+//  210 {
+//  211 #ifdef BUILDFIXED
+//  212     static int virgin = 1;
+//  213     static code *lenfix, *distfix;
+//  214     static code fixed[544];
+//  215 
+//  216     /* build fixed huffman tables if first call (may not be thread safe) */
+//  217     if (virgin) {
+//  218         unsigned sym, bits;
+//  219         static code *next;
+//  220 
+//  221         /* literal/length table */
+//  222         sym = 0;
+//  223         while (sym < 144) state->lens[sym++] = 8;
+//  224         while (sym < 256) state->lens[sym++] = 9;
+//  225         while (sym < 280) state->lens[sym++] = 7;
+//  226         while (sym < 288) state->lens[sym++] = 8;
+//  227         next = fixed;
+//  228         lenfix = next;
+//  229         bits = 9;
+//  230         inflate_table(LENS, state->lens, 288, &(next), &(bits), state->work);
+//  231 
+//  232         /* distance table */
+//  233         sym = 0;
+//  234         while (sym < 32) state->lens[sym++] = 5;
+//  235         distfix = next;
+//  236         bits = 5;
+//  237         inflate_table(DISTS, state->lens, 32, &(next), &(bits), state->work);
+//  238 
+//  239         /* do this just once */
+//  240         virgin = 0;
+//  241     }
+//  242 #else /* !BUILDFIXED */
+//  243 #   include "inffixed.h"
+//  244 #endif /* BUILDFIXED */
+//  245     state->lencode = lenfix;
+fixedtables:
+        LDR      R1,??fixedtables_0  ;; ??lenfix
+//  246     state->lenbits = 9;
+        MOV      R2,#+9
+        STR      R1,[R0, #+76]
+        STR      R2,[R0, #+84]
+//  247     state->distcode = distfix;
+        ADD      R1,R1,#+2048
+        STR      R1,[R0, #+80]
+//  248     state->distbits = 5;
+        MOV      R1,#+5
+        STR      R1,[R0, #+88]
+//  249 }
+        BX       LR               ;; return
+        DATA
+??fixedtables_0:
+        DC32     ??lenfix
+        CFI EndBlock cfiBlock9
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??updatewindow??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock10
+        REQUIRE updatewindow
+//  250 
+//  251 #ifdef MAKEFIXED
+//  252 //#include <stdio.h>
+//  253 
+//  254 /*
+//  255    Write out the inffixed.h that is #include'd above.  Defining MAKEFIXED also
+//  256    defines BUILDFIXED, so the tables are built on the fly.  makefixed() writes
+//  257    those tables to stdout, which would be piped to inffixed.h.  A small program
+//  258    can simply call makefixed to do this:
+//  259 
+//  260     void makefixed(void);
+//  261 
+//  262     int main(void)
+//  263     {
+//  264         makefixed();
+//  265         return 0;
+//  266     }
+//  267 
+//  268    Then that can be linked with zlib built with MAKEFIXED defined and run:
+//  269 
+//  270     a.out > inffixed.h
+//  271  */
+//  272 void makefixed()
+//  273 {
+//  274     unsigned low, size;
+//  275     struct inflate_state state;
+//  276 
+//  277     fixedtables(&state);
+//  278     puts("    /* inffixed.h -- table for decoding fixed codes");
+//  279     puts("     * Generated automatically by makefixed().");
+//  280     puts("     */");
+//  281     puts("");
+//  282     puts("    /* WARNING: this file should *not* be used by applications.");
+//  283     puts("       It is part of the implementation of this library and is");
+//  284     puts("       subject to change. Applications should only use zlib.h.");
+//  285     puts("     */");
+//  286     puts("");
+//  287     size = 1U << 9;
+//  288     printf("    static const code lenfix[%u] = {", size);
+//  289     low = 0;
+//  290     for (;;) {
+//  291         if ((low % 7) == 0) printf("\n        ");
+//  292         printf("{%u,%u,%d}", state.lencode[low].op, state.lencode[low].bits,
+//  293                state.lencode[low].val);
+//  294         if (++low == size) break;
+//  295         putchar(',');
+//  296     }
+//  297     puts("\n    };");
+//  298     size = 1U << 5;
+//  299     printf("\n    static const code distfix[%u] = {", size);
+//  300     low = 0;
+//  301     for (;;) {
+//  302         if ((low % 6) == 0) printf("\n        ");
+//  303         printf("{%u,%u,%d}", state.distcode[low].op, state.distcode[low].bits,
+//  304                state.distcode[low].val);
+//  305         if (++low == size) break;
+//  306         putchar(',');
+//  307     }
+//  308     puts("\n    };");
+//  309 }
+//  310 #endif /* MAKEFIXED */
+//  311 
+//  312 /*
+//  313    Update the window with the last wsize (normally 32K) bytes written before
+//  314    returning.  If window does not exist yet, create it.  This is only called
+//  315    when a window is already in use, or when output has been written during this
+//  316    inflate call, but the end of the deflate stream has not been reached yet.
+//  317    It is also called to create a window for dictionary data when a dictionary
+//  318    is loaded.
+//  319 
+//  320    Providing output buffers larger than 32K to inflate() should provide a speed
+//  321    advantage, since only the last 32K of output is copied to the sliding window
+//  322    upon return from inflate(), and since all distances after the first 32K of
+//  323    output will fall in the output data, making match copies simpler and faster.
+//  324    The advantage may be dependent on the size of the processor's data caches.
+//  325  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock11 Using cfiCommon1
+        CFI Function updatewindow
+        ARM
+//  326 local int updatewindow(strm, out)
+//  327 z_streamp strm;
+//  328 unsigned out;
+//  329 {
+updatewindow:
+        PUSH     {R4-R8,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R8 Frame(CFA, -8)
+        CFI R7 Frame(CFA, -12)
+        CFI R6 Frame(CFA, -16)
+        CFI R5 Frame(CFA, -20)
+        CFI R4 Frame(CFA, -24)
+        CFI CFA R13+24
+        MOV      R4,R0
+//  330     struct inflate_state FAR *state;
+//  331     unsigned copy, dist;
+//  332 
+//  333     state = (struct inflate_state FAR *)strm->state;
+        LDR      R5,[R4, #+28]
+        MOV      R7,R1
+//  334 
+//  335     /* if it hasn't been done already, allocate space for the window */
+//  336     if (state->window == Z_NULL) {
+        LDR      R0,[R5, #+52]
+        MOV      R8,#+1
+        CMP      R0,#+0
+        BNE      ??updatewindow_0
+//  337         state->window = (unsigned char FAR *)
+//  338                         ZALLOC(strm, 1U << state->wbits,
+//  339                                sizeof(unsigned char));
+        LDR      R0,[R5, #+36]
+        LDR      R3,[R4, #+32]
+        LSL      R1,R8,R0
+        LDR      R0,[R4, #+40]
+        MOV      R2,#+1
+        BLX      R3
+        STR      R0,[R5, #+52]
+//  340         if (state->window == Z_NULL) return 1;
+        CMP      R0,#+0
+        MOVEQ    R0,#+1
+        POPEQ    {R4-R8,PC}
+//  341     }
+//  342 
+//  343     /* if window not in use yet, initialize */
+//  344     if (state->wsize == 0) {
+??updatewindow_0:
+        LDR      R0,[R5, #+40]
+        MOV      R6,#+0
+        CMP      R0,#+0
+        BNE      ??updatewindow_1
+//  345         state->wsize = 1U << state->wbits;
+        LDR      R0,[R5, #+36]
+        LSL      R0,R8,R0
+        STR      R0,[R5, #+40]
+//  346         state->write = 0;
+        STR      R6,[R5, #+48]
+//  347         state->whave = 0;
+        STR      R6,[R5, #+44]
+//  348     }
+//  349 
+//  350     /* copy state->wsize or less output bytes into the circular window */
+//  351     copy = out - strm->avail_out;
+??updatewindow_1:
+        LDR      R0,[R4, #+16]
+//  352     if (copy >= state->wsize) {
+        LDR      R3,[R5, #+40]
+        LDR      R1,[R4, #+12]
+        SUB      R7,R7,R0
+        LDR      R0,[R5, #+52]
+        CMP      R7,R3
+        BCC      ??updatewindow_2
+//  353         zmemcpy(state->window, strm->next_out - state->wsize, state->wsize);
+        MOV      R2,R3
+        RSB      R3,R3,#+0
+        ADD      R1,R3,R1
+        SWI      +286
+//  354         state->write = 0;
+        STR      R6,[R5, #+48]
+//  355         state->whave = state->wsize;
+??updatewindow_3:
+        LDR      R0,[R5, #+40]
+        B        ??updatewindow_4
+//  356     }
+//  357     else {
+//  358         dist = state->wsize - state->write;
+??updatewindow_2:
+        LDR      R12,[R5, #+48]
+        SUB      R8,R3,R12
+//  359         if (dist > copy) dist = copy;
+        CMP      R7,R8
+        MOVCC    R8,R7
+//  360         zmemcpy(state->window + state->write, strm->next_out - copy, dist);
+        MOV      R2,R8
+        MOV      R3,R7
+        RSB      R3,R3,#+0
+        ADD      R1,R3,R1
+        ADD      R0,R12,R0
+        SWI      +286
+//  361         copy -= dist;
+        SUBS     R7,R7,R8
+//  362         if (copy) {
+        BEQ      ??updatewindow_5
+//  363             zmemcpy(state->window, strm->next_out - copy, copy);
+        LDR      R1,[R4, #+12]
+        MOV      R2,R7
+        MOV      R0,R7
+        RSB      R0,R0,#+0
+        ADD      R1,R0,R1
+        LDR      R0,[R5, #+52]
+        SWI      +286
+//  364             state->write = copy;
+        STR      R7,[R5, #+48]
+//  365             state->whave = state->wsize;
+        B        ??updatewindow_3
+//  366         }
+//  367         else {
+//  368             state->write += dist;
+??updatewindow_5:
+        LDR      R0,[R5, #+48]
+        ADD      R0,R8,R0
+        STR      R0,[R5, #+48]
+//  369             if (state->write == state->wsize) state->write = 0;
+        LDR      R1,[R5, #+40]
+        CMP      R0,R1
+        STREQ    R6,[R5, #+48]
+//  370             if (state->whave < state->wsize) state->whave += dist;
+        LDR      R0,[R5, #+44]
+        CMP      R0,R1
+        BCS      ??updatewindow_6
+        ADD      R0,R8,R0
+??updatewindow_4:
+        STR      R0,[R5, #+44]
+//  371         }
+//  372     }
+//  373     return 0;
+??updatewindow_6:
+        MOV      R0,#+0
+        POP      {R4-R8,PC}       ;; return
+        CFI EndBlock cfiBlock11
+//  374 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock12 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??inflate??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock12
+        REQUIRE inflate
+//  375 
+//  376 /* Macros for inflate(): */
+//  377 
+//  378 /* check function to use adler32() for zlib or crc32() for gzip */
+//  379 #ifdef GUNZIP
+//  380 #  define UPDATE(check, buf, len) \ 
+//  381     (state->flags ? crc32(check, buf, len) : adler32(check, buf, len))
+//  382 #else
+//  383 #  define UPDATE(check, buf, len) adler32(check, buf, len)
+//  384 #endif
+//  385 
+//  386 /* check macros for header crc */
+//  387 #ifdef GUNZIP
+//  388 #  define CRC2(check, word) \ 
+//  389     do { \ 
+//  390         hbuf[0] = (unsigned char)(word); \ 
+//  391         hbuf[1] = (unsigned char)((word) >> 8); \ 
+//  392         check = crc32(check, hbuf, 2); \ 
+//  393     } while (0)
+//  394 
+//  395 #  define CRC4(check, word) \ 
+//  396     do { \ 
+//  397         hbuf[0] = (unsigned char)(word); \ 
+//  398         hbuf[1] = (unsigned char)((word) >> 8); \ 
+//  399         hbuf[2] = (unsigned char)((word) >> 16); \ 
+//  400         hbuf[3] = (unsigned char)((word) >> 24); \ 
+//  401         check = crc32(check, hbuf, 4); \ 
+//  402     } while (0)
+//  403 #endif
+//  404 
+//  405 /* Load registers with state in inflate() for speed */
+//  406 #define LOAD() \ 
+//  407     do { \ 
+//  408         put = strm->next_out; \ 
+//  409         left = strm->avail_out; \ 
+//  410         next = strm->next_in; \ 
+//  411         have = strm->avail_in; \ 
+//  412         hold = state->hold; \ 
+//  413         bits = state->bits; \ 
+//  414     } while (0)
+//  415 
+//  416 /* Restore state from registers in inflate() */
+//  417 #define RESTORE() \ 
+//  418     do { \ 
+//  419         strm->next_out = put; \ 
+//  420         strm->avail_out = left; \ 
+//  421         strm->next_in = next; \ 
+//  422         strm->avail_in = have; \ 
+//  423         state->hold = hold; \ 
+//  424         state->bits = bits; \ 
+//  425     } while (0)
+//  426 
+//  427 /* Clear the input bit accumulator */
+//  428 #define INITBITS() \ 
+//  429     do { \ 
+//  430         hold = 0; \ 
+//  431         bits = 0; \ 
+//  432     } while (0)
+//  433 
+//  434 /* Get a byte of input into the bit accumulator, or return from inflate()
+//  435    if there is no input available. */
+//  436 #define PULLBYTE() \ 
+//  437     do { \ 
+//  438         if (have == 0) goto inf_leave; \ 
+//  439         have--; \ 
+//  440         hold += (unsigned long)(*next++) << bits; \ 
+//  441         bits += 8; \ 
+//  442     } while (0)
+//  443 
+//  444 /* Assure that there are at least n bits in the bit accumulator.  If there is
+//  445    not enough available input to do that, then return from inflate(). */
+//  446 #define NEEDBITS(n) \ 
+//  447     do { \ 
+//  448         while (bits < (unsigned)(n)) \ 
+//  449             PULLBYTE(); \ 
+//  450     } while (0)
+//  451 
+//  452 /* Return the low n bits of the bit accumulator (n < 16) */
+//  453 #define BITS(n) \ 
+//  454     ((unsigned)hold & ((1U << (n)) - 1))
+//  455 
+//  456 /* Remove n bits from the bit accumulator */
+//  457 #define DROPBITS(n) \ 
+//  458     do { \ 
+//  459         hold >>= (n); \ 
+//  460         bits -= (unsigned)(n); \ 
+//  461     } while (0)
+//  462 
+//  463 /* Remove zero to seven bits as needed to go to a byte boundary */
+//  464 #define BYTEBITS() \ 
+//  465     do { \ 
+//  466         hold >>= bits & 7; \ 
+//  467         bits -= bits & 7; \ 
+//  468     } while (0)
+//  469 
+//  470 /* Reverse the bytes in a 32-bit value */
+//  471 #define REVERSE(q) \ 
+//  472     ((((q) >> 24) & 0xff) + (((q) >> 8) & 0xff00) + \ 
+//  473      (((q) & 0xff00) << 8) + (((q) & 0xff) << 24))
+//  474 
+//  475 /*
+//  476    inflate() uses a state machine to process as much input data and generate as
+//  477    much output data as possible before returning.  The state machine is
+//  478    structured roughly as follows:
+//  479 
+//  480     for (;;) switch (state) {
+//  481     ...
+//  482     case STATEn:
+//  483         if (not enough input data or output space to make progress)
+//  484             return;
+//  485         ... make progress ...
+//  486         state = STATEm;
+//  487         break;
+//  488     ...
+//  489     }
+//  490 
+//  491    so when inflate() is called again, the same case is attempted again, and
+//  492    if the appropriate resources are provided, the machine proceeds to the
+//  493    next state.  The NEEDBITS() macro is usually the way the state evaluates
+//  494    whether it can proceed or should return.  NEEDBITS() does the return if
+//  495    the requested bits are not available.  The typical use of the BITS macros
+//  496    is:
+//  497 
+//  498         NEEDBITS(n);
+//  499         ... do something with BITS(n) ...
+//  500         DROPBITS(n);
+//  501 
+//  502    where NEEDBITS(n) either returns from inflate() if there isn't enough
+//  503    input left to load n bits into the accumulator, or it continues.  BITS(n)
+//  504    gives the low n bits in the accumulator.  When done, DROPBITS(n) drops
+//  505    the low n bits off the accumulator.  INITBITS() clears the accumulator
+//  506    and sets the number of available bits to zero.  BYTEBITS() discards just
+//  507    enough bits to put the accumulator on a byte boundary.  After BYTEBITS()
+//  508    and a NEEDBITS(8), then BITS(8) would return the next byte in the stream.
+//  509 
+//  510    NEEDBITS(n) uses PULLBYTE() to get an available byte of input, or to return
+//  511    if there is no input available.  The decoding of variable length codes uses
+//  512    PULLBYTE() directly in order to pull just enough bytes to decode the next
+//  513    code, and no more.
+//  514 
+//  515    Some states loop until they get enough input, making sure that enough
+//  516    state information is maintained to continue the loop where it left off
+//  517    if NEEDBITS() returns in the loop.  For example, want, need, and keep
+//  518    would all have to actually be part of the saved state in case NEEDBITS()
+//  519    returns:
+//  520 
+//  521     case STATEw:
+//  522         while (want < need) {
+//  523             NEEDBITS(n);
+//  524             keep[want++] = BITS(n);
+//  525             DROPBITS(n);
+//  526         }
+//  527         state = STATEx;
+//  528     case STATEx:
+//  529 
+//  530    As shown above, if the next state is also the next case, then the break
+//  531    is omitted.
+//  532 
+//  533    A state may also return if there is not enough output space available to
+//  534    complete that state.  Those states are copying stored data, writing a
+//  535    literal byte, and copying a matching string.
+//  536 
+//  537    When returning, a "goto inf_leave" is used to update the total counters,
+//  538    update the check value, and determine whether any progress has been made
+//  539    during that inflate() call in order to return the proper return code.
+//  540    Progress is defined as a change in either strm->avail_in or strm->avail_out.
+//  541    When there is a window, goto inf_leave will update the window with the last
+//  542    output written.  If a goto inf_leave occurs in the middle of decompression
+//  543    and there is no window currently, goto inf_leave will create one and copy
+//  544    output to the window for the next call of inflate().
+//  545 
+//  546    In this implementation, the flush parameter of inflate() only affects the
+//  547    return code (per zlib.h).  inflate() always writes as much as possible to
+//  548    strm->next_out, given the space available and the provided input--the effect
+//  549    documented in zlib.h of Z_SYNC_FLUSH.  Furthermore, inflate() always defers
+//  550    the allocation of and copying into a sliding window until necessary, which
+//  551    provides the effect documented in zlib.h for Z_FINISH when the entire input
+//  552    stream available.  So the only thing the flush parameter actually does is:
+//  553    when flush is set to Z_FINISH, inflate() cannot return Z_OK.  Instead it
+//  554    will return Z_BUF_ERROR if it has not reached the end of the stream.
+//  555  */
+//  556 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock13 Using cfiCommon1
+        CFI Function inflate
+        ARM
+//  557 int ZEXPORT inflate(strm, flush)
+//  558 z_streamp strm;
+//  559 int flush;
+//  560 {
+inflate:
+        PUSH     {R1,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+40
+        SUB      SP,SP,#+32
+        CFI CFA R13+72
+        MOVS     R4,R0
+//  561     struct inflate_state FAR *state;
+//  562     unsigned char FAR *next;    /* next input */
+//  563     unsigned char FAR *put;     /* next output */
+//  564     unsigned have, left;        /* available input and output */
+//  565     unsigned long hold;         /* bit buffer */
+//  566     unsigned bits;              /* bits in bit buffer */
+//  567     unsigned in, out;           /* save starting available input and output */
+//  568     unsigned copy;              /* number of stored or match bytes to copy */
+//  569     unsigned char FAR *from;    /* where to copy match bytes from */
+//  570     code this;                  /* current decoding table entry */
+//  571     code last;                  /* parent table entry */
+//  572     unsigned len;               /* length to copy for repeats, bits to drop */
+//  573     int ret;                    /* return code */
+//  574 #ifdef GUNZIP
+//  575     unsigned char hbuf[4];      /* buffer for gzip header crc calculation */
+//  576 #endif
+//  577     static const unsigned short order[19] = /* permutation of code lengths */
+//  578         {16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15};
+//  579 
+//  580     if (strm == Z_NULL || strm->state == Z_NULL || strm->next_out == Z_NULL ||
+//  581         (strm->next_in == Z_NULL && strm->avail_in != 0))
+        LDRNE    R5,[R4, #+28]
+        CMPNE    R5,#+0
+        LDRNE    R0,[R4, #+12]
+        CMPNE    R0,#+0
+        BEQ      ??inflate_1
+        LDR      R0,[R4, #+0]
+        CMP      R0,#+0
+        BNE      ??inflate_2
+        LDR      R0,[R4, #+4]
+        CMP      R0,#+0
+        BEQ      ??inflate_2
+//  582         return Z_STREAM_ERROR;
+??inflate_1:
+        MVN      R0,#+1
+        B        ??inflate_3
+//  583 
+//  584     state = (struct inflate_state FAR *)strm->state;
+??inflate_2:
+        LDRB     R0,[R5, #+0]
+        CMP      R0,#+11
+//  585     if (state->mode == TYPE) state->mode = TYPEDO;      /* skip check */
+        MOVEQ    R0,#+12
+        STRBEQ   R0,[R5, #+0]
+//  586     LOAD();
+        LDR      R1,[R4, #+12]
+        STR      R1,[SP, #+12]
+        LDR      R1,[R4, #+16]
+        STR      R1,[SP, #+0]
+        LDR      R7,[R4, #+4]
+        LDR      R6,[R4, #+0]
+        LDR      R8,[R5, #+56]
+        LDR      R9,[R5, #+60]
+//  587     in = have;
+        STR      R7,[SP, #+20]
+//  588     out = left;
+        STR      R1,[SP, #+8]
+//  589     ret = Z_OK;
+        MOV      R1,#+0
+        STR      R1,[SP, #+16]
+        B        ??inflate_4
+//  590     for (;;)
+//  591         switch (state->mode) {
+//  592         case HEAD:
+//  593             if (state->wrap == 0) {
+//  594                 state->mode = TYPEDO;
+//  595                 break;
+//  596             }
+//  597             NEEDBITS(16);
+//  598 #ifdef GUNZIP
+//  599             if ((state->wrap & 2) && hold == 0x8b1f) {  /* gzip header */
+//  600                 state->check = crc32(0L, Z_NULL, 0);
+??inflate_5:
+        MOV      R2,#+0
+        MOV      R1,#+0
+        MOV      R0,R1
+        _BLF     crc32,??crc32??rA
+        STR      R0,[R5, #+24]
+//  601                 CRC2(state->check, hold);
+        MOV      R1,#+31
+        STRB     R1,[SP, #+4]
+        MOV      R1,#+139
+        STRB     R1,[SP, #+5]
+        LDR      R0,[R5, #+24]
+        MOV      R2,#+2
+        ADD      R1,SP,#+4
+        _BLF     crc32,??crc32??rA
+        STR      R0,[R5, #+24]
+//  602                 INITBITS();
+        MOV      R8,#+0
+        MOV      R9,R8
+//  603                 state->mode = FLAGS;
+        MOV      R0,#+1
+??inflate_6:
+        STRB     R0,[R5, #+0]
+//  604                 break;
+//  605             }
+??inflate_4:
+        LDR      R1,[SP, #+8]
+        LDR      R2,[SP, #+0]
+        SUB      R1,R1,R2
+        STR      R1,[SP, #+28]
+        LDRB     R0,[R5, #+0]
+        CMP      R0,#+28
+        BHI      ??inflate_1
+        ADR      R1,??inflate_0
+        MOV      R0,R0, LSL #+1
+        LDRSH    R1,[R1, R0]
+        ADD      PC,PC,R1, LSL #+2
+        DATA
+??inflate_0:
+        DC16     +14,+97,+132,+162
+        DC16     +186,+195,+273,+347
+        DC16     +393,+437,+451,+472
+        DC16     +475,+518,+544,+576
+        DC16     +626,+674,+836,+944
+        DC16     +976,+1049,+1084,+1128
+        DC16     +1139,+1194,+1218,+1221
+        DC16     +1223,+0
+        ARM
+??inflate_7:
+        LDR      R0,[R5, #+8]
+        CMP      R0,#+0
+        BNE      ??inflate_8
+        MOV      R0,#+12
+        B        ??inflate_6
+??inflate_9:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R0,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R0, LSL R9
+        ADD      R9,R9,#+8
+??inflate_8:
+        CMP      R9,#+16
+        BCC      ??inflate_9
+        LDR      R0,[R5, #+8]
+        TST      R0,#0x2
+        BEQ      ??inflate_11
+        MOV      R0,#+31
+        ORR      R0,R0,#0x8B00
+        CMP      R8,R0
+        BEQ      ??inflate_5
+//  606             state->flags = 0;           /* expect zlib header */
+??inflate_11:
+        MOV      R0,#+0
+        STR      R0,[R5, #+16]
+//  607             if (state->head != Z_NULL)
+        LDR      R0,[R5, #+32]
+        CMP      R0,#+0
+//  608                 state->head->done = -1;
+        MVNNE    R1,#+0
+        STRNE    R1,[R0, #+48]
+//  609             if (!(state->wrap & 1) ||   /* check if zlib header allowed */
+//  610 #else
+//  611             if (
+//  612 #endif
+//  613                 ((BITS(8) << 8) + (hold >> 8)) % 31) {
+        LDR      R0,[R5, #+8]
+        TST      R0,#0x1
+        BEQ      ??inflate_12
+        AND      R0,R8,#0xFF
+        LSR      R1,R8,#+8
+        ADD      R0,R1,R0, LSL #+8
+        LDR      R1,??inflate_13  ;; 0x8421085
+        UMULL    R2,R3,R1,R0
+        MOV      R2,#+31
+        ADDS     R3,R3,R0
+        RRX      R3,R3
+        LSR      R3,R3,#+4
+        MUL      R3,R2,R3
+        SUBS     R3,R0,R3
+        BEQ      ??inflate_14
+//  614                 strm->msg = (char *)"incorrect header check";
+??inflate_12:
+        LDR      R0,??inflate_13+0x4  ;; ??order + 40
+??inflate_15:
+        STR      R0,[R4, #+24]
+//  615                 state->mode = BAD;
+        MOV      R0,#+27
+        B        ??inflate_6
+//  616                 break;
+//  617             }
+//  618             if (BITS(4) != Z_DEFLATED) {
+??inflate_14:
+        AND      R0,R8,#0xF
+        CMP      R0,#+8
+        BEQ      ??inflate_16
+//  619                 strm->msg = (char *)"unknown compression method";
+??inflate_17:
+        LDR      R0,??inflate_13+0x8  ;; ??order + 64
+        B        ??inflate_15
+//  620                 state->mode = BAD;
+//  621                 break;
+//  622             }
+//  623             DROPBITS(4);
+??inflate_16:
+        LSR      R8,R8,#+4
+//  624             len = BITS(4) + 8;
+        AND      R0,R8,#0xF
+        ADD      R11,R0,#+8
+//  625             if (len > state->wbits) {
+        LDR      R0,[R5, #+36]
+        SUB      R9,R9,#+4
+        CMP      R0,R11
+        BCS      ??inflate_18
+//  626                 strm->msg = (char *)"invalid window size";
+        LDR      R0,??inflate_13+0xC  ;; ??order + 92
+??inflate_19:
+        STR      R0,[R4, #+24]
+//  627                 state->mode = BAD;
+        MOV      R0,#+27
+        B        ??inflate_6
+//  628                 break;
+//  629             }
+//  630             state->dmax = 1U << len;
+??inflate_18:
+        MOV      R0,#+1
+        LSL      R0,R0,R11
+        STR      R0,[R5, #+20]
+//  631             Tracev((stderr, "inflate:   zlib header ok\n"));
+//  632             strm->adler = state->check = adler32(0L, Z_NULL, 0);
+        MOV      R2,#+0
+        MOV      R1,#+0
+        MOV      R0,R1
+        _BLF     adler32,??adler32??rA
+        STR      R0,[R5, #+24]
+        STR      R0,[R4, #+48]
+//  633             state->mode = hold & 0x200 ? DICTID : TYPE;
+        TST      R8,#0x200
+        MOVNE    R0,#+9
+        MOVEQ    R0,#+11
+        STRB     R0,[R5, #+0]
+//  634             INITBITS();
+        MOV      R8,#+0
+        MOV      R9,#+0
+        B        ??inflate_4
+//  635             break;
+//  636 #ifdef GUNZIP
+//  637         case FLAGS:
+//  638             NEEDBITS(16);
+??inflate_20:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R0,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R0, LSL R9
+        ADD      R9,R9,#+8
+??inflate_21:
+        CMP      R9,#+16
+        BCC      ??inflate_20
+//  639             state->flags = (int)(hold);
+        STR      R8,[R5, #+16]
+//  640             if ((state->flags & 0xff) != Z_DEFLATED) {
+        AND      R0,R8,#0xFF
+        CMP      R0,#+8
+        BNE      ??inflate_17
+//  641                 strm->msg = (char *)"unknown compression method";
+//  642                 state->mode = BAD;
+//  643                 break;
+//  644             }
+//  645             if (state->flags & 0xe000) {
+        TST      R8,#0xE000
+        BEQ      ??inflate_22
+//  646                 strm->msg = (char *)"unknown header flags set";
+        LDR      R0,??inflate_13+0x10  ;; ??order + 112
+        B        ??inflate_15
+//  647                 state->mode = BAD;
+//  648                 break;
+//  649             }
+//  650             if (state->head != Z_NULL)
+??inflate_22:
+        LDR      R1,[R5, #+32]
+        LSR      R0,R8,#+8
+        CMP      R1,#+0
+//  651                 state->head->text = (int)((hold >> 8) & 1);
+        ANDNE    R2,R0,#0x1
+        STRNE    R2,[R1, #+0]
+//  652             if (state->flags & 0x0200) CRC2(state->check, hold);
+        LDR      R1,[R5, #+16]
+        TST      R1,#0x200
+        BEQ      ??inflate_23
+        STRB     R8,[SP, #+4]
+        STRB     R0,[SP, #+5]
+        LDR      R0,[R5, #+24]
+        MOV      R2,#+2
+        ADD      R1,SP,#+4
+        _BLF     crc32,??crc32??rA
+        STR      R0,[R5, #+24]
+//  653             INITBITS();
+??inflate_23:
+        MOV      R8,#+0
+        MOV      R9,#+0
+//  654             state->mode = TIME;
+        MOV      R0,#+2
+        STRB     R0,[R5, #+0]
+//  655         case TIME:
+//  656             NEEDBITS(32);
+??inflate_24:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R0,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R0, LSL R9
+        ADD      R9,R9,#+8
+??inflate_25:
+        CMP      R9,#+32
+        BCC      ??inflate_24
+//  657             if (state->head != Z_NULL)
+        LDR      R0,[R5, #+32]
+        CMP      R0,#+0
+//  658                 state->head->time = hold;
+        STRNE    R8,[R0, #+4]
+//  659             if (state->flags & 0x0200) CRC4(state->check, hold);
+        LDR      R0,[R5, #+16]
+        TST      R0,#0x200
+        BEQ      ??inflate_26
+        STRB     R8,[SP, #+4]
+        LSR      R1,R8,#+8
+        STRB     R1,[SP, #+5]
+        LSR      R1,R8,#+16
+        STRB     R1,[SP, #+6]
+        LSR      R1,R8,#+24
+        STRB     R1,[SP, #+7]
+        LDR      R0,[R5, #+24]
+        MOV      R2,#+4
+        ADD      R1,SP,#+4
+        _BLF     crc32,??crc32??rA
+        STR      R0,[R5, #+24]
+//  660             INITBITS();
+??inflate_26:
+        MOV      R8,#+0
+        MOV      R9,#+0
+//  661             state->mode = OS;
+        MOV      R0,#+3
+        STRB     R0,[R5, #+0]
+//  662         case OS:
+//  663             NEEDBITS(16);
+??inflate_27:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R0,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R0, LSL R9
+        ADD      R9,R9,#+8
+??inflate_28:
+        CMP      R9,#+16
+        BCC      ??inflate_27
+//  664             if (state->head != Z_NULL) {
+        LDR      R1,[R5, #+32]
+        LSR      R0,R8,#+8
+        CMP      R1,#+0
+        BEQ      ??inflate_29
+//  665                 state->head->xflags = (int)(hold & 0xff);
+        AND      R2,R8,#0xFF
+        STR      R2,[R1, #+8]
+//  666                 state->head->os = (int)(hold >> 8);
+        LDR      R1,[R5, #+32]
+        STR      R0,[R1, #+12]
+//  667             }
+//  668             if (state->flags & 0x0200) CRC2(state->check, hold);
+??inflate_29:
+        LDR      R1,[R5, #+16]
+        TST      R1,#0x200
+        BEQ      ??inflate_30
+        STRB     R8,[SP, #+4]
+        STRB     R0,[SP, #+5]
+        LDR      R0,[R5, #+24]
+        MOV      R2,#+2
+        ADD      R1,SP,#+4
+        _BLF     crc32,??crc32??rA
+        STR      R0,[R5, #+24]
+//  669             INITBITS();
+??inflate_30:
+        MOV      R8,#+0
+        MOV      R9,#+0
+//  670             state->mode = EXLEN;
+        MOV      R0,#+4
+        STRB     R0,[R5, #+0]
+//  671         case EXLEN:
+//  672             if (state->flags & 0x0400) {
+??inflate_31:
+        LDR      R0,[R5, #+16]
+        TST      R0,#0x400
+        BNE      ??inflate_32
+//  673                 NEEDBITS(16);
+//  674                 state->length = (unsigned)(hold);
+//  675                 if (state->head != Z_NULL)
+//  676                     state->head->extra_len = (unsigned)hold;
+//  677                 if (state->flags & 0x0200) CRC2(state->check, hold);
+//  678                 INITBITS();
+//  679             }
+//  680             else if (state->head != Z_NULL)
+        LDR      R0,[R5, #+32]
+        CMP      R0,#+0
+//  681                 state->head->extra = Z_NULL;
+        MOVNE    R1,#+0
+        STRNE    R1,[R0, #+16]
+//  682             state->mode = EXTRA;
+??inflate_33:
+        MOV      R0,#+5
+        STRB     R0,[R5, #+0]
+//  683         case EXTRA:
+//  684             if (state->flags & 0x0400) {
+??inflate_34:
+        LDR      R0,[R5, #+16]
+        TST      R0,#0x400
+        BEQ      ??inflate_35
+//  685                 copy = state->length;
+        LDR      R10,[R5, #+64]
+//  686                 if (copy > have) copy = have;
+        CMP      R7,R10
+        MOVCC    R10,R7
+//  687                 if (copy) {
+        CMP      R10,#+0
+        BEQ      ??inflate_36
+//  688                     if (state->head != Z_NULL &&
+//  689                         state->head->extra != Z_NULL) {
+        LDR      R0,[R5, #+32]
+        CMP      R0,#+0
+        LDRNE    R0,[R0, #+16]
+        CMPNE    R0,#+0
+        BEQ      ??inflate_37
+//  690                         len = state->head->extra_len - state->length;
+        LDR      R0,[R5, #+32]
+        LDR      R1,[R5, #+64]
+        LDR      R0,[R0, #+20]
+        SUB      R11,R0,R1
+//  691                         zmemcpy(state->head->extra + len, next,
+//  692                                 len + copy > state->head->extra_max ?
+//  693                                 state->head->extra_max - len : copy);
+        LDR      R0,[R5, #+32]
+        ADD      R1,R10,R11
+        LDR      R0,[R0, #+24]
+        CMP      R0,R1
+        BCS      ??inflate_38
+        LDR      R0,[R5, #+32]
+        LDR      R0,[R0, #+24]
+        SUB      R2,R0,R11
+        B        ??inflate_39
+??inflate_40:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R0,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R0, LSL R9
+        ADD      R9,R9,#+8
+??inflate_32:
+        CMP      R9,#+16
+        BCC      ??inflate_40
+        STR      R8,[R5, #+64]
+        LDR      R0,[R5, #+32]
+        CMP      R0,#+0
+        STRNE    R8,[R0, #+20]
+        LDR      R0,[R5, #+16]
+        TST      R0,#0x200
+        BEQ      ??inflate_41
+        STRB     R8,[SP, #+4]
+        LSR      R1,R8,#+8
+        STRB     R1,[SP, #+5]
+        LDR      R0,[R5, #+24]
+        MOV      R2,#+2
+        ADD      R1,SP,#+4
+        _BLF     crc32,??crc32??rA
+        STR      R0,[R5, #+24]
+??inflate_41:
+        MOV      R8,#+0
+        MOV      R9,#+0
+        B        ??inflate_33
+??inflate_38:
+        MOV      R2,R10
+??inflate_39:
+        LDR      R0,[R5, #+32]
+        MOV      R1,R6
+        LDR      R0,[R0, #+16]
+        ADD      R0,R11,R0
+        SWI      +286
+//  694                     }
+//  695                     if (state->flags & 0x0200)
+??inflate_37:
+        LDR      R0,[R5, #+16]
+        TST      R0,#0x200
+        BEQ      ??inflate_42
+//  696                         state->check = crc32(state->check, next, copy);
+        LDR      R0,[R5, #+24]
+        MOV      R2,R10
+        MOV      R1,R6
+        _BLF     crc32,??crc32??rA
+        STR      R0,[R5, #+24]
+//  697                     have -= copy;
+//  698                     next += copy;
+//  699                     state->length -= copy;
+??inflate_42:
+        LDR      R0,[R5, #+64]
+        SUB      R7,R7,R10
+        ADD      R6,R10,R6
+        SUB      R0,R0,R10
+        STR      R0,[R5, #+64]
+//  700                 }
+//  701                 if (state->length) goto inf_leave;
+??inflate_36:
+        LDR      R0,[R5, #+64]
+        CMP      R0,#+0
+        BNE      ??inflate_10
+//  702             }
+//  703             state->length = 0;
+??inflate_35:
+        MOV      R0,#+0
+        STR      R0,[R5, #+64]
+//  704             state->mode = NAME;
+        MOV      R0,#+6
+        STRB     R0,[R5, #+0]
+//  705         case NAME:
+//  706             if (state->flags & 0x0800) {
+??inflate_43:
+        LDR      R0,[R5, #+16]
+        TST      R0,#0x800
+        BEQ      ??inflate_44
+//  707                 if (have == 0) goto inf_leave;
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+//  708                 copy = 0;
+        MOV      R10,#+0
+//  709                 do {
+//  710                     len = (unsigned)(next[copy++]);
+//  711                     if (state->head != Z_NULL &&
+//  712                             state->head->name != Z_NULL &&
+//  713                             state->length < state->head->name_max)
+??inflate_45:
+        LDR      R0,[R5, #+32]
+        LDRB     R11,[R10, +R6]
+        CMP      R0,#+0
+        LDRNE    R0,[R0, #+28]
+        ADD      R10,R10,#+1
+        CMPNE    R0,#+0
+        BEQ      ??inflate_46
+        LDR      R1,[R5, #+32]
+        LDR      R0,[R5, #+64]
+        LDR      R1,[R1, #+32]
+        CMP      R0,R1
+        BCS      ??inflate_46
+//  714                         state->head->name[state->length++] = len;
+        ADD      R1,R0,#+1
+        STR      R1,[R5, #+64]
+        LDR      R1,[R5, #+32]
+        LDR      R1,[R1, #+28]
+        STRB     R11,[R0, +R1]
+//  715                 } while (len && copy < have);
+??inflate_46:
+        CMP      R11,#+0
+        BEQ      ??inflate_47
+        CMP      R10,R7
+        BCC      ??inflate_45
+//  716                 if (state->flags & 0x0200)
+??inflate_47:
+        LDR      R0,[R5, #+16]
+        TST      R0,#0x200
+        BEQ      ??inflate_48
+//  717                     state->check = crc32(state->check, next, copy);
+        LDR      R0,[R5, #+24]
+        MOV      R2,R10
+        MOV      R1,R6
+        _BLF     crc32,??crc32??rA
+        STR      R0,[R5, #+24]
+//  718                 have -= copy;
+??inflate_48:
+        SUB      R7,R7,R10
+//  719                 next += copy;
+        ADD      R6,R10,R6
+//  720                 if (len) goto inf_leave;
+        CMP      R11,#+0
+        BEQ      ??inflate_49
+//  721             }
+//  722             else if (state->head != Z_NULL)
+//  723                 state->head->name = Z_NULL;
+//  724             state->length = 0;
+//  725             state->mode = COMMENT;
+//  726         case COMMENT:
+//  727             if (state->flags & 0x1000) {
+//  728                 if (have == 0) goto inf_leave;
+//  729                 copy = 0;
+//  730                 do {
+//  731                     len = (unsigned)(next[copy++]);
+//  732                     if (state->head != Z_NULL &&
+//  733                             state->head->comment != Z_NULL &&
+//  734                             state->length < state->head->comm_max)
+//  735                         state->head->comment[state->length++] = len;
+//  736                 } while (len && copy < have);
+//  737                 if (state->flags & 0x0200)
+//  738                     state->check = crc32(state->check, next, copy);
+//  739                 have -= copy;
+//  740                 next += copy;
+//  741                 if (len) goto inf_leave;
+//  742             }
+//  743             else if (state->head != Z_NULL)
+//  744                 state->head->comment = Z_NULL;
+//  745             state->mode = HCRC;
+//  746         case HCRC:
+//  747             if (state->flags & 0x0200) {
+//  748                 NEEDBITS(16);
+//  749                 if (hold != (state->check & 0xffff)) {
+//  750                     strm->msg = (char *)"header crc mismatch";
+//  751                     state->mode = BAD;
+//  752                     break;
+//  753                 }
+//  754                 INITBITS();
+//  755             }
+//  756             if (state->head != Z_NULL) {
+//  757                 state->head->hcrc = (int)((state->flags >> 9) & 1);
+//  758                 state->head->done = 1;
+//  759             }
+//  760             strm->adler = state->check = crc32(0L, Z_NULL, 0);
+//  761             state->mode = TYPE;
+//  762             break;
+//  763 #endif
+//  764         case DICTID:
+//  765             NEEDBITS(32);
+//  766             strm->adler = state->check = REVERSE(hold);
+//  767             INITBITS();
+//  768             state->mode = DICT;
+//  769         case DICT:
+//  770             if (state->havedict == 0) {
+//  771                 RESTORE();
+//  772                 return Z_NEED_DICT;
+//  773             }
+//  774             strm->adler = state->check = adler32(0L, Z_NULL, 0);
+//  775             state->mode = TYPE;
+//  776         case TYPE:
+//  777             if (flush == Z_BLOCK) goto inf_leave;
+//  778         case TYPEDO:
+//  779             if (state->last) {
+//  780                 BYTEBITS();
+//  781                 state->mode = CHECK;
+//  782                 break;
+//  783             }
+//  784             NEEDBITS(3);
+//  785             state->last = BITS(1);
+//  786             DROPBITS(1);
+//  787             switch (BITS(2)) {
+//  788             case 0:                             /* stored block */
+//  789                 Tracev((stderr, "inflate:     stored block%s\n",
+//  790                         state->last ? " (last)" : ""));
+//  791                 state->mode = STORED;
+//  792                 break;
+//  793             case 1:                             /* fixed block */
+//  794                 fixedtables(state);
+//  795                 Tracev((stderr, "inflate:     fixed codes block%s\n",
+//  796                         state->last ? " (last)" : ""));
+//  797                 state->mode = LEN;              /* decode codes */
+//  798                 break;
+//  799             case 2:                             /* dynamic block */
+//  800                 Tracev((stderr, "inflate:     dynamic codes block%s\n",
+//  801                         state->last ? " (last)" : ""));
+//  802                 state->mode = TABLE;
+//  803                 break;
+//  804             case 3:
+//  805                 strm->msg = (char *)"invalid block type";
+//  806                 state->mode = BAD;
+//  807             }
+//  808             DROPBITS(2);
+//  809             break;
+//  810         case STORED:
+//  811             BYTEBITS();                         /* go to byte boundary */
+//  812             NEEDBITS(32);
+//  813             if ((hold & 0xffff) != ((hold >> 16) ^ 0xffff)) {
+//  814                 strm->msg = (char *)"invalid stored block lengths";
+//  815                 state->mode = BAD;
+//  816                 break;
+//  817             }
+//  818             state->length = (unsigned)hold & 0xffff;
+//  819             Tracev((stderr, "inflate:       stored length %u\n",
+//  820                     state->length));
+//  821             INITBITS();
+//  822             state->mode = COPY;
+//  823         case COPY:
+//  824             copy = state->length;
+//  825             if (copy) {
+//  826                 if (copy > have) copy = have;
+//  827                 if (copy > left) copy = left;
+//  828                 if (copy == 0) goto inf_leave;
+//  829                 zmemcpy(put, next, copy);
+//  830                 have -= copy;
+//  831                 next += copy;
+//  832                 left -= copy;
+//  833                 put += copy;
+//  834                 state->length -= copy;
+//  835                 break;
+//  836             }
+//  837             Tracev((stderr, "inflate:       stored end\n"));
+//  838             state->mode = TYPE;
+//  839             break;
+//  840         case TABLE:
+//  841             NEEDBITS(14);
+//  842             state->nlen = BITS(5) + 257;
+//  843             DROPBITS(5);
+//  844             state->ndist = BITS(5) + 1;
+//  845             DROPBITS(5);
+//  846             state->ncode = BITS(4) + 4;
+//  847             DROPBITS(4);
+//  848 #ifndef PKZIP_BUG_WORKAROUND
+//  849             if (state->nlen > 286 || state->ndist > 30) {
+//  850                 strm->msg = (char *)"too many length or distance symbols";
+//  851                 state->mode = BAD;
+//  852                 break;
+//  853             }
+//  854 #endif
+//  855             Tracev((stderr, "inflate:       table sizes ok\n"));
+//  856             state->have = 0;
+//  857             state->mode = LENLENS;
+//  858         case LENLENS:
+//  859             while (state->have < state->ncode) {
+//  860                 NEEDBITS(3);
+//  861                 state->lens[order[state->have++]] = (unsigned short)BITS(3);
+//  862                 DROPBITS(3);
+//  863             }
+//  864             while (state->have < 19)
+//  865                 state->lens[order[state->have++]] = 0;
+//  866             state->next = state->codes;
+//  867             state->lencode = (code const FAR *)(state->next);
+//  868             state->lenbits = 7;
+//  869             ret = inflate_table(CODES, state->lens, 19, &(state->next),
+//  870                                 &(state->lenbits), state->work);
+//  871             if (ret) {
+//  872                 strm->msg = (char *)"invalid code lengths set";
+//  873                 state->mode = BAD;
+//  874                 break;
+//  875             }
+//  876             Tracev((stderr, "inflate:       code lengths ok\n"));
+//  877             state->have = 0;
+//  878             state->mode = CODELENS;
+//  879         case CODELENS:
+//  880             while (state->have < state->nlen + state->ndist) {
+//  881                 for (;;) {
+//  882                     this = state->lencode[BITS(state->lenbits)];
+//  883                     if ((unsigned)(this.bits) <= bits) break;
+//  884                     PULLBYTE();
+//  885                 }
+//  886                 if (this.val < 16) {
+//  887                     NEEDBITS(this.bits);
+//  888                     DROPBITS(this.bits);
+//  889                     state->lens[state->have++] = this.val;
+//  890                 }
+//  891                 else {
+//  892                     if (this.val == 16) {
+//  893                         NEEDBITS(this.bits + 2);
+//  894                         DROPBITS(this.bits);
+//  895                         if (state->have == 0) {
+//  896                             strm->msg = (char *)"invalid bit length repeat";
+//  897                             state->mode = BAD;
+//  898                             break;
+//  899                         }
+//  900                         len = state->lens[state->have - 1];
+//  901                         copy = 3 + BITS(2);
+//  902                         DROPBITS(2);
+//  903                     }
+//  904                     else if (this.val == 17) {
+//  905                         NEEDBITS(this.bits + 3);
+//  906                         DROPBITS(this.bits);
+//  907                         len = 0;
+//  908                         copy = 3 + BITS(3);
+//  909                         DROPBITS(3);
+//  910                     }
+//  911                     else {
+//  912                         NEEDBITS(this.bits + 7);
+//  913                         DROPBITS(this.bits);
+//  914                         len = 0;
+//  915                         copy = 11 + BITS(7);
+//  916                         DROPBITS(7);
+//  917                     }
+//  918                     if (state->have + copy > state->nlen + state->ndist) {
+//  919                         strm->msg = (char *)"invalid bit length repeat";
+//  920                         state->mode = BAD;
+//  921                         break;
+//  922                     }
+//  923                     while (copy--)
+//  924                         state->lens[state->have++] = (unsigned short)len;
+//  925                 }
+//  926             }
+//  927 
+//  928             /* handle error breaks in while */
+//  929             if (state->mode == BAD) break;
+//  930 
+//  931             /* build code tables */
+//  932             state->next = state->codes;
+//  933             state->lencode = (code const FAR *)(state->next);
+//  934             state->lenbits = 9;
+//  935             ret = inflate_table(LENS, state->lens, state->nlen, &(state->next),
+//  936                                 &(state->lenbits), state->work);
+//  937             if (ret) {
+//  938                 strm->msg = (char *)"invalid literal/lengths set";
+//  939                 state->mode = BAD;
+//  940                 break;
+//  941             }
+//  942             state->distcode = (code const FAR *)(state->next);
+//  943             state->distbits = 6;
+//  944             ret = inflate_table(DISTS, state->lens + state->nlen, state->ndist,
+//  945                             &(state->next), &(state->distbits), state->work);
+//  946             if (ret) {
+//  947                 strm->msg = (char *)"invalid distances set";
+//  948                 state->mode = BAD;
+//  949                 break;
+//  950             }
+//  951             Tracev((stderr, "inflate:       codes ok\n"));
+//  952             state->mode = LEN;
+//  953         case LEN:
+//  954             if (have >= 6 && left >= 258) {
+//  955                 RESTORE();
+//  956                 inflate_fast(strm, out);
+//  957                 LOAD();
+//  958                 break;
+//  959             }
+//  960             for (;;) {
+//  961                 this = state->lencode[BITS(state->lenbits)];
+//  962                 if ((unsigned)(this.bits) <= bits) break;
+//  963                 PULLBYTE();
+//  964             }
+//  965             if (this.op && (this.op & 0xf0) == 0) {
+//  966                 last = this;
+//  967                 for (;;) {
+//  968                     this = state->lencode[last.val +
+//  969                             (BITS(last.bits + last.op) >> last.bits)];
+//  970                     if ((unsigned)(last.bits + this.bits) <= bits) break;
+//  971                     PULLBYTE();
+//  972                 }
+//  973                 DROPBITS(last.bits);
+//  974             }
+//  975             DROPBITS(this.bits);
+//  976             state->length = (unsigned)this.val;
+//  977             if ((int)(this.op) == 0) {
+//  978                 Tracevv((stderr, this.val >= 0x20 && this.val < 0x7f ?
+//  979                         "inflate:         literal '%c'\n" :
+//  980                         "inflate:         literal 0x%02x\n", this.val));
+//  981                 state->mode = LIT;
+//  982                 break;
+//  983             }
+//  984             if (this.op & 32) {
+//  985                 Tracevv((stderr, "inflate:         end of block\n"));
+//  986                 state->mode = TYPE;
+//  987                 break;
+//  988             }
+//  989             if (this.op & 64) {
+//  990                 strm->msg = (char *)"invalid literal/length code";
+//  991                 state->mode = BAD;
+//  992                 break;
+//  993             }
+//  994             state->extra = (unsigned)(this.op) & 15;
+//  995             state->mode = LENEXT;
+//  996         case LENEXT:
+//  997             if (state->extra) {
+//  998                 NEEDBITS(state->extra);
+//  999                 state->length += BITS(state->extra);
+// 1000                 DROPBITS(state->extra);
+// 1001             }
+// 1002             Tracevv((stderr, "inflate:         length %u\n", state->length));
+// 1003             state->mode = DIST;
+// 1004         case DIST:
+// 1005             for (;;) {
+// 1006                 this = state->distcode[BITS(state->distbits)];
+// 1007                 if ((unsigned)(this.bits) <= bits) break;
+// 1008                 PULLBYTE();
+// 1009             }
+// 1010             if ((this.op & 0xf0) == 0) {
+// 1011                 last = this;
+// 1012                 for (;;) {
+// 1013                     this = state->distcode[last.val +
+// 1014                             (BITS(last.bits + last.op) >> last.bits)];
+// 1015                     if ((unsigned)(last.bits + this.bits) <= bits) break;
+// 1016                     PULLBYTE();
+// 1017                 }
+// 1018                 DROPBITS(last.bits);
+// 1019             }
+// 1020             DROPBITS(this.bits);
+// 1021             if (this.op & 64) {
+// 1022                 strm->msg = (char *)"invalid distance code";
+// 1023                 state->mode = BAD;
+// 1024                 break;
+// 1025             }
+// 1026             state->offset = (unsigned)this.val;
+// 1027             state->extra = (unsigned)(this.op) & 15;
+// 1028             state->mode = DISTEXT;
+// 1029         case DISTEXT:
+// 1030             if (state->extra) {
+// 1031                 NEEDBITS(state->extra);
+// 1032                 state->offset += BITS(state->extra);
+// 1033                 DROPBITS(state->extra);
+// 1034             }
+// 1035 #ifdef INFLATE_STRICT
+// 1036             if (state->offset > state->dmax) {
+// 1037                 strm->msg = (char *)"invalid distance too far back";
+// 1038                 state->mode = BAD;
+// 1039                 break;
+// 1040             }
+// 1041 #endif
+// 1042             if (state->offset > state->whave + out - left) {
+// 1043                 strm->msg = (char *)"invalid distance too far back";
+// 1044                 state->mode = BAD;
+// 1045                 break;
+// 1046             }
+// 1047             Tracevv((stderr, "inflate:         distance %u\n", state->offset));
+// 1048             state->mode = MATCH;
+// 1049         case MATCH:
+// 1050             if (left == 0) goto inf_leave;
+// 1051             copy = out - left;
+// 1052             if (state->offset > copy) {         /* copy from window */
+// 1053                 copy = state->offset - copy;
+// 1054                 if (copy > state->write) {
+// 1055                     copy -= state->write;
+// 1056                     from = state->window + (state->wsize - copy);
+// 1057                 }
+// 1058                 else
+// 1059                     from = state->window + (state->write - copy);
+// 1060                 if (copy > state->length) copy = state->length;
+// 1061             }
+// 1062             else {                              /* copy from output */
+// 1063                 from = put - state->offset;
+// 1064                 copy = state->length;
+// 1065             }
+// 1066             if (copy > left) copy = left;
+// 1067             left -= copy;
+// 1068             state->length -= copy;
+// 1069             do {
+// 1070                 *put++ = *from++;
+// 1071             } while (--copy);
+// 1072             if (state->length == 0) state->mode = LEN;
+// 1073             break;
+// 1074         case LIT:
+// 1075             if (left == 0) goto inf_leave;
+// 1076             *put++ = (unsigned char)(state->length);
+// 1077             left--;
+// 1078             state->mode = LEN;
+// 1079             break;
+// 1080         case CHECK:
+// 1081             if (state->wrap) {
+// 1082                 NEEDBITS(32);
+// 1083                 out -= left;
+// 1084                 strm->total_out += out;
+// 1085                 state->total += out;
+// 1086                 if (out)
+// 1087                     strm->adler = state->check =
+// 1088                         UPDATE(state->check, put - out, out);
+// 1089                 out = left;
+// 1090                 if ((
+// 1091 #ifdef GUNZIP
+// 1092                      state->flags ? hold :
+// 1093 #endif
+// 1094                      REVERSE(hold)) != state->check) {
+// 1095                     strm->msg = (char *)"incorrect data check";
+// 1096                     state->mode = BAD;
+// 1097                     break;
+// 1098                 }
+// 1099                 INITBITS();
+// 1100                 Tracev((stderr, "inflate:   check matches trailer\n"));
+// 1101             }
+// 1102 #ifdef GUNZIP
+// 1103             state->mode = LENGTH;
+// 1104         case LENGTH:
+// 1105             if (state->wrap && state->flags) {
+// 1106                 NEEDBITS(32);
+// 1107                 if (hold != (state->total & 0xffffffffUL)) {
+// 1108                     strm->msg = (char *)"incorrect length check";
+// 1109                     state->mode = BAD;
+// 1110                     break;
+// 1111                 }
+// 1112                 INITBITS();
+// 1113                 Tracev((stderr, "inflate:   length matches trailer\n"));
+// 1114             }
+// 1115 #endif
+// 1116             state->mode = DONE;
+// 1117         case DONE:
+// 1118             ret = Z_STREAM_END;
+// 1119             goto inf_leave;
+// 1120         case BAD:
+// 1121             ret = Z_DATA_ERROR;
+// 1122             goto inf_leave;
+// 1123         case MEM:
+// 1124             return Z_MEM_ERROR;
+// 1125         case SYNC:
+// 1126         default:
+// 1127             return Z_STREAM_ERROR;
+// 1128         }
+// 1129 
+// 1130     /*
+// 1131        Return from inflate(), updating the total counts and the check value.
+// 1132        If there was no progress during the inflate() call, return a buffer
+// 1133        error.  Call updatewindow() to create and/or update the window state.
+// 1134        Note: a memory error from inflate() is non-recoverable.
+// 1135      */
+// 1136   inf_leave:
+// 1137     RESTORE();
+??inflate_10:
+        LDR      R0,[SP, #+12]
+        STR      R0,[R4, #+12]
+        LDR      R0,[SP, #+0]
+        STR      R0,[R4, #+16]
+        STR      R6,[R4, #+0]
+        STR      R7,[R4, #+4]
+        STR      R8,[R5, #+56]
+        STR      R9,[R5, #+60]
+// 1138     if (state->wsize || (state->mode < CHECK && out != strm->avail_out))
+        LDR      R0,[R5, #+40]
+        CMP      R0,#+0
+        BNE      ??inflate_50
+        LDRB     R0,[R5, #+0]
+        CMP      R0,#+24
+        BCS      ??inflate_51
+        LDR      R0,[SP, #+8]
+        LDR      R1,[R4, #+16]
+        CMP      R0,R1
+        BEQ      ??inflate_51
+// 1139         if (updatewindow(strm, out)) {
+??inflate_50:
+        LDR      R1,[SP, #+8]
+        MOV      R0,R4
+        BL       updatewindow
+        CMP      R0,#+0
+        BEQ      ??inflate_51
+// 1140             state->mode = MEM;
+        MOV      R0,#+28
+        STRB     R0,[R5, #+0]
+// 1141             return Z_MEM_ERROR;
+        B        ??inflate_52
+// 1142         }
+??inflate_44:
+        LDR      R0,[R5, #+32]
+        CMP      R0,#+0
+        BEQ      ??inflate_53
+        MOV      R1,#+0
+        STR      R1,[R0, #+28]
+??inflate_49:
+        MOV      R0,#+0
+??inflate_53:
+        STR      R0,[R5, #+64]
+        MOV      R0,#+7
+        STRB     R0,[R5, #+0]
+??inflate_54:
+        LDR      R0,[R5, #+16]
+        TST      R0,#0x1000
+        BEQ      ??inflate_55
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        MOV      R10,#+0
+??inflate_56:
+        LDR      R0,[R5, #+32]
+        LDRB     R11,[R10, +R6]
+        CMP      R0,#+0
+        LDRNE    R0,[R0, #+36]
+        ADD      R10,R10,#+1
+        CMPNE    R0,#+0
+        BEQ      ??inflate_57
+        LDR      R1,[R5, #+32]
+        LDR      R0,[R5, #+64]
+        LDR      R1,[R1, #+40]
+        CMP      R0,R1
+        BCS      ??inflate_57
+        ADD      R1,R0,#+1
+        STR      R1,[R5, #+64]
+        LDR      R1,[R5, #+32]
+        LDR      R1,[R1, #+36]
+        STRB     R11,[R0, +R1]
+??inflate_57:
+        CMP      R11,#+0
+        BEQ      ??inflate_58
+        CMP      R10,R7
+        BCC      ??inflate_56
+??inflate_58:
+        LDR      R0,[R5, #+16]
+        TST      R0,#0x200
+        BEQ      ??inflate_59
+        LDR      R0,[R5, #+24]
+        MOV      R2,R10
+        MOV      R1,R6
+        _BLF     crc32,??crc32??rA
+        STR      R0,[R5, #+24]
+??inflate_59:
+        SUB      R7,R7,R10
+        ADD      R6,R10,R6
+        CMP      R11,#+0
+        BNE      ??inflate_10
+        B        ??inflate_60
+??inflate_55:
+        LDR      R0,[R5, #+32]
+        CMP      R0,#+0
+        MOVNE    R1,#+0
+        STRNE    R1,[R0, #+36]
+??inflate_60:
+        MOV      R0,#+8
+        STRB     R0,[R5, #+0]
+??inflate_61:
+        LDR      R0,[R5, #+16]
+        TST      R0,#0x200
+        BNE      ??inflate_62
+        B        ??inflate_63
+??inflate_64:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R0,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R0, LSL R9
+        ADD      R9,R9,#+8
+??inflate_62:
+        CMP      R9,#+16
+        BCC      ??inflate_64
+        LDR      R0,[R5, #+24]
+        LSL      R0,R0,#+16
+        CMP      R8,R0, LSR #+16
+        BEQ      ??inflate_65
+        LDR      R0,??inflate_66  ;; ??order + 140
+        B        ??inflate_19
+??inflate_65:
+        MOV      R8,#+0
+        MOV      R9,#+0
+??inflate_63:
+        LDR      R0,[R5, #+32]
+        CMP      R0,#+0
+        BEQ      ??inflate_67
+        LDR      R1,[R5, #+16]
+        MOV      R2,#+1
+        AND      R1,R2,R1, ASR #+9
+        STR      R1,[R0, #+44]
+        LDR      R0,[R5, #+32]
+        MOV      R1,#+1
+        STR      R1,[R0, #+48]
+??inflate_67:
+        MOV      R2,#+0
+        MOV      R1,#+0
+        MOV      R0,R1
+        _BLF     crc32,??crc32??rA
+        STR      R0,[R5, #+24]
+        STR      R0,[R4, #+48]
+??inflate_68:
+        MOV      R0,#+11
+        B        ??inflate_6
+??inflate_69:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R0,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R0, LSL R9
+        ADD      R9,R9,#+8
+??inflate_70:
+        CMP      R9,#+32
+        BCC      ??inflate_69
+        MOV      R0,#+65280
+        AND      R0,R0,R8, LSR #+8
+        ADD      R0,R0,R8, LSR #+24
+        AND      R1,R8,#0xFF00
+        ADD      R0,R0,R1, LSL #+8
+        ADD      R0,R0,R8, LSL #+24
+        STR      R0,[R5, #+24]
+        STR      R0,[R4, #+48]
+        MOV      R8,#+0
+        MOV      R9,#+0
+        MOV      R0,#+10
+        STRB     R0,[R5, #+0]
+??inflate_71:
+        LDR      R0,[R5, #+12]
+        CMP      R0,#+0
+        BNE      ??inflate_72
+        LDR      R0,[SP, #+12]
+        STR      R0,[R4, #+12]
+        LDR      R0,[SP, #+0]
+        STR      R0,[R4, #+16]
+        STR      R6,[R4, #+0]
+        STR      R7,[R4, #+4]
+        STR      R8,[R5, #+56]
+        STR      R9,[R5, #+60]
+        MOV      R0,#+2
+        B        ??inflate_3
+??inflate_72:
+        MOV      R2,#+0
+        MOV      R1,#+0
+        MOV      R0,R1
+        _BLF     adler32,??adler32??rA
+        STR      R0,[R5, #+24]
+        STR      R0,[R4, #+48]
+        MOV      R0,#+11
+        STRB     R0,[R5, #+0]
+??inflate_73:
+        LDR      R0,[SP, #+32]
+        CMP      R0,#+5
+        BEQ      ??inflate_10
+??inflate_74:
+        LDR      R0,[R5, #+4]
+        CMP      R0,#+0
+        BEQ      ??inflate_75
+        AND      R0,R9,#0x7
+        LSR      R8,R8,R0
+        SUB      R9,R9,R0
+        MOV      R0,#+24
+        B        ??inflate_6
+??inflate_76:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R0,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R0, LSL R9
+        ADD      R9,R9,#+8
+??inflate_75:
+        CMP      R9,#+3
+        BCC      ??inflate_76
+        AND      R0,R8,#0x1
+        STR      R0,[R5, #+4]
+        LSR      R8,R8,#+1
+        ANDS     R0,R8,#0x3
+        BEQ      ??inflate_77
+        SUBS     R0,R0,#+1
+        BEQ      ??inflate_78
+        SUBS     R0,R0,#+1
+        BEQ      ??inflate_79
+        SUBS     R0,R0,#+1
+        BEQ      ??inflate_80
+        B        ??inflate_81
+??inflate_77:
+        MOV      R0,#+13
+        B        ??inflate_82
+??inflate_78:
+        MOV      R0,R5
+        BL       fixedtables
+        MOV      R0,#+18
+        B        ??inflate_82
+??inflate_79:
+        MOV      R0,#+15
+        B        ??inflate_82
+??inflate_80:
+        LDR      R0,??inflate_66+0x4  ;; ??order + 160
+        STR      R0,[R4, #+24]
+        MOV      R0,#+27
+??inflate_82:
+        STRB     R0,[R5, #+0]
+??inflate_81:
+        LSR      R8,R8,#+2
+        SUB      R9,R9,#+3
+        B        ??inflate_4
+??inflate_83:
+        AND      R0,R9,#0x7
+        LSR      R8,R8,R0
+        SUB      R9,R9,R0
+        B        ??inflate_84
+??inflate_85:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R0,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R0, LSL R9
+        ADD      R9,R9,#+8
+??inflate_84:
+        CMP      R9,#+32
+        BCC      ??inflate_85
+        LSL      R0,R8,#+16
+        MOV      R1,#+255
+        ORR      R1,R1,#0xFF00
+        EOR      R1,R1,R8, LSR #+16
+        CMP      R1,R0, LSR #+16
+        BEQ      ??inflate_86
+        LDR      R0,??inflate_66+0x8  ;; ??order + 180
+        B        ??inflate_15
+??inflate_86:
+        LSR      R0,R0,#+16
+        STR      R0,[R5, #+64]
+        MOV      R8,#+0
+        MOV      R9,#+0
+        MOV      R0,#+14
+        STRB     R0,[R5, #+0]
+??inflate_87:
+        LDR      R10,[R5, #+64]
+        CMP      R10,#+0
+        BEQ      ??inflate_68
+        LDR      R0,[SP, #+0]
+        CMP      R7,R10
+        MOVCC    R10,R7
+        CMP      R0,R10
+        MOVCC    R10,R0
+        CMP      R10,#+0
+        BEQ      ??inflate_10
+        LDR      R0,[SP, #+12]
+        MOV      R2,R10
+        MOV      R1,R6
+        SWI      +286
+        LDR      R1,[SP, #+0]
+        SUB      R7,R7,R10
+        SUB      R1,R1,R10
+        STR      R1,[SP, #+0]
+        LDR      R1,[SP, #+12]
+        ADD      R6,R10,R6
+        ADD      R1,R10,R1
+        STR      R1,[SP, #+12]
+        LDR      R0,[R5, #+64]
+        SUB      R0,R0,R10
+        STR      R0,[R5, #+64]
+        B        ??inflate_4
+??inflate_88:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R0,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R0, LSL R9
+        ADD      R9,R9,#+8
+??inflate_89:
+        CMP      R9,#+14
+        BCC      ??inflate_88
+        AND      R0,R8,#0x1F
+        MOV      R1,#+1
+        ORR      R1,R1,#0x100
+        ADD      R0,R1,R0
+        STR      R0,[R5, #+96]
+        LSR      R0,R8,#+5
+        AND      R1,R0,#0x1F
+        ADD      R1,R1,#+1
+        STR      R1,[R5, #+100]
+        LSR      R0,R0,#+5
+        AND      R1,R0,#0xF
+        ADD      R1,R1,#+4
+        STR      R1,[R5, #+92]
+        LSR      R8,R0,#+4
+        LDR      R0,[R5, #+96]
+        MOV      R1,#+31
+        ORR      R1,R1,#0x100
+        CMP      R0,R1
+        LDRCC    R0,[R5, #+100]
+        SUB      R9,R9,#+14
+        CMPCC    R0,#+31
+        BCC      ??inflate_90
+        LDR      R0,??inflate_66+0xC  ;; ??order + 212
+        B        ??inflate_15
+??inflate_90:
+        MOV      R0,#+0
+        STR      R0,[R5, #+104]
+        MOV      R0,#+16
+        STRB     R0,[R5, #+0]
+        B        ??inflate_91
+??inflate_92:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R0,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R0, LSL R9
+        ADD      R9,R9,#+8
+??inflate_93:
+        CMP      R9,#+3
+        BCC      ??inflate_92
+        LDR      R0,[R5, #+104]
+        SUB      R9,R9,#+3
+        ADD      R1,R0,#+1
+        STR      R1,[R5, #+104]
+        LDR      R1,??inflate_66+0x10  ;; ??order
+        ADD      R0,R1,R0, LSL #+1
+        LDRH     R0,[R0, #+0]
+        AND      R1,R8,#0x7
+        LSR      R8,R8,#+3
+        ADD      R0,R5,R0, LSL #+1
+        STRH     R1,[R0, #+112]
+??inflate_91:
+        LDR      R0,[R5, #+104]
+        LDR      R1,[R5, #+92]
+        CMP      R0,R1
+        BCC      ??inflate_93
+??inflate_94:
+        LDR      R0,[R5, #+104]
+        CMP      R0,#+19
+        BCS      ??inflate_95
+        ADD      R1,R0,#+1
+        STR      R1,[R5, #+104]
+        LDR      R1,??inflate_66+0x10  ;; ??order
+        ADD      R0,R1,R0, LSL #+1
+        LDRH     R0,[R0, #+0]
+        MOV      R1,#+0
+        ADD      R0,R5,R0, LSL #+1
+        STRH     R1,[R0, #+112]
+        B        ??inflate_94
+??inflate_95:
+        ADD      R0,R5,#+1328
+        STR      R0,[R5, #+108]
+        STR      R0,[R5, #+76]
+        MOV      R0,#+7
+        STR      R0,[R5, #+84]
+        ADD      R0,R5,#+752
+        PUSH     {R0}
+        CFI CFA R13+76
+        ADD      R3,R5,#+108
+        MOV      R2,#+19
+        ADD      R1,R5,#+112
+        ADD      R0,R5,#+84
+        PUSH     {R0}
+        CFI CFA R13+80
+        MOV      R0,#+0
+        _BLF     inflate_table,??inflate_table??rA
+        STR      R0,[SP, #+24]
+        CMP      R0,#+0
+        ADD      SP,SP,#+8
+        CFI CFA R13+72
+        BEQ      ??inflate_96
+        LDR      R0,??inflate_66+0x14  ;; ??order + 248
+        B        ??inflate_19
+??inflate_96:
+        MOV      R0,#+0
+        STR      R0,[R5, #+104]
+        MOV      R0,#+17
+        STRB     R0,[R5, #+0]
+        B        ??inflate_97
+??inflate_98:
+        LSR      R8,R8,R0
+        LDR      R0,[R5, #+104]
+        SUB      R9,R9,R2
+        ADD      R2,R0,#+1
+        STR      R2,[R5, #+104]
+        ADD      R0,R5,R0, LSL #+1
+        STRH     R1,[R0, #+112]
+??inflate_97:
+        LDR      R0,[R5, #+104]
+        LDR      R1,[R5, #+96]
+        LDR      R2,[R5, #+100]
+        ADD      R1,R2,R1
+        CMP      R0,R1
+        BCC      ??inflate_99
+??inflate_100:
+        LDRB     R0,[R5, #+0]
+        CMP      R0,#+27
+        BEQ      ??inflate_4
+        ADD      R0,R5,#+1328
+        STR      R0,[R5, #+108]
+        STR      R0,[R5, #+76]
+        MOV      R0,#+9
+        STR      R0,[R5, #+84]
+        ADD      R0,R5,#+752
+        PUSH     {R0}
+        CFI CFA R13+76
+        ADD      R3,R5,#+108
+        ADD      R1,R5,#+112
+        ADD      R0,R5,#+84
+        PUSH     {R0}
+        CFI CFA R13+80
+        LDR      R2,[R5, #+96]
+        MOV      R0,#+1
+        _BLF     inflate_table,??inflate_table??rA
+        STR      R0,[SP, #+24]
+        CMP      R0,#+0
+        ADD      SP,SP,#+8
+        CFI CFA R13+72
+        BEQ      ??inflate_101
+        LDR      R0,??inflate_66+0x18  ;; ??order + 304
+        B        ??inflate_15
+??inflate_102:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R0,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R0, LSL R9
+        ADD      R9,R9,#+8
+??inflate_99:
+        LDR      R1,[R5, #+84]
+        LDR      R2,[R5, #+84]
+        MOV      R0,#+1
+        LSL      R0,R0,R1
+        LDR      R1,[R5, #+76]
+        SUB      R0,R0,#+1
+        AND      R0,R0,R8
+        ADD      R0,R1,R0, LSL #+2
+        LDRB     R0,[R0, #+1]
+        MOV      R1,#+1
+        LSL      R1,R1,R2
+        LDR      R2,[R5, #+76]
+        SUB      R1,R1,#+1
+        AND      R1,R1,R8
+        ADD      R1,R2,R1, LSL #+2
+        LDRH     R1,[R1, #+2]
+        MOV      R2,R0
+        CMP      R9,R2
+        BCC      ??inflate_102
+        CMP      R1,#+16
+        BCC      ??inflate_98
+        BEQ      ??inflate_103
+        CMP      R1,#+17
+        BNE      ??inflate_104
+        B        ??inflate_105
+??inflate_106:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R1,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R1, LSL R9
+        ADD      R9,R9,#+8
+??inflate_103:
+        ADD      R1,R0,#+2
+        CMP      R9,R1
+        BCC      ??inflate_106
+        LSR      R8,R8,R0
+        LDR      R0,[R5, #+104]
+        SUB      R9,R9,R2
+        CMP      R0,#+0
+        BNE      ??inflate_107
+??inflate_108:
+        LDR      R0,??inflate_66+0x1C  ;; ??order + 276
+        STR      R0,[R4, #+24]
+        MOV      R0,#+27
+        STRB     R0,[R5, #+0]
+        B        ??inflate_100
+??inflate_107:
+        SUB      R0,R0,#+1
+        ADD      R0,R5,R0, LSL #+1
+        LDRH     R11,[R0, #+112]
+        AND      R0,R8,#0x3
+        ADD      R10,R0,#+3
+        LSR      R8,R8,#+2
+        SUB      R9,R9,#+2
+        B        ??inflate_109
+??inflate_110:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R1,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R1, LSL R9
+        ADD      R9,R9,#+8
+??inflate_105:
+        ADD      R1,R0,#+3
+        CMP      R9,R1
+        BCC      ??inflate_110
+        LSR      R0,R8,R0
+        SUB      R1,R9,R2
+        MOV      R11,#+0
+        AND      R2,R0,#0x7
+        ADD      R10,R2,#+3
+        LSR      R8,R0,#+3
+        SUB      R9,R1,#+3
+        B        ??inflate_109
+??inflate_111:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R1,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R1, LSL R9
+        ADD      R9,R9,#+8
+??inflate_104:
+        ADD      R1,R0,#+7
+        CMP      R9,R1
+        BCC      ??inflate_111
+        LSR      R0,R8,R0
+        SUB      R1,R9,R2
+        MOV      R11,#+0
+        AND      R2,R0,#0x7F
+        ADD      R10,R2,#+11
+        LSR      R8,R0,#+7
+        SUB      R9,R1,#+7
+??inflate_109:
+        LDR      R0,[R5, #+96]
+        LDR      R1,[R5, #+100]
+        ADD      R0,R1,R0
+        LDR      R1,[R5, #+104]
+        ADD      R1,R10,R1
+        CMP      R0,R1
+        BCC      ??inflate_108
+??inflate_112:
+        MOV      R0,R10
+        SUB      R10,R0,#+1
+        CMP      R0,#+0
+        BEQ      ??inflate_97
+        LDR      R0,[R5, #+104]
+        ADD      R1,R0,#+1
+        STR      R1,[R5, #+104]
+        ADD      R0,R5,R0, LSL #+1
+        STRH     R11,[R0, #+112]
+        B        ??inflate_112
+??inflate_101:
+        LDR      R0,[R5, #+108]
+        ADD      R3,R5,#+108
+        STR      R0,[R5, #+80]
+        MOV      R0,#+6
+        STR      R0,[R5, #+88]
+        ADD      R0,R5,#+752
+        PUSH     {R0}
+        CFI CFA R13+76
+        ADD      R0,R5,#+88
+        PUSH     {R0}
+        CFI CFA R13+80
+        LDR      R2,[R5, #+100]
+        LDR      R0,[R5, #+96]
+        ADD      R0,R5,R0, LSL #+1
+        ADD      R1,R0,#+112
+        MOV      R0,#+2
+        _BLF     inflate_table,??inflate_table??rA
+        STR      R0,[SP, #+24]
+        CMP      R0,#+0
+        ADD      SP,SP,#+8
+        CFI CFA R13+72
+        BEQ      ??inflate_113
+        LDR      R0,??inflate_66+0x20  ;; ??order + 332
+        STR      R0,[R4, #+24]
+        MOV      R0,#+27
+        B        ??inflate_6
+??inflate_113:
+        MOV      R0,#+18
+        STRB     R0,[R5, #+0]
+??inflate_114:
+        CMP      R7,#+6
+        BCC      ??inflate_115
+        LDR      R0,[SP, #+0]
+        MOV      R1,#+2
+        ORR      R1,R1,#0x100
+        CMP      R0,R1
+        BCC      ??inflate_115
+        LDR      R0,[SP, #+12]
+        STR      R0,[R4, #+12]
+        LDR      R0,[SP, #+0]
+        STR      R0,[R4, #+16]
+        STR      R6,[R4, #+0]
+        STR      R7,[R4, #+4]
+        STR      R8,[R5, #+56]
+        STR      R9,[R5, #+60]
+        LDR      R1,[SP, #+8]
+        MOV      R0,R4
+        _BLF     inflate_fast,??inflate_fast??rA
+        LDR      R1,[R4, #+12]
+        STR      R1,[SP, #+12]
+        LDR      R1,[R4, #+16]
+        STR      R1,[SP, #+0]
+        LDR      R6,[R4, #+0]
+        LDR      R7,[R4, #+4]
+        LDR      R8,[R5, #+56]
+        LDR      R9,[R5, #+60]
+        B        ??inflate_4
+??inflate_116:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R0,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R0, LSL R9
+        ADD      R9,R9,#+8
+??inflate_115:
+        LDR      R1,[R5, #+84]
+        LDR      R2,[R5, #+84]
+        MOV      R0,#+1
+        LSL      R0,R0,R1
+        LDR      R1,[R5, #+76]
+        SUB      R0,R0,#+1
+        AND      R0,R0,R8
+        LDRB     R12,[R1, +R0, LSL #+2]
+        LDR      R1,[R5, #+84]
+        MOV      R0,#+1
+        LSL      R0,R0,R1
+        LDR      R1,[R5, #+76]
+        SUB      R0,R0,#+1
+        AND      R0,R0,R8
+        ADD      R0,R1,R0, LSL #+2
+        LDRB     R0,[R0, #+1]
+        MOV      R1,#+1
+        LSL      R1,R1,R2
+        LDR      R2,[R5, #+76]
+        SUB      R1,R1,#+1
+        AND      R1,R1,R8
+        ADD      R1,R2,R1, LSL #+2
+        LDRH     R1,[R1, #+2]
+        MOV      R10,R0
+        CMP      R9,R10
+        BCC      ??inflate_116
+        CMP      R12,#+0
+        BEQ      ??inflate_117
+        TST      R12,#0xF0
+        BNE      ??inflate_117
+        STRB     R12,[SP, #+24]
+        MOV      R2,R0
+        MOV      R3,R1
+        B        ??inflate_118
+??inflate_119:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R0,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R0, LSL R9
+        ADD      R9,R9,#+8
+??inflate_118:
+        LDRB     R11,[SP, #+24]
+        LDR      R0,[R5, #+76]
+        MOV      R1,#+1
+        ADD      R11,R11,R2
+        LSL      R1,R1,R11
+        LDR      R11,[R5, #+76]
+        SUB      R1,R1,#+1
+        AND      R1,R1,R8
+        ADD      R1,R3,R1, LSR R2
+        LDRB     R12,[R0, +R1, LSL #+2]
+        ADD      R0,R0,R1, LSL #+2
+        LDRB     R0,[R0, #+1]
+        ADD      R1,R11,R1, LSL #+2
+        LDRH     R1,[R1, #+2]
+        ADD      R11,R0,R2
+        CMP      R9,R11
+        BCC      ??inflate_119
+        LSR      R8,R8,R2
+        SUB      R9,R9,R10
+??inflate_117:
+        LSR      R8,R8,R0
+        SUB      R9,R9,R0
+        STR      R1,[R5, #+64]
+        CMP      R12,#+0
+        MOVEQ    R0,#+23
+        BEQ      ??inflate_6
+        TST      R12,#0x20
+        BNE      ??inflate_68
+        TST      R12,#0x40
+        BEQ      ??inflate_120
+        LDR      R0,??inflate_66+0x24  ;; ??order + 356
+        B        ??inflate_15
+??inflate_120:
+        AND      R0,R12,#0xF
+        STR      R0,[R5, #+72]
+        MOV      R0,#+19
+        STRB     R0,[R5, #+0]
+??inflate_121:
+        LDR      R0,[R5, #+72]
+        CMP      R0,#+0
+        BNE      ??inflate_122
+        B        ??inflate_123
+??inflate_124:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R0,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R0, LSL R9
+        ADD      R9,R9,#+8
+??inflate_122:
+        LDR      R0,[R5, #+72]
+        CMP      R9,R0
+        BCC      ??inflate_124
+        LDR      R0,[R5, #+64]
+        LDR      R2,[R5, #+72]
+        MOV      R1,#+1
+        LSL      R1,R1,R2
+        SUB      R1,R1,#+1
+        AND      R1,R1,R8
+        ADD      R0,R1,R0
+        STR      R0,[R5, #+64]
+        LSR      R8,R8,R2
+        SUB      R9,R9,R2
+??inflate_123:
+        MOV      R0,#+20
+        STRB     R0,[R5, #+0]
+        B        ??inflate_125
+??inflate_126:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R0,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R0, LSL R9
+        ADD      R9,R9,#+8
+??inflate_125:
+        LDR      R1,[R5, #+88]
+        LDR      R2,[R5, #+88]
+        MOV      R0,#+1
+        LSL      R0,R0,R1
+        LDR      R1,[R5, #+80]
+        SUB      R0,R0,#+1
+        AND      R0,R0,R8
+        LDRB     R12,[R1, +R0, LSL #+2]
+        LDR      R1,[R5, #+88]
+        MOV      R0,#+1
+        LSL      R0,R0,R1
+        LDR      R1,[R5, #+80]
+        SUB      R0,R0,#+1
+        AND      R0,R0,R8
+        ADD      R0,R1,R0, LSL #+2
+        LDRB     R0,[R0, #+1]
+        MOV      R1,#+1
+        LSL      R1,R1,R2
+        LDR      R2,[R5, #+80]
+        SUB      R1,R1,#+1
+        AND      R1,R1,R8
+        ADD      R1,R2,R1, LSL #+2
+        LDRH     R1,[R1, #+2]
+        MOV      R10,R0
+        CMP      R9,R10
+        BCC      ??inflate_126
+        TST      R12,#0xF0
+        BNE      ??inflate_127
+        STRB     R12,[SP, #+24]
+        MOV      R2,R0
+        MOV      R3,R1
+        B        ??inflate_128
+??inflate_129:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R0,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R0, LSL R9
+        ADD      R9,R9,#+8
+??inflate_128:
+        LDRB     R11,[SP, #+24]
+        LDR      R0,[R5, #+80]
+        MOV      R1,#+1
+        ADD      R11,R11,R2
+        LSL      R1,R1,R11
+        LDR      R11,[R5, #+80]
+        SUB      R1,R1,#+1
+        AND      R1,R1,R8
+        ADD      R1,R3,R1, LSR R2
+        LDRB     R12,[R0, +R1, LSL #+2]
+        ADD      R0,R0,R1, LSL #+2
+        LDRB     R0,[R0, #+1]
+        ADD      R1,R11,R1, LSL #+2
+        LDRH     R1,[R1, #+2]
+        ADD      R11,R0,R2
+        CMP      R9,R11
+        BCC      ??inflate_129
+        LSR      R8,R8,R2
+        SUB      R9,R9,R10
+??inflate_127:
+        LSR      R8,R8,R0
+        SUB      R9,R9,R0
+        TST      R12,#0x40
+        BEQ      ??inflate_130
+        LDR      R0,??inflate_66+0x28  ;; ??order + 384
+        B        ??inflate_19
+        DATA
+??inflate_13:
+        DC32     0x8421085
+        DC32     ??order + 40
+        DC32     ??order + 64
+        DC32     ??order + 92
+        DC32     ??order + 112
+        ARM
+??inflate_130:
+        STR      R1,[R5, #+68]
+        AND      R0,R12,#0xF
+        STR      R0,[R5, #+72]
+        MOV      R0,#+21
+        STRB     R0,[R5, #+0]
+??inflate_131:
+        LDR      R0,[R5, #+72]
+        CMP      R0,#+0
+        BNE      ??inflate_132
+        B        ??inflate_133
+??inflate_134:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R0,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R0, LSL R9
+        ADD      R9,R9,#+8
+??inflate_132:
+        LDR      R0,[R5, #+72]
+        CMP      R9,R0
+        BCC      ??inflate_134
+        LDR      R0,[R5, #+68]
+        LDR      R2,[R5, #+72]
+        MOV      R1,#+1
+        LSL      R1,R1,R2
+        SUB      R1,R1,#+1
+        AND      R1,R1,R8
+        ADD      R0,R1,R0
+        STR      R0,[R5, #+68]
+        LSR      R8,R8,R2
+        SUB      R9,R9,R2
+??inflate_133:
+        LDR      R0,[R5, #+44]
+        LDR      R1,[SP, #+8]
+        ADD      R0,R1,R0
+        LDR      R1,[SP, #+0]
+        SUB      R0,R0,R1
+        LDR      R1,[R5, #+68]
+        CMP      R0,R1
+        BCS      ??inflate_135
+        LDR      R0,??inflate_66+0x2C  ;; ??order + 408
+        B        ??inflate_15
+??inflate_135:
+        MOV      R0,#+22
+        STRB     R0,[R5, #+0]
+??inflate_136:
+        LDR      R0,[SP, #+0]
+        CMP      R0,#+0
+        BEQ      ??inflate_10
+        LDR      R0,[SP, #+28]
+        LDR      R1,[R5, #+68]
+        CMP      R0,R1
+        BCS      ??inflate_137
+        SUB      R10,R1,R0
+        LDR      R0,[R5, #+48]
+        LDR      R1,[R5, #+52]
+        CMP      R0,R10
+        SUBCC    R10,R10,R0
+        LDRCC    R0,[R5, #+40]
+        SUB      R0,R0,R10
+        ADD      R0,R0,R1
+        LDR      R1,[R5, #+64]
+        CMP      R1,R10
+        BCS      ??inflate_138
+        MOV      R10,R1
+        B        ??inflate_138
+??inflate_137:
+        LDR      R10,[R5, #+64]
+        MOV      R0,R1
+        LDR      R1,[SP, #+12]
+        RSB      R0,R0,#+0
+        ADD      R0,R0,R1
+??inflate_138:
+        LDR      R1,[SP, #+0]
+        CMP      R1,R10
+        MOVCC    R10,R1
+        SUB      R2,R1,R10
+        STR      R2,[SP, #+0]
+        LDR      R1,[R5, #+64]
+        SUB      R1,R1,R10
+        STR      R1,[R5, #+64]
+??inflate_139:
+        LDRB     R2,[R0], #+1
+        LDR      R3,[SP, #+12]
+        SUBS     R10,R10,#+1
+        STRB     R2,[R3], #+1
+        STR      R3,[SP, #+12]
+        BNE      ??inflate_139
+        LDR      R0,[R5, #+64]
+        CMP      R0,#+0
+        BNE      ??inflate_4
+        MOV      R0,#+18
+        B        ??inflate_6
+??inflate_140:
+        CMP      R2,#+0
+        BEQ      ??inflate_10
+        LDR      R1,[R5, #+64]
+        LDR      R2,[SP, #+12]
+        MOV      R0,#+18
+        STRB     R1,[R2], #+1
+        STR      R2,[SP, #+12]
+        LDR      R1,[SP, #+0]
+        SUB      R1,R1,#+1
+        STR      R1,[SP, #+0]
+        B        ??inflate_6
+??inflate_141:
+        LDR      R0,[R5, #+8]
+        CMP      R0,#+0
+        BNE      ??inflate_142
+        B        ??inflate_143
+??inflate_144:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R0,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R0, LSL R9
+        ADD      R9,R9,#+8
+??inflate_142:
+        CMP      R9,#+32
+        BCC      ??inflate_144
+        LDR      R2,[SP, #+28]
+        LDR      R0,[R4, #+20]
+        CMP      R2,#+0
+        ADD      R0,R2,R0
+        STR      R0,[R4, #+20]
+        LDR      R0,[R5, #+28]
+        ADD      R0,R2,R0
+        STR      R0,[R5, #+28]
+        BEQ      ??inflate_145
+        LDR      R1,[SP, #+12]
+        MOV      R0,R2
+        RSB      R0,R0,#+0
+        ADD      R1,R0,R1
+        LDR      R0,[R5, #+16]
+        CMP      R0,#+0
+        LDR      R0,[R5, #+24]
+        BEQ      ??inflate_146
+        _BLF     crc32,??crc32??rA
+        B        ??inflate_147
+??inflate_146:
+        _BLF     adler32,??adler32??rA
+??inflate_147:
+        STR      R0,[R5, #+24]
+        STR      R0,[R4, #+48]
+??inflate_145:
+        LDR      R1,[SP, #+0]
+        STR      R1,[SP, #+8]
+        LDR      R0,[R5, #+16]
+        CMP      R0,#+0
+        MOVNE    R0,R8
+        BNE      ??inflate_148
+        MOV      R0,#+65280
+        AND      R0,R0,R8, LSR #+8
+        ADD      R0,R0,R8, LSR #+24
+        AND      R1,R8,#0xFF00
+        ADD      R0,R0,R1, LSL #+8
+        ADD      R0,R0,R8, LSL #+24
+??inflate_148:
+        LDR      R1,[R5, #+24]
+        CMP      R0,R1
+        BEQ      ??inflate_149
+        LDR      R0,??inflate_66+0x30  ;; ??order + 440
+        B        ??inflate_15
+??inflate_149:
+        MOV      R8,#+0
+        MOV      R9,#+0
+??inflate_143:
+        MOV      R0,#+25
+        STRB     R0,[R5, #+0]
+??inflate_150:
+        LDR      R0,[R5, #+8]
+        CMP      R0,#+0
+        BEQ      ??inflate_151
+        LDR      R0,[R5, #+16]
+        CMP      R0,#+0
+        BNE      ??inflate_152
+        B        ??inflate_151
+??inflate_153:
+        CMP      R7,#+0
+        BEQ      ??inflate_10
+        LDRB     R0,[R6], #+1
+        SUB      R7,R7,#+1
+        ADD      R8,R8,R0, LSL R9
+        ADD      R9,R9,#+8
+??inflate_152:
+        CMP      R9,#+32
+        BCC      ??inflate_153
+        LDR      R0,[R5, #+28]
+        CMP      R8,R0
+        BEQ      ??inflate_154
+        LDR      R0,??inflate_66+0x34  ;; ??order + 464
+        B        ??inflate_19
+??inflate_154:
+        MOV      R8,#+0
+        MOV      R9,#+0
+??inflate_151:
+        MOV      R0,#+26
+        STRB     R0,[R5, #+0]
+??inflate_155:
+        MOV      R1,#+1
+??inflate_156:
+        STR      R1,[SP, #+16]
+        B        ??inflate_10
+??inflate_157:
+        MVN      R1,#+2
+        B        ??inflate_156
+??inflate_52:
+        MVN      R0,#+3
+??inflate_3:
+        ADD      SP,SP,#+36
+        CFI CFA R13+36
+        POP      {R4-R11,PC}
+        CFI CFA R13+72
+// 1143     in -= strm->avail_in;
+??inflate_51:
+        LDR      R1,[SP, #+20]
+        LDR      R2,[R4, #+4]
+        SUB      R1,R1,R2
+        STR      R1,[SP, #+20]
+// 1144     out -= strm->avail_out;
+        LDR      R1,[SP, #+8]
+        LDR      R2,[R4, #+16]
+        SUB      R1,R1,R2
+        STR      R1,[SP, #+8]
+// 1145     strm->total_in += in;
+        LDR      R0,[R4, #+8]
+        LDR      R1,[SP, #+20]
+        ADD      R0,R1,R0
+        STR      R0,[R4, #+8]
+// 1146     strm->total_out += out;
+        LDR      R0,[R4, #+20]
+        LDR      R1,[SP, #+8]
+        ADD      R0,R1,R0
+        STR      R0,[R4, #+20]
+// 1147     state->total += out;
+        LDR      R0,[R5, #+28]
+        LDR      R1,[SP, #+8]
+        ADD      R0,R1,R0
+        STR      R0,[R5, #+28]
+// 1148     if (state->wrap && out)
+        LDR      R0,[R5, #+8]
+        CMP      R0,#+0
+        LDRNE    R0,[SP, #+8]
+        CMPNE    R0,#+0
+        BEQ      ??inflate_158
+// 1149         strm->adler = state->check =
+// 1150             UPDATE(state->check, strm->next_out - out, out);
+        LDR      R1,[R4, #+12]
+        LDR      R2,[SP, #+8]
+        RSB      R0,R0,#+0
+        ADD      R1,R0,R1
+        LDR      R0,[R5, #+16]
+        CMP      R0,#+0
+        LDR      R0,[R5, #+24]
+        BEQ      ??inflate_159
+        _BLF     crc32,??crc32??rA
+        B        ??inflate_160
+??inflate_159:
+        _BLF     adler32,??adler32??rA
+??inflate_160:
+        STR      R0,[R5, #+24]
+        STR      R0,[R4, #+48]
+// 1151     strm->data_type = state->bits + (state->last ? 64 : 0) +
+// 1152                       (state->mode == TYPE ? 128 : 0);
+??inflate_158:
+        LDRB     R1,[R5, #+0]
+        LDR      R0,[R5, #+4]
+        LDR      R2,[R5, #+60]
+        CMP      R0,#+0
+        MOVNE    R0,#+64
+        CMP      R1,#+11
+        MOVEQ    R1,#+128
+        MOVNE    R1,#+0
+        ADD      R0,R0,R2
+        ADD      R0,R1,R0
+        STR      R0,[R4, #+44]
+// 1153     if (((in == 0 && out == 0) || flush == Z_FINISH) && ret == Z_OK)
+        LDR      R0,[SP, #+20]
+        CMP      R0,#+0
+        LDREQ    R0,[SP, #+8]
+        CMPEQ    R0,#+0
+        LDRNE    R0,[SP, #+32]
+        CMPNE    R0,#+4
+        LDREQ    R0,[SP, #+16]
+        CMPEQ    R0,#+0
+// 1154         ret = Z_BUF_ERROR;
+        MVNEQ    R1,#+4
+        STREQ    R1,[SP, #+16]
+// 1155     return ret;
+        LDR      R0,[SP, #+16]
+        ADD      SP,SP,#+36
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        DATA
+??inflate_66:
+        DC32     ??order + 140
+        DC32     ??order + 160
+        DC32     ??order + 180
+        DC32     ??order + 212
+        DC32     ??order
+        DC32     ??order + 248
+        DC32     ??order + 304
+        DC32     ??order + 276
+        DC32     ??order + 332
+        DC32     ??order + 356
+        DC32     ??order + 384
+        DC32     ??order + 408
+        DC32     ??order + 440
+        DC32     ??order + 464
+        CFI EndBlock cfiBlock13
+// 1156 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock14 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??inflateEnd??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock14
+        REQUIRE inflateEnd
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+??order:
+        DATA
+        DC16 16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15
+        DC8 0, 0
+        DC8 "incorrect header check"
+        DC8 0
+        DC8 "unknown compression method"
+        DC8 0
+        DC8 "invalid window size"
+        DC8 "unknown header flags set"
+        DC8 0, 0, 0
+        DC8 "header crc mismatch"
+        DC8 "invalid block type"
+        DC8 0
+        DC8 "invalid stored block lengths"
+        DC8 0, 0, 0
+        DC8 "too many length or distance symbols"
+        DC8 "invalid code lengths set"
+        DC8 0, 0, 0
+        DC8 "invalid bit length repeat"
+        DC8 0, 0
+        DC8 "invalid literal/lengths set"
+        DC8 "invalid distances set"
+        DC8 0, 0
+        DC8 "invalid literal/length code"
+        DC8 "invalid distance code"
+        DC8 0, 0
+        DC8 "invalid distance too far back"
+        DC8 0, 0
+        DC8 "incorrect data check"
+        DC8 0, 0, 0
+        DC8 "incorrect length check"
+        DC8 0
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+// struct <unnamed> const __data lenfix[512]
+??lenfix:
+        DATA
+        DC8 96, 7
+        DC16 0
+        DC8 0, 8
+        DC16 80
+        DC8 0, 8
+        DC16 16
+        DC8 20, 8
+        DC16 115
+        DC8 18, 7
+        DC16 31
+        DC8 0, 8
+        DC16 112
+        DC8 0, 8
+        DC16 48
+        DC8 0, 9
+        DC16 192
+        DC8 16, 7
+        DC16 10
+        DC8 0, 8
+        DC16 96
+        DC8 0, 8
+        DC16 32
+        DC8 0, 9
+        DC16 160
+        DC8 0, 8
+        DC16 0
+        DC8 0, 8
+        DC16 128
+        DC8 0, 8
+        DC16 64
+        DC8 0, 9
+        DC16 224
+        DC8 16, 7
+        DC16 6
+        DC8 0, 8
+        DC16 88
+        DC8 0, 8
+        DC16 24
+        DC8 0, 9
+        DC16 144
+        DC8 19, 7
+        DC16 59
+        DC8 0, 8
+        DC16 120
+        DC8 0, 8
+        DC16 56
+        DC8 0, 9
+        DC16 208
+        DC8 17, 7
+        DC16 17
+        DC8 0, 8
+        DC16 104
+        DC8 0, 8
+        DC16 40
+        DC8 0, 9
+        DC16 176
+        DC8 0, 8
+        DC16 8
+        DC8 0, 8
+        DC16 136
+        DC8 0, 8
+        DC16 72
+        DC8 0, 9
+        DC16 240
+        DC8 16, 7
+        DC16 4
+        DC8 0, 8
+        DC16 84
+        DC8 0, 8
+        DC16 20
+        DC8 21, 8
+        DC16 227
+        DC8 19, 7
+        DC16 43
+        DC8 0, 8
+        DC16 116
+        DC8 0, 8
+        DC16 52
+        DC8 0, 9
+        DC16 200
+        DC8 17, 7
+        DC16 13
+        DC8 0, 8
+        DC16 100
+        DC8 0, 8
+        DC16 36
+        DC8 0, 9
+        DC16 168
+        DC8 0, 8
+        DC16 4
+        DC8 0, 8
+        DC16 132
+        DC8 0, 8
+        DC16 68
+        DC8 0, 9
+        DC16 232
+        DC8 16, 7
+        DC16 8
+        DC8 0, 8
+        DC16 92
+        DC8 0, 8
+        DC16 28
+        DC8 0, 9
+        DC16 152
+        DC8 20, 7
+        DC16 83
+        DC8 0, 8
+        DC16 124
+        DC8 0, 8
+        DC16 60
+        DC8 0, 9
+        DC16 216
+        DC8 18, 7
+        DC16 23
+        DC8 0, 8
+        DC16 108
+        DC8 0, 8
+        DC16 44
+        DC8 0, 9
+        DC16 184
+        DC8 0, 8
+        DC16 12
+        DC8 0, 8
+        DC16 140
+        DC8 0, 8
+        DC16 76
+        DC8 0, 9
+        DC16 248
+        DC8 16, 7
+        DC16 3
+        DC8 0, 8
+        DC16 82
+        DC8 0, 8
+        DC16 18
+        DC8 21, 8
+        DC16 163
+        DC8 19, 7
+        DC16 35
+        DC8 0, 8
+        DC16 114
+        DC8 0, 8
+        DC16 50
+        DC8 0, 9
+        DC16 196
+        DC8 17, 7
+        DC16 11
+        DC8 0, 8
+        DC16 98
+        DC8 0, 8
+        DC16 34
+        DC8 0, 9
+        DC16 164
+        DC8 0, 8
+        DC16 2
+        DC8 0, 8
+        DC16 130
+        DC8 0, 8
+        DC16 66
+        DC8 0, 9
+        DC16 228
+        DC8 16, 7
+        DC16 7
+        DC8 0, 8
+        DC16 90
+        DC8 0, 8
+        DC16 26
+        DC8 0, 9
+        DC16 148
+        DC8 20, 7
+        DC16 67
+        DC8 0, 8
+        DC16 122
+        DC8 0, 8
+        DC16 58
+        DC8 0, 9
+        DC16 212
+        DC8 18, 7
+        DC16 19
+        DC8 0, 8
+        DC16 106
+        DC8 0, 8
+        DC16 42
+        DC8 0, 9
+        DC16 180
+        DC8 0, 8
+        DC16 10
+        DC8 0, 8
+        DC16 138
+        DC8 0, 8
+        DC16 74
+        DC8 0, 9
+        DC16 244
+        DC8 16, 7
+        DC16 5
+        DC8 0, 8
+        DC16 86
+        DC8 0, 8
+        DC16 22
+        DC8 64, 8
+        DC16 0
+        DC8 19, 7
+        DC16 51
+        DC8 0, 8
+        DC16 118
+        DC8 0, 8
+        DC16 54
+        DC8 0, 9
+        DC16 204
+        DC8 17, 7
+        DC16 15
+        DC8 0, 8
+        DC16 102
+        DC8 0, 8
+        DC16 38
+        DC8 0, 9
+        DC16 172
+        DC8 0, 8
+        DC16 6
+        DC8 0, 8
+        DC16 134
+        DC8 0, 8
+        DC16 70
+        DC8 0, 9
+        DC16 236
+        DC8 16, 7
+        DC16 9
+        DC8 0, 8
+        DC16 94
+        DC8 0, 8
+        DC16 30
+        DC8 0, 9
+        DC16 156
+        DC8 20, 7
+        DC16 99
+        DC8 0, 8
+        DC16 126
+        DC8 0, 8
+        DC16 62
+        DC8 0, 9
+        DC16 220
+        DC8 18, 7
+        DC16 27
+        DC8 0, 8
+        DC16 110
+        DC8 0, 8
+        DC16 46
+        DC8 0, 9
+        DC16 188
+        DC8 0, 8
+        DC16 14
+        DC8 0, 8
+        DC16 142
+        DC8 0, 8
+        DC16 78
+        DC8 0, 9
+        DC16 252
+        DC8 96, 7
+        DC16 0
+        DC8 0, 8
+        DC16 81
+        DC8 0, 8
+        DC16 17
+        DC8 21, 8
+        DC16 131
+        DC8 18, 7
+        DC16 31
+        DC8 0, 8
+        DC16 113
+        DC8 0, 8
+        DC16 49
+        DC8 0, 9
+        DC16 194
+        DC8 16, 7
+        DC16 10
+        DC8 0, 8
+        DC16 97
+        DC8 0, 8
+        DC16 33
+        DC8 0, 9
+        DC16 162
+        DC8 0, 8
+        DC16 1
+        DC8 0, 8
+        DC16 129
+        DC8 0, 8
+        DC16 65
+        DC8 0, 9
+        DC16 226
+        DC8 16, 7
+        DC16 6
+        DC8 0, 8
+        DC16 89
+        DC8 0, 8
+        DC16 25
+        DC8 0, 9
+        DC16 146
+        DC8 19, 7
+        DC16 59
+        DC8 0, 8
+        DC16 121
+        DC8 0, 8
+        DC16 57
+        DC8 0, 9
+        DC16 210
+        DC8 17, 7
+        DC16 17
+        DC8 0, 8
+        DC16 105
+        DC8 0, 8
+        DC16 41
+        DC8 0, 9
+        DC16 178
+        DC8 0, 8
+        DC16 9
+        DC8 0, 8
+        DC16 137
+        DC8 0, 8
+        DC16 73
+        DC8 0, 9
+        DC16 242
+        DC8 16, 7
+        DC16 4
+        DC8 0, 8
+        DC16 85
+        DC8 0, 8
+        DC16 21
+        DC8 16, 8
+        DC16 258
+        DC8 19, 7
+        DC16 43
+        DC8 0, 8
+        DC16 117
+        DC8 0, 8
+        DC16 53
+        DC8 0, 9
+        DC16 202
+        DC8 17, 7
+        DC16 13
+        DC8 0, 8
+        DC16 101
+        DC8 0, 8
+        DC16 37
+        DC8 0, 9
+        DC16 170
+        DC8 0, 8
+        DC16 5
+        DC8 0, 8
+        DC16 133
+        DC8 0, 8
+        DC16 69
+        DC8 0, 9
+        DC16 234
+        DC8 16, 7
+        DC16 8
+        DC8 0, 8
+        DC16 93
+        DC8 0, 8
+        DC16 29
+        DC8 0, 9
+        DC16 154
+        DC8 20, 7
+        DC16 83
+        DC8 0, 8
+        DC16 125
+        DC8 0, 8
+        DC16 61
+        DC8 0, 9
+        DC16 218
+        DC8 18, 7
+        DC16 23
+        DC8 0, 8
+        DC16 109
+        DC8 0, 8
+        DC16 45
+        DC8 0, 9
+        DC16 186
+        DC8 0, 8
+        DC16 13
+        DC8 0, 8
+        DC16 141
+        DC8 0, 8
+        DC16 77
+        DC8 0, 9
+        DC16 250
+        DC8 16, 7
+        DC16 3
+        DC8 0, 8
+        DC16 83
+        DC8 0, 8
+        DC16 19
+        DC8 21, 8
+        DC16 195
+        DC8 19, 7
+        DC16 35
+        DC8 0, 8
+        DC16 115
+        DC8 0, 8
+        DC16 51
+        DC8 0, 9
+        DC16 198
+        DC8 17, 7
+        DC16 11
+        DC8 0, 8
+        DC16 99
+        DC8 0, 8
+        DC16 35
+        DC8 0, 9
+        DC16 166
+        DC8 0, 8
+        DC16 3
+        DC8 0, 8
+        DC16 131
+        DC8 0, 8
+        DC16 67
+        DC8 0, 9
+        DC16 230
+        DC8 16, 7
+        DC16 7
+        DC8 0, 8
+        DC16 91
+        DC8 0, 8
+        DC16 27
+        DC8 0, 9
+        DC16 150
+        DC8 20, 7
+        DC16 67
+        DC8 0, 8
+        DC16 123
+        DC8 0, 8
+        DC16 59
+        DC8 0, 9
+        DC16 214
+        DC8 18, 7
+        DC16 19
+        DC8 0, 8
+        DC16 107
+        DC8 0, 8
+        DC16 43
+        DC8 0, 9
+        DC16 182
+        DC8 0, 8
+        DC16 11
+        DC8 0, 8
+        DC16 139
+        DC8 0, 8
+        DC16 75
+        DC8 0, 9
+        DC16 246
+        DC8 16, 7
+        DC16 5
+        DC8 0, 8
+        DC16 87
+        DC8 0, 8
+        DC16 23
+        DC8 64, 8
+        DC16 0
+        DC8 19, 7
+        DC16 51
+        DC8 0, 8
+        DC16 119
+        DC8 0, 8
+        DC16 55
+        DC8 0, 9
+        DC16 206
+        DC8 17, 7
+        DC16 15
+        DC8 0, 8
+        DC16 103
+        DC8 0, 8
+        DC16 39
+        DC8 0, 9
+        DC16 174
+        DC8 0, 8
+        DC16 7
+        DC8 0, 8
+        DC16 135
+        DC8 0, 8
+        DC16 71
+        DC8 0, 9
+        DC16 238
+        DC8 16, 7
+        DC16 9
+        DC8 0, 8
+        DC16 95
+        DC8 0, 8
+        DC16 31
+        DC8 0, 9
+        DC16 158
+        DC8 20, 7
+        DC16 99
+        DC8 0, 8
+        DC16 127
+        DC8 0, 8
+        DC16 63
+        DC8 0, 9
+        DC16 222
+        DC8 18, 7
+        DC16 27
+        DC8 0, 8
+        DC16 111
+        DC8 0, 8
+        DC16 47
+        DC8 0, 9
+        DC16 190
+        DC8 0, 8
+        DC16 15
+        DC8 0, 8
+        DC16 143
+        DC8 0, 8
+        DC16 79
+        DC8 0, 9
+        DC16 254
+        DC8 96, 7
+        DC16 0
+        DC8 0, 8
+        DC16 80
+        DC8 0, 8
+        DC16 16
+        DC8 20, 8
+        DC16 115
+        DC8 18, 7
+        DC16 31
+        DC8 0, 8
+        DC16 112
+        DC8 0, 8
+        DC16 48
+        DC8 0, 9
+        DC16 193
+        DC8 16, 7
+        DC16 10
+        DC8 0, 8
+        DC16 96
+        DC8 0, 8
+        DC16 32
+        DC8 0, 9
+        DC16 161
+        DC8 0, 8
+        DC16 0
+        DC8 0, 8
+        DC16 128
+        DC8 0, 8
+        DC16 64
+        DC8 0, 9
+        DC16 225
+        DC8 16, 7
+        DC16 6
+        DC8 0, 8
+        DC16 88
+        DC8 0, 8
+        DC16 24
+        DC8 0, 9
+        DC16 145
+        DC8 19, 7
+        DC16 59
+        DC8 0, 8
+        DC16 120
+        DC8 0, 8
+        DC16 56
+        DC8 0, 9
+        DC16 209
+        DC8 17, 7
+        DC16 17
+        DC8 0, 8
+        DC16 104
+        DC8 0, 8
+        DC16 40
+        DC8 0, 9
+        DC16 177
+        DC8 0, 8
+        DC16 8
+        DC8 0, 8
+        DC16 136
+        DC8 0, 8
+        DC16 72
+        DC8 0, 9
+        DC16 241
+        DC8 16, 7
+        DC16 4
+        DC8 0, 8
+        DC16 84
+        DC8 0, 8
+        DC16 20
+        DC8 21, 8
+        DC16 227
+        DC8 19, 7
+        DC16 43
+        DC8 0, 8
+        DC16 116
+        DC8 0, 8
+        DC16 52
+        DC8 0, 9
+        DC16 201
+        DC8 17, 7
+        DC16 13
+        DC8 0, 8
+        DC16 100
+        DC8 0, 8
+        DC16 36
+        DC8 0, 9
+        DC16 169
+        DC8 0, 8
+        DC16 4
+        DC8 0, 8
+        DC16 132
+        DC8 0, 8
+        DC16 68
+        DC8 0, 9
+        DC16 233
+        DC8 16, 7
+        DC16 8
+        DC8 0, 8
+        DC16 92
+        DC8 0, 8
+        DC16 28
+        DC8 0, 9
+        DC16 153
+        DC8 20, 7
+        DC16 83
+        DC8 0, 8
+        DC16 124
+        DC8 0, 8
+        DC16 60
+        DC8 0, 9
+        DC16 217
+        DC8 18, 7
+        DC16 23
+        DC8 0, 8
+        DC16 108
+        DC8 0, 8
+        DC16 44
+        DC8 0, 9
+        DC16 185
+        DC8 0, 8
+        DC16 12
+        DC8 0, 8
+        DC16 140
+        DC8 0, 8
+        DC16 76
+        DC8 0, 9
+        DC16 249
+        DC8 16, 7
+        DC16 3
+        DC8 0, 8
+        DC16 82
+        DC8 0, 8
+        DC16 18
+        DC8 21, 8
+        DC16 163
+        DC8 19, 7
+        DC16 35
+        DC8 0, 8
+        DC16 114
+        DC8 0, 8
+        DC16 50
+        DC8 0, 9
+        DC16 197
+        DC8 17, 7
+        DC16 11
+        DC8 0, 8
+        DC16 98
+        DC8 0, 8
+        DC16 34
+        DC8 0, 9
+        DC16 165
+        DC8 0, 8
+        DC16 2
+        DC8 0, 8
+        DC16 130
+        DC8 0, 8
+        DC16 66
+        DC8 0, 9
+        DC16 229
+        DC8 16, 7
+        DC16 7
+        DC8 0, 8
+        DC16 90
+        DC8 0, 8
+        DC16 26
+        DC8 0, 9
+        DC16 149
+        DC8 20, 7
+        DC16 67
+        DC8 0, 8
+        DC16 122
+        DC8 0, 8
+        DC16 58
+        DC8 0, 9
+        DC16 213
+        DC8 18, 7
+        DC16 19
+        DC8 0, 8
+        DC16 106
+        DC8 0, 8
+        DC16 42
+        DC8 0, 9
+        DC16 181
+        DC8 0, 8
+        DC16 10
+        DC8 0, 8
+        DC16 138
+        DC8 0, 8
+        DC16 74
+        DC8 0, 9
+        DC16 245
+        DC8 16, 7
+        DC16 5
+        DC8 0, 8
+        DC16 86
+        DC8 0, 8
+        DC16 22
+        DC8 64, 8
+        DC16 0
+        DC8 19, 7
+        DC16 51
+        DC8 0, 8
+        DC16 118
+        DC8 0, 8
+        DC16 54
+        DC8 0, 9
+        DC16 205
+        DC8 17, 7
+        DC16 15
+        DC8 0, 8
+        DC16 102
+        DC8 0, 8
+        DC16 38
+        DC8 0, 9
+        DC16 173
+        DC8 0, 8
+        DC16 6
+        DC8 0, 8
+        DC16 134
+        DC8 0, 8
+        DC16 70
+        DC8 0, 9
+        DC16 237
+        DC8 16, 7
+        DC16 9
+        DC8 0, 8
+        DC16 94
+        DC8 0, 8
+        DC16 30
+        DC8 0, 9
+        DC16 157
+        DC8 20, 7
+        DC16 99
+        DC8 0, 8
+        DC16 126
+        DC8 0, 8
+        DC16 62
+        DC8 0, 9
+        DC16 221
+        DC8 18, 7
+        DC16 27
+        DC8 0, 8
+        DC16 110
+        DC8 0, 8
+        DC16 46
+        DC8 0, 9
+        DC16 189
+        DC8 0, 8
+        DC16 14
+        DC8 0, 8
+        DC16 142
+        DC8 0, 8
+        DC16 78
+        DC8 0, 9
+        DC16 253
+        DC8 96, 7
+        DC16 0
+        DC8 0, 8
+        DC16 81
+        DC8 0, 8
+        DC16 17
+        DC8 21, 8
+        DC16 131
+        DC8 18, 7
+        DC16 31
+        DC8 0, 8
+        DC16 113
+        DC8 0, 8
+        DC16 49
+        DC8 0, 9
+        DC16 195
+        DC8 16, 7
+        DC16 10
+        DC8 0, 8
+        DC16 97
+        DC8 0, 8
+        DC16 33
+        DC8 0, 9
+        DC16 163
+        DC8 0, 8
+        DC16 1
+        DC8 0, 8
+        DC16 129
+        DC8 0, 8
+        DC16 65
+        DC8 0, 9
+        DC16 227
+        DC8 16, 7
+        DC16 6
+        DC8 0, 8
+        DC16 89
+        DC8 0, 8
+        DC16 25
+        DC8 0, 9
+        DC16 147
+        DC8 19, 7
+        DC16 59
+        DC8 0, 8
+        DC16 121
+        DC8 0, 8
+        DC16 57
+        DC8 0, 9
+        DC16 211
+        DC8 17, 7
+        DC16 17
+        DC8 0, 8
+        DC16 105
+        DC8 0, 8
+        DC16 41
+        DC8 0, 9
+        DC16 179
+        DC8 0, 8
+        DC16 9
+        DC8 0, 8
+        DC16 137
+        DC8 0, 8
+        DC16 73
+        DC8 0, 9
+        DC16 243
+        DC8 16, 7
+        DC16 4
+        DC8 0, 8
+        DC16 85
+        DC8 0, 8
+        DC16 21
+        DC8 16, 8
+        DC16 258
+        DC8 19, 7
+        DC16 43
+        DC8 0, 8
+        DC16 117
+        DC8 0, 8
+        DC16 53
+        DC8 0, 9
+        DC16 203
+        DC8 17, 7
+        DC16 13
+        DC8 0, 8
+        DC16 101
+        DC8 0, 8
+        DC16 37
+        DC8 0, 9
+        DC16 171
+        DC8 0, 8
+        DC16 5
+        DC8 0, 8
+        DC16 133
+        DC8 0, 8
+        DC16 69
+        DC8 0, 9
+        DC16 235
+        DC8 16, 7
+        DC16 8
+        DC8 0, 8
+        DC16 93
+        DC8 0, 8
+        DC16 29
+        DC8 0, 9
+        DC16 155
+        DC8 20, 7
+        DC16 83
+        DC8 0, 8
+        DC16 125
+        DC8 0, 8
+        DC16 61
+        DC8 0, 9
+        DC16 219
+        DC8 18, 7
+        DC16 23
+        DC8 0, 8
+        DC16 109
+        DC8 0, 8
+        DC16 45
+        DC8 0, 9
+        DC16 187
+        DC8 0, 8
+        DC16 13
+        DC8 0, 8
+        DC16 141
+        DC8 0, 8
+        DC16 77
+        DC8 0, 9
+        DC16 251
+        DC8 16, 7
+        DC16 3
+        DC8 0, 8
+        DC16 83
+        DC8 0, 8
+        DC16 19
+        DC8 21, 8
+        DC16 195
+        DC8 19, 7
+        DC16 35
+        DC8 0, 8
+        DC16 115
+        DC8 0, 8
+        DC16 51
+        DC8 0, 9
+        DC16 199
+        DC8 17, 7
+        DC16 11
+        DC8 0, 8
+        DC16 99
+        DC8 0, 8
+        DC16 35
+        DC8 0, 9
+        DC16 167
+        DC8 0, 8
+        DC16 3
+        DC8 0, 8
+        DC16 131
+        DC8 0, 8
+        DC16 67
+        DC8 0, 9
+        DC16 231
+        DC8 16, 7
+        DC16 7
+        DC8 0, 8
+        DC16 91
+        DC8 0, 8
+        DC16 27
+        DC8 0, 9
+        DC16 151
+        DC8 20, 7
+        DC16 67
+        DC8 0, 8
+        DC16 123
+        DC8 0, 8
+        DC16 59
+        DC8 0, 9
+        DC16 215
+        DC8 18, 7
+        DC16 19
+        DC8 0, 8
+        DC16 107
+        DC8 0, 8
+        DC16 43
+        DC8 0, 9
+        DC16 183
+        DC8 0, 8
+        DC16 11
+        DC8 0, 8
+        DC16 139
+        DC8 0, 8
+        DC16 75
+        DC8 0, 9
+        DC16 247
+        DC8 16, 7
+        DC16 5
+        DC8 0, 8
+        DC16 87
+        DC8 0, 8
+        DC16 23
+        DC8 64, 8
+        DC16 0
+        DC8 19, 7
+        DC16 51
+        DC8 0, 8
+        DC16 119
+        DC8 0, 8
+        DC16 55
+        DC8 0, 9
+        DC16 207
+        DC8 17, 7
+        DC16 15
+        DC8 0, 8
+        DC16 103
+        DC8 0, 8
+        DC16 39
+        DC8 0, 9
+        DC16 175
+        DC8 0, 8
+        DC16 7
+        DC8 0, 8
+        DC16 135
+        DC8 0, 8
+        DC16 71
+        DC8 0, 9
+        DC16 239
+        DC8 16, 7
+        DC16 9
+        DC8 0, 8
+        DC16 95
+        DC8 0, 8
+        DC16 31
+        DC8 0, 9
+        DC16 159
+        DC8 20, 7
+        DC16 99
+        DC8 0, 8
+        DC16 127
+        DC8 0, 8
+        DC16 63
+        DC8 0, 9
+        DC16 223
+        DC8 18, 7
+        DC16 27
+        DC8 0, 8
+        DC16 111
+        DC8 0, 8
+        DC16 47
+        DC8 0, 9
+        DC16 191
+        DC8 0, 8
+        DC16 15
+        DC8 0, 8
+        DC16 143
+        DC8 0, 8
+        DC16 79
+        DC8 0, 9
+        DC16 255
+        DC8 16, 5
+        DC16 1
+        DC8 23, 5
+        DC16 257
+        DC8 19, 5
+        DC16 17
+        DC8 27, 5
+        DC16 4097
+        DC8 17, 5
+        DC16 5
+        DC8 25, 5
+        DC16 1025
+        DC8 21, 5
+        DC16 65
+        DC8 29, 5
+        DC16 16385
+        DC8 16, 5
+        DC16 3
+        DC8 24, 5
+        DC16 513
+        DC8 20, 5
+        DC16 33
+        DC8 28, 5
+        DC16 8193
+        DC8 18, 5
+        DC16 9
+        DC8 26, 5
+        DC16 2049
+        DC8 22, 5
+        DC16 129
+        DC8 64, 5
+        DC16 0
+        DC8 16, 5
+        DC16 2
+        DC8 23, 5
+        DC16 385
+        DC8 19, 5
+        DC16 25
+        DC8 27, 5
+        DC16 6145
+        DC8 17, 5
+        DC16 7
+        DC8 25, 5
+        DC16 1537
+        DC8 21, 5
+        DC16 97
+        DC8 29, 5
+        DC16 24577
+        DC8 16, 5
+        DC16 4
+        DC8 24, 5
+        DC16 769
+        DC8 20, 5
+        DC16 49
+        DC8 28, 5
+        DC16 12289
+        DC8 18, 5
+        DC16 13
+        DC8 26, 5
+        DC16 3073
+        DC8 22, 5
+        DC16 193
+        DC8 64, 5
+        DC16 0
+// 1157 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock15 Using cfiCommon1
+        CFI Function inflateEnd
+        ARM
+// 1158 int ZEXPORT inflateEnd(strm)
+// 1159 z_streamp strm;
+// 1160 {
+inflateEnd:
+        PUSH     {R4,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+        MOVS     R4,R0
+// 1161     struct inflate_state FAR *state;
+// 1162     if (strm == Z_NULL || strm->state == Z_NULL || strm->zfree == (free_func)0)
+        LDRNE    R0,[R4, #+28]
+        CMPNE    R0,#+0
+        LDRNE    R2,[R4, #+36]
+        CMPNE    R2,#+0
+// 1163         return Z_STREAM_ERROR;
+        MVNEQ    R0,#+1
+        POPEQ    {R4,PC}
+// 1164     state = (struct inflate_state FAR *)strm->state;
+// 1165     if (state->window != Z_NULL) ZFREE(strm, state->window);
+        LDR      R1,[R0, #+52]
+        CMP      R1,#+0
+        BEQ      ??inflateEnd_0
+        LDR      R0,[R4, #+40]
+        BLX      R2
+// 1166     ZFREE(strm, strm->state);
+??inflateEnd_0:
+        LDR      R0,[R4, #+40]
+        LDR      R1,[R4, #+28]
+        LDR      R2,[R4, #+36]
+        BLX      R2
+// 1167     strm->state = Z_NULL;
+        MOV      R0,#+0
+        STR      R0,[R4, #+28]
+// 1168     Tracev((stderr, "inflate: end\n"));
+// 1169     return Z_OK;
+        POP      {R4,PC}          ;; return
+        CFI EndBlock cfiBlock15
+// 1170 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock16 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??inflateSetDictionary??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock16
+        REQUIRE inflateSetDictionary
+// 1171 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock17 Using cfiCommon1
+        CFI Function inflateSetDictionary
+        ARM
+// 1172 int ZEXPORT inflateSetDictionary(strm, dictionary, dictLength)
+// 1173 z_streamp strm;
+// 1174 const Bytef *dictionary;
+// 1175 uInt dictLength;
+// 1176 {
+inflateSetDictionary:
+        PUSH     {R4-R7,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R7 Frame(CFA, -8)
+        CFI R6 Frame(CFA, -12)
+        CFI R5 Frame(CFA, -16)
+        CFI R4 Frame(CFA, -20)
+        CFI CFA R13+20
+        MOV      R4,R1
+        MOV      R5,R2
+        MOV      R7,R0
+// 1177     struct inflate_state FAR *state;
+// 1178     unsigned long id;
+// 1179 
+// 1180     /* check state */
+// 1181     if (strm == Z_NULL || strm->state == Z_NULL) return Z_STREAM_ERROR;
+        CMP      R7,#+0
+        LDRNE    R6,[R7, #+28]
+        CMPNE    R6,#+0
+        BNE      ??inflateSetDictionary_0
+??inflateSetDictionary_1:
+        MVN      R0,#+1
+        POP      {R4-R7,PC}
+// 1182     state = (struct inflate_state FAR *)strm->state;
+// 1183     if (state->wrap != 0 && state->mode != DICT)
+??inflateSetDictionary_0:
+        LDR      R0,[R6, #+8]
+        CMP      R0,#+0
+        LDRBNE   R0,[R6, #+0]
+        CMPNE    R0,#+10
+        BNE      ??inflateSetDictionary_1
+// 1184         return Z_STREAM_ERROR;
+// 1185 
+// 1186     /* check for correct dictionary id */
+// 1187     if (state->mode == DICT) {
+        LDRB     R0,[R6, #+0]
+        CMP      R0,#+10
+        BNE      ??inflateSetDictionary_2
+// 1188         id = adler32(0L, Z_NULL, 0);
+        MOV      R2,#+0
+        MOV      R1,#+0
+        MOV      R0,R1
+        _BLF     adler32,??adler32??rA
+// 1189         id = adler32(id, dictionary, dictLength);
+        MOV      R2,R5
+        MOV      R1,R4
+        _BLF     adler32,??adler32??rA
+// 1190         if (id != state->check)
+        LDR      R1,[R6, #+24]
+        CMP      R0,R1
+// 1191             return Z_DATA_ERROR;
+        MVNNE    R0,#+2
+        POPNE    {R4-R7,PC}
+// 1192     }
+// 1193 
+// 1194     /* copy dictionary to window */
+// 1195     if (updatewindow(strm, strm->avail_out)) {
+??inflateSetDictionary_2:
+        LDR      R1,[R7, #+16]
+        MOV      R0,R7
+        BL       updatewindow
+        CMP      R0,#+0
+        BEQ      ??inflateSetDictionary_3
+// 1196         state->mode = MEM;
+        MOV      R0,#+28
+        STRB     R0,[R6, #+0]
+// 1197         return Z_MEM_ERROR;
+        MVN      R0,#+3
+        POP      {R4-R7,PC}
+// 1198     }
+// 1199     if (dictLength > state->wsize) {
+??inflateSetDictionary_3:
+        LDR      R3,[R6, #+40]
+        LDR      R0,[R6, #+52]
+        CMP      R3,R5
+        BCS      ??inflateSetDictionary_4
+// 1200         zmemcpy(state->window, dictionary + dictLength - state->wsize,
+// 1201                 state->wsize);
+        MOV      R2,R3
+        RSB      R1,R3,#+0
+        ADD      R3,R5,R4
+        ADD      R1,R1,R3
+        SWI      +286
+// 1202         state->whave = state->wsize;
+        LDR      R5,[R6, #+40]
+        B        ??inflateSetDictionary_5
+// 1203     }
+// 1204     else {
+// 1205         zmemcpy(state->window + state->wsize - dictLength, dictionary,
+// 1206                 dictLength);
+??inflateSetDictionary_4:
+        MOV      R2,R5
+        MOV      R1,R4
+        MOV      R4,R5
+        RSB      R4,R4,#+0
+        ADD      R0,R3,R0
+        ADD      R0,R4,R0
+        SWI      +286
+// 1207         state->whave = dictLength;
+??inflateSetDictionary_5:
+        STR      R5,[R6, #+44]
+// 1208     }
+// 1209     state->havedict = 1;
+        MOV      R0,#+1
+        STR      R0,[R6, #+12]
+// 1210     Tracev((stderr, "inflate:   dictionary set\n"));
+// 1211     return Z_OK;
+        MOV      R0,#+0
+        POP      {R4-R7,PC}       ;; return
+        CFI EndBlock cfiBlock17
+// 1212 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock18 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??inflateGetHeader??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock18
+        REQUIRE inflateGetHeader
+// 1213 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock19 Using cfiCommon1
+        CFI Function inflateGetHeader
+        ARM
+// 1214 int ZEXPORT inflateGetHeader(strm, head)
+// 1215 z_streamp strm;
+// 1216 gz_headerp head;
+// 1217 {
+// 1218     struct inflate_state FAR *state;
+// 1219 
+// 1220     /* check state */
+// 1221     if (strm == Z_NULL || strm->state == Z_NULL) return Z_STREAM_ERROR;
+inflateGetHeader:
+        CMP      R0,#+0
+        LDRNE    R0,[R0, #+28]
+        CMPNE    R0,#+0
+// 1222     state = (struct inflate_state FAR *)strm->state;
+// 1223     if ((state->wrap & 2) == 0) return Z_STREAM_ERROR;
+        LDRNE    R2,[R0, #+8]
+        TSTNE    R2,#0x2
+        MVNEQ    R0,#+1
+        BXEQ     LR
+// 1224 
+// 1225     /* save header structure */
+// 1226     state->head = head;
+        STR      R1,[R0, #+32]
+// 1227     head->done = 0;
+        MOV      R0,#+0
+        STR      R0,[R1, #+48]
+// 1228     return Z_OK;
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock19
+// 1229 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock20 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??syncsearch??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock20
+        REQUIRE syncsearch
+// 1230 
+// 1231 /*
+// 1232    Search buf[0..len-1] for the pattern: 0, 0, 0xff, 0xff.  Return when found
+// 1233    or when out of input.  When called, *have is the number of pattern bytes
+// 1234    found in order so far, in 0..3.  On return *have is updated to the new
+// 1235    state.  If on return *have equals four, then the pattern was found and the
+// 1236    return value is how many bytes were read including the last byte of the
+// 1237    pattern.  If *have is less than four, then the pattern has not been found
+// 1238    yet and the return value is len.  In the latter case, syncsearch() can be
+// 1239    called again with more data and the *have state.  *have is initialized to
+// 1240    zero for the first call.
+// 1241  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock21 Using cfiCommon1
+        CFI Function syncsearch
+        ARM
+// 1242 local unsigned syncsearch(have, buf, len)
+// 1243 unsigned FAR *have;
+// 1244 unsigned char FAR *buf;
+// 1245 unsigned len;
+// 1246 {
+syncsearch:
+        PUSH     {R5-R7}
+        CFI R7 Frame(CFA, -4)
+        CFI R6 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -12)
+        CFI CFA R13+12
+// 1247     unsigned got;
+// 1248     unsigned next;
+// 1249 
+// 1250     got = *have;
+        LDR      R12,[R0, #+0]
+// 1251     next = 0;
+        MOV      R3,#+0
+        B        ??syncsearch_0
+// 1252     while (next < len && got < 4) {
+// 1253         if ((int)(buf[next]) == (got < 2 ? 0 : 0xff))
+// 1254             got++;
+// 1255         else if (buf[next])
+// 1256             got = 0;
+// 1257         else
+// 1258             got = 4 - got;
+// 1259         next++;
+??syncsearch_1:
+        ADD      R3,R3,#+1
+??syncsearch_0:
+        CMP      R3,R2
+        CMPCC    R12,#+4
+        BCS      ??syncsearch_2
+        ADD      R6,R3,R1
+        LDRB     R7,[R6, #+0]
+        CMP      R12,#+2
+        MOVCC    R5,#+0
+        MOVCS    R5,#+255
+        CMP      R7,R5
+        ADDEQ    R12,R12,#+1
+        BEQ      ??syncsearch_1
+        CMP      R7,#+0
+        RSBEQ    R12,R12,#+4
+        MOVNE    R12,#+0
+        B        ??syncsearch_1
+// 1260     }
+// 1261     *have = got;
+??syncsearch_2:
+        STR      R12,[R0, #+0]
+// 1262     return next;
+        POP      {R5-R7}
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI CFA R13+0
+        MOV      R0,R3
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock21
+// 1263 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock22 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??inflateSync??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock22
+        REQUIRE inflateSync
+// 1264 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock23 Using cfiCommon1
+        CFI Function inflateSync
+        ARM
+// 1265 int ZEXPORT inflateSync(strm)
+// 1266 z_streamp strm;
+// 1267 {
+inflateSync:
+        PUSH     {R4-R7,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R7 Frame(CFA, -8)
+        CFI R6 Frame(CFA, -12)
+        CFI R5 Frame(CFA, -16)
+        CFI R4 Frame(CFA, -20)
+        CFI CFA R13+20
+        SUB      SP,SP,#+4
+        CFI CFA R13+24
+        MOVS     R4,R0
+// 1268     unsigned len;               /* number of bytes to look at or looked at */
+// 1269     unsigned long in, out;      /* temporary to save total_in and total_out */
+// 1270     unsigned char buf[4];       /* to restore bit buffer to byte string */
+// 1271     struct inflate_state FAR *state;
+// 1272 
+// 1273     /* check parameters */
+// 1274     if (strm == Z_NULL || strm->state == Z_NULL) return Z_STREAM_ERROR;
+        LDRNE    R5,[R4, #+28]
+        CMPNE    R5,#+0
+        MVNEQ    R0,#+1
+        POPEQ    {R1,R4-R7,PC}
+// 1275     state = (struct inflate_state FAR *)strm->state;
+// 1276     if (strm->avail_in == 0 && state->bits < 8) return Z_BUF_ERROR;
+        LDR      R0,[R4, #+4]
+        CMP      R0,#+0
+        BNE      ??inflateSync_0
+        LDR      R0,[R5, #+60]
+        CMP      R0,#+8
+        MVNCC    R0,#+4
+        POPCC    {R1,R4-R7,PC}
+// 1277 
+// 1278     /* if first time, start search in bit buffer */
+// 1279     if (state->mode != SYNC) {
+??inflateSync_0:
+        LDRB     R0,[R5, #+0]
+        CMP      R0,#+29
+        BEQ      ??inflateSync_1
+// 1280         state->mode = SYNC;
+        MOV      R0,#+29
+        STRB     R0,[R5, #+0]
+// 1281         state->hold <<= state->bits & 7;
+        LDR      R0,[R5, #+60]
+        LDR      R1,[R5, #+56]
+        AND      R2,R0,#0x7
+        LSL      R1,R1,R2
+        STR      R1,[R5, #+56]
+// 1282         state->bits -= state->bits & 7;
+        AND      R1,R0,#0x7
+        SUB      R0,R0,R1
+        STR      R0,[R5, #+60]
+// 1283         len = 0;
+        MOV      R1,#+0
+        MOV      R2,#+0
+        CMP      R0,#+8
+        BCC      ??inflateSync_2
+// 1284         while (state->bits >= 8) {
+// 1285             buf[len++] = (unsigned char)(state->hold);
+??inflateSync_3:
+        LDR      R3,[R5, #+56]
+        MOV      R0,SP
+        STRB     R3,[R2, +R0]
+// 1286             state->hold >>= 8;
+        LDR      R0,[R5, #+56]
+        ADD      R2,R2,#+1
+        LSR      R0,R0,#+8
+        STR      R0,[R5, #+56]
+// 1287             state->bits -= 8;
+        LDR      R0,[R5, #+60]
+        SUB      R0,R0,#+8
+        STR      R0,[R5, #+60]
+// 1288         }
+        CMP      R0,#+8
+        BCS      ??inflateSync_3
+// 1289         state->have = 0;
+??inflateSync_2:
+        STR      R1,[R5, #+104]
+// 1290         syncsearch(&(state->have), buf, len);
+        MOV      R1,SP
+        ADD      R0,R5,#+104
+        BL       syncsearch
+// 1291     }
+// 1292 
+// 1293     /* search available input */
+// 1294     len = syncsearch(&(state->have), strm->next_in, strm->avail_in);
+??inflateSync_1:
+        LDR      R2,[R4, #+4]
+        LDR      R1,[R4, #+0]
+        ADD      R0,R5,#+104
+        BL       syncsearch
+// 1295     strm->avail_in -= len;
+        LDR      R1,[R4, #+4]
+        SUB      R1,R1,R0
+        STR      R1,[R4, #+4]
+// 1296     strm->next_in += len;
+        LDR      R1,[R4, #+0]
+        ADD      R1,R0,R1
+        STR      R1,[R4, #+0]
+// 1297     strm->total_in += len;
+        LDR      R1,[R4, #+8]
+        ADD      R6,R0,R1
+        STR      R6,[R4, #+8]
+// 1298 
+// 1299     /* return no joy or set up to restart inflate() on a new block */
+// 1300     if (state->have != 4) return Z_DATA_ERROR;
+        LDR      R0,[R5, #+104]
+        CMP      R0,#+4
+        MVNNE    R0,#+2
+        POPNE    {R1,R4-R7,PC}
+// 1301     in = strm->total_in;  out = strm->total_out;
+        LDR      R7,[R4, #+20]
+// 1302     inflateReset(strm);
+        MOV      R0,R4
+        BL       inflateReset
+// 1303     strm->total_in = in;  strm->total_out = out;
+        STR      R6,[R4, #+8]
+        STR      R7,[R4, #+20]
+// 1304     state->mode = TYPE;
+        MOV      R0,#+11
+        STRB     R0,[R5, #+0]
+// 1305     return Z_OK;
+        MOV      R0,#+0
+        POP      {R1,R4-R7,PC}    ;; return
+        CFI EndBlock cfiBlock23
+// 1306 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock24 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??inflateSyncPoint??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock24
+        REQUIRE inflateSyncPoint
+// 1307 
+// 1308 /*
+// 1309    Returns true if inflate is currently at the end of a block generated by
+// 1310    Z_SYNC_FLUSH or Z_FULL_FLUSH. This function is used by one PPP
+// 1311    implementation to provide an additional safety check. PPP uses
+// 1312    Z_SYNC_FLUSH but removes the length bytes of the resulting empty stored
+// 1313    block. When decompressing, PPP checks that at the end of input packet,
+// 1314    inflate is waiting for these length bytes.
+// 1315  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock25 Using cfiCommon1
+        CFI Function inflateSyncPoint
+        ARM
+// 1316 int ZEXPORT inflateSyncPoint(strm)
+// 1317 z_streamp strm;
+// 1318 {
+// 1319     struct inflate_state FAR *state;
+// 1320 
+// 1321     if (strm == Z_NULL || strm->state == Z_NULL) return Z_STREAM_ERROR;
+inflateSyncPoint:
+        CMP      R0,#+0
+        LDRNE    R0,[R0, #+28]
+        CMPNE    R0,#+0
+        MVNEQ    R0,#+1
+        BXEQ     LR
+// 1322     state = (struct inflate_state FAR *)strm->state;
+// 1323     return state->mode == STORED && state->bits == 0;
+        LDRB     R1,[R0, #+0]
+        CMP      R1,#+13
+        LDREQ    R0,[R0, #+60]
+        CMPEQ    R0,#+0
+        MOVEQ    R0,#+1
+        BXEQ     LR
+        MOV      R0,#+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock25
+// 1324 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock26 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??inflateCopy??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock26
+        REQUIRE inflateCopy
+// 1325 
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock27 Using cfiCommon1
+        CFI Function inflateCopy
+        ARM
+// 1326 int ZEXPORT inflateCopy(dest, source)
+// 1327 z_streamp dest;
+// 1328 z_streamp source;
+// 1329 {
+inflateCopy:
+        PUSH     {R4-R10,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R10 Frame(CFA, -8)
+        CFI R9 Frame(CFA, -12)
+        CFI R8 Frame(CFA, -16)
+        CFI R7 Frame(CFA, -20)
+        CFI R6 Frame(CFA, -24)
+        CFI R5 Frame(CFA, -28)
+        CFI R4 Frame(CFA, -32)
+        CFI CFA R13+32
+        SUB      SP,SP,#+4
+        CFI CFA R13+36
+        MOV      R5,R0
+        MOV      R6,R1
+// 1330     struct inflate_state FAR *state;
+// 1331     struct inflate_state FAR *copy;
+// 1332     unsigned char FAR *window;
+// 1333     unsigned wsize;
+// 1334 
+// 1335     /* check input */
+// 1336     if (dest == Z_NULL || source == Z_NULL || source->state == Z_NULL ||
+// 1337         source->zalloc == (alloc_func)0 || source->zfree == (free_func)0)
+        CMP      R5,#+0
+        CMPNE    R6,#+0
+        LDRNE    R4,[R6, #+28]
+        CMPNE    R4,#+0
+        LDRNE    R3,[R6, #+32]
+        CMPNE    R3,#+0
+        LDRNE    R0,[R6, #+36]
+        CMPNE    R0,#+0
+// 1338         return Z_STREAM_ERROR;
+        MVNEQ    R0,#+1
+        POPEQ    {R1,R4-R10,PC}
+// 1339     state = (struct inflate_state FAR *)source->state;
+// 1340 
+// 1341     /* allocate space */
+// 1342     copy = (struct inflate_state FAR *)
+// 1343            ZALLOC(source, 1, sizeof(struct inflate_state));
+        LDR      R0,[R6, #+40]
+        MOV      R10,#+48
+        ORR      R10,R10,#0x2500
+        MOV      R2,R10
+        MOV      R1,#+1
+        BLX      R3
+        MOVS     R7,R0
+// 1344     if (copy == Z_NULL) return Z_MEM_ERROR;
+        BEQ      ??inflateCopy_0
+// 1345     window = Z_NULL;
+// 1346     if (state->window != Z_NULL) {
+        LDR      R0,[R4, #+52]
+        MOV      R8,#+0
+        MOV      R9,#+1
+        CMP      R0,#+0
+        BEQ      ??inflateCopy_1
+// 1347         window = (unsigned char FAR *)
+// 1348                  ZALLOC(source, 1U << state->wbits, sizeof(unsigned char));
+        LDR      R0,[R4, #+36]
+        LDR      R3,[R6, #+32]
+        LSL      R1,R9,R0
+        LDR      R0,[R6, #+40]
+        MOV      R2,#+1
+        BLX      R3
+        MOVS     R8,R0
+// 1349         if (window == Z_NULL) {
+        BNE      ??inflateCopy_1
+// 1350             ZFREE(source, copy);
+        LDR      R0,[R6, #+40]
+        LDR      R2,[R6, #+36]
+        MOV      R1,R7
+        BLX      R2
+// 1351             return Z_MEM_ERROR;
+??inflateCopy_0:
+        MVN      R0,#+3
+        POP      {R1,R4-R10,PC}
+// 1352         }
+// 1353     }
+// 1354 
+// 1355     /* copy state */
+// 1356     zmemcpy(dest, source, sizeof(z_stream));
+??inflateCopy_1:
+        MOV      R2,#+56
+        MOV      R1,R6
+        MOV      R0,R5
+        SWI      +286
+// 1357     zmemcpy(copy, state, sizeof(struct inflate_state));
+        MOV      R2,R10
+        MOV      R1,R4
+        MOV      R0,R7
+        SWI      +286
+// 1358     if (state->lencode >= state->codes &&
+// 1359         state->lencode <= state->codes + ENOUGH - 1) {
+        LDR      R1,[R4, #+76]
+        MOV      R0,#+1328
+        ADD      R2,R0,R4
+        CMP      R1,R2
+        BCC      ??inflateCopy_2
+        SUB      R3,R10,#+4
+        ADD      R3,R3,R4
+        CMP      R3,R1
+        BCC      ??inflateCopy_2
+// 1360         copy->lencode = copy->codes + (state->lencode - state->codes);
+        LSR      R2,R2,#+2
+        RSB      R1,R2,R1, LSR #+2
+        ADD      R1,R7,R1, LSL #+2
+        ADD      R1,R1,#+1328
+        STR      R1,[R7, #+76]
+// 1361         copy->distcode = copy->codes + (state->distcode - state->codes);
+        LDR      R1,[R4, #+80]
+        RSB      R1,R2,R1, LSR #+2
+        ADD      R1,R7,R1, LSL #+2
+        ADD      R1,R1,#+1328
+        STR      R1,[R7, #+80]
+// 1362     }
+// 1363     copy->next = copy->codes + (state->next - state->codes);
+??inflateCopy_2:
+        LDR      R1,[R4, #+108]
+        ADD      R0,R0,R4
+        LSR      R1,R1,#+2
+        SUB      R0,R1,R0, LSR #+2
+        ADD      R0,R7,R0, LSL #+2
+        ADD      R0,R0,#+1328
+        STR      R0,[R7, #+108]
+// 1364     if (window != Z_NULL) {
+        CMP      R8,#+0
+        BEQ      ??inflateCopy_3
+// 1365         wsize = 1U << state->wbits;
+// 1366         zmemcpy(window, state->window, wsize);
+        LDR      R0,[R4, #+36]
+        LDR      R1,[R4, #+52]
+        LSL      R2,R9,R0
+        MOV      R0,R8
+        SWI      +286
+// 1367     }
+// 1368     copy->window = window;
+??inflateCopy_3:
+        STR      R8,[R7, #+52]
+// 1369     dest->state = (struct internal_state FAR *)copy;
+        STR      R7,[R5, #+28]
+// 1370     return Z_OK;
+        MOV      R0,#+0
+        POP      {R1,R4-R10,PC}   ;; return
+        CFI EndBlock cfiBlock27
+// 1371 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock28 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??crc32??rA:
+        LDR      R12,??Subroutine14_0  ;; crc32
+        BX       R12
+        DATA
+??Subroutine14_0:
+        DC32     crc32
+        CFI EndBlock cfiBlock28
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock29 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??adler32??rA:
+        LDR      R12,??Subroutine15_0  ;; adler32
+        BX       R12
+        DATA
+??Subroutine15_0:
+        DC32     adler32
+        CFI EndBlock cfiBlock29
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock30 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??inflate_table??rA:
+        LDR      R12,??Subroutine16_0  ;; inflate_table
+        BX       R12
+        DATA
+??Subroutine16_0:
+        DC32     inflate_table
+        CFI EndBlock cfiBlock30
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock31 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??inflate_fast??rA:
+        LDR      R12,??Subroutine17_0  ;; inflate_fast
+        BX       R12
+        DATA
+??Subroutine17_0:
+        DC32     inflate_fast
+        CFI EndBlock cfiBlock31
+
+        END
+// 
+// 7 532 bytes in segment CODE
+// 2 664 bytes in segment DATA_C
+// 
+// 7 428 bytes of CODE  memory (+ 104 bytes shared)
+// 2 664 bytes of CONST memory
+//
+//Errors: none
+//Warnings: none

@@ -1,0 +1,1365 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:25 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD /
+//                       EC\AAC_FILE (25).c                                  /
+//    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AAC /
+//                       DEC\AAC_FILE (25).c" -D NDEBUG -lC                  /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\AAC_FILE (25).s79                              /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME `AAC_FILE (25)`
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        MULTWEAK ??free??rA
+        MULTWEAK ??raac_AdjustHighFreq??rA
+        MULTWEAK ??raac_ByteAlignBitstream??rA
+        MULTWEAK ??raac_CalcFreqTables??rA
+        MULTWEAK ??raac_DecodeSBRBitstream??rT
+        MULTWEAK ??raac_DecodeSBRData??rT
+        MULTWEAK ??raac_FlushCodecSBR??rT
+        MULTWEAK ??raac_FreeSBR??rT
+        MULTWEAK ??raac_GenerateHighFreq??rA
+        MULTWEAK ??raac_GetBits??rA
+        MULTWEAK ??raac_GetSampRateIdx??rA
+        MULTWEAK ??raac_InitSBR??rT
+        MULTWEAK ??raac_QMFAnalysis??rA
+        MULTWEAK ??raac_QMFSynthesis??rA
+        MULTWEAK ??raac_SetBitstreamPointer??rA
+        MULTWEAK ??raac_UnpackSBRChannelPair??rA
+        MULTWEAK ??raac_UnpackSBRHeader??rA
+        MULTWEAK ??raac_UnpackSBRSingleChannel??rA
+        PUBLIC raac_DecodeSBRBitstream
+        FUNCTION raac_DecodeSBRBitstream,0203H
+        LOCFRAME CSTACK, 44, STACK
+        PUBLIC raac_DecodeSBRData
+        FUNCTION raac_DecodeSBRData,0203H
+        LOCFRAME CSTACK, 104, STACK
+        PUBLIC raac_FlushCodecSBR
+        FUNCTION raac_FlushCodecSBR,0203H
+        PUBLIC raac_FreeSBR
+        FUNCTION raac_FreeSBR,0203H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC raac_InitSBR
+        FUNCTION raac_InitSBR,0203H
+        LOCFRAME CSTACK, 12, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+free                SYMBOL "free"
+raac_AdjustHighFreq SYMBOL "raac_AdjustHighFreq"
+raac_ByteAlignBitstream SYMBOL "raac_ByteAlignBitstream"
+raac_CalcFreqTables SYMBOL "raac_CalcFreqTables"
+raac_GenerateHighFreq SYMBOL "raac_GenerateHighFreq"
+raac_GetBits        SYMBOL "raac_GetBits"
+raac_GetSampRateIdx SYMBOL "raac_GetSampRateIdx"
+raac_QMFAnalysis    SYMBOL "raac_QMFAnalysis"
+raac_QMFSynthesis   SYMBOL "raac_QMFSynthesis"
+raac_SetBitstreamPointer SYMBOL "raac_SetBitstreamPointer"
+raac_UnpackSBRChannelPair SYMBOL "raac_UnpackSBRChannelPair"
+raac_UnpackSBRHeader SYMBOL "raac_UnpackSBRHeader"
+raac_UnpackSBRSingleChannel SYMBOL "raac_UnpackSBRSingleChannel"
+??free??rA          SYMBOL "??rA", free
+??raac_AdjustHighFreq??rA SYMBOL "??rA", raac_AdjustHighFreq
+??raac_ByteAlignBitstream??rA SYMBOL "??rA", raac_ByteAlignBitstream
+??raac_CalcFreqTables??rA SYMBOL "??rA", raac_CalcFreqTables
+raac_DecodeSBRBitstream SYMBOL "raac_DecodeSBRBitstream"
+??raac_DecodeSBRBitstream??rT SYMBOL "??rT", raac_DecodeSBRBitstream
+raac_DecodeSBRData  SYMBOL "raac_DecodeSBRData"
+??raac_DecodeSBRData??rT SYMBOL "??rT", raac_DecodeSBRData
+raac_FlushCodecSBR  SYMBOL "raac_FlushCodecSBR"
+??raac_FlushCodecSBR??rT SYMBOL "??rT", raac_FlushCodecSBR
+raac_FreeSBR        SYMBOL "raac_FreeSBR"
+??raac_FreeSBR??rT  SYMBOL "??rT", raac_FreeSBR
+??raac_GenerateHighFreq??rA SYMBOL "??rA", raac_GenerateHighFreq
+??raac_GetBits??rA  SYMBOL "??rA", raac_GetBits
+??raac_GetSampRateIdx??rA SYMBOL "??rA", raac_GetSampRateIdx
+raac_InitSBR        SYMBOL "raac_InitSBR"
+??raac_InitSBR??rT  SYMBOL "??rT", raac_InitSBR
+??raac_QMFAnalysis??rA SYMBOL "??rA", raac_QMFAnalysis
+??raac_QMFSynthesis??rA SYMBOL "??rA", raac_QMFSynthesis
+??raac_SetBitstreamPointer??rA SYMBOL "??rA", raac_SetBitstreamPointer
+??raac_UnpackSBRChannelPair??rA SYMBOL "??rA", raac_UnpackSBRChannelPair
+??raac_UnpackSBRHeader??rA SYMBOL "??rA", raac_UnpackSBRHeader
+??raac_UnpackSBRSingleChannel??rA SYMBOL "??rA", raac_UnpackSBRSingleChannel
+
+        EXTERN free
+        FUNCTION free,0200H
+        EXTERN raac_AdjustHighFreq
+        FUNCTION raac_AdjustHighFreq,0202H
+        EXTERN raac_ByteAlignBitstream
+        FUNCTION raac_ByteAlignBitstream,0202H
+        EXTERN raac_CalcFreqTables
+        FUNCTION raac_CalcFreqTables,0202H
+        EXTERN raac_GenerateHighFreq
+        FUNCTION raac_GenerateHighFreq,0202H
+        EXTERN raac_GetBits
+        FUNCTION raac_GetBits,0202H
+        EXTERN raac_GetSampRateIdx
+        FUNCTION raac_GetSampRateIdx,0202H
+        EXTERN raac_QMFAnalysis
+        FUNCTION raac_QMFAnalysis,0202H
+        EXTERN raac_QMFSynthesis
+        FUNCTION raac_QMFSynthesis,0202H
+        EXTERN raac_SetBitstreamPointer
+        FUNCTION raac_SetBitstreamPointer,0202H
+        EXTERN raac_UnpackSBRChannelPair
+        FUNCTION raac_UnpackSBRChannelPair,0202H
+        EXTERN raac_UnpackSBRHeader
+        FUNCTION raac_UnpackSBRHeader,0202H
+        EXTERN raac_UnpackSBRSingleChannel
+        FUNCTION raac_UnpackSBRSingleChannel,0202H
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_InitSBR??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE raac_InitSBR
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (25).c
+//    1 /* ***** BEGIN LICENSE BLOCK *****  
+//    2  * Source last modified: $Id: sbr.c,v 1.1 2005/02/26 01:47:35 jrecker Exp $ 
+//    3  *   
+//    4  * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+//    5  *       
+//    6  * The contents of this file, and the files included with this file, 
+//    7  * are subject to the current version of the RealNetworks Public 
+//    8  * Source License (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the current version of the RealNetworks Community 
+//   11  * Source License (the "RCSL") available at 
+//   12  * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+//   13  * will apply. You may also obtain the license terms directly from 
+//   14  * RealNetworks.  You may not use this file except in compliance with 
+//   15  * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+//   16  * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+//   17  * the rights, obligations and limitations governing use of the 
+//   18  * contents of the file. 
+//   19  *   
+//   20  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   21  * developer of the Original Code and owns the copyrights in the 
+//   22  * portions it created. 
+//   23  *   
+//   24  * This file, and the files included with this file, is distributed 
+//   25  * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+//   26  * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+//   27  * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+//   28  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+//   29  * ENJOYMENT OR NON-INFRINGEMENT. 
+//   30  *  
+//   31  * Technology Compatibility Kit Test Suite(s) Location:  
+//   32  *    http://www.helixcommunity.org/content/tck  
+//   33  *  
+//   34  * Contributor(s):  
+//   35  *   
+//   36  * ***** END LICENSE BLOCK ***** */  
+//   37 
+//   38 /**************************************************************************************
+//   39  * Fixed-point HE-AAC decoder
+//   40  * Jon Recker (jrecker@real.com)
+//   41  * February 2005
+//   42  *
+//   43  * sbr.c - top level functions for SBR
+//   44  **************************************************************************************/
+//   45 
+//   46 #include "sbr_aac.h"
+//   47 
+//   48 /**************************************************************************************
+//   49  * Function:    InitSBRState
+//   50  *
+//   51  * Description: initialize PSInfoSBR struct at start of stream or after flush
+//   52  *
+//   53  * Inputs:      valid AACDecInfo struct
+//   54  *
+//   55  * Outputs:     PSInfoSBR struct with proper initial state
+//   56  *
+//   57  * Return:      none
+//   58  **************************************************************************************/
+//   59 static void InitSBRState(PSInfoSBR *psi)
+//   60 {
+//   61 	int i, ch;
+//   62 	unsigned char *c;
+//   63 
+//   64 	if (!psi)
+//   65 		return;
+//   66 
+//   67 	/* clear SBR state structure */
+//   68 	c = (unsigned char *)psi;
+//   69 	for (i = 0; i < sizeof(PSInfoSBR); i++)
+//   70 		*c++ = 0;
+//   71 
+//   72 	/* initialize non-zero state variables */
+//   73 	for (ch = 0; ch < AAC_MAX_NCHANS; ch++) {
+//   74 		psi->sbrChan[ch].reset = 1;
+//   75 		psi->sbrChan[ch].laPrev = -1;
+//   76 	}
+//   77 }
+//   78  
+//   79 /**************************************************************************************
+//   80  * Function:    InitSBR
+//   81  *
+//   82  * Description: initialize SBR decoder
+//   83  *
+//   84  * Inputs:      valid AACDecInfo struct
+//   85  *
+//   86  * Outputs:     PSInfoSBR struct to hold SBR state information
+//   87  *
+//   88  * Return:      0 if successful, error code (< 0) if error
+//   89  *
+//   90  * Note:        memory allocation for SBR is only done here
+//   91  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function raac_InitSBR
+        ARM
+//   92 int InitSBR(AACDecInfo *aacDecInfo)
+//   93 {
+raac_InitSBR:
+        PUSH     {R4,R5,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+        MOVS     R4,R0
+//   94 	PSInfoSBR *psi;
+//   95 
+//   96 	if (!aacDecInfo)
+//   97 		return ERR_AAC_NULL_POINTER;
+        MVNEQ    R0,#+1
+        POPEQ    {R4,R5,PC}
+//   98 
+//   99 	/* allocate SBR state structure */
+//  100 	psi = (PSInfoSBR *)malloc(sizeof(PSInfoSBR));
+        MOV      R5,#+44
+        ORR      R5,R5,#0xC600
+        MOV      R0,R5
+        SWI      +20
+//  101 	if (!psi)
+        CMP      R0,#+0
+//  102 		return ERR_AAC_SBR_INIT;
+        MVNEQ    R0,#+15
+        POPEQ    {R4,R5,PC}
+        MOV      R1,R0
+        MOV      R2,#+0
+        MOV      R3,#+0
+        B        ??raac_InitSBR_0
+??raac_InitSBR_1:
+        STRB     R3,[R1], #+1
+        ADD      R2,R2,#+1
+??raac_InitSBR_0:
+        CMP      R2,R5
+        BCC      ??raac_InitSBR_1
+        MOV      R1,#+0
+??raac_InitSBR_2:
+        MOV      R3,#+2336
+        MLA      R2,R3,R1,R0
+        MOV      R3,#+1
+        STR      R3,[R2, #+516]
+        RSB      R3,R3,#+0
+        STRB     R3,[R2, #+916]
+        ADD      R1,R1,#+1
+        CMP      R1,#+2
+        BLT      ??raac_InitSBR_2
+//  103 
+//  104 	InitSBRState(psi);
+//  105 
+//  106 	aacDecInfo->psInfoSBR = psi;
+        STR      R0,[R4, #+4]
+//  107 	return ERR_AAC_NONE;
+        MOV      R0,#+0
+        POP      {R4,R5,PC}       ;; return
+        CFI EndBlock cfiBlock1
+//  108 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_FreeSBR??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE raac_FreeSBR
+//  109 
+//  110 /**************************************************************************************
+//  111  * Function:    FreeSBR
+//  112  *
+//  113  * Description: free SBR decoder
+//  114  *
+//  115  * Inputs:      valid AACDecInfo struct
+//  116  *
+//  117  * Outputs:     none
+//  118  *
+//  119  * Return:      none
+//  120  *
+//  121  * Note:        memory deallocation for SBR is only done here
+//  122  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function raac_FreeSBR
+        ARM
+//  123 void FreeSBR(AACDecInfo *aacDecInfo)
+//  124 {
+raac_FreeSBR:
+        PUSH     {LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI CFA R13+4
+//  125 	if (aacDecInfo && aacDecInfo->psInfoSBR)
+        CMP      R0,#+0
+        LDRNE    R0,[R0, #+4]
+        CMPNE    R0,#+0
+        POPEQ    {PC}
+//  126 		free(aacDecInfo->psInfoSBR);
+        _BLF     free,??free??rA
+//  127 
+//  128 	return;
+        POP      {PC}             ;; return
+        CFI EndBlock cfiBlock3
+//  129 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_DecodeSBRBitstream??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE raac_DecodeSBRBitstream
+//  130 
+//  131 /**************************************************************************************
+//  132  * Function:    DecodeSBRBitstream
+//  133  *
+//  134  * Description: decode sideband information for SBR
+//  135  *
+//  136  * Inputs:      valid AACDecInfo struct
+//  137  *              fill buffer with SBR extension block
+//  138  *              number of bytes in fill buffer
+//  139  *              base output channel (range = [0, nChans-1])
+//  140  *
+//  141  * Outputs:     initialized state structs (SBRHdr, SBRGrid, SBRFreq, SBRChan)
+//  142  *
+//  143  * Return:      0 if successful, error code (< 0) if error
+//  144  *
+//  145  * Notes:       SBR payload should be in aacDecInfo->fillBuf
+//  146  *              returns with no error if fill buffer is not an SBR extension block, 
+//  147  *                or if current block is not a fill block (e.g. for LFE upsampling)
+//  148  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function raac_DecodeSBRBitstream
+        ARM
+//  149 int DecodeSBRBitstream(AACDecInfo *aacDecInfo, int chBase)
+//  150 {
+raac_DecodeSBRBitstream:
+        PUSH     {R4-R9,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R9 Frame(CFA, -8)
+        CFI R8 Frame(CFA, -12)
+        CFI R7 Frame(CFA, -16)
+        CFI R6 Frame(CFA, -20)
+        CFI R5 Frame(CFA, -24)
+        CFI R4 Frame(CFA, -28)
+        CFI CFA R13+28
+        SUB      SP,SP,#+16
+        CFI CFA R13+44
+        MOV      R4,R0
+//  151 	int headerFlag;
+//  152 	BitStreamInfo bsi;
+//  153 	PSInfoSBR *psi;
+//  154 
+//  155 	/* validate pointers */
+//  156 	if (!aacDecInfo || !aacDecInfo->psInfoSBR)
+        CMP      R4,#+0
+        LDRNE    R6,[R4, #+4]
+        MOV      R5,R1
+        CMPNE    R6,#+0
+//  157 		return ERR_AAC_NULL_POINTER;
+        MVNEQ    R0,#+1
+        BEQ      ??raac_DecodeSBRBitstream_0
+//  158 	psi = (PSInfoSBR *)(aacDecInfo->psInfoSBR);
+//  159 
+//  160 	if (aacDecInfo->currBlockID != AAC_ID_FIL || (aacDecInfo->fillExtType != EXT_SBR_DATA && aacDecInfo->fillExtType != EXT_SBR_DATA_CRC))
+        LDR      R0,[R4, #+40]
+        CMP      R0,#+6
+        BNE      ??raac_DecodeSBRBitstream_1
+        LDR      R0,[R4, #+32]
+        CMP      R0,#+13
+        CMPNE    R0,#+14
+        BNE      ??raac_DecodeSBRBitstream_1
+//  161 		return ERR_AAC_NONE;
+//  162 
+//  163 	SetBitstreamPointer(&bsi, aacDecInfo->fillCount, aacDecInfo->fillBuf);
+        LDR      R2,[R4, #+24]
+        LDR      R1,[R4, #+28]
+        MOV      R0,SP
+        _BLF     raac_SetBitstreamPointer,??raac_SetBitstreamPointer??rA
+//  164 	if (GetBits(&bsi, 4) != (unsigned int)aacDecInfo->fillExtType)
+        MOV      R1,#+4
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        LDR      R1,[R4, #+32]
+        CMP      R0,R1
+        BEQ      ??raac_DecodeSBRBitstream_2
+//  165 		return ERR_AAC_SBR_BITSTREAM;
+??raac_DecodeSBRBitstream_3:
+        MVN      R0,#+16
+        ADD      SP,SP,#+16
+        CFI CFA R13+28
+        POP      {R4-R9,PC}
+        CFI CFA R13+44
+//  166 	
+//  167 	if (aacDecInfo->fillExtType == EXT_SBR_DATA_CRC)
+??raac_DecodeSBRBitstream_2:
+        CMP      R1,#+14
+        BNE      ??raac_DecodeSBRBitstream_4
+//  168 		psi->crcCheckWord = GetBits(&bsi, 10);
+        MOV      R1,#+10
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+        MOV      R1,#+28
+        ORR      R1,R1,#0x1D00
+        STR      R0,[R1, +R6]
+//  169 
+//  170 	headerFlag = GetBits(&bsi, 1);
+??raac_DecodeSBRBitstream_4:
+        MOV      R1,#+1
+        MOV      R0,SP
+        _BLF     raac_GetBits,??raac_GetBits??rA
+//  171 	if (headerFlag) {
+        MOV      R1,#+20
+        MLA      R7,R1,R5,R6
+        CMP      R0,#+0
+        BEQ      ??raac_DecodeSBRBitstream_5
+//  172 		/* get sample rate index for output sample rate (2x base rate) */
+//  173 		psi->sampRateIdx = GetSampRateIdx(2 * aacDecInfo->sampRate);
+        LDR      R0,[R4, #+68]
+        LSL      R0,R0,#+1
+        _BLF     raac_GetSampRateIdx,??raac_GetSampRateIdx??rA
+        STR      R0,[R6, #+4]
+//  174 		if (psi->sampRateIdx < 0 || psi->sampRateIdx >= NUM_SAMPLE_RATES)
+        CMP      R0,#+0
+        BMI      ??raac_DecodeSBRBitstream_3
+        CMP      R0,#+12
+        BGE      ??raac_DecodeSBRBitstream_3
+//  175 			return ERR_AAC_SBR_BITSTREAM;
+//  176 		else if (psi->sampRateIdx >= NUM_SAMPLE_RATES_SBR)
+        CMP      R0,#+9
+//  177 			return ERR_AAC_SBR_SINGLERATE_UNSUPPORTED;
+        MVNGE    R0,#+20
+        BGE      ??raac_DecodeSBRBitstream_0
+//  178 
+//  179 		/* reset flag = 1 if header values changed */
+//  180 		if (UnpackSBRHeader(&bsi, &(psi->sbrHdr[chBase])))
+        MOV      R0,#+2336
+        MLA      R8,R0,R5,R6
+        MOV      R9,#+516
+        ADD      R1,R7,#+8
+        MOV      R0,SP
+        _BLF     raac_UnpackSBRHeader,??raac_UnpackSBRHeader??rA
+        CMP      R0,#+0
+//  181 			psi->sbrChan[chBase].reset = 1;
+        MOVNE    R0,#+1
+        STRNE    R0,[R9, +R8]
+//  182 	
+//  183 		/* first valid SBR header should always trigger CalcFreqTables(), since psi->reset was set in InitSBR() */
+//  184 		if (psi->sbrChan[chBase].reset)
+        LDR      R0,[R9, +R8]
+        CMP      R0,#+0
+        BEQ      ??raac_DecodeSBRBitstream_6
+//  185 			CalcFreqTables(&(psi->sbrHdr[chBase+0]), &(psi->sbrFreq[chBase]), psi->sampRateIdx);
+        LDR      R2,[R6, #+4]
+        MOV      R0,#+212
+        MLA      R1,R0,R5,R6
+        ADD      R0,R7,#+8
+        ADD      R1,R1,#+92
+        _BLF     raac_CalcFreqTables,??raac_CalcFreqTables??rA
+//  186 
+//  187 		/* copy and reset state to right channel for CPE */
+//  188 		if (aacDecInfo->prevBlockID == AAC_ID_CPE)
+??raac_DecodeSBRBitstream_6:
+        LDR      R0,[R4, #+36]
+        CMP      R0,#+1
+//  189 			psi->sbrChan[chBase+1].reset = psi->sbrChan[chBase+0].reset;
+        LDREQ    R0,[R9, +R8]
+        STREQ    R0,[R8, #+2852]
+//  190 	}
+//  191 	
+//  192 
+//  193 	/* if no header has been received, upsample only */
+//  194 	if (psi->sbrHdr[chBase].count == 0)
+??raac_DecodeSBRBitstream_5:
+        LDR      R0,[R7, #+8]
+        CMP      R0,#+0
+        BEQ      ??raac_DecodeSBRBitstream_0
+//  195 		return ERR_AAC_NONE;
+//  196 
+//  197 	if (aacDecInfo->prevBlockID == AAC_ID_SCE) {
+        LDR      R0,[R4, #+36]
+        CMP      R0,#+0
+        BNE      ??raac_DecodeSBRBitstream_7
+//  198 		UnpackSBRSingleChannel(&bsi, psi, chBase);
+        MOV      R2,R5
+        MOV      R1,R6
+        MOV      R0,SP
+        _BLF     raac_UnpackSBRSingleChannel,??raac_UnpackSBRSingleChannel??rA
+        B        ??raac_DecodeSBRBitstream_8
+//  199 	} else if (aacDecInfo->prevBlockID == AAC_ID_CPE) {
+??raac_DecodeSBRBitstream_7:
+        CMP      R0,#+1
+        BNE      ??raac_DecodeSBRBitstream_3
+//  200 		UnpackSBRChannelPair(&bsi, psi, chBase);
+        MOV      R2,R5
+        MOV      R1,R6
+        MOV      R0,SP
+        _BLF     raac_UnpackSBRChannelPair,??raac_UnpackSBRChannelPair??rA
+//  201 	} else {
+//  202 		return ERR_AAC_SBR_BITSTREAM;
+//  203 	}
+//  204 
+//  205 	ByteAlignBitstream(&bsi);
+??raac_DecodeSBRBitstream_8:
+        MOV      R0,SP
+        _BLF     raac_ByteAlignBitstream,??raac_ByteAlignBitstream??rA
+//  206 
+//  207 	return ERR_AAC_NONE;
+??raac_DecodeSBRBitstream_1:
+        MOV      R0,#+0
+??raac_DecodeSBRBitstream_0:
+        ADD      SP,SP,#+16       ;; stack cleaning
+        CFI CFA R13+28
+        POP      {R4-R9,PC}       ;; return
+        CFI EndBlock cfiBlock5
+//  208 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_DecodeSBRData??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE raac_DecodeSBRData
+//  209 
+//  210 /**************************************************************************************
+//  211  * Function:    DecodeSBRData
+//  212  *
+//  213  * Description: apply SBR to one frame of PCM data
+//  214  *
+//  215  * Inputs:      1024 samples of decoded 32-bit PCM, before SBR
+//  216  *              size of input PCM samples (must be 4 bytes)
+//  217  *              number of fraction bits in input PCM samples
+//  218  *              base output channel (range = [0, nChans-1])
+//  219  *              initialized state structs (SBRHdr, SBRGrid, SBRFreq, SBRChan)
+//  220  *
+//  221  * Outputs:     2048 samples of decoded 16-bit PCM, after SBR
+//  222  *
+//  223  * Return:      0 if successful, error code (< 0) if error
+//  224  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function raac_DecodeSBRData
+        ARM
+//  225 int DecodeSBRData(AACDecInfo *aacDecInfo, int chBase, short *outbuf)
+//  226 {
+raac_DecodeSBRData:
+        PUSH     {R1,R2,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+44
+        SUB      SP,SP,#+48
+        CFI CFA R13+92
+        MOVS     R4,R0
+//  227 	int k, l, ch, chBlock, qmfaBands, qmfsBands;
+//  228 	int upsampleOnly, gbIdx, gbMask;
+//  229 	int *inbuf;
+//  230 	short *outptr;
+//  231 	PSInfoSBR *psi;
+//  232 	SBRHeader *sbrHdr;
+//  233 	SBRGrid *sbrGrid;
+//  234 	SBRFreq *sbrFreq;
+//  235 	SBRChan *sbrChan;
+//  236 
+//  237 	/* validate pointers */
+//  238 	if (!aacDecInfo || !aacDecInfo->psInfoSBR)
+        LDRNE    R0,[R4, #+4]
+        CMPNE    R0,#+0
+//  239 		return ERR_AAC_NULL_POINTER;
+        MVNEQ    R0,#+1
+        ADDEQ    SP,SP,#+56
+        POPEQ    {R4-R11,PC}
+//  240 	psi = (PSInfoSBR *)(aacDecInfo->psInfoSBR);
+        MOV      R5,R0
+//  241 	
+//  242 	/* same header and freq tables for both channels in CPE */
+//  243 	sbrHdr =  &(psi->sbrHdr[chBase]);
+        MOV      R2,#+20
+        MLA      R1,R2,R1,R5
+//  244 	sbrFreq = &(psi->sbrFreq[chBase]);
+        MOV      R2,#+212
+        ADD      R1,R1,#+8
+        STR      R1,[SP, #+16]
+        LDR      R1,[SP, #+48]
+        MLA      R1,R2,R1,R5
+        ADD      R1,R1,#+92
+        STR      R1,[SP, #+0]
+//  245 
+//  246 	/* upsample only if we haven't received an SBR header yet or if we have an LFE block */
+//  247 	if (aacDecInfo->currBlockID == AAC_ID_LFE) {
+        LDR      R0,[R4, #+40]
+        CMP      R0,#+3
+        BNE      ??raac_DecodeSBRData_0
+//  248 		chBlock = 1;
+        MOV      R1,#+1
+        STR      R1,[SP, #+24]
+//  249 		upsampleOnly = 1;
+        STR      R1,[SP, #+28]
+        B        ??raac_DecodeSBRData_1
+//  250 	} else if (aacDecInfo->currBlockID == AAC_ID_FIL) {
+??raac_DecodeSBRData_0:
+        CMP      R0,#+6
+        BNE      ??raac_DecodeSBRData_2
+//  251 		if (aacDecInfo->prevBlockID == AAC_ID_SCE) 
+        LDR      R0,[R4, #+36]
+        CMP      R0,#+0
+        BNE      ??raac_DecodeSBRData_3
+//  252 			chBlock = 1;
+        MOV      R1,#+1
+//  253 		else if (aacDecInfo->prevBlockID == AAC_ID_CPE)
+//  254 			chBlock = 2;
+//  255 		else
+//  256 			return ERR_AAC_NONE;
+//  257 		
+//  258 		upsampleOnly = (sbrHdr->count == 0 ? 1 : 0);
+??raac_DecodeSBRData_4:
+        LDR      R0,[SP, #+16]
+        STR      R1,[SP, #+24]
+        LDR      R0,[R0, #+0]
+        CMP      R0,#+0
+        MOVNE    R1,#+0
+        MOVEQ    R1,#+1
+        B        ??raac_DecodeSBRData_5
+??raac_DecodeSBRData_3:
+        CMP      R0,#+1
+        BNE      ??raac_DecodeSBRData_2
+        MOV      R1,#+2
+        B        ??raac_DecodeSBRData_4
+??raac_DecodeSBRData_5:
+        STR      R1,[SP, #+28]
+//  259 		if (aacDecInfo->fillExtType != EXT_SBR_DATA && aacDecInfo->fillExtType != EXT_SBR_DATA_CRC)
+        LDR      R0,[R4, #+32]
+        CMP      R0,#+13
+        CMPNE    R0,#+14
+        BNE      ??raac_DecodeSBRData_2
+//  260 			return ERR_AAC_NONE;
+//  261 	} else {
+//  262 		/* ignore non-SBR blocks */
+//  263 		return ERR_AAC_NONE;
+//  264 	}
+//  265 
+//  266 	for (ch = 0; ch < chBlock; ch++) {
+??raac_DecodeSBRData_1:
+        MOV      R1,#+0
+        STR      R1,[SP, #+4]
+        MOV      R8,#+44
+        ORR      R8,R8,#0x5600
+        ORR      R9,R8,#0x2000
+        B        ??raac_DecodeSBRData_6
+//  267 		sbrGrid = &(psi->sbrGrid[chBase + ch]);	
+//  268 		sbrChan = &(psi->sbrChan[chBase + ch]);
+//  269 
+//  270 		if (aacDecInfo->rawSampleBuf[ch] == 0 || aacDecInfo->rawSampleBytes != 4)
+//  271 			return ERR_AAC_SBR_PCM_FORMAT;
+//  272 		inbuf = (int *)aacDecInfo->rawSampleBuf[ch];
+//  273 		outptr = outbuf + chBase + ch;
+//  274 
+//  275 		/* restore delay buffers (could use ring buffer or keep in temp buffer for nChans == 1) */
+//  276 		for (l = 0; l < HF_GEN; l++) {
+//  277 			for (k = 0; k < 64; k++) {
+//  278 				psi->XBuf[l][k][0] = psi->XBufDelay[chBase + ch][l][k][0];
+//  279 				psi->XBuf[l][k][1] = psi->XBufDelay[chBase + ch][l][k][1];
+//  280 			}
+//  281 		}
+//  282 
+//  283 		/* step 1 - analysis QMF */
+//  284 		qmfaBands = (sbrHdr->count > 0 ? sbrFreq->kStart : 32);
+//  285 		for (l = 0; l < 32; l++) {
+//  286 			gbMask = QMFAnalysis(inbuf + l*32, psi->delayQMFA[chBase + ch], psi->XBuf[l + HF_GEN][0], 
+//  287 				aacDecInfo->rawSampleFBits, &(psi->delayIdxQMFA[chBase + ch]), qmfaBands);
+//  288 
+//  289 			gbIdx = ((l + HF_GEN) >> 5) & 0x01;	
+//  290 			sbrChan->gbMask[gbIdx] |= gbMask;	/* gbIdx = (0 if i < 32), (1 if i >= 32) */
+//  291 		}
+//  292 
+//  293 		if (upsampleOnly) {
+//  294 			/* no SBR - just run synthesis QMF to upsample by 2x */
+//  295 			qmfsBands = 32;
+//  296 			for (l = 0; l < 32; l++) {
+//  297 				/* step 4 - synthesis QMF */
+//  298 				QMFSynthesis(psi->XBuf[l + HF_ADJ][0], psi->delayQMFS[chBase + ch], &(psi->delayIdxQMFS[chBase + ch]), qmfsBands, outptr, aacDecInfo->nChans);
+//  299 				outptr += 64*aacDecInfo->nChans;
+//  300 			}
+//  301 		} else {
+//  302 			/* step 2 - HF generation */
+//  303 			GenerateHighFreq(psi, sbrGrid, sbrFreq, sbrChan, ch);
+//  304 
+//  305 			/* step 3 - HF adjustment */
+//  306 			AdjustHighFreq(psi, sbrHdr, sbrGrid, sbrFreq, sbrChan, ch);
+//  307 
+//  308 			/* step 4 - synthesis QMF */
+//  309 			qmfsBands = sbrFreq->kStartPrev + sbrFreq->numQMFBandsPrev;
+//  310 			for (l = 0; l < sbrGrid->envTimeBorder[0]; l++) {
+//  311 				/* if new envelope starts mid-frame, use old settings until start of first envelope in this frame */
+//  312 				QMFSynthesis(psi->XBuf[l + HF_ADJ][0], psi->delayQMFS[chBase + ch], &(psi->delayIdxQMFS[chBase + ch]), qmfsBands, outptr, aacDecInfo->nChans);
+??raac_DecodeSBRData_7:
+        LDR      R0,[R4, #+64]
+        MOV      R1,R10
+        PUSH     {R0}
+        CFI CFA R13+96
+        MOV      R0,R6
+        PUSH     {R0}
+        CFI CFA R13+100
+        LDR      R3,[SP, #+52]
+        LDR      R2,[SP, #+40]
+        ADD      R0,R11,#+2
+        ADD      R0,R5,R0, LSL #+9
+        ADD      R0,R9,R0
+        _BLF     raac_QMFSynthesis,??raac_QMFSynthesis??rA
+//  313 				outptr += 64*aacDecInfo->nChans;
+        LDR      R0,[R4, #+64]
+//  314 			}
+        ADD      R11,R11,#+1
+        ADD      R6,R6,R0, LSL #+7
+        ADD      SP,SP,#+8
+        CFI CFA R13+92
+??raac_DecodeSBRData_8:
+        LDR      R0,[SP, #+12]
+        LDRB     R0,[R0, #+4]
+        CMP      R11,R0
+        BLT      ??raac_DecodeSBRData_7
+//  315 
+//  316 			qmfsBands = sbrFreq->kStart + sbrFreq->numQMFBands;
+??raac_DecodeSBRData_9:
+        LDR      R1,[SP, #+0]
+        LDR      R2,[SP, #+0]
+        LDR      R1,[R1, #+0]
+        LDR      R2,[R2, #+20]
+        CMP      R11,#+32
+        ADD      R1,R2,R1
+        STR      R1,[SP, #+20]
+        BGE      ??raac_DecodeSBRData_10
+//  317 			for (     ; l < 32; l++) {
+//  318 				/* use new settings for rest of frame (usually the entire frame, unless the first envelope starts mid-frame) */
+//  319 				QMFSynthesis(psi->XBuf[l + HF_ADJ][0], psi->delayQMFS[chBase + ch], &(psi->delayIdxQMFS[chBase + ch]), qmfsBands, outptr, aacDecInfo->nChans);
+??raac_DecodeSBRData_11:
+        LDR      R0,[R4, #+64]
+        MOV      R1,R10
+        PUSH     {R0}
+        CFI CFA R13+96
+        MOV      R0,R6
+        PUSH     {R0}
+        CFI CFA R13+100
+        LDR      R3,[SP, #+28]
+        LDR      R2,[SP, #+40]
+        ADD      R0,R11,#+2
+        ADD      R0,R5,R0, LSL #+9
+        ADD      R0,R9,R0
+        _BLF     raac_QMFSynthesis,??raac_QMFSynthesis??rA
+//  320 				outptr += 64*aacDecInfo->nChans;
+        LDR      R0,[R4, #+64]
+//  321 			}
+        ADD      R11,R11,#+1
+        ADD      R6,R6,R0, LSL #+7
+        CMP      R11,#+32
+        ADD      SP,SP,#+8
+        CFI CFA R13+92
+        BLT      ??raac_DecodeSBRData_11
+//  322 		}
+//  323 
+//  324 		/* save delay */
+//  325 		for (l = 0; l < HF_GEN; l++) {
+??raac_DecodeSBRData_10:
+        MOV      R1,#+0
+//  326 			for (k = 0; k < 64; k++) {		
+??raac_DecodeSBRData_12:
+        MOV      R0,#+0
+//  327 				psi->XBufDelay[chBase + ch][l][k][0] = psi->XBuf[l+32][k][0];
+??raac_DecodeSBRData_13:
+        ADD      R3,R8,#+24576
+        ADD      R6,R5,R1, LSL #+9
+        ADD      R6,R6,R0, LSL #+3
+        ADD      R3,R3,R6
+        LDR      R6,[R3, #+0]
+        ADD      R2,R7,R1, LSL #+9
+        ADD      R2,R2,R0, LSL #+3
+        ADD      R2,R8,R2
+        STR      R6,[R2, #+0]
+//  328 				psi->XBufDelay[chBase + ch][l][k][1] = psi->XBuf[l+32][k][1];
+        LDR      R3,[R3, #+4]
+//  329 			}
+        ADD      R0,R0,#+1
+        STR      R3,[R2, #+4]
+        CMP      R0,#+64
+        BLT      ??raac_DecodeSBRData_13
+//  330 		}
+        ADD      R1,R1,#+1
+        CMP      R1,#+8
+        BLT      ??raac_DecodeSBRData_12
+//  331 		sbrChan->gbMask[0] = sbrChan->gbMask[1];
+        LDR      R1,[SP, #+8]
+        MOV      R0,#+396
+        LDR      R2,[R0, +R1]
+        STR      R2,[R1, #+392]
+//  332 		sbrChan->gbMask[1] = 0;
+        LDR      R2,[SP, #+8]
+        MOV      R1,#+0
+        STR      R1,[R0, +R2]
+//  333 
+//  334 		if (sbrHdr->count > 0)
+        LDR      R0,[SP, #+16]
+        LDR      R0,[R0, #+0]
+        CMP      R0,#+1
+//  335 			sbrChan->reset = 0;
+        LDRGE    R0,[SP, #+8]
+        STRGE    R1,[R0, #+0]
+        LDR      R1,[SP, #+4]
+        ADD      R1,R1,#+1
+        STR      R1,[SP, #+4]
+??raac_DecodeSBRData_6:
+        LDR      R0,[SP, #+48]
+        LDR      R1,[SP, #+4]
+        ADD      R10,R1,R0
+        MOV      R0,R1
+        LDR      R1,[SP, #+24]
+        CMP      R0,R1
+        BGE      ??raac_DecodeSBRData_14
+        MOV      R1,#+22
+        MLA      R2,R1,R10,R5
+        ADD      R0,R4,R0, LSL #+2
+        ADD      R1,R2,#+48
+        STR      R1,[SP, #+12]
+        MOV      R1,#+2336
+        MLA      R2,R1,R10,R5
+        ADD      R1,R2,#+516
+        STR      R1,[SP, #+8]
+        LDR      R1,[R0, #+8]
+        CMP      R1,#+0
+        BEQ      ??raac_DecodeSBRData_15
+        LDR      R1,[R4, #+16]
+        CMP      R1,#+4
+        BEQ      ??raac_DecodeSBRData_16
+??raac_DecodeSBRData_15:
+        MVN      R0,#+18
+        B        ??raac_DecodeSBRData_17
+??raac_DecodeSBRData_16:
+        LDR      R0,[R0, #+8]
+        ADD      R7,R5,R10, LSL #+12
+        STR      R0,[SP, #+20]
+        LDR      R0,[SP, #+4]
+        LDR      R1,[SP, #+48]
+        LDR      R2,[SP, #+52]
+        ADD      R1,R2,R1, LSL #+1
+        ADD      R6,R1,R0, LSL #+1
+        MOV      R1,#+0
+??raac_DecodeSBRData_18:
+        MOV      R0,#+0
+??raac_DecodeSBRData_19:
+        ADD      R2,R7,R1, LSL #+9
+        ADD      R2,R2,R0, LSL #+3
+        ADD      R2,R8,R2
+        LDR      R11,[R2, #+0]
+        ADD      R3,R5,R1, LSL #+9
+        ADD      R3,R3,R0, LSL #+3
+        ADD      R3,R9,R3
+        STR      R11,[R3, #+0]
+        LDR      R2,[R2, #+4]
+        ADD      R0,R0,#+1
+        STR      R2,[R3, #+4]
+        CMP      R0,#+64
+        BLT      ??raac_DecodeSBRData_19
+        ADD      R1,R1,#+1
+        CMP      R1,#+8
+        BLT      ??raac_DecodeSBRData_18
+        LDR      R0,[SP, #+16]
+        MOV      R11,#+0
+        LDR      R0,[R0, #+0]
+        CMP      R0,#+1
+        LDRGE    R1,[SP, #+0]
+        LDRGE    R1,[R1, #+0]
+        MOVLT    R1,#+32
+        STR      R1,[SP, #+36]
+??raac_DecodeSBRData_20:
+        ADD      R1,R5,R10, LSL #+2
+        STR      R1,[SP, #+40]
+        LDR      R0,[SP, #+36]
+        PUSH     {R0}
+        CFI CFA R13+96
+        MOV      R0,#+28
+        ORR      R0,R0,#0x2400
+        ADD      R0,R0,R1
+        PUSH     {R0}
+        CFI CFA R13+100
+        LDR      R3,[R4, #+20]
+        MOV      R1,#+1280
+        MLA      R12,R1,R10,R5
+        ADD      R0,R11,#+8
+        ADD      R0,R5,R0, LSL #+9
+        ADD      R2,R9,R0
+        MOV      R0,#+36
+        ORR      R0,R0,#0x2400
+        ADD      R1,R0,R12
+        LDR      R0,[SP, #+28]
+        ADD      R0,R0,R11, LSL #+7
+        _BLF     raac_QMFAnalysis,??raac_QMFAnalysis??rA
+        ADD      R1,R11,#+8
+        MOV      R2,#+1
+        AND      R1,R2,R1, ASR #+5
+        LDR      R2,[SP, #+16]
+        ADD      R11,R11,#+1
+        ADD      R1,R2,R1, LSL #+2
+        LDR      R2,[R1, #+392]
+        CMP      R11,#+32
+        ORR      R0,R0,R2
+        STR      R0,[R1, #+392]
+        ADD      SP,SP,#+8
+        CFI CFA R13+92
+        BLT      ??raac_DecodeSBRData_20
+        MOV      R1,#+5120
+        MLA      R2,R1,R10,R5
+        SUB      R0,R8,#+10240
+        ADD      R10,R0,R2
+        LDR      R2,[SP, #+40]
+        BIC      R1,R0,#0x8
+        ADD      R1,R1,R2
+        STR      R1,[SP, #+32]
+        LDR      R0,[SP, #+28]
+        CMP      R0,#+0
+        BEQ      ??raac_DecodeSBRData_21
+        MOV      R11,#+0
+??raac_DecodeSBRData_22:
+        LDR      R0,[R4, #+64]
+        MOV      R3,#+32
+        PUSH     {R0}
+        CFI CFA R13+96
+        MOV      R1,R10
+        MOV      R0,R6
+        PUSH     {R0}
+        CFI CFA R13+100
+        LDR      R2,[SP, #+40]
+        ADD      R0,R11,#+2
+        ADD      R11,R11,#+1
+        ADD      R0,R5,R0, LSL #+9
+        ADD      R0,R9,R0
+        _BLF     raac_QMFSynthesis,??raac_QMFSynthesis??rA
+        LDR      R0,[R4, #+64]
+        CMP      R11,#+32
+        ADD      R6,R6,R0, LSL #+7
+        ADD      SP,SP,#+8
+        CFI CFA R13+92
+        BGE      ??raac_DecodeSBRData_10
+        B        ??raac_DecodeSBRData_22
+??raac_DecodeSBRData_21:
+        LDR      R0,[SP, #+4]
+        MOV      R11,#+0
+        PUSH     {R0}
+        CFI CFA R13+96
+        LDR      R3,[SP, #+12]
+        LDR      R2,[SP, #+4]
+        LDR      R1,[SP, #+16]
+        MOV      R0,R5
+        _BLF     raac_GenerateHighFreq,??raac_GenerateHighFreq??rA
+        LDR      R0,[SP, #+8]
+        PUSH     {R0}
+        CFI CFA R13+100
+        LDR      R0,[SP, #+16]
+        PUSH     {R0}
+        CFI CFA R13+104
+        LDR      R3,[SP, #+12]
+        LDR      R2,[SP, #+24]
+        LDR      R1,[SP, #+28]
+        MOV      R0,R5
+        _BLF     raac_AdjustHighFreq,??raac_AdjustHighFreq??rA
+        LDR      R1,[SP, #+12]
+        LDR      R2,[SP, #+12]
+        LDR      R1,[R1, #+28]
+        LDR      R2,[R2, #+32]
+        ADD      R1,R2,R1
+        STR      R1,[SP, #+56]
+        LDR      R0,[SP, #+24]
+        LDRB     R0,[R0, #+4]
+        ADD      SP,SP,#+12
+        CFI CFA R13+92
+        CMP      R0,#+0
+        BNE      ??raac_DecodeSBRData_8
+        B        ??raac_DecodeSBRData_9
+//  336 	}
+//  337 	sbrFreq->kStartPrev = sbrFreq->kStart;
+??raac_DecodeSBRData_14:
+        LDR      R0,[SP, #+0]
+        LDR      R1,[R0, #+0]
+        STR      R1,[R0, #+28]
+//  338 	sbrFreq->numQMFBandsPrev = sbrFreq->numQMFBands;
+        LDR      R0,[SP, #+0]
+        LDR      R1,[R0, #+20]
+        STR      R1,[R0, #+32]
+//  339 
+//  340 	if (aacDecInfo->nChans > 0 && (chBase + ch) == aacDecInfo->nChans)
+        LDR      R0,[R4, #+64]
+        CMP      R0,#+1
+        BLT      ??raac_DecodeSBRData_2
+        CMP      R10,R0
+//  341 		psi->frameCount++;
+        LDREQ    R0,[R5, #+0]
+        ADDEQ    R0,R0,#+1
+        STREQ    R0,[R5, #+0]
+??raac_DecodeSBRData_2:
+        MOV      R0,#+0
+??raac_DecodeSBRData_17:
+        ADD      SP,SP,#+56
+        CFI CFA R13+36
+        POP      {R4-R11,PC}
+        CFI EndBlock cfiBlock7
+//  342 
+//  343 	return ERR_AAC_NONE;
+//  344 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_FlushCodecSBR??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE raac_FlushCodecSBR
+//  345 
+//  346 /**************************************************************************************
+//  347  * Function:    FlushCodecSBR
+//  348  *
+//  349  * Description: flush internal SBR codec state (after seeking, for example)
+//  350  *
+//  351  * Inputs:      valid AACDecInfo struct
+//  352  *
+//  353  * Outputs:     updated state variables for SBR
+//  354  *
+//  355  * Return:      0 if successful, error code (< 0) if error
+//  356  *
+//  357  * Notes:       SBR is heavily dependent on state from previous frames
+//  358  *                (e.g. delta coded scalefactors, previous envelope boundaries, etc.)
+//  359  *              On flush, we reset everything as if SBR had just been initialized
+//  360  *                for the first time. This triggers "upsample-only" mode until
+//  361  *                the first valid SBR header is received. Then SBR starts as usual.
+//  362  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function raac_FlushCodecSBR
+        ARM
+//  363 int FlushCodecSBR(AACDecInfo *aacDecInfo)
+//  364 {
+//  365 	PSInfoSBR *psi;
+//  366 
+//  367 	/* validate pointers */
+//  368 	if (!aacDecInfo || !aacDecInfo->psInfoSBR)
+raac_FlushCodecSBR:
+        CMP      R0,#+0
+        LDRNE    R0,[R0, #+4]
+        CMPNE    R0,#+0
+//  369 		return ERR_AAC_NULL_POINTER;
+        MVNEQ    R0,#+1
+        BXEQ     LR
+//  370 	psi = (PSInfoSBR *)(aacDecInfo->psInfoSBR);
+//  371 
+//  372 	InitSBRState(psi);
+        BXEQ     LR
+        MOV      R1,R0
+        MOV      R2,#+0
+        MOV      R3,#+44
+        ORR      R3,R3,#0xC600
+        MOV      R12,#+0
+        B        ??raac_FlushCodecSBR_0
+??raac_FlushCodecSBR_1:
+        STRB     R12,[R1], #+1
+        ADD      R2,R2,#+1
+??raac_FlushCodecSBR_0:
+        CMP      R2,R3
+        BCC      ??raac_FlushCodecSBR_1
+        MOV      R1,#+0
+??raac_FlushCodecSBR_2:
+        MOV      R3,#+2336
+        MLA      R2,R3,R1,R0
+        MOV      R3,#+1
+        STR      R3,[R2, #+516]
+        RSB      R3,R3,#+0
+        STRB     R3,[R2, #+916]
+        ADD      R1,R1,#+1
+        CMP      R1,#+2
+        BLT      ??raac_FlushCodecSBR_2
+//  373 
+//  374 	return 0;
+        MOV      R0,#+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock9
+//  375 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??free??rA:
+        LDR      R12,??Subroutine5_0  ;; free
+        BX       R12
+        DATA
+??Subroutine5_0:
+        DC32     free
+        CFI EndBlock cfiBlock10
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock11 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_SetBitstreamPointer??rA:
+        LDR      R12,??Subroutine6_0  ;; raac_SetBitstreamPointer
+        BX       R12
+        DATA
+??Subroutine6_0:
+        DC32     raac_SetBitstreamPointer
+        CFI EndBlock cfiBlock11
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock12 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_GetBits??rA:
+        LDR      R12,??Subroutine7_0  ;; raac_GetBits
+        BX       R12
+        DATA
+??Subroutine7_0:
+        DC32     raac_GetBits
+        CFI EndBlock cfiBlock12
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock13 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_GetSampRateIdx??rA:
+        LDR      R12,??Subroutine8_0  ;; raac_GetSampRateIdx
+        BX       R12
+        DATA
+??Subroutine8_0:
+        DC32     raac_GetSampRateIdx
+        CFI EndBlock cfiBlock13
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock14 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_UnpackSBRHeader??rA:
+        LDR      R12,??Subroutine9_0  ;; raac_UnpackSBRHeader
+        BX       R12
+        DATA
+??Subroutine9_0:
+        DC32     raac_UnpackSBRHeader
+        CFI EndBlock cfiBlock14
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock15 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_CalcFreqTables??rA:
+        LDR      R12,??Subroutine10_0  ;; raac_CalcFreqTables
+        BX       R12
+        DATA
+??Subroutine10_0:
+        DC32     raac_CalcFreqTables
+        CFI EndBlock cfiBlock15
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock16 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_UnpackSBRSingleChannel??rA:
+        LDR      R12,??Subroutine11_0  ;; raac_UnpackSBRSingleChannel
+        BX       R12
+        DATA
+??Subroutine11_0:
+        DC32     raac_UnpackSBRSingleChannel
+        CFI EndBlock cfiBlock16
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock17 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_UnpackSBRChannelPair??rA:
+        LDR      R12,??Subroutine12_0  ;; raac_UnpackSBRChannelPair
+        BX       R12
+        DATA
+??Subroutine12_0:
+        DC32     raac_UnpackSBRChannelPair
+        CFI EndBlock cfiBlock17
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock18 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_ByteAlignBitstream??rA:
+        LDR      R12,??Subroutine13_0  ;; raac_ByteAlignBitstream
+        BX       R12
+        DATA
+??Subroutine13_0:
+        DC32     raac_ByteAlignBitstream
+        CFI EndBlock cfiBlock18
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock19 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_QMFSynthesis??rA:
+        LDR      R12,??Subroutine14_0  ;; raac_QMFSynthesis
+        BX       R12
+        DATA
+??Subroutine14_0:
+        DC32     raac_QMFSynthesis
+        CFI EndBlock cfiBlock19
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock20 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_QMFAnalysis??rA:
+        LDR      R12,??Subroutine15_0  ;; raac_QMFAnalysis
+        BX       R12
+        DATA
+??Subroutine15_0:
+        DC32     raac_QMFAnalysis
+        CFI EndBlock cfiBlock20
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock21 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_GenerateHighFreq??rA:
+        LDR      R12,??Subroutine16_0  ;; raac_GenerateHighFreq
+        BX       R12
+        DATA
+??Subroutine16_0:
+        DC32     raac_GenerateHighFreq
+        CFI EndBlock cfiBlock21
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock22 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_AdjustHighFreq??rA:
+        LDR      R12,??Subroutine17_0  ;; raac_AdjustHighFreq
+        BX       R12
+        DATA
+??Subroutine17_0:
+        DC32     raac_AdjustHighFreq
+        CFI EndBlock cfiBlock22
+
+        END
+// 
+// 2 024 bytes in segment CODE
+// 
+// 1 848 bytes of CODE memory (+ 176 bytes shared)
+//
+//Errors: none
+//Warnings: 1

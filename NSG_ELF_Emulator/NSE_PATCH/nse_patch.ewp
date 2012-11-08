@@ -559,8 +559,8 @@
         </option>
         <option>
           <name>FormatVariant</name>
-          <version>7</version>
-          <state>16</state>
+          <version>8</version>
+          <state>17</state>
         </option>
         <option>
           <name>SecondaryOutputFile</name>
@@ -745,7 +745,7 @@
         </option>
         <option>
           <name>ExtraFormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -1382,8 +1382,8 @@
         </option>
         <option>
           <name>FormatVariant</name>
-          <version>7</version>
-          <state>16</state>
+          <version>8</version>
+          <state>17</state>
         </option>
         <option>
           <name>SecondaryOutputFile</name>
@@ -1568,7 +1568,7 @@
         </option>
         <option>
           <name>ExtraFormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -1671,7 +1671,7 @@
         </option>
         <option>
           <name>ExePath</name>
-          <state>VKP\S65v58</state>
+          <state>Output</state>
         </option>
         <option>
           <name>ObjPath</name>
@@ -1753,7 +1753,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>4.41A</state>
+          <state>4.42A</state>
         </option>
         <option>
           <name>GeneralMisraRules</name>
@@ -2180,7 +2180,7 @@
       <archiveVersion>1</archiveVersion>
       <data>
         <prebuild></prebuild>
-        <postbuild>$PROJ_DIR$\postbuild\postbuild.cmd $PROJ_DIR$ $EXE_DIR$ $PROJ_DIR$\config\S65v58.txt</postbuild>
+        <postbuild></postbuild>
       </data>
     </settings>
     <settings>
@@ -2205,8 +2205,8 @@
         </option>
         <option>
           <name>FormatVariant</name>
-          <version>7</version>
-          <state>16</state>
+          <version>8</version>
+          <state>17</state>
         </option>
         <option>
           <name>SecondaryOutputFile</name>
@@ -2262,7 +2262,7 @@
         </option>
         <option>
           <name>XclFile</name>
-          <state>$PROJ_DIR$\config\S65sw58.xcl</state>
+          <state>$PROJ_DIR$\config\S6Csw53.xcl</state>
         </option>
         <option>
           <name>XclFileSlave</name>
@@ -2391,7 +2391,7 @@
         </option>
         <option>
           <name>ExtraFormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>
@@ -3028,8 +3028,8 @@
         </option>
         <option>
           <name>FormatVariant</name>
-          <version>7</version>
-          <state>16</state>
+          <version>8</version>
+          <state>17</state>
         </option>
         <option>
           <name>SecondaryOutputFile</name>
@@ -3214,7 +3214,7 @@
         </option>
         <option>
           <name>ExtraFormatVariant</name>
-          <version>7</version>
+          <version>8</version>
           <state>2</state>
         </option>
         <option>

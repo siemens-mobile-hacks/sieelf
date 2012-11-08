@@ -28,7 +28,7 @@ typedef struct{
 } TInfo;
 
 TInfo InfoData[13];
- 
+
 GBSTMR mytmr;
 const IPC_REQ my_ipc={
   ipc_my_name,

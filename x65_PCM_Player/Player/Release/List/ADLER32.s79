@@ -1,0 +1,583 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:35:50 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\ADL /
+//                       ER32.C                                              /
+//    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\ADL /
+//                       ER32.C -D NDEBUG -lC D:\SVN\SieELF\SieELF\x65_PCM_P /
+//                       layer\Player\Release\List\ -lA                      /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player\Player /
+//                       \Release\Obj\ -s9 --cpu_mode arm --endian little    /
+//                       --cpu ARM926EJ-S --stack_align 4 --interwork -e     /
+//                       --fpu None --dlib_config "D:\Program                /
+//                       Files\IAR\Embedded Workbench 4.0                    /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ADLER32.s79                                    /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME ADLER32
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+??DataTable0 EQU 0
+??DataTable1 EQU 0
+??DataTable2 EQU 0
+??DataTable3 EQU 0
+        MULTWEAK ??adler32??rT
+        MULTWEAK ??adler32_combine??rT
+        PUBLIC adler32
+        FUNCTION adler32,0203H
+        LOCFRAME CSTACK, 8, STACK
+        PUBLIC adler32_combine
+        FUNCTION adler32_combine,0203H
+        LOCFRAME CSTACK, 12, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+adler32             SYMBOL "adler32"
+??adler32??rT       SYMBOL "??rT", adler32
+adler32_combine     SYMBOL "adler32_combine"
+??adler32_combine??rT SYMBOL "??rT", adler32_combine
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??adler32??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE adler32
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\ADLER32.C
+//    1 /* adler32.c -- compute the Adler-32 checksum of a data stream
+//    2  * Copyright (C) 1995-2004 Mark Adler
+//    3  * For conditions of distribution and use, see copyright notice in zlib.h
+//    4  */
+//    5 
+//    6 /* @(#) $Id$ */
+//    7 
+//    8 #define ZLIB_INTERNAL
+//    9 #include "zlib.h"
+//   10 
+//   11 #define BASE 65521UL    /* largest prime smaller than 65536 */
+//   12 #define NMAX 5552
+//   13 /* NMAX is the largest n such that 255n(n+1)/2 + (n+1)(BASE-1) <= 2^32-1 */
+//   14 
+//   15 #define DO1(buf,i)  {adler += (buf)[i]; sum2 += adler;}
+//   16 #define DO2(buf,i)  DO1(buf,i); DO1(buf,i+1);
+//   17 #define DO4(buf,i)  DO2(buf,i); DO2(buf,i+2);
+//   18 #define DO8(buf,i)  DO4(buf,i); DO4(buf,i+4);
+//   19 #define DO16(buf)   DO8(buf,0); DO8(buf,8);
+//   20 
+//   21 /* use NO_DIVIDE if your processor does not do division in hardware */
+//   22 #ifdef NO_DIVIDE
+//   23 #  define MOD(a) \ 
+//   24     do { \ 
+//   25         if (a >= (BASE << 16)) a -= (BASE << 16); \ 
+//   26         if (a >= (BASE << 15)) a -= (BASE << 15); \ 
+//   27         if (a >= (BASE << 14)) a -= (BASE << 14); \ 
+//   28         if (a >= (BASE << 13)) a -= (BASE << 13); \ 
+//   29         if (a >= (BASE << 12)) a -= (BASE << 12); \ 
+//   30         if (a >= (BASE << 11)) a -= (BASE << 11); \ 
+//   31         if (a >= (BASE << 10)) a -= (BASE << 10); \ 
+//   32         if (a >= (BASE << 9)) a -= (BASE << 9); \ 
+//   33         if (a >= (BASE << 8)) a -= (BASE << 8); \ 
+//   34         if (a >= (BASE << 7)) a -= (BASE << 7); \ 
+//   35         if (a >= (BASE << 6)) a -= (BASE << 6); \ 
+//   36         if (a >= (BASE << 5)) a -= (BASE << 5); \ 
+//   37         if (a >= (BASE << 4)) a -= (BASE << 4); \ 
+//   38         if (a >= (BASE << 3)) a -= (BASE << 3); \ 
+//   39         if (a >= (BASE << 2)) a -= (BASE << 2); \ 
+//   40         if (a >= (BASE << 1)) a -= (BASE << 1); \ 
+//   41         if (a >= BASE) a -= BASE; \ 
+//   42     } while (0)
+//   43 #  define MOD4(a) \ 
+//   44     do { \ 
+//   45         if (a >= (BASE << 4)) a -= (BASE << 4); \ 
+//   46         if (a >= (BASE << 3)) a -= (BASE << 3); \ 
+//   47         if (a >= (BASE << 2)) a -= (BASE << 2); \ 
+//   48         if (a >= (BASE << 1)) a -= (BASE << 1); \ 
+//   49         if (a >= BASE) a -= BASE; \ 
+//   50     } while (0)
+//   51 #else
+//   52 #  define MOD(a) a %= BASE
+//   53 #  define MOD4(a) a %= BASE
+//   54 #endif
+//   55 
+//   56 /* ========================================================================= */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function adler32
+        ARM
+//   57 uLong ZEXPORT adler32(adler, buf, len)
+//   58     uLong adler;
+//   59     const Bytef *buf;
+//   60     uInt len;
+//   61 {
+adler32:
+        PUSH     {R4,R5}
+        CFI R5 Frame(CFA, -4)
+        CFI R4 Frame(CFA, -8)
+        CFI CFA R13+8
+//   62     unsigned long sum2;
+//   63     unsigned n;
+//   64 
+//   65     /* split Adler-32 into component sums */
+//   66     sum2 = (adler >> 16) & 0xffff;
+        LSR      R3,R0,#+16
+//   67     adler &= 0xffff;
+        LSL      R0,R0,#+16
+        LSR      R12,R0,#+16
+//   68 
+//   69     /* in case user likes doing a byte at a time, keep it fast */
+//   70     if (len == 1) {
+        MVN      R0,#+240
+        BIC      R0,R0,#0xFF00
+        RSB      R4,R0,#+0
+        CMP      R2,#+1
+        BNE      ??adler32_0
+//   71         adler += buf[0];
+        LDRB     R1,[R1, #+0]
+        ADD      R12,R1,R12
+//   72         if (adler >= BASE)
+        CMP      R12,R4
+//   73             adler -= BASE;
+        ADDCS    R12,R0,R12
+//   74         sum2 += adler;
+        ADD      R3,R12,R3
+//   75         if (sum2 >= BASE)
+        CMP      R3,R4
+//   76             sum2 -= BASE;
+        ADDCS    R3,R0,R3
+//   77         return adler | (sum2 << 16);
+??adler32_1:
+        ORR      R0,R12,R3, LSL #+16
+??adler32_2:
+        POP      {R4,R5}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        CFI R4 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -4)
+        CFI CFA R13+8
+//   78     }
+//   79 
+//   80     /* initial Adler-32 value (deferred check for len == 1 speed) */
+//   81     if (buf == Z_NULL)
+??adler32_0:
+        CMP      R1,#+0
+//   82         return 1L;
+        MOVEQ    R0,#+1
+        BEQ      ??adler32_2
+//   83 
+//   84     /* in case short lengths are provided, keep it somewhat fast */
+//   85     if (len < 16) {
+        CMP      R2,#+16
+        BCS      ??adler32_3
+        B        ??adler32_4
+//   86         while (len--) {
+//   87             adler += *buf++;
+??adler32_5:
+        LDRB     R5,[R1], #+1
+        ADD      R12,R5,R12
+//   88             sum2 += adler;
+        ADD      R3,R12,R3
+//   89         }
+??adler32_4:
+        MOV      R5,R2
+        SUB      R2,R5,#+1
+        CMP      R5,#+0
+        BNE      ??adler32_5
+//   90         if (adler >= BASE)
+        CMP      R12,R4
+//   91             adler -= BASE;
+        ADDCS    R12,R0,R12
+//   92         MOD4(sum2);             /* only added so many BASE's */
+//   93         return adler | (sum2 << 16);
+        LDR      R0,??DataTable4  ;; 0xffffffff80078071
+        UMULL    R1,R2,R0,R3
+        LSR      R2,R2,#+15
+        MUL      R2,R4,R2
+        POP      {R4,R5}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI CFA R13+0
+        SUB      R2,R3,R2
+        ORR      R0,R12,R2, LSL #+16
+        BX       LR
+        CFI R4 Frame(CFA, -8)
+        CFI R5 Frame(CFA, -4)
+        CFI CFA R13+8
+//   94     }
+//   95 
+//   96     /* do length NMAX blocks -- requires just one modulo operation */
+//   97     while (len >= NMAX) {
+//   98         len -= NMAX;
+??adler32_6:
+        RSB      R0,R0,#+0
+        ADD      R2,R0,R2
+//   99         n = NMAX / 16;          /* NMAX is divisible by 16 */
+        MOV      R0,#+91
+        ORR      R0,R0,#0x100
+//  100         do {
+//  101             DO16(buf);          /* 16 sums unrolled */
+??adler32_7:
+        LDRB     R4,[R1], #+1
+        LDRB     R5,[R1], #+1
+//  102             buf += 16;
+//  103         } while (--n);
+        SUBS     R0,R0,#+1
+        ADD      R4,R4,R12
+        ADD      R3,R4,R3
+        ADD      R4,R5,R4
+        LDRB     R5,[R1], #+1
+        ADD      R3,R4,R3
+        ADD      R4,R5,R4
+        LDRB     R5,[R1], #+1
+        ADD      R3,R4,R3
+        ADD      R4,R5,R4
+        LDRB     R5,[R1], #+1
+        ADD      R3,R4,R3
+        ADD      R4,R5,R4
+        LDRB     R5,[R1], #+1
+        ADD      R3,R4,R3
+        ADD      R4,R5,R4
+        LDRB     R5,[R1], #+1
+        ADD      R3,R4,R3
+        ADD      R4,R5,R4
+        LDRB     R5,[R1], #+1
+        ADD      R3,R4,R3
+        ADD      R4,R5,R4
+        LDRB     R5,[R1], #+1
+        ADD      R3,R4,R3
+        ADD      R4,R5,R4
+        LDRB     R5,[R1], #+1
+        ADD      R3,R4,R3
+        ADD      R4,R5,R4
+        LDRB     R5,[R1], #+1
+        ADD      R3,R4,R3
+        ADD      R4,R5,R4
+        LDRB     R5,[R1], #+1
+        ADD      R3,R4,R3
+        ADD      R4,R5,R4
+        LDRB     R5,[R1], #+1
+        ADD      R3,R4,R3
+        ADD      R4,R5,R4
+        LDRB     R5,[R1], #+1
+        ADD      R3,R4,R3
+        ADD      R4,R5,R4
+        LDRB     R5,[R1], #+1
+        ADD      R3,R4,R3
+        ADD      R4,R5,R4
+        LDRB     R5,[R1], #+1
+        ADD      R3,R4,R3
+        ADD      R12,R5,R4
+        ADD      R3,R12,R3
+        BNE      ??adler32_7
+//  104         MOD(adler);
+        LDR      R0,??DataTable4  ;; 0xffffffff80078071
+        UMULL    R4,R5,R0,R12
+        MOV      R4,#+241
+        LSR      R5,R5,#+15
+        ORR      R4,R4,#0xFF00
+        MUL      R5,R4,R5
+        SUB      R12,R12,R5
+//  105         MOD(sum2);
+        UMULL    R4,R5,R0,R3
+        MOV      R4,#+241
+        LSR      R5,R5,#+15
+        ORR      R4,R4,#0xFF00
+        MUL      R5,R4,R5
+        SUB      R3,R3,R5
+//  106     }
+??adler32_3:
+        MOV      R0,#+176
+        ORR      R0,R0,#0x1500
+        CMP      R2,R0
+        BCS      ??adler32_6
+//  107 
+//  108     /* do remaining bytes (less than NMAX, still just one modulo) */
+//  109     if (len) {                  /* avoid modulos if none remaining */
+        CMP      R2,#+0
+        BNE      ??adler32_8
+        B        ??adler32_1
+//  110         while (len >= 16) {
+//  111             len -= 16;
+//  112             DO16(buf);
+??adler32_9:
+        LDRB     R0,[R1], #+1
+        LDRB     R4,[R1], #+1
+        SUB      R2,R2,#+16
+        ADD      R0,R0,R12
+        ADD      R3,R0,R3
+        ADD      R0,R4,R0
+        LDRB     R4,[R1], #+1
+        ADD      R3,R0,R3
+        ADD      R0,R4,R0
+        LDRB     R4,[R1], #+1
+        ADD      R3,R0,R3
+        ADD      R0,R4,R0
+        LDRB     R4,[R1], #+1
+        ADD      R3,R0,R3
+        ADD      R0,R4,R0
+        LDRB     R4,[R1], #+1
+        ADD      R3,R0,R3
+        ADD      R0,R4,R0
+        LDRB     R4,[R1], #+1
+        ADD      R3,R0,R3
+        ADD      R0,R4,R0
+        LDRB     R4,[R1], #+1
+        ADD      R3,R0,R3
+        ADD      R0,R4,R0
+        LDRB     R4,[R1], #+1
+        ADD      R3,R0,R3
+        ADD      R0,R4,R0
+        LDRB     R4,[R1], #+1
+        ADD      R3,R0,R3
+        ADD      R0,R4,R0
+        LDRB     R4,[R1], #+1
+        ADD      R3,R0,R3
+        ADD      R0,R4,R0
+        LDRB     R4,[R1], #+1
+        ADD      R3,R0,R3
+        ADD      R0,R4,R0
+        LDRB     R4,[R1], #+1
+        ADD      R3,R0,R3
+        ADD      R0,R4,R0
+        LDRB     R4,[R1], #+1
+        ADD      R3,R0,R3
+        ADD      R0,R4,R0
+        LDRB     R4,[R1], #+1
+        ADD      R3,R0,R3
+        ADD      R0,R4,R0
+        LDRB     R4,[R1], #+1
+        ADD      R3,R0,R3
+        ADD      R12,R4,R0
+        ADD      R3,R12,R3
+//  113             buf += 16;
+//  114         }
+??adler32_8:
+        CMP      R2,#+16
+        BCS      ??adler32_9
+//  115         while (len--) {
+??adler32_10:
+        MOV      R0,R2
+        SUB      R2,R0,#+1
+        CMP      R0,#+0
+        BEQ      ??adler32_11
+//  116             adler += *buf++;
+        LDRB     R0,[R1], #+1
+        ADD      R12,R0,R12
+//  117             sum2 += adler;
+        ADD      R3,R12,R3
+        B        ??adler32_10
+//  118         }
+//  119         MOD(adler);
+??adler32_11:
+        LDR      R0,??DataTable4  ;; 0xffffffff80078071
+        UMULL    R1,R2,R0,R12
+        MOV      R1,#+241
+        LSR      R2,R2,#+15
+        ORR      R1,R1,#0xFF00
+        MUL      R2,R1,R2
+        SUB      R12,R12,R2
+//  120         MOD(sum2);
+        UMULL    R1,R2,R0,R3
+        MOV      R1,#+241
+        LSR      R2,R2,#+15
+        ORR      R1,R1,#0xFF00
+        MUL      R2,R1,R2
+        SUB      R3,R3,R2
+        B        ??adler32_1
+        CFI EndBlock cfiBlock1
+//  121     }
+//  122 
+//  123     /* return recombined sums */
+//  124     return adler | (sum2 << 16);
+//  125 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??adler32_combine??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE adler32_combine
+//  126 
+//  127 /* ========================================================================= */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function adler32_combine
+        ARM
+//  128 uLong ZEXPORT adler32_combine(adler1, adler2, len2)
+//  129     uLong adler1;
+//  130     uLong adler2;
+//  131     z_off_t len2;
+//  132 {
+adler32_combine:
+        PUSH     {R4-R6}
+        CFI R6 Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+//  133     unsigned long sum1;
+//  134     unsigned long sum2;
+//  135     unsigned rem;
+//  136 
+//  137     /* the derivation of this formula is left as an exercise for the reader */
+//  138     rem = (unsigned)(len2 % BASE);
+        LDR      R4,??DataTable4  ;; 0xffffffff80078071
+//  139     sum1 = adler1 & 0xffff;
+//  140     sum2 = rem * sum1;
+//  141     MOD(sum2);
+//  142     sum1 += (adler2 & 0xffff) + BASE - 1;
+        MOV      R5,#+240
+        UMULL    R12,R3,R4,R2
+        MOV      R12,#+241
+        LSR      R3,R3,#+15
+        ORR      R12,R12,#0xFF00
+        MUL      R3,R12,R3
+        ORR      R5,R5,#0xFF00
+        SUB      R3,R2,R3
+        ORR      R2,R12,#0xE
+        AND      R12,R2,R0
+        MUL      R4,R12,R3
+        AND      R2,R2,R1
+        ADD      R2,R5,R2
+//  143     sum2 += ((adler1 >> 16) & 0xffff) + ((adler2 >> 16) & 0xffff) + BASE - rem;
+        LDR      R5,??DataTable4  ;; 0xffffffff80078071
+        ADD      R2,R2,R12
+        UMULL    R12,R6,R5,R4
+        MOV      R12,#+241
+        LSR      R6,R6,#+15
+        ORR      R12,R12,#0xFF00
+        MUL      R6,R12,R6
+        SUB      R6,R4,R6
+//  144     if (sum1 > BASE) sum1 -= BASE;
+//  145     if (sum1 > BASE) sum1 -= BASE;
+//  146     if (sum2 > (BASE << 1)) sum2 -= (BASE << 1);
+        LDR      R4,??adler32_combine_0  ;; 0x1ffe3
+        ADD      R0,R6,R0, LSR #+16
+        ADD      R0,R0,R1, LSR #+16
+        MOV      R1,R12
+        ADD      R0,R1,R0
+        SUB      R0,R0,R3
+        RSB      R1,R1,#+0
+        ADD      R3,R12,#+1
+        CMP      R2,R3
+        ADDCS    R2,R1,R2
+        CMP      R2,R3
+        ADDCS    R2,R1,R2
+        CMP      R0,R4
+        LDRCS    R4,??adler32_combine_0+0x4  ;; 0xfffffffffffe001e
+        ADDCS    R0,R4,R0
+//  147     if (sum2 > BASE) sum2 -= BASE;
+//  148     return sum1 | (sum2 << 16);
+        POP      {R4-R6}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI CFA R13+0
+        CMP      R0,R3
+        ADDCS    R0,R1,R0
+        ORR      R0,R2,R0, LSL #+16
+        BX       LR               ;; return
+        DATA
+??adler32_combine_0:
+        DC32     0x1ffe3
+        DC32     0xfffffffffffe001e
+        CFI EndBlock cfiBlock3
+//  149 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable4:
+        DC32     0xffffffff80078071
+
+        END
+// 
+// 948 bytes in segment CODE
+// 
+// 940 bytes of CODE memory (+ 8 bytes shared)
+//
+//Errors: none
+//Warnings: none

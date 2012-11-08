@@ -44,14 +44,14 @@ int MyIDLECSM_onMessage(CSM_RAM* data,GBS_MSG* msg)
 {
   int csm_result=0;
 
-  csm_result=old_icsm_onMessage(data,msg); //Вызываем старый обработчик событий
+  csm_result=old_icsm_onMessage(data,msg); //Call the old event handler
 
 #define idlegui_id (((int *)data)[DISPLACE_OF_IDLEGUI_ID/4])  
   
-  if (IsGuiOnTop(idlegui_id)) //Если IdleGui на самом верху
+  if (IsGuiOnTop(idlegui_id)) //If IdleGui at the top
   {
     GUI *igui=GetTopGUI();
-    if (igui) //И он существует (а не в проекте ;))
+    if (igui) //And he was there (as opposed to the project;)
     {
       DoSplices(igui);
     }

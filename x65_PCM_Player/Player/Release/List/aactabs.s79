@@ -1,0 +1,332 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:33 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD /
+//                       EC\aactabs.c                                        /
+//    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD /
+//                       EC\aactabs.c -D NDEBUG -lC                          /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\aactabs.s79                                    /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME aactabs
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        PUBLIC raac_channelMapTab
+        PUBLIC raac_elementNumChans
+        PUBLIC raac_predSFBMax
+        PUBLIC raac_sampRateTab
+        PUBLIC raac_sfBandTabLong
+        PUBLIC raac_sfBandTabLongOffset
+        PUBLIC raac_sfBandTabShort
+        PUBLIC raac_sfBandTabShortOffset
+        PUBLIC raac_sfBandTotalLong
+        PUBLIC raac_sfBandTotalShort
+        PUBLIC raac_tnsMaxBandsLong
+        PUBLIC raac_tnsMaxBandsLongOffset
+        PUBLIC raac_tnsMaxBandsShort
+        PUBLIC raac_tnsMaxBandsShortOffset
+        PUBLIC raac_tnsMaxOrderLong
+        PUBLIC raac_tnsMaxOrderShort
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\aactabs.c
+//    1 /* ***** BEGIN LICENSE BLOCK *****  
+//    2  * Source last modified: $Id: aactabs.c,v 1.1 2005/02/26 01:47:31 jrecker Exp $ 
+//    3  *   
+//    4  * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+//    5  *       
+//    6  * The contents of this file, and the files included with this file, 
+//    7  * are subject to the current version of the RealNetworks Public 
+//    8  * Source License (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the current version of the RealNetworks Community 
+//   11  * Source License (the "RCSL") available at 
+//   12  * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+//   13  * will apply. You may also obtain the license terms directly from 
+//   14  * RealNetworks.  You may not use this file except in compliance with 
+//   15  * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+//   16  * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+//   17  * the rights, obligations and limitations governing use of the 
+//   18  * contents of the file. 
+//   19  *   
+//   20  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   21  * developer of the Original Code and owns the copyrights in the 
+//   22  * portions it created. 
+//   23  *   
+//   24  * This file, and the files included with this file, is distributed 
+//   25  * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+//   26  * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+//   27  * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+//   28  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+//   29  * ENJOYMENT OR NON-INFRINGEMENT. 
+//   30  *  
+//   31  * Technology Compatibility Kit Test Suite(s) Location:  
+//   32  *    http://www.helixcommunity.org/content/tck  
+//   33  *  
+//   34  * Contributor(s):  
+//   35  *   
+//   36  * ***** END LICENSE BLOCK ***** */  
+//   37 
+//   38 /**************************************************************************************
+//   39  * Fixed-point HE-AAC decoder
+//   40  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+//   41  * February 2005
+//   42  *
+//   43  * aactabs.c - platform-independent tables for AAC decoder (global, read-only)
+//   44  **************************************************************************************/
+//   45 
+//   46 #include "aaccommon.h"
+//   47 
+//   48 /* sample rates (table 4.5.1) */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//   49 const int sampRateTab[NUM_SAMPLE_RATES] = {
+raac_sampRateTab:
+        DATA
+        DC32 96000, 88200, 64000, 48000, 44100, 32000, 24000, 22050, 16000
+        DC32 12000, 11025, 8000
+//   50     96000, 88200, 64000, 48000, 44100, 32000, 
+//   51 	24000, 22050, 16000, 12000, 11025,  8000
+//   52 };
+//   53 
+//   54 /* max scalefactor band for prediction (main profile only) */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//   55 const int predSFBMax[NUM_SAMPLE_RATES] = {
+raac_predSFBMax:
+        DATA
+        DC32 33, 33, 38, 40, 40, 40, 41, 41, 37, 37, 37, 34
+//   56 	33, 33, 38, 40, 40, 40, 41, 41, 37, 37, 37, 34
+//   57 };
+//   58 
+//   59 /* channel mapping (table 1.6.3.4) (-1 = unknown, so need to determine mapping based on rules in 8.5.1) */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//   60 const int channelMapTab[NUM_DEF_CHAN_MAPS] = {
+raac_channelMapTab:
+        DATA
+        DC32 -1, 1, 2, 3, 4, 5, 6, 8
+//   61 	-1, 1, 2, 3, 4, 5, 6, 8
+//   62 };
+//   63 
+//   64 /* number of channels in each element (SCE, CPE, etc.)
+//   65  * see AACElementID in aaccommon.h 
+//   66  */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//   67 const int elementNumChans[NUM_ELEMENTS] = {
+raac_elementNumChans:
+        DATA
+        DC32 1, 2, 0, 1, 0, 0, 0, 0
+//   68 	1, 2, 0, 1, 0, 0, 0, 0
+//   69 };
+//   70 
+//   71 /* total number of scale factor bands in one window */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//   72 const unsigned char sfBandTotalShort[NUM_SAMPLE_RATES] = {
+raac_sfBandTotalShort:
+        DATA
+        DC8 12, 12, 12, 14, 14, 14, 15, 15, 15, 15, 15, 15
+//   73     12, 12, 12, 14, 14, 14, 15, 15, 15, 15, 15, 15
+//   74 };
+//   75 
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//   76 const unsigned char sfBandTotalLong[NUM_SAMPLE_RATES] = {
+raac_sfBandTotalLong:
+        DATA
+        DC8 41, 41, 47, 49, 49, 51, 47, 47, 43, 43, 43, 40
+//   77     41, 41, 47, 49, 49, 51, 47, 47, 43, 43, 43, 40
+//   78 };
+//   79 
+//   80 /* scale factor band tables */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//   81 const int sfBandTabShortOffset[NUM_SAMPLE_RATES] = {0, 0, 0, 13, 13, 13, 28, 28, 44, 44, 44, 60};
+raac_sfBandTabShortOffset:
+        DATA
+        DC32 0, 0, 0, 13, 13, 13, 28, 28, 44, 44, 44, 60
+//   82 
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//   83 const short sfBandTabShort[76] = {
+raac_sfBandTabShort:
+        DATA
+        DC16 0, 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 92, 128, 0, 4, 8, 12, 16
+        DC16 20, 28, 36, 44, 56, 68, 80, 96, 112, 128, 0, 4, 8, 12, 16, 20, 24
+        DC16 28, 36, 44, 52, 64, 76, 92, 108, 128, 0, 4, 8, 12, 16, 20, 24, 28
+        DC16 32, 40, 48, 60, 72, 88, 108, 128, 0, 4, 8, 12, 16, 20, 24, 28, 36
+        DC16 44, 52, 60, 72, 88, 108, 128
+//   84 	/* short block 64, 88, 96 kHz [13] (tables 4.5.24, 4.5.26) */
+//   85 	0,   4,   8,  12,  16,  20,  24,  32,  40,  48,  64,  92, 128,
+//   86 
+//   87 	/* short block 32, 44, 48 kHz [15] (table 4.5.15) */
+//   88 	0,   4,   8,  12,  16,  20,  28,  36,  44,  56,  68,  80,  96, 112, 128,
+//   89 
+//   90 	/* short block 22, 24 kHz [16] (table 4.5.22) */
+//   91 	0,   4,   8,  12,  16,  20,  24,  28,  36,  44,  52,  64,  76,  92, 108, 128,
+//   92 
+//   93 	/* short block 11, 12, 16 kHz [16] (table 4.5.20) */
+//   94 	0,   4,   8,  12,  16,  20,  24,  28,  32,  40,  48,  60,  72,  88, 108, 128,
+//   95 
+//   96 	/* short block 8 kHz [16] (table 4.5.18) */
+//   97 	0,   4,   8,  12,  16,  20,  24,  28,  36,  44,  52,  60,  72,  88, 108, 128
+//   98 };
+//   99 
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  100 const int sfBandTabLongOffset[NUM_SAMPLE_RATES] = {0, 0, 42, 90, 90, 140, 192, 192, 240, 240, 240, 284};
+raac_sfBandTabLongOffset:
+        DATA
+        DC32 0, 0, 42, 90, 90, 140, 192, 192, 240, 240, 240, 284
+//  101 
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  102 const short sfBandTabLong[325] = {
+raac_sfBandTabLong:
+        DATA
+        DC16 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 64, 72
+        DC16 80, 88, 96, 108, 120, 132, 144, 156, 172, 188, 212, 240, 276, 320
+        DC16 384, 448, 512, 576, 640, 704, 768, 832, 896, 960, 1024, 0, 4, 8
+        DC16 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 64, 72, 80, 88
+        DC16 100, 112, 124, 140, 156, 172, 192, 216, 240, 268, 304, 344, 384
+        DC16 424, 464, 504, 544, 584, 624, 664, 704, 744, 784, 824, 864, 904
+        DC16 944, 984, 1024, 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 48, 56
+        DC16 64, 72, 80, 88, 96, 108, 120, 132, 144, 160, 176, 196, 216, 240
+        DC16 264, 292, 320, 352, 384, 416, 448, 480, 512, 544, 576, 608, 640
+        DC16 672, 704, 736, 768, 800, 832, 864, 896, 928, 1024, 0, 4, 8, 12, 16
+        DC16 20, 24, 28, 32, 36, 40, 48, 56, 64, 72, 80, 88, 96, 108, 120, 132
+        DC16 144, 160, 176, 196, 216, 240, 264, 292, 320, 352, 384, 416, 448
+        DC16 480, 512, 544, 576, 608, 640, 672, 704, 736, 768, 800, 832, 864
+        DC16 896, 928, 960, 992, 1024, 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40
+        DC16 44, 52, 60, 68, 76, 84, 92, 100, 108, 116, 124, 136, 148, 160, 172
+        DC16 188, 204, 220, 240, 260, 284, 308, 336, 364, 396, 432, 468, 508
+        DC16 552, 600, 652, 704, 768, 832, 896, 960, 1024, 0, 8, 16, 24, 32, 40
+        DC16 48, 56, 64, 72, 80, 88, 100, 112, 124, 136, 148, 160, 172, 184
+        DC16 196, 212, 228, 244, 260, 280, 300, 320, 344, 368, 396, 424, 456
+        DC16 492, 532, 572, 616, 664, 716, 772, 832, 896, 960, 1024, 0, 12, 24
+        DC16 36, 48, 60, 72, 84, 96, 108, 120, 132, 144, 156, 172, 188, 204
+        DC16 220, 236, 252, 268, 288, 308, 328, 348, 372, 396, 420, 448, 476
+        DC16 508, 544, 580, 620, 664, 712, 764, 820, 880, 944, 1024
+        DC8 0, 0
+//  103 	/* long block 88, 96 kHz [42] (table 4.5.25) */
+//  104 	  0,   4,   8,  12,  16,  20,  24,  28,  32,  36,  40,  44,  48,   52,
+//  105 	 56,  64,  72,  80,  88,  96, 108, 120, 132, 144, 156, 172, 188,  212,
+//  106 	240, 276, 320, 384, 448, 512, 576, 640, 704, 768, 832, 896, 960, 1024,
+//  107 
+//  108 	/* long block 64 kHz [48] (table 4.5.13) */
+//  109 	  0,   4,   8,  12,  16,  20,  24,  28,  32,  36,  40,  44,  48,  52,  56,   64,
+//  110 	 72,  80,  88, 100, 112, 124, 140, 156, 172, 192, 216, 240, 268, 304, 344,  384,
+//  111 	424, 464, 504, 544, 584, 624, 664, 704, 744, 784, 824, 864, 904, 944, 984, 1024,
+//  112 
+//  113 	/* long block 44, 48 kHz [50] (table 4.5.14) */
+//  114 	  0,   4,   8,  12,  16,  20,  24,  28,  32,  36,  40,  48,  56,  64,  72,   80,  88,
+//  115 	 96, 108, 120, 132, 144, 160, 176, 196, 216, 240, 264, 292, 320, 352, 384,  416, 448,
+//  116 	480, 512, 544, 576, 608, 640, 672, 704, 736, 768, 800, 832, 864, 896, 928, 1024,
+//  117 
+//  118 	/* long block 32 kHz [52] (table 4.5.16) */
+//  119 	  0,   4,   8,  12,  16,  20,  24,  28,  32,  36,  40,  48,  56,  64,  72,   80,  88,  96,
+//  120 	108, 120, 132, 144, 160, 176, 196, 216, 240, 264, 292, 320, 352, 384, 416,  448, 480, 512,
+//  121 	544, 576, 608, 640, 672, 704, 736, 768, 800, 832, 864, 896, 928, 960, 992, 1024,
+//  122 
+//  123 	/* long block 22, 24 kHz [48] (table 4.5.21) */
+//  124 	  0,   4,   8,  12,  16,  20,  24,  28,  32,  36,  40,  44,  52,  60,  68,   76,
+//  125 	 84,  92, 100, 108, 116, 124, 136, 148, 160, 172, 188, 204, 220, 240, 260,  284,
+//  126 	308, 336, 364, 396, 432, 468, 508, 552, 600, 652, 704, 768, 832, 896, 960, 1024,
+//  127 
+//  128 	/* long block 11, 12, 16 kHz [44] (table 4.5.19) */
+//  129 	  0,   8,  16,  24,  32,  40,  48,  56,  64,  72,  80,  88, 100,  112, 124,
+//  130 	136, 148, 160, 172, 184, 196, 212, 228, 244, 260, 280, 300, 320,  344, 368,
+//  131 	396, 424, 456, 492, 532, 572, 616, 664, 716, 772, 832, 896, 960, 1024,
+//  132 
+//  133 	/* long block 8 kHz [41] (table 4.5.17) */
+//  134 	  0,  12,  24,  36,  48,  60,  72,  84,  96, 108, 120, 132,  144, 156,
+//  135 	172, 188, 204, 220, 236, 252, 268, 288, 308, 328, 348, 372,  396, 420,
+//  136 	448, 476, 508, 544, 580, 620, 664, 712, 764, 820, 880, 944, 1024
+//  137 };
+//  138 
+//  139 
+//  140 /* TNS max bands (table 4.139) and max order (table 4.138) */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  141 const int tnsMaxBandsShortOffset[AAC_NUM_PROFILES] = {0, 0, 12};
+raac_tnsMaxBandsShortOffset:
+        DATA
+        DC32 0, 0, 12
+//  142 
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  143 const unsigned char tnsMaxBandsShort[2*NUM_SAMPLE_RATES] = {
+raac_tnsMaxBandsShort:
+        DATA
+        DC8 9, 9, 10, 14, 14, 14, 14, 14, 14, 14, 14, 14, 7, 7, 7, 6, 6, 6, 7
+        DC8 7, 8, 8, 8, 7
+//  144 	 9,  9, 10, 14, 14, 14, 14, 14, 14, 14, 14, 14,		/* short block, Main/LC */
+//  145 	 7,  7,  7,  6,  6,  6,  7,  7,  8,  8,  8,  7		/* short block, SSR */
+//  146 };
+//  147 
+
+        RSEG DATA_C:CONST:SORT:NOROOT(0)
+//  148 const unsigned char tnsMaxOrderShort[AAC_NUM_PROFILES] = {7, 7, 7};
+raac_tnsMaxOrderShort:
+        DATA
+        DC8 7, 7, 7
+//  149 
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  150 const int tnsMaxBandsLongOffset[AAC_NUM_PROFILES] = {0, 0, 12};
+raac_tnsMaxBandsLongOffset:
+        DATA
+        DC32 0, 0, 12
+//  151 
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  152 const unsigned char tnsMaxBandsLong[2*NUM_SAMPLE_RATES] = {
+raac_tnsMaxBandsLong:
+        DATA
+        DC8 31, 31, 34, 40, 42, 51, 46, 46, 42, 42, 42, 39, 28, 28, 27, 26, 26
+        DC8 26, 29, 29, 23, 23, 23, 19
+//  153 	31, 31, 34, 40, 42, 51, 46, 46, 42, 42, 42, 39,		/* long block, Main/LC */
+//  154 	28, 28, 27, 26, 26, 26, 29, 29, 23, 23, 23, 19,		/* long block, SSR */
+//  155 };
+//  156 
+
+        RSEG DATA_C:CONST:SORT:NOROOT(0)
+//  157 const unsigned char tnsMaxOrderLong[AAC_NUM_PROFILES] = {20, 12, 12};
+raac_tnsMaxOrderLong:
+        DATA
+        DC8 20, 12, 12
+
+        END
+// 
+// 1 162 bytes in segment DATA_C
+// 
+// 1 162 bytes of CONST memory
+//
+//Errors: none
+//Warnings: 1

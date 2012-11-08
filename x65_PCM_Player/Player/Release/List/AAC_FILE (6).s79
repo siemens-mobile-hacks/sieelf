@@ -1,0 +1,547 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:28 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD /
+//                       EC\AAC_FILE (6).c                                   /
+//    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AAC /
+//                       DEC\AAC_FILE (6).c" -D NDEBUG -lC                   /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\AAC_FILE (6).s79                               /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME `AAC_FILE (6)`
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        EXTERN ??div32_a
+
+        MULTWEAK ??rA??div32_a
+        MULTWEAK ??raac_InvRNormalized??rT
+        MULTWEAK ??raac_RatioPowInv??rT
+        MULTWEAK ??raac_SqrtFix??rT
+        PUBLIC raac_InvRNormalized
+        FUNCTION raac_InvRNormalized,0203H
+        LOCFRAME CSTACK, 12, STACK
+        PUBLIC raac_RatioPowInv
+        FUNCTION raac_RatioPowInv,0203H
+        LOCFRAME CSTACK, 28, STACK
+        PUBLIC raac_SqrtFix
+        FUNCTION raac_SqrtFix,0203H
+        LOCFRAME CSTACK, 12, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+raac_InvRNormalized SYMBOL "raac_InvRNormalized"
+??raac_InvRNormalized??rT SYMBOL "??rT", raac_InvRNormalized
+raac_RatioPowInv    SYMBOL "raac_RatioPowInv"
+??raac_RatioPowInv??rT SYMBOL "??rT", raac_RatioPowInv
+raac_SqrtFix        SYMBOL "raac_SqrtFix"
+??raac_SqrtFix??rT  SYMBOL "??rT", raac_SqrtFix
+
+        EXTERN raac_log2Tab
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_InvRNormalized??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE raac_InvRNormalized
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (6).c
+//    1 /* ***** BEGIN LICENSE BLOCK *****  
+//    2  * Source last modified: $Id: sbrmath.c,v 1.1 2005/02/26 01:47:35 jrecker Exp $ 
+//    3  *   
+//    4  * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+//    5  *       
+//    6  * The contents of this file, and the files included with this file, 
+//    7  * are subject to the current version of the RealNetworks Public 
+//    8  * Source License (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the current version of the RealNetworks Community 
+//   11  * Source License (the "RCSL") available at 
+//   12  * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+//   13  * will apply. You may also obtain the license terms directly from 
+//   14  * RealNetworks.  You may not use this file except in compliance with 
+//   15  * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+//   16  * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+//   17  * the rights, obligations and limitations governing use of the 
+//   18  * contents of the file. 
+//   19  *   
+//   20  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   21  * developer of the Original Code and owns the copyrights in the 
+//   22  * portions it created. 
+//   23  *   
+//   24  * This file, and the files included with this file, is distributed 
+//   25  * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+//   26  * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+//   27  * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+//   28  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+//   29  * ENJOYMENT OR NON-INFRINGEMENT. 
+//   30  *  
+//   31  * Technology Compatibility Kit Test Suite(s) Location:  
+//   32  *    http://www.helixcommunity.org/content/tck  
+//   33  *  
+//   34  * Contributor(s):  
+//   35  *   
+//   36  * ***** END LICENSE BLOCK ***** */  
+//   37 
+//   38 /**************************************************************************************
+//   39  * Fixed-point HE-AAC decoder
+//   40  * Jon Recker (jrecker@real.com)
+//   41  * February 2005
+//   42  *
+//   43  * sbrmath.c - fixed-point math functions for SBR
+//   44  **************************************************************************************/
+//   45 
+//   46 #include "sbr_aac.h"
+//   47 #include "assembly_aac.h"
+//   48 
+//   49 #define Q28_2	0x20000000	/* Q28: 2.0 */
+//   50 #define Q28_15	0x30000000	/* Q28: 1.5 */
+//   51 
+//   52 #define NUM_ITER_IRN		5
+//   53 
+//   54 /**************************************************************************************
+//   55  * Function:    InvRNormalized
+//   56  *
+//   57  * Description: use Newton's method to solve for x = 1/r
+//   58  *
+//   59  * Inputs:      r = Q31, range = [0.5, 1) (normalize your inputs to this range)
+//   60  *
+//   61  * Outputs:     none
+//   62  *
+//   63  * Return:      x = Q29, range ~= [1.0, 2.0]
+//   64  *
+//   65  * Notes:       guaranteed to converge and not overflow for any r in [0.5, 1)
+//   66  * 
+//   67  *              xn+1  = xn - f(xn)/f'(xn)
+//   68  *              f(x)  = 1/r - x = 0 (find root)
+//   69  *                    = 1/x - r
+//   70  *              f'(x) = -1/x^2
+//   71  *
+//   72  *              so xn+1 = xn - (1/xn - r) / (-1/xn^2)
+//   73  *                      = xn * (2 - r*xn)
+//   74  *
+//   75  *              NUM_ITER_IRN = 2, maxDiff = 6.2500e-02 (precision of about 4 bits)
+//   76  *              NUM_ITER_IRN = 3, maxDiff = 3.9063e-03 (precision of about 8 bits)
+//   77  *              NUM_ITER_IRN = 4, maxDiff = 1.5288e-05 (precision of about 16 bits)
+//   78  *              NUM_ITER_IRN = 5, maxDiff = 3.0034e-08 (precision of about 24 bits)
+//   79  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function raac_InvRNormalized
+        ARM
+//   80 int InvRNormalized(int r)
+//   81 {
+raac_InvRNormalized:
+        PUSH     {R4-R6}
+        CFI R6 Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+        MOV      R12,R0
+//   82 	int i, xn, t;
+//   83 
+//   84 	/* r =   [0.5, 1.0) 
+//   85 	 * 1/r = (1.0, 2.0] 
+//   86 	 *   so use 1.5 as initial guess 
+//   87 	 */
+//   88 	xn = Q28_15;
+        MOV      R2,#+805306368
+//   89 
+//   90 	/* xn = xn*(2.0 - r*xn) */
+//   91 	for (i = NUM_ITER_IRN; i != 0; i--) {
+        MOV      R6,#+5
+//   92 		t = MULSHIFT32(r, xn);			/* Q31*Q29 = Q28 */
+//   93 		t = Q28_2 - t;					/* Q28 */
+//   94 		xn = MULSHIFT32(xn, t) << 4;	/* Q29*Q28 << 4 = Q29 */
+??raac_InvRNormalized_0:
+        ASR      R3,R2,#+31
+        MOV      R4,R12
+        ASR      R5,R4,#+31
+        UMULL    R0,R1,R4,R2
+//   95 	}
+        SUBS     R6,R6,#+1
+        MLA      R1,R4,R3,R1
+        MLA      R1,R5,R2,R1
+        MOV      R0,R1
+        RSB      R0,R0,#+536870912
+        ASR      R1,R0,#+31
+        UMULL    R4,R5,R2,R0
+        MLA      R5,R2,R1,R5
+        MLA      R5,R3,R0,R5
+        LSL      R2,R5,#+4
+        BNE      ??raac_InvRNormalized_0
+//   96 
+//   97 	return xn;
+        POP      {R4-R6}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI CFA R13+0
+        MOV      R0,R2
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock1
+//   98 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_RatioPowInv??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE raac_RatioPowInv
+//   99 
+//  100 #define NUM_TERMS_RPI	5
+//  101 #define LOG2_EXP_INV	0x58b90bfc	/* 1/log2(e), Q31 */
+//  102 
+//  103 /* invTab[x] = 1/(x+1), format = Q30 */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  104 static const int invTab[NUM_TERMS_RPI] = {0x40000000, 0x20000000, 0x15555555, 0x10000000, 0x0ccccccd};
+invTab:
+        DATA
+        DC32 1073741824, 536870912, 357913941, 268435456, 214748365
+//  105 
+//  106 /**************************************************************************************
+//  107  * Function:    RatioPowInv
+//  108  *
+//  109  * Description: use Taylor (MacLaurin) series expansion to calculate (a/b) ^ (1/c)
+//  110  *
+//  111  * Inputs:      a = [1, 64], b = [1, 64], c = [1, 64], a >= b
+//  112  *
+//  113  * Outputs:     none
+//  114  *
+//  115  * Return:      y = Q24, range ~= [0.015625, 64]
+//  116  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function raac_RatioPowInv
+        ARM
+//  117 int RatioPowInv(int a, int b, int c)
+//  118 {
+raac_RatioPowInv:
+        PUSH     {R4-R8,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R8 Frame(CFA, -8)
+        CFI R7 Frame(CFA, -12)
+        CFI R6 Frame(CFA, -16)
+        CFI R5 Frame(CFA, -20)
+        CFI R4 Frame(CFA, -24)
+        CFI CFA R13+24
+        MOV      R3,R1
+        MOV      R1,R2
+//  119 	int lna, lnb, i, p, t, y;
+//  120 
+//  121 	if (a < 1 || b < 1 || c < 1 || a > 64 || b > 64 || c > 64 || a < b)
+        CMP      R0,#+1
+        CMPGE    R3,#+1
+        CMPGE    R1,#+1
+        BLT      ??raac_RatioPowInv_0
+        CMP      R0,#+65
+        CMPLT    R3,#+65
+        CMPLT    R1,#+65
+        BGE      ??raac_RatioPowInv_0
+        CMP      R0,R3
+        BGE      ??raac_RatioPowInv_1
+//  122 		return 0;
+??raac_RatioPowInv_0:
+        MOV      R0,#+0
+        POP      {R4-R8,PC}
+//  123 
+//  124 	lna = MULSHIFT32(log2Tab[a], LOG2_EXP_INV) << 1;	/* ln(a), Q28 */
+//  125 	lnb = MULSHIFT32(log2Tab[b], LOG2_EXP_INV) << 1;	/* ln(b), Q28 */
+//  126 	p = (lna - lnb) / c;	/* Q28 */
+??raac_RatioPowInv_1:
+        LDR      R2,??raac_RatioPowInv_2  ;; raac_log2Tab
+        LDR      R8,??raac_RatioPowInv_2+0x4  ;; 0x58b90bfc
+        LDR      R6,[R2, +R0, LSL #+2]
+        ASR      R7,R6,#+31
+        UMULL    R4,R5,R6,R8
+        LDR      R6,[R2, +R3, LSL #+2]
+        MLA      R5,R7,R8,R5
+        ASR      R7,R6,#+31
+        UMULL    R2,R3,R6,R8
+//  127 
+//  128 	/* sum in Q24 */
+//  129 	y = (1 << 24);
+//  130 	t = p >> 4;		/* t = p^1 * 1/1! (Q24)*/
+//  131 	y += t;
+//  132 
+//  133 	for (i = 2; i <= NUM_TERMS_RPI; i++) {
+        MOV      R6,#+2
+        MLA      R3,R7,R8,R3
+        SUB      R0,R5,R3
+        LSL      R0,R0,#+1
+        _BLF     ??div32_a,??rA??div32_a
+        MOV      R3,R1
+        ASR      R4,R3,#+4
+        ADD      R2,R4,#+16777216
+//  134 		t = MULSHIFT32(invTab[i-1], t) << 2;
+//  135 		t = MULSHIFT32(p, t) << 4;	/* t = p^i * 1/i! (Q24) */
+??raac_RatioPowInv_3:
+        LDR      R0,??raac_RatioPowInv_2+0x8  ;; invTab
+        ADD      R0,R0,R6, LSL #+2
+        LDR      R12,[R0, #-4]
+//  136 		y += t;
+//  137 	}
+        ADD      R6,R6,#+1
+        SMULL    R0,R1,R12,R4
+        CMP      R6,#+6
+        LSL      R4,R1,#+2
+        SMULL    R0,R1,R3,R4
+        LSL      R4,R1,#+4
+        ADD      R2,R4,R2
+        BLT      ??raac_RatioPowInv_3
+//  138 
+//  139 	return y;
+        MOV      R0,R2
+        POP      {R4-R8,PC}
+        DATA
+??raac_RatioPowInv_2:
+        DC32     raac_log2Tab
+        DC32     0x58b90bfc
+        DC32     invTab
+        CFI EndBlock cfiBlock3
+//  140 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_SqrtFix??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE raac_SqrtFix
+//  141 
+//  142 /**************************************************************************************
+//  143  * Function:    SqrtFix
+//  144  *
+//  145  * Description: use binary search to calculate sqrt(q)
+//  146  *
+//  147  * Inputs:      q = Q30
+//  148  *              number of fraction bits in input
+//  149  *
+//  150  * Outputs:     number of fraction bits in output
+//  151  *
+//  152  * Return:      lo = Q(fBitsOut)
+//  153  *
+//  154  * Notes:       absolute precision varies depending on fBitsIn
+//  155  *              normalizes input to range [0x200000000, 0x7fffffff] and takes 
+//  156  *                floor(sqrt(input)), and sets fBitsOut appropriately
+//  157  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function raac_SqrtFix
+        ARM
+//  158 int SqrtFix(int q, int fBitsIn, int *fBitsOut)
+//  159 {
+raac_SqrtFix:
+        PUSH     {R4-R6}
+        CFI R6 Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+//  160 	int z, lo, hi, mid;
+//  161 
+//  162 	if (q <= 0) {
+        CMP      R0,#+1
+//  163 		*fBitsOut = fBitsIn;
+        STRLT    R1,[R2, #+0]
+//  164 		return 0;
+        MOVLT    R0,#+0
+        BLT      ??raac_SqrtFix_0
+//  165 	}
+//  166 
+//  167 	/* force even fBitsIn */
+//  168 	z = fBitsIn & 0x01;
+        AND      R3,R1,#0x1
+//  169 	q >>= z;
+        ASR      R0,R0,R3
+//  170 	fBitsIn -= z;
+        SUB      R1,R1,R3
+//  171 
+//  172 	/* for max precision, normalize to [0x20000000, 0x7fffffff] */
+//  173 	z = (CLZ(q) - 1);
+        MOVS     R3,R0
+        MOVEQ    R3,#+32
+        BEQ      ??raac_SqrtFix_1
+        MOV      R12,#+1
+        LSRS     R4,R3,#+16
+        MOVEQ    R12,#+17
+        LSLEQ    R3,R3,#+16
+        LSRS     R4,R3,#+24
+        ADDEQ    R12,R12,#+8
+        LSLEQ    R3,R3,#+8
+        LSRS     R4,R3,#+28
+        ADDEQ    R12,R12,#+4
+        LSLEQ    R3,R3,#+4
+        LSRS     R4,R3,#+30
+        ADDEQ    R12,R12,#+2
+        LSLEQ    R3,R3,#+2
+        SUB      R3,R12,R3, LSR #+31
+??raac_SqrtFix_1:
+        SUB      R3,R3,#+1
+//  174 	z >>= 1;
+        ASR      R3,R3,#+1
+//  175 	q <<= (2*z);
+        MOV      R4,R3
+        LSL      R4,R4,#+1
+        LSL      R0,R0,R4
+//  176 
+//  177 	/* choose initial bounds */
+//  178 	lo = 1;
+        MOV      R12,#+1
+//  179 	if (q >= 0x10000000)
+        CMP      R0,#+268435456
+//  180 		lo = 16384;	/* (int)sqrt(0x10000000) */
+        MOVGE    R12,#+16384
+//  181 	hi = 46340;		/* (int)sqrt(0x7fffffff) */
+        MOV      R4,#+4
+        ORR      R4,R4,#0xB500
+//  182 
+//  183 	/* do binary search with 32x32->32 multiply test */
+//  184 	do {
+//  185 		mid = (lo + hi) >> 1;
+??raac_SqrtFix_2:
+        ADD      R5,R4,R12
+        ASR      R5,R5,#+1
+//  186 		if (mid*mid > q)
+        MUL      R6,R5,R5
+        CMP      R0,R6
+//  187 			hi = mid - 1;
+        SUBLT    R4,R5,#+1
+//  188 		else
+//  189 			lo = mid + 1;
+        ADDGE    R12,R5,#+1
+//  190 	} while (hi >= lo);
+        CMP      R4,R12
+        BGE      ??raac_SqrtFix_2
+//  191 	lo--;
+//  192 
+//  193 	*fBitsOut = ((fBitsIn + 2*z) >> 1);
+        ADD      R0,R1,R3, LSL #+1
+        ASR      R0,R0,#+1
+        STR      R0,[R2, #+0]
+//  194 	return lo;
+        SUB      R0,R12,#+1
+??raac_SqrtFix_0:
+        POP      {R4-R6}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock5
+//  195 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??rA??div32_a:
+        LDR      R12,??Subroutine3_0  ;; ??div32_a
+        MOV      PC,R12
+        DATA
+??Subroutine3_0:
+        DC32     ??div32_a
+        CFI EndBlock cfiBlock6
+
+        END
+// 
+// 500 bytes in segment CODE
+//  20 bytes in segment DATA_C
+// 
+// 476 bytes of CODE  memory (+ 24 bytes shared)
+//  20 bytes of CONST memory
+//
+//Errors: none
+//Warnings: none

@@ -1,0 +1,188 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   02/Dec/2011  21:06:57 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\MultiSimPatch\MultiSimElf\conf /
+//                       ig_data.c                                           /
+//    Command line    =  D:\SVN\SieELF\SieELF\MultiSimPatch\MultiSimElf\conf /
+//                       ig_data.c -D NEWSGOLD -lC                           /
+//                       D:\SVN\SieELF\SieELF\MultiSimPatch\tmp\ -lA         /
+//                       D:\SVN\SieELF\SieELF\MultiSimPatch\tmp\ -o          /
+//                       D:\SVN\SieELF\SieELF\MultiSimPatch\tmp\ -s9         /
+//                       --no_unroll --cpu_mode arm --endian little --cpu    /
+//                       ARM926EJ-S --stack_align 4 --interwork -e --fpu     /
+//                       None --segment code=CONFIG --segment data=CONFIG    /
+//                       -I "D:\Program Files\IAR\Embedded Workbench 4.0     /
+//                       Evaluation\ARM\INC\" --inline_threshold=2           /
+//    List file       =  D:\SVN\SieELF\SieELF\MultiSimPatch\tmp\config_data. /
+//                       s79                                                 /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME config_data
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        PUBLIC _l1
+        PUBLIC ch0
+        PUBLIC ch1
+        PUBLIC ch2
+        PUBLIC ch3
+        PUBLIC ch4
+        PUBLIC cl0
+        PUBLIC f5401s
+        PUBLIC f5402s
+        PUBLIC onc_ena
+        PUBLIC onc_sim
+        PUBLIC onc_sim2
+// D:\SVN\SieELF\SieELF\MultiSimPatch\MultiSimElf\config_data.c
+//    1 #pragma segment="CONFIG_C"
+//    2 #include "..\..\inc\cfg_items.h"
+//    3 #include "..\..\inc\swilib.h"
+//    4 #include "language.h"
+//    5 //Конфигурация
+//    6 
+//    7 #ifdef NEWSGOLD
+//    8 #ifndef DISK0 
+//    9 #define DEFAULT_DISK_CFG "4"
+//   10 #else 
+//   11 #define DEFAULT_DISK_CFG "0"
+//   12 #endif 
+//   13 #else
+//   14 #define DEFAULT_DISK_CFG "0"
+//   15 #endif
+//   16 
+//   17 
+
+        RSEG CONFIG_C:CONST:SORT:ROOT(2)
+//   18 __root const CFG_HDR ch0={CFG_STR_UTF8,LG_CFG_PATH5400S,0,63};
+ch0:
+        DATA
+        DC32 2
+        DC8 "\302\267\276\2665401"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC32 0, 63
+
+        RSEG CONFIG_C:CONST:SORT:ROOT(2)
+//   19 __root const char f5401s[64]=DEFAULT_DISK_CFG ":\\misc\\5401.txt";
+f5401s:
+        DATA
+        DC8 "4:\\misc\\5401.txt"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+
+        RSEG CONFIG_C:CONST:SORT:ROOT(2)
+//   20 __root const CFG_HDR ch1={CFG_STR_UTF8,LG_CFG_PATH5401S,0,63};
+ch1:
+        DATA
+        DC32 2
+        DC8 "\302\267\276\2665402"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC32 0, 63
+
+        RSEG CONFIG_C:CONST:SORT:ROOT(2)
+//   21 __root const char f5402s[64]=DEFAULT_DISK_CFG ":\\misc\\5402.txt";
+f5402s:
+        DATA
+        DC8 "4:\\misc\\5402.txt"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+//   22 
+//   23 
+
+        RSEG CONFIG_C:CONST:SORT:ROOT(2)
+//   24 __root const CFG_HDR cl0={CFG_LEVEL,LG_CFG_SEC_FCLICK,1,0};
+cl0:
+        DATA
+        DC32 9
+        DC8 "\307\320\273\273\311\350\326\303"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC32 1, 0
+//   25 
+
+        RSEG CONFIG_C:CONST:SORT:ROOT(2)
+//   26 __root const CFG_HDR ch4={CFG_CHECKBOX,LG_CFG_NSIMENABLE,0,2};
+ch4:
+        DATA
+        DC32 11
+        DC8 "\324\312\320\355\277\354\313\331\307\320\273\273"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC32 0, 2
+
+        RSEG CONFIG_C:CONST:SORT:ROOT(2)
+//   27 __root const unsigned int onc_ena=0;   //on click change
+onc_ena:
+        DATA
+        DC32 0
+//   28 
+
+        RSEG CONFIG_C:CONST:SORT:ROOT(2)
+//   29 __root const CFG_HDR ch2={CFG_UINT,LG_CFG_NMAINSIM,0,9};
+ch2:
+        DATA
+        DC32 1
+        DC8 "\326\367SIM\277\250\272\305\302\353"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC32 0, 9
+
+        RSEG CONFIG_C:CONST:SORT:ROOT(2)
+//   30 __root const unsigned int onc_sim=2;
+onc_sim:
+        DATA
+        DC32 2
+
+        RSEG CONFIG_C:CONST:SORT:ROOT(2)
+//   31 __root const CFG_HDR ch3={CFG_UINT,LG_CFG_NADITSIM,0,9};
+ch3:
+        DATA
+        DC32 1
+        DC8 "\270\261SIM\277\250\272\305\302\353"
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC32 0, 9
+
+        RSEG CONFIG_C:CONST:SORT:ROOT(2)
+//   32 __root const unsigned int onc_sim2=1;
+onc_sim2:
+        DATA
+        DC32 1
+//   33 
+//   34  
+//   35 
+
+        RSEG CONFIG_C:CONST:SORT:ROOT(2)
+//   36 __root const CFG_HDR _l1={CFG_LEVEL,"",0,0};
+_l1:
+        DATA
+        DC32 9
+        DC8 ""
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC8 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        DC32 0, 0
+
+        END
+//   37 
+//   38 
+//   39 
+//   40 
+//   41 
+//   42 
+// 
+// 448 bytes in segment CONFIG_C
+// 
+// 448 bytes of CONST memory
+//
+//Errors: none
+//Warnings: none

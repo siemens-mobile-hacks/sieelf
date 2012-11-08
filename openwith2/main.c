@@ -1,7 +1,7 @@
-#include "E:\ARM\new11\inc\swilib.h"
+#include "..\inc\swilib.h"
 char filetostart[128];
 
-extern const char BM1NAME[32];//çàêëàäêè
+extern const char BM1NAME[32];
 extern const char BM1FILE[128];
 extern const char BM2NAME[32];
 extern const char BM2FILE[128];
@@ -107,12 +107,12 @@ int RunBM(int bm)
   return(0);
 }
 
-const HEADER_DESC bm_menuhdr={0,0,131,21,NULL,(int)"Open with...",LGP_NULL};
+const HEADER_DESC bm_menuhdr={0,0,131,21,NULL,(int)"´ò¿ª·½Ê½...",LGP_NULL};
 const int menusoftkeys[]={0,1,2};
 const SOFTKEY_DESC menu_sk[]=
 {
   {0x0018,0x0000,(int)""},
-  {0x0001,0x0000,(int)"Close"},
+  {0x0001,0x0000,(int)"¹Ø±Õ"},
   {0x003D,0x0000,(int)LGP_DOIT_PIC}
 };
 
@@ -127,11 +127,11 @@ void bm_menu_iconhndl(void *data, int curitem, int *unk);
 
 const MENU_DESC bm_menu=
 {
-  8,(void *)bm_menu_onkey,(void*)bm_menu_ghook,NULL,
+  8,bm_menu_onkey,bm_menu_ghook,NULL,
   menusoftkeys,
   &menu_skt,
   0,//0x11,
-  (void *)bm_menu_iconhndl,
+  bm_menu_iconhndl,
   NULL,   //Items
   NULL,   //Procs
   0   //n
@@ -179,13 +179,13 @@ void bm_menu_iconhndl(void *data, int curitem, int *unk)
     else
     {
       ws=AllocMenuWS(data,10);
-      wsprintf(ws,"Empty");
+      wsprintf(ws,"¿Õ°×");
     }
   }
   else
   {
     ws=AllocMenuWS(data,10);
-    wsprintf(ws,"error");
+    wsprintf(ws,"´íÎó");
   }
   SetMenuItemText(data,item,ws,curitem);
 }

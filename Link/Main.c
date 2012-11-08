@@ -1,7 +1,6 @@
 /*
 (c) cbn
 */
-// Link - загрузчик ярлыков
 #include "..\inc\swilib.h"
 
 #define lnksize 512
@@ -38,7 +37,7 @@ int main(char *exename, char *fname)
      img=s+1;
      while(*++s && *s!=0xd && *s!=':');
      if(*s==':')
-     { // Есть картинка
+     { 
        while(*++s && *s!=0xd);
      }else img=0;
      if(!*s) break;

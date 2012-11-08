@@ -1,0 +1,481 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    14/Feb/2012  15:39:33 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDE #
+#                       C\aactabs.c                                          #
+#    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDE #
+#                       C\aactabs.c -D NDEBUG -lC                            #
+#                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\ #
+#                       Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player #
+#                       \Player\Release\Obj\ -s9 --cpu_mode arm --endian     #
+#                       little --cpu ARM926EJ-S --stack_align 4 --interwork  #
+#                       -e --fpu None --dlib_config "D:\Program              #
+#                       Files\IAR\Embedded Workbench 4.0                     #
+#                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude       #
+#                       swilib.h -I "D:\Program Files\IAR\Embedded           #
+#                       Workbench 4.0 Evaluation\ARM\INC\"                   #
+#                       --inline_threshold=16                                #
+#    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\aactabs.lst                                      #
+#    Object file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\O #
+#                       bj\aactabs.r79                                       #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\aactabs.c
+      1          /* ***** BEGIN LICENSE BLOCK *****  
+                                                    ^
+Warning[Pa050]: non-native end of line sequence detected (this diagnostic is
+          only issued once)
+      2           * Source last modified: $Id: aactabs.c,v 1.1 2005/02/26 01:47:31 jrecker Exp $ 
+      3           *   
+      4           * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+      5           *       
+      6           * The contents of this file, and the files included with this file, 
+      7           * are subject to the current version of the RealNetworks Public 
+      8           * Source License (the "RPSL") available at 
+      9           * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+     10           * the file under the current version of the RealNetworks Community 
+     11           * Source License (the "RCSL") available at 
+     12           * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+     13           * will apply. You may also obtain the license terms directly from 
+     14           * RealNetworks.  You may not use this file except in compliance with 
+     15           * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+     16           * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+     17           * the rights, obligations and limitations governing use of the 
+     18           * contents of the file. 
+     19           *   
+     20           * This file is part of the Helix DNA Technology. RealNetworks is the 
+     21           * developer of the Original Code and owns the copyrights in the 
+     22           * portions it created. 
+     23           *   
+     24           * This file, and the files included with this file, is distributed 
+     25           * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+     26           * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+     27           * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+     28           * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+     29           * ENJOYMENT OR NON-INFRINGEMENT. 
+     30           *  
+     31           * Technology Compatibility Kit Test Suite(s) Location:  
+     32           *    http://www.helixcommunity.org/content/tck  
+     33           *  
+     34           * Contributor(s):  
+     35           *   
+     36           * ***** END LICENSE BLOCK ***** */  
+     37          
+     38          /**************************************************************************************
+     39           * Fixed-point HE-AAC decoder
+     40           * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+     41           * February 2005
+     42           *
+     43           * aactabs.c - platform-independent tables for AAC decoder (global, read-only)
+     44           **************************************************************************************/
+     45          
+     46          #include "aaccommon.h"
+     47          
+     48          /* sample rates (table 4.5.1) */
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     49          const int sampRateTab[NUM_SAMPLE_RATES] = {
+   \                     raac_sampRateTab:
+   \   00000000   007701008858       DC32 96000, 88200, 64000, 48000, 44100, 32000, 24000, 22050, 16000
+   \              010000FA0000
+   \              80BB000044AC
+   \              0000007D0000
+   \              C05D00002256
+   \              0000803E0000
+   \   00000024   E02E0000112B       DC32 12000, 11025, 8000
+   \              0000401F0000
+     50              96000, 88200, 64000, 48000, 44100, 32000, 
+     51          	24000, 22050, 16000, 12000, 11025,  8000
+     52          };
+     53          
+     54          /* max scalefactor band for prediction (main profile only) */
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     55          const int predSFBMax[NUM_SAMPLE_RATES] = {
+   \                     raac_predSFBMax:
+   \   00000000   210000002100       DC32 33, 33, 38, 40, 40, 40, 41, 41, 37, 37, 37, 34
+   \              000026000000
+   \              280000002800
+   \              000028000000
+   \              290000002900
+   \              000025000000
+   \              250000002500
+   \              000022000000
+     56          	33, 33, 38, 40, 40, 40, 41, 41, 37, 37, 37, 34
+     57          };
+     58          
+     59          /* channel mapping (table 1.6.3.4) (-1 = unknown, so need to determine mapping based on rules in 8.5.1) */
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     60          const int channelMapTab[NUM_DEF_CHAN_MAPS] = {
+   \                     raac_channelMapTab:
+   \   00000000   FFFFFFFF0100       DC32 -1, 1, 2, 3, 4, 5, 6, 8
+   \              000002000000
+   \              030000000400
+   \              000005000000
+   \              060000000800
+   \              0000        
+     61          	-1, 1, 2, 3, 4, 5, 6, 8
+     62          };
+     63          
+     64          /* number of channels in each element (SCE, CPE, etc.)
+     65           * see AACElementID in aaccommon.h 
+     66           */
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     67          const int elementNumChans[NUM_ELEMENTS] = {
+   \                     raac_elementNumChans:
+   \   00000000   010000000200       DC32 1, 2, 0, 1, 0, 0, 0, 0
+   \              000000000000
+   \              010000000000
+   \              000000000000
+   \              000000000000
+   \              0000        
+     68          	1, 2, 0, 1, 0, 0, 0, 0
+     69          };
+     70          
+     71          /* total number of scale factor bands in one window */
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     72          const unsigned char sfBandTotalShort[NUM_SAMPLE_RATES] = {
+   \                     raac_sfBandTotalShort:
+   \   00000000   0C0C0C0E0E0E       DC8 12, 12, 12, 14, 14, 14, 15, 15, 15, 15, 15, 15
+   \              0F0F0F0F0F0F
+     73              12, 12, 12, 14, 14, 14, 15, 15, 15, 15, 15, 15
+     74          };
+     75          
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     76          const unsigned char sfBandTotalLong[NUM_SAMPLE_RATES] = {
+   \                     raac_sfBandTotalLong:
+   \   00000000   29292F313133       DC8 41, 41, 47, 49, 49, 51, 47, 47, 43, 43, 43, 40
+   \              2F2F2B2B2B28
+     77              41, 41, 47, 49, 49, 51, 47, 47, 43, 43, 43, 40
+     78          };
+     79          
+     80          /* scale factor band tables */
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     81          const int sfBandTabShortOffset[NUM_SAMPLE_RATES] = {0, 0, 0, 13, 13, 13, 28, 28, 44, 44, 44, 60};
+   \                     raac_sfBandTabShortOffset:
+   \   00000000   000000000000       DC32 0, 0, 0, 13, 13, 13, 28, 28, 44, 44, 44, 60
+   \              000000000000
+   \              0D0000000D00
+   \              00000D000000
+   \              1C0000001C00
+   \              00002C000000
+   \              2C0000002C00
+   \              00003C000000
+     82          
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     83          const short sfBandTabShort[76] = {
+   \                     raac_sfBandTabShort:
+   \   00000000   000004000800       DC16 0, 4, 8, 12, 16, 20, 24, 32, 40, 48, 64, 92, 128, 0, 4, 8, 12, 16
+   \              0C0010001400
+   \              180020002800
+   \              300040005C00
+   \              800000000400
+   \              08000C001000
+   \   00000024   14001C002400       DC16 20, 28, 36, 44, 56, 68, 80, 96, 112, 128, 0, 4, 8, 12, 16, 20, 24
+   \              2C0038004400
+   \              500060007000
+   \              800000000400
+   \              08000C001000
+   \              14001800    
+   \   00000046   1C0024002C00       DC16 28, 36, 44, 52, 64, 76, 92, 108, 128, 0, 4, 8, 12, 16, 20, 24, 28
+   \              340040004C00
+   \              5C006C008000
+   \              000004000800
+   \              0C0010001400
+   \              18001C00    
+   \   00000068   200028003000       DC16 32, 40, 48, 60, 72, 88, 108, 128, 0, 4, 8, 12, 16, 20, 24, 28, 36
+   \              3C0048005800
+   \              6C0080000000
+   \              040008000C00
+   \              100014001800
+   \              1C002400    
+   \   0000008A   2C0034003C00       DC16 44, 52, 60, 72, 88, 108, 128
+   \              480058006C00
+   \              8000        
+     84          	/* short block 64, 88, 96 kHz [13] (tables 4.5.24, 4.5.26) */
+     85          	0,   4,   8,  12,  16,  20,  24,  32,  40,  48,  64,  92, 128,
+     86          
+     87          	/* short block 32, 44, 48 kHz [15] (table 4.5.15) */
+     88          	0,   4,   8,  12,  16,  20,  28,  36,  44,  56,  68,  80,  96, 112, 128,
+     89          
+     90          	/* short block 22, 24 kHz [16] (table 4.5.22) */
+     91          	0,   4,   8,  12,  16,  20,  24,  28,  36,  44,  52,  64,  76,  92, 108, 128,
+     92          
+     93          	/* short block 11, 12, 16 kHz [16] (table 4.5.20) */
+     94          	0,   4,   8,  12,  16,  20,  24,  28,  32,  40,  48,  60,  72,  88, 108, 128,
+     95          
+     96          	/* short block 8 kHz [16] (table 4.5.18) */
+     97          	0,   4,   8,  12,  16,  20,  24,  28,  36,  44,  52,  60,  72,  88, 108, 128
+     98          };
+     99          
+
+   \                                 In segment DATA_C, align 4, align-sorted
+    100          const int sfBandTabLongOffset[NUM_SAMPLE_RATES] = {0, 0, 42, 90, 90, 140, 192, 192, 240, 240, 240, 284};
+   \                     raac_sfBandTabLongOffset:
+   \   00000000   000000000000       DC32 0, 0, 42, 90, 90, 140, 192, 192, 240, 240, 240, 284
+   \              00002A000000
+   \              5A0000005A00
+   \              00008C000000
+   \              C0000000C000
+   \              0000F0000000
+   \              F0000000F000
+   \              00001C010000
+    101          
+
+   \                                 In segment DATA_C, align 4, align-sorted
+    102          const short sfBandTabLong[325] = {
+   \                     raac_sfBandTabLong:
+   \   00000000   000004000800       DC16 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 64, 72
+   \              0C0010001400
+   \              18001C002000
+   \              240028002C00
+   \              300034003800
+   \              40004800    
+   \   00000022   500058006000       DC16 80, 88, 96, 108, 120, 132, 144, 156, 172, 188, 212, 240, 276, 320
+   \              6C0078008400
+   \              90009C00AC00
+   \              BC00D400F000
+   \              14014001    
+   \   0000003E   8001C0010002       DC16 384, 448, 512, 576, 640, 704, 768, 832, 896, 960, 1024, 0, 4, 8
+   \              40028002C002
+   \              000340038003
+   \              C00300040000
+   \              04000800    
+   \   0000005A   0C0010001400       DC16 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 64, 72, 80, 88
+   \              18001C002000
+   \              240028002C00
+   \              300034003800
+   \              400048005000
+   \              5800        
+   \   0000007A   640070007C00       DC16 100, 112, 124, 140, 156, 172, 192, 216, 240, 268, 304, 344, 384
+   \              8C009C00AC00
+   \              C000D800F000
+   \              0C0130015801
+   \              8001        
+   \   00000094   A801D001F801       DC16 424, 464, 504, 544, 584, 624, 664, 704, 744, 784, 824, 864, 904
+   \              200248027002
+   \              9802C002E802
+   \              100338036003
+   \              8803        
+   \   000000AE   B003D8030004       DC16 944, 984, 1024, 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 48, 56
+   \              000004000800
+   \              0C0010001400
+   \              18001C002000
+   \              240028003000
+   \              3800        
+   \   000000CE   400048005000       DC16 64, 72, 80, 88, 96, 108, 120, 132, 144, 160, 176, 196, 216, 240
+   \              580060006C00
+   \              780084009000
+   \              A000B000C400
+   \              D800F000    
+   \   000000EA   080124014001       DC16 264, 292, 320, 352, 384, 416, 448, 480, 512, 544, 576, 608, 640
+   \              60018001A001
+   \              C001E0010002
+   \              200240026002
+   \              8002        
+   \   00000104   A002C002E002       DC16 672, 704, 736, 768, 800, 832, 864, 896, 928, 1024, 0, 4, 8, 12, 16
+   \              000320034003
+   \              60038003A003
+   \              000400000400
+   \              08000C001000
+   \   00000122   140018001C00       DC16 20, 24, 28, 32, 36, 40, 48, 56, 64, 72, 80, 88, 96, 108, 120, 132
+   \              200024002800
+   \              300038004000
+   \              480050005800
+   \              60006C007800
+   \              8400        
+   \   00000142   9000A000B000       DC16 144, 160, 176, 196, 216, 240, 264, 292, 320, 352, 384, 416, 448
+   \              C400D800F000
+   \              080124014001
+   \              60018001A001
+   \              C001        
+   \   0000015C   E00100022002       DC16 480, 512, 544, 576, 608, 640, 672, 704, 736, 768, 800, 832, 864
+   \              400260028002
+   \              A002C002E002
+   \              000320034003
+   \              6003        
+   \   00000176   8003A003C003       DC16 896, 928, 960, 992, 1024, 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40
+   \              E00300040000
+   \              040008000C00
+   \              100014001800
+   \              1C0020002400
+   \              2800        
+   \   00000196   2C0034003C00       DC16 44, 52, 60, 68, 76, 84, 92, 100, 108, 116, 124, 136, 148, 160, 172
+   \              44004C005400
+   \              5C0064006C00
+   \              74007C008800
+   \              9400A000AC00
+   \   000001B4   BC00CC00DC00       DC16 188, 204, 220, 240, 260, 284, 308, 336, 364, 396, 432, 468, 508
+   \              F00004011C01
+   \              340150016C01
+   \              8C01B001D401
+   \              FC01        
+   \   000001CE   280258028C02       DC16 552, 600, 652, 704, 768, 832, 896, 960, 1024, 0, 8, 16, 24, 32, 40
+   \              C00200034003
+   \              8003C0030004
+   \              000008001000
+   \              180020002800
+   \   000001EC   300038004000       DC16 48, 56, 64, 72, 80, 88, 100, 112, 124, 136, 148, 160, 172, 184
+   \              480050005800
+   \              640070007C00
+   \              88009400A000
+   \              AC00B800    
+   \   00000208   C400D400E400       DC16 196, 212, 228, 244, 260, 280, 300, 320, 344, 368, 396, 424, 456
+   \              F40004011801
+   \              2C0140015801
+   \              70018C01A801
+   \              C801        
+   \   00000222   EC0114023C02       DC16 492, 532, 572, 616, 664, 716, 772, 832, 896, 960, 1024, 0, 12, 24
+   \              68029802CC02
+   \              040340038003
+   \              C00300040000
+   \              0C001800    
+   \   0000023E   240030003C00       DC16 36, 48, 60, 72, 84, 96, 108, 120, 132, 144, 156, 172, 188, 204
+   \              480054006000
+   \              6C0078008400
+   \              90009C00AC00
+   \              BC00CC00    
+   \   0000025A   DC00EC00FC00       DC16 220, 236, 252, 268, 288, 308, 328, 348, 372, 396, 420, 448, 476
+   \              0C0120013401
+   \              48015C017401
+   \              8C01A401C001
+   \              DC01        
+   \   00000274   FC0120024402       DC16 508, 544, 580, 620, 664, 712, 764, 820, 880, 944, 1024
+   \              6C029802C802
+   \              FC0234037003
+   \              B0030004    
+   \   0000028A   0000               DC8 0, 0
+    103          	/* long block 88, 96 kHz [42] (table 4.5.25) */
+    104          	  0,   4,   8,  12,  16,  20,  24,  28,  32,  36,  40,  44,  48,   52,
+    105          	 56,  64,  72,  80,  88,  96, 108, 120, 132, 144, 156, 172, 188,  212,
+    106          	240, 276, 320, 384, 448, 512, 576, 640, 704, 768, 832, 896, 960, 1024,
+    107          
+    108          	/* long block 64 kHz [48] (table 4.5.13) */
+    109          	  0,   4,   8,  12,  16,  20,  24,  28,  32,  36,  40,  44,  48,  52,  56,   64,
+    110          	 72,  80,  88, 100, 112, 124, 140, 156, 172, 192, 216, 240, 268, 304, 344,  384,
+    111          	424, 464, 504, 544, 584, 624, 664, 704, 744, 784, 824, 864, 904, 944, 984, 1024,
+    112          
+    113          	/* long block 44, 48 kHz [50] (table 4.5.14) */
+    114          	  0,   4,   8,  12,  16,  20,  24,  28,  32,  36,  40,  48,  56,  64,  72,   80,  88,
+    115          	 96, 108, 120, 132, 144, 160, 176, 196, 216, 240, 264, 292, 320, 352, 384,  416, 448,
+    116          	480, 512, 544, 576, 608, 640, 672, 704, 736, 768, 800, 832, 864, 896, 928, 1024,
+    117          
+    118          	/* long block 32 kHz [52] (table 4.5.16) */
+    119          	  0,   4,   8,  12,  16,  20,  24,  28,  32,  36,  40,  48,  56,  64,  72,   80,  88,  96,
+    120          	108, 120, 132, 144, 160, 176, 196, 216, 240, 264, 292, 320, 352, 384, 416,  448, 480, 512,
+    121          	544, 576, 608, 640, 672, 704, 736, 768, 800, 832, 864, 896, 928, 960, 992, 1024,
+    122          
+    123          	/* long block 22, 24 kHz [48] (table 4.5.21) */
+    124          	  0,   4,   8,  12,  16,  20,  24,  28,  32,  36,  40,  44,  52,  60,  68,   76,
+    125          	 84,  92, 100, 108, 116, 124, 136, 148, 160, 172, 188, 204, 220, 240, 260,  284,
+    126          	308, 336, 364, 396, 432, 468, 508, 552, 600, 652, 704, 768, 832, 896, 960, 1024,
+    127          
+    128          	/* long block 11, 12, 16 kHz [44] (table 4.5.19) */
+    129          	  0,   8,  16,  24,  32,  40,  48,  56,  64,  72,  80,  88, 100,  112, 124,
+    130          	136, 148, 160, 172, 184, 196, 212, 228, 244, 260, 280, 300, 320,  344, 368,
+    131          	396, 424, 456, 492, 532, 572, 616, 664, 716, 772, 832, 896, 960, 1024,
+    132          
+    133          	/* long block 8 kHz [41] (table 4.5.17) */
+    134          	  0,  12,  24,  36,  48,  60,  72,  84,  96, 108, 120, 132,  144, 156,
+    135          	172, 188, 204, 220, 236, 252, 268, 288, 308, 328, 348, 372,  396, 420,
+    136          	448, 476, 508, 544, 580, 620, 664, 712, 764, 820, 880, 944, 1024
+    137          };
+    138          
+    139          
+    140          /* TNS max bands (table 4.139) and max order (table 4.138) */
+
+   \                                 In segment DATA_C, align 4, align-sorted
+    141          const int tnsMaxBandsShortOffset[AAC_NUM_PROFILES] = {0, 0, 12};
+   \                     raac_tnsMaxBandsShortOffset:
+   \   00000000   000000000000       DC32 0, 0, 12
+   \              00000C000000
+    142          
+
+   \                                 In segment DATA_C, align 4, align-sorted
+    143          const unsigned char tnsMaxBandsShort[2*NUM_SAMPLE_RATES] = {
+   \                     raac_tnsMaxBandsShort:
+   \   00000000   09090A0E0E0E       DC8 9, 9, 10, 14, 14, 14, 14, 14, 14, 14, 14, 14, 7, 7, 7, 6, 6, 6, 7
+   \              0E0E0E0E0E0E
+   \              070707060606
+   \              07          
+   \   00000013   0708080807         DC8 7, 8, 8, 8, 7
+    144          	 9,  9, 10, 14, 14, 14, 14, 14, 14, 14, 14, 14,		/* short block, Main/LC */
+    145          	 7,  7,  7,  6,  6,  6,  7,  7,  8,  8,  8,  7		/* short block, SSR */
+    146          };
+    147          
+
+   \                                 In segment DATA_C, align 1, align-sorted
+    148          const unsigned char tnsMaxOrderShort[AAC_NUM_PROFILES] = {7, 7, 7};
+   \                     raac_tnsMaxOrderShort:
+   \   00000000   070707             DC8 7, 7, 7
+    149          
+
+   \                                 In segment DATA_C, align 4, align-sorted
+    150          const int tnsMaxBandsLongOffset[AAC_NUM_PROFILES] = {0, 0, 12};
+   \                     raac_tnsMaxBandsLongOffset:
+   \   00000000   000000000000       DC32 0, 0, 12
+   \              00000C000000
+    151          
+
+   \                                 In segment DATA_C, align 4, align-sorted
+    152          const unsigned char tnsMaxBandsLong[2*NUM_SAMPLE_RATES] = {
+   \                     raac_tnsMaxBandsLong:
+   \   00000000   1F1F22282A33       DC8 31, 31, 34, 40, 42, 51, 46, 46, 42, 42, 42, 39, 28, 28, 27, 26, 26
+   \              2E2E2A2A2A27
+   \              1C1C1B1A1A  
+   \   00000011   1A1D1D171717       DC8 26, 29, 29, 23, 23, 23, 19
+   \              13          
+    153          	31, 31, 34, 40, 42, 51, 46, 46, 42, 42, 42, 39,		/* long block, Main/LC */
+    154          	28, 28, 27, 26, 26, 26, 29, 29, 23, 23, 23, 19,		/* long block, SSR */
+    155          };
+    156          
+
+   \                                 In segment DATA_C, align 1, align-sorted
+    157          const unsigned char tnsMaxOrderLong[AAC_NUM_PROFILES] = {20, 12, 12};
+   \                     raac_tnsMaxOrderLong:
+   \   00000000   140C0C             DC8 20, 12, 12
+
+
+   Segment part sizes:
+
+     Function/Label              Bytes
+     --------------              -----
+     raac_sampRateTab              48
+     raac_predSFBMax               48
+     raac_channelMapTab            32
+     raac_elementNumChans          32
+     raac_sfBandTotalShort         12
+     raac_sfBandTotalLong          12
+     raac_sfBandTabShortOffset     48
+     raac_sfBandTabShort          152
+     raac_sfBandTabLongOffset      48
+     raac_sfBandTabLong           652
+     raac_tnsMaxBandsShortOffset   12
+     raac_tnsMaxBandsShort         24
+     raac_tnsMaxOrderShort          3
+     raac_tnsMaxBandsLongOffset    12
+     raac_tnsMaxBandsLong          24
+     raac_tnsMaxOrderLong           3
+
+ 
+ 1 162 bytes in segment DATA_C
+ 
+ 1 162 bytes of CONST memory
+
+Errors: none
+Warnings: 1

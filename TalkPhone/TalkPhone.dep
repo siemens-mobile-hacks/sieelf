@@ -2,213 +2,77 @@
 
 <project>
   <fileVersion>2</fileVersion>
+  <fileChecksum>3327113885</fileChecksum>
   <configuration>
     <name>Release</name>
     <outputs>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
       <file>$PROJ_DIR$\Release\Obj\main.r79</file>
-      <file>$PROJ_DIR$\Release\Obj\config_data.pbi</file>
-      <file>$PROJ_DIR$\Release\List\conf_loader.lst</file>
-      <file>$PROJ_DIR$\Release\Obj\config_data.r79</file>
-      <file>$TOOLKIT_DIR$\inc\bn.h</file>
-      <file>$PROJ_DIR$\Release\List\config_data.lst</file>
-      <file>$PROJ_DIR$\Release\List\TalkPhone_SG.map</file>
-      <file>$TOOLKIT_DIR$\inc\playsound.h</file>
-      <file>$TOOLKIT_DIR$\inc\zlib.h</file>
-      <file>$TOOLKIT_DIR$\inc\pngconf.h</file>
-      <file>$TOOLKIT_DIR$\inc\png.h</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
-      <file>$TOOLKIT_DIR$\inc\cfg_items.h</file>
-      <file>$PROJ_DIR$\test.xcl</file>
-      <file>$TOOLKIT_DIR$\inc\swilib.h</file>
-      <file>$PROJ_DIR$\conf_loader.h</file>
-      <file>$PROJ_DIR$\Release\Obj\TalkPhone.pbd</file>
-      <file>$PROJ_DIR$\Release\Obj\func.r79</file>
+      <file>$PROJ_DIR$\..\inc\obs.h</file>
+      <file>$PROJ_DIR$\..\inc\playsound.h</file>
       <file>$PROJ_DIR$\Release\List\main.lst</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\Output\TalkPhone_SG.elf</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\Release\List\conf_loader.lst</file>
+      <file>$PROJ_DIR$\test.xcl</file>
+      <file>$PROJ_DIR$\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\Release\Obj\func.r79</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
       <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\sha.h</file>
-      <file>$PROJ_DIR$\Release\Obj\conf_loader.pbi</file>
-      <file>$PROJ_DIR$\Release\Exe\TalkPhone_SG.elf</file>
-      <file>$TOOLKIT_DIR$\inc\zconf.h</file>
-      <file>$TOOLKIT_DIR$\inc\md5.h</file>
+      <file>$PROJ_DIR$\Release\Obj\TalkPhone.pbd</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
       <file>$PROJ_DIR$\Release\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\Release\Exe\TalkPhone_SG.elf</file>
+      <file>$PROJ_DIR$\Release\Obj\config_data.pbi</file>
+      <file>$PROJ_DIR$\Release\Obj\conf_loader.pbi</file>
       <file>$PROJ_DIR$\conf_loader.c</file>
       <file>$PROJ_DIR$\config_data.c</file>
-      <file>$PROJ_DIR$\main.c</file>
       <file>$PROJ_DIR$\func.asm</file>
+      <file>$PROJ_DIR$\main.c</file>
       <file>$PROJ_DIR$\TalkPhone.h</file>
-      <file>$TOOLKIT_DIR$\inc\crypto.h</file>
-      <file>$TOOLKIT_DIR$\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\Release\List\TalkPhone_SG.map</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
+      <file>$PROJ_DIR$\Release\List\config_data.lst</file>
+      <file>$PROJ_DIR$\Release\Obj\config_data.r79</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
     </outputs>
+    <file>
+      <name>$PROJ_DIR$\Output\TalkPhone_SG.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 30</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 13 20 34 15 1 32</file>
+        </tool>
+      </inputs>
+    </file>
     <file>
       <name>$PROJ_DIR$\Release\Obj\TalkPhone.pbd</name>
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 21 1 19</file>
+          <file> 23 22 17</file>
         </tool>
       </inputs>
-    </file>
-    <file>
-      <name>[ROOT_NODE]</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 22 6</file>
-        </tool>
-      </outputs>
     </file>
     <file>
       <name>$PROJ_DIR$\Release\Exe\TalkPhone_SG.elf</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 6</file>
-        </tool>
-      </outputs>
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 13 25 3 17 0 11</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\conf_loader.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 25 2</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 21</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 14 10 8 23 9 32 4 31 20 24 12 15</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 14 10 8 23 9 32 4 31 20 24 12 15</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\config_data.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 3 5</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 1</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 12 14 10 8 23 9 32 4 31 20 24</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 12 14 10 8 23 9 32 4 31 20 24</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\main.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 0 18</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 19</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 14 10 8 23 9 32 4 31 20 24 7 12 15 30</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 14 10 8 23 9 32 4 31 20 24 7 12 15 30</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\func.asm</name>
-      <outputs>
-        <tool>
-          <name>AARM</name>
-          <file> 17</file>
-        </tool>
-      </outputs>
-    </file>
-  </configuration>
-  <configuration>
-    <name>Release ELKA</name>
-    <outputs>
-      <file>$PROJ_DIR$\Release ELKA\List\main.lst</file>
-      <file>$PROJ_DIR$\Release ELKA\List\TalkPhone_EL.map</file>
-      <file>$PROJ_DIR$\Release ELKA\Obj\main.r79</file>
-      <file>$PROJ_DIR$\Release ELKA\Exe\TalkPhone_EL.elf</file>
-      <file>$PROJ_DIR$\Release ELKA\Obj\conf_loader.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\bn.h</file>
-      <file>$TOOLKIT_DIR$\inc\playsound.h</file>
-      <file>$TOOLKIT_DIR$\inc\zlib.h</file>
-      <file>$TOOLKIT_DIR$\inc\pngconf.h</file>
-      <file>$TOOLKIT_DIR$\inc\png.h</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
-      <file>$TOOLKIT_DIR$\inc\cfg_items.h</file>
-      <file>$PROJ_DIR$\test.xcl</file>
-      <file>$PROJ_DIR$\Release ELKA\List\config_data.lst</file>
-      <file>$PROJ_DIR$\Release ELKA\Obj\config_data.r79</file>
-      <file>$PROJ_DIR$\Release ELKA\Obj\conf_loader.r79</file>
-      <file>$PROJ_DIR$\Release ELKA\Obj\TalkPhone.pbd</file>
-      <file>$TOOLKIT_DIR$\inc\swilib.h</file>
-      <file>$PROJ_DIR$\conf_loader.h</file>
-      <file>$PROJ_DIR$\Release ELKA\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\Release ELKA\Obj\func.r79</file>
-      <file>$PROJ_DIR$\Release ELKA\Obj\config_data.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\sha.h</file>
-      <file>$TOOLKIT_DIR$\inc\zconf.h</file>
-      <file>$TOOLKIT_DIR$\inc\md5.h</file>
-      <file>$PROJ_DIR$\Release ELKA\List\conf_loader.lst</file>
-      <file>$PROJ_DIR$\conf_loader.c</file>
-      <file>$PROJ_DIR$\config_data.c</file>
-      <file>$PROJ_DIR$\main.c</file>
-      <file>$PROJ_DIR$\func.asm</file>
-      <file>$PROJ_DIR$\TalkPhone.h</file>
-      <file>$TOOLKIT_DIR$\inc\crypto.h</file>
-      <file>$TOOLKIT_DIR$\inc\rsa.h</file>
-    </outputs>
-    <file>
-      <name>$PROJ_DIR$\Release ELKA\Exe\TalkPhone_EL.elf</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 1</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 12 15 14 20 2 10</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release ELKA\Obj\TalkPhone.pbd</name>
-      <inputs>
-        <tool>
-          <name>BILINK</name>
-          <file> 4 21 19</file>
+          <file> 13 20 34 15 1 32</file>
         </tool>
       </inputs>
     </file>
@@ -217,7 +81,7 @@
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 3 1</file>
+          <file> 9 30</file>
         </tool>
       </outputs>
     </file>
@@ -226,202 +90,7 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 15 25</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 4</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 17 9 7 23 8 32 5 31 22 24 11 18</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 17 9 7 23 8 32 5 31 22 24 11 18</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\config_data.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 14 13</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 21</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 11 17 9 7 23 8 32 5 31 22 24</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 11 17 9 7 23 8 32 5 31 22 24</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\main.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 2 0</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 19</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 17 9 7 23 8 32 5 31 22 24 6 11 18 30</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 17 9 7 23 8 32 5 31 22 24 6 11 18 30</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\func.asm</name>
-      <outputs>
-        <tool>
-          <name>AARM</name>
-          <file> 20</file>
-        </tool>
-      </outputs>
-    </file>
-  </configuration>
-  <configuration>
-    <name>Release NEWSGOLD</name>
-    <outputs>
-      <file>$PROJ_DIR$\Release NEWSGOLD\List\config_data.lst</file>
-      <file>$PROJ_DIR$\Release NEWSGOLD\Obj\config_data.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\bn.h</file>
-      <file>$TOOLKIT_DIR$\inc\playsound.h</file>
-      <file>$TOOLKIT_DIR$\inc\zlib.h</file>
-      <file>$TOOLKIT_DIR$\inc\pngconf.h</file>
-      <file>$TOOLKIT_DIR$\inc\png.h</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
-      <file>$TOOLKIT_DIR$\inc\cfg_items.h</file>
-      <file>$PROJ_DIR$\test.xcl</file>
-      <file>$TOOLKIT_DIR$\inc\swilib.h</file>
-      <file>$PROJ_DIR$\conf_loader.h</file>
-      <file>$PROJ_DIR$\Release NEWSGOLD\Obj\func.r79</file>
-      <file>$PROJ_DIR$\Release NEWSGOLD\Obj\TalkPhone.pbd</file>
-      <file>$PROJ_DIR$\Release NEWSGOLD\List\TalkPhone_NSG.map</file>
-      <file>$PROJ_DIR$\Release NEWSGOLD\Obj\conf_loader.pbi</file>
-      <file>$PROJ_DIR$\Release NEWSGOLD\Obj\config_data.r79</file>
-      <file>$PROJ_DIR$\Release NEWSGOLD\List\main.lst</file>
-      <file>$TOOLKIT_DIR$\inc\sha.h</file>
-      <file>$PROJ_DIR$\Release NEWSGOLD\Obj\conf_loader.r79</file>
-      <file>$PROJ_DIR$\Release NEWSGOLD\List\conf_loader.lst</file>
-      <file>$PROJ_DIR$\Release NEWSGOLD\Obj\main.r79</file>
-      <file>$PROJ_DIR$\Release NEWSGOLD\Exe\TalkPhone_NSG.elf</file>
-      <file>$PROJ_DIR$\Release NEWSGOLD\Obj\main.pbi</file>
-      <file>$TOOLKIT_DIR$\inc\zconf.h</file>
-      <file>$TOOLKIT_DIR$\inc\md5.h</file>
-      <file>$PROJ_DIR$\conf_loader.c</file>
-      <file>$PROJ_DIR$\config_data.c</file>
-      <file>$PROJ_DIR$\main.c</file>
-      <file>$PROJ_DIR$\func.asm</file>
-      <file>$PROJ_DIR$\TalkPhone.h</file>
-      <file>$TOOLKIT_DIR$\inc\crypto.h</file>
-      <file>$TOOLKIT_DIR$\inc\rsa.h</file>
-    </outputs>
-    <file>
-      <name>[ROOT_NODE]</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 22 14</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release NEWSGOLD\Obj\TalkPhone.pbd</name>
-      <inputs>
-        <tool>
-          <name>BILINK</name>
-          <file> 15 1 23</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release NEWSGOLD\Exe\TalkPhone_NSG.elf</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 14</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 9 19 16 12 21 7</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\conf_loader.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 19 20</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 15</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 10 6 4 24 5 32 2 31 18 25 8 11</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 10 6 4 24 5 32 2 31 18 25 8 11</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\config_data.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 16 0</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 1</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 8 10 6 4 24 5 32 2 31 18 25</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 8 10 6 4 24 5 32 2 31 18 25</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\main.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 21 17</file>
+          <file> 20 12</file>
         </tool>
         <tool>
           <name>BICOMP</name>
@@ -431,114 +100,11 @@
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 10 6 4 24 5 32 2 31 18 25 3 8 11 30</file>
+          <file> 6 0 10 31 19 7 11 35 8 14 29 2 16 5</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 10 6 4 24 5 32 2 31 18 25 3 8 11 30</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\func.asm</name>
-      <outputs>
-        <tool>
-          <name>AARM</name>
-          <file> 12</file>
-        </tool>
-      </outputs>
-    </file>
-  </configuration>
-  <configuration>
-    <name>Release X75</name>
-    <outputs>
-      <file>$PROJ_DIR$\Release X75\Obj\config_data.r79</file>
-      <file>$PROJ_DIR$\Release X75\List\config_data.lst</file>
-      <file>$TOOLKIT_DIR$\inc\bn.h</file>
-      <file>$TOOLKIT_DIR$\inc\playsound.h</file>
-      <file>$TOOLKIT_DIR$\inc\zlib.h</file>
-      <file>$TOOLKIT_DIR$\inc\pngconf.h</file>
-      <file>$TOOLKIT_DIR$\inc\png.h</file>
-      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
-      <file>$TOOLKIT_DIR$\inc\cfg_items.h</file>
-      <file>$PROJ_DIR$\test.xcl</file>
-      <file>$TOOLKIT_DIR$\inc\swilib.h</file>
-      <file>$PROJ_DIR$\conf_loader.h</file>
-      <file>$PROJ_DIR$\Release X75\Obj\func.r79</file>
-      <file>$PROJ_DIR$\Release X75\Obj\TalkPhone.pbd</file>
-      <file>$PROJ_DIR$\Release X75\Obj\conf_loader.pbi</file>
-      <file>$PROJ_DIR$\Release X75\Exe\TalkPhone_SG_X75.elf</file>
-      <file>$PROJ_DIR$\Release X75\Obj\config_data.pbi</file>
-      <file>$PROJ_DIR$\Release X75\List\main.lst</file>
-      <file>$PROJ_DIR$\Release X75\Obj\conf_loader.r79</file>
-      <file>$PROJ_DIR$\Release X75\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\Release X75\List\conf_loader.lst</file>
-      <file>$PROJ_DIR$\Release X75\List\TalkPhone_SG_X75.map</file>
-      <file>$PROJ_DIR$\Release X75\Obj\main.r79</file>
-      <file>$TOOLKIT_DIR$\inc\sha.h</file>
-      <file>$TOOLKIT_DIR$\inc\zconf.h</file>
-      <file>$TOOLKIT_DIR$\inc\md5.h</file>
-      <file>$PROJ_DIR$\conf_loader.c</file>
-      <file>$PROJ_DIR$\config_data.c</file>
-      <file>$PROJ_DIR$\main.c</file>
-      <file>$PROJ_DIR$\func.asm</file>
-      <file>$PROJ_DIR$\TalkPhone.h</file>
-      <file>$TOOLKIT_DIR$\inc\crypto.h</file>
-      <file>$TOOLKIT_DIR$\inc\rsa.h</file>
-    </outputs>
-    <file>
-      <name>$PROJ_DIR$\Release X75\Obj\TalkPhone.pbd</name>
-      <inputs>
-        <tool>
-          <name>BILINK</name>
-          <file> 14 16 19</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Release X75\Exe\TalkPhone_SG_X75.elf</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 21</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 9 18 0 12 22 7</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>[ROOT_NODE]</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 15 21</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\conf_loader.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 18 20</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 14</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 10 6 4 24 5 32 2 31 23 25 8 11</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 10 6 4 24 5 32 2 31 23 25 8 11</file>
+          <file> 6 0 10 31 19 7 11 35 8 14 29 2 16 5</file>
         </tool>
       </inputs>
     </file>
@@ -547,44 +113,21 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 0 1</file>
+          <file> 34 33</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 16</file>
+          <file> 22</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 8 10 6 4 24 5 32 2 31 23 25</file>
+          <file> 16 6 0 10 31 19 7 11 35 8 14 29 2</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 8 10 6 4 24 5 32 2 31 23 25</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\main.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 22 17</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 19</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 10 6 4 24 5 32 2 31 23 25 3 8 11 30</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 10 6 4 24 5 32 2 31 23 25 3 8 11 30</file>
+          <file> 16 6 0 10 31 19 7 11 35 8 14 29 2</file>
         </tool>
       </inputs>
     </file>
@@ -593,9 +136,511 @@
       <outputs>
         <tool>
           <name>AARM</name>
-          <file> 12</file>
+          <file> 15</file>
         </tool>
       </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 1 4</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 17</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 6 0 10 31 19 7 11 35 8 14 29 2 3 16 5 28</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 6 0 10 31 19 7 11 35 8 14 29 2 3 16 5 28</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>Release ELKA</name>
+    <outputs>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\..\inc\obs.h</file>
+      <file>$PROJ_DIR$\..\inc\playsound.h</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\Release ELKA\List\config_data.lst</file>
+      <file>$PROJ_DIR$\test.xcl</file>
+      <file>$PROJ_DIR$\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\Release ELKA\Obj\func.r79</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\func.asm</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\TalkPhone.h</file>
+      <file>$PROJ_DIR$\Release ELKA\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Output\TalkPhone_ELKA.elf</file>
+      <file>$PROJ_DIR$\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\Release ELKA\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\Release ELKA\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Release ELKA\List\TalkPhone_ELKA.map</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
+      <file>$PROJ_DIR$\Release ELKA\Exe\TalkPhone_EL.elf</file>
+      <file>$PROJ_DIR$\Release ELKA\Obj\config_data.pbi</file>
+      <file>$PROJ_DIR$\Release ELKA\Obj\config_data.r79</file>
+      <file>$PROJ_DIR$\Release ELKA\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\Release ELKA\List\main.lst</file>
+      <file>$PROJ_DIR$\Release ELKA\Obj\TalkPhone.pbd</file>
+      <file>$PROJ_DIR$\Release ELKA\List\conf_loader.lst</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 21 25</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 31 34</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 23</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 0 7 26 13 5 8 35 6 11 22 1 12 3</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 0 7 26 13 5 8 35 6 11 22 1 12 3</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config_data.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 30 9</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 29</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 12 4 0 7 26 13 5 8 35 6 11 22 1</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 12 4 0 7 26 13 5 8 35 6 11 22 1</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\func.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 14</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 24 32</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 20</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 4 0 7 26 13 5 8 35 6 11 22 1 2 12 3 19</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4 0 7 26 13 5 8 35 6 11 22 1 2 12 3 19</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Output\TalkPhone_ELKA.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 25</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 10 31 30 14 24 27</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release ELKA\Exe\TalkPhone_EL.elf</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 10 31 30 14 24 27</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release ELKA\Obj\TalkPhone.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 23 29 20</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>Release NEWSGOLD</name>
+    <outputs>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\..\inc\obs.h</file>
+      <file>$PROJ_DIR$\..\inc\playsound.h</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\Release NEWSGOLD\List\conf_loader.lst</file>
+      <file>$PROJ_DIR$\Release NEWSGOLD\List\TalkPhone_NSG.map</file>
+      <file>$PROJ_DIR$\Release NEWSGOLD\List\main.lst</file>
+      <file>$PROJ_DIR$\Release NEWSGOLD\Obj\config_data.pbi</file>
+      <file>$PROJ_DIR$\Release NEWSGOLD\Obj\config_data.r79</file>
+      <file>$PROJ_DIR$\Output\TalkPhone_NSG.elf</file>
+      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\test.xcl</file>
+      <file>$PROJ_DIR$\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\Release NEWSGOLD\Exe\TalkPhone_NSG.elf</file>
+      <file>$PROJ_DIR$\Release NEWSGOLD\Obj\TalkPhone.pbd</file>
+      <file>$PROJ_DIR$\Release NEWSGOLD\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Release NEWSGOLD\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\Release NEWSGOLD\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\func.asm</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\TalkPhone.h</file>
+      <file>$PROJ_DIR$\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\Release NEWSGOLD\List\config_data.lst</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
+      <file>$PROJ_DIR$\Release NEWSGOLD\Obj\func.r79</file>
+      <file>$PROJ_DIR$\Release NEWSGOLD\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\Output\TalkPhone_NSG.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 5</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 15 22 8 33 21 32</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release NEWSGOLD\Exe\TalkPhone_NSG.elf</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 15 22 8 33 21 32</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release NEWSGOLD\Obj\TalkPhone.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 23 7 34</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 9 5</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 22 4</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 23</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 10 0 13 31 18 11 14 35 12 16 29 1 17 3</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 10 0 13 31 18 11 14 35 12 16 29 1 17 3</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config_data.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 8 30</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 7</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 17 10 0 13 31 18 11 14 35 12 16 29 1</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 17 10 0 13 31 18 11 14 35 12 16 29 1</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\func.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 33</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 21 6</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 34</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 10 0 13 31 18 11 14 35 12 16 29 1 2 17 3 28</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 10 0 13 31 18 11 14 35 12 16 29 1 2 17 3 28</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>Release X75</name>
+    <outputs>
+      <file>$PROJ_DIR$\..\inc\png.h</file>
+      <file>$PROJ_DIR$\..\inc\obs.h</file>
+      <file>$PROJ_DIR$\..\inc\playsound.h</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$PROJ_DIR$\Release X75\Obj\func.r79</file>
+      <file>$PROJ_DIR$\Release X75\Obj\TalkPhone.pbd</file>
+      <file>$PROJ_DIR$\Release X75\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\test.xcl</file>
+      <file>$PROJ_DIR$\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\..\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\Release X75\Obj\config_data.r79</file>
+      <file>$PROJ_DIR$\Release X75\List\conf_loader.lst</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\func.asm</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\TalkPhone.h</file>
+      <file>$PROJ_DIR$\Release X75\List\config_data.lst</file>
+      <file>$PROJ_DIR$\Output\TalkPhone_SG_X75.elf</file>
+      <file>$PROJ_DIR$\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\Release X75\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Release X75\Exe\TalkPhone_SG_X75.elf</file>
+      <file>$PROJ_DIR$\..\inc\zconf.h</file>
+      <file>$TOOLKIT_DIR$\lib\dl5tpainl8n.r79</file>
+      <file>$PROJ_DIR$\Release X75\List\TalkPhone_SG_X75.map</file>
+      <file>$PROJ_DIR$\Release X75\Obj\config_data.pbi</file>
+      <file>$PROJ_DIR$\Release X75\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Release X75\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\Release X75\List\main.lst</file>
+      <file>$PROJ_DIR$\..\inc\crypto.h</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\Release X75\Obj\TalkPhone.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 6 31 26</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 24 30</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 33 17</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 6</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 7 0 10 28 15 8 11 35 9 13 25 1 14 3</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 7 0 10 28 15 8 11 35 9 13 25 1 14 3</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config_data.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 16 23</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 31</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 14 7 0 10 28 15 8 11 35 9 13 25 1</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 14 7 0 10 28 15 8 11 35 9 13 25 1</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\func.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 4</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 32 34</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 26</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 7 0 10 28 15 8 11 35 9 13 25 1 2 14 3 22</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Output\TalkPhone_SG_X75.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 30</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 12 33 16 4 32 29</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release X75\Exe\TalkPhone_SG_X75.elf</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 12 33 16 4 32 29</file>
+        </tool>
+      </inputs>
     </file>
   </configuration>
 </project>

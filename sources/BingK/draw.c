@@ -1,4 +1,4 @@
-#include "..\inc\swilib.h"
+#include "..\..\inc\swilib.h"
 #include "conf_loader.h"
 
 extern unsigned int pos_x;

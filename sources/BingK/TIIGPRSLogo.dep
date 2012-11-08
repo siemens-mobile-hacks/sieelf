@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <fileChecksum>1759816756</fileChecksum>
+  <configuration>
+    <name>Debug</name>
+    <outputs>
+      <file>$TOOLKIT_DIR$\inc\sha.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\draw.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\config_data.r79</file>
+      <file>$PROJ_DIR$\Debug\Obj\TIIGPRSLogo.pbd</file>
+      <file>$TOOLKIT_DIR$\inc\crypto.h</file>
+      <file>$TOOLKIT_DIR$\inc\swilib.h</file>
+      <file>$TOOLKIT_DIR$\inc\zconf.h</file>
+      <file>$TOOLKIT_DIR$\inc\png.h</file>
+      <file>$TOOLKIT_DIR$\inc\zlib.h</file>
+      <file>$TOOLKIT_DIR$\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.r79</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$TOOLKIT_DIR$\inc\md5.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\config_data.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\obs.h</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\draw.c</file>
+      <file>$PROJ_DIR$\main.asm</file>
+      <file>$TOOLKIT_DIR$\inc\bn.h</file>
+      <file>$TOOLKIT_DIR$\inc\rsa.h</file>
+      <file>$PROJ_DIR$\lang.h</file>
+      <file>$PROJ_DIR$\Debug\Exe\TIIGPRSLogo.d79</file>
+      <file>$TOOLKIT_DIR$\inc\pngconf.h</file>
+      <file>$TOOLKIT_DIR$\inc\data_n.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\draw.r79</file>
+      <file>$PROJ_DIR$\Debug\Obj\conf_loader.r79</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\Debug\Obj\TIIGPRSLogo.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 25 13 1</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 22</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 27</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 25</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5 7 8 6 23 20 19 4 0 12 24 14 9 11</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config_data.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 2</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 13</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 9 5 7 8 6 23 20 19 4 0 12 24 14 21</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\draw.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 26</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 1</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5 7 8 6 23 20 19 4 0 12 24 14 11</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 10</file>
+        </tool>
+      </outputs>
+    </file>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>E71Csw41</name>
+    <outputs>
+      <file>$TOOLKIT_DIR$\inc\sha.h</file>
+      <file>$TOOLKIT_DIR$\inc\crypto.h</file>
+      <file>$PROJ_DIR$\E71Csw41\List\main.lst</file>
+      <file>$TOOLKIT_DIR$\inc\swilib.h</file>
+      <file>$TOOLKIT_DIR$\inc\zconf.h</file>
+      <file>$TOOLKIT_DIR$\inc\png.h</file>
+      <file>$TOOLKIT_DIR$\inc\zlib.h</file>
+      <file>$PROJ_DIR$\E71Csw41\Obj\draw.r79</file>
+      <file>$PROJ_DIR$\E71Csw41\Exe\TIIGPRSLogo.a79</file>
+      <file>$TOOLKIT_DIR$\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$TOOLKIT_DIR$\inc\md5.h</file>
+      <file>$TOOLKIT_DIR$\inc\obs.h</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\draw.c</file>
+      <file>$PROJ_DIR$\main.asm</file>
+      <file>$TOOLKIT_DIR$\inc\bn.h</file>
+      <file>$TOOLKIT_DIR$\inc\rsa.h</file>
+      <file>$PROJ_DIR$\lang.h</file>
+      <file>$PROJ_DIR$\E71Csw41\Obj\config_data.r79</file>
+      <file>$TOOLKIT_DIR$\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\E71Csw41\List\conf_loader.lst</file>
+      <file>$TOOLKIT_DIR$\inc\data_n.h</file>
+      <file>$PROJ_DIR$\E71Csw41\Obj\draw.pbi</file>
+      <file>$PROJ_DIR$\E71Csw41\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\E71Csw41\Obj\TIIGPRSLogo.pbd</file>
+      <file>$PROJ_DIR$\E71Csw41\Obj\main.r79</file>
+      <file>$PROJ_DIR$\E71Csw41\Obj\conf_loader.r79</file>
+      <file>$PROJ_DIR$\E71Csw41\List\draw.lst</file>
+      <file>$PROJ_DIR$\E71Csw41\Obj\config_data.pbi</file>
+      <file>$PROJ_DIR$\E71Csw41\List\config_data.lst</file>
+      <file>$PROJ_DIR$\..\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\..\inc\png.h</file>
+      <file>$PROJ_DIR$\..\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\..\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\..\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\..\..\inc\obs.h</file>
+      <file>$PROJ_DIR$\..\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\..\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\..\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\..\inc\pngconf.h</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 8</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 28 22</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 25</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 3 5 6 4 21 18 17 1 0 11 23 12 9 10</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 3 5 6 4 21 18 17 1 0 11 23 12 9 10</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config_data.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 20 31</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 30</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 9 3 5 6 4 21 18 17 1 0 11 23 12 19</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 9 3 5 6 4 21 18 17 1 0 11 23 12 19</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\draw.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 7 29</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 24</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 32 33 40 39 43 34 41 42 35 36 37 38 10</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 32 33 40 39 43 34 41 42 35 36 37 38 10</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 27 2</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\E71Csw41\Obj\TIIGPRSLogo.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 25 30 24</file>
+        </tool>
+      </inputs>
+    </file>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>Release</name>
+    <outputs>
+      <file>$TOOLKIT_DIR$\inc\sha.h</file>
+      <file>$PROJ_DIR$\Release\Obj\draw.r79</file>
+      <file>$PROJ_DIR$\Release\Exe\TIIGPRSLogo.elf</file>
+      <file>$PROJ_DIR$\Release\Obj\conf_loader.r79</file>
+      <file>$TOOLKIT_DIR$\inc\crypto.h</file>
+      <file>$TOOLKIT_DIR$\inc\swilib.h</file>
+      <file>$TOOLKIT_DIR$\inc\zconf.h</file>
+      <file>$TOOLKIT_DIR$\inc\png.h</file>
+      <file>$PROJ_DIR$\Release\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Release\Obj\conf_loader.pbi</file>
+      <file>$PROJ_DIR$\Release\Obj\config_data.pbi</file>
+      <file>$TOOLKIT_DIR$\inc\zlib.h</file>
+      <file>$TOOLKIT_DIR$\inc\cfg_items.h</file>
+      <file>$PROJ_DIR$\Release\Obj\config_data.r79</file>
+      <file>$PROJ_DIR$\conf_loader.h</file>
+      <file>$TOOLKIT_DIR$\inc\md5.h</file>
+      <file>$PROJ_DIR$\Release\Obj\TIIGPRSLogo.pbd</file>
+      <file>$TOOLKIT_DIR$\inc\obs.h</file>
+      <file>$PROJ_DIR$\conf_loader.c</file>
+      <file>$PROJ_DIR$\config_data.c</file>
+      <file>$PROJ_DIR$\draw.c</file>
+      <file>$PROJ_DIR$\main.asm</file>
+      <file>$TOOLKIT_DIR$\inc\bn.h</file>
+      <file>$TOOLKIT_DIR$\inc\rsa.h</file>
+      <file>$PROJ_DIR$\lang.h</file>
+      <file>$TOOLKIT_DIR$\inc\pngconf.h</file>
+      <file>$TOOLKIT_DIR$\inc\data_n.h</file>
+      <file>$PROJ_DIR$\Release\Obj\draw.pbi</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\Release\Obj\TIIGPRSLogo.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 9 10 27</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 2</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\conf_loader.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 3</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 9</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5 7 11 6 25 23 22 4 0 15 26 17 12 14</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\config_data.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 13</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 10</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 12 5 7 11 6 25 23 22 4 0 15 26 17 24</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\draw.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 1</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 27</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 5 7 11 6 25 23 22 4 0 15 26 17 14</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 8</file>
+        </tool>
+      </outputs>
+    </file>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+</project>
+
+

@@ -6,27 +6,27 @@
   <configuration>
     <name>ELKA</name>
     <outputs>
+      <file>$PROJ_DIR$\test.xcl</file>
+      <file>$PROJ_DIR$\..\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\Other\ELKA\Obj\func.r79</file>
       <file>$PROJ_DIR$\..\..\inc\obs.h</file>
-      <file>$PROJ_DIR$\..\..\inc\zconf.h</file>
       <file>$PROJ_DIR$\Other\ELKA\List\jkfind_el.map</file>
+      <file>$PROJ_DIR$\..\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\..\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\Other\ELKA\List\main.lst</file>
       <file>$PROJ_DIR$\Other\ELKA\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\..\..\inc\sha.h</file>
       <file>$PROJ_DIR$\..\..\inc\zlib.h</file>
       <file>$PROJ_DIR$\..\..\inc\png.h</file>
       <file>$PROJ_DIR$\..\UtilELF\jkfind_el.elf</file>
-      <file>$PROJ_DIR$\..\..\inc\sha.h</file>
-      <file>$PROJ_DIR$\Other\ELKA\Obj\JKeyUtil.pbd</file>
-      <file>$PROJ_DIR$\..\..\inc\swilib.h</file>
-      <file>$PROJ_DIR$\..\..\inc\xtask_ipc.h</file>
       <file>$PROJ_DIR$\..\..\inc\data_n.h</file>
-      <file>$PROJ_DIR$\test.xcl</file>
-      <file>$PROJ_DIR$\Other\ELKA\Obj\func.r79</file>
-      <file>$PROJ_DIR$\..\..\inc\bn.h</file>
-      <file>$PROJ_DIR$\..\..\inc\pngconf.h</file>
-      <file>$PROJ_DIR$\..\..\inc\md5.h</file>
-      <file>$PROJ_DIR$\Other\ELKA\List\main.lst</file>
-      <file>$PROJ_DIR$\Other\ELKA\Obj\main.r79</file>
-      <file>$PROJ_DIR$\..\..\inc\rsa.h</file>
       <file>$PROJ_DIR$\..\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\..\inc\xtask_ipc.h</file>
+      <file>$PROJ_DIR$\..\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\Other\ELKA\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Other\ELKA\Obj\JKeyUtil.pbd</file>
       <file>$PROJ_DIR$\main.c</file>
       <file>$PROJ_DIR$\func.asm</file>
     </outputs>
@@ -35,12 +35,105 @@
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 6 2</file>
+          <file> 14 4</file>
         </tool>
       </outputs>
     </file>
     <file>
       <name>$PROJ_DIR$\..\UtilELF\jkfind_el.elf</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 4</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 0 2 19</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Other\ELKA\Obj\JKeyUtil.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 10</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 19 9</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 10</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCARM</name>
+          <file> 6 13 12 8 1 18 5 16 11 7 15 3 17</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 6 13 12 8 1 18 5 16 11 7 15 3 17</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\func.asm</name>
+      <outputs>
+        <tool>
+          <name>AARM</name>
+          <file> 2</file>
+        </tool>
+      </outputs>
+    </file>
+  </configuration>
+  <configuration>
+    <name>NewSGold</name>
+    <outputs>
+      <file>$PROJ_DIR$\..\UtilELF\jkfind_nsg.elf</file>
+      <file>$PROJ_DIR$\Other\NewSGold\List\main.lst</file>
+      <file>$PROJ_DIR$\Other\NewSGold\List\jkfind_nsg.map</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\func.r79</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\JKeyUtil.pbd</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\test.xcl</file>
+      <file>$PROJ_DIR$\Other\NewSGold\Obj\main.r79</file>
+      <file>$PROJ_DIR$\..\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\..\..\inc\obs.h</file>
+      <file>$PROJ_DIR$\..\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\..\inc\swilib.h</file>
+      <file>$PROJ_DIR$\..\..\inc\md5.h</file>
+      <file>$PROJ_DIR$\..\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\..\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\..\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\..\..\inc\png.h</file>
+      <file>$PROJ_DIR$\..\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\..\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\..\..\inc\xtask_ipc.h</file>
+      <file>$PROJ_DIR$\..\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\main.c</file>
+      <file>$PROJ_DIR$\func.asm</file>
+    </outputs>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 0 2</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\UtilELF\jkfind_nsg.elf</name>
       <outputs>
         <tool>
           <name>XLINK</name>
@@ -50,100 +143,7 @@
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 12 13 18</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\Other\ELKA\Obj\JKeyUtil.pbd</name>
-      <inputs>
-        <tool>
-          <name>BILINK</name>
-          <file> 3</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\main.c</name>
-      <outputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 18 17</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 3</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>ICCARM</name>
-          <file> 9 5 4 1 15 19 14 20 7 16 11 0 10</file>
-        </tool>
-        <tool>
-          <name>BICOMP</name>
-          <file> 9 5 4 1 15 19 14 20 7 16 11 0 10</file>
-        </tool>
-      </inputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\func.asm</name>
-      <outputs>
-        <tool>
-          <name>AARM</name>
-          <file> 13</file>
-        </tool>
-      </outputs>
-    </file>
-  </configuration>
-  <configuration>
-    <name>NewSGold</name>
-    <outputs>
-      <file>$PROJ_DIR$\..\..\inc\obs.h</file>
-      <file>$PROJ_DIR$\Other\NewSGold\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\..\UtilELF\jkfind_nsg.elf</file>
-      <file>$PROJ_DIR$\Other\NewSGold\List\jkfind_nsg.map</file>
-      <file>$PROJ_DIR$\Other\NewSGold\List\main.lst</file>
-      <file>$PROJ_DIR$\Other\NewSGold\Obj\func.r79</file>
-      <file>$PROJ_DIR$\..\..\inc\zconf.h</file>
-      <file>$PROJ_DIR$\..\..\inc\zlib.h</file>
-      <file>$PROJ_DIR$\..\..\inc\png.h</file>
-      <file>$PROJ_DIR$\..\..\inc\sha.h</file>
-      <file>$PROJ_DIR$\..\..\inc\swilib.h</file>
-      <file>$PROJ_DIR$\Other\NewSGold\Obj\JKeyUtil.pbd</file>
-      <file>$PROJ_DIR$\..\..\inc\xtask_ipc.h</file>
-      <file>$PROJ_DIR$\..\..\inc\data_n.h</file>
-      <file>$PROJ_DIR$\Other\NewSGold\Obj\main.r79</file>
-      <file>$PROJ_DIR$\test.xcl</file>
-      <file>$PROJ_DIR$\..\..\inc\bn.h</file>
-      <file>$PROJ_DIR$\..\..\inc\pngconf.h</file>
-      <file>$PROJ_DIR$\..\..\inc\md5.h</file>
-      <file>$PROJ_DIR$\..\..\inc\rsa.h</file>
-      <file>$PROJ_DIR$\..\..\inc\crypto.h</file>
-      <file>$PROJ_DIR$\main.c</file>
-      <file>$PROJ_DIR$\func.asm</file>
-    </outputs>
-    <file>
-      <name>[ROOT_NODE]</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 2 3</file>
-        </tool>
-      </outputs>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\UtilELF\jkfind_nsg.elf</name>
-      <outputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 3</file>
-        </tool>
-      </outputs>
-      <inputs>
-        <tool>
-          <name>XLINK</name>
-          <file> 15 5 14</file>
+          <file> 6 3 7</file>
         </tool>
       </inputs>
     </file>
@@ -152,7 +152,7 @@
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 1</file>
+          <file> 5</file>
         </tool>
       </inputs>
     </file>
@@ -161,21 +161,21 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 14 4</file>
+          <file> 7 1</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 1</file>
+          <file> 5</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 10 8 7 6 17 19 16 20 9 18 13 0 12</file>
+          <file> 11 16 15 13 8 20 10 18 14 12 17 9 19</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 10 8 7 6 17 19 16 20 9 18 13 0 12</file>
+          <file> 11 16 15 13 8 20 10 18 14 12 17 9 19</file>
         </tool>
       </inputs>
     </file>
@@ -184,7 +184,7 @@
       <outputs>
         <tool>
           <name>AARM</name>
-          <file> 5</file>
+          <file> 3</file>
         </tool>
       </outputs>
     </file>
@@ -192,27 +192,27 @@
   <configuration>
     <name>SGold</name>
     <outputs>
-      <file>$PROJ_DIR$\..\..\inc\obs.h</file>
-      <file>$PROJ_DIR$\..\UtilELF\jkfind_sg.elf</file>
-      <file>$PROJ_DIR$\Other\SGold\Obj\main.r79</file>
-      <file>$PROJ_DIR$\Other\SGold\List\jkfind_sg.map</file>
       <file>$PROJ_DIR$\Other\SGold\List\main.lst</file>
-      <file>$PROJ_DIR$\Other\SGold\Obj\main.pbi</file>
-      <file>$PROJ_DIR$\..\..\inc\zconf.h</file>
-      <file>$PROJ_DIR$\..\..\inc\zlib.h</file>
-      <file>$PROJ_DIR$\..\..\inc\png.h</file>
-      <file>$PROJ_DIR$\Other\SGold\Obj\JKeyUtil.pbd</file>
-      <file>$PROJ_DIR$\..\..\inc\sha.h</file>
-      <file>$PROJ_DIR$\..\..\inc\swilib.h</file>
-      <file>$PROJ_DIR$\..\..\inc\xtask_ipc.h</file>
-      <file>$PROJ_DIR$\..\..\inc\data_n.h</file>
+      <file>$PROJ_DIR$\..\UtilELF\jkfind_sg.elf</file>
       <file>$PROJ_DIR$\Other\SGold\Obj\func.r79</file>
       <file>$PROJ_DIR$\test.xcl</file>
-      <file>$PROJ_DIR$\..\..\inc\bn.h</file>
       <file>$PROJ_DIR$\..\..\inc\pngconf.h</file>
+      <file>$PROJ_DIR$\..\..\inc\obs.h</file>
+      <file>$PROJ_DIR$\..\..\inc\bn.h</file>
+      <file>$PROJ_DIR$\..\..\inc\swilib.h</file>
       <file>$PROJ_DIR$\..\..\inc\md5.h</file>
-      <file>$PROJ_DIR$\..\..\inc\rsa.h</file>
+      <file>$PROJ_DIR$\..\..\inc\zconf.h</file>
+      <file>$PROJ_DIR$\..\..\inc\sha.h</file>
+      <file>$PROJ_DIR$\..\..\inc\zlib.h</file>
+      <file>$PROJ_DIR$\..\..\inc\png.h</file>
+      <file>$PROJ_DIR$\..\..\inc\data_n.h</file>
       <file>$PROJ_DIR$\..\..\inc\crypto.h</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\main.r79</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\JKeyUtil.pbd</file>
+      <file>$PROJ_DIR$\Other\SGold\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\Other\SGold\List\jkfind_sg.map</file>
+      <file>$PROJ_DIR$\..\..\inc\xtask_ipc.h</file>
+      <file>$PROJ_DIR$\..\..\inc\rsa.h</file>
       <file>$PROJ_DIR$\main.c</file>
       <file>$PROJ_DIR$\func.asm</file>
     </outputs>
@@ -221,7 +221,7 @@
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 1 3</file>
+          <file> 1 18</file>
         </tool>
       </outputs>
     </file>
@@ -230,13 +230,13 @@
       <outputs>
         <tool>
           <name>XLINK</name>
-          <file> 3</file>
+          <file> 18</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>XLINK</name>
-          <file> 15 14 2</file>
+          <file> 3 2 15</file>
         </tool>
       </inputs>
     </file>
@@ -245,7 +245,7 @@
       <inputs>
         <tool>
           <name>BILINK</name>
-          <file> 5</file>
+          <file> 17</file>
         </tool>
       </inputs>
     </file>
@@ -254,21 +254,21 @@
       <outputs>
         <tool>
           <name>ICCARM</name>
-          <file> 2 4</file>
+          <file> 15 0</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 5</file>
+          <file> 17</file>
         </tool>
       </outputs>
       <inputs>
         <tool>
           <name>ICCARM</name>
-          <file> 11 8 7 6 17 19 16 20 10 18 13 0 12</file>
+          <file> 7 12 11 9 4 20 6 14 10 8 13 5 19</file>
         </tool>
         <tool>
           <name>BICOMP</name>
-          <file> 11 8 7 6 17 19 16 20 10 18 13 0 12</file>
+          <file> 7 12 11 9 4 20 6 14 10 8 13 5 19</file>
         </tool>
       </inputs>
     </file>
@@ -277,7 +277,7 @@
       <outputs>
         <tool>
           <name>AARM</name>
-          <file> 14</file>
+          <file> 2</file>
         </tool>
       </outputs>
     </file>

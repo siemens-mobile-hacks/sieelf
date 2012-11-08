@@ -1,0 +1,2572 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    14/Feb/2012  15:39:21 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDE #
+#                       C\AAC_FILE (2).c                                     #
+#    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD #
+#                       EC\AAC_FILE (2).c" -D NDEBUG -lC                     #
+#                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\ #
+#                       Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player #
+#                       \Player\Release\Obj\ -s9 --cpu_mode arm --endian     #
+#                       little --cpu ARM926EJ-S --stack_align 4 --interwork  #
+#                       -e --fpu None --dlib_config "D:\Program              #
+#                       Files\IAR\Embedded Workbench 4.0                     #
+#                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude       #
+#                       swilib.h -I "D:\Program Files\IAR\Embedded           #
+#                       Workbench 4.0 Evaluation\ARM\INC\"                   #
+#                       --inline_threshold=16                                #
+#    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\L #
+#                       ist\AAC_FILE (2).lst                                 #
+#    Object file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\O #
+#                       bj\AAC_FILE (2).r79                                  #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (2).c
+      1          /* ***** BEGIN LICENSE BLOCK *****  
+      2           * Source last modified: $Id: sbrhfadj.c,v 1.1 2005/02/26 01:47:35 jrecker Exp $ 
+      3           *   
+      4           * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+      5           *       
+      6           * The contents of this file, and the files included with this file, 
+      7           * are subject to the current version of the RealNetworks Public 
+      8           * Source License (the "RPSL") available at 
+      9           * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+     10           * the file under the current version of the RealNetworks Community 
+     11           * Source License (the "RCSL") available at 
+     12           * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+     13           * will apply. You may also obtain the license terms directly from 
+     14           * RealNetworks.  You may not use this file except in compliance with 
+     15           * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+     16           * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+     17           * the rights, obligations and limitations governing use of the 
+     18           * contents of the file. 
+     19           *   
+     20           * This file is part of the Helix DNA Technology. RealNetworks is the 
+     21           * developer of the Original Code and owns the copyrights in the 
+     22           * portions it created. 
+     23           *   
+     24           * This file, and the files included with this file, is distributed 
+     25           * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+     26           * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+     27           * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+     28           * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+     29           * ENJOYMENT OR NON-INFRINGEMENT. 
+     30           *  
+     31           * Technology Compatibility Kit Test Suite(s) Location:  
+     32           *    http://www.helixcommunity.org/content/tck  
+     33           *  
+     34           * Contributor(s):  
+     35           *   
+     36           * ***** END LICENSE BLOCK ***** */  
+     37          
+     38          /**************************************************************************************
+     39           * Fixed-point HE-AAC decoder
+     40           * Jon Recker (jrecker@real.com)
+     41           * February 2005
+     42           *
+     43           * sbrhfadj.c - high frequency adjustment for SBR
+     44           **************************************************************************************/
+     45          
+     46          #include "sbr_aac.h"
+     47          #include "assembly_aac.h"
+     48          
+     49          /* invBandTab[i] = 1.0 / (i + 1), Q31 */
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     50          static const int invBandTab[64] = {
+   \                     invBandTab:
+   \   00000000   FFFFFF7F0000       DC32 2147483647, 1073741824, 715827883, 536870912, 429496730, 357913941
+   \              0040ABAAAA2A
+   \              000000209A99
+   \              991955555515
+   \   00000018   922449120000       DC32 306783378, 268435456, 238609294, 214748365, 195225786, 178956971
+   \              00108EE3380E
+   \              CDCCCC0CBAE8
+   \              A20BABAAAA0A
+   \   00000030   8A9DD8094992       DC32 165191050, 153391689, 143165577, 134217728, 126322568, 119304647
+   \              240989888808
+   \              000000088887
+   \              8707C7711C07
+   \   00000048   AFA1BC066666       DC32 113025455, 107374182, 102261126, 97612893, 93368854, 89478485
+   \              660686611806
+   \              5D74D10516B2
+   \              900555555505
+   \   00000060   52B81E05C54E       DC32 85899346, 82595525, 79536431, 76695845, 74051160, 71582788
+   \              EC042FA1BD04
+   \              2549920458EE
+   \              690444444404
+   \   00000078   420821040000       DC32 69273666, 67108864, 65075262, 63161284, 61356676, 59652324
+   \              00043EF8E003
+   \              C4C3C303843A
+   \              A803E4388E03
+   \   00000090   239F7503D850       DC32 58040099, 56512728, 55063683, 53687091, 52377650, 51130563
+   \              5E0383344803
+   \              333333033238
+   \              1F03C3300C03
+   \   000000A8   E80BFA022FBA       DC32 49941480, 48806447, 47721859, 46684427, 45691141, 44739243
+   \              E802832DD802
+   \              0B59C8020531
+   \              B902ABAAAA02
+   \   000000C0   15BC9C02295C       DC32 43826197, 42949673, 42107523, 41297762, 40518559, 39768216
+   \              8F0283828202
+   \              622776029F43
+   \              6A0298D05E02
+   \   000000D8   25C853029224       DC32 39045157, 38347922, 37675152, 37025580, 36398028, 35791394
+   \              490290E03E02
+   \              2CF73402CC63
+   \              2B0222222202
+   \   000000F0   2A2E19022184       DC32 35204650, 34636833, 34087042, 33554432
+   \              100282200802
+   \              00000002    
+     51          	0x7fffffff, 0x40000000, 0x2aaaaaab, 0x20000000, 0x1999999a, 0x15555555, 0x12492492, 0x10000000, 
+     52          	0x0e38e38e, 0x0ccccccd, 0x0ba2e8ba, 0x0aaaaaab, 0x09d89d8a, 0x09249249, 0x08888889, 0x08000000, 
+     53          	0x07878788, 0x071c71c7, 0x06bca1af, 0x06666666, 0x06186186, 0x05d1745d, 0x0590b216, 0x05555555, 
+     54          	0x051eb852, 0x04ec4ec5, 0x04bda12f, 0x04924925, 0x0469ee58, 0x04444444, 0x04210842, 0x04000000, 
+     55          	0x03e0f83e, 0x03c3c3c4, 0x03a83a84, 0x038e38e4, 0x03759f23, 0x035e50d8, 0x03483483, 0x03333333, 
+     56          	0x031f3832, 0x030c30c3, 0x02fa0be8, 0x02e8ba2f, 0x02d82d83, 0x02c8590b, 0x02b93105, 0x02aaaaab, 
+     57          	0x029cbc15, 0x028f5c29, 0x02828283, 0x02762762, 0x026a439f, 0x025ed098, 0x0253c825, 0x02492492, 
+     58          	0x023ee090, 0x0234f72c, 0x022b63cc, 0x02222222, 0x02192e2a, 0x02108421, 0x02082082, 0x02000000, 
+     59          };
+     60          
+     61          /**************************************************************************************
+     62           * Function:    EstimateEnvelope
+     63           *
+     64           * Description: estimate power of generated HF QMF bands in one time-domain envelope
+     65           *                (4.6.18.7.3)
+     66           *
+     67           * Inputs:      initialized PSInfoSBR struct
+     68           *              initialized SBRHeader struct for this SCE/CPE block
+     69           *              initialized SBRGrid struct for this channel
+     70           *              initialized SBRFreq struct for this SCE/CPE block
+     71           *              index of current envelope
+     72           *
+     73           * Outputs:     power of each QMF subband, stored as integer (Q0) * 2^N, N >= 0
+     74           *
+     75           * Return:      none
+     76           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+     77          static void EstimateEnvelope(PSInfoSBR *psi, SBRHeader *sbrHdr, SBRGrid *sbrGrid, SBRFreq *sbrFreq, int env)
+     78          {
+   \                     EstimateEnvelope:
+   \   00000000   F14F2DE9           PUSH     {R0,R4-R11,LR}
+   \   00000004   28D04DE2           SUB      SP,SP,#+40
+   \   00000008   50009DE5           LDR      R0,[SP, #+80]
+   \   0000000C   03A0A0E1           MOV      R10,R3
+     79          	int i, m, iStart, iEnd, xre, xim, nScale, expMax;
+     80          	int p, n, mStart, mEnd, invFact, t;
+     81          	int *XBuf;
+     82          	U64 eCurr;
+     83          	unsigned char *freqBandTab;
+     84          
+     85          	/* estimate current envelope */
+     86          	iStart = sbrGrid->envTimeBorder[env] + HF_ADJ;
+   \   00000010   026080E0           ADD      R6,R0,R2
+   \   00000014   0460D6E5           LDRB     R6,[R6, #+4]
+   \   00000018   026086E2           ADD      R6,R6,#+2
+   \   0000001C   10608DE5           STR      R6,[SP, #+16]
+     87          	iEnd =   sbrGrid->envTimeBorder[env+1] + HF_ADJ;
+   \   00000020   026080E0           ADD      R6,R0,R2
+   \   00000024   0560D6E5           LDRB     R6,[R6, #+5]
+     88          	if (sbrGrid->freqRes[env]) {
+   \   00000028   020080E0           ADD      R0,R0,R2
+   \   0000002C   026086E2           ADD      R6,R6,#+2
+   \   00000030   08608DE5           STR      R6,[SP, #+8]
+   \   00000034   0A00D0E5           LDRB     R0,[R0, #+10]
+   \   00000038   000050E3           CMP      R0,#+0
+   \   0000003C   0300000A           BEQ      ??EstimateEnvelope_0
+     89          		n = sbrFreq->nHigh;
+   \   00000040   08209AE5           LDR      R2,[R10, #+8]
+   \   00000044   14208DE5           STR      R2,[SP, #+20]
+     90          		freqBandTab = sbrFreq->freqHigh;
+   \   00000048   55208AE2           ADD      R2,R10,#+85
+   \   0000004C   020000EA           B        ??EstimateEnvelope_1
+     91          	} else {
+     92          		n = sbrFreq->nLow;
+   \                     ??EstimateEnvelope_0:
+   \   00000050   0C209AE5           LDR      R2,[R10, #+12]
+   \   00000054   14208DE5           STR      R2,[SP, #+20]
+     93          		freqBandTab = sbrFreq->freqLow;
+   \   00000058   86208AE2           ADD      R2,R10,#+134
+     94          	}
+     95          
+     96          	/* ADS should inline MADD64 (smlal) properly, but check to make sure */
+     97          	expMax = 0;
+   \                     ??EstimateEnvelope_1:
+   \   0000005C   10309DE5           LDR      R3,[SP, #+16]
+   \   00000060   18208DE5           STR      R2,[SP, #+24]
+   \   00000064   0020A0E3           MOV      R2,#+0
+   \   00000068   0C208DE5           STR      R2,[SP, #+12]
+   \   0000006C   032046E0           SUB      R2,R6,R3
+   \   00000070   F4339FE5           LDR      R3,??EstimateEnvelope_2  ;; invBandTab
+   \   00000074   28B0A0E3           MOV      R11,#+40
+   \   00000078   022183E0           ADD      R2,R3,R2, LSL #+2
+   \   0000007C   20208DE5           STR      R2,[SP, #+32]
+   \   00000080   28209DE5           LDR      R2,[SP, #+40]
+   \   00000084   70BD8BE3           ORR      R11,R11,#0x1C00
+   \   00000088   02208BE0           ADD      R2,R11,R2
+   \   0000008C   1C208DE5           STR      R2,[SP, #+28]
+   \   00000090   1000D1E5           LDRB     R0,[R1, #+16]
+   \   00000094   000050E3           CMP      R0,#+0
+   \   00000098   6D00000A           BEQ      ??EstimateEnvelope_3
+     98          	if (sbrHdr->interpFreq) {
+     99          		for (m = 0; m < sbrFreq->numQMFBands; m++) {
+   \   0000009C   14009AE5           LDR      R0,[R10, #+20]
+   \   000000A0   00C0A0E3           MOV      R12,#+0
+   \   000000A4   010050E3           CMP      R0,#+1
+   \   000000A8   180000AA           BGE      ??EstimateEnvelope_4
+    100          			eCurr.w64 = 0;
+    101          			XBuf = psi->XBuf[iStart][sbrFreq->kStart + m];
+    102          			for (i = iStart; i < iEnd; i++) {
+    103          				/* scale to int before calculating power (precision not critical, and avoids overflow) */
+    104          				xre = (*XBuf) >> FBITS_OUT_QMFA;	XBuf += 1;
+    105          				xim = (*XBuf) >> FBITS_OUT_QMFA;	XBuf += (2*64 - 1);
+    106          				eCurr.w64 = MADD64(eCurr.w64, xre, xre);
+    107          				eCurr.w64 = MADD64(eCurr.w64, xim, xim);
+    108          			}
+    109          
+    110          			/* eCurr.w64 is now Q(64 - 2*FBITS_OUT_QMFA) (64-bit word)
+    111          			 * if energy is too big to fit in 32-bit word (> 2^31) scale down by power of 2
+    112          			 */
+    113          			nScale = 0;
+    114          			if (eCurr.r.hi32) {
+    115          				nScale = (32 - CLZ(eCurr.r.hi32)) + 1;
+    116          				t  = (int)(eCurr.r.lo32 >> nScale);		/* logical (unsigned) >> */
+    117          				t |= eCurr.r.hi32 << (32 - nScale);
+    118          			} else if (eCurr.r.lo32 >> 31) {
+    119          				nScale = 1;
+    120          				t  = (int)(eCurr.r.lo32 >> nScale);		/* logical (unsigned) >> */
+    121          			} else {
+    122          				t  = (int)eCurr.r.lo32;
+    123          			}
+    124          
+    125          			invFact = invBandTab[(iEnd - iStart)-1];
+    126          			psi->eCurr[m] = MULSHIFT32(t, invFact);
+    127          			psi->eCurrExp[m] = nScale + 1;	/* +1 for invFact = Q31 */
+    128          			if (psi->eCurrExp[m] > expMax)
+    129          				expMax = psi->eCurrExp[m];
+    130          		}
+    131          	} else {
+    132          		for (p = 0; p < n; p++) {
+    133          			mStart = freqBandTab[p];
+    134          			mEnd =   freqBandTab[p+1];
+    135          			eCurr.w64 = 0;
+    136          			for (i = iStart; i < iEnd; i++) {
+    137          				XBuf = psi->XBuf[i][mStart];
+    138          				for (m = mStart; m < mEnd; m++) {
+    139          					xre = (*XBuf++) >> FBITS_OUT_QMFA;
+    140          					xim = (*XBuf++) >> FBITS_OUT_QMFA;
+    141          					eCurr.w64 = MADD64(eCurr.w64, xre, xre);
+    142          					eCurr.w64 = MADD64(eCurr.w64, xim, xim);
+    143          				}
+    144          			}
+    145          
+    146          			nScale = 0;
+    147          			if (eCurr.r.hi32) {
+    148          				nScale = (32 - CLZ(eCurr.r.hi32)) + 1;
+    149          				t  = (int)(eCurr.r.lo32 >> nScale);		/* logical (unsigned) >> */
+    150          				t |= eCurr.r.hi32 << (32 - nScale);
+    151          			} else if (eCurr.r.lo32 >> 31) {
+    152          				nScale = 1;
+    153          				t  = (int)(eCurr.r.lo32 >> nScale);		/* logical (unsigned) >> */
+    154          			} else {
+    155          				t  = (int)eCurr.r.lo32;
+    156          			}
+    157          
+    158          			invFact = invBandTab[(iEnd - iStart)-1];
+    159          			invFact = MULSHIFT32(invBandTab[(mEnd - mStart)-1], invFact) << 1;
+    160          			t = MULSHIFT32(t, invFact);
+    161          
+    162          			for (m = mStart; m < mEnd; m++) {
+    163          				psi->eCurr[m - sbrFreq->kStart] = t;
+    164          				psi->eCurrExp[m - sbrFreq->kStart] = nScale + 1;	/* +1 for invFact = Q31 */
+    165          			}
+    166          			if (psi->eCurrExp[mStart - sbrFreq->kStart] > expMax)
+    167          				expMax = psi->eCurrExp[mStart - sbrFreq->kStart];
+    168          		}
+    169          	}
+    170          	psi->eCurrExpMax = expMax;
+   \                     ??EstimateEnvelope_5:
+   \   000000AC   1C009DE5           LDR      R0,[SP, #+28]
+   \   000000B0   0C109DE5           LDR      R1,[SP, #+12]
+   \   000000B4   F010C0E5           STRB     R1,[R0, #+240]
+    171          }
+   \   000000B8   2CD08DE2           ADD      SP,SP,#+44
+   \   000000BC   F08FBDE8           POP      {R4-R11,PC}      ;; return
+   \                     ??EstimateEnvelope_6:
+   \   000000C0   00309DE5           LDR      R3,[SP, #+0]
+   \                     ??EstimateEnvelope_7:
+   \   000000C4   28009DE5           LDR      R0,[SP, #+40]
+   \   000000C8   0C6180E0           ADD      R6,R0,R12, LSL #+2
+   \   000000CC   20009DE5           LDR      R0,[SP, #+32]
+   \   000000D0   047010E5           LDR      R7,[R0, #-4]
+   \   000000D4   9307C1E0           SMULL    R0,R1,R3,R7
+   \   000000D8   0100A0E1           MOV      R0,R1
+   \   000000DC   06008BE7           STR      R0,[R11, +R6]
+   \   000000E0   28109DE5           LDR      R1,[SP, #+40]
+   \   000000E4   C0008BE3           ORR      R0,R11,#0xC0
+   \   000000E8   01108CE0           ADD      R1,R12,R1
+   \   000000EC   010080E0           ADD      R0,R0,R1
+   \   000000F0   011082E2           ADD      R1,R2,#+1
+   \   000000F4   0010C0E5           STRB     R1,[R0, #+0]
+   \   000000F8   0020D0E5           LDRB     R2,[R0, #+0]
+   \   000000FC   0C109DE5           LDR      R1,[SP, #+12]
+   \   00000100   01C08CE2           ADD      R12,R12,#+1
+   \   00000104   020051E1           CMP      R1,R2
+   \   00000108   0200A0B1           MOVLT    R0,R2
+   \   0000010C   0C008DB5           STRLT    R0,[SP, #+12]
+   \                     ??EstimateEnvelope_4:
+   \   00000110   14009AE5           LDR      R0,[R10, #+20]
+   \   00000114   00005CE1           CMP      R12,R0
+   \   00000118   E3FFFFAA           BGE      ??EstimateEnvelope_5
+   \   0000011C   0D00A0E1           MOV      R0,SP
+   \   00000120   0020A0E3           MOV      R2,#+0
+   \   00000124   0030A0E3           MOV      R3,#+0
+   \   00000128   0C0080E8           STM      R0,{R2,R3}
+   \   0000012C   00109AE5           LDR      R1,[R10, #+0]
+   \   00000130   10209DE5           LDR      R2,[SP, #+16]
+   \   00000134   28309DE5           LDR      R3,[SP, #+40]
+   \   00000138   10609DE5           LDR      R6,[SP, #+16]
+   \   0000013C   2C00A0E3           MOV      R0,#+44
+   \   00000140   760C80E3           ORR      R0,R0,#0x7600
+   \   00000144   01108CE0           ADD      R1,R12,R1
+   \   00000148   822483E0           ADD      R2,R3,R2, LSL #+9
+   \   0000014C   811182E0           ADD      R1,R2,R1, LSL #+3
+   \   00000150   017080E0           ADD      R7,R0,R1
+   \   00000154   08009DE5           LDR      R0,[SP, #+8]
+   \   00000158   000056E1           CMP      R6,R0
+   \   0000015C   1B0000AA           BGE      ??EstimateEnvelope_8
+   \                     ??EstimateEnvelope_9:
+   \   00000160   ........           LDR      R0,[R7], #+4
+   \   00000164   0DE0A0E1           MOV      LR,SP
+   \   00000168   C022A0E1           ASR      R2,R0,#+5
+   \   0000016C   ........           LDR      R0,[R7], #+508
+   \   00000170   C21FA0E1           ASR      R1,R2,#+31
+   \   00000174   C002A0E1           ASR      R0,R0,#+5
+   \   00000178   0040A0E1           MOV      R4,R0
+   \   0000017C   C05FA0E1           ASR      R5,R0,#+31
+   \   00000180   0200A0E1           MOV      R0,R2
+   \   00000184   0D20A0E1           MOV      R2,SP
+   \   00000188   0C0092E8           LDM      R2,{R2,R3}
+   \   0000018C   0280A0E1           MOV      R8,R2
+   \   00000190   0390A0E1           MOV      R9,R3
+   \   00000194   902083E0           UMULL    R2,R3,R0,R0
+   \   00000198   016086E2           ADD      R6,R6,#+1
+   \   0000019C   903123E0           MLA      R3,R0,R1,R3
+   \   000001A0   913023E0           MLA      R3,R1,R0,R3
+   \   000001A4   940481E0           UMULL    R0,R1,R4,R4
+   \   000001A8   000092E0           ADDS     R0,R2,R0
+   \   000001AC   941521E0           MLA      R1,R4,R5,R1
+   \   000001B0   951421E0           MLA      R1,R5,R4,R1
+   \   000001B4   0110A3E0           ADC      R1,R3,R1
+   \   000001B8   000098E0           ADDS     R0,R8,R0
+   \   000001BC   0110A9E0           ADC      R1,R9,R1
+   \   000001C0   03008EE8           STM      LR,{R0,R1}
+   \   000001C4   08009DE5           LDR      R0,[SP, #+8]
+   \   000001C8   000056E1           CMP      R6,R0
+   \   000001CC   E3FFFFBA           BLT      ??EstimateEnvelope_9
+   \                     ??EstimateEnvelope_8:
+   \   000001D0   04009DE5           LDR      R0,[SP, #+4]
+   \   000001D4   0020A0E3           MOV      R2,#+0
+   \   000001D8   000050E3           CMP      R0,#+0
+   \   000001DC   1500000A           BEQ      ??EstimateEnvelope_10
+   \   000001E0   0010A0E1           MOV      R1,R0
+   \   000001E4   0120A0E3           MOV      R2,#+1
+   \   000001E8   2138B0E1           LSRS     R3,R1,#+16
+   \   000001EC   1120A003           MOVEQ    R2,#+17
+   \   000001F0   0118A001           LSLEQ    R1,R1,#+16
+   \   000001F4   213CB0E1           LSRS     R3,R1,#+24
+   \   000001F8   08208202           ADDEQ    R2,R2,#+8
+   \   000001FC   0114A001           LSLEQ    R1,R1,#+8
+   \   00000200   213EB0E1           LSRS     R3,R1,#+28
+   \   00000204   04208202           ADDEQ    R2,R2,#+4
+   \   00000208   0112A001           LSLEQ    R1,R1,#+4
+   \   0000020C   213FB0E1           LSRS     R3,R1,#+30
+   \   00000210   02208202           ADDEQ    R2,R2,#+2
+   \   00000214   0111A001           LSLEQ    R1,R1,#+2
+   \   00000218   212062E2           RSB      R2,R2,#+33
+   \   0000021C   A12F82E0           ADD      R2,R2,R1, LSR #+31
+   \   00000220   00109DE5           LDR      R1,[SP, #+0]
+   \   00000224   0230A0E1           MOV      R3,R2
+   \   00000228   203063E2           RSB      R3,R3,#+32
+   \   0000022C   1003A0E1           LSL      R0,R0,R3
+   \   00000230   313280E1           ORR      R3,R0,R1, LSR R2
+   \   00000234   A2FFFFEA           B        ??EstimateEnvelope_7
+   \                     ??EstimateEnvelope_10:
+   \   00000238   00009DE5           LDR      R0,[SP, #+0]
+   \   0000023C   A00FB0E1           LSRS     R0,R0,#+31
+   \   00000240   9EFFFF0A           BEQ      ??EstimateEnvelope_6
+   \   00000244   00009DE5           LDR      R0,[SP, #+0]
+   \   00000248   0120A0E3           MOV      R2,#+1
+   \   0000024C   A030A0E1           LSR      R3,R0,#+1
+   \   00000250   9BFFFFEA           B        ??EstimateEnvelope_7
+   \                     ??EstimateEnvelope_3:
+   \   00000254   14009DE5           LDR      R0,[SP, #+20]
+   \   00000258   00B0A0E3           MOV      R11,#+0
+   \   0000025C   010050E3           CMP      R0,#+1
+   \   00000260   280000AA           BGE      ??EstimateEnvelope_11
+   \   00000264   90FFFFEA           B        ??EstimateEnvelope_5
+   \                     ??EstimateEnvelope_12:
+   \   00000268   00309DE5           LDR      R3,[SP, #+0]
+   \                     ??EstimateEnvelope_13:
+   \   0000026C   F8119FE5           LDR      R1,??EstimateEnvelope_2  ;; invBandTab
+   \   00000270   090048E0           SUB      R0,R8,R9
+   \   00000274   000181E0           ADD      R0,R1,R0, LSL #+2
+   \   00000278   046010E5           LDR      R6,[R0, #-4]
+   \   0000027C   20009DE5           LDR      R0,[SP, #+32]
+   \   00000280   09C0A0E1           MOV      R12,R9
+   \   00000284   047010E5           LDR      R7,[R0, #-4]
+   \   00000288   08005CE1           CMP      R12,R8
+   \   0000028C   9607C1E0           SMULL    R0,R1,R6,R7
+   \   00000290   8160A0E1           LSL      R6,R1,#+1
+   \   00000294   9306C1E0           SMULL    R0,R1,R3,R6
+   \   00000298   0130A0E1           MOV      R3,R1
+   \   0000029C   0C0000AA           BGE      ??EstimateEnvelope_14
+   \   000002A0   010082E2           ADD      R0,R2,#+1
+   \                     ??EstimateEnvelope_15:
+   \   000002A4   00109AE5           LDR      R1,[R10, #+0]
+   \   000002A8   1C209DE5           LDR      R2,[SP, #+28]
+   \   000002AC   01104CE0           SUB      R1,R12,R1
+   \   000002B0   013182E7           STR      R3,[R2, +R1, LSL #+2]
+   \   000002B4   00109AE5           LDR      R1,[R10, #+0]
+   \   000002B8   1C209DE5           LDR      R2,[SP, #+28]
+   \   000002BC   01104CE0           SUB      R1,R12,R1
+   \   000002C0   C02082E2           ADD      R2,R2,#+192
+   \   000002C4   0200C1E7           STRB     R0,[R1, +R2]
+   \   000002C8   01C08CE2           ADD      R12,R12,#+1
+   \   000002CC   08005CE1           CMP      R12,R8
+   \   000002D0   F3FFFFBA           BLT      ??EstimateEnvelope_15
+   \                     ??EstimateEnvelope_14:
+   \   000002D4   00109AE5           LDR      R1,[R10, #+0]
+   \   000002D8   28209DE5           LDR      R2,[SP, #+40]
+   \   000002DC   E800A0E3           MOV      R0,#+232
+   \   000002E0   700D80E3           ORR      R0,R0,#0x1C00
+   \   000002E4   011049E0           SUB      R1,R9,R1
+   \   000002E8   021081E0           ADD      R1,R1,R2
+   \   000002EC   010080E0           ADD      R0,R0,R1
+   \   000002F0   0020D0E5           LDRB     R2,[R0, #+0]
+   \   000002F4   0C109DE5           LDR      R1,[SP, #+12]
+   \   000002F8   01B08BE2           ADD      R11,R11,#+1
+   \   000002FC   020051E1           CMP      R1,R2
+   \   00000300   0200A0B1           MOVLT    R0,R2
+   \   00000304   0C008DB5           STRLT    R0,[SP, #+12]
+   \                     ??EstimateEnvelope_11:
+   \   00000308   14009DE5           LDR      R0,[SP, #+20]
+   \   0000030C   00005BE1           CMP      R11,R0
+   \   00000310   65FFFFAA           BGE      ??EstimateEnvelope_5
+   \   00000314   18009DE5           LDR      R0,[SP, #+24]
+   \   00000318   0020A0E3           MOV      R2,#+0
+   \   0000031C   0090DBE7           LDRB     R9,[R11, +R0]
+   \   00000320   00008BE0           ADD      R0,R11,R0
+   \   00000324   0180D0E5           LDRB     R8,[R0, #+1]
+   \   00000328   0D00A0E1           MOV      R0,SP
+   \   0000032C   0030A0E3           MOV      R3,#+0
+   \   00000330   0C0080E8           STM      R0,{R2,R3}
+   \   00000334   10609DE5           LDR      R6,[SP, #+16]
+   \   00000338   08009DE5           LDR      R0,[SP, #+8]
+   \   0000033C   000056E1           CMP      R6,R0
+   \   00000340   280000AA           BGE      ??EstimateEnvelope_16
+   \   00000344   28209DE5           LDR      R2,[SP, #+40]
+   \   00000348   2C10A0E3           MOV      R1,#+44
+   \   0000034C   761C81E3           ORR      R1,R1,#0x7600
+   \   00000350   892182E0           ADD      R2,R2,R9, LSL #+3
+   \   00000354   021081E0           ADD      R1,R1,R2
+   \   00000358   24108DE5           STR      R1,[SP, #+36]
+   \                     ??EstimateEnvelope_17:
+   \   0000035C   24009DE5           LDR      R0,[SP, #+36]
+   \   00000360   09C0A0E1           MOV      R12,R9
+   \   00000364   867480E0           ADD      R7,R0,R6, LSL #+9
+   \   00000368   08005CE1           CMP      R12,R8
+   \   0000036C   190000AA           BGE      ??EstimateEnvelope_18
+   \                     ??EstimateEnvelope_19:
+   \   00000370   ........           LDR      R0,[R7], #+4
+   \   00000374   0DE0A0E1           MOV      LR,SP
+   \   00000378   C022A0E1           ASR      R2,R0,#+5
+   \   0000037C   ........           LDR      R0,[R7], #+4
+   \   00000380   0D40A0E1           MOV      R4,SP
+   \   00000384   300094E8           LDM      R4,{R4,R5}
+   \   00000388   C002A0E1           ASR      R0,R0,#+5
+   \   0000038C   30002DE9           PUSH     {R4,R5}
+   \   00000390   C01FA0E1           ASR      R1,R0,#+31
+   \   00000394   C23FA0E1           ASR      R3,R2,#+31
+   \   00000398   924285E0           UMULL    R4,R5,R2,R2
+   \   0000039C   01C08CE2           ADD      R12,R12,#+1
+   \   000003A0   925325E0           MLA      R5,R2,R3,R5
+   \   000003A4   935225E0           MLA      R5,R3,R2,R5
+   \   000003A8   902083E0           UMULL    R2,R3,R0,R0
+   \   000003AC   903123E0           MLA      R3,R0,R1,R3
+   \   000003B0   913023E0           MLA      R3,R1,R0,R3
+   \   000003B4   0510A0E1           MOV      R1,R5
+   \   000003B8   020094E0           ADDS     R0,R4,R2
+   \   000003BC   0310A1E0           ADC      R1,R1,R3
+   \   000003C0   0C00BDE8           POP      {R2,R3}
+   \   000003C4   000092E0           ADDS     R0,R2,R0
+   \   000003C8   0110A3E0           ADC      R1,R3,R1
+   \   000003CC   03008EE8           STM      LR,{R0,R1}
+   \   000003D0   08005CE1           CMP      R12,R8
+   \   000003D4   E5FFFFBA           BLT      ??EstimateEnvelope_19
+   \                     ??EstimateEnvelope_18:
+   \   000003D8   08009DE5           LDR      R0,[SP, #+8]
+   \   000003DC   016086E2           ADD      R6,R6,#+1
+   \   000003E0   000056E1           CMP      R6,R0
+   \   000003E4   DCFFFFBA           BLT      ??EstimateEnvelope_17
+   \                     ??EstimateEnvelope_16:
+   \   000003E8   04009DE5           LDR      R0,[SP, #+4]
+   \   000003EC   0020A0E3           MOV      R2,#+0
+   \   000003F0   000050E3           CMP      R0,#+0
+   \   000003F4   1500000A           BEQ      ??EstimateEnvelope_20
+   \   000003F8   0010A0E1           MOV      R1,R0
+   \   000003FC   0120A0E3           MOV      R2,#+1
+   \   00000400   2138B0E1           LSRS     R3,R1,#+16
+   \   00000404   1120A003           MOVEQ    R2,#+17
+   \   00000408   0118A001           LSLEQ    R1,R1,#+16
+   \   0000040C   213CB0E1           LSRS     R3,R1,#+24
+   \   00000410   08208202           ADDEQ    R2,R2,#+8
+   \   00000414   0114A001           LSLEQ    R1,R1,#+8
+   \   00000418   213EB0E1           LSRS     R3,R1,#+28
+   \   0000041C   04208202           ADDEQ    R2,R2,#+4
+   \   00000420   0112A001           LSLEQ    R1,R1,#+4
+   \   00000424   213FB0E1           LSRS     R3,R1,#+30
+   \   00000428   02208202           ADDEQ    R2,R2,#+2
+   \   0000042C   0111A001           LSLEQ    R1,R1,#+2
+   \   00000430   212062E2           RSB      R2,R2,#+33
+   \   00000434   A12F82E0           ADD      R2,R2,R1, LSR #+31
+   \   00000438   00109DE5           LDR      R1,[SP, #+0]
+   \   0000043C   0230A0E1           MOV      R3,R2
+   \   00000440   203063E2           RSB      R3,R3,#+32
+   \   00000444   1003A0E1           LSL      R0,R0,R3
+   \   00000448   313280E1           ORR      R3,R0,R1, LSR R2
+   \   0000044C   86FFFFEA           B        ??EstimateEnvelope_13
+   \                     ??EstimateEnvelope_20:
+   \   00000450   00009DE5           LDR      R0,[SP, #+0]
+   \   00000454   A00FB0E1           LSRS     R0,R0,#+31
+   \   00000458   82FFFF0A           BEQ      ??EstimateEnvelope_12
+   \   0000045C   00009DE5           LDR      R0,[SP, #+0]
+   \   00000460   0120A0E3           MOV      R2,#+1
+   \   00000464   A030A0E1           LSR      R3,R0,#+1
+   \   00000468   7FFFFFEA           B        ??EstimateEnvelope_13
+   \                     ??EstimateEnvelope_2:
+   \   0000046C   ........           DC32     invBandTab
+    172          
+    173          /**************************************************************************************
+    174           * Function:    GetSMapped
+    175           *
+    176           * Description: calculate SMapped (4.6.18.7.2)
+    177           *
+    178           * Inputs:      initialized PSInfoSBR struct
+    179           *              initialized SBRGrid struct for this channel
+    180           *              initialized SBRFreq struct for this SCE/CPE block
+    181           *              initialized SBRChan struct for this channel
+    182           *              index of current envelope
+    183           *              index of current QMF band
+    184           *              la flag for this envelope
+    185           *
+    186           * Outputs:     none
+    187           *
+    188           * Return:      1 if a sinusoid is present in this band, 0 if not
+    189           **************************************************************************************/
+    190          static int GetSMapped(SBRGrid *sbrGrid, SBRFreq *sbrFreq, SBRChan *sbrChan, int env, int band, int la)
+    191          {
+    192          	int bandStart, bandEnd, oddFlag;
+    193          
+    194          	if (sbrGrid->freqRes[env]) {
+    195          		/* high resolution */
+    196          		if (env >= la || (sbrChan->addHarmonicFlag[0] && sbrChan->addHarmonic[0][band]))
+    197          			return sbrChan->addHarmonic[1][band];
+    198          	} else {
+    199          		/* low resolution (see CalcFreqLow() for mapping) */
+    200          		oddFlag = sbrFreq->nHigh & 0x01;
+    201          		bandStart = 2*band - oddFlag;		/* starting index for freqLow[band] */
+    202          		bandEnd = 2*(band+1) - oddFlag;		/* ending index for freqLow[band+1] */
+    203          		for (band = bandStart; band < bandEnd; band++) {
+    204          			if (env >= la || (sbrChan->addHarmonicFlag[0] && sbrChan->addHarmonic[0][band]))
+    205          				if (sbrChan->addHarmonic[1][band])
+    206          					return 1;
+    207          		}
+    208          	}
+    209          	return 0;
+    210          }
+    211          
+    212          #define GBOOST_MAX	0x2830afd3	/* Q28, 1.584893192 squared */
+    213          #define	ACC_SCALE	6
+    214          
+    215          /* squared version of table in 4.6.18.7.5 */
+
+   \                                 In segment DATA_C, align 4, align-sorted
+    216          static const int limGainTab[4] = {0x20138ca7, 0x40000000, 0x7fb27dce, 0x80000000};	/* Q30 (0x80000000 = sentinel for GMAX) */
+   \                     limGainTab:
+   \   00000000   A78C13200000       DC32 538152103, 1073741824, 2142404046, -2147483648
+   \              0040CE7DB27F
+   \              00000080    
+    217          
+    218          /**************************************************************************************
+    219           * Function:    CalcMaxGain
+    220           *
+    221           * Description: calculate max gain in one limiter band (4.6.18.7.5)
+    222           *
+    223           * Inputs:      initialized PSInfoSBR struct
+    224           *              initialized SBRHeader struct for this SCE/CPE block
+    225           *              initialized SBRGrid struct for this channel
+    226           *              initialized SBRFreq struct for this SCE/CPE block
+    227           *              index of current channel (0 for SCE, 0 or 1 for CPE)
+    228           *              index of current envelope
+    229           *              index of current limiter band
+    230           *              number of fraction bits in dequantized envelope 
+    231           *                (max = Q(FBITS_OUT_DQ_ENV - 6) = Q23, can go negative)
+    232           *
+    233           * Outputs:     updated gainMax, gainMaxFBits, and sumEOrigMapped in PSInfoSBR struct
+    234           *
+    235           * Return:      none
+    236           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    237          static void CalcMaxGain(PSInfoSBR *psi, SBRHeader *sbrHdr, SBRGrid *sbrGrid, SBRFreq *sbrFreq, int ch, int env, int lim, int fbitsDQ)
+    238          {
+   \                     CalcMaxGain:
+   \   00000000   F34F2DE9           PUSH     {R0,R1,R4-R11,LR}
+   \   00000004   30109DE5           LDR      R1,[SP, #+48]
+   \   00000008   34A09DE5           LDR      R10,[SP, #+52]
+   \   0000000C   2C009DE5           LDR      R0,[SP, #+44]
+    239          	int m, mStart, mEnd, q, z, r;
+    240          	int sumEOrigMapped, sumECurr, gainMax, eOMGainMax, envBand;
+    241          	unsigned char eCurrExpMax;
+    242          	unsigned char *freqBandTab;
+    243          
+    244          	mStart = sbrFreq->freqLimiter[lim];   /* these are offsets from kStart */
+    245          	mEnd =   sbrFreq->freqLimiter[lim + 1];
+   \   00000010   03408AE0           ADD      R4,R10,R3
+   \   00000014   A670D4E5           LDRB     R7,[R4, #+166]
+    246          	freqBandTab = (sbrGrid->freqRes[env] ? sbrFreq->freqHigh : sbrFreq->freqLow);
+   \   00000018   022081E0           ADD      R2,R1,R2
+   \   0000001C   0A20D2E5           LDRB     R2,[R2, #+10]
+    247          
+    248          	/* calculate max gain to apply to signal in this limiter band */
+    249          	sumECurr = 0;
+    250          	sumEOrigMapped = 0;
+    251          	eCurrExpMax = psi->eCurrExpMax;
+   \   00000020   00609DE5           LDR      R6,[SP, #+0]
+    252          	eOMGainMax = psi->eOMGainMax;
+    253          	envBand = psi->envBand;
+    254          	for (m = mStart; m < mEnd; m++) {
+   \   00000024   03A08AE0           ADD      R10,R10,R3
+   \   00000028   A5E0DAE5           LDRB     LR,[R10, #+165]
+   \   0000002C   000052E3           CMP      R2,#+0
+   \   00000030   55C08312           ADDNE    R12,R3,#+85
+   \   00000034   86C08302           ADDEQ    R12,R3,#+134
+   \   00000038   0020A0E3           MOV      R2,#+0
+   \   0000003C   0050A0E3           MOV      R5,#+0
+   \   00000040   2840A0E3           MOV      R4,#+40
+   \   00000044   704D84E3           ORR      R4,R4,#0x1C00
+   \   00000048   064084E0           ADD      R4,R4,R6
+   \   0000004C   F060D4E5           LDRB     R6,[R4, #+240]
+   \   00000050   009194E5           LDR      R9,[R4, #+256]
+   \   00000054   FC8094E5           LDR      R8,[R4, #+252]
+   \   00000058   07005EE1           CMP      LR,R7
+   \   0000005C   210000AA           BGE      ??CalcMaxGain_0
+    255          		/* map current QMF band to appropriate envelope band */
+    256          		if (m == freqBandTab[envBand + 1] - sbrFreq->kStart) {
+   \                     ??CalcMaxGain_1:
+   \   00000060   00B093E5           LDR      R11,[R3, #+0]
+   \   00000064   01A08CE2           ADD      R10,R12,#+1
+   \   00000068   0AA0D8E7           LDRB     R10,[R8, +R10]
+   \   0000006C   0BA04AE0           SUB      R10,R10,R11
+   \   00000070   0A005EE1           CMP      LR,R10
+   \   00000074   0C00001A           BNE      ??CalcMaxGain_2
+    257          			envBand++;
+    258          			eOMGainMax = psi->envDataDequant[ch][env][envBand] >> ACC_SCALE;	/* summing max 48 bands */
+   \   00000078   5890A0E3           MOV      R9,#+88
+   \   0000007C   509D89E3           ORR      R9,R9,#0x1400
+   \   00000080   00022DE9           PUSH     {R9}
+   \   00000084   04A09DE5           LDR      R10,[SP, #+4]
+   \   00000088   F0BFA0E3           MOV      R11,#+960
+   \   0000008C   9BA02AE0           MLA      R10,R11,R0,R10
+   \   00000090   C090A0E3           MOV      R9,#+192
+   \   00000094   99A12AE0           MLA      R10,R9,R1,R10
+   \   00000098   0002BDE8           POP      {R9}
+   \   0000009C   018088E2           ADD      R8,R8,#+1
+   \   000000A0   08A18AE0           ADD      R10,R10,R8, LSL #+2
+   \   000000A4   0A9099E7           LDR      R9,[R9, +R10]
+   \   000000A8   4993A0E1           ASR      R9,R9,#+6
+    259          		}
+    260          		sumEOrigMapped += eOMGainMax;
+    261          
+    262          		/* easy test for overflow on ARM */
+    263          		sumECurr += (psi->eCurr[m] >> (eCurrExpMax - psi->eCurrExp[m]));
+   \                     ??CalcMaxGain_2:
+   \   000000AC   0EA194E7           LDR      R10,[R4, +LR, LSL #+2]
+   \   000000B0   055089E0           ADD      R5,R9,R5
+   \   000000B4   00042DE9           PUSH     {R10}
+   \   000000B8   C0A084E2           ADD      R10,R4,#+192
+   \   000000BC   0AA0DEE7           LDRB     R10,[LR, +R10]
+   \   000000C0   0008BDE8           POP      {R11}
+   \   000000C4   0AA046E0           SUB      R10,R6,R10
+   \   000000C8   5B2A82E0           ADD      R2,R2,R11, ASR R10
+    264          		if (sumECurr >> 30) {
+   \   000000CC   42AFB0E1           ASRS     R10,R2,#+30
+    265          			sumECurr >>= 1;
+   \   000000D0   C220A011           ASRNE    R2,R2,#+1
+    266          			eCurrExpMax++;
+   \   000000D4   01608612           ADDNE    R6,R6,#+1
+   \   000000D8   FF600612           ANDNE    R6,R6,#0xFF
+    267          		}
+    268          	}
+   \   000000DC   01E08EE2           ADD      LR,LR,#+1
+   \   000000E0   07005EE1           CMP      LR,R7
+   \   000000E4   DDFFFFBA           BLT      ??CalcMaxGain_1
+    269          	psi->eOMGainMax = eOMGainMax;
+   \                     ??CalcMaxGain_0:
+   \   000000E8   009184E5           STR      R9,[R4, #+256]
+    270          	psi->envBand = envBand;
+   \   000000EC   FC8084E5           STR      R8,[R4, #+252]
+    271          
+    272          	psi->gainMaxFBits = 30;	/* Q30 tables */
+   \   000000F0   1E00A0E3           MOV      R0,#+30
+   \   000000F4   080184E5           STR      R0,[R4, #+264]
+    273          	if (sumECurr == 0) {
+   \   000000F8   C8009FE5           LDR      R0,??CalcMaxGain_3  ;; limGainTab
+   \   000000FC   000052E3           CMP      R2,#+0
+   \   00000100   0900001A           BNE      ??CalcMaxGain_4
+    274          		/* any non-zero numerator * 1/EPS_0 is > G_MAX */
+    275          		gainMax = (sumEOrigMapped == 0 ? limGainTab[sbrHdr->limiterGains] : 0x80000000);
+   \   00000104   000055E3           CMP      R5,#+0
+   \   00000108   0300001A           BNE      ??CalcMaxGain_5
+   \   0000010C   04109DE5           LDR      R1,[SP, #+4]
+   \   00000110   0F10D1E5           LDRB     R1,[R1, #+15]
+   \   00000114   018190E7           LDR      R8,[R0, +R1, LSL #+2]
+   \   00000118   000000EA           B        ??CalcMaxGain_6
+   \                     ??CalcMaxGain_5:
+   \   0000011C   8084A0E3           MOV      R8,#-2147483648
+   \                     ??CalcMaxGain_6:
+   \   00000120   245184E5           STR      R5,[R4, #+292]
+   \   00000124   048184E5           STR      R8,[R4, #+260]
+   \   00000128   F38FBDE8           POP      {R0,R1,R4-R11,PC}
+    276          	} else if (sumEOrigMapped == 0) {
+   \                     ??CalcMaxGain_4:
+   \   0000012C   000055E3           CMP      R5,#+0
+    277          		/* 1/(any non-zero denominator) * EPS_0 * limGainTab[x] is appx. 0 */
+    278          		gainMax = 0;
+   \   00000130   0080A003           MOVEQ    R8,#+0
+   \   00000134   2000000A           BEQ      ??CalcMaxGain_7
+    279          	} else {
+    280          		/* sumEOrigMapped = Q(fbitsDQ - ACC_SCALE), sumECurr = Q(-eCurrExpMax) */
+    281          		gainMax = limGainTab[sbrHdr->limiterGains];
+   \   00000138   04109DE5           LDR      R1,[SP, #+4]
+   \   0000013C   0F10D1E5           LDRB     R1,[R1, #+15]
+   \   00000140   0130A0E1           MOV      R3,R1
+   \   00000144   038190E7           LDR      R8,[R0, +R3, LSL #+2]
+    282          		if (sbrHdr->limiterGains != 3) {
+   \   00000148   030051E3           CMP      R1,#+3
+   \   0000014C   1A00000A           BEQ      ??CalcMaxGain_7
+    283          			q = MULSHIFT32(sumEOrigMapped, gainMax);	/* Q(fbitsDQ - ACC_SCALE - 2), gainMax = Q30  */
+    284          			z = CLZ(sumECurr) - 1;
+   \   00000150   0200A0E1           MOV      R0,R2
+   \   00000154   0110A0E3           MOV      R1,#+1
+   \   00000158   2038B0E1           LSRS     R3,R0,#+16
+   \   0000015C   1110A003           MOVEQ    R1,#+17
+   \   00000160   0008A001           LSLEQ    R0,R0,#+16
+   \   00000164   203CB0E1           LSRS     R3,R0,#+24
+   \   00000168   08108102           ADDEQ    R1,R1,#+8
+   \   0000016C   0004A001           LSLEQ    R0,R0,#+8
+   \   00000170   203EB0E1           LSRS     R3,R0,#+28
+   \   00000174   04108102           ADDEQ    R1,R1,#+4
+   \   00000178   0002A001           LSLEQ    R0,R0,#+4
+   \   0000017C   203FB0E1           LSRS     R3,R0,#+30
+   \   00000180   02108102           ADDEQ    R1,R1,#+2
+   \   00000184   0001A001           LSLEQ    R0,R0,#+2
+   \   00000188   A00F41E0           SUB      R0,R1,R0, LSR #+31
+   \   0000018C   017040E2           SUB      R7,R0,#+1
+    285          			r = InvRNormalized(sumECurr << z);	/* in =  Q(z - eCurrExpMax), out = Q(29 + 31 - z + eCurrExpMax) */
+    286          			gainMax = MULSHIFT32(q, r);			/* Q(29 + 31 - z + eCurrExpMax + fbitsDQ - ACC_SCALE - 2 - 32) */
+   \   00000190   9508C1E0           SMULL    R0,R1,R5,R8
+   \   00000194   1207A0E1           LSL      R0,R2,R7
+   \   00000198   0180A0E1           MOV      R8,R1
+   \   0000019C   ........           _BLF     raac_InvRNormalized,??raac_InvRNormalized??rA
+    287          			psi->gainMaxFBits = 26 - z + eCurrExpMax + fbitsDQ - ACC_SCALE;
+   \   000001A0   38109DE5           LDR      R1,[SP, #+56]
+   \   000001A4   9820C3E0           SMULL    R2,R3,R8,R0
+   \   000001A8   070046E0           SUB      R0,R6,R7
+   \   000001AC   0380A0E1           MOV      R8,R3
+   \   000001B0   000081E0           ADD      R0,R1,R0
+   \   000001B4   140080E2           ADD      R0,R0,#+20
+   \   000001B8   080184E5           STR      R0,[R4, #+264]
+    288          		}
+    289          	}
+    290          	psi->sumEOrigMapped = sumEOrigMapped;
+   \                     ??CalcMaxGain_7:
+   \   000001BC   245184E5           STR      R5,[R4, #+292]
+    291          	psi->gainMax = gainMax;
+   \   000001C0   048184E5           STR      R8,[R4, #+260]
+    292          }
+   \   000001C4   F38FBDE8           POP      {R0,R1,R4-R11,PC}  ;; return
+   \                     ??CalcMaxGain_3:
+   \   000001C8   ........           DC32     limGainTab
+    293          
+    294          /**************************************************************************************
+    295           * Function:    CalcNoiseDivFactors
+    296           *
+    297           * Description: calculate 1/(1+Q) and Q/(1+Q) (4.6.18.7.4; 4.6.18.7.5)
+    298           *
+    299           * Inputs:      dequantized noise floor scalefactor
+    300           *
+    301           * Outputs:     1/(1+Q) and Q/(1+Q), format = Q31
+    302           *
+    303           * Return:      none
+    304           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    305          static void CalcNoiseDivFactors(int q, int *qp1Inv, int *qqp1Inv)
+    306          {
+   \                     CalcNoiseDivFactors:
+   \   00000000   F0402DE9           PUSH     {R4-R7,LR}
+   \   00000004   0050A0E1           MOV      R5,R0
+   \   00000008   0160A0E1           MOV      R6,R1
+   \   0000000C   0240A0E1           MOV      R4,R2
+    307          	int z, qp1, t, s;
+    308          
+    309          	/* 1 + Q_orig */
+    310          	qp1  = (q >> 1);
+    311          	qp1 += (1 << (FBITS_OUT_DQ_NOISE - 1));		/* >> 1 to avoid overflow when adding 1.0 */
+   \   00000010   8008A0E3           MOV      R0,#+8388608
+   \   00000014   C50080E0           ADD      R0,R0,R5, ASR #+1
+    312          	z = CLZ(qp1) - 1;							/* z <= 31 - FBITS_OUT_DQ_NOISE */
+   \   00000018   0010B0E1           MOVS     R1,R0
+   \   0000001C   2010A003           MOVEQ    R1,#+32
+   \   00000020   0D00000A           BEQ      ??CalcNoiseDivFactors_0
+   \   00000024   0120A0E3           MOV      R2,#+1
+   \   00000028   2138B0E1           LSRS     R3,R1,#+16
+   \   0000002C   1120A003           MOVEQ    R2,#+17
+   \   00000030   0118A001           LSLEQ    R1,R1,#+16
+   \   00000034   213CB0E1           LSRS     R3,R1,#+24
+   \   00000038   08208202           ADDEQ    R2,R2,#+8
+   \   0000003C   0114A001           LSLEQ    R1,R1,#+8
+   \   00000040   213EB0E1           LSRS     R3,R1,#+28
+   \   00000044   04208202           ADDEQ    R2,R2,#+4
+   \   00000048   0112A001           LSLEQ    R1,R1,#+4
+   \   0000004C   213FB0E1           LSRS     R3,R1,#+30
+   \   00000050   02208202           ADDEQ    R2,R2,#+2
+   \   00000054   0111A001           LSLEQ    R1,R1,#+2
+   \   00000058   A11F42E0           SUB      R1,R2,R1, LSR #+31
+   \                     ??CalcNoiseDivFactors_0:
+   \   0000005C   017041E2           SUB      R7,R1,#+1
+    313          	qp1 <<= z;									/* Q(FBITS_OUT_DQ_NOISE + z) = Q31 * 2^-(31 - (FBITS_OUT_DQ_NOISE + z)) */
+    314          	t = InvRNormalized(qp1) << 1;				/* Q30 * 2^(31 - (FBITS_OUT_DQ_NOISE + z)), guaranteed not to overflow */
+   \   00000060   1007A0E1           LSL      R0,R0,R7
+   \   00000064   ........           _BLF     raac_InvRNormalized,??raac_InvRNormalized??rA
+   \   00000068   8020A0E1           LSL      R2,R0,#+1
+    315          
+    316          	/* normalize to Q31 */
+    317          	s = (31 - (FBITS_OUT_DQ_NOISE - 1) - z - 1);	/* clearly z >= 0, z <= (30 - (FBITS_OUT_DQ_NOISE - 1)) */
+   \   0000006C   073067E2           RSB      R3,R7,#+7
+    318          	*qp1Inv = (t >> s);								/* s = [0, 31 - FBITS_OUT_DQ_NOISE] */
+   \   00000070   5203A0E1           ASR      R0,R2,R3
+   \   00000074   000086E5           STR      R0,[R6, #+0]
+    319          	*qqp1Inv = MULSHIFT32(t, q) << (32 - FBITS_OUT_DQ_NOISE - s);
+   \   00000078   9205C1E0           SMULL    R0,R1,R2,R5
+   \   0000007C   0100A0E1           MOV      R0,R1
+   \   00000080   081063E2           RSB      R1,R3,#+8
+   \   00000084   1001A0E1           LSL      R0,R0,R1
+   \   00000088   000084E5           STR      R0,[R4, #+0]
+    320          }
+   \   0000008C   F080BDE8           POP      {R4-R7,PC}       ;; return
+    321          
+    322          /**************************************************************************************
+    323           * Function:    CalcComponentGains
+    324           *
+    325           * Description: calculate gain of envelope, sinusoids, and noise in one limiter band
+    326           *                (4.6.18.7.5)
+    327           *
+    328           * Inputs:      initialized PSInfoSBR struct
+    329           *              initialized SBRHeader struct for this SCE/CPE block
+    330           *              initialized SBRGrid struct for this channel
+    331           *              initialized SBRFreq struct for this SCE/CPE block
+    332           *              initialized SBRChan struct for this channel
+    333           *              index of current channel (0 for SCE, 0 or 1 for CPE)
+    334           *              index of current envelope
+    335           *              index of current limiter band
+    336           *              number of fraction bits in dequantized envelope
+    337           *
+    338           * Outputs:     gains for envelope, sinusoids and noise
+    339           *              number of fraction bits for envelope gain
+    340           *              sum of the total gain for each component in this band
+    341           *              other updated state variables
+    342           *
+    343           * Return:      none
+    344           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    345          static void CalcComponentGains(PSInfoSBR *psi, SBRGrid *sbrGrid, SBRFreq *sbrFreq, SBRChan *sbrChan, int ch, int env, int lim, int fbitsDQ)
+    346          {
+   \                     CalcComponentGains:
+   \   00000000   F34F2DE9           PUSH     {R0,R1,R4-R11,LR}
+   \   00000004   24D04DE2           SUB      SP,SP,#+36
+   \   00000008   58009DE5           LDR      R0,[SP, #+88]
+   \   0000000C   0290A0E1           MOV      R9,R2
+    347          	int d, m, mStart, mEnd, q, qm, noiseFloor, sIndexMapped;
+    348          	int shift, eCurr, maxFlag, gainMax, gainMaxFBits;
+    349          	int gain, sm, z, r, fbitsGain, gainScale;
+    350          	unsigned char *freqBandTab;
+    351          
+    352          	mStart = sbrFreq->freqLimiter[lim];   /* these are offsets from kStart */
+   \   00000010   091080E0           ADD      R1,R0,R9
+   \   00000014   A560D1E5           LDRB     R6,[R1, #+165]
+    353          	mEnd =   sbrFreq->freqLimiter[lim + 1];
+    354          
+    355          	gainMax = psi->gainMax;
+   \   00000018   24109DE5           LDR      R1,[SP, #+36]
+   \   0000001C   090080E0           ADD      R0,R0,R9
+   \   00000020   A600D0E5           LDRB     R0,[R0, #+166]
+   \   00000024   0340A0E1           MOV      R4,R3
+   \   00000028   10008DE5           STR      R0,[SP, #+16]
+   \   0000002C   2800A0E3           MOV      R0,#+40
+   \   00000030   700D80E3           ORR      R0,R0,#0x1C00
+   \   00000034   015080E0           ADD      R5,R0,R1
+   \   00000038   041195E5           LDR      R1,[R5, #+260]
+    356          	gainMaxFBits = psi->gainMaxFBits;
+   \   0000003C   54009DE5           LDR      R0,[SP, #+84]
+   \   00000040   00108DE5           STR      R1,[SP, #+0]
+   \   00000044   081195E5           LDR      R1,[R5, #+264]
+   \   00000048   04108DE5           STR      R1,[SP, #+4]
+   \   0000004C   D11FD5E1           LDRSB    R1,[R5, #+241]
+   \   00000050   010050E1           CMP      R0,R1
+   \   00000054   0300000A           BEQ      ??CalcComponentGains_0
+   \   00000058   641F84E2           ADD      R1,R4,#+400
+   \   0000005C   D010D1E1           LDRSB    R1,[R1, #+0]
+   \   00000060   010050E1           CMP      R0,R1
+   \   00000064   0100001A           BNE      ??CalcComponentGains_1
+   \                     ??CalcComponentGains_0:
+   \   00000068   0010A0E3           MOV      R1,#+0
+   \   0000006C   000000EA           B        ??CalcComponentGains_2
+   \                     ??CalcComponentGains_1:
+   \   00000070   0110A0E3           MOV      R1,#+1
+   \                     ??CalcComponentGains_2:
+   \   00000074   14108DE5           STR      R1,[SP, #+20]
+    357          
+    358          	d = (env == psi->la || env == sbrChan->laPrev ? 0 : 1);
+    359          	freqBandTab = (sbrGrid->freqRes[env] ? sbrFreq->freqHigh : sbrFreq->freqLow);
+   \   00000078   28109DE5           LDR      R1,[SP, #+40]
+   \   0000007C   010080E0           ADD      R0,R0,R1
+   \   00000080   0A00D0E5           LDRB     R0,[R0, #+10]
+   \   00000084   000050E3           CMP      R0,#+0
+    360          
+    361          	/* figure out which noise floor this envelope is in (only 1 or 2 noise floors allowed) */
+    362          	noiseFloor = 0;
+    363          	if (sbrGrid->numNoiseFloors == 2 && sbrGrid->noiseTimeBorder[1] <= sbrGrid->envTimeBorder[env])
+   \   00000088   28009DE5           LDR      R0,[SP, #+40]
+   \   0000008C   55108912           ADDNE    R1,R9,#+85
+   \   00000090   86108902           ADDEQ    R1,R9,#+134
+   \   00000094   18108DE5           STR      R1,[SP, #+24]
+   \   00000098   0010A0E3           MOV      R1,#+0
+   \   0000009C   1C108DE5           STR      R1,[SP, #+28]
+   \   000000A0   0F00D0E5           LDRB     R0,[R0, #+15]
+   \   000000A4   020050E3           CMP      R0,#+2
+   \   000000A8   0700001A           BNE      ??CalcComponentGains_3
+   \   000000AC   54009DE5           LDR      R0,[SP, #+84]
+   \   000000B0   28109DE5           LDR      R1,[SP, #+40]
+   \   000000B4   010080E0           ADD      R0,R0,R1
+   \   000000B8   0400D0E5           LDRB     R0,[R0, #+4]
+   \   000000BC   1110D1E5           LDRB     R1,[R1, #+17]
+   \   000000C0   010050E1           CMP      R0,R1
+    364          		noiseFloor++;
+   \   000000C4   0110A023           MOVCS    R1,#+1
+   \   000000C8   1C108D25           STRCS    R1,[SP, #+28]
+    365          
+    366          	psi->sumECurrGLim = 0;
+   \                     ??CalcComponentGains_3:
+   \   000000CC   0000A0E3           MOV      R0,#+0
+   \   000000D0   280185E5           STR      R0,[R5, #+296]
+    367          	psi->sumSM = 0;
+   \   000000D4   2C0185E5           STR      R0,[R5, #+300]
+    368          	psi->sumQM = 0;
+   \   000000D8   300185E5           STR      R0,[R5, #+304]
+    369          	/* calculate energy of noise to add in this limiter band */
+    370          	for (m = mStart; m < mEnd; m++) {
+   \   000000DC   10009DE5           LDR      R0,[SP, #+16]
+   \   000000E0   000056E1           CMP      R6,R0
+   \   000000E4   FC0000AA           BGE      ??CalcComponentGains_4
+   \   000000E8   54309DE5           LDR      R3,[SP, #+84]
+   \   000000EC   50709DE5           LDR      R7,[SP, #+80]
+   \   000000F0   24A09DE5           LDR      R10,[SP, #+36]
+   \   000000F4   C020A0E3           MOV      R2,#+192
+   \   000000F8   F08FA0E3           MOV      R8,#+960
+   \   000000FC   98A727E0           MLA      R7,R8,R7,R10
+   \   00000100   5810A0E3           MOV      R1,#+88
+   \   00000104   927323E0           MLA      R3,R2,R3,R7
+   \   00000108   501D81E3           ORR      R1,R1,#0x1400
+   \   0000010C   031081E0           ADD      R1,R1,R3
+   \   00000110   20108DE5           STR      R1,[SP, #+32]
+    371          		if (m == sbrFreq->freqNoise[psi->noiseFloorBand + 1] - sbrFreq->kStart) {
+   \                     ??CalcComponentGains_5:
+   \   00000114   0C0195E5           LDR      R0,[R5, #+268]
+   \   00000118   9F1089E2           ADD      R1,R9,#+159
+   \   0000011C   010080E0           ADD      R0,R0,R1
+   \   00000120   0100D0E5           LDRB     R0,[R0, #+1]
+   \   00000124   001099E5           LDR      R1,[R9, #+0]
+   \   00000128   010040E0           SUB      R0,R0,R1
+   \   0000012C   000056E1           CMP      R6,R0
+   \   00000130   1400001A           BNE      ??CalcComponentGains_6
+    372          			/* map current QMF band to appropriate noise floor band (NOTE: freqLimiter[0] == freqLow[0] = freqHigh[0]) */
+    373          			psi->noiseFloorBand++;
+   \   00000134   0C0195E5           LDR      R0,[R5, #+268]
+    374          			CalcNoiseDivFactors(psi->noiseDataDequant[ch][noiseFloor][psi->noiseFloorBand], &(psi->qp1Inv), &(psi->qqp1Inv));
+   \   00000138   1480A0E3           MOV      R8,#+20
+   \   0000013C   010080E2           ADD      R0,R0,#+1
+   \   00000140   0C0185E5           STR      R0,[R5, #+268]
+   \   00000144   1C709DE5           LDR      R7,[SP, #+28]
+   \   00000148   50B09DE5           LDR      R11,[SP, #+80]
+   \   0000014C   24109DE5           LDR      R1,[SP, #+36]
+   \   00000150   0C3195E5           LDR      R3,[R5, #+268]
+   \   00000154   24C09DE5           LDR      R12,[SP, #+36]
+   \   00000158   28A0A0E3           MOV      R10,#+40
+   \   0000015C   9ACB2BE0           MLA      R11,R10,R11,R12
+   \   00000160   3C00A0E3           MOV      R0,#+60
+   \   00000164   98B727E0           MLA      R7,R8,R7,R11
+   \   00000168   740D80E3           ORR      R0,R0,#0x1D00
+   \   0000016C   012080E0           ADD      R2,R0,R1
+   \   00000170   0400C0E3           BIC      R0,R0,#0x4
+   \   00000174   011080E0           ADD      R1,R0,R1
+   \   00000178   580F40E2           SUB      R0,R0,#+352
+   \   0000017C   033187E0           ADD      R3,R7,R3, LSL #+2
+   \   00000180   030090E7           LDR      R0,[R0, +R3]
+   \   00000184   ........           BL       CalcNoiseDivFactors
+    375          		}
+    376          		if (m == sbrFreq->freqHigh[psi->highBand + 1] - sbrFreq->kStart)
+   \                     ??CalcComponentGains_6:
+   \   00000188   200195E5           LDR      R0,[R5, #+288]
+   \   0000018C   551089E2           ADD      R1,R9,#+85
+   \   00000190   010080E0           ADD      R0,R0,R1
+   \   00000194   0100D0E5           LDRB     R0,[R0, #+1]
+   \   00000198   001099E5           LDR      R1,[R9, #+0]
+   \   0000019C   010040E0           SUB      R0,R0,R1
+   \   000001A0   000056E1           CMP      R6,R0
+    377          			psi->highBand++;
+   \   000001A4   20019505           LDREQ    R0,[R5, #+288]
+   \   000001A8   01008002           ADDEQ    R0,R0,#+1
+   \   000001AC   20018505           STREQ    R0,[R5, #+288]
+    378          		if (m == freqBandTab[psi->sBand + 1] - sbrFreq->kStart) {
+   \   000001B0   1C1195E5           LDR      R1,[R5, #+284]
+   \   000001B4   18209DE5           LDR      R2,[SP, #+24]
+   \   000001B8   490FA0E3           MOV      R0,#+292
+   \   000001BC   012082E2           ADD      R2,R2,#+1
+   \   000001C0   0210D1E7           LDRB     R1,[R1, +R2]
+   \   000001C4   002099E5           LDR      R2,[R9, #+0]
+   \   000001C8   021041E0           SUB      R1,R1,R2
+   \   000001CC   010056E1           CMP      R6,R1
+   \   000001D0   3200001A           BNE      ??CalcComponentGains_7
+    379          			psi->sBand++;
+   \   000001D4   1C1195E5           LDR      R1,[R5, #+284]
+   \   000001D8   011081E2           ADD      R1,R1,#+1
+   \   000001DC   1C1185E5           STR      R1,[R5, #+284]
+    380          			psi->sMapped = GetSMapped(sbrGrid, sbrFreq, sbrChan, env, psi->sBand, psi->la);
+   \   000001E0   54309DE5           LDR      R3,[SP, #+84]
+   \   000001E4   28709DE5           LDR      R7,[SP, #+40]
+   \   000001E8   D11FD5E1           LDRSB    R1,[R5, #+241]
+   \   000001EC   1C2195E5           LDR      R2,[R5, #+284]
+   \   000001F0   073083E0           ADD      R3,R3,R7
+   \   000001F4   0A30D3E5           LDRB     R3,[R3, #+10]
+   \   000001F8   000053E3           CMP      R3,#+0
+   \   000001FC   0C00000A           BEQ      ??CalcComponentGains_8
+   \   00000200   54309DE5           LDR      R3,[SP, #+84]
+   \   00000204   010053E1           CMP      R3,R1
+   \   00000208   060000AA           BGE      ??CalcComponentGains_9
+   \   0000020C   0410D0E7           LDRB     R1,[R0, +R4]
+   \   00000210   000051E3           CMP      R1,#+0
+   \   00000214   2000000A           BEQ      ??CalcComponentGains_10
+   \   00000218   041082E0           ADD      R1,R2,R4
+   \   0000021C   2611D1E5           LDRB     R1,[R1, #+294]
+   \   00000220   000051E3           CMP      R1,#+0
+   \   00000224   1C00000A           BEQ      ??CalcComponentGains_10
+   \                     ??CalcComponentGains_9:
+   \   00000228   041082E0           ADD      R1,R2,R4
+   \   0000022C   5611D1E5           LDRB     R1,[R1, #+342]
+   \   00000230   190000EA           B        ??CalcComponentGains_10
+   \                     ??CalcComponentGains_8:
+   \   00000234   083099E5           LDR      R3,[R9, #+8]
+   \   00000238   017003E2           AND      R7,R3,#0x1
+   \   0000023C   013082E2           ADD      R3,R2,#+1
+   \   00000240   833067E0           RSB      R3,R7,R3, LSL #+1
+   \   00000244   822067E0           RSB      R2,R7,R2, LSL #+1
+   \   00000248   000000EA           B        ??CalcComponentGains_11
+   \                     ??CalcComponentGains_12:
+   \   0000024C   012082E2           ADD      R2,R2,#+1
+   \                     ??CalcComponentGains_11:
+   \   00000250   030052E1           CMP      R2,R3
+   \   00000254   0F0000AA           BGE      ??CalcComponentGains_13
+   \   00000258   54709DE5           LDR      R7,[SP, #+84]
+   \   0000025C   010057E1           CMP      R7,R1
+   \   00000260   060000AA           BGE      ??CalcComponentGains_14
+   \   00000264   0470D0E7           LDRB     R7,[R0, +R4]
+   \   00000268   000057E3           CMP      R7,#+0
+   \   0000026C   F6FFFF0A           BEQ      ??CalcComponentGains_12
+   \   00000270   047082E0           ADD      R7,R2,R4
+   \   00000274   2671D7E5           LDRB     R7,[R7, #+294]
+   \   00000278   000057E3           CMP      R7,#+0
+   \   0000027C   F2FFFF0A           BEQ      ??CalcComponentGains_12
+   \                     ??CalcComponentGains_14:
+   \   00000280   047082E0           ADD      R7,R2,R4
+   \   00000284   5671D7E5           LDRB     R7,[R7, #+342]
+   \   00000288   000057E3           CMP      R7,#+0
+   \   0000028C   EEFFFF0A           BEQ      ??CalcComponentGains_12
+   \   00000290   0110A0E3           MOV      R1,#+1
+   \   00000294   000000EA           B        ??CalcComponentGains_10
+   \                     ??CalcComponentGains_13:
+   \   00000298   0010A0E3           MOV      R1,#+0
+   \                     ??CalcComponentGains_10:
+   \   0000029C   181185E5           STR      R1,[R5, #+280]
+    381          		}
+    382          
+    383          		sIndexMapped = 0;
+    384          		if (env >= psi->la || (sbrChan->addHarmonicFlag[0] && sbrChan->addHarmonic[0][psi->highBand])) {
+   \                     ??CalcComponentGains_7:
+   \   000002A0   D13FD5E1           LDRSB    R3,[R5, #+241]
+   \   000002A4   54109DE5           LDR      R1,[SP, #+84]
+   \   000002A8   0020A0E3           MOV      R2,#+0
+   \   000002AC   030051E1           CMP      R1,R3
+   \   000002B0   070000AA           BGE      ??CalcComponentGains_15
+   \   000002B4   0400D0E7           LDRB     R0,[R0, +R4]
+   \   000002B8   000050E3           CMP      R0,#+0
+   \   000002BC   1100000A           BEQ      ??CalcComponentGains_16
+   \   000002C0   200195E5           LDR      R0,[R5, #+288]
+   \   000002C4   040080E0           ADD      R0,R0,R4
+   \   000002C8   2601D0E5           LDRB     R0,[R0, #+294]
+   \   000002CC   000050E3           CMP      R0,#+0
+   \   000002D0   0C00000A           BEQ      ??CalcComponentGains_16
+    385          			r = ((sbrFreq->freqHigh[psi->highBand+1] + sbrFreq->freqHigh[psi->highBand]) >> 1);	/* r = center band */
+    386          			if (m == r - sbrFreq->kStart)
+   \                     ??CalcComponentGains_15:
+   \   000002D4   200195E5           LDR      R0,[R5, #+288]
+   \   000002D8   201195E5           LDR      R1,[R5, #+288]
+   \   000002DC   090080E0           ADD      R0,R0,R9
+   \   000002E0   5600D0E5           LDRB     R0,[R0, #+86]
+   \   000002E4   091081E0           ADD      R1,R1,R9
+   \   000002E8   5510D1E5           LDRB     R1,[R1, #+85]
+   \   000002EC   000081E0           ADD      R0,R1,R0
+   \   000002F0   001099E5           LDR      R1,[R9, #+0]
+   \   000002F4   C00061E0           RSB      R0,R1,R0, ASR #+1
+   \   000002F8   000056E1           CMP      R6,R0
+    387          				sIndexMapped = sbrChan->addHarmonic[1][psi->highBand];
+   \   000002FC   20019505           LDREQ    R0,[R5, #+288]
+   \   00000300   04008000           ADDEQ    R0,R0,R4
+   \   00000304   5621D005           LDRBEQ   R2,[R0, #+342]
+    388          		}
+    389          
+    390          		gain = psi->envDataDequant[ch][env][psi->sBand];
+   \                     ??CalcComponentGains_16:
+   \   00000308   1C0195E5           LDR      R0,[R5, #+284]
+   \   0000030C   20109DE5           LDR      R1,[SP, #+32]
+   \   00000310   148195E5           LDR      R8,[R5, #+276]
+   \   00000314   007191E7           LDR      R7,[R1, +R0, LSL #+2]
+    391          		qm = MULSHIFT32(gain, psi->qqp1Inv) << 1;
+    392          		sm = (sIndexMapped ? MULSHIFT32(gain, psi->qp1Inv) << 1 : 0);
+   \   00000318   000052E3           CMP      R2,#+0
+   \   0000031C   9708C1E0           SMULL    R0,R1,R7,R8
+   \   00000320   0100A0E1           MOV      R0,R1
+   \   00000324   8000A0E1           LSL      R0,R0,#+1
+   \   00000328   08008DE5           STR      R0,[SP, #+8]
+   \   0000032C   0300000A           BEQ      ??CalcComponentGains_17
+   \   00000330   102195E5           LDR      R2,[R5, #+272]
+   \   00000334   9702C1E0           SMULL    R0,R1,R7,R2
+   \   00000338   81A0A0E1           LSL      R10,R1,#+1
+   \   0000033C   000000EA           B        ??CalcComponentGains_18
+   \                     ??CalcComponentGains_17:
+   \   00000340   00A0A0E3           MOV      R10,#+0
+    393          
+    394          		/* three cases: (sMapped == 0 && delta == 1), (sMapped == 0 && delta == 0), (sMapped == 1) */
+    395          		if (d == 1 && psi->sMapped == 0)
+   \                     ??CalcComponentGains_18:
+   \   00000344   14009DE5           LDR      R0,[SP, #+20]
+   \   00000348   010050E3           CMP      R0,#+1
+   \   0000034C   18019505           LDREQ    R0,[R5, #+280]
+   \   00000350   00005003           CMPEQ    R0,#+0
+    396          			gain = MULSHIFT32(psi->qp1Inv, gain) << 1;
+   \   00000354   10219505           LDREQ    R2,[R5, #+272]
+   \   00000358   0300000A           BEQ      ??CalcComponentGains_19
+    397          		else if (psi->sMapped != 0)
+   \   0000035C   180195E5           LDR      R0,[R5, #+280]
+   \   00000360   000050E3           CMP      R0,#+0
+   \   00000364   0200000A           BEQ      ??CalcComponentGains_20
+    398          			gain = MULSHIFT32(psi->qqp1Inv, gain) << 1;
+   \   00000368   142195E5           LDR      R2,[R5, #+276]
+   \                     ??CalcComponentGains_19:
+   \   0000036C   9207C1E0           SMULL    R0,R1,R2,R7
+   \   00000370   8170A0E1           LSL      R7,R1,#+1
+    399          
+    400          		/* gain, qm, sm = Q(fbitsDQ), gainMax = Q(fbitsGainMax) */
+    401          		eCurr = psi->eCurr[m];
+   \                     ??CalcComponentGains_20:
+   \   00000374   061195E7           LDR      R1,[R5, +R6, LSL #+2]
+   \   00000378   0C108DE5           STR      R1,[SP, #+12]
+   \   0000037C   0100A0E1           MOV      R0,R1
+   \   00000380   000050E3           CMP      R0,#+0
+   \   00000384   1E00000A           BEQ      ??CalcComponentGains_21
+    402          		if (eCurr) {
+    403          			z = CLZ(eCurr) - 1;
+   \   00000388   0110A0E3           MOV      R1,#+1
+   \   0000038C   2028B0E1           LSRS     R2,R0,#+16
+   \   00000390   1110A003           MOVEQ    R1,#+17
+   \   00000394   0008A001           LSLEQ    R0,R0,#+16
+   \   00000398   202CB0E1           LSRS     R2,R0,#+24
+   \   0000039C   08108102           ADDEQ    R1,R1,#+8
+   \   000003A0   0004A001           LSLEQ    R0,R0,#+8
+   \   000003A4   202EB0E1           LSRS     R2,R0,#+28
+   \   000003A8   04108102           ADDEQ    R1,R1,#+4
+   \   000003AC   0002A001           LSLEQ    R0,R0,#+4
+   \   000003B0   202FB0E1           LSRS     R2,R0,#+30
+   \   000003B4   02108102           ADDEQ    R1,R1,#+2
+   \   000003B8   0001A001           LSLEQ    R0,R0,#+2
+   \   000003BC   A00F41E0           SUB      R0,R1,R0, LSR #+31
+   \   000003C0   018040E2           SUB      R8,R0,#+1
+    404          			r = InvRNormalized(eCurr << z);		/* in = Q(z - eCurrExp), out = Q(29 + 31 - z + eCurrExp) */
+    405          			gainScale = MULSHIFT32(gain, r);	/* out = Q(29 + 31 - z + eCurrExp + fbitsDQ - 32) */
+   \   000003C4   0C009DE5           LDR      R0,[SP, #+12]
+   \   000003C8   1008A0E1           LSL      R0,R0,R8
+   \   000003CC   ........           _BLF     raac_InvRNormalized,??raac_InvRNormalized??rA
+    406          			fbitsGain = 29 + 31 - z + psi->eCurrExp[m] + fbitsDQ - 32;
+   \   000003D0   24309DE5           LDR      R3,[SP, #+36]
+   \   000003D4   0020A0E1           MOV      R2,R0
+   \   000003D8   9702C1E0           SMULL    R0,R1,R7,R2
+   \   000003DC   5C209DE5           LDR      R2,[SP, #+92]
+   \   000003E0   0100A0E1           MOV      R0,R1
+   \   000003E4   1C1068E2           RSB      R1,R8,#+28
+   \   000003E8   011082E0           ADD      R1,R2,R1
+   \   000003EC   E820A0E3           MOV      R2,#+232
+   \   000003F0   702D82E3           ORR      R2,R2,#0x1C00
+   \   000003F4   033086E0           ADD      R3,R6,R3
+   \   000003F8   0320D2E7           LDRB     R2,[R2, +R3]
+   \   000003FC   013082E0           ADD      R3,R2,R1
+   \   00000400   010000EA           B        ??CalcComponentGains_22
+    407          		} else {
+    408          			/* if eCurr == 0, then gain is unchanged (divide by EPS = 1) */
+    409          			gainScale = gain;
+    410          			fbitsGain = fbitsDQ;
+   \                     ??CalcComponentGains_21:
+   \   00000404   5C309DE5           LDR      R3,[SP, #+92]
+   \   00000408   0700A0E1           MOV      R0,R7
+    411          		}
+    412          
+    413          		/* see if gain for this band exceeds max gain */
+    414          		maxFlag = 0;
+    415          		if (gainMax != 0x80000000) {
+   \                     ??CalcComponentGains_22:
+   \   0000040C   24209DE5           LDR      R2,[SP, #+36]
+   \   00000410   1C10A0E3           MOV      R1,#+28
+   \   00000414   841D81E3           ORR      R1,R1,#0x2100
+   \   00000418   062182E0           ADD      R2,R2,R6, LSL #+2
+   \   0000041C   022081E0           ADD      R2,R1,R2
+   \   00000420   00109DE5           LDR      R1,[SP, #+0]
+   \   00000424   800451E3           CMP      R1,#-2147483648
+   \   00000428   0800000A           BEQ      ??CalcComponentGains_23
+    416          			if (fbitsGain >= gainMaxFBits) {
+   \   0000042C   04109DE5           LDR      R1,[SP, #+4]
+   \   00000430   010053E1           CMP      R3,R1
+   \   00000434   2A0000BA           BLT      ??CalcComponentGains_24
+    417          				shift = MIN(fbitsGain - gainMaxFBits, 31);
+    418          				maxFlag = ((gainScale >> shift) > gainMax ? 1 : 0);
+   \   00000438   00809DE5           LDR      R8,[SP, #+0]
+   \   0000043C   011043E0           SUB      R1,R3,R1
+   \   00000440   1F0051E3           CMP      R1,#+31
+   \   00000444   1F10A0A3           MOVGE    R1,#+31
+   \   00000448   500158E1           CMP      R8,R0, ASR R1
+   \   0000044C   2A0000BA           BLT      ??CalcComponentGains_25
+    419          			} else {
+    420          				shift = MIN(gainMaxFBits - fbitsGain, 31);
+    421          				maxFlag = (gainScale > (gainMax >> shift) ? 1 : 0);
+    422          			}
+    423          		}
+    424          
+    425          		if (maxFlag) {
+    426          			/* gainScale > gainMax, calculate ratio with 32/16 division */
+    427          			q = 0;
+    428          			r = gainScale;	/* guaranteed > 0, else maxFlag could not have been set */
+    429          			z = CLZ(r);
+    430          			if (z < 16) {
+    431          				q = 16 - z;
+    432          				r >>= q;	/* out = Q(fbitsGain - q) */
+    433          			}
+    434          
+    435          			z = CLZ(gainMax) - 1;
+    436          			r = (gainMax << z) / r;		/* out = Q((fbitsGainMax + z) - (fbitsGain - q)) */
+    437          			q = (gainMaxFBits + z) - (fbitsGain - q);	/* r = Q(q) */
+    438          			if (q > 30) {
+    439          				r >>= MIN(q - 30, 31);
+    440          			} else {
+    441          				z = MIN(30 - q, 30);
+    442          				CLIP_2N_SHIFT30(r, z);	/* let r = Q30 since range = [0.0, 1.0) (clip to 0x3fffffff = 0.99999) */
+    443          			}
+    444          
+    445          			qm = MULSHIFT32(qm, r) << 2;
+    446          			gain = MULSHIFT32(gain, r) << 2;
+    447          			psi->gLimBuf[m] = gainMax;
+    448          			psi->gLimFbits[m] = gainMaxFBits;
+    449          		} else {
+    450          			psi->gLimBuf[m] = gainScale;
+   \                     ??CalcComponentGains_23:
+   \   00000450   000082E5           STR      R0,[R2, #+0]
+    451          			psi->gLimFbits[m] = fbitsGain;
+   \   00000454   C03082E5           STR      R3,[R2, #+192]
+    452          		}
+    453          
+    454          		/* sumSM, sumQM, sumECurrGLim = Q(fbitsDQ - ACC_SCALE) */
+    455          		psi->smBuf[m] = sm;
+   \                     ??CalcComponentGains_26:
+   \   00000458   DD0F85E2           ADD      R0,R5,#+884
+   \   0000045C   06A180E7           STR      R10,[R0, +R6, LSL #+2]
+    456          		psi->sumSM += (sm >> ACC_SCALE);
+   \   00000460   2C0195E5           LDR      R0,[R5, #+300]
+   \   00000464   4A0380E0           ADD      R0,R0,R10, ASR #+6
+   \   00000468   2C0185E5           STR      R0,[R5, #+300]
+    457          
+    458          		psi->qmLimBuf[m] = qm;
+   \   0000046C   08109DE5           LDR      R1,[SP, #+8]
+   \   00000470   3400A0E3           MOV      R0,#+52
+   \   00000474   400E80E3           ORR      R0,R0,#0x400
+   \   00000478   050080E0           ADD      R0,R0,R5
+   \   0000047C   061180E7           STR      R1,[R0, +R6, LSL #+2]
+    459          		if (env != psi->la && env != sbrChan->laPrev && sm == 0)
+   \   00000480   D11FD5E1           LDRSB    R1,[R5, #+241]
+   \   00000484   54009DE5           LDR      R0,[SP, #+84]
+   \   00000488   010050E1           CMP      R0,R1
+   \   0000048C   0900000A           BEQ      ??CalcComponentGains_27
+   \   00000490   641F84E2           ADD      R1,R4,#+400
+   \   00000494   D010D1E1           LDRSB    R1,[R1, #+0]
+   \   00000498   010050E1           CMP      R0,R1
+   \   0000049C   0500000A           BEQ      ??CalcComponentGains_27
+   \   000004A0   00005AE3           CMP      R10,#+0
+   \   000004A4   0300001A           BNE      ??CalcComponentGains_27
+    460          			psi->sumQM += (qm >> ACC_SCALE);
+   \   000004A8   300195E5           LDR      R0,[R5, #+304]
+   \   000004AC   08109DE5           LDR      R1,[SP, #+8]
+   \   000004B0   410380E0           ADD      R0,R0,R1, ASR #+6
+   \   000004B4   300185E5           STR      R0,[R5, #+304]
+    461          
+    462          		/* eCurr * gain^2 same as gain^2, before division by eCurr 
+    463          		 * (but note that gain != 0 even if eCurr == 0, since it's divided by eps)
+    464          		 */
+    465          		if (eCurr)
+   \                     ??CalcComponentGains_27:
+   \   000004B8   0C009DE5           LDR      R0,[SP, #+12]
+    466          			psi->sumECurrGLim += (gain >> ACC_SCALE);
+   \   000004BC   016086E2           ADD      R6,R6,#+1
+   \   000004C0   000050E3           CMP      R0,#+0
+   \   000004C4   28019515           LDRNE    R0,[R5, #+296]
+   \   000004C8   47038010           ADDNE    R0,R0,R7, ASR #+6
+   \   000004CC   28018515           STRNE    R0,[R5, #+296]
+   \   000004D0   10009DE5           LDR      R0,[SP, #+16]
+   \   000004D4   000056E1           CMP      R6,R0
+   \   000004D8   0DFFFFBA           BLT      ??CalcComponentGains_5
+    467          	}
+    468          }
+   \                     ??CalcComponentGains_4:
+   \   000004DC   2CD08DE2           ADD      SP,SP,#+44       ;; stack cleaning
+   \   000004E0   F08FBDE8           POP      {R4-R11,PC}      ;; return
+   \                     ??CalcComponentGains_24:
+   \   000004E4   00809DE5           LDR      R8,[SP, #+0]
+   \   000004E8   031041E0           SUB      R1,R1,R3
+   \   000004EC   1F0051E3           CMP      R1,#+31
+   \   000004F0   1F10A0A3           MOVGE    R1,#+31
+   \   000004F4   580150E1           CMP      R0,R8, ASR R1
+   \   000004F8   D4FFFFDA           BLE      ??CalcComponentGains_23
+   \                     ??CalcComponentGains_25:
+   \   000004FC   00B0A0E3           MOV      R11,#+0
+   \   00000500   0010A0E1           MOV      R1,R0
+   \   00000504   0180B0E1           MOVS     R8,R1
+   \   00000508   2000A003           MOVEQ    R0,#+32
+   \   0000050C   0D00000A           BEQ      ??CalcComponentGains_28
+   \   00000510   0100A0E3           MOV      R0,#+1
+   \   00000514   28C8B0E1           LSRS     R12,R8,#+16
+   \   00000518   1100A003           MOVEQ    R0,#+17
+   \   0000051C   0888A001           LSLEQ    R8,R8,#+16
+   \   00000520   28CCB0E1           LSRS     R12,R8,#+24
+   \   00000524   08008002           ADDEQ    R0,R0,#+8
+   \   00000528   0884A001           LSLEQ    R8,R8,#+8
+   \   0000052C   28CEB0E1           LSRS     R12,R8,#+28
+   \   00000530   04008002           ADDEQ    R0,R0,#+4
+   \   00000534   0882A001           LSLEQ    R8,R8,#+4
+   \   00000538   28CFB0E1           LSRS     R12,R8,#+30
+   \   0000053C   02008002           ADDEQ    R0,R0,#+2
+   \   00000540   0881A001           LSLEQ    R8,R8,#+2
+   \   00000544   A80F40E0           SUB      R0,R0,R8, LSR #+31
+   \                     ??CalcComponentGains_28:
+   \   00000548   00809DE5           LDR      R8,[SP, #+0]
+   \   0000054C   100050E3           CMP      R0,#+16
+   \   00000550   10B060B2           RSBLT    R11,R0,#+16
+   \   00000554   511BA0B1           ASRLT    R1,R1,R11
+   \   00000558   000058E3           CMP      R8,#+0
+   \   0000055C   2000A003           MOVEQ    R0,#+32
+   \   00000560   0D00000A           BEQ      ??CalcComponentGains_29
+   \   00000564   0100A0E3           MOV      R0,#+1
+   \   00000568   28C8B0E1           LSRS     R12,R8,#+16
+   \   0000056C   1100A003           MOVEQ    R0,#+17
+   \   00000570   0888A001           LSLEQ    R8,R8,#+16
+   \   00000574   28CCB0E1           LSRS     R12,R8,#+24
+   \   00000578   08008002           ADDEQ    R0,R0,#+8
+   \   0000057C   0884A001           LSLEQ    R8,R8,#+8
+   \   00000580   28CEB0E1           LSRS     R12,R8,#+28
+   \   00000584   04008002           ADDEQ    R0,R0,#+4
+   \   00000588   0882A001           LSLEQ    R8,R8,#+4
+   \   0000058C   28CFB0E1           LSRS     R12,R8,#+30
+   \   00000590   02008002           ADDEQ    R0,R0,#+2
+   \   00000594   0881A001           LSLEQ    R8,R8,#+2
+   \   00000598   A80F40E0           SUB      R0,R0,R8, LSR #+31
+   \                     ??CalcComponentGains_29:
+   \   0000059C   018040E2           SUB      R8,R0,#+1
+   \   000005A0   00009DE5           LDR      R0,[SP, #+0]
+   \   000005A4   1008A0E1           LSL      R0,R0,R8
+   \   000005A8   ........           _BLF     ??div32_a,??rA??div32_a
+   \   000005AC   04009DE5           LDR      R0,[SP, #+4]
+   \   000005B0   000088E0           ADD      R0,R8,R0
+   \   000005B4   030040E0           SUB      R0,R0,R3
+   \   000005B8   0B0080E0           ADD      R0,R0,R11
+   \   000005BC   1F0050E3           CMP      R0,#+31
+   \   000005C0   050000BA           BLT      ??CalcComponentGains_30
+   \   000005C4   1E3040E2           SUB      R3,R0,#+30
+   \   000005C8   1F0053E3           CMP      R3,#+31
+   \   000005CC   E20080B2           ADDLT    R0,R0,#+226
+   \   000005D0   1F00A0A3           MOVGE    R0,#+31
+   \   000005D4   5130A0E1           ASR      R3,R1,R0
+   \   000005D8   090000EA           B        ??CalcComponentGains_31
+   \                     ??CalcComponentGains_30:
+   \   000005DC   1E8060E2           RSB      R8,R0,#+30
+   \   000005E0   1E0058E3           CMP      R8,#+30
+   \   000005E4   1E80A0A3           MOVGE    R8,#+30
+   \   000005E8   C10FA0E1           ASR      R0,R1,#+31
+   \   000005EC   0830A0E1           MOV      R3,R8
+   \   000005F0   1E3063E2           RSB      R3,R3,#+30
+   \   000005F4   510350E1           CMP      R0,R1, ASR R3
+   \   000005F8   C014E013           MVNNE    R1,#-1073741824
+   \   000005FC   00302110           EORNE    R3,R1,R0
+   \   00000600   1138A001           LSLEQ    R3,R1,R8
+   \                     ??CalcComponentGains_31:
+   \   00000604   08B09DE5           LDR      R11,[SP, #+8]
+   \   00000608   9B03C1E0           SMULL    R0,R1,R11,R3
+   \   0000060C   0100A0E1           MOV      R0,R1
+   \   00000610   0001A0E1           LSL      R0,R0,#+2
+   \   00000614   08008DE5           STR      R0,[SP, #+8]
+   \   00000618   9703C1E0           SMULL    R0,R1,R7,R3
+   \   0000061C   00009DE5           LDR      R0,[SP, #+0]
+   \   00000620   0171A0E1           LSL      R7,R1,#+2
+   \   00000624   000082E5           STR      R0,[R2, #+0]
+   \   00000628   04009DE5           LDR      R0,[SP, #+4]
+   \   0000062C   C00082E5           STR      R0,[R2, #+192]
+   \   00000630   88FFFFEA           B        ??CalcComponentGains_26
+    469          
+    470          /**************************************************************************************
+    471           * Function:    ApplyBoost
+    472           *
+    473           * Description: calculate and apply boost factor for envelope, sinusoids, and noise 
+    474           *                in this limiter band (4.6.18.7.5)
+    475           *
+    476           * Inputs:      initialized PSInfoSBR struct
+    477           *              initialized SBRFreq struct for this SCE/CPE block
+    478           *              index of current limiter band
+    479           *              number of fraction bits in dequantized envelope
+    480           *
+    481           * Outputs:     envelope gain, sinusoids and noise after scaling by gBoost
+    482           *              format = Q(FBITS_GLIM_BOOST) for envelope gain,
+    483           *                     = Q(FBITS_QLIM_BOOST) for noise
+    484           *                     = Q(FBITS_OUT_QMFA) for sinusoids
+    485           *
+    486           * Return:      none
+    487           *
+    488           * Notes:       after scaling, each component has at least 1 GB
+    489           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    490          static void ApplyBoost(PSInfoSBR *psi, SBRFreq *sbrFreq, int lim, int fbitsDQ)
+    491          {
+   \                     ApplyBoost:
+   \   00000000   F14F2DE9           PUSH     {R0,R4-R11,LR}
+   \   00000004   08D04DE2           SUB      SP,SP,#+8
+    492          	int m, mStart, mEnd, q, z, r;
+    493          	int sumEOrigMapped, gBoost;
+    494          
+    495          	mStart = sbrFreq->freqLimiter[lim];   /* these are offsets from kStart */
+    496          	mEnd =   sbrFreq->freqLimiter[lim + 1];
+    497          
+    498          	sumEOrigMapped = psi->sumEOrigMapped >> 1;
+    499          	r = (psi->sumECurrGLim >> 1) + (psi->sumSM >> 1) + (psi->sumQM >> 1);	/* 1 GB fine (sm and qm are mutually exclusive in acc) */
+    500          	if (r < (1 << (31-28))) {
+   \   00000008   E4729FE5           LDR      R7,??ApplyBoost_0  ;; 0x2830afd3
+   \   0000000C   010082E0           ADD      R0,R2,R1
+   \   00000010   A550D0E5           LDRB     R5,[R0, #+165]
+   \   00000014   011082E0           ADD      R1,R2,R1
+   \   00000018   A610D1E5           LDRB     R1,[R1, #+166]
+   \   0000001C   4C00A0E3           MOV      R0,#+76
+   \   00000020   740D80E3           ORR      R0,R0,#0x1D00
+   \   00000024   04108DE5           STR      R1,[SP, #+4]
+   \   00000028   08109DE5           LDR      R1,[SP, #+8]
+   \   0000002C   0360A0E1           MOV      R6,R3
+   \   00000030   014080E0           ADD      R4,R0,R1
+   \   00000034   000094E5           LDR      R0,[R4, #+0]
+   \   00000038   081094E5           LDR      R1,[R4, #+8]
+   \   0000003C   C080A0E1           ASR      R8,R0,#+1
+   \   00000040   040094E5           LDR      R0,[R4, #+4]
+   \   00000044   C110A0E1           ASR      R1,R1,#+1
+   \   00000048   C00081E0           ADD      R0,R1,R0, ASR #+1
+   \   0000004C   0C1094E5           LDR      R1,[R4, #+12]
+   \   00000050   C10080E0           ADD      R0,R0,R1, ASR #+1
+   \   00000054   080050E3           CMP      R0,#+8
+   \   00000058   050000AA           BGE      ??ApplyBoost_1
+    501          		/* any non-zero numerator * 1/EPS_0 is > GBOOST_MAX 
+    502          		 * round very small r to zero to avoid scaling problems
+    503          		 */
+    504          		gBoost = (sumEOrigMapped == 0 ? (1 << 28) : GBOOST_MAX);
+   \   0000005C   000058E3           CMP      R8,#+0
+   \   00000060   4005A003           MOVEQ    R0,#+268435456
+   \   00000064   0700A011           MOVNE    R0,R7
+    505          		z = 0;
+   \   00000068   0020A0E3           MOV      R2,#+0
+   \                     ??ApplyBoost_2:
+   \   0000006C   00208DE5           STR      R2,[SP, #+0]
+   \   00000070   190000EA           B        ??ApplyBoost_3
+    506          	} else if (sumEOrigMapped == 0) {
+   \                     ??ApplyBoost_1:
+   \   00000074   000058E3           CMP      R8,#+0
+    507          		/* 1/(any non-zero denominator) * EPS_0 is appx. 0 */
+    508          		gBoost = 0;
+   \   00000078   0000A003           MOVEQ    R0,#+0
+    509          		z = 0;
+   \   0000007C   0020A003           MOVEQ    R2,#+0
+   \   00000080   F9FFFF0A           BEQ      ??ApplyBoost_2
+    510          	} else {
+    511          		/* numerator (sumEOrigMapped) and denominator (r) have same Q format (before << z) */
+    512          		z = CLZ(r) - 1;	/* z = [0, 27] */
+   \   00000084   0010A0E1           MOV      R1,R0
+   \   00000088   0120A0E3           MOV      R2,#+1
+   \   0000008C   2138B0E1           LSRS     R3,R1,#+16
+   \   00000090   1120A003           MOVEQ    R2,#+17
+   \   00000094   0118A001           LSLEQ    R1,R1,#+16
+   \   00000098   213CB0E1           LSRS     R3,R1,#+24
+   \   0000009C   08208202           ADDEQ    R2,R2,#+8
+   \   000000A0   0114A001           LSLEQ    R1,R1,#+8
+   \   000000A4   213EB0E1           LSRS     R3,R1,#+28
+   \   000000A8   04208202           ADDEQ    R2,R2,#+4
+   \   000000AC   0112A001           LSLEQ    R1,R1,#+4
+   \   000000B0   213FB0E1           LSRS     R3,R1,#+30
+   \   000000B4   02208202           ADDEQ    R2,R2,#+2
+   \   000000B8   0111A001           LSLEQ    R1,R1,#+2
+   \   000000BC   A11F42E0           SUB      R1,R2,R1, LSR #+31
+   \   000000C0   011041E2           SUB      R1,R1,#+1
+   \   000000C4   00108DE5           STR      R1,[SP, #+0]
+    513          		r = InvRNormalized(r << z);
+    514          		gBoost = MULSHIFT32(sumEOrigMapped, r);
+   \   000000C8   1001A0E1           LSL      R0,R0,R1
+   \   000000CC   ........           _BLF     raac_InvRNormalized,??raac_InvRNormalized??rA
+   \   000000D0   0020A0E1           MOV      R2,R0
+   \   000000D4   9802C1E0           SMULL    R0,R1,R8,R2
+   \   000000D8   0100A0E1           MOV      R0,R1
+    515          	}
+    516          
+    517          	/* gBoost = Q(28 - z) */
+    518          	if (gBoost > (GBOOST_MAX >> z)) {
+   \                     ??ApplyBoost_3:
+   \   000000DC   00109DE5           LDR      R1,[SP, #+0]
+   \   000000E0   570150E1           CMP      R0,R7, ASR R1
+    519          		gBoost = GBOOST_MAX;
+    520          		z = 0;
+   \   000000E4   0020A0C3           MOVGT    R2,#+0
+   \   000000E8   00208DC5           STRGT    R2,[SP, #+0]
+    521          	}
+    522          	gBoost <<= z;	/* gBoost = Q28, minimum 1 GB */
+   \   000000EC   00109DE5           LDR      R1,[SP, #+0]
+   \   000000F0   0700A0C1           MOVGT    R0,R7
+   \   000000F4   1081A0E1           LSL      R8,R0,R1
+    523          
+    524          	/* convert gain, noise, sinusoids to fixed Q format, clipping if necessary
+    525          	 *   (rare, usually only happens at very low bitrates, introduces slight
+    526          	 *    distortion into final HF mapping, but should be inaudible)
+    527          	 */
+    528          	for (m = mStart; m < mEnd; m++) {
+   \   000000F8   04009DE5           LDR      R0,[SP, #+4]
+   \   000000FC   000055E1           CMP      R5,R0
+   \   00000100   F78FBDA8           POPGE    {R0-R2,R4-R11,PC}
+   \   00000104   02B046E2           SUB      R11,R6,#+2
+   \   00000108   C89FA0E1           ASR      R9,R8,#+31
+   \   0000010C   C0A4E0E3           MVN      R10,#-1073741824
+    529          		/* let gLimBoost = Q24, since in practice the max values are usually 16 to 20
+    530          		 *   unless limiterGains == 3 (limiter off) and eCurr ~= 0 (i.e. huge gain, but only
+    531          		 *   because the envelope has 0 power anyway)
+    532          		 */
+    533          		q = MULSHIFT32(psi->gLimBuf[m], gBoost) << 2;	/* Q(gLimFbits) * Q(28) --> Q(gLimFbits[m]-2) */
+    534          		r = SqrtFix(q, psi->gLimFbits[m] - 2, &z);
+   \                     ??ApplyBoost_4:
+   \   00000110   490E84E2           ADD      R0,R4,#+1168
+   \   00000114   050190E7           LDR      R0,[R0, +R5, LSL #+2]
+   \   00000118   0D20A0E1           MOV      R2,SP
+   \   0000011C   027040E2           SUB      R7,R0,#+2
+   \   00000120   F40F84E2           ADD      R0,R4,#+976
+   \   00000124   050190E7           LDR      R0,[R0, +R5, LSL #+2]
+   \   00000128   0260A0E1           MOV      R6,R2
+   \   0000012C   C01FA0E1           ASR      R1,R0,#+31
+   \   00000130   902883E0           UMULL    R2,R3,R0,R8
+   \   00000134   0620A0E1           MOV      R2,R6
+   \   00000138   903923E0           MLA      R3,R0,R9,R3
+   \   0000013C   913823E0           MLA      R3,R1,R8,R3
+   \   00000140   0710A0E1           MOV      R1,R7
+   \   00000144   0301A0E1           LSL      R0,R3,#+2
+   \   00000148   ........           _BLF     raac_SqrtFix,??raac_SqrtFix??rA
+    535          		z -= FBITS_GLIM_BOOST;
+   \   0000014C   00209DE5           LDR      R2,[SP, #+0]
+    536          		if (z >= 0) {
+   \   00000150   5C10A0E3           MOV      R1,#+92
+   \   00000154   182042E2           SUB      R2,R2,#+24
+   \   00000158   00208DE5           STR      R2,[SP, #+0]
+   \   0000015C   08209DE5           LDR      R2,[SP, #+8]
+   \   00000160   741D81E3           ORR      R1,R1,#0x1D00
+   \   00000164   052182E0           ADD      R2,R2,R5, LSL #+2
+   \   00000168   026081E0           ADD      R6,R1,R2
+   \   0000016C   00109DE5           LDR      R1,[SP, #+0]
+   \   00000170   1F70A0E3           MOV      R7,#+31
+   \   00000174   000051E3           CMP      R1,#+0
+   \   00000178   0300004A           BMI      ??ApplyBoost_5
+    537          			psi->gLimBoost[m] = r >> MIN(z, 31);
+   \   0000017C   1F0051E3           CMP      R1,#+31
+   \   00000180   1F10A0A3           MOVGE    R1,#+31
+   \   00000184   5001A0E1           ASR      R0,R0,R1
+   \   00000188   0B0000EA           B        ??ApplyBoost_6
+    538          		} else {
+    539          			z = MIN(30, -z);
+   \                     ??ApplyBoost_5:
+   \   0000018C   001061E2           RSB      R1,R1,#+0
+   \   00000190   1F0051E3           CMP      R1,#+31
+   \   00000194   1E20A0A3           MOVGE    R2,#+30
+   \   00000198   00208DA5           STRGE    R2,[SP, #+0]
+   \   0000019C   00108DB5           STRLT    R1,[SP, #+0]
+    540          			CLIP_2N_SHIFT30(r, z);
+   \   000001A0   00209DE5           LDR      R2,[SP, #+0]
+   \   000001A4   C01FA0E1           ASR      R1,R0,#+31
+   \   000001A8   1E2062E2           RSB      R2,R2,#+30
+   \   000001AC   500251E1           CMP      R1,R0, ASR R2
+   \   000001B0   00109D05           LDREQ    R1,[SP, #+0]
+   \   000001B4   01002A10           EORNE    R0,R10,R1
+   \   000001B8   1001A001           LSLEQ    R0,R0,R1
+    541          			psi->gLimBoost[m] = r;
+   \                     ??ApplyBoost_6:
+   \   000001BC   000086E5           STR      R0,[R6, #+0]
+    542          		}
+    543          
+    544          		q = MULSHIFT32(psi->qmLimBuf[m], gBoost) << 2;	/* Q(fbitsDQ) * Q(28) --> Q(fbitsDQ-2) */
+    545          		r = SqrtFix(q, fbitsDQ - 2, &z);
+   \   000001C0   C40F84E2           ADD      R0,R4,#+784
+   \   000001C4   050190E7           LDR      R0,[R0, +R5, LSL #+2]
+   \   000001C8   0D20A0E1           MOV      R2,SP
+   \   000001CC   02C0A0E1           MOV      R12,R2
+   \   000001D0   C01FA0E1           ASR      R1,R0,#+31
+   \   000001D4   902883E0           UMULL    R2,R3,R0,R8
+   \   000001D8   0C20A0E1           MOV      R2,R12
+   \   000001DC   903923E0           MLA      R3,R0,R9,R3
+   \   000001E0   913823E0           MLA      R3,R1,R8,R3
+   \   000001E4   0B10A0E1           MOV      R1,R11
+   \   000001E8   0300A0E1           MOV      R0,R3
+   \   000001EC   0001A0E1           LSL      R0,R0,#+2
+   \   000001F0   ........           _BLF     raac_SqrtFix,??raac_SqrtFix??rA
+    546          		z -= FBITS_QLIM_BOOST;		/* << by 14, since integer sqrt of x < 2^16, and we want to leave 1 GB */
+   \   000001F4   00209DE5           LDR      R2,[SP, #+0]
+   \   000001F8   0E2042E2           SUB      R2,R2,#+14
+   \   000001FC   00208DE5           STR      R2,[SP, #+0]
+    547          		if (z >= 0) {
+   \   00000200   0210A0E1           MOV      R1,R2
+   \   00000204   000051E3           CMP      R1,#+0
+   \   00000208   0300004A           BMI      ??ApplyBoost_7
+    548          			psi->qmLimBoost[m] = r >> MIN(31, z);
+   \   0000020C   200051E3           CMP      R1,#+32
+   \   00000210   1F10A0A3           MOVGE    R1,#+31
+   \   00000214   5001A0E1           ASR      R0,R0,R1
+   \   00000218   0B0000EA           B        ??ApplyBoost_8
+    549          		} else {
+    550          			z = MIN(30, -z);
+   \                     ??ApplyBoost_7:
+   \   0000021C   001061E2           RSB      R1,R1,#+0
+   \   00000220   1F0051E3           CMP      R1,#+31
+   \   00000224   1E20A0A3           MOVGE    R2,#+30
+   \   00000228   00208DA5           STRGE    R2,[SP, #+0]
+   \   0000022C   00108DB5           STRLT    R1,[SP, #+0]
+    551          			CLIP_2N_SHIFT30(r, z);
+   \   00000230   00209DE5           LDR      R2,[SP, #+0]
+   \   00000234   C01FA0E1           ASR      R1,R0,#+31
+   \   00000238   1E2062E2           RSB      R2,R2,#+30
+   \   0000023C   500251E1           CMP      R1,R0, ASR R2
+   \   00000240   00109D05           LDREQ    R1,[SP, #+0]
+   \   00000244   01002A10           EORNE    R0,R10,R1
+   \   00000248   1001A001           LSLEQ    R0,R0,R1
+    552          			psi->qmLimBoost[m] = r;
+   \                     ??ApplyBoost_8:
+   \   0000024C   C00086E5           STR      R0,[R6, #+192]
+    553          		}
+    554          
+    555          		q = MULSHIFT32(psi->smBuf[m], gBoost) << 2;		/* Q(fbitsDQ) * Q(28) --> Q(fbitsDQ-2) */
+    556          		r = SqrtFix(q, fbitsDQ - 2, &z);
+   \   00000250   940F84E2           ADD      R0,R4,#+592
+   \   00000254   050190E7           LDR      R0,[R0, +R5, LSL #+2]
+   \   00000258   0D20A0E1           MOV      R2,SP
+   \   0000025C   02C0A0E1           MOV      R12,R2
+   \   00000260   C01FA0E1           ASR      R1,R0,#+31
+   \   00000264   902883E0           UMULL    R2,R3,R0,R8
+   \   00000268   0C20A0E1           MOV      R2,R12
+   \   0000026C   903923E0           MLA      R3,R0,R9,R3
+   \   00000270   913823E0           MLA      R3,R1,R8,R3
+   \   00000274   0B10A0E1           MOV      R1,R11
+   \   00000278   0300A0E1           MOV      R0,R3
+   \   0000027C   0001A0E1           LSL      R0,R0,#+2
+   \   00000280   ........           _BLF     raac_SqrtFix,??raac_SqrtFix??rA
+    557          		z -= FBITS_OUT_QMFA;		/* justify for adding to signal (xBuf) later */
+   \   00000284   00209DE5           LDR      R2,[SP, #+0]
+   \   00000288   052042E2           SUB      R2,R2,#+5
+   \   0000028C   00208DE5           STR      R2,[SP, #+0]
+    558          		if (z >= 0) {
+   \   00000290   0210A0E1           MOV      R1,R2
+   \   00000294   000051E3           CMP      R1,#+0
+   \   00000298   0300004A           BMI      ??ApplyBoost_9
+    559          			psi->smBoost[m] = r >> MIN(31, z);
+   \   0000029C   200051E3           CMP      R1,#+32
+   \   000002A0   0170A0B1           MOVLT    R7,R1
+   \   000002A4   5007A0E1           ASR      R0,R0,R7
+   \   000002A8   0B0000EA           B        ??ApplyBoost_10
+    560          		} else {
+    561          			z = MIN(30, -z);
+   \                     ??ApplyBoost_9:
+   \   000002AC   001061E2           RSB      R1,R1,#+0
+   \   000002B0   1F0051E3           CMP      R1,#+31
+   \   000002B4   1E20A0A3           MOVGE    R2,#+30
+   \   000002B8   00208DA5           STRGE    R2,[SP, #+0]
+   \   000002BC   00108DB5           STRLT    R1,[SP, #+0]
+    562          			CLIP_2N_SHIFT30(r, z);
+   \   000002C0   00209DE5           LDR      R2,[SP, #+0]
+   \   000002C4   C01FA0E1           ASR      R1,R0,#+31
+   \   000002C8   1E2062E2           RSB      R2,R2,#+30
+   \   000002CC   500251E1           CMP      R1,R0, ASR R2
+   \   000002D0   00109D05           LDREQ    R1,[SP, #+0]
+   \   000002D4   01002A10           EORNE    R0,R10,R1
+   \   000002D8   1001A001           LSLEQ    R0,R0,R1
+    563          			psi->smBoost[m] = r;
+   \                     ??ApplyBoost_10:
+   \   000002DC   800186E5           STR      R0,[R6, #+384]
+    564          		}
+    565          	}
+   \   000002E0   04009DE5           LDR      R0,[SP, #+4]
+   \   000002E4   015085E2           ADD      R5,R5,#+1
+   \   000002E8   000055E1           CMP      R5,R0
+   \   000002EC   87FFFFBA           BLT      ??ApplyBoost_4
+    566          }
+   \   000002F0   F78FBDE8           POP      {R0-R2,R4-R11,PC}  ;; return
+   \                     ??ApplyBoost_0:
+   \   000002F4   D3AF3028           DC32     0x2830afd3
+    567          
+    568          /**************************************************************************************
+    569           * Function:    CalcGain
+    570           *
+    571           * Description: calculate and apply proper gain to HF components in one envelope 
+    572           *                (4.6.18.7.5)
+    573           *
+    574           * Inputs:      initialized PSInfoSBR struct
+    575           *              initialized SBRHeader struct for this SCE/CPE block
+    576           *              initialized SBRGrid struct for this channel
+    577           *              initialized SBRFreq struct for this SCE/CPE block
+    578           *              initialized SBRChan struct for this channel
+    579           *              index of current channel (0 for SCE, 0 or 1 for CPE)
+    580           *              index of current envelope
+    581           *
+    582           * Outputs:     envelope gain, sinusoids and noise after scaling
+    583           *
+    584           * Return:      none
+    585           **************************************************************************************/
+    586          static void CalcGain(PSInfoSBR *psi, SBRHeader *sbrHdr, SBRGrid *sbrGrid, SBRFreq *sbrFreq, SBRChan *sbrChan, int ch, int env)
+    587          {
+    588          	int lim, fbitsDQ;
+    589          
+    590          	/* initialize to -1 so that mapping limiter bands to env/noise bands works right on first pass */
+    591          	psi->envBand        = -1;
+    592          	psi->noiseFloorBand = -1;
+    593          	psi->sBand          = -1;
+    594          	psi->highBand       = -1;
+    595          
+    596          	fbitsDQ = (FBITS_OUT_DQ_ENV - psi->envDataDequantScale[ch][env]);	/* Q(29 - optional scalefactor) */
+    597          	for (lim = 0; lim < sbrFreq->nLimiter; lim++) {
+    598          		/* the QMF bands are divided into lim regions (consecutive, non-overlapping) */
+    599          		CalcMaxGain(psi, sbrHdr, sbrGrid, sbrFreq, ch, env, lim, fbitsDQ);
+    600          		CalcComponentGains(psi, sbrGrid, sbrFreq, sbrChan, ch, env, lim, fbitsDQ);
+    601          		ApplyBoost(psi, sbrFreq, lim, fbitsDQ);
+    602          	}
+    603          }
+    604          
+    605          /* hSmooth table from 4.7.18.7.6, format = Q31 */
+
+   \                                 In segment DATA_C, align 4, align-sorted
+    606          static const int hSmoothCoef[MAX_NUM_SMOOTH_COEFS] = {
+   \                     hSmoothCoef:
+   \   00000000   ABAAAA2A12A5       DC32 715827883, 647472402, 468515432, 247312451, 68355480
+   \              972668FAEC1B
+   \              43B0BD0E9805
+   \              1304        
+    607          	0x2aaaaaab, 0x2697a512, 0x1becfa68, 0x0ebdb043, 0x04130598, 
+    608          };
+    609          
+    610          /**************************************************************************************
+    611           * Function:    MapHF
+    612           *
+    613           * Description: map HF components to proper QMF bands, with optional gain smoothing
+    614           *                filter (4.6.18.7.6)
+    615           *
+    616           * Inputs:      initialized PSInfoSBR struct
+    617           *              initialized SBRHeader struct for this SCE/CPE block
+    618           *              initialized SBRGrid struct for this channel
+    619           *              initialized SBRFreq struct for this SCE/CPE block
+    620           *              initialized SBRChan struct for this channel
+    621           *              index of current envelope
+    622           *              reset flag (can be non-zero for first envelope only)
+    623           *
+    624           * Outputs:     complete reconstructed subband QMF samples for this envelope
+    625           *
+    626           * Return:      none
+    627           * 
+    628           * Notes:       ensures that output has >= MIN_GBITS_IN_QMFS guard bits,
+    629           *                so it's not necessary to check anything in the synth QMF
+    630           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    631          static void MapHF(PSInfoSBR *psi, SBRHeader *sbrHdr, SBRGrid *sbrGrid, SBRFreq *sbrFreq, SBRChan *sbrChan, int env, int hfReset)
+    632          {
+   \                     MapHF:
+   \   00000000   F14F2DE9           PUSH     {R0,R4-R11,LR}
+   \   00000004   28D04DE2           SUB      SP,SP,#+40
+    633          	int noiseTabIndex, sinIndex, gainNoiseIndex, hSL;
+    634          	int i, iStart, iEnd, m, idx, j, s, n, smre, smim;
+    635          	int gFilt, qFilt, xre, xim, gbMask, gbIdx;
+    636          	int *XBuf;
+    637          
+    638          	noiseTabIndex =   sbrChan->noiseTabIndex;
+   \   00000008   50409DE5           LDR      R4,[SP, #+80]
+   \   0000000C   58009DE5           LDR      R0,[SP, #+88]
+   \   00000010   944194E5           LDR      R4,[R4, #+404]
+   \   00000014   0390A0E1           MOV      R9,R3
+    639          	sinIndex =        sbrChan->sinIndex;
+    640          	gainNoiseIndex =  sbrChan->gainNoiseIndex;	/* oldest entries in filter delay buffer */
+   \   00000018   50309DE5           LDR      R3,[SP, #+80]
+   \   0000001C   08408DE5           STR      R4,[SP, #+8]
+   \   00000020   50409DE5           LDR      R4,[SP, #+80]
+    641          
+    642          	if (hfReset)
+   \   00000024   000050E3           CMP      R0,#+0
+   \   00000028   984194E5           LDR      R4,[R4, #+408]
+   \   0000002C   0C408DE5           STR      R4,[SP, #+12]
+   \   00000030   9C8193E5           LDR      R8,[R3, #+412]
+    643          		noiseTabIndex = 2;	/* starts at 1, double since complex */
+   \   00000034   0240A013           MOVNE    R4,#+2
+   \   00000038   08408D15           STRNE    R4,[SP, #+8]
+    644          	hSL = (sbrHdr->smoothMode ? 0 : 4); 
+   \   0000003C   1110D1E5           LDRB     R1,[R1, #+17]
+   \   00000040   000051E3           CMP      R1,#+0
+   \   00000044   0030A013           MOVNE    R3,#+0
+   \   00000048   0430A003           MOVEQ    R3,#+4
+   \   0000004C   10308DE5           STR      R3,[SP, #+16]
+   \   00000050   000050E3           CMP      R0,#+0
+   \   00000054   0300000A           BEQ      ??MapHF_0
+    645          
+    646          	if (hfReset) {
+    647          		for (i = 0; i < hSL; i++) {
+   \   00000058   10109DE5           LDR      R1,[SP, #+16]
+   \   0000005C   0000A0E3           MOV      R0,#+0
+   \   00000060   010051E3           CMP      R1,#+1
+   \   00000064   310000AA           BGE      ??MapHF_1
+    648          			for (m = 0; m < sbrFreq->numQMFBands; m++) {
+    649          				sbrChan->gTemp[gainNoiseIndex][m] = psi->gLimBoost[m];
+    650          				sbrChan->qTemp[gainNoiseIndex][m] = psi->qmLimBoost[m];
+    651          			}
+    652          			gainNoiseIndex++;
+    653          			if (gainNoiseIndex == MAX_NUM_SMOOTH_COEFS)
+    654          				gainNoiseIndex = 0;
+    655          		}
+    656          		ASSERT(env == 0);	/* should only be reset when env == 0 */
+    657          	}
+    658          
+    659          	iStart = sbrGrid->envTimeBorder[env];
+   \                     ??MapHF_0:
+   \   00000068   54109DE5           LDR      R1,[SP, #+84]
+   \   0000006C   021081E0           ADD      R1,R1,R2
+   \   00000070   0410D1E5           LDRB     R1,[R1, #+4]
+   \   00000074   14108DE5           STR      R1,[SP, #+20]
+    660          	iEnd =   sbrGrid->envTimeBorder[env+1];
+   \   00000078   54109DE5           LDR      R1,[SP, #+84]
+   \   0000007C   021081E0           ADD      R1,R1,R2
+   \   00000080   0510D1E5           LDRB     R1,[R1, #+5]
+   \   00000084   24108DE5           STR      R1,[SP, #+36]
+    661          	for (i = iStart; i < iEnd; i++) {
+   \   00000088   14109DE5           LDR      R1,[SP, #+20]
+   \   0000008C   00108DE5           STR      R1,[SP, #+0]
+   \   00000090   0100A0E1           MOV      R0,R1
+   \   00000094   24109DE5           LDR      R1,[SP, #+36]
+   \   00000098   010050E1           CMP      R0,R1
+   \   0000009C   0F0100AA           BGE      ??MapHF_2
+    662          		/* save new values in temp buffers (delay)
+    663          		 * we only store MAX_NUM_SMOOTH_COEFS most recent values, 
+    664          		 *   so don't keep storing the same value over and over
+    665          		 */
+    666          		if (i - iStart < MAX_NUM_SMOOTH_COEFS) {
+   \                     ??MapHF_3:
+   \   000000A0   50209DE5           LDR      R2,[SP, #+80]
+   \   000000A4   C010A0E3           MOV      R1,#+192
+   \   000000A8   912822E0           MLA      R2,R1,R8,R2
+   \   000000AC   00109DE5           LDR      R1,[SP, #+0]
+   \   000000B0   1C208DE5           STR      R2,[SP, #+28]
+   \   000000B4   14209DE5           LDR      R2,[SP, #+20]
+   \   000000B8   021041E0           SUB      R1,R1,R2
+   \   000000BC   20108DE5           STR      R1,[SP, #+32]
+   \   000000C0   050051E3           CMP      R1,#+5
+   \   000000C4   300000AA           BGE      ??MapHF_4
+    667          			for (m = 0; m < sbrFreq->numQMFBands; m++) {
+   \   000000C8   140099E5           LDR      R0,[R9, #+20]
+   \   000000CC   0030A0E3           MOV      R3,#+0
+   \   000000D0   010050E3           CMP      R0,#+1
+   \   000000D4   290000AA           BGE      ??MapHF_5
+   \   000000D8   2B0000EA           B        ??MapHF_4
+   \                     ??MapHF_6:
+   \   000000DC   50409DE5           LDR      R4,[SP, #+80]
+   \   000000E0   28509DE5           LDR      R5,[SP, #+40]
+   \   000000E4   C010A0E3           MOV      R1,#+192
+   \   000000E8   914824E0           MLA      R4,R1,R8,R4
+   \   000000EC   035185E0           ADD      R5,R5,R3, LSL #+2
+   \   000000F0   031184E0           ADD      R1,R4,R3, LSL #+2
+   \   000000F4   5C40A0E3           MOV      R4,#+92
+   \   000000F8   744D84E3           ORR      R4,R4,#0x1D00
+   \   000000FC   054084E0           ADD      R4,R4,R5
+   \   00000100   005094E5           LDR      R5,[R4, #+0]
+   \   00000104   013083E2           ADD      R3,R3,#+1
+   \   00000108   A05181E5           STR      R5,[R1, #+416]
+   \   0000010C   C04094E5           LDR      R4,[R4, #+192]
+   \   00000110   604581E5           STR      R4,[R1, #+1376]
+   \                     ??MapHF_7:
+   \   00000114   141099E5           LDR      R1,[R9, #+20]
+   \   00000118   010053E1           CMP      R3,R1
+   \   0000011C   EEFFFFBA           BLT      ??MapHF_6
+   \                     ??MapHF_8:
+   \   00000120   018088E2           ADD      R8,R8,#+1
+   \   00000124   050058E3           CMP      R8,#+5
+   \   00000128   0080A003           MOVEQ    R8,#+0
+   \   0000012C   010080E2           ADD      R0,R0,#+1
+   \                     ??MapHF_1:
+   \   00000130   10109DE5           LDR      R1,[SP, #+16]
+   \   00000134   010050E1           CMP      R0,R1
+   \   00000138   CAFFFFAA           BGE      ??MapHF_0
+   \   0000013C   141099E5           LDR      R1,[R9, #+20]
+   \   00000140   0030A0E3           MOV      R3,#+0
+   \   00000144   010051E3           CMP      R1,#+1
+   \   00000148   F1FFFFAA           BGE      ??MapHF_7
+   \   0000014C   F3FFFFEA           B        ??MapHF_8
+    668          				sbrChan->gTemp[gainNoiseIndex][m] = psi->gLimBoost[m];
+   \                     ??MapHF_9:
+   \   00000150   28209DE5           LDR      R2,[SP, #+40]
+   \   00000154   1C009DE5           LDR      R0,[SP, #+28]
+   \   00000158   5C10A0E3           MOV      R1,#+92
+   \   0000015C   741D81E3           ORR      R1,R1,#0x1D00
+   \   00000160   032182E0           ADD      R2,R2,R3, LSL #+2
+   \   00000164   021081E0           ADD      R1,R1,R2
+   \   00000168   002091E5           LDR      R2,[R1, #+0]
+   \   0000016C   030180E0           ADD      R0,R0,R3, LSL #+2
+   \   00000170   A02180E5           STR      R2,[R0, #+416]
+    669          				sbrChan->qTemp[gainNoiseIndex][m] = psi->qmLimBoost[m];
+   \   00000174   C01091E5           LDR      R1,[R1, #+192]
+    670          			}
+   \   00000178   013083E2           ADD      R3,R3,#+1
+   \   0000017C   601580E5           STR      R1,[R0, #+1376]
+   \                     ??MapHF_5:
+   \   00000180   140099E5           LDR      R0,[R9, #+20]
+   \   00000184   000053E1           CMP      R3,R0
+   \   00000188   F0FFFFBA           BLT      ??MapHF_9
+    671          		}
+    672          
+    673          		/* see 4.6.18.7.6 */
+    674          		XBuf = psi->XBuf[i + HF_ADJ][sbrFreq->kStart];
+   \                     ??MapHF_4:
+   \   0000018C   00109DE5           LDR      R1,[SP, #+0]
+   \   00000190   28309DE5           LDR      R3,[SP, #+40]
+   \   00000194   021081E2           ADD      R1,R1,#+2
+   \   00000198   18108DE5           STR      R1,[SP, #+24]
+   \   0000019C   002099E5           LDR      R2,[R9, #+0]
+   \   000001A0   2C00A0E3           MOV      R0,#+44
+   \   000001A4   760C80E3           ORR      R0,R0,#0x7600
+   \   000001A8   822183E0           ADD      R2,R3,R2, LSL #+3
+   \   000001AC   811482E0           ADD      R1,R2,R1, LSL #+9
+   \   000001B0   012080E0           ADD      R2,R0,R1
+    675          		gbMask = 0;
+   \   000001B4   0010A0E3           MOV      R1,#+0
+   \   000001B8   04108DE5           STR      R1,[SP, #+4]
+    676          		for (m = 0; m < sbrFreq->numQMFBands; m++) {
+   \   000001BC   140099E5           LDR      R0,[R9, #+20]
+   \   000001C0   0030A0E3           MOV      R3,#+0
+   \   000001C4   010050E3           CMP      R0,#+1
+   \   000001C8   260000AA           BGE      ??MapHF_10
+    677          			if (env == psi->la || env == sbrChan->laPrev) {
+    678          				/* no smoothing filter for gain, and qFilt = 0 (only need to do once) */
+    679          				if (i == iStart) {
+    680          					psi->gFiltLast[m] = sbrChan->gTemp[gainNoiseIndex][m];
+    681          					psi->qFiltLast[m] = 0;
+    682          				}
+    683          			} else if (hSL == 0) {
+    684          				/* no smoothing filter for gain, (only need to do once) */
+    685          				if (i == iStart) {
+    686          					psi->gFiltLast[m] = sbrChan->gTemp[gainNoiseIndex][m];
+    687          					psi->qFiltLast[m] = sbrChan->qTemp[gainNoiseIndex][m];
+    688          				}
+    689          			} else {
+    690          				/* apply smoothing filter to gain and noise (after MAX_NUM_SMOOTH_COEFS, it's always the same) */
+    691          				if (i - iStart < MAX_NUM_SMOOTH_COEFS) {
+    692          					gFilt = 0;
+    693          					qFilt = 0;
+    694          					idx = gainNoiseIndex;
+    695          					for (j = 0; j < MAX_NUM_SMOOTH_COEFS; j++) {
+    696          						/* sum(abs(hSmoothCoef[j])) for all j < 1.0 */
+    697          						gFilt += MULSHIFT32(sbrChan->gTemp[idx][m], hSmoothCoef[j]);
+    698          						qFilt += MULSHIFT32(sbrChan->qTemp[idx][m], hSmoothCoef[j]);
+    699          						idx--;
+    700          						if (idx < 0)
+    701          							idx += MAX_NUM_SMOOTH_COEFS;
+    702          					}
+    703          					psi->gFiltLast[m] = gFilt << 1;	/* restore to Q(FBITS_GLIM_BOOST) (gain of filter < 1.0, so no overflow) */
+    704          					psi->qFiltLast[m] = qFilt << 1;	/* restore to Q(FBITS_QLIM_BOOST) */
+    705          				}
+    706          			}
+    707          
+    708          			if (psi->smBoost[m] != 0) {
+    709          				/* add scaled signal and sinusoid, don't add noise (qFilt = 0) */
+    710          				smre = psi->smBoost[m];
+    711          				smim = smre;
+    712          
+    713          				/* sinIndex:  [0] xre += sm   [1] xim += sm*s   [2] xre -= sm   [3] xim -= sm*s  */
+    714          				s = (sinIndex >> 1);	/* if 2 or 3, flip sign to subtract sm */
+    715          				s <<= 31;
+    716          				smre ^= (s >> 31);
+    717          				smre -= (s >> 31);
+    718          				s ^= ((m + sbrFreq->kStart) << 31);
+    719          				smim ^= (s >> 31);
+    720          				smim -= (s >> 31);
+    721          
+    722          				/* if sinIndex == 0 or 2, smim = 0; if sinIndex == 1 or 3, smre = 0 */
+    723          				s = sinIndex << 31;
+    724          				smim &= (s >> 31);
+    725          				s ^= 0x80000000;
+    726          				smre &= (s >> 31);
+    727          
+    728          				noiseTabIndex += 2;		/* noise filtered by 0, but still need to bump index */
+    729          			} else {
+    730          				/* add scaled signal and scaled noise */
+    731          				qFilt = psi->qFiltLast[m];	
+    732          				n = noiseTab[noiseTabIndex++];
+    733          				smre = MULSHIFT32(n, qFilt) >> (FBITS_QLIM_BOOST - 1 - FBITS_OUT_QMFA);
+    734          
+    735          				n = noiseTab[noiseTabIndex++];
+    736          				smim = MULSHIFT32(n, qFilt) >> (FBITS_QLIM_BOOST - 1 - FBITS_OUT_QMFA);
+    737          			}
+    738          			noiseTabIndex &= 1023;	/* 512 complex numbers */
+    739          
+    740          			gFilt = psi->gFiltLast[m];
+    741          			xre = MULSHIFT32(gFilt, XBuf[0]);
+    742          			xim = MULSHIFT32(gFilt, XBuf[1]);
+    743          			CLIP_2N_SHIFT30(xre, 32 - FBITS_GLIM_BOOST);
+    744          			CLIP_2N_SHIFT30(xim, 32 - FBITS_GLIM_BOOST);
+    745          
+    746          			xre += smre;	*XBuf++ = xre;
+    747          			xim += smim;	*XBuf++ = xim;
+    748          
+    749          			gbMask |= FASTABS(xre);
+    750          			gbMask |= FASTABS(xim);
+    751          		}
+    752          		/* update circular buffer index */
+    753          		gainNoiseIndex++;
+    754          		if (gainNoiseIndex == MAX_NUM_SMOOTH_COEFS)
+    755          			gainNoiseIndex = 0;
+    756          
+    757          		sinIndex++;
+    758          		sinIndex &= 3;
+   \                     ??MapHF_11:
+   \   000001CC   0C109DE5           LDR      R1,[SP, #+12]
+    759          
+    760          		/* ensure MIN_GBITS_IN_QMFS guard bits in output
+    761          		 * almost never occurs in practice, but checking here makes synth QMF logic very simple
+    762          		 */
+    763          		if (gbMask >> (31 - MIN_GBITS_IN_QMFS)) {
+   \   000001D0   04009DE5           LDR      R0,[SP, #+4]
+   \   000001D4   018088E2           ADD      R8,R8,#+1
+   \   000001D8   050058E3           CMP      R8,#+5
+   \   000001DC   0080A003           MOVEQ    R8,#+0
+   \   000001E0   011081E2           ADD      R1,R1,#+1
+   \   000001E4   031001E2           AND      R1,R1,#0x3
+   \   000001E8   0C108DE5           STR      R1,[SP, #+12]
+   \   000001EC   C01EB0E1           ASRS     R1,R0,#+29
+   \   000001F0   AA00000A           BEQ      ??MapHF_12
+    764          			XBuf = psi->XBuf[i + HF_ADJ][sbrFreq->kStart];
+   \   000001F4   18209DE5           LDR      R2,[SP, #+24]
+   \   000001F8   003099E5           LDR      R3,[R9, #+0]
+   \   000001FC   28409DE5           LDR      R4,[SP, #+40]
+   \   00000200   2C00A0E3           MOV      R0,#+44
+   \   00000204   760C80E3           ORR      R0,R0,#0x7600
+   \   00000208   833184E0           ADD      R3,R4,R3, LSL #+3
+   \   0000020C   822483E0           ADD      R2,R3,R2, LSL #+9
+   \   00000210   022080E0           ADD      R2,R0,R2
+    765          			for (m = 0; m < sbrFreq->numQMFBands; m++) {
+   \   00000214   140099E5           LDR      R0,[R9, #+20]
+   \   00000218   0030A0E3           MOV      R3,#+0
+   \   0000021C   E054E0E3           MVN      R5,#-536870912
+   \   00000220   010050E3           CMP      R0,#+1
+   \   00000224   950000AA           BGE      ??MapHF_13
+   \   00000228   970000EA           B        ??MapHF_14
+   \                     ??MapHF_15:
+   \   0000022C   060085E0           ADD      R0,R5,R6
+   \   00000230   ........           STR      R0,[R2], #+4
+   \   00000234   014084E0           ADD      R4,R4,R1
+   \   00000238   ........           STR      R4,[R2], #+4
+   \   0000023C   04509DE5           LDR      R5,[SP, #+4]
+   \   00000240   C06FA0E1           ASR      R6,R0,#+31
+   \   00000244   C47FA0E1           ASR      R7,R4,#+31
+   \   00000248   000026E0           EOR      R0,R6,R0
+   \   0000024C   060040E0           SUB      R0,R0,R6
+   \   00000250   044027E0           EOR      R4,R7,R4
+   \   00000254   074044E0           SUB      R4,R4,R7
+   \   00000258   000084E1           ORR      R0,R4,R0
+   \   0000025C   050080E1           ORR      R0,R0,R5
+   \   00000260   04008DE5           STR      R0,[SP, #+4]
+   \   00000264   013083E2           ADD      R3,R3,#+1
+   \                     ??MapHF_10:
+   \   00000268   140099E5           LDR      R0,[R9, #+20]
+   \   0000026C   000053E1           CMP      R3,R0
+   \   00000270   D5FFFFAA           BGE      ??MapHF_11
+   \   00000274   28509DE5           LDR      R5,[SP, #+40]
+   \   00000278   28109DE5           LDR      R1,[SP, #+40]
+   \   0000027C   1940A0E3           MOV      R4,#+25
+   \   00000280   744D84E3           ORR      R4,R4,#0x1D00
+   \   00000284   D54094E1           LDRSB    R4,[R4, +R5]
+   \   00000288   DC00A0E3           MOV      R0,#+220
+   \   0000028C   780D80E3           ORR      R0,R0,#0x1E00
+   \   00000290   031181E0           ADD      R1,R1,R3, LSL #+2
+   \   00000294   017080E0           ADD      R7,R0,R1
+   \   00000298   1C009DE5           LDR      R0,[SP, #+28]
+   \   0000029C   54109DE5           LDR      R1,[SP, #+84]
+   \   000002A0   030180E0           ADD      R0,R0,R3, LSL #+2
+   \   000002A4   040051E1           CMP      R1,R4
+   \   000002A8   0400000A           BEQ      ??MapHF_16
+   \   000002AC   50409DE5           LDR      R4,[SP, #+80]
+   \   000002B0   644F84E2           ADD      R4,R4,#+400
+   \   000002B4   D040D4E1           LDRSB    R4,[R4, #+0]
+   \   000002B8   040051E1           CMP      R1,R4
+   \   000002BC   0700001A           BNE      ??MapHF_17
+   \                     ??MapHF_16:
+   \   000002C0   00109DE5           LDR      R1,[SP, #+0]
+   \   000002C4   14409DE5           LDR      R4,[SP, #+20]
+   \   000002C8   040051E1           CMP      R1,R4
+   \   000002CC   2A00001A           BNE      ??MapHF_18
+   \   000002D0   A00190E5           LDR      R0,[R0, #+416]
+   \   000002D4   C00387E5           STR      R0,[R7, #+960]
+   \   000002D8   0000A0E3           MOV      R0,#+0
+   \   000002DC   250000EA           B        ??MapHF_19
+   \                     ??MapHF_17:
+   \   000002E0   10109DE5           LDR      R1,[SP, #+16]
+   \   000002E4   000051E3           CMP      R1,#+0
+   \   000002E8   0700001A           BNE      ??MapHF_20
+   \   000002EC   00109DE5           LDR      R1,[SP, #+0]
+   \   000002F0   14409DE5           LDR      R4,[SP, #+20]
+   \   000002F4   040051E1           CMP      R1,R4
+   \   000002F8   1F00001A           BNE      ??MapHF_18
+   \   000002FC   A01190E5           LDR      R1,[R0, #+416]
+   \   00000300   C01387E5           STR      R1,[R7, #+960]
+   \   00000304   600590E5           LDR      R0,[R0, #+1376]
+   \   00000308   1A0000EA           B        ??MapHF_19
+   \                     ??MapHF_20:
+   \   0000030C   20009DE5           LDR      R0,[SP, #+32]
+   \   00000310   050050E3           CMP      R0,#+5
+   \   00000314   180000AA           BGE      ??MapHF_18
+   \   00000318   00C0A0E3           MOV      R12,#+0
+   \   0000031C   0040A0E3           MOV      R4,#+0
+   \   00000320   0850A0E1           MOV      R5,R8
+   \   00000324   0460A0E1           MOV      R6,R4
+   \                     ??MapHF_21:
+   \   00000328   50109DE5           LDR      R1,[SP, #+80]
+   \   0000032C   C000A0E3           MOV      R0,#+192
+   \   00000330   031181E0           ADD      R1,R1,R3, LSL #+2
+   \   00000334   90152AE0           MLA      R10,R0,R5,R1
+   \   00000338   C8019FE5           LDR      R0,??MapHF_22    ;; hSmoothCoef
+   \   0000033C   A0B19AE5           LDR      R11,[R10, #+416]
+   \   00000340   06E190E7           LDR      LR,[R0, +R6, LSL #+2]
+   \   00000344   60A59AE5           LDR      R10,[R10, #+1376]
+   \   00000348   9B0EC1E0           SMULL    R0,R1,R11,LR
+   \   0000034C   015055E2           SUBS     R5,R5,#+1
+   \   00000350   0CC081E0           ADD      R12,R1,R12
+   \   00000354   9A0EC1E0           SMULL    R0,R1,R10,LR
+   \   00000358   05508542           ADDMI    R5,R5,#+5
+   \   0000035C   044081E0           ADD      R4,R1,R4
+   \   00000360   016086E2           ADD      R6,R6,#+1
+   \   00000364   050056E3           CMP      R6,#+5
+   \   00000368   EEFFFFBA           BLT      ??MapHF_21
+   \   0000036C   8C00A0E1           LSL      R0,R12,#+1
+   \   00000370   C00387E5           STR      R0,[R7, #+960]
+   \   00000374   8400A0E1           LSL      R0,R4,#+1
+   \                     ??MapHF_19:
+   \   00000378   800487E5           STR      R0,[R7, #+1152]
+   \                     ??MapHF_18:
+   \   0000037C   000097E5           LDR      R0,[R7, #+0]
+   \   00000380   000050E3           CMP      R0,#+0
+   \   00000384   1300000A           BEQ      ??MapHF_23
+   \   00000388   0C109DE5           LDR      R1,[SP, #+12]
+   \   0000038C   C110A0E1           ASR      R1,R1,#+1
+   \   00000390   814FA0E1           LSL      R4,R1,#+31
+   \   00000394   C41FA0E1           ASR      R1,R4,#+31
+   \   00000398   005021E0           EOR      R5,R1,R0
+   \   0000039C   011045E0           SUB      R1,R5,R1
+   \   000003A0   005099E5           LDR      R5,[R9, #+0]
+   \   000003A4   035085E0           ADD      R5,R5,R3
+   \   000003A8   854F24E0           EOR      R4,R4,R5, LSL #+31
+   \   000003AC   C44FA0E1           ASR      R4,R4,#+31
+   \   000003B0   000024E0           EOR      R0,R4,R0
+   \   000003B4   040040E0           SUB      R0,R0,R4
+   \   000003B8   0C409DE5           LDR      R4,[SP, #+12]
+   \   000003BC   845FA0E1           LSL      R5,R4,#+31
+   \   000003C0   C54F00E0           AND      R4,R0,R5, ASR #+31
+   \   000003C4   800425E2           EOR      R0,R5,#0x80000000
+   \   000003C8   C05F01E0           AND      R5,R1,R0, ASR #+31
+   \   000003CC   08009DE5           LDR      R0,[SP, #+8]
+   \   000003D0   026080E2           ADD      R6,R0,#+2
+   \   000003D4   0A0000EA           B        ??MapHF_24
+   \                     ??MapHF_23:
+   \   000003D8   2C619FE5           LDR      R6,??MapHF_22+0x4  ;; raac_noiseTab
+   \   000003DC   08009DE5           LDR      R0,[SP, #+8]
+   \   000003E0   804497E5           LDR      R4,[R7, #+1152]
+   \   000003E4   005196E7           LDR      R5,[R6, +R0, LSL #+2]
+   \   000003E8   01A080E2           ADD      R10,R0,#+1
+   \   000003EC   0AB196E7           LDR      R11,[R6, +R10, LSL #+2]
+   \   000003F0   9504C1E0           SMULL    R0,R1,R5,R4
+   \   000003F4   01608AE2           ADD      R6,R10,#+1
+   \   000003F8   4154A0E1           ASR      R5,R1,#+8
+   \   000003FC   9B04C1E0           SMULL    R0,R1,R11,R4
+   \   00000400   4144A0E1           ASR      R4,R1,#+8
+   \                     ??MapHF_24:
+   \   00000404   061BA0E1           LSL      R1,R6,#+22
+   \   00000408   211BA0E1           LSR      R1,R1,#+22
+   \   0000040C   08108DE5           STR      R1,[SP, #+8]
+   \   00000410   C0C397E5           LDR      R12,[R7, #+960]
+   \   00000414   006092E5           LDR      R6,[R2, #+0]
+   \   00000418   047092E5           LDR      R7,[R2, #+4]
+   \   0000041C   9C06C1E0           SMULL    R0,R1,R12,R6
+   \   00000420   0160A0E1           MOV      R6,R1
+   \   00000424   9C07C1E0           SMULL    R0,R1,R12,R7
+   \   00000428   C074E0E3           MVN      R7,#-1073741824
+   \   0000042C   0100A0E1           MOV      R0,R1
+   \   00000430   C61FA0E1           ASR      R1,R6,#+31
+   \   00000434   460B51E1           CMP      R1,R6, ASR #+22
+   \   00000438   01602710           EORNE    R6,R7,R1
+   \   0000043C   0664A001           LSLEQ    R6,R6,#+8
+   \   00000440   C01FA0E1           ASR      R1,R0,#+31
+   \   00000444   400B51E1           CMP      R1,R0, ASR #+22
+   \   00000448   0014A001           LSLEQ    R1,R0,#+8
+   \   0000044C   01102710           EORNE    R1,R7,R1
+   \   00000450   75FFFFEA           B        ??MapHF_15
+    766          				xre = XBuf[0];	xim = XBuf[1];	
+   \                     ??MapHF_25:
+   \   00000454   000092E5           LDR      R0,[R2, #+0]
+   \   00000458   044092E5           LDR      R4,[R2, #+4]
+    767          				CLIP_2N(xre, (31 - MIN_GBITS_IN_QMFS));	
+   \   0000045C   C06FA0E1           ASR      R6,R0,#+31
+   \   00000460   C00E56E1           CMP      R6,R0, ASR #+29
+   \   00000464   06002510           EORNE    R0,R5,R6
+    768          				CLIP_2N(xim, (31 - MIN_GBITS_IN_QMFS));	
+   \   00000468   C46FA0E1           ASR      R6,R4,#+31
+   \   0000046C   C40E56E1           CMP      R6,R4, ASR #+29
+   \   00000470   06402510           EORNE    R4,R5,R6
+    769          				*XBuf++ = xre;	*XBuf++ = xim;
+   \   00000474   ........           STR      R0,[R2], #+4
+   \   00000478   ........           STR      R4,[R2], #+4
+    770          			}	
+   \   0000047C   013083E2           ADD      R3,R3,#+1
+   \                     ??MapHF_13:
+   \   00000480   140099E5           LDR      R0,[R9, #+20]
+   \   00000484   000053E1           CMP      R3,R0
+   \   00000488   F1FFFFBA           BLT      ??MapHF_25
+    771          			CLIP_2N(gbMask, (31 - MIN_GBITS_IN_QMFS));	
+   \                     ??MapHF_14:
+   \   0000048C   04009DE5           LDR      R0,[SP, #+4]
+   \   00000490   C00FA0E1           ASR      R0,R0,#+31
+   \   00000494   010050E1           CMP      R0,R1
+   \   00000498   00002510           EORNE    R0,R5,R0
+   \   0000049C   04008D15           STRNE    R0,[SP, #+4]
+    772          		}
+    773          		gbIdx = ((i + HF_ADJ) >> 5) & 0x01;
+   \                     ??MapHF_12:
+   \   000004A0   18009DE5           LDR      R0,[SP, #+24]
+    774          		sbrChan->gbMask[gbIdx] |= gbMask;
+   \   000004A4   04209DE5           LDR      R2,[SP, #+4]
+   \   000004A8   0110A0E3           MOV      R1,#+1
+   \   000004AC   C00201E0           AND      R0,R1,R0, ASR #+5
+   \   000004B0   50109DE5           LDR      R1,[SP, #+80]
+   \   000004B4   000181E0           ADD      R0,R1,R0, LSL #+2
+   \   000004B8   881190E5           LDR      R1,[R0, #+392]
+   \   000004BC   011082E1           ORR      R1,R2,R1
+   \   000004C0   881180E5           STR      R1,[R0, #+392]
+    775          	}
+   \   000004C4   00109DE5           LDR      R1,[SP, #+0]
+   \   000004C8   011081E2           ADD      R1,R1,#+1
+   \   000004CC   00108DE5           STR      R1,[SP, #+0]
+   \   000004D0   0100A0E1           MOV      R0,R1
+   \   000004D4   24109DE5           LDR      R1,[SP, #+36]
+   \   000004D8   010050E1           CMP      R0,R1
+   \   000004DC   EFFEFFBA           BLT      ??MapHF_3
+    776          	sbrChan->noiseTabIndex =  noiseTabIndex;
+   \                     ??MapHF_2:
+   \   000004E0   50009DE5           LDR      R0,[SP, #+80]
+   \   000004E4   08109DE5           LDR      R1,[SP, #+8]
+   \   000004E8   941180E5           STR      R1,[R0, #+404]
+    777          	sbrChan->sinIndex =       sinIndex;
+   \   000004EC   50009DE5           LDR      R0,[SP, #+80]
+   \   000004F0   0C109DE5           LDR      R1,[SP, #+12]
+   \   000004F4   981180E5           STR      R1,[R0, #+408]
+    778          	sbrChan->gainNoiseIndex = gainNoiseIndex;
+   \   000004F8   50009DE5           LDR      R0,[SP, #+80]
+   \   000004FC   9C8180E5           STR      R8,[R0, #+412]
+    779          }
+   \   00000500   2CD08DE2           ADD      SP,SP,#+44
+   \   00000504   F08FBDE8           POP      {R4-R11,PC}      ;; return
+   \                     ??MapHF_22:
+   \   00000508   ........           DC32     hSmoothCoef
+   \   0000050C   ........           DC32     raac_noiseTab
+    780          
+    781          /**************************************************************************************
+    782           * Function:    AdjustHighFreq
+    783           *
+    784           * Description: adjust high frequencies and add noise and sinusoids (4.6.18.7)
+    785           *
+    786           * Inputs:      initialized PSInfoSBR struct
+    787           *              initialized SBRHeader struct for this SCE/CPE block
+    788           *              initialized SBRGrid struct for this channel
+    789           *              initialized SBRFreq struct for this SCE/CPE block
+    790           *              initialized SBRChan struct for this channel
+    791           *              index of current channel (0 for SCE, 0 or 1 for CPE)
+    792           *
+    793           * Outputs:     complete reconstructed subband QMF samples for this channel
+    794           *
+    795           * Return:      none
+    796           **************************************************************************************/
+
+   \                                 In segment CODE, align 4, keep-with-next
+    797          void AdjustHighFreq(PSInfoSBR *psi, SBRHeader *sbrHdr, SBRGrid *sbrGrid, SBRFreq *sbrFreq, SBRChan *sbrChan, int ch)
+    798          {
+   \                     raac_AdjustHighFreq:
+   \   00000000   F24F2DE9           PUSH     {R1,R4-R11,LR}
+   \   00000004   04D04DE2           SUB      SP,SP,#+4
+   \   00000008   0040A0E1           MOV      R4,R0
+   \   0000000C   2C709DE5           LDR      R7,[SP, #+44]
+   \   00000010   30809DE5           LDR      R8,[SP, #+48]
+   \   00000014   0250A0E1           MOV      R5,R2
+    799          	int i, env, hfReset;
+    800          	unsigned char frameClass, pointer;
+    801          
+    802          	frameClass = sbrGrid->frameClass;
+   \   00000018   0000D5E5           LDRB     R0,[R5, #+0]
+    803          	pointer  = sbrGrid->pointer;
+   \   0000001C   0210D5E5           LDRB     R1,[R5, #+2]
+   \   00000020   0360A0E1           MOV      R6,R3
+    804          
+    805          	/* derive la from table 4.159 */
+    806          	if ((frameClass == SBR_GRID_FIXVAR || frameClass == SBR_GRID_VARVAR) && pointer > 0)
+   \   00000024   010050E3           CMP      R0,#+1
+   \   00000028   03005013           CMPNE    R0,#+3
+   \   0000002C   0500001A           BNE      ??raac_AdjustHighFreq_0
+   \   00000030   0120B0E1           MOVS     R2,R1
+   \   00000034   0300000A           BEQ      ??raac_AdjustHighFreq_0
+    807          		psi->la = sbrGrid->numEnv + 1 - pointer;
+   \   00000038   D300D5E1           LDRSB    R0,[R5, #+3]
+   \   0000003C   010080E2           ADD      R0,R0,#+1
+   \   00000040   010040E0           SUB      R0,R0,R1
+   \   00000044   050000EA           B        ??raac_AdjustHighFreq_1
+    808          	else if (frameClass == SBR_GRID_VARFIX && pointer > 1)
+   \                     ??raac_AdjustHighFreq_0:
+   \   00000048   020050E3           CMP      R0,#+2
+   \   0000004C   0200001A           BNE      ??raac_AdjustHighFreq_2
+   \   00000050   020051E3           CMP      R1,#+2
+    809          		psi->la = pointer - 1;
+   \   00000054   01004122           SUBCS    R0,R1,#+1
+   \   00000058   0000002A           BCS      ??raac_AdjustHighFreq_1
+    810          	else
+    811          		psi->la = -1;
+   \                     ??raac_AdjustHighFreq_2:
+   \   0000005C   0000E0E3           MVN      R0,#+0
+   \                     ??raac_AdjustHighFreq_1:
+   \   00000060   1910A0E3           MOV      R1,#+25
+   \   00000064   741D81E3           ORR      R1,R1,#0x1D00
+   \   00000068   0400C1E7           STRB     R0,[R1, +R4]
+    812          
+    813          	/* for each envelope, estimate gain and adjust SBR QMF bands */
+    814          	hfReset = sbrChan->reset;
+   \   0000006C   001097E5           LDR      R1,[R7, #+0]
+    815          	for (env = 0; env < sbrGrid->numEnv; env++) {
+   \   00000070   0090A0E3           MOV      R9,#+0
+   \   00000074   00108DE5           STR      R1,[SP, #+0]
+   \   00000078   0300D5E5           LDRB     R0,[R5, #+3]
+   \   0000007C   000050E3           CMP      R0,#+0
+   \   00000080   4600001A           BNE      ??raac_AdjustHighFreq_3
+    816          		EstimateEnvelope(psi, sbrHdr, sbrGrid, sbrFreq, env);
+    817          		CalcGain(psi, sbrHdr, sbrGrid, sbrFreq, sbrChan, ch, env);
+    818          		MapHF(psi, sbrHdr, sbrGrid, sbrFreq, sbrChan, env, hfReset);
+    819          		hfReset = 0;	/* only set for first envelope after header reset */
+    820          	}
+    821          
+    822          	/* save curr as prev for next time */
+    823          	for (i = 0; i < MAX_QMF_BANDS; i++)
+   \                     ??raac_AdjustHighFreq_4:
+   \   00000084   0000A0E3           MOV      R0,#+0
+    824          		sbrChan->addHarmonic[0][i] = sbrChan->addHarmonic[1][i];
+   \                     ??raac_AdjustHighFreq_5:
+   \   00000088   072080E0           ADD      R2,R0,R7
+   \   0000008C   5621D2E5           LDRB     R2,[R2, #+342]
+   \   00000090   071080E0           ADD      R1,R0,R7
+   \   00000094   010080E2           ADD      R0,R0,#+1
+   \   00000098   2621C1E5           STRB     R2,[R1, #+294]
+   \   0000009C   300050E3           CMP      R0,#+48
+   \   000000A0   F8FFFFBA           BLT      ??raac_AdjustHighFreq_5
+    825          	sbrChan->addHarmonicFlag[0] = sbrChan->addHarmonicFlag[1];
+   \   000000A4   2501D7E5           LDRB     R0,[R7, #+293]
+    826          
+    827          	/* save la for next frame */
+    828          	if (psi->la == sbrGrid->numEnv)
+   \   000000A8   1910A0E3           MOV      R1,#+25
+   \   000000AC   741D81E3           ORR      R1,R1,#0x1D00
+   \   000000B0   2401C7E5           STRB     R0,[R7, #+292]
+   \   000000B4   D41091E1           LDRSB    R1,[R1, +R4]
+   \   000000B8   0320D5E5           LDRB     R2,[R5, #+3]
+   \   000000BC   640FA0E3           MOV      R0,#+400
+   \   000000C0   020051E1           CMP      R1,R2
+   \   000000C4   0010E013           MVNNE    R1,#+0
+    829          		sbrChan->laPrev = 0;
+   \   000000C8   0010A003           MOVEQ    R1,#+0
+   \   000000CC   0710C0E7           STRB     R1,[R0, +R7]
+   \   000000D0   F38FBDE8           POP      {R0,R1,R4-R11,PC}
+   \                     ??raac_AdjustHighFreq_6:
+   \   000000D4   0A00A0E1           MOV      R0,R10
+   \   000000D8   01002DE9           PUSH     {R0}
+   \   000000DC   0630A0E1           MOV      R3,R6
+   \   000000E0   0520A0E1           MOV      R2,R5
+   \   000000E4   0B00A0E1           MOV      R0,R11
+   \   000000E8   01002DE9           PUSH     {R0}
+   \   000000EC   0900A0E1           MOV      R0,R9
+   \   000000F0   01002DE9           PUSH     {R0}
+   \   000000F4   0800A0E1           MOV      R0,R8
+   \   000000F8   01002DE9           PUSH     {R0}
+   \   000000FC   14109DE5           LDR      R1,[SP, #+20]
+   \   00000100   0400A0E1           MOV      R0,R4
+   \   00000104   ........           BL       CalcMaxGain
+   \   00000108   0A00A0E1           MOV      R0,R10
+   \   0000010C   01002DE9           PUSH     {R0}
+   \   00000110   0730A0E1           MOV      R3,R7
+   \   00000114   0620A0E1           MOV      R2,R6
+   \   00000118   0510A0E1           MOV      R1,R5
+   \   0000011C   0B00A0E1           MOV      R0,R11
+   \   00000120   01002DE9           PUSH     {R0}
+   \   00000124   0900A0E1           MOV      R0,R9
+   \   00000128   01002DE9           PUSH     {R0}
+   \   0000012C   0800A0E1           MOV      R0,R8
+   \   00000130   01002DE9           PUSH     {R0}
+   \   00000134   0400A0E1           MOV      R0,R4
+   \   00000138   ........           BL       CalcComponentGains
+   \   0000013C   0A30A0E1           MOV      R3,R10
+   \   00000140   0B20A0E1           MOV      R2,R11
+   \   00000144   0610A0E1           MOV      R1,R6
+   \   00000148   0400A0E1           MOV      R0,R4
+   \   0000014C   ........           BL       ApplyBoost
+   \   00000150   01B08BE2           ADD      R11,R11,#+1
+   \   00000154   20D08DE2           ADD      SP,SP,#+32
+   \                     ??raac_AdjustHighFreq_7:
+   \   00000158   100096E5           LDR      R0,[R6, #+16]
+   \   0000015C   00005BE1           CMP      R11,R0
+   \   00000160   DBFFFFBA           BLT      ??raac_AdjustHighFreq_6
+   \                     ??raac_AdjustHighFreq_8:
+   \   00000164   00009DE5           LDR      R0,[SP, #+0]
+   \   00000168   0630A0E1           MOV      R3,R6
+   \   0000016C   01002DE9           PUSH     {R0}
+   \   00000170   0520A0E1           MOV      R2,R5
+   \   00000174   0900A0E1           MOV      R0,R9
+   \   00000178   01002DE9           PUSH     {R0}
+   \   0000017C   019089E2           ADD      R9,R9,#+1
+   \   00000180   0700A0E1           MOV      R0,R7
+   \   00000184   01002DE9           PUSH     {R0}
+   \   00000188   10109DE5           LDR      R1,[SP, #+16]
+   \   0000018C   0400A0E1           MOV      R0,R4
+   \   00000190   ........           BL       MapHF
+   \   00000194   0010A0E3           MOV      R1,#+0
+   \   00000198   0C108DE5           STR      R1,[SP, #+12]
+   \   0000019C   0CD08DE2           ADD      SP,SP,#+12
+   \                     ??raac_AdjustHighFreq_3:
+   \   000001A0   0300D5E5           LDRB     R0,[R5, #+3]
+   \   000001A4   000059E1           CMP      R9,R0
+   \   000001A8   B5FFFFAA           BGE      ??raac_AdjustHighFreq_4
+   \   000001AC   0900A0E1           MOV      R0,R9
+   \   000001B0   01002DE9           PUSH     {R0}
+   \   000001B4   08109DE5           LDR      R1,[SP, #+8]
+   \   000001B8   0630A0E1           MOV      R3,R6
+   \   000001BC   0520A0E1           MOV      R2,R5
+   \   000001C0   0400A0E1           MOV      R0,R4
+   \   000001C4   ........           BL       EstimateEnvelope
+   \   000001C8   2400A0E3           MOV      R0,#+36
+   \   000001CC   740D80E3           ORR      R0,R0,#0x1D00
+   \   000001D0   040080E0           ADD      R0,R0,R4
+   \   000001D4   0010E0E3           MVN      R1,#+0
+   \   000001D8   001080E5           STR      R1,[R0, #+0]
+   \   000001DC   101080E5           STR      R1,[R0, #+16]
+   \   000001E0   201080E5           STR      R1,[R0, #+32]
+   \   000001E4   241080E5           STR      R1,[R0, #+36]
+   \   000001E8   4C00A0E3           MOV      R0,#+76
+   \   000001EC   500D80E3           ORR      R0,R0,#0x1400
+   \   000001F0   081188E0           ADD      R1,R8,R8, LSL #+2
+   \   000001F4   041081E0           ADD      R1,R1,R4
+   \   000001F8   011089E0           ADD      R1,R9,R1
+   \   000001FC   D10090E1           LDRSB    R0,[R0, +R1]
+   \   00000200   00B0A0E3           MOV      R11,#+0
+   \   00000204   1DA060E2           RSB      R10,R0,#+29
+   \   00000208   100096E5           LDR      R0,[R6, #+16]
+   \   0000020C   04D08DE2           ADD      SP,SP,#+4
+   \   00000210   010050E3           CMP      R0,#+1
+   \   00000214   CFFFFFAA           BGE      ??raac_AdjustHighFreq_7
+   \   00000218   D1FFFFEA           B        ??raac_AdjustHighFreq_8
+    830          	else
+    831          		sbrChan->laPrev = -1;
+    832          }
+
+   Maximum stack usage in bytes:
+
+     Function            CSTACK
+     --------            ------
+     ApplyBoost             48
+     CalcComponentGains     80
+     CalcMaxGain            48
+     CalcNoiseDivFactors    20
+     EstimateEnvelope       88
+     MapHF                  80
+     raac_AdjustHighFreq    76
+
+
+   Segment part sizes:
+
+     Function/Label      Bytes
+     --------------      -----
+     invBandTab           256
+     EstimateEnvelope    1136
+     limGainTab            16
+     CalcMaxGain          460
+     CalcNoiseDivFactors  144
+     CalcComponentGains  1588
+     ApplyBoost           760
+     hSmoothCoef           20
+     MapHF               1296
+     raac_AdjustHighFreq  540
+      Others               64
+
+ 
+ 5 988 bytes in segment CODE
+   292 bytes in segment DATA_C
+ 
+ 5 924 bytes of CODE  memory (+ 64 bytes shared)
+   292 bytes of CONST memory
+
+Errors: none
+Warnings: none

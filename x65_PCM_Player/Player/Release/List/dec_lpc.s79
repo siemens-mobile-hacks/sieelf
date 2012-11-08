@@ -1,0 +1,2665 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:41 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_ /
+//                       lpc.c                                               /
+//    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_ /
+//                       lpc.c -D NDEBUG -lC D:\SVN\SieELF\SieELF\x65_PCM_Pl /
+//                       ayer\Player\Release\List\ -lA                       /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player\Player /
+//                       \Release\Obj\ -s9 --cpu_mode arm --endian little    /
+//                       --cpu ARM926EJ-S --stack_align 4 --interwork -e     /
+//                       --fpu None --dlib_config "D:\Program                /
+//                       Files\IAR\Embedded Workbench 4.0                    /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\dec_lpc.s79                                    /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME dec_lpc
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        EXTERN ??div32_a
+
+        MULTWEAK ??D_LPC_a_weight??rT
+        MULTWEAK ??D_LPC_int_isp_find??rT
+        MULTWEAK ??D_LPC_isf_2s3s_decode??rT
+        MULTWEAK ??D_LPC_isf_2s5s_decode??rT
+        MULTWEAK ??D_LPC_isf_extrapolation??rT
+        MULTWEAK ??D_LPC_isf_isp_conversion??rT
+        MULTWEAK ??D_LPC_isf_noise_d??rT
+        MULTWEAK ??D_LPC_isp_a_conversion??rT
+        MULTWEAK ??D_UTIL_l_extract??rA
+        MULTWEAK ??D_UTIL_mpy_32??rA
+        MULTWEAK ??D_UTIL_mpy_32_16??rA
+        MULTWEAK ??D_UTIL_norm_l??rA
+        MULTWEAK ??D_UTIL_norm_s??rA
+??DataTable1 EQU 0
+??DataTable2 EQU 0
+??DataTable3 EQU 0
+        MULTWEAK ??labs??rA
+        MULTWEAK ??rA??div32_a
+        PUBLIC D_LPC_a_weight
+        FUNCTION D_LPC_a_weight,0203H
+        LOCFRAME CSTACK, 12, STACK
+        PUBLIC D_LPC_int_isp_find
+        FUNCTION D_LPC_int_isp_find,0203H
+        LOCFRAME CSTACK, 56, STACK
+        PUBLIC D_LPC_isf_2s3s_decode
+        FUNCTION D_LPC_isf_2s3s_decode,0203H
+        LOCFRAME CSTACK, 88, STACK
+        PUBLIC D_LPC_isf_2s5s_decode
+        FUNCTION D_LPC_isf_2s5s_decode,0203H
+        LOCFRAME CSTACK, 88, STACK
+        PUBLIC D_LPC_isf_extrapolation
+        FUNCTION D_LPC_isf_extrapolation,0203H
+        LOCFRAME CSTACK, 92, STACK
+        PUBLIC D_LPC_isf_isp_conversion
+        FUNCTION D_LPC_isf_isp_conversion,0203H
+        LOCFRAME CSTACK, 12, STACK
+        PUBLIC D_LPC_isf_noise_d
+        FUNCTION D_LPC_isf_noise_d,0203H
+        LOCFRAME CSTACK, 4, STACK
+        PUBLIC D_LPC_isp_a_conversion
+        FUNCTION D_LPC_isp_a_conversion,0203H
+        LOCFRAME CSTACK, 132, STACK
+        FUNCTION D_LPC_isp_pol_get,0203H
+        LOCFRAME CSTACK, 40, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+D_UTIL_l_extract    SYMBOL "D_UTIL_l_extract"
+D_UTIL_mpy_32       SYMBOL "D_UTIL_mpy_32"
+D_UTIL_mpy_32_16    SYMBOL "D_UTIL_mpy_32_16"
+D_UTIL_norm_l       SYMBOL "D_UTIL_norm_l"
+D_UTIL_norm_s       SYMBOL "D_UTIL_norm_s"
+labs                SYMBOL "labs"
+D_LPC_a_weight      SYMBOL "D_LPC_a_weight"
+??D_LPC_a_weight??rT SYMBOL "??rT", D_LPC_a_weight
+D_LPC_int_isp_find  SYMBOL "D_LPC_int_isp_find"
+??D_LPC_int_isp_find??rT SYMBOL "??rT", D_LPC_int_isp_find
+D_LPC_isf_2s3s_decode SYMBOL "D_LPC_isf_2s3s_decode"
+??D_LPC_isf_2s3s_decode??rT SYMBOL "??rT", D_LPC_isf_2s3s_decode
+D_LPC_isf_2s5s_decode SYMBOL "D_LPC_isf_2s5s_decode"
+??D_LPC_isf_2s5s_decode??rT SYMBOL "??rT", D_LPC_isf_2s5s_decode
+D_LPC_isf_extrapolation SYMBOL "D_LPC_isf_extrapolation"
+??D_LPC_isf_extrapolation??rT SYMBOL "??rT", D_LPC_isf_extrapolation
+D_LPC_isf_isp_conversion SYMBOL "D_LPC_isf_isp_conversion"
+??D_LPC_isf_isp_conversion??rT SYMBOL "??rT", D_LPC_isf_isp_conversion
+D_LPC_isf_noise_d   SYMBOL "D_LPC_isf_noise_d"
+??D_LPC_isf_noise_d??rT SYMBOL "??rT", D_LPC_isf_noise_d
+D_LPC_isp_a_conversion SYMBOL "D_LPC_isp_a_conversion"
+??D_LPC_isp_a_conversion??rT SYMBOL "??rT", D_LPC_isp_a_conversion
+??D_UTIL_l_extract??rA SYMBOL "??rA", D_UTIL_l_extract
+??D_UTIL_mpy_32??rA SYMBOL "??rA", D_UTIL_mpy_32
+??D_UTIL_mpy_32_16??rA SYMBOL "??rA", D_UTIL_mpy_32_16
+??D_UTIL_norm_l??rA SYMBOL "??rA", D_UTIL_norm_l
+??D_UTIL_norm_s??rA SYMBOL "??rA", D_UTIL_norm_s
+??labs??rA          SYMBOL "??rA", labs
+
+        EXTERN D_ROM_cos
+        EXTERN D_ROM_dico1_isf
+        EXTERN D_ROM_dico1_isf_noise
+        EXTERN D_ROM_dico21_isf
+        EXTERN D_ROM_dico21_isf_36b
+        EXTERN D_ROM_dico22_isf
+        EXTERN D_ROM_dico22_isf_36b
+        EXTERN D_ROM_dico23_isf
+        EXTERN D_ROM_dico23_isf_36b
+        EXTERN D_ROM_dico24_isf
+        EXTERN D_ROM_dico25_isf
+        EXTERN D_ROM_dico2_isf
+        EXTERN D_ROM_dico2_isf_noise
+        EXTERN D_ROM_dico3_isf_noise
+        EXTERN D_ROM_dico4_isf_noise
+        EXTERN D_ROM_dico5_isf_noise
+        EXTERN D_ROM_mean_isf
+        EXTERN D_ROM_mean_isf_noise
+        EXTERN D_UTIL_l_extract
+        FUNCTION D_UTIL_l_extract,0202H
+        EXTERN D_UTIL_mpy_32
+        FUNCTION D_UTIL_mpy_32,0202H
+        EXTERN D_UTIL_mpy_32_16
+        FUNCTION D_UTIL_mpy_32_16,0202H
+        EXTERN D_UTIL_norm_l
+        FUNCTION D_UTIL_norm_l,0202H
+        EXTERN D_UTIL_norm_s
+        FUNCTION D_UTIL_norm_s,0202H
+        EXTERN labs
+        FUNCTION labs,0200H
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_LPC_isf_noise_d??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE D_LPC_isf_noise_d
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AMR\dec_lpc.c
+//    1 /*
+//    2  *===================================================================
+//    3  *  3GPP AMR Wideband Floating-point Speech Codec
+//    4  *===================================================================
+//    5  */
+//    6 #include <math.h>
+//    7 #include "typedef.h"
+//    8 #include "dec_util.h"
+//    9 
+//   10 #define M            16             /* Order of LP filter                  */
+//   11 #define MP1          (M + 1)
+//   12 #define M16k         20
+//   13 #define NC16k        (M16k / 2)
+//   14 #define MU           10923          /* Prediction factor (1.0/3.0) in Q15  */
+//   15 #define L_MEANBUF    3
+//   16 #define ALPHA        29491          /* 0. 9 in Q15                         */
+//   17 #define ONE_ALPHA    (32768-ALPHA)  /* (1.0 - ALPHA) in Q15                */
+//   18 #define ORDER        16             /* order of linear prediction filter   */
+//   19 #define ISF_GAP      128            /* 50 Hz */
+//   20 #define INV_LENGTH   2731           /* 1/12                                */
+//   21 
+//   22 extern const Word16 D_ROM_dico1_isf[];
+//   23 extern const Word16 D_ROM_dico2_isf[];
+//   24 extern const Word16 D_ROM_dico21_isf_36b[];
+//   25 extern const Word16 D_ROM_dico22_isf_36b[];
+//   26 extern const Word16 D_ROM_dico23_isf_36b[];
+//   27 extern const Word16 D_ROM_dico21_isf[];
+//   28 extern const Word16 D_ROM_dico22_isf[];
+//   29 extern const Word16 D_ROM_dico23_isf[];
+//   30 extern const Word16 D_ROM_dico24_isf[];
+//   31 extern const Word16 D_ROM_dico25_isf[];
+//   32 extern const Word16 D_ROM_dico1_isf_noise[];
+//   33 extern const Word16 D_ROM_dico2_isf_noise[];
+//   34 extern const Word16 D_ROM_dico3_isf_noise[];
+//   35 extern const Word16 D_ROM_dico4_isf_noise[];
+//   36 extern const Word16 D_ROM_dico5_isf_noise[];
+//   37 extern const Word16 D_ROM_mean_isf[];
+//   38 extern const Word16 D_ROM_mean_isf_noise[];
+//   39 extern const Word16 D_ROM_cos[];
+//   40 
+//   41 
+//   42 /*
+//   43  * D_LPC_isf_reorder
+//   44  *
+//   45  * Parameters:
+//   46  *    isf          I/O: vector of isfs
+//   47  *    min_dist       I: quantized ISFs (in frequency domain)
+//   48  *    n              I: LPC order
+//   49  *
+//   50  * Function:
+//   51  *    To make sure that the  isfs are properly order and to keep a certain
+//   52  *    minimum distance between consecutive isfs.
+//   53  *
+//   54  * Returns:
+//   55  *    void
+//   56  */
+//   57 static void D_LPC_isf_reorder(Word16 *isf, Word16 min_dist, Word16 n)
+//   58 {
+//   59    Word32 i, isf_min;
+//   60 
+//   61    isf_min = min_dist;
+//   62 
+//   63    for(i = 0; i < n - 1; i++)
+//   64    {
+//   65       if(isf[i] < isf_min)
+//   66       {
+//   67          isf[i] = (Word16)isf_min;
+//   68       }
+//   69       isf_min = isf[i] + min_dist;
+//   70    }
+//   71 
+//   72    return;
+//   73 }
+//   74 
+//   75 
+//   76 /*
+//   77  * D_LPC_isf_noise_d
+//   78  *
+//   79  * Parameters:
+//   80  *    indice         I: indices of the selected codebook entries
+//   81  *    isf_q          O: quantized ISFs (in frequency domain)
+//   82  *
+//   83  * Function:
+//   84  *    Decoding of ISF parameters
+//   85  *
+//   86  * Returns:
+//   87  *    void
+//   88  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function D_LPC_isf_noise_d
+        ARM
+//   89 void D_LPC_isf_noise_d(Word16 *indice, Word16 *isf_q)
+//   90 {
+D_LPC_isf_noise_d:
+        PUSH     {R4}
+        CFI R4 Frame(CFA, -4)
+        CFI CFA R13+4
+//   91    Word32 i;
+//   92 
+//   93    for(i = 0; i < 2; i++)
+        MOV      R2,#+0
+//   94    {
+//   95       isf_q[i] = D_ROM_dico1_isf_noise[indice[0] * 2 + i];
+??D_LPC_isf_noise_d_0:
+        LDRSH    R12,[R0, #+0]
+        LDR      R4,??D_LPC_isf_noise_d_1  ;; D_ROM_dico1_isf_noise
+        ADD      R3,R1,R2, LSL #+1
+        ADD      R12,R2,R12, LSL #+1
+        ADD      R4,R4,R12, LSL #+1
+        LDRSH    R4,[R4, #+0]
+//   96    }
+        ADD      R2,R2,#+1
+        CMP      R2,#+2
+        STRH     R4,[R3, #+0]
+        BLT      ??D_LPC_isf_noise_d_0
+//   97 
+//   98    for(i = 0; i < 3; i++)
+        LDR      R12,??D_LPC_isf_noise_d_1+0x4  ;; D_ROM_dico2_isf_noise
+        MOV      R2,#+0
+//   99    {
+//  100       isf_q[i + 2] = D_ROM_dico2_isf_noise[indice[1] * 3 + i];
+??D_LPC_isf_noise_d_2:
+        LDRSH    R4,[R0, #+2]
+        ADD      R3,R1,R2, LSL #+1
+        ADD      R4,R4,R4, LSL #+1
+        ADD      R4,R2,R4
+        ADD      R4,R12,R4, LSL #+1
+        LDRSH    R4,[R4, #+0]
+//  101    }
+        ADD      R2,R2,#+1
+        CMP      R2,#+3
+        STRH     R4,[R3, #+4]
+        BLT      ??D_LPC_isf_noise_d_2
+//  102 
+//  103    for(i = 0; i < 3; i++)
+        LDR      R12,??D_LPC_isf_noise_d_1+0x8  ;; D_ROM_dico3_isf_noise
+        MOV      R2,#+0
+//  104    {
+//  105       isf_q[i + 5] = D_ROM_dico3_isf_noise[indice[2] * 3 + i];
+??D_LPC_isf_noise_d_3:
+        LDRSH    R4,[R0, #+4]
+        ADD      R3,R1,R2, LSL #+1
+        ADD      R4,R4,R4, LSL #+1
+        ADD      R4,R2,R4
+        ADD      R4,R12,R4, LSL #+1
+        LDRSH    R4,[R4, #+0]
+//  106    }
+        ADD      R2,R2,#+1
+        CMP      R2,#+3
+        STRH     R4,[R3, #+10]
+        BLT      ??D_LPC_isf_noise_d_3
+//  107 
+//  108    for(i = 0; i < 4; i++)
+        LDR      R12,??D_LPC_isf_noise_d_1+0xC  ;; D_ROM_dico4_isf_noise
+        MOV      R2,#+0
+//  109    {
+//  110       isf_q[i + 8] = D_ROM_dico4_isf_noise[indice[3] * 4 + i];
+??D_LPC_isf_noise_d_4:
+        LDRSH    R4,[R0, #+6]
+        ADD      R3,R1,R2, LSL #+1
+        ADD      R4,R2,R4, LSL #+2
+        ADD      R4,R12,R4, LSL #+1
+        LDRSH    R4,[R4, #+0]
+//  111    }
+        ADD      R2,R2,#+1
+        CMP      R2,#+4
+        STRH     R4,[R3, #+16]
+        BLT      ??D_LPC_isf_noise_d_4
+//  112 
+//  113    for(i = 0; i < 4; i++)
+        LDR      R12,??D_LPC_isf_noise_d_1+0x10  ;; D_ROM_dico5_isf_noise
+        MOV      R2,#+0
+//  114    {
+//  115       isf_q[i + 12] = D_ROM_dico5_isf_noise[indice[4] * 4 + i];
+??D_LPC_isf_noise_d_5:
+        LDRSH    R4,[R0, #+8]
+        ADD      R3,R1,R2, LSL #+1
+        ADD      R4,R2,R4, LSL #+2
+        ADD      R4,R12,R4, LSL #+1
+        LDRSH    R4,[R4, #+0]
+//  116    }
+        ADD      R2,R2,#+1
+        CMP      R2,#+4
+        STRH     R4,[R3, #+24]
+        BLT      ??D_LPC_isf_noise_d_5
+//  117 
+//  118    for(i = 0; i < ORDER; i++)
+        MOV      R0,#+0
+//  119    {
+//  120       isf_q[i] = (Word16)(isf_q[i]+ D_ROM_mean_isf_noise[i]);
+??D_LPC_isf_noise_d_6:
+        LDR      R4,??D_LPC_isf_noise_d_1+0x14  ;; D_ROM_mean_isf_noise
+        ADD      R2,R1,R0, LSL #+1
+        LDRSH    R3,[R2, #+0]
+        ADD      R4,R4,R0, LSL #+1
+        LDRSH    R4,[R4, #+0]
+//  121    }
+        ADD      R0,R0,#+1
+        CMP      R0,#+16
+        ADD      R3,R4,R3
+        STRH     R3,[R2, #+0]
+        BLT      ??D_LPC_isf_noise_d_6
+//  122 
+//  123    D_LPC_isf_reorder(isf_q, ISF_GAP, ORDER);
+        MOV      R0,#+128
+        MOV      R2,#+0
+??D_LPC_isf_noise_d_7:
+        ADD      R3,R1,R2, LSL #+1
+        LDRSH    R4,[R3, #+0]
+        ADD      R2,R2,#+1
+        CMP      R4,R0
+        STRHLT   R0,[R3, #+0]
+        LDRSH    R0,[R3, #+0]
+        CMP      R2,#+15
+        ADD      R0,R0,#+128
+        BLT      ??D_LPC_isf_noise_d_7
+//  124 
+//  125    return;
+        POP      {R4}
+        CFI R4 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        DATA
+??D_LPC_isf_noise_d_1:
+        DC32     D_ROM_dico1_isf_noise
+        DC32     D_ROM_dico2_isf_noise
+        DC32     D_ROM_dico3_isf_noise
+        DC32     D_ROM_dico4_isf_noise
+        DC32     D_ROM_dico5_isf_noise
+        DC32     D_ROM_mean_isf_noise
+        CFI EndBlock cfiBlock1
+//  126 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_LPC_isf_isp_conversion??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE D_LPC_isf_isp_conversion
+//  127 
+//  128 
+//  129 /*
+//  130  * D_LPC_isf_isp_conversion
+//  131  *
+//  132  * Parameters:
+//  133  *    isp            O: (Q15) isp[m] (range: -1<=val<1)
+//  134  *    isf            I: (Q15) isf[m] normalized (range: 0.0 <= val <= 0.5)
+//  135  *    m              I: LPC order
+//  136  *
+//  137  * Function:
+//  138  *    Transformation isf to isp
+//  139  *
+//  140  *    ISP are immitance spectral pair in cosine domain (-1 to 1).
+//  141  *    ISF are immitance spectral pair in frequency domain (0 to 6400).
+//  142  * Returns:
+//  143  *    void
+//  144  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function D_LPC_isf_isp_conversion
+        ARM
+//  145 void D_LPC_isf_isp_conversion(Word16 isf[], Word16 isp[], Word16 m)
+//  146 {
+D_LPC_isf_isp_conversion:
+        PUSH     {R4-R6}
+        CFI R6 Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+//  147    Word32 i, ind, offset, tmp;
+//  148 
+//  149    for(i = 0; i < m - 1; i++)
+        MOV      R12,#+0
+        MOV      R3,R2
+        SUB      R4,R3,#+1
+        CMP      R4,#+1
+        BGE      ??D_LPC_isf_isp_conversion_0
+        B        ??D_LPC_isf_isp_conversion_1
+//  150    {
+//  151       isp[i] = isf[i];
+??D_LPC_isf_isp_conversion_2:
+        ADD      R6,R0,R12, LSL #+1
+        LDRSH    R6,[R6, #+0]
+        ADD      R5,R1,R12, LSL #+1
+//  152    }
+        ADD      R12,R12,#+1
+        STRH     R6,[R5, #+0]
+??D_LPC_isf_isp_conversion_0:
+        CMP      R12,R4
+        BLT      ??D_LPC_isf_isp_conversion_2
+//  153    isp[m - 1] = (Word16)(isf[m - 1] << 1);
+??D_LPC_isf_isp_conversion_1:
+        ADD      R0,R0,R3, LSL #+1
+        LDRSH    R0,[R0, #-2]
+        ADD      R4,R1,R3, LSL #+1
+//  154 
+//  155    for(i = 0; i < m; i++)
+        CMP      R2,#+1
+        LSL      R0,R0,#+1
+        STRH     R0,[R4, #-2]
+        MOV      R0,#+0
+        BGE      ??D_LPC_isf_isp_conversion_3
+        B        ??D_LPC_isf_isp_conversion_4
+//  156    {
+//  157       ind = isp[i] >> 7;         /* ind = b7-b15 of isf[i]     */
+//  158       offset = isp[i] & 0x007f;  /* offset = b0-b6 of isf[i]   */
+//  159 
+//  160       /* isp[i] = table[ind]+ ((table[ind+1]-table[ind])*offset) / 128 */
+//  161       tmp = (D_ROM_cos[ind + 1] - D_ROM_cos[ind]) * offset;
+//  162       isp[i] = (Word16)(D_ROM_cos[ind] + (tmp >> 7));
+??D_LPC_isf_isp_conversion_5:
+        LDR      R5,??DataTable0  ;; D_ROM_cos
+        ADD      R2,R1,R0, LSL #+1
+        LDRSH    R4,[R2, #+0]
+//  163    }
+        ADD      R0,R0,#+1
+        ASR      R4,R4,#+7
+        ADD      R4,R5,R4, LSL #+1
+        LDRSH    R5,[R4, #+0]
+        LDRSH    R6,[R4, #+2]
+        SUB      R4,R6,R5
+        LDRSH    R6,[R2, #+0]
+        AND      R6,R6,#0x7F
+        MUL      R4,R6,R4
+        ADD      R4,R5,R4, ASR #+7
+        STRH     R4,[R2, #+0]
+??D_LPC_isf_isp_conversion_3:
+        CMP      R0,R3
+        BLT      ??D_LPC_isf_isp_conversion_5
+//  164    return;
+??D_LPC_isf_isp_conversion_4:
+        POP      {R4-R6}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock3
+//  165 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable0:
+        DC32     D_ROM_cos
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_LPC_isp_pol_get??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE D_LPC_isp_pol_get
+//  166 
+//  167 
+//  168 /*
+//  169  * D_LPC_isp_pol_get
+//  170  *
+//  171  * Parameters:
+//  172  *    isp            I: Immitance spectral pairs (cosine domaine)
+//  173  *    f              O: the coefficients of F1 or F2
+//  174  *    n              I: no of coefficients (m/2)
+//  175  *    k16            I: 16k flag
+//  176  *
+//  177  * Function:
+//  178  *    Find the polynomial F1(z) or F2(z) from the ISPs.
+//  179  *    This is performed by expanding the product polynomials:
+//  180  *
+//  181  *    F1(z) =   product   ( 1 - 2 isp_i z^-1 + z^-2 )
+//  182  *            i=0,2,4,6,8
+//  183  *    F2(z) =   product   ( 1 - 2 isp_i z^-1 + z^-2 )
+//  184  *             i=1,3,5,7
+//  185  *
+//  186  *    where isp_i are the ISPs in the cosine domain.
+//  187  *
+//  188  * Returns:
+//  189  *    void
+//  190  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function D_LPC_isp_pol_get
+        ARM
+//  191 static void D_LPC_isp_pol_get(Word16 *isp, Word32 *f, Word32 n, Word16 k16)
+//  192 {
+D_LPC_isp_pol_get:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+        SUB      SP,SP,#+4
+        CFI CFA R13+40
+        MOV      R4,R0
+        MOV      R5,R1
+//  193    Word32 i, j, t0, s1, s2;
+//  194    Word16 hi, lo;
+//  195 
+//  196    s1 = 8388608;
+        MOV      R0,#+8388608
+//  197    s2 = 512;
+//  198 
+//  199    if(k16)
+        CMP      R3,#+0
+//  200    {
+//  201       s1 >>= 2;
+        MOVNE    R0,#+2097152
+//  202       s2 >>= 2;
+//  203    }
+//  204 
+//  205    /* All computation in Q23 */
+//  206    f[0] = s1;              /* f[0] = 1.0; in Q23         */
+        STR      R0,[R5], #+4
+//  207    f[1] = isp[0] * (-s2);  /* f[1] = -2.0*isp[0] in Q23  */
+        LDRSH    R0,[R4], #+4
+        MOV      R7,#+512
+        MOVNE    R7,#+128
+        MUL      R0,R7,R0
+        MOV      R6,R2
+        RSB      R0,R0,#+0
+        STR      R0,[R5], #+4
+//  208    f += 2;                 /* Advance f pointer          */
+//  209    isp += 2;               /* Advance isp pointer        */
+//  210 
+//  211    for(i = 2; i <= n; i++)
+        MOV      R8,#+2
+        CMP      R6,#+2
+        POPLT    {R0,R4-R11,PC}
+//  212    {
+//  213       *f = f[ - 2];
+??D_LPC_isp_pol_get_0:
+        LDR      R0,[R5, #-8]
+//  214 
+//  215       for(j = 1; j < i; j++, f--)
+        MOV      R9,#+1
+        STR      R0,[R5, #+0]
+        CMP      R8,#+2
+        BGE      ??D_LPC_isp_pol_get_1
+        B        ??D_LPC_isp_pol_get_2
+//  216       {
+//  217          D_UTIL_l_extract(f[- 1], &hi, &lo);
+??D_LPC_isp_pol_get_3:
+        SUB      R10,R5,#+8
+        LDR      R0,[R10, #+4]
+        ADD      R2,SP,#+2
+        MOV      R1,SP
+        _BLF     D_UTIL_l_extract,??D_UTIL_l_extract??rA
+//  218          t0 = D_UTIL_mpy_32_16(hi, lo, *isp);   /* t0 = f[-1] * isp */
+//  219          t0 = (t0 << 1);
+//  220          *f = (*f - t0);         /* *f -= t0    */
+        LDRSH    R0,[SP, #+0]
+        LDR      R11,[R5, #+0]
+        LDRSH    R1,[SP, #+2]
+        LDRSH    R2,[R4, #+0]
+//  221          *f = (*f + f[ - 2]);    /* *f += f[-2] */
+//  222       }
+        ADD      R9,R9,#+1
+        _BLF     D_UTIL_mpy_32_16,??D_UTIL_mpy_32_16??rA
+        SUB      R0,R11,R0, LSL #+1
+        STR      R0,[R5, #+0]
+        LDR      R1,[R10, #+0]
+        ADD      R0,R1,R0
+        STR      R0,[R5], #-4
+??D_LPC_isp_pol_get_1:
+        CMP      R9,R8
+        BLT      ??D_LPC_isp_pol_get_3
+//  223 
+//  224       *f = *f - (*isp * s2);     /* *f -= isp << 8 */
+??D_LPC_isp_pol_get_2:
+        LDRSH    R1,[R4], #+4
+        LDR      R0,[R5, #+0]
+        MUL      R1,R7,R1
+        SUB      R0,R0,R1
+        STR      R0,[R5, #+0]
+//  225       f += i;     /* Advance f pointer   */
+        ADD      R5,R5,R8, LSL #+2
+//  226       isp += 2;   /* Advance isp pointer */
+//  227    }
+        ADD      R8,R8,#+1
+        CMP      R6,R8
+        BGE      ??D_LPC_isp_pol_get_0
+//  228 
+//  229    return;
+        POP      {R0,R4-R11,PC}   ;; return
+        CFI EndBlock cfiBlock5
+//  230 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_LPC_isp_a_conversion??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE D_LPC_isp_a_conversion
+//  231 
+//  232 
+//  233 /*
+//  234  * D_LPC_isp_a_conversion
+//  235  *
+//  236  * Parameters:
+//  237  *    isp            I: (Q15) Immittance spectral pairs
+//  238  *    a              O: (Q12) Predictor coefficients (order = M)
+//  239  *    m              I: order of LP filter
+//  240  *
+//  241  * Function:
+//  242  *    Convert ISPs to predictor coefficients a[]
+//  243  *
+//  244  * Returns:
+//  245  *    void
+//  246  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function D_LPC_isp_a_conversion
+        ARM
+//  247 void D_LPC_isp_a_conversion(Word16 isp[], Word16 a[], Word32 adaptive_scaling, 
+//  248                             Word16 m)
+//  249 {
+D_LPC_isp_a_conversion:
+        PUSH     {R2,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+40
+        SUB      SP,SP,#+92
+        CFI CFA R13+132
+        MOV      R7,R0
+        MOV      R4,R1
+        MOV      R5,R3
+        ASR      R6,R5,#+1
+//  250    Word32 j, i, nc, tmax, q, q_sug, r;
+//  251    Word32 f1[NC16k + 1], f2[NC16k];
+//  252    Word32 t0;
+//  253    Word16 hi, lo;
+//  254 
+//  255    nc = m >> 1;
+//  256 
+//  257    if(nc > 8)
+        CMP      R6,#+9
+        BLT      ??D_LPC_isp_a_conversion_0
+//  258    {
+//  259       D_LPC_isp_pol_get(&isp[0], f1, nc, 1);
+        MOV      R3,#+1
+        MOV      R2,R6
+        ADD      R1,SP,#+48
+        BL       D_LPC_isp_pol_get
+//  260 
+//  261       for(i = 0; i <= nc; i++)
+        MOV      R0,#+0
+//  262       {
+//  263          f1[i] = (f1[i] << 2);
+??D_LPC_isp_a_conversion_1:
+        ADD      R1,SP,#+48
+        ADD      R1,R1,R0, LSL #+2
+        LDR      R2,[R1, #+0]
+//  264       }
+        ADD      R0,R0,#+1
+        LSL      R2,R2,#+2
+        STR      R2,[R1, #+0]
+        CMP      R6,R0
+        BGE      ??D_LPC_isp_a_conversion_1
+//  265    }
+//  266    else
+//  267    {
+//  268       D_LPC_isp_pol_get(&isp[0], f1, nc, 0);
+//  269    }
+//  270 
+//  271    if(nc > 8)
+//  272    {
+//  273       D_LPC_isp_pol_get(&isp[1], f2, nc - 1, 1);
+        SUB      R8,R6,#+1
+        MOV      R3,#+1
+        MOV      R2,R8
+        ADD      R1,SP,#+8
+        ADD      R0,R7,#+2
+        BL       D_LPC_isp_pol_get
+//  274 
+//  275       for(i = 0; i <= nc - 1; i++)
+        MOV      R0,#+0
+        CMP      R8,#+0
+        BMI      ??D_LPC_isp_a_conversion_2
+//  276       {
+//  277          f2[i] = (f2[i] << 2);
+??D_LPC_isp_a_conversion_3:
+        ADD      R1,SP,#+8
+        ADD      R1,R1,R0, LSL #+2
+        LDR      R2,[R1, #+0]
+//  278       }
+        ADD      R0,R0,#+1
+        LSL      R2,R2,#+2
+        STR      R2,[R1, #+0]
+        CMP      R8,R0
+        BGE      ??D_LPC_isp_a_conversion_3
+//  279    }
+//  280    else
+//  281    {
+//  282       D_LPC_isp_pol_get(&isp[1], f2, nc - 1, 0);
+//  283    }
+//  284 
+//  285    /*
+//  286     *  Multiply F2(z) by (1 - z^-2)
+//  287     */
+//  288    for(i = nc - 1; i > 1; i--)
+??D_LPC_isp_a_conversion_2:
+        SUB      R0,R6,#+1
+        CMP      R0,#+2
+        BLT      ??D_LPC_isp_a_conversion_4
+//  289    {
+//  290       f2[i] = f2[i] - f2[i - 2];   /* f2[i] -= f2[i-2]; */
+??D_LPC_isp_a_conversion_5:
+        ADD      R1,SP,#+8
+        ADD      R1,R1,R0, LSL #+2
+        LDR      R2,[R1, #+0]
+        ADD      R3,SP,#+8
+        SUB      R3,R3,#+8
+        LDR      R3,[R3, +R0, LSL #+2]
+//  291    }
+        SUB      R0,R0,#+1
+        SUB      R2,R2,R3
+        STR      R2,[R1, #+0]
+        CMP      R0,#+2
+        BGE      ??D_LPC_isp_a_conversion_5
+//  292 
+//  293    /*
+//  294     *  Scale F1(z) by (1+isp[m-1]) and F2(z) by (1-isp[m-1])
+//  295     */
+//  296    for(i = 0; i < nc; i++)
+??D_LPC_isp_a_conversion_4:
+        MOV      R8,#+0
+        ADD      R1,R7,R5, LSL #+1
+        STR      R1,[SP, #+4]
+        CMP      R6,#+1
+        BGE      ??D_LPC_isp_a_conversion_6
+        B        ??D_LPC_isp_a_conversion_7
+??D_LPC_isp_a_conversion_0:
+        MOV      R3,#+0
+        MOV      R2,R6
+        ADD      R1,SP,#+48
+        BL       D_LPC_isp_pol_get
+        MOV      R3,#+0
+        SUB      R2,R6,#+1
+        ADD      R1,SP,#+8
+        ADD      R0,R7,#+2
+        BL       D_LPC_isp_pol_get
+        B        ??D_LPC_isp_a_conversion_2
+//  297    {
+//  298       /* f1[i] *= (1.0 + isp[M-1]); */
+//  299       D_UTIL_l_extract(f1[i], &hi, &lo);
+??D_LPC_isp_a_conversion_8:
+        ADD      R0,SP,#+48
+        ADD      R7,R0,R8, LSL #+2
+        LDR      R0,[R7, #+0]
+        ADD      R2,SP,#+2
+        MOV      R1,SP
+        _BLF     D_UTIL_l_extract,??D_UTIL_l_extract??rA
+//  300       t0 = D_UTIL_mpy_32_16(hi, lo, isp[m - 1]);
+        LDR      R0,[SP, #+4]
+        LDRSH    R1,[SP, #+2]
+        LDRSH    R2,[R0, #-2]
+        LDRSH    R0,[SP, #+0]
+        _BLF     D_UTIL_mpy_32_16,??D_UTIL_mpy_32_16??rA
+//  301       f1[i] = f1[i] + t0;
+        LDR      R1,[R7, #+0]
+//  302 
+//  303       /* f2[i] *= (1.0 - isp[M-1]); */
+//  304       D_UTIL_l_extract(f2[i], &hi, &lo);
+        ADD      R2,SP,#+2
+        ADD      R0,R0,R1
+        STR      R0,[R7, #+0]
+        ADD      R0,SP,#+8
+        ADD      R9,R0,R8, LSL #+2
+        LDR      R0,[R9, #+0]
+        MOV      R1,SP
+        _BLF     D_UTIL_l_extract,??D_UTIL_l_extract??rA
+//  305       t0 = D_UTIL_mpy_32_16(hi, lo, isp[m - 1]);
+        LDR      R0,[SP, #+4]
+        LDRSH    R1,[SP, #+2]
+        LDRSH    R2,[R0, #-2]
+        LDRSH    R0,[SP, #+0]
+//  306       f2[i] = f2[i] - t0;
+//  307    }
+        ADD      R8,R8,#+1
+        _BLF     D_UTIL_mpy_32_16,??D_UTIL_mpy_32_16??rA
+        MOV      R7,R0
+        LDR      R0,[R9, #+0]
+        SUB      R0,R0,R7
+        STR      R0,[R9, #+0]
+??D_LPC_isp_a_conversion_6:
+        CMP      R8,R6
+        BLT      ??D_LPC_isp_a_conversion_8
+//  308 
+//  309    /*
+//  310     *  A(z) = (F1(z)+F2(z))/2
+//  311     *  F1(z) is symmetric and F2(z) is antisymmetric
+//  312     */
+//  313 
+//  314    /* a[0] = 1.0; */
+//  315    a[0] = 4096;
+??D_LPC_isp_a_conversion_7:
+        MOV      R0,#+4096
+        STRH     R0,[R4, #+0]
+//  316    tmax = 1;
+        MOV      R9,#+1
+//  317 
+//  318    for(i = 1, j = m - 1; i < nc; i++, j--)
+        MOV      R10,#+1
+        SUB      R11,R5,#+1
+        CMP      R6,#+2
+        BGE      ??D_LPC_isp_a_conversion_9
+        B        ??D_LPC_isp_a_conversion_10
+??D_LPC_isp_a_conversion_11:
+        ADD      R0,SP,#+48
+        ADD      R7,R0,R10, LSL #+2
+        LDR      R0,[R7, #+0]
+        ADD      R1,SP,#+8
+        LDR      R1,[R1, +R10, LSL #+2]
+        ADD      R8,R1,R0
+//  319    {
+//  320       /* a[i] = 0.5*(f1[i] + f2[i]); */
+//  321       t0 = f1[i] + f2[i];   /* f1[i] + f2[i] */
+//  322       tmax |= labs(t0);
+        MOV      R0,R8
+        _BLF     labs,??labs??rA
+        ORR      R9,R0,R9
+//  323       a[i] = (Word16)((t0 + 0x800) >> 12);   /* from Q23 to Q12 and * 0.5 */
+        ADD      R0,R4,R10, LSL #+1
+        ADD      R1,R8,#+2048
+        ASR      R1,R1,#+12
+        STRH     R1,[R0, #+0]
+//  324       
+//  325       /* a[j] = 0.5*(f1[i] - f2[i]); */
+//  326       t0 = (f1[i] - f2[i]);   /* f1[i] - f2[i] */
+        LDR      R0,[R7, #+0]
+        ADD      R1,SP,#+8
+        LDR      R1,[R1, +R10, LSL #+2]
+//  327       tmax |= labs(t0);
+//  328       a[j] = (Word16)((t0 + 0x800) >> 12);   /* from Q23 to Q12 and * 0.5 */
+//  329    }
+        ADD      R10,R10,#+1
+        SUB      R7,R0,R1
+        MOV      R0,R7
+        _BLF     labs,??labs??rA
+        ORR      R9,R0,R9
+        ADD      R0,R4,R11, LSL #+1
+        ADD      R1,R7,#+2048
+        ASR      R1,R1,#+12
+        STRH     R1,[R0, #+0]
+        SUB      R11,R11,#+1
+??D_LPC_isp_a_conversion_9:
+        CMP      R10,R6
+        BLT      ??D_LPC_isp_a_conversion_11
+//  330 
+//  331    /* rescale data if overflow has occured and reprocess the loop */
+//  332 
+//  333     if (adaptive_scaling)
+??D_LPC_isp_a_conversion_10:
+        LDR      R0,[SP, #+92]
+        CMP      R0,#+0
+        BEQ      ??D_LPC_isp_a_conversion_12
+//  334     {
+//  335        q = 4 - D_UTIL_norm_l(tmax);        /* adaptive scaling enabled */
+        MOV      R0,R9
+        _BLF     D_UTIL_norm_l,??D_UTIL_norm_l??rA
+        RSB      R7,R0,#+4
+//  336     }
+//  337     else
+//  338     {
+//  339        q = 0;                           /* adaptive scaling disabled */
+//  340     }
+//  341 
+//  342     if (q > 0) 
+        CMP      R7,#+1
+        BLT      ??D_LPC_isp_a_conversion_12
+//  343     {
+//  344       q_sug = 12 + q;
+        ADD      R8,R7,#+12
+//  345       r = 1 << (q_sug - 1);
+        MOV      R0,#+1
+        SUB      R1,R8,#+1
+        LSL      R9,R0,R1
+//  346 
+//  347       for (i = 1, j = m - 1; i < nc; i++, j--)
+        MOV      R10,#+1
+        SUB      R11,R5,#+1
+        CMP      R6,#+2
+        BGE      ??D_LPC_isp_a_conversion_13
+        B        ??D_LPC_isp_a_conversion_14
+//  348         {
+//  349           /* a[i] = 0.5*(f1[i] + f2[i]); */
+//  350           t0 = f1[i] + f2[i];          /* f1[i] + f2[i]             */
+//  351           a[i] = (Word16)((t0 + r) >> q_sug); /* from Q23 to Q12 and * 0.5 */
+??D_LPC_isp_a_conversion_15:
+        ADD      R0,SP,#+48
+        LDR      R0,[R0, +R10, LSL #+2]
+        ADD      R1,SP,#+8
+        LDR      R1,[R1, +R10, LSL #+2]
+        ADD      R2,R4,R10, LSL #+1
+        ADD      R3,R1,R9
+        ADD      R3,R0,R3
+        ASR      R3,R3,R8
+        STRH     R3,[R2, #+0]
+//  352           
+//  353           /* a[j] = 0.5*(f1[i] - f2[i]); */
+//  354           t0 = f1[i] - f2[i];          /* f1[i] - f2[i]             */
+//  355           a[j] = (Word16)((t0 + r) >> q_sug); /* from Q23 to Q12 and * 0.5 */
+        ADD      R2,R4,R11, LSL #+1
+        SUB      R0,R0,R1
+        ADD      R0,R9,R0
+        ASR      R0,R0,R8
+        STRH     R0,[R2, #+0]
+//  356         }
+        ADD      R10,R10,#+1
+        SUB      R11,R11,#+1
+??D_LPC_isp_a_conversion_13:
+        CMP      R10,R6
+        BLT      ??D_LPC_isp_a_conversion_15
+//  357       a[0] = (Word16)(a[0] >> q);             
+??D_LPC_isp_a_conversion_14:
+        LDRSH    R0,[R4, #+0]
+        ASR      R0,R0,R7
+        STRH     R0,[R4, #+0]
+        B        ??D_LPC_isp_a_conversion_16
+//  358     } 
+//  359     else 
+//  360     {
+//  361       q_sug = 12;
+??D_LPC_isp_a_conversion_12:
+        MOV      R8,#+12
+//  362       r = 1 << (q_sug - 1);
+        MOV      R9,#+2048
+//  363       q     = 0;                          
+        MOV      R7,#+0
+//  364     }
+//  365    
+//  366    /* a[NC] = 0.5*f1[NC]*(1.0 + isp[M-1]); */
+//  367    D_UTIL_l_extract(f1[nc], &hi, &lo);
+??D_LPC_isp_a_conversion_16:
+        ADD      R0,SP,#+48
+        ADD      R10,R0,R6, LSL #+2
+        LDR      R0,[R10, #+0]
+        ADD      R2,SP,#+2
+        MOV      R1,SP
+        _BLF     D_UTIL_l_extract,??D_UTIL_l_extract??rA
+//  368    t0 = D_UTIL_mpy_32_16(hi, lo, isp[m - 1]);
+        LDR      R0,[SP, #+4]
+        LDRSH    R1,[SP, #+2]
+        LDRSH    R2,[R0, #-2]
+        LDRSH    R0,[SP, #+0]
+        _BLF     D_UTIL_mpy_32_16,??D_UTIL_mpy_32_16??rA
+//  369    t0 = f1[nc] + t0;
+//  370    a[nc] = (Word16)((t0 + r) >> q_sug);  /* from Q23 to Q12 and * 0.5 */
+        LDR      R2,[R10, #+0]
+        ADD      R1,R4,R6, LSL #+1
+        ADD      R0,R0,R2
+        ADD      R0,R9,R0
+        ASR      R0,R0,R8
+        STRH     R0,[R1, #+0]
+//  371 
+//  372    /* a[m] = isp[m-1]; */
+//  373    a[m] = (Word16)((isp[m - 1] >> (2 + q)) + 1); /* from Q15 to Q12 */
+        LDR      R1,[SP, #+4]
+        ADD      R0,R4,R5, LSL #+1
+        LDRSH    R1,[R1, #-2]
+        ADD      R2,R7,#+2
+        MOV      R3,#+1
+        ADD      R1,R3,R1, ASR R2
+        STRH     R1,[R0, #+0]
+//  374    a[m] = (Word16)(a[m] >> 1);
+        LDRSH    R1,[R0, #+0]
+        ASR      R1,R1,#+1
+        STRH     R1,[R0, #+0]
+//  375 
+//  376    return;
+        ADD      SP,SP,#+96
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        CFI EndBlock cfiBlock7
+//  377 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_LPC_a_weight??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE D_LPC_a_weight
+//  378 
+//  379 
+//  380 /*
+//  381  * D_LPC_a_weight
+//  382  *
+//  383  * Parameters:
+//  384  *    a              I: LP filter coefficients
+//  385  *    ap             O: weighted LP filter coefficients
+//  386  *    gamma          I: weighting factor
+//  387  *    m              I: order of LP filter
+//  388  *
+//  389  * Function:
+//  390  *    Weighting of LP filter coefficients, ap[i] = a[i] * (gamma^i).
+//  391  *
+//  392  * Returns:
+//  393  *    void
+//  394  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function D_LPC_a_weight
+        ARM
+//  395 void D_LPC_a_weight(Word16 a[], Word16 ap[], Word16 gamma, Word16 m)
+//  396 {
+D_LPC_a_weight:
+        PUSH     {R4-R6}
+        CFI R6 Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+//  397    Word32 i, fac;
+//  398 
+//  399    ap[0] = a[0];
+        LDRSH    R4,[R0, #+0]
+//  400    fac = gamma;
+//  401 
+//  402    for(i = 1; i < m; i++)
+        MOV      R12,R3
+        MOV      R5,R2
+        STRH     R4,[R1, #+0]
+        MOV      R4,#+1
+        CMP      R3,#+2
+        BGE      ??D_LPC_a_weight_0
+        B        ??D_LPC_a_weight_1
+//  403    {
+//  404       ap[i] = (Word16)(((a[i] * fac) + 0x4000) >> 15);
+??D_LPC_a_weight_2:
+        ADD      R6,R0,R4, LSL #+1
+        LDRSH    R6,[R6, #+0]
+        ADD      R3,R1,R4, LSL #+1
+//  405       fac = ((fac * gamma)  + 0x4000) >> 15;
+//  406    }
+        ADD      R4,R4,#+1
+        MUL      R6,R5,R6
+        ADD      R6,R6,#+16384
+        ASR      R6,R6,#+15
+        STRH     R6,[R3, #+0]
+        MUL      R3,R2,R5
+        ADD      R3,R3,#+16384
+        ASR      R5,R3,#+15
+??D_LPC_a_weight_0:
+        CMP      R4,R12
+        BLT      ??D_LPC_a_weight_2
+//  407 
+//  408    ap[m] = (Word16)(((a[m] * fac) + 0x4000) >> 15);
+??D_LPC_a_weight_1:
+        ADD      R0,R0,R12, LSL #+1
+        LDRSH    R0,[R0, #+0]
+        ADD      R1,R1,R12, LSL #+1
+        MUL      R0,R5,R0
+        ADD      R0,R0,#+16384
+        ASR      R0,R0,#+15
+        STRH     R0,[R1, #+0]
+//  409 
+//  410    return;
+        POP      {R4-R6}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        CFI EndBlock cfiBlock9
+//  411 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_LPC_isf_2s3s_decode??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock10
+        REQUIRE D_LPC_isf_2s3s_decode
+//  412 
+//  413 
+//  414 /*
+//  415  * D_LPC_isf_2s3s_decode
+//  416  *
+//  417  * Parameters:
+//  418  *    indice            I: quantisation indices
+//  419  *    isf_q             O: quantised ISFs in the cosine domain
+//  420  *    past_isfq       I/O: past ISF quantizer
+//  421  *    isfold            I: past quantised ISF
+//  422  *    isf_buf           O: isf buffer
+//  423  *    bfi               I: Bad frame indicator
+//  424  *
+//  425  * Function:
+//  426  *    Decoding of ISF parameters.
+//  427  *
+//  428  * Returns:
+//  429  *    void
+//  430  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock11 Using cfiCommon1
+        CFI Function D_LPC_isf_2s3s_decode
+        ARM
+//  431 void D_LPC_isf_2s3s_decode(Word16 *indice, Word16 *isf_q, Word16 *past_isfq,
+//  432                            Word16 *isfold, Word16 *isf_buf, Word16 bfi)
+//  433 {
+D_LPC_isf_2s3s_decode:
+        PUSH     {R4-R9}
+        CFI R9 Frame(CFA, -4)
+        CFI R8 Frame(CFA, -8)
+        CFI R7 Frame(CFA, -12)
+        CFI R6 Frame(CFA, -16)
+        CFI R5 Frame(CFA, -20)
+        CFI R4 Frame(CFA, -24)
+        CFI CFA R13+24
+//  434 
+//  435    Word32 ref_isf[M];
+//  436    Word32 L_tmp, i, j;
+//  437    Word16 tmp;
+//  438 
+//  439    if(bfi == 0) /* Good frame */
+        LDR      R4,??DataTable4  ;; D_ROM_mean_isf
+        SUB      SP,SP,#+64
+        CFI CFA R13+88
+        LDRSH    R5,[SP, #+92]
+        LDR      R12,[SP, #+88]
+        CMP      R5,#+0
+        BNE      ??D_LPC_isf_2s3s_decode_0
+//  440    {
+//  441       for(i = 0; i < 9; i++)
+        LDR      R7,??DataTable5  ;; D_ROM_dico1_isf
+        MOV      R3,#+0
+//  442       {
+//  443          isf_q[i] = D_ROM_dico1_isf[indice[0] * 9 + i];
+??D_LPC_isf_2s3s_decode_1:
+        LDRSH    R6,[R0, #+0]
+        ADD      R5,R1,R3, LSL #+1
+        ADD      R6,R6,R6, LSL #+3
+        ADD      R6,R3,R6
+        ADD      R6,R7,R6, LSL #+1
+        LDRSH    R6,[R6, #+0]
+//  444       }
+        ADD      R3,R3,#+1
+        CMP      R3,#+9
+        STRH     R6,[R5, #+0]
+        BLT      ??D_LPC_isf_2s3s_decode_1
+//  445 
+//  446       for(i = 0; i < 7; i++)
+        LDR      R7,??DataTable6  ;; D_ROM_dico2_isf
+        MOV      R3,#+0
+//  447       {
+//  448          isf_q[i + 9] = D_ROM_dico2_isf[indice[1] * 7 + i];
+??D_LPC_isf_2s3s_decode_2:
+        LDRSH    R6,[R0, #+2]
+        ADD      R5,R1,R3, LSL #+1
+        RSB      R6,R6,R6, LSL #+3
+        ADD      R6,R3,R6
+        ADD      R6,R7,R6, LSL #+1
+        LDRSH    R6,[R6, #+0]
+//  449       }
+        ADD      R3,R3,#+1
+        CMP      R3,#+7
+        STRH     R6,[R5, #+18]
+        BLT      ??D_LPC_isf_2s3s_decode_2
+//  450 
+//  451       for(i = 0; i < 5; i++)
+        LDR      R8,??D_LPC_isf_2s3s_decode_3  ;; D_ROM_dico21_isf_36b
+        MOV      R3,#+0
+//  452       {
+//  453          isf_q[i] =
+//  454             (Word16)(isf_q[i] + D_ROM_dico21_isf_36b[indice[2] * 5 + i]);
+??D_LPC_isf_2s3s_decode_4:
+        LDRSH    R7,[R0, #+4]
+        ADD      R5,R1,R3, LSL #+1
+        LDRSH    R6,[R5, #+0]
+        ADD      R7,R7,R7, LSL #+2
+        ADD      R7,R3,R7
+        ADD      R7,R8,R7, LSL #+1
+        LDRSH    R7,[R7, #+0]
+//  455       }
+        ADD      R3,R3,#+1
+        CMP      R3,#+5
+        ADD      R6,R7,R6
+        STRH     R6,[R5, #+0]
+        BLT      ??D_LPC_isf_2s3s_decode_4
+//  456 
+//  457       for(i = 0; i < 4; i++)
+        LDR      R8,??D_LPC_isf_2s3s_decode_3+0x4  ;; D_ROM_dico22_isf_36b
+        MOV      R3,#+0
+//  458       {
+//  459          isf_q[i + 5] =
+//  460             (Word16)(isf_q[i + 5] + D_ROM_dico22_isf_36b[indice[3] * 4 + i]);
+??D_LPC_isf_2s3s_decode_5:
+        LDRSH    R7,[R0, #+6]
+        ADD      R5,R1,R3, LSL #+1
+        LDRSH    R6,[R5, #+10]
+        ADD      R7,R3,R7, LSL #+2
+        ADD      R7,R8,R7, LSL #+1
+        LDRSH    R7,[R7, #+0]
+//  461       }
+        ADD      R3,R3,#+1
+        CMP      R3,#+4
+        ADD      R6,R7,R6
+        STRH     R6,[R5, #+10]
+        BLT      ??D_LPC_isf_2s3s_decode_5
+//  462 
+//  463       for(i = 0; i < 7; i++)
+        LDR      R8,??D_LPC_isf_2s3s_decode_3+0x8  ;; D_ROM_dico23_isf_36b
+        MOV      R3,#+0
+//  464       {
+//  465          isf_q[i + 9] =
+//  466             (Word16)(isf_q[i + 9] + D_ROM_dico23_isf_36b[indice[4] * 7 + i]);
+??D_LPC_isf_2s3s_decode_6:
+        LDRSH    R7,[R0, #+8]
+        ADD      R5,R1,R3, LSL #+1
+        LDRSH    R6,[R5, #+18]
+        RSB      R7,R7,R7, LSL #+3
+        ADD      R7,R3,R7
+        ADD      R7,R8,R7, LSL #+1
+        LDRSH    R7,[R7, #+0]
+//  467       }
+        ADD      R3,R3,#+1
+        CMP      R3,#+7
+        ADD      R6,R7,R6
+        STRH     R6,[R5, #+18]
+        BLT      ??D_LPC_isf_2s3s_decode_6
+//  468 
+//  469       for(i = 0; i < ORDER; i++)
+        MOV      R0,#+0
+        MOV      R9,#+171
+        ORR      R9,R9,#0x2A00
+//  470       {
+//  471          tmp = isf_q[i];
+//  472          isf_q[i] =
+//  473             (Word16)((tmp + D_ROM_mean_isf[i]) + ((MU * past_isfq[i]) >> 15));
+??D_LPC_isf_2s3s_decode_7:
+        ADD      R6,R2,R0, LSL #+1
+        LDRSH    R8,[R6, #+0]
+        ADD      R3,R1,R0, LSL #+1
+        LDRSH    R5,[R3, #+0]
+        ADD      R7,R4,R0, LSL #+1
+        LDRSH    R7,[R7, #+0]
+        MUL      R8,R9,R8
+        ADD      R7,R7,R5
+        ADD      R7,R7,R8, ASR #+15
+        STRH     R7,[R3, #+0]
+//  474          past_isfq[i] = tmp;
+        STRH     R5,[R6, #+0]
+//  475       }
+        ADD      R0,R0,#+1
+        CMP      R0,#+16
+        BLT      ??D_LPC_isf_2s3s_decode_7
+//  476 
+//  477       for(i = 0; i < M; i++)
+        MOV      R3,#+0
+//  478       {
+//  479          for(j = (L_MEANBUF - 1); j > 0; j--)
+??D_LPC_isf_2s3s_decode_8:
+        MOV      R0,#+2
+??D_LPC_isf_2s3s_decode_9:
+        ADD      R2,R3,R0, LSL #+4
+        ADD      R2,R12,R2, LSL #+1
+        LDRSH    R4,[R2, #-32]
+//  480          {
+//  481             isf_buf[j * M + i] = isf_buf[(j - 1) * M + i];
+        SUB      R0,R0,#+1
+        CMP      R0,#+1
+        STRH     R4,[R2, #+0]
+        BGE      ??D_LPC_isf_2s3s_decode_9
+//  482          }
+//  483          isf_buf[i] = isf_q[i];
+        ADD      R2,R1,R3, LSL #+1
+        LDRSH    R2,[R2, #+0]
+        ADD      R0,R12,R3, LSL #+1
+//  484       }
+        ADD      R3,R3,#+1
+        STRH     R2,[R0, #+0]
+        CMP      R3,#+16
+        BGE      ??D_LPC_isf_2s3s_decode_10
+        B        ??D_LPC_isf_2s3s_decode_8
+//  485 
+//  486    }
+//  487    else
+//  488    {   /* bad frame */
+//  489 
+//  490       for(i = 0; i < M; i++)
+??D_LPC_isf_2s3s_decode_0:
+        MOV      R5,#+0
+//  491       {
+//  492          L_tmp = D_ROM_mean_isf[i];
+??D_LPC_isf_2s3s_decode_11:
+        ADD      R0,R4,R5, LSL #+1
+        LDRSH    R6,[R0, #+0]
+//  493 
+//  494          for(j = 0; j < L_MEANBUF; j++)
+        MOV      R0,#+0
+//  495          {
+//  496             L_tmp = L_tmp + isf_buf[j * M + i];
+??D_LPC_isf_2s3s_decode_12:
+        ADD      R7,R5,R0, LSL #+4
+        ADD      R7,R12,R7, LSL #+1
+        LDRSH    R7,[R7, #+0]
+//  497          }
+        ADD      R0,R0,#+1
+        CMP      R0,#+3
+        ADD      R6,R7,R6
+        BLT      ??D_LPC_isf_2s3s_decode_12
+//  498          ref_isf[i] = (L_tmp + 0x1) >> 2;
+        MOV      R0,SP
+        ADD      R6,R6,#+1
+        ASR      R6,R6,#+2
+        STR      R6,[R0, +R5, LSL #+2]
+//  499       }
+        ADD      R5,R5,#+1
+        CMP      R5,#+16
+        BLT      ??D_LPC_isf_2s3s_decode_11
+//  500 
+//  501       /* use the past ISFs slightly shifted towards their mean */
+//  502       for(i = 0; i < ORDER; i++)
+        MOV      R0,#+0
+        MOV      R7,#+205
+        ORR      R7,R7,#0xC00
+//  503       {
+//  504          isf_q[i] = (Word16)((((ALPHA * isfold[i]) >> 15) +
+//  505             ((ONE_ALPHA * ref_isf[i]) >> 15)));
+??D_LPC_isf_2s3s_decode_13:
+        ADD      R5,R3,R0, LSL #+1
+        LDRSH    R5,[R5, #+0]
+        MOV      R6,#+51
+        ORR      R6,R6,#0x7300
+        MUL      R5,R6,R5
+        MOV      R6,SP
+        LDR      R6,[R6, +R0, LSL #+2]
+        ADD      R4,R1,R0, LSL #+1
+        MUL      R6,R7,R6
+//  506       }
+        ADD      R0,R0,#+1
+        ASR      R6,R6,#+15
+        ADD      R5,R6,R5, ASR #+15
+        STRH     R5,[R4, #+0]
+        CMP      R0,#+16
+        BLT      ??D_LPC_isf_2s3s_decode_13
+//  507 
+//  508       /* estimate past quantized residual to be used in next frame */
+//  509       for(i = 0; i < ORDER; i++)
+        MOV      R3,#+0
+        MOV      R6,#+171
+        ORR      R6,R6,#0x2A00
+//  510       {
+//  511          /* predicted ISF */
+//  512          L_tmp = ref_isf[i] + ((past_isfq[i] * MU) >> 15);
+//  513          /* past_isfq[i] *= 0.5 */
+//  514          past_isfq[i] = (Word16)((isf_q[i] - L_tmp) >> 1);
+??D_LPC_isf_2s3s_decode_14:
+        ADD      R4,R1,R3, LSL #+1
+        LDRSH    R4,[R4, #+0]
+        MOV      R5,SP
+        LDR      R5,[R5, +R3, LSL #+2]
+        ADD      R0,R2,R3, LSL #+1
+        SUB      R4,R4,R5
+        LDRSH    R5,[R0, #+0]
+//  515       }
+        ADD      R3,R3,#+1
+        CMP      R3,#+16
+        MUL      R5,R6,R5
+        SUB      R4,R4,R5, ASR #+15
+        ASR      R4,R4,#+1
+        STRH     R4,[R0, #+0]
+        BLT      ??D_LPC_isf_2s3s_decode_14
+//  516    }
+//  517 
+//  518    D_LPC_isf_reorder(isf_q, ISF_GAP, ORDER);
+??D_LPC_isf_2s3s_decode_10:
+        MOV      R0,#+128
+        MOV      R2,#+0
+??D_LPC_isf_2s3s_decode_15:
+        ADD      R3,R1,R2, LSL #+1
+        LDRSH    R4,[R3, #+0]
+        ADD      R2,R2,#+1
+        CMP      R4,R0
+        STRHLT   R0,[R3, #+0]
+        LDRSH    R0,[R3, #+0]
+        CMP      R2,#+15
+        ADD      R0,R0,#+128
+        BLT      ??D_LPC_isf_2s3s_decode_15
+//  519 
+//  520    return;
+        ADD      SP,SP,#+64
+        CFI CFA R13+24
+        POP      {R4-R9}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        DATA
+??D_LPC_isf_2s3s_decode_3:
+        DC32     D_ROM_dico21_isf_36b
+        DC32     D_ROM_dico22_isf_36b
+        DC32     D_ROM_dico23_isf_36b
+        CFI EndBlock cfiBlock11
+//  521 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock12 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_LPC_isf_2s5s_decode??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock12
+        REQUIRE D_LPC_isf_2s5s_decode
+//  522 
+//  523 
+//  524 /*
+//  525  * D_LPC_isf_2s5s_decode
+//  526  *
+//  527  * Parameters:
+//  528  *    indice            I: quantization indices
+//  529  *    isf_q             O: quantized ISFs in the cosine domain
+//  530  *    past_isfq       I/O: past ISF quantizer
+//  531  *    isfold            I: past quantized ISF
+//  532  *    isf_buf           O: isf buffer
+//  533  *    bfi               I: Bad frame indicator
+//  534  *
+//  535  * Function:
+//  536  *    Decoding of ISF parameters.
+//  537  *
+//  538  * Returns:
+//  539  *    void
+//  540  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock13 Using cfiCommon1
+        CFI Function D_LPC_isf_2s5s_decode
+        ARM
+//  541 void D_LPC_isf_2s5s_decode(Word16 *indice, Word16 *isf_q, Word16 *past_isfq,
+//  542                            Word16 *isfold, Word16 *isf_buf, Word16 bfi)
+//  543 {
+D_LPC_isf_2s5s_decode:
+        PUSH     {R4-R9}
+        CFI R9 Frame(CFA, -4)
+        CFI R8 Frame(CFA, -8)
+        CFI R7 Frame(CFA, -12)
+        CFI R6 Frame(CFA, -16)
+        CFI R5 Frame(CFA, -20)
+        CFI R4 Frame(CFA, -24)
+        CFI CFA R13+24
+//  544    Word32 ref_isf[M];
+//  545    Word32 i, j, L_tmp;
+//  546    Word16 tmp;
+//  547 
+//  548    if(bfi == 0) /* Good frame */
+        LDR      R4,??DataTable4  ;; D_ROM_mean_isf
+        SUB      SP,SP,#+64
+        CFI CFA R13+88
+        LDRSH    R5,[SP, #+92]
+        LDR      R12,[SP, #+88]
+        CMP      R5,#+0
+        BNE      ??D_LPC_isf_2s5s_decode_0
+//  549    {
+//  550       for(i = 0; i < 9; i++)
+        LDR      R7,??DataTable5  ;; D_ROM_dico1_isf
+        MOV      R3,#+0
+//  551       {
+//  552          isf_q[i] = D_ROM_dico1_isf[indice[0] * 9 + i];
+??D_LPC_isf_2s5s_decode_1:
+        LDRSH    R6,[R0, #+0]
+        ADD      R5,R1,R3, LSL #+1
+        ADD      R6,R6,R6, LSL #+3
+        ADD      R6,R3,R6
+        ADD      R6,R7,R6, LSL #+1
+        LDRSH    R6,[R6, #+0]
+//  553       }
+        ADD      R3,R3,#+1
+        CMP      R3,#+9
+        STRH     R6,[R5, #+0]
+        BLT      ??D_LPC_isf_2s5s_decode_1
+//  554 
+//  555       for(i = 0; i < 7; i++)
+        LDR      R7,??DataTable6  ;; D_ROM_dico2_isf
+        MOV      R3,#+0
+//  556       {
+//  557          isf_q[i + 9] = D_ROM_dico2_isf[indice[1] * 7 + i];
+??D_LPC_isf_2s5s_decode_2:
+        LDRSH    R6,[R0, #+2]
+        ADD      R5,R1,R3, LSL #+1
+        RSB      R6,R6,R6, LSL #+3
+        ADD      R6,R3,R6
+        ADD      R6,R7,R6, LSL #+1
+        LDRSH    R6,[R6, #+0]
+//  558       }
+        ADD      R3,R3,#+1
+        CMP      R3,#+7
+        STRH     R6,[R5, #+18]
+        BLT      ??D_LPC_isf_2s5s_decode_2
+//  559 
+//  560       for(i = 0; i < 3; i++)
+        LDR      R8,??D_LPC_isf_2s5s_decode_3  ;; D_ROM_dico21_isf
+        MOV      R3,#+0
+//  561       {
+//  562          isf_q[i] = (Word16)(isf_q[i] + D_ROM_dico21_isf[indice[2] * 3 + i]);
+??D_LPC_isf_2s5s_decode_4:
+        LDRSH    R7,[R0, #+4]
+        ADD      R5,R1,R3, LSL #+1
+        LDRSH    R6,[R5, #+0]
+        ADD      R7,R7,R7, LSL #+1
+        ADD      R7,R3,R7
+        ADD      R7,R8,R7, LSL #+1
+        LDRSH    R7,[R7, #+0]
+//  563       }
+        ADD      R3,R3,#+1
+        CMP      R3,#+3
+        ADD      R6,R7,R6
+        STRH     R6,[R5, #+0]
+        BLT      ??D_LPC_isf_2s5s_decode_4
+//  564 
+//  565       for(i = 0; i < 3; i++)
+        LDR      R8,??D_LPC_isf_2s5s_decode_3+0x4  ;; D_ROM_dico22_isf
+        MOV      R3,#+0
+//  566       {
+//  567          isf_q[i + 3] =
+//  568             (Word16)(isf_q[i + 3] + D_ROM_dico22_isf[indice[3] * 3 + i]);
+??D_LPC_isf_2s5s_decode_5:
+        LDRSH    R7,[R0, #+6]
+        ADD      R5,R1,R3, LSL #+1
+        LDRSH    R6,[R5, #+6]
+        ADD      R7,R7,R7, LSL #+1
+        ADD      R7,R3,R7
+        ADD      R7,R8,R7, LSL #+1
+        LDRSH    R7,[R7, #+0]
+//  569       }
+        ADD      R3,R3,#+1
+        CMP      R3,#+3
+        ADD      R6,R7,R6
+        STRH     R6,[R5, #+6]
+        BLT      ??D_LPC_isf_2s5s_decode_5
+//  570 
+//  571       for(i = 0; i < 3; i++)
+        LDR      R8,??D_LPC_isf_2s5s_decode_3+0x8  ;; D_ROM_dico23_isf
+        MOV      R3,#+0
+//  572       {
+//  573          isf_q[i + 6] =
+//  574             (Word16)(isf_q[i + 6] + D_ROM_dico23_isf[indice[4] * 3 + i]);
+??D_LPC_isf_2s5s_decode_6:
+        LDRSH    R7,[R0, #+8]
+        ADD      R5,R1,R3, LSL #+1
+        LDRSH    R6,[R5, #+12]
+        ADD      R7,R7,R7, LSL #+1
+        ADD      R7,R3,R7
+        ADD      R7,R8,R7, LSL #+1
+        LDRSH    R7,[R7, #+0]
+//  575       }
+        ADD      R3,R3,#+1
+        CMP      R3,#+3
+        ADD      R6,R7,R6
+        STRH     R6,[R5, #+12]
+        BLT      ??D_LPC_isf_2s5s_decode_6
+//  576 
+//  577       for(i = 0; i < 3; i++)
+        LDR      R8,??D_LPC_isf_2s5s_decode_3+0xC  ;; D_ROM_dico24_isf
+        MOV      R3,#+0
+//  578       {
+//  579          isf_q[i + 9] =
+//  580             (Word16)(isf_q[i + 9] + D_ROM_dico24_isf[indice[5] * 3 + i]);
+??D_LPC_isf_2s5s_decode_7:
+        LDRSH    R7,[R0, #+10]
+        ADD      R5,R1,R3, LSL #+1
+        LDRSH    R6,[R5, #+18]
+        ADD      R7,R7,R7, LSL #+1
+        ADD      R7,R3,R7
+        ADD      R7,R8,R7, LSL #+1
+        LDRSH    R7,[R7, #+0]
+//  581       }
+        ADD      R3,R3,#+1
+        CMP      R3,#+3
+        ADD      R6,R7,R6
+        STRH     R6,[R5, #+18]
+        BLT      ??D_LPC_isf_2s5s_decode_7
+//  582 
+//  583       for(i = 0; i < 4; i++)
+        LDR      R8,??D_LPC_isf_2s5s_decode_3+0x10  ;; D_ROM_dico25_isf
+        MOV      R3,#+0
+//  584       {
+//  585          isf_q[i + 12] =
+//  586             (Word16)(isf_q[i + 12] + D_ROM_dico25_isf[indice[6] * 4 + i]);
+??D_LPC_isf_2s5s_decode_8:
+        LDRSH    R7,[R0, #+12]
+        ADD      R5,R1,R3, LSL #+1
+        LDRSH    R6,[R5, #+24]
+        ADD      R7,R3,R7, LSL #+2
+        ADD      R7,R8,R7, LSL #+1
+        LDRSH    R7,[R7, #+0]
+//  587       }
+        ADD      R3,R3,#+1
+        CMP      R3,#+4
+        ADD      R6,R7,R6
+        STRH     R6,[R5, #+24]
+        BLT      ??D_LPC_isf_2s5s_decode_8
+//  588 
+//  589       for(i = 0; i < ORDER; i++)
+        MOV      R0,#+0
+        MOV      R9,#+171
+        ORR      R9,R9,#0x2A00
+//  590       {
+//  591          tmp = isf_q[i];
+//  592          isf_q[i] =
+//  593             (Word16)((tmp + D_ROM_mean_isf[i]) + ((MU * past_isfq[i]) >> 15));
+??D_LPC_isf_2s5s_decode_9:
+        ADD      R6,R2,R0, LSL #+1
+        LDRSH    R8,[R6, #+0]
+        ADD      R3,R1,R0, LSL #+1
+        LDRSH    R5,[R3, #+0]
+        ADD      R7,R4,R0, LSL #+1
+        LDRSH    R7,[R7, #+0]
+        MUL      R8,R9,R8
+        ADD      R7,R7,R5
+        ADD      R7,R7,R8, ASR #+15
+        STRH     R7,[R3, #+0]
+//  594          past_isfq[i] = tmp;
+        STRH     R5,[R6, #+0]
+//  595       }
+        ADD      R0,R0,#+1
+        CMP      R0,#+16
+        BLT      ??D_LPC_isf_2s5s_decode_9
+//  596 
+//  597 
+//  598       for(i = 0; i < M; i++)
+        MOV      R3,#+0
+//  599       {
+//  600          for(j = (L_MEANBUF - 1); j > 0; j--)
+??D_LPC_isf_2s5s_decode_10:
+        MOV      R0,#+2
+??D_LPC_isf_2s5s_decode_11:
+        ADD      R2,R3,R0, LSL #+4
+        ADD      R2,R12,R2, LSL #+1
+        LDRSH    R4,[R2, #-32]
+//  601          {
+//  602             isf_buf[j * M + i] = isf_buf[(j - 1) * M + i];
+        SUB      R0,R0,#+1
+        CMP      R0,#+1
+        STRH     R4,[R2, #+0]
+        BGE      ??D_LPC_isf_2s5s_decode_11
+//  603          }
+//  604          isf_buf[i] = isf_q[i];
+        ADD      R2,R1,R3, LSL #+1
+        LDRSH    R2,[R2, #+0]
+        ADD      R0,R12,R3, LSL #+1
+//  605       }
+        ADD      R3,R3,#+1
+        STRH     R2,[R0, #+0]
+        CMP      R3,#+16
+        BGE      ??D_LPC_isf_2s5s_decode_12
+        B        ??D_LPC_isf_2s5s_decode_10
+//  606 
+//  607    }
+//  608    else
+//  609    {   /* bad frame */
+//  610 
+//  611       for(i = 0; i < M; i++)
+??D_LPC_isf_2s5s_decode_0:
+        MOV      R5,#+0
+//  612       {
+//  613          L_tmp = D_ROM_mean_isf[i];
+??D_LPC_isf_2s5s_decode_13:
+        ADD      R0,R4,R5, LSL #+1
+        LDRSH    R6,[R0, #+0]
+//  614 
+//  615          for(j = 0; j < L_MEANBUF; j++)
+        MOV      R0,#+0
+//  616          {
+//  617             L_tmp = L_tmp + isf_buf[j * M + i];
+??D_LPC_isf_2s5s_decode_14:
+        ADD      R7,R5,R0, LSL #+4
+        ADD      R7,R12,R7, LSL #+1
+        LDRSH    R7,[R7, #+0]
+//  618          }
+        ADD      R0,R0,#+1
+        CMP      R0,#+3
+        ADD      R6,R7,R6
+        BLT      ??D_LPC_isf_2s5s_decode_14
+//  619 
+//  620          ref_isf[i] = (L_tmp + 0x1) >> 2;
+        MOV      R0,SP
+        ADD      R6,R6,#+1
+        ASR      R6,R6,#+2
+        STR      R6,[R0, +R5, LSL #+2]
+//  621       }
+        ADD      R5,R5,#+1
+        CMP      R5,#+16
+        BLT      ??D_LPC_isf_2s5s_decode_13
+//  622 
+//  623       /* use the past ISFs slightly shifted towards their mean */
+//  624       for(i = 0; i < ORDER; i++)
+        MOV      R0,#+0
+        MOV      R7,#+205
+        ORR      R7,R7,#0xC00
+//  625       {
+//  626          isf_q[i] = (Word16)(((ALPHA * isfold[i]) >> 15) +
+//  627             ((ONE_ALPHA * ref_isf[i]) >> 15));
+??D_LPC_isf_2s5s_decode_15:
+        ADD      R5,R3,R0, LSL #+1
+        LDRSH    R5,[R5, #+0]
+        MOV      R6,#+51
+        ORR      R6,R6,#0x7300
+        MUL      R5,R6,R5
+        MOV      R6,SP
+        LDR      R6,[R6, +R0, LSL #+2]
+        ADD      R4,R1,R0, LSL #+1
+        MUL      R6,R7,R6
+//  628       }
+        ADD      R0,R0,#+1
+        ASR      R6,R6,#+15
+        ADD      R5,R6,R5, ASR #+15
+        STRH     R5,[R4, #+0]
+        CMP      R0,#+16
+        BLT      ??D_LPC_isf_2s5s_decode_15
+//  629 
+//  630       /* estimate past quantized residual to be used in next frame */
+//  631       for(i = 0; i < ORDER; i++)
+        MOV      R3,#+0
+        MOV      R6,#+171
+        ORR      R6,R6,#0x2A00
+//  632       {
+//  633          /* predicted ISF */
+//  634          L_tmp = ref_isf[i] + ((past_isfq[i] * MU) >> 15);
+//  635          /* past_isfq[i] *= 0.5 */
+//  636          past_isfq[i] = (Word16)((isf_q[i] - L_tmp) >> 1);
+??D_LPC_isf_2s5s_decode_16:
+        ADD      R4,R1,R3, LSL #+1
+        LDRSH    R4,[R4, #+0]
+        MOV      R5,SP
+        LDR      R5,[R5, +R3, LSL #+2]
+        ADD      R0,R2,R3, LSL #+1
+        SUB      R4,R4,R5
+        LDRSH    R5,[R0, #+0]
+//  637       }
+        ADD      R3,R3,#+1
+        CMP      R3,#+16
+        MUL      R5,R6,R5
+        SUB      R4,R4,R5, ASR #+15
+        ASR      R4,R4,#+1
+        STRH     R4,[R0, #+0]
+        BLT      ??D_LPC_isf_2s5s_decode_16
+//  638    }
+//  639 
+//  640    D_LPC_isf_reorder(isf_q, ISF_GAP, ORDER);
+??D_LPC_isf_2s5s_decode_12:
+        MOV      R0,#+128
+        MOV      R2,#+0
+??D_LPC_isf_2s5s_decode_17:
+        ADD      R3,R1,R2, LSL #+1
+        LDRSH    R4,[R3, #+0]
+        ADD      R2,R2,#+1
+        CMP      R4,R0
+        STRHLT   R0,[R3, #+0]
+        LDRSH    R0,[R3, #+0]
+        CMP      R2,#+15
+        ADD      R0,R0,#+128
+        BLT      ??D_LPC_isf_2s5s_decode_17
+//  641 
+//  642    return;
+        ADD      SP,SP,#+64
+        CFI CFA R13+24
+        POP      {R4-R9}
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI CFA R13+0
+        BX       LR               ;; return
+        DATA
+??D_LPC_isf_2s5s_decode_3:
+        DC32     D_ROM_dico21_isf
+        DC32     D_ROM_dico22_isf
+        DC32     D_ROM_dico23_isf
+        DC32     D_ROM_dico24_isf
+        DC32     D_ROM_dico25_isf
+        CFI EndBlock cfiBlock13
+//  643 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable4:
+        DC32     D_ROM_mean_isf
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable5:
+        DC32     D_ROM_dico1_isf
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable6:
+        DC32     D_ROM_dico2_isf
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock14 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_LPC_int_isp_find??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock14
+        REQUIRE D_LPC_int_isp_find
+//  644 
+//  645 
+//  646 /*
+//  647  * D_LPC_int_isp_find
+//  648  *
+//  649  * Parameters:
+//  650  *    isp_old           I: isps from past frame
+//  651  *    isp_new           I: isps from present frame
+//  652  *    frac              I: (Q15) fraction for 3 first subfr
+//  653  *    Az                O: LP coefficients in 4 subframes
+//  654  *
+//  655  * Function:
+//  656  *    Find the interpolated ISP parameters for all subframes.
+//  657  *
+//  658  * Returns:
+//  659  *    void
+//  660  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock15 Using cfiCommon1
+        CFI Function D_LPC_int_isp_find
+        ARM
+//  661 void D_LPC_int_isp_find(Word16 isp_old[], Word16 isp_new[],
+//  662                         const Word16 frac[], Word16 Az[])
+//  663 {
+D_LPC_int_isp_find:
+        PUSH     {R4-R8,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R8 Frame(CFA, -8)
+        CFI R7 Frame(CFA, -12)
+        CFI R6 Frame(CFA, -16)
+        CFI R5 Frame(CFA, -20)
+        CFI R4 Frame(CFA, -24)
+        CFI CFA R13+24
+        SUB      SP,SP,#+32
+        CFI CFA R13+56
+        MOV      R4,R0
+        MOV      R5,R1
+        MOV      R6,R2
+        MOV      R7,R3
+//  664    Word32 tmp, i, k, fac_old, fac_new;
+//  665    Word16 isp[M];
+//  666 
+//  667    for(k = 0; k < 3; k++)
+        MOV      R8,#+0
+//  668    {
+//  669       fac_new = frac[k];
+??D_LPC_int_isp_find_0:
+        ADD      R0,R6,R8, LSL #+1
+        LDRSH    R1,[R0, #+0]
+//  670       fac_old = (32767 - fac_new) + 1;   /* 1.0 - fac_new */
+//  671 
+//  672       for(i = 0; i < M; i++)
+        MOV      R2,#+0
+        RSB      R0,R1,#+32768
+//  673       {
+//  674          tmp = isp_old[i] * fac_old;
+//  675          tmp += isp_new[i] * fac_new;
+//  676          isp[i] = (Word16)((tmp + 0x4000) >> 15);
+??D_LPC_int_isp_find_1:
+        ADD      R12,R5,R2, LSL #+1
+        LDRSH    R12,[R12, #+0]
+        ADD      LR,R4,R2, LSL #+1
+        LDRSH    LR,[LR, #+0]
+        MOV      R3,SP
+        ADD      R3,R3,R2, LSL #+1
+        MUL      LR,R0,LR
+//  677       }
+        ADD      R2,R2,#+1
+        MLA      R12,R1,R12,LR
+        CMP      R2,#+16
+        ADD      R12,R12,#+16384
+        ASR      R12,R12,#+15
+        STRH     R12,[R3, #+0]
+        BLT      ??D_LPC_int_isp_find_1
+//  678 
+//  679       D_LPC_isp_a_conversion(isp, Az, 0, M);
+        MOV      R3,#+16
+        MOV      R2,#+0
+        MOV      R1,R7
+        MOV      R0,SP
+        BL       D_LPC_isp_a_conversion
+//  680       Az += MP1;
+        ADD      R7,R7,#+34
+//  681    }
+        ADD      R8,R8,#+1
+        CMP      R8,#+3
+        BLT      ??D_LPC_int_isp_find_0
+//  682 
+//  683    /* 4th subframe: isp_new (frac=1.0) */
+//  684    D_LPC_isp_a_conversion(isp_new, Az, 0, M);
+        MOV      R3,#+16
+        MOV      R2,#+0
+        MOV      R1,R7
+        MOV      R0,R5
+        BL       D_LPC_isp_a_conversion
+//  685 
+//  686    return;
+        ADD      SP,SP,#+32
+        CFI CFA R13+24
+        POP      {R4-R8,PC}       ;; return
+        CFI EndBlock cfiBlock15
+//  687 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock16 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??D_LPC_isf_extrapolation??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock16
+        REQUIRE D_LPC_isf_extrapolation
+//  688 
+//  689 
+//  690 /*
+//  691  * D_LPC_isf_extrapolation
+//  692  *
+//  693  * Parameters:
+//  694  *    HfIsf          I/O: ISF vector
+//  695  *
+//  696  * Function:
+//  697  *    Conversion of 16th-order 12.8kHz ISF vector
+//  698  *    into 20th-order 16kHz ISF vector
+//  699  *
+//  700  * Returns:
+//  701  *    void
+//  702  */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock17 Using cfiCommon1
+        CFI Function D_LPC_isf_extrapolation
+        ARM
+//  703 void D_LPC_isf_extrapolation(Word16 HfIsf[])
+//  704 {
+D_LPC_isf_extrapolation:
+        PUSH     {R4-R7,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R7 Frame(CFA, -8)
+        CFI R6 Frame(CFA, -12)
+        CFI R5 Frame(CFA, -16)
+        CFI R4 Frame(CFA, -20)
+        CFI CFA R13+20
+        SUB      SP,SP,#+72
+        CFI CFA R13+92
+        MOV      R4,R0
+//  705    Word32 IsfDiff[M - 2];
+//  706    Word32 IsfCorr[3];
+//  707    Word32 tmp, tmp2, tmp3, mean, i;
+//  708    Word32 MaxCorr, exp, exp2, coeff;
+//  709    Word16 hi, lo;
+//  710 
+//  711    HfIsf[M16k - 1] = HfIsf[M - 1];
+        LDRSH    R0,[R4, #+30]
+        STRH     R0,[R4, #+38]
+//  712 
+//  713    /* Difference vector */
+//  714    for(i = 1; i < M - 1; i++)
+        MOV      R0,#+1
+//  715    {
+//  716       IsfDiff[i - 1] = HfIsf[i] - HfIsf[i - 1];
+??D_LPC_isf_extrapolation_0:
+        ADD      R1,R4,R0, LSL #+1
+        LDRSH    R3,[R1, #+0]
+        LDRSH    R1,[R1, #-2]
+        ADD      R2,SP,#+16
+        ADD      R2,R2,R0, LSL #+2
+        SUB      R1,R3,R1
+        STR      R1,[R2, #-4]
+//  717    }
+        ADD      R0,R0,#+1
+        CMP      R0,#+15
+        BLT      ??D_LPC_isf_extrapolation_0
+//  718 
+//  719    tmp = 0;
+        MOV      R0,#+0
+//  720 
+//  721    /* Mean of difference vector */
+//  722    for(i = 3; i < (M - 1); i++)
+        MOV      R1,#+3
+        MOV      R3,#+171
+        ORR      R3,R3,#0xA00
+//  723    {
+//  724       tmp = tmp + (IsfDiff[i - 1] * INV_LENGTH);
+??D_LPC_isf_extrapolation_1:
+        ADD      R2,SP,#+16
+        ADD      R2,R2,R1, LSL #+2
+        LDR      R2,[R2, #-4]
+//  725    }
+        ADD      R1,R1,#+1
+        MLA      R0,R3,R2,R0
+        CMP      R1,#+15
+        BLT      ??D_LPC_isf_extrapolation_1
+//  726 
+//  727    mean = (tmp + 0x4000) >> 15;
+        ADD      R0,R0,#+16384
+        ASR      R5,R0,#+15
+//  728    IsfCorr[0] = 0;
+        MOV      R1,#+0
+        STR      R1,[SP, #+4]
+//  729    IsfCorr[1] = 0;
+        MOV      R0,#+0
+        STR      R0,[SP, #+8]
+//  730    IsfCorr[2] = 0;
+        STR      R0,[SP, #+12]
+//  731    tmp = 0;
+//  732 
+//  733    for(i = 0; i < M - 2; i++)
+//  734    {
+//  735       if(IsfDiff[i] > tmp)
+??D_LPC_isf_extrapolation_2:
+        ADD      R2,SP,#+16
+        LDR      R2,[R2, +R1, LSL #+2]
+//  736       {
+//  737          tmp = IsfDiff[i];
+//  738       }
+//  739    }
+        ADD      R1,R1,#+1
+        CMP      R0,R2
+        MOVLT    R0,R2
+        CMP      R1,#+14
+        BLT      ??D_LPC_isf_extrapolation_2
+//  740 
+//  741    exp = D_UTIL_norm_s((Word16)tmp);
+        MOV      R0,R0, LSL #+16
+        MOV      R0,R0, ASR #+16
+        _BLF     D_UTIL_norm_s,??D_UTIL_norm_s??rA
+//  742 
+//  743    for(i = 0; i < M - 2; i++)
+        MOV      R1,#+0
+//  744    {
+//  745       IsfDiff[i] = IsfDiff[i] << exp;
+??D_LPC_isf_extrapolation_3:
+        ADD      R2,SP,#+16
+        ADD      R2,R2,R1, LSL #+2
+        LDR      R3,[R2, #+0]
+//  746    }
+        ADD      R1,R1,#+1
+        LSL      R3,R3,R0
+        STR      R3,[R2, #+0]
+        CMP      R1,#+14
+        BLT      ??D_LPC_isf_extrapolation_3
+//  747 
+//  748    mean = mean << exp;
+        LSL      R5,R5,R0
+//  749 
+//  750    for(i = 7; i < M - 2; i++)
+        MOV      R6,#+7
+//  751    {
+//  752       tmp2 = IsfDiff[i] - mean;
+//  753       tmp3 = IsfDiff[i - 2] - mean;
+//  754       tmp = (tmp2 * tmp3) << 1;
+//  755       D_UTIL_l_extract(tmp, &hi, &lo);
+??D_LPC_isf_extrapolation_4:
+        ADD      R0,SP,#+16
+        ADD      R0,R0,R6, LSL #+2
+        LDR      R3,[R0, #+0]
+        LDR      R0,[R0, #-8]
+        SUB      R3,R3,R5
+        SUB      R0,R0,R5
+        MUL      R3,R0,R3
+        ADD      R2,SP,#+2
+        MOV      R1,SP
+        LSL      R0,R3,#+1
+        _BLF     D_UTIL_l_extract,??D_UTIL_l_extract??rA
+//  756       tmp = D_UTIL_mpy_32(hi, lo, hi, lo);
+//  757       IsfCorr[0] = (IsfCorr[0] + tmp);
+        LDRSH    R3,[SP, #+2]
+        LDRSH    R2,[SP, #+0]
+        LDR      R7,[SP, #+4]
+        MOV      R1,R3
+        MOV      R0,R2
+        _BLF     D_UTIL_mpy_32,??D_UTIL_mpy_32??rA
+        ADD      R0,R0,R7
+        STR      R0,[SP, #+4]
+//  758    }
+        ADD      R6,R6,#+1
+        CMP      R6,#+14
+        BLT      ??D_LPC_isf_extrapolation_4
+//  759 
+//  760    for(i = 7; i < M - 2; i++)
+        MOV      R6,#+7
+//  761    {
+//  762       tmp2 = IsfDiff[i] - mean;
+//  763       tmp3 = IsfDiff[i - 3] - mean;
+//  764       tmp = (tmp2 * tmp3) << 1;
+//  765       D_UTIL_l_extract(tmp, &hi, &lo);
+??D_LPC_isf_extrapolation_5:
+        ADD      R0,SP,#+16
+        ADD      R0,R0,R6, LSL #+2
+        LDR      R3,[R0, #+0]
+        LDR      R0,[R0, #-12]
+        SUB      R3,R3,R5
+        SUB      R0,R0,R5
+        MUL      R3,R0,R3
+        ADD      R2,SP,#+2
+        MOV      R1,SP
+        LSL      R0,R3,#+1
+        _BLF     D_UTIL_l_extract,??D_UTIL_l_extract??rA
+//  766       tmp = D_UTIL_mpy_32(hi, lo, hi, lo);
+//  767       IsfCorr[1] = (IsfCorr[1] + tmp);
+        LDRSH    R3,[SP, #+2]
+        LDRSH    R2,[SP, #+0]
+        LDR      R7,[SP, #+8]
+        MOV      R1,R3
+        MOV      R0,R2
+        _BLF     D_UTIL_mpy_32,??D_UTIL_mpy_32??rA
+        ADD      R0,R0,R7
+        STR      R0,[SP, #+8]
+//  768    }
+        ADD      R6,R6,#+1
+        CMP      R6,#+14
+        BLT      ??D_LPC_isf_extrapolation_5
+//  769 
+//  770    for(i = 7; i < M - 2; i++)
+        MOV      R6,#+7
+//  771    {
+//  772       tmp2 = IsfDiff[i] - mean;
+//  773       tmp3 = IsfDiff[i - 4] - mean;
+//  774       tmp = (tmp2 * tmp3) << 1;
+//  775       D_UTIL_l_extract(tmp, &hi, &lo);
+??D_LPC_isf_extrapolation_6:
+        ADD      R0,SP,#+16
+        ADD      R0,R0,R6, LSL #+2
+        LDR      R3,[R0, #+0]
+        LDR      R0,[R0, #-16]
+        SUB      R3,R3,R5
+        SUB      R0,R0,R5
+        MUL      R3,R0,R3
+        ADD      R2,SP,#+2
+        MOV      R1,SP
+        LSL      R0,R3,#+1
+        _BLF     D_UTIL_l_extract,??D_UTIL_l_extract??rA
+//  776       tmp = D_UTIL_mpy_32(hi, lo, hi, lo);
+//  777       IsfCorr[2] = (IsfCorr[2] + tmp);
+        LDRSH    R3,[SP, #+2]
+        LDRSH    R2,[SP, #+0]
+        LDR      R7,[SP, #+12]
+        MOV      R1,R3
+        MOV      R0,R2
+        _BLF     D_UTIL_mpy_32,??D_UTIL_mpy_32??rA
+        ADD      R0,R0,R7
+        STR      R0,[SP, #+12]
+//  778    }
+        ADD      R6,R6,#+1
+        CMP      R6,#+14
+        BLT      ??D_LPC_isf_extrapolation_6
+//  779 
+//  780    if(IsfCorr[0] > IsfCorr[1])
+        LDR      R0,[SP, #+8]
+        LDR      R1,[SP, #+4]
+//  781    {
+//  782       MaxCorr = 0;
+//  783    }
+//  784    else
+//  785    {
+//  786       MaxCorr = 1;
+//  787    }
+//  788 
+//  789    if(IsfCorr[2] > IsfCorr[MaxCorr])
+        LDR      R2,[SP, #+12]
+        CMP      R0,R1
+        MOVLT    R0,#+0
+        MOVGE    R0,#+1
+        ADD      R1,SP,#+4
+        LDR      R1,[R1, +R0, LSL #+2]
+        CMP      R1,R2
+//  790    {
+//  791       MaxCorr = 2;
+        MOVLT    R0,#+2
+//  792    }
+//  793 
+//  794    MaxCorr = MaxCorr + 1;   /* Maximum correlation of difference vector */
+        ADD      R0,R0,#+1
+//  795 
+//  796    for(i = M - 1; i < (M16k - 1); i++)
+        MOV      R1,#+15
+//  797    {
+//  798       tmp = (HfIsf[i - 1 - MaxCorr] - HfIsf[i - 2 - MaxCorr]);
+//  799       HfIsf[i] = (Word16)(HfIsf[i - 1] + tmp);
+??D_LPC_isf_extrapolation_7:
+        ADD      R2,R4,R1, LSL #+1
+        LDRSH    R3,[R2, #-2]
+        SUB      R5,R1,#+1
+        SUB      R5,R5,R0
+        ADD      R5,R4,R5, LSL #+1
+        LDRSH    R5,[R5, #+0]
+        ADD      R3,R5,R3
+        SUB      R5,R1,#+2
+        SUB      R5,R5,R0
+        ADD      R5,R4,R5, LSL #+1
+        LDRSH    R5,[R5, #+0]
+//  800    }
+        ADD      R1,R1,#+1
+        CMP      R1,#+19
+        SUB      R3,R3,R5
+        STRH     R3,[R2, #+0]
+        BLT      ??D_LPC_isf_extrapolation_7
+//  801 
+//  802    /* tmp=7965+(HfIsf[2]-HfIsf[3]-HfIsf[4])/6; */
+//  803    tmp = HfIsf[4] + HfIsf[3];
+//  804    tmp = HfIsf[2] - tmp;
+//  805    tmp = (tmp * 5461) >> 15;
+//  806    tmp = tmp + 20390;
+        LDRSH    R0,[R4, #+4]
+        LDRSH    R1,[R4, #+8]
+        SUB      R0,R0,R1
+        LDRSH    R1,[R4, #+6]
+        SUB      R0,R0,R1
+        MOV      R1,#+85
+        ORR      R1,R1,#0x1500
+        MUL      R0,R1,R0
+        MOV      R1,#+166
+        ORR      R1,R1,#0x4F00
+        ADD      R0,R1,R0, ASR #+15
+//  807 
+//  808    if(tmp > 19456)
+        MOV      R1,#+1
+        ORR      R1,R1,#0x4C00
+        CMP      R0,R1
+//  809    {   /* Maximum value of ISF should be at most 7600 Hz */
+//  810       tmp = 19456;
+//  811    }
+//  812 
+//  813    tmp = tmp - HfIsf[M - 2];
+        LDRSH    R1,[R4, #+28]
+        MOVGE    R0,#+19456
+        SUB      R5,R0,R1
+//  814    tmp2 = HfIsf[M16k - 2] - HfIsf[M - 2];
+        LDRSH    R0,[R4, #+36]
+        SUB      R6,R0,R1
+//  815    exp2 = D_UTIL_norm_s((Word16)tmp2);
+        MOV      R0,R6, LSL #+16
+        MOV      R0,R0, ASR #+16
+        _BLF     D_UTIL_norm_s,??D_UTIL_norm_s??rA
+        MOV      R7,R0
+//  816    exp = D_UTIL_norm_s((Word16)tmp);
+        MOV      R0,R5, LSL #+16
+        MOV      R0,R0, ASR #+16
+        _BLF     D_UTIL_norm_s,??D_UTIL_norm_s??rA
+//  817    exp = exp - 1;
+        SUB      R2,R0,#+1
+//  818    tmp = tmp << exp;
+//  819    tmp2 = tmp2 << exp2;
+//  820    coeff = (tmp << 15) / tmp2;   /* Coefficient for stretching the ISF vector */
+        LSL      R0,R5,R2
+        LSL      R0,R0,#+15
+        LSL      R1,R6,R7
+        _BLF     ??div32_a,??rA??div32_a
+//  821    exp = exp2 - exp;
+        SUBS     R0,R7,R2
+//  822 
+//  823    if(exp >= 0)
+        BMI      ??D_LPC_isf_extrapolation_8
+//  824    {
+//  825       for(i = M - 1; i < M16k - 1; i++)
+        MOV      R2,#+15
+//  826       {
+//  827          tmp = ((HfIsf[i] - HfIsf[i - 1]) * coeff) >> 15;
+//  828          IsfDiff[i - (M - 1)] = tmp << exp;
+??D_LPC_isf_extrapolation_9:
+        ADD      R3,R4,R2, LSL #+1
+        LDRSH    R6,[R3, #+0]
+        LDRSH    R3,[R3, #-2]
+        ADD      R5,SP,#+16
+        ADD      R5,R5,R2, LSL #+2
+        SUB      R3,R6,R3
+        MUL      R3,R1,R3
+//  829       }
+        ADD      R2,R2,#+1
+        ASR      R3,R3,#+15
+        LSL      R3,R3,R0
+        STR      R3,[R5, #-60]
+        CMP      R2,#+19
+        BGE      ??D_LPC_isf_extrapolation_10
+        B        ??D_LPC_isf_extrapolation_9
+//  830    }
+//  831    else
+//  832    {
+//  833       exp = 15 - exp;
+??D_LPC_isf_extrapolation_8:
+        RSB      R0,R0,#+15
+//  834 
+//  835       for(i = M - 1; i < M16k - 1; i++)
+        MOV      R2,#+15
+//  836       {
+//  837          IsfDiff[i - (M - 1)] = ((HfIsf[i] - HfIsf[i - 1]) * coeff) >> exp;
+??D_LPC_isf_extrapolation_11:
+        ADD      R3,R4,R2, LSL #+1
+        LDRSH    R6,[R3, #+0]
+        LDRSH    R3,[R3, #-2]
+        ADD      R5,SP,#+16
+        ADD      R5,R5,R2, LSL #+2
+        SUB      R3,R6,R3
+        MUL      R3,R1,R3
+//  838       }
+        ADD      R2,R2,#+1
+        ASR      R3,R3,R0
+        STR      R3,[R5, #-60]
+        CMP      R2,#+19
+        BLT      ??D_LPC_isf_extrapolation_11
+//  839    }
+//  840 
+//  841    for(i = M; i < (M16k - 1); i++)
+??D_LPC_isf_extrapolation_10:
+        MOV      R0,#+16
+//  842    {
+//  843       /* The difference between ISF(n) and ISF(n-2) should be at least 500 Hz */
+//  844       tmp = ((IsfDiff[i - (M - 1)] + IsfDiff[i - M]) - 1280);
+//  845 
+//  846       if(tmp < 0)
+??D_LPC_isf_extrapolation_12:
+        ADD      R1,SP,#+16
+        ADD      R1,R1,R0, LSL #+2
+        LDR      R2,[R1, #-64]!
+        LDR      R3,[R1, #+4]
+        ADD      R2,R3,R2
+        MVN      R3,#+255
+        BIC      R3,R3,#0x400
+        ADDS     R2,R3,R2
+        BPL      ??D_LPC_isf_extrapolation_13
+//  847       {
+//  848          if(IsfDiff[i - (M - 1)] > IsfDiff[i - M])
+        LDR      R2,[R1, #+0]
+        LDR      R3,[R1, #+4]
+        CMP      R2,R3
+        BGE      ??D_LPC_isf_extrapolation_14
+//  849          {
+//  850             IsfDiff[i - M] = (1280 - IsfDiff[i - (M - 1)]);
+        MOV      R2,R3
+        RSB      R2,R2,#+1280
+        STR      R2,[R1, #+0]
+        B        ??D_LPC_isf_extrapolation_13
+//  851          }
+//  852          else
+//  853          {
+//  854             IsfDiff[i - (M - 1)] = (1280 - IsfDiff[i - M]);
+??D_LPC_isf_extrapolation_14:
+        RSB      R2,R2,#+1280
+        STR      R2,[R1, #+4]
+//  855          }
+//  856       }
+//  857    }
+??D_LPC_isf_extrapolation_13:
+        ADD      R0,R0,#+1
+        CMP      R0,#+19
+        BLT      ??D_LPC_isf_extrapolation_12
+//  858 
+//  859    for(i = M - 1; i < M16k - 1; i++)
+        MOV      R0,#+15
+//  860    {
+//  861       HfIsf[i] = (Word16)(HfIsf[i - 1] + IsfDiff[i - (M - 1)]);
+??D_LPC_isf_extrapolation_15:
+        ADD      R1,R4,R0, LSL #+1
+        LDRSH    R2,[R1, #-2]
+        ADD      R3,SP,#+16
+        ADD      R3,R3,R0, LSL #+2
+        LDR      R3,[R3, #-60]
+//  862    }
+        ADD      R0,R0,#+1
+        ADD      R2,R3,R2
+        STRH     R2,[R1, #+0]
+        CMP      R0,#+19
+        BLT      ??D_LPC_isf_extrapolation_15
+//  863 
+//  864    for(i = 0; i < M16k - 1; i++)
+        MOV      R0,#+0
+        MOV      R3,#+51
+        ORR      R3,R3,#0x3300
+//  865    {
+//  866       HfIsf[i] = (Word16)((HfIsf[i] * 13107) >> 14);
+??D_LPC_isf_extrapolation_16:
+        ADD      R1,R4,R0, LSL #+1
+        LDRSH    R2,[R1, #+0]
+//  867       /* Scale the ISF vector correctly for 16000 kHz */
+//  868    }
+        ADD      R0,R0,#+1
+        CMP      R0,#+19
+        MUL      R2,R3,R2
+        ASR      R2,R2,#+14
+        STRH     R2,[R1, #+0]
+        BLT      ??D_LPC_isf_extrapolation_16
+//  869 
+//  870    D_LPC_isf_isp_conversion(HfIsf, HfIsf, M16k);
+        MOV      R0,#+0
+??D_LPC_isf_extrapolation_17:
+        ADD      R1,R4,R0, LSL #+1
+        LDRSH    R2,[R1, #+0]
+        ADD      R0,R0,#+1
+        CMP      R0,#+19
+        STRH     R2,[R1, #+0]
+        BLT      ??D_LPC_isf_extrapolation_17
+        LDRSH    R0,[R4, #+38]
+        LSL      R0,R0,#+1
+        STRH     R0,[R4, #+38]
+        MOV      R0,#+0
+??D_LPC_isf_extrapolation_18:
+        LDR      R3,??DataTable7  ;; D_ROM_cos
+        ADD      R1,R4,R0, LSL #+1
+        LDRSH    R2,[R1, #+0]
+        ADD      R0,R0,#+1
+        CMP      R0,#+20
+        ASR      R2,R2,#+7
+        ADD      R2,R3,R2, LSL #+1
+        LDRSH    R3,[R2, #+0]
+        LDRSH    R5,[R2, #+2]
+        SUB      R2,R5,R3
+        LDRSH    R5,[R1, #+0]
+        AND      R5,R5,#0x7F
+        MUL      R2,R5,R2
+        ADD      R2,R3,R2, ASR #+7
+        STRH     R2,[R1, #+0]
+        BLT      ??D_LPC_isf_extrapolation_18
+//  871 
+//  872    return;
+        ADD      SP,SP,#+72       ;; stack cleaning
+        CFI CFA R13+20
+        POP      {R4-R7,PC}       ;; return
+        CFI EndBlock cfiBlock17
+//  873 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        DATA
+??DataTable7:
+        DC32     D_ROM_cos
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock18 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_l_extract??rA:
+        LDR      R12,??Subroutine9_0  ;; D_UTIL_l_extract
+        BX       R12
+        DATA
+??Subroutine9_0:
+        DC32     D_UTIL_l_extract
+        CFI EndBlock cfiBlock18
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock19 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_mpy_32_16??rA:
+        LDR      R12,??Subroutine10_0  ;; D_UTIL_mpy_32_16
+        BX       R12
+        DATA
+??Subroutine10_0:
+        DC32     D_UTIL_mpy_32_16
+        CFI EndBlock cfiBlock19
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock20 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??labs??rA:
+        LDR      R12,??Subroutine11_0  ;; labs
+        BX       R12
+        DATA
+??Subroutine11_0:
+        DC32     labs
+        CFI EndBlock cfiBlock20
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock21 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_norm_l??rA:
+        LDR      R12,??Subroutine12_0  ;; D_UTIL_norm_l
+        BX       R12
+        DATA
+??Subroutine12_0:
+        DC32     D_UTIL_norm_l
+        CFI EndBlock cfiBlock21
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock22 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_norm_s??rA:
+        LDR      R12,??Subroutine13_0  ;; D_UTIL_norm_s
+        BX       R12
+        DATA
+??Subroutine13_0:
+        DC32     D_UTIL_norm_s
+        CFI EndBlock cfiBlock22
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock23 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??D_UTIL_mpy_32??rA:
+        LDR      R12,??Subroutine14_0  ;; D_UTIL_mpy_32
+        BX       R12
+        DATA
+??Subroutine14_0:
+        DC32     D_UTIL_mpy_32
+        CFI EndBlock cfiBlock23
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock24 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??rA??div32_a:
+        LDR      R12,??Subroutine15_0  ;; ??div32_a
+        MOV      PC,R12
+        DATA
+??Subroutine15_0:
+        DC32     ??div32_a
+        CFI EndBlock cfiBlock24
+
+        END
+// 
+// 4 656 bytes in segment CODE
+// 
+// 4 536 bytes of CODE memory (+ 120 bytes shared)
+//
+//Errors: none
+//Warnings: 5

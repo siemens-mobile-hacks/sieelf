@@ -1,0 +1,310 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:36:00 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\UNC /
+//                       OMPR.C                                              /
+//    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\UNC /
+//                       OMPR.C -D NDEBUG -lC D:\SVN\SieELF\SieELF\x65_PCM_P /
+//                       layer\Player\Release\List\ -lA                      /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Player\Player /
+//                       \Release\Obj\ -s9 --cpu_mode arm --endian little    /
+//                       --cpu ARM926EJ-S --stack_align 4 --interwork -e     /
+//                       --fpu None --dlib_config "D:\Program                /
+//                       Files\IAR\Embedded Workbench 4.0                    /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\UNCOMPR.s79                                    /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME UNCOMPR
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        MULTWEAK ??inflate??rA
+        MULTWEAK ??inflateEnd??rA
+        MULTWEAK ??inflateInit_??rA
+        MULTWEAK ??uncompress??rT
+        PUBLIC uncompress
+        FUNCTION uncompress,0203H
+        LOCFRAME CSTACK, 68, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+inflate             SYMBOL "inflate"
+inflateEnd          SYMBOL "inflateEnd"
+inflateInit_        SYMBOL "inflateInit_"
+??inflate??rA       SYMBOL "??rA", inflate
+??inflateEnd??rA    SYMBOL "??rA", inflateEnd
+??inflateInit_??rA  SYMBOL "??rA", inflateInit_
+uncompress          SYMBOL "uncompress"
+??uncompress??rT    SYMBOL "??rT", uncompress
+
+        EXTERN inflate
+        FUNCTION inflate,0202H
+        EXTERN inflateEnd
+        FUNCTION inflateEnd,0202H
+        EXTERN inflateInit_
+        FUNCTION inflateInit_,0202H
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??uncompress??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE uncompress
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\zlib\UNCOMPR.C
+//    1 /* uncompr.c -- decompress a memory buffer
+//    2  * Copyright (C) 1995-2003 Jean-loup Gailly.
+//    3  * For conditions of distribution and use, see copyright notice in zlib.h
+//    4  */
+//    5 
+//    6 /* @(#) $Id$ */
+//    7 
+//    8 #define ZLIB_INTERNAL
+//    9 #include "zlib.h"
+//   10 
+//   11 /* ===========================================================================
+//   12      Decompresses the source buffer into the destination buffer.  sourceLen is
+//   13    the byte length of the source buffer. Upon entry, destLen is the total
+//   14    size of the destination buffer, which must be large enough to hold the
+//   15    entire uncompressed data. (The size of the uncompressed data must have
+//   16    been saved previously by the compressor and transmitted to the decompressor
+//   17    by some mechanism outside the scope of this compression library.)
+//   18    Upon exit, destLen is the actual size of the compressed buffer.
+//   19      This function can be used to decompress a whole file at once if the
+//   20    input file is mmap'ed.
+//   21 
+//   22      uncompress returns Z_OK if success, Z_MEM_ERROR if there was not
+//   23    enough memory, Z_BUF_ERROR if there was not enough room in the output
+//   24    buffer, or Z_DATA_ERROR if the input data was corrupted.
+//   25 */
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function uncompress
+        ARM
+//   26 int ZEXPORT uncompress (dest, destLen, source, sourceLen)
+//   27     Bytef *dest;
+//   28     uLongf *destLen;
+//   29     const Bytef *source;
+//   30     uLong sourceLen;
+//   31 {
+uncompress:
+        PUSH     {R4,R5,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R5 Frame(CFA, -8)
+        CFI R4 Frame(CFA, -12)
+        CFI CFA R13+12
+        SUB      SP,SP,#+56
+        CFI CFA R13+68
+        MOV      R4,R1
+//   32     z_stream stream;
+//   33     int err;
+//   34 
+//   35     stream.next_in = (Bytef*)source;
+        STR      R2,[SP, #+0]
+//   36     stream.avail_in = (uInt)sourceLen;
+        STR      R3,[SP, #+4]
+//   37     /* Check for source > 64K on 16-bit machine: */
+//   38     if ((uLong)stream.avail_in != sourceLen) return Z_BUF_ERROR;
+//   39 
+//   40     stream.next_out = dest;
+        STR      R0,[SP, #+12]
+//   41     stream.avail_out = (uInt)*destLen;
+        LDR      R1,[R4, #+0]
+//   42     if ((uLong)stream.avail_out != *destLen) return Z_BUF_ERROR;
+//   43 
+//   44     stream.zalloc = (alloc_func)0;
+        MOV      R0,#+0
+        STR      R1,[SP, #+16]
+//   45     stream.zfree = (free_func)0;
+//   46 
+//   47     err = inflateInit(&stream);
+        LDR      R1,??uncompress_0  ;; `?<Constant "1.2.3">`
+        STR      R0,[SP, #+32]
+        STR      R0,[SP, #+36]
+        MOV      R2,#+56
+        MOV      R0,SP
+        _BLF     inflateInit_,??inflateInit_??rA
+        MOVS     R5,R0
+//   48     if (err != Z_OK) return err;
+        BEQ      ??uncompress_1
+??uncompress_2:
+        MOV      R0,R5
+        B        ??uncompress_3
+//   49 
+//   50     err = inflate(&stream, Z_FINISH);
+??uncompress_1:
+        MOV      R1,#+4
+        MOV      R0,SP
+        _BLF     inflate,??inflate??rA
+        MOV      R5,R0
+//   51     if (err != Z_STREAM_END) {
+        CMP      R5,#+1
+        BEQ      ??uncompress_4
+//   52         inflateEnd(&stream);
+        MOV      R0,SP
+        _BLF     inflateEnd,??inflateEnd??rA
+//   53         if (err == Z_NEED_DICT || (err == Z_BUF_ERROR && stream.avail_in == 0))
+        CMP      R5,#+2
+        BEQ      ??uncompress_5
+        CMN      R5,#+5
+        LDREQ    R0,[SP, #+4]
+        CMPEQ    R0,#+0
+        BNE      ??uncompress_2
+//   54             return Z_DATA_ERROR;
+??uncompress_5:
+        MVN      R0,#+2
+??uncompress_3:
+        ADD      SP,SP,#+56
+        CFI CFA R13+12
+        POP      {R4,R5,PC}
+        CFI CFA R13+68
+//   55         return err;
+//   56     }
+//   57     *destLen = stream.total_out;
+??uncompress_4:
+        LDR      R0,[SP, #+20]
+        STR      R0,[R4, #+0]
+//   58 
+//   59     err = inflateEnd(&stream);
+//   60     return err;
+        MOV      R0,SP
+        _BLF     inflateEnd,??inflateEnd??rA
+        ADD      SP,SP,#+56
+        CFI CFA R13+12
+        POP      {R4,R5,PC}       ;; return
+        DATA
+??uncompress_0:
+        DC32     `?<Constant "1.2.3">`
+        CFI EndBlock cfiBlock1
+//   61 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??inflateInit_??rA:
+        LDR      R12,??Subroutine1_0  ;; inflateInit_
+        BX       R12
+        DATA
+??Subroutine1_0:
+        DC32     inflateInit_
+        CFI EndBlock cfiBlock2
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??inflate??rA:
+        LDR      R12,??Subroutine2_0  ;; inflate
+        BX       R12
+        DATA
+??Subroutine2_0:
+        DC32     inflate
+        CFI EndBlock cfiBlock3
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??inflateEnd??rA:
+        LDR      R12,??Subroutine3_0  ;; inflateEnd
+        BX       R12
+        DATA
+??Subroutine3_0:
+        DC32     inflateEnd
+        CFI EndBlock cfiBlock4
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+`?<Constant "1.2.3">`:
+        DATA
+        DC8 "1.2.3"
+        DC8 0, 0
+
+        END
+// 
+// 212 bytes in segment CODE
+//   8 bytes in segment DATA_C
+// 
+// 172 bytes of CODE  memory (+ 40 bytes shared)
+//   8 bytes of CONST memory
+//
+//Errors: none
+//Warnings: none

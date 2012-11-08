@@ -1,0 +1,3027 @@
+##############################################################################
+#                                                                            #
+# IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION    14/Feb/2012  14:27:25 #
+# Copyright 1999-2005 IAR Systems. All rights reserved.                      #
+#                                                                            #
+#    Cpu mode        =  interwork                                            #
+#    Endian          =  little                                               #
+#    Stack alignment =  4                                                    #
+#    Source file     =  D:\SVN\SieELF\SieELF\cbn_SRC\Command\COMMAND.C       #
+#    Command line    =  D:\SVN\SieELF\SieELF\cbn_SRC\Command\COMMAND.C -lC   #
+#                       D:\SVN\SieELF\SieELF\cbn_SRC\Command\SG\List\ -o     #
+#                       D:\SVN\SieELF\SieELF\cbn_SRC\Command\SG\Obj\ -s9     #
+#                       --no_unroll --no_clustering --cpu_mode arm --endian  #
+#                       little --cpu ARM926EJ-S --stack_align 4 --interwork  #
+#                       -e --char_is_signed --fpu None -I "D:\Program        #
+#                       Files\IAR\Embedded Workbench 4.0                     #
+#                       Evaluation\ARM\INC\" --inline_threshold=2            #
+#    List file       =  D:\SVN\SieELF\SieELF\cbn_SRC\Command\SG\List\COMMAND #
+#                       .lst                                                 #
+#    Object file     =  D:\SVN\SieELF\SieELF\cbn_SRC\Command\SG\Obj\COMMAND. #
+#                       r79                                                  #
+#                                                                            #
+#                                                                            #
+##############################################################################
+
+D:\SVN\SieELF\SieELF\cbn_SRC\Command\COMMAND.C
+      1          
+      2          //Command.c shell BAT files
+      3          
+      4          #include "..\swilib.h"
+
+   \                                 In segment DATA_C, align 4, align-sorted
+      5          const char Title[]="\r\n\r\nMS-DOS 0.4 (c)bn";
+   \                     Title:
+   \   00000000   0D0A0D0A4D53       DC8 "\015\012\015\012MS-DOS 0.4 (c)bn"
+   \              2D444F532030
+   \              2E3420286329
+   \              626E00      
+   \   00000015   000000             DC8 0, 0, 0
+      6          #define conbufsize 2048
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+      7          char conbuf[conbufsize], *conend; //lying. buffer
+   \                     conbuf:
+   \   00000000                      DS8 2048
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+   \                     conend:
+   \   00000000                      DS8 4
+      8          
+      9          #define MAXPATH 256
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     10          char con[MAXPATH]; //The string to display in the sprintf ()
+   \                     con:
+   \   00000000                      DS8 256
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     11          char path[MAXPATH], spath[MAXPATH], curdir[MAXPATH], temp[MAXPATH], ar1[MAXPATH], ar2[MAXPATH];
+   \                     path:
+   \   00000000                      DS8 256
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+   \                     spath:
+   \   00000000                      DS8 256
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+   \                     curdir:
+   \   00000000                      DS8 256
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+   \                     ar1:
+   \   00000000                      DS8 256
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+   \                     ar2:
+   \   00000000                      DS8 256
+     12          #define maxset 256
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     13          char set[maxset], *setend=set; //environment
+   \                     set:
+   \   00000000                      DS8 256
+
+   \                                 In segment DATA_I, align 4, align-sorted
+   \                     `setend`:
+   \   00000000                      DS8 4
+   \   00000004                      REQUIRE `?<Initializer for setend>`
+     14          
+     15          // arguments are complex. line
+     16          #define maxargv 16
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     17          char *argvv[maxargv], **argv;
+   \                     argvv:
+   \   00000000                      DS8 64
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+   \                     argv:
+   \   00000000                      DS8 4
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     18          int argc, fcon; //console
+   \                     argc:
+   \   00000000                      DS8 4
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+   \                     fcon:
+   \   00000000                      DS8 4
+     19          //char *file;
+     20          
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     21          void *SG=0;
+   \                     SG:
+   \   00000000                      DS8 4
+
+   \                                 In segment DATA_Z, align 1, align-sorted
+     22          char echooff=0, exit=0;
+   \                     echooff:
+   \   00000000                      DS8 1
+
+   \                                 In segment DATA_Z, align 1, align-sorted
+   \                     exit:
+   \   00000000                      DS8 1
+     23          
+
+   \                                 In segment DATA_C, align 4, align-sorted
+     24          const char link[]="4:\\ZBin\\Link.elf";
+   \                     link:
+   \   00000000   343A5C5A4269       DC8 "4:\\ZBin\\Link.elf"
+   \              6E5C4C696E6B
+   \              2E656C6600  
+   \   00000011   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 1, align-sorted
+     25          const char eline[]="\\", ezap[]=";";
+   \                     eline:
+   \   00000000   5C00               DC8 "\\"
+
+   \                                 In segment DATA_C, align 1, align-sorted
+   \                     ezap:
+   \   00000000   3B00               DC8 ";"
+     26          // Open at the start of onstart ()
+     27          // End buffer discharge team?// Go to the next. line
+     28          //#define crlf {*conend++=0xd;*conend++=0xa;}
+     29          // Force a reset buffer
+     30          #define flush {fwrite(fcon,conbuf,conend-conbuf,&err);*(conend=conbuf)=0;}
+     31          
+
+   \                                 In segment DATA_I, align 4, align-sorted
+     32          const char *cext[]={".bat",".lnk",".elf",".dll",0};
+   \                     cext:
+   \   00000000                      DS8 20
+   \   00000014                      REQUIRE `?<Initializer for cext>`
+     33          
+     34          struct cmdst{ //command
+     35            const char *name; //name of the
+     36            int (*func)(void); //F-I
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+     37          } *cmd;
+   \                     cmd:
+   \   00000000                      DS8 4
+     38          
+     39          
+     40          enum {ok, error, errcommand, errpath, errarg, errmemory, erropen, errcreate, erroption
+     41          };
+     42          
+
+   \                                 In segment DATA_I, align 4, align-sorted
+     43          const char *msg[]={
+   \                     msg:
+   \   00000000                      DS8 36
+   \   00000024                      REQUIRE `?<Initializer for msg>`
+     44            "OK",
+     45            "Error",  
+     46            "Bad command or file name",
+     47            "Wrong Way",
+     48            "Not enough arguments",
+     49            "Not enough memory",
+     50            "Failed to open file",
+     51            "Failed to create file",
+     52            "Invalid Option",
+     53          };
+     54          
+
+   \                                 In segment CODE, align 4, keep-with-next
+     55          int striicmp(const char *s, char *ss){
+     56            do{
+     57              if((*s|0x20)-(*ss|0x20)) return 1;
+   \                     striicmp:
+   \                     ??striicmp_0:
+   \   00000000   ........           LDRSB    R2,[R0], #+1
+   \   00000004   ........           LDRSB    R3,[R1], #+1
+   \   00000008   202082E3           ORR      R2,R2,#0x20
+   \   0000000C   203083E3           ORR      R3,R3,#0x20
+   \   00000010   032052E0           SUBS     R2,R2,R3
+   \   00000014   0100A013           MOVNE    R0,#+1
+   \   00000018   1EFF2F11           BXNE     LR
+     58              ++s; ++ss;
+     59            }while(*s);
+   \   0000001C   D020D0E1           LDRSB    R2,[R0, #+0]
+   \   00000020   000052E3           CMP      R2,#+0
+   \   00000024   F5FFFF1A           BNE      ??striicmp_0
+     60            return 0;
+   \   00000028   0000A0E3           MOV      R0,#+0
+   \   0000002C   1EFF2FE1           BX       LR               ;; return
+     61          }
+     62          
+     63          
+     64          
+     65          int execbat(char *fname);
+     66            
+
+   \                                 In segment CODE, align 4, keep-with-next
+     67          void print(const char *con){
+   \                     print:
+   \   00000000   F0402DE9           PUSH     {R4-R7,LR}
+     68            if(fcon>0 && *con){
+   \   00000004   ........           LDR      R5,??DataTable0  ;; fcon
+   \   00000008   0040A0E1           MOV      R4,R0
+   \   0000000C   000095E5           LDR      R0,[R5, #+0]
+   \   00000010   010050E3           CMP      R0,#+1
+   \   00000014   F080BDB8           POPLT    {R4-R7,PC}
+   \   00000018   D000D4E1           LDRSB    R0,[R4, #+0]
+   \   0000001C   000050E3           CMP      R0,#+0
+   \   00000020   F080BD08           POPEQ    {R4-R7,PC}
+     69              //crlf
+     70              if(conend+strlen(con)>=conbuf+conbufsize-4) flush
+   \   00000024   ........           LDR      R6,??DataTable67  ;; conend
+   \   00000028   ........           LDR      R7,??DataTable66  ;; conbuf
+   \   0000002C   0400A0E1           MOV      R0,R4
+   \   00000030   ........           _BLF     strlen,??strlen??rA
+   \   00000034   001096E5           LDR      R1,[R6, #+0]
+   \   00000038   FC20A0E3           MOV      R2,#+252
+   \   0000003C   010080E0           ADD      R0,R0,R1
+   \   00000040   702E82E3           ORR      R2,R2,#0x700
+   \   00000044   072082E0           ADD      R2,R2,R7
+   \   00000048   020050E1           CMP      R0,R2
+   \   0000004C   0700003A           BCC      ??print_0
+   \   00000050   000095E5           LDR      R0,[R5, #+0]
+   \   00000054   ........           LDR      R3,??DataTable65  ;; err
+   \   00000058   072041E0           SUB      R2,R1,R7
+   \   0000005C   0710A0E1           MOV      R1,R7
+   \   00000060   0C0000EF           SWI      +12
+   \   00000064   007086E5           STR      R7,[R6, #+0]
+   \   00000068   0000A0E3           MOV      R0,#+0
+   \   0000006C   0000C7E5           STRB     R0,[R7, #+0]
+     71              strcpy(conend, con);
+   \                     ??print_0:
+   \   00000070   000096E5           LDR      R0,[R6, #+0]
+   \   00000074   0410A0E1           MOV      R1,R4
+   \   00000078   ........           _BLF     strcpy,??strcpy??rA
+     72              conend+=strlen(con);
+   \   0000007C   0400A0E1           MOV      R0,R4
+   \   00000080   ........           _BLF     strlen,??strlen??rA
+   \   00000084   001096E5           LDR      R1,[R6, #+0]
+   \   00000088   010080E0           ADD      R0,R0,R1
+   \   0000008C   000086E5           STR      R0,[R6, #+0]
+     73              //*con=0;
+     74            }
+     75          }
+   \   00000090   F080BDE8           POP      {R4-R7,PC}       ;; return
+     76          
+
+   \                                 In segment CODE, align 4, keep-with-next
+     77          inline void cr(){
+     78            *conend++=0xd; *conend++=0xa;
+   \                     cr:
+   \   00000000   2C009FE5           LDR      R0,??cr_0        ;; conend
+   \   00000004   0D20A0E3           MOV      R2,#+13
+   \   00000008   001090E5           LDR      R1,[R0, #+0]
+   \   0000000C   0020C1E5           STRB     R2,[R1, #+0]
+   \   00000010   001090E5           LDR      R1,[R0, #+0]
+   \   00000014   0A20A0E3           MOV      R2,#+10
+   \   00000018   011081E2           ADD      R1,R1,#+1
+   \   0000001C   001080E5           STR      R1,[R0, #+0]
+   \   00000020   0020C1E5           STRB     R2,[R1, #+0]
+   \   00000024   001090E5           LDR      R1,[R0, #+0]
+   \   00000028   011081E2           ADD      R1,R1,#+1
+   \   0000002C   001080E5           STR      R1,[R0, #+0]
+     79          }
+   \   00000030   1EFF2FE1           BX       LR               ;; return
+   \                     ??cr_0:
+   \   00000034   ........           DC32     conend
+     80          
+
+   \                                 In segment CODE, align 4, keep-with-next
+     81          void arg(char *s){ 
+     82            argc=0;
+   \                     arg:
+   \   00000000   ........           LDR      R1,??DataTable68  ;; argc
+   \   00000004   ........           LDR      R3,??DataTable5  ;; argvv
+   \   00000008   0020A0E3           MOV      R2,#+0
+   \   0000000C   002081E5           STR      R2,[R1, #+0]
+     83            do{
+     84              argvv[argc++]=s;
+   \                     ??arg_0:
+   \   00000010   00C091E5           LDR      R12,[R1, #+0]
+   \   00000014   0C0183E7           STR      R0,[R3, +R12, LSL #+2]
+   \   00000018   01C08CE2           ADD      R12,R12,#+1
+   \   0000001C   00C081E5           STR      R12,[R1, #+0]
+     85              while(*++s && *s!=' ');
+   \                     ??arg_1:
+   \   00000020   D1C0F0E1           LDRSB    R12,[R0, #+1]!
+   \   00000024   00005CE3           CMP      R12,#+0
+   \   00000028   0A00000A           BEQ      ??arg_2
+   \   0000002C   20005CE3           CMP      R12,#+32
+   \   00000030   FAFFFF1A           BNE      ??arg_1
+     86              if(!*s) break;
+     87              *s=0;
+   \   00000034   0020C0E5           STRB     R2,[R0, #+0]
+     88              while(*++s && *s==' ');
+   \                     ??arg_3:
+   \   00000038   D1C0F0E1           LDRSB    R12,[R0, #+1]!
+   \   0000003C   00005CE3           CMP      R12,#+0
+   \   00000040   0400000A           BEQ      ??arg_2
+   \   00000044   20005CE3           CMP      R12,#+32
+   \   00000048   FAFFFF0A           BEQ      ??arg_3
+   \   0000004C   00C091E5           LDR      R12,[R1, #+0]
+   \   00000050   0F005CE3           CMP      R12,#+15
+   \   00000054   EDFFFFBA           BLT      ??arg_0
+     89            }while(*s && argc<maxargv-1);
+     90            argvv[argc]=0;
+   \                     ??arg_2:
+   \   00000058   000091E5           LDR      R0,[R1, #+0]
+   \   0000005C   002183E7           STR      R2,[R3, +R0, LSL #+2]
+     91            argv=argvv;
+   \   00000060   ........           LDR      R0,??DataTable69  ;; argv
+   \   00000064   003080E5           STR      R3,[R0, #+0]
+     92          }
+   \   00000068   1EFF2FE1           BX       LR               ;; return
+     93          
+
+   \                                 In segment CODE, align 4, keep-with-next
+     94          void Killer(void){
+   \                     Killer:
+   \   00000000   00402DE9           PUSH     {LR}
+     95            extern void *ELF_BEGIN;
+     96            extern void kill_data(void *p, void (*func_p)(void *));
+     97            kill_data(&ELF_BEGIN,(void (*)(void *))mfree_adr());
+   \   00000004   158000EF           SWI      +32789
+   \   00000008   0010A0E1           MOV      R1,R0
+   \   0000000C   04009FE5           LDR      R0,??Killer_0    ;; ELF_BEGIN
+   \   00000010   0040BDE8           POP      {LR}             ;; Pop
+   \   00000014   ........           _BF      kill_data,??kill_data??rA  ;; tailcall
+   \                     ??Killer_0:
+   \   00000018   ........           DC32     ELF_BEGIN
+     98          }
+     99          
+    100          typedef long Elf(char*, void*, void*, void*);
+    101          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    102          int rundll(char *exename, void *fc, void *curdir, void *arrgc, void *arrgv){
+   \                     rundll:
+   \   00000000   F04F2DE9           PUSH     {R4-R11,LR}
+   \   00000004   08D04DE2           SUB      SP,SP,#+8
+   \   00000008   2C709DE5           LDR      R7,[SP, #+44]
+   \   0000000C   0140A0E1           MOV      R4,R1
+   \   00000010   0250A0E1           MOV      R5,R2
+   \   00000014   0360A0E1           MOV      R6,R3
+    103              int f, l, size, msize, exoff;
+    104              unsigned int err;
+    105              char *mem;
+    106              long *tab;
+    107              if((f=fopen(exename,A_ReadOnly+A_BIN,P_READ,&err))==-1) return erropen;
+   \   00000018   0D30A0E1           MOV      R3,SP
+   \   0000001C   8020A0E3           MOV      R2,#+128
+   \   00000020   801CA0E3           MOV      R1,#+32768
+   \   00000024   0A0000EF           SWI      +10
+   \   00000028   0090A0E1           MOV      R9,R0
+   \   0000002C   010079E3           CMN      R9,#+1
+   \   00000030   0600A003           MOVEQ    R0,#+6
+   \   00000034   F68FBD08           POPEQ    {R1,R2,R4-R11,PC}
+    108              if((l=lseek(f,0,2,&err,&err))<16) return error;
+   \   00000038   0D00A0E1           MOV      R0,SP
+   \   0000003C   01002DE9           PUSH     {R0}
+   \   00000040   04308DE2           ADD      R3,SP,#+4
+   \   00000044   0220A0E3           MOV      R2,#+2
+   \   00000048   0010A0E3           MOV      R1,#+0
+   \   0000004C   0900A0E1           MOV      R0,R9
+   \   00000050   0F0000EF           SWI      +15
+   \   00000054   00A0A0E1           MOV      R10,R0
+   \   00000058   10005AE3           CMP      R10,#+16
+   \   0000005C   04D08DE2           ADD      SP,SP,#+4
+   \   00000060   0100A0B3           MOVLT    R0,#+1
+   \   00000064   F68FBDB8           POPLT    {R1,R2,R4-R11,PC}
+    109              lseek(f,l-4,0,&err,&err);
+   \   00000068   0D00A0E1           MOV      R0,SP
+   \   0000006C   01002DE9           PUSH     {R0}
+   \   00000070   04308DE2           ADD      R3,SP,#+4
+   \   00000074   0020A0E3           MOV      R2,#+0
+   \   00000078   04104AE2           SUB      R1,R10,#+4
+   \   0000007C   0900A0E1           MOV      R0,R9
+   \   00000080   0F0000EF           SWI      +15
+    110              fread(f,&size,4,&err);
+   \   00000084   04308DE2           ADD      R3,SP,#+4
+   \   00000088   0420A0E3           MOV      R2,#+4
+   \   0000008C   08108DE2           ADD      R1,SP,#+8
+   \   00000090   0900A0E1           MOV      R0,R9
+   \   00000094   0B0000EF           SWI      +11
+    111              lseek(f,0,0,&err,&err);
+   \   00000098   04008DE2           ADD      R0,SP,#+4
+   \   0000009C   01002DE9           PUSH     {R0}
+   \   000000A0   08308DE2           ADD      R3,SP,#+8
+   \   000000A4   0020A0E3           MOV      R2,#+0
+   \   000000A8   0010A0E3           MOV      R1,#+0
+   \   000000AC   0900A0E1           MOV      R0,R9
+   \   000000B0   0F0000EF           SWI      +15
+    112              //if(size<l-4) return 3;
+    113              msize=(size>l)?size:l;
+   \   000000B4   0C009DE5           LDR      R0,[SP, #+12]
+   \   000000B8   08D08DE2           ADD      SP,SP,#+8
+   \   000000BC   00005AE1           CMP      R10,R0
+   \   000000C0   00B0A0B1           MOVLT    R11,R0
+   \   000000C4   0AB0A0A1           MOVGE    R11,R10
+    114              if(!(mem=(char*)malloc(msize))) return errmemory;
+   \   000000C8   0B00A0E1           MOV      R0,R11
+   \   000000CC   140000EF           SWI      +20
+   \   000000D0   0080B0E1           MOVS     R8,R0
+   \   000000D4   0500A003           MOVEQ    R0,#+5
+   \   000000D8   F68FBD08           POPEQ    {R1,R2,R4-R11,PC}
+    115              zeromem(mem,msize);
+   \   000000DC   0B20A0E1           MOV      R2,R11
+   \   000000E0   0010A0E3           MOV      R1,#+0
+   \   000000E4   ........           _BLF     memset,??memset??rA
+    116              fread(f,mem,msize,&err);
+   \   000000E8   0D30A0E1           MOV      R3,SP
+   \   000000EC   0B20A0E1           MOV      R2,R11
+   \   000000F0   0810A0E1           MOV      R1,R8
+   \   000000F4   0900A0E1           MOV      R0,R9
+   \   000000F8   0B0000EF           SWI      +11
+    117              fclose(f,&err);
+   \   000000FC   0D10A0E1           MOV      R1,SP
+   \   00000100   0900A0E1           MOV      R0,R9
+   \   00000104   0D0000EF           SWI      +13
+    118              tab=(long*)(mem+l);
+    119              *--tab=0;
+   \   00000108   08008AE0           ADD      R0,R10,R8
+   \   0000010C   040040E2           SUB      R0,R0,#+4
+   \   00000110   0010A0E3           MOV      R1,#+0
+   \   00000114   ........           STR      R1,[R0], #-4
+    120              exoff=*--tab;
+   \   00000118   009090E5           LDR      R9,[R0, #+0]
+    121              *tab=0;
+   \   0000011C   001080E5           STR      R1,[R0, #+0]
+    122              while(*--tab);
+   \                     ??rundll_0:
+   \   00000120   042030E5           LDR      R2,[R0, #-4]!
+   \   00000124   000052E3           CMP      R2,#+0
+   \   00000128   FCFFFF1A           BNE      ??rundll_0
+    123              while(*++tab){
+   \                     ??rundll_1:
+   \   0000012C   0420B0E5           LDR      R2,[R0, #+4]!
+   \   00000130   000052E3           CMP      R2,#+0
+   \   00000134   0500000A           BEQ      ??rundll_2
+    124                *(long*)(mem+*tab)+=(long)mem;
+   \   00000138   082082E0           ADD      R2,R2,R8
+   \   0000013C   003092E5           LDR      R3,[R2, #+0]
+   \   00000140   033088E0           ADD      R3,R8,R3
+   \   00000144   003082E5           STR      R3,[R2, #+0]
+    125                *tab=0;
+   \   00000148   001080E5           STR      R1,[R0, #+0]
+   \   0000014C   F6FFFFEA           B        ??rundll_1
+    126              }
+    127              l=((Elf*)(mem+exoff))(fc,curdir,arrgc,arrgv);
+   \                     ??rundll_2:
+   \   00000150   0730A0E1           MOV      R3,R7
+   \   00000154   0620A0E1           MOV      R2,R6
+   \   00000158   0510A0E1           MOV      R1,R5
+   \   0000015C   0400A0E1           MOV      R0,R4
+   \   00000160   084089E0           ADD      R4,R9,R8
+   \   00000164   34FF2FE1           BLX      R4
+    128              mfree(mem);
+   \   00000168   0800A0E1           MOV      R0,R8
+   \   0000016C   150000EF           SWI      +21
+    129            return ok;
+   \   00000170   0000A0E3           MOV      R0,#+0
+   \   00000174   F68FBDE8           POP      {R1,R2,R4-R11,PC}  ;; return
+    130          }
+    131          
+    132          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    133          int isfile(char *fname){
+   \                     isfile:
+   \   00000000   10402DE9           PUSH     {R4,LR}
+    134            unsigned char at; 
+    135            GetFileAttrib(fname,&at,&err); 
+   \   00000004   ........           LDR      R4,??DataTable65  ;; err
+   \   00000008   04D04DE2           SUB      SP,SP,#+4
+   \   0000000C   0420A0E1           MOV      R2,R4
+   \   00000010   0D10A0E1           MOV      R1,SP
+   \   00000014   120000EF           SWI      +18
+    136            return !err;
+   \   00000018   000094E5           LDR      R0,[R4, #+0]
+   \   0000001C   000050E3           CMP      R0,#+0
+   \   00000020   0100A003           MOVEQ    R0,#+1
+   \   00000024   1280BD08           POPEQ    {R1,R4,PC}
+   \   00000028   0000A0E3           MOV      R0,#+0
+   \   0000002C   1280BDE8           POP      {R1,R4,PC}       ;; return
+    137          }
+    138          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    139          void execelf(char *exename, char *fname){
+   \                     execelf:
+   \   00000000   70402DE9           PUSH     {R4-R6,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+   \   00000008   0150A0E1           MOV      R5,R1
+    140           WSHDR *ws=AllocWS(256);
+   \   0000000C   400FA0E3           MOV      R0,#+256
+   \   00000010   250100EF           SWI      +293
+   \   00000014   0060A0E1           MOV      R6,R0
+    141           str_2ws(ws,exename,strlen(exename)+1);
+   \   00000018   0400A0E1           MOV      R0,R4
+   \   0000001C   ........           _BLF     strlen,??strlen??rA
+   \   00000020   012080E2           ADD      R2,R0,#+1
+   \   00000024   0410A0E1           MOV      R1,R4
+   \   00000028   0600A0E1           MOV      R0,R6
+   \   0000002C   6C0100EF           SWI      +364
+    142           ExecuteFile(ws,0,fname); 
+   \   00000030   0520A0E1           MOV      R2,R5
+   \   00000034   0010A0E3           MOV      R1,#+0
+   \   00000038   0600A0E1           MOV      R0,R6
+   \   0000003C   940000EF           SWI      +148
+    143           FreeWS(ws);
+   \   00000040   0600A0E1           MOV      R0,R6
+   \   00000044   290100EF           SWI      +297
+    144          }
+   \   00000048   7080BDE8           POP      {R4-R6,PC}       ;; return
+    145          
+    146          /////////
+    147          #include "find.h"
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+   \   DIR_ENTRY __data de[6]
+   \                     de:
+   \   00000000                      DS8 2640
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+   \   DIR_ENTRY __data dee
+   \                     dee:
+   \   00000000                      DS8 440
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+   \   char __data tmp[6][256]
+   \                     tmp:
+   \   00000000                      DS8 1536
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+   \   char __data temp[256]
+   \                     temp:
+   \   00000000                      DS8 256
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+   \   char __data name[256]
+   \                     name:
+   \   00000000                      DS8 256
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+   \   char *__data etemp
+   \                     etemp:
+   \   00000000                      DS8 4
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+   \   char *__data ename
+   \                     ename:
+   \   00000000                      DS8 4
+
+   \                                 In segment DATA_Z, align 4, align-sorted
+   \   char __data list[32768]
+   \                     list:
+   \   00000000                      DS8 32768
+
+   \                                 In segment DATA_I, align 4, align-sorted
+   \   char *__data lend
+   \                     lend:
+   \   00000000                      DS8 4
+   \   00000004                      REQUIRE `?<Initializer for lend>`
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs void un()
+   \                     un:
+   \   00000000   70402DE9           PUSH     {R4-R6,LR}
+   \   00000004   3C409FE5           LDR      R4,??un_0        ;; temp
+   \   00000008   3C609FE5           LDR      R6,??un_0+0x4    ;; lend
+   \   0000000C   0400A0E1           MOV      R0,R4
+   \   00000010   ........           _BLF     strlen,??strlen??rA
+   \   00000014   34209FE5           LDR      R2,??un_0+0x8    ;; list + 32765
+   \   00000018   015080E2           ADD      R5,R0,#+1
+   \   0000001C   000096E5           LDR      R0,[R6, #+0]
+   \   00000020   001085E0           ADD      R1,R5,R0
+   \   00000024   020051E1           CMP      R1,R2
+   \   00000028   7080BD28           POPCS    {R4-R6,PC}
+   \   0000002C   0520A0E1           MOV      R2,R5
+   \   00000030   0410A0E1           MOV      R1,R4
+   \   00000034   ........           _BLF     memcpy,??memcpy??rA
+   \   00000038   000096E5           LDR      R0,[R6, #+0]
+   \   0000003C   000085E0           ADD      R0,R5,R0
+   \   00000040   000086E5           STR      R0,[R6, #+0]
+   \   00000044   7080BDE8           POP      {R4-R6,PC}       ;; return
+   \                     ??un_0:
+   \   00000048   ........           DC32     temp
+   \   0000004C   ........           DC32     lend
+   \   00000050   ........           DC32     list + 32765
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs void extnn(char *, char *)
+   \                     extnn:
+   \   00000000   F0402DE9           PUSH     {R4-R7,LR}
+   \   00000004   ........           LDR      R5,??DataTable77  ;; temp
+   \   00000008   ........           LDR      R6,??DataTable65  ;; err
+   \   0000000C   0140A0E1           MOV      R4,R1
+   \   00000010   0010A0E1           MOV      R1,R0
+   \   00000014   0500A0E1           MOV      R0,R5
+   \   00000018   ........           _BLF     strcpy,??strcpy??rA
+   \   0000001C   0410A0E1           MOV      R1,R4
+   \   00000020   ........           LDR      R4,??DataTable14  ;; dee
+   \   00000024   0500A0E1           MOV      R0,R5
+   \   00000028   ........           _BLF     strcat,??strcat??rA
+   \   0000002C   0620A0E1           MOV      R2,R6
+   \   00000030   0510A0E1           MOV      R1,R5
+   \   00000034   0400A0E1           MOV      R0,R4
+   \   00000038   6B0000EF           SWI      +107
+   \   0000003C   000050E3           CMP      R0,#+0
+   \   00000040   0C00000A           BEQ      ??extnn_0
+   \                     ??extnn_1:
+   \   00000044   A97084E2           ADD      R7,R4,#+169
+   \   00000048   5C10A0E3           MOV      R1,#+92
+   \   0000004C   0500A0E1           MOV      R0,R5
+   \   00000050   ........           _BLF     strrchr,??strrchr??rA
+   \   00000054   0710A0E1           MOV      R1,R7
+   \   00000058   010080E2           ADD      R0,R0,#+1
+   \   0000005C   ........           _BLF     strcpy,??strcpy??rA
+   \   00000060   ........           _BLF     un,??un??rA
+   \   00000064   0610A0E1           MOV      R1,R6
+   \   00000068   0400A0E1           MOV      R0,R4
+   \   0000006C   6C0000EF           SWI      +108
+   \   00000070   000050E3           CMP      R0,#+0
+   \   00000074   F2FFFF1A           BNE      ??extnn_1
+   \                     ??extnn_0:
+   \   00000078   0610A0E1           MOV      R1,R6
+   \   0000007C   0400A0E1           MOV      R0,R4
+   \   00000080   6D0000EF           SWI      +109
+   \   00000084   F080BDE8           POP      {R4-R7,PC}       ;; return
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs void extn(char *, char *)
+   \                     extn:
+   \   00000000   F0402DE9           PUSH     {R4-R7,LR}
+   \   00000004   ........           LDR      R5,??DataTable77  ;; temp
+   \   00000008   ........           LDR      R6,??DataTable65  ;; err
+   \   0000000C   0140A0E1           MOV      R4,R1
+   \   00000010   0010A0E1           MOV      R1,R0
+   \   00000014   0500A0E1           MOV      R0,R5
+   \   00000018   ........           _BLF     strcpy,??strcpy??rA
+   \   0000001C   ........           LDR      R1,??DataTable84  ;; eline
+   \   00000020   0500A0E1           MOV      R0,R5
+   \   00000024   ........           _BLF     strcat,??strcat??rA
+   \   00000028   0410A0E1           MOV      R1,R4
+   \   0000002C   ........           LDR      R4,??DataTable14  ;; dee
+   \   00000030   0500A0E1           MOV      R0,R5
+   \   00000034   ........           _BLF     strcat,??strcat??rA
+   \   00000038   0620A0E1           MOV      R2,R6
+   \   0000003C   0510A0E1           MOV      R1,R5
+   \   00000040   0400A0E1           MOV      R0,R4
+   \   00000044   6B0000EF           SWI      +107
+   \   00000048   000050E3           CMP      R0,#+0
+   \   0000004C   0C00000A           BEQ      ??extn_0
+   \                     ??extn_1:
+   \   00000050   A97084E2           ADD      R7,R4,#+169
+   \   00000054   5C10A0E3           MOV      R1,#+92
+   \   00000058   0500A0E1           MOV      R0,R5
+   \   0000005C   ........           _BLF     strrchr,??strrchr??rA
+   \   00000060   0710A0E1           MOV      R1,R7
+   \   00000064   010080E2           ADD      R0,R0,#+1
+   \   00000068   ........           _BLF     strcpy,??strcpy??rA
+   \   0000006C   ........           _BLF     un,??un??rA
+   \   00000070   0610A0E1           MOV      R1,R6
+   \   00000074   0400A0E1           MOV      R0,R4
+   \   00000078   6C0000EF           SWI      +108
+   \   0000007C   000050E3           CMP      R0,#+0
+   \   00000080   F2FFFF1A           BNE      ??extn_1
+   \                     ??extn_0:
+   \   00000084   0610A0E1           MOV      R1,R6
+   \   00000088   0400A0E1           MOV      R0,R4
+   \   0000008C   6D0000EF           SWI      +109
+   \   00000090   F080BDE8           POP      {R4-R7,PC}       ;; return
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs void find(int, char *, char *)
+   \                     find:
+   \   00000000   F0472DE9           PUSH     {R4-R10,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+   \   00000008   0250A0E1           MOV      R5,R2
+   \   0000000C   060054E3           CMP      R4,#+6
+   \   00000010   F087BDA8           POPGE    {R4-R10,PC}
+   \   00000014   B8009FE5           LDR      R0,??find_0      ;; tmp
+   \   00000018   ........           LDR      R8,??DataTable65  ;; err
+   \   0000001C   ........           LDR      R9,??DataTable16  ;; SG
+   \   00000020   046480E0           ADD      R6,R0,R4, LSL #+8
+   \   00000024   0600A0E1           MOV      R0,R6
+   \   00000028   ........           _BLF     strcpy,??strcpy??rA
+   \   0000002C   0510A0E1           MOV      R1,R5
+   \   00000030   0600A0E1           MOV      R0,R6
+   \   00000034   ........           BL       extn
+   \   00000038   98109FE5           LDR      R1,??find_0+0x4  ;; `?<Constant "\\\\*.*">`
+   \   0000003C   0600A0E1           MOV      R0,R6
+   \   00000040   ........           _BLF     strcat,??strcat??rA
+   \   00000044   90109FE5           LDR      R1,??find_0+0x8  ;; de
+   \   00000048   6E0FA0E3           MOV      R0,#+440
+   \   0000004C   901427E0           MLA      R7,R0,R4,R1
+   \   00000050   0820A0E1           MOV      R2,R8
+   \   00000054   0610A0E1           MOV      R1,R6
+   \   00000058   0700A0E1           MOV      R0,R7
+   \   0000005C   6B0000EF           SWI      +107
+   \   00000060   000050E3           CMP      R0,#+0
+   \   00000064   1600000A           BEQ      ??find_1
+   \                     ??find_2:
+   \   00000068   A9A087E2           ADD      R10,R7,#+169
+   \   0000006C   5C10A0E3           MOV      R1,#+92
+   \   00000070   0600A0E1           MOV      R0,R6
+   \   00000074   ........           _BLF     strrchr,??strrchr??rA
+   \   00000078   0A10A0E1           MOV      R1,R10
+   \   0000007C   010080E2           ADD      R0,R0,#+1
+   \   00000080   ........           _BLF     strcpy,??strcpy??rA
+   \   00000084   000099E5           LDR      R0,[R9, #+0]
+   \   00000088   000050E3           CMP      R0,#+0
+   \   0000008C   2C00A013           MOVNE    R0,#+44
+   \   00000090   0E00A003           MOVEQ    R0,#+14
+   \   00000094   0700D0E7           LDRB     R0,[R0, +R7]
+   \   00000098   100010E3           TST      R0,#0x10
+   \   0000009C   0300000A           BEQ      ??find_3
+   \   000000A0   0520A0E1           MOV      R2,R5
+   \   000000A4   0610A0E1           MOV      R1,R6
+   \   000000A8   010084E2           ADD      R0,R4,#+1
+   \   000000AC   D3FFFFEB           BL       find
+   \                     ??find_3:
+   \   000000B0   0810A0E1           MOV      R1,R8
+   \   000000B4   0700A0E1           MOV      R0,R7
+   \   000000B8   6C0000EF           SWI      +108
+   \   000000BC   000050E3           CMP      R0,#+0
+   \   000000C0   E8FFFF1A           BNE      ??find_2
+   \                     ??find_1:
+   \   000000C4   0810A0E1           MOV      R1,R8
+   \   000000C8   0700A0E1           MOV      R0,R7
+   \   000000CC   6D0000EF           SWI      +109
+   \   000000D0   F087BDE8           POP      {R4-R10,PC}      ;; return
+   \                     ??find_0:
+   \   000000D4   ........           DC32     tmp
+   \   000000D8   ........           DC32     `?<Constant "\\\\*.*">`
+   \   000000DC   ........           DC32     de
+    148          #include "function.h"
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs char *par(char *, char *)
+   \                     par:
+   \   00000000   30402DE9           PUSH     {R4,R5,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+   \   00000008   0150A0E1           MOV      R5,R1
+   \   0000000C   D100D5E1           LDRSB    R0,[R5, #+1]
+   \   00000010   3A0050E3           CMP      R0,#+58
+   \   00000014   0300000A           BEQ      ??par_0
+   \   00000018   ........           LDR      R1,??DataTable83  ;; curdir
+   \   0000001C   0400A0E1           MOV      R0,R4
+   \   00000020   ........           _BLF     strcpy,??strcpy??rA
+   \   00000024   010000EA           B        ??par_1
+   \                     ??par_0:
+   \   00000028   0000A0E3           MOV      R0,#+0
+   \   0000002C   0000C4E5           STRB     R0,[R4, #+0]
+   \                     ??par_1:
+   \   00000030   0510A0E1           MOV      R1,R5
+   \   00000034   0400A0E1           MOV      R0,R4
+   \   00000038   ........           _BLF     strcat,??strcat??rA
+   \   0000003C   0400A0E1           MOV      R0,R4
+   \   00000040   3080BDE8           POP      {R4,R5,PC}       ;; return
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs int quit()
+   \                     quit:
+   \   00000000   0C009FE5           LDR      R0,??quit_0      ;; exit
+   \   00000004   0110A0E3           MOV      R1,#+1
+   \   00000008   0010C0E5           STRB     R1,[R0, #+0]
+   \   0000000C   0000A0E3           MOV      R0,#+0
+   \   00000010   1EFF2FE1           BX       LR               ;; return
+   \                     ??quit_0:
+   \   00000014   ........           DC32     exit
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs int empty()
+   \                     empty:
+   \   00000000   0000A0E3           MOV      R0,#+0
+   \   00000004   1EFF2FE1           BX       LR               ;; return
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs int cls()
+   \                     cls:
+   \   00000000   00402DE9           PUSH     {LR}
+   \   00000004   ........           _BLF     cr,??cr??rA
+   \   00000008   0000A0E3           MOV      R0,#+0
+   \   0000000C   0080BDE8           POP      {PC}             ;; return
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs int echo()
+   \                     echo:
+   \   00000000   30402DE9           PUSH     {R4,R5,LR}
+   \   00000004   ........           LDR      R4,??DataTable69  ;; argv
+   \   00000008   ........           LDR      R5,??DataTable19  ;; echooff
+   \   0000000C   000094E5           LDR      R0,[R4, #+0]
+   \   00000010   1F1F8FE2           ADR      R1,??echo_0      ;; "ON"
+   \   00000014   040080E2           ADD      R0,R0,#+4
+   \   00000018   000084E5           STR      R0,[R4, #+0]
+   \   0000001C   000090E5           LDR      R0,[R0, #+0]
+   \   00000020   ........           _BLF     stricmp,??stricmp??rA
+   \   00000024   000050E3           CMP      R0,#+0
+   \   00000028   0300000A           BEQ      ??echo_1
+   \   0000002C   0000A0E3           MOV      R0,#+0
+   \                     ??echo_2:
+   \   00000030   0000C5E5           STRB     R0,[R5, #+0]
+   \   00000034   0000A0E3           MOV      R0,#+0
+   \   00000038   3080BDE8           POP      {R4,R5,PC}
+   \                     ??echo_1:
+   \   0000003C   000094E5           LDR      R0,[R4, #+0]
+   \   00000040   141F8FE2           ADR      R1,??echo_0+0x4  ;; "OFF"
+   \   00000044   000090E5           LDR      R0,[R0, #+0]
+   \   00000048   ........           _BLF     stricmp,??stricmp??rA
+   \   0000004C   000050E3           CMP      R0,#+0
+   \   00000050   0100A013           MOVNE    R0,#+1
+   \   00000054   F5FFFF1A           BNE      ??echo_2
+   \   00000058   000094E5           LDR      R0,[R4, #+0]
+   \   0000005C   040040E2           SUB      R0,R0,#+4
+   \   00000060   000084E5           STR      R0,[R4, #+0]
+   \   00000064   020000EA           B        ??echo_3
+   \                     ??echo_4:
+   \   00000068   000094E5           LDR      R0,[R4, #+0]
+   \   0000006C   000090E5           LDR      R0,[R0, #+0]
+   \   00000070   ........           BL       print
+   \                     ??echo_3:
+   \   00000074   000094E5           LDR      R0,[R4, #+0]
+   \   00000078   040080E2           ADD      R0,R0,#+4
+   \   0000007C   000084E5           STR      R0,[R4, #+0]
+   \   00000080   000090E5           LDR      R0,[R0, #+0]
+   \   00000084   000050E3           CMP      R0,#+0
+   \   00000088   F6FFFF1A           BNE      ??echo_4
+   \   0000008C   0000A0E3           MOV      R0,#+0
+   \   00000090   3080BDE8           POP      {R4,R5,PC}       ;; return
+   \                     ??echo_0:
+   \   00000094   4F4E0000           DC8      "ON",+0
+   \   00000098   4F464600           DC8      "OFF"
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs int mem()
+   \                     mem:
+   \   00000000   70402DE9           PUSH     {R4-R6,LR}
+   \   00000004   ........           LDR      R5,??DataTable65  ;; err
+   \   00000008   5F0000EF           SWI      +95
+   \   0000000C   0040A0E1           MOV      R4,R0
+   \   00000010   0510A0E1           MOV      R1,R5
+   \   00000014   0000A0E3           MOV      R0,#+0
+   \   00000018   8A0000EF           SWI      +138
+   \   0000001C   0060A0E1           MOV      R6,R0
+   \   00000020   0510A0E1           MOV      R1,R5
+   \   00000024   ........           LDR      R5,??DataTable77  ;; temp
+   \   00000028   0000A0E3           MOV      R0,#+0
+   \   0000002C   8B0000EF           SWI      +139
+   \   00000030   4415A0E1           ASR      R1,R4,#+10
+   \   00000034   02002DE9           PUSH     {R1}
+   \   00000038   4635A0E1           ASR      R3,R6,#+10
+   \   0000003C   18109FE5           LDR      R1,??mem_0       ;; `?<Constant "Data on the disk of %...">`
+   \   00000040   4025A0E1           ASR      R2,R0,#+10
+   \   00000044   0500A0E1           MOV      R0,R5
+   \   00000048   160000EF           SWI      +22
+   \   0000004C   0500A0E1           MOV      R0,R5
+   \   00000050   ........           BL       print
+   \   00000054   0000A0E3           MOV      R0,#+0
+   \   00000058   7280BDE8           POP      {R1,R4-R6,PC}    ;; return
+   \                     ??mem_0:
+   \   0000005C   ........           DC32     `?<Constant "Data on the disk of %...">`
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs int date()
+   \                     `date`:
+   \   00000000   10402DE9           PUSH     {R4,LR}
+   \   00000004   ........           LDR      R4,??DataTable77  ;; temp
+   \   00000008   10D04DE2           SUB      SP,SP,#+16
+   \   0000000C   08108DE2           ADD      R1,SP,#+8
+   \   00000010   0D00A0E1           MOV      R0,SP
+   \   00000014   B40000EF           SWI      +180
+   \   00000018   00009DE5           LDR      R0,[SP, #+0]
+   \   0000001C   24109FE5           LDR      R1,??date_0      ;; `?<Constant "%d.%02d.%d">`
+   \   00000020   01002DE9           PUSH     {R0}
+   \   00000024   0830DDE5           LDRB     R3,[SP, #+8]
+   \   00000028   0920DDE5           LDRB     R2,[SP, #+9]
+   \   0000002C   0400A0E1           MOV      R0,R4
+   \   00000030   160000EF           SWI      +22
+   \   00000034   0400A0E1           MOV      R0,R4
+   \   00000038   ........           BL       print
+   \   0000003C   0000A0E3           MOV      R0,#+0
+   \   00000040   14D08DE2           ADD      SP,SP,#+20
+   \   00000044   1080BDE8           POP      {R4,PC}          ;; return
+   \                     ??date_0:
+   \   00000048   ........           DC32     `?<Constant "%d.%02d.%d">`
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs int time()
+   \                     time:
+   \   00000000   10402DE9           PUSH     {R4,LR}
+   \   00000004   ........           LDR      R4,??DataTable77  ;; temp
+   \   00000008   10D04DE2           SUB      SP,SP,#+16
+   \   0000000C   0D10A0E1           MOV      R1,SP
+   \   00000010   08008DE2           ADD      R0,SP,#+8
+   \   00000014   B40000EF           SWI      +180
+   \   00000018   0130DDE5           LDRB     R3,[SP, #+1]
+   \   0000001C   0020DDE5           LDRB     R2,[SP, #+0]
+   \   00000020   18109FE5           LDR      R1,??time_0      ;; `?<Constant "%d:%02d">`
+   \   00000024   0400A0E1           MOV      R0,R4
+   \   00000028   160000EF           SWI      +22
+   \   0000002C   0400A0E1           MOV      R0,R4
+   \   00000030   ........           BL       print
+   \   00000034   0000A0E3           MOV      R0,#+0
+   \   00000038   10D08DE2           ADD      SP,SP,#+16
+   \   0000003C   1080BDE8           POP      {R4,PC}          ;; return
+   \                     ??time_0:
+   \   00000040   ........           DC32     `?<Constant "%d:%02d">`
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs int md()
+   \                     md:
+   \   00000000   ........           LDR      R0,??DataTable69  ;; argv
+   \   00000004   30402DE9           PUSH     {R4,R5,LR}
+   \   00000008   000090E5           LDR      R0,[R0, #+0]
+   \   0000000C   ........           LDR      R4,??DataTable64  ;; ar1
+   \   00000010   ........           LDR      R5,??DataTable65  ;; err
+   \   00000014   041090E5           LDR      R1,[R0, #+4]
+   \   00000018   0400A0E1           MOV      R0,R4
+   \   0000001C   ........           BL       par
+   \   00000020   0510A0E1           MOV      R1,R5
+   \   00000024   0400A0E1           MOV      R0,R4
+   \   00000028   100000EF           SWI      +16
+   \   0000002C   000095E5           LDR      R0,[R5, #+0]
+   \   00000030   000050E3           CMP      R0,#+0
+   \   00000034   0300A013           MOVNE    R0,#+3
+   \   00000038   3080BDE8           POP      {R4,R5,PC}       ;; return
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs int rd()
+   \                     rd:
+   \   00000000   ........           LDR      R0,??DataTable69  ;; argv
+   \   00000004   30402DE9           PUSH     {R4,R5,LR}
+   \   00000008   000090E5           LDR      R0,[R0, #+0]
+   \   0000000C   ........           LDR      R4,??DataTable64  ;; ar1
+   \   00000010   ........           LDR      R5,??DataTable65  ;; err
+   \   00000014   041090E5           LDR      R1,[R0, #+4]
+   \   00000018   0400A0E1           MOV      R0,R4
+   \   0000001C   ........           BL       par
+   \   00000020   0510A0E1           MOV      R1,R5
+   \   00000024   0400A0E1           MOV      R0,R4
+   \   00000028   8F0000EF           SWI      +143
+   \   0000002C   000095E5           LDR      R0,[R5, #+0]
+   \   00000030   000050E3           CMP      R0,#+0
+   \   00000034   0300A013           MOVNE    R0,#+3
+   \   00000038   3080BDE8           POP      {R4,R5,PC}       ;; return
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs int ver()
+   \                     ver:
+   \   00000000   ........           LDR      R0,??DataTable30  ;; Title
+   \   00000004   00402DE9           PUSH     {LR}
+   \   00000008   ........           BL       print
+   \   0000000C   0000A0E3           MOV      R0,#+0
+   \   00000010   0080BDE8           POP      {PC}             ;; return
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs int setpath()
+   \                     setpath:
+   \   00000000   ........           LDR      R0,??DataTable68  ;; argc
+   \   00000004   10402DE9           PUSH     {R4,LR}
+   \   00000008   000090E5           LDR      R0,[R0, #+0]
+   \   0000000C   ........           LDR      R4,??DataTable93  ;; path
+   \   00000010   010050E3           CMP      R0,#+1
+   \   00000014   0400001A           BNE      ??setpath_0
+   \   00000018   ........           _BLF     cr,??cr??rA
+   \   0000001C   0400A0E1           MOV      R0,R4
+   \   00000020   ........           BL       print
+   \   00000024   0000A0E3           MOV      R0,#+0
+   \   00000028   1080BDE8           POP      {R4,PC}
+   \                     ??setpath_0:
+   \   0000002C   0400A0E1           MOV      R0,R4
+   \   00000030   ........           _BLF     strlen,??strlen??rA
+   \   00000034   040080E0           ADD      R0,R0,R4
+   \   00000038   D10050E1           LDRSB    R0,[R0, #-1]
+   \   0000003C   3B0050E3           CMP      R0,#+59
+   \   00000040   0200000A           BEQ      ??setpath_1
+   \   00000044   20109FE5           LDR      R1,??setpath_2   ;; ezap
+   \   00000048   0400A0E1           MOV      R0,R4
+   \   0000004C   ........           _BLF     strcat,??strcat??rA
+   \                     ??setpath_1:
+   \   00000050   ........           LDR      R0,??DataTable69  ;; argv
+   \   00000054   000090E5           LDR      R0,[R0, #+0]
+   \   00000058   041090E5           LDR      R1,[R0, #+4]
+   \   0000005C   0400A0E1           MOV      R0,R4
+   \   00000060   ........           _BLF     strcat,??strcat??rA
+   \   00000064   0000A0E3           MOV      R0,#+0
+   \   00000068   1080BDE8           POP      {R4,PC}          ;; return
+   \                     ??setpath_2:
+   \   0000006C   ........           DC32     ezap
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs int ren()
+   \                     ren:
+   \   00000000   ........           LDR      R0,??DataTable68  ;; argc
+   \   00000004   F0472DE9           PUSH     {R4-R10,LR}
+   \   00000008   000090E5           LDR      R0,[R0, #+0]
+   \   0000000C   030050E3           CMP      R0,#+3
+   \   00000010   0400A013           MOVNE    R0,#+4
+   \   00000014   F087BD18           POPNE    {R4-R10,PC}
+   \   00000018   ........           LDR      R5,??DataTable69  ;; argv
+   \   0000001C   ........           LDR      R4,??DataTable64  ;; ar1
+   \   00000020   000095E5           LDR      R0,[R5, #+0]
+   \   00000024   ........           LDR      R7,??DataTable57  ;; ar2
+   \   00000028   041090E5           LDR      R1,[R0, #+4]
+   \   0000002C   ........           LDR      R6,??DataTable53  ;; `?<Constant " => ">`
+   \   00000030   ........           LDR      R8,??DataTable65  ;; err
+   \   00000034   0400A0E1           MOV      R0,R4
+   \   00000038   ........           BL       par
+   \   0000003C   000095E5           LDR      R0,[R5, #+0]
+   \   00000040   081090E5           LDR      R1,[R0, #+8]
+   \   00000044   0700A0E1           MOV      R0,R7
+   \   00000048   ........           BL       par
+   \   0000004C   2A10A0E3           MOV      R1,#+42
+   \   00000050   0400A0E1           MOV      R0,R4
+   \   00000054   ........           _BLF     strchr,??strchr??rA
+   \   00000058   000050E3           CMP      R0,#+0
+   \   0000005C   1200001A           BNE      ??ren_0
+   \   00000060   0820A0E1           MOV      R2,R8
+   \   00000064   0710A0E1           MOV      R1,R7
+   \   00000068   0400A0E1           MOV      R0,R4
+   \   0000006C   8E0000EF           SWI      +142
+   \   00000070   000098E5           LDR      R0,[R8, #+0]
+   \   00000074   000050E3           CMP      R0,#+0
+   \   00000078   0100000A           BEQ      ??ren_1
+   \                     ??ren_2:
+   \   0000007C   0100A0E3           MOV      R0,#+1
+   \   00000080   F087BDE8           POP      {R4-R10,PC}
+   \                     ??ren_1:
+   \   00000084   000095E5           LDR      R0,[R5, #+0]
+   \   00000088   040090E5           LDR      R0,[R0, #+4]
+   \   0000008C   ........           BL       print
+   \   00000090   0600A0E1           MOV      R0,R6
+   \   00000094   ........           BL       print
+   \   00000098   000095E5           LDR      R0,[R5, #+0]
+   \   0000009C   080090E5           LDR      R0,[R0, #+8]
+   \   000000A0   ........           BL       print
+   \   000000A4   0000A0E3           MOV      R0,#+0
+   \   000000A8   F087BDE8           POP      {R4-R10,PC}
+   \                     ??ren_0:
+   \   000000AC   ........           LDR      R9,??DataTable75  ;; lend
+   \   000000B0   ........           LDR      R10,??DataTable76  ;; list
+   \   000000B4   5C10A0E3           MOV      R1,#+92
+   \   000000B8   00A089E5           STR      R10,[R9, #+0]
+   \   000000BC   0400A0E1           MOV      R0,R4
+   \   000000C0   ........           _BLF     strrchr,??strrchr??rA
+   \   000000C4   011080E2           ADD      R1,R0,#+1
+   \   000000C8   ........           LDR      R0,??DataTable83  ;; curdir
+   \   000000CC   ........           BL       extnn
+   \   000000D0   120000EA           B        ??ren_3
+   \                     ??ren_4:
+   \   000000D4   0820A0E1           MOV      R2,R8
+   \   000000D8   0710A0E1           MOV      R1,R7
+   \   000000DC   0A00A0E1           MOV      R0,R10
+   \   000000E0   8E0000EF           SWI      +142
+   \   000000E4   000098E5           LDR      R0,[R8, #+0]
+   \   000000E8   000050E3           CMP      R0,#+0
+   \   000000EC   E2FFFF1A           BNE      ??ren_2
+   \   000000F0   ........           _BLF     cr,??cr??rA
+   \   000000F4   0A00A0E1           MOV      R0,R10
+   \   000000F8   ........           BL       print
+   \   000000FC   0600A0E1           MOV      R0,R6
+   \   00000100   ........           BL       print
+   \   00000104   000095E5           LDR      R0,[R5, #+0]
+   \   00000108   080090E5           LDR      R0,[R0, #+8]
+   \   0000010C   ........           BL       print
+   \   00000110   0A00A0E1           MOV      R0,R10
+   \   00000114   ........           _BLF     strlen,??strlen??rA
+   \   00000118   0A0080E0           ADD      R0,R0,R10
+   \   0000011C   01A080E2           ADD      R10,R0,#+1
+   \                     ??ren_3:
+   \   00000120   000099E5           LDR      R0,[R9, #+0]
+   \   00000124   00005AE1           CMP      R10,R0
+   \   00000128   E9FFFF3A           BCC      ??ren_4
+   \   0000012C   0000A0E3           MOV      R0,#+0
+   \   00000130   F087BDE8           POP      {R4-R10,PC}      ;; return
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs int del()
+   \                     del:
+   \   00000000   ........           LDR      R0,??DataTable69  ;; argv
+   \   00000004   F0402DE9           PUSH     {R4-R7,LR}
+   \   00000008   ........           LDR      R4,??DataTable64  ;; ar1
+   \   0000000C   000090E5           LDR      R0,[R0, #+0]
+   \   00000010   ........           LDR      R5,??DataTable65  ;; err
+   \   00000014   041090E5           LDR      R1,[R0, #+4]
+   \   00000018   0400A0E1           MOV      R0,R4
+   \   0000001C   ........           BL       par
+   \   00000020   2A10A0E3           MOV      R1,#+42
+   \   00000024   0400A0E1           MOV      R0,R4
+   \   00000028   ........           _BLF     strchr,??strchr??rA
+   \   0000002C   000050E3           CMP      R0,#+0
+   \   00000030   0600001A           BNE      ??del_0
+   \   00000034   0510A0E1           MOV      R1,R5
+   \   00000038   0400A0E1           MOV      R0,R4
+   \   0000003C   6B0100EF           SWI      +363
+   \   00000040   000095E5           LDR      R0,[R5, #+0]
+   \   00000044   000050E3           CMP      R0,#+0
+   \   00000048   0300A013           MOVNE    R0,#+3
+   \   0000004C   F080BDE8           POP      {R4-R7,PC}
+   \                     ??del_0:
+   \   00000050   ........           LDR      R6,??DataTable75  ;; lend
+   \   00000054   ........           LDR      R7,??DataTable76  ;; list
+   \   00000058   5C10A0E3           MOV      R1,#+92
+   \   0000005C   007086E5           STR      R7,[R6, #+0]
+   \   00000060   0400A0E1           MOV      R0,R4
+   \   00000064   ........           _BLF     strrchr,??strrchr??rA
+   \   00000068   011080E2           ADD      R1,R0,#+1
+   \   0000006C   ........           LDR      R0,??DataTable83  ;; curdir
+   \   00000070   ........           BL       extnn
+   \   00000074   030000EA           B        ??del_1
+   \                     ??del_2:
+   \   00000078   0700A0E1           MOV      R0,R7
+   \   0000007C   ........           _BLF     strlen,??strlen??rA
+   \   00000080   070080E0           ADD      R0,R0,R7
+   \   00000084   017080E2           ADD      R7,R0,#+1
+   \                     ??del_1:
+   \   00000088   000096E5           LDR      R0,[R6, #+0]
+   \   0000008C   000057E1           CMP      R7,R0
+   \   00000090   0700002A           BCS      ??del_3
+   \   00000094   0510A0E1           MOV      R1,R5
+   \   00000098   0700A0E1           MOV      R0,R7
+   \   0000009C   6B0100EF           SWI      +363
+   \   000000A0   000095E5           LDR      R0,[R5, #+0]
+   \   000000A4   000050E3           CMP      R0,#+0
+   \   000000A8   F2FFFF0A           BEQ      ??del_2
+   \   000000AC   0100A0E3           MOV      R0,#+1
+   \   000000B0   F080BDE8           POP      {R4-R7,PC}
+   \                     ??del_3:
+   \   000000B4   0000A0E3           MOV      R0,#+0
+   \   000000B8   F080BDE8           POP      {R4-R7,PC}       ;; return
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs int copyxx(char *, int)
+   \                     copyxx:
+   \   00000000   F04F2DE9           PUSH     {R4-R11,LR}
+   \   00000004   ........           LDR      R5,??DataTable65  ;; err
+   \   00000008   0040A0E1           MOV      R4,R0
+   \   0000000C   01B0A0E1           MOV      R11,R1
+   \   00000010   0530A0E1           MOV      R3,R5
+   \   00000014   8020A0E3           MOV      R2,#+128
+   \   00000018   801CA0E3           MOV      R1,#+32768
+   \   0000001C   0A0000EF           SWI      +10
+   \   00000020   0090A0E1           MOV      R9,R0
+   \   00000024   0060E0E3           MVN      R6,#+0
+   \   00000028   060059E1           CMP      R9,R6
+   \   0000002C   0600A003           MOVEQ    R0,#+6
+   \   00000030   F08FBD08           POPEQ    {R4-R11,PC}
+   \   00000034   0500A0E1           MOV      R0,R5
+   \   00000038   01002DE9           PUSH     {R0}
+   \   0000003C   0530A0E1           MOV      R3,R5
+   \   00000040   0220A0E3           MOV      R2,#+2
+   \   00000044   0010A0E3           MOV      R1,#+0
+   \   00000048   0900A0E1           MOV      R0,R9
+   \   0000004C   0F0000EF           SWI      +15
+   \   00000050   0070A0E1           MOV      R7,R0
+   \   00000054   0500A0E1           MOV      R0,R5
+   \   00000058   01002DE9           PUSH     {R0}
+   \   0000005C   0530A0E1           MOV      R3,R5
+   \   00000060   0020A0E3           MOV      R2,#+0
+   \   00000064   0010A0E3           MOV      R1,#+0
+   \   00000068   0900A0E1           MOV      R0,R9
+   \   0000006C   0F0000EF           SWI      +15
+   \   00000070   010087E2           ADD      R0,R7,#+1
+   \   00000074   140000EF           SWI      +20
+   \   00000078   0080B0E1           MOVS     R8,R0
+   \   0000007C   08D08DE2           ADD      SP,SP,#+8
+   \   00000080   0400001A           BNE      ??copyxx_0
+   \   00000084   0510A0E1           MOV      R1,R5
+   \   00000088   0900A0E1           MOV      R0,R9
+   \   0000008C   0D0000EF           SWI      +13
+   \   00000090   0500A0E3           MOV      R0,#+5
+   \   00000094   F08FBDE8           POP      {R4-R11,PC}
+   \                     ??copyxx_0:
+   \   00000098   ........           LDR      R10,??DataTable57  ;; ar2
+   \   0000009C   0530A0E1           MOV      R3,R5
+   \   000000A0   0720A0E1           MOV      R2,R7
+   \   000000A4   0810A0E1           MOV      R1,R8
+   \   000000A8   0900A0E1           MOV      R0,R9
+   \   000000AC   0B0000EF           SWI      +11
+   \   000000B0   0900A0E1           MOV      R0,R9
+   \   000000B4   ........           LDR      R9,??DataTable77  ;; temp
+   \   000000B8   0510A0E1           MOV      R1,R5
+   \   000000BC   0D0000EF           SWI      +13
+   \   000000C0   0A10A0E1           MOV      R1,R10
+   \   000000C4   0900A0E1           MOV      R0,R9
+   \   000000C8   ........           _BLF     strcpy,??strcpy??rA
+   \   000000CC   00005BE3           CMP      R11,#+0
+   \   000000D0   0E00000A           BEQ      ??copyxx_1
+   \   000000D4   0900A0E1           MOV      R0,R9
+   \   000000D8   ........           _BLF     strlen,??strlen??rA
+   \   000000DC   090080E0           ADD      R0,R0,R9
+   \   000000E0   D10050E1           LDRSB    R0,[R0, #-1]
+   \   000000E4   5C0050E3           CMP      R0,#+92
+   \   000000E8   0200000A           BEQ      ??copyxx_2
+   \   000000EC   ........           LDR      R1,??DataTable84  ;; eline
+   \   000000F0   0900A0E1           MOV      R0,R9
+   \   000000F4   ........           _BLF     strcat,??strcat??rA
+   \                     ??copyxx_2:
+   \   000000F8   5C10A0E3           MOV      R1,#+92
+   \   000000FC   0400A0E1           MOV      R0,R4
+   \   00000100   ........           _BLF     strrchr,??strrchr??rA
+   \   00000104   011080E2           ADD      R1,R0,#+1
+   \   00000108   0900A0E1           MOV      R0,R9
+   \   0000010C   ........           _BLF     strcat,??strcat??rA
+   \                     ??copyxx_1:
+   \   00000110   0530A0E1           MOV      R3,R5
+   \   00000114   402FA0E3           MOV      R2,#+256
+   \   00000118   0110A0E3           MOV      R1,#+1
+   \   0000011C   811C81E3           ORR      R1,R1,#0x8100
+   \   00000120   0900A0E1           MOV      R0,R9
+   \   00000124   0A0000EF           SWI      +10
+   \   00000128   0090A0E1           MOV      R9,R0
+   \   0000012C   060059E1           CMP      R9,R6
+   \   00000130   0300001A           BNE      ??copyxx_3
+   \   00000134   0800A0E1           MOV      R0,R8
+   \   00000138   150000EF           SWI      +21
+   \   0000013C   0700A0E3           MOV      R0,#+7
+   \   00000140   F08FBDE8           POP      {R4-R11,PC}
+   \                     ??copyxx_3:
+   \   00000144   0530A0E1           MOV      R3,R5
+   \   00000148   0720A0E1           MOV      R2,R7
+   \   0000014C   0810A0E1           MOV      R1,R8
+   \   00000150   0C0000EF           SWI      +12
+   \   00000154   0510A0E1           MOV      R1,R5
+   \   00000158   0900A0E1           MOV      R0,R9
+   \   0000015C   0D0000EF           SWI      +13
+   \   00000160   0800A0E1           MOV      R0,R8
+   \   00000164   150000EF           SWI      +21
+   \   00000168   ........           _BLF     cr,??cr??rA
+   \   0000016C   0400A0E1           MOV      R0,R4
+   \   00000170   ........           BL       print
+   \   00000174   ........           LDR      R0,??DataTable53  ;; `?<Constant " => ">`
+   \   00000178   ........           BL       print
+   \   0000017C   0A00A0E1           MOV      R0,R10
+   \   00000180   ........           BL       print
+   \   00000184   0000A0E3           MOV      R0,#+0
+   \   00000188   F08FBDE8           POP      {R4-R11,PC}      ;; return
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs int copy()
+   \                     copy:
+   \   00000000   ........           LDR      R0,??DataTable68  ;; argc
+   \   00000004   F0402DE9           PUSH     {R4-R7,LR}
+   \   00000008   000090E5           LDR      R0,[R0, #+0]
+   \   0000000C   030050E3           CMP      R0,#+3
+   \   00000010   0400A013           MOVNE    R0,#+4
+   \   00000014   F080BD18           POPNE    {R4-R7,PC}
+   \   00000018   ........           LDR      R5,??DataTable69  ;; argv
+   \   0000001C   ........           LDR      R4,??DataTable64  ;; ar1
+   \   00000020   000095E5           LDR      R0,[R5, #+0]
+   \   00000024   ........           LDR      R6,??DataTable57  ;; ar2
+   \   00000028   041090E5           LDR      R1,[R0, #+4]
+   \   0000002C   0400A0E1           MOV      R0,R4
+   \   00000030   ........           BL       par
+   \   00000034   000095E5           LDR      R0,[R5, #+0]
+   \   00000038   081090E5           LDR      R1,[R0, #+8]
+   \   0000003C   0600A0E1           MOV      R0,R6
+   \   00000040   ........           BL       par
+   \   00000044   ........           LDR      R1,??DataTable65  ;; err
+   \   00000048   0600A0E1           MOV      R0,R6
+   \   0000004C   910000EF           SWI      +145
+   \   00000050   0050A0E1           MOV      R5,R0
+   \   00000054   2A10A0E3           MOV      R1,#+42
+   \   00000058   0400A0E1           MOV      R0,R4
+   \   0000005C   ........           _BLF     strchr,??strchr??rA
+   \   00000060   000050E3           CMP      R0,#+0
+   \   00000064   0300001A           BNE      ??copy_0
+   \   00000068   0510A0E1           MOV      R1,R5
+   \   0000006C   0400A0E1           MOV      R0,R4
+   \   00000070   ........           BL       copyxx
+   \   00000074   F080BDE8           POP      {R4-R7,PC}
+   \                     ??copy_0:
+   \   00000078   ........           LDR      R6,??DataTable75  ;; lend
+   \   0000007C   ........           LDR      R7,??DataTable76  ;; list
+   \   00000080   5C10A0E3           MOV      R1,#+92
+   \   00000084   007086E5           STR      R7,[R6, #+0]
+   \   00000088   0400A0E1           MOV      R0,R4
+   \   0000008C   ........           _BLF     strrchr,??strrchr??rA
+   \   00000090   011080E2           ADD      R1,R0,#+1
+   \   00000094   ........           LDR      R0,??DataTable83  ;; curdir
+   \   00000098   ........           BL       extnn
+   \   0000009C   030000EA           B        ??copy_1
+   \                     ??copy_2:
+   \   000000A0   0700A0E1           MOV      R0,R7
+   \   000000A4   ........           _BLF     strlen,??strlen??rA
+   \   000000A8   070080E0           ADD      R0,R0,R7
+   \   000000AC   017080E2           ADD      R7,R0,#+1
+   \                     ??copy_1:
+   \   000000B0   000096E5           LDR      R0,[R6, #+0]
+   \   000000B4   000057E1           CMP      R7,R0
+   \   000000B8   0500002A           BCS      ??copy_3
+   \   000000BC   0510A0E1           MOV      R1,R5
+   \   000000C0   0700A0E1           MOV      R0,R7
+   \   000000C4   ........           BL       copyxx
+   \   000000C8   000050E3           CMP      R0,#+0
+   \   000000CC   F3FFFF0A           BEQ      ??copy_2
+   \   000000D0   F080BDE8           POP      {R4-R7,PC}
+   \                     ??copy_3:
+   \   000000D4   0000A0E3           MOV      R0,#+0
+   \   000000D8   F080BDE8           POP      {R4-R7,PC}       ;; return
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs int type()
+   \                     type:
+   \   00000000   ........           LDR      R0,??DataTable68  ;; argc
+   \   00000004   F0402DE9           PUSH     {R4-R7,LR}
+   \   00000008   000090E5           LDR      R0,[R0, #+0]
+   \   0000000C   020050E3           CMP      R0,#+2
+   \   00000010   0400A013           MOVNE    R0,#+4
+   \   00000014   F080BD18           POPNE    {R4-R7,PC}
+   \   00000018   ........           LDR      R0,??DataTable69  ;; argv
+   \   0000001C   ........           LDR      R4,??DataTable64  ;; ar1
+   \   00000020   000090E5           LDR      R0,[R0, #+0]
+   \   00000024   ........           LDR      R5,??DataTable65  ;; err
+   \   00000028   041090E5           LDR      R1,[R0, #+4]
+   \   0000002C   0400A0E1           MOV      R0,R4
+   \   00000030   ........           BL       par
+   \   00000034   0530A0E1           MOV      R3,R5
+   \   00000038   8020A0E3           MOV      R2,#+128
+   \   0000003C   801CA0E3           MOV      R1,#+32768
+   \   00000040   0400A0E1           MOV      R0,R4
+   \   00000044   0A0000EF           SWI      +10
+   \   00000048   0040A0E1           MOV      R4,R0
+   \   0000004C   010074E3           CMN      R4,#+1
+   \   00000050   0600A003           MOVEQ    R0,#+6
+   \   00000054   F080BD08           POPEQ    {R4-R7,PC}
+   \   00000058   ........           LDR      R6,??DataTable66  ;; conbuf
+   \   0000005C   0530A0E1           MOV      R3,R5
+   \   00000060   802EA0E3           MOV      R2,#+2048
+   \   00000064   0610A0E1           MOV      R1,R6
+   \   00000068   0B0000EF           SWI      +11
+   \   0000006C   0070A0E1           MOV      R7,R0
+   \   00000070   0510A0E1           MOV      R1,R5
+   \   00000074   0400A0E1           MOV      R0,R4
+   \   00000078   0D0000EF           SWI      +13
+   \   0000007C   ........           LDR      R0,??DataTable67  ;; conend
+   \   00000080   061087E0           ADD      R1,R7,R6
+   \   00000084   001080E5           STR      R1,[R0, #+0]
+   \   00000088   0000A0E3           MOV      R0,#+0
+   \   0000008C   F080BDE8           POP      {R4-R7,PC}       ;; return
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs int sset()
+   \                     sset:
+   \   00000000   ........           LDR      R0,??DataTable68  ;; argc
+   \   00000004   70402DE9           PUSH     {R4-R6,LR}
+   \   00000008   000090E5           LDR      R0,[R0, #+0]
+   \   0000000C   A4509FE5           LDR      R5,??sset_0      ;; set
+   \   00000010   A4409FE5           LDR      R4,??sset_0+0x4  ;; `setend`
+   \   00000014   010050E3           CMP      R0,#+1
+   \   00000018   0D00001A           BNE      ??sset_1
+   \   0000001C   000094E5           LDR      R0,[R4, #+0]
+   \   00000020   000055E1           CMP      R5,R0
+   \   00000024   1F00002A           BCS      ??sset_2
+   \                     ??sset_3:
+   \   00000028   000094E5           LDR      R0,[R4, #+0]
+   \   0000002C   000055E1           CMP      R5,R0
+   \   00000030   1C00002A           BCS      ??sset_2
+   \   00000034   ........           _BLF     cr,??cr??rA
+   \   00000038   0500A0E1           MOV      R0,R5
+   \   0000003C   ........           BL       print
+   \   00000040   0500A0E1           MOV      R0,R5
+   \   00000044   ........           _BLF     strlen,??strlen??rA
+   \   00000048   050080E0           ADD      R0,R0,R5
+   \   0000004C   015080E2           ADD      R5,R0,#+1
+   \   00000050   F4FFFFEA           B        ??sset_3
+   \                     ??sset_1:
+   \   00000054   ........           LDR      R6,??DataTable69  ;; argv
+   \   00000058   000096E5           LDR      R0,[R6, #+0]
+   \   0000005C   040090E5           LDR      R0,[R0, #+4]
+   \   00000060   ........           _BLF     strlen,??strlen??rA
+   \   00000064   002094E5           LDR      R2,[R4, #+0]
+   \   00000068   401F85E2           ADD      R1,R5,#+256
+   \   0000006C   020080E0           ADD      R0,R0,R2
+   \   00000070   010080E2           ADD      R0,R0,#+1
+   \   00000074   010050E1           CMP      R0,R1
+   \   00000078   0C00002A           BCS      ??sset_4
+   \   0000007C   000096E5           LDR      R0,[R6, #+0]
+   \   00000080   041090E5           LDR      R1,[R0, #+4]
+   \   00000084   0200A0E1           MOV      R0,R2
+   \   00000088   ........           _BLF     strcpy,??strcpy??rA
+   \   0000008C   000096E5           LDR      R0,[R6, #+0]
+   \   00000090   040090E5           LDR      R0,[R0, #+4]
+   \   00000094   ........           _BLF     strlen,??strlen??rA
+   \   00000098   001094E5           LDR      R1,[R4, #+0]
+   \   0000009C   010080E0           ADD      R0,R0,R1
+   \   000000A0   010080E2           ADD      R0,R0,#+1
+   \   000000A4   000084E5           STR      R0,[R4, #+0]
+   \                     ??sset_2:
+   \   000000A8   0000A0E3           MOV      R0,#+0
+   \   000000AC   7080BDE8           POP      {R4-R6,PC}       ;; return
+   \                     ??sset_4:
+   \   000000B0   0500A0E3           MOV      R0,#+5
+   \   000000B4   7080BDE8           POP      {R4-R6,PC}
+   \                     ??sset_0:
+   \   000000B8   ........           DC32     set
+   \   000000BC   ........           DC32     `setend`
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs int dir()
+   \                     dir:
+   \   00000000   F04F2DE9           PUSH     {R4-R11,LR}
+   \   00000004   ........           LDR      R7,??DataTable83  ;; curdir
+   \   00000008   ........           LDR      R9,??DataTable89  ;; argvv
+   \   0000000C   ........           LDR      R11,??DataTable91  ;; spath
+   \   00000010   04D04DE2           SUB      SP,SP,#+4
+   \   00000014   0050A0E3           MOV      R5,#+0
+   \   00000018   00A0A0E3           MOV      R10,#+0
+   \   0000001C   0510A0E1           MOV      R1,R5
+   \   00000020   00108DE5           STR      R1,[SP, #+0]
+   \   00000024   0160A0E1           MOV      R6,R1
+   \   00000028   0710A0E1           MOV      R1,R7
+   \   0000002C   0B00A0E1           MOV      R0,R11
+   \   00000030   ........           _BLF     strcpy,??strcpy??rA
+   \   00000034   0B00A0E1           MOV      R0,R11
+   \   00000038   ........           _BLF     strlen,??strlen??rA
+   \   0000003C   0B0080E0           ADD      R0,R0,R11
+   \   00000040   0510A0E1           MOV      R1,R5
+   \   00000044   011040E5           STRB     R1,[R0, #-1]
+   \                     ??dir_0:
+   \   00000048   0400B9E5           LDR      R0,[R9, #+4]!
+   \   0000004C   000050E3           CMP      R0,#+0
+   \   00000050   0A00000A           BEQ      ??dir_1
+   \   00000054   D010D0E1           LDRSB    R1,[R0, #+0]
+   \   00000058   3E0051E3           CMP      R1,#+62
+   \   0000005C   0050A001           MOVEQ    R5,R0
+   \   00000060   0200000A           BEQ      ??dir_2
+   \   00000064   3C0051E3           CMP      R1,#+60
+   \   00000068   F6FFFF1A           BNE      ??dir_0
+   \   0000006C   01A0A0E3           MOV      R10,#+1
+   \                     ??dir_2:
+   \   00000070   ........           LDR      R0,??DataTable100  ;; argc
+   \   00000074   001090E5           LDR      R1,[R0, #+0]
+   \   00000078   011041E2           SUB      R1,R1,#+1
+   \   0000007C   001080E5           STR      R1,[R0, #+0]
+   \                     ??dir_1:
+   \   00000080   ........           LDR      R0,??DataTable100  ;; argc
+   \   00000084   ........           LDR      R8,??DataTable75  ;; lend
+   \   00000088   ........           LDR      R4,??DataTable76  ;; list
+   \   0000008C   000090E5           LDR      R0,[R0, #+0]
+   \   00000090   004088E5           STR      R4,[R8, #+0]
+   \   00000094   020050E3           CMP      R0,#+2
+   \   00000098   170000AA           BGE      ??dir_3
+   \   0000009C   632F8FE2           ADR      R2,??dir_4       ;; "*.*"
+   \   000000A0   00005AE3           CMP      R10,#+0
+   \   000000A4   1000000A           BEQ      ??dir_5
+   \   000000A8   0B10A0E1           MOV      R1,R11
+   \   000000AC   0000A0E3           MOV      R0,#+0
+   \   000000B0   ........           BL       find
+   \                     ??dir_6:
+   \   000000B4   000055E3           CMP      R5,#+0
+   \   000000B8   5000000A           BEQ      ??dir_7
+   \   000000BC   D100F5E1           LDRSB    R0,[R5, #+1]!
+   \   000000C0   ........           LDR      R6,??DataTable77  ;; temp
+   \   000000C4   3E0050E3           CMP      R0,#+62
+   \   000000C8   0110A003           MOVEQ    R1,#+1
+   \   000000CC   00108D05           STREQ    R1,[SP, #+0]
+   \   000000D0   01508502           ADDEQ    R5,R5,#+1
+   \   000000D4   D100D5E1           LDRSB    R0,[R5, #+1]
+   \   000000D8   3A0050E3           CMP      R0,#+58
+   \   000000DC   1900001A           BNE      ??dir_8
+   \   000000E0   0000A0E3           MOV      R0,#+0
+   \   000000E4   0000C6E5           STRB     R0,[R6, #+0]
+   \   000000E8   190000EA           B        ??dir_9
+   \                     ??dir_5:
+   \   000000EC   0210A0E1           MOV      R1,R2
+   \   000000F0   0700A0E1           MOV      R0,R7
+   \   000000F4   ........           BL       extnn
+   \   000000F8   EDFFFFEA           B        ??dir_6
+   \                     ??dir_3:
+   \   000000FC   ........           LDR      R9,??DataTable89  ;; argvv
+   \   00000100   030000EA           B        ??dir_10
+   \                     ??dir_11:
+   \   00000104   0120A0E1           MOV      R2,R1
+   \   00000108   0B10A0E1           MOV      R1,R11
+   \   0000010C   0000A0E3           MOV      R0,#+0
+   \   00000110   ........           BL       find
+   \                     ??dir_10:
+   \   00000114   0400B9E5           LDR      R0,[R9, #+4]!
+   \   00000118   000050E3           CMP      R0,#+0
+   \   0000011C   E4FFFF0A           BEQ      ??dir_6
+   \   00000120   0010A0E1           MOV      R1,R0
+   \   00000124   D000D1E1           LDRSB    R0,[R1, #+0]
+   \   00000128   3E0050E3           CMP      R0,#+62
+   \   0000012C   3C005013           CMPNE    R0,#+60
+   \   00000130   F7FFFF0A           BEQ      ??dir_10
+   \   00000134   00005AE3           CMP      R10,#+0
+   \   00000138   F1FFFF1A           BNE      ??dir_11
+   \   0000013C   0700A0E1           MOV      R0,R7
+   \   00000140   ........           BL       extnn
+   \   00000144   F2FFFFEA           B        ??dir_10
+   \                     ??dir_8:
+   \   00000148   0710A0E1           MOV      R1,R7
+   \   0000014C   0600A0E1           MOV      R0,R6
+   \   00000150   ........           _BLF     strcpy,??strcpy??rA
+   \                     ??dir_9:
+   \   00000154   0510A0E1           MOV      R1,R5
+   \   00000158   ........           LDR      R5,??DataTable108  ;; err
+   \   0000015C   0600A0E1           MOV      R0,R6
+   \   00000160   ........           _BLF     strcat,??strcat??rA
+   \   00000164   00009DE5           LDR      R0,[SP, #+0]
+   \   00000168   0530A0E1           MOV      R3,R5
+   \   0000016C   000050E3           CMP      R0,#+0
+   \   00000170   8000A013           MOVNE    R0,#+128
+   \   00000174   402F80E2           ADD      R2,R0,#+256
+   \   00000178   0A10A0E3           MOV      R1,#+10
+   \   0000017C   811C81E3           ORR      R1,R1,#0x8100
+   \   00000180   0600A0E1           MOV      R0,R6
+   \   00000184   0A0000EF           SWI      +10
+   \   00000188   0060A0E1           MOV      R6,R0
+   \   0000018C   010076E3           CMN      R6,#+1
+   \   00000190   2400000A           BEQ      ??dir_12
+   \   00000194   0500A0E1           MOV      R0,R5
+   \   00000198   01002DE9           PUSH     {R0}
+   \   0000019C   0530A0E1           MOV      R3,R5
+   \   000001A0   0220A0E3           MOV      R2,#+2
+   \   000001A4   0010A0E3           MOV      R1,#+0
+   \   000001A8   0600A0E1           MOV      R0,R6
+   \   000001AC   0F0000EF           SWI      +15
+   \   000001B0   000098E5           LDR      R0,[R8, #+0]
+   \   000001B4   0530A0E1           MOV      R3,R5
+   \   000001B8   042040E0           SUB      R2,R0,R4
+   \   000001BC   0410A0E1           MOV      R1,R4
+   \   000001C0   0600A0E1           MOV      R0,R6
+   \   000001C4   0C0000EF           SWI      +12
+   \   000001C8   0510A0E1           MOV      R1,R5
+   \   000001CC   0600A0E1           MOV      R0,R6
+   \   000001D0   0D0000EF           SWI      +13
+   \   000001D4   04D08DE2           ADD      SP,SP,#+4
+   \   000001D8   0000A0E3           MOV      R0,#+0
+   \   000001DC   F28FBDE8           POP      {R1,R4-R11,PC}
+   \                     ??dir_13:
+   \   000001E0   ........           _BLF     cr,??cr??rA
+   \   000001E4   0400A0E1           MOV      R0,R4
+   \   000001E8   ........           BL       print
+   \   000001EC   0400A0E1           MOV      R0,R4
+   \   000001F0   ........           _BLF     strlen,??strlen??rA
+   \   000001F4   040080E0           ADD      R0,R0,R4
+   \   000001F8   014080E2           ADD      R4,R0,#+1
+   \   000001FC   016086E2           ADD      R6,R6,#+1
+   \                     ??dir_7:
+   \   00000200   000098E5           LDR      R0,[R8, #+0]
+   \   00000204   000054E1           CMP      R4,R0
+   \   00000208   F4FFFF3A           BCC      ??dir_13
+   \   0000020C   ........           LDR      R4,??DataTable112  ;; con
+   \   00000210   1C109FE5           LDR      R1,??dir_4+0x4   ;; `?<Constant "\\r\\n%d files">`
+   \   00000214   0620A0E1           MOV      R2,R6
+   \   00000218   0400A0E1           MOV      R0,R4
+   \   0000021C   160000EF           SWI      +22
+   \   00000220   0400A0E1           MOV      R0,R4
+   \   00000224   ........           BL       print
+   \                     ??dir_12:
+   \   00000228   0000A0E3           MOV      R0,#+0
+   \   0000022C   F28FBDE8           POP      {R1,R4-R11,PC}   ;; return
+   \                     ??dir_4:
+   \   00000230   2A2E2A00           DC8      "*.*"
+   \   00000234   ........           DC32     `?<Constant "\\r\\n%d files">`
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \   __??Code32?? __code __interwork __atpcs int cd()
+   \                     cd:
+   \   00000000   ........           LDR      R0,??DataTable95  ;; argv
+   \   00000004   30402DE9           PUSH     {R4,R5,LR}
+   \   00000008   000090E5           LDR      R0,[R0, #+0]
+   \   0000000C   041090E5           LDR      R1,[R0, #+4]
+   \   00000010   ........           LDR      R0,??DataTable100  ;; argc
+   \   00000014   000090E5           LDR      R0,[R0, #+0]
+   \   00000018   020050E3           CMP      R0,#+2
+   \   0000001C   0100000A           BEQ      ??cd_0
+   \                     ??cd_1:
+   \   00000020   0000A0E3           MOV      R0,#+0
+   \   00000024   3080BDE8           POP      {R4,R5,PC}       ;; return
+   \                     ??cd_0:
+   \   00000028   D100D1E1           LDRSB    R0,[R1, #+1]
+   \   0000002C   ........           LDR      R4,??DataTable83  ;; curdir
+   \   00000030   3A0050E3           CMP      R0,#+58
+   \   00000034   0200001A           BNE      ??cd_2
+   \   00000038   0400A0E1           MOV      R0,R4
+   \                     ??cd_3:
+   \   0000003C   ........           _BLF     strcpy,??strcpy??rA
+   \   00000040   180000EA           B        ??cd_4
+   \                     ??cd_2:
+   \   00000044   D000D1E1           LDRSB    R0,[R1, #+0]
+   \   00000048   2E0050E2           SUBS     R0,R0,#+46
+   \   0000004C   0200000A           BEQ      ??cd_5
+   \   00000050   2E0050E2           SUBS     R0,R0,#+46
+   \   00000054   0F00000A           BEQ      ??cd_6
+   \   00000058   100000EA           B        ??cd_7
+   \                     ??cd_5:
+   \   0000005C   D100D1E1           LDRSB    R0,[R1, #+1]
+   \   00000060   2E0050E3           CMP      R0,#+46
+   \   00000064   0F00001A           BNE      ??cd_4
+   \   00000068   0050A0E3           MOV      R5,#+0
+   \   0000006C   0400A0E1           MOV      R0,R4
+   \   00000070   ........           _BLF     strlen,??strlen??rA
+   \   00000074   040080E0           ADD      R0,R0,R4
+   \   00000078   015040E5           STRB     R5,[R0, #-1]
+   \   0000007C   5C10A0E3           MOV      R1,#+92
+   \   00000080   0400A0E1           MOV      R0,R4
+   \   00000084   ........           _BLF     strrchr,??strrchr??rA
+   \   00000088   000050E3           CMP      R0,#+0
+   \   0000008C   0500000A           BEQ      ??cd_4
+   \   00000090   0150C0E5           STRB     R5,[R0, #+1]
+   \   00000094   030000EA           B        ??cd_4
+   \                     ??cd_6:
+   \   00000098   020084E2           ADD      R0,R4,#+2
+   \   0000009C   E6FFFFEA           B        ??cd_3
+   \                     ??cd_7:
+   \   000000A0   0400A0E1           MOV      R0,R4
+   \   000000A4   ........           _BLF     strcat,??strcat??rA
+   \                     ??cd_4:
+   \   000000A8   0400A0E1           MOV      R0,R4
+   \   000000AC   ........           _BLF     strlen,??strlen??rA
+   \   000000B0   040080E0           ADD      R0,R0,R4
+   \   000000B4   D10050E1           LDRSB    R0,[R0, #-1]
+   \   000000B8   5C0050E3           CMP      R0,#+92
+   \   000000BC   D7FFFF0A           BEQ      ??cd_1
+   \   000000C0   ........           LDR      R1,??DataTable84  ;; eline
+   \   000000C4   0400A0E1           MOV      R0,R4
+   \   000000C8   ........           _BLF     strcat,??strcat??rA
+   \   000000CC   0000A0E3           MOV      R0,#+0
+   \   000000D0   3080BDE8           POP      {R4,R5,PC}
+
+   \                                 In segment DATA_I, align 4, align-sorted
+   \   struct cmdst __data commands[27]
+   \                     commands:
+   \   00000000                      DS8 216
+   \   000000D8                      REQUIRE `?<Initializer for commands>`
+    149          ///////
+    150          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    151          int findall(){//char ext){
+    152            char *ptr, **ext=(char**)cext;
+    153            strcat(temp,*argvv);
+   \                     findall:
+   \   00000000   ........           LDR      R0,??DataTable89  ;; argvv
+   \   00000004   70402DE9           PUSH     {R4-R6,LR}
+   \   00000008   ........           LDR      R4,??DataTable88  ;; cext
+   \   0000000C   ........           LDR      R5,??DataTable106  ;; temp
+   \   00000010   001090E5           LDR      R1,[R0, #+0]
+   \   00000014   0500A0E1           MOV      R0,R5
+   \   00000018   ........           _BLF     strcat,??strcat??rA
+    154            if(strrchr(temp,'.'))
+   \   0000001C   2E10A0E3           MOV      R1,#+46
+   \   00000020   0500A0E1           MOV      R0,R5
+   \   00000024   ........           _BLF     strrchr,??strrchr??rA
+   \   00000028   000050E3           CMP      R0,#+0
+   \   0000002C   0500A0E1           MOV      R0,R5
+   \   00000030   0100000A           BEQ      ??findall_0
+    155              return isfile(temp);
+   \   00000034   ........           BL       isfile
+   \   00000038   7080BDE8           POP      {R4-R6,PC}
+    156            ptr=temp+strlen(temp);
+   \                     ??findall_0:
+   \   0000003C   ........           _BLF     strlen,??strlen??rA
+   \   00000040   056080E0           ADD      R6,R0,R5
+    157            while(*ext){
+   \                     ??findall_1:
+   \   00000044   000094E5           LDR      R0,[R4, #+0]
+   \   00000048   000050E3           CMP      R0,#+0
+   \   0000004C   7080BD08           POPEQ    {R4-R6,PC}
+    158              strcpy(ptr,*ext++);
+   \   00000050   ........           LDR      R1,[R4], #+4
+   \   00000054   0600A0E1           MOV      R0,R6
+   \   00000058   ........           _BLF     strcpy,??strcpy??rA
+    159              if(isfile(temp)) return 1;
+   \   0000005C   0500A0E1           MOV      R0,R5
+   \   00000060   ........           BL       isfile
+   \   00000064   000050E3           CMP      R0,#+0
+   \   00000068   F5FFFF0A           BEQ      ??findall_1
+   \   0000006C   0100A0E3           MOV      R0,#+1
+    160            }
+    161            return 0;
+   \   00000070   7080BDE8           POP      {R4-R6,PC}       ;; return
+    162          }
+    163          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    164          int gettype(char *s){
+   \                     gettype:
+   \   00000000   70402DE9           PUSH     {R4-R6,LR}
+    165            char **ss=(char**)cext;
+   \   00000004   ........           LDR      R4,??DataTable88  ;; cext
+    166            if(!(s=strrchr(s,'.'))) return 0;
+   \   00000008   2E10A0E3           MOV      R1,#+46
+   \   0000000C   0450A0E1           MOV      R5,R4
+   \   00000010   ........           _BLF     strrchr,??strrchr??rA
+   \   00000014   0060B0E1           MOVS     R6,R0
+   \   00000018   0000A003           MOVEQ    R0,#+0
+   \   0000001C   7080BD08           POPEQ    {R4-R6,PC}
+    167            while(*ss){
+   \                     ??gettype_0:
+   \   00000020   000095E5           LDR      R0,[R5, #+0]
+   \   00000024   000050E3           CMP      R0,#+0
+   \   00000028   7080BD08           POPEQ    {R4-R6,PC}
+    168              if(!striicmp(*ss++,s)) return ss-(char**)cext;
+   \   0000002C   ........           LDR      R0,[R5], #+4
+   \   00000030   0610A0E1           MOV      R1,R6
+   \   00000034   ........           BL       striicmp
+   \   00000038   000050E3           CMP      R0,#+0
+   \   0000003C   F7FFFF1A           BNE      ??gettype_0
+   \   00000040   2501A0E1           LSR      R0,R5,#+2
+   \   00000044   240140E0           SUB      R0,R0,R4, LSR #+2
+   \   00000048   7080BDE8           POP      {R4-R6,PC}       ;; return
+    169            }
+    170            return 0;
+    171          }
+    172          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    173          int command(){ 
+    174            char *s=*argvv, *ss, *sss;
+    175          
+    176            for(cmd=commands;cmd->name;cmd++){
+   \                     command:
+   \   00000000   54029FE5           LDR      R0,??command_0+0x4  ;; commands
+   \   00000004   F0472DE9           PUSH     {R4-R10,LR}
+   \   00000008   ........           LDR      R5,??DataTable89  ;; argvv
+   \   0000000C   4C429FE5           LDR      R4,??command_0+0x8  ;; cmd
+   \   00000010   006095E5           LDR      R6,[R5, #+0]
+   \   00000014   000000EA           B        ??command_1
+   \                     ??command_2:
+   \   00000018   080087E2           ADD      R0,R7,#+8
+   \                     ??command_1:
+   \   0000001C   000084E5           STR      R0,[R4, #+0]
+   \   00000020   007094E5           LDR      R7,[R4, #+0]
+   \   00000024   000097E5           LDR      R0,[R7, #+0]
+   \   00000028   000050E3           CMP      R0,#+0
+   \   0000002C   0800000A           BEQ      ??command_3
+    177              if(!striicmp(cmd->name,s)){
+   \   00000030   0610A0E1           MOV      R1,R6
+   \   00000034   ........           BL       striicmp
+   \   00000038   000050E3           CMP      R0,#+0
+   \   0000003C   F5FFFF1A           BNE      ??command_2
+    178                cr(); return cmd->func();
+   \   00000040   ........           _BLF     cr,??cr??rA
+   \   00000044   000094E5           LDR      R0,[R4, #+0]
+   \   00000048   040090E5           LDR      R0,[R0, #+4]
+   \   0000004C   30FF2FE1           BLX      R0
+   \   00000050   F087BDE8           POP      {R4-R10,PC}
+    179              }
+    180            }
+    181            if(s[1]==':'){ 
+   \                     ??command_3:
+   \   00000054   D100D6E1           LDRSB    R0,[R6, #+1]
+   \   00000058   ........           LDR      R7,??DataTable106  ;; temp
+   \   0000005C   ........           LDR      R4,??DataTable91  ;; spath
+   \   00000060   ........           LDR      R8,??DataTable105  ;; curdir
+   \   00000064   0090A0E3           MOV      R9,#+0
+   \   00000068   3A0050E3           CMP      R0,#+58
+   \   0000006C   1A00001A           BNE      ??command_4
+    182              if(isfile(s)){ 
+   \   00000070   0600A0E1           MOV      R0,R6
+   \   00000074   ........           BL       isfile
+   \   00000078   000050E3           CMP      R0,#+0
+   \   0000007C   0300000A           BEQ      ??command_5
+    183                strcpy(temp,s); goto lexec; //temp!!!
+   \   00000080   0610A0E1           MOV      R1,R6
+   \   00000084   0700A0E1           MOV      R0,R7
+   \   00000088   ........           _BLF     strcpy,??strcpy??rA
+   \   0000008C   3D0000EA           B        ??command_6
+    184              }
+    185              if(strrchr(s,'.')) return errcommand;
+   \                     ??command_5:
+   \   00000090   2E10A0E3           MOV      R1,#+46
+   \   00000094   0600A0E1           MOV      R0,R6
+   \   00000098   ........           _BLF     strrchr,??strrchr??rA
+   \   0000009C   000050E3           CMP      R0,#+0
+   \   000000A0   0100000A           BEQ      ??command_7
+   \                     ??command_8:
+   \   000000A4   0200A0E3           MOV      R0,#+2
+   \   000000A8   F087BDE8           POP      {R4-R10,PC}
+    186              *(ss=strrchr(s,'\\'))=0;
+   \                     ??command_7:
+   \   000000AC   5C10A0E3           MOV      R1,#+92
+   \   000000B0   0600A0E1           MOV      R0,R6
+   \   000000B4   ........           _BLF     strrchr,??strrchr??rA
+   \   000000B8   00A0A0E1           MOV      R10,R0
+   \   000000BC   0090CAE5           STRB     R9,[R10, #+0]
+    187              strcpy(spath,s);
+   \   000000C0   0610A0E1           MOV      R1,R6
+   \   000000C4   0400A0E1           MOV      R0,R4
+   \   000000C8   ........           _BLF     strcpy,??strcpy??rA
+    188              strcpy(s,ss+1);
+   \   000000CC   01108AE2           ADD      R1,R10,#+1
+   \   000000D0   0600A0E1           MOV      R0,R6
+   \   000000D4   ........           _BLF     strcpy,??strcpy??rA
+   \   000000D8   080000EA           B        ??command_9
+    189            }else{ 
+    190              strcpy(spath,curdir);
+   \                     ??command_4:
+   \   000000DC   0810A0E1           MOV      R1,R8
+   \   000000E0   0400A0E1           MOV      R0,R4
+   \   000000E4   ........           _BLF     strcpy,??strcpy??rA
+    191              strcat(spath,";");
+   \   000000E8   5A1F8FE2           ADR      R1,??command_0   ;; ";"
+   \   000000EC   0400A0E1           MOV      R0,R4
+   \   000000F0   ........           _BLF     strcat,??strcat??rA
+    192              strcat(spath,path);
+   \   000000F4   ........           LDR      R1,??DataTable93  ;; path
+   \   000000F8   0400A0E1           MOV      R0,R4
+   \   000000FC   ........           _BLF     strcat,??strcat??rA
+    193            }
+    194          
+    195            ss=spath;
+   \                     ??command_9:
+   \   00000100   0410A0E1           MOV      R1,R4
+   \   00000104   030000EA           B        ??command_10
+    196            while(*ss){
+    197              while(*ss==' ') ++ss;
+    198              sss=ss;
+    199              while(*++sss && *sss!=';');
+    200              memcpy(temp,ss,sss-ss);
+    201              temp[sss-ss]=0;
+    202              if(temp[sss-ss-1]!='\\') strcat(temp,eline);
+    203              if(findall()){
+    204          lexec:
+    205              switch(gettype(temp)){
+    206              case 1: //bat
+    207                execbat(temp); break; //error recurse????!!!!
+    208              case 2: //lnk
+    209                if(!isfile((char*)link)) *((char*)link)='0';
+    210                execelf((char*)link,temp); break;//??
+    211              case 3: //elf
+    212                execelf(temp,argv[1]); break;
+    213              case 4: //dll
+    214                flush
+    215                rundll(temp,(void*)fcon,curdir,(void*)argc,argvv); break;
+    216              default: 
+    217                return errcommand;
+    218              }
+    219              return 0;
+    220              }
+    221              if(!*sss) break;
+   \                     ??command_11:
+   \   00000108   D000D4E1           LDRSB    R0,[R4, #+0]
+   \   0000010C   000050E3           CMP      R0,#+0
+   \   00000110   E3FFFF0A           BEQ      ??command_8
+    222              ss=sss+1;
+   \   00000114   011084E2           ADD      R1,R4,#+1
+   \                     ??command_10:
+   \   00000118   D000D1E1           LDRSB    R0,[R1, #+0]
+   \   0000011C   000050E3           CMP      R0,#+0
+   \   00000120   0100001A           BNE      ??command_12
+   \   00000124   210000EA           B        ??command_13
+   \                     ??command_14:
+   \   00000128   011081E2           ADD      R1,R1,#+1
+   \                     ??command_12:
+   \   0000012C   D000D1E1           LDRSB    R0,[R1, #+0]
+   \   00000130   200050E3           CMP      R0,#+32
+   \   00000134   FBFFFF0A           BEQ      ??command_14
+   \   00000138   0140A0E1           MOV      R4,R1
+   \                     ??command_15:
+   \   0000013C   D100F4E1           LDRSB    R0,[R4, #+1]!
+   \   00000140   000050E3           CMP      R0,#+0
+   \   00000144   3B005013           CMPNE    R0,#+59
+   \   00000148   FBFFFF1A           BNE      ??command_15
+   \   0000014C   016044E0           SUB      R6,R4,R1
+   \   00000150   0620A0E1           MOV      R2,R6
+   \   00000154   0700A0E1           MOV      R0,R7
+   \   00000158   ........           _BLF     memcpy,??memcpy??rA
+   \   0000015C   070086E0           ADD      R0,R6,R7
+   \   00000160   0090C0E5           STRB     R9,[R0, #+0]
+   \   00000164   D10050E1           LDRSB    R0,[R0, #-1]
+   \   00000168   5C0050E3           CMP      R0,#+92
+   \   0000016C   0200000A           BEQ      ??command_16
+   \   00000170   ........           LDR      R1,??DataTable94  ;; eline
+   \   00000174   0700A0E1           MOV      R0,R7
+   \   00000178   ........           _BLF     strcat,??strcat??rA
+   \                     ??command_16:
+   \   0000017C   ........           BL       findall
+   \   00000180   000050E3           CMP      R0,#+0
+   \   00000184   DFFFFF0A           BEQ      ??command_11
+   \                     ??command_6:
+   \   00000188   0700A0E1           MOV      R0,R7
+   \   0000018C   ........           BL       gettype
+   \   00000190   010050E2           SUBS     R0,R0,#+1
+   \   00000194   0700000A           BEQ      ??command_17
+   \   00000198   010050E2           SUBS     R0,R0,#+1
+   \   0000019C   0800000A           BEQ      ??command_18
+   \   000001A0   010050E2           SUBS     R0,R0,#+1
+   \   000001A4   0F00000A           BEQ      ??command_19
+   \   000001A8   010050E2           SUBS     R0,R0,#+1
+   \   000001AC   1400000A           BEQ      ??command_20
+   \                     ??command_13:
+   \   000001B0   0200A0E3           MOV      R0,#+2
+   \   000001B4   F087BDE8           POP      {R4-R10,PC}
+   \                     ??command_17:
+   \   000001B8   0700A0E1           MOV      R0,R7
+   \   000001BC   ........           BL       execbat
+   \   000001C0   0D0000EA           B        ??command_21
+   \                     ??command_18:
+   \   000001C4   98409FE5           LDR      R4,??command_0+0xC  ;; link
+   \   000001C8   0400A0E1           MOV      R0,R4
+   \   000001CC   ........           BL       isfile
+   \   000001D0   000050E3           CMP      R0,#+0
+   \   000001D4   3000A003           MOVEQ    R0,#+48
+   \   000001D8   0000C405           STRBEQ   R0,[R4, #+0]
+   \   000001DC   0710A0E1           MOV      R1,R7
+   \   000001E0   0400A0E1           MOV      R0,R4
+   \   000001E4   030000EA           B        ??command_22
+   \                     ??command_19:
+   \   000001E8   ........           LDR      R0,??DataTable95  ;; argv
+   \   000001EC   000090E5           LDR      R0,[R0, #+0]
+   \   000001F0   041090E5           LDR      R1,[R0, #+4]
+   \   000001F4   0700A0E1           MOV      R0,R7
+   \                     ??command_22:
+   \   000001F8   ........           BL       execelf
+   \                     ??command_21:
+   \   000001FC   0000A0E3           MOV      R0,#+0
+   \   00000200   F087BDE8           POP      {R4-R10,PC}
+   \                     ??command_20:
+   \   00000204   ........           LDR      R10,??DataTable109  ;; conend
+   \   00000208   ........           LDR      R4,??DataTable107  ;; fcon
+   \   0000020C   ........           LDR      R6,??DataTable110  ;; conbuf
+   \   00000210   00009AE5           LDR      R0,[R10, #+0]
+   \   00000214   ........           LDR      R3,??DataTable108  ;; err
+   \   00000218   062040E0           SUB      R2,R0,R6
+   \   0000021C   000094E5           LDR      R0,[R4, #+0]
+   \   00000220   0610A0E1           MOV      R1,R6
+   \   00000224   0C0000EF           SWI      +12
+   \   00000228   ........           LDR      R0,??DataTable100  ;; argc
+   \   0000022C   00608AE5           STR      R6,[R10, #+0]
+   \   00000230   0090C6E5           STRB     R9,[R6, #+0]
+   \   00000234   20002DE9           PUSH     {R5}
+   \   00000238   003090E5           LDR      R3,[R0, #+0]
+   \   0000023C   001094E5           LDR      R1,[R4, #+0]
+   \   00000240   0820A0E1           MOV      R2,R8
+   \   00000244   0700A0E1           MOV      R0,R7
+   \   00000248   ........           BL       rundll
+   \   0000024C   04D08DE2           ADD      SP,SP,#+4
+   \   00000250   0000A0E3           MOV      R0,#+0
+   \   00000254   F087BDE8           POP      {R4-R10,PC}      ;; return
+   \                     ??command_0:
+   \   00000258   3B000000           DC8      ";",+0,+0
+   \   0000025C   ........           DC32     commands
+   \   00000260   ........           DC32     cmd
+   \   00000264   ........           DC32     link
+    223            }
+    224            return errcommand;
+    225          }
+    226          
+    227          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    228          int exec(char *s){ 
+   \                     exec:
+   \   00000000   10402DE9           PUSH     {R4,LR}
+   \   00000004   0040A0E1           MOV      R4,R0
+   \   00000008   D000D4E1           LDRSB    R0,[R4, #+0]
+   \   0000000C   200050E3           CMP      R0,#+32
+   \   00000010   0200001A           BNE      ??exec_0
+    229          while(*s==' ') ++s;
+   \                     ??exec_1:
+   \   00000014   D100F4E1           LDRSB    R0,[R4, #+1]!
+   \   00000018   200050E3           CMP      R0,#+32
+   \   0000001C   FCFFFF0A           BEQ      ??exec_1
+    230            if(!*s) return 0; //empty
+   \                     ??exec_0:
+   \   00000020   D000D4E1           LDRSB    R0,[R4, #+0]
+   \   00000024   000050E3           CMP      R0,#+0
+   \   00000028   1080BD08           POPEQ    {R4,PC}
+    231            if(!echooff){ cr(); print(s);}
+   \   0000002C   ........           LDR      R0,??DataTable101  ;; echooff
+   \   00000030   D000D0E1           LDRSB    R0,[R0, #+0]
+   \   00000034   000050E3           CMP      R0,#+0
+   \   00000038   0200001A           BNE      ??exec_2
+   \   0000003C   ........           _BLF     cr,??cr??rA
+   \   00000040   0400A0E1           MOV      R0,R4
+   \   00000044   ........           BL       print
+    232            arg(s); 
+   \                     ??exec_2:
+   \   00000048   0400A0E1           MOV      R0,R4
+   \   0000004C   ........           BL       arg
+    233            return command(); 
+   \   00000050   1040BDE8           POP      {R4,LR}          ;; Pop
+   \   00000054   ........           B        command          ;; tailcall
+    234          }
+    235          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    236          int execbat(char *fname){ 
+   \                     execbat:
+   \   00000000   F0432DE9           PUSH     {R4-R9,LR}
+    237            int i,f;
+    238            char *buf, *s, *ss, c;
+    239            if((f=fopen(fname,A_ReadOnly+A_BIN,P_READ,&err))==-1) return erropen;
+   \   00000004   ........           LDR      R4,??DataTable108  ;; err
+   \   00000008   8020A0E3           MOV      R2,#+128
+   \   0000000C   0430A0E1           MOV      R3,R4
+   \   00000010   801CA0E3           MOV      R1,#+32768
+   \   00000014   0A0000EF           SWI      +10
+   \   00000018   0090A0E1           MOV      R9,R0
+   \   0000001C   010079E3           CMN      R9,#+1
+   \   00000020   0600A003           MOVEQ    R0,#+6
+   \   00000024   F083BD08           POPEQ    {R4-R9,PC}
+    240            if(!(i=lseek(f,0,2,&err,&err))
+    241               || !(s=buf=(char*)malloc(i+1))){ fclose(f,&err); return errmemory;}
+   \   00000028   0400A0E1           MOV      R0,R4
+   \   0000002C   01002DE9           PUSH     {R0}
+   \   00000030   0430A0E1           MOV      R3,R4
+   \   00000034   0220A0E3           MOV      R2,#+2
+   \   00000038   0010A0E3           MOV      R1,#+0
+   \   0000003C   0900A0E1           MOV      R0,R9
+   \   00000040   0F0000EF           SWI      +15
+   \   00000044   0080B0E1           MOVS     R8,R0
+   \   00000048   04D08DE2           ADD      SP,SP,#+4
+   \   0000004C   0400000A           BEQ      ??execbat_0
+   \   00000050   010088E2           ADD      R0,R8,#+1
+   \   00000054   140000EF           SWI      +20
+   \   00000058   0060A0E1           MOV      R6,R0
+   \   0000005C   0650B0E1           MOVS     R5,R6
+   \   00000060   0400001A           BNE      ??execbat_1
+   \                     ??execbat_0:
+   \   00000064   0410A0E1           MOV      R1,R4
+   \   00000068   0900A0E1           MOV      R0,R9
+   \   0000006C   0D0000EF           SWI      +13
+   \   00000070   0500A0E3           MOV      R0,#+5
+   \   00000074   F083BDE8           POP      {R4-R9,PC}
+    242            lseek(f,0,0,&err,&err);
+   \                     ??execbat_1:
+   \   00000078   0400A0E1           MOV      R0,R4
+   \   0000007C   01002DE9           PUSH     {R0}
+   \   00000080   0430A0E1           MOV      R3,R4
+   \   00000084   0020A0E3           MOV      R2,#+0
+   \   00000088   0010A0E3           MOV      R1,#+0
+   \   0000008C   0900A0E1           MOV      R0,R9
+   \   00000090   0F0000EF           SWI      +15
+    243            fread(f,buf,i,&err);
+   \   00000094   0430A0E1           MOV      R3,R4
+   \   00000098   0820A0E1           MOV      R2,R8
+   \   0000009C   0510A0E1           MOV      R1,R5
+   \   000000A0   0900A0E1           MOV      R0,R9
+   \   000000A4   0B0000EF           SWI      +11
+    244            buf[i]=0; //eof
+   \   000000A8   0070A0E3           MOV      R7,#+0
+   \   000000AC   0570C8E7           STRB     R7,[R8, +R5]
+    245            fclose(f,&err);
+   \   000000B0   0410A0E1           MOV      R1,R4
+   \   000000B4   0900A0E1           MOV      R0,R9
+   \   000000B8   0D0000EF           SWI      +13
+   \   000000BC   04D08DE2           ADD      SP,SP,#+4
+    246            //for() exec()
+    247            do{
+    248              ss=s;
+   \                     ??execbat_2:
+   \   000000C0   0600A0E1           MOV      R0,R6
+   \   000000C4   000000EA           B        ??execbat_3
+    249              while(*s && *s!=0xd) ++s;
+   \                     ??execbat_4:
+   \   000000C8   016086E2           ADD      R6,R6,#+1
+   \                     ??execbat_3:
+   \   000000CC   D010D6E1           LDRSB    R1,[R6, #+0]
+   \   000000D0   000051E3           CMP      R1,#+0
+   \   000000D4   0D005113           CMPNE    R1,#+13
+   \   000000D8   FAFFFF1A           BNE      ??execbat_4
+    250              c=*s; *s=0;
+   \   000000DC   0140A0E1           MOV      R4,R1
+   \   000000E0   0070C6E5           STRB     R7,[R6, #+0]
+    251              if(i=exec(ss)){ cr(); print((char*)msg[i]);}
+   \   000000E4   ........           BL       exec
+   \   000000E8   0080B0E1           MOVS     R8,R0
+   \   000000EC   0300000A           BEQ      ??execbat_5
+   \   000000F0   ........           _BLF     cr,??cr??rA
+   \   000000F4   34009FE5           LDR      R0,??execbat_6   ;; msg
+   \   000000F8   080190E7           LDR      R0,[R0, +R8, LSL #+2]
+   \   000000FC   ........           BL       print
+    252              if(!c) break;
+   \                     ??execbat_5:
+   \   00000100   000054E3           CMP      R4,#+0
+   \   00000104   0500000A           BEQ      ??execbat_7
+    253              if(*++s==0xa) ++s;
+   \   00000108   D100F6E1           LDRSB    R0,[R6, #+1]!
+   \   0000010C   0A0050E3           CMP      R0,#+10
+   \   00000110   01608602           ADDEQ    R6,R6,#+1
+    254            }while(*s);
+   \   00000114   D000D6E1           LDRSB    R0,[R6, #+0]
+   \   00000118   000050E3           CMP      R0,#+0
+   \   0000011C   E7FFFF1A           BNE      ??execbat_2
+    255            mfree(buf);
+   \                     ??execbat_7:
+   \   00000120   0500A0E1           MOV      R0,R5
+   \   00000124   150000EF           SWI      +21
+    256            return ok; 
+   \   00000128   0000A0E3           MOV      R0,#+0
+   \   0000012C   F083BDE8           POP      {R4-R9,PC}       ;; return
+   \                     ??execbat_6:
+   \   00000130   ........           DC32     msg
+    257          }
+    258          
+
+   \                                 In segment CODE, align 4, keep-with-next
+    259          int main(char *exename, char *fname){
+   \                     main:
+   \   00000000   F04F2DE9           PUSH     {R4-R11,LR}
+   \   00000004   10D04DE2           SUB      SP,SP,#+16
+   \   00000008   0040A0E1           MOV      R4,R0
+   \   0000000C   0150A0E1           MOV      R5,R1
+    260            TDate date;
+    261            TTime time;
+    262            GetDateTime(&date,&time);
+   \   00000010   08108DE2           ADD      R1,SP,#+8
+   \   00000014   0D00A0E1           MOV      R0,SP
+   \   00000018   B40000EF           SWI      +180
+    263            if(SG=malloc(2500000)) mfree(SG); //S75 
+   \   0000001C   C0019FE5           LDR      R0,??main_0      ;; 0x2625a0
+   \   00000020   140000EF           SWI      +20
+   \   00000024   ........           LDR      R1,??DataTable103  ;; SG
+   \   00000028   000050E3           CMP      R0,#+0
+   \   0000002C   000081E5           STR      R0,[R1, #+0]
+   \   00000030   0000000A           BEQ      ??main_1
+   \   00000034   150000EF           SWI      +21
+    264            *(strrchr(exename,'\\')+1)=0;
+    265            strcpy(path,exename);
+   \                     ??main_1:
+   \   00000038   ........           LDR      R6,??DataTable104  ;; path
+   \   0000003C   5C10A0E3           MOV      R1,#+92
+    266            strcat(path,";4:\\ZBin\\;0:\\ZBin\\");
+    267            if(fname[1]!=':'){ //no fname
+   \   00000040   ........           LDR      R7,??DataTable105  ;; curdir
+   \   00000044   0400A0E1           MOV      R0,R4
+   \   00000048   ........           _BLF     strrchr,??strrchr??rA
+   \   0000004C   0010A0E3           MOV      R1,#+0
+   \   00000050   0110C0E5           STRB     R1,[R0, #+1]
+   \   00000054   0410A0E1           MOV      R1,R4
+   \   00000058   0600A0E1           MOV      R0,R6
+   \   0000005C   ........           _BLF     strcpy,??strcpy??rA
+   \   00000060   80119FE5           LDR      R1,??main_0+0x4  ;; `?<Constant ";4:\\\\ZBin\\\\;0:\\\\ZBin\\\\">`
+   \   00000064   0600A0E1           MOV      R0,R6
+   \   00000068   ........           _BLF     strcat,??strcat??rA
+   \   0000006C   D100D5E1           LDRSB    R0,[R5, #+1]
+   \   00000070   3A0050E3           CMP      R0,#+58
+   \   00000074   0300000A           BEQ      ??main_2
+    268              strcpy(curdir,exename);
+   \   00000078   0410A0E1           MOV      R1,R4
+   \   0000007C   0700A0E1           MOV      R0,R7
+   \   00000080   ........           _BLF     strcpy,??strcpy??rA
+   \   00000084   070000EA           B        ??main_3
+    269            }else{    
+    270              strcpy(curdir,fname);
+   \                     ??main_2:
+   \   00000088   0510A0E1           MOV      R1,R5
+   \   0000008C   0700A0E1           MOV      R0,R7
+   \   00000090   ........           _BLF     strcpy,??strcpy??rA
+    271              *(strrchr(curdir,'\\')+1)=0;
+   \   00000094   5C10A0E3           MOV      R1,#+92
+   \   00000098   0700A0E1           MOV      R0,R7
+   \   0000009C   ........           _BLF     strrchr,??strrchr??rA
+   \   000000A0   0010A0E3           MOV      R1,#+0
+   \   000000A4   0110C0E5           STRB     R1,[R0, #+1]
+    272            }
+    273            strcpy(temp,curdir);
+   \                     ??main_3:
+   \   000000A8   ........           LDR      R6,??DataTable106  ;; temp
+    274            strcat(temp,"Console.txt");
+    275            if((fcon=fopen(temp,A_ReadWrite+A_Append+A_Create,P_READ+P_WRITE,&err))>0)
+   \   000000AC   ........           LDR      R8,??DataTable107  ;; fcon
+   \   000000B0   0710A0E1           MOV      R1,R7
+   \   000000B4   ........           LDR      R7,??DataTable108  ;; err
+   \   000000B8   0600A0E1           MOV      R0,R6
+   \   000000BC   ........           _BLF     strcpy,??strcpy??rA
+   \   000000C0   24119FE5           LDR      R1,??main_0+0x8  ;; `?<Constant "Console.txt">`
+   \   000000C4   0600A0E1           MOV      R0,R6
+   \   000000C8   ........           _BLF     strcat,??strcat??rA
+   \   000000CC   0730A0E1           MOV      R3,R7
+   \   000000D0   602FA0E3           MOV      R2,#+384
+   \   000000D4   761042E2           SUB      R1,R2,#+118
+   \   000000D8   0600A0E1           MOV      R0,R6
+   \   000000DC   0A0000EF           SWI      +10
+   \   000000E0   000088E5           STR      R0,[R8, #+0]
+   \   000000E4   010050E3           CMP      R0,#+1
+   \   000000E8   070000BA           BLT      ??main_4
+    276              lseek(fcon,0,2,&err,&err); 
+   \   000000EC   0700A0E1           MOV      R0,R7
+   \   000000F0   01002DE9           PUSH     {R0}
+   \   000000F4   0730A0E1           MOV      R3,R7
+   \   000000F8   0220A0E3           MOV      R2,#+2
+   \   000000FC   000098E5           LDR      R0,[R8, #+0]
+   \   00000100   0010A0E3           MOV      R1,#+0
+   \   00000104   0F0000EF           SWI      +15
+   \   00000108   04D08DE2           ADD      SP,SP,#+4
+    277            conend=conbuf; 
+   \                     ??main_4:
+   \   0000010C   ........           LDR      R9,??DataTable109  ;; conend
+   \   00000110   ........           LDR      R10,??DataTable110  ;; conbuf
+    278            print(Title);
+   \   00000114   ........           LDR      R0,??DataTable111  ;; Title
+    279            sprintf(con,"\r\nDate: %d.%02d.%d  %d:%02d\n",
+    280                    date.day,date.month,date.year, time.hour,time.min);
+   \   00000118   ........           LDR      R11,??DataTable112  ;; con
+   \   0000011C   00A089E5           STR      R10,[R9, #+0]
+   \   00000120   ........           BL       print
+   \   00000124   0900DDE5           LDRB     R0,[SP, #+9]
+   \   00000128   C0109FE5           LDR      R1,??main_0+0xC  ;; `?<Constant "\\r\\nDate: %d.%02d.%d  %...">`
+   \   0000012C   01002DE9           PUSH     {R0}
+   \   00000130   0C00DDE5           LDRB     R0,[SP, #+12]
+   \   00000134   01002DE9           PUSH     {R0}
+   \   00000138   08009DE5           LDR      R0,[SP, #+8]
+   \   0000013C   01002DE9           PUSH     {R0}
+   \   00000140   1030DDE5           LDRB     R3,[SP, #+16]
+   \   00000144   1120DDE5           LDRB     R2,[SP, #+17]
+   \   00000148   0B00A0E1           MOV      R0,R11
+   \   0000014C   160000EF           SWI      +22
+    281            print(con);
+   \   00000150   0B00A0E1           MOV      R0,R11
+   \   00000154   ........           BL       print
+    282            strcpy(temp,exename);
+   \   00000158   0410A0E1           MOV      R1,R4
+   \   0000015C   0600A0E1           MOV      R0,R6
+   \   00000160   ........           _BLF     strcpy,??strcpy??rA
+    283            strcat(temp,"autoexec.bat");
+   \   00000164   88109FE5           LDR      R1,??main_0+0x10  ;; `?<Constant "autoexec.bat">`
+   \   00000168   0600A0E1           MOV      R0,R6
+   \   0000016C   ........           _BLF     strcat,??strcat??rA
+    284            execbat(temp);
+   \   00000170   0600A0E1           MOV      R0,R6
+   \   00000174   ........           BL       execbat
+    285            if(fname[1]==':'){
+   \   00000178   D100D5E1           LDRSB    R0,[R5, #+1]
+   \   0000017C   0CD08DE2           ADD      SP,SP,#+12
+   \   00000180   3A0050E3           CMP      R0,#+58
+   \   00000184   0100001A           BNE      ??main_5
+    286              execbat(fname);
+   \   00000188   0500A0E1           MOV      R0,R5
+   \   0000018C   ........           BL       execbat
+    287            }
+    288            if(fcon>0){ cr(); flush fclose(fcon,&err);}
+   \                     ??main_5:
+   \   00000190   000098E5           LDR      R0,[R8, #+0]
+   \   00000194   010050E3           CMP      R0,#+1
+   \   00000198   0C0000BA           BLT      ??main_6
+   \   0000019C   ........           _BLF     cr,??cr??rA
+   \   000001A0   000099E5           LDR      R0,[R9, #+0]
+   \   000001A4   0730A0E1           MOV      R3,R7
+   \   000001A8   0A2040E0           SUB      R2,R0,R10
+   \   000001AC   000098E5           LDR      R0,[R8, #+0]
+   \   000001B0   0A10A0E1           MOV      R1,R10
+   \   000001B4   0C0000EF           SWI      +12
+   \   000001B8   00A089E5           STR      R10,[R9, #+0]
+   \   000001BC   0000A0E3           MOV      R0,#+0
+   \   000001C0   0000CAE5           STRB     R0,[R10, #+0]
+   \   000001C4   000098E5           LDR      R0,[R8, #+0]
+   \   000001C8   0710A0E1           MOV      R1,R7
+   \   000001CC   0D0000EF           SWI      +13
+    289            SUBPROC((void *)Killer); 
+   \                     ??main_6:
+   \   000001D0   20009FE5           LDR      R0,??main_0+0x14  ;; Killer
+   \   000001D4   710100EF           SWI      +369
+    290            return 0;
+   \   000001D8   0000A0E3           MOV      R0,#+0
+   \   000001DC   10D08DE2           ADD      SP,SP,#+16
+   \   000001E0   F08FBDE8           POP      {R4-R11,PC}      ;; return
+   \                     ??main_0:
+   \   000001E4   A0252600           DC32     0x2625a0
+   \   000001E8   ........           DC32     `?<Constant ";4:\\\\ZBin\\\\;0:\\\\ZBin\\\\">`
+   \   000001EC   ........           DC32     `?<Constant "Console.txt">`
+   \   000001F0   ........           DC32     `?<Constant "\\r\\nDate: %d.%02d.%d  %...">`
+   \   000001F4   ........           DC32     `?<Constant "autoexec.bat">`
+   \   000001F8   ........           DC32     Killer
+    291          }
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable0:
+   \   00000000   ........           DC32     fcon
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable5:
+   \   00000000   ........           DC32     argvv
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable14:
+   \   00000000   ........           DC32     dee
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable16:
+   \   00000000   ........           DC32     SG
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable19:
+   \   00000000   ........           DC32     echooff
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable30:
+   \   00000000   ........           DC32     Title
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable53:
+   \   00000000   ........           DC32     `?<Constant " => ">`
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable57:
+   \   00000000   ........           DC32     ar2
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable64:
+   \   00000000   ........           DC32     ar1
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable65:
+   \   00000000   ........           DC32     err
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable66:
+   \   00000000   ........           DC32     conbuf
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable67:
+   \   00000000   ........           DC32     conend
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable68:
+   \   00000000   ........           DC32     argc
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable69:
+   \   00000000   ........           DC32     argv
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable75:
+   \   00000000   ........           DC32     lend
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable76:
+   \   00000000   ........           DC32     list
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable77:
+   \   00000000   ........           DC32     temp
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable83:
+   \   00000000   ........           DC32     curdir
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable84:
+   \   00000000   ........           DC32     eline
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable88:
+   \   00000000   ........           DC32     cext
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable89:
+   \   00000000   ........           DC32     argvv
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable91:
+   \   00000000   ........           DC32     spath
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable93:
+   \   00000000   ........           DC32     path
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable94:
+   \   00000000   ........           DC32     eline
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable95:
+   \   00000000   ........           DC32     argv
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable100:
+   \   00000000   ........           DC32     argc
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable101:
+   \   00000000   ........           DC32     echooff
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable103:
+   \   00000000   ........           DC32     SG
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable104:
+   \   00000000   ........           DC32     path
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable105:
+   \   00000000   ........           DC32     curdir
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable106:
+   \   00000000   ........           DC32     temp
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable107:
+   \   00000000   ........           DC32     fcon
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable108:
+   \   00000000   ........           DC32     err
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable109:
+   \   00000000   ........           DC32     conend
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable110:
+   \   00000000   ........           DC32     conbuf
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable111:
+   \   00000000   ........           DC32     Title
+
+   \                                 In segment CODE, align 4, keep-with-next
+   \                     ??DataTable112:
+   \   00000000   ........           DC32     con
+
+   \                                 In segment DATA_ID, align 4, align-sorted
+   \                     `?<Initializer for setend>`:
+   \   00000000   ........           DC32 set
+
+   \                                 In segment DATA_ID, align 4, align-sorted
+   \                     `?<Initializer for cext>`:
+   \   00000000   ............       DC32 `?<Constant ".bat">`, `?<Constant ".lnk">`, `?<Constant ".elf">`
+   \              ............
+   \   0000000C   ........0000       DC32 `?<Constant ".dll">`, 0H
+   \              0000        
+
+   \                                 In segment DATA_ID, align 4, align-sorted
+   \                     `?<Initializer for msg>`:
+   \   00000000   ............       DC32 `?<Constant "OK">`, `?<Constant "Error">`
+   \              ....        
+   \   00000008   ........           DC32 `?<Constant "Bad command or file name">`
+   \   0000000C   ............       DC32 `?<Constant "Wrong Way">`, `?<Constant "Not enough arguments">`
+   \              ....        
+   \   00000014   ........           DC32 `?<Constant "Not enough memory">`
+   \   00000018   ........           DC32 `?<Constant "Failed to open file">`
+   \   0000001C   ........           DC32 `?<Constant "Failed to create file">`
+   \   00000020   ........           DC32 `?<Constant "Invalid Option">`
+
+   \                                 In segment DATA_ID, align 4, align-sorted
+   \                     `?<Initializer for lend>`:
+   \   00000000   ........           DC32 list
+
+   \                                 In segment DATA_ID, align 4, align-sorted
+   \                     `?<Initializer for commands>`:
+   \   00000000   ............       DC32 `?<Constant "CD">`, cd, `?<Constant "CHDIR">`, cd
+   \              ............
+   \              ........    
+   \   00000010   ............       DC32 `?<Constant "COPY">`, copy, `?<Constant "ECHO">`, echo
+   \              ............
+   \              ........    
+   \   00000020   ............       DC32 `?<Constant "REN">`, ren, `?<Constant "RENAME">`, ren
+   \              ............
+   \              ........    
+   \   00000030   ............       DC32 `?<Constant "REM">`, empty, `?<Constant "PATH">`, setpath
+   \              ............
+   \              ........    
+   \   00000040   ............       DC32 `?<Constant "DIR">`, dir, `?<Constant "MEM">`, mem
+   \              ............
+   \              ........    
+   \   00000050   ............       DC32 `?<Constant "DATE">`, `date`, `?<Constant "TIME">`, time
+   \              ............
+   \              ........    
+   \   00000060   ............       DC32 `?<Constant "MD">`, md, `?<Constant "MKDIR">`, md
+   \              ............
+   \              ........    
+   \   00000070   ............       DC32 `?<Constant "RD">`, rd, `?<Constant "RMDIR">`, rd
+   \              ............
+   \              ........    
+   \   00000080   ............       DC32 `?<Constant "TYPE">`, type, `?<Constant "VER">`, ver
+   \              ............
+   \              ........    
+   \   00000090   ............       DC32 `?<Constant "SET">`, sset, `?<Constant "CLS">`, cls
+   \              ............
+   \              ........    
+   \   000000A0   ............       DC32 `?<Constant "QUIT">`, quit, `?<Constant "EXIT">`, quit
+   \              ............
+   \              ........    
+   \   000000B0   ............       DC32 `?<Constant "DEL">`, del, `?<Constant "ERASE">`, del
+   \              ............
+   \              ........    
+   \   000000C0   ............       DC32 `?<Constant "PAUSE">`, empty, `?<Constant "GOTO">`, empty, 0H, 0H
+   \              ............
+   \              ........0000
+   \              000000000000
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "PATH">`:
+   \   00000000   5041544800         DC8 "PATH"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "DIR">`:
+   \   00000000   44495200           DC8 "DIR"
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "MEM">`:
+   \   00000000   4D454D00           DC8 "MEM"
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "DATE">`:
+   \   00000000   4441544500         DC8 "DATE"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "TIME">`:
+   \   00000000   54494D4500         DC8 "TIME"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 1, align-sorted
+   \                     `?<Constant "MD">`:
+   \   00000000   4D4400             DC8 "MD"
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "MKDIR">`:
+   \   00000000   4D4B44495200       DC8 "MKDIR"
+   \   00000006   0000               DC8 0, 0
+
+   \                                 In segment DATA_C, align 1, align-sorted
+   \                     `?<Constant "RD">`:
+   \   00000000   524400             DC8 "RD"
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "RMDIR">`:
+   \   00000000   524D44495200       DC8 "RMDIR"
+   \   00000006   0000               DC8 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "TYPE">`:
+   \   00000000   5459504500         DC8 "TYPE"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "REM">`:
+   \   00000000   52454D00           DC8 "REM"
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "VER">`:
+   \   00000000   56455200           DC8 "VER"
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "SET">`:
+   \   00000000   53455400           DC8 "SET"
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "CLS">`:
+   \   00000000   434C5300           DC8 "CLS"
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "QUIT">`:
+   \   00000000   5155495400         DC8 "QUIT"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "EXIT">`:
+   \   00000000   4558495400         DC8 "EXIT"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "DEL">`:
+   \   00000000   44454C00           DC8 "DEL"
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "ERASE">`:
+   \   00000000   455241534500       DC8 "ERASE"
+   \   00000006   0000               DC8 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "PAUSE">`:
+   \   00000000   504155534500       DC8 "PAUSE"
+   \   00000006   0000               DC8 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "GOTO">`:
+   \   00000000   474F544F00         DC8 "GOTO"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\\\*.*">`:
+   \   00000000   5C2A2E2A00         DC8 "\\*.*"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \   00000000   4F464600           DC8 "OFF"
+
+   \                                 In segment DATA_C, align 1, align-sorted
+   \   00000000   4F4E00             DC8 "ON"
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "%d.%02d.%d">`:
+   \   00000000   25642E253032       DC8 "%d.%02d.%d"
+   \              642E256400  
+   \   0000000B   00                 DC8 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "%d:%02d">`:
+   \   00000000   25643A253032       DC8 "%d:%02d"
+   \              6400        
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant " => ">`:
+   \   00000000   203D3E2000         DC8 " => "
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \   00000000   2A2E2A00           DC8 "*.*"
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\r\\n%d files">`:
+   \   00000000   0D0A25642066       DC8 "\015\012%d files"
+   \              696C657300  
+   \   0000000B   00                 DC8 0
+
+   \                                 In segment DATA_C, align 1, align-sorted
+   \   00000000   3B00               DC8 ";"
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant ";4:\\\\ZBin\\\\;0:\\\\ZBin\\\\">`:
+   \   00000000   3B343A5C5A42       DC8 ";4:\\ZBin\\;0:\\ZBin\\"
+   \              696E5C3B303A
+   \              5C5A42696E5C
+   \              00          
+   \   00000013   00                 DC8 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "Console.txt">`:
+   \   00000000   436F6E736F6C       DC8 "Console.txt"
+   \              652E74787400
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "\\r\\nDate: %d.%02d.%d  %...">`:
+   \   00000000   0D0A44617465       DC8 "\015\012Date: %d.%02d.%d  %d:%02d\012"
+   \              3A2025642E25
+   \              3032642E2564
+   \              202025643A25
+   \              3032640A00  
+   \   0000001D   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "autoexec.bat">`:
+   \   00000000   6175746F6578       DC8 "autoexec.bat"
+   \              65632E626174
+   \              00          
+   \   0000000D   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "Not enough memory">`:
+   \   00000000   4E6F7420656E       DC8 "Not enough memory"
+   \              6F756768206D
+   \              656D6F727900
+   \   00000012   0000               DC8 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant ".bat">`:
+   \   00000000   2E62617400         DC8 ".bat"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant ".lnk">`:
+   \   00000000   2E6C6E6B00         DC8 ".lnk"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant ".elf">`:
+   \   00000000   2E656C6600         DC8 ".elf"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant ".dll">`:
+   \   00000000   2E646C6C00         DC8 ".dll"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 1, align-sorted
+   \                     `?<Constant "OK">`:
+   \   00000000   4F4B00             DC8 "OK"
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "Error">`:
+   \   00000000   4572726F7200       DC8 "Error"
+   \   00000006   0000               DC8 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "Bad command or file name">`:
+   \   00000000   42616420636F       DC8 "Bad command or file name"
+   \              6D6D616E6420
+   \              6F722066696C
+   \              65206E616D65
+   \              00          
+   \   00000019   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "Wrong Way">`:
+   \   00000000   57726F6E6720       DC8 "Wrong Way"
+   \              57617900    
+   \   0000000A   0000               DC8 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "Not enough arguments">`:
+   \   00000000   4E6F7420656E       DC8 "Not enough arguments"
+   \              6F7567682061
+   \              7267756D656E
+   \              747300      
+   \   00000015   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "Data on the disk of %...">`:
+   \   00000000   44617461206F       DC8 44H, 61H, 74H, 61H, 20H, 6FH, 6EH, 20H
+   \              6E20        
+   \   00000008   746865206469       DC8 74H, 68H, 65H, 20H, 64H, 69H, 73H, 6BH
+   \              736B        
+   \   00000010   206F66202564       DC8 20H, 6FH, 66H, 20H, 25H, 64H, 20H, 0A7H
+   \              20A7        
+   \   00000018   AC620D0A4672       DC8 0ACH, 62H, 0DH, 0AH, 46H, 72H, 65H, 65H
+   \              6565        
+   \   00000020   3A202564204B       DC8 3AH, 20H, 25H, 64H, 20H, 4BH, 62H, 0DH
+   \              620D        
+   \   00000028   0A4672656520       DC8 0AH, 46H, 72H, 65H, 65H, 20H, 6DH, 65H
+   \              6D65        
+   \   00000030   6D6F72793A20       DC8 6DH, 6FH, 72H, 79H, 3AH, 20H, 25H, 64H
+   \              2564        
+   \   00000038   204B620D0A00       DC8 20H, 4BH, 62H, 0DH, 0AH, 0
+   \   0000003E   0000               DC8 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "Failed to open file">`:
+   \   00000000   4661696C6564       DC8 "Failed to open file"
+   \              20746F206F70
+   \              656E2066696C
+   \              6500        
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "Failed to create file">`:
+   \   00000000   4661696C6564       DC8 "Failed to create file"
+   \              20746F206372
+   \              656174652066
+   \              696C6500    
+   \   00000016   0000               DC8 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "Invalid Option">`:
+   \   00000000   496E76616C69       DC8 "Invalid Option"
+   \              64204F707469
+   \              6F6E00      
+   \   0000000F   00                 DC8 0
+
+   \                                 In segment DATA_C, align 1, align-sorted
+   \                     `?<Constant "CD">`:
+   \   00000000   434400             DC8 "CD"
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "CHDIR">`:
+   \   00000000   434844495200       DC8 "CHDIR"
+   \   00000006   0000               DC8 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "COPY">`:
+   \   00000000   434F505900         DC8 "COPY"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "ECHO">`:
+   \   00000000   4543484F00         DC8 "ECHO"
+   \   00000005   000000             DC8 0, 0, 0
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "REN">`:
+   \   00000000   52454E00           DC8 "REN"
+
+   \                                 In segment DATA_C, align 4, align-sorted
+   \                     `?<Constant "RENAME">`:
+   \   00000000   52454E414D45       DC8 "RENAME"
+   \              00          
+   \   00000007   00                 DC8 0
+
+   Maximum stack usage in bytes:
+
+     Function CSTACK
+     -------- ------
+     Killer       4
+     arg          0
+     cd          12
+     cls          4
+     command     36
+     copy        20
+     copyxx      44
+     cr           0
+     date        28
+     del         20
+     dir         44
+     echo        12
+     empty        0
+     exec         8
+     execbat     32
+     execelf     16
+     extn        20
+     extnn       20
+     find        32
+     findall     16
+     gettype     16
+     isfile      12
+     main        64
+     md          12
+     mem         20
+     par         12
+     print       20
+     quit         0
+     rd          12
+     ren         32
+     rundll      52
+     setpath      8
+     sset        16
+     striicmp     0
+     time        24
+     type        20
+     un          16
+     ver          4
+
+
+   Segment part sizes:
+
+     Function/Label                 Bytes
+     --------------                 -----
+     Title                             24
+     conbuf                          2048
+     conend                             4
+     con                              256
+     path                             256
+     spath                            256
+     curdir                           256
+     ar1                              256
+     ar2                              256
+     set                              256
+     setend                             4
+     argvv                             64
+     argv                               4
+     argc                               4
+     fcon                               4
+     SG                                 4
+     echooff                            1
+     exit                               1
+     link                              20
+     eline                              2
+     ezap                               2
+     cext                              20
+     cmd                                4
+     msg                               36
+     ??striicmp_0                      48
+     print                            148
+     cr                                56
+     arg                              108
+     Killer                            28
+     rundll                           376
+     isfile                            48
+     execelf                           76
+     de                              2640
+     dee                              440
+     tmp                             1536
+     temp                             256
+     name                             256
+     etemp                              4
+     ename                              4
+     list                           32768
+     lend                               4
+     un                                84
+     extnn                            136
+     extn                             148
+     find                             224
+     par                               68
+     quit                              24
+     empty                              8
+     cls                               16
+     echo                             156
+     mem                               96
+     date                              76
+     time                              68
+     md                                60
+     rd                                60
+     ver                               20
+     setpath                          112
+     ren                              308
+     del                              188
+     copyxx                           396
+     copy                             220
+     type                             144
+     sset                             192
+     dir                              568
+     cd                               212
+     commands                         216
+     findall                          116
+     gettype                           76
+     command                          616
+     exec                              88
+     execbat                          308
+     main                             508
+     ??DataTable0                       4
+     ??DataTable5                       4
+     ??DataTable14                      4
+     ??DataTable16                      4
+     ??DataTable19                      4
+     ??DataTable30                      4
+     ??DataTable53                      4
+     ??DataTable57                      4
+     ??DataTable64                      4
+     ??DataTable65                      4
+     ??DataTable66                      4
+     ??DataTable67                      4
+     ??DataTable68                      4
+     ??DataTable69                      4
+     ??DataTable75                      4
+     ??DataTable76                      4
+     ??DataTable77                      4
+     ??DataTable83                      4
+     ??DataTable84                      4
+     ??DataTable88                      4
+     ??DataTable89                      4
+     ??DataTable91                      4
+     ??DataTable93                      4
+     ??DataTable94                      4
+     ??DataTable95                      4
+     ??DataTable100                     4
+     ??DataTable101                     4
+     ??DataTable103                     4
+     ??DataTable104                     4
+     ??DataTable105                     4
+     ??DataTable106                     4
+     ??DataTable107                     4
+     ??DataTable108                     4
+     ??DataTable109                     4
+     ??DataTable110                     4
+     ??DataTable111                     4
+     ??DataTable112                     4
+     ?<Initializer for setend>          4
+     ?<Initializer for cext>           20
+     ?<Initializer for msg>            36
+     ?<Initializer for lend>            4
+     ?<Initializer for commands>      216
+     ?<Constant "PATH">                 8
+     ?<Constant "DIR">                  4
+     ?<Constant "MEM">                  4
+     ?<Constant "DATE">                 8
+     ?<Constant "TIME">                 8
+     ?<Constant "MD">                   3
+     ?<Constant "MKDIR">                8
+     ?<Constant "RD">                   3
+     ?<Constant "RMDIR">                8
+     ?<Constant "TYPE">                 8
+     ?<Constant "REM">                  4
+     ?<Constant "VER">                  4
+     ?<Constant "SET">                  4
+     ?<Constant "CLS">                  4
+     ?<Constant "QUIT">                 8
+     ?<Constant "EXIT">                 8
+     ?<Constant "DEL">                  4
+     ?<Constant "ERASE">                8
+     ?<Constant "PAUSE">                8
+     ?<Constant "GOTO">                 8
+     ?<Constant "\\*.*">                8
+     ?<Constant "OFF">                  4
+     ?<Constant "ON">                   3
+     ?<Constant "%d.%02d.%d">          12
+     ?<Constant "%d:%02d">              8
+     ?<Constant " => ">                 8
+     ?<Constant "*.*">                  4
+     ?<Constant "\r\n%d files">        12
+     ?<Constant ";">                    2
+     ?<Constant ";4:\\ZBin\\;0:\\ZBin\\">
+                                       20
+     ?<Constant "Console.txt">         12
+     ?<Constant "\r\nDate: %d.%02d.%d  %...">
+                                       32
+     ?<Constant "autoexec.bat">        16
+     ?<Constant "Not enough memory">
+                                       20
+     ?<Constant ".bat">                 8
+     ?<Constant ".lnk">                 8
+     ?<Constant ".elf">                 8
+     ?<Constant ".dll">                 8
+     ?<Constant "OK">                   3
+     ?<Constant "Error">                8
+     ?<Constant "Bad command or file name">
+                                       28
+     ?<Constant "Wrong Way">           12
+     ?<Constant "Not enough arguments">
+                                       24
+     ?<Constant "Data on the disk of %...">
+                                       64
+     ?<Constant "Failed to open file">
+                                       20
+     ?<Constant "Failed to create file">
+                                       24
+     ?<Constant "Invalid Option">      16
+     ?<Constant "CD">                   3
+     ?<Constant "CHDIR">                8
+     ?<Constant "COPY">                 8
+     ?<Constant "ECHO">                 8
+     ?<Constant "REN">                  4
+     ?<Constant "RENAME">               8
+      Others                          300
+
+ 
+  6 608 bytes in segment CODE
+    601 bytes in segment DATA_C
+    280 bytes in segment DATA_I
+    280 bytes in segment DATA_ID
+ 41 834 bytes in segment DATA_Z
+     24 bytes in segment INITTAB
+ 
+  6 192 bytes of CODE  memory (+ 440 bytes shared)
+    881 bytes of CONST memory
+ 42 114 bytes of DATA  memory
+
+Errors: none
+Warnings: none

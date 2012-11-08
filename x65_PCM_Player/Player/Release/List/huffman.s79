@@ -1,0 +1,1253 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:46 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3d /
+//                       ec\huffman.c                                        /
+//    Command line    =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3d /
+//                       ec\huffman.c -D NDEBUG -lC                          /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\huffman.s79                                    /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME huffman
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        MULTWEAK ??xmp3_DecodeHuffman??rT
+        FUNCTION DecodeHuffmanPairs,0203H
+        LOCFRAME CSTACK, 48, STACK
+        FUNCTION DecodeHuffmanQuads,0203H
+        LOCFRAME CSTACK, 40, STACK
+        PUBLIC xmp3_DecodeHuffman
+        FUNCTION xmp3_DecodeHuffman,0203H
+        LOCFRAME CSTACK, 68, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+xmp3_DecodeHuffman  SYMBOL "xmp3_DecodeHuffman"
+??xmp3_DecodeHuffman??rT SYMBOL "??rT", xmp3_DecodeHuffman
+
+        EXTERN xmp3_huffTabLookup
+        EXTERN xmp3_huffTabOffset
+        EXTERN xmp3_huffTable
+        EXTERN xmp3_quadTabMaxBits
+        EXTERN xmp3_quadTabOffset
+        EXTERN xmp3_quadTable
+
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??DecodeHuffmanPairs??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE DecodeHuffmanPairs
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\MP3\mp3dec\huffman.c
+//    1 /* ***** BEGIN LICENSE BLOCK ***** 
+//    2  * Version: RCSL 1.0/RPSL 1.0 
+//    3  *  
+//    4  * Portions Copyright (c) 1995-2002 RealNetworks, Inc. All Rights Reserved. 
+//    5  *      
+//    6  * The contents of this file, and the files included with this file, are 
+//    7  * subject to the current version of the RealNetworks Public Source License 
+//    8  * Version 1.0 (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the RealNetworks Community Source License Version 1.0 
+//   11  * (the "RCSL") available at http://www.helixcommunity.org/content/rcsl, 
+//   12  * in which case the RCSL will apply. You may also obtain the license terms 
+//   13  * directly from RealNetworks.  You may not use this file except in 
+//   14  * compliance with the RPSL or, if you have a valid RCSL with RealNetworks 
+//   15  * applicable to this file, the RCSL.  Please see the applicable RPSL or 
+//   16  * RCSL for the rights, obligations and limitations governing use of the 
+//   17  * contents of the file.  
+//   18  *  
+//   19  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   20  * developer of the Original Code and owns the copyrights in the portions 
+//   21  * it created. 
+//   22  *  
+//   23  * This file, and the files included with this file, is distributed and made 
+//   24  * available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
+//   25  * EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
+//   26  * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
+//   27  * FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. 
+//   28  * 
+//   29  * Technology Compatibility Kit Test Suite(s) Location: 
+//   30  *    http://www.helixcommunity.org/content/tck 
+//   31  * 
+//   32  * Contributor(s): 
+//   33  *  
+//   34  * ***** END LICENSE BLOCK ***** */ 
+//   35 
+//   36 /**************************************************************************************
+//   37  * Fixed-point MP3 decoder
+//   38  * Jon Recker (jrecker@real.com), Ken Cooke (kenc@real.com)
+//   39  * July 2003
+//   40  *
+//   41  * huffman.c - Huffman decoding of transform coefficients
+//   42  **************************************************************************************/
+//   43 
+//   44 #include "coder.h"
+//   45 
+//   46 /* helper macros - see comments in hufftabs.c about the format of the huffman tables */
+//   47 #define GetMaxbits(x)   ((int)( (((unsigned short)(x)) >>  0) & 0x000f))
+//   48 #define GetHLen(x)      ((int)( (((unsigned short)(x)) >> 12) & 0x000f))
+//   49 #define GetCWY(x)       ((int)( (((unsigned short)(x)) >>  8) & 0x000f))
+//   50 #define GetCWX(x)       ((int)( (((unsigned short)(x)) >>  4) & 0x000f))
+//   51 #define GetSignBits(x)  ((int)( (((unsigned short)(x)) >>  0) & 0x000f))
+//   52 
+//   53 #define GetHLenQ(x)     ((int)( (((unsigned char)(x)) >> 4) & 0x0f))
+//   54 #define GetCWVQ(x)      ((int)( (((unsigned char)(x)) >> 3) & 0x01))
+//   55 #define GetCWWQ(x)      ((int)( (((unsigned char)(x)) >> 2) & 0x01))
+//   56 #define GetCWXQ(x)      ((int)( (((unsigned char)(x)) >> 1) & 0x01))
+//   57 #define GetCWYQ(x)      ((int)( (((unsigned char)(x)) >> 0) & 0x01))
+//   58 
+//   59 /* apply sign of s to the positive number x (save in MSB, will do two's complement in dequant) */
+//   60 #define ApplySign(x, s)	{ (x) |= ((s) & 0x80000000); }
+//   61 
+//   62 /**************************************************************************************
+//   63  * Function:    DecodeHuffmanPairs
+//   64  *
+//   65  * Description: decode 2-way vector Huffman codes in the "bigValues" region of spectrum
+//   66  *
+//   67  * Inputs:      valid BitStreamInfo struct, pointing to start of pair-wise codes
+//   68  *              pointer to xy buffer to received decoded values
+//   69  *              number of codewords to decode
+//   70  *              index of Huffman table to use
+//   71  *              number of bits remaining in bitstream
+//   72  *
+//   73  * Outputs:     pairs of decoded coefficients in vwxy
+//   74  *              updated BitStreamInfo struct
+//   75  *
+//   76  * Return:      number of bits used, or -1 if out of bits
+//   77  *
+//   78  * Notes:       assumes that nVals is an even number
+//   79  *              si_huff.bit tests every Huffman codeword in every table (though not
+//   80  *                necessarily all linBits outputs for x,y > 15)
+//   81  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function DecodeHuffmanPairs
+        ARM
+//   82 static int DecodeHuffmanPairs(int *xy, int nVals, int tabIdx, int bitsLeft, unsigned char *buf, int bitOffset)
+//   83 {
+DecodeHuffmanPairs:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+        SUB      SP,SP,#+12
+        CFI CFA R13+48
+        LDR      R12,[SP, #+48]
+        LDR      R6,[SP, #+52]
+//   84 	int i, x, y;
+//   85 	int cachedBits, padBits, len, startBits, linBits, maxBits, minBits;
+//   86 	HuffTabType tabType;
+//   87 	unsigned short cw, *tBase, *tCurr;
+//   88 	unsigned int cache;
+//   89 
+//   90 	if(nVals <= 0) 
+        CMP      R1,#+1
+        BGE      ??DecodeHuffmanPairs_0
+//   91 		return 0;
+??DecodeHuffmanPairs_1:
+        MOV      R0,#+0
+        POP      {R1-R11,PC}      ;; return
+//   92 
+//   93 	if (bitsLeft < 0)
+??DecodeHuffmanPairs_0:
+        CMP      R3,#+0
+        BPL      ??DecodeHuffmanPairs_2
+//   94 		return -1;
+??DecodeHuffmanPairs_3:
+        MVN      R0,#+0
+        POP      {R1-R11,PC}
+//   95 	startBits = bitsLeft;
+//   96 
+//   97 	tBase = (unsigned short *)(huffTable + huffTabOffset[tabIdx]);
+??DecodeHuffmanPairs_2:
+        LDR      R5,??DecodeHuffmanPairs_4  ;; xmp3_huffTabOffset
+        LDR      R7,??DecodeHuffmanPairs_4+0x4  ;; xmp3_huffTable
+        STR      R3,[SP, #+8]
+        LDR      R5,[R5, +R2, LSL #+2]
+//   98 	linBits = huffTabLookup[tabIdx].linBits;
+//   99 	tabType = huffTabLookup[tabIdx].tabType;
+//  100 
+//  101 	ASSERT(!(nVals & 0x01));
+//  102 	ASSERT(tabIdx < HUFF_PAIRTABS);
+//  103 	ASSERT(tabIdx >= 0);
+//  104 	ASSERT(tabType != invalidTab);
+//  105 
+//  106 	/* initially fill cache with any partial byte */
+//  107 	cache = 0;
+//  108 	cachedBits = (8 - bitOffset) & 0x07;
+        RSB      R6,R6,#+8
+        ADD      R5,R7,R5, LSL #+1
+        STR      R5,[SP, #+4]
+        LDR      R5,??DecodeHuffmanPairs_4+0x8  ;; xmp3_huffTabLookup
+        ANDS     R7,R6,#0x7
+        LDR      R4,[R5, +R2, LSL #+3]
+        ADD      R2,R5,R2, LSL #+3
+        LDRB     R2,[R2, #+4]
+        MOV      R5,#+0
+        STR      R2,[SP, #+0]
+        MOV      R2,#+0
+//  109 	if (cachedBits)
+        BEQ      ??DecodeHuffmanPairs_5
+//  110 		cache = (unsigned int)(*buf++) << (32 - cachedBits);
+        LDRB     R5,[R12], #+1
+        MOV      R6,R7
+        RSB      R6,R6,#+32
+        LSL      R5,R5,R6
+//  111 	bitsLeft -= cachedBits;
+//  112 
+//  113 	if (tabType == noBits) {
+??DecodeHuffmanPairs_5:
+        LDR      R6,[SP, #+0]
+        SUB      R3,R3,R7
+        ANDS     R6,R6,#0xFF
+        BNE      ??DecodeHuffmanPairs_6
+//  114 		/* table 0, no data, x = y = 0 */
+//  115 		for (i = 0; i < nVals; i+=2) {
+        MOV      R3,#+0
+??DecodeHuffmanPairs_7:
+        CMP      R3,R1
+        BGE      ??DecodeHuffmanPairs_1
+//  116 			xy[i+0] = 0;
+        ADD      R4,R0,R3, LSL #+2
+        STR      R2,[R4, #+0]
+//  117 			xy[i+1] = 0;
+        STR      R2,[R4, #+4]
+//  118 		}
+        ADD      R3,R3,#+2
+        B        ??DecodeHuffmanPairs_7
+//  119 		return 0;
+//  120 	} else if (tabType == oneShot) {
+??DecodeHuffmanPairs_6:
+        MOV      R2,#-2147483648
+        CMP      R6,#+1
+        BNE      ??DecodeHuffmanPairs_8
+//  121 		/* single lookup, no escapes */
+//  122 		maxBits = GetMaxbits(tBase[0]);
+        LDR      R6,[SP, #+4]
+        LDRH     R8,[R6], #+2
+        STR      R6,[SP, #+4]
+//  123 		tBase++;
+//  124 		padBits = 0;
+        MOV      R6,#+0
+        AND      R8,R8,#0xF
+//  125 		while (nVals > 0) {
+//  126 			/* refill cache - assumes cachedBits <= 16 */
+//  127 			if (bitsLeft >= 16) {
+??DecodeHuffmanPairs_9:
+        MOV      R4,R7
+        RSB      R4,R4,#+16
+        MOV      R9,R7
+        RSB      R9,R9,#+24
+        CMP      R3,#+16
+        BLT      ??DecodeHuffmanPairs_10
+//  128 				/* load 2 new bytes into left-justified cache */
+//  129 				cache |= (unsigned int)(*buf++) << (24 - cachedBits);
+        LDRB     R10,[R12], #+1
+//  130 				cache |= (unsigned int)(*buf++) << (16 - cachedBits);
+//  131 				cachedBits += 16;
+        ADD      R7,R7,#+16
+//  132 				bitsLeft -= 16;
+        SUB      R3,R3,#+16
+        ORR      R5,R5,R10, LSL R9
+        LDRB     R9,[R12], #+1
+        ORR      R5,R5,R9, LSL R4
+        B        ??DecodeHuffmanPairs_11
+//  133 			} else {
+//  134 				/* last time through, pad cache with zeros and drain cache */
+//  135 				if (cachedBits + bitsLeft <= 0)	return -1;
+??DecodeHuffmanPairs_10:
+        ADD      R7,R3,R7
+        CMP      R7,#+1
+        BLT      ??DecodeHuffmanPairs_3
+//  136 				if (bitsLeft > 0)	cache |= (unsigned int)(*buf++) << (24 - cachedBits);
+        CMP      R3,#+1
+        LDRBGE   R6,[R12], #+1
+        ORRGE    R5,R5,R6, LSL R9
+//  137 				if (bitsLeft > 8)	cache |= (unsigned int)(*buf++) << (16 - cachedBits);
+        CMP      R3,#+9
+        LDRBGE   R3,[R12], #+1
+//  138 				cachedBits += bitsLeft;
+//  139 				bitsLeft = 0;
+//  140 
+//  141 				cache &= (signed int)0x80000000 >> (cachedBits - 1);
+//  142 				padBits = 11;
+        MOV      R6,#+11
+        ORRGE    R5,R5,R3, LSL R4
+        SUB      R4,R7,#+1
+        AND      R5,R5,R2, ASR R4
+        MOV      R3,#+0
+//  143 				cachedBits += padBits;	/* okay if this is > 32 (0's automatically shifted in from right) */
+        ADD      R7,R7,#+11
+??DecodeHuffmanPairs_11:
+        CMP      R7,#+11
+        BLT      ??DecodeHuffmanPairs_9
+//  144 			}
+//  145 
+//  146 			/* largest maxBits = 9, plus 2 for sign bits, so make sure cache has at least 11 bits */
+//  147 			while (nVals > 0 && cachedBits >= 11 ) {
+//  148 				cw = tBase[cache >> (32 - maxBits)];
+        LDR      R9,[SP, #+4]
+        MOV      R4,R8
+        RSB      R4,R4,#+32
+        LSR      R4,R5,R4
+        ADD      R4,R9,R4, LSL #+1
+        LDRH     R10,[R4, #+0]
+//  149 				len = GetHLen(cw);
+//  150 				cachedBits -= len;
+//  151 				cache <<= len;
+//  152 
+//  153 				x = GetCWX(cw);		if (x)	{ApplySign(x, cache); cache <<= 1; cachedBits--;}
+        MOV      R4,#+15
+        LSR      R11,R10,#+12
+        SUB      R7,R7,R11
+        LSL      R5,R5,R11
+        ANDS     R9,R4,R10, ASR #+4
+        BEQ      ??DecodeHuffmanPairs_12
+        AND      R4,R5,#0x80000000
+        ORR      R9,R4,R9
+        LSL      R5,R5,#+1
+        SUB      R7,R7,#+1
+//  154 				y = GetCWY(cw);		if (y)	{ApplySign(y, cache); cache <<= 1; cachedBits--;}
+??DecodeHuffmanPairs_12:
+        MOV      R4,#+15
+        ANDS     R10,R4,R10, ASR #+8
+        BEQ      ??DecodeHuffmanPairs_13
+        AND      R4,R5,#0x80000000
+        ORR      R10,R4,R10
+        LSL      R5,R5,#+1
+        SUB      R7,R7,#+1
+//  155 
+//  156 				/* ran out of bits - should never have consumed padBits */
+//  157 				if (cachedBits < padBits)
+??DecodeHuffmanPairs_13:
+        CMP      R7,R6
+        BLT      ??DecodeHuffmanPairs_3
+//  158 					return -1;
+//  159 
+//  160 				*xy++ = x;
+        STR      R9,[R0], #+4
+//  161 				*xy++ = y;
+        STR      R10,[R0], #+4
+//  162 				nVals -= 2;
+        SUB      R1,R1,#+2
+//  163 			}
+        CMP      R1,#+1
+        BGE      ??DecodeHuffmanPairs_11
+//  164 		}
+//  165 		bitsLeft += (cachedBits - padBits);
+//  166 		return (startBits - bitsLeft);
+??DecodeHuffmanPairs_14:
+        LDR      R0,[SP, #+8]
+        SUB      R0,R0,R3
+        SUB      R0,R0,R7
+        ADD      R0,R6,R0
+        POP      {R1-R11,PC}
+//  167 	} else if (tabType == loopLinbits || tabType == loopNoLinbits) {
+??DecodeHuffmanPairs_8:
+        CMP      R6,#+3
+        CMPNE    R6,#+2
+        BNE      ??DecodeHuffmanPairs_3
+//  168 		tCurr = tBase;
+        LDR      R9,[SP, #+4]
+//  169 		padBits = 0;
+        MOV      R6,#+0
+//  170 		while (nVals > 0) {
+//  171 			/* refill cache - assumes cachedBits <= 16 */
+//  172 			if (bitsLeft >= 16) {
+??DecodeHuffmanPairs_15:
+        MOV      R8,R7
+        RSB      R8,R8,#+16
+        MOV      R10,R7
+        RSB      R10,R10,#+24
+        CMP      R3,#+16
+        BLT      ??DecodeHuffmanPairs_16
+//  173 				/* load 2 new bytes into left-justified cache */
+//  174 				cache |= (unsigned int)(*buf++) << (24 - cachedBits);
+        LDRB     R11,[R12], #+1
+//  175 				cache |= (unsigned int)(*buf++) << (16 - cachedBits);
+//  176 				cachedBits += 16;
+        ADD      R7,R7,#+16
+//  177 				bitsLeft -= 16;
+        SUB      R3,R3,#+16
+        ORR      R5,R5,R11, LSL R10
+        LDRB     R10,[R12], #+1
+        ORR      R5,R5,R10, LSL R8
+        B        ??DecodeHuffmanPairs_17
+//  178 			} else {
+//  179 				/* last time through, pad cache with zeros and drain cache */
+//  180 				if (cachedBits + bitsLeft <= 0)	return -1;
+??DecodeHuffmanPairs_16:
+        ADD      R7,R3,R7
+        CMP      R7,#+1
+        BLT      ??DecodeHuffmanPairs_3
+//  181 				if (bitsLeft > 0)	cache |= (unsigned int)(*buf++) << (24 - cachedBits);
+        CMP      R3,#+1
+        LDRBGE   R6,[R12], #+1
+        ORRGE    R5,R5,R6, LSL R10
+//  182 				if (bitsLeft > 8)	cache |= (unsigned int)(*buf++) << (16 - cachedBits);
+        CMP      R3,#+9
+        LDRBGE   R3,[R12], #+1
+//  183 				cachedBits += bitsLeft;
+//  184 				bitsLeft = 0;
+//  185 
+//  186 				cache &= (signed int)0x80000000 >> (cachedBits - 1);
+        SUB      R6,R7,#+1
+//  187 				padBits = 11;
+//  188 				cachedBits += padBits;	/* okay if this is > 32 (0's automatically shifted in from right) */
+        ADD      R7,R7,#+11
+        ORRGE    R5,R5,R3, LSL R8
+        MOV      R3,#+0
+        AND      R5,R5,R2, ASR R6
+        MOV      R6,#+11
+        B        ??DecodeHuffmanPairs_17
+//  189 			}
+//  190 
+//  191 			/* largest maxBits = 9, plus 2 for sign bits, so make sure cache has at least 11 bits */
+//  192 			while (nVals > 0 && cachedBits >= 11 ) {
+//  193 				maxBits = GetMaxbits(tCurr[0]);
+//  194 				cw = tCurr[(cache >> (32 - maxBits)) + 1];
+//  195 				len = GetHLen(cw);
+//  196 				if (!len) {
+//  197 					cachedBits -= maxBits;
+//  198 					cache <<= maxBits;
+//  199 					tCurr += cw;
+//  200 					continue;
+//  201 				}
+//  202 				cachedBits -= len;
+//  203 				cache <<= len;
+//  204 			
+//  205 				x = GetCWX(cw);
+//  206 				y = GetCWY(cw);
+//  207 
+//  208 				if (x == 15 && tabType == loopLinbits) {
+//  209 					minBits = linBits + 1 + (y ? 1 : 0);
+//  210 					if (cachedBits + bitsLeft < minBits)
+//  211 						return -1;
+//  212 					while (cachedBits < minBits) {
+//  213 						cache |= (unsigned int)(*buf++) << (24 - cachedBits);
+//  214 						cachedBits += 8;
+//  215 						bitsLeft -= 8;
+//  216 					}
+//  217 					if (bitsLeft < 0) {
+//  218 						cachedBits += bitsLeft;
+//  219 						bitsLeft = 0;
+//  220 						cache &= (signed int)0x80000000 >> (cachedBits - 1);
+//  221 					}
+//  222 					x += (int)(cache >> (32 - linBits));
+//  223 					cachedBits -= linBits;
+//  224 					cache <<= linBits;
+//  225 				}
+//  226 				if (x)	{ApplySign(x, cache); cache <<= 1; cachedBits--;}
+//  227 
+//  228 				if (y == 15 && tabType == loopLinbits) {
+//  229 					minBits = linBits + 1;
+//  230 					if (cachedBits + bitsLeft < minBits)
+//  231 						return -1;
+//  232 					while (cachedBits < minBits) {
+//  233 						cache |= (unsigned int)(*buf++) << (24 - cachedBits);
+??DecodeHuffmanPairs_18:
+        LDRB     R10,[R12], #+1
+        MOV      LR,R7
+        RSB      LR,LR,#+24
+        ORR      R5,R5,R10, LSL LR
+//  234 						cachedBits += 8;
+        ADD      R7,R7,#+8
+//  235 						bitsLeft -= 8;
+        SUB      R3,R3,#+8
+//  236 					}
+??DecodeHuffmanPairs_19:
+        CMP      R7,R8
+        BLT      ??DecodeHuffmanPairs_18
+//  237 					if (bitsLeft < 0) {
+        CMP      R3,#+0
+        BPL      ??DecodeHuffmanPairs_20
+//  238 						cachedBits += bitsLeft;
+        ADD      R7,R3,R7
+//  239 						bitsLeft = 0;
+//  240 						cache &= (signed int)0x80000000 >> (cachedBits - 1);
+        SUB      R8,R7,#+1
+        AND      R5,R5,R2, ASR R8
+        MOV      R3,#+0
+//  241 					}
+//  242 					y += (int)(cache >> (32 - linBits));
+??DecodeHuffmanPairs_20:
+        MOV      R8,#+15
+        ADD      R10,R8,R5, LSR R11
+//  243 					cachedBits -= linBits;
+        SUB      R7,R7,R4
+//  244 					cache <<= linBits;
+        LSL      R5,R5,R4
+//  245 				}
+//  246 				if (y)	{ApplySign(y, cache); cache <<= 1; cachedBits--;}
+??DecodeHuffmanPairs_21:
+        CMP      R10,#+0
+        BEQ      ??DecodeHuffmanPairs_22
+??DecodeHuffmanPairs_23:
+        AND      R8,R5,#0x80000000
+        ORR      R10,R8,R10
+        LSL      R5,R5,#+1
+        SUB      R7,R7,#+1
+//  247 
+//  248 				/* ran out of bits - should never have consumed padBits */
+//  249 				if (cachedBits < padBits)
+??DecodeHuffmanPairs_22:
+        CMP      R7,R6
+        BLT      ??DecodeHuffmanPairs_3
+//  250 					return -1;
+//  251 
+//  252 				*xy++ = x;
+        STR      R9,[R0], #+4
+//  253 				*xy++ = y;
+        STR      R10,[R0], #+4
+//  254 				nVals -= 2;
+//  255 				tCurr = tBase;
+        LDR      R9,[SP, #+4]
+        SUB      R1,R1,#+2
+        CMP      R1,#+1
+        BLT      ??DecodeHuffmanPairs_14
+??DecodeHuffmanPairs_17:
+        CMP      R7,#+11
+        BLT      ??DecodeHuffmanPairs_15
+        LDRH     R8,[R9, #+0]
+        AND      R8,R8,#0xF
+        MOV      R10,R8
+        RSB      R10,R10,#+32
+        LSR      R10,R5,R10
+        ADD      R10,R9,R10, LSL #+1
+        LDRH     R10,[R10, #+2]
+        MOV      R11,R10
+        LSRS     R11,R11,#+12
+        BNE      ??DecodeHuffmanPairs_24
+        SUB      R7,R7,R8
+        LSL      R5,R5,R8
+        ADD      R9,R9,R10, LSL #+1
+        B        ??DecodeHuffmanPairs_17
+??DecodeHuffmanPairs_24:
+        SUB      R7,R7,R11
+        LSL      R5,R5,R11
+        MOV      R8,#+15
+        AND      R9,R8,R10, ASR #+4
+        AND      R10,R8,R10, ASR #+8
+        RSB      R11,R4,#+32
+        CMP      R9,#+15
+        BNE      ??DecodeHuffmanPairs_25
+        LDR      R8,[SP, #+0]
+        AND      R8,R8,#0xFF
+        CMP      R8,#+3
+        BNE      ??DecodeHuffmanPairs_26
+        CMP      R10,#+0
+        MOVNE    R8,#+1
+        MOVEQ    R8,#+0
+        ADD      R8,R8,R4
+        ADD      R8,R8,#+1
+        ADD      R9,R3,R7
+        CMP      R9,R8
+        BGE      ??DecodeHuffmanPairs_27
+        B        ??DecodeHuffmanPairs_28
+??DecodeHuffmanPairs_29:
+        LDRB     R9,[R12], #+1
+        MOV      LR,R7
+        RSB      LR,LR,#+24
+        ORR      R5,R5,R9, LSL LR
+        ADD      R7,R7,#+8
+        SUB      R3,R3,#+8
+??DecodeHuffmanPairs_27:
+        CMP      R7,R8
+        BLT      ??DecodeHuffmanPairs_29
+        CMP      R3,#+0
+        BPL      ??DecodeHuffmanPairs_30
+        ADD      R7,R3,R7
+        SUB      R8,R7,#+1
+        AND      R5,R5,R2, ASR R8
+        MOV      R3,#+0
+??DecodeHuffmanPairs_30:
+        MOV      R8,#+15
+        ADD      R9,R8,R5, LSR R11
+        SUB      R7,R7,R4
+        LSL      R5,R5,R4
+??DecodeHuffmanPairs_25:
+        CMP      R9,#+0
+        BEQ      ??DecodeHuffmanPairs_31
+??DecodeHuffmanPairs_26:
+        AND      R8,R5,#0x80000000
+        ORR      R9,R8,R9
+        LSL      R5,R5,#+1
+        SUB      R7,R7,#+1
+??DecodeHuffmanPairs_31:
+        CMP      R10,#+15
+        BNE      ??DecodeHuffmanPairs_21
+        LDR      R8,[SP, #+0]
+        AND      R8,R8,#0xFF
+        CMP      R8,#+3
+        BNE      ??DecodeHuffmanPairs_23
+        ADD      R8,R4,#+1
+        ADD      R10,R3,R7
+        CMP      R10,R8
+        BGE      ??DecodeHuffmanPairs_19
+??DecodeHuffmanPairs_28:
+        MVN      R0,#+0
+        POP      {R1-R11,PC}
+        DATA
+??DecodeHuffmanPairs_4:
+        DC32     xmp3_huffTabOffset
+        DC32     xmp3_huffTable
+        DC32     xmp3_huffTabLookup
+        CFI EndBlock cfiBlock1
+//  256 			}
+//  257 		}
+//  258 		bitsLeft += (cachedBits - padBits);
+//  259 		return (startBits - bitsLeft);
+//  260 	}
+//  261 
+//  262 	/* error in bitstream - trying to access unused Huffman table */
+//  263 	return -1;
+//  264 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??DecodeHuffmanQuads??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE DecodeHuffmanQuads
+//  265 
+//  266 /**************************************************************************************
+//  267  * Function:    DecodeHuffmanQuads
+//  268  *
+//  269  * Description: decode 4-way vector Huffman codes in the "count1" region of spectrum
+//  270  *
+//  271  * Inputs:      valid BitStreamInfo struct, pointing to start of quadword codes
+//  272  *              pointer to vwxy buffer to received decoded values
+//  273  *              maximum number of codewords to decode
+//  274  *              index of quadword table (0 = table A, 1 = table B)
+//  275  *              number of bits remaining in bitstream
+//  276  *
+//  277  * Outputs:     quadruples of decoded coefficients in vwxy
+//  278  *              updated BitStreamInfo struct
+//  279  *
+//  280  * Return:      index of the first "zero_part" value (index of the first sample 
+//  281  *                of the quad word after which all samples are 0)
+//  282  * 
+//  283  * Notes:        si_huff.bit tests every vwxy output in both quad tables
+//  284  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function DecodeHuffmanQuads
+        ARM
+//  285 static int DecodeHuffmanQuads(int *vwxy, int nVals, int tabIdx, int bitsLeft, unsigned char *buf, int bitOffset)
+//  286 {
+DecodeHuffmanQuads:
+        PUSH     {R2,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+40
+        LDR      R12,[SP, #+40]
+        LDR      R2,[SP, #+44]
+//  287 	int i, v, w, x, y;
+//  288 	int len, maxBits, cachedBits, padBits;
+//  289 	unsigned int cache;
+//  290 	unsigned char cw, *tBase;
+//  291 
+//  292 	if (bitsLeft <= 0)
+        CMP      R3,#+1
+//  293 		return 0;
+        MOVLT    R0,#+0
+        POPLT    {R1,R4-R11,PC}
+//  294 
+//  295 	tBase = (unsigned char *)quadTable + quadTabOffset[tabIdx];
+//  296 	maxBits = quadTabMaxBits[tabIdx];
+        LDR      R4,[SP, #+0]
+        LDR      R5,??DecodeHuffmanQuads_0  ;; xmp3_quadTabMaxBits
+//  297 
+//  298 	/* initially fill cache with any partial byte */
+//  299 	cache = 0;
+        MOV      R6,#+0
+        LDR      R4,[R5, +R4, LSL #+2]
+//  300 	cachedBits = (8 - bitOffset) & 0x07;
+        RSB      R2,R2,#+8
+        ANDS     R7,R2,#0x7
+//  301 	if (cachedBits)
+        BEQ      ??DecodeHuffmanQuads_1
+//  302 		cache = (unsigned int)(*buf++) << (32 - cachedBits);
+        LDRB     R2,[R12], #+1
+        MOV      R5,R7
+        RSB      R5,R5,#+32
+        LSL      R6,R2,R5
+//  303 	bitsLeft -= cachedBits;
+??DecodeHuffmanQuads_1:
+        SUB      R3,R3,R7
+//  304 
+//  305 	i = padBits = 0;
+        MOV      R5,#+0
+        MOV      R2,#+0
+        SUB      R1,R1,#+3
+        B        ??DecodeHuffmanQuads_2
+//  306 	while (i < (nVals - 3)) {
+//  307 		/* refill cache - assumes cachedBits <= 16 */
+//  308 		if (bitsLeft >= 16) {
+//  309 			/* load 2 new bytes into left-justified cache */
+//  310 			cache |= (unsigned int)(*buf++) << (24 - cachedBits);
+//  311 			cache |= (unsigned int)(*buf++) << (16 - cachedBits);
+//  312 			cachedBits += 16;
+//  313 			bitsLeft -= 16;
+//  314 		} else {
+//  315 			/* last time through, pad cache with zeros and drain cache */
+//  316 			if (cachedBits + bitsLeft <= 0) return i;
+//  317 			if (bitsLeft > 0)	cache |= (unsigned int)(*buf++) << (24 - cachedBits);
+??DecodeHuffmanQuads_3:
+        CMP      R3,#+1
+        LDRBGE   R5,[R12], #+1
+        ORRGE    R6,R6,R5, LSL R9
+//  318 			if (bitsLeft > 8)	cache |= (unsigned int)(*buf++) << (16 - cachedBits);
+        CMP      R3,#+9
+        LDRBGE   R3,[R12], #+1
+//  319 			cachedBits += bitsLeft;
+//  320 			bitsLeft = 0;
+//  321 
+//  322 			cache &= (signed int)0x80000000 >> (cachedBits - 1);
+        MOV      R5,#-2147483648
+        ORRGE    R6,R6,R3, LSL R8
+        MOV      R3,#+0
+        SUB      R8,R7,#+1
+        AND      R6,R6,R5, ASR R8
+//  323 			padBits = 10;
+        MOV      R5,#+10
+//  324 			cachedBits += padBits;	/* okay if this is > 32 (0's automatically shifted in from right) */
+        ADD      R7,R7,#+10
+??DecodeHuffmanQuads_4:
+        CMP      R7,#+10
+        BLT      ??DecodeHuffmanQuads_5
+//  325 		}
+//  326 
+//  327 		/* largest maxBits = 6, plus 4 for sign bits, so make sure cache has at least 10 bits */
+//  328 		while (i < (nVals - 3) && cachedBits >= 10 ) {
+//  329 			cw = tBase[cache >> (32 - maxBits)];
+        LDR      R9,[SP, #+0]
+        LDR      R10,??DecodeHuffmanQuads_0+0x4  ;; xmp3_quadTabOffset
+        MOV      R8,R4
+        LDR      R9,[R10, +R9, LSL #+2]
+        LDR      R10,??DecodeHuffmanQuads_0+0x8  ;; xmp3_quadTable
+        RSB      R8,R8,#+32
+        ADD      R9,R9,R10
+        ADD      R8,R9,R6, LSR R8
+        LDRB     R8,[R8, #+0]
+//  330 			len = GetHLenQ(cw);
+        MOV      R9,R8
+        LSR      R9,R9,#+4
+//  331 			cachedBits -= len;
+        SUB      R7,R7,R9
+//  332 			cache <<= len;
+        LSL      R6,R6,R9
+//  333 
+//  334 			v = GetCWVQ(cw);	if(v) {ApplySign(v, cache); cache <<= 1; cachedBits--;}
+        MOV      R9,#+1
+        ANDS     R9,R9,R8, ASR #+3
+        BEQ      ??DecodeHuffmanQuads_6
+        AND      R10,R6,#0x80000000
+        ORR      R9,R10,R9
+        LSL      R6,R6,#+1
+        SUB      R7,R7,#+1
+//  335 			w = GetCWWQ(cw);	if(w) {ApplySign(w, cache); cache <<= 1; cachedBits--;}
+??DecodeHuffmanQuads_6:
+        MOV      R10,#+1
+        ANDS     R10,R10,R8, ASR #+2
+        BEQ      ??DecodeHuffmanQuads_7
+        AND      R11,R6,#0x80000000
+        ORR      R10,R11,R10
+        LSL      R6,R6,#+1
+        SUB      R7,R7,#+1
+//  336 			x = GetCWXQ(cw);	if(x) {ApplySign(x, cache); cache <<= 1; cachedBits--;}
+??DecodeHuffmanQuads_7:
+        MOV      R11,#+1
+        ANDS     R11,R11,R8, ASR #+1
+        BEQ      ??DecodeHuffmanQuads_8
+        AND      LR,R6,#0x80000000
+        ORR      R11,LR,R11
+        LSL      R6,R6,#+1
+        SUB      R7,R7,#+1
+//  337 			y = GetCWYQ(cw);	if(y) {ApplySign(y, cache); cache <<= 1; cachedBits--;}
+??DecodeHuffmanQuads_8:
+        ANDS     R8,R8,#0x1
+        BEQ      ??DecodeHuffmanQuads_9
+        AND      LR,R6,#0x80000000
+        ORR      R8,LR,R8
+        LSL      R6,R6,#+1
+        SUB      R7,R7,#+1
+//  338 
+//  339 			/* ran out of bits - okay (means we're done) */
+//  340 			if (cachedBits < padBits)
+??DecodeHuffmanQuads_9:
+        CMP      R7,R5
+        BLT      ??DecodeHuffmanQuads_10
+//  341 				return i;
+//  342 
+//  343 			*vwxy++ = v;
+        STR      R9,[R0], #+4
+//  344 			*vwxy++ = w;
+        STR      R10,[R0], #+4
+//  345 			*vwxy++ = x;
+        STR      R11,[R0], #+4
+//  346 			*vwxy++ = y;
+        STR      R8,[R0], #+4
+//  347 			i += 4;
+        ADD      R2,R2,#+4
+//  348 		}
+        CMP      R2,R1
+        BLT      ??DecodeHuffmanQuads_4
+??DecodeHuffmanQuads_2:
+        CMP      R2,R1
+        BGE      ??DecodeHuffmanQuads_10
+??DecodeHuffmanQuads_5:
+        MOV      R8,R7
+        RSB      R8,R8,#+16
+        MOV      R9,R7
+        RSB      R9,R9,#+24
+        CMP      R3,#+16
+        BLT      ??DecodeHuffmanQuads_11
+        LDRB     R10,[R12], #+1
+        ADD      R7,R7,#+16
+        SUB      R3,R3,#+16
+        ORR      R6,R6,R10, LSL R9
+        LDRB     R9,[R12], #+1
+        ORR      R6,R6,R9, LSL R8
+        B        ??DecodeHuffmanQuads_4
+??DecodeHuffmanQuads_11:
+        ADD      R7,R3,R7
+        CMP      R7,#+1
+        BGE      ??DecodeHuffmanQuads_3
+??DecodeHuffmanQuads_10:
+        MOV      R0,R2
+        POP      {R1,R4-R11,PC}   ;; return
+        DATA
+??DecodeHuffmanQuads_0:
+        DC32     xmp3_quadTabMaxBits
+        DC32     xmp3_quadTabOffset
+        DC32     xmp3_quadTable
+        CFI EndBlock cfiBlock3
+//  349 	}
+//  350 
+//  351 	/* decoded max number of quad values */
+//  352 	return i;
+//  353 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??xmp3_DecodeHuffman??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE xmp3_DecodeHuffman
+//  354 
+//  355 /**************************************************************************************
+//  356  * Function:    DecodeHuffman
+//  357  *
+//  358  * Description: decode one granule, one channel worth of Huffman codes
+//  359  *
+//  360  * Inputs:      MP3DecInfo structure filled by UnpackFrameHeader(), UnpackSideInfo(),
+//  361  *                and UnpackScaleFactors() (for this granule)
+//  362  *              buffer pointing to start of Huffman data in MP3 frame
+//  363  *              pointer to bit offset (0-7) indicating starting bit in buf[0]
+//  364  *              number of bits in the Huffman data section of the frame
+//  365  *                (could include padding bits)
+//  366  *              index of current granule and channel
+//  367  *
+//  368  * Outputs:     decoded coefficients in hi->huffDecBuf[ch] (hi pointer in mp3DecInfo)
+//  369  *              updated bitOffset
+//  370  *
+//  371  * Return:      length (in bytes) of Huffman codes
+//  372  *              bitOffset also returned in parameter (0 = MSB, 7 = LSB of 
+//  373  *                byte located at buf + offset)
+//  374  *              -1 if null input pointers, huffBlockBits < 0, or decoder runs 
+//  375  *                out of bits prematurely (invalid bitstream)
+//  376  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function xmp3_DecodeHuffman
+        ARM
+//  377 int DecodeHuffman(MP3DecInfo *mp3DecInfo, unsigned char *buf, int *bitOffset, int huffBlockBits, int gr, int ch)
+//  378 {
+xmp3_DecodeHuffman:
+        PUSH     {R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+36
+        SUB      SP,SP,#+24
+        CFI CFA R13+60
+        MOV      R5,R1
+//  379 	int r1Start, r2Start, rEnd[4];	/* region boundaries */
+//  380 	int i, w, bitsUsed, bitsLeft;
+//  381 	unsigned char *startBuf = buf;
+        STR      R5,[SP, #+20]
+//  382 
+//  383 	FrameHeader *fh;
+//  384 	SideInfo *si;
+//  385 	SideInfoSub *sis;
+//  386 	ScaleFactorInfo *sfi;
+//  387 	HuffmanInfo *hi;
+//  388 
+//  389 	/* validate pointers */
+//  390 	if (!mp3DecInfo || !mp3DecInfo->FrameHeaderPS || !mp3DecInfo->SideInfoPS || !mp3DecInfo->ScaleFactorInfoPS || !mp3DecInfo->HuffmanInfoPS)
+        CMP      R0,#+0
+        LDRNE    R1,[R0, #+0]
+        MOV      R6,R2
+        LDR      R2,[SP, #+60]
+        CMPNE    R1,#+0
+        LDRNE    R4,[R0, #+4]
+        CMPNE    R4,#+0
+        LDRNE    R7,[R0, #+8]
+        CMPNE    R7,#+0
+        LDRNE    R0,[R0, #+12]
+        CMPNE    R0,#+0
+        BNE      ??xmp3_DecodeHuffman_0
+//  391 		return -1;
+??xmp3_DecodeHuffman_1:
+        MVN      R0,#+0
+        ADD      SP,SP,#+24
+        CFI CFA R13+36
+        POP      {R4-R11,PC}
+        CFI CFA R13+60
+//  392 
+//  393 	fh = ((FrameHeader *)(mp3DecInfo->FrameHeaderPS));
+//  394 	si = ((SideInfo *)(mp3DecInfo->SideInfoPS));
+//  395 	sis = &si->sis[gr][ch];
+??xmp3_DecodeHuffman_0:
+        LDR      R7,[SP, #+64]
+        MOV      R8,#+72
+        MOV      R9,#+144
+        MLA      R2,R9,R2,R4
+//  396 	sfi = ((ScaleFactorInfo *)(mp3DecInfo->ScaleFactorInfoPS));
+//  397 	hi = (HuffmanInfo*)(mp3DecInfo->HuffmanInfoPS);
+        STR      R0,[SP, #+0]
+        MLA      R2,R8,R7,R2
+//  398 
+//  399 	if (huffBlockBits < 0)
+        CMP      R3,#+0
+        ADD      R7,R2,#+40
+        BMI      ??xmp3_DecodeHuffman_1
+//  400 		return -1;
+//  401 
+//  402 	/* figure out region boundaries (the first 2*bigVals coefficients divided into 3 regions) */
+//  403 	if (sis->winSwitchFlag && sis->blockType == 2) {
+        LDR      R2,[R7, #+16]
+        LDR      R0,[R1, #+52]
+        CMP      R2,#+0
+        BEQ      ??xmp3_DecodeHuffman_2
+        LDR      R2,[R7, #+20]
+        CMP      R2,#+2
+        BNE      ??xmp3_DecodeHuffman_2
+//  404 		if (sis->mixedBlock == 0) {
+        LDR      R2,[R7, #+24]
+        CMP      R2,#+0
+        BNE      ??xmp3_DecodeHuffman_3
+//  405 			r1Start = fh->sfBand->s[(sis->region0Count + 1)/3] * 3;
+        LDR      R1,[R7, #+52]
+        LDR      R2,??xmp3_DecodeHuffman_4  ;; 0x55555556
+        ADD      R1,R1,#+1
+        SMULL    R4,R8,R2,R1
+        ADD      R1,R8,R1, LSR #+31
+        ADD      R0,R0,R1, LSL #+1
+        LDRSH    R0,[R0, #+46]
+        ADD      R1,R0,R0, LSL #+1
+        B        ??xmp3_DecodeHuffman_5
+//  406 		} else {
+//  407 			if (fh->ver == MPEG1) {
+??xmp3_DecodeHuffman_3:
+        LDRB     R1,[R1, #+0]
+        CMP      R1,#+0
+        BNE      ??xmp3_DecodeHuffman_6
+//  408 				r1Start = fh->sfBand->l[sis->region0Count + 1];
+        LDR      R1,[R7, #+52]
+        ADD      R0,R0,R1, LSL #+1
+        LDRSH    R1,[R0, #+2]
+        B        ??xmp3_DecodeHuffman_5
+//  409 			} else {
+//  410 				/* see MPEG2 spec for explanation */
+//  411 				w = fh->sfBand->s[4] - fh->sfBand->s[3];
+//  412 				r1Start = fh->sfBand->l[6] + 2*w;
+??xmp3_DecodeHuffman_6:
+        LDRSH    R1,[R0, #+12]
+        LDRSH    R2,[R0, #+54]
+        LDRSH    R0,[R0, #+52]
+        SUB      R0,R2,R0
+        ADD      R1,R1,R0, LSL #+1
+//  413 			}
+//  414 		}
+//  415 		r2Start = MAX_NSAMP;	/* short blocks don't have region 2 */
+??xmp3_DecodeHuffman_5:
+        MOV      R0,#+576
+        B        ??xmp3_DecodeHuffman_7
+//  416 	} else {
+//  417 		r1Start = fh->sfBand->l[sis->region0Count + 1];
+??xmp3_DecodeHuffman_2:
+        LDR      R1,[R7, #+52]
+//  418 		r2Start = fh->sfBand->l[sis->region0Count + 1 + sis->region1Count + 1];
+        LDR      R2,[R7, #+52]
+        LDR      R4,[R7, #+56]
+        ADD      R1,R0,R1, LSL #+1
+        LDRSH    R1,[R1, #+2]
+        ADD      R2,R4,R2
+        ADD      R0,R0,R2, LSL #+1
+        LDRSH    R0,[R0, #+4]
+//  419 	}
+//  420 
+//  421 	/* offset rEnd index by 1 so first region = rEnd[1] - rEnd[0], etc. */
+//  422 	rEnd[3] = MIN(MAX_NSAMP, 2 * sis->nBigvals);
+??xmp3_DecodeHuffman_7:
+        LDR      R2,[R7, #+4]
+        MOV      R4,#+65
+        ORR      R4,R4,#0x200
+        CMP      R4,R2, LSL #+1
+        MOVLE    R4,#+576
+        MOVGT    R4,R2
+        LSLGT    R4,R4,#+1
+        STR      R4,[SP, #+16]
+//  423 	rEnd[2] = MIN(r2Start, rEnd[3]);
+        LDR      R8,[SP, #+16]
+//  424 	rEnd[1] = MIN(r1Start, rEnd[3]);
+//  425 	rEnd[0] = 0;
+//  426 
+//  427 	/* rounds up to first all-zero pair (we don't check last pair for (x,y) == (non-zero, zero)) */
+//  428 	hi->nonZeroBound[ch] = rEnd[3];
+//  429 
+//  430 	/* decode Huffman pairs (rEnd[i] are always even numbers) */
+//  431 	bitsLeft = huffBlockBits;
+        MOV      R4,R3
+        CMP      R0,R8
+        STRLT    R0,[SP, #+12]
+        LDR      R0,[SP, #+64]
+        STRGE    R8,[SP, #+12]
+        CMP      R1,R8
+        STRLT    R1,[SP, #+8]
+        MOV      R1,#+0
+        STR      R1,[SP, #+4]
+        LDR      R1,[SP, #+0]
+        STRGE    R8,[SP, #+8]
+        ADD      R0,R1,R0, LSL #+2
+        ADD      R9,R0,#+4608
+        STR      R8,[R9, #+0]
+//  432 	for (i = 0; i < 3; i++) {
+        MOV      R11,#+0
+//  433 		bitsUsed = DecodeHuffmanPairs(hi->huffDecBuf[ch] + rEnd[i], rEnd[i+1] - rEnd[i], sis->tableSelect[i], bitsLeft, buf, *bitOffset);
+??xmp3_DecodeHuffman_8:
+        LDR      R2,[SP, #+64]
+        LDR      R10,[SP, #+0]
+        ADD      R0,SP,#+4
+        ADD      R1,R0,R11, LSL #+2
+        LDR      R0,[R1, #+0]
+        MOV      R3,#+2304
+        MLA      R10,R3,R2,R10
+        LDR      R2,[R6, #+0]
+        MOV      R3,R4
+        PUSH     {R2}
+        CFI CFA R13+64
+        MOV      R2,R5
+        PUSH     {R2}
+        CFI CFA R13+68
+        LDR      R1,[R1, #+4]
+        ADD      R2,R7,R11, LSL #+2
+        LDR      R2,[R2, #+28]
+        SUB      R1,R1,R0
+        ADD      R0,R10,R0, LSL #+2
+        BL       DecodeHuffmanPairs
+//  434 		if (bitsUsed < 0 || bitsUsed > bitsLeft)	/* error - overran end of bitstream */
+        CMP      R0,#+0
+        ADD      SP,SP,#+8
+        CFI CFA R13+60
+        BMI      ??xmp3_DecodeHuffman_1
+        CMP      R4,R0
+        BLT      ??xmp3_DecodeHuffman_1
+//  435 			return -1;
+//  436 
+//  437 		/* update bitstream position */
+//  438 		buf += (bitsUsed + *bitOffset) >> 3;
+        LDR      R1,[R6, #+0]
+//  439 		*bitOffset = (bitsUsed + *bitOffset) & 0x07;
+//  440 		bitsLeft -= bitsUsed;
+        SUB      R4,R4,R0
+        ADD      R1,R1,R0
+        ADD      R5,R5,R1, ASR #+3
+        AND      R1,R1,#0x7
+        STR      R1,[R6, #+0]
+//  441 	}
+        ADD      R11,R11,#+1
+        CMP      R11,#+3
+        BLT      ??xmp3_DecodeHuffman_8
+//  442 
+//  443 	/* decode Huffman quads (if any) */
+//  444 	hi->nonZeroBound[ch] += DecodeHuffmanQuads(hi->huffDecBuf[ch] + rEnd[3], MAX_NSAMP - rEnd[3], sis->count1TableSelect, bitsLeft, buf, *bitOffset);
+        LDR      R11,[R9, #+0]
+        PUSH     {R1}
+        CFI CFA R13+64
+        MOV      R0,R5
+        PUSH     {R0}
+        CFI CFA R13+68
+        LDR      R2,[R7, #+68]
+        MOV      R3,R4
+        RSB      R1,R8,#+576
+        ADD      R0,R10,R8, LSL #+2
+        BL       DecodeHuffmanQuads
+        ADD      R0,R0,R11
+        STR      R0,[R9, #+0]
+//  445 
+//  446 	ASSERT(hi->nonZeroBound[ch] <= MAX_NSAMP);
+//  447 	for (i = hi->nonZeroBound[ch]; i < MAX_NSAMP; i++)
+        MOV      R11,R0
+        CMP      R11,#+576
+        ADD      SP,SP,#+8
+        CFI CFA R13+60
+        BGE      ??xmp3_DecodeHuffman_9
+        MOV      R0,#+0
+//  448 		hi->huffDecBuf[ch][i] = 0;
+??xmp3_DecodeHuffman_10:
+        STR      R0,[R10, +R11, LSL #+2]
+        ADD      R11,R11,#+1
+        CMP      R11,#+576
+        BLT      ??xmp3_DecodeHuffman_10
+//  449 	
+//  450 	/* If bits used for 576 samples < huffBlockBits, then the extras are considered
+//  451 	 *  to be stuffing bits (throw away, but need to return correct bitstream position) 
+//  452 	 */
+//  453 	buf += (bitsLeft + *bitOffset) >> 3;
+??xmp3_DecodeHuffman_9:
+        LDR      R0,[R6, #+0]
+        ADD      R0,R0,R4
+        ADD      R5,R5,R0, ASR #+3
+//  454 	*bitOffset = (bitsLeft + *bitOffset) & 0x07;
+        AND      R0,R0,#0x7
+        STR      R0,[R6, #+0]
+//  455 	
+//  456 	return (buf - startBuf);
+        LDR      R0,[SP, #+20]
+        ADD      SP,SP,#+24
+        CFI CFA R13+36
+        SUB      R0,R5,R0
+        POP      {R4-R11,PC}      ;; return
+        DATA
+??xmp3_DecodeHuffman_4:
+        DC32     0x55555556
+        CFI EndBlock cfiBlock5
+//  457 }
+
+        END
+//  458 
+// 
+// 2 092 bytes in segment CODE
+// 
+// 2 080 bytes of CODE memory (+ 12 bytes shared)
+//
+//Errors: none
+//Warnings: 2

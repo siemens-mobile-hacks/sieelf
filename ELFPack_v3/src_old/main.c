@@ -21,10 +21,10 @@ int main(char *exename, char *fname)
    setenv("sie_test", strcat(getcwd(buf, 256), "/"), 1);
    printf("env: %s\n", getenv("sie_test"));
    
-   printf("loading...\n");
+   printf("加载中...\n");
   Elf32_Exec *ex = elfopen( NAME );
   if( ex == 0 ){
-    printf("Error\n");
+    printf("错误\n");
     return 1;
   }
 
@@ -35,10 +35,10 @@ int main(char *exename, char *fname)
   
   if( !addr )
   {
-    printf("entry not found\n");
+    printf("入口未发现\n");
   }else
   {
-    printf("entry: 0x%X\n", addr);
+    printf("入口: 0x%X\n", addr);
       fflush(stdout);
      //addr( NAME, (char*)0);
   }

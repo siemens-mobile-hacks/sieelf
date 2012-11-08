@@ -1,0 +1,2845 @@
+//////////////////////////////////////////////////////////////////////////////
+//                                                                           /
+// IAR ARM ANSI C/C++ Compiler V4.42A/W32 EVALUATION   14/Feb/2012  15:39:20 /
+// Copyright 1999-2005 IAR Systems. All rights reserved.                     /
+//                                                                           /
+//    Cpu mode        =  interwork                                           /
+//    Endian          =  little                                              /
+//    Stack alignment =  4                                                   /
+//    Source file     =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACD /
+//                       EC\AAC_FILE (2).c                                   /
+//    Command line    =  "D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AAC /
+//                       DEC\AAC_FILE (2).c" -D NDEBUG -lC                   /
+//                       D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\ -lA D:\SVN\SieELF\SieELF\x65_PCM_Player\Playe /
+//                       r\Release\List\ -o D:\SVN\SieELF\SieELF\x65_PCM_Pla /
+//                       yer\Player\Release\Obj\ -s9 --cpu_mode arm          /
+//                       --endian little --cpu ARM926EJ-S --stack_align 4    /
+//                       --interwork -e --fpu None --dlib_config             /
+//                       "D:\Program Files\IAR\Embedded Workbench 4.0        /
+//                       Evaluation\ARM\LIB\dl5tpainl8n.h" --preinclude      /
+//                       swilib.h -I "D:\Program Files\IAR\Embedded          /
+//                       Workbench 4.0 Evaluation\ARM\INC\"                  /
+//                       --inline_threshold=16                               /
+//    List file       =  D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\Release\ /
+//                       List\AAC_FILE (2).s79                               /
+//                                                                           /
+//                                                                           /
+//////////////////////////////////////////////////////////////////////////////
+
+        NAME `AAC_FILE (2)`
+
+        RTMODEL "StackAlign4", "USED"
+        RTMODEL "__cpu_mode", "__pcs__interwork"
+        RTMODEL "__data_model", "absolute"
+        RTMODEL "__endian", "little"
+        RTMODEL "__rt_version", "6"
+
+        RSEG CSTACK:DATA:NOROOT(2)
+
+        EXTERN ??div32_a
+
+        MULTWEAK ??rA??div32_a
+        MULTWEAK ??raac_AdjustHighFreq??rT
+        MULTWEAK ??raac_InvRNormalized??rA
+        MULTWEAK ??raac_SqrtFix??rA
+        FUNCTION ApplyBoost,0203H
+        LOCFRAME CSTACK, 48, STACK
+        FUNCTION CalcComponentGains,0203H
+        LOCFRAME CSTACK, 80, STACK
+        FUNCTION CalcMaxGain,0203H
+        LOCFRAME CSTACK, 48, STACK
+        FUNCTION CalcNoiseDivFactors,0203H
+        LOCFRAME CSTACK, 20, STACK
+        FUNCTION EstimateEnvelope,0203H
+        LOCFRAME CSTACK, 88, STACK
+        FUNCTION MapHF,0203H
+        LOCFRAME CSTACK, 80, STACK
+        PUBLIC raac_AdjustHighFreq
+        FUNCTION raac_AdjustHighFreq,0203H
+        LOCFRAME CSTACK, 76, STACK
+        
+        CFI Names cfiNames0
+        CFI StackFrame CFA R13 HUGEDATA
+        CFI Resource R0:32, R1:32, R2:32, R3:32, R4:32, R5:32, R6:32, R7:32
+        CFI Resource R8:32, R9:32, R10:32, R11:32, R12:32, CPSR:32, R13:32
+        CFI Resource R14:32, SPSR:32
+        CFI VirtualResource ?RET:32
+        CFI EndNames cfiNames0
+        
+        CFI Common cfiCommon0 Using cfiNames0
+        CFI CodeAlign 2
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon0
+        
+        
+        CFI Common cfiCommon1 Using cfiNames0
+        CFI CodeAlign 4
+        CFI DataAlign 4
+        CFI ReturnAddress ?RET CODE
+        CFI CFA R13+0
+        CFI R0 Undefined
+        CFI R1 Undefined
+        CFI R2 Undefined
+        CFI R3 Undefined
+        CFI R4 SameValue
+        CFI R5 SameValue
+        CFI R6 SameValue
+        CFI R7 SameValue
+        CFI R8 SameValue
+        CFI R9 SameValue
+        CFI R10 SameValue
+        CFI R11 SameValue
+        CFI R12 Undefined
+        CFI CPSR SameValue
+        CFI R14 Undefined
+        CFI SPSR SameValue
+        CFI ?RET R14
+        CFI EndCommon cfiCommon1
+        
+raac_InvRNormalized SYMBOL "raac_InvRNormalized"
+raac_SqrtFix        SYMBOL "raac_SqrtFix"
+raac_AdjustHighFreq SYMBOL "raac_AdjustHighFreq"
+??raac_AdjustHighFreq??rT SYMBOL "??rT", raac_AdjustHighFreq
+??raac_InvRNormalized??rA SYMBOL "??rA", raac_InvRNormalized
+??raac_SqrtFix??rA  SYMBOL "??rA", raac_SqrtFix
+
+        EXTERN raac_InvRNormalized
+        FUNCTION raac_InvRNormalized,0202H
+        EXTERN raac_SqrtFix
+        FUNCTION raac_SqrtFix,0202H
+        EXTERN raac_noiseTab
+
+// D:\SVN\SieELF\SieELF\x65_PCM_Player\Player\AAC\AACDEC\AAC_FILE (2).c
+//    1 /* ***** BEGIN LICENSE BLOCK *****  
+//    2  * Source last modified: $Id: sbrhfadj.c,v 1.1 2005/02/26 01:47:35 jrecker Exp $ 
+//    3  *   
+//    4  * Portions Copyright (c) 1995-2005 RealNetworks, Inc. All Rights Reserved.  
+//    5  *       
+//    6  * The contents of this file, and the files included with this file, 
+//    7  * are subject to the current version of the RealNetworks Public 
+//    8  * Source License (the "RPSL") available at 
+//    9  * http://www.helixcommunity.org/content/rpsl unless you have licensed 
+//   10  * the file under the current version of the RealNetworks Community 
+//   11  * Source License (the "RCSL") available at 
+//   12  * http://www.helixcommunity.org/content/rcsl, in which case the RCSL 
+//   13  * will apply. You may also obtain the license terms directly from 
+//   14  * RealNetworks.  You may not use this file except in compliance with 
+//   15  * the RPSL or, if you have a valid RCSL with RealNetworks applicable 
+//   16  * to this file, the RCSL.  Please see the applicable RPSL or RCSL for 
+//   17  * the rights, obligations and limitations governing use of the 
+//   18  * contents of the file. 
+//   19  *   
+//   20  * This file is part of the Helix DNA Technology. RealNetworks is the 
+//   21  * developer of the Original Code and owns the copyrights in the 
+//   22  * portions it created. 
+//   23  *   
+//   24  * This file, and the files included with this file, is distributed 
+//   25  * and made available on an 'AS IS' basis, WITHOUT WARRANTY OF ANY 
+//   26  * KIND, EITHER EXPRESS OR IMPLIED, AND REALNETWORKS HEREBY DISCLAIMS 
+//   27  * ALL SUCH WARRANTIES, INCLUDING WITHOUT LIMITATION, ANY WARRANTIES 
+//   28  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, QUIET 
+//   29  * ENJOYMENT OR NON-INFRINGEMENT. 
+//   30  *  
+//   31  * Technology Compatibility Kit Test Suite(s) Location:  
+//   32  *    http://www.helixcommunity.org/content/tck  
+//   33  *  
+//   34  * Contributor(s):  
+//   35  *   
+//   36  * ***** END LICENSE BLOCK ***** */  
+//   37 
+//   38 /**************************************************************************************
+//   39  * Fixed-point HE-AAC decoder
+//   40  * Jon Recker (jrecker@real.com)
+//   41  * February 2005
+//   42  *
+//   43  * sbrhfadj.c - high frequency adjustment for SBR
+//   44  **************************************************************************************/
+//   45 
+//   46 #include "sbr_aac.h"
+//   47 #include "assembly_aac.h"
+//   48 
+//   49 /* invBandTab[i] = 1.0 / (i + 1), Q31 */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//   50 static const int invBandTab[64] = {
+invBandTab:
+        DATA
+        DC32 2147483647, 1073741824, 715827883, 536870912, 429496730, 357913941
+        DC32 306783378, 268435456, 238609294, 214748365, 195225786, 178956971
+        DC32 165191050, 153391689, 143165577, 134217728, 126322568, 119304647
+        DC32 113025455, 107374182, 102261126, 97612893, 93368854, 89478485
+        DC32 85899346, 82595525, 79536431, 76695845, 74051160, 71582788
+        DC32 69273666, 67108864, 65075262, 63161284, 61356676, 59652324
+        DC32 58040099, 56512728, 55063683, 53687091, 52377650, 51130563
+        DC32 49941480, 48806447, 47721859, 46684427, 45691141, 44739243
+        DC32 43826197, 42949673, 42107523, 41297762, 40518559, 39768216
+        DC32 39045157, 38347922, 37675152, 37025580, 36398028, 35791394
+        DC32 35204650, 34636833, 34087042, 33554432
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock0 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??EstimateEnvelope??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock0
+        REQUIRE EstimateEnvelope
+//   51 	0x7fffffff, 0x40000000, 0x2aaaaaab, 0x20000000, 0x1999999a, 0x15555555, 0x12492492, 0x10000000, 
+//   52 	0x0e38e38e, 0x0ccccccd, 0x0ba2e8ba, 0x0aaaaaab, 0x09d89d8a, 0x09249249, 0x08888889, 0x08000000, 
+//   53 	0x07878788, 0x071c71c7, 0x06bca1af, 0x06666666, 0x06186186, 0x05d1745d, 0x0590b216, 0x05555555, 
+//   54 	0x051eb852, 0x04ec4ec5, 0x04bda12f, 0x04924925, 0x0469ee58, 0x04444444, 0x04210842, 0x04000000, 
+//   55 	0x03e0f83e, 0x03c3c3c4, 0x03a83a84, 0x038e38e4, 0x03759f23, 0x035e50d8, 0x03483483, 0x03333333, 
+//   56 	0x031f3832, 0x030c30c3, 0x02fa0be8, 0x02e8ba2f, 0x02d82d83, 0x02c8590b, 0x02b93105, 0x02aaaaab, 
+//   57 	0x029cbc15, 0x028f5c29, 0x02828283, 0x02762762, 0x026a439f, 0x025ed098, 0x0253c825, 0x02492492, 
+//   58 	0x023ee090, 0x0234f72c, 0x022b63cc, 0x02222222, 0x02192e2a, 0x02108421, 0x02082082, 0x02000000, 
+//   59 };
+//   60 
+//   61 /**************************************************************************************
+//   62  * Function:    EstimateEnvelope
+//   63  *
+//   64  * Description: estimate power of generated HF QMF bands in one time-domain envelope
+//   65  *                (4.6.18.7.3)
+//   66  *
+//   67  * Inputs:      initialized PSInfoSBR struct
+//   68  *              initialized SBRHeader struct for this SCE/CPE block
+//   69  *              initialized SBRGrid struct for this channel
+//   70  *              initialized SBRFreq struct for this SCE/CPE block
+//   71  *              index of current envelope
+//   72  *
+//   73  * Outputs:     power of each QMF subband, stored as integer (Q0) * 2^N, N >= 0
+//   74  *
+//   75  * Return:      none
+//   76  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock1 Using cfiCommon1
+        CFI Function EstimateEnvelope
+        ARM
+//   77 static void EstimateEnvelope(PSInfoSBR *psi, SBRHeader *sbrHdr, SBRGrid *sbrGrid, SBRFreq *sbrFreq, int env)
+//   78 {
+EstimateEnvelope:
+        PUSH     {R0,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+40
+        SUB      SP,SP,#+40
+        CFI CFA R13+80
+        LDR      R0,[SP, #+80]
+        MOV      R10,R3
+//   79 	int i, m, iStart, iEnd, xre, xim, nScale, expMax;
+//   80 	int p, n, mStart, mEnd, invFact, t;
+//   81 	int *XBuf;
+//   82 	U64 eCurr;
+//   83 	unsigned char *freqBandTab;
+//   84 
+//   85 	/* estimate current envelope */
+//   86 	iStart = sbrGrid->envTimeBorder[env] + HF_ADJ;
+        ADD      R6,R0,R2
+        LDRB     R6,[R6, #+4]
+        ADD      R6,R6,#+2
+        STR      R6,[SP, #+16]
+//   87 	iEnd =   sbrGrid->envTimeBorder[env+1] + HF_ADJ;
+        ADD      R6,R0,R2
+        LDRB     R6,[R6, #+5]
+//   88 	if (sbrGrid->freqRes[env]) {
+        ADD      R0,R0,R2
+        ADD      R6,R6,#+2
+        STR      R6,[SP, #+8]
+        LDRB     R0,[R0, #+10]
+        CMP      R0,#+0
+        BEQ      ??EstimateEnvelope_0
+//   89 		n = sbrFreq->nHigh;
+        LDR      R2,[R10, #+8]
+        STR      R2,[SP, #+20]
+//   90 		freqBandTab = sbrFreq->freqHigh;
+        ADD      R2,R10,#+85
+        B        ??EstimateEnvelope_1
+//   91 	} else {
+//   92 		n = sbrFreq->nLow;
+??EstimateEnvelope_0:
+        LDR      R2,[R10, #+12]
+        STR      R2,[SP, #+20]
+//   93 		freqBandTab = sbrFreq->freqLow;
+        ADD      R2,R10,#+134
+//   94 	}
+//   95 
+//   96 	/* ADS should inline MADD64 (smlal) properly, but check to make sure */
+//   97 	expMax = 0;
+??EstimateEnvelope_1:
+        LDR      R3,[SP, #+16]
+        STR      R2,[SP, #+24]
+        MOV      R2,#+0
+        STR      R2,[SP, #+12]
+        SUB      R2,R6,R3
+        LDR      R3,??EstimateEnvelope_2  ;; invBandTab
+        MOV      R11,#+40
+        ADD      R2,R3,R2, LSL #+2
+        STR      R2,[SP, #+32]
+        LDR      R2,[SP, #+40]
+        ORR      R11,R11,#0x1C00
+        ADD      R2,R11,R2
+        STR      R2,[SP, #+28]
+        LDRB     R0,[R1, #+16]
+        CMP      R0,#+0
+        BEQ      ??EstimateEnvelope_3
+//   98 	if (sbrHdr->interpFreq) {
+//   99 		for (m = 0; m < sbrFreq->numQMFBands; m++) {
+        LDR      R0,[R10, #+20]
+        MOV      R12,#+0
+        CMP      R0,#+1
+        BGE      ??EstimateEnvelope_4
+//  100 			eCurr.w64 = 0;
+//  101 			XBuf = psi->XBuf[iStart][sbrFreq->kStart + m];
+//  102 			for (i = iStart; i < iEnd; i++) {
+//  103 				/* scale to int before calculating power (precision not critical, and avoids overflow) */
+//  104 				xre = (*XBuf) >> FBITS_OUT_QMFA;	XBuf += 1;
+//  105 				xim = (*XBuf) >> FBITS_OUT_QMFA;	XBuf += (2*64 - 1);
+//  106 				eCurr.w64 = MADD64(eCurr.w64, xre, xre);
+//  107 				eCurr.w64 = MADD64(eCurr.w64, xim, xim);
+//  108 			}
+//  109 
+//  110 			/* eCurr.w64 is now Q(64 - 2*FBITS_OUT_QMFA) (64-bit word)
+//  111 			 * if energy is too big to fit in 32-bit word (> 2^31) scale down by power of 2
+//  112 			 */
+//  113 			nScale = 0;
+//  114 			if (eCurr.r.hi32) {
+//  115 				nScale = (32 - CLZ(eCurr.r.hi32)) + 1;
+//  116 				t  = (int)(eCurr.r.lo32 >> nScale);		/* logical (unsigned) >> */
+//  117 				t |= eCurr.r.hi32 << (32 - nScale);
+//  118 			} else if (eCurr.r.lo32 >> 31) {
+//  119 				nScale = 1;
+//  120 				t  = (int)(eCurr.r.lo32 >> nScale);		/* logical (unsigned) >> */
+//  121 			} else {
+//  122 				t  = (int)eCurr.r.lo32;
+//  123 			}
+//  124 
+//  125 			invFact = invBandTab[(iEnd - iStart)-1];
+//  126 			psi->eCurr[m] = MULSHIFT32(t, invFact);
+//  127 			psi->eCurrExp[m] = nScale + 1;	/* +1 for invFact = Q31 */
+//  128 			if (psi->eCurrExp[m] > expMax)
+//  129 				expMax = psi->eCurrExp[m];
+//  130 		}
+//  131 	} else {
+//  132 		for (p = 0; p < n; p++) {
+//  133 			mStart = freqBandTab[p];
+//  134 			mEnd =   freqBandTab[p+1];
+//  135 			eCurr.w64 = 0;
+//  136 			for (i = iStart; i < iEnd; i++) {
+//  137 				XBuf = psi->XBuf[i][mStart];
+//  138 				for (m = mStart; m < mEnd; m++) {
+//  139 					xre = (*XBuf++) >> FBITS_OUT_QMFA;
+//  140 					xim = (*XBuf++) >> FBITS_OUT_QMFA;
+//  141 					eCurr.w64 = MADD64(eCurr.w64, xre, xre);
+//  142 					eCurr.w64 = MADD64(eCurr.w64, xim, xim);
+//  143 				}
+//  144 			}
+//  145 
+//  146 			nScale = 0;
+//  147 			if (eCurr.r.hi32) {
+//  148 				nScale = (32 - CLZ(eCurr.r.hi32)) + 1;
+//  149 				t  = (int)(eCurr.r.lo32 >> nScale);		/* logical (unsigned) >> */
+//  150 				t |= eCurr.r.hi32 << (32 - nScale);
+//  151 			} else if (eCurr.r.lo32 >> 31) {
+//  152 				nScale = 1;
+//  153 				t  = (int)(eCurr.r.lo32 >> nScale);		/* logical (unsigned) >> */
+//  154 			} else {
+//  155 				t  = (int)eCurr.r.lo32;
+//  156 			}
+//  157 
+//  158 			invFact = invBandTab[(iEnd - iStart)-1];
+//  159 			invFact = MULSHIFT32(invBandTab[(mEnd - mStart)-1], invFact) << 1;
+//  160 			t = MULSHIFT32(t, invFact);
+//  161 
+//  162 			for (m = mStart; m < mEnd; m++) {
+//  163 				psi->eCurr[m - sbrFreq->kStart] = t;
+//  164 				psi->eCurrExp[m - sbrFreq->kStart] = nScale + 1;	/* +1 for invFact = Q31 */
+//  165 			}
+//  166 			if (psi->eCurrExp[mStart - sbrFreq->kStart] > expMax)
+//  167 				expMax = psi->eCurrExp[mStart - sbrFreq->kStart];
+//  168 		}
+//  169 	}
+//  170 	psi->eCurrExpMax = expMax;
+??EstimateEnvelope_5:
+        LDR      R0,[SP, #+28]
+        LDR      R1,[SP, #+12]
+        STRB     R1,[R0, #+240]
+//  171 }
+        ADD      SP,SP,#+44
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        CFI CFA R13+80
+??EstimateEnvelope_6:
+        LDR      R3,[SP, #+0]
+??EstimateEnvelope_7:
+        LDR      R0,[SP, #+40]
+        ADD      R6,R0,R12, LSL #+2
+        LDR      R0,[SP, #+32]
+        LDR      R7,[R0, #-4]
+        SMULL    R0,R1,R3,R7
+        MOV      R0,R1
+        STR      R0,[R11, +R6]
+        LDR      R1,[SP, #+40]
+        ORR      R0,R11,#0xC0
+        ADD      R1,R12,R1
+        ADD      R0,R0,R1
+        ADD      R1,R2,#+1
+        STRB     R1,[R0, #+0]
+        LDRB     R2,[R0, #+0]
+        LDR      R1,[SP, #+12]
+        ADD      R12,R12,#+1
+        CMP      R1,R2
+        MOVLT    R0,R2
+        STRLT    R0,[SP, #+12]
+??EstimateEnvelope_4:
+        LDR      R0,[R10, #+20]
+        CMP      R12,R0
+        BGE      ??EstimateEnvelope_5
+        MOV      R0,SP
+        MOV      R2,#+0
+        MOV      R3,#+0
+        STM      R0,{R2,R3}
+        LDR      R1,[R10, #+0]
+        LDR      R2,[SP, #+16]
+        LDR      R3,[SP, #+40]
+        LDR      R6,[SP, #+16]
+        MOV      R0,#+44
+        ORR      R0,R0,#0x7600
+        ADD      R1,R12,R1
+        ADD      R2,R3,R2, LSL #+9
+        ADD      R1,R2,R1, LSL #+3
+        ADD      R7,R0,R1
+        LDR      R0,[SP, #+8]
+        CMP      R6,R0
+        BGE      ??EstimateEnvelope_8
+??EstimateEnvelope_9:
+        LDR      R0,[R7], #+4
+        MOV      LR,SP
+        ASR      R2,R0,#+5
+        LDR      R0,[R7], #+508
+        ASR      R1,R2,#+31
+        ASR      R0,R0,#+5
+        MOV      R4,R0
+        ASR      R5,R0,#+31
+        MOV      R0,R2
+        MOV      R2,SP
+        LDM      R2,{R2,R3}
+        MOV      R8,R2
+        MOV      R9,R3
+        UMULL    R2,R3,R0,R0
+        ADD      R6,R6,#+1
+        MLA      R3,R0,R1,R3
+        MLA      R3,R1,R0,R3
+        UMULL    R0,R1,R4,R4
+        ADDS     R0,R2,R0
+        MLA      R1,R4,R5,R1
+        MLA      R1,R5,R4,R1
+        ADC      R1,R3,R1
+        ADDS     R0,R8,R0
+        ADC      R1,R9,R1
+        STM      LR,{R0,R1}
+        LDR      R0,[SP, #+8]
+        CMP      R6,R0
+        BLT      ??EstimateEnvelope_9
+??EstimateEnvelope_8:
+        LDR      R0,[SP, #+4]
+        MOV      R2,#+0
+        CMP      R0,#+0
+        BEQ      ??EstimateEnvelope_10
+        MOV      R1,R0
+        MOV      R2,#+1
+        LSRS     R3,R1,#+16
+        MOVEQ    R2,#+17
+        LSLEQ    R1,R1,#+16
+        LSRS     R3,R1,#+24
+        ADDEQ    R2,R2,#+8
+        LSLEQ    R1,R1,#+8
+        LSRS     R3,R1,#+28
+        ADDEQ    R2,R2,#+4
+        LSLEQ    R1,R1,#+4
+        LSRS     R3,R1,#+30
+        ADDEQ    R2,R2,#+2
+        LSLEQ    R1,R1,#+2
+        RSB      R2,R2,#+33
+        ADD      R2,R2,R1, LSR #+31
+        LDR      R1,[SP, #+0]
+        MOV      R3,R2
+        RSB      R3,R3,#+32
+        LSL      R0,R0,R3
+        ORR      R3,R0,R1, LSR R2
+        B        ??EstimateEnvelope_7
+??EstimateEnvelope_10:
+        LDR      R0,[SP, #+0]
+        LSRS     R0,R0,#+31
+        BEQ      ??EstimateEnvelope_6
+        LDR      R0,[SP, #+0]
+        MOV      R2,#+1
+        LSR      R3,R0,#+1
+        B        ??EstimateEnvelope_7
+??EstimateEnvelope_3:
+        LDR      R0,[SP, #+20]
+        MOV      R11,#+0
+        CMP      R0,#+1
+        BGE      ??EstimateEnvelope_11
+        B        ??EstimateEnvelope_5
+??EstimateEnvelope_12:
+        LDR      R3,[SP, #+0]
+??EstimateEnvelope_13:
+        LDR      R1,??EstimateEnvelope_2  ;; invBandTab
+        SUB      R0,R8,R9
+        ADD      R0,R1,R0, LSL #+2
+        LDR      R6,[R0, #-4]
+        LDR      R0,[SP, #+32]
+        MOV      R12,R9
+        LDR      R7,[R0, #-4]
+        CMP      R12,R8
+        SMULL    R0,R1,R6,R7
+        LSL      R6,R1,#+1
+        SMULL    R0,R1,R3,R6
+        MOV      R3,R1
+        BGE      ??EstimateEnvelope_14
+        ADD      R0,R2,#+1
+??EstimateEnvelope_15:
+        LDR      R1,[R10, #+0]
+        LDR      R2,[SP, #+28]
+        SUB      R1,R12,R1
+        STR      R3,[R2, +R1, LSL #+2]
+        LDR      R1,[R10, #+0]
+        LDR      R2,[SP, #+28]
+        SUB      R1,R12,R1
+        ADD      R2,R2,#+192
+        STRB     R0,[R1, +R2]
+        ADD      R12,R12,#+1
+        CMP      R12,R8
+        BLT      ??EstimateEnvelope_15
+??EstimateEnvelope_14:
+        LDR      R1,[R10, #+0]
+        LDR      R2,[SP, #+40]
+        MOV      R0,#+232
+        ORR      R0,R0,#0x1C00
+        SUB      R1,R9,R1
+        ADD      R1,R1,R2
+        ADD      R0,R0,R1
+        LDRB     R2,[R0, #+0]
+        LDR      R1,[SP, #+12]
+        ADD      R11,R11,#+1
+        CMP      R1,R2
+        MOVLT    R0,R2
+        STRLT    R0,[SP, #+12]
+??EstimateEnvelope_11:
+        LDR      R0,[SP, #+20]
+        CMP      R11,R0
+        BGE      ??EstimateEnvelope_5
+        LDR      R0,[SP, #+24]
+        MOV      R2,#+0
+        LDRB     R9,[R11, +R0]
+        ADD      R0,R11,R0
+        LDRB     R8,[R0, #+1]
+        MOV      R0,SP
+        MOV      R3,#+0
+        STM      R0,{R2,R3}
+        LDR      R6,[SP, #+16]
+        LDR      R0,[SP, #+8]
+        CMP      R6,R0
+        BGE      ??EstimateEnvelope_16
+        LDR      R2,[SP, #+40]
+        MOV      R1,#+44
+        ORR      R1,R1,#0x7600
+        ADD      R2,R2,R9, LSL #+3
+        ADD      R1,R1,R2
+        STR      R1,[SP, #+36]
+??EstimateEnvelope_17:
+        LDR      R0,[SP, #+36]
+        MOV      R12,R9
+        ADD      R7,R0,R6, LSL #+9
+        CMP      R12,R8
+        BGE      ??EstimateEnvelope_18
+??EstimateEnvelope_19:
+        LDR      R0,[R7], #+4
+        MOV      LR,SP
+        ASR      R2,R0,#+5
+        LDR      R0,[R7], #+4
+        MOV      R4,SP
+        LDM      R4,{R4,R5}
+        ASR      R0,R0,#+5
+        PUSH     {R4,R5}
+        CFI CFA R13+88
+        ASR      R1,R0,#+31
+        ASR      R3,R2,#+31
+        UMULL    R4,R5,R2,R2
+        ADD      R12,R12,#+1
+        MLA      R5,R2,R3,R5
+        MLA      R5,R3,R2,R5
+        UMULL    R2,R3,R0,R0
+        MLA      R3,R0,R1,R3
+        MLA      R3,R1,R0,R3
+        MOV      R1,R5
+        ADDS     R0,R4,R2
+        ADC      R1,R1,R3
+        POP      {R2,R3}
+        CFI CFA R13+80
+        ADDS     R0,R2,R0
+        ADC      R1,R3,R1
+        STM      LR,{R0,R1}
+        CMP      R12,R8
+        BLT      ??EstimateEnvelope_19
+??EstimateEnvelope_18:
+        LDR      R0,[SP, #+8]
+        ADD      R6,R6,#+1
+        CMP      R6,R0
+        BLT      ??EstimateEnvelope_17
+??EstimateEnvelope_16:
+        LDR      R0,[SP, #+4]
+        MOV      R2,#+0
+        CMP      R0,#+0
+        BEQ      ??EstimateEnvelope_20
+        MOV      R1,R0
+        MOV      R2,#+1
+        LSRS     R3,R1,#+16
+        MOVEQ    R2,#+17
+        LSLEQ    R1,R1,#+16
+        LSRS     R3,R1,#+24
+        ADDEQ    R2,R2,#+8
+        LSLEQ    R1,R1,#+8
+        LSRS     R3,R1,#+28
+        ADDEQ    R2,R2,#+4
+        LSLEQ    R1,R1,#+4
+        LSRS     R3,R1,#+30
+        ADDEQ    R2,R2,#+2
+        LSLEQ    R1,R1,#+2
+        RSB      R2,R2,#+33
+        ADD      R2,R2,R1, LSR #+31
+        LDR      R1,[SP, #+0]
+        MOV      R3,R2
+        RSB      R3,R3,#+32
+        LSL      R0,R0,R3
+        ORR      R3,R0,R1, LSR R2
+        B        ??EstimateEnvelope_13
+??EstimateEnvelope_20:
+        LDR      R0,[SP, #+0]
+        LSRS     R0,R0,#+31
+        BEQ      ??EstimateEnvelope_12
+        LDR      R0,[SP, #+0]
+        MOV      R2,#+1
+        LSR      R3,R0,#+1
+        B        ??EstimateEnvelope_13
+        DATA
+??EstimateEnvelope_2:
+        DC32     invBandTab
+        CFI EndBlock cfiBlock1
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock2 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??CalcMaxGain??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock2
+        REQUIRE CalcMaxGain
+//  172 
+//  173 /**************************************************************************************
+//  174  * Function:    GetSMapped
+//  175  *
+//  176  * Description: calculate SMapped (4.6.18.7.2)
+//  177  *
+//  178  * Inputs:      initialized PSInfoSBR struct
+//  179  *              initialized SBRGrid struct for this channel
+//  180  *              initialized SBRFreq struct for this SCE/CPE block
+//  181  *              initialized SBRChan struct for this channel
+//  182  *              index of current envelope
+//  183  *              index of current QMF band
+//  184  *              la flag for this envelope
+//  185  *
+//  186  * Outputs:     none
+//  187  *
+//  188  * Return:      1 if a sinusoid is present in this band, 0 if not
+//  189  **************************************************************************************/
+//  190 static int GetSMapped(SBRGrid *sbrGrid, SBRFreq *sbrFreq, SBRChan *sbrChan, int env, int band, int la)
+//  191 {
+//  192 	int bandStart, bandEnd, oddFlag;
+//  193 
+//  194 	if (sbrGrid->freqRes[env]) {
+//  195 		/* high resolution */
+//  196 		if (env >= la || (sbrChan->addHarmonicFlag[0] && sbrChan->addHarmonic[0][band]))
+//  197 			return sbrChan->addHarmonic[1][band];
+//  198 	} else {
+//  199 		/* low resolution (see CalcFreqLow() for mapping) */
+//  200 		oddFlag = sbrFreq->nHigh & 0x01;
+//  201 		bandStart = 2*band - oddFlag;		/* starting index for freqLow[band] */
+//  202 		bandEnd = 2*(band+1) - oddFlag;		/* ending index for freqLow[band+1] */
+//  203 		for (band = bandStart; band < bandEnd; band++) {
+//  204 			if (env >= la || (sbrChan->addHarmonicFlag[0] && sbrChan->addHarmonic[0][band]))
+//  205 				if (sbrChan->addHarmonic[1][band])
+//  206 					return 1;
+//  207 		}
+//  208 	}
+//  209 	return 0;
+//  210 }
+//  211 
+//  212 #define GBOOST_MAX	0x2830afd3	/* Q28, 1.584893192 squared */
+//  213 #define	ACC_SCALE	6
+//  214 
+//  215 /* squared version of table in 4.6.18.7.5 */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  216 static const int limGainTab[4] = {0x20138ca7, 0x40000000, 0x7fb27dce, 0x80000000};	/* Q30 (0x80000000 = sentinel for GMAX) */
+limGainTab:
+        DATA
+        DC32 538152103, 1073741824, 2142404046, -2147483648
+//  217 
+//  218 /**************************************************************************************
+//  219  * Function:    CalcMaxGain
+//  220  *
+//  221  * Description: calculate max gain in one limiter band (4.6.18.7.5)
+//  222  *
+//  223  * Inputs:      initialized PSInfoSBR struct
+//  224  *              initialized SBRHeader struct for this SCE/CPE block
+//  225  *              initialized SBRGrid struct for this channel
+//  226  *              initialized SBRFreq struct for this SCE/CPE block
+//  227  *              index of current channel (0 for SCE, 0 or 1 for CPE)
+//  228  *              index of current envelope
+//  229  *              index of current limiter band
+//  230  *              number of fraction bits in dequantized envelope 
+//  231  *                (max = Q(FBITS_OUT_DQ_ENV - 6) = Q23, can go negative)
+//  232  *
+//  233  * Outputs:     updated gainMax, gainMaxFBits, and sumEOrigMapped in PSInfoSBR struct
+//  234  *
+//  235  * Return:      none
+//  236  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock3 Using cfiCommon1
+        CFI Function CalcMaxGain
+        ARM
+//  237 static void CalcMaxGain(PSInfoSBR *psi, SBRHeader *sbrHdr, SBRGrid *sbrGrid, SBRFreq *sbrFreq, int ch, int env, int lim, int fbitsDQ)
+//  238 {
+CalcMaxGain:
+        PUSH     {R0,R1,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+44
+        LDR      R1,[SP, #+48]
+        LDR      R10,[SP, #+52]
+        LDR      R0,[SP, #+44]
+//  239 	int m, mStart, mEnd, q, z, r;
+//  240 	int sumEOrigMapped, sumECurr, gainMax, eOMGainMax, envBand;
+//  241 	unsigned char eCurrExpMax;
+//  242 	unsigned char *freqBandTab;
+//  243 
+//  244 	mStart = sbrFreq->freqLimiter[lim];   /* these are offsets from kStart */
+//  245 	mEnd =   sbrFreq->freqLimiter[lim + 1];
+        ADD      R4,R10,R3
+        LDRB     R7,[R4, #+166]
+//  246 	freqBandTab = (sbrGrid->freqRes[env] ? sbrFreq->freqHigh : sbrFreq->freqLow);
+        ADD      R2,R1,R2
+        LDRB     R2,[R2, #+10]
+//  247 
+//  248 	/* calculate max gain to apply to signal in this limiter band */
+//  249 	sumECurr = 0;
+//  250 	sumEOrigMapped = 0;
+//  251 	eCurrExpMax = psi->eCurrExpMax;
+        LDR      R6,[SP, #+0]
+//  252 	eOMGainMax = psi->eOMGainMax;
+//  253 	envBand = psi->envBand;
+//  254 	for (m = mStart; m < mEnd; m++) {
+        ADD      R10,R10,R3
+        LDRB     LR,[R10, #+165]
+        CMP      R2,#+0
+        ADDNE    R12,R3,#+85
+        ADDEQ    R12,R3,#+134
+        MOV      R2,#+0
+        MOV      R5,#+0
+        MOV      R4,#+40
+        ORR      R4,R4,#0x1C00
+        ADD      R4,R4,R6
+        LDRB     R6,[R4, #+240]
+        LDR      R9,[R4, #+256]
+        LDR      R8,[R4, #+252]
+        CMP      LR,R7
+        BGE      ??CalcMaxGain_0
+//  255 		/* map current QMF band to appropriate envelope band */
+//  256 		if (m == freqBandTab[envBand + 1] - sbrFreq->kStart) {
+??CalcMaxGain_1:
+        LDR      R11,[R3, #+0]
+        ADD      R10,R12,#+1
+        LDRB     R10,[R8, +R10]
+        SUB      R10,R10,R11
+        CMP      LR,R10
+        BNE      ??CalcMaxGain_2
+//  257 			envBand++;
+//  258 			eOMGainMax = psi->envDataDequant[ch][env][envBand] >> ACC_SCALE;	/* summing max 48 bands */
+        MOV      R9,#+88
+        ORR      R9,R9,#0x1400
+        PUSH     {R9}
+        CFI CFA R13+48
+        LDR      R10,[SP, #+4]
+        MOV      R11,#+960
+        MLA      R10,R11,R0,R10
+        MOV      R9,#+192
+        MLA      R10,R9,R1,R10
+        POP      {R9}
+        CFI CFA R13+44
+        ADD      R8,R8,#+1
+        ADD      R10,R10,R8, LSL #+2
+        LDR      R9,[R9, +R10]
+        ASR      R9,R9,#+6
+//  259 		}
+//  260 		sumEOrigMapped += eOMGainMax;
+//  261 
+//  262 		/* easy test for overflow on ARM */
+//  263 		sumECurr += (psi->eCurr[m] >> (eCurrExpMax - psi->eCurrExp[m]));
+??CalcMaxGain_2:
+        LDR      R10,[R4, +LR, LSL #+2]
+        ADD      R5,R9,R5
+        PUSH     {R10}
+        CFI CFA R13+48
+        ADD      R10,R4,#+192
+        LDRB     R10,[LR, +R10]
+        POP      {R11}
+        CFI CFA R13+44
+        SUB      R10,R6,R10
+        ADD      R2,R2,R11, ASR R10
+//  264 		if (sumECurr >> 30) {
+        ASRS     R10,R2,#+30
+//  265 			sumECurr >>= 1;
+        ASRNE    R2,R2,#+1
+//  266 			eCurrExpMax++;
+        ADDNE    R6,R6,#+1
+        ANDNE    R6,R6,#0xFF
+//  267 		}
+//  268 	}
+        ADD      LR,LR,#+1
+        CMP      LR,R7
+        BLT      ??CalcMaxGain_1
+//  269 	psi->eOMGainMax = eOMGainMax;
+??CalcMaxGain_0:
+        STR      R9,[R4, #+256]
+//  270 	psi->envBand = envBand;
+        STR      R8,[R4, #+252]
+//  271 
+//  272 	psi->gainMaxFBits = 30;	/* Q30 tables */
+        MOV      R0,#+30
+        STR      R0,[R4, #+264]
+//  273 	if (sumECurr == 0) {
+        LDR      R0,??CalcMaxGain_3  ;; limGainTab
+        CMP      R2,#+0
+        BNE      ??CalcMaxGain_4
+//  274 		/* any non-zero numerator * 1/EPS_0 is > G_MAX */
+//  275 		gainMax = (sumEOrigMapped == 0 ? limGainTab[sbrHdr->limiterGains] : 0x80000000);
+        CMP      R5,#+0
+        BNE      ??CalcMaxGain_5
+        LDR      R1,[SP, #+4]
+        LDRB     R1,[R1, #+15]
+        LDR      R8,[R0, +R1, LSL #+2]
+        B        ??CalcMaxGain_6
+??CalcMaxGain_5:
+        MOV      R8,#-2147483648
+??CalcMaxGain_6:
+        STR      R5,[R4, #+292]
+        STR      R8,[R4, #+260]
+        POP      {R0,R1,R4-R11,PC}
+//  276 	} else if (sumEOrigMapped == 0) {
+??CalcMaxGain_4:
+        CMP      R5,#+0
+//  277 		/* 1/(any non-zero denominator) * EPS_0 * limGainTab[x] is appx. 0 */
+//  278 		gainMax = 0;
+        MOVEQ    R8,#+0
+        BEQ      ??CalcMaxGain_7
+//  279 	} else {
+//  280 		/* sumEOrigMapped = Q(fbitsDQ - ACC_SCALE), sumECurr = Q(-eCurrExpMax) */
+//  281 		gainMax = limGainTab[sbrHdr->limiterGains];
+        LDR      R1,[SP, #+4]
+        LDRB     R1,[R1, #+15]
+        MOV      R3,R1
+        LDR      R8,[R0, +R3, LSL #+2]
+//  282 		if (sbrHdr->limiterGains != 3) {
+        CMP      R1,#+3
+        BEQ      ??CalcMaxGain_7
+//  283 			q = MULSHIFT32(sumEOrigMapped, gainMax);	/* Q(fbitsDQ - ACC_SCALE - 2), gainMax = Q30  */
+//  284 			z = CLZ(sumECurr) - 1;
+        MOV      R0,R2
+        MOV      R1,#+1
+        LSRS     R3,R0,#+16
+        MOVEQ    R1,#+17
+        LSLEQ    R0,R0,#+16
+        LSRS     R3,R0,#+24
+        ADDEQ    R1,R1,#+8
+        LSLEQ    R0,R0,#+8
+        LSRS     R3,R0,#+28
+        ADDEQ    R1,R1,#+4
+        LSLEQ    R0,R0,#+4
+        LSRS     R3,R0,#+30
+        ADDEQ    R1,R1,#+2
+        LSLEQ    R0,R0,#+2
+        SUB      R0,R1,R0, LSR #+31
+        SUB      R7,R0,#+1
+//  285 			r = InvRNormalized(sumECurr << z);	/* in =  Q(z - eCurrExpMax), out = Q(29 + 31 - z + eCurrExpMax) */
+//  286 			gainMax = MULSHIFT32(q, r);			/* Q(29 + 31 - z + eCurrExpMax + fbitsDQ - ACC_SCALE - 2 - 32) */
+        SMULL    R0,R1,R5,R8
+        LSL      R0,R2,R7
+        MOV      R8,R1
+        _BLF     raac_InvRNormalized,??raac_InvRNormalized??rA
+//  287 			psi->gainMaxFBits = 26 - z + eCurrExpMax + fbitsDQ - ACC_SCALE;
+        LDR      R1,[SP, #+56]
+        SMULL    R2,R3,R8,R0
+        SUB      R0,R6,R7
+        MOV      R8,R3
+        ADD      R0,R1,R0
+        ADD      R0,R0,#+20
+        STR      R0,[R4, #+264]
+//  288 		}
+//  289 	}
+//  290 	psi->sumEOrigMapped = sumEOrigMapped;
+??CalcMaxGain_7:
+        STR      R5,[R4, #+292]
+//  291 	psi->gainMax = gainMax;
+        STR      R8,[R4, #+260]
+//  292 }
+        POP      {R0,R1,R4-R11,PC}  ;; return
+        DATA
+??CalcMaxGain_3:
+        DC32     limGainTab
+        CFI EndBlock cfiBlock3
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock4 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??CalcNoiseDivFactors??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock4
+        REQUIRE CalcNoiseDivFactors
+//  293 
+//  294 /**************************************************************************************
+//  295  * Function:    CalcNoiseDivFactors
+//  296  *
+//  297  * Description: calculate 1/(1+Q) and Q/(1+Q) (4.6.18.7.4; 4.6.18.7.5)
+//  298  *
+//  299  * Inputs:      dequantized noise floor scalefactor
+//  300  *
+//  301  * Outputs:     1/(1+Q) and Q/(1+Q), format = Q31
+//  302  *
+//  303  * Return:      none
+//  304  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock5 Using cfiCommon1
+        CFI Function CalcNoiseDivFactors
+        ARM
+//  305 static void CalcNoiseDivFactors(int q, int *qp1Inv, int *qqp1Inv)
+//  306 {
+CalcNoiseDivFactors:
+        PUSH     {R4-R7,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R7 Frame(CFA, -8)
+        CFI R6 Frame(CFA, -12)
+        CFI R5 Frame(CFA, -16)
+        CFI R4 Frame(CFA, -20)
+        CFI CFA R13+20
+        MOV      R5,R0
+        MOV      R6,R1
+        MOV      R4,R2
+//  307 	int z, qp1, t, s;
+//  308 
+//  309 	/* 1 + Q_orig */
+//  310 	qp1  = (q >> 1);
+//  311 	qp1 += (1 << (FBITS_OUT_DQ_NOISE - 1));		/* >> 1 to avoid overflow when adding 1.0 */
+        MOV      R0,#+8388608
+        ADD      R0,R0,R5, ASR #+1
+//  312 	z = CLZ(qp1) - 1;							/* z <= 31 - FBITS_OUT_DQ_NOISE */
+        MOVS     R1,R0
+        MOVEQ    R1,#+32
+        BEQ      ??CalcNoiseDivFactors_0
+        MOV      R2,#+1
+        LSRS     R3,R1,#+16
+        MOVEQ    R2,#+17
+        LSLEQ    R1,R1,#+16
+        LSRS     R3,R1,#+24
+        ADDEQ    R2,R2,#+8
+        LSLEQ    R1,R1,#+8
+        LSRS     R3,R1,#+28
+        ADDEQ    R2,R2,#+4
+        LSLEQ    R1,R1,#+4
+        LSRS     R3,R1,#+30
+        ADDEQ    R2,R2,#+2
+        LSLEQ    R1,R1,#+2
+        SUB      R1,R2,R1, LSR #+31
+??CalcNoiseDivFactors_0:
+        SUB      R7,R1,#+1
+//  313 	qp1 <<= z;									/* Q(FBITS_OUT_DQ_NOISE + z) = Q31 * 2^-(31 - (FBITS_OUT_DQ_NOISE + z)) */
+//  314 	t = InvRNormalized(qp1) << 1;				/* Q30 * 2^(31 - (FBITS_OUT_DQ_NOISE + z)), guaranteed not to overflow */
+        LSL      R0,R0,R7
+        _BLF     raac_InvRNormalized,??raac_InvRNormalized??rA
+        LSL      R2,R0,#+1
+//  315 
+//  316 	/* normalize to Q31 */
+//  317 	s = (31 - (FBITS_OUT_DQ_NOISE - 1) - z - 1);	/* clearly z >= 0, z <= (30 - (FBITS_OUT_DQ_NOISE - 1)) */
+        RSB      R3,R7,#+7
+//  318 	*qp1Inv = (t >> s);								/* s = [0, 31 - FBITS_OUT_DQ_NOISE] */
+        ASR      R0,R2,R3
+        STR      R0,[R6, #+0]
+//  319 	*qqp1Inv = MULSHIFT32(t, q) << (32 - FBITS_OUT_DQ_NOISE - s);
+        SMULL    R0,R1,R2,R5
+        MOV      R0,R1
+        RSB      R1,R3,#+8
+        LSL      R0,R0,R1
+        STR      R0,[R4, #+0]
+//  320 }
+        POP      {R4-R7,PC}       ;; return
+        CFI EndBlock cfiBlock5
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock6 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??CalcComponentGains??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock6
+        REQUIRE CalcComponentGains
+//  321 
+//  322 /**************************************************************************************
+//  323  * Function:    CalcComponentGains
+//  324  *
+//  325  * Description: calculate gain of envelope, sinusoids, and noise in one limiter band
+//  326  *                (4.6.18.7.5)
+//  327  *
+//  328  * Inputs:      initialized PSInfoSBR struct
+//  329  *              initialized SBRHeader struct for this SCE/CPE block
+//  330  *              initialized SBRGrid struct for this channel
+//  331  *              initialized SBRFreq struct for this SCE/CPE block
+//  332  *              initialized SBRChan struct for this channel
+//  333  *              index of current channel (0 for SCE, 0 or 1 for CPE)
+//  334  *              index of current envelope
+//  335  *              index of current limiter band
+//  336  *              number of fraction bits in dequantized envelope
+//  337  *
+//  338  * Outputs:     gains for envelope, sinusoids and noise
+//  339  *              number of fraction bits for envelope gain
+//  340  *              sum of the total gain for each component in this band
+//  341  *              other updated state variables
+//  342  *
+//  343  * Return:      none
+//  344  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock7 Using cfiCommon1
+        CFI Function CalcComponentGains
+        ARM
+//  345 static void CalcComponentGains(PSInfoSBR *psi, SBRGrid *sbrGrid, SBRFreq *sbrFreq, SBRChan *sbrChan, int ch, int env, int lim, int fbitsDQ)
+//  346 {
+CalcComponentGains:
+        PUSH     {R0,R1,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+44
+        SUB      SP,SP,#+36
+        CFI CFA R13+80
+        LDR      R0,[SP, #+88]
+        MOV      R9,R2
+//  347 	int d, m, mStart, mEnd, q, qm, noiseFloor, sIndexMapped;
+//  348 	int shift, eCurr, maxFlag, gainMax, gainMaxFBits;
+//  349 	int gain, sm, z, r, fbitsGain, gainScale;
+//  350 	unsigned char *freqBandTab;
+//  351 
+//  352 	mStart = sbrFreq->freqLimiter[lim];   /* these are offsets from kStart */
+        ADD      R1,R0,R9
+        LDRB     R6,[R1, #+165]
+//  353 	mEnd =   sbrFreq->freqLimiter[lim + 1];
+//  354 
+//  355 	gainMax = psi->gainMax;
+        LDR      R1,[SP, #+36]
+        ADD      R0,R0,R9
+        LDRB     R0,[R0, #+166]
+        MOV      R4,R3
+        STR      R0,[SP, #+16]
+        MOV      R0,#+40
+        ORR      R0,R0,#0x1C00
+        ADD      R5,R0,R1
+        LDR      R1,[R5, #+260]
+//  356 	gainMaxFBits = psi->gainMaxFBits;
+        LDR      R0,[SP, #+84]
+        STR      R1,[SP, #+0]
+        LDR      R1,[R5, #+264]
+        STR      R1,[SP, #+4]
+        LDRSB    R1,[R5, #+241]
+        CMP      R0,R1
+        BEQ      ??CalcComponentGains_0
+        ADD      R1,R4,#+400
+        LDRSB    R1,[R1, #+0]
+        CMP      R0,R1
+        BNE      ??CalcComponentGains_1
+??CalcComponentGains_0:
+        MOV      R1,#+0
+        B        ??CalcComponentGains_2
+??CalcComponentGains_1:
+        MOV      R1,#+1
+??CalcComponentGains_2:
+        STR      R1,[SP, #+20]
+//  357 
+//  358 	d = (env == psi->la || env == sbrChan->laPrev ? 0 : 1);
+//  359 	freqBandTab = (sbrGrid->freqRes[env] ? sbrFreq->freqHigh : sbrFreq->freqLow);
+        LDR      R1,[SP, #+40]
+        ADD      R0,R0,R1
+        LDRB     R0,[R0, #+10]
+        CMP      R0,#+0
+//  360 
+//  361 	/* figure out which noise floor this envelope is in (only 1 or 2 noise floors allowed) */
+//  362 	noiseFloor = 0;
+//  363 	if (sbrGrid->numNoiseFloors == 2 && sbrGrid->noiseTimeBorder[1] <= sbrGrid->envTimeBorder[env])
+        LDR      R0,[SP, #+40]
+        ADDNE    R1,R9,#+85
+        ADDEQ    R1,R9,#+134
+        STR      R1,[SP, #+24]
+        MOV      R1,#+0
+        STR      R1,[SP, #+28]
+        LDRB     R0,[R0, #+15]
+        CMP      R0,#+2
+        BNE      ??CalcComponentGains_3
+        LDR      R0,[SP, #+84]
+        LDR      R1,[SP, #+40]
+        ADD      R0,R0,R1
+        LDRB     R0,[R0, #+4]
+        LDRB     R1,[R1, #+17]
+        CMP      R0,R1
+//  364 		noiseFloor++;
+        MOVCS    R1,#+1
+        STRCS    R1,[SP, #+28]
+//  365 
+//  366 	psi->sumECurrGLim = 0;
+??CalcComponentGains_3:
+        MOV      R0,#+0
+        STR      R0,[R5, #+296]
+//  367 	psi->sumSM = 0;
+        STR      R0,[R5, #+300]
+//  368 	psi->sumQM = 0;
+        STR      R0,[R5, #+304]
+//  369 	/* calculate energy of noise to add in this limiter band */
+//  370 	for (m = mStart; m < mEnd; m++) {
+        LDR      R0,[SP, #+16]
+        CMP      R6,R0
+        BGE      ??CalcComponentGains_4
+        LDR      R3,[SP, #+84]
+        LDR      R7,[SP, #+80]
+        LDR      R10,[SP, #+36]
+        MOV      R2,#+192
+        MOV      R8,#+960
+        MLA      R7,R8,R7,R10
+        MOV      R1,#+88
+        MLA      R3,R2,R3,R7
+        ORR      R1,R1,#0x1400
+        ADD      R1,R1,R3
+        STR      R1,[SP, #+32]
+//  371 		if (m == sbrFreq->freqNoise[psi->noiseFloorBand + 1] - sbrFreq->kStart) {
+??CalcComponentGains_5:
+        LDR      R0,[R5, #+268]
+        ADD      R1,R9,#+159
+        ADD      R0,R0,R1
+        LDRB     R0,[R0, #+1]
+        LDR      R1,[R9, #+0]
+        SUB      R0,R0,R1
+        CMP      R6,R0
+        BNE      ??CalcComponentGains_6
+//  372 			/* map current QMF band to appropriate noise floor band (NOTE: freqLimiter[0] == freqLow[0] = freqHigh[0]) */
+//  373 			psi->noiseFloorBand++;
+        LDR      R0,[R5, #+268]
+//  374 			CalcNoiseDivFactors(psi->noiseDataDequant[ch][noiseFloor][psi->noiseFloorBand], &(psi->qp1Inv), &(psi->qqp1Inv));
+        MOV      R8,#+20
+        ADD      R0,R0,#+1
+        STR      R0,[R5, #+268]
+        LDR      R7,[SP, #+28]
+        LDR      R11,[SP, #+80]
+        LDR      R1,[SP, #+36]
+        LDR      R3,[R5, #+268]
+        LDR      R12,[SP, #+36]
+        MOV      R10,#+40
+        MLA      R11,R10,R11,R12
+        MOV      R0,#+60
+        MLA      R7,R8,R7,R11
+        ORR      R0,R0,#0x1D00
+        ADD      R2,R0,R1
+        BIC      R0,R0,#0x4
+        ADD      R1,R0,R1
+        SUB      R0,R0,#+352
+        ADD      R3,R7,R3, LSL #+2
+        LDR      R0,[R0, +R3]
+        BL       CalcNoiseDivFactors
+//  375 		}
+//  376 		if (m == sbrFreq->freqHigh[psi->highBand + 1] - sbrFreq->kStart)
+??CalcComponentGains_6:
+        LDR      R0,[R5, #+288]
+        ADD      R1,R9,#+85
+        ADD      R0,R0,R1
+        LDRB     R0,[R0, #+1]
+        LDR      R1,[R9, #+0]
+        SUB      R0,R0,R1
+        CMP      R6,R0
+//  377 			psi->highBand++;
+        LDREQ    R0,[R5, #+288]
+        ADDEQ    R0,R0,#+1
+        STREQ    R0,[R5, #+288]
+//  378 		if (m == freqBandTab[psi->sBand + 1] - sbrFreq->kStart) {
+        LDR      R1,[R5, #+284]
+        LDR      R2,[SP, #+24]
+        MOV      R0,#+292
+        ADD      R2,R2,#+1
+        LDRB     R1,[R1, +R2]
+        LDR      R2,[R9, #+0]
+        SUB      R1,R1,R2
+        CMP      R6,R1
+        BNE      ??CalcComponentGains_7
+//  379 			psi->sBand++;
+        LDR      R1,[R5, #+284]
+        ADD      R1,R1,#+1
+        STR      R1,[R5, #+284]
+//  380 			psi->sMapped = GetSMapped(sbrGrid, sbrFreq, sbrChan, env, psi->sBand, psi->la);
+        LDR      R3,[SP, #+84]
+        LDR      R7,[SP, #+40]
+        LDRSB    R1,[R5, #+241]
+        LDR      R2,[R5, #+284]
+        ADD      R3,R3,R7
+        LDRB     R3,[R3, #+10]
+        CMP      R3,#+0
+        BEQ      ??CalcComponentGains_8
+        LDR      R3,[SP, #+84]
+        CMP      R3,R1
+        BGE      ??CalcComponentGains_9
+        LDRB     R1,[R0, +R4]
+        CMP      R1,#+0
+        BEQ      ??CalcComponentGains_10
+        ADD      R1,R2,R4
+        LDRB     R1,[R1, #+294]
+        CMP      R1,#+0
+        BEQ      ??CalcComponentGains_10
+??CalcComponentGains_9:
+        ADD      R1,R2,R4
+        LDRB     R1,[R1, #+342]
+        B        ??CalcComponentGains_10
+??CalcComponentGains_8:
+        LDR      R3,[R9, #+8]
+        AND      R7,R3,#0x1
+        ADD      R3,R2,#+1
+        RSB      R3,R7,R3, LSL #+1
+        RSB      R2,R7,R2, LSL #+1
+        B        ??CalcComponentGains_11
+??CalcComponentGains_12:
+        ADD      R2,R2,#+1
+??CalcComponentGains_11:
+        CMP      R2,R3
+        BGE      ??CalcComponentGains_13
+        LDR      R7,[SP, #+84]
+        CMP      R7,R1
+        BGE      ??CalcComponentGains_14
+        LDRB     R7,[R0, +R4]
+        CMP      R7,#+0
+        BEQ      ??CalcComponentGains_12
+        ADD      R7,R2,R4
+        LDRB     R7,[R7, #+294]
+        CMP      R7,#+0
+        BEQ      ??CalcComponentGains_12
+??CalcComponentGains_14:
+        ADD      R7,R2,R4
+        LDRB     R7,[R7, #+342]
+        CMP      R7,#+0
+        BEQ      ??CalcComponentGains_12
+        MOV      R1,#+1
+        B        ??CalcComponentGains_10
+??CalcComponentGains_13:
+        MOV      R1,#+0
+??CalcComponentGains_10:
+        STR      R1,[R5, #+280]
+//  381 		}
+//  382 
+//  383 		sIndexMapped = 0;
+//  384 		if (env >= psi->la || (sbrChan->addHarmonicFlag[0] && sbrChan->addHarmonic[0][psi->highBand])) {
+??CalcComponentGains_7:
+        LDRSB    R3,[R5, #+241]
+        LDR      R1,[SP, #+84]
+        MOV      R2,#+0
+        CMP      R1,R3
+        BGE      ??CalcComponentGains_15
+        LDRB     R0,[R0, +R4]
+        CMP      R0,#+0
+        BEQ      ??CalcComponentGains_16
+        LDR      R0,[R5, #+288]
+        ADD      R0,R0,R4
+        LDRB     R0,[R0, #+294]
+        CMP      R0,#+0
+        BEQ      ??CalcComponentGains_16
+//  385 			r = ((sbrFreq->freqHigh[psi->highBand+1] + sbrFreq->freqHigh[psi->highBand]) >> 1);	/* r = center band */
+//  386 			if (m == r - sbrFreq->kStart)
+??CalcComponentGains_15:
+        LDR      R0,[R5, #+288]
+        LDR      R1,[R5, #+288]
+        ADD      R0,R0,R9
+        LDRB     R0,[R0, #+86]
+        ADD      R1,R1,R9
+        LDRB     R1,[R1, #+85]
+        ADD      R0,R1,R0
+        LDR      R1,[R9, #+0]
+        RSB      R0,R1,R0, ASR #+1
+        CMP      R6,R0
+//  387 				sIndexMapped = sbrChan->addHarmonic[1][psi->highBand];
+        LDREQ    R0,[R5, #+288]
+        ADDEQ    R0,R0,R4
+        LDRBEQ   R2,[R0, #+342]
+//  388 		}
+//  389 
+//  390 		gain = psi->envDataDequant[ch][env][psi->sBand];
+??CalcComponentGains_16:
+        LDR      R0,[R5, #+284]
+        LDR      R1,[SP, #+32]
+        LDR      R8,[R5, #+276]
+        LDR      R7,[R1, +R0, LSL #+2]
+//  391 		qm = MULSHIFT32(gain, psi->qqp1Inv) << 1;
+//  392 		sm = (sIndexMapped ? MULSHIFT32(gain, psi->qp1Inv) << 1 : 0);
+        CMP      R2,#+0
+        SMULL    R0,R1,R7,R8
+        MOV      R0,R1
+        LSL      R0,R0,#+1
+        STR      R0,[SP, #+8]
+        BEQ      ??CalcComponentGains_17
+        LDR      R2,[R5, #+272]
+        SMULL    R0,R1,R7,R2
+        LSL      R10,R1,#+1
+        B        ??CalcComponentGains_18
+??CalcComponentGains_17:
+        MOV      R10,#+0
+//  393 
+//  394 		/* three cases: (sMapped == 0 && delta == 1), (sMapped == 0 && delta == 0), (sMapped == 1) */
+//  395 		if (d == 1 && psi->sMapped == 0)
+??CalcComponentGains_18:
+        LDR      R0,[SP, #+20]
+        CMP      R0,#+1
+        LDREQ    R0,[R5, #+280]
+        CMPEQ    R0,#+0
+//  396 			gain = MULSHIFT32(psi->qp1Inv, gain) << 1;
+        LDREQ    R2,[R5, #+272]
+        BEQ      ??CalcComponentGains_19
+//  397 		else if (psi->sMapped != 0)
+        LDR      R0,[R5, #+280]
+        CMP      R0,#+0
+        BEQ      ??CalcComponentGains_20
+//  398 			gain = MULSHIFT32(psi->qqp1Inv, gain) << 1;
+        LDR      R2,[R5, #+276]
+??CalcComponentGains_19:
+        SMULL    R0,R1,R2,R7
+        LSL      R7,R1,#+1
+//  399 
+//  400 		/* gain, qm, sm = Q(fbitsDQ), gainMax = Q(fbitsGainMax) */
+//  401 		eCurr = psi->eCurr[m];
+??CalcComponentGains_20:
+        LDR      R1,[R5, +R6, LSL #+2]
+        STR      R1,[SP, #+12]
+        MOV      R0,R1
+        CMP      R0,#+0
+        BEQ      ??CalcComponentGains_21
+//  402 		if (eCurr) {
+//  403 			z = CLZ(eCurr) - 1;
+        MOV      R1,#+1
+        LSRS     R2,R0,#+16
+        MOVEQ    R1,#+17
+        LSLEQ    R0,R0,#+16
+        LSRS     R2,R0,#+24
+        ADDEQ    R1,R1,#+8
+        LSLEQ    R0,R0,#+8
+        LSRS     R2,R0,#+28
+        ADDEQ    R1,R1,#+4
+        LSLEQ    R0,R0,#+4
+        LSRS     R2,R0,#+30
+        ADDEQ    R1,R1,#+2
+        LSLEQ    R0,R0,#+2
+        SUB      R0,R1,R0, LSR #+31
+        SUB      R8,R0,#+1
+//  404 			r = InvRNormalized(eCurr << z);		/* in = Q(z - eCurrExp), out = Q(29 + 31 - z + eCurrExp) */
+//  405 			gainScale = MULSHIFT32(gain, r);	/* out = Q(29 + 31 - z + eCurrExp + fbitsDQ - 32) */
+        LDR      R0,[SP, #+12]
+        LSL      R0,R0,R8
+        _BLF     raac_InvRNormalized,??raac_InvRNormalized??rA
+//  406 			fbitsGain = 29 + 31 - z + psi->eCurrExp[m] + fbitsDQ - 32;
+        LDR      R3,[SP, #+36]
+        MOV      R2,R0
+        SMULL    R0,R1,R7,R2
+        LDR      R2,[SP, #+92]
+        MOV      R0,R1
+        RSB      R1,R8,#+28
+        ADD      R1,R2,R1
+        MOV      R2,#+232
+        ORR      R2,R2,#0x1C00
+        ADD      R3,R6,R3
+        LDRB     R2,[R2, +R3]
+        ADD      R3,R2,R1
+        B        ??CalcComponentGains_22
+//  407 		} else {
+//  408 			/* if eCurr == 0, then gain is unchanged (divide by EPS = 1) */
+//  409 			gainScale = gain;
+//  410 			fbitsGain = fbitsDQ;
+??CalcComponentGains_21:
+        LDR      R3,[SP, #+92]
+        MOV      R0,R7
+//  411 		}
+//  412 
+//  413 		/* see if gain for this band exceeds max gain */
+//  414 		maxFlag = 0;
+//  415 		if (gainMax != 0x80000000) {
+??CalcComponentGains_22:
+        LDR      R2,[SP, #+36]
+        MOV      R1,#+28
+        ORR      R1,R1,#0x2100
+        ADD      R2,R2,R6, LSL #+2
+        ADD      R2,R1,R2
+        LDR      R1,[SP, #+0]
+        CMP      R1,#-2147483648
+        BEQ      ??CalcComponentGains_23
+//  416 			if (fbitsGain >= gainMaxFBits) {
+        LDR      R1,[SP, #+4]
+        CMP      R3,R1
+        BLT      ??CalcComponentGains_24
+//  417 				shift = MIN(fbitsGain - gainMaxFBits, 31);
+//  418 				maxFlag = ((gainScale >> shift) > gainMax ? 1 : 0);
+        LDR      R8,[SP, #+0]
+        SUB      R1,R3,R1
+        CMP      R1,#+31
+        MOVGE    R1,#+31
+        CMP      R8,R0, ASR R1
+        BLT      ??CalcComponentGains_25
+//  419 			} else {
+//  420 				shift = MIN(gainMaxFBits - fbitsGain, 31);
+//  421 				maxFlag = (gainScale > (gainMax >> shift) ? 1 : 0);
+//  422 			}
+//  423 		}
+//  424 
+//  425 		if (maxFlag) {
+//  426 			/* gainScale > gainMax, calculate ratio with 32/16 division */
+//  427 			q = 0;
+//  428 			r = gainScale;	/* guaranteed > 0, else maxFlag could not have been set */
+//  429 			z = CLZ(r);
+//  430 			if (z < 16) {
+//  431 				q = 16 - z;
+//  432 				r >>= q;	/* out = Q(fbitsGain - q) */
+//  433 			}
+//  434 
+//  435 			z = CLZ(gainMax) - 1;
+//  436 			r = (gainMax << z) / r;		/* out = Q((fbitsGainMax + z) - (fbitsGain - q)) */
+//  437 			q = (gainMaxFBits + z) - (fbitsGain - q);	/* r = Q(q) */
+//  438 			if (q > 30) {
+//  439 				r >>= MIN(q - 30, 31);
+//  440 			} else {
+//  441 				z = MIN(30 - q, 30);
+//  442 				CLIP_2N_SHIFT30(r, z);	/* let r = Q30 since range = [0.0, 1.0) (clip to 0x3fffffff = 0.99999) */
+//  443 			}
+//  444 
+//  445 			qm = MULSHIFT32(qm, r) << 2;
+//  446 			gain = MULSHIFT32(gain, r) << 2;
+//  447 			psi->gLimBuf[m] = gainMax;
+//  448 			psi->gLimFbits[m] = gainMaxFBits;
+//  449 		} else {
+//  450 			psi->gLimBuf[m] = gainScale;
+??CalcComponentGains_23:
+        STR      R0,[R2, #+0]
+//  451 			psi->gLimFbits[m] = fbitsGain;
+        STR      R3,[R2, #+192]
+//  452 		}
+//  453 
+//  454 		/* sumSM, sumQM, sumECurrGLim = Q(fbitsDQ - ACC_SCALE) */
+//  455 		psi->smBuf[m] = sm;
+??CalcComponentGains_26:
+        ADD      R0,R5,#+884
+        STR      R10,[R0, +R6, LSL #+2]
+//  456 		psi->sumSM += (sm >> ACC_SCALE);
+        LDR      R0,[R5, #+300]
+        ADD      R0,R0,R10, ASR #+6
+        STR      R0,[R5, #+300]
+//  457 
+//  458 		psi->qmLimBuf[m] = qm;
+        LDR      R1,[SP, #+8]
+        MOV      R0,#+52
+        ORR      R0,R0,#0x400
+        ADD      R0,R0,R5
+        STR      R1,[R0, +R6, LSL #+2]
+//  459 		if (env != psi->la && env != sbrChan->laPrev && sm == 0)
+        LDRSB    R1,[R5, #+241]
+        LDR      R0,[SP, #+84]
+        CMP      R0,R1
+        BEQ      ??CalcComponentGains_27
+        ADD      R1,R4,#+400
+        LDRSB    R1,[R1, #+0]
+        CMP      R0,R1
+        BEQ      ??CalcComponentGains_27
+        CMP      R10,#+0
+        BNE      ??CalcComponentGains_27
+//  460 			psi->sumQM += (qm >> ACC_SCALE);
+        LDR      R0,[R5, #+304]
+        LDR      R1,[SP, #+8]
+        ADD      R0,R0,R1, ASR #+6
+        STR      R0,[R5, #+304]
+//  461 
+//  462 		/* eCurr * gain^2 same as gain^2, before division by eCurr 
+//  463 		 * (but note that gain != 0 even if eCurr == 0, since it's divided by eps)
+//  464 		 */
+//  465 		if (eCurr)
+??CalcComponentGains_27:
+        LDR      R0,[SP, #+12]
+//  466 			psi->sumECurrGLim += (gain >> ACC_SCALE);
+        ADD      R6,R6,#+1
+        CMP      R0,#+0
+        LDRNE    R0,[R5, #+296]
+        ADDNE    R0,R0,R7, ASR #+6
+        STRNE    R0,[R5, #+296]
+        LDR      R0,[SP, #+16]
+        CMP      R6,R0
+        BLT      ??CalcComponentGains_5
+//  467 	}
+//  468 }
+??CalcComponentGains_4:
+        ADD      SP,SP,#+44       ;; stack cleaning
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        CFI CFA R13+80
+??CalcComponentGains_24:
+        LDR      R8,[SP, #+0]
+        SUB      R1,R1,R3
+        CMP      R1,#+31
+        MOVGE    R1,#+31
+        CMP      R0,R8, ASR R1
+        BLE      ??CalcComponentGains_23
+??CalcComponentGains_25:
+        MOV      R11,#+0
+        MOV      R1,R0
+        MOVS     R8,R1
+        MOVEQ    R0,#+32
+        BEQ      ??CalcComponentGains_28
+        MOV      R0,#+1
+        LSRS     R12,R8,#+16
+        MOVEQ    R0,#+17
+        LSLEQ    R8,R8,#+16
+        LSRS     R12,R8,#+24
+        ADDEQ    R0,R0,#+8
+        LSLEQ    R8,R8,#+8
+        LSRS     R12,R8,#+28
+        ADDEQ    R0,R0,#+4
+        LSLEQ    R8,R8,#+4
+        LSRS     R12,R8,#+30
+        ADDEQ    R0,R0,#+2
+        LSLEQ    R8,R8,#+2
+        SUB      R0,R0,R8, LSR #+31
+??CalcComponentGains_28:
+        LDR      R8,[SP, #+0]
+        CMP      R0,#+16
+        RSBLT    R11,R0,#+16
+        ASRLT    R1,R1,R11
+        CMP      R8,#+0
+        MOVEQ    R0,#+32
+        BEQ      ??CalcComponentGains_29
+        MOV      R0,#+1
+        LSRS     R12,R8,#+16
+        MOVEQ    R0,#+17
+        LSLEQ    R8,R8,#+16
+        LSRS     R12,R8,#+24
+        ADDEQ    R0,R0,#+8
+        LSLEQ    R8,R8,#+8
+        LSRS     R12,R8,#+28
+        ADDEQ    R0,R0,#+4
+        LSLEQ    R8,R8,#+4
+        LSRS     R12,R8,#+30
+        ADDEQ    R0,R0,#+2
+        LSLEQ    R8,R8,#+2
+        SUB      R0,R0,R8, LSR #+31
+??CalcComponentGains_29:
+        SUB      R8,R0,#+1
+        LDR      R0,[SP, #+0]
+        LSL      R0,R0,R8
+        _BLF     ??div32_a,??rA??div32_a
+        LDR      R0,[SP, #+4]
+        ADD      R0,R8,R0
+        SUB      R0,R0,R3
+        ADD      R0,R0,R11
+        CMP      R0,#+31
+        BLT      ??CalcComponentGains_30
+        SUB      R3,R0,#+30
+        CMP      R3,#+31
+        ADDLT    R0,R0,#+226
+        MOVGE    R0,#+31
+        ASR      R3,R1,R0
+        B        ??CalcComponentGains_31
+??CalcComponentGains_30:
+        RSB      R8,R0,#+30
+        CMP      R8,#+30
+        MOVGE    R8,#+30
+        ASR      R0,R1,#+31
+        MOV      R3,R8
+        RSB      R3,R3,#+30
+        CMP      R0,R1, ASR R3
+        MVNNE    R1,#-1073741824
+        EORNE    R3,R1,R0
+        LSLEQ    R3,R1,R8
+??CalcComponentGains_31:
+        LDR      R11,[SP, #+8]
+        SMULL    R0,R1,R11,R3
+        MOV      R0,R1
+        LSL      R0,R0,#+2
+        STR      R0,[SP, #+8]
+        SMULL    R0,R1,R7,R3
+        LDR      R0,[SP, #+0]
+        LSL      R7,R1,#+2
+        STR      R0,[R2, #+0]
+        LDR      R0,[SP, #+4]
+        STR      R0,[R2, #+192]
+        B        ??CalcComponentGains_26
+        CFI EndBlock cfiBlock7
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock8 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??ApplyBoost??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock8
+        REQUIRE ApplyBoost
+//  469 
+//  470 /**************************************************************************************
+//  471  * Function:    ApplyBoost
+//  472  *
+//  473  * Description: calculate and apply boost factor for envelope, sinusoids, and noise 
+//  474  *                in this limiter band (4.6.18.7.5)
+//  475  *
+//  476  * Inputs:      initialized PSInfoSBR struct
+//  477  *              initialized SBRFreq struct for this SCE/CPE block
+//  478  *              index of current limiter band
+//  479  *              number of fraction bits in dequantized envelope
+//  480  *
+//  481  * Outputs:     envelope gain, sinusoids and noise after scaling by gBoost
+//  482  *              format = Q(FBITS_GLIM_BOOST) for envelope gain,
+//  483  *                     = Q(FBITS_QLIM_BOOST) for noise
+//  484  *                     = Q(FBITS_OUT_QMFA) for sinusoids
+//  485  *
+//  486  * Return:      none
+//  487  *
+//  488  * Notes:       after scaling, each component has at least 1 GB
+//  489  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock9 Using cfiCommon1
+        CFI Function ApplyBoost
+        ARM
+//  490 static void ApplyBoost(PSInfoSBR *psi, SBRFreq *sbrFreq, int lim, int fbitsDQ)
+//  491 {
+ApplyBoost:
+        PUSH     {R0,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+40
+        SUB      SP,SP,#+8
+        CFI CFA R13+48
+//  492 	int m, mStart, mEnd, q, z, r;
+//  493 	int sumEOrigMapped, gBoost;
+//  494 
+//  495 	mStart = sbrFreq->freqLimiter[lim];   /* these are offsets from kStart */
+//  496 	mEnd =   sbrFreq->freqLimiter[lim + 1];
+//  497 
+//  498 	sumEOrigMapped = psi->sumEOrigMapped >> 1;
+//  499 	r = (psi->sumECurrGLim >> 1) + (psi->sumSM >> 1) + (psi->sumQM >> 1);	/* 1 GB fine (sm and qm are mutually exclusive in acc) */
+//  500 	if (r < (1 << (31-28))) {
+        LDR      R7,??ApplyBoost_0  ;; 0x2830afd3
+        ADD      R0,R2,R1
+        LDRB     R5,[R0, #+165]
+        ADD      R1,R2,R1
+        LDRB     R1,[R1, #+166]
+        MOV      R0,#+76
+        ORR      R0,R0,#0x1D00
+        STR      R1,[SP, #+4]
+        LDR      R1,[SP, #+8]
+        MOV      R6,R3
+        ADD      R4,R0,R1
+        LDR      R0,[R4, #+0]
+        LDR      R1,[R4, #+8]
+        ASR      R8,R0,#+1
+        LDR      R0,[R4, #+4]
+        ASR      R1,R1,#+1
+        ADD      R0,R1,R0, ASR #+1
+        LDR      R1,[R4, #+12]
+        ADD      R0,R0,R1, ASR #+1
+        CMP      R0,#+8
+        BGE      ??ApplyBoost_1
+//  501 		/* any non-zero numerator * 1/EPS_0 is > GBOOST_MAX 
+//  502 		 * round very small r to zero to avoid scaling problems
+//  503 		 */
+//  504 		gBoost = (sumEOrigMapped == 0 ? (1 << 28) : GBOOST_MAX);
+        CMP      R8,#+0
+        MOVEQ    R0,#+268435456
+        MOVNE    R0,R7
+//  505 		z = 0;
+        MOV      R2,#+0
+??ApplyBoost_2:
+        STR      R2,[SP, #+0]
+        B        ??ApplyBoost_3
+//  506 	} else if (sumEOrigMapped == 0) {
+??ApplyBoost_1:
+        CMP      R8,#+0
+//  507 		/* 1/(any non-zero denominator) * EPS_0 is appx. 0 */
+//  508 		gBoost = 0;
+        MOVEQ    R0,#+0
+//  509 		z = 0;
+        MOVEQ    R2,#+0
+        BEQ      ??ApplyBoost_2
+//  510 	} else {
+//  511 		/* numerator (sumEOrigMapped) and denominator (r) have same Q format (before << z) */
+//  512 		z = CLZ(r) - 1;	/* z = [0, 27] */
+        MOV      R1,R0
+        MOV      R2,#+1
+        LSRS     R3,R1,#+16
+        MOVEQ    R2,#+17
+        LSLEQ    R1,R1,#+16
+        LSRS     R3,R1,#+24
+        ADDEQ    R2,R2,#+8
+        LSLEQ    R1,R1,#+8
+        LSRS     R3,R1,#+28
+        ADDEQ    R2,R2,#+4
+        LSLEQ    R1,R1,#+4
+        LSRS     R3,R1,#+30
+        ADDEQ    R2,R2,#+2
+        LSLEQ    R1,R1,#+2
+        SUB      R1,R2,R1, LSR #+31
+        SUB      R1,R1,#+1
+        STR      R1,[SP, #+0]
+//  513 		r = InvRNormalized(r << z);
+//  514 		gBoost = MULSHIFT32(sumEOrigMapped, r);
+        LSL      R0,R0,R1
+        _BLF     raac_InvRNormalized,??raac_InvRNormalized??rA
+        MOV      R2,R0
+        SMULL    R0,R1,R8,R2
+        MOV      R0,R1
+//  515 	}
+//  516 
+//  517 	/* gBoost = Q(28 - z) */
+//  518 	if (gBoost > (GBOOST_MAX >> z)) {
+??ApplyBoost_3:
+        LDR      R1,[SP, #+0]
+        CMP      R0,R7, ASR R1
+//  519 		gBoost = GBOOST_MAX;
+//  520 		z = 0;
+        MOVGT    R2,#+0
+        STRGT    R2,[SP, #+0]
+//  521 	}
+//  522 	gBoost <<= z;	/* gBoost = Q28, minimum 1 GB */
+        LDR      R1,[SP, #+0]
+        MOVGT    R0,R7
+        LSL      R8,R0,R1
+//  523 
+//  524 	/* convert gain, noise, sinusoids to fixed Q format, clipping if necessary
+//  525 	 *   (rare, usually only happens at very low bitrates, introduces slight
+//  526 	 *    distortion into final HF mapping, but should be inaudible)
+//  527 	 */
+//  528 	for (m = mStart; m < mEnd; m++) {
+        LDR      R0,[SP, #+4]
+        CMP      R5,R0
+        POPGE    {R0-R2,R4-R11,PC}
+        SUB      R11,R6,#+2
+        ASR      R9,R8,#+31
+        MVN      R10,#-1073741824
+//  529 		/* let gLimBoost = Q24, since in practice the max values are usually 16 to 20
+//  530 		 *   unless limiterGains == 3 (limiter off) and eCurr ~= 0 (i.e. huge gain, but only
+//  531 		 *   because the envelope has 0 power anyway)
+//  532 		 */
+//  533 		q = MULSHIFT32(psi->gLimBuf[m], gBoost) << 2;	/* Q(gLimFbits) * Q(28) --> Q(gLimFbits[m]-2) */
+//  534 		r = SqrtFix(q, psi->gLimFbits[m] - 2, &z);
+??ApplyBoost_4:
+        ADD      R0,R4,#+1168
+        LDR      R0,[R0, +R5, LSL #+2]
+        MOV      R2,SP
+        SUB      R7,R0,#+2
+        ADD      R0,R4,#+976
+        LDR      R0,[R0, +R5, LSL #+2]
+        MOV      R6,R2
+        ASR      R1,R0,#+31
+        UMULL    R2,R3,R0,R8
+        MOV      R2,R6
+        MLA      R3,R0,R9,R3
+        MLA      R3,R1,R8,R3
+        MOV      R1,R7
+        LSL      R0,R3,#+2
+        _BLF     raac_SqrtFix,??raac_SqrtFix??rA
+//  535 		z -= FBITS_GLIM_BOOST;
+        LDR      R2,[SP, #+0]
+//  536 		if (z >= 0) {
+        MOV      R1,#+92
+        SUB      R2,R2,#+24
+        STR      R2,[SP, #+0]
+        LDR      R2,[SP, #+8]
+        ORR      R1,R1,#0x1D00
+        ADD      R2,R2,R5, LSL #+2
+        ADD      R6,R1,R2
+        LDR      R1,[SP, #+0]
+        MOV      R7,#+31
+        CMP      R1,#+0
+        BMI      ??ApplyBoost_5
+//  537 			psi->gLimBoost[m] = r >> MIN(z, 31);
+        CMP      R1,#+31
+        MOVGE    R1,#+31
+        ASR      R0,R0,R1
+        B        ??ApplyBoost_6
+//  538 		} else {
+//  539 			z = MIN(30, -z);
+??ApplyBoost_5:
+        RSB      R1,R1,#+0
+        CMP      R1,#+31
+        MOVGE    R2,#+30
+        STRGE    R2,[SP, #+0]
+        STRLT    R1,[SP, #+0]
+//  540 			CLIP_2N_SHIFT30(r, z);
+        LDR      R2,[SP, #+0]
+        ASR      R1,R0,#+31
+        RSB      R2,R2,#+30
+        CMP      R1,R0, ASR R2
+        LDREQ    R1,[SP, #+0]
+        EORNE    R0,R10,R1
+        LSLEQ    R0,R0,R1
+//  541 			psi->gLimBoost[m] = r;
+??ApplyBoost_6:
+        STR      R0,[R6, #+0]
+//  542 		}
+//  543 
+//  544 		q = MULSHIFT32(psi->qmLimBuf[m], gBoost) << 2;	/* Q(fbitsDQ) * Q(28) --> Q(fbitsDQ-2) */
+//  545 		r = SqrtFix(q, fbitsDQ - 2, &z);
+        ADD      R0,R4,#+784
+        LDR      R0,[R0, +R5, LSL #+2]
+        MOV      R2,SP
+        MOV      R12,R2
+        ASR      R1,R0,#+31
+        UMULL    R2,R3,R0,R8
+        MOV      R2,R12
+        MLA      R3,R0,R9,R3
+        MLA      R3,R1,R8,R3
+        MOV      R1,R11
+        MOV      R0,R3
+        LSL      R0,R0,#+2
+        _BLF     raac_SqrtFix,??raac_SqrtFix??rA
+//  546 		z -= FBITS_QLIM_BOOST;		/* << by 14, since integer sqrt of x < 2^16, and we want to leave 1 GB */
+        LDR      R2,[SP, #+0]
+        SUB      R2,R2,#+14
+        STR      R2,[SP, #+0]
+//  547 		if (z >= 0) {
+        MOV      R1,R2
+        CMP      R1,#+0
+        BMI      ??ApplyBoost_7
+//  548 			psi->qmLimBoost[m] = r >> MIN(31, z);
+        CMP      R1,#+32
+        MOVGE    R1,#+31
+        ASR      R0,R0,R1
+        B        ??ApplyBoost_8
+//  549 		} else {
+//  550 			z = MIN(30, -z);
+??ApplyBoost_7:
+        RSB      R1,R1,#+0
+        CMP      R1,#+31
+        MOVGE    R2,#+30
+        STRGE    R2,[SP, #+0]
+        STRLT    R1,[SP, #+0]
+//  551 			CLIP_2N_SHIFT30(r, z);
+        LDR      R2,[SP, #+0]
+        ASR      R1,R0,#+31
+        RSB      R2,R2,#+30
+        CMP      R1,R0, ASR R2
+        LDREQ    R1,[SP, #+0]
+        EORNE    R0,R10,R1
+        LSLEQ    R0,R0,R1
+//  552 			psi->qmLimBoost[m] = r;
+??ApplyBoost_8:
+        STR      R0,[R6, #+192]
+//  553 		}
+//  554 
+//  555 		q = MULSHIFT32(psi->smBuf[m], gBoost) << 2;		/* Q(fbitsDQ) * Q(28) --> Q(fbitsDQ-2) */
+//  556 		r = SqrtFix(q, fbitsDQ - 2, &z);
+        ADD      R0,R4,#+592
+        LDR      R0,[R0, +R5, LSL #+2]
+        MOV      R2,SP
+        MOV      R12,R2
+        ASR      R1,R0,#+31
+        UMULL    R2,R3,R0,R8
+        MOV      R2,R12
+        MLA      R3,R0,R9,R3
+        MLA      R3,R1,R8,R3
+        MOV      R1,R11
+        MOV      R0,R3
+        LSL      R0,R0,#+2
+        _BLF     raac_SqrtFix,??raac_SqrtFix??rA
+//  557 		z -= FBITS_OUT_QMFA;		/* justify for adding to signal (xBuf) later */
+        LDR      R2,[SP, #+0]
+        SUB      R2,R2,#+5
+        STR      R2,[SP, #+0]
+//  558 		if (z >= 0) {
+        MOV      R1,R2
+        CMP      R1,#+0
+        BMI      ??ApplyBoost_9
+//  559 			psi->smBoost[m] = r >> MIN(31, z);
+        CMP      R1,#+32
+        MOVLT    R7,R1
+        ASR      R0,R0,R7
+        B        ??ApplyBoost_10
+//  560 		} else {
+//  561 			z = MIN(30, -z);
+??ApplyBoost_9:
+        RSB      R1,R1,#+0
+        CMP      R1,#+31
+        MOVGE    R2,#+30
+        STRGE    R2,[SP, #+0]
+        STRLT    R1,[SP, #+0]
+//  562 			CLIP_2N_SHIFT30(r, z);
+        LDR      R2,[SP, #+0]
+        ASR      R1,R0,#+31
+        RSB      R2,R2,#+30
+        CMP      R1,R0, ASR R2
+        LDREQ    R1,[SP, #+0]
+        EORNE    R0,R10,R1
+        LSLEQ    R0,R0,R1
+//  563 			psi->smBoost[m] = r;
+??ApplyBoost_10:
+        STR      R0,[R6, #+384]
+//  564 		}
+//  565 	}
+        LDR      R0,[SP, #+4]
+        ADD      R5,R5,#+1
+        CMP      R5,R0
+        BLT      ??ApplyBoost_4
+//  566 }
+        POP      {R0-R2,R4-R11,PC}  ;; return
+        DATA
+??ApplyBoost_0:
+        DC32     0x2830afd3
+        CFI EndBlock cfiBlock9
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock10 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??MapHF??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock10
+        REQUIRE MapHF
+//  567 
+//  568 /**************************************************************************************
+//  569  * Function:    CalcGain
+//  570  *
+//  571  * Description: calculate and apply proper gain to HF components in one envelope 
+//  572  *                (4.6.18.7.5)
+//  573  *
+//  574  * Inputs:      initialized PSInfoSBR struct
+//  575  *              initialized SBRHeader struct for this SCE/CPE block
+//  576  *              initialized SBRGrid struct for this channel
+//  577  *              initialized SBRFreq struct for this SCE/CPE block
+//  578  *              initialized SBRChan struct for this channel
+//  579  *              index of current channel (0 for SCE, 0 or 1 for CPE)
+//  580  *              index of current envelope
+//  581  *
+//  582  * Outputs:     envelope gain, sinusoids and noise after scaling
+//  583  *
+//  584  * Return:      none
+//  585  **************************************************************************************/
+//  586 static void CalcGain(PSInfoSBR *psi, SBRHeader *sbrHdr, SBRGrid *sbrGrid, SBRFreq *sbrFreq, SBRChan *sbrChan, int ch, int env)
+//  587 {
+//  588 	int lim, fbitsDQ;
+//  589 
+//  590 	/* initialize to -1 so that mapping limiter bands to env/noise bands works right on first pass */
+//  591 	psi->envBand        = -1;
+//  592 	psi->noiseFloorBand = -1;
+//  593 	psi->sBand          = -1;
+//  594 	psi->highBand       = -1;
+//  595 
+//  596 	fbitsDQ = (FBITS_OUT_DQ_ENV - psi->envDataDequantScale[ch][env]);	/* Q(29 - optional scalefactor) */
+//  597 	for (lim = 0; lim < sbrFreq->nLimiter; lim++) {
+//  598 		/* the QMF bands are divided into lim regions (consecutive, non-overlapping) */
+//  599 		CalcMaxGain(psi, sbrHdr, sbrGrid, sbrFreq, ch, env, lim, fbitsDQ);
+//  600 		CalcComponentGains(psi, sbrGrid, sbrFreq, sbrChan, ch, env, lim, fbitsDQ);
+//  601 		ApplyBoost(psi, sbrFreq, lim, fbitsDQ);
+//  602 	}
+//  603 }
+//  604 
+//  605 /* hSmooth table from 4.7.18.7.6, format = Q31 */
+
+        RSEG DATA_C:CONST:SORT:NOROOT(2)
+//  606 static const int hSmoothCoef[MAX_NUM_SMOOTH_COEFS] = {
+hSmoothCoef:
+        DATA
+        DC32 715827883, 647472402, 468515432, 247312451, 68355480
+//  607 	0x2aaaaaab, 0x2697a512, 0x1becfa68, 0x0ebdb043, 0x04130598, 
+//  608 };
+//  609 
+//  610 /**************************************************************************************
+//  611  * Function:    MapHF
+//  612  *
+//  613  * Description: map HF components to proper QMF bands, with optional gain smoothing
+//  614  *                filter (4.6.18.7.6)
+//  615  *
+//  616  * Inputs:      initialized PSInfoSBR struct
+//  617  *              initialized SBRHeader struct for this SCE/CPE block
+//  618  *              initialized SBRGrid struct for this channel
+//  619  *              initialized SBRFreq struct for this SCE/CPE block
+//  620  *              initialized SBRChan struct for this channel
+//  621  *              index of current envelope
+//  622  *              reset flag (can be non-zero for first envelope only)
+//  623  *
+//  624  * Outputs:     complete reconstructed subband QMF samples for this envelope
+//  625  *
+//  626  * Return:      none
+//  627  * 
+//  628  * Notes:       ensures that output has >= MIN_GBITS_IN_QMFS guard bits,
+//  629  *                so it's not necessary to check anything in the synth QMF
+//  630  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock11 Using cfiCommon1
+        CFI Function MapHF
+        ARM
+//  631 static void MapHF(PSInfoSBR *psi, SBRHeader *sbrHdr, SBRGrid *sbrGrid, SBRFreq *sbrFreq, SBRChan *sbrChan, int env, int hfReset)
+//  632 {
+MapHF:
+        PUSH     {R0,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+40
+        SUB      SP,SP,#+40
+        CFI CFA R13+80
+//  633 	int noiseTabIndex, sinIndex, gainNoiseIndex, hSL;
+//  634 	int i, iStart, iEnd, m, idx, j, s, n, smre, smim;
+//  635 	int gFilt, qFilt, xre, xim, gbMask, gbIdx;
+//  636 	int *XBuf;
+//  637 
+//  638 	noiseTabIndex =   sbrChan->noiseTabIndex;
+        LDR      R4,[SP, #+80]
+        LDR      R0,[SP, #+88]
+        LDR      R4,[R4, #+404]
+        MOV      R9,R3
+//  639 	sinIndex =        sbrChan->sinIndex;
+//  640 	gainNoiseIndex =  sbrChan->gainNoiseIndex;	/* oldest entries in filter delay buffer */
+        LDR      R3,[SP, #+80]
+        STR      R4,[SP, #+8]
+        LDR      R4,[SP, #+80]
+//  641 
+//  642 	if (hfReset)
+        CMP      R0,#+0
+        LDR      R4,[R4, #+408]
+        STR      R4,[SP, #+12]
+        LDR      R8,[R3, #+412]
+//  643 		noiseTabIndex = 2;	/* starts at 1, double since complex */
+        MOVNE    R4,#+2
+        STRNE    R4,[SP, #+8]
+//  644 	hSL = (sbrHdr->smoothMode ? 0 : 4); 
+        LDRB     R1,[R1, #+17]
+        CMP      R1,#+0
+        MOVNE    R3,#+0
+        MOVEQ    R3,#+4
+        STR      R3,[SP, #+16]
+        CMP      R0,#+0
+        BEQ      ??MapHF_0
+//  645 
+//  646 	if (hfReset) {
+//  647 		for (i = 0; i < hSL; i++) {
+        LDR      R1,[SP, #+16]
+        MOV      R0,#+0
+        CMP      R1,#+1
+        BGE      ??MapHF_1
+//  648 			for (m = 0; m < sbrFreq->numQMFBands; m++) {
+//  649 				sbrChan->gTemp[gainNoiseIndex][m] = psi->gLimBoost[m];
+//  650 				sbrChan->qTemp[gainNoiseIndex][m] = psi->qmLimBoost[m];
+//  651 			}
+//  652 			gainNoiseIndex++;
+//  653 			if (gainNoiseIndex == MAX_NUM_SMOOTH_COEFS)
+//  654 				gainNoiseIndex = 0;
+//  655 		}
+//  656 		ASSERT(env == 0);	/* should only be reset when env == 0 */
+//  657 	}
+//  658 
+//  659 	iStart = sbrGrid->envTimeBorder[env];
+??MapHF_0:
+        LDR      R1,[SP, #+84]
+        ADD      R1,R1,R2
+        LDRB     R1,[R1, #+4]
+        STR      R1,[SP, #+20]
+//  660 	iEnd =   sbrGrid->envTimeBorder[env+1];
+        LDR      R1,[SP, #+84]
+        ADD      R1,R1,R2
+        LDRB     R1,[R1, #+5]
+        STR      R1,[SP, #+36]
+//  661 	for (i = iStart; i < iEnd; i++) {
+        LDR      R1,[SP, #+20]
+        STR      R1,[SP, #+0]
+        MOV      R0,R1
+        LDR      R1,[SP, #+36]
+        CMP      R0,R1
+        BGE      ??MapHF_2
+//  662 		/* save new values in temp buffers (delay)
+//  663 		 * we only store MAX_NUM_SMOOTH_COEFS most recent values, 
+//  664 		 *   so don't keep storing the same value over and over
+//  665 		 */
+//  666 		if (i - iStart < MAX_NUM_SMOOTH_COEFS) {
+??MapHF_3:
+        LDR      R2,[SP, #+80]
+        MOV      R1,#+192
+        MLA      R2,R1,R8,R2
+        LDR      R1,[SP, #+0]
+        STR      R2,[SP, #+28]
+        LDR      R2,[SP, #+20]
+        SUB      R1,R1,R2
+        STR      R1,[SP, #+32]
+        CMP      R1,#+5
+        BGE      ??MapHF_4
+//  667 			for (m = 0; m < sbrFreq->numQMFBands; m++) {
+        LDR      R0,[R9, #+20]
+        MOV      R3,#+0
+        CMP      R0,#+1
+        BGE      ??MapHF_5
+        B        ??MapHF_4
+??MapHF_6:
+        LDR      R4,[SP, #+80]
+        LDR      R5,[SP, #+40]
+        MOV      R1,#+192
+        MLA      R4,R1,R8,R4
+        ADD      R5,R5,R3, LSL #+2
+        ADD      R1,R4,R3, LSL #+2
+        MOV      R4,#+92
+        ORR      R4,R4,#0x1D00
+        ADD      R4,R4,R5
+        LDR      R5,[R4, #+0]
+        ADD      R3,R3,#+1
+        STR      R5,[R1, #+416]
+        LDR      R4,[R4, #+192]
+        STR      R4,[R1, #+1376]
+??MapHF_7:
+        LDR      R1,[R9, #+20]
+        CMP      R3,R1
+        BLT      ??MapHF_6
+??MapHF_8:
+        ADD      R8,R8,#+1
+        CMP      R8,#+5
+        MOVEQ    R8,#+0
+        ADD      R0,R0,#+1
+??MapHF_1:
+        LDR      R1,[SP, #+16]
+        CMP      R0,R1
+        BGE      ??MapHF_0
+        LDR      R1,[R9, #+20]
+        MOV      R3,#+0
+        CMP      R1,#+1
+        BGE      ??MapHF_7
+        B        ??MapHF_8
+//  668 				sbrChan->gTemp[gainNoiseIndex][m] = psi->gLimBoost[m];
+??MapHF_9:
+        LDR      R2,[SP, #+40]
+        LDR      R0,[SP, #+28]
+        MOV      R1,#+92
+        ORR      R1,R1,#0x1D00
+        ADD      R2,R2,R3, LSL #+2
+        ADD      R1,R1,R2
+        LDR      R2,[R1, #+0]
+        ADD      R0,R0,R3, LSL #+2
+        STR      R2,[R0, #+416]
+//  669 				sbrChan->qTemp[gainNoiseIndex][m] = psi->qmLimBoost[m];
+        LDR      R1,[R1, #+192]
+//  670 			}
+        ADD      R3,R3,#+1
+        STR      R1,[R0, #+1376]
+??MapHF_5:
+        LDR      R0,[R9, #+20]
+        CMP      R3,R0
+        BLT      ??MapHF_9
+//  671 		}
+//  672 
+//  673 		/* see 4.6.18.7.6 */
+//  674 		XBuf = psi->XBuf[i + HF_ADJ][sbrFreq->kStart];
+??MapHF_4:
+        LDR      R1,[SP, #+0]
+        LDR      R3,[SP, #+40]
+        ADD      R1,R1,#+2
+        STR      R1,[SP, #+24]
+        LDR      R2,[R9, #+0]
+        MOV      R0,#+44
+        ORR      R0,R0,#0x7600
+        ADD      R2,R3,R2, LSL #+3
+        ADD      R1,R2,R1, LSL #+9
+        ADD      R2,R0,R1
+//  675 		gbMask = 0;
+        MOV      R1,#+0
+        STR      R1,[SP, #+4]
+//  676 		for (m = 0; m < sbrFreq->numQMFBands; m++) {
+        LDR      R0,[R9, #+20]
+        MOV      R3,#+0
+        CMP      R0,#+1
+        BGE      ??MapHF_10
+//  677 			if (env == psi->la || env == sbrChan->laPrev) {
+//  678 				/* no smoothing filter for gain, and qFilt = 0 (only need to do once) */
+//  679 				if (i == iStart) {
+//  680 					psi->gFiltLast[m] = sbrChan->gTemp[gainNoiseIndex][m];
+//  681 					psi->qFiltLast[m] = 0;
+//  682 				}
+//  683 			} else if (hSL == 0) {
+//  684 				/* no smoothing filter for gain, (only need to do once) */
+//  685 				if (i == iStart) {
+//  686 					psi->gFiltLast[m] = sbrChan->gTemp[gainNoiseIndex][m];
+//  687 					psi->qFiltLast[m] = sbrChan->qTemp[gainNoiseIndex][m];
+//  688 				}
+//  689 			} else {
+//  690 				/* apply smoothing filter to gain and noise (after MAX_NUM_SMOOTH_COEFS, it's always the same) */
+//  691 				if (i - iStart < MAX_NUM_SMOOTH_COEFS) {
+//  692 					gFilt = 0;
+//  693 					qFilt = 0;
+//  694 					idx = gainNoiseIndex;
+//  695 					for (j = 0; j < MAX_NUM_SMOOTH_COEFS; j++) {
+//  696 						/* sum(abs(hSmoothCoef[j])) for all j < 1.0 */
+//  697 						gFilt += MULSHIFT32(sbrChan->gTemp[idx][m], hSmoothCoef[j]);
+//  698 						qFilt += MULSHIFT32(sbrChan->qTemp[idx][m], hSmoothCoef[j]);
+//  699 						idx--;
+//  700 						if (idx < 0)
+//  701 							idx += MAX_NUM_SMOOTH_COEFS;
+//  702 					}
+//  703 					psi->gFiltLast[m] = gFilt << 1;	/* restore to Q(FBITS_GLIM_BOOST) (gain of filter < 1.0, so no overflow) */
+//  704 					psi->qFiltLast[m] = qFilt << 1;	/* restore to Q(FBITS_QLIM_BOOST) */
+//  705 				}
+//  706 			}
+//  707 
+//  708 			if (psi->smBoost[m] != 0) {
+//  709 				/* add scaled signal and sinusoid, don't add noise (qFilt = 0) */
+//  710 				smre = psi->smBoost[m];
+//  711 				smim = smre;
+//  712 
+//  713 				/* sinIndex:  [0] xre += sm   [1] xim += sm*s   [2] xre -= sm   [3] xim -= sm*s  */
+//  714 				s = (sinIndex >> 1);	/* if 2 or 3, flip sign to subtract sm */
+//  715 				s <<= 31;
+//  716 				smre ^= (s >> 31);
+//  717 				smre -= (s >> 31);
+//  718 				s ^= ((m + sbrFreq->kStart) << 31);
+//  719 				smim ^= (s >> 31);
+//  720 				smim -= (s >> 31);
+//  721 
+//  722 				/* if sinIndex == 0 or 2, smim = 0; if sinIndex == 1 or 3, smre = 0 */
+//  723 				s = sinIndex << 31;
+//  724 				smim &= (s >> 31);
+//  725 				s ^= 0x80000000;
+//  726 				smre &= (s >> 31);
+//  727 
+//  728 				noiseTabIndex += 2;		/* noise filtered by 0, but still need to bump index */
+//  729 			} else {
+//  730 				/* add scaled signal and scaled noise */
+//  731 				qFilt = psi->qFiltLast[m];	
+//  732 				n = noiseTab[noiseTabIndex++];
+//  733 				smre = MULSHIFT32(n, qFilt) >> (FBITS_QLIM_BOOST - 1 - FBITS_OUT_QMFA);
+//  734 
+//  735 				n = noiseTab[noiseTabIndex++];
+//  736 				smim = MULSHIFT32(n, qFilt) >> (FBITS_QLIM_BOOST - 1 - FBITS_OUT_QMFA);
+//  737 			}
+//  738 			noiseTabIndex &= 1023;	/* 512 complex numbers */
+//  739 
+//  740 			gFilt = psi->gFiltLast[m];
+//  741 			xre = MULSHIFT32(gFilt, XBuf[0]);
+//  742 			xim = MULSHIFT32(gFilt, XBuf[1]);
+//  743 			CLIP_2N_SHIFT30(xre, 32 - FBITS_GLIM_BOOST);
+//  744 			CLIP_2N_SHIFT30(xim, 32 - FBITS_GLIM_BOOST);
+//  745 
+//  746 			xre += smre;	*XBuf++ = xre;
+//  747 			xim += smim;	*XBuf++ = xim;
+//  748 
+//  749 			gbMask |= FASTABS(xre);
+//  750 			gbMask |= FASTABS(xim);
+//  751 		}
+//  752 		/* update circular buffer index */
+//  753 		gainNoiseIndex++;
+//  754 		if (gainNoiseIndex == MAX_NUM_SMOOTH_COEFS)
+//  755 			gainNoiseIndex = 0;
+//  756 
+//  757 		sinIndex++;
+//  758 		sinIndex &= 3;
+??MapHF_11:
+        LDR      R1,[SP, #+12]
+//  759 
+//  760 		/* ensure MIN_GBITS_IN_QMFS guard bits in output
+//  761 		 * almost never occurs in practice, but checking here makes synth QMF logic very simple
+//  762 		 */
+//  763 		if (gbMask >> (31 - MIN_GBITS_IN_QMFS)) {
+        LDR      R0,[SP, #+4]
+        ADD      R8,R8,#+1
+        CMP      R8,#+5
+        MOVEQ    R8,#+0
+        ADD      R1,R1,#+1
+        AND      R1,R1,#0x3
+        STR      R1,[SP, #+12]
+        ASRS     R1,R0,#+29
+        BEQ      ??MapHF_12
+//  764 			XBuf = psi->XBuf[i + HF_ADJ][sbrFreq->kStart];
+        LDR      R2,[SP, #+24]
+        LDR      R3,[R9, #+0]
+        LDR      R4,[SP, #+40]
+        MOV      R0,#+44
+        ORR      R0,R0,#0x7600
+        ADD      R3,R4,R3, LSL #+3
+        ADD      R2,R3,R2, LSL #+9
+        ADD      R2,R0,R2
+//  765 			for (m = 0; m < sbrFreq->numQMFBands; m++) {
+        LDR      R0,[R9, #+20]
+        MOV      R3,#+0
+        MVN      R5,#-536870912
+        CMP      R0,#+1
+        BGE      ??MapHF_13
+        B        ??MapHF_14
+??MapHF_15:
+        ADD      R0,R5,R6
+        STR      R0,[R2], #+4
+        ADD      R4,R4,R1
+        STR      R4,[R2], #+4
+        LDR      R5,[SP, #+4]
+        ASR      R6,R0,#+31
+        ASR      R7,R4,#+31
+        EOR      R0,R6,R0
+        SUB      R0,R0,R6
+        EOR      R4,R7,R4
+        SUB      R4,R4,R7
+        ORR      R0,R4,R0
+        ORR      R0,R0,R5
+        STR      R0,[SP, #+4]
+        ADD      R3,R3,#+1
+??MapHF_10:
+        LDR      R0,[R9, #+20]
+        CMP      R3,R0
+        BGE      ??MapHF_11
+        LDR      R5,[SP, #+40]
+        LDR      R1,[SP, #+40]
+        MOV      R4,#+25
+        ORR      R4,R4,#0x1D00
+        LDRSB    R4,[R4, +R5]
+        MOV      R0,#+220
+        ORR      R0,R0,#0x1E00
+        ADD      R1,R1,R3, LSL #+2
+        ADD      R7,R0,R1
+        LDR      R0,[SP, #+28]
+        LDR      R1,[SP, #+84]
+        ADD      R0,R0,R3, LSL #+2
+        CMP      R1,R4
+        BEQ      ??MapHF_16
+        LDR      R4,[SP, #+80]
+        ADD      R4,R4,#+400
+        LDRSB    R4,[R4, #+0]
+        CMP      R1,R4
+        BNE      ??MapHF_17
+??MapHF_16:
+        LDR      R1,[SP, #+0]
+        LDR      R4,[SP, #+20]
+        CMP      R1,R4
+        BNE      ??MapHF_18
+        LDR      R0,[R0, #+416]
+        STR      R0,[R7, #+960]
+        MOV      R0,#+0
+        B        ??MapHF_19
+??MapHF_17:
+        LDR      R1,[SP, #+16]
+        CMP      R1,#+0
+        BNE      ??MapHF_20
+        LDR      R1,[SP, #+0]
+        LDR      R4,[SP, #+20]
+        CMP      R1,R4
+        BNE      ??MapHF_18
+        LDR      R1,[R0, #+416]
+        STR      R1,[R7, #+960]
+        LDR      R0,[R0, #+1376]
+        B        ??MapHF_19
+??MapHF_20:
+        LDR      R0,[SP, #+32]
+        CMP      R0,#+5
+        BGE      ??MapHF_18
+        MOV      R12,#+0
+        MOV      R4,#+0
+        MOV      R5,R8
+        MOV      R6,R4
+??MapHF_21:
+        LDR      R1,[SP, #+80]
+        MOV      R0,#+192
+        ADD      R1,R1,R3, LSL #+2
+        MLA      R10,R0,R5,R1
+        LDR      R0,??MapHF_22    ;; hSmoothCoef
+        LDR      R11,[R10, #+416]
+        LDR      LR,[R0, +R6, LSL #+2]
+        LDR      R10,[R10, #+1376]
+        SMULL    R0,R1,R11,LR
+        SUBS     R5,R5,#+1
+        ADD      R12,R1,R12
+        SMULL    R0,R1,R10,LR
+        ADDMI    R5,R5,#+5
+        ADD      R4,R1,R4
+        ADD      R6,R6,#+1
+        CMP      R6,#+5
+        BLT      ??MapHF_21
+        LSL      R0,R12,#+1
+        STR      R0,[R7, #+960]
+        LSL      R0,R4,#+1
+??MapHF_19:
+        STR      R0,[R7, #+1152]
+??MapHF_18:
+        LDR      R0,[R7, #+0]
+        CMP      R0,#+0
+        BEQ      ??MapHF_23
+        LDR      R1,[SP, #+12]
+        ASR      R1,R1,#+1
+        LSL      R4,R1,#+31
+        ASR      R1,R4,#+31
+        EOR      R5,R1,R0
+        SUB      R1,R5,R1
+        LDR      R5,[R9, #+0]
+        ADD      R5,R5,R3
+        EOR      R4,R4,R5, LSL #+31
+        ASR      R4,R4,#+31
+        EOR      R0,R4,R0
+        SUB      R0,R0,R4
+        LDR      R4,[SP, #+12]
+        LSL      R5,R4,#+31
+        AND      R4,R0,R5, ASR #+31
+        EOR      R0,R5,#0x80000000
+        AND      R5,R1,R0, ASR #+31
+        LDR      R0,[SP, #+8]
+        ADD      R6,R0,#+2
+        B        ??MapHF_24
+??MapHF_23:
+        LDR      R6,??MapHF_22+0x4  ;; raac_noiseTab
+        LDR      R0,[SP, #+8]
+        LDR      R4,[R7, #+1152]
+        LDR      R5,[R6, +R0, LSL #+2]
+        ADD      R10,R0,#+1
+        LDR      R11,[R6, +R10, LSL #+2]
+        SMULL    R0,R1,R5,R4
+        ADD      R6,R10,#+1
+        ASR      R5,R1,#+8
+        SMULL    R0,R1,R11,R4
+        ASR      R4,R1,#+8
+??MapHF_24:
+        LSL      R1,R6,#+22
+        LSR      R1,R1,#+22
+        STR      R1,[SP, #+8]
+        LDR      R12,[R7, #+960]
+        LDR      R6,[R2, #+0]
+        LDR      R7,[R2, #+4]
+        SMULL    R0,R1,R12,R6
+        MOV      R6,R1
+        SMULL    R0,R1,R12,R7
+        MVN      R7,#-1073741824
+        MOV      R0,R1
+        ASR      R1,R6,#+31
+        CMP      R1,R6, ASR #+22
+        EORNE    R6,R7,R1
+        LSLEQ    R6,R6,#+8
+        ASR      R1,R0,#+31
+        CMP      R1,R0, ASR #+22
+        LSLEQ    R1,R0,#+8
+        EORNE    R1,R7,R1
+        B        ??MapHF_15
+//  766 				xre = XBuf[0];	xim = XBuf[1];	
+??MapHF_25:
+        LDR      R0,[R2, #+0]
+        LDR      R4,[R2, #+4]
+//  767 				CLIP_2N(xre, (31 - MIN_GBITS_IN_QMFS));	
+        ASR      R6,R0,#+31
+        CMP      R6,R0, ASR #+29
+        EORNE    R0,R5,R6
+//  768 				CLIP_2N(xim, (31 - MIN_GBITS_IN_QMFS));	
+        ASR      R6,R4,#+31
+        CMP      R6,R4, ASR #+29
+        EORNE    R4,R5,R6
+//  769 				*XBuf++ = xre;	*XBuf++ = xim;
+        STR      R0,[R2], #+4
+        STR      R4,[R2], #+4
+//  770 			}	
+        ADD      R3,R3,#+1
+??MapHF_13:
+        LDR      R0,[R9, #+20]
+        CMP      R3,R0
+        BLT      ??MapHF_25
+//  771 			CLIP_2N(gbMask, (31 - MIN_GBITS_IN_QMFS));	
+??MapHF_14:
+        LDR      R0,[SP, #+4]
+        ASR      R0,R0,#+31
+        CMP      R0,R1
+        EORNE    R0,R5,R0
+        STRNE    R0,[SP, #+4]
+//  772 		}
+//  773 		gbIdx = ((i + HF_ADJ) >> 5) & 0x01;
+??MapHF_12:
+        LDR      R0,[SP, #+24]
+//  774 		sbrChan->gbMask[gbIdx] |= gbMask;
+        LDR      R2,[SP, #+4]
+        MOV      R1,#+1
+        AND      R0,R1,R0, ASR #+5
+        LDR      R1,[SP, #+80]
+        ADD      R0,R1,R0, LSL #+2
+        LDR      R1,[R0, #+392]
+        ORR      R1,R2,R1
+        STR      R1,[R0, #+392]
+//  775 	}
+        LDR      R1,[SP, #+0]
+        ADD      R1,R1,#+1
+        STR      R1,[SP, #+0]
+        MOV      R0,R1
+        LDR      R1,[SP, #+36]
+        CMP      R0,R1
+        BLT      ??MapHF_3
+//  776 	sbrChan->noiseTabIndex =  noiseTabIndex;
+??MapHF_2:
+        LDR      R0,[SP, #+80]
+        LDR      R1,[SP, #+8]
+        STR      R1,[R0, #+404]
+//  777 	sbrChan->sinIndex =       sinIndex;
+        LDR      R0,[SP, #+80]
+        LDR      R1,[SP, #+12]
+        STR      R1,[R0, #+408]
+//  778 	sbrChan->gainNoiseIndex = gainNoiseIndex;
+        LDR      R0,[SP, #+80]
+        STR      R8,[R0, #+412]
+//  779 }
+        ADD      SP,SP,#+44
+        CFI CFA R13+36
+        POP      {R4-R11,PC}      ;; return
+        DATA
+??MapHF_22:
+        DC32     hSmoothCoef
+        DC32     raac_noiseTab
+        CFI EndBlock cfiBlock11
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock12 Using cfiCommon0
+        CFI NoFunction
+        THUMB
+??raac_AdjustHighFreq??rT:
+        BX       PC
+        Nop      
+        CFI EndBlock cfiBlock12
+        REQUIRE raac_AdjustHighFreq
+//  780 
+//  781 /**************************************************************************************
+//  782  * Function:    AdjustHighFreq
+//  783  *
+//  784  * Description: adjust high frequencies and add noise and sinusoids (4.6.18.7)
+//  785  *
+//  786  * Inputs:      initialized PSInfoSBR struct
+//  787  *              initialized SBRHeader struct for this SCE/CPE block
+//  788  *              initialized SBRGrid struct for this channel
+//  789  *              initialized SBRFreq struct for this SCE/CPE block
+//  790  *              initialized SBRChan struct for this channel
+//  791  *              index of current channel (0 for SCE, 0 or 1 for CPE)
+//  792  *
+//  793  * Outputs:     complete reconstructed subband QMF samples for this channel
+//  794  *
+//  795  * Return:      none
+//  796  **************************************************************************************/
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock13 Using cfiCommon1
+        CFI Function raac_AdjustHighFreq
+        ARM
+//  797 void AdjustHighFreq(PSInfoSBR *psi, SBRHeader *sbrHdr, SBRGrid *sbrGrid, SBRFreq *sbrFreq, SBRChan *sbrChan, int ch)
+//  798 {
+raac_AdjustHighFreq:
+        PUSH     {R1,R4-R11,LR}
+        CFI ?RET Frame(CFA, -4)
+        CFI R11 Frame(CFA, -8)
+        CFI R10 Frame(CFA, -12)
+        CFI R9 Frame(CFA, -16)
+        CFI R8 Frame(CFA, -20)
+        CFI R7 Frame(CFA, -24)
+        CFI R6 Frame(CFA, -28)
+        CFI R5 Frame(CFA, -32)
+        CFI R4 Frame(CFA, -36)
+        CFI CFA R13+40
+        SUB      SP,SP,#+4
+        CFI CFA R13+44
+        MOV      R4,R0
+        LDR      R7,[SP, #+44]
+        LDR      R8,[SP, #+48]
+        MOV      R5,R2
+//  799 	int i, env, hfReset;
+//  800 	unsigned char frameClass, pointer;
+//  801 
+//  802 	frameClass = sbrGrid->frameClass;
+        LDRB     R0,[R5, #+0]
+//  803 	pointer  = sbrGrid->pointer;
+        LDRB     R1,[R5, #+2]
+        MOV      R6,R3
+//  804 
+//  805 	/* derive la from table 4.159 */
+//  806 	if ((frameClass == SBR_GRID_FIXVAR || frameClass == SBR_GRID_VARVAR) && pointer > 0)
+        CMP      R0,#+1
+        CMPNE    R0,#+3
+        BNE      ??raac_AdjustHighFreq_0
+        MOVS     R2,R1
+        BEQ      ??raac_AdjustHighFreq_0
+//  807 		psi->la = sbrGrid->numEnv + 1 - pointer;
+        LDRSB    R0,[R5, #+3]
+        ADD      R0,R0,#+1
+        SUB      R0,R0,R1
+        B        ??raac_AdjustHighFreq_1
+//  808 	else if (frameClass == SBR_GRID_VARFIX && pointer > 1)
+??raac_AdjustHighFreq_0:
+        CMP      R0,#+2
+        BNE      ??raac_AdjustHighFreq_2
+        CMP      R1,#+2
+//  809 		psi->la = pointer - 1;
+        SUBCS    R0,R1,#+1
+        BCS      ??raac_AdjustHighFreq_1
+//  810 	else
+//  811 		psi->la = -1;
+??raac_AdjustHighFreq_2:
+        MVN      R0,#+0
+??raac_AdjustHighFreq_1:
+        MOV      R1,#+25
+        ORR      R1,R1,#0x1D00
+        STRB     R0,[R1, +R4]
+//  812 
+//  813 	/* for each envelope, estimate gain and adjust SBR QMF bands */
+//  814 	hfReset = sbrChan->reset;
+        LDR      R1,[R7, #+0]
+//  815 	for (env = 0; env < sbrGrid->numEnv; env++) {
+        MOV      R9,#+0
+        STR      R1,[SP, #+0]
+        LDRB     R0,[R5, #+3]
+        CMP      R0,#+0
+        BNE      ??raac_AdjustHighFreq_3
+//  816 		EstimateEnvelope(psi, sbrHdr, sbrGrid, sbrFreq, env);
+//  817 		CalcGain(psi, sbrHdr, sbrGrid, sbrFreq, sbrChan, ch, env);
+//  818 		MapHF(psi, sbrHdr, sbrGrid, sbrFreq, sbrChan, env, hfReset);
+//  819 		hfReset = 0;	/* only set for first envelope after header reset */
+//  820 	}
+//  821 
+//  822 	/* save curr as prev for next time */
+//  823 	for (i = 0; i < MAX_QMF_BANDS; i++)
+??raac_AdjustHighFreq_4:
+        MOV      R0,#+0
+//  824 		sbrChan->addHarmonic[0][i] = sbrChan->addHarmonic[1][i];
+??raac_AdjustHighFreq_5:
+        ADD      R2,R0,R7
+        LDRB     R2,[R2, #+342]
+        ADD      R1,R0,R7
+        ADD      R0,R0,#+1
+        STRB     R2,[R1, #+294]
+        CMP      R0,#+48
+        BLT      ??raac_AdjustHighFreq_5
+//  825 	sbrChan->addHarmonicFlag[0] = sbrChan->addHarmonicFlag[1];
+        LDRB     R0,[R7, #+293]
+//  826 
+//  827 	/* save la for next frame */
+//  828 	if (psi->la == sbrGrid->numEnv)
+        MOV      R1,#+25
+        ORR      R1,R1,#0x1D00
+        STRB     R0,[R7, #+292]
+        LDRSB    R1,[R1, +R4]
+        LDRB     R2,[R5, #+3]
+        MOV      R0,#+400
+        CMP      R1,R2
+        MVNNE    R1,#+0
+//  829 		sbrChan->laPrev = 0;
+        MOVEQ    R1,#+0
+        STRB     R1,[R0, +R7]
+        POP      {R0,R1,R4-R11,PC}
+??raac_AdjustHighFreq_6:
+        MOV      R0,R10
+        PUSH     {R0}
+        CFI CFA R13+48
+        MOV      R3,R6
+        MOV      R2,R5
+        MOV      R0,R11
+        PUSH     {R0}
+        CFI CFA R13+52
+        MOV      R0,R9
+        PUSH     {R0}
+        CFI CFA R13+56
+        MOV      R0,R8
+        PUSH     {R0}
+        CFI CFA R13+60
+        LDR      R1,[SP, #+20]
+        MOV      R0,R4
+        BL       CalcMaxGain
+        MOV      R0,R10
+        PUSH     {R0}
+        CFI CFA R13+64
+        MOV      R3,R7
+        MOV      R2,R6
+        MOV      R1,R5
+        MOV      R0,R11
+        PUSH     {R0}
+        CFI CFA R13+68
+        MOV      R0,R9
+        PUSH     {R0}
+        CFI CFA R13+72
+        MOV      R0,R8
+        PUSH     {R0}
+        CFI CFA R13+76
+        MOV      R0,R4
+        BL       CalcComponentGains
+        MOV      R3,R10
+        MOV      R2,R11
+        MOV      R1,R6
+        MOV      R0,R4
+        BL       ApplyBoost
+        ADD      R11,R11,#+1
+        ADD      SP,SP,#+32
+        CFI CFA R13+44
+??raac_AdjustHighFreq_7:
+        LDR      R0,[R6, #+16]
+        CMP      R11,R0
+        BLT      ??raac_AdjustHighFreq_6
+??raac_AdjustHighFreq_8:
+        LDR      R0,[SP, #+0]
+        MOV      R3,R6
+        PUSH     {R0}
+        CFI CFA R13+48
+        MOV      R2,R5
+        MOV      R0,R9
+        PUSH     {R0}
+        CFI CFA R13+52
+        ADD      R9,R9,#+1
+        MOV      R0,R7
+        PUSH     {R0}
+        CFI CFA R13+56
+        LDR      R1,[SP, #+16]
+        MOV      R0,R4
+        BL       MapHF
+        MOV      R1,#+0
+        STR      R1,[SP, #+12]
+        ADD      SP,SP,#+12
+        CFI CFA R13+44
+??raac_AdjustHighFreq_3:
+        LDRB     R0,[R5, #+3]
+        CMP      R9,R0
+        BGE      ??raac_AdjustHighFreq_4
+        MOV      R0,R9
+        PUSH     {R0}
+        CFI CFA R13+48
+        LDR      R1,[SP, #+8]
+        MOV      R3,R6
+        MOV      R2,R5
+        MOV      R0,R4
+        BL       EstimateEnvelope
+        MOV      R0,#+36
+        ORR      R0,R0,#0x1D00
+        ADD      R0,R0,R4
+        MVN      R1,#+0
+        STR      R1,[R0, #+0]
+        STR      R1,[R0, #+16]
+        STR      R1,[R0, #+32]
+        STR      R1,[R0, #+36]
+        MOV      R0,#+76
+        ORR      R0,R0,#0x1400
+        ADD      R1,R8,R8, LSL #+2
+        ADD      R1,R1,R4
+        ADD      R1,R9,R1
+        LDRSB    R0,[R0, +R1]
+        MOV      R11,#+0
+        RSB      R10,R0,#+29
+        LDR      R0,[R6, #+16]
+        ADD      SP,SP,#+4
+        CFI CFA R13+44
+        CMP      R0,#+1
+        BGE      ??raac_AdjustHighFreq_7
+        B        ??raac_AdjustHighFreq_8
+        CFI EndBlock cfiBlock13
+//  830 	else
+//  831 		sbrChan->laPrev = -1;
+//  832 }
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock14 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_InvRNormalized??rA:
+        LDR      R12,??Subroutine7_0  ;; raac_InvRNormalized
+        BX       R12
+        DATA
+??Subroutine7_0:
+        DC32     raac_InvRNormalized
+        CFI EndBlock cfiBlock14
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock15 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??rA??div32_a:
+        LDR      R12,??Subroutine8_0  ;; ??div32_a
+        MOV      PC,R12
+        DATA
+??Subroutine8_0:
+        DC32     ??div32_a
+        CFI EndBlock cfiBlock15
+
+        RSEG CODE:CODE:NOROOT(2)
+        CFI Block cfiBlock16 Using cfiCommon1
+        CFI NoFunction
+        ARM
+??raac_SqrtFix??rA:
+        LDR      R12,??Subroutine9_0  ;; raac_SqrtFix
+        BX       R12
+        DATA
+??Subroutine9_0:
+        DC32     raac_SqrtFix
+        CFI EndBlock cfiBlock16
+
+        END
+// 
+// 5 988 bytes in segment CODE
+//   292 bytes in segment DATA_C
+// 
+// 5 924 bytes of CODE  memory (+ 64 bytes shared)
+//   292 bytes of CONST memory
+//
+//Errors: none
+//Warnings: none

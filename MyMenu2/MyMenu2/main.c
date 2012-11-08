@@ -1,7 +1,7 @@
 #include "..\..\inc\swilib.h"
 
 #ifndef NEWSGOLD
-#define ENUM 0x23   ;SGold为0x23,其他为0x26
+#define ENUM 0x23
 #else
 #define ENUM 0x26
 #endif
@@ -28,8 +28,20 @@
 //#define menu_item_n	16
 #define ADDR_LEN	8
 
+#ifdef  E71Cv41
 #define FUNC_PT_START	0xA085DEA4
 #define FUNC_PT_END	0xA0865BA3
+#endif
+#ifdef  S7Cv47
+#define FUNC_PT_START	0xA0456A80
+#define FUNC_PT_END	0xA045E6FF
+#endif
+
+#ifdef  S68Cv51
+#define FUNC_PT_START	0xA04269B4
+#define FUNC_PT_END	0xA042E633
+#endif
+
 #define FUNC_PT_PSIZE	0x80
 #define FUNC_PT_OFFSET	0x10
 #define MAX_FUNC	0xFA
@@ -437,10 +449,12 @@ PROCESSOR_MODE void run_ml(MENU_LIST *ml)
 	switch(ml->type)
 	{
 	case TYPE_FILE:
+    DoIDLE(0);
 		run_file(ml);
 		break;
 	case TYPE_SHORTCUT:
 	{
+    DoIDLE(0);
 		char ShortCut[32];
 		char *p=ml->path;
 		int i=0;
@@ -460,6 +474,7 @@ PROCESSOR_MODE void run_ml(MENU_LIST *ml)
 	}
 	case TYPE_ADDRESS:
 	{
+    DoIDLE(0);
 		if(ml->path_len==ADDR_LEN)
 		{
 			int i;
@@ -474,6 +489,7 @@ PROCESSOR_MODE void run_ml(MENU_LIST *ml)
 		break;
 	}
 	case TYPE_FOLDER:
+    DoIDLE(0);
 		run_folder(ml);
 		break;
 	}
@@ -506,7 +522,7 @@ typedef struct
 //all params: if 0, not applied
 //exp_mode		        equ		0	; 0=normal, 1=file selection, 3+4=folder selection
 //exp_def_folder	    equ		4	; NSG eg. 0=MyStuff 1=sound, 8=Misc 9=pictures 11=video 1F=apps 20=game 2D=theme 31=unknown1 61=MMC. 0x26: use folder in st_exp_cust_folder_ws
-//                            ;  SG eg. 0=Misc 1=sound 2=sound\Ems 3=sound\on off 4=sound\ProSlide 5=Voice memo 6=SMS 7=Misc 8=picture 9=pic\EMS A=Pic\Logos B=Pic\WallPaper C=Pic\MMS D=pic\Icons E=pic\Frame F=video 10=Animation 11=Ani\EMS 12=0:\ 13=Misc\Data inbox 14=Text module 15=Pic\Clip Gallery 16=0:\ 17=0:\ 18=0:\ 19=Skins 1A=Text 1B=JAVA 1C=JAVA/jam 1D=JAVA/jam/Apps 1E=jam/Games 1F=jam/SMS 20=System 21=0:\ 22=Tmp 23=ws 24=存储器已满 25=0:\ 26=1:\Skin 27=System/mms 28=System/japp/ 29=2:\japp 2A=theme 2B=1:\ims 2C=2:\IMS 2D=PhonePilots 2E=2D\Lists 2F=2D\Res 30=2D\Tmp 31=Sms archive 35=Sms archieve\Draft 39=0:\System\HMI 3A=0:\System\SMS 3B=0:\System\SyncML 
+//                            ;  SG eg. 0=Misc 1=sound 2=sound\Ems 3=sound\on off 4=sound\ProSlide 5=Voice memo 6=SMS 7=Misc 8=picture 9=pic\EMS A=Pic\Logos B=Pic\WallPaper C=Pic\MMS D=pic\Icons E=pic\Frame F=video 10=Animation 11=Ani\EMS 12=0:\ 13=Misc\Data inbox 14=Text module 15=Pic\Clip Gallery 16=0:\ 17=0:\ 18=0:\ 19=Skins 1A=Text 1B=JAVA 1C=JAVA/jam 1D=JAVA/jam/Apps 1E=jam/Games 1F=jam/SMS 20=System 21=0:\ 22=Tmp 23=ws 25=0:\ 26=1:\Skin 27=System/mms 28=System/japp/ 29=2:\japp 2A=theme 2B=1:\ims 2C=2:\IMS 2D=PhonePilots 2E=2D\Lists 2F=2D\Res 30=2D\Tmp 31=Sms archive 35=Sms archieve\Draft 39=0:\System\HMI 3A=0:\System\SMS 3B=0:\System\SyncML 
 //exp_cust_folder_ws	equ		8	  ; if NSG st_exp_def_folder=0x26, use base folder stored in this ws, if SGold st_exp_def_folder=0x23
 //exp_preselection_ws	equ		0xC	; start selection in explorer with file/folder stored in ws
 //                    equ		0x10
@@ -544,7 +560,7 @@ void run_folder(MENU_LIST *ml)
 	NativeExplorerData data;
 	zeromem(&data,sizeof(NativeExplorerData));
 	data.mode=0;
-	data.dir_enum=0x3B;
+	data.dir_enum=ENUM;
 	data.path_to_file=ws;
 	data.is_exact_dir=0;
 	data.full_filename=ws;

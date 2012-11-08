@@ -7,8 +7,20 @@
 #define ENUM 0x26
 #endif
 
-extern const char FUNC_FILE_NAME[];
+#ifdef  E71Cv41
+#define FUNC_PT_START	0xA085DEA4
+#define FUNC_PT_END	0xA0865BA3
+#endif
+#ifdef  S7Cv47
+#define FUNC_PT_START	0xA0456A80
+#define FUNC_PT_END	0xA045E6FF
+#endif
 
+#define FUNC_PT_PSIZE	0x80
+#define FUNC_PT_OFFSET	0x10
+#define MAX_FUNC	0xFA
+
+extern const char FUNC_FILE_NAME[];
 extern const char REFRESH[];
 extern const char QUIT[];
 extern const char REBOOT[];
@@ -99,7 +111,7 @@ int runSystem(char *text) {
 //    if (p) {
     if (strcmp(text,REFRESH)==0)
     {  DoIDLE(0);
-      ShowMSG(1, (int)"Reflashing seting!");
+      ShowMSG(1, (int)"更新设置中!");
       if (!RereadSettings()) {
         SUBPROC((void *)ElfKiller);
         r = 1;
@@ -112,7 +124,7 @@ int runSystem(char *text) {
 //    if (p) {
     if (strcmp(text,QUIT)==0)
     {  DoIDLE(0);
-      ShowMSG(1, (int)"Quit DialExt!");
+      ShowMSG(1, (int)"退出DialExt!");
       SUBPROC((void *)ElfKiller);
       r = 1;
     }
@@ -123,7 +135,7 @@ int runSystem(char *text) {
 //    if (p) {
     if (strcmp(text,REBOOT)==0)
     { DoIDLE(0);
-      ShowMSG(1, (int)"Rebooting phone!");
+      ShowMSG(1, (int)"重启手机!");
       RebootPhone();
       r = 1;
     }
@@ -134,13 +146,45 @@ int runSystem(char *text) {
 //    if (p) {
     if (strcmp(text,SHUTOFF)==0)
     { DoIDLE(0);
-      ShowMSG(1, (int)"Switching phone off!");
+      ShowMSG(1, (int)"关闭手机!");
       SwitchPhoneOff();
       r = 1;
     }
 //  }
   return r;
 }
+
+#pragma inline=forced
+int toupper(int c)
+{
+	if ((c>='a')&&(c<='z')) c+='A'-'a';
+	return(c);
+}
+
+int strncmpNoCase(const char *s1,const char *s2,unsigned int n)
+{
+	int i;
+	int c;
+	while(!(i=(c=toupper(*s1++))-toupper(*s2++))&&(--n)) if (!c) break;
+	return(i);
+}
+
+#ifdef NEWSGOLD
+unsigned int GetFunctionPointByName(char *name)
+{
+	char *p=(char *)FUNC_PT_START;
+	int len=strlen(name);
+	if(len==0)
+		return 0;
+	while((char *)FUNC_PT_END-p>0)
+	{
+		if(!strncmpNoCase(p, name, len))
+			return (*(unsigned int *)(p+FUNC_PT_OFFSET));
+		p+=FUNC_PT_PSIZE;
+	}
+	return 0;
+}
+#endif
 
 char *getFuncText(WSHDR *key) {
   char *text = malloc(10);
@@ -234,19 +278,6 @@ int runFolder(char *folderpath)
 }
 */
 
-int runShorcut(char *shorcut) 
-{
-
-  void (*runfunc)(void);
-  runfunc = (void (*)()) GetFunctionPointer(shorcut);
-  if (runfunc) 
-  {
-    runfunc();
-    return 1;
-  }
-  return 0;
-}
-
 int runAddress(long address) 
 {
   void (*runaddr)(void);
@@ -258,6 +289,25 @@ int runAddress(long address)
   }
   return 0;
 }
+
+int runShorcut(char *shorcut) 
+{
+
+  void (*runfunc)(void);
+#ifndef NEWSGOLD
+  runfunc = (void (*)()) GetFunctionPointer(shorcut);
+#else
+  runfunc = (void (*)()) GetFunctionPointByName(shorcut);
+#endif
+  if (runfunc) 
+  {
+    runfunc();
+    return 1;
+  }
+  return 0;
+}
+
+
 
 int runFunc(char *func) {
   if (!func) return 0;
